@@ -11,9 +11,12 @@ Features:
 
 import httpx
 import os
+import logging
 from typing import List, Dict, Any, Optional
 from datetime import datetime, timedelta
 import asyncio
+
+logger = logging.getLogger(__name__)
 
 
 class GitHubConnector:
@@ -86,7 +89,7 @@ class GitHubConnector:
                 return profile
 
         except httpx.HTTPError as e:
-            print(f"Error fetching GitHub profile: {e}")
+            logger.error(f"Error fetching GitHub profile: {e}", exc_info=True)
             return {'error': str(e)}
 
     async def get_repositories(
@@ -149,7 +152,7 @@ class GitHubConnector:
                 return repos
 
         except httpx.HTTPError as e:
-            print(f"Error fetching GitHub repos: {e}")
+            logger.error(f"Error fetching GitHub repos: {e}", exc_info=True)
             return []
 
     async def get_user_activity_summary(self, username: str = "mangeshraut712") -> Dict[str, Any]:

@@ -8,6 +8,9 @@ from fastapi import APIRouter, Request, HTTPException
 from fastapi.responses import StreamingResponse
 
 import httpx
+import logging
+
+logger = logging.getLogger(__name__)
 
 from api.config import (
     ChatRequest,
@@ -531,8 +534,8 @@ async def stream_openrouter_response(
     routing_tier: str = "auto",
 ) -> AsyncGenerator[str, None]:
     """Enhanced streaming with robust error handling and retries"""
-    print(
-        f"🔄 Streaming from OpenRouter: {model} tier={routing_tier} "
+    logger.info(
+        f"Streaming from OpenRouter: {model} tier={routing_tier} "
         f"(site_context={knowledge_context_enabled}, web_tools={web_tools_enabled})"
     )
     user_msg = next(
@@ -541,7 +544,7 @@ async def stream_openrouter_response(
     )
 
     if not get_openrouter_api_key():
-        print("⚠️ No API Key found - activating Local Intelligence Fallback")
+        logger.warning("⚠️ No API Key found - activating Local Intelligence Fallback")
 
         # Generate local response
         fallback = generate_local_response(user_msg)
@@ -603,7 +606,7 @@ async def stream_openrouter_response(
 
     while retry_count <= max_retries:
         if retry_count > 0:
-            print(f"🔄 Retrying stream (attempt {retry_count}/{max_retries})...")
+            logger.info(f"🔄 Retrying stream (attempt {retry_count}/{max_retries})...")
             full_content = ""
             chunk_count = 0
 
@@ -631,7 +634,7 @@ async def stream_openrouter_response(
                     ) as response:
                         if response.status_code != 200:
                             await response.aread()
-                            print(
+                            logger.error(
                                 f"❌ OpenRouter API error for {candidate_model}: "
                                 f"status={response.status_code}"
                             )
@@ -709,13 +712,13 @@ async def stream_openrouter_response(
 
                         return
             except (httpx.RemoteProtocolError, httpx.ReadError, httpx.ReadTimeout) as e:
-                print(f"⚠️ Stream connection error for {candidate_model}: {type(e).__name__}")
+                logger.warning(f"⚠️ Stream connection error for {candidate_model}: {type(e).__name__}")
                 continue
             except httpx.HTTPStatusError as e:
-                print(f"❌ OpenRouter HTTP error for {candidate_model}: {e.response.status_code}")
+                logger.error(f"❌ OpenRouter HTTP error for {candidate_model}: {e.response.status_code}")
                 continue
             except httpx.RequestError as e:
-                print(f"❌ Request error for {candidate_model}: {str(e)}")
+                logger.error(f"❌ Request error for {candidate_model}: {str(e)}")
                 continue
 
         retry_count += 1
@@ -773,7 +776,7 @@ async def call_openrouter(
                 }
             except Exception as exc:
                 last_error = exc
-                print(f"❌ OpenRouter non-stream error for {candidate_model}: {exc}")
+                logger.error(f"❌ OpenRouter non-stream error for {candidate_model}: {exc}", exc_info=True)
                 continue
 
     raise last_error or Exception("OpenRouter request failed")
@@ -802,14 +805,14 @@ async def chat_endpoint(request: ChatRequest, req: Request):
             status=429,
             retry_after=RATE_LIMIT_WINDOW,
         )
-    print(f"📨 Chat request from {client_ip}: chars={len(message)}")
+    logger.info(f"📨 Chat request from {client_ip}: chars={len(message)}")
 
     if not message:
         raise HTTPException(status_code=400, detail="Message cannot be empty")
 
     # Prompt injection guard
     if is_prompt_injection(message):
-        print(f"🛡️  Prompt injection detected from {client_ip}: chars={len(message)}")
+        logger.warning(f"🛡️  Prompt injection detected from {client_ip}: chars={len(message)}")
         return {
             "answer": "I noticed your message contains instructions that try to change my behaviour. I'm here to help you learn about Mangesh's portfolio — feel free to ask me anything about that!",
             "source": "Security",
@@ -841,7 +844,7 @@ async def chat_endpoint(request: ChatRequest, req: Request):
         return direct_response
 
     if not get_openrouter_api_key():
-        print("⚠️ No API key - using Local Intelligence fallback")
+        logger.warning("⚠️ No API key - using Local Intelligence fallback")
         fallback = generate_local_response(message, site_context)
         elapsed = time.time() - start_time
         payload = {
@@ -970,7 +973,7 @@ async def chat_endpoint(request: ChatRequest, req: Request):
     except HTTPException:
         raise
     except httpx.HTTPStatusError as e:
-        print(f"❌ Chat endpoint HTTP status error: {e.response.status_code}")
+        logger.error(f"❌ Chat endpoint HTTP status error: {e.response.status_code}")
         return build_local_chat_payload(
             message,
             site_context,
@@ -978,7 +981,7 @@ async def chat_endpoint(request: ChatRequest, req: Request):
             reason="Local Intelligence",
         )
     except httpx.RequestError as e:
-        print(f"❌ Chat endpoint connection/request error: {str(e)}")
+        logger.error(f"❌ Chat endpoint connection/request error: {str(e)}")
         return build_local_chat_payload(
             message,
             site_context,
@@ -986,7 +989,7 @@ async def chat_endpoint(request: ChatRequest, req: Request):
             reason="Local Intelligence",
         )
     except asyncio.TimeoutError:
-        print("❌ Chat endpoint request timed out")
+        logger.error("❌ Chat endpoint request timed out")
         return build_local_chat_payload(
             message,
             site_context,
@@ -994,7 +997,7 @@ async def chat_endpoint(request: ChatRequest, req: Request):
             reason="Local Intelligence",
         )
     except Exception as e:
-        print(f"❌ Chat endpoint unexpected error: {type(e).__name__} - {str(e)}")
+        logger.error(f"❌ Chat endpoint unexpected error: {type(e).__name__} - {str(e)}", exc_info=True)
         raise api_error(
             code="CHAT_INTERNAL_ERROR",
             message="Something went wrong while processing your message. Please try again.",

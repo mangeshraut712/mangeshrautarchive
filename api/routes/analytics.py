@@ -1,6 +1,9 @@
 from datetime import datetime, timezone
+import logging
 from fastapi import APIRouter, HTTPException, Request
 from fastapi.responses import JSONResponse
+
+logger = logging.getLogger(__name__)
 
 from api.config import (
     AnalyticsTrackRequest,
@@ -74,7 +77,7 @@ async def get_analytics_views():
     try:
         return await portfolio_analytics_store.get_metrics()
     except Exception as e:
-        print(f"Analytics metrics error: {type(e).__name__}")
+        logger.error(f"Analytics metrics error: {type(e).__name__}", exc_info=True)
         raise HTTPException(status_code=500, detail="Analytics service error")
 
 
@@ -107,7 +110,7 @@ async def track_analytics_view(payload: AnalyticsTrackRequest, request: Request)
         )
         return metrics
     except Exception as e:
-        print(f"Analytics tracking error: {type(e).__name__}")
+        logger.error(f"Analytics tracking error: {type(e).__name__}", exc_info=True)
         raise HTTPException(status_code=500, detail="Analytics tracking error")
 
 
@@ -140,7 +143,7 @@ async def get_portfolio_reach(request: Request):
     try:
         ga_snapshot = await google_analytics_client.get_reach_snapshot()
     except Exception as e:
-        print(f"Google Analytics reach error: {type(e).__name__}: {e}")
+        logger.error(f"Google Analytics reach error: {type(e).__name__}: {e}", exc_info=True)
 
     source = ga_snapshot.get("source") or "portfolio_store"
     ga_enabled = source == "google_analytics"

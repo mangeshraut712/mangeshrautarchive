@@ -5,6 +5,9 @@ from datetime import datetime, timezone
 from fastapi import APIRouter, HTTPException, Request
 
 import httpx
+import logging
+
+logger = logging.getLogger(__name__)
 
 from api.config import (
     ContactMessage,
@@ -110,18 +113,18 @@ async def send_contact_message(payload: ContactMessage, req: Request):
 
         if not resp.is_success:
             error_body = resp.text
-            print(f"❌ Firestore error {resp.status_code}: {error_body}")
+            logger.error(f"❌ Firestore error {resp.status_code}: {error_body}")
             raise HTTPException(
                 status_code=502,
                 detail="Failed to save message. Please try again or email mbr63@drexel.edu.",
             )
 
         doc_id = resp.json().get("name", "").split("/")[-1]
-        print(f"✅ Contact message saved: {doc_id}")
+        logger.info(f"✅ Contact message saved: {doc_id}")
         return {"success": True, "message": "Message sent successfully!", "id": doc_id}
 
     except httpx.RequestError as exc:
-        print(f"❌ Network error saving contact: {exc}")
+        logger.error(f"❌ Network error saving contact: {exc}", exc_info=True)
         raise HTTPException(status_code=503, detail="Network error. Please try again.")
 
 
@@ -195,14 +198,14 @@ async def subscribe_newsletter(payload: NewsletterSubscribe, req: Request):
 
         if not resp.is_success:
             error_body = resp.text
-            print(f"❌ Newsletter Firestore error {resp.status_code}: {error_body}")
+            logger.error(f"❌ Newsletter Firestore error {resp.status_code}: {error_body}")
             raise HTTPException(
                 status_code=502,
                 detail="Subscription failed. Please try again in a moment.",
             )
 
         doc_name = resp.json().get("name", "").split("/")[-1]
-        print(f"✅ Newsletter subscriber saved: {doc_name}")
+        logger.info(f"✅ Newsletter subscriber saved: {doc_name}")
         return {
             "success": True,
             "message": "Thanks for subscribing! Watch your inbox for the next issue.",
@@ -210,7 +213,7 @@ async def subscribe_newsletter(payload: NewsletterSubscribe, req: Request):
         }
 
     except httpx.RequestError as exc:
-        print(f"❌ Network error saving newsletter subscription: {exc}")
+        logger.error(f"❌ Network error saving newsletter subscription: {exc}", exc_info=True)
         raise HTTPException(status_code=503, detail="Network error. Please try again.")
 
 

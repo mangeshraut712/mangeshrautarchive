@@ -803,7 +803,7 @@ class SystemMonitor:
             self._health_cache = data
             self._health_cache_expires_at = time.time() + 60.0
         except Exception as e:
-            print(f"Error refreshing health check in background: {e}")
+            logger.error(f"Error refreshing health check in background: {e}", exc_info=True)
         finally:
             self._health_is_refreshing = False
 
@@ -824,7 +824,7 @@ class SystemMonitor:
             self._health_cache_expires_at = now + 60.0
             return self._health_cache
         except Exception as e:
-            print(f"Error executing health check, returning fallback: {e}")
+            logger.error(f"Error executing health check, returning fallback: {e}", exc_info=True)
             return {
                 "status": "degraded",
                 "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
@@ -867,7 +867,7 @@ class SystemMonitor:
             self._services_cache = data
             self._services_cache_expires_at = time.time() + 120.0
         except Exception as e:
-            print(f"Error refreshing external services in background: {e}")
+            logger.error(f"Error refreshing external services in background: {e}", exc_info=True)
         finally:
             self._services_is_refreshing = False
 
@@ -888,7 +888,7 @@ class SystemMonitor:
             self._services_cache_expires_at = now + 120.0
             return self._services_cache
         except Exception as e:
-            print(f"Error fetching external services status: {e}")
+            logger.error(f"Error fetching external services status: {e}", exc_info=True)
             return {
                 "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
                 "summary": {"healthy": 0, "degraded": 0, "unhealthy": 0},
@@ -929,7 +929,7 @@ class SystemMonitor:
             self._hosting_cache = data
             self._hosting_cache_expires_at = time.time() + 120.0
         except Exception as e:
-            print(f"Error refreshing hosting surfaces in background: {e}")
+            logger.error(f"Error refreshing hosting surfaces in background: {e}", exc_info=True)
         finally:
             self._hosting_is_refreshing = False
 
@@ -950,7 +950,7 @@ class SystemMonitor:
             self._hosting_cache_expires_at = now + 120.0
             return self._hosting_cache
         except Exception as e:
-            print(f"Error fetching hosting surfaces status: {e}")
+            logger.error(f"Error fetching hosting surfaces status: {e}", exc_info=True)
             return {
                 "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
                 "summary": {"healthy": 0, "degraded": 0, "unhealthy": 0},

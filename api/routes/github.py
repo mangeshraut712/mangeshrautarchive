@@ -1,5 +1,8 @@
 import time
 import re
+import logging
+
+logger = logging.getLogger(__name__)
 from datetime import datetime, timezone
 from typing import Optional
 from urllib.parse import unquote
@@ -58,12 +61,12 @@ async def fetch_github_repos_cached(username: str) -> list:
             resp.raise_for_status()
             repos = resp.json()
     except (httpx.HTTPStatusError, httpx.RequestError) as exc:
-        print(f"⚠️ Error fetching GitHub repos: {type(exc).__name__} - {str(exc)}")
+        logger.error(f"⚠️ Error fetching GitHub repos: {type(exc).__name__} - {str(exc)}", exc_info=True)
         if entry and entry.get("data"):
             return entry["data"]
         raise
     except Exception as exc:
-        print(f"⚠️ Unexpected error fetching GitHub repos: {type(exc).__name__} - {str(exc)}")
+        logger.error(f"⚠️ Unexpected error fetching GitHub repos: {type(exc).__name__} - {str(exc)}", exc_info=True)
         if entry and entry.get("data"):
             return entry["data"]
         raise
@@ -123,7 +126,7 @@ async def github_api_proxy(path: str):
             response = JSONResponse(status_code=200, content=cached["data"])
             response.headers["x-data-stale"] = "1"
             return response
-        print(f"GitHub proxy request failed: {type(exc).__name__}")
+        logger.error(f"GitHub proxy request failed: {type(exc).__name__}", exc_info=True)
         raise HTTPException(
             status_code=503, detail="GitHub request failed"
         )
@@ -269,10 +272,10 @@ async def get_github_profile(username: str = "mangeshraut712"):
             "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
         }
     except httpx.HTTPError as e:
-        print(f"❌ get_github_profile HTTP error: {str(e)}")
+        logger.error(f"❌ get_github_profile HTTP error: {str(e)}", exc_info=True)
         raise HTTPException(status_code=502, detail="GitHub API gateway error")
     except Exception as e:
-        print(f"❌ get_github_profile unexpected error: {type(e).__name__} - {str(e)}")
+        logger.error(f"❌ get_github_profile unexpected error: {type(e).__name__} - {str(e)}", exc_info=True)
         raise HTTPException(status_code=500, detail="GitHub integration error")
 
 

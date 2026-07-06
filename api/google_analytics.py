@@ -11,6 +11,9 @@ from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.asymmetric import padding
 from cryptography.hazmat.primitives.asymmetric.rsa import RSAPrivateKey
 from cryptography.hazmat.primitives.serialization import load_pem_private_key
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 def normalize_country_name(raw: str) -> str:
@@ -362,7 +365,7 @@ class GoogleAnalyticsDataClient:
                 active_users_last_30_mins = total_rt_users
             realtime_countries = self._top_countries(parsed_rt_countries, limit=3)
         except Exception as re:
-            print(f"Error querying realtime GA report: {re}")
+            logger.error(f"Error querying realtime GA report: {re}", exc_info=True)
 
         trend_by_date = {}
         for row in daily_report.get("rows", []):
@@ -416,7 +419,7 @@ class GoogleAnalyticsDataClient:
             self._snapshot = data
             self._snapshot_expires_at = time.time() + 180
         except Exception as e:
-            print(f"Error refreshing GA reach snapshot in background: {e}")
+            logger.error(f"Error refreshing GA reach snapshot in background: {e}", exc_info=True)
         finally:
             self._is_refreshing = False
 
@@ -439,7 +442,7 @@ class GoogleAnalyticsDataClient:
             self._snapshot_expires_at = now + 180
             return self._snapshot
         except Exception as e:
-            print(f"Error querying Google Analytics API, falling back to mock snapshot: {e}")
+            logger.error(f"Error querying Google Analytics API, falling back to mock snapshot: {e}", exc_info=True)
             return self._get_mock_snapshot()
 
 
