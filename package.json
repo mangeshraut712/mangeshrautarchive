@@ -45,7 +45,7 @@
     "stylelint": "^16.26.1",
     "stylelint-config-standard": "^36.0.1",
     "tailwindcss": "^4.0.9",
-    "vitest": "^4.1.9"
+    "vitest": "^4.1.10"
   },
   "dependencies": {
     "@ogtirth/liquid-glass-oss": "^0.1.0",
