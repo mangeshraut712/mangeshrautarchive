@@ -463,8 +463,7 @@ html.dark footer .wrapper {
 }
 
 body:not(.travel-body):not(.monitor-page) main > section {
-  content-visibility: auto;
-  contain-intrinsic-size: auto 480px;
+  content-visibility: visible;
 }
 
 body:not(.travel-body):not(.monitor-page) section:nth-child(even) {

@@ -34,12 +34,11 @@ html.dark body {
   background-color: #000000;
 }
 
-/* Below-fold homepage sections — skip layout/paint until near viewport */
-@supports (content-visibility: auto) {
-  body:not(.travel-body):not(.monitor-page) main > section:not(#home) {
-    content-visibility: auto;
-    contain-intrinsic-size: auto 960px;
-  }
+/* Below-fold homepage sections render eagerly so the whole page is preloaded.
+   content-visibility:auto previously skipped paint until near-viewport, which
+   caused blank sections and large scroll jumps (960px placeholder vs real height). */
+body:not(.travel-body):not(.monitor-page) main > section:not(#home) {
+  content-visibility: visible;
 }
 
 /* Reduce motion cost while scrolling — nav background stays solid (chrome-surfaces.css) */
