@@ -136,10 +136,16 @@ async function readCardMetrics(locator, { checkAppleBlueBorder = false, dark = f
 async function assertCardHover(page, { section, selector }) {
   await page.locator(section).scrollIntoViewIfNeeded();
   const key = section.replace('#', '');
-  await page.waitForFunction((styleKey) => {
-    const links = Array.from(document.querySelectorAll(`[data-lazy-style-key~="${styleKey}"]`));
-    return links.every(link => link.dataset.styleLoaded === 'true');
-  }, key, { timeout: 15_000 }).catch(() => {});
+  await page
+    .waitForFunction(
+      styleKey => {
+        const links = Array.from(document.querySelectorAll(`[data-lazy-style-key~="${styleKey}"]`));
+        return links.every(link => link.dataset.styleLoaded === 'true');
+      },
+      key,
+      { timeout: 15_000 }
+    )
+    .catch(() => {});
 
   if (section === '#skills') {
     await page.waitForSelector('#skills-container .skill-badge', { timeout: 20_000 });
@@ -157,7 +163,9 @@ async function assertCardHover(page, { section, selector }) {
     checkAppleBlueBorder: true,
   });
   if (!hovered.isAppleBlueBorder) {
-    console.log(`Failed blue border check on ${section} card. Received borderTopColor: ${hovered.borderTopColor}`);
+    console.log(
+      `Failed blue border check on ${section} card. Received borderTopColor: ${hovered.borderTopColor}`
+    );
   }
   expect(hovered.boxShadow).toBe('none');
   expect(hovered.isAppleBlueBorder).toBe(true);
@@ -246,7 +254,9 @@ test.describe('Standalone page card hover audit', () => {
 
       const hovered = await hoverAndReadCardMetrics(page, card, { checkAppleBlueBorder: true });
       if (!hovered.isAppleBlueBorder) {
-        console.log(`Failed blue border check on standalone page ${check.name} card. Received borderTopColor: ${hovered.borderTopColor}`);
+        console.log(
+          `Failed blue border check on standalone page ${check.name} card. Received borderTopColor: ${hovered.borderTopColor}`
+        );
       }
       expect(hovered.boxShadow).toBe('none');
       expect(hovered.isAppleBlueBorder).toBe(true);
