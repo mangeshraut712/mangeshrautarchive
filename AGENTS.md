@@ -220,3 +220,20 @@ The AI chatbot is the portfolio's interactive assistant:
 - **WebMCP Tools:** The chatbot can perform agentic actions (navigate pages, query project data, surface resume info) via WebMCP tool definitions.
 - **Rich Rendering:** Chat responses support Markdown (via `marked`), code highlighting, KaTeX math, and footnotes.
 - **Security:** All LLM API calls are server-side only. No API keys are exposed to the client.
+
+---
+
+## Cursor Cloud specific instructions
+
+Durable, non-obvious notes for running/testing this repo in the Cursor Cloud VM. Standard commands live in section 3 and `package.json`; only the caveats are captured here.
+
+### Python environment (important)
+- The Python virtualenv must be named `venv` (not `.venv`). `scripts/utils/dev-backend.js` auto-detects `./venv/bin/python`; if it is missing it falls back to `uv`, which is not installed in this environment, so the backend would fail to start.
+- `npm run test:api` (`python -m pytest`) and `npm run lint:python` (`python -m flake8`) call bare `python`. Activate the venv first: `source venv/bin/activate`. The `dev:backend` script does not need activation (it uses `./venv/bin/python` directly).
+
+### Node install
+- Use `npm install`, not `npm ci`. The committed `package-lock.json` is slightly out of sync (a transitive `react` entry is missing), so `npm ci` aborts. `npm install` resolves it. This is the documented install path (README).
+
+### Running locally / no API key needed
+- `npm run dev` serves the frontend on http://127.0.0.1:4000 and proxies `/api/*` to the FastAPI backend on port 8001.
+- The AI chatbot works without any secrets: when `OPENROUTER_API_KEY` is unset the backend runs in "Local Intelligence (offline fallback)" mode and returns canned portfolio answers. Set `OPENROUTER_API_KEY` (and optionally `OPENROUTER_MODEL`) in `.env`/`.env.local` only when you need real LLM responses. All other AI/media/integration keys in `.env.example` are optional for local dev.

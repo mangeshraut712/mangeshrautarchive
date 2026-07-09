@@ -2225,14 +2225,6 @@ html.dark .apple-3d-project:hover {
   }
 }
 
-/* Progressive rendering for below-the-fold sections */
-@supports (content-visibility: auto) {
-  main > section:not(#home) {
-    content-visibility: auto;
-    contain-intrinsic-size: 900px;
-  }
-}
-
 /* Reduce repaint scope for heavy card grids */
 #github-projects-container .showcase-project-card,
 #blog-posts-container .blog-card {
@@ -2302,7 +2294,9 @@ html.dark #debug-runner-section .debug-game-btn {
 main > section:not(#home) {
   padding-top: clamp(60px, 8vh, 100px) !important;
   padding-bottom: clamp(60px, 8vh, 100px) !important;
-  contain-intrinsic-size: auto 600px;
+  /* Render eagerly (preloaded) — avoids blank pop-in / scroll jumps that
+     content-visibility:auto caused on below-fold sections. */
+  content-visibility: visible;
 }
 
 section h2 {
@@ -3568,3 +3562,87 @@ html.dark #home .portfolio-reach-badge:focus-visible {
   outline: 2.5px solid var(--apple-blue-dark, #0a84ff) !important;
   outline-offset: 3px !important;
 }
+
+/* =================================================================
+   DESIGN RESTORATION — reinstates styles that were dropped when the
+   CSS was consolidated into apple-design-system.css. Kept together so
+   they are easy to audit.
+   ================================================================= */
+
+/* 1) Section titles: consistent blue gradient (previously most rendered
+      solid black because the gradient rules were orphaned). */
+main > section:not(#home) > .container > h2,
+main > section:not(#home) > h2,
+#about h2,
+#skills h2,
+#experience h2,
+#engineering h2,
+#projects h2,
+#education h2,
+#publications h2,
+#awards h2,
+#recommendations h2,
+#certifications h2,
+#blog h2,
+#contact h2,
+#debug-runner-section h2 {
+  background: linear-gradient(135deg, #0071e3, #2997ff) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  color: #0071e3 !important;
+}
+
+html.dark main > section:not(#home) > .container > h2,
+html.dark main > section:not(#home) > h2,
+html.dark #about h2,
+html.dark #skills h2,
+html.dark #experience h2,
+html.dark #engineering h2,
+html.dark #projects h2,
+html.dark #education h2,
+html.dark #publications h2,
+html.dark #awards h2,
+html.dark #recommendations h2,
+html.dark #certifications h2,
+html.dark #blog h2,
+html.dark #contact h2,
+html.dark #debug-runner-section h2 {
+  background: linear-gradient(135deg, #58a6ff, #79c0ff) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  color: #58a6ff !important;
+}
+
+/* Screen-reader-only headings must not pick up the gradient treatment. */
+main > section .sr-only {
+  background: none !important;
+  -webkit-text-fill-color: currentcolor !important;
+}
+
+/* 2) Chatbot toggle: same Apple blue as the go-to-top button. */
+#chatbot-toggle {
+  background: linear-gradient(135deg, #007aff 0%, #0051d5 100%) !important;
+  background-color: #007aff !important;
+  color: #fff !important;
+  -webkit-text-fill-color: #fff !important;
+  border: none !important;
+  border-radius: 50% !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  box-shadow:
+    0 4px 14px rgb(0 122 255 / 38%),
+    inset 0 1px 0 rgb(255 255 255 / 28%) !important;
+}
+
+html.dark #chatbot-toggle {
+  background: linear-gradient(135deg, #0a84ff 0%, #0066cc 100%) !important;
+  background-color: #0a84ff !important;
+}
+
+#chatbot-toggle .inline-icon svg,
+#chatbot-toggle i {
+  color: #fff !important;
+}
+/* Accessibility toolbar card/border is restored site-wide in accessibility.css. */

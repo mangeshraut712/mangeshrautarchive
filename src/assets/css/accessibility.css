@@ -203,3 +203,22 @@ html.dark {
     -webkit-backdrop-filter: none !important;
   }
 }
+
+/* Accessibility toolbar — solid card with border/shadow (restored site-wide).
+   The original styling lived in the now-unloaded wwdc26-liquid-glass.css. */
+.a11y-toolbar {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  border: 1px solid rgb(0 0 0 / 10%) !important;
+  border-radius: 999px !important;
+  box-shadow: 0 10px 36px rgb(0 0 0 / 12%) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+html.dark .a11y-toolbar {
+  background: #000000 !important;
+  background-color: #000000 !important;
+  border-color: rgb(255 255 255 / 14%) !important;
+  box-shadow: 0 10px 36px rgb(0 0 0 / 42%) !important;
+}
