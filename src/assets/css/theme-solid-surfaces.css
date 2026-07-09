@@ -1709,7 +1709,7 @@ html.dark :is(#skills .skill-category, #skills-container .skill-category):focus-
   #projects #github-projects-container .showcase-project-card,
   #skills .skill-category,
   #skills-container .skill-category
-):where(:not(:hover), :not(:focus-within)) {
+):not(:hover):not(:focus-within) {
   border-color: var(--card-border-rest) !important;
 }
 
@@ -1761,7 +1761,9 @@ html.dark :is(#skills .skill-category, #skills-container .skill-category):focus-
       #blog .newsletter-card,
       #projects #github-projects-container .showcase-project-card,
       #skills .skill-category,
-      #skills-container .skill-category
+      #skills-container .skill-category,
+      .travel-stop,
+      .place-guide-card
     ):is(:hover, :focus-within) {
     border-color: var(--card-border-hover) !important;
   }
@@ -1813,7 +1815,9 @@ html.dark :is(#skills .skill-category, #skills-container .skill-category):focus-
       #blog .newsletter-card,
       #projects #github-projects-container .showcase-project-card,
       #skills .skill-category,
-      #skills-container .skill-category
+      #skills-container .skill-category,
+      .travel-stop,
+      .place-guide-card
     ):is(:hover, :focus-within) {
     border-color: var(--card-border-hover) !important;
   }

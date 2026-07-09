@@ -76,13 +76,8 @@ async function hoverAndReadCardMetrics(
       // Marquee skill badges keep moving; section scroll is sufficient.
     }
   }
-  const box = await locator.boundingBox();
-  if (box) {
-    await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
-  } else {
-    await locator.hover({ force: true });
-  }
-  await page.waitForTimeout(200);
+  await locator.hover({ force: true });
+  await page.waitForTimeout(550);
   return locator.evaluate(
     (node, { checkBlue, isDark: _isDark }) => {
       const style = getComputedStyle(node);
@@ -140,6 +135,12 @@ async function readCardMetrics(locator, { checkAppleBlueBorder = false, dark = f
 
 async function assertCardHover(page, { section, selector }) {
   await page.locator(section).scrollIntoViewIfNeeded();
+  const key = section.replace('#', '');
+  await page.waitForFunction((styleKey) => {
+    const links = Array.from(document.querySelectorAll(`[data-lazy-style-key~="${styleKey}"]`));
+    return links.every(link => link.dataset.styleLoaded === 'true');
+  }, key, { timeout: 15_000 }).catch(() => {});
+
   if (section === '#skills') {
     await page.waitForSelector('#skills-container .skill-badge', { timeout: 20_000 });
   }
@@ -155,6 +156,9 @@ async function assertCardHover(page, { section, selector }) {
     scrollCard: section !== '#skills',
     checkAppleBlueBorder: true,
   });
+  if (!hovered.isAppleBlueBorder) {
+    console.log(`Failed blue border check on ${section} card. Received borderTopColor: ${hovered.borderTopColor}`);
+  }
   expect(hovered.boxShadow).toBe('none');
   expect(hovered.isAppleBlueBorder).toBe(true);
 }
@@ -168,6 +172,9 @@ test.describe('Sitewide card hover audit', () => {
     await page.evaluate(() => {
       document.documentElement.classList.remove('dark');
       document.documentElement.setAttribute('data-theme', 'light');
+      document.getElementById('chatbot-widget')?.remove();
+      document.querySelector('.a11y-toolbar')?.remove();
+      document.querySelector('header')?.remove();
     });
   });
 
@@ -224,6 +231,9 @@ test.describe('Standalone page card hover audit', () => {
       await page.evaluate(() => {
         document.documentElement.classList.remove('dark');
         document.documentElement.setAttribute('data-theme', 'light');
+        document.getElementById('chatbot-widget')?.remove();
+        document.querySelector('.a11y-toolbar')?.remove();
+        document.querySelector('header')?.remove();
       });
       await page.waitForTimeout(1500);
 
@@ -235,6 +245,9 @@ test.describe('Standalone page card hover audit', () => {
       expect(resting.borderRadius).toBeGreaterThanOrEqual(12);
 
       const hovered = await hoverAndReadCardMetrics(page, card, { checkAppleBlueBorder: true });
+      if (!hovered.isAppleBlueBorder) {
+        console.log(`Failed blue border check on standalone page ${check.name} card. Received borderTopColor: ${hovered.borderTopColor}`);
+      }
       expect(hovered.boxShadow).toBe('none');
       expect(hovered.isAppleBlueBorder).toBe(true);
     });

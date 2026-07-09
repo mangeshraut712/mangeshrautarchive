@@ -2998,6 +2998,22 @@ html.dark #contact .ios-widget-wrapper {
   border-color: var(--contact-border-dark) !important;
 }
 
+#contact .contact-card:hover,
+#contact .support-donation-card:hover,
+#contact .currently-card:hover,
+#contact .calendar-wrapper-clean:hover,
+#contact .ios-widget-wrapper:hover {
+  border-color: #0071e3 !important;
+}
+
+html.dark #contact .contact-card:hover,
+html.dark #contact .support-donation-card:hover,
+html.dark #contact .currently-card:hover,
+html.dark #contact .calendar-wrapper-clean:hover,
+html.dark #contact .ios-widget-wrapper:hover {
+  border-color: #0a84ff !important;
+}
+
 #contact .reminder-card.completed {
   opacity: 0.7;
 }
