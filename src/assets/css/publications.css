@@ -17,15 +17,15 @@ html.dark #publications {
   font-weight: 800 !important;
   text-align: center !important;
   margin-bottom: 2rem !important;
-  color: #1d1d1f !important;
-  background: none !important;
-  -webkit-text-fill-color: currentcolor !important;
+  background: linear-gradient(135deg, #0071e3, #2997ff) !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
 }
 
 html.dark #publications h2 {
-  color: #f5f5f7 !important;
-  background: none !important;
-  -webkit-text-fill-color: currentcolor !important;
+  background: linear-gradient(135deg, #58a6ff, #79c0ff) !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
 }
 
 /* Divider */
