@@ -77,7 +77,7 @@ async def fetch_github_repos_cached(username: str) -> list:
 
 @router.get("/api/github/proxy")
 @router.get("/github/proxy")
-async def github_api_proxy(path: str):
+async def github_api_proxy(path: Optional[str] = None):
     """
     Lightweight GitHub API passthrough for repo/user endpoints.
     Used by frontend modules to avoid browser-level rate limits and keep
@@ -260,6 +260,7 @@ async def get_github_profile(username: str = "mangeshraut712"):
     Get live GitHub profile and activity summary
     """
     try:
+        username = _validate_github_username(username)
         activity = await github_connector.get_user_activity_summary(username)
 
         if "error" in activity:
@@ -271,6 +272,8 @@ async def get_github_profile(username: str = "mangeshraut712"):
             "ai_summary": github_connector.generate_github_summary_for_ai(activity),
             "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
         }
+    except HTTPException:
+        raise
     except httpx.HTTPError as e:
         logger.error(f"❌ get_github_profile HTTP error: {str(e)}", exc_info=True)
         raise HTTPException(status_code=502, detail="GitHub API gateway error")
@@ -291,6 +294,7 @@ async def get_github_repos(
     Get user's GitHub repositories with optional filtering
     """
     try:
+        username = _validate_github_username(username)
         if search:
             repos = await github_connector.search_user_repos(username, search)
         else:
@@ -298,12 +302,9 @@ async def get_github_repos(
                 username, sort=sort, max_repos=limit
             )
 
-        return {
-            "success": True,
-            "count": len(repos),
-            "data": repos,
-            "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
-        }
+        return repos
+    except HTTPException:
+        raise
     except httpx.HTTPError as e:
         print(f"❌ get_github_repos HTTP error: {str(e)}")
         raise HTTPException(status_code=502, detail="GitHub API gateway error")

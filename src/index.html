@@ -177,10 +177,15 @@
       outline: none;
     }
 
-    .skip-link:focus {
+    .skip-link:focus,
+    .skip-link:focus-visible {
       transform: translateY(0);
       outline: 3px solid #fff;
       outline-offset: -3px;
+    }
+
+    .skip-link:focus:not(:focus-visible) {
+      outline: none;
     }
 
     .skip-link:hover {
@@ -4313,7 +4318,6 @@ html.dark #home .hero-name-text {
           { src: 'js/utils/theme.js?v=20260701q', module: true },
           { src: 'js/utils/go-to-top.js?v=20260701q', defer: true },
           { src: 'js/core/bootstrap.js?v=20260701q', module: true },
-          { src: 'js/modules/share-widget.js?v=20260701q', module: true },
           { src: 'js/modules/name-pronounce.js?v=20260506a', defer: true },
         ];
 

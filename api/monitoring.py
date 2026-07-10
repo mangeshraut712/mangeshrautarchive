@@ -965,6 +965,17 @@ class SystemMonitor:
         resolved_events = len([event for event in self.events if event.resolved])
         unresolved_events = len([event for event in self.events if not event.resolved])
 
+        healthy_count = sum(1 for ep in endpoints if ep.get("error_rate", 0.0) == 0.0)
+        degraded_count = sum(1 for ep in endpoints if 0.0 < ep.get("error_rate", 0.0) < 5.0)
+        unhealthy_count = sum(1 for ep in endpoints if ep.get("error_rate", 0.0) >= 5.0)
+
+        status_counts = {
+            "healthy": healthy_count,
+            "degraded": degraded_count,
+            "unhealthy": unhealthy_count,
+            "total": len(endpoints),
+        }
+
         return {
             "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
             "uptime_seconds": uptime_seconds,
@@ -986,6 +997,7 @@ class SystemMonitor:
                         if e.type == EventType.CRITICAL and not e.resolved
                     ]
                 ),
+                **status_counts,
             },
             "events_24h": len(
                 [e for e in self.events if self._is_recent(e.timestamp, hours=24)]

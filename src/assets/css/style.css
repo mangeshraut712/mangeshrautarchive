@@ -5638,6 +5638,21 @@ img.about-image.animate-in {
   animation: microScaleIn 0.48s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
+/* ═══════════════════════════════════════════════════════════
+   CRITICAL SCROLL ANIMATION BASE (eager, prevents blank sections)
+   Full animation variants remain in deferred animations.css
+   ═══════════════════════════════════════════════════════════ */
+@keyframes microReveal {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 8px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .animate-on-scroll {
     opacity: 1 !important;
