@@ -1073,7 +1073,7 @@ html.dark #projects .projects-empty-state {
   box-shadow:
     0 20px 35px rgb(10 111 239 / 18%),
     0 0 15px rgb(10 111 239 / 10%) !important;
-  border-color: rgba(10, 111, 239, 0.45) !important;
+  border-color: #0071e3 !important;
 }
 
 #projects #github-projects-container .showcase-project-card:hover::after {

@@ -222,3 +222,14 @@ html.dark .a11y-toolbar {
   border-color: rgb(255 255 255 / 14%) !important;
   box-shadow: 0 10px 36px rgb(0 0 0 / 42%) !important;
 }
+
+/* Footer - high contrast overrides to pass WCAG AA color-contrast checks */
+.footer-copy,
+.footer-tagline {
+  color: #48484a !important;
+}
+
+html.dark .footer-copy,
+html.dark .footer-tagline {
+  color: #a1a1a6 !important;
+}

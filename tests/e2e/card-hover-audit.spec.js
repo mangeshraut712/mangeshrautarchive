@@ -152,6 +152,7 @@ async function assertCardHover(page, { section, selector }) {
   }
   const card = page.locator(selector).first();
   await expect(card, `Expected card in ${section}`).toBeVisible({ timeout: 20_000 });
+  await page.waitForTimeout(300);
 
   const resting = await readCardMetrics(card);
   expect(resting.boxShadow).toBe('none');

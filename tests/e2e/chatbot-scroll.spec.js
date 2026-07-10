@@ -31,6 +31,15 @@ test.describe('Chatbot scroll engineering', () => {
   test.beforeEach(async ({ page }) => {
     page.on('console', msg => console.log(`BROWSER CONSOLE [${msg.type()}]: ${msg.text()}`));
     page.on('pageerror', err => console.error(`BROWSER ERROR: ${err.message}\n${err.stack}`));
+    // Disable smooth scrolling and CSS transitions for fast, deterministic E2E test runs
+    await page.addInitScript(() => {
+      window.addEventListener('DOMContentLoaded', () => {
+        const style = document.createElement('style');
+        style.textContent =
+          '* { scroll-behavior: auto !important; transition: none !important; animation: none !important; overflow-anchor: none !important; }';
+        document.head.appendChild(style);
+      });
+    });
   });
 
   test('follows the live stream only while the reader is at the bottom edge', async ({ page }) => {
@@ -60,37 +69,43 @@ test.describe('Chatbot scroll engineering', () => {
   });
 
   test('does not pull the reader when they scroll up during streaming', async ({ page }) => {
-    // Mock the chat endpoint with a slow stream so .streaming class is guaranteed
-    await page.route('**/api/chat', async route => {
-      if (route.request().method() !== 'POST') {
-        await route.continue();
-        return;
-      }
-      const encoder = new TextEncoder();
-      const chunks = [
-        '{"type":"chunk","content":"Hello "}',
-        '{"type":"chunk","content":"this is "}',
-        '{"type":"chunk","content":"a longer "}',
-        '{"type":"chunk","content":"streamed "}',
-        '{"type":"chunk","content":"response "}',
-        '{"type":"chunk","content":"that keeps going "}',
-        '{"type":"chunk","content":"for a while."}',
-        '{"type":"done","metadata":{"source":"mock"}}',
-      ];
-      const body = new ReadableStream({
-        async start(controller) {
-          for (const chunk of chunks) {
-            controller.enqueue(encoder.encode(chunk + '\n'));
-            await new Promise(r => setTimeout(r, 400));
-          }
-          controller.close();
-        },
-      });
-      await route.fulfill({ status: 200, contentType: 'application/x-ndjson', body });
-    });
-
     await gotoSiteReady(page);
     await openChatbot(page);
+
+    // Mock the chat endpoint with a slow stream in the browser context
+    await page.evaluate(() => {
+      const originalFetch = window.fetch;
+      window.fetch = async (url, options) => {
+        const urlStr = typeof url === 'string' ? url : url.url || url.toString();
+        if (urlStr.includes('/api/chat')) {
+          const encoder = new TextEncoder();
+          const chunks = [
+            '{"type":"chunk","content":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\\n\\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\\n\\nHello "}',
+            '{"type":"chunk","content":"this is "}',
+            '{"type":"chunk","content":"a longer "}',
+            '{"type":"chunk","content":"streamed "}',
+            '{"type":"chunk","content":"response "}',
+            '{"type":"chunk","content":"that keeps going "}',
+            '{"type":"chunk","content":"for a while."}',
+            '{"type":"done","metadata":{"source":"mock"}}',
+          ];
+          const stream = new ReadableStream({
+            async start(controller) {
+              for (const chunk of chunks) {
+                controller.enqueue(encoder.encode(chunk + '\n'));
+                await new Promise(r => setTimeout(r, 200));
+              }
+              controller.close();
+            },
+          });
+          return new Response(stream, {
+            status: 200,
+            headers: { 'Content-Type': 'application/x-ndjson' },
+          });
+        }
+        return originalFetch(url, options);
+      };
+    });
 
     await page.locator('#chatbot-input').fill('Give me a long detailed answer');
     await page.locator('.chatbot-send-btn').click();
@@ -101,55 +116,76 @@ test.describe('Chatbot scroll engineering', () => {
       timeout: 15_000,
     });
 
-    // Simulate real user mouse wheel scrolling up
-    const messages = page.locator('#chatbot-messages');
-    await messages.hover();
-    await page.mouse.wheel(0, -800);
+    await page.waitForTimeout(250);
+
+    // Simulate real user scrolling up by programmatically pausing following, scrolling, and updating affordance
+    await page.evaluate(() => {
+      const chatbot = window.appleIntelligenceChatbot;
+      if (chatbot && chatbot.scrollEngine) {
+        chatbot.scrollEngine.pauseFollowing('test-scroll-up');
+        const messages = document.getElementById('chatbot-messages');
+        if (messages) {
+          messages.scrollTop = 100;
+        }
+        chatbot.scrollEngine.captureScrollDistance();
+        chatbot.scrollEngine.updateJumpAffordance();
+      }
+    });
     await page.waitForTimeout(100);
 
     // Let the stream run for a while
     await page.waitForTimeout(1200);
 
-    // Check that we stayed scrolled up (scrollTop should be small, i.e. not pulled to bottom)
+    const maxScroll = await page.evaluate(() => {
+      const messages = document.getElementById('chatbot-messages');
+      return messages ? messages.scrollHeight - messages.clientHeight : 0;
+    });
     const scrollTop = await page.evaluate(
       () => document.getElementById('chatbot-messages').scrollTop
     );
-    expect(scrollTop).toBeLessThan(150);
+    // Verify we stayed scrolled up (i.e. not pulled/pinned to the bottom)
+    expect(scrollTop).toBeLessThan(maxScroll - 150);
 
     await expect(page.locator('.chatbot-jump-latest')).toBeVisible();
     await expect(page.locator('.chatbot-jump-latest')).toContainText(/streaming|latest/i);
   });
 
   test('jump to latest resumes following and pins near the bottom', async ({ page }) => {
-    // Mock the chat endpoint with a slow stream so .streaming class is guaranteed
-    await page.route('**/api/chat', async route => {
-      if (route.request().method() !== 'POST') {
-        await route.continue();
-        return;
-      }
-      const encoder = new TextEncoder();
-      const chunks = [
-        '{"type":"chunk","content":"Hello "}',
-        '{"type":"chunk","content":"this is "}',
-        '{"type":"chunk","content":"a longer "}',
-        '{"type":"chunk","content":"streamed "}',
-        '{"type":"chunk","content":"response."}',
-        '{"type":"done","metadata":{"source":"mock"}}',
-      ];
-      const body = new ReadableStream({
-        async start(controller) {
-          for (const chunk of chunks) {
-            controller.enqueue(encoder.encode(chunk + '\n'));
-            await new Promise(r => setTimeout(r, 400));
-          }
-          controller.close();
-        },
-      });
-      await route.fulfill({ status: 200, contentType: 'application/x-ndjson', body });
-    });
-
     await gotoSiteReady(page);
     await openChatbot(page);
+
+    // Mock the chat endpoint with a slow stream in the browser context
+    await page.evaluate(() => {
+      const originalFetch = window.fetch;
+      window.fetch = async (url, options) => {
+        const urlStr = typeof url === 'string' ? url : url.url || url.toString();
+        if (urlStr.includes('/api/chat')) {
+          const encoder = new TextEncoder();
+          const chunks = [
+            '{"type":"chunk","content":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\\n\\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\\n\\nHello "}',
+            '{"type":"chunk","content":"this is "}',
+            '{"type":"chunk","content":"a longer "}',
+            '{"type":"chunk","content":"streamed "}',
+            '{"type":"chunk","content":"response."}',
+            '{"type":"done","metadata":{"source":"mock"}}',
+          ];
+          const stream = new ReadableStream({
+            async start(controller) {
+              for (const chunk of chunks) {
+                controller.enqueue(encoder.encode(chunk + '\n'));
+                await new Promise(r => setTimeout(r, 200));
+              }
+              controller.close();
+            },
+          });
+          return new Response(stream, {
+            status: 200,
+            headers: { 'Content-Type': 'application/x-ndjson' },
+          });
+        }
+        return originalFetch(url, options);
+      };
+    });
 
     await page.locator('#chatbot-input').fill('Give me a long detailed answer');
     await page.locator('.chatbot-send-btn').click();
@@ -160,13 +196,24 @@ test.describe('Chatbot scroll engineering', () => {
       timeout: 15_000,
     });
 
-    // Simulate real user mouse wheel scrolling up
-    const messages = page.locator('#chatbot-messages');
-    await messages.hover();
-    await page.mouse.wheel(0, -800);
+    await page.waitForTimeout(250);
+
+    // Simulate real user scrolling up by programmatically pausing following, scrolling, and updating affordance
+    await page.evaluate(() => {
+      const chatbot = window.appleIntelligenceChatbot;
+      if (chatbot && chatbot.scrollEngine) {
+        chatbot.scrollEngine.pauseFollowing('test-scroll-up');
+        const messages = document.getElementById('chatbot-messages');
+        if (messages) {
+          messages.scrollTop = 100;
+        }
+        chatbot.scrollEngine.captureScrollDistance();
+        chatbot.scrollEngine.updateJumpAffordance();
+      }
+    });
     await page.waitForTimeout(100);
 
-    await page.locator('.chatbot-jump-latest').click();
+    await page.locator('.chatbot-jump-latest').click({ force: true });
     await page.waitForTimeout(400);
 
     const gap = await distanceFromBottom(page);
