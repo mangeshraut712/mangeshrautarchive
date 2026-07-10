@@ -5576,3 +5576,72 @@ html.dark .book-author-text {
 .health-spinner {
   animation: spin 1s linear infinite;
 }
+
+/* ═══════════════════════════════════════════════════════════
+   CRITICAL SCROLL ANIMATION BASE (eager — prevents blank sections)
+   Full animation variants remain in deferred animations.css.
+   These rules MUST live in an eagerly-loaded stylesheet so that
+   .animate-on-scroll elements are never stuck at opacity:0 when
+   the deferred CSS has not arrived yet.
+   ═══════════════════════════════════════════════════════════ */
+@keyframes microReveal {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 8px, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes microScaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes headingReveal {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 12px, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.animate-on-scroll {
+  opacity: 0;
+}
+
+.animate-on-scroll.animate-in {
+  animation: microReveal 0.42s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+section h2.animate-in {
+  animation: headingReveal 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.about-image.animate-in,
+.profile-image-wrapper.animate-in,
+img.about-image.animate-in {
+  animation: microScaleIn 0.48s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-on-scroll {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+  }
+}

@@ -1,4 +1,4 @@
-const EAGER_MODULES = ['../modules/accessibility.js'];
+const EAGER_MODULES = ['../modules/accessibility.js', '../modules/scroll-animations.js'];
 
 const IDLE_EAGER_MODULES = [
   '../modules/liquid-glass-engine.js',
@@ -66,7 +66,6 @@ const SECTION_MODULES = [
   { sectionId: 'blog', modulePath: '../modules/blog-loader.js', rootMargin: '800px 0px' },
   { sectionId: 'blog', modulePath: '../modules/newsletter.js', rootMargin: '800px 0px' },
   { sectionId: 'contact', modulePath: '../modules/calendar.js', rootMargin: '800px 0px' },
-  { sectionId: 'contact', modulePath: '../modules/currently.js', rootMargin: '800px 0px' },
   {
     sectionId: 'currently-section',
     modulePath: '../modules/currently.js',
@@ -87,6 +86,16 @@ const SECTION_MODULES = [
     sectionId: 'debug-runner-section',
     modulePath: '../modules/debug-runner.js',
     rootMargin: '800px 0px',
+  },
+  {
+    sectionId: 'experience',
+    modulePath: '../modules/experience-interactivity.js',
+    rootMargin: '500px 0px',
+  },
+  {
+    sectionId: 'awards',
+    modulePath: '../modules/awards-shelf.js',
+    rootMargin: '500px 0px',
   },
 ];
 
@@ -110,7 +119,7 @@ const SECTION_STYLE_GROUPS = [
 const FIRST_INTERACTION_STYLE_KEYS = ['interactive', 'motion', 'birthday'];
 
 /** Styles to prefetch after first paint — keep small to protect LCP on Chrome/Safari */
-const EARLY_IDLE_STYLE_KEYS = ['interactive', 'about'];
+const EARLY_IDLE_STYLE_KEYS = ['interactive', 'about', 'motion'];
 
 const USER_INTERACTION_EVENTS = ['pointerdown', 'keydown', 'touchstart'];
 const DEFERRED_IMAGE_PLACEHOLDER =
@@ -255,25 +264,11 @@ function warmCriticalSectionPreloads() {
     prefetchGithubProjectsCatalog();
     warmProjectShowcaseAssets();
 
-    // Idle/background pre-warming of all deferred styles and modules to prevent blank spaces on scroll
+    // Idle/background pre-warming of near-fold deferred styles only
     runWhenIdle(() => {
-      // 1. Preheat all deferred CSS
-      const allStyleKeys = [
-        'about',
-        'skills',
-        'experience',
-        'engineering',
-        'projects',
-        'education',
-        'publications',
-        'awards',
-        'recommendations',
-        'certifications',
-        'blog',
-        'currently',
-        'share',
-      ];
-      loadDeferredStyles(allStyleKeys).catch(() => {});
+      // 1. Preheat only near-fold CSS (about, skills) — rest load on scroll via SECTION_STYLE_GROUPS
+      const nearFoldStyleKeys = ['about', 'skills'];
+      loadDeferredStyles(nearFoldStyleKeys).catch(() => {});
 
       // 2. Preheat secondary JS modules after page load settles
       runWhenIdle(() => {
@@ -293,7 +288,7 @@ function warmCriticalSectionPreloads() {
           modulePreload(path);
         });
       }, 1500);
-    }, 1000);
+    }, 100);
   }, WARM_SECTION_PRELOAD_DELAY_MS);
 }
 
@@ -1237,7 +1232,9 @@ function initScrollBlurThrottle() {
   const root = document.documentElement;
 
   const onScroll = () => {
-    root.classList.add('is-scrolling');
+    if (!root.classList.contains('is-scrolling')) {
+      root.classList.add('is-scrolling');
+    }
     clearTimeout(scrollTimer);
     scrollTimer = window.setTimeout(() => {
       root.classList.remove('is-scrolling');

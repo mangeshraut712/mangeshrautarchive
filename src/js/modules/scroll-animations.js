@@ -45,19 +45,36 @@ class ScrollAnimations {
 
   handleIntersection(entries) {
     entries.forEach(entry => {
-      if (!entry.isIntersecting) return;
-
       const target = entry.target;
-      target.classList.add('animate-in');
-      target.addEventListener(
-        'animationend',
-        () => {
-          target.classList.remove('animate-on-scroll');
-          target.style.willChange = 'auto';
-        },
-        { once: true }
-      );
-      this.observer.unobserve(target);
+      const isAboveViewport = entry.boundingClientRect.bottom < 0;
+
+      if (entry.isIntersecting || isAboveViewport) {
+        target.classList.add('animate-in');
+
+        let animationFired = false;
+        target.addEventListener(
+          'animationend',
+          () => {
+            animationFired = true;
+            target.classList.remove('animate-on-scroll');
+            target.style.willChange = 'auto';
+          },
+          { once: true }
+        );
+
+        // Safety net: if CSS animation never fires (deferred stylesheet race),
+        // force the element visible after 3 s so content is never permanently hidden.
+        window.setTimeout(() => {
+          if (!animationFired) {
+            target.classList.remove('animate-on-scroll');
+            target.style.opacity = '1';
+            target.style.transform = 'none';
+            target.style.willChange = 'auto';
+          }
+        }, 3000);
+
+        this.observer.unobserve(target);
+      }
     });
   }
 
@@ -96,6 +113,14 @@ class ScrollAnimations {
         if (el.classList.contains('animate-in') || el.classList.contains('animate-on-scroll')) {
           return;
         }
+
+        // If the element is already above the viewport, do not hide it
+        const rect = el.getBoundingClientRect();
+        if (rect.bottom < 0) {
+          el.classList.add('animate-in');
+          return;
+        }
+
         el.classList.add('animate-on-scroll');
         this.observer?.observe(el);
       });
