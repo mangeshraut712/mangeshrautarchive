@@ -18,6 +18,13 @@ test.describe('Apple Super Retina / iPhone 17 Pro Max display compat', () => {
 
   test('viewport meta and Apple display CSS are present', async ({ page }) => {
     await gotoSite(page);
+    await page.waitForFunction(
+      () =>
+        [...document.styleSheets].some(
+          s => s.href?.includes('apple-super-retina-display.css') && s.cssRules.length > 0
+        ),
+      { timeout: 15000 }
+    );
 
     const head = await page.evaluate(() => ({
       viewport: document.querySelector('meta[name="viewport"]')?.getAttribute('content') || '',
@@ -142,6 +149,13 @@ test.describe('Apple Super Retina / iPhone 17 Pro Max display compat', () => {
     await page.waitForFunction(() => typeof globalThis.appleHaptics?.trigger === 'function', {
       timeout: 20_000,
     });
+    await page.waitForFunction(
+      () =>
+        [...document.styleSheets].some(
+          s => s.href?.includes('apple-super-retina-display.css') && s.cssRules.length > 0
+        ),
+      { timeout: 15000 }
+    );
 
     const matrix = await page.evaluate(() => {
       const root = document.documentElement;
@@ -179,6 +193,8 @@ test.describe('Apple Super Retina / iPhone 17 Pro Max display compat', () => {
     await page.evaluate(() => {
       document.documentElement.classList.add('dark', 'aod-dim');
     });
+    await page.waitForTimeout(400);
+
     const aod = await page.evaluate(() => ({
       aodDim: document.documentElement.classList.contains('aod-dim'),
       darkBg: getComputedStyle(document.documentElement).backgroundColor,

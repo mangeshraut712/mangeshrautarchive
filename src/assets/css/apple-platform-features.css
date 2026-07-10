@@ -1,0 +1,673 @@
+/* Apple Platform 2026 — feature modules (audit P2/P3) */
+/* Nav + hero music card backgrounds: chrome-surfaces.css (load last) */
+
+/* ─── Solid surfaces: no drop shadows on cards (all glass modes) ─── */
+html
+  :is(
+    .card,
+    .experience-content,
+    .education-content,
+    .award-card,
+    .recommendation-card,
+    .certification-card,
+    .showcase-project-card,
+    .contact-card,
+    .contact-form-card,
+    .currently-card,
+    .media-card,
+    .calendar-card,
+    .skill-category,
+    #skills .skill-category,
+    #skills-container .skill-category,
+    #skills-container .skill-badge,
+    #skills-container .skill-scroll-wrapper .skill-badge,
+    .skill-badge,
+    .live-activity-strip,
+    .lg-glass-card,
+    .vibe-stack-card,
+    #home .music-card-inner,
+    .about-highlight-card,
+    .about-text-card,
+    .publication-card,
+    .blog-card,
+    .game-stat-card,
+    .game-info-card
+  ) {
+  box-shadow: none !important;
+}
+
+html[data-lg-mode='clear'] body #global-nav.global-nav.dynamic-island,
+html[data-lg-mode='clear'] .a11y-toolbar,
+html[data-lg-mode='clear'] .a11y-glass-popover,
+html[data-lg-mode='clear'] #chatbot-widget,
+html[data-lg-mode='clear'] .live-activity-strip {
+  box-shadow: none !important;
+}
+
+html.dark[data-lg-mode='clear'] body #global-nav.global-nav.dynamic-island,
+html.dark[data-lg-mode='clear'] .a11y-toolbar,
+html.dark[data-lg-mode='clear'] .a11y-glass-popover,
+html.dark[data-lg-mode='clear'] #chatbot-widget,
+html.dark[data-lg-mode='clear'] .live-activity-strip {
+  box-shadow: none !important;
+}
+
+html[data-lg-mode='clear'] .experience-icon,
+html[data-lg-mode='clear'] .education-icon,
+html[data-lg-mode='clear'] .award-icon,
+html[data-lg-mode='clear'] #experience .timeline-section-header::before,
+html[data-lg-mode='clear'] #experience .timeline-section-header h3 {
+  box-shadow: none !important;
+}
+
+/* Hero music card layout — width/surfaces in chrome-surfaces.css */
+#home .music-card-inner .lg-webgl-content {
+  display: inline-flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  gap: 0.75rem !important;
+  flex: 0 1 auto !important;
+  width: auto !important;
+  min-width: 0 !important;
+}
+
+#home .music-card-inner .album-art-container {
+  width: 52px !important;
+  height: 52px !important;
+  flex-shrink: 0 !important;
+  border-radius: 50% !important;
+  overflow: hidden !important;
+}
+
+#home .music-card-inner .album-art {
+  width: 52px !important;
+  height: 52px !important;
+  border-radius: 50% !important;
+  object-fit: cover !important;
+  box-shadow: none !important;
+}
+
+#home .music-card-inner .track-info {
+  flex: 0 1 auto !important;
+  min-width: 0 !important;
+  text-align: left !important;
+}
+
+#home .music-card-spotify-link {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 32px !important;
+  height: 32px !important;
+  flex-shrink: 0 !important;
+  margin-left: 0.15rem !important;
+  border-radius: 50% !important;
+  color: #1db954 !important;
+  font-size: 1.1rem !important;
+  opacity: 0.88;
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+}
+
+#home .music-card-spotify-link:hover {
+  opacity: 1;
+  transform: scale(1.06);
+}
+
+/* ─── Experience cards ─── */
+#experience .experience-content {
+  border-radius: 22px !important;
+}
+
+#experience .experience-header {
+  align-items: flex-start !important;
+  gap: 1rem !important;
+}
+
+#experience .experience-meta {
+  align-items: flex-end !important;
+  min-width: 9.5rem !important;
+}
+
+#experience .timeline-section-header h3 {
+  box-shadow: none !important;
+}
+
+#experience .timeline-section-header::before {
+  box-shadow: none !important;
+}
+
+/* ─── Awards grid cards ─── */
+.awards-grid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)) !important;
+  gap: 1.5rem !important;
+  align-items: stretch !important;
+}
+
+.award-card {
+  height: 100% !important;
+  align-items: flex-start !important;
+  border-radius: 22px !important;
+  box-shadow: none !important;
+}
+
+.award-icon {
+  box-shadow: none !important;
+}
+
+.award-content {
+  gap: 0.75rem !important;
+}
+
+.award-title {
+  font-size: 1.25rem !important;
+  line-height: 1.25 !important;
+}
+
+/* ─── Chatbot — calmer clear glass panel ─── */
+html[data-lg-mode='clear'] #chatbot-widget {
+  border: 1px solid var(--card-border-rest) !important;
+}
+
+html[data-lg-mode='clear'] .chatbot-title {
+  background: none !important;
+  -webkit-text-fill-color: #0071e3 !important;
+  color: #0071e3 !important;
+  filter: none !important;
+  animation: none !important;
+}
+
+html.dark[data-lg-mode='clear'] .chatbot-title {
+  -webkit-text-fill-color: #0a84ff !important;
+  color: #0a84ff !important;
+}
+
+#chatbot-widget .lg-webgl-content {
+  display: flex !important;
+  flex-direction: column !important;
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  width: 100% !important;
+}
+
+#chatbot-widget.lg-webgl-host {
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+/* ─── Light mode: solid #ffffff shell (body + sections) ─── */
+html:not(.dark),
+html:not(.dark) body,
+html:not(.dark) main,
+html:not(.dark) #main-content,
+html:not(.dark) #home,
+html:not(.dark) .home-hero {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
+}
+
+/* Nav + music card backgrounds: chrome-surfaces.css (loaded last) */
+
+/* ─── Dark mode: solid #000000 shell (body + sections) ─── */
+html.dark,
+html.dark body,
+html.dark main,
+html.dark #main-content,
+html.dark #home,
+html.dark .home-hero {
+  background: #000000 !important;
+  background-color: #000000 !important;
+  background-image: none !important;
+}
+
+/* Nav + music card backgrounds: chrome-surfaces.css (loaded last) */
+
+/* ─── Footer + last section spacing ─── */
+#debug-runner-section,
+#debug-runner-section.py-12 {
+  padding-top: 1.25rem !important;
+  padding-bottom: clamp(3rem, 6vh, 5rem) !important;
+}
+
+footer {
+  margin-top: 0 !important;
+  padding-top: clamp(1.25rem, 2.5vh, 1.75rem) !important;
+  padding-bottom: max(1rem, env(safe-area-inset-bottom, 0px)) !important;
+}
+
+footer .max-w-6xl {
+  padding-top: 0.75rem !important;
+  padding-bottom: 0.75rem !important;
+}
+
+footer .flex.justify-center.mb-2 {
+  margin-bottom: 1rem !important;
+}
+
+footer .footer-tagline {
+  margin-top: 0.35rem !important;
+  margin-bottom: 0 !important;
+}
+
+/* Live Activity strip — below hero CTAs */
+#home .hero-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  gap: 0.85rem;
+}
+
+.live-activity-strip {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  width: min(100%, 22rem);
+  max-width: min(100%, 22rem);
+  margin: 0 auto !important;
+  margin-bottom: 0 !important;
+  padding: 0.55rem 0.9rem;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  box-sizing: border-box;
+}
+
+@media (max-width: 640px) {
+  #home .hero-footer {
+    padding-inline: 0.25rem;
+    gap: 1rem;
+  }
+
+  #home .live-activity-strip {
+    width: min(100%, calc(100vw - 2.5rem));
+    max-width: min(100%, calc(100vw - 2.5rem));
+    margin-top: 0.15rem !important;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.78rem;
+  }
+
+  .live-activity-strip__detail {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+  }
+}
+.quick-look-dialog {
+  border: none;
+  padding: 0;
+  background: transparent;
+  max-width: min(520px, 92vw);
+}
+
+.quick-look-dialog::backdrop {
+  background: rgb(0 0 0 / 45%);
+  backdrop-filter: blur(8px);
+}
+
+.quick-look-dialog__sheet {
+  padding: 1.25rem;
+  border-radius: 20px;
+}
+
+.quick-look-dialog__close {
+  float: right;
+  border: none;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+
+.quick-look-dialog__eyebrow {
+  margin: 0;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  opacity: 0.7;
+}
+
+.quick-look-dialog__title {
+  margin: 0.25rem 0 0.5rem;
+  font-size: 1.35rem;
+}
+
+.quick-look-dialog__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.quick-look-dialog__action {
+  padding: 0.5rem 0.9rem;
+  border-radius: 999px;
+  background: #0071e3;
+  color: #fff;
+  text-decoration: none;
+  font-size: 0.85rem;
+}
+
+.live-activity-strip__pulse {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #34c759;
+  box-shadow: 0 0 0 0 rgb(52 199 89 / 55%);
+  animation: liveActivityPulse 2s infinite;
+}
+
+@keyframes liveActivityPulse {
+  70% {
+    box-shadow: 0 0 0 8px rgb(52 199 89 / 0%);
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 rgb(52 199 89 / 0%);
+  }
+}
+
+.live-activity-strip__label {
+  font-weight: 700;
+}
+
+.live-activity-strip__detail {
+  opacity: 0.72;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Control Center (uses page) */
+.uses-control-center {
+  margin-bottom: 1.5rem;
+  padding: 1.25rem;
+  border-radius: 20px;
+}
+
+.uses-control-center__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 0.75rem;
+}
+
+.uses-control-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.85rem 0.5rem;
+  border-radius: 16px;
+  border: 1px solid rgb(0 0 0 / 8%);
+  background: rgb(255 255 255 / 65%);
+  font-size: 0.72rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+html.dark .uses-control-tile {
+  border-color: rgb(255 255 255 / 10%);
+  background: rgb(0 0 0 / 55%);
+}
+
+body.systems-page .uses-control-tile {
+  border: 1px solid var(--systems-card-border);
+  background: var(--systems-diagram-bg);
+  color: var(--systems-text);
+}
+
+html.dark body.systems-page .uses-control-tile {
+  border-color: var(--systems-card-border);
+  background: var(--systems-diagram-bg);
+}
+
+body.systems-page .uses-control-tile.is-active {
+  border-color: #0071e3;
+  color: #0071e3;
+}
+
+body.uses-page .uses-control-tile,
+body.systems-page .uses-control-tile {
+  min-height: 3.5rem;
+  color: var(--systems-text) !important;
+  -webkit-text-fill-color: var(--systems-text) !important;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  border-color: var(--systems-card-border, rgb(0 0 0 / 10%)) !important;
+  box-shadow: 0 8px 22px rgb(0 0 0 / 6%) !important;
+}
+
+html.dark body.uses-page .uses-control-tile,
+html.dark body.systems-page .uses-control-tile {
+  color: #f5f5f7 !important;
+  -webkit-text-fill-color: #f5f5f7 !important;
+  background: #000000 !important;
+  background-color: #000000 !important;
+  border-color: rgb(255 255 255 / 14%) !important;
+  box-shadow: 0 10px 28px rgb(0 0 0 / 46%) !important;
+}
+
+body.uses-page .uses-control-tile i,
+body.systems-page .uses-control-tile i {
+  color: #0071e3 !important;
+  -webkit-text-fill-color: #0071e3 !important;
+}
+
+body.uses-page .uses-control-tile.is-active,
+body.systems-page .uses-control-tile.is-active {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  background: #0071e3 !important;
+  background-color: #0071e3 !important;
+  border-color: #0071e3 !important;
+}
+
+body.uses-page .uses-control-tile.is-active i,
+body.systems-page .uses-control-tile.is-active i {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+/* Game leaderboard — body/list styled in game-section-fix.css */
+.game-leaderboard ol {
+  margin: 0;
+  padding: 0;
+}
+
+/* Global search overlay (subpages) */
+#search-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100001;
+  display: none;
+}
+
+#search-overlay.active {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 10vh 1rem 1rem;
+}
+
+#search-overlay .search-panel {
+  position: relative;
+  z-index: 1;
+  width: min(640px, 100%);
+  padding: 1rem;
+  border-radius: 16px;
+}
+
+#search-overlay .search-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+#search-overlay #search-input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  font-size: 1rem;
+  outline: none;
+}
+
+.search-overlay-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgb(0 0 0 / 35%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .live-activity-strip__pulse {
+    animation: none;
+  }
+}
+
+/* ─── Sitewide solid theme: cards/panels match page fill (no grey shadow halos) ─── */
+html:not(.dark)
+  :is(
+    .card,
+    .experience-card,
+    .experience-content,
+    .education-card,
+    .education-content,
+    .stat-card,
+    .blog-card,
+    .publication-card,
+    .award-card,
+    .recommendation-card,
+    .certification-card,
+    .showcase-project-card,
+    .about-highlight-card,
+    .about-text-card,
+    .about-card,
+    .contact-card,
+    .contact-form-card,
+    .currently-card,
+    .calendar-card,
+    .skill-card,
+    .skill-badge,
+    #skills .skill-category,
+    #skills-container .skill-category,
+    #skills-container .skill-badge,
+    .game-stat-card,
+    .game-info-card,
+    .vibe-stack-card,
+    .lg-glass-card
+  ) {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+html.dark
+  :is(
+    .card,
+    .experience-card,
+    .experience-content,
+    .education-card,
+    .education-content,
+    .stat-card,
+    .blog-card,
+    .publication-card,
+    .award-card,
+    .recommendation-card,
+    .certification-card,
+    .showcase-project-card,
+    .about-highlight-card,
+    .about-text-card,
+    .about-card,
+    .contact-card,
+    .contact-form-card,
+    .currently-card,
+    .calendar-card,
+    .skill-card,
+    .skill-badge,
+    #skills .skill-category,
+    #skills-container .skill-category,
+    #skills-container .skill-badge,
+    .game-stat-card,
+    .game-info-card,
+    .vibe-stack-card,
+    .lg-glass-card
+  ) {
+  background: #000000 !important;
+  background-color: #000000 !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+html:not(.dark)
+  :is(
+    .card,
+    .experience-card,
+    .experience-content,
+    .education-card,
+    .education-content,
+    .stat-card,
+    .blog-card,
+    .publication-card,
+    .award-card,
+    .recommendation-card,
+    .certification-card,
+    .showcase-project-card,
+    .about-highlight-card,
+    .about-text-card,
+    .about-card,
+    .contact-card,
+    .contact-form-card,
+    .currently-card,
+    .calendar-card,
+    .skill-card,
+    .skill-badge,
+    #skills .skill-category,
+    #skills-container .skill-category,
+    #skills-container .skill-badge,
+    .game-stat-card,
+    .game-info-card,
+    .vibe-stack-card,
+    .lg-glass-card
+  ):is(:hover, :focus-within) {
+  box-shadow: none !important;
+}
+
+html.dark
+  :is(
+    .card,
+    .experience-card,
+    .experience-content,
+    .education-card,
+    .education-content,
+    .stat-card,
+    .blog-card,
+    .publication-card,
+    .award-card,
+    .recommendation-card,
+    .certification-card,
+    .showcase-project-card,
+    .about-highlight-card,
+    .about-text-card,
+    .about-card,
+    .contact-card,
+    .contact-form-card,
+    .currently-card,
+    .calendar-card,
+    .skill-card,
+    .skill-badge,
+    #skills .skill-category,
+    #skills-container .skill-category,
+    #skills-container .skill-badge,
+    .game-stat-card,
+    .game-info-card,
+    .vibe-stack-card,
+    .lg-glass-card
+  ):is(:hover, :focus-within) {
+  box-shadow: none !important;
+}

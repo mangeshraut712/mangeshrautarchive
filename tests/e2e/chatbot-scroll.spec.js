@@ -60,6 +60,35 @@ test.describe('Chatbot scroll engineering', () => {
   });
 
   test('does not pull the reader when they scroll up during streaming', async ({ page }) => {
+    // Mock the chat endpoint with a slow stream so .streaming class is guaranteed
+    await page.route('**/api/chat', async route => {
+      if (route.request().method() !== 'POST') {
+        await route.continue();
+        return;
+      }
+      const encoder = new TextEncoder();
+      const chunks = [
+        '{"type":"chunk","content":"Hello "}',
+        '{"type":"chunk","content":"this is "}',
+        '{"type":"chunk","content":"a longer "}',
+        '{"type":"chunk","content":"streamed "}',
+        '{"type":"chunk","content":"response "}',
+        '{"type":"chunk","content":"that keeps going "}',
+        '{"type":"chunk","content":"for a while."}',
+        '{"type":"done","metadata":{"source":"mock"}}',
+      ];
+      const body = new ReadableStream({
+        async start(controller) {
+          for (const chunk of chunks) {
+            controller.enqueue(encoder.encode(chunk + '\n'));
+            await new Promise(r => setTimeout(r, 400));
+          }
+          controller.close();
+        },
+      });
+      await route.fulfill({ status: 200, contentType: 'application/x-ndjson', body });
+    });
+
     await gotoSiteReady(page);
     await openChatbot(page);
 
@@ -92,6 +121,33 @@ test.describe('Chatbot scroll engineering', () => {
   });
 
   test('jump to latest resumes following and pins near the bottom', async ({ page }) => {
+    // Mock the chat endpoint with a slow stream so .streaming class is guaranteed
+    await page.route('**/api/chat', async route => {
+      if (route.request().method() !== 'POST') {
+        await route.continue();
+        return;
+      }
+      const encoder = new TextEncoder();
+      const chunks = [
+        '{"type":"chunk","content":"Hello "}',
+        '{"type":"chunk","content":"this is "}',
+        '{"type":"chunk","content":"a longer "}',
+        '{"type":"chunk","content":"streamed "}',
+        '{"type":"chunk","content":"response."}',
+        '{"type":"done","metadata":{"source":"mock"}}',
+      ];
+      const body = new ReadableStream({
+        async start(controller) {
+          for (const chunk of chunks) {
+            controller.enqueue(encoder.encode(chunk + '\n'));
+            await new Promise(r => setTimeout(r, 400));
+          }
+          controller.close();
+        },
+      });
+      await route.fulfill({ status: 200, contentType: 'application/x-ndjson', body });
+    });
+
     await gotoSiteReady(page);
     await openChatbot(page);
 

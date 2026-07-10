@@ -982,7 +982,7 @@ html.dark .calendly-panel h4 {
   width: 100%;
   min-height: 44px;
   color: #fff;
-  background: #007aff;
+  background: #0066cc;
   border: 0;
   border-radius: 999px;
   font-weight: 700;
@@ -994,7 +994,7 @@ html.dark .calendly-panel h4 {
 }
 
 .calendly-panel-button:hover {
-  background: #006edb;
+  background: #005bb3;
   box-shadow: 0 12px 28px rgb(0 122 255 / 25%);
   transform: translateY(-1px);
 }
@@ -1246,7 +1246,7 @@ html.dark .day-cell:hover:not(.empty, .selected, .today) {
   color: #fff !important;
 
   /* White Text */
-  background: #007aff !important;
+  background: #0066cc !important;
 
   /* Solid Blue */
   padding: 0 16px !important;
@@ -1295,7 +1295,16 @@ html.dark .day-cell.has-event:not(.today, .selected) .event-dot {
 
 .ios-weekdays span:first-child,
 .day-cell:nth-child(7n + 1) {
-  color: #ff3b30;
+  color: #d01c1c;
+}
+
+html.dark .ios-weekdays span:first-child,
+html.dark .day-cell:nth-child(7n + 1) {
+  color: #ff453a;
+}
+
+html.dark .ios-btn-small {
+  background: #007aff !important;
 }
 
 .day-cell.today:nth-child(7n + 1),
@@ -1849,7 +1858,7 @@ html.dark .day-cell.mangesh-birthday {
 
 .reminder-card.accent-gold .card-tag {
   background: rgb(255 215 0 / 20%) !important;
-  color: #b8860b !important;
+  color: #855e00 !important;
 }
 
 .reminder-card.accent-gold .card-time i {

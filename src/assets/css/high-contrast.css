@@ -1,0 +1,51 @@
+/* Increase Contrast — pairs with accessibility.js .high-contrast + prefers-contrast: high */
+
+html.high-contrast,
+html.high-contrast body {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+}
+
+html.dark.high-contrast,
+html.dark.high-contrast body {
+  background: #000000 !important;
+  background-color: #000000 !important;
+}
+
+html.high-contrast
+  :is(.card, .skill-category, .experience-content, .award-card, .blog-card, .lg-glass-card) {
+  border-width: 2px !important;
+  border-color: #000000 !important;
+  box-shadow: none !important;
+}
+
+html.dark.high-contrast
+  :is(.card, .skill-category, .experience-content, .award-card, .blog-card, .lg-glass-card) {
+  border-color: #ffffff !important;
+}
+
+html.high-contrast :is(a, button, .global-nav a) {
+  text-decoration-thickness: 2px;
+}
+
+html.high-contrast :focus-visible {
+  outline: 3px solid #0071e3 !important;
+  outline-offset: 3px !important;
+}
+
+html.dark.high-contrast :focus-visible {
+  outline-color: #0a84ff !important;
+}
+
+html.high-contrast .a11y-toolbar,
+html.high-contrast .global-nav.dynamic-island,
+html.high-contrast .monitor-page-nav,
+html.high-contrast .travel-nav {
+  border-width: 2px !important;
+}
+
+@media (prefers-contrast: more) {
+  html:not(.high-contrast) :is(.card, .skill-category, .award-card) {
+    border-width: 1.5px !important;
+  }
+}

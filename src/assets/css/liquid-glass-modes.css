@@ -1,0 +1,483 @@
+/* ════════════════════════════════════════════════════════════════
+   Liquid Glass modes — loaded AFTER theme-solid-surfaces.css
+   Tinted (slider → Tinted): solid frosted surfaces from theme-solid.
+   Clear / Balanced: restore WWDC26 liquid glass (blur + translucency).
+   ════════════════════════════════════════════════════════════════ */
+
+/* Shared card / panel selectors — solid surfaces (no blur halos on rounded corners) */
+html:not([data-lg-mode='tinted'])
+  :is(
+    .card,
+    .experience-card,
+    .experience-content,
+    .education-card,
+    .education-content,
+    .stat-card,
+    .blog-card,
+    .publication-card,
+    .award-card,
+    .recommendation-card,
+    .certification-card,
+    .showcase-project-card,
+    .about-highlight-card,
+    .about-text-card,
+    .about-card,
+    .contact-card,
+    .contact-form-card,
+    .newsletter-card,
+    .support-donation-card,
+    .media-card,
+    .currently-card,
+    .calendar-card,
+    .ios-widget-wrapper,
+    .legend-card,
+    .reminder-card,
+    .overview-card,
+    .doc-card,
+    .health-item,
+    .game-stat-card,
+    .game-info-card,
+    .skill-card,
+    .skill-badge,
+    .timeline-content,
+    .service-card,
+    .feature-card,
+    .testimonial-card,
+    .pricing-card,
+    .team-card,
+    .info-card,
+    .detail-card,
+    .summary-card,
+    .glass-card,
+    .overlay-card,
+    .panel,
+    .health-widget-container,
+    .monitor-summary-card,
+    .monitor-summary-panel,
+    .integration-owner-auth,
+    .ops-card,
+    .endpoint-card,
+    .travel-sidebar,
+    .travel-stop,
+    .place-guide-card,
+    .travel-stat,
+    .travel-filter-panel,
+    .travel-advanced-search,
+    .travel-results-summary,
+    .travel-timeline__country-header,
+    .sub-card,
+    .nested-card,
+    .vibe-stack-card,
+    .lg-glass-card,
+    .engineering-quality-overview,
+    .projects-activity-overview,
+    .systems-evidence-card,
+    .systems-principle-card,
+    .eng-building-card,
+    .eng-design-card,
+    .systems-case-flow,
+    .systems-bench-row,
+    .systems-bento-tile,
+    .systems-metric-panel,
+    .systems-arch-stage,
+    .systems-flow-step,
+    .systems-hero-stat,
+    .eng-showcase-card,
+    .systems-timeline-block,
+    .systems-now-card,
+    .case-study-preview-card,
+    .reach-realtime-section,
+    .error-container,
+    #blog .blog-card,
+    body.blog-standalone-page .blog-card,
+    body.blog-standalone-page .blog-index-header,
+    body.blog-standalone-page .article-header,
+    body.blog-standalone-page .blog-article-sidebar,
+    body.blog-standalone-page .article-related-card,
+    #blog .newsletter-card,
+    body.monitor-page .doc-card,
+    body.monitor-page .overview-card,
+    body.monitor-page .health-item,
+    body.monitor-page .endpoint-card,
+    body.monitor-page .ops-card,
+    #projects #github-projects-container .showcase-project-card,
+    #skills .skill-category,
+    #skills-container .skill-category
+  ) {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  transition:
+    transform 0.32s cubic-bezier(0.25, 0.1, 0.25, 1),
+    border-color 0.32s ease,
+    background 0.32s ease !important;
+}
+
+html:not([data-lg-mode='tinted']):not(.dark)
+  :is(
+    .card,
+    .experience-card,
+    .experience-content,
+    .education-card,
+    .education-content,
+    .stat-card,
+    .blog-card,
+    .publication-card,
+    .award-card,
+    .recommendation-card,
+    .certification-card,
+    .showcase-project-card,
+    .about-highlight-card,
+    .about-text-card,
+    .about-card,
+    .contact-card,
+    .contact-form-card,
+    .newsletter-card,
+    .support-donation-card,
+    .media-card,
+    .currently-card,
+    .calendar-card,
+    .ios-widget-wrapper,
+    .legend-card,
+    .reminder-card,
+    .overview-card,
+    .doc-card,
+    .health-item,
+    .game-stat-card,
+    .game-info-card,
+    .skill-card,
+    .skill-badge,
+    .timeline-content,
+    .service-card,
+    .feature-card,
+    .testimonial-card,
+    .pricing-card,
+    .team-card,
+    .info-card,
+    .detail-card,
+    .summary-card,
+    .glass-card,
+    .overlay-card,
+    .panel,
+    .health-widget-container,
+    .monitor-summary-card,
+    .monitor-summary-panel,
+    .integration-owner-auth,
+    .ops-card,
+    .endpoint-card,
+    .travel-sidebar,
+    .travel-stop,
+    .place-guide-card,
+    .travel-stat,
+    .travel-filter-panel,
+    .travel-advanced-search,
+    .travel-results-summary,
+    .travel-timeline__country-header,
+    .sub-card,
+    .nested-card,
+    .vibe-stack-card,
+    .lg-glass-card,
+    .engineering-quality-overview,
+    .projects-activity-overview,
+    .systems-evidence-card,
+    .systems-principle-card,
+    .eng-building-card,
+    .eng-design-card,
+    .systems-case-flow,
+    .systems-bench-row,
+    .systems-bento-tile,
+    .systems-metric-panel,
+    .systems-arch-stage,
+    .systems-flow-step,
+    .systems-hero-stat,
+    .eng-showcase-card,
+    .systems-timeline-block,
+    .systems-now-card,
+    .case-study-preview-card,
+    .reach-realtime-section,
+    .error-container,
+    #blog .blog-card,
+    body.blog-standalone-page .blog-card,
+    #blog .newsletter-card,
+    body.monitor-page .doc-card,
+    body.monitor-page .overview-card,
+    body.monitor-page .health-item,
+    body.monitor-page .endpoint-card,
+    body.monitor-page .ops-card,
+    #projects #github-projects-container .showcase-project-card,
+    #skills .skill-category,
+    #skills-container .skill-category,
+    #skills-container .skill-scroll-wrapper .skill-badge
+  ) {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
+  border: 1px solid var(--card-border-rest) !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+html.dark:not([data-lg-mode='tinted'])
+  :is(
+    .card,
+    .experience-card,
+    .experience-content,
+    .education-card,
+    .education-content,
+    .stat-card,
+    .blog-card,
+    .publication-card,
+    .award-card,
+    .recommendation-card,
+    .certification-card,
+    .showcase-project-card,
+    .about-highlight-card,
+    .about-text-card,
+    .about-card,
+    .contact-card,
+    .contact-form-card,
+    .newsletter-card,
+    .support-donation-card,
+    .media-card,
+    .currently-card,
+    .calendar-card,
+    .ios-widget-wrapper,
+    .legend-card,
+    .reminder-card,
+    .overview-card,
+    .doc-card,
+    .health-item,
+    .game-stat-card,
+    .game-info-card,
+    .skill-card,
+    .skill-badge,
+    .timeline-content,
+    .service-card,
+    .feature-card,
+    .testimonial-card,
+    .pricing-card,
+    .team-card,
+    .info-card,
+    .detail-card,
+    .summary-card,
+    .glass-card,
+    .overlay-card,
+    .panel,
+    .health-widget-container,
+    .monitor-summary-card,
+    .monitor-summary-panel,
+    .integration-owner-auth,
+    .ops-card,
+    .endpoint-card,
+    .travel-sidebar,
+    .travel-stop,
+    .place-guide-card,
+    .travel-stat,
+    .travel-filter-panel,
+    .travel-advanced-search,
+    .travel-results-summary,
+    .travel-timeline__country-header,
+    .sub-card,
+    .nested-card,
+    .vibe-stack-card,
+    .lg-glass-card,
+    .engineering-quality-overview,
+    .projects-activity-overview,
+    .systems-evidence-card,
+    .systems-principle-card,
+    .eng-building-card,
+    .eng-design-card,
+    .systems-case-flow,
+    .systems-bench-row,
+    .systems-bento-tile,
+    .systems-metric-panel,
+    .systems-arch-stage,
+    .systems-flow-step,
+    .systems-hero-stat,
+    .eng-showcase-card,
+    .systems-timeline-block,
+    .systems-now-card,
+    .case-study-preview-card,
+    .reach-realtime-section,
+    .error-container,
+    #blog .blog-card,
+    body.blog-standalone-page .blog-card,
+    #blog .newsletter-card,
+    body.monitor-page .doc-card,
+    body.monitor-page .overview-card,
+    body.monitor-page .health-item,
+    body.monitor-page .endpoint-card,
+    body.monitor-page .ops-card,
+    #projects #github-projects-container .showcase-project-card,
+    #skills .skill-category,
+    #skills-container .skill-category,
+    #skills-container .skill-scroll-wrapper .skill-badge
+  ) {
+  background: #000000 !important;
+  background-color: #000000 !important;
+  background-image: none !important;
+  border: 1px solid var(--card-border-rest) !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* ─── Floating chrome: nav backgrounds owned by chrome-surfaces.css ─── */
+
+html:not([data-lg-mode='tinted']) .a11y-toolbar,
+html[data-lg-mode='clear'] .a11y-glass-popover,
+html[data-lg-mode='clear'] #chatbot-widget {
+  box-shadow: none !important;
+}
+
+html.dark[data-lg-mode='clear'] .a11y-toolbar,
+html.dark[data-lg-mode='clear'] .a11y-glass-popover,
+html.dark[data-lg-mode='clear'] #chatbot-widget {
+  box-shadow: none !important;
+}
+
+html:not([data-lg-mode='tinted']) .a11y-toolbar,
+html:not([data-lg-mode='tinted']) .a11y-glass-popover {
+  backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-control)) !important;
+  -webkit-backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-control)) !important;
+}
+
+html:not([data-lg-mode='tinted']):not(.dark) .a11y-toolbar {
+  background: rgb(255 255 255 / calc(52% + var(--lg-tint) * 38%)) !important;
+  background-color: rgb(255 255 255 / calc(52% + var(--lg-tint) * 38%)) !important;
+  border: 1px solid color-mix(in srgb, rgb(255 255 255 / 44%) 62%, rgb(0 0 0 / 8%) 38%) !important;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / calc(44% + var(--lg-tint) * 36%)),
+    0 10px 36px rgb(0 0 0 / calc(10% + (1 - var(--lg-tint)) * 8%)) !important;
+}
+
+html.dark:not([data-lg-mode='tinted']) .a11y-toolbar {
+  background: rgb(0 0 0 / calc(48% + var(--lg-tint) * 42%)) !important;
+  background-color: rgb(0 0 0 / calc(48% + var(--lg-tint) * 42%)) !important;
+  border-color: color-mix(in srgb, rgb(255 255 255 / 12%) 76%, rgb(0 0 0 / 24%) 24%) !important;
+}
+
+html:not([data-lg-mode='tinted']):not(.dark) .a11y-glass-popover {
+  background: rgb(255 255 255 / calc(58% + var(--lg-tint) * 34%)) !important;
+  background-color: rgb(255 255 255 / calc(58% + var(--lg-tint) * 34%)) !important;
+  border: 1px solid color-mix(in srgb, rgb(255 255 255 / 44%) 70%, rgb(0 0 0 / 9%) 30%) !important;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / calc(46% + var(--lg-tint) * 38%)),
+    0 18px 48px rgb(0 0 0 / calc(14% + (1 - var(--lg-tint)) * 10%)) !important;
+}
+
+html.dark:not([data-lg-mode='tinted']) .a11y-glass-popover {
+  background: rgb(0 0 0 / calc(54% + var(--lg-tint) * 38%)) !important;
+  background-color: rgb(0 0 0 / calc(54% + var(--lg-tint) * 38%)) !important;
+  border-color: color-mix(in srgb, rgb(255 255 255 / 12%) 74%, rgb(0 0 0 / 26%) 26%) !important;
+}
+
+html:not([data-lg-mode='tinted']) #chatbot-widget {
+  backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-panel)) !important;
+  -webkit-backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-panel)) !important;
+}
+
+html:not([data-lg-mode='tinted']):not(.dark) #chatbot-widget {
+  background: rgb(255 255 255 / calc(56% + var(--lg-tint) * 36%)) !important;
+  background-color: rgb(255 255 255 / calc(56% + var(--lg-tint) * 36%)) !important;
+}
+
+html.dark:not([data-lg-mode='tinted']) #chatbot-widget {
+  background: rgb(0 0 0 / calc(52% + var(--lg-tint) * 40%)) !important;
+  background-color: rgb(0 0 0 / calc(52% + var(--lg-tint) * 40%)) !important;
+}
+
+/* Projects controls */
+html:not([data-lg-mode='tinted']) #projects .proj-input-group,
+html:not([data-lg-mode='tinted']) #projects .proj-sort-native {
+  backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-control)) !important;
+  -webkit-backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-control)) !important;
+}
+
+html:not([data-lg-mode='tinted']):not(.dark) #projects .proj-input-group,
+html:not([data-lg-mode='tinted']):not(.dark) #projects .proj-sort-native {
+  background: rgb(255 255 255 / calc(54% + var(--lg-tint) * 38%)) !important;
+  background-color: rgb(255 255 255 / calc(54% + var(--lg-tint) * 38%)) !important;
+}
+
+html.dark:not([data-lg-mode='tinted']) #projects .proj-input-group,
+html.dark:not([data-lg-mode='tinted']) #projects .proj-sort-native {
+  background: rgb(0 0 0 / calc(50% + var(--lg-tint) * 42%)) !important;
+  background-color: rgb(0 0 0 / calc(50% + var(--lg-tint) * 42%)) !important;
+}
+
+/* Page shell stays pure white/black in every glass mode */
+html[data-lg-mode='clear']:not(.dark) body,
+html[data-lg-mode='balanced']:not(.dark) body,
+html[data-lg-mode='tinted']:not(.dark) body {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
+}
+
+html.dark[data-lg-mode='clear'] body,
+html.dark[data-lg-mode='balanced'] body,
+html.dark[data-lg-mode='tinted'] body {
+  background: #000000 !important;
+  background-color: #000000 !important;
+  background-image: none !important;
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  html:not([data-lg-mode='tinted']) .a11y-toolbar,
+  html:not([data-lg-mode='tinted']) .a11y-glass-popover,
+  html:not([data-lg-mode='tinted']) #chatbot-widget {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  html:not([data-lg-mode='tinted']):not(.dark) .a11y-toolbar,
+  html:not([data-lg-mode='tinted']):not(.dark) .a11y-glass-popover,
+  html:not([data-lg-mode='tinted']):not(.dark) #chatbot-widget {
+    background: rgb(255 255 255 / 96%) !important;
+    background-color: rgb(255 255 255 / 96%) !important;
+  }
+
+  html.dark:not([data-lg-mode='tinted']) .a11y-toolbar,
+  html.dark:not([data-lg-mode='tinted']) .a11y-glass-popover,
+  html.dark:not([data-lg-mode='tinted']) #chatbot-widget {
+    background: rgb(0 0 0 / 96%) !important;
+    background-color: rgb(0 0 0 / 96%) !important;
+  }
+}
+
+/* ─── Tinted endpoint: solid chrome, zero glass (wins over wwdc26 + WebGL hosts) ─── */
+html[data-lg-mode='tinted'] .a11y-toolbar,
+html[data-lg-mode='tinted'] .a11y-glass-popover,
+html[data-lg-mode='tinted'] #chatbot-widget,
+html[data-lg-mode='tinted']
+  .lg-webgl-host:not(#global-nav):not(#chatbot-widget):not(.music-card-inner) {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+html[data-lg-mode='tinted']:not(.dark) .a11y-toolbar,
+html[data-lg-mode='tinted']:not(.dark) .a11y-glass-popover,
+html[data-lg-mode='tinted']:not(.dark) #chatbot-widget,
+html[data-lg-mode='tinted']:not(.dark)
+  .lg-webgl-host:not(#global-nav):not(#chatbot-widget):not(.music-card-inner) {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+}
+
+html.dark[data-lg-mode='tinted'] .a11y-toolbar,
+html.dark[data-lg-mode='tinted'] .a11y-glass-popover,
+html.dark[data-lg-mode='tinted'] #chatbot-widget,
+html.dark[data-lg-mode='tinted']
+  .lg-webgl-host:not(#global-nav):not(#chatbot-widget):not(.music-card-inner) {
+  background: #000000 !important;
+  background-color: #000000 !important;
+}
+
+html[data-lg-mode='tinted'] .lg-webgl-canvas {
+  display: none !important;
+}

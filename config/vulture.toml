@@ -1,0 +1,6 @@
+[tool.vulture]
+paths = ["api"]
+min_confidence = 80
+exclude = ["venv", "dist"]
+ignore_decorators = ["@app.get", "@app.post", "@app.exception_handler"]
+ignore_names = ["dispatch"]
