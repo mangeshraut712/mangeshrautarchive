@@ -271,29 +271,62 @@ function warmCriticalSectionPreloads() {
   }
 
   /*
-   * Light warm only — do NOT import a dozen modules at once (main-thread jank).
-   * Section modules still load via SECTION_MODULES IntersectionObserver near each section.
-   * Content CSS is already progressive + promoted once in initDeferredStyles.
+   * Middle band (engineering → blog) was spinner-gated until scroll IO.
+   * Prefetch + start those modules early so the middle of the page paints like home/contact.
    */
   scheduleSoon(
     () => {
       prefetchGithubProjectsCatalog();
     },
-    Math.max(200, WARM_SECTION_PRELOAD_DELAY_MS)
+    Math.max(150, WARM_SECTION_PRELOAD_DELAY_MS)
   );
 
-  // Near-fold modules only (skills empty shell, about tabs)
   runWhenIdle(() => {
     modulePreload('../modules/skills-visualization.js');
-    modulePreload('../modules/about-interactivity.js');
     loadModule('../modules/skills-visualization.js');
     loadModule('../modules/about-interactivity.js');
-  }, 1200);
+  }, 400);
 
-  // Projects catalog after first paint settles
   runWhenIdle(() => {
-    warmProjectShowcaseAssets();
-  }, 2000);
+    loadModule('../modules/experience-interactivity.js');
+    loadModule('../modules/blog-loader.js');
+    loadModule('../modules/awards-shelf.js');
+    import('../modules/engineering-showcase.js')
+      .then(m => m.initEngineeringTeaser?.())
+      .catch(() => {});
+    warmProjectShowcaseAssets()
+      ?.then(mod => {
+        if (mod?.initProjectShowcase) {
+          return mod.initProjectShowcase();
+        }
+        return import('../modules/projects-showcase.js').then(m => m.initProjectShowcase?.());
+      })
+      .catch(() => {});
+  }, 650);
+
+  runWhenIdle(() => {
+    hydrateDeferredImagesIn(document.getElementById('certifications'));
+    hydrateDeferredImagesIn(document.getElementById('education'));
+    hydrateDeferredImagesIn(document.getElementById('about'));
+  }, 450);
+}
+
+/** Real src for deferred middle-section images (certs, etc.) — no blank 1×1 placeholders. */
+function hydrateDeferredImagesIn(root) {
+  if (!root) return;
+  root.querySelectorAll('picture source[data-deferred-srcset]').forEach(source => {
+    if (!source.dataset.deferredSrcset) return;
+    source.setAttribute('srcset', source.dataset.deferredSrcset.trim());
+    source.removeAttribute('data-deferred-srcset');
+  });
+  root.querySelectorAll('img[data-deferred-src]').forEach(img => {
+    if (!img.dataset.deferredSrc) return;
+    if (!img.getAttribute('loading')) {
+      img.loading = 'lazy';
+    }
+    img.src = img.dataset.deferredSrc;
+    img.removeAttribute('data-deferred-src');
+  });
 }
 
 function ensureDeferredStylesheetLoaded(link) {
@@ -1030,7 +1063,9 @@ function initProjectShowcaseOnDemand() {
     return pending;
   };
 
-  observeSectionTask('projects', start, '500px 0px');
+  // Start early so middle of page is never a permanent spinner; IO is backup only
+  scheduleSoon(start, 400);
+  observeSectionTask('projects', start, '200px 0px');
 }
 
 function initEngineeringTeaserOnDemand() {
@@ -1061,7 +1096,8 @@ function initEngineeringTeaserOnDemand() {
     return pending;
   };
 
-  observeSectionTask('engineering', start, '500px 0px');
+  scheduleSoon(start, 250);
+  observeSectionTask('engineering', start, '200px 0px');
 }
 
 function initServiceWorker() {

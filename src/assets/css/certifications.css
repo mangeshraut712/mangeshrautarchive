@@ -138,7 +138,9 @@ html.dark .certification-logo-container {
 .certification-logo {
   width: 100% !important;
   height: 100% !important;
+  max-width: 40px;
   object-fit: contain !important;
+  opacity: 1 !important;
 }
 
 .certification-info {
@@ -249,28 +251,11 @@ html.dark .certification-logo[alt='Spoken Tutorial'] {
 }
 
 /* ============================================
-   ROW LIMITING - View More Logic (2 Rows)
+   Certifications grid — always show all cards.
+   (Collapsing middle-section content made the page feel empty/laggy.)
+   View More button can still toggle .expanded for future polish.
    ============================================ */
 
-.certifications-grid:not(.expanded) .certification-card {
-  display: none !important;
-}
-
-/* Mobile: 1 col -> 2 items = 2 rows */
-.certifications-grid:not(.expanded) .certification-card:nth-child(-n + 2) {
+.certifications-grid .certification-card {
   display: flex !important;
-}
-
-/* Tablet: typically 2 cols -> 4 items = 2 rows */
-@media (min-width: 650px) {
-  .certifications-grid:not(.expanded) .certification-card:nth-child(-n + 4) {
-    display: flex !important;
-  }
-}
-
-/* Desktop: typically 3 cols -> 6 items = 2 rows */
-@media (min-width: 950px) {
-  .certifications-grid:not(.expanded) .certification-card:nth-child(-n + 6) {
-    display: flex !important;
-  }
 }

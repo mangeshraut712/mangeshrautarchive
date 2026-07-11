@@ -62,6 +62,33 @@ html.dark #engineering {
   gap: clamp(0.95rem, 1.8vw, 1.45rem);
 }
 
+/* Static shell while JS hydrates — readable, not a blank spinner */
+.engineering-static-shell {
+  padding: clamp(1rem, 2.5vw, 1.5rem);
+  border-radius: var(--systems-radius, 20px);
+  border: 1px solid var(--eng-border-light, rgb(0 0 0 / 12%));
+  background: #ffffff;
+  box-shadow: var(--eng-shadow-light, 0 14px 30px rgb(0 0 0 / 4%));
+}
+
+html.dark .engineering-static-shell {
+  border-color: var(--eng-border-dark, rgb(255 255 255 / 14%));
+  background: #000000;
+  box-shadow: var(--eng-shadow-dark, 0 18px 34px rgb(0 0 0 / 60%));
+}
+
+.engineering-static-shell .engineering-public-statement {
+  margin: 0 0 1rem;
+  color: var(--eng-text-light, #1d1d1f);
+  font-size: 1.05rem;
+  line-height: 1.5;
+  text-align: center;
+}
+
+html.dark .engineering-static-shell .engineering-public-statement {
+  color: var(--eng-text-dark, #f5f5f7);
+}
+
 .engineering-quality-overview {
   max-width: 1200px;
   margin: 0 auto;
