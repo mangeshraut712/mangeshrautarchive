@@ -23,6 +23,9 @@ const generatedDirs = [
   '.codex',
   '.windsurf',
   '.vercel',
+  'coverage',
+  '.turbo',
+  '.cache',
 ];
 const generatedFiles = ['backend_test.log', 'dev_server.log', '.clinerules', '.windsurfrules'];
 const generatedFileNames = new Set(['.DS_Store']);

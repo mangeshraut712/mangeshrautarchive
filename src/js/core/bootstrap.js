@@ -291,6 +291,7 @@ function warmCriticalSectionPreloads() {
     loadModule('../modules/experience-interactivity.js');
     loadModule('../modules/blog-loader.js');
     loadModule('../modules/awards-shelf.js');
+    loadModule('../modules/calendar.js');
     import('../modules/engineering-showcase.js')
       .then(m => m.initEngineeringTeaser?.())
       .catch(() => {});
