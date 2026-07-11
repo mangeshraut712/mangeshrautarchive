@@ -177,6 +177,11 @@ async function copyDirContent(src, dest, depth = 0) {
  * Keep this small: the whole bundle is inlined into index.html.
  * Bloated inlines delay HTML parse and tank mobile LCP.
  */
+/**
+ * Above-the-fold paint path (inlined into index.html).
+ * Keep lean: homepage + nav + a11y are required for LCP + target-size 100.
+ * Heavier design-system sheets stay in PREMIUM_DEFERRED_CSS.
+ */
 const HERO_CRITICAL_CSS = [
   'assets/css/cross-browser-responsive.css',
   'assets/css/critical-tokens.css',
@@ -185,7 +190,7 @@ const HERO_CRITICAL_CSS = [
   'assets/css/accessibility.css',
 ];
 
-/** Deferred after first paint — still high priority, non-blocking via media=print onload */
+/** Deferred after first paint — non-blocking via media=print onload */
 const PREMIUM_DEFERRED_CSS = [
   'assets/css/tailwind-output.css',
   'assets/css/sitewide-design-system.css',
