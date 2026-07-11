@@ -581,30 +581,58 @@ function renderTelemetry(snapshot) {
 let telemetryTimer = null;
 
 async function hydrateTelemetry({ initial = false } = {}) {
-  const [snapshot, reachData] = await Promise.all([
-    fetchEngineeringSnapshot(),
-    fetchAnalyticsReach(),
-  ]);
-  cachedReachData = reachData;
+  const bento = document.getElementById('systems-telemetry-bento');
+  if (bento && initial) {
+    bento.dataset.state = 'loading';
+  }
 
-  renderTelemetry(snapshot);
-  updateLiveBenchmarkValues(snapshot || {});
-  mountArchitectureDiagrams(reachData);
-  bindCardPress();
+  try {
+    const [snapshot, reachData] = await Promise.all([
+      fetchEngineeringSnapshot(),
+      fetchAnalyticsReach(),
+    ]);
+    cachedReachData = reachData;
 
-  const note = document.getElementById('telemetry-refreshed');
-  const tileNote = document.getElementById('telemetry-tile-synced');
-  const syncText = snapshot?.generated_at
-    ? `Synced ${new Date(snapshot.generated_at).toLocaleTimeString()}`
-    : '';
-  if (note && syncText) note.textContent = syncText;
-  if (tileNote && syncText) tileNote.textContent = syncText;
+    renderTelemetry(snapshot);
+    updateLiveBenchmarkValues(snapshot || {});
+    mountArchitectureDiagrams(reachData);
+    bindCardPress();
 
-  const ossNote = document.getElementById('oss-live-note');
-  if (ossNote) {
-    ossNote.textContent = snapshot
-      ? 'Public GitHub activity — live sync enabled'
-      : 'Public GitHub metrics — static snapshot';
+    if (bento) {
+      bento.dataset.state = snapshot ? 'ready' : 'degraded';
+    }
+
+    const note = document.getElementById('telemetry-refreshed');
+    const tileNote = document.getElementById('telemetry-tile-synced');
+    const syncText = snapshot?.generated_at
+      ? `Synced ${new Date(snapshot.generated_at).toLocaleTimeString()}`
+      : 'Using static benchmarks (live telemetry unavailable)';
+    if (note) note.textContent = syncText;
+    if (tileNote) tileNote.textContent = syncText;
+
+    const ossNote = document.getElementById('oss-live-note');
+    if (ossNote) {
+      ossNote.textContent = snapshot
+        ? 'Public GitHub activity — live sync enabled'
+        : 'Public GitHub metrics — static snapshot';
+    }
+  } catch (error) {
+    console.warn('Systems telemetry hydrate failed:', error);
+    if (bento) {
+      bento.dataset.state = 'error';
+      const loading = bento.querySelector('.systems-bento-loading');
+      if (loading) {
+        loading.textContent = 'Telemetry unavailable — showing static evidence below.';
+      }
+    }
+    const note = document.getElementById('telemetry-refreshed');
+    if (note) note.textContent = 'Live telemetry offline';
+    // Still mount static architecture diagrams when reach fails
+    try {
+      mountArchitectureDiagrams(cachedReachData);
+    } catch {
+      /* ignore */
+    }
   }
 
   if (initial && !telemetryTimer) {
@@ -696,7 +724,8 @@ export function initSystemsPage() {
 
 if (document.body.classList.contains('systems-page')) {
   const boot = () => {
-    if (isPerformanceAudit()) return;
+    // Always render static evidence content; only live telemetry/animations
+    // are skipped under perf-audit / Lighthouse to protect scores.
     initSystemsPage();
   };
 

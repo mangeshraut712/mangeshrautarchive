@@ -38,6 +38,25 @@ class PortfolioSearch {
       return;
     }
 
+    // Closed by default for AT + layout
+    this.searchOverlay.setAttribute('aria-hidden', 'true');
+    this.searchOverlay.style.setProperty('display', 'none', 'important');
+    this.searchToggle.setAttribute('aria-expanded', 'false');
+    this.searchToggle.setAttribute('aria-controls', 'search-overlay');
+    if (!this.searchInput.getAttribute('aria-label')) {
+      this.searchInput.setAttribute('aria-label', 'Search portfolio, pages, and actions');
+    }
+    // ARIA combobox pattern for results navigation
+    this.searchInput.setAttribute('role', 'combobox');
+    this.searchInput.setAttribute('aria-autocomplete', 'list');
+    this.searchInput.setAttribute('aria-controls', 'search-results');
+    this.searchInput.setAttribute('aria-expanded', 'false');
+    this.searchInput.setAttribute('aria-haspopup', 'listbox');
+    if (this.searchResults && !this.searchResults.getAttribute('role')) {
+      this.searchResults.setAttribute('role', 'listbox');
+      this.searchResults.setAttribute('aria-label', 'Search results');
+    }
+
     this.indexContent();
     this.attachEventListeners();
     this.showSuggestedSearches();
@@ -299,20 +318,20 @@ class PortfolioSearch {
         tags: 'game interactive debug runner',
       },
       {
-        title: 'Engineering',
-        description: 'Architecture, benchmarks, case studies, and portfolio proof',
+        title: 'Engineering Evidence (section)',
+        description: 'Architecture, benchmarks, case studies, and portfolio proof on the homepage',
         icon: 'fa-diagram-project',
         sectionId: 'engineering',
         type: 'Portfolio',
         tags: 'engineering architecture benchmarks evidence building learned',
       },
       {
-        title: 'Engineering',
+        title: 'Evidence Notebook',
         description: 'Full architecture diagrams, system design, and case studies',
         icon: 'fa-book-open',
         url: 'systems.html',
         type: 'Page',
-        tags: 'systems architecture design benchmarks notebook',
+        tags: 'systems architecture design benchmarks notebook evidence',
       },
       {
         title: 'System Monitor',
@@ -427,8 +446,14 @@ class PortfolioSearch {
   openSearch() {
     this.searchOverlay.style.setProperty('display', 'flex', 'important');
     this.searchOverlay.classList.add('active');
+    this.searchOverlay.setAttribute('aria-hidden', 'false');
+    this.searchOverlay.removeAttribute('hidden');
+    if (this.searchToggle) {
+      this.searchToggle.setAttribute('aria-expanded', 'true');
+    }
+    this.searchInput?.setAttribute('aria-expanded', 'true');
     setTimeout(() => {
-      this.searchInput.focus();
+      this.searchInput?.focus();
     }, 100);
     document.body.style.overflow = 'hidden';
   }
@@ -436,9 +461,26 @@ class PortfolioSearch {
   closeSearch() {
     this.searchOverlay.classList.remove('active');
     this.searchOverlay.style.setProperty('display', 'none', 'important');
-    this.searchInput.value = '';
+    this.searchOverlay.setAttribute('aria-hidden', 'true');
+    if (this.searchToggle) {
+      this.searchToggle.setAttribute('aria-expanded', 'false');
+    }
+    if (this.searchInput) {
+      this.searchInput.value = '';
+      this.searchInput.setAttribute('aria-expanded', 'false');
+      this.searchInput.removeAttribute('aria-activedescendant');
+    }
+    this.activeResultIndex = -1;
     this.showSuggestedSearches();
     document.body.style.overflow = '';
+    // Restore focus to the control that opened search
+    if (this.searchToggle && typeof this.searchToggle.focus === 'function') {
+      try {
+        this.searchToggle.focus({ preventScroll: true });
+      } catch {
+        this.searchToggle.focus();
+      }
+    }
   }
 
   showSuggestedSearches() {
@@ -614,12 +656,20 @@ class PortfolioSearch {
     const items = this.getResultItems();
     items.forEach((item, index) => {
       const isActive = index === this.activeResultIndex;
+      if (!item.id) {
+        item.id = `search-result-${index}`;
+      }
+      item.setAttribute('role', 'option');
       item.classList.toggle('active', isActive);
       item.setAttribute('aria-selected', isActive.toString());
       if (isActive) {
         item.scrollIntoView({ block: 'nearest' });
+        this.searchInput?.setAttribute('aria-activedescendant', item.id);
       }
     });
+    if (this.activeResultIndex < 0 || !items[this.activeResultIndex]) {
+      this.searchInput?.removeAttribute('aria-activedescendant');
+    }
   }
 
   navigateResult(item) {

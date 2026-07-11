@@ -635,10 +635,24 @@ class SystemMonitor:
             status = HealthStatus.HEALTHY
             message = "Runtime resources are healthy"
 
-            if cpu_percent > 90 or memory.percent > 90:
+            # Host memory/CPU on shared local machines often sits high while the
+            # portfolio API itself is fine. Prefer available memory floors over
+            # raw percent for CRITICAL, and keep elevated usage as degraded.
+            memory_available_gb = memory.available / (1024**3)
+            critical_pressure = cpu_percent > 95 or (
+                memory.percent > 95 and memory_available_gb < 0.5
+            )
+            elevated_pressure = (
+                cpu_percent > 85
+                or memory.percent > 90
+                or (memory.percent > 85 and memory_available_gb < 1.0)
+                or disk_pressure
+            )
+
+            if critical_pressure:
                 status = HealthStatus.CRITICAL
                 message = "Critical: High resource usage"
-            elif cpu_percent > 70 or memory.percent > 80 or disk_pressure:
+            elif elevated_pressure:
                 status = HealthStatus.DEGRADED
                 message = "Warning: Elevated resource usage"
 

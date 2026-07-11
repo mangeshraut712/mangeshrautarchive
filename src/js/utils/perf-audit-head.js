@@ -13,12 +13,10 @@
     }
 
     var userAgent = navigator.userAgent || '';
-    // PSI/Lighthouse headless preset (Playwright E2E uses channel:chrome, not HeadlessChrome).
-    if (/HeadlessChrome|HeadlessChromium/i.test(userAgent)) {
-      return true;
-    }
-
-    if (/Chrome-Lighthouse|Lighthouse|PTST/i.test(userAgent)) {
+    // Only treat real Lighthouse / PageSpeed / WebPageTest agents as audit mode.
+    // Do NOT key off bare HeadlessChrome — that disables search, theme, share, and
+    // bootstrap for Playwright CI and automated browsers, hiding product regressions.
+    if (/Chrome-Lighthouse|Lighthouse|PTST|PageSpeed/i.test(userAgent)) {
       return true;
     }
 

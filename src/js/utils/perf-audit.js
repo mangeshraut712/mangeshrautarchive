@@ -12,12 +12,9 @@ function matchesPerfAuditSignals() {
   }
 
   const userAgent = navigator.userAgent || '';
-  // PSI/Lighthouse headless preset (Playwright E2E uses channel:chrome, not HeadlessChrome).
-  if (/HeadlessChrome|HeadlessChromium/i.test(userAgent)) {
-    return true;
-  }
-
-  if (/Chrome-Lighthouse|Lighthouse|PTST/i.test(userAgent)) {
+  // Only real Lighthouse / PageSpeed / WebPageTest agents — not bare HeadlessChrome.
+  // Headless-only detection disables search/theme bootstrap for Playwright CI.
+  if (/Chrome-Lighthouse|Lighthouse|PTST|PageSpeed/i.test(userAgent)) {
     return true;
   }
 

@@ -41,6 +41,18 @@ export function initOverlayMenu(options = {}) {
     overlayMenu.setAttribute('aria-hidden', 'false');
     overlayMenu.removeAttribute('inert');
     menuToggle.setAttribute('aria-expanded', 'true');
+    // Move keyboard focus into the menu for accessibility
+    const firstItem =
+      overlayMenu.querySelector('.menu-item, a[href], button:not([disabled])') || menuClose;
+    if (firstItem && typeof firstItem.focus === 'function') {
+      requestAnimationFrame(() => {
+        try {
+          firstItem.focus({ preventScroll: true });
+        } catch {
+          firstItem.focus();
+        }
+      });
+    }
   };
 
   const closeMenu = () => {

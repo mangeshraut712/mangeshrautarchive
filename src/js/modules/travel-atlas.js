@@ -485,6 +485,10 @@ function renderTimeline() {
         return;
       }
 
+      // Ignore toolbar / nested control clicks (listen/translate)
+      if (event.target.closest('button, a, input, select, textarea, .card-read-toolbar')) {
+        return;
+      }
       const stop = event.target.closest('.travel-stop');
       if (!stop) return;
       stopTour();
@@ -493,7 +497,12 @@ function renderTimeline() {
 
     el.addEventListener('keydown', event => {
       if (event.key !== 'Enter' && event.key !== ' ') return;
-      const stop = event.target.closest('.travel-stop');
+      if (event.target.closest('button, a, input, select, textarea, .card-read-toolbar')) {
+        return;
+      }
+      const main = event.target.closest('.travel-stop__main');
+      if (!main) return;
+      const stop = main.closest('.travel-stop');
       if (!stop) return;
       event.preventDefault();
       stopTour();
@@ -526,26 +535,28 @@ function renderStopCard(waypoint, index, countryGroupHeader) {
 
   return `
     ${countryGroupHeader}
-    <article class="travel-stop${activeClass}" role="button" tabindex="0" aria-label="${escapeHtml(ariaLabel)}" aria-describedby="${summaryId}" aria-controls="${detailsId}" aria-expanded="${index === state.activeIndex}" data-index="${index}" data-city="${escapeHtml(waypoint.locality.city)}" data-country="${escapeHtml(waypoint.locality.country)}" style="--stop-color: ${waypointColor()}">
-      <div class="travel-stop__dot"></div>
-      <div class="travel-stop__order">${escapeHtml(waypoint.locality.region)}, ${escapeHtml(waypoint.locality.country)} ${homeBadge}</div>
-      <h3 class="travel-stop__name">${escapeHtml(waypoint.title)}</h3>
-      ${placeContext}
-      <div class="travel-stop__tagline" id="${summaryId}">${escapeHtml(waypoint.editorial.experience)}</div>
-      <div class="travel-stop__details" id="${detailsId}">
-        ${renderStopMedia(waypoint)}
-        <p class="travel-stop__story">${escapeHtml(wikiSummary)}</p>
-        ${renderQuickFacts(waypoint)}
-        ${renderSignalTags(waypoint)}
-        <div class="travel-stop__detail-section">
-          <div class="travel-stop__detail-label">Why Visit</div>
-          <div class="travel-stop__detail-text">${escapeHtml(waypoint.editorial.whyVisit)}</div>
+    <article class="travel-stop${activeClass}" data-index="${index}" data-city="${escapeHtml(waypoint.locality.city)}" data-country="${escapeHtml(waypoint.locality.country)}" style="--stop-color: ${waypointColor()}">
+      <div class="travel-stop__main" role="button" tabindex="0" aria-label="${escapeHtml(ariaLabel)}" aria-describedby="${summaryId}" aria-controls="${detailsId}" aria-expanded="${index === state.activeIndex}">
+        <div class="travel-stop__dot"></div>
+        <div class="travel-stop__order">${escapeHtml(waypoint.locality.region)}, ${escapeHtml(waypoint.locality.country)} ${homeBadge}</div>
+        <h3 class="travel-stop__name">${escapeHtml(waypoint.title)}</h3>
+        ${placeContext}
+        <div class="travel-stop__tagline" id="${summaryId}">${escapeHtml(waypoint.editorial.experience)}</div>
+        <div class="travel-stop__details" id="${detailsId}">
+          ${renderStopMedia(waypoint)}
+          <p class="travel-stop__story">${escapeHtml(wikiSummary)}</p>
+          ${renderQuickFacts(waypoint)}
+          ${renderSignalTags(waypoint)}
+          <div class="travel-stop__detail-section">
+            <div class="travel-stop__detail-label">Why Visit</div>
+            <div class="travel-stop__detail-text">${escapeHtml(waypoint.editorial.whyVisit)}</div>
+          </div>
+          <div class="travel-stop__detail-section">
+            <div class="travel-stop__detail-label">Must See</div>
+            <div class="travel-stop__detail-text">${escapeHtml(waypoint.editorial.mustSee.join(', '))}</div>
+          </div>
+          ${renderPlaceGuide(waypoint)}
         </div>
-        <div class="travel-stop__detail-section">
-          <div class="travel-stop__detail-label">Must See</div>
-          <div class="travel-stop__detail-text">${escapeHtml(waypoint.editorial.mustSee.join(', '))}</div>
-        </div>
-        ${renderPlaceGuide(waypoint)}
       </div>
     </article>`;
 }
@@ -974,7 +985,8 @@ function setActive(index) {
   document.querySelectorAll('.travel-stop').forEach(el => {
     const isActive = Number(el.dataset.index) === index;
     el.classList.toggle('active', isActive);
-    el.setAttribute('aria-expanded', String(isActive));
+    const main = el.querySelector('.travel-stop__main');
+    main?.setAttribute('aria-expanded', String(isActive));
     if (isActive) {
       el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       fetchWikiData(waypoint, el);
@@ -1002,7 +1014,8 @@ function setActive(index) {
 
 function updateStopA11y() {
   document.querySelectorAll('.travel-stop').forEach(el => {
-    el.setAttribute('aria-expanded', String(Number(el.dataset.index) === state.activeIndex));
+    const main = el.querySelector('.travel-stop__main');
+    main?.setAttribute('aria-expanded', String(Number(el.dataset.index) === state.activeIndex));
   });
 }
 

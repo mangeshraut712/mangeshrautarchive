@@ -22,19 +22,24 @@
     <link rel="alternate" hreflang="x-default" href="https://mangeshraut.pro/travel" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://mangeshraut.pro/travel" />
-    <meta property="og:title" content="Travel Atlas | Mangesh Raut" />
+    <meta property="og:title" content="Travel Atlas — Mangesh Raut" />
     <meta
       property="og:description"
       content="A 2026 map-led travel atlas of countries, cities, landmarks, and personal destination highlights."
     />
     <meta property="og:image" content="https://mangeshraut.pro/assets/images/home.png" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Travel Atlas | Mangesh Raut" />
+    <meta name="twitter:title" content="Travel Atlas — Mangesh Raut" />
     <meta
       name="twitter:description"
       content="A 2026 map-led travel atlas of countries, cities, landmarks, and personal destination highlights."
     />
     <meta name="twitter:image" content="https://mangeshraut.pro/assets/images/home.png" />
+    <meta property="og:locale" content="en_US" />
+    <meta name="twitter:site" content="@mrcommando712" />
+    <meta name="twitter:creator" content="@mrcommando712" />
+    <meta name="msapplication-TileColor" content="#0071e3" />
+    <link rel="apple-touch-icon" href="assets/images/profile-icon.png" sizes="192x192" />
     <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
     <meta name="color-scheme" content="light dark" />
@@ -42,7 +47,7 @@
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="apple-mobile-web-app-title" content="Mangesh Raut" />
-    <title>Travel Atlas | Mangesh Raut</title>
+    <title>Travel Atlas — Mangesh Raut</title>
     <link rel="icon" type="image/png" href="assets/images/profile-icon.png" />
     <link rel="mask-icon" href="assets/icons/icon.svg" color="#007AFF" />
     <link rel="apple-touch-icon" href="assets/images/profile-icon.png" sizes="180x180" />
@@ -81,6 +86,7 @@
     />
     <link rel="stylesheet" href="assets/css/theme-solid-surfaces.css?v=20260701q" data-perf-defer />
     <link rel="stylesheet" href="assets/css/chrome-surfaces.css?v=20260701q" data-perf-defer />
+    <link rel="stylesheet" href="assets/css/share-widget.css?v=20260701q" data-perf-defer />
     <link
       rel="stylesheet"
       href="assets/vendor/fontawesome/css/all.min.css?v=20260701q"
@@ -168,7 +174,12 @@
     <main class="travel-layout" id="main-content" data-travel-app>
       <!-- ─── Map ─── -->
       <div class="travel-map-layer">
-        <div id="map-container" class="travel-map"></div>
+        <div
+          id="map-container"
+          class="travel-map"
+          role="application"
+          aria-label="World travel map with selectable countries and cities"
+        ></div>
       </div>
 
       <!-- ─── UI Overlay ─── -->
@@ -302,8 +313,8 @@
                 <i class="fas fa-chevron-down" aria-hidden="true"></i>
               </button>
               <div class="travel-advanced-content" id="advanced-search-content">
-                <div class="travel-filter-group">
-                  <label class="travel-filter-label">Categories</label>
+                <fieldset class="travel-filter-group">
+                  <legend>Categories</legend>
                   <div class="travel-filter-chips" id="category-filters">
                     <button
                       class="travel-filter-chip"
@@ -346,7 +357,7 @@
                       <i class="fas fa-monument" aria-hidden="true"></i> History
                     </button>
                   </div>
-                </div>
+                </fieldset>
               </div>
             </div>
 
@@ -386,6 +397,10 @@
           </div>
 
           <div class="travel-timeline" id="travel-timeline">
+            <div class="loading-state">
+              <div class="loading-spinner"></div>
+              <p class="loading-message">Loading places...</p>
+            </div>
             <!-- JS-rendered places -->
           </div>
         </aside>

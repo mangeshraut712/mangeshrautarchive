@@ -1821,12 +1821,12 @@ html.dark .hero-name-text {
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
-  width: 28px !important;
-  height: 28px !important;
-  min-width: 28px !important;
-  min-height: 28px !important;
-  max-width: 28px !important;
-  max-height: 28px !important;
+  width: 44px !important;
+  height: 44px !important;
+  min-width: 44px !important;
+  min-height: 44px !important;
+  max-width: 44px !important;
+  max-height: 44px !important;
   padding: 0 !important;
   margin: 0 !important;
   border: none !important;
@@ -1942,18 +1942,18 @@ html.dark #name-pronounce-btn.name-pronounce-btn.is-playing {
 
 @media (width <= 768px) {
   #name-pronounce-btn.name-pronounce-btn {
-    width: 34px !important;
-    height: 34px !important;
-    min-width: 34px !important;
-    min-height: 34px !important;
-    max-width: 34px !important;
-    max-height: 34px !important;
+    width: 44px !important;
+    height: 44px !important;
+    min-width: 44px !important;
+    min-height: 44px !important;
+    max-width: 44px !important;
+    max-height: 44px !important;
     background: rgb(0 113 227 / 7%) !important;
   }
 
   #name-pronounce-btn.name-pronounce-btn svg {
-    width: 17px !important;
-    height: 17px !important;
+    width: 18px !important;
+    height: 18px !important;
   }
 }
 

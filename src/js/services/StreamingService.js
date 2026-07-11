@@ -36,7 +36,7 @@ class StreamingService extends EventTarget {
    * @param {object} payload  JSON-serialisable request body
    * @returns {() => void}    Abort function
    */
-  async stream(url, payload) {
+  async stream(url, payload, options = {}) {
     // Cancel any in-flight request
     if (this._activeController) {
       this._activeController.abort();
@@ -44,12 +44,29 @@ class StreamingService extends EventTarget {
 
     const controller = new AbortController();
     this._activeController = controller;
+    const timeoutMs = Number(options.timeoutMs) > 0 ? Number(options.timeoutMs) : 45000;
+    let timeoutId = null;
 
-    const abort = () => {
+    const abort = (reason = 'user') => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+        timeoutId = null;
+      }
       controller.abort();
       this._activeController = null;
-      this.dispatchEvent(new CustomEvent('abort'));
+      this.dispatchEvent(new CustomEvent('abort', { detail: { reason } }));
     };
+
+    this._emit('connecting', { url });
+    timeoutId = setTimeout(() => {
+      if (this._activeController === controller) {
+        this._emit('error', {
+          code: 'TIMEOUT',
+          message: `Request timed out after ${Math.round(timeoutMs / 1000)}s. Please try again.`,
+        });
+        abort('timeout');
+      }
+    }, timeoutMs);
 
     try {
       const resp = await fetch(url, {
@@ -83,8 +100,9 @@ class StreamingService extends EventTarget {
       await this._consumeStream(resp.body, controller.signal);
     } catch (err) {
       if (err.name === 'AbortError') {
-        // Expected — user cancelled
+        // Expected — user cancelled or timeout
         this._activeController = null;
+        if (timeoutId) clearTimeout(timeoutId);
         return abort;
       }
       this._emit('error', {
@@ -93,6 +111,7 @@ class StreamingService extends EventTarget {
       });
     }
 
+    if (timeoutId) clearTimeout(timeoutId);
     this._activeController = null;
     return abort;
   }

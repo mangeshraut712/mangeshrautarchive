@@ -74,7 +74,7 @@ This repository powers [mangeshraut.pro](https://mangeshraut.pro) — a static-f
 
 The same `dist/` output is deployed to **Vercel** (primary + API) and **GitHub Pages** (static mirror with `apiBaseUrl` pointing at production).
 
-**Repository scale (June 2026):** 6 static HTML entry points · 40+ public GitHub repositories · 12 technical articles · 5 in-depth case studies · 10 WebMCP tools · 99 automated tests (29 Vitest + 70 pytest) · 15 Playwright browser projects.
+**Repository scale (July 2026):** 7 static HTML entry points (incl. offline shell) · 40+ public GitHub repositories · 12 technical articles · 5 in-depth case studies · 10 WebMCP tools · **149 automated tests** (40 Vitest + 109 pytest) · 15 Playwright browser projects.
 
 ---
 
@@ -103,7 +103,8 @@ The same `dist/` output is deployed to **Vercel** (primary + API) and **GitHub P
 | **Travel**       | [mangeshraut.pro/travel](https://mangeshraut.pro/travel)                                            | MapLibre GL atlas — routes, location gallery, searchable narratives        |
 | **Uses**         | [mangeshraut.pro/uses](https://mangeshraut.pro/uses)                                                | Hardware / software / AI stack from `usesStack`                            |
 | **Blog**         | [mangeshraut.pro/blog](https://mangeshraut.pro/blog)                                                | 12 build-generated Field Notes articles                                    |
-| **404**          | [mangeshraut.pro/404](https://mangeshraut.pro/404.html)                                             | Branded not-found with navigation recovery                                 |
+| **404**          | [mangeshraut.pro/404](https://mangeshraut.pro/404.html)                                             | Branded not-found with popular destinations                                |
+| **Offline**      | Served by service worker when offline                                                               | Lightweight reconnect shell (`src/offline.html`)                           |
 
 ---
 
@@ -527,32 +528,44 @@ Dev server commands (`npm run dev`, `npm run build`, etc.) are listed in [Local 
 
 ```
 mangeshrautarchive/
-├── api/                          # FastAPI (Vercel entry: api/index.py)
+├── api/                          # FastAPI (Vercel serverless entry: api/index.py)
 │   ├── routes/                   # chat, github, media, analytics, monitor, integrations
 │   ├── integrations/             # WHOOP, Withings, Google Calendar, Supabase
 │   ├── model_router.py           # OpenRouter model selection
+│   ├── monitoring.py             # Health / metrics / engineering probes
 │   └── site_knowledge.py         # Deterministic portfolio answers
-├── src/                          # Static site source → dist/
-│   ├── *.html                    # index, systems, uses, monitor, travel, 404
-│   ├── assets/                   # css/, images/, files/
+├── src/                          # Static site source → npm run build → dist/
+│   ├── index.html                # Portfolio SPA
+│   ├── systems.html              # Engineering evidence notebook
+│   ├── monitor.html              # Live ops dashboard
+│   ├── travel.html               # Travel atlas
+│   ├── uses.html                 # Hardware / software / AI stack
+│   ├── 404.html                  # Branded not-found
+│   ├── offline.html              # Service-worker offline shell
+│   ├── service-worker.js         # Shell precache + navigation fallback
+│   ├── assets/                   # css/, images/, files/, icons/
 │   └── js/                       # core/, modules/, services/, utils/, data/
 ├── scripts/
-│   ├── build/                    # build.js, generators, clean.js
-│   ├── deployment/               # Lighthouse, security-check, deploy sync (CI)
+│   ├── build/                    # esbuild pipeline, blog/case-study generators
+│   ├── deployment/               # Lighthouse gates, security-check, deploy sync
 │   ├── utils/                    # dev-all, local-server, serve-dist
-│   ├── integrations/             # Vercel env sync (manual/ for one-off setup)
-│   ├── qa/                       # CI: iphone-17-pro-max, promotion-fps; manual/ for audits
-│   └── offline/travel-data/      # Optional travel atlas data generators (not in build)
+│   └── qa/                       # Browser / FPS audit helpers
 ├── tests/
-│   ├── api/                      # pytest (70 tests)
-│   └── e2e/                      # Playwright smoke + a11y (CI)
+│   ├── api/                      # pytest (109 tests)
+│   ├── e2e/                      # Playwright multi-browser
+│   └── unit/ + src/**/*.test.js  # Vitest (40 tests)
+├── docs/                         # UI/UX audit report + fix progress
 ├── config/                       # pyright, vulture (CI dead-code scan)
+├── middleware.js                 # Vercel edge: Lighthouse → ?perf-audit=1
 ├── index.js                      # react-doctor entry shim → src/js/entry.js
 ├── vercel.json                   # dist/ + FastAPI rewrites + cron
+├── package.json                  # Node 22 · ESM · CI scripts
+├── requirements.txt              # Python runtime deps
+├── AGENTS.md                     # AI contributor briefing
 └── .github/workflows/            # deploy.yml, post-deploy-monitoring.yml
 ```
 
-OpenRouter MCP (dev): `npm run setup:openrouter-mcp` — template at `scripts/integrations/cursor-openrouter-mcp.example.json`.
+**Not committed (local only):** `.env` / `.env.local`, `node_modules/`, `dist/`, `.venv` / `venv`, `test-results/`, `artifacts/`, IDE caches.
 
 ---
 
@@ -626,12 +639,14 @@ OpenAPI interactive docs: `http://127.0.0.1:8001/docs` when running the API loca
 ```bash
 git clone https://github.com/mangeshraut712/mangeshrautarchive.git
 cd mangeshrautarchive
-npm install --no-audit --no-fund
+npm install --no-audit --no-fund   # prefer install over npm ci (lock may lag transitive peers)
 
-python3 -m venv .venv && source .venv/bin/activate
+# Python 3.12 — name the venv `venv` so scripts/utils/dev-backend.js auto-detects it
+python3 -m venv venv && source venv/bin/activate
 pip install -r requirements.txt -r requirements-dev.txt
+# or: uv venv && uv pip install -r requirements.txt -r requirements-dev.txt
 
-cp .env.example .env    # set OPENROUTER_API_KEY at minimum
+cp .env.example .env    # OPENROUTER_API_KEY optional (offline AssistMe fallback works without it)
 npm run dev             # frontend :4000 + API :8001
 ```
 
@@ -664,15 +679,19 @@ PORT=4174 npm run serve:dist
 
 ### Common dev commands
 
-| Command                         | Purpose                                        |
-| ------------------------------- | ---------------------------------------------- |
-| `npm run dev`                   | Frontend dev server (:4000) + FastAPI (:8001)  |
-| `npm run dev:frontend`          | Frontend only                                  |
-| `npm run dev:backend`           | API only (reuses existing instance if running) |
-| `npm run build`                 | Production `dist/` output                      |
-| `npm run check`                 | Lint + unit + API tests                        |
-| `npm run qa:smoke`              | Playwright smoke on dev server                 |
-| `npm run qa:lighthouse:desktop` | Lighthouse gate on built `dist/`               |
+| Command                         | Purpose                                              |
+| ------------------------------- | ---------------------------------------------------- |
+| `npm run dev`                   | Frontend (:4000) + FastAPI (:8001)                   |
+| `npm run dev:frontend`          | Frontend only (proxies `/api` → :8001)               |
+| `npm run dev:backend`           | API only                                             |
+| `npm run build`                 | Production `dist/` (HTML/CSS/JS + blog/case studies) |
+| `npm test`                      | Vitest unit tests                                    |
+| `npm run test:api`              | pytest API suite (`source venv/bin/activate` first)  |
+| `npm run test:e2e:chrome`       | Playwright Desktop Chrome                            |
+| `npm run lint` / `lint:css`     | ESLint / Stylelint                                   |
+| `npm run security-check`        | Scan for leaked secrets                              |
+| `npm run qa:prod-ready`         | Full pre-deploy matrix (CI parity)                   |
+| `npm run qa:lighthouse:desktop` | Lighthouse gate (local or remote URL)                |
 
 ---
 
@@ -707,12 +726,14 @@ npm run verify:deploy-sync:remote -- --parity   # Vercel + GitHub Pages same com
 
 ## Documentation
 
-| Doc                                                                | Contents                                   |
-| ------------------------------------------------------------------ | ------------------------------------------ |
-| [README.md](README.md)                                             | Setup, CI, API reference, deployment       |
-| [AGENTS.md](AGENTS.md)                                             | AI agent briefing for contributors         |
-| [.env.example](.env.example)                                       | Environment variables and integration keys |
-| [.github/copilot-instructions.md](.github/copilot-instructions.md) | GitHub Copilot project rules               |
+| Doc                                                                | Contents                                             |
+| ------------------------------------------------------------------ | ---------------------------------------------------- |
+| [README.md](README.md)                                             | Setup, CI, API reference, deployment                 |
+| [AGENTS.md](AGENTS.md)                                             | AI agent briefing for contributors                   |
+| [.env.example](.env.example)                                       | Environment variables and integration keys           |
+| [docs/UI-UX-BUG-REPORT.md](docs/UI-UX-BUG-REPORT.md)               | Full UI/UX audit backlog (87 items)                  |
+| [docs/UI-UX-BUG-FIX-PROGRESS.md](docs/UI-UX-BUG-FIX-PROGRESS.md)   | Fix status, re-audit results, next-sprint priorities |
+| [.github/copilot-instructions.md](.github/copilot-instructions.md) | GitHub Copilot project rules                         |
 
 ---
 
@@ -720,11 +741,14 @@ npm run verify:deploy-sync:remote -- --parity   # Vercel + GitHub Pages same com
 
 **July 2026**
 
-- **Tailwind Refactoring:** Cleaned up 31+ Tailwind utility classes from `index.html` markup and migrated to semantic CSS rules (`.hero-intro-wrapper`, `.proj-search-container`, `.footer-wrapper`, etc.).
-- **Touch Target Compliance:** Expanded touch targets for compact Dynamic Island controls, Close buttons, Chatbot buttons, and Name Pronunciation controls on mobile to at least 48x48px using pure CSS pseudo-elements, achieving **100/100 Accessibility** score.
-- **SEO Schema:** Added `ProfilePage` + `Person` JSON-LD structured data to `index.html` for rich search engine snippets.
-- **React Cleanups:** Removed React phantom imports from `entry.js` to ensure compliance with the vanilla JS runtime constraint.
-- **Console Log Suppression:** Silenced debug logs in the vendored KaTeX `rich-markdown.js` build bundle.
+- **UI/UX hardening:** Search Esc fully closes overlay; share-widget CSS on all subpages; combobox ARIA + keyboard results; hero name solid-color `@supports` fallback; travel nested-interactive fix; monitor/travel WCAG contrast.
+- **PWA offline:** Service worker shell precache + network-first navigation with `offline.html` fallback.
+- **Streaming reliability:** `StreamingService` 45s timeout, `connecting` event, AbortController cancel path.
+- **Perf-audit detection:** No longer treats bare HeadlessChrome as Lighthouse (unblocks Playwright product JS).
+- **API health:** Resource checks use available-memory floors so busy local hosts don’t false-critical.
+- **Repo hygiene:** `docs/` for audit trackers; gitignore for venv/test-results; README structure refresh.
+- **Tailwind markup cleanup:** Migrated remaining utility classes to semantic CSS where present.
+- **Touch targets:** Dynamic Island / name pronounce / FABs meet 44px+ guidance on mobile.
 
 **June 2026**
 

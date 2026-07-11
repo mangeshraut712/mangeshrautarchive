@@ -239,13 +239,27 @@ async function copyShareUrl(status) {
   }
 }
 
+function ensureShareWidgetStyles() {
+  if (document.getElementById('share-widget-stylesheet')) return;
+  if (document.querySelector('link[href*="share-widget.css"]')) return;
+
+  const link = document.createElement('link');
+  link.id = 'share-widget-stylesheet';
+  link.rel = 'stylesheet';
+  link.href = 'assets/css/share-widget.css?v=20260701q';
+  document.head.appendChild(link);
+}
+
 async function initShareWidget() {
+  ensureShareWidgetStyles();
   if (document.getElementById('website-share-dialog')) return;
 
   await ensureShareToggleReady();
   document.body.insertAdjacentHTML('beforeend', createShareMarkup());
 
   const dialog = document.getElementById('website-share-dialog');
+  // Force closed layout even if stylesheet is still loading
+  setDialogState(dialog, document.getElementById(SHARE_TOGGLE_ID), false);
   const card = dialog.querySelector('.website-share-card');
   const copyButton = document.getElementById('website-share-copy');
   const nativeShareButton = document.getElementById('website-native-share');

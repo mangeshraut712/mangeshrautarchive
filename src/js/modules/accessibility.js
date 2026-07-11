@@ -290,10 +290,21 @@ export class AccessibilityEnhancer {
    * Handle Escape key press
    */
   handleEscapeKey() {
-    // Close search overlay
+    // Close search overlay fully (must clear display:flex !important, not only .active)
     const searchOverlay = document.querySelector('#search-overlay');
-    if (searchOverlay && searchOverlay.classList.contains('active')) {
-      searchOverlay.classList.remove('active');
+    const searchOpen =
+      searchOverlay &&
+      (searchOverlay.classList.contains('active') ||
+        getComputedStyle(searchOverlay).display !== 'none');
+    if (searchOpen) {
+      if (typeof window.portfolioSearch?.closeSearch === 'function') {
+        window.portfolioSearch.closeSearch();
+      } else if (searchOverlay) {
+        searchOverlay.classList.remove('active');
+        searchOverlay.style.setProperty('display', 'none', 'important');
+        searchOverlay.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+      }
       this.announce('Search closed');
       return;
     }
@@ -306,6 +317,18 @@ export class AccessibilityEnhancer {
 
     if (document.body.classList.contains('chatbot-open')) {
       window.appleIntelligenceChatbot?.closeWidget?.();
+      return;
+    }
+
+    // Close overlay navigation menu if open
+    if (document.body.classList.contains('menu-open')) {
+      const closeBtn = document.getElementById('close-menu-btn');
+      const menuBtn = document.getElementById('menu-btn');
+      if (closeBtn) {
+        closeBtn.click();
+      } else if (menuBtn) {
+        menuBtn.click();
+      }
       return;
     }
 

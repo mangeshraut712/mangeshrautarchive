@@ -226,14 +226,48 @@ html.dark select:focus {
 
 /* ========================================
    GLOBAL SECTION BACKGROUNDS
+   Scoped to main portfolio sections only —
+   avoid hammering nested/dialog/utility sections.
    ======================================== */
 
-section {
+main > section.section-standard,
+main > section.section-about,
+main > section.section-blog,
+main > section.fade-in.section-standard,
+main > section#about,
+main > section#skills,
+main > section#experience,
+main > section#engineering,
+main > section#projects,
+main > section#education,
+main > section#publications,
+main > section#awards,
+main > section#recommendations,
+main > section#certifications,
+main > section#blog,
+main > section#contact,
+main > section#debug-runner-section {
   background: #fff;
   padding: 5rem 0;
 }
 
-html.dark section {
+html.dark main > section.section-standard,
+html.dark main > section.section-about,
+html.dark main > section.section-blog,
+html.dark main > section.fade-in.section-standard,
+html.dark main > section#about,
+html.dark main > section#skills,
+html.dark main > section#experience,
+html.dark main > section#engineering,
+html.dark main > section#projects,
+html.dark main > section#education,
+html.dark main > section#publications,
+html.dark main > section#awards,
+html.dark main > section#recommendations,
+html.dark main > section#certifications,
+html.dark main > section#blog,
+html.dark main > section#contact,
+html.dark main > section#debug-runner-section {
   background: #000;
 }
 
@@ -297,6 +331,8 @@ img {
   max-width: 100%;
   height: auto;
   border-radius: 12px;
+  image-rendering: auto;
+  -webkit-user-drag: none;
 }
 
 .logo,
@@ -337,7 +373,23 @@ img {
    ======================================== */
 
 @media (width <=768px) {
-  section {
+  main > section.section-standard,
+  main > section.section-about,
+  main > section.section-blog,
+  main > section.fade-in.section-standard,
+  main > section#about,
+  main > section#skills,
+  main > section#experience,
+  main > section#engineering,
+  main > section#projects,
+  main > section#education,
+  main > section#publications,
+  main > section#awards,
+  main > section#recommendations,
+  main > section#certifications,
+  main > section#blog,
+  main > section#contact,
+  main > section#debug-runner-section {
     padding: 3rem 0;
   }
 
@@ -426,4 +478,159 @@ html.dark :where(a, button, input, textarea, select, summary, [role='button']):f
 #currently-section {
   scroll-margin-top: calc(var(--island-height, 52px) + env(safe-area-inset-top, 0px) + 20px);
   scroll-margin-bottom: 2rem;
+}
+
+/* ========================================
+   SITEWIDE VISUAL POLISH (safe refinements)
+   ======================================== */
+
+::selection {
+  background: rgb(0 113 227 / 22%);
+  color: inherit;
+}
+
+html.dark ::selection {
+  background: rgb(41 151 255 / 32%);
+}
+
+/* Balanced headings + readable body copy */
+h1,
+h2,
+h3,
+.section-title {
+  text-wrap: balance;
+}
+
+p,
+.section-subtitle,
+.hero-description,
+.about-paragraph,
+.error-message {
+  text-wrap: pretty;
+}
+
+/* Unified section subtitles across homepage sections */
+.section-subtitle {
+  max-width: 52ch;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 2rem;
+  text-align: center;
+  font-size: clamp(1rem, 2.1vw, 1.125rem);
+  line-height: 1.55;
+  font-weight: 450;
+  letter-spacing: -0.01em;
+  color: var(--text-secondary, #6e6e73);
+}
+
+html.dark .section-subtitle {
+  color: var(--text-secondary, #a1a1a6);
+}
+
+/* Anchor scroll clearance under fixed island nav */
+main section[id],
+section[id] {
+  scroll-margin-top: calc(var(--island-height, 52px) + env(safe-area-inset-top, 0px) + 16px);
+}
+
+/* Softer card lift that respects solid theme */
+@media (hover: hover) and (pointer: fine) {
+  .card:hover,
+  .skill-card:hover,
+  .experience-card:hover,
+  .education-card:hover,
+  .award-card:hover,
+  .publication-card:hover,
+  .recommendation-card:hover,
+  .blog-card:hover {
+    transform: translateY(-4px);
+    border-color: rgb(0 113 227 / 22%);
+    box-shadow:
+      0 12px 36px rgb(0 0 0 / 10%),
+      0 0 0 1px rgb(0 113 227 / 8%);
+  }
+
+  html.dark .card:hover,
+  html.dark .skill-card:hover,
+  html.dark .experience-card:hover,
+  html.dark .education-card:hover,
+  html.dark .award-card:hover,
+  html.dark .publication-card:hover,
+  html.dark .recommendation-card:hover,
+  html.dark .blog-card:hover {
+    border-color: rgb(41 151 255 / 28%);
+    box-shadow:
+      0 16px 44px rgb(0 0 0 / 55%),
+      0 0 0 1px rgb(41 151 255 / 12%);
+  }
+}
+
+/* Footer breathing room on mobile */
+.footer-info-container {
+  padding-inline: max(1rem, env(safe-area-inset-left), env(safe-area-inset-right));
+}
+
+.footer-tagline {
+  letter-spacing: -0.01em;
+  opacity: 0.92;
+}
+
+/* Reduced-motion: kill card lift */
+@media (prefers-reduced-motion: reduce) {
+  .card:hover,
+  .skill-card:hover,
+  .experience-card:hover,
+  .education-card:hover,
+  .award-card:hover,
+  .publication-card:hover,
+  .recommendation-card:hover,
+  .blog-card:hover {
+    transform: none;
+  }
+}
+
+/* ========================================
+   TOUCH TARGET + SUBPAGE CHROME POLISH
+   ======================================== */
+
+#name-pronounce-btn.name-pronounce-btn {
+  min-width: 44px;
+  min-height: 44px;
+}
+
+.hero-pill-badge {
+  min-height: 44px;
+}
+
+.nav-link {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.monitor-page-nav__home,
+.monitor-page-nav__theme,
+.monitor-page-nav__back {
+  min-width: 44px;
+  min-height: 44px;
+}
+
+.website-share-close {
+  min-width: 44px !important;
+  min-height: 44px !important;
+}
+
+/* Closed share dialog must never participate in layout */
+.website-share-dialog:not(.active),
+.website-share-dialog[aria-hidden='true']:not(.active),
+.website-share-dialog.hidden {
+  display: none !important;
+  position: fixed !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
+}
+
+.error-destinations a {
+  min-height: 44px;
 }

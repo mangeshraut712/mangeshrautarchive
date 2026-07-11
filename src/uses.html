@@ -89,6 +89,7 @@
       data-perf-defer
     />
     <link rel="stylesheet" href="assets/css/chrome-surfaces.css?v=20260701q" data-perf-defer />
+    <link rel="stylesheet" href="assets/css/share-widget.css?v=20260701q" data-perf-defer />
     <link
       rel="stylesheet"
       href="assets/vendor/fontawesome/css/all.min.css?v=20260701q"
@@ -176,14 +177,24 @@
         <p class="systems-eyebrow">Colophon</p>
         <h1>What I use to build.</h1>
         <p class="systems-hero-lead">
-          Hardware, software, and AI stack — the tools behind this portfolio and production systems.
+          Hardware, software, and AI stack — the everyday tools behind this portfolio and the
+          systems I ship.
         </p>
       </header>
-      <div class="uses-grid" id="uses-grid"></div>
+      <div class="uses-grid" id="uses-grid">
+        <div class="loading-state">
+          <div class="loading-spinner"></div>
+          <p class="loading-message">Loading gear...</p>
+        </div>
+      </div>
       <footer class="systems-footer systems-footer--expanded">
-        <p class="footer-copy">&copy; 2026 Mangesh Raut Archive</p>
+        <p class="footer-copy">&copy; <span id="footer-year"></span> Mangesh Raut Archive</p>
+        <script>
+          document.getElementById('footer-year').textContent = new Date().getFullYear();
+        </script>
         <nav class="systems-footer-links" aria-label="Related pages">
           <a href="systems.html">Engineering Notebook</a>
+          <a href="monitor.html">System Monitor</a>
           <a href="travel.html">Travel Atlas</a>
           <a href="index.html#home">Portfolio home</a>
         </nav>

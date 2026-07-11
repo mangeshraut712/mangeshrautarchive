@@ -16,11 +16,17 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-title" content="Mangesh Raut" />
-    <title>Page Not Found | Mangesh Raut Portfolio</title>
+    <meta property="og:locale" content="en_US" />
+    <meta name="twitter:site" content="@mrcommando712" />
+    <meta name="twitter:creator" content="@mrcommando712" />
+    <meta name="msapplication-TileColor" content="#0071e3" />
+    <link rel="apple-touch-icon" href="assets/images/profile-icon.png" sizes="192x192" />
+    <title>Page Not Found — Mangesh Raut</title>
     <link rel="manifest" href="manifest.json" />
     <link rel="icon" type="image/png" href="assets/images/profile-icon.png" />
     <link rel="mask-icon" href="assets/icons/icon.svg" color="#007AFF" />
     <link rel="apple-touch-icon" href="assets/images/profile-icon.png" sizes="180x180" />
+    <link rel="apple-touch-icon" href="assets/images/profile-icon.png" sizes="192x192" />
     <script src="build-config.js"></script>
     <script src="js/utils/theme-head.js"></script>
     <script src="js/utils/perf-audit-flag.js"></script>
@@ -34,21 +40,17 @@
     />
     <link rel="stylesheet" href="assets/css/global-improvements.css?v=20260701q" data-perf-defer />
     <link rel="stylesheet" href="assets/css/mobile-viewport.css?v=20260701q" data-perf-defer />
-    <link rel="stylesheet" data-perf-defer />
     <link rel="stylesheet" href="assets/css/accessibility.css?v=20260701q" data-perf-defer />
     <link rel="stylesheet" href="assets/css/liquid-glass.css?v=20260701q" data-perf-defer />
-    <link rel="stylesheet" data-perf-defer />
     <link rel="stylesheet" href="assets/css/theme-solid-surfaces.css?v=20260701q" data-perf-defer />
-
-    <link rel="stylesheet" data-perf-defer />
     <link rel="stylesheet" href="assets/css/chrome-surfaces.css?v=20260701q" data-perf-defer />
+    <link rel="stylesheet" href="assets/css/share-widget.css?v=20260701q" data-perf-defer />
     <script src="js/utils/perf-defer-css.js"></script>
     <noscript>
       <link rel="stylesheet" href="assets/css/typography-system.css?v=20260701q" />
       <link rel="stylesheet" href="assets/css/sitewide-design-system.css?v=20260701q" />
       <link rel="stylesheet" href="assets/css/global-improvements.css?v=20260701q" />
       <link rel="stylesheet" href="assets/css/mobile-viewport.css?v=20260701q" />
-
       <link rel="stylesheet" href="assets/css/theme-solid-surfaces.css?v=20260701q" />
     </noscript>
     <script type="application/ld+json">
@@ -70,34 +72,46 @@
     </script>
   </head>
   <body class="error-page">
-    <div class="skip-links" role="navigation" aria-label="Skip links">
+    <div class="skip-links" aria-label="Skip links">
       <a href="#main-content" class="skip-link">Skip to main content</a>
     </div>
 
     <main class="error-container lg-glass-card" id="main-content">
       <div class="error-code" aria-hidden="true">404</div>
-      <h1 class="error-title">Page Not Found</h1>
+      <h1 class="error-title"><span class="error-kicker">Error</span> — Page not found</h1>
       <p class="error-message">
-        The page you're looking for doesn't exist or has been moved. Let's get you back on track.
+        That URL does not exist or may have moved. Head home, or jump to a popular destination.
       </p>
-      <a href="/" class="error-home-link home-link">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="20"
-          height="20"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          aria-hidden="true"
-        >
-          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-          <polyline points="9 22 9 12 15 12 15 22"></polyline>
-        </svg>
-        Back to Home
-      </a>
+      <div class="error-actions">
+        <a href="/" class="error-home-link home-link">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+          </svg>
+          Back to Home
+        </a>
+      </div>
+      <nav class="error-destinations" aria-label="Popular destinations">
+        <ul>
+          <li><a href="systems.html">Engineering</a></li>
+          <li><a href="index.html#projects">Projects</a></li>
+          <li><a href="monitor.html">Monitor</a></li>
+          <li><a href="travel.html">Travel</a></li>
+          <li><a href="uses.html">Uses</a></li>
+          <li><a href="index.html#contact">Contact</a></li>
+        </ul>
+      </nav>
     </main>
 
     <script type="module" src="js/core/subpage-chrome.js?v=20260701q"></script>

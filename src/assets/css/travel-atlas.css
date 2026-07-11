@@ -311,7 +311,8 @@ html.dark .travel-sidebar {
 
 .travel-sidebar__subtitle {
   font-size: 14px;
-  color: var(--text-tertiary);
+  /* WCAG AA on white: #86868b fails; use darker secondary */
+  color: #515154;
   margin: 0;
 }
 
@@ -343,7 +344,7 @@ html.dark .travel-sidebar {
   font-weight: 600;
   text-transform: none;
   letter-spacing: 0.04em;
-  color: var(--text-tertiary);
+  color: #515154;
   margin-top: 1px;
 }
 
@@ -657,9 +658,27 @@ html.dark .travel-sidebar {
   flex-wrap: wrap;
   font-size: 11px;
   font-weight: 700;
-  color: var(--text-tertiary);
+  color: #515154;
   text-transform: none;
   letter-spacing: 0.06em;
+}
+
+.travel-stop__main {
+  display: block;
+  width: 100%;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  text-align: left;
+  color: inherit;
+  cursor: pointer;
+  border-radius: inherit;
+}
+
+.travel-stop__main:focus-visible {
+  outline: 2px solid #0071e3;
+  outline-offset: 2px;
 }
 
 .travel-stop__home-badge {
@@ -668,8 +687,8 @@ html.dark .travel-sidebar {
   gap: 5px;
   padding: 3px 8px;
   border-radius: var(--radius-full);
-  background: color-mix(in srgb, var(--apple-red) 12%, transparent);
-  color: var(--apple-red);
+  background: color-mix(in srgb, #b00020 14%, #ffffff);
+  color: #b00020;
   font-size: 10px;
   font-weight: 800;
   letter-spacing: 0.02em;
@@ -1575,7 +1594,12 @@ html.dark .travel-stop__order,
 html.dark .travel-stop__story,
 html.dark .place-guide__header p,
 html.dark .place-guide-card p {
-  color: #a1a1a6 !important;
+  color: #c7c7cc !important;
+}
+
+html.dark .travel-stop__home-badge {
+  background: color-mix(in srgb, #ff6961 18%, #000000);
+  color: #ffb4b0;
 }
 
 .travel-stop.active,

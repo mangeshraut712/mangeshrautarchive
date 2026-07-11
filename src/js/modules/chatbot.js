@@ -754,6 +754,7 @@ class AppleIntelligenceChatbot {
     }
     this.elements.widget?.classList.remove('hidden');
     this.elements.widget?.classList.add('visible');
+    this.elements.widget?.setAttribute('aria-hidden', 'false');
     this.isOpen = true;
     this.elements.toggle?.setAttribute('aria-expanded', 'true');
     this.updateRateLimitBadge();
@@ -797,6 +798,7 @@ class AppleIntelligenceChatbot {
     }
     this.elements.widget?.classList.remove('visible');
     this.elements.widget?.classList.add('hidden');
+    this.elements.widget?.setAttribute('aria-hidden', 'true');
     this.isOpen = false;
     this.elements.toggle?.setAttribute('aria-expanded', 'false');
     const focusTarget =

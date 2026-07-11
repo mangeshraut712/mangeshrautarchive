@@ -1,25 +1,34 @@
 /* Website share widget — Apple iOS/macOS inspired Share Sheet style */
 
 .website-share-dialog {
-  position: fixed;
+  position: fixed !important;
   inset: 0;
   z-index: 100200;
-  display: none;
+  display: none !important;
   place-items: center;
   padding: 1.5rem;
   opacity: 0;
-  pointer-events: none;
+  pointer-events: none !important;
+  visibility: hidden;
   transition: opacity 0.24s cubic-bezier(0.4, 0, 0.2, 1);
   -webkit-transform: translateZ(0);
   transform: translateZ(0);
 }
 
 .website-share-dialog.active {
-  display: grid;
+  display: grid !important;
   opacity: 1;
-  pointer-events: auto;
+  pointer-events: auto !important;
+  visibility: visible;
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
+}
+
+.website-share-dialog[aria-hidden='true']:not(.active) {
+  display: none !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
 }
 
 body.share-dialog-open {

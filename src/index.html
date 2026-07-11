@@ -134,7 +134,7 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Mangesh Raut | Software Engineer — Java, Python, AWS" />
   <meta name="twitter:description"
-    content="5+ years building production-ready software. MS CS from Drexel University. View portfolio, projects, and resume." />
+    content="6+ years building production-ready software. MS CS from Drexel University. View portfolio, projects, and resume." />
   <meta name="twitter:image" content="https://mangeshraut.pro/assets/images/home.png" />
   <meta name="twitter:image:alt" content="Mangesh Raut Software Engineer Portfolio" />
   <meta name="twitter:site" content="@mrcommando712" />
@@ -350,11 +350,18 @@
       font-weight: 800;
       letter-spacing: -0.03em;
       line-height: 1.05;
+      /* Solid fallback when background-clip text is unsupported */
+      color: #0071e3;
       background: linear-gradient(135deg, #0071e3 0%, #2997ff 100%);
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
-      color: transparent;
+    }
+
+    @supports ((-webkit-background-clip: text) or (background-clip: text)) {
+      #home .hero-name-text {
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        color: transparent;
+      }
     }
 
     .profile-image-wrapper {
@@ -382,11 +389,17 @@
     }
 
 html.dark #home .hero-name-text {
-  background-image: linear-gradient(135deg, #5ac8fa 0%, #0a84ff 52%, #2997ff 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
   color: #0a84ff;
+  background-image: linear-gradient(135deg, #5ac8fa 0%, #0a84ff 52%, #2997ff 100%);
+}
+
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  html.dark #home .hero-name-text {
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
 }
 
     main > section:not(#home) {
@@ -453,7 +466,7 @@ html.dark #home .hero-name-text {
       "givenName": "Mangesh",
       "familyName": "Raut",
       "jobTitle": "Software Development Engineer",
-      "description": "Software Engineer with 5+ years of experience in full-stack development, cloud computing, and machine learning. MS in Computer Science from Drexel University.",
+      "description": "Software Engineer with 6+ years of experience in full-stack development, cloud computing, and machine learning. MS in Computer Science from Drexel University.",
       "url": "https://mangeshraut.pro/",
       "mainEntityOfPage": { "@id": "https://mangeshraut.pro/#profilepage" },
       "image": "https://mangeshraut.pro/assets/images/profile.jpg",
@@ -819,17 +832,19 @@ html.dark #home .hero-name-text {
     })();
   </script>
   <!-- Search Overlay -->
-  <div id="search-overlay" role="dialog" aria-modal="true" aria-label="Command palette"
+  <div id="search-overlay" role="dialog" aria-modal="true" aria-label="Command palette" aria-hidden="true"
     style="display: none !important;">
     <div class="search-container">
       <div class="search-input-wrapper">
-        <i class="fas fa-search search-icon"></i>
-        <input type="text" id="search-input" placeholder="Search pages, sections, posts..." autocomplete="off">
+        <i class="fas fa-search search-icon" aria-hidden="true"></i>
+        <label for="search-input" class="sr-only">Search portfolio, pages, and actions</label>
+        <input type="search" id="search-input" placeholder="Search pages, sections, posts..." autocomplete="off"
+          aria-label="Search portfolio, pages, and actions">
         <button id="search-close" class="premium-close-btn" aria-label="Close search" type="button">
-          <i class="fas fa-times"></i>
+          <i class="fas fa-times" aria-hidden="true"></i>
         </button>
       </div>
-      <div id="search-results"></div>
+      <div id="search-results" role="listbox" aria-label="Search results"><div class="loading-state" style="display:none"><div class="loading-spinner"></div><p class="loading-message">Searching...</p></div></div>
       <div class="search-hint">
         Press <kbd>Enter</kbd> to open, <kbd>Esc</kbd> to close
       </div>
@@ -847,23 +862,25 @@ html.dark #home .hero-name-text {
           </picture>
         </a>
       </div>
-      <div class="nav-links scrollable-nav" role="menubar">
-        <a href="#home" class="nav-link" role="menuitem">Home</a>
-        <a href="#about" class="nav-link" role="menuitem">About</a>
-        <a href="#skills" class="nav-link" role="menuitem">Skills</a>
-        <a href="#experience" class="nav-link" role="menuitem">Experience</a>
-        <a href="#engineering" class="nav-link" role="menuitem" data-nav-priority="deep">Engineering</a>
-        <a href="#projects" class="nav-link" role="menuitem">Projects</a>
-        <a href="#education" class="nav-link" role="menuitem">Education</a>
-        <a href="#publications" class="nav-link" role="menuitem">Publications</a>
-        <a href="#awards" class="nav-link" role="menuitem">Awards</a>
-        <a href="#recommendations" class="nav-link" role="menuitem" data-nav-priority="deep">Recommendations</a>
-        <a href="#certifications" class="nav-link" role="menuitem" data-nav-priority="deep">Certifications</a>
-        <a href="#blog" class="nav-link" role="menuitem">Blog</a>
-        <a href="#contact" class="nav-link" role="menuitem">Contact</a>
-        <a href="#debug-runner-section" class="nav-link" role="menuitem" data-nav-priority="aux" title="Debug Runner">Debug Runner</a>
-        <a href="travel.html" class="nav-link" role="menuitem" data-nav-priority="aux" title="Travel Atlas">Travel Atlas</a>
-        <a href="monitor.html" class="nav-link" role="menuitem" data-nav-priority="aux" title="System Monitor">System Monitor</a>
+      <div class="nav-links scrollable-nav">
+        <a href="#home" class="nav-link">Home</a>
+        <a href="#about" class="nav-link">About</a>
+        <a href="#skills" class="nav-link">Skills</a>
+        <a href="#experience" class="nav-link">Experience</a>
+        <a href="#engineering" class="nav-link" data-nav-priority="deep">Engineering</a>
+        <a href="#projects" class="nav-link">Projects</a>
+        <a href="#education" class="nav-link">Education</a>
+        <a href="#publications" class="nav-link">Publications</a>
+        <a href="#awards" class="nav-link">Awards</a>
+        <a href="#recommendations" class="nav-link" data-nav-priority="deep">Recommendations</a>
+        <a href="#certifications" class="nav-link" data-nav-priority="deep">Certifications</a>
+        <a href="#blog" class="nav-link">Blog</a>
+        <a href="#contact" class="nav-link">Contact</a>
+        <a href="#debug-runner-section" class="nav-link" data-nav-priority="aux" title="Debug Runner">Debug Runner</a>
+        <a href="systems.html" class="nav-link" data-nav-priority="aux" title="Engineering Evidence">Evidence</a>
+        <a href="uses.html" class="nav-link" data-nav-priority="aux" title="Uses">Uses</a>
+        <a href="travel.html" class="nav-link" data-nav-priority="aux" title="Travel Atlas">Travel Atlas</a>
+        <a href="monitor.html" class="nav-link" data-nav-priority="aux" title="System Monitor">System Monitor</a>
       </div>
       <div class="nav-actions">
         <button id="search-toggle" class="theme-toggle-nav" aria-label="Open command palette" title="Command palette"
@@ -960,6 +977,14 @@ html.dark #home .hero-name-text {
         <a href="#debug-runner-section" class="menu-item">
           <div class="premium-menu-icon"><i class="fas fa-gamepad"></i></div>
           <span>Debug Runner</span>
+        </a>
+        <a href="systems.html" class="menu-item">
+          <div class="premium-menu-icon"><i class="fas fa-diagram-project"></i></div>
+          <span>Evidence</span>
+        </a>
+        <a href="uses.html" class="menu-item">
+          <div class="premium-menu-icon"><i class="fas fa-toolbox"></i></div>
+          <span>Uses</span>
         </a>
         <a href="travel.html" class="menu-item">
           <div class="premium-menu-icon"><i class="fas fa-route"></i></div>
@@ -1318,7 +1343,7 @@ html.dark #home .hero-name-text {
                           <a class="vibe-tool-chip" href="https://openai.com/codex" target="_blank" rel="noopener noreferrer" title="Codex"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/codex.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Codex</span></a>
                           <a class="vibe-tool-chip" href="https://cursor.com" target="_blank" rel="noopener noreferrer" title="Cursor"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/cursor.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Cursor</span></a>
                           <a class="vibe-tool-chip" href="https://claude.ai" target="_blank" rel="noopener noreferrer" title="Claude"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/claude.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Claude</span></a>
-                          <a class="vibe-tool-chip vibe-tool-chip--wide" href="https://antigravity.google" target="_blank" rel="noopener noreferrer" title="Antigravity"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/antigravity.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Antigravity</span></a>
+                          <a class="vibe-tool-chip vibe-tool-chip--wide" href="https://github.com/mangeshraut712" target="_blank" rel="noopener noreferrer" title="Antigravity"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/antigravity.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Antigravity</span></a>
                           <a class="vibe-tool-chip" href="https://windsurf.com" target="_blank" rel="noopener noreferrer" title="Windsurf"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/windsurf.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Windsurf</span></a>
                           <a class="vibe-tool-chip" href="https://kilo.ai" target="_blank" rel="noopener noreferrer" title="Kilo Code"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/kilo.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Kilo</span></a>
                           <a class="vibe-tool-chip" href="https://cline.bot" target="_blank" rel="noopener noreferrer" title="Cline"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/cline.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Cline</span></a>
@@ -1328,7 +1353,7 @@ html.dark #home .hero-name-text {
                           <a class="vibe-tool-chip" href="https://openai.com/codex" target="_blank" rel="noopener noreferrer" title="Codex"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/codex.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Codex</span></a>
                           <a class="vibe-tool-chip" href="https://cursor.com" target="_blank" rel="noopener noreferrer" title="Cursor"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/cursor.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Cursor</span></a>
                           <a class="vibe-tool-chip" href="https://claude.ai" target="_blank" rel="noopener noreferrer" title="Claude"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/claude.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Claude</span></a>
-                          <a class="vibe-tool-chip vibe-tool-chip--wide" href="https://antigravity.google" target="_blank" rel="noopener noreferrer" title="Antigravity"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/antigravity.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Antigravity</span></a>
+                          <a class="vibe-tool-chip vibe-tool-chip--wide" href="https://github.com/mangeshraut712" target="_blank" rel="noopener noreferrer" title="Antigravity"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/antigravity.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Antigravity</span></a>
                           <a class="vibe-tool-chip" href="https://windsurf.com" target="_blank" rel="noopener noreferrer" title="Windsurf"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/windsurf.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Windsurf</span></a>
                           <a class="vibe-tool-chip" href="https://kilo.ai" target="_blank" rel="noopener noreferrer" title="Kilo Code"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/kilo.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Kilo</span></a>
                           <a class="vibe-tool-chip" href="https://cline.bot" target="_blank" rel="noopener noreferrer" title="Cline"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/cline.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Cline</span></a>
@@ -1483,9 +1508,9 @@ html.dark #home .hero-name-text {
 
               <div class="hero-body">
                 <p class="hero-description hero-description-lines">
-                  <span class="hero-description-line">Building AI-native products for the next generation of software.</span>
+                  <span class="hero-description-line">Building AI-native products with Apple-level craft and reliability.</span>
                   <span class="hero-description-line">From agentic systems to full-stack experiences, I ship ideas end-to-end.</span>
-                  <span class="hero-description-line">Driven by thoughtful design, dependable engineering, and continuous iteration.</span>
+                  <span class="hero-description-line">Thoughtful design, dependable engineering, and continuous iteration.</span>
                 </p>
               </div>
 
@@ -1643,7 +1668,7 @@ html.dark #home .hero-name-text {
         <!-- Tech Stack Marquee -->
 
         <!-- Interactive Skills Visualization Container -->
-        <div id="skills-container" class="section-container-wide">
+        <div id="skills-container" class="section-container-wide"><div class="loading-state"><div class="loading-spinner"></div><p class="loading-message">Loading skills...</p></div>
           <!-- Skills will be dynamically rendered here by skills-visualization.js -->
           <div class="skills-loading-container" id="skills-loading">
             <div class="skills-loading-spinner-wrapper">
@@ -2054,7 +2079,7 @@ html.dark #home .hero-name-text {
         <p class="section-subtitle">
           Every claim is backed by code, benchmarks, architecture, or production telemetry — open the notebook for full proof.
         </p>
-        <div id="engineering-teaser-root" class="engineering-teaser-root" aria-live="polite"></div>
+        <div id="engineering-teaser-root" class="engineering-teaser-root" aria-live="polite"><div class="loading-state"><div class="loading-spinner"></div><p class="loading-message">Loading engineering evidence...</p></div></div>
       </div>
     </section>
 
@@ -2492,7 +2517,7 @@ html.dark #home .hero-name-text {
 
           <!-- Projects Grid -->
           <div class="section-container-wide">
-            <div id="github-projects-container" class="projects-grid-shell">
+            <div id="github-projects-container" class="projects-grid-shell"><div class="loading-state"><div class="loading-spinner"></div><p class="loading-message">Loading projects...</p></div>
               <!-- Projects will be dynamically loaded here -->
               <div class="projects-loading-container">
                 <div class="projects-loading-inner">
@@ -2999,7 +3024,7 @@ html.dark #home .hero-name-text {
       <div class="container">
         <h2 id="certifications-heading">Licenses & Certifications</h2>
         <p class="section-subtitle">Industry credentials across cloud, security, development, and platform engineering.</p>
-        <div id="certifications-grid" class="certifications-grid certifications-grid-spaced">
+        <div id="certifications-grid" class="certifications-grid certifications-grid-spaced"><div class="loading-state"><div class="loading-spinner"></div><p class="loading-message">Loading certifications...</p></div>
           <div class="certification-card">
             <span class="certification-category">Programming</span>
             <div class="certification-header">
@@ -3167,11 +3192,11 @@ html.dark #home .hero-name-text {
     </section>
     <!-- Contact Section -->
     <!-- Blog Section -->
-    <section id="blog" class="section-blog">
+    <section id="blog" class="section-blog" aria-labelledby="blog-heading" aria-label="Blog posts">
       <div class="container">
         <h2 id="blog-heading">Technical Writings <span id="blog-post-count" class="section-count">(12)</span></h2>
         <p class="section-subtitle">Sharing insights on cloud architecture, full-stack development, and machine learning.</p>
-        <div id="blog-posts-container">
+        <div id="blog-posts-container"><div class="loading-state"><div class="loading-spinner"></div><p class="loading-message">Loading blog posts...</p></div>
           <!-- Blog posts injected by blog-loader.js -->
           <div class="section-loading-container">
             <div class="loading-spinner"></div>
@@ -4002,7 +4027,7 @@ html.dark #home .hero-name-text {
 
               <!-- Shows & Movies Section -->
               <div class="currently-content active" id="shows-content" role="tabpanel" aria-labelledby="currently-tab-shows">
-                <div class="media-grid" id="shows-grid">
+                <div class="media-grid" id="shows-grid"><div class="loading-state"><div class="loading-spinner"></div><p class="loading-message">Loading shows...</p></div>
                   <!-- Will be populated by real-media-loader.js with verified TMDB posters -->
                   <div class="currently-loading-container">
                     <div class="loading-spinner health-spinner"></div>
@@ -4013,7 +4038,7 @@ html.dark #home .hero-name-text {
 
               <!-- Music Section - Last.fm Now Playing -->
               <div class="currently-content" id="music-content" role="tabpanel" aria-labelledby="currently-tab-music" hidden>
-                <div class="media-grid music-shelf-grid" id="music-grid">
+                <div class="media-grid music-shelf-grid" id="music-grid"><div class="loading-state"><div class="loading-spinner"></div><p class="loading-message">Loading music...</p></div>
                   <!-- Featured / now playing card -->
                   <div class="media-card currently-music-card currently-music-state now-playing" id="now-playing-card" hidden>
                     <div class="media-poster">
@@ -4055,7 +4080,7 @@ html.dark #home .hero-name-text {
                   </div>
 
                   <!-- Recent tracks will be injected here as music cards -->
-                  <div id="recent-tracks-container" class="currently-tracks-display-contents"></div>
+                  <div id="recent-tracks-container" class="currently-tracks-display-contents"><div class="loading-state"><div class="loading-spinner"></div><p class="loading-message">Loading recent tracks...</p></div></div>
                 </div>
 
 
@@ -4077,7 +4102,7 @@ html.dark #home .hero-name-text {
             <!-- Merged Calendar, Reminder & Let's Talk Card -->
             <div class="calendar-wrapper-clean apple-card">
               <!-- Calendar/reminders/booking widget -->
-              <div id="calendar-widget"></div>
+              <div id="calendar-widget"><div class="loading-state"><div class="loading-spinner"></div><p class="loading-message">Loading calendar...</p></div></div>
 
               <!-- Divider -->
               <div class="currently-divider currently-divider-tight"></div>
@@ -4246,7 +4271,7 @@ html.dark #home .hero-name-text {
     <div id="chatbot-backdrop" class="chatbot-backdrop hidden" aria-hidden="true"></div>
 
     <!-- Chatbot Widget -->
-    <div id="chatbot-widget" class="hidden" role="dialog" aria-modal="true"
+    <div id="chatbot-widget" class="hidden" role="dialog" aria-modal="true" aria-hidden="true"
       aria-label="Apple Intelligence chat window" tabindex="-1">
       <!-- Header -->
       <div class="chatbot-header">

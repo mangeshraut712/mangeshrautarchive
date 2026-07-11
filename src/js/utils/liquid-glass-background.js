@@ -23,9 +23,14 @@ async function loadCaptureModule() {
 export function isLiquidGlassCaptureSupported() {
   if (typeof window === 'undefined') return false;
   if (window.matchMedia?.('(prefers-reduced-transparency: reduce)')?.matches) return false;
+  // Respect reduced motion — skip heavy WebGL capture/animation path
+  if (window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches) return false;
   try {
     const canvas = document.createElement('canvas');
-    return Boolean(canvas.getContext('webgl', { alpha: true }));
+    const gl =
+      canvas.getContext('webgl', { alpha: true }) ||
+      canvas.getContext('experimental-webgl', { alpha: true });
+    return Boolean(gl);
   } catch {
     return false;
   }

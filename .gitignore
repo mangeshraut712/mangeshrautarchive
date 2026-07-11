@@ -145,7 +145,14 @@ out
 __pycache__/
 *.py[cod]
 venv/
+venv
 .venv/
+.venv
+# Local UI/UX working notes (optional; keep out of accidental commits of drafts)
+# UI-UX-BUG-FIX-PROGRESS.md and UI-UX-BUG-REPORT.md are intentional project docs when committed
+test-results/
+artifacts/playwright-report/
+playwright-report/
 
 # Python cache
 .pytest_cache/

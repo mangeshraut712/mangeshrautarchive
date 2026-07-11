@@ -966,6 +966,23 @@ body.monitor-page main > section.section:not(#home) {
   color: var(--accent-blue);
 }
 
+html:not(.dark) .method-get {
+  color: #1a6f30;
+}
+
+html:not(.dark) .method-post {
+  color: #004d99;
+}
+
+html:not(.dark) .method-put,
+html:not(.dark) .method-patch {
+  color: #8a4b00;
+}
+
+html:not(.dark) .method-delete {
+  color: #b00020;
+}
+
 .doc-endpoint-copy {
   min-width: 0;
 }
@@ -2814,23 +2831,42 @@ html.dark body.monitor-page .integration-owner-auth,
 }
 
 .legend-status-badge.status-healthy {
-  background: rgba(52, 199, 89, 0.1);
-  color: var(--accent-green);
+  background: rgba(52, 199, 89, 0.14);
+  color: #1a6f30;
 }
 
 .legend-status-badge.status-degraded {
-  background: rgba(255, 149, 0, 0.1);
-  color: var(--accent-yellow);
+  background: rgba(255, 149, 0, 0.16);
+  /* Orange accent alone fails AA on light cards; use deep amber text */
+  color: #8a4b00;
 }
 
 .legend-status-badge.status-offline {
-  background: rgba(255, 59, 48, 0.1);
-  color: var(--accent-red);
+  background: rgba(255, 59, 48, 0.14);
+  color: #b00020;
+}
+
+html.dark .legend-status-badge.status-healthy {
+  color: #30d158;
+}
+
+html.dark .legend-status-badge.status-degraded {
+  color: #ffd60a;
+}
+
+html.dark .legend-status-badge.status-offline {
+  color: #ff6961;
 }
 
 .legend-status-badge.status-neutral {
-  background: rgba(142, 142, 147, 0.1);
-  color: var(--text-secondary);
+  background: rgba(142, 142, 147, 0.14);
+  /* WCAG AA on light card surfaces (#f0f0f1): #6e6e73 was 4.45:1; #424245 clears 4.5:1 */
+  color: #424245;
+}
+
+html.dark .legend-status-badge.status-neutral {
+  background: rgba(142, 142, 147, 0.18);
+  color: #d2d2d7;
 }
 
 .legend-status-desc {
@@ -3808,4 +3844,54 @@ html.dark .ai-model-row {
   font-size: 13px;
   font-weight: 500;
   color: var(--text-secondary);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   WCAG AA contrast — light mode status colors (small text)
+   Apple system greens/oranges on tinted chips fail ~2:1; deepen text.
+   ═══════════════════════════════════════════════════════════════ */
+html:not(.dark) body.monitor-page {
+  --accent-green: #1a6f30;
+  --accent-yellow: #8a4b00;
+  --accent-red: #b00020;
+  --text-secondary: #515154;
+}
+
+html:not(.dark) body.monitor-page .status-badge.healthy,
+html:not(.dark) body.monitor-page .status-badge--live-feed,
+html:not(.dark) body.monitor-page .legend-status-badge.status-healthy,
+html:not(.dark) body.monitor-page [class*='status-healthy'],
+html:not(.dark) body.monitor-page .status-healthy {
+  color: #1a6f30 !important;
+}
+
+html:not(.dark) body.monitor-page .status-badge.degraded,
+html:not(.dark) body.monitor-page .legend-status-badge.status-degraded,
+html:not(.dark) body.monitor-page .status-degraded {
+  color: #8a4b00 !important;
+}
+
+html:not(.dark) body.monitor-page .status-badge.unhealthy,
+html:not(.dark) body.monitor-page .legend-status-badge.status-offline,
+html:not(.dark) body.monitor-page .status-offline,
+html:not(.dark) body.monitor-page .status-unhealthy {
+  color: #b00020 !important;
+}
+
+html:not(.dark) body.monitor-page .status-badge.unknown,
+html:not(.dark) body.monitor-page .legend-status-badge.status-neutral,
+html:not(.dark) body.monitor-page .legend-status-desc,
+html:not(.dark) body.monitor-page .text-secondary {
+  color: #515154 !important;
+}
+
+/* Blue chips / badges on light blue tints */
+html:not(.dark) body.monitor-page .status-badge.healthy {
+  background: rgba(26, 111, 48, 0.12);
+}
+html:not(.dark) body.monitor-page .metric-chip,
+html:not(.dark) body.monitor-page .tag-blue,
+html:not(.dark) body.monitor-page .badge-blue,
+html:not(.dark) body.monitor-page [class*='chip'][class*='blue'] {
+  color: #004d99 !important;
 }
