@@ -38,8 +38,9 @@ describe('section-preload', () => {
     );
   });
 
-  it('exposes conservative warm delays for lighthouse budgets', () => {
-    expect(WARM_SECTION_PRELOAD_DELAY_MS).toBeGreaterThanOrEqual(250);
-    expect(WARM_SECTION_START_DELAY_MS).toBeGreaterThanOrEqual(200);
+  it('exposes near-zero warm delays so section CSS arrives before scroll', () => {
+    // Content CSS must not wait hundreds of ms or scroll hits unstyled layout collapse.
+    expect(WARM_SECTION_PRELOAD_DELAY_MS).toBeLessThanOrEqual(50);
+    expect(WARM_SECTION_START_DELAY_MS).toBeLessThanOrEqual(150);
   });
 });

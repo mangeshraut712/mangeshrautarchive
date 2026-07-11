@@ -326,12 +326,22 @@ function warmCriticalSectionPreloads() {
 }
 
 function ensureDeferredStylesheetLoaded(link) {
-  const href = link.dataset.href;
+  const href = link.dataset.href || link.getAttribute('href');
   if (!href) {
     return Promise.resolve(true);
   }
 
   if (link.dataset.styleLoaded === 'true') {
+    // Progressive media=print links may already be loaded — promote to all.
+    if (link.media === 'print') {
+      link.media = 'all';
+    }
+    return Promise.resolve(true);
+  }
+
+  // Already applied via progressive onload (media flipped to all + sheet present)
+  if (link.sheet && link.media !== 'print' && link.getAttribute('href')) {
+    link.dataset.styleLoaded = 'true';
     return Promise.resolve(true);
   }
 
@@ -343,13 +353,35 @@ function ensureDeferredStylesheetLoaded(link) {
     const settle = success => {
       if (success) {
         link.dataset.styleLoaded = 'true';
+        if (link.media === 'print') {
+          link.media = 'all';
+        }
       }
       resolve(success);
     };
 
+    // Progressive links already have href + media=print — wait for load then enable.
+    if (link.getAttribute('href') && link.sheet) {
+      settle(true);
+      return;
+    }
+
     link.addEventListener('load', () => settle(true), { once: true });
     link.addEventListener('error', () => settle(false), { once: true });
-    link.setAttribute('href', href);
+
+    if (!link.getAttribute('href')) {
+      link.setAttribute('href', href);
+    } else if (link.media === 'print' && link.sheet) {
+      // Cached/parsed already
+      settle(true);
+    } else if (link.media === 'print') {
+      // Force apply if browser already finished loading while we listened late
+      requestAnimationFrame(() => {
+        if (link.sheet) {
+          settle(true);
+        }
+      });
+    }
   });
 
   deferredStyleLoads.set(href, pending);
@@ -819,29 +851,36 @@ function initDeferredStyles() {
     });
   });
 
-  if (!isPerformanceAudit()) {
-    window.addEventListener(
-      'load',
-      () => {
-        runWhenIdle(() => {
-          loadDeferredStyles(EARLY_IDLE_STYLE_KEYS).catch(error => {
-            console.warn('Early idle style prefetch skipped:', error);
-          });
-          runWhenIdle(() => {
-            loadDeferredStyles(['share']).catch(error => {
-              console.warn('Share style prefetch skipped:', error);
-            });
-          }, 900);
-        }, 250);
-      },
-      { once: true }
-    );
-  }
-
   if (isPerformanceAudit()) {
     return;
   }
 
+  // CONTENT CSS: promote immediately so scroll never hits unstyled layout collapse.
+  // Progressive <link media=print> already starts download; JS flips media + marks loaded.
+  const allContentStyleKeys = [
+    ...new Set([
+      ...EARLY_IDLE_STYLE_KEYS,
+      ...SECTION_STYLE_GROUPS.flatMap(group => group.styleKeys),
+      'share',
+    ]),
+  ];
+
+  const promoteContentStyles = () => {
+    loadDeferredStyles(allContentStyleKeys).catch(error => {
+      console.warn('Content style promote skipped:', error);
+    });
+  };
+
+  // Run ASAP — do not wait for window load / idle (that was the blank-scroll bug).
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', promoteContentStyles, { once: true });
+  } else {
+    promoteContentStyles();
+  }
+  // Also on first paint in case DOMContentLoaded already fired
+  scheduleSoon(promoteContentStyles, 0);
+
+  // Section observers remain as a safety net for late dynamic links
   SECTION_STYLE_GROUPS.forEach(({ sectionId, styleKeys, rootMargin }) => {
     observeSectionTask(sectionId, () => loadDeferredStyles(styleKeys), rootMargin);
   });
@@ -949,7 +988,8 @@ function initContactDeferredImages(documentRef = document) {
     return;
   }
 
-  initSectionDeferredImages('contact', '800px 0px', documentRef);
+  // Wide rootMargin so images hydrate before the user arrives (blank logos)
+  initSectionDeferredImages('contact', '1200px 0px', documentRef);
 }
 
 function initCertificationDeferredImages(documentRef = document) {
@@ -957,7 +997,7 @@ function initCertificationDeferredImages(documentRef = document) {
     return;
   }
 
-  initSectionDeferredImages('certifications', '800px 0px', documentRef);
+  initSectionDeferredImages('certifications', '1200px 0px', documentRef);
 }
 
 function initAboutDeferredImages(documentRef = document) {
@@ -965,7 +1005,15 @@ function initAboutDeferredImages(documentRef = document) {
     return;
   }
 
-  initSectionDeferredImages('about', '800px 0px', documentRef);
+  initSectionDeferredImages('about', '1200px 0px', documentRef);
+  // Also hydrate about image on idle so first scroll never shows 1×1 placeholder
+  scheduleSoon(() => {
+    const img = documentRef.getElementById('about-image');
+    if (img?.dataset.deferredSrc) {
+      img.src = img.dataset.deferredSrc;
+      img.removeAttribute('data-deferred-src');
+    }
+  }, 200);
 }
 
 function initProjectShowcaseOnDemand() {

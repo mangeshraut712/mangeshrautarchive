@@ -469,6 +469,52 @@ html.dark #experience .experience-tag:hover {
   box-shadow: 0 2px 12px rgb(0 0 0 / 35%) !important;
 }
 
+/* Disclosure control — Apple compact pill */
+.experience-disclosure {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 0.75rem;
+  padding: 0.4rem 0.85rem;
+  border: 1px solid rgb(0 0 0 / 10%);
+  border-radius: 980px;
+  background: rgb(0 0 0 / 3%);
+  color: #0071e3;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+html.dark .experience-disclosure {
+  border-color: rgb(255 255 255 / 12%);
+  background: rgb(255 255 255 / 6%);
+  color: #0a84ff;
+}
+
+.experience-disclosure:hover {
+  background: rgb(0 113 227 / 10%);
+  border-color: rgb(0 113 227 / 28%);
+}
+
+html.dark .experience-disclosure:hover {
+  background: rgb(10 132 255 / 14%);
+  border-color: rgb(10 132 255 / 32%);
+}
+
+.experience-disclosure:focus-visible {
+  outline: 3px solid #0071e3;
+  outline-offset: 2px;
+}
+
+.experience-disclosure i {
+  font-size: 0.7rem;
+}
+
 /* Scroll stagger */
 .experience-timeline .experience-item:nth-of-type(1) .experience-content.animate-on-scroll {
   animation-delay: 0.05s;

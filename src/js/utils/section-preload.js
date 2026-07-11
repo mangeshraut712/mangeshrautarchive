@@ -1,8 +1,10 @@
-/** Delay before warming below-fold CSS/modules (protects LCP/TBT). */
-export const WARM_SECTION_PRELOAD_DELAY_MS = 350;
+/** Delay before warming below-fold CSS/modules.
+ * Keep near-zero so section CSS arrives before users can scroll into unstyled layout.
+ */
+export const WARM_SECTION_PRELOAD_DELAY_MS = 0;
 
 /** Delay before kicking project/engineering loaders after DOM ready. */
-export const WARM_SECTION_START_DELAY_MS = 250;
+export const WARM_SECTION_START_DELAY_MS = 100;
 
 export function resolveGithubApiBase(context = globalThis) {
   const location = context.location || {};
