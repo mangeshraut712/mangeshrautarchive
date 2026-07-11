@@ -67,7 +67,8 @@
 }
 
 html.dark {
-  --text-primary-dark: #fff;
+  /* Apple system dark text (not pure white — matches SF/pro body on apple.com) */
+  --text-primary-dark: #f5f5f7;
   --text-secondary-dark: #a1a1a6;
   --text-accent-dark: #2997ff;
   --text-primary: var(--text-primary-dark);

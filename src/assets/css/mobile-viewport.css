@@ -319,3 +319,80 @@ body {
     margin-top: 0.32rem;
   }
 }
+
+/* ─── Tablet (iPad portrait / landscape) ─── */
+@media (min-width: 769px) and (max-width: 1024px) {
+  :root {
+    --mobile-anchor-offset: calc(5.25rem + env(safe-area-inset-top, 0px));
+  }
+
+  html {
+    scroll-padding-top: var(--mobile-anchor-offset);
+  }
+
+  #home,
+  #about,
+  #skills,
+  #experience,
+  #engineering,
+  #projects,
+  #education,
+  #publications,
+  #awards,
+  #recommendations,
+  #certifications,
+  #blog,
+  #contact,
+  .section {
+    scroll-margin-top: var(--mobile-anchor-offset);
+  }
+
+  /* Prevent intentional marquees from expanding document width */
+  .skill-scroll-container,
+  .dream-companies-marquee,
+  .dream-cars-marquee {
+    overflow: hidden !important;
+    max-width: 100% !important;
+  }
+
+  .container,
+  .section-container-wide,
+  .systems-shell,
+  .monitor-container {
+    max-width: min(960px, calc(100% - 2.5rem)) !important;
+    margin-inline: auto;
+    box-sizing: border-box;
+  }
+
+  body.systems-page,
+  body.monitor-page {
+    padding-top: calc(76px + env(safe-area-inset-top, 0px));
+  }
+
+  .monitor-page-nav {
+    width: min(920px, calc(100% - 28px)) !important;
+    max-width: calc(100vw - 1.75rem) !important;
+  }
+
+  /* Touch-friendly controls on tablet */
+  .project-lens-chip,
+  .contact-link-item,
+  .publication-read-btn {
+    min-height: 44px !important;
+  }
+}
+
+/* Universal overflow safety (all viewports) */
+img,
+video,
+canvas,
+svg {
+  max-width: 100%;
+}
+
+.github-graph-svg,
+#github-chart-img,
+#github-fallback-svg {
+  max-width: 100% !important;
+  height: auto !important;
+}

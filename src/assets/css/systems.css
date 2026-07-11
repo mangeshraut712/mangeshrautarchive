@@ -1772,8 +1772,15 @@ html.dark .systems-arch-svg .arch-node {
 }
 
 .systems-arch-diagram-host .systems-arch-svg {
-  min-width: 520px;
+  min-width: min(520px, 100%);
   max-width: 100%;
+  height: auto;
+}
+
+@media (width <= 640px) {
+  .systems-arch-diagram-host .systems-arch-svg {
+    min-width: 420px;
+  }
 }
 
 .systems-arch-caption {

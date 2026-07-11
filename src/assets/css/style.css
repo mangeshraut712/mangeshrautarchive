@@ -165,8 +165,8 @@ html.dark {
 
   /* Solid Black */
 
-  /* Advanced Text Hierarchy for Dark Mode */
-  --text-primary-dark: #fff;
+  /* Advanced Text Hierarchy for Dark Mode (Apple #f5f5f7, not pure white) */
+  --text-primary-dark: #f5f5f7;
   --text-secondary-dark: #a1a1a6;
   --text-tertiary-dark: #86868b;
   --text-accent-dark: #2997ff;
