@@ -1,4 +1,4 @@
 flake8==7.3.0
-pytest==8.4.2
+pytest==9.1.1
 ruff==0.14.8
 vulture==2.14
