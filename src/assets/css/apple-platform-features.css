@@ -470,7 +470,7 @@ body.systems-page .uses-control-tile.is-active i {
   -webkit-text-fill-color: #ffffff !important;
 }
 
-/* Game leaderboard — body/list styled in game-section-fix.css */
+/* Game leaderboard list reset — body/list layout in game-2026.css */
 .game-leaderboard ol {
   margin: 0;
   padding: 0;
