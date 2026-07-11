@@ -6,7 +6,7 @@
   <script>
     if (!window.__PERF_AUDIT__) {
       var lgBoot = document.createElement('script');
-      lgBoot.src = 'js/utils/liquid-glass-boot.js?v=20260701q';
+      lgBoot.src = 'js/utils/liquid-glass-boot.js?v=20260712a';
       document.head.appendChild(lgBoot);
     }
   </script>
@@ -149,8 +149,8 @@
   <meta name="apple-touch-fullscreen" content="yes" />
 
   <!-- Preload critical CSS for performance -->
-  <link rel="stylesheet" href="assets/css/cross-browser-responsive.css?v=20260701q" />
-  <link rel="stylesheet" href="assets/css/critical-tokens.css?v=20260701q" />
+  <link rel="stylesheet" href="assets/css/cross-browser-responsive.css?v=20260712a" />
+  <link rel="stylesheet" href="assets/css/critical-tokens.css?v=20260712a" />
   <style>
     .skip-links {
       position: fixed;
@@ -350,18 +350,14 @@
       font-weight: 800;
       letter-spacing: -0.03em;
       line-height: 1.05;
-      /* Solid fallback when background-clip text is unsupported */
+      /*
+       * Solid paint for LCP: transparent gradient fill is not counted as LCP text,
+       * which forced Lighthouse to wait on below-fold about subtitle (~7s mobile).
+       * Gradient polish can still apply via non-transparent decoration elsewhere.
+       */
       color: #0071e3;
-      background: linear-gradient(135deg, #0071e3 0%, #2997ff 100%);
-    }
-
-    @supports ((-webkit-background-clip: text) or (background-clip: text)) {
-      #home .hero-name-text {
-        -webkit-background-clip: text;
-        background-clip: text;
-        -webkit-text-fill-color: transparent;
-        color: transparent;
-      }
+      -webkit-text-fill-color: #0071e3;
+      background: none;
     }
 
     .profile-image-wrapper {
@@ -390,16 +386,8 @@
 
 html.dark #home .hero-name-text {
   color: #0a84ff;
-  background-image: linear-gradient(135deg, #5ac8fa 0%, #0a84ff 52%, #2997ff 100%);
-}
-
-@supports ((-webkit-background-clip: text) or (background-clip: text)) {
-  html.dark #home .hero-name-text {
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    color: transparent;
-  }
+  -webkit-text-fill-color: #0a84ff;
+  background: none;
 }
 
     main > section:not(#home) {
@@ -410,6 +398,38 @@ html.dark #home .hero-name-text {
       animation: none !important;
       opacity: 1 !important;
       transform: none !important;
+    }
+
+    /*
+     * Critical scroll-reveal safety (inline, always available).
+     * style.css loads via media=print onload — without this, .animate-on-scroll
+     * can flash blank when deferred CSS arrives. Fail-safe forces visibility.
+     */
+    @keyframes scrollRevealFailsafe {
+      to {
+        opacity: 1;
+        transform: none;
+      }
+    }
+
+    .animate-on-scroll {
+      opacity: 0;
+      animation: scrollRevealFailsafe 0.01s linear 0.45s forwards;
+    }
+
+    .animate-on-scroll.animate-in {
+      opacity: 1;
+      animation: none;
+      transform: none;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .animate-on-scroll,
+      .animate-on-scroll.animate-in {
+        opacity: 1 !important;
+        transform: none !important;
+        animation: none !important;
+      }
     }
 
     .inline-icon {
@@ -702,60 +722,60 @@ html.dark #home .hero-name-text {
   <!-- Google Fonts preconnect moved to head top for performance -->
 
   <!-- Consolidated CSS - Reduced from 30+ files to ~15 -->
-  <link rel="stylesheet" href="assets/css/tailwind-output.css?v=20260701q" />
-  <link rel="stylesheet" href="assets/vendor/fontawesome/css/all.min.css?v=20260701q"
+  <link rel="stylesheet" href="assets/css/tailwind-output.css?v=20260712a" />
+  <link rel="stylesheet" href="assets/vendor/fontawesome/css/all.min.css?v=20260712a"
     media="print" onload="this.media='all'" />
-  <link rel="stylesheet" href="assets/css/font-awesome-display.css?v=20260701q" media="print" onload="this.media='all'" />
+  <link rel="stylesheet" href="assets/css/font-awesome-display.css?v=20260712a" media="print" onload="this.media='all'" />
   <noscript>
-    <link rel="stylesheet" href="assets/vendor/fontawesome/css/all.min.css?v=20260701q" />
+    <link rel="stylesheet" href="assets/vendor/fontawesome/css/all.min.css?v=20260712a" />
   </noscript>
 
   <!-- Core Styles -->
-  <link rel="stylesheet" href="assets/css/apple-design-system.css?v=20260701q" />
-  <link rel="stylesheet" href="assets/css/sitewide-design-system.css?v=20260701q" media="print" onload="this.media='all'" />
-  <noscript><link rel="stylesheet" href="assets/css/sitewide-design-system.css?v=20260701q" /></noscript>
-  <link rel="stylesheet" href="assets/css/apple-premium-overrides.css?v=20260701q" media="print" onload="this.media='all'" />
-  <link rel="stylesheet" href="assets/css/style.css?v=20260701q" media="print" onload="this.media='all'" />
-  <noscript><link rel="stylesheet" href="assets/css/style.css?v=20260701q" /></noscript>
-  <link rel="stylesheet" href="assets/css/accessibility.css?v=20260701q" />
-  <link rel="stylesheet" href="assets/css/liquid-glass.css?v=20260701q" media="print" onload="this.media='all'" />
-  <noscript><link rel="stylesheet" href="assets/css/liquid-glass.css?v=20260701q" /></noscript>
-  <link rel="stylesheet" href="assets/css/dynamic-island-navbar.css?v=20260701q" />
-  <link rel="stylesheet" href="assets/css/homepage.css?v=20260701q" />
-  <link rel="stylesheet" href="assets/css/global-improvements.css?v=20260701q" media="print" onload="this.media='all'" />
-  <link rel="stylesheet" href="assets/css/mobile-viewport.css?v=20260701q" media="print" onload="this.media='all'" />
-  <noscript><link rel="stylesheet" href="assets/css/mobile-viewport.css?v=20260701q" /></noscript>
-  <link rel="stylesheet" href="assets/css/apple-super-retina-display.css?v=20260701q" media="print" onload="this.media='all'" />
-  <noscript><link rel="stylesheet" href="assets/css/apple-super-retina-display.css?v=20260701q" /></noscript>
-  <link rel="stylesheet" href="assets/css/theme-solid-surfaces.css?v=20260701q" media="print" onload="this.media='all'" />
-  <noscript><link rel="stylesheet" href="assets/css/theme-solid-surfaces.css?v=20260701q" /></noscript>
-  <link rel="stylesheet" href="assets/css/chrome-surfaces.css?v=20260701q" media="print" onload="this.media='all'" />
-  <noscript><link rel="stylesheet" href="assets/css/chrome-surfaces.css?v=20260701q" /></noscript>
+  <link rel="stylesheet" href="assets/css/apple-design-system.css?v=20260712a" />
+  <link rel="stylesheet" href="assets/css/sitewide-design-system.css?v=20260712a" media="print" onload="this.media='all'" />
+  <noscript><link rel="stylesheet" href="assets/css/sitewide-design-system.css?v=20260712a" /></noscript>
+  <link rel="stylesheet" href="assets/css/apple-premium-overrides.css?v=20260712a" media="print" onload="this.media='all'" />
+  <link rel="stylesheet" href="assets/css/style.css?v=20260712a" media="print" onload="this.media='all'" />
+  <noscript><link rel="stylesheet" href="assets/css/style.css?v=20260712a" /></noscript>
+  <link rel="stylesheet" href="assets/css/accessibility.css?v=20260712a" />
+  <link rel="stylesheet" href="assets/css/liquid-glass.css?v=20260712a" media="print" onload="this.media='all'" />
+  <noscript><link rel="stylesheet" href="assets/css/liquid-glass.css?v=20260712a" /></noscript>
+  <link rel="stylesheet" href="assets/css/dynamic-island-navbar.css?v=20260712a" />
+  <link rel="stylesheet" href="assets/css/homepage.css?v=20260712a" />
+  <link rel="stylesheet" href="assets/css/global-improvements.css?v=20260712a" media="print" onload="this.media='all'" />
+  <link rel="stylesheet" href="assets/css/mobile-viewport.css?v=20260712a" media="print" onload="this.media='all'" />
+  <noscript><link rel="stylesheet" href="assets/css/mobile-viewport.css?v=20260712a" /></noscript>
+  <link rel="stylesheet" href="assets/css/apple-super-retina-display.css?v=20260712a" media="print" onload="this.media='all'" />
+  <noscript><link rel="stylesheet" href="assets/css/apple-super-retina-display.css?v=20260712a" /></noscript>
+  <link rel="stylesheet" href="assets/css/theme-solid-surfaces.css?v=20260712a" media="print" onload="this.media='all'" />
+  <noscript><link rel="stylesheet" href="assets/css/theme-solid-surfaces.css?v=20260712a" /></noscript>
+  <link rel="stylesheet" href="assets/css/chrome-surfaces.css?v=20260712a" media="print" onload="this.media='all'" />
+  <noscript><link rel="stylesheet" href="assets/css/chrome-surfaces.css?v=20260712a" /></noscript>
 
   <!-- Lazy-loaded Section Styles -->
-  <link rel="stylesheet" data-href="assets/css/contact.css?v=20260701q" data-lazy-style-key="contact" />
-  <link rel="stylesheet" data-href="assets/css/animations.css?v=20260701q" data-lazy-style-key="motion" />
-  <link rel="stylesheet" data-href="assets/css/publications.css?v=20260701q" data-lazy-style-key="publications" />
-  <link rel="stylesheet" data-href="assets/css/education.css?v=20260701q" data-lazy-style-key="education" />
-  <link rel="stylesheet" data-href="assets/css/skills.css?v=20260701q" data-lazy-style-key="skills" />
-  <link rel="stylesheet" data-href="assets/css/certifications.css?v=20260701q" data-lazy-style-key="certifications" />
-  <link rel="stylesheet" data-href="assets/css/katex.min.css?v=20260701q" data-lazy-style-key="assistant" />
-  <link rel="stylesheet" data-href="assets/css/ai-assistant.css?v=20260701q" data-lazy-style-key="assistant" />
-  <link rel="stylesheet" data-href="assets/css/ai-assistant-mobile.css?v=20260701q" data-lazy-style-key="assistant" />
-  <link rel="stylesheet" data-href="assets/css/about.css?v=20260701q" data-lazy-style-key="about" />
-  <link rel="stylesheet" data-href="assets/css/blog.css?v=20260701q" data-lazy-style-key="blog" />
-  <link rel="stylesheet" data-href="assets/css/recommendations.css?v=20260701q" data-lazy-style-key="recommendations" />
-  <link rel="stylesheet" data-href="assets/css/awards.css?v=20260701q" data-lazy-style-key="awards" />
-  <link rel="stylesheet" data-href="assets/css/experience.css?v=20260701q" data-lazy-style-key="experience" />
-  <link rel="stylesheet" data-href="assets/css/game-2026.css?v=20260701q" data-lazy-style-key="game" />
-  <link rel="stylesheet" data-href="assets/css/premium-enhancements.css?v=20260701q" data-lazy-style-key="motion" />
-  <link rel="stylesheet" data-href="assets/css/birthday-celebration.css?v=20260701q" data-lazy-style-key="birthday" />
-  <link rel="stylesheet" data-href="assets/css/projects-showcase-2026.css?v=20260701q" data-lazy-style-key="projects" />
-  <link rel="stylesheet" data-href="assets/css/engineering-showcase.css?v=20260701q" data-lazy-style-key="engineering" />
-  <link rel="stylesheet" data-href="assets/css/share-widget.css?v=20260701q" data-lazy-style-key="share" />
-  <link rel="stylesheet" data-href="assets/css/health-widget.css?v=20260701q" data-lazy-style-key="currently" />
+  <link rel="stylesheet" data-href="assets/css/contact.css?v=20260712a" data-lazy-style-key="contact" />
+  <link rel="stylesheet" data-href="assets/css/animations.css?v=20260712a" data-lazy-style-key="motion" />
+  <link rel="stylesheet" data-href="assets/css/publications.css?v=20260712a" data-lazy-style-key="publications" />
+  <link rel="stylesheet" data-href="assets/css/education.css?v=20260712a" data-lazy-style-key="education" />
+  <link rel="stylesheet" data-href="assets/css/skills.css?v=20260712a" data-lazy-style-key="skills" />
+  <link rel="stylesheet" data-href="assets/css/certifications.css?v=20260712a" data-lazy-style-key="certifications" />
+  <link rel="stylesheet" data-href="assets/css/katex.min.css?v=20260712a" data-lazy-style-key="assistant" />
+  <link rel="stylesheet" data-href="assets/css/ai-assistant.css?v=20260712a" data-lazy-style-key="assistant" />
+  <link rel="stylesheet" data-href="assets/css/ai-assistant-mobile.css?v=20260712a" data-lazy-style-key="assistant" />
+  <link rel="stylesheet" data-href="assets/css/about.css?v=20260712a" data-lazy-style-key="about" />
+  <link rel="stylesheet" data-href="assets/css/blog.css?v=20260712a" data-lazy-style-key="blog" />
+  <link rel="stylesheet" data-href="assets/css/recommendations.css?v=20260712a" data-lazy-style-key="recommendations" />
+  <link rel="stylesheet" data-href="assets/css/awards.css?v=20260712a" data-lazy-style-key="awards" />
+  <link rel="stylesheet" data-href="assets/css/experience.css?v=20260712a" data-lazy-style-key="experience" />
+  <link rel="stylesheet" data-href="assets/css/game-2026.css?v=20260712a" data-lazy-style-key="game" />
+  <link rel="stylesheet" data-href="assets/css/premium-enhancements.css?v=20260712a" data-lazy-style-key="motion" />
+  <link rel="stylesheet" data-href="assets/css/birthday-celebration.css?v=20260712a" data-lazy-style-key="birthday" />
+  <link rel="stylesheet" data-href="assets/css/projects-showcase-2026.css?v=20260712a" data-lazy-style-key="projects" />
+  <link rel="stylesheet" data-href="assets/css/engineering-showcase.css?v=20260712a" data-lazy-style-key="engineering" />
+  <link rel="stylesheet" data-href="assets/css/share-widget.css?v=20260712a" data-lazy-style-key="share" />
+  <link rel="stylesheet" data-href="assets/css/health-widget.css?v=20260712a" data-lazy-style-key="currently" />
 
-  <link rel="icon" type="image/png" href="assets/images/profile-icon.png?v=20260701q" />
+  <link rel="icon" type="image/png" href="assets/images/profile-icon.png?v=20260712a" />
 
 </head>
 
@@ -1120,7 +1140,7 @@ html.dark #home .hero-name-text {
           projectStyle.setAttribute('href', projectStyle.dataset.href);
         }
 
-        import('./js/modules/projects-showcase.js?v=20260701q')
+        import('./js/modules/projects-showcase.js?v=20260712a')
           .then(function (module) {
             var init = module.initProjectShowcase || module.default;
             if (typeof init === 'function') {
@@ -1445,7 +1465,7 @@ html.dark #home .hero-name-text {
                   if (!window.__PERF_AUDIT__) {
                     var heroFlyoutScript = document.createElement('script');
                     heroFlyoutScript.defer = true;
-                    heroFlyoutScript.src = 'js/modules/hero-flyout-position.js?v=20260701q';
+                    heroFlyoutScript.src = 'js/modules/hero-flyout-position.js?v=20260712a';
                     document.currentScript.parentNode.insertBefore(
                       heroFlyoutScript,
                       document.currentScript.nextSibling
@@ -1453,7 +1473,7 @@ html.dark #home .hero-name-text {
 
                     var vibeStackScript = document.createElement('script');
                     vibeStackScript.defer = true;
-                    vibeStackScript.src = 'js/modules/vibe-stack.js?v=20260701q';
+                    vibeStackScript.src = 'js/modules/vibe-stack.js?v=20260712a';
                     document.currentScript.parentNode.insertBefore(
                       vibeStackScript,
                       heroFlyoutScript.nextSibling
@@ -1464,7 +1484,7 @@ html.dark #home .hero-name-text {
                   if (!window.__PERF_AUDIT__) {
                     var reachAnalytics = document.createElement('script');
                     reachAnalytics.defer = true;
-                    reachAnalytics.src = 'js/modules/analytics.js?v=20260701q';
+                    reachAnalytics.src = 'js/modules/analytics.js?v=20260712a';
                     document.currentScript.parentNode.insertBefore(
                       reachAnalytics,
                       document.currentScript.nextSibling
@@ -1668,15 +1688,15 @@ html.dark #home .hero-name-text {
         <!-- Tech Stack Marquee -->
 
         <!-- Interactive Skills Visualization Container -->
-        <div id="skills-container" class="section-container-wide"><div class="loading-state"><div class="loading-spinner"></div><p class="loading-message">Loading skills...</p></div>
-          <!-- Skills will be dynamically rendered here by skills-visualization.js -->
+        <div id="skills-container" class="section-container-wide" aria-busy="true">
+          <!-- Lightweight shell until skills-visualization.js hydrates (loaded on idle after paint) -->
           <div class="skills-loading-container" id="skills-loading">
             <div class="skills-loading-spinner-wrapper">
-              <svg class="skills-loading-spinner" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg class="skills-loading-spinner" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                   d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
               </svg>
-              <p class="skills-loading-message">Loading interactive skills visualization...</p>
+              <p class="skills-loading-message">Preparing skills…</p>
             </div>
           </div>
 
@@ -2079,7 +2099,7 @@ html.dark #home .hero-name-text {
         <p class="section-subtitle">
           Every claim is backed by code, benchmarks, architecture, or production telemetry — open the notebook for full proof.
         </p>
-        <div id="engineering-teaser-root" class="engineering-teaser-root" aria-live="polite"><div class="loading-state"><div class="loading-spinner"></div><p class="loading-message">Loading engineering evidence...</p></div></div>
+        <div id="engineering-teaser-root" class="engineering-teaser-root" aria-live="polite" aria-busy="true"><div class="loading-state"><div class="loading-spinner"></div><p class="loading-message">Loading engineering evidence…</p></div></div>
       </div>
     </section>
 
@@ -2517,7 +2537,7 @@ html.dark #home .hero-name-text {
 
           <!-- Projects Grid -->
           <div class="section-container-wide">
-            <div id="github-projects-container" class="projects-grid-shell"><div class="loading-state"><div class="loading-spinner"></div><p class="loading-message">Loading projects...</p></div>
+            <div id="github-projects-container" class="projects-grid-shell">
               <!-- Projects will be dynamically loaded here -->
               <div class="projects-loading-container">
                 <div class="projects-loading-inner">
@@ -3024,7 +3044,7 @@ html.dark #home .hero-name-text {
       <div class="container">
         <h2 id="certifications-heading">Licenses & Certifications</h2>
         <p class="section-subtitle">Industry credentials across cloud, security, development, and platform engineering.</p>
-        <div id="certifications-grid" class="certifications-grid certifications-grid-spaced"><div class="loading-state"><div class="loading-spinner"></div><p class="loading-message">Loading certifications...</p></div>
+        <div id="certifications-grid" class="certifications-grid certifications-grid-spaced">
           <div class="certification-card">
             <span class="certification-category">Programming</span>
             <div class="certification-header">
@@ -3196,7 +3216,7 @@ html.dark #home .hero-name-text {
       <div class="container">
         <h2 id="blog-heading">Technical Writings <span id="blog-post-count" class="section-count">(12)</span></h2>
         <p class="section-subtitle">Sharing insights on cloud architecture, full-stack development, and machine learning.</p>
-        <div id="blog-posts-container"><div class="loading-state"><div class="loading-spinner"></div><p class="loading-message">Loading blog posts...</p></div>
+        <div id="blog-posts-container">
           <!-- Blog posts injected by blog-loader.js -->
           <div class="section-loading-container">
             <div class="loading-spinner"></div>
@@ -4339,11 +4359,11 @@ html.dark #home .hero-name-text {
       (function () {
         var audit = window.__PERF_AUDIT__ === true;
         var scripts = [
-          { src: 'js/utils/smart-navbar.js?v=20260701q', module: true },
-          { src: 'js/utils/theme.js?v=20260701q', module: true },
-          { src: 'js/utils/go-to-top.js?v=20260701q', defer: true },
-          { src: 'js/core/bootstrap.js?v=20260701q', module: true },
-          { src: 'js/modules/share-widget.js?v=20260701q', module: true },
+          { src: 'js/utils/smart-navbar.js?v=20260712a', module: true },
+          { src: 'js/utils/theme.js?v=20260712a', module: true },
+          { src: 'js/utils/go-to-top.js?v=20260712a', defer: true },
+          { src: 'js/core/bootstrap.js?v=20260712a', module: true },
+          { src: 'js/modules/share-widget.js?v=20260712a', module: true },
           { src: 'js/modules/name-pronounce.js?v=20260506a', defer: true },
         ];
 

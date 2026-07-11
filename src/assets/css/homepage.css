@@ -1774,7 +1774,10 @@ html.dark .launch-intro-label {
 
 .hero-name-text {
   display: inline-block;
-  color: inherit;
+  color: #0071e3;
+  -webkit-text-fill-color: #0071e3;
+  background: none;
+  background-image: none;
 }
 
 .hero-verified-badge {
@@ -1805,10 +1808,9 @@ html.dark .hero-verified-badge {
 
 html.dark .hero-name-text {
   display: inline-block;
-  background-image: linear-gradient(135deg, #5ac8fa 0%, #0a84ff 52%, #2997ff 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
+  background: none;
+  background-image: none;
+  -webkit-text-fill-color: #0a84ff;
   color: #0a84ff !important;
   text-shadow: none;
 }

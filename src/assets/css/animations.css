@@ -175,9 +175,19 @@
    UTILITY CLASSES - Add these to HTML elements
    ═══════════════════════════════════════════════════════════ */
 
-/* Scroll-triggered animations (use with Intersection Observer) */
+/* Scroll-triggered animations (use with Intersection Observer)
+   Content-first fail-safe: auto-reveal after 450ms so fast scroll
+   never leaves blank sections if IO or JS is delayed. */
+@keyframes scrollRevealFailsafe {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 .animate-on-scroll {
   opacity: 0;
+  animation: scrollRevealFailsafe 0.01s linear 0.45s forwards;
 }
 
 .animate-on-scroll.animate-in {

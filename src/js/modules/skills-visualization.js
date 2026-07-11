@@ -302,6 +302,7 @@ const initSkillsVisualization = () => {
   }
 
   container.dataset.skillsVizReady = 'true';
+  container.setAttribute('aria-busy', 'false');
   new SkillsVisualization().render('skills-container');
 };
 

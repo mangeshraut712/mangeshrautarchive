@@ -172,20 +172,26 @@ async function copyDirContent(src, dest, depth = 0) {
   );
 }
 
+/**
+ * True above-the-fold paint path only.
+ * Keep this small: the whole bundle is inlined into index.html.
+ * Bloated inlines delay HTML parse and tank mobile LCP.
+ */
 const HERO_CRITICAL_CSS = [
   'assets/css/cross-browser-responsive.css',
   'assets/css/critical-tokens.css',
+  'assets/css/homepage.css',
+  'assets/css/dynamic-island-navbar.css',
+  'assets/css/accessibility.css',
+];
+
+/** Deferred after first paint — still high priority, non-blocking via media=print onload */
+const PREMIUM_DEFERRED_CSS = [
   'assets/css/tailwind-output.css',
   'assets/css/sitewide-design-system.css',
   'assets/css/apple-design-system.css',
   'assets/css/typography-system.css',
-  'assets/css/homepage.css',
-  'assets/css/dynamic-island-navbar.css',
   'assets/css/global-improvements.css',
-  'assets/css/accessibility.css',
-];
-
-const PREMIUM_DEFERRED_CSS = [
   'assets/css/style.css',
   'assets/css/sections-apple-premium.css',
   'assets/css/contact.css',
@@ -193,16 +199,12 @@ const PREMIUM_DEFERRED_CSS = [
   'assets/css/premium-enhancements.css',
 ];
 
+/** Slim set kept available for perf-audit mode (not inlined; referenced if needed). */
 const PERF_AUDIT_SLIM_CSS = [
   'assets/css/cross-browser-responsive.css',
   'assets/css/critical-tokens.css',
-  'assets/css/tailwind-output.css',
-  'assets/css/sitewide-design-system.css',
-  'assets/css/apple-design-system.css',
-  'assets/css/typography-system.css',
   'assets/css/homepage.css',
   'assets/css/dynamic-island-navbar.css',
-  'assets/css/global-improvements.css',
   'assets/css/accessibility.css',
 ];
 

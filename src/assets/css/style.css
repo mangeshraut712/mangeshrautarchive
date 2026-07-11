@@ -5329,6 +5329,39 @@ html.dark .footer-info-container {
   animation: spin 1s linear infinite;
 }
 
+/* Generic loading shell — compact, never blocks layout permanently */
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 1.5rem 1rem;
+  min-height: 3rem;
+  color: var(--apple-text-secondary, #6e6e73);
+  text-align: center;
+}
+
+.loading-state .loading-message {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.loading-state .loading-spinner {
+  width: 1.75rem;
+  height: 1.75rem;
+  border: 2px solid rgb(0 113 227 / 18%);
+  border-top-color: #0071e3;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+/* Static sections must never show orphaned loading shells */
+#certifications-grid > .loading-state {
+  display: none !important;
+}
+
 /* ═══ Projects loading state ═══ */
 .projects-loading-container {
   grid-column: 1 / -1;
@@ -5580,9 +5613,10 @@ html.dark .book-author-text {
 /* ═══════════════════════════════════════════════════════════
    CRITICAL SCROLL ANIMATION BASE (eager — prevents blank sections)
    Full animation variants remain in deferred animations.css.
-   These rules MUST live in an eagerly-loaded stylesheet so that
-   .animate-on-scroll elements are never stuck at opacity:0 when
-   the deferred CSS has not arrived yet.
+
+   Content-first: .animate-on-scroll starts slightly offset and
+   auto-reveals via CSS after 450ms even if JS/IO never runs.
+   This prevents permanent blank sections during fast scroll.
    ═══════════════════════════════════════════════════════════ */
 @keyframes microReveal {
   from {
@@ -5620,8 +5654,18 @@ html.dark .book-author-text {
   }
 }
 
+/* CSS-only fail-safe: force visible if JS animation never completes */
+@keyframes scrollRevealFailsafe {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 .animate-on-scroll {
   opacity: 0;
+  /* Always become visible — never stay blank on fast scroll / late CSS */
+  animation: scrollRevealFailsafe 0.01s linear 0.45s forwards;
 }
 
 .animate-on-scroll.animate-in {
@@ -5638,23 +5682,9 @@ img.about-image.animate-in {
   animation: microScaleIn 0.48s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-/* ═══════════════════════════════════════════════════════════
-   CRITICAL SCROLL ANIMATION BASE (eager, prevents blank sections)
-   Full animation variants remain in deferred animations.css
-   ═══════════════════════════════════════════════════════════ */
-@keyframes microReveal {
-  from {
-    opacity: 0;
-    transform: translate3d(0, 8px, 0);
-  }
-  to {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .animate-on-scroll {
+  .animate-on-scroll,
+  .animate-on-scroll.animate-in {
     opacity: 1 !important;
     transform: none !important;
     animation: none !important;

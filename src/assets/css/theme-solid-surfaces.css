@@ -1030,24 +1030,26 @@ body.travel-body .travel-stop.active {
   box-shadow: none !important;
 }
 
-/* ─── Hero chrome: blue name, solid pronoun pill ─── */
+/* ─── Hero chrome: solid blue name (LCP-safe; no transparent fill) ─── */
 #home .hero-name-text,
 #home.hero-section .hero-name-text {
-  background: linear-gradient(135deg, #0071e3 0%, #2997ff 100%) !important;
-  -webkit-background-clip: text !important;
-  background-clip: text !important;
-  -webkit-text-fill-color: transparent !important;
+  background: none !important;
+  background-image: none !important;
+  -webkit-background-clip: border-box !important;
+  background-clip: border-box !important;
+  -webkit-text-fill-color: #0071e3 !important;
   color: #0071e3 !important;
 }
 
 html.dark #home .hero-name-text,
 html.dark #home.hero-section .hero-name-text {
   display: inline-block;
-  background-image: linear-gradient(135deg, #5ac8fa 0%, #0a84ff 52%, #2997ff 100%) !important;
+  background: none !important;
+  background-image: none !important;
   background-color: transparent !important;
-  -webkit-background-clip: text !important;
-  background-clip: text !important;
-  -webkit-text-fill-color: transparent !important;
+  -webkit-background-clip: border-box !important;
+  background-clip: border-box !important;
+  -webkit-text-fill-color: #0a84ff !important;
   color: #0a84ff !important;
   text-shadow: none !important;
 }

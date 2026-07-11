@@ -118,8 +118,17 @@ const SECTION_STYLE_GROUPS = [
 
 const FIRST_INTERACTION_STYLE_KEYS = ['interactive', 'motion', 'birthday'];
 
-/** Styles to prefetch after first paint — keep small to protect LCP on Chrome/Safari */
-const EARLY_IDLE_STYLE_KEYS = ['interactive', 'about', 'motion'];
+/** Styles to prefetch after first paint — near-fold + motion (protects scroll UX) */
+const EARLY_IDLE_STYLE_KEYS = [
+  'interactive',
+  'about',
+  'skills',
+  'motion',
+  'experience',
+  'projects',
+  'engineering',
+  'education',
+];
 
 const USER_INTERACTION_EVENTS = ['pointerdown', 'keydown', 'touchstart'];
 const DEFERRED_IMAGE_PLACEHOLDER =
@@ -264,18 +273,32 @@ function warmCriticalSectionPreloads() {
     prefetchGithubProjectsCatalog();
     warmProjectShowcaseAssets();
 
-    // Idle/background pre-warming of near-fold deferred styles only
+    // Idle pre-warm of section CSS so fast scroll never hits unstyled / spinner-only sections
     runWhenIdle(() => {
-      // 1. Preheat only near-fold CSS (about, skills) — rest load on scroll via SECTION_STYLE_GROUPS
-      const nearFoldStyleKeys = ['about', 'skills'];
+      const nearFoldStyleKeys = [
+        'about',
+        'skills',
+        'experience',
+        'projects',
+        'engineering',
+        'education',
+        'publications',
+        'awards',
+        'certifications',
+        'blog',
+        'recommendations',
+        'contact',
+        'currently',
+      ];
       loadDeferredStyles(nearFoldStyleKeys).catch(() => {});
 
-      // 2. Preheat secondary JS modules after page load settles
+      // Eager-load near-fold interactive modules so users never see "Loading..." spinners
+      loadModule('../modules/skills-visualization.js');
+      loadModule('../modules/about-interactivity.js');
+      loadModule('../modules/card-content-accessibility.js');
+
       runWhenIdle(() => {
         const modulesToPreload = [
-          '../modules/about-interactivity.js',
-          '../modules/card-content-accessibility.js',
-          '../modules/skills-visualization.js',
           '../modules/blog-loader.js',
           '../modules/newsletter.js',
           '../modules/calendar.js',
@@ -283,11 +306,21 @@ function warmCriticalSectionPreloads() {
           '../modules/real-media-loader.js',
           '../modules/lastfm.js',
           '../modules/health-widget.js',
+          '../modules/experience-interactivity.js',
+          '../modules/awards-shelf.js',
         ];
         modulesToPreload.forEach(path => {
           modulePreload(path);
         });
-      }, 1500);
+
+        // Start content modules so "Loading..." shells clear before the user arrives
+        loadModule('../modules/blog-loader.js');
+        loadModule('../modules/experience-interactivity.js');
+        loadModule('../modules/awards-shelf.js');
+        import('../modules/engineering-showcase.js')
+          .then(module => module.initEngineeringTeaser?.())
+          .catch(() => {});
+      }, 800);
     }, 100);
   }, WARM_SECTION_PRELOAD_DELAY_MS);
 }
