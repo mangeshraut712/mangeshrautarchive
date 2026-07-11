@@ -26,7 +26,15 @@
     "clean": "node scripts/build/clean.js",
     "open": "open src/index.html",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "test:e2e": "npx playwright test",
+    "test:e2e:chrome": "npx playwright test --project=\"Desktop Chrome\"",
+    "test:e2e:all": "npx playwright test",
+    "qa:prod-ready": "npm run security-check && npm run lint && npm run lint:css && npm run format:check && npm test && npm run test:api && npx playwright test --project=\"Desktop Chrome\" && npm run qa:lighthouse:ci",
+    "qa:lighthouse:desktop": "node scripts/deployment/lighthouse-gate.js --url=http://127.0.0.1:4000/ --form-factor=desktop --min-performance=90 --min-accessibility=90 --min-best-practices=90 --min-seo=90",
+    "qa:lighthouse:mobile": "node scripts/deployment/lighthouse-gate.js --url=http://127.0.0.1:4000/ --form-factor=mobile --min-performance=85 --min-accessibility=90 --min-best-practices=90 --min-seo=90",
+    "verify:deploy-sync": "node scripts/deployment/verify-deployment-sync.js --remote --parity",
+    "qa:postdeploy": "node scripts/deployment/verify-deployment-sync.js --remote --parity --retries=10 --wait=20"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.12.1",
@@ -37,6 +45,7 @@
     "dotenv": "^17.4.2",
     "esbuild": "^0.28.0",
     "eslint": "^9.39.5",
+    "express": "^5.2.1",
     "globals": "^17.7.0",
     "jsdom": "^29.1.1",
     "prettier": "^3.9.5",
@@ -50,7 +59,6 @@
   "dependencies": {
     "@ogtirth/liquid-glass-oss": "^0.1.0",
     "@vercel/analytics": "^2.0.1",
-    "express": "^5.2.1",
     "html-to-image": "^1.11.13",
     "isomorphic-dompurify": "^3.17.0",
     "katex": "^0.17.0",

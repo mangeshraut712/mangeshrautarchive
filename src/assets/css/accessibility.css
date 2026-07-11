@@ -247,3 +247,46 @@ html:not(.dark) .status-badge.degraded {
 html:not(.dark) .status-badge.unhealthy {
   color: #b31e15 !important;
 }
+
+/* Touch target accessibility guarantees */
+.contact-link-item {
+  min-height: 48px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  box-sizing: border-box !important;
+  padding: 0.75rem 1rem !important;
+}
+
+.wrapper .icon {
+  width: 3.125rem !important;
+  height: 3.125rem !important;
+  min-width: 48px !important;
+  min-height: 48px !important;
+  display: inline-flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  box-sizing: border-box !important;
+}
+
+.wrapper .icon a {
+  width: 100% !important;
+  height: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-width: 48px !important;
+  min-height: 48px !important;
+}
+
+/* Hide tooltips eagerly to prevent inline rendering before style.css loads */
+.wrapper .tooltip {
+  position: absolute !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
+}
+.wrapper .icon:hover .tooltip,
+.wrapper .icon:focus-within .tooltip {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
