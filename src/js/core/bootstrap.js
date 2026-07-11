@@ -304,16 +304,15 @@ function warmCriticalSectionPreloads() {
       .catch(() => {});
   }, 650);
 
+  // Safety net: any residual data-deferred-* images sitewide
   runWhenIdle(() => {
-    hydrateDeferredImagesIn(document.getElementById('certifications'));
-    hydrateDeferredImagesIn(document.getElementById('education'));
-    hydrateDeferredImagesIn(document.getElementById('about'));
-  }, 450);
+    hydrateDeferredImagesIn(document);
+  }, 300);
 }
 
-/** Real src for deferred middle-section images (certs, etc.) — no blank 1×1 placeholders. */
+/** Real src for any residual data-deferred images (HTML now uses native lazy where possible). */
 function hydrateDeferredImagesIn(root) {
-  if (!root) return;
+  if (!root?.querySelectorAll) return;
   root.querySelectorAll('picture source[data-deferred-srcset]').forEach(source => {
     if (!source.dataset.deferredSrcset) return;
     source.setAttribute('srcset', source.dataset.deferredSrcset.trim());

@@ -1442,14 +1442,21 @@ class GitHubProjects {
       return;
     }
 
-    container.innerHTML = `
-      <div class="projects-grid-full project-loading-state">
+    // Keep existing shell if present (avoids flash of empty + double spinner)
+    if (
+      !container.querySelector(
+        '.project-loading-state, .projects-loading-container, .apple-3d-project, .showcase-project-card'
+      )
+    ) {
+      container.innerHTML = `
+      <div class="projects-grid-full project-loading-state" role="status" aria-live="polite">
         <div class="project-loading-inner">
-          <div class="loading-spinner"></div>
-          <p class="text-secondary">Loading projects from GitHub...</p>
+          <div class="loading-spinner" aria-hidden="true"></div>
+          <p class="text-secondary loading-message">Loading projects from GitHub…</p>
         </div>
       </div>
     `;
+    }
 
     try {
       const repos = await this.fetchRepositories();
@@ -1458,8 +1465,9 @@ class GitHubProjects {
       if (showcaseRepos.length === 0) {
         container.innerHTML = `
           <div class="projects-grid-full project-empty-state">
-            <i class="fas fa-folder-open project-state-icon"></i>
+            <i class="fas fa-folder-open project-state-icon" aria-hidden="true"></i>
             <p class="text-secondary">No showcase-ready repositories found</p>
+            <p class="text-secondary"><a href="https://github.com/mangeshraut712" target="_blank" rel="noopener noreferrer">View GitHub profile</a></p>
           </div>
         `;
         return;
@@ -1481,8 +1489,9 @@ class GitHubProjects {
       console.warn('[GitHubProjects] Failed to render projects:', error);
       container.innerHTML = `
         <div class="projects-grid-full project-empty-state">
-          <i class="fas fa-exclamation-triangle project-state-icon project-state-icon-danger"></i>
-          <p class="text-secondary">Failed to load projects. Please try again later.</p>
+          <i class="fas fa-exclamation-triangle project-state-icon project-state-icon-danger" aria-hidden="true"></i>
+          <p class="text-secondary">Could not load live GitHub projects right now.</p>
+          <p class="text-secondary"><a href="https://github.com/mangeshraut712?tab=repositories" target="_blank" rel="noopener noreferrer">Browse repositories on GitHub</a></p>
         </div>
       `;
     }

@@ -527,6 +527,87 @@ html.dark .section-subtitle {
   color: var(--text-secondary, #a1a1a6);
 }
 
+/* ═══════════════════════════════════════════════════════════
+   CONTENT SURFACES — middle of page must paint as solidly as home/contact
+   ═══════════════════════════════════════════════════════════ */
+
+main > section[id] {
+  position: relative;
+  min-width: 0;
+  contain: layout style;
+}
+
+main > section[id] .container {
+  width: 100%;
+  max-width: min(1120px, 100%);
+  margin-inline: auto;
+  padding-inline: max(1rem, env(safe-area-inset-left), env(safe-area-inset-right));
+  box-sizing: border-box;
+  min-width: 0;
+}
+
+/* Apple solid cards — never transparent void in middle sections */
+#experience .experience-content,
+#education .education-content,
+#publications .publication-card,
+#awards .award-card,
+#recommendations .recommendation-card,
+#certifications .certification-card,
+#blog .blog-card,
+#engineering .engineering-evidence-card,
+#engineering .engineering-quality-overview,
+#projects .apple-3d-project,
+#projects .showcase-project-card {
+  background-color: #ffffff !important;
+  color: #1d1d1f !important;
+  border: 1px solid rgb(0 0 0 / 10%);
+  box-sizing: border-box;
+  max-width: 100%;
+}
+
+html.dark #experience .experience-content,
+html.dark #education .education-content,
+html.dark #publications .publication-card,
+html.dark #awards .award-card,
+html.dark #recommendations .recommendation-card,
+html.dark #certifications .certification-card,
+html.dark #blog .blog-card,
+html.dark #engineering .engineering-evidence-card,
+html.dark #engineering .engineering-quality-overview,
+html.dark #projects .apple-3d-project,
+html.dark #projects .showcase-project-card {
+  background-color: #000000 !important;
+  color: #f5f5f7 !important;
+  border-color: rgb(255 255 255 / 12%);
+}
+
+/* Compact, non-blocking loading shells (never full blank sections) */
+.section-loading-container,
+.projects-loading-container,
+.project-loading-state,
+.loading-state {
+  min-height: 4.5rem;
+  padding: 1.25rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  color: var(--text-secondary, #6e6e73);
+}
+
+.loading-message,
+.projects-loading-message {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+/* Images always aspect-safe */
+main section[id] img {
+  max-width: 100%;
+  height: auto;
+}
+
 /* Anchor scroll clearance under fixed island nav */
 main section[id],
 section[id] {
