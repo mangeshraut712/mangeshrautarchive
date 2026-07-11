@@ -2912,10 +2912,11 @@ html.dark .recent-track-img {
   justify-content: center;
   gap: 0.3rem;
   padding: 0.42rem 0.5rem;
-  background: rgba(0, 113, 227, 0.08);
-  color: #005bb5 !important;
+  background: rgba(0, 68, 148, 0.1);
+  /* AA on tinted blue chip (was #0071e3 via global a!important) */
+  color: #004494 !important;
   font-size: 0.68rem;
-  font-weight: 600;
+  font-weight: 700;
   border-radius: 8px;
   text-decoration: none !important;
   transition:
@@ -2936,9 +2937,14 @@ html.dark .recent-track-img {
 }
 
 .watch-btn:hover {
-  background: rgba(0, 113, 227, 0.14);
-  color: #005bb5 !important;
+  background: rgba(0, 68, 148, 0.16);
+  color: #004494 !important;
   transform: none;
+}
+
+.watch-btn span,
+.watch-btn i {
+  color: inherit !important;
 }
 
 .watch-btn:active {
@@ -2947,12 +2953,12 @@ html.dark .recent-track-img {
 }
 
 .watch-btn.book-btn {
-  color: #005bb5 !important;
-  background: rgba(0, 113, 227, 0.08);
+  color: #004494 !important;
+  background: rgba(0, 68, 148, 0.1);
 }
 
 .watch-btn.book-btn:hover {
-  background: rgba(0, 113, 227, 0.14);
+  background: rgba(0, 68, 148, 0.16);
 }
 
 .watch-btn i {

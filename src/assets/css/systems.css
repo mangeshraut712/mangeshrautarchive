@@ -611,7 +611,9 @@ html.dark .systems-section-desc code {
 
 .systems-status-pill.healthy {
   background: rgb(52 199 89 / 14%);
-  color: #248a3d;
+  /* Darker green for AA on tinted mint background */
+  color: #166c31 !important;
+  font-weight: 700;
 }
 
 .systems-status-pill.degraded {
@@ -2801,16 +2803,23 @@ body.systems-page .project-evidence-link {
   min-height: 32px;
   padding: 0.3rem 0.7rem;
   border-radius: 999px;
-  font-size: 0.72rem;
-  font-weight: 600;
+  font-size: 0.78rem;
+  font-weight: 700;
   letter-spacing: 0.02em;
   text-decoration: none;
-  color: var(--systems-accent);
-  background: rgb(0 113 227 / 10%);
-  border: 1px solid rgb(0 113 227 / 15%);
+  /* !important: sitewide a{} used #0071e3 !important and failed AA on tinted chips */
+  color: #004494 !important;
+  background: rgb(0 68 148 / 10%) !important;
+  border: 1px solid rgb(0 68 148 / 22%);
   transition:
     transform 0.3s var(--systems-spring),
     background 0.2s ease;
+}
+
+html.dark body.systems-page .project-evidence-link {
+  color: #9ed0ff !important;
+  background: rgb(88 166 255 / 14%) !important;
+  border-color: rgb(88 166 255 / 28%);
 }
 
 body.systems-page .project-evidence-link:hover,
@@ -3115,20 +3124,20 @@ html.dark .decision-badge--eng {
   width: 32px;
   height: 32px;
   border-radius: 8px;
-  background: rgb(255 159 10 / 8%);
-  color: #ff9f0a;
+  background: rgb(154 77 0 / 10%);
+  color: #9a4d00;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 0.95rem;
   flex-shrink: 0;
-  border: 1px solid rgb(255 159 10 / 15%);
+  border: 1px solid rgb(154 77 0 / 18%);
 }
 
 html.dark .failure-icon-container {
-  background: rgb(255 159 10 / 12%);
-  border-color: rgb(255 159 10 / 20%);
-  color: #ff9f0a;
+  background: rgb(255 179 64 / 14%);
+  border-color: rgb(255 179 64 / 22%);
+  color: #ffb340;
 }
 
 .systems-failure-title-block {
@@ -3149,9 +3158,14 @@ html.dark .failure-icon-container {
 .systems-failure-status-badge {
   font-size: 0.65rem;
   font-weight: 750;
-  color: #ff9f0a;
+  /* Darker amber for AA on white cards (was #ff9f0a ≈ 2.05:1) */
+  color: #9a4d00;
   text-transform: uppercase;
   letter-spacing: 0.05em;
+}
+
+html.dark .systems-failure-status-badge {
+  color: #ffb340;
 }
 
 .systems-failure-body {
@@ -3412,7 +3426,8 @@ html.dark .systems-token-value {
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
-  color: #34c759 !important;
+  /* Darker green for AA on white systems cards (was #34c759 ≈ 2.5:1) */
+  color: #166c31 !important;
 }
 
 html.dark .systems-token-value--active {

@@ -357,16 +357,29 @@ html.dark .health-widget-container {
   }
 }
 
-/* WHOOP Recovery Score Color Themes */
+/* WHOOP Recovery Score Color Themes — AA on light surfaces */
 .whoop-metric.recovery-green .metric-value,
 .whoop-metric.recovery-green .metric-icon {
-  color: #30d158 !important; /* iOS system green */
+  color: #1b7f37 !important;
 }
 .whoop-metric.recovery-yellow .metric-value,
 .whoop-metric.recovery-yellow .metric-icon {
-  color: #ff9f0a !important; /* iOS system orange */
+  color: #9a4d00 !important;
 }
 .whoop-metric.recovery-red .metric-value,
 .whoop-metric.recovery-red .metric-icon {
-  color: #ff453a !important; /* iOS system red */
+  color: #c41e1a !important;
+}
+
+html.dark .whoop-metric.recovery-green .metric-value,
+html.dark .whoop-metric.recovery-green .metric-icon {
+  color: #30d158 !important;
+}
+html.dark .whoop-metric.recovery-yellow .metric-value,
+html.dark .whoop-metric.recovery-yellow .metric-icon {
+  color: #ffb340 !important;
+}
+html.dark .whoop-metric.recovery-red .metric-value,
+html.dark .whoop-metric.recovery-red .metric-icon {
+  color: #ff6961 !important;
 }

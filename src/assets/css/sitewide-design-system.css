@@ -574,14 +574,25 @@ html.dark a {
   /* Default Light Gray */
 }
 
-/* Blue Accents (Links, etc) */
-a,
+/* Blue Accents (Links, etc)
+   Exclude chip/button-like anchors that set their own AA palette
+   (project evidence chips, media watch chips, nav chrome). */
+a:not(.project-evidence-link):not(.watch-btn):not(.book-btn):not(.systems-status-pill):not(
+    .nav-link
+  ):not(.monitor-page-nav__home):not(.monitor-page-nav__back):not(.systems-hero-action):not(
+    .btn
+  ):not(.btn-primary):not(.btn-secondary):not(.section-preview-btn),
 .link,
 .text-blue {
   color: #0071e3 !important;
 }
 
-html.dark a,
+html.dark
+  a:not(.project-evidence-link):not(.watch-btn):not(.book-btn):not(.systems-status-pill):not(
+    .nav-link
+  ):not(.monitor-page-nav__home):not(.monitor-page-nav__back):not(.systems-hero-action):not(
+    .btn
+  ):not(.btn-primary):not(.btn-secondary):not(.section-preview-btn),
 html.dark .link,
 html.dark .text-blue {
   color: #2997ff !important;

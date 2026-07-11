@@ -1170,25 +1170,25 @@ html.dark .day-cell:hover:not(.empty, .selected, .today) {
   transform: scale(0.9);
 }
 
-/* Today Pulse */
+/* Today Pulse — darker red so white day numbers meet WCAG AA 4.5:1 */
 
 .day-cell.today {
-  background: #ff3b30;
-  color: white !important;
+  background: #c41e1a;
+  color: #ffffff !important;
   font-weight: 700;
-  box-shadow: 0 4px 12px rgb(255 59 48 / 40%);
+  box-shadow: 0 4px 12px rgb(196 30 26 / 35%);
   animation: gentle-pulse 3s infinite;
 }
 
 @keyframes gentle-pulse {
   0%,
   100% {
-    box-shadow: 0 4px 12px rgb(255 59 48 / 40%);
+    box-shadow: 0 4px 12px rgb(196 30 26 / 35%);
     transform: scale(1);
   }
 
   50% {
-    box-shadow: 0 8px 20px rgb(255 59 48 / 60%);
+    box-shadow: 0 8px 20px rgb(196 30 26 / 50%);
     transform: scale(1.05);
   }
 }
