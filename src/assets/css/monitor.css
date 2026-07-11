@@ -380,6 +380,19 @@ html.dark .header-content {
   border-color: rgba(142, 142, 147, 0.2);
 }
 
+html:not(.dark) .status-badge.healthy,
+html:not(.dark) .status-badge--live-feed {
+  color: #1a6f30;
+}
+
+html:not(.dark) .status-badge.degraded {
+  color: #8a4b00;
+}
+
+html:not(.dark) .status-badge.unhealthy {
+  color: #b31e15;
+}
+
 .status-dot {
   width: 8px;
   height: 8px;

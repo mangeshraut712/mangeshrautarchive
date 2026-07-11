@@ -699,7 +699,12 @@
         </div>
 
         <!-- Hidden legacy filter element to keep backward compatibility -->
-        <select id="event-filter" class="event-filter-sr-only" onchange="filterEvents()">
+        <select
+          id="event-filter"
+          class="event-filter-sr-only"
+          onchange="filterEvents()"
+          aria-label="Filter events"
+        >
           <option value="">All Events</option>
           <option value="critical">Critical</option>
           <option value="error">Errors</option>

@@ -233,3 +233,17 @@ html.dark .footer-copy,
 html.dark .footer-tagline {
   color: #a1a1a6 !important;
 }
+
+/* Status badges - high contrast overrides in light mode to pass WCAG AA color-contrast checks */
+html:not(.dark) .status-badge.healthy,
+html:not(.dark) .status-badge--live-feed {
+  color: #1a6f30 !important;
+}
+
+html:not(.dark) .status-badge.degraded {
+  color: #8a4b00 !important;
+}
+
+html:not(.dark) .status-badge.unhealthy {
+  color: #b31e15 !important;
+}
