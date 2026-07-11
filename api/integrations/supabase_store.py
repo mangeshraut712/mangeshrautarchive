@@ -164,17 +164,17 @@ def _coalesce_latest_health_rows(rows: List[Dict[str, Any]]) -> Dict[str, Any]:
         merged["weightTrend"] = weight_row.get("weightTrend")
 
     synced_candidates = [
-        _row.get("lastSyncedAt")
+        str(_row.get("lastSyncedAt"))
         for _row in (whoop_row, weight_row, latest_row)
-        if _row and _row.get("lastSyncedAt")
+        if _row and _row.get("lastSyncedAt") is not None
     ]
     if synced_candidates:
         merged["lastSyncedAt"] = max(synced_candidates)
 
     date_candidates = [
-        _row.get("date")
+        str(_row.get("date"))
         for _row in (whoop_row, weight_row, latest_row)
-        if _row and _row.get("date")
+        if _row and _row.get("date") is not None
     ]
     if date_candidates:
         merged["date"] = max(date_candidates)

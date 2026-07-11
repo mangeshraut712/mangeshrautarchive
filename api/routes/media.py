@@ -364,7 +364,7 @@ async def get_recent_music(
     cache_key = f"{user}:{limit}"
     started_at = time.perf_counter()
     cached = lastfm_recent_cache.get(cache_key)
-    if is_fresh_lastfm_cache(cached):
+    if cached is not None and is_fresh_lastfm_cache(cached):
         return JSONResponse(
             content=cached["data"],
             headers=build_lastfm_headers("HIT", started_at),
@@ -378,7 +378,7 @@ async def get_recent_music(
             headers=build_lastfm_headers("UNCONFIGURED", started_at),
         )
 
-    if is_servable_lastfm_cache(cached):
+    if cached is not None and is_servable_lastfm_cache(cached):
         background_tasks.add_task(refresh_lastfm_recent_cache, cache_key, user, limit)
         return JSONResponse(
             content=cached["data"],

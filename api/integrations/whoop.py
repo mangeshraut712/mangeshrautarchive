@@ -178,9 +178,9 @@ async def fetch_sanitized_summary(access_token: str) -> Dict[str, Any]:
     )
 
     try:
-        if isinstance(recovery_result, Exception):
+        if isinstance(recovery_result, BaseException):
             raise recovery_result
-        recovery = recovery_result
+        recovery = recovery_result if isinstance(recovery_result, dict) else {}
         record = _pick_scored_record(recovery.get("records") or [])
         if record:
             record_date = _record_date(record)
@@ -198,9 +198,9 @@ async def fetch_sanitized_summary(access_token: str) -> Dict[str, Any]:
         partial = True
 
     try:
-        if isinstance(cycles_result, Exception):
+        if isinstance(cycles_result, BaseException):
             raise cycles_result
-        cycles = cycles_result
+        cycles = cycles_result if isinstance(cycles_result, dict) else {}
         record = _pick_active_cycle_record(cycles.get("records") or [])
         if record:
             record_date = _record_date(record)
@@ -215,9 +215,9 @@ async def fetch_sanitized_summary(access_token: str) -> Dict[str, Any]:
         partial = True
 
     try:
-        if isinstance(sleep_result, Exception):
+        if isinstance(sleep_result, BaseException):
             raise sleep_result
-        sleep = sleep_result
+        sleep = sleep_result if isinstance(sleep_result, dict) else {}
         record = _pick_scored_record(sleep.get("records") or [])
         if record:
             record_date = _record_date(record)

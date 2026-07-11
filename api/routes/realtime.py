@@ -96,7 +96,7 @@ async def realtime_voice_proxy(client_ws: WebSocket):
     try:
         async with websockets.connect(
             upstream_url,
-            subprotocols=protocols,
+            subprotocols=list(protocols),  # type: ignore[arg-type]
             ping_interval=20,
             ping_timeout=20,
             max_size=8 * 1024 * 1024,
@@ -127,7 +127,12 @@ async def realtime_voice_proxy(client_ws: WebSocket):
 
             async def upstream_to_client() -> None:
                 async for message in upstream:
-                    await client_ws.send_text(message)
+                    text = (
+                        message
+                        if isinstance(message, str)
+                        else message.decode("utf-8", errors="replace")
+                    )
+                    await client_ws.send_text(text)
 
             done, pending = await asyncio.wait(
                 [

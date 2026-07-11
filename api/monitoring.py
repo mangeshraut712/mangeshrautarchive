@@ -656,7 +656,7 @@ class SystemMonitor:
                 status = HealthStatus.DEGRADED
                 message = "Warning: Elevated resource usage"
 
-            details = {
+            details: Dict[str, Any] = {
                 "cpu_percent": cpu_percent,
                 "memory_percent": memory.percent,
                 "memory_available_gb": round(memory.available / (1024**3), 2),
@@ -664,7 +664,9 @@ class SystemMonitor:
                 "disk_free_gb": round(disk.free / (1024**3), 2),
             }
             if is_vercel_runtime:
-                details["disk_note"] = "Vercel ephemeral disk is informational and not used for health status."
+                details["disk_note"] = (
+                    "Vercel ephemeral disk is informational and not used for health status."
+                )
 
             return {
                 "status": status,

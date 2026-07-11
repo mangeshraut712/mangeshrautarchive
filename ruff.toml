@@ -1,0 +1,8 @@
+# Align Ruff with project .flake8 policy for local + CI consistency
+target-version = "py312"
+line-length = 120
+exclude = [".git", "__pycache__", "old", "build", "dist", ".venv", "venv", "node_modules"]
+
+[lint]
+# Mirror .flake8 extend-ignore (W503 is not a Ruff code)
+ignore = ["E203", "E402", "E501", "W291", "W293"]

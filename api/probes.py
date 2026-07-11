@@ -566,14 +566,20 @@ async def probe_analytics_reach(monitor) -> Dict[str, Any]:
 
         mock_request = Request(scope={"type": "http", "headers": []})
         response = await get_portfolio_reach(mock_request)
-        payload = (
-            json.loads(response.body.decode("utf-8"))
-            if hasattr(response, "body")
-            else response
-        )
+        if isinstance(response, dict):
+            payload = response
+        else:
+            body = getattr(response, "body", b"{}")
+            if isinstance(body, memoryview):
+                body_bytes = body.tobytes()
+            elif isinstance(body, (bytes, bytearray)):
+                body_bytes = bytes(body)
+            else:
+                body_bytes = str(body).encode("utf-8")
+            payload = json.loads(body_bytes.decode("utf-8"))
         latency = round((time.time() - start) * 1000)
-        
-        reach = payload.get("total_reach", 0)
+
+        reach = payload.get("total_reach", 0) if isinstance(payload, dict) else 0
         return {
             "name": "Portfolio Reach API",
             "status": HealthStatus.HEALTHY.value,

@@ -322,19 +322,26 @@ class GoogleAnalyticsDataClient:
             ),
             return_exceptions=True,
         )
-        for report in (total_report, week_country_report, week_totals_report, daily_report):
-            if isinstance(report, Exception):
+        reports = (total_report, week_country_report, week_totals_report, daily_report)
+        for report in reports:
+            if isinstance(report, BaseException):
                 raise report
 
-        total_row = (total_report.get("rows") or [{}])[0]
-        week_row = (week_totals_report.get("rows") or [{}])[0]
+        # Narrow after exception checks for type checkers
+        total_data = total_report if isinstance(total_report, dict) else {}
+        week_country_data = week_country_report if isinstance(week_country_report, dict) else {}
+        week_totals_data = week_totals_report if isinstance(week_totals_report, dict) else {}
+        daily_data = daily_report if isinstance(daily_report, dict) else {}
+
+        total_row = (total_data.get("rows") or [{}])[0]
+        week_row = (week_totals_data.get("rows") or [{}])[0]
         top_countries = self._top_countries(
             [
                 {
                     "country": self._dimension_value(row, 0),
                     "users": self._metric_value(row, 0),
                 }
-                for row in week_country_report.get("rows", [])
+                for row in week_country_data.get("rows", [])
             ],
             limit=10,
         )
@@ -346,9 +353,9 @@ class GoogleAnalyticsDataClient:
         active_users_last_30_mins = 0
         realtime_countries: List[Dict[str, Any]] = []
         try:
-            if isinstance(realtime_result, Exception):
+            if isinstance(realtime_result, BaseException):
                 raise realtime_result
-            realtime_data = realtime_result
+            realtime_data = realtime_result if isinstance(realtime_result, dict) else {}
             total_rt_users = 0
             parsed_rt_countries: List[Dict[str, Any]] = []
             for row in realtime_data.get("rows", []):
@@ -368,7 +375,7 @@ class GoogleAnalyticsDataClient:
             logger.error(f"Error querying realtime GA report: {re}", exc_info=True)
 
         trend_by_date = {}
-        for row in daily_report.get("rows", []):
+        for row in daily_data.get("rows", []):
             date_key = self._dimension_value(row, 0)
             if len(date_key) == 8:
                 date_key = f"{date_key[:4]}-{date_key[4:6]}-{date_key[6:]}"
@@ -380,7 +387,7 @@ class GoogleAnalyticsDataClient:
             }
 
         from zoneinfo import ZoneInfo
-        time_zone_str = total_report.get("metadata", {}).get("timeZone", "UTC")
+        time_zone_str = total_data.get("metadata", {}).get("timeZone", "UTC")
         try:
             tz = ZoneInfo(time_zone_str)
         except Exception:

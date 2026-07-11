@@ -3,14 +3,14 @@
   "exclude": ["**/__pycache__", "scripts", "tests", "src", "node_modules", "dist", ".venv", "venv"],
   "pythonVersion": "3.12",
   "pythonPlatform": "All",
-  "venvPath": "..",
+  "venvPath": ".",
   "venv": ".venv",
   "reportMissingImports": true,
   "executionEnvironments": [
     {
-      "root": "..",
+      "root": ".",
       "pythonVersion": "3.12",
-      "extraPaths": [".."]
+      "extraPaths": ["."]
     }
   ]
 }
