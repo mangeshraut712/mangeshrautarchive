@@ -10,8 +10,8 @@
 /* 1. FADE-IN ON SCROLL - Cards, Content Blocks */
 @keyframes fadeInUp {
   from {
-    opacity: 0;
-    transform: translateY(40px);
+    opacity: 1;
+    transform: translateY(12px);
   }
 
   to {
@@ -58,7 +58,7 @@
 
 @keyframes skillBadgeEntrance {
   from {
-    opacity: 0;
+    opacity: 1;
     transform: translate3d(0, 10px, 0) scale(0.97);
   }
 
@@ -70,7 +70,7 @@
 
 @keyframes microReveal {
   from {
-    opacity: 0;
+    opacity: 1;
     transform: translate3d(0, 8px, 0);
   }
 
@@ -82,7 +82,7 @@
 
 @keyframes microScaleIn {
   from {
-    opacity: 0;
+    opacity: 1;
     transform: scale(0.96);
   }
 
@@ -107,7 +107,7 @@
 /* 2. SECTION HEADING REVEAL */
 @keyframes headingReveal {
   from {
-    opacity: 0;
+    opacity: 1;
     transform: translateY(-20px);
     letter-spacing: 0.1em;
   }
@@ -122,7 +122,7 @@
 /* 3. HERO SECTION ENTRANCE */
 @keyframes heroFadeIn {
   from {
-    opacity: 0;
+    opacity: 1;
     transform: scale(0.95);
   }
 
@@ -135,7 +135,7 @@
 /* 5. NEURAL REVEAL - Chatbot, AI Chips */
 @keyframes neuralReveal {
   from {
-    opacity: 0;
+    opacity: 1;
     transform: scale(0.9) translateY(10px);
   }
 
@@ -161,7 +161,7 @@
 /* 6. IMAGE FADE-IN */
 @keyframes imageFade {
   from {
-    opacity: 0;
+    opacity: 1;
     filter: blur(4px);
   }
 
@@ -175,26 +175,44 @@
    UTILITY CLASSES - Add these to HTML elements
    ═══════════════════════════════════════════════════════════ */
 
-/* Scroll-triggered animations (use with Intersection Observer)
-   Content-first fail-safe: auto-reveal after 450ms so fast scroll
-   never leaves blank sections if IO or JS is delayed. */
-@keyframes scrollRevealFailsafe {
+/* Content-first: never opacity:0. Scroll polish is transform-only. */
+@keyframes scrollPolishIn {
+  from {
+    opacity: 1;
+    transform: translate3d(0, 10px, 0);
+  }
+
   to {
     opacity: 1;
-    transform: none;
+    transform: translate3d(0, 0, 0);
   }
 }
 
 .animate-on-scroll {
-  opacity: 0;
-  animation: scrollRevealFailsafe 0.01s linear 0.45s forwards;
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: translate3d(0, 6px, 0);
 }
 
 .animate-on-scroll.animate-in {
-  animation: microReveal 0.42s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  opacity: 1 !important;
+  visibility: visible !important;
+  animation: scrollPolishIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-/* Cards - Projects, Experience, Education, etc. */
+.profile-image-wrapper,
+.profile-image-wrapper.animate-in,
+.profile-image-wrapper.animate-on-scroll,
+.hero-cta,
+.hero-identity-item,
+#avatar-toggle {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: none !important;
+  animation: none !important;
+}
+
+/* Cards - transform polish only (never opacity:0) */
 .showcase-project-card.animate-in,
 .experience-content.animate-in,
 .education-content.animate-in,
@@ -211,21 +229,21 @@
 .about-highlight-card.animate-in,
 .about-text-card.animate-in,
 .eng-showcase-card.animate-in,
-.engineering-evidence-card.animate-in,
-.hero-cta.animate-in,
-.hero-identity-item.animate-in {
-  animation: microReveal 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+.engineering-evidence-card.animate-in {
+  opacity: 1 !important;
+  animation: scrollPolishIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .about-image.animate-in,
-.profile-image-wrapper.animate-in,
 img.about-image.animate-in {
-  animation: microScaleIn 0.48s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  opacity: 1 !important;
+  animation: scrollPolishIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 /* Section Headings */
 section h2.animate-in {
-  animation: headingReveal 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  opacity: 1 !important;
+  animation: scrollPolishIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 /* Stagger delays for cards */
@@ -432,12 +450,13 @@ html.dark .timeline-line::before {
 }
 
 /* ═══════════════════════════════════════════════════════════
-   LAZY LOAD IMAGE FADE
+   LAZY LOAD IMAGE FADE (content-first — never permanent blank)
+   Native loading=lazy still works; we no longer hide until JS.
    ═══════════════════════════════════════════════════════════ */
 
 img[loading='lazy'] {
-  opacity: 0;
-  transition: opacity 0.6s ease-in-out;
+  opacity: 1;
+  transition: opacity 0.35s ease-in-out;
 }
 
 img[loading='lazy'].loaded,
@@ -450,8 +469,9 @@ img.loaded {
    ═══════════════════════════════════════════════════════════ */
 
 .animate-on-scroll:not(.animate-in) {
-  will-change: transform, opacity;
-  transform: translate3d(0, 0, 0);
+  will-change: transform;
+  opacity: 1 !important;
+  visibility: visible !important;
   backface-visibility: hidden;
 }
 

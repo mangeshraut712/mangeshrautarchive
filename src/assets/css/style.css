@@ -5620,7 +5620,7 @@ html.dark .book-author-text {
    ═══════════════════════════════════════════════════════════ */
 @keyframes microReveal {
   from {
-    opacity: 0;
+    opacity: 1;
     transform: translate3d(0, 8px, 0);
   }
 
@@ -5632,7 +5632,7 @@ html.dark .book-author-text {
 
 @keyframes microScaleIn {
   from {
-    opacity: 0;
+    opacity: 1;
     transform: scale(0.96);
   }
 
@@ -5644,7 +5644,7 @@ html.dark .book-author-text {
 
 @keyframes headingReveal {
   from {
-    opacity: 0;
+    opacity: 1;
     transform: translate3d(0, 12px, 0);
   }
 
@@ -5654,37 +5654,66 @@ html.dark .book-author-text {
   }
 }
 
-/* CSS-only fail-safe: force visible if JS animation never completes */
-@keyframes scrollRevealFailsafe {
+/*
+ * CONTENT-FIRST scroll polish (never blank on scroll up/down).
+ * Pending nodes stay fully opaque. Only a subtle translateY polish runs.
+ */
+@keyframes scrollPolishIn {
+  from {
+    opacity: 1;
+    transform: translate3d(0, 10px, 0);
+  }
+
   to {
     opacity: 1;
-    transform: none;
+    transform: translate3d(0, 0, 0);
   }
 }
 
 .animate-on-scroll {
-  opacity: 0;
-  /* Always become visible — never stay blank on fast scroll / late CSS */
-  animation: scrollRevealFailsafe 0.01s linear 0.45s forwards;
+  opacity: 1 !important;
+  visibility: visible !important;
+  /* Optional offset while pending — still fully readable */
+  transform: translate3d(0, 6px, 0);
 }
 
-.animate-on-scroll.animate-in {
-  animation: microReveal 0.42s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+.animate-on-scroll.animate-in,
+.animate-in {
+  opacity: 1 !important;
+  visibility: visible !important;
+  animation: scrollPolishIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Never hide hero chrome */
+.profile-image-wrapper,
+.profile-image-wrapper.animate-in,
+.profile-image-wrapper.animate-on-scroll,
+.hero-cta,
+.hero-cta.animate-in,
+.hero-identity-item,
+.hero-identity-item.animate-in,
+#avatar-toggle {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: none !important;
+  animation: none !important;
 }
 
 section h2.animate-in {
-  animation: headingReveal 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  opacity: 1 !important;
+  animation: scrollPolishIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .about-image.animate-in,
-.profile-image-wrapper.animate-in,
 img.about-image.animate-in {
-  animation: microScaleIn 0.48s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  opacity: 1 !important;
+  animation: scrollPolishIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .animate-on-scroll,
-  .animate-on-scroll.animate-in {
+  .animate-on-scroll.animate-in,
+  .animate-in {
     opacity: 1 !important;
     transform: none !important;
     animation: none !important;

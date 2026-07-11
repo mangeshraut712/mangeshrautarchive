@@ -270,23 +270,22 @@ html.dark .systems-hero-action--primary:hover {
   margin-right: 0.35rem;
 }
 
-/* Scroll reveal */
+/* Scroll polish — content-first (never blank) */
 .systems-page .animate-on-scroll {
-  opacity: 0;
-  transform: translateY(18px);
-  transition:
-    opacity 0.55s cubic-bezier(0.25, 0.1, 0.25, 1),
-    transform 0.55s cubic-bezier(0.25, 0.1, 0.25, 1);
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: translateY(8px);
+  transition: transform 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 
 .systems-page .animate-on-scroll.animate-in {
-  opacity: 1;
+  opacity: 1 !important;
   transform: translateY(0);
 }
 
 @media (prefers-reduced-motion: reduce) {
   .systems-page .animate-on-scroll {
-    opacity: 1;
+    opacity: 1 !important;
     transform: none;
     transition: none;
   }
