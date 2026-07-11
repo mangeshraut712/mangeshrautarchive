@@ -45,9 +45,15 @@ function initExperienceInteractivity() {
     toggle.className = 'experience-disclosure';
     toggle.setAttribute('aria-expanded', 'true');
     toggle.setAttribute('aria-controls', list.id);
+    const roleLabel =
+      content.querySelector('h3')?.textContent?.trim() ||
+      item.querySelector('h3')?.textContent?.trim() ||
+      `role ${index + 1}`;
+
     toggle.innerHTML =
       '<span class="experience-disclosure__label">Hide details</span>' +
       '<i class="fas fa-chevron-up" aria-hidden="true"></i>';
+    toggle.setAttribute('aria-label', `Hide details, ${roleLabel}`);
 
     header.appendChild(toggle);
 
@@ -63,6 +69,7 @@ function initExperienceInteractivity() {
       if (icon) {
         icon.className = open ? 'fas fa-chevron-up' : 'fas fa-chevron-down';
       }
+      toggle.setAttribute('aria-label', `${open ? 'Hide' : 'Show'} details, ${roleLabel}`);
     };
 
     toggle.addEventListener('click', event => {

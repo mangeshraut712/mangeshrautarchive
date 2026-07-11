@@ -18,9 +18,11 @@ class LiquidGlassEngine {
     this.heavyCaptureScheduled = false;
     this.resizeObserver = null;
     this.captureFallbackReported = false;
-    this._onScroll = () => this.scheduleCapture();
+    // Do not capture on scroll — html2canvas/page capture mid-fling destroys FPS.
+    // Resize/theme changes are enough; surfaces already use CSS backdrop when capture is cold.
+    this._onScroll = null;
     this._onResize = () => {
-      this.scheduleCapture();
+      this.scheduleCapture(false);
       this.surfaces.forEach(surface => surface.resize());
     };
   }
@@ -49,7 +51,6 @@ class LiquidGlassEngine {
     this._initialized = true;
 
     this.tintRatio = this.readTintRatio();
-    window.addEventListener('scroll', this._onScroll, { passive: true });
     window.addEventListener('resize', this._onResize, { passive: true });
 
     this.resizeObserver = new ResizeObserver(() => {

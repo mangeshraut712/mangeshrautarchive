@@ -5655,67 +5655,28 @@ html.dark .book-author-text {
 }
 
 /*
- * CONTENT-FIRST scroll polish (never blank on scroll up/down).
- * Pending nodes stay fully opaque. Only a subtle translateY polish runs.
+ * Instant visibility — no scroll-driven animation thrash.
+ * Any legacy .animate-on-scroll class is forced painted with zero offset.
  */
-@keyframes scrollPolishIn {
-  from {
-    opacity: 1;
-    transform: translate3d(0, 10px, 0);
-  }
-
-  to {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
-  }
-}
-
-.animate-on-scroll {
-  opacity: 1 !important;
-  visibility: visible !important;
-  /* Optional offset while pending — still fully readable */
-  transform: translate3d(0, 6px, 0);
-}
-
+.animate-on-scroll,
 .animate-on-scroll.animate-in,
 .animate-in {
   opacity: 1 !important;
   visibility: visible !important;
-  animation: scrollPolishIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  transform: none !important;
+  animation: none !important;
+  will-change: auto !important;
 }
 
-/* Never hide hero chrome */
 .profile-image-wrapper,
-.profile-image-wrapper.animate-in,
-.profile-image-wrapper.animate-on-scroll,
 .hero-cta,
-.hero-cta.animate-in,
 .hero-identity-item,
-.hero-identity-item.animate-in,
-#avatar-toggle {
+#avatar-toggle,
+section h2.animate-in,
+.about-image.animate-in,
+img.about-image.animate-in {
   opacity: 1 !important;
   visibility: visible !important;
   transform: none !important;
   animation: none !important;
-}
-
-section h2.animate-in {
-  opacity: 1 !important;
-  animation: scrollPolishIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-.about-image.animate-in,
-img.about-image.animate-in {
-  opacity: 1 !important;
-  animation: scrollPolishIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .animate-on-scroll,
-  .animate-on-scroll.animate-in,
-  .animate-in {
-    opacity: 1 !important;
-    transform: none !important;
-    animation: none !important;
-  }
 }

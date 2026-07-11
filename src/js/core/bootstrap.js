@@ -36,66 +36,67 @@ const INTERACTION_MODULES = [
   '../modules/birthday-celebration.js',
 ];
 
+/* Tighter rootMargin = modules load when near, not all at once mid-page */
 const SECTION_MODULES = [
-  { sectionId: 'home', modulePath: '../modules/lastfm.js', rootMargin: '800px 0px' },
+  { sectionId: 'home', modulePath: '../modules/lastfm.js', rootMargin: '200px 0px' },
   {
     sectionId: 'about',
     modulePath: '../modules/card-content-accessibility.js',
-    rootMargin: '800px 0px',
+    rootMargin: '300px 0px',
   },
   {
     sectionId: 'about',
     modulePath: '../modules/about-interactivity.js',
-    rootMargin: '800px 0px',
+    rootMargin: '300px 0px',
   },
   {
     sectionId: 'home',
     modulePath: '../modules/live-activity-strip.js',
-    rootMargin: '800px 0px',
+    rootMargin: '200px 0px',
   },
   {
     sectionId: 'projects',
     modulePath: '../modules/quick-look.js',
-    rootMargin: '800px 0px',
+    rootMargin: '250px 0px',
   },
   {
     sectionId: 'skills',
     modulePath: '../modules/skills-visualization.js',
-    rootMargin: '800px 0px',
+    rootMargin: '400px 0px',
   },
-  { sectionId: 'blog', modulePath: '../modules/blog-loader.js', rootMargin: '800px 0px' },
-  { sectionId: 'blog', modulePath: '../modules/newsletter.js', rootMargin: '800px 0px' },
-  { sectionId: 'contact', modulePath: '../modules/calendar.js', rootMargin: '800px 0px' },
+  { sectionId: 'blog', modulePath: '../modules/blog-loader.js', rootMargin: '250px 0px' },
+  { sectionId: 'blog', modulePath: '../modules/newsletter.js', rootMargin: '200px 0px' },
+  { sectionId: 'contact', modulePath: '../modules/calendar.js', rootMargin: '200px 0px' },
   {
     sectionId: 'currently-section',
     modulePath: '../modules/currently.js',
-    rootMargin: '800px 0px',
+    rootMargin: '200px 0px',
   },
   {
     sectionId: 'currently-section',
     modulePath: '../modules/real-media-loader.js',
-    rootMargin: '800px 0px',
+    rootMargin: '200px 0px',
   },
-  { sectionId: 'currently-section', modulePath: '../modules/lastfm.js', rootMargin: '800px 0px' },
+  { sectionId: 'currently-section', modulePath: '../modules/lastfm.js', rootMargin: '200px 0px' },
   {
     sectionId: 'currently-section',
     modulePath: '../modules/health-widget.js',
-    rootMargin: '800px 0px',
+    rootMargin: '200px 0px',
   },
   {
     sectionId: 'debug-runner-section',
     modulePath: '../modules/debug-runner.js',
-    rootMargin: '800px 0px',
+    rootMargin: '150px 0px',
   },
   {
     sectionId: 'experience',
     modulePath: '../modules/experience-interactivity.js',
-    rootMargin: '500px 0px',
+    rootMargin: '300px 0px',
   },
   {
     sectionId: 'awards',
     modulePath: '../modules/awards-shelf.js',
-    rootMargin: '500px 0px',
+    rootMargin: '250px 0px',
   },
 ];
 
@@ -269,60 +270,30 @@ function warmCriticalSectionPreloads() {
     return;
   }
 
-  scheduleSoon(() => {
-    prefetchGithubProjectsCatalog();
+  /*
+   * Light warm only — do NOT import a dozen modules at once (main-thread jank).
+   * Section modules still load via SECTION_MODULES IntersectionObserver near each section.
+   * Content CSS is already progressive + promoted once in initDeferredStyles.
+   */
+  scheduleSoon(
+    () => {
+      prefetchGithubProjectsCatalog();
+    },
+    Math.max(200, WARM_SECTION_PRELOAD_DELAY_MS)
+  );
+
+  // Near-fold modules only (skills empty shell, about tabs)
+  runWhenIdle(() => {
+    modulePreload('../modules/skills-visualization.js');
+    modulePreload('../modules/about-interactivity.js');
+    loadModule('../modules/skills-visualization.js');
+    loadModule('../modules/about-interactivity.js');
+  }, 1200);
+
+  // Projects catalog after first paint settles
+  runWhenIdle(() => {
     warmProjectShowcaseAssets();
-
-    // Idle pre-warm of section CSS so fast scroll never hits unstyled / spinner-only sections
-    runWhenIdle(() => {
-      const nearFoldStyleKeys = [
-        'about',
-        'skills',
-        'experience',
-        'projects',
-        'engineering',
-        'education',
-        'publications',
-        'awards',
-        'certifications',
-        'blog',
-        'recommendations',
-        'contact',
-        'currently',
-      ];
-      loadDeferredStyles(nearFoldStyleKeys).catch(() => {});
-
-      // Eager-load near-fold interactive modules so users never see "Loading..." spinners
-      loadModule('../modules/skills-visualization.js');
-      loadModule('../modules/about-interactivity.js');
-      loadModule('../modules/card-content-accessibility.js');
-
-      runWhenIdle(() => {
-        const modulesToPreload = [
-          '../modules/blog-loader.js',
-          '../modules/newsletter.js',
-          '../modules/calendar.js',
-          '../modules/currently.js',
-          '../modules/real-media-loader.js',
-          '../modules/lastfm.js',
-          '../modules/health-widget.js',
-          '../modules/experience-interactivity.js',
-          '../modules/awards-shelf.js',
-        ];
-        modulesToPreload.forEach(path => {
-          modulePreload(path);
-        });
-
-        // Start content modules so "Loading..." shells clear before the user arrives
-        loadModule('../modules/blog-loader.js');
-        loadModule('../modules/experience-interactivity.js');
-        loadModule('../modules/awards-shelf.js');
-        import('../modules/engineering-showcase.js')
-          .then(module => module.initEngineeringTeaser?.())
-          .catch(() => {});
-      }, 800);
-    }, 100);
-  }, WARM_SECTION_PRELOAD_DELAY_MS);
+  }, 2000);
 }
 
 function ensureDeferredStylesheetLoaded(link) {
@@ -331,16 +302,20 @@ function ensureDeferredStylesheetLoaded(link) {
     return Promise.resolve(true);
   }
 
-  if (link.dataset.styleLoaded === 'true') {
-    // Progressive media=print links may already be loaded — promote to all.
+  const promote = () => {
     if (link.media === 'print') {
       link.media = 'all';
     }
+    link.dataset.styleLoaded = 'true';
+  };
+
+  if (link.dataset.styleLoaded === 'true') {
+    promote();
     return Promise.resolve(true);
   }
 
-  // Already applied via progressive onload (media flipped to all + sheet present)
-  if (link.sheet && link.media !== 'print' && link.getAttribute('href')) {
+  // Already applied
+  if (link.getAttribute('href') && link.sheet && link.media !== 'print') {
     link.dataset.styleLoaded = 'true';
     return Promise.resolve(true);
   }
@@ -350,17 +325,17 @@ function ensureDeferredStylesheetLoaded(link) {
   }
 
   const pending = new Promise(resolve => {
+    let settled = false;
     const settle = success => {
+      if (settled) return;
+      settled = true;
       if (success) {
-        link.dataset.styleLoaded = 'true';
-        if (link.media === 'print') {
-          link.media = 'all';
-        }
+        promote();
       }
       resolve(success);
     };
 
-    // Progressive links already have href + media=print — wait for load then enable.
+    // Already in CSSOM
     if (link.getAttribute('href') && link.sheet) {
       settle(true);
       return;
@@ -371,17 +346,21 @@ function ensureDeferredStylesheetLoaded(link) {
 
     if (!link.getAttribute('href')) {
       link.setAttribute('href', href);
-    } else if (link.media === 'print' && link.sheet) {
-      // Cached/parsed already
-      settle(true);
-    } else if (link.media === 'print') {
-      // Force apply if browser already finished loading while we listened late
-      requestAnimationFrame(() => {
-        if (link.sheet) {
-          settle(true);
-        }
-      });
     }
+
+    // Hang-safety: load may have fired before listeners attached
+    const trySheet = () => {
+      if (settled) return;
+      if (link.sheet || (link.media === 'all' && link.dataset.styleLoaded === 'true')) {
+        settle(true);
+      }
+    };
+    requestAnimationFrame(trySheet);
+    window.setTimeout(trySheet, 0);
+    window.setTimeout(trySheet, 50);
+    window.setTimeout(trySheet, 200);
+    // Hard timeout — never block interaction handlers forever
+    window.setTimeout(() => settle(Boolean(link.sheet)), 2000);
   });
 
   deferredStyleLoads.set(href, pending);
@@ -446,6 +425,7 @@ async function loadDeferredStyles(styleKeys = [], documentRef = document) {
 }
 
 function modulePreload(path) {
+  // Lightweight hint only — does not execute the module.
   const resolvedPath = path.replace(/^\.\.\//, 'js/');
   if (document.querySelector(`link[rel="modulepreload"][href="${resolvedPath}"]`)) {
     return;
@@ -837,12 +817,14 @@ function initDeferredStyles() {
   }
   window.__portfolioDeferredStylesBound = true;
 
-  const loadInteractionStyles = () => {
-    loadDeferredStyles(FIRST_INTERACTION_STYLE_KEYS).catch(error => {
-      console.warn('Deferred style load skipped:', error);
-    });
-  };
+  if (isPerformanceAudit()) {
+    return;
+  }
 
+  // Interaction-only CSS (chat/birthday) — not needed for scroll content
+  const loadInteractionStyles = () => {
+    loadDeferredStyles(FIRST_INTERACTION_STYLE_KEYS).catch(() => {});
+  };
   USER_INTERACTION_EVENTS.forEach(eventName => {
     window.addEventListener(eventName, loadInteractionStyles, {
       once: true,
@@ -851,39 +833,30 @@ function initDeferredStyles() {
     });
   });
 
-  if (isPerformanceAudit()) {
-    return;
-  }
-
-  // CONTENT CSS: promote immediately so scroll never hits unstyled layout collapse.
-  // Progressive <link media=print> already starts download; JS flips media + marks loaded.
-  const allContentStyleKeys = [
+  /*
+   * Progressive content CSS already has href + media=print in HTML.
+   * Promote all content sheets ONCE (not via 14 IntersectionObservers + dual warm paths).
+   * Mid-scroll IO style loads caused main-thread jank and reflow storms.
+   */
+  const contentKeys = [
     ...new Set([
       ...EARLY_IDLE_STYLE_KEYS,
-      ...SECTION_STYLE_GROUPS.flatMap(group => group.styleKeys),
+      ...SECTION_STYLE_GROUPS.flatMap(g => g.styleKeys),
       'share',
     ]),
   ];
 
-  const promoteContentStyles = () => {
-    loadDeferredStyles(allContentStyleKeys).catch(error => {
-      console.warn('Content style promote skipped:', error);
-    });
+  const promoteOnce = () => {
+    if (window.__portfolioContentStylesPromoted) return;
+    window.__portfolioContentStylesPromoted = true;
+    loadDeferredStyles(contentKeys).catch(() => {});
   };
 
-  // Run ASAP — do not wait for window load / idle (that was the blank-scroll bug).
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', promoteContentStyles, { once: true });
+    document.addEventListener('DOMContentLoaded', promoteOnce, { once: true });
   } else {
-    promoteContentStyles();
+    promoteOnce();
   }
-  // Also on first paint in case DOMContentLoaded already fired
-  scheduleSoon(promoteContentStyles, 0);
-
-  // Section observers remain as a safety net for late dynamic links
-  SECTION_STYLE_GROUPS.forEach(({ sectionId, styleKeys, rootMargin }) => {
-    observeSectionTask(sectionId, () => loadDeferredStyles(styleKeys), rootMargin);
-  });
 }
 
 function initLazyModules() {
@@ -1304,29 +1277,12 @@ async function checkDeploymentVersion() {
 }
 
 function initScrollBlurThrottle() {
-  if (window.__portfolioScrollBlurBound || prefersReducedMotion()) {
-    return;
-  }
+  /*
+   * Disabled: toggling html.is-scrolling on every fling forced style/layout thrash
+   * across liquid-glass / chrome layers and made mobile scroll feel laggy.
+   * CSS that depended on .is-scrolling for minor polish is not worth the cost.
+   */
   window.__portfolioScrollBlurBound = true;
-
-  let scrollTimer = null;
-  const root = document.documentElement;
-
-  const onScroll = () => {
-    if (!root.classList.contains('is-scrolling')) {
-      root.classList.add('is-scrolling');
-    }
-    clearTimeout(scrollTimer);
-    scrollTimer = window.setTimeout(() => {
-      root.classList.remove('is-scrolling');
-    }, 180);
-  };
-
-  window.addEventListener('scroll', onScroll, { passive: true });
-}
-
-function prefersReducedMotion() {
-  return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 }
 
 function initAppleDisplayEnhancements() {

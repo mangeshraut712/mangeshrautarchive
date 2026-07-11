@@ -49,6 +49,7 @@ function renderEvidenceCards() {
 export function renderEngineeringTeaser(root = document.getElementById('engineering-teaser-root')) {
   if (!root || root.dataset.rendered === 'true') return;
   root.dataset.rendered = 'true';
+  root.setAttribute('aria-busy', 'false');
 
   root.innerHTML = `
     <div class="engineering-showcase-shell">
