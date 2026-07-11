@@ -250,12 +250,11 @@ html.dark .certification-logo[alt='Spoken Tutorial'] {
   filter: brightness(1.3) contrast(1.1);
 }
 
-/* ============================================
-   Certifications grid — always show all cards.
-   (Collapsing middle-section content made the page feel empty/laggy.)
-   View More button can still toggle .expanded for future polish.
-   ============================================ */
-
+/* Cards stay flex when visible; preview module hides .is-preview-hidden */
 .certifications-grid .certification-card {
   display: flex !important;
+}
+
+.certifications-grid:not(.is-expanded) .certification-card.is-preview-hidden {
+  display: none !important;
 }

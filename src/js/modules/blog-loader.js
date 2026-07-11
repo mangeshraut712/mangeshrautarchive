@@ -1,5 +1,6 @@
 import { blogPosts } from './blog-data.js';
 import { rescanCardContentAccessibility } from './card-content-accessibility.js';
+import { refreshSectionPreview } from './section-preview.js';
 
 /**
  * Blog Loader Module
@@ -92,6 +93,8 @@ class BlogLoader {
       .join('');
 
     rescanCardContentAccessibility(this.container);
+    // Progressive disclosure after inject (View more articles)
+    refreshSectionPreview(this.container);
   }
 
   bindCardEvents() {

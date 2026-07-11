@@ -36,6 +36,7 @@ import './modules/project-xr.js';
 import './modules/projects-showcase.js';
 import './modules/real-media-loader.js';
 import './modules/scroll-animations.js';
+import './modules/section-preview.js';
 import './modules/search.js';
 import './modules/share-widget.js';
 import './modules/skills-visualization.js';

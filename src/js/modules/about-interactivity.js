@@ -15,7 +15,8 @@ export function initAboutInteractivity() {
   const panels = card.querySelectorAll('.about-tab-panel');
   const slider = card.querySelector('.segmented-control-bg');
 
-  let activePanelId = 'full-story-panel';
+  // Prefer Quick Summary on first paint — Full Story is opt-in (Apple density).
+  let activePanelId = 'quick-summary-panel';
 
   const updateSlider = activeBtn => {
     if (!slider || !activeBtn) return;

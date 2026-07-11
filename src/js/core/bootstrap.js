@@ -1,4 +1,8 @@
-const EAGER_MODULES = ['../modules/accessibility.js', '../modules/scroll-animations.js'];
+const EAGER_MODULES = [
+  '../modules/accessibility.js',
+  '../modules/scroll-animations.js',
+  '../modules/section-preview.js',
+];
 
 const IDLE_EAGER_MODULES = [
   '../modules/liquid-glass-engine.js',
@@ -167,6 +171,11 @@ const MODULE_IMPORTERS = {
   '../modules/scroll-animations.js': () =>
     import('../modules/scroll-animations.js').then(module => {
       module.initScrollAnimations?.();
+    }),
+  '../modules/section-preview.js': () =>
+    import('../modules/section-preview.js').then(module => {
+      module.initSectionPreviews?.();
+      module.initContactExtras?.();
     }),
 };
 

@@ -38,7 +38,11 @@ const INTERACTION_MODULES = [
   '../modules/birthday-celebration.js',
 ];
 
-const EAGER_MODULES = ['../modules/accessibility.js', '../modules/scroll-animations.js'];
+const EAGER_MODULES = [
+  '../modules/accessibility.js',
+  '../modules/scroll-animations.js',
+  '../modules/section-preview.js',
+];
 
 const IDLE_EAGER_MODULES = [
   '../modules/liquid-glass-engine.js',
@@ -121,6 +125,7 @@ const MODULE_IMPORTERS = new Set([
   '../modules/search.js',
   '../modules/about-interactivity.js',
   '../modules/scroll-animations.js',
+  '../modules/section-preview.js',
 ]);
 
 describe('Bootstrap module parity', () => {

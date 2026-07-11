@@ -248,7 +248,9 @@ main > section#blog,
 main > section#contact,
 main > section#debug-runner-section {
   background: #fff;
-  padding: 5rem 0;
+  /* Apple-like section rhythm: generous but not endless */
+  padding-block: clamp(3rem, 6.5vw, 5.25rem);
+  padding-inline: 0;
 }
 
 html.dark main > section.section-standard,
@@ -269,6 +271,202 @@ html.dark main > section#blog,
 html.dark main > section#contact,
 html.dark main > section#debug-runner-section {
   background: #000;
+}
+
+/* ========================================
+   APPLE PAGE SHELL — gutters, max width, grids
+   ======================================== */
+
+main#main-content {
+  overflow-x: clip;
+}
+
+/* Content measure closer to apple.com product pages (~980–1120) */
+main#main-content > section > .container {
+  width: 100%;
+  max-width: min(1120px, 100%);
+  margin-inline: auto;
+  padding-inline: clamp(1.25rem, 4.5vw, 2.5rem);
+  box-sizing: border-box;
+}
+
+main#main-content > section h2 {
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+
+main#main-content > section .section-subtitle {
+  max-width: 42rem;
+  margin-inline: auto;
+  margin-bottom: clamp(1.5rem, 3vw, 2.25rem);
+  text-wrap: pretty;
+  color: var(--text-secondary, #6e6e73);
+  font-size: clamp(1.05rem, 1.6vw, 1.25rem);
+  line-height: 1.45;
+  text-align: center;
+}
+
+/* ========================================
+   SECTION PREVIEW — View more / Show less
+   ======================================== */
+
+[data-section-preview]:not(.is-expanded) .is-preview-hidden,
+.timeline-section-header.is-preview-hidden {
+  display: none !important;
+}
+
+/* CSS-first collapse (pre-JS) for simple direct-child grids — matches data-preview-limit */
+#certifications-grid:not(.is-expanded) > .certification-card:nth-child(n + 4),
+#recommendations-grid:not(.is-expanded) > .recommendation-card:nth-child(n + 3),
+#blog-posts-container:not(.is-expanded) > .blog-card:nth-child(n + 4),
+#awards-grid:not(.is-expanded) > .award-card:nth-child(n + 3) {
+  display: none !important;
+}
+
+/* Experience / education use class hooks from section-preview.js */
+.experience-timeline:not(.is-expanded) > .experience-item.is-preview-hidden,
+.education-timeline:not(.is-expanded) > .education-item.is-preview-hidden {
+  display: none !important;
+}
+
+.section-preview-actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: clamp(1.25rem, 3vw, 1.85rem);
+  padding-inline: 0.5rem;
+}
+
+.section-preview-actions[hidden] {
+  display: none !important;
+}
+
+.section-preview-btn {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  min-height: 44px;
+  padding: 0.7rem 1.35rem;
+  border-radius: 980px;
+  border: 1px solid rgb(0 113 227 / 28%);
+  background: rgb(0 113 227 / 6%);
+  color: #0071e3;
+  font-family: inherit;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.section-preview-btn:hover {
+  background: rgb(0 113 227 / 12%);
+  border-color: rgb(0 113 227 / 45%);
+}
+
+.section-preview-btn:active {
+  transform: scale(0.98);
+}
+
+.section-preview-btn:focus-visible {
+  outline: 2px solid #0071e3;
+  outline-offset: 3px;
+}
+
+html.dark .section-preview-btn {
+  color: #2997ff;
+  border-color: rgb(41 151 255 / 35%);
+  background: rgb(41 151 255 / 10%);
+}
+
+html.dark .section-preview-btn:hover {
+  background: rgb(41 151 255 / 18%);
+  border-color: rgb(41 151 255 / 55%);
+}
+
+html.dark .section-preview-btn:focus-visible {
+  outline-color: #2997ff;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .section-preview-btn {
+    transition: none;
+  }
+
+  .section-preview-btn:active {
+    transform: none;
+  }
+}
+
+/* Contact secondary blocks (support / social / marquees) */
+#contact:not(.is-contact-expanded) [data-contact-extra],
+#contact [data-contact-extra].is-preview-hidden {
+  display: none !important;
+}
+
+#contact .contact-extras-actions {
+  margin-block: 0.75rem 0.25rem;
+}
+
+#contact .contact-info-all {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Subpage shell: consistent side gutters (systems / uses / travel) */
+.systems-shell,
+.uses-page .systems-shell,
+body.systems-page main,
+body.uses-page main {
+  box-sizing: border-box;
+}
+
+body.systems-page .systems-shell,
+body.uses-page .systems-shell {
+  padding-inline: clamp(1rem, 4vw, 2rem);
+}
+
+/* Recommendation quotes — keep cards short on first paint */
+.recommendation-text {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 5;
+  line-clamp: 5;
+  overflow: hidden;
+}
+
+#recommendations-grid.is-expanded .recommendation-text {
+  -webkit-line-clamp: unset;
+  line-clamp: unset;
+  display: block;
+  overflow: visible;
+}
+
+/* Award blurbs — scannable titles first */
+.award-description {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  overflow: hidden;
+}
+
+#awards-grid.is-expanded .award-description {
+  -webkit-line-clamp: unset;
+  line-clamp: unset;
+  display: block;
+  overflow: visible;
 }
 
 /* ========================================
@@ -390,11 +588,23 @@ img {
   main > section#blog,
   main > section#contact,
   main > section#debug-runner-section {
-    padding: 3rem 0;
+    padding-block: clamp(2.5rem, 8vw, 3.25rem);
+  }
+
+  main#main-content > section > .container {
+    padding-inline: clamp(1rem, 4.5vw, 1.5rem);
   }
 
   .container-padding {
     padding: 0 1rem;
+  }
+
+  /* Denser card grids on phones — still readable */
+  .certifications-grid,
+  .recommendations-grid,
+  .awards-grid,
+  #blog-posts-container {
+    gap: 1rem !important;
   }
 
   .btn,

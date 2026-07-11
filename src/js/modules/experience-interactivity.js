@@ -34,8 +34,7 @@ function initExperienceInteractivity() {
     const detailsId = `experience-details-${index}`;
     list.id = list.id || detailsId;
 
-    // Default open for first role, open for others too (content-first — never blank).
-    // Users can collapse long lists after reading.
+    // First role: details open. Later roles: Show details (scannable timeline).
     const header =
       item.querySelector('.experience-header') || content.querySelector('h3')?.parentElement;
     if (!header || header.querySelector('.experience-disclosure')) return;
@@ -43,7 +42,6 @@ function initExperienceInteractivity() {
     const toggle = document.createElement('button');
     toggle.type = 'button';
     toggle.className = 'experience-disclosure';
-    toggle.setAttribute('aria-expanded', 'true');
     toggle.setAttribute('aria-controls', list.id);
     const roleLabel =
       content.querySelector('h3')?.textContent?.trim() ||
@@ -51,9 +49,8 @@ function initExperienceInteractivity() {
       `role ${index + 1}`;
 
     toggle.innerHTML =
-      '<span class="experience-disclosure__label">Hide details</span>' +
-      '<i class="fas fa-chevron-up" aria-hidden="true"></i>';
-    toggle.setAttribute('aria-label', `Hide details, ${roleLabel}`);
+      '<span class="experience-disclosure__label">Show details</span>' +
+      '<i class="fas fa-chevron-down" aria-hidden="true"></i>';
 
     header.appendChild(toggle);
 
@@ -77,7 +74,7 @@ function initExperienceInteractivity() {
       setOpen(list.hidden);
     });
 
-    setOpen(true);
+    setOpen(index === 0);
   });
 }
 
