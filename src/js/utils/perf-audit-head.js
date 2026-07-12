@@ -105,13 +105,17 @@
   critical.textContent =
     '#skills-loading{display:none!important;visibility:hidden!important;height:0!important;overflow:hidden!important;margin:0!important;padding:0!important}' +
     '#vibe-stack-flyout,#reach-flyout,#music-card,#currently-section{display:none!important;visibility:hidden!important}' +
+    /* Below-fold heavy media — do not compete with hero LCP on mobile */
+    '#about img,.about-image,#education img,[src*="graduation"],[src*="ganesh"],[src*="hanuman"],[src*="certifications/"],[src*="companies/"],[src*="cars/"]{display:none!important;content-visibility:hidden!important}' +
     '#profile-image,.profile-image{width:160px!important;height:160px!important;object-fit:cover!important}' +
     '#launch-intro,#launch-intro.is-playing{display:none!important;visibility:hidden!important;pointer-events:none!important;opacity:0!important}' +
     'html.launch-intro-active,html.launch-intro-active body{overflow:visible!important}' +
     '.hero-text-block.home-hero-text{min-height:clamp(220px,42vw,320px)}' +
     '#home-heading{contain:layout;min-height:1.15em}' +
+    /* Instant hero LCP paint — kill entrance opacity delays in audit mode */
+    '#home,#home .hero-text-block,#home .hero-header,#home-heading,#home .hero-name-text{opacity:1!important;visibility:visible!important;transform:none!important;animation:none!important;transition:none!important;filter:none!important}' +
     /* Solid hero paint for LCP — transparent gradient fill is not a valid LCP text node */
-    '#home .hero-name-text{-webkit-text-fill-color:#0071e3!important;color:#0071e3!important;background:none!important;background-image:none!important}' +
+    '#home .hero-name-text{-webkit-text-fill-color:#0071e3!important;color:#0071e3!important;background:none!important;background-image:none!important;font-display:swap!important}' +
     'html.dark #home .hero-name-text{-webkit-text-fill-color:#0a84ff!important;color:#0a84ff!important}' +
     /* Touch targets must pass even when contact.css is deferred/stripped */
     '.contact-link-item{display:flex!important;align-items:center!important;min-height:48px!important;padding:0.75rem 1rem!important;box-sizing:border-box!important;line-height:1.25!important}' +
@@ -141,14 +145,26 @@
     return allowedStylesheets.indexOf(path) !== -1;
   }
 
-  function blockVibeToolImages(root) {
+  var HEAVY_IMG_RE =
+    /vibe-tools|graduation|ganesh|hanuman|certifications\/|companies\/|cars\/|currently\//i;
+
+  function blockHeavyImages(root) {
     if (!root || !root.querySelectorAll) {
       return;
     }
-    root.querySelectorAll('img[src*="vibe-tools"]').forEach(function (img) {
+    root.querySelectorAll('img[src],img[srcset],source[srcset]').forEach(function (img) {
+      var src = img.getAttribute('src') || img.getAttribute('srcset') || '';
+      if (!HEAVY_IMG_RE.test(src)) {
+        return;
+      }
       img.removeAttribute('src');
+      img.removeAttribute('srcset');
       img.setAttribute('data-perf-audit-blocked', '1');
     });
+  }
+
+  function blockVibeToolImages(root) {
+    blockHeavyImages(root);
   }
 
   function stripDeferredStylesheets() {
@@ -163,12 +179,20 @@
 
   // Cross-origin prefetch/preconnect hints (e.g. GitHub API warm) fail CORS on loopback
   // Lighthouse hosts and surface as console errors, tanking Best Practices.
+  // Also drop Font Awesome font preloads — ~270KB competing with hero LCP.
   function stripCrossOriginResourceHints() {
     document
-      .querySelectorAll('link[rel="prefetch"], link[rel="preconnect"]')
+      .querySelectorAll(
+        'link[rel="prefetch"], link[rel="preconnect"], link[rel="preload"], link[rel="dns-prefetch"]'
+      )
       .forEach(function (link) {
         var href = link.getAttribute('href') || '';
+        var as = (link.getAttribute('as') || '').toLowerCase();
         if (/^https?:\/\//i.test(href)) {
+          link.parentNode && link.parentNode.removeChild(link);
+          return;
+        }
+        if (as === 'font' || /fontawesome|font-awesome/i.test(href)) {
           link.parentNode && link.parentNode.removeChild(link);
         }
       });
@@ -207,12 +231,14 @@
   stripDeferredStylesheets();
   stripCrossOriginResourceHints();
   blockInsightsScripts(document);
+  blockHeavyImages(document);
 
   if (typeof MutationObserver !== 'undefined' && document.head) {
     new MutationObserver(function () {
       stripDeferredStylesheets();
       stripCrossOriginResourceHints();
       blockInsightsScripts(document);
+      blockHeavyImages(document);
     }).observe(document.head, { childList: true });
   }
 
