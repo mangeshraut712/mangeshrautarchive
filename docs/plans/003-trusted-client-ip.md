@@ -88,7 +88,7 @@ Place near existing rate-limit tests (`tests/api/test_rate_limit.py` if present)
 
 ### Step 3: Done
 
-Update `plans/README.md` → 003 DONE
+Update `docs/plans/README.md` → 003 DONE
 
 ## Done criteria
 

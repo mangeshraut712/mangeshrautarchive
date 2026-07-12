@@ -5,7 +5,7 @@ import {
   getGithubProjectsPrefetchUrl,
   resolveGithubApiBase,
   shouldDeferCriticalWarmup,
-} from './section-preload.js';
+} from '../../src/js/utils/section-preload.js';
 
 describe('section-preload', () => {
   it('resolves github API base from configured app config', () => {

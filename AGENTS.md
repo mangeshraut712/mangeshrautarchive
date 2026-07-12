@@ -137,41 +137,33 @@ npm run qa:lighthouse:vercel  # Live Vercel Lighthouse floors
 
 ```
 mangeshrautarchive/
-├── src/                    # Frontend source
-│   ├── index.html          # Main portfolio page
-│   ├── systems.html        # Systems dashboard (no footer)
-│   ├── monitor.html        # Monitor dashboard (no footer)
-│   ├── travel.html         # Travel page
-│   ├── uses.html           # Uses page
-│   ├── 404.html            # Custom 404
-│   ├── js/                 # JavaScript ES modules
-│   ├── assets/css/         # Vanilla CSS + Tailwind output
-│   └── assets/             # Images, fonts, icons
-├── api/                    # Python FastAPI backend
-│   ├── index.py            # FastAPI app entrypoint
-│   ├── config.py           # Environment + model config
-│   ├── routes/             # API route modules
-│   ├── monitoring.py       # Health monitoring
-│   └── integrations/       # Third-party integrations
-├── scripts/                # Build & deployment tooling
-│   ├── build/              # esbuild, image optimization, CSS
-│   ├── deployment/         # Lighthouse gates, security checks
-│   ├── utils/              # Dev servers, Playwright runner
-│   └── qa/                 # QA scripts (iPhone compat, FPS audit)
-├── tests/                  # All test suites
-│   ├── unit/               # Vitest unit tests
-│   ├── api/                # pytest API tests
-│   ├── e2e/                # Playwright E2E specs
-│   └── config/             # Test configuration
-├── config/                 # vulture.toml (CI dead-code scan)
-├── pyrightconfig.json      # Python typecheck (api/)
+├── src/                    # Frontend source → npm run build → dist/
+│   ├── *.html              # Page shells (index, systems, monitor, travel, uses, 404, offline)
+│   ├── js/core|modules|services|utils|data|vendor/
+│   └── assets/css|images|files|icons|vendor/
+├── api/                    # FastAPI (Vercel entry: api/index.py)
+│   ├── routes/             # HTTP route modules
+│   ├── integrations/       # OAuth + third-party connectors
+│   └── config.py · model_router.py · monitoring.py · …
+├── scripts/                # Tooling (not shipped to browsers)
+│   ├── build/              # esbuild, generators, clean
+│   ├── deployment/         # Lighthouse, security, deploy sync
+│   ├── utils/              # dev servers, flake8/vulture runners
+│   ├── qa/                 # browser / device audits
+│   └── integrations/       # OAuth + OpenRouter helpers
+├── tests/                  # All automated tests
+│   ├── unit/               # Vitest (tests/unit/**/*.test.js)
+│   ├── api/                # pytest
+│   ├── e2e/                # Playwright
+│   └── config/             # Extra harness specs
+├── config/                 # doctor.config.js · vulture.toml
+├── docs/                   # STRUCTURE.md · plans/ · doc index
 ├── dist/                   # Build output (git-ignored)
-├── vercel.json             # Vercel deployment config
-├── playwright.config.js    # Playwright multi-browser config
-├── vitest.config.js        # Vitest config
-├── eslint.config.js        # ESLint flat config
-└── package.json            # Node.js config (ESM, engines: 22.x)
+├── vercel.json · package.json · playwright/vitest/eslint configs
+└── pyproject.toml · requirements*.txt
 ```
+
+Full map: [docs/STRUCTURE.md](docs/STRUCTURE.md).
 
 ---
 

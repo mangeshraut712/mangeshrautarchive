@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { bucketEndpointErrors, buildDonutSegments } from './monitor-metrics.js';
+import { bucketEndpointErrors, buildDonutSegments } from '../../src/js/utils/monitor-metrics.js';
 
 describe('bucketEndpointErrors', () => {
   it('classifies server and client failures by last status code', () => {

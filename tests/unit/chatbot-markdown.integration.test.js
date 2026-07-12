@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 
 import { describe, expect, it } from 'vitest';
-import { markdownService } from '../services/MarkdownService.js';
+import { markdownService } from '../../src/js/services/MarkdownService.js';
 
 describe('chatbot markdown integration patterns', () => {
   it('uses containsMarkdown for streaming detection heuristics', () => {

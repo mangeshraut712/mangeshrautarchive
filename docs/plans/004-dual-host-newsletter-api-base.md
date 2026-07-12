@@ -84,7 +84,7 @@ If pure function exported, unit-test host cases. Otherwise add a tiny exported h
 
 ### Step 3: Done
 
-Update plans/README.md → 004 DONE
+Update docs/plans/README.md → 004 DONE
 
 ## Done criteria
 

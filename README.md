@@ -304,16 +304,18 @@ Live reachability (Vercel + Pages) · Lighthouse floors · commit parity.
 
 ```text
 mangeshrautarchive/
+├── src/                 # Frontend (HTML · CSS · ES modules) → dist/
 ├── api/                 # FastAPI · routes · model_router · integrations
-├── src/                 # HTML · CSS · ES modules → dist/
-├── scripts/             # build · deployment · qa · utils
-├── tests/               # unit · api · e2e
-├── .github/workflows/   # deploy.yml · post-deploy-monitoring.yml
-├── vercel.json          # dist + /api rewrites + cron
-├── package.json         # Node 22 · ESM
-├── requirements.txt     # Python runtime
-└── AGENTS.md            # AI contributor brief
+├── scripts/             # build · deployment · qa · utils · integrations
+├── tests/unit|api|e2e/  # Vitest · pytest · Playwright
+├── config/              # doctor · vulture (non-root tool config)
+├── docs/                # STRUCTURE.md · plans/ · doc index
+├── .github/workflows/   # deploy + monitoring
+├── vercel.json · package.json · pyproject.toml
+└── AGENTS.md
 ```
+
+**Map for contributors:** [docs/STRUCTURE.md](docs/STRUCTURE.md) · [scripts/README.md](scripts/README.md) · [tests/README.md](tests/README.md)
 
 ---
 

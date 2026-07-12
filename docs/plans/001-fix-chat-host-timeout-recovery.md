@@ -1,6 +1,6 @@
 # Plan 001: Fix AssistMe host detection, stream timeout, and server-AI recovery
 
-> **Executor instructions**: Follow this plan step by step. Run every verification command and confirm the expected result before moving to the next step. If anything in the "STOP conditions" section occurs, stop and report — do not improvise. When done, update the status row for this plan in `plans/README.md`.
+> **Executor instructions**: Follow this plan step by step. Run every verification command and confirm the expected result before moving to the next step. If anything in the "STOP conditions" section occurs, stop and report — do not improvise. When done, update the status row for this plan in `docs/plans/README.md`.
 >
 > **Drift check (run first)**: `git diff --stat 915866f2..HEAD -- src/js/core/chat.js src/js/modules/chatbot.js tests/`
 > If any in-scope file changed since this plan was written, compare the "Current state" excerpts against the live code before proceeding; on a mismatch, treat it as a STOP condition.
@@ -53,7 +53,7 @@ if (isGitHubPages) {
 
 **Recovery** (~1088–1092): `markServerUnavailable()` sets `canUseServerAI = false` then `setTimeout(() => this.initialize(), 30000)`.
 
-**Conventions**: Vanilla ES modules with `.js` import extensions; single quotes; Vitest under `tests/js/` or colocated `*.test.js`. Commit style: `fix(chatbot): …`.
+**Conventions**: Vanilla ES modules with `.js` import extensions; single quotes; Vitest under `tests/unit/`. Commit style: `fix(chatbot): …`.
 
 ## Commands you will need
 
@@ -69,7 +69,7 @@ if (isGitHubPages) {
 **In scope**:
 
 - `src/js/core/chat.js`
-- New unit tests (prefer `tests/js/chat-api-base.test.js` or export pure helpers from `chat.js` for testability)
+- New unit tests (prefer `tests/unit/chat-api-base.test.js` or export pure helpers from `chat.js` for testability)
 - Optional: `src/js/modules/chatbot.js` only if needed to pass AbortSignal into `chatAPI.ask` / closeWidget (see Step 4)
 
 **Out of scope**:
@@ -156,7 +156,7 @@ npm run check
 
 → exit 0
 
-Update `plans/README.md` row 001 → `DONE`.
+Update `docs/plans/README.md` row 001 → `DONE`.
 
 ## Test plan
 
@@ -171,7 +171,7 @@ Update `plans/README.md` row 001 → `DONE`.
 - [ ] `callApi` does not require `vercel.app` substring
 - [ ] New unit tests cover apex + github.io + empty base cases
 - [ ] No out-of-scope files modified
-- [ ] `plans/README.md` status updated
+- [ ] `docs/plans/README.md` status updated
 
 ## STOP conditions
 

@@ -5,7 +5,7 @@ import {
   markdownService,
   SHOW_MORE_CHAR_THRESHOLD,
   SHOW_MORE_PREVIEW_CHARS,
-} from './MarkdownService.js';
+} from '../../src/js/services/MarkdownService.js';
 
 describe('MarkdownService.render', () => {
   it('renders basic markdown', () => {

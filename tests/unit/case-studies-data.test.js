@@ -4,7 +4,7 @@ import {
   getProjectEvidenceLinks,
   normalizeExternalUrl,
   renderRepoEvidenceRow,
-} from './case-studies-data.js';
+} from '../../src/js/modules/case-studies-data.js';
 
 describe('normalizeExternalUrl', () => {
   it('returns null for empty values', () => {

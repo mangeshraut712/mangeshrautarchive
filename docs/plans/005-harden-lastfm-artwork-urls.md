@@ -75,7 +75,7 @@ Unit-test `isSafeHttpsUrl` / sanitizer:
 
 ### Step 4: Done
 
-Update plans/README.md → 005 DONE
+Update docs/plans/README.md → 005 DONE
 
 ## Done criteria
 

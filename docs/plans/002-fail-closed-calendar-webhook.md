@@ -1,6 +1,6 @@
 # Plan 002: Fail-closed Google Calendar webhook verification
 
-> **Executor instructions**: Follow step by step. Run every verification. On STOP conditions, report — do not improvise. Update `plans/README.md` when done.
+> **Executor instructions**: Follow step by step. Run every verification. On STOP conditions, report — do not improvise. Update `docs/plans/README.md` when done.
 >
 > **Drift check**: `git diff --stat 915866f2..HEAD -- api/routes/integrations.py tests/api/test_security_hardening.py`
 
@@ -91,7 +91,7 @@ Model after existing tests in `tests/api/test_security_hardening.py`.
 ### Step 3: Lint + index
 
 **Verify**: `npm run lint:python` → exit 0  
-Update `plans/README.md` → 002 DONE
+Update `docs/plans/README.md` → 002 DONE
 
 ## Done criteria
 
