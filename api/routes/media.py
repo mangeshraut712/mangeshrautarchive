@@ -1,11 +1,14 @@
 import time
 import json
+import logging
 from typing import Optional
 from urllib.parse import quote
 from fastapi import APIRouter, HTTPException, BackgroundTasks
 from fastapi.responses import JSONResponse
 
 import httpx
+
+logger = logging.getLogger(__name__)
 
 from api.config import (
     TMDB_API_KEY,
@@ -449,11 +452,12 @@ async def get_recent_music(
                 content=cached["data"],
                 headers=build_lastfm_headers("STALE", started_at, {"X-Lastfm-Stale": "1"}),
             )
+        logger.error("Music proxy failed: %s", type(e).__name__, exc_info=True)
         return JSONResponse(
             status_code=500,
             content={
                 "error": "Music service error",
-                "details": f"Internal error: {str(e)}",
+                "details": "Internal error",
             },
         )
 

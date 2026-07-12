@@ -368,7 +368,13 @@ html.dark .travel-sidebar {
   color: var(--text-secondary);
   cursor: pointer;
   border: 1px solid transparent;
-  transition: all var(--duration-fast) var(--ease-apple);
+  transition:
+    color var(--duration-fast) var(--ease-apple),
+    background-color var(--duration-fast) var(--ease-apple),
+    border-color var(--duration-fast) var(--ease-apple),
+    box-shadow var(--duration-fast) var(--ease-apple),
+    transform var(--duration-fast) var(--ease-apple),
+    opacity var(--duration-fast) var(--ease-apple);
 }
 .country-pill:hover,
 .country-pill.active {
@@ -464,7 +470,13 @@ html.dark .travel-sidebar {
   color: var(--text-secondary);
   font: 600 13px/1 var(--font-text);
   cursor: pointer;
-  transition: all var(--duration-fast) var(--ease-apple);
+  transition:
+    color var(--duration-fast) var(--ease-apple),
+    background-color var(--duration-fast) var(--ease-apple),
+    border-color var(--duration-fast) var(--ease-apple),
+    box-shadow var(--duration-fast) var(--ease-apple),
+    transform var(--duration-fast) var(--ease-apple),
+    opacity var(--duration-fast) var(--ease-apple);
 }
 
 .travel-advanced-toggle:hover {
@@ -525,7 +537,13 @@ html.dark .travel-sidebar {
   font-size: 12px;
   font-weight: 600;
   cursor: pointer;
-  transition: all var(--duration-fast) var(--ease-apple);
+  transition:
+    color var(--duration-fast) var(--ease-apple),
+    background-color var(--duration-fast) var(--ease-apple),
+    border-color var(--duration-fast) var(--ease-apple),
+    box-shadow var(--duration-fast) var(--ease-apple),
+    transform var(--duration-fast) var(--ease-apple),
+    opacity var(--duration-fast) var(--ease-apple);
 }
 
 .travel-filter-chip:hover {
@@ -625,7 +643,13 @@ html.dark .travel-sidebar {
   background: var(--bg-primary);
   border: 3px solid var(--stop-color, var(--apple-blue));
   z-index: 2;
-  transition: all var(--duration-normal) var(--ease-spring);
+  transition:
+    color var(--duration-normal) var(--ease-spring),
+    background-color var(--duration-normal) var(--ease-spring),
+    border-color var(--duration-normal) var(--ease-spring),
+    box-shadow var(--duration-normal) var(--ease-spring),
+    transform var(--duration-normal) var(--ease-spring),
+    opacity var(--duration-normal) var(--ease-spring);
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
 }
 
@@ -1471,7 +1495,13 @@ html.dark .travel-timeline__country-header {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all var(--duration-fast) var(--ease-apple);
+  transition:
+    color var(--duration-fast) var(--ease-apple),
+    background-color var(--duration-fast) var(--ease-apple),
+    border-color var(--duration-fast) var(--ease-apple),
+    box-shadow var(--duration-fast) var(--ease-apple),
+    transform var(--duration-fast) var(--ease-apple),
+    opacity var(--duration-fast) var(--ease-apple);
   font-size: 18px;
 }
 

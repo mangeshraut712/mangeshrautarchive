@@ -3,7 +3,7 @@
  * Loaded last among design sheets so it can win without more !important sprawl.
  */
 
-/* ─── Z-index scale + FAB tokens ─── */
+/* ─── Z-index scale + FAB + motion tokens ─── */
 :root {
   --z-base: 1;
   --z-sticky: 100;
@@ -17,6 +17,12 @@
   --fab-gap: 10px;
   --fab-edge: max(14px, env(safe-area-inset-right, 0px));
   --fab-bottom: max(14px, env(safe-area-inset-bottom, 0px));
+  /* Motion (Emil Kowalski / Apple UI curves) */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out-motion: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+  --duration-ui: 200ms;
+  --duration-ui-fast: 140ms;
 }
 
 /* ─── Apple HIG: minimum 44×44 interactive chrome ─── */
@@ -267,5 +273,33 @@ html.dark #debug-runner-section .debug-runner-disclosure > summary {
     flex: 1 1 calc(50% - 0.4rem);
     min-width: min(100%, 9.5rem);
     justify-content: center;
+  }
+}
+
+/* Press feedback for primary interactive chrome */
+button:not(:disabled):active,
+.btn-primary:active,
+.btn-secondary:active,
+.hero-cta:active,
+.section-preview-btn:active,
+#chatbot-toggle:active,
+#go-to-top:active {
+  transform: scale(0.97);
+  transition: transform var(--duration-ui-fast) var(--ease-out);
+}
+
+/* Accessibility: reduced motion keeps comprehension, kills travel & loops */
+@media (prefers-reduced-motion: reduce) {
+  html:focus-within {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

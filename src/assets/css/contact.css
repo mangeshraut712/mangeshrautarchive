@@ -163,7 +163,13 @@ html.dark .contact-description {
   padding: 0.75rem 1rem;
   min-height: 48px;
   border-radius: 12px;
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition:
+    color 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    background-color 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    border-color 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    opacity 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
   text-decoration: none;
   color: #1d1d1f;
   font-size: 0.9rem;
@@ -218,7 +224,13 @@ html.dark .contact-link-item:hover .link-text {
   align-items: center;
   justify-content: center;
   font-size: 1rem !important;
-  transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition:
+    color 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+    background-color 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+    border-color 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+    transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+    opacity 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
   flex-shrink: 0;
   cursor: pointer;
 }
@@ -435,7 +447,13 @@ html.dark .contact-assistme-note {
   border-radius: 12px !important;
   font-size: 0.9rem !important;
   line-height: 1.5 !important;
-  transition: all 0.2s ease;
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease,
+    opacity 0.2s ease;
   box-shadow: none !important;
   /* remove shadow to look cleaner on solid bg */
   color: #1d1d1f;
@@ -491,7 +509,13 @@ textarea.contact-input {
   color: white !important;
   border: none !important;
   box-shadow: 0 4px 12px rgb(0 122 255 / 30%) !important;
-  transition: all 0.3s ease;
+  transition:
+    color 0.3s ease,
+    background-color 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease,
+    transform 0.3s ease,
+    opacity 0.3s ease;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
@@ -583,7 +607,13 @@ html.dark .social-section {
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition:
+    color 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+    background-color 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+    border-color 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+    transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+    opacity 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
   position: relative;
   overflow: visible;
   backdrop-filter: saturate(180%) blur(20px);
@@ -690,7 +720,13 @@ html.dark .donation-header h3 {
   border-radius: 20px;
   text-decoration: none;
   box-shadow: 0 4px 12px rgb(102 126 234 / 30%);
-  transition: all 0.3s ease;
+  transition:
+    color 0.3s ease,
+    background-color 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease,
+    transform 0.3s ease,
+    opacity 0.3s ease;
 }
 
 .donate-badge:hover {
@@ -761,7 +797,13 @@ html.dark .support-subheadline {
   box-shadow: 0 4px 15px rgb(0 0 0 / 15%);
   position: relative;
   z-index: 2;
-  transition: all 0.3s ease;
+  transition:
+    color 0.3s ease,
+    background-color 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease,
+    transform 0.3s ease,
+    opacity 0.3s ease;
   animation: blessingFloat 4s ease-in-out infinite;
 }
 
@@ -784,7 +826,13 @@ html.dark .hanuman-blessing-img {
   box-shadow: 0 4px 15px rgb(0 0 0 / 15%);
   position: relative;
   z-index: 2;
-  transition: all 0.3s ease;
+  transition:
+    color 0.3s ease,
+    background-color 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease,
+    transform 0.3s ease,
+    opacity 0.3s ease;
   animation: blessingFloat 4s ease-in-out infinite;
 }
 
@@ -1029,7 +1077,13 @@ html.dark .crypto-label {
   width: 64px;
   height: 64px;
   cursor: pointer;
-  transition: all 0.25s var(--apple-ease);
+  transition:
+    color 0.25s var(--apple-ease),
+    background-color 0.25s var(--apple-ease),
+    border-color 0.25s var(--apple-ease),
+    box-shadow 0.25s var(--apple-ease),
+    transform 0.25s var(--apple-ease),
+    opacity 0.25s var(--apple-ease);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
@@ -1117,7 +1171,13 @@ html.dark .crypto-mini-btn span {
   font-size: 0.9375rem;
   font-weight: 700;
   letter-spacing: 0;
-  transition: all 0.25s var(--apple-ease);
+  transition:
+    color 0.25s var(--apple-ease),
+    background-color 0.25s var(--apple-ease),
+    border-color 0.25s var(--apple-ease),
+    box-shadow 0.25s var(--apple-ease),
+    transform 0.25s var(--apple-ease),
+    opacity 0.25s var(--apple-ease);
   box-shadow: 0 4px 14px rgba(0, 200, 5, 0.3);
   margin-top: 0.5rem;
 }
@@ -1407,7 +1467,13 @@ html.dark #music-content .currently-music-card .watch-btn:hover {
 /* Improved animations */
 
 .music-card {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition:
+    color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .recent-track-item {
@@ -1440,7 +1506,13 @@ html.dark #music-content .currently-music-card .watch-btn:hover {
   border-radius: 12px;
   text-decoration: none;
   box-shadow: none !important;
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition:
+    color 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    background-color 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    border-color 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    opacity 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
   position: relative;
   overflow: visible;
   letter-spacing: 0.01em;
@@ -1495,7 +1567,13 @@ html.dark .support-stripe-btn.premium svg {
   border-radius: 12px;
   text-decoration: none;
   box-shadow: none !important;
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition:
+    color 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    background-color 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    border-color 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    opacity 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
   position: relative;
   overflow: visible;
   letter-spacing: 0.01em;
@@ -2071,7 +2149,13 @@ html.dark .media-poster {
   background: transparent;
   border: none;
   box-shadow: none;
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition:
+    color 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    background-color 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    border-color 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    opacity 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 /* Logo Images - Clean and Visible */
@@ -2082,7 +2166,13 @@ html.dark .media-poster {
   width: auto;
   max-width: 120px;
   object-fit: contain;
-  transition: all 0.3s ease;
+  transition:
+    color 0.3s ease,
+    background-color 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease,
+    transform 0.3s ease,
+    opacity 0.3s ease;
   opacity: 1;
   border: none !important;
   outline: none !important;

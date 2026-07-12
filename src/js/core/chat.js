@@ -15,6 +15,41 @@ const VERCEL_BACKEND = 'https://mangeshraut.pro';
 const PRIMARY_CUSTOM_DOMAIN = 'mangeshraut.pro';
 const MAX_SERVER_MESSAGE_LENGTH = 1800;
 const MAX_SERVER_HISTORY_MESSAGES = 12;
+/** Align with server OpenRouter stream budget (api chat uses ~60s); leave headroom. */
+const SERVER_STREAM_TIMEOUT_MS = 90_000;
+
+/** True only for static mirrors without a same-origin API (not custom domains / Vercel). */
+export function isStaticMirrorHost(hostname = '') {
+  const host = String(hostname || '').toLowerCase();
+  return host.includes('github.io');
+}
+
+/** Whether AssistMe may call the FastAPI backend for this host + API base. */
+export function canEnableServerAI({ hostname = '', apiBase = '', online = true } = {}) {
+  if (online === false) return false;
+  const host = String(hostname || '').toLowerCase();
+  const base = String(apiBase || '').trim();
+
+  if (isLoopbackHostname(host)) return true;
+  if (
+    host.endsWith('.vercel.app') ||
+    host === PRIMARY_CUSTOM_DOMAIN ||
+    host.endsWith('.mangeshraut.pro')
+  ) {
+    return true;
+  }
+  // Static mirror must have an absolute HTTPS API origin
+  if (isStaticMirrorHost(host)) {
+    return /^https:\/\//i.test(base);
+  }
+  // Explicit absolute API base on other hosts
+  if (/^https:\/\//i.test(base)) return true;
+  // Same-origin empty base on HTTPS production hosts with API (apex already handled)
+  if (!base && typeof window !== 'undefined' && window.location?.protocol === 'https:') {
+    return host === PRIMARY_CUSTOM_DOMAIN || host.endsWith('.vercel.app');
+  }
+  return false;
+}
 
 function stripUnsafeControlCharacters(value) {
   return Array.from(value)
@@ -156,45 +191,29 @@ class IntelligentAssistant {
   }
 
   async initialize(_options = {}) {
-    // For GitHub Pages deployment, work offline only to avoid CORS issues
     const hostname = typeof window !== 'undefined' ? window.location.hostname : '';
+    const online = typeof navigator === 'undefined' || navigator.onLine !== false;
 
-    // Check multiple ways to detect GitHub Pages and static hosting
-    const isGitHubPages =
-      hostname.includes('github.io') ||
-      hostname.includes('mangeshraut712.github.io') ||
-      !navigator.onLine ||
-      (window.location.protocol === 'https:' &&
-        !['localhost', '127.0.0.1', '0.0.0.0'].includes(hostname) &&
-        !hostname.endsWith('.vercel.app') &&
-        !hostname.endsWith('.herokuapp.com') &&
-        !hostname.endsWith('.netlify.app'));
-
-    if (isGitHubPages) {
-      // Check if API_BASE is configured (which it should be now)
-      if (API_BASE && (API_BASE.includes('vercel.app') || API_BASE.startsWith('http'))) {
-        this.canUseServerAI = true;
-        this.isReadyState = true;
-        return true; // API is available
-      } else {
-        this.isReadyState = true;
-        return false;
-      }
-    }
-
-    if (!navigator.onLine) {
-      this.isReadyState = true;
-      return false;
-    }
-
-    // If API_BASE is explicitly configured, trust it and enable server AI
-    if (API_BASE && API_BASE.length > 0) {
+    if (
+      canEnableServerAI({
+        hostname,
+        apiBase: API_BASE,
+        online,
+      })
+    ) {
       this.canUseServerAI = true;
       this.isReadyState = true;
       return true;
     }
 
-    // Fallback: Try health check for legacy compatibility
+    // Static mirror without API base → offline / local-only AssistMe
+    if (isStaticMirrorHost(hostname) || !online) {
+      this.canUseServerAI = false;
+      this.isReadyState = true;
+      return false;
+    }
+
+    // Same-origin / unknown host: health-check then optimistic enable
     try {
       const tryEndpoint = async (path, timeoutMs) => {
         const res = await fetch(buildApiUrl(path), {
@@ -210,21 +229,17 @@ class IntelligentAssistant {
         (await tryEndpoint('/api/health', 15000).catch(() => false)) ||
         (await tryEndpoint('/api/status', 15000).catch(() => false));
 
-      if (healthy) {
-        this.canUseServerAI = true;
-        this.isReadyState = true;
-        return true;
-      }
-
-      console.warn('⚠️ Server connectivity test failed - will try API calls anyway');
-      this.canUseServerAI = true; // Try anyway
+      this.canUseServerAI = true;
       this.isReadyState = true;
-      return true; // Optimistic
+      if (!healthy) {
+        console.warn('⚠️ Server connectivity test failed - will try API calls anyway');
+      }
+      return true;
     } catch (error) {
       console.warn('Server initialization failed - enabling optimistic mode:', error.message);
-      this.canUseServerAI = true; // Try anyway
+      this.canUseServerAI = true;
       this.isReadyState = true;
-      return true; // Optimistic
+      return true;
     }
   }
 
@@ -356,17 +371,16 @@ class IntelligentAssistant {
     const safeQuery = this._sanitizeMessageForServer(query);
     if (!safeQuery) return null;
 
-    // Allow API calls from GitHub Pages if CORS is configured and API base URL is set
     const hostname = typeof window !== 'undefined' ? window.location.hostname : '';
+    const online = typeof navigator === 'undefined' || navigator.onLine !== false;
     const canCallServerAPI =
-      this.canUseServerAI ||
-      (hostname.includes('github.io') && API_BASE && API_BASE.includes('vercel.app'));
+      this.canUseServerAI || canEnableServerAI({ hostname, apiBase: API_BASE, online });
 
     if (!canCallServerAPI) {
       return null;
     }
 
-    if (typeof navigator !== 'undefined' && navigator.onLine === false) {
+    if (!online) {
       return null;
     }
 
@@ -374,6 +388,12 @@ class IntelligentAssistant {
       const apiUrl = buildApiUrl('/api/chat');
 
       const isStreaming = typeof options.onChunk === 'function';
+      const externalSignal = options.signal;
+      const timeoutSignal = AbortSignal.timeout(SERVER_STREAM_TIMEOUT_MS);
+      const signal =
+        externalSignal && typeof AbortSignal.any === 'function'
+          ? AbortSignal.any([externalSignal, timeoutSignal])
+          : externalSignal || timeoutSignal;
 
       const response = await fetch(apiUrl, {
         method: 'POST',
@@ -389,7 +409,7 @@ class IntelligentAssistant {
           stream: isStreaming,
           ...(options.model ? { model: options.model } : {}),
         }),
-        signal: AbortSignal.timeout(30000),
+        signal,
       });
 
       if (!response.ok) {

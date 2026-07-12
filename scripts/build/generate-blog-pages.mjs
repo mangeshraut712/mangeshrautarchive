@@ -58,24 +58,19 @@ function pageShell({
     <link rel="alternate" type="application/atom+xml" title="Atom" href="${SITE_URL}/feed.xml" />
     <link rel="stylesheet" href="${fontAwesomeStylesheet(ASSET_PREFIX)}" media="print" onload="this.media='all'" />
     <noscript><link rel="stylesheet" href="${fontAwesomeStylesheet(ASSET_PREFIX)}" /></noscript>
-    <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/apple-2026-design-system.css?v=${ASSET_VER}" />
+    <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/apple-design-system.css?v=${ASSET_VER}" />
     <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/typography-system.css?v=${ASSET_VER}" />
     <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/sitewide-design-system.css?v=${ASSET_VER}" />
     <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/global-improvements.css?v=${ASSET_VER}" />
-    <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/accessibility-contrast-fixes.css?v=${ASSET_VER}" />
-    <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/wwdc26-liquid-glass.css?v=${ASSET_VER}" media="print" onload="this.media='all'" />
-    <noscript><link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/wwdc26-liquid-glass.css?v=${ASSET_VER}" /></noscript>
+    <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/accessibility.css?v=${ASSET_VER}" />
+    <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/liquid-glass.css?v=${ASSET_VER}" media="print" onload="this.media='all'" />
+    <noscript><link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/liquid-glass.css?v=${ASSET_VER}" /></noscript>
     <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/blog.css?v=${ASSET_VER}" />
-    <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/card-content-accessibility.css?v=${ASSET_VER}" />
     <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/mobile-viewport.css?v=${ASSET_VER}" />
-    <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/apple-super-retina-display.css?v=${ASSET_VER}" />
     <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/theme-solid-surfaces.css?v=${ASSET_VER}" />
-    <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/liquid-glass-modes.css?v=${ASSET_VER}" />
-    <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/liquid-glass-webgl.css?v=${ASSET_VER}" />
-    <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/high-contrast.css?v=${ASSET_VER}" />
     <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/apple-platform-features.css?v=${ASSET_VER}" />
     <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/chrome-surfaces.css?v=${ASSET_VER}" />
-    <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/apple-premium-overrides.css?v=${ASSET_VER}" />
+    <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/ux-polish-fixes.css?v=${ASSET_VER}" />
     <script src="${ASSET_PREFIX}/js/utils/liquid-glass-boot.js?v=${ASSET_VER}"></script>
     <script src="${ASSET_PREFIX}/js/utils/theme-head.js"></script>
     ${extraHead}

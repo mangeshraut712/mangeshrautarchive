@@ -318,7 +318,13 @@ button,
   /* Pill shape */
   font-weight: 500 !important;
   letter-spacing: -0.01em !important;
-  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+  transition:
+    color 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
+    background-color 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
+    border-color 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
+    box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
+    transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
+    opacity 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
 }
 
 .projects-view-all-btn,
@@ -372,7 +378,13 @@ html.dark .project-action-btn.btn-demo:hover:not(:disabled):not(.is-disabled) {
   cursor: pointer !important;
   backdrop-filter: blur(10px) !important;
   -webkit-backdrop-filter: blur(10px) !important;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  transition:
+    color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+    background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
   z-index: 10002;
 }
 
@@ -563,7 +575,13 @@ html.dark .menu-item:hover {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.2s;
+  transition:
+    color 0.2s,
+    background-color 0.2s,
+    border-color 0.2s,
+    box-shadow 0.2s,
+    transform 0.2s,
+    opacity 0.2s;
   box-shadow: none !important;
 }
 
@@ -1069,7 +1087,13 @@ html.dark .month-title {
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  transition: all 0.2s;
+  transition:
+    color 0.2s,
+    background-color 0.2s,
+    border-color 0.2s,
+    box-shadow 0.2s,
+    transform 0.2s,
+    opacity 0.2s;
   font-size: 0.9rem;
 }
 
@@ -1142,7 +1166,13 @@ html.dark .ios-weekdays {
   border-radius: 50%;
   cursor: pointer;
   position: relative;
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition:
+    color 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    background-color 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    border-color 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    opacity 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 
   /* Bouncy spring */
   color: inherit;
@@ -1254,7 +1284,13 @@ html.dark .day-cell:hover:not(.empty, .selected, .today) {
   border: none !important;
   cursor: pointer !important;
   font-weight: 600 !important;
-  transition: all 0.2s !important;
+  transition:
+    color 0.2s,
+    background-color 0.2s,
+    border-color 0.2s,
+    box-shadow 0.2s,
+    transform 0.2s,
+    opacity 0.2s !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -1366,7 +1402,13 @@ html.dark .reminders-title {
   justify-content: center;
   cursor: pointer;
   font-size: 0.75rem;
-  transition: all 0.2s ease;
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease,
+    opacity 0.2s ease;
 }
 
 html.dark .edit-btn {
@@ -1416,7 +1458,13 @@ html.dark .edit-btn {
   /* Shadow needed for visibility on white */
   border: 1px solid rgb(0 0 0 / 5%) !important;
   overflow: hidden;
-  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition:
+    color 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+    background-color 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+    border-color 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+    transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+    opacity 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
   cursor: pointer;
   min-height: 50px;
 }
@@ -1584,7 +1632,13 @@ html.dark .card-title {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition:
+    color 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+    background-color 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+    border-color 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+    transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+    opacity 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
   color: transparent;
 }
 
@@ -1731,7 +1785,13 @@ html.dark .experience-icon {
   border-radius: 22px !important;
   padding: 12px 20px !important;
   gap: 12px !important;
-  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+  transition:
+    color 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
+    background-color 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
+    border-color 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
+    box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
+    transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
+    opacity 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
   min-width: 140px;
   justify-content: center;
 }
@@ -1791,7 +1851,13 @@ textarea {
   background: rgb(255 255 255 / 50%) !important;
   border: 1px solid rgb(0 0 0 / 10%) !important;
   border-radius: 12px !important;
-  transition: all 0.3s ease !important;
+  transition:
+    color 0.3s ease,
+    background-color 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease,
+    transform 0.3s ease,
+    opacity 0.3s ease !important;
 }
 
 html.dark input,
@@ -1890,7 +1956,13 @@ html.dark .reminder-card.accent-gold .card-tag {
   margin: 1.5rem 0;
   position: relative;
   overflow: hidden;
-  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  transition:
+    color 0.4s cubic-bezier(0.23, 1, 0.32, 1),
+    background-color 0.4s cubic-bezier(0.23, 1, 0.32, 1),
+    border-color 0.4s cubic-bezier(0.23, 1, 0.32, 1),
+    box-shadow 0.4s cubic-bezier(0.23, 1, 0.32, 1),
+    transform 0.4s cubic-bezier(0.23, 1, 0.32, 1),
+    opacity 0.4s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
 html.dark .apple-tldr {
@@ -1984,7 +2056,13 @@ html.dark .apple-tldr:hover {
   letter-spacing: -0.01em;
   color: #1d1d1f;
   box-shadow: none !important;
-  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  transition:
+    color 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
+    background-color 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
+    border-color 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
+    box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
+    transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
+    opacity 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
   cursor: default;
 }
 
@@ -2070,7 +2148,13 @@ html.dark .hero-description {
 }
 
 .hero-cta {
-  transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  transition:
+    color 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1);
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.06);
   font-weight: 600;
 }
@@ -2862,7 +2946,13 @@ html.dark #theme-toggle .fa-moon {
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  transition: all 0.3s ease !important;
+  transition:
+    color 0.3s ease,
+    background-color 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease,
+    transform 0.3s ease,
+    opacity 0.3s ease !important;
   box-shadow: none !important;
 }
 
@@ -3148,7 +3238,13 @@ html.dark .artist-name {
   margin-left: 0.25rem;
   color: #ff3b30;
   opacity: 0.7;
-  transition: all 0.2s ease;
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease,
+    opacity 0.2s ease;
   flex-shrink: 0;
   border-radius: 8px;
 }

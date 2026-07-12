@@ -175,7 +175,13 @@ html.dark #home .profile-image {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.25s cubic-bezier(0.25, 0.8, 0.25, 1);
+  transition:
+    color 0.25s cubic-bezier(0.25, 0.8, 0.25, 1),
+    background-color 0.25s cubic-bezier(0.25, 0.8, 0.25, 1),
+    border-color 0.25s cubic-bezier(0.25, 0.8, 0.25, 1),
+    box-shadow 0.25s cubic-bezier(0.25, 0.8, 0.25, 1),
+    transform 0.25s cubic-bezier(0.25, 0.8, 0.25, 1),
+    opacity 0.25s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
 #home .name-pronounce-btn:hover {
@@ -298,7 +304,13 @@ html.dark #home .hero-role-flip strong {
   border-radius: 100px;
   font-size: 0.875rem;
   font-weight: 600;
-  transition: all var(--duration-fast) var(--apple-ease);
+  transition:
+    color var(--duration-fast) var(--apple-ease),
+    background-color var(--duration-fast) var(--apple-ease),
+    border-color var(--duration-fast) var(--apple-ease),
+    box-shadow var(--duration-fast) var(--apple-ease),
+    transform var(--duration-fast) var(--apple-ease),
+    opacity var(--duration-fast) var(--apple-ease);
   border: 1px solid var(--border-subtle);
   color: var(--text-primary);
   box-shadow: var(--shadow-sm);
@@ -359,7 +371,13 @@ html.dark #home .hero-pill-badge {
   border: none !important;
   box-shadow: none !important;
   padding: 0;
-  transition: all var(--duration-normal) var(--apple-ease);
+  transition:
+    color var(--duration-normal) var(--apple-ease),
+    background-color var(--duration-normal) var(--apple-ease),
+    border-color var(--duration-normal) var(--apple-ease),
+    box-shadow var(--duration-normal) var(--apple-ease),
+    transform var(--duration-normal) var(--apple-ease),
+    opacity var(--duration-normal) var(--apple-ease);
 }
 
 #home .music-card:hover {
@@ -516,7 +534,13 @@ html.dark #home .hero-description {
   font-size: 0.9375rem;
   font-weight: 600;
   text-decoration: none;
-  transition: all var(--duration-fast) var(--apple-spring);
+  transition:
+    color var(--duration-fast) var(--apple-spring),
+    background-color var(--duration-fast) var(--apple-spring),
+    border-color var(--duration-fast) var(--apple-spring),
+    box-shadow var(--duration-fast) var(--apple-spring),
+    transform var(--duration-fast) var(--apple-spring),
+    opacity var(--duration-fast) var(--apple-spring);
   cursor: pointer;
   border: none;
 }

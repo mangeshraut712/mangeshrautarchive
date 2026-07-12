@@ -268,22 +268,16 @@ def generate_local_response(query: str, site_context: str = "") -> Dict:
             "category": "Achievements",
         }
 
-    # Astrology & Horoscope
+    # Astrology (public high-level only — no private PII)
     if any(k in query for k in ["horoscope", "astrology", "birth chart", "vedic"]):
         return {
             "answer": (
-                "✨ **Vedic Astrology & Horoscope**:\n"
-                "Mangesh was born under the **Libra Ascendant** (तुला लग्न) and **Cancer Moon Sign** (कर्क राशि). In Vedic Astrology, this combination represents a highly balanced, analytical, and emotionally intelligent individual who is deeply driven by professional growth and family values.\n\n"
-                "**Vedic Details**:\n"
-                "• **Ascendant (Lagna)**: Libra (तुला - House No. 7, ruled by Venus) — Gives him a balanced, diplomatic, analytical, just, and magnetic personality with a 6-foot stature.\n"
-                "• **Moon Sign (Rashi)**: Cancer (कर्क - House No. 4, ruled by Moon) — Instills deep emotional intelligence, sensitivity, and a protective bond with his mother and motherland.\n"
-                "• **Gotra**: Kashyap\n"
-                "• **Devak**: Pach Palvi (पाच पालवी)\n"
-                "• **Kula Devata**: Shree Tulja Bhavani Mata (Tuljapur, Maharashtra)\n"
-                "• **Nadi**: Madhya (मध्य) | **Gana**: Dev (देव) | **Varna**: Vipra (Intellectual/Analytical)\n"
-                "• **Lineage Roots (Natesambandha)**: Khandagale, Kashid, Gawali, Mane, Salunkhe, Dudhal\n\n"
-                "**Major Yogas**:\n"
-                "• **Budhaditya & Lakshmi Narayan Yoga**: A powerful conjunction of the Sun, Mercury, and Venus resides in his 2nd House (Wealth & Family), indicating that his primary wealth generation comes through his sharp intellect, tech skills, and strategic communication (Software Engineering)."
+                "✨ **Public personality notes**:\n"
+                "Mangesh shares a high-level interest in Vedic symbolism as cultural context. "
+                "Publicly he is described as **balanced, diplomatic, and analytically driven** — "
+                "aligned with a software-engineering career focused on systems thinking and clear communication.\n\n"
+                "For professional details (role, stack, projects, education), ask about experience or skills. "
+                "Private chart / family / medical details are not part of this portfolio assistant."
             ),
             "category": "Astrology",
         }
@@ -292,24 +286,24 @@ def generate_local_response(query: str, site_context: str = "") -> Dict:
     if any(k in query for k in ["foreign", "settlement", "abroad", "settle", "relocation", "visa", "h1b", "relocate", "usa career"]):
         return {
             "answer": (
-                "🌍 **Foreign Settlement & USA Career Context**:\n"
-                "Yes, absolutely. Mangesh's chart displays a powerful placement of the Ascendant Lord (Venus) aligned with wealth-generating planets, strongly favoring a career tied to international tech landscapes, multinational corporations, and long-term residency in foreign lands like the USA.\n\n"
-                "**The Corporate Narrative**:\n"
-                "\"Mangesh successfully attained his MSCS in the United States and accumulated excellent corporate tenure operating as a full-time Software Development Engineer (SDE) at CES in the US. Due to a technical/administrative delay during an H1B visa transfer protocol to a new corporate entity, he temporarily transited back to his home operations in Pune, India. He remains fully employed, handling global engineering assignments remotely while actively executing structural paths to transition seamlessly back into the US tech industry.\"\n\n"
-                "**Optimal Locations (Astro-Geographical Alignment)**:\n"
-                "His absolute best geographical zones for maximizing wealth and long-term tech status within the USA are the **North-East Corridor** (New York, New Jersey, Boston) and the **North-West Coast** (Seattle, Silicon Valley/Northern California)."
+                "🌍 **USA career context (public)**:\n"
+                "Mangesh completed his **MSCS in the United States** and worked as a full-time **Software Development Engineer** "
+                "at Customized Energy Solutions. He continues global engineering work with interest in US tech opportunities "
+                "across the **Northeast corridor** and **West Coast** tech hubs.\n\n"
+                "Ask about experience, skills, or projects for hiring-oriented detail."
             ),
-            "category": "Astrology",
+            "category": "Career",
         }
 
     # Personality Traits
     if any(k in query for k in ["personality", "trait", "character"]):
         return {
             "answer": (
-                "🧠 **Personality Traits (Astrological)**:\n"
-                "According to his North Indian chart, Mangesh possesses strong leadership qualities, high resilience in testing times (due to Saturn's placement), a sharp technical intellect, and a profound protective instinct toward his family, especially his mother. His Venus-ruled Libra Ascendant gives him a balanced, diplomatic, and magnetic personality."
+                "🧠 **Working style**:\n"
+                "Colleagues and portfolio evidence emphasize **systems thinking**, resilience under delivery pressure, "
+                "and a pragmatic full-stack / AI engineering approach. He values clear communication and shipping production-quality software."
             ),
-            "category": "Astrology",
+            "category": "About",
         }
 
     # Family Structure & Values
@@ -1032,10 +1026,10 @@ async def chat_health():
                 status = "unhealthy"
                 provider_status = "error"
                 message = f"OpenRouter returned HTTP {response.status_code}."
-        except Exception as exc:
+        except Exception:
             status = "unhealthy"
             provider_status = "error"
-            message = f"OpenRouter health check failed: {exc}"
+            message = "OpenRouter health check failed."
 
     return {
         "success": True,

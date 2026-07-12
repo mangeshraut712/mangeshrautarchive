@@ -76,7 +76,13 @@
   opacity: 0;
   transform: scale(0.92) translateY(30px) rotate(-2deg);
   pointer-events: none;
-  transition: all 0.65s cubic-bezier(0.19, 1, 0.22, 1);
+  transition:
+    color 0.65s cubic-bezier(0.19, 1, 0.22, 1),
+    background-color 0.65s cubic-bezier(0.19, 1, 0.22, 1),
+    border-color 0.65s cubic-bezier(0.19, 1, 0.22, 1),
+    box-shadow 0.65s cubic-bezier(0.19, 1, 0.22, 1),
+    transform 0.65s cubic-bezier(0.19, 1, 0.22, 1),
+    opacity 0.65s cubic-bezier(0.19, 1, 0.22, 1);
   font-family: var(--ai-font);
   transform-origin: bottom right;
 }
@@ -225,7 +231,13 @@ html.dark .chatbot-title {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.2s;
+  transition:
+    color 0.2s,
+    background-color 0.2s,
+    border-color 0.2s,
+    box-shadow 0.2s,
+    transform 0.2s,
+    opacity 0.2s;
 }
 
 html.dark .chatbot-settings-btn,
@@ -345,7 +357,13 @@ html.dark .suggested-prompts-label {
   display: flex;
   align-items: center;
   gap: 8px;
-  transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition:
+    color 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+    background-color 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+    border-color 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+    transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+    opacity 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
   backdrop-filter: blur(10px);
   font-family: var(--ai-font);
   font-weight: 500;
@@ -576,7 +594,13 @@ html.dark #chatbot-messages::-webkit-scrollbar-thumb:hover {
   font-weight: 600;
   color: #0071e3;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition:
+    color 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    background-color 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    border-color 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    opacity 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
   animation: neuralReveal 0.6s cubic-bezier(0.19, 1, 0.22, 1) backwards;
   display: inline-flex;
   align-items: center;
@@ -699,7 +723,13 @@ html.dark .welcome-action-chip:hover {
   border: 1px solid rgba(0, 0, 0, 0.06);
   position: relative;
   overflow: hidden;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition:
+    color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .assistant-message .message-content:hover {
@@ -764,7 +794,13 @@ html.dark .assistant-message .message-content:hover {
   box-shadow:
     0 2px 8px rgba(0, 122, 255, 0.25),
     0 4px 12px rgba(0, 122, 255, 0.15);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition:
+    color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .user-message .message-content:hover {
@@ -860,7 +896,13 @@ html.dark .message-content h4 {
   text-decoration: none;
   font-weight: 500;
   border-bottom: 1px solid rgba(0, 113, 227, 0.3);
-  transition: all 0.2s ease;
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease,
+    opacity 0.2s ease;
 }
 
 .message-content a:hover {
@@ -1020,7 +1062,13 @@ html.dark .message-content th {
   background: rgb(0 0 0 / 5%);
   color: #3c3c43;
   border: 1px solid rgb(0 0 0 / 8%);
-  transition: all 0.2s;
+  transition:
+    color 0.2s,
+    background-color 0.2s,
+    border-color 0.2s,
+    box-shadow 0.2s,
+    transform 0.2s,
+    opacity 0.2s;
 }
 
 html.dark .meta-chip {
@@ -1112,7 +1160,13 @@ html.dark .meta-chip-confidence {
   justify-content: center;
   cursor: pointer;
   font-size: 12px;
-  transition: all 0.2s;
+  transition:
+    color 0.2s,
+    background-color 0.2s,
+    border-color 0.2s,
+    box-shadow 0.2s,
+    transform 0.2s,
+    opacity 0.2s;
 }
 
 html.dark .msg-action-btn {
@@ -1193,7 +1247,13 @@ html.dark .msg-action-btn.speaking {
     0 2px 8px rgb(0 0 0 / 6%),
     0 0 0 1px rgb(0 0 0 / 4%) inset;
   border: 1.5px solid transparent;
-  transition: all 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
+  transition:
+    color 0.4s cubic-bezier(0.25, 0.1, 0.25, 1),
+    background-color 0.4s cubic-bezier(0.25, 0.1, 0.25, 1),
+    border-color 0.4s cubic-bezier(0.25, 0.1, 0.25, 1),
+    box-shadow 0.4s cubic-bezier(0.25, 0.1, 0.25, 1),
+    transform 0.4s cubic-bezier(0.25, 0.1, 0.25, 1),
+    opacity 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 
 html.dark .input-wrapper {
@@ -1237,7 +1297,13 @@ html.dark .input-wrapper:focus-within {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition:
+    color 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    background-color 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    border-color 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    opacity 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
   box-shadow: 0 2px 8px rgba(52, 199, 89, 0.3);
 }
 
@@ -1306,7 +1372,13 @@ html.dark .chatbot-rate-status {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition:
+    color 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    background-color 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    border-color 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    opacity 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
   box-shadow: 0 2px 8px rgba(0, 122, 255, 0.3);
 }
 
@@ -1352,7 +1424,13 @@ html.dark .chatbot-rate-status {
   box-shadow:
     0 8px 32px rgba(0, 0, 0, 0.12),
     0 4px 16px rgba(0, 0, 0, 0.08);
-  transition: all 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+  transition:
+    color 0.3s cubic-bezier(0.25, 0.1, 0.25, 1),
+    background-color 0.3s cubic-bezier(0.25, 0.1, 0.25, 1),
+    border-color 0.3s cubic-bezier(0.25, 0.1, 0.25, 1),
+    box-shadow 0.3s cubic-bezier(0.25, 0.1, 0.25, 1),
+    transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1),
+    opacity 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
   z-index: 9998;
 }
 
@@ -1520,7 +1598,13 @@ html.dark .welcome-message .welcome-subtitle {
   border-radius: 20px;
   cursor: pointer;
   white-space: nowrap;
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition:
+    color 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    background-color 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    border-color 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    opacity 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
   animation: chipReveal 0.5s cubic-bezier(0.19, 1, 0.22, 1) backwards;
 }
 
@@ -1594,7 +1678,13 @@ html.dark .followup-chip:hover {
   border: 1.5px solid rgba(255, 59, 48, 0.2);
   border-radius: 16px;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition:
+    color 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    background-color 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    border-color 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    opacity 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .chatbot-retry-btn:hover {
@@ -1786,7 +1876,13 @@ html.dark .welcome-quick-actions {
   font-size: 12px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition:
+    color 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    background-color 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    border-color 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    opacity 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
   font-family: var(--ai-font);
 }
 
@@ -2376,7 +2472,13 @@ html.dark .meta-retry-badge {
   overflow: hidden;
   opacity: 0;
   margin-top: 0;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition:
+    color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .meta-details.expanded {
@@ -2610,7 +2712,13 @@ html.dark .rich-message--collapsed .rich-message-preview::after {
   font-weight: 600;
   font-family: var(--ai-font);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease,
+    opacity 0.2s ease;
 }
 
 .rich-show-more-btn:hover {

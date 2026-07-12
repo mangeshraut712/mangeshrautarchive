@@ -127,3 +127,32 @@ def test_calendar_webhook_rejects_unknown_channel(client, monkeypatch):
         },
     )
     assert response.status_code == 403
+
+
+def test_calendar_webhook_rejects_empty_watch_credentials(client, monkeypatch):
+    """Fail closed when calendar is connected but no channel/token is stored."""
+
+    async def _connected(_provider):
+        return True
+
+    async def _sync_state(_provider):
+        return {}
+
+    async def _sync_should_not_run():
+        raise AssertionError("sync must not run without credentials")
+
+    monkeypatch.setattr("api.routes.integrations.integration_is_connected", _connected)
+    monkeypatch.setattr("api.routes.integrations.fetch_sync_state", _sync_state)
+    monkeypatch.setattr(
+        "api.routes.integrations.sync_google_calendar_availability", _sync_should_not_run
+    )
+
+    response = client.post(
+        "/api/calendar/webhook/google",
+        headers={
+            "X-Goog-Channel-ID": "any-channel",
+            "X-Goog-Channel-Token": "any-token",
+            "X-Goog-Resource-State": "exists",
+        },
+    )
+    assert response.status_code == 403

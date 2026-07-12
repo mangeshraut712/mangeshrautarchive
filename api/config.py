@@ -374,11 +374,9 @@ You're an intelligent, conversational AI that answers any question with clarity 
 - Certifications: AWS Cloud Practitioner, Oracle Certified Java SE, TensorFlow Developer
 - Awards: Dean's List (Drexel, 3 semesters), Best Project Award (Pune University)
 - Recent content: Authored a technical blog on "Google I/O 2026: The Rise of Agentic Web, Gemini 2.5, Gemma 3, and WebNN" (May 2026) and "Inside the Open X Algorithm" (May 2026).
-- Vedic Astrology Profile (North Indian Chart): Born Dec 7, 1998 (Monday) at 04:05 AM in Ramkund, Bhoom, Dharashiv, Maharashtra, India. Ascendant (Lagna) is Libra (तुला - House No. 7, ruled by Venus), giving a balanced, diplomatic, analytical, and magnetic personality with a 6-foot stature. Moon Sign (Rashi) is Cancer (कर्क - House No. 4, ruled by Moon), instilling deep emotional intelligence, sensitivity, and a protective bond with his mother and motherland. Nadi: Madhya, Gana: Dev, Varna: Vipra (Intellectual/Analytical). Gotra: Kashyap, Devak: Pach Palvi (पाच पालवी), Kula Devata: Shree Tulja Bhavani Mata. Lineage roots (Natesambandha): Khandagale, Kashid, Gawali, Mane, Salunkhe, Dudhal.
-- Astrological Yogas & Foreign Connection: Budhaditya & Lakshmi Narayan Yoga (conjunction of Sun, Mercury, Venus in 2nd House of Wealth & Family) indicates wealth generation through sharp intellect, tech skills, and strategic communication (Software Engineering). The Ascendant Lord (Venus) sits directly in the wealth house linked with foreign associations, mapping his financial peak and destiny to overseas soil (USA).
-- Personal & Family Details: Height: 6'0", Complexion: Fair, Blood Group: O Positive. Native language: Marathi. Permanent address: Kamble Corner, Panchsheelnagar, Pimple Nilakh, Pune - 411027, Maharashtra. Deeply devoted to his mother (Mrs. Meena Bharat Raut, proprietor at Kashish Beauty Parlour & Training Center). His primary core drive is to provide her with absolute financial comfort, peace of mind, and happiness. Father: Mr. Bharat Ambarushi Raut. Sister: Ms. Vidya Bharat Raut (M.Sc Physics, B.Ed, M.Tech in Energy Technology, Researcher & Analyst at CES).
-- USA Career Narrative: Mangesh successfully attained his MSCS in the United States and accumulated excellent corporate tenure operating as a full-time Software Development Engineer (SDE) at CES in the US. Due to a technical/administrative delay during an H1B visa transfer protocol to a new corporate entity, he temporarily transited back to his home operations in Pune, India. He remains fully employed, handling global engineering assignments remotely while actively executing structural paths to transition seamlessly back into the US tech industry.
-- Optimal USA Locations: North-East Corridor (New York, New Jersey, Boston) and North-West Coast (Seattle, Silicon Valley/Northern California).
+- Public location context: works with CES (US/India hybrid engineering); based in the Pune / Philadelphia professional corridor when relevant to career questions.
+- Interests visitors may ask about at a high level: open-source, AI engineering, travel, and continuous learning. Do **not** invent or disclose private home addresses, medical data, blood group, caste, or detailed family PII — those are not part of the public portfolio surface.
+- USA career narrative (public): MSCS in the United States; SDE tenure at CES; continues global engineering work with interest in US tech opportunities (Northeast / Northwest corridors).
 
 ## Response Style — Rich Markdown for Chat UI
 
@@ -414,7 +412,7 @@ Interested in his AI projects or work experience?"
 8. Use emojis minimally — one or two max, and only when they add value
 
 ## Professional Data Reference
-{json.dumps(PORTFOLIO_DATA, indent=2)}
+{json.dumps({k: v for k, v in PORTFOLIO_DATA.items() if k != "astrology"}, indent=2)}
 
 ## How to Handle Different Questions
 
@@ -483,10 +481,22 @@ class AnalyticsTrackRequest(BaseModel):
 
 # Helper Functions
 def get_client_ip(request: Request) -> str:
-    """Get client IP for rate limiting"""
-    forwarded = request.headers.get("X-Forwarded-For")
+    """Resolve client IP for rate limiting without trusting spoofed leftmost XFF.
+
+    Prefer platform-provided identity (Vercel), then rightmost X-Forwarded-For hop
+    (closest to the edge that appended it), then the direct socket peer.
+    """
+    vercel = (request.headers.get("x-vercel-forwarded-for") or "").split(",")[0].strip()
+    if vercel:
+        return vercel
+    real_ip = (request.headers.get("x-real-ip") or "").strip()
+    if real_ip:
+        return real_ip
+    forwarded = request.headers.get("x-forwarded-for") or request.headers.get("X-Forwarded-For")
     if forwarded:
-        return forwarded.split(",")[0]
+        parts = [part.strip() for part in forwarded.split(",") if part.strip()]
+        if parts:
+            return parts[-1]
     return request.client.host if request.client else "unknown"
 
 

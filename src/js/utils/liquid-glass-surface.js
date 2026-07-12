@@ -119,21 +119,20 @@ export class LiquidGlassSurface {
       startLoop();
     };
 
+    const onLeave = () => {
+      this.liquid.target = 0;
+      startLoop();
+    };
+
     this.element.addEventListener('pointermove', onMove, { passive: true });
-    this.element.addEventListener(
-      'pointerleave',
-      () => {
-        this.liquid.target = 0;
-        startLoop();
-      },
-      { passive: true }
-    );
+    this.element.addEventListener('pointerleave', onLeave, { passive: true });
 
     // One settle frame only — do not run forever at idle
     startLoop();
 
     this._cleanupMotion = () => {
       this.element.removeEventListener('pointermove', onMove);
+      this.element.removeEventListener('pointerleave', onLeave);
       stopLoop();
     };
   }

@@ -5,10 +5,19 @@
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 function getApiBase() {
-  if (typeof globalThis !== 'undefined' && globalThis.location?.hostname === 'localhost') {
+  if (typeof window === 'undefined') {
+    return globalThis.APP_CONFIG?.apiBaseUrl || '';
+  }
+  const host = window.location.hostname || '';
+  if (['localhost', '127.0.0.1', '0.0.0.0'].includes(host)) {
     return 'http://127.0.0.1:8001';
   }
-  return '';
+  // GitHub Pages has no /api — use production FastAPI origin
+  if (host.endsWith('github.io')) {
+    return 'https://mangeshraut.pro';
+  }
+  // Vercel / apex: same-origin relative API
+  return window.APP_CONFIG?.apiBaseUrl || '';
 }
 
 function setStatus(statusEl, message, type = 'info') {

@@ -6,7 +6,7 @@ logger = logging.getLogger(__name__)
 from datetime import datetime, timezone
 from typing import Optional
 from urllib.parse import unquote
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Request
 from fastapi.responses import JSONResponse
 
 import httpx
@@ -77,12 +77,18 @@ async def fetch_github_repos_cached(username: str) -> list:
 
 @router.get("/api/github/proxy")
 @router.get("/github/proxy")
-async def github_api_proxy(path: Optional[str] = None):
+async def github_api_proxy(request: Request, path: Optional[str] = None):
     """
-    Lightweight GitHub API passthrough for repo/user endpoints.
+    Lightweight GitHub API passthrough for portfolio repo/user endpoints only.
     Used by frontend modules to avoid browser-level rate limits and keep
     GitHub data consistent through a single server-side source of truth.
     """
+    from api.config import check_rate_limit, get_client_ip
+
+    client_ip = get_client_ip(request)
+    if not check_rate_limit(f"gh-proxy:{client_ip}"):
+        raise HTTPException(status_code=429, detail="GitHub proxy rate limit exceeded")
+
     if not path or not path.strip():
         raise HTTPException(
             status_code=400, detail="Missing required query param: path"
@@ -95,10 +101,24 @@ async def github_api_proxy(path: Optional[str] = None):
     if len(normalized_path) > 1000:
         raise HTTPException(status_code=400, detail="Path is too long")
 
-    allowed_prefixes = ("/repos/", "/users/")
-    if not normalized_path.startswith(allowed_prefixes):
+    # Portfolio-only allowlist — never open-proxy arbitrary GitHub users/orgs with PAT
+    allowed_exact = (
+        "/users/mangeshraut712",
+        "/users/mangeshraut712/repos",
+        "/users/mangeshraut712/events",
+        "/users/mangeshraut712/received_events",
+    )
+    allowed_prefixes = (
+        "/users/mangeshraut712/",
+        "/repos/mangeshraut712/",
+    )
+    path_ok = normalized_path in allowed_exact or any(
+        normalized_path.startswith(prefix) for prefix in allowed_prefixes
+    )
+    if not path_ok:
         raise HTTPException(
-            status_code=400, detail="Only /repos/* and /users/* paths are allowed"
+            status_code=400,
+            detail="GitHub proxy path not allowed for this portfolio",
         )
 
     cache_key = f"gh_proxy:{normalized_path}"

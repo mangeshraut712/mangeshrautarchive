@@ -404,54 +404,84 @@ class LastFmService {
     }
   }
 
+  isSafeHttpsUrl(value) {
+    try {
+      const parsed = new URL(String(value || ''), 'https://example.invalid');
+      return parsed.protocol === 'https:';
+    } catch {
+      return false;
+    }
+  }
+
   renderMusicShelf(tracks = []) {
     if (!this.currently?.recentContainer) return;
 
-    this.currently.recentContainer.innerHTML = tracks
-      .map(item => {
-        const track = item.track || item;
-        const trackName = track?.name || 'Unknown Track';
-        const artistName = this.getArtistName(track);
-        const artwork = this.getBestImage(track);
-        const fallback = this.getArtworkPlaceholder(trackName, artistName);
-        const link = this.buildSpotifySearchUrl(trackName, artistName);
-        const isNowPlaying = item.state === 'now-playing';
-        const badgeText = isNowPlaying ? 'Now Playing' : 'Recent';
-        const actionText = isNowPlaying ? 'Listen' : 'View';
-        const actionIcon = isNowPlaying ? 'fa-play' : 'fa-arrow-up-right-from-square';
+    const fragment = document.createDocumentFragment();
 
-        return `
-          <div class="media-card currently-music-card recent-track-card ${isNowPlaying ? 'is-now-playing' : 'is-recent'}">
-            <div class="media-poster">
-              <img
-                src="${artwork}"
-                alt="${this.escapeHtml(trackName)}"
-                class="recent-track-img"
-                loading="lazy"
-                decoding="async"
-                onerror="this.src='${fallback}'; this.onerror=null;"
-              />
-              <span class="media-badge playing">${badgeText}</span>
-            </div>
-            <div class="media-info">
-              <h4>${this.escapeHtml(trackName)}</h4>
-              <p>${this.escapeHtml(artistName)}</p>
-              <a
-                href="${link}"
-                target="_blank"
-                rel="noopener"
-                class="watch-btn"
-                aria-label="Open ${this.escapeHtml(trackName)} by ${this.escapeHtml(artistName)} in Spotify"
-              >
-                <i class="fas ${actionIcon}" aria-hidden="true"></i><span>${actionText}</span>
-              </a>
-            </div>
-          </div>
-        `;
-      })
-      .join('');
+    tracks.forEach(item => {
+      const track = item.track || item;
+      const trackName = track?.name || 'Unknown Track';
+      const artistName = this.getArtistName(track);
+      const artwork = this.getBestImage(track);
+      const fallback = this.getArtworkPlaceholder(trackName, artistName);
+      const link = this.buildSpotifySearchUrl(trackName, artistName);
+      const isNowPlaying = item.state === 'now-playing';
+      const badgeText = isNowPlaying ? 'Now Playing' : 'Recent';
+      const actionText = isNowPlaying ? 'Listen' : 'View';
+      const actionIcon = isNowPlaying ? 'fa-play' : 'fa-arrow-up-right-from-square';
 
-    // Shelf cards keep Last.fm artwork on initial load; the hero card hydrates high-res art.
+      const card = document.createElement('div');
+      card.className = `media-card currently-music-card recent-track-card ${
+        isNowPlaying ? 'is-now-playing' : 'is-recent'
+      }`;
+
+      const poster = document.createElement('div');
+      poster.className = 'media-poster';
+
+      const img = document.createElement('img');
+      img.alt = trackName;
+      img.className = 'recent-track-img';
+      img.loading = 'lazy';
+      img.decoding = 'async';
+      img.src = this.isSafeHttpsUrl(artwork) ? artwork : fallback;
+      img.addEventListener(
+        'error',
+        () => {
+          if (img.src !== fallback) img.src = fallback;
+        },
+        { once: true }
+      );
+
+      const badge = document.createElement('span');
+      badge.className = 'media-badge playing';
+      badge.textContent = badgeText;
+
+      poster.append(img, badge);
+
+      const info = document.createElement('div');
+      info.className = 'media-info';
+
+      const title = document.createElement('h4');
+      title.textContent = trackName;
+      const artist = document.createElement('p');
+      artist.textContent = artistName;
+
+      const action = document.createElement('a');
+      action.href = link;
+      action.target = '_blank';
+      action.rel = 'noopener';
+      action.className = 'watch-btn';
+      action.setAttribute('aria-label', `Open ${trackName} by ${artistName} in Spotify`);
+      action.innerHTML = `<i class="fas ${actionIcon}" aria-hidden="true"></i><span></span>`;
+      const actionLabel = action.querySelector('span');
+      if (actionLabel) actionLabel.textContent = actionText;
+
+      info.append(title, artist, action);
+      card.append(poster, info);
+      fragment.append(card);
+    });
+
+    this.currently.recentContainer.replaceChildren(fragment);
   }
 
   updateCurrently(tracks) {

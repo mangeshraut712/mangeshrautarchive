@@ -89,11 +89,19 @@ class TestGithubProxy:
         response = client.get("/api/github/proxy?path=" + "/repos/test/" + "a" * 1000)
         assert response.status_code == 400
 
-    def test_proxy_allows_repos_path(self, client):
+    def test_proxy_rejects_other_users(self, client):
+        response = client.get("/api/github/proxy?path=/users/testuser")
+        assert response.status_code == 400
+
+    def test_proxy_rejects_other_repos(self, client):
         response = client.get("/api/github/proxy?path=/repos/testuser/test-repo")
-        # Should either succeed, be not found, or return 503 (GitHub API unreachable in test)
+        assert response.status_code == 400
+
+    def test_proxy_allows_portfolio_repos_path(self, client):
+        response = client.get("/api/github/proxy?path=/repos/mangeshraut712/mangeshrautarchive")
+        # Succeed, not found upstream, or 503 if GitHub unreachable in CI
         assert response.status_code in (200, 404, 503)
 
-    def test_proxy_allows_users_path(self, client):
-        response = client.get("/api/github/proxy?path=/users/testuser")
+    def test_proxy_allows_portfolio_users_path(self, client):
+        response = client.get("/api/github/proxy?path=/users/mangeshraut712")
         assert response.status_code in (200, 404, 503)

@@ -312,7 +312,13 @@
     border-radius: var(--radius-full);
     border: none;
     cursor: pointer;
-    transition: all var(--duration-fast) var(--ease-apple);
+    transition:
+      color var(--duration-fast) var(--ease-apple),
+      background-color var(--duration-fast) var(--ease-apple),
+      border-color var(--duration-fast) var(--ease-apple),
+      box-shadow var(--duration-fast) var(--ease-apple),
+      transform var(--duration-fast) var(--ease-apple),
+      opacity var(--duration-fast) var(--ease-apple);
     -webkit-tap-highlight-color: transparent;
   }
 
@@ -713,7 +719,13 @@
     background: var(--apple-blue);
     color: white;
     box-shadow: 0 4px 12px rgba(0, 113, 227, 0.3);
-    transition: all var(--duration-fast) var(--ease-apple);
+    transition:
+      color var(--duration-fast) var(--ease-apple),
+      background-color var(--duration-fast) var(--ease-apple),
+      border-color var(--duration-fast) var(--ease-apple),
+      box-shadow var(--duration-fast) var(--ease-apple),
+      transform var(--duration-fast) var(--ease-apple),
+      opacity var(--duration-fast) var(--ease-apple);
     -webkit-tap-highlight-color: transparent;
   }
 
@@ -739,7 +751,13 @@
     cursor: pointer;
     background: var(--fill);
     color: var(--apple-blue);
-    transition: all var(--duration-fast) var(--ease-apple);
+    transition:
+      color var(--duration-fast) var(--ease-apple),
+      background-color var(--duration-fast) var(--ease-apple),
+      border-color var(--duration-fast) var(--ease-apple),
+      box-shadow var(--duration-fast) var(--ease-apple),
+      transform var(--duration-fast) var(--ease-apple),
+      opacity var(--duration-fast) var(--ease-apple);
     -webkit-tap-highlight-color: transparent;
   }
 

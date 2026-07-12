@@ -739,9 +739,12 @@ async def google_calendar_webhook(request: Request):
     sync_state = await fetch_sync_state("google_calendar")
     expected_channel = str(sync_state.get("channel_id") or "").strip()
     expected_token = str(sync_state.get("channel_token") or "").strip()
-    if expected_channel and channel_id != expected_channel:
+    # Fail closed: refuse webhooks until a watch channel is fully registered.
+    if not expected_channel or not expected_token:
+        raise HTTPException(status_code=403, detail="Calendar webhook rejected.")
+    if channel_id != expected_channel:
         raise HTTPException(status_code=403, detail="Unknown calendar webhook channel.")
-    if expected_token and channel_token != expected_token:
+    if channel_token != expected_token:
         raise HTTPException(status_code=403, detail="Invalid calendar webhook token.")
 
     await sync_google_calendar_availability()
