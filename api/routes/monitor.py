@@ -552,6 +552,27 @@ async def get_monitor_platform_health():
     )
 
 
+@router.get(
+    "/monitor/portfolio-catalog",
+    tags=["system-monitor"],
+    summary="Portfolio pages and API route health catalog",
+)
+@router.get(
+    "/api/monitor/portfolio-catalog",
+    tags=["system-monitor"],
+    summary="Portfolio pages and API route health catalog",
+)
+async def get_monitor_portfolio_catalog():
+    """Live probe matrix for every public page and primary API used by the portfolio."""
+    from api.platform_health import probe_portfolio_catalog
+
+    return await _cached_public_monitor_response(
+        "monitor_portfolio_catalog",
+        probe_portfolio_catalog,
+        ttl_seconds=45,
+    )
+
+
 @router.get("/api/monitor/real-time")
 async def get_real_time_metrics():
     """Get real-time system metrics for live dashboard"""

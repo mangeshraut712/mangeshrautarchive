@@ -1,8 +1,10 @@
 """Aggregate platform API health checks for the system monitor."""
 
+import asyncio
 import os
 from datetime import datetime, timezone
 from typing import Any, Dict, List
+import httpx
 
 from api.integrations import google_calendar
 from api.integrations.supabase_store import (
@@ -10,6 +12,105 @@ from api.integrations.supabase_store import (
     integration_is_connected,
     supabase_is_configured,
 )
+
+# Public portfolio pages + API routes showcased on the System Monitor.
+PORTFOLIO_PAGE_CATALOG: List[Dict[str, str]] = [
+    {"id": "home", "label": "Homepage", "path": "/", "group": "pages"},
+    {"id": "systems", "label": "Engineering Evidence", "path": "/systems", "group": "pages"},
+    {"id": "monitor", "label": "System Monitor", "path": "/monitor", "group": "pages"},
+    {"id": "travel", "label": "Travel Atlas", "path": "/travel", "group": "pages"},
+    {"id": "uses", "label": "Uses Stack", "path": "/uses", "group": "pages"},
+    {"id": "offline", "label": "Offline Shell", "path": "/offline.html", "group": "pages"},
+    {"id": "not_found", "label": "404 Page", "path": "/404.html", "group": "pages"},
+]
+
+PORTFOLIO_API_CATALOG: List[Dict[str, str]] = [
+    {"id": "api_health", "label": "API Health", "path": "/api/health", "group": "api"},
+    {"id": "api_status", "label": "API Status", "path": "/api/status", "group": "api"},
+    {"id": "monitor_status", "label": "Monitor Status", "path": "/api/monitor/status", "group": "api"},
+    {"id": "monitor_health", "label": "Monitor Health", "path": "/api/monitor/health", "group": "api"},
+    {"id": "chat_health", "label": "AssistMe Chat Health", "path": "/api/chat/health", "group": "api"},
+    {"id": "github_profile", "label": "GitHub Profile Proxy", "path": "/api/github/profile", "group": "api"},
+    {"id": "music_recent", "label": "Last.fm Recent", "path": "/api/music/recent?limit=1", "group": "api"},
+    {"id": "analytics_reach", "label": "Portfolio Reach", "path": "/api/analytics/reach", "group": "api"},
+    {"id": "health_vitals", "label": "Health Vitals Summary", "path": "/api/health-vitals/summary", "group": "api"},
+    {"id": "integrations_status", "label": "Integrations Status", "path": "/api/integrations/status", "group": "api"},
+    {"id": "calendar_availability", "label": "Calendar Availability", "path": "/api/calendar/availability", "group": "api"},
+    {"id": "platform_health", "label": "Platform Health", "path": "/api/monitor/platform-health", "group": "api"},
+    {"id": "hosting_surfaces", "label": "Hosting Surfaces", "path": "/api/monitor/hosting-surfaces", "group": "api"},
+    {"id": "external_services", "label": "External Services", "path": "/api/monitor/external-services", "group": "api"},
+]
+
+
+def _public_base_url() -> str:
+    return (
+        os.getenv("OPENROUTER_SITE_URL")
+        or os.getenv("NEXT_PUBLIC_SITE_URL")
+        or "https://mangeshraut.pro"
+    ).rstrip("/")
+
+
+async def _probe_public_path(client: httpx.AsyncClient, base: str, entry: Dict[str, str]) -> Dict[str, Any]:
+    path = entry["path"]
+    if path.startswith("http"):
+        url = path
+    elif path == "/":
+        url = f"{base}/"
+    else:
+        url = f"{base}{path if path.startswith('/') else '/' + path}"
+    start = datetime.now(timezone.utc)
+    try:
+        response = await client.get(url, timeout=6.0, follow_redirects=True)
+        latency_ms = int((datetime.now(timezone.utc) - start).total_seconds() * 1000)
+        ok = 200 <= response.status_code < 400
+        warn = response.status_code in {401, 403, 404, 429}
+        status = "healthy" if ok else ("degraded" if warn else "unhealthy")
+        return {
+            "id": entry["id"],
+            "label": entry["label"],
+            "path": path,
+            "url": url,
+            "group": entry.get("group", "other"),
+            "status": status,
+            "http_status": response.status_code,
+            "latency_ms": latency_ms,
+            "detail": f"HTTP {response.status_code} · {latency_ms}ms",
+        }
+    except Exception as exc:  # noqa: BLE001 — surface probe failures cleanly
+        return {
+            "id": entry["id"],
+            "label": entry["label"],
+            "path": path,
+            "url": url,
+            "group": entry.get("group", "other"),
+            "status": "unhealthy",
+            "http_status": 0,
+            "latency_ms": None,
+            "detail": f"Unreachable ({type(exc).__name__})",
+        }
+
+
+async def probe_portfolio_catalog() -> Dict[str, Any]:
+    """Live probe of public portfolio pages and primary API routes."""
+    base = _public_base_url()
+    catalog = [*PORTFOLIO_PAGE_CATALOG, *PORTFOLIO_API_CATALOG]
+    async with httpx.AsyncClient() as client:
+        results = await asyncio.gather(*[_probe_public_path(client, base, item) for item in catalog])
+    items = list(results)
+    summary = {
+        "healthy": len([i for i in items if i["status"] == "healthy"]),
+        "degraded": len([i for i in items if i["status"] == "degraded"]),
+        "unhealthy": len([i for i in items if i["status"] == "unhealthy"]),
+        "total": len(items),
+    }
+    return {
+        "base_url": base,
+        "timestamp": _utc_now(),
+        "summary": summary,
+        "items": items,
+        "pages": [i for i in items if i.get("group") == "pages"],
+        "apis": [i for i in items if i.get("group") == "api"],
+    }
 
 INTEGRATION_ENV_KEYS = (
     "SUPABASE_URL",
@@ -176,6 +277,20 @@ async def collect_platform_health() -> Dict[str, Any]:
         }
     )
 
+    portfolio = await probe_portfolio_catalog()
+    for item in portfolio.get("items") or []:
+        checks.append(
+            {
+                "id": f"portfolio_{item['id']}",
+                "label": item["label"],
+                "path": item["path"],
+                "status": item["status"],
+                "detail": item.get("detail") or "",
+                "group": item.get("group"),
+                "latency_ms": item.get("latency_ms"),
+            }
+        )
+
     summary = {
         "healthy": len([entry for entry in checks if entry["status"] == "healthy"]),
         "degraded": len([entry for entry in checks if entry["status"] == "degraded"]),
@@ -190,4 +305,5 @@ async def collect_platform_health() -> Dict[str, Any]:
         "checks": checks,
         "summary": summary,
         "integration_env": integration_env_presence(),
+        "portfolio_catalog": portfolio,
     }

@@ -3,7 +3,7 @@
  * Caches a small allowlist for resilience without aggressive stale asset risk.
  */
 
-const CACHE_VERSION = 'portfolio-shell-v20260712s';
+const CACHE_VERSION = 'portfolio-shell-v20260712t';
 const PRECACHE_URLS = [
   './',
   './index.html',

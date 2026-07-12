@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <script src="js/utils/liquid-glass-boot.js?v=20260712s"></script>
+    <script src="js/utils/liquid-glass-boot.js?v=20260712t"></script>
     <script src="js/utils/deferred-analytics.js"></script>
 
     <meta charset="UTF-8" />
@@ -45,7 +45,7 @@
     />
     <meta name="twitter:image" content="https://mangeshraut.pro/assets/images/home.png" />
     <meta name="twitter:image:alt" content="System Monitor dashboard for Mangesh Raut portfolio" />
-    <link rel="icon" type="image/png" href="assets/images/profile-icon.png?v=20260712s" />
+    <link rel="icon" type="image/png" href="assets/images/profile-icon.png?v=20260712t" />
     <link rel="mask-icon" href="assets/icons/icon.svg" color="#007AFF" />
     <link rel="apple-touch-icon" href="assets/images/profile-icon.png" sizes="180x180" />
     <link rel="apple-touch-icon" href="assets/images/profile-icon.png" sizes="192x192" />
@@ -79,57 +79,58 @@
     </script>
     <script src="js/utils/theme-head.js"></script>
     <script src="js/utils/perf-audit-flag.js"></script>
-    <link rel="stylesheet" href="assets/css/monitor.css?v=20260712s" />
-    <link rel="stylesheet" href="assets/css/ux-polish-fixes.css?v=20260712s" />
-    <link rel="stylesheet" href="assets/css/apple-design-system.css?v=20260712s" data-perf-defer />
-    <link rel="stylesheet" href="assets/css/typography-system.css?v=20260712s" data-perf-defer />
+    <link rel="stylesheet" href="assets/css/monitor.css?v=20260712t" />
+    <link rel="stylesheet" href="assets/css/monitor-apple-redesign.css?v=20260712t" />
+    <link rel="stylesheet" href="assets/css/ux-polish-fixes.css?v=20260712t" />
+    <link rel="stylesheet" href="assets/css/apple-design-system.css?v=20260712t" data-perf-defer />
+    <link rel="stylesheet" href="assets/css/typography-system.css?v=20260712t" data-perf-defer />
     <link
       rel="stylesheet"
-      href="assets/css/sitewide-design-system.css?v=20260712s"
+      href="assets/css/sitewide-design-system.css?v=20260712t"
       data-perf-defer
     />
-    <link rel="stylesheet" href="assets/css/accessibility.css?v=20260712s" data-perf-defer />
+    <link rel="stylesheet" href="assets/css/accessibility.css?v=20260712t" data-perf-defer />
     <link
       rel="stylesheet"
-      href="assets/css/liquid-glass.css?v=20260712s"
+      href="assets/css/liquid-glass.css?v=20260712t"
       media="print"
       onload="this.media = 'all'"
       data-perf-defer
     />
-    <link rel="stylesheet" href="assets/css/mobile-viewport.css?v=20260712s" data-perf-defer />
+    <link rel="stylesheet" href="assets/css/mobile-viewport.css?v=20260712t" data-perf-defer />
     <link
       rel="stylesheet"
-      href="assets/css/sections-apple-premium.css?v=20260712s"
+      href="assets/css/sections-apple-premium.css?v=20260712t"
       data-perf-defer
     />
     <link
       rel="stylesheet"
-      href="assets/css/theme-solid-surfaces.css?v=20260712s"
+      href="assets/css/theme-solid-surfaces.css?v=20260712t"
       media="print"
       onload="this.media = 'all'"
       data-perf-defer
     />
-    <link rel="stylesheet" href="assets/css/chrome-surfaces.css?v=20260712s" data-perf-defer />
-    <link rel="stylesheet" href="assets/css/share-widget.css?v=20260712s" data-perf-defer />
+    <link rel="stylesheet" href="assets/css/chrome-surfaces.css?v=20260712t" data-perf-defer />
+    <link rel="stylesheet" href="assets/css/share-widget.css?v=20260712t" data-perf-defer />
     <link
       rel="stylesheet"
-      href="assets/vendor/fontawesome/css/all.min.css?v=20260712s"
+      href="assets/vendor/fontawesome/css/all.min.css?v=20260712t"
       media="print"
       onload="this.media = 'all'"
       data-perf-defer
     />
     <script src="js/utils/perf-defer-css.js"></script>
     <noscript>
-      <link rel="stylesheet" href="assets/css/typography-system.css?v=20260712s" />
-      <link rel="stylesheet" href="assets/css/sitewide-design-system.css?v=20260712s" />
+      <link rel="stylesheet" href="assets/css/typography-system.css?v=20260712t" />
+      <link rel="stylesheet" href="assets/css/sitewide-design-system.css?v=20260712t" />
 
-      <link rel="stylesheet" href="assets/css/mobile-viewport.css?v=20260712s" />
+      <link rel="stylesheet" href="assets/css/mobile-viewport.css?v=20260712t" />
 
-      <link rel="stylesheet" href="assets/css/sections-apple-premium.css?v=20260712s" />
+      <link rel="stylesheet" href="assets/css/sections-apple-premium.css?v=20260712t" />
 
-      <link rel="stylesheet" href="assets/css/theme-solid-surfaces.css?v=20260712s" />
+      <link rel="stylesheet" href="assets/css/theme-solid-surfaces.css?v=20260712t" />
 
-      <link rel="stylesheet" href="assets/vendor/fontawesome/css/all.min.css?v=20260712s" />
+      <link rel="stylesheet" href="assets/vendor/fontawesome/css/all.min.css?v=20260712t" />
     </noscript>
     <script type="application/ld+json">
       [
@@ -235,6 +236,24 @@
     </nav>
 
     <main class="monitor-container" id="main-content">
+      <nav class="monitor-section-rail" aria-label="Monitor sections">
+        <ul class="monitor-section-rail__list">
+          <li><a href="#monitor-summary-section">Overview</a></li>
+          <li><a href="#portfolio-surfaces-section">Portfolio</a></li>
+          <li><a href="#backend-system-section">Backend</a></li>
+          <li><a href="#realtime-metrics-section">Performance</a></li>
+          <li><a href="#health-checks-section">Health</a></li>
+          <li><a href="#external-services-section">Providers</a></li>
+          <li><a href="#platform-health-section">Platform</a></li>
+          <li><a href="#integrations-section">OAuth</a></li>
+          <li><a href="#deployment-surfaces-section">Deploy</a></li>
+          <li><a href="#ai-metrics-section">AI</a></li>
+          <li><a href="#security-section">Security</a></li>
+          <li><a href="#event-log-section">Events</a></li>
+          <li><a href="#api-docs-section">Docs</a></li>
+        </ul>
+      </nav>
+
       <div class="monitor-top-row">
         <section
           class="monitor-summary-card"
@@ -366,6 +385,37 @@
           </div>
         </section>
       </div>
+
+      <section class="section" id="portfolio-surfaces-section" aria-label="Portfolio surfaces">
+        <div class="section-header">
+          <h2 class="section-title">Portfolio Surfaces</h2>
+          <div class="section-actions">
+            <span class="status-badge unknown" id="portfolio-catalog-badge">
+              <span class="status-dot"></span>
+              Pages + APIs
+            </span>
+            <button
+              class="btn btn-secondary"
+              type="button"
+              id="btn-refresh-portfolio-catalog"
+              onclick="refreshPortfolioCatalog()"
+            >
+              <i class="fas fa-globe" aria-hidden="true"></i>
+              <span>Probe All</span>
+            </button>
+          </div>
+        </div>
+        <p class="monitor-section-lead">
+          Live health of every public page and primary API this portfolio uses — homepage,
+          engineering, travel, uses, AssistMe, GitHub, music, analytics, vitals, and monitor routes.
+        </p>
+        <div class="portfolio-surface-grid" id="portfolio-surfaces-grid">
+          <div class="empty-state compact">
+            <i class="fas fa-spinner fa-spin"></i>
+            <h3>Probing portfolio surfaces…</h3>
+          </div>
+        </div>
+      </section>
 
       <section class="section monitor-dashboard-section" id="backend-system-section">
         <div class="section-header">
@@ -820,10 +870,10 @@
 
     <div class="toast-container" id="toast-container"></div>
 
-    <script type="module" src="js/core/subpage-chrome.js?v=20260712s"></script>
-    <script type="module" src="js/utils/theme.js?v=20260712s"></script>
+    <script type="module" src="js/core/subpage-chrome.js?v=20260712t"></script>
+    <script type="module" src="js/utils/theme.js?v=20260712t"></script>
     <script type="module">
-      import * as MonitorMetrics from './js/utils/monitor-metrics.js?v=20260712s';
+      import * as MonitorMetrics from './js/utils/monitor-metrics.js?v=20260712t';
       globalThis.MonitorMetrics = MonitorMetrics;
     </script>
     <script>
@@ -1002,6 +1052,106 @@
         return fetchMonitorJson('/api/integrations/status', 'Integration status');
       }
 
+      async function fetchPortfolioCatalog() {
+        const data = await fetchMonitorJson('/api/monitor/portfolio-catalog', 'Portfolio catalog');
+        if (data?.items) return data;
+        // Fallback from platform-health payload if dedicated route fails
+        const platform = await fetchMonitorJson(
+          '/api/monitor/platform-health',
+          'Platform health (catalog fallback)'
+        );
+        return platform?.portfolio_catalog || null;
+      }
+
+      function statusBadgeClass(status) {
+        const s = String(status || 'unknown').toLowerCase();
+        if (s === 'healthy' || s === 'ok' || s === 'live') return 'healthy';
+        if (s === 'degraded' || s === 'empty') return 'degraded';
+        if (s === 'unhealthy' || s === 'critical' || s === 'error') return 'unhealthy';
+        return 'unknown';
+      }
+
+      function renderPortfolioCatalog(catalog) {
+        const grid = document.getElementById('portfolio-surfaces-grid');
+        const badge = document.getElementById('portfolio-catalog-badge');
+        if (!grid) return;
+
+        if (!catalog || !Array.isArray(catalog.items) || catalog.items.length === 0) {
+          grid.innerHTML = `
+            <div class="empty-state compact">
+              <i class="fas fa-plug" aria-hidden="true"></i>
+              <h3>Portfolio probes unavailable</h3>
+              <p>Open this page from production API origin or refresh once the backend is reachable.</p>
+            </div>`;
+          if (badge) {
+            badge.className = 'status-badge unknown';
+            badge.innerHTML = '<span class="status-dot"></span> Offline';
+          }
+          return;
+        }
+
+        const summary = catalog.summary || {};
+        if (badge) {
+          const tone =
+            (summary.unhealthy || 0) > 0
+              ? 'unhealthy'
+              : (summary.degraded || 0) > 0
+                ? 'degraded'
+                : 'healthy';
+          badge.className = `status-badge ${tone}`;
+          badge.innerHTML = `<span class="status-dot"></span> ${summary.healthy || 0}/${summary.total || catalog.items.length} healthy`;
+        }
+
+        const pages = catalog.pages || catalog.items.filter(i => i.group === 'pages');
+        const apis = catalog.apis || catalog.items.filter(i => i.group === 'api');
+        const blocks = [
+          { title: 'Public pages', items: pages },
+          { title: 'Primary APIs', items: apis },
+        ];
+
+        grid.innerHTML = blocks
+          .map(block => {
+            if (!block.items?.length) return '';
+            return block.items
+              .map(item => {
+                const tone = statusBadgeClass(item.status);
+                const href = item.url || item.path || '#';
+                const latency =
+                  item.latency_ms != null ? `${escapeHtml(String(item.latency_ms))}ms` : '—';
+                return `
+              <article class="portfolio-surface-card" data-status="${escapeHtml(tone)}">
+                <div class="portfolio-surface-card__top">
+                  <h3 class="portfolio-surface-card__title">${escapeHtml(item.label || item.id)}</h3>
+                  <span class="status-badge ${tone}"><span class="status-dot"></span>${escapeHtml(item.status || 'unknown')}</span>
+                </div>
+                <p class="portfolio-surface-card__path">${escapeHtml(item.path || '')}</p>
+                <p class="doc-card-description">${escapeHtml(item.detail || '')}</p>
+                <div class="portfolio-surface-card__meta">
+                  <span class="meta-stat-label">Latency ${latency}</span>
+                  <a class="surface-link" href="${escapeHtml(href)}" target="_blank" rel="noopener">Open</a>
+                </div>
+              </article>`;
+              })
+              .join('');
+          })
+          .join('');
+      }
+
+      async function refreshPortfolioCatalog() {
+        setButtonLoading('#btn-refresh-portfolio-catalog', true, 'Probing...');
+        showToast('Probing portfolio pages and APIs…', 'info');
+        const catalog = await fetchPortfolioCatalog();
+        renderPortfolioCatalog(catalog);
+        if (catalog) {
+          mergeMonitorSnapshot({ portfolioCatalog: catalog });
+        }
+        showToast(
+          catalog ? 'Portfolio catalog updated' : 'Portfolio catalog unavailable',
+          catalog ? 'success' : 'error'
+        );
+        setButtonLoading('#btn-refresh-portfolio-catalog', false);
+      }
+
       async function fetchPlatformHealth() {
         const data = await fetchMonitorJson('/api/monitor/platform-health', 'Platform health');
         if (data && Array.isArray(data.checks)) return data;
@@ -1135,7 +1285,7 @@
 
       async function ensureMonitorMetricsModule() {
         if (monitorMetricsModule) return monitorMetricsModule;
-        monitorMetricsModule = await import('./js/utils/monitor-metrics.js?v=20260712s');
+        monitorMetricsModule = await import('./js/utils/monitor-metrics.js?v=20260712t');
         globalThis.MonitorMetrics = monitorMetricsModule;
         return monitorMetricsModule;
       }
@@ -2672,6 +2822,7 @@
           realTime,
           secData,
           aiData,
+          portfolioCatalog,
         ] = await Promise.all([
           fetchHealth(),
           fetchMetrics(),
@@ -2684,6 +2835,7 @@
           fetchRealTimeMetrics(),
           fetchSecurity(),
           fetchAIMetrics(),
+          fetchPortfolioCatalog(),
         ]);
 
         await fetchEvents();
@@ -2699,6 +2851,7 @@
           realTime,
           secData,
           aiData,
+          portfolioCatalog,
         };
 
         renderHealthChecks(health);
@@ -2707,6 +2860,7 @@
         renderExternalServices(integrations);
         renderIntegrationsPanel(oauthStatus);
         renderPlatformHealthMatrix(platformHealth);
+        renderPortfolioCatalog(portfolioCatalog);
         scrollToIntegrationsIfRequested();
         renderRuntimeSnapshot(status || hosting);
         renderDeploymentSurfaces(hosting);
