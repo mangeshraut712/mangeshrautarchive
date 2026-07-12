@@ -177,7 +177,7 @@
       try {
         link.onload = null;
         link.onerror = null;
-      } catch (e) {
+      } catch (_err) {
         /* ignore */
       }
       link.removeAttribute('onload');
