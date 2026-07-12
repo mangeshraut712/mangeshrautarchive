@@ -154,8 +154,7 @@ mangeshrautarchive/
 ├── tests/                  # All automated tests
 │   ├── unit/               # Vitest (tests/unit/**/*.test.js)
 │   ├── api/                # pytest
-│   ├── e2e/                # Playwright
-│   └── config/             # Extra harness specs
+│   └── e2e/                # Playwright (+ helpers/site.js)
 ├── config/                 # doctor.config.js · vulture.toml
 ├── docs/                   # STRUCTURE.md · plans/ · doc index
 ├── dist/                   # Build output (git-ignored)
