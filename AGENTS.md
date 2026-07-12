@@ -75,10 +75,10 @@ npm run lint:python         # flake8 (Python)
 npm run format:check        # Prettier check
 
 # Test
-npm test                    # Vitest unit tests (29 tests)
-npm run test:api            # pytest API tests (70 tests) via uv
+npm test                    # Vitest unit tests (40 tests)
+npm run test:api            # pytest API tests (109 tests; activate venv first)
 npm run test:e2e:chrome     # Playwright E2E — Desktop Chrome
-npm run test:e2e:all        # Playwright E2E — all 15 browser configs
+npm run test:e2e:all        # Playwright E2E — all 15 browser projects
 
 # Quality gates
 npm run check               # ESLint + Stylelint + Prettier + Vitest

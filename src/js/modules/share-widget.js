@@ -246,7 +246,7 @@ function ensureShareWidgetStyles() {
   const link = document.createElement('link');
   link.id = 'share-widget-stylesheet';
   link.rel = 'stylesheet';
-  link.href = 'assets/css/share-widget.css?v=20260701q';
+  link.href = 'assets/css/share-widget.css?v=20260712s';
   document.head.appendChild(link);
 }
 

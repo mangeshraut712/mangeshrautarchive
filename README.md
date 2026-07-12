@@ -713,9 +713,9 @@ PORT=4174 npm run serve:dist
 All three surfaces serve the same `dist/` output from `main`. After any change:
 
 ```bash
-npm run build                              # produces dist/ with build-config.json gitCommit
-npm run verify:deploy-sync                 # local dist vs live (optional)
-npm run verify:deploy-sync:remote -- --parity   # Vercel + GitHub Pages same commit
+npm run build                 # produces dist/ with build-config.json gitCommit
+npm run verify:deploy-sync    # Vercel + GitHub Pages commit parity
+npm run qa:postdeploy         # same parity check with retries for fresh deploys
 ```
 
 | Surface          | URL                                                             | How it updates                          |
