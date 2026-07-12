@@ -1276,6 +1276,16 @@ async function checkDeploymentVersion() {
   try {
     if (shouldSkipDeploymentVersionCheck()) return;
 
+    // Hard-cap reload attempts for this tab — prevents iOS Safari
+    // "A problem repeatedly occurred" reload loops with stale SW caches.
+    let sessionReloads = 0;
+    try {
+      sessionReloads = Number(sessionStorage.getItem('portfolio-sync-reloads') || '0');
+      if (sessionReloads >= 1) return;
+    } catch (_e) {
+      // sessionStorage may be blocked
+    }
+
     const localBuild =
       globalThis.buildConfig?.buildTime ||
       globalThis.buildConfig?.gitCommit ||
@@ -1305,16 +1315,24 @@ async function checkDeploymentVersion() {
         server: serverBuild,
       });
 
-      if (currentBuildParam === normalizeBuildId(serverBuild)) {
-        if (syncRetry < 1) {
-          await clearBrowserDeploymentCaches();
-          reloadWithServerBuild(serverBuild, String(syncRetry + 1));
+      // Already reloaded for this server build once — stop (avoid infinite crash loop)
+      if (currentBuildParam === normalizeBuildId(serverBuild) || syncRetry >= 1) {
+        try {
+          sessionStorage.setItem('portfolio-sync-reloads', '1');
+        } catch (_e) {
+          /* ignore */
         }
         return;
       }
 
+      try {
+        sessionStorage.setItem('portfolio-sync-reloads', String(sessionReloads + 1));
+      } catch (_e) {
+        /* ignore */
+      }
+
       await clearBrowserDeploymentCaches();
-      reloadWithServerBuild(serverBuild);
+      reloadWithServerBuild(serverBuild, '1');
     }
   } catch (error) {
     console.info('Version check skipped or failed:', error);

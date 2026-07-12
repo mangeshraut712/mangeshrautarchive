@@ -65,21 +65,18 @@ export class LiquidGlassSurface {
     const damping = this.renderer.settings.liquidDamping ?? 0.84;
     const motion = this.renderer.settings.liquidMotion ?? 0.14;
 
-    const onMove = event => {
-      const rect = this.element.getBoundingClientRect();
-      const dx = event.clientX - (rect.left + rect.width / 2);
-      const dy = event.clientY - (rect.top + rect.height / 2);
-      const speed = Math.hypot(dx, dy);
-      this.liquid.target = Math.min(0.12, 0.02 + (speed / 2200) * motion);
+    const stopLoop = () => {
+      if (this.motionFrame) {
+        cancelAnimationFrame(this.motionFrame);
+        this.motionFrame = 0;
+      }
     };
 
-    this.element.addEventListener('pointermove', onMove);
-    this.element.addEventListener('pointerleave', () => {
-      this.liquid.target = 0;
-    });
-
     const tick = () => {
-      if (this.disposed || !this.renderer) return;
+      if (this.disposed || !this.renderer) {
+        stopLoop();
+        return;
+      }
       this.liquid.velocity += (this.liquid.target - this.liquid.stretch) * spring;
       this.liquid.velocity *= damping;
       this.liquid.stretch += this.liquid.velocity;
@@ -93,12 +90,51 @@ export class LiquidGlassSurface {
         1,
         0
       );
+
+      // Stop perpetual rAF when settled — infinite loops crash Mobile Safari
+      const stillMoving =
+        Math.abs(this.liquid.stretch) > 0.0008 ||
+        Math.abs(this.liquid.velocity) > 0.0008 ||
+        this.liquid.target > 0.0008;
+      if (stillMoving) {
+        this.motionFrame = requestAnimationFrame(tick);
+      } else {
+        this.liquid.stretch = 0;
+        this.liquid.velocity = 0;
+        this.motionFrame = 0;
+      }
+    };
+
+    const startLoop = () => {
+      if (this.disposed || this.motionFrame) return;
       this.motionFrame = requestAnimationFrame(tick);
     };
-    this.motionFrame = requestAnimationFrame(tick);
+
+    const onMove = event => {
+      const rect = this.element.getBoundingClientRect();
+      const dx = event.clientX - (rect.left + rect.width / 2);
+      const dy = event.clientY - (rect.top + rect.height / 2);
+      const speed = Math.hypot(dx, dy);
+      this.liquid.target = Math.min(0.12, 0.02 + (speed / 2200) * motion);
+      startLoop();
+    };
+
+    this.element.addEventListener('pointermove', onMove, { passive: true });
+    this.element.addEventListener(
+      'pointerleave',
+      () => {
+        this.liquid.target = 0;
+        startLoop();
+      },
+      { passive: true }
+    );
+
+    // One settle frame only — do not run forever at idle
+    startLoop();
+
     this._cleanupMotion = () => {
       this.element.removeEventListener('pointermove', onMove);
-      cancelAnimationFrame(this.motionFrame);
+      stopLoop();
     };
   }
 

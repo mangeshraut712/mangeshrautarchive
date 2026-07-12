@@ -2,13 +2,15 @@ import {
   capturePageBackground,
   createProceduralBackground,
   isLiquidGlassCaptureSupported,
+  isLowPowerClient,
 } from '../utils/liquid-glass-background.js';
 import { mountLiquidGlassSurface } from '../utils/liquid-glass-surface.js';
 import { isPerformanceAudit } from '../utils/perf-audit.js';
 
 class LiquidGlassEngine {
   constructor() {
-    this.enabled = isLiquidGlassCaptureSupported() && !isPerformanceAudit();
+    // iPhone / low-power: CSS glass only — WebGL multi-surface rAF OOMs Mobile Safari
+    this.enabled = isLiquidGlassCaptureSupported() && !isPerformanceAudit() && !isLowPowerClient();
     this.surfaces = new Set();
     this.tintRatio = 0;
     this.backgroundCanvas = null;
@@ -22,6 +24,7 @@ class LiquidGlassEngine {
     // Resize/theme changes are enough; surfaces already use CSS backdrop when capture is cold.
     this._onScroll = null;
     this._onResize = () => {
+      if (!this.enabled || this.surfaces.size === 0) return;
       this.scheduleCapture(false);
       this.surfaces.forEach(surface => surface.resize());
     };

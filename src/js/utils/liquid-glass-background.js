@@ -1,5 +1,8 @@
 /**
  * Captures page background for WebGL liquid glass refraction.
+ *
+ * iPhone / low-power devices skip WebGL entirely — multiple perpetual rAF + WebGL
+ * contexts crash Safari with "A problem repeatedly occurred on …".
  */
 let captureModulePromise = null;
 
@@ -13,6 +16,42 @@ function shouldExcludeNode(node) {
   return false;
 }
 
+/**
+ * True for iPhone / iPad (including iPadOS desktop UA) and other touch Macs.
+ * Used to avoid WebGL liquid glass which OOM-crashes Mobile Safari.
+ */
+export function isIOSLikeDevice() {
+  if (typeof navigator === 'undefined') return false;
+  const ua = navigator.userAgent || '';
+  if (/iPad|iPhone|iPod/i.test(ua)) return true;
+  // iPadOS 13+ reports as MacIntel with touch
+  if (navigator.platform === 'MacIntel' && Number(navigator.maxTouchPoints || 0) > 1) {
+    return true;
+  }
+  return false;
+}
+
+/** Heuristic for devices that should never run multi-context WebGL glass. */
+export function isLowPowerClient() {
+  if (typeof window === 'undefined' || typeof navigator === 'undefined') return true;
+  if (isIOSLikeDevice()) return true;
+  if (window.matchMedia?.('(prefers-reduced-transparency: reduce)')?.matches) return true;
+  if (window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches) return true;
+  // Coarse pointer + limited cores ≈ phone / tablet class
+  const coarse = window.matchMedia?.('(pointer: coarse)')?.matches;
+  const cores = Number(navigator.hardwareConcurrency || 8);
+  if (coarse && cores > 0 && cores <= 6) return true;
+  if (
+    typeof navigator.deviceMemory === 'number' &&
+    navigator.deviceMemory > 0 &&
+    navigator.deviceMemory <= 4
+  ) {
+    return true;
+  }
+  if (navigator.connection?.saveData) return true;
+  return false;
+}
+
 async function loadCaptureModule() {
   if (!captureModulePromise) {
     captureModulePromise = import('../vendor/html-to-image/index.js');
@@ -22,23 +61,33 @@ async function loadCaptureModule() {
 
 export function isLiquidGlassCaptureSupported() {
   if (typeof window === 'undefined') return false;
-  if (window.matchMedia?.('(prefers-reduced-transparency: reduce)')?.matches) return false;
-  // Respect reduced motion — skip heavy WebGL capture/animation path
-  if (window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches) return false;
+  // CSS backdrop-filter only on iPhone / low-power — never multi-WebGL hosts
+  if (isLowPowerClient()) return false;
   try {
     const canvas = document.createElement('canvas');
     const gl =
-      canvas.getContext('webgl', { alpha: true }) ||
-      canvas.getContext('experimental-webgl', { alpha: true });
-    return Boolean(gl);
+      canvas.getContext('webgl', { alpha: true, failIfMajorPerformanceCaveat: true }) ||
+      canvas.getContext('experimental-webgl', { alpha: true, failIfMajorPerformanceCaveat: true });
+    if (!gl) return false;
+    // Release the probe context immediately so we don't burn one of Safari's slots
+    const ext = gl.getExtension('WEBGL_lose_context');
+    ext?.loseContext?.();
+    return true;
   } catch {
     return false;
   }
 }
 
 export async function capturePageBackground({ target = document.documentElement } = {}) {
+  // Never run full-page html-to-image capture on mobile — OOM risk
+  if (isLowPowerClient()) {
+    return createProceduralBackground(window.innerWidth, window.innerHeight, {
+      dark: document.documentElement.classList.contains('dark'),
+    });
+  }
+
   const { toCanvas } = await loadCaptureModule();
-  const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
+  const pixelRatio = Math.min(window.devicePixelRatio || 1, 1.5);
 
   return toCanvas(target, {
     pixelRatio,

@@ -6,6 +6,19 @@
   const root = document.documentElement;
   let stored = 0;
 
+  // Flag iPhone / iPad early so CSS can prefer lighter glass (no multi-WebGL)
+  try {
+    const ua = navigator.userAgent || '';
+    const iosLike =
+      /iPad|iPhone|iPod/i.test(ua) ||
+      (navigator.platform === 'MacIntel' && Number(navigator.maxTouchPoints || 0) > 1);
+    if (iosLike) {
+      root.dataset.iosSafe = '1';
+    }
+  } catch (_e) {
+    // ignore
+  }
+
   try {
     const raw = localStorage.getItem('wwdc26-liquid-glass-tint');
     if (raw !== null) {
