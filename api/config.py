@@ -23,6 +23,13 @@ LASTFM_DEFAULT_USERNAME = os.getenv("LASTFM_USERNAME", "mbr63").strip() or "mbr6
 
 FALLBACK_OPENROUTER_MODEL = "google/gemini-2.5-flash"
 PRIMARY_OPENROUTER_MODEL = "x-ai/grok-4.3"
+# Zero-credit online path when paid balance is exhausted (OpenRouter free router).
+FREE_OPENROUTER_MODEL = "openrouter/free"
+FREE_OPENROUTER_FALLBACKS = (
+    FREE_OPENROUTER_MODEL,
+    "google/gemma-4-26b-a4b-it:free",
+    "google/gemma-4-31b-it:free",
+)
 AUTO_ROUTER_MODEL = "openrouter/auto"
 FUSION_MODEL = "openrouter/fusion"
 API_URL = "https://openrouter.ai/api/v1/chat/completions"

@@ -39,7 +39,9 @@ const GA_REDUNDANT_KEYS = new Set([
 const CONFIG_DEFAULTS = {
   OPENROUTER_SITE_URL: 'https://mangeshraut.pro',
   OPENROUTER_SITE_TITLE: 'AssistMe AI Assistant',
-  OPENROUTER_MODEL: 'x-ai/grok-4.3',
+  // Free router stays online when paid OpenRouter balance is exhausted (402).
+  // Switch back to x-ai/grok-4.3 after topping up https://openrouter.ai/settings/credits
+  OPENROUTER_MODEL: 'openrouter/free',
   NEXT_PUBLIC_API_BASE: 'https://mangeshraut.pro',
 };
 

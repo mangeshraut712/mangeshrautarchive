@@ -1,6 +1,8 @@
 """Tests for intelligent OpenRouter model routing."""
 
-from api.config import normalize_openrouter_model
+import os
+
+from api.config import FREE_OPENROUTER_MODEL, normalize_openrouter_model
 from api.model_router import (
     AUTO_ROUTER_MODEL,
     FUSION_MODEL,
@@ -17,7 +19,8 @@ def test_normalize_passes_openrouter_router_models():
     assert normalize_openrouter_model("x-ai/grok-4.1-fast") == ROUTER_PRIMARY_MODEL
 
 
-def test_resolve_portfolio_query_uses_grok():
+def test_resolve_portfolio_query_uses_grok(monkeypatch):
+    monkeypatch.delenv("OPENROUTER_MODEL", raising=False)
     model, web, tier = resolve_chat_model(
         "What are Mangesh's top Java skills?",
         site_context="Skills section content",
@@ -28,7 +31,20 @@ def test_resolve_portfolio_query_uses_grok():
     assert web is False
 
 
-def test_resolve_general_query_uses_auto_router():
+def test_resolve_portfolio_query_uses_free_when_env_free(monkeypatch):
+    monkeypatch.setenv("OPENROUTER_MODEL", FREE_OPENROUTER_MODEL)
+    model, web, tier = resolve_chat_model(
+        "What are Mangesh's top Java skills?",
+        site_context="Skills section content",
+        stream=True,
+    )
+    assert model == FREE_OPENROUTER_MODEL
+    assert tier == "portfolio-free"
+    assert web is False
+
+
+def test_resolve_general_query_uses_auto_router(monkeypatch):
+    monkeypatch.delenv("OPENROUTER_MODEL", raising=False)
     model, _web, tier = resolve_chat_model(
         "Explain how TLS handshakes work in one paragraph.",
         stream=True,
@@ -57,11 +73,15 @@ def test_resolve_compare_query_uses_auto_when_streaming():
     assert tier == "fusion-stream"
 
 
-def test_fallback_chain_includes_grok_auto_and_flash():
+def test_fallback_chain_includes_grok_auto_flash_and_free():
     chain = build_model_fallback_chain(ROUTER_PRIMARY_MODEL)
     assert chain[0] == ROUTER_PRIMARY_MODEL
+    assert "openrouter/free" in chain
+    # Free recovery should be early so 402 on paid models fails over quickly.
+    assert chain.index("openrouter/free") < chain.index(AUTO_ROUTER_MODEL)
     assert AUTO_ROUTER_MODEL in chain
     assert "google/gemini-2.5-flash" in chain
+    assert "google/gemma-4-26b-a4b-it:free" in chain
 
 
 def test_auto_router_request_includes_plugins_and_session():

@@ -8,8 +8,11 @@ from typing import List, Optional, Tuple
 from api.config import (
     AUTO_ROUTER_MODEL,
     FALLBACK_OPENROUTER_MODEL,
+    FREE_OPENROUTER_FALLBACKS,
+    FREE_OPENROUTER_MODEL,
     FUSION_MODEL,
     PRIMARY_OPENROUTER_MODEL,
+    get_default_model,
     normalize_openrouter_model,
 )
 from api.site_knowledge import should_use_web_tools
@@ -96,31 +99,58 @@ def resolve_chat_model(
         return FUSION_MODEL, True, "fusion"
 
     if is_portfolio_query(message, site_context):
+        # When OPENROUTER_MODEL is a free/router slug (credit-safe), use it first.
+        env_default = get_default_model()
+        if env_default.endswith(":free") or env_default in {
+            FREE_OPENROUTER_MODEL,
+            *FREE_OPENROUTER_FALLBACKS,
+        }:
+            return env_default, web_tools, "portfolio-free"
         return PRIMARY_MODEL, web_tools, "portfolio"
 
     if MATH_OR_TRIVIA_RE.search(message or "") and len(message) < 120:
+        env_default = get_default_model()
+        if env_default.endswith(":free") or env_default == FREE_OPENROUTER_MODEL:
+            return env_default, False, "fast-free"
         return FALLBACK_OPENROUTER_MODEL, False, "fast"
 
+    env_default = get_default_model()
+    if env_default.endswith(":free") or env_default == FREE_OPENROUTER_MODEL:
+        return env_default, web_tools, "auto-free"
     return AUTO_ROUTER_MODEL, web_tools, "auto"
 
 
 def build_model_fallback_chain(primary_model: str) -> List[str]:
-    """Ordered fallbacks: primary → Grok → Auto Router → Gemini Flash."""
+    """Ordered fallbacks: primary → free tier → Grok → Auto → Flash → free spares.
+
+    Free models stay online when the OpenRouter paid balance is exhausted (HTTP 402).
+    """
     chain: List[str] = []
 
     def add(model: str) -> None:
-        normalized = (
-            model
-            if model in OPENROUTER_ROUTER_MODELS or model.startswith("openrouter/")
-            else normalize_openrouter_model(model)
-        )
+        raw = (model or "").strip()
+        if not raw:
+            return
+        # Keep free/router slugs as-is (including ``*:free`` and openrouter/*).
+        if (
+            raw in OPENROUTER_ROUTER_MODELS
+            or raw.startswith("openrouter/")
+            or raw.endswith(":free")
+        ):
+            normalized = raw
+        else:
+            normalized = normalize_openrouter_model(raw)
         if normalized and normalized not in chain:
             chain.append(normalized)
 
     add(primary_model)
+    # Prefer free router immediately after the primary so credit exhaustion recovers fast.
+    add(FREE_OPENROUTER_MODEL)
     if primary_model != PRIMARY_MODEL:
         add(PRIMARY_MODEL)
     if primary_model != AUTO_ROUTER_MODEL:
         add(AUTO_ROUTER_MODEL)
     add(FALLBACK_OPENROUTER_MODEL)
+    for free_model in FREE_OPENROUTER_FALLBACKS:
+        add(free_model)
     return chain
