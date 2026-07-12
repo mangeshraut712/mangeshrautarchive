@@ -502,6 +502,35 @@ async def stream_static_chat_response(payload: Dict, start_time: float) -> Async
     )
 
 
+def _upstream_fallback_answer(reason: str, site_context: str = "") -> Optional[str]:
+    """User-facing copy when cloud AI is configured but temporarily unavailable."""
+    lower = (reason or "").lower()
+    if "402" in lower or "credit" in lower or "billing" in lower or "payment" in lower:
+        return (
+            "Cloud AI is temporarily unavailable because the OpenRouter account is out of "
+            "credits (HTTP 402). Portfolio knowledge still works — try asking about skills, "
+            "projects, experience, blogs, or travel. Add credits at "
+            "https://openrouter.ai/settings/credits to restore full AssistMe answers."
+        )
+    if "429" in lower or "rate" in lower:
+        return (
+            "Cloud AI is rate-limited right now. Please wait a moment and try again, "
+            "or ask a portfolio question (skills, projects, experience) for a local answer."
+        )
+    if any(token in lower for token in ("timeout", "connect", "network", "upstream", "openrouter")):
+        return (
+            "Cloud AI did not respond in time. You can retry in a few seconds, or ask about "
+            "Mangesh's skills, projects, experience, blogs, or travel for a local portfolio answer."
+        )
+    if site_context and reason not in ("Local Intelligence", "no_key"):
+        excerpt = site_context[:1800].rsplit(" ", 1)[0]
+        return (
+            "Cloud AI is temporarily unavailable, so here is a direct portfolio knowledge answer:\n\n"
+            f"{excerpt}"
+        )
+    return None
+
+
 def build_local_chat_payload(
     message: str,
     site_context: str,
@@ -511,9 +540,20 @@ def build_local_chat_payload(
 ) -> Dict:
     """Build the same local answer shape for offline and upstream-fallback modes."""
     fallback = generate_local_response(message, site_context)
+    override = _upstream_fallback_answer(reason, site_context)
+    # Prefer honest upstream failure copy over the misleading "no API key" blurb.
+    answer = fallback["answer"]
+    if override and reason not in ("Local Intelligence", "no_key"):
+        lower_answer = answer.lower()
+        if (
+            fallback.get("category") == "System"
+            or "no cloud API key" in lower_answer
+            or "local mode" in lower_answer
+        ):
+            answer = override
     elapsed = int((time.time() - start_time) * 1000)
     return {
-        "answer": fallback["answer"],
+        "answer": answer,
         "source": reason,
         "model": "Local-FastAPI",
         "category": fallback.get("category", "General"),
@@ -522,6 +562,7 @@ def build_local_chat_payload(
         "type": "local",
         "knowledge_context": bool(site_context),
         "web_tools": False,
+        "fallback_reason": reason,
     }
 
 
@@ -607,6 +648,7 @@ async def stream_openrouter_response(
     full_content = ""
     chunk_count = 0
     start_time = time.time()
+    last_upstream_reason = "OpenRouter upstream unavailable"
 
     while retry_count <= max_retries:
         if retry_count > 0:
@@ -638,6 +680,14 @@ async def stream_openrouter_response(
                     ) as response:
                         if response.status_code != 200:
                             await response.aread()
+                            last_upstream_reason = (
+                                f"OpenRouter HTTP {response.status_code}"
+                                + (
+                                    " insufficient credits"
+                                    if response.status_code == 402
+                                    else ""
+                                )
+                            )
                             logger.error(
                                 f"❌ OpenRouter API error for {candidate_model}: "
                                 f"status={response.status_code}"
@@ -716,12 +766,15 @@ async def stream_openrouter_response(
 
                         return
             except (httpx.RemoteProtocolError, httpx.ReadError, httpx.ReadTimeout) as e:
+                last_upstream_reason = f"OpenRouter timeout ({type(e).__name__})"
                 logger.warning(f"⚠️ Stream connection error for {candidate_model}: {type(e).__name__}")
                 continue
             except httpx.HTTPStatusError as e:
+                last_upstream_reason = f"OpenRouter HTTP {e.response.status_code}"
                 logger.error(f"❌ OpenRouter HTTP error for {candidate_model}: {e.response.status_code}")
                 continue
             except httpx.RequestError as e:
+                last_upstream_reason = f"OpenRouter network ({type(e).__name__})"
                 logger.error(f"❌ Request error for {candidate_model}: {str(e)}")
                 continue
 
@@ -732,7 +785,7 @@ async def stream_openrouter_response(
         user_msg,
         "",
         start_time,
-        reason="Local Intelligence",
+        reason=last_upstream_reason,
     )
     async for item in stream_static_chat_response(fallback, start_time):
         yield item
@@ -977,12 +1030,16 @@ async def chat_endpoint(request: ChatRequest, req: Request):
     except HTTPException:
         raise
     except httpx.HTTPStatusError as e:
-        logger.error(f"❌ Chat endpoint HTTP status error: {e.response.status_code}")
+        status = e.response.status_code
+        logger.error(f"❌ Chat endpoint HTTP status error: {status}")
+        reason = f"OpenRouter HTTP {status}"
+        if status == 402:
+            reason = "OpenRouter HTTP 402 insufficient credits"
         return build_local_chat_payload(
             message,
             site_context,
             start_time,
-            reason="Local Intelligence",
+            reason=reason,
         )
     except httpx.RequestError as e:
         logger.error(f"❌ Chat endpoint connection/request error: {str(e)}")
@@ -990,7 +1047,7 @@ async def chat_endpoint(request: ChatRequest, req: Request):
             message,
             site_context,
             start_time,
-            reason="Local Intelligence",
+            reason=f"OpenRouter network ({type(e).__name__})",
         )
     except asyncio.TimeoutError:
         logger.error("❌ Chat endpoint request timed out")
@@ -998,7 +1055,7 @@ async def chat_endpoint(request: ChatRequest, req: Request):
             message,
             site_context,
             start_time,
-            reason="Local Intelligence",
+            reason="OpenRouter timeout",
         )
     except Exception as e:
         logger.error(f"❌ Chat endpoint unexpected error: {type(e).__name__} - {str(e)}", exc_info=True)

@@ -37,15 +37,20 @@ class GitHubConnector:
         Args:
             access_token: Optional GitHub personal access token for higher rate limits
         """
-        self.access_token = access_token or os.getenv("GITHUB_TOKEN") or os.getenv("GITHUB_PAT")
+        self.access_token = (
+            (access_token or "").strip()
+            or (os.getenv("GITHUB_TOKEN") or "").strip()
+            or (os.getenv("GITHUB_PAT") or "").strip()
+        )
         self.base_url = "https://api.github.com"
         self.headers = {
             "Accept": "application/vnd.github.v3+json",
-            "User-Agent": "AssistMe-Personal-Intelligence/1.0"
+            "User-Agent": "AssistMe-Personal-Intelligence/1.0",
         }
 
-        if access_token:
-            self.headers["Authorization"] = f"token {access_token}"
+        # Use env token when no explicit arg is passed (was a bug: only the arg was checked).
+        if self.access_token:
+            self.headers["Authorization"] = f"token {self.access_token}"
 
         # Cache to avoid rate limits
         self.cache = {}
@@ -88,8 +93,11 @@ class GitHubConnector:
                 self._cache_data(cache_key, profile)
                 return profile
 
+        except httpx.TimeoutException as e:
+            logger.warning(f"GitHub profile timeout for {username}: {type(e).__name__}")
+            return {'error': 'timeout', 'username': username}
         except httpx.HTTPError as e:
-            logger.error(f"Error fetching GitHub profile: {e}", exc_info=True)
+            logger.warning(f"Error fetching GitHub profile: {type(e).__name__}: {e}")
             return {'error': str(e)}
 
     async def get_repositories(
@@ -151,8 +159,11 @@ class GitHubConnector:
                 self._cache_data(cache_key, repos)
                 return repos
 
+        except httpx.TimeoutException as e:
+            logger.warning(f"GitHub repos timeout for {username}: {type(e).__name__}")
+            return []
         except httpx.HTTPError as e:
-            logger.error(f"Error fetching GitHub repos: {e}", exc_info=True)
+            logger.warning(f"Error fetching GitHub repos: {type(e).__name__}: {e}")
             return []
 
     async def get_user_activity_summary(self, username: str = "mangeshraut712") -> Dict[str, Any]:
