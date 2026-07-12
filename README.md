@@ -2,782 +2,395 @@
 
 <p align="center">
   <a href="https://mangeshraut.pro">
-    <img src="src/assets/images/homepage-light.png" alt="Portfolio homepage — light mode" width="360">
-    <img src="src/assets/images/homepage-dark.png" alt="Portfolio homepage — dark mode" width="360">
+    <img src="src/assets/images/homepage-light.png" alt="Portfolio homepage — light mode" width="380">
+    <img src="src/assets/images/homepage-dark.png" alt="Portfolio homepage — dark mode" width="380">
   </a>
 </p>
-<p align="center"><sub>Homepage · Light mode (left) · Dark mode (right) · July 2026</sub></p>
+
+<p align="center">
+  <sub>Homepage · Light (left) · Dark (right) · <strong>July 2026</strong></sub>
+</p>
 
 <p align="center">
   <a href="https://mangeshraut.pro"><img src="https://img.shields.io/badge/Live-mangeshraut.pro-0071e3?style=for-the-badge&logo=vercel&logoColor=white" alt="Live site"></a>
   <a href="https://mangeshraut712.github.io/mangeshrautarchive/"><img src="https://img.shields.io/badge/GitHub_Pages-mirror-24292e?style=for-the-badge&logo=github&logoColor=white" alt="GitHub Pages"></a>
-  <a href="https://github.com/mangeshraut712/mangeshrautarchive/actions/workflows/deploy.yml"><img src="https://img.shields.io/github/actions/workflow/status/mangeshraut712/mangeshrautarchive/deploy.yml?branch=main&style=for-the-badge&logo=githubactions&logoColor=white" alt="CI status"></a>
+  <a href="https://github.com/mangeshraut712/mangeshrautarchive/actions/workflows/deploy.yml"><img src="https://img.shields.io/github/actions/workflow/status/mangeshraut712/mangeshrautarchive/deploy.yml?branch=main&style=for-the-badge&logo=githubactions&logoColor=white&label=CI" alt="CI status"></a>
   <a href="LICENSE"><img src="https://img.shields.io/github/license/mangeshraut712/mangeshrautarchive?style=for-the-badge" alt="MIT License"></a>
-  <a href="https://nodejs.org/"><img src="https://img.shields.io/badge/Node-22.x-339933?style=for-the-badge&logo=node.js&logoColor=white" alt="Node 22"></a>
-  <a href="https://github.com/sponsors/mangeshraut712"><img src="https://img.shields.io/badge/Sponsor-Support-ea4aaa?style=for-the-badge&logo=github-sponsors&logoColor=white" alt="GitHub Sponsors"></a>
 </p>
 
 <p align="center">
-  <strong>Production AI-first portfolio with local-first agentic actions, dual hosting, and a full CI quality matrix.</strong><br>
-  <sub>Vanilla ES modules · FastAPI on Vercel · WWDC26 liquid glass · WebMCP · OpenRouter</sub>
+  <img src="https://img.shields.io/badge/Node-22.x-339933?style=flat-square&logo=node.js&logoColor=white" alt="Node 22">
+  <img src="https://img.shields.io/badge/Python-3.12-3776AB?style=flat-square&logo=python&logoColor=white" alt="Python 3.12">
+  <img src="https://img.shields.io/badge/FastAPI-0.139-009688?style=flat-square&logo=fastapi&logoColor=white" alt="FastAPI">
+  <img src="https://img.shields.io/badge/OpenRouter-free%20%2B%20Grok%204.3-black?style=flat-square" alt="OpenRouter">
+  <img src="https://img.shields.io/badge/Tests-170%20unit%2FAPI-brightgreen?style=flat-square" alt="Tests">
+  <img src="https://img.shields.io/badge/Playwright-15%20browsers-2EAD33?style=flat-square&logo=playwright&logoColor=white" alt="Playwright">
+  <a href="https://github.com/sponsors/mangeshraut712"><img src="https://img.shields.io/badge/Sponsor-♥-ea4aaa?style=flat-square&logo=github-sponsors&logoColor=white" alt="Sponsors"></a>
 </p>
 
 <p align="center">
-  <a href="https://mangeshraut.pro"><strong>Live site</strong></a>
-  &nbsp;·&nbsp;
-  <a href="https://mangeshraut.pro/monitor"><strong>Monitor</strong></a>
-  &nbsp;·&nbsp;
-  <a href="https://mangeshraut.pro/systems"><strong>Engineering</strong></a>
-  &nbsp;·&nbsp;
-  <a href="#-architecture"><strong>Architecture</strong></a>
-  &nbsp;·&nbsp;
-  <a href="#-local-development"><strong>Quick start</strong></a>
+  <strong>AI-first portfolio · local agentic actions · dual hosting · production CI</strong><br>
+  <sub>Vanilla ESM · FastAPI on Vercel · OpenRouter · WebMCP · WWDC26 liquid glass · true lazy CSS</sub>
 </p>
 
----
-
-## Table of contents
-
-- [Overview](#overview)
-- [About the builder](#about-the-builder)
-- [Live surfaces](#live-surfaces)
-- [Homepage sections](#homepage-sections)
-- [Features](#features)
-- [Apple Platform 2026 (WWDC26) audit — 100% coverage](#apple-platform-2026-wwdc26-audit--100-coverage)
-- [Blog & case studies](#blog--case-studies)
-- [Tech stack](#tech-stack)
-- [Architecture](#architecture)
-- [AI model routing](#ai-model-routing)
-- [AssistMe & WebMCP tools](#assistme--webmcp-tools)
-- [Integrations & OAuth](#integrations--oauth)
-- [PWA & installability](#pwa--installability)
-- [Performance & lazy loading](#performance--lazy-loading)
-- [Security](#security)
-- [Quality assurance & CI](#quality-assurance--ci)
-- [Project structure](#project-structure)
-- [API reference](#api-reference)
-- [Local development](#local-development)
-- [Deployment & CI/CD](#deployment--cicd)
-- [Documentation](#documentation)
-- [Changelog highlights](#changelog-highlights)
-- [Sponsors](#sponsors)
-- [Contributing](#contributing)
-- [License & contact](#license--contact)
+<p align="center">
+  <a href="https://mangeshraut.pro"><b>Live</b></a>
+  ·
+  <a href="https://mangeshraut.pro/monitor"><b>Monitor</b></a>
+  ·
+  <a href="https://mangeshraut.pro/systems"><b>Systems</b></a>
+  ·
+  <a href="#-quick-start"><b>Quick start</b></a>
+  ·
+  <a href="#-architecture"><b>Architecture</b></a>
+</p>
 
 ---
 
 ## Overview
 
-This repository powers [mangeshraut.pro](https://mangeshraut.pro) — a static-first portfolio with a **FastAPI** backend on Vercel, not a React/Next.js app. The runtime is **vanilla ES modules**, **Tailwind CSS v4**, and a custom **esbuild** build pipeline.
+This repo powers **[mangeshraut.pro](https://mangeshraut.pro)** — a **static-first** portfolio with a **Python FastAPI** backend on **Vercel serverless**, not a React/Next runtime.
 
-**AssistMe** is the on-site AI assistant. It runs **deterministic actions in the browser first** (navigation, resume download, theme toggle, project filters) via regex + **WebMCP** (`navigator.modelContext`). Only when local logic cannot answer does the client call **`POST /api/chat`** with **NDJSON streaming** through **OpenRouter** (`model_router.py`).
+| Principle                | Implementation                                                           |
+| ------------------------ | ------------------------------------------------------------------------ |
+| **Local-first agents**   | WebMCP + regex actions in the browser (~ms) before any LLM               |
+| **Cloud AI when needed** | `POST /api/chat` NDJSON stream via **OpenRouter** (`model_router.py`)    |
+| **Credit-safe online**   | `openrouter/free` + free-tier fallbacks when paid balance is empty       |
+| **Dual surface**         | Same `dist/` → **Vercel** (API + CDN) + **GitHub Pages** (static mirror) |
+| **Quality gate**         | Lint · 170 unit/API tests · browser QA · Lighthouse on every `main` push |
 
-The same `dist/` output is deployed to **Vercel** (primary + API) and **GitHub Pages** (static mirror with `apiBaseUrl` pointing at production).
-
-**Repository scale (July 2026):** 7 static HTML entry points (incl. offline shell) · 40+ public GitHub repositories · 12 technical articles · 5 in-depth case studies · 10 WebMCP tools · **149 automated unit/API tests** (40 Vitest + 109 pytest) · 15 Playwright browser projects · Apple-style progressive disclosure + iOS crash-hardening.
-
----
-
-## About the builder
-
-|               |                                                                                                                               |
-| ------------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| **Name**      | Mangesh Raut                                                                                                                  |
-| **Role**      | Software Development Engineer                                                                                                 |
-| **Education** | MS Computer Science — Drexel University                                                                                       |
-| **Focus**     | Production AI products, agentic workflows, developer infrastructure, modern web systems                                       |
-| **Site**      | [mangeshraut.pro](https://mangeshraut.pro) — evidence-first portfolio (code, benchmarks, telemetry — not bullet-point claims) |
-
-**What I build:** AI products · agentic systems · full-stack applications · RAG pipelines · developer tools · system monitors · production APIs · design systems. See [Architecture](#architecture) for engineering decisions documented on `/systems`.
+**Scale (July 2026):** 7 HTML shells · 13 homepage sections · 12 Field Notes · 5 case studies · 10 WebMCP tools · **49 Vitest + 121 pytest** · 15 Playwright projects · Apple-style System Monitor · true lazy section CSS (`ASSET_VER=20260712w`).
 
 ---
 
 ## Live surfaces
 
-| Surface          | URL                                                                                                 | Highlights                                                                 |
-| ---------------- | --------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
-| **Portfolio**    | [mangeshraut.pro](https://mangeshraut.pro)                                                          | AssistMe, 13 homepage sections, projects, blog, health widget, PWA         |
-| **GitHub Pages** | [mangeshraut712.github.io/mangeshrautarchive](https://mangeshraut712.github.io/mangeshrautarchive/) | Same `dist/` build; `apiBaseUrl` → production API                          |
-| **Engineering**  | [mangeshraut.pro/systems](https://mangeshraut.pro/systems)                                          | CI benchmarks, architecture log, failed experiments, hiring evidence Q&A   |
-| **Monitor**      | [mangeshraut.pro/monitor](https://mangeshraut.pro/monitor)                                          | Health probes, uptime matrix, CSP reports, AI metrics, deployment surfaces |
-| **Travel**       | [mangeshraut.pro/travel](https://mangeshraut.pro/travel)                                            | MapLibre GL atlas — routes, location gallery, searchable narratives        |
-| **Uses**         | [mangeshraut.pro/uses](https://mangeshraut.pro/uses)                                                | Hardware / software / AI stack from `usesStack`                            |
-| **Blog**         | [mangeshraut.pro/blog](https://mangeshraut.pro/blog)                                                | 12 build-generated Field Notes articles                                    |
-| **404**          | [mangeshraut.pro/404](https://mangeshraut.pro/404.html)                                             | Branded not-found with popular destinations                                |
-| **Offline**      | Served by service worker when offline                                                               | Lightweight reconnect shell (`src/offline.html`)                           |
+| Surface          | URL                                                                          | Role                                          |
+| ---------------- | ---------------------------------------------------------------------------- | --------------------------------------------- |
+| **Portfolio**    | [mangeshraut.pro](https://mangeshraut.pro)                                   | AssistMe, projects, blog, health, PWA         |
+| **GitHub Pages** | […/mangeshrautarchive](https://mangeshraut712.github.io/mangeshrautarchive/) | Static mirror · API → production              |
+| **Engineering**  | [/systems](https://mangeshraut.pro/systems)                                  | CI evidence, architecture log, hiring Q&A     |
+| **Monitor**      | [/monitor](https://mangeshraut.pro/monitor)                                  | Apple Status cards, portfolio catalog, probes |
+| **Travel**       | [/travel](https://mangeshraut.pro/travel)                                    | MapLibre atlas                                |
+| **Uses**         | [/uses](https://mangeshraut.pro/uses)                                        | Hardware / software / AI stack                |
+| **Blog**         | [/blog](https://mangeshraut.pro/blog)                                        | 12 build-generated articles                   |
 
 ---
 
-## Homepage sections
+## Features (July 2026)
 
-The main portfolio (`index.html`) is a single-page app with **13 primary nav landmarks** plus embedded sub-regions:
-
-| Section             | ID                      | What it contains                                                               |
-| ------------------- | ----------------------- | ------------------------------------------------------------------------------ |
-| **Hero**            | `#home`                 | Profile, role rotator, vibe-stack flyout, GA4 portfolio-reach panel, hero CTAs |
-| **About**           | `#about`                | Bio, timeline highlights, interactive cards                                    |
-| **Skills**          | `#skills`               | Category panels, skills visualization (lazy-loaded)                            |
-| **Experience**      | `#experience`           | Work history cards                                                             |
-| **Projects**        | `#projects`             | GitHub showcase grid, activity graph, lens filters, XR detail modal            |
-| **Education**       | `#education`            | Degree timeline                                                                |
-| **Publications**    | `#publications`         | Research / writing citations                                                   |
-| **Awards**          | `#awards`               | Honors and recognition                                                         |
-| **Recommendations** | `#recommendations`      | LinkedIn-style endorsement cards                                               |
-| **Certifications**  | `#certifications`       | Credential grid                                                                |
-| **Blog**            | `#blog`                 | 12 technical articles with generated HTML pages                                |
-| **Contact**         | `#contact`              | Form, Calendly, social links, merged health + Currently shelf                  |
-| **Debug Runner**    | `#debug-runner-section` | Optional browser game — collapsed disclosure + lazy init on open               |
-
-**Additional embedded regions:** `#engineering` (evidence teaser linking to `/systems`) · `#currently-section` (shows / books / music tabs with local poster assets) · health widget (WHOOP / Withings when connected).
-
----
-
-## Features
-
-| Area                | What it does                                                                                            | Key files / endpoints                                        |
-| ------------------- | ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------ |
-| **AssistMe**        | 10 WebMCP tools + regex fast-path before LLM; NDJSON streaming chat with KaTeX + DOMPurify markdown     | `agentic-actions.js`, `chat.js`, `POST /api/chat`            |
-| **Command palette** | Indexes sections, blog, case studies, travel, debug runner; `⌘K` / `Ctrl+K`; lazy-loaded on first click | `#search-overlay`, `search.js`                               |
-| **Projects**        | Live GitHub grid, lens filters, XR detail modal, multi-origin proxy fallback                            | `github-projects.js`, `/api/github/*`                        |
-| **Currently shelf** | Shows / books / music tabs; local posters; Last.fm via `/api/music/recent` + `/api/music/artwork`       | `currently.js`, `lastfm.js`                                  |
-| **Health widget**   | WHOOP + Withings metrics when OAuth connected; Supabase snapshots                                       | `/api/health-vitals/summary`                                 |
-| **Portfolio reach** | GA4 Data API hero panel — realtime users, events, views, countries                                      | `#portfolio-reach-panel`                                     |
-| **Design system**   | WWDC26 liquid glass, solid light/dark surfaces, dynamic island nav, view transitions                    | `wwdc26-liquid-glass.css`, `view-transitions-nav.js`         |
-| **Accessibility**   | Toolbar (share, shortcuts, font scale, glass tint), skip links, axe-core CI gate                        | `accessibility.js`                                           |
-| **Forms**           | Contact + newsletter with server validation and rate limiting                                           | `POST /api/contact`, `POST /api/newsletter/subscribe`        |
-| **Analytics**       | `@vercel/analytics` + deferred GA4 gtag (interaction-triggered)                                         | `analytics.js`, `vercel-analytics.js`                        |
-| **Build**           | esbuild, Sharp, hero-critical CSS, blog/case-study generators                                           | `scripts/build/build.js`                                     |
-| **Polish**          | Apple haptics, AOD dim mode, birthday easter-egg, share widget, UX polish sheet                         | `apple-haptics.js`, `share-widget.js`, `ux-polish-fixes.css` |
-| **Disclosure**      | Apple-style View more on dense sections (experience, blog, contact extras) — not endless scroll         | `section-preview.js`                                         |
-| **Testing**         | 15 Playwright projects, 40 Vitest + 109 pytest, Lighthouse CI on `dist/`                                | `tests/`                                                     |
-
----
-
-## Apple Platform 2026 (WWDC26) audit — 100% coverage
-
-Sitewide parity with Apple’s 2026 design language: **Liquid Glass** (clear / balanced / tinted), **WebGL refraction** on nav + chatbot + hero/projects, **Dynamic Island** (home), **command palette** on all pages, **share sheet**, **accessibility toolbar**, **high contrast**, **reduce-transparency sync**, and **solid `#FFFFFF` / `#000000`** page shells.
-
-| Phase  | Delivered                                                                                                                                                                                   | Key paths                                                      |
-| ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
-| **P0** | Unified asset version (`ASSET_VER` in `asset-version.mjs`, currently `20260712s`), `high-contrast.css`, blog/case-study WebGL CSS, monitor dead CSS removed, `reduced-transparency-sync.js` | `scripts/build/asset-version.mjs`                              |
-| **P1** | `subpage-chrome.js` on systems/uses/travel/monitor/404/blog/case studies; global search overlay; extended WebGL chrome                                                                      | `src/js/core/subpage-chrome.js`                                |
-| **P2** | Experience cards, awards grid, skills categories, education glass tokens, health widget alignment                                                                                           | `experience.css`, `awards.css`, `skills-visualization.js`      |
-| **P3** | Control Center (uses), Live Activity strip, Quick Look projects, Game leaderboard                                                                                                           | `control-center.js`, `live-activity-strip.js`, `quick-look.js` |
-
-**Verify locally:**
-
-```bash
-npm run check                 # ESLint + Stylelint + Prettier + Vitest
-npm run test:e2e:chrome       # Playwright smoke/a11y on Desktop Chrome
-```
-
-| Page                        | Glass boot | A11y toolbar | ⌘K search | Share | WebGL chrome        |
-| --------------------------- | ---------- | ------------ | --------- | ----- | ------------------- |
-| `index.html`                | ✅         | ✅           | ✅        | ✅    | ✅                  |
-| `systems.html`              | ✅         | ✅           | ✅        | ✅    | ✅ nav              |
-| `uses.html`                 | ✅         | ✅           | ✅        | ✅    | ✅ + Control Center |
-| `travel.html`               | ✅         | ✅           | ✅        | ✅    | ✅ nav              |
-| `monitor.html`              | ✅         | ✅           | ✅        | ✅    | ✅ nav              |
-| `404.html`                  | ✅         | ✅           | ✅        | ✅    | —                   |
-| Blog / case studies (build) | ✅         | ✅           | ✅        | ✅    | ✅ CSS              |
-
-## Blog & case studies
-
-### Technical articles (12)
-
-Generated at build time from `blog-data.js` into `dist/blog/*.html`:
-
-| #   | Article                                                                     |
-| --- | --------------------------------------------------------------------------- |
-| 1   | Google I/O 2026 Field Notes: Agentic Web, Gemini, Gemma, and WebNN          |
-| 2   | X Algorithm Field Notes: Retrieval, Hydration, Ranking, and Real-Time Feeds |
-| 3   | Google AI Ecosystem Field Notes: Multimodal Intelligence as a Product Layer |
-| 4   | OpenClaw Field Notes: Open-Source Agents Need More Than Autonomy            |
-| 5   | Wispr Flow Field Notes: Voice Input as a Power Tool                         |
-| 6   | NVIDIA Field Notes: Why AI Infrastructure Became the Product                |
-| 7   | Global AI Race Field Notes: Models, Nations, and the Infrastructure Layer   |
-| 8   | AI Code Editors Field Notes: VS Code, Cursor, Windsurf, and Antigravity     |
-| 9   | Apple at 50 Field Notes: The Product Discipline Behind the Myth             |
-| 10  | Anthropic Mythos Field Notes: Philosophy, Simulation, and AI Safety         |
-| 11  | WWDC 2026 Field Notes: Apple Intelligence, Siri, and Private AI             |
-| 12  | NotebookLM 2026 Field Notes: From Document Q&A to Research Workflow         |
-
-### Case studies (5)
-
-Defined in `case-studies-data.js` — searchable in the command palette and linked from `/systems`:
-
-| Case study                                 | Focus                                         |
-| ------------------------------------------ | --------------------------------------------- |
-| **mangeshraut.pro — Agentic Portfolio**    | This site — dual hosting, WebMCP, CI evidence |
-| **HindAI — Grounded Philosophy Assistant** | RAG + citation-grounded answers               |
-| **CES Energy Analytics Platform**          | Enterprise dashboard / analytics              |
-| **AssistMe Virtual Assistant**             | Multi-surface AI assistant product            |
-| **Bug Reporting System**                   | Full-stack defect tracking workflow           |
-
-Flagship repos: `mangeshrautarchive` · `HindAI` · `AssistMe Virtual Assistant` · `CES Energy Platform` · `Bug Reporting System`
+| Area                | Highlights                                                                                          |
+| ------------------- | --------------------------------------------------------------------------------------------------- |
+| **AssistMe**        | 10 WebMCP tools · regex fast-path · NDJSON stream · KaTeX + DOMPurify markdown · free-tier failover |
+| **System Monitor**  | Dense Apple-style cards · full portfolio health catalog · platform matrix · CSP / AI metrics        |
+| **Load pipeline**   | Section CSS as `data-href` only until near viewport · idle sequential warm · delayed liquid glass   |
+| **Command palette** | `⌘K` / `Ctrl+K` · sections, blog, case studies, travel                                              |
+| **Projects**        | Live GitHub grid · lens filters · multi-origin proxy · authenticated PAT on server                  |
+| **Currently**       | Shows / books / music · Last.fm server proxy · local posters                                        |
+| **Health**          | WHOOP + Withings OAuth · Supabase snapshots · daily cron                                            |
+| **Reach**           | GA4 Data API hero panel (optional service account)                                                  |
+| **Design**          | WWDC26 liquid glass · solid light/dark · Dynamic Island nav · view transitions · SF Pro tokens      |
+| **A11y**            | axe-core CI · 44px touch · focus rings · reduced motion · high contrast                             |
+| **PWA**             | Manifest · offline shell · install shortcuts                                                        |
+| **Security**        | Server-only secrets · CSP report endpoint · rate limits · HMAC OAuth state                          |
 
 ---
 
 ## Tech stack
 
-Versions below match `package.json` / `requirements.txt` in this repo.
+Pinned to this repo’s `package.json` / `requirements.txt` (July 2026).
 
-| Layer                   | Technologies                                                                                             |
-| ----------------------- | -------------------------------------------------------------------------------------------------------- |
-| **Frontend**            | Vanilla ES modules, Tailwind CSS **4.0.9** (`@tailwindcss/cli` **4.3.x**), no production React framework |
-| **Agentic**             | WebMCP `navigator.modelContext`, AssistMe action handler, NDJSON chat UI                                 |
-| **AI backend**          | OpenRouter via `model_router.py` (Grok portfolio tier, Fusion compare, Auto general, Gemini fast-path)   |
-| **API**                 | FastAPI (see `requirements.txt`), Pydantic v2, Uvicorn, httpx                                            |
-| **Data & integrations** | GitHub REST, Last.fm, Google Analytics 4, Supabase health vitals, WHOOP, Withings                        |
-| **Build**               | esbuild **0.28.0**, Sharp **0.35.2**, custom Node pipeline                                               |
-| **Analytics (client)**  | `@vercel/analytics` **2.0.1**                                                                            |
-| **Markdown**            | `marked` **18.x**, `isomorphic-dompurify`, KaTeX (chat/blog)                                             |
-| **Testing**             | Playwright **1.61.x**, Vitest **4.1.x**, `@axe-core/playwright` **4.12.x**, Lighthouse CI                |
-| **Lint / format**       | ESLint **9.x**, Stylelint **16.x**, Prettier **3.9.x**, flake8 / ruff / vulture (Python)                 |
-| **Env parity**          | `npm run doctor:full` → `verify-env-parity.mjs` (local/CI/Vercel surface checks)                         |
-| **Hosting**             | Vercel (API + CDN) + GitHub Pages (static mirror)                                                        |
-| **Runtimes**            | Node **22.x**, Python **3.12**                                                                           |
+### Frontend
 
-### Uses page stack (`/uses`)
+|               |                                                                                                    |
+| ------------- | -------------------------------------------------------------------------------------------------- |
+| **Runtime**   | Vanilla **ES modules** (no React/Vue/Svelte production runtime)                                    |
+| **CSS**       | Vanilla design system + **Tailwind CSS 4.x** utility _output only_ (never utility classes in HTML) |
+| **Build**     | **esbuild 0.28** · Sharp 0.35 · custom Node pipeline                                               |
+| **Markdown**  | marked 18 · isomorphic-dompurify · KaTeX 0.17 · marked-footnote                                    |
+| **Glass**     | `@ogtirth/liquid-glass-oss` + custom WebGL (disabled on iOS/low-power)                             |
+| **Analytics** | `@vercel/analytics` 2.x · deferred GA4                                                             |
 
-Rendered from `usesStack` in `engineering-showcase-data.js`:
+### Backend (Vercel serverless)
 
-| Category         | Tools                                                                 |
-| ---------------- | --------------------------------------------------------------------- |
-| **Hardware**     | MacBook Pro (Apple Silicon), Studio Display, AirPods Pro              |
-| **Software**     | macOS, Raycast, Arc / Safari, iTerm                                   |
-| **AI stack**     | Cursor, Claude Code, OpenRouter, Codex                                |
-| **Engineering**  | FastAPI, React, Next.js, Vercel, GitHub Actions, Playwright           |
-| **Fonts**        | SF Pro, Inter (fallback)                                              |
-| **Theme**        | Solid white/black surfaces, Apple 2026 design tokens, dark/light sync |
-| **Productivity** | Notion, Linear-style task lists, GitHub Projects                      |
+|                  |                                                                                                |
+| ---------------- | ---------------------------------------------------------------------------------------------- |
+| **API**          | **FastAPI 0.139** · Pydantic 2.13 · Uvicorn · httpx · websockets 16                            |
+| **AI**           | OpenRouter · `x-ai/grok-4.3` preferred · `openrouter/free` online path · Auto / Fusion routers |
+| **Crypto / env** | cryptography 49 · python-dotenv · aiofiles · psutil                                            |
+| **Integrations** | GitHub REST · Last.fm · GA4 · Supabase · WHOOP · Withings · Google Calendar                    |
+
+### Quality
+
+|              |                                                                             |
+| ------------ | --------------------------------------------------------------------------- |
+| **Unit**     | Vitest **4.1** · **49** tests                                               |
+| **API**      | pytest · **121** tests                                                      |
+| **E2E**      | Playwright **1.61** · **15** browser projects · `@axe-core/playwright` 4.12 |
+| **Lint**     | ESLint 9 · Stylelint 16 · Prettier 3.9 · flake8 / ruff / vulture            |
+| **Perf**     | Lighthouse gates on `dist/` (desktop/mobile) every CI run                   |
+| **Runtimes** | **Node 22.x** · **Python 3.12**                                             |
 
 ---
 
 ## Architecture
 
-### System map
-
 ```mermaid
-flowchart TB
-    subgraph Pages["Static pages src/ → dist/"]
-        HOME[index.html]
-        SYS[systems.html]
-        USES[uses.html]
-        MON[monitor.html]
-        TRV[travel.html]
-        BLOG[blog/*.html]
-    end
+flowchart LR
+  subgraph Client
+    HTML[Static pages]
+    BOOT[bootstrap.js]
+    MCP[WebMCP + regex]
+    CHAT[AssistMe UI]
+  end
 
-    subgraph Browser["Browser"]
-        BOOT[bootstrap.js lazy modules]
-        AGENT[agentic-actions.js 10 WebMCP tools]
-        CHAT[chatbot.js + chat.js]
-        BOOT --> CHAT --> AGENT
-    end
+  subgraph Vercel
+    CDN[dist/ CDN]
+    API[FastAPI api/index.py]
+    R[model_router.py]
+  end
 
-    HOME --> BOOT
-    SYS --> BOOT
-    MON --> BOOT
-    TRV --> BOOT
+  subgraph External
+    OR[OpenRouter]
+    GH[GitHub]
+    INT[Health / Last.fm / GA4]
+  end
 
-    subgraph Local["Local-first under ~50ms"]
-        TOOLS[WebMCP + regex actions]
-        SK[site_knowledge.py]
-    end
-
-    AGENT --> TOOLS
-    CHAT --> TOOLS
-
-    subgraph Vercel["Vercel mangeshraut.pro"]
-        STATIC[dist/ CDN]
-        API[FastAPI api/index.py]
-        ROUTER[model_router.py]
-        API --> ROUTER
-        STATIC --> API
-    end
-
-    subgraph GHPages["GitHub Pages mirror"]
-        MIRROR[static dist/]
-        CFG[build-config.js apiBaseUrl → mangeshraut.pro]
-        MIRROR --> CFG
-    end
-
-    CHAT -->|POST /api/chat| API
-    CFG -->|cross-origin API| API
-    API --> SK
-
-    subgraph External["External"]
-        OR[OpenRouter]
-        GH[GitHub API]
-        LF[Last.fm / iTunes proxy]
-        HV[WHOOP / Withings / Supabase]
-        GA[Google Analytics 4]
-    end
-
-    ROUTER --> OR
-    API --> GH
-    API --> LF
-    API --> HV
-    API --> GA
-
-    subgraph CI["GitHub Actions deploy.yml"]
-        QA[lint · test · Playwright · Lighthouse 100]
-        BUILD[npm run build]
-        QA --> BUILD --> STATIC
-        BUILD --> MIRROR
-    end
+  HTML --> BOOT --> CHAT
+  CHAT --> MCP
+  MCP -->|local action| HTML
+  CHAT -->|POST /api/chat NDJSON| API
+  API --> R --> OR
+  API --> GH
+  API --> INT
+  CDN --> HTML
 ```
 
-### Chat request flow
+### Chat path
 
-```mermaid
-sequenceDiagram
-    participant U as User
-    participant UI as Chat UI
-    participant AG as Agentic engine
-    participant API as POST /api/chat
-    participant SK as Site knowledge
-    participant OR as OpenRouter
+1. **Browser** — `detectAndExecute()` WebMCP / regex (navigate, resume, theme, filters).
+2. **Site knowledge** — deterministic portfolio facts without an LLM.
+3. **OpenRouter** — routed model (Grok / free / Auto / Fusion / Gemini) with multi-model fallback chain.
+4. **Graceful offline** — honest fallbacks for 402 credits, rate limits, and upstream errors.
 
-    U->>UI: Message
-    UI->>AG: detectAndExecute()
-    alt Local action match
-        AG-->>UI: Result in browser
-    else Needs backend
-        UI->>API: NDJSON stream optional
-        API->>SK: Deterministic facts?
-        alt Site knowledge hit
-            SK-->>UI: Answer without LLM
-        else OpenRouter configured
-            API->>OR: Routed model from model_router.py
-            OR-->>UI: Streamed tokens
-        else
-            API-->>UI: Offline local response
-        end
-    end
-```
+### Dual hosting
 
-**Design principles:** local-first actions · dual surface (Vercel + GitHub Pages) · secrets only in server env · every `main` push runs the full quality gate before deploy.
+| Host                           | Serves            | API                                                    |
+| ------------------------------ | ----------------- | ------------------------------------------------------ |
+| **Vercel** (`mangeshraut.pro`) | `dist/` + FastAPI | Same origin `/api/*`                                   |
+| **GitHub Pages**               | `dist/` only      | `build-config` → `apiBaseUrl: https://mangeshraut.pro` |
 
-### Key architecture decisions (documented on `/systems`)
-
-| Decision                                   | Rationale                                             |
-| ------------------------------------------ | ----------------------------------------------------- |
-| **FastAPI over serverless functions only** | Async streaming for NDJSON chat                       |
-| **OpenRouter over single provider**        | Model routing beats lock-in                           |
-| **WebMCP + regex before LLM**              | ~20× faster for navigation and portfolio actions      |
-| **Vanilla ES modules over React SPA**      | Smaller bundle, no hydration tax, Lighthouse-friendly |
-| **Rejected microservices**                 | Complexity without benefit at this scale              |
-| **Rejected vector DB**                     | Section-indexed search was sufficient                 |
-| **Rejected prompt-only navigation**        | Unreliable vs deterministic handlers                  |
+Both stamp `build-config.json` with `gitCommit` for deploy parity (`npm run verify:deploy-sync`).
 
 ---
 
 ## AI model routing
 
-`model_router.py` selects the OpenRouter model per message — no client-side model picker required:
+| Tier                          | Model                     | When                                                |
+| ----------------------------- | ------------------------- | --------------------------------------------------- |
+| **Env default (online-safe)** | `openrouter/free`         | Set on Vercel when paid balance is empty            |
+| **Portfolio primary**         | `x-ai/grok-4.3`           | Hire / skills / experience (when credits available) |
+| **Fusion**                    | `openrouter/fusion`       | Compare / trade-off queries (non-stream)            |
+| **Auto**                      | `openrouter/auto`         | Open-domain                                         |
+| **Fast**                      | `google/gemini-2.5-flash` | Lightweight paid path                               |
+| **Free spares**               | Gemma 4 `:free` etc.      | Automatic chain after 402 / upstream fail           |
 
-| Tier                  | Model (`api/config.py`)   | When used                                                                   |
-| --------------------- | ------------------------- | --------------------------------------------------------------------------- |
-| **Portfolio primary** | `x-ai/grok-4.3`           | Questions about Mangesh, skills, experience, projects, hire intent          |
-| **Fusion compare**    | `openrouter/fusion`       | Compare / vs / trade-offs / multi-perspective analysis                      |
-| **Auto router**       | `openrouter/auto`         | General open-domain queries (allowed families: Grok, Gemini, Claude, GPT-5) |
-| **Fast fallback**     | `google/gemini-2.5-flash` | Default when `OPENROUTER_MODEL` unset or as lightweight path                |
-
-**Before any LLM call:** `site_knowledge.py` answers deterministic portfolio facts · regex agentic actions run in the browser. Rate limits and input sanitization are documented in [Security](#security).
-
-**Optional web tools:** `should_use_web_tools()` can augment answers for time-sensitive queries when configured.
+Configure with `OPENROUTER_API_KEY` + optional `OPENROUTER_MODEL`. After topping up credits: set `OPENROUTER_MODEL=x-ai/grok-4.3` on Vercel and redeploy.
 
 ---
 
-## AssistMe & WebMCP tools
+## AssistMe · WebMCP tools
 
-Ten tools are registered when `navigator.modelContext` is available (`agentic-actions.js`):
-
-| Tool                   | Action                                                       |
-| ---------------------- | ------------------------------------------------------------ |
-| `navigate_to_section`  | Scroll to a portfolio section                                |
-| `download_resume`      | Download resume PDF                                          |
-| `schedule_meeting`     | Open Calendly popup                                          |
-| `open_contact_form`    | Focus contact form                                           |
-| `copy_contact_info`    | Copy email / social links                                    |
-| `search_portfolio`     | Open global search with query                                |
-| `filter_projects`      | Filter GitHub showcase by technology                         |
-| `open_social_media`    | Open GitHub, LinkedIn, or X                                  |
-| `toggle_theme`         | Switch light / dark / system                                 |
-| `update_health_metric` | Update WHOOP/Withings widget metric (connected integrations) |
-
-Natural-language commands in AssistMe use the same handlers via regex detection in `chat.js` before any network call.
-
-**Keyboard shortcuts (accessibility toolbar):** `?` shortcuts panel · `⌘K` command palette · theme persists in `localStorage`.
+| Tool                   | Action                         |
+| ---------------------- | ------------------------------ |
+| `navigate_to_section`  | Scroll to a section            |
+| `download_resume`      | Resume PDF                     |
+| `schedule_meeting`     | Calendly                       |
+| `open_contact_form`    | Focus contact                  |
+| `copy_contact_info`    | Copy email / socials           |
+| `search_portfolio`     | Command palette query          |
+| `filter_projects`      | Project lens by tech           |
+| `open_social_media`    | GitHub / LinkedIn / X          |
+| `toggle_theme`         | Light / dark / system          |
+| `update_health_metric` | Health widget (when connected) |
 
 ---
 
-## Integrations & OAuth
+## Quick start
 
-Server-side OAuth flows in `api/integrations/` — tokens never exposed to the browser bundle.
+```bash
+git clone https://github.com/mangeshraut712/mangeshrautarchive.git
+cd mangeshrautarchive
 
-| Integration         | Endpoints                                                                  | Purpose                                |
-| ------------------- | -------------------------------------------------------------------------- | -------------------------------------- |
-| **WHOOP**           | `/api/integrations/whoop/connect` · `/callback`                            | Recovery, strain, sleep metrics        |
-| **Withings**        | `/api/integrations/withings/connect` · `/callback`                         | Weight, body composition               |
-| **Google Calendar** | `/api/integrations/google-calendar/connect` · `/api/calendar/availability` | Meeting availability for Calendly flow |
-| **Supabase**        | Internal store                                                             | Daily health summary snapshots         |
-| **Health summary**  | `GET /api/health-vitals/summary` · `POST /api/health-vitals/sync`          | Sanitized widget data for homepage     |
-| **Cron sync**       | `GET /api/cron/health-vitals-sync`                                         | Hourly scheduled provider refresh      |
+# Node 22
+npm install --no-audit --no-fund   # prefer install over npm ci
 
-Optional: Upstash Redis for shared reach counters · GA4 Data API (property `537627192`) for the hero reach panel. See [.env.example](.env.example) and `scripts/integrations/`.
+# Python 3.12 — venv must be named `venv` for dev-backend auto-detect
+python3 -m venv venv && source venv/bin/activate
+pip install -r requirements.txt -r requirements-dev.txt
 
----
+cp .env.example .env               # OPENROUTER_API_KEY optional
+npm run dev                        # http://127.0.0.1:4000  ·  API :8001
+```
 
-## PWA & installability
+| URL                        | Service                 |
+| -------------------------- | ----------------------- |
+| http://127.0.0.1:4000      | Frontend + `/api` proxy |
+| http://127.0.0.1:8001      | FastAPI direct          |
+| http://127.0.0.1:8001/docs | OpenAPI                 |
 
-`manifest.json` enables install-to-homescreen on supported platforms:
+```bash
+npm run build && PORT=4174 npm run serve:dist   # production preview
+```
 
-| Property        | Value                                           |
-| --------------- | ----------------------------------------------- |
-| **Name**        | Mangesh Raut \| Software Engineer               |
-| **Display**     | `standalone` with `minimal-ui` override         |
-| **Theme color** | `#007AFF`                                       |
-| **Icons**       | SVG + 180×180 / 192×192 PNG (maskable)          |
-| **Screenshots** | Wide homepage + narrow iPhone 17 Pro Max splash |
+### Essential commands
 
-**App shortcuts:** Projects · Contact · Travel Atlas · System Monitor
-
-**Apple web app:** `apple-mobile-web-app-capable` · `black-translucent` status bar · dedicated PWA splash assets in `assets/images/`.
-
----
-
-## Performance & lazy loading
-
-`bootstrap.js` defers non-critical work to protect LCP and Lighthouse scores:
-
-| Strategy                  | Implementation                                                                                     |
-| ------------------------- | -------------------------------------------------------------------------------------------------- |
-| **Eager modules**         | `accessibility.js` only                                                                            |
-| **Section lazy load**     | Intersection Observer loads projects, blog, currently, skills, debug-runner CSS + JS near viewport |
-| **Interaction lazy load** | AssistMe, search, share widget load on first click (`bindInteractionModuleLoader`)                 |
-| **Deferred styles**       | CSS groups (`projects`, `blog`, `currently`, `assistant`, etc.) injected on demand                 |
-| **Deferred analytics**    | GA4 gtag loads after first user interaction; skipped entirely during `perf-audit` runs             |
-| **Perf-audit mode**       | `perf-audit-head.js` + `?perf-audit=1` — slim CSS, no analytics, Lighthouse-specific UA detection  |
-| **Hero-critical CSS**     | Inlined / bundled separately in `build.js` for first paint                                         |
-| **Image pipeline**        | Sharp optimization + WebP conversion at build time                                                 |
-
-**Lighthouse CI:** loopback audits use `?perf-audit=1`; production nightly monitoring audits the live Vercel URL without the flag.
+| Command                         | Purpose                                   |
+| ------------------------------- | ----------------------------------------- |
+| `npm run dev`                   | Frontend + backend                        |
+| `npm run build`                 | Production `dist/`                        |
+| `npm test` / `npm run test:api` | Vitest / pytest                           |
+| `npm run check`                 | ESLint + Stylelint + Prettier + Vitest    |
+| `npm run qa:prod-ready`         | Full pre-deploy matrix                    |
+| `npm run verify:deploy-sync`    | Vercel ↔ Pages parity                     |
+| `npm run clean`                 | Purge dist/artifacts/caches (keeps venvs) |
+| `npm run security-check`        | Secret scan                               |
 
 ---
 
-## Security
+## Environment (server-side only)
 
-| Control                | Details                                                                                          |
-| ---------------------- | ------------------------------------------------------------------------------------------------ |
-| **Secrets**            | API keys server-side only — never in `build-config.js` or client bundles                         |
-| **Rate limiting**      | 20 req / 60 s default on chat and sensitive endpoints                                            |
-| **CSP reporting**      | `POST /api/csp-report` ingested by monitor dashboard                                             |
-| **OAuth state**        | HMAC-signed state tokens via `oauth_state.py`                                                    |
-| **Integration admin**  | `require_integration_admin` guard on connect/disconnect routes                                   |
-| **Input sanitization** | DOMPurify on client markdown · Pydantic validation on API                                        |
-| **CI security**        | `npm audit --audit-level=high` + `npm run security-check` on every deploy                        |
-| **CORS**               | iTunes artwork proxied through `/api/music/artwork` — no direct third-party fetches from browser |
+| Group         | Keys                                     | Notes                                |
+| ------------- | ---------------------------------------- | ------------------------------------ |
+| **AI**        | `OPENROUTER_API_KEY`, `OPENROUTER_MODEL` | Chat; free model works at $0 balance |
+| **GitHub**    | `GITHUB_TOKEN` / `GITHUB_PAT`            | Rate limits for project grid         |
+| **Last.fm**   | `LASTFM_API_KEY`, `LASTFM_USERNAME`      | Music shelf                          |
+| **Analytics** | `GA4_*`, service account JSON            | Portfolio reach panel                |
+| **Health**    | WHOOP / Withings / Calendar OAuth        | Optional                             |
+| **Supabase**  | URL + service role                       | Vitals persistence                   |
+| **Voice**     | `AI_GATEWAY_API_KEY`                     | Optional realtime speech             |
+
+Never commit `.env` / `.env.local`. See [`.env.example`](.env.example).
 
 ---
 
-## Quality assurance & CI
+## Quality & CI
 
-### GitHub Actions (`deploy.yml` on every push/PR to `main`)
+### `deploy.yml` (push / PR → `main`)
 
-1. `npm audit --audit-level=high` + `npm run security-check`
-2. ESLint + Stylelint + Prettier
-3. Vitest unit tests (**40**)
-4. Env parity (`npm run doctor:full` → `verify-env-parity.mjs`)
-5. Python flake8 + ruff/vulture dead-code scan + **109** API tests (pytest)
-6. Browser QA smoke (`qa:browser:ci`) on the local dev server
-7. Production build + Lighthouse desktop/mobile on `dist/` (served on loopback)
-8. Build artifact → GitHub Pages deploy → live commit verification
+1. `npm audit` + `security-check`
+2. ESLint · Stylelint · Prettier
+3. Vitest (**49**)
+4. Env parity (non-blocking)
+5. flake8 · dead-code · pytest (**121**)
+6. Browser QA smoke
+7. `npm run build` + Lighthouse desktop/mobile on `dist/`
+8. GitHub Pages deploy + dual-surface verify
 
-Nightly **[post-deploy-monitoring.yml](.github/workflows/post-deploy-monitoring.yml)** checks production reachability and Lighthouse on Vercel.
+### Nightly `post-deploy-monitoring.yml`
 
-### Thresholds (July 2026)
+Live reachability (Vercel + Pages) · Lighthouse floors · commit parity.
 
-| Gate                                          | Target                                                                                     |
-| --------------------------------------------- | ------------------------------------------------------------------------------------------ |
-| **Lighthouse CI** (`dist/`, desktop + mobile) | Performance / Accessibility / Best Practices / SEO gates (see workflow mins)               |
-| **axe-core** (CI browser QA)                  | Zero critical / serious violations on key surfaces                                         |
-| **Playwright**                                | 15 named browser projects (Chrome, Safari, Firefox, Edge, Pixel, iPhone, iPad, responsive) |
-| **Vitest**                                    | **40** tests across 7 files                                                                |
-| **pytest**                                    | **109** API tests                                                                          |
-
-### Useful commands
-
-| Command                      | Purpose                                                         |
-| ---------------------------- | --------------------------------------------------------------- |
-| `npm run check`              | ESLint + Stylelint + Prettier + Vitest                          |
-| `npm run qa:prod-ready`      | Security + full lint/test + Chrome E2E + Lighthouse             |
-| `npm run doctor:full`        | Env / surface parity checks (`verify-env-parity.mjs`)           |
-| `npm run qa:lighthouse:ci`   | Lighthouse against the live GitHub Pages URL                    |
-| `npm run qa:browser:ci`      | CI browser / FPS promotion audit on the local dev server        |
-| `npm run verify:deploy-sync` | Compare deploy commit parity across Vercel + GitHub Pages       |
-| `npm run clean`              | Remove `dist/`, `artifacts/`, caches, `__pycache__` (not venvs) |
-
-Dev server commands (`npm run dev`, `npm run build`, etc.) are listed in [Local development](#local-development).
+| Suite                   | Count / target               |
+| ----------------------- | ---------------------------- |
+| Vitest                  | 49                           |
+| pytest                  | 121                          |
+| Playwright projects     | 15                           |
+| Lighthouse CI (`dist/`) | Perf / A11y / BP / SEO gates |
 
 ---
 
 ## Project structure
 
-```
+```text
 mangeshrautarchive/
-├── api/                          # FastAPI (Vercel serverless entry: api/index.py)
-│   ├── routes/                   # chat, github, media, analytics, monitor, integrations
-│   ├── integrations/             # WHOOP, Withings, Google Calendar, Supabase
-│   ├── model_router.py           # OpenRouter model selection
-│   ├── monitoring.py             # Health / metrics / engineering probes
-│   └── site_knowledge.py         # Deterministic portfolio answers
-├── src/                          # Static site source → npm run build → dist/
-│   ├── index.html                # Portfolio SPA
-│   ├── systems.html              # Engineering evidence notebook (no footer)
-│   ├── monitor.html              # Live ops dashboard (no footer)
-│   ├── travel.html               # Travel atlas
-│   ├── uses.html                 # Hardware / software / AI stack
-│   ├── 404.html · offline.html   # Branded not-found + SW offline shell
-│   ├── service-worker.js         # Shell precache + navigation fallback
-│   ├── assets/css/               # Vanilla CSS design system (+ ux-polish-fixes.css)
-│   ├── assets/images|files|icons/
-│   └── js/                       # core/, modules/, services/, utils/, data/
-├── scripts/
-│   ├── build/                    # esbuild, clean, asset-version, generators
-│   ├── deployment/               # Lighthouse, security-check, deploy sync
-│   ├── utils/                    # dev-all, local-server, serve-dist, flake8/vulture
-│   ├── qa/                       # Browser / FPS / iPhone audit helpers
-│   └── integrations/             # OAuth + env helper scripts
-├── tests/
-│   ├── api/                      # pytest (109 tests)
-│   ├── e2e/                      # Playwright (15 browser projects)
-│   └── js/ + src/**/*.test.js    # Vitest (40 tests)
-├── docs/                         # Pointers to primary docs (no session dumps)
-├── config/                       # vulture.toml (CI dead-code scan)
-├── middleware.js                 # Vercel edge: Lighthouse → ?perf-audit=1
-├── index.js                      # Static-analysis entry → src/js/entry.js
-├── pyrightconfig.json            # Python typecheck include: api/
-├── vercel.json                   # dist/ + FastAPI rewrites + cron
-├── package.json                  # Node 22 · ESM · CI scripts
-├── requirements.txt              # Python runtime deps
-├── AGENTS.md                     # AI contributor briefing
-└── .github/workflows/            # deploy.yml, post-deploy-monitoring.yml
+├── api/                 # FastAPI · routes · model_router · integrations
+├── src/                 # HTML · CSS · ES modules → dist/
+├── scripts/             # build · deployment · qa · utils
+├── tests/               # unit · api · e2e
+├── .github/workflows/   # deploy.yml · post-deploy-monitoring.yml
+├── vercel.json          # dist + /api rewrites + cron
+├── package.json         # Node 22 · ESM
+├── requirements.txt     # Python runtime
+└── AGENTS.md            # AI contributor brief
 ```
-
-**Not committed (local only):** `.env` / `.env.local`, `node_modules/`, `dist/`, `.venv` / `venv` symlink, `test-results/`, `artifacts/`, IDE caches. Run `npm run clean` to purge generated dirs safely (skips venvs).
 
 ---
 
-## API reference
-
-Production base: `https://mangeshraut.pro`
-
-### Core & chat
+## API (production)
 
 ```bash
-curl https://mangeshraut.pro/api/health
-curl https://mangeshraut.pro/api/status
-curl https://mangeshraut.pro/api/monitor/status
-curl https://mangeshraut.pro/api/chat/health
-curl https://mangeshraut.pro/api/models
+curl -s https://mangeshraut.pro/api/health
+curl -s https://mangeshraut.pro/api/chat/health
+curl -s https://mangeshraut.pro/api/monitor/platform-health | head
+curl -s https://mangeshraut.pro/api/monitor/portfolio-catalog | head
+curl -s -X POST https://mangeshraut.pro/api/chat \
+  -H 'Content-Type: application/json' \
+  -d '{"message":"What are Mangesh top skills?","stream":false}'
 ```
 
-### Content, GitHub & reach
+| Area    | Endpoints                                                  |
+| ------- | ---------------------------------------------------------- |
+| Core    | `/api/health` · `/api/status` · `/api/models`              |
+| Chat    | `/api/chat` · `/api/chat/health`                           |
+| GitHub  | `/api/github/profile` · `/api/github/repos/*`              |
+| Media   | `/api/music/recent` · `/api/music/artwork` · posters       |
+| Health  | `/api/health-vitals/summary` · integrations · calendar     |
+| Monitor | `/api/monitor/*` · `platform-health` · `portfolio-catalog` |
+| Forms   | `POST /api/contact` · `POST /api/newsletter/subscribe`     |
 
-```bash
-curl "https://mangeshraut.pro/api/github/repos/public?username=mangeshraut712"
-curl https://mangeshraut.pro/api/github/profile
-curl https://mangeshraut.pro/api/analytics/reach
-curl https://mangeshraut.pro/api/analytics/views
-```
-
-### Media
-
-```bash
-curl "https://mangeshraut.pro/api/music/recent?user=mbr63&limit=5"
-curl "https://mangeshraut.pro/api/music/artwork?track=Song&artist=Artist"
-curl "https://mangeshraut.pro/api/posters/movie?title=Inception"
-curl "https://mangeshraut.pro/api/posters/book?title=Deep+Learning"
-```
-
-### Health & integrations
-
-```bash
-curl https://mangeshraut.pro/api/health-vitals/summary
-curl https://mangeshraut.pro/api/integrations/status
-curl "https://mangeshraut.pro/api/calendar/availability"
-```
-
-### Monitor (public ops)
-
-```bash
-curl https://mangeshraut.pro/api/monitor/health
-curl https://mangeshraut.pro/api/monitor/metrics
-curl https://mangeshraut.pro/api/monitor/events
-curl https://mangeshraut.pro/api/monitor/engineering
-curl https://mangeshraut.pro/api/monitor/ai-metrics
-curl https://mangeshraut.pro/api/monitor/security
-```
-
-### Forms
-
-```bash
-# Contact and newsletter (POST with JSON body)
-curl -X POST https://mangeshraut.pro/api/contact -H "Content-Type: application/json" -d '{"name":"...","email":"...","message":"..."}'
-curl -X POST https://mangeshraut.pro/api/newsletter/subscribe -H "Content-Type: application/json" -d '{"email":"..."}'
-```
-
-OpenAPI interactive docs: `http://127.0.0.1:8001/docs` when running the API locally. Full monitor API reference: `GET /api/monitor/docs`.
+Local OpenAPI: `http://127.0.0.1:8001/docs`
 
 ---
 
-## Local development
+## Deployment
 
-**Requirements:** Node.js 22.x, Python 3.12+, optional [uv](https://github.com/astral-sh/uv) for faster pytest.
-
-```bash
-git clone https://github.com/mangeshraut712/mangeshrautarchive.git
-cd mangeshrautarchive
-npm install --no-audit --no-fund   # prefer install over npm ci (lock may lag transitive peers)
-
-# Python 3.12 — name the venv `venv` so scripts/utils/dev-backend.js auto-detects it
-python3 -m venv venv && source venv/bin/activate
-pip install -r requirements.txt -r requirements-dev.txt
-# or: uv venv && uv pip install -r requirements.txt -r requirements-dev.txt
-
-cp .env.example .env    # OPENROUTER_API_KEY optional (offline AssistMe fallback works without it)
-npm run dev             # frontend :4000 + API :8001
-```
-
-### Environment variables (summary)
-
-Copy [.env.example](.env.example) → `.env` (`.env.local` overrides). Key groups:
-
-| Group            | Variables                                     | Required for                               |
-| ---------------- | --------------------------------------------- | ------------------------------------------ |
-| **AI**           | `OPENROUTER_API_KEY`, `OPENROUTER_MODEL`      | AssistMe chat (minimum viable local setup) |
-| **GitHub**       | `GITHUB_TOKEN` / `GITHUB_PAT`                 | Higher rate limits on repo proxy           |
-| **Last.fm**      | `LASTFM_API_KEY`, `LASTFM_USERNAME`           | Live listening shelf (defaults to `mbr63`) |
-| **Analytics**    | `GA4_PROPERTY_ID`, `GOOGLE_ANALYTICS_*`       | Detailed Portfolio Reach panel             |
-| **Redis**        | `UPSTASH_REDIS_REST_*`                        | Shared reach counters in production        |
-| **Health OAuth** | WHOOP / Withings / Google Calendar client IDs | Health widget + calendar availability      |
-| **Supabase**     | `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`   | Health vitals persistence                  |
-
-| Service  | URL                        |
-| -------- | -------------------------- |
-| Frontend | http://127.0.0.1:4000      |
-| FastAPI  | http://127.0.0.1:8001      |
-| API docs | http://127.0.0.1:8001/docs |
-
-Production build preview:
+| Surface          | How                                                                |
+| ---------------- | ------------------------------------------------------------------ |
+| **Vercel**       | Git `main` · FastAPI + `dist/` · Node 22 · Python serverless       |
+| **GitHub Pages** | CI artifact after quality gates                                    |
+| **Cache bust**   | `ASSET_VER` in `scripts/build/asset-version.mjs` (**`20260712w`**) |
 
 ```bash
 npm run build
-PORT=4174 npm run serve:dist
+npm run verify:deploy-sync
+npm run qa:postdeploy
 ```
-
-### Common dev commands
-
-| Command                         | Purpose                                              |
-| ------------------------------- | ---------------------------------------------------- |
-| `npm run dev`                   | Frontend (:4000) + FastAPI (:8001)                   |
-| `npm run dev:frontend`          | Frontend only (proxies `/api` → :8001)               |
-| `npm run dev:backend`           | API only                                             |
-| `npm run build`                 | Production `dist/` (HTML/CSS/JS + blog/case studies) |
-| `npm test`                      | Vitest unit tests                                    |
-| `npm run test:api`              | pytest API suite (`source venv/bin/activate` first)  |
-| `npm run test:e2e:chrome`       | Playwright Desktop Chrome                            |
-| `npm run lint` / `lint:css`     | ESLint / Stylelint                                   |
-| `npm run security-check`        | Scan for leaked secrets                              |
-| `npm run qa:prod-ready`         | Full pre-deploy matrix (CI parity)                   |
-| `npm run qa:lighthouse:desktop` | Lighthouse gate (local or remote URL)                |
-| `npm run clean`                 | Purge dist/artifacts/caches (safe; skips venvs)      |
-| `npm run check`                 | Lint + format check + Vitest                         |
 
 ---
 
-## Deployment & CI/CD
+## Blog & case studies
 
-| Workflow                                                                   | Trigger                | Role                                                                       |
-| -------------------------------------------------------------------------- | ---------------------- | -------------------------------------------------------------------------- |
-| [deploy.yml](.github/workflows/deploy.yml)                                 | Push/PR `main`, manual | Quality gates → Lighthouse on `dist/` → GitHub Pages → dual-surface verify |
-| [post-deploy-monitoring.yml](.github/workflows/post-deploy-monitoring.yml) | Daily 14:00 UTC        | Live reachability (Vercel + Pages) · Lighthouse floors · commit parity     |
+**Field Notes (12):** Google I/O 2026 · X Algorithm · Google AI · OpenClaw · Wispr Flow · NVIDIA · Global AI race · AI code editors · Apple at 50 · Anthropic Mythos · WWDC 2026 · NotebookLM 2026.
 
-**Dual hosting**
+**Case studies (5):** This portfolio · HindAI · CES Energy · AssistMe · Bug Reporting System.
 
-| Surface          | URL                                                                          | How it updates                                                |
-| ---------------- | ---------------------------------------------------------------------------- | ------------------------------------------------------------- |
-| **Vercel**       | [mangeshraut.pro](https://mangeshraut.pro)                                   | Git integration on `main` · FastAPI + `dist/` · `vercel.json` |
-| **GitHub Pages** | […/mangeshrautarchive](https://mangeshraut712.github.io/mangeshrautarchive/) | `deploy.yml` uploads the verified `dist/` artifact            |
-| **Local**        | http://127.0.0.1:4000 / `:4174`                                              | `npm run dev` or `npm run build && npm run serve:dist`        |
+---
 
-Both production surfaces stamp `dist/build-config.json` with `gitCommit`. CI after Pages deploy waits for that SHA on GitHub Pages and best-effort on Vercel, then runs parity checks.
+## Changelog — July 2026
 
-### Vercel notes
-
-- `installCommand`: `npm install --no-audit --no-fund` (matches local AGENTS guidance; more resilient than `npm ci` when the lockfile lags peers).
-- Python API: `api/index.py` (60s) · realtime WS: `api/realtime-ws.js` (300s) · health-vitals cron daily 13:00 UTC.
-- Security headers + CSP reporting → `/api/csp-report`. HTML is short-cached (`s-maxage=300`); versioned `/assets/*` is immutable.
-- Edge middleware only forces `?perf-audit=1` for Lighthouse / PageSpeed UAs (not bare HeadlessChrome).
-
-### Keeping surfaces in sync
-
-```bash
-npm run build                 # dist/ + build-config.json gitCommit
-npm run verify:deploy-sync    # Vercel ↔ GitHub Pages parity
-npm run qa:postdeploy         # parity with longer retries after a push
-npm run qa:surfaces           # quicker dual-host smoke
-npm run qa:lighthouse:vercel  # live Vercel quality floors
-```
-
-**Cache busting:** Static HTML uses `?v=<ASSET_VER>` (currently **`20260712s`**). Single source: `scripts/build/asset-version.mjs` (+ service worker cache name). Bump `ASSET_VER` and HTML `?v=` strings when shipping CSS/JS that must invalidate immediately.
+- **OpenRouter online path** — free-tier env + multi-model fallback when paid credits are exhausted.
+- **True lazy CSS** — section sheets `data-href` only until near viewport (no first-paint stampede).
+- **System Monitor** — Apple Status densify · full portfolio catalog · probe matrix.
+- **GitHub connector** — always attach `GITHUB_TOKEN`/`GITHUB_PAT` (fixes unauthenticated 403 storms).
+- **CI harden** — checkout@v5 · split flake8 · honest chat fallback tests · softer live Vercel Lighthouse noise.
+- **UX / a11y** — 44px targets · FAB stack · progressive disclosure · iOS WebGL crash guard.
+- **Tests** — **49** Vitest · **121** pytest · Playwright multi-browser green path.
 
 ---
 
 ## Documentation
 
-| Doc                                                                | Contents                                   |
-| ------------------------------------------------------------------ | ------------------------------------------ |
-| [README.md](README.md)                                             | Setup, CI, API reference, deployment       |
-| [AGENTS.md](AGENTS.md)                                             | AI agent briefing for contributors         |
-| [SECURITY.md](SECURITY.md)                                         | Security policy and reporting              |
-| [.env.example](.env.example)                                       | Environment variables and integration keys |
-| [docs/README.md](docs/README.md)                                   | Index of primary docs (no session dumps)   |
-| [.github/copilot-instructions.md](.github/copilot-instructions.md) | GitHub Copilot project rules               |
-
----
-
-## Changelog highlights
-
-**July 2026**
-
-- **UX polish ship (`ux-polish-fixes.css`):** 44px touch targets, safe-area FAB stack, focus-visible rings, text clipping, z-index tokens; 404 AA contrast (global link blue scoped off `error-page`); Debug Runner behind `<details>` + lazy game init; cache/SW bust **`20260712s`**.
-- **iOS Safari stability:** Disable WebGL liquid glass + endless rAF paths on low-power/iOS clients; hard-cap deploy-version reload loops (“A problem repeatedly occurred”).
-- **Progressive disclosure:** Apple-style View more for dense homepage sections (`section-preview.js`) instead of endless scroll.
-- **E2E / a11y green:** Playwright smoke, axe contrast, marquee, card-hover, and chatbot scroll suites hardened.
-- **Content-first load:** Mid-page paint without scroll-gated spinners; progressive CSS promote without blank sections.
-- **Repo hygiene:** `npm run clean` skips `.venv` / `node_modules`; remove session bug dumps from `docs/`; root README accuracy pass; `npm run check` restored.
-- **PWA offline:** Service worker shell precache + network-first navigation with `offline.html` fallback.
-- **Streaming reliability:** `StreamingService` timeout, `connecting` event, AbortController cancel path.
-
-**June 2026**
-
-- Dual-host deploy sync (Vercel + GitHub Pages), engineering evidence (`/systems`), solid theme surfaces
-- Lighthouse CI gates · iTunes artwork proxy · sitewide card / responsive audit
-- AssistMe WebMCP (10 tools) · public monitor · travel atlas · Field Notes + case studies
-
-**Earlier 2026**
-
-- WHOOP / Withings / Google Calendar OAuth · command palette · dynamic island nav
+| Doc                              | Purpose                      |
+| -------------------------------- | ---------------------------- |
+| [AGENTS.md](AGENTS.md)           | AI agent / contributor brief |
+| [SECURITY.md](SECURITY.md)       | Security policy              |
+| [.env.example](.env.example)     | Env template                 |
+| [docs/README.md](docs/README.md) | Doc index                    |
 
 ---
 
 ## Sponsors
-
-If this project helps your own agentic apps or portfolio work, you can support development through:
 
 <p align="center">
   <a href="https://github.com/sponsors/mangeshraut712"><img src="https://img.shields.io/badge/GitHub_Sponsors-Support-ea4aaa?style=for-the-badge&logo=github-sponsors&logoColor=white" alt="GitHub Sponsors"></a>
@@ -785,41 +398,28 @@ If this project helps your own agentic apps or portfolio work, you can support d
   <a href="https://www.paypal.com/ncp/payment/LXNHJ5SUGNP82"><img src="https://img.shields.io/badge/PayPal-Sponsor-00457C?style=for-the-badge&logo=paypal&logoColor=white" alt="PayPal"></a>
 </p>
 
-| Method              | Link                                                                                     |
-| ------------------- | ---------------------------------------------------------------------------------------- |
-| **GitHub Sponsors** | [github.com/sponsors/mangeshraut712](https://github.com/sponsors/mangeshraut712)         |
-| **Stripe**          | [buy.stripe.com/14A3cufGUgcV5ePfuA14401](https://buy.stripe.com/14A3cufGUgcV5ePfuA14401) |
-| **PayPal**          | [paypal.com/ncp/payment/LXNHJ5SUGNP82](https://www.paypal.com/ncp/payment/LXNHJ5SUGNP82) |
-
-Configured in [.github/FUNDING.yml](.github/FUNDING.yml) for the GitHub **Sponsor** button on the repository.
-
 ---
 
 ## Contributing
 
-Issues and PRs are welcome. Minimum before opening a PR:
-
 ```bash
-npm run check
+npm run check          # minimum before PR
+npm run qa:prod-ready  # larger changes
 ```
 
-For larger changes, run `npm run qa:prod-ready`.
+Issues and PRs welcome under MIT.
 
 ---
 
 ## License & contact
 
-**MIT License** — see [LICENSE](LICENSE).
+**MIT** — [LICENSE](LICENSE)
 
-**Mangesh Raut**
-
-- Web: [mangeshraut.pro](https://mangeshraut.pro)
-- LinkedIn: [linkedin.com/in/mangeshraut71298](https://linkedin.com/in/mangeshraut71298)
-- GitHub: [github.com/mangeshraut712](https://github.com/mangeshraut712)
-- Email: mbr63@drexel.edu
+**Mangesh Raut** · MS CS, Drexel University  
+[mangeshraut.pro](https://mangeshraut.pro) · [LinkedIn](https://linkedin.com/in/mangeshraut71298) · [GitHub](https://github.com/mangeshraut712) · mbr63@drexel.edu
 
 ---
 
 <p align="center">
-  <a href="#mangesh-raut--agentic-full-stack-portfolio">Back to top</a>
+  <a href="#mangesh-raut--agentic-full-stack-portfolio">↑ Back to top</a>
 </p>
