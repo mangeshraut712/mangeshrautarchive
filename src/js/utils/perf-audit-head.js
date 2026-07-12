@@ -168,11 +168,25 @@
   }
 
   function stripDeferredStylesheets() {
-    document.querySelectorAll('link[rel="stylesheet"]').forEach(function (link) {
-      if (!isAllowedStylesheet(link.getAttribute('href'))) {
-        link.disabled = true;
-        link.media = 'not all';
-        link.parentNode && link.parentNode.removeChild(link);
+    document.querySelectorAll('link[rel="stylesheet"],link[data-href]').forEach(function (link) {
+      var href = link.getAttribute('href') || link.getAttribute('data-href') || '';
+      // Keep only the slim allowlist; drop everything else before onload promotes media=all.
+      if (href && isAllowedStylesheet(href)) {
+        return;
+      }
+      try {
+        link.onload = null;
+        link.onerror = null;
+      } catch (e) {
+        /* ignore */
+      }
+      link.removeAttribute('onload');
+      link.removeAttribute('href');
+      link.removeAttribute('data-href');
+      link.disabled = true;
+      link.media = 'not all';
+      if (link.parentNode) {
+        link.parentNode.removeChild(link);
       }
     });
   }

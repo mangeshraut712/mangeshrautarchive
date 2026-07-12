@@ -128,18 +128,18 @@ jobs:
           node scripts/deployment/lighthouse-gate.js \
             --url=http://127.0.0.1:4000/ \
             --form-factor=desktop \
-            --min-performance=95 \
-            --min-accessibility=95 \
-            --min-best-practices=95 \
-            --min-seo=95 \
+            --min-performance=100 \
+            --min-accessibility=100 \
+            --min-best-practices=100 \
+            --min-seo=100 \
             --max-attempts=3
           node scripts/deployment/lighthouse-gate.js \
             --url=http://127.0.0.1:4000/ \
             --form-factor=mobile \
-            --min-performance=90 \
-            --min-accessibility=95 \
-            --min-best-practices=95 \
-            --min-seo=95 \
+            --min-performance=100 \
+            --min-accessibility=100 \
+            --min-best-practices=100 \
+            --min-seo=100 \
             --max-attempts=3
         env:
           OPENROUTER_SITE_URL: https://mangeshraut712.github.io/mangeshrautarchive

@@ -38,7 +38,8 @@
     "qa:lighthouse:mobile": "node scripts/deployment/lighthouse-gate.js --url=http://127.0.0.1:4000/ --form-factor=mobile --min-performance=85 --min-accessibility=90 --min-best-practices=90 --min-seo=90",
     "verify:deploy-sync": "node scripts/deployment/verify-deployment-sync.js --remote --parity",
     "qa:postdeploy": "node scripts/deployment/verify-deployment-sync.js --remote --parity --retries=12 --wait=20",
-    "qa:surfaces": "node scripts/deployment/verify-deployment-sync.js --remote --parity --retries=6 --wait=15"
+    "qa:surfaces": "node scripts/deployment/verify-deployment-sync.js --remote --parity --retries=6 --wait=15",
+    "doctor:react": "npx --yes react-doctor@latest . -y --verbose"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.12.1",

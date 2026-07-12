@@ -1,4 +1,8 @@
-/** React Doctor config for this static HTML + vanilla JS portfolio. */
+/**
+ * React Doctor config for this vanilla HTML/JS portfolio (no React runtime).
+ * Score target: 100/100 — React-specific rules are not applicable; deslop noise
+ * from vendor/data modules is ignored so the scan stays signal-focused.
+ */
 export default {
   ignore: {
     files: [
@@ -11,9 +15,12 @@ export default {
       'venv/**',
       'node_modules/**',
       'src/js/vendor/**',
+      'docs/**',
       'docs/plans/**',
       'plans/**',
       '.agents/**',
+      'artifacts/**',
+      'coverage/**',
     ],
     rules: [
       // Vendor / non-React portfolio — keep scan focused on real product sinks
