@@ -17,16 +17,24 @@
 
 <!-- Describe the tests you ran and how to reproduce them. -->
 
-- [ ] Unit tests pass (`npm test`)
+- [ ] Unit tests pass (`npm test` / `npm run check`)
 - [ ] API tests pass (`npm run test:api`)
-- [ ] E2E tests pass (`npm run test:e2e:chrome`)
-- [ ] Lighthouse scores maintained (`npm run qa:lighthouse:desktop`)
+- [ ] E2E smoke (when UI changes): `npm run test:e2e:chrome`
+- [ ] Lighthouse (when performance-sensitive): `npm run qa:lighthouse:desktop`
+
+## Deploy impact
+
+- [ ] No change to dual-host surfaces
+- [ ] Touches static `src/` → Vercel + GitHub Pages will both rebuild
+- [ ] Touches `api/` or `vercel.json` → verify `https://mangeshraut.pro/api/health`
+- [ ] Touches CI / Pages only → check Actions → **CI → Deploy to GitHub Pages**
 
 ## Checklist
 
-- [ ] My code follows the project's code style (ESLint, Stylelint, Prettier)
-- [ ] I have run `npm run security-check` with no issues
-- [ ] I have not added inline styles or Tailwind classes in HTML
-- [ ] I have not committed `.env` files or API keys
-- [ ] My changes do not add `<footer>` to `systems.html` or `monitor.html`
-- [ ] All ES module imports include `.js` extension
+- [ ] Code style: ESLint, Stylelint, Prettier (`npm run check`)
+- [ ] `npm run security-check` clean
+- [ ] No inline styles or Tailwind utility classes in HTML
+- [ ] No `.env` files or secrets committed
+- [ ] No `<footer>` on `systems.html` / `monitor.html`
+- [ ] ES module imports include the `.js` extension
+- [ ] Bumped `ASSET_VER` / `?v=` when shipping CSS/JS cache-sensitive changes

@@ -1,16 +1,39 @@
+# Tests & QA output (never ship to Vercel build context)
 tests/
 artifacts/
 test-results/
 playwright-report/
+coverage/
 .playwright-mcp/
 .playwright/
 .playwright-cli/
 scratch/
+
+# Local tooling / agent dirs
 .agent/
 .claude/
 .trae/
 .agents/
+.codacy/
+.vscode/
 skills/
+.gitnexus/
+
+# GitHub-only surfaces
 .github/
+
+# Python / Node local envs (platform installs its own)
+venv/
+.venv/
+node_modules/
+
+# Docs noise (keep root README for project card if needed)
 *.md
 !README.md
+!SECURITY.md
+!LICENSE
+
+# Secrets & local overrides
+.env
+.env.*
+!.env.example

@@ -1,0 +1,8 @@
+# Default owner for all paths in this portfolio monorepo.
+* @mangeshraut712
+
+# Deployment and CI surfaces
+/.github/ @mangeshraut712
+/vercel.json @mangeshraut712
+/middleware.js @mangeshraut712
+/scripts/deployment/ @mangeshraut712

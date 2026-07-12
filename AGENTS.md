@@ -89,8 +89,10 @@ npm run security-check      # Scan for leaked secrets and credentials
 npm run clean               # Purge dist/, artifacts/, caches (skips .venv / node_modules)
 
 # Deploy verification
-npm run qa:postdeploy       # Post-deployment smoke test
-npm run verify:deploy-sync  # Verify deployment artifact consistency
+npm run qa:postdeploy       # Dual-host commit parity (long retries)
+npm run qa:surfaces         # Faster dual-host smoke
+npm run verify:deploy-sync  # Vercel ↔ GitHub Pages parity
+npm run qa:lighthouse:vercel  # Live Vercel Lighthouse floors
 ```
 
 ---

@@ -701,30 +701,39 @@ PORT=4174 npm run serve:dist
 
 ## Deployment & CI/CD
 
-| Workflow                                                                   | Trigger                | Role                                          |
-| -------------------------------------------------------------------------- | ---------------------- | --------------------------------------------- |
-| [deploy.yml](.github/workflows/deploy.yml)                                 | Push/PR `main`, manual | Quality gates → build → GitHub Pages → verify |
-| [post-deploy-monitoring.yml](.github/workflows/post-deploy-monitoring.yml) | Daily 14:00 UTC        | Production reachability + Lighthouse          |
+| Workflow                                                                   | Trigger                | Role                                                                       |
+| -------------------------------------------------------------------------- | ---------------------- | -------------------------------------------------------------------------- |
+| [deploy.yml](.github/workflows/deploy.yml)                                 | Push/PR `main`, manual | Quality gates → Lighthouse on `dist/` → GitHub Pages → dual-surface verify |
+| [post-deploy-monitoring.yml](.github/workflows/post-deploy-monitoring.yml) | Daily 14:00 UTC        | Live reachability (Vercel + Pages) · Lighthouse floors · commit parity     |
 
-**Dual hosting:** CI deploys GitHub Pages from `dist/`. Vercel production deploys via the repo integration on the same `main` commits. `build-config.json` stores `gitCommit` for cross-surface parity checks.
+**Dual hosting**
 
-### Keeping local, Vercel, and GitHub Pages in sync
+| Surface          | URL                                                                          | How it updates                                                |
+| ---------------- | ---------------------------------------------------------------------------- | ------------------------------------------------------------- |
+| **Vercel**       | [mangeshraut.pro](https://mangeshraut.pro)                                   | Git integration on `main` · FastAPI + `dist/` · `vercel.json` |
+| **GitHub Pages** | […/mangeshrautarchive](https://mangeshraut712.github.io/mangeshrautarchive/) | `deploy.yml` uploads the verified `dist/` artifact            |
+| **Local**        | http://127.0.0.1:4000 / `:4174`                                              | `npm run dev` or `npm run build && npm run serve:dist`        |
 
-All three surfaces serve the same `dist/` output from `main`. After any change:
+Both production surfaces stamp `dist/build-config.json` with `gitCommit`. CI after Pages deploy waits for that SHA on GitHub Pages and best-effort on Vercel, then runs parity checks.
+
+### Vercel notes
+
+- `installCommand`: `npm install --no-audit --no-fund` (matches local AGENTS guidance; more resilient than `npm ci` when the lockfile lags peers).
+- Python API: `api/index.py` (60s) · realtime WS: `api/realtime-ws.js` (300s) · health-vitals cron daily 13:00 UTC.
+- Security headers + CSP reporting → `/api/csp-report`. HTML is short-cached (`s-maxage=300`); versioned `/assets/*` is immutable.
+- Edge middleware only forces `?perf-audit=1` for Lighthouse / PageSpeed UAs (not bare HeadlessChrome).
+
+### Keeping surfaces in sync
 
 ```bash
-npm run build                 # produces dist/ with build-config.json gitCommit
-npm run verify:deploy-sync    # Vercel + GitHub Pages commit parity
-npm run qa:postdeploy         # same parity check with retries for fresh deploys
+npm run build                 # dist/ + build-config.json gitCommit
+npm run verify:deploy-sync    # Vercel ↔ GitHub Pages parity
+npm run qa:postdeploy         # parity with longer retries after a push
+npm run qa:surfaces           # quicker dual-host smoke
+npm run qa:lighthouse:vercel  # live Vercel quality floors
 ```
 
-| Surface          | URL                                                             | How it updates                          |
-| ---------------- | --------------------------------------------------------------- | --------------------------------------- |
-| **Local dev**    | http://127.0.0.1:4000 (`npm run dev`) or `:4174` (`serve:dist`) | Serves `src/` or built `dist/` directly |
-| **Vercel**       | https://mangeshraut.pro                                         | Auto-deploy on push to `main`           |
-| **GitHub Pages** | https://mangeshraut712.github.io/mangeshrautarchive/            | `deploy.yml` uploads `dist/` on CI pass |
-
-**Cache busting:** Static HTML in `src/*.html` uses `?v=<ASSET_VER>` query strings (currently **`20260712s`**). Blog and case-study pages read `ASSET_VER` from `scripts/build/asset-version.mjs`. The service worker cache name is versioned with the same token. Bump `ASSET_VER`, update HTML `?v=` strings, and ship so browsers + SW drop stale CSS/JS.
+**Cache busting:** Static HTML uses `?v=<ASSET_VER>` (currently **`20260712s`**). Single source: `scripts/build/asset-version.mjs` (+ service worker cache name). Bump `ASSET_VER` and HTML `?v=` strings when shipping CSS/JS that must invalidate immediately.
 
 ---
 

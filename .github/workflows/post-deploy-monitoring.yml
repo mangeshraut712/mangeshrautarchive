@@ -3,22 +3,33 @@ name: Production Monitoring
 on:
   workflow_dispatch:
   schedule:
+    # Daily 14:00 UTC
     - cron: '0 14 * * *'
 
 permissions:
   contents: read
 
+concurrency:
+  group: production-monitoring
+  cancel-in-progress: true
+
+env:
+  NODE_VERSION: '22'
+  GH_PAGES_BASE: https://mangeshraut712.github.io/mangeshrautarchive
+  VERCEL_PROD: https://mangeshraut.pro
+
 jobs:
   monitor:
     name: 📈 Production health + Lighthouse
     runs-on: ubuntu-latest
+    timeout-minutes: 40
     steps:
       - uses: actions/checkout@v4
 
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: '22'
+          node-version: ${{ env.NODE_VERSION }}
           cache: npm
           cache-dependency-path: package-lock.json
 
@@ -27,23 +38,38 @@ jobs:
 
       - name: Verify production surfaces are reachable
         run: |
-          for url in \
-            "https://mangeshraut.pro/" \
-            "https://mangeshraut.pro/api/health" \
-            "https://mangeshraut712.github.io/mangeshrautarchive/" \
-            "https://mangeshraut712.github.io/mangeshrautarchive/build-config.json"
-          do
-            curl --fail --silent --show-error "$url" >/dev/null
-            echo "✅ $url"
+          set -euo pipefail
+          urls=(
+            "${{ env.VERCEL_PROD }}/"
+            "${{ env.VERCEL_PROD }}/api/health"
+            "${{ env.VERCEL_PROD }}/api/status"
+            "${{ env.VERCEL_PROD }}/systems"
+            "${{ env.VERCEL_PROD }}/monitor"
+            "${{ env.VERCEL_PROD }}/travel"
+            "${{ env.VERCEL_PROD }}/uses"
+            "${{ env.VERCEL_PROD }}/build-config.json"
+            "${{ env.GH_PAGES_BASE }}/"
+            "${{ env.GH_PAGES_BASE }}/travel.html"
+            "${{ env.GH_PAGES_BASE }}/monitor.html"
+            "${{ env.GH_PAGES_BASE }}/systems.html"
+            "${{ env.GH_PAGES_BASE }}/build-config.json"
+          )
+          failed=0
+          for url in "${urls[@]}"; do
+            code=$(curl -sS -o /dev/null -w "%{http_code}" --max-time 20 "$url" || echo "000")
+            if [ "$code" = "200" ] || [ "$code" = "301" ] || [ "$code" = "302" ] || [ "$code" = "308" ]; then
+              echo "✅ $url ($code)"
+            else
+              echo "❌ $url ($code)"
+              failed=1
+            fi
           done
+          exit "$failed"
 
-      - name: Lighthouse CI parity (built artifact)
-        run: npm run qa:lighthouse:ci
-
-      - name: Lighthouse — live GitHub Pages + Vercel quality floor
+      - name: Lighthouse — live GitHub Pages quality floor
         run: |
           node scripts/deployment/lighthouse-gate.js \
-            --url=https://mangeshraut712.github.io/mangeshrautarchive/ \
+            --url=${{ env.GH_PAGES_BASE }}/ \
             --form-factor=desktop \
             --min-performance=90 \
             --min-accessibility=90 \
@@ -51,15 +77,19 @@ jobs:
             --min-seo=90 \
             --max-attempts=3
           node scripts/deployment/lighthouse-gate.js \
-            --url=https://mangeshraut712.github.io/mangeshrautarchive/ \
+            --url=${{ env.GH_PAGES_BASE }}/ \
             --form-factor=mobile \
             --min-performance=85 \
             --min-accessibility=90 \
             --min-best-practices=90 \
             --min-seo=90 \
             --max-attempts=5
+
+      - name: Lighthouse — live Vercel quality floor
+        # Live Vercel includes AssistMe + third-party scripts; keep realistic floors.
+        run: |
           node scripts/deployment/lighthouse-gate.js \
-            --url=https://mangeshraut.pro/ \
+            --url=${{ env.VERCEL_PROD }}/ \
             --form-factor=desktop \
             --min-performance=55 \
             --min-accessibility=90 \
@@ -67,7 +97,7 @@ jobs:
             --min-seo=90 \
             --max-attempts=3
           node scripts/deployment/lighthouse-gate.js \
-            --url=https://mangeshraut.pro/ \
+            --url=${{ env.VERCEL_PROD }}/ \
             --form-factor=mobile \
             --min-performance=55 \
             --min-accessibility=90 \
@@ -76,7 +106,21 @@ jobs:
             --max-attempts=3
 
       - name: Compare GitHub Pages and Vercel deployment sync
-        run: node scripts/deployment/verify-deployment-sync.js --remote --parity --retries=10 --wait=20
+        run: node scripts/deployment/verify-deployment-sync.js --remote --parity --retries=12 --wait=20
+
+      - name: Job summary
+        if: always()
+        run: |
+          {
+            echo "## Production monitoring"
+            echo ""
+            echo "| Surface | URL |"
+            echo "| --- | --- |"
+            echo "| Vercel | ${{ env.VERCEL_PROD }} |"
+            echo "| GitHub Pages | ${{ env.GH_PAGES_BASE }} |"
+            echo ""
+            echo "Parity check uses \`build-config.json\` gitCommit on both hosts."
+          } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload monitoring artifacts
         if: always()
@@ -84,3 +128,5 @@ jobs:
         with:
           name: production-monitoring
           path: artifacts/lighthouse
+          if-no-files-found: ignore
+          retention-days: 14
