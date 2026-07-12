@@ -22,6 +22,11 @@ PORTFOLIO_PAGE_CATALOG: List[Dict[str, str]] = [
     {"id": "uses", "label": "Uses Stack", "path": "/uses", "group": "pages"},
     {"id": "offline", "label": "Offline Shell", "path": "/offline.html", "group": "pages"},
     {"id": "not_found", "label": "404 Page", "path": "/404.html", "group": "pages"},
+    {"id": "manifest", "label": "PWA Manifest", "path": "/manifest.json", "group": "pages"},
+    {"id": "robots", "label": "robots.txt", "path": "/robots.txt", "group": "pages"},
+    {"id": "sitemap", "label": "Sitemap", "path": "/sitemap.xml", "group": "pages"},
+    {"id": "service_worker", "label": "Service Worker Script", "path": "/service-worker.js", "group": "pages"},
+    {"id": "build_config", "label": "Build Config", "path": "/build-config.json", "group": "pages"},
 ]
 
 PORTFOLIO_API_CATALOG: List[Dict[str, str]] = [
@@ -29,6 +34,8 @@ PORTFOLIO_API_CATALOG: List[Dict[str, str]] = [
     {"id": "api_status", "label": "API Status", "path": "/api/status", "group": "api"},
     {"id": "monitor_status", "label": "Monitor Status", "path": "/api/monitor/status", "group": "api"},
     {"id": "monitor_health", "label": "Monitor Health", "path": "/api/monitor/health", "group": "api"},
+    {"id": "monitor_metrics", "label": "Monitor Metrics", "path": "/api/monitor/metrics", "group": "api"},
+    {"id": "monitor_docs", "label": "Monitor Docs", "path": "/api/monitor/docs", "group": "api"},
     {"id": "chat_health", "label": "AssistMe Chat Health", "path": "/api/chat/health", "group": "api"},
     {"id": "github_profile", "label": "GitHub Profile Proxy", "path": "/api/github/profile", "group": "api"},
     {"id": "music_recent", "label": "Last.fm Recent", "path": "/api/music/recent?limit=1", "group": "api"},
@@ -39,6 +46,9 @@ PORTFOLIO_API_CATALOG: List[Dict[str, str]] = [
     {"id": "platform_health", "label": "Platform Health", "path": "/api/monitor/platform-health", "group": "api"},
     {"id": "hosting_surfaces", "label": "Hosting Surfaces", "path": "/api/monitor/hosting-surfaces", "group": "api"},
     {"id": "external_services", "label": "External Services", "path": "/api/monitor/external-services", "group": "api"},
+    {"id": "portfolio_catalog", "label": "Portfolio Catalog", "path": "/api/monitor/portfolio-catalog", "group": "api"},
+    {"id": "ai_metrics", "label": "AI Metrics", "path": "/api/monitor/ai-metrics", "group": "api"},
+    {"id": "security", "label": "Security Monitor", "path": "/api/monitor/security", "group": "api"},
 ]
 
 

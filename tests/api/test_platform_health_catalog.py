@@ -10,6 +10,8 @@ def test_portfolio_page_catalog_covers_core_surfaces():
     assert "/monitor" in paths
     assert "/travel" in paths
     assert "/uses" in paths
+    assert "/manifest.json" in paths
+    assert "/build-config.json" in paths
 
 
 def test_portfolio_api_catalog_covers_critical_routes():
@@ -17,5 +19,6 @@ def test_portfolio_api_catalog_covers_critical_routes():
     assert "/api/health" in paths
     assert "/api/monitor/status" in paths
     assert "/api/chat/health" in paths
+    assert "/api/monitor/portfolio-catalog" in paths
     assert any(p.startswith("/api/github") for p in paths)
     assert any("music" in p for p in paths)

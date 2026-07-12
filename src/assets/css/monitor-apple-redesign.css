@@ -358,6 +358,145 @@ body.monitor-page .status-badge {
   letter-spacing: 0.04em;
 }
 
+/* ─── Unified status cards (health / providers / deploy / probes) ─── */
+body.monitor-page .health-grid {
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr)) !important;
+  gap: var(--mon-gap) !important;
+}
+
+body.monitor-page .health-item {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+  gap: 0.75rem !important;
+  min-height: 148px !important;
+  padding: 1rem 1.05rem 0.95rem !important;
+  border-radius: 18px !important;
+  background: color-mix(in srgb, var(--mon-surface) 55%, var(--mon-card)) !important;
+  box-shadow: none !important;
+  overflow: hidden;
+}
+
+body.monitor-page .health-item::after {
+  top: 0.85rem !important;
+  right: 0.85rem !important;
+  z-index: 1;
+}
+
+body.monitor-page .health-item-left {
+  padding-right: 4.5rem; /* room for status pill */
+  align-items: flex-start;
+}
+
+body.monitor-page .health-info h4 {
+  margin: 0 0 0.25rem;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+  color: var(--text-primary, #1d1d1f);
+  word-break: break-word;
+}
+
+body.monitor-page .health-info p {
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  color: var(--text-secondary, #6e6e73);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+body.monitor-page .health-status-icon {
+  width: 40px !important;
+  height: 40px !important;
+  flex-shrink: 0;
+  font-size: 0.95rem;
+}
+
+body.monitor-page .health-metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(88px, 1fr));
+  gap: 0.45rem;
+  margin-top: auto;
+  width: 100%;
+}
+
+body.monitor-page .health-metric {
+  padding: 0.45rem 0.55rem;
+  border-radius: 12px;
+  border: 1px solid var(--mon-hairline);
+  background: color-mix(in srgb, var(--mon-card) 80%, transparent);
+  min-width: 0;
+}
+
+body.monitor-page .health-metric-value {
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-primary, #1d1d1f);
+  word-break: break-word;
+}
+
+body.monitor-page .health-metric-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-secondary, #6e6e73);
+}
+
+body.monitor-page .health-inline-link {
+  display: inline-block;
+  margin-top: 0.35rem;
+  font-size: 0.78rem;
+  font-weight: 650;
+  color: var(--accent-blue, #0071e3);
+  text-decoration: none;
+  word-break: break-all;
+}
+
+body.monitor-page .health-inline-link:hover {
+  text-decoration: underline;
+}
+
+body.monitor-page .response-time {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+body.monitor-page .response-time-bar {
+  height: 4px;
+  border-radius: 999px;
+  background: rgb(0 0 0 / 8%);
+  overflow: hidden;
+}
+
+html.dark body.monitor-page .response-time-bar {
+  background: rgb(255 255 255 / 12%);
+}
+
+body.monitor-page .response-time-fill {
+  height: 100%;
+  border-radius: inherit;
+  background: var(--accent-blue, #0071e3);
+}
+
+body.monitor-page .response-time-fill.fast {
+  background: var(--accent-green, #34c759);
+}
+
+body.monitor-page .response-time-fill.medium {
+  background: var(--accent-yellow, #ff9500);
+}
+
+body.monitor-page .response-time-fill.slow {
+  background: var(--accent-red, #ff3b30);
+}
+
 /* Buttons on monitor */
 body.monitor-page .btn,
 body.monitor-page .control-center-refresh {
