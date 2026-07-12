@@ -1480,7 +1480,7 @@ class DebugRunner {
 
 export default DebugRunner;
 
-// Auto-initialize
+// Lazy-init only when the disclosure is opened (keeps homepage light)
 const initDebugRunner = () => {
   if (
     window.__PERF_AUDIT__ === true ||
@@ -1490,32 +1490,52 @@ const initDebugRunner = () => {
   }
 
   const container = document.getElementById('debug-runner-container');
-  if (container) {
-    const game = new DebugRunner();
-    const canvas = game.init();
-    container.appendChild(canvas);
+  if (!container || container.dataset.gameReady === 'true') return;
 
-    document.addEventListener('visibilitychange', () => {
-      if (document.hidden) {
-        game.pause();
-      } else {
-        game.resume();
-      }
-    });
-
-    const observerOptions = {
-      threshold: 0.1,
+  const disclosure = container.closest('details.debug-runner-disclosure');
+  if (disclosure && !disclosure.open) {
+    const onToggle = () => {
+      if (!disclosure.open) return;
+      disclosure.removeEventListener('toggle', onToggle);
+      initDebugRunner();
     };
-    const observer = new IntersectionObserver(entries => {
+    disclosure.addEventListener('toggle', onToggle);
+    return;
+  }
+
+  container.dataset.gameReady = 'true';
+  const game = new DebugRunner();
+  const canvas = game.init();
+  container.appendChild(canvas);
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      game.pause();
+    } else if (!disclosure || disclosure.open) {
+      game.resume();
+    }
+  });
+
+  const observer = new IntersectionObserver(
+    entries => {
       entries.forEach(entry => {
-        if (entry.isIntersecting) {
+        if (entry.isIntersecting && (!disclosure || disclosure.open)) {
           game.resume();
         } else {
           game.pause();
         }
       });
-    }, observerOptions);
-    observer.observe(container);
+    },
+    { threshold: 0.1 }
+  );
+  observer.observe(container);
+
+  if (disclosure) {
+    disclosure.addEventListener('toggle', () => {
+      if (!disclosure.open) {
+        game.pause();
+      }
+    });
   }
 };
 

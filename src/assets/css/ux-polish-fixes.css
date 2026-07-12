@@ -1,0 +1,271 @@
+/**
+ * UX polish fixes — touch targets, FAB stack, focus, clipping, z-index scale.
+ * Loaded last among design sheets so it can win without more !important sprawl.
+ */
+
+/* ─── Z-index scale + FAB tokens ─── */
+:root {
+  --z-base: 1;
+  --z-sticky: 100;
+  --z-nav: 1000;
+  --z-fab: 9000;
+  --z-a11y: 9100;
+  --z-overlay: 10000;
+  --z-modal: 11000;
+  --z-toast: 12000;
+  --fab-size: 48px;
+  --fab-gap: 10px;
+  --fab-edge: max(14px, env(safe-area-inset-right, 0px));
+  --fab-bottom: max(14px, env(safe-area-inset-bottom, 0px));
+}
+
+/* ─── Apple HIG: minimum 44×44 interactive chrome ─── */
+@media (pointer: coarse), (max-width: 900px) {
+  #global-nav.global-nav.dynamic-island .nav-link,
+  #global-nav.global-nav.dynamic-island .theme-toggle-nav,
+  #global-nav.global-nav.dynamic-island .menu-toggle-button,
+  #global-nav.global-nav.dynamic-island #search-toggle,
+  #global-nav.global-nav.dynamic-island #theme-toggle,
+  #global-nav.global-nav.dynamic-island #menu-btn {
+    min-height: 44px;
+    min-width: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding-inline: 0.55rem;
+    box-sizing: border-box;
+  }
+
+  #global-nav.global-nav.dynamic-island {
+    --island-control-size: 44px;
+    --island-control-size-compact: 44px;
+    --island-height: 56px;
+    --island-height-compact: 52px;
+  }
+
+  #global-nav.global-nav.dynamic-island .nav-logo {
+    width: 44px;
+    height: 44px;
+  }
+
+  .monitor-page-nav__home,
+  .monitor-page-nav__back,
+  .monitor-page-nav__theme {
+    min-width: 44px !important;
+    min-height: 44px !important;
+  }
+
+  .hero-cta,
+  .hero-actions a,
+  .hero-actions button,
+  .btn-primary,
+  .btn-secondary,
+  .cta-button,
+  .publication-read-btn,
+  .blog-read-btn,
+  .section-preview-btn {
+    min-height: 44px;
+    box-sizing: border-box;
+  }
+
+  body.systems-page .project-evidence-link,
+  .project-evidence-link {
+    min-height: 44px;
+    padding: 0.45rem 0.85rem;
+    font-size: 0.8rem;
+  }
+
+  .maplibregl-ctrl-group button {
+    min-width: 44px !important;
+    min-height: 44px !important;
+  }
+}
+
+/* Desktop island: still hit 40px+ for trackpad comfort */
+#global-nav.global-nav.dynamic-island .nav-link {
+  min-height: 40px;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* ─── FAB stack + safe areas (all viewports) ─── */
+body #chatbot-toggle {
+  width: var(--fab-size);
+  height: var(--fab-size);
+  min-width: var(--fab-size);
+  min-height: var(--fab-size);
+  right: var(--fab-edge);
+  bottom: calc(var(--fab-bottom) + var(--fab-size) + var(--fab-gap));
+  z-index: var(--z-fab);
+}
+
+body #go-to-top,
+body #go-to-top.visible {
+  width: var(--fab-size);
+  height: var(--fab-size);
+  min-width: var(--fab-size);
+  min-height: var(--fab-size);
+  right: var(--fab-edge);
+  bottom: var(--fab-bottom);
+  z-index: var(--z-fab);
+}
+
+body #website-share-toggle {
+  z-index: var(--z-fab);
+}
+
+.a11y-toolbar {
+  z-index: var(--z-a11y);
+  bottom: max(12px, env(safe-area-inset-bottom, 0px));
+  left: max(12px, env(safe-area-inset-left, 0px));
+}
+
+/* Clearance so last content isn’t under FABs (homepage only) */
+body:not(.systems-page):not(.monitor-page):not(.uses-page):not(.error-page) main#main-content {
+  padding-bottom: calc(
+    var(--fab-size) * 2 + var(--fab-gap) + env(safe-area-inset-bottom, 0px) + 1.25rem
+  );
+}
+
+/* ─── Text clipping in flex/grid ─── */
+main#main-content h1,
+main#main-content h2,
+main#main-content h3,
+main#main-content p,
+main#main-content a,
+main#main-content button,
+.section-subtitle,
+.experience-role,
+.experience-company,
+.blog-title,
+.certification-title,
+.award-title,
+.project-title,
+.showcase-project-card h3 {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  min-width: 0;
+}
+
+.flex,
+.grid,
+[class*='flex'],
+[class*='grid'] {
+  min-width: 0;
+}
+
+/* ─── Focus-visible: never leave keyboard users without a ring ─── */
+:where(
+  a,
+  button,
+  input,
+  textarea,
+  select,
+  summary,
+  [role='button'],
+  [tabindex]:not([tabindex='-1'])
+):focus {
+  outline: none;
+}
+
+:where(
+  a,
+  button,
+  input,
+  textarea,
+  select,
+  summary,
+  [role='button'],
+  [tabindex]:not([tabindex='-1'])
+):focus-visible {
+  outline: 2px solid #0071e3 !important;
+  outline-offset: 3px !important;
+}
+
+html.dark
+  :where(
+    a,
+    button,
+    input,
+    textarea,
+    select,
+    summary,
+    [role='button'],
+    [tabindex]:not([tabindex='-1'])
+  ):focus-visible {
+  outline-color: #0a84ff !important;
+}
+
+/* ─── Debug Runner: collapsed by default (details disclosure) ─── */
+#debug-runner-section .debug-runner-disclosure {
+  max-width: 980px;
+  margin: 0 auto;
+  border: 1px solid var(--card-border-rest, #e5e5ea);
+  border-radius: 20px;
+  padding: 0.25rem 1rem 1rem;
+  background: var(--bg-primary, #fff);
+}
+
+html.dark #debug-runner-section .debug-runner-disclosure {
+  border-color: var(--card-border-rest, #2c2c2e);
+  background: #000;
+}
+
+#debug-runner-section .debug-runner-disclosure > summary {
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 48px;
+  font-weight: 650;
+  font-size: 1rem;
+  color: #0071e3;
+  text-align: center;
+  padding: 0.75rem;
+}
+
+html.dark #debug-runner-section .debug-runner-disclosure > summary {
+  color: #2997ff;
+}
+
+#debug-runner-section .debug-runner-disclosure > summary::-webkit-details-marker {
+  display: none;
+}
+
+#debug-runner-section .debug-runner-disclosure:not([open]) .game-stage,
+#debug-runner-section .debug-runner-disclosure:not([open]) .game-area,
+#debug-runner-section .debug-runner-disclosure:not([open]) #debug-runner-container {
+  display: none !important;
+}
+
+/* ─── Contact: quieter secondary density when collapsed ─── */
+#contact .contact-info-all {
+  gap: 1.15rem;
+}
+
+#contact .section-preview-btn,
+#contact .contact-extras-actions .section-preview-btn {
+  width: 100%;
+  max-width: 22rem;
+}
+
+/* ─── Reduce extreme section padding on mobile ─── */
+@media (max-width: 768px) {
+  main#main-content > section {
+    padding-block: clamp(2.25rem, 7vw, 3.25rem) !important;
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+  }
+
+  .hero-actions .hero-cta {
+    flex: 1 1 calc(50% - 0.4rem);
+    min-width: min(100%, 9.5rem);
+    justify-content: center;
+  }
+}

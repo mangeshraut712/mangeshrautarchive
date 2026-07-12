@@ -88,6 +88,9 @@ html.dark .monitor-page-nav {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  box-sizing: border-box;
   border: 1px solid var(--border-color);
   border-radius: 999px;
   background: var(--bg-secondary);
@@ -96,8 +99,8 @@ html.dark .monitor-page-nav {
 }
 
 .monitor-page-nav__home {
-  width: 36px;
-  height: 36px;
+  width: 44px;
+  height: 44px;
   overflow: hidden;
 }
 
@@ -109,8 +112,8 @@ html.dark .monitor-page-nav {
 
 .monitor-page-nav__back {
   gap: 8px;
-  min-height: 36px;
-  padding: 0 12px;
+  min-height: 44px;
+  padding: 0 14px;
   color: #004d99;
   font-size: 14px;
   font-weight: 700;
@@ -121,8 +124,8 @@ html.dark .monitor-page-nav__back {
 }
 
 .monitor-page-nav__theme {
-  width: 38px;
-  height: 38px;
+  width: 44px;
+  height: 44px;
   cursor: pointer;
 }
 
