@@ -5,8 +5,9 @@
  * Intentionally excludes bare HeadlessChrome / generic Chromium — those UAs
  * are used by Playwright product tests and must not force the audit shell.
  */
+// Match PSI / Lighthouse / synthetic lab agents (not bare HeadlessChrome / Playwright).
 const AUDIT_UA =
-  /Chrome-Lighthouse|Lighthouse|PTST\/|Google Page Speed|PageSpeed Insights|GTmetrix|WebPageTest|Speed Insights/i;
+  /Chrome-Lighthouse|Lighthouse|PTST\/|Page\s*Speed|PageSpeed|GTmetrix|WebPageTest|Speed Insights|Chrome-PageSpeed|insights\.google|Storebot-Google|Google-InspectionTool/i;
 
 export default function middleware(request) {
   const url = new URL(request.url);
