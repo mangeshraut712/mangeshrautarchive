@@ -59,9 +59,13 @@ export function restoreBodyScrollPosition(
   const targetY = Math.max(0, restoredY);
 
   const applyScroll = () => {
+    // Prefer window.scrollTo; also set documentElement/body for WebKit
     windowRef.scrollTo(0, targetY);
-    if (Math.abs((windowRef.scrollY || 0) - targetY) > 2) {
+    if (document.documentElement) {
       document.documentElement.scrollTop = targetY;
+    }
+    if (document.body) {
+      document.body.scrollTop = targetY;
     }
   };
 
@@ -69,10 +73,17 @@ export function restoreBodyScrollPosition(
 
   if (typeof windowRef.requestAnimationFrame === 'function') {
     windowRef.requestAnimationFrame(() => {
-      if (Math.abs((windowRef.scrollY || 0) - targetY) > 2) {
-        windowRef.requestAnimationFrame(applyScroll);
-      }
+      applyScroll();
+      windowRef.requestAnimationFrame(applyScroll);
     });
+  }
+
+  // iOS Safari often reflows chrome (URL bar / visual viewport) after unlock;
+  // re-apply a few times so the menu close lands near the pre-open Y.
+  if (typeof windowRef.setTimeout === 'function') {
+    windowRef.setTimeout(applyScroll, 32);
+    windowRef.setTimeout(applyScroll, 120);
+    windowRef.setTimeout(applyScroll, 280);
   }
 
   return targetY;

@@ -1582,6 +1582,48 @@ html.dark
   outline: none !important;
 }
 
+/*
+ * Skills marquee badges — force Apple blue hover above late-loaded skills.css
+ * and solid-surface resting rules (must beat #skills-container .skill-badge).
+ */
+html:not(.dark) #skills-container .skill-badge:hover,
+html:not(.dark) #skills-container .skill-scroll-wrapper .skill-badge:hover,
+html:not(.dark) #skills .skill-badge:hover {
+  border: 1px solid #0071e3 !important;
+  border-color: #0071e3 !important;
+  border-top-color: #0071e3 !important;
+  border-right-color: #0071e3 !important;
+  border-bottom-color: #0071e3 !important;
+  border-left-color: #0071e3 !important;
+  box-shadow: none !important;
+}
+
+html.dark #skills-container .skill-badge:hover,
+html.dark #skills-container .skill-scroll-wrapper .skill-badge:hover,
+html.dark #skills .skill-badge:hover {
+  border: 1px solid #0a84ff !important;
+  border-color: #0a84ff !important;
+  border-top-color: #0a84ff !important;
+  border-right-color: #0a84ff !important;
+  border-bottom-color: #0a84ff !important;
+  border-left-color: #0a84ff !important;
+  box-shadow: none !important;
+}
+
+html:not(.dark) #projects #github-projects-container .showcase-project-card:hover {
+  border: 1px solid #0071e3 !important;
+  border-color: #0071e3 !important;
+  border-top-color: #0071e3 !important;
+  box-shadow: none !important;
+}
+
+html.dark #projects #github-projects-container .showcase-project-card:hover {
+  border: 1px solid #0a84ff !important;
+  border-color: #0a84ff !important;
+  border-top-color: #0a84ff !important;
+  box-shadow: none !important;
+}
+
 /* Category panels keep resting border — only badges get blue hover */
 html:not(.dark) :is(#skills .skill-category, #skills-container .skill-category):hover,
 html:not(.dark) :is(#skills .skill-category, #skills-container .skill-category):focus-within {

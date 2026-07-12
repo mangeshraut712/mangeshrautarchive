@@ -349,18 +349,22 @@ html.dark[data-lg-mode='tinted'] #skills-container .skill-scroll-wrapper .skill-
 }
 
 #skills-container .skill-badge:hover,
+#skills-container .skill-scroll-wrapper .skill-badge:hover,
 .skill-badge:hover {
   transform: translateY(-3px);
-  box-shadow: none;
+  box-shadow: none !important;
   border: 1px solid #0071e3 !important;
+  border-color: #0071e3 !important;
   border-width: 1px !important;
   z-index: 10;
 }
 
 html.dark #skills-container .skill-badge:hover,
+html.dark #skills-container .skill-scroll-wrapper .skill-badge:hover,
 html.dark .skill-badge:hover {
-  box-shadow: none;
+  box-shadow: none !important;
   border: 1px solid #0a84ff !important;
+  border-color: #0a84ff !important;
   border-width: 1px !important;
 }
 

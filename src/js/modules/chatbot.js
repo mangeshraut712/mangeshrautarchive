@@ -1575,12 +1575,17 @@ class AppleIntelligenceChatbot {
     contentDiv.textContent = text;
 
     messageDiv.appendChild(contentDiv);
+    // User turns: pin via beginUserTurn (anchors near top). Assistant: follow if reading.
     this.appendToMessages(messageDiv, {
       pin: options.forceScroll ? 'force' : role === 'user' ? false : 'if-following',
     });
 
     if (role === 'user') {
       this.scrollEngine?.beginUserTurn(messageDiv);
+      // Re-pin after the message paints and any offline auto-reply starts
+      requestAnimationFrame(() => {
+        this.scrollEngine?.scrollTurnIntoView(messageDiv);
+      });
     }
 
     return messageDiv;

@@ -535,7 +535,7 @@ function renderStopCard(waypoint, index, countryGroupHeader) {
 
   return `
     ${countryGroupHeader}
-    <article class="travel-stop${activeClass}" data-index="${index}" data-city="${escapeHtml(waypoint.locality.city)}" data-country="${escapeHtml(waypoint.locality.country)}" style="--stop-color: ${waypointColor()}">
+    <article class="travel-stop${activeClass}" data-index="${index}" data-city="${escapeHtml(waypoint.locality.city)}" data-country="${escapeHtml(waypoint.locality.country)}" style="--stop-color: ${waypointColor()}" aria-label="${escapeHtml(ariaLabel)}">
       <div class="travel-stop__main" role="button" tabindex="0" aria-label="${escapeHtml(ariaLabel)}" aria-describedby="${summaryId}" aria-controls="${detailsId}" aria-expanded="${index === state.activeIndex}">
         <div class="travel-stop__dot"></div>
         <div class="travel-stop__order">${escapeHtml(waypoint.locality.region)}, ${escapeHtml(waypoint.locality.country)} ${homeBadge}</div>

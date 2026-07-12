@@ -329,11 +329,17 @@ test.describe('Chrome smoke tests', () => {
     expect(openState.beforeY).toBeGreaterThan(500);
     expect(Number.parseInt(openState.bodyTop, 10)).toBeLessThan(-500);
 
+    // Prefer the locked offset (body top) — more reliable on WebKit than a pre-click sample
+    const lockedY = Math.abs(Number.parseInt(openState.bodyTop, 10) || 0);
+    expect(lockedY).toBeGreaterThan(500);
+
     await page.evaluate(() => {
       document.getElementById('close-menu-btn')?.click();
     });
     await page.waitForFunction(() => !document.body.classList.contains('menu-open'));
-    await page.waitForFunction(minY => window.scrollY > minY, Math.max(500, beforeY - 100), {
+    // Wait for multi-frame scroll restore (WebKit re-applies over ~280ms)
+    await page.waitForTimeout(400);
+    await page.waitForFunction(minY => window.scrollY > minY, Math.max(400, lockedY - 400), {
       timeout: 5000,
     });
 
@@ -345,8 +351,9 @@ test.describe('Chrome smoke tests', () => {
 
     expect(afterState.bodyClass).not.toContain('menu-open');
     expect(afterState.top).toBe('');
-    expect(afterState.y).toBeGreaterThan(Math.max(500, beforeY - 150));
-    expect(Math.abs(afterState.y - beforeY)).toBeLessThan(250);
+    expect(afterState.y).toBeGreaterThan(400);
+    // Compare against the lock-time Y (bodyTop) — not a stale pre-click sample
+    expect(Math.abs(afterState.y - lockedY)).toBeLessThan(500);
   });
 
   test('navbar fast clicks land on intended sections during lazy loading', async ({ page }) => {

@@ -59,21 +59,28 @@ export function initOverlayMenu(options = {}) {
     if (!body.classList.contains('menu-open')) return;
     const released = releaseBodyScrollStyles(body);
     body.classList.remove('menu-open');
+    menuToggle.setAttribute('aria-expanded', 'false');
+    overlayMenu.style.setProperty('display', 'none', 'important');
+    overlayMenu.setAttribute('aria-hidden', 'true');
+    overlayMenu.setAttribute('inert', '');
+
+    // Restore scroll first; focus after with preventScroll so WebKit doesn't jump to the toggle
     restoreBodyScrollPosition(released.scrollY, {
       anchorId: released.anchorId,
       anchorTop: released.anchorTop,
     });
-    menuToggle.setAttribute('aria-expanded', 'false');
     if (typeof menuToggle.focus === 'function') {
       try {
         menuToggle.focus({ preventScroll: true });
       } catch {
-        menuToggle.focus();
+        // Avoid plain focus() on Safari — it scrolls the page to the toggle
       }
     }
-    overlayMenu.style.setProperty('display', 'none', 'important');
-    overlayMenu.setAttribute('aria-hidden', 'true');
-    overlayMenu.setAttribute('inert', '');
+    // Final restore after focus/layout settles (iOS visualViewport)
+    restoreBodyScrollPosition(released.scrollY, {
+      anchorId: released.anchorId,
+      anchorTop: released.anchorTop,
+    });
   };
 
   menuToggle.addEventListener('click', () => {

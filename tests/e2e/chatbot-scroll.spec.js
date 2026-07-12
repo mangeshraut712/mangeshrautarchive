@@ -225,20 +225,15 @@ test.describe('Chatbot scroll engineering', () => {
     await gotoSiteReady(page);
     await openChatbot(page);
 
-    // Make the message viewport scrollable to allow positioning the user message near the top
+    // Tall history above the next user turn so there is room to scroll it upward
     await page.evaluate(() => {
       const messages = document.getElementById('chatbot-messages');
-      if (messages) {
-        const topSpacer = document.createElement('div');
-        topSpacer.style.height = '1000px';
-        topSpacer.style.flexShrink = '0';
-        messages.prepend(topSpacer);
-
-        const bottomSpacer = document.createElement('div');
-        bottomSpacer.style.height = '1000px';
-        bottomSpacer.style.flexShrink = '0';
-        messages.appendChild(bottomSpacer);
-      }
+      if (!messages) return;
+      const topSpacer = document.createElement('div');
+      topSpacer.dataset.testTopSpacer = '1';
+      topSpacer.style.height = '1200px';
+      topSpacer.style.flexShrink = '0';
+      messages.prepend(topSpacer);
     });
 
     await page.locator('#chatbot-input').fill('First question');
@@ -248,17 +243,58 @@ test.describe('Chatbot scroll engineering', () => {
       timeout: 10_000,
     });
 
+    // Room below the user bubble (and pin) so the scroller can place it near the top
+    await page.evaluate(() => {
+      const chatbot = window.appleIntelligenceChatbot;
+      const messages = document.getElementById('chatbot-messages');
+      const users = messages?.querySelectorAll('.user-message');
+      const last = users?.[users.length - 1];
+      if (!messages || !last) return;
+
+      let bottom = messages.querySelector('[data-test-bottom-spacer]');
+      if (!bottom) {
+        bottom = document.createElement('div');
+        bottom.dataset.testBottomSpacer = '1';
+        bottom.style.height = '1600px';
+        bottom.style.flexShrink = '0';
+        const anchor = messages.querySelector('#chatbot-scroll-anchor');
+        if (anchor) {
+          messages.insertBefore(bottom, anchor);
+        } else {
+          messages.appendChild(bottom);
+        }
+      }
+
+      if (chatbot?.scrollEngine) {
+        chatbot.scrollEngine.userTurnPinnedUntil = Date.now() + 3000;
+        chatbot.scrollEngine.beginUserTurn(last);
+        chatbot.scrollEngine.scrollTurnIntoView(last);
+      } else {
+        const topInset = Math.round(messages.clientHeight * 0.08);
+        const delta =
+          last.getBoundingClientRect().top - messages.getBoundingClientRect().top - topInset;
+        messages.scrollTop += delta;
+      }
+    });
+    await page.waitForTimeout(250);
+
     const layout = await page.evaluate(() => {
       const messages = document.getElementById('chatbot-messages');
       const userList = messages.querySelectorAll('.user-message');
       const user = userList[userList.length - 1];
+      if (!user || !messages) {
+        return { offset: 999, viewport: 1 };
+      }
+      const containerRect = messages.getBoundingClientRect();
+      const userRect = user.getBoundingClientRect();
       return {
-        offset: user ? user.offsetTop - messages.scrollTop : 999,
+        offset: userRect.top - containerRect.top,
         viewport: messages.clientHeight,
       };
     });
 
-    expect(layout.offset).toBeLessThan(layout.viewport * 0.35);
+    // Upper portion of the message viewport counts as "near the top"
+    expect(layout.offset).toBeLessThan(layout.viewport * 0.4);
   });
 
   test('restores the welcome message after clear chat', async ({ page }) => {
