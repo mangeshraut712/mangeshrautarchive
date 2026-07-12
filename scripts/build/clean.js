@@ -16,6 +16,7 @@ const generatedDirs = [
   'playwright-report',
   '.playwright-mcp',
   '.playwright-cli',
+  '.playwright',
   '.pytest_cache',
   '.gitnexus',
   'scratch',
@@ -26,9 +27,23 @@ const generatedDirs = [
   'coverage',
   '.turbo',
   '.cache',
+  '.eslintcache',
+  '.stylelintcache',
 ];
 const generatedFiles = ['backend_test.log', 'dev_server.log', '.clinerules', '.windsurfrules'];
 const generatedFileNames = new Set(['.DS_Store']);
+
+/** Never walk into package installs or VCS — only project sources. */
+const SKIP_DIR_NAMES = new Set([
+  'node_modules',
+  '.git',
+  'venv',
+  '.venv',
+  'dist',
+  'coverage',
+  'artifacts',
+  'test-results',
+]);
 
 async function removeDirectory(relativePath) {
   const absolutePath = join(root, relativePath);
@@ -55,7 +70,7 @@ async function findPycacheDirs(directory, matches = []) {
         return;
       }
 
-      if (entry.name === 'node_modules' || entry.name === '.git' || entry.name === 'venv') {
+      if (SKIP_DIR_NAMES.has(entry.name)) {
         return;
       }
 
@@ -77,7 +92,7 @@ async function findGeneratedFiles(directory, matches = []) {
 
   await Promise.all(
     entries.map(async entry => {
-      if (entry.name === 'node_modules' || entry.name === '.git' || entry.name === 'venv') {
+      if (SKIP_DIR_NAMES.has(entry.name)) {
         return;
       }
 

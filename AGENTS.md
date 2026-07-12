@@ -1,7 +1,7 @@
 # AGENTS.md — Universal AI Agent Briefing
 
 > **Standard:** Linux Foundation AGENTS.md v1.0 (2026)
-> **Last updated:** 2026-07-06
+> **Last updated:** 2026-07-12
 
 ---
 
@@ -81,10 +81,12 @@ npm run test:e2e:chrome     # Playwright E2E — Desktop Chrome
 npm run test:e2e:all        # Playwright E2E — all 15 browser configs
 
 # Quality gates
+npm run check               # ESLint + Stylelint + Prettier + Vitest
 npm run qa:prod-ready       # Full pre-deploy: security + lint + unit + API + E2E + Lighthouse
-npm run qa:lighthouse:desktop  # Lighthouse audit (desktop, 100/100/100/100 gates)
-npm run qa:lighthouse:mobile   # Lighthouse audit (mobile, 100/100/100/100 gates)
+npm run qa:lighthouse:desktop  # Lighthouse audit (desktop)
+npm run qa:lighthouse:mobile   # Lighthouse audit (mobile)
 npm run security-check      # Scan for leaked secrets and credentials
+npm run clean               # Purge dist/, artifacts/, caches (skips .venv / node_modules)
 
 # Deploy verification
 npm run qa:postdeploy       # Post-deployment smoke test
@@ -159,7 +161,8 @@ mangeshrautarchive/
 │   ├── api/                # pytest API tests
 │   ├── e2e/                # Playwright E2E specs
 │   └── config/             # Test configuration
-├── config/                 # pyright + vulture (CI dead-code scan)
+├── config/                 # vulture.toml (CI dead-code scan)
+├── pyrightconfig.json      # Python typecheck (api/)
 ├── dist/                   # Build output (git-ignored)
 ├── vercel.json             # Vercel deployment config
 ├── playwright.config.js    # Playwright multi-browser config
@@ -176,9 +179,9 @@ All three test suites must pass before any merge to `main`:
 
 | Suite | Runner     | Command                | Coverage                                    |
 | ----- | ---------- | ---------------------- | ------------------------------------------- |
-| Unit  | Vitest     | `npm test`             | 29 tests — JS modules, utilities, DOM logic |
-| API   | pytest     | `npm run test:api`     | 70 tests — FastAPI endpoints, middleware    |
-| E2E   | Playwright | `npm run test:e2e:all` | 150 tests across 15 browser configurations  |
+| Unit  | Vitest     | `npm test`             | 40 tests — JS modules, utilities, markdown  |
+| API   | pytest     | `npm run test:api`     | 109 tests — FastAPI endpoints, middleware   |
+| E2E   | Playwright | `npm run test:e2e:all` | Multi-spec suite across 15 browser projects |
 
 - Playwright configs include Desktop Chrome/Safari/Firefox/Edge, Pixel 7 Chrome, iPhone 14 Safari, iPad Pro Safari, and more.
 - Lighthouse gates enforce 100/100/100/100 (Performance/Accessibility/Best Practices/SEO).

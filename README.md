@@ -6,7 +6,7 @@
     <img src="src/assets/images/homepage-dark.png" alt="Portfolio homepage — dark mode" width="360">
   </a>
 </p>
-<p align="center"><sub>Homepage · Light mode (left) · Dark mode (right) · June 2026</sub></p>
+<p align="center"><sub>Homepage · Light mode (left) · Dark mode (right) · July 2026</sub></p>
 
 <p align="center">
   <a href="https://mangeshraut.pro"><img src="https://img.shields.io/badge/Live-mangeshraut.pro-0071e3?style=for-the-badge&logo=vercel&logoColor=white" alt="Live site"></a>
@@ -74,7 +74,7 @@ This repository powers [mangeshraut.pro](https://mangeshraut.pro) — a static-f
 
 The same `dist/` output is deployed to **Vercel** (primary + API) and **GitHub Pages** (static mirror with `apiBaseUrl` pointing at production).
 
-**Repository scale (July 2026):** 7 static HTML entry points (incl. offline shell) · 40+ public GitHub repositories · 12 technical articles · 5 in-depth case studies · 10 WebMCP tools · **149 automated tests** (40 Vitest + 109 pytest) · 15 Playwright browser projects.
+**Repository scale (July 2026):** 7 static HTML entry points (incl. offline shell) · 40+ public GitHub repositories · 12 technical articles · 5 in-depth case studies · 10 WebMCP tools · **149 automated unit/API tests** (40 Vitest + 109 pytest) · 15 Playwright browser projects · Apple-style progressive disclosure + iOS crash-hardening.
 
 ---
 
@@ -126,7 +126,7 @@ The main portfolio (`index.html`) is a single-page app with **13 primary nav lan
 | **Certifications**  | `#certifications`       | Credential grid                                                                |
 | **Blog**            | `#blog`                 | 12 technical articles with generated HTML pages                                |
 | **Contact**         | `#contact`              | Form, Calendly, social links, merged health + Currently shelf                  |
-| **Debug Runner**    | `#debug-runner-section` | Interactive browser game (lazy-loaded)                                         |
+| **Debug Runner**    | `#debug-runner-section` | Optional browser game — collapsed disclosure + lazy init on open               |
 
 **Additional embedded regions:** `#engineering` (evidence teaser linking to `/systems`) · `#currently-section` (shows / books / music tabs with local poster assets) · health widget (WHOOP / Withings when connected).
 
@@ -134,21 +134,22 @@ The main portfolio (`index.html`) is a single-page app with **13 primary nav lan
 
 ## Features
 
-| Area                | What it does                                                                                            | Key files / endpoints                                 |
-| ------------------- | ------------------------------------------------------------------------------------------------------- | ----------------------------------------------------- |
-| **AssistMe**        | 10 WebMCP tools + regex fast-path before LLM; NDJSON streaming chat with KaTeX + DOMPurify markdown     | `agentic-actions.js`, `chat.js`, `POST /api/chat`     |
-| **Command palette** | Indexes sections, blog, case studies, travel, debug runner; `⌘K` / `Ctrl+K`; lazy-loaded on first click | `#search-overlay`, `search.js`                        |
-| **Projects**        | Live GitHub grid, lens filters, XR detail modal, multi-origin proxy fallback                            | `github-projects.js`, `/api/github/*`                 |
-| **Currently shelf** | Shows / books / music tabs; local posters; Last.fm via `/api/music/recent` + `/api/music/artwork`       | `currently.js`, `lastfm.js`                           |
-| **Health widget**   | WHOOP + Withings metrics when OAuth connected; Supabase snapshots                                       | `/api/health-vitals/summary`                          |
-| **Portfolio reach** | GA4 Data API hero panel — realtime users, events, views, countries                                      | `#portfolio-reach-panel`                              |
-| **Design system**   | WWDC26 liquid glass, solid light/dark surfaces, dynamic island nav, view transitions                    | `wwdc26-liquid-glass.css`, `view-transitions-nav.js`  |
-| **Accessibility**   | Toolbar (share, shortcuts, font scale, glass tint), skip links, axe-core CI gate                        | `accessibility.js`                                    |
-| **Forms**           | Contact + newsletter with server validation and rate limiting                                           | `POST /api/contact`, `POST /api/newsletter/subscribe` |
-| **Analytics**       | `@vercel/analytics` + deferred GA4 gtag (interaction-triggered)                                         | `analytics.js`, `vercel-analytics.js`                 |
-| **Build**           | esbuild, Sharp, hero-critical CSS, blog/case-study generators                                           | `scripts/build/build.js`                              |
-| **Polish**          | Apple haptics, AOD dim mode, birthday easter-egg, share widget                                          | `apple-haptics.js`, `share-widget.js`                 |
-| **Testing**         | 15 Playwright projects, 70 pytest tests, Lighthouse **100/100** CI on `dist/`                           | `tests/`                                              |
+| Area                | What it does                                                                                            | Key files / endpoints                                        |
+| ------------------- | ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------ |
+| **AssistMe**        | 10 WebMCP tools + regex fast-path before LLM; NDJSON streaming chat with KaTeX + DOMPurify markdown     | `agentic-actions.js`, `chat.js`, `POST /api/chat`            |
+| **Command palette** | Indexes sections, blog, case studies, travel, debug runner; `⌘K` / `Ctrl+K`; lazy-loaded on first click | `#search-overlay`, `search.js`                               |
+| **Projects**        | Live GitHub grid, lens filters, XR detail modal, multi-origin proxy fallback                            | `github-projects.js`, `/api/github/*`                        |
+| **Currently shelf** | Shows / books / music tabs; local posters; Last.fm via `/api/music/recent` + `/api/music/artwork`       | `currently.js`, `lastfm.js`                                  |
+| **Health widget**   | WHOOP + Withings metrics when OAuth connected; Supabase snapshots                                       | `/api/health-vitals/summary`                                 |
+| **Portfolio reach** | GA4 Data API hero panel — realtime users, events, views, countries                                      | `#portfolio-reach-panel`                                     |
+| **Design system**   | WWDC26 liquid glass, solid light/dark surfaces, dynamic island nav, view transitions                    | `wwdc26-liquid-glass.css`, `view-transitions-nav.js`         |
+| **Accessibility**   | Toolbar (share, shortcuts, font scale, glass tint), skip links, axe-core CI gate                        | `accessibility.js`                                           |
+| **Forms**           | Contact + newsletter with server validation and rate limiting                                           | `POST /api/contact`, `POST /api/newsletter/subscribe`        |
+| **Analytics**       | `@vercel/analytics` + deferred GA4 gtag (interaction-triggered)                                         | `analytics.js`, `vercel-analytics.js`                        |
+| **Build**           | esbuild, Sharp, hero-critical CSS, blog/case-study generators                                           | `scripts/build/build.js`                                     |
+| **Polish**          | Apple haptics, AOD dim mode, birthday easter-egg, share widget, UX polish sheet                         | `apple-haptics.js`, `share-widget.js`, `ux-polish-fixes.css` |
+| **Disclosure**      | Apple-style View more on dense sections (experience, blog, contact extras) — not endless scroll         | `section-preview.js`                                         |
+| **Testing**         | 15 Playwright projects, 40 Vitest + 109 pytest, Lighthouse CI on `dist/`                                | `tests/`                                                     |
 
 ---
 
@@ -156,18 +157,18 @@ The main portfolio (`index.html`) is a single-page app with **13 primary nav lan
 
 Sitewide parity with Apple’s 2026 design language: **Liquid Glass** (clear / balanced / tinted), **WebGL refraction** on nav + chatbot + hero/projects, **Dynamic Island** (home), **command palette** on all pages, **share sheet**, **accessibility toolbar**, **high contrast**, **reduce-transparency sync**, and **solid `#FFFFFF` / `#000000`** page shells.
 
-| Phase  | Delivered                                                                                                                                                                          | Key paths                                                      |
-| ------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
-| **P0** | Unified asset version `20260701q` (single source in `asset-version.mjs`), `high-contrast.css`, blog/case-study WebGL CSS, monitor dead CSS removed, `reduced-transparency-sync.js` | `scripts/build/asset-version.mjs`                              |
-| **P1** | `subpage-chrome.js` on systems/uses/travel/monitor/404/blog/case studies; global search overlay; extended WebGL chrome                                                             | `src/js/core/subpage-chrome.js`                                |
-| **P2** | Experience cards, awards grid, skills categories, education glass tokens, health widget alignment                                                                                  | `experience.css`, `awards.css`, `skills-visualization.js`      |
-| **P3** | Control Center (uses), Live Activity strip, Quick Look projects, Game leaderboard                                                                                                  | `control-center.js`, `live-activity-strip.js`, `quick-look.js` |
+| Phase  | Delivered                                                                                                                                                                                   | Key paths                                                      |
+| ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
+| **P0** | Unified asset version (`ASSET_VER` in `asset-version.mjs`, currently `20260712s`), `high-contrast.css`, blog/case-study WebGL CSS, monitor dead CSS removed, `reduced-transparency-sync.js` | `scripts/build/asset-version.mjs`                              |
+| **P1** | `subpage-chrome.js` on systems/uses/travel/monitor/404/blog/case studies; global search overlay; extended WebGL chrome                                                                      | `src/js/core/subpage-chrome.js`                                |
+| **P2** | Experience cards, awards grid, skills categories, education glass tokens, health widget alignment                                                                                           | `experience.css`, `awards.css`, `skills-visualization.js`      |
+| **P3** | Control Center (uses), Live Activity strip, Quick Look projects, Game leaderboard                                                                                                           | `control-center.js`, `live-activity-strip.js`, `quick-look.js` |
 
 **Verify locally:**
 
 ```bash
-npm run check
-npm run qa:apple-platform   # 10 Playwright audit specs (glass, a11y, ⌘K, control center, skills)
+npm run check                 # ESLint + Stylelint + Prettier + Vitest
+npm run test:e2e:chrome       # Playwright smoke/a11y on Desktop Chrome
 ```
 
 | Page                        | Glass boot | A11y toolbar | ⌘K search | Share | WebGL chrome        |
@@ -223,17 +224,17 @@ Versions below match `package.json` / `requirements.txt` in this repo.
 
 | Layer                   | Technologies                                                                                             |
 | ----------------------- | -------------------------------------------------------------------------------------------------------- |
-| **Frontend**            | Vanilla ES modules, Tailwind CSS **4.0.9** (`@tailwindcss/cli` **4.3.1**), no production React framework |
+| **Frontend**            | Vanilla ES modules, Tailwind CSS **4.0.9** (`@tailwindcss/cli` **4.3.x**), no production React framework |
 | **Agentic**             | WebMCP `navigator.modelContext`, AssistMe action handler, NDJSON chat UI                                 |
 | **AI backend**          | OpenRouter via `model_router.py` (Grok portfolio tier, Fusion compare, Auto general, Gemini fast-path)   |
-| **API**                 | FastAPI **0.136.1**, Pydantic **2.13.4**, Uvicorn **0.47.0**, httpx **0.28.1**                           |
-| **Data & integrations** | GitHub REST, Last.fm, Google Analytics 4, Firestore reach, Supabase health vitals, WHOOP, Withings       |
+| **API**                 | FastAPI (see `requirements.txt`), Pydantic v2, Uvicorn, httpx                                            |
+| **Data & integrations** | GitHub REST, Last.fm, Google Analytics 4, Supabase health vitals, WHOOP, Withings                        |
 | **Build**               | esbuild **0.28.0**, Sharp **0.35.2**, custom Node pipeline                                               |
 | **Analytics (client)**  | `@vercel/analytics` **2.0.1**                                                                            |
-| **Markdown**            | `marked` **18.0.5**, `isomorphic-dompurify`, KaTeX (chat/blog)                                           |
-| **Testing**             | Playwright **1.58.2**, Vitest **4.1.6**, `@axe-core/playwright` **4.11.1**, Lighthouse CI                |
-| **Lint / format**       | ESLint **9.21.0**, Stylelint **16.26.1**, Prettier **3.8.4**, flake8 (Python)                            |
-| **Static analysis**     | React Doctor **0.5.8** (dependency graph via `src/js/entry.js`; informational in CI)                     |
+| **Markdown**            | `marked` **18.x**, `isomorphic-dompurify`, KaTeX (chat/blog)                                             |
+| **Testing**             | Playwright **1.61.x**, Vitest **4.1.x**, `@axe-core/playwright` **4.12.x**, Lighthouse CI                |
+| **Lint / format**       | ESLint **9.x**, Stylelint **16.x**, Prettier **3.9.x**, flake8 / ruff / vulture (Python)                 |
+| **Env parity**          | `npm run doctor:full` → `verify-env-parity.mjs` (local/CI/Vercel surface checks)                         |
 | **Hosting**             | Vercel (API + CDN) + GitHub Pages (static mirror)                                                        |
 | **Runtimes**            | Node **22.x**, Python **3.12**                                                                           |
 
@@ -487,38 +488,37 @@ Optional: Upstash Redis for shared reach counters · GA4 Data API (property `537
 ### GitHub Actions (`deploy.yml` on every push/PR to `main`)
 
 1. `npm audit --audit-level=high` + `npm run security-check`
-2. ESLint + Stylelint
-3. Vitest (29 unit tests) + Apple Platform audit (10 Playwright specs via `npm run qa:apple-platform`)
-4. React Doctor (`doctor:full`, non-blocking)
-5. Python flake8 + dead-code scan + **70** API tests (pytest)
-6. Playwright smoke + axe-core (`qa:browser:ci`)
-7. Lighthouse desktop + mobile on `dist/` (`qa:lighthouse:ci`)
-8. Build → GitHub Pages deploy → live commit verification
+2. ESLint + Stylelint + Prettier
+3. Vitest unit tests (**40**)
+4. Env parity (`npm run doctor:full` → `verify-env-parity.mjs`)
+5. Python flake8 + ruff/vulture dead-code scan + **109** API tests (pytest)
+6. Browser QA smoke (`qa:browser:ci`) on the local dev server
+7. Production build + Lighthouse desktop/mobile on `dist/` (served on loopback)
+8. Build artifact → GitHub Pages deploy → live commit verification
 
 Nightly **[post-deploy-monitoring.yml](.github/workflows/post-deploy-monitoring.yml)** checks production reachability and Lighthouse on Vercel.
 
-### Thresholds (June 2026)
+### Thresholds (July 2026)
 
 | Gate                                          | Target                                                                                     |
 | --------------------------------------------- | ------------------------------------------------------------------------------------------ |
-| **Lighthouse CI** (`dist/`, desktop + mobile) | **100** Performance · **100** Accessibility · **100** Best Practices · **100** SEO         |
-| **React Doctor** (`doctor:full`)              | **97+/100** (static graph audit via `index.js` → `entry.js`; non-blocking in CI)           |
-| **axe-core** (homepage)                       | Zero critical / serious violations                                                         |
+| **Lighthouse CI** (`dist/`, desktop + mobile) | Performance / Accessibility / Best Practices / SEO gates (see workflow mins)               |
+| **axe-core** (CI browser QA)                  | Zero critical / serious violations on key surfaces                                         |
 | **Playwright**                                | 15 named browser projects (Chrome, Safari, Firefox, Edge, Pixel, iPhone, iPad, responsive) |
-| **Vitest**                                    | 29 tests across 4 files                                                                    |
-| **pytest**                                    | 70 API tests                                                                               |
+| **Vitest**                                    | **40** tests across 7 files                                                                |
+| **pytest**                                    | **109** API tests                                                                          |
 
 ### Useful commands
 
-| Command                             | Purpose                                                 |
-| ----------------------------------- | ------------------------------------------------------- |
-| `npm run check`                     | ESLint + Stylelint + Prettier + Vitest + pytest         |
-| `npm run qa:prod-ready`             | Security + full lint/test + browser + Lighthouse        |
-| `npm run doctor:full`               | React Doctor static graph audit (97+/100 target)        |
-| `npm run qa:lighthouse:ci`          | Build `dist/` and run desktop + mobile Lighthouse gates |
-| `npm run qa:browser:ci`             | Playwright smoke + axe-core on dev server               |
-| `npm run verify:deploy-sync`        | Compare local `dist/` build commit vs live surfaces     |
-| `npm run verify:deploy-sync:remote` | Compare deploy commit on Vercel vs GitHub Pages         |
+| Command                      | Purpose                                                         |
+| ---------------------------- | --------------------------------------------------------------- |
+| `npm run check`              | ESLint + Stylelint + Prettier + Vitest                          |
+| `npm run qa:prod-ready`      | Security + full lint/test + Chrome E2E + Lighthouse             |
+| `npm run doctor:full`        | Env / surface parity checks (`verify-env-parity.mjs`)           |
+| `npm run qa:lighthouse:ci`   | Lighthouse against the live GitHub Pages URL                    |
+| `npm run qa:browser:ci`      | CI browser / FPS promotion audit on the local dev server        |
+| `npm run verify:deploy-sync` | Compare deploy commit parity across Vercel + GitHub Pages       |
+| `npm run clean`              | Remove `dist/`, `artifacts/`, caches, `__pycache__` (not venvs) |
 
 Dev server commands (`npm run dev`, `npm run build`, etc.) are listed in [Local development](#local-development).
 
@@ -536,28 +536,30 @@ mangeshrautarchive/
 │   └── site_knowledge.py         # Deterministic portfolio answers
 ├── src/                          # Static site source → npm run build → dist/
 │   ├── index.html                # Portfolio SPA
-│   ├── systems.html              # Engineering evidence notebook
-│   ├── monitor.html              # Live ops dashboard
+│   ├── systems.html              # Engineering evidence notebook (no footer)
+│   ├── monitor.html              # Live ops dashboard (no footer)
 │   ├── travel.html               # Travel atlas
 │   ├── uses.html                 # Hardware / software / AI stack
-│   ├── 404.html                  # Branded not-found
-│   ├── offline.html              # Service-worker offline shell
+│   ├── 404.html · offline.html   # Branded not-found + SW offline shell
 │   ├── service-worker.js         # Shell precache + navigation fallback
-│   ├── assets/                   # css/, images/, files/, icons/
+│   ├── assets/css/               # Vanilla CSS design system (+ ux-polish-fixes.css)
+│   ├── assets/images|files|icons/
 │   └── js/                       # core/, modules/, services/, utils/, data/
 ├── scripts/
-│   ├── build/                    # esbuild pipeline, blog/case-study generators
-│   ├── deployment/               # Lighthouse gates, security-check, deploy sync
-│   ├── utils/                    # dev-all, local-server, serve-dist
-│   └── qa/                       # Browser / FPS audit helpers
+│   ├── build/                    # esbuild, clean, asset-version, generators
+│   ├── deployment/               # Lighthouse, security-check, deploy sync
+│   ├── utils/                    # dev-all, local-server, serve-dist, flake8/vulture
+│   ├── qa/                       # Browser / FPS / iPhone audit helpers
+│   └── integrations/             # OAuth + env helper scripts
 ├── tests/
 │   ├── api/                      # pytest (109 tests)
-│   ├── e2e/                      # Playwright multi-browser
-│   └── unit/ + src/**/*.test.js  # Vitest (40 tests)
-├── docs/                         # UI/UX audit report + fix progress
-├── config/                       # pyright, vulture (CI dead-code scan)
+│   ├── e2e/                      # Playwright (15 browser projects)
+│   └── js/ + src/**/*.test.js    # Vitest (40 tests)
+├── docs/                         # Pointers to primary docs (no session dumps)
+├── config/                       # vulture.toml (CI dead-code scan)
 ├── middleware.js                 # Vercel edge: Lighthouse → ?perf-audit=1
-├── index.js                      # react-doctor entry shim → src/js/entry.js
+├── index.js                      # Static-analysis entry → src/js/entry.js
+├── pyrightconfig.json            # Python typecheck include: api/
 ├── vercel.json                   # dist/ + FastAPI rewrites + cron
 ├── package.json                  # Node 22 · ESM · CI scripts
 ├── requirements.txt              # Python runtime deps
@@ -565,7 +567,7 @@ mangeshrautarchive/
 └── .github/workflows/            # deploy.yml, post-deploy-monitoring.yml
 ```
 
-**Not committed (local only):** `.env` / `.env.local`, `node_modules/`, `dist/`, `.venv` / `venv`, `test-results/`, `artifacts/`, IDE caches.
+**Not committed (local only):** `.env` / `.env.local`, `node_modules/`, `dist/`, `.venv` / `venv` symlink, `test-results/`, `artifacts/`, IDE caches. Run `npm run clean` to purge generated dirs safely (skips venvs).
 
 ---
 
@@ -692,6 +694,8 @@ PORT=4174 npm run serve:dist
 | `npm run security-check`        | Scan for leaked secrets                              |
 | `npm run qa:prod-ready`         | Full pre-deploy matrix (CI parity)                   |
 | `npm run qa:lighthouse:desktop` | Lighthouse gate (local or remote URL)                |
+| `npm run clean`                 | Purge dist/artifacts/caches (safe; skips venvs)      |
+| `npm run check`                 | Lint + format check + Vitest                         |
 
 ---
 
@@ -720,20 +724,20 @@ npm run verify:deploy-sync:remote -- --parity   # Vercel + GitHub Pages same com
 | **Vercel**       | https://mangeshraut.pro                                         | Auto-deploy on push to `main`           |
 | **GitHub Pages** | https://mangeshraut712.github.io/mangeshrautarchive/            | `deploy.yml` uploads `dist/` on CI pass |
 
-**Cache busting:** Static HTML in `src/*.html` uses `?v=20260701q` query strings. Blog and case-study pages read `ASSET_VER` from `scripts/build/asset-version.mjs`. The build step also stamps a timestamp version on `dist/` JS module imports. Bump `ASSET_VER` and run `sed` across `src/*.html` when shipping CSS/JS changes that must invalidate browser caches immediately.
+**Cache busting:** Static HTML in `src/*.html` uses `?v=<ASSET_VER>` query strings (currently **`20260712s`**). Blog and case-study pages read `ASSET_VER` from `scripts/build/asset-version.mjs`. The service worker cache name is versioned with the same token. Bump `ASSET_VER`, update HTML `?v=` strings, and ship so browsers + SW drop stale CSS/JS.
 
 ---
 
 ## Documentation
 
-| Doc                                                                | Contents                                             |
-| ------------------------------------------------------------------ | ---------------------------------------------------- |
-| [README.md](README.md)                                             | Setup, CI, API reference, deployment                 |
-| [AGENTS.md](AGENTS.md)                                             | AI agent briefing for contributors                   |
-| [.env.example](.env.example)                                       | Environment variables and integration keys           |
-| [docs/UI-UX-BUG-REPORT.md](docs/UI-UX-BUG-REPORT.md)               | Full UI/UX audit backlog (87 items)                  |
-| [docs/UI-UX-BUG-FIX-PROGRESS.md](docs/UI-UX-BUG-FIX-PROGRESS.md)   | Fix status, re-audit results, next-sprint priorities |
-| [.github/copilot-instructions.md](.github/copilot-instructions.md) | GitHub Copilot project rules                         |
+| Doc                                                                | Contents                                   |
+| ------------------------------------------------------------------ | ------------------------------------------ |
+| [README.md](README.md)                                             | Setup, CI, API reference, deployment       |
+| [AGENTS.md](AGENTS.md)                                             | AI agent briefing for contributors         |
+| [SECURITY.md](SECURITY.md)                                         | Security policy and reporting              |
+| [.env.example](.env.example)                                       | Environment variables and integration keys |
+| [docs/README.md](docs/README.md)                                   | Index of primary docs (no session dumps)   |
+| [.github/copilot-instructions.md](.github/copilot-instructions.md) | GitHub Copilot project rules               |
 
 ---
 
@@ -741,31 +745,24 @@ npm run verify:deploy-sync:remote -- --parity   # Vercel + GitHub Pages same com
 
 **July 2026**
 
-- **UI/UX hardening:** Search Esc fully closes overlay; share-widget CSS on all subpages; combobox ARIA + keyboard results; hero name solid-color `@supports` fallback; travel nested-interactive fix; monitor/travel WCAG contrast.
+- **UX polish ship (`ux-polish-fixes.css`):** 44px touch targets, safe-area FAB stack, focus-visible rings, text clipping, z-index tokens; 404 AA contrast (global link blue scoped off `error-page`); Debug Runner behind `<details>` + lazy game init; cache/SW bust **`20260712s`**.
+- **iOS Safari stability:** Disable WebGL liquid glass + endless rAF paths on low-power/iOS clients; hard-cap deploy-version reload loops (“A problem repeatedly occurred”).
+- **Progressive disclosure:** Apple-style View more for dense homepage sections (`section-preview.js`) instead of endless scroll.
+- **E2E / a11y green:** Playwright smoke, axe contrast, marquee, card-hover, and chatbot scroll suites hardened.
+- **Content-first load:** Mid-page paint without scroll-gated spinners; progressive CSS promote without blank sections.
+- **Repo hygiene:** `npm run clean` skips `.venv` / `node_modules`; remove session bug dumps from `docs/`; root README accuracy pass; `npm run check` restored.
 - **PWA offline:** Service worker shell precache + network-first navigation with `offline.html` fallback.
-- **Streaming reliability:** `StreamingService` 45s timeout, `connecting` event, AbortController cancel path.
-- **Perf-audit detection:** No longer treats bare HeadlessChrome as Lighthouse (unblocks Playwright product JS).
-- **API health:** Resource checks use available-memory floors so busy local hosts don’t false-critical.
-- **Repo hygiene:** `docs/` for audit trackers; gitignore for venv/test-results; README structure refresh.
-- **Tailwind markup cleanup:** Migrated remaining utility classes to semantic CSS where present.
-- **Touch targets:** Dynamic Island / name pronounce / FABs meet 44px+ guidance on mobile.
+- **Streaming reliability:** `StreamingService` timeout, `connecting` event, AbortController cancel path.
 
 **June 2026**
 
-- **Deploy sync:** Vercel + GitHub Pages parity verified via `verify:deploy-sync:remote --parity`
-- **Debug Runner:** Restored classic layout; fixed game-section footer spacing (`chrome-surfaces.css` wins over platform overrides)
-- **Responsive audit:** Mobile/tablet/desktop alignment fixes across navbar, hero, engineering showcase, travel atlas, FAB stack
-- **Cache bust:** Unified asset version `20260701q` across all `src/*.html` + `asset-version.mjs`
-- Lighthouse CI **100/100** (desktop + mobile on `dist/`) · React Doctor **97/100**
-- iTunes artwork proxy (`/api/music/artwork`) — CORS + Best Practices fix
-- Perf-audit detection narrowed for Playwright E2E
-- Engineering evidence page (`/systems`), solid theme surfaces, sitewide card audit
-- README reorganized — deduplicated sections, sponsors restored, deploy-sync docs added
+- Dual-host deploy sync (Vercel + GitHub Pages), engineering evidence (`/systems`), solid theme surfaces
+- Lighthouse CI gates · iTunes artwork proxy · sitewide card / responsive audit
+- AssistMe WebMCP (10 tools) · public monitor · travel atlas · Field Notes + case studies
 
 **Earlier 2026**
 
-- AssistMe WebMCP (10 tools) · public monitor · travel atlas · dual-host deploy
-- WHOOP / Withings / Google Calendar OAuth · 12 Field Notes articles · command palette
+- WHOOP / Withings / Google Calendar OAuth · command palette · dynamic island nav
 
 ---
 
