@@ -1109,12 +1109,19 @@ function initEngineeringTeaserOnDemand() {
   observeSectionTask('engineering', start, '200px 0px');
 }
 
+/**
+ * Service worker is intentionally NOT registered.
+ * Past SW + version-reload loops caused iOS Safari “A problem repeatedly
+ * occurred” hard crashes. We actively unregister stale SWs and clear caches
+ * once per session so dual-host deploys stay clean. offline.html is a manual
+ * fallback page only — not SW-served.
+ */
 function initServiceWorker() {
   if (!('serviceWorker' in navigator)) {
     return;
   }
 
-  const cleanupKey = 'portfolio-sw-cleanup-v20260509';
+  const cleanupKey = 'portfolio-sw-cleanup-v20260712';
   try {
     if (sessionStorage.getItem(cleanupKey) === '1') {
       return;

@@ -782,6 +782,17 @@ class AppleIntelligenceChatbot {
   }
 
   closeWidget() {
+    // Abort any in-flight chat stream so reopen is not stuck on isProcessing
+    if (this.activeAskController) {
+      try {
+        this.activeAskController.abort();
+      } catch (_error) {
+        // ignore
+      }
+      this.activeAskController = null;
+    }
+    this.isProcessing = false;
+    this.hideTypingIndicator?.();
     this.scrollEngine?.saveSession();
     this.closeWritingTools();
     this.stopDictation(false);
@@ -971,6 +982,10 @@ class AppleIntelligenceChatbot {
         await this.simulateTyping(this.getFallbackResponse(text), startTime);
       }
     } catch (error) {
+      if (error?.name === 'AbortError') {
+        this.hideTypingIndicator();
+        return;
+      }
       console.error('Error getting AI response:', error);
       this.hideTypingIndicator();
       const rateLimited = error?.code === 'RATE_LIMITED';
@@ -981,6 +996,7 @@ class AppleIntelligenceChatbot {
           : "I'm having trouble connecting. Please try again in a moment."
       );
     } finally {
+      this.activeAskController = null;
       this.isProcessing = false;
       this.messageCount++;
     }
@@ -1109,8 +1125,20 @@ class AppleIntelligenceChatbot {
       this.scrollEngine?.onStreamStart();
       this.updateThinkingStage('generating');
 
+      if (this.activeAskController) {
+        try {
+          this.activeAskController.abort();
+        } catch (_error) {
+          // ignore prior abort
+        }
+      }
+      this.activeAskController = new AbortController();
+      const signal = this.activeAskController.signal;
+
       const response = await this.chatAPI.ask(userMessage, {
+        signal,
         onChunk: chunk => {
+          if (signal.aborted) return;
           if (!chunk) return;
           fullText += chunk;
           ensureStreamBubble();

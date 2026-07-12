@@ -306,30 +306,40 @@ def generate_local_response(query: str, site_context: str = "") -> Dict:
             "category": "About",
         }
 
-    # Family Structure & Values
+    # Family — public assistant does not disclose private family details
     if any(k in query for k in ["family", "parents", "mother", "father", "sister", "vidya", "meena", "bharat"]):
         return {
             "answer": (
-                "👨‍👩‍👧‍👦 **Family Structure & Values**:\n"
-                "Mangesh comes from a close-knit and supportive family:\n"
-                "• **Father**: Mr. Bharat Ambarushi Raut\n"
-                "• **Mother**: Mrs. Meena Bharat Raut, a Proprietor at Kashish Beauty Parlour & Training Center (Dange Chowk, Pune). Mangesh is deeply devoted to his mother; his primary core drive in life is to provide her with absolute financial comfort, peace of mind, and happiness.\n"
-                "• **Sister**: Ms. Vidya Bharat Raut, a highly accomplished scholar (M.Sc Physics, B.Ed, currently pursuing M.Tech in Energy Technology at Pune University) who works as a Researcher & Analyst at CES, Pune.\n"
-                "• **Lineage Roots (Natesambandha)**: Khandagale, Kashid, Gawali, Mane, Salunkhe, Dudhal."
+                "👨‍👩‍👧 **Family**:\n"
+                "AssistMe keeps family details private. For professional background, ask about "
+                "**experience**, **education**, **projects**, or **skills**."
             ),
             "category": "Family",
         }
 
-    # Personal Identity details (Navaras/Hinoji, Height, Address)
-    if any(k in query for k in ["hinoji", "birth name", "call name", "navaras", "height", "complexion", "blood group", "address", "residence", "hometown"]):
+    # Personal identity — no medical / home address disclosure
+    if any(
+        k in query
+        for k in [
+            "hinoji",
+            "birth name",
+            "call name",
+            "navaras",
+            "height",
+            "complexion",
+            "blood group",
+            "address",
+            "residence",
+            "hometown",
+        ]
+    ):
         return {
             "answer": (
-                "👤 **Personal & Cultural Identity**:\n"
-                "• **Full Name**: Mangesh Bharat Raut\n"
-                "• **Birth Name (Navaras / Call Name)**: Hinoji (हिनोजी)\n"
-                "• **Physical Attributes**: Height: 6'0\" | Complexion: Fair | Blood Group: O Positive (O +ve)\n"
-                "• **Languages**: Marathi (Native), English (Professional), Hindi\n"
-                "• **Permanent Residence Address**: Kamble Corner, Panchsheelnagar, Pimple Nilakh, Pune - 411027, Maharashtra, India"
+                "👤 **Public identity**:\n"
+                "• **Name**: Mangesh Bharat Raut\n"
+                "• **Languages**: English (professional), Marathi (native), Hindi\n"
+                "• **Professional locations**: CES (US / India hybrid engineering context)\n\n"
+                "Home address, medical data, and private cultural records are **not** shared by this assistant."
             ),
             "category": "Identity",
         }
