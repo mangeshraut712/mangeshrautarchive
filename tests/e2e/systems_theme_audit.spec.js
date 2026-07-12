@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { PAGES, gotoSite } from './helpers/site.js';
 
 test.describe('Systems Page (Engineering Evidence) Audit', () => {
   test('audit page for layout, styles, and console issues (desktop & mobile)', async ({ page }) => {
@@ -20,7 +21,7 @@ test.describe('Systems Page (Engineering Evidence) Audit', () => {
 
     // 1. Desktop Audit
     await page.setViewportSize({ width: 1280, height: 900 });
-    await page.goto('/systems.html');
+    await gotoSite(page, PAGES.systems);
     await page.waitForSelector('#systems-overview-grid .eng-showcase-card', { timeout: 15000 });
 
     console.log('--- Desktop Console Errors:', consoleErrors);
@@ -91,7 +92,7 @@ test.describe('Systems Page (Engineering Evidence) Audit', () => {
 
     // 3. Mobile Viewport Audit
     await page.setViewportSize({ width: 375, height: 812 });
-    await page.goto('/systems.html');
+    await gotoSite(page, PAGES.systems);
     await page.waitForSelector('#systems-overview-grid .eng-showcase-card', { timeout: 15000 });
 
     const mobileLayout = await page.evaluate(() => {

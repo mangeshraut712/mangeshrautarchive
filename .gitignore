@@ -180,3 +180,6 @@ secrets.*
 
 #Ignore vscode AI rules
 .github/instructions/codacy.instructions.md
+
+# Local Codacy CLI (not required for app build)
+.codacy/

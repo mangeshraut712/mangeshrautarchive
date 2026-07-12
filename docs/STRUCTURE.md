@@ -52,8 +52,7 @@ mangeshrautarchive/
 ├── tests/                    # ★ All automated tests
 │   ├── unit/                 # Vitest (vanilla JS)
 │   ├── api/                  # pytest (FastAPI)
-│   ├── e2e/                  # Playwright specs
-│   └── config/               # Extra test harness specs
+│   └── e2e/                  # Playwright specs (+ helpers/)
 │
 ├── config/                   # Shared non-root tool config
 │   ├── doctor.config.js

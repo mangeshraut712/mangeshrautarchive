@@ -44,19 +44,19 @@ const INDEX_CARD_CHECKS = [
 
 const STANDALONE_CARD_CHECKS = [
   {
-    path: '/systems.html',
+    path: '/systems',
     name: 'systems',
     selector: '#systems-overview-grid .eng-showcase-card',
     waitFor: '#systems-overview-grid .eng-showcase-card',
   },
   {
-    path: '/monitor.html',
+    path: '/monitor',
     name: 'monitor',
     selector: 'body.monitor-page .doc-card',
     waitFor: 'body.monitor-page .doc-card',
   },
   {
-    path: '/travel.html',
+    path: '/travel',
     name: 'travel',
     selector: '.travel-stop',
     waitFor: '.travel-stop',

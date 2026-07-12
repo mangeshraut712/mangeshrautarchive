@@ -1,16 +1,17 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
+import { PAGES, gotoSite } from './helpers/site.js';
 
 const SECONDARY_PAGES = [
-  { path: '/systems.html', name: 'systems' },
-  { path: '/travel.html', name: 'travel' },
-  { path: '/monitor.html', name: 'monitor' },
-  { path: '/uses.html', name: 'uses' },
+  { path: PAGES.systems, name: 'systems' },
+  { path: PAGES.travel, name: 'travel' },
+  { path: PAGES.monitor, name: 'monitor' },
+  { path: PAGES.uses, name: 'uses' },
 ];
 
 test.describe('Chrome accessibility baseline', () => {
   test('homepage has no critical/serious axe violations', async ({ page }) => {
-    await page.goto('/', { waitUntil: 'domcontentloaded' });
+    await gotoSite(page, PAGES.home);
 
     // skills-visualization.js loads lazily when #skills enters the viewport
     await page.locator('#skills, #skills-container').first().scrollIntoViewIfNeeded();
@@ -29,7 +30,7 @@ test.describe('Chrome accessibility baseline', () => {
 
   for (const { path, name } of SECONDARY_PAGES) {
     test(`${name} page has no critical/serious axe violations`, async ({ page }) => {
-      await page.goto(path, { waitUntil: 'domcontentloaded' });
+      await gotoSite(page, path);
 
       // Wait for subpage-chrome to initialize
       await page.waitForSelector('#main-content', { timeout: 15000 }).catch(() => {});

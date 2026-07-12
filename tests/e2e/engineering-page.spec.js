@@ -1,8 +1,5 @@
 import { expect, test } from '@playwright/test';
-
-const pathPrefix = process.env.TEST_TARGET === 'github' ? '/mangeshrautarchive' : '';
-const gotoPage = (page, path) =>
-  page.goto(`${pathPrefix}${path}`, { waitUntil: 'domcontentloaded' });
+import { PAGES, gotoSite, pathPrefix } from './helpers/site.js';
 
 const sectionIds = [
   'overview',
@@ -17,7 +14,7 @@ const sectionIds = [
 ];
 
 async function waitForSystemsReady(page) {
-  await gotoPage(page, '/systems.html');
+  await gotoSite(page, PAGES.systems);
   await page.waitForSelector('#systems-overview-grid .eng-showcase-card', { timeout: 30_000 });
 }
 
@@ -110,7 +107,7 @@ test.describe('Engineering evidence dashboard', () => {
 
   test('uses page renders stack sections', async ({ page }) => {
     await page.setViewportSize({ width: 1280, height: 900 });
-    await gotoPage(page, '/uses.html');
+    await gotoSite(page, PAGES.uses);
     await page.waitForSelector('#uses-grid .uses-section', { timeout: 15_000 });
     await expect(page.locator('#uses-grid .uses-section')).toHaveCount(8);
     await expect(page.locator('.systems-footer-links a[href="systems.html"]')).toBeVisible();

@@ -1,4 +1,9 @@
 import { expect, test } from '@playwright/test';
+import {
+  gotoSite,
+  gotoSiteReady,
+  scrollSelectorIntoView as scrollIntoViewHelper,
+} from './helpers/site.js';
 
 const navSections = [
   'home',
@@ -20,18 +25,6 @@ const sectionUrlPatterns = {
   projects: /#projects$/,
   education: /#education$/,
   contact: /#contact$/,
-};
-
-const pathPrefix = process.env.TEST_TARGET === 'github' ? '/mangeshrautarchive' : '';
-const sitePath = path => `${pathPrefix}${path}`;
-const gotoSite = (page, path = '/', options = { waitUntil: 'domcontentloaded' }) =>
-  page.goto(sitePath(path), options);
-
-const gotoSiteReady = async (page, path = '/') => {
-  await gotoSite(page, path);
-  await page.waitForSelector('#main-content', { state: 'attached', timeout: 30_000 });
-  await page.waitForLoadState('load');
-  await page.waitForTimeout(1200);
 };
 
 const waitForTravelMap = async page => {
@@ -59,13 +52,7 @@ const waitForCurrentlyReady = async page => {
   );
 };
 
-const scrollSelectorIntoView = async (page, selector) =>
-  page.evaluate(targetSelector => {
-    const node = document.querySelector(targetSelector);
-    if (!node) return false;
-    node.scrollIntoView({ block: 'center', inline: 'nearest' });
-    return true;
-  }, selector);
+const scrollSelectorIntoView = scrollIntoViewHelper;
 
 const criticalLayoutChecks = [
   {
