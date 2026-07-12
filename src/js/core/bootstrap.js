@@ -105,35 +105,26 @@ const SECTION_MODULES = [
 ];
 
 const SECTION_STYLE_GROUPS = [
-  { sectionId: 'about', styleKeys: ['about'], rootMargin: '800px 0px' },
-  { sectionId: 'skills', styleKeys: ['skills'], rootMargin: '800px 0px' },
-  { sectionId: 'experience', styleKeys: ['experience'], rootMargin: '800px 0px' },
-  { sectionId: 'engineering', styleKeys: ['engineering'], rootMargin: '800px 0px' },
-  { sectionId: 'projects', styleKeys: ['projects'], rootMargin: '800px 0px' },
-  { sectionId: 'education', styleKeys: ['education'], rootMargin: '800px 0px' },
-  { sectionId: 'publications', styleKeys: ['publications'], rootMargin: '800px 0px' },
-  { sectionId: 'awards', styleKeys: ['awards'], rootMargin: '800px 0px' },
-  { sectionId: 'recommendations', styleKeys: ['recommendations'], rootMargin: '800px 0px' },
-  { sectionId: 'certifications', styleKeys: ['certifications'], rootMargin: '800px 0px' },
-  { sectionId: 'blog', styleKeys: ['blog'], rootMargin: '800px 0px' },
-  { sectionId: 'contact', styleKeys: ['contact'], rootMargin: '800px 0px' },
-  { sectionId: 'currently-section', styleKeys: ['currently'], rootMargin: '800px 0px' },
-  { sectionId: 'debug-runner-section', styleKeys: ['game'], rootMargin: '800px 0px' },
+  { sectionId: 'about', styleKeys: ['about'], rootMargin: '500px 0px' },
+  { sectionId: 'skills', styleKeys: ['skills'], rootMargin: '500px 0px' },
+  { sectionId: 'experience', styleKeys: ['experience'], rootMargin: '450px 0px' },
+  { sectionId: 'engineering', styleKeys: ['engineering'], rootMargin: '450px 0px' },
+  { sectionId: 'projects', styleKeys: ['projects'], rootMargin: '450px 0px' },
+  { sectionId: 'education', styleKeys: ['education'], rootMargin: '400px 0px' },
+  { sectionId: 'publications', styleKeys: ['publications'], rootMargin: '400px 0px' },
+  { sectionId: 'awards', styleKeys: ['awards'], rootMargin: '400px 0px' },
+  { sectionId: 'recommendations', styleKeys: ['recommendations'], rootMargin: '400px 0px' },
+  { sectionId: 'certifications', styleKeys: ['certifications'], rootMargin: '400px 0px' },
+  { sectionId: 'blog', styleKeys: ['blog'], rootMargin: '400px 0px' },
+  { sectionId: 'contact', styleKeys: ['contact'], rootMargin: '400px 0px' },
+  { sectionId: 'currently-section', styleKeys: ['currently'], rootMargin: '400px 0px' },
+  { sectionId: 'debug-runner-section', styleKeys: ['game'], rootMargin: '300px 0px' },
 ];
 
 const FIRST_INTERACTION_STYLE_KEYS = ['interactive', 'motion', 'birthday'];
 
-/** Styles to prefetch after first paint — near-fold + motion (protects scroll UX) */
-const EARLY_IDLE_STYLE_KEYS = [
-  'interactive',
-  'about',
-  'skills',
-  'motion',
-  'experience',
-  'projects',
-  'engineering',
-  'education',
-];
+/** Styles to prefetch one-at-a-time after first paint (near-fold only). */
+const EARLY_IDLE_STYLE_KEYS = ['about', 'skills', 'experience', 'motion'];
 
 const USER_INTERACTION_EVENTS = ['pointerdown', 'keydown', 'touchstart'];
 const DEFERRED_IMAGE_PLACEHOLDER =
@@ -876,28 +867,57 @@ function initDeferredStyles() {
   });
 
   /*
-   * Progressive content CSS already has href + media=print in HTML.
-   * Promote all content sheets ONCE (not via 14 IntersectionObservers + dual warm paths).
-   * Mid-scroll IO style loads caused main-thread jank and reflow storms.
+   * True progressive CSS:
+   * - Section sheets use data-href only (no network until needed).
+   * - Load when the section is near the viewport (IO).
+   * - After load event, warm a few near-fold keys one-at-a-time on idle
+   *   so first paint is not competing with 15+ parallel CSS downloads.
+   * - Hash deep-links load styles for the target section immediately.
    */
-  const contentKeys = [
-    ...new Set([
-      ...EARLY_IDLE_STYLE_KEYS,
-      ...SECTION_STYLE_GROUPS.flatMap(g => g.styleKeys),
-      'share',
-    ]),
-  ];
+  const loadStylesForHash = () => {
+    const raw = (window.location.hash || '').replace(/^#/, '');
+    if (!raw) return;
+    const match = SECTION_STYLE_GROUPS.find(
+      g => g.sectionId === raw || g.sectionId === `${raw}-section`
+    );
+    if (match) {
+      loadDeferredStyles(match.styleKeys).catch(() => {});
+    }
+  };
+  loadStylesForHash();
+  window.addEventListener('hashchange', loadStylesForHash);
 
-  const promoteOnce = () => {
+  SECTION_STYLE_GROUPS.forEach(({ sectionId, styleKeys, rootMargin }) => {
+    observeSectionTask(
+      sectionId,
+      () => {
+        loadDeferredStyles(styleKeys).catch(() => {});
+      },
+      rootMargin || '450px 0px'
+    );
+  });
+
+  const warmNearFoldStylesSequentially = () => {
     if (window.__portfolioContentStylesPromoted) return;
     window.__portfolioContentStylesPromoted = true;
-    loadDeferredStyles(contentKeys).catch(() => {});
+
+    const queue = [...EARLY_IDLE_STYLE_KEYS];
+    const next = () => {
+      if (queue.length === 0) return;
+      const key = queue.shift();
+      loadDeferredStyles([key])
+        .catch(() => {})
+        .finally(() => {
+          runWhenIdle(next, 120);
+        });
+    };
+    runWhenIdle(next, 400);
   };
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', promoteOnce, { once: true });
+  if (document.readyState === 'complete') {
+    warmNearFoldStylesSequentially();
   } else {
-    promoteOnce();
+    window.addEventListener('load', warmNearFoldStylesSequentially, { once: true });
   }
 }
 
@@ -916,11 +936,12 @@ function initLazyModules() {
       loadModule(path);
     });
 
+    // Liquid glass is expensive (WebGL/DOM) — wait until after first scroll paint window
     runWhenIdle(() => {
       IDLE_EAGER_MODULES.forEach(path => {
         loadModule(path);
       });
-    }, 3500);
+    }, 5500);
 
     if (new URLSearchParams(window.location.search).has('birthday-test')) {
       loadModule('../modules/birthday-celebration.js');
