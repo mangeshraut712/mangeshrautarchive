@@ -28,7 +28,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Setup Node.js
         uses: actions/setup-node@v6
@@ -75,10 +75,11 @@ jobs:
           echo "$GITHUB_WORKSPACE/.venv/bin" >> $GITHUB_PATH
           uv pip install -r requirements.txt -r requirements-dev.txt
 
-      - name: 🐍 Python — lint and dead-code scan
-        run: |
-          npm run lint:dead-code
-          npm run lint:python
+      - name: 🐍 Python — dead-code scan
+        run: npm run lint:dead-code
+
+      - name: 🐍 Python — flake8 lint
+        run: npm run lint:python
 
       - name: 🐍 Python — API tests
         run: npm run test:api
@@ -216,7 +217,7 @@ jobs:
     if: github.ref == 'refs/heads/main'
     timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Setup Node.js
         uses: actions/setup-node@v6

@@ -1,7 +1,5 @@
 """Tests for intelligent OpenRouter model routing."""
 
-import os
-
 from api.config import FREE_OPENROUTER_MODEL, normalize_openrouter_model
 from api.model_router import (
     AUTO_ROUTER_MODEL,

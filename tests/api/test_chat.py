@@ -102,9 +102,12 @@ def test_chat_upstream_http_error_returns_local_fallback(client, monkeypatch):
 
     assert response.status_code == 200
     payload = response.json()
-    assert payload["source"] == "Local Intelligence"
+    # Upstream HTTP errors use a specific reason instead of the generic offline label.
+    assert payload["source"] == "OpenRouter HTTP 404"
     assert payload["model"] == "Local-FastAPI"
-    assert "Hello" in payload["answer"]
+    assert payload.get("fallback_reason") == "OpenRouter HTTP 404"
+    assert payload.get("type") == "local"
+    assert "temporarily unavailable" in payload["answer"].lower()
 
 
 def test_chat_local_mode_uses_public_site_knowledge(client, monkeypatch):

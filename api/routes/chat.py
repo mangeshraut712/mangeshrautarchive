@@ -512,15 +512,20 @@ def _upstream_fallback_answer(reason: str, site_context: str = "") -> Optional[s
             "projects, experience, blogs, or travel. Add credits at "
             "https://openrouter.ai/settings/credits to restore full AssistMe answers."
         )
-    if "429" in lower or "rate" in lower:
+    if "429" in lower or "rate limit" in lower:
         return (
             "Cloud AI is rate-limited right now. Please wait a moment and try again, "
             "or ask a portfolio question (skills, projects, experience) for a local answer."
         )
-    if any(token in lower for token in ("timeout", "connect", "network", "upstream", "openrouter")):
+    if any(token in lower for token in ("timeout", "connect", "network", "readerror", "remoteprotocol")):
         return (
             "Cloud AI did not respond in time. You can retry in a few seconds, or ask about "
             "Mangesh's skills, projects, experience, blogs, or travel for a local portfolio answer."
+        )
+    if any(code in lower for code in ("http 4", "http 5", "404", "502", "503", "504")):
+        return (
+            "Cloud AI is temporarily unavailable (upstream error). Please try again shortly, "
+            "or ask about skills, projects, experience, blogs, or travel for a local portfolio answer."
         )
     if site_context and reason not in ("Local Intelligence", "no_key"):
         excerpt = site_context[:1800].rsplit(" ", 1)[0]
