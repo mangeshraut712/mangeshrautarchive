@@ -129,7 +129,10 @@
     '.publication-read-btn,a.publication-read-btn{display:inline-flex!important;align-items:center!important;justify-content:center!important;min-height:44px!important;min-width:44px!important;padding:0.55rem 0.9rem!important;box-sizing:border-box!important}' +
     '.education-title-group{display:flex!important;flex-direction:column!important;gap:0.5rem!important}' +
     'a.education-institution,a.education-board,.education-map-link{display:flex!important;align-items:center!important;min-height:44px!important;padding-block:0.45rem!important}' +
-    'a.education-proof{min-height:44px!important}';
+    'a.education-proof{min-height:44px!important}' +
+    /* Debug Runner summary is only styled by deferred sheets — pin target-size here */
+    '#debug-runner-section .debug-runner-disclosure>summary,.debug-runner-disclosure>summary{display:flex!important;align-items:center!important;justify-content:center!important;gap:0.5rem!important;min-height:48px!important;min-width:48px!important;padding:0.85rem 1.25rem!important;box-sizing:border-box!important;line-height:1.3!important;font-size:1rem!important;list-style:none!important;cursor:pointer!important}' +
+    '#debug-runner-section .debug-runner-disclosure>summary::-webkit-details-marker,.debug-runner-disclosure>summary::-webkit-details-marker{display:none!important}';
   (document.head || document.documentElement).appendChild(critical);
 
   function isAllowedStylesheet(href) {

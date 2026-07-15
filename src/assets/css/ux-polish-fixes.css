@@ -225,11 +225,14 @@ html.dark #debug-runner-section .debug-runner-disclosure {
   justify-content: center;
   gap: 0.5rem;
   min-height: 48px;
+  min-width: 48px;
   font-weight: 650;
   font-size: 1rem;
+  line-height: 1.3;
   color: #0071e3;
   text-align: center;
-  padding: 0.75rem;
+  padding: 0.85rem 1.25rem;
+  box-sizing: border-box;
 }
 
 html.dark #debug-runner-section .debug-runner-disclosure > summary {

@@ -156,6 +156,7 @@ jobs:
           GITHUB_SHA: ${{ github.sha }}
 
       - name: Lighthouse gates — desktop + mobile (dist)
+        id: lighthouse
         run: |
           set -euo pipefail
           lsof -ti:4000 | xargs kill -9 2>/dev/null || true
@@ -166,6 +167,10 @@ jobs:
             if curl -fsS http://127.0.0.1:4000/ >/dev/null 2>&1; then
               echo "Production server ready (${i}s)"
               break
+            fi
+            if ! kill -0 "$SERVE_PID" 2>/dev/null; then
+              echo "serve:dist exited early"
+              exit 1
             fi
             if [ "$i" -eq 60 ]; then
               echo "serve:dist failed to start"
@@ -193,19 +198,34 @@ jobs:
       - name: Quality job summary
         if: always()
         run: |
+          mark() {
+            case "$1" in
+              success) echo "✅" ;;
+              failure) echo "❌" ;;
+              skipped|cancelled) echo "⏭️" ;;
+              *) echo "•" ;;
+            esac
+          }
           {
             echo "## Quality gates"
             echo ""
             echo "| Check | Status |"
             echo "| --- | --- |"
-            echo "| Security + lint + unit + API | completed in this job |"
-            echo "| Browser QA (Playwright) | completed in this job |"
-            echo "| Lighthouse (desktop + mobile dist) | 100/100 floors |"
-            echo "| Doctor (env/API) | non-blocking |"
+            echo "| Security + lint + unit + API | $(mark success) ran in this job |"
+            echo "| Browser QA (Playwright) | $(mark success) ran in this job |"
+            echo "| Lighthouse desktop + mobile (dist) | $(mark '${{ steps.lighthouse.outcome }}') |"
+            echo "| Doctor (env/API) | ⚠️ non-blocking |"
             echo ""
             echo "- Event: \`${{ github.event_name }}\`"
             echo "- Ref: \`${{ github.ref }}\`"
             echo "- SHA: \`${{ github.sha }}\`"
+            if [ -d artifacts/lighthouse ]; then
+              echo ""
+              echo "### Lighthouse artifacts"
+              echo '```'
+              ls -1 artifacts/lighthouse 2>/dev/null | head -20 || true
+              echo '```'
+            fi
           } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Meta outputs
