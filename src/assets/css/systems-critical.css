@@ -27,14 +27,96 @@ html.dark {
   --text-primary: #f5f5f7;
 }
 
-body.systems-page {
+body.systems-page,
+body.monitor-page,
+body.uses-page {
   margin: 0;
-  background: var(--systems-bg);
-  color: var(--systems-text);
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+  background: var(--systems-bg, #ffffff);
+  color: var(--systems-text, #1d1d1f);
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', 'Segoe UI', Roboto,
+    'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   padding-top: calc(84px + env(safe-area-inset-top, 0px));
   overflow-x: clip;
+}
+
+html.dark body.systems-page,
+html.dark body.monitor-page,
+html.dark body.uses-page {
+  background: #000000;
+  color: #f5f5f7;
+}
+
+/* Solid Apple cards — match main site, no milky glass */
+body.systems-page .systems-evidence-card,
+body.systems-page .systems-metric-card,
+body.systems-page .systems-bento > *,
+body.systems-page .uses-category-card,
+body.uses-page .uses-category-card,
+body.monitor-page .card,
+body.monitor-page .metric-card,
+body.monitor-page .status-card {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  border: 1px solid rgb(0 0 0 / 10%) !important;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 5%) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+html.dark body.systems-page .systems-evidence-card,
+html.dark body.systems-page .systems-metric-card,
+html.dark body.systems-page .systems-bento > *,
+html.dark body.systems-page .uses-category-card,
+html.dark body.uses-page .uses-category-card,
+html.dark body.monitor-page .card,
+html.dark body.monitor-page .metric-card,
+html.dark body.monitor-page .status-card {
+  background: #000000 !important;
+  background-color: #000000 !important;
+  border-color: rgb(255 255 255 / 14%) !important;
+  box-shadow: 0 2px 10px rgb(0 0 0 / 35%) !important;
+}
+
+/* Theme toggle icons always visible on subpage chrome */
+.monitor-page-nav__theme,
+.monitor-page-nav__theme #theme-toggle-icon,
+.monitor-page-nav__theme i {
+  color: var(--systems-text, #1d1d1f) !important;
+  font-size: 15px;
+  line-height: 1;
+}
+
+html.dark .monitor-page-nav__theme,
+html.dark .monitor-page-nav__theme #theme-toggle-icon,
+html.dark .monitor-page-nav__theme i {
+  color: #f5f5f7 !important;
+}
+
+/* Typography rhythm aligned with main site */
+body.systems-page h1,
+body.uses-page h1,
+body.monitor-page h1 {
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+  letter-spacing: -0.03em;
+  font-weight: 700;
+  color: inherit;
+}
+
+body.systems-page .systems-hero-lead,
+body.uses-page .systems-hero-lead,
+body.systems-page .systems-section-desc {
+  color: var(--systems-muted, #6e6e73);
+  line-height: 1.55;
+  max-width: 42rem;
+}
+
+html.dark body.systems-page .systems-hero-lead,
+html.dark body.uses-page .systems-hero-lead,
+html.dark body.systems-page .systems-section-desc {
+  color: #a1a1a6;
 }
 
 .monitor-page-nav {
@@ -48,22 +130,19 @@ body.systems-page {
   width: min(1040px, calc(100% - 32px));
   min-height: 52px;
   padding: 8px 16px;
-  border: 1px solid var(--border-color);
+  border: 1px solid rgb(0 0 0 / 10%) !important;
   border-radius: 999px;
-  box-shadow:
-    var(--shadow-md),
-    inset 0 1px 0 rgb(255 255 255 / 55%);
+  box-shadow: 0 4px 20px rgb(0 0 0 / 8%) !important;
   transform: translateX(-50%);
-  background: rgb(255 255 255 / 88%);
-  backdrop-filter: saturate(180%) blur(20px);
-  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  background: #ffffff !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
 }
 
 html.dark .monitor-page-nav {
-  background: rgb(0 0 0 / 82%);
-  box-shadow:
-    var(--shadow-md),
-    inset 0 1px 0 rgb(255 255 255 / 8%);
+  background: #000000 !important;
+  border-color: rgb(255 255 255 / 14%) !important;
+  box-shadow: 0 4px 24px rgb(0 0 0 / 45%) !important;
 }
 
 .monitor-page-nav__left,
@@ -84,18 +163,34 @@ html.dark .monitor-page-nav {
 
 .monitor-page-nav__home,
 .monitor-page-nav__back,
-.monitor-page-nav__theme {
+.monitor-page-nav__theme,
+.monitor-page-nav .monitor-page-nav__theme.lg-webgl-host,
+.monitor-page-nav button.monitor-page-nav__theme {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   min-width: 44px;
   min-height: 44px;
   box-sizing: border-box;
-  border: 1px solid var(--border-color);
+  border: 1px solid rgb(0 0 0 / 12%) !important;
   border-radius: 999px;
-  background: var(--bg-secondary);
-  color: var(--text-primary);
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  color: #1d1d1f !important;
   text-decoration: none;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+html.dark .monitor-page-nav__home,
+html.dark .monitor-page-nav__back,
+html.dark .monitor-page-nav__theme,
+html.dark .monitor-page-nav .monitor-page-nav__theme.lg-webgl-host,
+html.dark .monitor-page-nav button.monitor-page-nav__theme {
+  background: #000000 !important;
+  background-color: #000000 !important;
+  border-color: rgb(255 255 255 / 16%) !important;
+  color: #f5f5f7 !important;
 }
 
 .monitor-page-nav__home {

@@ -225,31 +225,90 @@ html.dark {
 }
 
 .travel-nav__projection,
-.travel-nav__theme {
+.travel-nav__theme,
+.travel-nav__panel {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 38px;
-  height: 38px;
-  border: 1px solid var(--separator);
-  border-radius: var(--radius-full);
-  background: var(--fill-secondary);
-  color: var(--text-primary);
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  min-height: 40px;
+  border: 1px solid rgb(0 0 0 / 12%) !important;
+  border-radius: 999px;
+  background: #ffffff !important;
+  color: #1d1d1f !important;
   cursor: pointer;
+  box-shadow: 0 1px 4px rgb(0 0 0 / 6%);
   transition:
-    background var(--duration-fast) var(--ease-apple),
-    transform var(--duration-fast) var(--ease-apple);
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease,
+    color 0.2s ease;
+}
+
+html.dark .travel-nav__projection,
+html.dark .travel-nav__theme,
+html.dark .travel-nav__panel {
+  background: #000000 !important;
+  border-color: rgb(255 255 255 / 16%) !important;
+  color: #f5f5f7 !important;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 35%);
+}
+
+.travel-nav__projection i,
+.travel-nav__theme i,
+.travel-nav__panel i,
+.travel-nav__theme .fa-moon,
+.travel-nav__theme .fa-sun {
+  font-size: 15px !important;
+  line-height: 1;
+  color: #1d1d1f !important;
+  -webkit-text-fill-color: #1d1d1f !important;
+  opacity: 1 !important;
+}
+
+html.dark .travel-nav__projection i,
+html.dark .travel-nav__theme i,
+html.dark .travel-nav__panel i,
+html.dark .travel-nav__theme .fa-moon,
+html.dark .travel-nav__theme .fa-sun {
+  color: #f5f5f7 !important;
+  -webkit-text-fill-color: #f5f5f7 !important;
 }
 
 .travel-nav__projection:hover,
 .travel-nav__projection[aria-pressed='true'],
-.travel-nav__theme:hover {
-  background: var(--fill);
+.travel-nav__theme:hover,
+.travel-nav__panel:hover {
+  border-color: rgb(0 113 227 / 35%) !important;
+  color: #0071e3 !important;
   transform: translateY(-1px);
 }
 
+html.dark .travel-nav__projection:hover,
+html.dark .travel-nav__projection[aria-pressed='true'],
+html.dark .travel-nav__theme:hover,
+html.dark .travel-nav__panel:hover {
+  color: #0a84ff !important;
+  border-color: rgb(10 132 255 / 40%) !important;
+}
+
 .travel-nav__projection[aria-pressed='true'] {
-  color: var(--apple-blue);
+  color: #0071e3 !important;
+  background: rgb(0 113 227 / 8%) !important;
+}
+
+/* Map never collapses to empty white when tiles are loading */
+.travel-map-layer,
+.travel-map {
+  min-height: 100%;
+  background: #e8eef5;
+}
+
+html.dark .travel-map-layer,
+html.dark .travel-map {
+  background: #0b1220;
 }
 
 /* ─── Sidebar ─── */
