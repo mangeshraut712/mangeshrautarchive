@@ -663,7 +663,7 @@ html.dark .travel-sidebar {
 /* Active state — selected stop keeps blue accent */
 .travel-stop.active {
   content-visibility: visible;
-  contain-intrinsic-size: auto;
+  contain-intrinsic-size: auto 180px;
   border-color: var(--theme-card-border-hover, #0071e3);
   box-shadow: none;
   transform: translateY(-1px);
