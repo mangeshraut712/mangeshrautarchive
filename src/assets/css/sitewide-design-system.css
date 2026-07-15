@@ -44,8 +44,11 @@ button:not(.about-tab-btn):not(.about-speak-btn):not(.card-speak-btn):not(.card-
 .submit-btn,
 a.button,
 .cta-button {
-  background: linear-gradient(135deg, #0071e3 0%, #0a84ff 100%) !important;
+  background: #0071e3 !important;
+  background-color: #0071e3 !important;
+  background-image: none !important;
   color: #fff !important;
+  -webkit-text-fill-color: #fff !important;
   border: none !important;
   font-weight: 600 !important;
   border-radius: 12px !important;
@@ -96,7 +99,9 @@ button:not(.about-tab-btn):not(.about-speak-btn):not(.card-speak-btn):not(.card-
 .submit-btn:hover,
 a.button:hover,
 .cta-button:hover {
-  background: linear-gradient(135deg, #0077ed 0%, #2997ff 100%) !important;
+  background: #0077ed !important;
+  background-color: #0077ed !important;
+  background-image: none !important;
   transform: translateY(-2px) !important;
   box-shadow: 0 8px 24px rgb(0 113 227 / 40%) !important;
 }
@@ -105,7 +110,8 @@ a.button:hover,
 .btn-red,
 .btn-danger,
 .btn-error {
-  background: linear-gradient(135deg, #0071e3 0%, #0a84ff 100%) !important;
+  background: #0071e3 !important;
+  background-image: none !important;
 
   /* Force Blue */
 }
@@ -641,8 +647,9 @@ html.dark body:not(.error-page) .text-blue {
   color: #2997ff !important;
 }
 
-/* Exclude buttons from text color override */
-.btn,
+/* Exclude buttons from text color override.
+   Outline / soft CTAs keep their own blue labels — never force white here. */
+.btn:not(.hero-cta-secondary):not(.section-preview-btn),
 button:not(.about-tab-btn):not(.about-speak-btn):not(.card-speak-btn):not(.card-translate-btn):not(
     .card-restore-btn
   ):not(.card-translate-option):not(#go-to-top):not(#chatbot-toggle):not(#website-share-toggle):not(
@@ -661,12 +668,14 @@ button:not(.about-tab-btn):not(.about-speak-btn):not(.card-speak-btn):not(.card-
     .robinhood-mini-btn
   ):not(.calendly-panel-button):not(.ios-btn):not(.ios-btn-small):not(.status-circle):not(
     .edit-btn
-  ):not(.contact-assistme-btn):not(.currently-tab),
+  ):not(.contact-assistme-btn):not(.currently-tab):not(.section-preview-btn):not(
+    .hero-cta-secondary
+  ):not(.hero-cta-primary),
 .project-tag,
 .badge {
   color: #fff !important;
 
-  /* Keep buttons white text */
+  /* Keep solid primary buttons white text */
 }
 
 /* Exclude specific text elements that need to be gray */

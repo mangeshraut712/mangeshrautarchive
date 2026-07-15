@@ -442,7 +442,9 @@ html.dark .skill-badge-percentage {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Hero primary — solid Apple blue */
+/* Hero primary — solid Apple blue (beats nth-child gradient rules) */
+#home .hero-actions a.hero-cta-primary,
+#home .hero-actions .hero-cta.hero-cta-primary,
 #home a.hero-cta-primary,
 #home .hero-cta-primary {
   color: #ffffff !important;
@@ -455,10 +457,35 @@ html.dark .skill-badge-percentage {
   box-shadow: 0 4px 16px rgb(0 113 227 / 28%) !important;
 }
 
+#home .hero-actions a.hero-cta-primary:hover,
+#home .hero-actions .hero-cta.hero-cta-primary:hover,
 #home a.hero-cta-primary:hover,
 #home .hero-cta-primary:hover {
   background: #0077ed !important;
   background-color: #0077ed !important;
+  background-image: none !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+html.dark #home .hero-actions a.hero-cta-primary,
+html.dark #home .hero-actions .hero-cta.hero-cta-primary,
+html.dark #home a.hero-cta-primary,
+html.dark #home .hero-cta-primary {
+  background: #0a84ff !important;
+  background-color: #0a84ff !important;
+  background-image: none !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+html.dark #home .hero-actions a.hero-cta-primary:hover,
+html.dark #home .hero-actions .hero-cta.hero-cta-primary:hover,
+html.dark #home a.hero-cta-primary:hover,
+html.dark #home .hero-cta-primary:hover {
+  background: #2997ff !important;
+  background-color: #2997ff !important;
+  background-image: none !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
 }
@@ -500,12 +527,15 @@ html.dark #home .hero-cta-secondary:hover {
   -webkit-text-fill-color: #0a84ff !important;
 }
 
-/* Section “View more” — soft outline, not solid blue paint */
+/* Section “View more” — soft outline, blue label (never white-on-tint) */
 button.section-preview-btn,
-.section-preview-btn {
+.section-preview-btn,
+main button.section-preview-btn,
+main .section-preview-btn {
   color: #0071e3 !important;
   -webkit-text-fill-color: #0071e3 !important;
   background: rgb(0 113 227 / 8%) !important;
+  background-color: rgb(0 113 227 / 8%) !important;
   background-image: none !important;
   border: 1px solid rgb(0 113 227 / 30%) !important;
   border-radius: 980px !important;
@@ -514,24 +544,33 @@ button.section-preview-btn,
 }
 
 button.section-preview-btn:hover,
-.section-preview-btn:hover {
+.section-preview-btn:hover,
+main button.section-preview-btn:hover,
+main .section-preview-btn:hover {
   background: rgb(0 113 227 / 14%) !important;
+  background-color: rgb(0 113 227 / 14%) !important;
   border-color: rgb(0 113 227 / 50%) !important;
   color: #0071e3 !important;
   -webkit-text-fill-color: #0071e3 !important;
 }
 
 html.dark button.section-preview-btn,
-html.dark .section-preview-btn {
+html.dark .section-preview-btn,
+html.dark main button.section-preview-btn,
+html.dark main .section-preview-btn {
   color: #0a84ff !important;
   -webkit-text-fill-color: #0a84ff !important;
   background: rgb(10 132 255 / 12%) !important;
+  background-color: rgb(10 132 255 / 12%) !important;
   border-color: rgb(10 132 255 / 35%) !important;
 }
 
 html.dark button.section-preview-btn:hover,
-html.dark .section-preview-btn:hover {
+html.dark .section-preview-btn:hover,
+html.dark main button.section-preview-btn:hover,
+html.dark main .section-preview-btn:hover {
   background: rgb(10 132 255 / 20%) !important;
+  background-color: rgb(10 132 255 / 20%) !important;
   color: #0a84ff !important;
   -webkit-text-fill-color: #0a84ff !important;
 }
@@ -787,4 +826,100 @@ html.dark .website-share-dialog.active .website-share-card {
   background: #000000 !important;
   background-color: #000000 !important;
   color: #f5f5f7 !important;
+}
+
+/* ─── FABs — solid Apple blue (no glass / no multi-stop gradient) ─── */
+#chatbot-toggle,
+body #chatbot-toggle {
+  background: #0071e3 !important;
+  background-color: #0071e3 !important;
+  background-image: none !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  border: none !important;
+  border-radius: 50% !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  box-shadow: 0 4px 16px rgb(0 113 227 / 32%) !important;
+}
+
+html.dark #chatbot-toggle,
+html.dark body #chatbot-toggle {
+  background: #0a84ff !important;
+  background-color: #0a84ff !important;
+  background-image: none !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  box-shadow: 0 4px 16px rgb(10 132 255 / 40%) !important;
+}
+
+#chatbot-toggle:hover,
+body #chatbot-toggle:hover {
+  background: #0077ed !important;
+  background-color: #0077ed !important;
+  background-image: none !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+html.dark #chatbot-toggle:hover,
+html.dark body #chatbot-toggle:hover {
+  background: #2997ff !important;
+  background-color: #2997ff !important;
+  background-image: none !important;
+}
+
+#go-to-top,
+body #go-to-top {
+  background: #0071e3 !important;
+  background-color: #0071e3 !important;
+  background-image: none !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  border: none !important;
+  box-shadow: 0 4px 14px rgb(0 113 227 / 32%) !important;
+}
+
+html.dark #go-to-top,
+html.dark body #go-to-top {
+  background: #0a84ff !important;
+  background-color: #0a84ff !important;
+  background-image: none !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  box-shadow: 0 4px 16px rgb(10 132 255 / 40%) !important;
+}
+
+#go-to-top:hover,
+body #go-to-top:hover {
+  background: #0077ed !important;
+  background-color: #0077ed !important;
+  background-image: none !important;
+}
+
+html.dark #go-to-top:hover,
+html.dark body #go-to-top:hover {
+  background: #2997ff !important;
+  background-color: #2997ff !important;
+  background-image: none !important;
+}
+
+/* A11y toolbar share control — solid tile, readable glyph */
+#website-share-toggle,
+.a11y-toolbar #website-share-toggle {
+  color: #1d1d1f !important;
+  -webkit-text-fill-color: #1d1d1f !important;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  border: 1px solid #e5e5ea !important;
+  border-radius: 12px !important;
+}
+
+html.dark #website-share-toggle,
+html.dark .a11y-toolbar #website-share-toggle {
+  color: #f5f5f7 !important;
+  -webkit-text-fill-color: #f5f5f7 !important;
+  background: #000000 !important;
+  background-color: #000000 !important;
+  border-color: #2c2c2e !important;
 }

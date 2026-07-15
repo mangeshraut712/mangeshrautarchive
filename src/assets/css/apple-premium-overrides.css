@@ -3579,18 +3579,27 @@ html.dark ::-webkit-scrollbar-thumb:hover {
 
 /* 15. Homepage Apple Styling Refinements */
 
-/* Primary Button (Download Resume) */
-#home .hero-actions .hero-cta:nth-child(1) {
-  background: linear-gradient(135deg, #0071e3 0%, #0051a8 100%) !important;
+/* Primary Button (Download Resume) — solid Apple blue */
+#home .hero-actions .hero-cta:nth-child(1),
+#home .hero-actions .hero-cta-primary {
+  background: #0071e3 !important;
+  background-color: #0071e3 !important;
+  background-image: none !important;
   color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
   border-radius: 9999px !important;
   padding: 0.8rem 1.8rem !important;
   border: 1px solid transparent !important;
   box-shadow: 0 4px 12px rgba(0, 113, 227, 0.24) !important;
 }
 
-#home .hero-actions .hero-cta:nth-child(1):hover {
-  background: linear-gradient(135deg, #0077ed 0%, #005bbd 100%) !important;
+#home .hero-actions .hero-cta:nth-child(1):hover,
+#home .hero-actions .hero-cta-primary:hover {
+  background: #0077ed !important;
+  background-color: #0077ed !important;
+  background-image: none !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
   box-shadow: 0 6px 20px rgba(0, 113, 227, 0.36) !important;
   transform: translateY(-2px) scale(1.02) !important;
 }
@@ -3623,9 +3632,23 @@ html.dark ::-webkit-scrollbar-thumb:hover {
 }
 
 /* Dark mode overrides for CTAs */
-html.dark #home .hero-actions .hero-cta:nth-child(1) {
-  background: linear-gradient(135deg, #0071e3 0%, #0077ed 100%) !important;
+html.dark #home .hero-actions .hero-cta:nth-child(1),
+html.dark #home .hero-actions .hero-cta-primary {
+  background: #0a84ff !important;
+  background-color: #0a84ff !important;
+  background-image: none !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
   box-shadow: 0 4px 12px rgba(0, 113, 227, 0.4) !important;
+}
+
+html.dark #home .hero-actions .hero-cta:nth-child(1):hover,
+html.dark #home .hero-actions .hero-cta-primary:hover {
+  background: #2997ff !important;
+  background-color: #2997ff !important;
+  background-image: none !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
 }
 
 html.dark #home .hero-actions .hero-cta:nth-child(2),

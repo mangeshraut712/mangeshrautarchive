@@ -7,16 +7,18 @@
    GLOBAL BUTTON STANDARDIZATION
    ======================================== */
 
-.btn:not(.hero-cta-secondary),
-.btn-primary,
-.hero-cta:not(.hero-cta-secondary),
+/* Solid primary CTAs only — outline/soft buttons excluded */
+.btn:not(.hero-cta-secondary):not(.section-preview-btn):not(.hero-cta-primary),
+.btn-primary:not(.hero-cta-primary),
+.hero-cta:not(.hero-cta-secondary):not(.hero-cta-primary),
 .cta-button,
 .action-btn,
 .download-btn,
 button[type='submit'],
 input[type='submit'] {
   padding: 1rem 2rem;
-  background: linear-gradient(135deg, #0071e3 0%, #0a84ff 100%);
+  background: #0071e3;
+  background-image: none;
   color: #fff !important;
   border: 2px solid var(--card-border-rest);
   border-radius: 16px;
@@ -40,9 +42,9 @@ input[type='submit'] {
   overflow: hidden;
 }
 
-.btn:not(.hero-cta-secondary)::before,
-.btn-primary::before,
-.hero-cta:not(.hero-cta-secondary)::before,
+.btn:not(.hero-cta-secondary):not(.section-preview-btn):not(.hero-cta-primary)::before,
+.btn-primary:not(.hero-cta-primary)::before,
+.hero-cta:not(.hero-cta-secondary):not(.hero-cta-primary)::before,
 .cta-button::before {
   content: '';
   position: absolute;
@@ -54,37 +56,40 @@ input[type='submit'] {
   transition: left 0.5s;
 }
 
-.btn:not(.hero-cta-secondary):hover::before,
-.btn-primary:hover::before,
-.hero-cta:not(.hero-cta-secondary):hover::before,
+.btn:not(.hero-cta-secondary):not(.section-preview-btn):not(.hero-cta-primary):hover::before,
+.btn-primary:not(.hero-cta-primary):hover::before,
+.hero-cta:not(.hero-cta-secondary):not(.hero-cta-primary):hover::before,
 .cta-button:hover::before {
   left: 100%;
 }
 
-.btn:not(.hero-cta-secondary):hover,
-.btn-primary:hover,
-.hero-cta:not(.hero-cta-secondary):hover,
+.btn:not(.hero-cta-secondary):not(.section-preview-btn):not(.hero-cta-primary):hover,
+.btn-primary:not(.hero-cta-primary):hover,
+.hero-cta:not(.hero-cta-secondary):not(.hero-cta-primary):hover,
 .cta-button:hover,
 .action-btn:hover,
 .download-btn:hover {
-  background: linear-gradient(135deg, #0077ed 0%, #2997ff 100%);
+  background: #0077ed;
+  background-image: none;
   box-shadow: 0 6px 24px rgb(41 151 255 / 40%);
   transform: translateY(-2px);
 }
 
-html.dark .btn:not(.hero-cta-secondary),
-html.dark .btn-primary,
-html.dark .hero-cta:not(.hero-cta-secondary),
+html.dark .btn:not(.hero-cta-secondary):not(.section-preview-btn):not(.hero-cta-primary),
+html.dark .btn-primary:not(.hero-cta-primary),
+html.dark .hero-cta:not(.hero-cta-secondary):not(.hero-cta-primary),
 html.dark .cta-button {
-  background: linear-gradient(135deg, #0071e3 0%, #0a84ff 100%);
+  background: #0a84ff;
+  background-image: none;
   color: #fff !important;
 }
 
-html.dark .btn:not(.hero-cta-secondary):hover,
-html.dark .btn-primary:hover,
-html.dark .hero-cta:not(.hero-cta-secondary):hover,
+html.dark .btn:not(.hero-cta-secondary):not(.section-preview-btn):not(.hero-cta-primary):hover,
+html.dark .btn-primary:not(.hero-cta-primary):hover,
+html.dark .hero-cta:not(.hero-cta-secondary):not(.hero-cta-primary):hover,
 html.dark .cta-button:hover {
-  background: linear-gradient(135deg, #0077ed 0%, #2997ff 100%);
+  background: #2997ff;
+  background-image: none;
   box-shadow: 0 8px 32px rgb(41 151 255 / 50%);
 }
 
@@ -445,6 +450,27 @@ html.dark .section-subtitle {
   display: block !important;
 }
 
+/* Theme-aware logo pairs (eager — contact.css is lazy) */
+#contact .dream-company-item .logo-dark,
+#contact .dream-car-item .logo-dark {
+  display: none !important;
+}
+
+html.dark #contact .dream-company-item.has-dark-logo .logo-light,
+html.dark #contact .dream-car-item.has-dark-logo .logo-light {
+  display: none !important;
+}
+
+html.dark #contact .dream-company-item.has-dark-logo .logo-dark,
+html.dark #contact .dream-car-item.has-dark-logo .logo-dark {
+  display: block !important;
+}
+
+html.dark #contact .dream-company-item.logo-mono .logo-light,
+html.dark #contact .dream-car-item.logo-mono .logo-light {
+  filter: brightness(0) invert(1) !important;
+}
+
 /* Support payment buttons — prevent raw SVG anchors from exploding height */
 #contact .support-buttons-container {
   display: flex !important;
@@ -617,7 +643,8 @@ main section .section-subtitle {
   border-radius: 980px;
   border: 1px solid rgb(0 113 227 / 28%);
   background: rgb(0 113 227 / 6%);
-  color: #0071e3;
+  color: #0071e3 !important;
+  -webkit-text-fill-color: #0071e3 !important;
   font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', system-ui, sans-serif;
   font-size: 0.9375rem;
   font-weight: 600;
@@ -634,7 +661,8 @@ main section .section-subtitle {
 }
 
 html.dark .section-preview-btn {
-  color: #2997ff;
+  color: #0a84ff !important;
+  -webkit-text-fill-color: #0a84ff !important;
   border-color: rgb(41 151 255 / 35%);
   background: rgb(10 132 255 / 12%);
 }
