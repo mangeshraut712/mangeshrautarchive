@@ -65,7 +65,7 @@ function initControlCenter() {
     const control = tile.dataset.control;
     const root = document.documentElement;
 
-    if (control === 'glass-clear') await applyTint(0);
+    if (control === 'glass-clear') await applyTint(8);
     if (control === 'glass-tinted') await applyTint(100);
     if (control === 'text-up') {
       const size = parseFloat(getComputedStyle(root).fontSize) * 1.08;

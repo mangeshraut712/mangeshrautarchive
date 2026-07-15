@@ -1,75 +1,98 @@
 /* ════════════════════════════════════════════════════════════════
-   CHROME SURFACES — single source of truth (load last)
-   Navbar (#global-nav) + hero music card (#home .music-card-inner)
-   Solid #ffffff / #000000 — no glass, no scroll/mode/slider drift.
-   Do NOT set background or backdrop-filter on these elsewhere.
+   CHROME SURFACES — navbar + hero music card
+   Liquid glass in clear/balanced · solid only in tinted / reduced transparency.
    ════════════════════════════════════════════════════════════════ */
 
-/* ─── Navbar ─── */
-body #global-nav.global-nav.dynamic-island,
-body #global-nav.global-nav.dynamic-island.scrolled,
-body #global-nav.global-nav.dynamic-island.is-compact,
-body #global-nav.global-nav.dynamic-island.lg-webgl-host,
-html[data-lg-mode='clear'] body #global-nav.global-nav.dynamic-island,
-html[data-lg-mode='balanced'] body #global-nav.global-nav.dynamic-island,
-html[data-lg-mode='tinted'] body #global-nav.global-nav.dynamic-island,
-html.is-scrolling body #global-nav.global-nav.dynamic-island,
-html:not(.dark) body #global-nav.global-nav.dynamic-island,
-html:not(.dark) body #global-nav.global-nav.dynamic-island.scrolled,
-html:not(.dark) body #global-nav.global-nav.dynamic-island.is-compact,
-html:not(.dark) body #global-nav.global-nav.dynamic-island.lg-webgl-host,
-html:not(.dark)[data-lg-mode='clear'] body #global-nav.global-nav.dynamic-island,
-html:not(.dark)[data-lg-mode='balanced'] body #global-nav.global-nav.dynamic-island,
-html:not(.dark)[data-lg-mode='tinted'] body #global-nav.global-nav.dynamic-island,
-html:not(.dark).is-scrolling body #global-nav.global-nav.dynamic-island,
-html:not(.dark).aod-dim body #global-nav.global-nav.dynamic-island {
+/* ─── Navbar — Apple liquid glass (clear + balanced) ─── */
+html:is([data-lg-mode='clear'], [data-lg-mode='balanced']):not(.dark)
+  body
+  #global-nav.global-nav.dynamic-island,
+html:is([data-lg-mode='clear'], [data-lg-mode='balanced']):not(.dark)
+  body
+  #global-nav.global-nav.dynamic-island.scrolled,
+html:is([data-lg-mode='clear'], [data-lg-mode='balanced']):not(.dark)
+  body
+  #global-nav.global-nav.dynamic-island.is-compact {
+  background:
+    linear-gradient(180deg, rgb(255 255 255 / 55%) 0%, rgb(255 255 255 / 28%) 100%),
+    rgb(255 255 255 / var(--lg-nav-light-fill, 28%)) !important;
+  background-color: rgb(255 255 255 / var(--lg-nav-light-fill, 28%)) !important;
+  background-image: none !important;
+  backdrop-filter: saturate(var(--lg-saturate, 180%)) blur(var(--lg-blur-nav, 40px)) !important;
+  -webkit-backdrop-filter: saturate(var(--lg-saturate, 180%)) blur(var(--lg-blur-nav, 40px)) !important;
+  border: 1px solid rgb(255 255 255 / var(--lg-border-light, 40%)) !important;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / var(--lg-specular-light, 70%)),
+    0 8px 32px rgb(0 0 0 / 8%),
+    0 1px 0 rgb(0 0 0 / 4%) !important;
+  transition:
+    border-color 0.25s ease,
+    background 0.25s ease,
+    box-shadow 0.25s ease,
+    opacity 0.2s ease !important;
+}
+
+html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced'])
+  body
+  #global-nav.global-nav.dynamic-island,
+html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced'])
+  body
+  #global-nav.global-nav.dynamic-island.scrolled,
+html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced'])
+  body
+  #global-nav.global-nav.dynamic-island.is-compact {
+  background:
+    linear-gradient(180deg, rgb(40 40 44 / 45%) 0%, rgb(0 0 0 / 35%) 100%),
+    rgb(0 0 0 / var(--lg-nav-dark-fill, 32%)) !important;
+  background-color: rgb(0 0 0 / var(--lg-nav-dark-fill, 32%)) !important;
+  background-image: none !important;
+  backdrop-filter: saturate(var(--lg-saturate, 180%)) blur(var(--lg-blur-nav, 40px)) !important;
+  -webkit-backdrop-filter: saturate(var(--lg-saturate, 180%)) blur(var(--lg-blur-nav, 40px)) !important;
+  border: 1px solid rgb(255 255 255 / var(--lg-border-dark, 14%)) !important;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / var(--lg-specular-dark, 12%)),
+    0 10px 36px rgb(0 0 0 / 45%) !important;
+  transition:
+    border-color 0.25s ease,
+    background 0.25s ease,
+    box-shadow 0.25s ease,
+    opacity 0.2s ease !important;
+}
+
+/* ─── Navbar — solid only when tinted (max opacity / a11y) ─── */
+html[data-lg-mode='tinted']:not(.dark) body #global-nav.global-nav.dynamic-island,
+html[data-lg-mode='tinted']:not(.dark) body #global-nav.global-nav.dynamic-island.scrolled,
+html[data-lg-mode='tinted']:not(.dark) body #global-nav.global-nav.dynamic-island.is-compact {
   background: #ffffff !important;
   background-color: #ffffff !important;
   background-image: none !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
+  border-bottom: 1px solid #e5e5ea !important;
   box-shadow: none !important;
-  transition:
-    border-color 0.2s ease,
-    opacity 0.2s ease !important;
 }
 
-html.dark body #global-nav.global-nav.dynamic-island,
-html.dark body #global-nav.global-nav.dynamic-island.scrolled,
-html.dark body #global-nav.global-nav.dynamic-island.is-compact,
-html.dark body #global-nav.global-nav.dynamic-island.lg-webgl-host,
-html.dark[data-lg-mode='clear'] body #global-nav.global-nav.dynamic-island,
-html.dark[data-lg-mode='balanced'] body #global-nav.global-nav.dynamic-island,
 html.dark[data-lg-mode='tinted'] body #global-nav.global-nav.dynamic-island,
-html.dark.is-scrolling body #global-nav.global-nav.dynamic-island,
-html.dark.aod-dim body #global-nav.global-nav.dynamic-island {
+html.dark[data-lg-mode='tinted'] body #global-nav.global-nav.dynamic-island.scrolled,
+html.dark[data-lg-mode='tinted'] body #global-nav.global-nav.dynamic-island.is-compact {
   background: #000000 !important;
   background-color: #000000 !important;
   background-image: none !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
+  border-bottom: 1px solid #2c2c2e !important;
   box-shadow: none !important;
-  border-bottom: 1px solid #2c2c2e !important;
-  transition:
-    border-color 0.2s ease,
-    opacity 0.2s ease !important;
 }
 
-html:not(.dark) body #global-nav.global-nav.dynamic-island,
-html:not(.dark) body #global-nav.global-nav.dynamic-island.scrolled,
-html:not(.dark) body #global-nav.global-nav.dynamic-island.lg-webgl-host {
-  border-bottom: 1px solid #e5e5ea !important;
+/* WebGL canvas optional under glass hosts */
+#global-nav.lg-webgl-host .lg-webgl-canvas {
+  opacity: 0.55;
+  mix-blend-mode: soft-light;
+  pointer-events: none;
 }
 
-html.dark body #global-nav.global-nav.dynamic-island,
-html.dark body #global-nav.global-nav.dynamic-island.scrolled,
-html.dark body #global-nav.global-nav.dynamic-island.lg-webgl-host {
-  border-bottom: 1px solid #2c2c2e !important;
-}
-
-/* WebGL must not paint over solid chrome */
-#global-nav.lg-webgl-host .lg-webgl-canvas,
-#home .music-card-inner.lg-webgl-host .lg-webgl-canvas {
+html[data-lg-mode='tinted'] #global-nav.lg-webgl-host .lg-webgl-canvas,
+html[data-lg-mode='tinted'] #home .music-card-inner.lg-webgl-host .lg-webgl-canvas {
   display: none !important;
 }
 
@@ -104,10 +127,7 @@ html.dark body #global-nav.global-nav.dynamic-island.lg-webgl-host {
 
 #home .music-card-inner,
 #home .music-card-inner.lg-webgl-host,
-#home .music-card.is-playing .music-card-inner,
-html[data-lg-mode='clear'] #home .music-card-inner,
-html[data-lg-mode='balanced'] #home .music-card-inner,
-html[data-lg-mode='tinted'] #home .music-card-inner {
+#home .music-card.is-playing .music-card-inner {
   display: inline-flex !important;
   flex-direction: row !important;
   align-items: center !important;
@@ -117,16 +137,59 @@ html[data-lg-mode='tinted'] #home .music-card-inner {
   min-height: 64px !important;
   padding: 0.5rem 0.85rem 0.5rem 0.5rem !important;
   border-radius: 999px !important;
-  background: #ffffff !important;
-  background-color: #ffffff !important;
-  background-image: none !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-  box-shadow: none !important;
-  border: 1px solid #e5e5ea !important;
   transition:
     border-color 0.2s ease,
+    background 0.25s ease,
+    box-shadow 0.25s ease,
     transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+}
+
+html:is([data-lg-mode='clear'], [data-lg-mode='balanced']):not(.dark) #home .music-card-inner,
+html:is([data-lg-mode='clear'], [data-lg-mode='balanced']):not(.dark)
+  #home
+  .music-card-inner.lg-webgl-host {
+  background: rgb(255 255 255 / var(--lg-card-light-alpha, 48%)) !important;
+  background-color: rgb(255 255 255 / var(--lg-card-light-alpha, 48%)) !important;
+  backdrop-filter: saturate(var(--lg-saturate, 180%)) blur(var(--lg-blur-card, 28px)) !important;
+  -webkit-backdrop-filter: saturate(var(--lg-saturate, 180%)) blur(var(--lg-blur-card, 28px)) !important;
+  border: 1px solid rgb(255 255 255 / var(--lg-border-light, 42%)) !important;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / var(--lg-specular-light, 70%)),
+    0 8px 28px rgb(0 0 0 / 8%) !important;
+}
+
+html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced']) #home .music-card-inner,
+html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced'])
+  #home
+  .music-card-inner.lg-webgl-host {
+  background: rgb(0 0 0 / var(--lg-card-dark-alpha, 52%)) !important;
+  background-color: rgb(0 0 0 / var(--lg-card-dark-alpha, 52%)) !important;
+  backdrop-filter: saturate(var(--lg-saturate, 180%)) blur(var(--lg-blur-card, 28px)) !important;
+  -webkit-backdrop-filter: saturate(var(--lg-saturate, 180%)) blur(var(--lg-blur-card, 28px)) !important;
+  border: 1px solid rgb(255 255 255 / var(--lg-border-dark, 14%)) !important;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / var(--lg-specular-dark, 12%)),
+    0 10px 32px rgb(0 0 0 / 40%) !important;
+}
+
+html[data-lg-mode='tinted']:not(.dark) #home .music-card-inner,
+html[data-lg-mode='tinted']:not(.dark) #home .music-card-inner.lg-webgl-host {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border: 1px solid #e5e5ea !important;
+  box-shadow: none !important;
+}
+
+html.dark[data-lg-mode='tinted'] #home .music-card-inner,
+html.dark[data-lg-mode='tinted'] #home .music-card-inner.lg-webgl-host {
+  background: #000000 !important;
+  background-color: #000000 !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border: 1px solid #2c2c2e !important;
+  box-shadow: none !important;
 }
 
 #home .music-card-inner .lg-webgl-content {
@@ -139,29 +202,26 @@ html[data-lg-mode='tinted'] #home .music-card-inner {
   min-width: 0 !important;
 }
 
-html.dark #home .music-card-inner,
-html.dark #home .music-card-inner.lg-webgl-host,
-html.dark #home .music-card.is-playing .music-card-inner,
-html.dark[data-lg-mode='clear'] #home .music-card-inner,
-html.dark[data-lg-mode='balanced'] #home .music-card-inner,
-html.dark[data-lg-mode='tinted'] #home .music-card-inner {
-  background: #000000 !important;
-  background-color: #000000 !important;
-  border-color: #2c2c2e !important;
-}
-
 @media (hover: hover) and (pointer: fine) {
-  html:not(.dark) #home .music-card:hover .music-card-inner,
-  html:not(.dark) #home .music-card:hover .music-card-inner.lg-webgl-host {
-    background: #ffffff !important;
-    background-color: #ffffff !important;
+  html:is([data-lg-mode='clear'], [data-lg-mode='balanced']):not(.dark)
+    #home
+    .music-card:hover
+    .music-card-inner {
+    border-color: rgb(0 113 227 / 55%) !important;
+  }
+
+  html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced'])
+    #home
+    .music-card:hover
+    .music-card-inner {
+    border-color: rgb(10 132 255 / 55%) !important;
+  }
+
+  html[data-lg-mode='tinted']:not(.dark) #home .music-card:hover .music-card-inner {
     border-color: #0071e3 !important;
   }
 
-  html.dark #home .music-card:hover .music-card-inner,
-  html.dark #home .music-card:hover .music-card-inner.lg-webgl-host {
-    background: #000000 !important;
-    background-color: #000000 !important;
+  html.dark[data-lg-mode='tinted'] #home .music-card:hover .music-card-inner {
     border-color: #0a84ff !important;
   }
 }

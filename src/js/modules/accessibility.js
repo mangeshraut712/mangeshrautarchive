@@ -1347,6 +1347,13 @@ export class AccessibilityEnhancer {
 
   getStoredGlassTint() {
     try {
+      if (window.matchMedia('(prefers-reduced-transparency: reduce)').matches) {
+        return 100;
+      }
+    } catch (_error) {
+      // ignore
+    }
+    try {
       const raw = localStorage.getItem('wwdc26-liquid-glass-tint');
       if (raw !== null) {
         const stored = Number(raw);
@@ -1357,7 +1364,8 @@ export class AccessibilityEnhancer {
     } catch (_error) {
       // Storage unavailable — fall through to default.
     }
-    return 0;
+    // Balanced liquid glass (Apple-like frosted material)
+    return 42;
   }
 
   applyGlassTint(value, { instant = false } = {}) {
