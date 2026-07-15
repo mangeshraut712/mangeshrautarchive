@@ -214,16 +214,15 @@ html.dark .skill-category > h3:not(.skill-category-title) {
   border-color: rgb(255 255 255 / 10%);
 }
 
-/* Marquee container — clips inside rounded category card */
+/* Skill badge row — wrap grid on desktop; soft horizontal scroll on small screens */
 .skill-scroll-container {
   position: relative;
-  overflow: hidden;
+  overflow: visible;
   border-radius: 14px;
   background: rgb(0 0 0 / 2%);
   border: 1px solid rgb(0 0 0 / 4%);
-  mask-image: linear-gradient(to right, transparent, black 2%, black 98%, transparent);
-  will-change: transform;
-  padding: 0.35rem 0;
+  padding: 0.65rem 0.75rem;
+  max-width: 100%;
 }
 
 html.dark .skill-scroll-container {
@@ -233,55 +232,91 @@ html.dark .skill-scroll-container {
 
 .skill-scroll-wrapper {
   display: flex;
-  gap: 1rem;
-  padding: 0.75rem 0;
-  width: max-content;
-  min-width: max-content;
-  animation: skillMarquee var(--skill-marquee-duration, 40s) linear infinite;
-  transform: translate3d(0, 0, 0);
-  backface-visibility: hidden;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  padding: 0;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  animation: none !important;
+  transform: none !important;
+  will-change: auto;
 }
 
 .skill-scroll-wrapper:not(.is-offscreen-paused) {
-  will-change: transform;
+  will-change: auto;
 }
 
 .skill-scroll-container:hover .skill-scroll-wrapper {
   animation-play-state: paused;
 }
 
-@keyframes skillMarquee {
-  0% {
-    transform: translate3d(0, 0, 0);
+@media (width <= 767px) {
+  .skill-scroll-container {
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+    scrollbar-width: thin;
+    padding-bottom: 0.5rem;
   }
 
-  100% {
-    transform: translate3d(var(--skill-marquee-distance, -33.333%), 0, 0);
+  .skill-scroll-wrapper {
+    flex-wrap: nowrap;
+    width: max-content;
+    min-width: max-content;
+    max-width: none;
   }
 }
 
 /* Skill Badge — layout + motion; glass surfaces from wwdc26 / liquid-glass-modes */
 #skills-container .skill-badge,
 .skill-badge {
-  flex-shrink: 0;
+  flex: 1 1 200px;
+  flex-shrink: 1;
+  min-width: min(200px, 100%);
+  max-width: 100%;
   display: flex;
   align-items: center;
   gap: 0.75rem;
   padding: 0.75rem 1rem;
-  border-radius: 22px;
+  border-radius: 18px;
   border: 1px solid var(--theme-card-border, rgb(0 0 0 / 8%));
   transition:
-    transform 0.42s var(--skill-motion-spring),
-    border-color 0.32s ease,
-    background 0.32s ease;
+    transform 0.28s var(--skill-motion-spring),
+    border-color 0.28s ease,
+    background 0.28s ease;
   position: relative;
   overflow: hidden;
-  height: 100%;
-  backface-visibility: hidden;
-
-  /* Marquee badges stay static; category cards reveal on scroll */
+  box-sizing: border-box;
   animation: none;
   opacity: 1;
+}
+
+@media (width >= 768px) {
+  #skills-container .skill-badge,
+  .skill-badge {
+    flex: 1 1 calc(33.333% - 0.75rem);
+    max-width: calc(33.333% - 0.5rem);
+    min-width: 180px;
+  }
+}
+
+@media (width >= 1100px) {
+  #skills-container .skill-badge,
+  .skill-badge {
+    flex: 1 1 calc(25% - 0.75rem);
+    max-width: calc(25% - 0.55rem);
+  }
+}
+
+@media (width <= 767px) {
+  #skills-container .skill-badge,
+  .skill-badge {
+    flex: 0 0 auto;
+    min-width: 200px;
+    max-width: 240px;
+  }
 }
 
 html:not(.dark)

@@ -101,34 +101,42 @@ function setActiveLinkBySectionId(sectionId) {
   revealActiveDesktopLink();
 }
 
-function cacheSectionOffsets() {
-  const sections = Array.from(document.querySelectorAll('section[id]'));
-  state.sectionsCache = sections
-    .filter(section => state.navLinks.some(link => link.getAttribute('href') === `#${section.id}`))
-    .map(section => ({
-      id: section.id,
-      offsetTop: section.offsetTop,
-    }))
-    .sort((a, b) => a.offsetTop - b.offsetTop);
+function getNavSectionIds() {
+  const links = state.navLinks.length
+    ? state.navLinks
+    : Array.from(document.querySelectorAll('#global-nav a.nav-link[href^="#"]'));
+  return links.map(link => (link.getAttribute('href') || '').replace(/^#/, '')).filter(Boolean);
 }
 
 function getVisibleSectionId() {
+  // Live layout (offsetTop cache goes stale after lazy CSS/images).
+  // Score sections by overlap with a reading band just below the sticky nav.
   const navHeight = state.nav?.offsetHeight || 0;
-  const probe = navHeight + 120;
+  const bandTop = navHeight + 72;
+  const bandBottom = bandTop + Math.min(300, Math.max(180, window.innerHeight * 0.32));
+  const sectionIds = getNavSectionIds();
 
-  if (!state.sectionsCache) {
-    cacheSectionOffsets();
-  }
+  let bestId = null;
+  let bestScore = -1;
 
-  const cache = state.sectionsCache || [];
-  const currentY = window.scrollY || window.pageYOffset || 0;
-
-  for (let i = cache.length - 1; i >= 0; i -= 1) {
-    if (currentY + probe >= cache[i].offsetTop) {
-      return cache[i].id;
+  sectionIds.forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    // Ignore sections fully above the band or mostly below the fold
+    if (r.bottom <= bandTop || r.top >= window.innerHeight * 0.9) return;
+    const overlap = Math.max(0, Math.min(r.bottom, bandBottom) - Math.max(r.top, bandTop));
+    // Prefer sections whose heading is near the band (tie-break)
+    const headingBias = r.top <= bandBottom && r.top >= bandTop - 40 ? 40 : 0;
+    const score = overlap + headingBias;
+    if (score > bestScore) {
+      bestScore = score;
+      bestId = id;
     }
-  }
-  return cache[0]?.id || null;
+  });
+
+  if (bestId) return bestId;
+  return sectionIds[0] || null;
 }
 
 function clearStabilizeTimers() {
@@ -389,24 +397,18 @@ function initSectionObserver() {
   }
 
   state.observer = new IntersectionObserver(
-    entries => {
-      const visible = entries
-        .filter(entry => entry.isIntersecting)
-        .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
-
-      if (visible.length) {
-        setActiveLinkBySectionId(visible[0].target.id);
-        return;
-      }
-
-      const fallbackId = getVisibleSectionId();
-      if (fallbackId) {
-        setActiveLinkBySectionId(fallbackId);
+    () => {
+      // Always resolve with the band scorer — ratio ranking mis-highlights tall sections
+      // (e.g. Projects stays active while Awards is the reading focus).
+      const id = getVisibleSectionId();
+      if (id) {
+        state.currentActiveSectionId = id;
+        setActiveLinkBySectionId(id);
       }
     },
     {
-      threshold: [0.2, 0.4, 0.65],
-      rootMargin: '-20% 0px -55% 0px',
+      threshold: [0, 0.15, 0.35, 0.55, 0.75],
+      rootMargin: '-12% 0px -40% 0px',
     }
   );
 
@@ -482,7 +484,6 @@ function onScroll() {
 
 function onResize() {
   if (!state.nav) return;
-  state.sectionsCache = null;
   const desktop = isDesktop();
 
   if (!desktop) {

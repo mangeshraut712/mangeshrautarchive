@@ -471,13 +471,12 @@ body.uses-page .systems-shell {
   overflow: visible;
 }
 
-/* Award blurbs — scannable titles first */
+/* Award blurbs — full text (only two cards; clamp hurt readability) */
 .award-description {
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
-  line-clamp: 3;
-  overflow: hidden;
+  display: block;
+  overflow: visible;
+  -webkit-line-clamp: unset;
+  line-clamp: unset;
 }
 
 #awards-grid.is-expanded .award-description {
