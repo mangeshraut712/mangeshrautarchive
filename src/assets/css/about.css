@@ -518,10 +518,10 @@ html.dark .summary-item:hover {
 
 .summary-label {
   display: block;
-  font-size: 0.75rem;
+  font-size: 0.78rem;
   font-weight: 650;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.05em;
   color: var(--apple-gray-400);
   margin-bottom: 0.4rem;
 }

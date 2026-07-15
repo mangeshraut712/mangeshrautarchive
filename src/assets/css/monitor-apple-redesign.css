@@ -48,13 +48,23 @@ body.monitor-page #main-content.monitor-container {
   padding: 0.2rem;
   border-radius: 999px;
   border: 1px solid var(--mon-hairline);
-  background: color-mix(in srgb, var(--mon-card) 90%, transparent);
+  background: var(--mon-card, #ffffff);
   backdrop-filter: saturate(180%) blur(16px);
   -webkit-backdrop-filter: saturate(180%) blur(16px);
   box-shadow: var(--mon-shadow);
   overflow-x: auto;
+  overflow-y: hidden;
+  max-width: 100%;
+  width: 100%;
+  min-width: 0;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
+  overscroll-behavior-x: contain;
+  isolation: isolate;
+}
+
+html.dark .monitor-section-rail {
+  background: var(--mon-card, #000000);
 }
 
 .monitor-section-rail::-webkit-scrollbar {
@@ -67,8 +77,10 @@ body.monitor-page #main-content.monitor-container {
   gap: 0.15rem;
   margin: 0;
   padding: 0;
+  width: max-content;
+  min-width: 100%;
   list-style: none;
-  min-width: max-content;
+  box-sizing: border-box;
 }
 
 .monitor-section-rail a {
@@ -186,20 +198,24 @@ body.monitor-page #monitor-summary-text {
   margin: 0 !important;
 }
 
-/* 3-column control center — pack content, no tall empty columns */
+/* 3-column control center — explicit named areas (never leave grid-area orphans) */
 body.monitor-page .control-center-grid {
   display: grid !important;
   grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.95fr) minmax(0, 0.95fr) !important;
-  grid-template-areas: none !important;
+  grid-template-areas: 'info visuals telemetry' !important;
   gap: 0.65rem !important;
   margin: 0 !important;
   align-items: start !important;
+  width: 100%;
+  min-width: 0;
 }
 
 body.monitor-page .control-center-info,
 body.monitor-page .control-center-visuals,
 body.monitor-page .control-center-telemetry {
   min-width: 0;
+  max-width: 100%;
+  width: auto;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -209,10 +225,24 @@ body.monitor-page .control-center-telemetry {
 }
 
 body.monitor-page .control-center-info {
+  grid-area: info !important;
   display: flex !important;
   flex-direction: column !important;
   flex-wrap: nowrap !important;
   gap: 0.55rem !important;
+}
+
+body.monitor-page .control-center-visuals {
+  grid-area: visuals !important;
+  gap: 0.55rem !important;
+}
+
+body.monitor-page .control-center-telemetry {
+  grid-area: telemetry !important;
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 0.4rem !important;
+  align-content: start;
 }
 
 body.monitor-page .control-center-info > div:first-child {
@@ -243,9 +273,9 @@ body.monitor-page .control-center-telemetry .overview-item {
 body.monitor-page .meta-stat-label,
 body.monitor-page .visual-section-label,
 body.monitor-page .doc-card-kicker {
-  font-size: 0.62rem !important;
+  font-size: 0.7rem !important;
   font-weight: 700;
-  letter-spacing: 0.07em !important;
+  letter-spacing: 0.06em !important;
   text-transform: uppercase;
   color: var(--text-secondary, #6e6e73);
   margin: 0 0 0.25rem !important;
@@ -261,19 +291,13 @@ body.monitor-page .overview-item strong {
   line-height: 1.2;
 }
 
-body.monitor-page .control-center-telemetry {
-  display: grid !important;
-  grid-template-columns: 1fr 1fr !important;
-  gap: 0.4rem !important;
-}
-
 body.monitor-page .control-center-telemetry > .visual-section-label {
   grid-column: 1 / -1;
   margin: 0 !important;
 }
 
-body.monitor-page .control-center-visuals {
-  gap: 0.55rem !important;
+body.monitor-page #monitor-summary-section.monitor-summary-card {
+  overflow: visible !important;
 }
 
 body.monitor-page .visual-uptime-history {
@@ -765,11 +789,14 @@ body.monitor-page .donut-chart__visual svg {
 /* ─── Breakpoints ─── */
 @media (max-width: 1100px) {
   body.monitor-page .control-center-grid {
-    grid-template-columns: 1fr 1fr !important;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+    grid-template-areas:
+      'info info'
+      'visuals telemetry' !important;
   }
 
   body.monitor-page .control-center-telemetry {
-    grid-column: 1 / -1;
+    grid-column: auto;
   }
 }
 
@@ -783,7 +810,19 @@ body.monitor-page .donut-chart__visual svg {
   }
 
   body.monitor-page .control-center-grid {
-    grid-template-columns: 1fr !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-areas:
+      'info'
+      'visuals'
+      'telemetry' !important;
+    gap: 0.85rem !important;
+  }
+
+  body.monitor-page .control-center-info,
+  body.monitor-page .control-center-visuals,
+  body.monitor-page .control-center-telemetry {
+    width: 100% !important;
+    max-width: 100% !important;
   }
 
   body.monitor-page .control-center-visuals {
@@ -797,6 +836,22 @@ body.monitor-page .donut-chart__visual svg {
   body.monitor-page .backend-system-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
   }
+
+  body.monitor-page .metrics-table-wrapper,
+  body.monitor-page .table-responsive,
+  body.monitor-page #endpoint-metrics-section,
+  body.monitor-page .section {
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  body.monitor-page .metrics-table {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
 }
 
 @media (max-width: 640px) {
@@ -806,19 +861,47 @@ body.monitor-page .donut-chart__visual svg {
 
   body.monitor-page #main-content.monitor-container {
     padding: 0.35rem var(--mon-gutter) 1.25rem !important;
+    max-width: 100%;
+    overflow-x: clip;
   }
 
   body.monitor-page .monitor-page-nav__label {
-    font-size: 12px;
+    font-size: 13px;
   }
 
   body.monitor-page .monitor-page-nav__kicker {
     display: none;
   }
 
+  body.monitor-page .monitor-summary-eyebrow,
+  body.monitor-page .control-center-eyebrow {
+    font-size: 0.7rem !important;
+  }
+
+  body.monitor-page .status-badge {
+    font-size: 0.72rem !important;
+    white-space: normal;
+    line-height: 1.25;
+  }
+
+  body.monitor-page .monitor-refresh-note {
+    font-size: 0.75rem !important;
+    line-height: 1.3;
+  }
+
   body.monitor-page .meta-stats-stack,
   body.monitor-page .control-center-telemetry {
     grid-template-columns: 1fr 1fr !important;
+  }
+
+  body.monitor-page .control-center-telemetry .overview-item {
+    min-height: 4.25rem !important;
+    padding: 0.65rem 0.7rem !important;
+  }
+
+  body.monitor-page .overview-item-label span {
+    font-size: 0.78rem !important;
+    line-height: 1.25;
   }
 
   body.monitor-page .health-grid,
@@ -844,13 +927,23 @@ body.monitor-page .donut-chart__visual svg {
     width: 100%;
     display: flex;
     flex-wrap: wrap;
-    gap: 0.35rem;
+    align-items: center;
+    gap: 0.45rem;
+  }
+
+  body.monitor-page .control-center-actions .btn {
+    flex: 0 0 auto;
   }
 
   body.monitor-page .monitor-section-rail {
     top: calc(54px + env(safe-area-inset-top, 0px));
     border-radius: 14px;
     margin-bottom: 0.5rem;
+  }
+
+  body.monitor-page .monitor-section-rail a {
+    white-space: nowrap;
+    flex-shrink: 0;
   }
 
   body.monitor-page .health-item-left {

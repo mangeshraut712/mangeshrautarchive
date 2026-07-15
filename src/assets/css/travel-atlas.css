@@ -1202,14 +1202,19 @@ html.dark .travel-map-status span {
   }
 
   .travel-stats {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: var(--space-1);
   }
+  .travel-stat {
+    min-width: 0;
+    padding: 0.45rem 0.2rem;
+  }
   .travel-stat__value {
-    font-size: 15px;
+    font-size: 16px;
   }
   .travel-stat__label {
-    font-size: 9px;
+    font-size: 11px;
+    line-height: 1.2;
   }
 
   .travel-sidebar__header {
