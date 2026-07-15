@@ -1,4 +1,5 @@
 import { blogPosts } from './blog-data.js';
+import { parseBlogContent } from './blog-markdown.js';
 import { rescanCardContentAccessibility } from './card-content-accessibility.js';
 import { refreshSectionPreview } from './section-preview.js';
 
@@ -163,18 +164,24 @@ class BlogLoader {
     if (!post) return;
 
     const modalBody = document.getElementById('blog-modal-body');
-
-    // Convert markdown-like content to HTML (simple parser)
-    const htmlContent = this.parseContent(post.content);
+    const { html: htmlContent } = parseBlogContent(post.content, { addHeadingIds: true });
 
     modalBody.innerHTML = `
+            <article class="x-article">
             <header class="article-header">
                 <span class="article-kicker">${this.escapeHTML(post.kicker || 'Field notes')}</span>
-                <div class="article-meta">
-                    <span>${this.formatDate(post.date)}</span> • <span>${this.escapeHTML(post.readTime)}</span>
-                </div>
                 <h1 class="article-title">${this.escapeHTML(post.title)}</h1>
                 <p class="article-promise">${this.escapeHTML(post.readerPromise || post.summary)}</p>
+                <div class="article-byline">
+                  <span class="article-byline__author">
+                    <img class="article-byline__avatar" src="assets/images/profile-icon.webp" width="28" height="28" alt="" loading="lazy" decoding="async" />
+                    Mangesh Raut
+                  </span>
+                  <span aria-hidden="true">·</span>
+                  <span>${this.formatDate(post.date)}</span>
+                  <span aria-hidden="true">·</span>
+                  <span>${this.escapeHTML(post.readTime)}</span>
+                </div>
                 <div class="article-tags">
                     ${post.tags.map(tag => `<span class="blog-tag">${this.escapeHTML(tag)}</span>`).join('')}
                 </div>
@@ -182,6 +189,7 @@ class BlogLoader {
             <div class="article-body">
                 ${htmlContent}
             </div>
+            </article>
         `;
 
     this.modal.classList.remove('hidden');
@@ -190,6 +198,7 @@ class BlogLoader {
     this.modal.classList.add('active');
     this.modal.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden'; // Prevent background scrolling
+    rescanCardContentAccessibility(modalBody);
   }
 
   closeModal() {

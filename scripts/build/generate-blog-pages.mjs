@@ -162,7 +162,7 @@ function renderBlogIndex(posts, tags) {
 function renderBlogPost(post, posts) {
   const { html, headings } = parseBlogContent(post.content, { addHeadingIds: true });
   const toc = buildTableOfContents(headings);
-  const related = getRelatedPosts(post, posts, 3);
+  const related = getRelatedPosts(posts, post.id, 3);
 
   const relatedHtml = related.length
     ? `<section class="article-related" aria-label="Related articles">
@@ -185,15 +185,20 @@ function renderBlogPost(post, posts) {
     <a href="/blog" class="blog-back-link"><i class="fas fa-arrow-left" aria-hidden="true"></i> All articles</a>
     <main id="main-content" class="blog-article-main">
       <article class="blog-article">
-        <header class="article-header lg-glass-card">
+        <header class="article-header">
           <span class="article-kicker">${escapeHTML(post.kicker || 'Field notes')}</span>
-          <div class="article-meta">
-            <time datetime="${post.date}">${formatBlogDate(post.date)}</time>
-            <span aria-hidden="true">•</span>
-            <span>${escapeHTML(post.readTime)}</span>
-          </div>
           <h1 class="article-title">${escapeHTML(post.title)}</h1>
           <p class="article-promise">${escapeHTML(post.readerPromise || post.summary)}</p>
+          <div class="article-byline">
+            <span class="article-byline__author">
+              <img class="article-byline__avatar" src="${ASSET_PREFIX}/assets/images/profile-icon.webp" width="28" height="28" alt="" loading="lazy" decoding="async" />
+              Mangesh Raut
+            </span>
+            <span aria-hidden="true">·</span>
+            <time datetime="${post.date}">${formatBlogDate(post.date)}</time>
+            <span aria-hidden="true">·</span>
+            <span>${escapeHTML(post.readTime)}</span>
+          </div>
           <div class="article-tags">${(post.tags || []).map(tag => `<span class="blog-tag">${escapeHTML(tag)}</span>`).join('')}</div>
         </header>
         <div class="blog-article-layout">
