@@ -7,9 +7,9 @@
   "display_override": ["standalone", "minimal-ui"],
   "background_color": "#ffffff",
   "theme_color": "#007AFF",
-  "description": "Portfolio of Mangesh Raut - Software Engineer specializing in Java, Python, and Full-Stack Development.",
+  "description": "Portfolio of Mangesh Raut — Software Engineer specializing in production AI products, Java, Python, AWS, and full-stack systems.",
   "orientation": "any",
-  "categories": ["portfolio", "technology", "education"],
+  "categories": ["portfolio", "technology", "education", "productivity"],
   "icons": [
     {
       "src": "assets/icons/icon.svg",
@@ -54,22 +54,22 @@
   ],
   "shortcuts": [
     {
+      "name": "Field Notes",
+      "short_name": "Blog",
+      "url": "./blog/",
+      "description": "Technical writing on AI, systems, and product engineering"
+    },
+    {
       "name": "Projects",
       "short_name": "Projects",
       "url": "./index.html#projects",
       "description": "View my project showcase"
     },
     {
-      "name": "Contact",
-      "short_name": "Contact",
-      "url": "./index.html#contact",
-      "description": "Get in touch"
-    },
-    {
-      "name": "Travel Atlas",
-      "short_name": "Travel",
-      "url": "./travel.html",
-      "description": "Explore my travel map"
+      "name": "Systems",
+      "short_name": "Systems",
+      "url": "./systems.html",
+      "description": "Engineering notebook and architecture proof"
     },
     {
       "name": "System Monitor",

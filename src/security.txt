@@ -1,0 +1,8 @@
+# Security contact (RFC 9116) — prefer /.well-known/security.txt
+Contact: mailto:mbr63@drexel.edu
+Contact: mailto:mbr63drexel@gmail.com
+Expires: 2027-07-15T23:59:59.000Z
+Preferred-Languages: en
+Canonical: https://mangeshraut.pro/.well-known/security.txt
+Policy: https://mangeshraut.pro/#contact
+Hiring: https://mangeshraut.pro/#contact

@@ -3,7 +3,8 @@
  * Caches a small allowlist for resilience without aggressive stale asset risk.
  */
 
-const CACHE_VERSION = 'portfolio-shell-v20260712w';
+// Build replaces __ASSET_VER__ with scripts/build/asset-version.mjs ASSET_VER.
+const CACHE_VERSION = 'portfolio-shell-v__ASSET_VER__';
 const PRECACHE_URLS = [
   './',
   './index.html',

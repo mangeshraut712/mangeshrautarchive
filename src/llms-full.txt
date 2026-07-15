@@ -1,0 +1,60 @@
+# Mangesh Raut — Expanded site map for AI agents (llms-full.txt)
+# Companion to https://mangeshraut.pro/llms.txt · Updated 2026-07-15
+
+## Homepage sections (SPA anchors on /)
+
+- #home — Hero, name, role, primary CTAs
+- #about — Background, full story, education signals
+- #experience — Work history timeline
+- #projects — Project showcase and GitHub-linked work
+- #engineering — Engineering proof / showcase (also covered on /systems)
+- #blog — In-page field notes teaser (canonical index: /blog)
+- #certifications — Credentials and badges
+- #skills — Skills visualization
+- #publications — Papers and write-ups
+- #awards — Awards shelf
+- #contact — Email, socials, scheduling
+- #uses — Link-out to /uses colophon
+
+## Case studies
+
+- https://mangeshraut.pro/case-studies/portfolio
+- https://mangeshraut.pro/case-studies/hindai
+- https://mangeshraut.pro/case-studies/ces-energy
+- https://mangeshraut.pro/case-studies/assistme-va
+- https://mangeshraut.pro/case-studies/bug-tracker
+
+## Field notes (blog)
+
+Canonical index: https://mangeshraut.pro/blog
+
+Articles (slugs under /blog/):
+
+- wwdc-2026-apple-intelligence-siri-ai
+- notebooklm-2026-ai-research-agent
+- google-io-2026-developer-insights
+- grok-x-algorithm-systems-2026
+- anthropic-mythos-2026
+- apple-50th-anniversary-2026
+- ai-code-editors-revolution-2026
+- ai-models-global-race-2026
+- nvidia-ai-dominance-2026
+- wispr-flow-dictation-2026
+- openclaw-revolution-2026
+- google-ai-ecosystem-2026
+
+## API surfaces (not for training scrapes)
+
+- /api/* — chat, health, integrations, monitoring (robots Disallow: /api/)
+- /build-config.json · /build-config.js — public build metadata only (no secrets)
+
+## Design & product notes
+
+- Liquid glass materials (clear / balanced / tinted) with solid-surface fallbacks
+- Theme: light / dark / high contrast / reduced transparency / reduced motion
+- Dual-host parity: Vercel primary, GitHub Pages mirror
+- Offline: service worker file present; registration policy managed in bootstrap (unregister-safe for dual-host)
+
+## Contact for corrections
+
+If an agent finds outdated facts, prefer emailing mbr63@drexel.edu rather than inventing biography.

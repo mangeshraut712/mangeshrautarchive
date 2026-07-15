@@ -5,7 +5,10 @@ import { fileURLToPath } from 'url';
 import { dirname, join, resolve } from 'path';
 import dotenv from 'dotenv';
 import { WebSocket, WebSocketServer } from 'ws';
+import { mkdir, writeFile } from 'node:fs/promises';
 import { generateCaseStudyPages } from '../build/generate-case-study-pages.mjs';
+import { generateBlogPages } from '../build/generate-blog-pages.mjs';
+import { blogPosts } from '../../src/js/modules/blog-data.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -247,8 +250,24 @@ app.use((req, res, next) => {
 
 const staticPath = join(projectRoot, 'src');
 const distPath = join(projectRoot, 'dist');
-app.use('/case-studies', express.static(join(distPath, 'case-studies'), { extensions: ['html'] }));
-app.use(express.static(staticPath, { extensions: ['html'] }));
+const staticOpts = {
+  extensions: ['html'],
+  // Avoid redirect fights with the no-trailing-slash middleware above.
+  redirect: false,
+  index: 'index.html',
+  // Required so /.well-known/security.txt is served (Express defaults to ignoring dotfiles).
+  dotfiles: 'allow',
+};
+// Generated at dev start (not in src/) — serve before the src static root.
+// Explicit index routes: mount + no-trailing-slash + redirect:false otherwise 404s /blog.
+app.get(['/blog', '/blog/'], (req, res) => {
+  res.sendFile(join(distPath, 'blog', 'index.html'));
+});
+app.use('/blog', express.static(join(distPath, 'blog'), staticOpts));
+app.use('/case-studies', express.static(join(distPath, 'case-studies'), staticOpts));
+app.use(express.static(staticPath, staticOpts));
+// Build-time feeds land in dist/; expose them in local dev too.
+app.use(express.static(distPath, { ...staticOpts, index: false }));
 
 const chatbotPath = join(projectRoot, 'chatbot');
 app.use('/chatbot', express.static(chatbotPath));
@@ -287,11 +306,90 @@ function startServer(listenPort) {
   });
 }
 
+function escapeXml(value = '') {
+  return String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos;');
+}
+
+async function generateLocalFeeds() {
+  const siteUrl = 'https://mangeshraut.pro';
+  const posts = [...blogPosts].sort((a, b) => new Date(b.date) - new Date(a.date));
+  const updatedAt = new Date().toUTCString();
+  const atomUpdatedAt = new Date().toISOString();
+
+  const rssItems = posts
+    .map(post => {
+      const postUrl = `${siteUrl}/blog/${post.id}`;
+      return `    <item>
+      <title>${escapeXml(post.title)}</title>
+      <link>${postUrl}</link>
+      <guid isPermaLink="true">${postUrl}</guid>
+      <pubDate>${new Date(post.date).toUTCString()}</pubDate>
+      <description>${escapeXml(post.summary)}</description>
+    </item>`;
+    })
+    .join('\n');
+
+  const rss = `<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Mangesh Raut Technical Writings</title>
+    <link>${siteUrl}/blog</link>
+    <atom:link href="${siteUrl}/rss.xml" rel="self" type="application/rss+xml" />
+    <description>Technical articles by Mangesh Raut (local dev feed).</description>
+    <language>en-us</language>
+    <lastBuildDate>${updatedAt}</lastBuildDate>
+${rssItems}
+  </channel>
+</rss>
+`;
+
+  const atomEntries = posts
+    .map(post => {
+      const postUrl = `${siteUrl}/blog/${post.id}`;
+      return `  <entry>
+    <title>${escapeXml(post.title)}</title>
+    <link href="${postUrl}" />
+    <id>${escapeXml(postUrl)}</id>
+    <updated>${new Date(post.date).toISOString()}</updated>
+    <summary>${escapeXml(post.summary)}</summary>
+  </entry>`;
+    })
+    .join('\n');
+
+  const atom = `<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Mangesh Raut Technical Writings</title>
+  <link href="${siteUrl}/blog" />
+  <link href="${siteUrl}/feed.xml" rel="self" />
+  <id>${siteUrl}/blog</id>
+  <updated>${atomUpdatedAt}</updated>
+  <author><name>Mangesh Raut</name></author>
+${atomEntries}
+</feed>
+`;
+
+  await mkdir(distPath, { recursive: true });
+  await Promise.all([
+    writeFile(join(distPath, 'rss.xml'), rss, 'utf8'),
+    writeFile(join(distPath, 'feed.xml'), atom, 'utf8'),
+  ]);
+}
+
 async function prepareDevAssets() {
   try {
-    await generateCaseStudyPages(distPath);
+    await Promise.all([
+      generateBlogPages(distPath),
+      generateCaseStudyPages(distPath),
+      generateLocalFeeds(),
+    ]);
+    console.log('📝 Generated local /blog, /case-studies, and feeds into dist/');
   } catch (error) {
-    console.error('Failed to generate case study pages for local dev:', error.message);
+    console.error('Failed to generate blog/case-study pages for local dev:', error.message);
     process.exit(1);
   }
 }

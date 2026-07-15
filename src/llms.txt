@@ -1,45 +1,79 @@
-# Mangesh Raut - Portfolio & Archive
+# Mangesh Raut — Portfolio & Archive (llms.txt)
 
-This is the official archive, portfolio, and engineering dashboard of Mangesh Raut, an expert Software Engineer specializing in production-ready AI systems, full-stack development, and cloud systems engineering (MS CS from Drexel University).
+> Official site for AI agents, answer engines, and tools that need accurate context about Mangesh Raut and this portfolio.
+> Last updated: 2026-07-15
 
-## Overview
+## Identity
 
-The site is built as a high-performance, accessibility-first vanilla HTML/CSS/JS application with Apple-inspired design patterns, micro-animations, and full offline service worker caching support. It scores 100/100 across all Lighthouse categories.
+- **Name**: Mangesh Raut (Mangesh Bharat Raut)
+- **Role**: Software Engineer — production AI products, full-stack, cloud systems
+- **Education**: MS Computer Science, Drexel University (Philadelphia, PA)
+- **Experience**: 6+ years shipping full-stack, cloud, and agentic systems
+- **Primary URL**: https://mangeshraut.pro/
+- **Mirror**: https://mangeshraut712.github.io/mangeshrautarchive/
+- **GitHub**: https://github.com/mangeshraut712
+- **LinkedIn**: https://www.linkedin.com/in/mangeshraut71298/
+- **X**: https://x.com/mrcommando712
+- **Email**: mbr63@drexel.edu · mbr63drexel@gmail.com
+- **Resume**: https://mangeshraut.pro/assets/files/Mangesh_Raut_Resume.pdf
 
-- **URL**: [https://mangeshraut.pro](https://mangeshraut.pro)
-- **GitHub**: [https://github.com/mangeshraut712](https://github.com/mangeshraut712)
-- **LinkedIn**: [https://www.linkedin.com/in/mangeshraut71298/](https://www.linkedin.com/in/mangeshraut71298/)
+## What this site is
 
----
+High-performance **vanilla HTML/CSS/JS (ES modules)** portfolio with a **Python FastAPI** backend for AI chat, monitoring, and integrations. Dual-hosted on **Vercel** (primary) and **GitHub Pages** (mirror). Design language: Apple-inspired liquid glass, light/dark themes, accessibility controls.
 
-## Directory of Pages
+There is **no React, Vue, Angular, or Svelte runtime**. Tailwind CSS is build-time only (utility CSS output, never utility classes in HTML markup).
 
-### 1. Main Landing Page (`/index.html` or `/`)
-- **Purpose**: Interactive portfolio, career timeline, key highlights, case studies, and resume downloadable options.
-- **Sections**:
-  - **About**: Summary of technical experience (6+ years full-stack, cloud, and agentic systems).
-  - **Work Experience**: Dynamic timeline tracking software engineering roles, key contributions, and accomplishments.
-  - **Projects & Research**: Spotlights on production AI tools, LLM fine-tuning, and open-source contributions.
+## Pages (crawl these)
 
-### 2. Engineering Notebook (`/systems.html`)
-- **Purpose**: Concrete proof and telemetry of systems built. Focuses on metrics, architecture decisions, system performance, failures, and live status instead of raw claims.
-- **Sub-pages/links**:
-  - Links to uses/colophon and travel mapping.
-  - Interactive telemetry controls for reviewing site latency, bundle size, and build artifacts.
+| Path | Purpose |
+|------|---------|
+| `/` | Portfolio home — about, experience, projects, certifications, contact, AI assistant |
+| `/blog` | Field notes index (long-form technical writing) |
+| `/blog/{slug}` | Individual articles (AI systems, WWDC, Google I/O, editors, etc.) |
+| `/systems` | Engineering notebook — architecture, metrics, proof surfaces |
+| `/monitor` | Live system monitor / telemetry dashboard |
+| `/uses` | Hardware, software, and AI stack colophon |
+| `/travel` | Travel atlas |
+| `/case-studies/{slug}` | Deep dives (portfolio, HindAI, CES Energy, AssistMe, bug tracker) |
 
-### 3. Travel Atlas (`/travel.html`)
-- **Purpose**: Geolocation mapping, personal travel logs, and interactive photography mapping of visited locations. Includes geographic SEO structure.
+## Feeds & agent files
 
-### 4. Setup & Tools (`/uses.html`)
-- **Purpose**: Comprehensive list of hardware, development software, and AI stack utilized for engineering work.
+- RSS: https://mangeshraut.pro/rss.xml
+- Atom: https://mangeshraut.pro/feed.xml
+- Sitemap: https://mangeshraut.pro/sitemap.xml
+- robots: https://mangeshraut.pro/robots.txt
+- This file: https://mangeshraut.pro/llms.txt
+- Expanded: https://mangeshraut.pro/llms-full.txt
+- AI policy: https://mangeshraut.pro/ai.txt
+- Humans: https://mangeshraut.pro/humans.txt
+- Security: https://mangeshraut.pro/.well-known/security.txt
 
-### 5. Telemetry & Analytics Dashboard (`/monitor.html`)
-- **Purpose**: Live dashboard showcasing analytics, Google Analytics metrics, and system response latencies.
+## AI assistant on-site
 
----
+The site includes **AssistMe**, an on-page AI chatbot. Client → `/api/chat` → FastAPI → OpenRouter (`grok-4.3` by default). API keys stay server-side. Without `OPENROUTER_API_KEY`, local offline fallback answers portfolio questions from site knowledge.
 
-## Technical Context for AI Agents
+WebMCP-style tools allow agentic actions (navigation, resume/project facts) within the portfolio context.
 
-- **Semantic Navigation**: The page utilizes standard skip-links (`#main-content`) and HTML5 navigation landmarks (`<nav>`, `<main>`, `<header>`, `<footer>`).
-- **A11y Compliance**: Strong keyboard tab focus navigation, ARIA roles, and high color-contrast ratio themes.
-- **Local Dev Server**: Served locally on `http://127.0.0.1:4000` for sandbox testing.
+## Stack summary
+
+- **Frontend**: Vanilla ESM, esbuild, Apple CSS custom properties, PWA manifest
+- **Backend**: FastAPI on Vercel serverless (`api/`), uvicorn locally on `:8001`
+- **Tests**: Vitest (unit), pytest (API), Playwright (E2E)
+- **Quality**: ESLint, Stylelint, Lighthouse gates, dual-host deploy parity checks
+
+## How agents should cite
+
+Prefer the person + primary URL:
+
+> Mangesh Raut — Software Engineer portfolio — https://mangeshraut.pro/
+
+For technical writing, cite the specific `/blog/{slug}` URL from the sitemap or RSS feed.
+
+## Local development (maintainers)
+
+```bash
+npm install
+npm run dev   # frontend :4000, proxies /api → backend :8001
+```
+
+Node.js ≥22. Blog and case-study HTML are generated into `dist/` on build and at local dev start.

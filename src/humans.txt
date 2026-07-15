@@ -1,0 +1,20 @@
+/* TEAM */
+Name: Mangesh Raut
+Role: Software Engineer — full-stack, cloud, agentic AI
+Site: https://mangeshraut.pro/
+Location: Philadelphia, PA, USA
+Contact: mbr63@drexel.edu
+GitHub: https://github.com/mangeshraut712
+LinkedIn: https://www.linkedin.com/in/mangeshraut71298/
+X: https://x.com/mrcommando712
+
+/* SITE */
+Last update: 2026-07-15
+Standards: HTML5, CSS3, ES modules, JSON-LD, WCAG-minded a11y
+Language: English
+Doctype: HTML5
+IDE: Cursor, VS Code, terminal
+Software: Node.js 22+, Python 3.12+, FastAPI, Vitest, Playwright, esbuild
+Components: Vanilla HTML/CSS/JS (no React/Vue/Angular runtime)
+Design: Apple-inspired liquid glass, SF Pro system fonts, light/dark themes
+Hosting: Vercel (primary) + GitHub Pages (mirror)

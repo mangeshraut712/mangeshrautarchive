@@ -78,5 +78,10 @@ User-agent: Meta-ExternalAgent
 Disallow: /
 
 # =============================================================================
+# Agent / discovery files (plain text — always allowed)
+# =============================================================================
+# llms.txt, ai.txt, humans.txt, security.txt under /.well-known/
+
+# =============================================================================
 Sitemap: https://mangeshraut.pro/sitemap.xml
 Host: https://mangeshraut.pro

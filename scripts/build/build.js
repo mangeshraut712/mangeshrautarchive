@@ -408,6 +408,7 @@ async function build() {
   console.log('⚡ Minifying copied CSS/JS assets ...');
   await bundleAboveFoldCss(distDir);
   await injectApiKeys(distDir);
+  await syncServiceWorkerCacheVersion(distDir);
   await optimizeCopiedAssets(distDir);
   await inlineThemeHead(distDir);
 
@@ -442,6 +443,31 @@ function getSortedBlogPosts() {
   return [...blogPosts].sort((a, b) => new Date(b.date) - new Date(a.date));
 }
 
+/**
+ * Inject ASSET_VER into the service worker shell cache name so offline caches
+ * invalidate in lockstep with HTML/CSS/JS query-string cache busting.
+ */
+async function syncServiceWorkerCacheVersion(distDir) {
+  const swPath = resolve(distDir, 'service-worker.js');
+  if (!(await pathExists(swPath))) {
+    console.warn('⚠️  service-worker.js missing in dist — skipped cache version sync');
+    return;
+  }
+  let content = await readFile(swPath, 'utf8');
+  const before = content;
+  content = content.replaceAll('__ASSET_VER__', ASSET_VER);
+  content = content.replace(
+    /portfolio-shell-v(?!__ASSET_VER__)[A-Za-z0-9._-]+/g,
+    `portfolio-shell-v${ASSET_VER}`
+  );
+  if (content === before) {
+    console.warn('⚠️  service-worker.js had no CACHE_VERSION placeholder to sync');
+  } else {
+    await writeFile(swPath, content, 'utf8');
+    console.log(`🔧 Service worker CACHE_VERSION → portfolio-shell-v${ASSET_VER}`);
+  }
+}
+
 async function generateFeeds(distDir) {
   const siteUrl = 'https://mangeshraut.pro';
   const updatedAt = new Date().toUTCString();
@@ -450,11 +476,11 @@ async function generateFeeds(distDir) {
 
   const rssItems = posts
     .map(post => {
-      const postUrl = `${siteUrl}/#blog`;
+      const postUrl = `${siteUrl}/blog/${post.id}`;
       return `    <item>
       <title>${escapeXml(post.title)}</title>
       <link>${postUrl}</link>
-      <guid isPermaLink="false">${escapeXml(`mangeshraut-blog-${post.id}`)}</guid>
+      <guid isPermaLink="true">${postUrl}</guid>
       <pubDate>${new Date(post.date).toUTCString()}</pubDate>
       <description>${escapeXml(post.summary)}</description>
       ${(post.tags || []).map(tag => `<category>${escapeXml(tag)}</category>`).join('\n      ')}
@@ -466,7 +492,7 @@ async function generateFeeds(distDir) {
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Mangesh Raut Technical Writings</title>
-    <link>${siteUrl}/#blog</link>
+    <link>${siteUrl}/blog/</link>
     <atom:link href="${siteUrl}/rss.xml" rel="self" type="application/rss+xml" />
     <description>Technical articles on software engineering, AI, cloud, and product engineering by Mangesh Raut.</description>
     <language>en-us</language>
@@ -478,11 +504,11 @@ ${rssItems}
 
   const atomEntries = posts
     .map(post => {
-      const postUrl = `${siteUrl}/#blog`;
+      const postUrl = `${siteUrl}/blog/${post.id}`;
       return `  <entry>
     <title>${escapeXml(post.title)}</title>
     <link href="${postUrl}" />
-    <id>${escapeXml(`${siteUrl}/blog/${post.id}`)}</id>
+    <id>${escapeXml(postUrl)}</id>
     <updated>${new Date(post.date).toISOString()}</updated>
     <summary>${escapeXml(post.summary)}</summary>
     ${(post.tags || []).map(tag => `<category term="${escapeXml(tag)}" />`).join('\n    ')}
@@ -493,9 +519,9 @@ ${rssItems}
   const atom = `<?xml version="1.0" encoding="UTF-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title>Mangesh Raut Technical Writings</title>
-  <link href="${siteUrl}/#blog" />
+  <link href="${siteUrl}/blog/" />
   <link href="${siteUrl}/feed.xml" rel="self" />
-  <id>${siteUrl}/</id>
+  <id>${siteUrl}/blog/</id>
   <updated>${atomUpdatedAt}</updated>
   <author>
     <name>Mangesh Raut</name>
@@ -519,26 +545,26 @@ async function generateSitemap(distDir) {
   const posts = getSortedBlogPosts();
   const latestPostDate = posts[0]?.date || today;
 
+  // Only real crawlable URLs — fragment URLs (#blog, #engineering) are ignored by Google
+  // and pollute Search Console. Standalone /blog and /case-studies pages are the source of truth.
   const staticPages = [
     { loc: `${siteUrl}/`, lastmod: today, changefreq: 'weekly', priority: '1.0' },
     { loc: `${siteUrl}/travel`, lastmod: today, changefreq: 'monthly', priority: '0.8' },
-    { loc: `${siteUrl}/monitor`, lastmod: today, changefreq: 'monthly', priority: '0.6' },
+    { loc: `${siteUrl}/monitor`, lastmod: today, changefreq: 'daily', priority: '0.6' },
     { loc: `${siteUrl}/systems`, lastmod: today, changefreq: 'weekly', priority: '0.75' },
     { loc: `${siteUrl}/uses`, lastmod: today, changefreq: 'monthly', priority: '0.5' },
-    { loc: `${siteUrl}/#engineering`, lastmod: today, changefreq: 'weekly', priority: '0.8' },
+    { loc: `${siteUrl}/blog`, lastmod: latestPostDate, changefreq: 'weekly', priority: '0.8' },
     ...caseStudies.map(cs => ({
       loc: `${siteUrl}/case-studies/${cs.slug}`,
       lastmod: today,
       changefreq: 'monthly',
       priority: '0.7',
     })),
-    { loc: `${siteUrl}/blog/`, lastmod: latestPostDate, changefreq: 'weekly', priority: '0.7' },
-    { loc: `${siteUrl}/#blog`, lastmod: latestPostDate, changefreq: 'weekly', priority: '0.7' },
     ...posts.map(post => ({
       loc: `${siteUrl}/blog/${post.id}`,
       lastmod: post.date || today,
       changefreq: 'monthly',
-      priority: '0.6',
+      priority: '0.65',
     })),
   ];
 
