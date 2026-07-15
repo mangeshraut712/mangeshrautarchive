@@ -872,16 +872,18 @@ export class AccessibilityEnhancer {
 
         .a11y-glass-popover {
           position: fixed;
-          left: 20px;
-          bottom: max(84px, calc(env(safe-area-inset-bottom) + 60px));
-          width: 310px;
-          padding: 1.25rem;
-          border-radius: 20px;
-          z-index: 9998;
+          left: max(1rem, env(safe-area-inset-left, 0px));
+          bottom: max(5.5rem, calc(env(safe-area-inset-bottom, 0px) + 4.5rem));
+          width: min(17.5rem, calc(100vw - 1.5rem));
+          padding: 1rem;
+          border-radius: 18px;
+          z-index: 100050;
           opacity: 0;
           transform: scale(0.96) translateY(8px);
           pointer-events: none;
-          box-shadow: 0 10px 40px rgb(0 0 0 / 10%), 0 1px 3px rgb(0 0 0 / 5%);
+          background: #ffffff;
+          border: 1px solid #e5e5ea;
+          box-shadow: 0 16px 40px rgb(0 0 0 / 16%);
           transition: opacity 0.25s ease, transform 0.28s cubic-bezier(0.2, 0.8, 0.2, 1);
         }
 
@@ -891,19 +893,37 @@ export class AccessibilityEnhancer {
           pointer-events: auto;
         }
 
+        html.dark .a11y-glass-popover {
+          background: #000000;
+          border-color: #2c2c2e;
+        }
+
         .a11y-glass-popover__title {
           font-size: 0.95rem;
           font-weight: 700;
-          margin-bottom: 0.85rem;
+          margin: 0 0 0.35rem;
           color: #1d1d1f;
-          letter-spacing: -0.015em;
+          letter-spacing: -0.02em;
         }
 
         .a11y-glass-popover__value {
-          font-size: 0.8rem;
-          color: #86868b;
-          font-weight: 600;
-          margin-bottom: 0.85rem;
+          font-size: 0.78rem;
+          color: #0071e3;
+          font-weight: 650;
+          margin: 0 0 0.65rem;
+        }
+
+        .a11y-glass-popover__icons {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin: 0 0 0.55rem;
+        }
+
+        .a11y-glass-icon {
+          width: 32px;
+          height: 22px;
+          display: block;
         }
 
         .a11y-glass-popover input[type='range'] {
@@ -919,8 +939,12 @@ export class AccessibilityEnhancer {
           color: #f5f5f7;
         }
 
+        html.dark .a11y-glass-popover__value {
+          color: #0a84ff;
+        }
+
         html.dark .a11y-glass-popover input[type='range'] {
-          accent-color: #4ea1ff;
+          accent-color: #0a84ff;
         }
       `;
       document.head.appendChild(style);
@@ -998,17 +1022,31 @@ export class AccessibilityEnhancer {
 
   formatGlassTintLabel(value) {
     const clamped = Math.min(100, Math.max(0, value));
-    if (clamped <= 12) return 'Clear glass';
-    if (clamped >= 88) return 'Tinted glass';
-    return `${clamped}% material tint`;
+    if (clamped <= 12) return 'Clear';
+    if (clamped >= 88) return 'Tinted';
+    return `${clamped}% tint`;
   }
 
   updateGlassTintReadout(value, root = document) {
+    const clamped = Math.min(100, Math.max(0, value));
+    const label = this.formatGlassTintLabel(clamped);
+
     const readout = root.querySelector('.a11y-glass-popover__value');
     if (readout) {
-      readout.textContent = this.formatGlassTintLabel(value);
+      readout.textContent = label;
     }
-    const clamped = Math.min(100, Math.max(0, value));
+
+    const badge = root.querySelector('.a11y-glass-popover__badge');
+    if (badge) {
+      badge.textContent = label;
+      badge.dataset.mode = clamped <= 12 ? 'clear' : clamped >= 88 ? 'tinted' : 'balanced';
+    }
+
+    const fill = root.querySelector('.a11y-glass-slider__fill');
+    if (fill) {
+      fill.style.width = `${clamped}%`;
+    }
+
     root.querySelectorAll('.a11y-glass-preset').forEach(button => {
       const preset = button.getAttribute('data-glass-preset');
       const isActive =
@@ -1016,15 +1054,16 @@ export class AccessibilityEnhancer {
       button.classList.toggle('is-active', isActive);
       button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
     });
-    const clearIcon = root.querySelector('.a11y-glass-icon--clear');
-    const tintedIcon = root.querySelector('.a11y-glass-icon--tinted');
-    clearIcon?.classList.toggle('is-active', clamped <= 12);
-    tintedIcon?.classList.toggle('is-active', clamped >= 88);
+
+    const slider = root.querySelector('.a11y-glass-popover input[type="range"]');
+    if (slider && Number(slider.value) !== clamped) {
+      slider.value = String(clamped);
+    }
   }
 
   /**
-   * WWDC26 Liquid Glass transparency slider
-   * 0 = ultra-clear, 100 = fully tinted. Drives --lg-tint.
+   * Liquid Glass material control — redesigned compact sheet.
+   * 0 = clear (solid default), 100 = tinted frosted. Drives --lg-tint.
    */
   toggleLiquidGlassPopover() {
     const glassButton = document.querySelector(
@@ -1036,34 +1075,74 @@ export class AccessibilityEnhancer {
       popover = document.createElement('div');
       popover.className = 'a11y-glass-popover';
       popover.id = 'a11y-glass-popover';
-      popover.setAttribute('role', 'group');
-      popover.setAttribute('aria-label', 'Liquid Glass transparency');
+      popover.setAttribute('role', 'dialog');
+      popover.setAttribute('aria-modal', 'false');
+      popover.setAttribute('aria-label', 'Liquid Glass material');
+
+      const header = document.createElement('div');
+      header.className = 'a11y-glass-popover__header';
+
+      const titleWrap = document.createElement('div');
+      titleWrap.className = 'a11y-glass-popover__heading';
 
       const title = document.createElement('p');
       title.className = 'a11y-glass-popover__title';
+      title.id = 'a11y-glass-title';
       title.textContent = 'Liquid Glass';
 
-      const readout = document.createElement('p');
-      readout.className = 'a11y-glass-popover__value';
-      readout.setAttribute('aria-live', 'polite');
+      const badge = document.createElement('span');
+      badge.className = 'a11y-glass-popover__badge';
+      badge.setAttribute('aria-live', 'polite');
 
-      const icons = document.createElement('div');
-      icons.className = 'a11y-glass-popover__icons';
-      icons.setAttribute('aria-hidden', 'true');
-      icons.innerHTML = `
-        <svg class="a11y-glass-icon a11y-glass-icon--clear" viewBox="0 0 32 22" fill="none">
-          <rect x="1.5" y="4.5" width="19" height="13" rx="3.5" stroke="currentColor" stroke-width="1.5"/>
-          <rect x="11.5" y="1.5" width="19" height="13" rx="3.5" stroke="currentColor" stroke-width="1.5" opacity="0.55"/>
-        </svg>
-        <svg class="a11y-glass-icon a11y-glass-icon--tinted" viewBox="0 0 32 22" fill="none">
-          <rect x="1.5" y="4.5" width="19" height="13" rx="3.5" stroke="currentColor" stroke-width="1.5" opacity="0.55"/>
-          <rect x="11.5" y="1.5" width="19" height="13" rx="3.5" fill="currentColor" opacity="0.82"/>
-        </svg>`;
+      titleWrap.append(title, badge);
 
-      const hint = document.createElement('p');
-      hint.className = 'a11y-glass-popover__hint';
-      hint.textContent =
-        'Clear is more transparent; tinted increases opacity and contrast for controls.';
+      const closeBtn = document.createElement('button');
+      closeBtn.type = 'button';
+      closeBtn.className = 'a11y-glass-popover__close';
+      closeBtn.setAttribute('aria-label', 'Close Liquid Glass settings');
+      closeBtn.innerHTML =
+        '<svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.1 2.1l7.8 7.8M9.9 2.1L2.1 9.9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>';
+      closeBtn.addEventListener('click', () => {
+        if (popover.classList.contains('is-open')) {
+          this.toggleLiquidGlassPopover();
+        }
+      });
+
+      header.append(titleWrap, closeBtn);
+
+      const segment = document.createElement('div');
+      segment.className = 'a11y-glass-popover__presets';
+      segment.setAttribute('role', 'group');
+      segment.setAttribute('aria-label', 'Glass material presets');
+
+      const clearPreset = document.createElement('button');
+      clearPreset.type = 'button';
+      clearPreset.className = 'a11y-glass-preset';
+      clearPreset.dataset.glassPreset = 'clear';
+      clearPreset.innerHTML =
+        '<span class="a11y-glass-preset__dot a11y-glass-preset__dot--clear" aria-hidden="true"></span><span>Clear</span>';
+      clearPreset.setAttribute('aria-label', 'Clear glass — maximum transparency');
+
+      const tintedPreset = document.createElement('button');
+      tintedPreset.type = 'button';
+      tintedPreset.className = 'a11y-glass-preset';
+      tintedPreset.dataset.glassPreset = 'tinted';
+      tintedPreset.innerHTML =
+        '<span class="a11y-glass-preset__dot a11y-glass-preset__dot--tinted" aria-hidden="true"></span><span>Tinted</span>';
+      tintedPreset.setAttribute('aria-label', 'Tinted glass — frosted material');
+
+      segment.append(clearPreset, tintedPreset);
+
+      const sliderBlock = document.createElement('div');
+      sliderBlock.className = 'a11y-glass-slider';
+
+      const track = document.createElement('div');
+      track.className = 'a11y-glass-slider__track';
+      track.setAttribute('aria-hidden', 'true');
+
+      const fill = document.createElement('div');
+      fill.className = 'a11y-glass-slider__fill';
+      track.appendChild(fill);
 
       const slider = document.createElement('input');
       slider.type = 'range';
@@ -1071,61 +1150,74 @@ export class AccessibilityEnhancer {
       slider.max = '100';
       slider.step = '1';
       slider.value = String(this.getStoredGlassTint());
-      slider.setAttribute('aria-label', 'Glass transparency, clear to tinted');
-      readout.textContent = this.formatGlassTintLabel(Number(slider.value));
+      slider.className = 'a11y-glass-slider__input';
+      slider.setAttribute('aria-labelledby', 'a11y-glass-title');
+      slider.setAttribute('aria-valuetext', this.formatGlassTintLabel(Number(slider.value)));
+      slider.setAttribute('aria-label', 'Glass material from clear to tinted');
+
+      sliderBlock.append(track, slider);
 
       const scale = document.createElement('div');
       scale.className = 'a11y-glass-popover__scale';
       scale.innerHTML = '<span>Clear</span><span>Tinted</span>';
 
-      const presets = document.createElement('div');
-      presets.className = 'a11y-glass-popover__presets';
-      presets.setAttribute('role', 'group');
-      presets.setAttribute('aria-label', 'Glass material presets');
+      const hint = document.createElement('p');
+      hint.className = 'a11y-glass-popover__hint';
+      hint.textContent = 'Tinted adds opacity and contrast for controls and cards.';
 
-      const clearPreset = document.createElement('button');
-      clearPreset.type = 'button';
-      clearPreset.className = 'a11y-glass-preset';
-      clearPreset.dataset.glassPreset = 'clear';
-      clearPreset.textContent = 'Clear glass';
-      clearPreset.setAttribute('aria-label', 'Clear glass — maximum transparency');
-
-      const tintedPreset = document.createElement('button');
-      tintedPreset.type = 'button';
-      tintedPreset.className = 'a11y-glass-preset';
-      tintedPreset.dataset.glassPreset = 'tinted';
-      tintedPreset.textContent = 'Tinted glass';
-      tintedPreset.setAttribute('aria-label', 'Tinted glass — frosted material');
-
-      presets.append(clearPreset, tintedPreset);
+      // Hidden live region kept for screen readers (badge is visual)
+      const readout = document.createElement('p');
+      readout.className = 'a11y-glass-popover__value';
+      readout.hidden = true;
+      readout.setAttribute('aria-live', 'polite');
 
       slider.addEventListener('input', () => {
         const nextValue = Number(slider.value);
         this.applyGlassTint(nextValue);
-        this.updateGlassTintReadout(nextValue);
+        slider.setAttribute('aria-valuetext', this.formatGlassTintLabel(nextValue));
       });
 
       clearPreset.addEventListener('click', () => {
-        this.applyGlassTint(0);
+        this.applyGlassTint(0, { instant: true });
         this.announce('Liquid Glass set to clear');
       });
 
       tintedPreset.addEventListener('click', () => {
-        this.applyGlassTint(100);
+        this.applyGlassTint(100, { instant: true });
         this.announce('Liquid Glass set to tinted');
       });
 
-      popover.append(title, readout, icons, slider, scale, hint, presets);
+      popover.append(header, segment, sliderBlock, scale, hint, readout);
       document.body.appendChild(popover);
+      this.updateGlassTintReadout(Number(slider.value), popover);
+
+      // Outside click closes
+      document.addEventListener(
+        'pointerdown',
+        event => {
+          if (!popover.classList.contains('is-open')) return;
+          const path = event.composedPath?.() || [];
+          if (path.includes(popover) || path.includes(glassButton)) return;
+          this.toggleLiquidGlassPopover();
+        },
+        true
+      );
+
+      document.addEventListener('keydown', event => {
+        if (event.key === 'Escape' && popover.classList.contains('is-open')) {
+          this.toggleLiquidGlassPopover();
+          glassButton?.focus();
+        }
+      });
     }
 
     const isOpen = popover.classList.toggle('is-open');
     glassButton?.classList.toggle('a11y-glass-active', isOpen);
     glassButton?.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-    this.announce(isOpen ? 'Liquid Glass slider opened' : 'Liquid Glass slider closed');
+    this.announce(isOpen ? 'Liquid Glass settings opened' : 'Liquid Glass settings closed');
     if (isOpen) {
-      this.updateGlassTintReadout(this.getStoredGlassTint());
-      popover.querySelector('input')?.focus();
+      this.updateGlassTintReadout(this.getStoredGlassTint(), popover);
+      popover.querySelector('.a11y-glass-slider__input')?.focus();
     }
   }
 

@@ -15,10 +15,10 @@
   --island-height-compact: 46px;
   --island-side-pad: clamp(28px, 4vw, 48px);
   --island-side-pad-compact: clamp(24px, 3vw, 40px);
-  --island-link-size: 13px;
+  --island-link-size: 12.5px;
   --island-link-weight: 400;
-  --island-link-gap: clamp(14px, 1.6vw, 24px);
-  --island-link-gap-compact: clamp(12px, 1.3vw, 18px);
+  --island-link-gap: clamp(6px, 0.9vw, 12px);
+  --island-link-gap-compact: clamp(5px, 0.75vw, 10px);
   --island-link-color: rgba(29, 29, 31, 0.88);
   --island-link-color-active: #000;
   --island-link-color-hover: #0071e3;
@@ -222,11 +222,11 @@ html.dark .global-nav.dynamic-island.scrolled {
   align-items: center;
   justify-content: center;
   position: relative;
-  min-height: 32px !important;
-  padding: 6px 9px !important;
+  min-height: 30px !important;
+  padding: 5px 7px !important;
   font-size: var(--island-link-size) !important;
   font-weight: var(--island-link-weight) !important;
-  letter-spacing: -0.01em !important;
+  letter-spacing: -0.012em !important;
   color: var(--island-link-color) !important;
   transition:
     color 0.2s ease,
@@ -243,9 +243,27 @@ html.dark .global-nav.dynamic-island.scrolled {
   text-decoration: none !important;
 }
 
-/* External page links — subtle separation from in-page anchors */
+/* Divider between in-page sections and separate HTML pages */
+.global-nav.dynamic-island .nav-links-sep {
+  display: inline-block;
+  flex: 0 0 auto;
+  width: 1px;
+  height: 1rem;
+  margin: 0 0.2rem;
+  background: rgb(0 0 0 / 12%);
+  border-radius: 1px;
+  align-self: center;
+}
+
+html.dark .global-nav.dynamic-island .nav-links-sep {
+  background: rgb(255 255 255 / 18%);
+}
+
+/* Separate HTML pages — slightly stronger weight so they read as destinations */
 .global-nav.dynamic-island .nav-link--page {
-  opacity: 0.92;
+  opacity: 1;
+  font-weight: 500 !important;
+  letter-spacing: -0.01em !important;
 }
 
 html.dark .global-nav.dynamic-island .nav-link {

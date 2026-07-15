@@ -419,6 +419,7 @@ html.dark .section-subtitle {
   overflow: hidden !important;
   display: block !important;
   box-sizing: border-box;
+  margin-top: 0.35rem !important;
 }
 
 #contact .dream-companies-track,
@@ -469,6 +470,14 @@ html.dark #contact .dream-car-item.has-dark-logo .logo-dark {
 html.dark #contact .dream-company-item.logo-mono .logo-light,
 html.dark #contact .dream-car-item.logo-mono .logo-light {
   filter: brightness(0) invert(1) !important;
+  opacity: 0.95 !important;
+}
+
+/* Colored logos without dark variants — slight lift for dark surfaces */
+html.dark #contact .dream-company-item:not(.has-dark-logo):not(.logo-mono) .logo-light,
+html.dark #contact .dream-car-item:not(.has-dark-logo):not(.logo-mono) .car-logo {
+  filter: brightness(1.12) contrast(1.08) saturate(1.05) !important;
+  opacity: 1 !important;
 }
 
 /* Support payment buttons — prevent raw SVG anchors from exploding height */
@@ -1216,4 +1225,260 @@ section[id] {
 
 .error-destinations a {
   min-height: 44px;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Site polish — contact columns, footer, logos, projects, a11y tools
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Contact: balanced two-column stack */
+@media (min-width: 1024px) {
+  #contact .contact-grid {
+    align-items: stretch !important;
+  }
+
+  #contact .contact-column {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 1.15rem !important;
+    height: 100% !important;
+  }
+
+  #contact .contact-column > * {
+    flex: 0 0 auto;
+  }
+
+  #contact .contact-column:last-child .currently-card,
+  #contact .contact-column:last-child .calendar-wrapper-clean,
+  #contact .contact-column:last-child .calendly-panel {
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  #contact .contact-column:last-child .currently-card {
+    flex: 1 1 auto !important;
+  }
+}
+
+#contact .contact-column:last-child .currently-card,
+#contact .contact-column:last-child .calendar-wrapper-clean,
+#contact .contact-column:last-child .apple-card,
+#contact .contact-column:last-child .calendly-panel {
+  border-radius: 18px !important;
+  border: 1px solid var(--card-border-rest, #e5e5ea) !important;
+  background: #ffffff !important;
+  box-shadow: none !important;
+}
+
+html.dark #contact .contact-column:last-child .currently-card,
+html.dark #contact .contact-column:last-child .calendar-wrapper-clean,
+html.dark #contact .contact-column:last-child .apple-card,
+html.dark #contact .contact-column:last-child .calendly-panel {
+  background: #000000 !important;
+  border-color: #2c2c2e !important;
+}
+
+/* Space under Follow Me social logos before dream marquees */
+#contact .follow-section,
+#contact .social-section {
+  margin-bottom: 0 !important;
+  padding-bottom: 0.35rem !important;
+}
+
+#contact .contact-social-wrapper.wrapper,
+#contact ul.contact-social-wrapper {
+  margin-bottom: 1.35rem !important;
+  padding-bottom: 0.35rem !important;
+  row-gap: 0.65rem !important;
+}
+
+/* Footer — tighten bottom dead space; breathing room under social row */
+footer {
+  padding: 1rem 0 0.85rem !important;
+  margin-bottom: 0 !important;
+}
+
+footer .footer-wrapper {
+  padding-bottom: 0 !important;
+  margin-bottom: 0 !important;
+  gap: 0.75rem !important;
+}
+
+footer .footer-social-row,
+footer .footer-social-wrapper {
+  margin-bottom: 0.85rem !important;
+  padding-bottom: 0.15rem !important;
+}
+
+footer .footer-info-container {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+/* Don’t leave a huge blank band under the page */
+body:not(.systems-page):not(.monitor-page):not(.uses-page):not(.error-page) main#main-content {
+  padding-bottom: calc(
+    var(--fab-size, 3.75rem) * 1.35 + var(--fab-gap, 0.85rem) + env(safe-area-inset-bottom, 0px) +
+      0.75rem
+  ) !important;
+}
+
+/* Project showcase cards — solid, clearer hierarchy */
+#projects #github-projects-container .showcase-project-card {
+  background: #ffffff !important;
+  border: 1px solid var(--card-border-rest, #e5e5ea) !important;
+  box-shadow: 0 1px 0 rgb(0 0 0 / 3%) !important;
+}
+
+html.dark #projects #github-projects-container .showcase-project-card {
+  background: #000000 !important;
+  border-color: #2c2c2e !important;
+  box-shadow: none !important;
+}
+
+#projects #github-projects-container .showcase-project-card:hover {
+  border-color: #0071e3 !important;
+}
+
+html.dark #projects #github-projects-container .showcase-project-card:hover {
+  border-color: #0a84ff !important;
+}
+
+/* Speak / Translate — clearer, larger Apple controls */
+.card-read-toolbar {
+  gap: 0.4rem !important;
+}
+
+.card-read-toolbar .card-speak-btn,
+.card-read-toolbar .card-translate-btn,
+.card-read-toolbar .card-restore-btn {
+  width: auto !important;
+  height: 36px !important;
+  min-width: 36px !important;
+  min-height: 36px !important;
+  padding: 0 0.7rem !important;
+  gap: 0.35rem !important;
+  border-radius: 999px !important;
+  border: 1px solid #d2d2d7 !important;
+  background: #ffffff !important;
+  color: #1d1d1f !important;
+  -webkit-text-fill-color: #1d1d1f !important;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 6%) !important;
+  font-size: 0.75rem !important;
+  font-weight: 650 !important;
+  letter-spacing: -0.01em !important;
+}
+
+.card-read-toolbar .card-tool-label {
+  display: inline !important;
+  line-height: 1 !important;
+}
+
+@media (width <= 640px) {
+  .card-read-toolbar .card-tool-label {
+    display: none !important;
+  }
+
+  .card-read-toolbar .card-speak-btn,
+  .card-read-toolbar .card-translate-btn,
+  .card-read-toolbar .card-restore-btn {
+    width: 40px !important;
+    padding: 0 !important;
+  }
+}
+
+html.dark .card-read-toolbar .card-speak-btn,
+html.dark .card-read-toolbar .card-translate-btn,
+html.dark .card-read-toolbar .card-restore-btn {
+  border-color: #3a3a3c !important;
+  background: #000000 !important;
+  color: #f5f5f7 !important;
+  -webkit-text-fill-color: #f5f5f7 !important;
+  box-shadow: none !important;
+}
+
+.card-read-toolbar .card-speak-btn:hover,
+.card-read-toolbar .card-translate-btn:hover,
+.card-read-toolbar .card-restore-btn:hover {
+  border-color: #0071e3 !important;
+  color: #0071e3 !important;
+  -webkit-text-fill-color: #0071e3 !important;
+  background: rgb(0 113 227 / 8%) !important;
+  transform: none !important;
+}
+
+html.dark .card-read-toolbar .card-speak-btn:hover,
+html.dark .card-read-toolbar .card-translate-btn:hover,
+html.dark .card-read-toolbar .card-restore-btn:hover {
+  border-color: #0a84ff !important;
+  color: #0a84ff !important;
+  -webkit-text-fill-color: #0a84ff !important;
+  background: rgb(10 132 255 / 12%) !important;
+}
+
+.card-read-toolbar .card-speak-btn.is-speaking,
+.card-read-toolbar .card-speak-btn[aria-pressed='true'] {
+  background: #0071e3 !important;
+  border-color: #0071e3 !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+html.dark .card-read-toolbar .card-speak-btn.is-speaking,
+html.dark .card-read-toolbar .card-speak-btn[aria-pressed='true'] {
+  background: #0a84ff !important;
+  border-color: #0a84ff !important;
+}
+
+.card-read-toolbar .card-translate-btn[aria-expanded='true'] {
+  border-color: #0071e3 !important;
+  color: #0071e3 !important;
+  -webkit-text-fill-color: #0071e3 !important;
+  box-shadow: 0 0 0 3px rgb(0 113 227 / 14%) !important;
+}
+
+html.dark .card-read-toolbar .card-translate-btn[aria-expanded='true'] {
+  border-color: #0a84ff !important;
+  color: #0a84ff !important;
+  -webkit-text-fill-color: #0a84ff !important;
+  box-shadow: 0 0 0 3px rgb(10 132 255 / 18%) !important;
+}
+
+.card-read-toolbar svg,
+.card-read-toolbar i {
+  width: 16px !important;
+  height: 16px !important;
+  font-size: 15px !important;
+}
+
+.card-translate-popover {
+  border-radius: 16px !important;
+  border: 1px solid #e5e5ea !important;
+  background: #ffffff !important;
+  box-shadow: 0 16px 40px rgb(0 0 0 / 14%) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+html.dark .card-translate-popover {
+  background: #000000 !important;
+  border-color: #2c2c2e !important;
+  box-shadow: 0 18px 48px rgb(0 0 0 / 55%) !important;
+}
+
+/* Launch / first paint — reduce long blank load feeling */
+#launch-intro {
+  transition: opacity 0.35s ease !important;
+}
+
+html.launch-intro-active body {
+  overflow: hidden;
+}
+
+/* Skills loading placeholder — compact, non-blocking */
+#skills-loading {
+  min-height: 4.5rem !important;
+  padding: 1rem !important;
 }

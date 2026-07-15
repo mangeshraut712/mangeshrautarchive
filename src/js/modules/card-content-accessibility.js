@@ -317,8 +317,8 @@ function buildToolbar(card, profile) {
   speakBtn.className = 'card-speak-btn about-speak-btn';
   speakBtn.setAttribute('aria-pressed', 'false');
   speakBtn.setAttribute('aria-label', 'Listen to this card');
-  speakBtn.title = 'Listen';
-  speakBtn.innerHTML = `${SPEAK_ICON}<span class="sr-only">Listen</span>`;
+  speakBtn.title = 'Listen to this content';
+  speakBtn.innerHTML = `${SPEAK_ICON}<span class="card-tool-label" aria-hidden="true">Listen</span><span class="sr-only">Listen</span>`;
 
   const translateWrap = document.createElement('div');
   translateWrap.className = 'card-translate-wrap';
@@ -328,8 +328,8 @@ function buildToolbar(card, profile) {
   translateBtn.className = 'card-translate-btn';
   translateBtn.setAttribute('aria-expanded', 'false');
   translateBtn.setAttribute('aria-label', 'Translate this card');
-  translateBtn.title = 'Translate';
-  translateBtn.innerHTML = `${TRANSLATE_ICON}<span class="sr-only">Translate</span>`;
+  translateBtn.title = 'Translate this content';
+  translateBtn.innerHTML = `${TRANSLATE_ICON}<span class="card-tool-label" aria-hidden="true">Translate</span><span class="sr-only">Translate</span>`;
 
   const popover = document.createElement('div');
   popover.className = 'card-translate-popover';
