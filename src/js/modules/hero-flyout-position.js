@@ -1,11 +1,12 @@
 /**
- * Hero flyout placement — anchor under badge cluster (stable), never jump
- * to music-card edge or off-screen "somewhere else".
+ * Hero flyout placement — centered under badge cluster, occupying the music
+ * card slot so nothing overlaps awkwardly on either side.
  */
 (function () {
-  const DESKTOP_MQ = '(min-width: 901px)';
   const MUSIC_SLOT_SELECTOR = '#music-card';
   const FLYOUT_IDS = ['vibe-stack-flyout', 'reach-flyout'];
+  const GAP = 10;
+  const MARGIN = 14;
 
   function portalFlyoutsToBody() {
     FLYOUT_IDS.forEach(id => {
@@ -22,10 +23,6 @@
     portalFlyoutsToBody();
   }
 
-  function isDesktop() {
-    return window.matchMedia(DESKTOP_MQ).matches;
-  }
-
   function getMusicSlotRect() {
     return document.querySelector(MUSIC_SLOT_SELECTOR)?.getBoundingClientRect() || null;
   }
@@ -39,101 +36,87 @@
   }
 
   /**
+   * Place flyout centered under badges (or exactly over the music card).
+   * Hides the music card while open so there is no side bleed / overlap.
+   *
    * @param {object} options
    * @param {HTMLElement} options.flyout
    * @param {HTMLElement} options.anchor
-   * @param {'left' | 'right'} options.side  preferred horizontal bias
+   * @param {'left' | 'right' | 'center'} [options.side]
    */
-  function positionHeroFlyout({ flyout, anchor, side }) {
+  function positionHeroFlyout({ flyout, anchor, side: _side = 'center' }) {
     if (!flyout || !anchor) return;
 
-    flyout.classList.remove('hero-flyout--music-slot');
     flyout.style.position = 'fixed';
     flyout.style.right = '';
     flyout.style.bottom = '';
 
-    const margin = 14;
-    const gap = 10;
     const badgeRect = anchor.getBoundingClientRect();
     const viewportW = window.innerWidth;
     const viewportH = window.innerHeight;
+    const slot = getMusicSlotRect();
+    const isReach = flyout.id === 'reach-flyout';
 
-    // Preferred width by flyout type
-    const preferredWidth =
-      flyout.id === 'reach-flyout'
-        ? clamp(Math.min(360, viewportW - margin * 2), 280, 380)
-        : clamp(Math.min(320, viewportW - margin * 2), 260, 340);
-
-    flyout.style.width = `${preferredWidth}px`;
-    flyout.style.maxWidth = `${Math.min(preferredWidth, viewportW - margin * 2)}px`;
-
-    // Measure after width applied
-    const panelWidth = flyout.offsetWidth || preferredWidth;
-    const panelHeight = flyout.offsetHeight || (flyout.id === 'reach-flyout' ? 420 : 90);
-
+    // Prefer music-card geometry: same width + horizontal alignment as the card.
+    // Fall back to badge-centered placement when the music card is not laid out.
     let left;
     let top;
+    let width;
 
-    if (!isDesktop()) {
-      // Mobile: dock under badges, full-ish width, or music slot if available
-      const slot = getMusicSlotRect();
+    if (slot && slot.width > 160 && slot.height > 40) {
       flyout.classList.add('hero-flyout--music-slot');
+      setMusicSlotHidden(true);
 
-      if (slot && slot.width > 180) {
-        const width = Math.round(slot.width);
-        left = Math.round(clamp(slot.left, margin, viewportW - width - margin));
-        top = Math.round(slot.top);
-        flyout.style.width = `${width}px`;
-        flyout.style.maxWidth = `${width}px`;
-        setMusicSlotHidden(true);
-      } else {
-        setMusicSlotHidden(false);
-        left = Math.round(badgeRect.left + badgeRect.width / 2 - panelWidth / 2);
-        left = clamp(left, margin, viewportW - panelWidth - margin);
-        top = Math.round(badgeRect.bottom + gap);
-        if (top + panelHeight > viewportH - margin) {
-          top = Math.max(margin, Math.round(badgeRect.top - panelHeight - gap));
-        }
-      }
-
-      flyout.style.left = `${left}px`;
-      flyout.style.top = `${top}px`;
-      flyout.style.maxHeight = `${Math.max(120, viewportH - top - margin)}px`;
-      flyout.style.overflow = flyout.id === 'vibe-stack-flyout' ? 'visible' : 'auto';
-      return;
-    }
-
-    setMusicSlotHidden(false);
-
-    // Desktop: always hug the badge cluster — open just under it.
-    // Horizontal bias only; never teleport to music-card edge.
-    const centerX = badgeRect.left + badgeRect.width / 2;
-    if (side === 'left') {
-      left = centerX - panelWidth + badgeRect.width * 0.15;
+      // Match music card width + left exactly so there is no side gap or bleed.
+      width = Math.round(slot.width);
+      left = Math.round(slot.left);
+      top = Math.round(slot.top);
     } else {
-      left = centerX - badgeRect.width * 0.15;
+      // No music card — center under badges.
+      flyout.classList.remove('hero-flyout--music-slot');
+      setMusicSlotHidden(false);
+
+      width = isReach
+        ? clamp(Math.min(360, viewportW - MARGIN * 2), 280, 380)
+        : clamp(Math.min(Math.max(badgeRect.width + 80, 300), viewportW - MARGIN * 2), 260, 420);
+
+      left = Math.round(badgeRect.left + badgeRect.width / 2 - width / 2);
+      left = clamp(left, MARGIN, viewportW - width - MARGIN);
+      top = Math.round(badgeRect.bottom + GAP);
     }
 
-    top = badgeRect.bottom + gap;
+    // Keep fully on-screen horizontally
+    left = clamp(left, MARGIN, Math.max(MARGIN, viewportW - width - MARGIN));
 
-    // If not enough space below, flip above the badges
-    if (top + Math.min(panelHeight, 280) > viewportH - margin) {
-      top = Math.max(margin, badgeRect.top - Math.min(panelHeight, 280) - gap);
-    }
+    flyout.style.width = `${width}px`;
+    flyout.style.maxWidth = `${Math.min(width, viewportW - MARGIN * 2)}px`;
+    flyout.style.left = `${left}px`;
+    flyout.style.top = `${top}px`;
 
-    // Clamp horizontally into viewport only
-    left = clamp(left, margin, viewportW - panelWidth - margin);
-
-    flyout.style.left = `${Math.round(left)}px`;
-    flyout.style.top = `${Math.round(top)}px`;
-
-    const maxHeight = Math.max(120, viewportH - margin - top);
-    if (flyout.id === 'vibe-stack-flyout') {
-      flyout.style.maxHeight = '';
-      flyout.style.overflow = 'visible';
-    } else {
+    // Tall reach panel: stay in the music slot and scroll inside — never jump above.
+    // Short vibe marquee: only flip above if it would clip the bottom edge.
+    const maxHeight = Math.max(140, viewportH - MARGIN - top);
+    if (isReach) {
       flyout.style.maxHeight = `${Math.round(maxHeight)}px`;
       flyout.style.overflow = 'auto';
+      // Keep music covered for the full open duration
+      if (slot) {
+        flyout.classList.add('hero-flyout--music-slot');
+        setMusicSlotHidden(true);
+      }
+    } else {
+      const panelHeight = flyout.offsetHeight || 80;
+      if (top + panelHeight > viewportH - MARGIN) {
+        const above = Math.round(badgeRect.top - panelHeight - GAP);
+        if (above >= MARGIN) {
+          top = above;
+          flyout.style.top = `${top}px`;
+          setMusicSlotHidden(false);
+          flyout.classList.remove('hero-flyout--music-slot');
+        }
+      }
+      flyout.style.maxHeight = '';
+      flyout.style.overflow = 'visible';
     }
   }
 
@@ -149,7 +132,15 @@
     flyout.style.bottom = '';
     flyout.style.position = '';
     flyout.classList.remove('hero-flyout--music-slot');
-    setMusicSlotHidden(false);
+    // Only unhide music if no other hero flyout is open
+    const otherOpen = FLYOUT_IDS.some(id => {
+      if (flyout.id && id === flyout.id) return false;
+      const el = document.getElementById(id);
+      return el?.classList.contains('is-open');
+    });
+    if (!otherOpen) {
+      setMusicSlotHidden(false);
+    }
   }
 
   globalThis.positionHeroFlyout = positionHeroFlyout;

@@ -1513,14 +1513,40 @@ html.dark .reach-countries-list::-webkit-scrollbar-thumb {
   white-space: nowrap;
 }
 
-@media (width <= 900px) {
-  #music-card.is-flyout-covered {
-    visibility: hidden;
-    pointer-events: none;
-  }
+/* Music card fully yields to open flyout — desktop + mobile (no side bleed) */
+#music-card.is-flyout-covered {
+  visibility: hidden !important;
+  pointer-events: none !important;
+  opacity: 0 !important;
+}
 
+.hero-flyout--music-slot {
+  transform: none !important;
+  z-index: 3200;
+}
+
+/* Full-width marquee / reach panel inside music-card slot */
+.hero-flyout--music-slot .vibe-stack-card,
+.hero-flyout--music-slot .portfolio-reach-panel {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.hero-flyout--music-slot .vibe-stack-card {
+  min-height: 3.65rem;
+  padding: 0.8rem 0.95rem;
+  border-radius: 22px;
+}
+
+.hero-flyout--music-slot .portfolio-reach-panel {
+  max-height: inherit;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+
+@media (width <= 900px) {
   .hero-flyout--music-slot {
-    transform: none;
     z-index: 3100;
   }
 
@@ -1647,19 +1673,25 @@ html.dark .reach-countries-list::-webkit-scrollbar-thumb {
 
 @media (min-width: 901px) {
   .hero-flyout--left,
-  .hero-flyout--right {
+  .hero-flyout--right,
+  .hero-flyout--music-slot {
     max-height: calc(100vh - 2rem);
-    overflow: visible;
     scrollbar-width: thin;
   }
 
   .hero-flyout--left .vibe-stack-card,
-  .hero-flyout--right .portfolio-reach-panel {
+  .hero-flyout--music-slot .vibe-stack-card {
     max-height: none;
   }
 
-  .hero-flyout--left.is-open {
-    min-width: 280px;
+  .hero-flyout--right .portfolio-reach-panel,
+  .hero-flyout--music-slot .portfolio-reach-panel {
+    max-height: inherit;
+  }
+
+  .hero-flyout--left.is-open,
+  .hero-flyout--music-slot.is-open#vibe-stack-flyout {
+    min-width: 0;
   }
 
   .portfolio-reach-panel .reach-panel-chart svg {

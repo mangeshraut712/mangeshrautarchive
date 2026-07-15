@@ -317,7 +317,7 @@
     globalThis.positionHeroFlyout?.({
       flyout: reachFlyout,
       anchor: document.querySelector('.hero-badge-cluster') || reachBadge,
-      side: 'right',
+      side: 'center',
     });
   }
 

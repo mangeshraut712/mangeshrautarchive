@@ -84,9 +84,9 @@ export class CalendarWidget {
               <span class="current-year">${year}</span>
             </div>
             <div class="ios-actions">
-              <button class="ios-btn icon-only" title="Previous Month"><i class="fas fa-chevron-left"></i></button>
-              <button class="ios-btn today-btn" title="Go to Today"><i class="fas fa-calendar-day"></i></button>
-              <button class="ios-btn icon-only" title="Next Month"><i class="fas fa-chevron-right"></i></button>
+              <button type="button" class="ios-btn icon-only" title="Previous Month" aria-label="Previous month"><i class="fas fa-chevron-left" aria-hidden="true"></i></button>
+              <button type="button" class="ios-btn today-btn" title="Go to Today" aria-label="Go to today"><i class="fas fa-calendar-day" aria-hidden="true"></i></button>
+              <button type="button" class="ios-btn icon-only" title="Next Month" aria-label="Next month"><i class="fas fa-chevron-right" aria-hidden="true"></i></button>
             </div>
           </div>
           

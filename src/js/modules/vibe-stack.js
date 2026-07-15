@@ -23,7 +23,7 @@
     globalThis.positionHeroFlyout?.({
       flyout: vibeFlyout,
       anchor: badgeCluster || vibeBadge,
-      side: 'left',
+      side: 'center',
     });
   }
 

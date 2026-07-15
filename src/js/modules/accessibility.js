@@ -290,6 +290,31 @@ export class AccessibilityEnhancer {
    * Handle Escape key press
    */
   handleEscapeKey() {
+    // Liquid Glass settings first
+    const glassPopover = document.querySelector('.a11y-glass-popover.is-open');
+    if (glassPopover) {
+      this.toggleLiquidGlassPopover();
+      document
+        .querySelector('.a11y-toolbar button[aria-label="Liquid Glass transparency"]')
+        ?.focus();
+      this.announce('Liquid Glass settings closed');
+      return;
+    }
+
+    // Hero flyouts (Vibe Coder / Portfolio Reach)
+    const openFlyout = document.querySelector('.hero-flyout.is-open');
+    if (openFlyout) {
+      if (openFlyout.id === 'vibe-stack-flyout') {
+        window.vibeStack?.close?.();
+        document.getElementById('vibe-coder-badge')?.focus();
+      } else if (openFlyout.id === 'reach-flyout') {
+        document.getElementById('portfolio-reach')?.click();
+        document.getElementById('portfolio-reach')?.focus();
+      }
+      this.announce('Panel closed');
+      return;
+    }
+
     // Close search overlay fully (must clear display:flex !important, not only .active)
     const searchOverlay = document.querySelector('#search-overlay');
     const searchOpen =
@@ -329,6 +354,14 @@ export class AccessibilityEnhancer {
       } else if (menuBtn) {
         menuBtn.click();
       }
+      return;
+    }
+
+    // Keyboard shortcuts modal
+    const shortcutsModal = document.querySelector('.modal:has(.shortcut-item)');
+    if (shortcutsModal) {
+      shortcutsModal.remove();
+      this.announce('Keyboard shortcuts closed');
       return;
     }
 
@@ -654,33 +687,51 @@ export class AccessibilityEnhancer {
    * Add missing ARIA labels
    */
   addMissingAriaLabels() {
-    // Buttons without labels
     const buttons = document.querySelectorAll('button:not([aria-label]):not([aria-labelledby])');
     buttons.forEach(button => {
-      if (!button.textContent.trim() && button.querySelector('i, svg')) {
-        const icon = button.querySelector('i');
-        if (icon) {
-          const classes = icon.className;
-          let label = 'Button';
+      const text = (button.textContent || '').replace(/\s+/g, ' ').trim();
+      if (text) return;
 
-          if (classes.includes('search')) label = 'Search';
-          else if (classes.includes('menu')) label = 'Menu';
-          else if (classes.includes('close')) label = 'Close';
-          else if (classes.includes('theme')) label = 'Toggle theme';
+      if (button.title) {
+        button.setAttribute('aria-label', button.title);
+        return;
+      }
 
-          button.setAttribute('aria-label', label);
-        }
+      const icon = button.querySelector('i, svg');
+      if (!icon) return;
+
+      const classes = `${icon.className || ''} ${button.className || ''}`;
+      let label = 'Button';
+      if (/search/i.test(classes)) label = 'Search';
+      else if (/menu|hamburger/i.test(classes)) label = 'Menu';
+      else if (/close|times|xmark/i.test(classes)) label = 'Close';
+      else if (/theme|moon|sun/i.test(classes)) label = 'Toggle theme';
+      else if (/chevron-left|arrow-left/i.test(classes)) label = 'Previous';
+      else if (/chevron-right|arrow-right/i.test(classes)) label = 'Next';
+      else if (/calendar|today/i.test(classes)) label = 'Calendar';
+      else if (/share/i.test(classes)) label = 'Share';
+      else if (/plus/i.test(classes)) label = 'Add';
+      else if (/preview/i.test(classes)) label = 'Expand section preview';
+      button.setAttribute('aria-label', label);
+    });
+
+    const links = document.querySelectorAll('a:not([aria-label]):not([aria-labelledby])');
+    links.forEach(link => {
+      if ((link.textContent || '').trim()) return;
+      if (link.title) {
+        link.setAttribute('aria-label', link.title);
+        return;
+      }
+      const img = link.querySelector('img');
+      if (img?.alt) {
+        link.setAttribute('aria-label', img.alt);
       }
     });
 
-    // Links without labels
-    const links = document.querySelectorAll('a:not([aria-label]):not([aria-labelledby])');
-    links.forEach(link => {
-      if (!link.textContent.trim() && link.querySelector('i, svg, img')) {
-        const img = link.querySelector('img');
-        if (img && img.alt) {
-          link.setAttribute('aria-label', img.alt);
-        }
+    // Icon-only images that are decorative
+    document.querySelectorAll('img:not([alt])').forEach(img => {
+      if (img.closest('a, button') || img.getAttribute('role') === 'presentation') {
+        img.setAttribute('alt', '');
       }
     });
   }
@@ -748,24 +799,38 @@ export class AccessibilityEnhancer {
     // Reduced motion
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       document.documentElement.style.setProperty('--animation-duration', '0.01ms');
-      this.announce('Reduced motion enabled');
+      document.documentElement.classList.add('reduce-motion');
     }
 
-    // High contrast
+    // High contrast — system preference + user override
+    let userContrast = null;
+    try {
+      const stored = localStorage.getItem('a11y-high-contrast');
+      if (stored === '1') userContrast = true;
+      if (stored === '0') userContrast = false;
+    } catch {
+      // ignore
+    }
+
     const contrastMedia = window.matchMedia('(prefers-contrast: more), (prefers-contrast: high)');
     const syncContrast = () => {
-      document.documentElement.classList.toggle('high-contrast', contrastMedia.matches);
+      if (userContrast === null) {
+        document.documentElement.classList.toggle('high-contrast', contrastMedia.matches);
+      } else {
+        document.documentElement.classList.toggle('high-contrast', userContrast);
+      }
     };
     syncContrast();
     contrastMedia.addEventListener('change', syncContrast);
 
-    // Listen for changes
     window.matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', e => {
       if (e.matches) {
         document.documentElement.style.setProperty('--animation-duration', '0.01ms');
+        document.documentElement.classList.add('reduce-motion');
         this.announce('Reduced motion enabled');
       } else {
         document.documentElement.style.removeProperty('--animation-duration');
+        document.documentElement.classList.remove('reduce-motion');
         this.announce('Animations enabled');
       }
     });
@@ -980,6 +1045,11 @@ export class AccessibilityEnhancer {
         action: () => this.adjustTextSize(0.9),
       },
       {
+        icon: '▣',
+        label: 'Toggle high contrast',
+        action: () => this.toggleHighContrast(),
+      },
+      {
         icon: '◐',
         label: 'Liquid Glass transparency',
         action: () => this.toggleLiquidGlassPopover(),
@@ -1004,6 +1074,11 @@ export class AccessibilityEnhancer {
         button.setAttribute('aria-expanded', 'false');
         button.setAttribute('aria-controls', 'a11y-glass-popover');
       }
+      if (btn.label === 'Toggle high contrast') {
+        const active = document.documentElement.classList.contains('high-contrast');
+        button.setAttribute('aria-pressed', active ? 'true' : 'false');
+        button.classList.toggle('is-active', active);
+      }
       const isHtmlIcon = btn.icon.startsWith('<');
       const iconClass =
         !isHtmlIcon && btn.icon.startsWith('A') ? 'a11y-toolbar-button__icon--text' : '';
@@ -1017,6 +1092,55 @@ export class AccessibilityEnhancer {
     if (!hasExistingToolbar) {
       document.body.appendChild(toolbar);
       document.body.classList.add('has-a11y-toolbar');
+    }
+
+    this.setupToolbarKeyboardNav(toolbar);
+    this.restoreTextSize();
+  }
+
+  setupToolbarKeyboardNav(toolbar) {
+    if (!toolbar || toolbar.dataset.kbNav === 'true') return;
+    toolbar.dataset.kbNav = 'true';
+    toolbar.addEventListener('keydown', e => {
+      if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(e.key)) return;
+      const buttons = Array.from(toolbar.querySelectorAll('button'));
+      if (!buttons.length) return;
+      const index = buttons.indexOf(document.activeElement);
+      if (index < 0) return;
+      e.preventDefault();
+      let next = index;
+      if (e.key === 'ArrowRight') next = (index + 1) % buttons.length;
+      if (e.key === 'ArrowLeft') next = (index - 1 + buttons.length) % buttons.length;
+      if (e.key === 'Home') next = 0;
+      if (e.key === 'End') next = buttons.length - 1;
+      buttons[next]?.focus();
+    });
+  }
+
+  toggleHighContrast() {
+    const root = document.documentElement;
+    const next = !root.classList.contains('high-contrast');
+    root.classList.toggle('high-contrast', next);
+    try {
+      localStorage.setItem('a11y-high-contrast', next ? '1' : '0');
+    } catch {
+      // best-effort
+    }
+    const btn = document.querySelector('.a11y-toolbar button[aria-label="Toggle high contrast"]');
+    btn?.setAttribute('aria-pressed', next ? 'true' : 'false');
+    btn?.classList.toggle('is-active', next);
+    this.announce(next ? 'High contrast enabled' : 'High contrast disabled');
+  }
+
+  restoreTextSize() {
+    try {
+      const stored = Number(localStorage.getItem('a11y-text-scale'));
+      if (Number.isFinite(stored) && stored >= 0.85 && stored <= 1.4) {
+        const base = 16;
+        document.documentElement.style.fontSize = `${(base * stored).toFixed(2)}px`;
+      }
+    } catch {
+      // ignore
     }
   }
 
@@ -1253,13 +1377,20 @@ export class AccessibilityEnhancer {
   }
 
   /**
-   * Adjust text size
+   * Adjust text size (clamped 85%–140% of 16px base)
    */
   adjustTextSize(factor) {
-    const currentSize = parseFloat(getComputedStyle(document.documentElement).fontSize);
-    const newSize = currentSize * factor;
-    document.documentElement.style.fontSize = `${newSize}px`;
-    this.announce(`Text size ${factor > 1 ? 'increased' : 'decreased'}`);
+    const base = 16;
+    const currentSize = parseFloat(getComputedStyle(document.documentElement).fontSize) || base;
+    const next = Math.min(base * 1.4, Math.max(base * 0.85, currentSize * factor));
+    document.documentElement.style.fontSize = `${next.toFixed(2)}px`;
+    try {
+      localStorage.setItem('a11y-text-scale', String(next / base));
+    } catch {
+      // best-effort
+    }
+    const pct = Math.round((next / base) * 100);
+    this.announce(`Text size ${pct}%`);
   }
 }
 

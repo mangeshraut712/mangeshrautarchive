@@ -37,6 +37,36 @@ html.dark {
   border-radius: 4px;
 }
 
+/* Accessibility toolbar — active / pressed states */
+.a11y-toolbar button.is-active,
+.a11y-toolbar button[aria-pressed='true'],
+.a11y-toolbar button.a11y-glass-active {
+  box-shadow: 0 0 0 2px rgb(0 113 227 / 35%);
+}
+
+html.dark .a11y-toolbar button.is-active,
+html.dark .a11y-toolbar button[aria-pressed='true'],
+html.dark .a11y-toolbar button.a11y-glass-active {
+  box-shadow: 0 0 0 2px rgb(10 132 255 / 45%);
+}
+
+/* Prefer reduced motion site-wide when class is set */
+html.reduce-motion *,
+html.reduce-motion *::before,
+html.reduce-motion *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
+
+/* Hero flyouts — dialog focus ring */
+.hero-flyout.is-open .vibe-stack-card:focus-within,
+.hero-flyout.is-open .portfolio-reach-panel:focus-within {
+  outline: 2px solid var(--a11y-focus-ring);
+  outline-offset: 2px;
+}
+
 /* Skip to main content */
 .skip-link {
   position: absolute;

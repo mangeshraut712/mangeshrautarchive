@@ -85,7 +85,11 @@ function ensureActions(container) {
     button = document.createElement('button');
     button.type = 'button';
     button.className = 'section-preview-btn';
+    button.setAttribute('aria-label', 'Expand or collapse section preview');
     actions.appendChild(button);
+  }
+  if (!button.getAttribute('aria-label')) {
+    button.setAttribute('aria-label', 'Expand or collapse section preview');
   }
   return { actions, button };
 }
