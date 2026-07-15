@@ -85,8 +85,21 @@ html.dark body.monitor-page .status-card {
 .monitor-page-nav__theme #theme-toggle-icon,
 .monitor-page-nav__theme i {
   color: var(--systems-text, #1d1d1f) !important;
+  -webkit-text-fill-color: var(--systems-text, #1d1d1f) !important;
   font-size: 15px;
   line-height: 1;
+}
+
+/* Keep search-toggle fully out of a11y tree on subpages (Cmd-K still works) */
+#search-toggle[hidden] {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
 }
 
 html.dark .monitor-page-nav__theme,

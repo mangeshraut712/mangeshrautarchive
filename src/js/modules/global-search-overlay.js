@@ -14,7 +14,7 @@ const OVERLAY_HTML = `
     <div id="search-results" role="listbox" aria-label="Search results"></div>
   </div>
 </div>
-<button id="search-toggle" type="button" hidden aria-hidden="true" tabindex="-1"></button>`;
+<button id="search-toggle" type="button" hidden aria-hidden="true" tabindex="-1" aria-label="Open command palette"></button>`;
 
 export function ensureSearchOverlay() {
   if (document.getElementById('search-overlay')) return;

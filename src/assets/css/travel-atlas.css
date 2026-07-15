@@ -238,6 +238,7 @@ html.dark {
   border-radius: 999px;
   background: #ffffff !important;
   color: #1d1d1f !important;
+  -webkit-text-fill-color: #1d1d1f !important;
   cursor: pointer;
   box-shadow: 0 1px 4px rgb(0 0 0 / 6%);
   transition:
@@ -506,7 +507,7 @@ html.dark .travel-sidebar {
 .travel-actions {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: var(--space-2);
+  gap: 0.4rem;
   margin-top: var(--space-3);
 }
 
@@ -620,19 +621,36 @@ html.dark .travel-sidebar {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: var(--space-2);
+  gap: 0.3rem;
+  min-width: 0;
   min-height: 38px;
+  padding: 0.35rem 0.55rem;
   border: 1px solid color-mix(in srgb, var(--separator) 78%, transparent);
   border-radius: var(--radius-full);
   background: var(--fill-secondary);
   color: var(--text-secondary);
-  font: 700 13px/1 var(--font-text);
+  font: 700 12px/1.1 var(--font-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   cursor: pointer;
   transition:
     background var(--duration-fast) var(--ease-apple),
     color var(--duration-fast) var(--ease-apple),
     transform var(--duration-fast) var(--ease-apple),
     border-color var(--duration-fast) var(--ease-apple);
+}
+
+.travel-action span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+}
+
+.travel-action i {
+  flex-shrink: 0;
+  font-size: 11px;
 }
 
 .travel-action:hover {

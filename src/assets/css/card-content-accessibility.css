@@ -277,6 +277,25 @@ html.dark .card-translate-option__label {
   position: static;
 }
 
+/* Travel: only show Listen/Translate on the expanded stop — avoids clutter */
+.travel-stop:not(.active) > .card-read-toolbar {
+  display: none !important;
+}
+
+.travel-stop.active > .card-read-toolbar--inline {
+  display: inline-flex !important;
+  flex-direction: row !important;
+  justify-content: flex-end;
+  width: 100%;
+  margin: 0.35rem 0 0.55rem;
+  order: -1;
+}
+
+.travel-stop.active {
+  display: flex;
+  flex-direction: column;
+}
+
 .blog-card > .card-read-toolbar--inline {
   margin-bottom: 0;
 }
