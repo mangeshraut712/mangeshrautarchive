@@ -7,6 +7,7 @@ import { blogPosts } from '../../src/js/modules/blog-data.js';
 import { generateBlogPages } from './generate-blog-pages.mjs';
 import { generateCaseStudyPages } from './generate-case-study-pages.mjs';
 import { caseStudies } from '../../src/js/modules/case-studies-data.js';
+import { ASSET_VER } from './asset-version.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -97,7 +98,7 @@ async function injectApiKeys(distDir) {
     lastfmApiKey: '',
     musicDirectFallback: true,
     buildTime: new Date().toISOString(),
-    version: `v${new Date().toISOString().slice(0, 10).replace(/-/g, '')}`,
+    version: ASSET_VER,
     gitCommit,
     nodeEnv: process.env.NODE_ENV || 'production',
     githubPages: process.env.GITHUB_PAGES === 'true',
@@ -410,7 +411,9 @@ async function build() {
   await optimizeCopiedAssets(distDir);
   await inlineThemeHead(distDir);
 
-  const version = `v${Date.now()}`;
+  // Use repo ASSET_VER (not Date.now) so dist HTML matches src/?v= and dual-host parity is readable.
+  const version = ASSET_VER;
+  console.log(`🔖 Cache-bust version: ${version}`);
   await cacheBustJsModules(distDir, version);
 
   await Promise.all([
