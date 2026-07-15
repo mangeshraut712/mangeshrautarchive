@@ -532,32 +532,32 @@ export class AccessibilityEnhancer {
       {
         title: 'Site actions',
         items: [
-          { keys: `${mod} K`, desc: 'Open search' },
-          { keys: `${mod} D`, desc: 'Toggle light / dark theme' },
-          { keys: `${mod} H`, desc: 'Go to home' },
-          { keys: `${mod} ${shift} C`, desc: 'Go to contact' },
-          { keys: `${mod} /`, desc: 'Show this shortcuts list' },
+          { keys: [mod, 'K'], desc: 'Open search' },
+          { keys: [mod, 'D'], desc: 'Toggle light / dark theme' },
+          { keys: [mod, 'H'], desc: 'Go to home' },
+          { keys: [mod, shift, 'C'], desc: 'Go to contact' },
+          { keys: [mod, '/'], desc: 'Show this shortcuts list' },
         ],
       },
       {
         title: 'Navigation',
         items: [
-          { keys: 'Tab', desc: 'Move focus forward' },
-          { keys: `${shift} Tab`, desc: 'Move focus backward' },
-          { keys: '↑ ↓ ← →', desc: 'Move within menus and card grids' },
-          { keys: `${mod} Home`, desc: 'Scroll to top of page' },
-          { keys: `${mod} End`, desc: 'Scroll to bottom of page' },
-          { keys: 'Esc', desc: 'Close dialogs, menus, and overlays' },
+          { keys: ['Tab'], desc: 'Move focus forward' },
+          { keys: [shift, 'Tab'], desc: 'Move focus backward' },
+          { keys: ['↑', '↓', '←', '→'], desc: 'Move within menus and card grids' },
+          { keys: [mod, 'Home'], desc: 'Scroll to top of page' },
+          { keys: [mod, 'End'], desc: 'Scroll to bottom of page' },
+          { keys: ['Esc'], desc: 'Close dialogs, menus, and overlays' },
         ],
       },
       {
         title: 'Accessibility toolbar',
         items: [
-          { keys: 'A+ / A−', desc: 'Increase or decrease text size' },
-          { keys: 'Contrast', desc: 'Toggle high contrast mode' },
-          { keys: 'Motion', desc: 'Toggle reduced motion' },
-          { keys: 'Glass', desc: 'Adjust Liquid Glass transparency' },
-          { keys: 'Share', desc: 'Share this website' },
+          { keys: ['A+', 'A−'], desc: 'Increase or decrease text size' },
+          { keys: ['Contrast'], desc: 'Toggle high contrast mode' },
+          { keys: ['Motion'], desc: 'Toggle reduced motion' },
+          { keys: ['Glass'], desc: 'Adjust Liquid Glass transparency' },
+          { keys: ['Share'], desc: 'Share this website' },
         ],
       },
     ];
@@ -617,15 +617,28 @@ export class AccessibilityEnhancer {
         const li = document.createElement('li');
         li.className = 'shortcut-item';
 
-        const kbd = document.createElement('kbd');
-        kbd.className = 'shortcut-item__keys';
-        kbd.textContent = item.keys;
+        const keysWrap = document.createElement('span');
+        keysWrap.className = 'shortcut-item__keys';
+        const keyList = Array.isArray(item.keys) ? item.keys : [String(item.keys)];
+        keyList.forEach((key, index) => {
+          if (index > 0) {
+            const sep = document.createElement('span');
+            sep.className = 'shortcut-item__sep';
+            sep.textContent = '+';
+            sep.setAttribute('aria-hidden', 'true');
+            keysWrap.appendChild(sep);
+          }
+          const kbd = document.createElement('kbd');
+          kbd.className = 'shortcut-item__key';
+          kbd.textContent = key;
+          keysWrap.appendChild(kbd);
+        });
 
         const desc = document.createElement('span');
         desc.className = 'shortcut-item__desc';
         desc.textContent = item.desc;
 
-        li.append(kbd, desc);
+        li.append(keysWrap, desc);
         list.appendChild(li);
       });
 
@@ -651,15 +664,17 @@ export class AccessibilityEnhancer {
     doneBtn.addEventListener('click', close);
     overlay.addEventListener('click', close);
 
+    document.body.classList.add('shortcuts-modal-open');
     // Focus trap within the panel
     this.trapFocus(panel);
-    panel.focus();
+    closeBtn.focus();
     this.announce('Keyboard shortcuts dialog opened');
   }
 
   closeKeyboardShortcuts(modal = document.querySelector('.shortcuts-modal')) {
     if (!modal) return;
     modal.remove();
+    document.body.classList.remove('shortcuts-modal-open');
     const returnTo = this._shortcutsReturnFocus;
     this._shortcutsReturnFocus = null;
     if (returnTo && typeof returnTo.focus === 'function' && document.contains(returnTo)) {
@@ -1257,10 +1272,13 @@ export class AccessibilityEnhancer {
     const clamped = Math.min(100, Math.max(0, value));
     const label = this.formatGlassTintLabel(clamped);
     const mode = this.getGlassMode(clamped);
+    const detail =
+      mode === 'custom' ? `${label} · ${clamped}% tint` : `${label} · ${clamped}% tint`;
 
     const readout = root.querySelector('.a11y-glass-popover__value');
     if (readout) {
-      readout.textContent = label;
+      readout.hidden = false;
+      readout.textContent = detail;
     }
 
     const badge = root.querySelector('.a11y-glass-popover__badge');
@@ -1274,6 +1292,15 @@ export class AccessibilityEnhancer {
       fill.style.width = `${clamped}%`;
     }
 
+    const previewPane = root.querySelector('.a11y-glass-preview__pane');
+    if (previewPane) {
+      // Higher tint = more opaque frost
+      const opacity = 0.18 + (clamped / 100) * 0.72;
+      const blur = 2 + (clamped / 100) * 14;
+      previewPane.style.setProperty('--ag-preview-opacity', String(opacity));
+      previewPane.style.setProperty('--ag-preview-blur', `${blur.toFixed(1)}px`);
+    }
+
     root.querySelectorAll('.a11y-glass-preset').forEach(button => {
       const preset = button.getAttribute('data-glass-preset');
       const isActive =
@@ -1281,6 +1308,7 @@ export class AccessibilityEnhancer {
         (preset === 'balanced' && mode === 'balanced') ||
         (preset === 'tinted' && mode === 'tinted');
       button.classList.toggle('is-active', isActive);
+      button.setAttribute('aria-checked', isActive ? 'true' : 'false');
       button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
     });
 
@@ -1291,8 +1319,8 @@ export class AccessibilityEnhancer {
   }
 
   /**
-   * Liquid Glass material control — redesigned compact sheet.
-   * 0 = clear (solid default), 100 = tinted frosted. Drives --lg-tint.
+   * Liquid Glass material control — accessible sheet with presets + fine control.
+   * 0 = clear, 42 = balanced (default), 100 = tinted. Drives --lg-tint.
    */
   toggleLiquidGlassPopover() {
     const glassButton = document.querySelector(
@@ -1306,7 +1334,8 @@ export class AccessibilityEnhancer {
       popover.id = 'a11y-glass-popover';
       popover.setAttribute('role', 'dialog');
       popover.setAttribute('aria-modal', 'false');
-      popover.setAttribute('aria-label', 'Liquid Glass material');
+      popover.setAttribute('aria-labelledby', 'a11y-glass-title');
+      popover.setAttribute('aria-describedby', 'a11y-glass-hint');
 
       const header = document.createElement('div');
       header.className = 'a11y-glass-popover__header';
@@ -1314,7 +1343,7 @@ export class AccessibilityEnhancer {
       const titleWrap = document.createElement('div');
       titleWrap.className = 'a11y-glass-popover__heading';
 
-      const title = document.createElement('p');
+      const title = document.createElement('h2');
       title.className = 'a11y-glass-popover__title';
       title.id = 'a11y-glass-title';
       title.textContent = 'Liquid Glass';
@@ -1330,7 +1359,7 @@ export class AccessibilityEnhancer {
       closeBtn.className = 'a11y-glass-popover__close';
       closeBtn.setAttribute('aria-label', 'Close Liquid Glass settings');
       closeBtn.innerHTML =
-        '<svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.1 2.1l7.8 7.8M9.9 2.1L2.1 9.9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>';
+        '<svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M2.5 2.5l9 9M11.5 2.5l-9 9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>';
       closeBtn.addEventListener('click', () => {
         if (popover.classList.contains('is-open')) {
           this.toggleLiquidGlassPopover();
@@ -1339,25 +1368,38 @@ export class AccessibilityEnhancer {
 
       header.append(titleWrap, closeBtn);
 
+      // Live preview strip — shows how transparent vs frosted glass feels
+      const preview = document.createElement('div');
+      preview.className = 'a11y-glass-popover__preview';
+      preview.setAttribute('aria-hidden', 'true');
+      preview.innerHTML = `
+        <div class="a11y-glass-preview__bg"></div>
+        <div class="a11y-glass-preview__pane">
+          <span class="a11y-glass-preview__label">Preview</span>
+        </div>
+      `;
+
       const segment = document.createElement('div');
       segment.className = 'a11y-glass-popover__presets';
-      segment.setAttribute('role', 'group');
+      segment.setAttribute('role', 'radiogroup');
       segment.setAttribute('aria-label', 'Glass material presets');
 
       const clearPreset = document.createElement('button');
       clearPreset.type = 'button';
       clearPreset.className = 'a11y-glass-preset';
       clearPreset.dataset.glassPreset = 'clear';
+      clearPreset.setAttribute('role', 'radio');
       clearPreset.innerHTML =
-        '<span class="a11y-glass-preset__dot a11y-glass-preset__dot--clear" aria-hidden="true"></span><span>Clear</span>';
+        '<span class="a11y-glass-preset__dot a11y-glass-preset__dot--clear" aria-hidden="true"></span><span class="a11y-glass-preset__name">Clear</span><span class="a11y-glass-preset__meta">0%</span>';
       clearPreset.setAttribute('aria-label', 'Clear glass — maximum transparency');
 
       const balancedPreset = document.createElement('button');
       balancedPreset.type = 'button';
       balancedPreset.className = 'a11y-glass-preset';
       balancedPreset.dataset.glassPreset = 'balanced';
+      balancedPreset.setAttribute('role', 'radio');
       balancedPreset.innerHTML =
-        '<span class="a11y-glass-preset__dot a11y-glass-preset__dot--balanced" aria-hidden="true"></span><span>Balanced</span>';
+        '<span class="a11y-glass-preset__dot a11y-glass-preset__dot--balanced" aria-hidden="true"></span><span class="a11y-glass-preset__name">Balanced</span><span class="a11y-glass-preset__meta">42%</span>';
       balancedPreset.setAttribute(
         'aria-label',
         'Balanced glass — Apple-like frosted material (default)'
@@ -1367,8 +1409,9 @@ export class AccessibilityEnhancer {
       tintedPreset.type = 'button';
       tintedPreset.className = 'a11y-glass-preset';
       tintedPreset.dataset.glassPreset = 'tinted';
+      tintedPreset.setAttribute('role', 'radio');
       tintedPreset.innerHTML =
-        '<span class="a11y-glass-preset__dot a11y-glass-preset__dot--tinted" aria-hidden="true"></span><span>Tinted</span>';
+        '<span class="a11y-glass-preset__dot a11y-glass-preset__dot--tinted" aria-hidden="true"></span><span class="a11y-glass-preset__name">Tinted</span><span class="a11y-glass-preset__meta">100%</span>';
       tintedPreset.setAttribute('aria-label', 'Tinted glass — maximum opacity for contrast');
 
       segment.append(clearPreset, balancedPreset, tintedPreset);
@@ -1401,16 +1444,15 @@ export class AccessibilityEnhancer {
       scale.className = 'a11y-glass-popover__scale';
       scale.innerHTML = '<span>Clear</span><span>Balanced</span><span>Tinted</span>';
 
-      const hint = document.createElement('p');
-      hint.className = 'a11y-glass-popover__hint';
-      hint.textContent =
-        'Clear is most transparent. Balanced matches Apple Liquid Glass. Tinted maximizes contrast for readability.';
-
-      // Hidden live region kept for screen readers (badge is visual)
       const readout = document.createElement('p');
       readout.className = 'a11y-glass-popover__value';
-      readout.hidden = true;
       readout.setAttribute('aria-live', 'polite');
+
+      const hint = document.createElement('p');
+      hint.className = 'a11y-glass-popover__hint';
+      hint.id = 'a11y-glass-hint';
+      hint.textContent =
+        'Clear is most transparent. Balanced matches Apple Liquid Glass. Tinted maximizes contrast for readability. Your choice is saved for next visits.';
 
       slider.addEventListener('input', () => {
         const nextValue = Number(slider.value);
@@ -1433,7 +1475,7 @@ export class AccessibilityEnhancer {
         this.announce('Liquid Glass set to tinted');
       });
 
-      popover.append(header, segment, sliderBlock, scale, hint, readout);
+      popover.append(header, preview, segment, sliderBlock, scale, readout, hint);
       document.body.appendChild(popover);
       this.updateGlassTintReadout(Number(slider.value), popover);
 

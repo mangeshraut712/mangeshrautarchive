@@ -465,6 +465,8 @@ html.dark #contact .dream-car-item.has-dark-logo .logo-light {
 html.dark #contact .dream-company-item.has-dark-logo .logo-dark,
 html.dark #contact .dream-car-item.has-dark-logo .logo-dark {
   display: block !important;
+  filter: none !important;
+  opacity: 1 !important;
 }
 
 html.dark #contact .dream-company-item.logo-mono .logo-light,
@@ -477,6 +479,12 @@ html.dark #contact .dream-car-item.logo-mono .logo-light {
 html.dark #contact .dream-company-item:not(.has-dark-logo):not(.logo-mono) .logo-light,
 html.dark #contact .dream-car-item:not(.has-dark-logo):not(.logo-mono) .car-logo {
   filter: brightness(1.12) contrast(1.08) saturate(1.05) !important;
+  opacity: 1 !important;
+}
+
+/* Toyota red remains readable on dark canvas */
+html.dark #contact .dream-car-item[title='Toyota'] .car-logo {
+  filter: brightness(1.08) contrast(1.1) saturate(1.15) !important;
   opacity: 1 !important;
 }
 

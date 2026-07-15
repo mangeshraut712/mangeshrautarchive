@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 72" role="img" aria-label="Aston Martin">
+  <!-- Transparent mono wings + wordmark — works with logo-mono invert in dark mode -->
+  <g fill="none" stroke="#1d1d1f" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Left wing -->
+    <path d="M118 30 C96 28 72 24 48 20 C36 18 24 20 16 28 C28 26 42 28 54 32 C70 36 88 38 108 38"/>
+    <path d="M118 34 C94 34 70 32 48 30 C34 28 22 32 14 40 C28 36 44 38 58 40 C76 42 94 42 110 40"/>
+    <path d="M118 38 C96 40 74 40 54 42 C38 44 24 48 16 56 C30 50 48 48 66 48 C84 48 100 44 114 42"/>
+    <!-- Right wing -->
+    <path d="M122 30 C144 28 168 24 192 20 C204 18 216 20 224 28 C212 26 198 28 186 32 C170 36 152 38 132 38"/>
+    <path d="M122 34 C146 34 170 32 192 30 C206 28 218 32 226 40 C212 36 196 38 182 40 C164 42 146 42 130 40"/>
+    <path d="M122 38 C144 40 166 40 186 42 C202 44 216 48 224 56 C210 50 192 48 174 48 C156 48 140 44 126 42"/>
+  </g>
+  <!-- Center bar -->
+  <rect x="96" y="28" width="48" height="16" rx="2" fill="#1d1d1f"/>
+  <!-- Wordmark -->
+  <text x="120" y="39.5" text-anchor="middle" fill="#f5f5f7" font-family="system-ui, -apple-system, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" font-size="7.2" font-weight="700" letter-spacing="1.6">ASTON MARTIN</text>
+</svg>

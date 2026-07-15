@@ -2267,6 +2267,7 @@ html.dark .dream-company-item.has-dark-logo .logo-dark,
 html.dark .dream-car-item.has-dark-logo .logo-dark {
   display: block !important;
   filter: none !important;
+  opacity: 1 !important;
 }
 
 /* Monochrome black marks → white on dark backgrounds */
@@ -2344,9 +2345,24 @@ html:not(.dark) .dream-car-item.logo-mono .car-logo {
   height: 40px !important;
 }
 
+.dream-company-item[title='Meta'] .company-logo {
+  max-width: 132px !important;
+  height: 32px !important;
+}
+
+.dream-company-item[title='Amazon'] .company-logo {
+  max-width: 118px !important;
+  height: 34px !important;
+}
+
 .dream-car-item[title='Toyota'] .car-logo {
-  max-width: 64px !important;
-  height: 40px !important;
+  max-width: 72px !important;
+  height: 44px !important;
+}
+
+.dream-car-item[title='Aston Martin'] .car-logo {
+  max-width: 140px !important;
+  height: 42px !important;
 }
 
 .dream-car-item[title='Porsche'] .car-logo,
