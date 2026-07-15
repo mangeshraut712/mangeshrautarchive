@@ -1187,10 +1187,10 @@ html.dark .a11y-toolbar {
 
 .a11y-toolbar button {
   padding: 0 !important;
-  min-width: 42px !important;
-  min-height: 42px !important;
-  width: 42px !important;
-  height: 42px !important;
+  min-width: 44px !important;
+  min-height: 44px !important;
+  width: 44px !important;
+  height: 44px !important;
   border-radius: 999px !important;
   border: 1px solid rgb(0 0 0 / 10%) !important;
   color: #1d1d1f !important;
@@ -1275,9 +1275,10 @@ html.dark .a11y-toolbar button.a11y-glass-active {
   }
 
   .a11y-toolbar button {
-    width: 2.5rem !important;
-    height: 2.5rem !important;
-    min-width: 2.5rem !important;
+    width: 44px !important;
+    height: 44px !important;
+    min-width: 44px !important;
+    min-height: 44px !important;
     flex: 0 0 auto;
     font-size: 0.82rem !important;
   }

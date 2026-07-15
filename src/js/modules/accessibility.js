@@ -149,6 +149,7 @@ export class AccessibilityEnhancer {
     const skipLinks = [
       { href: '#main-content', text: 'Skip to main content' },
       { href: '#global-nav', text: 'Skip to navigation' },
+      { href: '#a11y-toolbar', text: 'Skip to accessibility tools' },
       { href: '#contact', text: 'Skip to contact' },
     ];
 
@@ -181,6 +182,17 @@ export class AccessibilityEnhancer {
 
       a.addEventListener('click', e => {
         e.preventDefault();
+        if (link.href === '#a11y-toolbar') {
+          const toolbar =
+            document.getElementById('a11y-toolbar') || document.querySelector('.a11y-toolbar');
+          const firstBtn = toolbar?.querySelector('button');
+          if (firstBtn) {
+            firstBtn.focus();
+            toolbar?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            this.announce('Navigated to accessibility tools');
+          }
+          return;
+        }
         const target = document.querySelector(link.href);
         if (target) {
           target.setAttribute('tabindex', '-1');
@@ -358,10 +370,9 @@ export class AccessibilityEnhancer {
     }
 
     // Keyboard shortcuts modal
-    const shortcutsModal = document.querySelector('.modal:has(.shortcut-item)');
+    const shortcutsModal = document.querySelector('.shortcuts-modal');
     if (shortcutsModal) {
-      shortcutsModal.remove();
-      this.announce('Keyboard shortcuts closed');
+      this.closeKeyboardShortcuts(shortcutsModal);
       return;
     }
 
@@ -502,143 +513,161 @@ export class AccessibilityEnhancer {
   }
 
   /**
-   * Show keyboard shortcuts modal
+   * Show keyboard shortcuts modal (single instance, focus-trapped, Esc-closable)
    */
   showKeyboardShortcuts() {
+    const existing = document.querySelector('.shortcuts-modal');
+    if (existing) {
+      existing.querySelector('.shortcuts-modal__panel')?.focus();
+      return;
+    }
+
+    this._shortcutsReturnFocus = document.activeElement;
+
+    const isMac = /Mac|iPhone|iPad|iPod/i.test(navigator.platform || navigator.userAgent || '');
+    const mod = isMac ? '⌘' : 'Ctrl';
+    const shift = isMac ? '⇧' : 'Shift';
+
+    const groups = [
+      {
+        title: 'Site actions',
+        items: [
+          { keys: `${mod} K`, desc: 'Open search' },
+          { keys: `${mod} D`, desc: 'Toggle light / dark theme' },
+          { keys: `${mod} H`, desc: 'Go to home' },
+          { keys: `${mod} ${shift} C`, desc: 'Go to contact' },
+          { keys: `${mod} /`, desc: 'Show this shortcuts list' },
+        ],
+      },
+      {
+        title: 'Navigation',
+        items: [
+          { keys: 'Tab', desc: 'Move focus forward' },
+          { keys: `${shift} Tab`, desc: 'Move focus backward' },
+          { keys: '↑ ↓ ← →', desc: 'Move within menus and card grids' },
+          { keys: `${mod} Home`, desc: 'Scroll to top of page' },
+          { keys: `${mod} End`, desc: 'Scroll to bottom of page' },
+          { keys: 'Esc', desc: 'Close dialogs, menus, and overlays' },
+        ],
+      },
+      {
+        title: 'Accessibility toolbar',
+        items: [
+          { keys: 'A+ / A−', desc: 'Increase or decrease text size' },
+          { keys: 'Contrast', desc: 'Toggle high contrast mode' },
+          { keys: 'Motion', desc: 'Toggle reduced motion' },
+          { keys: 'Glass', desc: 'Adjust Liquid Glass transparency' },
+          { keys: 'Share', desc: 'Share this website' },
+        ],
+      },
+    ];
+
     const modal = document.createElement('div');
-    modal.setAttribute('role', 'dialog');
-    modal.setAttribute('aria-labelledby', 'shortcuts-title');
-    modal.setAttribute('aria-modal', 'true');
     modal.className = 'shortcuts-modal';
-    modal.innerHTML = `
-            <div class="modal-overlay" style="
-                position: fixed;
-                top: 0;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                background: rgba(0, 0, 0, 0.7);
-                backdrop-filter: blur(10px);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                z-index: 10001;
-                animation: fadeIn 0.3s ease;
-            ">
-                <div class="modal-content" style="
-                    background: white;
-                    padding: 2rem;
-                    border-radius: 16px;
-                    max-width: 600px;
-                    width: 90%;
-                    max-height: 80vh;
-                    overflow-y: auto;
-                    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-                " tabindex="-1">
-                    <h2 id="shortcuts-title" style="margin: 0 0 1.5rem 0; color: #1d1d1f;">
-                        ⌨️ Keyboard Shortcuts
-                    </h2>
-                    <div style="display: grid; gap: 1rem;">
-                        <div class="shortcut-item">
-                            <kbd>Ctrl/Cmd + K</kbd>
-                            <span>Open search</span>
-                        </div>
-                        <div class="shortcut-item">
-                            <kbd>Ctrl/Cmd + D</kbd>
-                            <span>Toggle dark mode</span>
-                        </div>
-                        <div class="shortcut-item">
-                            <kbd>Ctrl/Cmd + H</kbd>
-                            <span>Go to home</span>
-                        </div>
-                        <div class="shortcut-item">
-                            <kbd>Ctrl/Cmd + Shift + C</kbd>
-                            <span>Go to contact</span>
-                        </div>
-                        <div class="shortcut-item">
-                            <kbd>Esc</kbd>
-                            <span>Close modals/overlays</span>
-                        </div>
-                        <div class="shortcut-item">
-                            <kbd>Tab</kbd>
-                            <span>Navigate forward</span>
-                        </div>
-                        <div class="shortcut-item">
-                            <kbd>Shift + Tab</kbd>
-                            <span>Navigate backward</span>
-                        </div>
-                        <div class="shortcut-item">
-                            <kbd>Arrow Keys</kbd>
-                            <span>Navigate within sections</span>
-                        </div>
-                    </div>
-                    <button onclick="this.closest('.shortcuts-modal').remove()" style="
-                        margin-top: 1.5rem;
-                        background: #007aff;
-                        color: white;
-                        border: none;
-                        padding: 0.75rem 1.5rem;
-                        border-radius: 8px;
-                        cursor: pointer;
-                        font-size: 1rem;
-                        width: 100%;
-                    ">
-                        Close
-                    </button>
-                </div>
-            </div>
-        `;
+    modal.setAttribute('role', 'dialog');
+    modal.setAttribute('aria-modal', 'true');
+    modal.setAttribute('aria-labelledby', 'shortcuts-title');
 
-    const style = document.createElement('style');
-    style.textContent = `
-            .shortcut-item {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                padding: 0.75rem;
-                background: #f5f5f7;
-                border-radius: 8px;
-            }
-            .shortcut-item kbd {
-                background: white;
-                padding: 0.25rem 0.5rem;
-                border-radius: 4px;
-                border: 1px solid #ddd;
-                font-family: monospace;
-                font-size: 0.9rem;
-            }
-            html.dark .modal-content {
-                background: #1d1d1f !important;
-                color: #f5f5f7 !important;
-            }
-            html.dark .shortcut-item {
-                background: #2c2c2e !important;
-            }
-            html.dark .shortcut-item kbd {
-                background: #3a3a3c !important;
-                border-color: #48484a !important;
-                color: #f5f5f7 !important;
-            }
-        `;
-    document.head.appendChild(style);
+    const overlay = document.createElement('div');
+    overlay.className = 'shortcuts-modal__overlay';
 
-    document.body.appendChild(modal);
+    const panel = document.createElement('div');
+    panel.className = 'shortcuts-modal__panel';
+    panel.tabIndex = -1;
 
-    // Focus the modal
-    const modalContent = modal.querySelector('.modal-content');
-    modalContent.focus();
+    const header = document.createElement('div');
+    header.className = 'shortcuts-modal__header';
 
-    // Set up focus trap
-    this.trapFocus(modalContent);
+    const title = document.createElement('h2');
+    title.id = 'shortcuts-title';
+    title.className = 'shortcuts-modal__title';
+    title.textContent = 'Keyboard shortcuts';
 
-    // Close on overlay click
-    modal.querySelector('.modal-overlay').addEventListener('click', e => {
-      if (e.target === e.currentTarget) {
-        modal.remove();
-      }
+    const subtitle = document.createElement('p');
+    subtitle.className = 'shortcuts-modal__subtitle';
+    subtitle.textContent =
+      'Use these shortcuts from anywhere on the site. Screen reader users can also use the skip links and accessibility toolbar.';
+
+    const closeBtn = document.createElement('button');
+    closeBtn.type = 'button';
+    closeBtn.className = 'shortcuts-modal__close';
+    closeBtn.setAttribute('aria-label', 'Close keyboard shortcuts');
+    closeBtn.innerHTML =
+      '<svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M2.5 2.5l9 9M11.5 2.5l-9 9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>';
+
+    header.append(title, closeBtn);
+
+    const body = document.createElement('div');
+    body.className = 'shortcuts-modal__body';
+
+    groups.forEach(group => {
+      const section = document.createElement('section');
+      section.className = 'shortcuts-modal__group';
+      section.setAttribute('aria-label', group.title);
+
+      const groupTitle = document.createElement('h3');
+      groupTitle.className = 'shortcuts-modal__group-title';
+      groupTitle.textContent = group.title;
+      section.appendChild(groupTitle);
+
+      const list = document.createElement('ul');
+      list.className = 'shortcuts-modal__list';
+
+      group.items.forEach(item => {
+        const li = document.createElement('li');
+        li.className = 'shortcut-item';
+
+        const kbd = document.createElement('kbd');
+        kbd.className = 'shortcut-item__keys';
+        kbd.textContent = item.keys;
+
+        const desc = document.createElement('span');
+        desc.className = 'shortcut-item__desc';
+        desc.textContent = item.desc;
+
+        li.append(kbd, desc);
+        list.appendChild(li);
+      });
+
+      section.appendChild(list);
+      body.appendChild(section);
     });
 
+    const footer = document.createElement('div');
+    footer.className = 'shortcuts-modal__footer';
+
+    const doneBtn = document.createElement('button');
+    doneBtn.type = 'button';
+    doneBtn.className = 'shortcuts-modal__done';
+    doneBtn.textContent = 'Done';
+
+    footer.appendChild(doneBtn);
+    panel.append(header, subtitle, body, footer);
+    modal.append(overlay, panel);
+    document.body.appendChild(modal);
+
+    const close = () => this.closeKeyboardShortcuts(modal);
+    closeBtn.addEventListener('click', close);
+    doneBtn.addEventListener('click', close);
+    overlay.addEventListener('click', close);
+
+    // Focus trap within the panel
+    this.trapFocus(panel);
+    panel.focus();
     this.announce('Keyboard shortcuts dialog opened');
+  }
+
+  closeKeyboardShortcuts(modal = document.querySelector('.shortcuts-modal')) {
+    if (!modal) return;
+    modal.remove();
+    const returnTo = this._shortcutsReturnFocus;
+    this._shortcutsReturnFocus = null;
+    if (returnTo && typeof returnTo.focus === 'function' && document.contains(returnTo)) {
+      returnTo.focus();
+    } else {
+      document.querySelector('.a11y-toolbar button[aria-label="Keyboard shortcuts"]')?.focus();
+    }
+    this.announce('Keyboard shortcuts closed');
   }
 
   /**
@@ -793,14 +822,31 @@ export class AccessibilityEnhancer {
   }
 
   /**
-   * Respect user preferences
+   * Respect user preferences (system + localStorage overrides)
    */
   respectUserPreferences() {
-    // Reduced motion
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      document.documentElement.style.setProperty('--animation-duration', '0.01ms');
-      document.documentElement.classList.add('reduce-motion');
+    // Reduced motion — system preference + user override
+    let userMotion = null;
+    try {
+      const storedMotion = localStorage.getItem('a11y-reduce-motion');
+      if (storedMotion === '1') userMotion = true;
+      if (storedMotion === '0') userMotion = false;
+    } catch {
+      // ignore
     }
+
+    const motionMedia = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const syncMotion = () => {
+      const enabled = userMotion === null ? motionMedia.matches : userMotion;
+      this.applyReduceMotion(enabled, { persist: false, announce: false });
+    };
+    syncMotion();
+    motionMedia.addEventListener('change', () => {
+      if (userMotion !== null) return;
+      syncMotion();
+      this.announce(motionMedia.matches ? 'Reduced motion enabled' : 'Animations enabled');
+    });
+    this._userMotionOverride = userMotion;
 
     // High contrast — system preference + user override
     let userContrast = null;
@@ -819,21 +865,52 @@ export class AccessibilityEnhancer {
       } else {
         document.documentElement.classList.toggle('high-contrast', userContrast);
       }
+      this.syncHighContrastButton();
     };
     syncContrast();
     contrastMedia.addEventListener('change', syncContrast);
+    this._userContrastOverride = userContrast;
+  }
 
-    window.matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', e => {
-      if (e.matches) {
-        document.documentElement.style.setProperty('--animation-duration', '0.01ms');
-        document.documentElement.classList.add('reduce-motion');
-        this.announce('Reduced motion enabled');
-      } else {
-        document.documentElement.style.removeProperty('--animation-duration');
-        document.documentElement.classList.remove('reduce-motion');
-        this.announce('Animations enabled');
+  applyReduceMotion(enabled, { persist = true, announce = true } = {}) {
+    const root = document.documentElement;
+    root.classList.toggle('reduce-motion', enabled);
+    if (enabled) {
+      root.style.setProperty('--animation-duration', '0.01ms');
+    } else {
+      root.style.removeProperty('--animation-duration');
+    }
+    if (persist) {
+      try {
+        localStorage.setItem('a11y-reduce-motion', enabled ? '1' : '0');
+      } catch {
+        // best-effort
       }
-    });
+      this._userMotionOverride = enabled;
+    }
+    this.syncReduceMotionButton();
+    if (announce) {
+      this.announce(enabled ? 'Reduced motion enabled' : 'Animations enabled');
+    }
+  }
+
+  syncReduceMotionButton() {
+    const active = document.documentElement.classList.contains('reduce-motion');
+    const btn = document.querySelector('.a11y-toolbar button[aria-label="Toggle reduce motion"]');
+    btn?.setAttribute('aria-pressed', active ? 'true' : 'false');
+    btn?.classList.toggle('is-active', active);
+  }
+
+  syncHighContrastButton() {
+    const active = document.documentElement.classList.contains('high-contrast');
+    const btn = document.querySelector('.a11y-toolbar button[aria-label="Toggle high contrast"]');
+    btn?.setAttribute('aria-pressed', active ? 'true' : 'false');
+    btn?.classList.toggle('is-active', active);
+  }
+
+  toggleReduceMotion() {
+    const next = !document.documentElement.classList.contains('reduce-motion');
+    this.applyReduceMotion(next, { persist: true, announce: true });
   }
 
   /**
@@ -863,10 +940,10 @@ export class AccessibilityEnhancer {
 
         .a11y-toolbar button {
           position: relative;
-          width: 42px;
-          height: 42px;
-          min-width: 42px;
-          min-height: 42px;
+          width: 44px !important;
+          height: 44px !important;
+          min-width: 44px !important;
+          min-height: 44px !important;
           padding: 0;
           border-radius: 999px;
           cursor: pointer;
@@ -878,6 +955,10 @@ export class AccessibilityEnhancer {
           line-height: 1;
           letter-spacing: -0.01em;
           transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        html.reduce-motion .a11y-toolbar button {
+          transition: none;
         }
 
         .a11y-toolbar button:hover {
@@ -1018,10 +1099,14 @@ export class AccessibilityEnhancer {
     if (!toolbar) {
       toolbar = document.createElement('div');
       toolbar.className = 'a11y-toolbar';
+      toolbar.id = 'a11y-toolbar';
       toolbar.setAttribute('role', 'toolbar');
       toolbar.setAttribute('aria-label', 'Accessibility tools');
+    } else if (!toolbar.id) {
+      toolbar.id = 'a11y-toolbar';
     }
 
+    // Share first and unchanged — do not alter #website-share-toggle markup/behavior.
     const buttons = [
       {
         id: 'website-share-toggle',
@@ -1048,6 +1133,13 @@ export class AccessibilityEnhancer {
         icon: '▣',
         label: 'Toggle high contrast',
         action: () => this.toggleHighContrast(),
+        pressed: () => document.documentElement.classList.contains('high-contrast'),
+      },
+      {
+        icon: '⏸',
+        label: 'Toggle reduce motion',
+        action: () => this.toggleReduceMotion(),
+        pressed: () => document.documentElement.classList.contains('reduce-motion'),
       },
       {
         icon: '◐',
@@ -1074,8 +1166,8 @@ export class AccessibilityEnhancer {
         button.setAttribute('aria-expanded', 'false');
         button.setAttribute('aria-controls', 'a11y-glass-popover');
       }
-      if (btn.label === 'Toggle high contrast') {
-        const active = document.documentElement.classList.contains('high-contrast');
+      if (typeof btn.pressed === 'function') {
+        const active = btn.pressed();
         button.setAttribute('aria-pressed', active ? 'true' : 'false');
         button.classList.toggle('is-active', active);
       }
@@ -1096,6 +1188,8 @@ export class AccessibilityEnhancer {
 
     this.setupToolbarKeyboardNav(toolbar);
     this.restoreTextSize();
+    this.syncHighContrastButton();
+    this.syncReduceMotionButton();
   }
 
   setupToolbarKeyboardNav(toolbar) {
@@ -1126,9 +1220,8 @@ export class AccessibilityEnhancer {
     } catch {
       // best-effort
     }
-    const btn = document.querySelector('.a11y-toolbar button[aria-label="Toggle high contrast"]');
-    btn?.setAttribute('aria-pressed', next ? 'true' : 'false');
-    btn?.classList.toggle('is-active', next);
+    this._userContrastOverride = next;
+    this.syncHighContrastButton();
     this.announce(next ? 'High contrast enabled' : 'High contrast disabled');
   }
 
@@ -1148,12 +1241,22 @@ export class AccessibilityEnhancer {
     const clamped = Math.min(100, Math.max(0, value));
     if (clamped <= 12) return 'Clear';
     if (clamped >= 88) return 'Tinted';
+    if (clamped >= 35 && clamped <= 55) return 'Balanced';
     return `${clamped}% tint`;
+  }
+
+  getGlassMode(value) {
+    const clamped = Math.min(100, Math.max(0, value));
+    if (clamped <= 12) return 'clear';
+    if (clamped >= 88) return 'tinted';
+    if (clamped >= 35 && clamped <= 55) return 'balanced';
+    return 'custom';
   }
 
   updateGlassTintReadout(value, root = document) {
     const clamped = Math.min(100, Math.max(0, value));
     const label = this.formatGlassTintLabel(clamped);
+    const mode = this.getGlassMode(clamped);
 
     const readout = root.querySelector('.a11y-glass-popover__value');
     if (readout) {
@@ -1163,7 +1266,7 @@ export class AccessibilityEnhancer {
     const badge = root.querySelector('.a11y-glass-popover__badge');
     if (badge) {
       badge.textContent = label;
-      badge.dataset.mode = clamped <= 12 ? 'clear' : clamped >= 88 ? 'tinted' : 'balanced';
+      badge.dataset.mode = mode;
     }
 
     const fill = root.querySelector('.a11y-glass-slider__fill');
@@ -1174,7 +1277,9 @@ export class AccessibilityEnhancer {
     root.querySelectorAll('.a11y-glass-preset').forEach(button => {
       const preset = button.getAttribute('data-glass-preset');
       const isActive =
-        (preset === 'clear' && clamped <= 12) || (preset === 'tinted' && clamped >= 88);
+        (preset === 'clear' && mode === 'clear') ||
+        (preset === 'balanced' && mode === 'balanced') ||
+        (preset === 'tinted' && mode === 'tinted');
       button.classList.toggle('is-active', isActive);
       button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
     });
@@ -1247,15 +1352,26 @@ export class AccessibilityEnhancer {
         '<span class="a11y-glass-preset__dot a11y-glass-preset__dot--clear" aria-hidden="true"></span><span>Clear</span>';
       clearPreset.setAttribute('aria-label', 'Clear glass — maximum transparency');
 
+      const balancedPreset = document.createElement('button');
+      balancedPreset.type = 'button';
+      balancedPreset.className = 'a11y-glass-preset';
+      balancedPreset.dataset.glassPreset = 'balanced';
+      balancedPreset.innerHTML =
+        '<span class="a11y-glass-preset__dot a11y-glass-preset__dot--balanced" aria-hidden="true"></span><span>Balanced</span>';
+      balancedPreset.setAttribute(
+        'aria-label',
+        'Balanced glass — Apple-like frosted material (default)'
+      );
+
       const tintedPreset = document.createElement('button');
       tintedPreset.type = 'button';
       tintedPreset.className = 'a11y-glass-preset';
       tintedPreset.dataset.glassPreset = 'tinted';
       tintedPreset.innerHTML =
         '<span class="a11y-glass-preset__dot a11y-glass-preset__dot--tinted" aria-hidden="true"></span><span>Tinted</span>';
-      tintedPreset.setAttribute('aria-label', 'Tinted glass — frosted material');
+      tintedPreset.setAttribute('aria-label', 'Tinted glass — maximum opacity for contrast');
 
-      segment.append(clearPreset, tintedPreset);
+      segment.append(clearPreset, balancedPreset, tintedPreset);
 
       const sliderBlock = document.createElement('div');
       sliderBlock.className = 'a11y-glass-slider';
@@ -1283,11 +1399,12 @@ export class AccessibilityEnhancer {
 
       const scale = document.createElement('div');
       scale.className = 'a11y-glass-popover__scale';
-      scale.innerHTML = '<span>Clear</span><span>Tinted</span>';
+      scale.innerHTML = '<span>Clear</span><span>Balanced</span><span>Tinted</span>';
 
       const hint = document.createElement('p');
       hint.className = 'a11y-glass-popover__hint';
-      hint.textContent = 'Tinted adds opacity and contrast for controls and cards.';
+      hint.textContent =
+        'Clear is most transparent. Balanced matches Apple Liquid Glass. Tinted maximizes contrast for readability.';
 
       // Hidden live region kept for screen readers (badge is visual)
       const readout = document.createElement('p');
@@ -1304,6 +1421,11 @@ export class AccessibilityEnhancer {
       clearPreset.addEventListener('click', () => {
         this.applyGlassTint(0, { instant: true });
         this.announce('Liquid Glass set to clear');
+      });
+
+      balancedPreset.addEventListener('click', () => {
+        this.applyGlassTint(42, { instant: true });
+        this.announce('Liquid Glass set to balanced');
       });
 
       tintedPreset.addEventListener('click', () => {

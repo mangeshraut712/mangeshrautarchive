@@ -37,17 +37,59 @@ html.dark {
   border-radius: 4px;
 }
 
-/* Accessibility toolbar — active / pressed states */
+/* Accessibility toolbar — solid card, WCAG 2.2 44×44px targets + active states */
+.a11y-toolbar {
+  flex-wrap: wrap;
+  max-width: calc(100vw - 1.5rem);
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  border: 1px solid rgb(0 0 0 / 10%) !important;
+  border-radius: 999px !important;
+  box-shadow: 0 10px 36px rgb(0 0 0 / 12%) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+html.dark .a11y-toolbar {
+  background: #000000 !important;
+  background-color: #000000 !important;
+  border-color: rgb(255 255 255 / 14%) !important;
+  box-shadow: 0 10px 36px rgb(0 0 0 / 42%) !important;
+}
+
+.a11y-toolbar button {
+  width: 44px !important;
+  height: 44px !important;
+  min-width: 44px !important;
+  min-height: 44px !important;
+}
+
 .a11y-toolbar button.is-active,
 .a11y-toolbar button[aria-pressed='true'],
 .a11y-toolbar button.a11y-glass-active {
   box-shadow: 0 0 0 2px rgb(0 113 227 / 35%);
+  background: rgb(0 113 227 / 10%) !important;
 }
 
 html.dark .a11y-toolbar button.is-active,
 html.dark .a11y-toolbar button[aria-pressed='true'],
 html.dark .a11y-toolbar button.a11y-glass-active {
   box-shadow: 0 0 0 2px rgb(10 132 255 / 45%);
+  background: rgb(10 132 255 / 14%) !important;
+}
+
+@media (width <= 480px) {
+  .a11y-toolbar {
+    left: max(0.5rem, env(safe-area-inset-left)) !important;
+    right: auto !important;
+    gap: 6px !important;
+    padding: 6px !important;
+  }
+
+  .a11y-toolbar button {
+    width: 44px !important;
+    height: 44px !important;
+  }
 }
 
 /* Prefer reduced motion site-wide when class is set */
@@ -234,28 +276,9 @@ html.reduce-motion *::after {
   }
 }
 
-/* Accessibility toolbar — solid card with border/shadow (restored site-wide).
-   The original styling lived in the now-unloaded wwdc26-liquid-glass.css. */
-.a11y-toolbar {
-  background: #ffffff !important;
-  background-color: #ffffff !important;
-  border: 1px solid rgb(0 0 0 / 10%) !important;
-  border-radius: 999px !important;
-  box-shadow: 0 10px 36px rgb(0 0 0 / 12%) !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-}
-
-html.dark .a11y-toolbar {
-  background: #000000 !important;
-  background-color: #000000 !important;
-  border-color: rgb(255 255 255 / 14%) !important;
-  box-shadow: 0 10px 36px rgb(0 0 0 / 42%) !important;
-}
-
 /* ═══════════════════════════════════════════════════════════════
    Liquid Glass material sheet — redesigned compact control
-   Header + segmented Clear/Tinted + slider + hint
+   Header + segmented Clear / Balanced / Tinted + slider + hint
    ═══════════════════════════════════════════════════════════════ */
 .a11y-glass-popover {
   --ag-blue: #0071e3;
@@ -379,6 +402,20 @@ html.dark .a11y-glass-popover__badge {
   background: rgb(10 132 255 / 14%) !important;
 }
 
+.a11y-glass-popover__badge[data-mode='balanced'] {
+  border-color: rgb(0 113 227 / 28%) !important;
+  background: rgb(0 113 227 / 12%) !important;
+  color: #0071e3 !important;
+  -webkit-text-fill-color: #0071e3 !important;
+}
+
+html.dark .a11y-glass-popover__badge[data-mode='balanced'] {
+  border-color: rgb(10 132 255 / 32%) !important;
+  background: rgb(10 132 255 / 16%) !important;
+  color: #0a84ff !important;
+  -webkit-text-fill-color: #0a84ff !important;
+}
+
 .a11y-glass-popover__badge[data-mode='tinted'] {
   border-color: rgb(94 92 230 / 28%) !important;
   background: rgb(94 92 230 / 12%) !important;
@@ -391,6 +428,20 @@ html.dark .a11y-glass-popover__badge[data-mode='tinted'] {
   background: rgb(191 90 242 / 14%) !important;
   color: #bf5af2 !important;
   -webkit-text-fill-color: #bf5af2 !important;
+}
+
+.a11y-glass-popover__badge[data-mode='custom'] {
+  border-color: rgb(110 110 115 / 28%) !important;
+  background: rgb(110 110 115 / 10%) !important;
+  color: #6e6e73 !important;
+  -webkit-text-fill-color: #6e6e73 !important;
+}
+
+html.dark .a11y-glass-popover__badge[data-mode='custom'] {
+  border-color: rgb(142 142 147 / 30%) !important;
+  background: rgb(142 142 147 / 14%) !important;
+  color: #a1a1a6 !important;
+  -webkit-text-fill-color: #a1a1a6 !important;
 }
 
 button.a11y-glass-popover__close,
@@ -438,7 +489,7 @@ button.a11y-glass-popover__close:focus-visible {
 
 .a11y-glass-popover__presets {
   display: grid !important;
-  grid-template-columns: 1fr 1fr !important;
+  grid-template-columns: 1fr 1fr 1fr !important;
   gap: 0.2rem !important;
   margin: 0 !important;
   padding: 0.2rem !important;
@@ -498,9 +549,14 @@ button.a11y-glass-preset,
   opacity: 0.85 !important;
 }
 
+.a11y-glass-preset__dot--balanced {
+  background: currentColor !important;
+  opacity: 0.35 !important;
+}
+
 .a11y-glass-preset__dot--tinted {
   background: currentColor !important;
-  opacity: 0.55 !important;
+  opacity: 0.7 !important;
 }
 
 button.a11y-glass-preset.is-active,
@@ -829,6 +885,295 @@ a.publication-read-btn {
   box-sizing: border-box !important;
   padding: 0.55rem 0.9rem !important;
   line-height: 1.2 !important;
+}
+
+/* ==========================================================================
+   6. KEYBOARD SHORTCUTS DIALOG
+   ========================================================================== */
+
+.shortcuts-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 100060;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: max(1rem, env(safe-area-inset-top)) max(1rem, env(safe-area-inset-right))
+    max(1rem, env(safe-area-inset-bottom)) max(1rem, env(safe-area-inset-left));
+}
+
+.shortcuts-modal__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgb(0 0 0 / 55%);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+html.reduce-motion .shortcuts-modal__overlay {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.shortcuts-modal__panel {
+  position: relative;
+  z-index: 1;
+  width: min(32rem, 100%);
+  max-height: min(85vh, 40rem);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 20px;
+  border: 1px solid rgb(0 0 0 / 10%);
+  background: #ffffff;
+  color: #1d1d1f;
+  box-shadow:
+    0 0 0 0.5px rgb(0 0 0 / 4%),
+    0 24px 64px rgb(0 0 0 / 22%);
+  outline: none;
+}
+
+html.dark .shortcuts-modal__panel {
+  background: #1c1c1e;
+  color: #f5f5f7;
+  border-color: rgb(255 255 255 / 12%);
+  box-shadow:
+    0 0 0 0.5px rgb(255 255 255 / 6%),
+    0 28px 72px rgb(0 0 0 / 55%);
+}
+
+.shortcuts-modal__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 1.15rem 1.25rem 0.35rem;
+}
+
+.shortcuts-modal__title {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.2;
+  color: inherit;
+}
+
+.shortcuts-modal__subtitle {
+  margin: 0;
+  padding: 0 1.25rem 0.85rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  line-height: 1.45;
+  color: #6e6e73;
+}
+
+html.dark .shortcuts-modal__subtitle {
+  color: #a1a1a6;
+}
+
+.shortcuts-modal__close {
+  appearance: none;
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
+  margin: -0.35rem -0.35rem 0 0;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: #f5f5f7;
+  color: #6e6e73;
+  cursor: pointer;
+}
+
+html.dark .shortcuts-modal__close {
+  background: #2c2c2e;
+  color: #a1a1a6;
+}
+
+.shortcuts-modal__close:hover {
+  color: #1d1d1f;
+  background: #e8e8ed;
+}
+
+html.dark .shortcuts-modal__close:hover {
+  color: #f5f5f7;
+  background: #3a3a3c;
+}
+
+.shortcuts-modal__close:focus-visible {
+  outline: 3px solid var(--a11y-focus-ring);
+  outline-offset: 2px;
+}
+
+.shortcuts-modal__body {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  padding: 0 1.25rem 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  -webkit-overflow-scrolling: touch;
+}
+
+.shortcuts-modal__group-title {
+  margin: 0 0 0.45rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #86868b;
+}
+
+html.dark .shortcuts-modal__group-title {
+  color: #8e8e93;
+}
+
+.shortcuts-modal__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.4rem;
+}
+
+.shortcut-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.65rem 0.75rem;
+  border-radius: 12px;
+  background: #f5f5f7;
+  min-height: 44px;
+  box-sizing: border-box;
+}
+
+html.dark .shortcut-item {
+  background: #2c2c2e;
+}
+
+.shortcut-item__keys {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 28px;
+  padding: 0.2rem 0.55rem;
+  border-radius: 8px;
+  border: 1px solid #d2d2d7;
+  background: #ffffff;
+  color: #1d1d1f;
+  font-family:
+    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New',
+    monospace;
+  font-size: 0.78rem;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+
+html.dark .shortcut-item__keys {
+  background: #3a3a3c;
+  border-color: #48484a;
+  color: #f5f5f7;
+}
+
+.shortcut-item__desc {
+  flex: 1 1 auto;
+  text-align: right;
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.35;
+  color: #1d1d1f;
+}
+
+html.dark .shortcut-item__desc {
+  color: #f5f5f7;
+}
+
+.shortcuts-modal__footer {
+  padding: 0.85rem 1.25rem 1.15rem;
+  border-top: 1px solid rgb(0 0 0 / 6%);
+}
+
+html.dark .shortcuts-modal__footer {
+  border-top-color: rgb(255 255 255 / 8%);
+}
+
+.shortcuts-modal__done {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 48px;
+  padding: 0.75rem 1.25rem;
+  border: none;
+  border-radius: 12px;
+  background: #0071e3;
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  cursor: pointer;
+}
+
+html.dark .shortcuts-modal__done {
+  background: #0a84ff;
+}
+
+.shortcuts-modal__done:hover {
+  filter: brightness(1.05);
+}
+
+.shortcuts-modal__done:focus-visible {
+  outline: 3px solid var(--a11y-focus-ring);
+  outline-offset: 2px;
+}
+
+/* High contrast: solid surfaces, stronger borders */
+html.high-contrast .shortcuts-modal__panel {
+  border-width: 2px;
+  border-color: #000000;
+  box-shadow: none;
+}
+
+html.dark.high-contrast .shortcuts-modal__panel {
+  border-color: #ffffff;
+}
+
+html.high-contrast .shortcut-item {
+  border: 1px solid #000000;
+}
+
+html.dark.high-contrast .shortcut-item {
+  border: 1px solid #ffffff;
+}
+
+/* ==========================================================================
+   7. CARD READABILITY (accessibility polish)
+   ========================================================================== */
+
+html.high-contrast .card p,
+html.high-contrast .glass-card p,
+html.high-contrast .liquid-glass-card p,
+html.high-contrast .experience-card p,
+html.high-contrast .project-card p,
+html.high-contrast .blog-card p {
+  color: var(--a11y-text-primary) !important;
+}
+
+html.high-contrast .text-secondary,
+html.high-contrast .text-tertiary,
+html.high-contrast .section-subtitle {
+  color: var(--a11y-text-primary) !important;
+  opacity: 1 !important;
 }
 
 /* Debug Runner disclosure — always ≥24×24px (Lighthouse target-size).

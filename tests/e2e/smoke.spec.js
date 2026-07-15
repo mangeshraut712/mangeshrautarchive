@@ -145,7 +145,7 @@ test.describe('Chrome smoke tests', () => {
     await expect(skipLink).toBeFocused();
   });
 
-  test('accessibility toolbar is visible with five actions', async ({ page }) => {
+  test('accessibility toolbar is visible with core actions', async ({ page }) => {
     await gotoSiteReady(page);
 
     await page.waitForSelector('.a11y-toolbar', { state: 'attached' });
@@ -153,7 +153,7 @@ test.describe('Chrome smoke tests', () => {
     await expect(toolbar).toBeAttached();
 
     const buttons = toolbar.locator('button');
-    await expect(buttons).toHaveCount(5);
+    await expect(buttons).toHaveCount(7);
 
     const labels = await buttons.evaluateAll(nodes =>
       nodes.map(node => node.getAttribute('aria-label'))
@@ -163,8 +163,25 @@ test.describe('Chrome smoke tests', () => {
       'Keyboard shortcuts',
       'Increase text size',
       'Decrease text size',
+      'Toggle high contrast',
+      'Toggle reduce motion',
       'Liquid Glass transparency',
     ]);
+
+    // WCAG 2.2 minimum target size for interactive controls
+    const sizes = await buttons.evaluateAll(nodes =>
+      nodes.map(node => {
+        const r = node.getBoundingClientRect();
+        return { w: Math.round(r.width), h: Math.round(r.height) };
+      })
+    );
+    for (const size of sizes) {
+      expect(size.w).toBeGreaterThanOrEqual(44);
+      expect(size.h).toBeGreaterThanOrEqual(44);
+    }
+
+    // Share card entry point must remain present and unchanged by id
+    await expect(page.locator('#website-share-toggle')).toHaveCount(1);
   });
 
   test('system monitor actions respond', async ({ page }) => {
