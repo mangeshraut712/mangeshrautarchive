@@ -660,8 +660,24 @@ function initGlobalErrorHandlers() {
   }
   window.__portfolioErrorHandlersBound = true;
 
+  const isBenignRuntimeNoise = message => {
+    const text = String(message || '');
+    // Browser-internal layout thrash signal — not an app defect.
+    // https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver#observation_errors
+    return (
+      text.includes('ResizeObserver loop') ||
+      text.includes('ResizeObserver loop limit exceeded') ||
+      text.includes('ResizeObserver loop completed with undelivered notifications') ||
+      text.includes('Script error.') // cross-origin opaque errors without useful detail
+    );
+  };
+
   window.addEventListener('error', event => {
     if (event?.error?.name === 'AbortError') {
+      return;
+    }
+    if (isBenignRuntimeNoise(event?.message)) {
+      event.preventDefault?.();
       return;
     }
 
@@ -676,6 +692,14 @@ function initGlobalErrorHandlers() {
 
   window.addEventListener('unhandledrejection', event => {
     if (event?.reason?.name === 'AbortError') {
+      event.preventDefault();
+      return;
+    }
+    const reasonText =
+      typeof event?.reason === 'string'
+        ? event.reason
+        : event?.reason?.message || event?.reason?.toString?.() || '';
+    if (isBenignRuntimeNoise(reasonText)) {
       event.preventDefault();
       return;
     }
