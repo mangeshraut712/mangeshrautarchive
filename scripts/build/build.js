@@ -389,6 +389,11 @@ async function build() {
   console.log('📂 Copying src/ → dist/ ...');
   await copyDirContent(srcDir, distDir);
 
+  // GitHub Pages runs Jekyll by default, which ignores dotdirs like `.well-known`.
+  // An empty `.nojekyll` disables Jekyll so security.txt and other agent files ship.
+  await writeFile(resolve(distDir, '.nojekyll'), '');
+  console.log('📄 Ensured dist/.nojekyll (GitHub Pages static publish)');
+
   await Promise.all(
     staticExtras.map(async item => {
       const source = resolve(projectRoot, item);
