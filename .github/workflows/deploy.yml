@@ -363,12 +363,13 @@ jobs:
           set -euo pipefail
           BASE="${{ env.VERCEL_PROD }}"
           EXPECTED="${{ github.sha }}"
-          # Vercel deploys independently from the Git integration; allow longer catch-up.
-          for attempt in $(seq 1 24); do
+          # Vercel deploys independently (often faster than this job). Accept exact match
+          # OR a newer main commit that already includes this SHA (push-train race).
+          for attempt in $(seq 1 12); do
             health=$(curl -sS -o /tmp/health.json -w "%{http_code}" --max-time 15 "${BASE}/api/health" || true)
             if [ "$health" != "200" ]; then
-              echo "⏳ API health HTTP ${health} (${attempt}/24)"
-              sleep 15
+              echo "⏳ API health HTTP ${health} (${attempt}/12)"
+              sleep 10
               continue
             fi
             REMOTE_COMMIT=$(curl --fail --silent --show-error --max-time 15 \
@@ -376,8 +377,16 @@ jobs:
               | node -pe "JSON.parse(require('fs').readFileSync(0,'utf8')).gitCommit" || true)
             echo "Remote Vercel commit: ${REMOTE_COMMIT:-unknown}"
             echo "Expected commit:      ${EXPECTED}"
+            MATCH=0
             if [ "${REMOTE_COMMIT}" = "${EXPECTED}" ]; then
-              echo "✅ Vercel production commit matches + API healthy"
+              MATCH=1
+            elif [ -n "${REMOTE_COMMIT}" ] && git cat-file -e "${REMOTE_COMMIT}^{commit}" 2>/dev/null \
+              && git merge-base --is-ancestor "${EXPECTED}" "${REMOTE_COMMIT}" 2>/dev/null; then
+              echo "✅ Vercel is ahead of this push (includes expected commit)"
+              MATCH=1
+            fi
+            if [ "$MATCH" -eq 1 ]; then
+              echo "✅ Vercel production healthy for this train"
               for path in "" "systems" "monitor" "travel" "uses" "api/status"; do
                 code=$(curl -sS -o /dev/null -w "%{http_code}" --max-time 15 "${BASE}/${path}")
                 echo "  ${BASE}/${path} → ${code}"
@@ -388,8 +397,8 @@ jobs:
               done
               exit 0
             fi
-            echo "Waiting for Vercel deploy (${attempt}/24)..."
-            sleep 15
+            echo "Waiting for Vercel deploy (${attempt}/12)..."
+            sleep 10
           done
           echo "::warning::Vercel production has not reached ${EXPECTED} yet (GitHub Pages is live). Check Vercel dashboard."
           # Soft-fail Vercel lag so Pages deploys are not blocked when Vercel is slow/queued.
