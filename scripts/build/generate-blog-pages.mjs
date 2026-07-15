@@ -17,7 +17,7 @@ const SITE_URL = 'https://mangeshraut.pro';
 const ASSET_PREFIX = '..';
 
 function sortedPosts() {
-  return blogPosts.toSorted((a, b) => new Date(b.date) - new Date(a.date));
+  return [...blogPosts].sort((a, b) => new Date(b.date) - new Date(a.date));
 }
 
 function pageShell({

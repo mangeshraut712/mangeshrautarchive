@@ -438,7 +438,8 @@ function escapeXml(value = '') {
 }
 
 function getSortedBlogPosts() {
-  return blogPosts.toSorted((a, b) => new Date(b.date) - new Date(a.date));
+  // Explicit copy + sort (avoid relying on Array#toSorted for older local Node).
+  return [...blogPosts].sort((a, b) => new Date(b.date) - new Date(a.date));
 }
 
 async function generateFeeds(distDir) {

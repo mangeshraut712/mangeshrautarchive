@@ -14,7 +14,7 @@
 | Primary URL     | [mangeshraut.pro](https://mangeshraut.pro) (Vercel)                                                               |
 | Mirror URL      | [mangeshraut712.github.io/mangeshrautarchive](https://mangeshraut712.github.io/mangeshrautarchive) (GitHub Pages) |
 | License         | MIT                                                                                                               |
-| Node.js         | 22.x, ESM (`"type": "module"`)                                                                                    |
+| Node.js         | ≥22 &lt;27 (`.nvmrc` → 22), ESM (`"type": "module"`)                                                              |
 | Python          | 3.12+ (FastAPI backend)                                                                                           |
 | Design language | Apple (SF Pro Text/Display, glassmorphism, light/dark themes)                                                     |
 
@@ -58,6 +58,11 @@
 ## 3. Essential Commands
 
 ```bash
+# Prerequisites
+node -v                     # must be ≥22 (see .nvmrc); Node 18 breaks Stylelint 17 / Vitest 4
+npm run check-node          # fails fast if Node is out of range
+npm run doctor:stack        # Node + no React/Next/Vue runtime deps
+
 # Development
 npm run dev                 # Start frontend (port 4000) + backend (port 8001) concurrently
 npm run dev:frontend        # Frontend-only with backend proxy to localhost:8001
@@ -75,8 +80,8 @@ npm run lint:python         # flake8 (Python)
 npm run format:check        # Prettier check
 
 # Test
-npm test                    # Vitest unit tests (40 tests)
-npm run test:api            # pytest API tests (109 tests; activate venv first)
+npm test                    # Vitest unit tests (50 tests)
+npm run test:api            # pytest API tests (122 tests; activate venv first)
 npm run test:e2e:chrome     # Playwright E2E — Desktop Chrome
 npm run test:e2e:all        # Playwright E2E — all 15 browser projects
 
@@ -172,8 +177,8 @@ All three test suites must pass before any merge to `main`:
 
 | Suite | Runner     | Command                | Coverage                                    |
 | ----- | ---------- | ---------------------- | ------------------------------------------- |
-| Unit  | Vitest     | `npm test`             | 40 tests — JS modules, utilities, markdown  |
-| API   | pytest     | `npm run test:api`     | 109 tests — FastAPI endpoints, middleware   |
+| Unit  | Vitest     | `npm test`             | 50 tests — JS modules, utilities, markdown  |
+| API   | pytest     | `npm run test:api`     | 122 tests — FastAPI endpoints, middleware   |
 | E2E   | Playwright | `npm run test:e2e:all` | Multi-spec suite across 15 browser projects |
 
 - Playwright configs include Desktop Chrome/Safari/Firefox/Edge, Pixel 7 Chrome, iPhone 14 Safari, iPad Pro Safari, and more.

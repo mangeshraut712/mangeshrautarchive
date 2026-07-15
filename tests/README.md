@@ -1,11 +1,11 @@
 # Tests
 
-| Suite       | Path                 | Runner     | Command                                         |
-| ----------- | -------------------- | ---------- | ----------------------------------------------- |
-| **Unit**    | `tests/unit/`        | Vitest     | `npm test`                                      |
-| **API**     | `tests/api/`         | pytest     | `npm run test:api` (activate `venv` first)      |
-| **E2E**     | `tests/e2e/`         | Playwright | `npm run test:e2e:chrome` / `test:e2e:all`      |
-| **Helpers** | `tests/e2e/helpers/` | —          | Shared `gotoSite`, `PAGES`, GitHub Pages prefix |
+| Suite       | Path                 | Runner     | Command                                         | Count (Jul 2026) |
+| ----------- | -------------------- | ---------- | ----------------------------------------------- | ---------------- |
+| **Unit**    | `tests/unit/`        | Vitest     | `npm test`                                      | 50               |
+| **API**     | `tests/api/`         | pytest     | `npm run test:api` (activate `venv` first)      | 122              |
+| **E2E**     | `tests/e2e/`         | Playwright | `npm run test:e2e:chrome` / `test:e2e:all`      | 15 projects      |
+| **Helpers** | `tests/e2e/helpers/` | —          | Shared `gotoSite`, `PAGES`, GitHub Pages prefix | —                |
 
 ## Conventions
 

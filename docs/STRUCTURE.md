@@ -8,9 +8,11 @@ mangeshrautarchive/
 ├── AGENTS.md                 # AI / contributor brief (must stay accurate)
 ├── SECURITY.md · LICENSE
 │
-├── package.json              # Node 22 · scripts · deps (root — required)
+├── package.json              # Node ≥22 · scripts · deps (root — required)
+├── .nvmrc · .node-version    # Pin local Node 22 for nvm / asdf / fnm
 ├── vercel.json               # Vercel routes · functions · headers
 ├── middleware.js             # Vercel edge (Lighthouse perf-audit rewrite)
+├── index.js                  # Static-analysis entry → src/js/entry.js
 ├── playwright.config.js      # E2E multi-browser
 ├── vitest.config.js          # Unit tests → tests/unit/**
 ├── eslint.config.js          # ESLint flat config
@@ -44,7 +46,7 @@ mangeshrautarchive/
 ├── scripts/                  # ★ Tooling (not shipped to browsers)
 │   ├── build/                # esbuild, generators, clean, assets
 │   ├── deployment/           # Lighthouse, security, env parity, deploy sync
-│   ├── utils/                # dev servers, serve-dist, flake8/vulture runners
+│   ├── utils/                # dev servers, check-node, serve-dist, flake8/vulture
 │   ├── qa/                   # Browser / FPS / device audits (+ manual/)
 │   ├── integrations/         # OAuth setup helpers, OpenRouter tests
 │   └── offline/              # Offline data builders (travel DB)
