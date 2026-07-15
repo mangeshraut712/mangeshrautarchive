@@ -580,6 +580,8 @@ main section h2[id$='-heading'] {
   color: #0071e3 !important;
   -webkit-text-fill-color: #0071e3 !important;
   margin-bottom: 0.75rem !important;
+  text-align: center;
+  letter-spacing: -0.02em;
 }
 
 html.dark main section > .container > h2,
@@ -590,6 +592,18 @@ html.dark main section h2[id$='-heading'] {
 
 main section .section-subtitle {
   margin-top: 0 !important;
+  margin-bottom: 1.25rem !important;
+  text-align: center;
+  max-width: 42rem;
+  margin-inline: auto;
+  color: #6e6e73 !important;
+  -webkit-text-fill-color: #6e6e73 !important;
+  line-height: 1.45;
+}
+
+html.dark main section .section-subtitle {
+  color: #a1a1a6 !important;
+  -webkit-text-fill-color: #a1a1a6 !important;
 }
 
 /* sr-only must never expand layout even with animate-in */
@@ -1231,21 +1245,44 @@ section[id] {
    Site polish — contact columns, footer, logos, projects, a11y tools
    ═══════════════════════════════════════════════════════════════ */
 
-/* Contact: balanced two-column stack */
+/* Contact: true two-column layout (right cards beside left, not under) */
+#contact .contact-grid {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  gap: 1.25rem !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  align-items: start !important;
+}
+
+#contact .contact-column {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 1.15rem !important;
+  min-width: 0 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}
+
 @media (min-width: 1024px) {
   #contact .contact-grid {
-    align-items: stretch !important;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+    gap: 1.5rem !important;
+    align-items: start !important;
   }
 
   #contact .contact-column {
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 1.15rem !important;
-    height: 100% !important;
+    height: auto !important;
   }
 
   #contact .contact-column > * {
     flex: 0 0 auto;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
   }
 
   #contact .contact-column:last-child .currently-card,
@@ -1253,10 +1290,6 @@ section[id] {
   #contact .contact-column:last-child .calendly-panel {
     width: 100% !important;
     box-sizing: border-box !important;
-  }
-
-  #contact .contact-column:last-child .currently-card {
-    flex: 1 1 auto !important;
   }
 }
 
@@ -1268,6 +1301,7 @@ section[id] {
   border: 1px solid var(--card-border-rest, #e5e5ea) !important;
   background: #ffffff !important;
   box-shadow: none !important;
+  overflow: hidden !important;
 }
 
 html.dark #contact .contact-column:last-child .currently-card,
@@ -1294,27 +1328,49 @@ html.dark #contact .contact-column:last-child .calendly-panel {
 
 /* Footer — tighten bottom dead space; breathing room under social row */
 footer {
-  padding: 1rem 0 0.85rem !important;
+  padding: 1.25rem 0 1.15rem !important;
   margin-bottom: 0 !important;
+  overflow: visible !important;
 }
 
 footer .footer-wrapper {
   padding-bottom: 0 !important;
   margin-bottom: 0 !important;
-  gap: 0.75rem !important;
+  gap: 1.1rem !important;
+  overflow: visible !important;
 }
 
 footer .footer-social-row,
 footer .footer-social-wrapper {
-  margin-bottom: 0.85rem !important;
-  padding-bottom: 0.15rem !important;
+  margin-bottom: 0 !important;
+  padding-bottom: 2.65rem !important; /* room for social name tooltips above copyright */
+  overflow: visible !important;
+  position: relative !important;
+  z-index: 2 !important;
+}
+
+/* Footer social names: show below icons but never collide with copyright */
+footer .footer-social-wrapper .tooltip,
+footer .wrapper.footer-social-wrapper .tooltip {
+  top: calc(100% + 8px) !important;
+  bottom: auto !important;
+  z-index: 5 !important;
 }
 
 footer .footer-info-container {
-  margin-top: 0 !important;
-  padding-top: 0 !important;
+  margin-top: 0.35rem !important;
+  padding-top: 1.15rem !important;
   margin-bottom: 0 !important;
-  padding-bottom: 0 !important;
+  padding-bottom: 0.35rem !important;
+  position: relative !important;
+  z-index: 1 !important;
+  clear: both !important;
+}
+
+footer .footer-copy,
+footer .footer-tagline {
+  line-height: 1.45 !important;
+  margin-bottom: 0.2rem !important;
 }
 
 /* Don’t leave a huge blank band under the page */
@@ -1346,18 +1402,52 @@ html.dark #projects #github-projects-container .showcase-project-card:hover {
   border-color: #0a84ff !important;
 }
 
-/* Speak / Translate — clearer, larger Apple controls */
-.card-read-toolbar {
+/* Speak / Translate — single horizontal row, never stacked */
+.card-read-toolbar,
+.card-read-toolbar.card-read-toolbar--inline {
+  display: inline-flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
   gap: 0.4rem !important;
+  flex-shrink: 0 !important;
+  width: auto !important;
+  max-width: 100% !important;
+  min-height: 36px !important;
+  height: auto !important;
+  margin: 0 !important;
+  box-sizing: border-box !important;
+}
+
+.card-read-toolbar.card-read-toolbar--inline {
+  display: flex !important;
+  width: 100% !important;
+  margin: 0 0 0.65rem !important;
+}
+
+.card-translate-wrap {
+  position: relative !important;
+  display: inline-flex !important;
+  flex: 0 0 auto !important;
+  align-items: center !important;
+  width: auto !important;
+  max-width: none !important;
 }
 
 .card-read-toolbar .card-speak-btn,
 .card-read-toolbar .card-translate-btn,
 .card-read-toolbar .card-restore-btn {
+  display: inline-flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  align-items: center !important;
+  justify-content: center !important;
   width: auto !important;
   height: 36px !important;
   min-width: 36px !important;
   min-height: 36px !important;
+  max-height: 36px !important;
   padding: 0 0.7rem !important;
   gap: 0.35rem !important;
   border-radius: 999px !important;
@@ -1369,14 +1459,47 @@ html.dark #projects #github-projects-container .showcase-project-card:hover {
   font-size: 0.75rem !important;
   font-weight: 650 !important;
   letter-spacing: -0.01em !important;
+  line-height: 1 !important;
+  white-space: nowrap !important;
+  vertical-align: middle !important;
 }
 
 .card-read-toolbar .card-tool-label {
   display: inline !important;
   line-height: 1 !important;
+  white-space: nowrap !important;
+}
+
+/* Keep Listen/Translate beside segmented control on About */
+.about-card-header {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 0.75rem !important;
+}
+
+.about-card-header .about-segmented-control {
+  flex: 0 1 auto !important;
+  min-width: 0 !important;
+}
+
+.about-card-header .card-read-toolbar {
+  margin-left: auto !important;
+  flex: 0 0 auto !important;
+  width: auto !important;
 }
 
 @media (width <= 640px) {
+  .about-card-header {
+    flex-wrap: wrap !important;
+  }
+
+  .about-card-header .card-read-toolbar {
+    margin-left: auto !important;
+  }
+
   .card-read-toolbar .card-tool-label {
     display: none !important;
   }
@@ -1385,6 +1508,7 @@ html.dark #projects #github-projects-container .showcase-project-card:hover {
   .card-read-toolbar .card-translate-btn,
   .card-read-toolbar .card-restore-btn {
     width: 40px !important;
+    min-width: 40px !important;
     padding: 0 !important;
   }
 }
@@ -1481,4 +1605,58 @@ html.launch-intro-active body {
 #skills-loading {
   min-height: 4.5rem !important;
   padding: 1rem !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Cross-page layout consistency — section rhythm + solid cards
+   ═══════════════════════════════════════════════════════════════ */
+
+main section.section-standard,
+main section.fade-in {
+  scroll-margin-top: 5.5rem;
+}
+
+main section > .container {
+  width: 100%;
+  max-width: min(1120px, calc(100% - 2.5rem));
+  margin-inline: auto;
+  box-sizing: border-box;
+}
+
+/* Shared solid card surface language across sections */
+#experience .experience-content,
+#education .education-card,
+#awards .award-card,
+#publications .publication-card,
+#recommendations .recommendation-card,
+#blog .blog-card,
+#about .about-text-card {
+  border-radius: 18px !important;
+  border: 1px solid var(--card-border-rest, #e5e5ea) !important;
+  background: #ffffff !important;
+  box-sizing: border-box !important;
+}
+
+html.dark #experience .experience-content,
+html.dark #education .education-card,
+html.dark #awards .award-card,
+html.dark #publications .publication-card,
+html.dark #recommendations .recommendation-card,
+html.dark #blog .blog-card,
+html.dark #about .about-text-card {
+  background: #000000 !important;
+  border-color: #2c2c2e !important;
+}
+
+/* Experience toolbar sits top-right of card content */
+#experience .experience-content > .card-read-toolbar--inline {
+  margin: 0 0 0.55rem !important;
+  justify-content: flex-end !important;
+}
+
+#awards .award-content > .card-read-toolbar--inline,
+#recommendations .recommendation-card > .card-read-toolbar--inline,
+#blog .blog-card-actions > .card-read-toolbar--inline {
+  margin: 0 0 0.45rem !important;
+  justify-content: flex-end !important;
 }

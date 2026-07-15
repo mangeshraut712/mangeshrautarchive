@@ -9,10 +9,11 @@
     if (typeof window === 'undefined') return false;
     if (window.__PERF_AUDIT__ === true) return true;
     if (new URLSearchParams(window.location.search).has('perf-audit')) return true;
+    // Lighthouse / PageSpeed only — do not bail on generic webdriver (breaks local QA)
     const ua = navigator.userAgent || '';
-    if (/Chrome-Lighthouse|Lighthouse|PTST|HeadlessChrome|HeadlessChromium/i.test(ua)) return true;
-    if (/moto g power/i.test(ua)) return true;
-    return navigator.webdriver === true;
+    if (/Chrome-Lighthouse|Lighthouse|PTST/i.test(ua)) return true;
+    if (/moto g power/i.test(ua) && /Chrome-Lighthouse|Lighthouse/i.test(ua)) return true;
+    return false;
   }
 
   if (isPerformanceAudit()) {
@@ -594,7 +595,10 @@
 
     reachBadge?.addEventListener('click', event => {
       event.stopPropagation();
-      setReachPanelOpen(!reachPanel?.classList.contains('is-open'));
+      event.preventDefault();
+      const isOpen =
+        reachFlyout?.classList.contains('is-open') || reachPanel?.classList.contains('is-open');
+      setReachPanelOpen(!isOpen);
     });
 
     reachBadge?.addEventListener('keydown', event => {

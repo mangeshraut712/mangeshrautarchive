@@ -655,21 +655,25 @@ html.dark .about-segmented-control {
 .about-tab-btn:not(.active) {
   background-color: #ffffff !important;
   color: #3a3a3c !important;
+  -webkit-text-fill-color: #3a3a3c !important;
 }
 
 html.dark .about-tab-btn:not(.active) {
   background-color: #000000 !important;
   color: #f5f5f7 !important;
+  -webkit-text-fill-color: #f5f5f7 !important;
 }
 
 .about-tab-btn.active {
   background: #000000 !important;
   color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
 }
 
 html.dark .about-tab-btn.active {
-  background: #ffffff !important;
+  background: #f5f5f7 !important;
   color: #000000 !important;
+  -webkit-text-fill-color: #000000 !important;
 }
 
 .about-text-card.speech-active .highlight-target {

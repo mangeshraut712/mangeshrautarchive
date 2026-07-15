@@ -245,21 +245,25 @@ html.dark .blog-card:hover {
 }
 
 .blog-card-actions {
-  position: absolute;
-  top: clamp(1.25rem, 2.4vw, 1.75rem);
-  right: clamp(1.25rem, 2.4vw, 1.75rem);
+  position: static;
+  top: auto;
+  right: auto;
   z-index: 2;
   display: flex;
   justify-content: flex-end;
   align-items: center;
   min-height: 34px;
+  margin: 0 0 0.15rem;
   pointer-events: none;
+  order: -1;
+  width: 100%;
 }
 
 .blog-card-actions .card-read-toolbar--inline {
-  margin: 0;
-  width: auto;
-  justify-content: flex-end;
+  margin: 0 !important;
+  width: auto !important;
+  max-width: 100%;
+  justify-content: flex-end !important;
   pointer-events: auto;
 }
 
@@ -269,8 +273,9 @@ html.dark .blog-card:hover {
   justify-content: space-between;
   gap: 0.85rem;
   min-height: 34px;
-  padding-right: 5.35rem;
+  padding-right: 0;
   flex-wrap: wrap;
+  width: 100%;
 }
 
 .blog-kicker {
@@ -961,12 +966,15 @@ html.dark .article-link:hover {
   }
 
   .blog-card-actions {
-    top: 1.25rem;
-    right: 1.25rem;
+    position: static;
+    top: auto;
+    right: auto;
+    width: 100%;
+    margin-bottom: 0.15rem;
   }
 
   .blog-kicker-row {
-    padding-right: 6.5rem;
+    padding-right: 0;
   }
 
   .blog-read-btn {
