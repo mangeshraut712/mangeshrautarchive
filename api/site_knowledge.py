@@ -171,7 +171,18 @@ def _extract_javascript_strings(raw: str) -> str:
         value = match.group(2)
         if any(token in value for token in ["./", "../", ".css", ".js", ".webp", ".png"]):
             continue
-        lines.append(value.encode("utf-8", "ignore").decode("unicode_escape", "ignore"))
+        # Manual unescape — avoid codecs.unicode_escape DeprecationWarning on JS
+        # sequences like \` that are not valid Python unicode-escape payloads.
+        unescaped = (
+            value.replace(r"\\", "\u0000")
+            .replace(r"\n", "\n")
+            .replace(r"\t", "\t")
+            .replace(r"\"", '"')
+            .replace(r"\'", "'")
+            .replace(r"\`", "`")
+            .replace("\u0000", "\\")
+        )
+        lines.append(unescaped)
     return _normalize_text(" ".join(lines))
 
 

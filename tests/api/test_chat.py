@@ -137,7 +137,7 @@ def test_travel_summary_counts_usa_states_from_site_data():
 def test_blog_release_summary_finds_june_2026_titles():
     summary = format_blog_release_summary("June 2026 blog releases")
 
-    assert "WWDC 2026 Field Notes: Apple Intelligence, Siri, and Private AI" in summary
+    assert "WWDC 2026 Field Notes: Liquid Glass Maturity, Apple Intelligence, and Siri" in summary
     assert "NotebookLM 2026 Field Notes: From Document Q&A to Research Workflow" in summary
 
 
