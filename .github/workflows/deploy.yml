@@ -275,6 +275,9 @@ jobs:
         uses: actions/upload-pages-artifact@v5
         with:
           path: ./dist
+          # Required: default tar step uses --exclude=.[^/]* so .nojekyll and
+          # .well-known/security.txt never reach GitHub Pages without this flag.
+          include-hidden-files: true
 
   deploy:
     name: Deploy to GitHub Pages
