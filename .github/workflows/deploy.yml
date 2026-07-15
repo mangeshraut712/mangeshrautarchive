@@ -238,6 +238,8 @@ jobs:
         with:
           name: pages-dist-${{ github.sha }}
           path: dist
+          # Required so /.well-known/security.txt (and other dotdirs) reach GitHub Pages.
+          include-hidden-files: true
           if-no-files-found: error
           retention-days: 2
 
