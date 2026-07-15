@@ -99,9 +99,12 @@ class TestGithubProxy:
 
     def test_proxy_allows_portfolio_repos_path(self, client):
         response = client.get("/api/github/proxy?path=/repos/mangeshraut712/mangeshrautarchive")
-        # Succeed, not found upstream, or 503 if GitHub unreachable in CI
-        assert response.status_code in (200, 404, 503)
+        # Succeed, not found, upstream rate-limit/forbidden (no PAT in CI), or network error
+        assert response.status_code in (200, 403, 404, 429, 503)
+        # Path allowlist must not reject portfolio repos (that is 400).
+        assert response.status_code != 400
 
     def test_proxy_allows_portfolio_users_path(self, client):
         response = client.get("/api/github/proxy?path=/users/mangeshraut712")
-        assert response.status_code in (200, 404, 503)
+        assert response.status_code in (200, 403, 404, 429, 503)
+        assert response.status_code != 400
