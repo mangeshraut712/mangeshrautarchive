@@ -61,7 +61,65 @@ def test_health_vitals_summary_uses_sanitized_fallback(client):
     assert payload["refresh"]["stale"] is False
 
 
-def test_health_vitals_summary_serves_stale_cache_without_provider_refresh(client, monkeypatch):
+def test_health_vitals_summary_serves_stale_cache_when_auto_refresh_disabled(client, monkeypatch):
+    from api.routes import integrations as integrations_route
+
+    calls = {"sync": 0, "state_updates": []}
+    old_sync = (datetime.now(timezone.utc) - timedelta(hours=4)).isoformat().replace("+00:00", "Z")
+
+    async def fake_fetch_latest_health_summary():
+        return {
+            "status": "live",
+            "source": "supabase",
+            "data": {
+                "date": "2026-06-14",
+                "sleepScore": 81,
+                "recoveryScore": 64,
+                "strain": 4.8,
+                "restingHeartRate": 57,
+                "hrvTrend": "steady",
+                "weightTrend": "104.0 kg",
+                "lastSyncedAt": old_sync,
+                "sourceStatus": "synced",
+            },
+        }
+
+    async def fake_sync_connected_health_providers():
+        calls["sync"] += 1
+        return {"saved": True, "results": [{"provider": "whoop", "status": "live"}]}
+
+    async def fake_update_sync_state(provider, **fields):
+        calls["state_updates"].append({"provider": provider, **fields})
+
+    monkeypatch.setattr(
+        integrations_route,
+        "fetch_latest_health_summary",
+        fake_fetch_latest_health_summary,
+    )
+    monkeypatch.setattr(
+        integrations_route,
+        "sync_connected_health_providers",
+        fake_sync_connected_health_providers,
+    )
+    monkeypatch.setattr(integrations_route, "update_sync_state", fake_update_sync_state)
+    monkeypatch.setattr(integrations_route, "HEALTH_SUMMARY_AUTO_REFRESH_ON_READ", False)
+
+    response = client.get("/api/health-vitals/summary")
+
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["status"] == "stale"
+    assert payload["data"]["sleepScore"] == 81
+    assert payload["data"]["sourceStatus"] == "stale"
+    assert payload["refresh"]["attempted"] is False
+    assert payload["refresh"]["refreshed"] is False
+    assert payload["refresh"]["stale"] is True
+    assert payload["refresh"]["reason"] == "cron_refresh_pending"
+    assert calls["sync"] == 0
+    assert calls["state_updates"] == []
+
+
+def test_health_vitals_summary_refreshes_stale_cache_when_auto_refresh_enabled(client, monkeypatch):
     from api.routes import integrations as integrations_route
 
     calls = {"sync": 0, "state_updates": []}
@@ -137,15 +195,15 @@ def test_health_vitals_summary_serves_stale_cache_without_provider_refresh(clien
 
     assert response.status_code == 200
     payload = response.json()
-    assert payload["status"] == "stale"
-    assert payload["data"]["sleepScore"] == 81
-    assert payload["data"]["sourceStatus"] == "stale"
-    assert payload["refresh"]["attempted"] is False
-    assert payload["refresh"]["refreshed"] is False
-    assert payload["refresh"]["stale"] is True
-    assert payload["refresh"]["reason"] == "scheduled_or_admin_sync"
-    assert calls["sync"] == 0
-    assert calls["state_updates"] == []
+    assert payload["status"] == "live"
+    assert payload["data"]["sleepScore"] == 88
+    assert payload["data"]["sourceStatus"] == "synced"
+    assert payload["refresh"]["attempted"] is True
+    assert payload["refresh"]["refreshed"] is True
+    assert payload["refresh"]["stale"] is False
+    assert payload["refresh"]["reason"] == "provider_refresh_completed"
+    assert calls["sync"] == 1
+    assert any(item.get("last_success_at") for item in calls["state_updates"])
 
 
 def test_health_vitals_sync_requires_admin_token(client):

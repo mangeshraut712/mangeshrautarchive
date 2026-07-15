@@ -11,10 +11,14 @@ const DEFAULT_METRICS = {
   weight: null,
   muscle: null,
   fat: null,
+  restingHeartRate: null,
+  hrvTrend: null,
+  metricDate: null,
   lastSynced: null,
   cachedAt: null,
   source: 'fallback',
   sourceStatus: 'pending',
+  status: 'pending',
   refresh: null,
 };
 
@@ -154,10 +158,13 @@ class HealthWidget {
       const data = payload.data;
       const isLive = payload.status === 'live';
       this.metrics.source = payload.source || 'fallback';
+      this.metrics.status = payload.status || data.sourceStatus || 'unknown';
       this.metrics.sourceStatus = payload.sourceStatus || data.sourceStatus || 'unknown';
       this.metrics.refresh = payload.refresh || null;
       this.metrics.cachedAt = Date.now();
+      this.metrics.metricDate = typeof data.date === 'string' ? data.date : this.metrics.metricDate;
 
+      // Always prefer fresh numbers from the API; only clear when live payload omits them.
       if (typeof data.sleepScore === 'number') this.metrics.sleep = data.sleepScore;
       else if (isLive) this.metrics.sleep = null;
 
@@ -167,6 +174,18 @@ class HealthWidget {
       const strainValue = this.normalizeStrainValue(data);
       if (strainValue !== null) this.metrics.strain = strainValue;
       else if (isLive) this.metrics.strain = null;
+
+      if (typeof data.restingHeartRate === 'number') {
+        this.metrics.restingHeartRate = data.restingHeartRate;
+      } else if (isLive) {
+        this.metrics.restingHeartRate = null;
+      }
+
+      if (typeof data.hrvTrend === 'string' && data.hrvTrend.trim()) {
+        this.metrics.hrvTrend = data.hrvTrend.trim().toLowerCase();
+      } else if (isLive) {
+        this.metrics.hrvTrend = null;
+      }
 
       const parsedWeight = parseWeightTrend(data.weightTrend);
       if (parsedWeight.weight !== null) this.metrics.weight = parsedWeight.weight;
@@ -181,7 +200,10 @@ class HealthWidget {
       if (data.lastSyncedAt) {
         const parsed = Date.parse(data.lastSyncedAt);
         if (!Number.isNaN(parsed)) this.metrics.lastSynced = parsed;
-      } else if (isLive) {
+      } else if (payload.lastSyncedAt) {
+        const parsed = Date.parse(payload.lastSyncedAt);
+        if (!Number.isNaN(parsed)) this.metrics.lastSynced = parsed;
+      } else if (isLive || payload.refresh?.refreshed) {
         this.metrics.lastSynced = Date.now();
       }
 
@@ -249,6 +271,29 @@ class HealthWidget {
       this.metrics.fat === null ? '--' : this.metrics.fat.toFixed(1)
     );
 
+    // Optional RHR / HRV rows when present in markup
+    this.setTextContent(
+      'whoop-rhr-val',
+      this.metrics.restingHeartRate === null ? '--' : `${Math.round(this.metrics.restingHeartRate)}`
+    );
+    this.setTextContent('whoop-hrv-val', this.metrics.hrvTrend ? this.metrics.hrvTrend : '--');
+
+    const widget = document.querySelector('.health-widget-container');
+    if (widget) {
+      widget.classList.remove(
+        'health-status-live',
+        'health-status-stale',
+        'health-status-pending',
+        'health-status-empty',
+        'health-status-not_configured'
+      );
+      const statusKey = String(this.metrics.status || this.metrics.sourceStatus || 'pending')
+        .toLowerCase()
+        .replace(/[^a-z0-9_-]/g, '_');
+      widget.classList.add(`health-status-${statusKey}`);
+      widget.dataset.healthStatus = statusKey;
+    }
+
     this.updateSyncedTimeText();
   }
 
@@ -261,13 +306,29 @@ class HealthWidget {
     const el = document.getElementById('health-sync-text');
     if (!el) return;
 
+    const liveLabel = document.querySelector('.health-widget-live-label');
+    const status = String(this.metrics.status || this.metrics.sourceStatus || '').toLowerCase();
+    if (liveLabel) {
+      if (this.isRefreshing) {
+        liveLabel.textContent = 'Updating…';
+      } else if (status === 'live') {
+        liveLabel.textContent = 'Live Vitals';
+      } else if (status === 'stale') {
+        liveLabel.textContent = 'Cached Vitals';
+      } else if (status === 'not_configured' || status === 'empty') {
+        liveLabel.textContent = 'Setup Pending';
+      } else {
+        liveLabel.textContent = 'Health Vitals';
+      }
+    }
+
     if (!this.metrics.lastSynced) {
       el.textContent = this.isRefreshing ? 'Checking latest stats…' : 'Last synced: Pending';
       return;
     }
 
     const refresh = this.metrics.refresh || {};
-    const prefix = this.isRefreshing ? 'Refreshing latest stats · ' : 'Last synced: ';
+    const prefix = this.isRefreshing ? 'Refreshing · ' : 'Last synced: ';
     const diffMs = Date.now() - this.metrics.lastSynced;
     const diffMin = Math.floor(diffMs / 60000);
     const diffHour = Math.floor(diffMin / 60);
@@ -291,12 +352,23 @@ class HealthWidget {
     }
 
     if (!this.isRefreshing && refresh.refreshed) {
-      el.textContent = 'Last synced: Just now';
+      el.textContent = 'Last synced: Just now · WHOOP + Withings';
       return;
     }
 
     if (!this.isRefreshing && refresh.stale && refresh.reason === 'cooldown') {
-      el.textContent = `Last synced: ${relativeText} · refresh queued`;
+      el.textContent = `Last synced: ${relativeText} · refresh soon`;
+      return;
+    }
+
+    if (!this.isRefreshing && refresh.stale && refresh.reason === 'cron_refresh_pending') {
+      el.textContent = `Last synced: ${relativeText} · refresh pending`;
+      return;
+    }
+
+    if (!this.isRefreshing && status === 'stale') {
+      const dayHint = this.metrics.metricDate ? ` · data ${this.metrics.metricDate}` : '';
+      el.textContent = `Last synced: ${relativeText}${dayHint}`;
       return;
     }
 

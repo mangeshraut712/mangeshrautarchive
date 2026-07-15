@@ -47,10 +47,12 @@ HEALTH_SUMMARY_REFRESH_COOLDOWN_MINUTES = int(
     os.getenv("HEALTH_SUMMARY_REFRESH_COOLDOWN_MINUTES", "15")
 )
 HEALTH_SUMMARY_REFRESH_TIMEOUT_SECONDS = float(
-    os.getenv("HEALTH_SUMMARY_REFRESH_TIMEOUT_SECONDS", "8")
+    os.getenv("HEALTH_SUMMARY_REFRESH_TIMEOUT_SECONDS", "12")
 )
+# Default ON so public summary stays current when WHOOP/Withings tokens are connected.
+# Disable with HEALTH_SUMMARY_AUTO_REFRESH_ON_READ=false if cost/latency is a concern.
 HEALTH_SUMMARY_AUTO_REFRESH_ON_READ = os.getenv(
-    "HEALTH_SUMMARY_AUTO_REFRESH_ON_READ", "false"
+    "HEALTH_SUMMARY_AUTO_REFRESH_ON_READ", "true"
 ).lower() in {"1", "true", "yes"}
 HEALTH_SUMMARY_SYNC_STATE_PROVIDER = "health_vitals"
 
@@ -138,7 +140,8 @@ def _health_summary_refresh_metadata(
         "ageMinutes": _health_summary_age_minutes(summary),
         "maxAgeMinutes": HEALTH_SUMMARY_REFRESH_MAX_AGE_MINUTES,
         "cooldownMinutes": HEALTH_SUMMARY_REFRESH_COOLDOWN_MINUTES,
-        "automaticCronUtc": "hourly",
+        "automaticCronUtc": "0 */6 * * *",
+        "autoRefreshOnRead": HEALTH_SUMMARY_AUTO_REFRESH_ON_READ,
     }
 
 
@@ -345,11 +348,13 @@ async def get_integrations_status():
 )
 async def get_health_vitals_summary():
     summary = await fetch_latest_health_summary()
-    refresh = _health_summary_refresh_metadata(summary)
+    summary, refresh = await _maybe_refresh_health_summary(summary)
     data = summary.get("data") or empty_health_summary()
     status = _health_summary_public_status(summary, refresh)
     if status == "stale":
         data = {**data, "sourceStatus": "stale"}
+    elif refresh.get("refreshed") and status == "live":
+        data = {**data, "sourceStatus": data.get("sourceStatus") or "synced"}
     return _health_summary_response({
         "success": True,
         "timestamp": _utc_now(),
