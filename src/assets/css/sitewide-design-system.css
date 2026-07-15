@@ -16,6 +16,10 @@ button:not(.about-tab-btn):not(.about-speak-btn):not(.card-speak-btn):not(.card-
     .website-share-close
   ):not(.website-share-copy):not(.website-share-action):not(.chatbot-close-btn):not(
     .chatbot-send-btn
+  ):not(.chatbot-settings-btn):not(.chatbot-voice-btn):not(.chatbot-writing-btn):not(
+    .chatbot-retry-btn
+  ):not(.welcome-action-chip):not(.writing-tool-option):not(.context-aware-chip):not(
+    .chatbot-followup-chips button
   ):not(#search-toggle):not(#theme-toggle):not(.theme-toggle-nav):not(#menu-btn):not(
     .menu-toggle-button
   ):not(#name-pronounce-btn):not(.name-pronounce-btn):not(#avatar-toggle):not(
@@ -71,6 +75,10 @@ button:not(.about-tab-btn):not(.about-speak-btn):not(.card-speak-btn):not(.card-
     .website-share-close
   ):not(.website-share-copy):not(.website-share-action):not(.chatbot-close-btn):not(
     .chatbot-send-btn
+  ):not(.chatbot-settings-btn):not(.chatbot-voice-btn):not(.chatbot-writing-btn):not(
+    .chatbot-retry-btn
+  ):not(.welcome-action-chip):not(.writing-tool-option):not(.context-aware-chip):not(
+    .chatbot-followup-chips button
   ):not(#search-toggle):not(#theme-toggle):not(.theme-toggle-nav):not(#menu-btn):not(
     .menu-toggle-button
   ):not(#name-pronounce-btn):not(.name-pronounce-btn):not(#avatar-toggle):not(
@@ -656,6 +664,10 @@ button:not(.about-tab-btn):not(.about-speak-btn):not(.card-speak-btn):not(.card-
     .website-share-close
   ):not(.website-share-copy):not(.website-share-action):not(.chatbot-close-btn):not(
     .chatbot-send-btn
+  ):not(.chatbot-settings-btn):not(.chatbot-voice-btn):not(.chatbot-writing-btn):not(
+    .chatbot-retry-btn
+  ):not(.welcome-action-chip):not(.writing-tool-option):not(.context-aware-chip):not(
+    .chatbot-followup-chips button
   ):not(#search-toggle):not(#theme-toggle):not(.theme-toggle-nav):not(#menu-btn):not(
     .menu-toggle-button
   ):not(#name-pronounce-btn):not(.name-pronounce-btn):not(#avatar-toggle):not(

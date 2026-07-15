@@ -387,7 +387,12 @@ class IntelligentAssistant {
     try {
       const apiUrl = buildApiUrl('/api/chat');
 
-      const isStreaming = typeof options.onChunk === 'function';
+      // Prefer NDJSON streaming even without an onChunk callback. Free-router
+      // non-stream responses occasionally return junk safety classifiers.
+      const wantsLiveChunks = typeof options.onChunk === 'function';
+      const forceJson = options.stream === false;
+      const isStreaming = !forceJson;
+      const onChunk = wantsLiveChunks ? options.onChunk : null;
       const externalSignal = options.signal;
       const timeoutSignal = AbortSignal.timeout(SERVER_STREAM_TIMEOUT_MS);
       const signal =
@@ -463,12 +468,12 @@ class IntelligentAssistant {
               // Handle chunk data (backend sends {type: "chunk", content: "..."})
               if (data.type === 'chunk' && data.content) {
                 fullText += data.content;
-                options.onChunk(data.content);
+                onChunk?.(data.content);
               }
               // Legacy format support
               else if (data.chunk) {
                 fullText += data.chunk;
-                options.onChunk(data.chunk);
+                onChunk?.(data.chunk);
               }
               // Handle errors
               else if (data.error || data.type === 'error') {
@@ -520,7 +525,7 @@ class IntelligentAssistant {
           return null;
         }
 
-        if (this.isUpstreamFailureText(fullText)) {
+        if (this.isUpstreamFailureText(fullText) || this.isGarbageModelAnswer(fullText, metadata)) {
           this.markServerUnavailable();
           return null;
         }
@@ -540,6 +545,11 @@ class IntelligentAssistant {
           throw new Error('Empty response from server');
         }
         const data = JSON.parse(text);
+        const answer = this._extractAnswerText(data);
+        if (this.isUpstreamFailureText(answer) || this.isGarbageModelAnswer(answer, data)) {
+          this.markServerUnavailable();
+          return null;
+        }
         this.isReadyState = true;
         return data;
       }
@@ -656,13 +666,25 @@ class IntelligentAssistant {
 
   isUpstreamFailureText(answer) {
     if (!answer) return false;
-    const lower = String(answer).toLowerCase();
+    const lower = String(answer).toLowerCase().trim();
     return (
       lower.includes('neural interrupt') ||
       lower.includes('ai service is temporarily unavailable') ||
       lower.includes('upstream_http_error') ||
-      lower.includes('the ai service returned an error')
+      lower.includes('the ai service returned an error') ||
+      // OpenRouter free-router sometimes returns a content-safety classifier only.
+      /^user\s*safety\s*:\s*(safe|unsafe)\s*$/i.test(lower) ||
+      /^(safe|unsafe|allowed|blocked)\s*$/i.test(lower)
     );
+  }
+
+  isGarbageModelAnswer(answer, payload = {}) {
+    if (!answer) return true;
+    const text = String(answer).trim();
+    if (text.length < 12) return true;
+    const model = String(payload?.model || payload?.metadata?.model || '').toLowerCase();
+    if (model.includes('content-safety') || model.includes('moderation')) return true;
+    return this.isUpstreamFailureText(text);
   }
 
   isGenericFallback(answer) {

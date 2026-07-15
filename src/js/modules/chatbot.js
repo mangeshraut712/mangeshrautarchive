@@ -20,6 +20,7 @@ import { limits } from '../core/config.js';
 import { markdownService } from '../services/MarkdownService.js';
 import { ChatScrollEngine } from '../utils/chat-scroll-engine.js';
 import { realtimeVoiceService } from '../services/RealtimeVoiceService.js';
+import { lockBodyScroll, unlockBodyScroll } from '../utils/scroll-lock.js';
 import appleSounds from './apple-sounds.js';
 
 const MAX_CHAT_INPUT_LENGTH = 1800;
@@ -198,17 +199,82 @@ class AppleIntelligenceChatbot {
       announce: message => this.announceScroll(message),
     });
     this.scrollEngine.bind();
+    this._viewportBound = false;
+    this._onVisualViewport = null;
+    this._mobileScrollLocked = false;
 
     // Wait for chat API to be available
     this.waitForChatAPI();
     this.initVoiceRecognition();
     this.initRealtimeVoice();
     this.bindEvents();
+    this.ensureStatusIndicator();
     this.addWelcomeMessage();
     this.preloadSpeechVoices();
 
     // Set initial rate limit badge state
     this.updateRateLimitBadge();
+    this.setComposerBusy(false);
+  }
+
+  ensureStatusIndicator() {
+    const headerMain = this.elements.widget?.querySelector('.chatbot-header-main');
+    const titleRow = this.elements.widget?.querySelector('.chatbot-title-row');
+    if (!headerMain || !titleRow) return;
+    if (headerMain.querySelector('.chatbot-status')) return;
+
+    const status = document.createElement('div');
+    status.className = 'chatbot-status';
+    status.innerHTML =
+      '<span class="chatbot-status-dot status-local" aria-hidden="true"></span>' +
+      '<span class="chatbot-status-text">Ready</span>';
+    titleRow.insertAdjacentElement('afterend', status);
+  }
+
+  isMobileViewport() {
+    return typeof window !== 'undefined' && window.matchMedia('(max-width: 768px)').matches;
+  }
+
+  bindVisualViewportInsets() {
+    if (this._viewportBound || typeof window === 'undefined' || !window.visualViewport) return;
+    this._viewportBound = true;
+    this._onVisualViewport = () => {
+      const vv = window.visualViewport;
+      if (!vv) return;
+      // Keyboard / browser chrome that shrinks the visual viewport.
+      const inset = Math.max(0, Math.round(window.innerHeight - vv.height - vv.offsetTop));
+      document.documentElement.style.setProperty('--chat-keyboard-inset', `${inset}px`);
+      if (this.isOpen && this.scrollEngine?.isFollowing?.()) {
+        this.scrollEngine.jumpToLatest({ announce: false });
+      }
+    };
+    window.visualViewport.addEventListener('resize', this._onVisualViewport, { passive: true });
+    window.visualViewport.addEventListener('scroll', this._onVisualViewport, { passive: true });
+    this._onVisualViewport();
+  }
+
+  unbindVisualViewportInsets() {
+    if (!this._viewportBound) return;
+    if (window.visualViewport && this._onVisualViewport) {
+      window.visualViewport.removeEventListener('resize', this._onVisualViewport);
+      window.visualViewport.removeEventListener('scroll', this._onVisualViewport);
+    }
+    document.documentElement.style.removeProperty('--chat-keyboard-inset');
+    this._viewportBound = false;
+    this._onVisualViewport = null;
+  }
+
+  setComposerBusy(busy) {
+    const sendBtn = this.elements.sendBtn;
+    const input = this.elements.input;
+    if (sendBtn) {
+      sendBtn.disabled = Boolean(busy);
+      sendBtn.setAttribute('aria-busy', busy ? 'true' : 'false');
+      sendBtn.classList.toggle('is-busy', Boolean(busy));
+    }
+    if (input) {
+      input.setAttribute('aria-busy', busy ? 'true' : 'false');
+    }
   }
 
   getTodayKey() {
@@ -704,19 +770,27 @@ class AppleIntelligenceChatbot {
     });
 
     document.addEventListener('click', e => {
+      if (!this.isOpen || !e.isTrusted) return;
+      const target = e.target;
+      if (!(target instanceof Element)) return;
+      // Keep open when interacting with privacy sheet or other AssistMe overlays.
       if (
-        this.isOpen &&
-        e.isTrusted &&
-        !this.elements.widget.contains(e.target) &&
-        !this.elements.toggle.contains(e.target) &&
-        !this.elements.backdrop?.contains(e.target)
+        this.elements.widget?.contains(target) ||
+        this.elements.toggle?.contains(target) ||
+        this.elements.backdrop?.contains(target) ||
+        target.closest('#privacy-dashboard, .privacy-dashboard, .website-share-dialog')
       ) {
-        this.closeWidget();
+        return;
       }
+      this.closeWidget();
     });
 
     document.addEventListener('keydown', e => {
       if (e.key === 'Escape' && this.isOpen) {
+        if (this.elements.widget?.querySelector('.writing-tools-popover')) {
+          this.closeWritingTools();
+          return;
+        }
         this.closeWidget();
         return;
       }
@@ -730,9 +804,23 @@ class AppleIntelligenceChatbot {
       'resize',
       () => {
         this.textareaWidth = 0;
+        if (this.isOpen) {
+          this.syncMobileScrollLock();
+        }
       },
       { passive: true }
     );
+  }
+
+  syncMobileScrollLock() {
+    const wantLock = this.isOpen && this.isMobileViewport();
+    if (wantLock && !this._mobileScrollLocked) {
+      lockBodyScroll();
+      this._mobileScrollLocked = true;
+    } else if (!wantLock && this._mobileScrollLocked) {
+      unlockBodyScroll();
+      this._mobileScrollLocked = false;
+    }
   }
 
   toggleWidget() {
@@ -746,6 +834,8 @@ class AppleIntelligenceChatbot {
   openWidget() {
     this.lastFocusedElement = document.activeElement;
     document.body.classList.add('chatbot-open');
+    this.syncMobileScrollLock();
+    this.bindVisualViewportInsets();
     if (this.elements.backdrop) {
       this.elements.backdrop.classList.remove('hidden');
       this.elements.backdrop.classList.add('active');
@@ -792,6 +882,7 @@ class AppleIntelligenceChatbot {
       this.activeAskController = null;
     }
     this.isProcessing = false;
+    this.setComposerBusy(false);
     this.hideTypingIndicator?.();
     this.scrollEngine?.saveSession();
     this.closeWritingTools();
@@ -801,6 +892,9 @@ class AppleIntelligenceChatbot {
       this.realtimeTranscriptEls = { user: null, assistant: null };
     }
     document.body.classList.remove('chatbot-open');
+    this.isOpen = false;
+    this.syncMobileScrollLock();
+    this.unbindVisualViewportInsets();
     if (this.elements.backdrop) {
       this.elements.backdrop.classList.remove('active');
       this.elements.backdrop.classList.add('hidden');
@@ -810,7 +904,6 @@ class AppleIntelligenceChatbot {
     this.elements.widget?.classList.remove('visible');
     this.elements.widget?.classList.add('hidden');
     this.elements.widget?.setAttribute('aria-hidden', 'true');
-    this.isOpen = false;
     this.elements.toggle?.setAttribute('aria-expanded', 'false');
     const focusTarget =
       this.lastFocusedElement && document.contains(this.lastFocusedElement)
@@ -949,9 +1042,11 @@ class AppleIntelligenceChatbot {
     }
 
     this.isProcessing = true;
+    this.setComposerBusy(true);
     this.lastUserMessage = text;
     this.retryCount = 0;
     this.removeFollowupChips();
+    this.closeWritingTools();
     appleSounds.playClick();
 
     // Add user message
@@ -989,16 +1084,20 @@ class AppleIntelligenceChatbot {
       console.error('Error getting AI response:', error);
       this.hideTypingIndicator();
       const rateLimited = error?.code === 'RATE_LIMITED';
+      const retryAfter = Number(error?.retryAfter) || 0;
       this.addErrorMessage(
         rateLimited
-          ? error.message ||
-              'You have sent too many requests. Please wait a moment before trying again.'
+          ? `${error.message || 'You have sent too many requests.'}${
+              retryAfter > 0 ? ` Try again in about ${retryAfter}s.` : ' Please wait a moment.'
+            }`
           : "I'm having trouble connecting. Please try again in a moment."
       );
     } finally {
       this.activeAskController = null;
       this.isProcessing = false;
+      this.setComposerBusy(false);
       this.messageCount++;
+      this.updateRateLimitBadge();
     }
   }
 

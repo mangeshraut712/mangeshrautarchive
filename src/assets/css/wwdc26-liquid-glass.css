@@ -520,11 +520,14 @@ html.dark #chatbot-widget .thinking-content {
 
 /* !important needed: sitewide-design-system.css repaints buttons blue */
 #chatbot-widget .chatbot-writing-btn {
-  width: 40px;
-  height: 40px;
-  min-width: 40px;
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
+  flex: 0 0 44px;
   flex-shrink: 0;
   padding: 0 !important;
+  box-sizing: border-box;
   border-radius: 50% !important;
   border: none !important;
   background: linear-gradient(135deg, var(--siri-c2) 0%, var(--siri-c3) 100%) !important;
@@ -765,11 +768,14 @@ html.dark #chatbot-widget .chatbot-header {
 }
 
 #chatbot-widget .chatbot-header-main {
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-rows: auto auto;
   align-items: center;
-  justify-content: space-between;
-  gap: 8px;
+  column-gap: 8px;
+  row-gap: 2px;
   min-width: 0;
+  width: 100%;
 }
 
 #chatbot-widget .chatbot-title-row {
@@ -777,7 +783,8 @@ html.dark #chatbot-widget .chatbot-header {
   align-items: center;
   gap: 7px;
   min-width: 0;
-  flex: 1;
+  grid-column: 1;
+  grid-row: 1;
 }
 
 #chatbot-widget .chatbot-title-row .siri-orb {
@@ -788,20 +795,23 @@ html.dark #chatbot-widget .chatbot-header {
 }
 
 #chatbot-widget .chatbot-header-actions {
+  grid-column: 2;
+  grid-row: 1 / span 2;
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 4px;
   flex-shrink: 0;
 }
 
 /* !important: sitewide button gradient override */
 #chatbot-widget .chatbot-settings-btn,
 #chatbot-widget .chatbot-close-btn {
-  width: 30px;
-  height: 30px;
-  min-width: 30px;
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
   padding: 0 !important;
-  font-size: 12px;
+  font-size: 14px;
   border: none !important;
   border-radius: 50% !important;
   background: rgb(0 0 0 / 5%) !important;
@@ -1003,10 +1013,15 @@ html.dark #chatbot-widget .chatbot-dictation-status {
 #chatbot-widget .chatbot-voice-btn,
 #chatbot-widget .chatbot-send-btn,
 #chatbot-widget .chatbot-writing-btn {
-  width: 34px;
-  height: 34px;
-  min-width: 34px;
-  font-size: 14px;
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
+  max-width: 44px;
+  flex: 0 0 44px;
+  padding: 0 !important;
+  box-sizing: border-box;
+  font-size: 15px;
 }
 
 #chatbot-widget #chatbot-rate-status {

@@ -229,16 +229,20 @@ html.dark .chatbot-title {
 
 .chatbot-settings-btn,
 .chatbot-close-btn {
-  width: 36px;
-  height: 36px;
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
   border-radius: 50%;
   background: rgb(0 0 0 / 5%);
   border: none;
   color: var(--ai-text-light);
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  padding: 0;
+  box-sizing: border-box;
   transition:
     color 0.2s,
     background-color 0.2s,
@@ -1292,18 +1296,22 @@ html.dark .input-wrapper:focus-within {
 
 /* Voice Button (Left) - Enhanced Green Circle */
 .chatbot-voice-btn {
-  width: 40px;
-  height: 40px;
-  min-width: 40px;
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
+  flex: 0 0 44px;
   flex-shrink: 0;
   border-radius: 50%;
   border: none;
   background: linear-gradient(135deg, #34c759 0%, #30d158 100%);
   color: white;
   font-size: 17px;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
+  padding: 0;
+  box-sizing: border-box;
   cursor: pointer;
   transition:
     color 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
@@ -1367,18 +1375,22 @@ html.dark .chatbot-rate-status {
 
 /* Send Button (Right) - Enhanced Blue Circle */
 .chatbot-send-btn {
-  width: 40px;
-  height: 40px;
-  min-width: 40px;
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
+  flex: 0 0 44px;
   flex-shrink: 0;
   border-radius: 50%;
   border: none;
   background: linear-gradient(135deg, #007aff 0%, #0051d5 100%);
   color: white;
   font-size: 17px;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
+  padding: 0;
+  box-sizing: border-box;
   cursor: pointer;
   transition:
     color 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
@@ -1398,6 +1410,63 @@ html.dark .chatbot-rate-status {
 
 .chatbot-send-btn:active {
   transform: scale(0.96);
+}
+
+.chatbot-send-btn:disabled,
+.chatbot-send-btn.is-busy {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+  pointer-events: none;
+}
+
+/* Connection status under AssistMe title */
+.chatbot-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  min-height: 16px;
+  grid-column: 1;
+  grid-row: 2;
+}
+
+.chatbot-status-text {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: rgba(60, 60, 67, 0.72);
+}
+
+html.dark .chatbot-status-text {
+  color: rgba(245, 245, 247, 0.72);
+}
+
+/* Title + status left, action buttons right (status injected by JS) */
+#chatbot-widget .chatbot-header-main {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-rows: auto auto;
+  align-items: center;
+  column-gap: 8px;
+  row-gap: 2px;
+  width: 100%;
+  min-width: 0;
+}
+
+#chatbot-widget .chatbot-title-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  grid-column: 1;
+  grid-row: 1;
+}
+
+#chatbot-widget .chatbot-header-actions {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  align-self: center;
 }
 
 /* Scrollbar Hiding */
@@ -1799,12 +1868,6 @@ html.dark .welcome-name {
   50% {
     opacity: 0.5;
   }
-}
-
-.chatbot-status-text {
-  font-size: 11px;
-  font-weight: 600;
-  color: #34c759;
 }
 
 html.dark .welcome-status-badge {

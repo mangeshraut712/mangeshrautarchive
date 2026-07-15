@@ -730,10 +730,10 @@ html.dark .footer-tagline {
 }
 
 /* ─── Chatbot + share sheet — solid project surfaces (no glass wash) ─ */
-#chatbot-widget,
+/* Opacity only when .visible so open/close transitions still work */
 #chatbot-widget.visible,
-html:not([data-lg-mode='tinted']) #chatbot-widget,
-html[data-lg-mode] #chatbot-widget {
+html:not([data-lg-mode='tinted']) #chatbot-widget.visible,
+html[data-lg-mode] #chatbot-widget.visible {
   background: #ffffff !important;
   background-color: #ffffff !important;
   background-image: none !important;
@@ -745,10 +745,9 @@ html[data-lg-mode] #chatbot-widget {
   opacity: 1 !important;
 }
 
-html.dark #chatbot-widget,
 html.dark #chatbot-widget.visible,
-html.dark:not([data-lg-mode='tinted']) #chatbot-widget,
-html.dark[data-lg-mode] #chatbot-widget {
+html.dark:not([data-lg-mode='tinted']) #chatbot-widget.visible,
+html.dark[data-lg-mode] #chatbot-widget.visible {
   background: #000000 !important;
   background-color: #000000 !important;
   background-image: none !important;
@@ -761,11 +760,24 @@ html.dark[data-lg-mode] #chatbot-widget {
 
 #chatbot-widget .chatbot-header,
 #chatbot-widget #chatbot-messages,
-#chatbot-widget .chatbot-input-container,
-#chatbot-widget .input-wrapper {
+#chatbot-widget .chatbot-input-container {
   background: transparent !important;
   background-color: transparent !important;
   color: inherit !important;
+}
+
+/* Keep the composer pill readable (not fully transparent on solid shell) */
+#chatbot-widget .input-wrapper {
+  background: #f2f2f7 !important;
+  background-color: #f2f2f7 !important;
+  color: inherit !important;
+  border: 1px solid #e5e5ea !important;
+}
+
+html.dark #chatbot-widget .input-wrapper {
+  background: #1c1c1e !important;
+  background-color: #1c1c1e !important;
+  border-color: #2c2c2e !important;
 }
 
 #chatbot-widget .chatbot-title {

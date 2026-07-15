@@ -796,6 +796,25 @@ async def stream_openrouter_response(
         yield item
 
 
+_GARBAGE_ANSWER_RE = re.compile(
+    r"^\s*(user\s*safety\s*:\s*(safe|unsafe)|safe|unsafe|allowed|blocked)\s*$",
+    re.I,
+)
+
+
+def _is_garbage_chat_answer(answer: str, model: str = "") -> bool:
+    """Reject free-router classifier junk and empty safety-only payloads."""
+    text = (answer or "").strip()
+    if len(text) < 12:
+        return True
+    if _GARBAGE_ANSWER_RE.match(text):
+        return True
+    model_l = (model or "").lower()
+    if "content-safety" in model_l or "moderation" in model_l:
+        return True
+    return False
+
+
 async def call_openrouter(
     model: str,
     messages: List[Dict],
@@ -831,10 +850,21 @@ async def call_openrouter(
                 if not data.get("choices"):
                     raise Exception("Invalid response")
 
+                answer = (data["choices"][0]["message"].get("content") or "").strip()
+                resolved_model = data.get("model", candidate_model)
+                if _is_garbage_chat_answer(answer, resolved_model):
+                    logger.warning(
+                        "⚠️ Skipping garbage non-stream answer from %s (chars=%s)",
+                        resolved_model,
+                        len(answer),
+                    )
+                    last_error = Exception(f"Garbage answer from {resolved_model}")
+                    continue
+
                 return {
-                    "answer": data["choices"][0]["message"]["content"].strip(),
+                    "answer": answer,
                     "usage": data.get("usage"),
-                    "model": data.get("model", candidate_model),
+                    "model": resolved_model,
                 }
             except Exception as exc:
                 last_error = exc
