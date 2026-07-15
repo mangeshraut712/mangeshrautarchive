@@ -320,7 +320,10 @@ html.dark .eng-card-a {
   padding-top: 0.15rem;
 }
 
-.engineering-open-btn {
+/* Solid blue CTA — white label must beat global link-blue cascade */
+a.engineering-open-btn,
+.engineering-open-btn,
+body:not(.error-page) a.engineering-open-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -330,36 +333,73 @@ html.dark .eng-card-a {
   border-radius: 999px;
   font-size: var(--fs-btn, 0.875rem);
   font-weight: var(--fw-semibold, 600);
-  text-decoration: none;
-  color: #fff !important;
-  background: var(--systems-accent, #0071e3) !important;
+  letter-spacing: -0.01em;
+  text-decoration: none !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  background: #0071e3 !important;
+  background-color: #0071e3 !important;
+  background-image: none !important;
   border: 1px solid transparent !important;
-  box-shadow: 0 2px 10px rgb(0 0 0 / 8%) !important;
+  box-shadow: 0 2px 10px rgb(0 113 227 / 28%) !important;
   transition:
     transform 0.25s var(--eng-spring),
     border-color 0.25s ease,
-    box-shadow 0.25s ease !important;
+    box-shadow 0.25s ease,
+    background-color 0.25s ease !important;
 }
 
-.engineering-open-btn:hover {
+a.engineering-open-btn span,
+.engineering-open-btn span,
+body:not(.error-page) a.engineering-open-btn span {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+a.engineering-open-btn:hover,
+.engineering-open-btn:hover,
+body:not(.error-page) a.engineering-open-btn:hover {
   transform: translateY(-2px) !important;
-  border-color: var(--systems-accent, #0071e3) !important;
-  box-shadow: 0 4px 14px rgb(0 0 0 / 12%) !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  background: #0077ed !important;
+  background-color: #0077ed !important;
+  border-color: #0077ed !important;
+  box-shadow: 0 4px 14px rgb(0 113 227 / 35%) !important;
 }
 
+a.engineering-open-btn:focus-visible,
 .engineering-open-btn:focus-visible {
-  outline: 2px solid var(--systems-accent, #0071e3);
+  outline: 2px solid #0071e3;
   outline-offset: 2px;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
 }
 
-html.dark .engineering-open-btn {
-  color: #fff !important;
-  background: var(--systems-accent, #2997ff) !important;
+html.dark a.engineering-open-btn,
+html.dark .engineering-open-btn,
+html.dark body:not(.error-page) a.engineering-open-btn {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  background: #0a84ff !important;
+  background-color: #0a84ff !important;
   box-shadow: 0 2px 12px rgb(0 0 0 / 35%) !important;
 }
 
-html.dark .engineering-open-btn:hover {
-  border-color: var(--systems-accent, #2997ff) !important;
+html.dark a.engineering-open-btn span,
+html.dark .engineering-open-btn span {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+html.dark a.engineering-open-btn:hover,
+html.dark .engineering-open-btn:hover,
+html.dark body:not(.error-page) a.engineering-open-btn:hover {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  background: #2997ff !important;
+  background-color: #2997ff !important;
+  border-color: #2997ff !important;
   box-shadow: 0 4px 16px rgb(0 0 0 / 40%) !important;
 }
 

@@ -8,6 +8,7 @@ on:
 
 permissions:
   contents: read
+  actions: read
 
 concurrency:
   group: production-monitoring
@@ -17,12 +18,13 @@ env:
   NODE_VERSION: '22'
   GH_PAGES_BASE: https://mangeshraut712.github.io/mangeshrautarchive
   VERCEL_PROD: https://mangeshraut.pro
+  FORCE_COLOR: '1'
 
 jobs:
   monitor:
-    name: 📈 Production health + Lighthouse
+    name: Production health + Lighthouse
     runs-on: ubuntu-latest
-    timeout-minutes: 40
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v7
 
@@ -37,6 +39,7 @@ jobs:
         run: npm install --no-audit --no-fund
 
       - name: Verify production surfaces are reachable
+        id: reachability
         run: |
           set -euo pipefail
           urls=(
@@ -53,19 +56,75 @@ jobs:
             "${{ env.GH_PAGES_BASE }}/travel.html"
             "${{ env.GH_PAGES_BASE }}/monitor.html"
             "${{ env.GH_PAGES_BASE }}/systems.html"
+            "${{ env.GH_PAGES_BASE }}/uses.html"
             "${{ env.GH_PAGES_BASE }}/build-config.json"
           )
           failed=0
+          ok=0
+          {
+            echo "### Reachability"
+            echo ""
+            echo "| URL | Status |"
+            echo "| --- | --- |"
+          } >> "$GITHUB_STEP_SUMMARY"
           for url in "${urls[@]}"; do
             code=$(curl -sS -o /dev/null -w "%{http_code}" --max-time 20 "$url" || echo "000")
             if [ "$code" = "200" ] || [ "$code" = "301" ] || [ "$code" = "302" ] || [ "$code" = "308" ]; then
               echo "✅ $url ($code)"
+              echo "| \`$url\` | ✅ $code |" >> "$GITHUB_STEP_SUMMARY"
+              ok=$((ok + 1))
             else
               echo "❌ $url ($code)"
+              echo "| \`$url\` | ❌ $code |" >> "$GITHUB_STEP_SUMMARY"
               failed=1
             fi
           done
+          echo "ok_count=$ok" >> "$GITHUB_OUTPUT"
           exit "$failed"
+
+      - name: Doctor — production env parity
+        id: doctor
+        continue-on-error: true
+        run: |
+          set -euo pipefail
+          if npm run doctor:full; then
+            echo "status=pass" >> "$GITHUB_OUTPUT"
+            echo "" >> "$GITHUB_STEP_SUMMARY"
+            echo "### Doctor"
+            echo "- doctor:full ✅" >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "status=warn" >> "$GITHUB_OUTPUT"
+            echo "" >> "$GITHUB_STEP_SUMMARY"
+            echo "### Doctor"
+            echo "- doctor:full ⚠️ (non-blocking)" >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Capture dual-host commit SHAs
+        id: commits
+        continue-on-error: true
+        run: |
+          set -euo pipefail
+          pages=$(curl -fsS --max-time 15 "${{ env.GH_PAGES_BASE }}/build-config.json" \
+            | node -pe "JSON.parse(require('fs').readFileSync(0,'utf8')).gitCommit" || echo "unknown")
+          vercel=$(curl -fsS --max-time 15 "${{ env.VERCEL_PROD }}/build-config.json" \
+            | node -pe "JSON.parse(require('fs').readFileSync(0,'utf8')).gitCommit" || echo "unknown")
+          echo "pages=$pages" >> "$GITHUB_OUTPUT"
+          echo "vercel=$vercel" >> "$GITHUB_OUTPUT"
+          {
+            echo ""
+            echo "### Deployed commits"
+            echo "| Host | gitCommit |"
+            echo "| --- | --- |"
+            echo "| GitHub Pages | \`$pages\` |"
+            echo "| Vercel | \`$vercel\` |"
+            if [ "$pages" != "unknown" ] && [ "$vercel" != "unknown" ] && [ "$pages" = "$vercel" ]; then
+              echo ""
+              echo "Parity: ✅ matching"
+            else
+              echo ""
+              echo "Parity: ⚠️ check dashboard / wait for CDN"
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Lighthouse — live GitHub Pages quality floor
         run: |
@@ -88,7 +147,6 @@ jobs:
 
       - name: Lighthouse — live Vercel quality floor
         # Live Vercel includes AssistMe + third-party scripts; keep realistic floors.
-        # Soft-fail on pure performance variance; a11y/SEO/BP still enforced via gate retries.
         continue-on-error: true
         run: |
           node scripts/deployment/lighthouse-gate.js \
@@ -116,6 +174,7 @@ jobs:
         if: always()
         run: |
           {
+            echo ""
             echo "## Production monitoring"
             echo ""
             echo "| Surface | URL |"
@@ -123,7 +182,7 @@ jobs:
             echo "| Vercel | ${{ env.VERCEL_PROD }} |"
             echo "| GitHub Pages | ${{ env.GH_PAGES_BASE }} |"
             echo ""
-            echo "Parity check uses \`build-config.json\` gitCommit on both hosts."
+            echo "Schedule: daily 14:00 UTC · also \`workflow_dispatch\`."
           } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload monitoring artifacts

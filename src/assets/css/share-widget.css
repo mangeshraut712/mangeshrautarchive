@@ -47,7 +47,7 @@ html.dark .website-share-backdrop {
   background: rgba(0, 0, 0, 0.6);
 }
 
-/* Card Container (div instead of section to avoid padding: 5rem override) */
+/* Card Container — solid white/black (no liquid-glass transparency) */
 .website-share-card {
   position: relative;
   z-index: 1;
@@ -59,13 +59,16 @@ html.dark .website-share-backdrop {
   min-height: auto !important;
   max-height: fit-content !important;
   padding: 1.75rem !important;
-  color: #1d1d1f;
-  background: #ffffff !important; /* Solid white background */
-  border: 2px solid rgba(0, 113, 227, 0.5) !important; /* Stronger, visible Apple blue border */
+  color: #1d1d1f !important;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
+  border: 1px solid #e5e5ea !important;
   border-radius: 24px !important;
-  box-shadow:
-    0 24px 60px rgba(0, 0, 0, 0.14),
-    0 1px 0 rgba(255, 255, 255, 0.6) inset !important;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.14) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  opacity: 1 !important;
   transform: scale(0.95) translateY(10px);
   transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
@@ -75,12 +78,22 @@ html.dark .website-share-backdrop {
 }
 
 html.dark .website-share-card {
-  color: #f5f5f7;
-  background: #000000 !important; /* Solid black background */
-  border-color: rgba(10, 132, 255, 0.6) !important; /* Stronger, visible dark Apple blue border */
-  box-shadow:
-    0 24px 60px rgba(0, 0, 0, 0.65),
-    0 1px 0 rgba(255, 255, 255, 0.05) inset !important;
+  color: #f5f5f7 !important;
+  background: #000000 !important;
+  background-color: #000000 !important;
+  background-image: none !important;
+  border-color: #2c2c2e !important;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.65) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* Kill glass overrides on the share sheet card */
+html .website-share-dialog.active .website-share-card,
+html[data-lg-mode] .website-share-card,
+html.dark[data-lg-mode] .website-share-card {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
 }
 
 /* Close button - Apple iOS style circle, inline in card header row */

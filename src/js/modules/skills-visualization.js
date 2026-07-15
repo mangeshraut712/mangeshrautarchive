@@ -172,11 +172,13 @@ class SkillsVisualization {
   }
 
   /**
-   * Create category section — wrapping badge grid (readable desktop, soft scroll on small screens).
-   * Previously tripled skills for an infinite marquee that clipped mid-badge on desktop.
+   * Create category section — infinite horizontal marquee (skills tripled for seamless loop).
    */
   createCategorySection(category, skills, _categoryIndex) {
-    const skillsHTML = skills.map((skill, index) => this.createSkillBadge(skill, index)).join('');
+    const skillsList = [...skills, ...skills, ...skills];
+    const skillsHTML = skillsList
+      .map((skill, index) => this.createSkillBadge(skill, index % skills.length))
+      .join('');
 
     return `
       <div class="skill-category" role="region" aria-label="${category} skills">
@@ -221,12 +223,36 @@ class SkillsVisualization {
   }
 
   /**
-   * Marquee motion retired — grid wrap layout uses static badges.
-   * Kept as a no-op so call sites remain stable.
+   * Keep marquee speed consistent across desktop, tablet, and mobile.
    */
-  syncMarqueeMotion(_container) {
-    this.marqueeObserver?.disconnect();
-    this.marqueeObserver = null;
+  syncMarqueeMotion(container) {
+    const wrappers = Array.from(container.querySelectorAll('.skill-scroll-wrapper'));
+    const pixelsPerSecond = 30;
+
+    const updateWrapper = wrapper => {
+      const distance = Math.round(wrapper.scrollWidth / 3);
+      const duration = Math.max(22, distance / pixelsPerSecond);
+
+      wrapper.style.setProperty('--skill-marquee-distance', `-${distance}px`);
+      wrapper.style.setProperty('--skill-marquee-duration', `${duration.toFixed(2)}s`);
+    };
+
+    const updateAll = () => {
+      wrappers.forEach(updateWrapper);
+    };
+
+    requestAnimationFrame(updateAll);
+
+    if ('ResizeObserver' in window) {
+      this.marqueeObserver?.disconnect();
+      const observer = new ResizeObserver(updateAll);
+      observer.observe(container);
+      wrappers.forEach(wrapper => observer.observe(wrapper));
+      this.marqueeObserver = observer;
+      return;
+    }
+
+    window.addEventListener('resize', updateAll, { passive: true });
   }
 
   /**

@@ -14,9 +14,10 @@ html.dark #experience {
   background-image: none !important;
 }
 
+/* Keep normal heading → subtitle rhythm (no negative pull-up) */
 #experience .section-subtitle {
-  margin-top: -1.75rem !important;
-  margin-bottom: 0 !important;
+  margin-top: 0 !important;
+  margin-bottom: clamp(1.75rem, 3.5vh, 2.75rem) !important;
 }
 
 /* ========================================

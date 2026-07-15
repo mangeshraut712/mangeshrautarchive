@@ -182,60 +182,27 @@ export function refreshSectionPreview(target) {
 }
 
 /**
- * Contact: keep primary paths (email / form / calendar), tuck marquees &
- * secondary blocks behind one “View more” control — Apple product-page density.
+ * Contact extras (support, socials, dream marquees) stay fully visible —
+ * no progressive disclosure / Show less control.
  */
 export function initContactExtras(root = document) {
   const contact = root.getElementById?.('contact') || root.querySelector?.('#contact');
   if (!contact || contact.dataset.contactExtrasBound === 'true') return;
-  const extras = Array.from(contact.querySelectorAll('[data-contact-extra]'));
-  if (!extras.length) return;
 
   contact.dataset.contactExtrasBound = 'true';
+  contact.classList.add('is-contact-expanded');
 
-  const host =
-    contact.querySelector('.contact-info-all') ||
-    contact.querySelector('.contact-column') ||
-    contact.querySelector('.container');
-  if (!host) return;
-
-  let actions = host.querySelector(':scope > .section-preview-actions.contact-extras-actions');
-  if (!actions) {
-    actions = document.createElement('div');
-    actions.className = 'section-preview-actions contact-extras-actions';
-    const lastPrimary = host.querySelector('.contact-section:not([data-contact-extra])');
-    if (lastPrimary?.parentElement === host) {
-      lastPrimary.insertAdjacentElement('afterend', actions);
-    } else {
-      const firstExtra = extras[0];
-      firstExtra?.parentElement?.insertBefore(actions, firstExtra);
-    }
-  }
-
-  let button = actions.querySelector('.section-preview-btn');
-  if (!button) {
-    button = document.createElement('button');
-    button.type = 'button';
-    button.className = 'section-preview-btn';
-    actions.appendChild(button);
-  }
-
-  const apply = open => {
-    contact.classList.toggle('is-contact-expanded', open);
-    extras.forEach(el => {
-      el.classList.toggle('is-preview-hidden', !open);
-      el.hidden = !open;
-      el.setAttribute('aria-hidden', open ? 'false' : 'true');
-    });
-    button.setAttribute('aria-expanded', open ? 'true' : 'false');
-    button.textContent = open ? 'Show less' : 'View more ways to connect';
-  };
-
-  button.addEventListener('click', () => {
-    apply(!contact.classList.contains('is-contact-expanded'));
+  const extras = Array.from(contact.querySelectorAll('[data-contact-extra]'));
+  extras.forEach(el => {
+    el.classList.remove('is-preview-hidden');
+    el.hidden = false;
+    el.setAttribute('aria-hidden', 'false');
   });
 
-  apply(contact.classList.contains('is-contact-expanded'));
+  contact.querySelectorAll('.contact-extras-actions').forEach(actions => {
+    actions.hidden = true;
+    actions.remove();
+  });
 }
 
 function boot() {

@@ -1,0 +1,790 @@
+/**
+ * Apple UI Polish — global canvas, type, color, spacing
+ * Eager-loaded so light/dark themes stay consistent before deferred CSS.
+ * Tokens align with apple.com product pages (SF Pro, #1d1d1f / #f5f5f7).
+ */
+
+/* ─── Canvas & base type ─────────────────────────────────────────── */
+html {
+  background-color: #ffffff;
+  color-scheme: light;
+}
+
+html.dark {
+  background-color: #000000;
+  color-scheme: dark;
+}
+
+html,
+body {
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', 'Segoe UI', Roboto,
+    'Helvetica Neue', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  margin: 0;
+  font-size: 17px;
+  line-height: 1.4706; /* Apple body */
+  letter-spacing: -0.022em;
+  font-weight: 400;
+  color: #1d1d1f !important;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
+}
+
+html.dark body {
+  color: #f5f5f7 !important;
+  background: #000000 !important;
+  background-color: #000000 !important;
+  background-image: none !important;
+}
+
+main,
+#main-content {
+  color: inherit;
+  background: transparent;
+}
+
+/* Secondary copy — Apple greys (not page/card fills) */
+p,
+.section-subtitle,
+.contact-description,
+.crypto-label,
+.footer-copy,
+.footer-tagline,
+.currently-meta-subtitle {
+  color: #6e6e73;
+}
+
+html.dark p,
+html.dark .section-subtitle,
+html.dark .contact-description,
+html.dark .crypto-label,
+html.dark .footer-copy,
+html.dark .footer-tagline,
+html.dark .currently-meta-subtitle {
+  color: #a1a1a6;
+}
+
+/* ─── Headings (SF Pro Display character) ────────────────────────── */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Segoe UI', Roboto,
+    sans-serif;
+  color: #1d1d1f;
+  -webkit-text-fill-color: #1d1d1f;
+  background: none;
+  background-image: none;
+  letter-spacing: -0.025em;
+  line-height: 1.14;
+  font-weight: 700;
+}
+
+html.dark h1,
+html.dark h2,
+html.dark h3,
+html.dark h4,
+html.dark h5,
+html.dark h6 {
+  color: #f5f5f7;
+  -webkit-text-fill-color: #f5f5f7;
+}
+
+/* Section titles — same Apple blue as home "Mangesh Raut" (.hero-name-text) */
+main section > .container > h2,
+main section h2[id$='-heading'],
+#about h2,
+#skills h2,
+#experience h2,
+#projects h2,
+#education h2,
+#blog h2,
+#contact h2,
+#publications h2,
+#awards h2,
+#recommendations h2,
+#certifications h2,
+#engineering h2,
+#debug-runner-section h2,
+#currently-section h2 {
+  font-size: clamp(2rem, 4vw, 2.75rem) !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.03em !important;
+  line-height: 1.12 !important;
+  margin-top: 0 !important;
+  margin-bottom: 0.75rem !important; /* tight, consistent gap to subtitle */
+  padding-bottom: 0 !important;
+  text-align: center !important;
+  color: #0071e3 !important;
+  -webkit-text-fill-color: #0071e3 !important;
+  background: none !important;
+  background-image: none !important;
+  background-clip: border-box !important;
+  -webkit-background-clip: border-box !important;
+}
+
+html.dark main section > .container > h2,
+html.dark main section h2[id$='-heading'],
+html.dark #about h2,
+html.dark #skills h2,
+html.dark #experience h2,
+html.dark #projects h2,
+html.dark #education h2,
+html.dark #blog h2,
+html.dark #contact h2,
+html.dark #publications h2,
+html.dark #awards h2,
+html.dark #recommendations h2,
+html.dark #certifications h2,
+html.dark #engineering h2,
+html.dark #debug-runner-section h2,
+html.dark #currently-section h2 {
+  color: #0a84ff !important;
+  -webkit-text-fill-color: #0a84ff !important;
+  background: none !important;
+  background-image: none !important;
+}
+
+/* Subtitles — fixed spacing under blue headings */
+.section-subtitle,
+main section .section-subtitle,
+main section > .container > h2 + .section-subtitle,
+main section > .container > h2 + p.section-subtitle,
+#experience .section-subtitle {
+  font-size: clamp(1.05rem, 1.5vw, 1.3125rem) !important;
+  font-weight: 400 !important;
+  line-height: 1.4211 !important;
+  letter-spacing: -0.016em !important;
+  color: #6e6e73 !important;
+  -webkit-text-fill-color: #6e6e73 !important;
+  max-width: 42rem;
+  margin-top: 0 !important; /* never pull up into heading */
+  margin-inline: auto !important;
+  margin-bottom: clamp(1.75rem, 3.5vh, 2.75rem) !important;
+  padding-top: 0 !important;
+  text-align: center;
+  text-wrap: pretty;
+}
+
+html.dark .section-subtitle,
+html.dark main section .section-subtitle,
+html.dark #experience .section-subtitle {
+  color: #a1a1a6 !important;
+  -webkit-text-fill-color: #a1a1a6 !important;
+}
+
+/* ─── Section canvas & rhythm ────────────────────────────────────── */
+main section[id] {
+  background-color: #ffffff;
+  background-image: none;
+}
+
+html.dark main section[id] {
+  background-color: #000000;
+  background-image: none;
+}
+
+main#main-content > section:not(#home) {
+  padding-top: clamp(4rem, 8vh, 6.5rem) !important;
+  padding-bottom: clamp(4rem, 8vh, 6.5rem) !important;
+}
+
+main#main-content > section > .container {
+  max-width: min(1120px, calc(100% - 3rem));
+  margin-inline: auto;
+  padding-inline: clamp(1.25rem, 4vw, 2rem);
+  box-sizing: border-box;
+}
+
+/* ─── Home hero type ─────────────────────────────────────────────── */
+#home .hero-name-text {
+  color: #0071e3 !important;
+  -webkit-text-fill-color: #0071e3 !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.03em !important;
+  background: none !important;
+}
+
+html.dark #home .hero-name-text {
+  color: #0a84ff !important;
+  -webkit-text-fill-color: #0a84ff !important;
+}
+
+#home .hero-title {
+  color: #6e6e73 !important;
+  -webkit-text-fill-color: #6e6e73 !important;
+  font-size: clamp(1.05rem, 1.4vw, 1.25rem) !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.016em !important;
+  line-height: 1.35 !important;
+}
+
+html.dark #home .hero-title {
+  color: #a1a1a6 !important;
+  -webkit-text-fill-color: #a1a1a6 !important;
+}
+
+html body #home .hero-description,
+html body #home .hero-description-lines,
+html body #home .hero-description-line,
+html body #home .hero-description.hero-description-lines {
+  color: #1d1d1f !important;
+  -webkit-text-fill-color: #1d1d1f !important;
+  font-size: clamp(1.0625rem, 1.4vw, 1.3125rem) !important;
+  line-height: 1.4706 !important;
+  font-weight: 400 !important;
+  letter-spacing: -0.016em !important;
+  opacity: 1 !important;
+}
+
+html.dark body #home .hero-description,
+html.dark body #home .hero-description-lines,
+html.dark body #home .hero-description-line,
+html.dark body #home .hero-description.hero-description-lines {
+  color: #d2d2d7 !important;
+  -webkit-text-fill-color: #d2d2d7 !important;
+}
+
+/* ─── Body copy in content sections ──────────────────────────────── */
+#about .about-paragraph,
+#about .about-description,
+.experience-content,
+.education-content,
+.publication-card p,
+.blog-summary,
+.recommendation-card p,
+.award-card p {
+  color: #424245;
+  line-height: 1.55;
+  letter-spacing: -0.014em;
+  font-size: 1.0625rem;
+}
+
+html.dark #about .about-paragraph,
+html.dark #about .about-description,
+html.dark .experience-content,
+html.dark .education-content,
+html.dark .publication-card p,
+html.dark .blog-summary,
+html.dark .recommendation-card p,
+html.dark .award-card p {
+  color: #a1a1a6;
+}
+
+/* ─── Cards — solid white (light) / solid black (dark) ───────────── */
+.blog-card,
+.experience-item,
+.education-item,
+.publication-card,
+.award-card,
+.recommendation-card,
+.certification-card,
+.skill-category,
+.contact-card,
+.support-donation-card,
+.currently-card,
+.calendar-wrapper-clean,
+.newsletter-card,
+.about-text-card,
+.ios-widget-wrapper,
+.reminder-card,
+.calendly-panel {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  border-color: #e5e5ea;
+  color: #1d1d1f;
+}
+
+html.dark .blog-card,
+html.dark .experience-item,
+html.dark .education-item,
+html.dark .publication-card,
+html.dark .award-card,
+html.dark .recommendation-card,
+html.dark .certification-card,
+html.dark .skill-category,
+html.dark .contact-card,
+html.dark .support-donation-card,
+html.dark .currently-card,
+html.dark .calendar-wrapper-clean,
+html.dark .newsletter-card,
+html.dark .about-text-card,
+html.dark .ios-widget-wrapper,
+html.dark .reminder-card,
+html.dark .calendly-panel {
+  background: #000000 !important;
+  background-color: #000000 !important;
+  border-color: #2c2c2e;
+  color: #f5f5f7;
+}
+
+/* Social tiles: solid rest state only — hover keeps brand fills */
+html:not(.dark) .wrapper .icon:not(:hover):not(:focus-within) {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+}
+
+html.dark .wrapper .icon:not(:hover):not(:focus-within) {
+  background: #000000 !important;
+  background-color: #000000 !important;
+}
+
+/* Brand glyph colors on solid tiles (rest) */
+html:not(.dark) .wrapper .facebook:not(:hover):not(:focus-within) {
+  color: #1877f2 !important;
+}
+html:not(.dark) .wrapper .instagram:not(:hover):not(:focus-within) {
+  color: #e4405f !important;
+}
+html:not(.dark) .wrapper .linkedin:not(:hover):not(:focus-within) {
+  color: #0177b5 !important;
+}
+html:not(.dark) .wrapper .youtube:not(:hover):not(:focus-within) {
+  color: #ff0000 !important;
+}
+html:not(.dark) .wrapper .github:not(:hover):not(:focus-within) {
+  color: #24292e !important;
+}
+html:not(.dark) .wrapper .x:not(:hover):not(:focus-within) {
+  color: #0f1419 !important;
+}
+html:not(.dark) .wrapper .leetcode:not(:hover):not(:focus-within) {
+  color: #e08a00 !important;
+}
+html:not(.dark) .wrapper .snapchat:not(:hover):not(:focus-within) {
+  color: #1d1d1f !important;
+}
+html:not(.dark) .wrapper .telegram:not(:hover):not(:focus-within) {
+  color: #229ed9 !important;
+}
+html:not(.dark) .wrapper .spotify:not(:hover):not(:focus-within) {
+  color: #1db954 !important;
+}
+html:not(.dark) .wrapper .strava:not(:hover):not(:focus-within) {
+  color: #fc4c02 !important;
+}
+html:not(.dark) .wrapper .whoop:not(:hover):not(:focus-within) {
+  color: #000000 !important;
+}
+
+html.dark .wrapper .facebook:not(:hover):not(:focus-within) {
+  color: #1877f2 !important;
+}
+html.dark .wrapper .instagram:not(:hover):not(:focus-within) {
+  color: #e4405f !important;
+}
+html.dark .wrapper .linkedin:not(:hover):not(:focus-within) {
+  color: #0177b5 !important;
+}
+html.dark .wrapper .youtube:not(:hover):not(:focus-within) {
+  color: #ff0000 !important;
+}
+html.dark .wrapper .github:not(:hover):not(:focus-within) {
+  color: #f5f5f7 !important;
+}
+html.dark .wrapper .x:not(:hover):not(:focus-within) {
+  color: #f5f5f7 !important;
+}
+html.dark .wrapper .leetcode:not(:hover):not(:focus-within) {
+  color: #ffa116 !important;
+}
+html.dark .wrapper .snapchat:not(:hover):not(:focus-within) {
+  color: #fffc00 !important;
+}
+html.dark .wrapper .telegram:not(:hover):not(:focus-within) {
+  color: #229ed9 !important;
+}
+html.dark .wrapper .spotify:not(:hover):not(:focus-within) {
+  color: #1db954 !important;
+}
+html.dark .wrapper .strava:not(:hover):not(:focus-within) {
+  color: #fc4c02 !important;
+}
+html.dark .wrapper .whoop:not(:hover):not(:focus-within) {
+  color: #ffffff !important;
+}
+
+/* Skills badges */
+.skill-badge-name {
+  color: #1d1d1f !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.014em;
+}
+
+html.dark .skill-badge-name {
+  color: #f5f5f7 !important;
+}
+
+.skill-badge-percentage {
+  color: #6e6e73 !important;
+}
+
+html.dark .skill-badge-percentage {
+  color: #a1a1a6 !important;
+}
+
+/* ─── Buttons / CTAs ─────────────────────────────────────────────── */
+#home .hero-cta,
+.btn-primary,
+.section-preview-btn {
+  font-family: inherit;
+  letter-spacing: -0.01em;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Hero primary — solid Apple blue */
+#home a.hero-cta-primary,
+#home .hero-cta-primary {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  background: #0071e3 !important;
+  background-color: #0071e3 !important;
+  background-image: none !important;
+  border: 1px solid transparent !important;
+  border-radius: 980px !important;
+  box-shadow: 0 4px 16px rgb(0 113 227 / 28%) !important;
+}
+
+#home a.hero-cta-primary:hover,
+#home .hero-cta-primary:hover {
+  background: #0077ed !important;
+  background-color: #0077ed !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+/* Hero secondary — outline (Apple style) */
+#home a.hero-cta-secondary,
+#home .hero-cta-secondary {
+  color: #0071e3 !important;
+  -webkit-text-fill-color: #0071e3 !important;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
+  border: 1px solid rgb(0 113 227 / 35%) !important;
+  border-radius: 980px !important;
+  box-shadow: none !important;
+}
+
+#home a.hero-cta-secondary:hover,
+#home .hero-cta-secondary:hover {
+  background: rgb(0 113 227 / 8%) !important;
+  border-color: #0071e3 !important;
+  color: #0071e3 !important;
+  -webkit-text-fill-color: #0071e3 !important;
+}
+
+html.dark #home a.hero-cta-secondary,
+html.dark #home .hero-cta-secondary {
+  color: #0a84ff !important;
+  -webkit-text-fill-color: #0a84ff !important;
+  background: #000000 !important;
+  background-color: #000000 !important;
+  border-color: rgb(10 132 255 / 45%) !important;
+}
+
+html.dark #home a.hero-cta-secondary:hover,
+html.dark #home .hero-cta-secondary:hover {
+  background: rgb(10 132 255 / 14%) !important;
+  color: #0a84ff !important;
+  -webkit-text-fill-color: #0a84ff !important;
+}
+
+/* Section “View more” — soft outline, not solid blue paint */
+button.section-preview-btn,
+.section-preview-btn {
+  color: #0071e3 !important;
+  -webkit-text-fill-color: #0071e3 !important;
+  background: rgb(0 113 227 / 8%) !important;
+  background-image: none !important;
+  border: 1px solid rgb(0 113 227 / 30%) !important;
+  border-radius: 980px !important;
+  box-shadow: none !important;
+  min-height: 44px !important;
+}
+
+button.section-preview-btn:hover,
+.section-preview-btn:hover {
+  background: rgb(0 113 227 / 14%) !important;
+  border-color: rgb(0 113 227 / 50%) !important;
+  color: #0071e3 !important;
+  -webkit-text-fill-color: #0071e3 !important;
+}
+
+html.dark button.section-preview-btn,
+html.dark .section-preview-btn {
+  color: #0a84ff !important;
+  -webkit-text-fill-color: #0a84ff !important;
+  background: rgb(10 132 255 / 12%) !important;
+  border-color: rgb(10 132 255 / 35%) !important;
+}
+
+html.dark button.section-preview-btn:hover,
+html.dark .section-preview-btn:hover {
+  background: rgb(10 132 255 / 20%) !important;
+  color: #0a84ff !important;
+  -webkit-text-fill-color: #0a84ff !important;
+}
+
+/* Selection + focus polish */
+::selection {
+  background: rgb(0 113 227 / 22%);
+  color: inherit;
+}
+
+html.dark ::selection {
+  background: rgb(10 132 255 / 35%);
+}
+
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid #0071e3;
+  outline-offset: 3px;
+}
+
+html.dark a:focus-visible,
+html.dark button:focus-visible {
+  outline-color: #0a84ff;
+}
+
+/* Project repo links — readable + touch-friendly */
+#projects .project-repo-link {
+  display: inline-flex !important;
+  align-items: center !important;
+  min-height: 44px !important;
+  padding: 0.35rem 0 !important;
+  color: #0071e3 !important;
+  -webkit-text-fill-color: #0071e3 !important;
+  text-decoration: none !important;
+}
+
+html.dark #projects .project-repo-link {
+  color: #0a84ff !important;
+  -webkit-text-fill-color: #0a84ff !important;
+}
+
+/* Card borders — consistent Apple hairline */
+.blog-card,
+.experience-item,
+.education-item,
+.publication-card,
+.award-card,
+.recommendation-card,
+.certification-card,
+.skill-category,
+.contact-card {
+  border-radius: 18px !important;
+}
+
+/* About tabs readable */
+.about-tab-btn {
+  color: #6e6e73 !important;
+  -webkit-text-fill-color: #6e6e73 !important;
+  background: transparent !important;
+  background-image: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.about-tab-btn.active,
+.about-tab-btn[aria-selected='true'] {
+  color: #0071e3 !important;
+  -webkit-text-fill-color: #0071e3 !important;
+  font-weight: 600 !important;
+}
+
+html.dark .about-tab-btn {
+  color: #a1a1a6 !important;
+  -webkit-text-fill-color: #a1a1a6 !important;
+}
+
+html.dark .about-tab-btn.active,
+html.dark .about-tab-btn[aria-selected='true'] {
+  color: #0a84ff !important;
+  -webkit-text-fill-color: #0a84ff !important;
+}
+
+/* ─── Footer ─────────────────────────────────────────────────────── */
+footer,
+.footer-wrapper {
+  background-color: #ffffff;
+  color: #1d1d1f;
+}
+
+html.dark footer,
+html.dark .footer-wrapper {
+  background-color: #000000;
+  color: #f5f5f7;
+}
+
+.footer-copy,
+.footer-tagline {
+  color: #6e6e73 !important;
+  font-size: 0.8125rem !important;
+  line-height: 1.5 !important;
+}
+
+html.dark .footer-copy,
+html.dark .footer-tagline {
+  color: #a1a1a6 !important;
+}
+
+/* ─── Mobile refinements ─────────────────────────────────────────── */
+@media (max-width: 768px) {
+  body {
+    font-size: 16px;
+    letter-spacing: -0.016em;
+  }
+
+  main#main-content > section:not(#home) {
+    padding-top: clamp(3rem, 7vh, 4rem) !important;
+    padding-bottom: clamp(3rem, 7vh, 4rem) !important;
+  }
+
+  main section > .container > h2,
+  main section h2[id$='-heading'] {
+    font-size: clamp(1.75rem, 7vw, 2.125rem) !important;
+  }
+
+  .section-subtitle {
+    font-size: 1.0625rem !important;
+    padding-inline: 0.25rem;
+  }
+
+  #home .hero-description,
+  #home .hero-description-line {
+    font-size: 1.0625rem !important;
+    line-height: 1.5 !important;
+    white-space: normal !important;
+  }
+
+  #home .hero-title {
+    font-size: 1.0625rem !important;
+  }
+}
+
+/* ─── Reduced motion ─────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* ─── Chatbot + share sheet — solid project surfaces (no glass wash) ─ */
+#chatbot-widget,
+#chatbot-widget.visible,
+html:not([data-lg-mode='tinted']) #chatbot-widget,
+html[data-lg-mode] #chatbot-widget {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
+  color: #1d1d1f !important;
+  border: 1px solid #e5e5ea !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.14) !important;
+  opacity: 1 !important;
+}
+
+html.dark #chatbot-widget,
+html.dark #chatbot-widget.visible,
+html.dark:not([data-lg-mode='tinted']) #chatbot-widget,
+html.dark[data-lg-mode] #chatbot-widget {
+  background: #000000 !important;
+  background-color: #000000 !important;
+  background-image: none !important;
+  color: #f5f5f7 !important;
+  border-color: #2c2c2e !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.55) !important;
+}
+
+#chatbot-widget .chatbot-header,
+#chatbot-widget #chatbot-messages,
+#chatbot-widget .chatbot-input-container,
+#chatbot-widget .input-wrapper {
+  background: transparent !important;
+  background-color: transparent !important;
+  color: inherit !important;
+}
+
+#chatbot-widget .chatbot-title {
+  color: #1d1d1f !important;
+  -webkit-text-fill-color: #1d1d1f !important;
+  background: none !important;
+  background-image: none !important;
+}
+
+html.dark #chatbot-widget .chatbot-title {
+  color: #f5f5f7 !important;
+  -webkit-text-fill-color: #f5f5f7 !important;
+  background: none !important;
+  background-image: none !important;
+}
+
+#chatbot-widget #chatbot-input,
+#chatbot-widget textarea#chatbot-input {
+  color: #1d1d1f !important;
+  -webkit-text-fill-color: #1d1d1f !important;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  border-color: #e5e5ea !important;
+}
+
+html.dark #chatbot-widget #chatbot-input,
+html.dark #chatbot-widget textarea#chatbot-input {
+  color: #f5f5f7 !important;
+  -webkit-text-fill-color: #f5f5f7 !important;
+  background: #000000 !important;
+  background-color: #000000 !important;
+  border-color: #2c2c2e !important;
+}
+
+#chatbot-widget .chatbot-message.bot,
+#chatbot-widget .message.bot,
+#chatbot-widget .bot-message {
+  background: #ffffff !important;
+  color: #1d1d1f !important;
+  border: 1px solid #e5e5ea !important;
+}
+
+html.dark #chatbot-widget .chatbot-message.bot,
+html.dark #chatbot-widget .message.bot,
+html.dark #chatbot-widget .bot-message {
+  background: #000000 !important;
+  color: #f5f5f7 !important;
+  border-color: #2c2c2e !important;
+}
+
+/* Share dialog shell — solid card already in share-widget.css */
+.website-share-dialog.active {
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+}
+
+.website-share-dialog.active .website-share-card {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
+  color: #1d1d1f !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  opacity: 1 !important;
+}
+
+html.dark .website-share-dialog.active .website-share-card {
+  background: #000000 !important;
+  background-color: #000000 !important;
+  color: #f5f5f7 !important;
+}

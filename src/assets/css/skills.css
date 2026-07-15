@@ -214,14 +214,16 @@ html.dark .skill-category > h3:not(.skill-category-title) {
   border-color: rgb(255 255 255 / 10%);
 }
 
-/* Skill badge row — wrap grid on desktop; soft horizontal scroll on small screens */
+/* Marquee container — clips inside rounded category card */
 .skill-scroll-container {
   position: relative;
-  overflow: visible;
+  overflow: hidden;
   border-radius: 14px;
   background: rgb(0 0 0 / 2%);
   border: 1px solid rgb(0 0 0 / 4%);
-  padding: 0.65rem 0.75rem;
+  mask-image: linear-gradient(to right, transparent, black 2%, black 98%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 2%, black 98%, transparent);
+  padding: 0.35rem 0;
   max-width: 100%;
 }
 
@@ -232,55 +234,59 @@ html.dark .skill-scroll-container {
 
 .skill-scroll-wrapper {
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-  padding: 0;
-  width: 100%;
-  min-width: 0;
-  max-width: 100%;
-  animation: none !important;
-  transform: none !important;
-  will-change: auto;
+  flex-wrap: nowrap;
+  gap: 1rem;
+  padding: 0.75rem 0;
+  width: max-content;
+  min-width: max-content;
+  max-width: none;
+  animation: skillMarquee var(--skill-marquee-duration, 40s) linear infinite;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  will-change: transform;
 }
 
 .skill-scroll-wrapper:not(.is-offscreen-paused) {
-  will-change: auto;
+  will-change: transform;
+}
+
+.skill-scroll-wrapper.is-offscreen-paused {
+  animation-play-state: paused;
 }
 
 .skill-scroll-container:hover .skill-scroll-wrapper {
   animation-play-state: paused;
 }
 
-@media (width <= 767px) {
-  .skill-scroll-container {
-    overflow-x: auto;
-    overflow-y: hidden;
-    -webkit-overflow-scrolling: touch;
-    overscroll-behavior-x: contain;
-    scrollbar-width: thin;
-    padding-bottom: 0.5rem;
+@keyframes skillMarquee {
+  0% {
+    transform: translate3d(0, 0, 0);
   }
 
-  .skill-scroll-wrapper {
-    flex-wrap: nowrap;
-    width: max-content;
-    min-width: max-content;
-    max-width: none;
+  100% {
+    transform: translate3d(var(--skill-marquee-distance, -33.333%), 0, 0);
   }
 }
 
-/* Skill Badge — layout + motion; glass surfaces from wwdc26 / liquid-glass-modes */
+@media (prefers-reduced-motion: reduce) {
+  .skill-scroll-wrapper {
+    animation: none !important;
+    transform: none !important;
+  }
+}
+
+/* Skill Badge — marquee chips; glass surfaces from wwdc26 / liquid-glass-modes */
 #skills-container .skill-badge,
 .skill-badge {
-  flex: 1 1 200px;
-  flex-shrink: 1;
-  min-width: min(200px, 100%);
-  max-width: 100%;
+  flex: 0 0 auto;
+  flex-shrink: 0;
+  min-width: 200px;
+  max-width: 260px;
   display: flex;
   align-items: center;
   gap: 0.75rem;
   padding: 0.75rem 1rem;
-  border-radius: 18px;
+  border-radius: 22px;
   border: 1px solid var(--theme-card-border, rgb(0 0 0 / 8%));
   transition:
     transform 0.28s var(--skill-motion-spring),
@@ -291,31 +297,15 @@ html.dark .skill-scroll-container {
   box-sizing: border-box;
   animation: none;
   opacity: 1;
-}
-
-@media (width >= 768px) {
-  #skills-container .skill-badge,
-  .skill-badge {
-    flex: 1 1 calc(33.333% - 0.75rem);
-    max-width: calc(33.333% - 0.5rem);
-    min-width: 180px;
-  }
-}
-
-@media (width >= 1100px) {
-  #skills-container .skill-badge,
-  .skill-badge {
-    flex: 1 1 calc(25% - 0.75rem);
-    max-width: calc(25% - 0.55rem);
-  }
+  height: 100%;
+  backface-visibility: hidden;
 }
 
 @media (width <= 767px) {
   #skills-container .skill-badge,
   .skill-badge {
-    flex: 0 0 auto;
-    min-width: 200px;
-    max-width: 240px;
+    min-width: 190px;
+    max-width: 230px;
   }
 }
 
@@ -368,7 +358,6 @@ html.dark[data-lg-mode='tinted'] #skills-container .skill-scroll-wrapper .skill-
 .skill-scroll-wrapper .skill-badge {
   animation: none !important;
   opacity: 1 !important;
-  transform: none !important;
 }
 
 @keyframes slideInBadge {
@@ -500,9 +489,10 @@ html.dark .skill-badge:hover {
 .skill-badge-name {
   font-weight: 600;
   font-size: 0.9rem;
-  color: var(--text-primary, #1d1d1f);
+  color: #1d1d1f;
   margin-bottom: 0.25rem;
   line-height: 1.2;
+  letter-spacing: -0.014em;
 }
 
 html.dark .skill-badge-name {

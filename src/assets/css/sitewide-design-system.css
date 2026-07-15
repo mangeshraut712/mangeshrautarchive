@@ -7,8 +7,9 @@
    1. GLOBAL BUTTON STYLES - APPLE BLUE
    ======================================== */
 
-/* Target ALL buttons across the site to ensure they are BLUE */
-.btn,
+/* Target ALL buttons across the site to ensure they are BLUE.
+   Contact chrome (crypto, calendar, calendly) is excluded so brand tiles keep their own look. */
+.btn:not(.hero-cta-secondary):not(.section-preview-btn),
 button:not(.about-tab-btn):not(.about-speak-btn):not(.card-speak-btn):not(.card-translate-btn):not(
     .card-restore-btn
   ):not(.card-translate-option):not(#go-to-top):not(#chatbot-toggle):not(#website-share-toggle):not(
@@ -27,7 +28,13 @@ button:not(.about-tab-btn):not(.about-speak-btn):not(.card-speak-btn):not(.card-
     .a11y-toolbar button
   ):not([class*='maplibregl-ctrl']):not(.systems-arch-tab):not(.uses-control-tile):not(
     .portfolio-reach-badge
-  ):not(.hero-pill-badge),
+  ):not(.hero-pill-badge):not(.crypto-mini-btn):not(.robinhood-mini-btn):not(
+    .calendly-panel-button
+  ):not(.ios-btn):not(.ios-btn-small):not(.status-circle):not(.edit-btn):not(
+    .contact-assistme-btn
+  ):not(.currently-tab):not(.section-preview-btn):not(.hero-cta-secondary):not(.about-tab-btn):not(
+    .proj-filter-btn
+  ),
 .contact-submit,
 .project-link,
 .read-more-btn,
@@ -54,7 +61,7 @@ a.button,
 }
 
 /* Hover State */
-.btn:hover,
+.btn:not(.hero-cta-secondary):not(.section-preview-btn):hover,
 button:not(.about-tab-btn):not(.about-speak-btn):not(.card-speak-btn):not(.card-translate-btn):not(
     .card-restore-btn
   ):not(.card-translate-option):not(#go-to-top):not(#chatbot-toggle):not(#website-share-toggle):not(
@@ -73,7 +80,13 @@ button:not(.about-tab-btn):not(.about-speak-btn):not(.card-speak-btn):not(.card-
     .a11y-toolbar button
   ):not([class*='maplibregl-ctrl']):not(.systems-arch-tab):not(.uses-control-tile):not(
     .portfolio-reach-badge
-  ):not(.hero-pill-badge):hover,
+  ):not(.hero-pill-badge):not(.crypto-mini-btn):not(.robinhood-mini-btn):not(
+    .calendly-panel-button
+  ):not(.ios-btn):not(.ios-btn-small):not(.status-circle):not(.edit-btn):not(
+    .contact-assistme-btn
+  ):not(.currently-tab):not(.section-preview-btn):not(.hero-cta-secondary):not(.about-tab-btn):not(
+    .proj-filter-btn
+  ):hover,
 .contact-submit:hover,
 .project-link:hover,
 .read-more-btn:hover,
@@ -594,13 +607,19 @@ html.dark a {
 
 /* Blue Accents (Links, etc)
    Exclude chip/button-like anchors that set their own AA palette
-   (project evidence chips, media watch chips, nav chrome). */
+   (project evidence chips, media watch chips, nav chrome).
+   :where() keeps exclusion specificity at zero so brand tiles
+   (.wrapper .icon a { color: inherit }) win over this rule. */
 body:not(.error-page)
-  a:not(.project-evidence-link):not(.watch-btn):not(.book-btn):not(.systems-status-pill):not(
-    .nav-link
-  ):not(.monitor-page-nav__home):not(.monitor-page-nav__back):not(.systems-hero-action):not(
-    .btn
-  ):not(.btn-primary):not(.btn-secondary):not(.section-preview-btn):not(.error-home-link),
+  a:where(
+    :not(.project-evidence-link):not(.watch-btn):not(.book-btn):not(.systems-status-pill):not(
+        .nav-link
+      ):not(.monitor-page-nav__home):not(.monitor-page-nav__back):not(.systems-hero-action):not(
+        .btn
+      ):not(.btn-primary):not(.btn-secondary):not(.section-preview-btn):not(.error-home-link):not(
+        .engineering-open-btn
+      ):not(.hero-cta):not(.contact-assistme-btn)
+  ),
 body:not(.error-page) .link,
 body:not(.error-page) .text-blue {
   color: #0071e3 !important;
@@ -608,11 +627,15 @@ body:not(.error-page) .text-blue {
 
 html.dark
   body:not(.error-page)
-  a:not(.project-evidence-link):not(.watch-btn):not(.book-btn):not(.systems-status-pill):not(
-    .nav-link
-  ):not(.monitor-page-nav__home):not(.monitor-page-nav__back):not(.systems-hero-action):not(
-    .btn
-  ):not(.btn-primary):not(.btn-secondary):not(.section-preview-btn):not(.error-home-link),
+  a:where(
+    :not(.project-evidence-link):not(.watch-btn):not(.book-btn):not(.systems-status-pill):not(
+        .nav-link
+      ):not(.monitor-page-nav__home):not(.monitor-page-nav__back):not(.systems-hero-action):not(
+        .btn
+      ):not(.btn-primary):not(.btn-secondary):not(.section-preview-btn):not(.error-home-link):not(
+        .engineering-open-btn
+      ):not(.hero-cta):not(.contact-assistme-btn)
+  ),
 html.dark body:not(.error-page) .link,
 html.dark body:not(.error-page) .text-blue {
   color: #2997ff !important;
@@ -634,7 +657,11 @@ button:not(.about-tab-btn):not(.about-speak-btn):not(.card-speak-btn):not(.card-
     .project-action-btn
   ):not(.blog-read-btn):not(.a11y-toolbar button):not(.systems-arch-tab):not(
     .uses-control-tile
-  ):not(.portfolio-reach-badge):not(.hero-pill-badge),
+  ):not(.portfolio-reach-badge):not(.hero-pill-badge):not(.crypto-mini-btn):not(
+    .robinhood-mini-btn
+  ):not(.calendly-panel-button):not(.ios-btn):not(.ios-btn-small):not(.status-circle):not(
+    .edit-btn
+  ):not(.contact-assistme-btn):not(.currently-tab),
 .project-tag,
 .badge {
   color: #fff !important;
@@ -844,6 +871,7 @@ footer .wrapper {
   color: inherit;
 }
 
+/* Social tiles: solid white (light) / solid black (dark) rest state */
 .wrapper .icon {
   position: relative;
   border-radius: 50%;
@@ -855,8 +883,9 @@ footer .wrapper {
   align-items: center;
   flex-direction: column;
   cursor: pointer;
-  background: var(--social-surface-light);
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: #ffffff;
+  background-color: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.1);
   box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
   transition:
     transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
@@ -869,14 +898,29 @@ footer .wrapper {
   z-index: 1;
 }
 
+html:not(.dark) .wrapper .icon:not(:hover):not(:focus-within) {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+}
+
 html.dark .wrapper .icon:not(:hover):not(:focus-within) {
-  background: var(--social-surface-dark);
-  border-color: var(--social-border-dark);
+  background: #000000 !important;
+  background-color: #000000 !important;
+  border-color: rgba(255, 255, 255, 0.14) !important;
   box-shadow: 0 10px 10px rgba(0, 0, 0, 0.28);
 }
 
-.wrapper .icon a {
+/* Brand color lives on .icon; anchors/SVGs must inherit (never global link blue). */
+.wrapper .icon a,
+body:not(.error-page) .wrapper .icon a,
+.wrapper .icon a:hover,
+.wrapper .icon a:focus,
+.wrapper .icon a:focus-visible,
+body:not(.error-page) .wrapper .icon a:hover,
+body:not(.error-page) .wrapper .icon a:focus,
+body:not(.error-page) .wrapper .icon a:focus-visible {
   color: inherit !important;
+  -webkit-text-fill-color: currentColor !important;
   width: 100%;
   height: 100%;
   display: flex;
@@ -891,79 +935,103 @@ html.dark .wrapper .icon:not(:hover):not(:focus-within) {
   padding: 0 !important;
 }
 
-.wrapper .icon a:hover,
-.wrapper .icon a:focus,
-.wrapper .icon a:focus-visible {
-  color: inherit !important;
-  background: transparent !important;
-  box-shadow: none !important;
-  transform: none !important;
-}
-
+/* Solid brand glyphs only — never force stroke (breaks outline icons) */
 .wrapper .icon svg,
-.wrapper .icon i {
-  width: 1.2em;
-  height: 1.2em;
-  color: inherit;
+.wrapper .icon i,
+.wrapper .icon .fab,
+body:not(.error-page) .wrapper .icon a svg,
+body:not(.error-page) .wrapper .icon a i,
+body:not(.error-page) .wrapper .icon a .fab {
+  width: 1.35em !important;
+  height: 1.35em !important;
+  min-width: 1.35em;
+  min-height: 1.35em;
+  display: block !important;
+  color: inherit !important;
+  fill: currentColor !important;
+  stroke: none !important;
+  -webkit-text-fill-color: currentColor !important;
   pointer-events: none;
+  overflow: visible;
+  flex-shrink: 0;
 }
 
-.wrapper .icon svg path[fill]:not([fill='none']) {
-  fill: currentColor;
+.wrapper .icon svg path,
+body:not(.error-page) .wrapper .icon a svg path {
+  fill: currentColor !important;
+  stroke: none !important;
 }
 
 .wrapper .facebook {
-  color: var(--facebook-color);
+  color: var(--facebook-color) !important;
 }
 
 .wrapper .instagram {
-  color: var(--instagram-color);
+  color: var(--instagram-color) !important;
 }
 
 .wrapper .linkedin {
-  color: var(--linkedin-color);
+  color: var(--linkedin-color) !important;
 }
 
 .wrapper .youtube {
-  color: var(--youtube-color);
+  color: var(--youtube-color) !important;
 }
 
 .wrapper .github {
-  color: var(--github-color);
+  color: var(--github-color) !important;
 }
 
 .wrapper .x {
-  color: var(--x-color);
+  color: var(--x-color) !important;
 }
 
 .wrapper .leetcode {
-  color: var(--leetcode-color);
+  color: var(--leetcode-color) !important;
 }
 
-.wrapper .snapchat {
-  color: var(--snapchat-color);
+/* Snapchat: solid tile rest; yellow brand fill on hover */
+.wrapper .snapchat:not(:hover):not(:focus-within) {
+  color: #1d1d1f !important;
 }
 
-/* Light: yellow ghost on white tile — subtle stroke only, no filled circle at rest */
-html:not(.dark) .wrapper .snapchat:not(:hover):not(:focus-within) .fab {
-  -webkit-text-stroke: 0.4px rgba(0, 0, 0, 0.28);
-  paint-order: stroke fill;
+html.dark .wrapper .snapchat:not(:hover):not(:focus-within) {
+  color: #fffc00 !important;
 }
 
 .wrapper .telegram {
-  color: var(--telegram-color);
+  color: var(--telegram-color) !important;
 }
 
 .wrapper .spotify {
-  color: var(--spotify-color);
+  color: var(--spotify-color) !important;
 }
 
 .wrapper .strava {
-  color: var(--strava-color);
+  color: var(--strava-color) !important;
 }
 
 .wrapper .whoop {
-  color: var(--whoop-color);
+  color: var(--whoop-color) !important;
+}
+
+/* Brand glyph colors must win over global apple-blue link styles */
+.wrapper .icon:not(:hover):not(:focus-within) svg,
+.wrapper .icon:not(:hover):not(:focus-within) i,
+.wrapper .icon:not(:hover):not(:focus-within) .fab {
+  color: inherit !important;
+  fill: currentColor !important;
+  stroke: none !important;
+}
+
+.wrapper .icon:not(:hover):not(:focus-within) svg path {
+  fill: currentColor !important;
+  stroke: none !important;
+}
+
+/* LeetCode orange slightly deeper on pure white for legibility */
+html:not(.dark) .wrapper .leetcode:not(:hover):not(:focus-within) {
+  color: #e08a00 !important;
 }
 
 .wrapper .tooltip {

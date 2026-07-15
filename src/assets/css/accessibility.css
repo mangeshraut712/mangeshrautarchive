@@ -223,6 +223,39 @@ html.dark .a11y-toolbar {
   box-shadow: 0 10px 36px rgb(0 0 0 / 42%) !important;
 }
 
+/* Liquid Glass transparency popover — readable solid card in both themes */
+.a11y-glass-popover {
+  border-radius: 18px !important;
+  padding: 0.9rem 1rem 1rem !important;
+  min-width: 15rem;
+  max-width: min(18rem, calc(100vw - 1.5rem));
+  background: #ffffff !important;
+  border: 1px solid rgb(0 0 0 / 12%) !important;
+  box-shadow: 0 16px 40px rgb(0 0 0 / 14%) !important;
+  color: #1d1d1f !important;
+}
+
+html.dark .a11y-glass-popover {
+  background: #1c1c1e !important;
+  border-color: rgb(255 255 255 / 14%) !important;
+  box-shadow: 0 18px 48px rgb(0 0 0 / 5%) !important;
+  color: #f5f5f7 !important;
+}
+
+.a11y-glass-popover label,
+.a11y-glass-popover__hint,
+.a11y-glass-popover p {
+  color: #6e6e73 !important;
+  font-size: 0.78rem !important;
+  line-height: 1.4 !important;
+}
+
+html.dark .a11y-glass-popover label,
+html.dark .a11y-glass-popover__hint,
+html.dark .a11y-glass-popover p {
+  color: #a1a1a6 !important;
+}
+
 /* Footer - high contrast overrides to pass WCAG AA color-contrast checks */
 .footer-copy,
 .footer-tagline {

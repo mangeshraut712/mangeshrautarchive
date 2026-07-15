@@ -252,7 +252,7 @@ footer .footer-tagline {
   margin-bottom: 0 !important;
 }
 
-/* Live Activity strip — below hero CTAs */
+/* Hero actions stay centered; Live Activity strip removed */
 #home .hero-footer {
   display: flex;
   flex-direction: column;
@@ -261,7 +261,13 @@ footer .footer-tagline {
   gap: 0.85rem;
 }
 
-.live-activity-strip {
+/* Live Activity strip retired — hide if residual markup appears */
+.live-activity-strip,
+#live-activity-strip {
+  display: none !important;
+}
+
+.live-activity-strip-legacy {
   display: flex;
   align-items: center;
   gap: 0.65rem;

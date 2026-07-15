@@ -7,10 +7,9 @@
    GLOBAL BUTTON STANDARDIZATION
    ======================================== */
 
-.btn,
+.btn:not(.hero-cta-secondary),
 .btn-primary,
-.btn-secondary,
-.hero-cta,
+.hero-cta:not(.hero-cta-secondary),
 .cta-button,
 .action-btn,
 .download-btn,
@@ -41,10 +40,9 @@ input[type='submit'] {
   overflow: hidden;
 }
 
-.btn::before,
+.btn:not(.hero-cta-secondary)::before,
 .btn-primary::before,
-.btn-secondary::before,
-.hero-cta::before,
+.hero-cta:not(.hero-cta-secondary)::before,
 .cta-button::before {
   content: '';
   position: absolute;
@@ -56,18 +54,16 @@ input[type='submit'] {
   transition: left 0.5s;
 }
 
-.btn:hover::before,
+.btn:not(.hero-cta-secondary):hover::before,
 .btn-primary:hover::before,
-.btn-secondary:hover::before,
-.hero-cta:hover::before,
+.hero-cta:not(.hero-cta-secondary):hover::before,
 .cta-button:hover::before {
   left: 100%;
 }
 
-.btn:hover,
+.btn:not(.hero-cta-secondary):hover,
 .btn-primary:hover,
-.btn-secondary:hover,
-.hero-cta:hover,
+.hero-cta:not(.hero-cta-secondary):hover,
 .cta-button:hover,
 .action-btn:hover,
 .download-btn:hover {
@@ -76,19 +72,17 @@ input[type='submit'] {
   transform: translateY(-2px);
 }
 
-html.dark .btn,
+html.dark .btn:not(.hero-cta-secondary),
 html.dark .btn-primary,
-html.dark .btn-secondary,
-html.dark .hero-cta,
+html.dark .hero-cta:not(.hero-cta-secondary),
 html.dark .cta-button {
   background: linear-gradient(135deg, #0071e3 0%, #0a84ff 100%);
   color: #fff !important;
 }
 
-html.dark .btn:hover,
+html.dark .btn:not(.hero-cta-secondary):hover,
 html.dark .btn-primary:hover,
-html.dark .btn-secondary:hover,
-html.dark .hero-cta:hover,
+html.dark .hero-cta:not(.hero-cta-secondary):hover,
 html.dark .cta-button:hover {
   background: linear-gradient(135deg, #0077ed 0%, #2997ff 100%);
   box-shadow: 0 8px 32px rgb(41 151 255 / 50%);
@@ -327,6 +321,257 @@ main#main-content > section .section-subtitle {
 }
 
 /* ========================================
+   THEME-AWARE TYPE VISIBILITY (light + dark)
+   Ensures headings/body never go transparent or low-contrast
+   ======================================== */
+
+html:not(.dark) body,
+html:not(.dark) main {
+  color: #1d1d1f;
+}
+
+html.dark body,
+html.dark main {
+  color: #f5f5f7;
+}
+
+/* Generic headings (section h2 blue is set separately below) */
+html:not(.dark) h1,
+html:not(.dark) h3,
+html:not(.dark) .section-title {
+  color: #1d1d1f !important;
+  -webkit-text-fill-color: #1d1d1f !important;
+}
+
+html.dark h1,
+html.dark h3,
+html.dark .section-title {
+  color: #f5f5f7 !important;
+  -webkit-text-fill-color: #f5f5f7 !important;
+}
+
+/* Section headings — match home "Mangesh Raut" blue */
+html.dark #about h2,
+html.dark #skills h2,
+html.dark #experience h2,
+html.dark #projects h2,
+html.dark #education h2,
+html.dark #blog h2,
+html.dark #contact h2,
+html.dark #publications h2,
+html.dark #awards h2,
+html.dark #recommendations h2,
+html.dark #certifications h2,
+html.dark #engineering h2,
+html.dark #debug-runner-heading,
+html.dark #currently-section h2 {
+  color: #0a84ff !important;
+  -webkit-text-fill-color: #0a84ff !important;
+}
+
+html:not(.dark) .section-subtitle {
+  color: #6e6e73 !important;
+}
+
+html.dark .section-subtitle {
+  color: #a1a1a6 !important;
+}
+
+/* Readable body copy floor sizes */
+@media (max-width: 768px) {
+  #home .hero-description,
+  #home .hero-description-line {
+    font-size: 0.95rem !important;
+    line-height: 1.5 !important;
+  }
+
+  #home .hero-name,
+  #home .hero-name-text {
+    font-size: clamp(1.7rem, 7vw, 2.1rem) !important;
+  }
+
+  #home .hero-title {
+    font-size: 1rem !important;
+    color: #3a3a3c !important;
+  }
+
+  html.dark #home .hero-title {
+    color: #e8e8ed !important;
+  }
+
+  main section .section-subtitle {
+    font-size: 0.95rem !important;
+    line-height: 1.45 !important;
+  }
+}
+
+/* ── Contact critical layout (eager — contact.css is lazy) ── */
+#contact .dream-companies-marquee,
+#contact .dream-cars-marquee {
+  width: 100% !important;
+  max-width: 100% !important;
+  max-height: 5.75rem !important;
+  overflow: hidden !important;
+  display: block !important;
+  box-sizing: border-box;
+}
+
+#contact .dream-companies-track,
+#contact .dream-cars-track {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  align-items: center !important;
+  width: max-content !important;
+  min-width: max-content !important;
+  height: auto !important;
+  gap: 2rem !important;
+}
+
+#contact .dream-company-item,
+#contact .dream-car-item {
+  display: inline-flex !important;
+  flex: 0 0 auto !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+#contact .company-logo,
+#contact .car-logo {
+  height: 40px !important;
+  width: auto !important;
+  max-width: 120px !important;
+  object-fit: contain !important;
+  display: block !important;
+}
+
+/* Support payment buttons — prevent raw SVG anchors from exploding height */
+#contact .support-buttons-container {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.5rem !important;
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+#contact a.support-stripe-btn,
+#contact a.support-paypal-btn,
+#contact .support-stripe-btn.premium,
+#contact .support-paypal-btn.premium {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.5rem !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-height: 44px !important;
+  max-height: 52px !important;
+  padding: 0.55rem 1rem !important;
+  box-sizing: border-box !important;
+  overflow: hidden !important;
+  text-decoration: none !important;
+  border-radius: 12px !important;
+  font-weight: 600 !important;
+  line-height: 1.2 !important;
+}
+
+#contact .support-stripe-btn .payment-logo,
+#contact .support-paypal-btn .payment-logo,
+#contact .support-stripe-btn svg,
+#contact .support-paypal-btn svg {
+  width: 1.25rem !important;
+  height: 1.25rem !important;
+  max-width: 1.25rem !important;
+  max-height: 1.25rem !important;
+  flex-shrink: 0 !important;
+  display: block !important;
+}
+
+#contact .support-stripe-btn.premium {
+  background: linear-gradient(135deg, #635bff 0%, #4f46e5 100%) !important;
+  color: #fff !important;
+}
+
+#contact .support-paypal-btn.premium {
+  background: linear-gradient(135deg, #003087 0%, #0070ba 100%) !important;
+  color: #fff !important;
+}
+
+/* Crypto tiles — sizing/colors owned by contact.css (logo + full name labels) */
+#contact .crypto-wallets {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  justify-content: center !important;
+  gap: 0.75rem 0.85rem !important;
+}
+
+/* Currently media shelf — horizontal scroll only (never multi-row stack) */
+#contact .media-grid,
+#contact #shows-grid,
+#contact #music-grid,
+#contact #books-grid {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  gap: 0.75rem !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  max-height: none !important;
+  grid-template-columns: none !important;
+  align-items: stretch !important;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding-bottom: 0.35rem !important;
+}
+
+#contact .media-grid > *,
+#contact #shows-grid > *,
+#contact #music-grid > *,
+#contact #books-grid > * {
+  flex: 0 0 auto !important;
+  scroll-snap-align: start;
+}
+
+#contact .media-card,
+#contact .currently-music-card {
+  width: min(148px, 42vw) !important;
+  max-width: 160px !important;
+}
+
+/* Section titles — match home "Mangesh Raut" Apple blue */
+main section > .container > h2,
+main section h2[id$='-heading'] {
+  color: #0071e3 !important;
+  -webkit-text-fill-color: #0071e3 !important;
+  margin-bottom: 0.75rem !important;
+}
+
+html.dark main section > .container > h2,
+html.dark main section h2[id$='-heading'] {
+  color: #0a84ff !important;
+  -webkit-text-fill-color: #0a84ff !important;
+}
+
+main section .section-subtitle {
+  margin-top: 0 !important;
+}
+
+/* sr-only must never expand layout even with animate-in */
+.sr-only,
+.sr-only.animate-in {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+/* ========================================
    SECTION PREVIEW — View more / Show less
    ======================================== */
 
@@ -338,7 +583,7 @@ main#main-content > section .section-subtitle {
 /* CSS-first collapse (pre-JS) for simple direct-child grids — matches data-preview-limit */
 #certifications-grid:not(.is-expanded) > .certification-card:nth-child(n + 4),
 #recommendations-grid:not(.is-expanded) > .recommendation-card:nth-child(n + 3),
-#blog-posts-container:not(.is-expanded) > .blog-card:nth-child(n + 4),
+#blog-posts-container:not(.is-expanded) > .blog-card:nth-child(n + 3),
 #awards-grid:not(.is-expanded) > .award-card:nth-child(n + 3) {
   display: none !important;
 }
@@ -368,16 +613,17 @@ main#main-content > section .section-subtitle {
   justify-content: center;
   gap: 0.4rem;
   min-height: 44px;
-  padding: 0.7rem 1.35rem;
+  padding: 0.75rem 1.5rem;
   border-radius: 980px;
   border: 1px solid rgb(0 113 227 / 28%);
   background: rgb(0 113 227 / 6%);
   color: #0071e3;
-  font-family: inherit;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', system-ui, sans-serif;
   font-size: 0.9375rem;
   font-weight: 600;
-  letter-spacing: -0.01em;
-  line-height: 1.2;
+  letter-spacing: -0.015em;
+  line-height: 1.25;
+  -webkit-font-smoothing: antialiased;
   cursor: pointer;
   transition:
     background 0.2s ease,
@@ -385,6 +631,12 @@ main#main-content > section .section-subtitle {
     color 0.2s ease,
     transform 0.2s ease;
   -webkit-tap-highlight-color: transparent;
+}
+
+html.dark .section-preview-btn {
+  color: #2997ff;
+  border-color: rgb(41 151 255 / 35%);
+  background: rgb(10 132 255 / 12%);
 }
 
 .section-preview-btn:hover {
@@ -399,12 +651,6 @@ main#main-content > section .section-subtitle {
 .section-preview-btn:focus-visible {
   outline: 2px solid #0071e3;
   outline-offset: 3px;
-}
-
-html.dark .section-preview-btn {
-  color: #2997ff;
-  border-color: rgb(41 151 255 / 35%);
-  background: rgb(41 151 255 / 10%);
 }
 
 html.dark .section-preview-btn:hover {
@@ -426,14 +672,19 @@ html.dark .section-preview-btn:focus-visible {
   }
 }
 
-/* Contact secondary blocks (support / social / marquees) */
-#contact:not(.is-contact-expanded) [data-contact-extra],
+/* Contact secondary blocks (support / social / marquees) — always visible */
+#contact [data-contact-extra] {
+  display: block !important;
+  visibility: visible !important;
+}
+
 #contact [data-contact-extra].is-preview-hidden {
-  display: none !important;
+  display: block !important;
+  visibility: visible !important;
 }
 
 #contact .contact-extras-actions {
-  margin-block: 0.75rem 0.25rem;
+  display: none !important;
 }
 
 #contact .contact-info-all {
@@ -748,10 +999,6 @@ p,
   font-weight: 450;
   letter-spacing: -0.01em;
   color: var(--text-secondary, #6e6e73);
-}
-
-html.dark .section-subtitle {
-  color: var(--text-secondary, #a1a1a6);
 }
 
 /* ═══════════════════════════════════════════════════════════

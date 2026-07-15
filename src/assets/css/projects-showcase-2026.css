@@ -1169,7 +1169,7 @@ html.dark #projects #github-projects-container .project-repo-updated {
 #projects #github-projects-container .project-repo-path,
 #projects #github-projects-container .project-repo-link {
   margin: 0 !important;
-  color: var(--project-muted-light) !important;
+  color: #0071e3 !important;
   font-size: 0.78rem !important;
   line-height: 1.35 !important;
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
@@ -1178,9 +1178,16 @@ html.dark #projects #github-projects-container .project-repo-updated {
   text-overflow: ellipsis;
 }
 
+#projects #github-projects-container .project-repo-link {
+  display: inline-flex !important;
+  align-items: center !important;
+  min-height: 44px !important;
+  max-width: 100%;
+}
+
 html.dark #projects #github-projects-container .project-repo-path,
 html.dark #projects #github-projects-container .project-repo-link {
-  color: var(--project-muted-dark) !important;
+  color: #0a84ff !important;
 }
 
 #projects #github-projects-container .project-description {

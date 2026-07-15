@@ -222,12 +222,12 @@ html.dark .availability-dot {
 
 .hero-description {
   margin: 0 auto !important;
-  max-width: min(100%, 76ch) !important;
-  font-size: clamp(0.9rem, 0.95vw, 0.98rem) !important;
-  line-height: 1.45 !important;
+  max-width: min(100%, 52rem) !important;
+  font-size: clamp(1.05rem, 1.35vw, 1.3125rem) !important;
+  line-height: 1.4706 !important;
   font-weight: 400 !important;
-  color: #51545b !important;
-  letter-spacing: -0.014em !important;
+  color: #1d1d1f !important;
+  letter-spacing: -0.016em !important;
   opacity: 1;
 }
 
@@ -248,22 +248,35 @@ html.dark .availability-dot {
   }
 }
 
-/* DARK MODE OVERRIDES */
+/* DARK MODE OVERRIDES — solid visible type (never transparent) */
 
-html.dark .hero-name {
-  color: transparent !important;
-  background: none;
-  -webkit-text-fill-color: initial !important;
+html.dark .hero-name,
+html.dark #home .hero-name,
+html.dark #home .hero-name.xdr-highlight {
+  color: #f5f5f7 !important;
+  background: none !important;
+  background-image: none !important;
+  -webkit-text-fill-color: #f5f5f7 !important;
   text-shadow: none !important;
+}
+
+html.dark .hero-name-text,
+html.dark #home .hero-name-text {
+  color: #0a84ff !important;
+  -webkit-text-fill-color: #0a84ff !important;
+  background: none !important;
+  background-image: none !important;
 }
 
 html.dark .hero-title {
-  color: #f5f5f7 !important;
+  color: #e8e8ed !important;
   text-shadow: none !important;
 }
 
-html.dark .hero-description {
+html.dark .hero-description,
+html.dark .hero-description-line {
   color: #d2d2d7 !important;
+  -webkit-text-fill-color: #d2d2d7 !important;
 }
 
 /* Responsive Adjustments */
@@ -436,6 +449,134 @@ html.dark .hero-social-link:hover {
   padding-top: clamp(12px, 2.5vh, 24px) !important;
   padding-bottom: clamp(16px, 3vh, 32px) !important;
   min-height: auto !important;
+}
+
+/* ============================================================
+   Desktop layout polish — natural section flow (no forced clips)
+   Home fills first viewport; other sections size to content.
+   ============================================================ */
+@media (min-width: 1025px) {
+  :root {
+    --site-nav-offset: 4.25rem;
+  }
+
+  html {
+    scroll-padding-top: var(--site-nav-offset);
+    scroll-snap-type: none;
+  }
+
+  /* Home: comfortable full first screen, no max-height clipping */
+  section#home,
+  #home.hero-section,
+  #home.home-hero,
+  #home.hero-section.home-hero,
+  section#home.hero-section.home-hero,
+  body #home.hero-section.home-hero,
+  #home {
+    min-height: calc(100svh - var(--site-nav-offset)) !important;
+    max-height: none !important;
+    height: auto !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    overflow: visible !important;
+  }
+
+  #home > .container-fluid {
+    width: 100%;
+    min-height: 0 !important;
+    max-height: none !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    overflow: visible !important;
+    padding-block: clamp(1rem, 3vh, 2rem);
+    box-sizing: border-box;
+  }
+
+  #home .hero-text-block.home-hero-text {
+    min-height: 0 !important;
+  }
+
+  .home-hero {
+    min-height: 0 !important;
+  }
+
+  /* Content sections: readable spacing, never locked to one screen */
+  main#main-content > section:not(#home) {
+    min-height: 0 !important;
+    max-height: none !important;
+    height: auto !important;
+    overflow: visible !important;
+    padding-top: clamp(3.5rem, 7vh, 5.5rem) !important;
+    padding-bottom: clamp(3.5rem, 7vh, 5.5rem) !important;
+    display: block !important;
+  }
+
+  main#main-content > section:not(#home) > .container {
+    max-height: none !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+    display: block !important;
+    max-width: min(1120px, calc(100% - 4rem));
+    margin-inline: auto;
+  }
+
+  /* About: matched image + story card, natural section height */
+  #about {
+    --about-pair-height: clamp(520px, 58vh, 640px);
+  }
+
+  #about .about-main {
+    display: grid !important;
+    grid-template-columns: minmax(360px, 1fr) minmax(0, 1.25fr);
+    gap: clamp(2rem, 3.5vw, 3rem);
+    align-items: stretch !important;
+    margin-bottom: 0 !important;
+  }
+
+  #about .about-image-wrapper,
+  #about .about-text-card {
+    height: var(--about-pair-height) !important;
+    min-height: var(--about-pair-height) !important;
+    max-height: var(--about-pair-height) !important;
+  }
+
+  #about .about-image-wrapper {
+    border-radius: 24px;
+    overflow: hidden;
+  }
+
+  #about .about-image-wrapper picture,
+  #about .about-image {
+    width: 100%;
+    height: 100% !important;
+    object-fit: cover;
+    object-position: center top;
+    display: block;
+  }
+
+  #about .about-text-card {
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: hidden !important;
+  }
+
+  #about .about-tab-panel {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+  }
+
+  #about .about-content {
+    margin-top: 1.5rem !important;
+  }
 }
 
 .hero-section {
@@ -2319,6 +2460,99 @@ html.dark .artist-name {
 
 .hero-cta i {
   font-size: 1rem;
+}
+
+/* Home hero polish — cleaner footer spacing without live-activity strip */
+#home .hero-footer {
+  margin-top: 0.35rem;
+}
+
+#home .hero-actions {
+  gap: 0.85rem;
+}
+
+/* About image + info card — equal height (critical, before lazy about.css) */
+#about {
+  --about-pair-height: clamp(480px, 52vh, 600px);
+}
+
+#about .about-main {
+  display: grid;
+  grid-template-columns: minmax(320px, 1fr) minmax(0, 1.25fr);
+  gap: clamp(1.5rem, 3vw, 2.75rem);
+  align-items: stretch;
+}
+
+#about .about-image-wrapper,
+#about .about-text-card {
+  height: var(--about-pair-height);
+  min-height: var(--about-pair-height);
+  max-height: var(--about-pair-height);
+  box-sizing: border-box;
+}
+
+#about .about-image-wrapper {
+  position: relative;
+  border-radius: 24px;
+  overflow: hidden;
+}
+
+#about .about-image-wrapper picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+#about .about-image {
+  width: 100%;
+  height: 100% !important;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+}
+
+#about .about-text-card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+#about .about-tab-panel {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+@media (max-width: 1024px) {
+  #about {
+    --about-pair-height: clamp(360px, 48vh, 480px);
+  }
+
+  #about .about-main {
+    grid-template-columns: 1fr;
+  }
+
+  #about .about-image-wrapper,
+  #about .about-text-card {
+    max-height: none;
+    height: auto;
+    min-height: 0;
+  }
+
+  #about .about-image-wrapper {
+    height: min(420px, 55vw);
+    min-height: 280px;
+  }
+
+  #about .about-text-card {
+    height: auto;
+    max-height: none;
+    overflow: visible;
+  }
+
+  #about .about-tab-panel {
+    overflow: visible;
+  }
 }
 
 /* Skills Marquee */

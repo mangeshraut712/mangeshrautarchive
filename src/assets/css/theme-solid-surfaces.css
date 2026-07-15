@@ -69,6 +69,7 @@ html.dark body {
   background: #000000 !important;
   background-color: #000000 !important;
   background-image: none !important;
+  color: #f5f5f7 !important;
 }
 
 /* ─── Card & panel surfaces ─── */
@@ -1059,8 +1060,10 @@ html.dark #home.hero-section .hero-name,
 html.dark #home .hero-name.xdr-highlight,
 html.dark #home.hero-section .hero-name.xdr-highlight {
   background: none !important;
-  color: transparent !important;
-  -webkit-text-fill-color: initial !important;
+  background-image: none !important;
+  /* Parent h1 must stay visible; blue brand lives on .hero-name-text */
+  color: #f5f5f7 !important;
+  -webkit-text-fill-color: #f5f5f7 !important;
   text-shadow: none !important;
 }
 

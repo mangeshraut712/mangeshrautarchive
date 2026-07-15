@@ -145,7 +145,8 @@ function clearStabilizeTimers() {
 }
 
 function getSectionOffset() {
-  return (state.nav?.offsetHeight || 60) + 12;
+  // Keep in sync with CSS scroll-margin-top on sections
+  return (state.nav?.offsetHeight || 52) + 20;
 }
 
 function withNativeScrollJump(callback) {
@@ -224,18 +225,40 @@ function scrollToSection(sectionId) {
   const target = document.getElementById(sectionId);
   if (!target || !state.nav) return;
 
+  // Clear previous focus ring
+  document.querySelectorAll('section.nav-target-focus').forEach(el => {
+    el.classList.remove('nav-target-focus');
+  });
+
   const navOffset = getSectionOffset();
   const top = target.getBoundingClientRect().top + window.scrollY - navOffset;
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const distance = Math.abs((window.scrollY || window.pageYOffset || 0) - top);
-  const useSmoothScroll = !prefersReducedMotion && distance <= window.innerHeight * 3;
+  // Prefer instant jump for long distances so the full section lands correctly
+  const useSmoothScroll = !prefersReducedMotion && distance <= window.innerHeight * 1.75;
 
   const targetTop = Math.max(0, top);
+
+  const finishFocus = () => {
+    target.classList.add('nav-target-focus');
+    window.setTimeout(() => target.classList.remove('nav-target-focus'), 1100);
+    // Snap once more after paint so lazy CSS/images don't leave a gap under the island
+    window.requestAnimationFrame(() => {
+      const delta = target.getBoundingClientRect().top - navOffset;
+      if (Math.abs(delta) > 8) {
+        withNativeScrollJump(() => {
+          window.scrollBy({ top: delta, behavior: 'auto' });
+        });
+      }
+    });
+  };
+
   if (useSmoothScroll) {
     window.scrollTo({
       top: targetTop,
       behavior: 'smooth',
     });
+    window.setTimeout(finishFocus, Math.min(520, 180 + distance * 0.12));
   } else {
     withNativeScrollJump(() => {
       window.scrollTo({
@@ -243,6 +266,7 @@ function scrollToSection(sectionId) {
         behavior: 'auto',
       });
     });
+    finishFocus();
   }
 
   stabilizeScrollToSection(sectionId);
@@ -497,6 +521,24 @@ function onResize() {
   }
 
   revealActiveDesktopLink();
+  syncNavRailOverflow();
+}
+
+function dedupeNavLinks(links) {
+  const seen = new Set();
+  return links.filter(link => {
+    const href = (link.getAttribute('href') || '').trim();
+    if (!href) return false;
+    if (seen.has(href)) {
+      // Hide accidental duplicate anchors in the island rail
+      link.hidden = true;
+      link.setAttribute('aria-hidden', 'true');
+      link.style.display = 'none';
+      return false;
+    }
+    seen.add(href);
+    return true;
+  });
 }
 
 function initSmartNavbar() {
@@ -509,8 +551,10 @@ function initSmartNavbar() {
 
   window.__smartNavbarInitialized = true;
 
-  state.navLinks = Array.from(state.nav.querySelectorAll('.nav-link[href^="#"]'));
-  state.overlayLinks = Array.from(document.querySelectorAll('.menu-item[href^="#"]'));
+  state.navLinks = dedupeNavLinks(Array.from(state.nav.querySelectorAll('.nav-link[href^="#"]')));
+  state.overlayLinks = dedupeNavLinks(
+    Array.from(document.querySelectorAll('#overlay-menu .menu-item[href^="#"]'))
+  );
   state.lastY = Math.max(0, window.scrollY || window.pageYOffset || 0);
 
   window.__smartNavbarHandlesDynamicIsland = true;
@@ -525,6 +569,7 @@ function initSmartNavbar() {
   bindScrollWheelForDesktopNav();
   bindKeyboardNavigation();
   initSectionObserver();
+  syncNavRailOverflow();
 
   const initialHash = window.location.hash.replace('#', '').trim();
   setActiveLinkBySectionId(initialHash || getVisibleSectionId() || 'home');
@@ -533,6 +578,13 @@ function initSmartNavbar() {
 
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', onResize, { passive: true });
+}
+
+function syncNavRailOverflow() {
+  const navRail = state.nav?.querySelector('.nav-links.scrollable-nav');
+  if (!navRail) return;
+  const overflowing = navRail.scrollWidth > navRail.clientWidth + 2;
+  navRail.classList.toggle('is-overflowing', overflowing);
 }
 
 if (document.readyState === 'loading') {

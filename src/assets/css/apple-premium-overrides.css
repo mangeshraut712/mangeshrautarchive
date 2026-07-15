@@ -214,17 +214,19 @@ samp,
 #blog h2,
 #contact h2,
 #certifications h2,
-#debug-runner-section h2 {
-  font-size: clamp(2rem, 4vw, 3rem) !important;
+#debug-runner-section h2,
+#currently-section h2 {
+  font-size: clamp(1.85rem, 3.8vw, 2.6rem) !important;
   font-weight: 800 !important;
   text-align: center !important;
-  margin-bottom: 3rem !important;
-  background: linear-gradient(135deg, #0071e3, #2997ff) !important;
-  background-clip: text !important;
-  -webkit-text-fill-color: transparent !important;
-  color: transparent !important;
-
-  /* Fallback */
+  margin-bottom: 0.75rem !important;
+  /* Match home "Mangesh Raut" Apple blue */
+  background: none !important;
+  background-image: none !important;
+  background-clip: border-box !important;
+  -webkit-background-clip: border-box !important;
+  -webkit-text-fill-color: #0071e3 !important;
+  color: #0071e3 !important;
 }
 
 html.dark #about h2,
@@ -239,10 +241,14 @@ html.dark #recommendations h2,
 html.dark #blog h2,
 html.dark #contact h2,
 html.dark #certifications h2,
-html.dark #debug-runner-section h2 {
-  background: linear-gradient(135deg, #58a6ff, #79c0ff) !important;
-  background-clip: text !important;
-  -webkit-text-fill-color: transparent !important;
+html.dark #debug-runner-section h2,
+html.dark #currently-section h2 {
+  background: none !important;
+  background-image: none !important;
+  background-clip: border-box !important;
+  -webkit-background-clip: border-box !important;
+  -webkit-text-fill-color: #0a84ff !important;
+  color: #0a84ff !important;
 }
 
 /* 3. Section Backgrounds - SOLID WHITE/BLACK */
@@ -906,8 +912,9 @@ html.dark .schedule-text {
   /* Solid White - Matching Contact Card */
   border-radius: 16px !important;
 
-  /* Match Contact Card Radius */
-  overflow: hidden;
+  /* Natural height — calendar, reminders, Calendly fully visible */
+  overflow: visible;
+  max-height: none;
   border: 1px solid rgb(0 0 0 / 10%) !important;
 
   /* Match Contact Card Border */
@@ -2000,6 +2007,36 @@ html.dark .apple-tldr:hover {
   min-height: auto !important;
 }
 
+/* Desktop: home fills first viewport without clipping content */
+@media (min-width: 1025px) {
+  #home.hero-section,
+  #home.hero-section.home-hero,
+  section#home.hero-section.home-hero {
+    min-height: calc(100svh - 4.25rem) !important;
+    max-height: none !important;
+    height: auto !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-sizing: border-box !important;
+    overflow: visible !important;
+  }
+
+  #home.hero-section .container-fluid {
+    flex: 0 1 auto;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+}
+
 .hero-section {
   display: flex;
   align-items: center;
@@ -2396,17 +2433,17 @@ section h2 {
   font-size: clamp(2rem, 4.4vw, 3.12rem) !important;
   font-weight: 700 !important;
   letter-spacing: -0.034em !important;
-  margin-bottom: clamp(1.85rem, 4vh, 3rem) !important;
+  margin-bottom: 0.75rem !important;
   text-align: center;
-  color: #1d1d1f !important;
+  color: #0071e3 !important;
   background: none !important;
-  -webkit-text-fill-color: currentcolor !important;
+  -webkit-text-fill-color: #0071e3 !important;
 }
 
 html.dark section h2 {
-  color: #f5f5f7 !important;
+  color: #0a84ff !important;
   background: none !important;
-  -webkit-text-fill-color: currentcolor !important;
+  -webkit-text-fill-color: #0a84ff !important;
 }
 
 /* Specific Section Adjustments for Airier Flow */
@@ -2484,6 +2521,16 @@ p {
   background:
     radial-gradient(760px 420px at 50% -6%, rgba(90, 200, 250, 0.08), transparent 62%),
     linear-gradient(180deg, rgba(255, 255, 255, 0.96) 0%, rgba(255, 255, 255, 1) 100%) !important;
+}
+
+@media (min-width: 1025px) {
+  #home.hero-section.home-hero {
+    min-height: calc(100svh - 4.25rem) !important;
+    max-height: none !important;
+    height: auto !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+  }
 }
 
 html.dark #home.hero-section.home-hero {
@@ -3548,22 +3595,30 @@ html.dark ::-webkit-scrollbar-thumb:hover {
   transform: translateY(-2px) scale(1.02) !important;
 }
 
-/* Secondary Button (View Projects) — blue shine, solid base */
-#home .hero-actions .hero-cta:nth-child(2) {
-  background: linear-gradient(135deg, #0071e3 0%, #0a84ff 100%) !important;
-  color: #ffffff !important;
-  border: 1px solid transparent !important;
+/* Secondary Button (View Projects) — outline, solid white/black base */
+#home .hero-actions .hero-cta:nth-child(2),
+#home .hero-actions .hero-cta-secondary {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
+  color: #0071e3 !important;
+  -webkit-text-fill-color: #0071e3 !important;
+  border: 1px solid rgb(0 113 227 / 35%) !important;
   border-radius: 9999px !important;
   padding: 0.8rem 1.8rem !important;
-  box-shadow: 0 4px 16px rgb(0 113 227 / 28%) !important;
+  box-shadow: none !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
 }
 
-#home .hero-actions .hero-cta:nth-child(2):hover {
-  background: linear-gradient(135deg, #0077ed 0%, #2997ff 100%) !important;
-  border-color: transparent !important;
-  box-shadow: 0 6px 22px rgb(0 113 227 / 36%) !important;
+#home .hero-actions .hero-cta:nth-child(2):hover,
+#home .hero-actions .hero-cta-secondary:hover {
+  background: rgb(0 113 227 / 8%) !important;
+  background-image: none !important;
+  border-color: #0071e3 !important;
+  color: #0071e3 !important;
+  -webkit-text-fill-color: #0071e3 !important;
+  box-shadow: none !important;
   transform: translateY(-2px) scale(1.02) !important;
 }
 
@@ -3573,17 +3628,25 @@ html.dark #home .hero-actions .hero-cta:nth-child(1) {
   box-shadow: 0 4px 12px rgba(0, 113, 227, 0.4) !important;
 }
 
-html.dark #home .hero-actions .hero-cta:nth-child(2) {
-  background: linear-gradient(135deg, #0071e3 0%, #0a84ff 100%) !important;
-  color: #ffffff !important;
-  border: 1px solid transparent !important;
-  box-shadow: 0 4px 16px rgb(10 132 255 / 32%) !important;
+html.dark #home .hero-actions .hero-cta:nth-child(2),
+html.dark #home .hero-actions .hero-cta-secondary {
+  background: #000000 !important;
+  background-color: #000000 !important;
+  background-image: none !important;
+  color: #0a84ff !important;
+  -webkit-text-fill-color: #0a84ff !important;
+  border: 1px solid rgb(10 132 255 / 45%) !important;
+  box-shadow: none !important;
 }
 
-html.dark #home .hero-actions .hero-cta:nth-child(2):hover {
-  background: linear-gradient(135deg, #0077ed 0%, #2997ff 100%) !important;
-  border-color: transparent !important;
-  box-shadow: 0 6px 22px rgb(10 132 255 / 40%) !important;
+html.dark #home .hero-actions .hero-cta:nth-child(2):hover,
+html.dark #home .hero-actions .hero-cta-secondary:hover {
+  background: rgb(10 132 255 / 14%) !important;
+  background-image: none !important;
+  border-color: #0a84ff !important;
+  color: #0a84ff !important;
+  -webkit-text-fill-color: #0a84ff !important;
+  box-shadow: none !important;
 }
 
 /* Premium Frosted Glass Badges */
@@ -3674,8 +3737,7 @@ html.dark #home .portfolio-reach-badge:focus-visible {
    they are easy to audit.
    ================================================================= */
 
-/* 1) Section titles: consistent blue gradient (previously most rendered
-      solid black because the gradient rules were orphaned). */
+/* 1) Section titles: Apple blue like home "Mangesh Raut". */
 main > section:not(#home) > .container > h2,
 main > section:not(#home) > h2,
 #about h2,
@@ -3690,12 +3752,15 @@ main > section:not(#home) > h2,
 #certifications h2,
 #blog h2,
 #contact h2,
-#debug-runner-section h2 {
-  background: linear-gradient(135deg, #0071e3, #2997ff) !important;
-  -webkit-background-clip: text !important;
-  background-clip: text !important;
-  -webkit-text-fill-color: transparent !important;
+#debug-runner-section h2,
+#currently-section h2 {
+  background: none !important;
+  background-image: none !important;
+  -webkit-background-clip: border-box !important;
+  background-clip: border-box !important;
+  -webkit-text-fill-color: #0071e3 !important;
   color: #0071e3 !important;
+  margin-bottom: 0.75rem !important;
 }
 
 html.dark main > section:not(#home) > .container > h2,
@@ -3712,12 +3777,14 @@ html.dark #recommendations h2,
 html.dark #certifications h2,
 html.dark #blog h2,
 html.dark #contact h2,
-html.dark #debug-runner-section h2 {
-  background: linear-gradient(135deg, #58a6ff, #79c0ff) !important;
-  -webkit-background-clip: text !important;
-  background-clip: text !important;
-  -webkit-text-fill-color: transparent !important;
-  color: #58a6ff !important;
+html.dark #debug-runner-section h2,
+html.dark #currently-section h2 {
+  background: none !important;
+  background-image: none !important;
+  -webkit-background-clip: border-box !important;
+  background-clip: border-box !important;
+  -webkit-text-fill-color: #0a84ff !important;
+  color: #0a84ff !important;
 }
 
 /* Screen-reader-only headings must not pick up the gradient treatment. */

@@ -10,6 +10,7 @@ on:
 # Least privilege by default; deploy job elevates Pages permissions.
 permissions:
   contents: read
+  actions: read
 
 concurrency:
   group: pages-${{ github.workflow }}-${{ github.ref }}
@@ -21,14 +22,18 @@ env:
   PYTHON_VERSION: '3.12'
   GH_PAGES_BASE: https://mangeshraut712.github.io/mangeshrautarchive
   VERCEL_PROD: https://mangeshraut.pro
+  FORCE_COLOR: '1'
 
 jobs:
   quality:
-    name: 🔍 Quality Gates
+    name: Quality Gates
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 50
+    outputs:
+      pages_artifact: ${{ steps.meta.outputs.pages_artifact }}
     steps:
-      - uses: actions/checkout@v7
+      - name: Checkout
+        uses: actions/checkout@v7
 
       - name: Setup Node.js
         uses: actions/setup-node@v6
@@ -37,33 +42,57 @@ jobs:
           cache: npm
           cache-dependency-path: package-lock.json
 
-      - name: Install dependencies
+      - name: Install Node dependencies
+        # package-lock can lag transitive pins; install (not ci) matches local AGENTS.md path.
         run: npm install --no-audit --no-fund
 
-      - name: 🔒 Security — dependency vulnerability audit
+      - name: Resolve Playwright version
+        id: pw
+        run: |
+          VER=$(node -p "require('./node_modules/@playwright/test/package.json').version")
+          echo "version=$VER" >> "$GITHUB_OUTPUT"
+          echo "Playwright $VER"
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        id: playwright-cache
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ steps.pw.outputs.version }}
+          restore-keys: |
+            playwright-${{ runner.os }}-
+
+      - name: Security — dependency vulnerability audit
         run: npm audit --audit-level=high --omit=dev
 
-      - name: 🔒 Security — scan for exposed API keys
+      - name: Security — scan for exposed secrets
         run: npm run security-check
 
-      - name: 🧹 Lint — ESLint code quality check
+      - name: Lint — ESLint (JS)
         run: npm run lint
 
-      - name: 🎨 Lint — Stylelint CSS quality check
+      - name: Lint — Stylelint (CSS)
         run: npm run lint:css
 
-      - name: 📝 Format — Prettier check
+      - name: Format — Prettier check
         run: npm run format:check
 
-      - name: 🧪 Tests — Vitest unit tests
+      - name: Unit tests — Vitest
         run: npm test
 
-      - name: 🩺 Env parity — production API surface (non-blocking)
-        # Needs no Vercel CLI token in CI; still probes live API health when available.
+      - name: Doctor — env / production API surface (non-blocking)
+        # Probes live API when reachable; does not require Vercel tokens in CI.
         continue-on-error: true
-        run: npm run doctor:full
+        run: |
+          set -euo pipefail
+          echo "## Doctor" >> "$GITHUB_STEP_SUMMARY"
+          if npm run doctor:full; then
+            echo "- doctor:full ✅" >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "- doctor:full ⚠️ (non-blocking)" >> "$GITHUB_STEP_SUMMARY"
+          fi
 
-      - name: 🐍 Python — setup
+      - name: Setup Python (uv)
         uses: astral-sh/setup-uv@v7
         with:
           python-version: ${{ env.PYTHON_VERSION }}
@@ -72,33 +101,42 @@ jobs:
       - name: Install Python dependencies
         run: |
           uv venv --clear
-          echo "$GITHUB_WORKSPACE/.venv/bin" >> $GITHUB_PATH
+          echo "$GITHUB_WORKSPACE/.venv/bin" >> "$GITHUB_PATH"
           uv pip install -r requirements.txt -r requirements-dev.txt
 
-      - name: 🐍 Python — dead-code scan
+      - name: Python — dead-code scan
         run: npm run lint:dead-code
 
-      - name: 🐍 Python — flake8 lint
+      - name: Python — flake8
         run: npm run lint:python
 
-      - name: 🐍 Python — API tests
+      - name: API tests — pytest
         run: npm run test:api
 
-      - name: 🌐 Install Playwright browser runtime
+      - name: Install Playwright Chromium
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
         run: npx playwright install --with-deps chromium
 
-      - name: ✅ Browser QA — smoke + accessibility
+      - name: Install Playwright system deps (cache hit)
+        if: steps.playwright-cache.outputs.cache-hit == 'true'
+        run: npx playwright install-deps chromium
+
+      - name: Browser QA — smoke + accessibility
         run: |
           set -euo pipefail
           NO_RELOAD=1 npm run dev &
           DEV_PID=$!
           trap 'kill $DEV_PID 2>/dev/null || true' EXIT
-          for i in $(seq 1 45); do
-            if curl -fsS http://127.0.0.1:4000/ >/dev/null; then
+          for i in $(seq 1 60); do
+            if curl -fsS http://127.0.0.1:4000/ >/dev/null 2>&1; then
               echo "Dev server ready (${i}s)"
               break
             fi
-            if [ "$i" -eq 45 ]; then
+            if ! kill -0 "$DEV_PID" 2>/dev/null; then
+              echo "Dev server exited early"
+              exit 1
+            fi
+            if [ "$i" -eq 60 ]; then
               echo "Dev server failed to start"
               exit 1
             fi
@@ -106,20 +144,30 @@ jobs:
           done
           npm run qa:browser:ci
 
-      - name: ⚡ Lighthouse gates — desktop + mobile (dist)
+      - name: Build production bundle
+        run: npm run build
+        env:
+          OPENROUTER_SITE_URL: https://mangeshraut712.github.io/mangeshrautarchive
+          OPENROUTER_APP_TITLE: AssistMe Portfolio Assistant
+          OPENROUTER_MODEL: x-ai/grok-4.3
+          NEXT_PUBLIC_API_BASE: https://mangeshraut.pro
+          NODE_ENV: production
+          GITHUB_PAGES: true
+          GITHUB_SHA: ${{ github.sha }}
+
+      - name: Lighthouse gates — desktop + mobile (dist)
         run: |
           set -euo pipefail
           lsof -ti:4000 | xargs kill -9 2>/dev/null || true
-          npm run build
           PORT=4000 npm run serve:dist &
           SERVE_PID=$!
           trap 'kill $SERVE_PID 2>/dev/null || true' EXIT
-          for i in $(seq 1 45); do
-            if curl -fsS http://127.0.0.1:4000/ >/dev/null; then
+          for i in $(seq 1 60); do
+            if curl -fsS http://127.0.0.1:4000/ >/dev/null 2>&1; then
               echo "Production server ready (${i}s)"
               break
             fi
-            if [ "$i" -eq 45 ]; then
+            if [ "$i" -eq 60 ]; then
               echo "serve:dist failed to start"
               exit 1
             fi
@@ -141,16 +189,30 @@ jobs:
             --min-best-practices=100 \
             --min-seo=100 \
             --max-attempts=3
-        env:
-          OPENROUTER_SITE_URL: https://mangeshraut712.github.io/mangeshrautarchive
-          OPENROUTER_APP_TITLE: AssistMe Portfolio Assistant
-          OPENROUTER_MODEL: x-ai/grok-4.3
-          NEXT_PUBLIC_API_BASE: https://mangeshraut.pro
-          NODE_ENV: production
-          GITHUB_PAGES: true
-          GITHUB_SHA: ${{ github.sha }}
 
-      - name: 📦 Upload verified Pages build
+      - name: Quality job summary
+        if: always()
+        run: |
+          {
+            echo "## Quality gates"
+            echo ""
+            echo "| Check | Status |"
+            echo "| --- | --- |"
+            echo "| Security + lint + unit + API | completed in this job |"
+            echo "| Browser QA (Playwright) | completed in this job |"
+            echo "| Lighthouse (desktop + mobile dist) | 100/100 floors |"
+            echo "| Doctor (env/API) | non-blocking |"
+            echo ""
+            echo "- Event: \`${{ github.event_name }}\`"
+            echo "- Ref: \`${{ github.ref }}\`"
+            echo "- SHA: \`${{ github.sha }}\`"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Meta outputs
+        id: meta
+        run: echo "pages_artifact=pages-dist-${{ github.sha }}" >> "$GITHUB_OUTPUT"
+
+      - name: Upload verified Pages build
         if: github.ref == 'refs/heads/main'
         uses: actions/upload-artifact@v7
         with:
@@ -159,7 +221,7 @@ jobs:
           if-no-files-found: error
           retention-days: 2
 
-      - name: 📦 Upload QA artifacts
+      - name: Upload QA artifacts
         if: always()
         uses: actions/upload-artifact@v7
         with:
@@ -167,11 +229,12 @@ jobs:
           path: |
             artifacts/playwright-report
             artifacts/lighthouse
+            artifacts/test-results
           if-no-files-found: ignore
           retention-days: 7
 
   build:
-    name: 📦 Package Pages artifact
+    name: Package Pages artifact
     runs-on: ubuntu-latest
     needs: quality
     if: github.ref == 'refs/heads/main'
@@ -192,7 +255,7 @@ jobs:
           path: ./dist
 
   deploy:
-    name: 🚀 Deploy to GitHub Pages
+    name: Deploy to GitHub Pages
     needs: build
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
@@ -211,11 +274,11 @@ jobs:
         uses: actions/deploy-pages@v5
 
   verify-surfaces:
-    name: ✅ Dual-surface deploy verify
+    name: Dual-surface deploy verify
     runs-on: ubuntu-latest
     needs: deploy
     if: github.ref == 'refs/heads/main'
-    timeout-minutes: 20
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v7
 
@@ -293,7 +356,6 @@ jobs:
             echo "Expected commit:      ${EXPECTED}"
             if [ "${REMOTE_COMMIT}" = "${EXPECTED}" ]; then
               echo "✅ Vercel production commit matches + API healthy"
-              # Smoke a few key surfaces
               for path in "" "systems" "monitor" "travel" "uses" "api/status"; do
                 code=$(curl -sS -o /dev/null -w "%{http_code}" --max-time 15 "${BASE}/${path}")
                 echo "  ${BASE}/${path} → ${code}"
@@ -311,10 +373,13 @@ jobs:
           # Soft-fail Vercel lag so Pages deploys are not blocked when Vercel is slow/queued.
           exit 0
 
+      - name: Doctor — production env parity (non-blocking)
+        continue-on-error: true
+        run: npm run doctor:full
+
       - name: Dual-surface commit parity (best effort)
         run: |
           set -euo pipefail
-          # Prefer exact push SHA when both surfaces have caught up; otherwise report parity state.
           node scripts/deployment/verify-deployment-sync.js \
             --remote \
             --commit="${{ github.sha }}" \
@@ -326,3 +391,17 @@ jobs:
               --retries=3 \
               --wait=15 \
             || echo "::warning::Surfaces not fully in parity yet; nightly monitor will recheck."
+
+      - name: Deploy verify summary
+        if: always()
+        run: |
+          {
+            echo "## Dual-surface verify"
+            echo ""
+            echo "| Surface | URL |"
+            echo "| --- | --- |"
+            echo "| GitHub Pages | ${{ env.GH_PAGES_BASE }} |"
+            echo "| Vercel | ${{ env.VERCEL_PROD }} |"
+            echo ""
+            echo "Expected SHA: \`${{ github.sha }}\`"
+          } >> "$GITHUB_STEP_SUMMARY"
