@@ -57,7 +57,7 @@ export function renderEngineeringTeaser(root = document.getElementById('engineer
       <div class="engineering-quality-overview" aria-label="Engineering evidence highlights">
         <div class="engineering-overview-head">
           <div class="engineering-overview-title-wrap">
-            <p class="engineering-eyebrow">Engineering Evidence</p>
+            <p class="engineering-eyebrow">Engineering</p>
             <p class="engineering-overview-lead">${escapeHtml(heroLead)}</p>
           </div>
         </div>

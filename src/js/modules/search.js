@@ -302,7 +302,7 @@ class PortfolioSearch {
         tags: 'email phone social linkedin github',
       },
       {
-        title: 'Travel Atlas',
+        title: 'Travel',
         description: 'Open the interactive travel timeline, route playback, and location gallery',
         icon: 'fa-route',
         url: 'travel.html',
@@ -310,7 +310,7 @@ class PortfolioSearch {
         tags: 'travel map atlas journey timeline route flight road gallery mapbox',
       },
       {
-        title: 'Debug Runner',
+        title: 'Game — Debug Runner',
         description: 'Interactive debug runner game section',
         icon: 'fa-gamepad',
         sectionId: 'debug-runner-section',
@@ -318,23 +318,16 @@ class PortfolioSearch {
         tags: 'game interactive debug runner',
       },
       {
-        title: 'Engineering Evidence (section)',
-        description: 'Architecture, benchmarks, case studies, and portfolio proof on the homepage',
+        title: 'Engineering',
+        description:
+          'Architecture, benchmarks, case studies — open full notebook from the homepage section',
         icon: 'fa-diagram-project',
         sectionId: 'engineering',
         type: 'Portfolio',
-        tags: 'engineering architecture benchmarks evidence building learned',
+        tags: 'engineering architecture benchmarks evidence building systems notebook',
       },
       {
-        title: 'Evidence Notebook',
-        description: 'Full architecture diagrams, system design, and case studies',
-        icon: 'fa-book-open',
-        url: 'systems.html',
-        type: 'Page',
-        tags: 'systems architecture design benchmarks notebook evidence',
-      },
-      {
-        title: 'System Monitor',
+        title: 'Monitor',
         description: 'Open the system monitor page',
         icon: 'fa-heart-pulse',
         url: 'monitor.html',

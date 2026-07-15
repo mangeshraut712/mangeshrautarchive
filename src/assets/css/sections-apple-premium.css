@@ -887,7 +887,11 @@ html.dark #debug-runner-section {
 footer {
   background: #ffffff !important;
   border-top: 1px solid var(--apple-gray-200);
-  padding: 0.75rem 0 0.625rem !important;
+  overflow: hidden;
+  max-width: 100%;
+  padding: clamp(2rem, 4vw, 3rem) 1.25rem clamp(2.5rem, 5vw, 3.5rem);
+  text-align: center;
+  box-sizing: border-box;
 }
 
 html.dark footer {
@@ -895,15 +899,45 @@ html.dark footer {
   border-color: var(--apple-dark-border);
 }
 
+footer .footer-wrapper {
+  max-width: 720px;
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+footer .footer-social-row {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+footer .footer-info-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  max-width: 36rem;
+  padding-inline: 0.5rem;
+}
+
 footer .footer-copy {
   color: var(--apple-gray-400);
   font-size: 0.875rem;
+  margin: 0;
+  line-height: 1.4;
+  text-wrap: balance;
 }
 
 footer .footer-tagline {
   color: var(--apple-gray-400);
   font-size: 0.75rem;
   font-style: italic;
+  margin: 0;
+  line-height: 1.4;
+  text-wrap: balance;
 }
 
 html.dark footer .footer-copy {

@@ -15,10 +15,76 @@
   color: var(--text-secondary);
 }
 
+#debug-runner-section {
+  scroll-margin-top: 6rem;
+  padding-block: clamp(3rem, 6vw, 5rem);
+  background: #fff;
+  overflow: hidden;
+}
+
+html.dark #debug-runner-section {
+  background: #000;
+}
+
+#debug-runner-section .container {
+  max-width: min(980px, calc(100% - 3rem));
+  margin-inline: auto;
+}
+
 #debug-runner-section .section-subtitle {
-  margin: -1.25rem auto 0 !important;
+  margin: 0.35rem auto 1.5rem !important;
   font-size: 0.95rem;
   line-height: 1.45;
+  color: #6e6e73;
+}
+
+html.dark #debug-runner-section .section-subtitle {
+  color: #a1a1a6;
+}
+
+/* Collapsed disclosure — clean Apple control */
+.debug-runner-disclosure {
+  border: 1px solid var(--card-border-rest, rgb(0 0 0 / 8%));
+  border-radius: 18px;
+  background: #fff;
+  overflow: hidden;
+  max-width: 100%;
+}
+
+html.dark .debug-runner-disclosure {
+  background: #000;
+  border-color: rgb(255 255 255 / 12%);
+}
+
+.debug-runner-disclosure > summary {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  min-height: 3.25rem;
+  padding: 0.9rem 1.25rem;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #0071e3;
+  user-select: none;
+}
+
+.debug-runner-disclosure > summary::-webkit-details-marker {
+  display: none;
+}
+
+html.dark .debug-runner-disclosure > summary {
+  color: #2997ff;
+}
+
+.debug-runner-disclosure[open] > summary {
+  border-bottom: 1px solid var(--card-border-rest, rgb(0 0 0 / 8%));
+}
+
+.debug-runner-disclosure[open] .game-stage {
+  padding: 1rem 1rem 1.25rem;
 }
 
 /* ═══════════════════════════════════════════════════════════

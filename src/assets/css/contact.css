@@ -9,20 +9,31 @@
 
 /* Contact Grid Layout */
 
+#contact {
+  scroll-margin-top: 6rem;
+}
+
+#contact .container {
+  max-width: min(1100px, calc(100% - 3rem));
+  margin-inline: auto;
+}
+
 .contact-grid {
   display: grid;
   grid-template-columns: 1fr;
   gap: 1.5rem !important;
   margin-top: 1.5rem;
   width: 100%;
+  max-width: 100%;
+  min-width: 0;
 }
 
 /* Desktop: Two columns side by side */
 
 @media (min-width: 1024px) {
   .contact-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 2rem !important;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 1.75rem !important;
     align-items: start;
     display: grid !important;
   }
