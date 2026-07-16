@@ -149,15 +149,22 @@ def normalize_openrouter_model(model: str) -> str:
     requested = OPENROUTER_MODEL_ALIASES.get(requested, requested)
     if requested in ROUTER_MODEL_IDS or requested.startswith("openrouter/"):
         return requested
+    # Preserve free-tier model slugs (e.g. google/gemma-*:free)
+    if requested.endswith(":free"):
+        return requested
     if requested in SUPPORTED_OPENROUTER_MODELS:
+        return requested
+    if requested in FREE_OPENROUTER_FALLBACKS:
         return requested
     return FALLBACK_OPENROUTER_MODEL
 
 
 def get_default_model() -> str:
-    """Env default, falling back to Grok then Auto Router."""
+    """Env default, falling back to Grok then free/Auto Router."""
     raw = get_openrouter_model_raw()
-    if raw in ROUTER_MODEL_IDS or raw.startswith("openrouter/"):
+    if raw in ROUTER_MODEL_IDS or raw.startswith("openrouter/") or raw.endswith(":free"):
+        return raw
+    if raw in FREE_OPENROUTER_FALLBACKS:
         return raw
     normalized = normalize_openrouter_model(raw)
     if normalized != FALLBACK_OPENROUTER_MODEL or raw == FALLBACK_OPENROUTER_MODEL:
