@@ -40,16 +40,17 @@ body {
     --mobile-fab-size: 3rem;
     --mobile-fab-gap: 0.625rem;
     --mobile-edge-inset: max(1rem, env(safe-area-inset-right));
-    --mobile-bottom-inset: calc(env(safe-area-inset-bottom, 0px) + 0.875rem);
-    --mobile-a11y-toolbar-lift: 3.25rem;
-    --mobile-content-chrome-pad: 7.5rem;
+    --mobile-bottom-inset: calc(env(safe-area-inset-bottom, 0px) + 0.75rem);
+    --mobile-a11y-toolbar-lift: 3.5rem;
+    /* Single a11y FAB + share FAB — avoid huge footer dead space */
+    --mobile-content-chrome-pad: 5.25rem;
     --mobile-anchor-offset: calc(5.75rem + env(safe-area-inset-top, 0px));
     --mobile-gutter: max(1rem, env(safe-area-inset-left, 0px));
     --mobile-card-radius: 18px;
     --mobile-type-floor: 0.75rem;
   }
 
-  /* Accessibility toolbar — above Safari home indicator, clear of page edge */
+  /* Accessibility FAB dock — left bottom */
   .a11y-toolbar {
     left: max(1rem, env(safe-area-inset-left)) !important;
     right: auto !important;
@@ -57,7 +58,11 @@ body {
     top: auto !important;
     transform: none !important;
     z-index: 9998 !important;
-    max-width: calc(100vw - 2rem - env(safe-area-inset-left) - env(safe-area-inset-right));
+    max-width: none !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
   }
 
   body.monitor-page .a11y-toolbar,
@@ -65,8 +70,27 @@ body {
     bottom: calc(env(safe-area-inset-bottom, 0px) + 0.625rem) !important;
   }
 
+  #website-share-toggle.website-share-fab,
+  .website-share-fab {
+    left: max(1rem, env(safe-area-inset-left)) !important;
+    bottom: calc(
+      var(--mobile-bottom-inset) + var(--mobile-fab-size) + var(--mobile-fab-gap)
+    ) !important;
+    width: var(--mobile-fab-size) !important;
+    height: var(--mobile-fab-size) !important;
+    min-width: var(--mobile-fab-size) !important;
+    min-height: var(--mobile-fab-size) !important;
+  }
+
+  .a11y-toolbar__main {
+    width: var(--mobile-fab-size) !important;
+    height: var(--mobile-fab-size) !important;
+    min-width: var(--mobile-fab-size) !important;
+    min-height: var(--mobile-fab-size) !important;
+  }
+
   .a11y-glass-popover {
-    bottom: calc(var(--mobile-bottom-inset) + var(--mobile-a11y-toolbar-lift)) !important;
+    bottom: calc(var(--mobile-bottom-inset) + var(--mobile-a11y-toolbar-lift) + 3.25rem) !important;
     left: max(1rem, env(safe-area-inset-left)) !important;
     right: auto !important;
     top: auto !important;
@@ -103,11 +127,17 @@ body {
     scroll-padding-bottom: calc(var(--mobile-content-chrome-pad) + env(safe-area-inset-bottom));
   }
 
+  /* Body clearance for left FAB stack only — do not pad every section (caused footer void) */
   body.has-a11y-toolbar {
     padding-bottom: calc(var(--mobile-content-chrome-pad) + env(safe-area-inset-bottom)) !important;
   }
 
-  /* Keep readable clearance above bottom floating chrome in key sections */
+  body.has-a11y-toolbar footer {
+    scroll-margin-bottom: calc(var(--mobile-content-chrome-pad) * 0.35);
+    /* Remove stacked section + footer mega-padding */
+    padding-bottom: max(1.5rem, env(safe-area-inset-bottom)) !important;
+  }
+
   body.has-a11y-toolbar #about,
   body.has-a11y-toolbar #skills,
   body.has-a11y-toolbar #experience,
@@ -121,10 +151,8 @@ body {
   body.has-a11y-toolbar #debug-runner-section,
   body.has-a11y-toolbar #contact,
   body.has-a11y-toolbar #engineering,
-  body.has-a11y-toolbar #projects,
-  body.has-a11y-toolbar footer {
-    scroll-margin-bottom: calc(var(--mobile-content-chrome-pad) + env(safe-area-inset-bottom));
-    padding-bottom: calc(var(--mobile-content-chrome-pad) + env(safe-area-inset-bottom)) !important;
+  body.has-a11y-toolbar #projects {
+    scroll-margin-bottom: 1.25rem;
   }
 
   body.has-a11y-toolbar .systems-shell,
@@ -132,7 +160,7 @@ body {
   body.has-a11y-toolbar .travel-sidebar,
   body.has-a11y-toolbar .uses-section,
   body.has-a11y-toolbar .uses-control-center {
-    padding-bottom: calc(var(--mobile-content-chrome-pad) + env(safe-area-inset-bottom)) !important;
+    padding-bottom: max(1.5rem, env(safe-area-inset-bottom)) !important;
   }
 
   #home,

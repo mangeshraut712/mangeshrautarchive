@@ -144,13 +144,14 @@ def build_model_fallback_chain(primary_model: str) -> List[str]:
             chain.append(normalized)
 
     add(primary_model)
-    # Prefer free router immediately after the primary so credit exhaustion recovers fast.
+    # Prefer free router immediately after the primary so credit exhaustion / Grok outages recover fast.
     add(FREE_OPENROUTER_MODEL)
+    for free_model in FREE_OPENROUTER_FALLBACKS:
+        add(free_model)
+    # Paid spares after free path so Vercel can stay online without credits.
     if primary_model != PRIMARY_MODEL:
         add(PRIMARY_MODEL)
     if primary_model != AUTO_ROUTER_MODEL:
         add(AUTO_ROUTER_MODEL)
     add(FALLBACK_OPENROUTER_MODEL)
-    for free_model in FREE_OPENROUTER_FALLBACKS:
-        add(free_model)
     return chain

@@ -185,9 +185,11 @@ export class AccessibilityEnhancer {
         if (link.href === '#a11y-toolbar') {
           const toolbar =
             document.getElementById('a11y-toolbar') || document.querySelector('.a11y-toolbar');
-          const firstBtn = toolbar?.querySelector('button');
-          if (firstBtn) {
-            firstBtn.focus();
+          const mainBtn =
+            toolbar?.querySelector('.a11y-toolbar__main') || toolbar?.querySelector('button');
+          if (mainBtn) {
+            this.setAccessibilityMenuOpen(true);
+            mainBtn.focus();
             toolbar?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
             this.announce('Navigated to accessibility tools');
           }
@@ -307,9 +309,17 @@ export class AccessibilityEnhancer {
     if (glassPopover) {
       this.toggleLiquidGlassPopover();
       document
-        .querySelector('.a11y-toolbar button[aria-label="Liquid Glass transparency"]')
+        .querySelector('.a11y-toolbar__panel button[aria-label="Liquid Glass transparency"]')
         ?.focus();
       this.announce('Liquid Glass settings closed');
+      return;
+    }
+
+    const a11yOpen = document.querySelector('.a11y-toolbar.is-open');
+    if (a11yOpen) {
+      this.setAccessibilityMenuOpen(false);
+      document.querySelector('.a11y-toolbar__main')?.focus();
+      this.announce('Accessibility options closed');
       return;
     }
 
@@ -788,10 +798,11 @@ export class AccessibilityEnhancer {
     const observer = new MutationObserver(mutations => {
       mutations.forEach(mutation => {
         mutation.addedNodes.forEach(node => {
-          if (
-            node.nodeType === 1 &&
-            (node.matches('[role="dialog"]') || node.classList?.contains('modal'))
-          ) {
+          if (node.nodeType !== 1) return;
+          // Shortcuts dialog traps focus on its panel explicitly — skip the outer shell
+          // so Tab handlers are not attached twice.
+          if (node.classList?.contains('shortcuts-modal')) return;
+          if (node.matches('[role="dialog"]') || node.classList?.contains('modal')) {
             this.trapFocus(node);
           }
         });
@@ -911,14 +922,18 @@ export class AccessibilityEnhancer {
 
   syncReduceMotionButton() {
     const active = document.documentElement.classList.contains('reduce-motion');
-    const btn = document.querySelector('.a11y-toolbar button[aria-label="Toggle reduce motion"]');
+    const btn = document.querySelector(
+      '.a11y-toolbar__panel button[aria-label="Toggle reduce motion"], .a11y-toolbar button[aria-label="Toggle reduce motion"]'
+    );
     btn?.setAttribute('aria-pressed', active ? 'true' : 'false');
     btn?.classList.toggle('is-active', active);
   }
 
   syncHighContrastButton() {
     const active = document.documentElement.classList.contains('high-contrast');
-    const btn = document.querySelector('.a11y-toolbar button[aria-label="Toggle high contrast"]');
+    const btn = document.querySelector(
+      '.a11y-toolbar__panel button[aria-label="Toggle high contrast"], .a11y-toolbar button[aria-label="Toggle high contrast"]'
+    );
     btn?.setAttribute('aria-pressed', active ? 'true' : 'false');
     btn?.classList.toggle('is-active', active);
   }
@@ -929,7 +944,7 @@ export class AccessibilityEnhancer {
   }
 
   /**
-   * Create accessibility toolbar
+   * Create accessibility FAB + expandable tool panel (share lives separately).
    */
   createAccessibilityToolbar() {
     let toolbar = document.querySelector('.a11y-toolbar');
@@ -941,19 +956,99 @@ export class AccessibilityEnhancer {
       style.textContent = `
         .a11y-toolbar {
           position: fixed;
-          left: 20px;
-          bottom: max(24px, env(safe-area-inset-bottom));
+          left: max(1rem, env(safe-area-inset-left, 0px));
+          bottom: max(1.25rem, env(safe-area-inset-bottom, 0px));
           z-index: 9997;
           display: flex;
-          flex-direction: row;
-          align-items: center;
-          gap: 8px;
-          padding: 8px;
-          border-radius: 999px;
+          flex-direction: column-reverse;
+          align-items: flex-start;
+          gap: 0.5rem;
+          padding: 0;
+          border-radius: 0;
+          background: transparent !important;
+          border: none !important;
+          box-shadow: none !important;
           pointer-events: auto;
+          max-width: none;
         }
 
-        .a11y-toolbar button {
+        .a11y-toolbar__main {
+          width: 48px !important;
+          height: 48px !important;
+          min-width: 48px !important;
+          min-height: 48px !important;
+          border-radius: 999px;
+          border: 1px solid rgb(0 0 0 / 10%);
+          background: #ffffff !important;
+          box-shadow: 0 10px 28px rgb(0 0 0 / 14%);
+          color: #1d1d1f;
+          cursor: pointer;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 1.05rem;
+          font-weight: 800;
+          transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease;
+        }
+
+        html.dark .a11y-toolbar__main {
+          background: #1c1c1e !important;
+          border-color: rgb(255 255 255 / 14%);
+          color: #f5f5f7;
+          box-shadow: 0 10px 28px rgb(0 0 0 / 42%);
+        }
+
+        .a11y-toolbar__main:hover {
+          transform: translateY(-2px) scale(1.04);
+        }
+
+        .a11y-toolbar__main:focus-visible {
+          outline: none;
+          box-shadow: 0 0 0 4px rgb(0 113 227 / 28%);
+        }
+
+        .a11y-toolbar__main[aria-expanded='true'] {
+          background: #0071e3 !important;
+          border-color: #0071e3 !important;
+          color: #fff;
+        }
+
+        html.dark .a11y-toolbar__main[aria-expanded='true'] {
+          background: #0a84ff !important;
+          border-color: #0a84ff !important;
+        }
+
+        .a11y-toolbar__panel {
+          display: flex;
+          flex-direction: column;
+          gap: 0.4rem;
+          padding: 0.45rem;
+          border-radius: 18px;
+          background: #ffffff;
+          border: 1px solid rgb(0 0 0 / 10%);
+          box-shadow: 0 14px 36px rgb(0 0 0 / 14%);
+          max-height: 0;
+          opacity: 0;
+          overflow: hidden;
+          pointer-events: none;
+          transform: translateY(8px) scale(0.96);
+          transition: max-height 0.28s ease, opacity 0.22s ease, transform 0.28s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        .a11y-toolbar.is-open .a11y-toolbar__panel {
+          max-height: 22rem;
+          opacity: 1;
+          pointer-events: auto;
+          transform: translateY(0) scale(1);
+        }
+
+        html.dark .a11y-toolbar__panel {
+          background: #000000;
+          border-color: rgb(255 255 255 / 14%);
+          box-shadow: 0 14px 36px rgb(0 0 0 / 45%);
+        }
+
+        .a11y-toolbar__panel button {
           position: relative;
           width: 44px !important;
           height: 44px !important;
@@ -961,6 +1056,9 @@ export class AccessibilityEnhancer {
           min-height: 44px !important;
           padding: 0;
           border-radius: 999px;
+          border: 1px solid rgb(0 0 0 / 8%);
+          background: #f5f5f7;
+          color: #1d1d1f;
           cursor: pointer;
           display: inline-flex;
           align-items: center;
@@ -969,46 +1067,61 @@ export class AccessibilityEnhancer {
           font-weight: 800;
           line-height: 1;
           letter-spacing: -0.01em;
-          transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+          transition: transform 0.2s ease, background 0.2s ease;
         }
 
-        html.reduce-motion .a11y-toolbar button {
+        html.dark .a11y-toolbar__panel button {
+          background: #1c1c1e;
+          border-color: rgb(255 255 255 / 12%);
+          color: #f5f5f7;
+        }
+
+        html.reduce-motion .a11y-toolbar__main,
+        html.reduce-motion .a11y-toolbar__panel,
+        html.reduce-motion .a11y-toolbar__panel button {
           transition: none;
         }
 
-        .a11y-toolbar button:hover {
-          transform: translateY(-2px) scale(1.04);
+        .a11y-toolbar__panel button:hover {
+          transform: scale(1.05);
         }
 
-        .a11y-toolbar button:focus-visible {
+        .a11y-toolbar__panel button:focus-visible {
           outline: none;
-          box-shadow: 0 0 0 4px rgb(0 113 227 / 25%);
+          box-shadow: 0 0 0 3px rgb(0 113 227 / 30%);
         }
 
-        .a11y-toolbar button::after {
+        .a11y-toolbar__panel button::after {
           content: attr(data-label);
           position: absolute;
-          left: 50%;
-          bottom: calc(100% + 10px);
-          transform: translateX(-50%) translateY(4px);
+          left: calc(100% + 10px);
+          top: 50%;
+          transform: translateY(-50%) translateX(-4px);
           opacity: 0;
           pointer-events: none;
           white-space: nowrap;
-          padding: 8px 12px;
+          padding: 7px 11px;
           border-radius: 999px;
           background: rgb(255 255 255 / 96%);
           border: 1px solid rgb(0 0 0 / 8%);
           box-shadow: 0 8px 24px rgb(0 0 0 / 10%);
           color: #1d1d1f;
-          font-size: 0.75rem;
+          font-size: 0.72rem;
           font-weight: 700;
-          transition: opacity 0.2s ease, transform 0.2s ease;
+          transition: opacity 0.18s ease, transform 0.18s ease;
+          z-index: 2;
         }
 
-        .a11y-toolbar button:hover::after,
-        .a11y-toolbar button:focus-visible::after {
+        .a11y-toolbar__panel button:hover::after,
+        .a11y-toolbar__panel button:focus-visible::after {
           opacity: 1;
-          transform: translateX(-50%) translateY(0);
+          transform: translateY(-50%) translateX(0);
+        }
+
+        html.dark .a11y-toolbar__panel button::after {
+          background: rgb(18 18 20 / 96%);
+          border-color: rgb(255 255 255 / 10%);
+          color: #f5f5f7;
         }
 
         .a11y-toolbar-button__icon {
@@ -1025,16 +1138,10 @@ export class AccessibilityEnhancer {
           letter-spacing: -0.02em;
         }
 
-        html.dark .a11y-toolbar button::after {
-          background: rgb(18 18 20 / 96%);
-          border-color: rgb(255 255 255 / 10%);
-          color: #f5f5f7;
-        }
-
         .a11y-glass-popover {
           position: fixed;
           left: max(1rem, env(safe-area-inset-left, 0px));
-          bottom: max(5.5rem, calc(env(safe-area-inset-bottom, 0px) + 4.5rem));
+          bottom: max(6.5rem, calc(env(safe-area-inset-bottom, 0px) + 5.5rem));
           width: min(17.5rem, calc(100vw - 1.5rem));
           padding: 1rem;
           border-radius: 18px;
@@ -1115,20 +1222,50 @@ export class AccessibilityEnhancer {
       toolbar = document.createElement('div');
       toolbar.className = 'a11y-toolbar';
       toolbar.id = 'a11y-toolbar';
-      toolbar.setAttribute('role', 'toolbar');
+      toolbar.setAttribute('role', 'group');
       toolbar.setAttribute('aria-label', 'Accessibility tools');
     } else if (!toolbar.id) {
       toolbar.id = 'a11y-toolbar';
     }
 
-    // Share first and unchanged — do not alter #website-share-toggle markup/behavior.
+    // Migrate legacy flat toolbar: strip share + rebuild as FAB + panel
+    const legacyShare = toolbar.querySelector('#website-share-toggle');
+    if (legacyShare) {
+      legacyShare.remove();
+    }
+
+    let mainBtn = toolbar.querySelector('.a11y-toolbar__main');
+    let panel = toolbar.querySelector('.a11y-toolbar__panel');
+
+    if (!mainBtn) {
+      // Clear old flat buttons if rebuilding
+      if (!panel) {
+        Array.from(toolbar.querySelectorAll(':scope > button')).forEach(btn => {
+          if (!btn.classList.contains('a11y-toolbar__main')) btn.remove();
+        });
+      }
+      mainBtn = document.createElement('button');
+      mainBtn.type = 'button';
+      mainBtn.className = 'a11y-toolbar__main';
+      mainBtn.setAttribute('aria-label', 'Accessibility options');
+      mainBtn.setAttribute('aria-expanded', 'false');
+      mainBtn.setAttribute('aria-controls', 'a11y-toolbar-panel');
+      mainBtn.innerHTML =
+        '<span class="a11y-toolbar-button__icon" aria-hidden="true"><i class="fa-solid fa-universal-access" style="font-size: 1.05rem;"></i></span>';
+      mainBtn.addEventListener('click', () => this.toggleAccessibilityMenu());
+      toolbar.appendChild(mainBtn);
+    }
+
+    if (!panel) {
+      panel = document.createElement('div');
+      panel.className = 'a11y-toolbar__panel';
+      panel.id = 'a11y-toolbar-panel';
+      panel.setAttribute('role', 'toolbar');
+      panel.setAttribute('aria-label', 'Accessibility controls');
+      toolbar.appendChild(panel);
+    }
+
     const buttons = [
-      {
-        id: 'website-share-toggle',
-        icon: '<i class="fa-solid fa-share-nodes" style="font-size: 14px;"></i>',
-        label: 'Share website',
-        action: null,
-      },
       {
         icon: '⌨',
         label: 'Keyboard shortcuts',
@@ -1164,19 +1301,14 @@ export class AccessibilityEnhancer {
     ];
 
     buttons.forEach(btn => {
-      // Check if button already exists in the toolbar by label
-      if (toolbar.querySelector(`button[aria-label="${btn.label}"]`)) {
+      if (panel.querySelector(`button[aria-label="${btn.label}"]`)) {
         return;
       }
 
       const button = document.createElement('button');
-      button.setAttribute('type', 'button');
       button.type = 'button';
       button.setAttribute('aria-label', btn.label);
       button.setAttribute('data-label', btn.label);
-      if (btn.id) {
-        button.id = btn.id;
-      }
       if (btn.label === 'Liquid Glass transparency') {
         button.setAttribute('aria-expanded', 'false');
         button.setAttribute('aria-controls', 'a11y-glass-popover');
@@ -1193,33 +1325,81 @@ export class AccessibilityEnhancer {
       if (btn.action) {
         button.addEventListener('click', btn.action);
       }
-      toolbar.appendChild(button);
+      panel.appendChild(button);
     });
 
     if (!hasExistingToolbar) {
       document.body.appendChild(toolbar);
-      document.body.classList.add('has-a11y-toolbar');
+    }
+    document.body.classList.add('has-a11y-toolbar');
+
+    if (!this._a11yOutsideCloseBound) {
+      this._a11yOutsideCloseBound = event => {
+        if (!toolbar.classList.contains('is-open')) return;
+        if (toolbar.contains(event.target)) return;
+        if (event.target.closest?.('.a11y-glass-popover')) return;
+        this.setAccessibilityMenuOpen(false);
+      };
+      document.addEventListener('click', this._a11yOutsideCloseBound, true);
     }
 
-    this.setupToolbarKeyboardNav(toolbar);
+    this.setupToolbarKeyboardNav(panel);
     this.restoreTextSize();
     this.syncHighContrastButton();
     this.syncReduceMotionButton();
+  }
+
+  setAccessibilityMenuOpen(open) {
+    const toolbar =
+      document.getElementById('a11y-toolbar') || document.querySelector('.a11y-toolbar');
+    const mainBtn = toolbar?.querySelector('.a11y-toolbar__main');
+    if (!toolbar || !mainBtn) return;
+    toolbar.classList.toggle('is-open', open);
+    mainBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    if (!open) {
+      // Close glass sheet when collapsing tools
+      const glassPopover = document.querySelector('.a11y-glass-popover.is-open');
+      if (glassPopover) {
+        this.toggleLiquidGlassPopover();
+      }
+    }
+  }
+
+  toggleAccessibilityMenu() {
+    const toolbar =
+      document.getElementById('a11y-toolbar') || document.querySelector('.a11y-toolbar');
+    const next = !toolbar?.classList.contains('is-open');
+    this.setAccessibilityMenuOpen(next);
+    this.announce(next ? 'Accessibility options opened' : 'Accessibility options closed');
   }
 
   setupToolbarKeyboardNav(toolbar) {
     if (!toolbar || toolbar.dataset.kbNav === 'true') return;
     toolbar.dataset.kbNav = 'true';
     toolbar.addEventListener('keydown', e => {
-      if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(e.key)) return;
+      if (
+        !['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Home', 'End', 'Escape'].includes(
+          e.key
+        )
+      ) {
+        return;
+      }
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        this.setAccessibilityMenuOpen(false);
+        document.querySelector('.a11y-toolbar__main')?.focus();
+        return;
+      }
       const buttons = Array.from(toolbar.querySelectorAll('button'));
       if (!buttons.length) return;
       const index = buttons.indexOf(document.activeElement);
       if (index < 0) return;
       e.preventDefault();
       let next = index;
-      if (e.key === 'ArrowRight') next = (index + 1) % buttons.length;
-      if (e.key === 'ArrowLeft') next = (index - 1 + buttons.length) % buttons.length;
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') next = (index + 1) % buttons.length;
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+        next = (index - 1 + buttons.length) % buttons.length;
+      }
       if (e.key === 'Home') next = 0;
       if (e.key === 'End') next = buttons.length - 1;
       buttons[next]?.focus();

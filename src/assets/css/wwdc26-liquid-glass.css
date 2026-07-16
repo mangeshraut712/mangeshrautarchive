@@ -1165,7 +1165,18 @@ html.dark #chatbot-widget .assistant-message .message-content:hover {
    11. ACCESSIBILITY TOOLBAR — same Liquid Glass material as nav
    ──────────────────────────────────────────────────────────────── */
 
+/* FAB shell stays transparent; material applies to main control + expanded panel */
 .a11y-toolbar {
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.a11y-toolbar__main,
+.a11y-toolbar__panel {
   background: var(--lg-control-surface-light) !important;
   background-color: var(--lg-control-surface-light) !important;
   border: 1px solid color-mix(in srgb, var(--lg-edge-light) 62%, rgb(0 0 0 / 8%) 38%) !important;
@@ -1173,19 +1184,20 @@ html.dark #chatbot-widget .assistant-message .message-content:hover {
   -webkit-backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-control)) !important;
   box-shadow:
     inset 0 1px 0 rgb(255 255 255 / calc(44% + var(--lg-tint) * 36%)),
-    0 10px 36px rgb(0 0 0 / calc(10% + (1 - var(--lg-tint)) * 8%)) !important;
+    0 10px 28px rgb(0 0 0 / calc(10% + (1 - var(--lg-tint)) * 8%)) !important;
 }
 
-html.dark .a11y-toolbar {
+html.dark .a11y-toolbar__main,
+html.dark .a11y-toolbar__panel {
   background: var(--lg-control-surface-dark) !important;
   background-color: var(--lg-control-surface-dark) !important;
   border-color: color-mix(in srgb, var(--lg-edge-dark) 76%, rgb(0 0 0 / 24%) 24%) !important;
   box-shadow:
     inset 0 1px 0 rgb(255 255 255 / calc(5% + var(--lg-tint) * 8%)),
-    0 10px 36px rgb(0 0 0 / 42%) !important;
+    0 10px 28px rgb(0 0 0 / 42%) !important;
 }
 
-.a11y-toolbar button {
+.a11y-toolbar__panel button {
   padding: 0 !important;
   min-width: 44px !important;
   min-height: 44px !important;
@@ -1208,14 +1220,14 @@ html.dark .a11y-toolbar {
     transform 0.2s ease !important;
 }
 
-.a11y-toolbar button:hover,
-.a11y-toolbar button:focus-visible {
+.a11y-toolbar__panel button:hover,
+.a11y-toolbar__panel button:focus-visible {
   border-color: rgb(0 113 227 / 35%) !important;
   color: #0071e3 !important;
   background: #f5f5f7 !important;
 }
 
-html.dark .a11y-toolbar button {
+html.dark .a11y-toolbar__panel button {
   color: #f5f5f7 !important;
   background: #1c1c1e !important;
   background-color: #1c1c1e !important;
@@ -1225,14 +1237,14 @@ html.dark .a11y-toolbar button {
     0 2px 10px rgb(0 0 0 / 28%) !important;
 }
 
-html.dark .a11y-toolbar button:hover,
-html.dark .a11y-toolbar button:focus-visible {
+html.dark .a11y-toolbar__panel button:hover,
+html.dark .a11y-toolbar__panel button:focus-visible {
   border-color: rgb(10 132 255 / 40%) !important;
   color: #0a84ff !important;
   background: #2c2c2e !important;
 }
 
-.a11y-toolbar button.a11y-glass-active {
+.a11y-toolbar__panel button.a11y-glass-active {
   background: linear-gradient(135deg, rgb(10 132 255 / 18%), rgb(94 92 230 / 22%)) !important;
   border-color: rgb(94 92 230 / 32%) !important;
   color: #5e5ce6 !important;
@@ -1241,7 +1253,7 @@ html.dark .a11y-toolbar button:focus-visible {
     0 0 0 1px rgb(94 92 230 / 18%) !important;
 }
 
-html.dark .a11y-toolbar button.a11y-glass-active {
+html.dark .a11y-toolbar__panel button.a11y-glass-active {
   color: #bf5af2 !important;
   box-shadow:
     inset 0 1px 0 rgb(255 255 255 / 10%),

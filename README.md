@@ -226,7 +226,7 @@ cd mangeshrautarchive
 
 # Node 22+ (nvm use / brew node@22 / fnm)
 node -v                                 # must be v22.x–v26.x
-npm install --no-audit --no-fund      # prefer install over npm ci
+npm install --no-audit --no-fund      # matches CI / Vercel (npm ci also works)
 
 # Python 3.12 — venv must be named `venv` for dev-backend auto-detect
 python3 -m venv venv && source venv/bin/activate
@@ -234,7 +234,8 @@ pip install -r requirements.txt -r requirements-dev.txt
 # optional: ln -sfn .venv venv   if you already use a .venv directory
 
 cp .env.example .env                    # OPENROUTER_API_KEY optional
-npm run doctor:stack                    # Node range + no React/Next deps
+npm run doctor                          # Root layout + stack guard (vanilla ESM)
+npm run doctor:stack                    # Node range + full repo doctor
 npm run dev                             # http://127.0.0.1:4000  ·  API :8001
 ```
 
@@ -250,18 +251,18 @@ npm run build && PORT=4174 npm run serve:dist   # production preview
 
 ### Essential commands
 
-| Command                         | Purpose                                    |
-| ------------------------------- | ------------------------------------------ |
-| `npm run check-node`            | Fail if Node is outside `engines`          |
-| `npm run doctor:stack`          | Node + stack guard (no React/Next runtime) |
-| `npm run dev`                   | Frontend + backend                         |
-| `npm run build`                 | Production `dist/`                         |
-| `npm test` / `npm run test:api` | Vitest (50) / pytest (122)                 |
-| `npm run check`                 | ESLint + Stylelint + Prettier + Vitest     |
-| `npm run qa:prod-ready`         | Full pre-deploy matrix                     |
-| `npm run verify:deploy-sync`    | Vercel ↔ Pages parity                      |
-| `npm run clean`                 | Purge dist/artifacts/caches (keeps venvs)  |
-| `npm run security-check`        | Secret scan                                |
+| Command                           | Purpose                                           |
+| --------------------------------- | ------------------------------------------------- |
+| `npm run check-node`              | Fail if Node is outside `engines`                 |
+| `npm run doctor` / `doctor:stack` | Root layout + stack guard (no React/Next runtime) |
+| `npm run dev`                     | Frontend + backend                                |
+| `npm run build`                   | Production `dist/`                                |
+| `npm test` / `npm run test:api`   | Vitest (50) / pytest (122)                        |
+| `npm run check`                   | ESLint + Stylelint + Prettier + Vitest            |
+| `npm run qa:prod-ready`           | Full pre-deploy matrix                            |
+| `npm run verify:deploy-sync`      | Vercel ↔ Pages parity                             |
+| `npm run clean`                   | Purge dist/artifacts/caches (keeps venvs)         |
+| `npm run security-check`          | Secret scan                                       |
 
 ---
 
@@ -324,7 +325,7 @@ mangeshrautarchive/
 │   ├── utils/              # dev servers, check-node, lint runners
 │   └── qa/ · integrations/ · offline/
 ├── tests/unit|api|e2e/     # Vitest · pytest · Playwright
-├── config/                 # doctor · vulture (non-root tool config)
+├── config/                 # vulture.toml (non-root tool config)
 ├── docs/                   # STRUCTURE.md · plans/ · doc index
 ├── .github/workflows/      # deploy.yml · post-deploy-monitoring.yml
 ├── package.json · vercel.json · pyproject.toml · .nvmrc
@@ -368,6 +369,14 @@ Local OpenAPI: `http://127.0.0.1:8001/docs`
 | **Vercel**       | Git `main` · FastAPI + `dist/` · Node 22 · Python serverless                               |
 | **GitHub Pages** | CI artifact after quality gates                                                            |
 | **Cache bust**   | `ASSET_VER` in `scripts/build/asset-version.mjs` (keep in sync with `src/**/*.html` `?v=`) |
+
+**Vercel Ignored Build Step** (optional, dashboard-only): Project → Settings → Git → Ignored Build Step →
+
+```bash
+bash scripts/deployment/vercel-ignore-build.sh
+```
+
+Skips Dependabot commits and messages containing `[skip ci]`, `[ci skip]`, or `[skip vercel]` (exit 0 = cancel build).
 
 ```bash
 npm run build

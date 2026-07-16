@@ -37,59 +37,34 @@ html.dark {
   border-radius: 4px;
 }
 
-/* Accessibility toolbar — solid card, WCAG 2.2 44×44px targets + active states */
+/* Accessibility FAB + panel — solid targets, share is a separate control */
 .a11y-toolbar {
-  flex-wrap: wrap;
-  max-width: calc(100vw - 1.5rem);
-  background: #ffffff !important;
-  background-color: #ffffff !important;
-  border: 1px solid rgb(0 0 0 / 10%) !important;
-  border-radius: 999px !important;
-  box-shadow: 0 10px 36px rgb(0 0 0 / 12%) !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
 }
 
-html.dark .a11y-toolbar {
-  background: #000000 !important;
-  background-color: #000000 !important;
-  border-color: rgb(255 255 255 / 14%) !important;
-  box-shadow: 0 10px 36px rgb(0 0 0 / 42%) !important;
-}
-
-.a11y-toolbar button {
+.a11y-toolbar__panel button {
   width: 44px !important;
   height: 44px !important;
   min-width: 44px !important;
   min-height: 44px !important;
 }
 
-.a11y-toolbar button.is-active,
-.a11y-toolbar button[aria-pressed='true'],
-.a11y-toolbar button.a11y-glass-active {
+.a11y-toolbar__panel button.is-active,
+.a11y-toolbar__panel button[aria-pressed='true'],
+.a11y-toolbar__panel button.a11y-glass-active {
   box-shadow: 0 0 0 2px rgb(0 113 227 / 35%);
-  background: rgb(0 113 227 / 10%) !important;
+  background: rgb(0 113 227 / 12%) !important;
 }
 
-html.dark .a11y-toolbar button.is-active,
-html.dark .a11y-toolbar button[aria-pressed='true'],
-html.dark .a11y-toolbar button.a11y-glass-active {
+html.dark .a11y-toolbar__panel button.is-active,
+html.dark .a11y-toolbar__panel button[aria-pressed='true'],
+html.dark .a11y-toolbar__panel button.a11y-glass-active {
   box-shadow: 0 0 0 2px rgb(10 132 255 / 45%);
-  background: rgb(10 132 255 / 14%) !important;
-}
-
-@media (width <= 480px) {
-  .a11y-toolbar {
-    left: max(0.5rem, env(safe-area-inset-left)) !important;
-    right: auto !important;
-    gap: 6px !important;
-    padding: 6px !important;
-  }
-
-  .a11y-toolbar button {
-    width: 44px !important;
-    height: 44px !important;
-  }
+  background: rgb(10 132 255 / 16%) !important;
 }
 
 /* Prefer reduced motion site-wide when class is set */

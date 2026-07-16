@@ -61,7 +61,8 @@
 # Prerequisites
 node -v                     # must be ≥22 (see .nvmrc); Node 18 breaks Stylelint 17 / Vitest 4
 npm run check-node          # fails fast if Node is out of range
-npm run doctor:stack        # Node + no React/Next/Vue runtime deps
+npm run doctor              # Root layout + stack guard (vanilla ESM + FastAPI)
+npm run doctor:stack        # Node + doctor (no React/Next/Vue runtime deps)
 
 # Development
 npm run dev                 # Start frontend (port 4000) + backend (port 8001) concurrently
@@ -160,7 +161,7 @@ mangeshrautarchive/
 │   ├── unit/               # Vitest (tests/unit/**/*.test.js)
 │   ├── api/                # pytest
 │   └── e2e/                # Playwright (+ helpers/site.js)
-├── config/                 # doctor.config.js · vulture.toml
+├── config/                 # vulture.toml (non-root tool config)
 ├── docs/                   # STRUCTURE.md · plans/ · doc index
 ├── dist/                   # Build output (git-ignored)
 ├── vercel.json · package.json · playwright/vitest/eslint configs
@@ -235,7 +236,7 @@ Durable, non-obvious notes for running/testing this repo in the Cursor Cloud VM.
 
 ### Node install
 
-- Use `npm install`, not `npm ci`. The committed `package-lock.json` is slightly out of sync (a transitive `react` entry is missing), so `npm ci` aborts. `npm install` resolves it. This is the documented install path (README).
+- Prefer `npm install --no-audit --no-fund` (matches CI / Vercel). `npm ci` also works after the React Doctor / lockfile cleanup; use it when you want a clean install from the lockfile only.
 
 ### Running locally / no API key needed
 

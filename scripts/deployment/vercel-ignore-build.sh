@@ -1,26 +1,37 @@
 #!/bin/bash
+# Vercel Ignored Build Step — cancel wasteful builds (exit 0 = skip, 1 = build).
+#
+# Wire in the Vercel dashboard (Project → Settings → Git → Ignored Build Step):
+#   bash scripts/deployment/vercel-ignore-build.sh
+# Docs: https://vercel.com/docs/project-configuration/git-settings#ignored-build-step
+#
+# Exit codes follow Vercel’s convention: 0 cancels the build, non-zero proceeds.
 
-# Vercel Ignored Build Step Script
-# Determines whether Vercel should build the current commit.
-# Exits with 0 to cancel/skip the build, or 1 to proceed with the build.
+set -euo pipefail
 
-echo "🔍 Vercel build filter checks starting..."
-echo "👤 Author: $VERCEL_GIT_COMMIT_AUTHOR_LOGIN"
-echo "🌿 Branch: $VERCEL_GIT_COMMIT_REF"
-echo "📝 Message: $VERCEL_GIT_COMMIT_MESSAGE"
+echo "Vercel build filter checks starting..."
+echo "Author: ${VERCEL_GIT_COMMIT_AUTHOR_LOGIN:-}"
+echo "Branch: ${VERCEL_GIT_COMMIT_REF:-}"
+echo "Message: ${VERCEL_GIT_COMMIT_MESSAGE:-}"
 
-# 1. Skip Dependabot builds
-if [[ "$VERCEL_GIT_COMMIT_AUTHOR_LOGIN" == "dependabot[bot]" ]] || [[ "$VERCEL_GIT_COMMIT_AUTHOR_LOGIN" == "dependabot" ]]; then
-  echo "✅ Ignored: Commit is from Dependabot. Skipping build to conserve team hours."
+# 1. Skip Dependabot builds (saves team build minutes)
+author="${VERCEL_GIT_COMMIT_AUTHOR_LOGIN:-}"
+if [[ "$author" == "dependabot[bot]" || "$author" == "dependabot" ]]; then
+  echo "Ignored: Dependabot commit. Skipping build."
   exit 0
 fi
 
-# 2. Skip builds with [skip ci], [ci skip], or [skip vercel] in the commit message
-if [[ "$VERCEL_GIT_COMMIT_MESSAGE" =~ "\[skip ci\]" ]] || [[ "$VERCEL_GIT_COMMIT_MESSAGE" =~ "\[ci skip\]" ]] || [[ "$VERCEL_GIT_COMMIT_MESSAGE" =~ "\[skip vercel\]" ]]; then
-  echo "✅ Ignored: Commit message requests skipping build. Skipping build to conserve team hours."
-  exit 0
-fi
+# 2. Skip when the commit message requests it.
+# Use portable substring match — do NOT quote the RHS of [[ =~ ]] (quoted patterns
+# are treated as literals, so "\[skip ci\]" never matches real [skip ci] messages).
+msg="${VERCEL_GIT_COMMIT_MESSAGE:-}"
+case "$msg" in
+  *'[skip ci]'*|*'[ci skip]'*|*'[skip vercel]'*)
+    echo "Ignored: commit message requests skipping build."
+    exit 0
+    ;;
+esac
 
-# 3. Allow all other builds (e.g. normal user commits on production/preview branches)
-echo "🛑 Proceeding with build..."
+# 3. Proceed with all other commits
+echo "Proceeding with build..."
 exit 1

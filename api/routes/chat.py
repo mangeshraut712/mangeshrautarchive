@@ -582,6 +582,7 @@ async def stream_openrouter_response(
     web_tools_enabled: bool = False,
     knowledge_context_enabled: bool = False,
     routing_tier: str = "auto",
+    site_context: str = "",
 ) -> AsyncGenerator[str, None]:
     """Enhanced streaming with robust error handling and retries"""
     logger.info(
@@ -596,8 +597,8 @@ async def stream_openrouter_response(
     if not get_openrouter_api_key():
         logger.warning("⚠️ No API Key found - activating Local Intelligence Fallback")
 
-        # Generate local response
-        fallback = generate_local_response(user_msg)
+        # Generate local response with portfolio site knowledge when available
+        fallback = generate_local_response(user_msg, site_context)
 
         # Simulate typing
         yield json.dumps({"type": "typing", "status": "start"}) + "\n"
@@ -709,44 +710,20 @@ async def stream_openrouter_response(
 
                             data = line[6:]
                             if data == "[DONE]":
-                                elapsed = time.time() - start_time
-                                tokens_estimate = len(full_content) // 4
-                                tokens_per_sec = (
-                                    tokens_estimate / elapsed if elapsed > 0 else 0
-                                )
-
-                                yield (
-                                    json.dumps(
-                                        {
-                                            "type": "done",
-                                            "full_content": full_content,
-                                            "metadata": {
-                                                "model": model,
-                                                "source": "OpenRouter",
-                                                "sourceLabel": (
-                                                    f"OpenRouter + Web ({model.split('/')[-1]})"
-                                                    if web_tools_enabled
-                                                    else f"OpenRouter ({model.split('/')[-1]})"
-                                                ),
-                                                "category": "AI Response",
-                                                "knowledge_context": knowledge_context_enabled,
-                                                "web_tools": web_tools_enabled,
-                                                "web_engine": "parallel" if web_tools_enabled else None,
-                                                "routing_tier": routing_tier,
-                                                "char_count": len(full_content),
-                                                "tokens_estimate": tokens_estimate,
-                                                "elapsed_ms": int(elapsed * 1000),
-                                                "tokens_per_sec": round(tokens_per_sec, 2),
-                                                "chunks": chunk_count,
-                                            },
-                                        }
-                                    )
-                                    + "\n"
-                                )
-                                return
+                                break
 
                             try:
                                 json_data = json.loads(data)
+                                # Surface provider error payloads instead of treating as empty success
+                                err = json_data.get("error")
+                                if err:
+                                    last_upstream_reason = (
+                                        err.get("message")
+                                        if isinstance(err, dict)
+                                        else str(err)
+                                    ) or last_upstream_reason
+                                    full_content = ""
+                                    break
                                 content = (
                                     json_data.get("choices", [{}])[0]
                                     .get("delta", {})
@@ -769,6 +746,53 @@ async def stream_openrouter_response(
                             except BaseException:
                                 continue
 
+                        # Empty / classifier-junk stream → try free-tier fallback models
+                        if not full_content or _is_garbage_chat_answer(full_content, model):
+                            last_upstream_reason = (
+                                f"Empty/garbage stream from {candidate_model}"
+                            )
+                            logger.warning(
+                                "⚠️ Skipping empty/garbage stream from %s",
+                                candidate_model,
+                            )
+                            full_content = ""
+                            chunk_count = 0
+                            continue
+
+                        elapsed = time.time() - start_time
+                        tokens_estimate = len(full_content) // 4
+                        tokens_per_sec = (
+                            tokens_estimate / elapsed if elapsed > 0 else 0
+                        )
+
+                        yield (
+                            json.dumps(
+                                {
+                                    "type": "done",
+                                    "full_content": full_content,
+                                    "metadata": {
+                                        "model": model,
+                                        "source": "OpenRouter",
+                                        "sourceLabel": (
+                                            f"OpenRouter + Web ({model.split('/')[-1]})"
+                                            if web_tools_enabled
+                                            else f"OpenRouter ({model.split('/')[-1]})"
+                                        ),
+                                        "category": "AI Response",
+                                        "knowledge_context": knowledge_context_enabled,
+                                        "web_tools": web_tools_enabled,
+                                        "web_engine": "parallel" if web_tools_enabled else None,
+                                        "routing_tier": routing_tier,
+                                        "char_count": len(full_content),
+                                        "tokens_estimate": tokens_estimate,
+                                        "elapsed_ms": int(elapsed * 1000),
+                                        "tokens_per_sec": round(tokens_per_sec, 2),
+                                        "chunks": chunk_count,
+                                    },
+                                }
+                            )
+                            + "\n"
+                        )
                         return
             except (httpx.RemoteProtocolError, httpx.ReadError, httpx.ReadTimeout) as e:
                 last_upstream_reason = f"OpenRouter timeout ({type(e).__name__})"
@@ -788,7 +812,7 @@ async def stream_openrouter_response(
 
     fallback = build_local_chat_payload(
         user_msg,
-        "",
+        site_context,
         start_time,
         reason=last_upstream_reason,
     )
@@ -1008,6 +1032,7 @@ async def chat_endpoint(request: ChatRequest, req: Request):
                     web_tools_enabled,
                     bool(site_context),
                     routing_tier,
+                    site_context=site_context or "",
                 ):
                     yield chunk
                     try:
@@ -1138,8 +1163,11 @@ async def chat_health():
         "status": status,
         "provider": "openrouter",
         "provider_status": provider_status,
+        "online": bool(api_key) and provider_status in ("online", "configured"),
+        "local_only": not bool(api_key) or provider_status == "local_only",
         "streaming": "ndjson",
         "model": model,
+        "fallback_models": list(build_model_fallback_chain(model))[:6],
         "message": message,
         "timestamp": datetime.now().isoformat(),
     }

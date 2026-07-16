@@ -346,13 +346,60 @@ class AppleIntelligenceChatbot {
     }
 
     const online = typeof navigator !== 'undefined' ? navigator.onLine !== false : true;
-    const canUseServer =
-      online &&
-      (this.chatAPI.canUseServerAI === true ||
-        Boolean(window.APP_CONFIG?.apiBaseUrl) ||
-        /vercel\.app$|mangeshraut\.pro$|localhost|127\.0\.0\.1/.test(window.location.hostname));
+    if (!online) {
+      this.updateStatusIndicator('offline');
+      return;
+    }
 
-    this.updateStatusIndicator(canUseServer ? 'online' : online ? 'local' : 'offline');
+    // Probe chat health so "Connected" means OpenRouter is actually configured/online.
+    // Treat Vercel DEPLOYMENT_DISABLED (402) / network failures as Local Mode so
+    // GitHub Pages still answers from the client portfolio knowledge base.
+    let status = 'local';
+    try {
+      // chat.js exports buildApiUrl; resolve API base the same way as ask()
+      const { buildApiUrl } = await import('../core/chat.js');
+      const healthUrl = buildApiUrl('/api/chat/health');
+      const res = await fetch(healthUrl, {
+        method: 'GET',
+        headers: { Accept: 'application/json' },
+        signal: AbortSignal.timeout(12000),
+      });
+      const bodyText = await res.text();
+      if (res.status === 402 || /DEPLOYMENT_DISABLED|Payment required/i.test(bodyText)) {
+        status = 'local';
+        if (this.chatAPI?.markServerUnavailable) {
+          this.chatAPI.markServerUnavailable();
+        } else if (this.chatAPI) {
+          this.chatAPI.canUseServerAI = false;
+        }
+      } else if (res.ok) {
+        let data = {};
+        try {
+          data = JSON.parse(bodyText);
+        } catch {
+          data = {};
+        }
+        const provider = data?.provider_status || '';
+        if (provider === 'online' || provider === 'configured') {
+          status = 'online';
+          if (this.chatAPI) this.chatAPI.canUseServerAI = true;
+        } else if (provider === 'local_only' || data?.local_only) {
+          status = 'local';
+          if (this.chatAPI) this.chatAPI.canUseServerAI = true;
+        } else {
+          status = 'local';
+          if (this.chatAPI) this.chatAPI.canUseServerAI = true;
+        }
+      } else {
+        status = 'local';
+        if (this.chatAPI) this.chatAPI.canUseServerAI = false;
+      }
+    } catch {
+      status = 'local';
+      if (this.chatAPI) this.chatAPI.canUseServerAI = false;
+    }
+
+    this.updateStatusIndicator(status);
   }
 
   updateStatusIndicator(status) {
@@ -368,6 +415,12 @@ class AppleIntelligenceChatbot {
         offline: 'Offline',
       };
       statusText.textContent = labels[status] || 'Ready';
+      statusText.title =
+        status === 'online'
+          ? 'OpenRouter configured — free models used if Grok is unavailable'
+          : status === 'local'
+            ? 'Answering from portfolio knowledge / local FastAPI'
+            : 'No network — offline portfolio answers only';
     }
   }
 

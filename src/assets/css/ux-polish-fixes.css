@@ -126,11 +126,9 @@ body #website-share-toggle {
   left: max(12px, env(safe-area-inset-left, 0px));
 }
 
-/* Clearance so last content isn’t under FABs (homepage only) */
+/* Clearance so last content isn’t under FABs (homepage only) — single stack, no huge void */
 body:not(.systems-page):not(.monitor-page):not(.uses-page):not(.error-page) main#main-content {
-  padding-bottom: calc(
-    var(--fab-size) * 2 + var(--fab-gap) + env(safe-area-inset-bottom, 0px) + 1.25rem
-  );
+  padding-bottom: calc(var(--fab-size) + var(--fab-gap) + env(safe-area-inset-bottom, 0px) + 1rem);
 }
 
 /* ─── Text clipping in flex/grid ─── */

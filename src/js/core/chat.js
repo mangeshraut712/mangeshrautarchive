@@ -113,7 +113,7 @@ if (typeof window !== 'undefined') {
   }
 }
 
-function buildApiUrl(path) {
+export function buildApiUrl(path) {
   if (!API_BASE) {
     return path;
   }
@@ -443,7 +443,35 @@ class IntelligentAssistant {
           throw rateError;
         }
 
+        // Vercel DEPLOYMENT_DISABLED / account 402, gateway HTML, or OpenRouter unpaid —
+        // drop to offline portfolio answers instead of a hard failure in the UI.
+        if (
+          response.status === 402 ||
+          response.status === 503 ||
+          /DEPLOYMENT_DISABLED|Payment required|Application not found/i.test(errorText)
+        ) {
+          this.markServerUnavailable();
+          return null;
+        }
+
         throw new Error(`Server responded with ${response.status}: ${response.statusText}`);
+      }
+
+      // Non-JSON success bodies (e.g. plain-text Vercel errors with 200 edge cases)
+      const contentType = response.headers.get('content-type') || '';
+      if (
+        !contentType.includes('json') &&
+        !contentType.includes('ndjson') &&
+        !contentType.includes('text/event-stream')
+      ) {
+        const peek = await response
+          .clone()
+          .text()
+          .catch(() => '');
+        if (/DEPLOYMENT_DISABLED|Payment required/i.test(peek)) {
+          this.markServerUnavailable();
+          return null;
+        }
       }
 
       if (isStreaming) {

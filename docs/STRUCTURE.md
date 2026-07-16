@@ -16,7 +16,6 @@ mangeshrautarchive/
 ├── playwright.config.js      # E2E multi-browser
 ├── vitest.config.js          # Unit tests → tests/unit/**
 ├── eslint.config.js          # ESLint flat config
-├── doctor.config.js          # Re-export → config/doctor.config.js
 ├── pyproject.toml            # Python deps + Ruff/pytest tool config
 ├── requirements.txt          # Runtime pip pins
 ├── requirements-dev.txt      # Dev/test pip pins
@@ -57,16 +56,15 @@ mangeshrautarchive/
 │   └── e2e/                  # Playwright specs (+ helpers/)
 │
 ├── config/                   # Shared non-root tool config
-│   ├── doctor.config.js
-│   └── vulture.toml
+│   └── vulture.toml          # Python dead-code (lint:dead-code)
 │
 ├── docs/                     # Human docs + archived plans
 │   ├── STRUCTURE.md          # This file
 │   ├── README.md             # Doc index
 │   └── plans/                # Improve-skill execution plans
 │
-├── .github/workflows/        # CI · deploy · monitoring
-├── .agents/                  # Local agent skills lock
+├── .github/workflows/        # CI · deploy · monitoring (no React Doctor)
+├── skills-lock.json          # Agent skills lock (tracked)
 ├── dist/                     # Build output (gitignored)
 └── node_modules/ · venv/     # Install trees (gitignored)
 ```
@@ -104,6 +102,7 @@ Do **not** move them into `config/` without updating every consumer.
 
 ```bash
 npm run clean          # dist, artifacts, caches (keeps venvs)
+npm run doctor         # root layout + stack guard (vanilla ESM + FastAPI)
 npm run format         # Prettier write
 npm run check          # lint + format check + unit tests
 ```

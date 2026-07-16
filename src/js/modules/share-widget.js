@@ -49,41 +49,33 @@ function createShareToggleButton() {
   const button = document.createElement('button');
   button.id = SHARE_TOGGLE_ID;
   button.type = 'button';
+  button.className = 'website-share-fab';
   button.setAttribute('aria-label', SHARE_TOGGLE_LABEL);
   button.setAttribute('data-label', SHARE_TOGGLE_LABEL);
   button.innerHTML = `
-    <span class="a11y-toolbar-button__icon" aria-hidden="true">
-      <i class="fa-solid fa-share-nodes" style="font-size: 14px;"></i>
+    <span class="website-share-fab__icon" aria-hidden="true">
+      <i class="fa-solid fa-share-nodes" style="font-size: 15px;"></i>
     </span>
   `;
   return button;
 }
 
-function getAccessibilityToolbar() {
-  return document.querySelector('.a11y-toolbar');
-}
-
+/**
+ * Share FAB is independent of the accessibility menu (left dock, above a11y).
+ */
 function repairShareToggle() {
   const existingToggle = document.getElementById(SHARE_TOGGLE_ID);
-  if (existingToggle) return existingToggle;
-
-  let toolbar = getAccessibilityToolbar();
-  if (!toolbar && typeof window.a11y?.createAccessibilityToolbar === 'function') {
-    window.a11y.createAccessibilityToolbar();
-    toolbar = getAccessibilityToolbar();
-  }
-
-  if (!toolbar) {
-    toolbar = document.createElement('div');
-    toolbar.className = 'a11y-toolbar';
-    toolbar.setAttribute('role', 'toolbar');
-    toolbar.setAttribute('aria-label', 'Accessibility tools');
-    document.body.appendChild(toolbar);
-    document.body.classList.add('has-a11y-toolbar');
+  if (existingToggle) {
+    // Detach from legacy a11y toolbar if still nested there
+    if (existingToggle.closest('.a11y-toolbar')) {
+      existingToggle.classList.add('website-share-fab');
+      document.body.appendChild(existingToggle);
+    }
+    return existingToggle;
   }
 
   const repairedToggle = createShareToggleButton();
-  toolbar.prepend(repairedToggle);
+  document.body.appendChild(repairedToggle);
   return repairedToggle;
 }
 

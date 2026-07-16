@@ -46,6 +46,14 @@ jobs:
         # package-lock can lag transitive pins; install (not ci) matches local AGENTS.md path.
         run: npm install --no-audit --no-fund
 
+      - name: Doctor — stack + root hygiene
+        # Fail-fast before lint/tests: layout allow-list, forbidden framework deps, pins.
+        run: |
+          set -euo pipefail
+          echo "## Doctor" >> "$GITHUB_STEP_SUMMARY"
+          npm run doctor
+          echo "- doctor ✅ (layout + stack guard)" >> "$GITHUB_STEP_SUMMARY"
+
       - name: Resolve Playwright version
         id: pw
         run: |
@@ -85,7 +93,6 @@ jobs:
         continue-on-error: true
         run: |
           set -euo pipefail
-          echo "## Doctor" >> "$GITHUB_STEP_SUMMARY"
           if npm run doctor:full; then
             echo "- doctor:full ✅" >> "$GITHUB_STEP_SUMMARY"
           else

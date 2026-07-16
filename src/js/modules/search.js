@@ -150,24 +150,17 @@ class PortfolioSearch {
           .map(tag => tag.textContent)
           .join(' ');
 
-        // Specific handling for GitHub Projects (dynamic content)
+        // GitHub project cards (github-projects.js): .project-tag + .project-language
         if (type === 'Project') {
-          // Extract topics from both legacy and current card styles.
-          const topics = Array.from(
-            element.querySelectorAll('span.rounded-full.border, .project-tag')
-          ).map(t => t.textContent.trim());
+          const topics = Array.from(element.querySelectorAll('.project-tag'))
+            .map(t => t.textContent.trim())
+            .filter(Boolean);
 
-          // Extract language (usually next to a colored dot)
-          // We look for the text content in the language section
-          const languageCandidates = [
-            element.querySelector('.project-language'),
-            element.querySelector('.flex.items-center.gap-3'),
-          ];
-          languageCandidates.forEach(languageContainer => {
-            if (!languageContainer) return;
-            const langText = languageContainer.textContent.trim();
-            if (langText) topics.push(langText);
-          });
+          const languageEl = element.querySelector('.project-language');
+          const langText = languageEl?.textContent?.trim();
+          if (langText) {
+            topics.push(langText);
+          }
 
           if (topics.length > 0) {
             tags += ' ' + topics.join(' ');

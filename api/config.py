@@ -41,7 +41,9 @@ def get_openrouter_api_key() -> str:
 
 
 def get_openrouter_model_raw() -> str:
-    return os.getenv("OPENROUTER_MODEL", FALLBACK_OPENROUTER_MODEL).strip()
+    # Prefer explicit Vercel env. Default primary is Grok 4.3; chat fallback chain always
+    # tries openrouter/free (+ free Gemma) when paid models fail or return empty streams.
+    return os.getenv("OPENROUTER_MODEL", PRIMARY_OPENROUTER_MODEL).strip()
 
 
 def get_site_url() -> str:

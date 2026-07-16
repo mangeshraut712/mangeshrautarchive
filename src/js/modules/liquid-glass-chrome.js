@@ -99,7 +99,7 @@ export function initLiquidGlassChrome() {
     'click',
     event => {
       const trigger = event.target.closest?.(
-        '.a11y-toolbar button[aria-label="Liquid Glass transparency"]'
+        '.a11y-toolbar__panel button[aria-label="Liquid Glass transparency"], .a11y-toolbar button[aria-label="Liquid Glass transparency"]'
       );
       if (!trigger) return;
       requestAnimationFrame(() => {
