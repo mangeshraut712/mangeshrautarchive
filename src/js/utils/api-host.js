@@ -3,9 +3,48 @@
  * Marks hosts dead on 402 DEPLOYMENT_DISABLED / network failure for the session.
  */
 
+/** Cloudflare Worker (FastAPI-compatible) used when Vercel is DEPLOYMENT_DISABLED */
+export const EDGE_API_BASE = 'https://assistme-chat.mangeshraut712.workers.dev';
+
 const deadHosts = new Set();
 const healthyHosts = new Set();
 let probePromise = null;
+
+export function isBlockedVercelHost(urlOrBase = '') {
+  const s = String(urlOrBase || '');
+  return /mangeshraut\.pro|mraut\.vercel\.app|\.vercel\.app/i.test(s);
+}
+
+/** Prefer edge + config; never lead with blocked Vercel on GitHub Pages. */
+export function pagesApiCandidates(extra = []) {
+  const cfg = globalThis.APP_CONFIG || globalThis.buildConfig || {};
+  const list = [
+    EDGE_API_BASE,
+    cfg.apiBaseUrl,
+    ...(Array.isArray(cfg.apiBaseCandidates) ? cfg.apiBaseCandidates : []),
+    ...extra,
+  ]
+    .filter(Boolean)
+    .map(c => {
+      try {
+        return new URL(String(c), typeof location !== 'undefined' ? location.href : undefined)
+          .origin;
+      } catch {
+        return String(c).replace(/\/$/, '');
+      }
+    });
+  // Edge first, then non-Vercel, then Vercel last (only as last resort)
+  const edge = [];
+  const ok = [];
+  const blocked = [];
+  for (const o of list) {
+    if (!o) continue;
+    if (o.includes('workers.dev') || o === EDGE_API_BASE) edge.push(o);
+    else if (isBlockedVercelHost(o)) blocked.push(o);
+    else ok.push(o);
+  }
+  return [...new Set([...edge, ...ok, ...blocked])];
+}
 
 function originOf(urlOrBase) {
   try {
@@ -84,15 +123,16 @@ export async function resolveHealthyApiBase(candidates = [], options = {}) {
 export function probeDefaultPagesApi() {
   if (probePromise) return probePromise;
   if (typeof window === 'undefined') return Promise.resolve(false);
-  const cfg = globalThis.APP_CONFIG || globalThis.buildConfig || {};
-  const candidates = [
-    ...(Array.isArray(cfg.apiBaseCandidates) ? cfg.apiBaseCandidates : []),
-    cfg.apiBaseUrl,
-    'https://mangeshraut.pro',
-  ].filter(Boolean);
+  const candidates = pagesApiCandidates();
   probePromise = resolveHealthyApiBase(candidates).then(base => {
     if (base && globalThis.APP_CONFIG) {
       globalThis.APP_CONFIG.apiBaseUrl = base;
+      if (Array.isArray(globalThis.APP_CONFIG.apiBaseCandidates)) {
+        globalThis.APP_CONFIG.apiBaseCandidates = pagesApiCandidates();
+      }
+    }
+    if (base && globalThis.buildConfig) {
+      globalThis.buildConfig.apiBaseUrl = base;
     }
     return Boolean(base);
   });

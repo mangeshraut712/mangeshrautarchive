@@ -26,19 +26,23 @@ const HEALTH_FETCH_TIMEOUT_MS = 9000;
 const HEALTH_REFRESH_INTERVAL_MS = 5 * 60 * 1000;
 
 function resolveApiBase() {
+  const EDGE = 'https://assistme-chat.mangeshraut712.workers.dev';
   const base =
     globalThis.APP_CONFIG?.apiBaseUrl ||
     (typeof globalThis.buildConfig !== 'undefined' && globalThis.buildConfig.apiBaseUrl) ||
     '';
-  if (base) return base.replace(/\/$/, '');
   const hostname = globalThis.location?.hostname || '';
   if (hostname === 'localhost' || hostname === '127.0.0.1') {
     return '';
   }
   if (hostname.endsWith('github.io')) {
-    return 'https://mangeshraut.pro';
+    if (base && !/mangeshraut\.pro|vercel\.app/i.test(base)) {
+      return base.replace(/\/$/, '');
+    }
+    return EDGE;
   }
-  return 'https://mangeshraut.pro';
+  if (base) return base.replace(/\/$/, '');
+  return EDGE;
 }
 
 function parseWeightTrend(weightTrend) {

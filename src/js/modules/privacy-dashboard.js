@@ -15,9 +15,11 @@ function getApiUrl(path) {
     (typeof globalThis.buildConfig !== 'undefined' && globalThis.buildConfig.apiBaseUrl) ||
     '';
   let apiBase = base;
-  if (!apiBase && typeof window !== 'undefined' && window.location.hostname.endsWith('github.io')) {
+  if (typeof window !== 'undefined' && window.location.hostname.endsWith('github.io')) {
     // Vercel blocked — use Cloudflare edge worker (same as CHAT_API_BASE)
-    apiBase = 'https://assistme-chat.mangeshraut712.workers.dev';
+    if (!apiBase || /mangeshraut\.pro|vercel\.app/i.test(apiBase)) {
+      apiBase = 'https://assistme-chat.mangeshraut712.workers.dev';
+    }
   }
   const apiBaseNormalized = apiBase ? apiBase.replace(/\/$/, '') : '';
   return apiBaseNormalized

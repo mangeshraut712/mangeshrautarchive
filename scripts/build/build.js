@@ -126,14 +126,33 @@ async function injectApiKeys(distDir) {
 // DO NOT add API keys or secrets to this file.
 // This file is shipped to browsers and publicly visible.
 (function () {
+  const EDGE = 'https://assistme-chat.mangeshraut712.workers.dev';
   const buildConfig = ${JSON.stringify(config, null, 2)};
   globalThis.buildConfig = buildConfig;
   const merged = Object.assign({}, globalThis.APP_CONFIG || {}, buildConfig);
   const loopbackHosts = ['localhost', '127.0.0.1', '0.0.0.0', '[::1]'];
-  if (loopbackHosts.includes(window.location.hostname)) {
+  const host = window.location.hostname || '';
+  if (loopbackHosts.includes(host)) {
     merged.apiBaseUrl = window.location.origin;
+  } else if (host.endsWith('github.io')) {
+    // Vercel is DEPLOYMENT_DISABLED — always prefer Cloudflare edge for Pages.
+    const blocked = function (u) {
+      return !u || /mangeshraut\\.pro|vercel\\.app/i.test(String(u));
+    };
+    if (blocked(merged.apiBaseUrl)) {
+      merged.apiBaseUrl = EDGE;
+    }
+    var cands = Array.isArray(merged.apiBaseCandidates) ? merged.apiBaseCandidates.slice() : [];
+    cands = [EDGE, merged.apiBaseUrl].concat(cands).filter(Boolean);
+    var seen = {};
+    merged.apiBaseCandidates = cands.filter(function (u) {
+      if (seen[u]) return false;
+      seen[u] = true;
+      return true;
+    });
   }
   globalThis.APP_CONFIG = merged;
+  globalThis.buildConfig = Object.assign({}, buildConfig, merged);
 })();
 `;
   const jsConfigPath = resolve(distDir, 'build-config.js');

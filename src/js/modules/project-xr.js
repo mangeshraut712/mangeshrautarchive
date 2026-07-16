@@ -385,27 +385,28 @@ class ProjectXR {
           }
         }
 
-        const base =
-          globalThis.APP_CONFIG?.apiBaseUrl ||
-          (typeof globalThis.buildConfig !== 'undefined' && globalThis.buildConfig.apiBaseUrl) ||
-          '';
-        let apiBase = base;
-        if (
-          !apiBase &&
-          typeof window !== 'undefined' &&
-          window.location.hostname.endsWith('github.io')
-        ) {
-          apiBase = 'https://mangeshraut.pro';
-        }
-        const apiBaseNormalized = apiBase ? apiBase.replace(/\/$/, '') : '';
-        const proxiedUrl = apiBaseNormalized
-          ? `${apiBaseNormalized}/api/github/proxy?path=${encodeURIComponent(pathWithQuery)}`
-          : `/api/github/proxy?path=${encodeURIComponent(pathWithQuery)}`;
-        const proxiedResponse = await fetch(proxiedUrl, {
-          headers: { Accept: 'application/json' },
-        });
-        if (proxiedResponse.ok) {
-          return await proxiedResponse.json();
+        // On GitHub Pages skip blocked Vercel proxy — use public GitHub API below
+        const isPages =
+          typeof window !== 'undefined' && window.location.hostname.endsWith('github.io');
+        if (!isPages) {
+          const base =
+            globalThis.APP_CONFIG?.apiBaseUrl ||
+            (typeof globalThis.buildConfig !== 'undefined' && globalThis.buildConfig.apiBaseUrl) ||
+            '';
+          let apiBase = base;
+          if (!apiBase) {
+            apiBase = 'https://assistme-chat.mangeshraut712.workers.dev';
+          }
+          if (!/mangeshraut\.pro|vercel\.app/i.test(apiBase)) {
+            const apiBaseNormalized = apiBase.replace(/\/$/, '');
+            const proxiedUrl = `${apiBaseNormalized}/api/github/proxy?path=${encodeURIComponent(pathWithQuery)}`;
+            const proxiedResponse = await fetch(proxiedUrl, {
+              headers: { Accept: 'application/json' },
+            });
+            if (proxiedResponse.ok) {
+              return await proxiedResponse.json();
+            }
+          }
         }
       }
     } catch {

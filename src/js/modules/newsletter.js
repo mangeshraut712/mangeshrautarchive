@@ -12,9 +12,13 @@ function getApiBase() {
   if (['localhost', '127.0.0.1', '0.0.0.0'].includes(host)) {
     return 'http://127.0.0.1:8001';
   }
-  // GitHub Pages has no /api — use production FastAPI origin
+  // GitHub Pages: Cloudflare edge (newsletter may soft-fail if route absent)
   if (host.endsWith('github.io')) {
-    return 'https://mangeshraut.pro';
+    const configured = window.APP_CONFIG?.apiBaseUrl || '';
+    if (configured && !/mangeshraut\.pro|vercel\.app/i.test(configured)) {
+      return configured.replace(/\/$/, '');
+    }
+    return 'https://assistme-chat.mangeshraut712.workers.dev';
   }
   // Vercel / apex: same-origin relative API
   return window.APP_CONFIG?.apiBaseUrl || '';

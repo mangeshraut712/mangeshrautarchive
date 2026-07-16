@@ -519,10 +519,18 @@ function renderCaseStudyFlows() {
     .join('');
 }
 
+const EDGE_API = 'https://assistme-chat.mangeshraut712.workers.dev';
+
 function getApiBase() {
   const isGitHubPages = window.location.hostname.endsWith('github.io');
-  if (isGitHubPages) return 'https://mangeshraut.pro';
-  return window.APP_CONFIG?.apiBaseUrl || window.location.origin;
+  const configured = window.APP_CONFIG?.apiBaseUrl || window.buildConfig?.apiBaseUrl || '';
+  if (isGitHubPages) {
+    if (configured && !/mangeshraut\.pro|vercel\.app/i.test(configured)) {
+      return configured.replace(/\/$/, '');
+    }
+    return EDGE_API;
+  }
+  return configured || window.location.origin;
 }
 
 async function fetchEngineeringSnapshot() {
@@ -531,9 +539,8 @@ async function fetchEngineeringSnapshot() {
   }
 
   const base = getApiBase();
-  const origins = [base, 'https://mangeshraut.pro', 'https://mraut.vercel.app'].filter(
-    (v, i, a) => a.indexOf(v) === i
-  );
+  // Prefer edge; do not hammer blocked Vercel from Pages
+  const origins = [base, EDGE_API].filter((v, i, a) => v && a.indexOf(v) === i);
 
   for (const origin of origins) {
     try {
@@ -554,9 +561,7 @@ async function fetchAnalyticsReach() {
   }
 
   const base = getApiBase();
-  const origins = [base, 'https://mangeshraut.pro', 'https://mraut.vercel.app'].filter(
-    (v, i, a) => a.indexOf(v) === i
-  );
+  const origins = [base, EDGE_API].filter((v, i, a) => v && a.indexOf(v) === i);
 
   for (const origin of origins) {
     try {

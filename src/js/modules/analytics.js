@@ -82,6 +82,12 @@
     }
   }
 
+  const EDGE_API = 'https://assistme-chat.mangeshraut712.workers.dev';
+
+  function isBlockedVercelOrigin(origin) {
+    return /mangeshraut\.pro|vercel\.app/i.test(String(origin || ''));
+  }
+
   function getApiBase() {
     if (isRemoteApiDisabled()) {
       return '';
@@ -101,13 +107,16 @@
       return '';
     }
 
-    if (configuredOrigin) {
-      return `${configuredOrigin}/api`;
+    if (window.location.hostname.endsWith('github.io')) {
+      // Vercel blocked — use edge worker only (no CORS spam to mangeshraut.pro)
+      if (configuredOrigin && !isBlockedVercelOrigin(configuredOrigin)) {
+        return `${configuredOrigin}/api`;
+      }
+      return `${EDGE_API}/api`;
     }
 
-    if (window.location.hostname.endsWith('github.io')) {
-      // Prefer live edge/API base only; never spam a blocked Vercel host.
-      return 'https://mangeshraut.pro/api';
+    if (configuredOrigin) {
+      return `${configuredOrigin}/api`;
     }
 
     return '/api';

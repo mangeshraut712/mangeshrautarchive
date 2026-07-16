@@ -499,6 +499,36 @@ export default {
       return handleMusicRecent(url, env, cors);
     }
 
+    // Soft monitor surface (Vercel FastAPI offline)
+    if (
+      request.method === 'GET' &&
+      (path === '/api/monitor/status' ||
+        path === '/api/monitor/engineering' ||
+        path.startsWith('/api/monitor/'))
+    ) {
+      return handleMonitorStatus(env, cors, path);
+    }
+
+    // Soft analytics so Pages does not spam blocked Vercel
+    if (request.method === 'GET' && path === '/api/analytics/reach') {
+      return handleAnalyticsReach(cors);
+    }
+    if (request.method === 'GET' && path === '/api/analytics/views') {
+      return handleAnalyticsViews(cors);
+    }
+    if (request.method === 'POST' && path === '/api/analytics/track') {
+      return json(
+        { success: true, tracked: false, host: 'cloudflare-worker', note: 'edge no-op track' },
+        200,
+        cors
+      );
+    }
+
+    // GitHub proxy for activity metadata (public API only)
+    if (request.method === 'GET' && path === '/api/github/proxy') {
+      return handleGithubProxy(url, cors);
+    }
+
     if (request.method === 'GET' && path === '/') {
       return json(
         {
@@ -509,7 +539,11 @@ export default {
             'GET /api/chat/health',
             'POST /api/chat',
             'GET /api/github/repos/public',
+            'GET /api/github/proxy',
             'GET /api/music/recent',
+            'GET /api/monitor/status',
+            'GET /api/analytics/reach',
+            'POST /api/analytics/track',
           ],
         },
         200,
@@ -520,3 +554,96 @@ export default {
     return json({ error: 'Not found', hint: 'POST /api/chat or GET /api/chat/health' }, 404, cors);
   },
 };
+
+async function handleMonitorStatus(env, cors, path) {
+  const apiKey = (env.OPENROUTER_API_KEY || '').trim();
+  const payload = {
+    success: true,
+    status: apiKey ? 'healthy' : 'degraded',
+    host: 'cloudflare-worker',
+    path,
+    message:
+      'Edge monitor surface while Vercel FastAPI is unavailable. Chat, GitHub, and music are live on this worker.',
+    uptime: null,
+    services: [
+      { name: 'assistme-chat', status: 'ok', host: 'cloudflare-worker' },
+      {
+        name: 'openrouter',
+        status: apiKey ? 'configured' : 'local_only',
+      },
+      { name: 'github-public', status: 'ok' },
+      { name: 'lastfm-proxy', status: env.LASTFM_API_KEY ? 'configured' : 'optional' },
+    ],
+    open_issues: 0,
+    last_updated: new Date().toISOString(),
+    vercel: { status: 'DEPLOYMENT_DISABLED', note: 'Use Cloudflare edge' },
+  };
+  return json(payload, 200, cors);
+}
+
+function handleAnalyticsReach(cors) {
+  return json(
+    {
+      success: true,
+      total_reach: 0,
+      source: 'edge-placeholder',
+      ga_enabled: false,
+      host: 'cloudflare-worker',
+      message:
+        'Portfolio Reach requires GA4/Redis on FastAPI. Edge returns a quiet placeholder while Vercel is blocked.',
+      insights: {
+        unique_visitors: 0,
+        total_views_all_time: 0,
+        countries_this_week: 0,
+        trend: [],
+      },
+      timestamp: new Date().toISOString(),
+    },
+    200,
+    cors
+  );
+}
+
+function handleAnalyticsViews(cors) {
+  return json(
+    {
+      success: true,
+      views: { total: 0, this_week: 0 },
+      storage: { backend: 'edge-placeholder' },
+      host: 'cloudflare-worker',
+      timestamp: new Date().toISOString(),
+    },
+    200,
+    cors
+  );
+}
+
+async function handleGithubProxy(url, cors) {
+  const pathParam = url.searchParams.get('path') || '';
+  if (!pathParam.startsWith('/')) {
+    return json({ error: 'path must start with /' }, 400, cors);
+  }
+  // Block non-GET-safe abuse
+  if (pathParam.includes('..') || pathParam.length > 500) {
+    return json({ error: 'invalid path' }, 400, cors);
+  }
+  try {
+    const gh = await fetch(`https://api.github.com${pathParam}`, {
+      headers: {
+        Accept: 'application/vnd.github+json',
+        'User-Agent': 'assistme-cloudflare-edge',
+      },
+    });
+    const text = await gh.text();
+    return new Response(text, {
+      status: gh.status,
+      headers: {
+        'Content-Type': gh.headers.get('content-type') || 'application/json',
+        'Cache-Control': 'public, max-age=60',
+        ...cors,
+      },
+    });
+  } catch (e) {
+    return json({ error: e.message }, 502, cors);
+  }
+}

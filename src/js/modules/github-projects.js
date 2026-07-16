@@ -51,18 +51,12 @@ class GitHubProjects {
         `${apiBaseNormalized}/api/github/repos`
       );
     }
-    // Secondary Vercel fallbacks only when not already on workers.dev edge
-    if (apiBaseNormalized && !apiBaseNormalized.includes('workers.dev')) {
-      candidates.push(
-        'https://mangeshraut.pro/api/github/repos/public',
-        'https://mangeshraut.pro/api/github/repos'
-      );
-    } else if (!apiBaseNormalized) {
-      candidates.push(
-        'https://mangeshraut.pro/api/github/repos/public',
-        'https://mangeshraut.pro/api/github/repos'
-      );
+    // Edge worker catalog (Pages when Vercel is blocked)
+    const edgeBase = 'https://assistme-chat.mangeshraut712.workers.dev';
+    if (!apiBaseNormalized || !apiBaseNormalized.includes('workers.dev')) {
+      candidates.push(`${edgeBase}/api/github/repos/public`, `${edgeBase}/api/github/repos`);
     }
+    // Do not add blocked Vercel hosts — they only produce CORS noise on Pages.
     this.proxyCandidates = candidates;
     this.directApiUrl = `https://api.github.com/users/${username}/repos`;
 
@@ -1023,19 +1017,22 @@ class GitHubProjects {
         return `/api/github/proxy?path=${encodeURIComponent(pathWithQuery)}`;
       }
 
+      // GitHub Pages: skip Vercel proxy (CORS / 402). Use edge proxy or direct API.
+      if (typeof window !== 'undefined' && window.location.hostname.endsWith('github.io')) {
+        const base =
+          globalThis.APP_CONFIG?.apiBaseUrl ||
+          globalThis.buildConfig?.apiBaseUrl ||
+          'https://assistme-chat.mangeshraut712.workers.dev';
+        if (base && !/mangeshraut\.pro|vercel\.app/i.test(base)) {
+          return `${base.replace(/\/$/, '')}/api/github/proxy?path=${encodeURIComponent(pathWithQuery)}`;
+        }
+        return '';
+      }
       const base =
         globalThis.APP_CONFIG?.apiBaseUrl ||
         (typeof globalThis.buildConfig !== 'undefined' && globalThis.buildConfig.apiBaseUrl) ||
         '';
-      let apiBase = base;
-      if (
-        !apiBase &&
-        typeof window !== 'undefined' &&
-        window.location.hostname.endsWith('github.io')
-      ) {
-        apiBase = 'https://mangeshraut.pro';
-      }
-      const apiBaseNormalized = apiBase ? apiBase.replace(/\/$/, '') : '';
+      const apiBaseNormalized = base ? base.replace(/\/$/, '') : '';
       return apiBaseNormalized
         ? `${apiBaseNormalized}/api/github/proxy?path=${encodeURIComponent(pathWithQuery)}`
         : `/api/github/proxy?path=${encodeURIComponent(pathWithQuery)}`;

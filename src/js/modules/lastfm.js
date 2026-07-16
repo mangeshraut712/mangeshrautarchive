@@ -68,23 +68,19 @@ class LastFmService {
     }
 
     // Prefer CHAT_API_BASE / APP_CONFIG (Cloudflare Worker) over blocked Vercel
+    const EDGE = 'https://assistme-chat.mangeshraut712.workers.dev';
     const configured =
       globalThis.APP_CONFIG?.apiBaseUrl || globalThis.buildConfig?.apiBaseUrl || '';
-    if (configured && !configured.includes('mangeshraut.pro')) {
+    if (configured && !/mangeshraut\.pro|vercel\.app/i.test(configured)) {
       return configured.replace(/\/$/, '');
     }
 
     if (host.endsWith('github.io')) {
-      try {
-        if (sessionStorage.getItem('portfolio_api_host_dead_v1') === '1') {
-          return configured && !configured.includes('vercel.app')
-            ? configured.replace(/\/$/, '')
-            : '';
-        }
-      } catch {
-        // ignore
+      // Edge worker hosts /api/music/recent — never hit blocked Vercel
+      if (configured && !/mangeshraut\.pro|vercel\.app/i.test(configured)) {
+        return configured.replace(/\/$/, '');
       }
-      return configured ? configured.replace(/\/$/, '') : 'https://mangeshraut.pro';
+      return EDGE;
     }
 
     return configured || window.location.origin;

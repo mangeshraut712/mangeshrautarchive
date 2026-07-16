@@ -14,6 +14,8 @@ let API_BASE_CANDIDATES = [];
 
 // Primary Backend: custom domain (OpenRouter key configured on Vercel)
 const VERCEL_BACKEND = 'https://mangeshraut.pro';
+/** Cloudflare edge API when Vercel is DEPLOYMENT_DISABLED (GitHub Pages). */
+const EDGE_BACKEND = 'https://assistme-chat.mangeshraut712.workers.dev';
 const PRIMARY_CUSTOM_DOMAIN = 'mangeshraut.pro';
 const MAX_SERVER_MESSAGE_LENGTH = 1800;
 const MAX_SERVER_HISTORY_MESSAGES = 12;
@@ -92,6 +94,7 @@ function normalizeApiBase(rawValue) {
 
 if (typeof window !== 'undefined') {
   const cfg = window.APP_CONFIG || {};
+  const hostname = window.location.hostname || '';
   const candidates = Array.isArray(cfg.apiBaseCandidates)
     ? cfg.apiBaseCandidates.map(normalizeApiBase).filter(Boolean)
     : [];
@@ -99,14 +102,27 @@ if (typeof window !== 'undefined') {
     const primary = normalizeApiBase(cfg.apiBaseUrl);
     if (primary) candidates.unshift(primary);
   }
-  // Unique preserve order
-  API_BASE_CANDIDATES = [...new Set(candidates.filter(Boolean))];
 
-  if (cfg.apiBaseUrl) {
+  // GitHub Pages: always prefer Cloudflare edge over blocked Vercel
+  if (isStaticMirrorHost(hostname)) {
+    candidates.unshift(EDGE_BACKEND);
+    const edgeFirst = [];
+    const rest = [];
+    for (const c of candidates) {
+      if (!c) continue;
+      if (c.includes('workers.dev') || c === EDGE_BACKEND) edgeFirst.push(c);
+      else rest.push(c);
+    }
+    API_BASE_CANDIDATES = [...new Set([...edgeFirst, ...rest])];
+    const preferred =
+      API_BASE_CANDIDATES.find(c => c.includes('workers.dev')) ||
+      normalizeApiBase(cfg.apiBaseUrl) ||
+      EDGE_BACKEND;
+    API_BASE = preferred;
+  } else if (cfg.apiBaseUrl) {
+    API_BASE_CANDIDATES = [...new Set(candidates.filter(Boolean))];
     API_BASE = normalizeApiBase(cfg.apiBaseUrl);
   } else {
-    const hostname = window.location.hostname || '';
-
     // ALWAYS use relative paths for localhost to hit the proxy
     if (hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '0.0.0.0') {
       API_BASE = '';
@@ -118,17 +134,19 @@ if (typeof window !== 'undefined') {
     // Vercel deployment and primary custom domain
     else if (hostname.includes('vercel.app') || hostname === PRIMARY_CUSTOM_DOMAIN) {
       API_BASE = '';
-    }
-    // GitHub Pages or other static hosts — edge worker / Vercel candidates
-    else {
-      API_BASE = API_BASE_CANDIDATES[0] || VERCEL_BACKEND;
+    } else {
+      API_BASE = API_BASE_CANDIDATES[0] || EDGE_BACKEND;
       if (!API_BASE_CANDIDATES.length) {
-        API_BASE_CANDIDATES = [VERCEL_BACKEND];
+        API_BASE_CANDIDATES = [EDGE_BACKEND, VERCEL_BACKEND];
       }
     }
+    API_BASE_CANDIDATES = [...new Set(candidates.filter(Boolean))];
   }
   if (API_BASE && !API_BASE_CANDIDATES.includes(API_BASE)) {
     API_BASE_CANDIDATES.unshift(API_BASE);
+  }
+  if (isStaticMirrorHost(hostname) && !API_BASE_CANDIDATES.includes(EDGE_BACKEND)) {
+    API_BASE_CANDIDATES.unshift(EDGE_BACKEND);
   }
 }
 

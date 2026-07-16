@@ -71,11 +71,30 @@ self.addEventListener('fetch', event => {
     return;
   }
 
+  // build-config must never be stale (CHAT_API_BASE / edge routing)
+  if (/build-config\.(js|json)$/i.test(url.pathname)) {
+    event.respondWith(networkFirstConfig(request));
+    return;
+  }
+
   // Static assets: stale-while-revalidate style for same-origin shell assets
   if (/\.(?:css|js|webp|png|svg|woff2|json)$/i.test(url.pathname)) {
     event.respondWith(staleWhileRevalidate(request));
   }
 });
+
+async function networkFirstConfig(request) {
+  const cache = await caches.open(CACHE_VERSION);
+  try {
+    const networkResponse = await fetch(request, { cache: 'no-store' });
+    if (networkResponse && networkResponse.ok) {
+      cache.put(request, networkResponse.clone()).catch(() => {});
+    }
+    return networkResponse;
+  } catch {
+    return (await cache.match(request)) || fetch(request);
+  }
+}
 
 async function networkFirstNavigation(request) {
   const cache = await caches.open(CACHE_VERSION);

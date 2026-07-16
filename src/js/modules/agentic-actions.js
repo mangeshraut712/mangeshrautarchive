@@ -462,7 +462,10 @@ export class AgenticActionHandler {
       typeof window !== 'undefined' &&
       window.location.hostname.endsWith('github.io')
     ) {
-      apiBase = 'https://mangeshraut.pro';
+      apiBase = 'https://assistme-chat.mangeshraut712.workers.dev';
+    }
+    if (apiBase && /mangeshraut\.pro|vercel\.app/i.test(apiBase)) {
+      apiBase = 'https://assistme-chat.mangeshraut712.workers.dev';
     }
     const apiBaseNormalized = apiBase ? apiBase.replace(/\/$/, '') : '';
 
