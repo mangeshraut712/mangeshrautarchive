@@ -16,7 +16,8 @@ function getApiUrl(path) {
     '';
   let apiBase = base;
   if (!apiBase && typeof window !== 'undefined' && window.location.hostname.endsWith('github.io')) {
-    apiBase = 'https://mangeshraut.pro';
+    // Vercel blocked — use Cloudflare edge worker (same as CHAT_API_BASE)
+    apiBase = 'https://assistme-chat.mangeshraut712.workers.dev';
   }
   const apiBaseNormalized = apiBase ? apiBase.replace(/\/$/, '') : '';
   return apiBaseNormalized

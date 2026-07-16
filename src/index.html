@@ -14,8 +14,8 @@
   <link rel="preconnect" href="https://api.github.com" crossorigin />
   <link rel="preconnect" href="https://openrouter.ai" crossorigin />
   <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com" />
-  <link rel="preconnect" href="https://mangeshraut.pro" crossorigin />
-  <link rel="dns-prefetch" href="https://mangeshraut.pro" />
+  <link rel="preconnect" href="https://assistme-chat.mangeshraut712.workers.dev" crossorigin />
+  <link rel="dns-prefetch" href="https://assistme-chat.mangeshraut712.workers.dev" />
   <link rel="dns-prefetch" href="https://lastfm.freetls.fastly.net" />
   <!-- Font Awesome preloads steal bandwidth from LCP text on mobile — skip in Lighthouse -->
   <script>
@@ -698,8 +698,14 @@ html.dark #home .hero-name-text {
   </script>
   <script>
     (function () {
+      // Prefer build-config (CHAT_API_BASE → Cloudflare Worker). Never force blocked Vercel on Pages.
+      const EDGE_API = 'https://assistme-chat.mangeshraut712.workers.dev';
       const isGitHubPages = window.location.hostname.endsWith('github.io');
-      const apiBaseUrl = isGitHubPages ? 'https://mangeshraut.pro' : window.location.origin;
+      const fromBuild =
+        (window.buildConfig && window.buildConfig.apiBaseUrl) ||
+        (window.APP_CONFIG && window.APP_CONFIG.apiBaseUrl);
+      const apiBaseUrl =
+        fromBuild || (isGitHubPages ? EDGE_API : window.location.origin);
 
       window.APP_CONFIG = Object.assign({}, window.APP_CONFIG || {}, {
         apiBaseUrl,

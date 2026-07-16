@@ -48,8 +48,12 @@
     <script src="build-config.js"></script>
     <script>
       (function () {
+        const EDGE_API = 'https://assistme-chat.mangeshraut712.workers.dev';
         const isGitHubPages = window.location.hostname.endsWith('github.io');
-        const apiBaseUrl = isGitHubPages ? 'https://mangeshraut.pro' : window.location.origin;
+        const fromBuild =
+          (window.buildConfig && window.buildConfig.apiBaseUrl) ||
+          (window.APP_CONFIG && window.APP_CONFIG.apiBaseUrl);
+        const apiBaseUrl = fromBuild || (isGitHubPages ? EDGE_API : window.location.origin);
         window.APP_CONFIG = Object.assign({}, window.APP_CONFIG || {}, { apiBaseUrl });
       })();
     </script>
