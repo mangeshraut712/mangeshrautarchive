@@ -464,52 +464,70 @@ class GitHubProjects {
     const networkLoad = (async () => {
       let rawRepos = null;
 
-      for (const proxyBase of this.proxyCandidates) {
-        try {
-          const proxyResp = await fetch(
-            `${proxyBase}?username=${this.username}&limit=100&no_forks=false`,
-            { headers: { Accept: 'application/json' } }
-          );
+      const skipProxy =
+        typeof window !== 'undefined' &&
+        (window.location.hostname.endsWith('github.io') ||
+          (() => {
+            try {
+              return sessionStorage.getItem('portfolio_api_host_dead_v1') === '1';
+            } catch {
+              return false;
+            }
+          })());
 
-          if (!proxyResp.ok) {
-            console.warn(`Proxy ${proxyBase} returned ${proxyResp.status}`);
-            continue;
-          }
+      if (!skipProxy) {
+        for (const proxyBase of this.proxyCandidates) {
+          try {
+            const proxyResp = await fetch(
+              `${proxyBase}?username=${this.username}&limit=100&no_forks=false`,
+              { headers: { Accept: 'application/json' } }
+            );
 
-          const repoList = this.extractRepoList(await proxyResp.json());
-          if (repoList) {
-            rawRepos = repoList;
-            break;
+            if (proxyResp.status === 402 || proxyResp.status === 503) {
+              try {
+                sessionStorage.setItem('portfolio_api_host_dead_v1', '1');
+              } catch {
+                // ignore
+              }
+              break;
+            }
+
+            if (!proxyResp.ok) {
+              continue;
+            }
+
+            const repoList = this.extractRepoList(await proxyResp.json());
+            if (repoList) {
+              rawRepos = repoList;
+              break;
+            }
+          } catch {
+            // Quiet: proxy may be offline on static mirrors
           }
-        } catch (err) {
-          console.warn(`Proxy ${proxyBase} failed:`, err.message);
         }
       }
 
       if (!rawRepos) {
         try {
           const response = await fetch(`${this.directApiUrl}?per_page=100&sort=updated`, {
-            headers: { Accept: 'application/vnd.github.v3+json' },
+            headers: { Accept: 'application/vnd.github+json' },
           });
 
           if (!response.ok) throw new Error(`GitHub API error: ${response.status}`);
           rawRepos = await response.json();
-        } catch (err) {
-          console.error('Error fetching GitHub repositories:', err);
-          // If we have stale cache, return it with a warning
+        } catch {
+          // Prefer any local cache (even stale), then bundled catalog
           const staleCache = localStorage.getItem(this.localCacheKey);
           if (staleCache) {
             try {
               const { repos } = JSON.parse(staleCache);
               if (repos && repos.length > 0) {
-                console.warn('Using stale cache due to API error:', err.message);
                 return repos;
               }
             } catch {
-              // Ignore stale cache parse failure and return empty below.
+              // Ignore stale cache parse failure
             }
           }
-          console.warn('Using bundled fallback GitHub repository catalog.');
           return this.fallbackRepos.map(repo => this.normalizeRepoShape(repo));
         }
       }

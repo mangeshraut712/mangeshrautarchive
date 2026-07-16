@@ -64,7 +64,29 @@
     }
   }
 
+  const API_DEAD_KEY = 'portfolio_api_host_dead_v1';
+
+  function isRemoteApiDisabled() {
+    try {
+      return sessionStorage.getItem(API_DEAD_KEY) === '1';
+    } catch {
+      return false;
+    }
+  }
+
+  function markRemoteApiDisabled() {
+    try {
+      sessionStorage.setItem(API_DEAD_KEY, '1');
+    } catch {
+      // ignore
+    }
+  }
+
   function getApiBase() {
+    if (isRemoteApiDisabled()) {
+      return '';
+    }
+
     const configuredOrigin = normalizeOrigin(
       globalThis.APP_CONFIG?.apiBaseUrl || globalThis.buildConfig?.apiBaseUrl
     );
@@ -84,6 +106,7 @@
     }
 
     if (window.location.hostname.endsWith('github.io')) {
+      // Prefer live edge/API base only; never spam a blocked Vercel host.
       return 'https://mangeshraut.pro/api';
     }
 
@@ -506,6 +529,10 @@
         headers: { Accept: 'application/json' },
         cache: 'no-store',
       });
+      if (res.status === 402 || res.status === 503) {
+        markRemoteApiDisabled();
+        return null;
+      }
       if (!res.ok) throw new Error(`Reach fetch failed: ${res.status}`);
       return { type: 'reach', data: await res.json() };
     } catch {
@@ -514,9 +541,17 @@
           headers: { Accept: 'application/json' },
           cache: 'no-store',
         });
+        if (res.status === 402 || res.status === 503) {
+          markRemoteApiDisabled();
+          return null;
+        }
         if (!res.ok) throw new Error(`Views fetch failed: ${res.status}`);
         return { type: 'views', data: await res.json() };
       } catch {
+        // Network / CORS when Vercel is DEPLOYMENT_DISABLED — stop retrying this session
+        if (window.location.hostname.endsWith('github.io')) {
+          markRemoteApiDisabled();
+        }
         return null;
       }
     }
@@ -526,27 +561,39 @@
     const apiBase = getApiBase();
     if (!apiBase) return null;
 
-    const response = await fetchWithTimeout(`${apiBase}/analytics/track`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-      },
-      body: JSON.stringify({
-        session_id: getSessionId(),
-        path: window.location.pathname || '/',
-        is_homepage:
-          window.location.pathname === '/' || window.location.pathname.endsWith('/index.html'),
-        referrer: document.referrer || '',
-      }),
-    });
+    try {
+      const response = await fetchWithTimeout(`${apiBase}/analytics/track`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify({
+          session_id: getSessionId(),
+          path: window.location.pathname || '/',
+          is_homepage:
+            window.location.pathname === '/' || window.location.pathname.endsWith('/index.html'),
+          referrer: document.referrer || '',
+        }),
+      });
 
-    if (!response.ok) {
-      throw new Error(`Analytics track failed: ${response.status}`);
+      if (response.status === 402 || response.status === 503) {
+        markRemoteApiDisabled();
+        return null;
+      }
+
+      if (!response.ok) {
+        return null;
+      }
+
+      localStorage.setItem(STORAGE_KEYS.LAST_VISIT, Date.now().toString());
+      return response.json();
+    } catch {
+      if (window.location.hostname.endsWith('github.io')) {
+        markRemoteApiDisabled();
+      }
+      return null;
     }
-
-    localStorage.setItem(STORAGE_KEYS.LAST_VISIT, Date.now().toString());
-    return response.json();
   }
 
   async function refreshReach({ track = false } = {}) {

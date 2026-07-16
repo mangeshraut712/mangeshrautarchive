@@ -240,7 +240,27 @@ function prefetchGithubProjectsCatalog() {
     return;
   }
 
-  fetch(getGithubProjectsPrefetchUrl(), {
+  // Skip warm fetch to blocked Vercel from GitHub Pages (avoids console CORS noise).
+  try {
+    if (sessionStorage.getItem('portfolio_api_host_dead_v1') === '1') {
+      return;
+    }
+  } catch {
+    // ignore
+  }
+
+  const url = getGithubProjectsPrefetchUrl();
+  if (typeof window !== 'undefined' && window.location.hostname.endsWith('github.io')) {
+    // Prefer public GitHub API warm; proxy often 402 when Vercel is disabled.
+    fetch('https://api.github.com/users/mangeshraut712/repos?per_page=30&sort=updated', {
+      method: 'GET',
+      headers: { Accept: 'application/vnd.github+json' },
+      priority: 'low',
+    }).catch(() => {});
+    return;
+  }
+
+  fetch(url, {
     method: 'GET',
     headers: { Accept: 'application/json' },
     priority: 'low',

@@ -20,12 +20,16 @@ describe('section-preload', () => {
     );
   });
 
-  it('falls back to production API on github.io mirrors', () => {
+  it('uses public GitHub API on github.io when no CHAT/API base is configured', () => {
     const context = {
       location: { origin: 'https://user.github.io', hostname: 'user.github.io' },
     };
 
-    expect(resolveGithubApiBase(context)).toBe('https://mangeshraut.pro');
+    // Avoid hammering a blocked Vercel host from static mirrors
+    expect(resolveGithubApiBase(context)).toBe('');
+    expect(getGithubProjectsPrefetchUrl(context)).toBe(
+      'https://api.github.com/users/mangeshraut712/repos?per_page=100&sort=updated'
+    );
   });
 
   it('defers warmup on save-data and very slow connections', () => {

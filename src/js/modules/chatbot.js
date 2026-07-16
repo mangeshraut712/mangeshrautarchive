@@ -414,12 +414,13 @@ class AppleIntelligenceChatbot {
         local: 'Local Mode',
         offline: 'Offline',
       };
-      statusText.textContent = labels[status] || 'Ready';
+      // Never leave a misleading "Ready" while Vercel/API is down
+      statusText.textContent = labels[status] || labels.local;
       statusText.title =
         status === 'online'
           ? 'OpenRouter configured — free models used if Grok is unavailable'
           : status === 'local'
-            ? 'Answering from portfolio knowledge / local FastAPI'
+            ? 'Answering from portfolio knowledge (live API host unavailable)'
             : 'No network — offline portfolio answers only';
     }
   }

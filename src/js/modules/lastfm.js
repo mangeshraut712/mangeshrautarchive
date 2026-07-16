@@ -326,14 +326,42 @@ class LastFmService {
   }
 
   async fetchRecent() {
-    try {
-      const payload = await this.fetchRecentFromProxy(10);
-      if (this.applyRecentPayload(payload, 'proxy')) {
-        return;
+    // Hydrate from local cache first so GitHub Pages paints music without waiting on a dead API.
+    this.hydrateFromLocalCache();
+
+    const apiDead = (() => {
+      try {
+        return sessionStorage.getItem('portfolio_api_host_dead_v1') === '1';
+      } catch {
+        return false;
       }
-    } catch (error) {
-      if (!this.isLoopbackHost()) {
-        console.warn('Last.fm proxy fetch failed; trying direct fallback:', error);
+    })();
+
+    const onGithubPages =
+      typeof window !== 'undefined' && window.location.hostname.endsWith('github.io');
+
+    if (!apiDead && !onGithubPages) {
+      try {
+        const payload = await this.fetchRecentFromProxy(10);
+        if (this.applyRecentPayload(payload, 'proxy')) {
+          return;
+        }
+      } catch {
+        // Quiet fail — try JSONP / cache
+      }
+    } else if (!apiDead && onGithubPages) {
+      // One quiet attempt; mark host dead on 402 so analytics/github stop hammering Vercel
+      try {
+        const payload = await this.fetchRecentFromProxy(10);
+        if (this.applyRecentPayload(payload, 'proxy')) {
+          return;
+        }
+      } catch {
+        try {
+          sessionStorage.setItem('portfolio_api_host_dead_v1', '1');
+        } catch {
+          // ignore
+        }
       }
     }
 
@@ -353,10 +381,8 @@ class LastFmService {
       if (this.applyRecentPayload(payload, 'direct-jsonp')) {
         return;
       }
-    } catch (error) {
-      if (!this.isLoopbackHost()) {
-        console.warn('Last.fm direct fallback failed:', error);
-      }
+    } catch {
+      // Quiet fail
     }
 
     if (this.cachedTracks?.length) {
