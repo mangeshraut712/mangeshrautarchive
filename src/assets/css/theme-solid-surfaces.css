@@ -57,19 +57,48 @@ html[data-theme='dark'] {
   --lg-popover-surface-dark: #000000;
 }
 
+/* Page canvas — solid only (must win over liquid-glass ambient mesh) */
 html,
-html:not(.dark) body {
+html:not(.dark),
+html:not(.dark) body,
+html:not(.dark) main,
+html:not(.dark) #main-content,
+html:not(.dark) footer {
   background: #ffffff !important;
   background-color: #ffffff !important;
   background-image: none !important;
 }
 
 html.dark,
-html.dark body {
+html.dark body,
+html.dark main,
+html.dark #main-content,
+html.dark footer {
   background: #000000 !important;
   background-color: #000000 !important;
   background-image: none !important;
   color: #f5f5f7 !important;
+}
+
+/* Homepage + subpage section shells inherit solid page color */
+html:not(.dark) main > section,
+html:not(.dark) body.systems-page,
+html:not(.dark) body.monitor-page,
+html:not(.dark) body.uses-page,
+html:not(.dark) body.systems-page .systems-shell,
+html:not(.dark) body.monitor-page main {
+  background-color: #ffffff !important;
+  background-image: none !important;
+}
+
+html.dark main > section,
+html.dark body.systems-page,
+html.dark body.monitor-page,
+html.dark body.uses-page,
+html.dark body.systems-page .systems-shell,
+html.dark body.monitor-page main {
+  background-color: #000000 !important;
+  background-image: none !important;
 }
 
 /* ─── Card & panel surfaces ─── */

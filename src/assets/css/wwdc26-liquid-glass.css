@@ -72,7 +72,9 @@
 
 html {
   transition: --lg-tint 0.32s cubic-bezier(0.25, 0.1, 0.25, 1);
-  background-color: var(--theme-page-bg) !important;
+  background: var(--theme-page-bg, #ffffff) !important;
+  background-color: var(--theme-page-bg, #ffffff) !important;
+  background-image: none !important;
 }
 
 html.lg-tint-instant {
@@ -1579,7 +1581,35 @@ html .container,
 .travel-body,
 body.monitor-page,
 body.monitor-page main {
-  background-color: var(--theme-page-bg) !important;
+  /* Solid page fill only — never gradients/mesh */
+  background: var(--theme-page-bg, #ffffff) !important;
+  background-color: var(--theme-page-bg, #ffffff) !important;
+  background-image: none !important;
+}
+
+html.dark,
+html.dark body,
+html.dark main,
+html.dark #main-content,
+html.dark footer,
+html.dark .page-wrapper,
+html.dark .container,
+html.dark body.monitor-page,
+html.dark body.monitor-page main,
+html.dark .travel-body {
+  background: #000000 !important;
+  background-color: #000000 !important;
+  background-image: none !important;
+}
+
+html:not(.dark),
+html:not(.dark) body,
+html:not(.dark) main,
+html:not(.dark) #main-content,
+html:not(.dark) footer {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
 }
 
 /* Map / media layers stay independent of page fill */

@@ -5,13 +5,18 @@
  */
 
 /* ─── Canvas & base type ─────────────────────────────────────────── */
+/* Entire site page background: solid white (light) / solid black (dark) */
 html {
-  background-color: #ffffff;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
   color-scheme: light;
 }
 
 html.dark {
-  background-color: #000000;
+  background: #000000 !important;
+  background-color: #000000 !important;
+  background-image: none !important;
   color-scheme: dark;
 }
 
@@ -47,7 +52,39 @@ html.dark body {
 main,
 #main-content {
   color: inherit;
-  background: transparent;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
+}
+
+html.dark main,
+html.dark #main-content {
+  background: #000000 !important;
+  background-color: #000000 !important;
+  background-image: none !important;
+}
+
+/* Final page-canvas lock (beats deferred liquid-glass sheets) */
+html:not(.dark),
+html:not(.dark) body,
+html:not(.dark) main,
+html:not(.dark) #main-content,
+html:not(.dark) footer,
+html:not(.dark) .page-wrapper {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
+}
+
+html.dark,
+html.dark body,
+html.dark main,
+html.dark #main-content,
+html.dark footer,
+html.dark .page-wrapper {
+  background: #000000 !important;
+  background-color: #000000 !important;
+  background-image: none !important;
 }
 
 /* Secondary copy — Apple greys (not page/card fills) */
