@@ -351,10 +351,18 @@ body.systems-page button.uses-control-tile.is-active[type='button'] i {
 }
 
 @media (width <= 768px) {
-  .a11y-toolbar button {
+  /* Panel feature buttons only — main FAB stays 48px (desktop parity) */
+  .a11y-toolbar__panel button {
     width: 44px !important;
     height: 44px !important;
     min-width: 44px !important;
     min-height: 44px !important;
+  }
+
+  .a11y-toolbar__main {
+    width: 48px !important;
+    height: 48px !important;
+    min-width: 48px !important;
+    min-height: 48px !important;
   }
 }

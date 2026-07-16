@@ -309,15 +309,18 @@ html.reduce-motion *::after {
   pointer-events: auto !important;
 }
 
+/* Ensure dark glass sheet matches desktop/mobile solid card */
 html.dark .a11y-glass-popover {
   --ag-blue: #0a84ff;
-  --ag-surface: #000000;
-  --ag-elevated: #1c1c1e;
+  --ag-surface: #1c1c1e;
+  --ag-elevated: #2c2c2e;
   --ag-border: #2c2c2e;
   --ag-text: #f5f5f7;
   --ag-muted: #a1a1a6;
   --ag-subtle: #8e8e93;
 
+  background: #1c1c1e !important;
+  background-color: #1c1c1e !important;
   box-shadow:
     0 0 0 0.5px rgb(255 255 255 / 6%),
     0 22px 56px rgb(0 0 0 / 58%) !important;
@@ -826,20 +829,16 @@ html.dark .a11y-glass-popover__hint {
   display: none !important;
 }
 
+/* Narrow phones: keep same solid card chrome as desktop; only clamp width to viewport */
 @media (width <= 480px) {
   .a11y-glass-popover {
-    left: max(0.65rem, env(safe-area-inset-left, 0px)) !important;
-    bottom: max(8rem, calc(env(safe-area-inset-bottom, 0px) + 6.75rem)) !important;
-    width: min(17rem, calc(100vw - 1.25rem)) !important;
-    max-width: min(17rem, calc(100vw - 1.25rem)) !important;
-    padding: 0.85rem 0.9rem 0.95rem !important;
-    gap: 0.75rem !important;
-  }
-
-  button.a11y-glass-preset,
-  .a11y-glass-preset {
-    min-height: 2.35rem !important;
-    font-size: 0.8rem !important;
+    left: max(1rem, env(safe-area-inset-left, 0px)) !important;
+    bottom: calc(
+      max(1.25rem, env(safe-area-inset-bottom, 0px)) + 48px + 12px + 48px + 0.75rem
+    ) !important;
+    width: min(20.5rem, calc(100vw - 1.6rem)) !important;
+    max-width: min(20.5rem, calc(100vw - 1.6rem)) !important;
+    padding: 1rem 1.05rem 1.1rem !important;
   }
 }
 

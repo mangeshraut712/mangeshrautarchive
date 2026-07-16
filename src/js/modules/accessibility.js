@@ -1049,7 +1049,7 @@ export class AccessibilityEnhancer {
         }
 
         html.dark .a11y-toolbar__panel {
-          background: #000000;
+          background: #1c1c1e;
           border-color: rgb(255 255 255 / 14%);
           box-shadow: 0 14px 36px rgb(0 0 0 / 45%);
         }
@@ -1147,17 +1147,25 @@ export class AccessibilityEnhancer {
         .a11y-glass-popover {
           position: fixed;
           left: max(1rem, env(safe-area-inset-left, 0px));
-          bottom: max(6.5rem, calc(env(safe-area-inset-bottom, 0px) + 5.5rem));
-          width: min(17.5rem, calc(100vw - 1.5rem));
-          padding: 1rem;
-          border-radius: 18px;
+          bottom: calc(max(1.25rem, env(safe-area-inset-bottom, 0px)) + 48px + 12px + 48px + 0.75rem);
+          width: min(20.5rem, calc(100vw - 1.6rem));
+          max-width: min(20.5rem, calc(100vw - 1.6rem));
+          max-height: min(82vh, 32rem);
+          overflow-x: hidden;
+          overflow-y: auto;
+          padding: 1rem 1.05rem 1.1rem;
+          border-radius: 22px;
           z-index: 100050;
           opacity: 0;
           transform: scale(0.96) translateY(8px);
           pointer-events: none;
-          background: #ffffff;
+          background: #ffffff !important;
+          background-color: #ffffff !important;
+          background-image: none !important;
           border: 1px solid #e5e5ea;
           box-shadow: 0 16px 40px rgb(0 0 0 / 16%);
+          backdrop-filter: none !important;
+          -webkit-backdrop-filter: none !important;
           transition: opacity 0.25s ease, transform 0.28s cubic-bezier(0.2, 0.8, 0.2, 1);
         }
 
@@ -1168,7 +1176,8 @@ export class AccessibilityEnhancer {
         }
 
         html.dark .a11y-glass-popover {
-          background: #000000;
+          background: #1c1c1e !important;
+          background-color: #1c1c1e !important;
           border-color: #2c2c2e;
         }
 

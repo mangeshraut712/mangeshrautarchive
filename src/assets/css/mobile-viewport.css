@@ -37,28 +37,39 @@ body {
 
 @media (width <=768px) {
   :root {
-    --mobile-fab-size: 3rem;
-    --mobile-fab-gap: 0.625rem;
+    /* Match desktop 48px FABs so a11y/share feel the same on phone */
+    --mobile-fab-size: 48px;
+    --mobile-fab-gap: 12px;
     --mobile-edge-inset: max(1rem, env(safe-area-inset-right));
-    --mobile-bottom-inset: calc(env(safe-area-inset-bottom, 0px) + 0.75rem);
-    --mobile-a11y-toolbar-lift: 3.5rem;
+    --mobile-bottom-inset: max(1.25rem, env(safe-area-inset-bottom, 0px));
+    /* Share on bottom dock; a11y above it (same as desktop) */
+    --mobile-a11y-bottom: calc(
+      var(--mobile-bottom-inset) + var(--mobile-fab-size) + var(--mobile-fab-gap)
+    );
+    --mobile-a11y-toolbar-lift: calc(var(--mobile-fab-size) + var(--mobile-fab-gap));
     /* Single a11y FAB + share FAB — avoid huge footer dead space */
-    --mobile-content-chrome-pad: 5.25rem;
+    --mobile-content-chrome-pad: 5.75rem;
     --mobile-anchor-offset: calc(5.75rem + env(safe-area-inset-top, 0px));
     --mobile-gutter: max(1rem, env(safe-area-inset-left, 0px));
     --mobile-card-radius: 18px;
     --mobile-type-floor: 0.75rem;
   }
 
-  /* Accessibility FAB dock — left bottom */
+  /* Accessibility dock — same vertical stack as desktop (above share) */
   .a11y-toolbar {
     left: max(1rem, env(safe-area-inset-left)) !important;
     right: auto !important;
-    bottom: var(--mobile-bottom-inset) !important;
+    bottom: var(--mobile-a11y-bottom) !important;
     top: auto !important;
     transform: none !important;
-    z-index: 9998 !important;
+    z-index: 9997 !important;
     max-width: none !important;
+    width: auto !important;
+    display: flex !important;
+    flex-direction: column-reverse !important;
+    align-items: flex-start !important;
+    gap: 0.5rem !important;
+    overflow: visible !important;
     background: transparent !important;
     border: none !important;
     box-shadow: none !important;
@@ -66,20 +77,21 @@ body {
   }
 
   body.monitor-page .a11y-toolbar,
-  body.systems-page .a11y-toolbar {
-    bottom: calc(env(safe-area-inset-bottom, 0px) + 0.625rem) !important;
+  body.systems-page .a11y-toolbar,
+  body.uses-page .a11y-toolbar {
+    bottom: var(--mobile-a11y-bottom) !important;
   }
 
+  /* Share FAB — bottom-left dock (under a11y), same as desktop */
   #website-share-toggle.website-share-fab,
   .website-share-fab {
     left: max(1rem, env(safe-area-inset-left)) !important;
-    bottom: calc(
-      var(--mobile-bottom-inset) + var(--mobile-fab-size) + var(--mobile-fab-gap)
-    ) !important;
+    bottom: var(--mobile-bottom-inset) !important;
     width: var(--mobile-fab-size) !important;
     height: var(--mobile-fab-size) !important;
     min-width: var(--mobile-fab-size) !important;
     min-height: var(--mobile-fab-size) !important;
+    z-index: 9998 !important;
   }
 
   .a11y-toolbar__main {
@@ -89,12 +101,35 @@ body {
     min-height: var(--mobile-fab-size) !important;
   }
 
+  .a11y-toolbar__panel {
+    flex-direction: column !important;
+    overflow: hidden !important;
+  }
+
+  .a11y-toolbar.is-open .a11y-toolbar__panel {
+    max-height: min(22rem, 55vh) !important;
+  }
+
+  /* Glass popover — solid card, same structure as desktop */
   .a11y-glass-popover {
-    bottom: calc(var(--mobile-bottom-inset) + var(--mobile-a11y-toolbar-lift) + 3.25rem) !important;
+    bottom: calc(var(--mobile-a11y-bottom) + var(--mobile-fab-size) + 0.75rem) !important;
     left: max(1rem, env(safe-area-inset-left)) !important;
     right: auto !important;
     top: auto !important;
     transform: none !important;
+    width: min(20.5rem, calc(100vw - 1.6rem)) !important;
+    max-width: min(20.5rem, calc(100vw - 1.6rem)) !important;
+    max-height: min(82vh, 32rem) !important;
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    background-image: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  html.dark .a11y-glass-popover {
+    background: #1c1c1e !important;
+    background-color: #1c1c1e !important;
   }
 
   /* Right FAB stack — go-to-top lowest, chatbot above with explicit gap */
