@@ -1022,23 +1022,28 @@ export class AccessibilityEnhancer {
           display: flex;
           flex-direction: column;
           gap: 0.4rem;
-          padding: 0.45rem;
+          padding: 0;
+          margin: 0;
           border-radius: 18px;
           background: #ffffff;
-          border: 1px solid rgb(0 0 0 / 10%);
-          box-shadow: 0 14px 36px rgb(0 0 0 / 14%);
+          border: 1px solid transparent;
+          box-shadow: none;
           max-height: 0;
+          min-height: 0;
           opacity: 0;
           overflow: hidden;
           pointer-events: none;
           transform: translateY(8px) scale(0.96);
-          transition: max-height 0.28s ease, opacity 0.22s ease, transform 0.28s cubic-bezier(0.2, 0.8, 0.2, 1);
+          transition: max-height 0.28s ease, opacity 0.22s ease, transform 0.28s cubic-bezier(0.2, 0.8, 0.2, 1), padding 0.22s ease;
         }
 
         .a11y-toolbar.is-open .a11y-toolbar__panel {
           max-height: 22rem;
+          padding: 0.45rem;
           opacity: 1;
           pointer-events: auto;
+          border-color: rgb(0 0 0 / 10%);
+          box-shadow: 0 14px 36px rgb(0 0 0 / 14%);
           transform: translateY(0) scale(1);
         }
 

@@ -337,37 +337,33 @@ html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced'])
 
 /* ─── Floating chrome: nav backgrounds owned by chrome-surfaces.css ─── */
 
+/* A11y shell stays transparent — glass only on __main / __panel (avoids covering share FAB) */
 html:not([data-lg-mode='tinted']) .a11y-toolbar,
+html[data-lg-mode='clear'] .a11y-toolbar,
+html.dark:not([data-lg-mode='tinted']) .a11y-toolbar,
+html.dark[data-lg-mode='clear'] .a11y-toolbar {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
 html[data-lg-mode='clear'] .a11y-glass-popover,
 html[data-lg-mode='clear'] #chatbot-widget {
   box-shadow: none !important;
 }
 
-html.dark[data-lg-mode='clear'] .a11y-toolbar,
 html.dark[data-lg-mode='clear'] .a11y-glass-popover,
 html.dark[data-lg-mode='clear'] #chatbot-widget {
   box-shadow: none !important;
 }
 
-html:not([data-lg-mode='tinted']) .a11y-toolbar,
 html:not([data-lg-mode='tinted']) .a11y-glass-popover {
   backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-control)) !important;
   -webkit-backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-control)) !important;
-}
-
-html:not([data-lg-mode='tinted']):not(.dark) .a11y-toolbar {
-  background: rgb(255 255 255 / calc(52% + var(--lg-tint) * 38%)) !important;
-  background-color: rgb(255 255 255 / calc(52% + var(--lg-tint) * 38%)) !important;
-  border: 1px solid color-mix(in srgb, rgb(255 255 255 / 44%) 62%, rgb(0 0 0 / 8%) 38%) !important;
-  box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / calc(44% + var(--lg-tint) * 36%)),
-    0 10px 36px rgb(0 0 0 / calc(10% + (1 - var(--lg-tint)) * 8%)) !important;
-}
-
-html.dark:not([data-lg-mode='tinted']) .a11y-toolbar {
-  background: rgb(0 0 0 / calc(48% + var(--lg-tint) * 42%)) !important;
-  background-color: rgb(0 0 0 / calc(48% + var(--lg-tint) * 42%)) !important;
-  border-color: color-mix(in srgb, rgb(255 255 255 / 12%) 76%, rgb(0 0 0 / 24%) 24%) !important;
 }
 
 html:not([data-lg-mode='tinted']):not(.dark) .a11y-glass-popover {
@@ -438,30 +434,50 @@ html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced'], [data-lg-mode='t
 }
 
 @media (prefers-reduced-transparency: reduce) {
-  html:not([data-lg-mode='tinted']) .a11y-toolbar,
+  html:not([data-lg-mode='tinted']) .a11y-toolbar__main,
+  html:not([data-lg-mode='tinted']) .a11y-toolbar__panel,
   html:not([data-lg-mode='tinted']) .a11y-glass-popover,
   html:not([data-lg-mode='tinted']) #chatbot-widget {
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
   }
 
-  html:not([data-lg-mode='tinted']):not(.dark) .a11y-toolbar,
+  html:not([data-lg-mode='tinted']):not(.dark) .a11y-toolbar__main,
+  html:not([data-lg-mode='tinted']):not(.dark) .a11y-toolbar__panel,
   html:not([data-lg-mode='tinted']):not(.dark) .a11y-glass-popover,
   html:not([data-lg-mode='tinted']):not(.dark) #chatbot-widget {
-    background: rgb(255 255 255 / 96%) !important;
-    background-color: rgb(255 255 255 / 96%) !important;
+    background: #ffffff !important;
+    background-color: #ffffff !important;
   }
 
-  html.dark:not([data-lg-mode='tinted']) .a11y-toolbar,
+  html.dark:not([data-lg-mode='tinted']) .a11y-toolbar__main,
+  html.dark:not([data-lg-mode='tinted']) .a11y-toolbar__panel,
   html.dark:not([data-lg-mode='tinted']) .a11y-glass-popover,
   html.dark:not([data-lg-mode='tinted']) #chatbot-widget {
-    background: rgb(0 0 0 / 96%) !important;
-    background-color: rgb(0 0 0 / 96%) !important;
+    background: #000000 !important;
+    background-color: #000000 !important;
+  }
+
+  /* Never paint the a11y shell or full-screen share dialog */
+  .a11y-toolbar,
+  .website-share-dialog.active {
+    background: transparent !important;
+    background-color: transparent !important;
   }
 }
 
 /* ─── Tinted endpoint: solid chrome, zero glass (wins over wwdc26 + WebGL hosts) ─── */
-html[data-lg-mode='tinted'] .a11y-toolbar,
+html[data-lg-mode='tinted'] .a11y-toolbar {
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+html[data-lg-mode='tinted'] .a11y-toolbar__main,
+html[data-lg-mode='tinted'] .a11y-toolbar__panel,
 html[data-lg-mode='tinted'] .a11y-glass-popover,
 html[data-lg-mode='tinted'] #chatbot-widget,
 html[data-lg-mode='tinted']
@@ -470,7 +486,8 @@ html[data-lg-mode='tinted']
   -webkit-backdrop-filter: none !important;
 }
 
-html[data-lg-mode='tinted']:not(.dark) .a11y-toolbar,
+html[data-lg-mode='tinted']:not(.dark) .a11y-toolbar__main,
+html[data-lg-mode='tinted']:not(.dark) .a11y-toolbar__panel,
 html[data-lg-mode='tinted']:not(.dark) .a11y-glass-popover,
 html[data-lg-mode='tinted']:not(.dark) #chatbot-widget,
 html[data-lg-mode='tinted']:not(.dark)
@@ -479,7 +496,8 @@ html[data-lg-mode='tinted']:not(.dark)
   background-color: #ffffff !important;
 }
 
-html.dark[data-lg-mode='tinted'] .a11y-toolbar,
+html.dark[data-lg-mode='tinted'] .a11y-toolbar__main,
+html.dark[data-lg-mode='tinted'] .a11y-toolbar__panel,
 html.dark[data-lg-mode='tinted'] .a11y-glass-popover,
 html.dark[data-lg-mode='tinted'] #chatbot-widget,
 html.dark[data-lg-mode='tinted']

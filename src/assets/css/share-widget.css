@@ -1,12 +1,13 @@
 /* Website share widget — Apple iOS/macOS inspired Share Sheet style */
 
-/* Independent share FAB (not inside accessibility toolbar) */
+/* Independent share FAB — stacked above a11y with clear gap (no shared glass shell) */
 #website-share-toggle.website-share-fab,
 .website-share-fab {
   position: fixed !important;
   left: max(1rem, env(safe-area-inset-left, 0px)) !important;
-  bottom: calc(max(1.25rem, env(safe-area-inset-bottom, 0px)) + 3.65rem) !important;
-  z-index: 9996 !important;
+  /* a11y FAB is 48px + 12px gap above a11y bottom dock */
+  bottom: calc(max(1.25rem, env(safe-area-inset-bottom, 0px)) + 48px + 12px) !important;
+  z-index: 9998 !important;
   width: 48px !important;
   height: 48px !important;
   min-width: 48px !important;
@@ -16,12 +17,17 @@
   border-radius: 999px !important;
   border: 1px solid rgb(0 0 0 / 10%) !important;
   background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
   box-shadow: 0 10px 28px rgb(0 0 0 / 14%) !important;
   color: #1d1d1f !important;
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
   cursor: pointer !important;
+  isolation: isolate !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
   transition:
     transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1),
     box-shadow 0.2s ease !important;
@@ -30,6 +36,8 @@
 html.dark #website-share-toggle.website-share-fab,
 html.dark .website-share-fab {
   background: #1c1c1e !important;
+  background-color: #1c1c1e !important;
+  background-image: none !important;
   border-color: rgb(255 255 255 / 14%) !important;
   color: #f5f5f7 !important;
   box-shadow: 0 10px 28px rgb(0 0 0 / 42%) !important;
@@ -62,6 +70,10 @@ html.dark .website-share-fab {
   opacity: 0;
   pointer-events: none !important;
   visibility: hidden;
+  /* Full-screen host must stay transparent — only backdrop + card paint */
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
   transition: opacity 0.24s cubic-bezier(0.4, 0, 0.2, 1);
   -webkit-transform: translateZ(0);
   transform: translateZ(0);
@@ -72,8 +84,22 @@ html.dark .website-share-fab {
   opacity: 1;
   pointer-events: auto !important;
   visibility: visible;
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* Hide left-dock FABs while share sheet is open (prevents bg bleed through card) */
+body.share-dialog-open .a11y-toolbar,
+body.share-dialog-open #website-share-toggle,
+.website-share-dialog.active ~ .a11y-toolbar,
+body:has(.website-share-dialog.active) .a11y-toolbar,
+body:has(.website-share-dialog.active) #website-share-toggle {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
 }
 
 .website-share-dialog[aria-hidden='true']:not(.active) {
@@ -91,25 +117,27 @@ body.share-dialog-open {
 .website-share-backdrop {
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.4);
+  z-index: 0;
+  background: rgba(0, 0, 0, 0.45);
   transition: background-color 0.24s ease;
 }
 
 html.dark .website-share-backdrop {
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.72);
 }
 
-/* Card Container — solid white/black (no liquid-glass transparency) */
+/* Card Container — solid white/black, isolated above any a11y chrome */
 .website-share-card {
   position: relative;
-  z-index: 1;
+  z-index: 2;
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
   width: 100%;
   max-width: 360px;
   min-height: auto !important;
-  max-height: fit-content !important;
+  max-height: min(85vh, 720px) !important;
+  overflow: auto !important;
   padding: 1.75rem !important;
   color: #1d1d1f !important;
   background: #ffffff !important;
@@ -117,9 +145,10 @@ html.dark .website-share-backdrop {
   background-image: none !important;
   border: 1px solid #e5e5ea !important;
   border-radius: 24px !important;
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.14) !important;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.22) !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
+  isolation: isolate !important;
   opacity: 1 !important;
   transform: scale(0.95) translateY(10px);
   transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -131,21 +160,34 @@ html.dark .website-share-backdrop {
 
 html.dark .website-share-card {
   color: #f5f5f7 !important;
-  background: #000000 !important;
-  background-color: #000000 !important;
+  background: #1c1c1e !important;
+  background-color: #1c1c1e !important;
   background-image: none !important;
   border-color: #2c2c2e !important;
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.65) !important;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.72) !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
 }
 
-/* Kill glass overrides on the share sheet card */
+/* Kill glass / theme overrides on the share sheet card (highest priority) */
+html .website-share-dialog .website-share-card,
 html .website-share-dialog.active .website-share-card,
 html[data-lg-mode] .website-share-card,
-html.dark[data-lg-mode] .website-share-card {
+html.dark[data-lg-mode] .website-share-card,
+html.dark .website-share-dialog .website-share-card {
+  background-image: none !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
+}
+
+html:not(.dark) .website-share-dialog .website-share-card {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+}
+
+html.dark .website-share-dialog .website-share-card {
+  background: #1c1c1e !important;
+  background-color: #1c1c1e !important;
 }
 
 /* Close button - Apple iOS style circle, inline in card header row */

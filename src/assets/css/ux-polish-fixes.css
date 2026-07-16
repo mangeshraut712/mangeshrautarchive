@@ -137,13 +137,23 @@ body #go-to-top.visible {
 }
 
 body #website-share-toggle {
-  z-index: var(--z-fab);
+  z-index: 9998;
 }
 
 .a11y-toolbar {
-  z-index: var(--z-a11y);
+  z-index: 9997;
   bottom: max(12px, env(safe-area-inset-bottom, 0px));
   left: max(12px, env(safe-area-inset-left, 0px));
+  /* Shell never paints — only child FABs/panel */
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  padding: 0 !important;
+  gap: 0.5rem !important;
 }
 
 /* Clearance so last content isn’t under FABs (homepage only) — single stack, no huge void */
