@@ -2457,7 +2457,6 @@ html.dark section h2 {
 }
 
 /* Spacing for Major Content Components */
-#github-projects-container,
 #blog-posts-container,
 .skills-grid,
 .experience-timeline,
@@ -2465,10 +2464,19 @@ html.dark section h2 {
   margin-top: clamp(2rem, 5vh, 4rem) !important;
 }
 
-/* Vertical breathing room for Project Cards */
-.showcase-project-card,
+/* Projects grid sits inside shell — no extra top margin that desyncs controls */
+#projects #github-projects-container {
+  margin-top: 0 !important;
+}
+
+/* Blog cards need bottom margin outside a tight grid; project cards use grid gap only */
 .blog-card {
   margin-bottom: 2rem !important;
+}
+
+#projects #github-projects-container .showcase-project-card,
+#projects .showcase-project-card {
+  margin-bottom: 0 !important;
 }
 
 /* Grid Spacing Refinement - keep native grid/timeline layouts intact */

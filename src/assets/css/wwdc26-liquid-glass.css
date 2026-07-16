@@ -2596,19 +2596,19 @@ html.dark #projects #github-projects-container .showcase-project-card {
 
 @media (hover: hover) and (pointer: fine) {
   #projects #github-projects-container .showcase-project-card:hover {
-    transform: translateY(-3px) scale(1.008) !important;
+    transform: translateY(-4px) !important;
     border-color: #0071e3 !important;
-    box-shadow: none !important;
+    box-shadow: 0 16px 32px rgb(15 23 42 / 10%) !important;
   }
 
   html.dark #projects #github-projects-container .showcase-project-card:hover {
     border-color: #0a84ff !important;
-    box-shadow: none !important;
+    box-shadow: 0 18px 36px rgb(0 0 0 / 45%) !important;
   }
 }
 
 #projects #github-projects-container .showcase-project-card.is-pressed {
-  transform: translateY(-1px) scale(0.985) !important;
+  transform: translateY(-1px) !important;
   transition-duration: 0.12s !important;
 }
 

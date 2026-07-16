@@ -98,17 +98,19 @@ html.dark .project-evidence-link.is-unavailable {
   border-color: var(--project-border-dark);
 }
 
-/* Projects grid baseline - Compact 3-column layout */
+/* Projects grid baseline — equal columns, shell owns width */
 #projects .projects-grid-shell,
 #projects #github-projects-container {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1rem;
+  gap: 1.15rem;
   width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  min-height: 520px;
+  max-width: 100%;
+  margin: 0;
+  min-height: 0;
   overflow-x: clip;
+  align-items: stretch;
+  justify-items: stretch;
 }
 
 /* Section and global nav alignment */
@@ -180,16 +182,25 @@ html.dark #projects #projects-stats .stat-label {
   color: var(--project-muted-dark) !important;
 }
 
-/* Projects section shell + controls */
+/* Projects section shell + controls — one shared column so every band aligns */
 #projects .projects-showcase-shell {
-  width: min(1240px, 100%);
+  width: min(1200px, 100%);
   margin: 0 auto;
   display: grid;
   gap: clamp(0.95rem, 1.8vw, 1.45rem);
+  justify-items: stretch;
+  align-items: start;
+  box-sizing: border-box;
 }
 
 #projects .projects-showcase-shell > * {
   min-width: 0;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  margin-left: 0;
+  margin-right: 0;
+  justify-self: stretch;
 }
 
 #projects .section-subtitle {
@@ -205,8 +216,8 @@ html.dark #projects #projects-stats .stat-label {
   gap: 0.85rem !important;
   width: 100% !important;
   min-width: 0 !important;
-  max-width: 1200px !important;
-  margin: 0 auto !important;
+  max-width: 100% !important;
+  margin: 0 !important;
   position: relative;
   z-index: 20;
 }
@@ -467,15 +478,17 @@ html.dark #projects .proj-filter-select {
   background-repeat: no-repeat !important;
 }
 
-/* Activity overview banner */
+/* Activity overview banner — full shell width (no margin:auto shrink in grid) */
 #projects .projects-activity-overview {
-  max-width: 1200px;
-  margin: 0 auto;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
   padding: clamp(0.95rem, 1.6vw, 1.25rem);
   border-radius: 20px;
   border: 1px solid var(--project-border-light);
   background: #ffffff;
   box-shadow: none;
+  box-sizing: border-box;
 }
 
 html.dark #projects .projects-activity-overview {
@@ -909,8 +922,9 @@ html.dark #projects .activity-stat-item:hover {
 
 /* Release freshness lens */
 #projects .project-lens-bar {
-  width: min(1200px, 100%);
-  margin: 0 auto;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
   display: flex;
   flex-wrap: nowrap;
   gap: 0.48rem;
@@ -920,6 +934,7 @@ html.dark #projects .activity-stat-item:hover {
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
   padding-bottom: 0.2rem;
+  box-sizing: border-box;
 }
 
 #projects .project-lens-bar::-webkit-scrollbar {
@@ -1027,10 +1042,12 @@ html.dark #projects .project-lens-chip.active {
 #projects #github-projects-container {
   display: grid !important;
   grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-  gap: 1rem !important;
+  gap: 1.15rem !important;
   min-width: 0 !important;
-  max-width: 1200px !important;
-  margin: 0 auto !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  align-items: stretch !important;
 }
 
 #projects .projects-empty-state {
@@ -1053,38 +1070,43 @@ html.dark #projects .projects-empty-state {
   margin-bottom: 0.75rem;
 }
 
-/* Project cards */
+/* Project cards — consistent internal zones + equal row height */
 #projects #github-projects-container .showcase-project-card {
+  --project-card-pad-x: 1rem;
+  --project-card-pad-y: 0.95rem;
   position: relative !important;
   display: flex !important;
   flex-direction: column !important;
-  min-height: 405px !important;
+  min-height: 0 !important;
   height: 100% !important;
-  border-radius: 20px !important;
+  margin: 0 !important;
+  margin-bottom: 0 !important;
+  border-radius: 18px !important;
   color: var(--project-text-light) !important;
   overflow: hidden !important;
+  box-sizing: border-box !important;
   transition:
     transform 0.24s ease,
+    border-color 0.24s ease,
     box-shadow 0.24s ease !important;
 }
 
 #projects #github-projects-container .showcase-project-card::after {
   content: '';
   position: absolute;
-  inset: auto 1rem 0.7rem;
+  inset: auto var(--project-card-pad-x) 0.55rem;
   height: 2px;
   border-radius: 999px;
   background: linear-gradient(90deg, transparent 0%, rgb(10 111 239 / 35%) 50%, transparent 100%);
   opacity: 0;
   transition: opacity 0.24s ease;
+  pointer-events: none;
 }
 
-/* Interactive hover glow & scale overrides */
+/* Interactive hover — lift only, keep grid alignment */
 #projects #github-projects-container .showcase-project-card:hover {
-  transform: translateY(-5px) scale(1.015) !important;
-  box-shadow:
-    0 20px 35px rgb(10 111 239 / 18%),
-    0 0 15px rgb(10 111 239 / 10%) !important;
+  transform: translateY(-4px) !important;
+  box-shadow: 0 16px 32px rgb(15 23 42 / 10%) !important;
   border-color: #0071e3 !important;
 }
 
@@ -1097,33 +1119,35 @@ html.dark #projects #github-projects-container .showcase-project-card {
 }
 
 html.dark #projects #github-projects-container .showcase-project-card:hover {
-  transform: translateY(-5px) scale(1.015) !important;
-  box-shadow:
-    0 20px 40px rgba(10, 132, 255, 0.25),
-    0 0 20px rgba(10, 132, 255, 0.15) !important;
-  border-color: rgba(10, 132, 255, 0.5) !important;
+  transform: translateY(-4px) !important;
+  box-shadow: 0 18px 36px rgb(0 0 0 / 45%) !important;
+  border-color: #0a84ff !important;
 }
 
 #projects #github-projects-container .project-header {
-  padding: 1rem 1rem 0.8rem !important;
+  padding: var(--project-card-pad-y) var(--project-card-pad-x) 0.7rem !important;
   display: flex !important;
   flex-direction: column !important;
-  gap: 0.62rem !important;
-  flex: 1 !important;
+  gap: 0.55rem !important;
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  min-width: 0 !important;
 }
 
 #projects #github-projects-container .project-head-top {
-  display: flex !important;
-  align-items: flex-start !important;
-  justify-content: space-between !important;
-  flex-wrap: wrap !important;
-  gap: 0.58rem !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  align-items: start !important;
+  column-gap: 0.55rem !important;
+  row-gap: 0.35rem !important;
+  width: 100% !important;
 }
 
 #projects #github-projects-container .project-title-wrap {
   min-width: 0;
   display: grid;
-  gap: 0.28rem;
+  gap: 0.2rem;
+  grid-column: 1;
 }
 
 #projects #github-projects-container .project-title {
@@ -1133,31 +1157,35 @@ html.dark #projects #github-projects-container .showcase-project-card:hover {
 }
 
 #projects #github-projects-container .project-title-text {
-  font-size: 1.16rem !important;
+  font-size: 1.05rem !important;
   font-weight: 700 !important;
-  line-height: 1.22 !important;
+  line-height: 1.25 !important;
   letter-spacing: -0.02em !important;
-  display: -webkit-box !important;
-  -webkit-line-clamp: 1 !important;
-  line-clamp: 1 !important;
-  -webkit-box-orient: vertical !important;
+  display: block !important;
+  white-space: nowrap !important;
   overflow: hidden !important;
+  text-overflow: ellipsis !important;
 }
 
 #projects #github-projects-container .project-repo-updated {
+  grid-column: 2;
+  grid-row: 1;
+  justify-self: end;
+  align-self: start;
   display: inline-flex !important;
   align-items: center !important;
-  gap: 0.34rem !important;
+  gap: 0.3rem !important;
   flex-shrink: 0 !important;
   border-radius: 999px !important;
   border: 1px solid var(--project-accent-soft-border) !important;
   background: var(--project-accent-soft) !important;
   color: #0a58be !important;
-  padding: 0.3rem 0.65rem !important;
-  font-size: 0.74rem !important;
+  padding: 0.28rem 0.55rem !important;
+  font-size: 0.7rem !important;
   font-weight: 640 !important;
   line-height: 1 !important;
   white-space: nowrap !important;
+  max-width: 100%;
 }
 
 html.dark #projects #github-projects-container .project-repo-updated {
@@ -1170,7 +1198,7 @@ html.dark #projects #github-projects-container .project-repo-updated {
 #projects #github-projects-container .project-repo-link {
   margin: 0 !important;
   color: #0071e3 !important;
-  font-size: 0.78rem !important;
+  font-size: 0.74rem !important;
   line-height: 1.35 !important;
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   white-space: nowrap;
@@ -1179,10 +1207,16 @@ html.dark #projects #github-projects-container .project-repo-updated {
 }
 
 #projects #github-projects-container .project-repo-link {
-  display: inline-flex !important;
-  align-items: center !important;
-  min-height: 44px !important;
+  display: block !important;
+  min-height: 0 !important;
   max-width: 100%;
+  padding: 0.1rem 0 !important;
+  text-decoration: none !important;
+}
+
+#projects #github-projects-container .project-repo-link:hover,
+#projects #github-projects-container .project-repo-link:focus-visible {
+  text-decoration: underline !important;
 }
 
 html.dark #projects #github-projects-container .project-repo-path,
@@ -1193,9 +1227,11 @@ html.dark #projects #github-projects-container .project-repo-link {
 #projects #github-projects-container .project-description {
   margin: 0 !important;
   color: #374151 !important;
-  font-size: 0.9rem !important;
-  line-height: 1.54 !important;
+  font-size: 0.875rem !important;
+  line-height: 1.5 !important;
   letter-spacing: -0.004em !important;
+  /* Reserve 3 lines so every card body aligns */
+  min-height: calc(1.5em * 3) !important;
   display: -webkit-box !important;
   -webkit-line-clamp: 3 !important;
   line-clamp: 3 !important;
@@ -1209,18 +1245,19 @@ html.dark #projects #github-projects-container .project-description {
 
 #projects #github-projects-container .project-release-strip {
   border: 1px solid var(--project-border-light);
-  border-radius: 14px;
-  background: rgb(255 255 255 / 78%);
-  padding: 0.62rem 0.68rem;
+  border-radius: 12px;
+  background: #f5f5f7;
+  padding: 0.55rem 0.62rem;
   display: grid;
-  gap: 0.45rem;
-  box-shadow: inset 0 1px 0 rgb(255 255 255 / 70%);
+  gap: 0.4rem;
+  box-shadow: none;
+  min-width: 0;
 }
 
 html.dark #projects #github-projects-container .project-release-strip {
   border-color: var(--project-border-dark);
-  background: rgb(255 255 255 / 3%);
-  box-shadow: inset 0 1px 0 rgb(255 255 255 / 6%);
+  background: #1c1c1e;
+  box-shadow: none;
 }
 
 #projects #github-projects-container .project-release-copy,
@@ -1320,8 +1357,9 @@ html.dark #projects .project-release-open {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 0.4rem;
-  margin-top: 0.1rem;
+  gap: 0.35rem;
+  margin-top: 0.05rem;
+  min-height: 1.7rem;
 }
 
 #projects .project-signal-pill,
@@ -1348,10 +1386,12 @@ html.dark #projects #github-projects-container .project-signal-pill {
 
 #projects #github-projects-container .project-signal-score {
   margin-left: auto;
+  flex: 0 0 auto;
   color: var(--project-muted-light);
-  font-size: 0.74rem;
+  font-size: 0.72rem;
   font-weight: 640;
   letter-spacing: -0.01em;
+  white-space: nowrap;
 }
 
 html.dark #projects #github-projects-container .project-signal-score {
@@ -1361,7 +1401,12 @@ html.dark #projects #github-projects-container .project-signal-score {
 #projects #github-projects-container .project-tags {
   display: flex !important;
   flex-wrap: wrap !important;
-  gap: 0.34rem !important;
+  gap: 0.3rem !important;
+  align-items: center !important;
+  min-height: 1.55rem !important;
+  /* Cap tag row height so cards stay even when topic counts differ */
+  max-height: 3.4rem !important;
+  overflow: hidden !important;
 }
 
 #projects #github-projects-container .project-language,
@@ -1385,35 +1430,55 @@ html.dark #projects #github-projects-container .project-tag {
   background: rgb(88 166 255 / 15%) !important;
 }
 
+/* Evidence links share the same horizontal inset as header/footer */
+#projects #github-projects-container .project-evidence-row {
+  margin: 0 !important;
+  padding: 0.55rem var(--project-card-pad-x, 1rem) 0.15rem !important;
+  border-top: 1px solid var(--project-border-light);
+  flex: 0 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+  gap: 0.3rem 0.4rem;
+}
+
+html.dark #projects #github-projects-container .project-evidence-row {
+  border-top-color: var(--project-border-dark);
+}
+
 #projects #github-projects-container .project-footer {
   margin-top: auto !important;
   display: grid !important;
   grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-  gap: 0.55rem !important;
-  padding: 0.75rem 1rem 1rem !important;
+  gap: 0.5rem !important;
+  padding: 0.7rem var(--project-card-pad-x, 1rem) 0.9rem !important;
   border-top: 1px solid var(--project-border-light) !important;
-  background: linear-gradient(180deg, rgb(255 255 255 / 78%) 0%, #fff 100%) !important;
+  background: #ffffff !important;
+  flex: 0 0 auto !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
 }
 
 html.dark #projects #github-projects-container .project-footer {
   border-top-color: var(--project-border-dark) !important;
-  background: linear-gradient(180deg, rgb(255 255 255 / 1%) 0%, #000 100%) !important;
+  background: #000000 !important;
 }
 
 #projects #github-projects-container .project-action-btn {
-  min-height: 44px !important;
-  border-radius: 12px !important;
-  padding: 0.55rem 0.7rem !important;
+  min-height: 42px !important;
+  border-radius: 11px !important;
+  padding: 0.5rem 0.55rem !important;
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
-  gap: 0.4rem !important;
-  font-size: 0.84rem !important;
+  gap: 0.35rem !important;
+  font-size: 0.8rem !important;
   font-weight: 640 !important;
   letter-spacing: -0.01em !important;
   text-decoration: none !important;
   white-space: nowrap !important;
   width: 100% !important;
+  min-width: 0 !important;
+  box-sizing: border-box !important;
   transition:
     transform 0.2s ease,
     box-shadow 0.2s ease !important;
@@ -2253,7 +2318,7 @@ html.dark .project-xr-status {
   }
 
   #projects .projects-activity-overview {
-    padding: 1.25rem 1rem !important;
+    padding: 1rem 0.9rem !important;
     max-width: 100% !important;
     min-width: 0 !important;
     overflow: hidden !important;
@@ -2284,9 +2349,23 @@ html.dark .project-xr-status {
 
   #projects #github-projects-container {
     grid-template-columns: 1fr !important;
+    gap: 0.9rem !important;
   }
 
-  #projects #github-projects-container .project-footer,
+  #projects #github-projects-container .showcase-project-card {
+    --project-card-pad-x: 0.9rem;
+    --project-card-pad-y: 0.85rem;
+  }
+
+  /* Keep title + updated badge on one row when possible */
+  #projects #github-projects-container .project-head-top {
+    grid-template-columns: minmax(0, 1fr) auto !important;
+  }
+
+  #projects #github-projects-container .project-footer {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
   .project-xr-facts,
   .project-xr-activity-stats,
   .project-xr-actions {
@@ -2294,14 +2373,14 @@ html.dark .project-xr-status {
   }
 
   #projects #github-projects-container .project-signal-score {
-    width: 100%;
-    margin-left: 0;
+    margin-left: auto;
   }
 
   #projects #github-projects-container .project-release-copy,
   #projects #github-projects-container .project-release-meta {
-    align-items: flex-start;
-    flex-direction: column;
+    align-items: center;
+    flex-direction: row;
+    flex-wrap: wrap;
   }
 
   .project-xr-head {
@@ -2319,5 +2398,11 @@ html.dark .project-xr-status {
 
   .project-xr-release-body {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 380px) {
+  #projects #github-projects-container .project-footer {
+    grid-template-columns: 1fr !important;
   }
 }
