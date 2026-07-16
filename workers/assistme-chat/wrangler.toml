@@ -1,10 +1,13 @@
-# AssistMe chat proxy — Cloudflare Worker (free tier)
-# Deploy: wrangler deploy
-# Secrets: wrangler secret put OPENROUTER_API_KEY
+# AssistMe chat + API edge (Cloudflare Worker) — Vercel FastAPI-compatible surface
+# Deployed by .github/workflows/deploy-chat-worker.yml
 name = "assistme-chat"
 main = "src/index.js"
 compatibility_date = "2026-04-01"
+workers_dev = true
 
 [vars]
-OPENROUTER_MODEL = "google/gemma-4-26b-a4b-it:free"
+OPENROUTER_MODEL = "x-ai/grok-4.3"
+OPENROUTER_SITE_URL = "https://mangeshraut712.github.io/mangeshrautarchive"
+OPENROUTER_SITE_TITLE = "AssistMe Cloudflare Edge"
+LASTFM_USERNAME = "mbr63"
 ALLOWED_ORIGINS = "https://mangeshraut712.github.io,https://mangeshraut.pro,https://mraut.vercel.app,http://127.0.0.1:4000,http://localhost:4000"

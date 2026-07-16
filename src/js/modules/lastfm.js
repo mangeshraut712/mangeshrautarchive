@@ -67,15 +67,27 @@ class LastFmService {
       return window.location.origin;
     }
 
-    if (host.endsWith('github.io')) {
-      return 'https://mangeshraut.pro';
+    // Prefer CHAT_API_BASE / APP_CONFIG (Cloudflare Worker) over blocked Vercel
+    const configured =
+      globalThis.APP_CONFIG?.apiBaseUrl || globalThis.buildConfig?.apiBaseUrl || '';
+    if (configured && !configured.includes('mangeshraut.pro')) {
+      return configured.replace(/\/$/, '');
     }
 
-    return (
-      globalThis.APP_CONFIG?.apiBaseUrl ||
-      globalThis.buildConfig?.apiBaseUrl ||
-      window.location.origin
-    );
+    if (host.endsWith('github.io')) {
+      try {
+        if (sessionStorage.getItem('portfolio_api_host_dead_v1') === '1') {
+          return configured && !configured.includes('vercel.app')
+            ? configured.replace(/\/$/, '')
+            : '';
+        }
+      } catch {
+        // ignore
+      }
+      return configured ? configured.replace(/\/$/, '') : 'https://mangeshraut.pro';
+    }
+
+    return configured || window.location.origin;
   }
 
   isLoopbackHost() {

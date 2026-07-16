@@ -1,11 +1,10 @@
-# Deploy AssistMe chat edge proxy (Cloudflare Worker) using GitHub secrets.
-# Required secrets:
-#   OPENROUTER_API_KEY          (already set) — OpenRouter API key
-#   CLOUDFLARE_API_TOKEN        — Workers Edit permission
-#   CLOUDFLARE_ACCOUNT_ID       — Cloudflare account id
-# After deploy, set repo Variable CHAT_API_BASE to the worker URL, e.g.
-#   https://assistme-chat.<subdomain>.workers.dev
-# Deploy workflow also writes the URL into job summary.
+# Deploy AssistMe Cloudflare Worker (FastAPI-compatible chat + github + music)
+# Secrets (accepts either name):
+#   OPENROUTER_API_KEY
+#   CLOUDFLARE_API_TOKEN  or  CLOUDFARE_API_KEY  (typo-tolerant)
+#   CLOUDFLARE_ACCOUNT_ID (optional — auto-detected from API if missing)
+#   LASTFM_API_KEY (optional)
+# After deploy, sets repo Variable CHAT_API_BASE when permissions allow.
 
 name: Deploy AssistMe Chat Worker
 
@@ -19,6 +18,7 @@ on:
 
 permissions:
   contents: read
+  actions: write
 
 concurrency:
   group: assistme-chat-worker
@@ -30,16 +30,13 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - name: Checkout
-        uses: actions/checkout@v7
-
-      - name: Probe OpenRouter free model with repo secret
+      - name: Probe OpenRouter free model
         env:
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
         run: |
           set -euo pipefail
           if [ -z "${OPENROUTER_API_KEY:-}" ]; then
-            echo "::error::OPENROUTER_API_KEY secret is missing. Add it in repo Settings → Secrets."
+            echo "::error::OPENROUTER_API_KEY secret is missing."
             exit 1
           fi
           echo "Key length: ${#OPENROUTER_API_KEY}"
@@ -49,55 +46,73 @@ jobs:
             -H "Content-Type: application/json" \
             -H "HTTP-Referer: https://mangeshraut712.github.io/mangeshrautarchive" \
             -H "X-Title: AssistMe CI Probe" \
-            -d '{"model":"openrouter/free","messages":[{"role":"user","content":"Reply with exactly: ok"}],"max_tokens":16}')
+            -d '{"model":"google/gemma-4-26b-a4b-it:free","messages":[{"role":"user","content":"Reply with exactly: ok"}],"max_tokens":32}')
           echo "OpenRouter HTTP $HTTP"
-          head -c 400 /tmp/or.json; echo
+          head -c 500 /tmp/or.json; echo
           if [ "$HTTP" != "200" ]; then
-            echo "::warning::OpenRouter free model probe failed (HTTP $HTTP). Worker will still deploy; edge local fallback remains."
-            echo "openrouter_ok=false" >> "$GITHUB_OUTPUT"
+            echo "::warning::OpenRouter probe HTTP $HTTP — worker still deploys with local fallback."
           else
-            echo "openrouter_ok=true" >> "$GITHUB_OUTPUT"
-            echo "## OpenRouter secret" >> "$GITHUB_STEP_SUMMARY"
-            echo "- OPENROUTER_API_KEY present and free model accepted a probe request." >> "$GITHUB_STEP_SUMMARY"
+            echo "## OpenRouter" >> "$GITHUB_STEP_SUMMARY"
+            echo "- Secret present; free model probe HTTP 200." >> "$GITHUB_STEP_SUMMARY"
           fi
 
   deploy-worker:
     name: Deploy Cloudflare Worker
     needs: verify-openrouter
     runs-on: ubuntu-latest
-    timeout-minutes: 10
-    defaults:
-      run:
-        working-directory: workers/assistme-chat
+    timeout-minutes: 15
+    outputs:
+      worker_url: ${{ steps.deploy.outputs.worker_url }}
+      deployed: ${{ steps.cf.outputs.present }}
     steps:
       - name: Checkout
         uses: actions/checkout@v7
 
-      - name: Check Cloudflare credentials
+      - name: Resolve Cloudflare credentials
         id: cf
         env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          # Prefer canonical name; accept user typo CLOUDFARE_API_KEY
+          CF_TOKEN_A: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CF_TOKEN_B: ${{ secrets.CLOUDFARE_API_KEY }}
+          CF_ACCOUNT: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: |
-          if [ -z "${CLOUDFLARE_API_TOKEN:-}" ] || [ -z "${CLOUDFLARE_ACCOUNT_ID:-}" ]; then
+          set -euo pipefail
+          TOKEN="${CF_TOKEN_A:-${CF_TOKEN_B:-}}"
+          ACCOUNT="${CF_ACCOUNT:-}"
+          if [ -z "$TOKEN" ]; then
             echo "present=false" >> "$GITHUB_OUTPUT"
             {
-              echo "## AssistMe Chat Worker — not deployed"
-              echo ""
-              echo "GitHub has \`OPENROUTER_API_KEY\`, but Cloudflare deploy secrets are missing."
-              echo ""
-              echo "Add these repository secrets, then re-run this workflow:"
-              echo "1. \`CLOUDFLARE_API_TOKEN\` (Account → API Tokens → Edit Cloudflare Workers)"
-              echo "2. \`CLOUDFLARE_ACCOUNT_ID\` (Workers dashboard → Account ID)"
-              echo ""
-              echo "Then set repository **Variable** \`CHAT_API_BASE\` to the worker URL, e.g."
-              echo "\`https://assistme-chat.<you>.workers.dev\`"
-              echo ""
-              echo "Until then, GitHub Pages uses **rich local AssistMe** when Vercel is blocked."
+              echo "## Cloudflare Worker — not deployed"
+              echo "Missing token secret. Add **CLOUDFLARE_API_TOKEN** (or **CLOUDFARE_API_KEY**)."
             } >> "$GITHUB_STEP_SUMMARY"
-          else
-            echo "present=true" >> "$GITHUB_OUTPUT"
+            exit 0
           fi
+          echo "token_len=${#TOKEN}" >> "$GITHUB_OUTPUT"
+          # Auto-detect account if not provided
+          if [ -z "$ACCOUNT" ]; then
+            ACCOUNT=$(curl -sS -H "Authorization: Bearer ${TOKEN}" \
+              "https://api.cloudflare.com/client/v4/accounts?per_page=5" \
+              | python3 -c "import sys,json; d=json.load(sys.stdin); r=d.get('result') or []; print(r[0]['id'] if r else '')" 2>/dev/null || true)
+          fi
+          if [ -z "$ACCOUNT" ]; then
+            echo "present=false" >> "$GITHUB_OUTPUT"
+            {
+              echo "## Cloudflare Worker — account id missing"
+              echo "Token present but could not list accounts. Add **CLOUDFLARE_ACCOUNT_ID**."
+              echo "Token may lack Account Read / Workers Edit scopes."
+            } >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          echo "present=true" >> "$GITHUB_OUTPUT"
+          echo "account_id=$ACCOUNT" >> "$GITHUB_OUTPUT"
+          # Mask for later steps via env file
+          {
+            echo "CLOUDFLARE_API_TOKEN=$TOKEN"
+            echo "CLOUDFLARE_ACCOUNT_ID=$ACCOUNT"
+          } >> "$GITHUB_ENV"
+          echo "## Cloudflare credentials" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Token: present (${#TOKEN} chars)" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Account: \`${ACCOUNT:0:8}…\`" >> "$GITHUB_STEP_SUMMARY"
 
       - name: Setup Node
         if: steps.cf.outputs.present == 'true'
@@ -106,28 +121,81 @@ jobs:
           node-version: '22'
 
       - name: Deploy with Wrangler
+        id: deploy
         if: steps.cf.outputs.present == 'true'
         uses: cloudflare/wrangler-action@v3
         with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          apiToken: ${{ env.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ env.CLOUDFLARE_ACCOUNT_ID }}
           workingDirectory: workers/assistme-chat
           command: deploy
           secrets: |
             OPENROUTER_API_KEY
+            LASTFM_API_KEY
         env:
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          LASTFM_API_KEY: ${{ secrets.LASTFM_API_KEY }}
 
-      - name: Post-deploy summary
+      - name: Capture worker URL
         if: steps.cf.outputs.present == 'true'
+        id: url
         run: |
+          set -euo pipefail
+          # Wrangler prints https://assistme-chat.<subdomain>.workers.dev
+          LOG="${{ steps.deploy.outputs.command-output || '' }}"
+          URL=$(echo "$LOG" | grep -oE 'https://[a-zA-Z0-9.-]+\.workers\.dev' | head -1 || true)
+          if [ -z "$URL" ]; then
+            # Fallback: query Cloudflare API for workers.dev subdomain
+            SUB=$(curl -sS -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}" \
+              "https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ACCOUNT_ID}/workers/subdomain" \
+              | python3 -c "import sys,json; d=json.load(sys.stdin); print((d.get('result') or {}).get('subdomain',''))" || true)
+            if [ -n "$SUB" ]; then
+              URL="https://assistme-chat.${SUB}.workers.dev"
+            fi
+          fi
+          echo "worker_url=${URL}" >> "$GITHUB_OUTPUT"
+          echo "Worker URL: ${URL:-unknown}"
           {
             echo "## AssistMe Chat Worker"
-            echo ""
-            echo "Deployed \`workers/assistme-chat\`."
-            echo ""
-            echo "1. Copy the workers.dev URL from the Wrangler log above."
-            echo "2. Repo **Settings → Secrets and variables → Actions → Variables**"
-            echo "3. Set \`CHAT_API_BASE\` = \`https://assistme-chat.<subdomain>.workers.dev\` (no trailing slash)"
-            echo "4. Re-run **CI → Deploy to GitHub Pages** so \`build-config.js\` picks up the base."
+            echo "- Deployed: \`assistme-chat\`"
+            echo "- URL: ${URL:-see Wrangler logs}"
+            echo "- Endpoints: \`/api/chat\`, \`/api/chat/health\`, \`/api/github/repos/public\`, \`/api/music/recent\`"
           } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Set CHAT_API_BASE repository variable
+        if: steps.cf.outputs.present == 'true' && steps.url.outputs.worker_url != ''
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          WORKER_URL: ${{ steps.url.outputs.worker_url }}
+        run: |
+          set -euo pipefail
+          # Requires variables:write — may fail on default GITHUB_TOKEN; non-fatal
+          if gh variable set CHAT_API_BASE --body "$WORKER_URL" 2>/tmp/var-err.txt; then
+            echo "Set CHAT_API_BASE=$WORKER_URL"
+            echo "- Set repo variable \`CHAT_API_BASE\` = \`$WORKER_URL\`" >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "::warning::Could not set CHAT_API_BASE automatically. Set it manually to $WORKER_URL"
+            cat /tmp/var-err.txt || true
+            echo "- **Manual step:** set Variable \`CHAT_API_BASE\` = \`$WORKER_URL\`" >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Smoke test worker health + chat
+        if: steps.cf.outputs.present == 'true' && steps.url.outputs.worker_url != ''
+        env:
+          WORKER_URL: ${{ steps.url.outputs.worker_url }}
+        run: |
+          set -euo pipefail
+          BASE="${WORKER_URL%/}"
+          echo "Health:"
+          curl -sS -m 20 "${BASE}/api/chat/health" | head -c 800; echo
+          echo "Chat (non-stream):"
+          HTTP=$(curl -sS -m 60 -o /tmp/chat.json -w "%{http_code}" \
+            -X POST "${BASE}/api/chat" \
+            -H "Content-Type: application/json" \
+            -H "Origin: https://mangeshraut712.github.io" \
+            -d '{"message":"What are Mangesh top skills?","stream":false}')
+          echo "HTTP $HTTP"
+          head -c 600 /tmp/chat.json; echo
+          if [ "$HTTP" != "200" ]; then
+            echo "::warning::Chat smoke returned HTTP $HTTP"
+          fi

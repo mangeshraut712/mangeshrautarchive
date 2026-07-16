@@ -1,23 +1,27 @@
 /**
- * AssistMe Chat Proxy — Cloudflare Worker
- * Uses OPENROUTER_API_KEY from Worker secrets (set via GH Actions / wrangler).
- * Serves GitHub Pages when Vercel is unavailable (DEPLOYMENT_DISABLED).
+ * AssistMe API edge (Cloudflare Worker) — FastAPI-compatible surface for GitHub Pages
+ * when Vercel is DEPLOYMENT_DISABLED.
  *
- * Endpoints:
- *   GET  /api/chat/health
+ * Secrets: OPENROUTER_API_KEY, optional LASTFM_API_KEY
+ * Vars: OPENROUTER_MODEL, ALLOWED_ORIGINS, LASTFM_USERNAME
+ *
+ * Endpoints (mirror FastAPI):
  *   GET  /api/health
- *   POST /api/chat   { message, stream?, model? }
+ *   GET  /api/chat/health
+ *   POST /api/chat | /chat
+ *   GET  /api/github/repos/public
+ *   GET  /api/music/recent
  */
 
 const OPENROUTER_URL = 'https://openrouter.ai/api/v1/chat/completions';
-// Prefer concrete free models first — openrouter/free sometimes returns empty content + reasoning-only.
+const PRIMARY_MODEL = 'x-ai/grok-4.3';
 const FREE_MODELS = [
   'google/gemma-4-26b-a4b-it:free',
   'google/gemma-4-31b-it:free',
   'openrouter/free',
 ];
 
-const SYSTEM_PROMPT = `You are AssistMe, the AI assistant for Mangesh Raut's portfolio (mangeshraut.pro / GitHub Pages mirror).
+const SYSTEM_PROMPT = `You are AssistMe, the AI assistant for Mangesh Raut's portfolio (mangeshraut.pro and GitHub Pages mirror).
 Answer helpfully about Mangesh's experience, skills, projects, education, and contact.
 Facts to prefer:
 - Software Engineer at Customized Energy Solutions (energy analytics, AWS, Java/Spring, Python).
@@ -25,7 +29,7 @@ Facts to prefer:
 - MSCS Drexel University (GPA ~3.76); BE Computer Engineering SPPU.
 - Stack: Java Spring Boot, Python, AWS, Terraform, React/Angular, ML (TensorFlow).
 - Contact: mbr63@drexel.edu · linkedin.com/in/mangeshraut71298 · github.com/mangeshraut712
-Keep answers concise, professional, and friendly. Use Markdown sparingly.`;
+Keep answers concise, professional, and friendly. Use light Markdown.`;
 
 function corsHeaders(origin, allowed) {
   const list = String(allowed || '')
@@ -33,12 +37,12 @@ function corsHeaders(origin, allowed) {
     .map(s => s.trim())
     .filter(Boolean);
   const ok =
-    origin &&
-    (list.includes(origin) ||
-      list.some(a => a && origin.startsWith(a.replace(/\/$/, ''))) ||
-      /localhost|127\.0\.0\.1/.test(origin));
+    !origin ||
+    list.includes(origin) ||
+    list.some(a => origin.startsWith(a.replace(/\/$/, ''))) ||
+    /localhost|127\.0\.0\.1/.test(origin);
   return {
-    'Access-Control-Allow-Origin': ok ? origin : list[0] || '*',
+    'Access-Control-Allow-Origin': ok && origin ? origin : list[0] || '*',
     'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type, Accept, Authorization, Origin',
     'Access-Control-Max-Age': '86400',
@@ -60,44 +64,24 @@ function json(data, status, extra = {}) {
 function localAnswer(message) {
   const q = String(message || '').toLowerCase();
   if (/hello|hi\b|hey/.test(q)) {
-    return "👋 Hello! I'm **AssistMe** (GitHub Pages edge mode). Ask about Mangesh's skills, experience, projects, education, or contact.";
+    return "👋 Hello! I'm **AssistMe** on Cloudflare edge (Vercel fallback). Ask about skills, experience, projects, education, or contact.";
   }
   if (/skill|stack|technolog|java|python|aws|cloud/.test(q)) {
-    return "Mangesh's core stack: **Java Spring Boot**, **Python**, **AWS** (Lambda, EC2, ECS, S3), **Terraform**, React/Angular, and ML with TensorFlow. He builds full-stack + cloud systems with production reliability.";
+    return "Mangesh's core stack: **Java Spring Boot**, **Python**, **AWS** (Lambda, EC2, ECS, S3), **Terraform**, React/Angular, and ML with TensorFlow.";
   }
   if (/experience|work|job|company|ces|ioasiz|aramark/.test(q)) {
-    return 'Mangesh is a **Software Engineer at Customized Energy Solutions**, focusing on energy analytics and cloud systems. Previously he built microservices at **IoasiZ** and automated cloud workflows at **Aramark**.';
+    return 'Mangesh is a **Software Engineer at Customized Energy Solutions**. Previously: microservices at **IoasiZ**, cloud automation at **Aramark**.';
   }
   if (/educat|degree|university|drexel|gpa/.test(q)) {
-    return 'Education: **M.S. Computer Science, Drexel University** (GPA ~3.76) and **B.E. Computer Engineering**, Savitribai Phule Pune University.';
+    return '**M.S. Computer Science, Drexel University** (GPA ~3.76) · **B.E. Computer Engineering**, SPPU.';
   }
   if (/project|github|portfolio/.test(q)) {
-    return "Explore Mangesh's work at [github.com/mangeshraut712](https://github.com/mangeshraut712) and the live portfolio at [mangeshraut.pro](https://mangeshraut.pro). Featured areas include agentic portfolio systems, energy analytics, and full-stack apps.";
+    return 'Projects: [github.com/mangeshraut712](https://github.com/mangeshraut712) · portfolio [mangeshraut.pro](https://mangeshraut.pro).';
   }
   if (/contact|email|linkedin|hire|reach/.test(q)) {
-    return 'Contact Mangesh: **mbr63@drexel.edu** · [LinkedIn](https://linkedin.com/in/mangeshraut71298) · [GitHub](https://github.com/mangeshraut712).';
+    return '**mbr63@drexel.edu** · [LinkedIn](https://linkedin.com/in/mangeshraut71298) · [GitHub](https://github.com/mangeshraut712)';
   }
-  return "I'm AssistMe in **edge/local knowledge mode**. Ask about skills, experience, education, projects, or contact — or wait for OpenRouter online mode if the free model is rate-limited.";
-}
-
-async function callOpenRouter(apiKey, model, messages, stream) {
-  const res = await fetch(OPENROUTER_URL, {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      'Content-Type': 'application/json',
-      'HTTP-Referer': 'https://mangeshraut712.github.io/mangeshrautarchive',
-      'X-Title': 'AssistMe GitHub Pages',
-    },
-    body: JSON.stringify({
-      model,
-      messages,
-      stream: Boolean(stream),
-      temperature: 0.6,
-      max_tokens: 1200,
-    }),
-  });
-  return res;
+  return "I'm AssistMe (edge local knowledge). Try skills, experience, education, projects, or contact.";
 }
 
 function isGarbage(text) {
@@ -106,197 +90,42 @@ function isGarbage(text) {
   return /^(user\s*safety\s*:\s*(safe|unsafe)|safe|unsafe|allowed|blocked)$/i.test(t);
 }
 
-export default {
-  async fetch(request, env) {
-    const url = new URL(request.url);
-    const origin = request.headers.get('Origin') || '';
-    const cors = corsHeaders(origin, env.ALLOWED_ORIGINS);
+function buildModelChain(env, requested) {
+  const primary = (requested || env.OPENROUTER_MODEL || PRIMARY_MODEL || '').trim();
+  const chain = [primary, PRIMARY_MODEL, ...FREE_MODELS].filter(
+    (v, i, a) => v && a.indexOf(v) === i
+  );
+  return chain;
+}
 
-    if (request.method === 'OPTIONS') {
-      return new Response(null, { status: 204, headers: cors });
-    }
+async function callOpenRouter(apiKey, model, messages, stream, env) {
+  return fetch(OPENROUTER_URL, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+      'Content-Type': 'application/json',
+      'HTTP-Referer':
+        env.OPENROUTER_SITE_URL || 'https://mangeshraut712.github.io/mangeshrautarchive',
+      'X-Title': env.OPENROUTER_SITE_TITLE || 'AssistMe Cloudflare Edge',
+    },
+    body: JSON.stringify({
+      model,
+      messages,
+      stream: Boolean(stream),
+      temperature: 0.65,
+      max_tokens: 1800,
+    }),
+  });
+}
 
-    const path = url.pathname.replace(/\/+$/, '') || '/';
-
-    if (
-      request.method === 'GET' &&
-      (path === '/api/health' || path === '/api/chat/health' || path === '/health')
-    ) {
-      const hasKey = Boolean(env.OPENROUTER_API_KEY);
-      let provider_status = hasKey ? 'configured' : 'local_only';
-      let status = hasKey ? 'degraded' : 'degraded';
-      let message = hasKey
-        ? 'OpenRouter key present on edge worker.'
-        : 'No OPENROUTER_API_KEY secret on worker — local knowledge only.';
-
-      if (hasKey) {
-        try {
-          const probe = await fetch('https://openrouter.ai/api/v1/models', {
-            headers: { Authorization: `Bearer ${env.OPENROUTER_API_KEY}` },
-          });
-          if (probe.ok) {
-            status = 'healthy';
-            provider_status = 'online';
-            message = 'OpenRouter reachable via GitHub-deployed edge worker.';
-          } else {
-            status = 'unhealthy';
-            provider_status = 'error';
-            message = `OpenRouter models probe HTTP ${probe.status}`;
-          }
-        } catch (e) {
-          status = 'unhealthy';
-          provider_status = 'error';
-          message = `OpenRouter probe failed: ${e.message}`;
-        }
-      }
-
-      return json(
-        {
-          success: true,
-          status,
-          provider: 'openrouter',
-          provider_status,
-          online: provider_status === 'online' || provider_status === 'configured',
-          local_only: !hasKey,
-          streaming: 'ndjson',
-          model: env.OPENROUTER_MODEL || FREE_MODELS[0],
-          host: 'cloudflare-worker',
-          message,
-          timestamp: new Date().toISOString(),
-        },
-        200,
-        cors
-      );
-    }
-
-    if (request.method === 'POST' && (path === '/api/chat' || path === '/chat')) {
-      let body;
-      try {
-        body = await request.json();
-      } catch {
-        return json({ error: 'Invalid JSON body' }, 400, cors);
-      }
-
-      const message = String(body.message || body.query || '')
-        .trim()
-        .slice(0, 2000);
-      if (!message) {
-        return json({ error: 'Message cannot be empty' }, 400, cors);
-      }
-
-      const wantStream = body.stream !== false;
-      const history = Array.isArray(body.messages) ? body.messages.slice(-10) : [];
-      const messages = [
-        { role: 'system', content: SYSTEM_PROMPT },
-        ...history
-          .filter(m => m && (m.role === 'user' || m.role === 'assistant') && m.content)
-          .map(m => ({
-            role: m.role,
-            content: String(m.content).slice(0, 2000),
-          })),
-        { role: 'user', content: message },
-      ];
-
-      const apiKey = env.OPENROUTER_API_KEY || '';
-      if (!apiKey) {
-        const answer = localAnswer(message);
-        if (wantStream) {
-          return streamLocal(answer, cors);
-        }
-        return json(
-          {
-            answer,
-            source: 'Local Intelligence',
-            model: 'edge-local',
-            type: 'local',
-            confidence: 1,
-          },
-          200,
-          cors
-        );
-      }
-
-      const chain = [body.model || env.OPENROUTER_MODEL || FREE_MODELS[0], ...FREE_MODELS].filter(
-        (v, i, a) => v && a.indexOf(v) === i
-      );
-
-      let lastErr = 'upstream failed';
-      for (const model of chain) {
-        try {
-          const res = await callOpenRouter(apiKey, model, messages, wantStream);
-          if (!res.ok) {
-            lastErr = `OpenRouter HTTP ${res.status}`;
-            if (res.status === 402 || res.status === 429 || res.status >= 500) {
-              continue;
-            }
-            continue;
-          }
-
-          if (wantStream) {
-            // Convert OpenAI SSE → NDJSON chunks for existing frontend
-            return streamOpenRouterToNdjson(res, model, cors);
-          }
-
-          const data = await res.json();
-          const answer = (data?.choices?.[0]?.message?.content || '').trim();
-          if (isGarbage(answer)) {
-            lastErr = `garbage from ${model}`;
-            continue;
-          }
-          return json(
-            {
-              answer,
-              source: 'OpenRouter',
-              model: data.model || model,
-              type: 'general',
-              confidence: 0.9,
-              host: 'cloudflare-worker',
-            },
-            200,
-            cors
-          );
-        } catch (e) {
-          lastErr = e.message || String(e);
-        }
-      }
-
-      const answer = localAnswer(message);
-      if (wantStream) {
-        return streamLocal(answer, cors, lastErr);
-      }
-      return json(
-        {
-          answer,
-          source: 'Local Intelligence',
-          model: 'edge-local',
-          type: 'local',
-          fallback_reason: lastErr,
-          confidence: 1,
-        },
-        200,
-        cors
-      );
-    }
-
-    return json(
-      {
-        error: 'Not found',
-        hint: 'POST /api/chat or GET /api/chat/health',
-      },
-      404,
-      cors
-    );
-  },
-};
-
-function streamLocal(answer, cors, reason = '') {
+function streamLocal(answer, cors, meta = {}) {
   const encoder = new TextEncoder();
   const stream = new ReadableStream({
     start(controller) {
       const push = obj => controller.enqueue(encoder.encode(`${JSON.stringify(obj)}\n`));
       push({ type: 'typing', status: 'start' });
       push({ type: 'typing', status: 'stop' });
-      const step = 24;
+      const step = 28;
       for (let i = 0; i < answer.length; i += step) {
         push({ type: 'chunk', content: answer.slice(i, i + step) });
       }
@@ -304,10 +133,11 @@ function streamLocal(answer, cors, reason = '') {
         type: 'done',
         full_content: answer,
         metadata: {
-          model: 'edge-local',
-          source: 'Local Intelligence',
-          sourceLabel: 'AssistMe Edge (offline knowledge)',
-          fallback_reason: reason || undefined,
+          model: meta.model || 'edge-local',
+          source: meta.source || 'Local Intelligence',
+          sourceLabel: meta.sourceLabel || 'AssistMe Edge',
+          host: 'cloudflare-worker',
+          fallback_reason: meta.reason,
         },
       });
       controller.close();
@@ -349,13 +179,18 @@ function streamOpenRouterToNdjson(upstream, model, cors) {
             if (data === '[DONE]') continue;
             try {
               const jsonData = JSON.parse(data);
+              const err = jsonData?.error;
+              if (err) {
+                full = '';
+                break;
+              }
               const content = jsonData?.choices?.[0]?.delta?.content || '';
               if (content) {
                 full += content;
                 push({ type: 'chunk', content });
               }
             } catch {
-              // ignore partial JSON
+              // ignore partial
             }
           }
         }
@@ -367,6 +202,18 @@ function streamOpenRouterToNdjson(upstream, model, cors) {
         const fallback = localAnswer('skills experience contact');
         push({ type: 'chunk', content: fallback });
         full = fallback;
+        push({
+          type: 'done',
+          full_content: full,
+          metadata: {
+            model: 'edge-local',
+            source: 'Local Intelligence',
+            sourceLabel: 'AssistMe Edge (fallback)',
+            host: 'cloudflare-worker',
+          },
+        });
+        controller.close();
+        return;
       }
 
       push({
@@ -375,7 +222,7 @@ function streamOpenRouterToNdjson(upstream, model, cors) {
         metadata: {
           model,
           source: 'OpenRouter',
-          sourceLabel: `OpenRouter (${model.split('/').pop()})`,
+          sourceLabel: `OpenRouter (${String(model).split('/').pop()})`,
           host: 'cloudflare-worker',
         },
       });
@@ -391,3 +238,285 @@ function streamOpenRouterToNdjson(upstream, model, cors) {
     },
   });
 }
+
+async function handleChat(request, env, cors) {
+  let body;
+  try {
+    body = await request.json();
+  } catch {
+    return json({ error: 'Invalid JSON body' }, 400, cors);
+  }
+
+  const message = String(body.message || body.query || '')
+    .trim()
+    .slice(0, 2000);
+  if (!message) {
+    return json({ error: 'Message cannot be empty' }, 400, cors);
+  }
+
+  const wantStream = body.stream !== false;
+  const history = Array.isArray(body.messages) ? body.messages.slice(-12) : [];
+  const messages = [
+    { role: 'system', content: SYSTEM_PROMPT },
+    ...history
+      .filter(m => m && (m.role === 'user' || m.role === 'assistant') && m.content)
+      .map(m => ({
+        role: m.role,
+        content: String(m.content).slice(0, 2000),
+      })),
+    { role: 'user', content: message },
+  ];
+
+  const apiKey = (env.OPENROUTER_API_KEY || '').trim();
+  if (!apiKey) {
+    const answer = localAnswer(message);
+    return wantStream
+      ? streamLocal(answer, cors, { reason: 'no_key' })
+      : json(
+          {
+            answer,
+            source: 'Local Intelligence',
+            model: 'edge-local',
+            type: 'local',
+            confidence: 1,
+            host: 'cloudflare-worker',
+          },
+          200,
+          cors
+        );
+  }
+
+  const chain = buildModelChain(env, body.model);
+  let lastErr = 'upstream failed';
+
+  for (const model of chain) {
+    try {
+      const res = await callOpenRouter(apiKey, model, messages, wantStream, env);
+      if (!res.ok) {
+        lastErr = `OpenRouter HTTP ${res.status}`;
+        continue;
+      }
+
+      if (wantStream) {
+        return streamOpenRouterToNdjson(res, model, cors);
+      }
+
+      const data = await res.json();
+      const answer = (data?.choices?.[0]?.message?.content || '').trim();
+      if (isGarbage(answer)) {
+        lastErr = `garbage from ${model}`;
+        continue;
+      }
+      return json(
+        {
+          answer,
+          source: 'OpenRouter',
+          model: data.model || model,
+          type: 'general',
+          confidence: 0.92,
+          host: 'cloudflare-worker',
+        },
+        200,
+        cors
+      );
+    } catch (e) {
+      lastErr = e.message || String(e);
+    }
+  }
+
+  const answer = localAnswer(message);
+  return wantStream
+    ? streamLocal(answer, cors, { reason: lastErr })
+    : json(
+        {
+          answer,
+          source: 'Local Intelligence',
+          model: 'edge-local',
+          type: 'local',
+          fallback_reason: lastErr,
+          confidence: 1,
+          host: 'cloudflare-worker',
+        },
+        200,
+        cors
+      );
+}
+
+async function handleHealth(env, cors) {
+  const apiKey = (env.OPENROUTER_API_KEY || '').trim();
+  let provider_status = apiKey ? 'configured' : 'local_only';
+  let status = 'degraded';
+  let message = apiKey
+    ? 'OpenRouter key present on Cloudflare Worker.'
+    : 'No OPENROUTER_API_KEY on worker — local knowledge only.';
+
+  if (apiKey) {
+    try {
+      const probe = await fetch('https://openrouter.ai/api/v1/models', {
+        headers: { Authorization: `Bearer ${apiKey}` },
+      });
+      if (probe.ok) {
+        status = 'healthy';
+        provider_status = 'online';
+        message = 'OpenRouter reachable via Cloudflare Worker (Vercel fallback).';
+      } else {
+        status = 'unhealthy';
+        provider_status = 'error';
+        message = `OpenRouter models probe HTTP ${probe.status}`;
+      }
+    } catch (e) {
+      status = 'unhealthy';
+      provider_status = 'error';
+      message = `OpenRouter probe failed: ${e.message}`;
+    }
+  }
+
+  return json(
+    {
+      success: true,
+      status,
+      provider: 'openrouter',
+      provider_status,
+      online: provider_status === 'online' || provider_status === 'configured',
+      local_only: !apiKey || provider_status === 'local_only',
+      streaming: 'ndjson',
+      model: env.OPENROUTER_MODEL || PRIMARY_MODEL,
+      fallback_models: FREE_MODELS,
+      host: 'cloudflare-worker',
+      message,
+      timestamp: new Date().toISOString(),
+    },
+    200,
+    cors
+  );
+}
+
+async function handleGithubRepos(url, cors) {
+  const username = url.searchParams.get('username') || 'mangeshraut712';
+  const limit = Math.min(100, Math.max(1, Number(url.searchParams.get('limit') || 100)));
+  try {
+    const res = await fetch(
+      `https://api.github.com/users/${encodeURIComponent(username)}/repos?per_page=${limit}&sort=updated`,
+      {
+        headers: {
+          Accept: 'application/vnd.github+json',
+          'User-Agent': 'assistme-cloudflare-edge',
+        },
+      }
+    );
+    if (!res.ok) {
+      return json(
+        { success: false, error: `GitHub HTTP ${res.status}`, items: [] },
+        res.status === 403 ? 503 : res.status,
+        cors
+      );
+    }
+    const repos = await res.json();
+    return json(
+      {
+        success: true,
+        source: 'github-public',
+        host: 'cloudflare-worker',
+        items: Array.isArray(repos) ? repos : [],
+        count: Array.isArray(repos) ? repos.length : 0,
+      },
+      200,
+      cors
+    );
+  } catch (e) {
+    return json({ success: false, error: e.message, items: [] }, 502, cors);
+  }
+}
+
+async function handleMusicRecent(url, env, cors) {
+  const user = url.searchParams.get('user') || env.LASTFM_USERNAME || 'mbr63';
+  const limit = Math.min(20, Math.max(1, Number(url.searchParams.get('limit') || 10)));
+  const key = (env.LASTFM_API_KEY || '').trim();
+  if (!key) {
+    return json(
+      {
+        success: false,
+        error: 'LASTFM_API_KEY not configured on worker',
+        recenttracks: { track: [] },
+      },
+      200,
+      cors
+    );
+  }
+  try {
+    const qs = new URLSearchParams({
+      method: 'user.getrecenttracks',
+      user,
+      api_key: key,
+      format: 'json',
+      limit: String(limit),
+    });
+    const res = await fetch(`https://ws.audioscrobbler.com/2.0/?${qs}`);
+    if (!res.ok) {
+      return json({ success: false, error: `Last.fm HTTP ${res.status}` }, 502, cors);
+    }
+    const data = await res.json();
+    return json({ ...data, host: 'cloudflare-worker', success: true }, 200, cors);
+  } catch (e) {
+    return json({ success: false, error: e.message }, 502, cors);
+  }
+}
+
+export default {
+  async fetch(request, env) {
+    const url = new URL(request.url);
+    const origin = request.headers.get('Origin') || '';
+    const cors = corsHeaders(origin, env.ALLOWED_ORIGINS);
+
+    if (request.method === 'OPTIONS') {
+      return new Response(null, { status: 204, headers: cors });
+    }
+
+    const path = url.pathname.replace(/\/+$/, '') || '/';
+
+    if (
+      request.method === 'GET' &&
+      (path === '/api/health' ||
+        path === '/api/chat/health' ||
+        path === '/health' ||
+        path === '/api/status')
+    ) {
+      return handleHealth(env, cors);
+    }
+
+    if (request.method === 'POST' && (path === '/api/chat' || path === '/chat')) {
+      return handleChat(request, env, cors);
+    }
+
+    if (
+      request.method === 'GET' &&
+      (path === '/api/github/repos/public' || path === '/api/github/repos')
+    ) {
+      return handleGithubRepos(url, cors);
+    }
+
+    if (request.method === 'GET' && path === '/api/music/recent') {
+      return handleMusicRecent(url, env, cors);
+    }
+
+    if (request.method === 'GET' && path === '/') {
+      return json(
+        {
+          name: 'assistme-chat',
+          host: 'cloudflare-worker',
+          endpoints: [
+            'GET /api/health',
+            'GET /api/chat/health',
+            'POST /api/chat',
+            'GET /api/github/repos/public',
+            'GET /api/music/recent',
+          ],
+        },
+        200,
+        cors
+      );
+    }
+
+    return json({ error: 'Not found', hint: 'POST /api/chat or GET /api/chat/health' }, 404, cors);
+  },
+};

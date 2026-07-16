@@ -31,26 +31,34 @@ class GitHubProjects {
       globalThis.APP_CONFIG?.apiBaseUrl ||
       (typeof globalThis.buildConfig !== 'undefined' && globalThis.buildConfig.apiBaseUrl) ||
       '';
-    let apiBase = base;
+    let apiBase = base ? String(base).replace(/\/$/, '') : '';
+    // On GitHub Pages prefer configured edge worker; only use Vercel if still configured as base
     if (
       !apiBase &&
       typeof window !== 'undefined' &&
       window.location.hostname.endsWith('github.io')
     ) {
-      apiBase = 'https://mangeshraut.pro';
+      apiBase = '';
     }
-    const apiBaseNormalized = apiBase ? apiBase.replace(/\/$/, '') : '';
+    const apiBaseNormalized = apiBase;
 
-    this.proxyCandidates = isLocal
-      ? ['/api/github/repos/public', '/api/github/repos']
-      : apiBaseNormalized
-        ? [`${apiBaseNormalized}/api/github/repos/public`, `${apiBaseNormalized}/api/github/repos`]
-        : [
-            '/api/github/repos/public',
-            '/api/github/repos',
-            'https://mangeshraut.pro/api/github/repos/public',
-            'https://mangeshraut.pro/api/github/repos',
-          ];
+    const candidates = [];
+    if (isLocal) {
+      candidates.push('/api/github/repos/public', '/api/github/repos');
+    } else if (apiBaseNormalized) {
+      candidates.push(
+        `${apiBaseNormalized}/api/github/repos/public`,
+        `${apiBaseNormalized}/api/github/repos`
+      );
+    }
+    // Secondary fallbacks (skipped when session marks Vercel dead)
+    if (!apiBaseNormalized.includes('workers.dev')) {
+      candidates.push(
+        'https://mangeshraut.pro/api/github/repos/public',
+        'https://mangeshraut.pro/api/github/repos'
+      );
+    }
+    this.proxyCandidates = candidates;
     this.directApiUrl = `https://api.github.com/users/${username}/repos`;
 
     this.cache = null;
@@ -402,7 +410,9 @@ class GitHubProjects {
 
   extractRepoList(payload) {
     if (Array.isArray(payload)) return payload;
+    if (payload && Array.isArray(payload.items)) return payload.items;
     if (payload && Array.isArray(payload.data)) return payload.data;
+    if (payload && Array.isArray(payload.repos)) return payload.repos;
     return null;
   }
 
@@ -464,46 +474,54 @@ class GitHubProjects {
     const networkLoad = (async () => {
       let rawRepos = null;
 
-      const skipProxy =
-        typeof window !== 'undefined' &&
-        (window.location.hostname.endsWith('github.io') ||
-          (() => {
-            try {
-              return sessionStorage.getItem('portfolio_api_host_dead_v1') === '1';
-            } catch {
-              return false;
-            }
-          })());
-
-      if (!skipProxy) {
-        for (const proxyBase of this.proxyCandidates) {
-          try {
-            const proxyResp = await fetch(
-              `${proxyBase}?username=${this.username}&limit=100&no_forks=false`,
-              { headers: { Accept: 'application/json' } }
+      // Prefer configured edge/API bases; skip only hosts marked dead this session.
+      const candidates = this.proxyCandidates.filter(base => {
+        try {
+          if (sessionStorage.getItem('portfolio_api_host_dead_v1') === '1') {
+            // Still allow non-Vercel workers.dev / custom CHAT_API_BASE
+            return (
+              !String(base).includes('mangeshraut.pro') && !String(base).includes('vercel.app')
             );
+          }
+        } catch {
+          // ignore
+        }
+        return true;
+      });
 
-            if (proxyResp.status === 402 || proxyResp.status === 503) {
+      for (const proxyBase of candidates) {
+        try {
+          const proxyResp = await fetch(
+            `${proxyBase}?username=${this.username}&limit=100&no_forks=false`,
+            { headers: { Accept: 'application/json' } }
+          );
+
+          if (proxyResp.status === 402 || proxyResp.status === 503) {
+            if (
+              String(proxyBase).includes('mangeshraut.pro') ||
+              String(proxyBase).includes('vercel.app')
+            ) {
               try {
                 sessionStorage.setItem('portfolio_api_host_dead_v1', '1');
               } catch {
                 // ignore
               }
-              break;
             }
-
-            if (!proxyResp.ok) {
-              continue;
-            }
-
-            const repoList = this.extractRepoList(await proxyResp.json());
-            if (repoList) {
-              rawRepos = repoList;
-              break;
-            }
-          } catch {
-            // Quiet: proxy may be offline on static mirrors
+            continue;
           }
+
+          if (!proxyResp.ok) {
+            continue;
+          }
+
+          const body = await proxyResp.json();
+          const repoList = this.extractRepoList(body);
+          if (repoList) {
+            rawRepos = repoList;
+            break;
+          }
+        } catch {
+          // Quiet: proxy may be offline on static mirrors
         }
       }
 
