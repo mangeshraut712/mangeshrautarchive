@@ -70,8 +70,10 @@
   .publication-read-btn,
   .blog-read-btn,
   .section-preview-btn {
-    min-height: 44px;
+    min-height: 44px !important;
+    min-width: 44px;
     box-sizing: border-box;
+    padding-block: max(0.55rem, 10px);
   }
 
   body.systems-page .project-evidence-link,
@@ -84,6 +86,17 @@
   .maplibregl-ctrl-group button {
     min-width: 44px !important;
     min-height: 44px !important;
+  }
+
+  /* Travel Atlas filters + Uses toggles — Apple HIG 44pt */
+  .travel-filter-chip,
+  .travel-filter-chips button,
+  .uses-page button,
+  .control-center button,
+  .control-center [role='switch'] {
+    min-height: 44px !important;
+    min-width: 44px;
+    box-sizing: border-box;
   }
 }
 

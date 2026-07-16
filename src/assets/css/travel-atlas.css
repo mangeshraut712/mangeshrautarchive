@@ -588,8 +588,8 @@ html.dark .travel-sidebar {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  min-height: 32px;
-  padding: 7px 12px;
+  min-height: 44px;
+  padding: 10px 14px;
   border-radius: var(--radius-full);
   background: var(--fill-secondary);
   border: 1px solid transparent;
@@ -623,8 +623,8 @@ html.dark .travel-sidebar {
   justify-content: center;
   gap: 0.3rem;
   min-width: 0;
-  min-height: 38px;
-  padding: 0.35rem 0.55rem;
+  min-height: 44px;
+  padding: 0.45rem 0.7rem;
   border: 1px solid color-mix(in srgb, var(--separator) 78%, transparent);
   border-radius: var(--radius-full);
   background: var(--fill-secondary);
@@ -1353,7 +1353,7 @@ html.dark .travel-map-status span {
 
   .travel-action {
     gap: 5px;
-    min-height: 36px;
+    min-height: 44px;
     font-size: 12px;
   }
 
