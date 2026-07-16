@@ -135,21 +135,27 @@ jobs:
 
           if [ "$SUCCESS" != "OK" ] || [ -z "$ACCOUNT" ]; then
             echo "present=false" >> "$GITHUB_OUTPUT"
+            echo "::error::Cloudflare auth failed SUCCESS=${SUCCESS} ERR=${ERR:-unknown} token_len=${#TOKEN}"
+            echo "Last API response (truncated): $(echo "$RESP" | head -c 240)"
             {
               echo "## Cloudflare Worker — auth/account failed"
               echo "- Secret present (${#TOKEN} chars)"
               echo "- API success: \`${SUCCESS}\` — ${ERR:-unknown}"
               echo "- Tried Bearer token + Global Key with candidate emails"
               echo ""
-              echo "**Create a proper API Token (recommended):**"
-              echo "1. Cloudflare → My Profile → API Tokens → Create Token"
-              echo "2. Template **Edit Cloudflare Workers** (or custom: Account.Workers Scripts:Edit, Account.Account Settings:Read)"
-              echo "3. Save as GitHub secret \`CLOUDFLARE_API_TOKEN\` (or \`CLOUDFARE_API_KEY\`)"
-              echo "4. Optional: \`CLOUDFLARE_ACCOUNT_ID\` from Workers dashboard right sidebar"
+              echo "**Required: valid Cloudflare API Token**"
+              echo "1. https://dash.cloudflare.com/profile/api-tokens → **Create Token**"
+              echo "2. Use template **Edit Cloudflare Workers**"
+              echo "3. GitHub → Settings → Secrets → Actions → New:"
+              echo "   - Name: \`CLOUDFLARE_API_TOKEN\` (recommended) or keep \`CLOUDFARE_API_KEY\`"
+              echo "   - Value: the new token"
+              echo "4. Optional secret \`CLOUDFLARE_ACCOUNT_ID\` (Workers overview → Account ID)"
+              echo "5. Re-run workflow **Deploy AssistMe Chat Worker**"
+              echo ""
+              echo "Note: Global API Keys need matching \`CLOUDFLARE_EMAIL\`. API Tokens are preferred for Wrangler."
             } >> "$GITHUB_STEP_SUMMARY"
-            # Log response shape (no secrets) for debugging
-            echo "$RESP" | head -c 300 >> "$GITHUB_STEP_SUMMARY" || true
-            exit 0
+            # Fail the job so the red X is visible (auth is blocking online chat)
+            exit 1
           fi
 
           echo "present=true" >> "$GITHUB_OUTPUT"
