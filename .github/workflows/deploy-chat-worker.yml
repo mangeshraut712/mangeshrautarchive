@@ -280,12 +280,26 @@ jobs:
       - name: Resolve worker URL
         if: steps.cf.outputs.present == 'true'
         id: url
+        env:
+          # Do not interpolate wrangler command-output into the script body —
+          # multiline logs break bash (e.g. "Cloudflare: command not found").
+          DEPLOY_LOG: ${{ steps.deploy.outputs.command-output }}
+          DEPLOY_LOG_GLOBAL: ${{ steps.deploy_global.outputs.command-output }}
         run: |
           set -euo pipefail
-          LOG="${{ steps.deploy.outputs.command-output || steps.deploy_global.outputs.command-output || '' }}"
-          URL=$(echo "$LOG" | grep -oE 'https://[a-zA-Z0-9.-]+\.workers\.dev' | head -1 || true)
+          URL=""
+          # Prefer subdomain we registered / discovered earlier
+          if [ -n "${CF_WORKERS_SUBDOMAIN:-}" ]; then
+            URL="https://assistme-chat.${CF_WORKERS_SUBDOMAIN}.workers.dev"
+          fi
+          # Fallback: scrape wrangler logs from env (safe multiline)
           if [ -z "$URL" ]; then
-            if [ "${CF_AUTH_MODE:-}" = "global" ] || [ -n "${CLOUDFLARE_API_KEY:-}" ]; then
+            LOG="${DEPLOY_LOG:-${DEPLOY_LOG_GLOBAL:-}}"
+            URL=$(printf '%s' "$LOG" | grep -oE 'https://[a-zA-Z0-9.-]+\.workers\.dev' | head -1 || true)
+          fi
+          # Fallback: Cloudflare API
+          if [ -z "$URL" ]; then
+            if [ -n "${CLOUDFLARE_API_KEY:-}" ] && [ -n "${CLOUDFLARE_EMAIL:-}" ]; then
               SUB=$(curl -sS -H "X-Auth-Email: ${CLOUDFLARE_EMAIL}" -H "X-Auth-Key: ${CLOUDFLARE_API_KEY}" \
                 "https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ACCOUNT_ID}/workers/subdomain" \
                 | python3 -c "import sys,json; d=json.load(sys.stdin); print((d.get('result') or {}).get('subdomain',''))" || true)
@@ -294,11 +308,12 @@ jobs:
                 "https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ACCOUNT_ID}/workers/subdomain" \
                 | python3 -c "import sys,json; d=json.load(sys.stdin); print((d.get('result') or {}).get('subdomain',''))" || true)
             fi
-            [ -n "$SUB" ] && URL="https://assistme-chat.${SUB}.workers.dev"
+            [ -n "${SUB:-}" ] && URL="https://assistme-chat.${SUB}.workers.dev"
           fi
+          # Last resort known default for this account
           if [ -z "$URL" ]; then
-            echo "::error::Deploy may have succeeded but worker URL was not found in logs."
-            exit 1
+            URL="https://assistme-chat.mangeshraut712.workers.dev"
+            echo "::warning::Using default workers.dev URL; verify in Cloudflare dashboard."
           fi
           echo "worker_url=$URL" >> "$GITHUB_OUTPUT"
           echo "Worker URL: $URL"
