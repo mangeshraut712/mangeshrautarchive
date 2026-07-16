@@ -132,7 +132,7 @@ function renderBlogIndex(posts, tags) {
       <header class="blog-index-header lg-glass-card">
         <p class="blog-index-kicker">Technical Writings</p>
         <h1 class="blog-index-title">Field notes on AI, systems, and product engineering</h1>
-        <p class="blog-index-lede">Long-form articles with reader promises, practical workflows, and honest tradeoffs — built for engineers who want signal, not hype.</p>
+        <p class="blog-index-lede">Long-form posts with reader promises, practical workflows, and honest tradeoffs — written for engineers who want signal, not hype. No stock imagery; charts and source links only when they help.</p>
         <div class="blog-index-meta">
           <span>${posts.length} articles</span>
           <a href="${SITE_URL}/rss.xml" class="blog-feed-link">RSS</a>

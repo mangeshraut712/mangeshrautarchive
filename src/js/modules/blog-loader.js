@@ -12,6 +12,7 @@ class BlogLoader {
   constructor() {
     this.container = document.getElementById('blog-posts-container');
     this.modal = null;
+    this.lastFocus = null;
     this.init();
   }
 
@@ -22,6 +23,14 @@ class BlogLoader {
     this.bindCardEvents();
     this.createModal();
     this.bindDeepLinks();
+    this.syncPostCount();
+  }
+
+  syncPostCount() {
+    const countEl = document.getElementById('blog-post-count');
+    if (countEl) {
+      countEl.textContent = `(${blogPosts.length})`;
+    }
   }
 
   bindDeepLinks() {
@@ -57,7 +66,7 @@ class BlogLoader {
     this.container.innerHTML = sortedPosts
       .map(
         post => `
-            <article class="blog-card x-post-card apple-3d-project" data-id="${post.id}">
+            <article class="blog-card x-post-card apple-3d-project" data-id="${post.id}" tabindex="0" aria-label="${this.escapeHTML(post.title)}">
                 <div class="blog-card-content">
                     <div class="blog-card-actions" aria-label="Listen and translate article card"></div>
                     <div class="x-post-card__head">
@@ -108,16 +117,43 @@ class BlogLoader {
 
   bindCardEvents() {
     this.container.addEventListener('click', event => {
-      const button = event.target.closest('[data-blog-open]');
-      if (!button) return;
+      // Don't hijack listen/translate toolbar or external links
+      if (event.target.closest('.blog-card-actions, a:not(.blog-title-link)')) return;
 
-      this.openPost(button.dataset.blogOpen);
+      const openControl = event.target.closest('[data-blog-open]');
+      if (openControl) {
+        event.preventDefault();
+        this.openPost(openControl.dataset.blogOpen);
+        return;
+      }
+
+      const card = event.target.closest('.blog-card[data-id]');
+      if (card?.dataset?.id) {
+        this.openPost(card.dataset.id);
+      }
+    });
+
+    this.container.addEventListener('keydown', event => {
+      if (event.key !== 'Enter' && event.key !== ' ') return;
+      const card = event.target.closest('.blog-card[data-id]');
+      if (!card || event.target.closest('a, button, .blog-card-actions')) return;
+      event.preventDefault();
+      this.openPost(card.dataset.id);
     });
   }
 
   formatDate(dateString) {
-    const options = { year: 'numeric', month: 'long', day: 'numeric' };
-    return new Date(dateString).toLocaleDateString('en-US', options);
+    const raw = String(dateString || '').trim();
+    const isoDay = raw.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+    const date = isoDay
+      ? new Date(Number(isoDay[1]), Number(isoDay[2]) - 1, Number(isoDay[3]), 12, 0, 0)
+      : new Date(raw);
+    if (Number.isNaN(date.getTime())) return raw;
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    });
   }
 
   renderHighlights(highlights = []) {
@@ -139,10 +175,10 @@ class BlogLoader {
   createModal() {
     // Create modal HTML structure
     const modalHTML = `
-            <div id="blog-modal" class="blog-modal hidden" aria-hidden="true">
-                <div class="blog-modal-overlay"></div>
-                <div class="blog-modal-container">
-                    <button class="blog-modal-close" type="button" aria-label="Close article">×</button>
+            <div id="blog-modal" class="blog-modal hidden" role="dialog" aria-modal="true" aria-labelledby="blog-modal-title" aria-hidden="true">
+                <div class="blog-modal-overlay" data-blog-close></div>
+                <div class="blog-modal-container" tabindex="-1">
+                    <button class="blog-modal-close" type="button" aria-label="Close article" data-blog-close>×</button>
                     <div class="blog-modal-content" id="blog-modal-body">
                         <!-- Content injected here -->
                     </div>
@@ -153,26 +189,42 @@ class BlogLoader {
     document.body.insertAdjacentHTML('beforeend', modalHTML);
 
     this.modal = document.getElementById('blog-modal');
-    const closeBtn = this.modal.querySelector('.blog-modal-close');
-    const overlay = this.modal.querySelector('.blog-modal-overlay');
-
     const closeModal = () => this.closeModal();
 
-    closeBtn.addEventListener('click', closeModal);
-    overlay.addEventListener('click', closeModal);
+    this.modal.addEventListener('click', e => {
+      if (e.target.closest('[data-blog-close]')) closeModal();
+    });
     document.addEventListener('keydown', e => {
-      if (e.key === 'Escape' && !this.modal.classList.contains('hidden')) {
+      if (e.key === 'Escape' && this.modal && !this.modal.classList.contains('hidden')) {
         closeModal();
+        return;
+      }
+      // Simple focus trap while modal is open
+      if (e.key !== 'Tab' || !this.modal || this.modal.classList.contains('hidden')) return;
+      const focusable = this.modal.querySelectorAll(
+        'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])'
+      );
+      if (!focusable.length) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
       }
     });
   }
 
   openPost(id) {
     const post = blogPosts.find(p => p.id === id);
-    if (!post) return;
+    if (!post || !this.modal) return;
 
+    this.lastFocus = document.activeElement;
     const modalBody = document.getElementById('blog-modal-body');
     const { html: htmlContent } = parseBlogContent(post.content, { addHeadingIds: true });
+    const fullPageHref = `/blog/${encodeURIComponent(post.id)}`;
 
     modalBody.innerHTML = `
             <article class="x-article">
@@ -184,7 +236,7 @@ class BlogLoader {
                     <div class="article-author-handle">@mangeshraut · Field notes</div>
                   </div>
                 </div>
-                <h1 class="article-title">${this.escapeHTML(post.title)}</h1>
+                <h1 class="article-title" id="blog-modal-title">${this.escapeHTML(post.title)}</h1>
                 <p class="article-promise">${this.escapeHTML(post.readerPromise || post.summary)}</p>
                 <div class="article-byline">
                   <span class="article-kicker">${this.escapeHTML(post.kicker || 'Field notes')}</span>
@@ -206,7 +258,7 @@ class BlogLoader {
                 ${htmlContent}
             </div>
             <footer class="x-article-footer">
-              <a class="x-article-footer__link" href="blog/${this.escapeHTML(post.id)}">Open full page</a>
+              <a class="x-article-footer__link" href="${fullPageHref}">Open full page</a>
             </footer>
             </article>
         `;
@@ -216,19 +268,62 @@ class BlogLoader {
     this.modal.offsetHeight;
     this.modal.classList.add('active');
     this.modal.setAttribute('aria-hidden', 'false');
-    document.body.style.overflow = 'hidden'; // Prevent background scrolling
+    document.body.style.overflow = 'hidden';
+    document.documentElement.classList.add('blog-modal-open');
+
+    // Deep-link hash for shareable open state (without fighting #blog)
+    try {
+      const nextHash = `#blog-read-${encodeURIComponent(post.id)}`;
+      if (window.location.hash !== nextHash) {
+        history.replaceState(
+          null,
+          '',
+          `${window.location.pathname}${window.location.search}${nextHash}`
+        );
+      }
+    } catch {
+      // ignore history errors
+    }
+
     rescanCardContentAccessibility(modalBody);
+    // Move focus into the dialog
+    requestAnimationFrame(() => {
+      this.modal.querySelector('.blog-modal-close')?.focus();
+      this.modal.querySelector('.blog-modal-container')?.scrollTo?.(0, 0);
+      modalBody.scrollTop = 0;
+    });
   }
 
   closeModal() {
+    if (!this.modal) return;
     this.modal.classList.remove('active');
     this.modal.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
+    document.documentElement.classList.remove('blog-modal-open');
+
+    // Clear deep-link hash when closing from hash open
+    try {
+      if (/^#blog-read-/.test(window.location.hash)) {
+        history.replaceState(null, '', `${window.location.pathname}${window.location.search}#blog`);
+      }
+    } catch {
+      // ignore
+    }
+
+    const restore = this.lastFocus;
+    this.lastFocus = null;
 
     // Delay hidden class to let fade-out transition complete
     setTimeout(() => {
       if (!this.modal.classList.contains('active')) {
         this.modal.classList.add('hidden');
+      }
+      if (restore && typeof restore.focus === 'function') {
+        try {
+          restore.focus();
+        } catch {
+          // ignore
+        }
       }
     }, 300);
   }

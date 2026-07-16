@@ -321,7 +321,14 @@ export function buildTableOfContents(headings = []) {
 
 export function formatBlogDate(dateString) {
   try {
-    return new Date(dateString).toLocaleDateString('en-US', {
+    // YYYY-MM-DD as local calendar day (avoid UTC midnight → previous-day shift)
+    const raw = String(dateString || '').trim();
+    const isoDay = raw.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+    const date = isoDay
+      ? new Date(Number(isoDay[1]), Number(isoDay[2]) - 1, Number(isoDay[3]), 12, 0, 0)
+      : new Date(raw);
+    if (Number.isNaN(date.getTime())) return raw;
+    return date.toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'long',
       day: 'numeric',

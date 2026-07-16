@@ -189,6 +189,36 @@ html.dark .newsletter-status.is-error {
   margin-top: clamp(2rem, 3.4vw, 3rem);
 }
 
+.blog-archive-link-wrap {
+  margin: -0.35rem 0 1.35rem;
+  text-align: center;
+}
+
+.blog-archive-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: #1d9bf0;
+  font-weight: 650;
+  font-size: 0.95rem;
+  text-decoration: none;
+}
+
+.blog-archive-link:hover,
+.blog-archive-link:focus-visible {
+  text-decoration: underline;
+}
+
+html.blog-modal-open,
+html.blog-modal-open body {
+  overflow: hidden !important;
+}
+
+.blog-card[tabindex='0']:focus-visible {
+  outline: 2px solid #1d9bf0;
+  outline-offset: 3px;
+}
+
 /* Blog Card */
 .blog-card {
   position: relative;

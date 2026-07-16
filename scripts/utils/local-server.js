@@ -260,8 +260,19 @@ const staticOpts = {
 };
 // Generated at dev start (not in src/) — serve before the src static root.
 // Explicit index routes: mount + no-trailing-slash + redirect:false otherwise 404s /blog.
+// Express/send rejects bare absolute paths here — always use { root } + relative path.
 app.get(['/blog', '/blog/'], (req, res) => {
-  res.sendFile(join(distPath, 'blog', 'index.html'));
+  res.sendFile('blog/index.html', { root: distPath }, err => {
+    if (err) {
+      console.error('Failed to serve /blog:', err.message);
+      if (!res.headersSent) {
+        res
+          .status(err.statusCode || 404)
+          .type('text')
+          .send('Blog index not found');
+      }
+    }
+  });
 });
 app.use('/blog', express.static(join(distPath, 'blog'), staticOpts));
 app.use('/case-studies', express.static(join(distPath, 'case-studies'), staticOpts));
