@@ -600,10 +600,15 @@ export default {
   },
 };
 
-const EDGE_BOOT_MS = Date.now();
-
+/** Isolate boot clock — set on first request (avoids module-eval edge cases). */
 function edgeUptimeSeconds() {
-  return Math.max(1, Math.floor((Date.now() - EDGE_BOOT_MS) / 1000));
+  const now = Date.now();
+  if (!globalThis.__ASSISTME_EDGE_BOOT_MS__ || globalThis.__ASSISTME_EDGE_BOOT_MS__ > now) {
+    globalThis.__ASSISTME_EDGE_BOOT_MS__ = now;
+  }
+  const s = Math.floor((now - globalThis.__ASSISTME_EDGE_BOOT_MS__) / 1000);
+  // Cap at 30d so a bad boot stamp never shows multi-decade uptime
+  return Math.min(Math.max(1, s), 30 * 86400);
 }
 
 function edgeUptimeHuman() {
@@ -613,7 +618,7 @@ function edgeUptimeHuman() {
   const m = Math.floor((s % 3600) / 60);
   if (d > 0) return `${d}d ${h}h ${m}m`;
   if (h > 0) return `${h}h ${m}m`;
-  return `${m}m`;
+  return `${Math.max(1, m)}m`;
 }
 
 function edgeTs() {
