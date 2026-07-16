@@ -74,7 +74,20 @@
     }
   }
 
-  function markRemoteApiDisabled() {
+  const EDGE_API = 'https://assistme-chat.mangeshraut712.workers.dev';
+
+  function isBlockedVercelOrigin(origin) {
+    return /mangeshraut\.pro|vercel\.app/i.test(String(origin || ''));
+  }
+
+  function markRemoteApiDisabled(origin = '') {
+    // Never blacklist Cloudflare edge — only park blocked Vercel hosts
+    if (origin && /workers\.dev/i.test(String(origin))) {
+      return;
+    }
+    if (origin && !isBlockedVercelOrigin(origin) && !/vercel|mangeshraut\.pro/i.test(origin)) {
+      return;
+    }
     try {
       sessionStorage.setItem(API_DEAD_KEY, '1');
     } catch {
@@ -82,17 +95,15 @@
     }
   }
 
-  const EDGE_API = 'https://assistme-chat.mangeshraut712.workers.dev';
-
-  function isBlockedVercelOrigin(origin) {
-    return /mangeshraut\.pro|vercel\.app/i.test(String(origin || ''));
+  function clearRemoteApiDisabled() {
+    try {
+      sessionStorage.removeItem(API_DEAD_KEY);
+    } catch {
+      // ignore
+    }
   }
 
   function getApiBase() {
-    if (isRemoteApiDisabled()) {
-      return '';
-    }
-
     const configuredOrigin = normalizeOrigin(
       globalThis.APP_CONFIG?.apiBaseUrl || globalThis.buildConfig?.apiBaseUrl
     );
@@ -108,11 +119,19 @@
     }
 
     if (window.location.hostname.endsWith('github.io')) {
-      // Vercel blocked — use edge worker only (no CORS spam to mangeshraut.pro)
-      if (configuredOrigin && !isBlockedVercelOrigin(configuredOrigin)) {
-        return `${configuredOrigin}/api`;
+      // Always use edge on Pages (ignore stale dead-host flag for workers.dev)
+      const edgeOrigin =
+        configuredOrigin && !isBlockedVercelOrigin(configuredOrigin) ? configuredOrigin : EDGE_API;
+      if (/workers\.dev/i.test(edgeOrigin)) {
+        clearRemoteApiDisabled();
+      } else if (isRemoteApiDisabled()) {
+        return '';
       }
-      return `${EDGE_API}/api`;
+      return `${edgeOrigin}/api`;
+    }
+
+    if (isRemoteApiDisabled()) {
+      return '';
     }
 
     if (configuredOrigin) {
@@ -483,11 +502,25 @@
     }
 
     const totalReach = payload.total_reach ?? 0;
+    // Edge placeholder has no GA4 — still show a number (0) rather than "Unavailable"
     const formattedValue = formatNumber(totalReach);
+    const isEdgePlaceholder = payload.source === 'edge-placeholder';
 
     reachCountEls.forEach(element => {
-      animateReachValue(element, formattedValue, `Portfolio Reach: ${formattedValue}`);
+      animateReachValue(
+        element,
+        formattedValue,
+        isEdgePlaceholder
+          ? `Portfolio Reach (edge mode): ${formattedValue}`
+          : `Portfolio Reach: ${formattedValue}`
+      );
     });
+    if (reachBadge) {
+      reachBadge.title = isEdgePlaceholder
+        ? 'Portfolio Reach on Cloudflare edge (GA4 offline with Vercel)'
+        : reachBadge.title || 'Portfolio Reach insights';
+      reachBadge.classList.remove('is-unavailable');
+    }
     updateReachPanel(payload);
   }
 
@@ -539,10 +572,11 @@
         cache: 'no-store',
       });
       if (res.status === 402 || res.status === 503) {
-        markRemoteApiDisabled();
+        markRemoteApiDisabled(apiBase);
         return null;
       }
       if (!res.ok) throw new Error(`Reach fetch failed: ${res.status}`);
+      clearRemoteApiDisabled();
       return { type: 'reach', data: await res.json() };
     } catch {
       try {
@@ -551,16 +585,15 @@
           cache: 'no-store',
         });
         if (res.status === 402 || res.status === 503) {
-          markRemoteApiDisabled();
+          markRemoteApiDisabled(apiBase);
           return null;
         }
         if (!res.ok) throw new Error(`Views fetch failed: ${res.status}`);
+        clearRemoteApiDisabled();
         return { type: 'views', data: await res.json() };
       } catch {
-        // Network / CORS when Vercel is DEPLOYMENT_DISABLED — stop retrying this session
-        if (window.location.hostname.endsWith('github.io')) {
-          markRemoteApiDisabled();
-        }
+        // Only blacklist blocked Vercel origins — keep retrying edge worker
+        markRemoteApiDisabled(apiBase);
         return null;
       }
     }
@@ -587,7 +620,7 @@
       });
 
       if (response.status === 402 || response.status === 503) {
-        markRemoteApiDisabled();
+        markRemoteApiDisabled(apiBase);
         return null;
       }
 
@@ -595,12 +628,12 @@
         return null;
       }
 
+      clearRemoteApiDisabled();
       localStorage.setItem(STORAGE_KEYS.LAST_VISIT, Date.now().toString());
       return response.json();
     } catch {
-      if (window.location.hostname.endsWith('github.io')) {
-        markRemoteApiDisabled();
-      }
+      // Do not kill edge analytics on transient network errors
+      markRemoteApiDisabled(apiBase);
       return null;
     }
   }

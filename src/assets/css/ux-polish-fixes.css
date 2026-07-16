@@ -94,12 +94,19 @@
   align-items: center;
 }
 
+/* Prevent rare horizontal scroll from marquees / full-bleed maps */
+html,
+body {
+  overflow-x: clip;
+  max-width: 100%;
+}
+
 /* ─── FAB stack + safe areas (all viewports) ─── */
 body #chatbot-toggle {
-  width: var(--fab-size);
-  height: var(--fab-size);
-  min-width: var(--fab-size);
-  min-height: var(--fab-size);
+  width: var(--fab-size) !important;
+  height: var(--fab-size) !important;
+  min-width: var(--fab-size) !important;
+  min-height: var(--fab-size) !important;
   right: var(--fab-edge);
   bottom: calc(var(--fab-bottom) + var(--fab-size) + var(--fab-gap));
   z-index: var(--z-fab);

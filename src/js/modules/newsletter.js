@@ -55,9 +55,11 @@ async function subscribeEmail(email) {
   if (!response.ok) {
     const detail =
       payload?.detail ||
-      payload?.error?.message ||
+      (typeof payload?.error === 'string' ? payload.error : payload?.error?.message) ||
       payload?.message ||
-      'Subscription failed. Please try again.';
+      (response.status === 503
+        ? 'Newsletter is offline on this mirror — email mbr63@drexel.edu instead.'
+        : 'Subscription failed. Please try again.');
     throw new Error(typeof detail === 'string' ? detail : 'Subscription failed. Please try again.');
   }
 
