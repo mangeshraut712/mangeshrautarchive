@@ -14,31 +14,73 @@
   padding: 0 !important;
   margin: 0 !important;
   border-radius: 999px !important;
-  border: 1px solid rgb(0 0 0 / 10%) !important;
-  background: #ffffff !important;
-  background-color: #ffffff !important;
-  background-image: none !important;
-  box-shadow: 0 10px 28px rgb(0 0 0 / 14%) !important;
   color: #1d1d1f !important;
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
   cursor: pointer !important;
   isolation: isolate !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
   transition:
     transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1),
-    box-shadow 0.2s ease !important;
+    box-shadow 0.2s ease,
+    background-color 0.25s ease,
+    border-color 0.25s ease,
+    backdrop-filter 0.25s ease !important;
 }
 
-html.dark #website-share-toggle.website-share-fab,
-html.dark .website-share-fab {
+/* Clear / balanced: frosted glass control (matches a11y FAB) */
+html:is([data-lg-mode='clear'], [data-lg-mode='balanced']):not(.dark)
+  #website-share-toggle.website-share-fab,
+html:is([data-lg-mode='clear'], [data-lg-mode='balanced']):not(.dark) .website-share-fab {
+  border: 1px solid rgb(255 255 255 / var(--lg-border-light, 40%)) !important;
+  background: rgb(255 255 255 / calc(42% + var(--lg-tint, 0.42) * 46%)) !important;
+  background-color: rgb(255 255 255 / calc(42% + var(--lg-tint, 0.42) * 46%)) !important;
+  background-image: none !important;
+  backdrop-filter: saturate(var(--lg-saturate, 180%)) blur(var(--lg-blur-control, 20px)) !important;
+  -webkit-backdrop-filter: saturate(var(--lg-saturate, 180%)) blur(var(--lg-blur-control, 20px)) !important;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / var(--lg-specular-light, 70%)),
+    0 10px 28px rgb(0 0 0 / 12%) !important;
+}
+
+html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced'])
+  #website-share-toggle.website-share-fab,
+html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced']) .website-share-fab {
+  border: 1px solid rgb(255 255 255 / var(--lg-border-dark, 14%)) !important;
+  background: rgb(28 28 30 / calc(46% + var(--lg-tint, 0.42) * 44%)) !important;
+  background-color: rgb(28 28 30 / calc(46% + var(--lg-tint, 0.42) * 44%)) !important;
+  background-image: none !important;
+  color: #f5f5f7 !important;
+  backdrop-filter: saturate(var(--lg-saturate, 180%)) blur(var(--lg-blur-control, 20px)) !important;
+  -webkit-backdrop-filter: saturate(var(--lg-saturate, 180%)) blur(var(--lg-blur-control, 20px)) !important;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / var(--lg-specular-dark, 12%)),
+    0 10px 28px rgb(0 0 0 / 42%) !important;
+}
+
+/* Tinted / fallback: solid control (max readability) */
+html[data-lg-mode='tinted']:not(.dark) #website-share-toggle.website-share-fab,
+html[data-lg-mode='tinted']:not(.dark) .website-share-fab,
+html:not([data-lg-mode]) #website-share-toggle.website-share-fab {
+  border: 1px solid rgb(0 0 0 / 10%) !important;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  box-shadow: 0 10px 28px rgb(0 0 0 / 14%) !important;
+}
+
+html.dark[data-lg-mode='tinted'] #website-share-toggle.website-share-fab,
+html.dark[data-lg-mode='tinted'] .website-share-fab,
+html.dark:not([data-lg-mode]) #website-share-toggle.website-share-fab {
   background: #1c1c1e !important;
   background-color: #1c1c1e !important;
   background-image: none !important;
   border-color: rgb(255 255 255 / 14%) !important;
   color: #f5f5f7 !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
   box-shadow: 0 10px 28px rgb(0 0 0 / 42%) !important;
 }
 

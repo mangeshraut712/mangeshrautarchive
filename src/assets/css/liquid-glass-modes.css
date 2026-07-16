@@ -613,3 +613,60 @@ html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced'], [data-lg-mode='t
   background-image: none !important;
   background-attachment: scroll !important;
 }
+
+/* ─── Tinted cards: force solid material (wins residual blur from other layers) ─── */
+html[data-lg-mode='tinted']:not(.dark)
+  :is(
+    .card,
+    .about-text-card,
+    .about-highlight-card,
+    .about-card,
+    .experience-content,
+    .education-card,
+    .blog-card,
+    .contact-card,
+    .newsletter-card,
+    .currently-card,
+    .calendar-card,
+    .stat-card,
+    .skill-card,
+    .lg-glass-card,
+    .projects-activity-overview,
+    #skills .skill-category
+  ) {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border: 1px solid #e5e5ea !important;
+  box-shadow: none !important;
+}
+
+html.dark[data-lg-mode='tinted']
+  :is(
+    .card,
+    .about-text-card,
+    .about-highlight-card,
+    .about-card,
+    .experience-content,
+    .education-card,
+    .blog-card,
+    .contact-card,
+    .newsletter-card,
+    .currently-card,
+    .calendar-card,
+    .stat-card,
+    .skill-card,
+    .lg-glass-card,
+    .projects-activity-overview,
+    #skills .skill-category
+  ) {
+  background: #000000 !important;
+  background-color: #000000 !important;
+  background-image: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border: 1px solid #2c2c2e !important;
+  box-shadow: none !important;
+}
