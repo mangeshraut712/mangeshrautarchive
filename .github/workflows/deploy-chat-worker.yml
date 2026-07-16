@@ -24,8 +24,6 @@ on:
 permissions:
   contents: read
   actions: write
-  # Allow auto-set of repo Variable CHAT_API_BASE after deploy
-  variables: write
 
 concurrency:
   group: assistme-chat-worker
