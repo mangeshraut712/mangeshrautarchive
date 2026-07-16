@@ -499,6 +499,27 @@ export default {
       return handleMusicRecent(url, env, cors);
     }
 
+    // Artwork lookups fall through to client CDN; quiet 204 avoids console 404 spam
+    if (request.method === 'GET' && path === '/api/music/artwork') {
+      return json({ success: false, url: null, host: 'cloudflare-worker' }, 200, cors);
+    }
+
+    if (
+      request.method === 'GET' &&
+      (path === '/api/realtime/health' || path === '/api/realtime/status')
+    ) {
+      return json(
+        {
+          success: true,
+          available: false,
+          host: 'cloudflare-worker',
+          message: 'Realtime voice requires Vercel AI Gateway; unavailable on edge.',
+        },
+        200,
+        cors
+      );
+    }
+
     // Soft monitor surface (Vercel FastAPI offline)
     if (
       request.method === 'GET' &&
