@@ -57,35 +57,43 @@ class BlogLoader {
     this.container.innerHTML = sortedPosts
       .map(
         post => `
-            <article class="blog-card apple-3d-project" data-id="${post.id}">
+            <article class="blog-card x-post-card apple-3d-project" data-id="${post.id}">
                 <div class="blog-card-content">
                     <div class="blog-card-actions" aria-label="Listen and translate article card"></div>
-                    <div class="blog-kicker-row">
-                        <span class="blog-kicker">${this.escapeHTML(post.kicker || 'Field notes')}</span>
-                        <span class="blog-read-time">${this.escapeHTML(post.readTime)}</span>
-                    </div>
-                    <div class="blog-meta">
-                        <span class="blog-date">${this.formatDate(post.date)}</span>
+                    <div class="x-post-card__head">
+                      <img class="x-post-card__avatar" src="assets/images/profile-icon.webp" width="44" height="44" alt="" loading="lazy" decoding="async" />
+                      <div class="x-post-card__identity">
+                        <div class="x-post-card__name-row">
+                          <span class="x-post-card__name">Mangesh Raut</span>
+                          <span class="x-post-card__handle">@mangeshraut</span>
+                          <span class="x-post-card__dot" aria-hidden="true">·</span>
+                          <time class="x-post-card__date" datetime="${this.escapeHTML(post.date)}">${this.formatDate(post.date)}</time>
+                        </div>
+                        <div class="x-post-card__meta-row">
+                          <span class="blog-kicker">${this.escapeHTML(post.kicker || 'Field notes')}</span>
+                          <span class="blog-read-time">${this.escapeHTML(post.readTime)}</span>
+                        </div>
+                      </div>
                     </div>
                     <h3 class="blog-title">${this.escapeHTML(post.title)}</h3>
-
-                    <div class="blog-promise">
-                        <span class="blog-promise-label">Reader promise</span>
-                        <p class="blog-summary">${this.escapeHTML(post.readerPromise || post.summary)}</p>
-                    </div>
-
-                    <blockquote class="blog-card-quote">${this.escapeHTML(post.pullQuote || post.summary)}</blockquote>
-
-                    <ul class="blog-highlight-list" aria-label="Article highlights">
-                        ${this.renderHighlights(post.highlights)}
-                    </ul>
-
+                    <p class="blog-summary">${this.escapeHTML(post.readerPromise || post.summary)}</p>
+                    ${
+                      post.pullQuote
+                        ? `<blockquote class="blog-card-quote">${this.escapeHTML(post.pullQuote)}</blockquote>`
+                        : ''
+                    }
                     <div class="blog-tags">
-                        ${post.tags.map(tag => `<span class="blog-tag">${this.escapeHTML(tag)}</span>`).join('')}
+                        ${post.tags
+                          .slice(0, 5)
+                          .map(
+                            tag =>
+                              `<span class="blog-tag">#${this.escapeHTML(tag.replace(/\s+/g, ''))}</span>`
+                          )
+                          .join('')}
                     </div>
                     <button class="blog-read-btn publication-read-btn" type="button" data-blog-open="${post.id}">
-                        <i class="fas fa-book-open" aria-hidden="true"></i>
-                        <span>Read Article</span>
+                        <span>Read article</span>
+                        <i class="fas fa-arrow-right" aria-hidden="true"></i>
                     </button>
                 </div>
             </article>
@@ -169,26 +177,37 @@ class BlogLoader {
     modalBody.innerHTML = `
             <article class="x-article">
             <header class="article-header">
-                <span class="article-kicker">${this.escapeHTML(post.kicker || 'Field notes')}</span>
+                <div class="article-author-row">
+                  <img class="article-byline__avatar article-byline__avatar--lg" src="assets/images/profile-icon.webp" width="48" height="48" alt="" loading="lazy" decoding="async" />
+                  <div class="article-author-text">
+                    <div class="article-author-name">Mangesh Raut</div>
+                    <div class="article-author-handle">@mangeshraut · Field notes</div>
+                  </div>
+                </div>
                 <h1 class="article-title">${this.escapeHTML(post.title)}</h1>
                 <p class="article-promise">${this.escapeHTML(post.readerPromise || post.summary)}</p>
                 <div class="article-byline">
-                  <span class="article-byline__author">
-                    <img class="article-byline__avatar" src="assets/images/profile-icon.webp" width="28" height="28" alt="" loading="lazy" decoding="async" />
-                    Mangesh Raut
-                  </span>
+                  <span class="article-kicker">${this.escapeHTML(post.kicker || 'Field notes')}</span>
                   <span aria-hidden="true">·</span>
-                  <span>${this.formatDate(post.date)}</span>
+                  <time datetime="${this.escapeHTML(post.date)}">${this.formatDate(post.date)}</time>
                   <span aria-hidden="true">·</span>
                   <span>${this.escapeHTML(post.readTime)}</span>
                 </div>
                 <div class="article-tags">
-                    ${post.tags.map(tag => `<span class="blog-tag">${this.escapeHTML(tag)}</span>`).join('')}
+                    ${post.tags
+                      .map(
+                        tag =>
+                          `<span class="blog-tag">#${this.escapeHTML(String(tag).replace(/\s+/g, ''))}</span>`
+                      )
+                      .join('')}
                 </div>
             </header>
             <div class="article-body">
                 ${htmlContent}
             </div>
+            <footer class="x-article-footer">
+              <a class="x-article-footer__link" href="blog/${this.escapeHTML(post.id)}">Open full page</a>
+            </footer>
             </article>
         `;
 

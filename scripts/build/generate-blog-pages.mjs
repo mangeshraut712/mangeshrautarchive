@@ -37,17 +37,17 @@ function pageShell({
     <meta name="view-transition" content="same-origin" />
     <meta name="description" content="${escapeHTML(description)}" />
     <meta name="author" content="Mangesh Raut" />
-    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <meta name="robots" content="index, follow, max-image-preview:standard" />
     <link rel="canonical" href="${canonical}" />
     <meta property="og:type" content="${ogType}" />
     <meta property="og:url" content="${canonical}" />
     <meta property="og:title" content="${escapeHTML(title)}" />
     <meta property="og:description" content="${escapeHTML(description)}" />
-    <meta property="og:image" content="${SITE_URL}/assets/images/home.png" />
-    <meta name="twitter:card" content="summary_large_image" />
+    <meta property="og:image" content="${SITE_URL}/assets/images/profile-icon.png" />
+    <meta name="twitter:card" content="summary" />
     <meta name="twitter:title" content="${escapeHTML(title)}" />
     <meta name="twitter:description" content="${escapeHTML(description)}" />
-    <meta name="twitter:image" content="${SITE_URL}/assets/images/home.png" />
+    <meta name="twitter:image" content="${SITE_URL}/assets/images/profile-icon.png" />
     <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
     <meta name="color-scheme" content="light dark" />
@@ -88,17 +88,32 @@ function renderBlogIndex(posts, tags) {
   const cards = posts
     .map(
       post => `
-    <article class="blog-card apple-3d-project lg-glass-card" data-id="${post.id}" data-tags="${escapeHTML((post.tags || []).join(','))}">
+    <article class="blog-card x-post-card apple-3d-project lg-glass-card" data-id="${post.id}" data-tags="${escapeHTML((post.tags || []).join(','))}">
       <div class="blog-card-content">
-        <div class="blog-kicker-row">
-          <span class="blog-kicker">${escapeHTML(post.kicker || 'Field notes')}</span>
-          <span class="blog-read-time">${escapeHTML(post.readTime)}</span>
+        <div class="x-post-card__head">
+          <img class="x-post-card__avatar" src="${ASSET_PREFIX}/assets/images/profile-icon.webp" width="44" height="44" alt="" loading="lazy" decoding="async" />
+          <div class="x-post-card__identity">
+            <div class="x-post-card__name-row">
+              <span class="x-post-card__name">Mangesh Raut</span>
+              <span class="x-post-card__handle">@mangeshraut</span>
+              <span class="x-post-card__dot" aria-hidden="true">·</span>
+              <time class="x-post-card__date" datetime="${escapeHTML(post.date)}">${formatBlogDate(post.date)}</time>
+            </div>
+            <div class="x-post-card__meta-row">
+              <span class="blog-kicker">${escapeHTML(post.kicker || 'Field notes')}</span>
+              <span class="blog-read-time">${escapeHTML(post.readTime)}</span>
+            </div>
+          </div>
         </div>
-        <div class="blog-meta"><span class="blog-date">${formatBlogDate(post.date)}</span></div>
         <h2 class="blog-title"><a href="/blog/${post.id}" class="blog-title-link">${escapeHTML(post.title)}</a></h2>
         <p class="blog-summary">${escapeHTML(post.readerPromise || post.summary)}</p>
-        <div class="blog-tags">${(post.tags || []).map(tag => `<span class="blog-tag">${escapeHTML(tag)}</span>`).join('')}</div>
-        <a class="blog-read-btn" href="/blog/${post.id}">Read Article <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+        <div class="blog-tags">${(post.tags || [])
+          .slice(0, 5)
+          .map(
+            tag => `<span class="blog-tag">#${escapeHTML(String(tag).replace(/\s+/g, ''))}</span>`
+          )
+          .join('')}</div>
+        <a class="blog-read-btn" href="/blog/${post.id}">Read article <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
       </div>
     </article>`
     )
@@ -184,29 +199,36 @@ function renderBlogPost(post, posts) {
     <div class="blog-reading-progress" id="blog-reading-progress" aria-hidden="true"></div>
     <a href="/blog" class="blog-back-link"><i class="fas fa-arrow-left" aria-hidden="true"></i> All articles</a>
     <main id="main-content" class="blog-article-main">
-      <article class="blog-article">
+      <article class="blog-article x-article">
         <header class="article-header">
-          <span class="article-kicker">${escapeHTML(post.kicker || 'Field notes')}</span>
+          <div class="article-author-row">
+            <img class="article-byline__avatar article-byline__avatar--lg" src="${ASSET_PREFIX}/assets/images/profile-icon.webp" width="48" height="48" alt="" loading="lazy" decoding="async" />
+            <div class="article-author-text">
+              <div class="article-author-name">Mangesh Raut</div>
+              <div class="article-author-handle">@mangeshraut · Field notes</div>
+            </div>
+          </div>
           <h1 class="article-title">${escapeHTML(post.title)}</h1>
           <p class="article-promise">${escapeHTML(post.readerPromise || post.summary)}</p>
           <div class="article-byline">
-            <span class="article-byline__author">
-              <img class="article-byline__avatar" src="${ASSET_PREFIX}/assets/images/profile-icon.webp" width="28" height="28" alt="" loading="lazy" decoding="async" />
-              Mangesh Raut
-            </span>
+            <span class="article-kicker">${escapeHTML(post.kicker || 'Field notes')}</span>
             <span aria-hidden="true">·</span>
             <time datetime="${post.date}">${formatBlogDate(post.date)}</time>
             <span aria-hidden="true">·</span>
             <span>${escapeHTML(post.readTime)}</span>
           </div>
-          <div class="article-tags">${(post.tags || []).map(tag => `<span class="blog-tag">${escapeHTML(tag)}</span>`).join('')}</div>
+          <div class="article-tags">${(post.tags || [])
+            .map(
+              tag => `<span class="blog-tag">#${escapeHTML(String(tag).replace(/\s+/g, ''))}</span>`
+            )
+            .join('')}</div>
         </header>
         <div class="blog-article-layout">
           ${toc ? `<aside class="blog-article-sidebar lg-glass-card">${toc}</aside>` : ''}
           <div class="article-body">${html}</div>
         </div>
         ${relatedHtml}
-        <footer class="article-footer">
+        <footer class="article-footer x-article-footer">
           <a href="${ASSET_PREFIX}/#contact" class="blog-read-btn">Discuss this topic</a>
         </footer>
       </article>

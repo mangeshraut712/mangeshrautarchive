@@ -41,14 +41,6 @@ export const blogPosts = [
 
 The useful I/O question is not "which model name won the slide deck?" It is: where does intelligence run, what context is allowed to leave the device, and which product moments deserve an agent versus a deterministic UI? The 2026 signal, in my read, is a web stack that can mix cloud reasoning, open local models, browser acceleration, and tool-calling without pretending one layer replaces the others.
 
-:::figure
-src: assets/images/homepage-light.png
-alt: Portfolio homepage surface used as a stand-in for hybrid web product design
-caption: Hybrid AI still lands on a UI. The architecture question is what happens before the pixels paint.
-width: 1200
-height: 675
-:::
-
 ## TL;DR
 
 Design for three execution surfaces: **device-side helpers** for private low-latency work, **browser acceleration** for repeated local inference, and **cloud models** for hard synthesis. Long-context Gemini-class models make document-heavy and code-heavy products more believable. Gemma-style open models give teams a path when privacy or cost make frontier calls the wrong default. WebNN and WebGPU matter when they remove round trips for summarization, accessibility, search, and UI assistance. The winning product is not a chat panel. It is a workflow where context, tools, permissions, and fallback behavior are designed together.
@@ -307,14 +299,6 @@ The future of feeds and assistants is not only bigger models. It is cleaner retr
 
 Ecosystem AI is a product strategy, not a research paper. The bet is simple: if the assistant already sits near mail, docs, photos, maps, and the phone camera, it can reduce steps without inventing a new daily destination. The hard part is making that context useful without making users feel watched, overloaded, or trapped in a maze of assistant entry points.
 
-:::figure
-src: assets/images/homepage-dark.png
-alt: Dark-mode portfolio homepage representing multi-surface product design
-caption: Ecosystem products win when intelligence shows up on the surface the user already opened.
-width: 1200
-height: 675
-:::
-
 ## TL;DR
 
 Put intelligence where user context already lives. Multimodal input (camera, voice, files, screen state, text) is the interface language. Workspace integration is where AI becomes collaboration infrastructure instead of novelty. Android is the path for device-aware features that feel native. The risks are permission opacity, assistant clutter, and reliability failures that edit the wrong object with high confidence.
@@ -429,14 +413,6 @@ This essay is a **product-pattern analysis**. Where OpenClaw-style systems are l
 ## Fast Context
 
 What makes open agent stacks exciting is inspectability. Prompts, tools, state, retries, logs, and failures can become part of the engineering surface instead of a hidden SaaS behavior. The next phase is not "agents that never stop." It is agents teams can constrain, evaluate, and trust.
-
-:::figure
-src: assets/images/home.png
-alt: Portfolio home surface representing product control and clarity
-caption: Open agents still need product boundaries. Transparency is not the same as safety.
-width: 1200
-height: 675
-:::
 
 ## TL;DR
 
@@ -671,14 +647,6 @@ For portfolio and productivity tools, I would use voice for quick capture: proje
 - Destination templates
 - No silent cloud training surprises without consent
 - A local-first path for sensitive research notes
-
-:::figure
-src: assets/images/profile.webp
-alt: Profile portrait used as a human-centered product reminder
-caption: Voice products succeed when they feel like an extension of the person, not a rewrite of their identity.
-width: 800
-height: 800
-:::
 
 ## Bottom Line
 
@@ -1061,14 +1029,6 @@ For UI work, add:
 7. **Verifier pass** — screenshots or Playwright assertions.
 8. **Reviewer pass** — readability, a11y, performance before human PR review.
 
-:::figure
-src: assets/images/homepage-light.png
-alt: Clean product UI as a reminder that AI edits still ship to real interfaces
-caption: If the tool cannot help you verify the rendered result, it is only half a coding environment.
-width: 1200
-height: 675
-:::
-
 ## Things I Learned
 
 - Define the goal before coding because agents perform better when success is measurable.
@@ -1150,14 +1110,6 @@ AI code editors are becoming serious engineering tools, but the winning workflow
 ## Fast Context
 
 Apple repeatedly wins when hardware, software, interaction design, retail, and ecosystem strategy are treated as one system. It loses clarity when channels multiply without a coherent default, or when polish becomes a substitute for progress. This essay is product craft analysis, not a shareholder note.
-
-:::figure
-src: assets/images/profile.webp
-alt: Human-centered product portrait as a stand-in for taste and craft
-caption: Fifty years in, the durable Apple lesson is still craft under constraint—not feature count.
-width: 800
-height: 800
-:::
 
 ## TL;DR
 
@@ -1277,14 +1229,6 @@ This piece intentionally mixes philosophy and engineering. Where claims are not 
 ## Fast Context
 
 "Anthropic" here primarily means **anthropic reasoning / observer selection effects**, not only the company Anthropic—though modern AI safety culture and Anthropic’s public writing often sit adjacent to these debates. The goal is operational: can a philosophical frame change how we build, test, or govern systems?
-
-:::figure
-src: assets/images/home.png
-alt: Clean homepage composition representing clarity under complexity
-caption: Philosophy is useful when it sharpens controls. It is noise when it replaces them.
-width: 1200
-height: 675
-:::
 
 ## TL;DR
 
@@ -1488,14 +1432,6 @@ Each action needs:
 - Confirmation when user data changes
 - Clear permission copy
 
-:::figure
-src: assets/images/homepage-dark.png
-alt: Dark interface with calm hierarchy illustrating Apple-like restraint
-caption: Calm automation should look like a finished OS feature, not a chatbot takeover.
-width: 1200
-height: 675
-:::
-
 ## What I Would Watch
 
 - Siri reliability regressions that train users to avoid voice
@@ -1639,14 +1575,6 @@ For portfolio research, competitive analysis, or course work:
 - Generate an Audio Overview for orientation
 - Draft public writing only after a human pass with citations
 - Keep a clear source trail before publishing anything external
-
-:::figure
-src: assets/images/homepage-light.png
-alt: Clean reading-oriented interface metaphor for research synthesis
-caption: Research products should make evidence closer than the prose, not the other way around.
-width: 1200
-height: 675
-:::
 
 ## Practical Prompts I Reuse
 
