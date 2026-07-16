@@ -957,7 +957,8 @@ export class AccessibilityEnhancer {
         .a11y-toolbar {
           position: fixed;
           left: max(1rem, env(safe-area-inset-left, 0px));
-          bottom: max(1.25rem, env(safe-area-inset-bottom, 0px));
+          /* Share FAB is bottom-left; stack a11y above it with 12px gap so panel opens clear */
+          bottom: calc(max(1.25rem, env(safe-area-inset-bottom, 0px)) + 48px + 12px);
           z-index: 9997;
           display: flex;
           flex-direction: column-reverse;

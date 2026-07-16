@@ -1,12 +1,11 @@
 /* Website share widget — Apple iOS/macOS inspired Share Sheet style */
 
-/* Independent share FAB — stacked above a11y with clear gap (no shared glass shell) */
+/* Share FAB — bottom-left dock (a11y sits above so its panel never covers share) */
 #website-share-toggle.website-share-fab,
 .website-share-fab {
   position: fixed !important;
   left: max(1rem, env(safe-area-inset-left, 0px)) !important;
-  /* a11y FAB is 48px + 12px gap above a11y bottom dock */
-  bottom: calc(max(1.25rem, env(safe-area-inset-bottom, 0px)) + 48px + 12px) !important;
+  bottom: max(1.25rem, env(safe-area-inset-bottom, 0px)) !important;
   z-index: 9998 !important;
   width: 48px !important;
   height: 48px !important;

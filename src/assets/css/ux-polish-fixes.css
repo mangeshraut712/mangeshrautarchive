@@ -142,8 +142,9 @@ body #website-share-toggle {
 
 .a11y-toolbar {
   z-index: 9997;
-  bottom: max(12px, env(safe-area-inset-bottom, 0px));
-  left: max(12px, env(safe-area-inset-left, 0px));
+  /* Share is on the bottom dock; a11y stacks above (panel opens upward, clear of share) */
+  bottom: calc(max(1.25rem, env(safe-area-inset-bottom, 0px)) + 48px + 12px) !important;
+  left: max(1rem, env(safe-area-inset-left, 0px));
   /* Shell never paints — only child FABs/panel */
   background: transparent !important;
   background-color: transparent !important;

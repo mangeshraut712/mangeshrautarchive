@@ -61,7 +61,8 @@ function createShareToggleButton() {
 }
 
 /**
- * Share FAB is independent of the accessibility menu (left dock, above a11y).
+ * Share FAB is independent of the accessibility menu (left dock, below a11y).
+ * A11y sits above so its expanding panel never covers the share control.
  */
 function repairShareToggle() {
   const existingToggle = document.getElementById(SHARE_TOGGLE_ID);
