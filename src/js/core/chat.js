@@ -993,10 +993,16 @@ class IntelligentAssistant {
     }
 
     result.answer =
-      "I'm answering in offline mode right now because the live AI service is unavailable. Ask about Mangesh's projects, skills, experience, education, or contact details and I'll respond from the portfolio knowledge base.";
+      "I'm on **Local Portfolio Mode** (live AI host unavailable). Try asking:\n\n" +
+      '• What are Mangesh’s top skills?\n' +
+      '• Tell me about his experience\n' +
+      '• Where did he study?\n' +
+      '• How can I contact him?\n' +
+      '• Show me projects / GitHub';
     result.source = 'assistme-portfolio';
     result.sourceLabel = this.getSourceLabelForKey('assistme-portfolio', 'portfolio');
-    result.confidence = 0.45;
+    result.confidence = 0.55;
+    result.model = 'Local Portfolio KB';
     return result;
   }
 

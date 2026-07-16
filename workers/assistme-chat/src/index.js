@@ -10,10 +10,11 @@
  */
 
 const OPENROUTER_URL = 'https://openrouter.ai/api/v1/chat/completions';
+// Prefer concrete free models first — openrouter/free sometimes returns empty content + reasoning-only.
 const FREE_MODELS = [
-  'openrouter/free',
   'google/gemma-4-26b-a4b-it:free',
   'google/gemma-4-31b-it:free',
+  'openrouter/free',
 ];
 
 const SYSTEM_PROMPT = `You are AssistMe, the AI assistant for Mangesh Raut's portfolio (mangeshraut.pro / GitHub Pages mirror).

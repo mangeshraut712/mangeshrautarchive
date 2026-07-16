@@ -6,5 +6,5 @@ main = "src/index.js"
 compatibility_date = "2026-04-01"
 
 [vars]
-OPENROUTER_MODEL = "openrouter/free"
+OPENROUTER_MODEL = "google/gemma-4-26b-a4b-it:free"
 ALLOWED_ORIGINS = "https://mangeshraut712.github.io,https://mangeshraut.pro,https://mraut.vercel.app,http://127.0.0.1:4000,http://localhost:4000"
