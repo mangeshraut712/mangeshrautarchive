@@ -51,8 +51,13 @@ class GitHubProjects {
         `${apiBaseNormalized}/api/github/repos`
       );
     }
-    // Secondary fallbacks (skipped when session marks Vercel dead)
-    if (!apiBaseNormalized.includes('workers.dev')) {
+    // Secondary Vercel fallbacks only when not already on workers.dev edge
+    if (apiBaseNormalized && !apiBaseNormalized.includes('workers.dev')) {
+      candidates.push(
+        'https://mangeshraut.pro/api/github/repos/public',
+        'https://mangeshraut.pro/api/github/repos'
+      );
+    } else if (!apiBaseNormalized) {
       candidates.push(
         'https://mangeshraut.pro/api/github/repos/public',
         'https://mangeshraut.pro/api/github/repos'

@@ -1,10 +1,14 @@
-# Deploy AssistMe Cloudflare Worker (FastAPI-compatible chat + github + music)
-# Secrets (accepts either name):
-#   OPENROUTER_API_KEY
-#   CLOUDFLARE_API_TOKEN  or  CLOUDFARE_API_KEY  (typo-tolerant)
-#   CLOUDFLARE_ACCOUNT_ID (optional — auto-detected from API if missing)
-#   LASTFM_API_KEY (optional)
-# After deploy, sets repo Variable CHAT_API_BASE when permissions allow.
+# Deploy AssistMe Cloudflare Worker (FastAPI-compatible for GitHub Pages)
+#
+# Secrets:
+#   OPENROUTER_API_KEY     — required (chat models)
+#   CLOUDFLARE_API_TOKEN   — preferred (Workers Edit token)
+#   CLOUDFARE_API_KEY      — accepted alias (typo-tolerant)
+#   CLOUDFLARE_ACCOUNT_ID  — optional if token can list accounts
+#   CLOUDFLARE_EMAIL       — only for Global API Key auth
+#   LASTFM_API_KEY         — optional music proxy
+#
+# After deploy, sets Variable CHAT_API_BASE when possible.
 
 name: Deploy AssistMe Chat Worker
 
@@ -14,6 +18,7 @@ on:
     paths:
       - 'workers/assistme-chat/**'
       - '.github/workflows/deploy-chat-worker.yml'
+      - 'scripts/deployment/cf-parse-accounts.py'
   workflow_dispatch:
 
 permissions:
@@ -39,7 +44,7 @@ jobs:
             echo "::error::OPENROUTER_API_KEY secret is missing."
             exit 1
           fi
-          echo "Key length: ${#OPENROUTER_API_KEY}"
+          echo "OPENROUTER_API_KEY length: ${#OPENROUTER_API_KEY}"
           HTTP=$(curl -sS -o /tmp/or.json -w "%{http_code}" \
             -X POST "https://openrouter.ai/api/v1/chat/completions" \
             -H "Authorization: Bearer ${OPENROUTER_API_KEY}" \
@@ -48,12 +53,12 @@ jobs:
             -H "X-Title: AssistMe CI Probe" \
             -d '{"model":"google/gemma-4-26b-a4b-it:free","messages":[{"role":"user","content":"Reply with exactly: ok"}],"max_tokens":32}')
           echo "OpenRouter HTTP $HTTP"
-          head -c 500 /tmp/or.json; echo
+          head -c 400 /tmp/or.json; echo
           if [ "$HTTP" != "200" ]; then
-            echo "::warning::OpenRouter probe HTTP $HTTP — worker still deploys with local fallback."
+            echo "::warning::OpenRouter free probe HTTP $HTTP — worker still deploys."
           else
             echo "## OpenRouter" >> "$GITHUB_STEP_SUMMARY"
-            echo "- Secret present; free model probe HTTP 200." >> "$GITHUB_STEP_SUMMARY"
+            echo "- Secret OK; free model probe HTTP 200." >> "$GITHUB_STEP_SUMMARY"
           fi
 
   deploy-worker:
@@ -61,9 +66,6 @@ jobs:
     needs: verify-openrouter
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    outputs:
-      worker_url: ${{ steps.deploy.outputs.worker_url }}
-      deployed: ${{ steps.cf.outputs.present }}
     steps:
       - name: Checkout
         uses: actions/checkout@v7
@@ -71,51 +73,61 @@ jobs:
       - name: Resolve Cloudflare credentials
         id: cf
         env:
-          # Prefer canonical API Token; accept user typo CLOUDFARE_API_KEY (Global Key or Token)
           CF_TOKEN_A: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CF_TOKEN_B: ${{ secrets.CLOUDFARE_API_KEY }}
           CF_ACCOUNT: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           CF_EMAIL: ${{ secrets.CLOUDFLARE_EMAIL }}
         run: |
           set -euo pipefail
-          TOKEN="${CF_TOKEN_A:-${CF_TOKEN_B:-}}"
-          ACCOUNT="${CF_ACCOUNT:-}"
-          # Global API Key needs account email (secret CLOUDFLARE_EMAIL preferred)
-          EMAIL="${CF_EMAIL:-}"
+          # Prefer CLOUDFLARE_API_TOKEN; accept typo CLOUDFARE_API_KEY
+          RAW="${CF_TOKEN_A:-${CF_TOKEN_B:-}}"
+          # Strip whitespace / wrapping quotes that break headers
+          TOKEN=$(printf '%s' "$RAW" | tr -d '\r\n\t' | sed -e 's/^["'\'']//' -e 's/["'\'']$//')
+          ACCOUNT=$(printf '%s' "${CF_ACCOUNT:-}" | tr -d '\r\n\t ')
+          EMAIL=$(printf '%s' "${CF_EMAIL:-}" | tr -d '\r\n\t ')
           AUTH_MODE="token"
+
           if [ -z "$TOKEN" ]; then
             echo "present=false" >> "$GITHUB_OUTPUT"
-            {
-              echo "## Cloudflare Worker — not deployed"
-              echo "Missing token secret. Add **CLOUDFLARE_API_TOKEN** (or **CLOUDFARE_API_KEY**)."
-            } >> "$GITHUB_STEP_SUMMARY"
-            exit 0
+            echo "::error::No Cloudflare token secret. Add CLOUDFLARE_API_TOKEN (Workers Edit template)."
+            exit 1
           fi
-          echo "token_len=${#TOKEN}" >> "$GITHUB_OUTPUT"
 
-          # 1) API Token (Bearer)
+          echo "token_len=${#TOKEN}"
+          echo "token_prefix=$(printf '%s' "$TOKEN" | head -c 4)…"
+          # Shape hints (no secret leak)
+          if printf '%s' "$TOKEN" | grep -Eq '^[0-9a-fA-F]{37}$'; then
+            echo "shape=global_api_key_hex37"
+          elif printf '%s' "$TOKEN" | grep -Eq '^[A-Za-z0-9_-]{40,}$'; then
+            echo "shape=likely_api_token"
+          else
+            echo "shape=unknown (len=${#TOKEN})"
+          fi
+
+          # --- Auth probe ---
           RESP=$(curl -sS -H "Authorization: Bearer ${TOKEN}" \
             "https://api.cloudflare.com/client/v4/accounts?per_page=5" || echo '{}')
-          mapfile -t _PARSED < <(echo "$RESP" | python3 scripts/deployment/cf-parse-accounts.py)
-          SUCCESS="${_PARSED[0]:-FAIL}"
-          ACCOUNT_FROM="${_PARSED[1]:-}"
-          ERR="${_PARSED[2]:-}"
+          mapfile -t _P < <(echo "$RESP" | python3 scripts/deployment/cf-parse-accounts.py)
+          SUCCESS="${_P[0]:-FAIL}"
+          ACCOUNT_FROM="${_P[1]:-}"
+          ERR="${_P[2]:-}"
+          echo "bearer_probe=${SUCCESS} err=${ERR:-none}"
 
-          # 2) Global API Key + Email candidates
           if [ "$SUCCESS" != "OK" ]; then
             EMAILS=()
             [ -n "$EMAIL" ] && EMAILS+=("$EMAIL")
             EMAILS+=("mangeshraut71298@gmail.com" "mbr63@drexel.edu")
-            for TRY_EMAIL in "${EMAILS[@]}"; do
-              RESP=$(curl -sS -H "X-Auth-Email: ${TRY_EMAIL}" -H "X-Auth-Key: ${TOKEN}" \
+            for TRY in "${EMAILS[@]}"; do
+              RESP=$(curl -sS -H "X-Auth-Email: ${TRY}" -H "X-Auth-Key: ${TOKEN}" \
                 "https://api.cloudflare.com/client/v4/accounts?per_page=5" || echo '{}')
-              mapfile -t _PARSED < <(echo "$RESP" | python3 scripts/deployment/cf-parse-accounts.py)
-              SUCCESS="${_PARSED[0]:-FAIL}"
-              ACCOUNT_FROM="${_PARSED[1]:-}"
-              ERR="${_PARSED[2]:-}"
+              mapfile -t _P < <(echo "$RESP" | python3 scripts/deployment/cf-parse-accounts.py)
+              SUCCESS="${_P[0]:-FAIL}"
+              ACCOUNT_FROM="${_P[1]:-}"
+              ERR="${_P[2]:-}"
+              echo "global_probe email=${TRY} success=${SUCCESS} err=${ERR:-none}"
               if [ "$SUCCESS" = "OK" ]; then
                 AUTH_MODE="global"
-                EMAIL="$TRY_EMAIL"
+                EMAIL="$TRY"
                 break
               fi
             done
@@ -125,36 +137,38 @@ jobs:
             ACCOUNT="$ACCOUNT_FROM"
           fi
 
-          # If we have explicit account + token, try deploy even when list failed
-          # (some tokens can deploy without Account List permission)
+          # Allow deploy with explicit account even if list failed (limited tokens)
           if [ "$SUCCESS" != "OK" ] && [ -n "$ACCOUNT" ]; then
+            echo "Using CLOUDFLARE_ACCOUNT_ID without Account:Read"
             SUCCESS="OK"
             AUTH_MODE="token"
-            echo "Using explicit CLOUDFLARE_ACCOUNT_ID without list permission"
           fi
 
           if [ "$SUCCESS" != "OK" ] || [ -z "$ACCOUNT" ]; then
-            echo "present=false" >> "$GITHUB_OUTPUT"
-            echo "::error::Cloudflare auth failed SUCCESS=${SUCCESS} ERR=${ERR:-unknown} token_len=${#TOKEN}"
-            echo "Last API response (truncated): $(echo "$RESP" | head -c 240)"
             {
-              echo "## Cloudflare Worker — auth/account failed"
-              echo "- Secret present (${#TOKEN} chars)"
-              echo "- API success: \`${SUCCESS}\` — ${ERR:-unknown}"
-              echo "- Tried Bearer token + Global Key with candidate emails"
+              echo "## Cloudflare deploy blocked — invalid API credential"
               echo ""
-              echo "**Required: valid Cloudflare API Token**"
-              echo "1. https://dash.cloudflare.com/profile/api-tokens → **Create Token**"
-              echo "2. Use template **Edit Cloudflare Workers**"
-              echo "3. GitHub → Settings → Secrets → Actions → New:"
-              echo "   - Name: \`CLOUDFLARE_API_TOKEN\` (recommended) or keep \`CLOUDFARE_API_KEY\`"
-              echo "   - Value: the new token"
-              echo "4. Optional secret \`CLOUDFLARE_ACCOUNT_ID\` (Workers overview → Account ID)"
-              echo "5. Re-run workflow **Deploy AssistMe Chat Worker**"
+              echo "| Check | Result |"
+              echo "| --- | --- |"
+              echo "| Secret length | ${#TOKEN} |"
+              echo "| Probe | ${SUCCESS} — ${ERR:-unknown} |"
               echo ""
-              echo "Note: Global API Keys need matching \`CLOUDFLARE_EMAIL\`. API Tokens are preferred for Wrangler."
+              echo "Your \`CLOUDFARE_API_KEY\` is **not** a valid Cloudflare API Token"
+              echo "(\`Invalid format for X-Auth-Key\` / invalid Bearer)."
+              echo ""
+              echo "### Fix (2 minutes)"
+              echo "1. Open https://dash.cloudflare.com/profile/api-tokens"
+              echo "2. **Create Token** → template **Edit Cloudflare Workers** → Continue → Create"
+              echo "3. Copy the token once"
+              echo "4. GitHub → Settings → Secrets → Actions → **New repository secret**:"
+              echo "   - Name: \`CLOUDFLARE_API_TOKEN\`"
+              echo "   - Value: *(paste token)*"
+              echo "5. Optional: \`CLOUDFLARE_ACCOUNT_ID\` from Workers dashboard (right sidebar)"
+              echo "6. Re-run this workflow"
+              echo ""
+              echo "Do **not** paste Global API Key digests, Origin CA keys, or random hex."
             } >> "$GITHUB_STEP_SUMMARY"
-            # Fail the job so the red X is visible (auth is blocking online chat)
+            echo "::error::Cloudflare credential invalid (${ERR:-auth failed}). Create API Token 'Edit Cloudflare Workers' as CLOUDFLARE_API_TOKEN."
             exit 1
           fi
 
@@ -163,7 +177,6 @@ jobs:
           echo "auth_mode=$AUTH_MODE" >> "$GITHUB_OUTPUT"
           {
             echo "CLOUDFLARE_ACCOUNT_ID=$ACCOUNT"
-            echo "CF_AUTH_MODE=$AUTH_MODE"
             if [ "$AUTH_MODE" = "global" ]; then
               echo "CLOUDFLARE_API_KEY=$TOKEN"
               echo "CLOUDFLARE_EMAIL=$EMAIL"
@@ -171,9 +184,8 @@ jobs:
               echo "CLOUDFLARE_API_TOKEN=$TOKEN"
             fi
           } >> "$GITHUB_ENV"
-          echo "## Cloudflare credentials" >> "$GITHUB_STEP_SUMMARY"
-          echo "- Auth mode: \`${AUTH_MODE}\`" >> "$GITHUB_STEP_SUMMARY"
-          echo "- Account: \`${ACCOUNT:0:8}…\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "## Cloudflare auth" >> "$GITHUB_STEP_SUMMARY"
+          echo "- mode: \`${AUTH_MODE}\` · account: \`${ACCOUNT:0:8}…\`" >> "$GITHUB_STEP_SUMMARY"
 
       - name: Setup Node
         if: steps.cf.outputs.present == 'true'
@@ -181,7 +193,7 @@ jobs:
         with:
           node-version: '22'
 
-      - name: Deploy with Wrangler (API Token)
+      - name: Deploy Worker (API Token)
         id: deploy
         if: steps.cf.outputs.present == 'true' && steps.cf.outputs.auth_mode != 'global'
         uses: cloudflare/wrangler-action@v3
@@ -197,7 +209,7 @@ jobs:
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
           LASTFM_API_KEY: ${{ secrets.LASTFM_API_KEY }}
 
-      - name: Deploy with Wrangler (Global API Key)
+      - name: Deploy Worker (Global API Key)
         id: deploy_global
         if: steps.cf.outputs.present == 'true' && steps.cf.outputs.auth_mode == 'global'
         uses: cloudflare/wrangler-action@v3
@@ -214,7 +226,7 @@ jobs:
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
           LASTFM_API_KEY: ${{ secrets.LASTFM_API_KEY }}
 
-      - name: Capture worker URL
+      - name: Resolve worker URL
         if: steps.cf.outputs.present == 'true'
         id: url
         run: |
@@ -222,61 +234,74 @@ jobs:
           LOG="${{ steps.deploy.outputs.command-output || steps.deploy_global.outputs.command-output || '' }}"
           URL=$(echo "$LOG" | grep -oE 'https://[a-zA-Z0-9.-]+\.workers\.dev' | head -1 || true)
           if [ -z "$URL" ]; then
-            if [ "${CF_AUTH_MODE:-token}" = "global" ]; then
-              AUTH_H=(-H "X-Auth-Email: ${CLOUDFLARE_EMAIL}" -H "X-Auth-Key: ${CLOUDFLARE_API_KEY}")
+            if [ "${CF_AUTH_MODE:-}" = "global" ] || [ -n "${CLOUDFLARE_API_KEY:-}" ]; then
+              SUB=$(curl -sS -H "X-Auth-Email: ${CLOUDFLARE_EMAIL}" -H "X-Auth-Key: ${CLOUDFLARE_API_KEY}" \
+                "https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ACCOUNT_ID}/workers/subdomain" \
+                | python3 -c "import sys,json; d=json.load(sys.stdin); print((d.get('result') or {}).get('subdomain',''))" || true)
             else
-              AUTH_H=(-H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}")
+              SUB=$(curl -sS -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}" \
+                "https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ACCOUNT_ID}/workers/subdomain" \
+                | python3 -c "import sys,json; d=json.load(sys.stdin); print((d.get('result') or {}).get('subdomain',''))" || true)
             fi
-            SUB=$(curl -sS "${AUTH_H[@]}" \
-              "https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ACCOUNT_ID}/workers/subdomain" \
-              | python3 -c "import sys,json; d=json.load(sys.stdin); print((d.get('result') or {}).get('subdomain',''))" || true)
-            if [ -n "$SUB" ]; then
-              URL="https://assistme-chat.${SUB}.workers.dev"
-            fi
+            [ -n "$SUB" ] && URL="https://assistme-chat.${SUB}.workers.dev"
           fi
-          echo "worker_url=${URL}" >> "$GITHUB_OUTPUT"
-          echo "Worker URL: ${URL:-unknown}"
+          if [ -z "$URL" ]; then
+            echo "::error::Deploy may have succeeded but worker URL was not found in logs."
+            exit 1
+          fi
+          echo "worker_url=$URL" >> "$GITHUB_OUTPUT"
+          echo "Worker URL: $URL"
           {
-            echo "## AssistMe Chat Worker"
-            echo "- Deployed: \`assistme-chat\`"
-            echo "- URL: ${URL:-see Wrangler logs}"
+            echo "## AssistMe Chat Worker live"
+            echo "- **URL:** $URL"
             echo "- Endpoints: \`/api/chat\`, \`/api/chat/health\`, \`/api/github/repos/public\`, \`/api/music/recent\`"
           } >> "$GITHUB_STEP_SUMMARY"
 
-      - name: Set CHAT_API_BASE repository variable
-        if: steps.cf.outputs.present == 'true' && steps.url.outputs.worker_url != ''
+      - name: Set CHAT_API_BASE variable
+        if: steps.url.outputs.worker_url != ''
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           WORKER_URL: ${{ steps.url.outputs.worker_url }}
         run: |
-          set -euo pipefail
-          # Requires variables:write — may fail on default GITHUB_TOKEN; non-fatal
-          if gh variable set CHAT_API_BASE --body "$WORKER_URL" 2>/tmp/var-err.txt; then
-            echo "Set CHAT_API_BASE=$WORKER_URL"
-            echo "- Set repo variable \`CHAT_API_BASE\` = \`$WORKER_URL\`" >> "$GITHUB_STEP_SUMMARY"
+          if gh variable set CHAT_API_BASE --body "$WORKER_URL"; then
+            echo "CHAT_API_BASE=$WORKER_URL"
+            echo "- Set repo variable \`CHAT_API_BASE\`" >> "$GITHUB_STEP_SUMMARY"
           else
-            echo "::warning::Could not set CHAT_API_BASE automatically. Set it manually to $WORKER_URL"
-            cat /tmp/var-err.txt || true
-            echo "- **Manual step:** set Variable \`CHAT_API_BASE\` = \`$WORKER_URL\`" >> "$GITHUB_STEP_SUMMARY"
+            echo "::warning::Set Variable CHAT_API_BASE=$WORKER_URL manually"
+            echo "- **Manual:** Variable \`CHAT_API_BASE\` = \`$WORKER_URL\`" >> "$GITHUB_STEP_SUMMARY"
           fi
 
-      - name: Smoke test worker health + chat
-        if: steps.cf.outputs.present == 'true' && steps.url.outputs.worker_url != ''
+      - name: Smoke test chat
+        if: steps.url.outputs.worker_url != ''
         env:
-          WORKER_URL: ${{ steps.url.outputs.worker_url }}
+          BASE: ${{ steps.url.outputs.worker_url }}
         run: |
           set -euo pipefail
-          BASE="${WORKER_URL%/}"
-          echo "Health:"
-          curl -sS -m 20 "${BASE}/api/chat/health" | head -c 800; echo
-          echo "Chat (non-stream):"
-          HTTP=$(curl -sS -m 60 -o /tmp/chat.json -w "%{http_code}" \
+          BASE="${BASE%/}"
+          echo "== health =="
+          curl -sS -m 20 "${BASE}/api/chat/health" | tee /tmp/health.json | head -c 600; echo
+          echo "== chat =="
+          HTTP=$(curl -sS -m 90 -o /tmp/chat.json -w "%{http_code}" \
             -X POST "${BASE}/api/chat" \
             -H "Content-Type: application/json" \
             -H "Origin: https://mangeshraut712.github.io" \
             -d '{"message":"What are Mangesh top skills?","stream":false}')
           echo "HTTP $HTTP"
-          head -c 600 /tmp/chat.json; echo
-          if [ "$HTTP" != "200" ]; then
-            echo "::warning::Chat smoke returned HTTP $HTTP"
-          fi
+          head -c 800 /tmp/chat.json; echo
+          test "$HTTP" = "200"
+          python3 - <<'PY'
+          import json
+          d=json.load(open("/tmp/chat.json"))
+          ans=(d.get("answer") or "")
+          assert len(ans) > 20, d
+          print("answer_preview:", ans[:200])
+          PY
+
+      - name: Trigger Pages rebuild
+        if: steps.url.outputs.worker_url != ''
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Kick main CI so build-config.js picks up CHAT_API_BASE
+          gh workflow run "CI → Deploy to GitHub Pages" --ref main || true
+          echo "- Triggered GitHub Pages deploy workflow" >> "$GITHUB_STEP_SUMMARY"
