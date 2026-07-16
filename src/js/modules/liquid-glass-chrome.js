@@ -1,34 +1,77 @@
 import { getLiquidGlassEngine } from './liquid-glass-engine.js';
 
-/* Nav + music card + chatbot: solid/fixed surfaces — no WebGL host */
+/**
+ * WebGL liquid glass for a few cards only.
+ * NEVER attach to .monitor-page-nav — fixed pill + canvas resize stretches
+ * the bar to full document height and blocks systems/uses/monitor pages.
+ */
 const CHROME_SELECTORS = [
-  '.monitor-page-nav',
   '.hero-glass-card',
   '#projects #github-projects-container .showcase-project-card',
 ];
 
 const CHROME_MATCH =
-  '.monitor-page-nav, .a11y-glass-popover, .a11y-toolbar, .hero-glass-card, #projects #github-projects-container .showcase-project-card';
+  '.hero-glass-card, #projects #github-projects-container .showcase-project-card, .a11y-glass-popover, .a11y-toolbar';
+
+/** Subpage pill nav must stay CSS glass only */
+const NAV_SELECTOR = '.monitor-page-nav';
 
 function isGlassModeActive() {
   const mode = document.documentElement.dataset.lgMode;
   return mode !== 'tinted';
 }
 
+/** Detach WebGL and unwrap children if nav was poisoned by an older attach. */
+function repairSubpageNav() {
+  const nav = document.querySelector(NAV_SELECTOR);
+  if (!nav) return;
+
+  const engine = getLiquidGlassEngine();
+  if (engine?.surfaces?.size) {
+    [...engine.surfaces].forEach(surface => {
+      if (surface.element === nav || surface.element?.closest?.(NAV_SELECTOR)) {
+        engine.detach(surface);
+      }
+    });
+  }
+
+  // Remove leftover canvas / restore content wrapper
+  nav.querySelectorAll(':scope > .lg-webgl-canvas').forEach(el => el.remove());
+  const content = nav.querySelector(':scope > .lg-webgl-content');
+  if (content) {
+    while (content.firstChild) {
+      nav.appendChild(content.firstChild);
+    }
+    content.remove();
+  }
+  nav.classList.remove('lg-webgl-host', 'lg-webgl-fallback');
+
+  // Clear broken inline geometry if any
+  nav.style.removeProperty('height');
+  nav.style.removeProperty('bottom');
+  nav.style.removeProperty('inset');
+}
+
 function attachChrome() {
   const engine = getLiquidGlassEngine();
+  // Always keep subpage nav free of WebGL host
+  repairSubpageNav();
   if (!engine.enabled || !isGlassModeActive()) return;
 
   CHROME_SELECTORS.forEach(selector => {
     const node = document.querySelector(selector);
     if (!node || node.classList.contains('lg-webgl-host')) return;
+    // Guard: never host on nav descendants
+    if (node.closest?.(NAV_SELECTOR) || node.matches?.(NAV_SELECTOR)) return;
     const rect = node.getBoundingClientRect();
+    // Skip zero-size or absurdly tall hosts (broken layout)
+    if (rect.height > 200 || rect.width < 8) return;
     engine.attach(node, {
       settings: {
-        radius: selector.includes('nav') ? 28 : 22,
-        depth: selector.includes('nav') ? 22 : 18,
+        radius: 22,
+        depth: 18,
         lensWidth: rect.width || node.offsetWidth || 280,
-        lensHeight: rect.height || node.offsetHeight || 64,
+        lensHeight: Math.min(rect.height || node.offsetHeight || 64, 120),
       },
     });
   });
@@ -79,6 +122,7 @@ function releaseChatbotWebGL() {
 
 export function syncLiquidGlassChrome() {
   releaseChatbotWebGL();
+  repairSubpageNav();
   if (isGlassModeActive()) {
     attachChrome();
     return;
@@ -87,6 +131,8 @@ export function syncLiquidGlassChrome() {
 }
 
 export function initLiquidGlassChrome() {
+  // Repair even when WebGL engine is disabled (CSS-only clients)
+  repairSubpageNav();
   const engine = getLiquidGlassEngine();
   if (!engine.enabled) return;
 

@@ -136,15 +136,20 @@ html.dark body.systems-page .systems-section-desc {
   position: fixed;
   top: max(14px, env(safe-area-inset-top));
   left: 50%;
+  /* Never stretch to document height (WebGL host bug used bottom/inset) */
+  bottom: auto !important;
   z-index: 1000;
   display: flex;
   align-items: center;
   justify-content: space-between;
   width: min(1040px, calc(100% - 32px));
+  height: auto !important;
+  max-height: 72px !important;
   min-height: 52px;
   padding: 8px 16px;
   border-radius: 999px;
   transform: translateX(-50%);
+  overflow: hidden;
   border: 1px solid rgb(255 255 255 / var(--lg-border-light, 36%));
   background: rgb(255 255 255 / var(--lg-nav-light-fill, 32%));
   backdrop-filter: saturate(var(--lg-saturate, 180%)) blur(var(--lg-blur-nav, 36px));
@@ -152,6 +157,30 @@ html.dark body.systems-page .systems-section-desc {
   box-shadow:
     inset 0 1px 0 rgb(255 255 255 / var(--lg-specular-light, 60%)),
     0 8px 28px rgb(0 0 0 / 10%);
+}
+
+/* If WebGL was attached in a prior session/build, neutralize canvas stretch */
+.monitor-page-nav.lg-webgl-host {
+  position: fixed !important;
+  height: auto !important;
+  max-height: 72px !important;
+  bottom: auto !important;
+  overflow: hidden !important;
+}
+
+.monitor-page-nav > .lg-webgl-canvas {
+  display: none !important;
+}
+
+.monitor-page-nav > .lg-webgl-content {
+  display: flex !important;
+  align-items: center;
+  justify-content: space-between;
+  grid-column: 1 / -1;
+  width: 100% !important;
+  min-width: 0;
+  flex: 1 1 auto;
+  gap: inherit;
 }
 
 html.dark .monitor-page-nav {
@@ -181,15 +210,6 @@ html.dark[data-lg-mode='tinted'] .monitor-page-nav {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-}
-
-.monitor-page-nav > .lg-webgl-content {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  grid-column: 1 / -1;
-  width: 100%;
-  min-width: 0;
 }
 
 .monitor-page-nav__home,

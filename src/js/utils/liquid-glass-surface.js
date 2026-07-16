@@ -167,6 +167,14 @@ export class LiquidGlassSurface {
     this.renderer?.dispose();
     this.renderer = null;
     this.canvas?.remove();
+    // Unwrap content so flex/nav layouts restore correctly
+    const content = this.element?.querySelector(':scope > .lg-webgl-content');
+    if (content && this.element) {
+      while (content.firstChild) {
+        this.element.appendChild(content.firstChild);
+      }
+      content.remove();
+    }
     this.element?.classList.remove('lg-webgl-host', 'lg-webgl-fallback');
   }
 }

@@ -1,6 +1,6 @@
 /* WebGL Liquid Glass surfaces (liquidglass-oss) */
 
-.lg-webgl-host:not(#global-nav):not(#chatbot-widget):not(.music-card-inner) {
+.lg-webgl-host:not(#global-nav):not(#chatbot-widget):not(.music-card-inner):not(.monitor-page-nav) {
   position: relative;
   isolation: isolate;
   overflow: hidden;
@@ -34,7 +34,9 @@ html[data-lg-mode='tinted'] .lg-webgl-canvas {
 }
 
 html[data-lg-mode='tinted']
-  .lg-webgl-host:not(#global-nav):not(#chatbot-widget):not(.music-card-inner) {
+  .lg-webgl-host:not(#global-nav):not(#chatbot-widget):not(.music-card-inner):not(
+    .monitor-page-nav
+  ) {
   background: transparent !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
@@ -112,7 +114,9 @@ html.dark .a11y-glass-popover__hint {
 }
 
 @media (prefers-reduced-transparency: reduce) {
-  .lg-webgl-host:not(#global-nav):not(#chatbot-widget):not(.music-card-inner) {
+  .lg-webgl-host:not(#global-nav):not(#chatbot-widget):not(.music-card-inner):not(
+      .monitor-page-nav
+    ) {
     background: inherit !important;
   }
 
