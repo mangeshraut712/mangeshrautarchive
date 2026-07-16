@@ -1358,10 +1358,12 @@ async function checkDeploymentVersion() {
       // sessionStorage may be blocked
     }
 
+    // Prefer gitCommit so dual-host deploys compare the same source revision
+    // (buildTime always differs between Vercel vs Pages builds of the same commit).
     const localBuild =
-      globalThis.buildConfig?.buildTime ||
       globalThis.buildConfig?.gitCommit ||
-      globalThis.buildConfig?.version;
+      globalThis.buildConfig?.version ||
+      globalThis.buildConfig?.buildTime;
     if (!localBuild) return;
 
     const configUrl = new URL('build-config.json', window.location.href);
@@ -1376,10 +1378,22 @@ async function checkDeploymentVersion() {
     if (!res.ok) return;
 
     const serverConfig = await res.json();
-    const serverBuild = serverConfig?.buildTime || serverConfig?.gitCommit || serverConfig?.version;
+    const serverBuild = serverConfig?.gitCommit || serverConfig?.version || serverConfig?.buildTime;
     const current = new URL(window.location.href);
     const currentBuildParam = current.searchParams.get('site_build');
     const syncRetry = Number(current.searchParams.get('sync_retry') || '0');
+
+    // Persist last-seen deploy for support / multi-device diagnostics
+    try {
+      if (serverBuild) {
+        localStorage.setItem('portfolio-last-git-commit', String(serverBuild));
+        if (serverConfig?.version) {
+          localStorage.setItem('portfolio-last-asset-ver', String(serverConfig.version));
+        }
+      }
+    } catch (_e) {
+      /* ignore */
+    }
 
     if (serverBuild && localBuild !== serverBuild) {
       console.warn('🔄 New website version detected on server. Clearing cache and reloading...', {
