@@ -378,6 +378,19 @@ bash scripts/deployment/vercel-ignore-build.sh
 
 Skips Dependabot commits and messages containing `[skip ci]`, `[ci skip]`, or `[skip vercel]` (exit 0 = cancel build).
 
+### AssistMe when Vercel is blocked
+
+GitHub Secrets already include **`OPENROUTER_API_KEY`** (used by the edge worker — never shipped to browsers).
+
+If `mangeshraut.pro` returns `DEPLOYMENT_DISABLED` / HTTP 402:
+
+1. Add Cloudflare secrets: `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`
+2. Run workflow **Deploy AssistMe Chat Worker** (or push `workers/assistme-chat/**`)
+3. Set repo **Variable** `CHAT_API_BASE` = your `https://assistme-chat.<you>.workers.dev`
+4. Re-run **CI → Deploy to GitHub Pages** so `build-config.js` points at the worker
+
+Until the worker is live, GitHub Pages AssistMe answers from the **local portfolio knowledge base** (skills, experience, education, contact, etc.).
+
 ```bash
 npm run build
 npm run verify:deploy-sync

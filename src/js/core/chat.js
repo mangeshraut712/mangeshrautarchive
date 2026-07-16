@@ -9,6 +9,8 @@ import { agenticActions } from '../modules/agentic-actions.js';
 // ============================================================================
 
 let API_BASE = '';
+/** Ordered API origins to try (edge worker → Vercel). Mutated when a host is 402/down. */
+let API_BASE_CANDIDATES = [];
 
 // Primary Backend: custom domain (OpenRouter key configured on Vercel)
 const VERCEL_BACKEND = 'https://mangeshraut.pro';
@@ -89,8 +91,19 @@ function normalizeApiBase(rawValue) {
 }
 
 if (typeof window !== 'undefined') {
-  if (window.APP_CONFIG?.apiBaseUrl) {
-    API_BASE = normalizeApiBase(window.APP_CONFIG.apiBaseUrl);
+  const cfg = window.APP_CONFIG || {};
+  const candidates = Array.isArray(cfg.apiBaseCandidates)
+    ? cfg.apiBaseCandidates.map(normalizeApiBase).filter(Boolean)
+    : [];
+  if (cfg.apiBaseUrl) {
+    const primary = normalizeApiBase(cfg.apiBaseUrl);
+    if (primary) candidates.unshift(primary);
+  }
+  // Unique preserve order
+  API_BASE_CANDIDATES = [...new Set(candidates.filter(Boolean))];
+
+  if (cfg.apiBaseUrl) {
+    API_BASE = normalizeApiBase(cfg.apiBaseUrl);
   } else {
     const hostname = window.location.hostname || '';
 
@@ -106,10 +119,16 @@ if (typeof window !== 'undefined') {
     else if (hostname.includes('vercel.app') || hostname === PRIMARY_CUSTOM_DOMAIN) {
       API_BASE = '';
     }
-    // GitHub Pages or other static hosts — use configured API base when available
+    // GitHub Pages or other static hosts — edge worker / Vercel candidates
     else {
-      API_BASE = VERCEL_BACKEND;
+      API_BASE = API_BASE_CANDIDATES[0] || VERCEL_BACKEND;
+      if (!API_BASE_CANDIDATES.length) {
+        API_BASE_CANDIDATES = [VERCEL_BACKEND];
+      }
     }
+  }
+  if (API_BASE && !API_BASE_CANDIDATES.includes(API_BASE)) {
+    API_BASE_CANDIDATES.unshift(API_BASE);
   }
 }
 
@@ -745,86 +764,127 @@ class IntelligentAssistant {
     };
 
     const lower = query.toLowerCase();
+    const portfolio = (answer, confidence = 0.85) => {
+      result.answer = answer;
+      result.type = 'portfolio';
+      result.confidence = confidence;
+      result.source = 'assistme-portfolio';
+      result.sourceLabel = this.getSourceLabelForKey('assistme-portfolio', 'portfolio');
+      result.model = 'Local Portfolio KB';
+      return result;
+    };
 
-    if (lower.includes('hello') || lower.includes('hi')) {
+    if (lower.includes('hello') || lower.includes('hi') || lower.includes('hey')) {
       result.answer =
-        this.defaultGreetings[Math.floor(Math.random() * this.defaultGreetings.length)];
+        this.defaultGreetings[Math.floor(Math.random() * this.defaultGreetings.length)] +
+        '\n\n_Running in Local Mode while the live API host is unavailable — portfolio answers still work._';
       result.type = 'greeting';
+      result.confidence = 0.9;
       result.source = 'assistme-utility';
       result.sourceLabel = this.getSourceLabelForKey('assistme-utility', 'utility');
+      result.model = 'Local Portfolio KB';
       return result;
     }
 
-    if (lower.includes('experience') || lower.includes('employment')) {
-      result.answer =
-        'Mangesh is currently a Software Engineer at Customized Energy Solutions, optimizing energy forecasting and analytics systems. Previously, he built scalable microservices at IoasiZ and automated cloud workflows at Aramark.';
-      result.type = 'portfolio';
-      result.source = 'assistme-portfolio';
-      result.sourceLabel = this.getSourceLabelForKey('assistme-portfolio', 'portfolio');
-      return result;
+    if (
+      lower.includes('who is') ||
+      lower.includes('about mangesh') ||
+      lower.includes('tell me about') ||
+      (lower.includes('who') && lower.includes('you'))
+    ) {
+      return portfolio(
+        '**Mangesh Raut** is a Software Engineer based in Philadelphia (and Pune roots). He builds AI-native full-stack systems with production reliability — Java Spring Boot, Python, AWS, and ML. Live site: [mangeshraut.pro](https://mangeshraut.pro) · code: [github.com/mangeshraut712](https://github.com/mangeshraut712).'
+      );
     }
 
-    if (lower.includes('portfolio') || lower.includes('work') || lower.includes('experience')) {
-      result.answer =
-        'Mangesh is a Software Engineer specializing in Java Spring Boot, React, Angular, AWS, and Machine Learning. Explore his interactive work on github.com/mangeshraut712';
-      result.type = 'portfolio';
-      result.source = 'assistme-portfolio';
-      result.sourceLabel = this.getSourceLabelForKey('assistme-portfolio', 'portfolio');
-      return result;
+    if (
+      lower.includes('experience') ||
+      lower.includes('employment') ||
+      lower.includes('work history')
+    ) {
+      return portfolio(
+        'Mangesh is currently a **Software Engineer at Customized Energy Solutions**, optimizing energy forecasting and analytics systems (Java/Python/AWS). Previously he built scalable microservices at **IoasiZ** and automated cloud workflows at **Aramark**.'
+      );
     }
 
-    if (lower.includes('contact') || lower.includes('email')) {
-      result.answer =
-        'You can reach Mangesh at mbr63@drexel.edu or connect on LinkedIn: linkedin.com/in/mangeshraut71298';
-      result.type = 'portfolio';
-      result.source = 'assistme-portfolio';
-      result.sourceLabel = this.getSourceLabelForKey('assistme-portfolio', 'portfolio');
-      return result;
+    if (lower.includes('skill') || lower.includes('tech stack') || lower.includes('technologies')) {
+      return portfolio(
+        '**Core skills:** Java · Spring Boot · Python · AWS (Lambda, EC2, ECS, S3) · Terraform · Docker · React/Angular · REST APIs · ML (TensorFlow) · CI/CD · FastAPI.\n\nHe focuses on agentic systems, cloud reliability, and polished product UX.'
+      );
     }
 
-    if (lower.includes('java')) {
-      result.answer =
-        'Mangesh has extensive experience with Java, particularly Spring Boot. He built scalable enterprise microservices at IoasiZ, optimized relational databases, and architected backend systems integrated with AWS.';
-      result.type = 'portfolio';
-      result.source = 'assistme-portfolio';
-      result.sourceLabel = this.getSourceLabelForKey('assistme-portfolio', 'portfolio');
-      return result;
+    if (lower.includes('portfolio') || lower.includes('website') || lower.includes('this site')) {
+      return portfolio(
+        'This portfolio is an **agentic full-stack site**: vanilla ESM frontend, FastAPI on Vercel, OpenRouter AssistMe chatbot, dual-host to GitHub Pages, Playwright + Lighthouse gates. Explore Projects, Systems, Monitor, Travel Atlas, and Blog on the nav.'
+      );
     }
 
-    if (lower.includes('aws') || lower.includes('cloud')) {
-      result.answer =
-        'Mangesh is skilled in AWS services like Lambda, EC2, ECS, and S3. He automated infrastructure with Terraform, and engineered highly-scalable cloud solutions at Customized Energy Solutions and IoasiZ.';
-      result.type = 'portfolio';
-      result.source = 'assistme-portfolio';
-      result.sourceLabel = this.getSourceLabelForKey('assistme-portfolio', 'portfolio');
-      return result;
+    if (
+      lower.includes('contact') ||
+      lower.includes('email') ||
+      lower.includes('hire') ||
+      lower.includes('reach')
+    ) {
+      return portfolio(
+        '**Contact Mangesh**\n- Email: mbr63@drexel.edu\n- LinkedIn: [linkedin.com/in/mangeshraut71298](https://linkedin.com/in/mangeshraut71298)\n- GitHub: [github.com/mangeshraut712](https://github.com/mangeshraut712)\n- Resume: download from the homepage CTA'
+      );
     }
 
-    if (lower.includes('machine learning') || lower.includes('ml') || lower.includes('ai')) {
-      result.answer =
-        'Mangesh has worked on Machine Learning projects, including demand forecasting using LSTM models (TensorFlow) and other Python-based data science initiatives.';
-      result.type = 'portfolio';
-      result.source = 'assistme-portfolio';
-      result.sourceLabel = this.getSourceLabelForKey('assistme-portfolio', 'portfolio');
-      return result;
+    if (lower.includes('java') || lower.includes('spring')) {
+      return portfolio(
+        'Mangesh has deep **Java / Spring Boot** experience: enterprise microservices at IoasiZ, relational data optimization, REST APIs, and AWS-integrated backends for production systems.'
+      );
     }
 
-    if (lower.includes('education') || lower.includes('university') || lower.includes('degree')) {
-      result.answer =
-        'Mangesh holds a Master of Science in Computer Science from Drexel University (GPA 3.76) and a Bachelor of Engineering in Computer Engineering from Savitribai Phule Pune University.';
-      result.type = 'portfolio';
-      result.source = 'assistme-portfolio';
-      result.sourceLabel = this.getSourceLabelForKey('assistme-portfolio', 'portfolio');
-      return result;
+    if (
+      lower.includes('aws') ||
+      lower.includes('cloud') ||
+      lower.includes('terraform') ||
+      lower.includes('devops')
+    ) {
+      return portfolio(
+        '**Cloud / DevOps:** AWS Lambda, EC2, ECS, S3; infrastructure as code with **Terraform**; Dockerized CI/CD; production automation at CES, IoasiZ, and Aramark.'
+      );
     }
 
-    if (lower.includes('code') || lower.includes('github') || lower.includes('project')) {
-      result.answer =
-        "You can explore Mangesh's code on GitHub. He has projects demonstrating Microservices, AWS integration, and Machine Learning. Visit: github.com/mangeshraut712";
-      result.type = 'portfolio';
-      result.source = 'assistme-portfolio';
-      result.sourceLabel = this.getSourceLabelForKey('assistme-portfolio', 'portfolio');
-      return result;
+    if (
+      lower.includes('machine learning') ||
+      lower.includes('ml') ||
+      lower.includes('ai') ||
+      lower.includes('tensorflow') ||
+      lower.includes('llm')
+    ) {
+      return portfolio(
+        '**AI/ML:** demand forecasting with LSTM (TensorFlow), Python data pipelines, and productizing LLM features (OpenRouter, agentic actions, streaming chat) on this portfolio.'
+      );
+    }
+
+    if (
+      lower.includes('education') ||
+      lower.includes('university') ||
+      lower.includes('degree') ||
+      lower.includes('drexel')
+    ) {
+      return portfolio(
+        '**Education**\n- M.S. Computer Science — **Drexel University** (GPA 3.76)\n- B.E. Computer Engineering — **Savitribai Phule Pune University**'
+      );
+    }
+
+    if (
+      lower.includes('code') ||
+      lower.includes('github') ||
+      lower.includes('project') ||
+      lower.includes('repo')
+    ) {
+      return portfolio(
+        'Explore projects on [github.com/mangeshraut712](https://github.com/mangeshraut712) — microservices, AWS, ML, and this agentic portfolio (vanilla ESM + FastAPI).'
+      );
+    }
+
+    if (lower.includes('resume') || lower.includes('cv')) {
+      return portfolio(
+        'Download the resume from the homepage **Download Resume** button (`assets/files/Mangesh_Raut_Resume.pdf`), or ask me about skills / experience while you review it.'
+      );
     }
 
     if (
@@ -1156,6 +1216,18 @@ class IntelligentAssistant {
   }
 
   markServerUnavailable() {
+    // Rotate to next API base (edge worker) before giving up entirely
+    if (API_BASE_CANDIDATES.length > 1 && API_BASE) {
+      const idx = API_BASE_CANDIDATES.indexOf(API_BASE);
+      const next = API_BASE_CANDIDATES[(idx + 1) % API_BASE_CANDIDATES.length];
+      if (next && next !== API_BASE) {
+        console.warn(`↻ Switching chat API base → ${next}`);
+        API_BASE = next;
+        this.canUseServerAI = true;
+        this.isReadyState = true;
+        return;
+      }
+    }
     this.isReadyState = false;
     this.canUseServerAI = false;
     // Try to reinitialize after a delay

@@ -1,0 +1,133 @@
+# Deploy AssistMe chat edge proxy (Cloudflare Worker) using GitHub secrets.
+# Required secrets:
+#   OPENROUTER_API_KEY          (already set) — OpenRouter API key
+#   CLOUDFLARE_API_TOKEN        — Workers Edit permission
+#   CLOUDFLARE_ACCOUNT_ID       — Cloudflare account id
+# After deploy, set repo Variable CHAT_API_BASE to the worker URL, e.g.
+#   https://assistme-chat.<subdomain>.workers.dev
+# Deploy workflow also writes the URL into job summary.
+
+name: Deploy AssistMe Chat Worker
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'workers/assistme-chat/**'
+      - '.github/workflows/deploy-chat-worker.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: assistme-chat-worker
+  cancel-in-progress: true
+
+jobs:
+  verify-openrouter:
+    name: Verify OpenRouter secret
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Probe OpenRouter free model with repo secret
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+        run: |
+          set -euo pipefail
+          if [ -z "${OPENROUTER_API_KEY:-}" ]; then
+            echo "::error::OPENROUTER_API_KEY secret is missing. Add it in repo Settings → Secrets."
+            exit 1
+          fi
+          echo "Key length: ${#OPENROUTER_API_KEY}"
+          HTTP=$(curl -sS -o /tmp/or.json -w "%{http_code}" \
+            -X POST "https://openrouter.ai/api/v1/chat/completions" \
+            -H "Authorization: Bearer ${OPENROUTER_API_KEY}" \
+            -H "Content-Type: application/json" \
+            -H "HTTP-Referer: https://mangeshraut712.github.io/mangeshrautarchive" \
+            -H "X-Title: AssistMe CI Probe" \
+            -d '{"model":"openrouter/free","messages":[{"role":"user","content":"Reply with exactly: ok"}],"max_tokens":16}')
+          echo "OpenRouter HTTP $HTTP"
+          head -c 400 /tmp/or.json; echo
+          if [ "$HTTP" != "200" ]; then
+            echo "::warning::OpenRouter free model probe failed (HTTP $HTTP). Worker will still deploy; edge local fallback remains."
+            echo "openrouter_ok=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "openrouter_ok=true" >> "$GITHUB_OUTPUT"
+            echo "## OpenRouter secret" >> "$GITHUB_STEP_SUMMARY"
+            echo "- OPENROUTER_API_KEY present and free model accepted a probe request." >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+  deploy-worker:
+    name: Deploy Cloudflare Worker
+    needs: verify-openrouter
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: workers/assistme-chat
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Check Cloudflare credentials
+        id: cf
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          if [ -z "${CLOUDFLARE_API_TOKEN:-}" ] || [ -z "${CLOUDFLARE_ACCOUNT_ID:-}" ]; then
+            echo "present=false" >> "$GITHUB_OUTPUT"
+            {
+              echo "## AssistMe Chat Worker — not deployed"
+              echo ""
+              echo "GitHub has \`OPENROUTER_API_KEY\`, but Cloudflare deploy secrets are missing."
+              echo ""
+              echo "Add these repository secrets, then re-run this workflow:"
+              echo "1. \`CLOUDFLARE_API_TOKEN\` (Account → API Tokens → Edit Cloudflare Workers)"
+              echo "2. \`CLOUDFLARE_ACCOUNT_ID\` (Workers dashboard → Account ID)"
+              echo ""
+              echo "Then set repository **Variable** \`CHAT_API_BASE\` to the worker URL, e.g."
+              echo "\`https://assistme-chat.<you>.workers.dev\`"
+              echo ""
+              echo "Until then, GitHub Pages uses **rich local AssistMe** when Vercel is blocked."
+            } >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "present=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Setup Node
+        if: steps.cf.outputs.present == 'true'
+        uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+
+      - name: Deploy with Wrangler
+        if: steps.cf.outputs.present == 'true'
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          workingDirectory: workers/assistme-chat
+          command: deploy
+          secrets: |
+            OPENROUTER_API_KEY
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+
+      - name: Post-deploy summary
+        if: steps.cf.outputs.present == 'true'
+        run: |
+          {
+            echo "## AssistMe Chat Worker"
+            echo ""
+            echo "Deployed \`workers/assistme-chat\`."
+            echo ""
+            echo "1. Copy the workers.dev URL from the Wrangler log above."
+            echo "2. Repo **Settings → Secrets and variables → Actions → Variables**"
+            echo "3. Set \`CHAT_API_BASE\` = \`https://assistme-chat.<subdomain>.workers.dev\` (no trailing slash)"
+            echo "4. Re-run **CI → Deploy to GitHub Pages** so \`build-config.js\` picks up the base."
+          } >> "$GITHUB_STEP_SUMMARY"

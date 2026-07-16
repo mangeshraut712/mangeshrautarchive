@@ -88,9 +88,20 @@ async function injectApiKeys(distDir) {
     }
   }
 
+  // Prefer CHAT_API_BASE (edge worker) when Vercel is disabled; never embed secrets.
+  const apiBaseUrl =
+    process.env.CHAT_API_BASE || process.env.NEXT_PUBLIC_API_BASE || 'https://mangeshraut.pro';
+
   const config = {
     // Safe public configuration only — NO secrets
-    apiBaseUrl: process.env.NEXT_PUBLIC_API_BASE || 'https://mangeshraut.pro',
+    apiBaseUrl,
+    // Ordered failover for GitHub Pages when primary host is down (402 DEPLOYMENT_DISABLED)
+    apiBaseCandidates: [
+      process.env.CHAT_API_BASE,
+      process.env.NEXT_PUBLIC_API_BASE,
+      'https://mangeshraut.pro',
+      'https://mraut.vercel.app',
+    ].filter((v, i, a) => v && String(v).startsWith('http') && a.indexOf(v) === i),
     siteUrl: process.env.OPENROUTER_SITE_URL || 'https://mangeshraut.pro',
     appTitle: process.env.OPENROUTER_APP_TITLE || 'AssistMe Portfolio Assistant',
     selectedModel: normalizeSelectedModel(process.env.OPENROUTER_MODEL),

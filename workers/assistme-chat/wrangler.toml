@@ -1,0 +1,10 @@
+# AssistMe chat proxy — Cloudflare Worker (free tier)
+# Deploy: wrangler deploy
+# Secrets: wrangler secret put OPENROUTER_API_KEY
+name = "assistme-chat"
+main = "src/index.js"
+compatibility_date = "2026-04-01"
+
+[vars]
+OPENROUTER_MODEL = "openrouter/free"
+ALLOWED_ORIGINS = "https://mangeshraut712.github.io,https://mangeshraut.pro,https://mraut.vercel.app,http://127.0.0.1:4000,http://localhost:4000"

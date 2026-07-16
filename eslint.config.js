@@ -18,6 +18,7 @@ export default [
       '.vercel/**',
       '.venv/**',
       'venv/**',
+      'workers/**',
     ],
   },
   // Browser Code (src)
