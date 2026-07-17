@@ -1317,7 +1317,7 @@ html.dark #projects #github-projects-container .project-release-meta {
 #projects .project-release-fresh,
 #projects .project-release-hot {
   background: rgb(34 197 94 / 13%);
-  color: #147d3f;
+  color: #0f6b34;
 }
 
 #projects .project-release-busy {
@@ -1792,7 +1792,7 @@ html.dark .project-xr-release-panel {
 .project-xr-release-fresh,
 .project-xr-release-hot {
   background: rgb(34 197 94 / 13%);
-  color: #147d3f;
+  color: #0f6b34;
 }
 
 .project-xr-release-busy {
