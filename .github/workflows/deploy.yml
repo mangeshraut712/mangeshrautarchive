@@ -159,15 +159,14 @@ jobs:
       - name: Build production bundle
         run: npm run build
         env:
-          OPENROUTER_SITE_URL: https://mangeshraut712.github.io/mangeshrautarchive
           OPENROUTER_APP_TITLE: AssistMe Portfolio Assistant
           # Free-first when Grok/paid fails; server chain still tries free models
           OPENROUTER_MODEL: openrouter/free
           # Cloudflare Worker is the primary API for GitHub Pages (Vercel optional).
-          CHAT_API_BASE: ${{ vars.CHAT_API_BASE != '' && vars.CHAT_API_BASE || 'https://assistme-chat.mangeshraut712.workers.dev' }}
-          NEXT_PUBLIC_API_BASE: ${{ vars.CHAT_API_BASE != '' && vars.CHAT_API_BASE || vars.EDGE_API_BASE != '' && vars.EDGE_API_BASE || 'https://assistme-chat.mangeshraut712.workers.dev' }}
-          EDGE_API_BASE: ${{ vars.EDGE_API_BASE != '' && vars.EDGE_API_BASE || 'https://assistme-chat.mangeshraut712.workers.dev' }}
-          OPENROUTER_SITE_URL: ${{ vars.PAGES_SITE_URL != '' && vars.PAGES_SITE_URL || 'https://mangeshraut712.github.io/mangeshrautarchive' }}
+          CHAT_API_BASE: ${{ vars.CHAT_API_BASE || 'https://assistme-chat.mangeshraut712.workers.dev' }}
+          NEXT_PUBLIC_API_BASE: ${{ vars.EDGE_API_BASE || vars.CHAT_API_BASE || 'https://assistme-chat.mangeshraut712.workers.dev' }}
+          EDGE_API_BASE: ${{ vars.EDGE_API_BASE || 'https://assistme-chat.mangeshraut712.workers.dev' }}
+          OPENROUTER_SITE_URL: ${{ vars.PAGES_SITE_URL || 'https://mangeshraut712.github.io/mangeshrautarchive' }}
           NODE_ENV: production
           GITHUB_PAGES: true
           GITHUB_SHA: ${{ github.sha }}
