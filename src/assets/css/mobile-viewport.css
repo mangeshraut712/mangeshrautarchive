@@ -444,6 +444,56 @@ body {
     box-sizing: border-box;
   }
 
+  /* About: never trap story text in a short fixed-height scroll box on phones */
+  #about .about-main {
+    grid-template-columns: 1fr !important;
+    align-items: start !important;
+    gap: 1.5rem !important;
+  }
+
+  #about .about-image-wrapper {
+    height: min(360px, 72vw) !important;
+    min-height: 240px !important;
+    max-height: 400px !important;
+  }
+
+  #about .about-image-wrapper img.about-image {
+    height: 100% !important;
+    max-height: none !important;
+    object-fit: cover !important;
+  }
+
+  #about .about-text-card {
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  #about .about-tab-panel {
+    overflow: visible !important;
+    max-height: none !important;
+    flex: 0 1 auto !important;
+  }
+
+  #about .about-card-header {
+    margin-bottom: 1rem !important;
+    padding-bottom: 0.85rem !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 0.75rem !important;
+  }
+
+  #about .about-segmented-control {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  #about .card-read-toolbar {
+    width: 100% !important;
+    justify-content: flex-start !important;
+  }
+
   .about-image-badge {
     left: 0.75rem !important;
     right: 0.75rem !important;
