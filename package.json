@@ -34,7 +34,7 @@
     "open": "open src/index.html",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "test:e2e": "npx playwright test",
+    "test:e2e": "npx playwright test --project=\"Desktop Chrome\"",
     "test:e2e:chrome": "npx playwright test --project=\"Desktop Chrome\"",
     "test:e2e:all": "npx playwright test",
     "qa:prod-ready": "npm run security-check && npm run lint && npm run lint:css && npm run format:check && npm test && npm run test:api && npx playwright test --project=\"Desktop Chrome\" && npm run qa:lighthouse:ci",

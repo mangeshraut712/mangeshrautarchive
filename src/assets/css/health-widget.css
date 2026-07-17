@@ -401,3 +401,19 @@ html.dark .whoop-metric.recovery-red .metric-value,
 html.dark .whoop-metric.recovery-red .metric-icon {
   color: #ff6961 !important;
 }
+
+/* Health vitals — solid only in tinted mode; clear/balanced use liquid glass */
+html[data-lg-mode='tinted']:not(.dark) .health-widget-container {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+html.dark[data-lg-mode='tinted'] .health-widget-container {
+  background: #000000 !important;
+  background-color: #000000 !important;
+  background-image: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}

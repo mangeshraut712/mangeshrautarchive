@@ -1,3 +1,4 @@
+/* stylelint-disable no-duplicate-selectors -- intentional cascade overrides */
 /* ========================================
    CONTACT SECTION STYLES
    Premium Apple-Style Design
@@ -643,11 +644,11 @@ html.dark .social-section {
 }
 
 .support-donation-card {
-  background: rgba(255, 255, 255, 0.72) !important;
+  background: #ffffff !important;
   border-radius: 24px;
   padding: 1.5rem 1.75rem;
   border: 1px solid var(--contact-border-light) !important;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+  box-shadow: none;
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -660,8 +661,8 @@ html.dark .social-section {
     opacity 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
   position: relative;
   overflow: visible;
-  backdrop-filter: saturate(180%) blur(20px);
-  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
 
 /* Subtle accent gradient on left border - DISABLED */
@@ -672,9 +673,9 @@ html.dark .social-section {
 }
 
 html.dark .support-donation-card {
-  background: rgba(0, 0, 0, 0.72) !important;
-  border: 1px solid var(--contact-border-light) !important;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  background: #000000 !important;
+  border: 1px solid var(--contact-border-dark) !important;
+  box-shadow: none;
 }
 
 .support-donation-card:hover {
@@ -1353,7 +1354,7 @@ html.dark .support-donation-card cite {
 }
 
 html.dark #music-content .currently-music-card .media-poster {
-  background: #1c1c1e;
+  background: #000000;
   border-color: transparent;
   box-shadow: none;
 }
@@ -1931,7 +1932,7 @@ html.dark .follow-section {
 
 /* ----------------------------------------
    Apple Alignment Refinements
-   Keeps Contact consistent with the homepage glass language
+   Keeps Contact consistent with site solid surfaces (no glass)
    ---------------------------------------- */
 
 :root {
@@ -1949,9 +1950,9 @@ html.dark .follow-section {
 .currently-card {
   background: var(--contact-surface-light) !important;
   border: 1px solid var(--contact-border-light) !important;
-  box-shadow: var(--contact-shadow-light) !important;
-  backdrop-filter: saturate(180%) blur(22px) !important;
-  -webkit-backdrop-filter: saturate(180%) blur(22px) !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
   margin-bottom: 1.5rem !important;
   box-sizing: border-box !important;
 }
@@ -3125,7 +3126,7 @@ html.dark .currently-meta-subtitle {
 }
 
 html.dark .currently-poster-empty {
-  background: linear-gradient(135deg, #1c1c1e 0%, #2c2c2e 100%) !important;
+  background: linear-gradient(135deg, #000000 0%, #2c2c2e 100%) !important;
 }
 
 .currently-spotify-icon {
@@ -3162,14 +3163,23 @@ html.dark .loading-spinner {
   gap: 1.15rem !important;
   padding: 1.35rem 1.4rem !important;
   border-radius: 22px !important;
-  background: #ffffff !important;
   border: 1px solid #e5e5ea !important;
-  box-shadow: none !important;
   overflow: visible !important;
 }
 
-html.dark #contact .contact-card.contact-info-all {
+/* Opaque fill only in tinted — clear/balanced keep liquid glass */
+html[data-lg-mode='tinted']:not(.dark) #contact .contact-card.contact-info-all {
+  background: #ffffff !important;
+  box-shadow: none !important;
+}
+
+html.dark[data-lg-mode='tinted'] #contact .contact-card.contact-info-all {
   background: #000000 !important;
+  border-color: #2c2c2e !important;
+  box-shadow: none !important;
+}
+
+html.dark #contact .contact-card.contact-info-all {
   border-color: #2c2c2e !important;
 }
 
@@ -3236,22 +3246,31 @@ html.dark #contact .contact-link-item .link-text {
   color: #f5f5f7 !important;
 }
 
-/* Currently + health card: solid surface, no runaway height */
+/* Currently + health card: layout; fill from glass/tinted materials */
 #contact .currently-card,
 #contact .merged-health-currently-card {
   margin-top: 0 !important;
   padding: 1.15rem 1.2rem 1.25rem !important;
   border-radius: 22px !important;
-  background: #ffffff !important;
   border: 1px solid #e5e5ea !important;
-  box-shadow: none !important;
   overflow: hidden !important;
+}
+
+html[data-lg-mode='tinted']:not(.dark) #contact .currently-card,
+html[data-lg-mode='tinted']:not(.dark) #contact .merged-health-currently-card {
+  background: #ffffff !important;
+  box-shadow: none !important;
 }
 
 html.dark #contact .currently-card,
 html.dark #contact .merged-health-currently-card {
-  background: #000000 !important;
   border-color: #2c2c2e !important;
+}
+
+html.dark[data-lg-mode='tinted'] #contact .currently-card,
+html.dark[data-lg-mode='tinted'] #contact .merged-health-currently-card {
+  background: #000000 !important;
+  box-shadow: none !important;
 }
 
 /* Hide duplicate inline loaders once media cards exist */
@@ -3344,13 +3363,19 @@ html.dark #contact .media-info h4 {
 #contact .calendar-wrapper-clean {
   border-radius: 22px !important;
   overflow: visible !important;
-  background: #ffffff !important;
   border: 1px solid #e5e5ea !important;
 }
 
+html[data-lg-mode='tinted']:not(.dark) #contact .calendar-wrapper-clean {
+  background: #ffffff !important;
+}
+
 html.dark #contact .calendar-wrapper-clean {
-  background: #000000 !important;
   border-color: #2c2c2e !important;
+}
+
+html.dark[data-lg-mode='tinted'] #contact .calendar-wrapper-clean {
+  background: #000000 !important;
 }
 
 #contact #calendar-widget,
@@ -3406,8 +3431,19 @@ html.dark #contact .contact-social-wrapper .icon:not(:hover):not(:focus-within) 
   height: 1.4em !important;
 }
 
-/* Contact surfaces: solid white / solid black + Apple type */
-#contact,
+/* Contact section page canvas stays solid; cards glass in clear/balanced */
+#contact {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  color: #1d1d1f !important;
+}
+
+html.dark #contact {
+  background: #000000 !important;
+  background-color: #000000 !important;
+  color: #f5f5f7 !important;
+}
+
 #contact .contact-card,
 #contact .support-donation-card,
 #contact .currently-card,
@@ -3415,12 +3451,9 @@ html.dark #contact .contact-social-wrapper .icon:not(:hover):not(:focus-within) 
 #contact .ios-widget-wrapper,
 #contact .reminder-card,
 #contact .calendly-panel {
-  background: #ffffff !important;
-  background-color: #ffffff !important;
   color: #1d1d1f !important;
 }
 
-html.dark #contact,
 html.dark #contact .contact-card,
 html.dark #contact .support-donation-card,
 html.dark #contact .currently-card,
@@ -3428,9 +3461,35 @@ html.dark #contact .calendar-wrapper-clean,
 html.dark #contact .ios-widget-wrapper,
 html.dark #contact .reminder-card,
 html.dark #contact .calendly-panel {
+  color: #f5f5f7 !important;
+}
+
+html[data-lg-mode='tinted']:not(.dark)
+  #contact
+  :is(
+    .contact-card,
+    .support-donation-card,
+    .currently-card,
+    .calendar-wrapper-clean,
+    .ios-widget-wrapper,
+    .reminder-card
+  ) {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+}
+
+html.dark[data-lg-mode='tinted']
+  #contact
+  :is(
+    .contact-card,
+    .support-donation-card,
+    .currently-card,
+    .calendar-wrapper-clean,
+    .ios-widget-wrapper,
+    .reminder-card
+  ) {
   background: #000000 !important;
   background-color: #000000 !important;
-  color: #f5f5f7 !important;
 }
 
 #contact h3,
@@ -3475,17 +3534,25 @@ html.dark #contact .crypto-mini-btn span {
 
 /* Support card compact */
 #contact .support-donation-card {
-  background: #ffffff !important;
   border: 1px solid #e5e5ea !important;
   border-radius: 20px !important;
   padding: 1.15rem 1.2rem !important;
+}
+
+html[data-lg-mode='tinted']:not(.dark) #contact .support-donation-card {
+  background: #ffffff !important;
   box-shadow: none !important;
   backdrop-filter: none !important;
 }
 
 html.dark #contact .support-donation-card {
-  background: #000000 !important;
   border-color: #2c2c2e !important;
+}
+
+html.dark[data-lg-mode='tinted'] #contact .support-donation-card {
+  background: #000000 !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
 }
 
 /* Marquees locked horizontal */
@@ -3527,4 +3594,274 @@ html.dark #contact .support-donation-card {
   #contact .contact-social-wrapper .icon {
     margin-bottom: 1.75rem !important;
   }
+}
+
+/* ════════════════════════════════════════════════════════════════
+   Contact surfaces — solid only in tinted mode.
+   Clear + balanced use liquid glass (see end-of-file unlock).
+   ════════════════════════════════════════════════════════════════ */
+
+#contact .contact-card,
+#contact .support-donation-card,
+#contact .currently-card,
+#contact .calendar-wrapper-clean,
+#contact .ios-widget-wrapper,
+#contact .reminder-card,
+#contact .calendly-panel {
+  border-color: #e5e5ea !important;
+  color: #1d1d1f !important;
+}
+
+html.dark #contact .contact-card,
+html.dark #contact .support-donation-card,
+html.dark #contact .currently-card,
+html.dark #contact .calendar-wrapper-clean,
+html.dark #contact .ios-widget-wrapper,
+html.dark #contact .reminder-card,
+html.dark #contact .calendly-panel {
+  border-color: #2c2c2e !important;
+  color: #f5f5f7 !important;
+}
+
+html[data-lg-mode='tinted']:not(.dark) #contact .contact-card,
+html[data-lg-mode='tinted']:not(.dark) #contact .support-donation-card,
+html[data-lg-mode='tinted']:not(.dark) #contact .currently-card,
+html[data-lg-mode='tinted']:not(.dark) #contact .calendar-wrapper-clean,
+html[data-lg-mode='tinted']:not(.dark) #contact .ios-widget-wrapper,
+html[data-lg-mode='tinted']:not(.dark) #contact .reminder-card {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  box-shadow: none !important;
+}
+
+html.dark[data-lg-mode='tinted'] #contact .contact-card,
+html.dark[data-lg-mode='tinted'] #contact .support-donation-card,
+html.dark[data-lg-mode='tinted'] #contact .currently-card,
+html.dark[data-lg-mode='tinted'] #contact .calendar-wrapper-clean,
+html.dark[data-lg-mode='tinted'] #contact .ios-widget-wrapper,
+html.dark[data-lg-mode='tinted'] #contact .reminder-card {
+  background: #000000 !important;
+  background-color: #000000 !important;
+  background-image: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  box-shadow: none !important;
+}
+
+/* Inner widget is content only — one outer shell */
+#contact .calendar-wrapper-clean {
+  border-radius: 22px !important;
+  overflow: hidden !important;
+  padding: 0 !important;
+}
+
+#contact .ios-widget-wrapper {
+  border: none !important;
+  border-radius: 0 !important;
+  transform: none !important;
+}
+
+#contact .ios-widget-wrapper:hover {
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+#contact .calendly-panel {
+  border: none !important;
+  border-top: 1px solid #e5e5ea !important;
+  border-radius: 0 !important;
+}
+
+html.dark #contact .calendly-panel {
+  border-top-color: #2c2c2e !important;
+}
+
+#contact .contact-assistme-card {
+  background: transparent !important;
+  border: none !important;
+  border-top: 1px solid #e5e5ea !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+html.dark #contact .contact-assistme-card {
+  border-top-color: #2c2c2e !important;
+  background: transparent !important;
+}
+
+/* Solid CTAs — Apple system blue */
+#contact .calendly-panel-button,
+#contact .contact-assistme-btn {
+  background: #0071e3 !important;
+  background-image: none !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  border: none !important;
+  border-radius: 980px !important;
+  min-height: 44px !important;
+  box-shadow: none !important;
+  font-weight: 600 !important;
+}
+
+html.dark #contact .calendly-panel-button,
+html.dark #contact .contact-assistme-btn {
+  background: #0a84ff !important;
+  background-image: none !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+#contact .calendly-panel-button:hover,
+#contact .contact-assistme-btn:hover {
+  background: #0077ed !important;
+}
+
+html.dark #contact .calendly-panel-button:hover,
+html.dark #contact .contact-assistme-btn:hover {
+  background: #409cff !important;
+}
+
+/* Reminder rows: solid inset list on black/white shell */
+#contact .reminder-card {
+  border-radius: 14px !important;
+  border: 1px solid #e5e5ea !important;
+}
+
+html.dark #contact .reminder-card {
+  border-color: #2c2c2e !important;
+}
+
+/* Kill hover lift that fights solid card stack */
+#contact .calendar-wrapper-clean:hover,
+#contact .ios-widget-wrapper:hover {
+  transform: none !important;
+}
+
+#contact .card-action-area {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   CLEAR LIQUID GLASS — contact.css end unlock
+   Lazy contact.css must not flatten clear glass after contact-solid.
+   ════════════════════════════════════════════════════════════════ */
+
+html[data-lg-mode='clear'] body #main-content #contact .contact-card,
+html[data-lg-mode='clear'] body #main-content #contact .support-donation-card,
+html[data-lg-mode='clear'] body #main-content #contact .currently-card,
+html[data-lg-mode='clear'] body #main-content #contact .merged-health-currently-card,
+html[data-lg-mode='clear'] body #main-content #contact .calendar-wrapper-clean,
+html[data-lg-mode='clear'] body #main-content #contact .ios-widget-wrapper,
+html[data-lg-mode='clear'] body #main-content #contact .reminder-card,
+html[data-lg-mode='clear'] body #main-content #contact .health-widget-container,
+html[data-lg-mode='balanced'] body #main-content #contact .contact-card,
+html[data-lg-mode='balanced'] body #main-content #contact .support-donation-card,
+html[data-lg-mode='balanced'] body #main-content #contact .currently-card,
+html[data-lg-mode='balanced'] body #main-content #contact .calendar-wrapper-clean,
+html[data-lg-mode='balanced'] body #main-content #contact .reminder-card,
+html[data-lg-mode='balanced'] body #main-content #contact .health-widget-container {
+  backdrop-filter: saturate(var(--lg-saturate, 180%)) blur(var(--lg-blur-card, 40px)) !important;
+  -webkit-backdrop-filter: saturate(var(--lg-saturate, 180%)) blur(var(--lg-blur-card, 40px)) !important;
+}
+
+html[data-lg-mode='clear']:not(.dark) body #main-content #contact .contact-card,
+html[data-lg-mode='clear']:not(.dark) body #main-content #contact .support-donation-card,
+html[data-lg-mode='clear']:not(.dark) body #main-content #contact .currently-card,
+html[data-lg-mode='clear']:not(.dark) body #main-content #contact .calendar-wrapper-clean,
+html[data-lg-mode='clear']:not(.dark) body #main-content #contact .reminder-card,
+html[data-lg-mode='clear']:not(.dark) body #main-content #contact .health-widget-container,
+html[data-lg-mode='balanced']:not(.dark) body #main-content #contact .contact-card,
+html[data-lg-mode='balanced']:not(.dark) body #main-content #contact .support-donation-card,
+html[data-lg-mode='balanced']:not(.dark) body #main-content #contact .currently-card,
+html[data-lg-mode='balanced']:not(.dark) body #main-content #contact .calendar-wrapper-clean,
+html[data-lg-mode='balanced']:not(.dark) body #main-content #contact .reminder-card,
+html[data-lg-mode='balanced']:not(.dark) body #main-content #contact .health-widget-container {
+  background:
+    linear-gradient(
+      165deg,
+      rgb(255 255 255 / var(--lg-card-highlight-light, 55%)) 0%,
+      transparent 45%
+    ),
+    rgb(255 255 255 / var(--lg-card-light-alpha, 68%)) !important;
+  border-color: rgb(255 255 255 / var(--lg-border-light, 40%)) !important;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / var(--lg-specular-light, 70%)),
+    0 8px 32px rgb(0 0 0 / var(--lg-card-shadow-light, 12%)) !important;
+}
+
+html.dark[data-lg-mode='clear'] body #main-content #contact .contact-card,
+html.dark[data-lg-mode='clear'] body #main-content #contact .support-donation-card,
+html.dark[data-lg-mode='clear'] body #main-content #contact .currently-card,
+html.dark[data-lg-mode='clear'] body #main-content #contact .calendar-wrapper-clean,
+html.dark[data-lg-mode='clear'] body #main-content #contact .reminder-card,
+html.dark[data-lg-mode='clear'] body #main-content #contact .health-widget-container,
+html.dark[data-lg-mode='balanced'] body #main-content #contact .contact-card,
+html.dark[data-lg-mode='balanced'] body #main-content #contact .support-donation-card,
+html.dark[data-lg-mode='balanced'] body #main-content #contact .currently-card,
+html.dark[data-lg-mode='balanced'] body #main-content #contact .calendar-wrapper-clean,
+html.dark[data-lg-mode='balanced'] body #main-content #contact .reminder-card,
+html.dark[data-lg-mode='balanced'] body #main-content #contact .health-widget-container {
+  background:
+    linear-gradient(
+      165deg,
+      rgb(255 255 255 / var(--lg-card-highlight-dark, 10%)) 0%,
+      transparent 40%
+    ),
+    rgb(0 0 0 / var(--lg-card-dark-alpha, 64%)) !important;
+  border-color: rgb(255 255 255 / var(--lg-border-dark, 14%)) !important;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / var(--lg-specular-dark, 12%)),
+    0 12px 40px rgb(0 0 0 / var(--lg-card-shadow-dark, 45%)) !important;
+}
+
+/* contact-info-all double-class solid rules need explicit glass override */
+html[data-lg-mode='clear']:not(.dark) body #main-content #contact .contact-card.contact-info-all,
+html[data-lg-mode='balanced']:not(.dark) body #main-content #contact .contact-card.contact-info-all,
+html[data-lg-mode='clear']:not(.dark)
+  body
+  #main-content
+  #contact
+  .currently-card.merged-health-currently-card,
+html[data-lg-mode='balanced']:not(.dark)
+  body
+  #main-content
+  #contact
+  .currently-card.merged-health-currently-card {
+  background:
+    linear-gradient(
+      165deg,
+      rgb(255 255 255 / var(--lg-card-highlight-light, 55%)) 0%,
+      transparent 45%
+    ),
+    rgb(255 255 255 / var(--lg-card-light-alpha, 68%)) !important;
+  backdrop-filter: saturate(var(--lg-saturate, 180%)) blur(var(--lg-blur-card, 40px)) !important;
+  -webkit-backdrop-filter: saturate(var(--lg-saturate, 180%)) blur(var(--lg-blur-card, 40px)) !important;
+}
+
+html.dark[data-lg-mode='clear'] body #main-content #contact .contact-card.contact-info-all,
+html.dark[data-lg-mode='balanced'] body #main-content #contact .contact-card.contact-info-all,
+html.dark[data-lg-mode='clear']
+  body
+  #main-content
+  #contact
+  .currently-card.merged-health-currently-card,
+html.dark[data-lg-mode='balanced']
+  body
+  #main-content
+  #contact
+  .currently-card.merged-health-currently-card {
+  background:
+    linear-gradient(
+      165deg,
+      rgb(255 255 255 / var(--lg-card-highlight-dark, 10%)) 0%,
+      transparent 40%
+    ),
+    rgb(0 0 0 / var(--lg-card-dark-alpha, 64%)) !important;
+  backdrop-filter: saturate(var(--lg-saturate, 180%)) blur(var(--lg-blur-card, 40px)) !important;
+  -webkit-backdrop-filter: saturate(var(--lg-saturate, 180%)) blur(var(--lg-blur-card, 40px)) !important;
 }

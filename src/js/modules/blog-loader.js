@@ -2,6 +2,7 @@ import { blogPosts } from './blog-data.js';
 import { parseBlogContent } from './blog-markdown.js';
 import { rescanCardContentAccessibility } from './card-content-accessibility.js';
 import { refreshSectionPreview } from './section-preview.js';
+import { escapeHTML as escapeHtmlShared } from '../utils/escape-html.js';
 
 /**
  * Blog Loader Module
@@ -162,14 +163,8 @@ class BlogLoader {
       .map(item => `<li>${this.escapeHTML(item)}</li>`)
       .join('');
   }
-
   escapeHTML(value = '') {
-    return String(value)
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#39;');
+    return escapeHtmlShared(value);
   }
 
   createModal() {

@@ -1,17 +1,9 @@
+import { escapeHTML } from '../utils/escape-html.js';
 /**
  * Shared blog markdown parser — used by blog-loader (browser) and build (Node).
  * Supports headings, lists, quotes, code, HR, and media blocks:
  *   :::figure / :::video / :::audio / :::chart / :::callout / :::embed
  */
-
-export function escapeHTML(value = '') {
-  return String(value)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
-}
 
 function safeHref(href = '') {
   try {
@@ -358,3 +350,5 @@ export function getRelatedPosts(posts = [], currentId, limit = 3) {
     .slice(0, limit)
     .map(x => x.post);
 }
+
+export { escapeHTML };

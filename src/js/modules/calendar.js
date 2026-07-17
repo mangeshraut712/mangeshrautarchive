@@ -1,4 +1,29 @@
 import { openCalendlyPopup } from '../utils/calendly.js';
+import { escapeHtml } from '../utils/escape-html.js';
+
+function ensureContactSolidStyles() {
+  const id = 'contact-solid-css';
+  let link = document.getElementById(id);
+  if (!link) {
+    link = document.createElement('link');
+    link.id = id;
+    link.rel = 'stylesheet';
+    link.href = 'assets/css/contact-solid.css?v=20260717whole';
+  }
+  // Always re-append as last stylesheet so solid beats deferred glass sheets
+  document.head.appendChild(link);
+
+  // Luxury card depth must load after contact-solid (which can flatten shadows)
+  const luxId = 'apple-cards-luxury-2026-css';
+  let lux = document.getElementById(luxId);
+  if (!lux) {
+    lux = document.createElement('link');
+    lux.id = luxId;
+    lux.rel = 'stylesheet';
+    lux.href = 'assets/css/apple-cards-luxury-2026.css?v=20260717whole';
+  }
+  document.head.appendChild(lux);
+}
 
 export class CalendarWidget {
   constructor(containerId) {
@@ -141,21 +166,21 @@ export class CalendarWidget {
               ${this.reminders
                 .map(
                   r => `
-                <div class="reminder-card ${r.completed ? 'completed' : ''} accent-${r.color}" data-id="${r.id}">
+                <div class="reminder-card ${r.completed ? 'completed' : ''} accent-${escapeHtml(r.color)}" data-id="${r.id}">
                   <div class="card-accent-strip"></div>
                   <div class="card-content">
                     <div class="card-header-flex">
-                       <span class="card-time"><i class="fas fa-clock"></i> ${r.time}</span>
-                       <span class="card-tag">${r.tag}</span>
+                       <span class="card-time"><i class="fas fa-clock" aria-hidden="true"></i> ${escapeHtml(r.time)}</span>
+                       <span class="card-tag">${escapeHtml(r.tag)}</span>
                     </div>
-                    <div class="card-title">${r.text}</div>
+                    <div class="card-title">${escapeHtml(r.text)}</div>
                   </div>
-                  <div class="card-action-area" style="display: flex; align-items: center;">
-                    <button class="edit-btn" aria-label="Edit Reminder">
-                        <i class="fas fa-pencil-alt"></i>
+                  <div class="card-action-area">
+                    <button type="button" class="edit-btn" aria-label="Edit Reminder">
+                        <i class="fas fa-pencil-alt" aria-hidden="true"></i>
                     </button>
-                    <button class="status-circle" aria-label="Toggle Complete">
-                      <i class="fas fa-check"></i>
+                    <button type="button" class="status-circle" aria-label="Toggle Complete">
+                      <i class="fas fa-check" aria-hidden="true"></i>
                     </button>
                   </div>
                 </div>
@@ -281,6 +306,7 @@ export class CalendarWidget {
 
 // Auto-init
 const initCalendarWidget = () => {
+  ensureContactSolidStyles();
   const widget = new CalendarWidget('calendar-widget');
   widget.init();
 };

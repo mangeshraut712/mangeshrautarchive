@@ -1515,7 +1515,7 @@ export class AccessibilityEnhancer {
 
   /**
    * Liquid Glass material control — accessible sheet with presets + fine control.
-   * 0 = clear, 42 = balanced (default), 100 = tinted. Drives --lg-tint.
+   * 0 = clear liquid glass, 42 = balanced frost, 100 = tinted solid (default).
    */
   toggleLiquidGlassPopover() {
     const glassButton = document.querySelector(
@@ -1723,8 +1723,8 @@ export class AccessibilityEnhancer {
     } catch (_error) {
       // Storage unavailable — fall through to default.
     }
-    // Balanced liquid glass (Apple-like frosted material)
-    return 42;
+    // Tinted solid (default) — max readability; user can slide to Clear for glass
+    return 100;
   }
 
   applyGlassTint(value, { instant = false } = {}) {

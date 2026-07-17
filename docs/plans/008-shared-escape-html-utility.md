@@ -4,6 +4,7 @@
 
 ## Status
 
+- **Status**: DONE (2026-07-17)
 - **Priority**: P2
 - **Effort**: M
 - **Risk**: MED

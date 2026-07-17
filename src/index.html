@@ -6,7 +6,7 @@
   <script>
     if (!window.__PERF_AUDIT__) {
       var lgBoot = document.createElement('script');
-      lgBoot.src = 'js/utils/liquid-glass-boot.js?v=20260716aa';
+      lgBoot.src = 'js/utils/liquid-glass-boot.js?v=20260717cleartheme';
       document.head.appendChild(lgBoot);
     }
   </script>
@@ -17,17 +17,34 @@
   <link rel="preconnect" href="https://assistme-chat.mangeshraut712.workers.dev" crossorigin />
   <link rel="dns-prefetch" href="https://assistme-chat.mangeshraut712.workers.dev" />
   <link rel="dns-prefetch" href="https://lastfm.freetls.fastly.net" />
-  <!-- Font Awesome preloads steal bandwidth from LCP text on mobile — skip in Lighthouse -->
+  <!-- Font Awesome preloads steal LCP bandwidth — defer until idle / first interaction -->
   <script>
     if (!window.__PERF_AUDIT__) {
-      ['assets/vendor/fontawesome/webfonts/fa-solid-900.woff2', 'assets/vendor/fontawesome/webfonts/fa-brands-400.woff2'].forEach(function (href) {
-        var l = document.createElement('link');
-        l.rel = 'preload';
-        l.as = 'font';
-        l.type = 'font/woff2';
-        l.crossOrigin = 'anonymous';
-        l.href = href;
-        document.head.appendChild(l);
+      function __preloadFaFonts() {
+        if (window.__FA_FONTS_PRELOADED__) return;
+        window.__FA_FONTS_PRELOADED__ = true;
+        [
+          'assets/vendor/fontawesome/webfonts/fa-solid-900.woff2',
+          'assets/vendor/fontawesome/webfonts/fa-brands-400.woff2',
+        ].forEach(function (href) {
+          var l = document.createElement('link');
+          l.rel = 'preload';
+          l.as = 'font';
+          l.type = 'font/woff2';
+          l.crossOrigin = 'anonymous';
+          l.href = href;
+          document.head.appendChild(l);
+        });
+      }
+      if ('requestIdleCallback' in window) {
+        requestIdleCallback(__preloadFaFonts, { timeout: 4000 });
+      } else {
+        window.addEventListener('load', function () {
+          setTimeout(__preloadFaFonts, 1500);
+        });
+      }
+      ['pointerdown', 'keydown', 'touchstart'].forEach(function (evt) {
+        window.addEventListener(evt, __preloadFaFonts, { once: true, passive: true });
       });
     }
   </script>
@@ -762,7 +779,7 @@ html.dark #home .hero-name-text {
   <link rel="stylesheet" href="assets/css/tailwind-output.css?v=20260716aa" />
   <link rel="stylesheet" href="assets/vendor/fontawesome/css/all.min.css?v=20260716aa"
     media="print" onload="this.media='all'" />
-  <link rel="preload" href="assets/vendor/fontawesome/webfonts/fa-solid-900.woff2?v=20260716aa" as="font" type="font/woff2" crossorigin />
+  <!-- FA solid already preloaded in head script when not in audit mode — avoid duplicate -->
   <link rel="stylesheet" href="assets/css/font-awesome-display.css?v=20260716aa" media="print" onload="this.media='all'" />
   <noscript>
     <link rel="stylesheet" href="assets/vendor/fontawesome/css/all.min.css?v=20260716aa" />
@@ -779,7 +796,7 @@ html.dark #home .hero-name-text {
   <link rel="stylesheet" href="assets/css/card-content-accessibility.css?v=20260716aa" />
   <link rel="stylesheet" href="assets/css/liquid-glass.css?v=20260716aa" media="print" onload="this.media='all'" />
   <noscript><link rel="stylesheet" href="assets/css/liquid-glass.css?v=20260716aa" /></noscript>
-  <link rel="stylesheet" href="assets/css/dynamic-island-navbar.css?v=20260716aa" />
+  <link rel="stylesheet" href="assets/css/dynamic-island-navbar.css?v=20260717whole" />
   <link rel="stylesheet" href="assets/css/homepage.css?v=20260716aa" />
   <link rel="stylesheet" href="assets/css/global-improvements.css?v=20260716aa" media="print" onload="this.media='all'" />
   <link rel="stylesheet" href="assets/css/ux-polish-fixes.css?v=20260716aa" media="print" onload="this.media='all'" />
@@ -787,22 +804,24 @@ html.dark #home .hero-name-text {
   <noscript><link rel="stylesheet" href="assets/css/mobile-viewport.css?v=20260716aa" /></noscript>
   <link rel="stylesheet" href="assets/css/apple-super-retina-display.css?v=20260716aa" media="print" onload="this.media='all'" />
   <noscript><link rel="stylesheet" href="assets/css/apple-super-retina-display.css?v=20260716aa" /></noscript>
-  <link rel="stylesheet" href="assets/css/theme-solid-surfaces.css?v=20260716aa" />
-  <link rel="stylesheet" href="assets/css/chrome-surfaces.css?v=20260716aa" media="print" onload="this.media='all'" />
-  <noscript><link rel="stylesheet" href="assets/css/chrome-surfaces.css?v=20260716aa" /></noscript>
+  <link rel="stylesheet" href="assets/css/theme-solid-surfaces.css?v=20260717whole" />
+  <link rel="stylesheet" href="assets/css/chrome-surfaces.css?v=20260717whole" media="print" onload="this.media='all'" />
+  <noscript><link rel="stylesheet" href="assets/css/chrome-surfaces.css?v=20260717whole" /></noscript>
   <!-- Liquid Glass modes must load after solid/chrome so clear+balanced materials win -->
-  <link rel="stylesheet" href="assets/css/liquid-glass-modes.css?v=20260716aa" />
-  <link rel="stylesheet" href="assets/css/wwdc26-liquid-glass.css?v=20260716aa" media="print" onload="this.media='all'" />
-  <noscript><link rel="stylesheet" href="assets/css/wwdc26-liquid-glass.css?v=20260716aa" /></noscript>
+  <link rel="stylesheet" href="assets/css/liquid-glass-modes.css?v=20260717whole" />
+  <link rel="stylesheet" href="assets/css/wwdc26-liquid-glass.css?v=20260717whole" media="print" onload="this.media='all'" />
+  <noscript><link rel="stylesheet" href="assets/css/wwdc26-liquid-glass.css?v=20260717whole" /></noscript>
   <!-- Final Apple type/color/spacing lock — last among global sheets -->
-  <link rel="stylesheet" href="assets/css/apple-ui-polish.css?v=20260716aa" />
+  <link rel="stylesheet" href="assets/css/apple-ui-polish.css?v=20260717whole" />
+  <!-- June 2026 luxury cards — last so depth/hover win over flat solid shells -->
+  <link rel="stylesheet" href="assets/css/apple-cards-luxury-2026.css?v=20260717whole" />
 
     <!-- Lazy-loaded Section Styles (data-href only — loaded near section / idle) -->
-  <link rel="stylesheet" data-href="assets/css/contact.css?v=20260716aa" data-lazy-style-key="contact" />
+  <link rel="stylesheet" data-href="assets/css/contact.css?v=20260717clearpolish" data-lazy-style-key="contact" />
   <link rel="stylesheet" data-href="assets/css/animations.css?v=20260716aa" data-lazy-style-key="motion" />
   <link rel="stylesheet" data-href="assets/css/publications.css?v=20260716aa" data-lazy-style-key="publications" />
   <link rel="stylesheet" data-href="assets/css/education.css?v=20260716aa" data-lazy-style-key="education" />
-  <link rel="stylesheet" data-href="assets/css/skills.css?v=20260716aa" data-lazy-style-key="skills" />
+  <link rel="stylesheet" data-href="assets/css/skills.css?v=20260717whole" data-lazy-style-key="skills" />
   <link rel="stylesheet" data-href="assets/css/certifications.css?v=20260716aa" data-lazy-style-key="certifications" />
   <link rel="stylesheet" data-href="assets/css/katex.min.css?v=20260716aa" data-lazy-style-key="assistant" />
   <link rel="stylesheet" data-href="assets/css/ai-assistant.css?v=20260716aa" data-lazy-style-key="assistant" />
@@ -1398,26 +1417,26 @@ html.dark #home .hero-name-text {
                     <div class="vibe-stack-card lg-glass-card" role="dialog" aria-label="Vibe coding tools I use">
                       <div class="vibe-stack-marquee" aria-hidden="true">
                         <div class="vibe-stack-marquee-track">
-                          <a class="vibe-tool-chip" href="https://openai.com/index/introducing-codex/" target="_blank" rel="noopener noreferrer" title="OpenAI Codex"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/codex.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Codex</span></a>
-                          <a class="vibe-tool-chip" href="https://cursor.com" target="_blank" rel="noopener noreferrer" title="Cursor"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/cursor.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Cursor</span></a>
-                          <a class="vibe-tool-chip" href="https://claude.ai/code" target="_blank" rel="noopener noreferrer" title="Claude Code"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/claude.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Claude</span></a>
-                          <a class="vibe-tool-chip vibe-tool-chip--wide" href="https://github.com/features/copilot" target="_blank" rel="noopener noreferrer" title="GitHub Copilot / Antigravity tools"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/antigravity.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Antigravity</span></a>
-                          <a class="vibe-tool-chip" href="https://windsurf.com" target="_blank" rel="noopener noreferrer" title="Windsurf"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/windsurf.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Windsurf</span></a>
-                          <a class="vibe-tool-chip" href="https://kilo.ai" target="_blank" rel="noopener noreferrer" title="Kilo Code"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/kilo.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Kilo</span></a>
-                          <a class="vibe-tool-chip" href="https://cline.bot" target="_blank" rel="noopener noreferrer" title="Cline"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/cline.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Cline</span></a>
-                          <a class="vibe-tool-chip" href="https://replit.com" target="_blank" rel="noopener noreferrer" title="Replit"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/replit.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Replit</span></a>
-                          <a class="vibe-tool-chip" href="https://lovable.dev" target="_blank" rel="noopener noreferrer" title="Lovable"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/lovable.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Lovable</span></a>
-                          <a class="vibe-tool-chip" href="https://www.figma.com" target="_blank" rel="noopener noreferrer" title="Figma"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/figma.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Figma</span></a>
-                          <a class="vibe-tool-chip" href="https://openai.com/index/introducing-codex/" target="_blank" rel="noopener noreferrer" title="OpenAI Codex"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/codex.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Codex</span></a>
-                          <a class="vibe-tool-chip" href="https://cursor.com" target="_blank" rel="noopener noreferrer" title="Cursor"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/cursor.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Cursor</span></a>
-                          <a class="vibe-tool-chip" href="https://claude.ai/code" target="_blank" rel="noopener noreferrer" title="Claude Code"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/claude.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Claude</span></a>
-                          <a class="vibe-tool-chip vibe-tool-chip--wide" href="https://github.com/features/copilot" target="_blank" rel="noopener noreferrer" title="GitHub Copilot / Antigravity tools"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/antigravity.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Antigravity</span></a>
-                          <a class="vibe-tool-chip" href="https://windsurf.com" target="_blank" rel="noopener noreferrer" title="Windsurf"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/windsurf.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Windsurf</span></a>
-                          <a class="vibe-tool-chip" href="https://kilo.ai" target="_blank" rel="noopener noreferrer" title="Kilo Code"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/kilo.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Kilo</span></a>
-                          <a class="vibe-tool-chip" href="https://cline.bot" target="_blank" rel="noopener noreferrer" title="Cline"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/cline.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Cline</span></a>
-                          <a class="vibe-tool-chip" href="https://replit.com" target="_blank" rel="noopener noreferrer" title="Replit"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/replit.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Replit</span></a>
-                          <a class="vibe-tool-chip" href="https://lovable.dev" target="_blank" rel="noopener noreferrer" title="Lovable"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/lovable.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Lovable</span></a>
-                          <a class="vibe-tool-chip" href="https://www.figma.com" target="_blank" rel="noopener noreferrer" title="Figma"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/figma.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Figma</span></a>
+                          <a class="vibe-tool-chip" tabindex="-1" href="https://openai.com/index/introducing-codex/" target="_blank" rel="noopener noreferrer" title="OpenAI Codex"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/codex.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Codex</span></a>
+                          <a class="vibe-tool-chip" tabindex="-1" href="https://cursor.com" target="_blank" rel="noopener noreferrer" title="Cursor"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/cursor.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Cursor</span></a>
+                          <a class="vibe-tool-chip" tabindex="-1" href="https://claude.ai/code" target="_blank" rel="noopener noreferrer" title="Claude Code"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/claude.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Claude</span></a>
+                          <a class="vibe-tool-chip vibe-tool-chip--wide" tabindex="-1" href="https://github.com/features/copilot" target="_blank" rel="noopener noreferrer" title="GitHub Copilot / Antigravity tools"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/antigravity.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Antigravity</span></a>
+                          <a class="vibe-tool-chip" tabindex="-1" href="https://windsurf.com" target="_blank" rel="noopener noreferrer" title="Windsurf"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/windsurf.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Windsurf</span></a>
+                          <a class="vibe-tool-chip" tabindex="-1" href="https://kilo.ai" target="_blank" rel="noopener noreferrer" title="Kilo Code"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/kilo.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Kilo</span></a>
+                          <a class="vibe-tool-chip" tabindex="-1" href="https://cline.bot" target="_blank" rel="noopener noreferrer" title="Cline"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/cline.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Cline</span></a>
+                          <a class="vibe-tool-chip" tabindex="-1" href="https://replit.com" target="_blank" rel="noopener noreferrer" title="Replit"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/replit.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Replit</span></a>
+                          <a class="vibe-tool-chip" tabindex="-1" href="https://lovable.dev" target="_blank" rel="noopener noreferrer" title="Lovable"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/lovable.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Lovable</span></a>
+                          <a class="vibe-tool-chip" tabindex="-1" href="https://www.figma.com" target="_blank" rel="noopener noreferrer" title="Figma"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/figma.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Figma</span></a>
+                          <a class="vibe-tool-chip" tabindex="-1" href="https://openai.com/index/introducing-codex/" target="_blank" rel="noopener noreferrer" title="OpenAI Codex"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/codex.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Codex</span></a>
+                          <a class="vibe-tool-chip" tabindex="-1" href="https://cursor.com" target="_blank" rel="noopener noreferrer" title="Cursor"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/cursor.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Cursor</span></a>
+                          <a class="vibe-tool-chip" tabindex="-1" href="https://claude.ai/code" target="_blank" rel="noopener noreferrer" title="Claude Code"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/claude.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Claude</span></a>
+                          <a class="vibe-tool-chip vibe-tool-chip--wide" tabindex="-1" href="https://github.com/features/copilot" target="_blank" rel="noopener noreferrer" title="GitHub Copilot / Antigravity tools"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/antigravity.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Antigravity</span></a>
+                          <a class="vibe-tool-chip" tabindex="-1" href="https://windsurf.com" target="_blank" rel="noopener noreferrer" title="Windsurf"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/windsurf.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Windsurf</span></a>
+                          <a class="vibe-tool-chip" tabindex="-1" href="https://kilo.ai" target="_blank" rel="noopener noreferrer" title="Kilo Code"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/kilo.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Kilo</span></a>
+                          <a class="vibe-tool-chip" tabindex="-1" href="https://cline.bot" target="_blank" rel="noopener noreferrer" title="Cline"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/cline.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Cline</span></a>
+                          <a class="vibe-tool-chip" tabindex="-1" href="https://replit.com" target="_blank" rel="noopener noreferrer" title="Replit"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/replit.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Replit</span></a>
+                          <a class="vibe-tool-chip" tabindex="-1" href="https://lovable.dev" target="_blank" rel="noopener noreferrer" title="Lovable"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/lovable.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Lovable</span></a>
+                          <a class="vibe-tool-chip" tabindex="-1" href="https://www.figma.com" target="_blank" rel="noopener noreferrer" title="Figma"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/figma.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Figma</span></a>
                         </div>
                       </div>
                     </div>
@@ -1678,7 +1697,7 @@ html.dark #home .hero-name-text {
               </div>
 
               <!-- Quick Summary Panel -->
-              <div id="quick-summary-panel" class="about-tab-panel" role="tabpanel" aria-labelledby="tab-quick-summary" aria-hidden="true" style="display: none;" tabindex="0">
+              <div id="quick-summary-panel" class="about-tab-panel" role="tabpanel" aria-labelledby="tab-quick-summary" aria-hidden="true" hidden>
                 <h3 class="about-intro-title">Quick Summary</h3>
                 <p class="about-brand-line">Production AI products with Apple-level engineering quality.</p>
 
@@ -3153,7 +3172,7 @@ html.dark #home .hero-name-text {
             <span class="certification-category">Programming</span>
             <div class="certification-header">
               <div class="certification-logo-container">
-                <img src="assets/images/certifications/hackerrank.png" loading="lazy" decoding="async" class="certification-logo" width="40" height="40"
+                <img src="assets/images/certifications/hackerrank.webp" loading="lazy" decoding="async" class="certification-logo" width="40" height="40"
                   loading="lazy" decoding="async" alt="HackerRank">
               </div>
               <div class="certification-info">
@@ -3171,7 +3190,7 @@ html.dark #home .hero-name-text {
             <span class="certification-category">Marketing</span>
             <div class="certification-header">
               <div class="certification-logo-container">
-                <img src="assets/images/certifications/apple.png" loading="lazy" decoding="async" class="certification-logo" width="40" height="40"
+                <img src="assets/images/certifications/apple.webp" loading="lazy" decoding="async" class="certification-logo" width="40" height="40"
                   loading="lazy" decoding="async" alt="Apple">
               </div>
               <div class="certification-info">
@@ -3188,7 +3207,7 @@ html.dark #home .hero-name-text {
             <span class="certification-category">AI</span>
             <div class="certification-header">
               <div class="certification-logo-container">
-                <img src="assets/images/certifications/google.png" loading="lazy" decoding="async" class="certification-logo" width="40" height="40"
+                <img src="assets/images/certifications/google.webp" loading="lazy" decoding="async" class="certification-logo" width="40" height="40"
                   loading="lazy" decoding="async" alt="Google">
               </div>
               <div class="certification-info">
@@ -3205,7 +3224,7 @@ html.dark #home .hero-name-text {
             <span class="certification-category">Data</span>
             <div class="certification-header">
               <div class="certification-logo-container">
-                <img src="assets/images/certifications/ibm.png" loading="lazy" decoding="async" class="certification-logo" width="40" height="40"
+                <img src="assets/images/certifications/ibm.webp" loading="lazy" decoding="async" class="certification-logo" width="40" height="40"
                   loading="lazy" decoding="async" alt="IBM">
               </div>
               <div class="certification-info">
@@ -3222,7 +3241,7 @@ html.dark #home .hero-name-text {
             <span class="certification-category">Security</span>
             <div class="certification-header">
               <div class="certification-logo-container">
-                <img src="assets/images/certifications/ibm.png" loading="lazy" decoding="async" class="certification-logo" width="40" height="40"
+                <img src="assets/images/certifications/ibm.webp" loading="lazy" decoding="async" class="certification-logo" width="40" height="40"
                   loading="lazy" decoding="async" alt="IBM">
               </div>
               <div class="certification-info">
@@ -3239,7 +3258,7 @@ html.dark #home .hero-name-text {
             <span class="certification-category">Networking</span>
             <div class="certification-header">
               <div class="certification-logo-container">
-                <img src="assets/images/certifications/cisco.png" loading="lazy" decoding="async" class="certification-logo" width="40" height="40"
+                <img src="assets/images/certifications/cisco.webp" loading="lazy" decoding="async" class="certification-logo" width="40" height="40"
                   loading="lazy" decoding="async" alt="Cisco">
               </div>
               <div class="certification-info">
@@ -3257,7 +3276,7 @@ html.dark #home .hero-name-text {
             <span class="certification-category">Programming</span>
             <div class="certification-header">
               <div class="certification-logo-container">
-                <img src="assets/images/certifications/microsoft.png" loading="lazy" decoding="async" class="certification-logo" width="40" height="40"
+                <img src="assets/images/certifications/microsoft.webp" loading="lazy" decoding="async" class="certification-logo" width="40" height="40"
                   loading="lazy" decoding="async" alt="Microsoft">
               </div>
               <div class="certification-info">
@@ -3275,7 +3294,7 @@ html.dark #home .hero-name-text {
             <span class="certification-category">Networking</span>
             <div class="certification-header">
               <div class="certification-logo-container">
-                <img src="assets/images/certifications/cisco.png" loading="lazy" decoding="async" class="certification-logo" width="40" height="40"
+                <img src="assets/images/certifications/cisco.webp" loading="lazy" decoding="async" class="certification-logo" width="40" height="40"
                   loading="lazy" decoding="async" alt="Cisco">
               </div>
               <div class="certification-info">
@@ -3445,7 +3464,7 @@ html.dark #home .hero-name-text {
                             assets/images/ganesh-mobile.webp 320w,
                             assets/images/ganesh-tablet.webp 768w,
                             assets/images/ganesh-desktop.webp 1920w"
-                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" />
+                          sizes="70px" />
                         <img src="assets/images/ganesh.jpg" alt="Lord Ganesh" class="ganesh-blessing-img"
                           title="🕉️ Om Gan Ganapataye Namah" width="70" height="70" loading="lazy" decoding="async">
                       </picture>
@@ -3465,7 +3484,7 @@ html.dark #home .hero-name-text {
                             assets/images/hanuman-mobile.webp 320w,
                             assets/images/hanuman-tablet.webp 768w,
                             assets/images/hanuman-desktop.webp 1920w"
-                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" />
+                          sizes="70px" />
                         <img src="assets/images/hanuman.png" alt="Lord Hanuman" class="hanuman-blessing-img"
                           title="🙏 Jai Hanuman" width="70" height="70" loading="lazy" decoding="async">
                       </picture>

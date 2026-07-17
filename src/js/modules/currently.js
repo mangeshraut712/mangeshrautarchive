@@ -15,33 +15,49 @@ export function initCurrentlySection() {
   }
   document.body.dataset.currentlyInit = 'true';
 
-  // Tab switching logic
-  tabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      const tabName = tab.dataset.tab;
+  const tabList = Array.from(tabs);
 
-      // Update tabs
-      tabs.forEach(t => {
-        t.classList.remove('active');
-        t.setAttribute('aria-selected', 'false');
-      });
-      tab.classList.add('active');
-      tab.setAttribute('aria-selected', 'true');
-
-      // Update content
-      contents.forEach(c => {
-        c.classList.remove('active');
-        c.hidden = true;
-      });
-      const targetContent = document.getElementById(`${tabName}-content`);
-      if (targetContent) {
-        targetContent.classList.add('active');
-        targetContent.hidden = false;
-      }
+  const activateTab = tab => {
+    const tabName = tab.dataset.tab;
+    tabs.forEach(t => {
+      const active = t === tab;
+      t.classList.toggle('active', active);
+      t.setAttribute('aria-selected', active ? 'true' : 'false');
+      t.setAttribute('tabindex', active ? '0' : '-1');
     });
+    contents.forEach(c => {
+      c.classList.remove('active');
+      c.hidden = true;
+    });
+    const targetContent = document.getElementById(`${tabName}-content`);
+    if (targetContent) {
+      targetContent.classList.add('active');
+      targetContent.hidden = false;
+    }
+  };
 
+  // Tab switching logic (click + ARIA keyboard pattern)
+  tabs.forEach((tab, index) => {
+    tab.addEventListener('click', () => activateTab(tab));
     tab.setAttribute('role', 'tab');
     tab.setAttribute('aria-selected', tab.classList.contains('active') ? 'true' : 'false');
+    tab.setAttribute('tabindex', tab.classList.contains('active') ? '0' : '-1');
+    tab.addEventListener('keydown', e => {
+      let next = -1;
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+        next = (index + 1) % tabList.length;
+      } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+        next = (index - 1 + tabList.length) % tabList.length;
+      } else if (e.key === 'Home') {
+        next = 0;
+      } else if (e.key === 'End') {
+        next = tabList.length - 1;
+      }
+      if (next < 0) return;
+      e.preventDefault();
+      activateTab(tabList[next]);
+      tabList[next].focus();
+    });
   });
 
   contents.forEach(content => {

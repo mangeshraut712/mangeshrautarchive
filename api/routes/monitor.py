@@ -1,4 +1,5 @@
 import hashlib
+import hmac
 import os
 import re
 import time
@@ -98,19 +99,26 @@ def _redact_monitor_event(event: Dict) -> Dict:
     return redacted
 
 
+def _tokens_match(provided: str, expected: str) -> bool:
+    """Constant-time compare; unequal lengths are a mismatch (never raise)."""
+    if not provided or not expected or len(provided) != len(expected):
+        return False
+    return hmac.compare_digest(provided, expected)
+
+
 def _monitor_admin_token_ok(request: Request) -> bool:
     admin_token = os.getenv("MONITOR_ADMIN_TOKEN", "").strip()
     if not admin_token:
         return False
     provided = request.headers.get("x-monitor-admin-token", "").strip()
-    return provided == admin_token
+    return _tokens_match(provided, admin_token)
 
 
 def _require_monitor_admin(request: Request) -> None:
     admin_token = os.getenv("MONITOR_ADMIN_TOKEN", "").strip()
     if admin_token:
         provided = request.headers.get("x-monitor-admin-token", "").strip()
-        if provided == admin_token:
+        if _tokens_match(provided, admin_token):
             return
         raise HTTPException(status_code=403, detail="Monitor admin token required")
 

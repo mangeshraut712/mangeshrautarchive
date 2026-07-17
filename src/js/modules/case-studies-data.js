@@ -3,6 +3,7 @@
  */
 
 import { formatDeployLighthouseGate, WEBMCP_TOOL_COUNT } from '../data/portfolio-public-data.js';
+import { escapeHtml } from '../utils/escape-html.js';
 
 const BRAND_TAGLINE = 'Production AI products with Apple-level engineering quality.';
 
@@ -274,14 +275,6 @@ export function normalizeExternalUrl(raw) {
   } catch {
     return null;
   }
-}
-
-function escapeHtml(value) {
-  return String(value ?? '')
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;');
 }
 
 function sanitizeArchitectureHref(raw) {

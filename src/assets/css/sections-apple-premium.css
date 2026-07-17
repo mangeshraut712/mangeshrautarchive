@@ -93,7 +93,9 @@ section .section-subtitle {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #ffffff !important;
+  /* Fill from page canvas / mode materials — not forced solid (clear needs soft gray) */
+  background: transparent !important;
+  background-color: transparent !important;
   position: relative;
   overflow: hidden;
 }
@@ -109,7 +111,20 @@ html.dark #home::before {
 }
 
 html.dark #home {
+  background: transparent !important;
+  background-color: transparent !important;
+}
+
+/* Tinted solid hero canvas */
+html[data-lg-mode='tinted']:not(.dark) #home,
+html:not([data-lg-mode]):not(.dark) #home {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+}
+html.dark[data-lg-mode='tinted'] #home,
+html.dark:not([data-lg-mode]) #home {
   background: #000000 !important;
+  background-color: #000000 !important;
 }
 
 /* Hero Profile Image - clean photo, no blue frame */

@@ -1,7 +1,8 @@
+/* stylelint-disable no-duplicate-selectors -- intentional cascade overrides */
 /* ════════════════════════════════════════════════════════════════
    Liquid Glass modes — loaded AFTER theme-solid-surfaces.css
-   Tinted (slider → Tinted): solid frosted surfaces from theme-solid.
-   Clear / Balanced: restore WWDC26 liquid glass (blur + translucency).
+   Clear + Balanced: real liquid glass (blur + translucency) sitewide.
+   Tinted: solid white (light) / solid black (dark) for max readability.
    ════════════════════════════════════════════════════════════════ */
 
 /* Shared card / panel selectors — Apple liquid glass (clear + balanced) */
@@ -22,16 +23,9 @@ html:is([data-lg-mode='clear'], [data-lg-mode='balanced'])
     .about-highlight-card,
     .about-text-card,
     .about-card,
-    .contact-card,
     .contact-form-card,
     .newsletter-card,
-    .support-donation-card,
-    .media-card,
-    .currently-card,
-    .calendar-card,
-    .ios-widget-wrapper,
     .legend-card,
-    .reminder-card,
     .overview-card,
     .doc-card,
     .health-item,
@@ -50,7 +44,6 @@ html:is([data-lg-mode='clear'], [data-lg-mode='balanced'])
     .glass-card,
     .overlay-card,
     .panel,
-    .health-widget-container,
     .monitor-summary-card,
     .monitor-summary-panel,
     .integration-owner-auth,
@@ -130,16 +123,9 @@ html:is([data-lg-mode='clear'], [data-lg-mode='balanced']):not(.dark)
     .about-highlight-card,
     .about-text-card,
     .about-card,
-    .contact-card,
     .contact-form-card,
     .newsletter-card,
-    .support-donation-card,
-    .media-card,
-    .currently-card,
-    .calendar-card,
-    .ios-widget-wrapper,
     .legend-card,
-    .reminder-card,
     .overview-card,
     .doc-card,
     .health-item,
@@ -158,7 +144,6 @@ html:is([data-lg-mode='clear'], [data-lg-mode='balanced']):not(.dark)
     .glass-card,
     .overlay-card,
     .panel,
-    .health-widget-container,
     .monitor-summary-card,
     .monitor-summary-panel,
     .integration-owner-auth,
@@ -216,11 +201,13 @@ html:is([data-lg-mode='clear'], [data-lg-mode='balanced']):not(.dark)
     ),
     rgb(255 255 255 / var(--lg-card-light-alpha)) !important;
   background-color: rgb(255 255 255 / var(--lg-card-light-alpha)) !important;
-  border: 1px solid rgb(255 255 255 / var(--lg-border-light)) !important;
+  /* Dark hairline (not white-on-white) — matches tinted #e5e5ea readability */
+  border: 1px solid var(--lg-hairline-light, rgb(0 0 0 / 10%)) !important;
   box-shadow:
     inset 0 1px 0 rgb(255 255 255 / var(--lg-specular-light)),
-    0 8px 32px rgb(0 0 0 / var(--lg-card-shadow-light)),
-    0 1px 0 rgb(0 0 0 / 4%) !important;
+    0 1px 2px rgb(0 0 0 / 4%),
+    0 10px 28px rgb(0 0 0 / var(--lg-card-shadow-light)),
+    0 20px 48px rgb(15 23 42 / 5%) !important;
   isolation: isolate;
 }
 
@@ -241,16 +228,9 @@ html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced'])
     .about-highlight-card,
     .about-text-card,
     .about-card,
-    .contact-card,
     .contact-form-card,
     .newsletter-card,
-    .support-donation-card,
-    .media-card,
-    .currently-card,
-    .calendar-card,
-    .ios-widget-wrapper,
     .legend-card,
-    .reminder-card,
     .overview-card,
     .doc-card,
     .health-item,
@@ -269,7 +249,6 @@ html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced'])
     .glass-card,
     .overlay-card,
     .panel,
-    .health-widget-container,
     .monitor-summary-card,
     .monitor-summary-panel,
     .integration-owner-auth,
@@ -327,11 +306,12 @@ html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced'])
     ),
     rgb(0 0 0 / var(--lg-card-dark-alpha)) !important;
   background-color: rgb(0 0 0 / var(--lg-card-dark-alpha)) !important;
-  border: 1px solid rgb(255 255 255 / var(--lg-border-dark)) !important;
+  /* Subtle white hairline — matches tinted #2c2c2e contrast on black */
+  border: 1px solid var(--lg-hairline-dark, rgb(255 255 255 / 14%)) !important;
   box-shadow:
     inset 0 1px 0 rgb(255 255 255 / var(--lg-specular-dark)),
-    0 12px 40px rgb(0 0 0 / var(--lg-card-shadow-dark)),
-    0 1px 0 rgb(255 255 255 / 4%) !important;
+    0 1px 0 rgb(0 0 0 / 40%),
+    0 14px 40px rgb(0 0 0 / var(--lg-card-shadow-dark)) !important;
   isolation: isolate;
 }
 
@@ -381,8 +361,8 @@ html.dark:not([data-lg-mode='tinted']) .a11y-glass-popover,
 html.dark[data-lg-mode='clear'] .a11y-glass-popover,
 html.dark[data-lg-mode='balanced'] .a11y-glass-popover,
 html.dark[data-lg-mode='tinted'] .a11y-glass-popover {
-  background: #1c1c1e !important;
-  background-color: #1c1c1e !important;
+  background: #000000 !important;
+  background-color: #000000 !important;
   border: 1px solid #2c2c2e !important;
   box-shadow: 0 16px 40px rgb(0 0 0 / 45%) !important;
   color: #f5f5f7 !important;
@@ -397,44 +377,66 @@ html.dark[data-lg-mode='clear'] #chatbot-widget {
   box-shadow: none !important;
 }
 
-html:not([data-lg-mode='tinted']) #chatbot-widget {
+/* Chatbot liquid glass in clear + balanced; solid only in tinted */
+html:is([data-lg-mode='clear'], [data-lg-mode='balanced']) #chatbot-widget {
   backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-panel)) !important;
   -webkit-backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-panel)) !important;
 }
 
-html:not([data-lg-mode='tinted']):not(.dark) #chatbot-widget {
+html:is([data-lg-mode='clear'], [data-lg-mode='balanced']):not(.dark) #chatbot-widget {
   background: rgb(255 255 255 / calc(56% + var(--lg-tint) * 36%)) !important;
   background-color: rgb(255 255 255 / calc(56% + var(--lg-tint) * 36%)) !important;
 }
 
-html.dark:not([data-lg-mode='tinted']) #chatbot-widget {
+html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced']) #chatbot-widget {
   background: rgb(0 0 0 / calc(52% + var(--lg-tint) * 40%)) !important;
   background-color: rgb(0 0 0 / calc(52% + var(--lg-tint) * 40%)) !important;
 }
 
+html[data-lg-mode='tinted']:not(.dark) #chatbot-widget {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+html.dark[data-lg-mode='tinted'] #chatbot-widget {
+  background: #000000 !important;
+  background-color: #000000 !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
 /* Projects controls */
-html:not([data-lg-mode='tinted']) #projects .proj-input-group,
-html:not([data-lg-mode='tinted']) #projects .proj-sort-native {
+html:is([data-lg-mode='clear'], [data-lg-mode='balanced']) #projects .proj-input-group,
+html:is([data-lg-mode='clear'], [data-lg-mode='balanced']) #projects .proj-sort-native {
   backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-control)) !important;
   -webkit-backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-control)) !important;
 }
 
-html:not([data-lg-mode='tinted']):not(.dark) #projects .proj-input-group,
-html:not([data-lg-mode='tinted']):not(.dark) #projects .proj-sort-native {
+html:is([data-lg-mode='clear'], [data-lg-mode='balanced']):not(.dark) #projects .proj-input-group,
+html:is([data-lg-mode='clear'], [data-lg-mode='balanced']):not(.dark) #projects .proj-sort-native {
   background: rgb(255 255 255 / calc(54% + var(--lg-tint) * 38%)) !important;
   background-color: rgb(255 255 255 / calc(54% + var(--lg-tint) * 38%)) !important;
 }
 
-html.dark:not([data-lg-mode='tinted']) #projects .proj-input-group,
-html.dark:not([data-lg-mode='tinted']) #projects .proj-sort-native {
+html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced']) #projects .proj-input-group,
+html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced']) #projects .proj-sort-native {
   background: rgb(0 0 0 / calc(50% + var(--lg-tint) * 42%)) !important;
   background-color: rgb(0 0 0 / calc(50% + var(--lg-tint) * 42%)) !important;
 }
 
-/* Page chrome: always solid white (light) / solid black (dark) — no ambient mesh */
+/* Page chrome — tinted solid product canvas; clear/balanced soft depth for glass */
 html:not(.dark) body,
-html:is([data-lg-mode='clear'], [data-lg-mode='balanced'], [data-lg-mode='tinted']):not(.dark)
-  body {
+html[data-lg-mode='tinted']:not(.dark) body {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
+  background-attachment: scroll !important;
+}
+
+/* Light clear/balanced: solid white page canvas (cards carry the glass) */
+html:is([data-lg-mode='clear'], [data-lg-mode='balanced']):not(.dark) body {
   background: #ffffff !important;
   background-color: #ffffff !important;
   background-image: none !important;
@@ -442,7 +444,15 @@ html:is([data-lg-mode='clear'], [data-lg-mode='balanced'], [data-lg-mode='tinted
 }
 
 html.dark body,
-html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced'], [data-lg-mode='tinted']) body {
+html.dark[data-lg-mode='tinted'] body {
+  background: #000000 !important;
+  background-color: #000000 !important;
+  background-image: none !important;
+  background-attachment: scroll !important;
+}
+
+/* Dark clear/balanced: solid black page canvas */
+html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced']) body {
   background: #000000 !important;
   background-color: #000000 !important;
   background-image: none !important;
@@ -470,8 +480,8 @@ html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced'], [data-lg-mode='t
   html.dark:not([data-lg-mode='tinted']) .a11y-toolbar__panel,
   html.dark:not([data-lg-mode='tinted']) .a11y-glass-popover,
   html.dark:not([data-lg-mode='tinted']) #chatbot-widget {
-    background: #1c1c1e !important;
-    background-color: #1c1c1e !important;
+    background: #000000 !important;
+    background-color: #000000 !important;
   }
 
   /* Never paint the a11y shell or full-screen share dialog */
@@ -518,8 +528,8 @@ html.dark[data-lg-mode='tinted'] .a11y-glass-popover,
 html.dark[data-lg-mode='tinted'] #chatbot-widget,
 html.dark[data-lg-mode='tinted']
   .lg-webgl-host:not(#global-nav):not(#chatbot-widget):not(.music-card-inner) {
-  background: #1c1c1e !important;
-  background-color: #1c1c1e !important;
+  background: #000000 !important;
+  background-color: #000000 !important;
 }
 
 /* A11y settings card never hosts WebGL (solid card parity mobile/desktop) */
@@ -624,10 +634,7 @@ html[data-lg-mode='tinted']:not(.dark)
     .experience-content,
     .education-card,
     .blog-card,
-    .contact-card,
     .newsletter-card,
-    .currently-card,
-    .calendar-card,
     .stat-card,
     .skill-card,
     .lg-glass-card,
@@ -652,10 +659,7 @@ html.dark[data-lg-mode='tinted']
     .experience-content,
     .education-card,
     .blog-card,
-    .contact-card,
     .newsletter-card,
-    .currently-card,
-    .calendar-card,
     .stat-card,
     .skill-card,
     .lg-glass-card,
@@ -669,4 +673,899 @@ html.dark[data-lg-mode='tinted']
   -webkit-backdrop-filter: none !important;
   border: 1px solid #2c2c2e !important;
   box-shadow: none !important;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   TINTED ONLY — solid white / solid black (max readability)
+   Clear + balanced keep liquid glass from rules above.
+   ════════════════════════════════════════════════════════════════ */
+
+html.dark[data-lg-mode='tinted'],
+html.dark[data-lg-mode='tinted'] body,
+html.dark[data-lg-mode='tinted'] main,
+html.dark[data-lg-mode='tinted'] #main-content,
+html.dark[data-lg-mode='tinted'] footer {
+  background: #000000 !important;
+  background-color: #000000 !important;
+  background-image: none !important;
+}
+
+html[data-lg-mode='tinted']:not(.dark)
+  body
+  :is(
+    .card,
+    .experience-card,
+    .experience-content,
+    .education-card,
+    .education-content,
+    .stat-card,
+    .blog-card,
+    .publication-card,
+    .award-card,
+    .recommendation-card,
+    .certification-card,
+    .showcase-project-card,
+    .about-highlight-card,
+    .about-text-card,
+    .about-card,
+    .contact-card,
+    .contact-form-card,
+    .newsletter-card,
+    .support-donation-card,
+    .currently-card,
+    .skill-badge,
+    .skill-category,
+    .health-widget-container,
+    .health-item,
+    .timeline-content,
+    .monitor-summary-card,
+    .ops-card,
+    .endpoint-card,
+    #blog .blog-card,
+    #blog .newsletter-card,
+    #projects #github-projects-container .showcase-project-card,
+    #projects #github-projects-container article.showcase-project-card,
+    #skills .skill-category,
+    #skills-container .skill-category,
+    #skills-container .skill-badge,
+    #chatbot-widget
+  ) {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+html.dark[data-lg-mode='tinted']
+  body
+  :is(
+    .card,
+    .experience-card,
+    .experience-content,
+    .education-card,
+    .education-content,
+    .stat-card,
+    .blog-card,
+    .publication-card,
+    .award-card,
+    .recommendation-card,
+    .certification-card,
+    .showcase-project-card,
+    .about-highlight-card,
+    .about-text-card,
+    .about-card,
+    .contact-card,
+    .contact-form-card,
+    .newsletter-card,
+    .support-donation-card,
+    .currently-card,
+    .skill-badge,
+    .skill-category,
+    .health-widget-container,
+    .health-item,
+    .timeline-content,
+    .monitor-summary-card,
+    .ops-card,
+    .endpoint-card,
+    #blog .blog-card,
+    #blog .newsletter-card,
+    #projects #github-projects-container .showcase-project-card,
+    #projects #github-projects-container article.showcase-project-card,
+    #skills .skill-category,
+    #skills-container .skill-category,
+    #skills-container .skill-badge,
+    #chatbot-widget
+  ) {
+  background: #000000 !important;
+  background-color: #000000 !important;
+  background-image: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* ─── Clear liquid glass: extra surfaces (contact, skills badges, controls) ─── */
+html:is([data-lg-mode='clear'], [data-lg-mode='balanced'])
+  body
+  :is(
+    .contact-card,
+    .support-donation-card,
+    .currently-card,
+    .merged-health-currently-card,
+    .calendar-wrapper-clean,
+    .reminder-card,
+    .health-widget-container,
+    .skill-badge,
+    #skills-container .skill-badge,
+    #skills-container .skill-scroll-wrapper .skill-badge,
+    .proj-filter-btn,
+    .project-lens-chip,
+    .currently-tab,
+    .ios-widget-wrapper
+  ) {
+  backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-card)) !important;
+  -webkit-backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-card)) !important;
+}
+
+html:is([data-lg-mode='clear'], [data-lg-mode='balanced']):not(.dark)
+  body
+  :is(
+    .contact-card,
+    .support-donation-card,
+    .currently-card,
+    .merged-health-currently-card,
+    .calendar-wrapper-clean,
+    .reminder-card,
+    .health-widget-container,
+    .skill-badge,
+    #skills-container .skill-badge,
+    .proj-filter-btn:not(.is-active),
+    .project-lens-chip,
+    .currently-tab:not(.active),
+    .ios-widget-wrapper
+  ) {
+  background:
+    linear-gradient(
+      165deg,
+      rgb(255 255 255 / var(--lg-card-highlight-light)) 0%,
+      rgb(255 255 255 / 0%) 42%
+    ),
+    rgb(255 255 255 / var(--lg-card-light-alpha)) !important;
+  background-color: rgb(255 255 255 / var(--lg-card-light-alpha)) !important;
+  border: 1px solid var(--lg-hairline-light, rgb(0 0 0 / 10%)) !important;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / var(--lg-specular-light)),
+    0 1px 2px rgb(0 0 0 / 4%),
+    0 10px 28px rgb(0 0 0 / var(--lg-card-shadow-light)) !important;
+}
+
+html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced'])
+  body
+  :is(
+    .contact-card,
+    .support-donation-card,
+    .currently-card,
+    .merged-health-currently-card,
+    .calendar-wrapper-clean,
+    .reminder-card,
+    .health-widget-container,
+    .skill-badge,
+    #skills-container .skill-badge,
+    .proj-filter-btn:not(.is-active),
+    .project-lens-chip,
+    .currently-tab:not(.active),
+    .ios-widget-wrapper
+  ) {
+  background:
+    linear-gradient(
+      165deg,
+      rgb(255 255 255 / var(--lg-card-highlight-dark)) 0%,
+      rgb(255 255 255 / 0%) 40%
+    ),
+    rgb(0 0 0 / var(--lg-card-dark-alpha)) !important;
+  background-color: rgb(0 0 0 / var(--lg-card-dark-alpha)) !important;
+  border: 1px solid var(--lg-hairline-dark, rgb(255 255 255 / 14%)) !important;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / var(--lg-specular-dark)),
+    0 12px 40px rgb(0 0 0 / var(--lg-card-shadow-dark)) !important;
+}
+
+/* Secondary control buttons — glass in clear/balanced (primary CTAs stay solid blue) */
+html:is([data-lg-mode='clear'], [data-lg-mode='balanced']):not(.dark)
+  body
+  :is(
+    .hero-cta-secondary,
+    .section-preview-btn,
+    .about-tab-btn,
+    .proj-sort-native,
+    .blog-filter-btn:not(.is-active)
+  ) {
+  background: rgb(255 255 255 / var(--lg-card-light-alpha)) !important;
+  background-color: rgb(255 255 255 / var(--lg-card-light-alpha)) !important;
+  backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-control)) !important;
+  -webkit-backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-control)) !important;
+  border: 1px solid var(--lg-hairline-light, rgb(0 0 0 / 10%)) !important;
+  color: #1d1d1f !important;
+  -webkit-text-fill-color: #1d1d1f !important;
+}
+
+html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced'])
+  body
+  :is(
+    .hero-cta-secondary,
+    .section-preview-btn,
+    .about-tab-btn,
+    .proj-sort-native,
+    .blog-filter-btn:not(.is-active)
+  ) {
+  background: rgb(0 0 0 / var(--lg-card-dark-alpha)) !important;
+  background-color: rgb(0 0 0 / var(--lg-card-dark-alpha)) !important;
+  backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-control)) !important;
+  -webkit-backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-control)) !important;
+  border: 1px solid var(--lg-hairline-dark, rgb(255 255 255 / 14%)) !important;
+  color: #f5f5f7 !important;
+  -webkit-text-fill-color: #f5f5f7 !important;
+}
+
+/* DUAL-ID CONTACT CLEAR GLASS — beats theme-solid dual-ID solid fills */
+html:is([data-lg-mode='clear'], [data-lg-mode='balanced']):not(.dark)
+  body
+  #main-content
+  #contact
+  :is(
+    .contact-card,
+    .contact-card.contact-info-all,
+    .support-donation-card,
+    .currently-card,
+    .merged-health-currently-card,
+    .calendar-wrapper-clean,
+    .ios-widget-wrapper,
+    .reminder-card,
+    .health-widget-container
+  ) {
+  background:
+    linear-gradient(
+      165deg,
+      rgb(255 255 255 / var(--lg-card-highlight-light)) 0%,
+      rgb(255 255 255 / 0%) 42%
+    ),
+    rgb(255 255 255 / var(--lg-card-light-alpha)) !important;
+  background-color: rgb(255 255 255 / var(--lg-card-light-alpha)) !important;
+  backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-card)) !important;
+  -webkit-backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-card)) !important;
+  border-color: var(--lg-hairline-light, rgb(0 0 0 / 10%)) !important;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / var(--lg-specular-light)),
+    0 1px 2px rgb(0 0 0 / 4%),
+    0 10px 28px rgb(0 0 0 / var(--lg-card-shadow-light)) !important;
+}
+
+html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced'])
+  body
+  #main-content
+  #contact
+  :is(
+    .contact-card,
+    .contact-card.contact-info-all,
+    .support-donation-card,
+    .currently-card,
+    .merged-health-currently-card,
+    .calendar-wrapper-clean,
+    .ios-widget-wrapper,
+    .reminder-card,
+    .health-widget-container
+  ) {
+  background:
+    linear-gradient(
+      165deg,
+      rgb(255 255 255 / var(--lg-card-highlight-dark)) 0%,
+      rgb(255 255 255 / 0%) 40%
+    ),
+    rgb(0 0 0 / var(--lg-card-dark-alpha)) !important;
+  background-color: rgb(0 0 0 / var(--lg-card-dark-alpha)) !important;
+  backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-card)) !important;
+  -webkit-backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-card)) !important;
+  border-color: rgb(255 255 255 / var(--lg-border-dark)) !important;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / var(--lg-specular-dark)),
+    0 12px 40px rgb(0 0 0 / var(--lg-card-shadow-dark)) !important;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   CLEAR POLISH — product parity with tinted
+   Clear/balanced should feel as premium as tinted solid — denser glass,
+   readable type, soft product canvas, continuous corners.
+   ════════════════════════════════════════════════════════════════ */
+html:is([data-lg-mode='clear'], [data-lg-mode='balanced']):not(.dark) {
+  --theme-page-bg: #ffffff;
+  --bg-primary: #ffffff;
+  --bg-secondary: #ffffff;
+}
+html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced']) {
+  --theme-page-bg: #000000;
+  --bg-primary: #000000;
+  --bg-secondary: #000000;
+}
+
+/* Section shells: transparent so page mesh shows; cards float above */
+html:is([data-lg-mode='clear'], [data-lg-mode='balanced']):not(.dark)
+  :is(
+    main,
+    #main-content,
+    section,
+    .section,
+    #about,
+    #skills,
+    #experience,
+    #projects,
+    #engineering,
+    #education,
+    #publications,
+    #awards,
+    #recommendations,
+    #certifications,
+    #blog,
+    #contact,
+    #home,
+    #game,
+    #debug-runner-section
+  ) {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+}
+
+html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced'])
+  :is(
+    main,
+    #main-content,
+    section,
+    .section,
+    #about,
+    #skills,
+    #experience,
+    #projects,
+    #engineering,
+    #education,
+    #publications,
+    #awards,
+    #recommendations,
+    #certifications,
+    #blog,
+    #contact,
+    #home,
+    #game,
+    #debug-runner-section
+  ) {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+}
+
+/* html root follows body canvas */
+html:is([data-lg-mode='clear'], [data-lg-mode='balanced']):not(.dark) {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
+}
+
+html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced']) {
+  background: #000000 !important;
+  background-color: #000000 !important;
+}
+
+/* Card type — SF Pro contrast on glass (matches tinted readability) */
+html:is([data-lg-mode='clear'], [data-lg-mode='balanced']):not(.dark)
+  :is(
+    .experience-content,
+    .blog-card,
+    .publication-card,
+    .showcase-project-card,
+    .about-text-card,
+    .about-highlight-card,
+    .skill-category,
+    .contact-card,
+    .newsletter-card,
+    .award-card,
+    .certification-card,
+    .education-card,
+    .stat-card
+  ) {
+  color: #1d1d1f !important;
+  border-radius: 22px !important;
+}
+
+html:is([data-lg-mode='clear'], [data-lg-mode='balanced']):not(.dark)
+  :is(
+    .experience-content,
+    .blog-card,
+    .publication-card,
+    .showcase-project-card,
+    .about-text-card,
+    .skill-category,
+    .contact-card,
+    .newsletter-card
+  )
+  :is(h2, h3, h4, .card-title, .blog-title, .project-title) {
+  color: #1d1d1f !important;
+  -webkit-text-fill-color: #1d1d1f !important;
+}
+
+html:is([data-lg-mode='clear'], [data-lg-mode='balanced']):not(.dark)
+  :is(
+    .experience-content,
+    .blog-card,
+    .publication-card,
+    .showcase-project-card,
+    .about-text-card,
+    .skill-category,
+    .contact-card
+  )
+  :is(p, .card-description, .blog-excerpt, .project-description) {
+  color: #6e6e73 !important;
+}
+
+html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced'])
+  :is(
+    .experience-content,
+    .blog-card,
+    .publication-card,
+    .showcase-project-card,
+    .about-text-card,
+    .about-highlight-card,
+    .skill-category,
+    .contact-card,
+    .newsletter-card,
+    .award-card,
+    .certification-card,
+    .education-card,
+    .stat-card
+  ) {
+  color: #f5f5f7 !important;
+  border-radius: 22px !important;
+}
+
+html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced'])
+  :is(
+    .experience-content,
+    .blog-card,
+    .publication-card,
+    .showcase-project-card,
+    .about-text-card,
+    .skill-category,
+    .contact-card,
+    .newsletter-card
+  )
+  :is(h2, h3, h4, .card-title, .blog-title, .project-title) {
+  color: #f5f5f7 !important;
+  -webkit-text-fill-color: #f5f5f7 !important;
+}
+
+html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced'])
+  :is(
+    .experience-content,
+    .blog-card,
+    .publication-card,
+    .showcase-project-card,
+    .about-text-card,
+    .skill-category,
+    .contact-card
+  )
+  :is(p, .card-description, .blog-excerpt, .project-description) {
+  color: #a1a1a6 !important;
+}
+
+/* Clear contact dual-ID shells: elevated dark glass fill */
+html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced'])
+  body
+  #main-content
+  #contact
+  :is(
+    .contact-card,
+    .contact-card.contact-info-all,
+    .support-donation-card,
+    .currently-card,
+    .merged-health-currently-card,
+    .calendar-wrapper-clean,
+    .ios-widget-wrapper,
+    .reminder-card,
+    .health-widget-container
+  ) {
+  background:
+    linear-gradient(
+      165deg,
+      rgb(255 255 255 / var(--lg-card-highlight-dark, 14%)) 0%,
+      rgb(255 255 255 / 0%) 40%
+    ),
+    rgb(0 0 0 / var(--lg-card-dark-alpha, 64%)) !important;
+  background-color: rgb(0 0 0 / var(--lg-card-dark-alpha, 64%)) !important;
+}
+
+/* Footer stays solid on clear so layout anchors (matches tinted structure) */
+html:is([data-lg-mode='clear'], [data-lg-mode='balanced']):not(.dark) footer {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
+  border-top: 1px solid rgb(0 0 0 / 8%) !important;
+}
+
+html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced']) footer {
+  background: #000000 !important;
+  background-color: #000000 !important;
+  border-top: 1px solid rgb(255 255 255 / 10%) !important;
+}
+
+/* Subpage bodies (systems/monitor/travel/uses) — same canvas as homepage clear */
+html:is([data-lg-mode='clear'], [data-lg-mode='balanced']):not(.dark)
+  body:is(.systems-page, .monitor-page, .travel-body, .uses-page, .travel-page) {
+  background-color: #ffffff !important;
+}
+
+html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced'])
+  body:is(.systems-page, .monitor-page, .travel-body, .uses-page, .travel-page) {
+  background-color: #000000 !important;
+}
+
+/* SECTION CANVAS UNLOCK — beat theme-solid section solid fills in clear/balanced */
+html:is([data-lg-mode='clear'], [data-lg-mode='balanced']):not(.dark) body main > section,
+html:is([data-lg-mode='clear'], [data-lg-mode='balanced']):not(.dark) body #main-content > section,
+html:is([data-lg-mode='clear'], [data-lg-mode='balanced']):not(.dark)
+  body
+  :is(
+    #about,
+    #skills,
+    #experience,
+    #projects,
+    #engineering,
+    #education,
+    #publications,
+    #awards,
+    #recommendations,
+    #certifications,
+    #blog,
+    #contact,
+    #home,
+    #game,
+    #debug-runner-section
+  ) {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+}
+
+html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced']) body main > section,
+html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced']) body #main-content > section,
+html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced'])
+  body
+  :is(
+    #about,
+    #skills,
+    #experience,
+    #projects,
+    #engineering,
+    #education,
+    #publications,
+    #awards,
+    #recommendations,
+    #certifications,
+    #blog,
+    #contact,
+    #home,
+    #game,
+    #debug-runner-section
+  ) {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+}
+
+/* Section titles keep contrast on soft canvas */
+html:is([data-lg-mode='clear'], [data-lg-mode='balanced']):not(.dark) body section h2,
+html:is([data-lg-mode='clear'], [data-lg-mode='balanced']):not(.dark) body .section-subtitle {
+  color: #1d1d1f !important;
+}
+html:is([data-lg-mode='clear'], [data-lg-mode='balanced']):not(.dark) body .section-subtitle {
+  color: #6e6e73 !important;
+}
+html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced']) body section h2 {
+  color: #f5f5f7 !important;
+}
+html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced']) body .section-subtitle {
+  color: #a1a1a6 !important;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   CLEAR THEME FINAL — light/dark consistency
+   Last-word polish so clear light/dark match tinted structure:
+   hairline borders, type, hover, chrome density, no white-on-white.
+   ════════════════════════════════════════════════════════════════ */
+
+:root {
+  --lg-hairline-light: rgb(0 0 0 / 10%);
+  --lg-hairline-dark: rgb(255 255 255 / 14%);
+}
+
+/* Light clear cards — hairline + type parity with tinted */
+html:is([data-lg-mode='clear'], [data-lg-mode='balanced']):not(.dark)
+  body
+  :is(
+    .card,
+    .experience-content,
+    .education-card,
+    .education-content,
+    .stat-card,
+    .blog-card,
+    .publication-card,
+    .award-card,
+    .recommendation-card,
+    .certification-card,
+    .showcase-project-card,
+    .about-text-card,
+    .about-highlight-card,
+    .contact-card,
+    .newsletter-card,
+    .support-donation-card,
+    .currently-card,
+    .skill-category,
+    .skill-badge,
+    .timeline-content,
+    .monitor-summary-card,
+    .ops-card,
+    .endpoint-card,
+    .travel-stop,
+    .place-guide-card,
+    .systems-evidence-card,
+    .systems-bento-tile,
+    .eng-showcase-card,
+    #blog .blog-card,
+    #projects #github-projects-container .showcase-project-card,
+    #projects #github-projects-container article.showcase-project-card,
+    #skills .skill-category,
+    #skills-container .skill-category
+  ) {
+  border-color: var(--lg-hairline-light, rgb(0 0 0 / 10%)) !important;
+  color: #1d1d1f !important;
+  -webkit-font-smoothing: antialiased;
+}
+
+html:is([data-lg-mode='clear'], [data-lg-mode='balanced']):not(.dark)
+  body
+  :is(
+    .experience-content,
+    .blog-card,
+    .publication-card,
+    .showcase-project-card,
+    .about-text-card,
+    .skill-category,
+    .contact-card,
+    .newsletter-card,
+    .award-card,
+    .certification-card,
+    .education-card
+  )
+  :is(h2, h3, h4, .card-title, .blog-title, .project-title, .publication-title) {
+  color: #1d1d1f !important;
+  -webkit-text-fill-color: #1d1d1f !important;
+}
+
+html:is([data-lg-mode='clear'], [data-lg-mode='balanced']):not(.dark)
+  body
+  :is(
+    .experience-content,
+    .blog-card,
+    .publication-card,
+    .showcase-project-card,
+    .about-text-card,
+    .skill-category,
+    .contact-card,
+    .newsletter-card
+  )
+  :is(p, .card-description, .blog-excerpt, .project-description, li, span:not([class*='icon'])) {
+  /* don't force every span — only prose helpers above are safe enough; skip broad span */
+}
+
+html:is([data-lg-mode='clear'], [data-lg-mode='balanced']):not(.dark)
+  body
+  :is(
+    .experience-content,
+    .blog-card,
+    .publication-card,
+    .showcase-project-card,
+    .about-text-card,
+    .skill-category,
+    .contact-card
+  )
+  :is(p, .card-description, .blog-excerpt, .project-description) {
+  color: #6e6e73 !important;
+}
+
+/* Dark clear cards — elevated glass + hairline parity */
+html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced'])
+  body
+  :is(
+    .card,
+    .experience-content,
+    .education-card,
+    .education-content,
+    .stat-card,
+    .blog-card,
+    .publication-card,
+    .award-card,
+    .recommendation-card,
+    .certification-card,
+    .showcase-project-card,
+    .about-text-card,
+    .about-highlight-card,
+    .contact-card,
+    .newsletter-card,
+    .support-donation-card,
+    .currently-card,
+    .skill-category,
+    .skill-badge,
+    .timeline-content,
+    .monitor-summary-card,
+    .ops-card,
+    .endpoint-card,
+    .travel-stop,
+    .place-guide-card,
+    .systems-evidence-card,
+    .systems-bento-tile,
+    .eng-showcase-card,
+    #blog .blog-card,
+    #projects #github-projects-container .showcase-project-card,
+    #projects #github-projects-container article.showcase-project-card,
+    #skills .skill-category,
+    #skills-container .skill-category
+  ) {
+  border-color: var(--lg-hairline-dark, rgb(255 255 255 / 14%)) !important;
+  color: #f5f5f7 !important;
+  -webkit-font-smoothing: antialiased;
+}
+
+html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced'])
+  body
+  :is(
+    .experience-content,
+    .blog-card,
+    .publication-card,
+    .showcase-project-card,
+    .about-text-card,
+    .skill-category,
+    .contact-card,
+    .newsletter-card,
+    .award-card,
+    .certification-card,
+    .education-card
+  )
+  :is(h2, h3, h4, .card-title, .blog-title, .project-title, .publication-title) {
+  color: #f5f5f7 !important;
+  -webkit-text-fill-color: #f5f5f7 !important;
+}
+
+html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced'])
+  body
+  :is(
+    .experience-content,
+    .blog-card,
+    .publication-card,
+    .showcase-project-card,
+    .about-text-card,
+    .skill-category,
+    .contact-card
+  )
+  :is(p, .card-description, .blog-excerpt, .project-description) {
+  color: #a1a1a6 !important;
+}
+
+/* Hover — same system blue as tinted (clear stays glassy) */
+@media (hover: hover) and (pointer: fine) {
+  html:is([data-lg-mode='clear'], [data-lg-mode='balanced']):not(.dark)
+    body
+    :is(
+      .experience-content,
+      .blog-card,
+      .publication-card,
+      .showcase-project-card,
+      .about-text-card,
+      .skill-category,
+      .contact-card,
+      .newsletter-card,
+      .award-card,
+      .certification-card,
+      #projects #github-projects-container article.showcase-project-card
+    ):hover {
+    border-color: #0071e3 !important;
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 80%),
+      0 2px 8px rgb(0 113 227 / 10%),
+      0 14px 36px rgb(0 0 0 / 8%) !important;
+  }
+
+  html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced'])
+    body
+    :is(
+      .experience-content,
+      .blog-card,
+      .publication-card,
+      .showcase-project-card,
+      .about-text-card,
+      .skill-category,
+      .contact-card,
+      .newsletter-card,
+      .award-card,
+      .certification-card,
+      #projects #github-projects-container article.showcase-project-card
+    ):hover {
+    border-color: #0a84ff !important;
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 12%),
+      0 0 0 1px rgb(10 132 255 / 16%),
+      0 16px 44px rgb(0 0 0 / 55%) !important;
+  }
+}
+
+/* Chatbot glass density aligned with cards */
+html:is([data-lg-mode='clear'], [data-lg-mode='balanced']):not(.dark) #chatbot-widget {
+  background: rgb(255 255 255 / var(--lg-card-light-alpha, 72%)) !important;
+  background-color: rgb(255 255 255 / var(--lg-card-light-alpha, 72%)) !important;
+  border: 1px solid var(--lg-hairline-light, rgb(0 0 0 / 10%)) !important;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 70%),
+    0 12px 40px rgb(0 0 0 / 10%) !important;
+}
+
+html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced']) #chatbot-widget {
+  background: rgb(0 0 0 / var(--lg-card-dark-alpha, 70%)) !important;
+  background-color: rgb(0 0 0 / var(--lg-card-dark-alpha, 70%)) !important;
+  border: 1px solid var(--lg-hairline-dark, rgb(255 255 255 / 14%)) !important;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 10%),
+    0 14px 44px rgb(0 0 0 / 50%) !important;
+}
+
+/* Contact dual-ID shells: same hairlines */
+html:is([data-lg-mode='clear'], [data-lg-mode='balanced']):not(.dark)
+  body
+  #main-content
+  #contact
+  :is(
+    .contact-card,
+    .support-donation-card,
+    .currently-card,
+    .calendar-wrapper-clean,
+    .reminder-card,
+    .health-widget-container
+  ) {
+  border-color: var(--lg-hairline-light, rgb(0 0 0 / 10%)) !important;
+  background-color: rgb(255 255 255 / var(--lg-card-light-alpha, 72%)) !important;
+}
+
+html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced'])
+  body
+  #main-content
+  #contact
+  :is(
+    .contact-card,
+    .support-donation-card,
+    .currently-card,
+    .calendar-wrapper-clean,
+    .reminder-card,
+    .health-widget-container
+  ) {
+  border-color: var(--lg-hairline-dark, rgb(255 255 255 / 14%)) !important;
+  background-color: rgb(0 0 0 / var(--lg-card-dark-alpha, 70%)) !important;
+}
+
+/* Project cards — force SF Pro text colors (kills slate/gray drift) */
+html:is([data-lg-mode='clear'], [data-lg-mode='balanced']):not(.dark)
+  body
+  #projects
+  :is(.showcase-project-card, article.showcase-project-card) {
+  color: #1d1d1f !important;
+}
+html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced'])
+  body
+  #projects
+  :is(.showcase-project-card, article.showcase-project-card) {
+  color: #f5f5f7 !important;
 }

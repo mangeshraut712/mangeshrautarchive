@@ -4,20 +4,13 @@
 
 import { formatDeployLighthouseGate, WEBMCP_TOOL_COUNT } from '../data/portfolio-public-data.js';
 import { buildDonutSegments } from '../utils/monitor-metrics.js';
+import { escapeHtml } from '../utils/escape-html.js';
 import {
   productionMetricGroups,
   openSourceActivity,
   productionSnapshot,
   staticBenchmarks,
 } from './engineering-showcase-data.js';
-
-function escapeHtml(value) {
-  return String(value ?? '')
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;');
-}
 
 export function renderSparklineSvg(points, { width = 280, height = 88, className = '' } = {}) {
   const values = (points || [])

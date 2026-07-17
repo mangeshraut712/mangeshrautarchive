@@ -486,17 +486,15 @@ class AnalyticsTrackRequest(BaseModel):
 
 # Helper Functions
 def get_client_ip(request: Request) -> str:
-    """Resolve client IP for rate limiting without trusting spoofed leftmost XFF.
+    """Resolve client IP for rate limiting without trusting spoofed client headers.
 
     Prefer platform-provided identity (Vercel), then rightmost X-Forwarded-For hop
     (closest to the edge that appended it), then the direct socket peer.
+    Never honor bare X-Real-IP — clients can set it to rotate identity.
     """
     vercel = (request.headers.get("x-vercel-forwarded-for") or "").split(",")[0].strip()
     if vercel:
         return vercel
-    real_ip = (request.headers.get("x-real-ip") or "").strip()
-    if real_ip:
-        return real_ip
     forwarded = request.headers.get("x-forwarded-for") or request.headers.get("X-Forwarded-For")
     if forwarded:
         parts = [part.strip() for part in forwarded.split(",") if part.strip()]

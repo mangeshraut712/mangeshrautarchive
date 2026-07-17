@@ -3,7 +3,7 @@ import json
 import logging
 from typing import Optional
 from urllib.parse import quote
-from fastapi import APIRouter, HTTPException, BackgroundTasks
+from fastapi import APIRouter, HTTPException, BackgroundTasks, Request
 from fastapi.responses import JSONResponse
 
 import httpx
@@ -22,8 +22,16 @@ from api.config import (
     POSTER_CACHE_DURATION,
     artwork_cache,
     ARTWORK_CACHE_DURATION,
+    check_rate_limit,
+    get_client_ip,
 )
 from api.monitoring import system_monitor
+
+
+def _enforce_media_rate_limit(request: Request, bucket: str) -> None:
+    client_ip = get_client_ip(request)
+    if not check_rate_limit(f"{bucket}:{client_ip}"):
+        raise HTTPException(status_code=429, detail="Rate limit exceeded. Please try again later.")
 
 router = APIRouter()
 LASTFM_STALE_TTL = 5 * 60
@@ -333,8 +341,11 @@ async def fetch_itunes_artwork(search_term: str) -> str:
 
 
 @router.get("/api/music/artwork")
-async def get_music_artwork(track: str = "", artist: str = "", term: str = ""):
+async def get_music_artwork(
+    request: Request, track: str = "", artist: str = "", term: str = ""
+):
     """Proxy iTunes artwork lookup for the Last.fm hero card."""
+    _enforce_media_rate_limit(request, "media-artwork")
     search_term = term.strip() or f"{track.strip()} {artist.strip()}".strip()
     if not search_term:
         raise HTTPException(status_code=400, detail="track/artist or term is required")
@@ -354,6 +365,7 @@ async def get_music_artwork(track: str = "", artist: str = "", term: str = ""):
 
 @router.get("/api/music/recent")
 async def get_recent_music(
+    request: Request,
     background_tasks: BackgroundTasks,
     user: str = "mbr63",
     limit: int = 10,
@@ -362,6 +374,7 @@ async def get_recent_music(
     Proxy endpoint for Last.fm listening data.
     Forces UTF-8 and returns structured JSON to avoid frontend fetch issues.
     """
+    _enforce_media_rate_limit(request, "media-music")
     user = user.strip() or LASTFM_DEFAULT_USERNAME
     limit = max(1, min(limit, 20))
     cache_key = f"{user}:{limit}"
@@ -463,12 +476,16 @@ async def get_recent_music(
 
 
 @router.get("/api/posters/movie")
-async def get_movie_poster(title: str, media_type: str = "movie"):
+async def get_movie_poster(request: Request, title: str, media_type: str = "movie"):
     """Get movie/TV poster from TMDB"""
+    _enforce_media_rate_limit(request, "media-poster")
     if not title.strip():
         raise HTTPException(status_code=400, detail="Title is required")
+    media_type_l = (media_type or "movie").strip().lower()
+    if media_type_l not in ("movie", "tv"):
+        raise HTTPException(status_code=400, detail="media_type must be movie or tv")
 
-    poster_url = await fetch_tmdb_poster(title, media_type)
+    poster_url = await fetch_tmdb_poster(title, media_type_l)
     if not poster_url:
         return {"poster_url": "", "source": "tmdb", "cached": False}
 
@@ -477,13 +494,14 @@ async def get_movie_poster(title: str, media_type: str = "movie"):
         "source": "tmdb",
         "cached": True,
         "title": title,
-        "media_type": media_type,
+        "media_type": media_type_l,
     }
 
 
 @router.get("/api/posters/book")
-async def get_book_cover(title: str, author: str = ""):
+async def get_book_cover(request: Request, title: str, author: str = ""):
     """Get book cover from Google Books or Open Library"""
+    _enforce_media_rate_limit(request, "media-poster")
     if not title.strip():
         raise HTTPException(status_code=400, detail="Title is required")
 
@@ -504,22 +522,32 @@ async def get_book_cover(title: str, author: str = ""):
 
 
 @router.get("/api/posters/batch")
-async def get_batch_posters(items: str):
+async def get_batch_posters(request: Request, items: str):
     """Get posters for multiple items at once"""
+    _enforce_media_rate_limit(request, "media-poster-batch")
     try:
         data = json.loads(items)
     except json.JSONDecodeError:
         raise HTTPException(status_code=400, detail="Invalid JSON in items parameter")
 
+    if not isinstance(data, list):
+        raise HTTPException(status_code=400, detail="items must be a JSON array")
+    # Bound outbound fan-out (third-party quota protection)
+    if len(data) > 20:
+        raise HTTPException(status_code=400, detail="Batch size limited to 20 items")
+
     results = []
-    for item in data:
-        media_type = item.get("type", "").lower()
+    for item in data[:20]:
+        if not isinstance(item, dict):
+            results.append({"id": "", "poster_url": "", "source": "unknown", "cached": False})
+            continue
+        media_type = str(item.get("type", "")).lower()
         title = item.get("title", "")
         author = item.get("author", "")
 
         if media_type in ["movie", "tv", "series"]:
             poster_url = await fetch_tmdb_poster(
-                title, "tv" if media_type == "tv" else "movie"
+                title, "tv" if media_type in ("tv", "series") else "movie"
             )
             source = "tmdb"
         elif media_type == "book":

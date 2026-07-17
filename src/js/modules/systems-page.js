@@ -26,14 +26,7 @@ import {
 } from './systems-viz.js';
 import { isPerformanceAudit } from '../utils/perf-audit.js';
 import { blogPosts } from './blog-data.js';
-
-function escapeHtml(value) {
-  return String(value ?? '')
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;');
-}
+import { escapeHtml } from '../utils/escape-html.js';
 
 function bindCardPress() {
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -142,22 +135,48 @@ function initArchitectureTabs() {
   const panels = document.querySelectorAll('[data-arch-panel]');
   if (!root || !tabs.length) return;
 
+  const tabList = Array.from(tabs);
+  const panelIdFor = tabId => {
+    const panel = Array.from(panels).find(p => p.dataset.archPanel === tabId);
+    if (panel?.id) return panel.id;
+    return `architecture-${tabId}`;
+  };
   const activate = id => {
     tabs.forEach(tab => {
       const active = tab.dataset.archTab === id;
       tab.classList.toggle('is-active', active);
       tab.setAttribute('aria-selected', active ? 'true' : 'false');
+      tab.setAttribute('tabindex', active ? '0' : '-1');
+      if (!tab.getAttribute('role')) tab.setAttribute('role', 'tab');
+      tab.setAttribute('aria-controls', panelIdFor(tab.dataset.archTab));
     });
     panels.forEach(panel => {
       const active = panel.dataset.archPanel === id;
       panel.classList.toggle('is-active', active);
       panel.hidden = !active;
+      if (!panel.id) panel.id = `architecture-${panel.dataset.archPanel}`;
       if (active) remountArchPanel(id, cachedReachData);
     });
   };
 
-  tabs.forEach(tab => {
+  tabs.forEach((tab, index) => {
     tab.addEventListener('click', () => activate(tab.dataset.archTab));
+    tab.addEventListener('keydown', e => {
+      let next = -1;
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+        next = (index + 1) % tabList.length;
+      } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+        next = (index - 1 + tabList.length) % tabList.length;
+      } else if (e.key === 'Home') {
+        next = 0;
+      } else if (e.key === 'End') {
+        next = tabList.length - 1;
+      }
+      if (next < 0) return;
+      e.preventDefault();
+      activate(tabList[next].dataset.archTab);
+      tabList[next].focus();
+    });
   });
 
   activate(tabs[0]?.dataset.archTab || 'dual-host');

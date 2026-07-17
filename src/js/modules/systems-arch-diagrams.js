@@ -278,7 +278,12 @@ export function remountArchPanel(panelId, analyticsData) {
     if (render) {
       const svg = render();
       const caption = DIAGRAM_CAPTIONS[panelId] || '';
-      host.innerHTML = `${svg}<p class="systems-arch-caption">${caption}</p>`;
+      host.replaceChildren();
+      host.insertAdjacentHTML('beforeend', svg);
+      const p = document.createElement('p');
+      p.className = 'systems-arch-caption';
+      p.textContent = caption;
+      host.appendChild(p);
     }
   }
   animateArchBars(host);
@@ -298,7 +303,12 @@ export function mountArchitectureDiagrams(analyticsData) {
     if (!host) return;
     const svg = typeof render === 'function' ? render() : render;
     const caption = DIAGRAM_CAPTIONS[id] || '';
-    host.innerHTML = `${svg}<p class="systems-arch-caption">${caption}</p>`;
+    host.replaceChildren();
+    host.insertAdjacentHTML('beforeend', svg);
+    const p = document.createElement('p');
+    p.className = 'systems-arch-caption';
+    p.textContent = caption;
+    host.appendChild(p);
     animateArchBars(host);
   });
 }

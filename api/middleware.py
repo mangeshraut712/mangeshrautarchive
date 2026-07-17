@@ -30,13 +30,19 @@ class MonitoringMiddleware(BaseHTTPMiddleware):
             if self.monitor is None:
                 return response
 
-            # Extract user agent and client IP
+            # Extract user agent and client IP (same trust model as rate limiting)
             user_agent = request.headers.get("user-agent", "unknown")
-            forwarded = request.headers.get("x-forwarded-for")
-            if forwarded:
-                client_ip = forwarded.split(",")[0].strip()
-            else:
-                client_ip = request.client.host if request.client else "unknown"
+            try:
+                from api.config import get_client_ip
+
+                client_ip = get_client_ip(request)
+            except Exception:
+                forwarded = request.headers.get("x-forwarded-for")
+                if forwarded:
+                    parts = [p.strip() for p in forwarded.split(",") if p.strip()]
+                    client_ip = parts[-1] if parts else "unknown"
+                else:
+                    client_ip = request.client.host if request.client else "unknown"
 
             # Record metrics
             self.monitor.record_request(

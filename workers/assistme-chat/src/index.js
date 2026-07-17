@@ -36,18 +36,31 @@ function corsHeaders(origin, allowed) {
     .split(',')
     .map(s => s.trim())
     .filter(Boolean);
+  // Built-in production hosts when ALLOWED_ORIGINS is unset — never fall open to *
+  const defaults = [
+    'https://mangeshraut.pro',
+    'https://www.mangeshraut.pro',
+    'https://mangeshraut712.github.io',
+  ];
+  const allowList = list.length ? list : defaults;
+  const isLocal = !origin || /localhost|127\.0\.0\.1/.test(origin);
   const ok =
-    !origin ||
-    list.includes(origin) ||
-    list.some(a => origin.startsWith(a.replace(/\/$/, ''))) ||
-    /localhost|127\.0\.0\.1/.test(origin);
-  return {
-    'Access-Control-Allow-Origin': ok && origin ? origin : list[0] || '*',
+    isLocal ||
+    allowList.includes(origin) ||
+    allowList.some(a => origin.startsWith(a.replace(/\/$/, '')));
+  const headers = {
     'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type, Accept, Authorization, Origin',
     'Access-Control-Max-Age': '86400',
     Vary: 'Origin',
   };
+  // Fail closed: omit ACAO when origin is not allowed (never '*')
+  if (ok && origin) {
+    headers['Access-Control-Allow-Origin'] = origin;
+  } else if (ok && !origin) {
+    headers['Access-Control-Allow-Origin'] = allowList[0];
+  }
+  return headers;
 }
 
 function json(data, status, extra = {}) {
@@ -86,12 +99,25 @@ function localAnswer(message) {
 
 function isGarbage(text) {
   const t = String(text || '').trim();
-  if (t.length < 12) return true;
+  if (!t) return true;
+  // Do not reject short legitimate answers — only classifier junk / empty.
   return /^(user\s*safety\s*:\s*(safe|unsafe)|safe|unsafe|allowed|blocked)$/i.test(t);
 }
 
+/** Models the edge worker will call — ignore arbitrary client-chosen models. */
+const ALLOWED_MODELS = new Set([PRIMARY_MODEL, ...FREE_MODELS]);
+
 function buildModelChain(env, requested) {
-  const primary = (requested || env.OPENROUTER_MODEL || PRIMARY_MODEL || '').trim();
+  const envPrimary = (env.OPENROUTER_MODEL || PRIMARY_MODEL || '').trim();
+  const req = (requested || '').trim();
+  const primary =
+    (req && ALLOWED_MODELS.has(req) ? req : '') ||
+    (envPrimary && (ALLOWED_MODELS.has(envPrimary) || envPrimary === PRIMARY_MODEL)
+      ? envPrimary
+      : PRIMARY_MODEL);
+  if (envPrimary && !ALLOWED_MODELS.has(envPrimary)) {
+    ALLOWED_MODELS.add(envPrimary);
+  }
   const chain = [primary, PRIMARY_MODEL, ...FREE_MODELS].filter(
     (v, i, a) => v && a.indexOf(v) === i
   );
@@ -152,7 +178,7 @@ function streamLocal(answer, cors, meta = {}) {
   });
 }
 
-function streamOpenRouterToNdjson(upstream, model, cors) {
+function streamOpenRouterToNdjson(upstream, model, cors, userMessage = '') {
   const encoder = new TextEncoder();
   const decoder = new TextDecoder();
   let buffer = '';
@@ -199,8 +225,8 @@ function streamOpenRouterToNdjson(upstream, model, cors) {
       }
 
       if (!full || isGarbage(full)) {
-        const fallback = localAnswer('skills experience contact');
-        push({ type: 'chunk', content: fallback });
+        // Answer the actual user question; full_content replaces any junk chunks client-side.
+        const fallback = localAnswer(userMessage);
         full = fallback;
         push({
           type: 'done',
@@ -210,6 +236,7 @@ function streamOpenRouterToNdjson(upstream, model, cors) {
             source: 'Local Intelligence',
             sourceLabel: 'AssistMe Edge (fallback)',
             host: 'cloudflare-worker',
+            replaced_garbage: true,
           },
         });
         controller.close();
@@ -298,7 +325,7 @@ async function handleChat(request, env, cors) {
       }
 
       if (wantStream) {
-        return streamOpenRouterToNdjson(res, model, cors);
+        return streamOpenRouterToNdjson(res, model, cors, message);
       }
 
       const data = await res.json();
@@ -981,12 +1008,39 @@ async function handleGithubProxy(url, cors) {
   if (!pathParam.startsWith('/')) {
     return json({ error: 'path must start with /' }, 400, cors);
   }
-  // Block non-GET-safe abuse
-  if (pathParam.includes('..') || pathParam.length > 500) {
+  if (pathParam.length > 500) {
     return json({ error: 'invalid path' }, 400, cors);
   }
+  // Collapse .. segments then enforce portfolio-only allowlist (mirror FastAPI github.py)
+  let canonical = pathParam;
   try {
-    const gh = await fetch(`https://api.github.com${pathParam}`, {
+    // posix-style: resolve segments without allowing escape
+    const parts = [];
+    for (const seg of pathParam.split('/')) {
+      if (!seg || seg === '.') continue;
+      if (seg === '..') {
+        if (parts.length) parts.pop();
+        continue;
+      }
+      parts.push(seg);
+    }
+    canonical = `/${parts.join('/')}`;
+  } catch {
+    return json({ error: 'invalid path' }, 400, cors);
+  }
+  const allowedExact = new Set([
+    '/users/mangeshraut712',
+    '/users/mangeshraut712/repos',
+    '/users/mangeshraut712/events',
+    '/users/mangeshraut712/received_events',
+  ]);
+  const allowedPrefixes = ['/users/mangeshraut712/', '/repos/mangeshraut712/'];
+  const pathOk = allowedExact.has(canonical) || allowedPrefixes.some(p => canonical.startsWith(p));
+  if (!pathOk) {
+    return json({ error: 'GitHub proxy path not allowed for this portfolio' }, 400, cors);
+  }
+  try {
+    const gh = await fetch(`https://api.github.com${canonical}`, {
       headers: {
         Accept: 'application/vnd.github+json',
         'User-Agent': 'assistme-cloudflare-edge',

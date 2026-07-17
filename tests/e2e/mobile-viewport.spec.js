@@ -10,18 +10,35 @@ test.describe('Mobile viewport fit', () => {
   test('homepage has no horizontal document overflow', async ({ page }) => {
     await gotoSite(page);
     await page.waitForSelector('#main-content', { state: 'attached', timeout: 20_000 });
+    // mobile-viewport.css is print/onload deferred — wait for load + stylesheet
+    await page.waitForLoadState('load');
+    await page
+      .waitForFunction(
+        () =>
+          [...document.styleSheets].some(s => {
+            try {
+              return s.href?.includes('mobile-viewport.css');
+            } catch {
+              return false;
+            }
+          }) || !!document.querySelector('link[href*="mobile-viewport.css"]'),
+        null,
+        { timeout: 15_000 }
+      )
+      .catch(() => {});
 
     const metrics = await page.evaluate(() => ({
       overflow: document.documentElement.scrollWidth - window.innerWidth,
       clientW: document.documentElement.clientWidth,
       innerW: window.innerWidth,
-      hasMobileCss: [...document.styleSheets].some(s => {
-        try {
-          return s.href?.includes('mobile-viewport.css');
-        } catch {
-          return false;
-        }
-      }),
+      hasMobileCss:
+        [...document.styleSheets].some(s => {
+          try {
+            return s.href?.includes('mobile-viewport.css');
+          } catch {
+            return false;
+          }
+        }) || !!document.querySelector('link[href*="mobile-viewport.css"]'),
     }));
 
     expect(metrics.hasMobileCss).toBe(true);

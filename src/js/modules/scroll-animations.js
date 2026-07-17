@@ -84,12 +84,20 @@ class ScrollAnimations {
       const mo = new MutationObserver(() => {
         if (queued) return;
         queued = true;
-        // One rAF debounce — never scan on every scroll
-        requestAnimationFrame(() => {
+        // One rAF debounce — never scan on every scroll (guard for jsdom / SSR)
+        const schedule =
+          typeof requestAnimationFrame === 'function'
+            ? requestAnimationFrame
+            : cb => setTimeout(cb, 0);
+        schedule(() => {
           queued = false;
-          // Only clear residual pending class if present
-          if (document.querySelector('.animate-on-scroll')) {
-            paintAll(['.animate-on-scroll']);
+          try {
+            // Only clear residual pending class if present
+            if (document?.querySelector?.('.animate-on-scroll')) {
+              paintAll(['.animate-on-scroll']);
+            }
+          } catch {
+            // Test teardown / detached document
           }
         });
       });

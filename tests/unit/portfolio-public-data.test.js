@@ -23,12 +23,12 @@ describe('portfolio-public-data', () => {
   });
 
   it('documents consistent test counts and WebMCP tools', () => {
-    expect(TEST_COUNTS.pytest).toBe(122);
+    expect(TEST_COUNTS.pytest).toBe(132);
     expect(TEST_COUNTS.playwrightProjects).toBe(15);
-    expect(TEST_COUNTS.vitest).toBeGreaterThanOrEqual(57);
+    expect(TEST_COUNTS.vitest).toBeGreaterThanOrEqual(81);
     expect(WEBMCP_TOOL_COUNT).toBe(10);
     expect(formatQualitySummary()).toContain(`${TEST_COUNTS.vitest} Vitest`);
-    expect(formatQualitySummary()).toContain('122 pytest');
+    expect(formatQualitySummary()).toContain(`${TEST_COUNTS.pytest} pytest`);
     expect(formatQualitySummary()).toContain('Lighthouse deploy gate 100/100/100/100');
   });
 

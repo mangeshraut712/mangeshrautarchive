@@ -93,12 +93,21 @@ class UpstashRateLimitStore:
                     )
             return count <= limit
         except Exception as exc:
+            fail_closed = os.getenv("RATE_LIMIT_FAIL_CLOSED", "").strip().lower() in (
+                "1",
+                "true",
+                "yes",
+                "on",
+            )
             if not self._warned:
                 logger.warning(
-                    "Upstash rate limit unavailable (%s); falling back to memory",
+                    "Upstash rate limit unavailable (%s); %s",
                     type(exc).__name__,
+                    "failing closed" if fail_closed else "falling back to memory",
                 )
                 self._warned = True
+            if fail_closed:
+                return False
             return self._fallback.allow(client_id, limit=limit, window_sec=window_sec)
 
     def clear(self) -> None:

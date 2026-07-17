@@ -1,3 +1,4 @@
+import { escapeHtml } from '../utils/escape-html.js';
 /**
  * MarkdownService — Telegram-style rich chat rendering for AssistMe
  *
@@ -59,15 +60,6 @@ const KATEX_ATTR = [
   'd',
   'fill',
 ];
-
-function escapeHtml(text) {
-  return text
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
-}
 
 function isTrustedImageUrl(url) {
   try {

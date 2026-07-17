@@ -357,6 +357,23 @@ class IntelligentAssistant {
       if (error?.code === 'RATE_LIMITED') {
         throw error;
       }
+      // User cancelled stream — do not inject offline answer into conversation history
+      if (
+        error?.name === 'AbortError' ||
+        error?.code === 'ABORT_ERR' ||
+        (typeof DOMException !== 'undefined' &&
+          error instanceof DOMException &&
+          error.name === 'AbortError')
+      ) {
+        // Drop the user turn that never got a real assistant reply
+        if (
+          this.conversation.length &&
+          this.conversation[this.conversation.length - 1]?.role === 'user'
+        ) {
+          this.conversation.pop();
+        }
+        throw error;
+      }
       console.error('Error processing query:', error);
       const fallback = this.handleError(question, error);
       const fallbackText = this._extractAnswerText(fallback);
@@ -548,11 +565,17 @@ class IntelligentAssistant {
                     ? data.error
                     : 'AI service is temporarily unavailable.';
               }
-              // Handle completion
+              // Handle completion — prefer authoritative full_content (multi-model
+              // fallback may replace partial junk chunks with a corrected answer).
               else if (data.type === 'done') {
                 Object.assign(metadata, data.metadata || {});
-                if (data.full_content && !fullText) {
-                  fullText = data.full_content;
+                if (data.full_content) {
+                  const authoritative = String(data.full_content);
+                  if (authoritative && authoritative !== fullText) {
+                    fullText = authoritative;
+                  } else if (!fullText) {
+                    fullText = authoritative;
+                  }
                 }
               }
               // Other metadata
@@ -619,6 +642,16 @@ class IntelligentAssistant {
         return data;
       }
     } catch (error) {
+      // User cancel / stream abort is intentional — do not flip AssistMe offline.
+      if (
+        error?.name === 'AbortError' ||
+        error?.code === 'ABORT_ERR' ||
+        (typeof DOMException !== 'undefined' &&
+          error instanceof DOMException &&
+          error.name === 'AbortError')
+      ) {
+        throw error;
+      }
       if (error?.code === 'RATE_LIMITED') {
         throw error;
       }
@@ -746,9 +779,14 @@ class IntelligentAssistant {
   isGarbageModelAnswer(answer, payload = {}) {
     if (!answer) return true;
     const text = String(answer).trim();
-    if (text.length < 12) return true;
+    // Keep real short answers ("Yes.", "Philly.", "In 2024.") — only reject
+    // empty/whitespace and known free-router safety-classifier junk.
+    if (!text) return true;
     const model = String(payload?.model || payload?.metadata?.model || '').toLowerCase();
     if (model.includes('content-safety') || model.includes('moderation')) return true;
+    if (/^(user\s*safety\s*:\s*(safe|unsafe)|safe|unsafe|allowed|blocked)$/i.test(text)) {
+      return true;
+    }
     return this.isUpstreamFailureText(text);
   }
 
@@ -1254,8 +1292,14 @@ class IntelligentAssistant {
     }
     this.isReadyState = false;
     this.canUseServerAI = false;
-    // Try to reinitialize after a delay
-    setTimeout(() => this.initialize(), 30000); // 30 seconds
+    // Coalesce recovery so repeated failures do not stack re-init timers
+    if (this._serverRecoveryTimer) {
+      clearTimeout(this._serverRecoveryTimer);
+    }
+    this._serverRecoveryTimer = setTimeout(() => {
+      this._serverRecoveryTimer = null;
+      this.initialize();
+    }, 30000);
   }
 
   getStatus() {

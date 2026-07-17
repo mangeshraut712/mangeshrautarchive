@@ -59,11 +59,11 @@
     backdrop-filter 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
     -webkit-backdrop-filter 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 
-  /* Contain layout */
-  contain: layout style paint;
+  /* layout/style only — paint/isolation trap backdrop-filter samples */
+  contain: layout style;
   font-family: var(--island-font) !important;
   color: var(--island-link-color) !important;
-  isolation: isolate;
+  isolation: auto;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }

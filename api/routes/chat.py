@@ -827,9 +827,13 @@ _GARBAGE_ANSWER_RE = re.compile(
 
 
 def _is_garbage_chat_answer(answer: str, model: str = "") -> bool:
-    """Reject free-router classifier junk and empty safety-only payloads."""
+    """Reject free-router classifier junk and empty safety-only payloads.
+
+    Short legitimate answers ("Yes.", "Philly.", "In 2024.") must not be treated
+    as garbage — only empty/whitespace and known safety-classifier strings.
+    """
     text = (answer or "").strip()
-    if len(text) < 12:
+    if not text:
         return True
     if _GARBAGE_ANSWER_RE.match(text):
         return True

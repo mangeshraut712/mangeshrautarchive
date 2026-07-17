@@ -28,7 +28,7 @@
     env(safe-area-inset-left, 0px),
     env(safe-area-inset-right, 0px)
   );
-  --theme-card-radius: 20px;
+  --theme-card-radius: 22px;
   --theme-fab-edge: max(1.5rem, env(safe-area-inset-right, 0px));
   --theme-fab-bottom: max(1.75rem, env(safe-area-inset-bottom, 0px));
   --theme-fab-size: 3.75rem;
@@ -1117,7 +1117,7 @@ html.dark #home .portfolio-reach-badge {
   background-color: #000000 !important;
 }
 
-/* ─── Skills section shell: always solid; categories/badges solid only in tinted ─── */
+/* ─── Skills shell: solid page canvas; categories glass in clear/balanced ─── */
 html:not(.dark) :is(#skills, #skills > .container, #skills-container) {
   background: #ffffff !important;
   background-color: #ffffff !important;
@@ -1130,7 +1130,11 @@ html.dark :is(#skills, #skills > .container, #skills-container) {
   background-image: none !important;
 }
 
-html:not(.dark) :is(#skills .skill-category, #skills-container .skill-category) {
+/* Categories + badges — solid only when tinted (clear glass from liquid-glass-modes) */
+html[data-lg-mode='tinted']:not(.dark)
+  :is(#skills .skill-category, #skills-container .skill-category),
+html:not([data-lg-mode]):not(.dark)
+  :is(#skills .skill-category, #skills-container .skill-category) {
   background: #ffffff !important;
   background-color: #ffffff !important;
   background-image: none !important;
@@ -1144,7 +1148,9 @@ html:not(.dark) :is(#skills .skill-category, #skills-container .skill-category) 
   isolation: isolate;
 }
 
-html:not(.dark)
+html[data-lg-mode='tinted']:not(.dark)
+  :is(#skills-container .skill-badge, #skills-container .skill-scroll-wrapper .skill-badge),
+html:not([data-lg-mode]):not(.dark)
   :is(#skills-container .skill-badge, #skills-container .skill-scroll-wrapper .skill-badge) {
   background: #ffffff !important;
   background-color: #ffffff !important;
@@ -1154,7 +1160,8 @@ html:not(.dark)
   box-shadow: none !important;
 }
 
-html.dark :is(#skills .skill-category, #skills-container .skill-category) {
+html.dark[data-lg-mode='tinted'] :is(#skills .skill-category, #skills-container .skill-category),
+html.dark:not([data-lg-mode]) :is(#skills .skill-category, #skills-container .skill-category) {
   background: #000000 !important;
   background-color: #000000 !important;
   background-image: none !important;
@@ -1166,7 +1173,9 @@ html.dark :is(#skills .skill-category, #skills-container .skill-category) {
   isolation: isolate;
 }
 
-html.dark
+html.dark[data-lg-mode='tinted']
+  :is(#skills-container .skill-badge, #skills-container .skill-scroll-wrapper .skill-badge),
+html.dark:not([data-lg-mode])
   :is(#skills-container .skill-badge, #skills-container .skill-scroll-wrapper .skill-badge) {
   background: #000000 !important;
   background-color: #000000 !important;

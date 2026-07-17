@@ -761,7 +761,7 @@ html.dark #chatbot-widget .context-aware-chip {
 
 html.dark #chatbot-widget .chatbot-header {
   border-bottom-color: rgb(255 255 255 / 9%);
-  background: linear-gradient(180deg, rgb(28 28 30 / 94%) 0%, rgb(16 16 18 / 78%) 100%);
+  background: linear-gradient(180deg, rgb(0 0 0 / 94%) 0%, rgb(0 0 0 / 78%) 100%);
 }
 
 #chatbot-widget .chatbot-header-brand {
@@ -1177,9 +1177,9 @@ html.dark #chatbot-widget .assistant-message .message-content:hover {
   -webkit-backdrop-filter: none !important;
 }
 
-/* Clear/balanced: translucent control glass (Apple material). Tinted: solid. */
-html:is([data-lg-mode='clear'], [data-lg-mode='balanced']):not(.dark) .a11y-toolbar__main,
-html:is([data-lg-mode='clear'], [data-lg-mode='balanced']):not(.dark) .a11y-toolbar__panel {
+/* Balanced only: translucent control glass. Clear + tinted: solid. */
+html[data-lg-mode='balanced']:not(.dark) .a11y-toolbar__main,
+html[data-lg-mode='balanced']:not(.dark) .a11y-toolbar__panel {
   background: rgb(255 255 255 / calc(38% + var(--lg-tint) * 48%)) !important;
   background-color: rgb(255 255 255 / calc(38% + var(--lg-tint) * 48%)) !important;
   border: 1px solid rgb(255 255 255 / var(--lg-border-light, 40%)) !important;
@@ -1190,10 +1190,10 @@ html:is([data-lg-mode='clear'], [data-lg-mode='balanced']):not(.dark) .a11y-tool
     0 10px 28px rgb(0 0 0 / calc(10% + (1 - var(--lg-tint)) * 8%)) !important;
 }
 
-html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced']) .a11y-toolbar__main,
-html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced']) .a11y-toolbar__panel {
-  background: rgb(28 28 30 / calc(42% + var(--lg-tint) * 46%)) !important;
-  background-color: rgb(28 28 30 / calc(42% + var(--lg-tint) * 46%)) !important;
+html.dark[data-lg-mode='balanced'] .a11y-toolbar__main,
+html.dark[data-lg-mode='balanced'] .a11y-toolbar__panel {
+  background: rgb(0 0 0 / calc(42% + var(--lg-tint) * 46%)) !important;
+  background-color: rgb(0 0 0 / calc(42% + var(--lg-tint) * 46%)) !important;
   border-color: rgb(255 255 255 / var(--lg-border-dark, 14%)) !important;
   backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-control)) !important;
   -webkit-backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-control)) !important;
@@ -1202,6 +1202,7 @@ html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced']) .a11y-toolbar__p
     0 10px 28px rgb(0 0 0 / 42%) !important;
 }
 
+/* Clear shares balanced glass toolbar; tinted stays solid */
 html[data-lg-mode='tinted']:not(.dark) .a11y-toolbar__main,
 html[data-lg-mode='tinted']:not(.dark) .a11y-toolbar__panel {
   background: #ffffff !important;
@@ -1214,12 +1215,30 @@ html[data-lg-mode='tinted']:not(.dark) .a11y-toolbar__panel {
 
 html.dark[data-lg-mode='tinted'] .a11y-toolbar__main,
 html.dark[data-lg-mode='tinted'] .a11y-toolbar__panel {
-  background: #1c1c1e !important;
-  background-color: #1c1c1e !important;
+  background: #000000 !important;
+  background-color: #000000 !important;
   border: 1px solid #2c2c2e !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
   box-shadow: 0 10px 28px rgb(0 0 0 / 40%) !important;
+}
+
+html:is([data-lg-mode='clear'], [data-lg-mode='balanced']):not(.dark) .a11y-toolbar__main,
+html:is([data-lg-mode='clear'], [data-lg-mode='balanced']):not(.dark) .a11y-toolbar__panel {
+  background: rgb(255 255 255 / calc(38% + var(--lg-tint) * 48%)) !important;
+  background-color: rgb(255 255 255 / calc(38% + var(--lg-tint) * 48%)) !important;
+  border: 1px solid rgb(255 255 255 / var(--lg-border-light, 40%)) !important;
+  backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-control)) !important;
+  -webkit-backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-control)) !important;
+}
+
+html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced']) .a11y-toolbar__main,
+html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced']) .a11y-toolbar__panel {
+  background: rgb(0 0 0 / calc(42% + var(--lg-tint) * 46%)) !important;
+  background-color: rgb(0 0 0 / calc(42% + var(--lg-tint) * 46%)) !important;
+  border-color: rgb(255 255 255 / var(--lg-border-dark, 14%)) !important;
+  backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-control)) !important;
+  -webkit-backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-control)) !important;
 }
 
 .a11y-toolbar__panel button {
@@ -1254,8 +1273,8 @@ html.dark[data-lg-mode='tinted'] .a11y-toolbar__panel {
 
 html.dark .a11y-toolbar__panel button {
   color: #f5f5f7 !important;
-  background: #1c1c1e !important;
-  background-color: #1c1c1e !important;
+  background: #000000 !important;
+  background-color: #000000 !important;
   border-color: rgb(255 255 255 / 14%) !important;
   box-shadow:
     inset 0 1px 0 rgb(255 255 255 / 8%),
@@ -1364,8 +1383,8 @@ html.dark .a11y-toolbar__panel button.a11y-glass-active {
 
 html.dark .a11y-glass-popover,
 html.dark .a11y-glass-popover.lg-webgl-host {
-  background: #1c1c1e !important;
-  background-color: #1c1c1e !important;
+  background: #000000 !important;
+  background-color: #000000 !important;
   background-image: none !important;
   border-color: #2c2c2e !important;
   box-shadow: 0 16px 40px rgb(0 0 0 / 45%) !important;
@@ -1386,8 +1405,8 @@ html.dark .a11y-glass-popover.lg-webgl-host {
 }
 
 html.dark .a11y-glass-popover {
-  background: #1c1c1e !important;
-  background-color: #1c1c1e !important;
+  background: #000000 !important;
+  background-color: #000000 !important;
   border-color: rgb(255 255 255 / 14%) !important;
   box-shadow:
     inset 0 1px 0 rgb(255 255 255 / 8%),
@@ -1547,7 +1566,6 @@ html.dark #skills-container .skill-scroll-wrapper .skill-badge:hover {
     .blog-card,
     .showcase-project-card,
     .about-highlight-card,
-    .contact-card,
     .overview-card,
     .health-item,
     .travel-stop
@@ -1583,7 +1601,6 @@ html.dark #skills-container .skill-scroll-wrapper .skill-badge:hover {
     .blog-card,
     .showcase-project-card,
     .about-highlight-card,
-    .contact-card,
     .overview-card,
     .health-item,
     .travel-stop
@@ -1600,7 +1617,6 @@ html.dark #skills-container .skill-scroll-wrapper .skill-badge:hover {
       .blog-card,
       .showcase-project-card,
       .about-highlight-card,
-      .contact-card,
       .overview-card,
       .health-item,
       .travel-stop
@@ -1687,16 +1703,9 @@ footer .wrapper {
   .about-highlight-card,
   .about-text-card,
   .about-card,
-  .contact-card,
   .contact-form-card,
   .newsletter-card,
-  .support-donation-card,
-  .media-card,
-  .currently-card,
-  .calendar-card,
-  .ios-widget-wrapper,
   .legend-card,
-  .reminder-card,
   .overview-card,
   .doc-card,
   .health-item,
@@ -1716,7 +1725,6 @@ footer .wrapper {
   .glass-card,
   .overlay-card,
   .panel,
-  .health-widget-container,
   .monitor-summary-card,
   .monitor-summary-panel,
   .integration-owner-auth,
@@ -1766,16 +1774,9 @@ html.dark
     .about-highlight-card,
     .about-text-card,
     .about-card,
-    .contact-card,
     .contact-form-card,
     .newsletter-card,
-    .support-donation-card,
-    .media-card,
-    .currently-card,
-    .calendar-card,
-    .ios-widget-wrapper,
     .legend-card,
-    .reminder-card,
     .overview-card,
     .doc-card,
     .health-item,
@@ -1795,7 +1796,6 @@ html.dark
     .glass-card,
     .overlay-card,
     .panel,
-    .health-widget-container,
     .monitor-summary-card,
     .monitor-summary-panel,
     .integration-owner-auth,
@@ -1839,16 +1839,9 @@ html.dark
     .about-highlight-card,
     .about-text-card,
     .about-card,
-    .contact-card,
     .contact-form-card,
     .newsletter-card,
-    .support-donation-card,
-    .media-card,
-    .currently-card,
-    .calendar-card,
-    .ios-widget-wrapper,
     .legend-card,
-    .reminder-card,
     .overview-card,
     .doc-card,
     .health-item,
@@ -1868,7 +1861,6 @@ html.dark
     .glass-card,
     .overlay-card,
     .panel,
-    .health-widget-container,
     .monitor-summary-card,
     .monitor-summary-panel,
     .integration-owner-auth,
@@ -1917,9 +1909,6 @@ html body #about div.about-text-card,
 html body #about div.about-highlight-card,
 html body #projects #github-projects-container article.showcase-project-card,
 html body #blog div.newsletter-card,
-html body #contact div.contact-card,
-html body #contact div.support-donation-card,
-html body #contact div.media-card,
 .vibe-stack-card {
   background: rgb(255 255 255 / var(--lg-card-light-alpha)) !important;
   background-color: rgb(255 255 255 / var(--lg-card-light-alpha)) !important;
@@ -1942,9 +1931,6 @@ html.dark body #about div.about-text-card,
 html.dark body #about div.about-highlight-card,
 html.dark body #projects #github-projects-container article.showcase-project-card,
 html.dark body #blog div.newsletter-card,
-html.dark body #contact div.contact-card,
-html.dark body #contact div.support-donation-card,
-html.dark body #contact div.media-card,
 html.dark .vibe-stack-card {
   background: rgb(0 0 0 / var(--lg-card-dark-alpha)) !important;
   background-color: rgb(0 0 0 / var(--lg-card-dark-alpha)) !important;
@@ -1970,13 +1956,9 @@ html.dark .vibe-stack-card {
   .showcase-project-card:hover,
   .about-highlight-card:hover,
   .about-text-card:hover,
-  .contact-card:hover,
-  .currently-card:hover,
-  .calendar-wrapper-clean:hover,
   .contact-form-card:hover,
   .newsletter-card:hover,
   .support-donation-card:hover,
-  .media-card:hover,
   .overview-card:hover,
   .health-item:hover,
   .travel-stop:hover,
@@ -2007,16 +1989,6 @@ html body #projects #github-projects-container article.showcase-project-card:hov
 html.dark body #projects #github-projects-container article.showcase-project-card:hover,
 html body #blog div.newsletter-card:hover,
 html.dark body #blog div.newsletter-card:hover,
-html body #contact div.contact-card:hover,
-html.dark body #contact div.contact-card:hover,
-html body #contact div.currently-card:hover,
-html.dark body #contact div.currently-card:hover,
-html body #contact div.calendar-wrapper-clean:hover,
-html.dark body #contact div.calendar-wrapper-clean:hover,
-html body #contact div.support-donation-card:hover,
-html.dark body #contact div.support-donation-card:hover,
-html body #contact div.media-card:hover,
-html.dark body #contact div.media-card:hover,
 html body #contact #music-content .currently-music-card:hover .media-poster,
 html.dark body #contact #music-content .currently-music-card:hover .media-poster,
 html body #contact #music-content .recent-track-card:hover .media-poster,
@@ -2039,7 +2011,6 @@ html.dark .travel-sidebar:hover {
 
 html:not(.dark) #blog .blog-card:hover,
 html:not(.dark) #blog div.newsletter-card:hover,
-html:not(.dark) #contact div.contact-card:hover,
 html:not(.dark) #contact div.support-donation-card:hover,
 html:not(.dark) #contact div.media-card:hover,
 html:not(.dark) #contact #music-content .currently-music-card:hover .media-poster,
@@ -2166,7 +2137,6 @@ html.dark #blog {
   background: #000000 !important;
 }
 
-html body #contact div.currently-card,
 html body #contact div.calendar-wrapper-clean {
   transition:
     transform 0.32s cubic-bezier(0.25, 0.1, 0.25, 1),
@@ -2328,73 +2298,33 @@ html.dark[data-lg-mode='tinted'] .a11y-toolbar__main,
 html.dark[data-lg-mode='tinted'] .a11y-toolbar__panel,
 html.dark[data-lg-mode='tinted'] .a11y-glass-popover,
 html.dark[data-lg-mode='tinted'] #chatbot-widget {
-  background: #1c1c1e !important;
-  background-color: #1c1c1e !important;
+  background: #000000 !important;
+  background-color: #000000 !important;
 }
 
 /* Nav + hero music card backgrounds: chrome-surfaces.css */
 
 /* Cards — clear = more blur + transparency; tinted = near-solid white/black */
 html[data-lg-mode='clear']
-  :is(
-    .card,
-    .experience-content,
-    .education-card,
-    .stat-card,
-    .blog-card,
-    .contact-card,
-    .calendar-card,
-    .currently-card,
-    .vibe-stack-card
-  ) {
+  :is(.card, .experience-content, .education-card, .stat-card, .blog-card, .vibe-stack-card) {
   backdrop-filter: saturate(var(--lg-saturate)) blur(calc(var(--lg-blur-card) + 10px)) !important;
   -webkit-backdrop-filter: saturate(var(--lg-saturate)) blur(calc(var(--lg-blur-card) + 10px)) !important;
 }
 
 html[data-lg-mode='tinted']
-  :is(
-    .card,
-    .experience-content,
-    .education-card,
-    .stat-card,
-    .blog-card,
-    .contact-card,
-    .calendar-card,
-    .currently-card,
-    .vibe-stack-card
-  ) {
+  :is(.card, .experience-content, .education-card, .stat-card, .blog-card, .vibe-stack-card) {
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
 }
 
 html[data-lg-mode='tinted']:not(.dark)
-  :is(
-    .card,
-    .experience-content,
-    .education-card,
-    .stat-card,
-    .blog-card,
-    .contact-card,
-    .calendar-card,
-    .currently-card,
-    .vibe-stack-card
-  ) {
+  :is(.card, .experience-content, .education-card, .stat-card, .blog-card, .vibe-stack-card) {
   background: #ffffff !important;
   background-color: #ffffff !important;
 }
 
 html.dark[data-lg-mode='tinted']
-  :is(
-    .card,
-    .experience-content,
-    .education-card,
-    .stat-card,
-    .blog-card,
-    .contact-card,
-    .calendar-card,
-    .currently-card,
-    .vibe-stack-card
-  ) {
+  :is(.card, .experience-content, .education-card, .stat-card, .blog-card, .vibe-stack-card) {
   background: #000000 !important;
   background-color: #000000 !important;
 }
@@ -2439,25 +2369,23 @@ html.dark[data-lg-mode='tinted']
   html.dark .a11y-toolbar__panel,
   html.dark .a11y-glass-popover,
   html.dark #go-to-top.visible {
-    background: #1c1c1e !important;
-    background-color: #1c1c1e !important;
+    background: #000000 !important;
+    background-color: #000000 !important;
   }
 
   /* Nav background: chrome-surfaces.css */
 
-  :is(.card, .contact-card, .calendar-card, .currently-card, .vibe-stack-card, .lg-glass-card) {
+  :is(.card, .vibe-stack-card, .lg-glass-card) {
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
   }
 
-  html:not(.dark)
-    :is(.card, .contact-card, .calendar-card, .currently-card, .vibe-stack-card, .lg-glass-card) {
+  html:not(.dark) :is(.card, .vibe-stack-card, .lg-glass-card) {
     background: #ffffff !important;
     background-color: #ffffff !important;
   }
 
-  html.dark
-    :is(.card, .contact-card, .calendar-card, .currently-card, .vibe-stack-card, .lg-glass-card) {
+  html.dark :is(.card, .vibe-stack-card, .lg-glass-card) {
     background: #000000 !important;
     background-color: #000000 !important;
   }
@@ -2822,28 +2750,54 @@ html.dark body.monitor-page .doc-link-tile {
 /* Hero music card — owned by chrome-surfaces.css */
 
 /* ════════════════════════════════════════════════════════════════
-   FINAL MATERIAL AUTHORITY — clear / balanced glass · tinted solid
-   (loads last within liquid-glass stack after modes + chrome)
+   FINAL MATERIAL AUTHORITY — tinted solid · clear/balanced glass
+   Light solid white / dark solid black (page + cards + key chrome).
    ════════════════════════════════════════════════════════════════ */
 
 html[data-lg-mode='tinted']:not(.dark)
+  body
   :is(
     .card,
-    .about-text-card,
-    .about-highlight-card,
-    .about-card,
+    .experience-card,
     .experience-content,
     .education-card,
-    .blog-card,
-    .contact-card,
-    .newsletter-card,
-    .currently-card,
-    .calendar-card,
+    .education-content,
     .stat-card,
+    .blog-card,
+    .publication-card,
+    .award-card,
+    .recommendation-card,
+    .certification-card,
+    .showcase-project-card,
+    .about-highlight-card,
+    .about-text-card,
+    .about-card,
+    .contact-card,
+    .contact-form-card,
+    .newsletter-card,
+    .support-donation-card,
+    .currently-card,
     .skill-card,
+    .skill-badge,
+    .skill-category,
     .lg-glass-card,
     .projects-activity-overview,
+    .engineering-quality-overview,
+    .timeline-content,
+    .health-item,
+    .health-widget-container,
+    .monitor-summary-card,
+    .overview-card,
+    .doc-card,
+    .ops-card,
+    .endpoint-card,
     #skills .skill-category,
+    #skills-container .skill-category,
+    #skills-container .skill-badge,
+    #blog .blog-card,
+    #blog .newsletter-card,
+    #projects #github-projects-container .showcase-project-card,
+    #projects #github-projects-container article.showcase-project-card,
     #chatbot-widget
   ) {
   background: #ffffff !important;
@@ -2851,27 +2805,72 @@ html[data-lg-mode='tinted']:not(.dark)
   background-image: none !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
+  box-shadow: none !important;
 }
 
 html.dark[data-lg-mode='tinted']
+  body
   :is(
     .card,
-    .about-text-card,
-    .about-highlight-card,
-    .about-card,
+    .experience-card,
     .experience-content,
     .education-card,
-    .blog-card,
-    .contact-card,
-    .newsletter-card,
-    .currently-card,
-    .calendar-card,
+    .education-content,
     .stat-card,
+    .blog-card,
+    .publication-card,
+    .award-card,
+    .recommendation-card,
+    .certification-card,
+    .showcase-project-card,
+    .about-highlight-card,
+    .about-text-card,
+    .about-card,
+    .contact-card,
+    .contact-form-card,
+    .newsletter-card,
+    .support-donation-card,
+    .currently-card,
     .skill-card,
+    .skill-badge,
+    .skill-category,
     .lg-glass-card,
     .projects-activity-overview,
+    .engineering-quality-overview,
+    .timeline-content,
+    .health-item,
+    .health-widget-container,
+    .monitor-summary-card,
+    .overview-card,
+    .doc-card,
+    .ops-card,
+    .endpoint-card,
     #skills .skill-category,
+    #skills-container .skill-category,
+    #skills-container .skill-badge,
+    #blog .blog-card,
+    #blog .newsletter-card,
+    #projects #github-projects-container .showcase-project-card,
+    #projects #github-projects-container article.showcase-project-card,
     #chatbot-widget
+  ) {
+  background: #000000 !important;
+  background-color: #000000 !important;
+  background-image: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  box-shadow: none !important;
+}
+
+/* Dark clear + tinted floating chrome — solid black (not elevated gray) */
+html.dark[data-lg-mode='tinted']
+  :is(
+    .a11y-toolbar__main,
+    .a11y-toolbar__panel,
+    .a11y-glass-popover,
+    #chatbot-widget,
+    .monitor-page-nav,
+    .travel-nav
   ) {
   background: #000000 !important;
   background-color: #000000 !important;
@@ -2898,8 +2897,8 @@ html.dark[data-lg-mode='tinted']
   html.dark .a11y-toolbar__panel,
   html.dark .monitor-page-nav,
   html.dark #website-share-toggle.website-share-fab {
-    background: #1c1c1e !important;
-    background-color: #1c1c1e !important;
+    background: #000000 !important;
+    background-color: #000000 !important;
     background-image: none !important;
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;

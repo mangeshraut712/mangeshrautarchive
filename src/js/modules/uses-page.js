@@ -1,13 +1,6 @@
 import { usesStack } from '../data/portfolio-public-data.js';
 import './control-center.js';
-
-function escapeHtml(value) {
-  return String(value ?? '')
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;');
-}
+import { escapeHtml } from '../utils/escape-html.js';
 
 const labels = {
   hardware: 'Hardware',

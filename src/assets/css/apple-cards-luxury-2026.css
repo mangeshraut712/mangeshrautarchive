@@ -1,0 +1,1006 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   Apple Cards Luxury — June 2026
+   WWDC26-inspired product materials for every portfolio card.
+
+   Design language (apple.com + visionOS / iOS 26 materials):
+   • Continuous corners (22–24px)
+   • Tinted: solid white / solid black shells with luxury depth
+   • Clear + balanced: liquid glass (blur) — no opaque fill override
+   • Specular top edge + soft multi-stop depth
+   • SF Pro Display titles, SF Pro Text body
+   • Spring motion (0.32, 0.72, 0, 1)
+   • System blue interaction (#0071e3 / #0a84ff)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+:root {
+  --lux-radius: 22px;
+  --lux-radius-sm: 14px;
+  --lux-radius-pill: 980px;
+  --lux-pad-block: 1.35rem;
+  --lux-pad-inline: 1.4rem;
+  --lux-ease: cubic-bezier(0.32, 0.72, 0, 1);
+  --lux-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --lux-duration: 0.42s;
+  --lux-duration-fast: 0.22s;
+
+  --lux-border: #e5e5ea;
+  --lux-border-strong: #d2d2d7;
+  --lux-fg: #1d1d1f;
+  --lux-fg-secondary: #6e6e73;
+  --lux-fg-tertiary: #86868b;
+  --lux-blue: #0071e3;
+  --lux-blue-soft: rgb(0 113 227 / 14%);
+  --lux-blue-glow: rgb(0 113 227 / 22%);
+
+  /* Light luxury depth — product-page soft elevation */
+  --lux-shadow:
+    0 1px 0 rgb(255 255 255 / 70%) inset, 0 1px 2px rgb(0 0 0 / 4%), 0 8px 24px rgb(0 0 0 / 6%),
+    0 20px 48px rgb(15 23 42 / 4%);
+  --lux-shadow-hover:
+    0 1px 0 rgb(255 255 255 / 80%) inset, 0 2px 6px rgb(0 113 227 / 8%),
+    0 14px 36px rgb(0 0 0 / 8%), 0 28px 64px rgb(0 113 227 / 10%);
+}
+
+html.dark {
+  --lux-border: #2c2c2e;
+  --lux-border-strong: #3a3a3c;
+  --lux-fg: #f5f5f7;
+  --lux-fg-secondary: #a1a1a6;
+  --lux-fg-tertiary: #8e8e93;
+  --lux-blue: #0a84ff;
+  --lux-blue-soft: rgb(10 132 255 / 16%);
+  --lux-blue-glow: rgb(10 132 255 / 28%);
+
+  --lux-shadow:
+    0 1px 0 rgb(255 255 255 / 6%) inset, 0 1px 0 rgb(0 0 0 / 40%), 0 12px 40px rgb(0 0 0 / 55%);
+  --lux-shadow-hover:
+    0 1px 0 rgb(255 255 255 / 10%) inset, 0 0 0 1px rgb(10 132 255 / 18%),
+    0 16px 48px rgb(0 0 0 / 65%), 0 0 40px rgb(10 132 255 / 12%);
+}
+
+/* Shared card selector list — keep in sync with theme-solid / glass modes */
+:is(
+  .card,
+  .experience-card,
+  .experience-content,
+  .education-card,
+  .education-content,
+  .stat-card,
+  .blog-card,
+  .publication-card,
+  .award-card,
+  .recommendation-card,
+  .certification-card,
+  .showcase-project-card,
+  .about-highlight-card,
+  .about-text-card,
+  .about-card,
+  .contact-card,
+  .contact-form-card,
+  .newsletter-card,
+  .support-donation-card,
+  .currently-card,
+  .merged-health-currently-card,
+  .calendar-wrapper-clean,
+  .calendar-card,
+  .reminder-card,
+  .legend-card,
+  .overview-card,
+  .doc-card,
+  .health-item,
+  .game-stat-card,
+  .game-info-card,
+  .skill-card,
+  .skill-category,
+  .timeline-content,
+  .service-card,
+  .feature-card,
+  .testimonial-card,
+  .pricing-card,
+  .team-card,
+  .info-card,
+  .detail-card,
+  .summary-card,
+  .glass-card,
+  .monitor-summary-card,
+  .monitor-summary-panel,
+  .ops-card,
+  .endpoint-card,
+  .travel-stop,
+  .place-guide-card,
+  .travel-stat,
+  .travel-filter-panel,
+  .travel-advanced-search,
+  .travel-results-summary,
+  .sub-card,
+  .nested-card,
+  .vibe-stack-card,
+  .lg-glass-card,
+  .engineering-quality-overview,
+  .projects-activity-overview,
+  .systems-evidence-card,
+  .systems-principle-card,
+  .eng-building-card,
+  .eng-design-card,
+  .systems-case-flow,
+  .systems-bench-row,
+  .systems-bento-tile,
+  .systems-metric-panel,
+  .systems-arch-stage,
+  .systems-flow-step,
+  .systems-hero-stat,
+  .eng-showcase-card,
+  .systems-timeline-block,
+  .systems-now-card,
+  .case-study-preview-card,
+  .reach-realtime-section,
+  .error-container,
+  #blog .blog-card,
+  #blog .newsletter-card,
+  #skills .skill-category,
+  #skills-container .skill-category,
+  #projects #github-projects-container .showcase-project-card,
+  #projects #github-projects-container article.showcase-project-card,
+  body.blog-standalone-page .blog-card,
+  body.blog-standalone-page .article-related-card,
+  body.monitor-page .doc-card,
+  body.monitor-page .overview-card,
+  body.monitor-page .ops-card,
+  body.monitor-page .endpoint-card
+) {
+  border-radius: var(--lux-radius) !important;
+  border-width: 1px !important;
+  border-style: solid !important;
+  border-color: var(--lux-border) !important;
+  color: var(--lux-fg);
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, 'Helvetica Neue',
+    Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  letter-spacing: -0.011em;
+  transition:
+    transform var(--lux-duration) var(--lux-ease),
+    box-shadow var(--lux-duration) var(--lux-ease),
+    border-color var(--lux-duration-fast) var(--lux-ease-out),
+    background-color var(--lux-duration) var(--lux-ease),
+    backdrop-filter var(--lux-duration) var(--lux-ease),
+    color var(--lux-duration-fast) ease !important;
+  will-change: transform;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+/* Compact chips / badges — smaller continuous radius */
+:is(
+  .skill-badge,
+  #skills-container .skill-badge,
+  #skills-container .skill-scroll-wrapper .skill-badge,
+  .project-lens-chip,
+  .proj-filter-btn,
+  .hero-pill-badge,
+  .portfolio-reach-badge,
+  .currently-tab,
+  .systems-writing-chip,
+  .systems-token-card,
+  .vibe-tool-chip
+) {
+  border-radius: var(--lux-radius-sm) !important;
+  transition:
+    transform var(--lux-duration-fast) var(--lux-ease),
+    border-color var(--lux-duration-fast) var(--lux-ease-out),
+    box-shadow var(--lux-duration-fast) var(--lux-ease),
+    background-color var(--lux-duration-fast) ease !important;
+}
+
+/* ─── Solid materials (tinted only): luxury depth ─── */
+html[data-lg-mode='tinted']:not(.dark)
+  body
+  :is(
+    .card,
+    .experience-card,
+    .experience-content,
+    .education-card,
+    .education-content,
+    .stat-card,
+    .blog-card,
+    .publication-card,
+    .award-card,
+    .recommendation-card,
+    .certification-card,
+    .showcase-project-card,
+    .about-highlight-card,
+    .about-text-card,
+    .about-card,
+    .contact-card,
+    .contact-form-card,
+    .newsletter-card,
+    .support-donation-card,
+    .currently-card,
+    .merged-health-currently-card,
+    .calendar-wrapper-clean,
+    .reminder-card,
+    .overview-card,
+    .doc-card,
+    .health-item,
+    .game-stat-card,
+    .game-info-card,
+    .skill-card,
+    .skill-category,
+    .timeline-content,
+    .monitor-summary-card,
+    .ops-card,
+    .endpoint-card,
+    .travel-stop,
+    .place-guide-card,
+    .travel-stat,
+    .engineering-quality-overview,
+    .projects-activity-overview,
+    .systems-evidence-card,
+    .systems-principle-card,
+    .eng-building-card,
+    .eng-design-card,
+    .systems-bento-tile,
+    .systems-metric-panel,
+    .systems-hero-stat,
+    .eng-showcase-card,
+    .systems-now-card,
+    .case-study-preview-card,
+    #blog .blog-card,
+    #blog .newsletter-card,
+    #skills .skill-category,
+    #skills-container .skill-category,
+    #projects #github-projects-container .showcase-project-card,
+    #projects #github-projects-container article.showcase-project-card,
+    body.monitor-page .doc-card,
+    body.monitor-page .overview-card,
+    body.monitor-page .ops-card,
+    body.monitor-page .endpoint-card
+  ) {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
+  border-color: var(--lux-border) !important;
+  box-shadow: var(--lux-shadow) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+html.dark[data-lg-mode='tinted']
+  body
+  :is(
+    .card,
+    .experience-card,
+    .experience-content,
+    .education-card,
+    .education-content,
+    .stat-card,
+    .blog-card,
+    .publication-card,
+    .award-card,
+    .recommendation-card,
+    .certification-card,
+    .showcase-project-card,
+    .about-highlight-card,
+    .about-text-card,
+    .about-card,
+    .contact-card,
+    .contact-form-card,
+    .newsletter-card,
+    .support-donation-card,
+    .currently-card,
+    .merged-health-currently-card,
+    .calendar-wrapper-clean,
+    .reminder-card,
+    .overview-card,
+    .doc-card,
+    .health-item,
+    .game-stat-card,
+    .game-info-card,
+    .skill-card,
+    .skill-category,
+    .timeline-content,
+    .monitor-summary-card,
+    .ops-card,
+    .endpoint-card,
+    .travel-stop,
+    .place-guide-card,
+    .travel-stat,
+    .engineering-quality-overview,
+    .projects-activity-overview,
+    .systems-evidence-card,
+    .systems-principle-card,
+    .eng-building-card,
+    .eng-design-card,
+    .systems-bento-tile,
+    .systems-metric-panel,
+    .systems-hero-stat,
+    .eng-showcase-card,
+    .systems-now-card,
+    .case-study-preview-card,
+    #blog .blog-card,
+    #blog .newsletter-card,
+    #skills .skill-category,
+    #skills-container .skill-category,
+    #projects #github-projects-container .showcase-project-card,
+    #projects #github-projects-container article.showcase-project-card,
+    body.monitor-page .doc-card,
+    body.monitor-page .overview-card,
+    body.monitor-page .ops-card,
+    body.monitor-page .endpoint-card
+  ) {
+  background: #000000 !important;
+  background-color: #000000 !important;
+  background-image: none !important;
+  border-color: var(--lux-border) !important;
+  box-shadow: var(--lux-shadow) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  color: var(--lux-fg) !important;
+}
+
+/* Fallback when data-lg-mode missing — treat as solid luxury */
+html:not([data-lg-mode]):not(.dark)
+  :is(.experience-content, .blog-card, .showcase-project-card, .about-text-card, .contact-card),
+html:not([data-lg-mode]).dark
+  :is(.experience-content, .blog-card, .showcase-project-card, .about-text-card, .contact-card) {
+  box-shadow: var(--lux-shadow) !important;
+}
+
+/* ─── Hover / focus — Apple product interaction ─── */
+@media (hover: hover) and (pointer: fine) {
+  :is(
+    .card,
+    .experience-content,
+    .education-card,
+    .education-content,
+    .stat-card,
+    .blog-card,
+    .publication-card,
+    .award-card,
+    .recommendation-card,
+    .certification-card,
+    .showcase-project-card,
+    .about-highlight-card,
+    .about-text-card,
+    .contact-card,
+    .newsletter-card,
+    .support-donation-card,
+    .skill-category,
+    .timeline-content,
+    .monitor-summary-card,
+    .ops-card,
+    .endpoint-card,
+    .travel-stop,
+    .place-guide-card,
+    .eng-showcase-card,
+    .systems-bento-tile,
+    .systems-evidence-card,
+    .case-study-preview-card,
+    #blog .blog-card,
+    #projects #github-projects-container .showcase-project-card,
+    #projects #github-projects-container article.showcase-project-card,
+    #skills .skill-category,
+    #skills-container .skill-category
+  ):hover,
+  :is(
+    .card,
+    .experience-content,
+    .education-card,
+    .blog-card,
+    .publication-card,
+    .showcase-project-card,
+    .about-text-card,
+    .contact-card,
+    .newsletter-card,
+    .skill-category,
+    #blog .blog-card,
+    #projects #github-projects-container article.showcase-project-card
+  ):focus-within {
+    transform: translateY(-4px) scale(1.005) !important;
+    border-color: var(--lux-blue) !important;
+    box-shadow: var(--lux-shadow-hover) !important;
+  }
+
+  /* Don’t lift tiny media shelf tiles aggressively */
+  .media-card:hover,
+  .currently-music-card:hover,
+  .recent-track-card:hover {
+    transform: translateY(-2px) !important;
+  }
+
+  /* Calendar shell stays planted */
+  .calendar-wrapper-clean:hover,
+  .ios-widget-wrapper:hover {
+    transform: none !important;
+  }
+}
+
+/* Keyboard focus — system blue ring (a11y) */
+:is(
+  .card,
+  .experience-content,
+  .blog-card,
+  .showcase-project-card,
+  .about-text-card,
+  .contact-card,
+  .skill-category,
+  a.showcase-project-card,
+  article.showcase-project-card
+):focus-visible {
+  outline: 2px solid var(--lux-blue) !important;
+  outline-offset: 3px !important;
+  border-color: var(--lux-blue) !important;
+}
+
+/* ─── Typography inside cards ─── */
+:is(
+    .experience-content,
+    .education-card,
+    .blog-card,
+    .publication-card,
+    .award-card,
+    .recommendation-card,
+    .certification-card,
+    .showcase-project-card,
+    .about-text-card,
+    .about-highlight-card,
+    .contact-card,
+    .newsletter-card,
+    .skill-category,
+    .eng-showcase-card,
+    .systems-evidence-card
+  )
+  :is(h2, h3, h4, .card-title, .blog-title, .project-title, .publication-title) {
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Segoe UI', Roboto,
+    'Helvetica Neue', Helvetica, Arial, sans-serif !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.022em !important;
+  line-height: 1.2 !important;
+  color: var(--lux-fg) !important;
+  -webkit-text-fill-color: var(--lux-fg) !important;
+}
+
+:is(
+    .experience-content,
+    .education-card,
+    .blog-card,
+    .publication-card,
+    .showcase-project-card,
+    .about-text-card,
+    .contact-card,
+    .newsletter-card,
+    .skill-category
+  )
+  :is(p, .card-description, .blog-excerpt, .project-description, .section-subtitle) {
+  color: var(--lux-fg-secondary) !important;
+  line-height: 1.47 !important;
+  letter-spacing: -0.016em !important;
+}
+
+/* Meta / labels */
+:is(.experience-content, .blog-card, .publication-card, .showcase-project-card, .certification-card)
+  :is(.meta, .date, .tag, .badge, .label, time, .experience-date, .blog-date) {
+  color: var(--lux-fg-tertiary) !important;
+  font-size: 0.8125rem !important;
+  font-weight: 500 !important;
+  letter-spacing: -0.01em !important;
+}
+
+/* ─── Comfortable product padding (don’t clobber zero-pad media posters) ─── */
+:is(
+  .experience-content,
+  .education-card,
+  .education-content,
+  .blog-card,
+  .publication-card,
+  .award-card,
+  .recommendation-card,
+  .certification-card,
+  .about-text-card,
+  .about-highlight-card,
+  .newsletter-card,
+  .support-donation-card,
+  .skill-category,
+  .stat-card,
+  .timeline-content
+) {
+  padding: var(--lux-pad-block) var(--lux-pad-inline) !important;
+}
+
+/* Project cards often own internal media — keep outer pad 0, polish inner content */
+#projects #github-projects-container .showcase-project-card .project-content,
+#projects #github-projects-container article.showcase-project-card .project-content,
+.showcase-project-card .card-body,
+.showcase-project-card .project-body {
+  padding: 1.15rem 1.25rem 1.35rem !important;
+}
+
+/* ─── Section titles above cards — Apple marketing hierarchy ─── */
+main > section > .container > h2,
+main > section > h2,
+#main-content > section > .container > h2,
+section.section-standard > .container > h2 {
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', sans-serif !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.03em !important;
+  line-height: 1.05 !important;
+}
+
+main > section > .container > .section-subtitle,
+section .section-subtitle {
+  color: var(--lux-fg-secondary) !important;
+  font-size: 1.125rem !important;
+  line-height: 1.45 !important;
+  letter-spacing: -0.016em !important;
+}
+
+/* ─── Tags / chips on cards ─── */
+:is(.experience-content, .showcase-project-card, .blog-card, .skill-category)
+  :is(.tag, .chip, .experience-tag, .project-tag, .skill-tag, .tech-tag) {
+  border-radius: 999px !important;
+  font-weight: 500 !important;
+  letter-spacing: -0.01em !important;
+  border: 1px solid var(--lux-border) !important;
+  background: rgb(120 120 128 / 8%) !important;
+  color: var(--lux-fg-secondary) !important;
+  transition:
+    border-color var(--lux-duration-fast) ease,
+    color var(--lux-duration-fast) ease,
+    background-color var(--lux-duration-fast) ease !important;
+}
+
+html.dark
+  :is(.experience-content, .showcase-project-card, .blog-card, .skill-category)
+  :is(.tag, .chip, .experience-tag, .project-tag, .skill-tag, .tech-tag) {
+  background: rgb(120 120 128 / 16%) !important;
+}
+
+:is(.experience-content, .showcase-project-card, .blog-card)
+  :is(.tag, .chip, .experience-tag, .project-tag):hover {
+  border-color: var(--lux-blue) !important;
+  color: var(--lux-blue) !important;
+  background: var(--lux-blue-soft) !important;
+}
+
+/* ─── CTAs inside cards ─── */
+:is(.blog-card, .showcase-project-card, .newsletter-card, .support-donation-card, .about-text-card)
+  :is(a.btn, .btn-primary, .read-more-btn, .blog-read-btn, .project-action-btn, .project-link) {
+  border-radius: var(--lux-radius-pill) !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.01em !important;
+  min-height: 44px;
+  transition:
+    transform var(--lux-duration-fast) var(--lux-ease),
+    box-shadow var(--lux-duration-fast) var(--lux-ease),
+    background-color var(--lux-duration-fast) ease !important;
+}
+
+/* ─── Balanced liquid glass: keep translucency, refine radius + hover only ─── */
+html[data-lg-mode='balanced']
+  :is(
+    .experience-content,
+    .blog-card,
+    .publication-card,
+    .showcase-project-card,
+    .about-text-card,
+    .skill-category,
+    .award-card,
+    .recommendation-card,
+    .certification-card
+  ) {
+  border-radius: var(--lux-radius) !important;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  html[data-lg-mode='balanced']
+    :is(
+      .experience-content,
+      .blog-card,
+      .publication-card,
+      .showcase-project-card,
+      .about-text-card,
+      .skill-category,
+      .award-card,
+      .certification-card
+    ):hover {
+    transform: translateY(-4px) scale(1.005) !important;
+    border-color: var(--lux-blue) !important;
+  }
+}
+
+/* ─── Reduced motion ─── */
+@media (prefers-reduced-motion: reduce) {
+  :is(
+    .card,
+    .experience-content,
+    .blog-card,
+    .showcase-project-card,
+    .about-text-card,
+    .contact-card,
+    .skill-category,
+    .publication-card,
+    .media-card
+  ),
+  :is(
+    .card,
+    .experience-content,
+    .blog-card,
+    .showcase-project-card,
+    .about-text-card,
+    .contact-card,
+    .skill-category
+  ):hover {
+    transition:
+      border-color 0.15s ease,
+      box-shadow 0.15s ease !important;
+    transform: none !important;
+  }
+}
+
+/* ─── Mobile: slightly tighter radius + padding ─── */
+@media (max-width: 734px) {
+  :root {
+    --lux-radius: 18px;
+    --lux-pad-block: 1.15rem;
+    --lux-pad-inline: 1.15rem;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    :is(.experience-content, .blog-card, .showcase-project-card, .about-text-card):hover {
+      transform: translateY(-2px) !important;
+    }
+  }
+}
+
+/* ─── Contact calendar / reminders: luxury but no runaway lift ─── */
+#contact :is(.calendar-wrapper-clean, .currently-card, .support-donation-card, .contact-card) {
+  border-radius: var(--lux-radius) !important;
+}
+
+html[data-lg-mode='tinted']:not(.dark)
+  #contact
+  :is(.calendar-wrapper-clean, .currently-card, .support-donation-card, .contact-card) {
+  box-shadow: var(--lux-shadow) !important;
+}
+
+html.dark[data-lg-mode='tinted']
+  #contact
+  :is(.calendar-wrapper-clean, .currently-card, .support-donation-card, .contact-card) {
+  box-shadow: var(--lux-shadow) !important;
+}
+
+/* ─── Systems / monitor / travel subpage cards ─── */
+body.systems-page
+  :is(
+    .systems-evidence-card,
+    .systems-principle-card,
+    .systems-bento-tile,
+    .systems-metric-panel,
+    .systems-now-card,
+    .eng-showcase-card,
+    .eng-building-card,
+    .eng-design-card
+  ),
+body.monitor-page :is(.monitor-summary-card, .doc-card, .overview-card, .ops-card, .endpoint-card),
+body.travel-body :is(.travel-stop, .place-guide-card, .travel-stat),
+body.uses-page :is(.uses-control-tile, .card) {
+  border-radius: var(--lux-radius) !important;
+}
+
+html[data-lg-mode='tinted']:not(.dark)
+  body:is(.systems-page, .monitor-page, .travel-body, .uses-page)
+  :is(
+    .systems-evidence-card,
+    .systems-bento-tile,
+    .eng-showcase-card,
+    .monitor-summary-card,
+    .doc-card,
+    .ops-card,
+    .travel-stop,
+    .place-guide-card
+  ) {
+  background: #ffffff !important;
+  border-color: var(--lux-border) !important;
+  box-shadow: var(--lux-shadow) !important;
+}
+
+html.dark[data-lg-mode='tinted']
+  body:is(.systems-page, .monitor-page, .travel-body, .uses-page)
+  :is(
+    .systems-evidence-card,
+    .systems-bento-tile,
+    .eng-showcase-card,
+    .monitor-summary-card,
+    .doc-card,
+    .ops-card,
+    .travel-stop,
+    .place-guide-card
+  ) {
+  background: #000000 !important;
+  border-color: var(--lux-border) !important;
+  box-shadow: var(--lux-shadow) !important;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   ULTRA FINAL LUX SHADOW — beats wwdc/theme box-shadow:none
+   ════════════════════════════════════════════════════════════════ */
+html[data-lg-mode='tinted']:not(.dark)
+  body
+  :is(
+    .experience-content,
+    .education-card,
+    .education-content,
+    .stat-card,
+    .blog-card,
+    .publication-card,
+    .award-card,
+    .recommendation-card,
+    .certification-card,
+    .showcase-project-card,
+    .about-highlight-card,
+    .about-text-card,
+    .contact-card,
+    .newsletter-card,
+    .support-donation-card,
+    .currently-card,
+    .skill-category,
+    .timeline-content,
+    .monitor-summary-card,
+    .ops-card,
+    .endpoint-card,
+    .travel-stop,
+    .place-guide-card,
+    .eng-showcase-card,
+    .systems-bento-tile,
+    .systems-evidence-card,
+    #blog .blog-card,
+    #blog .newsletter-card,
+    #skills .skill-category,
+    #skills-container .skill-category,
+    #projects #github-projects-container .showcase-project-card,
+    #projects #github-projects-container article.showcase-project-card
+  ),
+html[data-lg-mode='tinted']:not(.dark)
+  body
+  #projects
+  #github-projects-container
+  article.showcase-project-card {
+  box-shadow:
+    0 1px 0 rgb(255 255 255 / 70%) inset,
+    0 1px 2px rgb(0 0 0 / 4%),
+    0 8px 24px rgb(0 0 0 / 6%),
+    0 20px 48px rgb(15 23 42 / 4%) !important;
+}
+
+html.dark[data-lg-mode='tinted']
+  body
+  :is(
+    .experience-content,
+    .education-card,
+    .education-content,
+    .stat-card,
+    .blog-card,
+    .publication-card,
+    .award-card,
+    .recommendation-card,
+    .certification-card,
+    .showcase-project-card,
+    .about-highlight-card,
+    .about-text-card,
+    .contact-card,
+    .newsletter-card,
+    .support-donation-card,
+    .currently-card,
+    .skill-category,
+    .timeline-content,
+    .monitor-summary-card,
+    .ops-card,
+    .endpoint-card,
+    .travel-stop,
+    .place-guide-card,
+    .eng-showcase-card,
+    .systems-bento-tile,
+    .systems-evidence-card,
+    #blog .blog-card,
+    #blog .newsletter-card,
+    #skills .skill-category,
+    #skills-container .skill-category,
+    #projects #github-projects-container .showcase-project-card,
+    #projects #github-projects-container article.showcase-project-card
+  ),
+html.dark[data-lg-mode='tinted']
+  body
+  #projects
+  #github-projects-container
+  article.showcase-project-card {
+  box-shadow:
+    0 1px 0 rgb(255 255 255 / 6%) inset,
+    0 1px 0 rgb(0 0 0 / 40%),
+    0 12px 40px rgb(0 0 0 / 55%) !important;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  html[data-lg-mode='tinted']:not(.dark)
+    body
+    :is(
+      .experience-content,
+      .blog-card,
+      .publication-card,
+      .showcase-project-card,
+      .about-text-card,
+      .contact-card,
+      .skill-category,
+      .award-card,
+      .certification-card,
+      #projects #github-projects-container article.showcase-project-card
+    ):hover {
+    box-shadow:
+      0 1px 0 rgb(255 255 255 / 80%) inset,
+      0 2px 6px rgb(0 113 227 / 8%),
+      0 14px 36px rgb(0 0 0 / 8%),
+      0 28px 64px rgb(0 113 227 / 10%) !important;
+    border-color: #0071e3 !important;
+  }
+
+  html.dark[data-lg-mode='tinted']
+    body
+    :is(
+      .experience-content,
+      .blog-card,
+      .publication-card,
+      .showcase-project-card,
+      .about-text-card,
+      .contact-card,
+      .skill-category,
+      .award-card,
+      .certification-card,
+      #projects #github-projects-container article.showcase-project-card
+    ):hover {
+    box-shadow:
+      0 1px 0 rgb(255 255 255 / 10%) inset,
+      0 0 0 1px rgb(10 132 255 / 18%),
+      0 16px 48px rgb(0 0 0 / 65%),
+      0 0 40px rgb(10 132 255 / 12%) !important;
+    border-color: #0a84ff !important;
+  }
+}
+
+/* ════════════════════════════════════════════════════════════════
+
+/* ════════════════════════════════════════════════════════════════
+   PAGE CANVAS FINAL — solid white (light) / solid black (dark) only
+   No gray canvases, no ambient mesh. Glass lives on cards only.
+   ════════════════════════════════════════════════════════════════ */
+
+html:is([data-lg-mode='clear'], [data-lg-mode='balanced'], [data-lg-mode='tinted']):not(.dark),
+html:not(.dark) {
+  --theme-page-bg: #ffffff;
+  --bg-primary: #ffffff;
+  --bg-secondary: #ffffff;
+}
+
+html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced'], [data-lg-mode='tinted']),
+html.dark {
+  --theme-page-bg: #000000;
+  --bg-primary: #000000;
+  --bg-secondary: #000000;
+}
+
+html:not(.dark),
+html:not(.dark) body,
+html:not(.dark) footer,
+html:not(.dark) .page-wrapper,
+html:is([data-lg-mode='clear'], [data-lg-mode='balanced'], [data-lg-mode='tinted']):not(.dark),
+html:is([data-lg-mode='clear'], [data-lg-mode='balanced'], [data-lg-mode='tinted']):not(.dark) body,
+html:is([data-lg-mode='clear'], [data-lg-mode='balanced'], [data-lg-mode='tinted']):not(.dark)
+  footer,
+html:is([data-lg-mode='clear'], [data-lg-mode='balanced'], [data-lg-mode='tinted']):not(.dark)
+  .page-wrapper,
+html:not(.dark) body:is(.systems-page, .monitor-page, .uses-page, .travel-body, .travel-page),
+html:not(.dark) body:is(.systems-page, .monitor-page, .uses-page, .travel-body, .travel-page) main,
+html:not(.dark) body.systems-page .systems-shell {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
+}
+
+html.dark,
+html.dark body,
+html.dark footer,
+html.dark .page-wrapper,
+html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced'], [data-lg-mode='tinted']),
+html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced'], [data-lg-mode='tinted']) body,
+html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced'], [data-lg-mode='tinted']) footer,
+html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced'], [data-lg-mode='tinted'])
+  .page-wrapper,
+html.dark body:is(.systems-page, .monitor-page, .uses-page, .travel-body, .travel-page),
+html.dark body:is(.systems-page, .monitor-page, .uses-page, .travel-body, .travel-page) main,
+html.dark body.systems-page .systems-shell {
+  background: #000000 !important;
+  background-color: #000000 !important;
+  background-image: none !important;
+}
+
+/* Section shells transparent so solid page canvas shows; cards keep their own fills */
+html:is([data-lg-mode='clear'], [data-lg-mode='balanced']) body main,
+html:is([data-lg-mode='clear'], [data-lg-mode='balanced']) body #main-content,
+html:is([data-lg-mode='clear'], [data-lg-mode='balanced']) body main > section,
+html:is([data-lg-mode='clear'], [data-lg-mode='balanced']) body #main-content > section,
+html:is([data-lg-mode='clear'], [data-lg-mode='balanced'])
+  body
+  :is(
+    #home,
+    #home.hero-section,
+    #home.home-hero,
+    section#home,
+    #about,
+    #skills,
+    #experience,
+    #projects,
+    #engineering,
+    #education,
+    #publications,
+    #awards,
+    #recommendations,
+    #certifications,
+    #blog,
+    #contact,
+    #game,
+    #debug-runner-section
+  ) {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+}
+
+/* Tinted: solid shells too (full solid stack) */
+html[data-lg-mode='tinted']:not(.dark) body main,
+html[data-lg-mode='tinted']:not(.dark) body #main-content,
+html[data-lg-mode='tinted']:not(.dark) body #home,
+html[data-lg-mode='tinted']:not(.dark) body section#home,
+html:not([data-lg-mode]):not(.dark) body main,
+html:not([data-lg-mode]):not(.dark) body #main-content,
+html:not([data-lg-mode]):not(.dark) body #home {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
+}
+
+html.dark[data-lg-mode='tinted'] body main,
+html.dark[data-lg-mode='tinted'] body #main-content,
+html.dark[data-lg-mode='tinted'] body #home,
+html.dark[data-lg-mode='tinted'] body section#home,
+html.dark:not([data-lg-mode]) body main,
+html.dark:not([data-lg-mode]) body #main-content,
+html.dark:not([data-lg-mode]) body #home {
+  background: #000000 !important;
+  background-color: #000000 !important;
+  background-image: none !important;
+}
+
+/* Tinted cards: kill residual blur (perf + true solid materials) */
+html[data-lg-mode='tinted']
+  body
+  :is(
+    .card,
+    .experience-content,
+    .education-card,
+    .stat-card,
+    .blog-card,
+    .showcase-project-card,
+    .about-text-card,
+    .contact-card,
+    .skill-category,
+    .newsletter-card,
+    .publication-card,
+    .award-card,
+    .recommendation-card,
+    .certification-card,
+    .timeline-content
+  ) {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}

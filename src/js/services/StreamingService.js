@@ -44,29 +44,40 @@ class StreamingService extends EventTarget {
 
     const controller = new AbortController();
     this._activeController = controller;
-    const timeoutMs = Number(options.timeoutMs) > 0 ? Number(options.timeoutMs) : 45000;
+    // Align with AssistMe chat.js (90s); idle-reset on each chunk so long
+    // generations do not false-timeout while data is still flowing.
+    const timeoutMs = Number(options.timeoutMs) > 0 ? Number(options.timeoutMs) : 90_000;
     let timeoutId = null;
 
-    const abort = (reason = 'user') => {
+    const clearIdleTimer = () => {
       if (timeoutId) {
         clearTimeout(timeoutId);
         timeoutId = null;
       }
+    };
+
+    const armIdleTimer = () => {
+      clearIdleTimer();
+      timeoutId = setTimeout(() => {
+        if (this._activeController === controller) {
+          this._emit('error', {
+            code: 'TIMEOUT',
+            message: `Request timed out after ${Math.round(timeoutMs / 1000)}s idle. Please try again.`,
+          });
+          abort('timeout');
+        }
+      }, timeoutMs);
+    };
+
+    const abort = (reason = 'user') => {
+      clearIdleTimer();
       controller.abort();
       this._activeController = null;
       this.dispatchEvent(new CustomEvent('abort', { detail: { reason } }));
     };
 
     this._emit('connecting', { url });
-    timeoutId = setTimeout(() => {
-      if (this._activeController === controller) {
-        this._emit('error', {
-          code: 'TIMEOUT',
-          message: `Request timed out after ${Math.round(timeoutMs / 1000)}s. Please try again.`,
-        });
-        abort('timeout');
-      }
-    }, timeoutMs);
+    armIdleTimer();
 
     try {
       const resp = await fetch(url, {
@@ -94,15 +105,16 @@ class StreamingService extends EventTarget {
           status: resp.status,
         });
         this._activeController = null;
+        clearIdleTimer();
         return abort;
       }
 
-      await this._consumeStream(resp.body, controller.signal);
+      await this._consumeStream(resp.body, controller.signal, armIdleTimer);
     } catch (err) {
       if (err.name === 'AbortError') {
         // Expected — user cancelled or timeout
         this._activeController = null;
-        if (timeoutId) clearTimeout(timeoutId);
+        clearIdleTimer();
         return abort;
       }
       this._emit('error', {
@@ -111,7 +123,7 @@ class StreamingService extends EventTarget {
       });
     }
 
-    if (timeoutId) clearTimeout(timeoutId);
+    clearIdleTimer();
     this._activeController = null;
     return abort;
   }
@@ -132,7 +144,7 @@ class StreamingService extends EventTarget {
   // Internal helpers
   // ─────────────────────────────────────────────
 
-  async _consumeStream(readableBody, signal) {
+  async _consumeStream(readableBody, signal, onActivity) {
     const reader = readableBody.getReader();
     const decoder = new TextDecoder();
     let buffer = '';
@@ -141,6 +153,8 @@ class StreamingService extends EventTarget {
       const readNext = async () => {
         const { done, value } = await reader.read();
         if (done || signal.aborted) return;
+
+        if (typeof onActivity === 'function') onActivity();
 
         buffer += decoder.decode(value, { stream: true });
         const lines = buffer.split('\n');

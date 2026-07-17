@@ -4,20 +4,52 @@
  * Tokens align with apple.com product pages (SF Pro, #1d1d1f / #f5f5f7).
  */
 
+/* PAGE BG VARS — style.css #home gradient uses --bg-primary/--bg-secondary */
+html:is([data-lg-mode='clear'], [data-lg-mode='balanced']):not(.dark) {
+  --bg-primary: #ffffff !important;
+  --bg-secondary: #ffffff !important;
+  --theme-page-bg: #ffffff !important;
+  --bg-primary-dark: #000000 !important;
+}
+html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced']) {
+  --bg-primary: #000000 !important;
+  --bg-secondary: #000000 !important;
+  --theme-page-bg: #000000 !important;
+  --bg-primary-dark: #000000 !important;
+}
+html[data-lg-mode='tinted']:not(.dark),
+html:not([data-lg-mode]):not(.dark) {
+  --bg-primary: #ffffff !important;
+  --bg-secondary: #ffffff !important;
+  --theme-page-bg: #ffffff !important;
+}
+html.dark[data-lg-mode='tinted'],
+html.dark:not([data-lg-mode]) {
+  --bg-primary: #000000 !important;
+  --bg-secondary: #000000 !important;
+  --theme-page-bg: #000000 !important;
+  --bg-primary-dark: #000000 !important;
+}
+
 /* ─── Canvas & base type ─────────────────────────────────────────── */
-/* Entire site page background: solid white (light) / solid black (dark) */
+/*
+  Page canvas is mode-aware (must stay last-load for type, but not kill clear glass):
+  - all modes: solid white (light) / solid black (dark) page canvas
+  - clear / balanced: section shells transparent so glass cards blur the page
+*/
+
 html {
+  color-scheme: light;
   background: #ffffff !important;
   background-color: #ffffff !important;
   background-image: none !important;
-  color-scheme: light;
 }
 
 html.dark {
+  color-scheme: dark;
   background: #000000 !important;
   background-color: #000000 !important;
   background-image: none !important;
-  color-scheme: dark;
 }
 
 html,
@@ -64,26 +96,110 @@ html.dark #main-content {
   background-image: none !important;
 }
 
-/* Final page-canvas lock (beats deferred liquid-glass sheets) */
-html:not(.dark),
-html:not(.dark) body,
-html:not(.dark) main,
-html:not(.dark) #main-content,
-html:not(.dark) footer,
-html:not(.dark) .page-wrapper {
+/* Tinted (default): solid product canvas everywhere */
+html[data-lg-mode='tinted']:not(.dark),
+html[data-lg-mode='tinted']:not(.dark) body,
+html[data-lg-mode='tinted']:not(.dark) main,
+html[data-lg-mode='tinted']:not(.dark) #main-content,
+html[data-lg-mode='tinted']:not(.dark) footer,
+html[data-lg-mode='tinted']:not(.dark) .page-wrapper,
+html:not([data-lg-mode]):not(.dark),
+html:not([data-lg-mode]):not(.dark) body,
+html:not([data-lg-mode]):not(.dark) main,
+html:not([data-lg-mode]):not(.dark) #main-content,
+html:not([data-lg-mode]):not(.dark) footer {
   background: #ffffff !important;
   background-color: #ffffff !important;
   background-image: none !important;
 }
 
-html.dark,
-html.dark body,
-html.dark main,
-html.dark #main-content,
-html.dark footer,
-html.dark .page-wrapper {
+html.dark[data-lg-mode='tinted'],
+html.dark[data-lg-mode='tinted'] body,
+html.dark[data-lg-mode='tinted'] main,
+html.dark[data-lg-mode='tinted'] #main-content,
+html.dark[data-lg-mode='tinted'] footer,
+html.dark[data-lg-mode='tinted'] .page-wrapper,
+html.dark:not([data-lg-mode]),
+html.dark:not([data-lg-mode]) body,
+html.dark:not([data-lg-mode]) main,
+html.dark:not([data-lg-mode]) #main-content,
+html.dark:not([data-lg-mode]) footer {
   background: #000000 !important;
   background-color: #000000 !important;
+  background-image: none !important;
+}
+
+/* Clear / balanced light: solid white page canvas */
+html:is([data-lg-mode='clear'], [data-lg-mode='balanced']):not(.dark),
+html:is([data-lg-mode='clear'], [data-lg-mode='balanced']):not(.dark) body,
+html:is([data-lg-mode='clear'], [data-lg-mode='balanced']):not(.dark) footer,
+html:is([data-lg-mode='clear'], [data-lg-mode='balanced']):not(.dark) .page-wrapper {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
+}
+
+html:is([data-lg-mode='clear'], [data-lg-mode='balanced']):not(.dark) main,
+html:is([data-lg-mode='clear'], [data-lg-mode='balanced']):not(.dark) #main-content,
+html:is([data-lg-mode='clear'], [data-lg-mode='balanced']):not(.dark) main > section,
+html:is([data-lg-mode='clear'], [data-lg-mode='balanced']):not(.dark) #main-content > section,
+html:is([data-lg-mode='clear'], [data-lg-mode='balanced']):not(.dark)
+  :is(
+    #home,
+    #about,
+    #skills,
+    #experience,
+    #projects,
+    #engineering,
+    #education,
+    #publications,
+    #awards,
+    #recommendations,
+    #certifications,
+    #blog,
+    #contact,
+    #game,
+    #debug-runner-section
+  ) {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+}
+
+/* Clear / balanced dark: solid black page canvas */
+html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced']),
+html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced']) body,
+html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced']) footer,
+html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced']) .page-wrapper {
+  background: #000000 !important;
+  background-color: #000000 !important;
+  background-image: none !important;
+}
+
+html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced']) main,
+html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced']) #main-content,
+html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced']) main > section,
+html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced']) #main-content > section,
+html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced'])
+  :is(
+    #home,
+    #about,
+    #skills,
+    #experience,
+    #projects,
+    #engineering,
+    #education,
+    #publications,
+    #awards,
+    #recommendations,
+    #certifications,
+    #blog,
+    #contact,
+    #game,
+    #debug-runner-section
+  ) {
+  background: transparent !important;
+  background-color: transparent !important;
   background-image: none !important;
 }
 
@@ -704,7 +820,7 @@ html.dark .about-tab-btn.active,
 html.dark .about-tab-btn[aria-selected='true'] {
   color: #000000 !important;
   -webkit-text-fill-color: #000000 !important;
-  background: #f5f5f7 !important;
+  background: #ffffff !important;
 }
 
 /* ─── Footer ─────────────────────────────────────────────────────── */
@@ -812,15 +928,15 @@ html.dark[data-lg-mode] #chatbot-widget.visible {
 
 /* Keep the composer pill readable (not fully transparent on solid shell) */
 #chatbot-widget .input-wrapper {
-  background: #f2f2f7 !important;
-  background-color: #f2f2f7 !important;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
   color: inherit !important;
   border: 1px solid #e5e5ea !important;
 }
 
 html.dark #chatbot-widget .input-wrapper {
-  background: #1c1c1e !important;
-  background-color: #1c1c1e !important;
+  background: #000000 !important;
+  background-color: #000000 !important;
   border-color: #2c2c2e !important;
 }
 
@@ -988,4 +1104,75 @@ html.dark .a11y-toolbar #website-share-toggle {
   background: #000000 !important;
   background-color: #000000 !important;
   border-color: #2c2c2e !important;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   PAGE BG FINAL AUTHORITY
+   Ensures clear soft canvas + transparent shells win after any late CSS.
+   ════════════════════════════════════════════════════════════════ */
+
+html:is([data-lg-mode='clear'], [data-lg-mode='balanced']):not(.dark) body #home,
+html:is([data-lg-mode='clear'], [data-lg-mode='balanced']):not(.dark) body #home.hero-section,
+html:is([data-lg-mode='clear'], [data-lg-mode='balanced']):not(.dark) body section#home,
+html:is([data-lg-mode='clear'], [data-lg-mode='balanced']):not(.dark) body main,
+html:is([data-lg-mode='clear'], [data-lg-mode='balanced']):not(.dark) body #main-content {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+}
+
+html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced']) body #home,
+html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced']) body #home.hero-section,
+html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced']) body section#home,
+html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced']) body main,
+html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced']) body #main-content {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+}
+
+/* Subpages */
+html:is([data-lg-mode='clear'], [data-lg-mode='balanced']):not(.dark)
+  body:is(.systems-page, .monitor-page, .uses-page, .travel-body, .travel-page),
+html:is([data-lg-mode='clear'], [data-lg-mode='balanced']):not(.dark)
+  body:is(.systems-page, .monitor-page, .uses-page, .travel-body, .travel-page)
+  main,
+html:is([data-lg-mode='clear'], [data-lg-mode='balanced']):not(.dark)
+  body.systems-page
+  .systems-shell {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
+}
+
+html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced'])
+  body:is(.systems-page, .monitor-page, .uses-page, .travel-body, .travel-page),
+html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced'])
+  body:is(.systems-page, .monitor-page, .uses-page, .travel-body, .travel-page)
+  main,
+html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced']) body.systems-page .systems-shell {
+  background-color: #000000 !important;
+  background-image: none !important;
+}
+
+html[data-lg-mode='tinted']:not(.dark)
+  body:is(.systems-page, .monitor-page, .uses-page, .travel-body, .travel-page),
+html[data-lg-mode='tinted']:not(.dark)
+  body:is(.systems-page, .monitor-page, .uses-page, .travel-body, .travel-page)
+  main,
+html[data-lg-mode='tinted']:not(.dark) body.systems-page .systems-shell {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
+}
+
+html.dark[data-lg-mode='tinted']
+  body:is(.systems-page, .monitor-page, .uses-page, .travel-body, .travel-page),
+html.dark[data-lg-mode='tinted']
+  body:is(.systems-page, .monitor-page, .uses-page, .travel-body, .travel-page)
+  main,
+html.dark[data-lg-mode='tinted'] body.systems-page .systems-shell {
+  background: #000000 !important;
+  background-color: #000000 !important;
+  background-image: none !important;
 }

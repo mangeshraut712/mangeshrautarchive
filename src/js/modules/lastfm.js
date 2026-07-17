@@ -1,5 +1,6 @@
 import { analytics } from '../services/AnalyticsService.js';
 import { isPerformanceAudit } from '../utils/perf-audit.js';
+import { escapeHtml as escapeHtmlShared } from '../utils/escape-html.js';
 
 const LASTFM_CDN_ORIGIN = 'https://lastfm.freetls.fastly.net';
 
@@ -95,12 +96,7 @@ class LastFmService {
   }
 
   escapeHtml(value = '') {
-    return String(value)
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#39;');
+    return escapeHtmlShared(value);
   }
 
   getArtistName(track) {

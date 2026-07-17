@@ -1,5 +1,6 @@
 import os
 import asyncio
+import hmac
 from datetime import datetime, timedelta, timezone
 from typing import Any, Dict, Optional
 
@@ -49,11 +50,11 @@ HEALTH_SUMMARY_REFRESH_COOLDOWN_MINUTES = int(
 HEALTH_SUMMARY_REFRESH_TIMEOUT_SECONDS = float(
     os.getenv("HEALTH_SUMMARY_REFRESH_TIMEOUT_SECONDS", "12")
 )
-# Default ON so public summary stays current when WHOOP/Withings tokens are connected.
-# Disable with HEALTH_SUMMARY_AUTO_REFRESH_ON_READ=false if cost/latency is a concern.
+# Default OFF: public GET must not trigger WHOOP/Withings token refresh.
+# Enable with HEALTH_SUMMARY_AUTO_REFRESH_ON_READ=true only if intentional; prefer cron/admin sync.
 HEALTH_SUMMARY_AUTO_REFRESH_ON_READ = os.getenv(
-    "HEALTH_SUMMARY_AUTO_REFRESH_ON_READ", "true"
-).lower() in {"1", "true", "yes"}
+    "HEALTH_SUMMARY_AUTO_REFRESH_ON_READ", "false"
+).lower() in ("1", "true", "yes", "on")
 HEALTH_SUMMARY_SYNC_STATE_PROVIDER = "health_vitals"
 
 
@@ -747,9 +748,13 @@ async def google_calendar_webhook(request: Request):
     # Fail closed: refuse webhooks until a watch channel is fully registered.
     if not expected_channel or not expected_token:
         raise HTTPException(status_code=403, detail="Calendar webhook rejected.")
-    if channel_id != expected_channel:
+    if len(channel_id) != len(expected_channel) or not hmac.compare_digest(
+        channel_id, expected_channel
+    ):
         raise HTTPException(status_code=403, detail="Unknown calendar webhook channel.")
-    if channel_token != expected_token:
+    if len(channel_token) != len(expected_token) or not hmac.compare_digest(
+        channel_token, expected_token
+    ):
         raise HTTPException(status_code=403, detail="Invalid calendar webhook token.")
 
     await sync_google_calendar_availability()

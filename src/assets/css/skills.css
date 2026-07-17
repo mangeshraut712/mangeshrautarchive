@@ -86,32 +86,12 @@ html.dark .skill-category {
   border: 1px solid var(--theme-card-border, rgb(255 255 255 / 12%));
 }
 
-/* Category section cards — solid theme surfaces in every glass mode */
-.skill-category,
-html:not(.dark) :is(#skills .skill-category, #skills-container .skill-category) {
-  background: #ffffff !important;
-  background-color: #ffffff !important;
-  background-image: none !important;
-  box-shadow: none !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-  isolation: isolate;
-}
-
-html.dark .skill-category,
-html.dark :is(#skills .skill-category, #skills-container .skill-category) {
-  background: #000000 !important;
-  background-color: #000000 !important;
-  background-image: none !important;
-  box-shadow: none !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-}
-
-/* Tinted mode — solid panels (clear/balanced use liquid glass) */
-html[data-lg-mode='tinted'] .skill-category,
-html[data-lg-mode='tinted'] #skills .skill-category,
-html[data-lg-mode='tinted'] #skills-container .skill-category {
+/* Category cards — solid only when tinted; clear/balanced glass from liquid-glass-modes */
+html[data-lg-mode='tinted']:not(.dark) .skill-category,
+html[data-lg-mode='tinted']:not(.dark) #skills .skill-category,
+html[data-lg-mode='tinted']:not(.dark) #skills-container .skill-category,
+html:not([data-lg-mode]):not(.dark) .skill-category,
+html:not([data-lg-mode]):not(.dark) #skills .skill-category {
   background: #ffffff !important;
   background-color: #ffffff !important;
   background-image: none !important;
@@ -123,9 +103,16 @@ html[data-lg-mode='tinted'] #skills-container .skill-category {
 
 html.dark[data-lg-mode='tinted'] .skill-category,
 html.dark[data-lg-mode='tinted'] #skills .skill-category,
-html.dark[data-lg-mode='tinted'] #skills-container .skill-category {
+html.dark[data-lg-mode='tinted'] #skills-container .skill-category,
+html.dark:not([data-lg-mode]) .skill-category,
+html.dark:not([data-lg-mode]) #skills .skill-category {
   background: #000000 !important;
   background-color: #000000 !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  isolation: isolate;
 }
 
 .skill-category-header {
@@ -309,37 +296,12 @@ html.dark .skill-scroll-container {
   }
 }
 
-html:not(.dark)
-  :is(
-    #skills-container .skill-badge,
-    .skill-badge,
-    #skills-container .skill-scroll-wrapper .skill-badge
-  ) {
-  background: #ffffff !important;
-  background-color: #ffffff !important;
-  background-image: none !important;
-  box-shadow: none !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-}
-
-html.dark
-  :is(
-    #skills-container .skill-badge,
-    .skill-badge,
-    #skills-container .skill-scroll-wrapper .skill-badge
-  ) {
-  background: #000000 !important;
-  background-color: #000000 !important;
-  background-image: none !important;
-  box-shadow: none !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-}
-
-html[data-lg-mode='tinted'] #skills-container .skill-badge,
-html[data-lg-mode='tinted'] .skill-badge,
-html[data-lg-mode='tinted'] #skills-container .skill-scroll-wrapper .skill-badge {
+/* Badges stay solid chips in tinted; clear/balanced inherit glass tokens if any */
+html[data-lg-mode='tinted']:not(.dark) #skills-container .skill-badge,
+html[data-lg-mode='tinted']:not(.dark) .skill-badge,
+html[data-lg-mode='tinted']:not(.dark) #skills-container .skill-scroll-wrapper .skill-badge,
+html:not([data-lg-mode]):not(.dark) #skills-container .skill-badge,
+html:not([data-lg-mode]):not(.dark) .skill-badge {
   background: #ffffff !important;
   background-color: #ffffff !important;
   background-image: none !important;
@@ -350,9 +312,15 @@ html[data-lg-mode='tinted'] #skills-container .skill-scroll-wrapper .skill-badge
 
 html.dark[data-lg-mode='tinted'] #skills-container .skill-badge,
 html.dark[data-lg-mode='tinted'] .skill-badge,
-html.dark[data-lg-mode='tinted'] #skills-container .skill-scroll-wrapper .skill-badge {
+html.dark[data-lg-mode='tinted'] #skills-container .skill-scroll-wrapper .skill-badge,
+html.dark:not([data-lg-mode]) #skills-container .skill-badge,
+html.dark:not([data-lg-mode]) .skill-badge {
   background: #000000 !important;
   background-color: #000000 !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
 }
 
 .skill-scroll-wrapper .skill-badge {

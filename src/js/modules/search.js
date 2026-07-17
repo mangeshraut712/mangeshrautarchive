@@ -438,6 +438,9 @@ class PortfolioSearch {
       this.searchToggle.setAttribute('aria-expanded', 'true');
     }
     this.searchInput?.setAttribute('aria-expanded', 'true');
+    // Keep keyboard/SR focus inside the modal (static overlay never gets MutationObserver trap)
+    this._setPageInert(true);
+    this._bindFocusTrap();
     setTimeout(() => {
       this.searchInput?.focus();
     }, 100);
@@ -448,6 +451,8 @@ class PortfolioSearch {
     this.searchOverlay.classList.remove('active');
     this.searchOverlay.style.setProperty('display', 'none', 'important');
     this.searchOverlay.setAttribute('aria-hidden', 'true');
+    this._unbindFocusTrap();
+    this._setPageInert(false);
     if (this.searchToggle) {
       this.searchToggle.setAttribute('aria-expanded', 'false');
     }
@@ -466,6 +471,69 @@ class PortfolioSearch {
       } catch {
         this.searchToggle.focus();
       }
+    }
+  }
+
+  _setPageInert(inert) {
+    const main = document.getElementById('main-content') || document.querySelector('main');
+    const chrome = [
+      main,
+      document.querySelector('header'),
+      document.querySelector('nav'),
+      document.getElementById('chatbot-toggle'),
+      document.querySelector('.chatbot-container'),
+      document.querySelector('footer'),
+    ].filter(Boolean);
+    for (const el of chrome) {
+      if (el === this.searchOverlay || this.searchOverlay?.contains(el)) continue;
+      if (inert) {
+        el.setAttribute('inert', '');
+      } else {
+        el.removeAttribute('inert');
+      }
+    }
+  }
+
+  _focusableInOverlay() {
+    if (!this.searchOverlay) return [];
+    const sel =
+      'a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])';
+    return Array.from(this.searchOverlay.querySelectorAll(sel)).filter(
+      el => !el.hasAttribute('disabled') && el.offsetParent !== null
+    );
+  }
+
+  _bindFocusTrap() {
+    this._unbindFocusTrap();
+    this._focusTrapHandler = e => {
+      if (e.key !== 'Tab' || !this.searchOverlay?.classList.contains('active')) return;
+      const nodes = this._focusableInOverlay();
+      if (!nodes.length) return;
+      const first = nodes[0];
+      const last = nodes[nodes.length - 1];
+      if (e.shiftKey) {
+        if (
+          document.activeElement === first ||
+          !this.searchOverlay.contains(document.activeElement)
+        ) {
+          e.preventDefault();
+          last.focus();
+        }
+      } else if (
+        document.activeElement === last ||
+        !this.searchOverlay.contains(document.activeElement)
+      ) {
+        e.preventDefault();
+        first.focus();
+      }
+    };
+    document.addEventListener('keydown', this._focusTrapHandler, true);
+  }
+
+  _unbindFocusTrap() {
+    if (this._focusTrapHandler) {
+      document.removeEventListener('keydown', this._focusTrapHandler, true);
+      this._focusTrapHandler = null;
     }
   }
 

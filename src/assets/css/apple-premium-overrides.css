@@ -40,11 +40,11 @@ html body #blog div.newsletter-card,
 html body #contact div.contact-card,
 html body #contact div.support-donation-card,
 html body #contact div.media-card {
-  border-radius: 20px !important;
+  border-radius: 22px !important;
   transition:
-    transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
-    border-color 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
-    box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+    transform 0.42s cubic-bezier(0.32, 0.72, 0, 1),
+    border-color 0.22s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.42s cubic-bezier(0.32, 0.72, 0, 1) !important;
 }
 
 /* Hover Effects - Uniform Lift (blue border glow in wwdc26 §15) */
@@ -85,7 +85,7 @@ html body #blog div.newsletter-card:hover,
 html body #contact div.contact-card:hover,
 html body #contact div.support-donation-card:hover,
 html body #contact div.media-card:hover {
-  transform: translateY(-5px) !important;
+  transform: translateY(-4px) scale(1.005) !important;
 }
 
 html.dark .experience-content:hover,
@@ -124,7 +124,7 @@ html.dark body #blog div.newsletter-card:hover,
 html.dark body #contact div.contact-card:hover,
 html.dark body #contact div.support-donation-card:hover,
 html.dark body #contact div.media-card:hover {
-  transform: translateY(-5px) !important;
+  transform: translateY(-4px) scale(1.005) !important;
 }
 
 /* Maintain specific status borders for health items */
@@ -810,7 +810,7 @@ html.dark .calendar-card {
 }
 
 .calendar-card:hover {
-  transform: translateY(-5px) !important;
+  transform: translateY(-4px) scale(1.005) !important;
   box-shadow: 0 20px 40px rgb(0 0 0 / 12%) !important;
 }
 
@@ -1806,7 +1806,7 @@ html.dark .experience-icon {
 /* Badge Hover — blue border only, no glow/shadow frame */
 #skills-container .skill-badge:hover,
 .skill-badge:hover {
-  transform: translateY(-5px) !important;
+  transform: translateY(-4px) scale(1.005) !important;
   box-shadow: none !important;
   border: 1px solid #0071e3 !important;
   border-width: 1px !important;

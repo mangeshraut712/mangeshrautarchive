@@ -1,11 +1,11 @@
 /**
  * Early Liquid Glass boot — runs before paint to set data-lg-mode and core tokens
  * from localStorage (matches liquid-glass-tokens.js / accessibility slider).
- * Default: balanced liquid glass (42) — Apple-like frosted material.
+ * Default: tinted solid (100) — max readability; Clear slider = full liquid glass.
  */
 (function liquidGlassBoot() {
   const root = document.documentElement;
-  const DEFAULT_TINT = 42;
+  const DEFAULT_TINT = 100;
   let stored = DEFAULT_TINT;
 
   try {
@@ -38,7 +38,7 @@
       }
     }
   } catch (_error) {
-    // Storage unavailable — default balanced glass.
+    // Storage unavailable — default tinted solid.
   }
 
   const t = stored / 100;
@@ -53,22 +53,26 @@
 
   if (t <= 0.12) {
     root.dataset.lgMode = 'clear';
-    root.style.setProperty('--lg-card-light-alpha', `${Math.round(18 + t * 24)}%`);
-    root.style.setProperty('--lg-card-dark-alpha', `${Math.round(22 + t * 24)}%`);
-    root.style.setProperty('--lg-specular-light', `${Math.round(74 + clear * 18)}%`);
-    root.style.setProperty('--lg-specular-dark', `${Math.round(14 + clear * 12)}%`);
-    root.style.setProperty('--lg-card-shadow-light', `${Math.round(12 + clear * 8)}%`);
-    root.style.setProperty('--lg-card-shadow-dark', `${Math.round(50 + clear * 10)}%`);
-    root.style.setProperty('--lg-card-highlight-light', `${Math.round(78 + clear * 14)}%`);
-    root.style.setProperty('--lg-card-highlight-dark', `${Math.round(16 + clear * 10)}%`);
-    root.style.setProperty('--lg-light-fill', `${6 + t * 36}%`);
-    root.style.setProperty('--lg-dark-fill', `${10 + t * 32}%`);
-    root.style.setProperty('--lg-nav-light-fill', `${8 + t * 32}%`);
-    root.style.setProperty('--lg-nav-dark-fill', `${12 + t * 30}%`);
-    root.style.setProperty('--lg-card-light-fill', `${12 + t * 36}%`);
-    root.style.setProperty('--lg-card-dark-fill', `${16 + t * 34}%`);
-    root.style.setProperty('--lg-border-light', `${Math.round(32 + clear * 24)}%`);
-    root.style.setProperty('--lg-border-dark', `${Math.round(12 + clear * 12)}%`);
+    // Product-grade clear glass (readable, still translucent) — mirrors liquid-glass-tokens.js
+    const cLift = t / 0.12;
+    root.style.setProperty('--lg-card-light-alpha', `${Math.round(70 + cLift * 6)}%`);
+    root.style.setProperty('--lg-card-dark-alpha', `${Math.round(68 + cLift * 6)}%`);
+    root.style.setProperty('--lg-specular-light', `${Math.round(76 + clear * 12)}%`);
+    root.style.setProperty('--lg-specular-dark', `${Math.round(18 + clear * 8)}%`);
+    root.style.setProperty('--lg-card-shadow-light', `${Math.round(8 + clear * 5)}%`);
+    root.style.setProperty('--lg-card-shadow-dark', `${Math.round(38 + clear * 8)}%`);
+    root.style.setProperty('--lg-card-highlight-light', `${Math.round(78 + clear * 10)}%`);
+    root.style.setProperty('--lg-card-highlight-dark', `${Math.round(18 + clear * 8)}%`);
+    root.style.setProperty('--lg-light-fill', `${52 + cLift * 10}%`);
+    root.style.setProperty('--lg-dark-fill', `${48 + cLift * 12}%`);
+    root.style.setProperty('--lg-nav-light-fill', `${46 + cLift * 8}%`);
+    root.style.setProperty('--lg-nav-dark-fill', `${44 + cLift * 8}%`);
+    root.style.setProperty('--lg-card-light-fill', `${66 + cLift * 8}%`);
+    root.style.setProperty('--lg-card-dark-fill', `${64 + cLift * 8}%`);
+    root.style.setProperty('--lg-border-light', `${Math.round(10 + cLift * 4)}%`);
+    root.style.setProperty('--lg-border-dark', `${Math.round(14 + cLift * 4)}%`);
+    root.style.setProperty('--lg-hairline-light', 'rgb(0 0 0 / 10%)');
+    root.style.setProperty('--lg-hairline-dark', 'rgb(255 255 255 / 14%)');
   } else if (t >= 0.88) {
     root.dataset.lgMode = 'tinted';
     const tintLift = (t - 0.88) / 0.12;
@@ -90,21 +94,21 @@
     root.style.setProperty('--lg-border-dark', `${Math.round(10 + t * 6)}%`);
   } else {
     root.dataset.lgMode = 'balanced';
-    root.style.setProperty('--lg-card-light-alpha', `${Math.round(32 + t * 42)}%`);
-    root.style.setProperty('--lg-card-dark-alpha', `${Math.round(36 + t * 40)}%`);
-    root.style.setProperty('--lg-specular-light', `${Math.round(58 + clear * 30)}%`);
-    root.style.setProperty('--lg-specular-dark', `${Math.round(10 + clear * 12)}%`);
-    root.style.setProperty('--lg-card-shadow-light', `${Math.round(9 + clear * 9)}%`);
-    root.style.setProperty('--lg-card-shadow-dark', `${Math.round(42 + clear * 12)}%`);
-    root.style.setProperty('--lg-card-highlight-light', `${Math.round(52 + clear * 30)}%`);
-    root.style.setProperty('--lg-card-highlight-dark', `${Math.round(10 + clear * 12)}%`);
-    root.style.setProperty('--lg-light-fill', `${18 + t * 48}%`);
-    root.style.setProperty('--lg-dark-fill', `${22 + t * 46}%`);
-    root.style.setProperty('--lg-nav-light-fill', `${16 + t * 50}%`);
-    root.style.setProperty('--lg-nav-dark-fill', `${20 + t * 48}%`);
-    root.style.setProperty('--lg-card-light-fill', `${24 + t * 46}%`);
-    root.style.setProperty('--lg-card-dark-fill', `${28 + t * 44}%`);
-    root.style.setProperty('--lg-border-light', `${Math.round(24 + clear * 20 + t * 10)}%`);
-    root.style.setProperty('--lg-border-dark', `${Math.round(10 + clear * 10 + t * 8)}%`);
+    root.style.setProperty('--lg-card-light-alpha', `${Math.round(52 + t * 38)}%`);
+    root.style.setProperty('--lg-card-dark-alpha', `${Math.round(50 + t * 38)}%`);
+    root.style.setProperty('--lg-specular-light', `${Math.round(54 + clear * 22)}%`);
+    root.style.setProperty('--lg-specular-dark', `${Math.round(12 + clear * 10)}%`);
+    root.style.setProperty('--lg-card-shadow-light', `${Math.round(9 + clear * 7)}%`);
+    root.style.setProperty('--lg-card-shadow-dark', `${Math.round(38 + clear * 10)}%`);
+    root.style.setProperty('--lg-card-highlight-light', `${Math.round(58 + clear * 20)}%`);
+    root.style.setProperty('--lg-card-highlight-dark', `${Math.round(12 + clear * 10)}%`);
+    root.style.setProperty('--lg-light-fill', `${40 + t * 42}%`);
+    root.style.setProperty('--lg-dark-fill', `${38 + t * 42}%`);
+    root.style.setProperty('--lg-nav-light-fill', `${38 + t * 44}%`);
+    root.style.setProperty('--lg-nav-dark-fill', `${36 + t * 44}%`);
+    root.style.setProperty('--lg-card-light-fill', `${48 + t * 40}%`);
+    root.style.setProperty('--lg-card-dark-fill', `${46 + t * 40}%`);
+    root.style.setProperty('--lg-border-light', `${Math.round(32 + clear * 14 + t * 8)}%`);
+    root.style.setProperty('--lg-border-dark', `${Math.round(14 + clear * 8 + t * 6)}%`);
   }
 })();

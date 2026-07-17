@@ -1,8 +1,16 @@
 import { BOOKS, SHOWS_AND_MOVIES } from '../data/media-data.js';
 import { analytics } from '../services/AnalyticsService.js';
 import { isPerformanceAudit } from '../utils/perf-audit.js';
+import { escapeHtml, escapeAttr } from '../utils/escape-html.js';
 
 class RealMediaLoader {
+  escapeAttribute(value) {
+    return escapeAttr(value);
+  }
+
+  escapeText(value) {
+    return escapeHtml(value);
+  }
   getMediaPlaceholder(title, type, _meta = '') {
     const palette =
       type === 'Series'
@@ -27,14 +35,6 @@ class RealMediaLoader {
 
   getShortTitle(title) {
     return title || '';
-  }
-
-  escapeAttribute(value = '') {
-    return String(value)
-      .replace(/&/g, '&amp;')
-      .replace(/"/g, '&quot;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;');
   }
 
   getUniqueItems(items = [], keySelector = item => item.title) {
@@ -78,24 +78,30 @@ class RealMediaLoader {
         const mediaTitle = this.escapeAttribute(item.title);
         const mediaType = this.escapeAttribute(item.type);
 
+        const safePoster = this.escapeAttribute(posterSrc);
+        const safeFallback = this.escapeAttribute(fallbackSvg);
+        const safeLink = this.escapeAttribute(item.link || '#');
+        const safeType = this.escapeText(item.type || '');
+        const safePlatform = this.escapeText(item.platform || '');
+        const safeTitle = this.escapeText(this.getShortTitle(item.title));
         return `
         <div class="media-card">
           <div class="media-poster">
               <img
-                src="${posterSrc}"
-                alt="${item.title}"
+                src="${safePoster}"
+                alt="${mediaTitle}"
                 loading="lazy"
                 decoding="async"
                 fetchpriority="low"
                 onload="this.classList.add('loaded'); this.parentElement.classList.add('loaded');"
-                onerror="this.src='${fallbackSvg}'; this.classList.add('loaded'); this.parentElement.classList.add('loaded'); this.onerror=null;"
+                onerror="this.src='${safeFallback}'; this.classList.add('loaded'); this.parentElement.classList.add('loaded'); this.onerror=null;"
               />
-            <span class="media-badge">${item.type}</span>
+            <span class="media-badge">${safeType}</span>
           </div>
           <div class="media-info">
-            <h4>${this.getShortTitle(item.title)}</h4>
-            <a href="${item.link}" target="_blank" rel="noopener" class="watch-btn" data-media-track data-media-title="${mediaTitle}" data-media-type="${mediaType}">
-              <i class="fas fa-play" aria-hidden="true"></i><span>${item.platform}</span>
+            <h4>${safeTitle}</h4>
+            <a href="${safeLink}" target="_blank" rel="noopener" class="watch-btn" data-media-track data-media-title="${mediaTitle}" data-media-type="${mediaType}">
+              <i class="fas fa-play" aria-hidden="true"></i><span>${safePlatform}</span>
             </a>
           </div>
         </div>
@@ -132,25 +138,31 @@ class RealMediaLoader {
         const mediaTitle = this.escapeAttribute(book.title);
         const mediaType = this.escapeAttribute(book.type);
 
+        const safeCover = this.escapeAttribute(coverSrc);
+        const safeFallback = this.escapeAttribute(fallbackSvg);
+        const safeLink = this.escapeAttribute(book.link || '#');
+        const safeType = this.escapeText(book.type || '');
+        const safeTitle = this.escapeText(this.getShortTitle(book.title));
+        const safeAuthor = this.escapeText(book.author || '');
         return `
         <div class="media-card book-card" data-title="${mediaTitle}" data-author="${this.escapeAttribute(book.author)}">
           <div class="media-poster">
               <img
-                src="${coverSrc}"
-                alt="${book.title}"
+                src="${safeCover}"
+                alt="${mediaTitle}"
                 loading="lazy"
                 decoding="async"
                 fetchpriority="low"
                 class="book-cover-img"
                 onload="this.classList.add('loaded'); this.parentElement.classList.add('loaded');"
-                onerror="this.src='${fallbackSvg}'; this.classList.add('loaded'); this.parentElement.classList.add('loaded'); this.onerror=null;"
+                onerror="this.src='${safeFallback}'; this.classList.add('loaded'); this.parentElement.classList.add('loaded'); this.onerror=null;"
               />
-            <span class="media-badge">${book.type}</span>
+            <span class="media-badge">${safeType}</span>
           </div>
           <div class="media-info">
-            <h4>${this.getShortTitle(book.title)}</h4>
-            <p class="book-author-text">${book.author}</p>
-            <a href="${book.link}" target="_blank" rel="noopener" class="watch-btn book-btn" data-media-track data-media-title="${mediaTitle}" data-media-type="${mediaType}">
+            <h4>${safeTitle}</h4>
+            <p class="book-author-text">${safeAuthor}</p>
+            <a href="${safeLink}" target="_blank" rel="noopener" class="watch-btn book-btn" data-media-track data-media-title="${mediaTitle}" data-media-type="${mediaType}">
               <i class="fas fa-book-open" aria-hidden="true"></i><span>Read</span>
             </a>
           </div>

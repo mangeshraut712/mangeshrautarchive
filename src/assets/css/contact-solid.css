@@ -1,0 +1,612 @@
+/* ════════════════════════════════════════════════════════════════
+   Contact solid surfaces — last-loaded lock sheet
+   Apple solid: white/#000 shells, no liquid glass, SF Pro friendly.
+   Must beat glass :is() lists that inflate specificity via dual IDs.
+   ════════════════════════════════════════════════════════════════ */
+
+/* ── Shared surface tokens ──
+   Also re-scope global card border tokens so a stale data-theme="dark"
+   (or dual-ID glass :is() borders using var(--card-border-rest)) cannot
+   paint dark hairlines on light contact shells. */
+html body #contact,
+html:not(.dark) body #contact,
+html.light body #contact {
+  --contact-solid-bg: #ffffff;
+  --contact-solid-fg: #1d1d1f;
+  --contact-solid-muted: #6e6e73;
+  --contact-solid-border: #e5e5ea;
+  --contact-solid-blue: #0071e3;
+  --contact-solid-blue-hover: #0077ed;
+  --card-border-rest: #e5e5ea;
+  --card-border-hover: #0071e3;
+  --theme-card-border: #e5e5ea;
+  --theme-card-border-hover: #0071e3;
+  --contact-border-light: #e5e5ea;
+  --contact-border-dark: #2c2c2e;
+}
+
+html.dark body #contact,
+html[data-theme='dark'] body #contact {
+  --contact-solid-bg: #000000;
+  --contact-solid-fg: #f5f5f7;
+  --contact-solid-muted: #a1a1a6;
+  --contact-solid-border: #2c2c2e;
+  --contact-solid-blue: #0a84ff;
+  --contact-solid-blue-hover: #409cff;
+  --card-border-rest: #2c2c2e;
+  --card-border-hover: #0a84ff;
+  --theme-card-border: #2c2c2e;
+  --theme-card-border-hover: #0a84ff;
+}
+
+/* Prefer class-based theme when class + data-theme disagree */
+html.light body #contact,
+html:not(.dark):not([data-theme='dark']) body #contact {
+  --contact-solid-bg: #ffffff;
+  --contact-solid-fg: #1d1d1f;
+  --contact-solid-muted: #6e6e73;
+  --contact-solid-border: #e5e5ea;
+  --card-border-rest: #e5e5ea;
+  --theme-card-border: #e5e5ea;
+}
+
+/* ── Primary card shells (all major contact sections) ──
+   Specificity: mode attrs + #contact + #currently-section where needed
+   beats liquid-glass :is() lists that include #projects #github… (2 IDs). */
+html body #contact,
+html[data-lg-mode='tinted'] body #contact,
+html[data-lg-mode='tinted']:not(.dark) body #contact,
+html.dark[data-lg-mode='tinted'] body #contact {
+  background: var(--contact-solid-bg) !important;
+  background-color: var(--contact-solid-bg) !important;
+  color: var(--contact-solid-fg) !important;
+}
+
+/* Solid opaque shells — tinted only (clear/balanced use liquid glass unlocks) */
+html[data-lg-mode='tinted']
+  body
+  #contact
+  :is(
+    div.contact-card,
+    div.support-donation-card,
+    div.currently-card,
+    div.merged-health-currently-card,
+    div.calendar-wrapper-clean,
+    div.ios-widget-wrapper,
+    div.reminder-card,
+    div.contact-form-card,
+    div.health-widget-container
+  ),
+html[data-lg-mode='tinted']:not(.dark)
+  body
+  #contact
+  :is(
+    div.contact-card,
+    div.support-donation-card,
+    div.currently-card,
+    div.merged-health-currently-card,
+    div.calendar-wrapper-clean,
+    div.ios-widget-wrapper,
+    div.reminder-card,
+    div.contact-form-card,
+    div.health-widget-container
+  ),
+html.dark[data-lg-mode='tinted']
+  body
+  #contact
+  :is(
+    div.contact-card,
+    div.support-donation-card,
+    div.currently-card,
+    div.merged-health-currently-card,
+    div.calendar-wrapper-clean,
+    div.ios-widget-wrapper,
+    div.reminder-card,
+    div.contact-form-card,
+    div.health-widget-container
+  ) {
+  background: var(--contact-solid-bg) !important;
+  background-color: var(--contact-solid-bg) !important;
+  background-image: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  box-shadow: none !important;
+  color: var(--contact-solid-fg) !important;
+  border-color: var(--contact-solid-border) !important;
+  border-top-color: var(--contact-solid-border) !important;
+  border-right-color: var(--contact-solid-border) !important;
+  border-bottom-color: var(--contact-solid-border) !important;
+  border-left-color: var(--contact-solid-border) !important;
+  transition:
+    transform 0.28s cubic-bezier(0.25, 0.1, 0.25, 1),
+    border-color 0.2s ease !important;
+}
+
+/* Light borders must never inherit dark hairlines.
+   Match glass-mode specificity so dual-ID :is() lists cannot re-darken borders. */
+html:not(.dark)
+  body
+  #contact
+  :is(
+    div.contact-card,
+    div.support-donation-card,
+    div.currently-card,
+    div.merged-health-currently-card,
+    div.calendar-wrapper-clean,
+    div.reminder-card,
+    div.health-widget-container,
+    a.contact-link-item,
+    .contact-link-item
+  ),
+html[data-lg-mode='tinted']:not(.dark)
+  body
+  #contact
+  :is(
+    div.contact-card,
+    div.support-donation-card,
+    div.currently-card,
+    div.merged-health-currently-card,
+    div.calendar-wrapper-clean,
+    div.reminder-card,
+    div.health-widget-container
+  ) {
+  border: 1px solid #e5e5ea !important;
+}
+
+html.dark
+  body
+  #contact
+  :is(
+    div.contact-card,
+    div.support-donation-card,
+    div.currently-card,
+    div.merged-health-currently-card,
+    div.calendar-wrapper-clean,
+    div.reminder-card,
+    div.health-widget-container,
+    a.contact-link-item,
+    .contact-link-item
+  ),
+html.dark[data-lg-mode='tinted']
+  body
+  #contact
+  :is(
+    div.contact-card,
+    div.support-donation-card,
+    div.currently-card,
+    div.merged-health-currently-card,
+    div.calendar-wrapper-clean,
+    div.reminder-card,
+    div.health-widget-container
+  ) {
+  border: 1px solid #2c2c2e !important;
+}
+
+/* ── Media / music shelf cards (Currently) — solid, no glass ── */
+html
+  body
+  #contact
+  #currently-section
+  :is(div.media-card, div.currently-music-card, div.recent-track-card),
+html
+  body
+  #contact
+  #music-content
+  :is(div.media-card, div.currently-music-card, div.recent-track-card),
+html body #contact #shows-grid :is(div.media-card),
+html body #contact #books-grid :is(div.media-card),
+html[data-lg-mode='tinted']
+  body
+  #contact
+  #currently-section
+  :is(div.media-card, div.currently-music-card, div.recent-track-card),
+html[data-lg-mode='tinted']:not(.dark)
+  body
+  #contact
+  #currently-section
+  :is(div.media-card, div.currently-music-card, div.recent-track-card),
+html.dark[data-lg-mode='tinted']
+  body
+  #contact
+  #currently-section
+  :is(div.media-card, div.currently-music-card, div.recent-track-card) {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  box-shadow: none !important;
+  border-color: transparent !important;
+  transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+}
+
+/* Poster tiles stay solid elevated surfaces */
+html body #contact #currently-section .media-poster,
+html body #contact .media-card .media-poster {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+html.dark body #contact #currently-section .media-poster,
+html.dark body #contact .media-card .media-poster {
+  background: #000000 !important;
+  background-color: #000000 !important;
+}
+
+/* Health widget solid only in tinted (clear/balanced = liquid glass) */
+html[data-lg-mode='tinted'] body #contact #currently-section div.health-widget-container,
+html[data-lg-mode='tinted'] body #contact #health-section div.health-widget-container {
+  background: var(--contact-solid-bg) !important;
+  background-color: var(--contact-solid-bg) !important;
+  background-image: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  box-shadow: none !important;
+  border: 1px solid var(--contact-solid-border) !important;
+}
+
+/* ── Calendly / AssistMe: transparent strip, solid CTA ── */
+html body #contact div.calendly-panel,
+html body #contact div.contact-assistme-card {
+  background: transparent !important;
+  background-image: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  box-shadow: none !important;
+}
+
+html body #contact div.ios-widget-wrapper {
+  border: none !important;
+  transform: none !important;
+}
+
+/* CTAs — Apple system blue (light #0071e3 / dark #0a84ff) */
+html
+  body
+  #contact
+  :is(
+    button.calendly-panel-button,
+    button.contact-assistme-btn,
+    .calendly-panel-button,
+    .contact-assistme-btn
+  ),
+html:not(.dark) body #contact :is(.calendly-panel-button, .contact-assistme-btn),
+html.light body #contact :is(.calendly-panel-button, .contact-assistme-btn) {
+  background: #0071e3 !important;
+  background-image: none !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  border: none !important;
+  border-radius: 980px !important;
+  min-height: 44px !important;
+  font-weight: 600 !important;
+  box-shadow: none !important;
+}
+
+html.dark
+  body
+  #contact
+  :is(
+    button.calendly-panel-button,
+    button.contact-assistme-btn,
+    .calendly-panel-button,
+    .contact-assistme-btn
+  ) {
+  background: #0a84ff !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+html body #contact :is(.calendly-panel-button, .contact-assistme-btn):hover {
+  background: #0077ed !important;
+}
+
+html.dark body #contact :is(.calendly-panel-button, .contact-assistme-btn):hover {
+  background: #409cff !important;
+}
+
+/* ── Contact link rows — solid only when tinted ── */
+html[data-lg-mode='tinted']:not(.dark) body #contact a.contact-link-item,
+html[data-lg-mode='tinted']:not(.dark) body #contact .contact-link-item {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border: 1px solid #e5e5ea !important;
+  color: #1d1d1f !important;
+}
+
+html.dark[data-lg-mode='tinted'] body #contact a.contact-link-item,
+html.dark[data-lg-mode='tinted'] body #contact .contact-link-item {
+  background: #000000 !important;
+  background-color: #000000 !important;
+  border-color: #2c2c2e !important;
+  color: #f5f5f7 !important;
+}
+
+html body #contact .contact-link-item .link-text {
+  color: #1d1d1f !important;
+  -webkit-text-fill-color: #1d1d1f !important;
+}
+
+html.dark body #contact .contact-link-item .link-text {
+  color: #f5f5f7 !important;
+  -webkit-text-fill-color: #f5f5f7 !important;
+}
+
+/* ── Social tiles — solid only when tinted ── */
+html[data-lg-mode='tinted']:not(.dark)
+  body
+  #contact
+  .contact-social-wrapper
+  .icon:not(:hover):not(:focus-within) {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+html.dark[data-lg-mode='tinted']
+  body
+  #contact
+  .contact-social-wrapper
+  .icon:not(:hover):not(:focus-within) {
+  background: #000000 !important;
+  background-color: #000000 !important;
+}
+
+/* ── Support premium buttons ── */
+html body #contact :is(.support-stripe-btn.premium, .support-paypal-btn.premium) {
+  border-radius: 980px !important;
+  min-height: 44px !important;
+  font-weight: 600 !important;
+}
+
+/* ── Typography ── */
+html body #contact :is(h3, .month-title, .reminders-title, .card-title) {
+  color: var(--contact-solid-fg) !important;
+  -webkit-text-fill-color: var(--contact-solid-fg) !important;
+}
+
+html
+  body
+  #contact
+  :is(.contact-description, .crypto-label, .calendly-panel p, .contact-assistme-note) {
+  color: var(--contact-solid-muted) !important;
+}
+
+html body #contact .card-action-area {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+/* Kill glass hover lift on calendar shell */
+html body #contact :is(.calendar-wrapper-clean, .ios-widget-wrapper):hover {
+  transform: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* LUX CONTACT SHADOWS — June 2026 depth (after solid lock) */
+html[data-lg-mode='tinted']:not(.dark)
+  body
+  #contact
+  :is(
+    div.contact-card,
+    div.support-donation-card,
+    div.currently-card,
+    div.merged-health-currently-card,
+    div.calendar-wrapper-clean,
+    div.reminder-card,
+    div.health-widget-container
+  ) {
+  box-shadow:
+    0 1px 0 rgb(255 255 255 / 70%) inset,
+    0 1px 2px rgb(0 0 0 / 4%),
+    0 8px 24px rgb(0 0 0 / 6%),
+    0 20px 48px rgb(15 23 42 / 4%) !important;
+  border-radius: 22px !important;
+}
+
+html.dark[data-lg-mode='tinted']
+  body
+  #contact
+  :is(
+    div.contact-card,
+    div.support-donation-card,
+    div.currently-card,
+    div.merged-health-currently-card,
+    div.calendar-wrapper-clean,
+    div.reminder-card,
+    div.health-widget-container
+  ) {
+  box-shadow:
+    0 1px 0 rgb(255 255 255 / 6%) inset,
+    0 1px 0 rgb(0 0 0 / 40%),
+    0 12px 40px rgb(0 0 0 / 55%) !important;
+  border-radius: 22px !important;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   CLEAR GLASS UNLOCK — contact surfaces use real liquid glass
+   Beats earlier solid #fff/#000 locks when data-lg-mode=clear|balanced.
+   Tinted keeps solid shells above.
+   ════════════════════════════════════════════════════════════════ */
+
+html:is([data-lg-mode='clear'], [data-lg-mode='balanced'])
+  body
+  #contact
+  :is(
+    div.contact-card,
+    div.support-donation-card,
+    div.currently-card,
+    div.merged-health-currently-card,
+    div.calendar-wrapper-clean,
+    div.ios-widget-wrapper,
+    div.reminder-card,
+    div.contact-form-card,
+    div.health-widget-container
+  ) {
+  backdrop-filter: saturate(var(--lg-saturate, 180%)) blur(var(--lg-blur-card, 40px)) !important;
+  -webkit-backdrop-filter: saturate(var(--lg-saturate, 180%)) blur(var(--lg-blur-card, 40px)) !important;
+  background-image: linear-gradient(
+    165deg,
+    rgb(255 255 255 / var(--lg-card-highlight-light, 70%)) 0%,
+    rgb(255 255 255 / 0%) 42%
+  ) !important;
+}
+
+html:is([data-lg-mode='clear'], [data-lg-mode='balanced']):not(.dark)
+  body
+  #contact
+  :is(
+    div.contact-card,
+    div.support-donation-card,
+    div.currently-card,
+    div.merged-health-currently-card,
+    div.calendar-wrapper-clean,
+    div.ios-widget-wrapper,
+    div.reminder-card,
+    div.contact-form-card,
+    div.health-widget-container
+  ) {
+  background:
+    linear-gradient(
+      165deg,
+      rgb(255 255 255 / var(--lg-card-highlight-light, 70%)) 0%,
+      rgb(255 255 255 / 0%) 42%
+    ),
+    rgb(255 255 255 / var(--lg-card-light-alpha, 48%)) !important;
+  border-color: rgb(255 255 255 / var(--lg-border-light, 40%)) !important;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / var(--lg-specular-light, 70%)),
+    0 8px 32px rgb(0 0 0 / var(--lg-card-shadow-light, 12%)) !important;
+  color: #1d1d1f !important;
+}
+
+html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced'])
+  body
+  #contact
+  :is(
+    div.contact-card,
+    div.support-donation-card,
+    div.currently-card,
+    div.merged-health-currently-card,
+    div.calendar-wrapper-clean,
+    div.ios-widget-wrapper,
+    div.reminder-card,
+    div.contact-form-card,
+    div.health-widget-container
+  ) {
+  background:
+    linear-gradient(
+      165deg,
+      rgb(255 255 255 / var(--lg-card-highlight-dark, 12%)) 0%,
+      rgb(255 255 255 / 0%) 40%
+    ),
+    rgb(0 0 0 / var(--lg-card-dark-alpha, 52%)) !important;
+  border-color: rgb(255 255 255 / var(--lg-border-dark, 14%)) !important;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / var(--lg-specular-dark, 12%)),
+    0 12px 40px rgb(0 0 0 / var(--lg-card-shadow-dark, 45%)) !important;
+  color: #f5f5f7 !important;
+}
+
+/* Link rows + social tiles — glass chips in clear/balanced */
+html:is([data-lg-mode='clear'], [data-lg-mode='balanced']):not(.dark)
+  body
+  #contact
+  :is(a.contact-link-item, .contact-link-item) {
+  background: rgb(255 255 255 / var(--lg-card-light-alpha, 48%)) !important;
+  background-color: rgb(255 255 255 / var(--lg-card-light-alpha, 48%)) !important;
+  backdrop-filter: saturate(var(--lg-saturate, 180%)) blur(var(--lg-blur-control, 20px)) !important;
+  -webkit-backdrop-filter: saturate(var(--lg-saturate, 180%)) blur(var(--lg-blur-control, 20px)) !important;
+  border-color: rgb(255 255 255 / var(--lg-border-light, 40%)) !important;
+}
+
+html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced'])
+  body
+  #contact
+  :is(a.contact-link-item, .contact-link-item) {
+  background: rgb(0 0 0 / var(--lg-card-dark-alpha, 52%)) !important;
+  background-color: rgb(0 0 0 / var(--lg-card-dark-alpha, 52%)) !important;
+  backdrop-filter: saturate(var(--lg-saturate, 180%)) blur(var(--lg-blur-control, 20px)) !important;
+  -webkit-backdrop-filter: saturate(var(--lg-saturate, 180%)) blur(var(--lg-blur-control, 20px)) !important;
+  border-color: rgb(255 255 255 / var(--lg-border-dark, 14%)) !important;
+}
+
+/* Kill prior clear+tinted lux solid shadow append — tinted only */
+html:is([data-lg-mode='clear'], [data-lg-mode='balanced'])
+  body
+  #contact
+  :is(div.contact-card, div.support-donation-card, div.currently-card) {
+  /* glass box-shadow set above — do not flatten */
+}
+
+/* NUCLEAR CLEAR CONTACT GLASS */
+html[data-lg-mode='clear'] body #main-content #contact .contact-card,
+html[data-lg-mode='clear'] body #main-content #contact .support-donation-card,
+html[data-lg-mode='clear'] body #main-content #contact .currently-card,
+html[data-lg-mode='clear'] body #main-content #contact .merged-health-currently-card,
+html[data-lg-mode='clear'] body #main-content #contact .calendar-wrapper-clean,
+html[data-lg-mode='clear'] body #main-content #contact .ios-widget-wrapper,
+html[data-lg-mode='clear'] body #main-content #contact .reminder-card,
+html[data-lg-mode='clear'] body #main-content #contact .health-widget-container,
+html[data-lg-mode='balanced'] body #main-content #contact .contact-card,
+html[data-lg-mode='balanced'] body #main-content #contact .support-donation-card,
+html[data-lg-mode='balanced'] body #main-content #contact .currently-card,
+html[data-lg-mode='balanced'] body #main-content #contact .calendar-wrapper-clean,
+html[data-lg-mode='balanced'] body #main-content #contact .reminder-card,
+html[data-lg-mode='balanced'] body #main-content #contact .health-widget-container {
+  backdrop-filter: saturate(var(--lg-saturate, 180%)) blur(var(--lg-blur-card, 40px)) !important;
+  -webkit-backdrop-filter: saturate(var(--lg-saturate, 180%)) blur(var(--lg-blur-card, 40px)) !important;
+}
+
+html[data-lg-mode='clear']:not(.dark) body #main-content #contact .contact-card,
+html[data-lg-mode='clear']:not(.dark) body #main-content #contact .support-donation-card,
+html[data-lg-mode='clear']:not(.dark) body #main-content #contact .currently-card,
+html[data-lg-mode='clear']:not(.dark) body #main-content #contact .calendar-wrapper-clean,
+html[data-lg-mode='clear']:not(.dark) body #main-content #contact .reminder-card,
+html[data-lg-mode='clear']:not(.dark) body #main-content #contact .health-widget-container,
+html[data-lg-mode='balanced']:not(.dark) body #main-content #contact .contact-card,
+html[data-lg-mode='balanced']:not(.dark) body #main-content #contact .support-donation-card,
+html[data-lg-mode='balanced']:not(.dark) body #main-content #contact .currently-card,
+html[data-lg-mode='balanced']:not(.dark) body #main-content #contact .calendar-wrapper-clean,
+html[data-lg-mode='balanced']:not(.dark) body #main-content #contact .reminder-card,
+html[data-lg-mode='balanced']:not(.dark) body #main-content #contact .health-widget-container {
+  background: rgb(255 255 255 / var(--lg-card-light-alpha, 68%)) !important;
+  background-color: rgb(255 255 255 / var(--lg-card-light-alpha, 68%)) !important;
+  background-image: linear-gradient(
+    165deg,
+    rgb(255 255 255 / var(--lg-card-highlight-light, 55%)) 0%,
+    rgb(255 255 255 / 0%) 45%
+  ) !important;
+  border-color: rgb(255 255 255 / var(--lg-border-light, 40%)) !important;
+}
+
+html.dark[data-lg-mode='clear'] body #main-content #contact .contact-card,
+html.dark[data-lg-mode='clear'] body #main-content #contact .support-donation-card,
+html.dark[data-lg-mode='clear'] body #main-content #contact .currently-card,
+html.dark[data-lg-mode='clear'] body #main-content #contact .calendar-wrapper-clean,
+html.dark[data-lg-mode='clear'] body #main-content #contact .reminder-card,
+html.dark[data-lg-mode='clear'] body #main-content #contact .health-widget-container,
+html.dark[data-lg-mode='balanced'] body #main-content #contact .contact-card,
+html.dark[data-lg-mode='balanced'] body #main-content #contact .support-donation-card,
+html.dark[data-lg-mode='balanced'] body #main-content #contact .currently-card,
+html.dark[data-lg-mode='balanced'] body #main-content #contact .calendar-wrapper-clean,
+html.dark[data-lg-mode='balanced'] body #main-content #contact .reminder-card,
+html.dark[data-lg-mode='balanced'] body #main-content #contact .health-widget-container {
+  background: rgb(0 0 0 / var(--lg-card-dark-alpha, 64%)) !important;
+  background-color: rgb(0 0 0 / var(--lg-card-dark-alpha, 64%)) !important;
+  background-image: linear-gradient(
+    165deg,
+    rgb(255 255 255 / var(--lg-card-highlight-dark, 10%)) 0%,
+    rgb(255 255 255 / 0%) 40%
+  ) !important;
+  border-color: rgb(255 255 255 / var(--lg-border-dark, 14%)) !important;
+}

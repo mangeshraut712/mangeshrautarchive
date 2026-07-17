@@ -9,6 +9,7 @@
  */
 
 import { renderRepoEvidenceRow } from './case-studies-data.js';
+import { escapeHtml as escapeHtmlShared } from '../utils/escape-html.js';
 
 // Hoisted Intl formatters for performance
 const absoluteDateFormatter = new Intl.DateTimeFormat('en-US', {
@@ -616,12 +617,7 @@ class GitHubProjects {
   }
 
   escapeHtml(value) {
-    return String(value ?? '')
-      .replaceAll('&', '&amp;')
-      .replaceAll('<', '&lt;')
-      .replaceAll('>', '&gt;')
-      .replaceAll('"', '&quot;')
-      .replaceAll("'", '&#39;');
+    return escapeHtmlShared(value);
   }
 
   formatCompactNumber(value) {

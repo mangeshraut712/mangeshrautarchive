@@ -5,6 +5,7 @@
 
 import { createTravelNarrative } from '../data/travel-engine.js';
 import { travelData as rawTravelData } from '../data/travel-locations.js';
+import { escapeHtml } from '../utils/escape-html.js';
 import {
   initCardContentAccessibility,
   rescanCardContentAccessibility,
@@ -18,13 +19,6 @@ const MAPLIBRE_JS = `https://cdn.jsdelivr.net/npm/maplibre-gl@${MAPLIBRE_VERSION
 const mapWarningMessages = new Set();
 const waypointSearchCache = new WeakMap();
 const waypointCategoryCache = new WeakMap();
-const htmlEntities = {
-  '&': '&amp;',
-  '<': '&lt;',
-  '>': '&gt;',
-  '"': '&quot;',
-  "'": '&#39;',
-};
 
 const state = {
   map: null,
@@ -51,10 +45,6 @@ function normalize(value) {
   return String(value || '')
     .trim()
     .toLowerCase();
-}
-
-function escapeHtml(value) {
-  return String(value ?? '').replace(/[&<>"']/g, char => htmlEntities[char]);
 }
 
 function safeExternalUrl(value) {

@@ -1323,9 +1323,17 @@ class AppleIntelligenceChatbot {
         messageDiv.classList.remove('streaming');
       }
 
-      // Fallback: If streaming yielded no text, use the direct answer
-      if (!fullText && response && (response.answer || response.content)) {
-        fullText = response.answer || response.content;
+      // Prefer authoritative final answer (e.g. done.full_content after stream
+      // fallback replaced classifier junk) over partial painted chunks.
+      const finalAnswer = (response && (response.answer || response.content)) || '';
+      if (finalAnswer && finalAnswer !== fullText) {
+        fullText = finalAnswer;
+        ensureStreamBubble();
+        if (contentDiv) {
+          void this.paintStreamingContent(contentDiv, fullText);
+        }
+      } else if (!fullText && finalAnswer) {
+        fullText = finalAnswer;
         ensureStreamBubble();
       }
 

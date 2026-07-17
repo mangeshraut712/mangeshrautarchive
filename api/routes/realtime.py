@@ -24,6 +24,7 @@ from api.ai_gateway_realtime import (
     is_realtime_configured,
     mint_gateway_realtime_client_secret,
 )
+from api.config import check_rate_limit, get_client_ip
 
 router = APIRouter()
 logger = logging.getLogger(__name__)
@@ -159,6 +160,17 @@ async def realtime_session(request: Request):
                 "success": False,
                 "available": False,
                 "message": "Origin not allowed for realtime sessions.",
+            },
+        )
+
+    client_ip = get_client_ip(request)
+    if not check_rate_limit(f"realtime-mint:{client_ip}"):
+        return JSONResponse(
+            status_code=429,
+            content={
+                "success": False,
+                "available": False,
+                "message": "Too many realtime session requests. Try again shortly.",
             },
         )
 
