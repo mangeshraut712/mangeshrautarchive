@@ -1131,25 +1131,26 @@ html.dark #home .hero-name-text {
           </picture>
         </a>
       </div>
-      <div class="nav-links scrollable-nav" role="list" aria-label="Primary sections">
+      <div class="nav-links scrollable-nav" aria-label="Primary sections">
         <!-- Home sections only (unique labels; Systems page covers engineering notebook) -->
-        <a href="#home" class="nav-link" role="listitem">Home</a>
-        <a href="#about" class="nav-link" role="listitem">About</a>
-        <a href="#skills" class="nav-link" role="listitem">Skills</a>
-        <a href="#experience" class="nav-link" role="listitem">Experience</a>
-        <a href="#projects" class="nav-link" role="listitem">Projects</a>
-        <a href="#education" class="nav-link" role="listitem">Education</a>
-        <a href="#publications" class="nav-link" role="listitem">Publications</a>
-        <a href="#awards" class="nav-link" role="listitem">Awards</a>
-        <a href="#blog" class="nav-link" role="listitem">Blog</a>
-        <a href="#contact" class="nav-link" role="listitem">Contact</a>
-        <a href="#debug-runner-section" class="nav-link" role="listitem">Game</a>
+        <!-- No role=list/listitem on anchors — invalid ARIA for <a> fails Agentic a11y tree -->
+        <a href="#home" class="nav-link">Home</a>
+        <a href="#about" class="nav-link">About</a>
+        <a href="#skills" class="nav-link">Skills</a>
+        <a href="#experience" class="nav-link">Experience</a>
+        <a href="#projects" class="nav-link">Projects</a>
+        <a href="#education" class="nav-link">Education</a>
+        <a href="#publications" class="nav-link">Publications</a>
+        <a href="#awards" class="nav-link">Awards</a>
+        <a href="#blog" class="nav-link">Blog</a>
+        <a href="#contact" class="nav-link">Contact</a>
+        <a href="#debug-runner-section" class="nav-link">Game</a>
         <!-- Separate pages — one entry each, no Engineering/Systems double label -->
         <span class="nav-links-sep" aria-hidden="true"></span>
-        <a href="systems.html" class="nav-link nav-link--page" role="listitem" title="Systems notebook">Systems</a>
-        <a href="travel.html" class="nav-link nav-link--page" role="listitem" title="Travel Atlas">Travel</a>
-        <a href="monitor.html" class="nav-link nav-link--page" role="listitem" title="System Monitor">Monitor</a>
-        <a href="uses.html" class="nav-link nav-link--page" role="listitem" title="Stack &amp; tools">Uses</a>
+        <a href="systems.html" class="nav-link nav-link--page" title="Systems notebook">Systems</a>
+        <a href="travel.html" class="nav-link nav-link--page" title="Travel Atlas">Travel</a>
+        <a href="monitor.html" class="nav-link nav-link--page" title="System Monitor">Monitor</a>
+        <a href="uses.html" class="nav-link nav-link--page" title="Stack &amp; tools">Uses</a>
       </div>
       <div class="nav-actions">
         <button id="search-toggle" class="theme-toggle-nav" aria-label="Open command palette" title="Command palette"
@@ -1190,68 +1191,68 @@ html.dark #home .hero-name-text {
 
     <div class="overlay-menu-content">
       <p class="overlay-menu-label">On this page</p>
-      <div class="menu-grid" role="list">
-        <a href="#home" class="menu-item" role="listitem">
+      <div class="menu-grid">
+        <a href="#home" class="menu-item">
           <div class="premium-menu-icon"><i class="fas fa-home" aria-hidden="true"></i></div>
           <span>Home</span>
         </a>
-        <a href="#about" class="menu-item" role="listitem">
+        <a href="#about" class="menu-item">
           <div class="premium-menu-icon"><i class="fas fa-user" aria-hidden="true"></i></div>
           <span>About</span>
         </a>
-        <a href="#skills" class="menu-item" role="listitem">
+        <a href="#skills" class="menu-item">
           <div class="premium-menu-icon"><i class="fas fa-laptop-code" aria-hidden="true"></i></div>
           <span>Skills</span>
         </a>
-        <a href="#experience" class="menu-item" role="listitem">
+        <a href="#experience" class="menu-item">
           <div class="premium-menu-icon"><i class="fas fa-briefcase" aria-hidden="true"></i></div>
           <span>Experience</span>
         </a>
-        <a href="#projects" class="menu-item" role="listitem">
+        <a href="#projects" class="menu-item">
           <div class="premium-menu-icon"><i class="fas fa-code" aria-hidden="true"></i></div>
           <span>Projects</span>
         </a>
-        <a href="#education" class="menu-item" role="listitem">
+        <a href="#education" class="menu-item">
           <div class="premium-menu-icon"><i class="fas fa-graduation-cap" aria-hidden="true"></i></div>
           <span>Education</span>
         </a>
-        <a href="#publications" class="menu-item" role="listitem">
+        <a href="#publications" class="menu-item">
           <div class="premium-menu-icon"><i class="fas fa-book" aria-hidden="true"></i></div>
           <span>Publications</span>
         </a>
-        <a href="#awards" class="menu-item" role="listitem">
+        <a href="#awards" class="menu-item">
           <div class="premium-menu-icon"><i class="fas fa-trophy" aria-hidden="true"></i></div>
           <span>Awards</span>
         </a>
-        <a href="#blog" class="menu-item" role="listitem">
+        <a href="#blog" class="menu-item">
           <div class="premium-menu-icon"><i class="fas fa-rss" aria-hidden="true"></i></div>
           <span>Blog</span>
         </a>
-        <a href="#contact" class="menu-item" role="listitem">
+        <a href="#contact" class="menu-item">
           <div class="premium-menu-icon"><i class="fas fa-envelope" aria-hidden="true"></i></div>
           <span>Contact</span>
         </a>
-        <a href="#debug-runner-section" class="menu-item" role="listitem">
+        <a href="#debug-runner-section" class="menu-item">
           <div class="premium-menu-icon"><i class="fas fa-gamepad" aria-hidden="true"></i></div>
           <span>Game</span>
         </a>
       </div>
 
       <p class="overlay-menu-label">Pages</p>
-      <div class="menu-grid menu-grid--secondary" role="list">
-        <a href="systems.html" class="menu-item" role="listitem">
+      <div class="menu-grid menu-grid--secondary">
+        <a href="systems.html" class="menu-item">
           <div class="premium-menu-icon"><i class="fas fa-layer-group" aria-hidden="true"></i></div>
           <span>Systems</span>
         </a>
-        <a href="travel.html" class="menu-item" role="listitem">
+        <a href="travel.html" class="menu-item">
           <div class="premium-menu-icon"><i class="fas fa-route" aria-hidden="true"></i></div>
           <span>Travel</span>
         </a>
-        <a href="monitor.html" class="menu-item" role="listitem">
+        <a href="monitor.html" class="menu-item">
           <div class="premium-menu-icon"><i class="fas fa-heart-pulse" aria-hidden="true"></i></div>
           <span>Monitor</span>
         </a>
-        <a href="uses.html" class="menu-item" role="listitem">
+        <a href="uses.html" class="menu-item">
           <div class="premium-menu-icon"><i class="fas fa-toolbox" aria-hidden="true"></i></div>
           <span>Uses</span>
         </a>
