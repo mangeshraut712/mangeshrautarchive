@@ -51,7 +51,7 @@ jobs:
             -H "Content-Type: application/json" \
             -H "HTTP-Referer: https://mangeshraut712.github.io/mangeshrautarchive" \
             -H "X-Title: AssistMe CI Probe" \
-            -d '{"model":"google/gemma-4-26b-a4b-it:free","messages":[{"role":"user","content":"Reply with exactly: ok"}],"max_tokens":32}')
+            -d '{"model":"nvidia/nemotron-3-super-120b-a12b:free","messages":[{"role":"user","content":"Reply with exactly: ok"}],"max_tokens":32}')
           echo "OpenRouter HTTP $HTTP"
           head -c 400 /tmp/or.json; echo
           if [ "$HTTP" != "200" ]; then

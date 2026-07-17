@@ -1,11 +1,12 @@
 import { api } from './config.js';
 import { agenticActions } from '../modules/agentic-actions.js';
+import { EDGE_API_BASE } from '../utils/api-host.js';
+import { MAX_CHAT_HISTORY, MAX_CHAT_INPUT_LENGTH } from '../chatbot/constants.js';
 
 // ============================================================================
 // API CONFIGURATION - Unified Backend Strategy
 // ============================================================================
-// All frontends use the Vercel backend which has API keys configured.
-// This ensures consistent behavior across localhost, GitHub Pages, and previews.
+// Local / Vercel custom domain → FastAPI. GitHub Pages → Cloudflare Worker edge.
 // ============================================================================
 
 let API_BASE = '';
@@ -15,10 +16,10 @@ let API_BASE_CANDIDATES = [];
 // Primary Backend: custom domain (OpenRouter key configured on Vercel)
 const VERCEL_BACKEND = 'https://mangeshraut.pro';
 /** Cloudflare edge API when Vercel is DEPLOYMENT_DISABLED (GitHub Pages). */
-const EDGE_BACKEND = 'https://assistme-chat.mangeshraut712.workers.dev';
+const EDGE_BACKEND = EDGE_API_BASE;
 const PRIMARY_CUSTOM_DOMAIN = 'mangeshraut.pro';
-const MAX_SERVER_MESSAGE_LENGTH = 1800;
-const MAX_SERVER_HISTORY_MESSAGES = 12;
+const MAX_SERVER_MESSAGE_LENGTH = MAX_CHAT_INPUT_LENGTH;
+const MAX_SERVER_HISTORY_MESSAGES = MAX_CHAT_HISTORY;
 /** Align with server OpenRouter stream budget (api chat uses ~60s); leave headroom. */
 const SERVER_STREAM_TIMEOUT_MS = 90_000;
 

@@ -22,11 +22,13 @@ LASTFM_DEFAULT_USERNAME = os.getenv("LASTFM_USERNAME", "mbr63").strip() or "mbr6
 
 FALLBACK_OPENROUTER_MODEL = "google/gemini-2.5-flash"
 PRIMARY_OPENROUTER_MODEL = "x-ai/grok-4.3"
-# Zero-credit online path when paid balance is exhausted (OpenRouter free router).
-# Concrete free models first — openrouter/free may return empty content on some providers.
-FREE_OPENROUTER_MODEL = "google/gemma-4-26b-a4b-it:free"
+# Zero-credit online path when paid balance is exhausted (HTTP 402).
+# Nemotron Super 120B free is the strongest free AssistMe path (OpenRouter MCP-validated).
+# Gemma free + openrouter/free remain spare recovery models.
+FREE_OPENROUTER_MODEL = "nvidia/nemotron-3-super-120b-a12b:free"
 FREE_OPENROUTER_FALLBACKS = (
     FREE_OPENROUTER_MODEL,
+    "google/gemma-4-26b-a4b-it:free",
     "google/gemma-4-31b-it:free",
     "openrouter/free",
 )
@@ -41,8 +43,8 @@ def get_openrouter_api_key() -> str:
 
 
 def get_openrouter_model_raw() -> str:
-    # Prefer explicit Vercel env. Default primary is Grok 4.3; chat fallback chain always
-    # tries openrouter/free (+ free Gemma) when paid models fail or return empty streams.
+    # Prefer explicit env. Default primary is Grok 4.3 when funded; chat fallback chain
+    # always tries FREE_OPENROUTER_MODEL (Nemotron free) + Gemma free on 402 / empty streams.
     return os.getenv("OPENROUTER_MODEL", PRIMARY_OPENROUTER_MODEL).strip()
 
 
@@ -362,10 +364,10 @@ PORTFOLIO_DATA = {
     },
 }
 
-SYSTEM_PROMPT = f"""You are AssistMe — a premium AI assistant for Mangesh Raut's professional portfolio. Your responses should feel like reading a beautifully crafted article, not raw code. Updated as of May 2026.
+SYSTEM_PROMPT = f"""You are AssistMe — a premium, Apple Intelligence–inspired AI assistant for Mangesh Raut's professional portfolio (WWDC 2026 Siri-class: warm, direct, personal, action-oriented). Your responses should feel like a polished assistant reply, not raw code. Updated as of July 2026.
 
 ## Your Identity
-You're an intelligent, conversational AI that answers any question with clarity and depth. You specialize in Mangesh's professional background but can discuss any topic thoughtfully.
+You're intelligent, conversational, and useful — like a capable personal assistant. Lead with the answer, stay concise, and offer a natural next step. You specialize in Mangesh's professional background but can discuss any topic thoughtfully.
 
 ## Mangesh Raut — Quick Profile
 - Software Engineer at Customized Energy Solutions (Philadelphia, PA, Aug 2024 - Present, ~2 years)

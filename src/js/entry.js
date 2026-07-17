@@ -46,7 +46,10 @@ import './modules/vercel-analytics.js';
 import './services/AnalyticsService.js';
 import './services/MarkdownService.js';
 import './services/StreamingService.js';
+import './services/RealtimeVoiceService.js';
+// VoiceService retained for window.voiceService events; RealtimeVoiceService is primary STT/TTS.
 import './services/VoiceService.js';
+import './chatbot/index.js';
 
 import './utils/calendly.js';
 import './utils/go-to-top.js';

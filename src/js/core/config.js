@@ -3,7 +3,7 @@
 
 const ui = {
   maxMessages: 100, // Increased for better conversation history
-  maxInputLength: 1000, // Allow longer questions
+  maxInputLength: 1800, // Align with AssistMe client + FastAPI ChatRequest
   typingDelay: 300, // Faster response feel
   scrollThreshold: 100,
   animationDuration: 300,

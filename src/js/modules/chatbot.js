@@ -18,14 +18,18 @@ import { privacyDashboard } from './privacy-dashboard.js';
 import { intelligentAssistant as chatAssistant } from '../core/chat.js';
 import { limits } from '../core/config.js';
 import { markdownService } from '../services/MarkdownService.js';
-import { ChatScrollEngine } from '../utils/chat-scroll-engine.js';
+import { ChatScrollEngine } from '../chatbot/scroll-engine.js';
+import {
+  CLIENT_DAILY_CHAT_LIMIT,
+  MAX_CHAT_INPUT_LENGTH as SHARED_MAX_CHAT_INPUT,
+} from '../chatbot/constants.js';
+import { getRemainingFreeMessages, consumeFreeMessage } from '../chatbot/rate-limit.js';
 import { realtimeVoiceService } from '../services/RealtimeVoiceService.js';
 import { lockBodyScroll, unlockBodyScroll } from '../utils/scroll-lock.js';
 import appleSounds from './apple-sounds.js';
 
-const MAX_CHAT_INPUT_LENGTH = 1800;
-const CLIENT_CHAT_MESSAGE_LIMIT = limits.dailyChatMessages;
-const CLIENT_CHAT_RATE_KEY = 'assistme-chat-rate-v1';
+const MAX_CHAT_INPUT_LENGTH = SHARED_MAX_CHAT_INPUT;
+const CLIENT_CHAT_MESSAGE_LIMIT = limits.dailyChatMessages || CLIENT_DAILY_CHAT_LIMIT;
 const TRUSTED_ICON_CLASS = /^fa-[a-z0-9-]+$/i;
 
 function stripUnsafeControlCharacters(value) {
@@ -295,21 +299,7 @@ class AppleIntelligenceChatbot {
   }
 
   getRemainingQueries() {
-    try {
-      const stored = JSON.parse(localStorage.getItem(CLIENT_CHAT_RATE_KEY) || '{}');
-      if (stored.date === this.getTodayKey()) {
-        return Math.max(0, this.maxSessionMessages - (Number(stored.count) || 0));
-      }
-
-      localStorage.setItem(
-        CLIENT_CHAT_RATE_KEY,
-        JSON.stringify({ date: this.getTodayKey(), count: 0 })
-      );
-    } catch {
-      // Storage can be disabled in private browsing; the server still enforces real limits.
-    }
-
-    return this.maxSessionMessages;
+    return getRemainingFreeMessages(this.maxSessionMessages);
   }
 
   updateRateLimitBadge() {
@@ -325,20 +315,9 @@ class AppleIntelligenceChatbot {
   }
 
   decrementRemainingQueries() {
-    let remaining = Math.max(0, this.getRemainingQueries() - 1);
-    try {
-      localStorage.setItem(
-        CLIENT_CHAT_RATE_KEY,
-        JSON.stringify({
-          date: this.getTodayKey(),
-          count: this.maxSessionMessages - remaining,
-        })
-      );
-    } catch {
-      remaining = this.maxSessionMessages;
-    }
+    const state = consumeFreeMessage(this.maxSessionMessages);
     this.updateRateLimitBadge();
-    return remaining;
+    return state.remaining;
   }
 
   async waitForChatAPI() {
