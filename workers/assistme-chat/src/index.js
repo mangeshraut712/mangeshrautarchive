@@ -10,8 +10,13 @@
  *   GET  /api/chat/health
  *   POST /api/chat | /chat
  *   GET  /api/github/repos/public
+ *   GET  /api/github/proxy
  *   GET  /api/music/recent
+ *   GET  /api/analytics/reach
+ *   GET  /api/health-vitals/summary
  */
+
+import { EDGE_DATA_SNAPSHOT } from './edge-data-snapshot.js';
 
 const OPENROUTER_URL = 'https://openrouter.ai/api/v1/chat/completions';
 const PRIMARY_MODEL = 'x-ai/grok-4.3';
@@ -439,19 +444,23 @@ async function handleGithubRepos(url, cors) {
       );
     }
     const repos = await res.json();
+    const items = Array.isArray(repos) ? repos : [];
     return json(
       {
         success: true,
+        username,
         source: 'github-public',
         host: 'cloudflare-worker',
-        items: Array.isArray(repos) ? repos : [],
-        count: Array.isArray(repos) ? repos.length : 0,
+        // FastAPI returns `data`; older edge clients used `items` — keep both.
+        data: items,
+        items,
+        count: items.length,
       },
       200,
       cors
     );
   } catch (e) {
-    return json({ success: false, error: e.message, items: [] }, 502, cors);
+    return json({ success: false, error: e.message, data: [], items: [] }, 502, cors);
   }
 }
 
@@ -572,7 +581,7 @@ export default {
       );
     }
 
-    // Soft analytics so Pages does not spam blocked Vercel
+    // Soft analytics + health vitals so Pages does not depend on blocked Vercel
     if (request.method === 'GET' && path === '/api/analytics/reach') {
       return handleAnalyticsReach(cors);
     }
@@ -581,6 +590,9 @@ export default {
     }
     if (request.method === 'POST' && path === '/api/analytics/track') {
       return handleAnalyticsTrack(cors);
+    }
+    if (request.method === 'GET' && path === '/api/health-vitals/summary') {
+      return handleHealthVitalsSummary(cors);
     }
 
     if (request.method === 'POST' && path === '/api/newsletter/subscribe') {
@@ -616,6 +628,7 @@ export default {
             'GET /api/monitor/status',
             'GET /api/analytics/reach',
             'POST /api/analytics/track',
+            'GET /api/health-vitals/summary',
           ],
         },
         200,
@@ -945,28 +958,31 @@ async function handleMonitorStatus(env, cors, path) {
   );
 }
 
-/** Best-effort edge counters (per isolate; resets on deploy — better than Unavailable). */
-let EDGE_REACH_TOTAL = 1200;
-let EDGE_REACH_WEEK = 40;
+/** Reach counters seeded from GA4/FastAPI export (see edge-data-snapshot.js). */
+const REACH_SEED = Number(EDGE_DATA_SNAPSHOT?.reach?.total_reach) || 6100;
+const REACH_WEEK_SEED =
+  Number(EDGE_DATA_SNAPSHOT?.reach?.insights?.unique_visitors_this_week) || 1100;
+let EDGE_REACH_TOTAL = REACH_SEED;
+let EDGE_REACH_WEEK = REACH_WEEK_SEED;
 
 function handleAnalyticsReach(cors) {
+  const base = EDGE_DATA_SNAPSHOT?.reach || {};
+  const insights = { ...(base.insights || {}) };
+  insights.unique_visitors = insights.unique_visitors || EDGE_REACH_TOTAL;
+  insights.unique_visitors_this_week = EDGE_REACH_WEEK;
+  insights.total_views_all_time = insights.total_views_all_time || EDGE_REACH_TOTAL;
+  insights.active_users_all_time = insights.active_users_all_time || EDGE_REACH_TOTAL;
   return json(
     {
+      ...base,
       success: true,
       total_reach: EDGE_REACH_TOTAL,
-      source: 'edge-placeholder',
-      ga_enabled: false,
+      source: base.source || 'edge-ga-snapshot',
+      ga_enabled: Boolean(base.ga_enabled),
       host: 'cloudflare-worker',
-      message:
-        'Portfolio Reach on Cloudflare edge (approximate). Full GA4 metrics return when FastAPI is online.',
-      insights: {
-        unique_visitors: Math.max(1, Math.floor(EDGE_REACH_TOTAL * 0.35)),
-        total_views_all_time: EDGE_REACH_TOTAL,
-        unique_visitors_this_week: EDGE_REACH_WEEK,
-        countries_this_week: 0,
-        trend: [],
-      },
+      insights,
       timestamp: new Date().toISOString(),
+      snapshotExportedAt: EDGE_DATA_SNAPSHOT?.exportedAt || null,
     },
     200,
     cors
@@ -978,7 +994,7 @@ function handleAnalyticsViews(cors) {
     {
       success: true,
       views: { total: EDGE_REACH_TOTAL, this_week: EDGE_REACH_WEEK },
-      storage: { backend: 'edge-placeholder' },
+      storage: { backend: 'edge-ga-snapshot' },
       host: 'cloudflare-worker',
       timestamp: new Date().toISOString(),
     },
@@ -996,7 +1012,22 @@ function handleAnalyticsTrack(cors) {
       tracked: true,
       total_reach: EDGE_REACH_TOTAL,
       host: 'cloudflare-worker',
-      note: 'edge counter (isolate-local)',
+      note: 'edge counter (isolate-local, seeded from GA snapshot)',
+    },
+    200,
+    cors
+  );
+}
+
+function handleHealthVitalsSummary(cors) {
+  const base = EDGE_DATA_SNAPSHOT?.healthVitals || {};
+  return json(
+    {
+      ...base,
+      success: true,
+      host: 'cloudflare-worker',
+      timestamp: new Date().toISOString(),
+      snapshotExportedAt: EDGE_DATA_SNAPSHOT?.exportedAt || null,
     },
     200,
     cors
