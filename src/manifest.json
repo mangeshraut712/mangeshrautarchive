@@ -2,11 +2,12 @@
   "id": "mangeshraut-portfolio",
   "name": "Mangesh Raut | Software Engineer",
   "short_name": "Mangesh Raut",
-  "start_url": "./index.html",
+  "start_url": "./",
+  "scope": "./",
   "display": "standalone",
   "display_override": ["standalone", "minimal-ui"],
   "background_color": "#ffffff",
-  "theme_color": "#007AFF",
+  "theme_color": "#0071e3",
   "description": "Portfolio of Mangesh Raut — Software Engineer specializing in production AI products, Java, Python, AWS, and full-stack systems.",
   "orientation": "any",
   "categories": ["portfolio", "technology", "education", "productivity"],
@@ -62,7 +63,7 @@
     {
       "name": "Projects",
       "short_name": "Projects",
-      "url": "./index.html#projects",
+      "url": "./#projects",
       "description": "View my project showcase"
     },
     {

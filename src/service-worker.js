@@ -1,19 +1,14 @@
 /*
- * Portfolio service worker — offline navigation fallback + static shell cache.
- * Caches a small allowlist for resilience without aggressive stale asset risk.
+ * Portfolio service worker — optional navigation fallback shell (not registered in production).
+ *
+ * bootstrap.js intentionally unregisters service workers on load to avoid iOS Safari
+ * reload loops. offline.html states there is no full offline cache by design.
+ * This file ships for installability metadata parity and future opt-in only.
+ * Build replaces __ASSET_VER__ with scripts/build/asset-version.mjs ASSET_VER.
  */
 
-// Build replaces __ASSET_VER__ with scripts/build/asset-version.mjs ASSET_VER.
 const CACHE_VERSION = 'portfolio-shell-v__ASSET_VER__';
-const PRECACHE_URLS = [
-  './',
-  './index.html',
-  './offline.html',
-  './404.html',
-  './manifest.json',
-  './assets/images/profile-icon.png',
-  './assets/images/profile-icon.webp',
-];
+const PRECACHE_URLS = ['./offline.html', './manifest.json', './assets/images/profile-icon.png'];
 
 self.addEventListener('install', event => {
   event.waitUntil(
@@ -59,8 +54,6 @@ self.addEventListener('fetch', event => {
 
   const url = new URL(request.url);
   if (url.origin !== self.location.origin) return;
-
-  // Never cache API traffic
   if (url.pathname.includes('/api/')) return;
 
   const isNavigation =
@@ -68,68 +61,28 @@ self.addEventListener('fetch', event => {
 
   if (isNavigation) {
     event.respondWith(networkFirstNavigation(request));
-    return;
-  }
-
-  // build-config must never be stale (CHAT_API_BASE / edge routing)
-  if (/build-config\.(js|json)$/i.test(url.pathname)) {
-    event.respondWith(networkFirstConfig(request));
-    return;
-  }
-
-  // Static assets: stale-while-revalidate style for same-origin shell assets
-  if (/\.(?:css|js|webp|png|svg|woff2|json)$/i.test(url.pathname)) {
-    event.respondWith(staleWhileRevalidate(request));
   }
 });
-
-async function networkFirstConfig(request) {
-  const cache = await caches.open(CACHE_VERSION);
-  try {
-    const networkResponse = await fetch(request, { cache: 'no-store' });
-    if (networkResponse && networkResponse.ok) {
-      cache.put(request, networkResponse.clone()).catch(() => {});
-    }
-    return networkResponse;
-  } catch {
-    return (await cache.match(request)) || fetch(request);
-  }
-}
 
 async function networkFirstNavigation(request) {
   const cache = await caches.open(CACHE_VERSION);
   try {
     const networkResponse = await fetch(request);
     if (networkResponse && networkResponse.ok) {
-      cache.put(request, networkResponse.clone()).catch(() => {});
+      return networkResponse;
     }
-    return networkResponse;
+    throw new Error('Navigation response not ok');
   } catch {
     const cached =
       (await cache.match(request)) ||
-      (await cache.match('./index.html')) ||
-      (await cache.match('./offline.html'));
+      (await cache.match('./offline.html')) ||
+      (await cache.match('./index.html'));
     if (cached) return cached;
     return new Response(
       '<!doctype html><title>Offline</title><h1>Offline</h1><p>Please reconnect and retry.</p>',
       { status: 503, headers: { 'Content-Type': 'text/html; charset=utf-8' } }
     );
   }
-}
-
-async function staleWhileRevalidate(request) {
-  const cache = await caches.open(CACHE_VERSION);
-  const cached = await cache.match(request);
-  const networkPromise = fetch(request)
-    .then(response => {
-      if (response && response.ok) {
-        cache.put(request, response.clone()).catch(() => {});
-      }
-      return response;
-    })
-    .catch(() => cached);
-
-  return cached || networkPromise;
 }
 
 self.addEventListener('message', event => {

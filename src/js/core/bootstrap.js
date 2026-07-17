@@ -131,6 +131,37 @@ const DEFERRED_IMAGE_PLACEHOLDER =
   'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
 
 const deferredStyleLoads = new Map();
+const lazyInteractionLoads = new Map();
+
+function getStylesheetBasename(href = '') {
+  return String(href).split('/').pop().split('?')[0];
+}
+
+function isStylesheetAlreadyApplied(href, documentRef = document) {
+  const base = getStylesheetBasename(href);
+  if (!base) return false;
+
+  return Array.from(documentRef.querySelectorAll('link[rel="stylesheet"]')).some(link => {
+    const candidate = getStylesheetBasename(link.getAttribute('href') || link.dataset.href || '');
+    if (candidate !== base) return false;
+    return link.dataset.styleLoaded === 'true' || link.sheet != null;
+  });
+}
+
+function runLazyInteraction(interactionKey, task) {
+  if (lazyInteractionLoads.has(interactionKey)) {
+    return lazyInteractionLoads.get(interactionKey);
+  }
+
+  const pending = Promise.resolve()
+    .then(task)
+    .finally(() => {
+      lazyInteractionLoads.delete(interactionKey);
+    });
+
+  lazyInteractionLoads.set(interactionKey, pending);
+  return pending;
+}
 
 const MODULE_IMPORTERS = {
   '../modules/accessibility.js': () => import('../modules/accessibility.js'),
@@ -364,6 +395,12 @@ function ensureDeferredStylesheetLoaded(link) {
 
   if (link.dataset.styleLoaded === 'true') {
     promote();
+    return Promise.resolve(true);
+  }
+
+  if (isStylesheetAlreadyApplied(href, link.ownerDocument || document)) {
+    promote();
+    link.dataset.styleLoaded = 'true';
     return Promise.resolve(true);
   }
 
@@ -739,19 +776,52 @@ function initContactChatbotCTA(chatbotModuleLoader, documentRef = document) {
 
   ctaButton.dataset.chatbotBound = 'true';
   ctaButton.addEventListener('click', async () => {
-    await Promise.all([loadDeferredStyles(['assistant'], documentRef), chatbotModuleLoader.load()]);
+    await openChatbotAssistant({
+      prompt: 'I want to contact Mangesh about a project opportunity.',
+      documentRef,
+      chatbotModuleLoader,
+    });
+  });
+}
 
-    const prompt = 'I want to contact Mangesh about a project opportunity.';
+export async function openChatbotAssistant({
+  prompt = '',
+  documentRef = document,
+  chatbotModuleLoader: loader = chatbotLoader,
+  loadStyles = loadDeferredStyles,
+} = {}) {
+  return runLazyInteraction('chatbot-open', async () => {
+    await Promise.all([loadStyles(['assistant'], documentRef), loader.load()]);
+
     if (
+      prompt &&
       window.appleIntelligenceChatbot &&
       typeof window.appleIntelligenceChatbot.ask === 'function'
     ) {
       window.appleIntelligenceChatbot.ask(prompt);
-      return;
+      return true;
     }
 
-    const toggle = documentRef.getElementById('chatbot-toggle');
-    toggle?.click();
+    documentRef.getElementById('chatbot-toggle')?.click();
+    return true;
+  });
+}
+
+export async function openSearchOverlay({
+  documentRef = document,
+  moduleLoader = searchLoader,
+  styleKeys = ['interactive'],
+  loadStyles = loadDeferredStyles,
+} = {}) {
+  return runLazyInteraction('search-open', async () => {
+    const stylesLoaded = await loadStyles(styleKeys, documentRef);
+    if (!stylesLoaded) return false;
+
+    const loaded = await moduleLoader.load();
+    if (!loaded) return false;
+
+    documentRef.getElementById('search-toggle')?.click();
+    return true;
   });
 }
 
@@ -770,7 +840,9 @@ function bindInteractionStyleLoader(elementId, styleKeys, replay = true, documen
       event.stopImmediatePropagation();
       event.stopPropagation();
 
-      const loaded = await loadDeferredStyles(styleKeys, documentRef);
+      const loaded = await runLazyInteraction(`styles:${elementId}`, () =>
+        loadDeferredStyles(styleKeys, documentRef)
+      );
       if (!loaded) return;
 
       if (replay) {
@@ -808,10 +880,11 @@ function bindInteractionModuleLoader(
       event.stopImmediatePropagation();
       event.stopPropagation();
 
-      const stylesLoaded = await loadDeferredStyles(styleKeys, documentRef);
-      if (!stylesLoaded) return;
-
-      const moduleLoaded = await moduleLoader.load();
+      const moduleLoaded = await runLazyInteraction(`module:${elementId}`, async () => {
+        const stylesLoaded = await loadDeferredStyles(styleKeys, documentRef);
+        if (!stylesLoaded) return false;
+        return moduleLoader.load();
+      });
       if (!moduleLoaded) return;
 
       if (replay) {
@@ -846,10 +919,11 @@ function bindSearchShortcutLoader(moduleLoader, documentRef = document, styleKey
 
       event.preventDefault();
 
-      const stylesLoaded = await loadDeferredStyles(styleKeys, documentRef);
-      if (!stylesLoaded) return;
-
-      const loaded = await moduleLoader.load();
+      const loaded = await runLazyInteraction('search-shortcut', async () => {
+        const stylesLoaded = await loadDeferredStyles(styleKeys, documentRef);
+        if (!stylesLoaded) return false;
+        return moduleLoader.load();
+      });
       if (!loaded) return;
 
       setTimeout(() => {

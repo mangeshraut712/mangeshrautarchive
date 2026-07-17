@@ -10,6 +10,7 @@
 - **Depends on**: none
 - **Category**: security
 - **Planned at**: commit `978494ee`, 2026-07-15
+- **Status**: DONE (wave: whole-site Task 5 — `api/rate_limit.py` + Upstash optional backend; memory default preserved)
 
 ## Why this matters
 

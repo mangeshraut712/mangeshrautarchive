@@ -187,7 +187,7 @@ class SkillsVisualization {
           <span class="skill-category-count" aria-hidden="true">${skills.length} skills</span>
         </div>
         <div class="skill-scroll-container">
-          <div class="skill-scroll-wrapper" role="list">
+          <div class="skill-scroll-wrapper" aria-hidden="true">
             ${skillsHTML}
           </div>
         </div>

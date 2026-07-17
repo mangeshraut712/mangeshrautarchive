@@ -371,8 +371,8 @@ class SystemMonitor:
             }
             self.security_events.append(sec_event)
             
-            # Log as warning/critical event
-            log_msg = f"Security threat [{threat_type}]: {method} {path} from {client_ip or 'unknown'}"
+            # Log as warning/critical event — keep raw IP only in structured details
+            log_msg = f"Security threat [{threat_type}]: {method} {path}"
             self.log_event(
                 log_msg,
                 EventType.CRITICAL if severity == "high" else EventType.WARNING,

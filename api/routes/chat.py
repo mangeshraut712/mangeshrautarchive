@@ -910,7 +910,7 @@ async def chat_endpoint(request: ChatRequest, req: Request):
     if not check_rate_limit(client_ip):
         if system_monitor is not None:
             system_monitor.log_event(
-                f"Rate limit exceeded: {client_ip}",
+                "Rate limit exceeded for chat client",
                 EventType.WARNING,
                 {"client_ip": client_ip, "endpoint": "/api/chat"},
                 "rate_limit",
@@ -1025,28 +1025,35 @@ async def chat_endpoint(request: ChatRequest, req: Request):
 
             async def generate_stream():
                 full_response = ""
-                async for chunk in stream_openrouter_response(
-                    selected_model,
-                    conversation,
-                    session_id,
-                    web_tools_enabled,
-                    bool(site_context),
-                    routing_tier,
-                    site_context=site_context or "",
-                ):
-                    yield chunk
-                    try:
-                        # NDJSON chunks have trailing \n — strip before parsing
-                        data = json.loads(chunk.rstrip())
-                        if data.get("type") == "done":
-                            full_response = data.get("full_content", "")
-                    except json.JSONDecodeError:
-                        pass
-                    except Exception:
-                        pass
+                try:
+                    async for chunk in stream_openrouter_response(
+                        selected_model,
+                        conversation,
+                        session_id,
+                        web_tools_enabled,
+                        bool(site_context),
+                        routing_tier,
+                        site_context=site_context or "",
+                    ):
+                        if await req.is_disconnected():
+                            logger.info("Chat client disconnected; stopping upstream stream")
+                            break
+                        yield chunk
+                        try:
+                            # NDJSON chunks have trailing \n — strip before parsing
+                            data = json.loads(chunk.rstrip())
+                            if data.get("type") == "done":
+                                full_response = data.get("full_content", "")
+                        except json.JSONDecodeError:
+                            pass
+                        except Exception:
+                            pass
 
-                if full_response and session_id:
-                    update_session_memory(session_id, message, full_response)
+                    if full_response and session_id and not await req.is_disconnected():
+                        update_session_memory(session_id, message, full_response)
+                except asyncio.CancelledError:
+                    logger.info("Chat stream cancelled after client disconnect")
+                    raise
 
             return StreamingResponse(
                 generate_stream(),

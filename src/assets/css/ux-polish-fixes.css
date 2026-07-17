@@ -182,6 +182,23 @@ main#main-content button,
   min-width: 0;
 }
 
+/* Dark mode section copy — WCAG AA on pure black canvas */
+html.dark .section-subtitle,
+html.dark .skills-section-subtitle,
+html.dark p.section-subtitle {
+  color: #d2d2d7 !important;
+  -webkit-text-fill-color: #d2d2d7 !important;
+}
+
+html.dark a.engineering-open-btn,
+html.dark .engineering-open-btn {
+  background: #0071e3 !important;
+  background-color: #0071e3 !important;
+  border-color: #0071e3 !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
 .flex,
 .grid,
 [class*='flex'],

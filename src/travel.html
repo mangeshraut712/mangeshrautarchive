@@ -28,6 +28,8 @@
       content="A 2026 map-led travel atlas of countries, cities, landmarks, and personal destination highlights."
     />
     <meta property="og:image" content="https://mangeshraut.pro/assets/images/home.png" />
+    <meta property="og:image:width" content="3024" />
+    <meta property="og:image:height" content="1722" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Travel Atlas — Mangesh Raut" />
     <meta
@@ -49,7 +51,7 @@
     <meta name="apple-mobile-web-app-title" content="Mangesh Raut" />
     <title>Travel Atlas — Mangesh Raut</title>
     <link rel="icon" type="image/png" href="assets/images/profile-icon.png" />
-    <link rel="mask-icon" href="assets/icons/icon.svg" color="#007AFF" />
+    <link rel="mask-icon" href="assets/icons/icon.svg" color="#0071e3" />
     <link rel="apple-touch-icon" href="assets/images/profile-icon.png" sizes="180x180" />
     <link
       rel="apple-touch-startup-image"
@@ -58,10 +60,30 @@
     />
     <link rel="manifest" href="manifest.json" />
     <script src="build-config.js"></script>
+    <script>
+      (function () {
+        const EDGE_API = 'https://assistme-chat.mangeshraut712.workers.dev';
+        const isGitHubPages = window.location.hostname.endsWith('github.io');
+        const fromBuild =
+          (window.buildConfig && window.buildConfig.apiBaseUrl) ||
+          (window.APP_CONFIG && window.APP_CONFIG.apiBaseUrl);
+        const blocked = function (u) {
+          return !u || /mangeshraut\.pro|vercel\.app/i.test(String(u));
+        };
+        const apiBaseUrl = isGitHubPages
+          ? blocked(fromBuild)
+            ? EDGE_API
+            : fromBuild
+          : fromBuild || window.location.origin;
+        window.APP_CONFIG = Object.assign({}, window.APP_CONFIG || {}, { apiBaseUrl });
+      })();
+    </script>
     <script src="js/utils/theme-head.js"></script>
     <script src="js/utils/perf-audit-flag.js"></script>
 
+    <!-- Shared subpage chrome stack: page-critical → design system → deferred chrome -->
     <link rel="stylesheet" href="assets/css/travel-atlas.css?v=20260716aa" />
+    <link rel="stylesheet" href="assets/css/ux-polish-fixes.css?v=20260716aa" />
     <link rel="stylesheet" href="assets/css/apple-design-system.css?v=20260716aa" data-perf-defer />
     <link rel="stylesheet" href="assets/css/typography-system.css?v=20260716aa" data-perf-defer />
     <link
@@ -70,7 +92,6 @@
       data-perf-defer
     />
     <link rel="stylesheet" href="assets/css/global-improvements.css?v=20260716aa" data-perf-defer />
-    <link rel="stylesheet" href="assets/css/ux-polish-fixes.css?v=20260716aa" data-perf-defer />
     <link rel="stylesheet" href="assets/css/accessibility.css?v=20260716aa" data-perf-defer />
     <link
       rel="stylesheet"

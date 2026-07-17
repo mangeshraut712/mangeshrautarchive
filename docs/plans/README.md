@@ -30,10 +30,10 @@ Runtime: Node 22+ · Python 3.12 · vanilla ES modules + FastAPI · dual host Ve
 | 004  | Dual-host API base for newsletter (and shared helper)               | P1       | S      | —          | DONE   |
 | 005  | Harden Last.fm artwork URLs (no raw URL in innerHTML)               | P1       | S      | —          | DONE   |
 | 006  | Sync service worker CACHE_VERSION with ASSET_VER on every deploy    | P1       | S      | —          | DONE   |
-| 007  | Durable rate limiting for serverless (replace process memory)       | P1       | M      | —          | TODO   |
+| 007  | Durable rate limiting for serverless (replace process memory)       | P1       | M      | —          | DONE   |
 | 008  | Shared escapeHtml utility and harden remaining innerHTML sinks      | P2       | M      | —          | TODO   |
 | 009  | Characterization tests for critical frontend modules                | P2       | M      | —          | TODO   |
-| 010  | Subpage CSS load hygiene (Systems / Monitor / Uses / Travel)        | P2       | M      | —          | TODO   |
+| 010  | Subpage CSS load hygiene (Systems / Monitor / Uses / Travel)        | P2       | M      | —          | DONE   |
 
 Status values: `TODO` | `IN PROGRESS` | `DONE` | `BLOCKED` | `REJECTED`
 

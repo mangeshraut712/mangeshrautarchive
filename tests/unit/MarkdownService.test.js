@@ -1,13 +1,33 @@
 // @vitest-environment jsdom
 
-import { describe, expect, it, beforeEach } from 'vitest';
+import { describe, expect, it, beforeEach, vi } from 'vitest';
 import {
   markdownService,
   SHOW_MORE_CHAR_THRESHOLD,
   SHOW_MORE_PREVIEW_CHARS,
 } from '../../src/js/services/MarkdownService.js';
 
+describe('MarkdownService plain path', () => {
+  it('renders plain text without loading the rich vendor graph', () => {
+    const html = markdownService.render('Hello plain world');
+    expect(html).toContain('Hello plain world');
+    expect(markdownService.isRichReady()).toBe(false);
+  });
+
+  it('renderPlain wraps long plain text in paragraphs', () => {
+    const longPlain = 'A'.repeat(64);
+    const html = markdownService.renderPlain(`${longPlain}\n\nSecond block`);
+    expect(html).toContain('<p>');
+    expect(html).toContain(longPlain);
+    expect(html).toContain('Second block');
+  });
+});
+
 describe('MarkdownService.render', () => {
+  beforeEach(async () => {
+    await markdownService.ensureRichReady();
+  });
+
   it('renders basic markdown', () => {
     const html = markdownService.render('Hello **world** and `code`');
     expect(html).toContain('<strong>world</strong>');
@@ -74,7 +94,24 @@ describe('MarkdownService.render', () => {
   });
 });
 
+describe('MarkdownService.renderAsync', () => {
+  it('lazy-loads rich vendor only when markdown is present', async () => {
+    vi.resetModules();
+    const { markdownService: service } = await import('../../src/js/services/MarkdownService.js');
+
+    await service.renderAsync('Just a plain answer.');
+    expect(service.isRichReady()).toBe(false);
+
+    await service.renderAsync('Answer with **bold** text');
+    expect(service.isRichReady()).toBe(true);
+  });
+});
+
 describe('MarkdownService.renderForChat', () => {
+  beforeEach(async () => {
+    await markdownService.ensureRichReady();
+  });
+
   it('returns full render for short messages', () => {
     const result = markdownService.renderForChat('Short **reply**');
     expect(result.collapsed).toBe(false);

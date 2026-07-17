@@ -97,10 +97,11 @@
   --fs-caption: 0.6875rem;
   /* 11px */
 
-  /* === TEXT COLORS - LIGHT MODE === */
+  /* === TEXT COLORS - LIGHT MODE ===
+     Owned values match apple-design-system.css (--text-primary/secondary/tertiary). */
   --text-primary-light: #1d1d1f;
-  --text-secondary-light: #424245;
-  --text-tertiary-light: #6e6e73;
+  --text-secondary-light: #6e6e73;
+  --text-tertiary-light: #86868b;
   --text-muted-light: #86868b;
   --text-placeholder-light: #a1a1a6;
 
@@ -111,11 +112,12 @@
   --text-color-muted: var(--text-muted-light);
 }
 
-/* === DARK MODE TEXT COLORS === */
+/* === DARK MODE TEXT COLORS ===
+   Match apple-design-system.css dark semantic ladder. */
 html.dark {
   --text-primary-dark: #f5f5f7;
-  --text-secondary-dark: #d2d2d7;
-  --text-tertiary-dark: #a1a1a6;
+  --text-secondary-dark: #a1a1a6;
+  --text-tertiary-dark: #6e6e73;
   --text-muted-dark: #86868b;
   --text-placeholder-dark: #6e6e73;
 

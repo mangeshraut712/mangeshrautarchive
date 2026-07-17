@@ -1,5 +1,6 @@
 import hashlib
 import os
+import re
 import time
 from datetime import datetime, timezone
 from typing import Any, Awaitable, Callable, Optional, Dict
@@ -51,15 +52,38 @@ def _mask_monitor_identifier(value: str) -> str:
     return f"client:{digest}"
 
 
+def _redact_ips_in_text(text: str) -> str:
+    """Mask IPv4/IPv6 literals that may appear in public monitor message strings."""
+    if not text:
+        return text
+    redacted = re.sub(
+        r"\b(?:(?:25[0-5]|2[0-4]\d|[01]?\d?\d)\.){3}(?:25[0-5]|2[0-4]\d|[01]?\d?\d)\b",
+        "[redacted-ip]",
+        text,
+    )
+    redacted = re.sub(
+        r"\b(?:[0-9a-fA-F]{0,4}:){2,7}[0-9a-fA-F]{0,4}\b",
+        "[redacted-ip]",
+        redacted,
+    )
+    return redacted
+
+
 def _redact_monitor_event(event: Dict) -> Dict:
     if not isinstance(event, dict):
         return event
     redacted = dict(event)
+    for key in ("ip", "client_ip"):
+        if redacted.get(key):
+            redacted[key] = _mask_monitor_identifier(str(redacted[key]))
     details = dict(redacted.get("details") or {})
     for key in ("ip", "client_ip"):
         if details.get(key):
             details[key] = _mask_monitor_identifier(str(details[key]))
-    redacted["details"] = details
+    if details:
+        redacted["details"] = details
+    if isinstance(redacted.get("message"), str):
+        redacted["message"] = _redact_ips_in_text(redacted["message"])
     return redacted
 
 
@@ -689,13 +713,13 @@ async def get_security_status(request: Request):
             "rate_limits": {},
         }
     
-    # Import rate limiting info from config to build dynamic stats
-    from api.config import rate_limit_store, RATE_LIMIT_REQUESTS, RATE_LIMIT_WINDOW
+    # Rate-limit diagnostics — use snapshot() so Upstash backends do not 500
+    from api.config import RATE_LIMIT_REQUESTS, RATE_LIMIT_WINDOW, get_rate_limit_store
     import time
     
     active_rate_limits = {}
     now = time.time()
-    for ip, timestamps in rate_limit_store.items():
+    for ip, timestamps in get_rate_limit_store().snapshot().items():
         # Filter timestamps to the current window
         recent = [t for t in timestamps if now - t < RATE_LIMIT_WINDOW]
         if recent:

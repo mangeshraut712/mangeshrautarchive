@@ -30,7 +30,7 @@ test.describe('Engineering evidence dashboard', () => {
     await page.setViewportSize({ width: 1280, height: 900 });
     await waitForSystemsReady(page);
 
-    await expect(page).toHaveTitle(/Engineering Evidence/i);
+    await expect(page).toHaveTitle(/Systems/i);
     await expect(page.locator('h1')).toContainText(/build, ship, think/i);
 
     for (const id of sectionIds) {

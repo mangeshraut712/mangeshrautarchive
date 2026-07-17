@@ -145,7 +145,7 @@ export class CalendarWidget {
                   <div class="card-accent-strip"></div>
                   <div class="card-content">
                     <div class="card-header-flex">
-                       <span class="card-time"><i class="far fa-clock"></i> ${r.time}</span>
+                       <span class="card-time"><i class="fas fa-clock"></i> ${r.time}</span>
                        <span class="card-tag">${r.tag}</span>
                     </div>
                     <div class="card-title">${r.text}</div>

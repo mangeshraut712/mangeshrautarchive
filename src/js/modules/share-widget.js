@@ -111,7 +111,7 @@ const createShareMarkup = () => `
       <div class="website-share-actions-list">
         <div id="website-share-copy" class="share-action-row" role="button" tabindex="0">
           <span>Copy Link</span>
-          <i class="fa-regular fa-copy" aria-hidden="true"></i>
+          <i class="fas fa-copy" aria-hidden="true"></i>
         </div>
         
         <div id="website-native-share" class="share-action-row" role="button" tabindex="0">

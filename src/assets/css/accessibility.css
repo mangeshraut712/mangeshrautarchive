@@ -1,6 +1,7 @@
 /**
  * Accessibility Styles — Consolidated
- * Merged from: accessibility-contrast-fixes, card-content-accessibility, high-contrast
+ * Merged from: accessibility-contrast-fixes, high-contrast
+ * Note: card-content-accessibility.css is still a separate, linked sheet.
  *
  * @version 2.0.0
  */
@@ -1235,6 +1236,129 @@ html.dark .shortcuts-modal__done {
 .shortcuts-modal__done:focus-visible {
   outline: 3px solid var(--a11y-focus-ring);
   outline-offset: 2px;
+}
+
+/* High contrast: solid page + card surfaces, strong borders (merged from high-contrast.css).
+   The liquid-glass sheets inflate specificity via :is() lists containing
+   "#projects #github-projects-container ..." (2,1,0); the same anchor is
+   included below so the accessibility override outranks glass materials. */
+html.high-contrast.high-contrast.high-contrast,
+html.high-contrast.high-contrast.high-contrast body {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+}
+
+html.dark.high-contrast.high-contrast,
+html.dark.high-contrast.high-contrast body {
+  background: #000000 !important;
+  background-color: #000000 !important;
+}
+
+html.high-contrast.high-contrast.high-contrast
+  :is(
+    #projects #github-projects-container .showcase-project-card,
+    .card,
+    .skill-category,
+    .experience-content,
+    .award-card,
+    .blog-card,
+    .lg-glass-card,
+    .glass-card,
+    .liquid-glass-card,
+    .project-card,
+    .education-card,
+    .publication-card,
+    .recommendation-card,
+    .certification-card
+  ) {
+  border-width: 2px !important;
+  border-style: solid !important;
+  border-color: #000000 !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  background: #ffffff !important;
+  color: #000000 !important;
+}
+
+html.dark.high-contrast.high-contrast
+  :is(
+    #projects #github-projects-container .showcase-project-card,
+    .card,
+    .skill-category,
+    .experience-content,
+    .award-card,
+    .blog-card,
+    .lg-glass-card,
+    .glass-card,
+    .liquid-glass-card,
+    .project-card,
+    .education-card,
+    .publication-card,
+    .recommendation-card,
+    .certification-card
+  ) {
+  border-color: #ffffff !important;
+  background: #000000 !important;
+  color: #ffffff !important;
+}
+
+html.high-contrast.high-contrast.high-contrast
+  :is(
+    main p,
+    main li,
+    main small,
+    .card p,
+    .card li,
+    .meta,
+    .card-meta,
+    .section-subtitle,
+    .text-secondary,
+    .text-tertiary
+  ) {
+  color: #000000 !important;
+}
+
+html.dark.high-contrast.high-contrast
+  :is(
+    main p,
+    main li,
+    main small,
+    .card p,
+    .card li,
+    .meta,
+    .card-meta,
+    .section-subtitle,
+    .text-secondary,
+    .text-tertiary
+  ) {
+  color: #ffffff !important;
+}
+
+html.high-contrast :is(a, button, .global-nav a) {
+  text-decoration-thickness: 2px;
+}
+
+html.high-contrast :focus-visible {
+  outline: 3px solid #0071e3 !important;
+  outline-offset: 3px !important;
+}
+
+html.dark.high-contrast :focus-visible {
+  outline-color: #0a84ff !important;
+}
+
+html.high-contrast .a11y-toolbar,
+html.high-contrast .global-nav.dynamic-island,
+html.high-contrast .monitor-page-nav,
+html.high-contrast .travel-nav {
+  border-width: 2px !important;
+}
+
+@media (prefers-contrast: more) {
+  html:not(.high-contrast) :is(.card, .skill-category, .award-card) {
+    border-width: 1.5px !important;
+  }
 }
 
 /* High contrast: solid surfaces, stronger borders */

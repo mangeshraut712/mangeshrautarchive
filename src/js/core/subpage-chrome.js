@@ -1,5 +1,6 @@
 /**
  * Shared WWDC26 chrome for subpages: a11y toolbar, liquid glass, search, share, haptics.
+ * Loaded by systems / monitor / uses / travel / 404 — keep this the single eager chrome owner.
  */
 import '../utils/reduced-transparency-sync.js';
 import { initGlobalSearch } from '../modules/global-search-overlay.js';
@@ -13,25 +14,41 @@ const EAGER = [
   () => import('../utils/view-transitions-nav.js'),
 ];
 
-async function bootSubpageChrome() {
-  await Promise.all(EAGER.map(load => load().catch(() => {})));
-  await initGlobalSearch().catch(() => {});
+let bootPromise = null;
 
-  document.addEventListener(
-    'keydown',
-    event => {
-      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
-        event.preventDefault();
-        const toggle = document.getElementById('search-toggle');
-        toggle?.click();
-      }
-    },
-    true
-  );
+async function bootSubpageChrome() {
+  if (bootPromise) return bootPromise;
+
+  bootPromise = (async () => {
+    await Promise.all(EAGER.map(load => load().catch(() => {})));
+    await initGlobalSearch().catch(() => {});
+
+    document.addEventListener(
+      'keydown',
+      event => {
+        if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
+          event.preventDefault();
+          const toggle = document.getElementById('search-toggle');
+          toggle?.click();
+        }
+      },
+      true
+    );
+  })();
+
+  return bootPromise;
 }
 
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', bootSubpageChrome, { once: true });
+  document.addEventListener(
+    'DOMContentLoaded',
+    () => {
+      void bootSubpageChrome();
+    },
+    { once: true }
+  );
 } else {
-  bootSubpageChrome();
+  void bootSubpageChrome();
 }
+
+export { bootSubpageChrome };

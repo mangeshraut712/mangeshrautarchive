@@ -7,20 +7,11 @@
 
 /* ===== APPLE DESIGN SYSTEM VARIABLES ===== */
 :root {
-  /* Apple Signature Colors */
-  --apple-blue: #0071e3;
-  --apple-blue-dark: #0a84ff;
-  --apple-blue-light: #5ac8fa;
+  /* Global color tokens (--apple-blue, --apple-teal, ...) are owned by
+     apple-design-system.css. Only file-specific tokens live here. */
+  --sap-blue-vivid: #0a84ff;
   --apple-blue-soft: rgb(0 113 227 / 12%);
   --apple-blue-glow: rgb(0 113 227 / 24%);
-  --apple-indigo: #5856d6;
-  --apple-purple: #af52de;
-  --apple-pink: #ff2d55;
-  --apple-red: #ff3b30;
-  --apple-orange: #ff9500;
-  --apple-yellow: #ffcc00;
-  --apple-green: #34c759;
-  --apple-teal: #5ac8fa;
 
   /* Apple Gray Scale */
   --apple-gray-50: #ffffff;
@@ -37,13 +28,7 @@
   --apple-dark-elevated: #000000;
   --apple-dark-border: rgb(255 255 255 / 12%);
 
-  /* Semantic Color Variables - Theme Aware */
-  --bg-primary: #ffffff;
-  --bg-secondary: #ffffff;
-  --bg-tertiary: #ffffff;
-  --text-primary: var(--apple-gray-600);
-  --text-secondary: var(--apple-gray-400);
-  --text-tertiary: var(--apple-gray-300);
+  /* Semantic bg/text tokens are owned by apple-design-system.css */
   --border-subtle: rgba(0, 0, 0, 0.08);
   --border-default: rgba(0, 0, 0, 0.12);
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
@@ -240,7 +225,7 @@ html.dark #home .hero-name-text {
 }
 
 html.dark #home .hero-verified-badge {
-  color: var(--apple-blue-dark);
+  color: var(--sap-blue-vivid);
 }
 
 /* Hero Title & Role */
@@ -272,14 +257,14 @@ html.dark #home .hero-role-flip span {
 #home .hero-role-flip strong {
   color: var(--apple-blue);
   font-weight: 700;
-  background: linear-gradient(135deg, var(--apple-blue) 0%, var(--apple-blue-light) 100%);
+  background: linear-gradient(135deg, var(--apple-blue) 0%, var(--apple-teal) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 html.dark #home .hero-role-flip strong {
-  background: linear-gradient(135deg, var(--apple-blue-dark) 0%, var(--apple-blue-light) 100%);
+  background: linear-gradient(135deg, var(--sap-blue-vivid) 0%, var(--apple-teal) 100%);
   -webkit-background-clip: text;
   background-clip: text;
 }
@@ -546,7 +531,7 @@ html.dark #home .hero-description {
 }
 
 #home .hero-cta:first-child {
-  background: linear-gradient(135deg, var(--apple-blue) 0%, var(--apple-blue-dark) 100%);
+  background: linear-gradient(135deg, var(--apple-blue) 0%, var(--sap-blue-vivid) 100%);
   color: white;
   box-shadow: 0 4px 16px rgb(0 113 227 / 35%);
 }
@@ -1034,14 +1019,10 @@ html.dark footer .footer-tagline {
   }
 }
 
-/* Dark Mode Semantic Variable Overrides */
+/* Dark mode: semantic bg/text tokens are owned by apple-design-system.css.
+   Only section-local border/shadow elevations live here (unlayered so they
+   can refine @layer tokens without rewriting the global color ladder). */
 html.dark {
-  --bg-primary: var(--apple-dark-bg);
-  --bg-secondary: #000 !important;
-  --bg-tertiary: #000000;
-  --text-primary: #f5f5f7;
-  --text-secondary: #a1a1a6;
-  --text-tertiary: #8e8e93;
   --border-subtle: rgba(255, 255, 255, 0.1);
   --border-default: rgba(255, 255, 255, 0.15);
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);

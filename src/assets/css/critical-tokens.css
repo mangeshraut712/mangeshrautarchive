@@ -16,7 +16,10 @@
   --color-blue-700: hsl(210deg 95% 42%);
   --color-blue-400: hsl(210deg 100% 75%);
   --text-primary-light: var(--color-black);
-  --text-secondary-light: var(--color-grey-600);
+
+  /* Match apple-design-system.css --text-secondary so first paint and
+     steady state render the same secondary text color. */
+  --text-secondary-light: #6e6e73;
   --text-accent-light: var(--color-blue-700);
   --bg-surface-light: var(--color-white);
   --bg-secondary-light: var(--color-white);

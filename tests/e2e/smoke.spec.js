@@ -159,7 +159,7 @@ test.describe('Chrome smoke tests', () => {
       nodes.map(node => node.getAttribute('aria-label'))
     );
     expect(labels).toEqual([
-      'Share website',
+      'Accessibility options',
       'Keyboard shortcuts',
       'Increase text size',
       'Decrease text size',
@@ -168,7 +168,9 @@ test.describe('Chrome smoke tests', () => {
       'Liquid Glass transparency',
     ]);
 
-    // WCAG 2.2 minimum target size for interactive controls
+    // Accessibility toolbar controls must meet 44×44px touch targets when open.
+    await page.locator('.a11y-toolbar__main').click();
+    await expect(toolbar).toHaveClass(/is-open/);
     const sizes = await buttons.evaluateAll(nodes =>
       nodes.map(node => {
         const r = node.getBoundingClientRect();
