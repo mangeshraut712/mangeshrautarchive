@@ -23,9 +23,10 @@
   <img src="https://img.shields.io/badge/Python-3.12-3776AB?style=flat-square&logo=python&logoColor=white" alt="Python 3.12">
   <img src="https://img.shields.io/badge/FastAPI-0.139-009688?style=flat-square&logo=fastapi&logoColor=white" alt="FastAPI">
   <img src="https://img.shields.io/badge/ESM-vanilla-yellow?style=flat-square" alt="Vanilla ESM">
-  <img src="https://img.shields.io/badge/OpenRouter-Grok%204.3%20%2B%20free-black?style=flat-square" alt="OpenRouter">
-  <img src="https://img.shields.io/badge/Tests-50%20%2B%20122-brightgreen?style=flat-square" alt="Tests">
+  <img src="https://img.shields.io/badge/OpenRouter-Grok%204.3%20%2B%20Nemotron%20free-black?style=flat-square" alt="OpenRouter">
+  <img src="https://img.shields.io/badge/Tests-89%20%2B%20134-brightgreen?style=flat-square" alt="Tests">
   <img src="https://img.shields.io/badge/Playwright-15%20projects-2EAD33?style=flat-square&logo=playwright&logoColor=white" alt="Playwright">
+  <a href="https://foglamp.dev/scan/mangeshrautarchive-jtspx4"><img src="https://img.shields.io/badge/Foglamp-AI%20map-0071e3?style=flat-square" alt="Foglamp architecture map"></a>
   <a href="https://github.com/sponsors/mangeshraut712"><img src="https://img.shields.io/badge/Sponsor-♥-ea4aaa?style=flat-square&logo=github-sponsors&logoColor=white" alt="Sponsors"></a>
 </p>
 
@@ -45,9 +46,9 @@
   ·
   <a href="https://mangeshraut.pro/blog"><b>Field Notes</b></a>
   ·
-  <a href="#-quick-start"><b>Quick start</b></a>
+  <a href="#7-quick-start"><b>Quick start</b></a>
   ·
-  <a href="#-technology-report-july-2026"><b>Tech report</b></a>
+  <a href="#3-technology-report-july-2026"><b>Tech report</b></a>
 </p>
 
 ---
@@ -61,10 +62,10 @@ As of **July 2026**, the product combines:
 | Pillar                 | What it delivers                                                                                |
 | ---------------------- | ----------------------------------------------------------------------------------------------- |
 | **Portfolio surfaces** | Home, Systems, Monitor, Travel, Uses, Blog, case studies, offline/404                           |
-| **Agentic AI**         | AssistMe chatbot · 10 WebMCP tools · local-first actions · OpenRouter NDJSON stream             |
+| **Agentic AI**         | AssistMe chatbot · 10 WebMCP tools · Plus menu tools · OpenRouter NDJSON stream · rich media    |
 | **Apple-inspired UI**  | Dynamic Island nav · liquid glass **clear / balanced / tinted** · solid page canvas · a11y dock |
-| **Operations**         | Platform health probes · portfolio catalog · dual-host commit parity                            |
-| **Quality**            | 67 Vitest · 122 pytest · 15 Playwright projects · Lighthouse deploy gates · security scan       |
+| **Operations**         | Platform health probes · portfolio catalog · dual-host commit parity · Foglamp map keep-alive   |
+| **Quality**            | **89** Vitest · **134** pytest · 15 Playwright projects · Lighthouse deploy gates · security    |
 
 This document is the **canonical technology report** for the repository: stack versions, libraries, architecture, features, and how to run it.
 
@@ -115,7 +116,7 @@ Pinned from this repo’s `package.json`, `requirements.txt`, `pyproject.toml`, 
 | **Realtime (dev)**  | ws                        | **^8.21.0**             | WebSocket tooling                                               |
 | **Analytics**       | @vercel/analytics         | **^2.0.1**              | Optional Vercel Analytics                                       |
 | **Images**          | sharp                     | **^0.35.2**             | Optimize pipeline                                               |
-| **Unit tests**      | Vitest                    | **^4.1.10**             | **67** unit tests                                               |
+| **Unit tests**      | Vitest                    | **^4.1.10**             | **89** unit tests                                               |
 | **E2E**             | Playwright                | **^1.61.1**             | **15** browser projects                                         |
 | **A11y E2E**        | @axe-core/playwright      | **^4.12.1**             | Accessibility assertions                                        |
 | **Lint JS**         | ESLint 9 + @eslint/js     | **^9.39.5**             | Flat config                                                     |
@@ -148,21 +149,24 @@ Pinned from this repo’s `package.json`, `requirements.txt`, `pyproject.toml`, 
 
 ### 3.4 AI & integrations (July 2026)
 
-| Integration             | Technology                                | Advancement                                         |
-| ----------------------- | ----------------------------------------- | --------------------------------------------------- |
-| **LLM gateway**         | [OpenRouter](https://openrouter.ai)       | Multi-model routing, free-tier failover on HTTP 402 |
-| **Primary model**       | `x-ai/grok-4.3`                           | Portfolio-oriented default when credits available   |
-| **Credit-safe default** | free / `:free` models (e.g. Gemma 4 free) | Stays online at $0 paid balance                     |
-| **Fusion / Auto**       | `openrouter/fusion`, `openrouter/auto`    | Compare / open-domain routing                       |
-| **Fast paid**           | `google/gemini-2.5-flash`                 | Lightweight fallback                                |
-| **Streaming**           | NDJSON over `POST /api/chat`              | Progressive AssistMe UI                             |
-| **Local agents**        | WebMCP + regex `detectAndExecute`         | Browser actions in ms before LLM                    |
-| **GitHub**              | REST API (+ optional PAT)                 | Project showcase grid, rate-limit resilience        |
-| **Music**               | Last.fm server proxy                      | Currently shelf artwork                             |
-| **Health**              | WHOOP + Withings OAuth · Supabase         | Vitals snapshots + cron                             |
-| **Reach**               | GA4 Data API (optional)                   | Hero portfolio-reach panel                          |
-| **Calendar**            | Google Calendar OAuth (optional)          | Scheduling surfaces                                 |
-| **Edge assist**         | Cloudflare Worker `assistme-chat`         | Chat path when Vercel is blocked; Pages-friendly    |
+| Integration             | Technology                                                         | Advancement                                                         |
+| ----------------------- | ------------------------------------------------------------------ | ------------------------------------------------------------------- |
+| **LLM gateway**         | [OpenRouter](https://openrouter.ai)                                | Multi-model routing; free-tier failover on HTTP 402 / empty streams |
+| **Primary model**       | `x-ai/grok-4.3`                                                    | Portfolio default when paid credits available                       |
+| **Credit-safe default** | `nvidia/nemotron-3-super-120b-a12b:free`                           | Strongest free AssistMe path; then Gemma 4 free · `openrouter/free` |
+| **Vision (free)**       | `google/gemma-4-26b-a4b-it:free`                                   | Image attach / multimodal turns                                     |
+| **Fusion / Auto**       | `openrouter/fusion`, `openrouter/auto`                             | Compare / open-domain routing                                       |
+| **Fast paid**           | `google/gemini-2.5-flash`                                          | Lightweight paid fallback                                           |
+| **Streaming**           | NDJSON over `POST /api/chat`                                       | Progressive AssistMe UI                                             |
+| **Rich media (free)**   | Pollinations images · client chart SVG fences                      | No paid OpenRouter image/audio models                               |
+| **Local agents**        | WebMCP + regex `detectAndExecute`                                  | Browser actions in ms before LLM                                    |
+| **GitHub**              | REST API (+ optional PAT)                                          | Project showcase grid, rate-limit resilience                        |
+| **Music**               | Last.fm server proxy                                               | Currently shelf artwork                                             |
+| **Health**              | WHOOP + Withings OAuth · Supabase                                  | Vitals snapshots + cron                                             |
+| **Reach**               | GA4 Data API (optional)                                            | Hero portfolio-reach panel                                          |
+| **Calendar**            | Google Calendar OAuth (optional)                                   | Scheduling surfaces                                                 |
+| **Edge assist**         | Cloudflare Worker `assistme-chat`                                  | Chat path when Vercel is blocked; Pages-friendly                    |
+| **Architecture map**    | [Foglamp scan](https://foglamp.dev/scan/mangeshrautarchive-jtspx4) | 41 nodes · 51 edges · monthly keep-alive CI                         |
 
 ### 3.5 Hosting & delivery
 
@@ -170,7 +174,7 @@ Pinned from this repo’s `package.json`, `requirements.txt`, `pyproject.toml`, 
 | ------------------ | ------------------------------------------------------- | ------------------------------------------------------------------------ |
 | **Vercel**         | Static `dist/` + Python serverless `api/index.py`       | Same-origin `/api/*`, analytics                                          |
 | **GitHub Pages**   | Static `dist/` only                                     | Dual-host parity via `build-config.json` `gitCommit`                     |
-| **CDN assets**     | esbuild + Sharp + `ASSET_VER`                           | Cache-busted CSS/JS (`20260716z` series)                                 |
+| **CDN assets**     | esbuild + Sharp + `ASSET_VER`                           | Cache-busted CSS/JS (`20260718assistme` series)                          |
 | **PWA**            | `manifest.json` (installable); SW registration disabled | Standalone shortcuts; offline.html reconnect-only; no full offline cache |
 | **CSP / security** | Headers in `vercel.json` · report endpoint              | Rate limits, server-only secrets, HMAC OAuth state                       |
 
@@ -178,8 +182,8 @@ Pinned from this repo’s `package.json`, `requirements.txt`, `pyproject.toml`, 
 
 | Suite        | Runner                         | Count / target (July 2026)                                          |
 | ------------ | ------------------------------ | ------------------------------------------------------------------- |
-| **Unit**     | Vitest 4.1                     | **67** tests · characterization + module suites                     |
-| **API**      | pytest                         | **122** tests · 17 modules                                          |
+| **Unit**     | Vitest 4.1                     | **89** tests · chatbot, scroll engine, modules                      |
+| **API**      | pytest                         | **134** tests · FastAPI routes / middleware                         |
 | **E2E**      | Playwright 1.61                | **15** projects (desktop + phone + tablet, incl. iPhone 17 Pro Max) |
 | **A11y**     | axe-core + a11y toolbar        | CI + runtime high contrast / reduced motion / liquid glass          |
 | **Perf**     | Lighthouse gate scripts        | Desktop/mobile floors on CI & live                                  |
@@ -189,23 +193,23 @@ Pinned from this repo’s `package.json`, `requirements.txt`, `pyproject.toml`, 
 
 ## 4. Product features (July 2026)
 
-| Area                | Highlights                                                                                                              |
-| ------------------- | ----------------------------------------------------------------------------------------------------------------------- |
-| **AssistMe**        | 10 WebMCP tools · local-first actions · NDJSON stream · KaTeX + DOMPurify · free-tier failover · offline site knowledge |
-| **Liquid Glass**    | Clear / balanced / tinted materials on chrome · solid white/black page canvas · WebGL optional · a11y slider            |
-| **System Monitor**  | Apple Status densify · platform probes · portfolio catalog · CSP / AI metrics                                           |
-| **Systems page**    | Evidence cards · architecture diagrams · hiring Q&A                                                                     |
-| **Projects**        | Live GitHub grid · release lens · evidence rows · Spatial View hooks                                                    |
-| **Field Notes**     | 12 long-form articles · X-style feed cards · no stock hero images · charts + source embeds                              |
-| **Case studies**    | 5 static deep-dives (portfolio, HindAI, CES Energy, AssistMe, Bug Tracker)                                              |
-| **Currently**       | Shows / books / music · Last.fm proxy · local posters                                                                   |
-| **Health**          | WHOOP + Withings · Supabase · daily cron                                                                                |
-| **Travel**          | MapLibre atlas · filters · glass sidebar                                                                                |
-| **Uses**            | Hardware / software / AI stack board                                                                                    |
-| **Command palette** | `⌘K` / `Ctrl+K` · sections, blog, actions                                                                               |
-| **A11y**            | Floating dock · liquid glass control · listen/translate · 44px targets · reduced transparency → solid                   |
-| **PWA**             | Install via manifest, shortcuts, splash assets; SW unregistered for iOS stability; offline.html reconnect only          |
-| **Share**           | Glass share FAB · system share sheet style dialog                                                                       |
+| Area                | Highlights                                                                                                                                                                                                  |
+| ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **AssistMe**        | Mic · input · **+** · send · 10 WebMCP tools · Writing Tools / attach / summarize via Plus · NDJSON stream · KaTeX + DOMPurify · Nemotron free chain · Pollinations + charts · session memory · scroll a11y |
+| **Liquid Glass**    | Clear / balanced / tinted materials on chrome · solid white/black page canvas · WebGL optional · a11y slider                                                                                                |
+| **System Monitor**  | Apple Status densify · platform probes · portfolio catalog · CSP / AI metrics                                                                                                                               |
+| **Systems page**    | Evidence cards · architecture diagrams · hiring Q&A                                                                                                                                                         |
+| **Projects**        | Live GitHub grid · release lens · evidence rows · Spatial View hooks                                                                                                                                        |
+| **Field Notes**     | 12 long-form articles · X-style feed cards · no stock hero images · charts + source embeds                                                                                                                  |
+| **Case studies**    | 5 static deep-dives (portfolio, HindAI, CES Energy, AssistMe, Bug Tracker)                                                                                                                                  |
+| **Currently**       | Shows / books / music · Last.fm proxy · local posters                                                                                                                                                       |
+| **Health**          | WHOOP + Withings · Supabase · daily cron                                                                                                                                                                    |
+| **Travel**          | MapLibre atlas · filters · glass sidebar                                                                                                                                                                    |
+| **Uses**            | Hardware / software / AI stack board                                                                                                                                                                        |
+| **Command palette** | `⌘K` / `Ctrl+K` · sections, blog, actions                                                                                                                                                                   |
+| **A11y**            | Floating dock · liquid glass control · listen/translate · 44px targets · reduced transparency → solid                                                                                                       |
+| **PWA**             | Install via manifest, shortcuts, splash assets; SW unregistered for iOS stability; offline.html reconnect only                                                                                              |
+| **Share**           | Glass share FAB · system share sheet style dialog                                                                                                                                                           |
 
 ### AssistMe · WebMCP tools
 
@@ -287,7 +291,7 @@ flowchart LR
 
 1. **Browser** — WebMCP / regex (`navigate`, resume, theme, filters) in milliseconds.
 2. **Site knowledge** — Deterministic portfolio facts without an LLM.
-3. **OpenRouter** — Routed model (Grok / free / Auto / Fusion / Flash) with multi-model fallback.
+3. **OpenRouter** — Routed model (Grok when credited; otherwise Nemotron Super free → Gemma free → `openrouter/free`).
 4. **Graceful degradation** — Honest UX for 402 credits, rate limits, and upstream errors.
 
 ### Dual hosting
@@ -303,16 +307,17 @@ Both stamp `build-config.json` with `gitCommit` for deploy parity (`npm run veri
 
 ## 6. AI model routing
 
-| Tier                  | Model                                           | When                                          |
-| --------------------- | ----------------------------------------------- | --------------------------------------------- |
-| **Portfolio primary** | `x-ai/grok-4.3`                                 | Default when paid credits available           |
-| **Env override**      | `OPENROUTER_MODEL`                              | Force free/router slug for credit-safe online |
-| **Free path**         | `google/gemma-4-26b-a4b-it:free` (+ free chain) | Automatic after 402 / primary fail            |
-| **Fusion**            | `openrouter/fusion`                             | Compare / trade-off (non-stream)              |
-| **Auto**              | `openrouter/auto`                               | Open-domain                                   |
-| **Fast paid**         | `google/gemini-2.5-flash`                       | Lightweight paid fallback                     |
+| Tier                  | Model                                                  | When                                                 |
+| --------------------- | ------------------------------------------------------ | ---------------------------------------------------- |
+| **Portfolio primary** | `x-ai/grok-4.3`                                        | Default when paid credits available                  |
+| **Env override**      | `OPENROUTER_MODEL`                                     | Force a slug (including free) for credit-safe online |
+| **Free chain**        | Nemotron Super free → Gemma 4 free → `openrouter/free` | Automatic after 402 / empty / primary fail           |
+| **Vision free**       | `google/gemma-4-26b-a4b-it:free` (+ free vision chain) | Image attach turns                                   |
+| **Fusion**            | `openrouter/fusion`                                    | Compare / trade-off (non-stream)                     |
+| **Auto**              | `openrouter/auto`                                      | Open-domain                                          |
+| **Fast paid**         | `google/gemini-2.5-flash`                              | Lightweight paid fallback                            |
 
-Configure with `OPENROUTER_API_KEY` + optional `OPENROUTER_MODEL`. Implementation: `api/config.py` + `api/model_router.py`.
+Configure with `OPENROUTER_API_KEY` + optional `OPENROUTER_MODEL`. Implementation: `api/config.py` + `api/model_router.py` (+ mirrored free chain in `workers/assistme-chat`).
 
 ---
 
@@ -354,27 +359,29 @@ npm run build && PORT=4174 npm run serve:dist   # production preview
 | `npm run doctor` / `doctor:stack` | Root layout + no React/Next runtime               |
 | `npm run dev`                     | Frontend + backend                                |
 | `npm run build`                   | Production `dist/` (+ blog/case study generation) |
-| `npm test` / `npm run test:api`   | Vitest **67** / pytest **122**                    |
+| `npm test` / `npm run test:api`   | Vitest **89** / pytest **134**                    |
 | `npm run check`                   | ESLint + Stylelint + Prettier + Vitest            |
 | `npm run qa:prod-ready`           | Full pre-deploy matrix                            |
 | `npm run verify:deploy-sync`      | Vercel ↔ Pages parity                             |
 | `npm run security-check`          | Secret scan                                       |
+| `npm run foglamp:publish`         | Refresh public Foglamp architecture map           |
 | `npm run clean`                   | Purge dist/artifacts (keeps venvs)                |
 
 ---
 
 ## 8. Environment (server-side only)
 
-| Group         | Keys                                     | Notes                                |
-| ------------- | ---------------------------------------- | ------------------------------------ |
-| **AI**        | `OPENROUTER_API_KEY`, `OPENROUTER_MODEL` | Chat; free models work at $0 balance |
-| **GitHub**    | `GITHUB_TOKEN` / `GITHUB_PAT`            | Rate limits for project grid         |
-| **Last.fm**   | `LASTFM_API_KEY`, `LASTFM_USERNAME`      | Music shelf                          |
-| **Analytics** | `GA4_*`, service account JSON            | Portfolio reach panel                |
-| **Health**    | WHOOP / Withings / Calendar OAuth        | Optional                             |
-| **Supabase**  | URL + service role                       | Vitals persistence                   |
-| **Voice**     | `AI_GATEWAY_API_KEY`                     | Optional realtime speech             |
-| **Edge**      | `CHAT_API_BASE`, Cloudflare token        | Pages AssistMe worker                |
+| Group          | Keys                                     | Notes                                        |
+| -------------- | ---------------------------------------- | -------------------------------------------- |
+| **AI**         | `OPENROUTER_API_KEY`, `OPENROUTER_MODEL` | Chat; Nemotron/Gemma free work at $0 balance |
+| **GitHub**     | `GITHUB_TOKEN` / `GITHUB_PAT`            | Rate limits for project grid                 |
+| **Last.fm**    | `LASTFM_API_KEY`, `LASTFM_USERNAME`      | Music shelf                                  |
+| **Analytics**  | `GA4_*`, service account JSON            | Portfolio reach panel                        |
+| **Health**     | WHOOP / Withings / Calendar OAuth        | Optional                                     |
+| **Supabase**   | URL + service role                       | Vitals persistence                           |
+| **Voice**      | `AI_GATEWAY_API_KEY`                     | Optional realtime speech                     |
+| **Edge**       | `CHAT_API_BASE`, Cloudflare token        | Pages AssistMe worker                        |
+| **Foglamp CI** | `FOGLAMP_SCAN_EDIT_TOKEN` (Actions only) | Keep-alive for public architecture map       |
 
 Never commit `.env` / `.env.local`. See [`.env.example`](.env.example).
 
@@ -386,9 +393,9 @@ Never commit `.env` / `.env.local`. See [`.env.example`](.env.example).
 
 1. `npm audit` + `security-check`
 2. ESLint · Stylelint 17 · Prettier
-3. Vitest (**67**)
+3. Vitest (**89**)
 4. Env parity (non-blocking)
-5. flake8 · dead-code · pytest (**122**)
+5. flake8 · dead-code · pytest (**134**)
 6. Browser QA smoke
 7. `npm run build` + Lighthouse on `dist/`
 8. GitHub Pages deploy + dual-surface verify
@@ -397,10 +404,14 @@ Never commit `.env` / `.env.local`. See [`.env.example`](.env.example).
 
 Live reachability (Vercel + Pages) · Lighthouse floors · commit parity.
 
+### Monthly `foglamp-scan-keepalive.yml`
+
+Republishes [`.foglamp/scan.json`](.foglamp/scan.json) to the same public URL using secret `FOGLAMP_SCAN_EDIT_TOKEN` (see [docs/foglamp-scan.md](docs/foglamp-scan.md)).
+
 | Suite               | Target                                     |
 | ------------------- | ------------------------------------------ |
-| Vitest              | 67                                         |
-| pytest              | 122                                        |
+| Vitest              | 89                                         |
+| pytest              | 134                                        |
 | Playwright projects | 15                                         |
 | Lighthouse CI       | Perf / A11y / BP / SEO floors per workflow |
 
@@ -412,7 +423,7 @@ Live reachability (Vercel + Pages) · Lighthouse floors · commit parity.
 mangeshrautarchive/
 ├── src/                    # Frontend shells + assets → npm run build → dist/
 │   ├── *.html              # index, systems, monitor, travel, uses, 404, offline
-│   ├── js/core|modules|services|utils|data|vendor/
+│   ├── js/core|modules|services|utils|data|vendor|chatbot/
 │   └── assets/css|images|files|icons|vendor/
 ├── api/                    # FastAPI (Vercel entry: api/index.py)
 │   ├── routes/ · integrations/
@@ -422,15 +433,16 @@ mangeshrautarchive/
 │   ├── build/              # esbuild pipeline, ASSET_VER, blog/case generators
 │   ├── deployment/         # Lighthouse, security, deploy sync
 │   ├── utils/              # dev servers, check-node, lint runners
-│   └── qa/ · integrations/
+│   └── qa/ · integrations/ # includes publish-foglamp-scan.mjs
 ├── tests/unit|api|e2e/     # Vitest · pytest · Playwright
-├── docs/                   # STRUCTURE.md · plans/
-├── .github/workflows/      # deploy.yml · post-deploy-monitoring.yml
+├── docs/                   # STRUCTURE.md · foglamp-scan.md · design-plans/ · plans/
+├── .foglamp/scan.json      # Public AI architecture graph (lock file gitignored)
+├── .github/workflows/      # deploy · monitoring · foglamp-scan-keepalive
 ├── package.json · vercel.json · pyproject.toml · .nvmrc
 └── AGENTS.md               # AI / contributor brief
 ```
 
-**Do not** add React/Next/Vue/Svelte app scaffolds. **Map:** [docs/STRUCTURE.md](docs/STRUCTURE.md) · [scripts/README.md](scripts/README.md) · [tests/README.md](tests/README.md)
+**Do not** add React/Next/Vue/Svelte app scaffolds. **Map:** [docs/STRUCTURE.md](docs/STRUCTURE.md) · [docs/foglamp-scan.md](docs/foglamp-scan.md) · [scripts/README.md](scripts/README.md) · [tests/README.md](tests/README.md)
 
 ---
 
@@ -495,23 +507,27 @@ Articles are generated at build/dev time from `src/js/modules/blog-data.js` into
 
 ## 14. Changelog highlights — July 2026
 
+- **AssistMe UX (main `0b045319` / `d30e5612`)** — composer Plus menu (attach / Writing Tools / summarize); MessageScroller a11y; scroll fades + text shimmer; attachment cards; decluttered header/status/welcome; free rich media (Pollinations + charts); Nemotron Super free chain on FastAPI + Cloudflare Worker.
+- **Foglamp architecture map** — committed `.foglamp/scan.json` (41 nodes · 51 edges); public URL keep-alive via `npm run foglamp:publish` + monthly GitHub Action.
 - **Liquid Glass materials** — clear / balanced / tinted parity on light + dark; chrome glass vs solid content discipline; a11y + share FAB materials aligned.
 - **Blog system** — 12 field notes; removed unrelated figures; X-style author cards; `/blog` index routing hardened for local Express.
 - **Project Showcase** — equal card grid alignment; shell width parity across activity / lens / search / grid.
 - **Solid theme** — white light / black dark page canvas; dual-host edge AssistMe path documented.
-- **Quality** — **67** Vitest · **122** pytest · Playwright multi-device matrix · Node engines guard · ASSET_VER cache busting.
+- **Quality** — **89** Vitest · **134** pytest · Playwright multi-device matrix · Node engines guard · `ASSET_VER=20260718assistme`.
 
 ---
 
 ## 15. Documentation
 
-| Doc                                    | Purpose                      |
-| -------------------------------------- | ---------------------------- |
-| [AGENTS.md](AGENTS.md)                 | AI agent / contributor brief |
-| [SECURITY.md](SECURITY.md)             | Security policy              |
-| [.env.example](.env.example)           | Env template                 |
-| [docs/README.md](docs/README.md)       | Doc index                    |
-| [docs/STRUCTURE.md](docs/STRUCTURE.md) | Full file map                |
+| Doc                                          | Purpose                             |
+| -------------------------------------------- | ----------------------------------- |
+| [AGENTS.md](AGENTS.md)                       | AI agent / contributor brief        |
+| [SECURITY.md](SECURITY.md)                   | Security policy                     |
+| [.env.example](.env.example)                 | Env template                        |
+| [docs/README.md](docs/README.md)             | Doc index                           |
+| [docs/STRUCTURE.md](docs/STRUCTURE.md)       | Full file map                       |
+| [docs/foglamp-scan.md](docs/foglamp-scan.md) | Public AI map + keep-alive          |
+| [docs/design-plans/](docs/design-plans/)     | AssistMe UX design plans (executed) |
 
 ---
 
