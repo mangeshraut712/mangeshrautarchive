@@ -130,7 +130,7 @@ function isGarbage(text, userMessage = '') {
   const isPortfolioQ =
     /mangesh|portfolio|resume|experience|skill|project|drexel|hire|contact|whoop|withings/.test(q);
   if (isPortfolioQ) return false;
-  return /do not have information regarding|specialized knowledge base|my expertise is limited to providing information regarding mangesh|cannot (discuss|answer).*(outside|beyond).*(portfolio|mangesh)/i.test(
+  return /don'?t have information|do not have information regarding|specialized knowledge base|my expertise is limited to providing information regarding mangesh|cannot (discuss|answer).*(outside|beyond).*(portfolio|mangesh)/i.test(
     t
   );
 }
