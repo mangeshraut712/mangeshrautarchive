@@ -199,6 +199,7 @@ class AppleIntelligenceChatbot {
       announce: message => this.announceScroll(message),
     });
     this.scrollEngine.bind();
+    this.syncComposerHeight();
     this._viewportBound = false;
     this._onVisualViewport = null;
     this._mobileScrollLocked = false;
@@ -234,6 +235,17 @@ class AppleIntelligenceChatbot {
 
   isMobileViewport() {
     return typeof window !== 'undefined' && window.matchMedia('(max-width: 768px)').matches;
+  }
+
+  syncComposerHeight() {
+    const widget = this.elements.widget;
+    if (!widget) return;
+    const footer =
+      widget.querySelector('.chatbot-footer') ||
+      widget.querySelector('.chatbot-input-area') ||
+      this.elements.inputWrapper?.parentElement;
+    const height = Math.max(72, Math.round(footer?.getBoundingClientRect?.().height || 92));
+    widget.style.setProperty('--chatbot-composer-height', `${height}px`);
   }
 
   bindVisualViewportInsets() {
@@ -904,13 +916,14 @@ class AppleIntelligenceChatbot {
     this.elements.toggle?.setAttribute('aria-expanded', 'true');
     this.updateRateLimitBadge();
     this.showContextAwareness();
+    this.syncComposerHeight();
     appleSounds.playNotification();
     setTimeout(() => {
       (this.elements.input || this.elements.widget)?.focus({ preventScroll: true });
-      const restored = this.scrollEngine?.restoreSession();
-      if (!restored) {
-        this.scrollEngine?.jumpToLatest({ announce: false });
-      }
+      this.syncComposerHeight();
+      // Always open at the latest message — restoreSession now forces follow-bottom.
+      this.scrollEngine?.restoreSession();
+      this.scrollEngine?.jumpToLatest({ announce: false });
     }, 300);
   }
 

@@ -436,7 +436,7 @@ html.dark .suggested-prompt-btn:hover {
 .chatbot-jump-latest {
   position: absolute;
   left: 50%;
-  bottom: 78px;
+  bottom: calc(var(--chatbot-composer-height, 92px) + 12px);
   z-index: 25;
   display: inline-flex;
   align-items: center;
@@ -444,15 +444,27 @@ html.dark .suggested-prompt-btn:hover {
   padding: 8px 14px;
   border: 1px solid rgb(0 122 255 / 28%);
   border-radius: 999px;
-  background: rgb(255 255 255 / 92%);
+  background: rgb(255 255 255 / 94%);
   color: #007aff;
   font-size: 0.78rem;
   font-weight: 600;
   box-shadow: 0 10px 24px rgb(15 23 42 / 14%);
-  transform: translateX(-50%);
+  transform: translateX(-50%) translateY(6px);
+  opacity: 0;
+  pointer-events: none;
   transition:
     opacity 0.2s ease,
     transform 0.2s ease;
+}
+
+.chatbot-jump-latest.is-visible:not([hidden]) {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0);
+}
+
+.chatbot-jump-latest[hidden] {
+  display: none !important;
 }
 
 .chatbot-jump-latest.is-streaming {

@@ -76,4 +76,34 @@ describe('ChatScrollEngine', () => {
     engine.bind();
     expect(() => engine.dispose()).not.toThrow();
   });
+
+  it('ensureUserPinPad is a no-op (no spacer thrash)', () => {
+    engine.bind();
+    expect(engine.ensureUserPinPad()).toBeNull();
+    expect(messages.querySelector('#chatbot-user-pin-pad')).toBeNull();
+  });
+
+  it('restoreSession forces following and clears sticky session', () => {
+    sessionStorage.setItem(
+      'assistme-chat-scroll-v1',
+      JSON.stringify({ scrollTop: 12, following: false, messageId: 'x' })
+    );
+    engine.pauseFollowing('test');
+    expect(engine.restoreSession()).toBe(true);
+    expect(engine.isFollowing()).toBe(true);
+    expect(sessionStorage.getItem('assistme-chat-scroll-v1')).toBeNull();
+  });
+
+  it('jump button stays hidden until activity below while not following', () => {
+    const widget = document.createElement('div');
+    document.body.appendChild(widget);
+    engine.dispose();
+    engine = new ChatScrollEngine(messages, { widgetEl: widget });
+    engine.bind();
+    expect(engine.jumpBtn.hidden).toBe(true);
+    engine.pauseFollowing('test');
+    engine.markActivityBelow();
+    expect(engine.jumpBtn.hidden).toBe(false);
+    expect(engine.jumpBtn.classList.contains('is-visible')).toBe(true);
+  });
 });

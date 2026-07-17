@@ -1,11 +1,12 @@
 /**
  * Scroll engineering for streaming chat (AssistMe).
- * Follow only while the reader is following; never fight user intent.
+ * Follow the live reply while the reader is following; never fight scroll intent.
+ * Apple Messages–inspired: keep the latest turn visible without spacer tricks.
  */
 
 const SESSION_KEY = 'assistme-chat-scroll-v1';
-const PROGRAMMATIC_GRACE_MS = 100;
-const NEAR_BOTTOM_THRESHOLD = 72;
+const PROGRAMMATIC_GRACE_MS = 140;
+const NEAR_BOTTOM_THRESHOLD = 96;
 
 export class ChatScrollEngine {
   constructor(messagesEl, { widgetEl, announce } = {}) {
@@ -228,54 +229,23 @@ export class ChatScrollEngine {
     if (!messageEl) return;
     this.activeTurnEl = messageEl;
     this.resumeFollowing('new-turn');
-    // Keep the user bubble near the top until assistant streaming starts
-    this.userTurnPinnedUntil = Date.now() + 1200;
-    const pin = () => {
-      // Do not re-expand the pin pad once the assistant stream is live
-      if (this.isStreaming) return;
-      this.scrollTurnIntoView(messageEl);
-    };
-    pin();
+    // Soft pin: bring the user bubble into view without a giant spacer pad
+    // (the old 90vh pad made the transcript jump upward and stuck Jump-to-latest).
+    this.scrollTurnIntoView(messageEl);
     if (typeof requestAnimationFrame === 'function') {
-      requestAnimationFrame(() => {
-        requestAnimationFrame(pin);
-      });
+      requestAnimationFrame(() => this.scrollTurnIntoView(messageEl));
     }
-    // Layout settles after flex spacers / markdown paint / offline auto-reply
-    setTimeout(pin, 32);
-    setTimeout(pin, 80);
-    setTimeout(pin, 160);
-    setTimeout(pin, 320);
-    setTimeout(pin, 640);
   }
 
   ensureUserPinPad() {
-    const messages = this.messagesEl;
-    if (!messages) return null;
-    let pad = messages.querySelector('#chatbot-user-pin-pad');
-    if (!pad) {
-      pad = document.createElement('div');
-      pad.id = 'chatbot-user-pin-pad';
-      pad.setAttribute('aria-hidden', 'true');
-      pad.style.flexShrink = '0';
-      pad.style.width = '100%';
-      pad.style.pointerEvents = 'none';
-      const anchor = this.ensureScrollAnchor();
-      if (anchor) {
-        messages.insertBefore(pad, anchor);
-      } else {
-        messages.appendChild(pad);
-      }
-    }
-    const need = Math.max(Math.round(messages.clientHeight * 0.9), 280);
-    pad.style.minHeight = `${need}px`;
-    return pad;
+    // Intentionally no-op: spacer pads caused scroll thrash on mobile/desktop.
+    return null;
   }
 
   collapseUserPinPad() {
     const pad = this.messagesEl?.querySelector('#chatbot-user-pin-pad');
     if (pad) {
-      pad.style.minHeight = '0px';
+      pad.remove();
     }
   }
 
@@ -283,31 +253,20 @@ export class ChatScrollEngine {
     const messages = this.messagesEl;
     if (!messages || !messageEl) return;
 
-    // Temporary pad so we can always scroll the user bubble near the top
-    // (skip while streaming so bottom-follow tests stay tight)
-    if (!this.isStreaming) {
-      this.ensureUserPinPad();
-    }
-
-    // Anchor user turn near the top of the scroller (Apple Messages–like)
-    const topInset = Math.max(8, Math.round(messages.clientHeight * 0.08));
-    const apply = () => {
-      try {
-        const containerRect = messages.getBoundingClientRect();
-        const messageRect = messageEl.getBoundingClientRect();
-        const delta = messageRect.top - containerRect.top - topInset;
-        if (Math.abs(delta) > 0.5) {
-          this.markProgrammaticScroll();
-          messages.scrollTop = Math.max(0, messages.scrollTop + delta);
-        }
-      } catch {
+    const topInset = Math.max(12, Math.round(messages.clientHeight * 0.12));
+    try {
+      const containerRect = messages.getBoundingClientRect();
+      const messageRect = messageEl.getBoundingClientRect();
+      const delta = messageRect.top - containerRect.top - topInset;
+      // Only nudge when the bubble is meaningfully off-screen
+      if (Math.abs(delta) > 24) {
         this.markProgrammaticScroll();
-        messages.scrollTop = Math.max(0, messageEl.offsetTop - topInset);
+        messages.scrollTop = Math.max(0, messages.scrollTop + delta);
       }
-    };
-    // Two passes: first jump, second corrects after browser layout reflow
-    apply();
-    apply();
+    } catch {
+      this.markProgrammaticScroll();
+      messages.scrollTop = Math.max(0, messageEl.offsetTop - topInset);
+    }
     this.captureScrollDistance();
   }
 
@@ -316,42 +275,15 @@ export class ChatScrollEngine {
     const messages = this.messagesEl;
     if (!messages) return;
 
-    // Prefer pinning the user turn near the top only until assistant streaming starts
-    if (
-      !this.isStreaming &&
-      this.activeTurnEl &&
-      this.userTurnPinnedUntil &&
-      Date.now() < this.userTurnPinnedUntil
-    ) {
-      this.scrollTurnIntoView(this.activeTurnEl);
-      return;
-    }
-
-    // While streaming, drop the pin pad so bottom-follow math stays tight
-    if (this.isStreaming) {
-      this.collapseUserPinPad();
-    }
-
     const containerRect = messages.getBoundingClientRect();
     const targetRect = element.getBoundingClientRect();
-    const bottomPadding = 20;
+    const bottomPadding = 28;
     const overflow = targetRect.bottom - (containerRect.bottom - bottomPadding);
 
     if (overflow > 0) {
       this.markProgrammaticScroll();
       messages.scrollTop += overflow;
       this.captureScrollDistance();
-      return;
-    }
-
-    if (this.activeTurnEl && !this.isStreaming) {
-      const turnRect = this.activeTurnEl.getBoundingClientRect();
-      const topOverflow = containerRect.top + 12 - turnRect.top;
-      if (topOverflow > 0) {
-        this.markProgrammaticScroll();
-        messages.scrollTop = Math.max(0, messages.scrollTop - topOverflow);
-        this.captureScrollDistance();
-      }
     }
   }
 
@@ -360,12 +292,10 @@ export class ChatScrollEngine {
     if (!messages) return;
 
     this.resumeFollowing('jump');
-    this.userTurnPinnedUntil = 0;
     this.collapseUserPinPad();
     this.markProgrammaticScroll();
     const anchor = this.ensureScrollAnchor();
-    const targetTop = Math.max(0, messages.scrollHeight - messages.clientHeight);
-    messages.scrollTop = targetTop;
+    messages.scrollTop = Math.max(0, messages.scrollHeight - messages.clientHeight);
 
     if (anchor?.scrollIntoView) {
       try {
@@ -400,24 +330,22 @@ export class ChatScrollEngine {
     this.pendingFollowFrame = requestAnimationFrame(() => {
       this.pendingFollowFrame = requestAnimationFrame(() => {
         this.pendingFollowFrame = 0;
-        if (this.activeTurnEl && this.following && this.isStreaming) {
-          const stream = this.messagesEl?.querySelector('.message.streaming');
-          if (stream) {
-            this.followLiveContent(stream);
-            return;
-          }
+        if (!this.following) return;
+        const stream = this.messagesEl?.querySelector('.message.streaming');
+        if (stream) {
+          this.followLiveContent(stream);
+          return;
         }
-        if (this.following) {
-          this.jumpToLatest({ announce: false });
-        }
+        this.jumpToLatest({ announce: false });
       });
     });
   }
 
   onStreamStart() {
     this.isStreaming = true;
-    this.userTurnPinnedUntil = 0;
     this.collapseUserPinPad();
+    this.resumeFollowing('stream-start');
+    this.scheduleFollow({ force: true });
     this.updateJumpAffordance();
   }
 
@@ -425,7 +353,7 @@ export class ChatScrollEngine {
     this.isStreaming = false;
     this.collapseUserPinPad();
     if (this.following) {
-      this.scheduleFollow();
+      this.jumpToLatest({ announce: false });
     } else {
       this.markActivityBelow();
     }
@@ -488,6 +416,7 @@ export class ChatScrollEngine {
       !this.following && (this.activityBelow || this.isStreaming || !this.isNearBottom());
     this.jumpBtn.hidden = !show;
     this.jumpBtn.classList.toggle('is-streaming', this.isStreaming);
+    this.jumpBtn.classList.toggle('is-visible', show);
 
     const label = this.jumpBtn.querySelector('.chatbot-jump-latest__label');
     if (label) {
@@ -513,40 +442,19 @@ export class ChatScrollEngine {
   }
 
   restoreSession() {
+    // Prefer a clean bottom-following open — restoring mid-scroll left the
+    // Jump-to-latest chip stuck over the composer on Pages.
     const messages = this.messagesEl;
     if (!messages) return false;
-
+    this.following = true;
+    this.activityBelow = false;
+    requestAnimationFrame(() => this.jumpToLatest({ announce: false }));
     try {
-      const raw = sessionStorage.getItem(SESSION_KEY);
-      if (!raw) return false;
-
-      const saved = JSON.parse(raw);
-      const lastUser = saved.messageId
-        ? messages.querySelector(`[data-message-id="${saved.messageId}"]`)
-        : messages.querySelector('.user-message:last-of-type');
-
-      if (lastUser) {
-        this.following = false;
-        this.activityBelow = true;
-        requestAnimationFrame(() => {
-          this.scrollTurnIntoView(lastUser);
-          this.updateJumpAffordance();
-        });
-        return true;
-      }
-
-      if (Number.isFinite(saved.scrollTop)) {
-        this.following = Boolean(saved.following);
-        messages.scrollTop = saved.scrollTop;
-        this.captureScrollDistance();
-        this.updateJumpAffordance();
-        return true;
-      }
+      sessionStorage.removeItem(SESSION_KEY);
     } catch {
-      return false;
+      // ignore
     }
-
-    return false;
+    return true;
   }
 
   clearSession() {
