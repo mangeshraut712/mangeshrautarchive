@@ -149,6 +149,11 @@ jobs:
             fi
             sleep 1
           done
+          PLAYWRIGHT_BASE_URL=http://127.0.0.1:4000 \
+            npx playwright test \
+              tests/e2e/smoke.spec.js \
+              tests/e2e/accessibility.spec.js \
+              --project="Desktop Chrome"
           npm run qa:browser:ci
 
       - name: Build production bundle
