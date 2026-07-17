@@ -224,10 +224,10 @@ const HERO_CRITICAL_CSS = [
   'assets/css/critical-tokens.css',
 ];
 
-/** Deferred after first paint — non-blocking via media=print onload */
+/** Deferred after first paint — non-blocking via media=print onload.
+ *  homepage.css + dynamic-island-navbar.css stay as real <link> tags in HTML
+ *  (render-blocking). Deferring them caused desktop full-load CLS ~0.6. */
 const PREMIUM_DEFERRED_CSS = [
-  'assets/css/homepage.css',
-  'assets/css/dynamic-island-navbar.css',
   'assets/css/accessibility.css',
   'assets/css/tailwind-output.css',
   'assets/css/sitewide-design-system.css',
@@ -300,10 +300,14 @@ async function bundleAboveFoldCss(distDir) {
   );
 
   // Inject lean critical CSS. Defer the premium bundle outside Lighthouse / perf-audit.
-  // Also inject a tiny hero LCP lock so name paint does not depend on homepage.css.
+  // Hero/nav metrics must match homepage.css + index critical styles (same first paint → no CLS).
   const heroLcpLock =
     '#home,#home .hero-text-block,#home .hero-header,#home-heading,#home .hero-name-text{opacity:1!important;visibility:visible!important;transform:none!important;animation:none!important;transition:none!important}' +
-    '#home{padding:5rem 1.25rem 2rem;min-height:60vh}' +
+    '#home,#home.hero-section,#home.home-hero{padding:20px 1.25rem;min-height:clamp(380px,58vh,680px);display:flex;align-items:center;justify-content:flex-start;box-sizing:border-box}' +
+    '#home>.container-fluid{width:100%;min-height:clamp(340px,52vh,620px);box-sizing:border-box}' +
+    '@media (min-width:1025px){:root{--site-nav-offset:4.25rem}#home,#home.hero-section,#home.home-hero{min-height:calc(100vh - var(--site-nav-offset));padding:clamp(2.5rem,8vh,5.5rem) 1.25rem clamp(1.5rem,4vh,3rem);flex-direction:column;justify-content:flex-start}#home>.container-fluid{min-height:0;padding-block:0}}' +
+    '.global-nav.dynamic-island{height:52px;min-height:52px}' +
+    '.global-nav.dynamic-island .nav-link{display:inline-flex;align-items:center;justify-content:center;min-height:30px;padding:5px 10px;font-size:12.5px;line-height:1;box-sizing:border-box}' +
     '#home-heading,#home .hero-name-text{font-size:clamp(2.2rem,8vw,4.5rem);font-weight:700;line-height:1.05;letter-spacing:-.03em;margin:0;color:#0071e3;-webkit-text-fill-color:#0071e3;background:none}' +
     'html.dark #home .hero-name-text{color:#0a84ff;-webkit-text-fill-color:#0a84ff}' +
     'body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,sans-serif;background:#fff;color:#1d1d1f}' +

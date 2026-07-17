@@ -38,15 +38,14 @@ const INTERACTION_MODULES = [
   '../modules/birthday-celebration.js',
 ];
 
-const EAGER_MODULES = [
-  '../modules/accessibility.js',
-  '../modules/scroll-animations.js',
-  '../modules/section-preview.js',
-];
+const EAGER_MODULES = ['../modules/accessibility.js', '../modules/section-preview.js'];
+
+const POST_PAINT_IDLE_MODULES = ['../modules/scroll-animations.js'];
 
 const IDLE_EAGER_MODULES = [
   '../modules/liquid-glass-engine.js',
   '../modules/liquid-glass-chrome.js',
+  '../modules/liquid-glass-interactive.js',
 ];
 
 // Modules loaded by loadDeferredBootstrapModules()
@@ -89,6 +88,7 @@ const ALL_LOAD_PATHS = new Set([
   ...SECTION_MODULES.map(m => m.modulePath),
   ...INTERACTION_MODULES,
   ...EAGER_MODULES,
+  ...POST_PAINT_IDLE_MODULES,
   ...IDLE_EAGER_MODULES,
   ...DEFERRED_BOOTSTRAP_MODULES,
   ...ON_DEMAND_MODULES,
@@ -104,6 +104,7 @@ const MODULE_IMPORTERS = new Set([
   '../modules/accessibility.js',
   '../modules/liquid-glass-engine.js',
   '../modules/liquid-glass-chrome.js',
+  '../modules/liquid-glass-interactive.js',
   '../modules/card-content-accessibility.js',
   '../modules/agentic-actions.js',
   '../modules/premium-enhancements.js',

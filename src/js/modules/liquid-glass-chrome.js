@@ -121,6 +121,7 @@ export function syncLiquidGlassChrome() {
 export function initLiquidGlassChrome() {
   repairSubpageNav();
   const engine = getLiquidGlassEngine();
+  engine.resolveEnabled?.();
   if (!engine.enabled) {
     // Still repair poisoned nav markup on CSS-only clients
     return;

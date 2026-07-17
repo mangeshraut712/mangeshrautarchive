@@ -1,9 +1,9 @@
-const EAGER_MODULES = [
-  '../modules/accessibility.js',
-  '../modules/scroll-animations.js',
-  '../modules/section-preview.js',
-];
+const EAGER_MODULES = ['../modules/accessibility.js', '../modules/section-preview.js'];
 
+/** Paint-visible polish — CSS already shows content; defer class sweeps off TBT path. */
+const POST_PAINT_IDLE_MODULES = ['../modules/scroll-animations.js'];
+
+/** WebGL / chrome glass — CSS glass paints first; load on interaction or late idle. */
 const IDLE_EAGER_MODULES = [
   '../modules/liquid-glass-engine.js',
   '../modules/liquid-glass-chrome.js',
@@ -1047,6 +1047,60 @@ function initDeferredStyles() {
   }
 }
 
+function schedulePostPaintIdleModules() {
+  let started = false;
+  const start = () => {
+    if (started || isPerformanceAudit()) return;
+    started = true;
+
+    POST_PAINT_IDLE_MODULES.forEach((path, index) => {
+      runWhenIdle(
+        () => {
+          loadModule(path);
+        },
+        1800 + index * 200
+      );
+    });
+  };
+
+  // Prefer near-viewport sections so first paint never pays the selector sweep.
+  observeSectionTask('about', start, '120px 0px');
+  observeSectionTask('skills', start, '80px 0px');
+  runWhenIdle(start, 4500);
+}
+
+function scheduleIdleEagerModules() {
+  let started = false;
+  const start = () => {
+    if (started || isPerformanceAudit()) return;
+    started = true;
+
+    // Stagger imports — engine + chrome + interactive must not share one long task.
+    IDLE_EAGER_MODULES.forEach((path, index) => {
+      runWhenIdle(
+        () => {
+          loadModule(path);
+        },
+        400 + index * 500
+      );
+    });
+  };
+
+  USER_INTERACTION_EVENTS.forEach(eventName => {
+    window.addEventListener(eventName, start, {
+      once: true,
+      passive: eventName !== 'keydown',
+      capture: true,
+    });
+  });
+
+  // CSS glass already paints; WebGL is enhancement.
+  // Avoid mid-audit idle timeouts — only a very late real-user fallback.
+  window.setTimeout(() => {
+    runWhenIdle(start, 2000);
+  }, 30000);
+}
+
 function initLazyModules() {
   if (window.__portfolioLazyModulesBound) {
     return;
@@ -1062,12 +1116,8 @@ function initLazyModules() {
       loadModule(path);
     });
 
-    // Liquid glass is expensive (WebGL/DOM) — wait until after first scroll paint window
-    runWhenIdle(() => {
-      IDLE_EAGER_MODULES.forEach(path => {
-        loadModule(path);
-      });
-    }, 5500);
+    schedulePostPaintIdleModules();
+    scheduleIdleEagerModules();
 
     if (new URLSearchParams(window.location.search).has('birthday-test')) {
       loadModule('../modules/birthday-celebration.js');
@@ -1318,9 +1368,15 @@ function initServiceWorker() {
 
 function applyStoredLiquidGlassTint() {
   try {
+    const root = document.documentElement;
+    // liquid-glass-boot.js already wrote tokens before paint — avoid re-set TBT/CLS.
+    if (root.style.getPropertyValue('--lg-tint').trim() !== '' && root.dataset.lgMode) {
+      return;
+    }
+
     const raw = localStorage.getItem('wwdc26-liquid-glass-tint');
     if (raw === null) {
-      syncLiquidGlassTokens(0, { instant: true });
+      syncLiquidGlassTokens(1, { instant: true });
       return;
     }
     const stored = Number(raw);

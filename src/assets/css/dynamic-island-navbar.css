@@ -9,8 +9,8 @@
 
 .global-nav.dynamic-island {
   /* Variables */
-  --island-font:
-    -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', Inter, sans-serif;
+  /* System stack only — Inter late-load was shifting Primary sections rail (CLS). */
+  --island-font: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', sans-serif;
   --island-height: 52px;
   --island-height-compact: 46px;
   --island-side-pad: clamp(28px, 4vw, 48px);
@@ -180,13 +180,16 @@ html.dark .global-nav.dynamic-island.scrolled {
 
 .global-nav.dynamic-island .nav-links {
   display: flex;
-  justify-content: center;
+  /* flex-start always — center→start on .is-overflowing caused Primary sections CLS */
+  justify-content: flex-start;
   align-items: center;
   gap: clamp(6px, 0.9vw, 14px) !important;
   font-size: var(--island-link-size) !important;
   font-weight: var(--island-link-weight) !important;
   letter-spacing: -0.01em !important;
   min-width: 0;
+  min-height: 34px;
+  height: 34px;
   font-family: var(--island-font) !important;
   overflow-x: auto !important;
   scrollbar-width: none !important;
@@ -195,11 +198,11 @@ html.dark .global-nav.dynamic-island.scrolled {
   /* Soft edge fade only when the rail actually overflows */
   mask-image: none;
   -webkit-mask-image: none;
+  contain: layout style;
 }
 
 /* When rail overflows, re-enable edge fade for scroll affordance */
 .global-nav.dynamic-island .nav-links.is-overflowing {
-  justify-content: flex-start;
   mask-image: linear-gradient(
     to right,
     transparent,
@@ -223,7 +226,8 @@ html.dark .global-nav.dynamic-island.scrolled {
   justify-content: center;
   position: relative;
   min-height: 30px !important;
-  padding: 5px 7px !important;
+  /* Keep idle padding equal to .active — padding jump was Primary sections CLS */
+  padding: 5px 10px !important;
   font-size: var(--island-link-size) !important;
   font-weight: var(--island-link-weight) !important;
   letter-spacing: -0.012em !important;
@@ -278,13 +282,12 @@ html.dark #global-nav.global-nav.dynamic-island .nav-link {
   color: var(--island-link-color) !important;
 }
 
-/* Active state */
+/* Active state — keep padding/size identical to idle to avoid Primary sections CLS */
 .global-nav.dynamic-island .nav-link.active {
   color: var(--island-link-color-active) !important;
   font-weight: 500 !important;
   background: var(--island-link-active-bg);
   padding-inline: 10px !important;
-  transform: scale(1.02);
 }
 
 html.dark .global-nav.dynamic-island .nav-link.active {

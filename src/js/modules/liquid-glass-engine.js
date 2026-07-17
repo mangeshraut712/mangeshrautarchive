@@ -9,8 +9,9 @@ import { isPerformanceAudit } from '../utils/perf-audit.js';
 
 class LiquidGlassEngine {
   constructor() {
-    // iPhone / low-power: CSS glass only — WebGL multi-surface rAF OOMs Mobile Safari
-    this.enabled = isLiquidGlassCaptureSupported() && !isPerformanceAudit() && !isLowPowerClient();
+    // Lazy: WebGL probe itself is a long task — defer until init/attach.
+    this._enabledResolved = false;
+    this.enabled = false;
     this.surfaces = new Set();
     this.tintRatio = 0;
     this.backgroundCanvas = null;
@@ -30,6 +31,14 @@ class LiquidGlassEngine {
     };
   }
 
+  resolveEnabled() {
+    if (this._enabledResolved) return this.enabled;
+    this._enabledResolved = true;
+    // iPhone / low-power: CSS glass only — WebGL multi-surface rAF OOMs Mobile Safari
+    this.enabled = isLiquidGlassCaptureSupported() && !isPerformanceAudit() && !isLowPowerClient();
+    return this.enabled;
+  }
+
   scheduleHeavyCapture() {
     // Heavy DOM capture is opt-in only (see liquid-glass-background.js).
     // Procedural backgrounds keep WebGL refraction without multi-second TBT.
@@ -45,6 +54,7 @@ class LiquidGlassEngine {
   }
 
   init() {
+    this.resolveEnabled();
     if (!this.enabled || this._initialized) return;
     this._initialized = true;
 
@@ -107,6 +117,7 @@ class LiquidGlassEngine {
   }
 
   attach(element, options = {}) {
+    this.resolveEnabled();
     if (!this.enabled || !element) return null;
     this.init();
 
@@ -171,6 +182,7 @@ export function attachLiquidGlass(element, options) {
 }
 
 export function syncLiquidGlassWebGL(tintRatio) {
+  engine.resolveEnabled();
   if (!engine.enabled) return;
   engine.init();
   engine.setTintRatio(tintRatio);
@@ -178,13 +190,7 @@ export function syncLiquidGlassWebGL(tintRatio) {
 
 if (typeof window !== 'undefined' && !isPerformanceAudit()) {
   window.liquidGlassEngine = engine;
-  engine.observeTheme();
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => engine.init(), { once: true });
-  } else {
-    engine.init();
-  }
+  // Do not auto-init / probe WebGL on import — chrome module calls init when needed.
 }
 
 export default engine;

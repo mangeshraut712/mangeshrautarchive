@@ -5,9 +5,11 @@
  * getBoundingClientRect loops on every frame. That made fling-scroll lag.
  *
  * New algorithm:
- * 1. Mark all known content nodes fully visible once (class only, no inline style thrash).
+ * 1. Mark known content nodes visible (class only) in idle slices — no inline style thrash.
  * 2. No scroll listeners. No IO observers. No will-change.
  * 3. Callers (skills/projects) still use observeScrollAnimations() — it just paints instantly.
+ *
+ * CSS already keeps .animate-on-scroll visible; this only cleans residual classes.
  */
 
 import { isPerformanceAudit } from '../utils/perf-audit.js';
@@ -44,6 +46,16 @@ const CONTENT_SELECTORS = [
   '.case-study-preview-card',
 ];
 
+const IDLE_CHUNK = 24;
+
+function runWhenIdle(callback, timeout = 1200) {
+  if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
+    window.requestIdleCallback(() => callback(), { timeout });
+    return;
+  }
+  setTimeout(callback, Math.min(timeout, 32));
+}
+
 function paintVisible(el) {
   if (!el || el.nodeType !== 1) return;
   // Class-only — never write inline opacity/transform (forces style recalc)
@@ -51,21 +63,57 @@ function paintVisible(el) {
   el.classList.remove('animate-on-scroll');
 }
 
-function paintAll(selectors = CONTENT_SELECTORS) {
+function collectNodes(selectors = CONTENT_SELECTORS) {
   const seen = new Set();
+  const nodes = [];
   selectors.forEach(selector => {
-    let nodes;
+    let found;
     try {
-      nodes = document.querySelectorAll(selector);
+      found = document.querySelectorAll(selector);
     } catch {
       return;
     }
-    nodes.forEach(el => {
+    found.forEach(el => {
       if (seen.has(el)) return;
       seen.add(el);
-      paintVisible(el);
+      nodes.push(el);
     });
   });
+  return nodes;
+}
+
+function paintAll(selectors = CONTENT_SELECTORS) {
+  collectNodes(selectors).forEach(paintVisible);
+}
+
+/** Slice DOM class work across idle callbacks to avoid multi-hundred-ms long tasks. */
+function paintAllIdle(selectors = CONTENT_SELECTORS, onDone) {
+  const nodes = collectNodes(selectors);
+  let index = 0;
+
+  const step = deadline => {
+    let budget = IDLE_CHUNK;
+    while (index < nodes.length && budget > 0) {
+      if (
+        deadline &&
+        typeof deadline.timeRemaining === 'function' &&
+        deadline.timeRemaining() < 8
+      ) {
+        break;
+      }
+      paintVisible(nodes[index]);
+      index += 1;
+      budget -= 1;
+    }
+
+    if (index < nodes.length) {
+      runWhenIdle(idleDeadline => step(idleDeadline), 800);
+      return;
+    }
+    onDone?.();
+  };
+
+  runWhenIdle(idleDeadline => step(idleDeadline), 600);
 }
 
 class ScrollAnimations {
@@ -75,39 +123,31 @@ class ScrollAnimations {
   }
 
   init() {
-    // Immediate paint — no pending hide state
-    paintAll();
+    paintAllIdle(CONTENT_SELECTORS, () => {
+      if (typeof MutationObserver === 'undefined' || !document.body) return;
 
-    // Dynamic content (skills marquee, project cards) may inject later
-    if (typeof MutationObserver !== 'undefined' && document.body) {
       let queued = false;
       const mo = new MutationObserver(() => {
         if (queued) return;
         queued = true;
-        // One rAF debounce — never scan on every scroll (guard for jsdom / SSR)
-        const schedule =
-          typeof requestAnimationFrame === 'function'
-            ? requestAnimationFrame
-            : cb => setTimeout(cb, 0);
-        schedule(() => {
+        runWhenIdle(() => {
           queued = false;
           try {
-            // Only clear residual pending class if present
             if (document?.querySelector?.('.animate-on-scroll')) {
-              paintAll(['.animate-on-scroll']);
+              paintAllIdle(['.animate-on-scroll']);
             }
           } catch {
             // Test teardown / detached document
           }
-        });
+        }, 400);
       });
       mo.observe(document.body, { childList: true, subtree: true });
       this._mo = mo;
-    }
+    });
   }
 
   observeElements(selectors = null) {
-    paintAll(selectors || CONTENT_SELECTORS);
+    paintAllIdle(selectors || CONTENT_SELECTORS);
   }
 
   showAllImmediately() {
@@ -116,7 +156,7 @@ class ScrollAnimations {
 
   revealInViewport() {
     // No-op: content is always visible
-    paintAll(['.animate-on-scroll']);
+    paintAllIdle(['.animate-on-scroll']);
   }
 
   ensureNeverHideVisible() {

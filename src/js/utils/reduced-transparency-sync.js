@@ -13,24 +13,33 @@ function readTintPercent() {
   } catch (_error) {
     // ignore
   }
-  return 0;
+  return 100;
 }
 
-function applyReducedTransparencyState(reduced) {
+function applyReducedTransparencyState(reduced, { forceTokens = false } = {}) {
   const root = document.documentElement;
+  const wasReduced = root.classList.contains('lg-reduced-transparency');
   root.classList.toggle('lg-reduced-transparency', reduced);
-  syncLiquidGlassTokens(readTintPercent() / 100, { instant: true });
 
-  import('../modules/liquid-glass-chrome.js')
-    .then(module => module.syncLiquidGlassChrome?.())
-    .catch(() => {});
+  // Boot already applied tokens; only rewrite CSS vars when the preference changes
+  // or when explicitly forced (e.g. media change mid-session).
+  if (forceTokens || wasReduced !== reduced) {
+    syncLiquidGlassTokens(readTintPercent() / 100, { instant: true });
+  }
+
+  if (forceTokens || wasReduced !== reduced) {
+    import('../modules/liquid-glass-chrome.js')
+      .then(module => module.syncLiquidGlassChrome?.())
+      .catch(() => {});
+  }
 }
 
 export function initReducedTransparencySync() {
   const media = window.matchMedia('(prefers-reduced-transparency: reduce)');
-  applyReducedTransparencyState(media.matches);
+  // Class sync only on first run — avoid liquid-glass-tokens style thrash on load.
+  applyReducedTransparencyState(media.matches, { forceTokens: false });
   media.addEventListener('change', event => {
-    applyReducedTransparencyState(event.matches);
+    applyReducedTransparencyState(event.matches, { forceTokens: true });
   });
 }
 

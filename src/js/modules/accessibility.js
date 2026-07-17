@@ -13,10 +13,6 @@
  * - Focus management
  */
 
-import { syncLiquidGlassTokens } from '../utils/liquid-glass-tokens.js';
-import { syncLiquidGlassChrome } from './liquid-glass-chrome.js';
-import './liquid-glass-interactive.js';
-
 export class AccessibilityEnhancer {
   constructor() {
     this.focusableElements =
@@ -65,7 +61,13 @@ export class AccessibilityEnhancer {
       this.createAccessibilityToolbar();
     }
 
-    this.applyGlassTint(this.getStoredGlassTint(), { instant: true });
+    // Boot already wrote --lg-tint; only re-apply (and load glass modules) if missing.
+    const root = document.documentElement;
+    if (!root.style.getPropertyValue('--lg-tint').trim() || !root.dataset.lgMode) {
+      this.applyGlassTint(this.getStoredGlassTint(), { instant: true });
+    } else {
+      this.updateGlassTintReadout(this.getStoredGlassTint());
+    }
     this.isInitialized = true;
     this.announce('Accessibility features enabled', 'polite');
   }
@@ -1730,8 +1732,17 @@ export class AccessibilityEnhancer {
 
   applyGlassTint(value, { instant = false } = {}) {
     const clamped = Math.min(100, Math.max(0, value));
-    syncLiquidGlassTokens(clamped / 100, { instant });
-    syncLiquidGlassChrome();
+    // Dynamic imports — keep WebGL/glass chrome off the eager a11y/TBT path.
+    Promise.all([
+      import('../utils/liquid-glass-tokens.js'),
+      import('./liquid-glass-chrome.js'),
+      import('./liquid-glass-interactive.js'),
+    ])
+      .then(([tokens, chrome]) => {
+        tokens.syncLiquidGlassTokens(clamped / 100, { instant });
+        chrome.syncLiquidGlassChrome?.();
+      })
+      .catch(() => {});
     this.updateGlassTintReadout(clamped);
     const slider = document.querySelector('.a11y-glass-popover input[type="range"]');
     if (slider && Number(slider.value) !== clamped) {

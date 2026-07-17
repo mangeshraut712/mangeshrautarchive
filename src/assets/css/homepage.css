@@ -23,7 +23,8 @@
   /* dynamic viewport height for mobile */
   display: flex;
   align-items: center;
-  justify-content: center;
+  /* flex-start: vertical center reflows when late CSS/fonts land (CLS) */
+  justify-content: flex-start;
   position: relative;
   background: #fff;
   /* fixes from 2026 update */
@@ -34,6 +35,13 @@
   padding-bottom: 20px !important;
   /* performance */
   contain: layout;
+}
+
+#hero-role-word {
+  display: inline-block;
+  min-width: 28ch;
+  text-align: left;
+  vertical-align: bottom;
 }
 
 /* Showcase enhancements */
@@ -465,7 +473,8 @@ html.dark .hero-social-link:hover {
     scroll-snap-type: none;
   }
 
-  /* Home: comfortable full first screen, no max-height clipping */
+  /* Home: full first screen. flex-start + fixed pad — NOT justify-center
+     (centering reflows when fonts/CSS land and caused ~0.6 desktop CLS). */
   section#home,
   #home.hero-section,
   #home.home-hero,
@@ -473,17 +482,18 @@ html.dark .hero-social-link:hover {
   section#home.hero-section.home-hero,
   body #home.hero-section.home-hero,
   #home {
-    min-height: calc(100svh - var(--site-nav-offset)) !important;
+    /* vh (not svh): avoids mid-audit viewport-unit retarget CLS in Lighthouse */
+    min-height: calc(100vh - var(--site-nav-offset)) !important;
     max-height: none !important;
     height: auto !important;
-    padding-top: 0 !important;
-    padding-bottom: 0 !important;
+    padding-top: clamp(2.5rem, 8vh, 5.5rem) !important;
+    padding-bottom: clamp(1.5rem, 4vh, 3rem) !important;
     margin: 0 !important;
     box-sizing: border-box !important;
     display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
-    justify-content: center !important;
+    justify-content: flex-start !important;
     overflow: visible !important;
   }
 
@@ -494,9 +504,9 @@ html.dark .hero-social-link:hover {
     display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
-    justify-content: center !important;
+    justify-content: flex-start !important;
     overflow: visible !important;
-    padding-block: clamp(1rem, 3vh, 2rem);
+    padding-block: 0;
     box-sizing: border-box;
   }
 
@@ -1790,9 +1800,13 @@ html.dark .hero-role-flip strong {
   box-shadow: none !important;
 }
 
-.hero-identity-strip i {
+.hero-identity-strip i,
+.hero-identity-strip .hero-identity-icon {
   color: #0071e3;
   font-size: 0.78rem;
+  width: 0.78rem;
+  height: 0.78rem;
+  flex-shrink: 0;
 }
 
 html.dark .hero-identity-item {

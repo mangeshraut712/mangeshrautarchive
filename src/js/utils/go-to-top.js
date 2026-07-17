@@ -7,12 +7,19 @@
 (function () {
   'use strict';
 
+  function runWhenIdle(callback, timeout = 2000) {
+    if ('requestIdleCallback' in window) {
+      window.requestIdleCallback(() => callback(), { timeout });
+      return;
+    }
+    setTimeout(callback, timeout);
+  }
+
   function initGoToTop() {
     const goToTopBtn = document.getElementById('go-to-top');
     const root = document.documentElement;
 
     if (!goToTopBtn) {
-      console.warn('Go to Top button not found');
       return;
     }
 
@@ -25,14 +32,13 @@
     goToTopBtn.setAttribute('aria-label', 'Scroll to top of page');
     goToTopBtn.setAttribute('role', 'button');
     goToTopBtn.setAttribute('tabindex', '-1'); // Start hidden from tab order
-    goToTopBtn.style.display = 'none';
+    goToTopBtn.setAttribute('aria-hidden', 'true');
 
-    // Add a visible label for better clarity (can be styled to appear on hover/focus)
+    // Label styled via CSS (.go-to-top-label) — avoid inline style writes on load
     if (!goToTopBtn.querySelector('.go-to-top-label')) {
       const label = document.createElement('span');
       label.className = 'go-to-top-label';
       label.textContent = 'TOP';
-      label.style.cssText = 'font-size: 9px; font-weight: 700; opacity: 0.9;';
       goToTopBtn.appendChild(label);
     }
 
@@ -43,18 +49,11 @@
         window.requestAnimationFrame(() => {
           const scrollPosition = window.pageYOffset || root.scrollTop;
           const showThreshold = 320;
+          const visible = scrollPosition > showThreshold;
 
-          if (scrollPosition > showThreshold) {
-            goToTopBtn.classList.add('visible');
-            goToTopBtn.style.display = 'flex';
-            goToTopBtn.setAttribute('aria-hidden', 'false');
-            goToTopBtn.tabIndex = 0;
-          } else {
-            goToTopBtn.classList.remove('visible');
-            goToTopBtn.style.display = 'none';
-            goToTopBtn.setAttribute('aria-hidden', 'true');
-            goToTopBtn.tabIndex = -1;
-          }
+          goToTopBtn.classList.toggle('visible', visible);
+          goToTopBtn.setAttribute('aria-hidden', visible ? 'false' : 'true');
+          goToTopBtn.tabIndex = visible ? 0 : -1;
           isScrolling = false;
         });
         isScrolling = true;
@@ -87,43 +86,39 @@
       }
 
       // Accessibility: Move focus to the top after scrolling
-      // We look for a focus target at the top
       setTimeout(() => {
         const topTarget = document.querySelector('h1') || document.body;
-        topTarget.tabIndex = -1; // Make it focusable if not already
+        topTarget.tabIndex = -1;
         topTarget.focus({ preventScroll: true });
 
-        // Remove tabindex after focus if we added it
         if (topTarget !== document.body) {
           topTarget.addEventListener('blur', () => topTarget.removeAttribute('tabindex'), {
             once: true,
           });
         }
-      }, 600); // Wait for smooth scroll to finish mostly
+      }, 600);
     }
 
-    // Keyboard support (Space/Enter is handled by <button> naturally, but good to be sure)
     goToTopBtn.addEventListener('keydown', e => {
       if (e.key === 'Enter' || e.key === ' ') {
         scrollToTop(e);
       }
     });
 
-    // Event listeners
     window.addEventListener('scroll', throttleScroll, { passive: true });
     goToTopBtn.addEventListener('click', scrollToTop);
 
-    // Initial check
-    throttleScroll();
-
-    // Set initial accessibility state
-    goToTopBtn.setAttribute('aria-hidden', 'true');
-    goToTopBtn.tabIndex = -1;
+    // Initial check only when already scrolled (avoids layout work on top of page)
+    if ((window.pageYOffset || root.scrollTop) > 0) {
+      throttleScroll();
+    }
   }
 
+  const boot = () => runWhenIdle(initGoToTop, 2500);
+
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initGoToTop, { once: true });
+    document.addEventListener('DOMContentLoaded', boot, { once: true });
   } else {
-    initGoToTop();
+    boot();
   }
 })();
