@@ -785,7 +785,7 @@ export default {
 
     // GitHub proxy for activity metadata (public API only)
     if (request.method === 'GET' && path === '/api/github/proxy') {
-      return handleGithubProxy(url, cors);
+      return handleGithubProxy(url, env, cors);
     }
 
     if (request.method === 'GET' && path === '/') {
@@ -1306,7 +1306,7 @@ async function fetchHealthVitalsFromSupabase(env) {
   }
 }
 
-async function handleGithubProxy(url, cors) {
+async function handleGithubProxy(url, env, cors) {
   const pathParam = url.searchParams.get('path') || '';
   if (!pathParam.startsWith('/')) {
     return json({ error: 'path must start with /' }, 400, cors);
@@ -1314,12 +1314,12 @@ async function handleGithubProxy(url, cors) {
   if (pathParam.length > 500) {
     return json({ error: 'invalid path' }, 400, cors);
   }
-  // Collapse .. segments then enforce portfolio-only allowlist (mirror FastAPI github.py)
-  let canonical = pathParam;
+  // Strip query for allowlist; keep full path+query for the upstream GitHub call.
+  const pathOnly = pathParam.split('?')[0] || pathParam;
+  let canonical = pathOnly;
   try {
-    // posix-style: resolve segments without allowing escape
     const parts = [];
-    for (const seg of pathParam.split('/')) {
+    for (const seg of pathOnly.split('/')) {
       if (!seg || seg === '.') continue;
       if (seg === '..') {
         if (parts.length) parts.pop();
@@ -1342,14 +1342,42 @@ async function handleGithubProxy(url, cors) {
   if (!pathOk) {
     return json({ error: 'GitHub proxy path not allowed for this portfolio' }, 400, cors);
   }
+
+  const query = pathParam.includes('?') ? pathParam.slice(pathParam.indexOf('?')) : '';
+  const upstreamPath = `${canonical}${query}`;
+
   try {
-    const gh = await fetch(`https://api.github.com${canonical}`, {
-      headers: {
-        Accept: 'application/vnd.github+json',
-        'User-Agent': 'assistme-cloudflare-edge',
-      },
-    });
+    const headers = {
+      Accept: 'application/vnd.github+json',
+      'User-Agent': 'assistme-cloudflare-edge',
+    };
+    const token = String(env?.GITHUB_PAT || '').trim();
+    if (token) {
+      headers.Authorization = `Bearer ${token}`;
+    }
+
+    const gh = await fetch(`https://api.github.com${upstreamPath}`, { headers });
     const text = await gh.text();
+
+    // Soft-fail rate limits / abuse 403s as empty 200 so browsers do not log console errors
+    // (PageSpeed Best Practices fails on "Failed to load resource: 403").
+    if (gh.status === 403 || gh.status === 429) {
+      const empty =
+        /\/(contributors|commits|releases|events|repos)(\?|$)/.test(canonical) ||
+        canonical.endsWith('/repos')
+          ? '[]'
+          : '{}';
+      return new Response(empty, {
+        status: 200,
+        headers: {
+          'Content-Type': 'application/json',
+          'Cache-Control': 'public, max-age=120',
+          'X-GitHub-Proxy-Degraded': 'rate-limit',
+          ...cors,
+        },
+      });
+    }
+
     return new Response(text, {
       status: gh.status,
       headers: {

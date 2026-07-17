@@ -20,15 +20,15 @@ describe('section-preload', () => {
     );
   });
 
-  it('uses public GitHub API on github.io when no CHAT/API base is configured', () => {
+  it('uses AssistMe edge on github.io when no CHAT/API base is configured', () => {
     const context = {
       location: { origin: 'https://user.github.io', hostname: 'user.github.io' },
     };
 
-    // Avoid hammering a blocked Vercel host from static mirrors
-    expect(resolveGithubApiBase(context)).toBe('');
+    // Prefer edge proxy over raw api.github.com (rate-limit 403s fail PageSpeed BP).
+    expect(resolveGithubApiBase(context)).toBe('https://assistme-chat.mangeshraut712.workers.dev');
     expect(getGithubProjectsPrefetchUrl(context)).toBe(
-      'https://api.github.com/users/mangeshraut712/repos?per_page=100&sort=updated'
+      'https://assistme-chat.mangeshraut712.workers.dev/api/github/repos/public?username=mangeshraut712&limit=100&no_forks=false'
     );
   });
 

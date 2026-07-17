@@ -285,10 +285,15 @@ function prefetchGithubProjectsCatalog() {
 
   const url = getGithubProjectsPrefetchUrl();
   if (typeof window !== 'undefined' && window.location.hostname.endsWith('github.io')) {
-    // Prefer public GitHub API warm; proxy often 402 when Vercel is disabled.
-    fetch('https://api.github.com/users/mangeshraut712/repos?per_page=30&sort=updated', {
+    // Use edge proxy only — direct api.github.com 403s poison PageSpeed Best Practices.
+    const edge =
+      globalThis.APP_CONFIG?.apiBaseUrl ||
+      globalThis.buildConfig?.apiBaseUrl ||
+      'https://assistme-chat.mangeshraut712.workers.dev';
+    const path = '/users/mangeshraut712/repos?per_page=30&sort=updated';
+    fetch(`${String(edge).replace(/\/$/, '')}/api/github/proxy?path=${encodeURIComponent(path)}`, {
       method: 'GET',
-      headers: { Accept: 'application/vnd.github+json' },
+      headers: { Accept: 'application/json' },
       priority: 'low',
     }).catch(() => {});
     return;

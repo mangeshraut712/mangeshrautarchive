@@ -1046,8 +1046,14 @@ class GitHubProjects {
         if (response.ok) {
           return await response.json();
         }
+        if (typeof window !== 'undefined' && window.location.hostname.endsWith('github.io')) {
+          return null;
+        }
       } catch {
-        // Fall through to direct GitHub call.
+        if (typeof window !== 'undefined' && window.location.hostname.endsWith('github.io')) {
+          return null;
+        }
+        // Fall through to direct GitHub call on non-Pages hosts.
       }
     }
 
@@ -1078,11 +1084,19 @@ class GitHubProjects {
     if (proxyUrl) {
       try {
         const proxied = await attemptFetch(proxyUrl);
+        // Never fall through to api.github.com from github.io — unauthenticated
+        // direct calls 403 and poison PageSpeed Best Practices (console network errors).
+        if (typeof window !== 'undefined' && window.location.hostname.endsWith('github.io')) {
+          return proxied;
+        }
         if (proxied.ok || proxied.status === 404) {
           return proxied;
         }
       } catch {
-        // Fall through to direct GitHub call.
+        if (typeof window !== 'undefined' && window.location.hostname.endsWith('github.io')) {
+          return { ok: false, status: 0, link: '', data: null };
+        }
+        // Fall through to direct GitHub call on non-Pages hosts.
       }
     }
 

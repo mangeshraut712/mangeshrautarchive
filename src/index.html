@@ -585,6 +585,11 @@ html.dark #home .hero-name-text {
       color: #f5f5f7;
     }
 
+    /* Reserve scrollbar space so launch-intro overflow lock does not shift layout (CLS). */
+    html {
+      scrollbar-gutter: stable;
+    }
+
     html.launch-intro-active,
     html.launch-intro-active body {
       overflow: hidden;
@@ -945,14 +950,8 @@ html.dark #home .hero-name-text {
   <noscript
     ><link rel="stylesheet" href="assets/css/apple-cards-luxury-2026.css?v=20260717clean"
   /></noscript>
-  <!-- Non-blocking: critical + heroLcpLock already lock mobile/desktop hero metrics for LCP -->
-  <link
-    rel="stylesheet"
-    href="assets/css/homepage.css?v=20260718about"
-    media="print"
-    onload="this.media='all'"
-  />
-  <noscript><link rel="stylesheet" href="assets/css/homepage.css?v=20260718about" /></noscript>
+  <!-- Render-blocking: homepage layout metrics must apply before first paint (desktop CLS). -->
+  <link rel="stylesheet" href="assets/css/homepage.css?v=20260718cls" />
   <link
     rel="stylesheet"
     href="assets/css/global-improvements.css?v=20260716aa"

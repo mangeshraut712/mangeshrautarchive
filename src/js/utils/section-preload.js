@@ -16,20 +16,20 @@ export function resolveGithubApiBase(context = globalThis) {
   } catch {
     // ignore
   }
-  const configuredBase =
-    context.APP_CONFIG?.apiBaseUrl ||
-    context.buildConfig?.apiBaseUrl ||
-    (hostname.endsWith('github.io') ? '' : '');
+  const configuredBase = context.APP_CONFIG?.apiBaseUrl || context.buildConfig?.apiBaseUrl || '';
 
-  const base = configuredBase || (hostname.endsWith('github.io') ? '' : location.origin || '');
+  // GitHub Pages: always prefer AssistMe edge (never raw api.github.com — 403 → PSI BP fail).
+  const pagesFallback = hostname.endsWith('github.io')
+    ? 'https://assistme-chat.mangeshraut712.workers.dev'
+    : '';
+  const base = configuredBase || pagesFallback || location.origin || '';
   return String(base).replace(/\/$/, '');
 }
 
 export function getGithubProjectsPrefetchUrl(context = globalThis) {
   const base = resolveGithubApiBase(context);
   if (!base) {
-    // Public GitHub API — no Vercel dependency
-    return 'https://api.github.com/users/mangeshraut712/repos?per_page=100&sort=updated';
+    return '';
   }
   return `${base}/api/github/repos/public?username=mangeshraut712&limit=100&no_forks=false`;
 }
