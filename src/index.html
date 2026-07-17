@@ -793,12 +793,7 @@ html.dark #home .hero-name-text {
   <link rel="stylesheet" href="assets/css/style.css?v=20260716aa" media="print" onload="this.media='all'" />
   <noscript><link rel="stylesheet" href="assets/css/style.css?v=20260716aa" /></noscript>
   <link rel="stylesheet" href="assets/css/accessibility.css?v=20260716aa" />
-  <link
-    rel="stylesheet"
-    href="assets/css/card-content-accessibility.css?v=20260716aa"
-    media="print"
-    onload="this.media='all'"
-  />
+  <link rel="stylesheet" href="assets/css/card-content-accessibility.css?v=20260717clean" media="print" class="js-defer-css" />
   <noscript
     ><link rel="stylesheet" href="assets/css/card-content-accessibility.css?v=20260716aa"
   /></noscript>
@@ -813,58 +808,28 @@ html.dark #home .hero-name-text {
   <link rel="stylesheet" href="assets/css/apple-super-retina-display.css?v=20260716aa" media="print" onload="this.media='all'" />
   <noscript><link rel="stylesheet" href="assets/css/apple-super-retina-display.css?v=20260716aa" /></noscript>
   <!-- Non-critical material sheets: print→all so they never block FCP/LCP (visual same after paint) -->
-  <link
-    rel="stylesheet"
-    href="assets/css/theme-solid-surfaces.css?v=20260717clean"
-    media="print"
-    onload="this.media='all'"
-  />
+  <link rel="stylesheet" href="assets/css/theme-solid-surfaces.css?v=20260717clean" media="print" class="js-defer-css" />
   <noscript
     ><link rel="stylesheet" href="assets/css/theme-solid-surfaces.css?v=20260717clean"
   /></noscript>
-  <link
-    rel="stylesheet"
-    href="assets/css/chrome-surfaces.css?v=20260717clean"
-    media="print"
-    onload="this.media='all'"
-  />
+  <link rel="stylesheet" href="assets/css/chrome-surfaces.css?v=20260717clean" media="print" class="js-defer-css" />
   <noscript
     ><link rel="stylesheet" href="assets/css/chrome-surfaces.css?v=20260717clean"
   /></noscript>
   <!-- Liquid Glass modes after solid/chrome so clear+balanced materials win -->
-  <link
-    rel="stylesheet"
-    href="assets/css/liquid-glass-modes.css?v=20260717clean"
-    media="print"
-    onload="this.media='all'"
-  />
+  <link rel="stylesheet" href="assets/css/liquid-glass-modes.css?v=20260717clean" media="print" class="js-defer-css" />
   <noscript
     ><link rel="stylesheet" href="assets/css/liquid-glass-modes.css?v=20260717clean"
   /></noscript>
-  <link
-    rel="stylesheet"
-    href="assets/css/wwdc26-liquid-glass.css?v=20260717whole"
-    media="print"
-    onload="this.media='all'"
-  />
+  <link rel="stylesheet" href="assets/css/wwdc26-liquid-glass.css?v=20260717clean" media="print" class="js-defer-css" />
   <noscript
     ><link rel="stylesheet" href="assets/css/wwdc26-liquid-glass.css?v=20260717whole"
   /></noscript>
-  <link
-    rel="stylesheet"
-    href="assets/css/apple-ui-polish.css?v=20260717clean"
-    media="print"
-    onload="this.media='all'"
-  />
+  <link rel="stylesheet" href="assets/css/apple-ui-polish.css?v=20260717clean" media="print" class="js-defer-css" />
   <noscript
     ><link rel="stylesheet" href="assets/css/apple-ui-polish.css?v=20260717clean"
   /></noscript>
-  <link
-    rel="stylesheet"
-    href="assets/css/apple-cards-luxury-2026.css?v=20260717clean"
-    media="print"
-    onload="this.media='all'"
-  />
+  <link rel="stylesheet" href="assets/css/apple-cards-luxury-2026.css?v=20260717clean" media="print" class="js-defer-css" />
   <noscript
     ><link rel="stylesheet" href="assets/css/apple-cards-luxury-2026.css?v=20260717clean"
   /></noscript>
@@ -894,6 +859,25 @@ html.dark #home .hero-name-text {
 
 <link rel="icon" type="image/png" href="assets/images/profile-icon.png?v=20260716aa" />
 
+
+  <script>
+    (function () {
+      function promoteDeferCss() {
+        if (window.__PERF_AUDIT__) return;
+        document.querySelectorAll('link.js-defer-css[media="print"]').forEach(function (link) {
+          link.media = 'all';
+          link.classList.remove('js-defer-css');
+        });
+      }
+      if (document.readyState === 'complete') {
+        requestAnimationFrame(promoteDeferCss);
+      } else {
+        window.addEventListener('load', function () {
+          requestAnimationFrame(promoteDeferCss);
+        }, { once: true });
+      }
+    })();
+  </script>
 </head>
 
 <body data-liquid-glass-background>
