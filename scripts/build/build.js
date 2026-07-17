@@ -88,21 +88,26 @@ async function injectApiKeys(distDir) {
     }
   }
 
-  // Prefer CHAT_API_BASE (edge worker) when Vercel is disabled; never embed secrets.
+  // Cloudflare Worker is the primary API for GitHub Pages. Vercel is optional/offline.
+  const EDGE_API = 'https://assistme-chat.mangeshraut712.workers.dev';
+  const PAGES_SITE = 'https://mangeshraut712.github.io/mangeshrautarchive';
   const apiBaseUrl =
-    process.env.CHAT_API_BASE || process.env.NEXT_PUBLIC_API_BASE || 'https://mangeshraut.pro';
+    process.env.CHAT_API_BASE ||
+    process.env.NEXT_PUBLIC_API_BASE ||
+    process.env.EDGE_API_BASE ||
+    EDGE_API;
 
   const config = {
     // Safe public configuration only — NO secrets
     apiBaseUrl,
-    // Ordered failover for GitHub Pages when primary host is down (402 DEPLOYMENT_DISABLED)
+    // Cloudflare-first candidates (do not require Vercel for Pages).
     apiBaseCandidates: [
       process.env.CHAT_API_BASE,
       process.env.NEXT_PUBLIC_API_BASE,
-      'https://mangeshraut.pro',
-      'https://mraut.vercel.app',
+      process.env.EDGE_API_BASE,
+      EDGE_API,
     ].filter((v, i, a) => v && String(v).startsWith('http') && a.indexOf(v) === i),
-    siteUrl: process.env.OPENROUTER_SITE_URL || 'https://mangeshraut.pro',
+    siteUrl: process.env.OPENROUTER_SITE_URL || process.env.PAGES_SITE_URL || PAGES_SITE,
     appTitle: process.env.OPENROUTER_APP_TITLE || 'AssistMe Portfolio Assistant',
     selectedModel: normalizeSelectedModel(process.env.OPENROUTER_MODEL),
     // Music uses /api/music/* on the backend — never ship Last.fm keys to browsers.

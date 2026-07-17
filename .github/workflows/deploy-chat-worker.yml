@@ -255,9 +255,21 @@ jobs:
           secrets: |
             OPENROUTER_API_KEY
             LASTFM_API_KEY
+            LASTFM_USERNAME
+            GITHUB_PAT
+            SUPABASE_URL
+            SUPABASE_SERVICE_ROLE_KEY
+            SUPABASE_HEALTH_TABLE
+            AI_GATEWAY_API_KEY
         env:
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
           LASTFM_API_KEY: ${{ secrets.LASTFM_API_KEY }}
+          LASTFM_USERNAME: ${{ secrets.LASTFM_USERNAME }}
+          GITHUB_PAT: ${{ secrets.GH_PAT }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          SUPABASE_HEALTH_TABLE: ${{ secrets.SUPABASE_HEALTH_TABLE }}
+          AI_GATEWAY_API_KEY: ${{ secrets.AI_GATEWAY_API_KEY }}
 
       - name: Deploy Worker (Global API Key)
         id: deploy_global
@@ -271,11 +283,23 @@ jobs:
           secrets: |
             OPENROUTER_API_KEY
             LASTFM_API_KEY
+            LASTFM_USERNAME
+            GITHUB_PAT
+            SUPABASE_URL
+            SUPABASE_SERVICE_ROLE_KEY
+            SUPABASE_HEALTH_TABLE
+            AI_GATEWAY_API_KEY
         env:
           CLOUDFLARE_API_KEY: ${{ env.CLOUDFLARE_API_KEY }}
           CLOUDFLARE_EMAIL: ${{ env.CLOUDFLARE_EMAIL }}
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
           LASTFM_API_KEY: ${{ secrets.LASTFM_API_KEY }}
+          LASTFM_USERNAME: ${{ secrets.LASTFM_USERNAME }}
+          GITHUB_PAT: ${{ secrets.GH_PAT }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          SUPABASE_HEALTH_TABLE: ${{ secrets.SUPABASE_HEALTH_TABLE }}
+          AI_GATEWAY_API_KEY: ${{ secrets.AI_GATEWAY_API_KEY }}
 
       - name: Resolve worker URL
         if: steps.cf.outputs.present == 'true'
@@ -345,7 +369,16 @@ jobs:
           set -euo pipefail
           BASE="${BASE%/}"
           echo "== health =="
-          curl -sS -m 20 "${BASE}/api/chat/health" | tee /tmp/health.json | head -c 600; echo
+          curl -sS -m 20 -A 'Mozilla/5.0' -H 'Accept: application/json' "${BASE}/api/chat/health" | tee /tmp/health.json | head -c 600; echo
+          echo "== reach =="
+          curl -sS -m 20 -A 'Mozilla/5.0' -H 'Accept: application/json' "${BASE}/api/analytics/reach" | head -c 400; echo
+          echo "== health-vitals =="
+          curl -sS -m 20 -A 'Mozilla/5.0' -H 'Accept: application/json' "${BASE}/api/health-vitals/summary" | head -c 400; echo
+          echo "== monitor =="
+          curl -sS -m 20 -A 'Mozilla/5.0' -H 'Accept: application/json' "${BASE}/api/monitor/status" | head -c 400; echo
+          echo "== github =="
+          curl -sS -m 20 -A 'Mozilla/5.0' -H 'Accept: application/json' \
+            "${BASE}/api/github/repos/public?username=mangeshraut712&limit=2" | head -c 300; echo
           echo "== chat =="
           HTTP=$(curl -sS -m 90 -o /tmp/chat.json -w "%{http_code}" \
             -X POST "${BASE}/api/chat" \

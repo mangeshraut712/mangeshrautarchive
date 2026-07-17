@@ -423,18 +423,19 @@ async function handleHealth(env, cors) {
   );
 }
 
-async function handleGithubRepos(url, cors) {
+async function handleGithubRepos(url, cors, env = {}) {
   const username = url.searchParams.get('username') || 'mangeshraut712';
   const limit = Math.min(100, Math.max(1, Number(url.searchParams.get('limit') || 100)));
   try {
+    const headers = {
+      Accept: 'application/vnd.github+json',
+      'User-Agent': 'assistme-cloudflare-edge',
+    };
+    const pat = (env.GITHUB_PAT || '').trim();
+    if (pat) headers.Authorization = `Bearer ${pat}`;
     const res = await fetch(
       `https://api.github.com/users/${encodeURIComponent(username)}/repos?per_page=${limit}&sort=updated`,
-      {
-        headers: {
-          Accept: 'application/vnd.github+json',
-          'User-Agent': 'assistme-cloudflare-edge',
-        },
-      }
+      { headers }
     );
     if (!res.ok) {
       return json(
@@ -528,7 +529,7 @@ export default {
       request.method === 'GET' &&
       (path === '/api/github/repos/public' || path === '/api/github/repos')
     ) {
-      return handleGithubRepos(url, cors);
+      return handleGithubRepos(url, cors, env);
     }
 
     if (request.method === 'GET' && path === '/api/music/recent') {
@@ -549,14 +550,15 @@ export default {
           success: true,
           available: false,
           host: 'cloudflare-worker',
-          message: 'Realtime voice requires Vercel AI Gateway; unavailable on edge.',
+          message:
+            'Realtime voice needs a WebSocket bridge; text AssistMe chat runs on this Cloudflare Worker.',
         },
         200,
         cors
       );
     }
 
-    // Soft monitor surface (Vercel FastAPI offline)
+    // Monitor surface (Cloudflare-primary for GitHub Pages)
     if (
       request.method === 'GET' &&
       (path === '/api/monitor/status' ||
@@ -592,7 +594,7 @@ export default {
       return handleAnalyticsTrack(cors);
     }
     if (request.method === 'GET' && path === '/api/health-vitals/summary') {
-      return handleHealthVitalsSummary(cors);
+      return handleHealthVitalsSummary(cors, env);
     }
 
     if (request.method === 'POST' && path === '/api/newsletter/subscribe') {
@@ -682,14 +684,17 @@ async function handleMonitorStatus(env, cors, path) {
     environment: 'cloudflare-edge',
     platform: 'cloudflare-workers',
     host: 'assistme-chat',
-    vercel: 'DEPLOYMENT_DISABLED',
+    primary: 'cloudflare',
+    vercel: 'optional-offline',
     env_presence: {
       openrouter_api_key: apiKey,
       lastfm_api_key: lastfm,
+      github_pat: Boolean((env.GITHUB_PAT || '').trim()),
+      supabase: Boolean(
+        (env.SUPABASE_URL || '').trim() && (env.SUPABASE_SERVICE_ROLE_KEY || '').trim()
+      ),
       github_pages_url: true,
       next_public_api_base: true,
-      github_token: false,
-      vercel_url: false,
     },
   };
 
@@ -697,14 +702,16 @@ async function handleMonitorStatus(env, cors, path) {
     {
       name: 'OpenRouter',
       status: apiKey ? 'healthy' : 'degraded',
-      message: apiKey ? 'API key present on edge worker' : 'No OPENROUTER_API_KEY',
+      message: apiKey ? 'API key present on Cloudflare Worker' : 'No OPENROUTER_API_KEY',
       purpose: 'AssistMe chat models',
       configured: apiKey,
     },
     {
       name: 'GitHub public API',
       status: 'healthy',
-      message: 'Public repos proxy via edge',
+      message: (env.GITHUB_PAT || '').trim()
+        ? 'Authenticated proxy via edge'
+        : 'Public repos proxy via edge',
       purpose: 'Project catalog',
       configured: true,
     },
@@ -716,10 +723,19 @@ async function handleMonitorStatus(env, cors, path) {
       configured: lastfm,
     },
     {
+      name: 'Supabase health',
+      status: Boolean((env.SUPABASE_URL || '').trim()) ? 'healthy' : 'degraded',
+      message: Boolean((env.SUPABASE_URL || '').trim())
+        ? 'Health vitals REST configured'
+        : 'Using edge snapshot fallback',
+      purpose: 'WHOOP/Withings public summary',
+      configured: Boolean((env.SUPABASE_URL || '').trim()),
+    },
+    {
       name: 'Cloudflare Worker',
       status: 'healthy',
       message: 'assistme-chat.mangeshraut712.workers.dev',
-      purpose: 'Edge FastAPI-compatible API',
+      purpose: 'Primary API for GitHub Pages',
       configured: true,
     },
   ];
@@ -729,24 +745,24 @@ async function handleMonitorStatus(env, cors, path) {
       name: 'GitHub Pages',
       status: 'healthy',
       url: 'https://mangeshraut712.github.io/mangeshrautarchive/',
-      message: 'Primary static host (Vercel disabled)',
-      metric_value: 'live',
-      metric_label: 'Mirror',
+      message: 'Primary public website',
+      metric_value: 'primary',
+      metric_label: 'Site',
     },
     {
       name: 'Cloudflare Edge API',
       status: 'healthy',
       url: 'https://assistme-chat.mangeshraut712.workers.dev/',
-      message: 'Chat, music, github, monitor stubs',
-      metric_value: 'edge',
+      message: 'Primary backend (chat, music, github, monitor, health, reach)',
+      metric_value: 'primary',
       metric_label: 'API',
     },
     {
-      name: 'Vercel production',
+      name: 'Vercel',
       status: 'degraded',
       url: 'https://mangeshraut.pro/',
-      message: 'DEPLOYMENT_DISABLED — traffic routed to edge',
-      metric_value: 'blocked',
+      message: 'Optional / offline — not required for Pages',
+      metric_value: 'optional',
       metric_label: 'Status',
     },
   ];
@@ -951,7 +967,7 @@ async function handleMonitorStatus(env, cors, path) {
       },
       host: 'cloudflare-worker',
       message:
-        'Edge monitor surface — Vercel FastAPI offline. Chat, music, and GitHub run on Cloudflare.',
+        'Primary Cloudflare API for GitHub Pages — chat, music, GitHub, health, reach, and monitor.',
     },
     200,
     cors
@@ -1019,19 +1035,78 @@ function handleAnalyticsTrack(cors) {
   );
 }
 
-function handleHealthVitalsSummary(cors) {
-  const base = EDGE_DATA_SNAPSHOT?.healthVitals || {};
-  return json(
-    {
-      ...base,
+function handleHealthVitalsSummary(cors, env = {}) {
+  return fetchHealthVitalsFromSupabase(env).then(live => {
+    if (live) {
+      return json({ ...live, host: 'cloudflare-worker' }, 200, cors);
+    }
+    const base = EDGE_DATA_SNAPSHOT?.healthVitals || {};
+    return json(
+      {
+        ...base,
+        success: true,
+        host: 'cloudflare-worker',
+        timestamp: new Date().toISOString(),
+        snapshotExportedAt: EDGE_DATA_SNAPSHOT?.exportedAt || null,
+      },
+      200,
+      cors
+    );
+  });
+}
+
+async function fetchHealthVitalsFromSupabase(env) {
+  const baseUrl = String(env.SUPABASE_URL || '')
+    .trim()
+    .replace(/\/$/, '');
+  const key = String(env.SUPABASE_SERVICE_ROLE_KEY || '').trim();
+  const table = String(env.SUPABASE_HEALTH_TABLE || 'health_vitals_daily').trim();
+  if (!baseUrl || !key || !table) return null;
+
+  try {
+    const qs = new URLSearchParams({
+      select:
+        'date,sleep_score,recovery_score,strain,resting_heart_rate,hrv_trend,weight_trend,last_synced_at,source_status',
+      order: 'date.desc',
+      limit: '7',
+    });
+    const res = await fetch(`${baseUrl}/rest/v1/${encodeURIComponent(table)}?${qs}`, {
+      headers: {
+        apikey: key,
+        Authorization: `Bearer ${key}`,
+        Accept: 'application/json',
+      },
+    });
+    if (!res.ok) return null;
+    const rows = await res.json();
+    if (!Array.isArray(rows) || !rows.length) return null;
+    const row = rows[0] || {};
+    const data = {
+      date: row.date || null,
+      sleepScore: row.sleep_score ?? null,
+      recoveryScore: row.recovery_score ?? null,
+      strain: row.strain ?? null,
+      restingHeartRate: row.resting_heart_rate ?? null,
+      hrvTrend: row.hrv_trend ?? null,
+      weightTrend: row.weight_trend ?? null,
+      lastSyncedAt: row.last_synced_at ?? null,
+      sourceStatus: row.source_status || 'synced',
+    };
+    return {
       success: true,
-      host: 'cloudflare-worker',
       timestamp: new Date().toISOString(),
-      snapshotExportedAt: EDGE_DATA_SNAPSHOT?.exportedAt || null,
-    },
-    200,
-    cors
-  );
+      status: 'live',
+      source: 'supabase',
+      sourceStatus: data.sourceStatus,
+      lastSyncedAt: data.lastSyncedAt,
+      data,
+      refresh: { stale: false, attempted: true, refreshed: true, reason: 'edge_supabase_read' },
+      privacy: 'Public health payload is deliberately limited to daily summary metrics and trends.',
+      message: 'Live health vitals from Supabase on Cloudflare edge.',
+    };
+  } catch {
+    return null;
+  }
 }
 
 async function handleGithubProxy(url, cors) {

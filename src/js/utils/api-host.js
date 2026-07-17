@@ -15,7 +15,7 @@ export function isBlockedVercelHost(urlOrBase = '') {
   return /mangeshraut\.pro|mraut\.vercel\.app|\.vercel\.app/i.test(s);
 }
 
-/** Prefer edge + config; never lead with blocked Vercel on GitHub Pages. */
+/** Prefer edge + config; never require Vercel for GitHub Pages. */
 export function pagesApiCandidates(extra = []) {
   const cfg = globalThis.APP_CONFIG || globalThis.buildConfig || {};
   const list = [
@@ -33,17 +33,16 @@ export function pagesApiCandidates(extra = []) {
         return String(c).replace(/\/$/, '');
       }
     });
-  // Edge first, then non-Vercel, then Vercel last (only as last resort)
+  // Edge first, then other non-Vercel hosts. Skip blocked Vercel hosts entirely.
   const edge = [];
   const ok = [];
-  const blocked = [];
   for (const o of list) {
     if (!o) continue;
+    if (isBlockedVercelHost(o)) continue;
     if (o.includes('workers.dev') || o === EDGE_API_BASE) edge.push(o);
-    else if (isBlockedVercelHost(o)) blocked.push(o);
     else ok.push(o);
   }
-  return [...new Set([...edge, ...ok, ...blocked])];
+  return [...new Set([...edge, ...ok])];
 }
 
 function originOf(urlOrBase) {
