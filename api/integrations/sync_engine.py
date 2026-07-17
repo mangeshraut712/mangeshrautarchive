@@ -37,10 +37,18 @@ def _merge_health_fields(target: Dict[str, Any], source: Dict[str, Any]) -> None
         "hrv_trend",
         "weight_trend",
         "source_status",
+        "date",
     ):
         value = source.get(key)
         if value is not None:
             target[key] = value
+
+
+def _whoop_has_metrics(summary: Dict[str, Any]) -> bool:
+    return any(
+        summary.get(key) is not None
+        for key in ("sleep_score", "recovery_score", "strain", "resting_heart_rate")
+    )
 
 
 async def sync_connected_health_providers() -> Dict[str, Any]:
@@ -56,74 +64,126 @@ async def sync_connected_health_providers() -> Dict[str, Any]:
         "source_status": "synced",
     }
     results: List[Dict[str, Any]] = []
+    whoop_ok = False
+    withings_ok = False
 
     if await integration_is_connected("whoop"):
         token = await get_valid_access_token("whoop")
         if not token:
             results.append(
-                {"provider": "whoop", "status": "degraded", "message": "Missing WHOOP token"}
-            )
-            await update_sync_state("whoop", last_error="missing_token")
-        else:
-            summary = await whoop.fetch_sanitized_summary(token)
-            _merge_health_fields(merged, summary)
-            has_metrics = any(
-                summary.get(key) is not None
-                for key in ("sleep_score", "recovery_score", "strain", "resting_heart_rate")
-            )
-            results.append(
                 {
                     "provider": "whoop",
-                    "status": "live" if has_metrics else "degraded",
-                    "date": summary.get("date"),
-                    "metrics": {
-                        key: summary.get(key)
-                        for key in ("sleep_score", "recovery_score", "strain", "resting_heart_rate")
-                        if summary.get(key) is not None
-                    },
+                    "status": "needs_reauth",
+                    "message": "WHOOP token expired and refresh failed. Reconnect WHOOP OAuth.",
                 }
             )
-            await update_sync_state(
-                "whoop",
-                last_success_at=_utc_now(),
-                last_error=None if has_metrics else "no_scored_metrics",
+            await update_sync_state("whoop", last_error="token_refresh_failed")
+            merged["source_status"] = "partial"
+        else:
+            summary = await whoop.fetch_sanitized_summary(token)
+            has_metrics = _whoop_has_metrics(summary)
+            errors = list(summary.get("errors") or [])
+            auth_failed = summary.get("source_status") == "needs_reauth" or any(
+                err in {"whoop_unauthorized", "whoop_forbidden"} for err in errors
             )
+            if has_metrics:
+                _merge_health_fields(merged, summary)
+                whoop_ok = True
+                results.append(
+                    {
+                        "provider": "whoop",
+                        "status": "live",
+                        "date": summary.get("date"),
+                        "metrics": {
+                            key: summary.get(key)
+                            for key in ("sleep_score", "recovery_score", "strain", "resting_heart_rate")
+                            if summary.get(key) is not None
+                        },
+                    }
+                )
+                await update_sync_state("whoop", last_success_at=_utc_now(), last_error=None)
+            else:
+                status = "needs_reauth" if auth_failed else "degraded"
+                message = (
+                    "WHOOP authorization invalid. Reconnect WHOOP OAuth."
+                    if auth_failed
+                    else "WHOOP returned no scored metrics."
+                )
+                results.append(
+                    {
+                        "provider": "whoop",
+                        "status": status,
+                        "date": summary.get("date"),
+                        "metrics": {},
+                        "message": message,
+                        "errors": errors,
+                    }
+                )
+                await update_sync_state(
+                    "whoop",
+                    last_error="needs_reauth" if auth_failed else "no_scored_metrics",
+                )
+                merged["source_status"] = "partial"
 
     if await integration_is_connected("withings"):
         token = await get_valid_access_token("withings")
         if not token:
             results.append(
-                {"provider": "withings", "status": "degraded", "message": "Missing Withings token"}
-            )
-            await update_sync_state("withings", last_error="missing_token")
-        else:
-            summary = await withings.fetch_sanitized_summary(token)
-            _merge_health_fields(merged, summary)
-            results.append(
                 {
                     "provider": "withings",
-                    "status": "live",
-                    "date": summary.get("date"),
-                    "metrics": {"weight_trend": summary.get("weight_trend")}
-                    if summary.get("weight_trend")
-                    else {},
+                    "status": "needs_reauth",
+                    "message": "Withings token expired and refresh failed. Reconnect Withings OAuth.",
                 }
             )
-            await update_sync_state(
-                "withings",
-                last_success_at=_utc_now(),
-                last_error=None if summary.get("weight_trend") else "no_weight_metrics",
-            )
+            await update_sync_state("withings", last_error="token_refresh_failed")
+            merged["source_status"] = "partial"
+        else:
+            summary = await withings.fetch_sanitized_summary(token)
+            weight = summary.get("weight_trend")
+            if weight:
+                _merge_health_fields(merged, summary)
+                withings_ok = True
+                results.append(
+                    {
+                        "provider": "withings",
+                        "status": "live",
+                        "date": summary.get("date"),
+                        "metrics": {"weight_trend": weight},
+                    }
+                )
+                await update_sync_state("withings", last_success_at=_utc_now(), last_error=None)
+            else:
+                results.append(
+                    {
+                        "provider": "withings",
+                        "status": "degraded",
+                        "date": summary.get("date"),
+                        "metrics": {},
+                        "message": "Withings returned no weight metrics.",
+                    }
+                )
+                await update_sync_state("withings", last_error="no_weight_metrics")
+                merged["source_status"] = "partial"
+
+    if whoop_ok and withings_ok:
+        merged["source_status"] = "synced"
+    elif whoop_ok or withings_ok:
+        merged["source_status"] = "partial"
 
     if not results:
         return {"results": [], "saved": False, "summary": merged}
 
-    saved = await upsert_health_summary_row(merged)
-    if not saved:
-        for item in results:
-            provider = item.get("provider")
-            if provider:
-                await update_sync_state(provider, last_error="upsert_failed")
+    # Only persist when at least one provider contributed metrics; avoid bumping
+    # last_synced_at on pure auth failures that would leave stale WHOOP scores looking fresh.
+    should_save = whoop_ok or withings_ok
+    saved = False
+    if should_save:
+        saved = await upsert_health_summary_row(merged)
+        if not saved:
+            for item in results:
+                provider = item.get("provider")
+                if provider:
+                    await update_sync_state(provider, last_error="upsert_failed")
 
     return {"results": results, "saved": saved, "summary": merged}
 

@@ -58,6 +58,19 @@ HEALTH_SUMMARY_AUTO_REFRESH_ON_READ = os.getenv(
 HEALTH_SUMMARY_SYNC_STATE_PROVIDER = "health_vitals"
 
 
+def _oauth_success_redirect(provider: str) -> str:
+    """Where to send the browser after a successful OAuth callback.
+
+    Prefer an explicit override, then local Pages/dev monitor — never the dead
+    Vercel mangeshraut.pro host while that deployment is disabled.
+    """
+    explicit = os.getenv("OAUTH_SUCCESS_REDIRECT", "").strip()
+    if explicit:
+        return explicit
+    local = os.getenv("LOCAL_SITE_URL", "").strip() or "http://127.0.0.1:4000"
+    return f"{local.rstrip('/')}/monitor.html#integrations-{provider}"
+
+
 def _enforce_rate_limit(request: Request) -> None:
     enforce_rate_limit(request)
 
@@ -565,7 +578,7 @@ async def google_calendar_callback(code: Optional[str] = None, state: Optional[s
             raise HTTPException(status_code=502, detail="Failed to persist Google Calendar tokens.")
 
         await update_sync_state("google_calendar", last_success_at=_utc_now(), last_error=None)
-        return RedirectResponse("https://mangeshraut.pro/monitor#integrations", status_code=302)
+        return RedirectResponse(_oauth_success_redirect("google_calendar"), status_code=302)
     except HTTPException:
         raise
     except httpx.HTTPStatusError as exc:
@@ -610,7 +623,7 @@ async def whoop_callback(code: Optional[str] = None, state: Optional[str] = None
             scopes=list(whoop.SCOPES),
             token_payload=token_payload,
         )
-        return RedirectResponse("https://mangeshraut.pro/monitor#integrations", status_code=302)
+        return RedirectResponse(_oauth_success_redirect("whoop"), status_code=302)
     except HTTPException:
         raise
     except Exception as exc:
@@ -650,7 +663,7 @@ async def withings_callback(code: Optional[str] = None, state: Optional[str] = N
             scopes=list(withings.SCOPES),
             token_payload=token_payload,
         )
-        return RedirectResponse("https://mangeshraut.pro/monitor#integrations", status_code=302)
+        return RedirectResponse(_oauth_success_redirect("withings"), status_code=302)
     except HTTPException:
         raise
     except Exception as exc:

@@ -168,7 +168,7 @@ function fmtNum(n) {
 export function renderPortfolioReachDiagram(analyticsData) {
   const insights = analyticsData?.insights || {};
   const activeUsers30m = insights.active_users_last_30_mins || 85;
-  const activeUsers = fmtNum(insights.active_users_all_time || insights.unique_visitors || 6100);
+  const activeUsers = fmtNum(insights.active_users_all_time || insights.unique_visitors || 10300);
   const eventCount = fmtNum(insights.event_count_all_time || 25000);
   const views = fmtNum(insights.total_views_all_time || 7300);
 

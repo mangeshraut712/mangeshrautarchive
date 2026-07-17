@@ -53,6 +53,25 @@ def test_pick_active_cycle_record_prefers_in_progress_cycle():
     assert picked["score"]["strain"] == 6.0
 
 
+def test_pick_scored_record_prefers_non_nap_sleep():
+    records = [
+        {
+            "nap": True,
+            "score_state": "SCORED",
+            "start": "2026-07-17T14:00:00.000Z",
+            "score": {"sleep_performance_percentage": 40},
+        },
+        {
+            "nap": False,
+            "score_state": "SCORED",
+            "start": "2026-07-17T06:00:00.000Z",
+            "score": {"sleep_performance_percentage": 85},
+        },
+    ]
+    picked = _pick_scored_record(records, prefer_non_nap=True)
+    assert picked["score"]["sleep_performance_percentage"] == 85
+
+
 def test_merge_health_row_preserves_existing_non_null_fields():
     existing = {
         "sleep_score": 81,

@@ -64,15 +64,20 @@ async def exchange_code(code: str) -> Dict[str, Any]:
 
 
 async def refresh_access_token(refresh_token: str) -> Dict[str, Any]:
+    # WHOOP refresh docs require scope=offline (not the full authorize scope list).
     payload = {
         "grant_type": "refresh_token",
         "refresh_token": refresh_token,
         "client_id": _client_id(),
         "client_secret": _client_secret(),
-        "scope": " ".join(SCOPES),
+        "scope": "offline",
     }
     async with httpx.AsyncClient(timeout=10.0) as client:
-        response = await client.post(TOKEN_URL, data=payload)
+        response = await client.post(
+            TOKEN_URL,
+            data=payload,
+            headers={"Content-Type": "application/x-www-form-urlencoded"},
+        )
     response.raise_for_status()
     return response.json()
 
@@ -96,13 +101,22 @@ def _record_sort_key(record: Dict[str, Any]) -> str:
     return ""
 
 
-def _pick_scored_record(records: List[Dict[str, Any]]) -> Optional[Dict[str, Any]]:
+def _pick_scored_record(
+    records: List[Dict[str, Any]],
+    *,
+    prefer_non_nap: bool = False,
+) -> Optional[Dict[str, Any]]:
     ordered = sorted(records or [], key=_record_sort_key, reverse=True)
-    for record in ordered:
+    candidates = ordered
+    if prefer_non_nap:
+        non_naps = [record for record in ordered if not record.get("nap")]
+        if non_naps:
+            candidates = non_naps
+    for record in candidates:
         score = record.get("score") or {}
         if record.get("score_state") == "SCORED" and score:
             return record
-    for record in ordered:
+    for record in candidates:
         if record.get("score"):
             return record
     return None
@@ -154,6 +168,19 @@ def _record_date(record: Optional[Dict[str, Any]]) -> Optional[str]:
     return None
 
 
+def _http_error_detail(exc: BaseException) -> str:
+    if isinstance(exc, httpx.HTTPStatusError):
+        status = exc.response.status_code
+        if status == 401:
+            return "whoop_unauthorized"
+        if status == 403:
+            return "whoop_forbidden"
+        return f"whoop_http_{status}"
+    if isinstance(exc, httpx.HTTPError):
+        return "whoop_http_error"
+    return "whoop_fetch_error"
+
+
 async def fetch_sanitized_summary(access_token: str) -> Dict[str, Any]:
     today = datetime.now(timezone.utc).date().isoformat()
     query = _recent_query()
@@ -166,8 +193,10 @@ async def fetch_sanitized_summary(access_token: str) -> Dict[str, Any]:
         "hrv_trend": None,
         "weight_trend": None,
         "source_status": "synced",
+        "errors": [],
     }
     partial = False
+    auth_failed = False
     record_dates: List[str] = []
 
     recovery_result, cycles_result, sleep_result = await asyncio.gather(
@@ -194,8 +223,12 @@ async def fetch_sanitized_summary(access_token: str) -> Dict[str, Any]:
                 summary["hrv_trend"] = "stable" if hrv >= 50 else "low"
         elif recovery.get("records"):
             partial = True
-    except httpx.HTTPError:
+    except Exception as exc:
         partial = True
+        detail = _http_error_detail(exc)
+        summary["errors"].append(detail)
+        if detail in {"whoop_unauthorized", "whoop_forbidden"}:
+            auth_failed = True
 
     try:
         if isinstance(cycles_result, BaseException):
@@ -211,14 +244,18 @@ async def fetch_sanitized_summary(access_token: str) -> Dict[str, Any]:
                 summary["strain"] = round(float(strain), 1)
         elif cycles.get("records"):
             partial = True
-    except httpx.HTTPError:
+    except Exception as exc:
         partial = True
+        detail = _http_error_detail(exc)
+        summary["errors"].append(detail)
+        if detail in {"whoop_unauthorized", "whoop_forbidden"}:
+            auth_failed = True
 
     try:
         if isinstance(sleep_result, BaseException):
             raise sleep_result
         sleep = sleep_result if isinstance(sleep_result, dict) else {}
-        record = _pick_scored_record(sleep.get("records") or [])
+        record = _pick_scored_record(sleep.get("records") or [], prefer_non_nap=True)
         if record:
             record_date = _record_date(record)
             if record_date:
@@ -228,13 +265,20 @@ async def fetch_sanitized_summary(access_token: str) -> Dict[str, Any]:
                 summary["sleep_score"] = int(round(float(performance)))
         elif sleep.get("records"):
             partial = True
-    except httpx.HTTPError:
+    except Exception as exc:
         partial = True
+        detail = _http_error_detail(exc)
+        summary["errors"].append(detail)
+        if detail in {"whoop_unauthorized", "whoop_forbidden"}:
+            auth_failed = True
 
-    if partial and not any(
+    has_metrics = any(
         summary.get(key) is not None
         for key in ("sleep_score", "recovery_score", "strain", "resting_heart_rate", "hrv_trend")
-    ):
+    )
+    if auth_failed and not has_metrics:
+        summary["source_status"] = "needs_reauth"
+    elif partial and not has_metrics:
         summary["source_status"] = "partial"
 
     if record_dates:

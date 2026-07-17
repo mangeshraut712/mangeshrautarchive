@@ -19,9 +19,10 @@ def _parse_expires_at(value: Optional[str]) -> Optional[datetime]:
 
 
 def _expires_soon(expires_at: Optional[str], skew_seconds: int = 120) -> bool:
+    """Treat missing/unparseable expires_at as expired so we always attempt refresh."""
     parsed = _parse_expires_at(expires_at)
     if not parsed:
-        return False
+        return True
     remaining = (parsed - datetime.now(timezone.utc)).total_seconds()
     return remaining <= skew_seconds
 
@@ -40,6 +41,11 @@ async def _refresh_google(refresh_token: str) -> Dict[str, Any]:
 
 
 async def get_valid_access_token(provider: str) -> Optional[str]:
+    """Return a usable access token, or None when refresh fails / token is expired.
+
+    Never return a known-expired token after a failed refresh — callers would
+    otherwise hit 401s and silently keep stale health metrics.
+    """
     bundle = await get_provider_token_bundle(provider)
     if not bundle:
         return None
@@ -54,7 +60,8 @@ async def get_valid_access_token(provider: str) -> Optional[str]:
         return access_token
 
     if not refresh_token:
-        return access_token
+        # Expired (or unknown expiry) with no refresh path — do not hand out a dead token.
+        return None if _expires_soon(expires_at) else access_token
 
     try:
         if provider == "google_calendar":
@@ -64,11 +71,11 @@ async def get_valid_access_token(provider: str) -> Optional[str]:
         elif provider == "withings":
             refreshed = await withings.refresh_access_token(refresh_token)
         else:
-            return access_token
+            return None if _expires_soon(expires_at) else access_token
 
         new_access = refreshed.get("access_token")
         if not new_access:
-            return access_token
+            return None
 
         new_refresh = refreshed.get("refresh_token") or refresh_token
         expires_in = refreshed.get("expires_in")
@@ -89,7 +96,8 @@ async def get_valid_access_token(provider: str) -> Optional[str]:
         )
         return new_access
     except (httpx.HTTPError, ValueError):
-        return access_token
+        # Refresh failed — refuse the expired access token so sync can surface reauth.
+        return None
 
 
 async def get_token_metadata(provider: str) -> Tuple[Optional[str], Optional[str]]:

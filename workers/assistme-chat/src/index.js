@@ -1041,7 +1041,7 @@ async function handleMonitorStatus(env, cors, path) {
 }
 
 /** Reach counters seeded from GA4/FastAPI export (see edge-data-snapshot.js). */
-const REACH_SEED = Number(EDGE_DATA_SNAPSHOT?.reach?.total_reach) || 6100;
+const REACH_SEED = Number(EDGE_DATA_SNAPSHOT?.reach?.total_reach) || 10300;
 const REACH_WEEK_SEED =
   Number(EDGE_DATA_SNAPSHOT?.reach?.insights?.unique_visitors_this_week) || 1100;
 let EDGE_REACH_TOTAL = REACH_SEED;
@@ -1174,14 +1174,14 @@ async function fetchHealthVitalsFromSupabase(env) {
       if (data.lastSyncedAt == null && row.last_synced_at) data.lastSyncedAt = row.last_synced_at;
       if (data.sourceStatus == null && row.source_status) data.sourceStatus = row.source_status;
     }
-    const snap = EDGE_DATA_SNAPSHOT?.healthVitals?.data || {};
-    for (const key of Object.keys(data)) {
-      if (data[key] == null && snap[key] != null) data[key] = snap[key];
-    }
-    if (!data.sourceStatus) {
-      data.sourceStatus =
-        data.sleepScore != null || data.recoveryScore != null ? 'synced' : 'partial';
-    }
+    // Never backfill WHOOP scores from the static edge snapshot — that froze
+    // stale sleep/recovery/strain (82/54/5.1) over live Supabase reads.
+    // Recompute status from metrics (row source_status can lag as "partial").
+    const hasWhoop = data.sleepScore != null || data.recoveryScore != null || data.strain != null;
+    const hasWeight = data.weightTrend != null;
+    if (hasWhoop && hasWeight) data.sourceStatus = 'synced';
+    else if (hasWhoop || hasWeight) data.sourceStatus = 'partial';
+    else if (!data.sourceStatus) data.sourceStatus = 'partial';
     return {
       success: true,
       timestamp: new Date().toISOString(),
