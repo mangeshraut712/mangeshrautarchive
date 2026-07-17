@@ -114,7 +114,10 @@ async function proxyApiRequest(req, res) {
 }
 
 app.post('/api/chat', (req, res, next) => {
-  if (process.env.NO_RELOAD === '1') {
+  // Deterministic mock only when explicitly requested (E2E can also route via Playwright).
+  // Do NOT tie this to NO_RELOAD — that flag only disables HMR and was breaking real local chat.
+  const mockChat = ['1', 'true', 'yes'].includes(String(process.env.MOCK_CHAT || '').toLowerCase());
+  if (mockChat) {
     res.setHeader('Content-Type', 'application/x-ndjson');
     res.setHeader('Transfer-Encoding', 'chunked');
     res.setHeader('Cache-Control', 'no-cache');
@@ -163,7 +166,8 @@ app.post('/api/chat', (req, res, next) => {
 });
 
 app.get(['/api/chat/health', '/api/health', '/api/status'], (req, res, next) => {
-  if (process.env.NO_RELOAD === '1') {
+  const mockChat = ['1', 'true', 'yes'].includes(String(process.env.MOCK_CHAT || '').toLowerCase());
+  if (mockChat) {
     res.status(200).json({ status: 'healthy', ok: true });
     return;
   }
