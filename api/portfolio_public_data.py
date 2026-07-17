@@ -78,7 +78,6 @@ def format_quality_summary() -> str:
 
 def get_portfolio_facts_chunk() -> str:
     """Compact first-party facts for AssistMe site knowledge injection."""
-    mobile = LIGHTHOUSE_DEPLOY_GATES["mobile"]
     uses_lines = []
     for category, items in USES_STACK.items():
         label = category.replace("_", " ").title()
