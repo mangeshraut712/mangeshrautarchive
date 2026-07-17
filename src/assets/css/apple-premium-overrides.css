@@ -3653,7 +3653,7 @@ html.dark #home .hero-actions .hero-cta-primary {
 html.dark #home .hero-actions .hero-cta:nth-child(1):hover,
 html.dark #home .hero-actions .hero-cta-primary:hover {
   background: #0077ed !important;
-  background-color: #2997ff !important;
+  background-color: #0077ed !important;
   background-image: none !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;

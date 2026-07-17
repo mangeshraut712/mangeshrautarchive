@@ -535,7 +535,7 @@ html.dark #home .hero-actions .hero-cta.hero-cta-primary:hover,
 html.dark #home a.hero-cta-primary:hover,
 html.dark #home .hero-cta-primary:hover {
   background: #0077ed !important;
-  background-color: #2997ff !important;
+  background-color: #0077ed !important;
   background-image: none !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
