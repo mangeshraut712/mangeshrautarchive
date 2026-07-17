@@ -1080,18 +1080,42 @@ async function fetchHealthVitalsFromSupabase(env) {
     if (!res.ok) return null;
     const rows = await res.json();
     if (!Array.isArray(rows) || !rows.length) return null;
-    const row = rows[0] || {};
+    // Coalesce newest non-null fields across recent rows (matches FastAPI behavior).
     const data = {
-      date: row.date || null,
-      sleepScore: row.sleep_score ?? null,
-      recoveryScore: row.recovery_score ?? null,
-      strain: row.strain ?? null,
-      restingHeartRate: row.resting_heart_rate ?? null,
-      hrvTrend: row.hrv_trend ?? null,
-      weightTrend: row.weight_trend ?? null,
-      lastSyncedAt: row.last_synced_at ?? null,
-      sourceStatus: row.source_status || 'synced',
+      date: null,
+      sleepScore: null,
+      recoveryScore: null,
+      strain: null,
+      restingHeartRate: null,
+      hrvTrend: null,
+      weightTrend: null,
+      lastSyncedAt: null,
+      sourceStatus: null,
     };
+    for (const row of rows) {
+      if (!row || typeof row !== 'object') continue;
+      if (data.date == null && row.date) data.date = row.date;
+      if (data.sleepScore == null && row.sleep_score != null) data.sleepScore = row.sleep_score;
+      if (data.recoveryScore == null && row.recovery_score != null) {
+        data.recoveryScore = row.recovery_score;
+      }
+      if (data.strain == null && row.strain != null) data.strain = row.strain;
+      if (data.restingHeartRate == null && row.resting_heart_rate != null) {
+        data.restingHeartRate = row.resting_heart_rate;
+      }
+      if (data.hrvTrend == null && row.hrv_trend != null) data.hrvTrend = row.hrv_trend;
+      if (data.weightTrend == null && row.weight_trend != null) data.weightTrend = row.weight_trend;
+      if (data.lastSyncedAt == null && row.last_synced_at) data.lastSyncedAt = row.last_synced_at;
+      if (data.sourceStatus == null && row.source_status) data.sourceStatus = row.source_status;
+    }
+    const snap = EDGE_DATA_SNAPSHOT?.healthVitals?.data || {};
+    for (const key of Object.keys(data)) {
+      if (data[key] == null && snap[key] != null) data[key] = snap[key];
+    }
+    if (!data.sourceStatus) {
+      data.sourceStatus =
+        data.sleepScore != null || data.recoveryScore != null ? 'synced' : 'partial';
+    }
     return {
       success: true,
       timestamp: new Date().toISOString(),
