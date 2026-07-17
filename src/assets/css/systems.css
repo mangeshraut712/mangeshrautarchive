@@ -627,7 +627,16 @@ html.dark .systems-section-desc code {
 }
 
 html.dark .systems-status-pill.healthy {
-  color: #30d158;
+  /* Must beat light-mode color: #166c31 !important (fails on dark tile bg) */
+  color: #30d158 !important;
+}
+
+html.dark .systems-status-pill.degraded {
+  color: #ff9f0a !important;
+}
+
+html.dark .systems-status-pill.unhealthy {
+  color: #ff6961 !important;
 }
 
 .systems-status-dot {

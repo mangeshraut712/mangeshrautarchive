@@ -139,6 +139,11 @@ html.dark .engineering-quality-overview:hover {
   letter-spacing: var(--ls-wider, 0.05em) !important;
 }
 
+/* #0071e3 fails WCAG AA on solid black at caption size — use system dark blue */
+html.dark .engineering-eyebrow {
+  color: #0a84ff !important;
+}
+
 .engineering-overview-title {
   margin: 0.38rem 0 0 !important;
   font-size: clamp(1.18rem, 2vw, 1.65rem) !important;
