@@ -2930,7 +2930,8 @@ html.dark[data-lg-mode='tinted']
 #home .hero-cta.lg-interactive,
 #chatbot-toggle.lg-interactive,
 #go-to-top.lg-interactive,
-#website-share-toggle.lg-interactive {
+#website-share-toggle.lg-interactive,
+#projects #github-projects-container .showcase-project-card.lg-interactive {
   overflow: hidden;
 }
 
@@ -2951,6 +2952,13 @@ html.dark[data-lg-mode='tinted']
   );
   mix-blend-mode: soft-light;
   transition: opacity 0.22s var(--lg-spring-soft, cubic-bezier(0.25, 0.1, 0.25, 1));
+}
+
+html:is([data-lg-mode='clear'], [data-lg-mode='balanced']) .lg-interactive:hover,
+html:is([data-lg-mode='clear'], [data-lg-mode='balanced']) .lg-interactive:focus-visible,
+html:is([data-lg-mode='clear'], [data-lg-mode='balanced']) [data-lg-interactive]:hover,
+html:is([data-lg-mode='clear'], [data-lg-mode='balanced']) [data-lg-interactive]:focus-visible {
+  filter: brightness(1.04);
 }
 
 html:is([data-lg-mode='clear'], [data-lg-mode='balanced']) .lg-interactive:hover::after,

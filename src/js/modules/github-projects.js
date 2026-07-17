@@ -1338,7 +1338,7 @@ class GitHubProjects {
         : this.formatCompactNumber(releaseSignal.commitsSinceRelease);
 
     return `
-      <article class="showcase-project-card apple-3d-project group" data-release-status="${safeReleaseKey}" aria-label="${safeName} project card">
+      <article class="showcase-project-card apple-3d-project group lg-interactive" data-lg-interactive data-release-status="${safeReleaseKey}" aria-label="${safeName} project card">
         <div class="project-header">
           <div class="project-head-top">
             <div class="project-title-wrap">
@@ -1514,6 +1514,9 @@ class GitHubProjects {
         .join('');
 
       container.innerHTML = projectsHTML;
+
+      window.dispatchEvent(new CustomEvent('projects:rendered'));
+      window.dispatchEvent(new CustomEvent('liquid-glass:sync-chrome'));
 
       if (window.PremiumEnhancements && window.PremiumEnhancements.applyTiltToElement) {
         const newCards = container.querySelectorAll('.apple-3d-project');

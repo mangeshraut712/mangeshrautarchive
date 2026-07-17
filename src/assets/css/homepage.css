@@ -1806,6 +1806,61 @@ html.dark .hero-identity-strip i {
   color: #2997ff;
 }
 
+/* Hero Liquid Glass presence — short staggered settle (off under reduced motion) */
+@keyframes hero-lg-settle {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  #home .hero-identity-item {
+    animation: hero-lg-settle 0.55s var(--lg-spring-soft, cubic-bezier(0.25, 0.1, 0.25, 1)) both;
+  }
+
+  #home .hero-identity-item:nth-child(1) {
+    animation-delay: 0.04s;
+  }
+  #home .hero-identity-item:nth-child(2) {
+    animation-delay: 0.1s;
+  }
+  #home .hero-identity-item:nth-child(3) {
+    animation-delay: 0.16s;
+  }
+  #home .hero-identity-item:nth-child(4) {
+    animation-delay: 0.22s;
+  }
+
+  #home .hero-actions .hero-cta {
+    animation: hero-lg-settle 0.6s var(--lg-spring, cubic-bezier(0.34, 1.56, 0.64, 1)) both;
+  }
+
+  #home .hero-actions .hero-cta:nth-child(1) {
+    animation-delay: 0.18s;
+  }
+  #home .hero-actions .hero-cta:nth-child(2) {
+    animation-delay: 0.26s;
+  }
+
+  #home .music-card-inner {
+    animation: hero-lg-settle 0.65s var(--lg-spring-soft, cubic-bezier(0.25, 0.1, 0.25, 1)) 0.12s
+      both;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #home .hero-identity-item,
+  #home .hero-actions .hero-cta,
+  #home .music-card-inner {
+    animation: none !important;
+  }
+}
+
 .section-count {
   color: #55555a;
   font-size: 0.55em;

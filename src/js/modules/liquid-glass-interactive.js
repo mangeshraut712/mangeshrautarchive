@@ -10,9 +10,13 @@ const INTERACTIVE_SELECTOR = [
   '#global-nav.dynamic-island .nav-link',
   '#global-nav.dynamic-island .nav-logo',
   '#global-nav.dynamic-island .nav-icon-btn',
+  '#global-nav.dynamic-island #search-toggle',
+  '#global-nav.dynamic-island #theme-toggle',
+  '#global-nav.dynamic-island #menu-btn',
   '#chatbot-toggle',
   '#go-to-top',
   '#website-share-toggle',
+  '#projects #github-projects-container .showcase-project-card',
 ].join(', ');
 
 const POINTER_VARS = {
@@ -109,9 +113,14 @@ export function initLiquidGlassInteractive() {
     attributeFilter: ['data-lg-mode'],
   });
 
-  // Late-painted hero CTAs / music card
+  // Late-painted hero CTAs / music card / project cards
   window.setTimeout(markHosts, 1200);
   window.addEventListener('liquid-glass:sync-chrome', markHosts);
+  window.addEventListener('projects:rendered', markHosts);
+}
+
+export function refreshLiquidGlassInteractive() {
+  markHosts();
 }
 
 if (typeof window !== 'undefined') {

@@ -1552,6 +1552,19 @@ html.dark #chatbot-toggle:hover {
   transform: scale(0.95);
 }
 
+/* Liquid Glass interactive host — specular layer sits above icon */
+#chatbot-toggle.lg-interactive,
+#chatbot-toggle[data-lg-interactive] {
+  overflow: hidden;
+  isolation: isolate;
+}
+
+#chatbot-toggle.lg-interactive > *,
+#chatbot-toggle[data-lg-interactive] > * {
+  position: relative;
+  z-index: 2;
+}
+
 #chatbot-toggle i {
   filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.3));
 }
