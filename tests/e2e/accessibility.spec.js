@@ -113,6 +113,29 @@ test.describe('Chrome accessibility baseline', () => {
     await expectNoBlockingViolations(page, knownHomepageDebt('light'));
   });
 
+  test('high contrast gives cards solid surfaces and strong borders', async ({ page }) => {
+    await configureAccessibilityMode(page, { highContrast: true });
+    await waitForAccessiblePage(page, PAGES.home);
+    await expect(page.locator('html')).toHaveClass(/high-contrast/);
+
+    const card = page.locator('.award-card').first();
+    await card.scrollIntoViewIfNeeded();
+    const surface = await card.evaluate(node => {
+      const style = getComputedStyle(node);
+      return {
+        backdropFilter: style.backdropFilter,
+        backgroundColor: style.backgroundColor,
+        borderColor: style.borderTopColor,
+        borderWidth: style.borderTopWidth,
+      };
+    });
+
+    expect(surface.backgroundColor).toBe('rgb(255, 255, 255)');
+    expect(surface.borderWidth).toBe('2px');
+    expect(surface.borderColor).toBe('rgb(0, 0, 0)');
+    expect(['none', '']).toContain(surface.backdropFilter);
+  });
+
   test.describe('mobile viewport', () => {
     test.use({
       isMobile: true,

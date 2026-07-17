@@ -33,7 +33,7 @@ Runtime: Node 22+ · Python 3.12 · vanilla ES modules + FastAPI · dual host Ve
 | 007  | Durable rate limiting for serverless (replace process memory)       | P1       | M      | —          | TODO   |
 | 008  | Shared escapeHtml utility and harden remaining innerHTML sinks      | P2       | M      | —          | TODO   |
 | 009  | Characterization tests for critical frontend modules                | P2       | M      | —          | TODO   |
-| 010  | Subpage CSS load hygiene (Systems / Monitor / Uses / Travel)        | P2       | M      | —          | TODO   |
+| 010  | Subpage CSS load hygiene (Systems / Monitor / Uses / Travel)        | P2       | M      | —          | DONE   |
 
 Status values: `TODO` | `IN PROGRESS` | `DONE` | `BLOCKED` | `REJECTED`
 

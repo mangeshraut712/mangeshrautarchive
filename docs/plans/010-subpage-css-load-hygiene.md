@@ -10,6 +10,7 @@
 - **Depends on**: none
 - **Category**: perf | tech-debt
 - **Planned at**: commit `978494ee`, 2026-07-15
+- **Status**: DONE (wave: whole-site Task 2 — shared chrome stack comments, uses/travel/monitor load order hygiene, noscript-safe dedupe characterization in `tests/unit/design-foundation.test.js`)
 
 ## Why this matters
 
