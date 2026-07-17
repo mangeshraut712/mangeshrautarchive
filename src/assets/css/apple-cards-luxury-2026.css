@@ -27,7 +27,8 @@
   --lux-border-strong: #d2d2d7;
   --lux-fg: #1d1d1f;
   --lux-fg-secondary: #6e6e73;
-  --lux-fg-tertiary: #86868b;
+  /* WCAG AA on white: #86868b is 3.62:1 — use ≥4.5:1 secondary gray */
+  --lux-fg-tertiary: #6e6e73;
   --lux-blue: #0071e3;
   --lux-blue-soft: rgb(0 113 227 / 14%);
   --lux-blue-glow: rgb(0 113 227 / 22%);
@@ -481,8 +482,8 @@ html:not([data-lg-mode]).dark
 
 /* Meta / labels */
 :is(.experience-content, .blog-card, .publication-card, .showcase-project-card, .certification-card)
-  :is(.meta, .date, .tag, .badge, .label, time, .experience-date, .blog-date) {
-  color: var(--lux-fg-tertiary) !important;
+  :is(.meta, .date, .tag, .badge, .label, time, .experience-date, .blog-date, .x-post-card__date) {
+  color: var(--lux-fg-secondary) !important;
   font-size: 0.8125rem !important;
   font-weight: 500 !important;
   letter-spacing: -0.01em !important;
