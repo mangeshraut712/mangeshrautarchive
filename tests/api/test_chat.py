@@ -223,3 +223,18 @@ def test_chat_health_reports_provider_status(client, monkeypatch):
     assert payload["provider"] == "openrouter"
     assert payload["provider_status"] == "local_only"
     assert payload["streaming"] == "ndjson"
+
+
+def test_direct_time_command_does_not_match_math_times():
+    import asyncio
+
+    from api.routes.chat import handle_direct_command
+
+    math = asyncio.run(
+        handle_direct_command("Calculate 17 times 24. Reply with the exact integer only.")
+    )
+    assert math is None
+
+    clock = asyncio.run(handle_direct_command("what time is it"))
+    assert clock is not None
+    assert "Current time" in clock["answer"]

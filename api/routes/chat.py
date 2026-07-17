@@ -430,8 +430,8 @@ async def handle_direct_command(message: str) -> Optional[Dict]:
             "action": {"type": "download", "url": PORTFOLIO_DATA["resume_url"]},
         }
 
-    # Time
-    if "time" in lower and "timezone" not in lower:
+    # Time (word-boundary — do not match "times" in math like "17 times 24")
+    if re.search(r"\b(what('?s| is)?\s+)?(the\s+)?(current\s+)?time\b", lower) and "timezone" not in lower:
         return {
             "answer": f"⏰ Current time is {now.strftime('%I:%M %p')}",
             "source": "System",
@@ -441,8 +441,10 @@ async def handle_direct_command(message: str) -> Optional[Dict]:
             "runtime": "0ms",
         }
 
-    # Date
-    if "date" in lower or "today" in lower:
+    # Date (word-boundary — avoid false hits like "candidate")
+    if re.search(r"\b(what('?s| is)?\s+)?(the\s+)?(current\s+)?date\b", lower) or re.search(
+        r"\btoday\b", lower
+    ):
         return {
             "answer": f"📅 Today is {now.strftime('%A, %B %d, %Y')}. It's a great day to hire a Software Engineer!",
             "source": "System",
