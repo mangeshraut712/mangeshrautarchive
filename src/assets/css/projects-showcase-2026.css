@@ -632,6 +632,11 @@ html.dark #projects .graph-title {
   box-shadow: none;
 }
 
+#projects .github-graph-scroll:focus-visible {
+  outline: 2px solid var(--apple-blue, #0071e3);
+  outline-offset: 2px;
+}
+
 html:not(.dark) #projects .github-graph-scroll {
   border-color: var(--github-graph-canvas-border);
   background: var(--github-graph-canvas);

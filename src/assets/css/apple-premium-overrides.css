@@ -3642,8 +3642,8 @@ html.dark ::-webkit-scrollbar-thumb:hover {
 /* Dark mode overrides for CTAs */
 html.dark #home .hero-actions .hero-cta:nth-child(1),
 html.dark #home .hero-actions .hero-cta-primary {
-  background: #0a84ff !important;
-  background-color: #0a84ff !important;
+  background: #0071e3 !important;
+  background-color: #0071e3 !important;
   background-image: none !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
@@ -3652,7 +3652,7 @@ html.dark #home .hero-actions .hero-cta-primary {
 
 html.dark #home .hero-actions .hero-cta:nth-child(1):hover,
 html.dark #home .hero-actions .hero-cta-primary:hover {
-  background: #2997ff !important;
+  background: #0077ed !important;
   background-color: #2997ff !important;
   background-image: none !important;
   color: #ffffff !important;
