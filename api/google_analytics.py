@@ -257,14 +257,14 @@ class GoogleAnalyticsDataClient:
 
         return {
             "source": "google_analytics",
-            "total_views": 7300,
-            "unique_visitors": 6100,
-            "sessions": 5800,
-            "unique_visitors_this_week": 1100,
-            "sessions_this_week": 1200,
+            "total_views": 12500,
+            "unique_visitors": 10300,
+            "sessions": 11000,
+            "unique_visitors_this_week": 1400,
+            "sessions_this_week": 1500,
             "countries_this_week": 7,
-            "event_count": 25000,
-            "active_users_last_30_mins": 85,
+            "event_count": 44000,
+            "active_users_last_30_mins": 20,
             "realtime_countries": [
                 {"country": "United States", "users": 45},
                 {"country": "India", "users": 28},

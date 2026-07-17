@@ -183,3 +183,4 @@ secrets.*
 
 # Local Codacy CLI (not required for app build)
 .codacy/
+.secrets/
