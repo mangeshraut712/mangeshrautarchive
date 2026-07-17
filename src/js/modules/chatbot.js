@@ -211,6 +211,7 @@ class AppleIntelligenceChatbot {
     this.ensureStatusIndicator();
     this.addWelcomeMessage();
     this.preloadSpeechVoices();
+    void markdownService.ensureRichReady();
 
     // Set initial rate limit badge state
     this.updateRateLimitBadge();
@@ -1195,28 +1196,34 @@ class AppleIntelligenceChatbot {
 
   // ── Apple Intelligence streaming paint ──────────────────────
 
-  paintStreamingContent(contentDiv, fullText) {
+  async paintStreamingContent(contentDiv, fullText) {
     if (!contentDiv) return;
 
-    const useMarkdown = markdownService.containsMarkdown(fullText) || fullText.length >= 48;
-    if (useMarkdown) {
-      contentDiv.innerHTML = `${markdownService.render(fullText)}<span class="siri-stream-caret" aria-hidden="true"></span>`;
+    const caret = '<span class="siri-stream-caret" aria-hidden="true"></span>';
+    const useRichMarkdown = markdownService.containsMarkdown(fullText);
+    const usePlainHtml = !useRichMarkdown && fullText.length >= 48;
+
+    if (useRichMarkdown) {
+      const html = await markdownService.renderAsync(fullText);
+      contentDiv.innerHTML = `${html}${caret}`;
+    } else if (usePlainHtml) {
+      contentDiv.innerHTML = `${markdownService.renderPlain(fullText)}${caret}`;
     } else {
       contentDiv.replaceChildren();
       contentDiv.append(document.createTextNode(fullText));
-      const caret = document.createElement('span');
-      caret.className = 'siri-stream-caret';
-      caret.setAttribute('aria-hidden', 'true');
-      contentDiv.appendChild(caret);
+      const caretNode = document.createElement('span');
+      caretNode.className = 'siri-stream-caret';
+      caretNode.setAttribute('aria-hidden', 'true');
+      contentDiv.appendChild(caretNode);
     }
 
     this.scrollEngine?.followLiveContent(this.getStreamingMessageEl(contentDiv));
   }
 
-  finalizeStreamingContent(contentDiv, fullText, response) {
+  async finalizeStreamingContent(contentDiv, fullText, response) {
     if (!contentDiv) return;
 
-    const rendered = markdownService.renderForChat(fullText);
+    const rendered = await markdownService.renderForChatAsync(fullText);
     contentDiv.innerHTML = rendered.html;
     contentDiv.classList.add('siri-intelligence-text');
     markdownService.bindRichInteractions(contentDiv);
@@ -1299,7 +1306,7 @@ class AppleIntelligenceChatbot {
           const now = Date.now();
           if (now - lastRender >= 72 || /[\n.!?]$/.test(chunk)) {
             lastRender = now;
-            this.paintStreamingContent(contentDiv, fullText);
+            void this.paintStreamingContent(contentDiv, fullText);
           } else {
             this.scrollEngine?.followLiveContent(this.getStreamingMessageEl(contentDiv));
           }
@@ -1355,7 +1362,7 @@ class AppleIntelligenceChatbot {
 
       if (fullText) {
         ensureStreamBubble();
-        this.finalizeStreamingContent(contentDiv, fullText, response);
+        await this.finalizeStreamingContent(contentDiv, fullText, response);
       }
 
       // Extract metadata
@@ -1568,8 +1575,8 @@ class AppleIntelligenceChatbot {
 
   // ── Markdown Rendering ──────────────────────
 
-  renderMarkdown(text) {
-    return markdownService.render(text);
+  async renderMarkdown(text) {
+    return markdownService.renderAsync(text);
   }
 
   // ── Fallback Typing (local mode) ──────────────────────

@@ -15,9 +15,9 @@ describe('chatbot markdown integration patterns', () => {
     expect(markdownService.containsMarkdown(rich) || rich.length >= 48).toBe(true);
   });
 
-  it('finalizes assistant output with renderForChat and interaction hooks', () => {
+  it('finalizes assistant output with renderForChatAsync and interaction hooks', async () => {
     const markdown = 'Answer with ||spoiler|| and [link](https://mangeshraut.pro)';
-    const rendered = markdownService.renderForChat(markdown);
+    const rendered = await markdownService.renderForChatAsync(markdown);
 
     expect(rendered.collapsed).toBe(false);
     expect(rendered.html).toContain('rich-spoiler');

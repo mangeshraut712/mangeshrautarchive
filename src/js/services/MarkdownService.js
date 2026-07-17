@@ -1,11 +1,10 @@
 /**
  * MarkdownService — Telegram-style rich chat rendering for AssistMe
  *
- * Extended GFM markdown → sanitized HTML with tables, nested lists, task lists,
- * math (KaTeX), footnotes, spoilers, collapsible sections, and trusted inline images.
+ * Plain responses use a lightweight HTML escape path (no vendor graph).
+ * Rich GFM (tables, math/KaTeX, footnotes, spoilers, etc.) lazy-loads
+ * ../vendor/rich-markdown.js on first use.
  */
-
-import { Marked, DOMPurify, katex, markedFootnote } from '../vendor/rich-markdown.js';
 
 export const SHOW_MORE_CHAR_THRESHOLD = 8000;
 export const SHOW_MORE_PREVIEW_CHARS = 4000;
@@ -80,67 +79,41 @@ function isTrustedImageUrl(url) {
   }
 }
 
-function splitMathSegments(markdown) {
-  const segments = [];
-  let cursor = 0;
-  const pattern = /(\$\$[\s\S]+?\$\$|\$(?!\$)[^\n$]+?\$(?!\$))/g;
-  let match;
-
-  while ((match = pattern.exec(markdown)) !== null) {
-    if (match.index > cursor) {
-      segments.push({ type: 'text', value: markdown.slice(cursor, match.index) });
-    }
-    const raw = match[0];
-    const display = raw.startsWith('$$');
-    const tex = display ? raw.slice(2, -2).trim() : raw.slice(1, -1).trim();
-    segments.push({ type: 'math', display, tex });
-    cursor = match.index + raw.length;
-  }
-
-  if (cursor < markdown.length) {
-    segments.push({ type: 'text', value: markdown.slice(cursor) });
-  }
-
-  return segments;
-}
-
-function renderMathSegment(tex, displayMode) {
-  try {
-    return katex.renderToString(tex, {
-      displayMode,
-      throwOnError: false,
-      strict: 'ignore',
-      trust: false,
-    });
-  } catch {
-    return displayMode
-      ? `<pre class="math-error">${escapeHtml(tex)}</pre>`
-      : `<code>${escapeHtml(tex)}</code>`;
-  }
-}
-
-function preprocessMath(markdown) {
-  const segments = splitMathSegments(markdown);
-  if (segments.every(segment => segment.type === 'text')) {
-    return markdown;
-  }
-
-  return segments
-    .map(segment => {
-      if (segment.type === 'text') return segment.value;
-      return renderMathSegment(segment.tex, segment.display);
-    })
-    .join('');
-}
-
 class MarkdownService {
   constructor() {
     this._configured = false;
     this._marked = null;
+    this._vendorPromise = null;
+    this._vendor = null;
+  }
+
+  isRichReady() {
+    return this._configured;
+  }
+
+  async ensureRichReady() {
+    if (this._configured) return;
+
+    if (!this._vendorPromise) {
+      this._vendorPromise = import('../vendor/rich-markdown.js')
+        .then(vendor => {
+          this._vendor = vendor;
+          this._ensureConfigured();
+          return vendor;
+        })
+        .catch(error => {
+          this._vendorPromise = null;
+          throw error;
+        });
+    }
+
+    await this._vendorPromise;
   }
 
   _ensureConfigured() {
-    if (this._configured) return;
+    if (this._configured || !this._vendor) return;
+
+    const { Marked, markedFootnote } = this._vendor;
 
     const marked = new Marked({
       gfm: true,
@@ -217,7 +190,62 @@ class MarkdownService {
     this._configured = true;
   }
 
+  _splitMathSegments(markdown) {
+    const segments = [];
+    let cursor = 0;
+    const pattern = /(\$\$[\s\S]+?\$\$|\$(?!\$)[^\n$]+?\$(?!\$))/g;
+    let match;
+
+    while ((match = pattern.exec(markdown)) !== null) {
+      if (match.index > cursor) {
+        segments.push({ type: 'text', value: markdown.slice(cursor, match.index) });
+      }
+      const raw = match[0];
+      const display = raw.startsWith('$$');
+      const tex = display ? raw.slice(2, -2).trim() : raw.slice(1, -1).trim();
+      segments.push({ type: 'math', display, tex });
+      cursor = match.index + raw.length;
+    }
+
+    if (cursor < markdown.length) {
+      segments.push({ type: 'text', value: markdown.slice(cursor) });
+    }
+
+    return segments;
+  }
+
+  _renderMathSegment(tex, displayMode) {
+    const { katex } = this._vendor;
+    try {
+      return katex.renderToString(tex, {
+        displayMode,
+        throwOnError: false,
+        strict: 'ignore',
+        trust: false,
+      });
+    } catch {
+      return displayMode
+        ? `<pre class="math-error">${escapeHtml(tex)}</pre>`
+        : `<code>${escapeHtml(tex)}</code>`;
+    }
+  }
+
+  _preprocessMath(markdown) {
+    const segments = this._splitMathSegments(markdown);
+    if (segments.every(segment => segment.type === 'text')) {
+      return markdown;
+    }
+
+    return segments
+      .map(segment => {
+        if (segment.type === 'text') return segment.value;
+        return this._renderMathSegment(segment.tex, segment.display);
+      })
+      .join('');
+  }
+
   _sanitize(html) {
+    const { DOMPurify } = this._vendor;
     return DOMPurify.sanitize(html, {
       ALLOWED_TAGS: [
         'p',
@@ -295,18 +323,23 @@ class MarkdownService {
     });
   }
 
-  /**
-   * Render Markdown to a sanitised HTML string.
-   * @param {string} markdown
-   * @returns {string}
-   */
-  render(markdown) {
+  renderPlain(markdown) {
     if (!markdown || typeof markdown !== 'string') return '';
 
+    const trimmed = markdown.trim();
+    if (!trimmed) return '';
+
+    return trimmed
+      .split(/\n{2,}/)
+      .map(block => `<p>${escapeHtml(block).replace(/\n/g, '<br>')}</p>`)
+      .join('');
+  }
+
+  _renderRich(markdown) {
     this._ensureConfigured();
 
     try {
-      const withMath = preprocessMath(markdown);
+      const withMath = this._preprocessMath(markdown);
       let html = this._marked.parse(withMath);
       html = html
         .replace(/<table/g, '<div class="rich-table-wrap"><table')
@@ -314,8 +347,44 @@ class MarkdownService {
       return this._sanitize(html);
     } catch (err) {
       console.warn('Markdown parse error:', err);
-      return `<p>${escapeHtml(markdown)}</p>`;
+      return this.renderPlain(markdown);
     }
+  }
+
+  /**
+   * Render Markdown to a sanitised HTML string.
+   * Plain text skips the rich vendor graph; rich markdown requires ensureRichReady().
+   * @param {string} markdown
+   * @returns {string}
+   */
+  render(markdown) {
+    if (!markdown || typeof markdown !== 'string') return '';
+
+    if (!this.containsMarkdown(markdown)) {
+      return this.renderPlain(markdown);
+    }
+
+    if (!this._configured) {
+      return this.renderPlain(markdown);
+    }
+
+    return this._renderRich(markdown);
+  }
+
+  /**
+   * Async render — loads rich vendor when markdown is detected.
+   * @param {string} markdown
+   * @returns {Promise<string>}
+   */
+  async renderAsync(markdown) {
+    if (!markdown || typeof markdown !== 'string') return '';
+
+    if (!this.containsMarkdown(markdown)) {
+      return this.renderPlain(markdown);
+    }
+
+    await this.ensureRichReady();
+    return this._renderRich(markdown);
   }
 
   /**
@@ -336,6 +405,38 @@ class MarkdownService {
     const previewMarkdown = `${markdown.slice(0, SHOW_MORE_PREVIEW_CHARS).trim()}\n\n…`;
     const previewHtml = this.render(previewMarkdown);
     const fullHtml = this.render(markdown);
+
+    return {
+      html: `<div class="rich-message rich-message--collapsed" data-rich-collapsed="true">
+  <div class="rich-message-preview">${previewHtml}</div>
+  <div class="rich-message-full" hidden>${fullHtml}</div>
+  <button type="button" class="rich-show-more-btn" aria-expanded="false">Show more</button>
+</div>`,
+      collapsed: true,
+      charCount,
+    };
+  }
+
+  /**
+   * Async variant of renderForChat — ensures rich vendor is loaded first.
+   * @param {string} markdown
+   * @returns {Promise<{ html: string, collapsed: boolean, charCount: number }>}
+   */
+  async renderForChatAsync(markdown) {
+    const charCount = markdown?.length || 0;
+    if (!markdown || charCount <= SHOW_MORE_CHAR_THRESHOLD) {
+      return {
+        html: await this.renderAsync(markdown),
+        collapsed: false,
+        charCount,
+      };
+    }
+
+    const previewMarkdown = `${markdown.slice(0, SHOW_MORE_PREVIEW_CHARS).trim()}\n\n…`;
+    const [previewHtml, fullHtml] = await Promise.all([
+      this.renderAsync(previewMarkdown),
+      this.renderAsync(markdown),
+    ]);
 
     return {
       html: `<div class="rich-message rich-message--collapsed" data-rich-collapsed="true">

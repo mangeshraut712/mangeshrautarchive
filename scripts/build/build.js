@@ -274,11 +274,22 @@ async function bundleAboveFoldCss(distDir) {
   for (const relPath of ABOVE_FOLD_CSS) {
     const fileName = relPath.split('/').pop();
     const linkPattern = new RegExp(
-      `\\s*<link\\s+[^>]*href="assets/css/${fileName.replace('.', '\\.')}[^"]*"[^>]*>\\s*`,
+      `\\s*<link\\s+[^>]*(?<!data-)href="assets/css/${fileName.replace('.', '\\.')}[^"]*"[^>]*>\\s*`,
       'g'
     );
     html = html.replace(linkPattern, '');
   }
+
+  const bundledCssFiles = new Set(PREMIUM_DEFERRED_CSS.map(relPath => relPath.split('/').pop()));
+  html = html.replace(
+    /<link rel="stylesheet" data-href="assets\/css\/([^"?]+\.css)(?:\?[^"]*)?" data-lazy-style-key="([^"]+)"\s*\/>/g,
+    (match, fileName, styleKey) => {
+      if (!bundledCssFiles.has(fileName)) {
+        return match;
+      }
+      return `<link rel="stylesheet" data-href="assets/css/${fileName}" data-lazy-style-key="${styleKey}" data-style-loaded="true" data-bundled-in="premium-deferred" />`;
+    }
+  );
 
   const heroCriticalContent = await readFile(
     resolve(distDir, 'assets/css/hero-critical.bundle.css'),
