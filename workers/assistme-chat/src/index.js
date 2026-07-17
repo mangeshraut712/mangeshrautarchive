@@ -499,6 +499,72 @@ async function handleMusicRecent(url, env, cors) {
   }
 }
 
+async function handleMusicArtwork(url, cors) {
+  const track = (url.searchParams.get('track') || '').trim();
+  const artist = (url.searchParams.get('artist') || '').trim();
+  const term = (url.searchParams.get('term') || '').trim() || `${track} ${artist}`.trim();
+  if (!term) {
+    return json(
+      { artwork_url: '', source: 'itunes', cached: false, term: '', host: 'cloudflare-worker' },
+      400,
+      cors
+    );
+  }
+  try {
+    const qs = new URLSearchParams({
+      term,
+      media: 'music',
+      entity: 'song',
+      limit: '1',
+    });
+    const res = await fetch(`https://itunes.apple.com/search?${qs}`, {
+      headers: { Accept: 'application/json', 'User-Agent': 'assistme-cloudflare-edge' },
+    });
+    if (!res.ok) {
+      return json(
+        {
+          artwork_url: '',
+          source: 'itunes',
+          cached: false,
+          term,
+          host: 'cloudflare-worker',
+          error: `iTunes HTTP ${res.status}`,
+        },
+        200,
+        cors
+      );
+    }
+    const data = await res.json();
+    let artwork = data?.results?.[0]?.artworkUrl100 || '';
+    if (artwork) artwork = artwork.replace('/100x100bb.', '/600x600bb.');
+    return json(
+      {
+        artwork_url: artwork,
+        source: 'itunes',
+        cached: false,
+        term,
+        host: 'cloudflare-worker',
+        success: Boolean(artwork),
+      },
+      200,
+      cors
+    );
+  } catch (e) {
+    return json(
+      {
+        artwork_url: '',
+        source: 'itunes',
+        cached: false,
+        term,
+        host: 'cloudflare-worker',
+        error: e.message,
+      },
+      200,
+      cors
+    );
+  }
+}
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
@@ -536,9 +602,9 @@ export default {
       return handleMusicRecent(url, env, cors);
     }
 
-    // Artwork lookups fall through to client CDN; quiet 204 avoids console 404 spam
+    // iTunes artwork proxy (FastAPI-compatible: artwork_url)
     if (request.method === 'GET' && path === '/api/music/artwork') {
-      return json({ success: false, url: null, host: 'cloudflare-worker' }, 200, cors);
+      return handleMusicArtwork(url, cors);
     }
 
     if (
