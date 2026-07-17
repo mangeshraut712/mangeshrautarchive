@@ -1933,10 +1933,16 @@ class AppleIntelligenceChatbot {
 
   // ── Apple Intelligence: Conversation Summary (WWDC26) ──────────
 
+  countUserMessages() {
+    const root = this.elements.messages;
+    if (!root) return this.messageCount || 0;
+    return root.querySelectorAll('.message.user-message, .user-message').length;
+  }
+
   summarizeConversation() {
     if (this.isProcessing) return;
 
-    if (this.messageCount === 0) {
+    if (this.countUserMessages() === 0 && this.messageCount === 0) {
       this.addMessage(
         'There is nothing to summarize yet — ask me something first, then I can recap the conversation.',
         'assistant'
@@ -2120,13 +2126,19 @@ class AppleIntelligenceChatbot {
   }
 }
 
-// Initialize chatbot when DOM is ready
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', () => {
-    window.appleIntelligenceChatbot = new AppleIntelligenceChatbot();
-  });
-} else {
+// Initialize chatbot once — avoid wiping an open session if this module is
+// dynamically imported again (lazy bootstrap / HMR / second import()).
+function initAppleIntelligenceChatbot() {
+  if (window.appleIntelligenceChatbot) return window.appleIntelligenceChatbot;
   window.appleIntelligenceChatbot = new AppleIntelligenceChatbot();
+  return window.appleIntelligenceChatbot;
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initAppleIntelligenceChatbot, { once: true });
+} else {
+  initAppleIntelligenceChatbot();
 }
 
 export default AppleIntelligenceChatbot;
+export { initAppleIntelligenceChatbot };
