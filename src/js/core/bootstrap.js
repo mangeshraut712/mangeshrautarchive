@@ -7,6 +7,7 @@ const EAGER_MODULES = [
 const IDLE_EAGER_MODULES = [
   '../modules/liquid-glass-engine.js',
   '../modules/liquid-glass-chrome.js',
+  '../modules/liquid-glass-interactive.js',
 ];
 
 import { syncLiquidGlassTokens } from '../utils/liquid-glass-tokens.js';
@@ -167,6 +168,7 @@ const MODULE_IMPORTERS = {
   '../modules/accessibility.js': () => import('../modules/accessibility.js'),
   '../modules/liquid-glass-engine.js': () => import('../modules/liquid-glass-engine.js'),
   '../modules/liquid-glass-chrome.js': () => import('../modules/liquid-glass-chrome.js'),
+  '../modules/liquid-glass-interactive.js': () => import('../modules/liquid-glass-interactive.js'),
   '../modules/card-content-accessibility.js': () =>
     import('../modules/card-content-accessibility.js').then(module => {
       module.initCardContentAccessibility?.();
@@ -470,9 +472,9 @@ function areStyleKeysLoaded(styleKeys = [], documentRef = document) {
   );
 }
 
-const CRITICAL_STYLE_PATTERN = /accessibility|liquid-glass|theme-solid-surfaces/;
+const CRITICAL_STYLE_PATTERN = /accessibility|liquid-glass|chrome-surfaces|theme-solid-surfaces/;
 
-/** Keep WCAG + liquid-glass layers last so lazy section CSS cannot override them. */
+/** Keep WCAG + liquid-glass + chrome surfaces last so lazy section CSS cannot override them. */
 function pinCriticalStylesheetsLast(documentRef = document) {
   if (window.__portfolioCriticalStylesPinned) {
     return;

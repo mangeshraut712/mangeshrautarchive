@@ -1,24 +1,29 @@
 import { getLiquidGlassEngine } from './liquid-glass-engine.js';
 
 /**
- * WebGL liquid glass for a few cards only.
+ * CSS-first Liquid Glass chrome.
+ * WebGL only on the hero music pill (compact host) when clear/balanced.
  * NEVER attach to .monitor-page-nav — fixed pill + canvas resize stretches
  * the bar to full document height and blocks systems/uses/monitor pages.
+ * Project cards + a11y popovers stay CSS glass (tall hosts / solid a11y sheets).
  */
-const CHROME_SELECTORS = [
-  '.hero-glass-card',
-  '#projects #github-projects-container .showcase-project-card',
-];
+const MUSIC_CARD_SELECTOR = '#home .music-card-inner, #music-card .music-card-inner';
 
-const CHROME_MATCH =
-  '.hero-glass-card, #projects #github-projects-container .showcase-project-card, .a11y-glass-popover, .a11y-toolbar';
+const CHROME_MATCH = `${MUSIC_CARD_SELECTOR}, .music-card-inner.lg-webgl-host`;
 
 /** Subpage pill nav must stay CSS glass only */
 const NAV_SELECTOR = '.monitor-page-nav';
 
 function isGlassModeActive() {
   const mode = document.documentElement.dataset.lgMode;
-  return mode !== 'tinted';
+  return mode === 'clear' || mode === 'balanced';
+}
+
+function prefersReducedMotion() {
+  return (
+    typeof window !== 'undefined' &&
+    window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches
+  );
 }
 
 /** Detach WebGL and unwrap children if nav was poisoned by an older attach. */
@@ -35,7 +40,6 @@ function repairSubpageNav() {
     });
   }
 
-  // Remove leftover canvas / restore content wrapper
   nav.querySelectorAll(':scope > .lg-webgl-canvas').forEach(el => el.remove());
   const content = nav.querySelector(':scope > .lg-webgl-content');
   if (content) {
@@ -46,53 +50,29 @@ function repairSubpageNav() {
   }
   nav.classList.remove('lg-webgl-host', 'lg-webgl-fallback');
 
-  // Clear broken inline geometry if any
   nav.style.removeProperty('height');
   nav.style.removeProperty('bottom');
   nav.style.removeProperty('inset');
 }
 
-function attachChrome() {
+function attachMusicCardGlass() {
   const engine = getLiquidGlassEngine();
-  // Always keep subpage nav free of WebGL host
-  repairSubpageNav();
-  if (!engine.enabled || !isGlassModeActive()) return;
+  if (!engine?.enabled || !isGlassModeActive() || prefersReducedMotion()) return;
 
-  CHROME_SELECTORS.forEach(selector => {
-    const node = document.querySelector(selector);
-    if (!node || node.classList.contains('lg-webgl-host')) return;
-    // Guard: never host on nav descendants
-    if (node.closest?.(NAV_SELECTOR) || node.matches?.(NAV_SELECTOR)) return;
-    const rect = node.getBoundingClientRect();
-    // Skip zero-size or absurdly tall hosts (broken layout)
-    if (rect.height > 200 || rect.width < 8) return;
-    engine.attach(node, {
-      settings: {
-        radius: 22,
-        depth: 18,
-        lensWidth: rect.width || node.offsetWidth || 280,
-        lensHeight: Math.min(rect.height || node.offsetHeight || 64, 120),
-      },
-    });
-  });
-}
+  const node = document.querySelector(MUSIC_CARD_SELECTOR);
+  if (!node || node.classList.contains('lg-webgl-host')) return;
+  if (node.closest?.(NAV_SELECTOR) || node.matches?.(NAV_SELECTOR)) return;
 
-function attachGlassPopover(popover) {
-  const engine = getLiquidGlassEngine();
-  if (
-    !engine.enabled ||
-    !isGlassModeActive() ||
-    !popover ||
-    popover.classList.contains('lg-webgl-host')
-  ) {
-    return;
-  }
-  engine.attach(popover, {
+  const rect = node.getBoundingClientRect();
+  // Music pill is short; skip if not laid out yet or absurdly tall
+  if (rect.width < 8 || rect.height < 8 || rect.height > 160) return;
+
+  engine.attach(node, {
     settings: {
-      radius: 20,
-      depth: 18,
-      lensWidth: popover.offsetWidth || 280,
-      lensHeight: popover.offsetHeight || 160,
+      radius: 22,
+      depth: 16,
+      lensWidth: rect.width || node.offsetWidth || 280,
+      lensHeight: Math.min(rect.height || node.offsetHeight || 64, 120),
     },
   });
 }
@@ -102,7 +82,15 @@ function releaseWebGLChrome() {
   if (!engine?.surfaces?.size) return;
 
   [...engine.surfaces].forEach(surface => {
-    if (surface.element?.matches?.(CHROME_MATCH)) {
+    const el = surface.element;
+    if (!el) return;
+    if (
+      el.matches?.(CHROME_MATCH) ||
+      el.classList?.contains('music-card-inner') ||
+      el.classList?.contains('a11y-glass-popover') ||
+      el.classList?.contains('showcase-project-card') ||
+      el.classList?.contains('hero-glass-card')
+    ) {
       engine.detach(surface);
     }
   });
@@ -124,44 +112,37 @@ export function syncLiquidGlassChrome() {
   releaseChatbotWebGL();
   repairSubpageNav();
   if (isGlassModeActive()) {
-    attachChrome();
+    attachMusicCardGlass();
     return;
   }
   releaseWebGLChrome();
 }
 
 export function initLiquidGlassChrome() {
-  // Repair even when WebGL engine is disabled (CSS-only clients)
   repairSubpageNav();
   const engine = getLiquidGlassEngine();
-  if (!engine.enabled) return;
+  if (!engine.enabled) {
+    // Still repair poisoned nav markup on CSS-only clients
+    return;
+  }
 
   engine.init();
   syncLiquidGlassChrome();
 
   window.addEventListener('liquid-glass:sync-chrome', syncLiquidGlassChrome);
 
-  document.addEventListener(
-    'click',
-    event => {
-      const trigger = event.target.closest?.(
-        '.a11y-toolbar__panel button[aria-label="Liquid Glass transparency"], .a11y-toolbar button[aria-label="Liquid Glass transparency"]'
-      );
-      if (!trigger) return;
-      requestAnimationFrame(() => {
-        const popover = document.querySelector('.a11y-glass-popover.is-open');
-        if (popover && isGlassModeActive()) attachGlassPopover(popover);
-      });
-    },
-    true
-  );
+  // Retry once hero music card paints (Last.fm / layout)
+  const musicHost = document.getElementById('music-card');
+  if (musicHost && typeof MutationObserver !== 'undefined') {
+    const mo = new MutationObserver(() => {
+      if (isGlassModeActive()) attachMusicCardGlass();
+    });
+    mo.observe(musicHost, { childList: true, subtree: true, attributes: true });
+    window.setTimeout(() => mo.disconnect(), 12000);
+  }
 
   const modeObserver = new MutationObserver(() => {
     syncLiquidGlassChrome();
-    if (isGlassModeActive()) {
-      const popover = document.querySelector('.a11y-glass-popover.is-open');
-      if (popover) attachGlassPopover(popover);
-    }
   });
   modeObserver.observe(document.documentElement, {
     attributes: true,

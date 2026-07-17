@@ -15,6 +15,7 @@
 
 import { syncLiquidGlassTokens } from '../utils/liquid-glass-tokens.js';
 import { syncLiquidGlassChrome } from './liquid-glass-chrome.js';
+import './liquid-glass-interactive.js';
 
 export class AccessibilityEnhancer {
   constructor() {

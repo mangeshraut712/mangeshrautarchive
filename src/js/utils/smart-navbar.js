@@ -66,6 +66,7 @@ function setCompactState(compact) {
   state.isCompact = shouldCompact;
   state.nav.classList.toggle('is-compact', shouldCompact);
   state.nav.dataset.compactState = shouldCompact ? 'compact' : 'default';
+  syncNavRailOverflow();
 }
 
 function revealActiveDesktopLink() {

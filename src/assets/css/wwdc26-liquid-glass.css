@@ -136,10 +136,10 @@ html.dark .global-nav.dynamic-island.scrolled {
   border-bottom-color: color-mix(in srgb, var(--lg-edge-dark) 72%, rgb(0 0 0 / 24%) 28%) !important;
 }
 
-/* Fade hint on the scrollable nav rail where the last links can
-   clip at mid-desktop widths (rail scrolls horizontally) */
+/* Fade hint on the scrollable nav rail ONLY when it actually overflows
+   (smart-navbar toggles .is-overflowing). Do not always-mask. */
 @media (min-width: 1151px) and (max-width: 1700px) {
-  .global-nav.dynamic-island .nav-links.scrollable-nav {
+  .global-nav.dynamic-island .nav-links.scrollable-nav.is-overflowing {
     -webkit-mask-image: linear-gradient(to right, #000 0, #000 calc(100% - 48px), transparent 100%);
     mask-image: linear-gradient(to right, #000 0, #000 calc(100% - 48px), transparent 100%);
   }
@@ -2902,5 +2902,125 @@ html.dark[data-lg-mode='tinted']
     background-image: none !important;
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
+  }
+}
+
+/* ────────────────────────────────────────────────────────────────
+   INTERACTIVE LIQUID GLASS (iOS 26–inspired, CSS-first, free)
+   Specular follows --lg-pointer-x/y; press spring on :active.
+   Gated off in tinted / reduced-motion / reduced-transparency.
+   ──────────────────────────────────────────────────────────────── */
+
+.lg-interactive,
+[data-lg-interactive] {
+  --lg-pointer-x: 50%;
+  --lg-pointer-y: 40%;
+  position: relative;
+  isolation: isolate;
+  transition:
+    transform 0.28s var(--lg-spring, cubic-bezier(0.34, 1.56, 0.64, 1)),
+    box-shadow 0.28s var(--lg-spring-soft, cubic-bezier(0.25, 0.1, 0.25, 1)),
+    filter 0.28s var(--lg-spring-soft, cubic-bezier(0.25, 0.1, 0.25, 1));
+  transform-origin: center;
+  will-change: transform;
+}
+
+/* Clip specular on solid pills/cards; keep nav text underlines visible */
+#home .music-card-inner.lg-interactive,
+#home .hero-cta.lg-interactive,
+#chatbot-toggle.lg-interactive,
+#go-to-top.lg-interactive,
+#website-share-toggle.lg-interactive {
+  overflow: hidden;
+}
+
+.lg-interactive::after,
+[data-lg-interactive]::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0;
+  background: radial-gradient(
+    120% 90% at var(--lg-pointer-x) var(--lg-pointer-y),
+    rgb(255 255 255 / 42%) 0%,
+    rgb(255 255 255 / 10%) 32%,
+    transparent 58%
+  );
+  mix-blend-mode: soft-light;
+  transition: opacity 0.22s var(--lg-spring-soft, cubic-bezier(0.25, 0.1, 0.25, 1));
+}
+
+html:is([data-lg-mode='clear'], [data-lg-mode='balanced']) .lg-interactive:hover::after,
+html:is([data-lg-mode='clear'], [data-lg-mode='balanced']) .lg-interactive:focus-visible::after,
+html:is([data-lg-mode='clear'], [data-lg-mode='balanced']) [data-lg-interactive]:hover::after,
+html:is([data-lg-mode='clear'], [data-lg-mode='balanced'])
+  [data-lg-interactive]:focus-visible::after {
+  opacity: 1;
+}
+
+html:is([data-lg-mode='clear'], [data-lg-mode='balanced']) .lg-interactive:active,
+html:is([data-lg-mode='clear'], [data-lg-mode='balanced']) [data-lg-interactive]:active {
+  transform: scale(0.97);
+}
+
+/* Scroll-edge veil under Dynamic Island — content stays legible under glass */
+html:is([data-lg-mode='clear'], [data-lg-mode='balanced'])
+  body
+  #global-nav.global-nav.dynamic-island.scrolled::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 100%;
+  height: 28px;
+  pointer-events: none;
+  z-index: 0;
+  background: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--lg-nav-surface-light, #fff) 55%, transparent),
+    transparent
+  );
+}
+
+html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced'])
+  body
+  #global-nav.global-nav.dynamic-island.scrolled::after {
+  background: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--lg-nav-surface-dark, #000) 55%, transparent),
+    transparent
+  );
+}
+
+html:is([data-lg-mode='tinted']) .lg-interactive::after,
+html:is([data-lg-mode='tinted']) [data-lg-interactive]::after {
+  display: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lg-interactive,
+  [data-lg-interactive] {
+    transition: none !important;
+    transform: none !important;
+    will-change: auto;
+  }
+
+  .lg-interactive::after,
+  [data-lg-interactive]::after {
+    display: none !important;
+  }
+
+  html body #global-nav.global-nav.dynamic-island.scrolled::after {
+    display: none !important;
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .lg-interactive::after,
+  [data-lg-interactive]::after {
+    display: none !important;
   }
 }

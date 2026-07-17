@@ -472,20 +472,9 @@ html.dark .global-nav.dynamic-island #menu-btn[aria-expanded='true'] {
   scroll-behavior: smooth;
   scroll-padding-inline: 24px;
   -webkit-overflow-scrolling: touch;
-  mask-image: linear-gradient(
-    to right,
-    transparent 0%,
-    black 20px,
-    black calc(100% - 20px),
-    transparent 100%
-  );
-  -webkit-mask-image: linear-gradient(
-    to right,
-    transparent 0%,
-    black 20px,
-    black calc(100% - 20px),
-    transparent 100%
-  );
+  /* Edge fade only when .is-overflowing (see rule above) */
+  mask-image: none;
+  -webkit-mask-image: none;
   padding: 0 24px;
 }
 

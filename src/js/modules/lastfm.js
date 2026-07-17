@@ -417,14 +417,19 @@ class LastFmService {
 
     this.hero.trackName.textContent = trackName;
     this.hero.artistName.textContent = artistName;
-    this.hero.statusText.textContent = isNowPlaying ? 'Now playing' : 'Recently played';
+    if (this.hero.statusText) {
+      this.hero.statusText.textContent = isNowPlaying ? 'Now playing' : 'Recently played';
+    }
     this.hero.albumArt.alt = `${trackName} by ${artistName}`;
-    this.hero.lastfmLink.href = this.buildSpotifySearchUrl(trackName, artistName);
-    this.hero.playingIndicator.classList.toggle('active', isNowPlaying);
-    this.hero.musicCard.classList.toggle('is-playing', isNowPlaying);
+    if (this.hero.lastfmLink) {
+      this.hero.lastfmLink.href = this.buildSpotifySearchUrl(trackName, artistName);
+    }
+    this.hero.playingIndicator?.classList.toggle('active', isNowPlaying);
+    this.hero.musicCard?.classList.toggle('is-playing', isNowPlaying);
     this.hydrateFallbackArtwork(this.hero.albumArt, track, {
       fallbackUrl: this.isUsableArtwork(artwork) ? artwork : '',
     });
+    window.dispatchEvent(new CustomEvent('liquid-glass:sync-chrome'));
   }
 
   populateFeaturedTrack(_track, _isNowPlaying) {
