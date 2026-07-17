@@ -150,17 +150,27 @@ html.dark .global-nav.dynamic-island.scrolled {
       glass material with a specular top edge
    ──────────────────────────────────────────────────────────────── */
 
-/* Keep the window as the vertical scroller. Chromium-only: body-level x clipping
-   can compute overflow-y:auto and break mobile scroll restoration. Safari keeps
-   cross-browser-responsive overflow-x:hidden. */
-html.browser-chromium:not(.launch-intro-active) {
-  overflow-x: visible !important;
-  overflow-y: visible !important;
+/* Keep the window as the vertical scroller on desktop Chromium.
+   On phones (Android Chrome / WhatsApp WebView), overflow-x:visible undoes
+   mobile-viewport guards and lets 100vw / nowrap / 28ch blow out the home hero. */
+@media (width > 768px) {
+  html.browser-chromium:not(.launch-intro-active) {
+    overflow-x: visible !important;
+    overflow-y: visible !important;
+  }
+
+  html.browser-chromium:not(.launch-intro-active) body:not(.menu-open) {
+    overflow-x: visible !important;
+    overflow-y: visible !important;
+  }
 }
 
-html.browser-chromium:not(.launch-intro-active) body:not(.menu-open) {
-  overflow-x: visible !important;
-  overflow-y: visible !important;
+@media (width <= 768px) {
+  html.browser-chromium:not(.launch-intro-active),
+  html.browser-chromium:not(.launch-intro-active) body:not(.menu-open) {
+    overflow-x: clip !important;
+    overflow-y: auto !important;
+  }
 }
 
 body.menu-open {

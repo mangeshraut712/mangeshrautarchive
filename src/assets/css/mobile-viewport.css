@@ -235,19 +235,30 @@ body {
     padding-bottom: calc(1.5rem + env(safe-area-inset-bottom));
   }
 
-  /* Hero CTAs stay above the bottom floating chrome when scrolled into view */
+  /* Hero CTAs: stack vertically and clear left/right FAB columns (Galaxy / WhatsApp) */
+  #home .hero-actions,
+  body.has-a11y-toolbar #home .hero-actions,
   body.has-a11y-toolbar .hero-actions {
-    margin-bottom: calc(var(--mobile-content-chrome-pad) + env(safe-area-inset-bottom));
-    padding-right: 0.5rem;
-    max-width: calc(100% - 4.25rem - env(safe-area-inset-right));
-    margin-inline: auto;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    justify-content: center !important;
+    gap: 0.65rem !important;
+    width: min(100%, 20rem) !important;
+    max-width: min(20rem, calc(100% - 2rem)) !important;
+    margin-inline: auto !important;
+    margin-bottom: calc(
+      var(--mobile-content-chrome-pad) + 0.75rem + env(safe-area-inset-bottom, 0px)
+    ) !important;
+    padding-inline: 0 !important;
     scroll-margin-bottom: calc(
-      var(--mobile-content-chrome-pad) + 0.75rem + env(safe-area-inset-bottom)
+      var(--mobile-content-chrome-pad) + 1rem + env(safe-area-inset-bottom, 0px)
     );
   }
 
   #home .hero-description {
-    max-width: min(100%, calc(100vw - 2.75rem)) !important;
+    /* Prefer % over 100vw — Android Chrome 100vw includes scrollbar / ignores body pad */
+    max-width: min(100%, calc(100% - 1.5rem)) !important;
     font-size: clamp(0.86rem, 2.8vw, 0.94rem) !important;
     line-height: 1.42 !important;
     margin-bottom: 0.75rem !important;
@@ -258,22 +269,18 @@ body {
     display: block !important;
   }
 
-  body.has-a11y-toolbar #home .hero-actions {
-    flex-direction: row !important;
-    width: min(100%, 22rem) !important;
-    max-width: min(22rem, calc(100vw - 2rem - env(safe-area-inset-right))) !important;
-    padding-right: 0 !important;
-    gap: 0.55rem !important;
-  }
-
+  #home .hero-actions .hero-cta,
   body.has-a11y-toolbar #home .hero-actions .hero-cta {
-    flex: 1 1 0 !important;
+    flex: 0 0 auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
     min-width: 0 !important;
-    min-height: 2.75rem !important;
-    padding-inline: 0.75rem !important;
-    font-size: clamp(0.78rem, 3.2vw, 0.9rem) !important;
-    line-height: 1.15 !important;
-    white-space: nowrap !important;
+    min-height: 2.85rem !important;
+    padding-inline: 1rem !important;
+    font-size: clamp(0.85rem, 3.4vw, 0.95rem) !important;
+    line-height: 1.2 !important;
+    white-space: normal !important;
+    justify-content: center !important;
   }
 
   .website-share-dialog {
@@ -686,4 +693,50 @@ svg {
 #github-fallback-svg {
   max-width: 100% !important;
   height: auto !important;
+}
+
+/* Android Chrome / Samsung / WhatsApp in-app browser hardening */
+@media (width <= 768px) {
+  html,
+  body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: clip;
+  }
+
+  main#main-content,
+  main#main-content > section,
+  .container,
+  .container-fluid {
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* Prevent late sheets from reintroducing page-wide horizontal scroll */
+  .hero-layout-wrapper,
+  .hero-text-block,
+  .hero-header,
+  .hero-insights-band,
+  .hero-badge-cluster {
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  #home .hero-actions {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    width: min(100%, 20rem) !important;
+    margin-bottom: calc(5.75rem + env(safe-area-inset-bottom, 0px)) !important;
+  }
+
+  #home .hero-actions .hero-cta {
+    width: 100% !important;
+    white-space: normal !important;
+    text-align: center;
+  }
+
+  /* Chat FAB clearance on the right — keep CTAs from sitting under it */
+  #chatbot-toggle {
+    z-index: 9999 !important;
+  }
 }

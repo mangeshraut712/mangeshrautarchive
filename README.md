@@ -26,7 +26,7 @@
   <img src="https://img.shields.io/badge/OpenRouter-Grok%204.3%20%2B%20Nemotron%20free-black?style=flat-square" alt="OpenRouter">
   <img src="https://img.shields.io/badge/Tests-89%20%2B%20134-brightgreen?style=flat-square" alt="Tests">
   <img src="https://img.shields.io/badge/Lighthouse-100%2F100%2F100%2F100-0cce6b?style=flat-square" alt="Lighthouse">
-  <img src="https://img.shields.io/badge/Playwright-15%20projects-2EAD33?style=flat-square&logo=playwright&logoColor=white" alt="Playwright">
+  <img src="https://img.shields.io/badge/Playwright-16%20projects-2EAD33?style=flat-square&logo=playwright&logoColor=white" alt="Playwright">
   <a href="https://foglamp.dev/scan/mangeshrautarchive-jtspx4"><img src="https://img.shields.io/badge/Foglamp-AI%20map-0071e3?style=flat-square" alt="Foglamp architecture map"></a>
   <a href="https://github.com/sponsors/mangeshraut712"><img src="https://img.shields.io/badge/Sponsor-♥-ea4aaa?style=flat-square&logo=github-sponsors&logoColor=white" alt="Sponsors"></a>
 </p>
@@ -68,7 +68,7 @@ As of **July 2026**, the product combines:
 | **Agentic AI**         | AssistMe chatbot · 10 WebMCP tools · Plus menu tools · OpenRouter NDJSON stream · rich media              |
 | **Apple-inspired UI**  | Dynamic Island nav · liquid glass **clear / balanced / tinted** · solid page canvas · a11y dock           |
 | **Operations**         | Platform health probes · portfolio catalog · dual-host commit parity · Foglamp map keep-alive             |
-| **Quality**            | **89** Vitest · **134** pytest · 15 Playwright projects · Lighthouse **100/100/100/100** gates · security |
+| **Quality**            | **89** Vitest · **134** pytest · 16 Playwright projects · Lighthouse **100/100/100/100** gates · security |
 
 This document is the **canonical technology report** for the repository: stack versions, libraries, architecture, features, and how to run it. Counts and URLs below were checked against the current `main` tree and live probes.
 
@@ -124,7 +124,7 @@ Pinned from this repo’s `package.json`, `requirements.txt`, `pyproject.toml`, 
 | **Analytics**       | @vercel/analytics         | **^2.0.1**              | Optional Vercel Analytics                                       |
 | **Images**          | sharp                     | **^0.35.2**             | Optimize pipeline                                               |
 | **Unit tests**      | Vitest                    | **^4.1.10**             | **89** unit tests                                               |
-| **E2E**             | Playwright                | **^1.61.1**             | **15** browser projects                                         |
+| **E2E**             | Playwright                | **^1.61.1**             | **16** browser projects                                         |
 | **A11y E2E**        | @axe-core/playwright      | **^4.12.1**             | Accessibility assertions                                        |
 | **Lint JS**         | ESLint 9 + @eslint/js     | **^9.39.5**             | Flat config                                                     |
 | **Lint CSS**        | Stylelint 17              | **^17.14.0**            | Standard config 40                                              |
@@ -192,7 +192,7 @@ Pinned from this repo’s `package.json`, `requirements.txt`, `pyproject.toml`, 
 | ------------ | ------------------------------ | --------------------------------------------------------------------------------------- |
 | **Unit**     | Vitest 4.1                     | **89** tests · chatbot, bootstrap, modules                                              |
 | **API**      | pytest                         | **134** tests · FastAPI routes / middleware                                             |
-| **E2E**      | Playwright 1.61                | **15** projects (desktop + phone + tablet, incl. iPhone 17 Pro Max)                     |
+| **E2E**      | Playwright 1.61                | **16** projects (desktop + phone + tablet, incl. iPhone 17 Pro Max)                     |
 | **A11y**     | axe-core + a11y toolbar        | CI + runtime high contrast / reduced motion / liquid glass                              |
 | **Perf**     | Lighthouse gate (`deploy.yml`) | **100 / 100 / 100 / 100** desktop + mobile on `dist/` (`?perf-audit=1`); full-load also |
 | **React**    | react-doctor (optional)        | **100** — no React project (vanilla stack; rules gated off)                             |
@@ -421,7 +421,7 @@ Republishes [`.foglamp/scan.json`](.foglamp/scan.json) to the same public URL us
 | ------------------- | ---------------------------------------------------------- |
 | Vitest              | 89                                                         |
 | pytest              | 134                                                        |
-| Playwright projects | 15                                                         |
+| Playwright projects | 16                                                         |
 | Lighthouse CI       | **100** Performance / Accessibility / Best Practices / SEO |
 
 ---
@@ -534,7 +534,7 @@ Articles use X-style author cards, solid theme settings, charts + official sourc
 - **Blog system** — 12 field notes; X-style author cards; `/blog` index routing hardened for local Express.
 - **Project Showcase** — equal card grid alignment; shell width parity across activity / lens / search / grid.
 - **Solid theme** — white light / black dark page canvas; dual-host edge AssistMe path documented.
-- **Quality** — **89** Vitest · **134** pytest · 15 Playwright projects · CI Lighthouse 100 floors · `ASSET_VER=20260718assistme` · vanilla stack (no React runtime).
+- **Quality** — **89** Vitest · **134** pytest · 16 Playwright projects · CI Lighthouse 100 floors · `ASSET_VER=20260718assistme` · vanilla stack (no React runtime).
 
 ---
 

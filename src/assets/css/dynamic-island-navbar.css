@@ -546,8 +546,12 @@ html.dark .global-nav.dynamic-island #menu-btn[aria-expanded='true'] {
     --island-side-pad: 20px;
     --island-control-size: 44px;
     --island-control-icon-size: 17px;
-    padding: 0 var(--island-side-pad) !important;
+    /* Preserve safe-area under notch / status bar (WhatsApp + Android Chrome) */
+    padding: env(safe-area-inset-top, 0px) var(--island-side-pad) 0 !important;
+    height: calc(var(--island-height) + env(safe-area-inset-top, 0px)) !important;
+    min-height: calc(var(--island-height) + env(safe-area-inset-top, 0px)) !important;
     border-bottom-color: rgb(0 0 0 / 10%) !important;
+    box-sizing: border-box !important;
   }
 
   html.dark .global-nav.dynamic-island {

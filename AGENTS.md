@@ -25,7 +25,7 @@
 - **AI Chatbot:** OpenRouter API (grok-4.3 model) proxied through FastAPI, with WebMCP agentic actions.
 - **Build:** esbuild for JS bundling; Tailwind CSS v4 for utility generation only (output CSS file consumed, never classes in HTML markup).
 - **Styling:** Vanilla CSS with Apple-standard CSS custom properties (`--apple-blue: #0071e3`, etc.).
-- **Testing:** Vitest (unit), pytest (API), Playwright (E2E across 15 browser configs).
+- **Testing:** Vitest (unit), pytest (API), Playwright (E2E across 16 browser configs).
 - **CI/CD:** GitHub Actions — security scanning, ESLint, Stylelint, Lighthouse deploy gates (100/100/100/100 on built dist homepage).
 
 ---
@@ -84,7 +84,7 @@ npm run format:check        # Prettier check
 npm test                    # Vitest unit tests (50 tests)
 npm run test:api            # pytest API tests (122 tests; activate venv first)
 npm run test:e2e:chrome     # Playwright E2E — Desktop Chrome
-npm run test:e2e:all        # Playwright E2E — all 15 browser projects
+npm run test:e2e:all        # Playwright E2E — all 16 browser projects
 
 # Quality gates
 npm run check               # ESLint + Stylelint + Prettier + Vitest
@@ -180,7 +180,7 @@ All three test suites must pass before any merge to `main`:
 | ----- | ---------- | ---------------------- | ------------------------------------------- |
 | Unit  | Vitest     | `npm test`             | 50 tests — JS modules, utilities, markdown  |
 | API   | pytest     | `npm run test:api`     | 122 tests — FastAPI endpoints, middleware   |
-| E2E   | Playwright | `npm run test:e2e:all` | Multi-spec suite across 15 browser projects |
+| E2E   | Playwright | `npm run test:e2e:all` | Multi-spec suite across 16 browser projects |
 
 - Playwright configs include Desktop Chrome/Safari/Firefox/Edge, Pixel 7 Chrome, iPhone 14 Safari, iPad Pro Safari, and more.
 - Lighthouse deploy workflow enforces 100/100/100/100 on built dist homepage; live-host floors vary (`npm run qa:lighthouse:ci`, `qa:lighthouse:vercel`).

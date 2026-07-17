@@ -305,6 +305,7 @@ async function bundleAboveFoldCss(distDir) {
     '#home,#home .hero-text-block,#home .hero-header,#home-heading,#home .hero-name-text{opacity:1!important;visibility:visible!important;transform:none!important;animation:none!important;transition:none!important}' +
     '#home,#home.hero-section,#home.home-hero{padding:20px 1.25rem;min-height:clamp(380px,58vh,680px);display:flex;align-items:center;justify-content:flex-start;box-sizing:border-box}' +
     '#home>.container-fluid{width:100%;min-height:clamp(340px,52vh,620px);box-sizing:border-box}' +
+    '@media (max-width:768px){#home,#home.hero-section,#home.home-hero{min-height:0;height:auto;padding:max(4.75rem,calc(3.25rem + env(safe-area-inset-top,0px))) 1rem 1.5rem;overflow-x:clip}#home>.container-fluid{min-height:0;max-width:100%}#home .hero-name-text,#hero-role-word{white-space:normal;max-width:100%}html,body{overflow-x:clip;max-width:100%}}' +
     '@media (min-width:1025px){:root{--site-nav-offset:4.25rem}#home,#home.hero-section,#home.home-hero{min-height:calc(100vh - var(--site-nav-offset));padding:clamp(2.5rem,8vh,5.5rem) 1.25rem clamp(1.5rem,4vh,3rem);flex-direction:column;justify-content:flex-start}#home>.container-fluid{min-height:0;padding-block:0}}' +
     '.global-nav.dynamic-island{height:52px;min-height:52px}' +
     '.global-nav.dynamic-island .nav-link{display:inline-flex;align-items:center;justify-content:center;min-height:30px;padding:5px 10px;font-size:12.5px;line-height:1;box-sizing:border-box}' +

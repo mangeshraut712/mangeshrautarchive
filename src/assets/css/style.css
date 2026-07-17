@@ -855,6 +855,14 @@ section#home {
   min-height: calc(100svh - 4.25rem);
 }
 
+/* Phones: natural height — 100svh + URL-bar churn / WebView messes up Galaxy Chrome */
+@media (max-width: 768px) {
+  section#home {
+    min-height: 0;
+    height: auto;
+  }
+}
+
 /* Desktop section rhythm — comfortable, not cramped */
 @media (min-width: 1025px) {
   section:not(#home) {

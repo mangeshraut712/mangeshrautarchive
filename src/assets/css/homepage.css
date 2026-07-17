@@ -33,15 +33,28 @@
   /* account for fixed navbar */
   padding-top: 20px !important;
   padding-bottom: 20px !important;
-  /* performance */
-  contain: layout;
+  /* performance — layout containment can clip absolute hero chrome on Chromium mobile */
+  contain: style;
 }
 
 #hero-role-word {
   display: inline-block;
-  min-width: 28ch;
+  min-width: 12ch;
+  max-width: 100%;
   text-align: left;
   vertical-align: bottom;
+}
+
+@media (width <= 768px) {
+  #hero-role-word {
+    min-width: 0;
+    max-width: 100%;
+    white-space: normal;
+  }
+
+  .hero-role-flip span {
+    white-space: normal;
+  }
 }
 
 /* Showcase enhancements */
@@ -2904,23 +2917,48 @@ html:not(.dark) .hero-stat-label {
     letter-spacing: 0.3em;
   }
 
-  .home-hero {
-    padding-top: 76px;
-    padding-bottom: 24px;
-    min-height: auto;
-    align-items: flex-start;
+  .home-hero,
+  #home.hero-section,
+  #home.home-hero,
+  section#home {
+    padding-top: max(4.75rem, calc(3.25rem + env(safe-area-inset-top, 0px))) !important;
+    padding-bottom: 24px !important;
+    min-height: 0 !important;
+    height: auto !important;
+    align-items: flex-start !important;
+    justify-content: flex-start !important;
+    overflow: visible !important;
+    contain: none !important;
   }
 
-  .profile-image-wrapper {
+  #home > .container-fluid {
+    min-height: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow: visible !important;
+    padding-inline: max(0.75rem, env(safe-area-inset-left, 0px))
+      max(0.75rem, env(safe-area-inset-right, 0px));
+    box-sizing: border-box !important;
+  }
+
+  #home .hero-name-text {
+    white-space: normal !important;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+  }
+
+  .profile-image-wrapper,
+  #home.hero-section .profile-image-wrapper {
     width: 88px !important;
     height: 88px !important;
     min-width: 88px !important;
     min-height: 88px !important;
     margin-bottom: 1rem;
     flex-shrink: 0;
-    border-radius: 25%;
+    border-radius: 50% !important;
     aspect-ratio: 1 / 1;
-    overflow: visible !important;
+    /* clip ring glow so it cannot spill under the fixed nav on Android WebViews */
+    overflow: hidden !important;
   }
 
   .profile-image {

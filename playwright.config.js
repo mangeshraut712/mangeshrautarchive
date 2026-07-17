@@ -118,6 +118,19 @@ export default defineConfig({
         channel: 'chrome',
       },
     },
+    {
+      // Matches Galaxy S22 Ultra CSS width (~384px) + Android Chrome / WhatsApp WebView UA
+      name: 'Samsung Galaxy S22 Ultra Chrome',
+      use: {
+        userAgent:
+          'Mozilla/5.0 (Linux; Android 14; SM-S908U) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Mobile Safari/537.36',
+        viewport: { width: 384, height: 824 },
+        deviceScaleFactor: 3.5,
+        isMobile: true,
+        hasTouch: true,
+        channel: 'chrome',
+      },
+    },
 
     // Mobile Devices - iOS (Safari)
     {

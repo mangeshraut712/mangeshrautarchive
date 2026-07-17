@@ -367,6 +367,36 @@
       box-sizing: border-box;
     }
 
+    /* Android Chrome / WhatsApp WebView: avoid tall 58vh first paint + H-scroll */
+    @media (max-width: 768px) {
+      #home.hero-section,
+      #home.home-hero,
+      #home {
+        min-height: 0;
+        height: auto;
+        padding-top: max(4.75rem, calc(3.25rem + env(safe-area-inset-top, 0px)));
+        padding-bottom: 1.5rem;
+        overflow-x: clip;
+      }
+
+      #home > .container-fluid {
+        min-height: 0;
+        max-width: 100%;
+      }
+
+      #home .hero-name-text,
+      #hero-role-word {
+        white-space: normal;
+        max-width: 100%;
+      }
+
+      html,
+      body {
+        overflow-x: clip;
+        max-width: 100%;
+      }
+    }
+
     #home .hero-header {
       min-height: auto;
     }
@@ -929,13 +959,8 @@ html.dark #home .hero-name-text {
     media="print"
     class="js-defer-css"
   />
-  <link
-    rel="stylesheet"
-    href="assets/css/mobile-viewport.css?v=20260718about"
-    media="print"
-    class="js-defer-css"
-  />
-  <noscript><link rel="stylesheet" href="assets/css/mobile-viewport.css?v=20260718about" /></noscript>
+  <!-- Render-blocking: overflow/safe-area must apply before Chromium paints (Android/WhatsApp) -->
+  <link rel="stylesheet" href="assets/css/mobile-viewport.css?v=20260718android" />
   <link
     rel="stylesheet"
     href="assets/css/apple-super-retina-display.css?v=20260716aa"
