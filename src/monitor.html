@@ -845,7 +845,13 @@
           <div class="doc-card doc-card--column">
             <p class="doc-card-kicker">Suspicious Intrusion Events</p>
             <p class="doc-card-description">Scans for pattern traversal or unauthorized headers.</p>
-            <div id="security-threats-log" class="security-log-container">
+            <div
+              id="security-threats-log"
+              class="security-log-container"
+              role="region"
+              aria-label="Security threat log"
+              tabindex="0"
+            >
               <div class="empty-state compact empty-state--compact-pad">
                 <i class="fas fa-shield-check icon-accent-green"></i>
                 <h3>No security threats detected</h3>
