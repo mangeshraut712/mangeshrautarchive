@@ -38,7 +38,7 @@ WEBMCP_TOOL_COUNT = 10
 PWA_POLICY = {
     "installable": True,
     "service_worker_registered": False,
-    "offline_mode": "navigation-fallback-only",
+    "offline_mode": "manual-reconnect-only",
     "summary": (
         "Installable via manifest (standalone shortcuts). Service worker registration is "
         "disabled for iOS Safari stability; offline.html is a manual reconnect page, "

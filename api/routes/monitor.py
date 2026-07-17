@@ -61,9 +61,20 @@ def _redact_ips_in_text(text: str) -> str:
         "[redacted-ip]",
         text,
     )
+
+    def _replace_ipv6(match: re.Match[str]) -> str:
+        value = match.group(0)
+        # Decimal HH:MM(:SS) wall-clock times are not IPs.
+        if re.fullmatch(r"\d{1,2}:\d{2}(?::\d{2})?", value):
+            return value
+        # Require hex letters or :: so pure decimal colon groups are left alone.
+        if "::" not in value and not re.search(r"[A-Fa-f]", value):
+            return value
+        return "[redacted-ip]"
+
     redacted = re.sub(
         r"\b(?:[0-9a-fA-F]{0,4}:){2,7}[0-9a-fA-F]{0,4}\b",
-        "[redacted-ip]",
+        _replace_ipv6,
         redacted,
     )
     return redacted

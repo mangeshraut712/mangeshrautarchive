@@ -5,6 +5,7 @@ import logging
 logger = logging.getLogger(__name__)
 from datetime import datetime, timezone
 from typing import Optional
+import posixpath
 from urllib.parse import unquote
 from fastapi import APIRouter, HTTPException, Request
 from fastapi.responses import JSONResponse
@@ -102,6 +103,13 @@ async def github_api_proxy(request: Request, path: Optional[str] = None):
     if len(normalized_path) > 1000:
         raise HTTPException(status_code=400, detail="Path is too long")
 
+    # Collapse .. segments before allowlist so PAT cannot escape the portfolio scope.
+    canonical_path = posixpath.normpath(normalized_path)
+    if not canonical_path.startswith("/"):
+        canonical_path = f"/{canonical_path}"
+    if canonical_path != "/" and canonical_path.endswith("/"):
+        canonical_path = canonical_path.rstrip("/") or "/"
+
     # Portfolio-only allowlist — never open-proxy arbitrary GitHub users/orgs with PAT
     allowed_exact = (
         "/users/mangeshraut712",
@@ -113,8 +121,8 @@ async def github_api_proxy(request: Request, path: Optional[str] = None):
         "/users/mangeshraut712/",
         "/repos/mangeshraut712/",
     )
-    path_ok = normalized_path in allowed_exact or any(
-        normalized_path.startswith(prefix) for prefix in allowed_prefixes
+    path_ok = canonical_path in allowed_exact or any(
+        canonical_path.startswith(prefix) for prefix in allowed_prefixes
     )
     if not path_ok:
         raise HTTPException(
@@ -122,6 +130,7 @@ async def github_api_proxy(request: Request, path: Optional[str] = None):
             detail="GitHub proxy path not allowed for this portfolio",
         )
 
+    normalized_path = canonical_path
     cache_key = f"gh_proxy:{normalized_path}"
     cached = _github_api_proxy_cache.get(cache_key)
     if cached and time.time() - cached["ts"] < GITHUB_API_PROXY_TTL:

@@ -18,3 +18,18 @@ def test_redact_monitor_event_masks_top_level_and_details_ip():
 
 def test_redact_ips_in_text_masks_ipv4():
     assert "10.0.0.1" not in _redact_ips_in_text("seen 10.0.0.1 probing")
+
+
+def test_redact_ips_in_text_preserves_wall_clock_timestamps():
+    """IPv6-ish colon patterns must not erase ordinary HH:MM:SS times in messages."""
+    message = "Security scan completed at 12:34:56 with no threats"
+    redacted = _redact_ips_in_text(message)
+    assert "12:34:56" in redacted
+    assert "[redacted-ip]" not in redacted
+
+
+def test_redact_ips_in_text_still_masks_real_ipv6():
+    message = "probe from 2001:db8::1 blocked"
+    redacted = _redact_ips_in_text(message)
+    assert "2001:db8::1" not in redacted
+    assert "[redacted-ip]" in redacted

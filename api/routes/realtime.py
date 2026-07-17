@@ -1,4 +1,6 @@
 import asyncio
+import hashlib
+import hmac
 import json
 import logging
 import os
@@ -39,12 +41,29 @@ _ALLOWED_ORIGIN_HOSTS = {
     "127.0.0.1",
 }
 
-_mint_tokens: Dict[str, float] = {}
+# Best-effort single-use tracking (per isolate). HMAC expiry is the cross-runtime guarantee.
+_mint_nonces: Dict[str, float] = {}
+_consumed_nonces: Dict[str, float] = {}
 _active_connections: Set[int] = set()
 
 
 def _utc_now() -> str:
     return datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
+
+
+def _mint_secret() -> bytes:
+    secret = (
+        os.getenv("REALTIME_MINT_SECRET", "").strip()
+        or os.getenv("AI_GATEWAY_API_KEY", "").strip()
+        or os.getenv("VERCEL_AI_GATEWAY_API_KEY", "").strip()
+        or "dev-realtime-mint"
+    )
+    return secret.encode("utf-8")
+
+
+def _sign_mint(exp: int, nonce: str) -> str:
+    message = f"{exp}.{nonce}".encode("utf-8")
+    return hmac.new(_mint_secret(), message, hashlib.sha256).hexdigest()[:32]
 
 
 def _resolve_public_ws_url(request: Request, mint_token: str) -> str:
@@ -70,24 +89,42 @@ def _origin_allowed(origin: Optional[str]) -> bool:
 
 def _purge_expired_mints(now: Optional[float] = None) -> None:
     current = now if now is not None else time.time()
-    expired = [token for token, expires_at in _mint_tokens.items() if expires_at <= current]
-    for token in expired:
-        _mint_tokens.pop(token, None)
+    for store in (_mint_nonces, _consumed_nonces):
+        expired = [nonce for nonce, expires_at in store.items() if expires_at <= current]
+        for nonce in expired:
+            store.pop(nonce, None)
 
 
 def _issue_mint_token() -> str:
+    """Issue an HMAC mint that Node realtime-ws.js can verify without shared memory."""
     _purge_expired_mints()
-    token = secrets.token_urlsafe(24)
-    _mint_tokens[token] = time.time() + REALTIME_MINT_TTL_SEC
-    return token
+    exp = int(time.time()) + REALTIME_MINT_TTL_SEC
+    nonce = secrets.token_urlsafe(16)
+    sig = _sign_mint(exp, nonce)
+    _mint_nonces[nonce] = float(exp)
+    return f"{exp}.{nonce}.{sig}"
 
 
 def _consume_mint_token(token: Optional[str]) -> bool:
-    if not token:
+    if not token or token.count(".") != 2:
         return False
-    _purge_expired_mints()
-    expires_at = _mint_tokens.pop(token, None)
-    return expires_at is not None and expires_at > time.time()
+    exp_s, nonce, sig = token.split(".", 2)
+    try:
+        exp = int(exp_s)
+    except ValueError:
+        return False
+    expected = _sign_mint(exp, nonce)
+    if not hmac.compare_digest(sig, expected):
+        return False
+    now = time.time()
+    if exp <= int(now):
+        return False
+    _purge_expired_mints(now)
+    if nonce in _consumed_nonces:
+        return False
+    _consumed_nonces[nonce] = float(exp)
+    _mint_nonces.pop(nonce, None)
+    return True
 
 
 @router.get("/api/realtime/health")

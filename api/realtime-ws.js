@@ -1,3 +1,4 @@
+import crypto from 'node:crypto';
 import http from 'node:http';
 import { WebSocket, WebSocketServer } from 'ws';
 
@@ -6,10 +7,32 @@ const GATEWAY_AUTH_PREFIX = 'ai-gateway-auth.';
 const DEFAULT_GATEWAY_BASE = 'https://ai-gateway.vercel.sh/v4/ai';
 const DEFAULT_GATEWAY_API_BASE = 'https://ai-gateway.vercel.sh';
 const DEFAULT_REALTIME_MODEL = 'openai/gpt-realtime-2';
+const REALTIME_MINT_TTL_SEC = Number(process.env.REALTIME_MINT_TTL_SEC || 60);
+
+const ALLOWED_ORIGIN_HOSTS = new Set([
+  'mangeshraut.pro',
+  'mangeshraut712.github.io',
+  'mraut.vercel.app',
+  'mangeshrautarchive.vercel.app',
+  'localhost',
+  '127.0.0.1',
+]);
+
+/** @type {Map<string, number>} */
+const usedMintNonces = new Map();
 
 function getApiKey() {
   return (
     process.env.AI_GATEWAY_API_KEY?.trim() || process.env.VERCEL_AI_GATEWAY_API_KEY?.trim() || ''
+  );
+}
+
+function getMintSecret() {
+  return (
+    process.env.REALTIME_MINT_SECRET?.trim() ||
+    process.env.AI_GATEWAY_API_KEY?.trim() ||
+    process.env.VERCEL_AI_GATEWAY_API_KEY?.trim() ||
+    'dev-realtime-mint'
   );
 }
 
@@ -33,6 +56,63 @@ function buildRealtimeSessionConfig() {
     turn_detection: { type: 'server_vad' },
     input_audio_transcription: {},
   };
+}
+
+function signMint(exp, nonce) {
+  return crypto
+    .createHmac('sha256', getMintSecret())
+    .update(`${exp}.${nonce}`)
+    .digest('hex')
+    .slice(0, 32);
+}
+
+function purgeUsedNonces(nowSec = Math.floor(Date.now() / 1000)) {
+  for (const [nonce, exp] of usedMintNonces) {
+    if (exp <= nowSec) usedMintNonces.delete(nonce);
+  }
+}
+
+/**
+ * Verify HMAC mint issued by api/routes/realtime.py (cross-runtime safe).
+ * Rejects missing/invalid/expired tokens and best-effort replay in this isolate.
+ */
+function consumeMintToken(token) {
+  if (!token || typeof token !== 'string') return false;
+  const parts = token.split('.');
+  if (parts.length !== 3) return false;
+  const [expRaw, nonce, sig] = parts;
+  const exp = Number(expRaw);
+  if (!Number.isFinite(exp) || !nonce || !sig) return false;
+
+  const expected = signMint(exp, nonce);
+  const sigBuf = Buffer.from(sig);
+  const expectedBuf = Buffer.from(expected);
+  if (sigBuf.length !== expectedBuf.length || !crypto.timingSafeEqual(sigBuf, expectedBuf)) {
+    return false;
+  }
+
+  const nowSec = Math.floor(Date.now() / 1000);
+  if (exp <= nowSec || exp > nowSec + REALTIME_MINT_TTL_SEC + 5) {
+    return false;
+  }
+
+  purgeUsedNonces(nowSec);
+  if (usedMintNonces.has(nonce)) return false;
+  usedMintNonces.set(nonce, exp);
+  return true;
+}
+
+function originAllowed(origin) {
+  if (!origin) {
+    return process.env.VERCEL_ENV !== 'production';
+  }
+  try {
+    const host = new URL(origin).hostname.toLowerCase();
+    if (ALLOWED_ORIGIN_HOSTS.has(host)) return true;
+    return host.endsWith('.vercel.app') && host.includes('mangeshraut');
+  } catch {
+    return false;
+  }
 }
 
 async function mintGatewayRealtimeClientSecret() {
@@ -81,21 +161,16 @@ function shouldDropClientMessage(raw) {
 }
 
 function bridgeSockets(clientWs, upstream) {
-  const forward = (from, to, { filterSessionUpdate = false } = {}) => {
+  const forward = (from, to, dropClientSessionUpdates = false) => {
     from.on('message', data => {
-      if (filterSessionUpdate && shouldDropClientMessage(data.toString())) {
-        return;
-      }
-      if (to.readyState === WebSocket.OPEN) {
-        to.send(data);
-      }
+      if (to.readyState !== WebSocket.OPEN) return;
+      if (dropClientSessionUpdates && shouldDropClientMessage(String(data))) return;
+      to.send(data);
     });
   };
 
-  upstream.on('open', () => {
-    forward(clientWs, upstream, { filterSessionUpdate: true });
-    forward(upstream, clientWs);
-  });
+  forward(clientWs, upstream, true);
+  forward(upstream, clientWs, false);
 
   clientWs.on('close', () => upstream.close());
   upstream.on('close', () => clientWs.close());
@@ -118,8 +193,17 @@ const server = http.createServer((req, res) => {
 const wss = new WebSocketServer({ noServer: true });
 
 server.on('upgrade', (req, socket, head) => {
-  const pathname = req.url?.split('?')[0] || '';
+  const requestUrl = new URL(req.url || '/', 'http://localhost');
+  const pathname = requestUrl.pathname;
   if (!isRealtimePath(pathname)) {
+    socket.destroy();
+    return;
+  }
+
+  const origin = req.headers.origin;
+  const token = requestUrl.searchParams.get('token');
+  if (!originAllowed(origin) || !consumeMintToken(token)) {
+    socket.write('HTTP/1.1 401 Unauthorized\r\nConnection: close\r\n\r\n');
     socket.destroy();
     return;
   }
@@ -140,3 +224,4 @@ server.on('upgrade', (req, socket, head) => {
 });
 
 export default server;
+export { consumeMintToken, originAllowed, signMint };

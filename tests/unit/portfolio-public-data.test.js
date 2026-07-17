@@ -40,7 +40,7 @@ describe('portfolio-public-data', () => {
   it('states PWA policy without active service worker registration', () => {
     expect(PWA_POLICY.installable).toBe(true);
     expect(PWA_POLICY.serviceWorkerRegistered).toBe(false);
-    expect(PWA_POLICY.offlineMode).toBe('navigation-fallback-only');
+    expect(PWA_POLICY.offlineMode).toBe('manual-reconnect-only');
     expect(PWA_POLICY.summary).toMatch(/disabled/i);
     expect(PWA_POLICY.summary).toMatch(/offline\.html/i);
   });

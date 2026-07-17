@@ -1199,16 +1199,20 @@ class AppleIntelligenceChatbot {
   async paintStreamingContent(contentDiv, fullText) {
     if (!contentDiv) return;
 
+    const paintGeneration = this._streamPaintGeneration ?? 0;
     const caret = '<span class="siri-stream-caret" aria-hidden="true"></span>';
     const useRichMarkdown = markdownService.containsMarkdown(fullText);
     const usePlainHtml = !useRichMarkdown && fullText.length >= 48;
 
     if (useRichMarkdown) {
       const html = await markdownService.renderAsync(fullText);
+      if (paintGeneration !== this._streamPaintGeneration) return;
       contentDiv.innerHTML = `${html}${caret}`;
     } else if (usePlainHtml) {
+      if (paintGeneration !== this._streamPaintGeneration) return;
       contentDiv.innerHTML = `${markdownService.renderPlain(fullText)}${caret}`;
     } else {
+      if (paintGeneration !== this._streamPaintGeneration) return;
       contentDiv.replaceChildren();
       contentDiv.append(document.createTextNode(fullText));
       const caretNode = document.createElement('span');
@@ -1223,6 +1227,7 @@ class AppleIntelligenceChatbot {
   async finalizeStreamingContent(contentDiv, fullText, response) {
     if (!contentDiv) return;
 
+    this._streamPaintGeneration = (this._streamPaintGeneration ?? 0) + 1;
     const rendered = await markdownService.renderForChatAsync(fullText);
     contentDiv.innerHTML = rendered.html;
     contentDiv.classList.add('siri-intelligence-text');
@@ -1284,6 +1289,7 @@ class AppleIntelligenceChatbot {
     try {
       this.scrollEngine?.onStreamStart();
       this.updateThinkingStage('generating');
+      this._streamPaintGeneration = (this._streamPaintGeneration ?? 0) + 1;
 
       if (this.activeAskController) {
         try {

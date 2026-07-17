@@ -50,7 +50,7 @@ export const WEBMCP_TOOL_COUNT = 10;
 export const PWA_POLICY = {
   installable: true,
   serviceWorkerRegistered: false,
-  offlineMode: 'navigation-fallback-only',
+  offlineMode: 'manual-reconnect-only',
   summary:
     'Installable via manifest (standalone shortcuts). Service worker registration is disabled for iOS Safari stability; offline.html is a manual reconnect page, not a full offline cache.',
 };
