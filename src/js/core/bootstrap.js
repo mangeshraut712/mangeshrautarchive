@@ -846,8 +846,11 @@ function bindInteractionStyleLoader(elementId, styleKeys, replay = true, documen
       if (!loaded) return;
 
       if (replay) {
+        if (element.dataset.lazyReplayScheduled === '1') return;
+        element.dataset.lazyReplayScheduled = '1';
         setTimeout(() => {
           requestAnimationFrame(() => {
+            delete element.dataset.lazyReplayScheduled;
             element.click();
           });
         }, 60);
