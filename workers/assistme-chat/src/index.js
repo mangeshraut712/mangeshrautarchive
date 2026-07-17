@@ -26,6 +26,13 @@ const FREE_MODELS = [
   'nvidia/nemotron-3-super-120b-a12b:free',
   'google/gemma-4-26b-a4b-it:free',
   'google/gemma-4-31b-it:free',
+  'nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free',
+  'openrouter/free',
+];
+const FREE_VISION_MODELS = [
+  'google/gemma-4-26b-a4b-it:free',
+  'nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free',
+  'google/gemma-4-31b-it:free',
   'openrouter/free',
 ];
 
@@ -33,6 +40,14 @@ const SYSTEM_PROMPT = `You are AssistMe — a premium, Apple Intelligence–insp
 
 ## Identity
 You are intelligent, warm, concise, and useful — like a capable personal assistant. Lead with the answer, stay focused, and offer a natural next step. You specialize in Mangesh's career, but you also answer general questions (science, tech, math, culture, public knowledge) clearly — never refuse just because a question is not portfolio-related.
+
+## Mini Google of this portfolio
+You are the site search + knowledge layer for this portfolio: prefer precise answers grounded in portfolio facts. When page context is provided (current section / visible projects), bias toward that. If unsure, say so and suggest what to ask next.
+
+## Rich media (Telegram-style, free)
+- Charts: use a \`\`\`chart JSON fence with type/labels/values.
+- Images: markdown \`![alt](https://image.pollinations.ai/prompt/...?width=768&height=768&nologo=true)\` (free). OpenRouter image generation is paid — do not claim Flux/Grok images.
+- Speech: suggest the chat Read Aloud control (OpenRouter TTS is not free).
 
 ## Portfolio facts (prefer these when relevant)
 - Software Engineer at Customized Energy Solutions (Philadelphia) — energy analytics, microservices, AWS, Java/Spring, Python.
@@ -140,11 +155,27 @@ function isGarbage(text, userMessage = '') {
 }
 
 /** Models the edge worker will call — ignore arbitrary client-chosen models. */
-const ALLOWED_MODELS = new Set([PRIMARY_MODEL, ...FREE_MODELS]);
+const ALLOWED_MODELS = new Set([PRIMARY_MODEL, ...FREE_MODELS, ...FREE_VISION_MODELS]);
 
-function buildModelChain(env, requested) {
+function sanitizeImages(images) {
+  if (!Array.isArray(images)) return [];
+  const out = [];
+  for (const item of images.slice(0, 2)) {
+    if (typeof item !== 'string') continue;
+    const cleaned = item.trim().replace(/\s+/g, '');
+    if (cleaned.length > 350000) continue;
+    if (!/^data:image\/(png|jpeg|jpg|webp|gif);base64,[A-Za-z0-9+/=]+$/i.test(cleaned)) continue;
+    out.push(cleaned);
+  }
+  return out;
+}
+
+function buildModelChain(env, requested, { hasImages = false } = {}) {
   const envPrimary = (env.OPENROUTER_MODEL || '').trim();
   const req = (requested || '').trim();
+  if (hasImages) {
+    return [...FREE_VISION_MODELS].filter((v, i, a) => v && a.indexOf(v) === i);
+  }
   // Env primary wins (credit-safe free or paid Grok). Then free chain, then aspirational Grok.
   const primary =
     (envPrimary && envPrimary.length ? envPrimary : '') ||
@@ -318,15 +349,37 @@ async function handleChat(request, env, cors) {
 
   const wantStream = body.stream !== false;
   const history = Array.isArray(body.messages) ? body.messages.slice(-12) : [];
+  const ctx = body.context && typeof body.context === 'object' ? body.context : {};
+  const contextLines = [];
+  if (ctx.currentSection) contextLines.push(`[User is viewing: ${ctx.currentSection}]`);
+  if (Array.isArray(ctx.visibleProjects) && ctx.visibleProjects.length) {
+    const titles = ctx.visibleProjects
+      .map(p => (p && p.title) || '')
+      .filter(Boolean)
+      .slice(0, 6)
+      .join(', ');
+    if (titles) contextLines.push(`[Visible projects: ${titles}]`);
+  }
+  if (ctx.pagePath) contextLines.push(`[Page: ${ctx.pagePath}]`);
+  const userText = contextLines.length
+    ? `${contextLines.join('\n')}\n\nUser Question: ${message}`
+    : message;
+  const safeImages = sanitizeImages(body.images);
+  const userContent = safeImages.length
+    ? [
+        { type: 'text', text: userText },
+        ...safeImages.map(url => ({ type: 'image_url', image_url: { url } })),
+      ]
+    : userText;
   const messages = [
     { role: 'system', content: SYSTEM_PROMPT },
     ...history
       .filter(m => m && (m.role === 'user' || m.role === 'assistant') && m.content)
       .map(m => ({
         role: m.role,
-        content: String(m.content).slice(0, 2000),
+        content: typeof m.content === 'string' ? String(m.content).slice(0, 2000) : m.content,
       })),
-    { role: 'user', content: message },
+    { role: 'user', content: userContent },
   ];
 
   const apiKey = (env.OPENROUTER_API_KEY || '').trim();
@@ -348,7 +401,7 @@ async function handleChat(request, env, cors) {
         );
   }
 
-  const chain = buildModelChain(env, body.model);
+  const chain = buildModelChain(env, body.model, { hasImages: Boolean(safeImages.length) });
   let lastErr = 'upstream failed';
   const tried = [];
 

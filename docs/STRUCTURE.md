@@ -61,7 +61,8 @@ mangeshrautarchive/
 ├── docs/                     # Human docs + archived plans
 │   ├── STRUCTURE.md          # This file
 │   ├── README.md             # Doc index
-│   └── plans/                # Improve-skill execution plans
+│   ├── plans/                # Improve-skill execution plans
+│   └── design-plans/         # AssistMe shadcn-inspired UX plans (executed)
 │
 ├── .github/workflows/        # CI · deploy · monitoring (no React Doctor)
 ├── skills-lock.json          # Agent skills lock (tracked)
@@ -87,6 +88,7 @@ mangeshrautarchive/
 | Playwright E2E                    | `tests/e2e/`                                             |
 | Architecture notes                | `docs/`                                                  |
 | Improve-skill plan                | `docs/plans/`                                            |
+| AssistMe UX design plan           | `docs/design-plans/`                                     |
 
 ## Root files that must stay at root
 

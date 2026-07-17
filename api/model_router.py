@@ -10,6 +10,8 @@ from api.config import (
     FALLBACK_OPENROUTER_MODEL,
     FREE_OPENROUTER_FALLBACKS,
     FREE_OPENROUTER_MODEL,
+    FREE_VISION_OPENROUTER_FALLBACKS,
+    FREE_VISION_OPENROUTER_MODEL,
     FUSION_MODEL,
     PRIMARY_OPENROUTER_MODEL,
     get_default_model,
@@ -80,6 +82,7 @@ def resolve_chat_model(
     requested_model: Optional[str] = None,
     site_context: str = "",
     stream: bool = True,
+    has_images: bool = False,
 ) -> Tuple[str, bool, str]:
     """
     Pick the best OpenRouter model for a user turn.
@@ -87,6 +90,10 @@ def resolve_chat_model(
     Returns (model_id, web_tools_enabled, routing_tier).
     """
     web_tools = should_use_web_tools(message, site_context)
+
+    if has_images:
+        # Free vision path (Gemma 4 / Nemotron Omni). Paid Grok vision needs credits.
+        return FREE_VISION_OPENROUTER_MODEL, False, "vision-free"
 
     if requested_model:
         explicit = normalize_openrouter_model(requested_model)
@@ -148,6 +155,8 @@ def build_model_fallback_chain(primary_model: str) -> List[str]:
     add(FREE_OPENROUTER_MODEL)
     for free_model in FREE_OPENROUTER_FALLBACKS:
         add(free_model)
+    for vision_model in FREE_VISION_OPENROUTER_FALLBACKS:
+        add(vision_model)
     # Paid spares after free path so Vercel can stay online without credits.
     if primary_model != PRIMARY_MODEL:
         add(PRIMARY_MODEL)

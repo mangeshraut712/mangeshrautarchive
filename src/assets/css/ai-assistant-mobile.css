@@ -165,7 +165,9 @@
   .chatbot-voice-btn,
   .chatbot-writing-btn,
   .chatbot-send-btn,
-  #chatbot-widget .chatbot-writing-btn {
+  .chatbot-plus-btn,
+  #chatbot-widget .chatbot-writing-btn,
+  #chatbot-widget .chatbot-plus-btn {
     width: 44px !important;
     height: 44px !important;
     min-width: 44px !important;
@@ -183,7 +185,8 @@
     box-sizing: border-box !important;
   }
 
-  #chatbot-widget .writing-tools-popover {
+  #chatbot-widget .writing-tools-popover,
+  #chatbot-widget .composer-plus-popover {
     right: 8px !important;
     left: 8px !important;
     width: auto !important;

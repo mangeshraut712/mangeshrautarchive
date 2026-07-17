@@ -101,9 +101,40 @@ describe('ChatScrollEngine', () => {
     engine = new ChatScrollEngine(messages, { widgetEl: widget });
     engine.bind();
     expect(engine.jumpBtn.hidden).toBe(true);
+    expect(engine.jumpBtn.tabIndex).toBe(-1);
     engine.pauseFollowing('test');
     engine.markActivityBelow();
     expect(engine.jumpBtn.hidden).toBe(false);
+    expect(engine.jumpBtn.tabIndex).toBe(0);
     expect(engine.jumpBtn.classList.contains('is-visible')).toBe(true);
+  });
+
+  it('toggles aria-busy and scroll-fade class across stream lifecycle', () => {
+    engine.bind();
+    expect(messages.classList.contains('chat-scroll-fade')).toBe(true);
+    expect(messages.getAttribute('aria-busy')).toBeNull();
+    engine.onStreamStart();
+    expect(messages.getAttribute('aria-busy')).toBe('true');
+    engine.onStreamEnd();
+    expect(messages.getAttribute('aria-busy')).toBe('false');
+  });
+
+  it('sets data-fade from scroll position', () => {
+    engine.bind();
+    Object.defineProperty(messages, 'scrollTop', {
+      get: () => 0,
+      set: () => {},
+      configurable: true,
+    });
+    engine.updateScrollFade();
+    expect(messages.dataset.fade).toBe('top');
+
+    Object.defineProperty(messages, 'scrollTop', {
+      get: () => 600,
+      set: () => {},
+      configurable: true,
+    });
+    engine.updateScrollFade();
+    expect(messages.dataset.fade).toBe('bottom');
   });
 });

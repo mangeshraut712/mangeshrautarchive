@@ -17,28 +17,30 @@ button:not(.about-tab-btn):not(.about-speak-btn):not(.card-speak-btn):not(.card-
   ):not(.website-share-copy):not(.website-share-action):not(.chatbot-close-btn):not(
     .chatbot-send-btn
   ):not(.chatbot-settings-btn):not(.chatbot-voice-btn):not(.chatbot-writing-btn):not(
-    .chatbot-retry-btn
-  ):not(.welcome-action-chip):not(.writing-tool-option):not(.context-aware-chip):not(
-    .chatbot-followup-chips button
-  ):not(#search-toggle):not(#theme-toggle):not(.theme-toggle-nav):not(#menu-btn):not(
-    .menu-toggle-button
-  ):not(#name-pronounce-btn):not(.name-pronounce-btn):not(#avatar-toggle):not(
-    .profile-image-toggle
-  ):not(.proj-filter-btn):not(.project-lens-chip):not(.project-action-btn):not(.blog-read-btn):not(
-    .travel-action
-  ):not(.travel-nav__projection):not(.travel-nav__theme):not(.travel-nav__panel):not(
-    .travel-filter-chip
-  ):not(.country-pill):not(.travel-advanced-toggle):not(.travel-sidebar__handle):not(
-    .a11y-toolbar button
-  ):not(.a11y-glass-preset):not(.a11y-glass-popover__close):not([class*='maplibregl-ctrl']):not(
-    .systems-arch-tab
-  ):not(.uses-control-tile):not(.portfolio-reach-badge):not(.hero-pill-badge):not(
-    .crypto-mini-btn
-  ):not(.robinhood-mini-btn):not(.calendly-panel-button):not(.ios-btn):not(.ios-btn-small):not(
-    .status-circle
-  ):not(.edit-btn):not(.contact-assistme-btn):not(.currently-tab):not(.section-preview-btn):not(
-    .hero-cta-secondary
-  ):not(.about-tab-btn):not(.proj-filter-btn),
+    .chatbot-plus-btn
+  ):not(.composer-plus-option):not(.chat-attachment-remove):not(.chatbot-retry-btn):not(
+    .welcome-action-chip
+  ):not(.writing-tool-option):not(.context-aware-chip):not(.chatbot-followup-chips button):not(
+    #search-toggle
+  ):not(#theme-toggle):not(.theme-toggle-nav):not(#menu-btn):not(.menu-toggle-button):not(
+    #name-pronounce-btn
+  ):not(.name-pronounce-btn):not(#avatar-toggle):not(.profile-image-toggle):not(
+    .proj-filter-btn
+  ):not(.project-lens-chip):not(.project-action-btn):not(.blog-read-btn):not(.travel-action):not(
+    .travel-nav__projection
+  ):not(.travel-nav__theme):not(.travel-nav__panel):not(.travel-filter-chip):not(.country-pill):not(
+    .travel-advanced-toggle
+  ):not(.travel-sidebar__handle):not(.a11y-toolbar button):not(.a11y-glass-preset):not(
+    .a11y-glass-popover__close
+  ):not([class*='maplibregl-ctrl']):not(.systems-arch-tab):not(.uses-control-tile):not(
+    .portfolio-reach-badge
+  ):not(.hero-pill-badge):not(.crypto-mini-btn):not(.robinhood-mini-btn):not(
+    .calendly-panel-button
+  ):not(.ios-btn):not(.ios-btn-small):not(.status-circle):not(.edit-btn):not(
+    .contact-assistme-btn
+  ):not(.currently-tab):not(.section-preview-btn):not(.hero-cta-secondary):not(.about-tab-btn):not(
+    .proj-filter-btn
+  ),
 .contact-submit,
 .project-link,
 .read-more-btn,
@@ -76,28 +78,30 @@ button:not(.about-tab-btn):not(.about-speak-btn):not(.card-speak-btn):not(.card-
   ):not(.website-share-copy):not(.website-share-action):not(.chatbot-close-btn):not(
     .chatbot-send-btn
   ):not(.chatbot-settings-btn):not(.chatbot-voice-btn):not(.chatbot-writing-btn):not(
-    .chatbot-retry-btn
-  ):not(.welcome-action-chip):not(.writing-tool-option):not(.context-aware-chip):not(
-    .chatbot-followup-chips button
-  ):not(#search-toggle):not(#theme-toggle):not(.theme-toggle-nav):not(#menu-btn):not(
-    .menu-toggle-button
-  ):not(#name-pronounce-btn):not(.name-pronounce-btn):not(#avatar-toggle):not(
-    .profile-image-toggle
-  ):not(.proj-filter-btn):not(.project-lens-chip):not(.project-action-btn):not(.blog-read-btn):not(
-    .travel-action
-  ):not(.travel-nav__projection):not(.travel-nav__theme):not(.travel-nav__panel):not(
-    .travel-filter-chip
-  ):not(.country-pill):not(.travel-advanced-toggle):not(.travel-sidebar__handle):not(
-    .a11y-toolbar button
-  ):not(.a11y-glass-preset):not(.a11y-glass-popover__close):not([class*='maplibregl-ctrl']):not(
-    .systems-arch-tab
-  ):not(.uses-control-tile):not(.portfolio-reach-badge):not(.hero-pill-badge):not(
-    .crypto-mini-btn
-  ):not(.robinhood-mini-btn):not(.calendly-panel-button):not(.ios-btn):not(.ios-btn-small):not(
-    .status-circle
-  ):not(.edit-btn):not(.contact-assistme-btn):not(.currently-tab):not(.section-preview-btn):not(
-    .hero-cta-secondary
-  ):not(.about-tab-btn):not(.proj-filter-btn):hover,
+    .chatbot-plus-btn
+  ):not(.composer-plus-option):not(.chat-attachment-remove):not(.chatbot-retry-btn):not(
+    .welcome-action-chip
+  ):not(.writing-tool-option):not(.context-aware-chip):not(.chatbot-followup-chips button):not(
+    #search-toggle
+  ):not(#theme-toggle):not(.theme-toggle-nav):not(#menu-btn):not(.menu-toggle-button):not(
+    #name-pronounce-btn
+  ):not(.name-pronounce-btn):not(#avatar-toggle):not(.profile-image-toggle):not(
+    .proj-filter-btn
+  ):not(.project-lens-chip):not(.project-action-btn):not(.blog-read-btn):not(.travel-action):not(
+    .travel-nav__projection
+  ):not(.travel-nav__theme):not(.travel-nav__panel):not(.travel-filter-chip):not(.country-pill):not(
+    .travel-advanced-toggle
+  ):not(.travel-sidebar__handle):not(.a11y-toolbar button):not(.a11y-glass-preset):not(
+    .a11y-glass-popover__close
+  ):not([class*='maplibregl-ctrl']):not(.systems-arch-tab):not(.uses-control-tile):not(
+    .portfolio-reach-badge
+  ):not(.hero-pill-badge):not(.crypto-mini-btn):not(.robinhood-mini-btn):not(
+    .calendly-panel-button
+  ):not(.ios-btn):not(.ios-btn-small):not(.status-circle):not(.edit-btn):not(
+    .contact-assistme-btn
+  ):not(.currently-tab):not(.section-preview-btn):not(.hero-cta-secondary):not(.about-tab-btn):not(
+    .proj-filter-btn
+  ):hover,
 .contact-submit:hover,
 .project-link:hover,
 .read-more-btn:hover,
@@ -665,24 +669,26 @@ button:not(.about-tab-btn):not(.about-speak-btn):not(.card-speak-btn):not(.card-
   ):not(.website-share-copy):not(.website-share-action):not(.chatbot-close-btn):not(
     .chatbot-send-btn
   ):not(.chatbot-settings-btn):not(.chatbot-voice-btn):not(.chatbot-writing-btn):not(
-    .chatbot-retry-btn
-  ):not(.welcome-action-chip):not(.writing-tool-option):not(.context-aware-chip):not(
-    .chatbot-followup-chips button
-  ):not(#search-toggle):not(#theme-toggle):not(.theme-toggle-nav):not(#menu-btn):not(
-    .menu-toggle-button
-  ):not(#name-pronounce-btn):not(.name-pronounce-btn):not(#avatar-toggle):not(
-    .profile-image-toggle
-  ):not(.proj-filter-btn):not(.project-lens-chip):not(.projects-view-all-btn):not(
-    .project-action-btn
-  ):not(.blog-read-btn):not(.a11y-toolbar button):not(.a11y-glass-preset):not(
-    .a11y-glass-popover__close
-  ):not(.systems-arch-tab):not(.uses-control-tile):not(.portfolio-reach-badge):not(
-    .hero-pill-badge
-  ):not(.crypto-mini-btn):not(.robinhood-mini-btn):not(.calendly-panel-button):not(.ios-btn):not(
-    .ios-btn-small
-  ):not(.status-circle):not(.edit-btn):not(.contact-assistme-btn):not(.currently-tab):not(
-    .section-preview-btn
-  ):not(.hero-cta-secondary):not(.hero-cta-primary),
+    .chatbot-plus-btn
+  ):not(.composer-plus-option):not(.chat-attachment-remove):not(.chatbot-retry-btn):not(
+    .welcome-action-chip
+  ):not(.writing-tool-option):not(.context-aware-chip):not(.chatbot-followup-chips button):not(
+    #search-toggle
+  ):not(#theme-toggle):not(.theme-toggle-nav):not(#menu-btn):not(.menu-toggle-button):not(
+    #name-pronounce-btn
+  ):not(.name-pronounce-btn):not(#avatar-toggle):not(.profile-image-toggle):not(
+    .proj-filter-btn
+  ):not(.project-lens-chip):not(.projects-view-all-btn):not(.project-action-btn):not(
+    .blog-read-btn
+  ):not(.a11y-toolbar button):not(.a11y-glass-preset):not(.a11y-glass-popover__close):not(
+    .systems-arch-tab
+  ):not(.uses-control-tile):not(.portfolio-reach-badge):not(.hero-pill-badge):not(
+    .crypto-mini-btn
+  ):not(.robinhood-mini-btn):not(.calendly-panel-button):not(.ios-btn):not(.ios-btn-small):not(
+    .status-circle
+  ):not(.edit-btn):not(.contact-assistme-btn):not(.currently-tab):not(.section-preview-btn):not(
+    .hero-cta-secondary
+  ):not(.hero-cta-primary),
 .project-tag,
 .badge {
   color: #fff !important;

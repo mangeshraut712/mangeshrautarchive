@@ -33,3 +33,17 @@ export {
   consumeFreeMessage,
   peekFreeMessageState,
 } from './rate-limit.js';
+export {
+  SESSION_MEMORY_KEY,
+  SESSION_ID_KEY,
+  getOrCreateSessionId,
+  loadConversation,
+  saveConversation,
+  clearSessionMemory,
+} from './session-memory.js';
+export {
+  isImageGenerationIntent,
+  isChartIntent,
+  buildPollinationsImageUrl,
+  preprocessRichMediaMarkdown,
+} from './rich-media.js';

@@ -2,6 +2,12 @@ import { api } from './config.js';
 import { agenticActions } from '../modules/agentic-actions.js';
 import { EDGE_API_BASE } from '../utils/api-host.js';
 import { MAX_CHAT_HISTORY, MAX_CHAT_INPUT_LENGTH } from '../chatbot/constants.js';
+import {
+  getOrCreateSessionId,
+  loadConversation,
+  saveConversation,
+  clearSessionMemory,
+} from '../chatbot/session-memory.js';
 
 // ============================================================================
 // API CONFIGURATION - Unified Backend Strategy
@@ -212,7 +218,8 @@ class IntelligentAssistant {
     ];
     this.processing = false;
     this.history = [];
-    this.conversation = [];
+    this.sessionId = getOrCreateSessionId();
+    this.conversation = loadConversation(MAX_CHAT_HISTORY);
 
     // Determine if we can use server AI services
     this.canUseServerAI = !!api.baseUrl;
@@ -298,16 +305,31 @@ class IntelligentAssistant {
     }
 
     this.processing = true;
+    const ephemeral = Boolean(options.ephemeral);
+    const regenerate = Boolean(options.regenerate);
 
     try {
       // Add to history
-      this.history.push({ question, timestamp: Date.now() });
+      if (!ephemeral) {
+        this.history.push({ question, timestamp: Date.now() });
+      }
       const trimmed = question.trim();
-      this._pushConversation('user', trimmed);
+      if (regenerate) {
+        // Drop prior assistant turn so the model regenerates cleanly
+        if (this.conversation.at(-1)?.role === 'assistant') {
+          this.conversation.pop();
+          saveConversation(this.conversation, MAX_CHAT_HISTORY);
+        }
+      } else if (!ephemeral) {
+        this._pushConversation('user', trimmed);
+      }
 
-      // 🎯 NEW: Check for agentic actions first
+      // 🎯 NEW: Check for agentic actions first (skip when regenerating / ephemeral tools)
       const startTime = Date.now();
-      const actionResult = await agenticActions.detectAndExecute(trimmed);
+      const actionResult =
+        ephemeral || regenerate
+          ? { actionDetected: false }
+          : await agenticActions.detectAndExecute(trimmed);
 
       if (actionResult.actionDetected) {
         const processingTime = Date.now() - startTime;
@@ -332,10 +354,14 @@ class IntelligentAssistant {
         };
 
         // Add response to history
-        this.history[this.history.length - 1].response = response;
-        this.history[this.history.length - 1].processingTime = processingTime;
+        if (!ephemeral && this.history.length) {
+          this.history[this.history.length - 1].response = response;
+          this.history[this.history.length - 1].processingTime = processingTime;
+        }
 
-        this._pushConversation('assistant', actionResult.message);
+        if (!ephemeral) {
+          this._pushConversation('assistant', actionResult.message);
+        }
 
         return response;
       }
@@ -344,12 +370,14 @@ class IntelligentAssistant {
       const response = await this.processQuery(trimmed, options);
 
       // Add response to history
-      this.history[this.history.length - 1].response = response;
-      this.history[this.history.length - 1].processingTime =
-        Date.now() - this.history[this.history.length - 1].timestamp;
+      if (!ephemeral && this.history.length) {
+        this.history[this.history.length - 1].response = response;
+        this.history[this.history.length - 1].processingTime =
+          Date.now() - this.history[this.history.length - 1].timestamp;
+      }
 
       const answerText = this._extractAnswerText(response);
-      if (answerText) {
+      if (answerText && !ephemeral) {
         this._pushConversation('assistant', answerText);
       }
 
@@ -366,19 +394,22 @@ class IntelligentAssistant {
           error instanceof DOMException &&
           error.name === 'AbortError')
       ) {
-        // Drop the user turn that never got a real assistant reply
+        // Drop the user turn that never got a real assistant reply (normal asks only)
         if (
+          !ephemeral &&
+          !regenerate &&
           this.conversation.length &&
           this.conversation[this.conversation.length - 1]?.role === 'user'
         ) {
           this.conversation.pop();
+          saveConversation(this.conversation, MAX_CHAT_HISTORY);
         }
         throw error;
       }
       console.error('Error processing query:', error);
       const fallback = this.handleError(question, error);
       const fallbackText = this._extractAnswerText(fallback);
-      if (fallbackText) {
+      if (fallbackText && !ephemeral) {
         this._pushConversation('assistant', fallbackText);
       }
       return fallback;
@@ -466,8 +497,12 @@ class IntelligentAssistant {
           message: safeQuery,
           messages: this._getConversationForServer(),
           context: options.context || {},
+          session_id: options.session_id || this.sessionId || getOrCreateSessionId(),
           stream: isStreaming,
           ...(options.model ? { model: options.model } : {}),
+          ...(Array.isArray(options.images) && options.images.length
+            ? { images: options.images.slice(0, 2) }
+            : {}),
         }),
         signal,
       });
@@ -678,6 +713,7 @@ class IntelligentAssistant {
     if (this.conversation.length > 16) {
       this.conversation.splice(0, this.conversation.length - 16);
     }
+    saveConversation(this.conversation, MAX_CHAT_HISTORY);
   }
 
   _extractAnswerText(response) {
@@ -1332,6 +1368,8 @@ class IntelligentAssistant {
   clearHistory() {
     this.history = [];
     this.conversation = [];
+    clearSessionMemory();
+    this.sessionId = getOrCreateSessionId();
     return true;
   }
 

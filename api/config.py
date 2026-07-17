@@ -32,6 +32,14 @@ FREE_OPENROUTER_FALLBACKS = (
     "google/gemma-4-31b-it:free",
     "openrouter/free",
 )
+# Free multimodal (image/video/audio → text). OpenRouter image/audio *generation* is paid.
+FREE_VISION_OPENROUTER_MODEL = "google/gemma-4-26b-a4b-it:free"
+FREE_VISION_OPENROUTER_FALLBACKS = (
+    FREE_VISION_OPENROUTER_MODEL,
+    "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free",
+    "google/gemma-4-31b-it:free",
+    "openrouter/free",
+)
 AUTO_ROUTER_MODEL = "openrouter/auto"
 FUSION_MODEL = "openrouter/fusion"
 API_URL = "https://openrouter.ai/api/v1/chat/completions"
@@ -65,7 +73,7 @@ SITE_TITLE = get_site_title()
 # Rate Limiting Store and Rules
 from api.rate_limit import get_rate_limit_store
 
-RATE_LIMIT_REQUESTS = 20  # requests per window
+RATE_LIMIT_REQUESTS = 40  # requests per window (aligned with free OpenRouter burst)
 RATE_LIMIT_WINDOW = 60  # seconds
 
 
@@ -369,6 +377,9 @@ SYSTEM_PROMPT = f"""You are AssistMe — a premium, Apple Intelligence–inspire
 ## Your Identity
 You're intelligent, conversational, and useful — like a capable personal assistant. Lead with the answer, stay concise, and offer a natural next step. You specialize in Mangesh's professional background but can discuss any topic thoughtfully.
 
+## Mini Google of this portfolio
+You are the site search + knowledge layer for mangeshraut.pro: retrieve precise answers from portfolio facts (projects, skills, experience, education, contact, systems). Prefer grounded answers over speculation. When the user is viewing a page section (provided in context), bias toward that section. If unsure, say so and suggest the best on-site place to look next.
+
 ## Mangesh Raut — Quick Profile
 - Software Engineer at Customized Energy Solutions (Philadelphia, PA, Aug 2024 - Present, ~2 years)
 - Full-Stack Developer & AI/ML Engineer with 6+ years of total software engineering experience
@@ -387,7 +398,17 @@ You're intelligent, conversational, and useful — like a capable personal assis
 
 ## Response Style — Rich Markdown for Chat UI
 
-Your replies render in a Telegram-style rich chat UI that supports **GFM markdown**, tables, nested lists, task lists, footnotes, spoilers (`||hidden||`), collapsible sections (`::: Summary` … `:::`), inline math (`$E=mc^2$`), and display math (`$$...$$`). Use structured formatting when it improves clarity — the UI is built for it.
+Your replies render in a Telegram-style rich chat UI that supports **GFM markdown**, tables, nested lists, task lists, footnotes, spoilers (`||hidden||`), collapsible sections (`::: Summary` … `:::`), inline math (`$E=mc^2$`), display math (`$$...$$`), **charts**, and **images**.
+
+### Rich media (free path)
+- Charts: emit a fenced block:
+```chart
+{"type":"bar","title":"Skills","labels":["Java","Python","AWS"],"values":[90,85,80]}
+```
+  Use `"type":"pie"` when comparing shares.
+- Images: markdown image links to `https://image.pollinations.ai/prompt/<urlencoded prompt>?width=768&height=768&nologo=true` (free image generation; OpenRouter image models are paid and unavailable here).
+- Do not claim you generated OpenRouter Flux/Grok images. Prefer Pollinations URLs or charts.
+- Audio/video generation via OpenRouter is not free — suggest the in-chat Read Aloud button for speech.
 
 ✅ GOOD Response Style:
 "Mangesh Raut is a Software Engineer at Customized Energy Solutions, specializing in Java Spring Boot, Python, and AWS.
@@ -461,6 +482,8 @@ class ChatRequest(BaseModel):
     stream: bool = True
     session_id: Optional[str] = None
     model: Optional[str] = None
+    # Optional vision attachments (data URLs). Free OpenRouter vision models only.
+    images: Optional[List[str]] = Field(default_factory=list, max_length=2)
 
 
 class TypingIndicator(BaseModel):
@@ -604,6 +627,42 @@ def sanitize_session_id(value: Optional[str]) -> str:
     if value and SESSION_ID_PATTERN.fullmatch(value):
         return value
     return secrets.token_hex(16)
+
+
+_DATA_IMAGE_RE = re.compile(
+    r"^data:image/(png|jpeg|jpg|webp|gif);base64,[A-Za-z0-9+/=\s]+$",
+    re.I,
+)
+MAX_IMAGE_DATA_URL_CHARS = 350_000
+
+
+def sanitize_chat_images(images: Optional[List[str]]) -> List[str]:
+    """Accept at most two small data-URL images for free vision models."""
+    if not images:
+        return []
+    safe: List[str] = []
+    for item in images[:2]:
+        if not isinstance(item, str):
+            continue
+        cleaned = item.strip().replace("\n", "").replace("\r", "")
+        if len(cleaned) > MAX_IMAGE_DATA_URL_CHARS:
+            continue
+        if not _DATA_IMAGE_RE.fullmatch(cleaned):
+            continue
+        safe.append(cleaned)
+    return safe
+
+
+def build_multimodal_user_content(message: str, images: Optional[List[str]] = None) -> Any:
+    """OpenAI-compatible multimodal user content when images are present."""
+    text = sanitize_chat_text(message)
+    safe_images = sanitize_chat_images(images)
+    if not safe_images:
+        return text
+    parts: List[Dict[str, Any]] = [{"type": "text", "text": text or "Describe this image."}]
+    for url in safe_images:
+        parts.append({"type": "image_url", "image_url": {"url": url}})
+    return parts
 
 
 def sanitize_client_history(messages: Optional[List[Dict[str, str]]]) -> List[Dict[str, str]]:

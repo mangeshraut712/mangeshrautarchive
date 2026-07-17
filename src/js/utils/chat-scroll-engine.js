@@ -30,9 +30,11 @@ export class ChatScrollEngine {
     if (!this.messagesEl.hasAttribute('tabindex')) {
       this.messagesEl.setAttribute('tabindex', '0');
     }
+    this.messagesEl.classList.add('chat-scroll-fade');
     this.ensureScrollAnchor();
     this.createJumpButton();
     this.initResizeObserver();
+    this.updateScrollFade();
 
     const on = (target, type, handler, options) => {
       target.addEventListener(type, handler, options);
@@ -51,6 +53,7 @@ export class ChatScrollEngine {
         }
         this.captureScrollDistance();
         this.updateJumpAffordance();
+        this.updateScrollFade();
       },
       { passive: true }
     );
@@ -308,6 +311,7 @@ export class ChatScrollEngine {
     messages.scrollTop = Math.max(0, messages.scrollHeight - messages.clientHeight);
     this.captureScrollDistance();
     this.updateJumpAffordance();
+    this.updateScrollFade();
     if (announce) {
       this.announce('Jumped to latest message. Following resumed.');
     }
@@ -343,14 +347,17 @@ export class ChatScrollEngine {
 
   onStreamStart() {
     this.isStreaming = true;
+    this.messagesEl?.setAttribute('aria-busy', 'true');
     this.collapseUserPinPad();
     this.resumeFollowing('stream-start');
     this.scheduleFollow({ force: true });
     this.updateJumpAffordance();
+    this.updateScrollFade();
   }
 
   onStreamEnd() {
     this.isStreaming = false;
+    this.messagesEl?.setAttribute('aria-busy', 'false');
     this.collapseUserPinPad();
     if (this.following) {
       this.jumpToLatest({ announce: false });
@@ -358,6 +365,7 @@ export class ChatScrollEngine {
       this.markActivityBelow();
     }
     this.updateJumpAffordance();
+    this.updateScrollFade();
   }
 
   markActivityBelow() {
@@ -401,6 +409,7 @@ export class ChatScrollEngine {
     button.type = 'button';
     button.className = 'chatbot-jump-latest';
     button.hidden = true;
+    button.tabIndex = -1;
     button.setAttribute('aria-label', 'Jump to latest message');
     button.innerHTML =
       '<span class="chatbot-jump-latest__icon" aria-hidden="true">↓</span><span class="chatbot-jump-latest__label">Jump to latest</span>';
@@ -415,12 +424,28 @@ export class ChatScrollEngine {
     const show =
       !this.following && (this.activityBelow || this.isStreaming || !this.isNearBottom());
     this.jumpBtn.hidden = !show;
+    this.jumpBtn.tabIndex = show ? 0 : -1;
     this.jumpBtn.classList.toggle('is-streaming', this.isStreaming);
     this.jumpBtn.classList.toggle('is-visible', show);
 
     const label = this.jumpBtn.querySelector('.chatbot-jump-latest__label');
     if (label) {
       label.textContent = this.isStreaming ? 'Reply streaming' : 'Jump to latest';
+    }
+  }
+
+  updateScrollFade() {
+    const messages = this.messagesEl;
+    if (!messages?.classList.contains('chat-scroll-fade')) return;
+
+    const nearTop = messages.scrollTop < 24;
+    const nearBottom = this.isNearBottom(24);
+    if (nearBottom && !nearTop) {
+      messages.dataset.fade = 'bottom';
+    } else if (nearTop && !nearBottom) {
+      messages.dataset.fade = 'top';
+    } else {
+      delete messages.dataset.fade;
     }
   }
 

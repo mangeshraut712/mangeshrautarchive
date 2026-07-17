@@ -31,6 +31,8 @@ from api.config import (
     create_session_token,
     verify_session_token,
     sanitize_client_history,
+    sanitize_chat_images,
+    build_multimodal_user_content,
     get_session_memory,
     SYSTEM_PROMPT,
     SECURITY_SYSTEM_PROMPT,
@@ -948,6 +950,7 @@ async def chat_endpoint(request: ChatRequest, req: Request):
     site_context = retrieve_site_context(message, safe_context)
     web_tools_enabled = should_use_web_tools(message, site_context)
     session_id = sanitize_session_id(request.session_id)
+    safe_images = sanitize_chat_images(getattr(request, "images", None))
 
     direct_response = await handle_direct_command(message)
     if direct_response:
@@ -1011,9 +1014,10 @@ async def chat_endpoint(request: ChatRequest, req: Request):
         # Add context awareness
         if safe_context:
             context_prompt = build_context_prompt(message, safe_context)
-            user_message = {"role": "user", "content": context_prompt}
+            user_payload = build_multimodal_user_content(context_prompt, safe_images)
         else:
-            user_message = {"role": "user", "content": message}
+            user_payload = build_multimodal_user_content(message, safe_images)
+        user_message = {"role": "user", "content": user_payload}
 
         conversation = [system_message] + history + [user_message]
 
@@ -1022,6 +1026,7 @@ async def chat_endpoint(request: ChatRequest, req: Request):
             requested_model=request.model,
             site_context=site_context,
             stream=bool(request.stream),
+            has_images=bool(safe_images),
         )
         if routed_web:
             web_tools_enabled = True

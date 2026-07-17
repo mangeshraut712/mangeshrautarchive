@@ -488,6 +488,17 @@ html.dark #chatbot-widget .input-wrapper:focus-within {
   box-shadow: 0 4px 14px rgb(191 90 242 / 40%);
 }
 
+#chatbot-widget .chatbot-send-btn.is-busy,
+#chatbot-widget .chatbot-send-btn.is-stop {
+  background: linear-gradient(135deg, #ff3b30 0%, #ff453a 100%);
+  box-shadow: 0 2px 10px rgba(255, 59, 48, 0.35);
+}
+
+#chatbot-widget .chatbot-send-btn.is-busy:hover,
+#chatbot-widget .chatbot-send-btn.is-stop:hover {
+  background: linear-gradient(135deg, #d70015 0%, #ff3b30 100%);
+}
+
 /* ────────────────────────────────────────────────────────────────
    6. THINKING INDICATOR — Siri gradient brain + glow border
    ──────────────────────────────────────────────────────────────── */
@@ -980,6 +991,150 @@ html.dark #chatbot-widget .chatbot-close-btn:hover {
   caret-color: var(--siri-c2);
 }
 
+/* Composer agent + realtime status chips */
+#chatbot-widget .chatbot-composer-status {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin: 2px 4px 0;
+  min-height: 18px;
+}
+
+#chatbot-widget .composer-status-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 650;
+  letter-spacing: 0.01em;
+  line-height: 1.2;
+  color: rgb(60 60 67 / 72%);
+  background: rgb(120 120 128 / 10%);
+  border: 1px solid rgb(120 120 128 / 12%);
+}
+
+html.dark #chatbot-widget .composer-status-chip {
+  color: rgb(235 235 245 / 78%);
+  background: rgb(255 255 255 / 8%);
+  border-color: rgb(255 255 255 / 10%);
+}
+
+#chatbot-widget .composer-status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #8e8e93;
+  flex-shrink: 0;
+}
+
+#chatbot-widget .composer-status-chip[data-state='online'] .composer-status-dot,
+#chatbot-widget .composer-status-chip[data-state='listening'] .composer-status-dot,
+#chatbot-widget .composer-status-chip[data-state='connected'] .composer-status-dot {
+  background: #34c759;
+  box-shadow: 0 0 0 3px rgb(52 199 89 / 22%);
+}
+
+#chatbot-widget .composer-status-chip[data-state='thinking'] .composer-status-dot,
+#chatbot-widget .composer-status-chip[data-state='generating'] .composer-status-dot,
+#chatbot-widget .composer-status-chip[data-state='connecting'] .composer-status-dot {
+  background: #0071e3;
+  animation: composer-status-pulse 1s ease-in-out infinite;
+}
+
+#chatbot-widget .composer-status-chip[data-state='streaming'] .composer-status-dot,
+#chatbot-widget .composer-status-chip[data-state='speaking'] .composer-status-dot,
+#chatbot-widget .composer-status-chip[data-state='agentic'] .composer-status-dot {
+  background: #bf5af2;
+  animation: composer-status-pulse 0.85s ease-in-out infinite;
+}
+
+#chatbot-widget .composer-status-chip[data-state='offline'] .composer-status-dot {
+  background: #ff9f0a;
+}
+
+@keyframes composer-status-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  50% {
+    transform: scale(1.25);
+    opacity: 0.65;
+  }
+}
+
+/* Hold-to-confirm clear (dqnamo) */
+#chatbot-widget .chatbot-clear-btn {
+  position: relative;
+  overflow: hidden;
+}
+
+#chatbot-widget .chatbot-clear-btn .hold-confirm-fill {
+  position: absolute;
+  inset: 0;
+  transform: scaleX(0);
+  transform-origin: left center;
+  background: rgb(255 59 48 / 28%);
+  pointer-events: none;
+  transition: none;
+}
+
+#chatbot-widget .chatbot-clear-btn.is-holding {
+  color: #ff3b30;
+}
+
+#chatbot-widget .chatbot-clear-btn.is-armed {
+  background: rgb(255 59 48 / 18%);
+}
+
+#chatbot-widget .chatbot-clear-undo {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: calc(var(--chatbot-composer-height, 92px) + 10px);
+  z-index: 6;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: rgb(28 28 30 / 92%);
+  color: #f5f5f7;
+  box-shadow: 0 10px 28px rgb(0 0 0 / 28%);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+#chatbot-widget .chatbot-clear-undo-label {
+  font-size: 13px;
+  font-weight: 600;
+  flex: 1;
+}
+
+#chatbot-widget .chatbot-clear-undo-btn {
+  border: 0;
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #0071e3;
+  background: rgb(255 255 255 / 92%);
+  cursor: pointer;
+}
+
+#chatbot-widget .chatbot-clear-undo-timer {
+  font-size: 11px;
+  font-weight: 650;
+  opacity: 0.72;
+  min-width: 1.5rem;
+  text-align: right;
+}
+
 #chatbot-widget .chatbot-dictation-status {
   margin: 0 6px 0 2px;
   min-height: 0;
@@ -1014,7 +1169,9 @@ html.dark #chatbot-widget .chatbot-dictation-status {
 
 #chatbot-widget .chatbot-voice-btn,
 #chatbot-widget .chatbot-send-btn,
-#chatbot-widget .chatbot-writing-btn {
+#chatbot-widget .chatbot-writing-btn,
+#chatbot-widget .chatbot-attach-btn,
+#chatbot-widget .chatbot-plus-btn {
   width: 44px;
   height: 44px;
   min-width: 44px;
@@ -1024,6 +1181,36 @@ html.dark #chatbot-widget .chatbot-dictation-status {
   padding: 0 !important;
   box-sizing: border-box;
   font-size: 15px;
+}
+
+#chatbot-widget .chatbot-plus-btn {
+  border-radius: 50% !important;
+  border: 1px solid rgb(0 113 227 / 22%) !important;
+  background: rgb(0 113 227 / 10%) !important;
+  color: #0071e3 !important;
+  -webkit-text-fill-color: #0071e3 !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: none !important;
+}
+
+html.dark #chatbot-widget .chatbot-plus-btn {
+  border-color: rgb(41 151 255 / 28%) !important;
+  background: rgb(41 151 255 / 14%) !important;
+  color: #2997ff !important;
+  -webkit-text-fill-color: #2997ff !important;
+}
+
+#chatbot-widget .chatbot-plus-btn:hover {
+  transform: scale(1.06);
+  background: rgb(0 113 227 / 16%) !important;
+}
+
+#chatbot-widget .composer-plus-popover {
+  left: 12px;
+  right: auto;
+  bottom: calc(100% + 8px);
 }
 
 #chatbot-widget #chatbot-rate-status {

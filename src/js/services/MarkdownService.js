@@ -1,9 +1,10 @@
 import { escapeHtml } from '../utils/escape-html.js';
+import { preprocessRichMediaMarkdown, POLLINATIONS_HOSTS } from '../chatbot/rich-media.js';
 /**
  * MarkdownService — Telegram-style rich chat rendering for AssistMe
  *
  * Plain responses use a lightweight HTML escape path (no vendor graph).
- * Rich GFM (tables, math/KaTeX, footnotes, spoilers, etc.) lazy-loads
+ * Rich GFM (tables, math/KaTeX, footnotes, spoilers, charts, etc.) lazy-loads
  * ../vendor/rich-markdown.js on first use.
  */
 
@@ -19,6 +20,10 @@ export const TRUSTED_IMAGE_HOSTS = new Set([
   'avatars.githubusercontent.com',
   'lastfm.freetls.fastly.net',
   'i.scdn.co',
+  'image.pollinations.ai',
+  'pollinations.ai',
+  'gen.pollinations.ai',
+  ...POLLINATIONS_HOSTS,
 ]);
 
 const SAFE_URL_PATTERN = /^(https?:|mailto:|tel:|\/(?!\/)|#)/i;
@@ -279,6 +284,14 @@ class MarkdownService {
         'input',
         'label',
         'section',
+        'svg',
+        'path',
+        'line',
+        'rect',
+        'circle',
+        'g',
+        'text',
+        'title',
         ...KATEX_TAGS,
       ],
       ALLOWED_ATTR: [
@@ -297,6 +310,26 @@ class MarkdownService {
         'aria-label',
         'aria-hidden',
         'role',
+        'viewBox',
+        'd',
+        'fill',
+        'stroke',
+        'opacity',
+        'x',
+        'y',
+        'x1',
+        'y1',
+        'x2',
+        'y2',
+        'cx',
+        'cy',
+        'r',
+        'rx',
+        'width',
+        'height',
+        'text-anchor',
+        'font-size',
+        'font-weight',
         'tabindex',
         'start',
         'open',
@@ -327,11 +360,14 @@ class MarkdownService {
       .join('');
   }
 
-  _renderRich(markdown) {
+  _renderRich(markdown, options = {}) {
     this._ensureConfigured();
 
     try {
-      const withMath = this._preprocessMath(markdown);
+      const prepared = preprocessRichMediaMarkdown(markdown, {
+        userPrompt: options.userPrompt || '',
+      });
+      const withMath = this._preprocessMath(prepared);
       let html = this._marked.parse(withMath);
       html = html
         .replace(/<table/g, '<div class="rich-table-wrap"><table')
@@ -347,12 +383,13 @@ class MarkdownService {
    * Render Markdown to a sanitised HTML string.
    * Plain text skips the rich vendor graph; rich markdown requires ensureRichReady().
    * @param {string} markdown
+   * @param {{ userPrompt?: string }} [options]
    * @returns {string}
    */
-  render(markdown) {
+  render(markdown, options = {}) {
     if (!markdown || typeof markdown !== 'string') return '';
 
-    if (!this.containsMarkdown(markdown)) {
+    if (!this.containsMarkdown(markdown) && !options.userPrompt) {
       return this.renderPlain(markdown);
     }
 
@@ -360,23 +397,29 @@ class MarkdownService {
       return this.renderPlain(markdown);
     }
 
-    return this._renderRich(markdown);
+    return this._renderRich(markdown, options);
   }
 
   /**
    * Async render — loads rich vendor when markdown is detected.
    * @param {string} markdown
+   * @param {{ userPrompt?: string }} [options]
    * @returns {Promise<string>}
    */
-  async renderAsync(markdown) {
+  async renderAsync(markdown, options = {}) {
     if (!markdown || typeof markdown !== 'string') return '';
 
-    if (!this.containsMarkdown(markdown)) {
+    const needsRich =
+      this.containsMarkdown(markdown) ||
+      Boolean(options.userPrompt) ||
+      /```chart|```svg/i.test(markdown);
+
+    if (!needsRich) {
       return this.renderPlain(markdown);
     }
 
     await this.ensureRichReady();
-    return this._renderRich(markdown);
+    return this._renderRich(markdown, options);
   }
 
   /**
@@ -412,13 +455,14 @@ class MarkdownService {
   /**
    * Async variant of renderForChat — ensures rich vendor is loaded first.
    * @param {string} markdown
+   * @param {{ userPrompt?: string }} [options]
    * @returns {Promise<{ html: string, collapsed: boolean, charCount: number }>}
    */
-  async renderForChatAsync(markdown) {
+  async renderForChatAsync(markdown, options = {}) {
     const charCount = markdown?.length || 0;
     if (!markdown || charCount <= SHOW_MORE_CHAR_THRESHOLD) {
       return {
-        html: await this.renderAsync(markdown),
+        html: await this.renderAsync(markdown, options),
         collapsed: false,
         charCount,
       };
@@ -426,8 +470,8 @@ class MarkdownService {
 
     const previewMarkdown = `${markdown.slice(0, SHOW_MORE_PREVIEW_CHARS).trim()}\n\n…`;
     const [previewHtml, fullHtml] = await Promise.all([
-      this.renderAsync(previewMarkdown),
-      this.renderAsync(markdown),
+      this.renderAsync(previewMarkdown, options),
+      this.renderAsync(markdown, options),
     ]);
 
     return {
@@ -480,7 +524,7 @@ class MarkdownService {
 
   containsMarkdown(text) {
     if (!text) return false;
-    return /(\*\*|__|`|\$\$?|#{1,6}\s|\[[ xX]\]|^\s*[-*+]\s|^\s*\d+\.\s|\[.*\]\(|>\s|^\|.*\||\|\|.+?\|\||\[\^[^\]]+\]|^:{3,})/m.test(
+    return /(\*\*|__|`|\$\$?|#{1,6}\s|\[[ xX]\]|^\s*[-*+]\s|^\s*\d+\.\s|\[.*\]\(|>\s|^\|.*\||\|\|.+?\|\||\[\^[^\]]+\]|^:{3,}|```(?:chart|svg))/m.test(
       text
     );
   }

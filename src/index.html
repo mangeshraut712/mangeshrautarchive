@@ -49,42 +49,8 @@
     }
   </script>
 
-  <!-- Google tag (gtag.js) — load only after user interaction to protect LCP -->
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag() {
-      window.dataLayer.push(arguments);
-    }
-    window.gtag = gtag;
-
-    if (!window.__PERF_AUDIT__) {
-      gtag('js', new Date());
-      gtag('config', 'G-HVKF4N150Y');
-    }
-
-    (function initDeferredAnalytics() {
-      if (window.__PERF_AUDIT__) {
-        return;
-      }
-      let loaded = false;
-      const loadGtag = () => {
-        if (loaded) return;
-        loaded = true;
-        const script = document.createElement('script');
-        script.async = true;
-        script.src = 'https://www.googletagmanager.com/gtag/js?id=G-HVKF4N150Y';
-        document.head.appendChild(script);
-      };
-
-      ['pointerdown', 'keydown', 'scroll', 'touchstart'].forEach(eventName => {
-        window.addEventListener(eventName, loadGtag, {
-          once: true,
-          passive: true,
-          capture: true,
-        });
-      });
-    })();
-  </script>
+  <!-- Google tag (gtag.js) — deferred; cookie_domain fixed for github.io / vercel.app PSL -->
+  <script src="js/utils/deferred-analytics.js"></script>
 
   <meta charset="UTF-8" />
   <title>Mangesh Raut | Software Engineer — Java, Python, AWS, Full-Stack</title>
@@ -4425,8 +4391,9 @@ html.dark #home .hero-name-text {
                 title="Privacy &amp; Personal Intelligence Settings" id="chatbot-privacy-btn">
                 <i class="fas fa-shield-alt"></i>
               </button>
-              <button class="chatbot-settings-btn" aria-label="Clear chat" title="Clear conversation" type="button"
-                id="chatbot-clear-btn">
+              <button class="chatbot-settings-btn chatbot-clear-btn" aria-label="Hold to clear chat"
+                title="Hold to clear conversation" type="button" id="chatbot-clear-btn">
+                <span class="hold-confirm-fill" aria-hidden="true"></span>
                 <i class="fas fa-trash-alt"></i>
               </button>
               <button class="chatbot-close-btn" aria-label="Close chat" type="button">
@@ -4438,7 +4405,13 @@ html.dark #home .hero-name-text {
       </div>
 
       <!-- Messages Area -->
-      <div id="chatbot-messages" aria-live="polite">
+      <div
+        id="chatbot-messages"
+        role="log"
+        aria-live="polite"
+        aria-relevant="additions"
+        aria-busy="false"
+      >
         <!-- Welcome message will be dynamically added by chatbot.js -->
       </div>
 
@@ -4453,14 +4426,37 @@ html.dark #home .hero-name-text {
             </button>
             <label for="chatbot-input" class="sr-only">Message AssistMe</label>
             <textarea id="chatbot-input" placeholder="Ask anything..." rows="1" autocomplete="off"
-              maxlength="1800" aria-describedby="chatbot-dictation-status chatbot-rate-status"></textarea>
+              maxlength="1800" aria-describedby="chatbot-composer-status chatbot-dictation-status chatbot-rate-status"></textarea>
+            <button type="button" id="chatbot-plus-btn" class="chatbot-plus-btn"
+              aria-label="Add to message" aria-expanded="false" aria-haspopup="menu" title="Add to message">
+              <i class="fas fa-plus" aria-hidden="true"></i>
+            </button>
+            <button type="button" id="chatbot-attach-btn" class="chatbot-attach-btn sr-only"
+              aria-label="Attach image for vision" title="Attach image (free vision model)" tabindex="-1">
+              <i class="fas fa-image" aria-hidden="true"></i>
+            </button>
             <button type="button" id="chatbot-writing-btn" class="chatbot-writing-btn"
               aria-label="Writing Tools" title="Apple Intelligence: Writing Tools" aria-expanded="false">
               <i class="fas fa-pen-nib"></i>
             </button>
+            <input type="file" id="chatbot-attach-input" class="sr-only" accept="image/png,image/jpeg,image/webp,image/gif" />
             <button type="submit" class="chatbot-send-btn" aria-label="Send message">
               <i class="fas fa-arrow-up"></i>
             </button>
+          </div>
+          <div id="chatbot-composer-status" class="chatbot-composer-status" role="status" aria-live="polite">
+            <span class="composer-status-chip" data-chip="connection" data-state="local">
+              <span class="composer-status-dot" aria-hidden="true"></span>
+              <span class="composer-status-label">Local</span>
+            </span>
+            <span class="composer-status-chip" data-chip="agent" data-state="idle">
+              <span class="composer-status-dot" aria-hidden="true"></span>
+              <span class="composer-status-label">Agent idle</span>
+            </span>
+            <span class="composer-status-chip" data-chip="realtime" data-state="off">
+              <span class="composer-status-dot" aria-hidden="true"></span>
+              <span class="composer-status-label">Realtime off</span>
+            </span>
           </div>
           <p id="chatbot-dictation-status" class="chatbot-dictation-status" aria-live="polite"></p>
           <p id="chatbot-rate-status" class="chatbot-rate-status" aria-live="polite"></p>

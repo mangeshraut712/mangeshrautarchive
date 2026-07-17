@@ -184,3 +184,6 @@ secrets.*
 # Local Codacy CLI (not required for app build)
 .codacy/
 .secrets/
+
+# Foglamp scan lock (editToken is secret)
+.foglamp/

@@ -29,7 +29,7 @@ const features = {
 
 const limits = {
   /** Client-side daily AI message estimate (server enforces per-minute throttling separately). */
-  dailyChatMessages: 12,
+  dailyChatMessages: 40,
 };
 
 const chat = {

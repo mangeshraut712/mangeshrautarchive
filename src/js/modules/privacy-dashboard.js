@@ -311,6 +311,8 @@ class PrivacyDashboard {
     try {
       localStorage.removeItem('assistme_privacy_settings');
       localStorage.removeItem('assistme_session_id');
+      localStorage.removeItem('assistme-chat-session-v1');
+      localStorage.removeItem('assistme-chat-session-id-v1');
 
       await fetch(getApiUrl('/api/personalization/delete'), { method: 'DELETE' });
 

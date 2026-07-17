@@ -24,6 +24,7 @@ import {
   MAX_CHAT_INPUT_LENGTH as SHARED_MAX_CHAT_INPUT,
 } from '../chatbot/constants.js';
 import { getRemainingFreeMessages, consumeFreeMessage } from '../chatbot/rate-limit.js';
+import { clearSessionMemory, saveConversation } from '../chatbot/session-memory.js';
 import { realtimeVoiceService } from '../services/RealtimeVoiceService.js';
 import { lockBodyScroll, unlockBodyScroll } from '../utils/scroll-lock.js';
 import appleSounds from './apple-sounds.js';
@@ -31,6 +32,34 @@ import appleSounds from './apple-sounds.js';
 const MAX_CHAT_INPUT_LENGTH = SHARED_MAX_CHAT_INPUT;
 const CLIENT_CHAT_MESSAGE_LIMIT = limits.dailyChatMessages || CLIENT_DAILY_CHAT_LIMIT;
 const TRUSTED_ICON_CLASS = /^fa-[a-z0-9-]+$/i;
+const SITE_SEARCH_PROMPT =
+  'Act as a site search engine for this portfolio. Give me a concise map of what I can ask about (projects, skills, experience, education, contact) and one suggested starter question for each.';
+const CREATE_IMAGE_PROMPT =
+  'Generate an image of a clean Apple-style portfolio hero with soft blue light';
+
+function normalizeImagePayloads(images) {
+  return (images || [])
+    .map(img => {
+      if (typeof img === 'string') return img;
+      if (img && typeof img.src === 'string') return img.src;
+      return '';
+    })
+    .filter(Boolean)
+    .slice(0, 2);
+}
+
+function imageDisplayName(image, index = 0) {
+  if (image && typeof image === 'object' && typeof image.name === 'string' && image.name.trim()) {
+    return image.name.trim();
+  }
+  return `image-${index + 1}.png`;
+}
+
+function imageSrc(image) {
+  if (typeof image === 'string') return image;
+  if (image && typeof image.src === 'string') return image.src;
+  return '';
+}
 
 function stripUnsafeControlCharacters(value) {
   return Array.from(value)
@@ -188,10 +217,18 @@ class AppleIntelligenceChatbot {
     this.realtimeVoice = realtimeVoiceService;
     this.realtimeAvailable = false;
     this.realtimeTranscriptEls = { user: null, assistant: null };
+    this.composerStates = {
+      connection: 'local',
+      agent: 'idle',
+      realtime: 'off',
+    };
+    this._clearHold = null;
+    this._clearUndo = null;
 
     // Local rate-limit visibility mirrors the backend throttle before requests are sent.
     this.maxSessionMessages = CLIENT_CHAT_MESSAGE_LIMIT;
     this.lastFocusedElement = null;
+    this.pendingImages = [];
 
     if (!this.elements.widget || !this.elements.toggle) {
       console.error('Chatbot elements not found');
@@ -219,6 +256,9 @@ class AppleIntelligenceChatbot {
     void markdownService.ensureRichReady();
 
     // Set initial rate limit badge state
+    this.setComposerChip('connection', 'local');
+    this.setComposerChip('agent', 'idle');
+    this.setComposerChip('realtime', 'off');
     this.updateRateLimitBadge();
     this.setComposerBusy(false);
   }
@@ -285,12 +325,33 @@ class AppleIntelligenceChatbot {
     const sendBtn = this.elements.sendBtn;
     const input = this.elements.input;
     if (sendBtn) {
-      sendBtn.disabled = Boolean(busy);
+      sendBtn.disabled = false;
       sendBtn.setAttribute('aria-busy', busy ? 'true' : 'false');
       sendBtn.classList.toggle('is-busy', Boolean(busy));
+      sendBtn.classList.toggle('is-stop', Boolean(busy));
+      sendBtn.setAttribute('aria-label', busy ? 'Stop generating' : 'Send message');
+      sendBtn.title = busy ? 'Stop generating' : 'Send message';
+      const icon = sendBtn.querySelector('i');
+      if (icon) {
+        icon.className = busy ? 'fas fa-stop' : 'fas fa-arrow-up';
+      }
     }
     if (input) {
       input.setAttribute('aria-busy', busy ? 'true' : 'false');
+    }
+  }
+
+  stopGeneration() {
+    if (!this.activeAskController) return;
+    try {
+      this.activeAskController.abort();
+    } catch (_error) {
+      // ignore
+    }
+    this.hideTypingIndicator?.();
+    this.setAgentComposerStatus('idle');
+    if (this.elements.rateStatus) {
+      this.elements.rateStatus.textContent = 'Stopped.';
     }
   }
 
@@ -395,6 +456,10 @@ class AppleIntelligenceChatbot {
   }
 
   updateStatusIndicator(status) {
+    this.setComposerChip(
+      'connection',
+      status === 'online' ? 'online' : status === 'offline' ? 'offline' : 'local'
+    );
     const statusEl = this.elements.widget?.querySelector('.chatbot-status-dot');
     const statusText = this.elements.widget?.querySelector('.chatbot-status-text');
     if (statusEl) {
@@ -417,6 +482,53 @@ class AppleIntelligenceChatbot {
     }
   }
 
+  setComposerChip(chip, state) {
+    if (!this.composerStates) {
+      this.composerStates = { connection: 'local', agent: 'idle', realtime: 'off' };
+    }
+    this.composerStates[chip] = state;
+    const root = this.elements.composerStatus || document.getElementById('chatbot-composer-status');
+    const el = root?.querySelector(`[data-chip="${chip}"]`);
+    if (!el) return;
+    const labels = {
+      connection: {
+        online: 'Connected',
+        local: 'Local',
+        offline: 'Offline',
+      },
+      agent: {
+        idle: 'Agent idle',
+        thinking: 'Thinking',
+        generating: 'Generating',
+        streaming: 'Streaming',
+        agentic: 'Agent action',
+      },
+      realtime: {
+        off: 'Realtime off',
+        connecting: 'Voice connecting',
+        listening: 'Voice listening',
+        speaking: 'Voice speaking',
+        connected: 'Voice live',
+      },
+    };
+    el.dataset.state = state;
+    const label = el.querySelector('.composer-status-label');
+    if (label) {
+      label.textContent = labels[chip]?.[state] || state;
+    }
+  }
+
+  setAgentComposerStatus(stage) {
+    const map = {
+      thinking: 'thinking',
+      generating: 'generating',
+      streaming: 'streaming',
+      agentic: 'agentic',
+      idle: 'idle',
+    };
+    this.setComposerChip('agent', map[stage] || 'idle');
+  }
+
   preloadSpeechVoices() {
     if (!('speechSynthesis' in window)) return;
     window.speechSynthesis.getVoices();
@@ -426,6 +538,13 @@ class AppleIntelligenceChatbot {
   initRealtimeVoice() {
     this.realtimeVoice.onStatusChange = status => {
       this.updateVoiceButtonState(status);
+      const realtimeMap = {
+        connecting: 'connecting',
+        connected: 'connected',
+        listening: 'listening',
+        speaking: 'speaking',
+      };
+      this.setComposerChip('realtime', realtimeMap[status] || 'off');
       if (status === 'listening') {
         this.setDictationStatus('Live voice — speak naturally');
       } else if (status === 'speaking') {
@@ -726,6 +845,9 @@ class AppleIntelligenceChatbot {
       privacyBtn: document.getElementById('chatbot-privacy-btn'),
       summarizeBtn: document.getElementById('chatbot-summarize-btn'),
       writingBtn: document.getElementById('chatbot-writing-btn'),
+      plusBtn: document.getElementById('chatbot-plus-btn'),
+      attachBtn: document.getElementById('chatbot-attach-btn'),
+      attachInput: document.getElementById('chatbot-attach-input'),
       form: document.getElementById('chatbot-form'),
       input: document.getElementById('chatbot-input'),
       messages: document.getElementById('chatbot-messages'),
@@ -734,6 +856,7 @@ class AppleIntelligenceChatbot {
       inputWrapper: document.getElementById('chatbot-input-wrapper'),
       dictationStatus: document.getElementById('chatbot-dictation-status'),
       rateStatus: document.getElementById('chatbot-rate-status'),
+      composerStatus: document.getElementById('chatbot-composer-status'),
     };
 
     // Create Shadow Div for smooth resizing
@@ -786,12 +909,15 @@ class AppleIntelligenceChatbot {
     this.elements.toggle?.addEventListener('click', () => this.toggleWidget());
     this.elements.closeBtn?.addEventListener('click', () => this.closeWidget());
     this.elements.backdrop?.addEventListener('click', () => this.closeWidget());
-    this.elements.clearBtn?.addEventListener('click', () => this.clearChat());
+    this.elements.clearBtn && this.bindHoldToClear(this.elements.clearBtn);
     this.elements.privacyBtn?.addEventListener('click', () => {
       privacyDashboard.open();
     });
     this.elements.summarizeBtn?.addEventListener('click', () => this.summarizeConversation());
     this.elements.writingBtn?.addEventListener('click', () => this.toggleWritingTools());
+    this.elements.plusBtn?.addEventListener('click', () => this.togglePlusMenu());
+    this.elements.attachBtn?.addEventListener('click', () => this.elements.attachInput?.click());
+    this.elements.attachInput?.addEventListener('change', e => this.handleAttachFiles(e));
 
     this.elements.form?.addEventListener('submit', e => {
       e.preventDefault();
@@ -831,8 +957,27 @@ class AppleIntelligenceChatbot {
       this.closeWidget();
     });
 
+    document.addEventListener('click', e => {
+      if (!this.isOpen) return;
+      const target = e.target;
+      if (!(target instanceof Element)) return;
+      if (
+        target.closest(
+          '#chatbot-plus-btn, .composer-plus-popover, #chatbot-writing-btn, .writing-tools-popover'
+        )
+      ) {
+        return;
+      }
+      this.closePlusMenu();
+      this.closeWritingTools();
+    });
+
     document.addEventListener('keydown', e => {
       if (e.key === 'Escape' && this.isOpen) {
+        if (this.elements.widget?.querySelector('.composer-plus-popover')) {
+          this.closePlusMenu();
+          return;
+        }
         if (this.elements.widget?.querySelector('.writing-tools-popover')) {
           this.closeWritingTools();
           return;
@@ -960,21 +1105,152 @@ class AppleIntelligenceChatbot {
   }
 
   clearChat() {
+    this.commitClearChat({ withUndo: false });
+  }
+
+  /**
+   * Hold-to-confirm clear (dqnamo pattern): press-and-hold fill, then timed undo.
+   */
+  bindHoldToClear(btn) {
+    const HOLD_MS = 900;
+    const fill = btn.querySelector('.hold-confirm-fill');
+
+    const resetHold = () => {
+      if (this._clearHold?.raf) cancelAnimationFrame(this._clearHold.raf);
+      this._clearHold = null;
+      btn.classList.remove('is-holding', 'is-armed');
+      if (fill) fill.style.transform = 'scaleX(0)';
+      btn.setAttribute('aria-label', 'Hold to clear chat');
+    };
+
+    const startHold = event => {
+      if (event.button != null && event.button !== 0) return;
+      if (this.isProcessing) return;
+      if (event.cancelable) event.preventDefault();
+      resetHold();
+      btn.classList.add('is-holding');
+      const started = performance.now();
+      const state = { raf: 0 };
+      const tick = now => {
+        const progress = Math.min(1, (now - started) / HOLD_MS);
+        if (fill) fill.style.transform = `scaleX(${progress})`;
+        if (progress >= 1) {
+          btn.classList.add('is-armed');
+          this.commitClearChat({ withUndo: true });
+          resetHold();
+          return;
+        }
+        state.raf = requestAnimationFrame(tick);
+      };
+      state.raf = requestAnimationFrame(tick);
+      this._clearHold = state;
+    };
+
+    btn.addEventListener('pointerdown', startHold);
+    ['pointerup', 'pointerleave', 'pointercancel', 'blur'].forEach(type => {
+      btn.addEventListener(type, resetHold);
+    });
+    btn.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        startHold(e);
+      }
+    });
+    btn.addEventListener('keyup', e => {
+      if (e.key === 'Enter' || e.key === ' ') resetHold();
+    });
+  }
+
+  commitClearChat({ withUndo = true } = {}) {
+    const snapshot = {
+      html: this.elements.messages?.innerHTML || '',
+      conversation: this.chatAPI?.conversation ? [...this.chatAPI.conversation] : [],
+      history: this.chatAPI?.history ? [...this.chatAPI.history] : [],
+      lastUserMessage: this.lastUserMessage,
+      messageCount: this.messageCount,
+    };
+
     if (this.elements.messages) {
       this.elements.messages.innerHTML = '';
       this.scrollEngine?.ensureScrollAnchor();
     }
     this.scrollEngine?.clearSession();
     this.scrollEngine?.resumeFollowing('clear');
-    if (this.chatAPI?.conversation) {
-      this.chatAPI.conversation = [];
-    }
-    if (this.chatAPI?.history) {
-      this.chatAPI.history = [];
+    if (typeof this.chatAPI?.clearHistory === 'function') {
+      this.chatAPI.clearHistory();
+    } else {
+      if (this.chatAPI?.conversation) this.chatAPI.conversation = [];
+      if (this.chatAPI?.history) this.chatAPI.history = [];
+      clearSessionMemory();
     }
     this.lastUserMessage = '';
     this.messageCount = 0;
     this.addWelcomeMessage();
+    this.updateRateLimitBadge();
+    this.setAgentComposerStatus('idle');
+
+    if (withUndo) {
+      this.showClearUndo(snapshot);
+    }
+  }
+
+  showClearUndo(snapshot) {
+    this.dismissClearUndo(false);
+    const bar = document.createElement('div');
+    bar.className = 'chatbot-clear-undo';
+    bar.setAttribute('role', 'status');
+    bar.innerHTML = `
+      <span class="chatbot-clear-undo-label">Cleared.</span>
+      <button type="button" class="chatbot-clear-undo-btn">Undo</button>
+      <span class="chatbot-clear-undo-timer" aria-hidden="true"></span>
+    `;
+    const undoBtn = bar.querySelector('.chatbot-clear-undo-btn');
+    const timerEl = bar.querySelector('.chatbot-clear-undo-timer');
+    const UNDO_MS = 5000;
+    const started = Date.now();
+    const tick = () => {
+      const left = Math.max(0, UNDO_MS - (Date.now() - started));
+      if (timerEl) timerEl.textContent = `${Math.ceil(left / 1000)}s`;
+      if (left <= 0) {
+        this.dismissClearUndo(false);
+        return;
+      }
+      this._clearUndo.raf = requestAnimationFrame(tick);
+    };
+    undoBtn?.addEventListener('click', () => {
+      this.restoreClearedChat(snapshot);
+      this.dismissClearUndo(false);
+    });
+    (this.elements.widget || document.body).appendChild(bar);
+    this._clearUndo = {
+      bar,
+      raf: requestAnimationFrame(tick),
+      timer: setTimeout(() => this.dismissClearUndo(false), UNDO_MS),
+    };
+  }
+
+  dismissClearUndo(restore = false) {
+    if (!this._clearUndo) return;
+    if (this._clearUndo.raf) cancelAnimationFrame(this._clearUndo.raf);
+    if (this._clearUndo.timer) clearTimeout(this._clearUndo.timer);
+    this._clearUndo.bar?.remove();
+    this._clearUndo = null;
+    if (restore) {
+      // no-op placeholder — restore handled by caller
+    }
+  }
+
+  restoreClearedChat(snapshot) {
+    if (!snapshot || !this.elements.messages) return;
+    this.elements.messages.innerHTML = snapshot.html || '';
+    if (this.chatAPI) {
+      this.chatAPI.conversation = snapshot.conversation || [];
+      this.chatAPI.history = snapshot.history || [];
+      saveConversation(this.chatAPI.conversation || []);
+    }
+    this.lastUserMessage = snapshot.lastUserMessage || '';
+    this.messageCount = snapshot.messageCount || 0;
+    this.scrollEngine?.jumpToLatest({ announce: false });
     this.updateRateLimitBadge();
   }
 
@@ -998,12 +1274,12 @@ class AppleIntelligenceChatbot {
           'message assistant-message welcome-message welcome-message-simplified';
         welcomeDiv.innerHTML = `
                     <div class="message-content">
-                        <div class="welcome-title">Welcome to Mangesh's AI Assistant</div>
-                        <div class="welcome-subtitle">Ask about projects, skills, experience, or contact details. Start with one quick option below.</div>
+                        <div class="welcome-title">Welcome to AssistMe</div>
+                        <div class="welcome-subtitle">Your mini search engine for this portfolio — projects, skills, experience, contact, and on-page actions.</div>
 
                         <div class="welcome-capabilities">
+                            <span class="capability-badge"><i class="fas fa-magnifying-glass"></i> Site Search</span>
                             <span class="capability-badge"><i class="fas fa-briefcase"></i> Portfolio</span>
-                            <span class="capability-badge"><i class="fas fa-brain"></i> AI/ML</span>
                             <span class="capability-badge"><i class="fas fa-pen-nib"></i> Writing Tools</span>
                         </div>
 
@@ -1013,8 +1289,14 @@ class AppleIntelligenceChatbot {
                 `;
         const chips = welcomeDiv.querySelector('.welcome-chips');
         [
+          ['fas fa-magnifying-glass', 'Search this site', SITE_SEARCH_PROMPT],
           ['fas fa-rocket', 'Top Projects', "What are Mangesh's top projects?"],
-          ['fas fa-brain', 'AI/ML Work', 'What AI and ML projects has Mangesh built?'],
+          ['fas fa-image', 'Generate image', CREATE_IMAGE_PROMPT],
+          [
+            'fas fa-chart-bar',
+            'Skills chart',
+            'Show a bar chart of Mangesh core skills (Java, Python, Spring, AWS, React, SQL)',
+          ],
           ['fas fa-envelope', 'Contact', 'How can I contact Mangesh?'],
         ].forEach(([iconClass, label, prompt]) => {
           chips?.appendChild(this.createWelcomeActionChip(iconClass, label, prompt));
@@ -1048,26 +1330,39 @@ class AppleIntelligenceChatbot {
   }
 
   showAgenticChip(action) {
+    this.setAgentComposerStatus('agentic');
     const chipEl = document.createElement('div');
-    chipEl.className = 'agentic-action-chip';
+    chipEl.className = 'chat-marker agentic-action-chip';
+    chipEl.dataset.kind = 'tool';
+    chipEl.setAttribute('role', 'status');
     chipEl.innerHTML = `
-            <span class="agentic-icon">${action.icon}</span>
-            <span class="agentic-label">Agent: ${action.label}</span>
-            <span class="agentic-pulse"></span>
+            <span class="agentic-icon" aria-hidden="true">${action.icon}</span>
+            <span class="chat-marker-label agentic-label">Agent: ${action.label}</span>
+            <span class="agentic-pulse" aria-hidden="true"></span>
         `;
     this.appendToMessages(chipEl, { pin: false });
 
     // Remove after a few seconds
     setTimeout(() => chipEl.classList.add('fade-out'), 3000);
-    setTimeout(() => chipEl.remove(), 3500);
+    setTimeout(() => {
+      chipEl.remove();
+      if (!this.isProcessing) this.setAgentComposerStatus('idle');
+    }, 3500);
   }
 
   // ── Message Sending ──────────────────────
 
   async handleSendMessage() {
     this.stopDictation(false);
+
+    // ChatGPT-style: tap send while generating → Stop
+    if (this.isProcessing) {
+      this.stopGeneration();
+      return;
+    }
+
     const text = this.normalizeInput(this.elements.input?.value);
-    if (!text || this.isProcessing) return;
+    if (!text) return;
 
     // Check rate limit first
     const remaining = this.getRemainingQueries();
@@ -1092,12 +1387,19 @@ class AppleIntelligenceChatbot {
     this.setComposerBusy(true);
     this.lastUserMessage = text;
     this.retryCount = 0;
+    const imagesForTurn = [...(this.pendingImages || [])];
+    this.pendingImages = [];
+    this.renderAttachPreview();
     this.removeFollowupChips();
     this.closeWritingTools();
+    this.closePlusMenu();
     appleSounds.playClick();
 
     // Add user message
     this.addMessage(text, 'user');
+    if (imagesForTurn.length) {
+      this.addAttachmentPreviewMessage(imagesForTurn);
+    }
 
     // Clear input
     if (this.elements.input) {
@@ -1119,13 +1421,16 @@ class AppleIntelligenceChatbot {
 
     try {
       if (this.chatAPI && typeof this.chatAPI.ask === 'function') {
-        await this.streamAIResponse(text, startTime);
+        await this.streamAIResponse(text, startTime, false, {
+          images: normalizeImagePayloads(imagesForTurn),
+        });
       } else {
         await this.simulateTyping(this.getFallbackResponse(text), startTime);
       }
     } catch (error) {
       if (error?.name === 'AbortError') {
         this.hideTypingIndicator();
+        this._abortedLastAsk = true;
         return;
       }
       console.error('Error getting AI response:', error);
@@ -1143,7 +1448,11 @@ class AppleIntelligenceChatbot {
       this.activeAskController = null;
       this.isProcessing = false;
       this.setComposerBusy(false);
-      this.messageCount++;
+      this.setAgentComposerStatus('idle');
+      if (!this._abortedLastAsk) {
+        this.messageCount++;
+      }
+      this._abortedLastAsk = false;
       this.updateRateLimitBadge();
     }
   }
@@ -1220,7 +1529,9 @@ class AppleIntelligenceChatbot {
     if (!contentDiv) return;
 
     this._streamPaintGeneration = (this._streamPaintGeneration ?? 0) + 1;
-    const rendered = await markdownService.renderForChatAsync(fullText);
+    const rendered = await markdownService.renderForChatAsync(fullText, {
+      userPrompt: this.lastUserMessage || '',
+    });
     contentDiv.innerHTML = rendered.html;
     contentDiv.classList.add('siri-intelligence-text');
     markdownService.bindRichInteractions(contentDiv);
@@ -1259,7 +1570,7 @@ class AppleIntelligenceChatbot {
 
   // ── Streaming AI Response ──────────────────────
 
-  async streamAIResponse(userMessage, startTime, isRetry = false) {
+  async streamAIResponse(userMessage, startTime, isRetry = false, askOptions = {}) {
     let fullText = '';
     let metadata = {};
     let messageDiv = null;
@@ -1295,6 +1606,11 @@ class AppleIntelligenceChatbot {
 
       const response = await this.chatAPI.ask(userMessage, {
         signal,
+        regenerate: Boolean(askOptions.regenerate),
+        ephemeral: Boolean(askOptions.ephemeral),
+        context: this.buildPageContextPayload(),
+        session_id: this.chatAPI.sessionId,
+        images: normalizeImagePayloads(askOptions.images || this.pendingImages || []),
         onChunk: chunk => {
           if (signal.aborted) return;
           if (!chunk) return;
@@ -1344,7 +1660,7 @@ class AppleIntelligenceChatbot {
         this.retryCount++;
         this.showThinkingIndicator();
         await new Promise(r => setTimeout(r, 500));
-        return this.streamAIResponse(userMessage, startTime, true);
+        return this.streamAIResponse(userMessage, startTime, true, askOptions);
       }
 
       // Final fallback for completely empty responses (after retry)
@@ -1525,6 +1841,11 @@ class AppleIntelligenceChatbot {
     });
     actionsDiv.appendChild(copyBtn);
 
+    const regenBtn = this.createActionButton('fa-redo', 'Regenerate', () => {
+      this.regenerateAssistantMessage(messageDiv);
+    });
+    actionsDiv.appendChild(regenBtn);
+
     const speakBtn = this.createActionButton('fa-volume-up', 'Read Aloud', () => {
       this.speakText(contentDiv.textContent, speakBtn);
     });
@@ -1574,6 +1895,15 @@ class AppleIntelligenceChatbot {
       chip.textContent = chipText;
       detailsRow.appendChild(chip);
     });
+
+    if (metadata.knowledgeContext) {
+      const sources = document.createElement('div');
+      sources.className = 'meta-sources';
+      sources.innerHTML =
+        '<span class="meta-sources-label">Sources</span> <span class="meta-sources-item">Portfolio site knowledge</span>';
+      detailsRow.appendChild(sources);
+      detailsRow.classList.add('has-sources');
+    }
 
     metaContainer.appendChild(detailsRow);
     messageDiv.appendChild(metaContainer);
@@ -1848,6 +2178,7 @@ class AppleIntelligenceChatbot {
 
   showThinkingIndicator() {
     this.hideTypingIndicator();
+    this.setAgentComposerStatus('thinking');
     const indicator = document.createElement('div');
     indicator.className = 'thinking-indicator rich-block-thinking';
     indicator.id = 'chatbot-typing-indicator';
@@ -1857,7 +2188,7 @@ class AppleIntelligenceChatbot {
                     <i class="fas fa-brain"></i>
                 </div>
                 <div class="thinking-text">
-                    <span class="thinking-stage">Thinking</span>
+                    <span class="thinking-stage chat-text-shimmer">Thinking</span>
                     <span class="thinking-dots"><span>.</span><span>.</span><span>.</span></span>
                 </div>
                 <div class="thinking-shimmer" aria-hidden="true">
@@ -1871,6 +2202,7 @@ class AppleIntelligenceChatbot {
   }
 
   updateThinkingStage(stage) {
+    this.setAgentComposerStatus(stage);
     const indicator = document.getElementById('chatbot-typing-indicator');
     const stageEl = indicator?.querySelector('.thinking-stage');
     const iconEl = indicator?.querySelector('.thinking-brain i');
@@ -1883,6 +2215,7 @@ class AppleIntelligenceChatbot {
       };
       const s = stages[stage] || stages.thinking;
       stageEl.textContent = s.text;
+      stageEl.classList.add('chat-text-shimmer');
       if (iconEl) iconEl.className = s.icon;
       indicator?.classList.toggle('rich-block-thinking--streaming', stage === 'streaming');
       shimmer?.setAttribute('data-stage', stage);
@@ -1891,9 +2224,13 @@ class AppleIntelligenceChatbot {
 
   hideTypingIndicator() {
     const indicator = document.getElementById('chatbot-typing-indicator');
-    if (!indicator) return;
+    if (!indicator) {
+      if (!this.isProcessing) this.setAgentComposerStatus('idle');
+      return;
+    }
     const wasFollowing = this.scrollEngine?.isFollowing();
     indicator.remove();
+    if (!this.isProcessing) this.setAgentComposerStatus('idle');
     if (wasFollowing) {
       this.scrollEngine?.followLiveContent(
         this.elements.messages?.querySelector('.user-message:last-of-type')
@@ -1950,7 +2287,132 @@ class AppleIntelligenceChatbot {
       return;
     }
 
-    this.ask('Summarize our conversation so far in 3 short bullet points.');
+    void this.runEphemeralAssistantTurn(
+      'Summarize our conversation so far in 3 short bullet points. Do not invent details that were not discussed.'
+    );
+  }
+
+  async runEphemeralAssistantTurn(prompt) {
+    if (this.isProcessing || !prompt) return;
+    if (!this.chatAPI || typeof this.chatAPI.ask !== 'function') {
+      this.addErrorMessage('AssistMe is not ready yet. Try again in a moment.');
+      return;
+    }
+
+    this.isProcessing = true;
+    this.setComposerBusy(true);
+    this.removeFollowupChips();
+    this.showThinkingIndicator();
+    const startTime = Date.now();
+    try {
+      await this.streamAIResponse(prompt, startTime, false, { ephemeral: true });
+    } catch (error) {
+      if (error?.name !== 'AbortError') {
+        console.error('Ephemeral turn failed:', error);
+        this.addErrorMessage('Could not complete that request. Please try again.');
+      }
+    } finally {
+      this.activeAskController = null;
+      this.isProcessing = false;
+      this.setComposerBusy(false);
+      this.setAgentComposerStatus('idle');
+      this.updateRateLimitBadge();
+    }
+  }
+
+  async regenerateAssistantMessage(messageDiv) {
+    if (this.isProcessing || !this.lastUserMessage) return;
+    messageDiv?.remove();
+    this.removeFollowupChips();
+    this.isProcessing = true;
+    this.setComposerBusy(true);
+    this.showThinkingIndicator();
+    const startTime = Date.now();
+    try {
+      await this.streamAIResponse(this.lastUserMessage, startTime, false, { regenerate: true });
+    } catch (error) {
+      if (error?.name !== 'AbortError') {
+        console.error('Regenerate failed:', error);
+        this.addErrorMessage('Could not regenerate. Please try again.');
+      }
+    } finally {
+      this.activeAskController = null;
+      this.isProcessing = false;
+      this.setComposerBusy(false);
+      this.setAgentComposerStatus('idle');
+      this.updateRateLimitBadge();
+    }
+  }
+
+  // ── Composer Plus menu (InputGroup pattern) ──────────────────
+
+  togglePlusMenu() {
+    const existing = this.elements.widget?.querySelector('.composer-plus-popover');
+    if (existing) {
+      this.closePlusMenu();
+      return;
+    }
+
+    this.closeWritingTools();
+
+    const popover = document.createElement('div');
+    popover.className = 'composer-plus-popover';
+    popover.setAttribute('role', 'menu');
+    popover.setAttribute('aria-label', 'Add to message');
+
+    const title = document.createElement('div');
+    title.className = 'composer-plus-title';
+    title.textContent = 'Add';
+    popover.appendChild(title);
+
+    const items = [
+      {
+        icon: 'fa-image',
+        label: 'Attach image',
+        onSelect: () => this.elements.attachInput?.click(),
+      },
+      {
+        icon: 'fa-wand-magic-sparkles',
+        label: 'Create image',
+        onSelect: () => this.ask(CREATE_IMAGE_PROMPT),
+      },
+      {
+        icon: 'fa-magnifying-glass',
+        label: 'Search this site',
+        onSelect: () => this.ask(SITE_SEARCH_PROMPT),
+      },
+      {
+        icon: 'fa-pen-nib',
+        label: 'Writing Tools',
+        onSelect: () => this.toggleWritingTools(),
+      },
+    ];
+
+    items.forEach(item => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'composer-plus-option';
+      btn.setAttribute('role', 'menuitem');
+      const icon = document.createElement('i');
+      icon.className = TRUSTED_ICON_CLASS.test(item.icon) ? `fas ${item.icon}` : 'fas fa-circle';
+      icon.setAttribute('aria-hidden', 'true');
+      btn.append(icon, document.createTextNode(` ${item.label}`));
+      btn.addEventListener('click', event => {
+        event.preventDefault();
+        event.stopPropagation();
+        this.closePlusMenu();
+        item.onSelect();
+      });
+      popover.appendChild(btn);
+    });
+
+    this.elements.form?.appendChild(popover);
+    this.elements.plusBtn?.setAttribute('aria-expanded', 'true');
+  }
+
+  closePlusMenu() {
+    this.elements.widget?.querySelectorAll('.composer-plus-popover').forEach(el => el.remove());
+    this.elements.plusBtn?.setAttribute('aria-expanded', 'false');
   }
 
   // ── Apple Intelligence: Writing Tools (WWDC26) ──────────────────
@@ -1961,6 +2423,8 @@ class AppleIntelligenceChatbot {
       this.closeWritingTools();
       return;
     }
+
+    this.closePlusMenu();
 
     const popover = document.createElement('div');
     popover.className = 'writing-tools-popover';
@@ -2029,7 +2493,11 @@ class AppleIntelligenceChatbot {
     this.isProcessing = true;
 
     try {
-      const response = await this.chatAPI.ask(`${tool.instruction}\n\n"${draft}"`);
+      const response = await this.chatAPI.ask(`${tool.instruction}\n\n"${draft}"`, {
+        ephemeral: true,
+        context: this.buildPageContextPayload(),
+        session_id: this.chatAPI.sessionId,
+      });
       const rewritten = this.normalizeInput(response?.answer || response?.content || '')
         .replace(/^["'\u201c]+/, '')
         .replace(/["'\u201d]+$/, '');
@@ -2062,6 +2530,112 @@ class AppleIntelligenceChatbot {
     }
   }
 
+  async handleAttachFiles(event) {
+    const files = Array.from(event?.target?.files || []);
+    if (event?.target) event.target.value = '';
+    if (!files.length) return;
+
+    const next = [];
+    for (const file of files.slice(0, 2)) {
+      if (!file.type.startsWith('image/')) continue;
+      if (file.size > 1_200_000) {
+        if (this.elements.rateStatus) {
+          this.elements.rateStatus.textContent = 'Image too large — keep under ~1.2MB.';
+        }
+        continue;
+      }
+      const dataUrl = await this.readFileAsDataUrl(file);
+      if (dataUrl) {
+        next.push({
+          src: dataUrl,
+          name: file.name || `image-${next.length + 1}.png`,
+        });
+      }
+    }
+    this.pendingImages = next.slice(0, 2);
+    this.renderAttachPreview();
+    if (this.pendingImages.length && this.elements.rateStatus) {
+      this.elements.rateStatus.textContent = `${this.pendingImages.length} image ready — ask a question (free vision).`;
+    }
+  }
+
+  readFileAsDataUrl(file) {
+    return new Promise(resolve => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(typeof reader.result === 'string' ? reader.result : '');
+      reader.onerror = () => resolve('');
+      reader.readAsDataURL(file);
+    });
+  }
+
+  createAttachmentCard(image, index, { removable = false } = {}) {
+    const src = imageSrc(image);
+    if (!src) return null;
+
+    const figure = document.createElement('figure');
+    figure.className = 'chat-attachment';
+
+    const img = document.createElement('img');
+    img.src = src;
+    img.alt = imageDisplayName(image, index);
+    img.loading = 'lazy';
+    figure.appendChild(img);
+
+    const caption = document.createElement('figcaption');
+    caption.className = 'chat-attachment-meta';
+    const name = document.createElement('span');
+    name.className = 'chat-attachment-name';
+    name.textContent = imageDisplayName(image, index);
+    caption.appendChild(name);
+
+    if (removable) {
+      const removeBtn = document.createElement('button');
+      removeBtn.type = 'button';
+      removeBtn.className = 'chat-attachment-remove';
+      removeBtn.textContent = 'Remove';
+      removeBtn.addEventListener('click', event => {
+        event.preventDefault();
+        event.stopPropagation();
+        this.pendingImages = (this.pendingImages || []).filter((_, i) => i !== index);
+        this.renderAttachPreview();
+        if (this.elements.rateStatus && !this.pendingImages.length) {
+          this.elements.rateStatus.textContent = '';
+        }
+      });
+      caption.appendChild(removeBtn);
+    }
+
+    figure.appendChild(caption);
+    return figure;
+  }
+
+  renderAttachPreview() {
+    const wrapper = this.elements.inputWrapper || this.elements.form;
+    wrapper?.querySelectorAll('.chatbot-attach-preview').forEach(el => el.remove());
+    if (!this.pendingImages?.length || !wrapper) return;
+    const bar = document.createElement('div');
+    bar.className = 'chatbot-attach-preview';
+    this.pendingImages.forEach((image, index) => {
+      const card = this.createAttachmentCard(image, index, { removable: true });
+      if (card) bar.appendChild(card);
+    });
+    wrapper.appendChild(bar);
+  }
+
+  addAttachmentPreviewMessage(images) {
+    if (!images?.length || !this.elements.messages) return;
+    const row = document.createElement('div');
+    row.className = 'message user-message attachment-preview-message';
+    const content = document.createElement('div');
+    content.className = 'message-content attachment-thumbs';
+    images.forEach((image, index) => {
+      const card = this.createAttachmentCard(image, index, { removable: false });
+      if (card) content.appendChild(card);
+    });
+    row.appendChild(content);
+    this.appendToMessages(row, { pin: false });
+  }
+
   // ── Siri AI: On-Screen Awareness (WWDC26) ───────────────────────
 
   getVisibleSectionContext() {
@@ -2075,6 +2649,24 @@ class AppleIntelligenceChatbot {
       }
     }
     return null;
+  }
+
+  buildPageContextPayload() {
+    const pageCtx = this.getVisibleSectionContext();
+    const projects = Array.from(document.querySelectorAll('[data-project-title], .project-card h3'))
+      .slice(0, 6)
+      .map(el => ({
+        title: (el.getAttribute('data-project-title') || el.textContent || '').trim().slice(0, 80),
+      }))
+      .filter(p => p.title);
+
+    return {
+      currentSection: pageCtx?.label || pageCtx?.sectionId || '',
+      sectionId: pageCtx?.sectionId || '',
+      pagePath: typeof location !== 'undefined' ? location.pathname : '',
+      pageTitle: typeof document !== 'undefined' ? document.title : '',
+      visibleProjects: projects,
+    };
   }
 
   showContextAwareness() {
