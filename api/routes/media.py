@@ -33,6 +33,7 @@ def _enforce_media_rate_limit(request: Request, bucket: str) -> None:
     if not check_rate_limit(f"{bucket}:{client_ip}"):
         raise HTTPException(status_code=429, detail="Rate limit exceeded. Please try again later.")
 
+
 router = APIRouter()
 LASTFM_STALE_TTL = 5 * 60
 _lastfm_refreshing = set()
