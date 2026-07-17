@@ -41,6 +41,8 @@
   ·
   <a href="https://mangeshraut.pro/systems"><b>Systems</b></a>
   ·
+  <a href="https://foglamp.dev/scan/mangeshrautarchive-jtspx4"><b>AI map</b></a>
+  ·
   <a href="https://mangeshraut.pro/blog"><b>Field Notes</b></a>
   ·
   <a href="#-quick-start"><b>Quick start</b></a>
@@ -223,6 +225,28 @@ Pinned from this repo’s `package.json`, `requirements.txt`, `pyproject.toml`, 
 ---
 
 ## 5. Architecture
+
+### Interactive AI map (Foglamp)
+
+High-level map of AssistMe agents, models, tools, integrations, and flows — **no code or secrets**.
+
+<p align="center">
+  <a href="https://foglamp.dev/scan/mangeshrautarchive-jtspx4"><img src="https://img.shields.io/badge/Foglamp_Scan-mangeshrautarchive-0B0B0F?style=for-the-badge&labelColor=0071e3" alt="Open interactive Foglamp architecture scan"></a>
+  <a href=".foglamp/scan.json"><img src="https://img.shields.io/badge/scan.json-41_nodes_·_51_edges-24292e?style=for-the-badge" alt="Committed scan data"></a>
+  <a href="docs/foglamp-scan.md"><img src="https://img.shields.io/badge/Keep--alive-docs-6e6e73?style=for-the-badge" alt="How to refresh the public map"></a>
+</p>
+
+|                     |                                                                                                  |
+| ------------------- | ------------------------------------------------------------------------------------------------ |
+| **Live (unlisted)** | [foglamp.dev/scan/mangeshrautarchive-jtspx4](https://foglamp.dev/scan/mangeshrautarchive-jtspx4) |
+| **Source data**     | [`.foglamp/scan.json`](.foglamp/scan.json) (committed)                                           |
+| **Edit token**      | `.foglamp/scan.lock.json` (**gitignored**) — use `npm run foglamp:publish` or monthly CI         |
+
+Foglamp links expire (~90 days). Republishing with the saved `editToken` **keeps the same URL** and extends expiry. Setup: [docs/foglamp-scan.md](docs/foglamp-scan.md).
+
+### Always-on diagram (in-repo)
+
+GitHub renders this Mermaid block forever — use it when the external map is offline or expired.
 
 ```mermaid
 flowchart LR

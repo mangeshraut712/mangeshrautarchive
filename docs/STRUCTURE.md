@@ -89,6 +89,7 @@ mangeshrautarchive/
 | Architecture notes                | `docs/`                                                  |
 | Improve-skill plan                | `docs/plans/`                                            |
 | AssistMe UX design plan           | `docs/design-plans/`                                     |
+| Foglamp AI architecture map       | `.foglamp/scan.json` + `docs/foglamp-scan.md`            |
 
 ## Root files that must stay at root
 

@@ -34,8 +34,6 @@ const CLIENT_CHAT_MESSAGE_LIMIT = limits.dailyChatMessages || CLIENT_DAILY_CHAT_
 const TRUSTED_ICON_CLASS = /^fa-[a-z0-9-]+$/i;
 const SITE_SEARCH_PROMPT =
   'Act as a site search engine for this portfolio. Give me a concise map of what I can ask about (projects, skills, experience, education, contact) and one suggested starter question for each.';
-const CREATE_IMAGE_PROMPT =
-  'Generate an image of a clean Apple-style portfolio hero with soft blue light';
 
 function normalizeImagePayloads(images) {
   return (images || [])
@@ -72,16 +70,16 @@ function stripUnsafeControlCharacters(value) {
 
 // ── Context-aware follow-up chip sets ──────────────────────
 const FOLLOWUP_CHIPS = {
-  skills: ['🔧 Top frameworks?', '☁️ Cloud & DevOps?', '🤖 AI/ML expertise?'],
-  experience: ['🏢 Current role?', '📈 Key achievements?', '🌍 Industry domains?'],
-  projects: ['📁 Show all projects', '⭐ Most impactful?', '🛠️ Tech stack used?'],
-  education: ['🎓 GPA & Honors?', '📚 Specialisations?', '🔬 Research work?'],
-  contact: ['📧 Email address?', '🔗 LinkedIn?', '📄 Download resume'],
-  publications: ['📄 Published papers?', '🔬 Research areas?', '🏆 Conference talks?'],
-  certifications: ['🏅 AWS certified?', '☕ Java certifications?', '📊 ML certs?'],
-  aiml: ['🧠 ML models used?', '📊 Data pipeline?', '🔮 NLP experience?'],
-  agents: ['🤖 What can you do?', '📋 Schedule meeting', '📥 Download resume'],
-  default: ['👨‍💻 About Mangesh', '🚀 Top projects', '🧠 AI/ML skills'],
+  skills: ['Top frameworks?', 'Cloud & DevOps?', 'AI/ML expertise?'],
+  experience: ['Current role?', 'Key achievements?', 'Industry domains?'],
+  projects: ['Show all projects', 'Most impactful?', 'Tech stack used?'],
+  education: ['GPA & Honors?', 'Specialisations?', 'Research work?'],
+  contact: ['Email address?', 'LinkedIn?', 'Download resume'],
+  publications: ['Published papers?', 'Research areas?', 'Conference talks?'],
+  certifications: ['AWS certified?', 'Java certifications?', 'ML certs?'],
+  aiml: ['ML models used?', 'Data pipeline?', 'NLP experience?'],
+  agents: ['What can you do?', 'Schedule meeting', 'Download resume'],
+  default: ['About Mangesh', 'Top projects', 'AI/ML skills'],
 };
 
 function inferFollowupContext(assistantText) {
@@ -255,8 +253,6 @@ class AppleIntelligenceChatbot {
     this.preloadSpeechVoices();
     void markdownService.ensureRichReady();
 
-    // Set initial rate limit badge state
-    this.setComposerChip('connection', 'local');
     this.setComposerChip('agent', 'idle');
     this.setComposerChip('realtime', 'off');
     this.updateRateLimitBadge();
@@ -365,13 +361,15 @@ class AppleIntelligenceChatbot {
 
   updateRateLimitBadge() {
     const status = this.elements.rateStatus;
+    if (!status) return;
     const remaining = this.getRemainingQueries();
-
-    if (status) {
-      status.textContent =
-        remaining > 0
-          ? `${remaining} free AI messages left today`
-          : 'Daily free-message estimate reached';
+    // Keep the composer quiet unless quota is low or exhausted.
+    if (remaining <= 0) {
+      status.textContent = 'Daily free-message estimate reached';
+    } else if (remaining <= 3) {
+      status.textContent = `${remaining} free AI messages left today`;
+    } else {
+      status.textContent = '';
     }
   }
 
@@ -456,10 +454,6 @@ class AppleIntelligenceChatbot {
   }
 
   updateStatusIndicator(status) {
-    this.setComposerChip(
-      'connection',
-      status === 'online' ? 'online' : status === 'offline' ? 'offline' : 'local'
-    );
     const statusEl = this.elements.widget?.querySelector('.chatbot-status-dot');
     const statusText = this.elements.widget?.querySelector('.chatbot-status-text');
     if (statusEl) {
@@ -484,27 +478,25 @@ class AppleIntelligenceChatbot {
 
   setComposerChip(chip, state) {
     if (!this.composerStates) {
-      this.composerStates = { connection: 'local', agent: 'idle', realtime: 'off' };
+      this.composerStates = { agent: 'idle', realtime: 'off' };
     }
     this.composerStates[chip] = state;
     const root = this.elements.composerStatus || document.getElementById('chatbot-composer-status');
     const el = root?.querySelector(`[data-chip="${chip}"]`);
-    if (!el) return;
+    if (!el) {
+      this.syncComposerStatusVisibility();
+      return;
+    }
     const labels = {
-      connection: {
-        online: 'Connected',
-        local: 'Local',
-        offline: 'Offline',
-      },
       agent: {
-        idle: 'Agent idle',
+        idle: 'Working',
         thinking: 'Thinking',
         generating: 'Generating',
         streaming: 'Streaming',
         agentic: 'Agent action',
       },
       realtime: {
-        off: 'Realtime off',
+        off: 'Voice',
         connecting: 'Voice connecting',
         listening: 'Voice listening',
         speaking: 'Voice speaking',
@@ -516,13 +508,28 @@ class AppleIntelligenceChatbot {
     if (label) {
       label.textContent = labels[chip]?.[state] || state;
     }
+    const idle =
+      (chip === 'agent' && (state === 'idle' || !state)) ||
+      (chip === 'realtime' && (state === 'off' || !state));
+    el.hidden = idle;
+    this.syncComposerStatusVisibility();
+  }
+
+  syncComposerStatusVisibility() {
+    const root = this.elements.composerStatus || document.getElementById('chatbot-composer-status');
+    if (!root) return;
+    const visible = root.querySelectorAll('.composer-status-chip:not([hidden])').length > 0;
+    root.hidden = !visible;
+    root.classList.toggle('is-idle', !visible);
   }
 
   setAgentComposerStatus(stage) {
+    // Thinking/generating/streaming already have a transcript indicator — don't mirror idle chrome.
+    if (stage === 'thinking' || stage === 'generating' || stage === 'streaming') {
+      this.setComposerChip('agent', 'idle');
+      return;
+    }
     const map = {
-      thinking: 'thinking',
-      generating: 'generating',
-      streaming: 'streaming',
       agentic: 'agentic',
       idle: 'idle',
     };
@@ -844,9 +851,7 @@ class AppleIntelligenceChatbot {
       clearBtn: document.getElementById('chatbot-clear-btn'),
       privacyBtn: document.getElementById('chatbot-privacy-btn'),
       summarizeBtn: document.getElementById('chatbot-summarize-btn'),
-      writingBtn: document.getElementById('chatbot-writing-btn'),
       plusBtn: document.getElementById('chatbot-plus-btn'),
-      attachBtn: document.getElementById('chatbot-attach-btn'),
       attachInput: document.getElementById('chatbot-attach-input'),
       form: document.getElementById('chatbot-form'),
       input: document.getElementById('chatbot-input'),
@@ -914,9 +919,7 @@ class AppleIntelligenceChatbot {
       privacyDashboard.open();
     });
     this.elements.summarizeBtn?.addEventListener('click', () => this.summarizeConversation());
-    this.elements.writingBtn?.addEventListener('click', () => this.toggleWritingTools());
     this.elements.plusBtn?.addEventListener('click', () => this.togglePlusMenu());
-    this.elements.attachBtn?.addEventListener('click', () => this.elements.attachInput?.click());
     this.elements.attachInput?.addEventListener('change', e => this.handleAttachFiles(e));
 
     this.elements.form?.addEventListener('submit', e => {
@@ -961,11 +964,7 @@ class AppleIntelligenceChatbot {
       if (!this.isOpen) return;
       const target = e.target;
       if (!(target instanceof Element)) return;
-      if (
-        target.closest(
-          '#chatbot-plus-btn, .composer-plus-popover, #chatbot-writing-btn, .writing-tools-popover'
-        )
-      ) {
+      if (target.closest('#chatbot-plus-btn, .composer-plus-popover, .writing-tools-popover')) {
         return;
       }
       this.closePlusMenu();
@@ -1275,28 +1274,14 @@ class AppleIntelligenceChatbot {
         welcomeDiv.innerHTML = `
                     <div class="message-content">
                         <div class="welcome-title">Welcome to AssistMe</div>
-                        <div class="welcome-subtitle">Your mini search engine for this portfolio — projects, skills, experience, contact, and on-page actions.</div>
-
-                        <div class="welcome-capabilities">
-                            <span class="capability-badge"><i class="fas fa-magnifying-glass"></i> Site Search</span>
-                            <span class="capability-badge"><i class="fas fa-briefcase"></i> Portfolio</span>
-                            <span class="capability-badge"><i class="fas fa-pen-nib"></i> Writing Tools</span>
-                        </div>
-
-                        <div class="welcome-chips">
-                        </div>
+                        <div class="welcome-subtitle">Ask about projects, skills, experience, or contact — or use + for tools.</div>
+                        <div class="welcome-chips"></div>
                     </div>
                 `;
         const chips = welcomeDiv.querySelector('.welcome-chips');
         [
           ['fas fa-magnifying-glass', 'Search this site', SITE_SEARCH_PROMPT],
           ['fas fa-rocket', 'Top Projects', "What are Mangesh's top projects?"],
-          ['fas fa-image', 'Generate image', CREATE_IMAGE_PROMPT],
-          [
-            'fas fa-chart-bar',
-            'Skills chart',
-            'Show a bar chart of Mangesh core skills (Java, Python, Spring, AWS, React, SQL)',
-          ],
           ['fas fa-envelope', 'Contact', 'How can I contact Mangesh?'],
         ].forEach(([iconClass, label, prompt]) => {
           chips?.appendChild(this.createWelcomeActionChip(iconClass, label, prompt));
@@ -1395,11 +1380,8 @@ class AppleIntelligenceChatbot {
     this.closePlusMenu();
     appleSounds.playClick();
 
-    // Add user message
-    this.addMessage(text, 'user');
-    if (imagesForTurn.length) {
-      this.addAttachmentPreviewMessage(imagesForTurn);
-    }
+    // Add user message (attachments live inside the same bubble — no second card row)
+    this.addMessage(text, 'user', { images: imagesForTurn });
 
     // Clear input
     if (this.elements.input) {
@@ -2096,7 +2078,21 @@ class AppleIntelligenceChatbot {
 
     const contentDiv = document.createElement('div');
     contentDiv.className = 'message-content';
-    contentDiv.textContent = text;
+    if (text) {
+      contentDiv.textContent = text;
+    }
+
+    const images = Array.isArray(options.images) ? options.images : [];
+    if (images.length) {
+      messageDiv.classList.add('has-attachments');
+      const thumbs = document.createElement('div');
+      thumbs.className = 'attachment-thumbs';
+      images.forEach((image, index) => {
+        const card = this.createAttachmentCard(image, index, { removable: false });
+        if (card) thumbs.appendChild(card);
+      });
+      contentDiv.appendChild(thumbs);
+    }
 
     messageDiv.appendChild(contentDiv);
     // User turns: pin via beginUserTurn (anchors near top). Assistant: follow if reading.
@@ -2372,19 +2368,14 @@ class AppleIntelligenceChatbot {
         onSelect: () => this.elements.attachInput?.click(),
       },
       {
-        icon: 'fa-wand-magic-sparkles',
-        label: 'Create image',
-        onSelect: () => this.ask(CREATE_IMAGE_PROMPT),
-      },
-      {
-        icon: 'fa-magnifying-glass',
-        label: 'Search this site',
-        onSelect: () => this.ask(SITE_SEARCH_PROMPT),
-      },
-      {
         icon: 'fa-pen-nib',
         label: 'Writing Tools',
         onSelect: () => this.toggleWritingTools(),
+      },
+      {
+        icon: 'fa-wand-magic-sparkles',
+        label: 'Summarize chat',
+        onSelect: () => this.summarizeConversation(),
       },
     ];
 
@@ -2450,12 +2441,10 @@ class AppleIntelligenceChatbot {
     });
 
     this.elements.form?.appendChild(popover);
-    this.elements.writingBtn?.setAttribute('aria-expanded', 'true');
   }
 
   closeWritingTools() {
     this.elements.widget?.querySelectorAll('.writing-tools-popover').forEach(el => el.remove());
-    this.elements.writingBtn?.setAttribute('aria-expanded', 'false');
   }
 
   async applyWritingTool(tool) {
@@ -2484,11 +2473,11 @@ class AppleIntelligenceChatbot {
       return;
     }
 
-    const writingBtn = this.elements.writingBtn;
-    const originalIcon = writingBtn?.innerHTML;
-    if (writingBtn) {
-      writingBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-      writingBtn.disabled = true;
+    const busyBtn = this.elements.plusBtn;
+    const originalIcon = busyBtn?.innerHTML;
+    if (busyBtn) {
+      busyBtn.innerHTML = '<i class="fas fa-spinner fa-spin" aria-hidden="true"></i>';
+      busyBtn.disabled = true;
     }
     this.isProcessing = true;
 
@@ -2507,7 +2496,7 @@ class AppleIntelligenceChatbot {
         this.autoResizeTextarea(this.elements.input);
         this.decrementRemainingQueries();
         if (this.elements.rateStatus) {
-          this.elements.rateStatus.textContent = `✦ ${tool.label} applied — review and send.`;
+          this.elements.rateStatus.textContent = `${tool.label} applied — review and send.`;
         }
       } else if (this.elements.rateStatus) {
         this.elements.rateStatus.textContent = 'Writing Tools returned nothing. Try again.';
@@ -2522,9 +2511,9 @@ class AppleIntelligenceChatbot {
       }
     } finally {
       this.isProcessing = false;
-      if (writingBtn) {
-        writingBtn.innerHTML = originalIcon;
-        writingBtn.disabled = false;
+      if (busyBtn) {
+        busyBtn.innerHTML = originalIcon;
+        busyBtn.disabled = false;
       }
       this.elements.input?.focus();
     }
@@ -2555,7 +2544,9 @@ class AppleIntelligenceChatbot {
     this.pendingImages = next.slice(0, 2);
     this.renderAttachPreview();
     if (this.pendingImages.length && this.elements.rateStatus) {
-      this.elements.rateStatus.textContent = `${this.pendingImages.length} image ready — ask a question (free vision).`;
+      this.elements.rateStatus.textContent = `${this.pendingImages.length} image attached`;
+    } else {
+      this.updateRateLimitBadge();
     }
   }
 
@@ -2620,20 +2611,6 @@ class AppleIntelligenceChatbot {
       if (card) bar.appendChild(card);
     });
     wrapper.appendChild(bar);
-  }
-
-  addAttachmentPreviewMessage(images) {
-    if (!images?.length || !this.elements.messages) return;
-    const row = document.createElement('div');
-    row.className = 'message user-message attachment-preview-message';
-    const content = document.createElement('div');
-    content.className = 'message-content attachment-thumbs';
-    images.forEach((image, index) => {
-      const card = this.createAttachmentCard(image, index, { removable: false });
-      if (card) content.appendChild(card);
-    });
-    row.appendChild(content);
-    this.appendToMessages(row, { pin: false });
   }
 
   // ── Siri AI: On-Screen Awareness (WWDC26) ───────────────────────

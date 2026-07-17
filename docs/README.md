@@ -3,6 +3,7 @@
 | Doc                                          | Contents                                                    |
 | -------------------------------------------- | ----------------------------------------------------------- |
 | [STRUCTURE.md](./STRUCTURE.md)               | Canonical folder map — **start here when organizing code**  |
+| [foglamp-scan.md](./foglamp-scan.md)         | Public AI architecture map (Foglamp) + keep-alive           |
 | [plans/](./plans/)                           | Improve-skill / audit execution plans (historical + active) |
 | [../README.md](../README.md)                 | Public project README                                       |
 | [../AGENTS.md](../AGENTS.md)                 | AI agent briefing                                           |

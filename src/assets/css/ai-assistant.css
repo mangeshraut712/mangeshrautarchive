@@ -745,12 +745,9 @@ html.dark #chatbot-messages::-webkit-scrollbar-thumb:hover {
   animation-delay: 1.4s;
 }
 
-/* Welcome Capabilities Grid */
+/* Welcome capability badges removed from AssistMe UI */
 .welcome-capabilities {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin-bottom: 14px;
+  display: none;
 }
 
 .capability-tag {
@@ -1466,13 +1463,28 @@ html.dark #chatbot-input {
 }
 
 .chatbot-rate-status {
-  min-height: 18px;
+  min-height: 0;
   margin: 8px 2px 0;
   color: rgba(60, 60, 67, 0.72);
   font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 0;
   text-align: right;
+}
+
+.chatbot-rate-status:empty {
+  display: none;
+  margin: 0;
+}
+
+.message.has-attachments .message-content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.message.has-attachments .attachment-thumbs {
+  margin-top: 2px;
 }
 
 html.dark .chatbot-rate-status {

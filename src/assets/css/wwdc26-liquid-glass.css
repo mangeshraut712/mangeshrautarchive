@@ -581,7 +581,7 @@ html.dark #chatbot-widget .thinking-content {
 
 #chatbot-widget .writing-tools-popover {
   position: absolute;
-  right: 52px;
+  right: 12px;
   bottom: calc(100% + 8px);
   z-index: 20;
   display: flex;
@@ -991,14 +991,29 @@ html.dark #chatbot-widget .chatbot-close-btn:hover {
   caret-color: var(--siri-c2);
 }
 
-/* Composer agent + realtime status chips */
+/* Composer agent + realtime status chips — only while active */
 #chatbot-widget .chatbot-composer-status {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 6px;
   margin: 2px 4px 0;
-  min-height: 18px;
+  min-height: 0;
+}
+
+#chatbot-widget .chatbot-composer-status[hidden],
+#chatbot-widget .chatbot-composer-status.is-idle {
+  display: none;
+}
+
+#chatbot-widget .composer-status-chip[hidden] {
+  display: none;
+}
+
+#chatbot-widget #chatbot-rate-status:empty {
+  display: none;
+  margin: 0;
+  min-height: 0;
 }
 
 #chatbot-widget .composer-status-chip {
@@ -1169,8 +1184,6 @@ html.dark #chatbot-widget .chatbot-dictation-status {
 
 #chatbot-widget .chatbot-voice-btn,
 #chatbot-widget .chatbot-send-btn,
-#chatbot-widget .chatbot-writing-btn,
-#chatbot-widget .chatbot-attach-btn,
 #chatbot-widget .chatbot-plus-btn {
   width: 44px;
   height: 44px;

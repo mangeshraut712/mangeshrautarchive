@@ -185,5 +185,6 @@ secrets.*
 .codacy/
 .secrets/
 
-# Foglamp scan lock (editToken is secret)
-.foglamp/
+# Foglamp: commit scan.json (public architecture summary); never commit the edit token
+.foglamp/scan.lock.json
+.foglamp/*.lock.json

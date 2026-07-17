@@ -1,0 +1,775 @@
+{
+  "version": 1,
+  "project": {
+    "name": "mangeshrautarchive",
+    "slug": "mangeshrautarchive",
+    "tagline": "Agentic portfolio with AssistMe AI over OpenRouter",
+    "iconDomain": "mangeshraut.pro",
+    "date": "2026-07-17"
+  },
+  "stats": {
+    "agents": 4,
+    "models": 6,
+    "tools": 8,
+    "integrations": 10
+  },
+  "topModels": [
+    {
+      "id": "grok-4.3",
+      "label": "Grok 4.3",
+      "domain": "x.ai"
+    },
+    {
+      "id": "nemotron-super-free",
+      "label": "Nemotron 3 Super",
+      "domain": "nvidia.com"
+    },
+    {
+      "id": "gemma-4-free",
+      "label": "Gemma 4 Free",
+      "domain": "gemini.google.com"
+    }
+  ],
+  "topTools": [
+    {
+      "id": "webmcp",
+      "label": "WebMCP Actions",
+      "domain": "w3.org"
+    },
+    {
+      "id": "site-rag",
+      "label": "Site Knowledge RAG"
+    },
+    {
+      "id": "or-web-search",
+      "label": "OpenRouter Web",
+      "domain": "openrouter.ai"
+    },
+    {
+      "id": "pollinations",
+      "label": "Pollinations Images",
+      "domain": "pollinations.ai"
+    },
+    {
+      "id": "writing-tools",
+      "label": "Writing Tools"
+    },
+    {
+      "id": "vision-attach",
+      "label": "Image Vision Attach"
+    },
+    {
+      "id": "rich-media",
+      "label": "Charts & Rich Media"
+    },
+    {
+      "id": "browser-voice",
+      "label": "Browser STT/TTS"
+    }
+  ],
+  "topIntegrations": [
+    {
+      "id": "openrouter",
+      "label": "OpenRouter",
+      "domain": "openrouter.ai"
+    },
+    {
+      "id": "cloudflare",
+      "label": "Cloudflare Workers",
+      "domain": "cloudflare.com"
+    },
+    {
+      "id": "ga4",
+      "label": "Google Analytics 4",
+      "domain": "analytics.google.com"
+    },
+    {
+      "id": "github",
+      "label": "GitHub API",
+      "domain": "github.com"
+    },
+    {
+      "id": "lastfm",
+      "label": "Last.fm",
+      "domain": "last.fm"
+    },
+    {
+      "id": "whoop",
+      "label": "WHOOP",
+      "domain": "whoop.com"
+    },
+    {
+      "id": "withings",
+      "label": "Withings",
+      "domain": "withings.com"
+    },
+    {
+      "id": "gcal",
+      "label": "Google Calendar",
+      "domain": "calendar.google.com"
+    },
+    {
+      "id": "supabase",
+      "label": "Supabase",
+      "domain": "supabase.com"
+    },
+    {
+      "id": "vercel-analytics",
+      "label": "Vercel Analytics",
+      "domain": "vercel.com"
+    }
+  ],
+  "graph": {
+    "nodes": [
+      {
+        "id": "entry-site",
+        "kind": "entry",
+        "label": "Portfolio site",
+        "sub": "mangeshraut.pro + Pages",
+        "group": "Surface",
+        "sourceRef": "src/index.html",
+        "detail": "Vanilla HTML/CSS/JS portfolio with AssistMe widget, systems, monitor, travel, and uses pages."
+      },
+      {
+        "id": "entry-chat-ui",
+        "kind": "entry",
+        "label": "AssistMe chat UI",
+        "sub": "stream + attach + voice",
+        "group": "AssistMe",
+        "sourceRef": "src/js/modules/chatbot.js",
+        "detail": "Apple Intelligence–style chat: NDJSON streaming, Writing Tools, image attach, agent chips, realtime voice."
+      },
+      {
+        "id": "entry-api-chat",
+        "kind": "entry",
+        "label": "POST /api/chat",
+        "sub": "FastAPI chat route",
+        "group": "AssistMe",
+        "sourceRef": "api/routes/chat.py:909",
+        "detail": "Rate-limited chat endpoint with RAG, model routing, streaming, and session memory."
+      },
+      {
+        "id": "entry-pages",
+        "kind": "entry",
+        "label": "GitHub Pages host",
+        "sub": "github.io mirror",
+        "group": "Dual host",
+        "sourceRef": "src/js/utils/api-host.js",
+        "detail": "Static mirror prefers Cloudflare Worker when Vercel primary is unavailable."
+      },
+      {
+        "id": "cron-vitals",
+        "kind": "cron",
+        "label": "Health vitals cron",
+        "sub": "0 13 * * * UTC",
+        "group": "Health",
+        "sourceRef": "vercel.json:19",
+        "detail": "Daily WHOOP/Withings sync into encrypted vault and health summary."
+      },
+      {
+        "id": "cron-postdeploy",
+        "kind": "cron",
+        "label": "Post-deploy monitor",
+        "sub": "daily GH Actions",
+        "group": "Dual host",
+        "sourceRef": ".github/workflows/post-deploy-monitoring.yml",
+        "detail": "Daily reachability and Lighthouse checks across Vercel and GitHub Pages."
+      },
+      {
+        "id": "agent-assistme",
+        "kind": "agent",
+        "label": "AssistMe agent",
+        "sub": "OpenRouter stream proxy",
+        "group": "AssistMe",
+        "sourceRef": "api/routes/chat.py",
+        "detail": "Portfolio assistant: site RAG, free/paid model chain, Telegram-style rich replies."
+      },
+      {
+        "id": "agent-webmcp",
+        "kind": "agent",
+        "label": "WebMCP agent",
+        "sub": "10 on-page tools",
+        "group": "AssistMe",
+        "sourceRef": "src/js/modules/agentic-actions.js:27",
+        "detail": "Navigates, filters projects, opens Calendly/resume/contact, toggles theme via WebMCP or regex."
+      },
+      {
+        "id": "agent-realtime",
+        "kind": "agent",
+        "label": "Realtime voice",
+        "sub": "AI Gateway WS",
+        "group": "AssistMe",
+        "sourceRef": "api/routes/realtime.py:131",
+        "detail": "Mints a realtime session and proxies browser audio over WebSocket to gpt-realtime-2."
+      },
+      {
+        "id": "agent-local",
+        "kind": "agent",
+        "label": "Local Intelligence",
+        "sub": "offline portfolio KB",
+        "group": "AssistMe",
+        "sourceRef": "api/routes/chat.py:971",
+        "detail": "Canned portfolio answers when OpenRouter key is missing or upstream fails."
+      },
+      {
+        "id": "model-grok",
+        "kind": "model",
+        "label": "Grok 4.3",
+        "sub": "x-ai/grok-4.3",
+        "domain": "x.ai",
+        "group": "Models",
+        "sourceRef": "api/config.py:24",
+        "detail": "Paid primary OpenRouter model; falls to free chain on HTTP 402."
+      },
+      {
+        "id": "model-nemotron",
+        "kind": "model",
+        "label": "Nemotron 3 Super",
+        "sub": "free OpenRouter",
+        "domain": "nvidia.com",
+        "group": "Models",
+        "sourceRef": "api/config.py:28",
+        "detail": "Credit-safe default for AssistMe text chat on edge and FastAPI fallbacks."
+      },
+      {
+        "id": "model-gemma",
+        "kind": "model",
+        "label": "Gemma 4 Free",
+        "sub": "vision + text",
+        "domain": "gemini.google.com",
+        "group": "Models",
+        "sourceRef": "api/config.py:36",
+        "detail": "Free multimodal path for image attach and text fallbacks."
+      },
+      {
+        "id": "model-gemini-flash",
+        "kind": "model",
+        "label": "Gemini 2.5 Flash",
+        "sub": "fast fallback",
+        "domain": "gemini.google.com",
+        "group": "Models",
+        "sourceRef": "api/config.py:23",
+        "detail": "Paid fast fallback for short math/trivia and recovery after free-tier issues."
+      },
+      {
+        "id": "model-realtime",
+        "kind": "model",
+        "label": "gpt-realtime-2",
+        "sub": "voice session",
+        "domain": "openai.com",
+        "group": "Models",
+        "sourceRef": "api/ai_gateway_realtime.py:11",
+        "detail": "Realtime speech model via Vercel AI Gateway WebSocket proxy."
+      },
+      {
+        "id": "tool-webmcp",
+        "kind": "tool",
+        "label": "WebMCP toolset",
+        "sub": "navigate · resume · search",
+        "group": "AssistMe",
+        "sourceRef": "src/js/modules/agentic-actions.js",
+        "detail": "Registers navigator.modelContext tools for agentic UI actions on the portfolio."
+      },
+      {
+        "id": "tool-rag",
+        "kind": "tool",
+        "label": "Site knowledge RAG",
+        "sub": "retrieve_site_context",
+        "group": "AssistMe",
+        "sourceRef": "api/site_knowledge.py:365",
+        "detail": "Retrieves portfolio HTML/JS/blog chunks into the chat system prompt."
+      },
+      {
+        "id": "tool-websearch",
+        "kind": "tool",
+        "label": "OpenRouter web tools",
+        "sub": "web_search + fetch",
+        "domain": "openrouter.ai",
+        "sourceRef": "api/routes/chat.py:127",
+        "detail": "Optional live web search/fetch plugins when the query needs external facts."
+      },
+      {
+        "id": "tool-pollinations",
+        "kind": "tool",
+        "label": "Pollinations images",
+        "sub": "free image URLs",
+        "domain": "pollinations.ai",
+        "sourceRef": "src/js/chatbot/rich-media.js",
+        "detail": "Client-side free image generation URLs when OpenRouter image models are paid-only."
+      },
+      {
+        "id": "tool-writing",
+        "kind": "tool",
+        "label": "Writing Tools",
+        "sub": "proofread · rewrite",
+        "sourceRef": "src/js/modules/chatbot.js:81",
+        "detail": "Ephemeral rewrite passes (proofread, tone) that do not pollute chat history."
+      },
+      {
+        "id": "tool-vision",
+        "kind": "tool",
+        "label": "Vision attach",
+        "sub": "up to 2 images",
+        "sourceRef": "src/js/modules/chatbot.js:2413",
+        "detail": "Uploads data-URL images to free vision models for OCR/describe."
+      },
+      {
+        "id": "tool-charts",
+        "kind": "tool",
+        "label": "Rich charts/SVG",
+        "sub": "Telegram-style media",
+        "sourceRef": "src/js/chatbot/rich-media.js",
+        "detail": "Renders chart JSON fences and SVG into chat bubbles."
+      },
+      {
+        "id": "svc-fastapi",
+        "kind": "service",
+        "label": "FastAPI app",
+        "sub": "api/index.py",
+        "group": "Backend",
+        "sourceRef": "api/index.py",
+        "detail": "Vercel Python entry mounting chat, media, github, analytics, integrations, realtime."
+      },
+      {
+        "id": "svc-router",
+        "kind": "service",
+        "label": "Model router",
+        "sub": "intent → model",
+        "group": "AssistMe",
+        "sourceRef": "api/model_router.py:79",
+        "detail": "Routes portfolio, fusion, vision, and free-credit paths across OpenRouter models."
+      },
+      {
+        "id": "svc-monitor",
+        "kind": "service",
+        "label": "Platform monitor",
+        "sub": "probes + events",
+        "group": "Backend",
+        "sourceRef": "api/monitoring.py",
+        "detail": "Health probes for OpenRouter, GitHub, memory, and dual-host status surfaces."
+      },
+      {
+        "id": "svc-ratelimit",
+        "kind": "service",
+        "label": "Rate limiter",
+        "sub": "40 req / 60s",
+        "group": "Backend",
+        "sourceRef": "api/rate_limit.py",
+        "detail": "IP rate limits with optional Upstash Redis backend for serverless durability."
+      },
+      {
+        "id": "svc-reach",
+        "kind": "service",
+        "label": "Portfolio Reach",
+        "sub": "analytics pipeline",
+        "group": "Analytics",
+        "sourceRef": "api/routes/analytics.py",
+        "detail": "Aggregates visits and GA4 snapshots for the hero reach widget."
+      },
+      {
+        "id": "svc-sync",
+        "kind": "service",
+        "label": "Health sync engine",
+        "sub": "WHOOP + Withings",
+        "group": "Health",
+        "sourceRef": "api/integrations/sync_engine.py",
+        "detail": "Polls wearables, normalizes vitals, stores encrypted sync state."
+      },
+      {
+        "id": "svc-privacy",
+        "kind": "service",
+        "label": "Privacy dashboard",
+        "sub": "export · delete",
+        "sourceRef": "src/js/modules/privacy-dashboard.js",
+        "detail": "GDPR-style preferences, export, and deletion for AssistMe personalization."
+      },
+      {
+        "id": "svc-edge",
+        "kind": "service",
+        "label": "AssistMe CF Worker",
+        "sub": "Pages API mirror",
+        "group": "Dual host",
+        "domain": "cloudflare.com",
+        "sourceRef": "workers/assistme-chat/src/index.js",
+        "detail": "Cloudflare Worker mirrors chat/health/github/music/reach for GitHub Pages."
+      },
+      {
+        "id": "store-conv",
+        "kind": "store",
+        "label": "Chat memory",
+        "sub": "in-process + local",
+        "group": "AssistMe",
+        "sourceRef": "api/config.py:119",
+        "detail": "Server session memory plus browser localStorage conversation persistence."
+      },
+      {
+        "id": "store-analytics",
+        "kind": "store",
+        "label": "Analytics store",
+        "sub": "Firestore/Redis/file",
+        "group": "Analytics",
+        "sourceRef": "api/analytics_store.py",
+        "detail": "Layered reach persistence: Firestore, Redis/KV, file, then memory."
+      },
+      {
+        "id": "store-supabase",
+        "kind": "store",
+        "label": "Supabase vault",
+        "sub": "OAuth + vitals",
+        "domain": "supabase.com",
+        "group": "Health",
+        "sourceRef": "api/integrations/supabase_store.py",
+        "detail": "Encrypted OAuth tokens and health sync rows for integrations."
+      },
+      {
+        "id": "store-ratelimit",
+        "kind": "store",
+        "label": "Rate-limit store",
+        "sub": "memory or Upstash",
+        "sourceRef": "api/rate_limit.py",
+        "detail": "Sliding-window counters for chat and API abuse protection."
+      },
+      {
+        "id": "ext-openrouter",
+        "kind": "external",
+        "label": "OpenRouter API",
+        "sub": "chat completions",
+        "domain": "openrouter.ai",
+        "group": "Models",
+        "sourceRef": "api/config.py:45",
+        "detail": "Unified LLM gateway for Grok, Nemotron, Gemma, Auto, and Fusion."
+      },
+      {
+        "id": "ext-ga4",
+        "kind": "external",
+        "label": "GA4 Data API",
+        "sub": "reach + realtime",
+        "domain": "analytics.google.com",
+        "group": "Analytics",
+        "sourceRef": "api/google_analytics.py",
+        "detail": "Service-account reads for Portfolio Reach and country breakdown."
+      },
+      {
+        "id": "ext-github",
+        "kind": "external",
+        "label": "GitHub API",
+        "sub": "repos proxy",
+        "domain": "github.com",
+        "sourceRef": "api/routes/github.py",
+        "detail": "Public repos and profile data for the projects showcase."
+      },
+      {
+        "id": "ext-lastfm",
+        "kind": "external",
+        "label": "Last.fm API",
+        "sub": "now playing",
+        "domain": "last.fm",
+        "sourceRef": "api/routes/media.py:367",
+        "detail": "Recent tracks and artwork for the music card."
+      },
+      {
+        "id": "ext-whoop",
+        "kind": "external",
+        "label": "WHOOP API",
+        "sub": "strain · recovery",
+        "domain": "whoop.com",
+        "group": "Health",
+        "sourceRef": "api/integrations/whoop.py",
+        "detail": "OAuth wearable metrics for sleep, strain, and recovery."
+      },
+      {
+        "id": "ext-withings",
+        "kind": "external",
+        "label": "Withings API",
+        "sub": "body metrics",
+        "domain": "withings.com",
+        "group": "Health",
+        "sourceRef": "api/integrations/withings.py",
+        "detail": "OAuth body/composition metrics merged into health vitals."
+      },
+      {
+        "id": "ext-gcal",
+        "kind": "external",
+        "label": "Google Calendar",
+        "sub": "availability",
+        "domain": "calendar.google.com",
+        "sourceRef": "api/integrations/google_calendar.py",
+        "detail": "Availability and webhook sync for scheduling surfaces."
+      }
+    ],
+    "edges": [
+      {
+        "from": "entry-site",
+        "to": "entry-chat-ui",
+        "kind": "triggers",
+        "label": "opens AssistMe"
+      },
+      {
+        "from": "entry-chat-ui",
+        "to": "agent-assistme",
+        "kind": "triggers"
+      },
+      {
+        "from": "entry-chat-ui",
+        "to": "agent-webmcp",
+        "kind": "triggers",
+        "label": "agentic chips"
+      },
+      {
+        "from": "entry-chat-ui",
+        "to": "agent-realtime",
+        "kind": "triggers",
+        "label": "voice mode"
+      },
+      {
+        "from": "entry-chat-ui",
+        "to": "tool-writing",
+        "kind": "calls"
+      },
+      {
+        "from": "entry-chat-ui",
+        "to": "tool-vision",
+        "kind": "calls"
+      },
+      {
+        "from": "entry-chat-ui",
+        "to": "tool-charts",
+        "kind": "calls"
+      },
+      {
+        "from": "entry-chat-ui",
+        "to": "tool-pollinations",
+        "kind": "calls"
+      },
+      {
+        "from": "entry-api-chat",
+        "to": "svc-fastapi",
+        "kind": "triggers"
+      },
+      {
+        "from": "entry-pages",
+        "to": "svc-edge",
+        "kind": "calls",
+        "label": "skip dead Vercel"
+      },
+      {
+        "from": "svc-fastapi",
+        "to": "agent-assistme",
+        "kind": "triggers"
+      },
+      {
+        "from": "svc-fastapi",
+        "to": "svc-ratelimit",
+        "kind": "calls"
+      },
+      {
+        "from": "agent-assistme",
+        "to": "svc-router",
+        "kind": "calls"
+      },
+      {
+        "from": "agent-assistme",
+        "to": "tool-rag",
+        "kind": "reads",
+        "label": "inject site facts"
+      },
+      {
+        "from": "agent-assistme",
+        "to": "tool-websearch",
+        "kind": "calls"
+      },
+      {
+        "from": "agent-assistme",
+        "to": "store-conv",
+        "kind": "writes"
+      },
+      {
+        "from": "agent-assistme",
+        "to": "agent-local",
+        "kind": "triggers",
+        "label": "no key / 402"
+      },
+      {
+        "from": "svc-router",
+        "to": "model-grok",
+        "kind": "calls"
+      },
+      {
+        "from": "svc-router",
+        "to": "model-nemotron",
+        "kind": "calls",
+        "label": "credit-safe"
+      },
+      {
+        "from": "svc-router",
+        "to": "model-gemma",
+        "kind": "calls",
+        "label": "vision-free"
+      },
+      {
+        "from": "svc-router",
+        "to": "model-gemini-flash",
+        "kind": "calls"
+      },
+      {
+        "from": "model-grok",
+        "to": "ext-openrouter",
+        "kind": "calls"
+      },
+      {
+        "from": "model-nemotron",
+        "to": "ext-openrouter",
+        "kind": "calls"
+      },
+      {
+        "from": "model-gemma",
+        "to": "ext-openrouter",
+        "kind": "calls"
+      },
+      {
+        "from": "model-gemini-flash",
+        "to": "ext-openrouter",
+        "kind": "calls"
+      },
+      {
+        "from": "svc-edge",
+        "to": "ext-openrouter",
+        "kind": "calls",
+        "label": "Nemotron default"
+      },
+      {
+        "from": "svc-edge",
+        "to": "agent-local",
+        "kind": "triggers"
+      },
+      {
+        "from": "agent-webmcp",
+        "to": "tool-webmcp",
+        "kind": "calls"
+      },
+      {
+        "from": "agent-realtime",
+        "to": "model-realtime",
+        "kind": "calls"
+      },
+      {
+        "from": "tool-vision",
+        "to": "model-gemma",
+        "kind": "calls"
+      },
+      {
+        "from": "tool-writing",
+        "to": "agent-assistme",
+        "kind": "triggers",
+        "label": "ephemeral rewrite"
+      },
+      {
+        "from": "svc-ratelimit",
+        "to": "store-ratelimit",
+        "kind": "writes"
+      },
+      {
+        "from": "svc-reach",
+        "to": "store-analytics",
+        "kind": "writes"
+      },
+      {
+        "from": "svc-reach",
+        "to": "ext-ga4",
+        "kind": "reads",
+        "label": "GA4 snapshot"
+      },
+      {
+        "from": "entry-site",
+        "to": "svc-reach",
+        "kind": "triggers"
+      },
+      {
+        "from": "entry-site",
+        "to": "ext-lastfm",
+        "kind": "reads",
+        "label": "via /api/music"
+      },
+      {
+        "from": "entry-site",
+        "to": "ext-github",
+        "kind": "reads",
+        "label": "via /api/github"
+      },
+      {
+        "from": "svc-fastapi",
+        "to": "ext-lastfm",
+        "kind": "calls"
+      },
+      {
+        "from": "svc-fastapi",
+        "to": "ext-github",
+        "kind": "calls"
+      },
+      {
+        "from": "cron-vitals",
+        "to": "svc-sync",
+        "kind": "triggers"
+      },
+      {
+        "from": "svc-sync",
+        "to": "ext-whoop",
+        "kind": "reads"
+      },
+      {
+        "from": "svc-sync",
+        "to": "ext-withings",
+        "kind": "reads"
+      },
+      {
+        "from": "svc-sync",
+        "to": "store-supabase",
+        "kind": "writes",
+        "label": "encrypted tokens"
+      },
+      {
+        "from": "svc-fastapi",
+        "to": "ext-gcal",
+        "kind": "calls"
+      },
+      {
+        "from": "svc-privacy",
+        "to": "store-conv",
+        "kind": "writes",
+        "label": "wipe on delete"
+      },
+      {
+        "from": "svc-monitor",
+        "to": "ext-openrouter",
+        "kind": "reads"
+      },
+      {
+        "from": "svc-monitor",
+        "to": "svc-edge",
+        "kind": "reads"
+      },
+      {
+        "from": "cron-postdeploy",
+        "to": "entry-site",
+        "kind": "reads"
+      },
+      {
+        "from": "cron-postdeploy",
+        "to": "entry-pages",
+        "kind": "reads"
+      },
+      {
+        "from": "entry-chat-ui",
+        "to": "entry-api-chat",
+        "kind": "calls",
+        "label": "same-origin"
+      },
+      {
+        "from": "entry-chat-ui",
+        "to": "svc-edge",
+        "kind": "calls",
+        "label": "Pages host"
+      }
+    ]
+  }
+}

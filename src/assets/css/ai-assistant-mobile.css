@@ -163,10 +163,8 @@
 
   /* 44×44 touch targets (WCAG 2.2 / Apple HIG) */
   .chatbot-voice-btn,
-  .chatbot-writing-btn,
   .chatbot-send-btn,
   .chatbot-plus-btn,
-  #chatbot-widget .chatbot-writing-btn,
   #chatbot-widget .chatbot-plus-btn {
     width: 44px !important;
     height: 44px !important;

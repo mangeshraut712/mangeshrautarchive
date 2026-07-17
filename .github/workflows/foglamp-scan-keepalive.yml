@@ -1,0 +1,49 @@
+# Refresh the public Foglamp architecture map so the unlisted URL does not expire.
+# Requires repo secret: FOGLAMP_SCAN_EDIT_TOKEN (= .foglamp/scan.lock.json editToken)
+#
+# Manual: Actions → “Foglamp scan keep-alive” → Run workflow
+
+name: Foglamp scan keep-alive
+
+on:
+  schedule:
+    # ~every 45 days (Foglamp expiry is ~90 days)
+    - cron: '17 6 1 */1 *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: foglamp-scan-keepalive
+  cancel-in-progress: true
+
+jobs:
+  publish:
+    name: Refresh public scan
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: npm
+
+      - name: Require edit token secret
+        env:
+          FOGLAMP_SCAN_EDIT_TOKEN: ${{ secrets.FOGLAMP_SCAN_EDIT_TOKEN }}
+        run: |
+          if [ -z "$FOGLAMP_SCAN_EDIT_TOKEN" ]; then
+            echo "::error::Missing secret FOGLAMP_SCAN_EDIT_TOKEN."
+            echo "Copy editToken from local .foglamp/scan.lock.json into the repo secret, then re-run."
+            exit 1
+          fi
+
+      - name: Publish / refresh scan
+        env:
+          FOGLAMP_SCAN_EDIT_TOKEN: ${{ secrets.FOGLAMP_SCAN_EDIT_TOKEN }}
+        run: node scripts/integrations/publish-foglamp-scan.mjs
