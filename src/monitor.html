@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <script src="js/utils/liquid-glass-boot.js?v=20260717cleartheme"></script>
-    <script src="js/utils/deferred-analytics.js"></script>
+    <script src="js/utils/deferred-analytics.js" defer></script>
 
     <meta charset="UTF-8" />
     <meta
@@ -61,7 +61,7 @@
       media="(device-width: 440px) and (device-height: 956px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)"
     />
     <link rel="manifest" href="manifest.json" />
-    <script src="build-config.js"></script>
+    <script src="build-config.js" defer></script>
     <script>
       (function () {
         // Prefer build-config (CHAT_API_BASE → Cloudflare Worker). Never force blocked Vercel on Pages.

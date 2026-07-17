@@ -49,8 +49,8 @@
     }
   </script>
 
-  <!-- Google tag (gtag.js) — deferred; cookie_domain fixed for github.io / vercel.app PSL -->
-  <script src="js/utils/deferred-analytics.js"></script>
+  <!-- GA bootstrap — defer so it never blocks FCP/LCP (PageSpeed render-blocking) -->
+  <script src="js/utils/deferred-analytics.js" defer></script>
 
   <meta charset="UTF-8" />
   <title>Mangesh Raut | Software Engineer — Java, Python, AWS, Full-Stack</title>
@@ -788,7 +788,7 @@ html.dark #home .hero-name-text {
       OPENROUTER_API_KEY: '' // Not used in frontend - backend only
     });
   </script>
-  <script src="build-config.js" data-skip-perf-audit></script>
+  <script src="build-config.js" defer data-skip-perf-audit></script>
   <script>
     if (window.__PERF_AUDIT__) {
       document.querySelector('script[data-skip-perf-audit]')?.remove();
@@ -945,8 +945,14 @@ html.dark #home .hero-name-text {
   <noscript
     ><link rel="stylesheet" href="assets/css/apple-cards-luxury-2026.css?v=20260717clean"
   /></noscript>
-  <!-- Render-blocking: hero layout must match first paint (deferred promote caused CLS) -->
-  <link rel="stylesheet" href="assets/css/homepage.css?v=20260718about" />
+  <!-- Non-blocking: critical + heroLcpLock already lock mobile/desktop hero metrics for LCP -->
+  <link
+    rel="stylesheet"
+    href="assets/css/homepage.css?v=20260718about"
+    media="print"
+    onload="this.media='all'"
+  />
+  <noscript><link rel="stylesheet" href="assets/css/homepage.css?v=20260718about" /></noscript>
   <link
     rel="stylesheet"
     href="assets/css/global-improvements.css?v=20260716aa"

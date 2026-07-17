@@ -43,7 +43,8 @@ const INTERACTION_MODULES = [
 
 /* Tighter rootMargin = modules load when near, not all at once mid-page */
 const SECTION_MODULES = [
-  { sectionId: 'home', modulePath: '../modules/lastfm.js', rootMargin: '200px 0px' },
+  /* Wider negative margin delays music card until below-fold — cuts hero CLS on PSI desktop */
+  { sectionId: 'home', modulePath: '../modules/lastfm.js', rootMargin: '-10% 0px' },
   {
     sectionId: 'about',
     modulePath: '../modules/card-content-accessibility.js',

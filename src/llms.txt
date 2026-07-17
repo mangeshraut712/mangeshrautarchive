@@ -1,7 +1,7 @@
-# Mangesh Raut — Portfolio & Archive (llms.txt)
+# Mangesh Raut — Portfolio & Archive
 
 > Official site for AI agents, answer engines, and tools that need accurate context about Mangesh Raut and this portfolio.
-> Last updated: 2026-07-15
+> Last updated: 2026-07-18
 
 ## Identity
 
@@ -9,17 +9,28 @@
 - **Role**: Software Engineer — production AI products, full-stack, cloud systems
 - **Education**: MS Computer Science, Drexel University (Philadelphia, PA)
 - **Experience**: 6+ years shipping full-stack, cloud, and agentic systems
-- **Primary URL**: https://mangeshraut.pro/
-- **Mirror**: https://mangeshraut712.github.io/mangeshrautarchive/
-- **GitHub**: https://github.com/mangeshraut712
-- **LinkedIn**: https://www.linkedin.com/in/mangeshraut71298/
-- **X**: https://x.com/mrcommando712
 - **Email**: mbr63@drexel.edu · mbr63drexel@gmail.com
-- **Resume**: https://mangeshraut.pro/assets/files/Mangesh_Raut_Resume.pdf
+
+## Key links
+
+- [Live portfolio (GitHub Pages)](https://mangeshraut712.github.io/mangeshrautarchive/)
+- [Custom domain](https://mangeshraut.pro/)
+- [GitHub profile](https://github.com/mangeshraut712)
+- [LinkedIn](https://www.linkedin.com/in/mangeshraut71298/)
+- [X / Twitter](https://x.com/mrcommando712)
+- [Resume PDF](https://mangeshraut712.github.io/mangeshrautarchive/assets/files/Mangesh_Raut_Resume.pdf)
+- [Field Notes blog](https://mangeshraut712.github.io/mangeshrautarchive/blog/)
+- [Systems notebook](https://mangeshraut712.github.io/mangeshrautarchive/systems)
+- [System monitor](https://mangeshraut712.github.io/mangeshrautarchive/monitor)
+- [Uses / stack](https://mangeshraut712.github.io/mangeshrautarchive/uses)
+- [Travel atlas](https://mangeshraut712.github.io/mangeshrautarchive/travel)
+- [RSS feed](https://mangeshraut712.github.io/mangeshrautarchive/rss.xml)
+- [Sitemap](https://mangeshraut712.github.io/mangeshrautarchive/sitemap.xml)
+- [Expanded llms-full.txt](https://mangeshraut712.github.io/mangeshrautarchive/llms-full.txt)
 
 ## What this site is
 
-High-performance **vanilla HTML/CSS/JS (ES modules)** portfolio with a **Python FastAPI** backend for AI chat, monitoring, and integrations. Dual-hosted on **Vercel** (primary) and **GitHub Pages** (mirror). Design language: Apple-inspired liquid glass, light/dark themes, accessibility controls.
+High-performance **vanilla HTML/CSS/JS (ES modules)** portfolio with a **Python FastAPI** backend for AI chat, monitoring, and integrations. Dual-hosted on **Vercel** (custom domain) and **GitHub Pages** (verified public mirror). Design language: Apple-inspired liquid glass, light/dark themes, accessibility controls.
 
 There is **no React, Vue, Angular, or Svelte runtime**. Tailwind CSS is build-time only (utility CSS output, never utility classes in HTML markup).
 
@@ -28,29 +39,17 @@ There is **no React, Vue, Angular, or Svelte runtime**. Tailwind CSS is build-ti
 | Path | Purpose |
 |------|---------|
 | `/` | Portfolio home — about, experience, projects, certifications, contact, AI assistant |
-| `/blog` | Field notes index (long-form technical writing) |
-| `/blog/{slug}` | Individual articles (AI systems, WWDC, Google I/O, editors, etc.) |
+| `/blog/` | Field notes index (long-form technical writing) |
+| `/blog/{slug}` | Individual articles |
 | `/systems` | Engineering notebook — architecture, metrics, proof surfaces |
 | `/monitor` | Live system monitor / telemetry dashboard |
 | `/uses` | Hardware, software, and AI stack colophon |
 | `/travel` | Travel atlas |
 | `/case-studies/{slug}` | Deep dives (portfolio, HindAI, CES Energy, AssistMe, bug tracker) |
 
-## Feeds & agent files
-
-- RSS: https://mangeshraut.pro/rss.xml
-- Atom: https://mangeshraut.pro/feed.xml
-- Sitemap: https://mangeshraut.pro/sitemap.xml
-- robots: https://mangeshraut.pro/robots.txt
-- This file: https://mangeshraut.pro/llms.txt
-- Expanded: https://mangeshraut.pro/llms-full.txt
-- AI policy: https://mangeshraut.pro/ai.txt
-- Humans: https://mangeshraut.pro/humans.txt
-- Security: https://mangeshraut.pro/.well-known/security.txt
-
 ## AI assistant on-site
 
-The site includes **AssistMe**, an on-page AI chatbot. Client → `/api/chat` → FastAPI → OpenRouter (`grok-4.3` by default). API keys stay server-side. Without `OPENROUTER_API_KEY`, local offline fallback answers portfolio questions from site knowledge.
+The site includes **AssistMe**, an on-page AI chatbot. Client → `/api/chat` → FastAPI or Cloudflare Worker → OpenRouter. API keys stay server-side. Without credits, free-tier models (Nemotron / Gemma) or offline portfolio answers apply.
 
 WebMCP-style tools allow agentic actions (navigation, resume/project facts) within the portfolio context.
 
@@ -59,21 +58,12 @@ WebMCP-style tools allow agentic actions (navigation, resume/project facts) with
 - **Frontend**: Vanilla ESM, esbuild, Apple CSS custom properties, PWA manifest
 - **Backend**: FastAPI on Vercel serverless (`api/`), uvicorn locally on `:8001`
 - **Tests**: Vitest (unit), pytest (API), Playwright (E2E)
-- **Quality**: ESLint, Stylelint, Lighthouse gates, dual-host deploy parity checks
+- **Quality**: ESLint, Stylelint, Lighthouse 100 gates, dual-host deploy parity
 
 ## How agents should cite
 
-Prefer the person + primary URL:
+Prefer the person + live mirror URL:
 
-> Mangesh Raut — Software Engineer portfolio — https://mangeshraut.pro/
+> Mangesh Raut — Software Engineer portfolio — https://mangeshraut712.github.io/mangeshrautarchive/
 
 For technical writing, cite the specific `/blog/{slug}` URL from the sitemap or RSS feed.
-
-## Local development (maintainers)
-
-```bash
-npm install
-npm run dev   # frontend :4000, proxies /api → backend :8001
-```
-
-Node.js ≥22. Blog and case-study HTML are generated into `dist/` on build and at local dev start.

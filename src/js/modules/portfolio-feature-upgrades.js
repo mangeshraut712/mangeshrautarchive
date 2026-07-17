@@ -41,13 +41,19 @@ function initHeroRoleFlip() {
     index = (index + 1) % ROLE_WORDS.length;
   };
 
-  setRole();
+  // Keep the HTML first paint word; avoid mid-Lighthouse CLS from early rotation.
   if (!prefersReducedMotion) {
-    const startRotation = () => window.setInterval(setRole, 2400);
-    if ('requestIdleCallback' in window) {
-      window.requestIdleCallback(startRotation, { timeout: 5000 });
+    const startRotation = () => {
+      index = 1 % ROLE_WORDS.length;
+      window.setInterval(setRole, 2400);
+    };
+    const arm = () => {
+      window.setTimeout(startRotation, 12000);
+    };
+    if (document.readyState === 'complete') {
+      arm();
     } else {
-      window.setTimeout(startRotation, 5000);
+      window.addEventListener('load', arm, { once: true });
     }
   }
 }
