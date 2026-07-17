@@ -364,17 +364,22 @@ jobs:
         run: |
           set -euo pipefail
           BASE="${BASE%/}"
-          echo "== health =="
-          curl -sS -m 20 -A 'Mozilla/5.0' -H 'Accept: application/json' "${BASE}/api/chat/health" | tee /tmp/health.json | head -c 600; echo
-          echo "== reach =="
-          curl -sS -m 20 -A 'Mozilla/5.0' -H 'Accept: application/json' "${BASE}/api/analytics/reach" | head -c 400; echo
-          echo "== health-vitals =="
-          curl -sS -m 20 -A 'Mozilla/5.0' -H 'Accept: application/json' "${BASE}/api/health-vitals/summary" | head -c 400; echo
-          echo "== monitor =="
-          curl -sS -m 20 -A 'Mozilla/5.0' -H 'Accept: application/json' "${BASE}/api/monitor/status" | head -c 400; echo
-          echo "== github =="
-          curl -sS -m 20 -A 'Mozilla/5.0' -H 'Accept: application/json' \
-            "${BASE}/api/github/repos/public?username=mangeshraut712&limit=2" | head -c 300; echo
+          smoke() {
+            local label="$1" url="$2"
+            echo "== ${label} =="
+            curl -sS -m 25 -A 'Mozilla/5.0' -H 'Accept: application/json' -o "/tmp/smoke-${label}.json" -w "HTTP %{http_code}\n" "$url"
+            python3 - "$label" <<'PY'
+          import json,sys
+          label=sys.argv[1]
+          d=json.load(open(f"/tmp/smoke-{label}.json"))
+          print(json.dumps(d, indent=2)[:500])
+          PY
+          }
+          smoke health "${BASE}/api/chat/health"
+          smoke reach "${BASE}/api/analytics/reach"
+          smoke vitals "${BASE}/api/health-vitals/summary"
+          smoke monitor "${BASE}/api/monitor/status"
+          smoke github "${BASE}/api/github/repos/public?username=mangeshraut712&limit=2"
           echo "== chat =="
           HTTP=$(curl -sS -m 90 -o /tmp/chat.json -w "%{http_code}" \
             -X POST "${BASE}/api/chat" \
@@ -382,15 +387,15 @@ jobs:
             -H "Origin: https://mangeshraut712.github.io" \
             -d '{"message":"What are Mangesh top skills?","stream":false}')
           echo "HTTP $HTTP"
-          head -c 800 /tmp/chat.json; echo
-          test "$HTTP" = "200"
           python3 - <<'PY'
           import json
           d=json.load(open("/tmp/chat.json"))
+          print(json.dumps({k:d.get(k) for k in ["success","source","model","answer"] if k in d}, indent=2)[:800])
           ans=(d.get("answer") or "")
           assert len(ans) > 20, d
           print("answer_preview:", ans[:200])
           PY
+          test "$HTTP" = "200"
 
       - name: Trigger Pages rebuild
         if: steps.url.outputs.worker_url != ''
