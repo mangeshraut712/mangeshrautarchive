@@ -55,6 +55,18 @@ class GitHubConnector:
         # Cache to avoid rate limits
         self.cache = {}
         self.cache_ttl = 300  # 5 minutes
+        self.portfolio_owner = (os.getenv("GITHUB_PORTFOLIO_OWNER") or "mangeshraut712").strip().lower()
+
+    def _headers_for_username(self, username: str) -> Dict[str, str]:
+        """Attach PAT only for the portfolio owner; anonymous for everyone else."""
+        headers = {
+            key: value
+            for key, value in self.headers.items()
+            if key.lower() != "authorization"
+        }
+        if self.access_token and (username or "").strip().lower() == self.portfolio_owner:
+            headers["Authorization"] = f"token {self.access_token}"
+        return headers
 
     async def get_user_profile(self, username: str = "mangeshraut712") -> Dict[str, Any]:
         """Fetch user profile information"""
@@ -68,7 +80,11 @@ class GitHubConnector:
 
         try:
             async with httpx.AsyncClient() as client:
-                response = await client.get(url, headers=self.headers, timeout=10.0)
+                response = await client.get(
+                    url,
+                    headers=self._headers_for_username(username),
+                    timeout=10.0,
+                )
                 response.raise_for_status()
                 data = response.json()
 
@@ -128,7 +144,12 @@ class GitHubConnector:
 
         try:
             async with httpx.AsyncClient() as client:
-                response = await client.get(url, headers=self.headers, params=params, timeout=10.0)
+                response = await client.get(
+                    url,
+                    headers=self._headers_for_username(username),
+                    params=params,
+                    timeout=10.0,
+                )
                 response.raise_for_status()
                 repos_data = response.json()
 

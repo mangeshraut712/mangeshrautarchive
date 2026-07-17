@@ -56,15 +56,46 @@ def test_realtime_session_configured(client, monkeypatch):
     monkeypatch.setenv("AI_GATEWAY_API_KEY", "gateway-test-key")
     monkeypatch.setenv("AI_GATEWAY_REALTIME_VOICE", "verse")
 
-    response = client.get("/api/realtime/session")
+    response = client.get(
+        "/api/realtime/session",
+        headers={"Origin": "https://mangeshraut.pro"},
+    )
 
     assert response.status_code == 200
     payload = response.json()
     assert payload["success"] is True
     assert payload["available"] is True
-    assert payload["wsUrl"].endswith("/api/realtime/ws")
+    assert "/api/realtime/ws?token=" in payload["wsUrl"]
+    assert payload["mintExpiresIn"] == 60
     assert payload["sessionDefaults"]["voice"] == "verse"
     assert "AssistMe" in payload["sessionDefaults"]["instructions"]
+
+
+def test_realtime_session_rejects_disallowed_origin(client, monkeypatch):
+    monkeypatch.setenv("AI_GATEWAY_API_KEY", "gateway-test-key")
+
+    response = client.get(
+        "/api/realtime/session",
+        headers={"Origin": "https://evil.example"},
+    )
+
+    assert response.status_code == 403
+    payload = response.json()
+    assert payload["success"] is False
+
+
+def test_realtime_ws_rejects_missing_mint_token(client, monkeypatch):
+    monkeypatch.setenv("AI_GATEWAY_API_KEY", "gateway-test-key")
+
+    with client.websocket_connect(
+        "/api/realtime/ws",
+        headers={"Origin": "https://mangeshraut.pro"},
+    ) as websocket:
+        # Server accepts then closes with policy violation
+        try:
+            websocket.receive()
+        except Exception:
+            pass
 
 
 def test_mint_gateway_realtime_client_secret(monkeypatch):

@@ -58,6 +58,24 @@
     />
     <link rel="manifest" href="manifest.json" />
     <script src="build-config.js"></script>
+    <script>
+      (function () {
+        const EDGE_API = 'https://assistme-chat.mangeshraut712.workers.dev';
+        const isGitHubPages = window.location.hostname.endsWith('github.io');
+        const fromBuild =
+          (window.buildConfig && window.buildConfig.apiBaseUrl) ||
+          (window.APP_CONFIG && window.APP_CONFIG.apiBaseUrl);
+        const blocked = function (u) {
+          return !u || /mangeshraut\.pro|vercel\.app/i.test(String(u));
+        };
+        const apiBaseUrl = isGitHubPages
+          ? blocked(fromBuild)
+            ? EDGE_API
+            : fromBuild
+          : fromBuild || window.location.origin;
+        window.APP_CONFIG = Object.assign({}, window.APP_CONFIG || {}, { apiBaseUrl });
+      })();
+    </script>
     <script src="js/utils/theme-head.js"></script>
     <script src="js/utils/perf-audit-flag.js"></script>
 

@@ -2,7 +2,11 @@ import asyncio
 import json
 import logging
 import os
+import secrets
+import time
 from datetime import datetime, timezone
+from typing import Dict, Optional, Set
+from urllib.parse import urlparse
 
 import websockets
 from fastapi import APIRouter, Request, WebSocket, WebSocketDisconnect
@@ -22,16 +26,68 @@ from api.ai_gateway_realtime import (
 router = APIRouter()
 logger = logging.getLogger(__name__)
 
+REALTIME_MINT_TTL_SEC = int(os.getenv("REALTIME_MINT_TTL_SEC", "60"))
+REALTIME_MAX_CONNECTIONS = int(os.getenv("REALTIME_MAX_CONNECTIONS", "8"))
+REALTIME_IDLE_TIMEOUT_SEC = float(os.getenv("REALTIME_IDLE_TIMEOUT_SEC", "45"))
+
+_ALLOWED_ORIGIN_HOSTS = {
+    "mangeshraut.pro",
+    "mangeshraut712.github.io",
+    "mraut.vercel.app",
+    "mangeshrautarchive.vercel.app",
+    "localhost",
+    "127.0.0.1",
+}
+
+_mint_tokens: Dict[str, float] = {}
+_active_connections: Set[int] = set()
+
 
 def _utc_now() -> str:
     return datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
 
 
-def _resolve_public_ws_url(request: Request) -> str:
+def _resolve_public_ws_url(request: Request, mint_token: str) -> str:
     forwarded_proto = request.headers.get("x-forwarded-proto", request.url.scheme)
     host = request.headers.get("x-forwarded-host") or request.headers.get("host") or request.url.netloc
     scheme = "wss" if forwarded_proto == "https" else "ws"
-    return f"{scheme}://{host}/api/realtime/ws"
+    return f"{scheme}://{host}/api/realtime/ws?token={mint_token}"
+
+
+def _origin_allowed(origin: Optional[str]) -> bool:
+    if not origin:
+        # Browsers send Origin for cross-site WS; missing Origin is only OK outside production.
+        return os.getenv("VERCEL_ENV") != "production"
+    try:
+        parsed = urlparse(origin)
+    except ValueError:
+        return False
+    host = (parsed.hostname or "").lower()
+    if host in _ALLOWED_ORIGIN_HOSTS:
+        return True
+    return host.endswith(".vercel.app") and "mangeshraut" in host
+
+
+def _purge_expired_mints(now: Optional[float] = None) -> None:
+    current = now if now is not None else time.time()
+    expired = [token for token, expires_at in _mint_tokens.items() if expires_at <= current]
+    for token in expired:
+        _mint_tokens.pop(token, None)
+
+
+def _issue_mint_token() -> str:
+    _purge_expired_mints()
+    token = secrets.token_urlsafe(24)
+    _mint_tokens[token] = time.time() + REALTIME_MINT_TTL_SEC
+    return token
+
+
+def _consume_mint_token(token: Optional[str]) -> bool:
+    if not token:
+        return False
+    _purge_expired_mints()
+    expires_at = _mint_tokens.pop(token, None)
+    return expires_at is not None and expires_at > time.time()
 
 
 @router.get("/api/realtime/health")
@@ -58,12 +114,35 @@ async def realtime_session(request: Request):
             },
         )
 
+    origin = request.headers.get("origin")
+    if not _origin_allowed(origin):
+        return JSONResponse(
+            status_code=403,
+            content={
+                "success": False,
+                "available": False,
+                "message": "Origin not allowed for realtime sessions.",
+            },
+        )
+
+    if len(_active_connections) >= REALTIME_MAX_CONNECTIONS:
+        return JSONResponse(
+            status_code=429,
+            content={
+                "success": False,
+                "available": False,
+                "message": "Realtime connection capacity reached. Try again shortly.",
+            },
+        )
+
+    mint_token = _issue_mint_token()
     return {
         "success": True,
         "timestamp": _utc_now(),
         "available": True,
         "model": get_realtime_model(),
-        "wsUrl": _resolve_public_ws_url(request),
+        "wsUrl": _resolve_public_ws_url(request, mint_token),
+        "mintExpiresIn": REALTIME_MINT_TTL_SEC,
         "sessionDefaults": {
             "voice": os.getenv("AI_GATEWAY_REALTIME_VOICE", "alloy"),
             "turnDetection": {"type": "server-vad"},
@@ -75,10 +154,26 @@ async def realtime_session(request: Request):
 
 @router.websocket("/api/realtime/ws")
 async def realtime_voice_proxy(client_ws: WebSocket):
+    origin = client_ws.headers.get("origin")
+    token = client_ws.query_params.get("token")
+
+    if not _origin_allowed(origin) or not _consume_mint_token(token):
+        await client_ws.accept()
+        await client_ws.close(code=1008, reason="Unauthorized realtime session")
+        return
+
+    if len(_active_connections) >= REALTIME_MAX_CONNECTIONS:
+        await client_ws.accept()
+        await client_ws.close(code=1013, reason="Realtime capacity reached")
+        return
+
     await client_ws.accept()
+    connection_id = id(client_ws)
+    _active_connections.add(connection_id)
 
     api_key = get_ai_gateway_api_key()
     if not api_key:
+        _active_connections.discard(connection_id)
         await client_ws.close(code=1013, reason="Realtime unavailable")
         return
 
@@ -90,6 +185,7 @@ async def realtime_voice_proxy(client_ws: WebSocket):
         protocols = build_gateway_realtime_protocols(client_secret)
     except Exception as error:
         logger.warning("Realtime client secret mint failed: %s", error)
+        _active_connections.discard(connection_id)
         await client_ws.close(code=1013, reason="Realtime unavailable")
         return
 
@@ -105,7 +201,10 @@ async def realtime_voice_proxy(client_ws: WebSocket):
             async def client_to_upstream() -> None:
                 try:
                     while True:
-                        message = await client_ws.receive()
+                        message = await asyncio.wait_for(
+                            client_ws.receive(),
+                            timeout=REALTIME_IDLE_TIMEOUT_SEC,
+                        )
                         if message["type"] == "websocket.disconnect":
                             break
                         data = message.get("text")
@@ -122,7 +221,7 @@ async def realtime_voice_proxy(client_ws: WebSocket):
                         except json.JSONDecodeError:
                             pass
                         await upstream.send(data)
-                except WebSocketDisconnect:
+                except (WebSocketDisconnect, asyncio.TimeoutError):
                     pass
 
             async def upstream_to_client() -> None:
@@ -148,14 +247,8 @@ async def realtime_voice_proxy(client_ws: WebSocket):
     except Exception as error:
         logger.warning("Realtime gateway proxy failed: %s", error)
         try:
-            await client_ws.send_text(
-                json.dumps(
-                    {
-                        "type": "error",
-                        "message": "Realtime voice session failed. Please try again.",
-                    }
-                )
-            )
+            await client_ws.close(code=1011, reason="Realtime proxy error")
         except Exception:
             pass
-        await client_ws.close(code=1011, reason="Upstream realtime error")
+    finally:
+        _active_connections.discard(connection_id)

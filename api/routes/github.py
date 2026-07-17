@@ -42,7 +42,8 @@ async def fetch_github_repos_cached(username: str) -> list:
         return entry["data"]
 
     headers = {"Accept": "application/vnd.github.v3+json"}
-    if GITHUB_PAT:
+    # Never attach the portfolio PAT to arbitrary usernames — anonymous for others.
+    if GITHUB_PAT and username.lower() == "mangeshraut712":
         headers["Authorization"] = f"Bearer {GITHUB_PAT}"
 
     try:

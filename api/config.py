@@ -6,7 +6,6 @@ import re
 import hashlib
 import hmac
 from typing import List, Optional, Dict, Any
-from collections import defaultdict
 from fastapi import HTTPException, Request
 from pydantic import BaseModel, Field
 from dotenv import load_dotenv
@@ -62,9 +61,38 @@ SITE_URL = get_site_url()
 SITE_TITLE = get_site_title()
 
 # Rate Limiting Store and Rules
-rate_limit_store = defaultdict(list)
+from api.rate_limit import get_rate_limit_store
+
 RATE_LIMIT_REQUESTS = 20  # requests per window
 RATE_LIMIT_WINDOW = 60  # seconds
+
+
+class _RateLimitStoreCompat:
+    """Dict-like shim so existing tests/monitor can clear and inspect the active store."""
+
+    def clear(self) -> None:
+        get_rate_limit_store().clear()
+
+    def items(self):
+        return get_rate_limit_store().items()
+
+    def snapshot(self):
+        return get_rate_limit_store().snapshot()
+
+    def __contains__(self, client_id: str) -> bool:
+        return client_id in get_rate_limit_store()  # type: ignore[operator]
+
+    def __getitem__(self, client_id: str):
+        return get_rate_limit_store()[client_id]  # type: ignore[index]
+
+    def __setitem__(self, client_id: str, values) -> None:
+        get_rate_limit_store()[client_id] = values  # type: ignore[index]
+
+    def __delitem__(self, client_id: str) -> None:
+        del get_rate_limit_store()[client_id]  # type: ignore[attr-defined]
+
+
+rate_limit_store = _RateLimitStoreCompat()
 _EPHEMERAL_SESSION_AUTH_SECRET = secrets.token_urlsafe(48)
 
 # Last.fm Cache and Config
@@ -478,19 +506,12 @@ def get_client_ip(request: Request) -> str:
 
 
 def check_rate_limit(client_id: str) -> bool:
-    """Check if client has exceeded rate limit"""
-    now = time.time()
-    rate_limit_store[client_id] = [
-        timestamp
-        for timestamp in rate_limit_store[client_id]
-        if now - timestamp < RATE_LIMIT_WINDOW
-    ]
-
-    if len(rate_limit_store[client_id]) >= RATE_LIMIT_REQUESTS:
-        return False
-
-    rate_limit_store[client_id].append(now)
-    return True
+    """Check if client has exceeded rate limit (durable backend when configured)."""
+    return get_rate_limit_store().allow(
+        client_id,
+        limit=RATE_LIMIT_REQUESTS,
+        window_sec=RATE_LIMIT_WINDOW,
+    )
 
 
 def get_session_memory(session_id: str) -> List[Dict[str, str]]:

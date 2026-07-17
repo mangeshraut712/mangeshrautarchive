@@ -62,3 +62,30 @@ def test_get_client_ip_uses_rightmost_xff_when_no_platform_header():
 def test_get_client_ip_falls_back_to_socket_peer():
     req = _request({}, client_host="192.168.1.50")
     assert get_client_ip(req) == "192.168.1.50"
+
+
+def test_upstash_store_falls_back_to_memory_on_http_error(monkeypatch):
+    from api.rate_limit import InMemoryRateLimitStore, UpstashRateLimitStore
+
+    class BoomClient:
+        def __init__(self, *args, **kwargs):
+            pass
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *args):
+            return False
+
+        def post(self, *args, **kwargs):
+            raise RuntimeError("network down")
+
+    monkeypatch.setattr("httpx.Client", BoomClient)
+    store = UpstashRateLimitStore(
+        "https://example.upstash.io",
+        "token",
+        InMemoryRateLimitStore(),
+    )
+    assert store.allow("client-a", limit=2, window_sec=60) is True
+    assert store.allow("client-a", limit=2, window_sec=60) is True
+    assert store.allow("client-a", limit=2, window_sec=60) is False
