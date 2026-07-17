@@ -26,7 +26,7 @@
 - **Build:** esbuild for JS bundling; Tailwind CSS v4 for utility generation only (output CSS file consumed, never classes in HTML markup).
 - **Styling:** Vanilla CSS with Apple-standard CSS custom properties (`--apple-blue: #0071e3`, etc.).
 - **Testing:** Vitest (unit), pytest (API), Playwright (E2E across 15 browser configs).
-- **CI/CD:** GitHub Actions — security scanning, ESLint, Stylelint, Lighthouse 100/100/100/100 gates.
+- **CI/CD:** GitHub Actions — security scanning, ESLint, Stylelint, Lighthouse deploy gates (100/100/100/100 on built dist homepage).
 
 ---
 
@@ -183,7 +183,7 @@ All three test suites must pass before any merge to `main`:
 | E2E   | Playwright | `npm run test:e2e:all` | Multi-spec suite across 15 browser projects |
 
 - Playwright configs include Desktop Chrome/Safari/Firefox/Edge, Pixel 7 Chrome, iPhone 14 Safari, iPad Pro Safari, and more.
-- Lighthouse gates enforce 100/100/100/100 (Performance/Accessibility/Best Practices/SEO).
+- Lighthouse deploy workflow enforces 100/100/100/100 on built dist homepage; live-host floors vary (`npm run qa:lighthouse:ci`, `qa:lighthouse:vercel`).
 - Accessibility tests use `@axe-core/playwright`.
 
 ---

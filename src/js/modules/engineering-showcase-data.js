@@ -3,9 +3,19 @@
  * Inspired by evidence-first hiring: build, ship, think, taste.
  */
 
+import {
+  formatDeployLighthouseGate,
+  LIGHTHOUSE_DEPLOY_GATES,
+  TEST_COUNTS,
+  usesStack,
+  WEBMCP_TOOL_COUNT,
+} from '../data/portfolio-public-data.js';
 import { BRAND_TAGLINE, portfolioCaseStudy } from './case-studies-data.js';
 
-export { portfolioCaseStudy, BRAND_TAGLINE };
+export { portfolioCaseStudy, BRAND_TAGLINE, usesStack };
+
+const deployLighthouse = formatDeployLighthouseGate();
+const mobileGate = LIGHTHOUSE_DEPLOY_GATES.mobile;
 
 export const publicEvidenceStatement =
   'This page is intentionally public. Every architecture decision, benchmark, tradeoff, failure, and production metric exists because I believe engineering ability should be demonstrated through evidence rather than claimed through bullet points.';
@@ -14,8 +24,8 @@ export const heroLead =
   "Every claim on this portfolio is backed by code, benchmarks, architecture, or production telemetry. No stock templates. No generated project descriptions. Only things I've built, measured, shipped, and learned.";
 
 export const heroStats = [
-  { value: '95+', unit: '', label: 'Lighthouse', href: '#production' },
-  { value: '10', unit: '', label: 'WebMCP tools', href: '#architecture' },
+  { value: deployLighthouse, unit: '', label: 'Lighthouse CI gate', href: '#production' },
+  { value: String(WEBMCP_TOOL_COUNT), unit: '', label: 'WebMCP tools', href: '#architecture' },
   { value: '40', unit: '%', label: 'Dashboard improvement', href: '#projects' },
   { value: '12', unit: '', label: 'Technical articles', href: '#writing' },
   { value: '40+', unit: '', label: 'Repositories', href: '#open-source' },
@@ -51,16 +61,14 @@ export const hiringEvidence = [
   {
     id: 'build',
     question: 'Can this person build?',
-    answer:
-      '9 WebMCP tools, dual-host portfolio, public monitor, and case studies with architecture diagrams — all in production.',
+    answer: `${WEBMCP_TOOL_COUNT} WebMCP tools, dual-host portfolio, public monitor, and case studies with architecture diagrams — all in production.`,
     href: '#projects',
     anchor: 'evidence-build',
   },
   {
     id: 'ship',
     question: 'Can this person ship?',
-    answer:
-      '95+ Lighthouse CI gate, automatic deployments, live telemetry, and enterprise analytics with measured 40% latency reduction.',
+    answer: `${deployLighthouse} Lighthouse deploy CI gate (dist homepage), automatic deployments, live telemetry, and enterprise analytics with measured 40% latency reduction.`,
     href: '#production',
     anchor: 'evidence-ship',
   },
@@ -85,7 +93,7 @@ export const hiringEvidence = [
 export const productionSnapshot = [
   { label: 'Current deployment', value: 'Operational', liveKey: 'health' },
   { label: 'Response time', value: '—', unit: 'ms', liveKey: 'apiP95' },
-  { label: 'Lighthouse', value: '95+' },
+  { label: 'Lighthouse CI gate', value: deployLighthouse },
   { label: 'Deployments', value: 'Automatic' },
   { label: 'AI streaming', value: 'Enabled' },
   { label: 'Provider', value: 'OpenRouter' },
@@ -100,7 +108,7 @@ export const productionMetricGroups = [
     rows: [
       { label: 'Status', value: 'Operational', liveKey: 'health' },
       { label: 'Response time', value: '—', unit: 'ms', liveKey: 'apiP95' },
-      { label: 'Lighthouse', value: '95+' },
+      { label: 'Lighthouse CI gate', value: deployLighthouse },
       { label: 'Deployments', value: 'Automatic' },
       { label: 'Uptime', value: '—', liveKey: 'uptime' },
     ],
@@ -121,10 +129,10 @@ export const productionMetricGroups = [
     id: 'frontend',
     title: 'Frontend',
     rows: [
-      { label: 'Lighthouse Performance', value: '95+' },
-      { label: 'Accessibility', value: '95' },
-      { label: 'Best Practices', value: '100' },
-      { label: 'SEO', value: '100' },
+      { label: 'Lighthouse Performance', value: String(mobileGate.performance) },
+      { label: 'Accessibility', value: String(mobileGate.accessibility) },
+      { label: 'Best Practices', value: String(mobileGate.bestPractices) },
+      { label: 'SEO', value: String(mobileGate.seo) },
       { label: 'CLS', value: '0.00' },
       { label: 'INP', value: '<100ms' },
     ],
@@ -133,7 +141,7 @@ export const productionMetricGroups = [
     id: 'agent',
     title: 'Local agent',
     rows: [
-      { label: 'WebMCP tools', value: '10' },
+      { label: 'WebMCP tools', value: String(WEBMCP_TOOL_COUNT) },
       { label: 'Navigate', value: '<30ms' },
       { label: 'Theme toggle', value: '<15ms' },
       { label: 'Resume download', value: '<10ms' },
@@ -295,16 +303,16 @@ export const staticBenchmarks = [
   {
     id: 'lighthouse',
     label: 'Lighthouse Performance',
-    value: '100',
+    value: String(mobileGate.performance),
     unit: '/100',
-    context: 'Homepage CI gate (mobile + desktop)',
+    context: 'Deploy CI gate on built dist (desktop + mobile)',
   },
   {
     id: 'accessibility',
     label: 'Lighthouse Accessibility',
-    value: '100',
+    value: String(mobileGate.accessibility),
     unit: '/100',
-    context: 'Automated a11y gate in CI',
+    context: 'Deploy CI gate (.github/workflows/deploy.yml)',
   },
   {
     id: 'local-actions',
@@ -316,23 +324,30 @@ export const staticBenchmarks = [
   {
     id: 'webmcp-mcp',
     label: 'WebMCP Client & Tools',
-    value: '10',
+    value: String(WEBMCP_TOOL_COUNT),
     unit: 'tools',
     context: 'Deterministic browser tool execution',
   },
   {
     id: 'best-practices',
     label: 'Lighthouse Best Practices',
-    value: '100',
+    value: String(mobileGate.bestPractices),
     unit: '/100',
-    context: 'Security & web standards gate',
+    context: 'Deploy CI gate on built dist',
   },
   {
     id: 'seo',
     label: 'Lighthouse SEO',
-    value: '100',
+    value: String(mobileGate.seo),
     unit: '/100',
     context: 'Structured data, meta, and crawlability gate',
+  },
+  {
+    id: 'test-matrix',
+    label: 'Automated test matrix',
+    value: String(TEST_COUNTS.vitest + TEST_COUNTS.pytest),
+    unit: 'tests',
+    context: `${TEST_COUNTS.vitest} Vitest · ${TEST_COUNTS.pytest} pytest · ${TEST_COUNTS.playwrightProjects} Playwright projects`,
   },
   {
     id: 'api-p95',
@@ -393,17 +408,6 @@ export const caseStudyFlowSteps = [
   { key: 'results', label: 'Lessons' },
   { key: 'resultSummary', label: 'Result' },
 ];
-
-export const usesStack = {
-  hardware: ['MacBook Pro (Apple Silicon)', 'Studio Display', 'AirPods Pro'],
-  software: ['macOS', 'Raycast', 'Arc / Safari', 'iTerm'],
-  aiStack: ['Cursor', 'Claude Code', 'OpenRouter', 'Codex'],
-  engineering: ['FastAPI', 'React', 'Next.js', 'Vercel', 'GitHub Actions', 'Playwright'],
-  fonts: ['SF Pro', 'Inter (fallback)'],
-  theme: ['Solid white/black surfaces', 'Apple 2026 design tokens', 'Dark / light sync'],
-  productivity: ['Notion', 'Linear-style task lists', 'GitHub Projects'],
-  reading: ['Technical blogs', 'Apple HIG', 'AI papers & field notes'],
-};
 
 /** Homepage engineering evidence Q&A cards (outside the metrics overview) */
 export const evidenceCards = [

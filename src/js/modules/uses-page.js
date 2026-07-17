@@ -1,4 +1,4 @@
-import { usesStack } from './engineering-showcase-data.js';
+import { usesStack } from '../data/portfolio-public-data.js';
 import './control-center.js';
 
 function escapeHtml(value) {

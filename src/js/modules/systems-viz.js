@@ -2,6 +2,7 @@
  * Engineering page — SVG visualizations & telemetry rendering (Apple Control Center style).
  */
 
+import { formatDeployLighthouseGate, WEBMCP_TOOL_COUNT } from '../data/portfolio-public-data.js';
 import { buildDonutSegments } from '../utils/monitor-metrics.js';
 import {
   productionMetricGroups,
@@ -140,8 +141,8 @@ export function renderTelemetryBento(snapshot) {
           <span class="systems-status-dot"></span>
           Lighthouse CI gate
         </span>
-        <p class="systems-tile-metric">95+<small>/100</small></p>
-        <p class="systems-tile-caption">Core Web Vitals in budget</p>
+        <p class="systems-tile-metric">${escapeHtml(formatDeployLighthouseGate())}<small>/100</small></p>
+        <p class="systems-tile-caption">Deploy CI gate on built dist</p>
       </div>
       <p class="systems-tile-foot">LCP &lt; 1.5s · INP &lt; 100ms · CLS 0.00</p>
     </article>
@@ -169,7 +170,7 @@ export function renderTelemetryBento(snapshot) {
         <p class="systems-tile-metric">&lt; 50<small>ms</small></p>
         <p class="systems-tile-caption">Deterministic browser actions</p>
       </div>
-      <p class="systems-tile-foot">9 tools · navigate · theme · resume</p>
+      <p class="systems-tile-foot">${WEBMCP_TOOL_COUNT} tools · navigate · theme · resume</p>
     </article>
 
     <article class="systems-bento-tile systems-bento-tile--budget lg-glass-card" data-tile="verification">

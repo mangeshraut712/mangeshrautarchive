@@ -62,7 +62,7 @@ As of **July 2026**, the product combines:
 | **Agentic AI**         | AssistMe chatbot · 10 WebMCP tools · local-first actions · OpenRouter NDJSON stream             |
 | **Apple-inspired UI**  | Dynamic Island nav · liquid glass **clear / balanced / tinted** · solid page canvas · a11y dock |
 | **Operations**         | Platform health probes · portfolio catalog · dual-host commit parity                            |
-| **Quality**            | 50 Vitest · 122 pytest · 15 Playwright projects · Lighthouse gates · security scan              |
+| **Quality**            | 67 Vitest · 122 pytest · 15 Playwright projects · Lighthouse deploy gates · security scan       |
 
 This document is the **canonical technology report** for the repository: stack versions, libraries, architecture, features, and how to run it.
 
@@ -113,7 +113,7 @@ Pinned from this repo’s `package.json`, `requirements.txt`, `pyproject.toml`, 
 | **Realtime (dev)**  | ws                        | **^8.21.0**             | WebSocket tooling                                               |
 | **Analytics**       | @vercel/analytics         | **^2.0.1**              | Optional Vercel Analytics                                       |
 | **Images**          | sharp                     | **^0.35.2**             | Optimize pipeline                                               |
-| **Unit tests**      | Vitest                    | **^4.1.10**             | **50** unit tests                                               |
+| **Unit tests**      | Vitest                    | **^4.1.10**             | **67** unit tests                                               |
 | **E2E**             | Playwright                | **^1.61.1**             | **15** browser projects                                         |
 | **A11y E2E**        | @axe-core/playwright      | **^4.12.1**             | Accessibility assertions                                        |
 | **Lint JS**         | ESLint 9 + @eslint/js     | **^9.39.5**             | Flat config                                                     |
@@ -164,19 +164,19 @@ Pinned from this repo’s `package.json`, `requirements.txt`, `pyproject.toml`, 
 
 ### 3.5 Hosting & delivery
 
-| Surface            | Stack                                             | Advances                                             |
-| ------------------ | ------------------------------------------------- | ---------------------------------------------------- |
-| **Vercel**         | Static `dist/` + Python serverless `api/index.py` | Same-origin `/api/*`, analytics                      |
-| **GitHub Pages**   | Static `dist/` only                               | Dual-host parity via `build-config.json` `gitCommit` |
-| **CDN assets**     | esbuild + Sharp + `ASSET_VER`                     | Cache-busted CSS/JS (`20260716z` series)             |
-| **PWA**            | `manifest.json` + service worker                  | Standalone install, offline shell, shortcuts         |
-| **CSP / security** | Headers in `vercel.json` · report endpoint        | Rate limits, server-only secrets, HMAC OAuth state   |
+| Surface            | Stack                                                   | Advances                                                                 |
+| ------------------ | ------------------------------------------------------- | ------------------------------------------------------------------------ |
+| **Vercel**         | Static `dist/` + Python serverless `api/index.py`       | Same-origin `/api/*`, analytics                                          |
+| **GitHub Pages**   | Static `dist/` only                                     | Dual-host parity via `build-config.json` `gitCommit`                     |
+| **CDN assets**     | esbuild + Sharp + `ASSET_VER`                           | Cache-busted CSS/JS (`20260716z` series)                                 |
+| **PWA**            | `manifest.json` (installable); SW registration disabled | Standalone shortcuts; offline.html reconnect-only; no full offline cache |
+| **CSP / security** | Headers in `vercel.json` · report endpoint              | Rate limits, server-only secrets, HMAC OAuth state                       |
 
 ### 3.6 Quality matrix
 
 | Suite        | Runner                         | Count / target (July 2026)                                          |
 | ------------ | ------------------------------ | ------------------------------------------------------------------- |
-| **Unit**     | Vitest 4.1                     | **50** tests · 10 files                                             |
+| **Unit**     | Vitest 4.1                     | **67** tests · characterization + module suites                     |
 | **API**      | pytest                         | **122** tests · 17 modules                                          |
 | **E2E**      | Playwright 1.61                | **15** projects (desktop + phone + tablet, incl. iPhone 17 Pro Max) |
 | **A11y**     | axe-core + a11y toolbar        | CI + runtime high contrast / reduced motion / liquid glass          |
@@ -202,7 +202,7 @@ Pinned from this repo’s `package.json`, `requirements.txt`, `pyproject.toml`, 
 | **Uses**            | Hardware / software / AI stack board                                                                                    |
 | **Command palette** | `⌘K` / `Ctrl+K` · sections, blog, actions                                                                               |
 | **A11y**            | Floating dock · liquid glass control · listen/translate · 44px targets · reduced transparency → solid                   |
-| **PWA**             | Install, offline, splash assets, blog shortcut                                                                          |
+| **PWA**             | Install via manifest, shortcuts, splash assets; SW unregistered for iOS stability; offline.html reconnect only          |
 | **Share**           | Glass share FAB · system share sheet style dialog                                                                       |
 
 ### AssistMe · WebMCP tools
@@ -330,7 +330,7 @@ npm run build && PORT=4174 npm run serve:dist   # production preview
 | `npm run doctor` / `doctor:stack` | Root layout + no React/Next runtime               |
 | `npm run dev`                     | Frontend + backend                                |
 | `npm run build`                   | Production `dist/` (+ blog/case study generation) |
-| `npm test` / `npm run test:api`   | Vitest **50** / pytest **122**                    |
+| `npm test` / `npm run test:api`   | Vitest **67** / pytest **122**                    |
 | `npm run check`                   | ESLint + Stylelint + Prettier + Vitest            |
 | `npm run qa:prod-ready`           | Full pre-deploy matrix                            |
 | `npm run verify:deploy-sync`      | Vercel ↔ Pages parity                             |
@@ -362,7 +362,7 @@ Never commit `.env` / `.env.local`. See [`.env.example`](.env.example).
 
 1. `npm audit` + `security-check`
 2. ESLint · Stylelint 17 · Prettier
-3. Vitest (**50**)
+3. Vitest (**67**)
 4. Env parity (non-blocking)
 5. flake8 · dead-code · pytest (**122**)
 6. Browser QA smoke
@@ -375,7 +375,7 @@ Live reachability (Vercel + Pages) · Lighthouse floors · commit parity.
 
 | Suite               | Target                                     |
 | ------------------- | ------------------------------------------ |
-| Vitest              | 50                                         |
+| Vitest              | 67                                         |
 | pytest              | 122                                        |
 | Playwright projects | 15                                         |
 | Lighthouse CI       | Perf / A11y / BP / SEO floors per workflow |
@@ -475,7 +475,7 @@ Articles are generated at build/dev time from `src/js/modules/blog-data.js` into
 - **Blog system** — 12 field notes; removed unrelated figures; X-style author cards; `/blog` index routing hardened for local Express.
 - **Project Showcase** — equal card grid alignment; shell width parity across activity / lens / search / grid.
 - **Solid theme** — white light / black dark page canvas; dual-host edge AssistMe path documented.
-- **Quality** — **50** Vitest · **122** pytest · Playwright multi-device matrix · Node engines guard · ASSET_VER cache busting.
+- **Quality** — **67** Vitest · **122** pytest · Playwright multi-device matrix · Node engines guard · ASSET_VER cache busting.
 
 ---
 

@@ -2,6 +2,8 @@
  * Project case studies — single source for evidence rows, systems page, and static pages.
  */
 
+import { formatDeployLighthouseGate, WEBMCP_TOOL_COUNT } from '../data/portfolio-public-data.js';
+
 const BRAND_TAGLINE = 'Production AI products with Apple-level engineering quality.';
 
 export { BRAND_TAGLINE };
@@ -57,8 +59,8 @@ export const caseStudies = [
     videoUrl: 'https://www.youtube.com/@mangeshraut71298',
     videoLabel: 'Walkthrough on YouTube',
     metrics: [
-      { label: 'WebMCP tools', value: '9' },
-      { label: 'Lighthouse (mobile)', value: '95+' },
+      { label: 'WebMCP tools', value: String(WEBMCP_TOOL_COUNT) },
+      { label: 'Lighthouse CI gate', value: formatDeployLighthouseGate() },
       { label: 'Local actions', value: '<50ms' },
       { label: 'Monitor sections', value: '15' },
     ],
@@ -71,8 +73,8 @@ export const caseStudies = [
     tradeoffs:
       'GH Pages visitors pay a cross-origin API hop; local regex/tools handle navigation so LLM latency does not block core flows.',
     results: [
-      '9 deterministic WebMCP tools — navigate, filter projects, download resume, toggle theme',
-      'Lighthouse 95+ mobile gate in CI',
+      `${WEBMCP_TOOL_COUNT} deterministic WebMCP tools — navigate, filter projects, download resume, toggle theme`,
+      `Lighthouse ${formatDeployLighthouseGate()} deploy CI gate on built dist`,
       'Public System Monitor with 15 diagnostic sections',
       '12 technical blog posts with structured “Things I Learned”',
       'WWDC26 liquid glass across home, travel, monitor, blog, systems',
