@@ -186,12 +186,16 @@ html.dark .engineering-metrics-inner {
 .engineering-metric-item {
   display: grid;
   gap: 0.2rem;
+  min-height: 44px;
+  min-width: 44px;
   padding: 0.75rem 0.5rem;
   border-radius: var(--systems-radius-sm, 14px);
   text-align: center;
   text-decoration: none;
   color: inherit;
   border: 1px solid transparent;
+  box-sizing: border-box;
+  align-content: center;
   transition:
     border-color 0.25s ease,
     transform 0.25s var(--eng-spring),

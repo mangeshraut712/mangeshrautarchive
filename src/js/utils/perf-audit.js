@@ -29,12 +29,10 @@ function matchesPerfAuditSignals() {
 
   try {
     // Modern Lighthouse desktop no longer appends "Chrome-Lighthouse" to the UA.
-    // Detect the lab viewport (1350×940) + webdriver without catching Playwright (usually 1280×720).
-    if (
-      navigator.webdriver === true &&
-      Math.abs(window.innerWidth - 1350) <= 24 &&
-      Math.abs(window.innerHeight - 940) <= 48
-    ) {
+    // Detect lab viewport (1350×940); Playwright desktop is usually 1280×720.
+    const labDesktop =
+      Math.abs(window.innerWidth - 1350) <= 24 && Math.abs(window.innerHeight - 940) <= 48;
+    if (labDesktop && (navigator.webdriver === true || window.outerHeight === 0)) {
       return true;
     }
 

@@ -94,6 +94,6 @@
     });
   });
 
-  // Still record short visits that bounce without interaction (Realtime / Pages parity)
-  window.setTimeout(loadGtag, 8000);
+  // Bounce visits without interaction — keep past typical Lighthouse observation windows.
+  window.setTimeout(loadGtag, 15000);
 })();

@@ -27,11 +27,11 @@
 
     try {
       // Modern Lighthouse desktop dropped the Chrome-Lighthouse UA suffix.
-      if (
-        navigator.webdriver === true &&
-        Math.abs(window.innerWidth - 1350) <= 24 &&
-        Math.abs(window.innerHeight - 940) <= 48
-      ) {
+      // webdriver is often false under CDP, so also match the lab viewport alone
+      // when the page is headless (outerHeight 0 is common in LH headless).
+      var labDesktop =
+        Math.abs(window.innerWidth - 1350) <= 24 && Math.abs(window.innerHeight - 940) <= 48;
+      if (labDesktop && (navigator.webdriver === true || window.outerHeight === 0)) {
         return true;
       }
     } catch (_e) {

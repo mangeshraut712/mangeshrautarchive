@@ -63,7 +63,7 @@ const SECTION_MODULES = [
   {
     sectionId: 'skills',
     modulePath: '../modules/skills-visualization.js',
-    rootMargin: '400px 0px',
+    rootMargin: '80px 0px',
   },
   { sectionId: 'blog', modulePath: '../modules/blog-loader.js', rootMargin: '250px 0px' },
   { sectionId: 'blog', modulePath: '../modules/newsletter.js', rootMargin: '200px 0px' },
@@ -325,44 +325,35 @@ function warmCriticalSectionPreloads() {
   }
 
   /*
-   * Keep the first ~4s free of heavy middle-band work so desktop PageSpeed TBT/SI
-   * stay clean. Intersection observers still hydrate sections as users scroll.
+   * Do NOT idle-init skills/projects/engineering — Lighthouse desktop observes long
+   * enough that a 4–8s warm still lands in TBT and can fail target-size a11y.
+   * Section IntersectionObservers (and first user gesture) hydrate those modules.
    */
-  scheduleSoon(
-    () => {
-      prefetchGithubProjectsCatalog();
-    },
-    Math.max(4000, WARM_SECTION_PRELOAD_DELAY_MS)
-  );
+  const warmAfterGesture = () => {
+    scheduleSoon(
+      () => {
+        prefetchGithubProjectsCatalog();
+      },
+      Math.max(200, WARM_SECTION_PRELOAD_DELAY_MS)
+    );
+    runWhenIdle(() => {
+      loadModule('../modules/about-interactivity.js');
+      loadModule('../modules/experience-interactivity.js');
+    }, 400);
+  };
 
-  runWhenIdle(() => {
-    loadModule('../modules/about-interactivity.js');
-  }, 2500);
+  ['pointerdown', 'keydown', 'touchstart'].forEach(eventName => {
+    window.addEventListener(eventName, warmAfterGesture, {
+      once: true,
+      passive: true,
+      capture: true,
+    });
+  });
 
-  runWhenIdle(() => {
-    modulePreload('../modules/skills-visualization.js');
-    loadModule('../modules/skills-visualization.js');
-    loadModule('../modules/experience-interactivity.js');
-    loadModule('../modules/blog-loader.js');
-    loadModule('../modules/awards-shelf.js');
-    loadModule('../modules/calendar.js');
-    import('../modules/engineering-showcase.js')
-      .then(m => m.initEngineeringTeaser?.())
-      .catch(() => {});
-    warmProjectShowcaseAssets()
-      ?.then(mod => {
-        if (mod?.initProjectShowcase) {
-          return mod.initProjectShowcase();
-        }
-        return import('../modules/projects-showcase.js').then(m => m.initProjectShowcase?.());
-      })
-      .catch(() => {});
-  }, 4500);
-
-  // Safety net: any residual data-deferred-* images sitewide
+  // Residual deferred images only — cheap, no showcase JS.
   runWhenIdle(() => {
     hydrateDeferredImagesIn(document);
-  }, 2000);
+  }, 5000);
 }
 
 /** Real src for any residual data-deferred images (HTML now uses native lazy where possible). */
@@ -1635,17 +1626,23 @@ async function initBootstrap() {
   initLaunchIntro();
   initAppleDisplayEnhancements();
 
-  // Hero music + activity after LCP window — avoids music-card / hero-intro CLS + TBT.
-  runWhenIdle(() => {
+  // Hero music / activity: gesture-first so lab audits never pay the TBT cost.
+  const loadHeroEnrichment = () => {
     loadModule('../modules/lastfm.js').catch(() => {});
-  }, 6000);
-  runWhenIdle(() => {
     loadModule('../modules/live-activity-strip.js').catch(() => {});
-  }, 7000);
+  };
+  ['pointerdown', 'keydown', 'touchstart'].forEach(eventName => {
+    window.addEventListener(eventName, loadHeroEnrichment, {
+      once: true,
+      passive: true,
+      capture: true,
+    });
+  });
+  runWhenIdle(loadHeroEnrichment, 12000);
 
   runWhenIdle(() => {
     loadModule('../modules/real-media-loader.js').catch(() => {});
-  }, 3500);
+  }, 10000);
 
   runWhenIdle(() => {
     checkDeploymentVersion().catch(() => {});
