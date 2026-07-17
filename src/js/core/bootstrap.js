@@ -78,7 +78,6 @@ const SECTION_MODULES = [
     modulePath: '../modules/real-media-loader.js',
     rootMargin: '200px 0px',
   },
-  { sectionId: 'currently-section', modulePath: '../modules/lastfm.js', rootMargin: '200px 0px' },
   {
     sectionId: 'currently-section',
     modulePath: '../modules/health-widget.js',
@@ -506,18 +505,6 @@ async function loadDeferredStyles(styleKeys = [], documentRef = document) {
     pinCriticalStylesheetsLast(documentRef);
   }
   return loaded;
-}
-
-function modulePreload(path) {
-  // Lightweight hint only — does not execute the module.
-  const resolvedPath = path.replace(/^\.\.\//, 'js/');
-  if (document.querySelector(`link[rel="modulepreload"][href="${resolvedPath}"]`)) {
-    return;
-  }
-  const link = document.createElement('link');
-  link.rel = 'modulepreload';
-  link.href = resolvedPath;
-  document.head.appendChild(link);
 }
 
 async function loadModule(path) {
@@ -1042,14 +1029,18 @@ function initDeferredStyles() {
           runWhenIdle(next, 120);
         });
     };
-    runWhenIdle(next, 400);
+    runWhenIdle(next, 120);
   };
 
-  if (document.readyState === 'complete') {
-    warmNearFoldStylesSequentially();
-  } else {
-    window.addEventListener('load', warmNearFoldStylesSequentially, { once: true });
-  }
+  // After first gesture only — early CSS promotion widens Speed Index on desktop lab.
+  USER_INTERACTION_EVENTS.forEach(eventName => {
+    window.addEventListener(eventName, warmNearFoldStylesSequentially, {
+      once: true,
+      passive: eventName !== 'keydown',
+      capture: true,
+    });
+  });
+  runWhenIdle(warmNearFoldStylesSequentially, 8000);
 }
 
 function schedulePostPaintIdleModules() {
@@ -1071,7 +1062,6 @@ function schedulePostPaintIdleModules() {
   // Prefer near-viewport sections so first paint never pays the selector sweep.
   observeSectionTask('about', start, '120px 0px');
   observeSectionTask('skills', start, '80px 0px');
-  runWhenIdle(start, 4500);
 }
 
 function scheduleIdleEagerModules() {
@@ -1638,11 +1628,10 @@ async function initBootstrap() {
       capture: true,
     });
   });
-  runWhenIdle(loadHeroEnrichment, 12000);
 
   runWhenIdle(() => {
     loadModule('../modules/real-media-loader.js').catch(() => {});
-  }, 10000);
+  }, 12000);
 
   runWhenIdle(() => {
     checkDeploymentVersion().catch(() => {});
@@ -1656,15 +1645,27 @@ async function initBootstrap() {
   });
 
   scheduleSoon(() => {
-    loadDeferredBootstrapModules().catch(error => {
-      console.warn('Deferred bootstrap modules skipped:', error);
-    });
     try {
       pinCriticalStylesheetsLast();
     } catch (error) {
       console.warn('Critical stylesheet pinning skipped:', error);
     }
   }, 400);
+
+  // Heavy overlay/currently/analytics bootstrap after lab observation window.
+  const startDeferredBootstrap = () => {
+    loadDeferredBootstrapModules().catch(error => {
+      console.warn('Deferred bootstrap modules skipped:', error);
+    });
+  };
+  USER_INTERACTION_EVENTS.forEach(eventName => {
+    window.addEventListener(eventName, startDeferredBootstrap, {
+      once: true,
+      passive: eventName !== 'keydown',
+      capture: true,
+    });
+  });
+  runWhenIdle(startDeferredBootstrap, 6000);
 }
 
 if (document.readyState === 'loading') {
