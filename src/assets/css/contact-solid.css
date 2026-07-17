@@ -540,14 +540,6 @@ html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced'])
   border-color: rgb(255 255 255 / var(--lg-border-dark, 14%)) !important;
 }
 
-/* Kill prior clear+tinted lux solid shadow append — tinted only */
-html:is([data-lg-mode='clear'], [data-lg-mode='balanced'])
-  body
-  #contact
-  :is(div.contact-card, div.support-donation-card, div.currently-card) {
-  /* glass box-shadow set above — do not flatten */
-}
-
 /* NUCLEAR CLEAR CONTACT GLASS */
 html[data-lg-mode='clear'] body #main-content #contact .contact-card,
 html[data-lg-mode='clear'] body #main-content #contact .support-donation-card,

@@ -24,9 +24,7 @@
   z-index: 1;
 }
 
-.lg-webgl-fallback {
-  /* CSS glass from wwdc26-liquid-glass.css remains active */
-}
+/* .lg-webgl-fallback: CSS glass from wwdc26-liquid-glass.css remains active */
 
 /* WebGL refraction only in clear / balanced — tinted uses solid CSS surfaces */
 html[data-lg-mode='tinted'] .lg-webgl-canvas {

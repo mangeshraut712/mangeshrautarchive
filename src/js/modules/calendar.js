@@ -8,7 +8,7 @@ function ensureContactSolidStyles() {
     link = document.createElement('link');
     link.id = id;
     link.rel = 'stylesheet';
-    link.href = 'assets/css/contact-solid.css?v=20260717whole';
+    link.href = 'assets/css/contact-solid.css?v=20260717clean';
   }
   // Always re-append as last stylesheet so solid beats deferred glass sheets
   document.head.appendChild(link);
@@ -20,7 +20,7 @@ function ensureContactSolidStyles() {
     lux = document.createElement('link');
     lux.id = luxId;
     lux.rel = 'stylesheet';
-    lux.href = 'assets/css/apple-cards-luxury-2026.css?v=20260717whole';
+    lux.href = 'assets/css/apple-cards-luxury-2026.css?v=20260717clean';
   }
   document.head.appendChild(lux);
 }

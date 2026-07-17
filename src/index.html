@@ -793,7 +793,15 @@ html.dark #home .hero-name-text {
   <link rel="stylesheet" href="assets/css/style.css?v=20260716aa" media="print" onload="this.media='all'" />
   <noscript><link rel="stylesheet" href="assets/css/style.css?v=20260716aa" /></noscript>
   <link rel="stylesheet" href="assets/css/accessibility.css?v=20260716aa" />
-  <link rel="stylesheet" href="assets/css/card-content-accessibility.css?v=20260716aa" />
+  <link
+    rel="stylesheet"
+    href="assets/css/card-content-accessibility.css?v=20260716aa"
+    media="print"
+    onload="this.media='all'"
+  />
+  <noscript
+    ><link rel="stylesheet" href="assets/css/card-content-accessibility.css?v=20260716aa"
+  /></noscript>
   <link rel="stylesheet" href="assets/css/liquid-glass.css?v=20260716aa" media="print" onload="this.media='all'" />
   <noscript><link rel="stylesheet" href="assets/css/liquid-glass.css?v=20260716aa" /></noscript>
   <link rel="stylesheet" href="assets/css/dynamic-island-navbar.css?v=20260717whole" />
@@ -804,20 +812,65 @@ html.dark #home .hero-name-text {
   <noscript><link rel="stylesheet" href="assets/css/mobile-viewport.css?v=20260716aa" /></noscript>
   <link rel="stylesheet" href="assets/css/apple-super-retina-display.css?v=20260716aa" media="print" onload="this.media='all'" />
   <noscript><link rel="stylesheet" href="assets/css/apple-super-retina-display.css?v=20260716aa" /></noscript>
-  <link rel="stylesheet" href="assets/css/theme-solid-surfaces.css?v=20260717whole" />
-  <link rel="stylesheet" href="assets/css/chrome-surfaces.css?v=20260717whole" media="print" onload="this.media='all'" />
-  <noscript><link rel="stylesheet" href="assets/css/chrome-surfaces.css?v=20260717whole" /></noscript>
-  <!-- Liquid Glass modes must load after solid/chrome so clear+balanced materials win -->
-  <link rel="stylesheet" href="assets/css/liquid-glass-modes.css?v=20260717whole" />
-  <link rel="stylesheet" href="assets/css/wwdc26-liquid-glass.css?v=20260717whole" media="print" onload="this.media='all'" />
-  <noscript><link rel="stylesheet" href="assets/css/wwdc26-liquid-glass.css?v=20260717whole" /></noscript>
-  <!-- Final Apple type/color/spacing lock — last among global sheets -->
-  <link rel="stylesheet" href="assets/css/apple-ui-polish.css?v=20260717whole" />
-  <!-- June 2026 luxury cards — last so depth/hover win over flat solid shells -->
-  <link rel="stylesheet" href="assets/css/apple-cards-luxury-2026.css?v=20260717whole" />
+  <!-- Non-critical material sheets: print→all so they never block FCP/LCP (visual same after paint) -->
+  <link
+    rel="stylesheet"
+    href="assets/css/theme-solid-surfaces.css?v=20260717clean"
+    media="print"
+    onload="this.media='all'"
+  />
+  <noscript
+    ><link rel="stylesheet" href="assets/css/theme-solid-surfaces.css?v=20260717clean"
+  /></noscript>
+  <link
+    rel="stylesheet"
+    href="assets/css/chrome-surfaces.css?v=20260717clean"
+    media="print"
+    onload="this.media='all'"
+  />
+  <noscript
+    ><link rel="stylesheet" href="assets/css/chrome-surfaces.css?v=20260717clean"
+  /></noscript>
+  <!-- Liquid Glass modes after solid/chrome so clear+balanced materials win -->
+  <link
+    rel="stylesheet"
+    href="assets/css/liquid-glass-modes.css?v=20260717clean"
+    media="print"
+    onload="this.media='all'"
+  />
+  <noscript
+    ><link rel="stylesheet" href="assets/css/liquid-glass-modes.css?v=20260717clean"
+  /></noscript>
+  <link
+    rel="stylesheet"
+    href="assets/css/wwdc26-liquid-glass.css?v=20260717whole"
+    media="print"
+    onload="this.media='all'"
+  />
+  <noscript
+    ><link rel="stylesheet" href="assets/css/wwdc26-liquid-glass.css?v=20260717whole"
+  /></noscript>
+  <link
+    rel="stylesheet"
+    href="assets/css/apple-ui-polish.css?v=20260717clean"
+    media="print"
+    onload="this.media='all'"
+  />
+  <noscript
+    ><link rel="stylesheet" href="assets/css/apple-ui-polish.css?v=20260717clean"
+  /></noscript>
+  <link
+    rel="stylesheet"
+    href="assets/css/apple-cards-luxury-2026.css?v=20260717clean"
+    media="print"
+    onload="this.media='all'"
+  />
+  <noscript
+    ><link rel="stylesheet" href="assets/css/apple-cards-luxury-2026.css?v=20260717clean"
+  /></noscript>
 
     <!-- Lazy-loaded Section Styles (data-href only — loaded near section / idle) -->
-  <link rel="stylesheet" data-href="assets/css/contact.css?v=20260717clearpolish" data-lazy-style-key="contact" />
+  <link rel="stylesheet" data-href="assets/css/contact.css?v=20260717clean" data-lazy-style-key="contact" />
   <link rel="stylesheet" data-href="assets/css/animations.css?v=20260716aa" data-lazy-style-key="motion" />
   <link rel="stylesheet" data-href="assets/css/publications.css?v=20260716aa" data-lazy-style-key="publications" />
   <link rel="stylesheet" data-href="assets/css/education.css?v=20260716aa" data-lazy-style-key="education" />

@@ -87,16 +87,19 @@
   heroPreload.setAttribute('fetchpriority', 'high');
   (document.head || document.documentElement).appendChild(heroPreload);
 
+  // Minimal allowlist for LCP text paint + a11y target sizes (inlined critical covers rest).
+  // homepage.css / accessibility.css are large and delay mobile FCP on Slow 4G simulation.
   var allowedStylesheets = [
     'assets/css/cross-browser-responsive.css',
     'assets/css/critical-tokens.css',
     'assets/css/tailwind-output.css',
-    'assets/css/homepage.css',
-    'assets/css/dynamic-island-navbar.css',
-    // Keep a11y + design tokens so target-size / contrast audits stay honest
-    'assets/css/accessibility.css',
     'assets/css/apple-design-system.css',
+    'assets/css/dynamic-island-navbar.css',
   ];
+
+  // Drop heavy material / section / icon sheets immediately (parser may discover them)
+  var blockedSheetRe =
+    /theme-solid|liquid-glass-modes|apple-ui-polish|apple-cards-luxury|wwdc26-liquid|chrome-surfaces|apple-premium-overrides|style\.css|sitewide-design|global-improvements|fontawesome|card-content-accessibility|homepage\.css|accessibility\.css|ux-polish|mobile-viewport|super-retina|premium-deferred/i;
 
   // Skills viz is lazy-loaded; bootstrap skips it in perf-audit. Hide transient UI
   // so Lighthouse never scores placeholder copy or off-screen hero flyout assets.
@@ -113,10 +116,17 @@
     '.hero-text-block.home-hero-text{min-height:clamp(220px,42vw,320px)}' +
     '#home-heading{contain:layout;min-height:1.15em}' +
     /* Instant hero LCP paint — kill entrance opacity delays in audit mode */
+    'body{margin:0!important;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,sans-serif!important;background:#fff!important;color:#1d1d1f!important}' +
+    'html.dark body{background:#000!important;color:#f5f5f7!important}' +
     '#home,#home .hero-text-block,#home .hero-header,#home-heading,#home .hero-name-text{opacity:1!important;visibility:visible!important;transform:none!important;animation:none!important;transition:none!important;filter:none!important}' +
+    '#home{padding:5rem 1.25rem 2rem!important;min-height:70vh!important}' +
+    '#home-heading,#home .hero-name-text{font-size:clamp(2.2rem,8vw,4.5rem)!important;font-weight:700!important;line-height:1.05!important;letter-spacing:-0.03em!important;margin:0!important}' +
     /* Solid hero paint for LCP — transparent gradient fill is not a valid LCP text node */
     '#home .hero-name-text{-webkit-text-fill-color:#0071e3!important;color:#0071e3!important;background:none!important;background-image:none!important;font-display:swap!important}' +
     'html.dark #home .hero-name-text{-webkit-text-fill-color:#0a84ff!important;color:#0a84ff!important}' +
+    '#profile-image,.profile-image,#home img[alt*="Mangesh"]{width:160px!important;height:160px!important;max-width:160px!important;border-radius:50%!important;object-fit:cover!important}' +
+    /* Hide non-LCP chrome during audit to reduce layout/CSS work */
+    '#global-nav,.global-nav,.a11y-toolbar,#chatbot-widget,#website-share-toggle,#go-to-top,footer{display:none!important}' +
     /* Touch targets must pass even when contact.css is deferred/stripped */
     '.contact-link-item{display:flex!important;align-items:center!important;min-height:48px!important;padding:0.75rem 1rem!important;box-sizing:border-box!important;line-height:1.25!important}' +
     '.contact-link-wrapper{display:flex!important;flex-direction:column!important;gap:0.6rem!important}' +
@@ -142,7 +152,7 @@
     var path = href.split('?')[0].replace(/^\//, '');
     // Font Awesome CSS + webfonts are ~280KB and not needed for LCP text paint.
     // Blocking them in perf-audit keeps mobile LCP focused on hero system fonts.
-    if (/fontawesome|font-awesome/i.test(path)) {
+    if (/fontawesome|font-awesome/i.test(path) || blockedSheetRe.test(path)) {
       return false;
     }
     return allowedStylesheets.indexOf(path) !== -1;

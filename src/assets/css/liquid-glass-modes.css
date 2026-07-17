@@ -368,14 +368,7 @@ html.dark[data-lg-mode='tinted'] .a11y-glass-popover {
   color: #f5f5f7 !important;
 }
 
-/* Chatbot may still use clear-glass chrome (not the a11y settings card) */
-html[data-lg-mode='clear'] #chatbot-widget {
-  box-shadow: none !important;
-}
-
-html.dark[data-lg-mode='clear'] #chatbot-widget {
-  box-shadow: none !important;
-}
+/* Chatbot glass: density rules later in this file */
 
 /* Chatbot liquid glass in clear + balanced; solid only in tinted */
 html:is([data-lg-mode='clear'], [data-lg-mode='balanced']) #chatbot-widget {
@@ -435,24 +428,8 @@ html[data-lg-mode='tinted']:not(.dark) body {
   background-attachment: scroll !important;
 }
 
-/* Light clear/balanced: solid white page canvas (cards carry the glass) */
-html:is([data-lg-mode='clear'], [data-lg-mode='balanced']):not(.dark) body {
-  background: #ffffff !important;
-  background-color: #ffffff !important;
-  background-image: none !important;
-  background-attachment: scroll !important;
-}
-
 html.dark body,
 html.dark[data-lg-mode='tinted'] body {
-  background: #000000 !important;
-  background-color: #000000 !important;
-  background-image: none !important;
-  background-attachment: scroll !important;
-}
-
-/* Dark clear/balanced: solid black page canvas */
-html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced']) body {
   background: #000000 !important;
   background-color: #000000 !important;
   background-image: none !important;
@@ -971,89 +948,6 @@ html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced'])
     0 12px 40px rgb(0 0 0 / var(--lg-card-shadow-dark)) !important;
 }
 
-/* ════════════════════════════════════════════════════════════════
-   CLEAR POLISH — product parity with tinted
-   Clear/balanced should feel as premium as tinted solid — denser glass,
-   readable type, soft product canvas, continuous corners.
-   ════════════════════════════════════════════════════════════════ */
-html:is([data-lg-mode='clear'], [data-lg-mode='balanced']):not(.dark) {
-  --theme-page-bg: #ffffff;
-  --bg-primary: #ffffff;
-  --bg-secondary: #ffffff;
-}
-html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced']) {
-  --theme-page-bg: #000000;
-  --bg-primary: #000000;
-  --bg-secondary: #000000;
-}
-
-/* Section shells: transparent so page mesh shows; cards float above */
-html:is([data-lg-mode='clear'], [data-lg-mode='balanced']):not(.dark)
-  :is(
-    main,
-    #main-content,
-    section,
-    .section,
-    #about,
-    #skills,
-    #experience,
-    #projects,
-    #engineering,
-    #education,
-    #publications,
-    #awards,
-    #recommendations,
-    #certifications,
-    #blog,
-    #contact,
-    #home,
-    #game,
-    #debug-runner-section
-  ) {
-  background: transparent !important;
-  background-color: transparent !important;
-  background-image: none !important;
-}
-
-html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced'])
-  :is(
-    main,
-    #main-content,
-    section,
-    .section,
-    #about,
-    #skills,
-    #experience,
-    #projects,
-    #engineering,
-    #education,
-    #publications,
-    #awards,
-    #recommendations,
-    #certifications,
-    #blog,
-    #contact,
-    #home,
-    #game,
-    #debug-runner-section
-  ) {
-  background: transparent !important;
-  background-color: transparent !important;
-  background-image: none !important;
-}
-
-/* html root follows body canvas */
-html:is([data-lg-mode='clear'], [data-lg-mode='balanced']):not(.dark) {
-  background: #ffffff !important;
-  background-color: #ffffff !important;
-  background-image: none !important;
-}
-
-html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced']) {
-  background: #000000 !important;
-  background-color: #000000 !important;
-}
-
 /* Card type — SF Pro contrast on glass (matches tinted readability) */
 html:is([data-lg-mode='clear'], [data-lg-mode='balanced']):not(.dark)
   :is(
@@ -1346,22 +1240,6 @@ html:is([data-lg-mode='clear'], [data-lg-mode='balanced']):not(.dark)
   :is(h2, h3, h4, .card-title, .blog-title, .project-title, .publication-title) {
   color: #1d1d1f !important;
   -webkit-text-fill-color: #1d1d1f !important;
-}
-
-html:is([data-lg-mode='clear'], [data-lg-mode='balanced']):not(.dark)
-  body
-  :is(
-    .experience-content,
-    .blog-card,
-    .publication-card,
-    .showcase-project-card,
-    .about-text-card,
-    .skill-category,
-    .contact-card,
-    .newsletter-card
-  )
-  :is(p, .card-description, .blog-excerpt, .project-description, li, span:not([class*='icon'])) {
-  /* don't force every span — only prose helpers above are safe enough; skip broad span */
 }
 
 html:is([data-lg-mode='clear'], [data-lg-mode='balanced']):not(.dark)

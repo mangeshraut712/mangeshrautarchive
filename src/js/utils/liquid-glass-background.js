@@ -1,5 +1,10 @@
 /**
- * Captures page background for WebGL liquid glass refraction.
+ * Background source for WebGL liquid glass refraction.
+ *
+ * Full-page html-to-image capture is intentionally disabled by default:
+ * it costs multi-second main-thread work (Lighthouse TBT collapse) and
+ * CSS backdrop-filter already delivers the glass look sitewide.
+ * Opt-in only: window.__LG_HEAVY_CAPTURE__ = true after a user gesture.
  *
  * iPhone / low-power devices skip WebGL entirely — multiple perpetual rAF + WebGL
  * contexts crash Safari with "A problem repeatedly occurred on …".
@@ -79,25 +84,35 @@ export function isLiquidGlassCaptureSupported() {
 }
 
 export async function capturePageBackground({ target = document.documentElement } = {}) {
-  // Never run full-page html-to-image capture on mobile — OOM risk
-  if (isLowPowerClient()) {
-    return createProceduralBackground(window.innerWidth, window.innerHeight, {
-      dark: document.documentElement.classList.contains('dark'),
-    });
+  const dark = document.documentElement.classList.contains('dark');
+  const procedural = () =>
+    createProceduralBackground(window.innerWidth, window.innerHeight, { dark });
+
+  // Default + mobile/low-power/audit: cheap procedural canvas (no DOM clone)
+  if (
+    isLowPowerClient() ||
+    typeof window === 'undefined' ||
+    window.__LG_HEAVY_CAPTURE__ !== true ||
+    navigator.webdriver === true
+  ) {
+    return procedural();
   }
 
-  const { toCanvas } = await loadCaptureModule();
-  const pixelRatio = Math.min(window.devicePixelRatio || 1, 1.5);
-
-  return toCanvas(target, {
-    pixelRatio,
-    cacheBust: true,
-    skipFonts: true,
-    fontEmbedCSS: '',
-    skipAutoScale: true,
-    backgroundColor: null,
-    filter: node => !shouldExcludeNode(node),
-  });
+  try {
+    const { toCanvas } = await loadCaptureModule();
+    const pixelRatio = Math.min(window.devicePixelRatio || 1, 1.25);
+    return await toCanvas(target, {
+      pixelRatio,
+      cacheBust: true,
+      skipFonts: true,
+      fontEmbedCSS: '',
+      skipAutoScale: true,
+      backgroundColor: null,
+      filter: node => !shouldExcludeNode(node),
+    });
+  } catch {
+    return procedural();
+  }
 }
 
 export function createProceduralBackground(width, height, { dark = false } = {}) {

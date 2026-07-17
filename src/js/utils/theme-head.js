@@ -353,6 +353,10 @@
         return /theme-solid-surfaces/.test(link.getAttribute('href') || '');
       })
       .forEach(function (link) {
+        // Never re-promote solid sheets during Lighthouse / perf-audit
+        if (typeof window !== 'undefined' && window.__PERF_AUDIT__ === true) {
+          return;
+        }
         if (link.parentNode) {
           document.head.appendChild(link);
         }

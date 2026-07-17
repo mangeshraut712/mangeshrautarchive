@@ -31,22 +31,17 @@ class LiquidGlassEngine {
   }
 
   scheduleHeavyCapture() {
+    // Heavy DOM capture is opt-in only (see liquid-glass-background.js).
+    // Procedural backgrounds keep WebGL refraction without multi-second TBT.
     if (this.heavyCaptureScheduled || !this.enabled) return;
-    if (typeof navigator !== 'undefined' && navigator.webdriver) {
+    if (typeof navigator !== 'undefined' && navigator.webdriver) return;
+    if (isPerformanceAudit()) return;
+    if (typeof window !== 'undefined' && window.__LG_HEAVY_CAPTURE__ !== true) {
       return;
     }
     this.heavyCaptureScheduled = true;
-
-    const enable = () => {
-      this.heavyCaptureEnabled = true;
-      this.scheduleCapture(true);
-    };
-
-    if ('requestIdleCallback' in window) {
-      window.requestIdleCallback(enable, { timeout: 8000 });
-    } else {
-      window.setTimeout(enable, 8000);
-    }
+    this.heavyCaptureEnabled = true;
+    this.scheduleCapture(true);
   }
 
   init() {

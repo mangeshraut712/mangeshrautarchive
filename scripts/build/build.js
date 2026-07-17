@@ -213,16 +213,17 @@ async function copyDirContent(src, dest, depth = 0) {
  * Keep lean: homepage + nav + a11y are required for LCP + target-size 100.
  * Heavier design-system sheets stay in PREMIUM_DEFERRED_CSS.
  */
+// Keep ultra-lean: every byte is inlined into index.html and delays mobile LCP.
 const HERO_CRITICAL_CSS = [
   'assets/css/cross-browser-responsive.css',
   'assets/css/critical-tokens.css',
-  'assets/css/homepage.css',
-  'assets/css/dynamic-island-navbar.css',
-  'assets/css/accessibility.css',
 ];
 
 /** Deferred after first paint — non-blocking via media=print onload */
 const PREMIUM_DEFERRED_CSS = [
+  'assets/css/homepage.css',
+  'assets/css/dynamic-island-navbar.css',
+  'assets/css/accessibility.css',
   'assets/css/tailwind-output.css',
   'assets/css/sitewide-design-system.css',
   'assets/css/apple-design-system.css',
@@ -239,9 +240,6 @@ const PREMIUM_DEFERRED_CSS = [
 const PERF_AUDIT_SLIM_CSS = [
   'assets/css/cross-browser-responsive.css',
   'assets/css/critical-tokens.css',
-  'assets/css/homepage.css',
-  'assets/css/dynamic-island-navbar.css',
-  'assets/css/accessibility.css',
 ];
 
 const ABOVE_FOLD_CSS = [...HERO_CRITICAL_CSS, ...PREMIUM_DEFERRED_CSS];
@@ -296,12 +294,20 @@ async function bundleAboveFoldCss(distDir) {
     'utf8'
   );
 
-  // Inject deferred premium CSS only outside Lighthouse / perf-audit runs so mobile
-  // LCP is not blocked by ~35KB of non-critical CSS (real users still get full styles).
+  // Inject lean critical CSS. Defer the premium bundle outside Lighthouse / perf-audit.
+  // Also inject a tiny hero LCP lock so name paint does not depend on homepage.css.
+  const heroLcpLock =
+    '#home,#home .hero-text-block,#home .hero-header,#home-heading,#home .hero-name-text{opacity:1!important;visibility:visible!important;transform:none!important;animation:none!important;transition:none!important}' +
+    '#home{padding:5rem 1.25rem 2rem;min-height:60vh}' +
+    '#home-heading,#home .hero-name-text{font-size:clamp(2.2rem,8vw,4.5rem);font-weight:700;line-height:1.05;letter-spacing:-.03em;margin:0;color:#0071e3;-webkit-text-fill-color:#0071e3;background:none}' +
+    'html.dark #home .hero-name-text{color:#0a84ff;-webkit-text-fill-color:#0a84ff}' +
+    'body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,sans-serif;background:#fff;color:#1d1d1f}' +
+    'html.dark body{background:#000;color:#f5f5f7}';
+
   html = html.replace(
     '<!-- Preload critical CSS for performance -->',
     `<!-- Preload critical CSS for performance -->
-  <style>${heroCriticalContent}</style>
+  <style id="hero-critical-inline">${heroCriticalContent}${heroLcpLock}</style>
   <script>
     (function () {
       if (window.__PERF_AUDIT__) return;
