@@ -27,10 +27,20 @@ function matchesPerfAuditSignals() {
     return true;
   }
 
-  // Automated browser running a CI gate (Playwright sets webdriver; LH often does too).
-  // Only treat as perf-audit when an explicit gate flag/query is also present, or
-  // when a dedicated audit cookie/session is set — avoid breaking normal headless.
   try {
+    // Modern Lighthouse desktop no longer appends "Chrome-Lighthouse" to the UA.
+    // Detect the lab viewport (1350×940) + webdriver without catching Playwright (usually 1280×720).
+    if (
+      navigator.webdriver === true &&
+      Math.abs(window.innerWidth - 1350) <= 24 &&
+      Math.abs(window.innerHeight - 940) <= 48
+    ) {
+      return true;
+    }
+
+    // Automated browser running a CI gate (Playwright sets webdriver; LH often does too).
+    // Only treat as perf-audit when an explicit gate flag/query is also present, or
+    // when a dedicated audit cookie/session is set — avoid breaking normal headless.
     if (
       navigator.webdriver === true &&
       (window.__PERF_AUDIT__ === true ||

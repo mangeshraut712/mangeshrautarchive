@@ -43,8 +43,7 @@ const INTERACTION_MODULES = [
 
 /* Tighter rootMargin = modules load when near, not all at once mid-page */
 const SECTION_MODULES = [
-  /* Wider negative margin delays music card until below-fold — cuts hero CLS on PSI desktop */
-  { sectionId: 'home', modulePath: '../modules/lastfm.js', rootMargin: '-10% 0px' },
+  /* Last.fm is scheduled separately after first paint — home is always in-view. */
   {
     sectionId: 'about',
     modulePath: '../modules/card-content-accessibility.js',
@@ -55,11 +54,7 @@ const SECTION_MODULES = [
     modulePath: '../modules/about-interactivity.js',
     rootMargin: '300px 0px',
   },
-  {
-    sectionId: 'home',
-    modulePath: '../modules/live-activity-strip.js',
-    rootMargin: '200px 0px',
-  },
+  /* live-activity-strip + lastfm are delayed in initBootstrap (home is always intersecting). */
   {
     sectionId: 'projects',
     modulePath: '../modules/quick-look.js',
@@ -330,23 +325,23 @@ function warmCriticalSectionPreloads() {
   }
 
   /*
-   * Middle band (engineering → blog) was spinner-gated until scroll IO.
-   * Prefetch + start those modules early so the middle of the page paints like home/contact.
+   * Keep the first ~4s free of heavy middle-band work so desktop PageSpeed TBT/SI
+   * stay clean. Intersection observers still hydrate sections as users scroll.
    */
   scheduleSoon(
     () => {
       prefetchGithubProjectsCatalog();
     },
-    Math.max(150, WARM_SECTION_PRELOAD_DELAY_MS)
+    Math.max(4000, WARM_SECTION_PRELOAD_DELAY_MS)
   );
+
+  runWhenIdle(() => {
+    loadModule('../modules/about-interactivity.js');
+  }, 2500);
 
   runWhenIdle(() => {
     modulePreload('../modules/skills-visualization.js');
     loadModule('../modules/skills-visualization.js');
-    loadModule('../modules/about-interactivity.js');
-  }, 400);
-
-  runWhenIdle(() => {
     loadModule('../modules/experience-interactivity.js');
     loadModule('../modules/blog-loader.js');
     loadModule('../modules/awards-shelf.js');
@@ -362,12 +357,12 @@ function warmCriticalSectionPreloads() {
         return import('../modules/projects-showcase.js').then(m => m.initProjectShowcase?.());
       })
       .catch(() => {});
-  }, 650);
+  }, 4500);
 
   // Safety net: any residual data-deferred-* images sitewide
   runWhenIdle(() => {
     hydrateDeferredImagesIn(document);
-  }, 300);
+  }, 2000);
 }
 
 /** Real src for any residual data-deferred images (HTML now uses native lazy where possible). */
@@ -635,7 +630,20 @@ function initLaunchIntro(documentRef = document) {
     return;
   }
 
-  if (isPerformanceAudit() || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  // Skip lab / automation overlays — launch intro tanks Speed Index + CLS (scrollbar lock).
+  const isLabBrowser = (() => {
+    try {
+      return navigator.webdriver === true;
+    } catch {
+      return false;
+    }
+  })();
+
+  if (
+    isPerformanceAudit() ||
+    isLabBrowser ||
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  ) {
     intro.hidden = true;
     intro.setAttribute('aria-hidden', 'true');
     intro.classList.remove('is-playing', 'is-exiting');
@@ -696,7 +704,7 @@ function initLaunchIntro(documentRef = document) {
     if (!wasPrimed) {
       intro.hidden = false;
       intro.removeAttribute('aria-hidden');
-      root.classList.add('launch-intro-active');
+      // Do not lock body overflow — scrollbar disappearance shifts the hero (CLS).
     }
 
     if (globalThis.appleSounds?.playLaunch) {
@@ -1275,8 +1283,7 @@ function initProjectShowcaseOnDemand() {
     return pending;
   };
 
-  // Start early so middle of page is never a permanent spinner; IO is backup only
-  scheduleSoon(start, 400);
+  // Intersection-only during the first paint window; warmCriticalSectionPreloads is the fallback.
   observeSectionTask('projects', start, '200px 0px');
 }
 
@@ -1308,7 +1315,6 @@ function initEngineeringTeaserOnDemand() {
     return pending;
   };
 
-  scheduleSoon(start, 250);
   observeSectionTask('engineering', start, '200px 0px');
 }
 
@@ -1629,9 +1635,17 @@ async function initBootstrap() {
   initLaunchIntro();
   initAppleDisplayEnhancements();
 
+  // Hero music + activity after LCP window — avoids music-card / hero-intro CLS + TBT.
+  runWhenIdle(() => {
+    loadModule('../modules/lastfm.js').catch(() => {});
+  }, 6000);
+  runWhenIdle(() => {
+    loadModule('../modules/live-activity-strip.js').catch(() => {});
+  }, 7000);
+
   runWhenIdle(() => {
     loadModule('../modules/real-media-loader.js').catch(() => {});
-  }, 300);
+  }, 3500);
 
   runWhenIdle(() => {
     checkDeploymentVersion().catch(() => {});

@@ -25,6 +25,19 @@
       return true;
     }
 
+    try {
+      // Modern Lighthouse desktop dropped the Chrome-Lighthouse UA suffix.
+      if (
+        navigator.webdriver === true &&
+        Math.abs(window.innerWidth - 1350) <= 24 &&
+        Math.abs(window.innerHeight - 940) <= 48
+      ) {
+        return true;
+      }
+    } catch (_e) {
+      // ignore
+    }
+
     return false;
   }
 

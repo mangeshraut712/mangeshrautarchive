@@ -585,14 +585,20 @@ html.dark #home .hero-name-text {
       color: #f5f5f7;
     }
 
-    /* Reserve scrollbar space so launch-intro overflow lock does not shift layout (CLS). */
+    /* Reserve scrollbar space so overlay chrome cannot shift the hero (CLS). */
     html {
       scrollbar-gutter: stable;
     }
 
-    html.launch-intro-active,
-    html.launch-intro-active body {
-      overflow: hidden;
+    /* Music card reserved height before Last.fm hydrates */
+    #home .music-card {
+      min-height: 86px;
+    }
+
+    #home .music-card-inner {
+      min-height: 72px;
+      width: min(100%, 28rem);
+      box-sizing: border-box;
     }
   </style>
 
