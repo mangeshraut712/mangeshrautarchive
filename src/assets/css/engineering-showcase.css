@@ -381,8 +381,8 @@ html.dark .engineering-open-btn,
 html.dark body:not(.error-page) a.engineering-open-btn {
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
-  background: #0a84ff !important;
-  background-color: #0a84ff !important;
+  background: #0071e3 !important;
+  background-color: #0071e3 !important;
   box-shadow: 0 2px 12px rgb(0 0 0 / 35%) !important;
 }
 

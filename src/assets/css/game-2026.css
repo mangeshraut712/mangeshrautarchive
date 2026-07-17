@@ -35,11 +35,11 @@ html.dark #debug-runner-section {
   margin: 0.35rem auto 1.5rem !important;
   font-size: 0.95rem;
   line-height: 1.45;
-  color: #6e6e73;
+  color: #6e6e73 !important;
 }
 
 html.dark #debug-runner-section .section-subtitle {
-  color: #a1a1a6;
+  color: #d2d2d7 !important;
 }
 
 /* Collapsed disclosure — clean Apple control */

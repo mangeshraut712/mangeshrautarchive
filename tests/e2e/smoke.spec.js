@@ -168,7 +168,9 @@ test.describe('Chrome smoke tests', () => {
       'Liquid Glass transparency',
     ]);
 
-    // Preserve the current compact toolbar target-size baseline.
+    // Accessibility toolbar controls must meet 44×44px touch targets when open.
+    await page.locator('.a11y-toolbar__main').click();
+    await expect(toolbar).toHaveClass(/is-open/);
     const sizes = await buttons.evaluateAll(nodes =>
       nodes.map(node => {
         const r = node.getBoundingClientRect();
@@ -176,8 +178,8 @@ test.describe('Chrome smoke tests', () => {
       })
     );
     for (const size of sizes) {
-      expect(size.w).toBeGreaterThanOrEqual(42);
-      expect(size.h).toBeGreaterThanOrEqual(42);
+      expect(size.w).toBeGreaterThanOrEqual(44);
+      expect(size.h).toBeGreaterThanOrEqual(44);
     }
 
     // Share card entry point must remain present and unchanged by id

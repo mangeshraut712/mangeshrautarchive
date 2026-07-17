@@ -1225,6 +1225,18 @@ html.dark .travel-map-status span {
   }
   .travel-nav__panel {
     display: inline-flex;
+    min-width: 44px;
+    min-height: 44px;
+    width: auto;
+    padding: 0 0.65rem;
+    gap: 0.35rem;
+  }
+
+  .travel-nav__panel::after {
+    content: 'Places';
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
   }
   .travel-nav__projection,
   .travel-nav__theme {

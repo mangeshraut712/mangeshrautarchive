@@ -18,22 +18,10 @@ const ERROR_PAGES = [
 // Keep the gate green around known homepage debt while still failing every new
 // critical/serious rule + selector pair. Remove entries as the underlying UI is fixed.
 const HOMEPAGE_DEBT = {
-  common: [
-    {
-      id: 'aria-required-children',
-      target: '.skill-scroll-wrapper[role="list"]',
-    },
-  ],
-  dark: [
-    { id: 'color-contrast', target: '.section-subtitle' },
-    { id: 'color-contrast', target: '.skills-section-subtitle' },
-    { id: 'color-contrast', target: '.engineering-open-btn' },
-  ],
-  light: [{ id: 'color-contrast', target: 'button[aria-label="View ' }],
-  mobile: [
-    { id: 'color-contrast', target: 'button[aria-label="View ' },
-    { id: 'scrollable-region-focusable', target: '.github-graph-scroll' },
-  ],
+  common: [],
+  dark: [],
+  light: [],
+  mobile: [],
 };
 
 async function configureAccessibilityMode(page, { highContrast = false, theme = 'light' } = {}) {

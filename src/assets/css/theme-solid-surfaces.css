@@ -1934,3 +1934,25 @@ footer .footer-tagline {
   padding-top: 1.25rem !important;
   padding-bottom: clamp(3rem, 6vh, 5rem) !important;
 }
+
+/* Whole-site Task 3: final dark-mode subtitle + CTA contrast lock (last sheet wins) */
+html.dark body .section-subtitle,
+html.dark body .skills-section-subtitle,
+html.dark body p.section-subtitle,
+html.dark body section .section-subtitle,
+html.dark body #about .section-subtitle,
+html.dark body #skills .section-subtitle,
+html.dark body #projects .section-subtitle {
+  color: #d2d2d7 !important;
+  -webkit-text-fill-color: #d2d2d7 !important;
+}
+
+html.dark body a.engineering-open-btn,
+html.dark body .engineering-open-btn,
+html.dark body:not(.error-page) a.engineering-open-btn {
+  background: #0071e3 !important;
+  background-color: #0071e3 !important;
+  border-color: #0071e3 !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
