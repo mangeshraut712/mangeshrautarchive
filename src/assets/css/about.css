@@ -361,45 +361,46 @@ html:not(.dark) .about-highlight-text {
 }
 
 /* Responsive Design
-   Desktop keeps equal-height image + story card.
-   Tablet/mobile stack: image keeps a fixed media height; story card grows
-   with content (no nested scroll trap). */
+   All viewports: image + story card share one fixed height.
+   On tablet/mobile they stack; the card scrolls its content inside. */
 @media (width <= 1024px) {
   #about {
-    --about-pair-height: auto;
+    --about-pair-height: clamp(440px, 52vh, 580px);
   }
 
   .about-main,
   #about .about-main {
     grid-template-columns: 1fr;
     gap: 1.75rem;
-    align-items: start;
+    align-items: stretch;
     margin-bottom: 2.5rem;
   }
 
   .about-image-wrapper,
   #about .about-image-wrapper {
-    height: min(420px, 58vw) !important;
-    min-height: 260px !important;
-    max-height: 440px !important;
+    height: var(--about-pair-height) !important;
+    min-height: var(--about-pair-height) !important;
+    max-height: var(--about-pair-height) !important;
     width: 100%;
   }
 
   .about-text-card,
   #about .about-text-card {
-    height: auto !important;
-    min-height: 0 !important;
-    max-height: none !important;
-    overflow: visible !important;
+    height: var(--about-pair-height) !important;
+    min-height: var(--about-pair-height) !important;
+    max-height: var(--about-pair-height) !important;
+    overflow: hidden !important;
     align-self: stretch;
   }
 
   #about .about-tab-panel {
-    flex: 0 1 auto;
+    flex: 1 1 auto;
     min-height: 0;
-    overflow: visible !important;
-    max-height: none !important;
-    padding-right: 0;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    padding-right: 0.5rem;
   }
 
   .about-image-badge {
@@ -410,6 +411,10 @@ html:not(.dark) .about-highlight-text {
 }
 
 @media (width <= 768px) {
+  #about {
+    --about-pair-height: clamp(400px, 50vh, 520px);
+  }
+
   .about-intro-title {
     font-size: 1.75rem;
   }
@@ -438,9 +443,9 @@ html:not(.dark) .about-highlight-text {
 
   .about-image-wrapper,
   #about .about-image-wrapper {
-    height: min(360px, 72vw) !important;
-    min-height: 240px !important;
-    max-height: 400px !important;
+    height: var(--about-pair-height) !important;
+    min-height: var(--about-pair-height) !important;
+    max-height: var(--about-pair-height) !important;
     border-radius: 20px;
   }
 
