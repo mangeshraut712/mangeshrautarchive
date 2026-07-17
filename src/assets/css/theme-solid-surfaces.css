@@ -1956,3 +1956,20 @@ html.dark body:not(.error-page) a.engineering-open-btn {
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
 }
+
+/* Footer tagline AA lock — beat apple-ui-polish #6e6e73 / #7a7a7e leftovers */
+footer .footer-tagline,
+footer .footer-copy,
+body .footer-tagline,
+body .footer-copy {
+  color: #48484a !important;
+  -webkit-text-fill-color: #48484a !important;
+}
+
+html.dark footer .footer-tagline,
+html.dark footer .footer-copy,
+html.dark body .footer-tagline,
+html.dark body .footer-copy {
+  color: #a1a1a6 !important;
+  -webkit-text-fill-color: #a1a1a6 !important;
+}
