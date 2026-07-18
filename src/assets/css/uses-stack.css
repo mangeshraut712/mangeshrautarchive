@@ -12,6 +12,10 @@ body.uses-page {
   --uses-border: #e5e5ea;
   --uses-blue: #0071e3;
   --uses-blue-soft: rgb(0 113 227 / 10%);
+  /* Soft/accent pills must stay AA on their chip fills (axe color-contrast). */
+  --uses-pill-soft-fg: #0058b0;
+  --uses-pill-accent-bg: #0071e3;
+  --uses-pill-accent-fg: #ffffff;
   --uses-radius: 18px;
   --uses-radius-sm: 12px;
   color: var(--uses-text);
@@ -27,6 +31,10 @@ html.dark body.uses-page {
   --uses-border: #2c2c2e;
   --uses-blue: #0a84ff;
   --uses-blue-soft: rgb(10 132 255 / 16%);
+  --uses-pill-soft-fg: #64b5ff;
+  /* #0a84ff fails AA with white; keep link blue separate from filled chips. */
+  --uses-pill-accent-bg: #0071e3;
+  --uses-pill-accent-fg: #ffffff;
   color: var(--uses-text);
   background: #000000 !important;
 }
@@ -442,15 +450,15 @@ body.uses-page .uses-pill {
 }
 
 body.uses-page .uses-pill--accent {
-  background: var(--uses-blue);
-  border-color: var(--uses-blue);
-  color: #ffffff;
+  background: var(--uses-pill-accent-bg);
+  border-color: var(--uses-pill-accent-bg);
+  color: var(--uses-pill-accent-fg);
 }
 
 body.uses-page .uses-pill--soft {
   background: var(--uses-blue-soft);
   border-color: transparent;
-  color: var(--uses-blue);
+  color: var(--uses-pill-soft-fg);
 }
 
 /* Empty state */
