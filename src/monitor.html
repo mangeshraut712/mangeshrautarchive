@@ -25,17 +25,31 @@
     <meta name="author" content="Mangesh Raut" />
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
     <meta name="googlebot" content="index, follow" />
-    <link rel="canonical" href="https://mangeshraut.pro/monitor" />
-    <link rel="alternate" hreflang="en-US" href="https://mangeshraut.pro/monitor" />
-    <link rel="alternate" hreflang="x-default" href="https://mangeshraut.pro/monitor" />
+    <link rel="canonical" href="https://mangeshraut712.github.io/mangeshrautarchive/monitor.html" />
+    <link
+      rel="alternate"
+      hreflang="en-US"
+      href="https://mangeshraut712.github.io/mangeshrautarchive/monitor.html"
+    />
+    <link
+      rel="alternate"
+      hreflang="x-default"
+      href="https://mangeshraut712.github.io/mangeshrautarchive/monitor.html"
+    />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://mangeshraut.pro/monitor" />
+    <meta
+      property="og:url"
+      content="https://mangeshraut712.github.io/mangeshrautarchive/monitor.html"
+    />
     <meta property="og:title" content="System Monitor — Mangesh Raut" />
     <meta
       property="og:description"
       content="Live portfolio operations dashboard for backend health, provider APIs, deployments, security checks, and AI metrics."
     />
-    <meta property="og:image" content="https://mangeshraut.pro/assets/images/home.png" />
+    <meta
+      property="og:image"
+      content="https://mangeshraut712.github.io/mangeshrautarchive/assets/images/home.png"
+    />
     <meta property="og:image:width" content="3024" />
     <meta property="og:image:height" content="1722" />
     <meta property="og:image:alt" content="System Monitor dashboard for Mangesh Raut portfolio" />
@@ -45,7 +59,10 @@
       name="twitter:description"
       content="Live portfolio operations dashboard for backend health, provider APIs, deployments, security checks, and AI metrics."
     />
-    <meta name="twitter:image" content="https://mangeshraut.pro/assets/images/home.png" />
+    <meta
+      name="twitter:image"
+      content="https://mangeshraut712.github.io/mangeshrautarchive/assets/images/home.png"
+    />
     <meta name="twitter:image:alt" content="System Monitor dashboard for Mangesh Raut portfolio" />
     <link rel="icon" type="image/png" href="assets/images/profile-icon.png?v=20260716aa" />
     <link rel="mask-icon" href="assets/icons/icon.svg" color="#0071e3" />
@@ -262,11 +279,13 @@
     </nav>
 
     <main class="monitor-container" id="main-content">
-      <div id="edge-api-banner" class="empty-state monitor-edge-banner" hidden role="status">
+      <div id="edge-api-banner" class="monitor-edge-banner" hidden role="status">
+        <p class="monitor-edge-banner__title">Cloudflare edge mode</p>
         <p>
-          API mode: <strong>Cloudflare edge</strong> (GitHub Pages primary). Health sync runs on
-          Worker hourly cron — not Vercel. Some monitor tiles are edge summaries while custom-domain
-          FastAPI is offline.
+          GitHub Pages is the primary site. Monitor probes hit
+          <code>assistme-chat…workers.dev</code> with live checks for pages, chat, music, GitHub,
+          and health vitals. FastAPI-only tiles (security feed, AI token ledger, host CPU) stay
+          marked unavailable — they are not silently “healthy.”
         </p>
       </div>
       <nav class="monitor-section-rail" aria-label="Monitor sections">
@@ -1198,8 +1217,9 @@
 
         return {
           environment: 'static fallback',
+          mode: 'offline_fallback',
           summary: {
-            healthy: 3,
+            healthy: 0,
             degraded: monitorApiAvailable ? 1 : 0,
             unhealthy: monitorApiAvailable ? 0 : 1,
           },
@@ -1277,6 +1297,10 @@
         try {
           await ensureApiOrigin();
           if (!monitorApiAvailable) throw new Error(monitorApiIssue || 'Monitor API unavailable');
+          if (String(apiOrigin || '').includes('workers.dev')) {
+            showToast('Event resolve is FastAPI-only — edge monitor is read-only.', 'warning');
+            return false;
+          }
           const response = await fetch(buildApiUrl(`/api/monitor/events/${eventId}/resolve`), {
             method: 'POST',
             headers: ownerAdminHeaders(),
@@ -1540,10 +1564,17 @@
         const errorRate = metricsData?.error_rate ?? 0;
         const environment = statusData?.environment || 'local';
 
+        const onEdge =
+          String(apiOrigin || '').includes('workers.dev') ||
+          String(statusData?.host || metricsData?.host || '').includes('cloudflare');
         if (degradedChecks > 0 || degradedSurfaces > 0) {
           summaryText.textContent = `${degradedChecks} backend checks and ${degradedSurfaces} deployment surfaces need attention.`;
+        } else if (onEdge) {
+          summaryText.textContent =
+            'Edge probes look healthy for Pages + Worker APIs. FastAPI-only security/AI ledgers remain unavailable.';
         } else {
-          summaryText.textContent = `All backend services, integration APIs, and hosting surfaces are operational.`;
+          summaryText.textContent =
+            'All backend services, integration APIs, and hosting surfaces are operational.';
         }
 
         uptime.textContent = uptimeText;
@@ -2205,13 +2236,26 @@
               provider.requiresOwnerAuth &&
               provider.configured &&
               (!provider.connected || provider.needsReauth || provider.status === 'needs_reauth');
-            const verifyHref = buildIntegrationConnectHref(verifyPath);
+            const onEdge = String(apiOrigin || '').includes('workers.dev');
+            const verifyHref =
+              key === 'googleCalendar' && onEdge ? null : buildIntegrationConnectHref(verifyPath);
             const actionMarkup = showConnect
               ? `<button type="button" class="btn btn-secondary" onclick="startIntegrationConnect('${key}')">
                    <i class="fas fa-arrow-up-right-from-square"></i>
-                   <span>Connect in Chrome</span>
+                   <span>Connect</span>
                  </button>`
-              : `<span class="integration-hint">${escapeHtml(provider.nextStep || 'Set provider env vars in Vercel, redeploy, then refresh.')}</span>`;
+              : `<span class="integration-hint">${escapeHtml(
+                  provider.nextStep ||
+                    (onEdge
+                      ? 'Configure provider secrets on the Cloudflare Worker, then refresh.'
+                      : 'Set provider env vars, redeploy, then refresh.')
+                )}</span>`;
+            const verifyMarkup = verifyHref
+              ? `<a class="btn btn-secondary" href="${escapeHtml(verifyHref)}" target="_blank" rel="noopener noreferrer">
+                    <i class="fas fa-vial"></i>
+                    <span>Verify API</span>
+                  </a>`
+              : `<span class="integration-hint">Calendar API is FastAPI-only (Pages uses Calendly).</span>`;
 
             return `
               <div class="health-item ${statusClass}">
@@ -2230,10 +2274,7 @@
                 </div>
                 <div class="health-metrics integration-actions">
                   ${actionMarkup}
-                  <a class="btn btn-secondary" href="${escapeHtml(verifyHref)}" target="_blank" rel="noopener noreferrer">
-                    <i class="fas fa-vial"></i>
-                    <span>Verify API</span>
-                  </a>
+                  ${verifyMarkup}
                 </div>
               </div>
             `;
@@ -2848,11 +2889,12 @@
       async function refreshHostingSurfaces() {
         setButtonLoading('#btn-refresh-surfaces', true, 'Refreshing...');
         showToast('Checking deployment surfaces...', 'info');
-        const hosting = await fetchHostingSurfaces();
-        renderRuntimeSnapshot(hosting);
+        const [hosting, status] = await Promise.all([fetchHostingSurfaces(), fetchStatus()]);
+        // Hosting payload has no runtime — keep runtime card from status.
+        if (status) renderRuntimeSnapshot(status);
         renderDeploymentSurfaces(hosting);
-        if (hosting) {
-          mergeMonitorSnapshot({ hosting });
+        if (hosting || status) {
+          mergeMonitorSnapshot({ hosting, status });
           refreshControlCenterFromSnapshot();
         }
         showToast('Deployment surfaces updated', hosting ? 'success' : 'error');
@@ -3262,8 +3304,19 @@
 
         // Render suspicious threats log
         const events = secData.security_events || [];
+        const edgeSecurity =
+          secData.mode === 'edge_unavailable' ||
+          secData.synthetic ||
+          String(secData.host || '').includes('cloudflare');
         if (events.length === 0) {
-          threatsLog.innerHTML = `
+          threatsLog.innerHTML = edgeSecurity
+            ? `
+            <div class="empty-state compact empty-state--compact-pad">
+              <i class="fas fa-cloud icon-accent-yellow"></i>
+              <h3>Security feed unavailable on edge</h3>
+              <p>${escapeHtml(secData.message || 'FastAPI security telemetry is offline on GitHub Pages.')}</p>
+            </div>`
+            : `
             <div class="empty-state compact empty-state--compact-pad">
               <i class="fas fa-shield-check icon-accent-green"></i>
               <h3>No security threats detected</h3>
@@ -3491,33 +3544,68 @@
       }
 
       function renderResourceMeters(realTimeData) {
-        const cpuVal = realTimeData?.cpu_trend?.slice(-1)[0]?.value ?? 1.5;
-        const memVal = realTimeData?.memory_trend?.slice(-1)[0]?.value ?? 45.0;
+        const cpuRaw = realTimeData?.cpu_percent ?? realTimeData?.cpu_trend?.slice(-1)[0]?.value;
+        const memRaw =
+          realTimeData?.memory_percent ?? realTimeData?.memory_trend?.slice(-1)[0]?.value;
+        const edgeUnavailable =
+          realTimeData?.mode === 'edge_summary' ||
+          realTimeData?.synthetic ||
+          String(realTimeData?.host || '').includes('cloudflare');
+        const cpuVal = typeof cpuRaw === 'number' ? cpuRaw : null;
+        const memVal = typeof memRaw === 'number' ? memRaw : null;
         const rpsVal = realTimeData?.requests_per_second ?? 0.0;
 
         const cpuValEl = document.getElementById('resource-cpu-value');
-        if (cpuValEl) cpuValEl.textContent = `${cpuVal.toFixed(1)}%`;
+        if (cpuValEl) {
+          cpuValEl.textContent =
+            cpuVal == null ? (edgeUnavailable ? 'n/a (edge)' : '—') : `${cpuVal.toFixed(1)}%`;
+        }
         const cpuFill = document.getElementById('resource-cpu-fill');
         if (cpuFill) {
-          cpuFill.style.width = `${cpuVal}%`;
-          cpuFill.className = `resource-bar-fill ${cpuVal < 60 ? 'normal' : cpuVal < 85 ? 'warning' : 'critical'}`;
+          cpuFill.style.width = `${cpuVal == null ? 0 : cpuVal}%`;
+          cpuFill.className = `resource-bar-fill ${
+            cpuVal == null
+              ? 'normal'
+              : cpuVal < 60
+                ? 'normal'
+                : cpuVal < 85
+                  ? 'warning'
+                  : 'critical'
+          }`;
         }
 
         const memValEl = document.getElementById('resource-memory-value');
-        if (memValEl) memValEl.textContent = `${memVal.toFixed(1)}%`;
+        if (memValEl) {
+          memValEl.textContent =
+            memVal == null ? (edgeUnavailable ? 'n/a (edge)' : '—') : `${memVal.toFixed(1)}%`;
+        }
         const memFill = document.getElementById('resource-memory-fill');
         if (memFill) {
-          memFill.style.width = `${memVal}%`;
-          memFill.className = `resource-bar-fill ${memVal < 70 ? 'normal' : memVal < 90 ? 'warning' : 'critical'}`;
+          memFill.style.width = `${memVal == null ? 0 : memVal}%`;
+          memFill.className = `resource-bar-fill ${
+            memVal == null
+              ? 'normal'
+              : memVal < 70
+                ? 'normal'
+                : memVal < 90
+                  ? 'warning'
+                  : 'critical'
+          }`;
         }
 
         const trafficValEl = document.getElementById('resource-traffic-value');
-        if (trafficValEl) trafficValEl.textContent = `${rpsVal.toFixed(2)} req/sec`;
+        if (trafficValEl) {
+          trafficValEl.textContent = edgeUnavailable
+            ? 'n/a (edge)'
+            : `${Number(rpsVal || 0).toFixed(2)} req/sec`;
+        }
         const trafficFill = document.getElementById('resource-traffic-fill');
         if (trafficFill) {
-          const trafficPct = Math.min((rpsVal / 5) * 100, 100);
+          const trafficPct = edgeUnavailable ? 0 : Math.min((rpsVal / 5) * 100, 100);
           trafficFill.style.width = `${trafficPct}%`;
-          trafficFill.className = `resource-bar-fill ${rpsVal < 2 ? 'normal' : rpsVal < 4 ? 'warning' : 'critical'}`;
+          trafficFill.className = `resource-bar-fill ${
+            edgeUnavailable ? 'normal' : rpsVal < 2 ? 'normal' : rpsVal < 4 ? 'warning' : 'critical'
+          }`;
         }
       }
 
