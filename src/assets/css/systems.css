@@ -11,8 +11,8 @@
   --systems-accent-soft: rgb(0 113 227 / 12%);
   --systems-radius: 20px;
   --systems-radius-sm: 14px;
-  --systems-section-gap: clamp(3rem, 6vw, 4.5rem);
-  --systems-shell-max: 1120px;
+  --systems-section-gap: clamp(1.75rem, 4vw, 2.75rem);
+  --systems-shell-max: min(1200px, 100%);
   --systems-shell-gutter: max(
     1.25rem,
     env(safe-area-inset-left, 0px),
@@ -3065,17 +3065,27 @@ html.dark .systems-public-statement {
 
 .systems-decision-grid {
   display: grid;
+  grid-template-columns: 1fr;
   gap: 0.55rem;
-  margin-bottom: 1rem;
+  margin-bottom: 0.85rem;
+  align-items: stretch;
+}
+
+@media (width >= 900px) {
+  .systems-decision-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 .systems-decision-row {
   display: flex;
-  gap: 1.5rem;
-  padding: 1.25rem 1.5rem;
+  gap: 1rem;
+  padding: 1rem 1.15rem;
   border-radius: 14px;
   align-items: flex-start;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0;
+  min-width: 0;
+  height: 100%;
   border: 1px solid var(--systems-card-border);
   background: var(--systems-card-bg);
   transition:

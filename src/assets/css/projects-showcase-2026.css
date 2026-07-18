@@ -612,9 +612,9 @@ html.dark #projects .activity-stat-label {
 }
 
 #projects .graph-title {
-  margin: 0 0 0.72rem !important;
-  font-size: 1.04rem !important;
-  font-weight: 640 !important;
+  margin: 0 !important;
+  font-size: 0.88rem !important;
+  font-weight: 400 !important;
   color: var(--project-text-light) !important;
 }
 
@@ -622,14 +622,25 @@ html.dark #projects .graph-title {
   color: var(--project-text-dark) !important;
 }
 
+#projects .graph-contrib-count {
+  font-size: 0.88rem;
+  font-weight: 400;
+  color: var(--project-muted-light);
+}
+
+html.dark #projects .graph-contrib-count {
+  color: var(--project-muted-dark);
+}
+
 #projects .github-graph-scroll {
   min-height: 132px;
   overflow-x: auto;
   border: 1px solid var(--github-graph-canvas-border);
-  border-radius: 16px;
+  border-radius: 6px;
   background: var(--github-graph-canvas);
-  padding: 0.85rem 0.75rem 0.65rem;
+  padding: 0.75rem 0.65rem 0.55rem;
   box-shadow: none;
+  position: relative;
 }
 
 #projects .github-graph-scroll:focus-visible {
@@ -698,7 +709,7 @@ html.dark #projects .github-graph-legend {
   min-width: 660px;
   height: auto;
   display: block;
-  border-radius: 10px;
+  border-radius: 2px;
 }
 
 html.dark #projects .github-graph-svg {
@@ -709,9 +720,15 @@ html.dark #projects .github-graph-svg {
 #projects .graph-header {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
-  gap: 1rem;
-  margin-bottom: 0.72rem;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.55rem;
+}
+
+#projects .graph-header-left {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 #projects .graph-loading .loading-spinner {
@@ -772,30 +789,63 @@ html.dark .graph-error-container {
   gap: 1rem;
 }
 
-.graph-refresh-btn {
+#projects .graph-refresh-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
-  border: none;
-  border-radius: 8px;
-  background: transparent;
-  color: var(--project-muted-light);
+  gap: 0.35rem;
+  border: none !important;
+  border-radius: 6px !important;
+  background: transparent !important;
+  color: var(--project-muted-light) !important;
   cursor: pointer;
   transition:
-    color 0.2s ease,
-    background-color 0.2s ease,
-    border-color 0.2s ease,
-    box-shadow 0.2s ease,
-    transform 0.2s ease,
-    opacity 0.2s ease;
-  font-size: 0.9rem;
+    color 0.18s ease,
+    background-color 0.18s ease;
+  font-size: 0.75rem !important;
+  padding: 0.3rem 0.5rem !important;
+  font-weight: 500;
+  width: auto !important;
+  height: auto !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  box-shadow: none !important;
+}
+
+#projects .graph-refresh-btn:hover {
+  color: var(--project-accent) !important;
+  background: rgb(0 113 227 / 8%) !important;
+}
+
+#projects .graph-refresh-btn i {
+  font-size: 0.65rem;
+  transition: transform 0.4s ease;
+}
+
+#projects .graph-refresh-btn:hover i {
+  transform: rotate(180deg);
+}
+
+html.dark #projects .graph-refresh-btn {
+  color: var(--project-muted-dark) !important;
+}
+
+html.dark #projects .graph-refresh-btn:hover {
+  background: rgb(255 255 255 / 8%) !important;
+  color: var(--project-accent) !important;
 }
 
 .graph-refresh-btn:hover {
-  background: rgb(0 0 0 / 8%);
   color: var(--project-accent);
+  background: rgb(0 113 227 / 8%);
+}
+
+.graph-refresh-btn i {
+  font-size: 0.65rem;
+  transition: transform 0.4s ease;
+}
+
+.graph-refresh-btn:hover i {
   transform: rotate(180deg);
 }
 
@@ -804,8 +854,53 @@ html.dark .graph-refresh-btn {
 }
 
 html.dark .graph-refresh-btn:hover {
-  background: rgb(255 255 255 / 10%);
+  background: rgb(255 255 255 / 8%);
   color: var(--project-accent);
+}
+
+/* GitHub-style tooltip popover for contribution cells */
+.contrib-tooltip {
+  position: absolute;
+  z-index: 100;
+  padding: 0.45rem 0.65rem;
+  border-radius: 6px;
+  background: #24292f;
+  color: #ffffff;
+  font-size: 0.72rem;
+  font-weight: 600;
+  line-height: 1.3;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateX(-50%) translateY(-4px);
+  transition: opacity 0.12s ease;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 30%);
+  text-align: center;
+}
+
+.contrib-tooltip::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px 5px 0;
+  border-style: solid;
+  border-color: #24292f transparent transparent;
+}
+
+.contrib-tooltip.visible {
+  opacity: 1;
+}
+
+html.dark .contrib-tooltip {
+  background: #f0f6fc;
+  color: #0d1117;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 50%);
+}
+
+html.dark .contrib-tooltip::after {
+  border-color: #f0f6fc transparent transparent;
 }
 
 /* Graph Retry Button */

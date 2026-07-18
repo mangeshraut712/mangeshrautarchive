@@ -24,6 +24,14 @@ body {
   padding-right: env(safe-area-inset-right);
 }
 
+/* Fullscreen atlas — never allow document scroll under the map UI */
+body.travel-body {
+  overflow: hidden !important;
+  overflow-x: hidden !important;
+  overflow-y: hidden !important;
+  overscroll-behavior: none;
+}
+
 #main-content,
 .global-nav.dynamic-island {
   max-width: 100%;

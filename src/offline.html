@@ -13,78 +13,26 @@
     <meta name="color-scheme" content="light dark" />
     <title>Offline | Mangesh Raut Portfolio</title>
     <link rel="icon" type="image/png" href="assets/images/profile-icon.png" />
-    <style>
-      :root {
-        color-scheme: light dark;
-        --bg: #ffffff;
-        --text: #1d1d1f;
-        --muted: #6e6e73;
-        --accent: #0071e3;
-      }
-      @media (prefers-color-scheme: dark) {
-        :root {
-          --bg: #000000;
-          --text: #f5f5f7;
-          --muted: #a1a1a6;
-          --accent: #0a84ff;
-        }
-      }
-      * {
-        box-sizing: border-box;
-      }
-      body {
-        margin: 0;
-        min-height: 100vh;
-        min-height: 100dvh;
-        display: grid;
-        place-items: center;
-        padding: 1.5rem;
-        font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', sans-serif;
-        background: var(--bg);
-        color: var(--text);
-        -webkit-font-smoothing: antialiased;
-      }
-      main {
-        max-width: 28rem;
-        text-align: center;
-      }
-      h1 {
-        margin: 0 0 0.75rem;
-        font-size: clamp(1.5rem, 4vw, 2rem);
-        letter-spacing: -0.03em;
-      }
-      p {
-        margin: 0 0 1.5rem;
-        color: var(--muted);
-        line-height: 1.55;
-      }
-      button {
-        appearance: none;
-        border: 0;
-        border-radius: 999px;
-        padding: 0.9rem 1.4rem;
-        min-height: 44px;
-        font: inherit;
-        font-weight: 600;
-        color: #fff;
-        background: linear-gradient(135deg, #0071e3, #0a84ff);
-        cursor: pointer;
-      }
-      button:focus-visible {
-        outline: 2px solid var(--accent);
-        outline-offset: 3px;
-      }
-    </style>
-    <link rel="stylesheet" href="assets/css/ux-polish-fixes.css?v=20260716aa" />
+    <link rel="stylesheet" href="assets/css/subpage-layout-polish.css?v=20260718sub" />
   </head>
-  <body>
-    <main>
+  <body class="offline-page">
+    <main class="offline-card" id="main-content">
+      <p class="offline-kicker">Connection</p>
       <h1>You're offline</h1>
       <p>
-        This page needs a network connection. Check Wi‑Fi or cellular, then try again. This site
-        does not keep a full offline cache (by design, for stability on mobile Safari).
+        This page needs a network connection. Check Wi‑Fi or cellular, then try again. A full
+        offline cache is intentionally not kept for mobile Safari stability.
       </p>
-      <button type="button" id="retry-btn">Try again</button>
+      <div class="offline-actions">
+        <button type="button" id="retry-btn">Try again</button>
+        <a class="offline-link" href="index.html">Go home</a>
+      </div>
+      <ul class="offline-destinations" aria-label="Cached destinations if available">
+        <li><a href="systems.html">Systems</a></li>
+        <li><a href="monitor.html">Monitor</a></li>
+        <li><a href="travel.html">Travel</a></li>
+        <li><a href="uses.html">Uses</a></li>
+      </ul>
     </main>
     <script>
       document.getElementById('retry-btn')?.addEventListener('click', () => {

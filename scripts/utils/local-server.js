@@ -287,6 +287,18 @@ app.use(express.static(distPath, { ...staticOpts, index: false }));
 const chatbotPath = join(projectRoot, 'chatbot');
 app.use('/chatbot', express.static(chatbotPath));
 
+// Interactive Apple 404 for unknown frontend routes (mirrors Vercel / GitHub Pages + serve-dist).
+app.use((req, res, next) => {
+  if (req.method !== 'GET' && req.method !== 'HEAD') return next();
+  if (req.path.startsWith('/api/')) return next();
+  const accept = String(req.headers.accept || '');
+  if (accept && !accept.includes('text/html') && !accept.includes('*/*')) return next();
+  const notFoundPage = join(staticPath, '404.html');
+  res.status(404).sendFile(notFoundPage, err => {
+    if (err) next();
+  });
+});
+
 function startServer(listenPort) {
   const server = http.createServer(app);
   attachRealtimeWsProxy(server);

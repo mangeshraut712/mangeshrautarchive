@@ -1,0 +1,608 @@
+/**
+ * Shared subpage layout polish — systems, uses, travel, 404, offline, monitor companions.
+ * Loaded last among page CSS so density / no-overlap rules win.
+ */
+
+/* ─── Shared shell density ─── */
+body.systems-page,
+body.uses-page {
+  --systems-shell-max: min(1200px, 100%);
+  --systems-section-gap: clamp(1.5rem, 3.5vw, 2.35rem);
+  --systems-radius: 18px;
+  --systems-radius-sm: 14px;
+  overflow-x: clip;
+}
+
+body.systems-page .systems-shell,
+body.uses-page .systems-shell {
+  max-width: var(--systems-shell-max);
+  gap: var(--systems-section-gap);
+  min-width: 0;
+}
+
+/* Hero — less empty air under title */
+body.systems-page .systems-keynote-hero,
+body.uses-page .systems-keynote-hero {
+  padding: clamp(0.85rem, 2.5vw, 1.5rem) 0 0.25rem;
+}
+
+body.systems-page .systems-keynote-hero h1,
+body.uses-page .systems-keynote-hero h1 {
+  max-width: 28ch;
+}
+
+body.systems-page .systems-hero-lead--stack {
+  min-height: 0;
+}
+
+body.systems-page .systems-hero-stats {
+  margin-top: 1rem !important;
+}
+
+/* Section cards — no clipped focus rings, tight stack */
+body.systems-page .systems-keynote-section {
+  gap: 0.9rem;
+  padding: clamp(1rem, 2.4vw, 1.5rem);
+  overflow: visible;
+  isolation: isolate;
+}
+
+body.systems-page .systems-section-head {
+  margin-bottom: 0.15rem;
+}
+
+body.systems-page .systems-section-desc {
+  max-width: none;
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+/* Sticky rail — clear fixed nav, no side mask eating labels */
+body.systems-page .systems-section-rail {
+  top: calc(76px + env(safe-area-inset-top, 0px)) !important;
+  z-index: 45;
+  width: 100%;
+  max-width: 100%;
+  justify-content: flex-start;
+  margin: 0 auto;
+  box-sizing: border-box;
+  mask-image: none !important;
+  -webkit-mask-image: none !important;
+  box-shadow: 0 2px 12px rgb(0 0 0 / 5%);
+}
+
+html.dark body.systems-page .systems-section-rail {
+  box-shadow: 0 2px 14px rgb(0 0 0 / 35%);
+}
+
+/* Evidence + metrics denser */
+body.systems-page .systems-evidence-grid {
+  gap: 0.7rem;
+  align-items: stretch;
+}
+
+body.systems-page .systems-evidence-card {
+  min-width: 0;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+/* When only a few overview cards, prefer half-width pairs on desktop */
+@media (min-width: 900px) {
+  body.systems-page
+    .systems-evidence-grid
+    > .systems-evidence-card:not(.systems-evidence-card--featured):not(
+      .systems-evidence-card--proof
+    ) {
+    grid-column: span 6;
+  }
+}
+
+body.systems-page .systems-metrics-grid,
+body.systems-page .systems-benchmarks-viz,
+body.systems-page .systems-now-grid,
+body.systems-page .systems-principles-grid {
+  gap: 0.7rem !important;
+  align-items: stretch;
+}
+
+body.systems-page .systems-metric-panel,
+body.systems-page .systems-bench-row,
+body.systems-page .systems-now-card,
+body.systems-page .systems-principle-card,
+body.systems-page .systems-bento-tile {
+  min-width: 0;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+/* Decision rows — two-up on wide screens (fill width, less vertical dead space) */
+body.systems-page .systems-decision-grid {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  gap: 0.55rem !important;
+  margin-bottom: 0.75rem !important;
+}
+
+@media (min-width: 900px) {
+  body.systems-page .systems-decision-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+body.systems-page .systems-decision-row {
+  margin-bottom: 0 !important;
+  min-width: 0;
+  height: 100%;
+  padding: 0.95rem 1.05rem !important;
+  gap: 0.85rem !important;
+}
+
+body.systems-page .systems-decision-meta {
+  min-width: 4.5rem;
+}
+
+body.systems-page .systems-decision-label {
+  font-size: 0.9rem !important;
+}
+
+body.systems-page .systems-decision-why {
+  font-size: 0.82rem !important;
+  line-height: 1.4 !important;
+}
+
+/* Architecture stage */
+body.systems-page .systems-arch-stage {
+  padding: 0.9rem !important;
+  min-width: 0;
+}
+
+body.systems-page .systems-arch-tabs {
+  gap: 0.3rem;
+  margin-bottom: 0.75rem !important;
+}
+
+body.systems-page .systems-arch-diagram-host {
+  min-height: 12rem;
+  min-width: 0;
+  overflow-x: auto;
+}
+
+/* Failure / project grids */
+body.systems-page .systems-failure-grid {
+  display: grid !important;
+  gap: 0.55rem !important;
+}
+
+@media (min-width: 900px) {
+  body.systems-page .systems-failure-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+body.systems-page .systems-failure-row {
+  margin: 0;
+  height: 100%;
+  min-width: 0;
+  padding: 0.95rem 1.05rem !important;
+}
+
+/* ─── Uses page ─── */
+body.uses-page .uses-grid {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 0.75rem !important;
+  align-items: stretch;
+}
+
+body.uses-page .uses-section {
+  min-width: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 1.05rem 0.95rem !important;
+  box-sizing: border-box;
+}
+
+body.uses-page .uses-section ul {
+  flex: 1 1 auto;
+}
+
+body.uses-page .uses-control-center {
+  margin-bottom: 0.85rem !important;
+  padding: 1rem !important;
+}
+
+body.uses-page .uses-control-center__grid {
+  gap: 0.55rem !important;
+}
+
+body.uses-page .systems-footer {
+  margin-top: 0.5rem;
+}
+
+@media (max-width: 640px) {
+  body.uses-page .uses-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* ─── Travel atlas ─── */
+html:has(body.travel-body),
+html:has(body.travel-body) body,
+body.travel-body {
+  /* Beat mobile-viewport `overflow: hidden auto` */
+  overflow: hidden !important;
+  overflow-x: hidden !important;
+  overflow-y: hidden !important;
+  overscroll-behavior: none;
+  height: 100%;
+  max-height: 100dvh;
+}
+
+body.travel-body .travel-layout {
+  width: 100%;
+  max-width: 100%;
+  min-height: 100dvh;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+/* Clear fixed nav; avoid nav/sidebar collision */
+body.travel-body .travel-nav {
+  width: min(1120px, calc(100% - 1.5rem));
+  max-width: calc(100vw - 1.5rem);
+  box-sizing: border-box;
+}
+
+body.travel-body .travel-sidebar {
+  top: calc(14px + 72px + 12px + env(safe-area-inset-top, 0px)) !important;
+  left: max(16px, env(safe-area-inset-left, 0px)) !important;
+  bottom: max(16px, env(safe-area-inset-bottom, 0px)) !important;
+  width: min(420px, calc(100vw - 32px)) !important;
+  max-width: calc(100vw - 32px) !important;
+  background: color-mix(in srgb, var(--theme-card-bg, #ffffff) 94%, transparent) !important;
+  backdrop-filter: saturate(180%) blur(18px);
+  -webkit-backdrop-filter: saturate(180%) blur(18px);
+  z-index: 20;
+}
+
+html.dark body.travel-body .travel-sidebar {
+  background: color-mix(in srgb, #111113 94%, transparent) !important;
+}
+
+body.travel-body .travel-stats {
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 0.4rem !important;
+}
+
+body.travel-body .travel-stat {
+  min-width: 0;
+  padding: 0.45rem 0.25rem !important;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--fill-secondary, #f5f5f7) 80%, transparent);
+}
+
+body.travel-body .travel-stat__value {
+  font-size: 0.95rem !important;
+  overflow-wrap: anywhere;
+}
+
+body.travel-body .travel-stat__label {
+  font-size: 0.58rem !important;
+  letter-spacing: 0.03em;
+}
+
+body.travel-body .travel-sidebar__header h1 {
+  font-size: clamp(1.15rem, 2.5vw, 1.4rem) !important;
+  line-height: 1.15;
+}
+
+body.travel-body .travel-search {
+  min-height: 40px;
+}
+
+body.travel-body .travel-countries {
+  gap: 0.35rem !important;
+  max-height: 5.5rem;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+/* Mobile travel drawer */
+@media (max-width: 820px) {
+  body.travel-body .travel-sidebar {
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    top: auto !important;
+    bottom: 0 !important;
+    height: min(58dvh, 520px);
+    border-radius: 22px 22px 0 0 !important;
+  }
+
+  body.travel-body .travel-sidebar__handle {
+    display: block !important;
+  }
+
+  body.travel-body .travel-nav {
+    width: calc(100% - 1rem);
+  }
+
+  body.travel-body .travel-nav__label {
+    font-size: 13px;
+  }
+
+  body.travel-body .travel-nav__kicker {
+    display: none;
+  }
+
+  body.travel-body .travel-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+/* ─── 404 ─── */
+body.error-page {
+  min-height: 100dvh;
+  background: #f5f5f7 !important;
+}
+
+html.dark body.error-page {
+  background: #000000 !important;
+}
+
+body.error-page .error-container,
+body.error-page main.error-container.lg-glass-card {
+  max-width: min(560px, calc(100vw - 2rem)) !important;
+  width: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center;
+  gap: 0.15rem;
+  background: #ffffff;
+  box-sizing: border-box;
+}
+
+html.dark body.error-page .error-container {
+  background: #111113;
+}
+
+body.error-page .error-destinations {
+  width: 100%;
+  padding-top: 1rem !important;
+  margin-top: 0.35rem;
+}
+
+body.error-page .error-destinations ul {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 0.45rem !important;
+  width: 100%;
+}
+
+body.error-page .error-destinations a {
+  width: 100%;
+  min-height: 44px;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+@media (min-width: 480px) {
+  body.error-page .error-destinations ul {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+}
+
+/* ─── Offline ─── */
+body.offline-page {
+  margin: 0;
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  padding: max(1.25rem, env(safe-area-inset-top)) max(1.25rem, env(safe-area-inset-right))
+    max(1.25rem, env(safe-area-inset-bottom)) max(1.25rem, env(safe-area-inset-left));
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', sans-serif;
+  background: #f5f5f7;
+  color: #1d1d1f;
+  -webkit-font-smoothing: antialiased;
+}
+
+html.dark body.offline-page {
+  background: #000000;
+  color: #f5f5f7;
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not(.light) body.offline-page {
+    background: #000000;
+    color: #f5f5f7;
+  }
+}
+
+body.offline-page .offline-card {
+  width: min(28rem, 100%);
+  padding: 1.75rem 1.5rem;
+  border-radius: 22px;
+  border: 1px solid rgb(0 0 0 / 8%);
+  background: #ffffff;
+  box-shadow:
+    0 1px 2px rgb(0 0 0 / 4%),
+    0 16px 40px rgb(0 0 0 / 6%);
+  text-align: center;
+}
+
+html.dark body.offline-page .offline-card {
+  background: #111113;
+  border-color: rgb(255 255 255 / 12%);
+  box-shadow:
+    0 1px 2px rgb(0 0 0 / 40%),
+    0 16px 40px rgb(0 0 0 / 35%);
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not(.light) body.offline-page .offline-card {
+    background: #111113;
+    border-color: rgb(255 255 255 / 12%);
+  }
+}
+
+body.offline-page .offline-kicker {
+  margin: 0 0 0.35rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #0071e3;
+}
+
+body.offline-page h1 {
+  margin: 0 0 0.65rem;
+  font-size: clamp(1.45rem, 4vw, 1.85rem);
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+}
+
+body.offline-page p {
+  margin: 0 0 1.25rem;
+  color: #6e6e73;
+  line-height: 1.55;
+  font-size: 0.95rem;
+}
+
+html.dark body.offline-page p {
+  color: #a1a1a6;
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not(.light) body.offline-page p {
+    color: #a1a1a6;
+  }
+}
+
+body.offline-page .offline-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+body.offline-page button,
+body.offline-page .offline-link {
+  appearance: none;
+  border: 0;
+  border-radius: 999px;
+  padding: 0.85rem 1.25rem;
+  min-height: 44px;
+  font: inherit;
+  font-weight: 650;
+  font-size: 0.9rem;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+body.offline-page button {
+  color: #fff;
+  background: linear-gradient(135deg, #0071e3, #0a84ff);
+}
+
+body.offline-page .offline-link {
+  color: #0071e3;
+  background: rgb(0 113 227 / 10%);
+  border: 1px solid rgb(0 113 227 / 18%);
+}
+
+body.offline-page .offline-destinations {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.4rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+body.offline-page .offline-destinations a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  padding: 0.45rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 650;
+  text-decoration: none;
+  color: #1d1d1f;
+  background: rgb(0 0 0 / 5%);
+  border: 1px solid rgb(0 0 0 / 8%);
+}
+
+html.dark body.offline-page .offline-destinations a {
+  color: #f5f5f7;
+  background: rgb(255 255 255 / 8%);
+  border-color: rgb(255 255 255 / 12%);
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not(.light) body.offline-page .offline-destinations a {
+    color: #f5f5f7;
+    background: rgb(255 255 255 / 8%);
+    border-color: rgb(255 255 255 / 12%);
+  }
+}
+
+body.offline-page button:focus-visible,
+body.offline-page .offline-link:focus-visible,
+body.offline-page .offline-destinations a:focus-visible {
+  outline: 2px solid #0071e3;
+  outline-offset: 3px;
+}
+
+/* ─── Mobile systems density ─── */
+@media (max-width: 900px) {
+  body.systems-page .systems-decision-grid,
+  body.systems-page .systems-failure-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  body.systems-page
+    .systems-evidence-grid
+    > .systems-evidence-card:not(.systems-evidence-card--featured):not(
+      .systems-evidence-card--proof
+    ) {
+    grid-column: span 12;
+  }
+
+  body.systems-page .systems-section-rail {
+    top: calc(64px + env(safe-area-inset-top, 0px)) !important;
+    border-radius: 14px;
+    position: sticky;
+  }
+}
+
+@media (max-width: 640px) {
+  body.systems-page {
+    padding-top: calc(64px + env(safe-area-inset-top, 0px));
+  }
+
+  body.systems-page .systems-keynote-section {
+    padding: 0.85rem;
+  }
+
+  body.systems-page .systems-bento--telemetry {
+    grid-template-columns: 1fr 1fr !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.systems-page .systems-decision-row,
+  body.uses-page .uses-section,
+  body.travel-body .travel-sidebar {
+    transition: none !important;
+  }
+}

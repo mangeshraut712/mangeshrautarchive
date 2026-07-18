@@ -15,7 +15,8 @@ html.dark {
 .travel-body {
   margin: 0;
   padding: 0;
-  overflow: hidden;
+  overflow: hidden !important;
+  overscroll-behavior: none;
   background: var(--bg-primary);
   color: var(--text-primary);
   font-family: var(--font-text);
@@ -315,11 +316,12 @@ html.dark .travel-map {
 /* ─── Sidebar ─── */
 .travel-sidebar {
   position: absolute;
-  top: 82px;
-  left: max(20px, env(safe-area-inset-left));
-  bottom: max(20px, env(safe-area-inset-bottom));
-  width: 440px;
-  max-width: calc(100vw - 40px);
+  /* Clear fixed travel-nav (top 14 + up to 72 height + 12 gap) */
+  top: calc(14px + 72px + 12px + env(safe-area-inset-top, 0px));
+  left: max(16px, env(safe-area-inset-left));
+  bottom: max(16px, env(safe-area-inset-bottom));
+  width: min(420px, calc(100vw - 32px));
+  max-width: calc(100vw - 32px);
   border-radius: var(--radius-2xl);
   display: flex;
   flex-direction: column;

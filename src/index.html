@@ -2423,13 +2423,17 @@ html.dark #home .hero-name-text {
 
             <div class="activity-github-graph-container" id="github-graph-container">
               <div class="graph-header">
-                <h4 class="graph-title">Contributions in the last year</h4>
+                <div class="graph-header-left">
+                  <span id="graph-contrib-count" class="graph-contrib-count"></span>
+                  <h4 class="graph-title">contributions in the last year</h4>
+                </div>
                 <button id="refresh-graph-btn" class="graph-refresh-btn" aria-label="Refresh contribution graph"
-                  title="Refresh graph">
+                  title="Load live data from GitHub">
                   <i class="fas fa-sync-alt"></i>
                 </button>
               </div>
               <div class="github-graph-scroll" tabindex="0" role="region" aria-label="GitHub contribution graph">
+                <div class="contrib-tooltip" id="contrib-tooltip" aria-hidden="true"></div>
                 <div class="graph-loading" id="graph-loading">
                   <div class="loading-spinner"></div>
                   <span id="graph-loading-text">Loading contribution graph...</span>
@@ -2539,6 +2543,44 @@ html.dark #home .hero-name-text {
 
                 function showGraphError() {
                   renderFallbackGraph();
+                }
+
+                function attachTooltipListeners(scrollEl) {
+                  const tooltip = document.getElementById('contrib-tooltip');
+                  if (!tooltip) return;
+
+                  scrollEl.addEventListener('mouseover', function (e) {
+                    const cell = e.target.closest('.contrib-cell');
+                    if (!cell || !cell.getAttribute('data-tooltip')) return;
+
+                    tooltip.textContent = cell.getAttribute('data-tooltip');
+                    tooltip.classList.add('visible');
+
+                    // Position tooltip above the cell
+                    const scrollRect = scrollEl.getBoundingClientRect();
+                    const cellRect = cell.getBoundingClientRect();
+                    const tooltipWidth = tooltip.offsetWidth;
+                    const cellCenterX = cellRect.left + cellRect.width / 2 - scrollRect.left + scrollEl.scrollLeft;
+                    const cellTopY = cellRect.top - scrollRect.top;
+
+                    tooltip.style.left = cellCenterX + 'px';
+                    tooltip.style.top = (cellTopY - tooltip.offsetHeight - 6) + 'px';
+
+                    // Keep tooltip within scroll bounds
+                    const tooltipLeft = cellCenterX - tooltipWidth / 2;
+                    if (tooltipLeft < 4) {
+                      tooltip.style.left = (tooltipWidth / 2 + 4) + 'px';
+                    } else if (tooltipLeft + tooltipWidth > scrollEl.scrollWidth - 4) {
+                      tooltip.style.left = (scrollEl.scrollWidth - tooltipWidth / 2 - 4) + 'px';
+                    }
+                  });
+
+                  scrollEl.addEventListener('mouseout', function (e) {
+                    const cell = e.target.closest('.contrib-cell');
+                    if (cell) {
+                      tooltip.classList.remove('visible');
+                    }
+                  });
                 }
 
                 function renderFallbackGraph() {
@@ -2653,10 +2695,12 @@ html.dark #home .hero-name-text {
                       rect.setAttribute('fill', colors[level]);
                       rect.setAttribute('class', 'contrib-cell');
 
-                      const title = document.createElementNS('http://www.w3.org/2000/svg', 'title');
-                      const dateStr = dayDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-                      title.textContent = `${contributions > 0 ? contributions : 'No'} contribution${contributions === 1 ? '' : 's'} on ${dateStr}`;
-                      rect.appendChild(title);
+                      const dateStr = dayDate.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
+                      const tooltipText = `${contributions > 0 ? contributions : 'No'} contribution${contributions === 1 ? '' : 's'} on ${dateStr}`;
+                      rect.setAttribute('data-tooltip', tooltipText);
+                      rect.setAttribute('data-date', dateStr);
+                      rect.setAttribute('data-count', contributions.toString());
+                      rect.setAttribute('data-level', level.toString());
 
                       gridGroup.appendChild(rect);
                       cellIndex++;
@@ -2669,11 +2713,18 @@ html.dark #home .hero-name-text {
 
                   scrollEl.appendChild(svg);
                   syncGraphLegendTheme();
+                  attachTooltipListeners(scrollEl);
 
-                  // Update text in label if possible
+                  // Update contribution count in header
+                  const countEl = document.getElementById('graph-contrib-count');
+                  if (countEl) {
+                    countEl.textContent = totalContributions.toLocaleString();
+                  }
+
+                  // Update caption
                   const countLabel = document.getElementById('projects-activity-caption');
                   if (countLabel && countLabel.textContent.includes('Syncing repository')) {
-                    countLabel.textContent = `Offline preview: ${totalContributions} contributions estimated for the last year.`;
+                    countLabel.textContent = `${totalContributions.toLocaleString()} contributions in the last year`;
                   }
                 }
 
