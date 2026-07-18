@@ -1,5 +1,5 @@
 /**
- * Permanent WHOOP OAuth on the Cloudflare Worker.
+ * Permanent WHOOP + Withings OAuth on the Cloudflare Worker.
  * Replaces dead Vercel / ephemeral Cloudflare-tunnel callbacks that forced repeat reauth.
  */
 
@@ -7,6 +7,7 @@ import {
   persistOAuthTokens,
   syncConnectedHealthProviders,
   whoopRedirectUri,
+  withingsRedirectUri,
 } from './health-sync.js';
 
 const WHOOP_AUTH_URL = 'https://api.prod.whoop.com/oauth/oauth2/auth';
@@ -18,6 +19,9 @@ const WHOOP_SCOPES = [
   'read:sleep',
   'read:body_measurement',
 ];
+const WITHINGS_AUTH_URL = 'https://account.withings.com/oauth2_user/authorize2';
+const WITHINGS_TOKEN_URL = 'https://wbsapi.withings.net/v2/oauth2';
+const WITHINGS_SCOPES = ['user.metrics', 'user.activity'];
 
 const DEFAULT_SUCCESS =
   'https://mangeshraut712.github.io/mangeshrautarchive/monitor.html#integrations-whoop';
@@ -157,6 +161,38 @@ function whoopConfigured(env) {
   );
 }
 
+function withingsConfigured(env) {
+  return Boolean(
+    String(env.WITHINGS_CLIENT_ID || '').trim() && String(env.WITHINGS_CLIENT_SECRET || '').trim()
+  );
+}
+
+async function readProviderStatus(env, provider) {
+  try {
+    const base = String(env.SUPABASE_URL || '')
+      .trim()
+      .replace(/\/$/, '');
+    const key = String(env.SUPABASE_SERVICE_ROLE_KEY || '').trim();
+    if (!base || !key) return { status: 'not_configured', connected: false };
+    const res = await fetch(
+      `${base}/rest/v1/integration_accounts?select=status&provider=eq.${provider}&limit=1`,
+      {
+        headers: {
+          apikey: key,
+          Authorization: `Bearer ${key}`,
+          Accept: 'application/json',
+        },
+      }
+    );
+    if (!res.ok) return { status: 'disconnected', connected: false };
+    const rows = await res.json();
+    const status = rows?.[0]?.status || 'disconnected';
+    return { status, connected: status === 'connected' };
+  } catch {
+    return { status: 'disconnected', connected: false };
+  }
+}
+
 function buildWhoopAuthorizeUrl(env, state) {
   const params = new URLSearchParams({
     response_type: 'code',
@@ -266,74 +302,167 @@ export async function handleWhoopCallback(request, env, cors = {}) {
   }
 }
 
-export async function handleAdminConnectUrl(request, env, provider, cors = {}) {
-  const normalized = String(provider || '')
-    .trim()
-    .replace(/-/g, '_');
-  if (normalized !== 'whoop') {
+function buildWithingsAuthorizeUrl(env, state) {
+  const params = new URLSearchParams({
+    response_type: 'code',
+    client_id: String(env.WITHINGS_CLIENT_ID || '').trim(),
+    redirect_uri: withingsRedirectUri(env),
+    scope: WITHINGS_SCOPES.join(','),
+    state,
+  });
+  return `${WITHINGS_AUTH_URL}?${params}`;
+}
+
+async function exchangeWithingsCode(env, code) {
+  const body = new URLSearchParams({
+    action: 'requesttoken',
+    grant_type: 'authorization_code',
+    code,
+    client_id: String(env.WITHINGS_CLIENT_ID || '').trim(),
+    client_secret: String(env.WITHINGS_CLIENT_SECRET || '').trim(),
+    redirect_uri: withingsRedirectUri(env),
+  });
+  const res = await fetch(WITHINGS_TOKEN_URL, { method: 'POST', body });
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(`withings_exchange_${res.status}:${text.slice(0, 180)}`);
+  }
+  const data = await res.json();
+  if (data.status !== 0) throw new Error(data.error || 'withings_exchange_failed');
+  const tokenBody = data.body || {};
+  return {
+    access_token: tokenBody.access_token,
+    refresh_token: tokenBody.refresh_token,
+    expires_in: tokenBody.expires_in,
+    userid: tokenBody.userid,
+  };
+}
+
+export async function handleWithingsConnect(request, env, cors = {}) {
+  if (!withingsConfigured(env)) {
+    return json({ error: 'Withings OAuth is not configured on the edge worker.' }, 503, cors);
+  }
+  const url = new URL(request.url);
+  const auth = url.searchParams.get('auth');
+  if (!(await authorizeConnect(request, env, 'withings', auth))) {
     return json(
-      {
-        error: 'Only WHOOP connect is available on the edge worker right now.',
-        provider: normalized,
-      },
-      404,
+      { error: 'Integration connect requires a signed owner auth token or admin header.' },
+      403,
       cors
     );
-  }
-  if (!authorizeAdmin(request, env)) {
-    return json({ error: 'Integration admin token required' }, 403, cors);
-  }
-  if (!whoopConfigured(env)) {
-    return json({ error: 'WHOOP OAuth is not configured.' }, 503, cors);
   }
   if (!signingMaterial(env)) {
     return json({ error: 'Integration signing secret is not configured.' }, 503, cors);
   }
-  const auth = await encodeSignedPayload(env, 'connect', 'whoop', 600);
+  const state = await encodeSignedPayload(env, 'oauth', 'withings', 900);
+  return redirect(buildWithingsAuthorizeUrl(env, state));
+}
+
+export async function handleWithingsCallback(request, env, cors = {}) {
+  const url = new URL(request.url);
+  const error = url.searchParams.get('error');
+  if (error) {
+    return json({ error: `Withings OAuth error: ${error}` }, 400, cors);
+  }
+  const code = url.searchParams.get('code');
+  const state = url.searchParams.get('state');
+  if (!code || !(await verifySignedPayload(env, state || '', 'oauth', 'withings'))) {
+    return json({ error: 'Invalid Withings OAuth callback.' }, 400, cors);
+  }
+  try {
+    const tokenPayload = await exchangeWithingsCode(env, code);
+    const subject = String(tokenPayload.userid || 'withings-user');
+    const saved = await persistOAuthTokens(env, 'withings', {
+      providerSubject: subject,
+      scopes: WITHINGS_SCOPES,
+      accessToken: tokenPayload.access_token,
+      refreshToken: tokenPayload.refresh_token,
+      expiresIn: tokenPayload.expires_in,
+    });
+    if (!saved) {
+      return json({ error: 'Failed to persist Withings tokens.' }, 502, cors);
+    }
+    try {
+      await syncConnectedHealthProviders(env);
+    } catch {
+      // cron retries
+    }
+    return redirect(oauthSuccessRedirect(env, 'withings'));
+  } catch (err) {
+    return json(
+      {
+        error: 'Withings OAuth callback failed.',
+        detail: String(err?.message || err).slice(0, 200),
+      },
+      502,
+      cors
+    );
+  }
+}
+
+export async function handleAdminConnectUrl(request, env, provider, cors = {}) {
+  const normalized = String(provider || '')
+    .trim()
+    .replace(/-/g, '_');
+  if (!authorizeAdmin(request, env)) {
+    return json({ error: 'Integration admin token required' }, 403, cors);
+  }
+  if (!signingMaterial(env)) {
+    return json({ error: 'Integration signing secret is not configured.' }, 503, cors);
+  }
+  if (normalized === 'whoop') {
+    if (!whoopConfigured(env)) {
+      return json({ error: 'WHOOP OAuth is not configured.' }, 503, cors);
+    }
+    const auth = await encodeSignedPayload(env, 'connect', 'whoop', 600);
+    return json(
+      {
+        success: true,
+        provider: 'whoop',
+        url: `/api/integrations/whoop/connect?auth=${auth}`,
+        expiresIn: 600,
+        redirectUri: whoopRedirectUri(env),
+        host: 'cloudflare-worker',
+        timestamp: new Date().toISOString(),
+      },
+      200,
+      cors
+    );
+  }
+  if (normalized === 'withings') {
+    if (!withingsConfigured(env)) {
+      return json({ error: 'Withings OAuth is not configured.' }, 503, cors);
+    }
+    const auth = await encodeSignedPayload(env, 'connect', 'withings', 600);
+    return json(
+      {
+        success: true,
+        provider: 'withings',
+        url: `/api/integrations/withings/connect?auth=${auth}`,
+        expiresIn: 600,
+        redirectUri: withingsRedirectUri(env),
+        host: 'cloudflare-worker',
+        timestamp: new Date().toISOString(),
+      },
+      200,
+      cors
+    );
+  }
   return json(
     {
-      success: true,
-      provider: 'whoop',
-      url: `/api/integrations/whoop/connect?auth=${auth}`,
-      expiresIn: 600,
-      redirectUri: whoopRedirectUri(env),
-      host: 'cloudflare-worker',
-      timestamp: new Date().toISOString(),
+      error: 'Edge OAuth supports WHOOP and Withings only (Google Calendar stays FastAPI).',
+      provider: normalized,
     },
-    200,
+    404,
     cors
   );
 }
 
 export async function handleIntegrationsStatus(env, cors = {}) {
   const whoopConfiguredFlag = whoopConfigured(env);
-  let whoopConnected = false;
-  let whoopStatus = 'not_configured';
-  try {
-    const base = String(env.SUPABASE_URL || '')
-      .trim()
-      .replace(/\/$/, '');
-    const key = String(env.SUPABASE_SERVICE_ROLE_KEY || '').trim();
-    if (base && key) {
-      const res = await fetch(
-        `${base}/rest/v1/integration_accounts?select=status&provider=eq.whoop&limit=1`,
-        {
-          headers: {
-            apikey: key,
-            Authorization: `Bearer ${key}`,
-            Accept: 'application/json',
-          },
-        }
-      );
-      if (res.ok) {
-        const rows = await res.json();
-        whoopStatus = rows?.[0]?.status || 'disconnected';
-        whoopConnected = whoopStatus === 'connected';
-      }
-    }
-  } catch {
-    // ignore
-  }
+  const withingsConfiguredFlag = withingsConfigured(env);
+  const whoop = await readProviderStatus(env, 'whoop');
+  const withings = await readProviderStatus(env, 'withings');
 
   return json(
     {
@@ -355,32 +484,38 @@ export async function handleIntegrationsStatus(env, cors = {}) {
         },
         whoop: {
           configured: whoopConfiguredFlag,
-          connected: whoopConnected,
-          status: whoopStatus,
-          needsReauth: whoopStatus === 'needs_reauth',
+          connected: whoop.connected,
+          status: whoop.status,
+          needsReauth: whoop.status === 'needs_reauth',
           purpose: 'Sleep, recovery, strain, resting heart rate, and HRV trends.',
           scopes: WHOOP_SCOPES,
           connectUrl: null,
           requiresOwnerAuth: whoopConfiguredFlag,
           nextStep:
-            whoopStatus === 'needs_reauth'
+            whoop.status === 'needs_reauth'
               ? 'Reconnect WHOOP once (edge Worker callback is permanent).'
               : 'Connect WHOOP via owner admin token on the monitor page.',
           redirectUri: whoopRedirectUri(env),
         },
         withings: {
-          configured: Boolean(
-            String(env.WITHINGS_CLIENT_ID || '').trim() &&
-            String(env.WITHINGS_CLIENT_SECRET || '').trim()
-          ),
-          connected: false,
-          purpose: 'Weight trends (edge OAuth for Withings coming next).',
-          requiresOwnerAuth: false,
+          configured: withingsConfiguredFlag,
+          connected: withings.connected,
+          status: withings.status,
+          needsReauth: withings.status === 'needs_reauth',
+          purpose: 'Weight and body composition trends from Withings devices.',
+          scopes: WITHINGS_SCOPES,
+          connectUrl: null,
+          requiresOwnerAuth: withingsConfiguredFlag,
+          nextStep:
+            withings.status === 'needs_reauth'
+              ? 'Reconnect Withings once via edge Worker callback.'
+              : 'Connect Withings via owner admin token on the monitor page.',
+          redirectUri: withingsRedirectUri(env),
         },
         googleCalendar: {
           configured: false,
           connected: false,
-          purpose: 'Calendar OAuth remains on FastAPI when Vercel is available.',
+          purpose: 'Portfolio UI uses Calendly; Google Calendar OAuth is optional FastAPI-only.',
           requiresOwnerAuth: false,
         },
       },

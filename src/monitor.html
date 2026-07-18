@@ -262,6 +262,13 @@
     </nav>
 
     <main class="monitor-container" id="main-content">
+      <div id="edge-api-banner" class="empty-state monitor-edge-banner" hidden role="status">
+        <p>
+          API mode: <strong>Cloudflare edge</strong> (GitHub Pages primary). Health sync runs on
+          Worker hourly cron — not Vercel. Some monitor tiles are edge summaries while custom-domain
+          FastAPI is offline.
+        </p>
+      </div>
       <nav class="monitor-section-rail" aria-label="Monitor sections">
         <ul class="monitor-section-rail__list">
           <li><a href="#monitor-summary-section">Overview</a></li>
@@ -2863,6 +2870,13 @@
           setButtonLoading('.control-center-actions button:first-child', true, 'Refreshing...');
         }
         await ensureApiOrigin({ force: true });
+        const edgeBanner = document.getElementById('edge-api-banner');
+        if (edgeBanner) {
+          const onEdge =
+            String(apiOrigin || '').includes('workers.dev') ||
+            (window.location.hostname || '').includes('github.io');
+          edgeBanner.hidden = !onEdge;
+        }
 
         const [
           health,

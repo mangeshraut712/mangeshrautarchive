@@ -76,11 +76,12 @@ class PrivacyDashboard {
         }),
       });
 
+      // Edge stub returns 200 with mode=client_local; localStorage remains source of truth.
       if (!response.ok) {
-        console.warn('Failed to sync preferences with backend');
+        console.info('Preferences kept on-device (edge personalization is client-local).');
       }
-    } catch (error) {
-      console.error('Error syncing preferences:', error);
+    } catch {
+      // Offline / edge unavailable — local settings still apply on GitHub Pages.
     }
   }
 

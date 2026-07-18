@@ -110,22 +110,16 @@ if (typeof window !== 'undefined') {
     if (primary) candidates.unshift(primary);
   }
 
-  // GitHub Pages: always prefer Cloudflare edge over blocked Vercel
+  // GitHub Pages: Cloudflare edge ONLY — never fall back to disabled Vercel/pro.
   if (isStaticMirrorHost(hostname)) {
-    candidates.unshift(EDGE_BACKEND);
-    const edgeFirst = [];
-    const rest = [];
-    for (const c of candidates) {
+    const edgeOnly = [];
+    for (const c of [EDGE_BACKEND, ...candidates]) {
       if (!c) continue;
-      if (c.includes('workers.dev') || c === EDGE_BACKEND) edgeFirst.push(c);
-      else rest.push(c);
+      if (/mangeshraut\.pro|vercel\.app/i.test(c)) continue;
+      if (c.includes('workers.dev') || c === EDGE_BACKEND) edgeOnly.push(c);
     }
-    API_BASE_CANDIDATES = [...new Set([...edgeFirst, ...rest])];
-    const preferred =
-      API_BASE_CANDIDATES.find(c => c.includes('workers.dev')) ||
-      normalizeApiBase(cfg.apiBaseUrl) ||
-      EDGE_BACKEND;
-    API_BASE = preferred;
+    API_BASE_CANDIDATES = [...new Set(edgeOnly.length ? edgeOnly : [EDGE_BACKEND])];
+    API_BASE = API_BASE_CANDIDATES[0] || EDGE_BACKEND;
   } else if (cfg.apiBaseUrl) {
     API_BASE_CANDIDATES = [...new Set(candidates.filter(Boolean))];
     API_BASE = normalizeApiBase(cfg.apiBaseUrl);

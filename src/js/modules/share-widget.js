@@ -4,9 +4,9 @@
  */
 
 const SHARE_MIRRORS = [
-  { name: 'Primary (Pro)', url: 'https://mangeshraut.pro' },
-  { name: 'Vercel (App)', url: 'https://mraut.vercel.app' },
-  { name: 'GitHub (Pages)', url: 'https://mangeshraut712.github.io/mangeshrautarchive/' },
+  { name: 'GitHub Pages (live)', url: 'https://mangeshraut712.github.io/mangeshrautarchive/' },
+  { name: 'Custom domain (Vercel)', url: 'https://mangeshraut.pro' },
+  { name: 'Vercel app', url: 'https://mraut.vercel.app' },
 ];
 
 let activeMirrorUrl = SHARE_MIRRORS[0].url;

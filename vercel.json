@@ -15,12 +15,7 @@
       "maxDuration": 300
     }
   },
-  "crons": [
-    {
-      "path": "/api/cron/health-vitals-sync",
-      "schedule": "0 13 * * *"
-    }
-  ],
+  "crons": [],
   "rewrites": [
     {
       "source": "/api/realtime/ws",
@@ -57,11 +52,11 @@
         },
         {
           "key": "Reporting-Endpoints",
-          "value": "csp-endpoint=\"https://mangeshraut.pro/api/csp-report\""
+          "value": "csp-endpoint=\"https://assistme-chat.mangeshraut712.workers.dev/api/csp-report\""
         },
         {
           "key": "Report-To",
-          "value": "{\"group\":\"csp-endpoint\",\"max_age\":10886400,\"endpoints\":[{\"url\":\"https://mangeshraut.pro/api/csp-report\"}]}"
+          "value": "{\"group\":\"csp-endpoint\",\"max_age\":10886400,\"endpoints\":[{\"url\":\"https://assistme-chat.mangeshraut712.workers.dev/api/csp-report\"}]}"
         },
         {
           "key": "Cross-Origin-Opener-Policy",
@@ -69,7 +64,7 @@
         },
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' cdn.jsdelivr.net cdnjs.cloudflare.com https://www.googletagmanager.com https://ws.audioscrobbler.com; style-src 'self' 'unsafe-inline' fonts.googleapis.com cdn.jsdelivr.net cdnjs.cloudflare.com; font-src 'self' fonts.gstatic.com cdn.jsdelivr.net cdnjs.cloudflare.com data:; img-src 'self' data: blob: https:; media-src 'self'; connect-src 'self' https://cdn.jsdelivr.net https://mangeshraut.pro https://mraut.vercel.app https://mangeshrautarchive.vercel.app https://mangeshraut712.github.io https://mangeshraut712.github.io/mangeshrautarchive https://api.github.com https://openrouter.ai https://firestore.googleapis.com https://api.countapi.xyz https://ws.audioscrobbler.com https://itunes.apple.com https://basemaps.cartocdn.com https://*.basemaps.cartocdn.com https://en.wikipedia.org https://api.qrserver.com https://ghchart.rshah.org https://lastfm.freetls.fastly.net https://is1-ssl.mzstatic.com https://*.mzstatic.com https://openlibrary.org https://covers.openlibrary.org https://www.googletagmanager.com https://www.google-analytics.com https://analytics.google.com https://region1.google-analytics.com wss://mangeshraut.pro wss://mraut.vercel.app wss://mangeshrautarchive.vercel.app; worker-src 'self' blob:; frame-ancestors 'none'; report-to csp-endpoint; report-uri https://mangeshraut.pro/api/csp-report;"
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' cdn.jsdelivr.net cdnjs.cloudflare.com https://www.googletagmanager.com https://ws.audioscrobbler.com; style-src 'self' 'unsafe-inline' fonts.googleapis.com cdn.jsdelivr.net cdnjs.cloudflare.com; font-src 'self' fonts.gstatic.com cdn.jsdelivr.net cdnjs.cloudflare.com data:; img-src 'self' data: blob: https:; media-src 'self'; connect-src 'self' https://cdn.jsdelivr.net https://assistme-chat.mangeshraut712.workers.dev https://*.workers.dev https://mangeshraut.pro https://mraut.vercel.app https://mangeshrautarchive.vercel.app https://mangeshraut712.github.io https://mangeshraut712.github.io/mangeshrautarchive https://api.github.com https://openrouter.ai https://firestore.googleapis.com https://api.countapi.xyz https://ws.audioscrobbler.com https://itunes.apple.com https://basemaps.cartocdn.com https://*.basemaps.cartocdn.com https://en.wikipedia.org https://api.qrserver.com https://ghchart.rshah.org https://lastfm.freetls.fastly.net https://is1-ssl.mzstatic.com https://*.mzstatic.com https://openlibrary.org https://covers.openlibrary.org https://www.googletagmanager.com https://www.google-analytics.com https://analytics.google.com https://region1.google-analytics.com wss://assistme-chat.mangeshraut712.workers.dev wss://mangeshraut.pro wss://mraut.vercel.app wss://mangeshrautarchive.vercel.app; worker-src 'self' blob:; frame-ancestors 'none'; report-to csp-endpoint; report-uri https://assistme-chat.mangeshraut712.workers.dev/api/csp-report;"
         },
         {
           "key": "Strict-Transport-Security",

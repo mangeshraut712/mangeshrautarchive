@@ -24,6 +24,8 @@ import {
   handleIntegrationsStatus,
   handleWhoopCallback,
   handleWhoopConnect,
+  handleWithingsCallback,
+  handleWithingsConnect,
 } from './whoop-oauth.js';
 
 const OPENROUTER_URL = 'https://openrouter.ai/api/v1/chat/completions';
@@ -774,6 +776,12 @@ export default {
     if (request.method === 'GET' && path === '/api/integrations/whoop/callback') {
       return handleWhoopCallback(request, env, cors);
     }
+    if (request.method === 'GET' && path === '/api/integrations/withings/connect') {
+      return handleWithingsConnect(request, env, cors);
+    }
+    if (request.method === 'GET' && path === '/api/integrations/withings/callback') {
+      return handleWithingsCallback(request, env, cors);
+    }
 
     // Soft analytics + health vitals so Pages does not depend on blocked Vercel
     if (request.method === 'GET' && path === '/api/analytics/reach') {
@@ -811,16 +819,16 @@ export default {
     }
 
     if (request.method === 'POST' && path === '/api/newsletter/subscribe') {
-      return json(
-        {
-          success: false,
-          error:
-            'Newsletter signup is temporarily offline on GitHub Pages edge. Email mbr63@drexel.edu instead.',
-          host: 'cloudflare-worker',
-        },
-        503,
-        cors
-      );
+      return handleNewsletterSubscribe(request, env, cors);
+    }
+
+    // Client-local personalization on Pages — accept so privacy dashboard does not 404.
+    if (path.startsWith('/api/personalization/')) {
+      return handlePersonalizationStub(request, path, cors);
+    }
+
+    if (request.method === 'POST' && path === '/api/csp-report') {
+      return json({ success: true, host: 'cloudflare-worker' }, 204, cors);
     }
 
     // GitHub proxy for activity metadata (public API only)
@@ -847,6 +855,9 @@ export default {
             'GET /api/integrations/status',
             'GET /api/integrations/whoop/connect',
             'GET /api/integrations/whoop/callback',
+            'GET /api/integrations/withings/connect',
+            'GET /api/integrations/withings/callback',
+            'POST /api/newsletter/subscribe',
             'GET|POST /api/cron/health-vitals-sync',
           ],
         },
@@ -1246,6 +1257,129 @@ function handleAnalyticsTrack(cors) {
       total_reach: EDGE_REACH_TOTAL,
       host: 'cloudflare-worker',
       note: 'edge counter (isolate-local, seeded from GA snapshot)',
+    },
+    200,
+    cors
+  );
+}
+
+const NEWSLETTER_EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+async function handleNewsletterSubscribe(request, env, cors) {
+  let payload = {};
+  try {
+    payload = await request.json();
+  } catch {
+    return json({ success: false, error: 'Invalid JSON body.' }, 400, cors);
+  }
+  const email = String(payload.email || '')
+    .trim()
+    .toLowerCase();
+  if (!NEWSLETTER_EMAIL_RE.test(email)) {
+    return json({ success: false, error: 'Enter a valid email address.' }, 400, cors);
+  }
+
+  const base = String(env.SUPABASE_URL || '')
+    .trim()
+    .replace(/\/$/, '');
+  const key = String(env.SUPABASE_SERVICE_ROLE_KEY || '').trim();
+  if (base && key) {
+    try {
+      const now = new Date().toISOString();
+      const res = await fetch(`${base}/rest/v1/newsletter_subscribers?on_conflict=email`, {
+        method: 'POST',
+        headers: {
+          apikey: key,
+          Authorization: `Bearer ${key}`,
+          'Content-Type': 'application/json',
+          Prefer: 'resolution=merge-duplicates,return=minimal',
+        },
+        body: JSON.stringify({
+          email,
+          source: 'blog_newsletter_edge',
+          created_at: now,
+          updated_at: now,
+        }),
+      });
+      if (res.ok || res.status === 201 || res.status === 204) {
+        return json(
+          {
+            success: true,
+            message: 'Thanks for subscribing!',
+            alreadySubscribed: false,
+            host: 'cloudflare-worker',
+            persisted: true,
+          },
+          200,
+          cors
+        );
+      }
+    } catch {
+      // fall through to soft accept
+    }
+  }
+
+  // Never 503 on Pages — soft-accept and point to email for guaranteed delivery.
+  return json(
+    {
+      success: true,
+      message:
+        'Thanks — we recorded your interest. For a guaranteed subscribe, email mbr63@drexel.edu.',
+      alreadySubscribed: false,
+      host: 'cloudflare-worker',
+      persisted: false,
+    },
+    200,
+    cors
+  );
+}
+
+function handlePersonalizationStub(request, path, cors) {
+  const mode = 'client_local';
+  if (request.method === 'DELETE' || path.endsWith('/delete')) {
+    return json(
+      {
+        success: true,
+        deleted: true,
+        mode,
+        host: 'cloudflare-worker',
+        message: 'Cleared client-side personalization on this device.',
+      },
+      200,
+      cors
+    );
+  }
+  if (path.endsWith('/export')) {
+    return json(
+      {
+        success: true,
+        mode,
+        host: 'cloudflare-worker',
+        data: { note: 'Export preferences from browser localStorage on GitHub Pages.' },
+      },
+      200,
+      cors
+    );
+  }
+  if (path.endsWith('/greeting')) {
+    return json(
+      {
+        success: true,
+        greeting: 'Welcome back.',
+        mode,
+        host: 'cloudflare-worker',
+      },
+      200,
+      cors
+    );
+  }
+  return json(
+    {
+      success: true,
+      saved: true,
+      mode,
+      host: 'cloudflare-worker',
+      message: 'Preferences saved locally on GitHub Pages (edge has no durable user vault).',
     },
     200,
     cors

@@ -17,6 +17,7 @@ concurrency:
 env:
   NODE_VERSION: '22'
   GH_PAGES_BASE: https://mangeshraut712.github.io/mangeshrautarchive
+  EDGE_API: https://assistme-chat.mangeshraut712.workers.dev
   VERCEL_PROD: https://mangeshraut.pro
   FORCE_COLOR: '1'
 
@@ -38,31 +39,28 @@ jobs:
       - name: Install dependencies
         run: npm install --no-audit --no-fund
 
-      - name: Verify production surfaces are reachable
+      - name: Verify GitHub Pages + Cloudflare edge (required)
         id: reachability
         run: |
           set -euo pipefail
           urls=(
-            "${{ env.VERCEL_PROD }}/"
-            "${{ env.VERCEL_PROD }}/api/health"
-            "${{ env.VERCEL_PROD }}/api/status"
-            "${{ env.VERCEL_PROD }}/api/chat/health"
-            "${{ env.VERCEL_PROD }}/systems"
-            "${{ env.VERCEL_PROD }}/monitor"
-            "${{ env.VERCEL_PROD }}/travel"
-            "${{ env.VERCEL_PROD }}/uses"
-            "${{ env.VERCEL_PROD }}/build-config.json"
             "${{ env.GH_PAGES_BASE }}/"
             "${{ env.GH_PAGES_BASE }}/travel.html"
             "${{ env.GH_PAGES_BASE }}/monitor.html"
             "${{ env.GH_PAGES_BASE }}/systems.html"
             "${{ env.GH_PAGES_BASE }}/uses.html"
             "${{ env.GH_PAGES_BASE }}/build-config.json"
+            "${{ env.EDGE_API }}/api/health"
+            "${{ env.EDGE_API }}/api/status"
+            "${{ env.EDGE_API }}/api/chat/health"
+            "${{ env.EDGE_API }}/api/health-vitals/summary"
+            "${{ env.EDGE_API }}/api/integrations/status"
+            "${{ env.EDGE_API }}/api/music/recent"
           )
           failed=0
           ok=0
           {
-            echo "### Reachability"
+            echo "### Reachability (Pages + Cloudflare edge — required)"
             echo ""
             echo "| URL | Status |"
             echo "| --- | --- |"
@@ -82,6 +80,31 @@ jobs:
           echo "ok_count=$ok" >> "$GITHUB_OUTPUT"
           exit "$failed"
 
+      - name: Soft-check Vercel / custom domain (optional while DEPLOYMENT_DISABLED)
+        continue-on-error: true
+        run: |
+          set -euo pipefail
+          urls=(
+            "${{ env.VERCEL_PROD }}/"
+            "${{ env.VERCEL_PROD }}/api/health"
+            "${{ env.VERCEL_PROD }}/api/chat/health"
+          )
+          {
+            echo ""
+            echo "### Vercel surface (soft — may be DEPLOYMENT_DISABLED)"
+            echo ""
+            echo "| URL | Status |"
+            echo "| --- | --- |"
+          } >> "$GITHUB_STEP_SUMMARY"
+          for url in "${urls[@]}"; do
+            code=$(curl -sS -o /dev/null -w "%{http_code}" --max-time 20 "$url" || echo "000")
+            if [ "$code" = "200" ] || [ "$code" = "301" ] || [ "$code" = "302" ] || [ "$code" = "308" ]; then
+              echo "| \`$url\` | ✅ $code |" >> "$GITHUB_STEP_SUMMARY"
+            else
+              echo "| \`$url\` | ⚠️ $code (non-blocking) |" >> "$GITHUB_STEP_SUMMARY"
+            fi
+          done
+
       - name: Doctor — production env parity
         id: doctor
         continue-on-error: true
@@ -99,31 +122,24 @@ jobs:
             echo "- doctor:full ⚠️ (non-blocking)" >> "$GITHUB_STEP_SUMMARY"
           fi
 
-      - name: Capture dual-host commit SHAs
+      - name: Capture Pages + edge commit SHAs
         id: commits
         continue-on-error: true
         run: |
           set -euo pipefail
           pages=$(curl -fsS --max-time 15 "${{ env.GH_PAGES_BASE }}/build-config.json" \
             | node -pe "JSON.parse(require('fs').readFileSync(0,'utf8')).gitCommit" || echo "unknown")
-          vercel=$(curl -fsS --max-time 15 "${{ env.VERCEL_PROD }}/build-config.json" \
-            | node -pe "JSON.parse(require('fs').readFileSync(0,'utf8')).gitCommit" || echo "unknown")
+          edge=$(curl -fsS --max-time 15 "${{ env.EDGE_API }}/api/health" \
+            | node -pe "const d=JSON.parse(require('fs').readFileSync(0,'utf8')); d.gitCommit||d.commit||d.version||'edge'" || echo "edge")
           echo "pages=$pages" >> "$GITHUB_OUTPUT"
-          echo "vercel=$vercel" >> "$GITHUB_OUTPUT"
+          echo "edge=$edge" >> "$GITHUB_OUTPUT"
           {
             echo ""
             echo "### Deployed commits"
             echo "| Host | gitCommit |"
             echo "| --- | --- |"
             echo "| GitHub Pages | \`$pages\` |"
-            echo "| Vercel | \`$vercel\` |"
-            if [ "$pages" != "unknown" ] && [ "$vercel" != "unknown" ] && [ "$pages" = "$vercel" ]; then
-              echo ""
-              echo "Parity: ✅ matching"
-            else
-              echo ""
-              echo "Parity: ⚠️ check dashboard / wait for CDN"
-            fi
+            echo "| Cloudflare edge | \`$edge\` |"
           } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Lighthouse — live GitHub Pages quality floor
@@ -146,7 +162,7 @@ jobs:
             --max-attempts=5
 
       - name: Lighthouse — live Vercel quality floor
-        # Live Vercel includes AssistMe + third-party scripts; keep realistic floors.
+        # Soft while Vercel may be DEPLOYMENT_DISABLED.
         continue-on-error: true
         run: |
           node scripts/deployment/lighthouse-gate.js \
@@ -156,19 +172,11 @@ jobs:
             --min-accessibility=90 \
             --min-best-practices=90 \
             --min-seo=90 \
-            --max-attempts=3
-          node scripts/deployment/lighthouse-gate.js \
-            --url=${{ env.VERCEL_PROD }}/ \
-            --form-factor=mobile \
-            --min-performance=55 \
-            --min-accessibility=90 \
-            --min-best-practices=90 \
-            --min-seo=90 \
-            --max-attempts=3
+            --max-attempts=2
 
       - name: Compare GitHub Pages and Vercel deployment sync
         continue-on-error: true
-        run: node scripts/deployment/verify-deployment-sync.js --remote --parity --retries=12 --wait=20
+        run: node scripts/deployment/verify-deployment-sync.js --remote --parity --retries=3 --wait=10
 
       - name: Job summary
         if: always()
@@ -179,10 +187,12 @@ jobs:
             echo ""
             echo "| Surface | URL |"
             echo "| --- | --- |"
-            echo "| Vercel | ${{ env.VERCEL_PROD }} |"
-            echo "| GitHub Pages | ${{ env.GH_PAGES_BASE }} |"
+            echo "| GitHub Pages (primary) | ${{ env.GH_PAGES_BASE }} |"
+            echo "| Cloudflare edge API | ${{ env.EDGE_API }} |"
+            echo "| Vercel (optional) | ${{ env.VERCEL_PROD }} |"
             echo ""
             echo "Schedule: daily 14:00 UTC · also \`workflow_dispatch\`."
+            echo "Hard gates: Pages + Worker only. Vercel is soft while DEPLOYMENT_DISABLED."
           } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload monitoring artifacts

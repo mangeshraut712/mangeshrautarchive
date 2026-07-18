@@ -15,9 +15,15 @@ const TOKEN_LOCK_TTL_MS = 45_000;
 const SAVE_ATTEMPTS = 4;
 const DEFAULT_WHOOP_REDIRECT =
   'https://assistme-chat.mangeshraut712.workers.dev/api/integrations/whoop/callback';
+const DEFAULT_WITHINGS_REDIRECT =
+  'https://assistme-chat.mangeshraut712.workers.dev/api/integrations/withings/callback';
 
 export function whoopRedirectUri(env) {
   return String(env.WHOOP_REDIRECT_URI || '').trim() || DEFAULT_WHOOP_REDIRECT;
+}
+
+export function withingsRedirectUri(env) {
+  return String(env.WITHINGS_REDIRECT_URI || '').trim() || DEFAULT_WITHINGS_REDIRECT;
 }
 
 function utcNowIso() {

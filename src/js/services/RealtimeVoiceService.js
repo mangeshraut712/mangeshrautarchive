@@ -6,6 +6,11 @@
 const TARGET_SAMPLE_RATE = 24000;
 
 function resolveApiBase() {
+  const host = typeof window !== 'undefined' ? window.location.hostname || '' : '';
+  // Realtime voice needs FastAPI WebSocket — Worker reports available:false on Pages.
+  if (host.endsWith('github.io')) {
+    return 'https://assistme-chat.mangeshraut712.workers.dev';
+  }
   const base = globalThis.APP_CONFIG?.apiBaseUrl || globalThis.buildConfig?.apiBaseUrl || '';
   if (base) return base.replace(/\/$/, '');
   return window.location.origin;

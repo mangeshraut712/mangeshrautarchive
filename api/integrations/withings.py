@@ -26,7 +26,7 @@ def _client_secret() -> str:
 def _redirect_uri() -> str:
     return (
         os.getenv("WITHINGS_REDIRECT_URI", "").strip()
-        or "https://mangeshraut.pro/api/integrations/withings/callback"
+        or "https://assistme-chat.mangeshraut712.workers.dev/api/integrations/withings/callback"
     )
 
 

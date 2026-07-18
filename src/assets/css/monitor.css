@@ -1522,6 +1522,21 @@ html:not(.dark) .method-delete {
 }
 
 /* ========================================
+   EDGE API BANNER (GitHub Pages / Cloudflare)
+   ======================================== */
+.monitor-edge-banner {
+  margin: 0 0 1rem;
+  padding: 0.85rem 1rem;
+  text-align: left;
+}
+
+.monitor-edge-banner p {
+  margin: 0;
+  font-size: 0.92rem;
+  line-height: 1.45;
+}
+
+/* ========================================
    EMPTY STATE
    ======================================== */
 .empty-state {
