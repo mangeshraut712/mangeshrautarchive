@@ -1,7 +1,6 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <script src="js/utils/liquid-glass-boot.js?v=20260717cleartheme"></script>
     <script src="js/utils/deferred-analytics.js" defer></script>
 
     <meta charset="UTF-8" />
@@ -113,8 +112,8 @@
     <!-- Shared subpage chrome stack: critical → page → polish → design system → deferred chrome -->
     <link rel="stylesheet" href="assets/css/systems-critical.css?v=20260718share" />
     <link rel="stylesheet" href="assets/css/ux-polish-fixes.css?v=20260716aa" />
-    <link rel="stylesheet" href="assets/css/monitor.css?v=20260718share" />
-    <link rel="stylesheet" href="assets/css/monitor-apple-redesign.css?v=20260718share" />
+    <link rel="stylesheet" href="assets/css/monitor.css?v=20260718sub2" />
+    <link rel="stylesheet" href="assets/css/monitor-apple-redesign.css?v=20260718sub2" />
     <link rel="stylesheet" href="assets/css/apple-design-system.css?v=20260716aa" data-perf-defer />
     <link rel="stylesheet" href="assets/css/typography-system.css?v=20260716aa" data-perf-defer />
     <link
@@ -123,13 +122,6 @@
       data-perf-defer
     />
     <link rel="stylesheet" href="assets/css/accessibility.css?v=20260716aa" data-perf-defer />
-    <link
-      rel="stylesheet"
-      href="assets/css/liquid-glass.css?v=20260716aa"
-      media="print"
-      onload="this.media = 'all'"
-      data-perf-defer
-    />
     <link rel="stylesheet" href="assets/css/mobile-viewport.css?v=20260716aa" data-perf-defer />
     <link
       rel="stylesheet"
@@ -144,13 +136,6 @@
       data-perf-defer
     />
     <link rel="stylesheet" href="assets/css/chrome-surfaces.css?v=20260717clean" data-perf-defer />
-
-    <link rel="stylesheet" href="assets/css/liquid-glass-modes.css?v=20260717clean" />
-    <link
-      rel="stylesheet"
-      href="assets/css/wwdc26-liquid-glass.css?v=20260717whole"
-      data-perf-defer
-    />
     <link rel="stylesheet" href="assets/css/share-widget.css?v=20260716aa" data-perf-defer />
     <link
       rel="stylesheet"
@@ -177,23 +162,25 @@
         {
           "@context": "https://schema.org",
           "@type": "WebPage",
-          "@id": "https://mangeshraut.pro/monitor#webpage",
-          "url": "https://mangeshraut.pro/monitor",
+          "@id": "https://mangeshraut712.github.io/mangeshrautarchive/monitor#webpage",
+          "url": "https://mangeshraut712.github.io/mangeshrautarchive/monitor",
           "name": "System Monitor | Mangesh Raut",
           "description": "Public operations dashboard for backend health, API availability, deployment surfaces, security checks, and AI metrics.",
           "isPartOf": {
             "@type": "WebSite",
-            "@id": "https://mangeshraut.pro/#website",
-            "url": "https://mangeshraut.pro/",
+            "@id": "https://mangeshraut712.github.io/mangeshrautarchive/#website",
+            "url": "https://mangeshraut712.github.io/mangeshrautarchive/",
             "name": "Mangesh Raut — Software Engineer Portfolio"
           },
           "publisher": {
             "@type": "Person",
-            "@id": "https://mangeshraut.pro/#person",
+            "@id": "https://mangeshraut712.github.io/mangeshrautarchive/#person",
             "name": "Mangesh Raut",
-            "url": "https://mangeshraut.pro/"
+            "url": "https://mangeshraut712.github.io/mangeshrautarchive/"
           },
-          "breadcrumb": { "@id": "https://mangeshraut.pro/monitor#breadcrumb" },
+          "breadcrumb": {
+            "@id": "https://mangeshraut712.github.io/mangeshrautarchive/monitor#breadcrumb"
+          },
           "about": [
             { "@type": "Thing", "name": "System status" },
             { "@type": "Thing", "name": "API monitoring" },
@@ -202,7 +189,7 @@
           ],
           "primaryImageOfPage": {
             "@type": "ImageObject",
-            "url": "https://mangeshraut.pro/assets/images/home.png"
+            "url": "https://mangeshraut712.github.io/mangeshrautarchive/assets/images/home.png"
           },
           "dateModified": "2026-05-18",
           "inLanguage": "en-US"
@@ -210,26 +197,26 @@
         {
           "@context": "https://schema.org",
           "@type": "BreadcrumbList",
-          "@id": "https://mangeshraut.pro/monitor#breadcrumb",
+          "@id": "https://mangeshraut712.github.io/mangeshrautarchive/monitor#breadcrumb",
           "itemListElement": [
             {
               "@type": "ListItem",
               "position": 1,
               "name": "Home",
-              "item": "https://mangeshraut.pro/"
+              "item": "https://mangeshraut712.github.io/mangeshrautarchive/"
             },
             {
               "@type": "ListItem",
               "position": 2,
               "name": "System Monitor",
-              "item": "https://mangeshraut.pro/monitor"
+              "item": "https://mangeshraut712.github.io/mangeshrautarchive/monitor"
             }
           ]
         }
       ]
     </script>
     <link rel="stylesheet" href="assets/css/apple-cards-luxury-2026.css?v=20260717clean" />
-    <link rel="stylesheet" href="assets/css/subpage-layout-polish.css?v=20260718share" />
+    <link rel="stylesheet" href="assets/css/subpage-layout-polish.css?v=20260718sub2" />
   </head>
   <body class="monitor-page">
     <div class="skip-links" role="navigation" aria-label="Skip links">
@@ -1474,7 +1461,7 @@
                 ([status, count, label]) => `
                   <span
                     class="ops-status-meter__segment ${status}"
-                    style="width: ${percentOf(count, total)}%"
+                    style="--bar-width: ${percentOf(count, total)}%"
                     title="${label}: ${count}"
                   ></span>
                 `
@@ -1517,7 +1504,7 @@
                       <strong>${escapeHtml(meta)}</strong>
                     </div>
                     <div class="ops-mini-track">
-                      <span class="ops-mini-fill ${options.tone || 'blue'}" style="width: ${width}%"></span>
+                      <span class="ops-mini-fill ${options.tone || 'blue'}" style="--bar-width: ${width}%"></span>
                     </div>
                   </div>
                 `;
@@ -2115,7 +2102,7 @@
                                 <div class="response-time-bar-wrapper">
                                     <span>${avgResponseMs.toFixed(0)}ms</span>
                                     <div class="response-time-bar">
-                                        <div class="response-time-fill ${responseClass}" style="width: ${responsePercent}%"></div>
+                                        <div class="response-time-fill ${responseClass}" style="--bar-width: ${responsePercent}%"></div>
                                     </div>
                                 </div>
                                 <div class="endpoint-sparkline">
@@ -2560,7 +2547,7 @@
                   <div class="endpoint-volume-bar" title="${escapeHtml(row.label)} · ${formatNumber(row.total)} requests">
                     <strong>${formatNumber(row.total)}</strong>
                     <span class="endpoint-volume-bar__track">
-                      <i style="height: ${heightPct}%"></i>
+                      <i style="--bar-height: ${heightPct}%"></i>
                     </span>
                     <small>${escapeHtml(row.label.replace('/api/', '').slice(0, 16))}</small>
                   </div>
@@ -3289,7 +3276,7 @@
                   <div class="health-metric-label">Latency</div>
                   <div class="response-time">
                     <div class="response-time-bar">
-                      <div class="response-time-fill ${latencyClass}" style="width:${latencyPercent}%"></div>
+                      <div class="response-time-fill ${latencyClass}" style="--bar-width: ${latencyPercent}%"></div>
                     </div>
                   </div>
                 </div>
@@ -3404,7 +3391,7 @@
                     </span>
                   </div>
                   <div class="resource-bar-track rate-limit-bar-track">
-                    <div class="resource-bar-fill ${percent > 85 ? 'error' : percent > 55 ? 'warning' : 'normal'} rate-limit-bar-fill" style="width: ${percent}%;"></div>
+                    <div class="resource-bar-fill ${percent > 85 ? 'error' : percent > 55 ? 'warning' : 'normal'} rate-limit-bar-fill" style="--bar-width: ${percent}%"></div>
                   </div>
                   <div class="rate-limit-footer">
                     <span>Budget Consumed</span>
@@ -3795,7 +3782,7 @@
                     <span class="font-bold">${formatNumber(tokenUsage.input)}</span>
                   </div>
                   <div class="resource-bar-track ai-token-bar-track">
-                    <div class="resource-bar-fill normal ai-token-bar-fill-input" style="width: ${Math.min((tokenUsage.input / 500000) * 100, 100)}%;"></div>
+                    <div class="resource-bar-fill normal ai-token-bar-fill-input" style="--bar-width: ${Math.min((tokenUsage.input / 500000) * 100, 100)}%"></div>
                   </div>
                 </div>
                 <!-- Output Tokens Progress -->
@@ -3805,7 +3792,7 @@
                     <span class="font-bold">${formatNumber(tokenUsage.output)}</span>
                   </div>
                   <div class="resource-bar-track ai-token-bar-track">
-                    <div class="resource-bar-fill normal ai-token-bar-fill-output" style="width: ${Math.min((tokenUsage.output / 500000) * 100, 100)}%;"></div>
+                    <div class="resource-bar-fill normal ai-token-bar-fill-output" style="--bar-width: ${Math.min((tokenUsage.output / 500000) * 100, 100)}%"></div>
                   </div>
                 </div>
               </div>

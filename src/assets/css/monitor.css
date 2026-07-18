@@ -1519,6 +1519,7 @@ html:not(.dark) .method-delete {
 }
 
 .response-time-fill {
+  width: var(--bar-width, 0%);
   height: 100%;
   border-radius: 2px;
   transition: width 0.3s ease;
@@ -2044,7 +2045,7 @@ html:not(.dark) .method-delete {
 }
 
 .resource-bar-fill {
-  width: 0;
+  width: var(--bar-width, 0%);
   height: 100%;
   border-radius: 99px;
   transition: width 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -3333,6 +3334,7 @@ body.monitor-page .monitor-summary-card {
 .endpoint-volume-bar__track i {
   display: block;
   width: 16px;
+  height: var(--bar-height, 8%);
   min-height: 8px;
   border-radius: 999px 999px 3px 3px;
   background: var(--accent-blue);
@@ -3474,6 +3476,7 @@ html.dark .ops-card,
 }
 
 .ops-status-meter__segment {
+  width: var(--bar-width, 0%);
   min-width: 4px;
 }
 
@@ -3502,6 +3505,7 @@ html.dark .ops-card,
 
 .ops-mini-fill {
   display: block;
+  width: var(--bar-width, 0%);
   min-width: 5px;
   border-radius: inherit;
   background: var(--accent-blue);
