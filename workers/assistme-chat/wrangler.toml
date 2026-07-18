@@ -14,3 +14,7 @@ LASTFM_USERNAME = "mbr63"
 # Cloudflare Worker is the primary API for GitHub Pages (Vercel optional/offline).
 PRIMARY_HOST = "cloudflare"
 ALLOWED_ORIGINS = "https://mangeshraut712.github.io,https://mangeshraut.pro,https://mraut.vercel.app,http://127.0.0.1:4000,http://localhost:4000"
+
+# Primary WHOOP/Withings refresh while Vercel cron is DEPLOYMENT_DISABLED.
+[triggers]
+crons = ["0 */6 * * *"]

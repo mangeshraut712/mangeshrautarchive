@@ -14,9 +14,15 @@
  *   GET  /api/music/recent
  *   GET  /api/analytics/reach
  *   GET  /api/health-vitals/summary
+ *   GET|POST /api/cron/health-vitals-sync  (Bearer CRON_SECRET / INTEGRATION_SYNC_ADMIN_TOKEN)
  */
 
 import { EDGE_DATA_SNAPSHOT } from './edge-data-snapshot.js';
+import {
+  authorizeCron,
+  maybeSyncStaleHealth,
+  syncConnectedHealthProviders,
+} from './health-sync.js';
 
 const OPENROUTER_URL = 'https://openrouter.ai/api/v1/chat/completions';
 /** Aspirational paid primary — used when OPENROUTER_MODEL is unset or credits return. */
@@ -673,7 +679,15 @@ async function handleMusicArtwork(url, cors) {
 }
 
 export default {
-  async fetch(request, env) {
+  async scheduled(_controller, env, ctx) {
+    ctx.waitUntil(
+      syncConnectedHealthProviders(env).catch(error => {
+        console.error('scheduled health sync failed', error?.message || error);
+      })
+    );
+  },
+
+  async fetch(request, env, ctx) {
     const url = new URL(request.url);
     const origin = request.headers.get('Origin') || '';
     const cors = corsHeaders(origin, env.ALLOWED_ORIGINS);
@@ -767,7 +781,28 @@ export default {
       return handleAnalyticsTrack(cors);
     }
     if (request.method === 'GET' && path === '/api/health-vitals/summary') {
-      return handleHealthVitalsSummary(cors, env);
+      return handleHealthVitalsSummary(cors, env, ctx);
+    }
+
+    // Edge cron / manual sync (replaces disabled Vercel /api/cron/health-vitals-sync)
+    if (
+      (request.method === 'GET' || request.method === 'POST') &&
+      path === '/api/cron/health-vitals-sync'
+    ) {
+      if (!authorizeCron(request, env)) {
+        return json({ error: 'Unauthorized cron request.' }, 401, cors);
+      }
+      const result = await syncConnectedHealthProviders(env);
+      const live = await fetchHealthVitalsFromSupabase(env);
+      return json(
+        {
+          ...result,
+          status: live?.status || (result.saved ? 'live' : 'degraded'),
+          data: live?.data || null,
+        },
+        result.success ? 200 : 503,
+        cors
+      );
     }
 
     if (request.method === 'POST' && path === '/api/newsletter/subscribe') {
@@ -1208,24 +1243,49 @@ function handleAnalyticsTrack(cors) {
   );
 }
 
-function handleHealthVitalsSummary(cors, env = {}) {
-  return fetchHealthVitalsFromSupabase(env).then(live => {
-    if (live) {
-      return json({ ...live, host: 'cloudflare-worker' }, 200, cors);
+async function handleHealthVitalsSummary(cors, env = {}, _ctx = null) {
+  let live = await fetchHealthVitalsFromSupabase(env);
+
+  // Await edge WHOOP/Withings sync when the Supabase row is stale (Vercel cron offline).
+  if (live) {
+    try {
+      const outcome = await maybeSyncStaleHealth(env, live);
+      if (outcome?.synced) {
+        live = (await fetchHealthVitalsFromSupabase(env)) || live;
+        live.refresh = {
+          stale: false,
+          attempted: true,
+          refreshed: true,
+          reason: 'edge_whoop_sync',
+        };
+      } else if (outcome?.attempted) {
+        live.refresh = {
+          ...(live.refresh || {}),
+          attempted: true,
+          refreshed: false,
+          reason: outcome?.reason || 'edge_whoop_sync_attempted',
+        };
+      }
+    } catch {
+      // Keep serving the last Supabase snapshot.
     }
-    const base = EDGE_DATA_SNAPSHOT?.healthVitals || {};
-    return json(
-      {
-        ...base,
-        success: true,
-        host: 'cloudflare-worker',
-        timestamp: new Date().toISOString(),
-        snapshotExportedAt: EDGE_DATA_SNAPSHOT?.exportedAt || null,
-      },
-      200,
-      cors
-    );
-  });
+  }
+
+  if (live) {
+    return json({ ...live, host: 'cloudflare-worker' }, 200, cors);
+  }
+  const base = EDGE_DATA_SNAPSHOT?.healthVitals || {};
+  return json(
+    {
+      ...base,
+      success: true,
+      host: 'cloudflare-worker',
+      timestamp: new Date().toISOString(),
+      snapshotExportedAt: EDGE_DATA_SNAPSHOT?.exportedAt || null,
+    },
+    200,
+    cors
+  );
 }
 
 async function fetchHealthVitalsFromSupabase(env) {

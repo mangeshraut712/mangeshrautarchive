@@ -260,6 +260,12 @@ jobs:
             SUPABASE_SERVICE_ROLE_KEY
             SUPABASE_HEALTH_TABLE
             AI_GATEWAY_API_KEY
+            INTEGRATION_ENCRYPTION_KEY
+            INTEGRATION_SYNC_ADMIN_TOKEN
+            WHOOP_CLIENT_ID
+            WHOOP_CLIENT_SECRET
+            WITHINGS_CLIENT_ID
+            WITHINGS_CLIENT_SECRET
         env:
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
           LASTFM_API_KEY: ${{ secrets.LASTFM_API_KEY }}
@@ -268,6 +274,12 @@ jobs:
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
           SUPABASE_HEALTH_TABLE: ${{ secrets.SUPABASE_HEALTH_TABLE }}
           AI_GATEWAY_API_KEY: ${{ secrets.AI_GATEWAY_API_KEY }}
+          INTEGRATION_ENCRYPTION_KEY: ${{ secrets.INTEGRATION_ENCRYPTION_KEY }}
+          INTEGRATION_SYNC_ADMIN_TOKEN: ${{ secrets.INTEGRATION_SYNC_ADMIN_TOKEN }}
+          WHOOP_CLIENT_ID: ${{ secrets.WHOOP_CLIENT_ID }}
+          WHOOP_CLIENT_SECRET: ${{ secrets.WHOOP_CLIENT_SECRET }}
+          WITHINGS_CLIENT_ID: ${{ secrets.WITHINGS_CLIENT_ID }}
+          WITHINGS_CLIENT_SECRET: ${{ secrets.WITHINGS_CLIENT_SECRET }}
 
       - name: Deploy Worker (Global API Key)
         id: deploy_global
@@ -286,6 +298,12 @@ jobs:
             SUPABASE_SERVICE_ROLE_KEY
             SUPABASE_HEALTH_TABLE
             AI_GATEWAY_API_KEY
+            INTEGRATION_ENCRYPTION_KEY
+            INTEGRATION_SYNC_ADMIN_TOKEN
+            WHOOP_CLIENT_ID
+            WHOOP_CLIENT_SECRET
+            WITHINGS_CLIENT_ID
+            WITHINGS_CLIENT_SECRET
         env:
           CLOUDFLARE_API_KEY: ${{ env.CLOUDFLARE_API_KEY }}
           CLOUDFLARE_EMAIL: ${{ env.CLOUDFLARE_EMAIL }}
@@ -296,6 +314,12 @@ jobs:
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
           SUPABASE_HEALTH_TABLE: ${{ secrets.SUPABASE_HEALTH_TABLE }}
           AI_GATEWAY_API_KEY: ${{ secrets.AI_GATEWAY_API_KEY }}
+          INTEGRATION_ENCRYPTION_KEY: ${{ secrets.INTEGRATION_ENCRYPTION_KEY }}
+          INTEGRATION_SYNC_ADMIN_TOKEN: ${{ secrets.INTEGRATION_SYNC_ADMIN_TOKEN }}
+          WHOOP_CLIENT_ID: ${{ secrets.WHOOP_CLIENT_ID }}
+          WHOOP_CLIENT_SECRET: ${{ secrets.WHOOP_CLIENT_SECRET }}
+          WITHINGS_CLIENT_ID: ${{ secrets.WITHINGS_CLIENT_ID }}
+          WITHINGS_CLIENT_SECRET: ${{ secrets.WITHINGS_CLIENT_SECRET }}
 
       - name: Resolve worker URL
         if: steps.cf.outputs.present == 'true'
