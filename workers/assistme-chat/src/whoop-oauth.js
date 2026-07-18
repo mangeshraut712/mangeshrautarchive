@@ -488,8 +488,10 @@ export async function handleAdminConnectUrl(request, env, provider, cors = {}) {
 export async function handleIntegrationsStatus(env, cors = {}) {
   const whoopConfiguredFlag = whoopConfigured(env);
   const withingsConfiguredFlag = withingsConfigured(env);
-  const whoop = await readProviderStatus(env, 'whoop');
-  const withings = await readProviderStatus(env, 'withings');
+  const [whoop, withings] = await Promise.all([
+    readProviderStatus(env, 'whoop'),
+    readProviderStatus(env, 'withings'),
+  ]);
 
   return json(
     {
@@ -521,7 +523,9 @@ export async function handleIntegrationsStatus(env, cors = {}) {
           nextStep:
             whoop.status === 'needs_reauth'
               ? 'Reconnect WHOOP once (edge Worker callback is permanent).'
-              : 'Connect WHOOP via owner admin token on the monitor page.',
+              : whoop.connected
+                ? 'Connected — Cloudflare keepalive refreshes the grant every 30 minutes.'
+                : 'Connect WHOOP via owner admin token on the monitor page.',
           redirectUri: whoopRedirectUri(env),
         },
         withings: {
@@ -536,7 +540,9 @@ export async function handleIntegrationsStatus(env, cors = {}) {
           nextStep:
             withings.status === 'needs_reauth'
               ? 'Reconnect Withings once via edge Worker callback.'
-              : 'Connect Withings via owner admin token on the monitor page.',
+              : withings.connected
+                ? 'Connected — synced with WHOOP on the Cloudflare edge keepalive.'
+                : 'Connect Withings via owner admin token on the monitor page.',
           redirectUri: withingsRedirectUri(env),
         },
         googleCalendar: {
