@@ -62,10 +62,22 @@ function bytesToUrlSafeB64(bytes) {
   return btoa(bin).replace(/\+/g, '-').replace(/\//g, '_');
 }
 
-function urlSafeB64ToBytes(value) {
-  const padded = value.replace(/-/g, '+').replace(/_/g, '/');
-  const padLen = (4 - (padded.length % 4)) % 4;
-  const b64 = padded + '='.repeat(padLen);
+function urlSafeB64ToBytes(value, { strictPadding = false } = {}) {
+  const normalized = String(value || '')
+    .trim()
+    .replace(/-/g, '+')
+    .replace(/_/g, '/');
+  // Match Python binascii: length % 4 == 1 is always invalid.
+  if (normalized.length % 4 === 1) {
+    throw new Error('Incorrect padding');
+  }
+  // Fernet keys must not invent padding. A 43-char key pad-decodes to 32 bytes in JS,
+  // but Python Fernet() rejects it and falls back to sha256(passphrase).
+  if (strictPadding && normalized.length % 4 !== 0) {
+    throw new Error('Incorrect padding');
+  }
+  const padLen = (4 - (normalized.length % 4)) % 4;
+  const b64 = normalized + '='.repeat(padLen);
   const bin = atob(b64);
   const out = new Uint8Array(bin.length);
   for (let i = 0; i < bin.length; i += 1) out[i] = bin.charCodeAt(i);
@@ -76,7 +88,8 @@ async function resolveFernetKeyBytes(rawKey) {
   const raw = String(rawKey || '').trim();
   if (!raw) throw new Error('INTEGRATION_ENCRYPTION_KEY missing');
   try {
-    const direct = urlSafeB64ToBytes(raw);
+    // Mirror api/integrations/token_crypto.py: Fernet(raw) then sha256 fallback.
+    const direct = urlSafeB64ToBytes(raw, { strictPadding: true });
     if (direct.length === 32) return direct;
   } catch {
     // fall through — treat as passphrase
