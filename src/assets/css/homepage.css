@@ -1354,6 +1354,66 @@ html.dark .reach-realtime-chart-bars {
   min-height: 2px;
 }
 
+.reach-realtime-chart-bars .reach-bar[data-h='12'] {
+  height: 12%;
+}
+
+.reach-realtime-chart-bars .reach-bar[data-h='25'] {
+  height: 25%;
+}
+
+.reach-realtime-chart-bars .reach-bar[data-h='30'] {
+  height: 30%;
+}
+
+.reach-realtime-chart-bars .reach-bar[data-h='32'] {
+  height: 32%;
+}
+
+.reach-realtime-chart-bars .reach-bar[data-h='38'] {
+  height: 38%;
+}
+
+.reach-realtime-chart-bars .reach-bar[data-h='40'] {
+  height: 40%;
+}
+
+.reach-realtime-chart-bars .reach-bar[data-h='45'] {
+  height: 45%;
+}
+
+.reach-realtime-chart-bars .reach-bar[data-h='48'] {
+  height: 48%;
+}
+
+.reach-realtime-chart-bars .reach-bar[data-h='52'] {
+  height: 52%;
+}
+
+.reach-realtime-chart-bars .reach-bar[data-h='55'] {
+  height: 55%;
+}
+
+.reach-realtime-chart-bars .reach-bar[data-h='60'] {
+  height: 60%;
+}
+
+.reach-realtime-chart-bars .reach-bar[data-h='65'] {
+  height: 65%;
+}
+
+.reach-realtime-chart-bars .reach-bar[data-h='75'] {
+  height: 75%;
+}
+
+.reach-realtime-chart-bars .reach-bar[data-h='85'] {
+  height: 85%;
+}
+
+.reach-realtime-chart-bars .reach-bar[data-h='95'] {
+  height: 95%;
+}
+
 html.dark .reach-realtime-chart-bars span {
   background-color: #2997ff;
 }
@@ -1985,12 +2045,64 @@ html.dark .launch-intro-hello {
 }
 
 .launch-intro-path {
+  --hello-duration: 0.16s;
+  --hello-delay: 0s;
   opacity: 0;
   stroke-dasharray: 1;
   stroke-dashoffset: 1;
   animation:
     heroHelloReveal 0.2s linear var(--hello-delay) forwards,
     heroHelloDraw var(--hello-duration) cubic-bezier(0.22, 1, 0.36, 1) var(--hello-delay) forwards;
+}
+
+.launch-intro-hello .launch-intro-path:nth-of-type(1) {
+  --hello-duration: 0.16s;
+  --hello-delay: 0s;
+}
+
+.launch-intro-hello .launch-intro-path:nth-of-type(2) {
+  --hello-duration: 0.12s;
+  --hello-delay: 0.11s;
+}
+
+.launch-intro-hello .launch-intro-path:nth-of-type(3) {
+  --hello-duration: 0.16s;
+  --hello-delay: 0.21s;
+}
+
+.launch-intro-hello .launch-intro-path:nth-of-type(4) {
+  --hello-duration: 0.12s;
+  --hello-delay: 0.31s;
+}
+
+.launch-intro-hello .launch-intro-path:nth-of-type(5) {
+  --hello-duration: 0.16s;
+  --hello-delay: 0.41s;
+}
+
+.launch-intro-hello .launch-intro-path:nth-of-type(6) {
+  --hello-duration: 0.12s;
+  --hello-delay: 0.51s;
+}
+
+.launch-intro-hello .launch-intro-path:nth-of-type(7) {
+  --hello-duration: 0.12s;
+  --hello-delay: 0.61s;
+}
+
+.launch-intro-hello .launch-intro-path:nth-of-type(8) {
+  --hello-duration: 0.16s;
+  --hello-delay: 0.7s;
+}
+
+.launch-intro-hello .launch-intro-path:nth-of-type(9) {
+  --hello-duration: 0.16s;
+  --hello-delay: 0.8s;
+}
+
+.launch-intro-hello .launch-intro-path:nth-of-type(10) {
+  --hello-duration: 0.22s;
+  --hello-delay: 0.9s;
 }
 
 .launch-intro-meta {

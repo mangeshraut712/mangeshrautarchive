@@ -531,7 +531,10 @@ async function syncServiceWorkerCacheVersion(distDir) {
 }
 
 async function generateFeeds(distDir) {
-  const siteUrl = 'https://mangeshraut.pro';
+  const siteUrl =
+    process.env.OPENROUTER_SITE_URL ||
+    process.env.PAGES_SITE_URL ||
+    'https://mangeshraut712.github.io/mangeshrautarchive';
   const updatedAt = new Date().toUTCString();
   const atomUpdatedAt = new Date().toISOString();
   const posts = getSortedBlogPosts();
@@ -602,7 +605,10 @@ ${atomEntries}
 }
 
 async function generateSitemap(distDir) {
-  const siteUrl = 'https://mangeshraut.pro';
+  const siteUrl =
+    process.env.OPENROUTER_SITE_URL ||
+    process.env.PAGES_SITE_URL ||
+    'https://mangeshraut712.github.io/mangeshrautarchive';
   const today = new Date().toISOString().slice(0, 10);
   const posts = getSortedBlogPosts();
   const latestPostDate = posts[0]?.date || today;

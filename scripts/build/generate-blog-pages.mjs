@@ -13,7 +13,10 @@ import {
 import { ASSET_VER, fontAwesomeStylesheet } from './asset-version.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const SITE_URL = 'https://mangeshraut.pro';
+const SITE_URL =
+  process.env.OPENROUTER_SITE_URL ||
+  process.env.PAGES_SITE_URL ||
+  'https://mangeshraut712.github.io/mangeshrautarchive';
 const ASSET_PREFIX = '..';
 
 function sortedPosts() {

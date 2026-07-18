@@ -772,6 +772,11 @@ html.dark #projects .graph-error {
   text-align: center;
 }
 
+.graph-error-container[hidden],
+.graph-retry-btn[hidden] {
+  display: none !important;
+}
+
 .graph-error-container i {
   font-size: 1.5rem;
   margin-bottom: 0.25rem;
