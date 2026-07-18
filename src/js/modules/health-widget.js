@@ -32,8 +32,12 @@ function resolveApiBase() {
     (typeof globalThis.buildConfig !== 'undefined' && globalThis.buildConfig.apiBaseUrl) ||
     '';
   const hostname = globalThis.location?.hostname || '';
-  if (hostname === 'localhost' || hostname === '127.0.0.1') {
-    return '';
+  // Local + Pages: Cloudflare edge so vitals work without Vercel FastAPI.
+  if (hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '0.0.0.0') {
+    if (base && /^https:\/\//i.test(base) && !/mangeshraut\.pro|vercel\.app/i.test(base)) {
+      return base.replace(/\/$/, '');
+    }
+    return EDGE;
   }
   if (hostname.endsWith('github.io')) {
     if (base && !/mangeshraut\.pro|vercel\.app/i.test(base)) {

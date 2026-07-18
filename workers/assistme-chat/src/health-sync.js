@@ -207,7 +207,9 @@ async function getConnectedAccount(env, provider) {
   );
   if (!res.ok) return null;
   const rows = await res.json();
-  if (!Array.isArray(rows) || !rows.length || rows[0].status !== 'connected') return null;
+  if (!Array.isArray(rows) || !rows.length) return null;
+  // Include needs_reauth so a recovery refresh can clear a false-positive flag.
+  if (!['connected', 'needs_reauth'].includes(rows[0].status)) return null;
   return rows[0];
 }
 

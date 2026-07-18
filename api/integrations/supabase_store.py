@@ -288,7 +288,9 @@ async def get_provider_token_bundle(provider: str) -> Optional[Dict[str, Any]]:
         if not isinstance(accounts, list) or not accounts:
             return None
         account = accounts[0]
-        if account.get("status") != "connected":
+        # Allow needs_reauth so a recovery refresh can still run (and clear the flag
+        # on success). Disconnected accounts stay blocked.
+        if account.get("status") not in {"connected", "needs_reauth"}:
             return None
         account_id = account.get("id")
         if not account_id:
@@ -314,6 +316,7 @@ async def get_provider_token_bundle(provider: str) -> Optional[Dict[str, Any]]:
             "account_id": account_id,
             "provider_subject": account.get("provider_subject"),
             "scopes": account.get("scopes") or [],
+            "status": account.get("status"),
             "access_token": decrypt_secret(access_enc) if access_enc else None,
             "refresh_token": decrypt_secret(refresh_enc) if refresh_enc else None,
             "expires_at": token_row.get("expires_at"),

@@ -20,6 +20,6 @@ WITHINGS_REDIRECT_URI = "https://assistme-chat.mangeshraut712.workers.dev/api/in
 OAUTH_SUCCESS_REDIRECT = "https://mangeshraut712.github.io/mangeshrautarchive/monitor.html#integrations-whoop"
 PUBLIC_SITE_URL = "https://mangeshraut712.github.io/mangeshrautarchive"
 
-# Hourly WHOOP keepalive — access tokens last ~1h and refresh tokens rotate.
+# Keepalive every 30m — WHOOP access tokens last ~1h; refresh before expiry under lock.
 [triggers]
-crons = ["20 * * * *"]
+crons = ["5,35 * * * *"]

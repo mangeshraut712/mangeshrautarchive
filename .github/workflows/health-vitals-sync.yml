@@ -5,8 +5,8 @@ name: Health vitals sync (edge)
 
 on:
   schedule:
-    # Hourly keepalive (WHOOP access tokens ~1h; refresh tokens rotate each refresh)
-    - cron: '25 * * * *'
+    # Every 30m keepalive (WHOOP access ~1h; refresh tokens rotate each refresh)
+    - cron: '10,40 * * * *'
   workflow_dispatch:
 
 permissions:
