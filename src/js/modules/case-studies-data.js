@@ -53,7 +53,7 @@ export const caseStudies = [
     repoName: 'mangeshrautarchive',
     title: 'mangeshraut.pro — Agentic Portfolio',
     tagline: BRAND_TAGLINE,
-    demoUrl: 'https://mangeshraut.pro/',
+    demoUrl: 'https://mangeshraut712.github.io/mangeshrautarchive/',
     repoUrl: 'https://github.com/mangeshraut712/mangeshrautarchive',
     blogId: null,
     blogHref: 'index.html#blog',

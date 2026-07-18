@@ -4,47 +4,63 @@
    ======================================== */
 
 #education {
-  background: #fff !important;
-  padding: 4rem 0 !important;
+  background: #ffffff !important;
+  background-image: none !important;
+  padding: clamp(3.25rem, 6vw, 5rem) 0 !important;
+  scroll-margin-top: calc(var(--island-height, 56px) + env(safe-area-inset-top, 0px) + 24px);
 }
 
 html.dark #education {
-  background: #000 !important;
+  background: #000000 !important;
+  background-image: none !important;
 }
 
 #education .container {
   display: flex;
   flex-direction: column;
-  gap: clamp(1.5rem, 3vh, 2rem);
+  gap: 0;
+  align-items: stretch;
 }
 
-/* Section Title */
-#education h2 {
-  font-size: clamp(2rem, 4vw, 3rem) !important;
-  font-weight: 800 !important;
+/* Section title — solid Apple blue (site standard), no pull-up overlap */
+#education h2,
+#education #education-heading {
+  font-size: clamp(2rem, 4vw, 2.75rem) !important;
+  font-weight: 750 !important;
   text-align: center !important;
-  margin-bottom: 0.5rem !important;
-  background: linear-gradient(135deg, #0071e3, #2997ff) !important;
-  -webkit-text-fill-color: transparent !important;
-  background-clip: text !important;
+  margin: 0 auto 0.75rem !important;
+  letter-spacing: -0.03em !important;
+  line-height: 1.1 !important;
+  color: #0071e3 !important;
+  -webkit-text-fill-color: #0071e3 !important;
+  background: none !important;
+  background-image: none !important;
 }
 
+/* Keep normal heading → subtitle rhythm (match Experience) */
 #education .section-subtitle {
-  margin: -1.75rem auto 0 !important;
+  margin: 0 auto clamp(1.75rem, 3.5vh, 2.75rem) !important;
   max-width: 42rem;
   text-align: center;
-  line-height: 1.55;
-  color: #6e6e73;
+  line-height: 1.55 !important;
+  font-size: clamp(1rem, 2vw, 1.125rem) !important;
+  font-weight: 450;
+  letter-spacing: -0.01em;
+  color: #6e6e73 !important;
+  -webkit-text-fill-color: #6e6e73 !important;
 }
 
 html.dark #education .section-subtitle {
-  color: #a1a1a6;
+  color: #a1a1a6 !important;
+  -webkit-text-fill-color: #a1a1a6 !important;
 }
 
-html.dark #education h2 {
-  background: linear-gradient(135deg, #58a6ff, #79c0ff) !important;
-  -webkit-text-fill-color: transparent !important;
-  background-clip: text !important;
+html.dark #education h2,
+html.dark #education #education-heading {
+  color: #0a84ff !important;
+  -webkit-text-fill-color: #0a84ff !important;
+  background: none !important;
+  background-image: none !important;
 }
 
 /* ========================================
@@ -53,9 +69,10 @@ html.dark #education h2 {
 
 .education-timeline {
   max-width: min(1000px, 100%);
+  width: 100%;
   margin: 0 auto;
   position: relative;
-  padding: 0.5rem 0 0;
+  padding: 0.25rem 0 0;
   overflow-x: clip;
 }
 
@@ -437,7 +454,7 @@ html.dark .education-header {
 
 @media (width <=768px) {
   #education {
-    padding: 3rem 0 !important;
+    padding: clamp(2.5rem, 8vw, 3.25rem) 0 !important;
   }
 
   .education-timeline::before {

@@ -1,7 +1,6 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <script src="js/utils/liquid-glass-boot.js?v=20260718err"></script>
     <meta charset="UTF-8" />
     <meta
       name="viewport"
@@ -10,10 +9,10 @@
     <meta name="view-transition" content="same-origin" />
     <meta
       name="description"
-      content="Page not found on Mangesh Raut's portfolio. Jump home, Systems, Monitor, Travel, or Uses."
+      content="Page not found on Mangesh Raut's portfolio. Return home or open Systems, Monitor, Travel, or Uses."
     />
     <meta name="robots" content="noindex, nofollow" />
-    <meta name="theme-color" content="#f5f5f7" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
     <meta name="color-scheme" content="light dark" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -24,7 +23,7 @@
     <meta property="og:title" content="Page Not Found — Mangesh Raut" />
     <meta
       property="og:description"
-      content="This path is not on the map. Explore home, systems, monitor, travel, and uses."
+      content="This page could not be found. Continue to home or another destination."
     />
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:site" content="@mrcommando712" />
@@ -38,10 +37,7 @@
     <script src="build-config.js" defer></script>
     <script src="js/utils/deferred-analytics.js" defer></script>
     <script src="js/utils/theme-head.js"></script>
-    <script src="js/utils/perf-audit-flag.js"></script>
-
-    <!-- Lean stack for a snappy interactive 404 -->
-    <link rel="stylesheet" href="assets/css/404.css?v=20260718err" />
+    <link rel="stylesheet" href="assets/css/404.css?v=20260718solid2" />
     <link
       rel="stylesheet"
       href="assets/vendor/fontawesome/css/all.min.css?v=20260716aa"
@@ -55,14 +51,14 @@
       {
         "@context": "https://schema.org",
         "@type": "WebPage",
-        "@id": "https://mangeshraut.pro/404.html#webpage",
-        "url": "https://mangeshraut.pro/404.html",
+        "@id": "https://mangeshraut712.github.io/mangeshrautarchive/404.html#webpage",
+        "url": "https://mangeshraut712.github.io/mangeshrautarchive/404.html",
         "name": "Page Not Found | Mangesh Raut Portfolio",
         "description": "Page not found on Mangesh Raut's portfolio.",
         "isPartOf": {
           "@type": "WebSite",
-          "@id": "https://mangeshraut.pro/#website",
-          "url": "https://mangeshraut.pro/",
+          "@id": "https://mangeshraut712.github.io/mangeshrautarchive/#website",
+          "url": "https://mangeshraut712.github.io/mangeshrautarchive/",
           "name": "Mangesh Raut"
         },
         "inLanguage": "en-US"
@@ -74,97 +70,38 @@
       <a href="#main-content" class="skip-link">Skip to main content</a>
     </div>
 
-    <div class="error-ambient" aria-hidden="true">
-      <div class="error-spotlight" id="error-spotlight"></div>
-      <div class="error-orb error-orb--a"></div>
-      <div class="error-orb error-orb--b"></div>
-      <div class="error-orb error-orb--c"></div>
-    </div>
+    <div class="error-ambient" aria-hidden="true"></div>
 
-    <header class="error-topbar" role="banner">
-      <a class="error-topbar__brand" href="index.html#home" aria-label="Mangesh Raut home">
-        <span class="error-topbar__avatar">
-          <picture>
-            <source srcset="assets/images/profile-icon.webp" type="image/webp" />
-            <img
-              src="assets/images/profile-icon.png"
-              alt=""
-              width="32"
-              height="32"
-              loading="eager"
-              decoding="async"
-            />
-          </picture>
-        </span>
-        <span class="error-topbar__label">Mangesh Raut</span>
-      </a>
-      <div class="error-topbar__actions">
-        <button type="button" id="theme-toggle" class="error-icon-btn" aria-label="Toggle theme">
-          <span id="theme-toggle-icon" aria-hidden="true"
-            ><i class="fas fa-moon moon-icon" aria-hidden="true"></i
-          ></span>
+    <button type="button" id="theme-toggle" class="error-theme-btn" aria-label="Toggle theme">
+      <span id="theme-toggle-icon" aria-hidden="true"
+        ><i class="fas fa-moon moon-icon" aria-hidden="true"></i
+      ></span>
+    </button>
+
+    <main class="error-shell error-container" id="main-content">
+      <p class="error-kicker">Page not found</p>
+      <p class="error-code" aria-hidden="true">404</p>
+      <h1 class="error-title">This page can’t be found.</h1>
+      <p class="error-message">
+        The link may be broken or the page may have moved. Head home, or choose another destination.
+      </p>
+      <p class="error-path" id="error-path" aria-live="polite"></p>
+
+      <div class="error-actions">
+        <a class="error-btn error-btn--primary error-home-link home-link" href="index.html#home">
+          Back to Home
+        </a>
+        <button type="button" class="error-btn error-btn--secondary" id="error-go-back">
+          Go Back
         </button>
       </div>
-    </header>
 
-    <div class="error-stage">
-      <main class="error-panel error-container" id="main-content">
-        <p class="error-kicker">Signal lost</p>
-        <div class="error-code" aria-hidden="true">
-          <span class="error-digit">4</span>
-          <span class="error-digit">0</span>
-          <span class="error-digit">4</span>
-        </div>
-        <h1 class="error-title">This page isn’t on the map.</h1>
-        <p class="error-message">
-          The link may be outdated, mistyped, or retired. Pick a destination below — or search where
-          you meant to go.
-        </p>
-        <p class="error-path" id="error-path" aria-live="polite"></p>
+      <nav class="error-destinations" aria-label="Popular destinations">
+        <ul class="error-dest-list" id="error-dest-grid"></ul>
+      </nav>
+    </main>
 
-        <div class="error-search" role="search">
-          <i class="fas fa-magnifying-glass error-search__icon" aria-hidden="true"></i>
-          <label class="sr-only" for="error-search-input">Filter destinations</label>
-          <input
-            id="error-search-input"
-            class="error-search__input"
-            type="search"
-            autocomplete="off"
-            spellcheck="false"
-            placeholder="Search destinations… (press /)"
-          />
-        </div>
-
-        <ul class="error-dest-grid" id="error-dest-grid" aria-label="Popular destinations"></ul>
-        <p class="error-empty" id="error-empty" role="status">No destinations match that search.</p>
-
-        <div class="error-actions">
-          <a class="error-btn error-btn--primary error-home-link home-link" href="index.html#home">
-            <i class="fas fa-house" aria-hidden="true"></i>
-            Back to Home
-          </a>
-          <button type="button" class="error-btn error-btn--secondary" id="error-go-back">
-            <i class="fas fa-arrow-left" aria-hidden="true"></i>
-            Go back
-          </button>
-        </div>
-
-        <p class="error-hint">
-          Shortcuts: <kbd>1</kbd>–<kbd>6</kbd> jump · <kbd>H</kbd> home · <kbd>B</kbd> back ·
-          <kbd>/</kbd> search
-        </p>
-
-        <div class="error-tip" role="note">
-          <span class="error-tip__icon" aria-hidden="true"><i class="fas fa-lightbulb"></i></span>
-          <div class="error-tip__body">
-            <p class="error-tip__label">While you’re here</p>
-            <p class="error-tip__text" id="error-tip-text">Loading a tip…</p>
-          </div>
-        </div>
-      </main>
-    </div>
-
-    <script type="module" src="js/utils/theme.js?v=20260718err"></script>
-    <script type="module" src="js/modules/error-404-page.js?v=20260718err"></script>
+    <script type="module" src="js/utils/theme.js?v=20260718solid"></script>
+    <script type="module" src="js/modules/error-404-page.js?v=20260718solid"></script>
   </body>
 </html>

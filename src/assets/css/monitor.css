@@ -89,37 +89,50 @@ html.dark body.monitor-page:not(.systems-evidence-page) main,
 }
 
 body.monitor-page {
-  padding-top: calc(84px + env(safe-area-inset-top, 0px));
+  padding-top: var(--subpage-body-pad-top, calc(84px + env(safe-area-inset-top, 0px)));
   min-height: 100vh;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
+}
+
+html.dark body.monitor-page,
+[data-theme='dark'] body.monitor-page {
+  background: #000000 !important;
+  background-color: #000000 !important;
+  background-image: none !important;
 }
 
 .monitor-page-nav {
   position: fixed;
-  top: max(14px, env(safe-area-inset-top));
+  top: var(--subpage-nav-top, max(14px, env(safe-area-inset-top)));
   left: 50%;
   z-index: 1000;
   display: flex;
   align-items: center;
   justify-content: space-between;
   width: min(1040px, calc(100% - 32px));
-  min-height: 52px;
+  min-height: var(--subpage-nav-height, 52px);
   padding: 8px 16px;
   border: 1px solid var(--border-color, #e5e5ea);
   border-radius: 999px;
   box-shadow: var(--shadow-md, 0 8px 24px rgb(0 0 0 / 8%));
   transform: translateX(-50%);
-  /* Always-solid Apple glass chrome — never fully transparent */
-  background: rgb(255 255 255 / 88%);
-  backdrop-filter: saturate(180%) blur(20px);
-  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  /* Solid chrome — match site white/black surfaces */
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
   box-sizing: border-box;
   max-width: calc(100vw - 1.5rem);
 }
 
 html.dark .monitor-page-nav,
 [data-theme='dark'] .monitor-page-nav {
-  border-color: rgb(255 255 255 / 12%);
-  background: rgb(0 0 0 / 82%);
+  border-color: rgb(255 255 255 / 14%);
+  background: #000000 !important;
+  background-color: #000000 !important;
   box-shadow: 0 8px 28px rgb(0 0 0 / 45%);
 }
 

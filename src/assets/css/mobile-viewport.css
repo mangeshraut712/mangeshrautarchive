@@ -171,8 +171,14 @@ body.travel-body {
   }
 
   /* Body clearance for left FAB stack only — do not pad every section (caused footer void) */
-  body.has-a11y-toolbar {
+  body.has-a11y-toolbar:not(.travel-body) {
     padding-bottom: calc(var(--mobile-content-chrome-pad) + env(safe-area-inset-bottom)) !important;
+  }
+
+  /* Travel is a locked map shell — never pad the document */
+  body.travel-body.has-a11y-toolbar,
+  body.travel-body {
+    padding-bottom: 0 !important;
   }
 
   body.has-a11y-toolbar footer {
@@ -200,10 +206,16 @@ body.travel-body {
 
   body.has-a11y-toolbar .systems-shell,
   body.has-a11y-toolbar .monitor-container,
-  body.has-a11y-toolbar .travel-sidebar,
   body.has-a11y-toolbar .uses-section,
   body.has-a11y-toolbar .uses-control-center {
     padding-bottom: max(1.5rem, env(safe-area-inset-bottom)) !important;
+  }
+
+  /* Travel drawer already sits on the safe-area edge — extra pad expands past height */
+  body.has-a11y-toolbar .travel-sidebar,
+  body.travel-body .travel-sidebar {
+    padding-bottom: 0 !important;
+    box-sizing: border-box !important;
   }
 
   #home,
@@ -442,9 +454,16 @@ body.travel-body {
   .service-card,
   .portfolio-surface-card,
   .doc-card,
-  .uses-section,
-  .travel-stop {
+  .uses-section {
     width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+
+  /* Travel stops use horizontal margin — 100% width + margin overflows drawer */
+  .travel-stop {
+    width: auto;
     max-width: 100%;
     min-width: 0;
     box-sizing: border-box;

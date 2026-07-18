@@ -88,7 +88,7 @@ class GitHubProjects {
         name: 'mangeshrautarchive',
         full_name: 'mangeshraut712/mangeshrautarchive',
         description: 'Personal portfolio site with project showcase and AI assistant.',
-        homepage: 'https://mangeshraut.pro/',
+        homepage: 'https://mangeshraut712.github.io/mangeshrautarchive/',
         html_url: 'https://github.com/mangeshraut712/mangeshrautarchive',
         language: 'JavaScript',
         topics: ['frontend', 'portfolio', 'web', 'ai-assistant'],

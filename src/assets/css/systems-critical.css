@@ -11,6 +11,14 @@
     env(safe-area-inset-left, 0px),
     env(safe-area-inset-right, 0px)
   );
+  /* Shared subpage chrome — nav float + sticky rails (systems / monitor / uses) */
+  --subpage-nav-top: max(14px, env(safe-area-inset-top, 0px));
+  --subpage-nav-height: 52px;
+  --subpage-nav-gap: 18px;
+  --subpage-body-pad-top: calc(
+    var(--subpage-nav-top) + var(--subpage-nav-height) + var(--subpage-nav-gap)
+  );
+  --subpage-sticky-top: calc(var(--subpage-nav-top) + var(--subpage-nav-height) + 12px);
   --border-color: rgb(0 0 0 / 10%);
   --bg-secondary: #ffffff;
   --text-primary: #1d1d1f;
@@ -31,21 +39,25 @@ body.systems-page,
 body.monitor-page,
 body.uses-page {
   margin: 0;
-  background: var(--systems-bg, #ffffff);
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
   color: var(--systems-text, #1d1d1f);
   font-family:
     -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', 'Segoe UI', Roboto,
     'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  padding-top: calc(84px + env(safe-area-inset-top, 0px));
+  padding-top: var(--subpage-body-pad-top);
   overflow-x: clip;
 }
 
 html.dark body.systems-page,
 html.dark body.monitor-page,
 html.dark body.uses-page {
-  background: #000000;
+  background: #000000 !important;
+  background-color: #000000 !important;
+  background-image: none !important;
   color: #f5f5f7;
 }
 
@@ -317,20 +329,26 @@ html.dark .monitor-page-nav__back {
   gap: 0.35rem;
   overflow-x: auto;
   padding: 0.35rem;
-  margin: -0.35rem auto 0;
+  margin: 0 auto;
   width: fit-content;
   max-width: 100%;
   border-radius: 999px;
-  border: 1px solid rgb(0 0 0 / 6%);
-  background: rgb(255 255 255 / 72%);
+  border: 1px solid rgb(0 0 0 / 10%);
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
   position: sticky;
-  top: calc(72px + env(safe-area-inset-top, 0px));
+  top: var(--subpage-sticky-top);
   z-index: 50;
+  box-shadow: 0 2px 12px rgb(0 0 0 / 5%);
 }
 
 html.dark .systems-section-rail {
-  border-color: rgb(255 255 255 / 10%);
-  background: rgb(28 28 30 / 72%);
+  border-color: rgb(255 255 255 / 14%);
+  background: #000000 !important;
+  background-color: #000000 !important;
+  box-shadow: 0 2px 14px rgb(0 0 0 / 35%);
 }
 
 .systems-section-rail a {

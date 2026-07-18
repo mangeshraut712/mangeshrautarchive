@@ -565,13 +565,22 @@ function createQuickFacts(stop, intelligence) {
 }
 
 function createSignalTags(stop, intelligence) {
-  return [
-    stop.tagline,
-    stop.placeKind,
-    getPlaceArchetype(stop, intelligence),
-    getDensitySignal(stop.photoCount),
-    ...intelligence.sensoryDescriptors.slice(0, 3),
-  ].filter(Boolean);
+  const seen = new Set();
+  const tags = [];
+  for (const value of [stop.placeKind, ...intelligence.sensoryDescriptors.slice(0, 3)]) {
+    const key = String(value || '')
+      .trim()
+      .toLowerCase();
+    if (!key || seen.has(key)) continue;
+    /* Skip values already shown as place type / density in quick facts or as atmosphere */
+    if (key === String(getPlaceArchetype(stop, intelligence)).toLowerCase()) continue;
+    if (key === String(getDensitySignal(stop.photoCount)).toLowerCase()) continue;
+    if (key === String(intelligence.localAtmosphere || '').toLowerCase()) continue;
+    if (key === String(stop.tagline || '').toLowerCase()) continue;
+    seen.add(key);
+    tags.push(String(value).trim());
+  }
+  return tags;
 }
 
 function dedupeStops(stops) {

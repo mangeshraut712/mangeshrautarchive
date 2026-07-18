@@ -387,9 +387,9 @@ async function buildLiveChecks(env, dispatch) {
     },
     {
       name: 'Vercel / mangeshraut.pro',
-      status: 'degraded',
+      status: 'unknown',
       url: 'https://mangeshraut.pro/',
-      message: 'Optional · often DEPLOYMENT_DISABLED — not required for Pages',
+      message: 'Optional offline (DEPLOYMENT_DISABLED) — GitHub Pages + Cloudflare are primary',
       metric_value: 'optional',
       metric_label: 'Status',
     },

@@ -85,8 +85,13 @@ html:not(.dark) main > section,
 html:not(.dark) body.systems-page,
 html:not(.dark) body.monitor-page,
 html:not(.dark) body.uses-page,
+html:not(.dark) body.error-page,
+html:not(.dark) body.offline-page,
 html:not(.dark) body.systems-page .systems-shell,
-html:not(.dark) body.monitor-page main {
+html:not(.dark) body.monitor-page main,
+html:not(.dark) body.error-page main,
+html:not(.dark) body.error-page .error-shell,
+html:not(.dark) body.offline-page main {
   background-color: #ffffff !important;
   background-image: none !important;
 }
@@ -95,8 +100,13 @@ html.dark main > section,
 html.dark body.systems-page,
 html.dark body.monitor-page,
 html.dark body.uses-page,
+html.dark body.error-page,
+html.dark body.offline-page,
 html.dark body.systems-page .systems-shell,
-html.dark body.monitor-page main {
+html.dark body.monitor-page main,
+html.dark body.error-page main,
+html.dark body.error-page .error-shell,
+html.dark body.offline-page main {
   background-color: #000000 !important;
   background-image: none !important;
 }
@@ -417,10 +427,12 @@ html.dark
 }
 
 /* ─── Floating chrome — solid only in tinted mode; clear/balanced use liquid glass ─── */
+/* Paint controls, not the a11y shell (shell must stay transparent — no extra square) */
 html[data-lg-mode='tinted']
   :is(
     #chatbot-widget,
-    .a11y-toolbar,
+    .a11y-toolbar__main,
+    .a11y-toolbar__panel,
     .a11y-glass-popover,
     .a11y-toolbar button,
     .website-share-dialog.active,
@@ -434,7 +446,8 @@ html[data-lg-mode='tinted']
 html[data-lg-mode='tinted']:not(.dark)
   :is(
     #chatbot-widget,
-    .a11y-toolbar,
+    .a11y-toolbar__main,
+    .a11y-toolbar__panel,
     .a11y-glass-popover,
     .a11y-toolbar button,
     .website-share-dialog.active,
@@ -449,7 +462,8 @@ html[data-lg-mode='tinted']:not(.dark)
 html.dark[data-lg-mode='tinted']
   :is(
     #chatbot-widget,
-    .a11y-toolbar,
+    .a11y-toolbar__main,
+    .a11y-toolbar__panel,
     .a11y-glass-popover,
     .a11y-toolbar button,
     .website-share-dialog.active,
@@ -459,6 +473,15 @@ html.dark[data-lg-mode='tinted']
   background: #000000 !important;
   background-color: #000000 !important;
   background-image: none !important;
+}
+
+html[data-lg-mode='tinted'] .a11y-toolbar,
+html.dark[data-lg-mode='tinted'] .a11y-toolbar {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  border: none !important;
+  box-shadow: none !important;
 }
 
 /* ─── Section shells ─── */

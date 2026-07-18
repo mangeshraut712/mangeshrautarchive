@@ -587,9 +587,11 @@ main section > .container > h2,
 main section h2[id$='-heading'] {
   color: #0071e3 !important;
   -webkit-text-fill-color: #0071e3 !important;
+  margin-top: 0 !important;
   margin-bottom: 0.75rem !important;
   text-align: center;
   letter-spacing: -0.02em;
+  line-height: 1.1;
 }
 
 html.dark main section > .container > h2,
@@ -598,20 +600,26 @@ html.dark main section h2[id$='-heading'] {
   -webkit-text-fill-color: #0a84ff !important;
 }
 
+/* Unified heading → subtitle rhythm: never pull subtitle into title */
 main section .section-subtitle {
   margin-top: 0 !important;
-  margin-bottom: 1.25rem !important;
+  margin-bottom: clamp(1.5rem, 3vw, 2.25rem) !important;
   text-align: center;
   max-width: 42rem;
   margin-inline: auto;
   color: #6e6e73 !important;
   -webkit-text-fill-color: #6e6e73 !important;
-  line-height: 1.45;
+  line-height: 1.5;
 }
 
 html.dark main section .section-subtitle {
   color: #a1a1a6 !important;
   -webkit-text-fill-color: #a1a1a6 !important;
+}
+
+/* Homepage anchors clear the floating Dynamic Island nav */
+main#main-content > section[id] {
+  scroll-margin-top: calc(var(--island-height, 56px) + env(safe-area-inset-top, 0px) + 28px);
 }
 
 /* sr-only must never expand layout even with animate-in */
@@ -1621,7 +1629,7 @@ html.launch-intro-active body {
 
 main section.section-standard,
 main section.fade-in {
-  scroll-margin-top: 5.5rem;
+  scroll-margin-top: calc(var(--island-height, 56px) + env(safe-area-inset-top, 0px) + 28px);
 }
 
 main section > .container {

@@ -5,6 +5,7 @@ from __future__ import annotations
 from typing import Any, Dict
 
 SITE_URL = "https://mangeshraut.pro"
+LIVE_SITE_URL = "https://mangeshraut712.github.io/mangeshrautarchive"
 
 SITE_THEME = {
     "apple_blue": "#0071e3",
@@ -15,7 +16,7 @@ SITE_THEME = {
 
 SOCIAL_IMAGE = {
     "path": "/assets/images/home.png",
-    "url": f"{SITE_URL}/assets/images/home.png",
+    "url": f"{LIVE_SITE_URL}/assets/images/home.png",
     "width": 3024,
     "height": 1722,
     "alt": "Mangesh Raut Software Engineer Portfolio",
@@ -31,7 +32,7 @@ LIGHTHOUSE_PAGES_GATES: Dict[str, Dict[str, int]] = {
     "mobile": {"performance": 85, "accessibility": 90, "best_practices": 90, "seo": 90},
 }
 
-TEST_COUNTS = {"vitest": 67, "pytest": 122, "playwright_projects": 15}
+TEST_COUNTS = {"vitest": 89, "pytest": 132, "playwright_projects": 15}
 
 WEBMCP_TOOL_COUNT = 10
 
@@ -46,16 +47,17 @@ PWA_POLICY = {
     ),
 }
 
+# Keep names aligned with src/js/data/portfolio-public-data.js usesStack / usesCatalog.
 USES_STACK: Dict[str, list[str]] = {
     "hardware": ["MacBook Pro (Apple Silicon)", "Studio Display", "AirPods Pro"],
     "software": ["macOS", "Raycast", "Arc / Safari", "iTerm"],
-    "ai_stack": ["Cursor", "Claude Code", "OpenRouter", "Codex"],
+    "aiStack": ["Cursor", "Claude Code", "OpenRouter", "Codex"],
     "engineering": [
         "Vanilla HTML / CSS / ESM",
         "esbuild",
         "FastAPI",
         "Tailwind CSS v4 (generated utilities)",
-        "Vercel + GitHub Pages",
+        "Cloudflare Worker + GitHub Pages",
         "GitHub Actions",
         "Vitest · pytest · Playwright",
     ],
@@ -78,12 +80,22 @@ def format_quality_summary() -> str:
 
 def get_portfolio_facts_chunk() -> str:
     """Compact first-party facts for AssistMe site knowledge injection."""
+    label_map = {
+        "hardware": "Hardware",
+        "software": "Software",
+        "aiStack": "AI Stack",
+        "engineering": "Engineering",
+        "fonts": "Fonts",
+        "theme": "Theme",
+        "productivity": "Productivity",
+        "reading": "Reading",
+    }
     uses_lines = []
     for category, items in USES_STACK.items():
-        label = category.replace("_", " ").title()
+        label = label_map.get(category, category)
         uses_lines.append(f"{label}: {', '.join(items)}")
     return (
-        f"Public portfolio facts ({SITE_URL}):\n"
+        f"Public portfolio facts (live: {LIVE_SITE_URL}; brand: {SITE_URL}):\n"
         f"- Quality: {format_quality_summary()}\n"
         f"- Live Pages monitoring floors (mobile perf min): "
         f"{LIGHTHOUSE_PAGES_GATES['mobile']['performance']}+ "
@@ -98,6 +110,7 @@ def get_portfolio_facts_chunk() -> str:
 def get_portfolio_facts_dict() -> Dict[str, Any]:
     return {
         "site_url": SITE_URL,
+        "live_site_url": LIVE_SITE_URL,
         "theme": SITE_THEME,
         "social_image": SOCIAL_IMAGE,
         "lighthouse_deploy_gates": LIGHTHOUSE_DEPLOY_GATES,

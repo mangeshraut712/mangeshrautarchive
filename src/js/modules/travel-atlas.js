@@ -57,6 +57,31 @@ function sameText(first, second) {
   return normalize(first) === normalize(second);
 }
 
+/** Case-insensitive unique list; drops empties and near-duplicate repeats. */
+function uniqueTexts(values, { max = 12 } = {}) {
+  const seen = new Set();
+  const out = [];
+  for (const value of values) {
+    const key = normalize(value);
+    if (!key || seen.has(key)) continue;
+    seen.add(key);
+    out.push(String(value).trim());
+    if (out.length >= max) break;
+  }
+  return out;
+}
+
+/** True when two prose strings are the same or one fully contains the other. */
+function textOverlaps(first, second) {
+  const a = normalize(first);
+  const b = normalize(second);
+  if (!a || !b) return false;
+  if (a === b) return true;
+  const shorter = a.length <= b.length ? a : b;
+  const longer = a.length <= b.length ? b : a;
+  return shorter.length >= 28 && longer.includes(shorter);
+}
+
 function getStopContext(waypoint) {
   const { locality } = waypoint;
   const titleIsSpecificPlace = locality.placeName && sameText(waypoint.title, locality.placeName);
@@ -68,11 +93,11 @@ function getStopContext(waypoint) {
 
   if (titleIsSpecificPlace) {
     pieces.push(`${locality.city} area`);
-  } else if (locality.placeName) {
+  } else if (locality.placeName && !sameText(locality.placeName, waypoint.title)) {
     pieces.push(locality.placeName);
   }
 
-  return pieces.filter(Boolean).join(' · ');
+  return uniqueTexts(pieces).join(' · ');
 }
 
 function hasMatchingCategories(waypoint) {
@@ -230,11 +255,20 @@ function getFilteredWaypoints() {
     return acc;
   }, []);
 
-  if (!term) return matches;
+  if (term) {
+    return matches.toSorted((a, b) => {
+      const scoreDelta = getSearchScore(b.waypoint, term) - getSearchScore(a.waypoint, term);
+      return scoreDelta || a.index - b.index;
+    });
+  }
 
+  /* Group by country so country headers appear once each (no India/USA/India flicker). */
   return matches.toSorted((a, b) => {
-    const scoreDelta = getSearchScore(b.waypoint, term) - getSearchScore(a.waypoint, term);
-    return scoreDelta || a.index - b.index;
+    const countryDelta = a.waypoint.locality.country.localeCompare(b.waypoint.locality.country);
+    if (countryDelta) return countryDelta;
+    const cityDelta = a.waypoint.locality.city.localeCompare(b.waypoint.locality.city);
+    if (cityDelta) return cityDelta;
+    return a.index - b.index;
   });
 }
 
@@ -515,10 +549,31 @@ function renderStopCard(waypoint, index, countryGroupHeader) {
   const placeContext = stopContext
     ? `<div class="travel-stop__place-name">${escapeHtml(stopContext)}</div>`
     : '';
+  const experience = waypoint.editorial.experience || '';
+  const whyVisit = waypoint.editorial.whyVisit || '';
   const wikiSummary =
     waypoint.editorial.wikiSummary ||
     waypoint.editorial.atlasSummary ||
     'Select this place to load concise local context.';
+  const guideTitles = (waypoint.editorial.thingsToDo || []).map(item => item.title);
+  const mustSee = uniqueTexts(waypoint.editorial.mustSee || []);
+  /* City guide cards already list the same landmarks — drop plain Must See list when covered. */
+  const mustSeeCoveredByGuide =
+    guideTitles.length > 0 &&
+    mustSee.filter(item =>
+      guideTitles.some(
+        title =>
+          sameText(title, item) ||
+          normalize(title).includes(normalize(item)) ||
+          normalize(item).includes(normalize(title))
+      )
+    ).length >= Math.min(mustSee.length, 2);
+  const showMustSee = mustSee.length > 0 && !mustSeeCoveredByGuide;
+  const showWhyVisit =
+    Boolean(whyVisit) &&
+    !textOverlaps(whyVisit, experience) &&
+    !textOverlaps(whyVisit, wikiSummary) &&
+    !sameText(whyVisit, experience);
   const detailsId = `travel-stop-details-${index}`;
   const summaryId = `travel-stop-summary-${index}`;
   const ariaLabel = `Open details for ${waypoint.title} in ${waypoint.locality.city}, ${waypoint.locality.country}`;
@@ -531,20 +586,28 @@ function renderStopCard(waypoint, index, countryGroupHeader) {
         <div class="travel-stop__order">${escapeHtml(waypoint.locality.region)}, ${escapeHtml(waypoint.locality.country)} ${homeBadge}</div>
         <h3 class="travel-stop__name">${escapeHtml(waypoint.title)}</h3>
         ${placeContext}
-        <div class="travel-stop__tagline" id="${summaryId}">${escapeHtml(waypoint.editorial.experience)}</div>
+        <div class="travel-stop__tagline" id="${summaryId}">${escapeHtml(experience)}</div>
         <div class="travel-stop__details" id="${detailsId}">
           ${renderStopMedia(waypoint)}
           <p class="travel-stop__story">${escapeHtml(wikiSummary)}</p>
           ${renderQuickFacts(waypoint)}
           ${renderSignalTags(waypoint)}
-          <div class="travel-stop__detail-section">
+          ${
+            showWhyVisit
+              ? `<div class="travel-stop__detail-section">
             <div class="travel-stop__detail-label">Why Visit</div>
-            <div class="travel-stop__detail-text">${escapeHtml(waypoint.editorial.whyVisit)}</div>
-          </div>
-          <div class="travel-stop__detail-section">
+            <div class="travel-stop__detail-text">${escapeHtml(whyVisit)}</div>
+          </div>`
+              : ''
+          }
+          ${
+            showMustSee
+              ? `<div class="travel-stop__detail-section">
             <div class="travel-stop__detail-label">Must See</div>
-            <div class="travel-stop__detail-text">${escapeHtml(waypoint.editorial.mustSee.join(', '))}</div>
-          </div>
+            <div class="travel-stop__detail-text">${escapeHtml(mustSee.join(', '))}</div>
+          </div>`
+              : ''
+          }
           ${renderPlaceGuide(waypoint)}
         </div>
       </div>
@@ -573,9 +636,29 @@ function renderQuickFacts(waypoint) {
   const facts = waypoint.editorial.quickFacts || [];
   if (!facts.length) return '';
 
+  const regionLine = `${waypoint.locality.region}, ${waypoint.locality.country}`;
+  const seen = new Set();
+  const uniqueFacts = facts.filter(fact => {
+    const label = normalize(fact.label);
+    const value = normalize(fact.value);
+    if (!value) return false;
+    /* Region fact repeats the order line above the title */
+    if (
+      label === 'region' &&
+      (sameText(fact.value, regionLine) || value.includes(normalize(waypoint.locality.region)))
+    ) {
+      return false;
+    }
+    if (seen.has(value)) return false;
+    seen.add(value);
+    return true;
+  });
+
+  if (!uniqueFacts.length) return '';
+
   return `
     <div class="travel-stop__facts" aria-label="${escapeHtml(waypoint.title)} quick facts">
-      ${facts
+      ${uniqueFacts
         .map(
           fact => `
             <div class="travel-stop__fact">
@@ -588,28 +671,68 @@ function renderQuickFacts(waypoint) {
 }
 
 function renderSignalTags(waypoint) {
-  const tags = waypoint.editorial.signalTags || [];
+  const blocked = new Set(
+    [
+      waypoint.title,
+      waypoint.locality.city,
+      waypoint.locality.region,
+      waypoint.locality.country,
+      waypoint.locality.placeName,
+      waypoint.editorial.experience,
+      waypoint.locality.placeKind,
+      ...(waypoint.editorial.bestFor || []),
+      ...(waypoint.editorial.quickFacts || []).map(fact => fact.value),
+    ]
+      .map(normalize)
+      .filter(Boolean)
+  );
+
+  const tags = uniqueTexts(waypoint.editorial.signalTags || [], { max: 6 }).filter(
+    tag => !blocked.has(normalize(tag))
+  );
   if (!tags.length) return '';
 
   return `
     <div class="travel-stop__signals" aria-label="${escapeHtml(waypoint.title)} intelligence signals">
-      ${tags
-        .slice(0, 8)
-        .map(tag => `<span>${escapeHtml(tag)}</span>`)
-        .join('')}
+      ${tags.map(tag => `<span>${escapeHtml(tag)}</span>`).join('')}
     </div>`;
 }
 
 function renderPlaceGuide(waypoint) {
   const { editorial } = waypoint;
-  if (!editorial.thingsToDo.length) return '';
+  if (!editorial.thingsToDo?.length) return '';
 
-  const chips = [...editorial.bestFor, ...editorial.neighborhoods]
-    .slice(0, 10)
+  const blockedChip = new Set(
+    [
+      waypoint.title,
+      waypoint.locality.city,
+      waypoint.locality.region,
+      waypoint.locality.country,
+      ...(editorial.signalTags || []),
+    ]
+      .map(normalize)
+      .filter(Boolean)
+  );
+
+  const chips = uniqueTexts([...(editorial.bestFor || []), ...(editorial.neighborhoods || [])], {
+    max: 8,
+  })
+    .filter(item => !blockedChip.has(normalize(item)))
     .map(item => `<span>${escapeHtml(item)}</span>`)
     .join('');
 
-  const cards = editorial.thingsToDo
+  /* Dedupe guide cards by title (case-insensitive) */
+  const seenTitles = new Set();
+  const thingsToDo = editorial.thingsToDo.filter(item => {
+    const key = normalize(item.title);
+    if (!key || seenTitles.has(key)) return false;
+    seenTitles.add(key);
+    return true;
+  });
+
+  if (!thingsToDo.length) return '';
+
+  const cards = thingsToDo
     .map(item => {
       const image = safeExternalUrl(item.image);
       const sourceUrl = safeExternalUrl(item.sourceUrl);
@@ -627,15 +750,22 @@ function renderPlaceGuide(waypoint) {
     })
     .join('');
 
+  const guideSummary = editorial.guideSummary || '';
+  const showGuideSummary =
+    Boolean(guideSummary) &&
+    !textOverlaps(guideSummary, editorial.experience) &&
+    !textOverlaps(guideSummary, editorial.whyVisit) &&
+    !textOverlaps(guideSummary, editorial.wikiSummary || editorial.atlasSummary || '');
+
   return `
     <section class="place-guide" aria-label="${waypoint.title} destination guide">
       <div class="place-guide__header">
         <div>
           <div class="travel-stop__detail-label">City Guide</div>
-          <p>${escapeHtml(editorial.guideSummary)}</p>
+          ${showGuideSummary ? `<p>${escapeHtml(guideSummary)}</p>` : ''}
         </div>
       </div>
-      <div class="place-guide__chips">${chips}</div>
+      ${chips ? `<div class="place-guide__chips">${chips}</div>` : ''}
       <div class="place-guide__cards">${cards}</div>
     </section>`;
 }
@@ -1140,9 +1270,13 @@ async function initMap() {
     maxPitch: 70,
   });
 
+  /* Zoom only — no compass/pitch stack (saves mobile map height above sheet) */
   state.map.addControl(
-    new window.maplibregl.NavigationControl({ visualizePitch: true }),
-    'bottom-right'
+    new window.maplibregl.NavigationControl({
+      showCompass: false,
+      visualizePitch: false,
+    }),
+    'top-right'
   );
   state.map.on('error', handleMapError);
   state.map.on('style.load', () => {
@@ -1551,6 +1685,10 @@ function bindSidebarToggle() {
     panelToggle?.classList.toggle('is-active', !collapsed);
     panelToggle?.setAttribute('aria-expanded', String(!collapsed));
     handleToggle?.setAttribute('aria-expanded', String(!collapsed));
+    handleToggle?.setAttribute(
+      'aria-label',
+      collapsed ? 'Expand places panel' : 'Collapse places panel'
+    );
   };
 
   const toggleSidebar = () => {
@@ -1559,6 +1697,21 @@ function bindSidebarToggle() {
 
   panelToggle?.addEventListener('click', toggleSidebar);
   handleToggle?.addEventListener('click', toggleSidebar);
+
+  /* Mobile: expand sheet when user picks a place so details are usable */
+  const mq = window.matchMedia('(max-width: 820px)');
+  const ensureOpenOnSelect = () => {
+    if (!mq.matches) return;
+    if (sidebar.classList.contains('is-collapsed')) {
+      setCollapsed(false);
+    }
+  };
+
+  document.getElementById('travel-timeline')?.addEventListener('click', event => {
+    if (event.target.closest('.travel-stop')) {
+      ensureOpenOnSelect();
+    }
+  });
 }
 
 function init() {

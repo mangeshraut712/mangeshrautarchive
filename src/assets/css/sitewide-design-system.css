@@ -660,7 +660,8 @@ html.dark body:not(.error-page) .text-blue {
 }
 
 /* Exclude buttons from text color override.
-   Outline / soft CTAs keep their own blue labels — never force white here. */
+   Outline / soft CTAs keep their own blue labels — never force white here.
+   Travel atlas controls use solid grey/white chips (not primary blue). */
 .btn:not(.hero-cta-secondary):not(.section-preview-btn),
 button:not(.about-tab-btn):not(.about-speak-btn):not(.card-speak-btn):not(.card-translate-btn):not(
     .card-restore-btn
@@ -680,15 +681,21 @@ button:not(.about-tab-btn):not(.about-speak-btn):not(.card-speak-btn):not(.card-
     .proj-filter-btn
   ):not(.project-lens-chip):not(.projects-view-all-btn):not(.project-action-btn):not(
     .blog-read-btn
-  ):not(.a11y-toolbar button):not(.a11y-glass-preset):not(.a11y-glass-popover__close):not(
-    .systems-arch-tab
-  ):not(.uses-control-tile):not(.portfolio-reach-badge):not(.hero-pill-badge):not(
-    .crypto-mini-btn
-  ):not(.robinhood-mini-btn):not(.calendly-panel-button):not(.ios-btn):not(.ios-btn-small):not(
-    .status-circle
-  ):not(.edit-btn):not(.contact-assistme-btn):not(.currently-tab):not(.section-preview-btn):not(
-    .hero-cta-secondary
-  ):not(.hero-cta-primary),
+  ):not(.travel-action):not(.travel-nav__projection):not(.travel-nav__theme):not(
+    .travel-nav__panel
+  ):not(.travel-filter-chip):not(.country-pill):not(.travel-advanced-toggle):not(
+    .travel-sidebar__handle
+  ):not(.travel-search__clear):not(.travel-empty-state__reset):not(.a11y-toolbar button):not(
+    .a11y-glass-preset
+  ):not(.a11y-glass-popover__close):not(.systems-arch-tab):not(.uses-control-tile):not(
+    .portfolio-reach-badge
+  ):not(.hero-pill-badge):not(.crypto-mini-btn):not(.robinhood-mini-btn):not(
+    .calendly-panel-button
+  ):not(.ios-btn):not(.ios-btn-small):not(.status-circle):not(.edit-btn):not(
+    .contact-assistme-btn
+  ):not(.currently-tab):not(.section-preview-btn):not(.hero-cta-secondary):not(
+    .hero-cta-primary
+  ):not([class*='maplibregl-ctrl']),
 .project-tag,
 .badge {
   color: #fff !important;

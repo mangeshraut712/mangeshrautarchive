@@ -1,16 +1,111 @@
 /**
- * Shared subpage layout polish — systems, uses, travel, 404, offline, monitor companions.
+ * Shared subpage layout polish — systems, uses, travel, monitor companions.
  * Loaded last among page CSS so density / no-overlap rules win.
+ *
+ * SAME across systems / monitor / uses:
+ *  - solid white/black page + nav chrome
+ *  - body pad-top clears floating pill nav
+ *  - sticky section rails sit below nav (never underlap)
+ *  - shell max width + gutters
+ *
+ * DIFFERENT by design:
+ *  - travel = fullscreen map app chrome
+ *  - 404/offline = centered single-screen utility pages
  */
 
-/* ─── Shared shell density ─── */
+/* Shared chrome tokens (fallback if systems-critical not present) */
 body.systems-page,
+body.monitor-page,
 body.uses-page {
+  --subpage-nav-top: max(14px, env(safe-area-inset-top, 0px));
+  --subpage-nav-height: 52px;
+  --subpage-nav-gap: 18px;
+  --subpage-body-pad-top: calc(
+    var(--subpage-nav-top) + var(--subpage-nav-height) + var(--subpage-nav-gap)
+  );
+  --subpage-sticky-top: calc(var(--subpage-nav-top) + var(--subpage-nav-height) + 12px);
   --systems-shell-max: min(1200px, 100%);
   --systems-section-gap: clamp(1.5rem, 3.5vw, 2.35rem);
   --systems-radius: 18px;
   --systems-radius-sm: 14px;
   overflow-x: clip;
+  padding-top: var(--subpage-body-pad-top) !important;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
+}
+
+html.dark body.systems-page,
+html.dark body.monitor-page,
+html.dark body.uses-page,
+html[data-theme='dark'] body.systems-page,
+html[data-theme='dark'] body.monitor-page,
+html[data-theme='dark'] body.uses-page {
+  background: #000000 !important;
+  background-color: #000000 !important;
+  background-image: none !important;
+}
+
+/* Floating pill nav — solid, shared on systems / monitor / uses */
+body.systems-page .monitor-page-nav,
+body.monitor-page .monitor-page-nav,
+body.uses-page .monitor-page-nav {
+  top: var(--subpage-nav-top) !important;
+  min-height: var(--subpage-nav-height) !important;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border: 1px solid #e5e5ea !important;
+}
+
+html.dark body.systems-page .monitor-page-nav,
+html.dark body.monitor-page .monitor-page-nav,
+html.dark body.uses-page .monitor-page-nav,
+html[data-theme='dark'] body.systems-page .monitor-page-nav,
+html[data-theme='dark'] body.monitor-page .monitor-page-nav,
+html[data-theme='dark'] body.uses-page .monitor-page-nav {
+  background: #000000 !important;
+  background-color: #000000 !important;
+  border-color: #2c2c2e !important;
+}
+
+/* Sticky section rails — never slide under the fixed nav */
+body.systems-page .systems-section-rail,
+body.monitor-page .monitor-section-rail {
+  top: var(--subpage-sticky-top) !important;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  z-index: 45 !important;
+}
+
+html.dark body.systems-page .systems-section-rail,
+html.dark body.monitor-page .monitor-section-rail,
+html[data-theme='dark'] body.systems-page .systems-section-rail,
+html[data-theme='dark'] body.monitor-page .monitor-section-rail {
+  background: #000000 !important;
+  background-color: #000000 !important;
+  border-color: #2c2c2e !important;
+}
+
+/* Main shells solid */
+body.systems-page main,
+body.monitor-page main,
+body.uses-page main {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
+}
+
+html.dark body.systems-page main,
+html.dark body.monitor-page main,
+html.dark body.uses-page main {
+  background: #000000 !important;
+  background-color: #000000 !important;
+  background-image: none !important;
 }
 
 body.systems-page .systems-shell,
@@ -57,10 +152,8 @@ body.systems-page .systems-section-desc {
   line-height: 1.45;
 }
 
-/* Sticky rail — clear fixed nav, no side mask eating labels */
+/* Sticky rail layout polish — clear fixed nav, no side mask eating labels */
 body.systems-page .systems-section-rail {
-  top: calc(76px + env(safe-area-inset-top, 0px)) !important;
-  z-index: 45;
   width: 100%;
   max-width: 100%;
   justify-content: flex-start;
@@ -228,63 +321,181 @@ body.uses-page .systems-footer {
 }
 
 /* ─── Travel atlas ─── */
+/* Chrome tokens on travel (same math as systems/monitor/uses — no body pad) */
+body.travel-body,
+body.travel-body.has-a11y-toolbar {
+  --subpage-nav-top: max(14px, env(safe-area-inset-top, 0px));
+  --subpage-nav-height: 72px; /* travel pill can grow past 52 with brand row */
+  --subpage-nav-gap: 12px;
+  --subpage-sticky-top: calc(
+    var(--subpage-nav-top) + var(--subpage-nav-height) + var(--subpage-nav-gap)
+  );
+  --travel-side-bottom: max(16px, env(safe-area-inset-bottom, 0px));
+  --travel-side-max-h: calc(100svh - var(--subpage-sticky-top) - var(--travel-side-bottom));
+  /* No document chrome padding — map is full-bleed; FABs float above drawer */
+  box-sizing: border-box !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
 html:has(body.travel-body),
 html:has(body.travel-body) body,
-body.travel-body {
-  /* Beat mobile-viewport `overflow: hidden auto` */
+html body.travel-body,
+body.travel-body,
+/* Beat wwdc26-liquid-glass mobile `overflow-y: auto !important` (higher specificity) */
+html.browser-chromium:not(.launch-intro-active):has(body.travel-body),
+html.browser-chromium:not(.launch-intro-active) body.travel-body:not(.menu-open),
+html.browser-chromium body.travel-body,
+html.browser-webkit:has(body.travel-body),
+html.browser-webkit body.travel-body,
+html.browser-gecko:has(body.travel-body),
+html.browser-gecko body.travel-body {
+  /* Beat mobile-viewport + liquid-glass scroll unlock */
   overflow: hidden !important;
   overflow-x: hidden !important;
   overflow-y: hidden !important;
-  overscroll-behavior: none;
-  height: 100%;
-  max-height: 100dvh;
+  overscroll-behavior: none !important;
+  /* 100dvh can exceed visible innerHeight (mobile chrome) → prefer svh */
+  height: 100% !important;
+  max-height: 100% !important;
+  min-height: 0 !important;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
 }
 
+@supports (height: 100svh) {
+  html:has(body.travel-body),
+  html.browser-chromium:has(body.travel-body),
+  html.browser-chromium body.travel-body,
+  html.browser-webkit:has(body.travel-body),
+  html.browser-webkit body.travel-body,
+  html.browser-gecko:has(body.travel-body),
+  html.browser-gecko body.travel-body {
+    height: 100svh !important;
+    max-height: 100svh !important;
+  }
+}
+
+/* Single-viewport shell — never document-scroll */
 body.travel-body .travel-layout {
-  width: 100%;
-  max-width: 100%;
-  min-height: 100dvh;
-  height: 100dvh;
-  overflow: hidden;
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  height: 100% !important;
+  max-height: 100% !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+  z-index: 1;
 }
 
-/* Clear fixed nav; avoid nav/sidebar collision */
+@supports (height: 100svh) {
+  body.travel-body .travel-layout {
+    height: 100svh !important;
+    max-height: 100svh !important;
+  }
+}
+
+body.travel-body .travel-map-layer,
+body.travel-body .travel-ui-layer {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-height: 100% !important;
+  overflow: hidden !important;
+}
+
+/* Nav + sidebar solids (merged — avoid restating twice) */
 body.travel-body .travel-nav {
   width: min(1120px, calc(100% - 1.5rem));
   max-width: calc(100vw - 1.5rem);
   box-sizing: border-box;
+  z-index: 1000;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border: 1px solid #e5e5ea !important;
 }
 
+html.dark body.travel-body .travel-nav,
+html[data-theme='dark'] body.travel-body .travel-nav {
+  background: #000000 !important;
+  background-color: #000000 !important;
+  border-color: #2c2c2e !important;
+}
+
+/*
+ * Pin sidebar with explicit top + bottom so height is viewport-bound.
+ * (A missing --subpage-sticky-top made top invalid → content-sized height ~20kpx.)
+ */
 body.travel-body .travel-sidebar {
-  top: calc(14px + 72px + 12px + env(safe-area-inset-top, 0px)) !important;
+  top: var(--subpage-sticky-top, 98px) !important;
   left: max(16px, env(safe-area-inset-left, 0px)) !important;
-  bottom: max(16px, env(safe-area-inset-bottom, 0px)) !important;
-  width: min(420px, calc(100vw - 32px)) !important;
+  right: auto !important;
+  bottom: var(--travel-side-bottom, 16px) !important;
+  width: min(400px, calc(100vw - 32px)) !important;
   max-width: calc(100vw - 32px) !important;
-  background: color-mix(in srgb, var(--theme-card-bg, #ffffff) 94%, transparent) !important;
-  backdrop-filter: saturate(180%) blur(18px);
-  -webkit-backdrop-filter: saturate(180%) blur(18px);
+  height: auto !important;
+  max-height: var(--travel-side-max-h, calc(100svh - 114px)) !important;
+  min-height: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
   z-index: 20;
 }
 
-html.dark body.travel-body .travel-sidebar {
-  background: color-mix(in srgb, #111113 94%, transparent) !important;
+html.dark body.travel-body .travel-sidebar,
+html[data-theme='dark'] body.travel-body .travel-sidebar {
+  background: #000000 !important;
+  background-color: #000000 !important;
+  background-image: none !important;
+}
+
+/* Compact chrome so timeline gets the rest of the viewport */
+body.travel-body .travel-sidebar__header {
+  flex-shrink: 0 !important;
+  max-height: min(40vh, 300px) !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain !important;
+  padding: 0.75rem 0.95rem 0.55rem !important;
+}
+
+body.travel-body .travel-timeline {
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  overflow-y: auto !important;
 }
 
 body.travel-body .travel-stats {
   grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
-  gap: 0.4rem !important;
+  gap: 0.3rem !important;
+  margin-top: 0.55rem !important;
 }
 
 body.travel-body .travel-stat {
   min-width: 0;
-  padding: 0.45rem 0.25rem !important;
-  border-radius: 12px;
-  background: color-mix(in srgb, var(--fill-secondary, #f5f5f7) 80%, transparent);
+  padding: 0.35rem 0.2rem !important;
+  border-radius: 10px;
+  background: #f5f5f7;
+}
+
+html.dark body.travel-body .travel-stat,
+html[data-theme='dark'] body.travel-body .travel-stat {
+  background: #1c1c1e;
 }
 
 body.travel-body .travel-stat__value {
-  font-size: 0.95rem !important;
+  font-size: 0.9rem !important;
   overflow-wrap: anywhere;
 }
 
@@ -294,23 +505,145 @@ body.travel-body .travel-stat__label {
 }
 
 body.travel-body .travel-sidebar__header h1 {
-  font-size: clamp(1.15rem, 2.5vw, 1.4rem) !important;
+  font-size: clamp(1.05rem, 2.2vw, 1.25rem) !important;
   line-height: 1.15;
 }
 
 body.travel-body .travel-search {
-  min-height: 40px;
+  min-height: 38px;
 }
 
 body.travel-body .travel-countries {
-  gap: 0.35rem !important;
-  max-height: 5.5rem;
-  overflow-y: auto;
+  gap: 0.3rem !important;
+  flex-wrap: nowrap !important;
+  max-height: 2.2rem !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
   overscroll-behavior: contain;
+  scrollbar-width: none;
 }
 
-/* Mobile travel drawer */
+body.travel-body .travel-countries::-webkit-scrollbar {
+  display: none;
+}
+
+/* Stop cards stay inside the sidebar (width + margin already in travel-atlas) */
+body.travel-body .travel-stop {
+  width: auto !important;
+  max-width: calc(100% - 0.8rem) !important;
+  min-width: 0 !important;
+  box-sizing: border-box !important;
+  overflow: hidden !important;
+  margin-inline: 0.4rem !important;
+}
+
+/*
+ * A11y dock: shell must stay transparent (theme-solid was painting a white square).
+ * Only the circular main button is solid; closed panel collapses fully.
+ */
+body.travel-body .a11y-toolbar {
+  left: auto !important;
+  right: max(1rem, env(safe-area-inset-right, 0px)) !important;
+  bottom: max(1.25rem, env(safe-area-inset-bottom, 0px)) !important;
+  z-index: 9999 !important;
+  width: auto !important;
+  max-width: none !important;
+  height: auto !important;
+  min-height: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  gap: 0.5rem !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  overflow: visible !important;
+}
+
+body.travel-body .a11y-toolbar__main {
+  width: 48px !important;
+  height: 48px !important;
+  min-width: 48px !important;
+  min-height: 48px !important;
+  border-radius: 999px !important;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  border: 1px solid #e5e5ea !important;
+  box-shadow: 0 8px 24px rgb(0 0 0 / 12%) !important;
+}
+
+html.dark body.travel-body .a11y-toolbar__main,
+html[data-theme='dark'] body.travel-body .a11y-toolbar__main {
+  background: #000000 !important;
+  background-color: #000000 !important;
+  border-color: #2c2c2e !important;
+}
+
+/* Collapsed panel — no 2px white strip / ghost square */
+body.travel-body .a11y-toolbar:not(.is-open) .a11y-toolbar__panel {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  min-height: 0 !important;
+  min-width: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+body.travel-body .a11y-toolbar.is-open .a11y-toolbar__panel {
+  display: flex !important;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  border: 1px solid #e5e5ea !important;
+  border-radius: 999px !important;
+  box-shadow: 0 8px 24px rgb(0 0 0 / 12%) !important;
+}
+
+html.dark body.travel-body .a11y-toolbar.is-open .a11y-toolbar__panel,
+html[data-theme='dark'] body.travel-body .a11y-toolbar.is-open .a11y-toolbar__panel {
+  background: #000000 !important;
+  background-color: #000000 !important;
+  border-color: #2c2c2e !important;
+}
+
+body.travel-body #website-share-toggle.website-share-fab,
+body.travel-body .website-share-fab {
+  left: auto !important;
+  right: max(1rem, env(safe-area-inset-right, 0px)) !important;
+  /* Stack above a11y with a clear gap */
+  bottom: max(calc(1.25rem + 64px), calc(env(safe-area-inset-bottom, 0px) + 64px)) !important;
+  z-index: 9998 !important;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  border: 1px solid #e5e5ea !important;
+}
+
+html.dark body.travel-body #website-share-toggle.website-share-fab,
+html.dark body.travel-body .website-share-fab,
+html[data-theme='dark'] body.travel-body #website-share-toggle.website-share-fab,
+html[data-theme='dark'] body.travel-body .website-share-fab {
+  background: #000000 !important;
+  background-color: #000000 !important;
+  border-color: #2c2c2e !important;
+}
+
+/* Mobile travel — bottom sheet; polish only positions FABs + locks chrome */
 @media (max-width: 820px) {
+  body.travel-body {
+    --travel-sheet-h: min(64svh, 540px);
+    --travel-sheet-h-open: min(72svh, 620px);
+    --travel-sheet-collapsed: calc(64px + env(safe-area-inset-bottom, 0px));
+  }
+
   body.travel-body .travel-sidebar {
     left: 0 !important;
     right: 0 !important;
@@ -318,28 +651,116 @@ body.travel-body .travel-countries {
     max-width: 100% !important;
     top: auto !important;
     bottom: 0 !important;
-    height: min(58dvh, 520px);
-    border-radius: 22px 22px 0 0 !important;
+    height: var(--travel-sheet-h) !important;
+    max-height: var(--travel-sheet-h) !important;
+    border-radius: 20px 20px 0 0 !important;
+    box-sizing: border-box !important;
+    padding-bottom: 0 !important;
+    z-index: 30 !important;
+  }
+
+  body.travel-body .travel-sidebar:has(.travel-stop.active) {
+    height: var(--travel-sheet-h-open) !important;
+    max-height: var(--travel-sheet-h-open) !important;
+  }
+
+  body.travel-body .travel-sidebar.is-collapsed {
+    height: var(--travel-sheet-collapsed) !important;
+    max-height: var(--travel-sheet-collapsed) !important;
   }
 
   body.travel-body .travel-sidebar__handle {
-    display: block !important;
+    display: flex !important;
+  }
+
+  /* Compact header — list visibility wins (title lives in nav) */
+  body.travel-body .travel-sidebar__header {
+    max-height: none !important;
+    overflow: visible !important;
+    padding: 0.15rem 0.85rem 0.55rem !important;
+  }
+
+  body.travel-body .travel-sidebar__header h1,
+  body.travel-body .travel-sidebar__subtitle,
+  body.travel-body .travel-stats,
+  body.travel-body .travel-actions,
+  body.travel-body .travel-results-summary,
+  body.travel-body .travel-advanced-search {
+    display: none !important;
+  }
+
+  body.travel-body .travel-timeline {
+    flex: 1 1 auto !important;
+    min-height: 12rem !important;
   }
 
   body.travel-body .travel-nav {
     width: calc(100% - 1rem);
   }
 
-  body.travel-body .travel-nav__label {
-    font-size: 13px;
-  }
-
   body.travel-body .travel-nav__kicker {
     display: none;
   }
 
-  body.travel-body .travel-stats {
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  /*
+   * FABs left of map (zoom is top-right). Sit just above the sheet.
+   */
+  body.travel-body .a11y-toolbar {
+    left: max(0.85rem, env(safe-area-inset-left, 0px)) !important;
+    right: auto !important;
+    bottom: calc(var(--travel-sheet-h) + 0.65rem) !important;
+    z-index: 40 !important;
+  }
+
+  body.travel-body #website-share-toggle.website-share-fab,
+  body.travel-body .website-share-fab {
+    left: max(0.85rem, env(safe-area-inset-left, 0px)) !important;
+    right: auto !important;
+    bottom: calc(var(--travel-sheet-h) + 0.65rem + 56px) !important;
+    z-index: 40 !important;
+  }
+
+  body.travel-body .travel-sidebar:has(.travel-stop.active) ~ * .a11y-toolbar,
+  body.travel-body:has(.travel-sidebar:not(.is-collapsed) .travel-stop.active) .a11y-toolbar {
+    bottom: calc(var(--travel-sheet-h-open) + 0.65rem) !important;
+  }
+
+  body.travel-body:has(.travel-sidebar:not(.is-collapsed) .travel-stop.active)
+    #website-share-toggle.website-share-fab,
+  body.travel-body:has(.travel-sidebar:not(.is-collapsed) .travel-stop.active) .website-share-fab {
+    bottom: calc(var(--travel-sheet-h-open) + 0.65rem + 56px) !important;
+  }
+
+  body.travel-body:has(.travel-sidebar.is-collapsed) .a11y-toolbar {
+    bottom: calc(var(--travel-sheet-collapsed) + 0.65rem) !important;
+  }
+
+  body.travel-body:has(.travel-sidebar.is-collapsed) #website-share-toggle.website-share-fab,
+  body.travel-body:has(.travel-sidebar.is-collapsed) .website-share-fab {
+    bottom: calc(var(--travel-sheet-collapsed) + 0.65rem + 56px) !important;
+  }
+
+  body.travel-body,
+  body.travel-body.has-a11y-toolbar {
+    padding: 0 !important;
+    padding-bottom: 0 !important;
+  }
+
+  body.travel-body #search-toggle {
+    position: fixed !important;
+    width: 1px !important;
+    height: 1px !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+  }
+}
+
+@media (max-width: 480px) {
+  body.travel-body {
+    --travel-sheet-h: min(66svh, 540px);
+    --travel-sheet-h-open: min(74svh, 640px);
   }
 }
 
@@ -395,7 +816,7 @@ body.error-page .error-destinations a {
   }
 }
 
-/* ─── Offline ─── */
+/* ─── Offline — solid white/black like site pages ─── */
 body.offline-page {
   margin: 0;
   min-height: 100dvh;
@@ -404,19 +825,25 @@ body.offline-page {
   padding: max(1.25rem, env(safe-area-inset-top)) max(1.25rem, env(safe-area-inset-right))
     max(1.25rem, env(safe-area-inset-bottom)) max(1.25rem, env(safe-area-inset-left));
   font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', sans-serif;
-  background: #f5f5f7;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
   color: #1d1d1f;
   -webkit-font-smoothing: antialiased;
 }
 
-html.dark body.offline-page {
-  background: #000000;
+html.dark body.offline-page,
+html[data-theme='dark'] body.offline-page {
+  background: #000000 !important;
+  background-color: #000000 !important;
+  background-image: none !important;
   color: #f5f5f7;
 }
 
 @media (prefers-color-scheme: dark) {
-  html:not(.light) body.offline-page {
-    background: #000000;
+  html:not(.light):not([data-theme='light']) body.offline-page {
+    background: #000000 !important;
+    background-color: #000000 !important;
     color: #f5f5f7;
   }
 }
@@ -425,26 +852,31 @@ body.offline-page .offline-card {
   width: min(28rem, 100%);
   padding: 1.75rem 1.5rem;
   border-radius: 22px;
-  border: 1px solid rgb(0 0 0 / 8%);
-  background: #ffffff;
+  border: 1px solid #e5e5ea;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
   box-shadow:
-    0 1px 2px rgb(0 0 0 / 4%),
-    0 16px 40px rgb(0 0 0 / 6%);
+    0 2px 8px rgb(0 0 0 / 4%),
+    0 8px 24px rgb(0 0 0 / 6%);
   text-align: center;
 }
 
-html.dark body.offline-page .offline-card {
-  background: #111113;
-  border-color: rgb(255 255 255 / 12%);
+html.dark body.offline-page .offline-card,
+html[data-theme='dark'] body.offline-page .offline-card {
+  background: #000000 !important;
+  background-color: #000000 !important;
+  border-color: #2c2c2e;
   box-shadow:
-    0 1px 2px rgb(0 0 0 / 40%),
-    0 16px 40px rgb(0 0 0 / 35%);
+    0 2px 8px rgb(0 0 0 / 40%),
+    0 12px 32px rgb(0 0 0 / 45%);
 }
 
 @media (prefers-color-scheme: dark) {
-  html:not(.light) body.offline-page .offline-card {
-    background: #111113;
-    border-color: rgb(255 255 255 / 12%);
+  html:not(.light):not([data-theme='light']) body.offline-page .offline-card {
+    background: #000000 !important;
+    background-color: #000000 !important;
+    border-color: #2c2c2e;
   }
 }
 
@@ -509,13 +941,27 @@ body.offline-page .offline-link {
 
 body.offline-page button {
   color: #fff;
-  background: linear-gradient(135deg, #0071e3, #0a84ff);
+  background: #0071e3 !important;
+  background-image: none !important;
+}
+
+html.dark body.offline-page button,
+html[data-theme='dark'] body.offline-page button {
+  background: #0a84ff !important;
 }
 
 body.offline-page .offline-link {
-  color: #0071e3;
-  background: rgb(0 113 227 / 10%);
-  border: 1px solid rgb(0 113 227 / 18%);
+  color: #1d1d1f;
+  background: #ffffff !important;
+  background-image: none !important;
+  border: 1px solid #e5e5ea;
+}
+
+html.dark body.offline-page .offline-link,
+html[data-theme='dark'] body.offline-page .offline-link {
+  color: #f5f5f7;
+  background: #000000 !important;
+  border-color: #2c2c2e;
 }
 
 body.offline-page .offline-destinations {
@@ -538,21 +984,23 @@ body.offline-page .offline-destinations a {
   font-weight: 650;
   text-decoration: none;
   color: #1d1d1f;
-  background: rgb(0 0 0 / 5%);
-  border: 1px solid rgb(0 0 0 / 8%);
+  background: #ffffff !important;
+  background-image: none !important;
+  border: 1px solid #e5e5ea;
 }
 
-html.dark body.offline-page .offline-destinations a {
+html.dark body.offline-page .offline-destinations a,
+html[data-theme='dark'] body.offline-page .offline-destinations a {
   color: #f5f5f7;
-  background: rgb(255 255 255 / 8%);
-  border-color: rgb(255 255 255 / 12%);
+  background: #000000 !important;
+  border-color: #2c2c2e;
 }
 
 @media (prefers-color-scheme: dark) {
-  html:not(.light) body.offline-page .offline-destinations a {
+  html:not(.light):not([data-theme='light']) body.offline-page .offline-destinations a {
     color: #f5f5f7;
-    background: rgb(255 255 255 / 8%);
-    border-color: rgb(255 255 255 / 12%);
+    background: #000000 !important;
+    border-color: #2c2c2e;
   }
 }
 
@@ -578,16 +1026,22 @@ body.offline-page .offline-destinations a:focus-visible {
     grid-column: span 12;
   }
 
-  body.systems-page .systems-section-rail {
-    top: calc(64px + env(safe-area-inset-top, 0px)) !important;
+  body.systems-page .systems-section-rail,
+  body.monitor-page .monitor-section-rail {
+    /* Keep sticky rails below floating nav on tablet/phone too */
+    top: var(--subpage-sticky-top) !important;
     border-radius: 14px;
     position: sticky;
   }
 }
 
 @media (max-width: 640px) {
-  body.systems-page {
-    padding-top: calc(64px + env(safe-area-inset-top, 0px));
+  body.systems-page,
+  body.monitor-page,
+  body.uses-page {
+    /* Slightly tighter pad still clears nav */
+    --subpage-nav-gap: 12px;
+    padding-top: var(--subpage-body-pad-top) !important;
   }
 
   body.systems-page .systems-keynote-section {
@@ -605,4 +1059,134 @@ body.offline-page .offline-destinations a:focus-visible {
   body.travel-body .travel-sidebar {
     transition: none !important;
   }
+}
+
+/* ─── Travel theme contrast lock (loads last) ─── */
+body.travel-body {
+  --travel-text: #1d1d1f;
+  --travel-text-secondary: #515154;
+  --travel-text-muted: #6e6e73;
+  --travel-surface: #ffffff;
+  --travel-surface-muted: #f5f5f7;
+  --travel-border: #e5e5ea;
+  --travel-blue: #0071e3;
+  --travel-link: #0071e3;
+  --travel-danger: #b00020;
+  color: var(--travel-text) !important;
+}
+
+html.dark body.travel-body,
+html[data-theme='dark'] body.travel-body {
+  --travel-text: #f5f5f7;
+  --travel-text-secondary: #c7c7cc;
+  --travel-text-muted: #a1a1a6;
+  --travel-surface: #000000;
+  --travel-surface-muted: #1c1c1e;
+  --travel-border: #2c2c2e;
+  --travel-blue: #0a84ff;
+  --travel-link: #64d2ff;
+  --travel-danger: #ff8a80;
+  color: var(--travel-text) !important;
+  background: #000000 !important;
+  background-color: #000000 !important;
+  background-image: none !important;
+}
+
+body.travel-body
+  :is(
+    .country-pill,
+    .travel-action,
+    .travel-filter-chip,
+    .travel-advanced-toggle,
+    .travel-nav__projection,
+    .travel-nav__theme,
+    .travel-nav__panel,
+    .travel-search__clear
+  ) {
+  color: var(--travel-text) !important;
+  -webkit-text-fill-color: var(--travel-text) !important;
+  background: var(--travel-surface-muted) !important;
+  background-color: var(--travel-surface-muted) !important;
+  border-color: var(--travel-border) !important;
+}
+
+body.travel-body
+  :is(
+    .country-pill.active,
+    .country-pill:hover,
+    .travel-filter-chip.active,
+    .travel-filter-chip:hover
+  ) {
+  background: var(--travel-blue) !important;
+  background-color: var(--travel-blue) !important;
+  border-color: var(--travel-blue) !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+body.travel-body
+  :is(
+    .travel-stop__name,
+    .travel-sidebar__header h1,
+    .place-guide-card h4,
+    .travel-nav__label,
+    .travel-search input,
+    .travel-stop__detail-text,
+    .travel-stat__value,
+    .travel-timeline__country-header h3
+  ) {
+  color: var(--travel-text) !important;
+  -webkit-text-fill-color: var(--travel-text) !important;
+}
+
+body.travel-body
+  :is(
+    .travel-sidebar__subtitle,
+    .travel-stat__label,
+    .travel-stop__order,
+    .travel-stop__story,
+    .travel-stop__detail-label,
+    .travel-stop__fact span,
+    .place-guide-card p,
+    .place-guide__header p,
+    .travel-results-summary
+  ) {
+  color: var(--travel-text-secondary) !important;
+  -webkit-text-fill-color: var(--travel-text-secondary) !important;
+}
+
+body.travel-body
+  :is(.travel-stop__tagline, .place-guide-card a, .travel-nav__back, .travel-nav__kicker) {
+  color: var(--travel-blue) !important;
+  -webkit-text-fill-color: var(--travel-blue) !important;
+}
+
+html.dark body.travel-body :is(.travel-stop__tagline, .place-guide-card a, .travel-nav__kicker),
+html[data-theme='dark']
+  body.travel-body
+  :is(.travel-stop__tagline, .place-guide-card a, .travel-nav__kicker) {
+  color: var(--travel-link) !important;
+  -webkit-text-fill-color: var(--travel-link) !important;
+}
+
+body.travel-body .place-guide-card__meta {
+  color: var(--travel-danger) !important;
+  -webkit-text-fill-color: var(--travel-danger) !important;
+}
+
+body.travel-body .travel-stop__signals span {
+  color: var(--travel-blue) !important;
+  -webkit-text-fill-color: var(--travel-blue) !important;
+}
+
+html.dark body.travel-body .travel-stop__signals span,
+html[data-theme='dark'] body.travel-body .travel-stop__signals span {
+  color: var(--travel-link) !important;
+  -webkit-text-fill-color: var(--travel-link) !important;
+}
+
+body.travel-body :is(.travel-stop, .place-guide-card, .travel-sidebar, .travel-nav) {
+  background: var(--travel-surface) !important;
+  background-color: var(--travel-surface) !important;
+  color: var(--travel-text) !important;
 }

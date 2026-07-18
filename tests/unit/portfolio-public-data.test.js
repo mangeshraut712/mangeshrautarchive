@@ -7,7 +7,9 @@ import {
   SITE_THEME,
   SOCIAL_IMAGE,
   TEST_COUNTS,
+  usesCatalog,
   usesStack,
+  getUsesStats,
   WEBMCP_TOOL_COUNT,
 } from '../../src/js/data/portfolio-public-data.js';
 
@@ -35,6 +37,9 @@ describe('portfolio-public-data', () => {
   it('uses vanilla stack on Uses page (no React/Next for this repo)', () => {
     expect(usesStack.engineering.some(item => /Vanilla HTML/i.test(item))).toBe(true);
     expect(usesStack.engineering.some(item => /React|Next\.js/i.test(item))).toBe(false);
+    expect(usesCatalog.some(cat => cat.id === 'engineering')).toBe(true);
+    expect(getUsesStats().tools).toBeGreaterThan(10);
+    expect(getUsesStats().featured).toBeGreaterThan(0);
   });
 
   it('states PWA policy without active service worker registration', () => {
@@ -48,6 +53,7 @@ describe('portfolio-public-data', () => {
   it('keeps social image and theme tokens aligned', () => {
     expect(SOCIAL_IMAGE.width).toBe(3024);
     expect(SOCIAL_IMAGE.height).toBe(1722);
+    expect(SOCIAL_IMAGE.url).toContain('github.io/mangeshrautarchive');
     expect(SITE_THEME.appleBlue).toBe('#0071e3');
   });
 });
