@@ -683,7 +683,7 @@ async function handleMusicArtwork(url, cors) {
   }
 }
 
-export default {
+const worker = {
   async scheduled(_controller, env, ctx) {
     ctx.waitUntil(
       syncConnectedHealthProviders(env).catch(error => {
@@ -757,7 +757,19 @@ export default {
         path === '/api/monitor/engineering' ||
         path.startsWith('/api/monitor/'))
     ) {
-      return handleMonitorEdge(env, cors, path, request);
+      // In-process dispatch — Workers cannot HTTP-fetch their own public URL.
+      const dispatch = relPath => {
+        const target = new URL(relPath, 'https://assistme-chat.internal');
+        return worker.fetch(
+          new Request(target.toString(), {
+            method: 'GET',
+            headers: { Accept: 'application/json,text/html,*/*' },
+          }),
+          env,
+          ctx
+        );
+      };
+      return handleMonitorEdge(env, cors, path, request, { dispatch });
     }
 
     // WHOOP OAuth + integration status (permanent edge path — Vercel may be disabled)
@@ -870,6 +882,8 @@ export default {
     return json({ error: 'Not found', hint: 'POST /api/chat or GET /api/chat/health' }, 404, cors);
   },
 };
+
+export default worker;
 
 /** Reach counters seeded from GA4/FastAPI export (see edge-data-snapshot.js). */
 const REACH_SEED = Number(EDGE_DATA_SNAPSHOT?.reach?.total_reach) || 10300;

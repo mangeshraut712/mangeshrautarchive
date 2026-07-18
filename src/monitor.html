@@ -113,8 +113,8 @@
     <!-- Shared subpage chrome stack: critical → page → polish → design system → deferred chrome -->
     <link rel="stylesheet" href="assets/css/systems-critical.css?v=20260716aa" />
     <link rel="stylesheet" href="assets/css/ux-polish-fixes.css?v=20260716aa" />
-    <link rel="stylesheet" href="assets/css/monitor.css?v=20260716aa" />
-    <link rel="stylesheet" href="assets/css/monitor-apple-redesign.css?v=20260716aa" />
+    <link rel="stylesheet" href="assets/css/monitor.css?v=20260718mon" />
+    <link rel="stylesheet" href="assets/css/monitor-apple-redesign.css?v=20260718mon" />
     <link rel="stylesheet" href="assets/css/apple-design-system.css?v=20260716aa" data-perf-defer />
     <link rel="stylesheet" href="assets/css/typography-system.css?v=20260716aa" data-perf-defer />
     <link
@@ -295,12 +295,14 @@
           <li><a href="#backend-system-section">Backend</a></li>
           <li><a href="#realtime-metrics-section">Performance</a></li>
           <li><a href="#health-checks-section">Health</a></li>
+          <li><a href="#endpoint-metrics-section">Endpoints</a></li>
           <li><a href="#external-services-section">Providers</a></li>
           <li><a href="#platform-health-section">Platform</a></li>
           <li><a href="#integrations-section">OAuth</a></li>
           <li><a href="#deployment-surfaces-section">Deploy</a></li>
-          <li><a href="#ai-metrics-section">AI</a></li>
+          <li><a href="#client-probes-section">Probes</a></li>
           <li><a href="#security-section">Security</a></li>
+          <li><a href="#ai-metrics-section">AI</a></li>
           <li><a href="#event-log-section">Events</a></li>
           <li><a href="#api-docs-section">Docs</a></li>
         </ul>
@@ -326,9 +328,9 @@
             </div>
 
             <div class="control-center-statusbar">
-              <span id="overall-status" class="status-badge healthy">
+              <span id="overall-status" class="status-badge unknown">
                 <span class="status-dot"></span>
-                All Systems Operational
+                Checking edge probes…
               </span>
               <div class="control-center-actions">
                 <span class="monitor-refresh-note" id="monitor-refresh-note" aria-live="polite">
@@ -497,7 +499,7 @@
             </span>
           </div>
         </div>
-        <div class="resource-trends-grid">
+        <div class="resource-trends-grid resource-trends-grid--performance">
           <!-- Latency Graph -->
           <div class="doc-card latency-card">
             <p class="doc-card-kicker">API Latency History (Last 30 probes)</p>
@@ -523,7 +525,7 @@
             </div>
           </div>
           <!-- System Resource Progress Bars -->
-          <div class="doc-card">
+          <div class="doc-card resource-load-card">
             <p class="doc-card-kicker">Environment Resource Load</p>
             <p class="doc-card-description doc-card-description--spaced">
               Serverless ephemeral container capacity indicator.
@@ -559,9 +561,7 @@
               </div>
             </div>
           </div>
-        </div>
 
-        <div class="resource-trends-grid resource-trends-grid--compact">
           <div class="doc-card endpoint-volume-card">
             <div>
               <p class="doc-card-kicker">Endpoint Request Volume</p>
@@ -664,12 +664,12 @@
               id="btn-refresh-platform-health"
               onclick="refreshPlatformHealth()"
             >
-              <i class="fas fa-heart-pulse"></i>
+              <i class="fas fa-heart-pulse" aria-hidden="true"></i>
               <span>Refresh Matrix</span>
             </button>
           </div>
         </div>
-        <p class="section-lead">
+        <p class="monitor-section-lead">
           Cross-checks core APIs, OAuth readiness, health vitals, and calendar availability for the
           active backend. Run <code>npm run verify:env-parity</code> locally to compare
           <code>.env.local</code> with Vercel production keys (no secrets printed).
@@ -697,7 +697,7 @@
             </button>
           </div>
         </div>
-        <p class="section-lead">
+        <p class="monitor-section-lead">
           Owner-only OAuth linking is protected. Enter your admin token below, then use
           <strong>Connect in Chrome</strong> to start a signed OAuth flow for the account you want
           to link.
@@ -847,9 +847,12 @@
         </p>
         <div class="health-grid" id="client-probes">
           <div class="empty-state">
-            <i class="fas fa-satellite-dish"></i>
-            <h3>Click "Run Probes" to measure latency</h3>
-            <p>Probes run entirely client-side — no backend needed</p>
+            <i class="fas fa-satellite-dish" aria-hidden="true"></i>
+            <h3>Measure live edge latency</h3>
+            <p>
+              Run probes from this browser against GitHub Pages, the Cloudflare Worker, and optional
+              Vercel surfaces — no backend session required.
+            </p>
           </div>
         </div>
       </section>
@@ -1701,23 +1704,33 @@
 
         gridEl.innerHTML = data.checks
           .map(check => {
-            const verifyHref = buildIntegrationConnectHref(check.path);
+            const path = String(check.path || '').trim();
+            const verifyHref = path
+              ? path.startsWith('/api/')
+                ? toAbsoluteApiLink(path)
+                : path.startsWith('http')
+                  ? path
+                  : path.startsWith('/')
+                    ? path
+                    : `/${path}`
+              : '#';
+            const status = statusBadgeClass(check.status);
             return `
-              <div class="health-item ${check.status}">
+              <div class="health-item ${escapeHtml(status)}">
                 <div class="health-item-left">
-                  <div class="health-status-icon ${check.status}">
-                    <i class="fas fa-${check.status === 'healthy' ? 'check' : check.status === 'degraded' ? 'minus' : 'xmark'}"></i>
+                  <div class="health-status-icon ${escapeHtml(status)}">
+                    <i class="fas fa-${status === 'healthy' ? 'check' : status === 'degraded' ? 'minus' : status === 'unhealthy' ? 'xmark' : 'circle-question'}"></i>
                   </div>
                   <div class="health-info">
                     <h4>${escapeHtml(check.label || check.id)}</h4>
                     <p>${escapeHtml(check.detail || '')}</p>
-                    <p class="integration-meta"><code>${escapeHtml(check.path || '')}</code></p>
+                    <p class="integration-meta"><code>${escapeHtml(path || '—')}</code></p>
                   </div>
                 </div>
                 <div class="health-metrics integration-actions">
-                  <a class="btn btn-secondary" href="${escapeHtml(verifyHref)}" target="_blank" rel="noopener noreferrer">
-                    <i class="fas fa-vial"></i>
-                    <span>Verify</span>
+                  <a class="btn btn-secondary" href="${escapeHtml(verifyHref)}" ${verifyHref.startsWith('http') || verifyHref.startsWith('/api/') ? 'target="_blank" rel="noopener noreferrer"' : ''}>
+                    <i class="fas fa-vial" aria-hidden="true"></i>
+                    <span>Open</span>
                   </a>
                 </div>
               </div>
@@ -3687,7 +3700,38 @@
           return;
         }
 
+        const edgeAi =
+          data.mode === 'edge_unavailable' ||
+          data.mode === 'edge_summary' ||
+          String(apiOrigin || '').includes('workers.dev');
         const responseTimes = Array.isArray(data.ai_response_times) ? data.ai_response_times : [];
+        const modelUsage = data.model_usage || {};
+        const modelCount = Object.keys(modelUsage).length;
+        const tokenUsage = data.token_usage || {};
+        const hasLedger =
+          responseTimes.length > 0 ||
+          modelCount > 0 ||
+          Number(tokenUsage.input || 0) > 0 ||
+          Number(tokenUsage.output || 0) > 0;
+
+        if (edgeAi && !hasLedger) {
+          const orReady = data.openrouter_configured === true;
+          container.innerHTML = `
+            <div class="empty-state">
+              <i class="fas fa-brain"></i>
+              <h3>AI token ledger is FastAPI-only</h3>
+              <p>${escapeHtml(
+                data.message ||
+                  'Edge reports OpenRouter readiness only — detailed latency/token samples stay on FastAPI.'
+              )}</p>
+              <p class="integration-meta">
+                OpenRouter on Worker:
+                <strong>${orReady ? 'configured' : 'missing (offline chat fallback)'}</strong>
+              </p>
+            </div>`;
+          return;
+        }
+
         const avgLatency =
           responseTimes.length > 0
             ? Math.round(
@@ -3695,9 +3739,6 @@
                   responseTimes.length
               )
             : null;
-        const modelUsage = data.model_usage || {};
-        const modelCount = Object.keys(modelUsage).length;
-        const tokenUsage = data.token_usage || {};
 
         container.innerHTML = `
           <div class="ai-metrics-dashboard">

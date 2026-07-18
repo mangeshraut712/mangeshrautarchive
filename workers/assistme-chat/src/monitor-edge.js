@@ -79,6 +79,17 @@ function overallFromSummary(summary) {
   return 'healthy';
 }
 
+function classifyProbe(httpStatus, latency_ms) {
+  const ok = httpStatus >= 200 && httpStatus < 400;
+  const warn = [401, 403, 404, 429].includes(httpStatus);
+  return {
+    status: ok ? 'healthy' : warn ? 'degraded' : 'unhealthy',
+    http_status: httpStatus,
+    latency_ms,
+    detail: `HTTP ${httpStatus} · ${latency_ms}ms`,
+  };
+}
+
 async function probeUrl(url, { timeoutMs = 6000 } = {}) {
   const start = Date.now();
   const controller = new AbortController();
@@ -90,15 +101,7 @@ async function probeUrl(url, { timeoutMs = 6000 } = {}) {
       signal: controller.signal,
       headers: { Accept: 'application/json,text/html,*/*' },
     });
-    const latency_ms = Date.now() - start;
-    const ok = res.status >= 200 && res.status < 400;
-    const warn = [401, 403, 404, 429].includes(res.status);
-    return {
-      status: ok ? 'healthy' : warn ? 'degraded' : 'unhealthy',
-      http_status: res.status,
-      latency_ms,
-      detail: `HTTP ${res.status} · ${latency_ms}ms`,
-    };
+    return classifyProbe(res.status, Date.now() - start);
   } catch (error) {
     return {
       status: 'unhealthy',
@@ -111,9 +114,42 @@ async function probeUrl(url, { timeoutMs = 6000 } = {}) {
   }
 }
 
-async function probeCatalogEntry(base, entry) {
+/**
+ * Probe an edge path via in-process dispatch.
+ * Workers cannot HTTP-fetch their own *.workers.dev URL (instant 404).
+ */
+async function probeEdgePath(dispatch, path, { timeoutMs = 8000 } = {}) {
+  const start = Date.now();
+  if (typeof dispatch !== 'function') {
+    return {
+      status: 'unhealthy',
+      http_status: 0,
+      latency_ms: null,
+      detail: 'Edge dispatch unavailable',
+    };
+  }
+  try {
+    const res = await Promise.race([
+      dispatch(path),
+      new Promise((_, reject) => {
+        setTimeout(() => reject(new Error('timeout')), timeoutMs);
+      }),
+    ]);
+    return classifyProbe(res.status, Date.now() - start);
+  } catch (error) {
+    return {
+      status: 'unhealthy',
+      http_status: 0,
+      latency_ms: null,
+      detail: `Dispatch failed (${error?.message || error?.name || 'Error'})`,
+    };
+  }
+}
+
+async function probePageEntry(entry) {
   const path = entry.path;
-  const url = path === '/' ? `${base}/` : `${base}${path.startsWith('/') ? path : `/${path}`}`;
+  const suffix = path.startsWith('/') ? path : `/${path}`;
+  const url = path === '/' ? `${PAGES_BASE}/` : `${PAGES_BASE}${suffix}`;
   const probed = await probeUrl(url);
   return {
     id: entry.id,
@@ -125,13 +161,26 @@ async function probeCatalogEntry(base, entry) {
   };
 }
 
-async function buildPortfolioCatalog() {
-  const pageResults = await Promise.all(
-    PAGE_CATALOG.map(entry => probeCatalogEntry(PAGES_BASE, entry))
-  );
-  const apiResults = await Promise.all(
-    EDGE_API_CATALOG.map(entry => probeCatalogEntry(EDGE_BASE, entry))
-  );
+async function probeApiEntry(dispatch, entry) {
+  const path = entry.path;
+  const url = `${EDGE_BASE}${path.startsWith('/') ? path : `/${path}`}`;
+  const probed = await probeEdgePath(dispatch, path);
+  return {
+    id: entry.id,
+    label: entry.label,
+    path,
+    url,
+    group: entry.group,
+    probe: 'in_process',
+    ...probed,
+  };
+}
+
+async function buildPortfolioCatalog(dispatch) {
+  const [pageResults, apiResults] = await Promise.all([
+    Promise.all(PAGE_CATALOG.map(entry => probePageEntry(entry))),
+    Promise.all(EDGE_API_CATALOG.map(entry => probeApiEntry(dispatch, entry))),
+  ]);
   const items = [...pageResults, ...apiResults];
   const summary = summarize(items);
   return {
@@ -181,14 +230,14 @@ function buildRuntime(env) {
   };
 }
 
-async function buildLiveChecks(env) {
+async function buildLiveChecks(env, dispatch) {
   const runtime = buildRuntime(env);
   const probes = await Promise.all([
-    probeUrl(`${EDGE_BASE}/api/chat/health`),
-    probeUrl(`${EDGE_BASE}/api/github/repos/public?limit=1`),
-    probeUrl(`${EDGE_BASE}/api/music/recent?limit=1`),
-    probeUrl(`${EDGE_BASE}/api/health-vitals/summary`),
-    probeUrl(`${EDGE_BASE}/api/integrations/status`),
+    probeEdgePath(dispatch, '/api/chat/health'),
+    probeEdgePath(dispatch, '/api/github/repos/public?limit=1'),
+    probeEdgePath(dispatch, '/api/music/recent?limit=1'),
+    probeEdgePath(dispatch, '/api/health-vitals/summary'),
+    probeEdgePath(dispatch, '/api/integrations/status'),
     probeUrl(`${PAGES_BASE}/`),
   ]);
   const [chat, github, music, vitals, integrations, pagesHome] = probes;
@@ -346,9 +395,18 @@ async function buildLiveChecks(env) {
     },
   ];
 
+  // Optional Vercel stays visible but must not poison overall health for Pages.
+  const scored = [...checks, ...services, ...surfaces.filter(s => s.metric_value !== 'optional')];
   const summary = summarize([...checks, ...services, ...surfaces]);
   summary.unresolved_events = 0;
-  return { checks, services, surfaces, summary, runtime, overall: overallFromSummary(summary) };
+  return {
+    checks,
+    services,
+    surfaces,
+    summary,
+    runtime,
+    overall: overallFromSummary(summarize(scored)),
+  };
 }
 
 function docsPayload() {
@@ -419,7 +477,7 @@ function docsPayload() {
   };
 }
 
-export async function handleMonitorEdge(env, cors, path, request) {
+export async function handleMonitorEdge(env, cors, path, request, { dispatch } = {}) {
   const json = (body, status = 200) =>
     new Response(JSON.stringify(body), {
       status,
@@ -449,11 +507,9 @@ export async function handleMonitorEdge(env, cors, path, request) {
   }
 
   if (path.endsWith('/portfolio-catalog')) {
-    const catalog = await buildPortfolioCatalog();
-    return json(catalog);
+    return json(await buildPortfolioCatalog(dispatch));
   }
 
-  const live = await buildLiveChecks(env);
   const baseMeta = {
     success: true,
     timestamp: edgeTs(),
@@ -462,6 +518,26 @@ export async function handleMonitorEdge(env, cors, path, request) {
     synthetic: false,
     note: 'Live probes for Pages + Worker. FastAPI-only telemetry (CPU, security feed, AI token ledger) is unavailable on edge.',
   };
+
+  if (path.endsWith('/platform-health')) {
+    const [live, catalog] = await Promise.all([
+      buildLiveChecks(env, dispatch),
+      buildPortfolioCatalog(dispatch),
+    ]);
+    return json({
+      ...baseMeta,
+      status: live.overall,
+      environment: 'cloudflare-edge',
+      checks: live.checks,
+      services: live.services,
+      surfaces: live.surfaces,
+      summary: live.summary,
+      runtime: live.runtime,
+      portfolio_catalog: catalog,
+    });
+  }
+
+  const live = await buildLiveChecks(env, dispatch);
 
   if (path.endsWith('/hosting-surfaces')) {
     return json({
@@ -479,20 +555,6 @@ export async function handleMonitorEdge(env, cors, path, request) {
       checks: live.checks,
       services: live.services,
       summary: live.summary,
-    });
-  }
-
-  if (path.endsWith('/platform-health')) {
-    return json({
-      ...baseMeta,
-      status: live.overall,
-      environment: 'cloudflare-edge',
-      checks: live.checks,
-      services: live.services,
-      surfaces: live.surfaces,
-      summary: live.summary,
-      runtime: live.runtime,
-      portfolio_catalog: await buildPortfolioCatalog(),
     });
   }
 
