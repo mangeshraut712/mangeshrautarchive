@@ -9,9 +9,10 @@ const WITHINGS_TOKEN_URL = 'https://wbsapi.withings.net/v2/oauth2';
 const WITHINGS_MEASURE_URL = 'https://wbsapi.withings.net/measure';
 
 const STALE_MS = 4 * 60 * 60 * 1000;
-const SYNC_COOLDOWN_MS = 15 * 60 * 1000;
-
-let lastSyncAttemptMs = 0;
+const REFRESH_SKEW_SECONDS = 300;
+const TOKEN_LOCK_PREFIX = 'token_refresh_lock:';
+const TOKEN_LOCK_TTL_MS = 45_000;
+const SAVE_ATTEMPTS = 4;
 
 function utcNowIso() {
   return new Date().toISOString().replace(/\.\d{3}Z$/, 'Z');
@@ -172,11 +173,15 @@ async function fernetEncrypt(plaintext, rawKey) {
   return bytesToUrlSafeB64(out);
 }
 
-function expiresSoon(expiresAt, skewSeconds = 120) {
+function expiresSoon(expiresAt, skewSeconds = REFRESH_SKEW_SECONDS) {
   if (!expiresAt) return true;
   const ms = Date.parse(String(expiresAt).replace('Z', '+00:00'));
   if (!Number.isFinite(ms)) return true;
   return ms - Date.now() <= skewSeconds * 1000;
+}
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 async function getConnectedAccount(env, provider) {
@@ -197,7 +202,7 @@ async function getConnectedAccount(env, provider) {
 async function getTokenRow(env, accountId) {
   const res = await fetch(
     supabaseRestUrl(env, 'integration_tokens', {
-      select: 'encrypted_access_token,encrypted_refresh_token,expires_at',
+      select: 'encrypted_access_token,encrypted_refresh_token,expires_at,rotated_at,updated_at',
       account_id: `eq.${accountId}`,
       limit: '1',
     }),
@@ -210,25 +215,99 @@ async function getTokenRow(env, accountId) {
 
 async function saveTokens(env, account, accessToken, refreshToken, expiresAt) {
   const encKey = env.INTEGRATION_ENCRYPTION_KEY;
+  const now = utcNowIso();
   const payload = {
     account_id: account.id,
     encrypted_access_token: await fernetEncrypt(accessToken, encKey),
     encrypted_refresh_token: await fernetEncrypt(refreshToken || '', encKey),
     expires_at: expiresAt || null,
-    updated_at: utcNowIso(),
+    rotated_at: now,
+    updated_at: now,
   };
-  const res = await fetch(
-    supabaseRestUrl(env, 'integration_tokens', { on_conflict: 'account_id' }),
-    {
-      method: 'POST',
-      headers: supabaseHeaders(env, {
-        'Content-Type': 'application/json',
-        Prefer: 'resolution=merge-duplicates,return=minimal',
+  for (let attempt = 1; attempt <= SAVE_ATTEMPTS; attempt += 1) {
+    const res = await fetch(
+      supabaseRestUrl(env, 'integration_tokens', { on_conflict: 'account_id' }),
+      {
+        method: 'POST',
+        headers: supabaseHeaders(env, {
+          'Content-Type': 'application/json',
+          Prefer: 'resolution=merge-duplicates,return=minimal',
+        }),
+        body: JSON.stringify(payload),
+      }
+    );
+    if (res.ok) return true;
+    await sleep(150 * attempt);
+  }
+  return false;
+}
+
+async function acquireTokenRefreshLock(env, provider) {
+  if (!supabaseConfigured(env) || !provider) return true;
+  const now = Date.now();
+  const lockUntil = new Date(now + TOKEN_LOCK_TTL_MS).toISOString();
+  const lockValue = `${TOKEN_LOCK_PREFIX}${lockUntil}`;
+  try {
+    const lookup = await fetch(
+      supabaseRestUrl(env, 'integration_sync_state', {
+        select: 'provider,cursor,updated_at',
+        provider: `eq.${provider}`,
+        limit: '1',
       }),
-      body: JSON.stringify(payload),
+      { headers: supabaseHeaders(env) }
+    );
+    if (lookup.ok) {
+      const rows = await lookup.json();
+      const cursor = String(rows?.[0]?.cursor || '');
+      if (cursor.startsWith(TOKEN_LOCK_PREFIX)) {
+        const heldUntil = Date.parse(cursor.slice(TOKEN_LOCK_PREFIX.length));
+        if (Number.isFinite(heldUntil) && heldUntil > now) return false;
+      }
     }
-  );
-  return res.ok;
+    const res = await fetch(
+      supabaseRestUrl(env, 'integration_sync_state', { on_conflict: 'provider' }),
+      {
+        method: 'POST',
+        headers: supabaseHeaders(env, {
+          'Content-Type': 'application/json',
+          Prefer: 'resolution=merge-duplicates,return=minimal',
+        }),
+        body: JSON.stringify({
+          provider,
+          cursor: lockValue,
+          updated_at: utcNowIso(),
+        }),
+      }
+    );
+    return res.ok || res.status >= 500;
+  } catch {
+    return true;
+  }
+}
+
+async function releaseTokenRefreshLock(env, provider) {
+  if (!supabaseConfigured(env) || !provider) return;
+  try {
+    const lookup = await fetch(
+      supabaseRestUrl(env, 'integration_sync_state', {
+        select: 'cursor',
+        provider: `eq.${provider}`,
+        limit: '1',
+      }),
+      { headers: supabaseHeaders(env) }
+    );
+    if (!lookup.ok) return;
+    const rows = await lookup.json();
+    const cursor = String(rows?.[0]?.cursor || '');
+    if (!cursor.startsWith(TOKEN_LOCK_PREFIX)) return;
+    await fetch(supabaseRestUrl(env, 'integration_sync_state', { provider: `eq.${provider}` }), {
+      method: 'PATCH',
+      headers: supabaseHeaders(env, { 'Content-Type': 'application/json' }),
+      body: JSON.stringify({ cursor: null, updated_at: utcNowIso() }),
+    });
+  } catch {
+    // ignore
+  }
 }
 
 async function refreshWhoop(env, refreshToken) {
@@ -244,7 +323,11 @@ async function refreshWhoop(env, refreshToken) {
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     body,
   });
-  if (!res.ok) throw new Error(`whoop_refresh_${res.status}`);
+  if (!res.ok) {
+    const err = new Error(`whoop_refresh_${res.status}`);
+    err.status = res.status;
+    throw err;
+  }
   return res.json();
 }
 
@@ -257,7 +340,11 @@ async function refreshWithings(env, refreshToken) {
     client_secret: String(env.WITHINGS_CLIENT_SECRET || '').trim(),
   });
   const res = await fetch(WITHINGS_TOKEN_URL, { method: 'POST', body });
-  if (!res.ok) throw new Error(`withings_refresh_${res.status}`);
+  if (!res.ok) {
+    const err = new Error(`withings_refresh_${res.status}`);
+    err.status = res.status;
+    throw err;
+  }
   const data = await res.json();
   if (data.status !== 0) throw new Error(data.error || 'withings_refresh_failed');
   const tokenBody = data.body || {};
@@ -268,49 +355,83 @@ async function refreshWithings(env, refreshToken) {
   };
 }
 
+async function decryptTokenBundle(env, tokenRow) {
+  const encKey = env.INTEGRATION_ENCRYPTION_KEY;
+  if (!encKey || !tokenRow) return null;
+  try {
+    return {
+      accessToken: tokenRow.encrypted_access_token
+        ? await fernetDecrypt(tokenRow.encrypted_access_token, encKey)
+        : null,
+      refreshToken: tokenRow.encrypted_refresh_token
+        ? await fernetDecrypt(tokenRow.encrypted_refresh_token, encKey)
+        : null,
+      expiresAt: tokenRow.expires_at,
+      updatedAt: tokenRow.updated_at,
+    };
+  } catch {
+    return null;
+  }
+}
+
 async function getValidAccessToken(env, provider) {
   const account = await getConnectedAccount(env, provider);
   if (!account) return null;
-  const tokenRow = await getTokenRow(env, account.id);
-  if (!tokenRow) return null;
+  if (!String(env.INTEGRATION_ENCRYPTION_KEY || '').trim()) return null;
 
-  const encKey = env.INTEGRATION_ENCRYPTION_KEY;
-  if (!encKey) return null;
+  let tokenRow = await getTokenRow(env, account.id);
+  let bundle = await decryptTokenBundle(env, tokenRow);
+  if (!bundle) return null;
 
-  let accessToken = null;
-  let refreshToken = null;
-  try {
-    accessToken = tokenRow.encrypted_access_token
-      ? await fernetDecrypt(tokenRow.encrypted_access_token, encKey)
-      : null;
-    refreshToken = tokenRow.encrypted_refresh_token
-      ? await fernetDecrypt(tokenRow.encrypted_refresh_token, encKey)
-      : null;
-  } catch {
+  if (bundle.accessToken && !expiresSoon(bundle.expiresAt)) {
+    return bundle.accessToken;
+  }
+  if (!bundle.refreshToken) return null;
+
+  const lockHeld = await acquireTokenRefreshLock(env, provider);
+  if (!lockHeld) {
+    await sleep(750);
+    tokenRow = await getTokenRow(env, account.id);
+    bundle = await decryptTokenBundle(env, tokenRow);
+    if (bundle?.accessToken && !expiresSoon(bundle.expiresAt)) return bundle.accessToken;
     return null;
   }
 
-  if (accessToken && !expiresSoon(tokenRow.expires_at)) {
-    return accessToken;
-  }
-  if (!refreshToken) return null;
-
   try {
-    const refreshed =
-      provider === 'whoop'
-        ? await refreshWhoop(env, refreshToken)
-        : await refreshWithings(env, refreshToken);
+    tokenRow = await getTokenRow(env, account.id);
+    bundle = await decryptTokenBundle(env, tokenRow);
+    if (!bundle) return null;
+    if (bundle.accessToken && !expiresSoon(bundle.expiresAt)) return bundle.accessToken;
+    if (!bundle.refreshToken) return null;
+
+    const seenUpdatedAt = bundle.updatedAt;
+    let refreshed;
+    try {
+      refreshed =
+        provider === 'whoop'
+          ? await refreshWhoop(env, bundle.refreshToken)
+          : await refreshWithings(env, bundle.refreshToken);
+    } catch (error) {
+      if (error?.status === 400 || error?.status === 401) {
+        const racedRow = await getTokenRow(env, account.id);
+        const raced = await decryptTokenBundle(env, racedRow);
+        if (raced?.updatedAt && raced.updatedAt !== seenUpdatedAt) {
+          if (raced.accessToken && !expiresSoon(raced.expiresAt)) return raced.accessToken;
+        }
+      }
+      return null;
+    }
+
     const newAccess = refreshed.access_token;
     if (!newAccess) return null;
-    const newRefresh = refreshed.refresh_token || refreshToken;
-    let newExpires = null;
-    if (refreshed.expires_in) {
-      newExpires = new Date(Date.now() + Number(refreshed.expires_in) * 1000).toISOString();
-    }
+    const newRefresh = refreshed.refresh_token || bundle.refreshToken;
+    const newExpires = refreshed.expires_in
+      ? new Date(Date.now() + Number(refreshed.expires_in) * 1000).toISOString()
+      : null;
     await saveTokens(env, account, newAccess, newRefresh, newExpires);
     return newAccess;
-  } catch {
-    return null;
+  } finally {
+    await releaseTokenRefreshLock(env, provider);
   }
 }
 
@@ -678,10 +799,12 @@ export async function syncConnectedHealthProviders(env) {
   } else {
     const account = await getConnectedAccount(env, 'whoop');
     if (account) {
+      // Do not tell operators to reauth on a single failed refresh — hourly cron retries.
+      // True reconnect is only needed after repeated invalid_grant with no rotated tokens.
       results.push({
         provider: 'whoop',
-        status: 'needs_reauth',
-        message: 'WHOOP token expired and refresh failed. Reconnect WHOOP OAuth.',
+        status: 'degraded',
+        message: 'WHOOP token refresh deferred; hourly keepalive will retry.',
       });
       merged.source_status = 'partial';
     }
@@ -747,12 +870,9 @@ export async function syncConnectedHealthProviders(env) {
   };
 }
 
-export async function maybeSyncStaleHealth(env, summary) {
-  if (!isHealthSummaryStale(summary)) return { attempted: false, synced: false };
-  if (Date.now() - lastSyncAttemptMs < SYNC_COOLDOWN_MS) {
-    return { attempted: false, synced: false, reason: 'cooldown' };
-  }
-  lastSyncAttemptMs = Date.now();
-  const result = await syncConnectedHealthProviders(env);
-  return { attempted: true, synced: Boolean(result.saved), result };
+export async function maybeSyncStaleHealth(_env, _summary) {
+  // Public summary GETs must NOT refresh WHOOP tokens. Concurrent Pages visitors
+  // previously stampeded refresh-token rotation and forced reauth. Keepalive is
+  // owned exclusively by Worker cron + /api/cron/health-vitals-sync.
+  return { attempted: false, synced: false, reason: 'summary_sync_disabled' };
 }

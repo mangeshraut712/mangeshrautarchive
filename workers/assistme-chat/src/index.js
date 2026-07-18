@@ -18,11 +18,7 @@
  */
 
 import { EDGE_DATA_SNAPSHOT } from './edge-data-snapshot.js';
-import {
-  authorizeCron,
-  maybeSyncStaleHealth,
-  syncConnectedHealthProviders,
-} from './health-sync.js';
+import { authorizeCron, syncConnectedHealthProviders } from './health-sync.js';
 
 const OPENROUTER_URL = 'https://openrouter.ai/api/v1/chat/completions';
 /** Aspirational paid primary — used when OPENROUTER_MODEL is unset or credits return. */
@@ -1244,33 +1240,9 @@ function handleAnalyticsTrack(cors) {
 }
 
 async function handleHealthVitalsSummary(cors, env = {}, _ctx = null) {
-  let live = await fetchHealthVitalsFromSupabase(env);
-
-  // Await edge WHOOP/Withings sync when the Supabase row is stale (Vercel cron offline).
-  if (live) {
-    try {
-      const outcome = await maybeSyncStaleHealth(env, live);
-      if (outcome?.synced) {
-        live = (await fetchHealthVitalsFromSupabase(env)) || live;
-        live.refresh = {
-          stale: false,
-          attempted: true,
-          refreshed: true,
-          reason: 'edge_whoop_sync',
-        };
-      } else if (outcome?.attempted) {
-        live.refresh = {
-          ...(live.refresh || {}),
-          attempted: true,
-          refreshed: false,
-          reason: outcome?.reason || 'edge_whoop_sync_attempted',
-        };
-      }
-    } catch {
-      // Keep serving the last Supabase snapshot.
-    }
-  }
-
+  // Read-only for public traffic. WHOOP refresh/sync is cron-only so concurrent
+  // Pages visitors cannot stampede refresh-token rotation.
+  const live = await fetchHealthVitalsFromSupabase(env);
   if (live) {
     return json({ ...live, host: 'cloudflare-worker' }, 200, cors);
   }

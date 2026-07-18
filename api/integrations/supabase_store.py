@@ -298,7 +298,7 @@ async def get_provider_token_bundle(provider: str) -> Optional[Dict[str, Any]]:
             "GET",
             "integration_tokens",
             params={
-                "select": "encrypted_access_token,encrypted_refresh_token,expires_at",
+                "select": "encrypted_access_token,encrypted_refresh_token,expires_at,rotated_at,updated_at",
                 "account_id": f"eq.{account_id}",
                 "limit": "1",
             },
@@ -317,6 +317,8 @@ async def get_provider_token_bundle(provider: str) -> Optional[Dict[str, Any]]:
             "access_token": decrypt_secret(access_enc) if access_enc else None,
             "refresh_token": decrypt_secret(refresh_enc) if refresh_enc else None,
             "expires_at": token_row.get("expires_at"),
+            "rotated_at": token_row.get("rotated_at"),
+            "updated_at": token_row.get("updated_at"),
         }
     except (httpx.HTTPError, ValueError, KeyError):
         return None
@@ -420,6 +422,7 @@ async def save_provider_tokens(
             "encrypted_access_token": encrypt_secret(access_token),
             "encrypted_refresh_token": encrypt_secret(refresh_token or ""),
             "expires_at": expires_at,
+            "rotated_at": now,
             "updated_at": now,
         }
         token_lookup = await _rest_request(
@@ -536,6 +539,99 @@ async def upsert_health_summary_row(row: Dict[str, Any]) -> bool:
         return True
     except (httpx.HTTPError, ValueError):
         return False
+
+
+_TOKEN_LOCK_PREFIX = "token_refresh_lock:"
+
+
+async def acquire_token_refresh_lock(provider: str, ttl_seconds: int = 45) -> bool:
+    """Best-effort distributed lock so WHOOP refresh-token rotation is single-flight.
+
+    WHOOP issues a new refresh_token on every refresh. Concurrent refreshes burn the
+    previous token and force a full OAuth reauth.
+    """
+    if not supabase_is_configured() or not provider:
+        return True
+
+    now = datetime.now(timezone.utc)
+    now_iso = now.isoformat().replace("+00:00", "Z")
+    lock_until = datetime.fromtimestamp(now.timestamp() + max(5, ttl_seconds), timezone.utc)
+    lock_until_iso = lock_until.isoformat().replace("+00:00", "Z")
+    lock_value = f"{_TOKEN_LOCK_PREFIX}{lock_until_iso}"
+
+    try:
+        lookup = await _rest_request(
+            "GET",
+            "integration_sync_state",
+            params={"select": "provider,cursor,updated_at", "provider": f"eq.{provider}", "limit": "1"},
+        )
+        lookup.raise_for_status()
+        rows = lookup.json()
+        current = rows[0] if isinstance(rows, list) and rows else None
+        cursor = str((current or {}).get("cursor") or "")
+        if cursor.startswith(_TOKEN_LOCK_PREFIX):
+            held_until_raw = cursor[len(_TOKEN_LOCK_PREFIX) :]
+            held_until = _parse_iso_datetime(held_until_raw)
+            if held_until and held_until > now:
+                return False
+
+        payload = {
+            "provider": provider,
+            "cursor": lock_value,
+            "updated_at": now_iso,
+        }
+        response = await _rest_request(
+            "POST",
+            "integration_sync_state",
+            headers={
+                "Content-Type": "application/json",
+                "Prefer": "resolution=merge-duplicates",
+            },
+            params={"on_conflict": "provider"},
+            json=payload,
+        )
+        response.raise_for_status()
+        return True
+    except (httpx.HTTPError, ValueError, KeyError):
+        # Prefer progress over hard-failing sync if the lock table is unavailable.
+        return True
+
+
+async def release_token_refresh_lock(provider: str) -> None:
+    if not supabase_is_configured() or not provider:
+        return
+    try:
+        lookup = await _rest_request(
+            "GET",
+            "integration_sync_state",
+            params={"select": "cursor", "provider": f"eq.{provider}", "limit": "1"},
+        )
+        lookup.raise_for_status()
+        rows = lookup.json()
+        cursor = str((rows[0] or {}).get("cursor") or "") if isinstance(rows, list) and rows else ""
+        if not cursor.startswith(_TOKEN_LOCK_PREFIX):
+            return
+        await _rest_request(
+            "PATCH",
+            "integration_sync_state",
+            params={"provider": f"eq.{provider}"},
+            headers={"Content-Type": "application/json"},
+            json={
+                "cursor": None,
+                "updated_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+            },
+        )
+    except (httpx.HTTPError, ValueError, KeyError):
+        return
+
+
+def _parse_iso_datetime(value: Optional[str]) -> Optional[datetime]:
+    if not value:
+        return None
+    try:
+        return datetime.fromisoformat(value.replace("Z", "+00:00"))
+    except ValueError:
+        return None
 
 
 async def update_sync_state(provider: str, **fields: Any) -> None:

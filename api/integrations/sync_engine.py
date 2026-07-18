@@ -73,11 +73,11 @@ async def sync_connected_health_providers() -> Dict[str, Any]:
             results.append(
                 {
                     "provider": "whoop",
-                    "status": "needs_reauth",
-                    "message": "WHOOP token expired and refresh failed. Reconnect WHOOP OAuth.",
+                    "status": "degraded",
+                    "message": "WHOOP token refresh deferred; keepalive cron will retry before asking for reauth.",
                 }
             )
-            await update_sync_state("whoop", last_error="token_refresh_failed")
+            await update_sync_state("whoop", last_error="token_refresh_deferred")
             merged["source_status"] = "partial"
         else:
             summary = await whoop.fetch_sanitized_summary(token)
