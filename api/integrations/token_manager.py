@@ -10,6 +10,7 @@ from api.integrations import whoop, withings
 from api.integrations.supabase_store import (
     acquire_token_refresh_lock,
     get_provider_token_bundle,
+    mark_provider_needs_reauth,
     release_token_refresh_lock,
     save_provider_tokens,
 )
@@ -107,13 +108,16 @@ async def _persist_rotated_tokens(
     return False
 
 
-async def get_valid_access_token(provider: str) -> Optional[str]:
+async def get_valid_access_token(provider: str, *, force_refresh: bool = False) -> Optional[str]:
     """Return a usable access token, refreshing once under a distributed lock.
 
     WHOOP access tokens last ~1 hour and every refresh returns a *new* refresh_token.
     Concurrent refreshes (Pages + cron + multiple Worker isolates) used to burn the
     previous refresh token and force another OAuth reauth. This path is single-flight
     and recovers when another worker already rotated successfully.
+
+    Pass force_refresh=True after a provider API returns 401 — expires_at can still look
+    valid while the access token was invalidated by a lost refresh-token rotation.
     """
     bundle = await get_provider_token_bundle(provider)
     if not bundle:
@@ -124,13 +128,14 @@ async def get_valid_access_token(provider: str) -> Optional[str]:
     expires_at = bundle.get("expires_at")
     subject = bundle.get("provider_subject") or provider
     scopes = bundle.get("scopes") or []
-    seen_updated_at = bundle.get("updated_at")
+    original_updated_at = bundle.get("updated_at")
+    seen_updated_at = original_updated_at
 
-    if access_token and not _expires_soon(expires_at):
+    if access_token and not _expires_soon(expires_at) and not force_refresh:
         return access_token
 
     if not refresh_token:
-        return None if _expires_soon(expires_at) else access_token
+        return None if (_expires_soon(expires_at) or force_refresh) else access_token
 
     lock_held = await acquire_token_refresh_lock(provider)
     if not lock_held:
@@ -141,6 +146,9 @@ async def get_valid_access_token(provider: str) -> Optional[str]:
             return None
         raced_access = raced.get("access_token")
         if raced_access and not _expires_soon(raced.get("expires_at")):
+            # force_refresh still needs a newer rotation than our first read.
+            if force_refresh and raced.get("updated_at") == original_updated_at:
+                return None
             return raced_access
         return None
 
@@ -153,9 +161,18 @@ async def get_valid_access_token(provider: str) -> Optional[str]:
             expires_at = fresh.get("expires_at")
             subject = fresh.get("provider_subject") or subject
             scopes = fresh.get("scopes") or scopes
-            seen_updated_at = fresh.get("updated_at") or seen_updated_at
-            if access_token and not _expires_soon(expires_at):
+            if access_token and not _expires_soon(expires_at) and not force_refresh:
                 return access_token
+            # Another worker already rotated while we waited for the lock.
+            if (
+                force_refresh
+                and access_token
+                and not _expires_soon(expires_at)
+                and fresh.get("updated_at")
+                and fresh.get("updated_at") != original_updated_at
+            ):
+                return access_token
+            seen_updated_at = fresh.get("updated_at") or seen_updated_at
 
         if not refresh_token:
             return None
@@ -175,6 +192,8 @@ async def get_valid_access_token(provider: str) -> Optional[str]:
                             provider,
                         )
                         return raced_access
+                # True dead grant — surface reconnect once instead of looping forever.
+                await mark_provider_needs_reauth(provider, reason=f"refresh_http_{status}")
             logger.warning("%s token refresh failed with HTTP %s", provider, status)
             return None
         except (httpx.HTTPError, ValueError) as exc:

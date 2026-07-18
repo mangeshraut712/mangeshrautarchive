@@ -61,14 +61,22 @@ HEALTH_SUMMARY_SYNC_STATE_PROVIDER = "health_vitals"
 def _oauth_success_redirect(provider: str) -> str:
     """Where to send the browser after a successful OAuth callback.
 
-    Prefer an explicit override, then local Pages/dev monitor — never the dead
-    Vercel mangeshraut.pro host while that deployment is disabled.
+    Prefer an explicit override, then the live GitHub Pages monitor — never the
+    dead Vercel mangeshraut.pro host while that deployment is disabled.
     """
     explicit = os.getenv("OAUTH_SUCCESS_REDIRECT", "").strip()
     if explicit:
         return explicit
-    local = os.getenv("LOCAL_SITE_URL", "").strip() or "http://127.0.0.1:4000"
-    return f"{local.rstrip('/')}/monitor.html#integrations-{provider}"
+    pages = os.getenv("PUBLIC_SITE_URL", "").strip()
+    if pages:
+        return f"{pages.rstrip('/')}/monitor.html#integrations-{provider}"
+    local = os.getenv("LOCAL_SITE_URL", "").strip()
+    if local:
+        return f"{local.rstrip('/')}/monitor.html#integrations-{provider}"
+    return (
+        "https://mangeshraut712.github.io/mangeshrautarchive/"
+        f"monitor.html#integrations-{provider}"
+    )
 
 
 def _enforce_rate_limit(request: Request) -> None:
@@ -263,6 +271,10 @@ async def _provider_status() -> Dict[str, Dict[str, Any]]:
         integration_is_connected("whoop"),
         integration_is_connected("withings"),
     )
+    whoop_sync = await fetch_sync_state("whoop") if whoop_configured else {}
+    whoop_needs_reauth = (whoop_sync.get("last_error") or "").startswith(
+        ("needs_reauth", "refresh_http_400", "refresh_http_401", "invalid_grant")
+    ) and not whoop_connected
 
     return {
         "supabase": {
@@ -274,6 +286,7 @@ async def _provider_status() -> Dict[str, Dict[str, Any]]:
         "whoop": {
             "configured": whoop_configured,
             "connected": whoop_connected,
+            "needsReauth": whoop_needs_reauth or (not whoop_connected and whoop_configured),
             "purpose": "Sleep, recovery, strain, resting heart rate, and HRV trends.",
             "scopes": [
                 "read:recovery",
@@ -284,7 +297,12 @@ async def _provider_status() -> Dict[str, Dict[str, Any]]:
             ],
             "connectUrl": None,
             "requiresOwnerAuth": whoop_configured,
-            "nextStep": "Create a WHOOP OAuth app and configure callback URL.",
+            "nextStep": (
+                "Reconnect WHOOP once via edge Worker callback "
+                "(assistme-chat…/api/integrations/whoop/callback)."
+                if whoop_needs_reauth or not whoop_connected
+                else "Hourly keepalive keeps the grant alive after connect."
+            ),
         },
         "withings": {
             "configured": withings_configured,

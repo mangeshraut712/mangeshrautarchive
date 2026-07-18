@@ -28,9 +28,11 @@ def _client_secret() -> str:
 
 
 def _redirect_uri() -> str:
+    # Permanent edge callback — Vercel host is often DEPLOYMENT_DISABLED; never use
+    # ephemeral Cloudflare tunnels (they caused repeated reauth failures).
     return (
         os.getenv("WHOOP_REDIRECT_URI", "").strip()
-        or "https://mangeshraut.pro/api/integrations/whoop/callback"
+        or "https://assistme-chat.mangeshraut712.workers.dev/api/integrations/whoop/callback"
     )
 
 

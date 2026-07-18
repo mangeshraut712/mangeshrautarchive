@@ -105,6 +105,59 @@ def test_refresh_recovers_when_another_worker_already_rotated():
     save_mock.assert_not_awaited()
 
 
+def test_force_refresh_ignores_unexpired_access_token():
+    with (
+        patch(
+            "api.integrations.token_manager.get_provider_token_bundle",
+            new=AsyncMock(
+                side_effect=[
+                    _bundle(
+                        access_token="stale-access",
+                        expires_at=(datetime.now(timezone.utc) + timedelta(hours=1))
+                        .isoformat()
+                        .replace("+00:00", "Z"),
+                    ),
+                    _bundle(
+                        access_token="stale-access",
+                        expires_at=(datetime.now(timezone.utc) + timedelta(hours=1))
+                        .isoformat()
+                        .replace("+00:00", "Z"),
+                    ),
+                ]
+            ),
+        ),
+        patch(
+            "api.integrations.token_manager.acquire_token_refresh_lock",
+            new=AsyncMock(return_value=True),
+        ),
+        patch(
+            "api.integrations.token_manager.release_token_refresh_lock",
+            new=AsyncMock(),
+        ),
+        patch(
+            "api.integrations.token_manager.whoop.refresh_access_token",
+            new=AsyncMock(
+                return_value={
+                    "access_token": "fresh-access",
+                    "refresh_token": "refresh-v2",
+                    "expires_in": 3600,
+                }
+            ),
+        ),
+        patch(
+            "api.integrations.token_manager.save_provider_tokens",
+            new=AsyncMock(return_value=True),
+        ),
+        patch(
+            "api.integrations.token_manager.mark_provider_needs_reauth",
+            new=AsyncMock(return_value=True),
+        ),
+    ):
+        token = asyncio.run(token_manager.get_valid_access_token("whoop", force_refresh=True))
+
+    assert token == "fresh-access"
+
+
 def test_waits_for_lock_holder_instead_of_double_refresh():
     held = _bundle(
         access_token="held-access",

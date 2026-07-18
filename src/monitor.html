@@ -2109,6 +2109,7 @@
 
       function integrationStatusLabel(provider) {
         if (provider.connected) return 'Connected';
+        if (provider.needsReauth || provider.status === 'needs_reauth') return 'Needs reconnect';
         if (provider.configured) return 'Ready to connect';
         return 'Not configured';
       }
@@ -2194,7 +2195,9 @@
             const statusClass = integrationStatusClass(provider);
             const statusLabel = integrationStatusLabel(provider);
             const showConnect =
-              provider.requiresOwnerAuth && provider.configured && !provider.connected;
+              provider.requiresOwnerAuth &&
+              provider.configured &&
+              (!provider.connected || provider.needsReauth || provider.status === 'needs_reauth');
             const verifyHref = buildIntegrationConnectHref(verifyPath);
             const actionMarkup = showConnect
               ? `<button type="button" class="btn btn-secondary" onclick="startIntegrationConnect('${key}')">

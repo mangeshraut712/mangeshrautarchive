@@ -17,7 +17,8 @@ const ROOT = resolve(import.meta.dirname, '../..');
 const ENV_FILE = resolve(ROOT, '.env');
 
 const PRODUCTION_REDIRECTS = {
-  WHOOP_REDIRECT_URI: 'https://mangeshraut.pro/api/integrations/whoop/callback',
+  WHOOP_REDIRECT_URI:
+    'https://assistme-chat.mangeshraut712.workers.dev/api/integrations/whoop/callback',
   WITHINGS_REDIRECT_URI: 'https://mangeshraut.pro/api/integrations/withings/callback',
 };
 

@@ -15,7 +15,8 @@ const TARGETS = (process.env.VERCEL_ENV_TARGETS || 'production')
   .filter(Boolean);
 const PRODUCTION_URI_OVERRIDES = {
   GOOGLE_CALENDAR_REDIRECT_URI: 'https://mangeshraut.pro/api/calendar/callback/google',
-  WHOOP_REDIRECT_URI: 'https://mangeshraut.pro/api/integrations/whoop/callback',
+  WHOOP_REDIRECT_URI:
+    'https://assistme-chat.mangeshraut712.workers.dev/api/integrations/whoop/callback',
   WITHINGS_REDIRECT_URI: 'https://mangeshraut.pro/api/integrations/withings/callback',
 };
 const KEYS = [

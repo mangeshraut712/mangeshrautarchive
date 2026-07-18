@@ -324,6 +324,38 @@ async def get_provider_token_bundle(provider: str) -> Optional[Dict[str, Any]]:
         return None
 
 
+async def mark_provider_needs_reauth(provider: str, *, reason: str = "invalid_grant") -> bool:
+    """Flip account out of connected so the UI can offer a one-time reconnect.
+
+    Keeps encrypted tokens for forensics; save_provider_tokens overwrites on reconnect.
+    """
+    if not supabase_is_configured() or not provider:
+        return False
+    now = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
+    try:
+        lookup = await _rest_request(
+            "GET",
+            "integration_accounts",
+            params={"select": "id", "provider": f"eq.{provider}", "limit": "1"},
+        )
+        lookup.raise_for_status()
+        rows = lookup.json()
+        if not isinstance(rows, list) or not rows:
+            return False
+        account_id = rows[0]["id"]
+        await _rest_request(
+            "PATCH",
+            "integration_accounts",
+            params={"id": f"eq.{account_id}"},
+            headers={"Content-Type": "application/json"},
+            json={"status": "needs_reauth", "updated_at": now},
+        )
+        await update_sync_state(provider, last_error=reason)
+        return True
+    except (httpx.HTTPError, ValueError, KeyError):
+        return False
+
+
 async def disconnect_provider(provider: str) -> bool:
     if not supabase_is_configured():
         return False

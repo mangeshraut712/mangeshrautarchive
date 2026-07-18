@@ -19,6 +19,12 @@
 
 import { EDGE_DATA_SNAPSHOT } from './edge-data-snapshot.js';
 import { authorizeCron, syncConnectedHealthProviders } from './health-sync.js';
+import {
+  handleAdminConnectUrl,
+  handleIntegrationsStatus,
+  handleWhoopCallback,
+  handleWhoopConnect,
+} from './whoop-oauth.js';
 
 const OPENROUTER_URL = 'https://openrouter.ai/api/v1/chat/completions';
 /** Aspirational paid primary — used when OPENROUTER_MODEL is unset or credits return. */
@@ -751,19 +757,22 @@ export default {
       return handleMonitorStatus(env, cors, path);
     }
 
-    // Integrations status (OAuth connectors not on edge)
+    // WHOOP OAuth + integration status (permanent edge path — Vercel may be disabled)
     if (request.method === 'GET' && path === '/api/integrations/status') {
-      return json(
-        {
-          success: true,
-          host: 'cloudflare-worker',
-          available: false,
-          integrations: [],
-          message: 'OAuth integrations require FastAPI; unavailable on edge worker.',
-        },
-        200,
-        cors
-      );
+      return handleIntegrationsStatus(env, cors);
+    }
+    if (request.method === 'GET' && path === '/api/integrations/admin/connect-url/whoop') {
+      return handleAdminConnectUrl(request, env, 'whoop', cors);
+    }
+    if (request.method === 'GET' && path.startsWith('/api/integrations/admin/connect-url/')) {
+      const provider = path.slice('/api/integrations/admin/connect-url/'.length);
+      return handleAdminConnectUrl(request, env, provider, cors);
+    }
+    if (request.method === 'GET' && path === '/api/integrations/whoop/connect') {
+      return handleWhoopConnect(request, env, cors);
+    }
+    if (request.method === 'GET' && path === '/api/integrations/whoop/callback') {
+      return handleWhoopCallback(request, env, cors);
     }
 
     // Soft analytics + health vitals so Pages does not depend on blocked Vercel
@@ -835,6 +844,10 @@ export default {
             'GET /api/analytics/reach',
             'POST /api/analytics/track',
             'GET /api/health-vitals/summary',
+            'GET /api/integrations/status',
+            'GET /api/integrations/whoop/connect',
+            'GET /api/integrations/whoop/callback',
+            'GET|POST /api/cron/health-vitals-sync',
           ],
         },
         200,

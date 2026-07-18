@@ -14,6 +14,10 @@ LASTFM_USERNAME = "mbr63"
 # Cloudflare Worker is the primary API for GitHub Pages (Vercel optional/offline).
 PRIMARY_HOST = "cloudflare"
 ALLOWED_ORIGINS = "https://mangeshraut712.github.io,https://mangeshraut.pro,https://mraut.vercel.app,http://127.0.0.1:4000,http://localhost:4000"
+# Permanent WHOOP OAuth callback (must also be registered in the WHOOP developer portal).
+WHOOP_REDIRECT_URI = "https://assistme-chat.mangeshraut712.workers.dev/api/integrations/whoop/callback"
+OAUTH_SUCCESS_REDIRECT = "https://mangeshraut712.github.io/mangeshrautarchive/monitor.html#integrations-whoop"
+PUBLIC_SITE_URL = "https://mangeshraut712.github.io/mangeshrautarchive"
 
 # Hourly WHOOP keepalive — access tokens last ~1h and refresh tokens rotate.
 [triggers]

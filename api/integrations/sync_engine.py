@@ -86,6 +86,18 @@ async def sync_connected_health_providers() -> Dict[str, Any]:
             auth_failed = summary.get("source_status") == "needs_reauth" or any(
                 err in {"whoop_unauthorized", "whoop_forbidden"} for err in errors
             )
+            # Access can still look unexpired after a lost refresh rotation — force once.
+            if auth_failed and not has_metrics:
+                retry_token = await get_valid_access_token("whoop", force_refresh=True)
+                if retry_token and retry_token != token:
+                    summary = await whoop.fetch_sanitized_summary(retry_token)
+                    has_metrics = _whoop_has_metrics(summary)
+                    errors = list(summary.get("errors") or [])
+                    auth_failed = summary.get("source_status") == "needs_reauth" or any(
+                        err in {"whoop_unauthorized", "whoop_forbidden"} for err in errors
+                    )
+                elif not retry_token:
+                    auth_failed = True
             if has_metrics:
                 _merge_health_fields(merged, summary)
                 whoop_ok = True
@@ -105,7 +117,8 @@ async def sync_connected_health_providers() -> Dict[str, Any]:
             else:
                 status = "needs_reauth" if auth_failed else "degraded"
                 message = (
-                    "WHOOP authorization invalid. Reconnect WHOOP OAuth."
+                    "WHOOP authorization invalid. Reconnect once via edge OAuth "
+                    "(Worker callback) — hourly keepalive will keep the grant alive after that."
                     if auth_failed
                     else "WHOOP returned no scored metrics."
                 )

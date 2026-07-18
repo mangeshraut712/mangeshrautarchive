@@ -13,6 +13,12 @@ const REFRESH_SKEW_SECONDS = 300;
 const TOKEN_LOCK_PREFIX = 'token_refresh_lock:';
 const TOKEN_LOCK_TTL_MS = 45_000;
 const SAVE_ATTEMPTS = 4;
+const DEFAULT_WHOOP_REDIRECT =
+  'https://assistme-chat.mangeshraut712.workers.dev/api/integrations/whoop/callback';
+
+export function whoopRedirectUri(env) {
+  return String(env.WHOOP_REDIRECT_URI || '').trim() || DEFAULT_WHOOP_REDIRECT;
+}
 
 function utcNowIso() {
   return new Date().toISOString().replace(/\.\d{3}Z$/, 'Z');
@@ -242,6 +248,118 @@ async function saveTokens(env, account, accessToken, refreshToken, expiresAt) {
   return false;
 }
 
+async function markProviderNeedsReauth(env, provider, reason = 'invalid_grant') {
+  const account = await getConnectedAccount(env, provider);
+  // Also flip accounts already in a weird state — look up without status filter.
+  let accountId = account?.id;
+  if (!accountId) {
+    try {
+      const res = await fetch(
+        supabaseRestUrl(env, 'integration_accounts', {
+          select: 'id',
+          provider: `eq.${provider}`,
+          limit: '1',
+        }),
+        { headers: supabaseHeaders(env) }
+      );
+      if (res.ok) {
+        const rows = await res.json();
+        accountId = rows?.[0]?.id;
+      }
+    } catch {
+      return false;
+    }
+  }
+  if (!accountId) return false;
+  const now = utcNowIso();
+  const res = await fetch(supabaseRestUrl(env, 'integration_accounts', { id: `eq.${accountId}` }), {
+    method: 'PATCH',
+    headers: supabaseHeaders(env, { 'Content-Type': 'application/json' }),
+    body: JSON.stringify({ status: 'needs_reauth', updated_at: now }),
+  });
+  try {
+    await fetch(supabaseRestUrl(env, 'integration_sync_state', { on_conflict: 'provider' }), {
+      method: 'POST',
+      headers: supabaseHeaders(env, {
+        'Content-Type': 'application/json',
+        Prefer: 'resolution=merge-duplicates,return=minimal',
+      }),
+      body: JSON.stringify({ provider, last_error: reason, updated_at: now }),
+    });
+  } catch {
+    // ignore
+  }
+  return res.ok;
+}
+
+/** Upsert account + encrypted tokens after OAuth code exchange (WHOOP reconnect). */
+export async function persistOAuthTokens(env, provider, payload) {
+  if (!supabaseConfigured(env) || !String(env.INTEGRATION_ENCRYPTION_KEY || '').trim()) {
+    return false;
+  }
+  const accessToken = payload?.accessToken;
+  if (!accessToken) return false;
+  const now = utcNowIso();
+  const subject = String(payload.providerSubject || `${provider}-user`);
+  const scopes = Array.isArray(payload.scopes) ? payload.scopes : [];
+  const expiresAt = payload.expiresIn
+    ? new Date(Date.now() + Number(payload.expiresIn) * 1000).toISOString()
+    : null;
+
+  let accountId = null;
+  const lookup = await fetch(
+    supabaseRestUrl(env, 'integration_accounts', {
+      select: 'id',
+      provider: `eq.${provider}`,
+      limit: '1',
+    }),
+    { headers: supabaseHeaders(env) }
+  );
+  if (lookup.ok) {
+    const rows = await lookup.json();
+    accountId = rows?.[0]?.id || null;
+  }
+
+  const accountPayload = {
+    provider,
+    provider_subject: subject,
+    status: 'connected',
+    scopes,
+    last_synced_at: now,
+    updated_at: now,
+  };
+
+  if (accountId) {
+    const patch = await fetch(
+      supabaseRestUrl(env, 'integration_accounts', { id: `eq.${accountId}` }),
+      {
+        method: 'PATCH',
+        headers: supabaseHeaders(env, {
+          'Content-Type': 'application/json',
+          Prefer: 'return=representation',
+        }),
+        body: JSON.stringify(accountPayload),
+      }
+    );
+    if (!patch.ok) return false;
+  } else {
+    const create = await fetch(supabaseRestUrl(env, 'integration_accounts'), {
+      method: 'POST',
+      headers: supabaseHeaders(env, {
+        'Content-Type': 'application/json',
+        Prefer: 'return=representation',
+      }),
+      body: JSON.stringify(accountPayload),
+    });
+    if (!create.ok) return false;
+    const created = await create.json();
+    accountId = created?.[0]?.id;
+    if (!accountId) return false;
+  }
+
+  return saveTokens(env, { id: accountId }, accessToken, payload.refreshToken || '', expiresAt);
+}
+
 async function acquireTokenRefreshLock(env, provider) {
   if (!supabaseConfigured(env) || !provider) return true;
   const now = Date.now();
@@ -374,7 +492,7 @@ async function decryptTokenBundle(env, tokenRow) {
   }
 }
 
-async function getValidAccessToken(env, provider) {
+async function getValidAccessToken(env, provider, { forceRefresh = false } = {}) {
   const account = await getConnectedAccount(env, provider);
   if (!account) return null;
   if (!String(env.INTEGRATION_ENCRYPTION_KEY || '').trim()) return null;
@@ -383,7 +501,8 @@ async function getValidAccessToken(env, provider) {
   let bundle = await decryptTokenBundle(env, tokenRow);
   if (!bundle) return null;
 
-  if (bundle.accessToken && !expiresSoon(bundle.expiresAt)) {
+  const originalUpdatedAt = bundle.updatedAt;
+  if (bundle.accessToken && !expiresSoon(bundle.expiresAt) && !forceRefresh) {
     return bundle.accessToken;
   }
   if (!bundle.refreshToken) return null;
@@ -393,7 +512,10 @@ async function getValidAccessToken(env, provider) {
     await sleep(750);
     tokenRow = await getTokenRow(env, account.id);
     bundle = await decryptTokenBundle(env, tokenRow);
-    if (bundle?.accessToken && !expiresSoon(bundle.expiresAt)) return bundle.accessToken;
+    if (bundle?.accessToken && !expiresSoon(bundle.expiresAt)) {
+      if (forceRefresh && bundle.updatedAt === originalUpdatedAt) return null;
+      return bundle.accessToken;
+    }
     return null;
   }
 
@@ -401,7 +523,18 @@ async function getValidAccessToken(env, provider) {
     tokenRow = await getTokenRow(env, account.id);
     bundle = await decryptTokenBundle(env, tokenRow);
     if (!bundle) return null;
-    if (bundle.accessToken && !expiresSoon(bundle.expiresAt)) return bundle.accessToken;
+    if (bundle.accessToken && !expiresSoon(bundle.expiresAt) && !forceRefresh) {
+      return bundle.accessToken;
+    }
+    if (
+      forceRefresh &&
+      bundle.accessToken &&
+      !expiresSoon(bundle.expiresAt) &&
+      bundle.updatedAt &&
+      bundle.updatedAt !== originalUpdatedAt
+    ) {
+      return bundle.accessToken;
+    }
     if (!bundle.refreshToken) return null;
 
     const seenUpdatedAt = bundle.updatedAt;
@@ -418,6 +551,7 @@ async function getValidAccessToken(env, provider) {
         if (raced?.updatedAt && raced.updatedAt !== seenUpdatedAt) {
           if (raced.accessToken && !expiresSoon(raced.expiresAt)) return raced.accessToken;
         }
+        await markProviderNeedsReauth(env, provider, `refresh_http_${error.status}`);
       }
       return null;
     }
@@ -759,10 +893,20 @@ export async function syncConnectedHealthProviders(env) {
   let whoopOk = false;
   let withingsOk = false;
 
-  const whoopToken = await getValidAccessToken(env, 'whoop');
+  let whoopToken = await getValidAccessToken(env, 'whoop');
   if (whoopToken) {
     try {
-      const summary = await fetchWhoopSummary(whoopToken);
+      let summary = await fetchWhoopSummary(whoopToken);
+      const authErrors = (summary.errors || []).some(
+        err => String(err).includes('whoop_http_401') || String(err).includes('whoop_http_403')
+      );
+      if (!whoopHasMetrics(summary) && authErrors) {
+        const retryToken = await getValidAccessToken(env, 'whoop', { forceRefresh: true });
+        if (retryToken && retryToken !== whoopToken) {
+          whoopToken = retryToken;
+          summary = await fetchWhoopSummary(whoopToken);
+        }
+      }
       if (whoopHasMetrics(summary)) {
         for (const key of Object.keys(merged)) {
           if (summary[key] != null) merged[key] = summary[key];
@@ -780,33 +924,91 @@ export async function syncConnectedHealthProviders(env) {
           },
         });
       } else {
+        const stillAuth = (summary.errors || []).some(
+          err => String(err).includes('whoop_http_401') || String(err).includes('whoop_http_403')
+        );
         results.push({
           provider: 'whoop',
-          status: 'degraded',
-          message: 'WHOOP returned no scored metrics',
+          status: stillAuth ? 'needs_reauth' : 'degraded',
+          message: stillAuth
+            ? 'WHOOP grant invalid — reconnect once via edge OAuth (permanent Worker callback).'
+            : 'WHOOP returned no scored metrics',
           errors: summary.errors || [],
         });
         merged.source_status = 'partial';
       }
     } catch (error) {
-      results.push({
-        provider: 'whoop',
-        status: 'degraded',
-        message: error?.message || 'whoop_sync_failed',
-      });
-      merged.source_status = 'partial';
+      if (error?.status === 401 || error?.status === 403) {
+        const retryToken = await getValidAccessToken(env, 'whoop', { forceRefresh: true });
+        if (retryToken && retryToken !== whoopToken) {
+          try {
+            const summary = await fetchWhoopSummary(retryToken);
+            if (whoopHasMetrics(summary)) {
+              for (const key of Object.keys(merged)) {
+                if (summary[key] != null) merged[key] = summary[key];
+              }
+              whoopOk = true;
+              results.push({
+                provider: 'whoop',
+                status: 'live',
+                date: summary.date,
+                metrics: {
+                  sleep_score: summary.sleep_score,
+                  recovery_score: summary.recovery_score,
+                  strain: summary.strain,
+                  resting_heart_rate: summary.resting_heart_rate,
+                },
+              });
+            }
+          } catch {
+            // fall through
+          }
+        }
+      }
+      if (!whoopOk) {
+        results.push({
+          provider: 'whoop',
+          status: error?.status === 401 ? 'needs_reauth' : 'degraded',
+          message: error?.message || 'whoop_sync_failed',
+        });
+        merged.source_status = 'partial';
+      }
     }
   } else {
     const account = await getConnectedAccount(env, 'whoop');
     if (account) {
-      // Do not tell operators to reauth on a single failed refresh — hourly cron retries.
-      // True reconnect is only needed after repeated invalid_grant with no rotated tokens.
       results.push({
         provider: 'whoop',
         status: 'degraded',
         message: 'WHOOP token refresh deferred; hourly keepalive will retry.',
       });
       merged.source_status = 'partial';
+    } else {
+      // Account may be needs_reauth — surface that clearly for monitor UI.
+      try {
+        const res = await fetch(
+          supabaseRestUrl(env, 'integration_accounts', {
+            select: 'status',
+            provider: 'eq.whoop',
+            limit: '1',
+          }),
+          { headers: supabaseHeaders(env) }
+        );
+        if (res.ok) {
+          const rows = await res.json();
+          if (rows?.[0]?.status === 'needs_reauth') {
+            results.push({
+              provider: 'whoop',
+              status: 'needs_reauth',
+              message:
+                'WHOOP needs one reconnect via edge OAuth. After that, hourly keepalive prevents repeats.',
+            });
+            merged.source_status = 'partial';
+          }
+        }
+      } catch {
+        // ignore
+      }
     }
   }
 
