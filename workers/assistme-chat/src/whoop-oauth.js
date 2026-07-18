@@ -262,11 +262,38 @@ export async function handleWhoopConnect(request, env, cors = {}) {
   return redirect(buildWhoopAuthorizeUrl(env, state));
 }
 
+function oauthErrorHtml(title, detail, redirectUri) {
+  const safeTitle = String(title || 'OAuth error');
+  const safeDetail = String(detail || '');
+  const safeRedirect = String(redirectUri || '');
+  return `<!doctype html><html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>${safeTitle}</title>
+<style>body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;max-width:40rem;margin:3rem auto;padding:0 1.25rem;line-height:1.5;color:#1d1d1f}code{background:#f5f5f7;padding:.15rem .4rem;border-radius:6px;font-size:.9em;word-break:break-all}a{color:#0071e3}</style></head><body>
+<h1>${safeTitle}</h1>
+<p>${safeDetail}</p>
+<p>In the <a href="https://developer-dashboard.whoop.com/" target="_blank" rel="noopener">WHOOP Developer Dashboard</a>, open your app and set <strong>Redirect URI</strong> to exactly:</p>
+<p><code>${safeRedirect}</code></p>
+<p>No trailing slash. Then retry connect from Monitor → Integrations.</p>
+<p><a href="https://mangeshraut712.github.io/mangeshrautarchive/monitor.html#integrations-whoop">Back to Monitor</a></p>
+</body></html>`;
+}
+
 export async function handleWhoopCallback(request, env, cors = {}) {
   const url = new URL(request.url);
   const error = url.searchParams.get('error');
   if (error) {
-    return json({ error: `WHOOP OAuth error: ${error}` }, 400, cors);
+    const redirectUri = whoopRedirectUri(env);
+    const detail =
+      error === 'request_forbidden'
+        ? 'WHOOP rejected the authorization (request_forbidden). Almost always the Redirect URI is missing or does not match exactly.'
+        : `WHOOP OAuth error: ${error}`;
+    const accept = String(request.headers.get('Accept') || '');
+    if (accept.includes('text/html') || !accept.includes('application/json')) {
+      return new Response(oauthErrorHtml('WHOOP reconnect blocked', detail, redirectUri), {
+        status: 400,
+        headers: { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store' },
+      });
+    }
+    return json({ error: `WHOOP OAuth error: ${error}`, redirectUri, detail }, 400, cors);
   }
   const code = url.searchParams.get('code');
   const state = url.searchParams.get('state');
