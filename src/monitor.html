@@ -113,8 +113,9 @@
     <!-- Shared subpage chrome stack: critical → page → polish → design system → deferred chrome -->
     <link rel="stylesheet" href="assets/css/systems-critical.css?v=20260716aa" />
     <link rel="stylesheet" href="assets/css/ux-polish-fixes.css?v=20260716aa" />
-    <link rel="stylesheet" href="assets/css/monitor.css?v=20260718mon" />
-    <link rel="stylesheet" href="assets/css/monitor-apple-redesign.css?v=20260718mon" />
+    <link rel="stylesheet" href="assets/css/monitor.css?v=20260718mon3" />
+    <link rel="stylesheet" href="assets/css/monitor-apple-redesign.css?v=20260718mon3" />
+    <link rel="stylesheet" href="assets/css/subpage-layout-polish.css?v=20260718sub" />
     <link rel="stylesheet" href="assets/css/apple-design-system.css?v=20260716aa" data-perf-defer />
     <link rel="stylesheet" href="assets/css/typography-system.css?v=20260716aa" data-perf-defer />
     <link
@@ -1653,21 +1654,32 @@
           .join('');
 
         const publicOrigins = runtime.public_origins || {};
+        const shortHost = value => {
+          try {
+            const u = new URL(String(value));
+            return u.host + (u.pathname === '/' ? '' : u.pathname.replace(/\/$/, ''));
+          } catch {
+            return String(value || '').replace(/^https?:\/\//, '');
+          }
+        };
         const originRows = Object.entries(publicOrigins)
           .map(
             ([key, value]) => `
                 <div class="runtime-meta-row">
                     <span>${escapeHtml(formatConfigLabel(key))}</span>
-                    <a href="${escapeHtml(value)}" target="_blank" rel="noopener">${escapeHtml(value)}</a>
+                    <a href="${escapeHtml(value)}" target="_blank" rel="noopener" title="${escapeHtml(value)}">${escapeHtml(shortHost(value))}</a>
                 </div>
             `
           )
           .join('');
 
+        const region = runtime.region && runtime.region !== 'unknown' ? ` · ${runtime.region}` : '';
+        const versionLabel =
+          runtime.version && runtime.version !== 'unknown' ? String(runtime.version) : 'edge';
         container.innerHTML = `
                 <p class="doc-card-kicker">Runtime Snapshot</p>
                 <h3 class="runtime-card-title">${escapeHtml(runtime.platform || 'local')} · ${escapeHtml(runtime.environment || 'unknown')}</h3>
-                <p class="doc-card-description">Version ${escapeHtml(runtime.version || 'unknown')} · Region ${escapeHtml(runtime.region || 'unknown')} · Deployment ${escapeHtml(runtime.deployment_url || 'localhost')}</p>
+                <p class="doc-card-description">${escapeHtml(versionLabel)}${escapeHtml(region)}</p>
                 <div class="runtime-meta-list">${originRows}</div>
                 ${envGroups}
             `;
@@ -1705,21 +1717,32 @@
         gridEl.innerHTML = data.checks
           .map(check => {
             const path = String(check.path || '').trim();
-            const verifyHref = path
-              ? path.startsWith('/api/')
+            const isHttp = /^https?:\/\//i.test(path);
+            const isApiPath = path.startsWith('/api/');
+            const isPagePath = path.startsWith('/') && !path.includes(':') && path.length > 1;
+            const verifyHref = isHttp
+              ? path
+              : isApiPath
                 ? toAbsoluteApiLink(path)
-                : path.startsWith('http')
+                : isPagePath
                   ? path
-                  : path.startsWith('/')
-                    ? path
-                    : `/${path}`
-              : '#';
+                  : '';
             const status = statusBadgeClass(check.status);
+            const actionMarkup = verifyHref
+              ? `<a class="btn btn-secondary" href="${escapeHtml(verifyHref)}" ${
+                  isHttp || isApiPath ? 'target="_blank" rel="noopener noreferrer"' : ''
+                }>
+                    <i class="fas fa-vial" aria-hidden="true"></i>
+                    <span>Open</span>
+                  </a>`
+              : `<span class="health-metric"><span class="health-metric-value health-metric-value--uppercase">${escapeHtml(
+                  status
+                )}</span><span class="health-metric-label">Status</span></span>`;
             return `
               <div class="health-item ${escapeHtml(status)}">
                 <div class="health-item-left">
                   <div class="health-status-icon ${escapeHtml(status)}">
-                    <i class="fas fa-${status === 'healthy' ? 'check' : status === 'degraded' ? 'minus' : status === 'unhealthy' ? 'xmark' : 'circle-question'}"></i>
+                    <i class="fas fa-${status === 'healthy' ? 'check' : status === 'degraded' ? 'minus' : status === 'unhealthy' ? 'xmark' : 'circle-question'}" aria-hidden="true"></i>
                   </div>
                   <div class="health-info">
                     <h4>${escapeHtml(check.label || check.id)}</h4>
@@ -1728,10 +1751,7 @@
                   </div>
                 </div>
                 <div class="health-metrics integration-actions">
-                  <a class="btn btn-secondary" href="${escapeHtml(verifyHref)}" ${verifyHref.startsWith('http') || verifyHref.startsWith('/api/') ? 'target="_blank" rel="noopener noreferrer"' : ''}>
-                    <i class="fas fa-vial" aria-hidden="true"></i>
-                    <span>Open</span>
-                  </a>
+                  ${actionMarkup}
                 </div>
               </div>
             `;

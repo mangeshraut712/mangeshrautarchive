@@ -3104,7 +3104,7 @@ body.monitor-page .monitor-summary-card {
 }
 
 .latency-card {
-  grid-column: span 2;
+  grid-column: auto;
   position: relative;
 }
 
@@ -3116,9 +3116,10 @@ body.monitor-page .monitor-summary-card {
   display: flex;
   grid-column: 1 / -1 !important;
   flex-direction: column;
-  justify-content: space-between;
-  min-height: 176px;
+  justify-content: flex-start;
+  min-height: 0;
   padding: 18px 20px;
+  gap: 10px;
 }
 
 .compact-copy {
@@ -3370,7 +3371,7 @@ body.monitor-page .monitor-summary-card {
   flex-direction: column;
   gap: 14px;
   min-width: 0;
-  min-height: 218px;
+  min-height: 0;
   padding: 16px;
   border-radius: 16px;
   background: #ffffff;

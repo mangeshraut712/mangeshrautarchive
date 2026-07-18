@@ -1,25 +1,25 @@
 /**
  * Apple Status densified System Monitor layout.
- * Fixes wasted free space, card alignment, and mobile/desktop packing.
+ * Equal-height cards, tight packing, no overlap / dead columns.
  * Loaded after monitor.css.
  */
 
-/* ─── Tokens (tighter density) ─── */
+/* ─── Tokens ─── */
 body.monitor-page {
-  --mon-shell: min(1120px, 100%);
-  --mon-gutter: max(0.85rem, env(safe-area-inset-left, 0px), env(safe-area-inset-right, 0px));
-  --mon-card-radius: 16px;
-  --mon-card-pad: clamp(0.75rem, 1.6vw, 1rem);
-  --mon-gap: clamp(0.5rem, 1.2vw, 0.7rem);
-  --mon-section-gap: clamp(0.7rem, 1.8vw, 1rem);
+  --mon-shell: min(1180px, 100%);
+  --mon-gutter: max(0.9rem, env(safe-area-inset-left, 0px), env(safe-area-inset-right, 0px));
+  --mon-card-radius: 18px;
+  --mon-card-pad: clamp(0.85rem, 1.6vw, 1.1rem);
+  --mon-gap: clamp(0.55rem, 1.2vw, 0.8rem);
+  --mon-section-gap: clamp(0.7rem, 1.6vw, 1rem);
   --mon-surface: #f5f5f7;
   --mon-card: #ffffff;
   --mon-hairline: rgb(0 0 0 / 8%);
-  --mon-shadow: 0 1px 2px rgb(0 0 0 / 4%), 0 6px 18px rgb(0 0 0 / 5%);
+  --mon-shadow: 0 1px 2px rgb(0 0 0 / 4%), 0 8px 22px rgb(0 0 0 / 5%);
   overflow-x: clip;
   background: var(--mon-surface) !important;
   padding-top: calc(84px + env(safe-area-inset-top, 0px));
-  padding-bottom: max(1.25rem, env(safe-area-inset-bottom, 0px));
+  padding-bottom: max(1.35rem, env(safe-area-inset-bottom, 0px));
 }
 
 html.dark body.monitor-page,
@@ -34,9 +34,31 @@ html.dark body.monitor-page,
 body.monitor-page #main-content.monitor-container {
   max-width: var(--mon-shell);
   margin-inline: auto;
-  padding: 0.45rem var(--mon-gutter) 1.5rem !important;
+  padding: 0.4rem var(--mon-gutter) 1.4rem !important;
   width: 100%;
   box-sizing: border-box;
+}
+
+body.monitor-page .monitor-edge-banner {
+  margin: 0 0 var(--mon-section-gap) !important;
+  padding: 0.7rem 0.85rem !important;
+  border-radius: 14px !important;
+  border: 1px solid color-mix(in srgb, var(--accent-blue, #0071e3) 22%, var(--mon-hairline));
+  background: color-mix(in srgb, var(--accent-blue, #0071e3) 7%, var(--mon-card)) !important;
+}
+
+body.monitor-page .monitor-edge-banner__title {
+  margin: 0 0 0.2rem !important;
+  font-size: 0.68rem !important;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+body.monitor-page .monitor-edge-banner p {
+  margin: 0 !important;
+  font-size: 0.8rem !important;
+  line-height: 1.4;
 }
 
 /* ─── Sticky section rail ─── */
@@ -113,33 +135,41 @@ html.dark .monitor-section-rail a {
   color: #a1a1a6;
 }
 
-/* ─── Top hero row — denser ─── */
+/* ─── Top hero row — equal height, no dead air ─── */
 body.monitor-page .monitor-top-row {
   display: grid;
-  grid-template-columns: minmax(0, 1.6fr) minmax(0, 0.95fr);
+  grid-template-columns: minmax(0, 1.45fr) minmax(260px, 0.9fr);
   gap: var(--mon-gap);
   margin-bottom: var(--mon-section-gap) !important;
-  align-items: start;
+  align-items: stretch !important;
 }
 
 body.monitor-page #monitor-summary-section.monitor-summary-card,
 body.monitor-page #runtime-snapshot-card.monitor-summary-panel {
-  display: flex;
-  flex-direction: column;
+  display: flex !important;
+  flex-direction: column !important;
   min-width: 0;
-  max-height: none;
+  min-height: 100%;
+  height: auto;
   margin: 0 !important;
   padding: var(--mon-card-pad) !important;
   border-radius: var(--mon-card-radius) !important;
   border: 1px solid var(--mon-hairline) !important;
   background: var(--mon-card) !important;
   box-shadow: var(--mon-shadow);
+  align-self: stretch !important;
+  box-sizing: border-box;
+}
+
+body.monitor-page #monitor-summary-section.monitor-summary-card {
   overflow: hidden;
 }
 
 body.monitor-page #runtime-snapshot-card.monitor-summary-panel {
-  max-height: none !important;
-  overflow: visible;
+  overflow: auto !important;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  max-height: min(42rem, 78vh);
 }
 
 body.monitor-page .control-center-header {
@@ -147,29 +177,30 @@ body.monitor-page .control-center-header {
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 0.55rem;
-  padding-bottom: 0.65rem;
-  margin-bottom: 0.65rem;
+  gap: 0.5rem;
+  padding-bottom: 0.55rem;
+  margin-bottom: 0.55rem;
   border-bottom: 1px solid var(--mon-hairline);
+  flex: 0 0 auto;
 }
 
 body.monitor-page .control-center-title-lockup {
   display: flex;
   align-items: center;
-  gap: 0.65rem;
+  gap: 0.6rem;
   min-width: 0;
 }
 
 body.monitor-page .monitor-hero-icon.control-center-icon {
-  width: 42px !important;
-  height: 42px !important;
+  width: 40px !important;
+  height: 40px !important;
   border-radius: 12px !important;
-  font-size: 1.1rem !important;
+  font-size: 1.05rem !important;
   flex-shrink: 0;
 }
 
 body.monitor-page .control-center-heading {
-  font-size: clamp(1.35rem, 3vw, 1.75rem);
+  font-size: clamp(1.3rem, 2.8vw, 1.65rem);
   font-weight: 700;
   letter-spacing: -0.03em;
   line-height: 1.1;
@@ -178,73 +209,150 @@ body.monitor-page .control-center-heading {
 
 body.monitor-page .monitor-summary-eyebrow,
 body.monitor-page .control-center-eyebrow {
-  margin: 0 0 0.15rem !important;
+  margin: 0 0 0.12rem !important;
   font-size: 0.65rem !important;
 }
 
+body.monitor-page .control-center-statusbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+}
+
 body.monitor-page .control-center-title {
-  font-size: 0.9rem !important;
+  font-size: 0.88rem !important;
   font-weight: 600;
   letter-spacing: -0.015em;
   line-height: 1.35 !important;
   color: var(--text-primary, #1d1d1f);
-  margin: 0 0 0.3rem !important;
+  margin: 0 0 0.25rem !important;
   max-width: none !important;
 }
 
 body.monitor-page #monitor-summary-text {
   color: var(--text-secondary, #6e6e73);
-  font-size: 0.82rem !important;
+  font-size: 0.8rem !important;
   line-height: 1.4 !important;
   max-width: none !important;
   margin: 0 !important;
 }
 
-/* 3-column control center — explicit named areas (never leave grid-area orphans) */
+/*
+ * Control center: 2×2 Apple panel — no orphan middle column.
+ *  info     | telemetry
+ *  visuals  | telemetry (telemetry spans both rows)
+ */
 body.monitor-page .control-center-grid {
   display: grid !important;
-  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.95fr) minmax(0, 0.95fr) !important;
-  grid-template-areas: 'info visuals telemetry' !important;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.95fr) !important;
+  grid-template-areas:
+    'info telemetry'
+    'visuals telemetry' !important;
   gap: 0.65rem !important;
   margin: 0 !important;
-  align-items: start !important;
+  align-items: stretch !important;
   width: 100%;
   min-width: 0;
-}
-
-body.monitor-page .control-center-info,
-body.monitor-page .control-center-visuals,
-body.monitor-page .control-center-telemetry {
-  min-width: 0;
-  max-width: 100%;
-  width: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  padding: 0 !important;
-  border: 0 !important;
-  margin: 0 !important;
+  flex: 1 1 auto;
+  min-height: 0;
 }
 
 body.monitor-page .control-center-info {
   grid-area: info !important;
   display: flex !important;
   flex-direction: column !important;
-  flex-wrap: nowrap !important;
-  gap: 0.55rem !important;
+  gap: 0.5rem !important;
+  min-width: 0;
+  padding: 0 !important;
+  border: 0 !important;
+  margin: 0 !important;
 }
 
 body.monitor-page .control-center-visuals {
   grid-area: visuals !important;
+  display: flex !important;
+  flex-direction: column !important;
   gap: 0.55rem !important;
+  min-width: 0;
+  padding: 0.55rem 0.65rem !important;
+  border: 1px solid var(--mon-hairline) !important;
+  border-radius: 14px !important;
+  margin: 0 !important;
+  justify-content: flex-start;
+  background: color-mix(in srgb, var(--mon-surface) 55%, var(--mon-card));
+}
+
+/* Collapse chart column until probes paint — avoids empty labeled voids */
+body.monitor-page .control-center-grid:has(#status-distribution-chart:empty) {
+  grid-template-areas:
+    'info telemetry'
+    'info telemetry' !important;
+}
+
+body.monitor-page
+  .control-center-grid:has(#status-distribution-chart:empty)
+  .control-center-visuals {
+  display: none !important;
 }
 
 body.monitor-page .control-center-telemetry {
   grid-area: telemetry !important;
   display: grid !important;
-  grid-template-columns: 1fr 1fr !important;
+  grid-template-columns: 1fr !important;
+  grid-auto-rows: minmax(0, 1fr);
   gap: 0.4rem !important;
-  align-content: start;
+  align-content: stretch;
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+  padding: 0 !important;
+  border: 0 !important;
+  margin: 0 !important;
+  overflow: hidden;
+}
+
+body.monitor-page .control-center-telemetry > .visual-section-label {
+  grid-column: 1 / -1;
+  margin: 0 !important;
+  flex: 0 0 auto;
+}
+
+body.monitor-page .control-center-telemetry .overview-item {
+  min-width: 0;
+  min-height: 0 !important;
+  height: auto;
+  overflow: hidden;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 0.45rem !important;
+  padding: 0.55rem 0.65rem !important;
+  border-radius: 12px;
+  border: 1px solid var(--mon-hairline);
+  background: color-mix(in srgb, var(--mon-surface) 70%, var(--mon-card));
+  box-sizing: border-box;
+}
+
+body.monitor-page .control-center-telemetry .overview-item-label {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-width: 0;
+}
+
+body.monitor-page .control-center-telemetry .overview-item-label span {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  font-size: 0.72rem !important;
+  line-height: 1.2;
+}
+
+body.monitor-page .control-center-telemetry strong {
+  flex: 0 0 auto;
+  font-variant-numeric: tabular-nums;
+  font-size: 0.88rem !important;
+  text-align: right;
 }
 
 body.monitor-page .control-center-info > div:first-child {
@@ -256,11 +364,10 @@ body.monitor-page .meta-stats-stack {
   grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
   gap: 0.4rem !important;
   margin-top: 0 !important;
-  flex: none !important;
+  flex: 1 1 auto;
 }
 
-body.monitor-page .meta-stat-row,
-body.monitor-page .control-center-telemetry .overview-item {
+body.monitor-page .meta-stat-row {
   min-height: 0 !important;
   padding: 0.5rem 0.6rem !important;
   border-radius: 12px;
@@ -270,17 +377,18 @@ body.monitor-page .control-center-telemetry .overview-item {
   display: flex;
   flex-direction: column;
   gap: 0.2rem;
+  justify-content: center;
 }
 
 body.monitor-page .meta-stat-label,
 body.monitor-page .visual-section-label,
 body.monitor-page .doc-card-kicker {
-  font-size: 0.7rem !important;
+  font-size: 0.68rem !important;
   font-weight: 700;
   letter-spacing: 0.06em !important;
   text-transform: uppercase;
   color: var(--text-secondary, #6e6e73);
-  margin: 0 0 0.25rem !important;
+  margin: 0 0 0.2rem !important;
 }
 
 body.monitor-page .meta-stat-row strong,
@@ -293,20 +401,124 @@ body.monitor-page .overview-item strong {
   line-height: 1.2;
 }
 
-body.monitor-page .control-center-telemetry > .visual-section-label {
-  grid-column: 1 / -1;
-  margin: 0 !important;
-}
-
-body.monitor-page #monitor-summary-section.monitor-summary-card {
-  overflow: visible !important;
-}
-
 body.monitor-page .visual-uptime-history {
   padding-top: 0.35rem !important;
+  border-top: 1px solid var(--mon-hairline);
 }
 
-/* ─── Sections — tight stack ─── */
+body.monitor-page #uptime-history-grid,
+body.monitor-page #status-distribution-chart {
+  min-height: 0;
+}
+
+body.monitor-page .donut-chart {
+  display: grid !important;
+  grid-template-columns: 68px minmax(0, 1fr) !important;
+  gap: 0.55rem !important;
+  align-items: center;
+  max-width: 100%;
+  min-width: 0;
+}
+
+body.monitor-page .donut-chart__visual {
+  width: 68px !important;
+  height: 68px !important;
+}
+
+body.monitor-page .donut-chart__visual svg {
+  width: 68px;
+  height: 68px;
+}
+
+body.monitor-page .availability-blocks {
+  gap: 3px !important;
+}
+
+body.monitor-page .availability-blocks span {
+  min-height: 10px !important;
+}
+
+/* ─── Runtime snapshot — dense, scrollable side panel ─── */
+body.monitor-page #runtime-snapshot-card .doc-card-kicker {
+  margin: 0 0 0.15rem !important;
+}
+
+body.monitor-page #runtime-snapshot-card .runtime-card-title {
+  margin: 0 0 0.2rem !important;
+  font-size: 0.98rem !important;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+body.monitor-page #runtime-snapshot-card .doc-card-description {
+  margin: 0 0 0.45rem !important;
+  font-size: 0.74rem !important;
+  line-height: 1.35 !important;
+}
+
+body.monitor-page #runtime-snapshot-card .runtime-meta-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem !important;
+  margin-bottom: 0.5rem !important;
+}
+
+body.monitor-page #runtime-snapshot-card .runtime-meta-row {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: 0.4rem;
+  align-items: center;
+  font-size: 0.7rem !important;
+  padding: 0.3rem 0.4rem;
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--mon-surface) 70%, var(--mon-card));
+  border: 1px solid var(--mon-hairline);
+}
+
+body.monitor-page #runtime-snapshot-card .runtime-meta-row a {
+  font-size: 0.68rem;
+  text-align: right;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+body.monitor-page #runtime-snapshot-card .env-group {
+  margin-top: 0.45rem !important;
+}
+
+body.monitor-page #runtime-snapshot-card .env-group-title {
+  margin: 0 0 0.3rem !important;
+  font-size: 0.66rem !important;
+}
+
+body.monitor-page #runtime-snapshot-card .env-pill-list {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 0.3rem !important;
+}
+
+body.monitor-page #runtime-snapshot-card .env-pill {
+  padding: 0.35rem 0.45rem !important;
+  border-radius: 10px !important;
+  min-width: 0;
+  gap: 0.15rem !important;
+}
+
+body.monitor-page #runtime-snapshot-card .env-pill-label {
+  font-size: 0.65rem !important;
+  line-height: 1.2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+body.monitor-page #runtime-snapshot-card .env-pill strong {
+  font-size: 0.68rem !important;
+}
+
+/* ─── Sections ─── */
 body.monitor-page main > section.section,
 body.monitor-page main > section.monitor-dashboard-section {
   margin: 0 0 var(--mon-section-gap) !important;
@@ -316,7 +528,8 @@ body.monitor-page main > section.monitor-dashboard-section {
   background: var(--mon-card) !important;
   box-shadow: var(--mon-shadow);
   min-width: 0;
-  overflow: hidden;
+  overflow: visible;
+  isolation: isolate;
 }
 
 body.monitor-page .section-header {
@@ -325,8 +538,8 @@ body.monitor-page .section-header {
   align-items: center;
   justify-content: space-between;
   gap: 0.45rem;
-  margin-bottom: 0.6rem !important;
-  padding-bottom: 0.55rem !important;
+  margin-bottom: 0.55rem !important;
+  padding-bottom: 0.5rem !important;
   border-bottom: 1px solid var(--mon-hairline);
 }
 
@@ -338,12 +551,13 @@ body.monitor-page .section-title {
   line-height: 1.15;
 }
 
-body.monitor-page .monitor-section-lead {
-  margin: 0 0 0.6rem !important;
+body.monitor-page .monitor-section-lead,
+body.monitor-page .section-lead {
+  margin: 0 0 0.65rem !important;
   max-width: none;
   color: var(--text-secondary, #6e6e73);
-  font-size: 0.82rem;
-  line-height: 1.4;
+  font-size: 0.82rem !important;
+  line-height: 1.4 !important;
 }
 
 body.monitor-page .section-actions {
@@ -353,7 +567,7 @@ body.monitor-page .section-actions {
   gap: 0.35rem;
 }
 
-/* ─── Dense card grids (fill width, less empty) ─── */
+/* ─── Dense card grids ─── */
 body.monitor-page .health-grid,
 body.monitor-page .docs-grid,
 body.monitor-page .backend-system-grid,
@@ -367,19 +581,20 @@ body.monitor-page .portfolio-surface-grid {
   align-items: stretch;
 }
 
-/* Prefer 3–4 columns on desktop when space allows */
 @media (min-width: 900px) {
   body.monitor-page .health-grid,
   body.monitor-page .portfolio-surface-grid,
   body.monitor-page .docs-grid,
-  body.monitor-page .backend-system-grid {
+  body.monitor-page .backend-system-grid,
+  body.monitor-page .platform-health-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
   }
 }
 
 @media (min-width: 1080px) {
   body.monitor-page .health-grid,
-  body.monitor-page .portfolio-surface-grid {
+  body.monitor-page .portfolio-surface-grid,
+  body.monitor-page .platform-health-grid {
     grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
   }
 }
@@ -405,12 +620,91 @@ body.monitor-page .portfolio-surface-card {
   box-sizing: border-box;
 }
 
+body.monitor-page .portfolio-surface-card {
+  position: relative;
+  justify-content: space-between;
+  min-height: 8rem !important;
+  border-left: 3px solid transparent;
+}
+
+body.monitor-page .portfolio-surface-card[data-status='healthy'] {
+  border-left-color: var(--accent-green, #34c759);
+}
+
+body.monitor-page .portfolio-surface-card[data-status='degraded'] {
+  border-left-color: var(--accent-yellow, #ff9500);
+}
+
+body.monitor-page .portfolio-surface-card[data-status='unhealthy'] {
+  border-left-color: var(--accent-red, #ff3b30);
+}
+
+body.monitor-page .portfolio-surface-card[data-status='unknown'] {
+  border-left-color: var(--text-secondary, #86868b);
+}
+
+body.monitor-page .portfolio-surface-card__top {
+  align-items: flex-start;
+  gap: 0.45rem;
+}
+
+body.monitor-page .portfolio-surface-card__top .status-badge {
+  flex: 0 0 auto;
+  max-width: 46%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+body.monitor-page .portfolio-surface-card__title {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+body.monitor-page .portfolio-surface-card .doc-card-description {
+  flex: 1 1 auto;
+  margin: 0.15rem 0 0 !important;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+body.monitor-page .portfolio-surface-card__meta {
+  margin-top: auto;
+  padding-top: 0.35rem;
+  border-top: 1px solid var(--mon-hairline);
+  width: 100%;
+  justify-content: space-between;
+}
+
+/* Performance grid */
 body.monitor-page .resource-trends-grid {
   display: grid !important;
   grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr) !important;
   gap: var(--mon-gap) !important;
   min-width: 0;
   margin: 0 !important;
+  align-items: stretch;
+}
+
+body.monitor-page .resource-trends-grid--performance {
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) !important;
+  grid-template-areas:
+    'latency resources'
+    'volume volume' !important;
+}
+
+body.monitor-page .resource-trends-grid--performance .latency-card {
+  grid-area: latency !important;
+}
+
+body.monitor-page .resource-trends-grid--performance .resource-load-card {
+  grid-area: resources !important;
+}
+
+body.monitor-page .resource-trends-grid--performance .endpoint-volume-card {
+  grid-area: volume !important;
 }
 
 body.monitor-page .resource-trends-grid--compact {
@@ -420,13 +714,23 @@ body.monitor-page .resource-trends-grid--compact {
 
 body.monitor-page .resource-trends-grid > .doc-card {
   min-height: 0 !important;
+  height: 100%;
+}
+
+body.monitor-page .latency-card {
+  grid-column: auto !important;
 }
 
 body.monitor-page .chart-container {
+  position: relative;
   width: 100%;
   max-width: 100%;
   min-width: 0;
   min-height: 140px;
+  overflow: hidden;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--mon-surface) 55%, transparent);
+  padding: 0.35rem;
 }
 
 body.monitor-page .chart-svg {
@@ -435,6 +739,35 @@ body.monitor-page .chart-svg {
   height: auto;
   min-height: 140px;
   max-height: 180px;
+}
+
+body.monitor-page .chart-tooltip {
+  z-index: 20;
+  pointer-events: none;
+}
+
+body.monitor-page .endpoint-volume-card {
+  min-height: 0 !important;
+  gap: 0.55rem;
+}
+
+body.monitor-page .endpoint-volume-chart {
+  grid-template-columns: repeat(auto-fit, minmax(56px, 1fr)) !important;
+  min-height: 120px !important;
+  gap: 0.5rem !important;
+  width: 100%;
+}
+
+body.monitor-page .endpoint-volume-bar {
+  grid-template-rows: auto minmax(64px, 1fr) auto !important;
+}
+
+body.monitor-page .endpoint-volume-bar__track {
+  height: 100% !important;
+  min-height: 64px;
+  width: 100%;
+  max-width: 28px;
+  margin-inline: auto;
 }
 
 body.monitor-page .monitor-table-scroll {
@@ -458,6 +791,13 @@ body.monitor-page .metrics-table td {
   text-align: left;
   border-bottom: 1px solid var(--mon-hairline);
   vertical-align: top;
+  white-space: nowrap;
+}
+
+body.monitor-page .metrics-table td:first-child {
+  white-space: normal;
+  word-break: break-word;
+  min-width: 8rem;
 }
 
 body.monitor-page .metrics-table th {
@@ -470,7 +810,6 @@ body.monitor-page .metrics-table th {
   top: 0;
 }
 
-/* Status pills */
 body.monitor-page .status-badge {
   min-height: 28px;
   padding: 0.25rem 0.55rem;
@@ -478,7 +817,7 @@ body.monitor-page .status-badge {
   letter-spacing: 0.04em;
 }
 
-/* ─── Compact status cards ─── */
+/* Health / OAuth cards */
 body.monitor-page .health-item {
   position: relative;
   display: flex !important;
@@ -508,6 +847,8 @@ body.monitor-page .health-item-left {
   gap: 0.55rem !important;
   flex: 1 1 auto;
   min-width: 0;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 body.monitor-page .health-info {
@@ -523,7 +864,6 @@ body.monitor-page .health-info h4 {
   line-height: 1.2;
   color: var(--text-primary, #1d1d1f);
   word-break: break-word;
-  padding-right: 0;
 }
 
 body.monitor-page .health-info p {
@@ -544,203 +884,70 @@ body.monitor-page .health-status-icon {
   font-size: 0.8rem !important;
 }
 
-body.monitor-page .health-metrics {
-  display: grid !important;
-  grid-template-columns: repeat(auto-fit, minmax(72px, 1fr)) !important;
-  gap: 0.3rem !important;
-  margin-top: 0 !important;
+body.monitor-page .health-item .integration-actions,
+body.monitor-page .health-item .health-metrics {
   width: 100%;
-  flex: 0 0 auto;
+  min-width: 0 !important;
+  align-items: stretch !important;
 }
 
-body.monitor-page .health-metric {
-  padding: 0.3rem 0.4rem !important;
-  border-radius: 10px;
-  border: 1px solid var(--mon-hairline);
-  background: color-mix(in srgb, var(--mon-card) 85%, transparent);
-  min-width: 0;
+body.monitor-page .health-item .integration-actions .btn,
+body.monitor-page .health-item .health-metrics > .btn {
+  width: 100%;
+  justify-content: center;
+  min-height: 34px;
 }
 
-body.monitor-page .health-metric-value {
-  font-size: 0.82rem !important;
-  font-weight: 700;
-  letter-spacing: -0.015em;
-  color: var(--text-primary, #1d1d1f);
-  word-break: break-word;
-  line-height: 1.2;
+body.monitor-page .health-item .integration-hint {
+  max-width: none !important;
+  text-align: left !important;
+  font-size: 0.72rem !important;
 }
 
-body.monitor-page .health-metric-label {
-  font-size: 0.58rem !important;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  color: var(--text-secondary, #6e6e73);
-}
-
-body.monitor-page .health-inline-link {
-  display: inline-block;
-  margin-top: 0.2rem;
-  font-size: 0.72rem;
-  font-weight: 650;
-  color: var(--accent-blue, #0071e3);
-  text-decoration: none;
-  word-break: break-all;
-}
-
-body.monitor-page .health-inline-link:hover {
-  text-decoration: underline;
-}
-
-body.monitor-page .response-time {
-  display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
-  margin-top: 0.2rem;
-}
-
-body.monitor-page .response-time-bar {
-  height: 3px;
-  border-radius: 999px;
-  background: rgb(0 0 0 / 8%);
-  overflow: hidden;
-}
-
-html.dark body.monitor-page .response-time-bar {
-  background: rgb(255 255 255 / 12%);
-}
-
-body.monitor-page .response-time-fill {
-  height: 100%;
-  border-radius: inherit;
-  background: var(--accent-blue, #0071e3);
-}
-
-body.monitor-page .response-time-fill.fast {
-  background: var(--accent-green, #34c759);
-}
-
-body.monitor-page .response-time-fill.medium {
-  background: var(--accent-yellow, #ff9500);
-}
-
-body.monitor-page .response-time-fill.slow {
-  background: var(--accent-red, #ff3b30);
-}
-
-/* Portfolio cards */
-body.monitor-page .portfolio-surface-card {
+/* Backend ops */
+body.monitor-page .backend-system-grid > *,
+body.monitor-page .ops-panel,
+body.monitor-page .ops-tile,
+body.monitor-page .ops-panel-body,
+body.monitor-page .endpoint-card,
+body.monitor-page .overview-card {
   min-height: 0 !important;
 }
 
-.portfolio-surface-card__top {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 0.35rem;
+body.monitor-page .ops-card {
+  min-height: 0 !important;
+  height: 100%;
+  gap: 0.55rem !important;
+  padding: 0.75rem 0.8rem !important;
+  border-radius: 14px !important;
+  background: color-mix(in srgb, var(--mon-surface) 55%, var(--mon-card)) !important;
+  box-shadow: none !important;
+  border: 1px solid var(--mon-hairline) !important;
 }
 
-.portfolio-surface-card__title {
-  margin: 0;
-  font-size: 0.9rem;
-  font-weight: 700;
-  letter-spacing: -0.015em;
+body.monitor-page .ops-card--hero {
+  grid-column: span 2;
+}
+
+body.monitor-page .ops-card h3 {
+  font-size: 0.95rem !important;
   line-height: 1.2;
 }
 
-.portfolio-surface-card__path {
-  margin: 0;
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 0.68rem;
-  color: var(--text-secondary, #6e6e73);
-  word-break: break-all;
+body.monitor-page .ops-card__kicker {
+  margin-bottom: 0.15rem !important;
+  font-size: 0.62rem !important;
 }
 
-.portfolio-surface-card__meta {
-  margin-top: 0.25rem;
+body.monitor-page .platform-health-summary {
+  margin-bottom: 0.65rem !important;
+}
+
+body.monitor-page .platform-health-stats {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.35rem;
+  gap: 0.4rem;
   align-items: center;
-}
-
-.portfolio-surface-card a.surface-link {
-  color: var(--accent-blue, #0071e3);
-  font-size: 0.75rem;
-  font-weight: 650;
-  text-decoration: none;
-}
-
-.portfolio-surface-card a.surface-link:hover {
-  text-decoration: underline;
-}
-
-/* Buttons */
-body.monitor-page .btn,
-body.monitor-page .control-center-refresh {
-  min-height: 36px;
-  border-radius: 999px;
-  font-weight: 650;
-  font-size: 0.8rem;
-  padding: 0.35rem 0.8rem;
-  gap: 0.3rem;
-  white-space: nowrap;
-}
-
-/* Empty states — smaller */
-body.monitor-page .empty-state {
-  display: grid;
-  place-items: center;
-  gap: 0.3rem;
-  min-height: 72px !important;
-  padding: 0.85rem !important;
-  text-align: center;
-  color: var(--text-secondary, #6e6e73);
-}
-
-body.monitor-page .empty-state.compact {
-  min-height: 64px !important;
-}
-
-body.monitor-page .empty-state h3 {
-  margin: 0;
-  font-size: 0.85rem;
-  font-weight: 650;
-  color: var(--text-primary, #1d1d1f);
-}
-
-body.monitor-page .empty-state p {
-  margin: 0;
-  font-size: 0.78rem;
-}
-
-/* Nav chrome */
-body.monitor-page .monitor-page-nav {
-  width: min(1080px, calc(100% - 1rem));
-  min-height: 48px;
-  padding: 6px 12px;
-}
-
-body.monitor-page .monitor-page-nav__home,
-body.monitor-page .monitor-page-nav__theme {
-  width: 40px;
-  height: 40px;
-  min-width: 40px;
-  min-height: 40px;
-}
-
-body.monitor-page .monitor-page-nav__back {
-  min-height: 40px;
-  padding-inline: 12px;
-}
-
-/* Resource bars denser */
-body.monitor-page .resource-bar-wrapper {
-  margin-bottom: 0.55rem !important;
-}
-
-body.monitor-page .resource-bar-wrapper:last-child {
-  margin-bottom: 0 !important;
 }
 
 body.monitor-page .doc-card-description,
@@ -751,54 +958,211 @@ body.monitor-page .compact-copy {
   line-height: 1.35 !important;
 }
 
-/* Backend tiles / ops panels from JS */
-body.monitor-page .backend-system-grid > *,
-body.monitor-page .ops-panel,
-body.monitor-page .ops-tile,
-body.monitor-page .ops-panel-body,
-body.monitor-page .endpoint-card,
-body.monitor-page .overview-card {
-  min-height: 0 !important;
+/* OAuth owner auth */
+body.monitor-page .integration-owner-auth {
+  margin: 0 0 0.75rem !important;
+  padding: 0.75rem 0.85rem !important;
+  border-radius: 14px !important;
+  border: 1px solid var(--mon-hairline) !important;
+  background: color-mix(in srgb, var(--mon-surface) 60%, var(--mon-card)) !important;
+  box-shadow: none !important;
 }
 
-/* Kill oversized empty chrome from base monitor.css */
-body.monitor-page main > section.section {
-  padding-top: var(--mon-card-pad) !important;
-  padding-bottom: var(--mon-card-pad) !important;
+body.monitor-page .integration-owner-auth__row {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.5rem;
+  align-items: stretch;
 }
 
-body.monitor-page .control-center-statusbar {
+body.monitor-page .integration-owner-auth__row input {
+  min-width: 0;
+  width: 100%;
+}
+
+/* Security */
+body.monitor-page .security-summary {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: var(--mon-gap) !important;
+  margin-bottom: 0 !important;
+  align-items: stretch;
+}
+
+body.monitor-page .security-summary > .doc-card {
+  min-height: 11rem;
+  height: 100%;
+}
+
+body.monitor-page .security-log-container {
+  flex: 1 1 auto;
+  max-height: 220px;
+  min-height: 100px;
+}
+
+/* Events */
+body.monitor-page .log-filter-bar {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  gap: 0.55rem !important;
+  margin-bottom: 0.7rem !important;
+  align-items: center;
+}
+
+body.monitor-page .log-tabs {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
-  gap: 0.4rem;
+  gap: 0.25rem;
+  min-width: 0;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-body.monitor-page #uptime-history-grid,
-body.monitor-page #status-distribution-chart {
-  min-height: 0;
+body.monitor-page .log-tab-btn {
+  flex: 1 1 auto;
+  min-height: 32px;
+  text-align: center;
+  white-space: nowrap;
 }
 
-body.monitor-page .donut-chart {
+body.monitor-page .event-list {
+  gap: 0.45rem !important;
+}
+
+body.monitor-page .event-item {
+  gap: 0.65rem !important;
+  padding: 0.7rem 0.8rem !important;
+  border-radius: 12px !important;
+  min-width: 0;
+  align-items: flex-start;
+}
+
+/* AI metrics */
+body.monitor-page #ai-metrics.health-grid,
+body.monitor-page #ai-metrics {
+  display: block !important;
+  width: 100% !important;
+  min-width: 0 !important;
+}
+
+body.monitor-page .ai-metrics-dashboard {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)) !important;
+  gap: var(--mon-gap) !important;
+  width: 100% !important;
+  min-width: 0 !important;
   max-width: 100%;
 }
 
-body.monitor-page .donut-chart__visual svg {
-  width: min(120px, 100%);
-  height: auto;
+body.monitor-page .ai-metric-card {
+  min-height: 0 !important;
+  min-width: 0;
+  height: 100%;
+  padding: 0.75rem 0.85rem !important;
+}
+
+body.monitor-page .ai-metric-val-title {
+  font-size: 1.15rem !important;
+  overflow-wrap: anywhere;
+}
+
+body.monitor-page .ai-model-name {
+  max-width: 100% !important;
+}
+
+body.monitor-page .doc-link-tile-grid {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)) !important;
+  gap: 0.5rem !important;
+}
+
+body.monitor-page .doc-link-tile {
+  min-width: 0;
+  padding: 0.7rem 0.8rem !important;
+}
+
+/* Empty / loading — compact, no giant voids */
+body.monitor-page .empty-state {
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: 12px;
+  border: 1px dashed var(--mon-hairline);
+  background: color-mix(in srgb, var(--mon-surface) 70%, transparent);
+  padding: 1rem 0.9rem !important;
+  min-height: 0 !important;
+  text-align: center;
+}
+
+body.monitor-page .empty-state.compact {
+  padding: 0.85rem 0.75rem !important;
+  text-align: left;
+}
+
+body.monitor-page .empty-state i {
+  font-size: 1.25rem !important;
+  margin-bottom: 0.35rem !important;
+}
+
+body.monitor-page .empty-state h3 {
+  font-size: 0.95rem !important;
+  margin: 0 0 0.25rem !important;
+}
+
+body.monitor-page .empty-state p {
+  margin: 0 !important;
+  font-size: 0.8rem !important;
+  line-height: 1.35;
+}
+
+body.monitor-page .portfolio-surface-grid > .empty-state,
+body.monitor-page .backend-system-grid > .empty-state,
+body.monitor-page .health-grid > .empty-state,
+body.monitor-page .platform-health-grid > .empty-state,
+body.monitor-page #runtime-snapshot-card > .empty-state {
+  grid-column: 1 / -1;
+  min-height: 4.5rem !important;
+}
+
+body.monitor-page #client-probes .empty-state {
+  min-height: 8rem !important;
+  padding: 1.15rem 1rem !important;
+}
+
+body.monitor-page #client-probes .empty-state i {
+  font-size: 1.35rem;
+  color: var(--accent-blue, #0071e3);
+  margin-bottom: 0.2rem;
+}
+
+body.monitor-page .monitor-section-rail a:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--accent-blue, #0071e3) 55%, transparent);
+  outline-offset: 1px;
 }
 
 /* ─── Breakpoints ─── */
 @media (max-width: 1100px) {
+  body.monitor-page .monitor-top-row {
+    grid-template-columns: minmax(0, 1.35fr) minmax(240px, 0.95fr);
+  }
+
+  body.monitor-page .backend-system-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  body.monitor-page .ops-card--hero {
+    grid-column: span 2;
+  }
+
+  body.monitor-page .log-filter-bar {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (max-width: 960px) {
   body.monitor-page .control-center-grid {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
     grid-template-areas:
       'info info'
       'visuals telemetry' !important;
-  }
-
-  body.monitor-page .control-center-telemetry {
-    grid-column: auto;
   }
 }
 
@@ -807,8 +1171,18 @@ body.monitor-page .donut-chart__visual svg {
     grid-template-columns: 1fr !important;
   }
 
-  body.monitor-page .resource-trends-grid {
+  body.monitor-page #runtime-snapshot-card.monitor-summary-panel {
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  body.monitor-page .resource-trends-grid,
+  body.monitor-page .resource-trends-grid--performance {
     grid-template-columns: 1fr !important;
+    grid-template-areas:
+      'latency'
+      'resources'
+      'volume' !important;
   }
 
   body.monitor-page .control-center-grid {
@@ -817,7 +1191,16 @@ body.monitor-page .donut-chart__visual svg {
       'info'
       'visuals'
       'telemetry' !important;
-    gap: 0.85rem !important;
+    gap: 0.75rem !important;
+  }
+
+  body.monitor-page .control-center-telemetry {
+    grid-template-columns: 1fr 1fr !important;
+    height: auto;
+  }
+
+  body.monitor-page .control-center-telemetry > .visual-section-label {
+    grid-column: 1 / -1;
   }
 
   body.monitor-page .control-center-info,
@@ -827,24 +1210,28 @@ body.monitor-page .donut-chart__visual svg {
     max-width: 100% !important;
   }
 
-  body.monitor-page .control-center-visuals {
-    border: 0 !important;
-    padding: 0 !important;
-  }
-
   body.monitor-page .health-grid,
   body.monitor-page .portfolio-surface-grid,
   body.monitor-page .docs-grid,
-  body.monitor-page .backend-system-grid {
+  body.monitor-page .backend-system-grid,
+  body.monitor-page .platform-health-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
   }
 
-  body.monitor-page .metrics-table-wrapper,
-  body.monitor-page .table-responsive,
-  body.monitor-page #endpoint-metrics-section,
-  body.monitor-page .section {
-    max-width: 100%;
-    min-width: 0;
+  body.monitor-page .security-summary {
+    grid-template-columns: 1fr !important;
+  }
+
+  body.monitor-page .ops-card--hero {
+    grid-column: auto;
+  }
+
+  body.monitor-page .integration-owner-auth__row {
+    grid-template-columns: 1fr !important;
+  }
+
+  body.monitor-page .integration-owner-auth__row .btn {
+    width: 100%;
   }
 
   body.monitor-page .metrics-table {
@@ -859,36 +1246,41 @@ body.monitor-page .donut-chart__visual svg {
 @media (max-width: 640px) {
   body.monitor-page {
     padding-top: calc(58px + env(safe-area-inset-top, 0px));
+    /* Keep FABs from covering cards */
+    padding-bottom: max(5.5rem, env(safe-area-inset-bottom, 0px));
   }
 
   body.monitor-page #main-content.monitor-container {
     padding: 0.35rem var(--mon-gutter) 1.25rem !important;
-    max-width: 100%;
-    overflow-x: clip;
+    max-width: 100% !important;
+    width: 100% !important;
   }
 
-  body.monitor-page .monitor-page-nav__label {
-    font-size: 13px;
+  body.monitor-page .monitor-edge-banner,
+  body.monitor-page .monitor-section-rail,
+  body.monitor-page .monitor-top-row,
+  body.monitor-page main > section.section {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  body.monitor-page .control-center-visuals {
+    overflow: hidden;
+  }
+
+  body.monitor-page .donut-chart {
+    grid-template-columns: 56px minmax(0, 1fr) !important;
+  }
+
+  body.monitor-page .donut-chart__visual,
+  body.monitor-page .donut-chart__visual svg {
+    width: 56px !important;
+    height: 56px !important;
   }
 
   body.monitor-page .monitor-page-nav__kicker {
     display: none;
-  }
-
-  body.monitor-page .monitor-summary-eyebrow,
-  body.monitor-page .control-center-eyebrow {
-    font-size: 0.7rem !important;
-  }
-
-  body.monitor-page .status-badge {
-    font-size: 0.72rem !important;
-    white-space: normal;
-    line-height: 1.25;
-  }
-
-  body.monitor-page .monitor-refresh-note {
-    font-size: 0.75rem !important;
-    line-height: 1.3;
   }
 
   body.monitor-page .meta-stats-stack,
@@ -896,94 +1288,51 @@ body.monitor-page .donut-chart__visual svg {
     grid-template-columns: 1fr 1fr !important;
   }
 
-  body.monitor-page .control-center-telemetry .overview-item {
-    min-height: 4.25rem !important;
-    padding: 0.65rem 0.7rem !important;
-  }
-
-  body.monitor-page .overview-item-label span {
-    font-size: 0.78rem !important;
-    line-height: 1.25;
-  }
-
   body.monitor-page .health-grid,
   body.monitor-page .docs-grid,
   body.monitor-page .backend-system-grid,
-  body.monitor-page .portfolio-surface-grid {
+  body.monitor-page .portfolio-surface-grid,
+  body.monitor-page .platform-health-grid {
     grid-template-columns: 1fr !important;
   }
 
-  body.monitor-page .section-header {
-    flex-direction: row;
-    align-items: center;
-    gap: 0.4rem;
-  }
-
-  body.monitor-page .control-center-statusbar {
-    width: 100%;
-    flex-wrap: wrap;
-    gap: 0.4rem;
-  }
-
+  body.monitor-page .control-center-statusbar,
   body.monitor-page .control-center-actions {
     width: 100%;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 0.45rem;
-  }
-
-  body.monitor-page .control-center-actions .btn {
-    flex: 0 0 auto;
+    gap: 0.4rem;
   }
 
   body.monitor-page .monitor-section-rail {
     top: calc(54px + env(safe-area-inset-top, 0px));
     border-radius: 14px;
-    margin-bottom: 0.5rem;
     position: relative;
     scrollbar-width: thin;
-    mask-image: linear-gradient(90deg, #000 0%, #000 calc(100% - 1.5rem), transparent 100%);
   }
 
-  body.monitor-page .monitor-section-rail::after {
-    content: 'Swipe';
-    position: absolute;
-    right: 0.55rem;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 0.65rem;
-    font-weight: 600;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    color: var(--text-tertiary, #86868b);
-    pointer-events: none;
-    opacity: 0.85;
+  body.monitor-page .log-tabs {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
   }
 
-  body.monitor-page .monitor-section-rail a {
-    white-space: nowrap;
-    flex-shrink: 0;
+  body.monitor-page .log-tab-btn {
+    flex: 0 0 auto;
   }
 
-  body.monitor-page .section,
-  body.monitor-page .monitor-summary-card,
-  body.monitor-page .header-actions,
-  body.monitor-page .section-actions,
-  body.monitor-page .control-center-actions {
-    min-width: 0;
-    max-width: 100%;
-  }
-
-  body.monitor-page .control-center-actions .btn,
-  body.monitor-page .header-actions .btn,
-  body.monitor-page .section-actions .btn {
-    max-width: 100%;
-    overflow-wrap: anywhere;
+  body.monitor-page .portfolio-surface-card {
+    min-height: 0 !important;
   }
 
   body.monitor-page .health-item-left {
     padding-right: 3.25rem;
+  }
+
+  body.monitor-page #runtime-snapshot-card .env-pill-list {
+    grid-template-columns: 1fr !important;
   }
 }
 
