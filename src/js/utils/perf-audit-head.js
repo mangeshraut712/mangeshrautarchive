@@ -155,7 +155,12 @@
     'a.education-proof{min-height:44px!important}' +
     /* Debug Runner summary is only styled by deferred sheets — pin target-size here */
     '#debug-runner-section .debug-runner-disclosure>summary,.debug-runner-disclosure>summary{display:flex!important;align-items:center!important;justify-content:center!important;gap:0.5rem!important;min-height:48px!important;min-width:48px!important;padding:0.85rem 1.25rem!important;box-sizing:border-box!important;line-height:1.3!important;font-size:1rem!important;list-style:none!important;cursor:pointer!important}' +
-    '#debug-runner-section .debug-runner-disclosure>summary::-webkit-details-marker,.debug-runner-disclosure>summary::-webkit-details-marker{display:none!important}';
+    '#debug-runner-section .debug-runner-disclosure>summary::-webkit-details-marker,.debug-runner-disclosure>summary::-webkit-details-marker{display:none!important}' +
+    /* Homepage FAQ — homepage.css is stripped in perf-audit; keep tap targets ≥24×24 */
+    '.section-faq .faq-list{display:flex!important;flex-direction:column!important;gap:1rem!important}' +
+    '.section-faq .faq-item{box-sizing:border-box!important}' +
+    '.section-faq .faq-item>summary{display:flex!important;align-items:center!important;min-height:48px!important;min-width:48px!important;padding:0.95rem 0!important;box-sizing:border-box!important;line-height:1.35!important;font-size:1.05rem!important;list-style:none!important;cursor:pointer!important}' +
+    '.section-faq .faq-item>summary::-webkit-details-marker{display:none!important}';
   (document.head || document.documentElement).appendChild(critical);
 
   function isAllowedStylesheet(href) {
