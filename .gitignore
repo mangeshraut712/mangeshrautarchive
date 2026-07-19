@@ -41,6 +41,7 @@ CLAUDE.md
 .claude/
 .factory/
 .trae/
+.superpowers/
 .windsurf/
 skills/
 *.swp
