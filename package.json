@@ -1,6 +1,7 @@
 {
   "name": "mangeshrautarchive",
   "type": "module",
+  "license": "MIT",
   "main": "src/js/entry.js",
   "scripts": {
     "check-node": "node scripts/utils/check-node.mjs",

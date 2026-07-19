@@ -64,7 +64,7 @@ async function assertVendorAssets() {
   }
 }
 
-const staticExtras = ['CNAME'];
+const staticExtras = ['CNAME', 'LICENSE'];
 
 const OPENROUTER_MODEL_ALIASES = {
   'x-ai/grok-4.1-fast': 'x-ai/grok-4.3',

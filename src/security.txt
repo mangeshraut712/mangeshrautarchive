@@ -1,8 +1,11 @@
-# Security contact (RFC 9116) — prefer /.well-known/security.txt
+# Security contact (RFC 9116) — prefer /.well-known/security.txt — updated 2026-07-19
+Contact: mailto:mangeshraut712@gmail.com
 Contact: mailto:mbr63@drexel.edu
 Contact: mailto:mbr63drexel@gmail.com
-Expires: 2027-07-15T23:59:59.000Z
+Contact: https://github.com/mangeshraut712/mangeshrautarchive/security/advisories/new
+Expires: 2027-07-19T23:59:59.000Z
 Preferred-Languages: en
+Canonical: https://mangeshraut712.github.io/mangeshrautarchive/.well-known/security.txt
 Canonical: https://mangeshraut.pro/.well-known/security.txt
-Policy: https://mangeshraut.pro/#contact
-Hiring: https://mangeshraut.pro/#contact
+Policy: https://github.com/mangeshraut712/mangeshrautarchive/blob/main/SECURITY.md
+Hiring: https://mangeshraut712.github.io/mangeshrautarchive/#contact

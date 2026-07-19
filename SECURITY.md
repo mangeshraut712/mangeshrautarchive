@@ -1,44 +1,75 @@
 # Security Policy
 
+> **Last updated:** 2026-07-19 (July 2026)
+
 ## Supported Versions
 
-| Version | Supported          |
-| ------- | ------------------ |
-| latest  | ✅ Fully supported |
+| Version / surface                                                                                  | Supported                                                      |
+| -------------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
+| `main` (latest)                                                                                    | ✅ Fully supported                                             |
+| [mangeshraut712.github.io/mangeshrautarchive](https://mangeshraut712.github.io/mangeshrautarchive) | ✅ GitHub Pages (active public mirror)                         |
+| [mangeshraut.pro](https://mangeshraut.pro)                                                         | ✅ Primary hostname (Vercel) when production deploy is enabled |
+
+Only the latest commit on `main` receives security fixes. Older tags or forks are not supported.
 
 ## Reporting a Vulnerability
 
-If you discover a security vulnerability, please report it responsibly:
+Please report security issues **privately**. Do **not** open a public GitHub issue or discussion for vulnerabilities.
 
-1. **Do NOT** open a public issue.
-2. Email **[mangeshraut712@gmail.com](mailto:mangeshraut712@gmail.com)** with:
-   - A description of the vulnerability
-   - Steps to reproduce it
-   - Potential impact assessment
-3. You will receive an acknowledgment within **48 hours**.
-4. A fix will be developed and deployed as soon as possible.
+### Preferred channels (in order)
+
+1. **GitHub private advisory** — [Report a vulnerability](https://github.com/mangeshraut712/mangeshrautarchive/security/advisories/new)
+2. **Email** (include a clear subject like `SECURITY: short summary`):
+   - [mangeshraut712@gmail.com](mailto:mangeshraut712@gmail.com)
+   - [mbr63@drexel.edu](mailto:mbr63@drexel.edu)
+   - [mbr63drexel@gmail.com](mailto:mbr63drexel@gmail.com)
+
+### What to include
+
+- Description of the issue and affected URL(s) / endpoint(s)
+- Steps to reproduce (PoC if available)
+- Potential impact (confidentiality, integrity, availability)
+- Your contact details and any disclosure timeline preferences
+
+### Response targets (July 2026)
+
+| Step                      | Target                                |
+| ------------------------- | ------------------------------------- |
+| Acknowledgment            | Within **48 hours**                   |
+| Initial triage / severity | Within **5 business days**            |
+| Fix or mitigation plan    | As soon as practical for the severity |
+
+We follow coordinated disclosure. Please give us a reasonable window to ship a fix before public discussion.
+
+Machine-readable contact details also live in RFC 9116 [`security.txt`](https://mangeshraut712.github.io/mangeshrautarchive/.well-known/security.txt) (and `/security.txt`).
 
 ## Security Measures
 
-This project implements the following security practices:
+This portfolio implements these practices on `main` as of July 2026:
 
-- **Content Security Policy (CSP)** — strict CSP headers with reporting
-- **HSTS** — Strict-Transport-Security with preload
-- **Automated scanning** — `npm run security-check` scans for exposed API keys on every commit
-- **Dependency auditing** — `npm audit` runs in CI pipeline; Dependabot monitors for known vulnerabilities
-- **No client-side secrets** — all API keys are server-side only (FastAPI proxy)
-- **Input sanitization** — all user input to the chatbot is sanitized before processing
+- **Content Security Policy (CSP)** — strict CSP headers with reporting where configured
+- **HSTS** — Strict-Transport-Security (production hosts)
+- **Automated secret scanning** — `npm run security-check` blocks exposed API keys before commit
+- **Dependency hygiene** — `npm audit` in CI; Dependabot monitors known CVEs
+- **Server-side secrets only** — OpenRouter and other provider keys stay on FastAPI / edge workers; never shipped to browsers
+- **Input sanitization** — chatbot and user-facing inputs are sanitized before processing
+- **GitHub Pages `.nojekyll`** — so `/.well-known/security.txt` and other agent discovery files publish correctly
 
 ## Scope
 
-The following are in scope for security reports:
+**In scope**
 
-- **[mangeshraut.pro](https://mangeshraut.pro)** — primary Vercel deployment
-- **[mangeshraut712.github.io/mangeshrautarchive](https://mangeshraut712.github.io/mangeshrautarchive)** — GitHub Pages mirror
-- API endpoints at `/api/*`
+- Public site surfaces above (Pages + Vercel when live)
+- FastAPI `/api/*` routes and Cloudflare AssistMe chat worker endpoints used by the portfolio
+- Client-side XSS / secret leakage / auth flaws in this repository’s code
 
-Out of scope:
+**Out of scope**
 
-- Third-party services (OpenRouter, Vercel infrastructure, GitHub infrastructure)
-- Social engineering attacks
-- Denial of service attacks
+- Third-party platforms (OpenRouter, Vercel, GitHub, Cloudflare account compromise unrelated to this repo)
+- Social engineering / phishing against personal accounts
+- Volumetric denial-of-service
+- Issues only present on outdated forks or local misconfiguration
+
+## License
+
+This project is released under the [MIT License](LICENSE) (Copyright 2025–2026 Mangesh Raut).

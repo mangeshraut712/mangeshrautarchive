@@ -575,7 +575,8 @@ Issues and PRs welcome under MIT. Keep the stack **vanilla ESM + FastAPI** — n
 
 ## 18. License & contact
 
-**MIT** — [LICENSE](LICENSE)
+**MIT** — [LICENSE](LICENSE) · Copyright © 2025–2026 Mangesh Raut  
+Security reports: [SECURITY.md](SECURITY.md) · [security.txt](https://mangeshraut712.github.io/mangeshrautarchive/.well-known/security.txt)
 
 **Mangesh Raut** · MS CS, Drexel University  
 [Portfolio (Pages)](https://mangeshraut712.github.io/mangeshrautarchive/) · [mangeshraut.pro](https://mangeshraut.pro) · [LinkedIn](https://www.linkedin.com/in/mangeshraut71298) · [GitHub](https://github.com/mangeshraut712) · mbr63@drexel.edu
