@@ -301,7 +301,7 @@ html.dark #home .hero-role-flip strong {
   align-items: center;
   gap: 0.4rem;
   padding: 0.5rem 1rem;
-  border-radius: 100px;
+  border-radius: 980px;
   font-size: 0.875rem;
   font-weight: 600;
   transition:
@@ -311,18 +311,10 @@ html.dark #home .hero-role-flip strong {
     box-shadow var(--duration-fast) var(--apple-ease),
     transform var(--duration-fast) var(--apple-ease),
     opacity var(--duration-fast) var(--apple-ease);
-  border: 1px solid var(--border-subtle);
-  color: var(--text-primary);
-  box-shadow: var(--shadow-sm);
-}
-
-#home .portfolio-reach-badge,
-#home .hero-pill-badge {
+  border: 1px solid #e5e5ea;
+  color: #1d1d1f;
   background: #ffffff !important;
-}
-
-#home .vibe-coder-badge {
-  background: var(--bg-primary);
+  box-shadow: none !important;
 }
 
 #home .portfolio-reach-badge,
@@ -338,7 +330,7 @@ html.dark #home .hero-role-flip strong {
 #home .portfolio-reach-badge.is-active {
   transform: translateY(-2px);
   border-color: #0071e3 !important;
-  box-shadow: var(--shadow-md);
+  box-shadow: none !important;
 }
 
 html.dark #home .vibe-coder-badge:hover,
@@ -348,20 +340,17 @@ html.dark #home .portfolio-reach-badge:focus-visible,
 html.dark #home .vibe-coder-badge.is-active,
 html.dark #home .portfolio-reach-badge.is-active {
   border-color: #2997ff !important;
-  box-shadow: var(--shadow-md);
+  box-shadow: none !important;
 }
 
-html.dark #home .vibe-coder-badge {
-  background: var(--bg-primary-dark);
-  border-color: var(--border-subtle-dark);
-  color: var(--text-primary-dark);
-}
-
+html.dark #home .vibe-coder-badge,
 html.dark #home .portfolio-reach-badge,
 html.dark #home .hero-pill-badge {
   background: #000000 !important;
-  border-color: var(--border-subtle-dark);
-  color: var(--text-primary-dark);
+  background-color: #000000 !important;
+  border-color: rgb(255 255 255 / 14%);
+  color: #f5f5f7;
+  box-shadow: none !important;
 }
 
 /* Music Card — surfaces/hover only; width/flex owned by chrome-surfaces.css */

@@ -172,15 +172,14 @@ html.dark {
   overflow: hidden;
 }
 
-/* Compact chips / badges — smaller continuous radius */
+/* Compact chips / badges — smaller continuous radius.
+   Hero Vibe/Reach pills stay capsule (980px) via chrome-surfaces — do not include them here. */
 :is(
   .skill-badge,
   #skills-container .skill-badge,
   #skills-container .skill-scroll-wrapper .skill-badge,
   .project-lens-chip,
   .proj-filter-btn,
-  .hero-pill-badge,
-  .portfolio-reach-badge,
   .currently-tab,
   .systems-writing-chip,
   .systems-token-card,

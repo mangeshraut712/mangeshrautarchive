@@ -517,7 +517,11 @@ body.systems-page button.uses-control-tile.is-active[type='button'] i {
   -webkit-text-fill-color: #ffffff !important;
 }
 
-/* Hero badges + Portfolio Reach — solid white/black only */
+/*
+ * Hero Vibe Coder / Reach pills — permanent solid lock.
+ * Never use elevated grey (#1c1c1e / #2c2c2e fills) or frosted white-alpha in dark mode.
+ * Keep capsule radius so they never read as grey mini-cards.
+ */
 html:not(.dark) #home :is(.vibe-coder-badge, .portfolio-reach-badge, .hero-pill-badge),
 html:not(.dark) #home :is(.portfolio-reach-panel, .vibe-stack-card, .reach-realtime-section) {
   background: #ffffff !important;
@@ -529,7 +533,10 @@ html:not(.dark) #home :is(.portfolio-reach-panel, .vibe-stack-card, .reach-realt
 }
 
 html.dark #home :is(.vibe-coder-badge, .portfolio-reach-badge, .hero-pill-badge),
-html.dark #home :is(.portfolio-reach-panel, .vibe-stack-card, .reach-realtime-section) {
+html.dark #home :is(.portfolio-reach-panel, .vibe-stack-card, .reach-realtime-section),
+html.dark #home :is(.vibe-coder-badge, .portfolio-reach-badge, .hero-pill-badge):hover,
+html.dark #home :is(.vibe-coder-badge, .portfolio-reach-badge, .hero-pill-badge):focus-visible,
+html.dark #home :is(.vibe-coder-badge, .portfolio-reach-badge, .hero-pill-badge).is-active {
   background: #000000 !important;
   background-color: #000000 !important;
   background-image: none !important;
@@ -538,12 +545,47 @@ html.dark #home :is(.portfolio-reach-panel, .vibe-stack-card, .reach-realtime-se
   box-shadow: none !important;
 }
 
+html:not(.dark) #home :is(.vibe-coder-badge, .portfolio-reach-badge, .hero-pill-badge) {
+  border: 1px solid #e5e5ea !important;
+  border-radius: 980px !important;
+  -webkit-appearance: none !important;
+  appearance: none !important;
+}
+
+html.dark #home :is(.vibe-coder-badge, .portfolio-reach-badge, .hero-pill-badge) {
+  border: 1px solid rgb(255 255 255 / 14%) !important;
+  border-radius: 980px !important;
+  color: #f5f5f7 !important;
+  -webkit-appearance: none !important;
+  appearance: none !important;
+}
+
 html:not(.dark) #home :is(.portfolio-reach-panel, .vibe-stack-card, .reach-realtime-section) {
   border-color: #e5e5ea !important;
 }
 
 html.dark #home :is(.portfolio-reach-panel, .vibe-stack-card, .reach-realtime-section) {
-  border-color: #2c2c2e !important;
+  border-color: rgb(255 255 255 / 14%) !important;
+}
+
+/* Vibe tool chips inside the flyout — solid canvas, not grey white-alpha */
+html:not(.dark) #home .vibe-tool-chip {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  border-color: #e5e5ea !important;
+  box-shadow: none !important;
+}
+
+html.dark #home .vibe-tool-chip {
+  background: #000000 !important;
+  background-color: #000000 !important;
+  border-color: rgb(255 255 255 / 14%) !important;
+  color: #f5f5f7 !important;
+  box-shadow: none !important;
+}
+
+html.dark #home .vibe-tool-icon {
+  background: #ffffff !important;
 }
 
 /* A11y panel chips — solid canvas, not elevated grey */
