@@ -6,6 +6,16 @@
   "outputDirectory": "dist",
   "cleanUrls": true,
   "trailingSlash": false,
+  "redirects": [
+    { "source": "/index.html", "destination": "/", "permanent": true },
+    { "source": "/about", "destination": "/", "permanent": true },
+    { "source": "/about.html", "destination": "/", "permanent": true },
+    { "source": "/gh.html", "destination": "/", "permanent": true },
+    { "source": "/monitor.html", "destination": "/monitor", "permanent": true },
+    { "source": "/travel.html", "destination": "/travel", "permanent": true },
+    { "source": "/systems.html", "destination": "/systems", "permanent": true },
+    { "source": "/uses.html", "destination": "/uses", "permanent": true }
+  ],
   "functions": {
     "api/index.py": {
       "maxDuration": 60,

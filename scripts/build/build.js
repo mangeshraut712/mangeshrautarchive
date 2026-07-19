@@ -485,6 +485,7 @@ async function build() {
     generateBlogPages(distDir),
     generateCaseStudyPages(distDir),
     generateSitemap(distDir),
+    generateRobotsTxt(distDir),
     generateFeeds(distDir),
   ]);
 
@@ -661,6 +662,32 @@ ${urlEntries}
   console.log(
     `📅 Sitemap generated with ${staticPages.length} URLs (latest blog: ${latestPostDate})`
   );
+}
+
+/**
+ * Rewrite Sitemap/Host in robots.txt so crawlers are not pointed at a disabled
+ * primary domain (mangeshraut.pro 402) while the live mirror is GitHub Pages.
+ */
+async function generateRobotsTxt(distDir) {
+  const siteUrl = (
+    process.env.OPENROUTER_SITE_URL ||
+    process.env.PAGES_SITE_URL ||
+    'https://mangeshraut712.github.io/mangeshrautarchive'
+  ).replace(/\/$/, '');
+  const robotsPath = resolve(distDir, 'robots.txt');
+  if (!(await pathExists(robotsPath))) {
+    console.warn('⚠️  robots.txt missing in dist — skipped Sitemap/Host rewrite');
+    return;
+  }
+  let robots = await readFile(robotsPath, 'utf8');
+  robots = robots
+    .replace(/^Sitemap:\s*.*$/m, `Sitemap: ${siteUrl}/sitemap.xml`)
+    .replace(/^Host:\s*.*$/m, `Host: ${siteUrl}`);
+  if (!/^Sitemap:/m.test(robots)) {
+    robots = `${robots.trimEnd()}\n\nSitemap: ${siteUrl}/sitemap.xml\nHost: ${siteUrl}\n`;
+  }
+  await writeFile(robotsPath, robots, 'utf8');
+  console.log(`🤖 robots.txt Sitemap/Host → ${siteUrl}`);
 }
 
 // Minify HTML files for better PageSpeed scores

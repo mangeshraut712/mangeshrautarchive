@@ -26,4 +26,18 @@ describe('Vercel FastAPI routing', () => {
       '@router.get("/api/analytics/reach"'
     );
   });
+
+  it('redirects duplicate HTML paths to clean URLs for SEO', () => {
+    const config = JSON.parse(readProjectFile('vercel.json'));
+    const redirects = config.redirects ?? [];
+    const bySource = Object.fromEntries(redirects.map(rule => [rule.source, rule]));
+
+    expect(config.cleanUrls).toBe(true);
+    expect(bySource['/monitor.html']?.destination).toBe('/monitor');
+    expect(bySource['/travel.html']?.destination).toBe('/travel');
+    expect(bySource['/systems.html']?.destination).toBe('/systems');
+    expect(bySource['/about.html']?.destination).toBe('/');
+    expect(bySource['/index.html']?.destination).toBe('/');
+    expect(bySource['/monitor.html']?.permanent).toBe(true);
+  });
 });

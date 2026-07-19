@@ -83,5 +83,8 @@ Disallow: /
 # llms.txt, ai.txt, humans.txt, security.txt under /.well-known/
 
 # =============================================================================
-Sitemap: https://mangeshraut.pro/sitemap.xml
-Host: https://mangeshraut.pro
+# Primary crawl host while mangeshraut.pro returns DEPLOYMENT_DISABLED (402).
+# Build overwrites these lines in dist/ to match OPENROUTER_SITE_URL / Pages URL.
+# =============================================================================
+Sitemap: https://mangeshraut712.github.io/mangeshrautarchive/sitemap.xml
+Host: https://mangeshraut712.github.io/mangeshrautarchive

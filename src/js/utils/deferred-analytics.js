@@ -8,6 +8,7 @@
  * the same way as https://mangeshraut.pro.
  *
  * Measurement ID: G-HVKF4N150Y (one web stream for all portfolio hosts).
+ * Local / preview hosts are never tracked — they previously polluted ~87% of sessions.
  */
 (function () {
   if (window.__PERF_AUDIT__) {
@@ -15,13 +16,17 @@
   }
 
   const hostname = String((window.location && window.location.hostname) || '').toLowerCase();
-  if (
-    !hostname ||
-    hostname === 'localhost' ||
-    hostname === '127.0.0.1' ||
-    hostname === '0.0.0.0' ||
-    hostname === '[::1]'
-  ) {
+
+  /** @param {string} host */
+  function isProductionAnalyticsHost(host) {
+    if (!host) return false;
+    if (host === 'mangeshraut.pro' || host === 'www.mangeshraut.pro') return true;
+    if (host === 'mangeshraut712.github.io') return true;
+    if (host === 'mraut.vercel.app' || host === 'mangeshrautarchive.vercel.app') return true;
+    return false;
+  }
+
+  if (!isProductionAnalyticsHost(hostname)) {
     return;
   }
 
