@@ -494,27 +494,9 @@ body {
   }
 }
 
-/* FontAwesome font-display override for PageSpeed optimization */
-@font-face {
-  font-family: 'Font Awesome 6 Free';
-  font-style: normal;
-  font-weight: 900;
-  font-display: swap;
-  src: url('../vendor/fontawesome/webfonts/fa-solid-900.woff2') format('woff2');
-}
-
-@font-face {
-  font-family: 'Font Awesome 6 Free';
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src: url('../vendor/fontawesome/webfonts/fa-regular-400.woff2') format('woff2');
-}
-
-@font-face {
-  font-family: 'Font Awesome 6 Brands';
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src: url('../vendor/fontawesome/webfonts/fa-brands-400.woff2') format('woff2');
-}
+/*
+ * Font Awesome @font-face lives in assets/css/font-awesome-display.css (linked,
+ * not inlined). Do not declare url('../vendor/...') here — cross-browser-responsive.css
+ * is inlined into index.html as hero-critical, and document-relative ../vendor
+ * resolves to https://…github.io/vendor/… (404) on project Pages.
+ */

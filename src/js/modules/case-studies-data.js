@@ -51,7 +51,7 @@ export const caseStudies = [
   {
     slug: 'portfolio',
     repoName: 'mangeshrautarchive',
-    title: 'mangeshraut.pro — Agentic Portfolio',
+    title: 'Agentic Portfolio',
     tagline: BRAND_TAGLINE,
     demoUrl: 'https://mangeshraut712.github.io/mangeshrautarchive/',
     repoUrl: 'https://github.com/mangeshraut712/mangeshrautarchive',

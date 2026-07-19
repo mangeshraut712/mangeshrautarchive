@@ -294,10 +294,14 @@ async function bundleAboveFoldCss(distDir) {
     }
   );
 
-  const heroCriticalContent = await readFile(
-    resolve(distDir, 'assets/css/hero-critical.bundle.css'),
-    'utf8'
-  );
+  // Document-relative ../ paths break when this CSS is inlined into index.html
+  // (e.g. ../vendor/fontawesome → https://host/vendor/... on GitHub project Pages).
+  const heroCriticalContent = (
+    await readFile(resolve(distDir, 'assets/css/hero-critical.bundle.css'), 'utf8')
+  ).replace(/url\(\s*(['"]?)(\.\.\/[^'")]+)\1\s*\)/g, (_match, quote, relPath) => {
+    const fromCssDir = relPath.replace(/^\.\.\//, 'assets/');
+    return `url(${quote}${fromCssDir}${quote})`;
+  });
 
   // Inject lean critical CSS. Defer the premium bundle outside Lighthouse / perf-audit.
   // Hero/nav metrics must match homepage.css + index critical styles (same first paint → no CLS).

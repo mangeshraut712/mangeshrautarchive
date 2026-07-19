@@ -2,10 +2,16 @@ import { mkdir, writeFile } from 'fs/promises';
 import { dirname, resolve } from 'path';
 import { fileURLToPath } from 'url';
 import { caseStudies } from '../../src/js/modules/case-studies-data.js';
+import { LIVE_SITE_URL } from '../../src/js/data/portfolio-public-data.js';
 import { ASSET_VER, fontAwesomeStylesheet } from './asset-version.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const SITE_URL = 'https://mangeshraut.pro';
+/** Canonical host while apex (mangeshraut.pro) is DEPLOYMENT_DISABLED. */
+const SITE_URL = (
+  process.env.OPENROUTER_SITE_URL ||
+  process.env.PAGES_SITE_URL ||
+  LIVE_SITE_URL
+).replace(/\/$/, '');
 const ASSET_PREFIX = '..';
 
 function escapeHTML(value) {
