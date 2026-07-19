@@ -627,6 +627,30 @@ body.travel-body .website-share-fab {
   border: 1px solid #e5e5ea !important;
 }
 
+/*
+ * Travel desktop: a11y + share already own the right dock.
+ * Mirror homepage right-stack on the LEFT so chatbot / go-to-top never overlap.
+ */
+body.travel-body #go-to-top,
+body.travel-body #go-to-top.visible {
+  position: fixed !important;
+  left: max(1rem, env(safe-area-inset-left, 0px)) !important;
+  right: auto !important;
+  bottom: max(1.25rem, env(safe-area-inset-bottom, 0px)) !important;
+  z-index: 9999 !important;
+}
+
+body.travel-body #chatbot-toggle {
+  position: fixed !important;
+  left: max(1rem, env(safe-area-inset-left, 0px)) !important;
+  right: auto !important;
+  bottom: max(
+    calc(1.25rem + 48px + 12px),
+    calc(env(safe-area-inset-bottom, 0px) + 48px + 12px)
+  ) !important;
+  z-index: 9999 !important;
+}
+
 html.dark body.travel-body #website-share-toggle.website-share-fab,
 html.dark body.travel-body .website-share-fab,
 html[data-theme='dark'] body.travel-body #website-share-toggle.website-share-fab,
@@ -716,7 +740,7 @@ html[data-theme='dark'] body.travel-body .website-share-fab {
   body.travel-body .website-share-fab {
     left: max(0.85rem, env(safe-area-inset-left, 0px)) !important;
     right: auto !important;
-    bottom: calc(var(--travel-sheet-h) + 0.65rem + 56px) !important;
+    bottom: calc(var(--travel-sheet-h) + 0.65rem + 60px) !important;
     z-index: 40 !important;
   }
 
@@ -728,7 +752,7 @@ html[data-theme='dark'] body.travel-body .website-share-fab {
   body.travel-body:has(.travel-sidebar:not(.is-collapsed) .travel-stop.active)
     #website-share-toggle.website-share-fab,
   body.travel-body:has(.travel-sidebar:not(.is-collapsed) .travel-stop.active) .website-share-fab {
-    bottom: calc(var(--travel-sheet-h-open) + 0.65rem + 56px) !important;
+    bottom: calc(var(--travel-sheet-h-open) + 0.65rem + 60px) !important;
   }
 
   body.travel-body:has(.travel-sidebar.is-collapsed) .a11y-toolbar {
@@ -737,7 +761,46 @@ html[data-theme='dark'] body.travel-body .website-share-fab {
 
   body.travel-body:has(.travel-sidebar.is-collapsed) #website-share-toggle.website-share-fab,
   body.travel-body:has(.travel-sidebar.is-collapsed) .website-share-fab {
-    bottom: calc(var(--travel-sheet-collapsed) + 0.65rem + 56px) !important;
+    bottom: calc(var(--travel-sheet-collapsed) + 0.65rem + 60px) !important;
+  }
+
+  /*
+   * Mobile travel: a11y + share sit left above the sheet.
+   * Chat + go-to-top sit right above the sheet (clear of map zoom top-right).
+   */
+  body.travel-body #go-to-top,
+  body.travel-body #go-to-top.visible {
+    position: fixed !important;
+    left: auto !important;
+    right: max(0.85rem, env(safe-area-inset-right, 0px)) !important;
+    bottom: calc(var(--travel-sheet-h) + 0.65rem) !important;
+    z-index: 40 !important;
+  }
+
+  body.travel-body #chatbot-toggle {
+    position: fixed !important;
+    left: auto !important;
+    right: max(0.85rem, env(safe-area-inset-right, 0px)) !important;
+    bottom: calc(var(--travel-sheet-h) + 0.65rem + 60px) !important;
+    z-index: 40 !important;
+  }
+
+  body.travel-body:has(.travel-sidebar:not(.is-collapsed) .travel-stop.active) #go-to-top,
+  body.travel-body:has(.travel-sidebar:not(.is-collapsed) .travel-stop.active) #go-to-top.visible {
+    bottom: calc(var(--travel-sheet-h-open) + 0.65rem) !important;
+  }
+
+  body.travel-body:has(.travel-sidebar:not(.is-collapsed) .travel-stop.active) #chatbot-toggle {
+    bottom: calc(var(--travel-sheet-h-open) + 0.65rem + 60px) !important;
+  }
+
+  body.travel-body:has(.travel-sidebar.is-collapsed) #go-to-top,
+  body.travel-body:has(.travel-sidebar.is-collapsed) #go-to-top.visible {
+    bottom: calc(var(--travel-sheet-collapsed) + 0.65rem) !important;
+  }
+
+  body.travel-body:has(.travel-sidebar.is-collapsed) #chatbot-toggle {
+    bottom: calc(var(--travel-sheet-collapsed) + 0.65rem + 60px) !important;
   }
 
   body.travel-body,

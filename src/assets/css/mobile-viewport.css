@@ -143,8 +143,11 @@ body.travel-body {
   /* Right FAB stack — go-to-top lowest, chatbot above with explicit gap */
   body #go-to-top,
   body #go-to-top.visible {
+    position: fixed !important;
+    left: auto !important;
     right: var(--mobile-edge-inset) !important;
     bottom: var(--mobile-bottom-inset) !important;
+    top: auto !important;
     width: var(--mobile-fab-size) !important;
     height: var(--mobile-fab-size) !important;
     min-width: var(--mobile-fab-size) !important;
@@ -153,6 +156,8 @@ body.travel-body {
   }
 
   body #chatbot-toggle {
+    position: fixed !important;
+    left: auto !important;
     right: var(--mobile-edge-inset) !important;
     bottom: calc(
       var(--mobile-bottom-inset) + var(--mobile-fab-size) + var(--mobile-fab-gap)

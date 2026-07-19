@@ -115,25 +115,82 @@ body {
 }
 
 /* ─── FAB stack + safe areas (all viewports) ─── */
+/* Subpages do not load style.css — pin position/display here. */
 body #chatbot-toggle {
+  position: fixed !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
   width: var(--fab-size) !important;
   height: var(--fab-size) !important;
   min-width: var(--fab-size) !important;
   min-height: var(--fab-size) !important;
-  right: var(--fab-edge);
-  bottom: calc(var(--fab-bottom) + var(--fab-size) + var(--fab-gap));
-  z-index: var(--z-fab);
+  left: auto !important;
+  right: var(--fab-edge) !important;
+  top: auto !important;
+  bottom: calc(var(--fab-bottom) + var(--fab-size) + var(--fab-gap)) !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  border-radius: 999px !important;
+  background: #0071e3 !important;
+  color: #fff !important;
+  box-shadow: 0 8px 24px rgb(0 113 227 / 28%) !important;
+  z-index: 9999 !important;
+  box-sizing: border-box !important;
+  cursor: pointer;
+}
+
+html.dark body #chatbot-toggle {
+  background: #0a84ff !important;
+  box-shadow: 0 8px 24px rgb(0 0 0 / 45%) !important;
+}
+
+body #chatbot-toggle .inline-icon,
+body #chatbot-toggle .inline-icon svg {
+  display: block;
+  width: 1.35rem;
+  height: 1.35rem;
 }
 
 body #go-to-top,
 body #go-to-top.visible {
-  width: var(--fab-size);
-  height: var(--fab-size);
-  min-width: var(--fab-size);
-  min-height: var(--fab-size);
-  right: var(--fab-edge);
-  bottom: var(--fab-bottom);
-  z-index: var(--z-fab);
+  position: fixed !important;
+  display: none;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-direction: column !important;
+  gap: 0.05rem;
+  width: var(--fab-size) !important;
+  height: var(--fab-size) !important;
+  min-width: var(--fab-size) !important;
+  min-height: var(--fab-size) !important;
+  left: auto !important;
+  right: var(--fab-edge) !important;
+  top: auto !important;
+  bottom: var(--fab-bottom) !important;
+  margin: 0 !important;
+  border: none !important;
+  border-radius: 999px !important;
+  background: #0071e3 !important;
+  color: #fff !important;
+  box-shadow: 0 8px 24px rgb(0 113 227 / 28%) !important;
+  z-index: 9999 !important;
+  box-sizing: border-box !important;
+  cursor: pointer;
+}
+
+html.dark body #go-to-top,
+html.dark body #go-to-top.visible {
+  background: #0a84ff !important;
+  box-shadow: 0 8px 24px rgb(0 0 0 / 45%) !important;
+}
+
+body #go-to-top.visible {
+  display: inline-flex !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
 }
 
 body #website-share-toggle {
@@ -157,9 +214,24 @@ body #website-share-toggle {
   gap: 0.5rem !important;
 }
 
-/* Clearance so last content isn’t under FABs (homepage only) — single stack, no huge void */
-body:not(.systems-page):not(.monitor-page):not(.uses-page):not(.error-page) main#main-content {
-  padding-bottom: calc(var(--fab-size) + var(--fab-gap) + env(safe-area-inset-bottom, 0px) + 1rem);
+/* Clearance so last content isn’t under the right FAB stack (chat + go-to-top) */
+body:not(.travel-body):not(.error-page):not(.offline-page) main#main-content,
+body.systems-page main,
+body.monitor-page main,
+body.uses-page main {
+  padding-bottom: calc(
+    (var(--fab-size) * 2) + var(--fab-gap) + env(safe-area-inset-bottom, 0px) + 1.25rem
+  );
+}
+
+/* Keep right FAB stack above page chrome on subpages */
+body.systems-page #chatbot-toggle,
+body.monitor-page #chatbot-toggle,
+body.uses-page #chatbot-toggle,
+body.systems-page #go-to-top,
+body.monitor-page #go-to-top,
+body.uses-page #go-to-top {
+  z-index: 9999;
 }
 
 /* ─── Text clipping in flex/grid ─── */
