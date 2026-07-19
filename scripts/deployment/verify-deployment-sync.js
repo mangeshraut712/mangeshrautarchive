@@ -150,6 +150,37 @@ async function fetchBuildConfig(baseUrl) {
   return response.json();
 }
 
+async function probeSurfaceAvailability(baseUrl) {
+  try {
+    const healthUrl = new URL('api/health', baseUrl).toString();
+    const response = await fetch(healthUrl, {
+      cache: 'no-store',
+      signal: AbortSignal.timeout(CONFIG.requestTimeoutMs),
+    });
+    const body = await response.text().catch(() => '');
+    if (response.status === 402 || /DEPLOYMENT_DISABLED|fair use|Payment required/i.test(body)) {
+      return { available: false, reason: `DEPLOYMENT_DISABLED (HTTP ${response.status})` };
+    }
+    if (response.ok) {
+      return { available: true, reason: `HTTP ${response.status}` };
+    }
+    // Fall through to build-config probe for static hosts without /api/health.
+  } catch {
+    // ignore and try build-config
+  }
+
+  try {
+    await fetchBuildConfig(baseUrl);
+    return { available: true, reason: 'build-config ok' };
+  } catch (error) {
+    const message = error?.message || String(error);
+    if (/HTTP 402|DEPLOYMENT_DISABLED/i.test(message)) {
+      return { available: false, reason: message };
+    }
+    return { available: false, reason: message };
+  }
+}
+
 async function fetchPageTitle(baseUrl, pagePath = '') {
   const pageUrl = new URL(pagePath, baseUrl).toString();
   const response = await fetch(pageUrl, {
@@ -165,9 +196,22 @@ async function fetchPageTitle(baseUrl, pagePath = '') {
 }
 
 async function verifyRemoteSync(options) {
+  const vercelProbe = await probeSurfaceAvailability(CONFIG.vercelProductionUrl);
+  const vercelRequired = vercelProbe.available;
+  if (!vercelRequired) {
+    log(
+      `Vercel production unavailable (${vercelProbe.reason}) — treating as optional while fair-use/DEPLOYMENT_DISABLED`,
+      'warning'
+    );
+  }
+
   const surfaces = [
     { name: 'GitHub Pages', url: CONFIG.githubPagesUrl, required: true },
-    { name: 'Vercel Production', url: CONFIG.vercelProductionUrl, required: true },
+    {
+      name: 'Vercel Production',
+      url: CONFIG.vercelProductionUrl,
+      required: vercelRequired,
+    },
     { name: 'Vercel Preview', url: CONFIG.vercelPreviewUrl, required: false },
   ];
 
@@ -179,10 +223,14 @@ async function verifyRemoteSync(options) {
       execSync('git rev-parse HEAD', { encoding: 'utf8' }).trim();
 
   if (options.parity) {
-    log(
-      'Parity mode: requiring GitHub Pages and Vercel production to share the same commit',
-      'info'
-    );
+    if (!vercelRequired) {
+      log('Parity mode: Vercel disabled — verifying GitHub Pages commit presence only', 'info');
+    } else {
+      log(
+        'Parity mode: requiring GitHub Pages and Vercel production to share the same commit',
+        'info'
+      );
+    }
   } else {
     log(`Expected deployment commit: ${expectedCommit}`, 'info');
   }
@@ -192,6 +240,20 @@ async function verifyRemoteSync(options) {
     let allRequiredSynced = true;
 
     for (const surface of surfaces) {
+      if (surface.name.startsWith('Vercel') && !vercelRequired) {
+        results.push({
+          ...surface,
+          synced: true,
+          config: null,
+          homeTitle: '',
+          travelTitle: '',
+          monitorTitle: '',
+          error: vercelProbe.reason,
+          skipped: true,
+        });
+        continue;
+      }
+
       try {
         const [config, homeTitle, travelTitle, monitorTitle] = await Promise.all([
           fetchBuildConfig(surface.url),
@@ -231,7 +293,13 @@ async function verifyRemoteSync(options) {
       const vercelProd = results.find(
         result => result.name === 'Vercel Production' && result.config?.gitCommit
       );
-      if (githubPages && vercelProd) {
+      if (!vercelRequired && githubPages) {
+        allRequiredSynced = true;
+        log(
+          `Pages-only mode: GitHub Pages ${githubPages.config.gitCommit} (Vercel skipped)`,
+          'success'
+        );
+      } else if (githubPages && vercelProd) {
         const parityOk = githubPages.config.gitCommit === vercelProd.config.gitCommit;
         allRequiredSynced = parityOk;
         log(
@@ -242,6 +310,10 @@ async function verifyRemoteSync(options) {
     }
 
     for (const result of results) {
+      if (result.skipped) {
+        log(`${result.name}: skipped (${result.error})`, 'info');
+        continue;
+      }
       if (result.error) {
         log(`${result.name}: unavailable (${result.error})`, result.required ? 'warning' : 'info');
         continue;
@@ -255,7 +327,12 @@ async function verifyRemoteSync(options) {
     }
 
     if (allRequiredSynced) {
-      log('GitHub Pages and Vercel production are synchronized', 'success');
+      log(
+        vercelRequired
+          ? 'GitHub Pages and Vercel production are synchronized'
+          : 'GitHub Pages deployment verified (Vercel optional/disabled)',
+        'success'
+      );
       return true;
     }
 

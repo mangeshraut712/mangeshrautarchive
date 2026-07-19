@@ -378,14 +378,32 @@ jobs:
           exit 1
 
       - name: Verify Vercel production commit + API health
+        id: vercel_surface
         run: |
           set -euo pipefail
           BASE="${{ env.VERCEL_PROD }}"
           EXPECTED="${{ github.sha }}"
+          health=$(curl -sS -o /tmp/health.json -w "%{http_code}" --max-time 15 "${BASE}/api/health" || true)
+          body=$(head -c 240 /tmp/health.json 2>/dev/null || true)
+
+          # Fair-use / billing blocks return 402 DEPLOYMENT_DISABLED — do not burn retries.
+          if [ "$health" = "402" ] || echo "$body" | grep -qiE 'DEPLOYMENT_DISABLED|fair use|Payment required'; then
+            echo "vercel_status=disabled" >> "$GITHUB_OUTPUT"
+            echo "::notice::Vercel production is DEPLOYMENT_DISABLED (HTTP ${health}). GitHub Pages is the live surface until the team fair-use block is cleared."
+            exit 0
+          fi
+
           # Vercel deploys independently (often faster than this job). Accept exact match
           # OR a newer main commit that already includes this SHA (push-train race).
           for attempt in $(seq 1 12); do
-            health=$(curl -sS -o /tmp/health.json -w "%{http_code}" --max-time 15 "${BASE}/api/health" || true)
+            if [ "$attempt" -gt 1 ]; then
+              health=$(curl -sS -o /tmp/health.json -w "%{http_code}" --max-time 15 "${BASE}/api/health" || true)
+            fi
+            if [ "$health" = "402" ]; then
+              echo "vercel_status=disabled" >> "$GITHUB_OUTPUT"
+              echo "::notice::Vercel became DEPLOYMENT_DISABLED mid-check. Skipping Vercel gate."
+              exit 0
+            fi
             if [ "$health" != "200" ]; then
               echo "⏳ API health HTTP ${health} (${attempt}/12)"
               sleep 10
@@ -405,6 +423,7 @@ jobs:
               MATCH=1
             fi
             if [ "$MATCH" -eq 1 ]; then
+              echo "vercel_status=ok" >> "$GITHUB_OUTPUT"
               echo "✅ Vercel production healthy for this train"
               for path in "" "systems" "monitor" "travel" "uses" "api/status"; do
                 code=$(curl -sS -o /dev/null -w "%{http_code}" --max-time 15 "${BASE}/${path}")
@@ -419,6 +438,7 @@ jobs:
             echo "Waiting for Vercel deploy (${attempt}/12)..."
             sleep 10
           done
+          echo "vercel_status=lagging" >> "$GITHUB_OUTPUT"
           echo "::warning::Vercel production has not reached ${EXPECTED} yet (GitHub Pages is live). Check Vercel dashboard."
           # Soft-fail Vercel lag so Pages deploys are not blocked when Vercel is slow/queued.
           exit 0
@@ -430,6 +450,10 @@ jobs:
       - name: Dual-surface commit parity (best effort)
         run: |
           set -euo pipefail
+          if [ "${{ steps.vercel_surface.outputs.vercel_status }}" = "disabled" ]; then
+            echo "::notice::Skipping Vercel↔Pages parity while Vercel is DEPLOYMENT_DISABLED."
+            exit 0
+          fi
           node scripts/deployment/verify-deployment-sync.js \
             --remote \
             --commit="${{ github.sha }}" \
@@ -448,10 +472,10 @@ jobs:
           {
             echo "## Dual-surface verify"
             echo ""
-            echo "| Surface | URL |"
-            echo "| --- | --- |"
-            echo "| GitHub Pages | ${{ env.GH_PAGES_BASE }} |"
-            echo "| Vercel | ${{ env.VERCEL_PROD }} |"
+            echo "| Surface | URL | Status |"
+            echo "| --- | --- | --- |"
+            echo "| GitHub Pages | ${{ env.GH_PAGES_BASE }} | required |"
+            echo "| Vercel | ${{ env.VERCEL_PROD }} | ${{ steps.vercel_surface.outputs.vercel_status || 'unknown' }} |"
             echo ""
             echo "Expected SHA: \`${{ github.sha }}\`"
           } >> "$GITHUB_STEP_SUMMARY"

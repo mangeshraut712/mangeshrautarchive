@@ -194,6 +194,7 @@ const allowedRootDirs = new Set([
   'scripts',
   'src',
   'tests',
+  'workers',
   'node_modules',
   'dist',
   'venv',
@@ -222,7 +223,16 @@ const allowedRootFiles = new Set([
   'vercel.json',
   'vitest.config.js',
 ]);
+function isGitIgnored(name) {
+  const result = spawnSync('git', ['check-ignore', '-q', '--', name], {
+    cwd: root,
+    stdio: 'ignore',
+  });
+  return result.status === 0;
+}
+
 const unexpected = rootEntries.filter(name => {
+  if (isGitIgnored(name)) return false;
   const abs = join(root, name);
   if (statSync(abs).isDirectory()) {
     return !allowedRootDirs.has(name);
@@ -285,12 +295,11 @@ if (existsSync(join(root, '.github/workflows/react-doctor.yml'))) {
 } else {
   pass('No react-doctor CI workflow');
 }
+// Optional local scanner config is ignored by CI; do not warn on presence.
 if (
-  existsSync(join(root, 'doctor.config.js')) ||
-  existsSync(join(root, 'config/doctor.config.js'))
+  !existsSync(join(root, 'doctor.config.js')) &&
+  !existsSync(join(root, 'config/doctor.config.js'))
 ) {
-  warn('doctor.config.js still present (only needed for react-doctor; safe to delete)');
-} else {
   pass('No react-doctor config files');
 }
 
