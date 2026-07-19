@@ -1031,10 +1031,12 @@ class AppleIntelligenceChatbot {
       this.elements.backdrop.classList.add('active');
       this.elements.backdrop.style.removeProperty('display');
       this.elements.backdrop.setAttribute('aria-hidden', 'false');
+      this.elements.backdrop.removeAttribute('inert');
     }
     this.elements.widget?.classList.remove('hidden');
     this.elements.widget?.classList.add('visible');
     this.elements.widget?.setAttribute('aria-hidden', 'false');
+    this.elements.widget?.removeAttribute('inert');
     this.isOpen = true;
     this.elements.toggle?.setAttribute('aria-expanded', 'true');
     this.updateRateLimitBadge();
@@ -1091,10 +1093,12 @@ class AppleIntelligenceChatbot {
       this.elements.backdrop.classList.add('hidden');
       this.elements.backdrop.style.display = 'none';
       this.elements.backdrop.setAttribute('aria-hidden', 'true');
+      this.elements.backdrop.setAttribute('inert', '');
     }
     this.elements.widget?.classList.remove('visible');
     this.elements.widget?.classList.add('hidden');
     this.elements.widget?.setAttribute('aria-hidden', 'true');
+    this.elements.widget?.setAttribute('inert', '');
     this.elements.toggle?.setAttribute('aria-expanded', 'false');
     const focusTarget =
       this.lastFocusedElement && document.contains(this.lastFocusedElement)

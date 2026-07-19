@@ -360,10 +360,10 @@ html.dark .a11y-toolbar.is-open .a11y-toolbar__panel {
 
 body .a11y-toolbar__panel button,
 .a11y-toolbar__panel button {
-  width: 40px !important;
-  height: 40px !important;
-  min-width: 40px !important;
-  min-height: 40px !important;
+  width: 44px !important;
+  height: 44px !important;
+  min-width: 44px !important;
+  min-height: 44px !important;
   border-radius: 999px !important;
   border: 1px solid #d2d2d7 !important;
   background: #ffffff !important;

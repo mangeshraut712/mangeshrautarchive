@@ -550,6 +550,34 @@ body.systems-page button.uses-control-tile.is-active[type='button'] i {
   -webkit-text-fill-color: #ffffff !important;
 }
 
+/* Uses filter chips — active state must stay white-on-blue (AA) */
+body.uses-page .uses-filter-chip,
+body.uses-page button.uses-filter-chip[type='button'] {
+  color: var(--uses-text, #1d1d1f) !important;
+  -webkit-text-fill-color: var(--uses-text, #1d1d1f) !important;
+}
+
+body.uses-page .uses-filter-chip.is-active,
+body.uses-page button.uses-filter-chip.is-active[type='button'] {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  background: #0071e3 !important;
+  background-color: #0071e3 !important;
+  border-color: #0071e3 !important;
+}
+
+body.uses-page .uses-filter-chip.is-active span,
+body.uses-page button.uses-filter-chip.is-active[type='button'] span {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+body.uses-page .uses-filter-chip.is-active i,
+body.uses-page button.uses-filter-chip.is-active[type='button'] i {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
 @media (width <= 768px) {
   /* Panel feature buttons only — main FAB stays 48px (desktop parity) */
   .a11y-toolbar__panel button {

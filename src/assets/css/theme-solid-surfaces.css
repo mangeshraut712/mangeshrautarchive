@@ -1385,13 +1385,14 @@ html.dark
     .contact-submit,
     .engineering-open-btn
   ):not(.is-disabled):not(:disabled) {
-  background: #0a84ff !important;
-  background-color: #0a84ff !important;
+  /* Keep #0071e3 for WCAG AA (white on #0a84ff fails ~3.64:1) */
+  background: #0071e3 !important;
+  background-color: #0071e3 !important;
   background-image: none !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
   border: none !important;
-  box-shadow: 0 4px 14px rgb(10 132 255 / 28%) !important;
+  box-shadow: 0 4px 14px rgb(0 113 227 / 28%) !important;
 }
 
 /* Project card footer — flat, not grey gradient */

@@ -1069,10 +1069,10 @@ export class AccessibilityEnhancer {
 
         .a11y-toolbar__panel button {
           position: relative;
-          width: 40px !important;
-          height: 40px !important;
-          min-width: 40px !important;
-          min-height: 40px !important;
+          width: 44px !important;
+          height: 44px !important;
+          min-width: 44px !important;
+          min-height: 44px !important;
           padding: 0;
           border-radius: 999px;
           border: 1px solid #d2d2d7 !important;

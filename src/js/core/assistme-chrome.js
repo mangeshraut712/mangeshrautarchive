@@ -66,7 +66,14 @@ function ensureChatbotChrome() {
     backdrop.id = 'chatbot-backdrop';
     backdrop.className = 'chatbot-backdrop hidden';
     backdrop.setAttribute('aria-hidden', 'true');
+    backdrop.setAttribute('inert', '');
     document.body.appendChild(backdrop);
+  } else {
+    const existingBackdrop = document.getElementById('chatbot-backdrop');
+    if (existingBackdrop?.classList.contains('hidden')) {
+      existingBackdrop.setAttribute('aria-hidden', 'true');
+      existingBackdrop.setAttribute('inert', '');
+    }
   }
 
   if (!document.getElementById('chatbot-widget')) {
@@ -76,6 +83,7 @@ function ensureChatbotChrome() {
     widget.setAttribute('role', 'dialog');
     widget.setAttribute('aria-modal', 'true');
     widget.setAttribute('aria-hidden', 'true');
+    widget.setAttribute('inert', '');
     widget.setAttribute('aria-label', 'Apple Intelligence chat window');
     widget.tabIndex = -1;
     widget.innerHTML = `
@@ -141,6 +149,12 @@ function ensureChatbotChrome() {
       </div>
     `;
     document.body.appendChild(widget);
+  } else {
+    const existingWidget = document.getElementById('chatbot-widget');
+    if (existingWidget?.classList.contains('hidden')) {
+      existingWidget.setAttribute('aria-hidden', 'true');
+      existingWidget.setAttribute('inert', '');
+    }
   }
 }
 
