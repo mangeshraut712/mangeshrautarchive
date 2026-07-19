@@ -13,5 +13,6 @@ package-lock.json
 gh.html
 vercel.html
 src/index.html
+src/google*.html
 src/assets/css/tailwind-output.css
 .superpowers/
