@@ -583,6 +583,109 @@ async function handleGithubRepos(url, cors, env = {}) {
   }
 }
 
+const LASTFM_PLACEHOLDER_HASH = '2a96cbd8b46e442fc41c2b86b821562f';
+
+function trackArtistName(track) {
+  const artist = track?.artist || {};
+  if (artist && typeof artist === 'object') {
+    return String(artist['#text'] || artist.name || '').trim();
+  }
+  return String(artist || '').trim();
+}
+
+function bestLastfmImage(track) {
+  const images = Array.isArray(track?.image) ? track.image : [];
+  const preferred = ['extralarge', 'large', 'medium', 'small'];
+  const bySize = new Map(
+    images
+      .filter(img => img && typeof img === 'object')
+      .map(img => [String(img.size || ''), String(img['#text'] || '').trim()])
+  );
+  for (const size of preferred) {
+    const url = bySize.get(size) || '';
+    if (url && !url.includes(LASTFM_PLACEHOLDER_HASH)) {
+      return url.replace('/174s/', '/300x300/').replace('/64s/', '/300x300/');
+    }
+  }
+  for (let i = images.length - 1; i >= 0; i -= 1) {
+    const url = String(images[i]?.['#text'] || '').trim();
+    if (url && !url.includes(LASTFM_PLACEHOLDER_HASH)) {
+      return url.replace('/174s/', '/300x300/').replace('/64s/', '/300x300/');
+    }
+  }
+  return '';
+}
+
+function pickItunesArtwork(results = [], artistHint = '') {
+  if (!Array.isArray(results) || !results.length) return '';
+  const hint = artistHint.trim().toLowerCase();
+  let ranked = results;
+  if (hint) {
+    ranked = [...results].sort((a, b) => {
+      const score = item => {
+        const name = String(item?.artistName || '')
+          .trim()
+          .toLowerCase();
+        if (name === hint) return 3;
+        if (name.includes(hint) || hint.includes(name)) return 2;
+        if (hint.split(/\s+/).some(part => part && name.includes(part))) return 1;
+        return 0;
+      };
+      return score(b) - score(a);
+    });
+  }
+  for (const item of ranked) {
+    const artwork = String(item?.artworkUrl100 || '').trim();
+    if (artwork) return artwork.replace('/100x100bb.', '/600x600bb.');
+  }
+  return '';
+}
+
+async function fetchItunesArtwork(term, artistHint = '') {
+  const qs = new URLSearchParams({
+    term,
+    media: 'music',
+    entity: 'song',
+    limit: '5',
+  });
+  const res = await fetch(`https://itunes.apple.com/search?${qs}`, {
+    headers: { Accept: 'application/json', 'User-Agent': 'assistme-cloudflare-edge' },
+  });
+  if (!res.ok) return '';
+  const data = await res.json();
+  return pickItunesArtwork(data?.results || [], artistHint);
+}
+
+async function enrichRecentTracksWithArtwork(payload, maxTracks = 8) {
+  const tracksRaw = payload?.recenttracks?.track;
+  const tracks = Array.isArray(tracksRaw) ? tracksRaw : tracksRaw ? [tracksRaw] : [];
+  await Promise.all(
+    tracks.slice(0, maxTracks).map(async track => {
+      if (!track || typeof track !== 'object') return;
+      const existing = String(track.resolved_artwork || '').trim();
+      if (existing && !existing.includes(LASTFM_PLACEHOLDER_HASH)) return;
+
+      const lastfmUrl = bestLastfmImage(track);
+      if (lastfmUrl) {
+        track.resolved_artwork = lastfmUrl;
+        track.artwork_source = 'lastfm';
+        return;
+      }
+
+      const name = String(track.name || '').trim();
+      const artist = trackArtistName(track);
+      const itunesUrl = await fetchItunesArtwork(`${name} ${artist}`.trim(), artist);
+      if (!itunesUrl) return;
+      track.resolved_artwork = itunesUrl;
+      track.artwork_source = 'itunes';
+      const images = Array.isArray(track.image) ? [...track.image] : [];
+      images.push({ size: 'extralarge', '#text': itunesUrl });
+      track.image = images;
+    })
+  );
+  return payload;
+}
+
 async function handleMusicRecent(url, env, cors) {
   const user = url.searchParams.get('user') || env.LASTFM_USERNAME || 'mbr63';
   const limit = Math.min(20, Math.max(1, Number(url.searchParams.get('limit') || 10)));
@@ -611,7 +714,8 @@ async function handleMusicRecent(url, env, cors) {
       return json({ success: false, error: `Last.fm HTTP ${res.status}` }, 502, cors);
     }
     const data = await res.json();
-    return json({ ...data, host: 'cloudflare-worker', success: true }, 200, cors);
+    const enriched = await enrichRecentTracksWithArtwork(data);
+    return json({ ...enriched, host: 'cloudflare-worker', success: true }, 200, cors);
   } catch (e) {
     return json({ success: false, error: e.message }, 502, cors);
   }
@@ -629,32 +733,7 @@ async function handleMusicArtwork(url, cors) {
     );
   }
   try {
-    const qs = new URLSearchParams({
-      term,
-      media: 'music',
-      entity: 'song',
-      limit: '1',
-    });
-    const res = await fetch(`https://itunes.apple.com/search?${qs}`, {
-      headers: { Accept: 'application/json', 'User-Agent': 'assistme-cloudflare-edge' },
-    });
-    if (!res.ok) {
-      return json(
-        {
-          artwork_url: '',
-          source: 'itunes',
-          cached: false,
-          term,
-          host: 'cloudflare-worker',
-          error: `iTunes HTTP ${res.status}`,
-        },
-        200,
-        cors
-      );
-    }
-    const data = await res.json();
-    let artwork = data?.results?.[0]?.artworkUrl100 || '';
-    if (artwork) artwork = artwork.replace('/100x100bb.', '/600x600bb.');
+    const artwork = await fetchItunesArtwork(term, artist);
     return json(
       {
         artwork_url: artwork,

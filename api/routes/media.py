@@ -1,7 +1,8 @@
+import asyncio
 import time
 import json
 import logging
-from typing import Optional
+from typing import List, Optional
 from urllib.parse import quote
 from fastapi import APIRouter, HTTPException, BackgroundTasks, Request
 from fastapi.responses import JSONResponse
@@ -36,6 +37,7 @@ def _enforce_media_rate_limit(request: Request, bucket: str) -> None:
 
 router = APIRouter()
 LASTFM_STALE_TTL = 5 * 60
+LASTFM_PLACEHOLDER_HASH = "2a96cbd8b46e442fc41c2b86b821562f"
 _lastfm_refreshing = set()
 
 
@@ -78,6 +80,52 @@ def is_servable_lastfm_cache(cached: Optional[dict]) -> bool:
     return bool(cached and time.time() - cached["ts"] < LASTFM_CACHE_TTL + LASTFM_STALE_TTL)
 
 
+def _normalize_tracks(payload: dict) -> List[dict]:
+    tracks = (payload.get("recenttracks") or {}).get("track")
+    if not tracks:
+        return []
+    if isinstance(tracks, dict):
+        return [tracks]
+    return [track for track in tracks if isinstance(track, dict)]
+
+
+def _track_artist_name(track: dict) -> str:
+    artist = track.get("artist") or {}
+    if isinstance(artist, dict):
+        return str(artist.get("#text") or artist.get("name") or "").strip()
+    return str(artist or "").strip()
+
+
+def _best_lastfm_image(track: dict) -> str:
+    images = track.get("image") or []
+    if not isinstance(images, list):
+        return ""
+    preferred = ("extralarge", "large", "medium", "small")
+    by_size = {
+        str(img.get("size") or ""): str(img.get("#text") or "").strip()
+        for img in images
+        if isinstance(img, dict)
+    }
+    for size in preferred:
+        url = by_size.get(size, "")
+        if url and LASTFM_PLACEHOLDER_HASH not in url:
+            return url.replace("/174s/", "/300x300/").replace("/64s/", "/300x300/")
+    for img in reversed(images):
+        if not isinstance(img, dict):
+            continue
+        url = str(img.get("#text") or "").strip()
+        if url and LASTFM_PLACEHOLDER_HASH not in url:
+            return url.replace("/174s/", "/300x300/").replace("/64s/", "/300x300/")
+    return ""
+
+
+def _tracks_need_enrichment(payload: dict) -> bool:
+    tracks = _normalize_tracks(payload)
+    if not tracks:
+        return False
+    return any(not str(track.get("resolved_artwork") or "").strip() for track in tracks[:8])
+
+
 async def fetch_lastfm_recent_payload(user: str, limit: int) -> dict:
     url = "https://ws.audioscrobbler.com/2.0/"
     lastfm_params = {
@@ -104,7 +152,7 @@ async def fetch_lastfm_recent_payload(user: str, limit: int) -> dict:
     data = response.json()
     if not data.get("recenttracks"):
         raise HTTPException(status_code=502, detail="Last.fm returned unexpected data format")
-    return data
+    return await enrich_recent_tracks_with_artwork(data)
 
 
 async def refresh_lastfm_recent_cache(cache_key: str, user: str, limit: int):
@@ -118,6 +166,41 @@ async def refresh_lastfm_recent_cache(cache_key: str, user: str, limit: int):
         print(f"Last.fm background refresh failed: {type(e).__name__} - {str(e)}")
     finally:
         _lastfm_refreshing.discard(cache_key)
+
+
+async def enrich_recent_tracks_with_artwork(payload: dict, max_tracks: int = 8) -> dict:
+    """Attach resolved_artwork so hero/shelf never stick on Last.fm star placeholders."""
+    tracks = _normalize_tracks(payload)
+    if not tracks:
+        return payload
+
+    async def enrich_one(track: dict) -> None:
+        existing = str(track.get("resolved_artwork") or "").strip()
+        if existing and LASTFM_PLACEHOLDER_HASH not in existing:
+            return
+
+        lastfm_url = _best_lastfm_image(track)
+        if lastfm_url:
+            track["resolved_artwork"] = lastfm_url
+            track["artwork_source"] = "lastfm"
+            return
+
+        name = str(track.get("name") or "").strip()
+        artist = _track_artist_name(track)
+        itunes_url = await fetch_itunes_artwork(f"{name} {artist}".strip(), artist_hint=artist)
+        if itunes_url:
+            track["resolved_artwork"] = itunes_url
+            track["artwork_source"] = "itunes"
+            images = track.get("image")
+            if isinstance(images, list):
+                images = list(images)
+            else:
+                images = []
+            images.append({"size": "extralarge", "#text": itunes_url})
+            track["image"] = images
+
+    await asyncio.gather(*(enrich_one(track) for track in tracks[:max_tracks]))
+    return payload
 
 
 async def get_cached_poster(cache_key: str) -> Optional[str]:
@@ -305,10 +388,43 @@ async def fetch_openlibrary_cover(title: str, author: str = "") -> str:
     return ""
 
 
-async def fetch_itunes_artwork(search_term: str) -> str:
+def _pick_itunes_artwork(results: list, artist_hint: str = "") -> str:
+    """Prefer an iTunes hit whose artist matches; fall back to the first artwork URL."""
+    if not results:
+        return ""
+
+    hint = artist_hint.strip().lower()
+    ranked = results
+    if hint:
+        scored = []
+        for idx, item in enumerate(results):
+            if not isinstance(item, dict):
+                continue
+            artist_name = str(item.get("artistName") or "").strip().lower()
+            score = 0
+            if artist_name == hint:
+                score = 3
+            elif hint in artist_name or artist_name in hint:
+                score = 2
+            elif any(part and part in artist_name for part in hint.split()):
+                score = 1
+            scored.append((score, -idx, item))
+        scored.sort(reverse=True)
+        ranked = [item for _, _, item in scored] if scored else results
+
+    for item in ranked:
+        if not isinstance(item, dict):
+            continue
+        artwork = str(item.get("artworkUrl100") or "").strip()
+        if artwork:
+            return artwork.replace("/100x100bb.", "/600x600bb.")
+    return ""
+
+
+async def fetch_itunes_artwork(search_term: str, artist_hint: str = "") -> str:
     """Fetch album artwork from iTunes Search API (server-side to avoid browser CORS)."""
-    cache_key = search_term.strip().lower()
-    if not cache_key:
+    cache_key = f"{search_term.strip().lower()}|{artist_hint.strip().lower()}"
+    if not search_term.strip():
         return ""
 
     cached = artwork_cache.get(cache_key)
@@ -317,7 +433,7 @@ async def fetch_itunes_artwork(search_term: str) -> str:
 
     search_url = (
         "https://itunes.apple.com/search?"
-        f"term={quote(search_term)}&media=music&entity=song&limit=1"
+        f"term={quote(search_term)}&media=music&entity=song&limit=5"
     )
     headers = {
         "User-Agent": "AssistMe-Portfolio/3.0.0",
@@ -330,9 +446,8 @@ async def fetch_itunes_artwork(search_term: str) -> str:
             response.raise_for_status()
             data = response.json()
 
-        artwork = data.get("results", [{}])[0].get("artworkUrl100", "")
+        artwork = _pick_itunes_artwork(data.get("results") or [], artist_hint=artist_hint)
         if artwork:
-            artwork = artwork.replace("/100x100bb.", "/600x600bb.")
             artwork_cache[cache_key] = {"url": artwork, "ts": time.time()}
             return artwork
     except Exception as e:
@@ -347,14 +462,15 @@ async def get_music_artwork(
 ):
     """Proxy iTunes artwork lookup for the Last.fm hero card."""
     _enforce_media_rate_limit(request, "media-artwork")
-    search_term = term.strip() or f"{track.strip()} {artist.strip()}".strip()
+    artist = artist.strip()
+    search_term = term.strip() or f"{track.strip()} {artist}".strip()
     if not search_term:
         raise HTTPException(status_code=400, detail="track/artist or term is required")
 
-    cache_key = search_term.lower()
+    cache_key = f"{search_term.lower()}|{artist.lower()}"
     cached = artwork_cache.get(cache_key)
     served_from_cache = bool(cached and time.time() - cached["ts"] < ARTWORK_CACHE_DURATION)
-    artwork_url = await fetch_itunes_artwork(search_term)
+    artwork_url = await fetch_itunes_artwork(search_term, artist_hint=artist)
 
     return {
         "artwork_url": artwork_url,
@@ -382,8 +498,12 @@ async def get_recent_music(
     started_at = time.perf_counter()
     cached = lastfm_recent_cache.get(cache_key)
     if cached is not None and is_fresh_lastfm_cache(cached):
+        data = cached["data"]
+        if _tracks_need_enrichment(data):
+            data = await enrich_recent_tracks_with_artwork(data)
+            lastfm_recent_cache[cache_key] = {"data": data, "ts": cached["ts"]}
         return JSONResponse(
-            content=cached["data"],
+            content=data,
             headers=build_lastfm_headers("HIT", started_at),
         )
 
@@ -397,8 +517,12 @@ async def get_recent_music(
 
     if cached is not None and is_servable_lastfm_cache(cached):
         background_tasks.add_task(refresh_lastfm_recent_cache, cache_key, user, limit)
+        data = cached["data"]
+        if _tracks_need_enrichment(data):
+            data = await enrich_recent_tracks_with_artwork(data)
+            lastfm_recent_cache[cache_key] = {"data": data, "ts": cached["ts"]}
         return JSONResponse(
-            content=cached["data"],
+            content=data,
             headers=build_lastfm_headers("STALE", started_at, {"X-Lastfm-Stale": "1"}),
         )
 

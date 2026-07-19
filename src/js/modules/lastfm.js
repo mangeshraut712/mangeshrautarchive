@@ -26,13 +26,14 @@ class LastFmService {
     this.PLACEHOLDER_HASH = '2a96cbd8b46e442fc41c2b86b821562f';
     this.UPDATE_INTERVAL_MS = 20000; // 20s — beats 25s backend cache TTL
     this.ARTWORK_CACHE_TTL_MS = 10 * 60 * 1000; // 10 min artwork cache
-    this.LOCAL_CACHE_KEY = 'assistme:lastfm:recent';
+    this.LOCAL_CACHE_KEY = 'assistme:lastfm:recent:v2';
     this.LOCAL_STALE_TTL_MS = 24 * 60 * 60 * 1000;
-    this.artworkCache = new Map(); // key => { url, ts }
+    this.artworkCache = new Map(); // key => { promise, ts }
     this.cachedTracks = null;
     this.started = false;
     this.intervalId = null;
     this._currentTrackId = null; // track identity for change detection
+    this._artworkTokens = new WeakMap();
 
     const apiBaseUrl = this.resolveMusicApiBase();
     const apiBaseNormalized = apiBaseUrl ? apiBaseUrl.replace(/\/$/, '') : '';
@@ -143,6 +144,11 @@ class LastFmService {
   }
 
   getBestImage(track, preferredSizes = ['extralarge', 'large', 'medium', 'small']) {
+    const resolved = this.normalizeArtworkUrl(track?.resolved_artwork || '', '300x300');
+    if (this.isUsableArtwork(resolved) && this.isSafeHttpsUrl(resolved)) {
+      return resolved;
+    }
+
     if (!Array.isArray(track?.image)) {
       return this.getArtworkPlaceholder(track?.name || 'Unknown Track', this.getArtistName(track));
     }
@@ -158,7 +164,18 @@ class LastFmService {
       }
     }
 
+    for (let i = track.image.length - 1; i >= 0; i -= 1) {
+      const normalized = this.normalizeArtworkUrl(track.image[i]?.['#text'] || '', '300x300');
+      if (this.isUsableArtwork(normalized)) {
+        return normalized;
+      }
+    }
+
     return this.getArtworkPlaceholder(track?.name || 'Unknown Track', this.getArtistName(track));
+  }
+
+  needsArtworkHydration(url = '') {
+    return !this.isUsableArtwork(url) || url.startsWith('data:') || !this.isSafeHttpsUrl(url);
   }
 
   async fetchAppleMusicArtwork(trackName = '', artistName = '') {
@@ -193,11 +210,33 @@ class LastFmService {
     return pending;
   }
 
-  hydrateFallbackArtwork(imageNode, track, { fallbackUrl = '' } = {}) {
+  hydrateFallbackArtwork(imageNode, track, { fallbackUrl = '', trackId = '' } = {}) {
     if (!imageNode || !track) return;
+
+    const resolvedId = trackId || `${track.name || ''}::${this.getArtistName(track)}`;
+    const token = (this._artworkTokens.get(imageNode) || 0) + 1;
+    this._artworkTokens.set(imageNode, token);
+
+    // Already have server-resolved or usable Last.fm art — paint immediately.
+    if (this.isUsableArtwork(fallbackUrl) && this.isSafeHttpsUrl(fallbackUrl)) {
+      if (imageNode.src !== fallbackUrl) {
+        imageNode.src = fallbackUrl;
+      }
+      // Skip iTunes when backend already resolved Apple Music art.
+      if (track.artwork_source === 'itunes' || String(fallbackUrl).includes('mzstatic.com')) {
+        return;
+      }
+    }
+
     this.fetchAppleMusicArtwork(track.name || '', this.getArtistName(track)).then(artworkUrl => {
+      if (this._artworkTokens.get(imageNode) !== token) {
+        return;
+      }
+      if (imageNode.dataset.trackId && imageNode.dataset.trackId !== resolvedId) {
+        return;
+      }
       const nextUrl = artworkUrl || fallbackUrl;
-      if (nextUrl && imageNode.src !== nextUrl) {
+      if (nextUrl && this.isSafeHttpsUrl(nextUrl) && imageNode.src !== nextUrl) {
         imageNode.src = nextUrl;
       }
     });
@@ -412,15 +451,19 @@ class LastFmService {
     const artistName = this.getArtistName(track);
     const isNowPlaying = track?.['@attr']?.nowplaying === 'true';
     const trackId = `${trackName}::${artistName}`;
+    const artwork = this.getBestImage(track, ['extralarge', 'large', 'medium']);
+    const usableArtwork = this.isUsableArtwork(artwork) && this.isSafeHttpsUrl(artwork);
+    const placeholder = this.getArtworkPlaceholder(trackName, artistName);
 
-    // Detect track change — reset artwork src to placeholder immediately
+    this.hero.albumArt.dataset.trackId = trackId;
+
+    // Detect track change — paint usable art immediately (or placeholder).
     if (this._currentTrackId !== trackId) {
       this._currentTrackId = trackId;
-      // Show placeholder while real artwork loads
-      this.hero.albumArt.src = this.getArtworkPlaceholder(trackName, artistName);
+      this.hero.albumArt.src = usableArtwork ? artwork : placeholder;
+    } else if (usableArtwork && this.hero.albumArt.src !== artwork) {
+      this.hero.albumArt.src = artwork;
     }
-
-    const artwork = this.getBestImage(track, ['extralarge', 'large', 'medium']);
 
     this.hero.trackName.textContent = trackName;
     this.hero.artistName.textContent = artistName;
@@ -438,7 +481,8 @@ class LastFmService {
     }
     this.setHeroMusicState(isNowPlaying ? 'playing' : 'recent');
     this.hydrateFallbackArtwork(this.hero.albumArt, track, {
-      fallbackUrl: this.isUsableArtwork(artwork) ? artwork : '',
+      fallbackUrl: usableArtwork ? artwork : '',
+      trackId,
     });
     window.dispatchEvent(new CustomEvent('liquid-glass:sync-chrome'));
   }
@@ -489,7 +533,9 @@ class LastFmService {
       img.className = 'recent-track-img';
       img.loading = 'lazy';
       img.decoding = 'async';
-      img.src = this.isSafeHttpsUrl(artwork) ? artwork : fallback;
+      const trackKey = `${trackName}::${artistName}`;
+      img.dataset.trackId = trackKey;
+      img.src = this.isSafeHttpsUrl(artwork) && this.isUsableArtwork(artwork) ? artwork : fallback;
       img.addEventListener(
         'error',
         () => {
@@ -497,6 +543,12 @@ class LastFmService {
         },
         { once: true }
       );
+      if (this.needsArtworkHydration(img.src)) {
+        this.hydrateFallbackArtwork(img, track, {
+          fallbackUrl: this.isUsableArtwork(artwork) ? artwork : '',
+          trackId: trackKey,
+        });
+      }
 
       const badge = document.createElement('span');
       badge.className = 'media-badge playing';

@@ -31,7 +31,14 @@ def test_music_recent_serves_stale_cache_before_refresh(monkeypatch):
     lastfm_recent_cache["mbr63:1"] = {
         "data": {
             "recenttracks": {
-                "track": [{"name": "Cached Track", "artist": {"#text": "Cached Artist"}}]
+                "track": [
+                    {
+                        "name": "Cached Track",
+                        "artist": {"#text": "Cached Artist"},
+                        "resolved_artwork": "https://lastfm.freetls.fastly.net/i/u/300x300/abc.jpg",
+                        "artwork_source": "lastfm",
+                    }
+                ]
             }
         },
         "ts": time.time() - 90,
@@ -51,6 +58,52 @@ def test_music_recent_serves_stale_cache_before_refresh(monkeypatch):
     assert response.headers["Access-Control-Allow-Origin"] == "*"
     assert int(response.headers["X-Lastfm-Latency-Ms"]) >= 0
     assert response.json()["recenttracks"]["track"][0]["name"] == "Cached Track"
+
+
+def test_music_recent_enriches_placeholder_artwork(monkeypatch):
+    monkeypatch.setattr("api.routes.media.LASTFM_API_KEY", "configured")
+    lastfm_recent_cache.clear()
+    lastfm_recent_cache["mbr63:1"] = {
+        "data": {
+            "recenttracks": {
+                "track": [
+                    {
+                        "name": "Piya Aaye Na",
+                        "artist": {"#text": "Tulsi Kumar"},
+                        "image": [
+                            {
+                                "size": "extralarge",
+                                "#text": (
+                                    "https://lastfm.freetls.fastly.net/i/u/300x300/"
+                                    "2a96cbd8b46e442fc41c2b86b821562f.png"
+                                ),
+                            }
+                        ],
+                    }
+                ]
+            }
+        },
+        "ts": time.time(),
+    }
+
+    async def fake_itunes(search_term: str, artist_hint: str = "") -> str:
+        assert "Piya Aaye Na" in search_term
+        assert artist_hint == "Tulsi Kumar"
+        return "https://is1-ssl.mzstatic.com/image/thumb/Music/example/600x600bb.jpg"
+
+    async def noop_refresh(*_args, **_kwargs):
+        return None
+
+    monkeypatch.setattr("api.routes.media.fetch_itunes_artwork", fake_itunes)
+    monkeypatch.setattr("api.routes.media.refresh_lastfm_recent_cache", noop_refresh)
+    client = TestClient(app)
+
+    response = client.get("/api/music/recent?user=mbr63&limit=1")
+
+    assert response.status_code == 200
+    track = response.json()["recenttracks"]["track"][0]
+    assert track["resolved_artwork"].endswith("/600x600bb.jpg")
+    assert track["artwork_source"] == "itunes"
 
 
 def test_music_artwork_returns_itunes_url(monkeypatch):
