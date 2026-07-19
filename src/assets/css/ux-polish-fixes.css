@@ -17,6 +17,11 @@
   --fab-gap: 10px;
   --fab-edge: max(14px, env(safe-area-inset-right, 0px));
   --fab-bottom: max(14px, env(safe-area-inset-bottom, 0px));
+  /* Single right-column stack (bottom → top): top, chat, share, a11y */
+  --fab-slot-0: var(--fab-bottom);
+  --fab-slot-1: calc(var(--fab-bottom) + var(--fab-size) + var(--fab-gap));
+  --fab-slot-2: calc(var(--fab-bottom) + (var(--fab-size) + var(--fab-gap)) * 2);
+  --fab-slot-3: calc(var(--fab-bottom) + (var(--fab-size) + var(--fab-gap)) * 3);
   /* Motion (Emil Kowalski / Apple UI curves) */
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
   --ease-in-out-motion: cubic-bezier(0.77, 0, 0.175, 1);
@@ -114,45 +119,9 @@ body {
   max-width: 100%;
 }
 
-/* ─── FAB stack + safe areas (all viewports) ─── */
-/* Subpages do not load style.css — pin position/display here. */
-body #chatbot-toggle {
-  position: fixed !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  width: var(--fab-size) !important;
-  height: var(--fab-size) !important;
-  min-width: var(--fab-size) !important;
-  min-height: var(--fab-size) !important;
-  left: auto !important;
-  right: var(--fab-edge) !important;
-  top: auto !important;
-  bottom: calc(var(--fab-bottom) + var(--fab-size) + var(--fab-gap)) !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  border: none !important;
-  border-radius: 999px !important;
-  background: #0071e3 !important;
-  color: #fff !important;
-  box-shadow: 0 8px 24px rgb(0 113 227 / 28%) !important;
-  z-index: 9999 !important;
-  box-sizing: border-box !important;
-  cursor: pointer;
-}
-
-html.dark body #chatbot-toggle {
-  background: #0a84ff !important;
-  box-shadow: 0 8px 24px rgb(0 0 0 / 45%) !important;
-}
-
-body #chatbot-toggle .inline-icon,
-body #chatbot-toggle .inline-icon svg {
-  display: block;
-  width: 1.35rem;
-  height: 1.35rem;
-}
-
+/* ─── FAB stack: ONE right column (all pages, including travel) ───
+   Bottom → top: go-to-top · chatbot · share · accessibility
+   Shared factor: 48px circle, Apple blue, white glyph (matches chat FAB). */
 body #go-to-top,
 body #go-to-top.visible {
   position: fixed !important;
@@ -168,7 +137,7 @@ body #go-to-top.visible {
   left: auto !important;
   right: var(--fab-edge) !important;
   top: auto !important;
-  bottom: var(--fab-bottom) !important;
+  bottom: var(--fab-slot-0) !important;
   margin: 0 !important;
   border: none !important;
   border-radius: 999px !important;
@@ -193,16 +162,129 @@ body #go-to-top.visible {
   pointer-events: auto !important;
 }
 
-body #website-share-toggle {
-  z-index: 9998;
+/* When Top is hidden, pack chat/share/a11y down so nothing floats mid-air */
+body:not(:has(#go-to-top.visible)) #chatbot-toggle {
+  bottom: var(--fab-slot-0) !important;
 }
 
+body:not(:has(#go-to-top.visible)) #website-share-toggle.website-share-fab,
+body:not(:has(#go-to-top.visible)) .website-share-fab {
+  bottom: var(--fab-slot-1) !important;
+}
+
+body:not(:has(#go-to-top.visible)) .a11y-toolbar {
+  bottom: var(--fab-slot-2) !important;
+}
+
+body #chatbot-toggle {
+  position: fixed !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: var(--fab-size) !important;
+  height: var(--fab-size) !important;
+  min-width: var(--fab-size) !important;
+  min-height: var(--fab-size) !important;
+  left: auto !important;
+  right: var(--fab-edge) !important;
+  top: auto !important;
+  bottom: var(--fab-slot-1) !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  border-radius: 999px !important;
+  background: #0071e3 !important;
+  color: #fff !important;
+  box-shadow: 0 8px 24px rgb(0 113 227 / 28%) !important;
+  z-index: 9999 !important;
+  box-sizing: border-box !important;
+  cursor: pointer;
+}
+
+html.dark body #chatbot-toggle {
+  background: #0a84ff !important;
+  box-shadow: 0 8px 24px rgb(0 0 0 / 45%) !important;
+}
+
+body #chatbot-toggle .inline-icon,
+body #chatbot-toggle .inline-icon svg {
+  display: block;
+  width: 1.35rem;
+  height: 1.35rem;
+}
+
+body #chatbot-toggle,
+body #chatbot-toggle i,
+body #chatbot-toggle svg,
+body #chatbot-toggle .inline-icon,
+body #chatbot-toggle .inline-icon svg,
+body #chatbot-toggle .inline-icon svg path,
+body #go-to-top,
+body #go-to-top i,
+body #go-to-top svg {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+body #chatbot-toggle .inline-icon svg path,
+body #chatbot-toggle svg path {
+  stroke: #ffffff !important;
+  fill: none !important;
+}
+
+/* Share — slot 2 */
+body #website-share-toggle.website-share-fab,
+body .website-share-fab {
+  position: fixed !important;
+  left: auto !important;
+  right: var(--fab-edge) !important;
+  bottom: var(--fab-slot-2) !important;
+  top: auto !important;
+  z-index: 9998 !important;
+  width: var(--fab-size) !important;
+  height: var(--fab-size) !important;
+  min-width: var(--fab-size) !important;
+  min-height: var(--fab-size) !important;
+  border: none !important;
+  border-radius: 999px !important;
+  background: #0071e3 !important;
+  background-color: #0071e3 !important;
+  background-image: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  box-shadow: 0 8px 24px rgb(0 113 227 / 28%) !important;
+}
+
+html.dark body #website-share-toggle.website-share-fab,
+html.dark body .website-share-fab {
+  background: #0a84ff !important;
+  background-color: #0a84ff !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  box-shadow: 0 8px 24px rgb(0 0 0 / 45%) !important;
+}
+
+body #website-share-toggle i,
+body #website-share-toggle svg,
+body .website-share-fab i,
+body .website-share-fab svg {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+/* Accessibility — slot 3 (panel opens upward above the stack) */
+body .a11y-toolbar,
 .a11y-toolbar {
-  z-index: 9997;
-  /* Share is on the bottom dock; a11y stacks above (panel opens upward, clear of share) */
-  bottom: calc(max(1.25rem, env(safe-area-inset-bottom, 0px)) + 48px + 12px) !important;
-  left: max(1rem, env(safe-area-inset-left, 0px));
-  /* Shell never paints — only child FABs/panel */
+  position: fixed !important;
+  left: auto !important;
+  right: var(--fab-edge) !important;
+  bottom: var(--fab-slot-3) !important;
+  z-index: 9997 !important;
+  display: flex !important;
+  flex-direction: column-reverse !important;
+  align-items: flex-end !important;
   background: transparent !important;
   background-color: transparent !important;
   background-image: none !important;
@@ -212,13 +294,136 @@ body #website-share-toggle {
   -webkit-backdrop-filter: none !important;
   padding: 0 !important;
   gap: 0.5rem !important;
+  width: auto !important;
+  max-width: none !important;
+}
+
+body .a11y-toolbar__main,
+.a11y-toolbar__main,
+body .a11y-toolbar__panel button,
+.a11y-toolbar__panel button {
+  width: var(--fab-size) !important;
+  height: var(--fab-size) !important;
+  min-width: var(--fab-size) !important;
+  min-height: var(--fab-size) !important;
+  border-radius: 999px !important;
+  border: none !important;
+  background: #0071e3 !important;
+  background-color: #0071e3 !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  box-shadow: 0 8px 24px rgb(0 113 227 / 28%) !important;
+}
+
+body .a11y-toolbar__panel button,
+.a11y-toolbar__panel button {
+  width: 44px !important;
+  height: 44px !important;
+  min-width: 44px !important;
+  min-height: 44px !important;
+  box-shadow: 0 6px 16px rgb(0 113 227 / 28%) !important;
+}
+
+html.dark body .a11y-toolbar__main,
+html.dark .a11y-toolbar__main,
+html.dark body .a11y-toolbar__panel button,
+html.dark .a11y-toolbar__panel button {
+  background: #0a84ff !important;
+  background-color: #0a84ff !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  box-shadow: 0 8px 24px rgb(0 0 0 / 45%) !important;
+}
+
+body .a11y-toolbar__main i,
+body .a11y-toolbar__main svg,
+body .a11y-toolbar-button__icon,
+body .a11y-toolbar__main .a11y-toolbar-button__icon i,
+body .a11y-toolbar__panel button i,
+body .a11y-toolbar__panel button svg,
+body .a11y-toolbar__panel button .a11y-toolbar-button__icon,
+.a11y-toolbar__main i,
+.a11y-toolbar__main svg,
+.a11y-toolbar-button__icon {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  fill: currentColor !important;
+}
+
+/* Share close — red circular X (parity with chatbot / publication close) */
+body .website-share-close,
+.website-share-close {
+  background: #ff3b30 !important;
+  background-color: #ff3b30 !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  border: none !important;
+  border-radius: 50% !important;
+  box-shadow: 0 8px 20px rgb(255 59 48 / 35%) !important;
+}
+
+body .website-share-close i,
+body .website-share-close svg,
+.website-share-close i,
+.website-share-close svg {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+body #website-share-toggle.website-share-fab svg,
+body #website-share-toggle.website-share-fab svg path,
+body .website-share-fab svg,
+body .website-share-fab svg path,
+body .website-share-fab__icon,
+body .website-share-fab__icon i {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  fill: currentColor !important;
+  stroke: currentColor !important;
+}
+
+/* Closed a11y panel must not paint/hit-test over the Share FAB */
+.a11y-toolbar:not(.is-open) .a11y-toolbar__panel {
+  display: none !important;
+  max-height: 0 !important;
+  min-height: 0 !important;
+  opacity: 0 !important;
+  overflow: hidden !important;
+  pointer-events: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.a11y-toolbar:not(.is-open) .a11y-toolbar__panel button {
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+/* Chat FAB glyph must stay white on Apple blue (SVG stroke + path fill) */
+body #chatbot-toggle,
+body #chatbot-toggle .inline-icon,
+body #chatbot-toggle .inline-icon svg,
+body #chatbot-toggle .inline-icon svg path,
+body #chatbot-toggle i {
+  color: #fff !important;
+  -webkit-text-fill-color: #fff !important;
+  fill: none !important;
+  stroke: #fff !important;
+}
+
+body #chatbot-toggle .inline-icon svg {
+  width: 1.35rem !important;
+  height: 1.35rem !important;
 }
 
 /* Clearance so last content isn’t under the right FAB stack (chat + go-to-top) */
 body:not(.travel-body):not(.error-page):not(.offline-page) main#main-content,
 body.systems-page main,
 body.monitor-page main,
-body.uses-page main {
+body.uses-page main,
+body.blog-standalone-page main {
   padding-bottom: calc(
     (var(--fab-size) * 2) + var(--fab-gap) + env(safe-area-inset-bottom, 0px) + 1.25rem
   );
@@ -228,9 +433,11 @@ body.uses-page main {
 body.systems-page #chatbot-toggle,
 body.monitor-page #chatbot-toggle,
 body.uses-page #chatbot-toggle,
+body.blog-standalone-page #chatbot-toggle,
 body.systems-page #go-to-top,
 body.monitor-page #go-to-top,
-body.uses-page #go-to-top {
+body.uses-page #go-to-top,
+body.blog-standalone-page #go-to-top {
   z-index: 9999;
 }
 
@@ -422,5 +629,335 @@ button:not(:disabled):active,
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+}
+
+/* ========================================
+   APPLE SPOTLIGHT / COMMAND PALETTE
+   Wins over legacy style.css + premium search chrome
+   ======================================== */
+
+#search-overlay {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 100050 !important;
+  display: none !important;
+  align-items: flex-start !important;
+  justify-content: center !important;
+  padding: min(12vh, 6.5rem) 1rem 2rem !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  opacity: 1 !important;
+}
+
+#search-overlay.active {
+  display: flex !important;
+}
+
+#search-overlay .search-overlay-backdrop {
+  position: absolute !important;
+  inset: 0 !important;
+  background: rgb(0 0 0 / 32%) !important;
+  backdrop-filter: blur(14px) saturate(140%) !important;
+  -webkit-backdrop-filter: blur(14px) saturate(140%) !important;
+}
+
+html.dark #search-overlay .search-overlay-backdrop {
+  background: rgb(0 0 0 / 55%) !important;
+}
+
+#search-overlay .search-panel {
+  position: relative !important;
+  z-index: 1 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  width: min(640px, 100%) !important;
+  max-height: min(72vh, 640px) !important;
+  margin: 0 auto !important;
+  padding: 0.5rem !important;
+  border-radius: 18px !important;
+  border: 1px solid rgb(0 0 0 / 8%) !important;
+  background: rgb(255 255 255 / 92%) !important;
+  background-color: rgb(255 255 255 / 92%) !important;
+  backdrop-filter: saturate(180%) blur(40px) !important;
+  -webkit-backdrop-filter: saturate(180%) blur(40px) !important;
+  box-shadow:
+    0 0 0 1px rgb(255 255 255 / 40%) inset,
+    0 1px 2px rgb(0 0 0 / 4%),
+    0 28px 80px rgb(0 0 0 / 22%) !important;
+  overflow: hidden !important;
+}
+
+html.dark #search-overlay .search-panel {
+  border-color: rgb(255 255 255 / 12%) !important;
+  background: rgb(28 28 30 / 88%) !important;
+  background-color: rgb(28 28 30 / 88%) !important;
+  box-shadow:
+    0 0 0 1px rgb(255 255 255 / 6%) inset,
+    0 1px 2px rgb(0 0 0 / 40%),
+    0 32px 90px rgb(0 0 0 / 65%) !important;
+}
+
+#search-overlay .search-header {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  gap: 0.7rem !important;
+  width: 100% !important;
+  margin: 0 0 0.35rem !important;
+  padding: 0.55rem 0.65rem 0.7rem !important;
+  border: none !important;
+  border-bottom: 1px solid rgb(0 0 0 / 7%) !important;
+  background: transparent !important;
+  box-sizing: border-box !important;
+}
+
+html.dark #search-overlay .search-header {
+  border-bottom-color: rgb(255 255 255 / 10%) !important;
+}
+
+#search-overlay .search-header > i.fas,
+#search-overlay .search-header > i.fa-magnifying-glass,
+#search-overlay .search-header > .fa-search {
+  position: static !important;
+  top: auto !important;
+  left: auto !important;
+  transform: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 1.15rem !important;
+  height: 1.15rem !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  flex: 0 0 auto !important;
+  color: #86868b !important;
+  font-size: 1rem !important;
+  pointer-events: none !important;
+}
+
+#search-overlay #search-input {
+  position: static !important;
+  display: block !important;
+  flex: 1 1 auto !important;
+  width: auto !important;
+  min-width: 0 !important;
+  height: auto !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0.35rem 0 !important;
+  border: none !important;
+  border-bottom: none !important;
+  border-radius: 0 !important;
+  outline: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  color: #1d1d1f !important;
+  -webkit-text-fill-color: #1d1d1f !important;
+  font-size: 1.125rem !important;
+  font-weight: 500 !important;
+  letter-spacing: -0.022em !important;
+  line-height: 1.35 !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+}
+
+html.dark #search-overlay #search-input {
+  color: #f5f5f7 !important;
+  -webkit-text-fill-color: #f5f5f7 !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
+
+#search-overlay #search-input:focus,
+#search-overlay #search-input:focus-visible {
+  outline: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+#search-overlay #search-input::placeholder {
+  color: #86868b !important;
+  opacity: 1 !important;
+  -webkit-text-fill-color: #86868b !important;
+}
+
+#search-overlay #search-close,
+#search-overlay #search-close.premium-close-btn,
+#search-overlay #search-close:hover,
+#search-overlay #search-close:focus,
+#search-overlay #search-close:focus-visible,
+#search-overlay #search-close:active {
+  position: static !important;
+  top: auto !important;
+  right: auto !important;
+  left: auto !important;
+  transform: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex: 0 0 auto !important;
+  width: 28px !important;
+  height: 28px !important;
+  min-width: 28px !important;
+  min-height: 28px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border-radius: 999px !important;
+  border: 1px solid rgb(0 0 0 / 8%) !important;
+  background: #f5f5f7 !important;
+  background-color: #f5f5f7 !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  color: #6e6e73 !important;
+  -webkit-text-fill-color: #6e6e73 !important;
+  font-size: 0.85rem !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  z-index: 1 !important;
+}
+
+#search-overlay #search-close:hover,
+#search-overlay #search-close:focus-visible {
+  background: #e8e8ed !important;
+  background-color: #e8e8ed !important;
+  color: #1d1d1f !important;
+  -webkit-text-fill-color: #1d1d1f !important;
+}
+
+html.dark #search-overlay #search-close,
+html.dark #search-overlay #search-close.premium-close-btn,
+html.dark #search-overlay #search-close:hover,
+html.dark #search-overlay #search-close:focus,
+html.dark #search-overlay #search-close:focus-visible {
+  border-color: rgb(255 255 255 / 12%) !important;
+  background: #3a3a3c !important;
+  background-color: #3a3a3c !important;
+  color: #a1a1a6 !important;
+  -webkit-text-fill-color: #a1a1a6 !important;
+}
+
+#search-overlay #search-results {
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  overflow-y: auto !important;
+  padding: 0.15rem 0.15rem 0.35rem !important;
+  margin: 0 !important;
+}
+
+#search-overlay .search-section-title {
+  margin: 0.55rem 0.55rem 0.3rem !important;
+  padding: 0 !important;
+  font-size: 0.7rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  color: #86868b !important;
+}
+
+#search-overlay .search-result-item {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.85rem !important;
+  margin: 0 0.1rem 0.15rem !important;
+  padding: 0.7rem 0.75rem !important;
+  border-radius: 12px !important;
+  border: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  animation: none !important;
+}
+
+#search-overlay .search-result-item.active,
+#search-overlay .search-result-item:hover {
+  background: rgb(0 113 227 / 10%) !important;
+  transform: none !important;
+}
+
+html.dark #search-overlay .search-result-item.active,
+html.dark #search-overlay .search-result-item:hover {
+  background: rgb(10 132 255 / 16%) !important;
+}
+
+#search-overlay .search-result-icon {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 2rem !important;
+  height: 2rem !important;
+  border-radius: 10px !important;
+  background: #f5f5f7 !important;
+  color: #0071e3 !important;
+  font-size: 0.85rem !important;
+  flex-shrink: 0 !important;
+}
+
+html.dark #search-overlay .search-result-icon {
+  background: #2c2c2e !important;
+  color: #0a84ff !important;
+}
+
+#search-overlay .search-result-content {
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+}
+
+#search-overlay .search-result-title {
+  margin: 0 !important;
+  font-size: 0.95rem !important;
+  font-weight: 650 !important;
+  letter-spacing: -0.015em !important;
+  color: #1d1d1f !important;
+  line-height: 1.3 !important;
+}
+
+html.dark #search-overlay .search-result-title {
+  color: #f5f5f7 !important;
+}
+
+#search-overlay .search-result-section {
+  margin: 0.12rem 0 0 !important;
+  font-size: 0.78rem !important;
+  line-height: 1.35 !important;
+  color: #6e6e73 !important;
+}
+
+html.dark #search-overlay .search-result-section {
+  color: #a1a1a6 !important;
+}
+
+#search-overlay .search-result-shortcut {
+  color: #86868b !important;
+  opacity: 0.7 !important;
+  flex-shrink: 0 !important;
+}
+
+#search-overlay .search-footer-hint,
+#search-overlay .search-hint {
+  margin: 0.35rem 0.55rem 0.2rem !important;
+  padding: 0 !important;
+  font-size: 0.72rem !important;
+  letter-spacing: -0.01em !important;
+  color: #86868b !important;
+  text-align: left !important;
+}
+
+@media (width <= 640px) {
+  #search-overlay.active {
+    padding: max(0.75rem, env(safe-area-inset-top)) 0.65rem 1rem !important;
+    align-items: flex-start !important;
+  }
+
+  #search-overlay .search-panel {
+    width: 100% !important;
+    max-height: min(82vh, 720px) !important;
+    border-radius: 16px !important;
+  }
+
+  #search-overlay #search-input {
+    font-size: 1.05rem !important;
   }
 }

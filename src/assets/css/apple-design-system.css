@@ -41,15 +41,15 @@
     /* Light Mode — apple.com product canvas */
     --bg-primary: #ffffff;
     --bg-secondary: #ffffff;
-    --bg-tertiary: #f5f5f7;
+    --bg-tertiary: #ffffff;
     --text-primary: #1d1d1f;
     --text-secondary: #6e6e73;
     --text-tertiary: #86868b;
     --separator: rgba(0, 0, 0, 0.08);
     --separator-strong: rgba(0, 0, 0, 0.16);
-    --fill: rgba(120, 120, 128, 0.12);
-    --fill-secondary: rgba(120, 120, 128, 0.08);
-    --fill-tertiary: rgba(118, 118, 128, 0.06);
+    --fill: #ffffff;
+    --fill-secondary: #ffffff;
+    --fill-tertiary: #ffffff;
 
     /* Typography */
     --font-display:
@@ -159,15 +159,15 @@
     /* Pure black canvas (portfolio) with system label colors */
     --bg-primary: #000000;
     --bg-secondary: #000000;
-    --bg-tertiary: #1c1c1e;
+    --bg-tertiary: #000000;
     --text-primary: #f5f5f7;
     --text-secondary: #a1a1a6;
     --text-tertiary: #6e6e73;
     --separator: rgba(255, 255, 255, 0.08);
     --separator-strong: rgba(255, 255, 255, 0.16);
-    --fill: rgba(120, 120, 128, 0.36);
-    --fill-secondary: rgba(120, 120, 128, 0.24);
-    --fill-tertiary: rgba(118, 118, 128, 0.18);
+    --fill: #000000;
+    --fill-secondary: #000000;
+    --fill-tertiary: #000000;
     --glass-bg: rgba(0, 0, 0, 0.72);
     --glass-bg-strong: rgba(0, 0, 0, 0.85);
     --glass-border: rgba(255, 255, 255, 0.1);
@@ -394,12 +394,26 @@
   }
 
   .btn-secondary {
-    background: var(--fill);
+    background: #ffffff;
     color: var(--apple-blue);
+    border: 1px solid rgb(0 113 227 / 35%);
   }
 
   .btn-secondary:hover {
-    background: var(--fill-secondary);
+    background: #ffffff;
+    border-color: var(--apple-blue);
+  }
+
+  html.dark .btn-secondary {
+    background: #000000;
+    color: #0a84ff;
+    border-color: rgb(10 132 255 / 40%);
+  }
+
+  html.dark .btn-secondary:hover {
+    background: #000000;
+    border-color: #0a84ff;
+    color: #2997ff;
   }
 
   /* Badges */

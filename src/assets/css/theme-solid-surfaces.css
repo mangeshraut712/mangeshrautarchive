@@ -16,6 +16,12 @@
   --theme-page-bg: #ffffff;
   --apple-gray-6: #ffffff;
   --apple-gray-5: #ffffff;
+  --apple-bg: #ffffff;
+  --uses-surface-muted: #ffffff;
+  --travel-surface-muted: #ffffff;
+  --systems-diagram-bg: #ffffff;
+  --ag-surface: #ffffff;
+  --ag-elevated: #ffffff;
   --lg-panel-surface-light: #ffffff;
   --lg-control-surface-light: #ffffff;
   --lg-nav-surface-light: #ffffff;
@@ -29,10 +35,11 @@
     env(safe-area-inset-right, 0px)
   );
   --theme-card-radius: 22px;
-  --theme-fab-edge: max(1.5rem, env(safe-area-inset-right, 0px));
-  --theme-fab-bottom: max(1.75rem, env(safe-area-inset-bottom, 0px));
-  --theme-fab-size: 3.75rem;
-  --theme-fab-gap: 0.85rem;
+  /* Keep in sync with ux-polish-fixes FAB stack (48px right column) */
+  --theme-fab-edge: max(14px, env(safe-area-inset-right, 0px));
+  --theme-fab-bottom: max(14px, env(safe-area-inset-bottom, 0px));
+  --theme-fab-size: 48px;
+  --theme-fab-gap: 10px;
   --card-border-rest: #e5e5ea;
   --card-border-hover: #0071e3;
 }
@@ -51,6 +58,12 @@ html[data-theme='dark'] {
   --fill-tertiary: #000000;
   --apple-gray-6: #000000;
   --apple-gray-5: #000000;
+  --apple-bg: #000000;
+  --uses-surface-muted: #000000;
+  --travel-surface-muted: #000000;
+  --systems-diagram-bg: #000000;
+  --ag-surface: #000000;
+  --ag-elevated: #000000;
   --lg-panel-surface-dark: #000000;
   --lg-control-surface-dark: #000000;
   --lg-nav-surface-dark: #000000;
@@ -85,13 +98,17 @@ html:not(.dark) main > section,
 html:not(.dark) body.systems-page,
 html:not(.dark) body.monitor-page,
 html:not(.dark) body.uses-page,
+html:not(.dark) body.travel-body,
 html:not(.dark) body.error-page,
 html:not(.dark) body.offline-page,
 html:not(.dark) body.systems-page .systems-shell,
 html:not(.dark) body.monitor-page main,
+html:not(.dark) body.travel-body main,
 html:not(.dark) body.error-page main,
 html:not(.dark) body.error-page .error-shell,
-html:not(.dark) body.offline-page main {
+html:not(.dark) body.error-page .error-container,
+html:not(.dark) body.offline-page main,
+html:not(.dark) body.blog-standalone-page {
   background-color: #ffffff !important;
   background-image: none !important;
 }
@@ -100,13 +117,17 @@ html.dark main > section,
 html.dark body.systems-page,
 html.dark body.monitor-page,
 html.dark body.uses-page,
+html.dark body.travel-body,
 html.dark body.error-page,
 html.dark body.offline-page,
 html.dark body.systems-page .systems-shell,
 html.dark body.monitor-page main,
+html.dark body.travel-body main,
 html.dark body.error-page main,
 html.dark body.error-page .error-shell,
-html.dark body.offline-page main {
+html.dark body.error-page .error-container,
+html.dark body.offline-page main,
+html.dark body.blog-standalone-page {
   background-color: #000000 !important;
   background-image: none !important;
 }
@@ -286,8 +307,6 @@ html:not(.dark)
     .error-container,
     #blog .blog-card,
     body.blog-standalone-page .blog-card,
-    body.blog-standalone-page .blog-index-header,
-    body.blog-standalone-page .article-header,
     body.blog-standalone-page .blog-article-sidebar,
     body.blog-standalone-page .article-related-card,
     #blog .newsletter-card,
@@ -399,8 +418,6 @@ html.dark
     .error-container,
     #blog .blog-card,
     body.blog-standalone-page .blog-card,
-    body.blog-standalone-page .blog-index-header,
-    body.blog-standalone-page .article-header,
     body.blog-standalone-page .blog-article-sidebar,
     body.blog-standalone-page .article-related-card,
     #blog .newsletter-card,
@@ -427,14 +444,12 @@ html.dark
 }
 
 /* ─── Floating chrome — solid only in tinted mode; clear/balanced use liquid glass ─── */
-/* Paint controls, not the a11y shell (shell must stay transparent — no extra square) */
+/* Paint panels/nav — NOT the a11y/share FABs (those stay Apple blue for contrast). */
 html[data-lg-mode='tinted']
   :is(
     #chatbot-widget,
-    .a11y-toolbar__main,
     .a11y-toolbar__panel,
     .a11y-glass-popover,
-    .a11y-toolbar button,
     .website-share-dialog.active,
     .travel-nav,
     .monitor-page-nav
@@ -446,10 +461,8 @@ html[data-lg-mode='tinted']
 html[data-lg-mode='tinted']:not(.dark)
   :is(
     #chatbot-widget,
-    .a11y-toolbar__main,
     .a11y-toolbar__panel,
     .a11y-glass-popover,
-    .a11y-toolbar button,
     .website-share-dialog.active,
     .travel-nav,
     .monitor-page-nav
@@ -462,10 +475,8 @@ html[data-lg-mode='tinted']:not(.dark)
 html.dark[data-lg-mode='tinted']
   :is(
     #chatbot-widget,
-    .a11y-toolbar__main,
     .a11y-toolbar__panel,
     .a11y-glass-popover,
-    .a11y-toolbar button,
     .website-share-dialog.active,
     .travel-nav,
     .monitor-page-nav
@@ -750,7 +761,7 @@ html:not(.dark) #projects .github-graph-legend span[data-level='4'] {
 }
 
 html.dark #projects .github-graph-legend span[data-level='0'] {
-  background-color: #161b22 !important;
+  background-color: #000000 !important;
   border: 1px solid rgb(255 255 255 / 12%) !important;
 }
 
@@ -794,7 +805,7 @@ html.dark
   body #go-to-top,
   body #go-to-top.visible {
     right: var(--theme-fab-edge) !important;
-    bottom: var(--theme-fab-bottom) !important;
+    bottom: var(--fab-slot-0, var(--theme-fab-bottom)) !important;
     width: var(--theme-fab-size) !important;
     height: var(--theme-fab-size) !important;
     min-width: var(--theme-fab-size) !important;
@@ -803,11 +814,31 @@ html.dark
 
   body #chatbot-toggle {
     right: var(--theme-fab-edge) !important;
-    bottom: calc(var(--theme-fab-bottom) + var(--theme-fab-size) + var(--theme-fab-gap)) !important;
+    bottom: var(
+      --fab-slot-1,
+      calc(var(--theme-fab-bottom) + var(--theme-fab-size) + var(--theme-fab-gap))
+    ) !important;
     width: var(--theme-fab-size) !important;
     height: var(--theme-fab-size) !important;
     min-width: var(--theme-fab-size) !important;
     min-height: var(--theme-fab-size) !important;
+  }
+
+  body #website-share-toggle.website-share-fab,
+  body .website-share-fab {
+    right: var(--theme-fab-edge) !important;
+    bottom: var(
+      --fab-slot-2,
+      calc(var(--theme-fab-bottom) + (var(--theme-fab-size) + var(--theme-fab-gap)) * 2)
+    ) !important;
+  }
+
+  body .a11y-toolbar {
+    right: var(--theme-fab-edge) !important;
+    bottom: var(
+      --fab-slot-3,
+      calc(var(--theme-fab-bottom) + (var(--theme-fab-size) + var(--theme-fab-gap)) * 3)
+    ) !important;
   }
 }
 
@@ -1228,45 +1259,131 @@ html.dark:not([data-lg-mode])
   }
 }
 
-/* ─── Blue shine buttons (no grey secondary fills) ─── */
+/* ─── Secondary buttons: solid surface + blue border (not primary blue) ─── */
 :is(
   .btn-secondary,
+  .button-secondary,
   .apple-btn-secondary,
   #projects .projects-view-all-btn,
   #projects #github-projects-container .btn-demo,
-  #home .hero-actions .hero-cta
+  #home .hero-actions .hero-cta-secondary,
+  .section-preview-btn
 ) {
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
 }
 
-html:not(.dark) :is(.btn-secondary, .apple-btn-secondary):not(.is-disabled):not(:disabled) {
-  background: linear-gradient(135deg, #0071e3 0%, #0a84ff 100%) !important;
-  color: #ffffff !important;
-  border: 1px solid transparent !important;
-  box-shadow: 0 4px 14px rgb(0 113 227 / 24%) !important;
+html:not(.dark)
+  :is(
+    .btn-secondary,
+    .button-secondary,
+    .apple-btn-secondary,
+    #projects .projects-view-all-btn,
+    #projects #github-projects-container .btn-demo,
+    #home .hero-actions .hero-cta-secondary,
+    .section-preview-btn
+  ):not(.is-disabled):not(:disabled) {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
+  color: #0071e3 !important;
+  -webkit-text-fill-color: #0071e3 !important;
+  border: 1px solid rgb(0 113 227 / 35%) !important;
+  box-shadow: none !important;
 }
 
-html.dark :is(.btn-secondary, .apple-btn-secondary):not(.is-disabled):not(:disabled) {
-  background: linear-gradient(135deg, #0071e3 0%, #0a84ff 100%) !important;
-  color: #ffffff !important;
-  border: 1px solid transparent !important;
-  box-shadow: 0 4px 14px rgb(10 132 255 / 28%) !important;
+html.dark
+  :is(
+    .btn-secondary,
+    .button-secondary,
+    .apple-btn-secondary,
+    #projects .projects-view-all-btn,
+    #projects #github-projects-container .btn-demo,
+    #home .hero-actions .hero-cta-secondary,
+    .section-preview-btn
+  ):not(.is-disabled):not(:disabled) {
+  background: #000000 !important;
+  background-color: #000000 !important;
+  background-image: none !important;
+  color: #0a84ff !important;
+  -webkit-text-fill-color: #0a84ff !important;
+  border: 1px solid rgb(10 132 255 / 40%) !important;
+  box-shadow: none !important;
 }
 
 @media (hover: hover) and (pointer: fine) {
-  html:not(.dark) :is(.btn-secondary, .apple-btn-secondary):hover:not(:disabled) {
-    background: linear-gradient(135deg, #0077ed 0%, #2997ff 100%) !important;
-    border-color: transparent !important;
-    box-shadow: 0 6px 20px rgb(0 113 227 / 32%) !important;
-    transform: translateY(-2px) scale(1.02);
+  html:not(.dark)
+    :is(
+      .btn-secondary,
+      .button-secondary,
+      .apple-btn-secondary,
+      #projects .projects-view-all-btn,
+      #projects #github-projects-container .btn-demo,
+      #home .hero-actions .hero-cta-secondary,
+      .section-preview-btn
+    ):hover:not(:disabled) {
+    background: #ffffff !important;
+    border-color: #0071e3 !important;
+    color: #0071e3 !important;
+    -webkit-text-fill-color: #0071e3 !important;
+    box-shadow: 0 4px 14px rgb(0 113 227 / 12%) !important;
+    transform: translateY(-1px);
   }
 
-  html.dark :is(.btn-secondary, .apple-btn-secondary):hover:not(:disabled) {
-    background: linear-gradient(135deg, #0077ed 0%, #2997ff 100%) !important;
-    box-shadow: 0 6px 20px rgb(10 132 255 / 36%) !important;
-    transform: translateY(-2px) scale(1.02);
+  html.dark
+    :is(
+      .btn-secondary,
+      .button-secondary,
+      .apple-btn-secondary,
+      #projects .projects-view-all-btn,
+      #projects #github-projects-container .btn-demo,
+      #home .hero-actions .hero-cta-secondary,
+      .section-preview-btn
+    ):hover:not(:disabled) {
+    background: #000000 !important;
+    border-color: #0a84ff !important;
+    color: #2997ff !important;
+    -webkit-text-fill-color: #2997ff !important;
+    box-shadow: 0 4px 14px rgb(10 132 255 / 16%) !important;
+    transform: translateY(-1px);
   }
+}
+
+/* Primary CTAs stay solid Apple blue */
+html:not(.dark)
+  :is(
+    .btn-primary,
+    .hero-cta-primary,
+    #home .hero-actions .hero-cta-primary,
+    button[type='submit']:not(.btn-secondary),
+    .contact-submit,
+    .engineering-open-btn
+  ):not(.is-disabled):not(:disabled) {
+  background: #0071e3 !important;
+  background-color: #0071e3 !important;
+  background-image: none !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  border: none !important;
+  box-shadow: 0 4px 14px rgb(0 113 227 / 24%) !important;
+}
+
+html.dark
+  :is(
+    .btn-primary,
+    .hero-cta-primary,
+    #home .hero-actions .hero-cta-primary,
+    button[type='submit']:not(.btn-secondary),
+    .contact-submit,
+    .engineering-open-btn
+  ):not(.is-disabled):not(:disabled) {
+  background: #0a84ff !important;
+  background-color: #0a84ff !important;
+  background-image: none !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  border: none !important;
+  box-shadow: 0 4px 14px rgb(10 132 255 / 28%) !important;
 }
 
 /* Project card footer — flat, not grey gradient */
@@ -1323,7 +1440,7 @@ html.dark #projects .activity-stat-item {
 
 html.dark #projects .github-graph-scroll,
 html.dark #projects .graph-loading {
-  background: #0d1117 !important;
+  background: #000000 !important;
   box-shadow: none !important;
 }
 
@@ -2004,4 +2121,168 @@ html.dark body .footer-tagline,
 html.dark body .footer-copy {
   color: #a1a1a6 !important;
   -webkit-text-fill-color: #a1a1a6 !important;
+}
+
+/* ─── Final solid canvas lock: kill residual grey page/card fills ─── */
+html:not(.dark)
+  :is(
+    .uses-item,
+    .uses-search,
+    .uses-control-tile,
+    .travel-stat,
+    .travel-stop,
+    .travel-stop__media,
+    .place-guide-card,
+    .blog-topic-pill,
+    .blog-filter-chip,
+    .blog-back-link,
+    .blog-promise,
+    .project-release-strip,
+    .a11y-glass-popover,
+    .systems-arch-diagram-host,
+    .contact-form-container,
+    .error-container
+  ) {
+  background-color: #ffffff !important;
+  background-image: none !important;
+}
+
+html.dark
+  :is(
+    .uses-item,
+    .uses-search,
+    .uses-control-tile,
+    .travel-stat,
+    .travel-stop,
+    .travel-stop__media,
+    .place-guide-card,
+    .blog-topic-pill,
+    .blog-filter-chip,
+    .blog-back-link,
+    .blog-promise,
+    .project-release-strip,
+    .a11y-glass-popover,
+    .systems-arch-diagram-host,
+    .contact-form-container,
+    .error-container
+  ) {
+  background-color: #000000 !important;
+  background-image: none !important;
+}
+
+/* ─── Right FAB stack (final authority) ───
+   One column: Top → Chat → Share → A11y. Solid Apple blue, white glyphs. */
+html
+  body
+  :is(
+    #chatbot-toggle,
+    #go-to-top,
+    #go-to-top.visible,
+    #website-share-toggle.website-share-fab,
+    .a11y-toolbar__main
+  ) {
+  width: var(--theme-fab-size, 48px) !important;
+  height: var(--theme-fab-size, 48px) !important;
+  min-width: var(--theme-fab-size, 48px) !important;
+  min-height: var(--theme-fab-size, 48px) !important;
+  left: auto !important;
+  right: var(--theme-fab-edge, max(14px, env(safe-area-inset-right, 0px))) !important;
+  border: none !important;
+  border-radius: 999px !important;
+  padding: 0 !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  background-image: none !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+html:not(.dark)
+  body
+  :is(
+    #chatbot-toggle,
+    #go-to-top,
+    #go-to-top.visible,
+    #website-share-toggle.website-share-fab,
+    .a11y-toolbar__main,
+    .a11y-toolbar__panel button
+  ) {
+  background: #0071e3 !important;
+  background-color: #0071e3 !important;
+}
+
+html.dark
+  body
+  :is(
+    #chatbot-toggle,
+    #go-to-top,
+    #go-to-top.visible,
+    #website-share-toggle.website-share-fab,
+    .a11y-toolbar__main,
+    .a11y-toolbar__panel button
+  ) {
+  background: #0a84ff !important;
+  background-color: #0a84ff !important;
+}
+
+html
+  body
+  :is(
+    #chatbot-toggle,
+    #go-to-top,
+    #website-share-toggle,
+    .a11y-toolbar__main,
+    .a11y-toolbar__panel button
+  )
+  :is(i, svg, .a11y-toolbar-button__icon) {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  fill: currentColor !important;
+}
+
+/* Share dialog close — always Apple red, light + dark */
+html body .website-share-close,
+html:not(.dark) body .website-share-close,
+html.dark body .website-share-close {
+  background: #ff3b30 !important;
+  background-color: #ff3b30 !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  border: none !important;
+  border-radius: 50% !important;
+}
+
+html body .website-share-close :is(i, svg) {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+/* Pack stack when Top is hidden; expand when visible */
+html body:not(:has(#go-to-top.visible)) #chatbot-toggle {
+  bottom: var(--fab-slot-0, var(--theme-fab-bottom)) !important;
+}
+
+html body:not(:has(#go-to-top.visible)) #website-share-toggle.website-share-fab {
+  bottom: var(--fab-slot-1) !important;
+}
+
+html body:not(:has(#go-to-top.visible)) .a11y-toolbar {
+  bottom: var(--fab-slot-2) !important;
+}
+
+html body:has(#go-to-top.visible) #go-to-top,
+html body:has(#go-to-top.visible) #go-to-top.visible {
+  bottom: var(--fab-slot-0) !important;
+}
+
+html body:has(#go-to-top.visible) #chatbot-toggle {
+  bottom: var(--fab-slot-1) !important;
+}
+
+html body:has(#go-to-top.visible) #website-share-toggle.website-share-fab {
+  bottom: var(--fab-slot-2) !important;
+}
+
+html body:has(#go-to-top.visible) .a11y-toolbar {
+  bottom: var(--fab-slot-3) !important;
 }

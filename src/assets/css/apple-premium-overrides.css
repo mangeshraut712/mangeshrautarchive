@@ -374,16 +374,18 @@ html.dark .project-action-btn.btn-demo:hover:not(:disabled):not(.is-disabled) {
 .premium-close-btn {
   width: 44px !important;
   height: 44px !important;
-  background: rgba(0, 113, 227, 0.1) !important;
-  color: #0071e3 !important;
+  background: #f5f5f7 !important;
+  color: #6e6e73 !important;
+  -webkit-text-fill-color: #6e6e73 !important;
   border-radius: 50% !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  border: 1px solid rgba(0, 113, 227, 0.2) !important;
+  border: 1px solid rgb(0 0 0 / 8%) !important;
   cursor: pointer !important;
-  backdrop-filter: blur(10px) !important;
-  -webkit-backdrop-filter: blur(10px) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  box-shadow: none !important;
   transition:
     color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
     background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
@@ -395,10 +397,14 @@ html.dark .project-action-btn.btn-demo:hover:not(:disabled):not(.is-disabled) {
 }
 
 #search-close.premium-close-btn {
-  position: absolute;
-  right: 12px;
-  top: 50%;
-  transform: translateY(-50%);
+  position: static;
+  right: auto;
+  top: auto;
+  transform: none !important;
+  width: 32px !important;
+  height: 32px !important;
+  min-width: 32px !important;
+  min-height: 32px !important;
 }
 
 #close-menu-btn.premium-close-btn {
@@ -408,53 +414,30 @@ html.dark .project-action-btn.btn-demo:hover:not(:disabled):not(.is-disabled) {
 }
 
 .premium-close-btn:hover {
-  background: #0071e3 !important;
-  color: #fff !important;
-  transform: scale(1.1) !important;
+  background: #e8e8ed !important;
+  color: #1d1d1f !important;
+  -webkit-text-fill-color: #1d1d1f !important;
+  transform: none !important;
 }
 
 #search-close.premium-close-btn:hover {
-  transform: translateY(-50%) scale(1.1) !important;
+  transform: none !important;
 }
 
 html.dark .premium-close-btn {
-  background: rgba(10, 132, 255, 0.1) !important;
-  color: #0a84ff !important;
-  border-color: rgba(10, 132, 255, 0.2) !important;
+  background: #2c2c2e !important;
+  color: #a1a1a6 !important;
+  -webkit-text-fill-color: #a1a1a6 !important;
+  border-color: rgb(255 255 255 / 12%) !important;
 }
 
 html.dark .premium-close-btn:hover {
-  background: #0a84ff !important;
-  color: #fff !important;
+  background: #3a3a3c !important;
+  color: #f5f5f7 !important;
+  -webkit-text-fill-color: #f5f5f7 !important;
 }
 
-/* Search Input - Premium Box Style */
-
-#search-input {
-  background: transparent !important;
-  border: 1px solid rgb(0 0 0 / 10%) !important;
-  border-radius: 12px !important;
-  padding: 16px 50px !important;
-
-  /* Space for icons */
-  font-size: 1.1rem !important;
-  height: 56px !important;
-}
-
-html.dark #search-input {
-  border-color: rgb(255 255 255 / 20%) !important;
-  color: #fff !important;
-}
-
-#search-input:focus {
-  border-color: #0071e3 !important;
-  box-shadow: 0 0 0 4px rgb(0 113 227 / 10%) !important;
-}
-
-html.dark #search-input:focus {
-  border-color: #0a84ff !important;
-  box-shadow: 0 0 0 4px rgb(10 132 255 / 20%) !important;
-}
+/* Search input chrome owned by Spotlight rules in ux-polish-fixes.css */
 
 /* Mobile Menu - Premium Grid Layout */
 
@@ -630,30 +613,7 @@ html.dark .menu-item:hover {
     color: #0a84ff;
   }
 
-  #search-overlay {
-    padding-top: 0 !important;
-    align-items: flex-start !important;
-    background: rgb(255 255 255 / 98%) !important;
-  }
-
-  html.dark #search-overlay {
-    background: rgb(0 0 0 / 95%) !important;
-  }
-
-  .search-container {
-    width: 100% !important;
-    padding: 20px;
-    margin-top: 0;
-  }
-
-  #search-input {
-    background: rgb(0 0 0 / 5%) !important;
-    border: none !important;
-  }
-
-  html.dark #search-input {
-    background: rgb(255 255 255 / 10%) !important;
-  }
+  /* Spotlight command palette owns mobile search layout (ux-polish-fixes) */
 }
 
 /* 6. Desktop Navbar Optimization (Fit all links) */
@@ -1842,20 +1802,20 @@ html.dark .skill-name {
 
 /* Contact Form */
 .contact-form-container {
-  background: rgb(255 255 255 / 70%) !important;
-  backdrop-filter: blur(20px) !important;
+  background: #ffffff !important;
+  backdrop-filter: none !important;
   border-radius: 24px !important;
-  border: 1px solid rgb(255 255 255 / 50%) !important;
+  border: 1px solid rgb(0 0 0 / 8%) !important;
 }
 
 html.dark .contact-form-container {
-  background: rgb(28 28 30 / 60%) !important;
-  border: 1px solid rgb(255 255 255 / 10%) !important;
+  background: #000000 !important;
+  border: 1px solid rgb(255 255 255 / 12%) !important;
 }
 
-input,
+input:not(#search-input),
 textarea {
-  background: rgb(255 255 255 / 50%) !important;
+  background: #ffffff !important;
   border: 1px solid rgb(0 0 0 / 10%) !important;
   border-radius: 12px !important;
   transition:
@@ -1867,24 +1827,24 @@ textarea {
     opacity 0.3s ease !important;
 }
 
-html.dark input,
+html.dark input:not(#search-input),
 html.dark textarea {
-  background: rgb(0 0 0 / 30%) !important;
-  border: 1px solid rgb(255 255 255 / 10%) !important;
+  background: #000000 !important;
+  border: 1px solid rgb(255 255 255 / 12%) !important;
   color: #fff !important;
 }
 
-input:focus,
+input:focus:not(#search-input),
 textarea:focus {
-  background: rgb(255 255 255 / 90%) !important;
+  background: #ffffff !important;
   border-color: #0071e3 !important;
   box-shadow: 0 0 0 4px rgb(0 113 227 / 15%) !important;
   outline: none !important;
 }
 
-html.dark input:focus,
+html.dark input:focus:not(#search-input),
 html.dark textarea:focus {
-  background: rgb(0 0 0 / 60%) !important;
+  background: #000000 !important;
   border-color: #2997ff !important;
   box-shadow: 0 0 0 4px rgb(41 151 255 / 15%) !important;
 }
@@ -3072,14 +3032,15 @@ html.dark .theme-toggle:hover {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  margin-top: 1.25rem;
+  margin-top: 0.35rem;
+  margin-bottom: 0.15rem;
   animation: musicCardSlide 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 @keyframes musicCardSlide {
   from {
     opacity: 0;
-    transform: translateY(20px) scale(0.95);
+    transform: translateY(12px) scale(0.98);
   }
   to {
     opacity: 1;
@@ -3088,10 +3049,13 @@ html.dark .theme-toggle:hover {
 }
 
 #home .music-card-inner {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 1rem;
-  padding: 0.75rem 1.25rem 0.75rem 0.75rem;
+  gap: 0.65rem;
+  width: fit-content;
+  max-width: min(100%, 22rem);
+  padding: 0.45rem 0.75rem;
+  box-sizing: border-box;
   border-radius: 100px;
   box-shadow: none !important;
   backdrop-filter: none !important;
@@ -3109,11 +3073,11 @@ html.dark #home .music-card:hover .music-card-inner {
   box-shadow: none !important;
 }
 
-/* Album Art Container - Circular Design */
+/* Album Art Container - Circular Design (compact; prevents hero CLS) */
 .album-art-container {
   position: relative;
-  width: 56px;
-  height: 56px;
+  width: 44px;
+  height: 44px;
   flex-shrink: 0;
 }
 
@@ -3202,7 +3166,7 @@ html.dark #home .music-card:hover .music-card-inner {
   gap: 0.125rem;
   min-width: 0;
   text-align: left;
-  flex: 1;
+  flex: 0 1 auto;
 }
 
 .status-row {

@@ -243,11 +243,11 @@ html.dark #chatbot-toggle {
 
 #go-to-top {
   position: fixed !important;
-  right: 1.5rem !important;
-  bottom: 1.75rem !important;
-  z-index: 100000 !important;
-  width: 3.75rem !important;
-  height: 3.75rem !important;
+  right: var(--fab-edge, max(14px, env(safe-area-inset-right, 0px))) !important;
+  bottom: var(--fab-slot-0, max(14px, env(safe-area-inset-bottom, 0px))) !important;
+  z-index: 9999 !important;
+  width: var(--fab-size, 48px) !important;
+  height: var(--fab-size, 48px) !important;
   padding: 0 !important;
   border-radius: 50% !important;
   display: none !important;
@@ -255,15 +255,13 @@ html.dark #chatbot-toggle {
   justify-content: center !important;
   flex-direction: column !important;
   gap: 0 !important;
-  background: linear-gradient(135deg, #007aff 0%, #0051d5 100%) !important;
+  background: #0071e3 !important;
   color: #fff !important;
   -webkit-text-fill-color: #fff !important;
   border: none !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
-  box-shadow:
-    0 4px 14px rgb(0 122 255 / 38%),
-    inset 0 1px 0 rgb(255 255 255 / 28%) !important;
+  box-shadow: 0 8px 24px rgb(0 113 227 / 28%) !important;
   opacity: 0;
   pointer-events: none;
   transform: translateY(16px) scale(0.92);
@@ -1128,7 +1126,7 @@ html.dark #chatbot-widget .composer-status-chip {
   gap: 10px;
   padding: 10px 12px;
   border-radius: 14px;
-  background: rgb(28 28 30 / 92%);
+  background: #000000;
   color: #f5f5f7;
   box-shadow: 0 10px 28px rgb(0 0 0 / 28%);
   backdrop-filter: blur(16px);
@@ -1387,68 +1385,49 @@ html.dark #chatbot-widget .assistant-message .message-content:hover {
   -webkit-backdrop-filter: none !important;
 }
 
-/* Balanced only: translucent control glass. Clear + tinted: solid. */
-html[data-lg-mode='balanced']:not(.dark) .a11y-toolbar__main,
-html[data-lg-mode='balanced']:not(.dark) .a11y-toolbar__panel {
-  background: rgb(255 255 255 / calc(38% + var(--lg-tint) * 48%)) !important;
-  background-color: rgb(255 255 255 / calc(38% + var(--lg-tint) * 48%)) !important;
-  border: 1px solid rgb(255 255 255 / var(--lg-border-light, 40%)) !important;
-  backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-control)) !important;
-  -webkit-backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-control)) !important;
-  box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / var(--lg-specular-light, 70%)),
-    0 10px 28px rgb(0 0 0 / calc(10% + (1 - var(--lg-tint)) * 8%)) !important;
+/* A11y main FAB stays solid Apple blue (same factor as chatbot). Panel can be solid. */
+html:is([data-lg-mode='clear'], [data-lg-mode='balanced'], [data-lg-mode='tinted']):not(.dark)
+  .a11y-toolbar__main,
+html:not([data-lg-mode]):not(.dark) .a11y-toolbar__main {
+  background: #0071e3 !important;
+  background-color: #0071e3 !important;
+  border: none !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  box-shadow: 0 8px 24px rgb(0 113 227 / 28%) !important;
 }
 
-html.dark[data-lg-mode='balanced'] .a11y-toolbar__main,
-html.dark[data-lg-mode='balanced'] .a11y-toolbar__panel {
-  background: rgb(0 0 0 / calc(42% + var(--lg-tint) * 46%)) !important;
-  background-color: rgb(0 0 0 / calc(42% + var(--lg-tint) * 46%)) !important;
-  border-color: rgb(255 255 255 / var(--lg-border-dark, 14%)) !important;
-  backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-control)) !important;
-  -webkit-backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-control)) !important;
-  box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / var(--lg-specular-dark, 12%)),
-    0 10px 28px rgb(0 0 0 / 42%) !important;
+html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced'], [data-lg-mode='tinted'])
+  .a11y-toolbar__main,
+html.dark:not([data-lg-mode]) .a11y-toolbar__main {
+  background: #0a84ff !important;
+  background-color: #0a84ff !important;
+  border: none !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  box-shadow: 0 8px 24px rgb(0 0 0 / 45%) !important;
 }
 
-/* Clear shares balanced glass toolbar; tinted stays solid */
-html[data-lg-mode='tinted']:not(.dark) .a11y-toolbar__main,
-html[data-lg-mode='tinted']:not(.dark) .a11y-toolbar__panel {
+html:not(.dark) .a11y-toolbar__panel {
   background: #ffffff !important;
   background-color: #ffffff !important;
   border: 1px solid #e5e5ea !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
-  box-shadow: 0 8px 24px rgb(0 0 0 / 8%) !important;
+  box-shadow: 0 8px 24px rgb(0 0 0 / 12%) !important;
 }
 
-html.dark[data-lg-mode='tinted'] .a11y-toolbar__main,
-html.dark[data-lg-mode='tinted'] .a11y-toolbar__panel {
+html.dark .a11y-toolbar__panel {
   background: #000000 !important;
   background-color: #000000 !important;
   border: 1px solid #2c2c2e !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
   box-shadow: 0 10px 28px rgb(0 0 0 / 40%) !important;
-}
-
-html:is([data-lg-mode='clear'], [data-lg-mode='balanced']):not(.dark) .a11y-toolbar__main,
-html:is([data-lg-mode='clear'], [data-lg-mode='balanced']):not(.dark) .a11y-toolbar__panel {
-  background: rgb(255 255 255 / calc(38% + var(--lg-tint) * 48%)) !important;
-  background-color: rgb(255 255 255 / calc(38% + var(--lg-tint) * 48%)) !important;
-  border: 1px solid rgb(255 255 255 / var(--lg-border-light, 40%)) !important;
-  backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-control)) !important;
-  -webkit-backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-control)) !important;
-}
-
-html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced']) .a11y-toolbar__main,
-html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced']) .a11y-toolbar__panel {
-  background: rgb(0 0 0 / calc(42% + var(--lg-tint) * 46%)) !important;
-  background-color: rgb(0 0 0 / calc(42% + var(--lg-tint) * 46%)) !important;
-  border-color: rgb(255 255 255 / var(--lg-border-dark, 14%)) !important;
-  backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-control)) !important;
-  -webkit-backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-control)) !important;
 }
 
 .a11y-toolbar__panel button {
@@ -1478,7 +1457,7 @@ html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced']) .a11y-toolbar__p
 .a11y-toolbar__panel button:focus-visible {
   border-color: rgb(0 113 227 / 35%) !important;
   color: #0071e3 !important;
-  background: #f5f5f7 !important;
+  background: #ffffff !important;
 }
 
 html.dark .a11y-toolbar__panel button {
@@ -1495,7 +1474,7 @@ html.dark .a11y-toolbar__panel button:hover,
 html.dark .a11y-toolbar__panel button:focus-visible {
   border-color: rgb(10 132 255 / 40%) !important;
   color: #0a84ff !important;
-  background: #2c2c2e !important;
+  background: #000000 !important;
 }
 
 .a11y-toolbar__panel button.a11y-glass-active {
@@ -1514,19 +1493,17 @@ html.dark .a11y-toolbar__panel button.a11y-glass-active {
     0 0 0 1px rgb(191 90 242 / 28%) !important;
 }
 
-/* Mobile/tablet: same vertical FAB stack + panel as desktop
-   (no horizontal scroll dock; share stays bottom, a11y above) */
+/* Mobile/tablet: keep ONE right-column FAB stack (never left-dock) */
 @media (width <=1024px) {
   .a11y-toolbar {
-    left: max(1rem, env(safe-area-inset-left, 0px)) !important;
-    right: auto !important;
-    /* Share FAB bottom dock; a11y above it */
-    bottom: calc(max(1.25rem, env(safe-area-inset-bottom, 0px)) + 48px + 12px) !important;
+    left: auto !important;
+    right: max(14px, env(safe-area-inset-right, 0px)) !important;
+    bottom: calc(max(14px, env(safe-area-inset-bottom, 0px)) + (48px + 10px) * 3) !important;
     top: auto !important;
     transform: none !important;
     display: flex !important;
     flex-direction: column-reverse !important;
-    align-items: flex-start !important;
+    align-items: flex-end !important;
     gap: 0.5rem !important;
     max-width: none !important;
     width: auto !important;
@@ -1542,6 +1519,8 @@ html.dark .a11y-toolbar__panel button.a11y-glass-active {
     height: 48px !important;
     min-width: 48px !important;
     min-height: 48px !important;
+    background: #0071e3 !important;
+    color: #ffffff !important;
   }
 
   .a11y-toolbar__panel {
@@ -1564,11 +1543,11 @@ html.dark .a11y-toolbar__panel button.a11y-glass-active {
   }
 
   .a11y-glass-popover {
-    left: max(1rem, env(safe-area-inset-left, 0px)) !important;
-    right: auto !important;
+    left: auto !important;
+    right: max(14px, env(safe-area-inset-right, 0px)) !important;
     top: auto !important;
     bottom: calc(
-      max(1.25rem, env(safe-area-inset-bottom, 0px)) + 48px + 12px + 48px + 0.75rem
+      max(14px, env(safe-area-inset-bottom, 0px)) + (48px + 10px) * 3 + 48px + 0.75rem
     ) !important;
     transform: none !important;
     width: min(20.5rem, calc(100vw - 1.6rem)) !important;
@@ -2496,7 +2475,6 @@ html[data-lg-mode='tinted'] #chatbot-widget {
   -webkit-backdrop-filter: none !important;
 }
 
-html[data-lg-mode='tinted']:not(.dark) .a11y-toolbar__main,
 html[data-lg-mode='tinted']:not(.dark) .a11y-toolbar__panel,
 html[data-lg-mode='tinted']:not(.dark) .a11y-glass-popover,
 html[data-lg-mode='tinted']:not(.dark) #chatbot-widget {
@@ -2504,12 +2482,24 @@ html[data-lg-mode='tinted']:not(.dark) #chatbot-widget {
   background-color: #ffffff !important;
 }
 
-html.dark[data-lg-mode='tinted'] .a11y-toolbar__main,
 html.dark[data-lg-mode='tinted'] .a11y-toolbar__panel,
 html.dark[data-lg-mode='tinted'] .a11y-glass-popover,
 html.dark[data-lg-mode='tinted'] #chatbot-widget {
   background: #000000 !important;
   background-color: #000000 !important;
+}
+
+/* Tinted mode must not paint the a11y FAB white (icon becomes invisible) */
+html[data-lg-mode='tinted']:not(.dark) .a11y-toolbar__main {
+  background: #0071e3 !important;
+  background-color: #0071e3 !important;
+  color: #ffffff !important;
+}
+
+html.dark[data-lg-mode='tinted'] .a11y-toolbar__main {
+  background: #0a84ff !important;
+  background-color: #0a84ff !important;
+  color: #ffffff !important;
 }
 
 /* Nav + hero music card backgrounds: chrome-surfaces.css */
@@ -2566,21 +2556,36 @@ html.dark[data-lg-mode='tinted']
   }
 
   html:not(.dark) #chatbot-widget,
-  html:not(.dark) .a11y-toolbar__main,
   html:not(.dark) .a11y-toolbar__panel,
-  html:not(.dark) .a11y-glass-popover,
-  html:not(.dark) #go-to-top.visible {
+  html:not(.dark) .a11y-glass-popover {
     background: #ffffff !important;
     background-color: #ffffff !important;
   }
 
   html.dark #chatbot-widget,
-  html.dark .a11y-toolbar__main,
   html.dark .a11y-toolbar__panel,
-  html.dark .a11y-glass-popover,
-  html.dark #go-to-top.visible {
+  html.dark .a11y-glass-popover {
     background: #000000 !important;
     background-color: #000000 !important;
+  }
+
+  /* Right FAB stack: solid blue + white glyphs (never white circles) */
+  html:not(.dark) .a11y-toolbar__main,
+  html:not(.dark) #go-to-top.visible,
+  html:not(.dark) #chatbot-toggle,
+  html:not(.dark) #website-share-toggle.website-share-fab {
+    background: #0071e3 !important;
+    background-color: #0071e3 !important;
+    color: #ffffff !important;
+  }
+
+  html.dark .a11y-toolbar__main,
+  html.dark #go-to-top.visible,
+  html.dark #chatbot-toggle,
+  html.dark #website-share-toggle.website-share-fab {
+    background: #0a84ff !important;
+    background-color: #0a84ff !important;
+    color: #ffffff !important;
   }
 
   /* Nav background: chrome-surfaces.css */
@@ -2845,8 +2850,6 @@ html.dark #projects .projects-activity-overview {
 :is(
   #blog .blog-card,
   body.blog-standalone-page .blog-card,
-  body.blog-standalone-page .blog-index-header,
-  body.blog-standalone-page .article-header,
   body.blog-standalone-page .blog-article-sidebar,
   body.blog-standalone-page .article-related-card,
   #blog .newsletter-card,
@@ -2879,8 +2882,6 @@ html.dark
   :is(
     #blog .blog-card,
     body.blog-standalone-page .blog-card,
-    body.blog-standalone-page .blog-index-header,
-    body.blog-standalone-page .article-header,
     body.blog-standalone-page .blog-article-sidebar,
     body.blog-standalone-page .article-related-card,
     #blog .newsletter-card,
@@ -2943,8 +2944,6 @@ html.dark body.monitor-page .doc-link-tile {
   :is(
     #blog .blog-card,
     body.blog-standalone-page .blog-card,
-    body.blog-standalone-page .blog-index-header,
-    body.blog-standalone-page .article-header,
     body.blog-standalone-page .blog-article-sidebar,
     body.blog-standalone-page .article-related-card,
     #blog .newsletter-card,
@@ -3091,10 +3090,8 @@ html.dark[data-lg-mode='tinted']
 
 @media (prefers-reduced-transparency: reduce) {
   html:not(.dark) body #global-nav.global-nav.dynamic-island,
-  html:not(.dark) .a11y-toolbar__main,
   html:not(.dark) .a11y-toolbar__panel,
-  html:not(.dark) .monitor-page-nav,
-  html:not(.dark) #website-share-toggle.website-share-fab {
+  html:not(.dark) .monitor-page-nav {
     background: #ffffff !important;
     background-color: #ffffff !important;
     background-image: none !important;
@@ -3103,13 +3100,30 @@ html.dark[data-lg-mode='tinted']
   }
 
   html.dark body #global-nav.global-nav.dynamic-island,
-  html.dark .a11y-toolbar__main,
   html.dark .a11y-toolbar__panel,
-  html.dark .monitor-page-nav,
-  html.dark #website-share-toggle.website-share-fab {
+  html.dark .monitor-page-nav {
     background: #000000 !important;
     background-color: #000000 !important;
     background-image: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  /* FAB stack stays solid Apple blue for contrast (never white-on-white) */
+  html:not(.dark) .a11y-toolbar__main,
+  html:not(.dark) #website-share-toggle.website-share-fab {
+    background: #0071e3 !important;
+    background-color: #0071e3 !important;
+    color: #ffffff !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  html.dark .a11y-toolbar__main,
+  html.dark #website-share-toggle.website-share-fab {
+    background: #0a84ff !important;
+    background-color: #0a84ff !important;
+    color: #ffffff !important;
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
   }

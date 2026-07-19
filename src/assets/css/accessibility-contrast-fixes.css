@@ -671,7 +671,7 @@ html.dark .about-tab-btn:not(.active) {
 }
 
 html.dark .about-tab-btn.active {
-  background: #f5f5f7 !important;
+  background: #ffffff !important;
   color: #000000 !important;
   -webkit-text-fill-color: #000000 !important;
 }

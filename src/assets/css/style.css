@@ -450,29 +450,28 @@ a:hover {
   color: #fff;
 }
 
-.btn-secondary {
-  background: #0071e3;
-
-  /* Same blue as primary */
-  color: #fff;
-
-  /* White text */
-  border: none;
+.btn-secondary,
+.button-secondary,
+.apple-btn-secondary {
+  background: #ffffff;
+  color: #0071e3;
+  -webkit-text-fill-color: #0071e3;
+  border: 1px solid rgb(0 113 227 / 35%);
   padding: 0.75rem 1.5rem;
   border-radius: 980px;
-
-  /* Pill shape */
-  font-weight: 500;
-  box-shadow: 0 4px 12px rgb(0 113 227 / 30%);
+  font-weight: 600;
+  box-shadow: none;
 }
 
-.btn-secondary:hover {
-  background: #0077ed;
-
-  /* Lighter blue on hover */
-  color: #fff;
+.btn-secondary:hover,
+.button-secondary:hover,
+.apple-btn-secondary:hover {
+  background: #ffffff;
+  color: #0071e3;
+  -webkit-text-fill-color: #0071e3;
+  border-color: #0071e3;
   transform: scale(1.02);
-  box-shadow: 0 6px 16px rgb(0 113 227 / 40%);
+  box-shadow: 0 4px 14px rgb(0 113 227 / 12%);
 }
 
 .btn-active {
@@ -481,17 +480,41 @@ a:hover {
 }
 
 /* Dark Mode Button Visibility Fixes */
-html.dark .btn,
-html.dark .btn-secondary,
+html.dark
+  .btn:not(.btn-secondary):not(.button-secondary):not(.apple-btn-secondary):not(
+    .hero-cta-secondary
+  ),
 html.dark .btn-primary {
   color: #fff;
-  background-color: #0071e3;
+  background-color: #0a84ff;
 }
 
-html.dark .btn:hover,
-html.dark .btn-secondary:hover,
+html.dark
+  .btn:not(.btn-secondary):not(.button-secondary):not(.apple-btn-secondary):not(
+    .hero-cta-secondary
+  ):hover,
 html.dark .btn-primary:hover {
   background-color: #2997ff;
+}
+
+html.dark .btn-secondary,
+html.dark .button-secondary,
+html.dark .apple-btn-secondary {
+  background: #000000;
+  color: #0a84ff;
+  -webkit-text-fill-color: #0a84ff;
+  border: 1px solid rgb(10 132 255 / 40%);
+  box-shadow: none;
+}
+
+html.dark .btn-secondary:hover,
+html.dark .button-secondary:hover,
+html.dark .apple-btn-secondary:hover {
+  background: #000000;
+  color: #2997ff;
+  -webkit-text-fill-color: #2997ff;
+  border-color: #0a84ff;
+  box-shadow: 0 4px 14px rgb(10 132 255 / 16%);
 }
 
 /* Dark mode for .button-primary */
@@ -4506,40 +4529,8 @@ html:not(.dark) body {
   background: #fff;
 }
 
-/* Search Overlay Styles - Apple Inspired Theme Aware */
-
-#search-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: var(--bg-primary);
-  z-index: 10000;
-  display: none !important;
-
-  /* Force hidden by default */
-  align-items: flex-start;
-  justify-content: center;
-  padding-top: 80px;
-  transition: opacity 0.3s ease;
-  opacity: 0;
-}
-
-#search-overlay.active {
-  display: flex !important;
-
-  /* Force visible when active */
-  opacity: 1;
-}
-
-html.dark #search-overlay {
-  background: rgb(0 0 0 / 98%);
-}
-
-html:not(.dark) #search-overlay {
-  background: rgb(255 255 255 / 98%);
-}
+/* Search overlay chrome owned by Spotlight rules (ux-polish-fixes + critical head CSS).
+   Keep only non-conflicting legacy helpers for any residual wrappers. */
 
 .search-container {
   width: 90%;
@@ -4552,9 +4543,8 @@ html:not(.dark) #search-overlay {
   margin-bottom: 32px;
 }
 
-/* Main site search icon - NOT for projects */
+/* Main site search icon - NOT for projects / Spotlight header */
 
-#search-input + .search-icon,
 .search-input-wrapper > .search-icon:not(#projects .search-icon) {
   position: absolute;
   left: 20px;
@@ -4563,64 +4553,6 @@ html:not(.dark) #search-overlay {
   color: var(--text-secondary);
   font-size: 18px;
   pointer-events: none;
-}
-
-#search-input {
-  width: 100%;
-  padding: 16px 60px 16px 56px;
-  font-size: 17px;
-  border: none;
-  border-bottom: 1px solid var(--border-color);
-  background: transparent;
-  color: var(--text-primary);
-  outline: none;
-  font-weight: 400;
-  letter-spacing: -0.01em;
-  transition: border-color 0.2s ease;
-}
-
-#search-input:focus {
-  border-bottom-color: var(--text-accent);
-}
-
-html.dark #search-input {
-  color: #f5f5f7;
-  border-bottom-color: rgb(255 255 255 / 20%);
-}
-
-html:not(.dark) #search-input {
-  color: #1d1d1f;
-  border-bottom-color: #d2d2d7;
-}
-
-#search-input::placeholder {
-  color: var(--text-secondary);
-  opacity: 0.6;
-}
-
-#search-close {
-  position: absolute;
-  right: 20px;
-  top: 50%;
-  transform: translateY(-50%);
-  background: none;
-  border: none;
-  color: var(--text-secondary);
-  font-size: 24px;
-  cursor: pointer;
-  padding: 8px;
-  width: 36px;
-  height: 36px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: color 0.2s ease;
-  border-radius: 50%;
-}
-
-#search-close:hover {
-  background: rgb(128 128 128 / 10%);
-  color: var(--text-primary);
 }
 
 .search-section-title {

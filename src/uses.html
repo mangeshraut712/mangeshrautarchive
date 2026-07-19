@@ -90,17 +90,17 @@
     <script src="js/utils/perf-audit-flag.js"></script>
     <!-- Shared subpage chrome stack: critical → page shells → design system → deferred chrome -->
     <link rel="stylesheet" href="assets/css/systems-critical.css?v=20260718share" />
-    <link rel="stylesheet" href="assets/css/ux-polish-fixes.css?v=20260719chrome3" />
+    <link rel="stylesheet" href="assets/css/ux-polish-fixes.css?v=20260719ui2" />
     <link rel="stylesheet" href="assets/css/monitor.css?v=20260718share" />
-    <link rel="stylesheet" href="assets/css/systems.css?v=20260718sub" />
+    <link rel="stylesheet" href="assets/css/systems.css?v=20260719fab1" />
     <link rel="stylesheet" href="assets/css/apple-design-system.css?v=20260716aa" data-perf-defer />
     <link rel="stylesheet" href="assets/css/typography-system.css?v=20260716aa" data-perf-defer />
     <link
       rel="stylesheet"
-      href="assets/css/sitewide-design-system.css?v=20260716aa"
+      href="assets/css/sitewide-design-system.css?v=20260719fab1"
       data-perf-defer
     />
-    <link rel="stylesheet" href="assets/css/accessibility.css?v=20260716aa" data-perf-defer />
+    <link rel="stylesheet" href="assets/css/accessibility.css?v=20260719ui2" data-perf-defer />
     <link
       rel="stylesheet"
       href="assets/css/mobile-viewport.css?v=20260719chrome2"
@@ -120,13 +120,13 @@
     />
     <link
       rel="stylesheet"
-      href="assets/css/theme-solid-surfaces.css?v=20260717clean"
+      href="assets/css/theme-solid-surfaces.css?v=20260719ui2"
       media="print"
       onload="this.media = 'all'"
       data-perf-defer
     />
     <link rel="stylesheet" href="assets/css/chrome-surfaces.css?v=20260717clean" data-perf-defer />
-    <link rel="stylesheet" href="assets/css/share-widget.css?v=20260716aa" data-perf-defer />
+    <link rel="stylesheet" href="assets/css/share-widget.css?v=20260719ui2" data-perf-defer />
     <link
       rel="stylesheet"
       href="assets/vendor/fontawesome/css/all.min.css?v=20260716aa"
@@ -137,13 +137,13 @@
     <script src="js/utils/perf-defer-css.js"></script>
     <noscript>
       <link rel="stylesheet" href="assets/css/typography-system.css?v=20260716aa" />
-      <link rel="stylesheet" href="assets/css/sitewide-design-system.css?v=20260716aa" />
+      <link rel="stylesheet" href="assets/css/sitewide-design-system.css?v=20260719fab1" />
 
       <link rel="stylesheet" href="assets/css/mobile-viewport.css?v=20260719chrome2" />
       <link rel="stylesheet" href="assets/css/font-awesome-display.css?v=20260716aa" />
       <link rel="stylesheet" href="assets/css/sections-apple-premium.css?v=20260716aa" />
 
-      <link rel="stylesheet" href="assets/css/theme-solid-surfaces.css?v=20260717clean" />
+      <link rel="stylesheet" href="assets/css/theme-solid-surfaces.css?v=20260719ui2" />
 
       <link rel="stylesheet" href="assets/vendor/fontawesome/css/all.min.css?v=20260716aa" />
     </noscript>
@@ -168,8 +168,8 @@
     </script>
     <script src="js/utils/deferred-analytics.js" defer></script>
     <link rel="stylesheet" href="assets/css/apple-cards-luxury-2026.css?v=20260717clean" />
-    <link rel="stylesheet" href="assets/css/subpage-layout-polish.css?v=20260719chrome3" />
-    <link rel="stylesheet" href="assets/css/uses-stack.css?v=20260718stack3" />
+    <link rel="stylesheet" href="assets/css/subpage-layout-polish.css?v=20260719fab1" />
+    <link rel="stylesheet" href="assets/css/uses-stack.css?v=20260719fab1" />
   </head>
   <body class="systems-page systems-evidence-page uses-page">
     <div class="skip-links" role="navigation" aria-label="Skip links">
@@ -266,19 +266,6 @@
           <p class="loading-message">Loading stack…</p>
         </div>
       </div>
-
-      <footer class="systems-footer systems-footer--expanded">
-        <p class="footer-copy">&copy; <span id="footer-year"></span> Mangesh Raut Archive</p>
-        <script>
-          document.getElementById('footer-year').textContent = new Date().getFullYear();
-        </script>
-        <nav class="systems-footer-links" aria-label="Related pages">
-          <a href="systems.html">Systems</a>
-          <a href="monitor.html">Monitor</a>
-          <a href="travel.html">Travel</a>
-          <a href="index.html#home">Home</a>
-        </nav>
-      </footer>
     </main>
 
     <script type="module" src="js/core/subpage-chrome.js?v=20260719chrome1"></script>

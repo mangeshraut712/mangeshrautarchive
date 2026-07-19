@@ -28,7 +28,9 @@ body.uses-page {
   --systems-section-gap: clamp(1.5rem, 3.5vw, 2.35rem);
   --systems-radius: 18px;
   --systems-radius-sm: 14px;
-  overflow-x: clip;
+  /* Sticky needs a visible overflow chain — do not clip on body. */
+  overflow-x: visible !important;
+  overflow-y: visible !important;
   padding-top: var(--subpage-body-pad-top) !important;
   background: #ffffff !important;
   background-color: #ffffff !important;
@@ -71,15 +73,42 @@ html[data-theme='dark'] body.uses-page .monitor-page-nav {
   border-color: #2c2c2e !important;
 }
 
+/*
+ * Sticky needs a visible overflow chain to the viewport.
+ * style.css sets body { overflow-x: hidden } which breaks position:sticky —
+ * keep body overflow visible (above) and leave html scrollable.
+ */
+html:has(body.systems-page),
+html:has(body.uses-page),
+html:has(body.monitor-page) {
+  overflow-x: visible !important;
+  overflow-y: auto !important;
+}
+
 /* Sticky section rails — never slide under the fixed nav */
 body.systems-page .systems-section-rail,
 body.monitor-page .monitor-section-rail {
+  position: sticky !important;
   top: var(--subpage-sticky-top) !important;
   background: #ffffff !important;
   background-color: #ffffff !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
-  z-index: 45 !important;
+  z-index: 200 !important;
+}
+
+body.uses-page .uses-toolbar {
+  position: sticky !important;
+  top: var(--subpage-sticky-top) !important;
+  z-index: 200 !important;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+}
+
+html.dark body.uses-page .uses-toolbar,
+html[data-theme='dark'] body.uses-page .uses-toolbar {
+  background: #000000 !important;
+  background-color: #000000 !important;
 }
 
 html.dark body.systems-page .systems-section-rail,
@@ -486,12 +515,12 @@ body.travel-body .travel-stat {
   min-width: 0;
   padding: 0.35rem 0.2rem !important;
   border-radius: 10px;
-  background: #f5f5f7;
+  background: #ffffff;
 }
 
 html.dark body.travel-body .travel-stat,
 html[data-theme='dark'] body.travel-body .travel-stat {
-  background: #1c1c1e;
+  background: #000000;
 }
 
 body.travel-body .travel-stat__value {
@@ -538,14 +567,14 @@ body.travel-body .travel-stop {
 }
 
 /*
- * A11y dock: shell must stay transparent (theme-solid was painting a white square).
- * Only the circular main button is solid; closed panel collapses fully.
+ * Travel FABs: use the sitewide right-column stack from ux-polish-fixes.
+ * MapLibre zoom stays top-right; do not move chat/share/a11y off that stack.
  */
 body.travel-body .a11y-toolbar {
   left: auto !important;
-  right: max(1rem, env(safe-area-inset-right, 0px)) !important;
-  bottom: max(1.25rem, env(safe-area-inset-bottom, 0px)) !important;
-  z-index: 9999 !important;
+  right: var(--fab-edge, max(14px, env(safe-area-inset-right, 0px))) !important;
+  bottom: var(--fab-slot-3, calc(max(14px, env(safe-area-inset-bottom, 0px)) + 174px)) !important;
+  z-index: 9997 !important;
   width: auto !important;
   max-width: none !important;
   height: auto !important;
@@ -561,6 +590,7 @@ body.travel-body .a11y-toolbar {
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
   overflow: visible !important;
+  align-items: flex-end !important;
 }
 
 body.travel-body .a11y-toolbar__main {
@@ -569,17 +599,19 @@ body.travel-body .a11y-toolbar__main {
   min-width: 48px !important;
   min-height: 48px !important;
   border-radius: 999px !important;
-  background: #ffffff !important;
-  background-color: #ffffff !important;
-  border: 1px solid #e5e5ea !important;
-  box-shadow: 0 8px 24px rgb(0 0 0 / 12%) !important;
+  background: #0071e3 !important;
+  background-color: #0071e3 !important;
+  border: none !important;
+  color: #ffffff !important;
+  box-shadow: 0 8px 24px rgb(0 113 227 / 28%) !important;
 }
 
 html.dark body.travel-body .a11y-toolbar__main,
 html[data-theme='dark'] body.travel-body .a11y-toolbar__main {
-  background: #000000 !important;
-  background-color: #000000 !important;
-  border-color: #2c2c2e !important;
+  background: #0a84ff !important;
+  background-color: #0a84ff !important;
+  border: none !important;
+  color: #ffffff !important;
 }
 
 /* Collapsed panel — no 2px white strip / ghost square */
@@ -618,36 +650,30 @@ html[data-theme='dark'] body.travel-body .a11y-toolbar.is-open .a11y-toolbar__pa
 body.travel-body #website-share-toggle.website-share-fab,
 body.travel-body .website-share-fab {
   left: auto !important;
-  right: max(1rem, env(safe-area-inset-right, 0px)) !important;
-  /* Stack above a11y with a clear gap */
-  bottom: max(calc(1.25rem + 64px), calc(env(safe-area-inset-bottom, 0px) + 64px)) !important;
+  right: var(--fab-edge, max(14px, env(safe-area-inset-right, 0px))) !important;
+  bottom: var(--fab-slot-2, calc(max(14px, env(safe-area-inset-bottom, 0px)) + 116px)) !important;
   z-index: 9998 !important;
-  background: #ffffff !important;
-  background-color: #ffffff !important;
-  border: 1px solid #e5e5ea !important;
+  background: #0071e3 !important;
+  background-color: #0071e3 !important;
+  border: none !important;
+  color: #ffffff !important;
 }
 
-/*
- * Travel desktop: a11y + share already own the right dock.
- * Mirror homepage right-stack on the LEFT so chatbot / go-to-top never overlap.
- */
+/* Keep chat + top on the same right stack (do not flip to left). */
 body.travel-body #go-to-top,
 body.travel-body #go-to-top.visible {
   position: fixed !important;
-  left: max(1rem, env(safe-area-inset-left, 0px)) !important;
-  right: auto !important;
-  bottom: max(1.25rem, env(safe-area-inset-bottom, 0px)) !important;
+  left: auto !important;
+  right: var(--fab-edge, max(14px, env(safe-area-inset-right, 0px))) !important;
+  bottom: var(--fab-slot-0, max(14px, env(safe-area-inset-bottom, 0px))) !important;
   z-index: 9999 !important;
 }
 
 body.travel-body #chatbot-toggle {
   position: fixed !important;
-  left: max(1rem, env(safe-area-inset-left, 0px)) !important;
-  right: auto !important;
-  bottom: max(
-    calc(1.25rem + 48px + 12px),
-    calc(env(safe-area-inset-bottom, 0px) + 48px + 12px)
-  ) !important;
+  left: auto !important;
+  right: var(--fab-edge, max(14px, env(safe-area-inset-right, 0px))) !important;
+  bottom: var(--fab-slot-1, calc(max(14px, env(safe-area-inset-bottom, 0px)) + 58px)) !important;
   z-index: 9999 !important;
 }
 
@@ -655,8 +681,8 @@ html.dark body.travel-body #website-share-toggle.website-share-fab,
 html.dark body.travel-body .website-share-fab,
 html[data-theme='dark'] body.travel-body #website-share-toggle.website-share-fab,
 html[data-theme='dark'] body.travel-body .website-share-fab {
-  background: #000000 !important;
-  background-color: #000000 !important;
+  background: #0a84ff !important;
+  background-color: #0a84ff !important;
   border-color: #2c2c2e !important;
 }
 
@@ -727,62 +753,38 @@ html[data-theme='dark'] body.travel-body .website-share-fab {
   }
 
   /*
-   * FABs left of map (zoom is top-right). Sit just above the sheet.
+   * Mobile travel: keep ONE right FAB column above the bottom sheet.
+   * MapLibre zoom remains top-right.
    */
-  body.travel-body .a11y-toolbar {
-    left: max(0.85rem, env(safe-area-inset-left, 0px)) !important;
-    right: auto !important;
+  body.travel-body #go-to-top,
+  body.travel-body #go-to-top.visible {
+    left: auto !important;
+    right: max(0.85rem, env(safe-area-inset-right, 0px)) !important;
     bottom: calc(var(--travel-sheet-h) + 0.65rem) !important;
-    z-index: 40 !important;
+    z-index: 9999 !important;
+  }
+
+  body.travel-body #chatbot-toggle {
+    left: auto !important;
+    right: max(0.85rem, env(safe-area-inset-right, 0px)) !important;
+    bottom: calc(var(--travel-sheet-h) + 0.65rem + 58px) !important;
+    z-index: 9999 !important;
   }
 
   body.travel-body #website-share-toggle.website-share-fab,
   body.travel-body .website-share-fab {
-    left: max(0.85rem, env(safe-area-inset-left, 0px)) !important;
-    right: auto !important;
-    bottom: calc(var(--travel-sheet-h) + 0.65rem + 60px) !important;
-    z-index: 40 !important;
-  }
-
-  body.travel-body .travel-sidebar:has(.travel-stop.active) ~ * .a11y-toolbar,
-  body.travel-body:has(.travel-sidebar:not(.is-collapsed) .travel-stop.active) .a11y-toolbar {
-    bottom: calc(var(--travel-sheet-h-open) + 0.65rem) !important;
-  }
-
-  body.travel-body:has(.travel-sidebar:not(.is-collapsed) .travel-stop.active)
-    #website-share-toggle.website-share-fab,
-  body.travel-body:has(.travel-sidebar:not(.is-collapsed) .travel-stop.active) .website-share-fab {
-    bottom: calc(var(--travel-sheet-h-open) + 0.65rem + 60px) !important;
-  }
-
-  body.travel-body:has(.travel-sidebar.is-collapsed) .a11y-toolbar {
-    bottom: calc(var(--travel-sheet-collapsed) + 0.65rem) !important;
-  }
-
-  body.travel-body:has(.travel-sidebar.is-collapsed) #website-share-toggle.website-share-fab,
-  body.travel-body:has(.travel-sidebar.is-collapsed) .website-share-fab {
-    bottom: calc(var(--travel-sheet-collapsed) + 0.65rem + 60px) !important;
-  }
-
-  /*
-   * Mobile travel: a11y + share sit left above the sheet.
-   * Chat + go-to-top sit right above the sheet (clear of map zoom top-right).
-   */
-  body.travel-body #go-to-top,
-  body.travel-body #go-to-top.visible {
-    position: fixed !important;
     left: auto !important;
     right: max(0.85rem, env(safe-area-inset-right, 0px)) !important;
-    bottom: calc(var(--travel-sheet-h) + 0.65rem) !important;
-    z-index: 40 !important;
+    bottom: calc(var(--travel-sheet-h) + 0.65rem + 116px) !important;
+    z-index: 9998 !important;
   }
 
-  body.travel-body #chatbot-toggle {
-    position: fixed !important;
+  body.travel-body .a11y-toolbar {
     left: auto !important;
     right: max(0.85rem, env(safe-area-inset-right, 0px)) !important;
-    bottom: calc(var(--travel-sheet-h) + 0.65rem + 60px) !important;
-    z-index: 40 !important;
+    bottom: calc(var(--travel-sheet-h) + 0.65rem + 174px) !important;
+    z-index: 9997 !important;
+    align-items: flex-end !important;
   }
 
   body.travel-body:has(.travel-sidebar:not(.is-collapsed) .travel-stop.active) #go-to-top,
@@ -791,7 +793,17 @@ html[data-theme='dark'] body.travel-body .website-share-fab {
   }
 
   body.travel-body:has(.travel-sidebar:not(.is-collapsed) .travel-stop.active) #chatbot-toggle {
-    bottom: calc(var(--travel-sheet-h-open) + 0.65rem + 60px) !important;
+    bottom: calc(var(--travel-sheet-h-open) + 0.65rem + 58px) !important;
+  }
+
+  body.travel-body:has(.travel-sidebar:not(.is-collapsed) .travel-stop.active)
+    #website-share-toggle.website-share-fab,
+  body.travel-body:has(.travel-sidebar:not(.is-collapsed) .travel-stop.active) .website-share-fab {
+    bottom: calc(var(--travel-sheet-h-open) + 0.65rem + 116px) !important;
+  }
+
+  body.travel-body:has(.travel-sidebar:not(.is-collapsed) .travel-stop.active) .a11y-toolbar {
+    bottom: calc(var(--travel-sheet-h-open) + 0.65rem + 174px) !important;
   }
 
   body.travel-body:has(.travel-sidebar.is-collapsed) #go-to-top,
@@ -800,7 +812,16 @@ html[data-theme='dark'] body.travel-body .website-share-fab {
   }
 
   body.travel-body:has(.travel-sidebar.is-collapsed) #chatbot-toggle {
-    bottom: calc(var(--travel-sheet-collapsed) + 0.65rem + 60px) !important;
+    bottom: calc(var(--travel-sheet-collapsed) + 0.65rem + 58px) !important;
+  }
+
+  body.travel-body:has(.travel-sidebar.is-collapsed) #website-share-toggle.website-share-fab,
+  body.travel-body:has(.travel-sidebar.is-collapsed) .website-share-fab {
+    bottom: calc(var(--travel-sheet-collapsed) + 0.65rem + 116px) !important;
+  }
+
+  body.travel-body:has(.travel-sidebar.is-collapsed) .a11y-toolbar {
+    bottom: calc(var(--travel-sheet-collapsed) + 0.65rem + 174px) !important;
   }
 
   body.travel-body,
@@ -830,7 +851,7 @@ html[data-theme='dark'] body.travel-body .website-share-fab {
 /* ─── 404 ─── */
 body.error-page {
   min-height: 100dvh;
-  background: #f5f5f7 !important;
+  background: #ffffff !important;
 }
 
 html.dark body.error-page {
@@ -850,7 +871,7 @@ body.error-page main.error-container.lg-glass-card {
 }
 
 html.dark body.error-page .error-container {
-  background: #111113;
+  background: #000000;
 }
 
 body.error-page .error-destinations {
@@ -1130,7 +1151,7 @@ body.travel-body {
   --travel-text-secondary: #515154;
   --travel-text-muted: #6e6e73;
   --travel-surface: #ffffff;
-  --travel-surface-muted: #f5f5f7;
+  --travel-surface-muted: #ffffff;
   --travel-border: #e5e5ea;
   --travel-blue: #0071e3;
   --travel-link: #0071e3;
@@ -1144,7 +1165,7 @@ html[data-theme='dark'] body.travel-body {
   --travel-text-secondary: #c7c7cc;
   --travel-text-muted: #a1a1a6;
   --travel-surface: #000000;
-  --travel-surface-muted: #1c1c1e;
+  --travel-surface-muted: #000000;
   --travel-border: #2c2c2e;
   --travel-blue: #0a84ff;
   --travel-link: #64d2ff;

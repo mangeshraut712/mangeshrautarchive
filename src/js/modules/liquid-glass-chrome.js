@@ -2,7 +2,8 @@ import { getLiquidGlassEngine } from './liquid-glass-engine.js';
 
 /**
  * CSS-first Liquid Glass chrome.
- * WebGL only on the hero music pill (compact host) when clear/balanced.
+ * Hero music pill stays CSS glass only — WebGL wrapping previously escaped
+ * containment and stretched the pill to full width with content right-biased.
  * NEVER attach to .monitor-page-nav — fixed pill + canvas resize stretches
  * the bar to full document height and blocks systems/uses/monitor pages.
  * Project cards + a11y popovers stay CSS glass (tall hosts / solid a11y sheets).
@@ -17,13 +18,6 @@ const NAV_SELECTOR = '.monitor-page-nav';
 function isGlassModeActive() {
   const mode = document.documentElement.dataset.lgMode;
   return mode === 'clear' || mode === 'balanced';
-}
-
-function prefersReducedMotion() {
-  return (
-    typeof window !== 'undefined' &&
-    window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches
-  );
 }
 
 /** Detach WebGL and unwrap children if nav was poisoned by an older attach. */
@@ -55,26 +49,34 @@ function repairSubpageNav() {
   nav.style.removeProperty('inset');
 }
 
-function attachMusicCardGlass() {
-  const engine = getLiquidGlassEngine();
-  if (!engine?.enabled || !isGlassModeActive() || prefersReducedMotion()) return;
-
+function detachMusicCardGlass() {
   const node = document.querySelector(MUSIC_CARD_SELECTOR);
-  if (!node || node.classList.contains('lg-webgl-host')) return;
-  if (node.closest?.(NAV_SELECTOR) || node.matches?.(NAV_SELECTOR)) return;
+  if (!node) return;
 
-  const rect = node.getBoundingClientRect();
-  // Music pill is short; skip if not laid out yet or absurdly tall
-  if (rect.width < 8 || rect.height < 8 || rect.height > 160) return;
+  const engine = getLiquidGlassEngine();
+  if (engine?.surfaces?.size) {
+    [...engine.surfaces].forEach(surface => {
+      if (surface.element === node || surface.element?.classList?.contains('music-card-inner')) {
+        engine.detach(surface);
+      }
+    });
+  }
 
-  engine.attach(node, {
-    settings: {
-      radius: 22,
-      depth: 16,
-      lensWidth: rect.width || node.offsetWidth || 280,
-      lensHeight: Math.min(rect.height || node.offsetHeight || 64, 120),
-    },
-  });
+  node.querySelectorAll(':scope > .lg-webgl-canvas').forEach(el => el.remove());
+  const content = node.querySelector(':scope > .lg-webgl-content');
+  if (content) {
+    while (content.firstChild) {
+      node.appendChild(content.firstChild);
+    }
+    content.remove();
+  }
+  node.classList.remove('lg-webgl-host', 'lg-webgl-fallback');
+}
+
+function attachMusicCardGlass() {
+  // CSS-only music pill — WebGL wrapping previously escaped containment
+  // (host lacked position:relative) and stretched the hero card.
+  detachMusicCardGlass();
 }
 
 function releaseWebGLChrome() {
@@ -111,11 +113,11 @@ function releaseChatbotWebGL() {
 export function syncLiquidGlassChrome() {
   releaseChatbotWebGL();
   repairSubpageNav();
-  if (isGlassModeActive()) {
-    attachMusicCardGlass();
-    return;
+  // Always keep hero music card on CSS glass (never WebGL host).
+  detachMusicCardGlass();
+  if (!isGlassModeActive()) {
+    releaseWebGLChrome();
   }
-  releaseWebGLChrome();
 }
 
 export function initLiquidGlassChrome() {

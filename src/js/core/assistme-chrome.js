@@ -3,19 +3,23 @@
  * Mirrors homepage IDs so go-to-top.js / chatbot.js work unchanged.
  */
 
+import { sitePath } from '../utils/site-base.js';
+
 const ASSISTANT_CSS = [
-  'assets/css/ai-assistant.css?v=20260718glass2',
-  'assets/css/ai-assistant-mobile.css?v=20260718chat',
+  '/assets/css/ai-assistant.css?v=20260718glass2',
+  '/assets/css/ai-assistant-mobile.css?v=20260718chat',
 ];
 
 function ensureStylesheet(href) {
+  const resolved = href.startsWith('/') ? sitePath(href) : href;
+  const file = resolved.split('?')[0].split('/').pop();
   const exists = Array.from(document.querySelectorAll('link[rel="stylesheet"]')).some(link =>
-    (link.getAttribute('href') || '').includes(href.split('?')[0])
+    (link.getAttribute('href') || '').includes(file)
   );
   if (exists) return;
   const link = document.createElement('link');
   link.rel = 'stylesheet';
-  link.href = href;
+  link.href = resolved;
   document.head.appendChild(link);
 }
 

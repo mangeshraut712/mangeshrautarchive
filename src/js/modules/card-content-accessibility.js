@@ -88,7 +88,7 @@ const CARD_PROFILES = [
   },
   {
     selector: '.blog-article',
-    toolbarAnchor: '.article-header',
+    toolbarAnchor: '.article-header-tools',
     toolbarMode: 'inline',
     blocks:
       '.article-title, .article-promise, .article-body p, .article-body li, .article-body h2, .article-body h3, .article-body blockquote',
@@ -560,6 +560,14 @@ function mountToolbar(card, profile) {
 
   const toolbar = buildToolbar(card, profile);
   const anchor = profile.toolbarAnchor ? card.querySelector(profile.toolbarAnchor) : null;
+
+  // If a dedicated anchor is required but missing (e.g. /blog archive cards),
+  // skip the toolbar so Listen/Translate do not crowd editorial layouts.
+  if (profile.toolbarAnchor && !anchor) {
+    delete card.dataset.cardReadableInit;
+    card.classList.remove('card-readable');
+    return;
+  }
 
   if (anchor) {
     if (profile.toolbarMode === 'inline') {

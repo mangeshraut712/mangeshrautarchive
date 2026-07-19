@@ -336,6 +336,22 @@ export function getAllTags(posts = []) {
   return [...tags].sort((a, b) => a.localeCompare(b));
 }
 
+/** Most frequent tags first — keeps archive filter chips quiet. */
+export function getTopTags(posts = [], limit = 8) {
+  const counts = new Map();
+  posts.forEach(post => {
+    (post.tags || []).forEach(tag => {
+      const key = String(tag || '').trim();
+      if (!key) return;
+      counts.set(key, (counts.get(key) || 0) + 1);
+    });
+  });
+  return [...counts.entries()]
+    .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+    .slice(0, Math.max(0, limit))
+    .map(([tag]) => tag);
+}
+
 export function getRelatedPosts(posts = [], currentId, limit = 3) {
   const current = posts.find(p => p.id === currentId);
   if (!current) return posts.filter(p => p.id !== currentId).slice(0, limit);

@@ -3,6 +3,7 @@ import { parseBlogContent } from './blog-markdown.js';
 import { rescanCardContentAccessibility } from './card-content-accessibility.js';
 import { refreshSectionPreview } from './section-preview.js';
 import { escapeHTML as escapeHtmlShared } from '../utils/escape-html.js';
+import { sitePath } from '../utils/site-base.js';
 
 /**
  * Blog Loader Module
@@ -65,25 +66,24 @@ class BlogLoader {
     const sortedPosts = blogPosts.toSorted((a, b) => new Date(b.date) - new Date(a.date));
 
     this.container.innerHTML = sortedPosts
-      .map(
-        post => `
-            <article class="blog-card x-post-card apple-3d-project" data-id="${post.id}" tabindex="0" aria-label="${this.escapeHTML(post.title)}">
+      .map(post => {
+        const fullHref = sitePath(`/blog/${encodeURIComponent(post.id)}.html`);
+        const pills = (post.tags || [])
+          .slice(0, 3)
+          .map(tag => `<span class="blog-topic-pill">${this.escapeHTML(tag)}</span>`)
+          .join('');
+        return `
+            <article class="blog-card blog-card--editorial" data-id="${post.id}" aria-label="${this.escapeHTML(post.title)}">
                 <div class="blog-card-content">
-                    <div class="blog-card-actions" aria-label="Listen and translate article card"></div>
-                    <div class="x-post-card__head">
-                      <img class="x-post-card__avatar" src="assets/images/profile-icon.webp" width="44" height="44" alt="" loading="lazy" decoding="async" />
-                      <div class="x-post-card__identity">
-                        <div class="x-post-card__name-row">
-                          <span class="x-post-card__name">Mangesh Raut</span>
-                          <span class="x-post-card__handle">@mangeshraut</span>
-                          <span class="x-post-card__dot" aria-hidden="true">·</span>
-                          <time class="x-post-card__date" datetime="${this.escapeHTML(post.date)}">${this.formatDate(post.date)}</time>
-                        </div>
-                        <div class="x-post-card__meta-row">
-                          <span class="blog-kicker">${this.escapeHTML(post.kicker || 'Field notes')}</span>
-                          <span class="blog-read-time">${this.escapeHTML(post.readTime)}</span>
-                        </div>
+                    <div class="blog-card-top">
+                      <div class="blog-card-meta">
+                        <span class="blog-kicker">${this.escapeHTML(post.kicker || 'Field notes')}</span>
+                        <span class="blog-card-meta-sep" aria-hidden="true">·</span>
+                        <time class="blog-card-date" datetime="${this.escapeHTML(post.date)}">${this.formatDate(post.date)}</time>
+                        <span class="blog-card-meta-sep" aria-hidden="true">·</span>
+                        <span class="blog-read-time">${this.escapeHTML(post.readTime)}</span>
                       </div>
+                      <div class="blog-card-actions" aria-label="Listen and translate article card"></div>
                     </div>
                     <h3 class="blog-title">${this.escapeHTML(post.title)}</h3>
                     <p class="blog-summary">${this.escapeHTML(post.readerPromise || post.summary)}</p>
@@ -92,54 +92,30 @@ class BlogLoader {
                         ? `<blockquote class="blog-card-quote">${this.escapeHTML(post.pullQuote)}</blockquote>`
                         : ''
                     }
-                    <div class="blog-tags">
-                        ${post.tags
-                          .slice(0, 5)
-                          .map(
-                            tag =>
-                              `<span class="blog-tag">#${this.escapeHTML(tag.replace(/\s+/g, ''))}</span>`
-                          )
-                          .join('')}
+                    <div class="blog-tags blog-tags--pills">${pills}</div>
+                    <div class="blog-card-cta-row">
+                      <button class="blog-preview-btn" type="button" data-blog-open="${post.id}">Preview</button>
+                      <a class="blog-read-btn" href="${fullHref}">Read article <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
                     </div>
-                    <button class="blog-read-btn publication-read-btn" type="button" data-blog-open="${post.id}">
-                        <span>Read article</span>
-                        <i class="fas fa-arrow-right" aria-hidden="true"></i>
-                    </button>
                 </div>
             </article>
-        `
-      )
+        `;
+      })
       .join('');
 
     rescanCardContentAccessibility(this.container);
-    // Progressive disclosure after inject (View more articles)
     refreshSectionPreview(this.container);
   }
 
   bindCardEvents() {
     this.container.addEventListener('click', event => {
-      // Don't hijack listen/translate toolbar or external links
-      if (event.target.closest('.blog-card-actions, a:not(.blog-title-link)')) return;
+      if (event.target.closest('.blog-card-actions, a.blog-read-btn')) return;
 
       const openControl = event.target.closest('[data-blog-open]');
       if (openControl) {
         event.preventDefault();
         this.openPost(openControl.dataset.blogOpen);
-        return;
       }
-
-      const card = event.target.closest('.blog-card[data-id]');
-      if (card?.dataset?.id) {
-        this.openPost(card.dataset.id);
-      }
-    });
-
-    this.container.addEventListener('keydown', event => {
-      if (event.key !== 'Enter' && event.key !== ' ') return;
-      const card = event.target.closest('.blog-card[data-id]');
-      if (!card || event.target.closest('a, button, .blog-card-actions')) return;
-      event.preventDefault();
-      this.openPost(card.dataset.id);
     });
   }
 
@@ -219,41 +195,36 @@ class BlogLoader {
     this.lastFocus = document.activeElement;
     const modalBody = document.getElementById('blog-modal-body');
     const { html: htmlContent } = parseBlogContent(post.content, { addHeadingIds: true });
-    const fullPageHref = `/blog/${encodeURIComponent(post.id)}`;
+    const fullPageHref = sitePath(`/blog/${encodeURIComponent(post.id)}.html`);
+    const pills = (post.tags || [])
+      .slice(0, 6)
+      .map(tag => `<span class="blog-topic-pill">${this.escapeHTML(tag)}</span>`)
+      .join('');
 
     modalBody.innerHTML = `
-            <article class="x-article">
+            <article class="blog-article blog-article--editorial x-article">
             <header class="article-header">
-                <div class="article-author-row">
-                  <img class="article-byline__avatar article-byline__avatar--lg" src="assets/images/profile-icon.webp" width="48" height="48" alt="" loading="lazy" decoding="async" />
-                  <div class="article-author-text">
-                    <div class="article-author-name">Mangesh Raut</div>
-                    <div class="article-author-handle">@mangeshraut · Field notes</div>
-                  </div>
-                </div>
+                <p class="article-kicker">${this.escapeHTML(post.kicker || 'Field notes')}</p>
                 <h1 class="article-title" id="blog-modal-title">${this.escapeHTML(post.title)}</h1>
                 <p class="article-promise">${this.escapeHTML(post.readerPromise || post.summary)}</p>
-                <div class="article-byline">
-                  <span class="article-kicker">${this.escapeHTML(post.kicker || 'Field notes')}</span>
-                  <span aria-hidden="true">·</span>
-                  <time datetime="${this.escapeHTML(post.date)}">${this.formatDate(post.date)}</time>
-                  <span aria-hidden="true">·</span>
-                  <span>${this.escapeHTML(post.readTime)}</span>
+                <div class="article-byline article-byline--editorial">
+                  <img class="article-byline__avatar" src="assets/images/profile-icon.webp" width="40" height="40" alt="" loading="lazy" decoding="async" />
+                  <div class="article-byline__text">
+                    <span class="article-byline__name">Mangesh Raut</span>
+                    <span class="article-byline__meta">
+                      <time datetime="${this.escapeHTML(post.date)}">${this.formatDate(post.date)}</time>
+                      <span aria-hidden="true">·</span>
+                      <span>${this.escapeHTML(post.readTime)}</span>
+                    </span>
+                  </div>
                 </div>
-                <div class="article-tags">
-                    ${post.tags
-                      .map(
-                        tag =>
-                          `<span class="blog-tag">#${this.escapeHTML(String(tag).replace(/\s+/g, ''))}</span>`
-                      )
-                      .join('')}
-                </div>
+                <div class="article-tags blog-tags--pills">${pills}</div>
             </header>
-            <div class="article-body">
+            <div class="article-body article-body--measure">
                 ${htmlContent}
             </div>
-            <footer class="x-article-footer">
-              <a class="x-article-footer__link" href="${fullPageHref}">Open full page</a>
+            <footer class="article-footer article-footer--editorial x-article-footer">
+              <a class="blog-read-btn x-article-footer__link" href="${fullPageHref}">Open full page</a>
             </footer>
             </article>
         `;

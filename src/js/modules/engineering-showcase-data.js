@@ -255,7 +255,7 @@ export const evidenceFooterLinks = [
   { label: 'Resume', href: 'assets/files/Mangesh_Raut_Resume.pdf' },
   { label: 'GitHub', href: 'https://github.com/mangeshraut712', external: true },
   { label: 'Now', href: 'uses.html' },
-  { label: 'RSS', href: 'rss.xml' },
+  { label: 'Writings', href: 'blog/' },
 ];
 
 /** AI tooling tokenization — public build stack transparency */

@@ -243,15 +243,9 @@ html.dark .publication-details {
 
 html.dark .publication-preview-sheet {
   border-color: rgb(255 255 255 / 10%);
-  background:
-    linear-gradient(180deg, rgb(28 28 30 / 98%) 0%, rgb(0 0 0 / 96%) 100%),
-    repeating-linear-gradient(
-      0deg,
-      transparent,
-      transparent 23px,
-      rgb(255 255 255 / 5%) 23px,
-      rgb(255 255 255 / 5%) 24px
-    );
+  background: #000000 !important;
+  background-color: #000000 !important;
+  background-image: none !important;
   box-shadow:
     inset 0 1px 0 rgb(255 255 255 / 8%),
     0 12px 32px rgb(0 0 0 / 45%);
@@ -410,4 +404,165 @@ html.dark .publication-preview-link:hover .publication-preview-sheet {
   .publication-details {
     font-size: 0.8rem !important;
   }
+}
+
+/* Publication PDF preview modal (blog-style) */
+html.publication-modal-open,
+html.publication-modal-open body {
+  overflow: hidden !important;
+}
+
+.publication-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 100060;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem;
+}
+
+.publication-modal.active {
+  display: flex;
+}
+
+.publication-modal.hidden {
+  display: none !important;
+}
+
+.publication-modal-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgb(0 0 0 / 45%);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.publication-modal-container {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  width: min(920px, 100%);
+  max-height: min(88vh, 920px);
+  overflow: hidden;
+  border-radius: 22px;
+  border: 1px solid rgb(0 0 0 / 8%);
+  background: #ffffff;
+  box-shadow: 0 28px 80px rgb(0 0 0 / 28%);
+}
+
+html.dark .publication-modal-container {
+  background: #000000;
+  border-color: rgb(255 255 255 / 12%);
+}
+
+.publication-modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 44px !important;
+  height: 44px !important;
+  min-width: 44px !important;
+  min-height: 44px !important;
+  padding: 0 !important;
+  border: none !important;
+  border-radius: 50% !important;
+  background: #ff3b30 !important;
+  background-color: #ff3b30 !important;
+  color: #ffffff !important;
+  cursor: pointer;
+  z-index: 2;
+  box-shadow: 0 8px 20px rgb(255 59 48 / 35%) !important;
+}
+
+.publication-modal-close::before,
+.publication-modal-close::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 16px;
+  height: 2px;
+  background: #ffffff;
+  border-radius: 2px;
+}
+
+.publication-modal-close::before {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.publication-modal-close::after {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.publication-modal-header {
+  padding: 1.35rem 4.5rem 1rem 1.35rem;
+  border-bottom: 1px solid rgb(0 0 0 / 8%);
+}
+
+html.dark .publication-modal-header {
+  border-bottom-color: rgb(255 255 255 / 10%);
+}
+
+.publication-modal-kicker {
+  margin: 0 0 0.35rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #0071e3;
+}
+
+.publication-modal-header h2 {
+  margin: 0;
+  font-size: clamp(1.2rem, 2.4vw, 1.55rem);
+  letter-spacing: -0.02em;
+  color: #1d1d1f;
+}
+
+html.dark .publication-modal-header h2 {
+  color: #f5f5f7;
+}
+
+.publication-modal-meta {
+  margin: 0.45rem 0 0.85rem;
+  font-size: 0.85rem;
+  color: #6e6e73;
+}
+
+.publication-modal-open-pdf {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 40px;
+  padding: 0.55rem 1rem;
+  border-radius: 980px;
+  background: #0071e3 !important;
+  color: #fff !important;
+  text-decoration: none !important;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.publication-modal-frame-wrap {
+  flex: 1 1 auto;
+  min-height: 0;
+  background: #ffffff;
+}
+
+html.dark .publication-modal-frame-wrap {
+  background: #000000;
+}
+
+.publication-modal-frame {
+  display: block;
+  width: 100%;
+  height: min(62vh, 640px);
+  border: 0;
+  background: #ffffff;
+}
+
+html.dark .publication-modal-frame {
+  background: #000000;
 }

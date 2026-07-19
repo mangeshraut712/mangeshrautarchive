@@ -3,6 +3,8 @@
  * Provides a QR card, copy link, native share, and social share options.
  */
 
+import { sitePath } from '../utils/site-base.js';
+
 const SHARE_MIRRORS = [
   { name: 'GitHub Pages (live)', url: 'https://mangeshraut712.github.io/mangeshrautarchive/' },
   { name: 'Custom domain (Vercel)', url: 'https://mangeshraut.pro' },
@@ -239,7 +241,7 @@ function ensureShareWidgetStyles() {
   const link = document.createElement('link');
   link.id = 'share-widget-stylesheet';
   link.rel = 'stylesheet';
-  link.href = 'assets/css/share-widget.css?v=20260712s';
+  link.href = `${sitePath('/assets/css/share-widget.css')}?v=20260712s`;
   document.head.appendChild(link);
 }
 

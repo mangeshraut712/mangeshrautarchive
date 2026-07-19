@@ -136,8 +136,8 @@ body.travel-body {
   }
 
   html.dark .a11y-glass-popover {
-    background: #1c1c1e !important;
-    background-color: #1c1c1e !important;
+    background: #000000 !important;
+    background-color: #000000 !important;
   }
 
   /* Right FAB stack — go-to-top lowest, chatbot above with explicit gap */
@@ -611,8 +611,8 @@ body.travel-body {
   }
 
   body #home.hero-section .music-card-inner {
-    min-height: 68px !important;
-    padding: 0.65rem 0.9rem !important;
+    /* Height/padding owned by chrome-surfaces.css */
+    min-height: 56px !important;
   }
 
   body #home.hero-section .album-art-container {

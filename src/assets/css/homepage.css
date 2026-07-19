@@ -1041,7 +1041,29 @@ html.dark .portfolio-reach-badge i {
 }
 
 .reach-panel-main {
+  display: flex;
+  flex-direction: column;
   min-width: 0;
+}
+
+/* Pin stack: header → active users → metrics → countries */
+.reach-panel-main > .reach-panel-header {
+  order: 0;
+}
+
+.reach-panel-main > .reach-realtime-section,
+.reach-panel-main > [data-reach-block='active-users'] {
+  order: 1;
+}
+
+.reach-panel-main > .reach-panel-metrics,
+.reach-panel-main > [data-reach-block='metrics'] {
+  order: 2;
+}
+
+.reach-panel-main > .reach-realtime-countries-block,
+.reach-panel-main > [data-reach-block='countries'] {
+  order: 3;
 }
 
 .reach-panel-header,
@@ -1430,9 +1452,17 @@ html.dark .reach-realtime-chart-bars span {
 }
 
 .reach-realtime-countries-block {
-  margin-top: 0.55rem;
-  padding-top: 0.45rem;
-  border-top: 1px solid rgb(0 0 0 / 5%);
+  margin-top: 0.65rem;
+  padding: 0.75rem 0.85rem;
+  background: #ffffff;
+  border: 1px solid rgb(0 0 0 / 8%);
+  border-radius: 16px;
+  text-align: left;
+}
+
+html.dark .reach-realtime-countries-block {
+  background: #000000;
+  border-color: rgb(255 255 255 / 12%);
 }
 
 .reach-realtime-countries-block .reach-realtime-chart-label {
@@ -1448,10 +1478,6 @@ html.dark .reach-realtime-chart-bars span {
 
 html.dark .reach-country-empty {
   color: #a1a1a6;
-}
-
-html.dark .reach-realtime-countries-block {
-  border-top-color: rgb(255 255 255 / 8%);
 }
 
 .reach-realtime-country-row,
@@ -2405,7 +2431,7 @@ html.dark #name-pronounce-btn.name-pronounce-btn.is-playing {
 
 html.dark .hero-2026-item {
   border-color: rgb(255 255 255 / 12%);
-  background: rgb(28 28 30 / 74%);
+  background: #000000;
   color: #f5f5f7;
   box-shadow: 0 2px 12px rgb(0 0 0 / 25%);
 }
@@ -2421,12 +2447,23 @@ html.dark .hero-2026-item::before {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  margin: 0.35rem auto 0.15rem;
-  /* Reserve Last.fm row height before track text swaps in (desktop CLS). */
-  min-height: 86px;
+  width: fit-content;
+  max-width: min(22rem, 100%);
+  margin: 0.35rem auto 0.45rem;
+  /* Height/width owned by chrome-surfaces.css — do not force a fixed/full-width box. */
   background: none !important;
   border: none !important;
   box-shadow: none !important;
+}
+
+#home .music-card,
+#home #music-card {
+  display: flex;
+  justify-content: center;
+  width: fit-content;
+  max-width: min(22rem, 100%);
+  margin-left: auto;
+  margin-right: auto;
 }
 
 #home .track-name,
@@ -2440,11 +2477,12 @@ html.dark .hero-2026-item::before {
 /* Music Card Inner - layout only; border/hover live in sections-apple-premium + overrides */
 
 .music-card-inner {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 0.75rem;
-  min-height: 72px;
-  width: min(100%, 28rem);
+  gap: 0.65rem;
+  width: fit-content;
+  max-width: min(100%, 22rem);
+  padding: 0.45rem 0.75rem;
   box-sizing: border-box;
   border: none;
   box-shadow: none;
@@ -2461,8 +2499,8 @@ html.dark .hero-2026-item::before {
 
 .album-art-container {
   position: relative;
-  width: 46px;
-  height: 46px;
+  width: 44px;
+  height: 44px;
   flex-shrink: 0;
 }
 
@@ -2576,7 +2614,7 @@ html.dark .hero-2026-item::before {
   flex-direction: column;
   gap: 0.125rem;
   min-width: 0;
-  flex: 1;
+  flex: 0 1 auto;
   text-align: left;
 }
 

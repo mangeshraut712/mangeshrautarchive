@@ -364,13 +364,15 @@ html.dark #home .hero-pill-badge {
   color: var(--text-primary-dark);
 }
 
-/* Music Card - layout in chrome-surfaces.css */
+/* Music Card — surfaces/hover only; width/flex owned by chrome-surfaces.css */
 #home .music-card {
-  margin: 0 auto 0.75rem;
+  margin: 0.35rem auto 0.45rem;
   background: transparent !important;
   border: none !important;
   box-shadow: none !important;
   padding: 0;
+  width: fit-content;
+  max-width: min(22rem, 100%);
   transition:
     color var(--duration-normal) var(--apple-ease),
     background-color var(--duration-normal) var(--apple-ease),
@@ -391,10 +393,12 @@ html.dark #home .music-card {
 }
 
 #home .music-card-inner {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 1rem;
-  padding: 0.75rem 1.25rem 0.75rem 0.75rem;
+  gap: 0.65rem;
+  width: fit-content;
+  max-width: min(22rem, 100%);
+  padding: 0.45rem 0.8rem 0.45rem 0.45rem;
   border-radius: 100px;
   box-shadow: none;
   backdrop-filter: none;
@@ -412,12 +416,14 @@ html.dark #home .music-card:hover .music-card-inner {
 
 #home .album-art-container {
   position: relative;
+  width: 44px;
+  height: 44px;
   flex-shrink: 0;
 }
 
 #home .album-art {
-  width: 56px;
-  height: 56px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   object-fit: cover;
   box-shadow: var(--shadow-apple-sm);
@@ -480,8 +486,9 @@ html.dark #home .music-card:hover .music-card-inner {
 }
 
 #home .track-info {
-  flex: 1;
+  flex: 0 1 auto;
   min-width: 0;
+  max-width: min(14rem, 48vw);
   text-align: left;
 }
 

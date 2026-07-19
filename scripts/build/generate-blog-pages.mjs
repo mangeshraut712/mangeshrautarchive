@@ -6,8 +6,8 @@ import {
   buildTableOfContents,
   escapeHTML,
   formatBlogDate,
-  getAllTags,
   getRelatedPosts,
+  getTopTags,
   parseBlogContent,
 } from '../../src/js/modules/blog-markdown.js';
 import { ASSET_VER, fontAwesomeStylesheet } from './asset-version.mjs';
@@ -19,8 +19,36 @@ const SITE_URL =
   'https://mangeshraut712.github.io/mangeshrautarchive';
 const ASSET_PREFIX = '..';
 
+/** Deploy path prefix ('' on Vercel apex, '/mangeshrautarchive' on GitHub Pages). */
+function routePrefixFromSiteUrl(siteUrl) {
+  try {
+    const pathname = new URL(siteUrl).pathname.replace(/\/+$/, '');
+    return !pathname || pathname === '/' ? '' : pathname;
+  } catch {
+    return '';
+  }
+}
+
+const ROUTE_PREFIX = routePrefixFromSiteUrl(SITE_URL);
+
+/** Relative in-folder links work on Vercel + GitHub Pages without cleanUrls. */
+function blogPostHref(id) {
+  return `./${encodeURIComponent(id)}.html`;
+}
+
+function blogIndexHref() {
+  return './';
+}
+
 function sortedPosts() {
   return [...blogPosts].sort((a, b) => new Date(b.date) - new Date(a.date));
+}
+
+function topicPills(tags = [], limit = 3) {
+  return (tags || [])
+    .slice(0, limit)
+    .map(tag => `<span class="blog-topic-pill">${escapeHTML(tag)}</span>`)
+    .join('');
 }
 
 function pageShell({
@@ -74,6 +102,11 @@ function pageShell({
     <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/apple-platform-features.css?v=${ASSET_VER}" />
     <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/chrome-surfaces.css?v=${ASSET_VER}" />
     <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/ux-polish-fixes.css?v=${ASSET_VER}" />
+    <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/ai-assistant.css?v=${ASSET_VER}" />
+    <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/ai-assistant-mobile.css?v=${ASSET_VER}" />
+    <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/share-widget.css?v=${ASSET_VER}" />
+    <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/wwdc26-liquid-glass.css?v=${ASSET_VER}" media="print" onload="this.media='all'" />
+    <noscript><link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/wwdc26-liquid-glass.css?v=${ASSET_VER}" /></noscript>
     <script src="${ASSET_PREFIX}/js/utils/liquid-glass-boot.js?v=${ASSET_VER}"></script>
     <script src="${ASSET_PREFIX}/js/utils/theme-head.js"></script>
     ${extraHead}
@@ -91,32 +124,23 @@ function renderBlogIndex(posts, tags) {
   const cards = posts
     .map(
       post => `
-    <article class="blog-card x-post-card apple-3d-project lg-glass-card" data-id="${post.id}" data-tags="${escapeHTML((post.tags || []).join(','))}">
+    <article class="blog-card blog-card--editorial" data-id="${post.id}" data-tags="${escapeHTML((post.tags || []).join(','))}">
       <div class="blog-card-content">
-        <div class="x-post-card__head">
-          <img class="x-post-card__avatar" src="${ASSET_PREFIX}/assets/images/profile-icon.webp" width="44" height="44" alt="" loading="lazy" decoding="async" />
-          <div class="x-post-card__identity">
-            <div class="x-post-card__name-row">
-              <span class="x-post-card__name">Mangesh Raut</span>
-              <span class="x-post-card__handle">@mangeshraut</span>
-              <span class="x-post-card__dot" aria-hidden="true">·</span>
-              <time class="x-post-card__date" datetime="${escapeHTML(post.date)}">${formatBlogDate(post.date)}</time>
-            </div>
-            <div class="x-post-card__meta-row">
-              <span class="blog-kicker">${escapeHTML(post.kicker || 'Field notes')}</span>
-              <span class="blog-read-time">${escapeHTML(post.readTime)}</span>
-            </div>
+        <div class="blog-card-top">
+          <div class="blog-card-meta">
+            <span class="blog-kicker">${escapeHTML(post.kicker || 'Field notes')}</span>
+            <span class="blog-card-meta-sep" aria-hidden="true">·</span>
+            <time class="blog-card-date" datetime="${escapeHTML(post.date)}">${formatBlogDate(post.date)}</time>
+            <span class="blog-card-meta-sep" aria-hidden="true">·</span>
+            <span class="blog-read-time">${escapeHTML(post.readTime)}</span>
           </div>
         </div>
-        <h2 class="blog-title"><a href="/blog/${post.id}" class="blog-title-link">${escapeHTML(post.title)}</a></h2>
+        <h2 class="blog-title"><a href="${blogPostHref(post.id)}" class="blog-title-link">${escapeHTML(post.title)}</a></h2>
         <p class="blog-summary">${escapeHTML(post.readerPromise || post.summary)}</p>
-        <div class="blog-tags">${(post.tags || [])
-          .slice(0, 5)
-          .map(
-            tag => `<span class="blog-tag">#${escapeHTML(String(tag).replace(/\s+/g, ''))}</span>`
-          )
-          .join('')}</div>
-        <a class="blog-read-btn" href="/blog/${post.id}">Read article <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+        <div class="blog-tags blog-tags--pills">${topicPills(post.tags, 3)}</div>
+        <div class="blog-card-cta-row">
+          <a class="blog-read-btn" href="${blogPostHref(post.id)}">Read article <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+        </div>
       </div>
     </article>`
     )
@@ -130,24 +154,22 @@ function renderBlogIndex(posts, tags) {
     .join('');
 
   const body = `
-    <a href="${ASSET_PREFIX}/" class="blog-back-link"><i class="fas fa-arrow-left" aria-hidden="true"></i> Back to portfolio</a>
     <main id="main-content" class="blog-index-main">
-      <header class="blog-index-header lg-glass-card">
+      <a href="${ASSET_PREFIX}/" class="blog-back-link"><i class="fas fa-arrow-left" aria-hidden="true"></i> Back to portfolio</a>
+      <header class="blog-index-header">
         <p class="blog-index-kicker">Technical Writings</p>
         <h1 class="blog-index-title">Field notes on AI, systems, and product engineering</h1>
-        <p class="blog-index-lede">Long-form posts with reader promises, practical workflows, and honest tradeoffs — written for engineers who want signal, not hype. No stock imagery; charts and source links only when they help.</p>
+        <p class="blog-index-lede">Long-form posts with reader promises, practical workflows, and honest tradeoffs — written for engineers who want signal, not hype.</p>
         <div class="blog-index-meta">
           <span>${posts.length} articles</span>
-          <a href="${SITE_URL}/rss.xml" class="blog-feed-link">RSS</a>
-          <a href="${SITE_URL}/feed.xml" class="blog-feed-link">Atom</a>
         </div>
       </header>
       <div class="blog-filter-bar" role="group" aria-label="Filter by topic">
         <button type="button" class="blog-filter-chip active" data-tag="all" aria-pressed="true">All topics</button>
         ${tagFilters}
       </div>
-      <p id="blog-filter-status" class="blog-filter-status" aria-live="polite"></p>
-      <div id="blog-posts-container" class="blog-index-grid">${cards}</div>
+      <p id="blog-filter-status" class="blog-filter-status" aria-live="polite" hidden></p>
+      <div id="blog-posts-container" class="blog-index-grid is-expanded">${cards}</div>
     </main>`;
 
   const jsonLd = JSON.stringify({
@@ -188,9 +210,10 @@ function renderBlogPost(post, posts) {
         <div class="article-related-grid">
           ${related
             .map(
-              r => `<a href="/blog/${r.id}" class="article-related-card lg-glass-card">
+              r => `<a href="${blogPostHref(r.id)}" class="article-related-card">
               <span class="article-related-kicker">${escapeHTML(r.kicker || 'Field notes')}</span>
               <span class="article-related-heading">${escapeHTML(r.title)}</span>
+              <span class="article-related-meta">${escapeHTML(r.readTime)}</span>
             </a>`
             )
             .join('')}
@@ -200,40 +223,32 @@ function renderBlogPost(post, posts) {
 
   const body = `
     <div class="blog-reading-progress" id="blog-reading-progress" aria-hidden="true"></div>
-    <a href="/blog" class="blog-back-link"><i class="fas fa-arrow-left" aria-hidden="true"></i> All articles</a>
     <main id="main-content" class="blog-article-main">
-      <article class="blog-article x-article">
+      <a href="${blogIndexHref()}" class="blog-back-link"><i class="fas fa-arrow-left" aria-hidden="true"></i> All articles</a>
+      <article class="blog-article blog-article--editorial x-article">
         <header class="article-header">
-          <div class="article-author-row">
-            <img class="article-byline__avatar article-byline__avatar--lg" src="${ASSET_PREFIX}/assets/images/profile-icon.webp" width="48" height="48" alt="" loading="lazy" decoding="async" />
-            <div class="article-author-text">
-              <div class="article-author-name">Mangesh Raut</div>
-              <div class="article-author-handle">@mangeshraut · Field notes</div>
-            </div>
-          </div>
+          <div class="article-header-tools" aria-hidden="false"></div>
+          <p class="article-kicker">${escapeHTML(post.kicker || 'Field notes')}</p>
           <h1 class="article-title">${escapeHTML(post.title)}</h1>
           <p class="article-promise">${escapeHTML(post.readerPromise || post.summary)}</p>
-          <div class="article-byline">
-            <span class="article-kicker">${escapeHTML(post.kicker || 'Field notes')}</span>
-            <span aria-hidden="true">·</span>
-            <time datetime="${post.date}">${formatBlogDate(post.date)}</time>
-            <span aria-hidden="true">·</span>
-            <span>${escapeHTML(post.readTime)}</span>
+          <div class="article-byline article-byline--editorial">
+            <img class="article-byline__avatar" src="${ASSET_PREFIX}/assets/images/profile-icon.webp" width="40" height="40" alt="" loading="lazy" decoding="async" />
+            <div class="article-byline__text">
+              <span class="article-byline__name">Mangesh Raut</span>
+              <span class="article-byline__meta">
+                <time datetime="${post.date}">${formatBlogDate(post.date)}</time>
+                <span aria-hidden="true">·</span>
+                <span>${escapeHTML(post.readTime)}</span>
+              </span>
+            </div>
           </div>
-          <div class="article-tags">${(post.tags || [])
-            .map(
-              tag => `<span class="blog-tag">#${escapeHTML(String(tag).replace(/\s+/g, ''))}</span>`
-            )
-            .join('')}</div>
+          <div class="article-tags blog-tags--pills">${topicPills(post.tags, 6)}</div>
         </header>
         <div class="blog-article-layout">
-          ${toc ? `<aside class="blog-article-sidebar lg-glass-card">${toc}</aside>` : ''}
-          <div class="article-body">${html}</div>
+          ${toc ? `<aside class="blog-article-sidebar" id="blog-article-toc">${toc}</aside>` : ''}
+          <div class="article-body article-body--measure">${html}</div>
         </div>
         ${relatedHtml}
-        <footer class="article-footer x-article-footer">
-          <a href="${ASSET_PREFIX}/#contact" class="blog-read-btn">Discuss this topic</a>
-        </footer>
       </article>
     </main>`;
 
@@ -267,7 +282,7 @@ export async function generateBlogPages(distDir) {
   await mkdir(blogDir, { recursive: true });
 
   const posts = sortedPosts();
-  const tags = getAllTags(posts);
+  const tags = getTopTags(posts, 8);
 
   await writeFile(resolve(blogDir, 'index.html'), renderBlogIndex(posts, tags), 'utf8');
 
@@ -277,6 +292,5 @@ export async function generateBlogPages(distDir) {
     )
   );
 
-  console.log(`📝 Generated blog index + ${posts.length} article pages in dist/blog/`);
-  return posts;
+  return { count: posts.length, routePrefix: ROUTE_PREFIX };
 }

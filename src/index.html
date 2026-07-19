@@ -219,6 +219,168 @@
       display: flex;
     }
 
+    /* Critical Spotlight layout — applies before deferred CSS sheets */
+    #search-overlay.active {
+      position: fixed;
+      inset: 0;
+      z-index: 100050;
+      align-items: flex-start;
+      justify-content: center;
+      padding: min(12vh, 6.5rem) 1rem 2rem;
+      background: transparent;
+    }
+
+    #search-overlay .search-overlay-backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgb(0 0 0 / 32%);
+      backdrop-filter: blur(14px) saturate(140%);
+      -webkit-backdrop-filter: blur(14px) saturate(140%);
+    }
+
+    html.dark #search-overlay .search-overlay-backdrop {
+      background: rgb(0 0 0 / 55%);
+    }
+
+    #search-overlay .search-panel {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      width: min(640px, 100%);
+      max-height: min(72vh, 640px);
+      margin: 0 auto;
+      padding: 0.5rem;
+      border-radius: 18px;
+      border: 1px solid rgb(0 0 0 / 8%);
+      background: rgb(255 255 255 / 92%);
+      backdrop-filter: saturate(180%) blur(40px);
+      -webkit-backdrop-filter: saturate(180%) blur(40px);
+      box-shadow: 0 28px 80px rgb(0 0 0 / 22%);
+      overflow: hidden;
+    }
+
+    html.dark #search-overlay .search-panel {
+      border-color: rgb(255 255 255 / 12%);
+      background: rgb(28 28 30 / 88%);
+      box-shadow: 0 32px 90px rgb(0 0 0 / 65%);
+    }
+
+    #search-overlay .search-header {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 0.7rem;
+      width: 100%;
+      margin: 0 0 0.35rem;
+      padding: 0.55rem 0.65rem 0.7rem;
+      border-bottom: 1px solid rgb(0 0 0 / 7%);
+      box-sizing: border-box;
+    }
+
+    html.dark #search-overlay .search-header {
+      border-bottom-color: rgb(255 255 255 / 10%);
+    }
+
+    #search-overlay .search-header > i {
+      flex: 0 0 auto;
+      color: #86868b;
+      font-size: 1rem;
+      pointer-events: none;
+    }
+
+    #search-overlay #search-input {
+      flex: 1 1 auto;
+      min-width: 0;
+      margin: 0;
+      padding: 0.35rem 0;
+      border: none;
+      border-radius: 0;
+      outline: none;
+      box-shadow: none;
+      background: transparent;
+      color: #1d1d1f;
+      font-size: 1.125rem;
+      font-weight: 500;
+      letter-spacing: -0.022em;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    html.dark #search-overlay #search-input {
+      color: #f5f5f7;
+    }
+
+    #search-overlay #search-input:focus,
+    #search-overlay #search-input:focus-visible {
+      outline: none;
+      border: none;
+      box-shadow: none;
+      background: transparent;
+    }
+
+    #search-overlay #search-input::placeholder {
+      color: #86868b;
+      opacity: 1;
+    }
+
+    #search-overlay #search-close {
+      position: static;
+      flex: 0 0 auto;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      margin: 0;
+      padding: 0;
+      border-radius: 999px;
+      border: 1px solid rgb(0 0 0 / 8%);
+      background: #f5f5f7;
+      color: #6e6e73;
+      box-shadow: none;
+      transform: none;
+    }
+
+    html.dark #search-overlay #search-close {
+      border-color: rgb(255 255 255 / 12%);
+      background: #3a3a3c;
+      color: #a1a1a6;
+    }
+
+    #search-overlay #search-results {
+      flex: 1 1 auto;
+      min-height: 0;
+      overflow-y: auto;
+      padding: 0.15rem;
+    }
+
+    #search-overlay .search-result-item {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      margin: 0 0.1rem 0.15rem;
+      padding: 0.7rem 0.75rem;
+      border-radius: 12px;
+      background: transparent;
+    }
+
+    #search-overlay .search-result-item.active,
+    #search-overlay .search-result-item:hover {
+      background: rgb(0 113 227 / 10%);
+    }
+
+    html.dark #search-overlay .search-result-item.active,
+    html.dark #search-overlay .search-result-item:hover {
+      background: rgb(10 132 255 / 16%);
+    }
+
+    #search-overlay .search-footer-hint {
+      margin: 0.35rem 0.55rem 0.2rem;
+      font-size: 0.72rem;
+      color: #86868b;
+    }
+
     #go-to-top {
       position: fixed;
       right: 1.25rem;
@@ -263,32 +425,28 @@
 
     #chatbot-toggle {
       position: fixed;
-      right: 24px;
-      bottom: 96px;
-      z-index: 9998;
+      right: max(14px, env(safe-area-inset-right, 0px));
+      bottom: max(14px, env(safe-area-inset-bottom, 0px));
+      z-index: 9999;
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 60px;
-      height: 60px;
-      border: 1px solid rgb(0 0 0 / 8%);
+      width: 48px;
+      height: 48px;
+      border: none;
       border-radius: 999px;
-      background: rgb(255 255 255 / 90%);
-      color: #0071e3;
-      box-shadow:
-        0 8px 32px rgb(0 0 0 / 12%),
-        0 4px 16px rgb(0 0 0 / 8%);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
+      background: #0071e3;
+      color: #ffffff;
+      box-shadow: 0 8px 24px rgb(0 113 227 / 28%);
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
     }
 
     html.dark #chatbot-toggle {
-      border-color: rgb(255 255 255 / 10%);
-      background: rgb(0 0 0 / 90%);
-      color: #4ea1ff;
-      box-shadow:
-        0 8px 32px rgb(0 0 0 / 40%),
-        0 4px 16px rgb(0 0 0 / 30%);
+      border: none;
+      background: #0a84ff;
+      color: #ffffff;
+      box-shadow: 0 8px 24px rgb(0 0 0 / 45%);
     }
 
     #chatbot-widget.hidden {
@@ -297,10 +455,10 @@
 
     @media (width <=768px) {
       #chatbot-toggle {
-        right: 16px;
-        bottom: 84px;
-        width: 56px;
-        height: 56px;
+        right: max(14px, env(safe-area-inset-right, 0px));
+        bottom: max(14px, env(safe-area-inset-bottom, 0px));
+        width: 48px;
+        height: 48px;
       }
     }
 
@@ -588,15 +746,25 @@ html.dark #home .hero-name-text {
       scrollbar-gutter: stable;
     }
 
-    /* Music card reserved height before Last.fm hydrates */
+    /* Music card — compact reserve; layout owned by chrome-surfaces.css */
     #home .music-card {
-      min-height: 86px;
+      display: flex;
+      justify-content: center;
+      width: fit-content;
+      max-width: min(22rem, 100%);
+      margin: 0.35rem auto 0.45rem;
+      min-height: 56px;
     }
 
     #home .music-card-inner {
-      min-height: 72px;
-      width: min(100%, 28rem);
+      display: inline-flex;
+      align-items: center;
+      width: fit-content;
+      max-width: min(22rem, 100%);
+      min-height: 56px;
+      padding: 0.45rem 0.8rem 0.45rem 0.45rem;
       box-sizing: border-box;
+      border-radius: 999px;
     }
   </style>
 
@@ -877,12 +1045,12 @@ html.dark #home .hero-name-text {
 
   <!-- Core Styles -->
   <link rel="stylesheet" href="assets/css/apple-design-system.css?v=20260716aa" />
-  <link rel="stylesheet" href="assets/css/sitewide-design-system.css?v=20260716aa" media="print" onload="this.media='all'" />
-  <noscript><link rel="stylesheet" href="assets/css/sitewide-design-system.css?v=20260716aa" /></noscript>
-  <link rel="stylesheet" href="assets/css/apple-premium-overrides.css?v=20260716aa" media="print" onload="this.media='all'" />
+  <link rel="stylesheet" href="assets/css/sitewide-design-system.css?v=20260719fab1" media="print" onload="this.media='all'" />
+  <noscript><link rel="stylesheet" href="assets/css/sitewide-design-system.css?v=20260719fab1" /></noscript>
+  <link rel="stylesheet" href="assets/css/apple-premium-overrides.css?v=20260719music1" media="print" onload="this.media='all'" />
   <link rel="stylesheet" href="assets/css/style.css?v=20260716aa" media="print" onload="this.media='all'" />
   <noscript><link rel="stylesheet" href="assets/css/style.css?v=20260716aa" /></noscript>
-  <link rel="stylesheet" href="assets/css/accessibility.css?v=20260716aa" />
+  <link rel="stylesheet" href="assets/css/accessibility.css?v=20260719ui2" />
 <noscript
     >
 </noscript>
@@ -900,21 +1068,21 @@ html.dark #home .hero-name-text {
   /></noscript>
   <link
     rel="stylesheet"
-    href="assets/css/theme-solid-surfaces.css?v=20260717clean"
+    href="assets/css/theme-solid-surfaces.css?v=20260719ui2"
     media="print"
     class="js-defer-css"
   />
   <noscript
-    ><link rel="stylesheet" href="assets/css/theme-solid-surfaces.css?v=20260717clean"
+    ><link rel="stylesheet" href="assets/css/theme-solid-surfaces.css?v=20260719ui2"
   /></noscript>
   <link
     rel="stylesheet"
-    href="assets/css/chrome-surfaces.css?v=20260718glass2"
+    href="assets/css/chrome-surfaces.css?v=20260719music1"
     media="print"
     class="js-defer-css"
   />
   <noscript
-    ><link rel="stylesheet" href="assets/css/chrome-surfaces.css?v=20260718glass2"
+    ><link rel="stylesheet" href="assets/css/chrome-surfaces.css?v=20260719music1"
   /></noscript>
   <link
     rel="stylesheet"
@@ -935,21 +1103,17 @@ html.dark #home .hero-name-text {
     ><link rel="stylesheet" href="assets/css/apple-cards-luxury-2026.css?v=20260717clean"
   /></noscript>
   <!-- Render-blocking: homepage layout metrics must apply before first paint (desktop CLS). -->
-  <link rel="stylesheet" href="assets/css/homepage.css?v=20260719role1" />
+  <link rel="stylesheet" href="assets/css/homepage.css?v=20260719ui2" />
   <link
     rel="stylesheet"
     href="assets/css/global-improvements.css?v=20260718edu"
     media="print"
     class="js-defer-css"
   />
-  <link
-    rel="stylesheet"
-    href="assets/css/ux-polish-fixes.css?v=20260716aa"
-    media="print"
-    class="js-defer-css"
-  />
+  <!-- Render-blocking: Spotlight command palette must win over deferred sheets -->
+  <link rel="stylesheet" href="assets/css/ux-polish-fixes.css?v=20260719ui2" />
   <!-- Render-blocking: overflow/safe-area must apply before Chromium paints (Android/WhatsApp) -->
-  <link rel="stylesheet" href="assets/css/mobile-viewport.css?v=20260718android" />
+  <link rel="stylesheet" href="assets/css/mobile-viewport.css?v=20260719music1" />
   <link
     rel="stylesheet"
     href="assets/css/apple-super-retina-display.css?v=20260716aa"
@@ -963,15 +1127,15 @@ html.dark #home .hero-name-text {
   <!-- Lazy-loaded Section Styles (data-href only — loaded near section / idle) -->
   <link rel="stylesheet" data-href="assets/css/contact.css?v=20260717clean" data-lazy-style-key="contact" />
   <link rel="stylesheet" data-href="assets/css/animations.css?v=20260716aa" data-lazy-style-key="motion" />
-  <link rel="stylesheet" data-href="assets/css/publications.css?v=20260716aa" data-lazy-style-key="publications" />
+  <link rel="stylesheet" data-href="assets/css/publications.css?v=20260719fab1" data-lazy-style-key="publications" />
   <link rel="stylesheet" data-href="assets/css/education.css?v=20260718edu" data-lazy-style-key="education" />
   <link rel="stylesheet" data-href="assets/css/skills.css?v=20260717whole" data-lazy-style-key="skills" />
   <link rel="stylesheet" data-href="assets/css/certifications.css?v=20260716aa" data-lazy-style-key="certifications" />
   <link rel="stylesheet" data-href="assets/css/katex.min.css?v=20260716aa" data-lazy-style-key="assistant" />
-  <link rel="stylesheet" data-href="assets/css/ai-assistant.css?v=20260718glass2" data-lazy-style-key="assistant" />
+  <link rel="stylesheet" data-href="assets/css/ai-assistant.css?v=20260719fab1" data-lazy-style-key="assistant" />
   <link rel="stylesheet" data-href="assets/css/ai-assistant-mobile.css?v=20260718chat" data-lazy-style-key="assistant" />
   <link rel="stylesheet" data-href="assets/css/about.css?v=20260718edu" data-lazy-style-key="about" />
-  <link rel="stylesheet" data-href="assets/css/blog.css?v=20260716aa" data-lazy-style-key="blog" />
+  <link rel="stylesheet" data-href="assets/css/blog.css?v=20260719fab1" data-lazy-style-key="blog" />
   <link rel="stylesheet" data-href="assets/css/recommendations.css?v=20260716aa" data-lazy-style-key="recommendations" />
   <link rel="stylesheet" data-href="assets/css/awards.css?v=20260716aa" data-lazy-style-key="awards" />
   <link rel="stylesheet" data-href="assets/css/experience.css?v=20260716aa" data-lazy-style-key="experience" />
@@ -980,7 +1144,7 @@ html.dark #home .hero-name-text {
   <link rel="stylesheet" data-href="assets/css/birthday-celebration.css?v=20260716aa" data-lazy-style-key="birthday" />
   <link rel="stylesheet" data-href="assets/css/projects-showcase-2026.css?v=20260716aa" data-lazy-style-key="projects" />
   <link rel="stylesheet" data-href="assets/css/engineering-showcase.css?v=20260716aa" data-lazy-style-key="engineering" />
-  <link rel="stylesheet" data-href="assets/css/share-widget.css?v=20260716aa" data-lazy-style-key="share" />
+  <link rel="stylesheet" data-href="assets/css/share-widget.css?v=20260719ui2" data-lazy-style-key="share" />
   <link rel="stylesheet" data-href="assets/css/health-widget.css?v=20260716aa" data-lazy-style-key="currently" />
 
 <link rel="icon" type="image/png" href="assets/images/profile-icon.png?v=20260716aa" />
@@ -1078,22 +1242,21 @@ html.dark #home .hero-name-text {
       window.__portfolioLaunchIntroPrimed = true;
     })();
   </script>
-  <!-- Search Overlay -->
-  <div id="search-overlay" role="dialog" aria-modal="true" aria-label="Command palette" aria-hidden="true">
-    <div class="search-container">
-      <div class="search-input-wrapper">
-        <i class="fas fa-search search-icon" aria-hidden="true"></i>
+  <!-- Search Overlay — Apple Spotlight / command palette -->
+  <div id="search-overlay" role="dialog" aria-modal="true" aria-label="Command palette" aria-hidden="true" hidden>
+    <div class="search-overlay-backdrop" data-search-close></div>
+    <div class="search-panel">
+      <div class="search-header">
+        <i class="fas fa-magnifying-glass" aria-hidden="true"></i>
         <label for="search-input" class="sr-only">Search portfolio, pages, and actions</label>
-        <input type="search" id="search-input" placeholder="Search pages, sections, posts..." autocomplete="off"
-          aria-label="Search portfolio, pages, and actions">
+        <input type="search" id="search-input" placeholder="Search pages, writing, projects, actions…" autocomplete="off"
+          spellcheck="false" aria-label="Search portfolio, pages, and actions" />
         <button id="search-close" class="premium-close-btn" aria-label="Close search" type="button">
-          <i class="fas fa-times" aria-hidden="true"></i>
+          <i class="fas fa-xmark" aria-hidden="true"></i>
         </button>
       </div>
-      <div id="search-results" role="listbox" aria-label="Search results"><div class="loading-state" hidden><div class="loading-spinner"></div><p class="loading-message">Searching...</p></div></div>
-      <div class="search-hint">
-        Press <kbd>Enter</kbd> to open, <kbd>Esc</kbd> to close
-      </div>
+      <div id="search-results" role="listbox" aria-label="Search results"></div>
+      <p class="search-footer-hint">↑↓ to move · Enter to open · Esc to close · ⌘K anytime</p>
     </div>
   </div>
 
@@ -1622,15 +1785,14 @@ html.dark #home .hero-name-text {
                           <span class="reach-panel-range" id="reach-panel-range">Last 30 days</span>
                         </div>
 
-                        <!-- Real-time Active Users Panel -->
-                        <div class="reach-realtime-section">
+                        <!-- 1) Active users (real-time) — always first -->
+                        <div class="reach-realtime-section" data-reach-block="active-users">
                           <div class="reach-realtime-header">
                             <span class="realtime-dot-pulse"></span>
                             <span class="reach-realtime-title">ACTIVE USERS IN LAST 30 MINUTES</span>
                           </div>
                           <div class="reach-realtime-value" id="reach-realtime-value">—</div>
-                          
-                          <!-- Active Users Per Minute (Visual Bars) -->
+
                           <div class="reach-realtime-chart-container">
                             <span class="reach-realtime-chart-label">ACTIVE USERS PER MINUTE</span>
                             <div class="reach-realtime-chart-bars" id="reach-realtime-bars">
@@ -1651,18 +1813,10 @@ html.dark #home .hero-name-text {
                               <span class="reach-bar" data-h="55"></span>
                             </div>
                           </div>
-
-                          <!-- Top 3 countries (GA real-time) -->
-                          <div class="reach-realtime-countries-block">
-                            <span class="reach-realtime-chart-label">TOP COUNTRIES · REAL-TIME</span>
-                            <div class="reach-realtime-countries" id="reach-realtime-countries" aria-live="polite">
-                              <!-- Populated dynamically by JS -->
-                            </div>
-                          </div>
                         </div>
 
-                        <!-- Core Metrics Grid -->
-                        <div class="reach-panel-metrics ga-metrics-grid">
+                        <!-- 2) Core metrics -->
+                        <div class="reach-panel-metrics ga-metrics-grid" data-reach-block="metrics">
                           <div class="reach-panel-metric active" id="reach-metric-active-users">
                             <span>Active users</span>
                             <strong id="reach-panel-visitors">10.3K</strong>
@@ -1679,6 +1833,14 @@ html.dark #home .hero-name-text {
                             <small id="reach-panel-total-caption">Jan - Today</small>
                           </div>
                         </div>
+
+                        <!-- 3) Top countries (below active users + metrics) -->
+                        <div class="reach-realtime-countries-block" data-reach-block="countries">
+                          <span class="reach-realtime-chart-label">TOP COUNTRIES · REAL-TIME</span>
+                          <div class="reach-realtime-countries" id="reach-realtime-countries" aria-live="polite">
+                            <!-- Populated dynamically by JS -->
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -1689,7 +1851,7 @@ html.dark #home .hero-name-text {
                   if (!window.__PERF_AUDIT__) {
                     var heroFlyoutScript = document.createElement('script');
                     heroFlyoutScript.defer = true;
-                    heroFlyoutScript.src = 'js/modules/hero-flyout-position.js?v=20260716aa';
+                    heroFlyoutScript.src = 'js/modules/hero-flyout-position.js?v=20260719ui2';
                     document.currentScript.parentNode.insertBefore(
                       heroFlyoutScript,
                       document.currentScript.nextSibling
@@ -3552,9 +3714,6 @@ html.dark #home .hero-name-text {
       <div class="container">
         <h2 id="blog-heading">Technical Writings <span id="blog-post-count" class="section-count">(12)</span></h2>
         <p class="section-subtitle">Field notes on AI systems, product engineering, and cloud architecture — written like long-form posts, not marketing pages.</p>
-        <p class="blog-archive-link-wrap">
-          <a href="/blog" class="blog-archive-link">Browse all articles <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
-        </p>
         <div
           id="blog-posts-container"
           data-section-preview
@@ -4612,7 +4771,7 @@ html.dark #home .hero-name-text {
           { src: 'js/utils/theme.js?v=20260716aa', module: true },
           { src: 'js/utils/go-to-top.js?v=20260716aa', defer: true },
           { src: 'js/core/bootstrap.js?v=20260718assistme', module: true },
-          { src: 'js/modules/share-widget.js?v=20260716aa', module: true },
+          { src: 'js/modules/share-widget.js?v=20260719fab1', module: true },
           { src: 'js/modules/name-pronounce.js?v=20260716aa', defer: true },
         ];
 

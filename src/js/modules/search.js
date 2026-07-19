@@ -1,5 +1,6 @@
 import { blogPosts } from './blog-data.js';
 import { caseStudies } from './case-studies-data.js';
+import { sitePath } from '../utils/site-base.js';
 
 /**
  * Search Functionality Module - Apple Inspired
@@ -16,20 +17,70 @@ class PortfolioSearch {
 
     this.searchableContent = [];
     this.activeResultIndex = -1;
-    this.suggestedSearches = [
+    this._domIndexed = false;
+    this.suggestedSearches = this.buildSuggestedSearches();
+
+    this.init();
+  }
+
+  buildSuggestedSearches() {
+    const onBlog = document.body.classList.contains('blog-standalone-page');
+    if (onBlog) {
+      return [
+        {
+          title: 'All Technical Writings',
+          icon: 'fa-newspaper',
+          url: sitePath('/blog/'),
+          type: 'Page',
+          description: 'Browse the full writing archive',
+        },
+        {
+          title: 'Back to portfolio',
+          icon: 'fa-house',
+          url: sitePath('/'),
+          type: 'Page',
+          description: 'Home, projects, experience, and more',
+        },
+        {
+          title: 'Systems notebook',
+          icon: 'fa-diagram-project',
+          url: sitePath('/systems.html'),
+          type: 'Page',
+        },
+        {
+          title: 'Open AssistMe',
+          icon: 'fa-comments',
+          action: 'open-chat',
+          type: 'Action',
+          description: 'Ask the portfolio assistant',
+        },
+        {
+          title: 'Download Resume',
+          icon: 'fa-file-arrow-down',
+          url: sitePath('/assets/files/Mangesh_Raut_Resume.pdf'),
+          type: 'Action',
+        },
+      ];
+    }
+    return [
       { title: 'Projects', icon: 'fa-code', sectionId: 'projects', type: 'Portfolio' },
       { title: 'Skills', icon: 'fa-laptop-code', sectionId: 'skills', type: 'Portfolio' },
       { title: 'Experience', icon: 'fa-briefcase', sectionId: 'experience', type: 'Portfolio' },
-      { title: 'Technical Writings', icon: 'fa-rss', sectionId: 'blog', type: 'Portfolio' },
       {
-        title: 'Certifications',
-        icon: 'fa-certificate',
-        sectionId: 'certifications',
+        title: 'Technical Writings',
+        icon: 'fa-newspaper',
+        sectionId: 'blog',
         type: 'Portfolio',
+        description: 'Field notes and long-form posts',
+      },
+      {
+        title: 'Open AssistMe',
+        icon: 'fa-comments',
+        action: 'open-chat',
+        type: 'Action',
+        description: 'Ask the portfolio assistant',
       },
     ];
-
-    this.init();
   }
 
   init() {
@@ -95,7 +146,11 @@ class PortfolioSearch {
     this.indexStaticCommands();
     this.indexBlogPosts();
     this.indexCaseStudies();
+    this.indexSitePages();
+    this.indexDomSections();
+  }
 
+  indexDomSections() {
     // Index all searchable content from the page
     const sections = [
       {
@@ -133,20 +188,30 @@ class PortfolioSearch {
         type: 'Certification',
         icon: 'fa-certificate',
       },
-      { selector: '[id="blog"] .blog-card', type: 'Blog', icon: 'fa-rss' },
+      { selector: '[id="blog"] .blog-card', type: 'Blog', icon: 'fa-newspaper' },
+      {
+        selector: 'body.blog-standalone-page .blog-card--editorial',
+        type: 'Blog',
+        icon: 'fa-newspaper',
+      },
     ];
 
     sections.forEach(({ selector, type, icon }) => {
       const elements = document.querySelectorAll(selector);
       elements.forEach((element, _index) => {
-        const title = element.querySelector('h3, h4, h5')?.textContent || '';
+        const title =
+          element.querySelector('.blog-title, h2, h3, h4, h5')?.textContent ||
+          element.getAttribute('aria-label') ||
+          '';
         const description =
-          Array.from(element.querySelectorAll('p'))
+          Array.from(element.querySelectorAll('p, .blog-summary'))
             .map(p => p.textContent)
             .join(' ') || '';
 
         // Generic tags
-        let tags = Array.from(element.querySelectorAll('.tag, .skill-tag, .tech-tag, .project-tag'))
+        let tags = Array.from(
+          element.querySelectorAll('.tag, .skill-tag, .tech-tag, .project-tag, .blog-topic-pill')
+        )
           .map(tag => tag.textContent)
           .join(' ');
 
@@ -167,24 +232,37 @@ class PortfolioSearch {
           }
         }
 
+        const postId = element.dataset?.id;
         if (title || description) {
           this.addSearchableEntry({
             title: title.trim(),
-            description: description.trim(),
+            description: description.trim().slice(0, 180),
             tags: tags.trim(),
             type,
             icon,
             element,
-            sectionId: selector.split(' ')[0].replace('[id="', '').replace('"]', ''),
+            sectionId:
+              type === 'Blog' && postId
+                ? undefined
+                : selector.split(' ')[0].replace('[id="', '').replace('"]', ''),
+            url:
+              type === 'Blog' && postId
+                ? sitePath(`/blog/${encodeURIComponent(postId)}.html`)
+                : undefined,
           });
         }
       });
     });
+    this._domIndexed = true;
   }
 
-  refreshIndex() {
+  refreshIndex({ includeDom = true } = {}) {
     this.searchableContent = [];
-    this.indexContent();
+    this.indexStaticCommands();
+    this.indexBlogPosts();
+    this.indexCaseStudies();
+    this.indexSitePages();
+    if (includeDom) this.indexDomSections();
   }
 
   addSearchableEntry(entry) {
@@ -281,10 +359,10 @@ class PortfolioSearch {
       {
         title: 'Technical Writings',
         description: 'Blog posts and technical articles',
-        icon: 'fa-rss',
+        icon: 'fa-newspaper',
         sectionId: 'blog',
         type: 'Portfolio',
-        tags: 'blog articles writing posts',
+        tags: 'blog articles writing posts field notes',
       },
       {
         title: 'Contact',
@@ -293,14 +371,6 @@ class PortfolioSearch {
         sectionId: 'contact',
         type: 'Portfolio',
         tags: 'email phone social linkedin github',
-      },
-      {
-        title: 'Travel',
-        description: 'Open the interactive travel timeline, route playback, and location gallery',
-        icon: 'fa-route',
-        url: 'travel.html',
-        type: 'Page',
-        tags: 'travel map atlas journey timeline route flight road gallery mapbox',
       },
       {
         title: 'Game — Debug Runner',
@@ -320,26 +390,26 @@ class PortfolioSearch {
         tags: 'engineering architecture benchmarks evidence building systems notebook',
       },
       {
-        title: 'Monitor',
-        description: 'Open the system monitor page',
-        icon: 'fa-heart-pulse',
-        url: 'monitor.html',
-        type: 'Page',
-        tags: 'monitor system status health',
+        title: 'Open AssistMe',
+        description: 'Ask the AI portfolio assistant',
+        icon: 'fa-comments',
+        action: 'open-chat',
+        type: 'Action',
+        tags: 'chatbot assistme assistant ai help ask',
       },
       {
-        title: 'Uses / Setup',
-        description: 'Hardware, software, AI stack, and engineering tools',
-        icon: 'fa-desktop',
-        url: 'uses.html',
-        type: 'Page',
-        tags: 'uses setup stack tools hardware software',
+        title: 'Toggle theme',
+        description: 'Switch light and dark appearance',
+        icon: 'fa-circle-half-stroke',
+        action: 'toggle-theme',
+        type: 'Action',
+        tags: 'dark mode light mode appearance theme',
       },
       {
         title: 'Download Resume',
         description: 'Open Mangesh Raut resume PDF',
         icon: 'fa-file-arrow-down',
-        url: 'assets/files/Mangesh_Raut_Resume.pdf',
+        url: sitePath('/assets/files/Mangesh_Raut_Resume.pdf'),
         type: 'Action',
         tags: 'resume cv pdf download',
       },
@@ -364,15 +434,69 @@ class PortfolioSearch {
     commands.forEach(command => this.addSearchableEntry(command));
   }
 
+  indexSitePages() {
+    const pages = [
+      {
+        title: 'Writings archive',
+        description: 'All technical articles with topic filters',
+        icon: 'fa-newspaper',
+        url: sitePath('/blog/'),
+        type: 'Page',
+        tags: 'blog archive writings articles rss feed technical',
+      },
+      {
+        title: 'Systems notebook',
+        description: 'Architecture notes, flows, and engineering systems',
+        icon: 'fa-diagram-project',
+        url: sitePath('/systems.html'),
+        type: 'Page',
+        tags: 'systems architecture notebook engineering',
+      },
+      {
+        title: 'System monitor',
+        description: 'Live health, endpoints, and ops status',
+        icon: 'fa-heart-pulse',
+        url: sitePath('/monitor.html'),
+        type: 'Page',
+        tags: 'monitor system status health ops',
+      },
+      {
+        title: 'Uses / Setup',
+        description: 'Hardware, software, AI stack, and engineering tools',
+        icon: 'fa-desktop',
+        url: sitePath('/uses.html'),
+        type: 'Page',
+        tags: 'uses setup stack tools hardware software',
+      },
+      {
+        title: 'Travel atlas',
+        description: 'Interactive travel timeline, routes, and galleries',
+        icon: 'fa-route',
+        url: sitePath('/travel.html'),
+        type: 'Page',
+        tags: 'travel map atlas journey timeline route flight road gallery',
+      },
+      {
+        title: 'Home',
+        description: 'Portfolio homepage',
+        icon: 'fa-house',
+        url: sitePath('/'),
+        type: 'Page',
+        tags: 'home portfolio landing',
+      },
+    ];
+    pages.forEach(page => this.addSearchableEntry(page));
+  }
+
   indexBlogPosts() {
     blogPosts.forEach(post => {
       this.addSearchableEntry({
         title: post.title,
-        description: post.summary,
-        tags: post.tags.join(' '),
+        description: post.readerPromise || post.summary,
+        tags: [...(post.tags || []), post.kicker, 'blog', 'article'].filter(Boolean).join(' '),
         type: 'Blog',
-        icon: 'fa-rss',
-        sectionId: 'blog',
+        icon: 'fa-newspaper',
+        url: sitePath(`/blog/${encodeURIComponent(post.id)}.html`),
       });
     });
   }
@@ -385,7 +509,7 @@ class PortfolioSearch {
         tags: `${cs.slug} case study architecture demo ${(cs.stack || []).join(' ')}`,
         type: 'Case Study',
         icon: 'fa-book-open',
-        url: `case-studies/${cs.slug}.html`,
+        url: sitePath(`/case-studies/${cs.slug}.html`),
       });
     });
   }
@@ -409,9 +533,13 @@ class PortfolioSearch {
       }
     });
 
-    // Close on overlay click
+    // Close on backdrop / overlay chrome click
     this.searchOverlay.addEventListener('click', e => {
-      if (e.target === this.searchOverlay) {
+      if (
+        e.target === this.searchOverlay ||
+        e.target?.classList?.contains('search-overlay-backdrop') ||
+        e.target?.closest?.('[data-search-close]')
+      ) {
         this.closeSearch();
       }
     });
@@ -464,8 +592,13 @@ class PortfolioSearch {
     this.activeResultIndex = -1;
     this.showSuggestedSearches();
     document.body.style.overflow = '';
-    // Restore focus to the control that opened search
-    if (this.searchToggle && typeof this.searchToggle.focus === 'function') {
+    // Restore focus only when the toggle is a real visible control (homepage nav)
+    if (
+      this.searchToggle &&
+      !this.searchToggle.hidden &&
+      this.searchToggle.offsetParent &&
+      typeof this.searchToggle.focus === 'function'
+    ) {
       try {
         this.searchToggle.focus({ preventScroll: true });
       } catch {
@@ -552,38 +685,68 @@ class PortfolioSearch {
   }
 
   performSearch(query) {
-    if (!query || query.length < 2) {
+    const trimmed = String(query || '').trim();
+    if (!trimmed || trimmed.length < 1) {
       this.showSuggestedSearches();
       return;
     }
 
-    // Always re-index so dynamically injected project cards are searchable
-    this.refreshIndex();
+    // Re-index DOM once per session so late-loaded cards are included, not every keystroke.
+    if (!this._domIndexed) {
+      this.refreshIndex({ includeDom: true });
+    }
 
-    const lowerQuery = query.toLowerCase();
+    const tokens = trimmed
+      .toLowerCase()
+      .split(/[\s,/|+]+/)
+      .map(t => t.trim())
+      .filter(t => t.length >= 1);
+
     const results = this.searchableContent
-      .filter(
-        item =>
-          item.normalizedTitle.includes(lowerQuery) ||
-          item.normalizedDescription.includes(lowerQuery) ||
-          item.normalizedTags.includes(lowerQuery)
+      .map(item => ({ item, score: this.scoreResult(item, trimmed.toLowerCase(), tokens) }))
+      .filter(entry => entry.score < 100)
+      .sort(
+        (a, b) => a.score - b.score || a.item.normalizedTitle.localeCompare(b.item.normalizedTitle)
       )
-      .sort((a, b) => this.rankResult(a, lowerQuery) - this.rankResult(b, lowerQuery));
+      .map(entry => entry.item);
 
-    this.displayResults(results, query);
+    // De-dupe by title+type (blog posts indexed both statically and from DOM)
+    const seen = new Set();
+    const unique = results.filter(item => {
+      const key = `${item.type}|${item.normalizedTitle}|${item.url || item.sectionId || ''}`;
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+
+    this.displayResults(unique, trimmed);
   }
 
-  rankResult(item, query) {
+  scoreResult(item, query, tokens) {
     const title = item.normalizedTitle || '';
     const tags = item.normalizedTags || '';
     const description = item.normalizedDescription || '';
+    const haystack = `${title} ${tags} ${description}`;
 
     if (title === query) return 0;
     if (title.startsWith(query)) return 1;
     if (title.includes(query)) return 2;
     if (tags.includes(query)) return 3;
     if (description.includes(query)) return 4;
-    return 5;
+
+    // Multi-token: rank by how many tokens hit (Spotlight-style, not strict AND)
+    if (tokens.length > 1) {
+      const hits = tokens.filter(token => haystack.includes(token)).length;
+      if (hits === 0) return 100;
+      const titleHits = tokens.filter(token => title.includes(token)).length;
+      if (hits === tokens.length) return 5 + (tokens.length - titleHits);
+      return 18 + (tokens.length - hits) * 4 - titleHits;
+    }
+
+    // Fuzzy-ish: token contained with light typo tolerance via startsWith on words
+    const words = haystack.split(/[^a-z0-9+#.-]+/).filter(Boolean);
+    if (tokens[0] && words.some(word => word.startsWith(tokens[0]))) return 6;
+    return 100;
   }
 
   displayResults(results, query) {
@@ -620,7 +783,18 @@ class PortfolioSearch {
   }
 
   groupResultsByType(results) {
-    const order = ['Portfolio', 'Blog', 'Project', 'GitHub Project', 'Social', 'Action', 'Page'];
+    const order = [
+      'Action',
+      'Page',
+      'Blog',
+      'Case Study',
+      'Portfolio',
+      'Project',
+      'GitHub Project',
+      'Skill',
+      'Experience',
+      'Social',
+    ];
     const grouped = new Map();
 
     results.forEach((result, index) => {
@@ -644,12 +818,13 @@ class PortfolioSearch {
       ? `data-section="${this.escapeAttribute(result.sectionId)}"`
       : '';
     const urlAttr = result.url ? `data-url="${this.escapeAttribute(result.url)}"` : '';
+    const actionAttr = result.action ? `data-action="${this.escapeAttribute(result.action)}"` : '';
     const description = result.description
       ? `<div class="search-result-section">${this.escapeHtml(result.description)}</div>`
       : `<div class="search-result-section">${this.escapeHtml(result.type || '')}</div>`;
 
     return `
-      <div class="search-result-item" role="option" tabindex="-1" data-index="${index}" ${sectionAttr} ${urlAttr}>
+      <div class="search-result-item" role="option" tabindex="-1" data-index="${index}" ${sectionAttr} ${urlAttr} ${actionAttr}>
         <div class="search-result-icon">
           <i class="${iconClass}"></i>
         </div>
@@ -731,9 +906,19 @@ class PortfolioSearch {
 
     const sectionId = item.dataset.section;
     const url = item.dataset.url;
+    const action = item.dataset.action;
     this.closeSearch();
 
     setTimeout(() => {
+      if (action === 'open-chat') {
+        document.getElementById('chatbot-toggle')?.click();
+        return;
+      }
+      if (action === 'toggle-theme') {
+        document.getElementById('theme-toggle')?.click();
+        return;
+      }
+
       if (url) {
         if (/^https?:\/\//.test(url)) {
           window.open(url, '_blank', 'noopener,noreferrer');
@@ -743,16 +928,19 @@ class PortfolioSearch {
         return;
       }
 
+      if (!sectionId) return;
+
       const section = document.getElementById(sectionId);
       if (section) {
         section.scrollIntoView({ behavior: 'smooth', block: 'start' });
         window.setTimeout(() => {
           section.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }, 700);
-        window.setTimeout(() => {
-          section.scrollIntoView({ behavior: 'auto', block: 'start' });
-        }, 1600);
+        return;
       }
+
+      // From subpages, jump to the homepage section.
+      window.location.href = `${sitePath('/')}#${encodeURIComponent(sectionId)}`;
     }, 100);
   }
 

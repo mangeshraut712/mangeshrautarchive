@@ -99,6 +99,10 @@
     if (isReach) {
       flyout.style.maxHeight = `${Math.round(maxHeight)}px`;
       flyout.style.overflow = 'auto';
+      // Always open on Active Users (top), never a mid-panel scroll restore.
+      flyout.scrollTop = 0;
+      const reachPanel = flyout.querySelector('.portfolio-reach-panel');
+      if (reachPanel) reachPanel.scrollTop = 0;
       // Keep music covered for the full open duration
       if (slot) {
         flyout.classList.add('hero-flyout--music-slot');

@@ -471,24 +471,59 @@ html:not(.dark) .status-badge.unhealthy {
   box-shadow: 0 2px 4px rgba(0, 113, 227, 0.3);
 }
 
+.btn.btn-secondary,
 .btn-secondary {
-  background: rgba(0, 0, 0, 0.04);
-  color: var(--text-primary);
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  color: #0071e3 !important;
+  -webkit-text-fill-color: #0071e3 !important;
+  border: 1px solid rgb(0 113 227 / 35%) !important;
+  box-shadow: none !important;
 }
 
+.btn.btn-secondary i,
+.btn-secondary i,
+.btn.btn-secondary span,
+.btn-secondary span {
+  color: #0071e3 !important;
+  -webkit-text-fill-color: #0071e3 !important;
+}
+
+html.dark .btn.btn-secondary,
+html.dark .btn-secondary,
+[data-theme='dark'] .btn.btn-secondary,
 [data-theme='dark'] .btn-secondary {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.12);
+  background: #000000 !important;
+  background-color: #000000 !important;
+  color: #0a84ff !important;
+  -webkit-text-fill-color: #0a84ff !important;
+  border: 1px solid rgb(10 132 255 / 40%) !important;
+}
+
+html.dark .btn.btn-secondary i,
+html.dark .btn-secondary i,
+html.dark .btn.btn-secondary span,
+html.dark .btn-secondary span,
+[data-theme='dark'] .btn.btn-secondary i,
+[data-theme='dark'] .btn-secondary i,
+[data-theme='dark'] .btn.btn-secondary span,
+[data-theme='dark'] .btn-secondary span {
+  color: #0a84ff !important;
+  -webkit-text-fill-color: #0a84ff !important;
 }
 
 .btn-secondary:hover {
-  background: rgba(0, 0, 0, 0.08);
+  background: #ffffff !important;
+  border-color: #0071e3 !important;
   transform: translateY(-1px);
 }
 
+html.dark .btn-secondary:hover,
 [data-theme='dark'] .btn-secondary:hover {
-  background: rgba(255, 255, 255, 0.12);
+  background: #000000 !important;
+  border-color: #0a84ff !important;
+  color: #2997ff !important;
+  -webkit-text-fill-color: #2997ff !important;
 }
 
 /* ========================================
@@ -1544,7 +1579,7 @@ html:not(.dark) .method-delete {
   text-align: left;
   border-radius: 14px;
   border: 1px solid color-mix(in srgb, var(--apple-blue, #0071e3) 35%, transparent);
-  background: color-mix(in srgb, var(--apple-blue, #0071e3) 10%, var(--apple-bg, #f5f5f7));
+  background: color-mix(in srgb, var(--apple-blue, #0071e3) 10%, var(--apple-bg, #ffffff));
   color: var(--text-primary, #1d1d1f);
 }
 

@@ -959,13 +959,14 @@ export class AccessibilityEnhancer {
       style.textContent = `
         .a11y-toolbar {
           position: fixed;
-          left: max(1rem, env(safe-area-inset-left, 0px));
-          /* Share FAB is bottom-left; stack a11y above it with 12px gap so panel opens clear */
-          bottom: calc(max(1.25rem, env(safe-area-inset-bottom, 0px)) + 48px + 12px);
+          left: auto;
+          right: max(14px, env(safe-area-inset-right, 0px));
+          /* Right FAB stack slot 3 — geometry owned by ux-polish-fixes.css */
+          bottom: calc(max(14px, env(safe-area-inset-bottom, 0px)) + (48px + 10px) * 3);
           z-index: 9997;
           display: flex;
           flex-direction: column-reverse;
-          align-items: flex-start;
+          align-items: flex-end;
           gap: 0.5rem;
           padding: 0;
           border-radius: 0;
@@ -982,10 +983,11 @@ export class AccessibilityEnhancer {
           min-width: 48px !important;
           min-height: 48px !important;
           border-radius: 999px;
-          border: 1px solid rgb(0 0 0 / 10%);
-          background: #ffffff !important;
-          box-shadow: 0 10px 28px rgb(0 0 0 / 14%);
-          color: #1d1d1f;
+          border: none !important;
+          background: #0071e3 !important;
+          box-shadow: 0 8px 24px rgb(0 113 227 / 28%);
+          color: #ffffff !important;
+          -webkit-text-fill-color: #ffffff !important;
           cursor: pointer;
           display: inline-flex;
           align-items: center;
@@ -996,10 +998,17 @@ export class AccessibilityEnhancer {
         }
 
         html.dark .a11y-toolbar__main {
-          background: #1c1c1e !important;
-          border-color: rgb(255 255 255 / 14%);
-          color: #f5f5f7;
-          box-shadow: 0 10px 28px rgb(0 0 0 / 42%);
+          background: #0a84ff !important;
+          border: none !important;
+          color: #ffffff !important;
+          -webkit-text-fill-color: #ffffff !important;
+          box-shadow: 0 8px 24px rgb(0 0 0 / 45%);
+        }
+
+        .a11y-toolbar__main i,
+        .a11y-toolbar__main .a11y-toolbar-button__icon {
+          color: #ffffff !important;
+          -webkit-text-fill-color: #ffffff !important;
         }
 
         .a11y-toolbar__main:hover {
@@ -1065,9 +1074,11 @@ export class AccessibilityEnhancer {
           min-height: 44px !important;
           padding: 0;
           border-radius: 999px;
-          border: 1px solid rgb(0 0 0 / 8%);
-          background: #f5f5f7;
-          color: #1d1d1f;
+          border: none !important;
+          background: #0071e3 !important;
+          background-color: #0071e3 !important;
+          color: #ffffff !important;
+          -webkit-text-fill-color: #ffffff !important;
           cursor: pointer;
           display: inline-flex;
           align-items: center;
@@ -1076,13 +1087,28 @@ export class AccessibilityEnhancer {
           font-weight: 800;
           line-height: 1;
           letter-spacing: -0.01em;
+          box-shadow: 0 6px 16px rgb(0 113 227 / 28%);
           transition: transform 0.2s ease, background 0.2s ease;
         }
 
         html.dark .a11y-toolbar__panel button {
-          background: #1c1c1e;
-          border-color: rgb(255 255 255 / 12%);
-          color: #f5f5f7;
+          background: #0a84ff !important;
+          background-color: #0a84ff !important;
+          border: none !important;
+          color: #ffffff !important;
+          -webkit-text-fill-color: #ffffff !important;
+          box-shadow: 0 6px 16px rgb(0 0 0 / 40%);
+        }
+
+        .a11y-toolbar__panel button i,
+        .a11y-toolbar__panel button svg,
+        .a11y-toolbar__panel button .a11y-toolbar-button__icon,
+        html.dark .a11y-toolbar__panel button i,
+        html.dark .a11y-toolbar__panel button svg,
+        html.dark .a11y-toolbar__panel button .a11y-toolbar-button__icon {
+          color: #ffffff !important;
+          -webkit-text-fill-color: #ffffff !important;
+          fill: currentColor !important;
         }
 
         html.reduce-motion .a11y-toolbar__main,

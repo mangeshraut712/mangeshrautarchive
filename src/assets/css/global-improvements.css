@@ -645,10 +645,11 @@ main#main-content > section[id] {
   display: none !important;
 }
 
-/* CSS-first collapse (pre-JS) for simple direct-child grids — matches data-preview-limit */
+/* CSS-first collapse (pre-JS) for simple direct-child grids — matches data-preview-limit.
+   Scope blog to #blog so /blog archive (same #blog-posts-container id) is never collapsed. */
 #certifications-grid:not(.is-expanded) > .certification-card:nth-child(n + 4),
 #recommendations-grid:not(.is-expanded) > .recommendation-card:nth-child(n + 3),
-#blog-posts-container:not(.is-expanded) > .blog-card:nth-child(n + 3),
+#blog #blog-posts-container:not(.is-expanded) > .blog-card:nth-child(n + 3),
 #awards-grid:not(.is-expanded) > .award-card:nth-child(n + 3) {
   display: none !important;
 }

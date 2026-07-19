@@ -67,6 +67,11 @@ const SECTION_MODULES = [
   },
   { sectionId: 'blog', modulePath: '../modules/blog-loader.js', rootMargin: '250px 0px' },
   { sectionId: 'blog', modulePath: '../modules/newsletter.js', rootMargin: '200px 0px' },
+  {
+    sectionId: 'publications',
+    modulePath: '../modules/publications-preview.js',
+    rootMargin: '200px 0px',
+  },
   { sectionId: 'contact', modulePath: '../modules/calendar.js', rootMargin: '200px 0px' },
   {
     sectionId: 'currently-section',
@@ -173,6 +178,7 @@ const MODULE_IMPORTERS = {
   '../modules/birthday-celebration.js': () => import('../modules/birthday-celebration.js'),
   '../modules/skills-visualization.js': () => import('../modules/skills-visualization.js'),
   '../modules/blog-loader.js': () => import('../modules/blog-loader.js'),
+  '../modules/publications-preview.js': () => import('../modules/publications-preview.js'),
   '../modules/newsletter.js': () => import('../modules/newsletter.js'),
   '../modules/calendar.js': () => import('../modules/calendar.js'),
   '../modules/currently.js': () => import('../modules/currently.js'),

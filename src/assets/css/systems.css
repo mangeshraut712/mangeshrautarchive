@@ -22,7 +22,7 @@
   --systems-card-bg: #ffffff;
   --systems-card-border: #e5e5ea;
   --systems-card-shadow: 0 4px 12px rgb(0 0 0 / 4%);
-  --systems-diagram-bg: #fbfbfd;
+  --systems-diagram-bg: #ffffff;
   --systems-diagram-border: rgb(0 0 0 / 6%);
 }
 
@@ -68,7 +68,8 @@ body.systems-page .monitor-page-nav {
   -webkit-backdrop-filter: saturate(180%) blur(20px);
 }
 
-/* Shell — symmetric gutters, centered column */
+/* Shell — symmetric gutters, centered column.
+   Keep overflow visible so sticky section rails / Uses toolbar can pin. */
 .systems-shell {
   box-sizing: border-box;
   width: 100%;
@@ -78,7 +79,7 @@ body.systems-page .monitor-page-nav {
   display: grid;
   gap: var(--systems-section-gap);
   min-width: 0;
-  overflow-x: clip;
+  overflow: visible;
 }
 
 /* Keynote hero */
@@ -238,24 +239,28 @@ html.dark .systems-hero-action:hover {
 }
 
 .systems-hero-action--primary {
-  background: var(--systems-accent);
+  background: #0071e3;
   color: #fff !important;
+  -webkit-text-fill-color: #fff !important;
   border-color: transparent;
 }
 
 html.dark .systems-hero-action--primary {
-  color: #000 !important;
-  background: #ffffff;
+  background: #0a84ff;
+  color: #fff !important;
+  -webkit-text-fill-color: #fff !important;
 }
 
 .systems-hero-action--primary:hover {
   background: #0077ed;
   color: #fff !important;
+  -webkit-text-fill-color: #fff !important;
 }
 
 html.dark .systems-hero-action--primary:hover {
-  background: #ffffff;
-  color: #000 !important;
+  background: #2997ff;
+  color: #fff !important;
+  -webkit-text-fill-color: #fff !important;
 }
 
 .systems-sync-note {
@@ -299,8 +304,8 @@ html.dark .systems-hero-action--primary:hover {
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
   position: sticky;
-  top: calc(72px + env(safe-area-inset-top, 0px));
-  z-index: 50;
+  top: var(--subpage-sticky-top, calc(72px + env(safe-area-inset-top, 0px)));
+  z-index: 200;
   mask-image: linear-gradient(90deg, transparent, #000 12px, #000 calc(100% - 12px), transparent);
   -webkit-mask-image: linear-gradient(
     90deg,

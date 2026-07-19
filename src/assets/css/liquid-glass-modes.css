@@ -82,8 +82,6 @@ html:is([data-lg-mode='clear'], [data-lg-mode='balanced'])
     .error-container,
     #blog .blog-card,
     body.blog-standalone-page .blog-card,
-    body.blog-standalone-page .blog-index-header,
-    body.blog-standalone-page .article-header,
     body.blog-standalone-page .blog-article-sidebar,
     body.blog-standalone-page .article-related-card,
     #blog .newsletter-card,
@@ -445,7 +443,6 @@ html.dark[data-lg-mode='tinted'] body {
     -webkit-backdrop-filter: none !important;
   }
 
-  html:not([data-lg-mode='tinted']):not(.dark) .a11y-toolbar__main,
   html:not([data-lg-mode='tinted']):not(.dark) .a11y-toolbar__panel,
   html:not([data-lg-mode='tinted']):not(.dark) .a11y-glass-popover,
   html:not([data-lg-mode='tinted']):not(.dark) #chatbot-widget {
@@ -453,12 +450,23 @@ html.dark[data-lg-mode='tinted'] body {
     background-color: #ffffff !important;
   }
 
-  html.dark:not([data-lg-mode='tinted']) .a11y-toolbar__main,
   html.dark:not([data-lg-mode='tinted']) .a11y-toolbar__panel,
   html.dark:not([data-lg-mode='tinted']) .a11y-glass-popover,
   html.dark:not([data-lg-mode='tinted']) #chatbot-widget {
     background: #000000 !important;
     background-color: #000000 !important;
+  }
+
+  html:not(.dark) .a11y-toolbar__main {
+    background: #0071e3 !important;
+    background-color: #0071e3 !important;
+    color: #ffffff !important;
+  }
+
+  html.dark .a11y-toolbar__main {
+    background: #0a84ff !important;
+    background-color: #0a84ff !important;
+    color: #ffffff !important;
   }
 
   /* Never paint the a11y shell or full-screen share dialog */
@@ -489,7 +497,6 @@ html[data-lg-mode='tinted']
   -webkit-backdrop-filter: none !important;
 }
 
-html[data-lg-mode='tinted']:not(.dark) .a11y-toolbar__main,
 html[data-lg-mode='tinted']:not(.dark) .a11y-toolbar__panel,
 html[data-lg-mode='tinted']:not(.dark) .a11y-glass-popover,
 html[data-lg-mode='tinted']:not(.dark) #chatbot-widget,
@@ -499,7 +506,6 @@ html[data-lg-mode='tinted']:not(.dark)
   background-color: #ffffff !important;
 }
 
-html.dark[data-lg-mode='tinted'] .a11y-toolbar__main,
 html.dark[data-lg-mode='tinted'] .a11y-toolbar__panel,
 html.dark[data-lg-mode='tinted'] .a11y-glass-popover,
 html.dark[data-lg-mode='tinted'] #chatbot-widget,
@@ -507,6 +513,18 @@ html.dark[data-lg-mode='tinted']
   .lg-webgl-host:not(#global-nav):not(#chatbot-widget):not(.music-card-inner) {
   background: #000000 !important;
   background-color: #000000 !important;
+}
+
+html[data-lg-mode='tinted']:not(.dark) .a11y-toolbar__main {
+  background: #0071e3 !important;
+  background-color: #0071e3 !important;
+  color: #ffffff !important;
+}
+
+html.dark[data-lg-mode='tinted'] .a11y-toolbar__main {
+  background: #0a84ff !important;
+  background-color: #0a84ff !important;
+  color: #ffffff !important;
 }
 
 /* A11y settings card never hosts WebGL (solid card parity mobile/desktop) */
