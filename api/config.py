@@ -584,9 +584,24 @@ def build_context_prompt(message: str, context: Optional[Dict] = None) -> str:
     if context.get("currentSection"):
         prompt += f"[User is viewing: {context['currentSection']}]\n"
 
-    if context.get("visibleProjects"):
-        titles = ", ".join([p.get("title", "") for p in context["visibleProjects"]])
-        prompt += f"[Visible projects: {titles}]\n"
+    projects = context.get("visibleProjects")
+    if isinstance(projects, str):
+        try:
+            projects = json.loads(projects)
+        except (TypeError, ValueError, json.JSONDecodeError):
+            projects = [projects] if projects.strip() else []
+    if isinstance(projects, list) and projects:
+        titles = ", ".join(
+            (
+                p.get("title", "")
+                if isinstance(p, dict)
+                else str(p).strip()
+            )
+            for p in projects
+            if p
+        )
+        if titles:
+            prompt += f"[Visible projects: {titles}]\n"
 
     prompt += "\nPlease answer using the portfolio data provided in the system prompt."
     return prompt
@@ -730,11 +745,29 @@ _CREATIVE_KEYWORDS = re.compile(
 )
 
 
-def adaptive_llm_params(message: str) -> dict:
+def _message_text_for_routing(message: Any) -> str:
+    """Extract plain text from OpenAI-style string or multimodal content parts."""
+    if isinstance(message, str):
+        return message
+    if isinstance(message, list):
+        parts: List[str] = []
+        for part in message:
+            if isinstance(part, str):
+                parts.append(part)
+            elif isinstance(part, dict):
+                text = part.get("text")
+                if isinstance(text, str):
+                    parts.append(text)
+        return " ".join(parts)
+    return ""
+
+
+def adaptive_llm_params(message: Any) -> dict:
     """Return temperature + max_tokens tuned to the detected query intent."""
-    if _FACTUAL_KEYWORDS.search(message):
+    text = _message_text_for_routing(message)
+    if text and _FACTUAL_KEYWORDS.search(text):
         return {"temperature": 0.3, "max_tokens": 1200, "top_p": 0.85}
-    if _CREATIVE_KEYWORDS.search(message):
+    if text and _CREATIVE_KEYWORDS.search(text):
         return {"temperature": 0.85, "max_tokens": 1800, "top_p": 0.95}
     return {"temperature": 0.7, "max_tokens": 1500, "top_p": 0.9}
 

@@ -8,8 +8,14 @@ from fastapi.testclient import TestClient
 
 os.environ.setdefault("VERCEL_ENV", "production")
 
-from api.config import rate_limit_store
-from api.config import normalize_openrouter_model
+from api.config import (
+    adaptive_llm_params,
+    build_context_prompt,
+    build_multimodal_user_content,
+    normalize_openrouter_model,
+    rate_limit_store,
+    sanitize_context,
+)
 from api.index import app
 from api.routes.chat import openrouter_request_body
 from api.site_knowledge import (
@@ -238,3 +244,50 @@ def test_direct_time_command_does_not_match_math_times():
     clock = asyncio.run(handle_direct_command("what time is it"))
     assert clock is not None
     assert "Current time" in clock["answer"]
+
+
+_TINY_PNG = (
+    "data:image/png;base64,"
+    "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg=="
+)
+
+
+def test_adaptive_llm_params_accepts_multimodal_content_parts():
+    multimodal = build_multimodal_user_content(
+        "Describe this photo of my resume experience",
+        [_TINY_PNG],
+    )
+    assert isinstance(multimodal, list)
+
+    params = adaptive_llm_params(multimodal)
+    assert params["temperature"] == 0.3
+    assert params["max_tokens"] == 1200
+
+
+def test_openrouter_body_accepts_multimodal_user_message():
+    content = build_multimodal_user_content(
+        "Who is in this image?",
+        [_TINY_PNG],
+    )
+    body = openrouter_request_body(
+        "google/gemma-4-26b-a4b-it:free",
+        [{"role": "user", "content": content}],
+    )
+
+    assert body["temperature"] == 0.7
+    assert body["messages"][0]["content"][0]["type"] == "text"
+    assert body["messages"][0]["content"][1]["type"] == "image_url"
+
+
+def test_build_context_prompt_handles_sanitized_visible_projects():
+    raw = {
+        "currentSection": "Home",
+        "visibleProjects": [{"title": "AssistMe"}, {"title": "Portfolio"}],
+    }
+    safe = sanitize_context(raw)
+    assert isinstance(safe["visibleProjects"], str)
+
+    prompt = build_context_prompt("Describe this photo", safe)
+    assert "[User is viewing: Home]" in prompt
+    assert "AssistMe" in prompt
+    assert "Portfolio" in prompt

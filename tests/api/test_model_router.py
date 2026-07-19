@@ -1,6 +1,10 @@
 """Tests for intelligent OpenRouter model routing."""
 
-from api.config import FREE_OPENROUTER_MODEL, normalize_openrouter_model
+from api.config import (
+    FREE_OPENROUTER_MODEL,
+    FREE_VISION_OPENROUTER_MODEL,
+    normalize_openrouter_model,
+)
 from api.model_router import (
     AUTO_ROUTER_MODEL,
     FUSION_MODEL,
@@ -98,3 +102,14 @@ def test_auto_router_request_includes_plugins_and_session():
     assert body["session_id"] == "sess-123"
     assert body["plugins"][0]["id"] == "auto-router"
     assert body["plugins"][0]["cost_quality_tradeoff"] == 2
+
+
+def test_resolve_image_query_uses_free_vision_model():
+    model, web, tier = resolve_chat_model(
+        "Describe this photo",
+        has_images=True,
+        stream=True,
+    )
+    assert model == FREE_VISION_OPENROUTER_MODEL
+    assert tier == "vision-free"
+    assert web is False
