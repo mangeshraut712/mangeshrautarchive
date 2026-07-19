@@ -187,16 +187,16 @@ async def enrich_recent_tracks_with_artwork(payload: dict, max_tracks: int = 8) 
 
         name = str(track.get("name") or "").strip()
         artist = _track_artist_name(track)
-        itunes_url = await fetch_itunes_artwork(f"{name} {artist}".strip(), artist_hint=artist)
-        if itunes_url:
-            track["resolved_artwork"] = itunes_url
-            track["artwork_source"] = "itunes"
+        artwork_url, artwork_source = await resolve_external_artwork(name, artist)
+        if artwork_url:
+            track["resolved_artwork"] = artwork_url
+            track["artwork_source"] = artwork_source
             images = track.get("image")
             if isinstance(images, list):
                 images = list(images)
             else:
                 images = []
-            images.append({"size": "extralarge", "#text": itunes_url})
+            images.append({"size": "extralarge", "#text": artwork_url})
             track["image"] = images
 
     await asyncio.gather(*(enrich_one(track) for track in tracks[:max_tracks]))
@@ -423,7 +423,7 @@ def _pick_itunes_artwork(results: list, artist_hint: str = "") -> str:
 
 async def fetch_itunes_artwork(search_term: str, artist_hint: str = "") -> str:
     """Fetch album artwork from iTunes Search API (server-side to avoid browser CORS)."""
-    cache_key = f"{search_term.strip().lower()}|{artist_hint.strip().lower()}"
+    cache_key = f"itunes|{search_term.strip().lower()}|{artist_hint.strip().lower()}"
     if not search_term.strip():
         return ""
 
@@ -456,26 +456,98 @@ async def fetch_itunes_artwork(search_term: str, artist_hint: str = "") -> str:
     return ""
 
 
+async def fetch_lastfm_track_artwork(track: str, artist: str = "") -> str:
+    """Resolve album art via Last.fm track.getInfo when recent-track images are placeholders."""
+    track_name = track.strip()
+    artist_name = artist.strip()
+    if not track_name or not LASTFM_API_KEY:
+        return ""
+
+    cache_key = f"lastfm-track|{track_name.lower()}|{artist_name.lower()}"
+    cached = artwork_cache.get(cache_key)
+    if cached and time.time() - cached["ts"] < ARTWORK_CACHE_DURATION:
+        return cached["url"]
+
+    params = {
+        "method": "track.getInfo",
+        "api_key": LASTFM_API_KEY,
+        "track": track_name,
+        "format": "json",
+        "autocorrect": "1",
+    }
+    if artist_name:
+        params["artist"] = artist_name
+
+    headers = {
+        "User-Agent": "AssistMe-Portfolio/3.0.0",
+        "Accept": "application/json",
+    }
+
+    try:
+        async with httpx.AsyncClient(timeout=3.2, follow_redirects=True) as client:
+            response = await client.get("https://ws.audioscrobbler.com/2.0/", params=params, headers=headers)
+            response.raise_for_status()
+            data = response.json()
+
+        album = (data.get("track") or {}).get("album") or {}
+        artwork = _best_lastfm_image({"image": album.get("image") or []})
+        if artwork:
+            artwork_cache[cache_key] = {"url": artwork, "ts": time.time()}
+            return artwork
+    except Exception as e:
+        print(
+            f"Last.fm track artwork fetch failed for {track_name}: {type(e).__name__} - {str(e)}"
+        )
+
+    return ""
+
+
+async def resolve_external_artwork(track: str, artist: str = "") -> tuple[str, str]:
+    """Prefer iTunes, then Last.fm track metadata (edge-friendly fallback)."""
+    search_term = f"{track.strip()} {artist.strip()}".strip()
+    itunes_url = await fetch_itunes_artwork(search_term, artist_hint=artist)
+    if itunes_url:
+        return itunes_url, "itunes"
+
+    lastfm_url = await fetch_lastfm_track_artwork(track, artist)
+    if lastfm_url:
+        return lastfm_url, "lastfm-track"
+
+    return "", ""
+
+
 @router.get("/api/music/artwork")
 async def get_music_artwork(
     request: Request, track: str = "", artist: str = "", term: str = ""
 ):
-    """Proxy iTunes artwork lookup for the Last.fm hero card."""
+    """Proxy artwork lookup for the Last.fm hero card (iTunes → Last.fm track info)."""
     _enforce_media_rate_limit(request, "media-artwork")
     artist = artist.strip()
-    search_term = term.strip() or f"{track.strip()} {artist}".strip()
+    track = track.strip()
+    search_term = term.strip() or f"{track} {artist}".strip()
     if not search_term:
         raise HTTPException(status_code=400, detail="track/artist or term is required")
 
-    cache_key = f"{search_term.lower()}|{artist.lower()}"
+    cache_key = f"resolved|{search_term.lower()}|{artist.lower()}"
     cached = artwork_cache.get(cache_key)
     served_from_cache = bool(cached and time.time() - cached["ts"] < ARTWORK_CACHE_DURATION)
-    artwork_url = await fetch_itunes_artwork(search_term, artist_hint=artist)
+    if served_from_cache:
+        return {
+            "artwork_url": cached["url"],
+            "source": cached.get("source") or "cache",
+            "cached": True,
+            "term": search_term,
+        }
+
+    track_name = track or search_term
+    artwork_url, source = await resolve_external_artwork(track_name, artist)
+    if artwork_url:
+        artwork_cache[cache_key] = {"url": artwork_url, "ts": time.time(), "source": source}
 
     return {
         "artwork_url": artwork_url,
-        "source": "itunes",
-        "cached": served_from_cache,
+        "source": source or "none",
+        "cached": False,
         "term": search_term,
     }
 

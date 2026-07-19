@@ -656,7 +656,41 @@ async function fetchItunesArtwork(term, artistHint = '') {
   return pickItunesArtwork(data?.results || [], artistHint);
 }
 
-async function enrichRecentTracksWithArtwork(payload, maxTracks = 8) {
+async function fetchLastfmTrackArtwork(trackName, artistName = '', apiKey = '') {
+  const track = String(trackName || '').trim();
+  const artist = String(artistName || '').trim();
+  const key = String(apiKey || '').trim();
+  if (!track || !key) return '';
+
+  const qs = new URLSearchParams({
+    method: 'track.getInfo',
+    api_key: key,
+    track,
+    format: 'json',
+    autocorrect: '1',
+  });
+  if (artist) qs.set('artist', artist);
+
+  const res = await fetch(`https://ws.audioscrobbler.com/2.0/?${qs}`, {
+    headers: { Accept: 'application/json', 'User-Agent': 'assistme-cloudflare-edge' },
+  });
+  if (!res.ok) return '';
+  const data = await res.json();
+  return bestLastfmImage({ image: data?.track?.album?.image || [] });
+}
+
+async function resolveExternalArtwork(trackName, artistName = '', apiKey = '') {
+  const term = `${trackName} ${artistName}`.trim();
+  const itunesUrl = await fetchItunesArtwork(term, artistName);
+  if (itunesUrl) return { url: itunesUrl, source: 'itunes' };
+
+  const lastfmUrl = await fetchLastfmTrackArtwork(trackName, artistName, apiKey);
+  if (lastfmUrl) return { url: lastfmUrl, source: 'lastfm-track' };
+
+  return { url: '', source: '' };
+}
+
+async function enrichRecentTracksWithArtwork(payload, apiKey = '', maxTracks = 8) {
   const tracksRaw = payload?.recenttracks?.track;
   const tracks = Array.isArray(tracksRaw) ? tracksRaw : tracksRaw ? [tracksRaw] : [];
   await Promise.all(
@@ -674,12 +708,12 @@ async function enrichRecentTracksWithArtwork(payload, maxTracks = 8) {
 
       const name = String(track.name || '').trim();
       const artist = trackArtistName(track);
-      const itunesUrl = await fetchItunesArtwork(`${name} ${artist}`.trim(), artist);
-      if (!itunesUrl) return;
-      track.resolved_artwork = itunesUrl;
-      track.artwork_source = 'itunes';
+      const resolved = await resolveExternalArtwork(name, artist, apiKey);
+      if (!resolved.url) return;
+      track.resolved_artwork = resolved.url;
+      track.artwork_source = resolved.source;
       const images = Array.isArray(track.image) ? [...track.image] : [];
-      images.push({ size: 'extralarge', '#text': itunesUrl });
+      images.push({ size: 'extralarge', '#text': resolved.url });
       track.image = images;
     })
   );
@@ -714,34 +748,34 @@ async function handleMusicRecent(url, env, cors) {
       return json({ success: false, error: `Last.fm HTTP ${res.status}` }, 502, cors);
     }
     const data = await res.json();
-    const enriched = await enrichRecentTracksWithArtwork(data);
+    const enriched = await enrichRecentTracksWithArtwork(data, key);
     return json({ ...enriched, host: 'cloudflare-worker', success: true }, 200, cors);
   } catch (e) {
     return json({ success: false, error: e.message }, 502, cors);
   }
 }
 
-async function handleMusicArtwork(url, cors) {
+async function handleMusicArtwork(url, env, cors) {
   const track = (url.searchParams.get('track') || '').trim();
   const artist = (url.searchParams.get('artist') || '').trim();
   const term = (url.searchParams.get('term') || '').trim() || `${track} ${artist}`.trim();
   if (!term) {
     return json(
-      { artwork_url: '', source: 'itunes', cached: false, term: '', host: 'cloudflare-worker' },
+      { artwork_url: '', source: 'none', cached: false, term: '', host: 'cloudflare-worker' },
       400,
       cors
     );
   }
   try {
-    const artwork = await fetchItunesArtwork(term, artist);
+    const resolved = await resolveExternalArtwork(track || term, artist, env.LASTFM_API_KEY || '');
     return json(
       {
-        artwork_url: artwork,
-        source: 'itunes',
+        artwork_url: resolved.url,
+        source: resolved.source || 'none',
         cached: false,
         term,
         host: 'cloudflare-worker',
-        success: Boolean(artwork),
+        success: Boolean(resolved.url),
       },
       200,
       cors
@@ -750,7 +784,7 @@ async function handleMusicArtwork(url, cors) {
     return json(
       {
         artwork_url: '',
-        source: 'itunes',
+        source: 'none',
         cached: false,
         term,
         host: 'cloudflare-worker',
@@ -809,7 +843,7 @@ const worker = {
 
     // iTunes artwork proxy (FastAPI-compatible: artwork_url)
     if (request.method === 'GET' && path === '/api/music/artwork') {
-      return handleMusicArtwork(url, cors);
+      return handleMusicArtwork(url, env, cors);
     }
 
     if (

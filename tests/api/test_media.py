@@ -86,15 +86,18 @@ def test_music_recent_enriches_placeholder_artwork(monkeypatch):
         "ts": time.time(),
     }
 
-    async def fake_itunes(search_term: str, artist_hint: str = "") -> str:
-        assert "Piya Aaye Na" in search_term
-        assert artist_hint == "Tulsi Kumar"
-        return "https://is1-ssl.mzstatic.com/image/thumb/Music/example/600x600bb.jpg"
+    async def fake_resolve(track: str, artist: str = ""):
+        assert "Piya Aaye Na" in track
+        assert artist == "Tulsi Kumar"
+        return (
+            "https://is1-ssl.mzstatic.com/image/thumb/Music/example/600x600bb.jpg",
+            "itunes",
+        )
 
     async def noop_refresh(*_args, **_kwargs):
         return None
 
-    monkeypatch.setattr("api.routes.media.fetch_itunes_artwork", fake_itunes)
+    monkeypatch.setattr("api.routes.media.resolve_external_artwork", fake_resolve)
     monkeypatch.setattr("api.routes.media.refresh_lastfm_recent_cache", noop_refresh)
     client = TestClient(app)
 
@@ -104,6 +107,31 @@ def test_music_recent_enriches_placeholder_artwork(monkeypatch):
     track = response.json()["recenttracks"]["track"][0]
     assert track["resolved_artwork"].endswith("/600x600bb.jpg")
     assert track["artwork_source"] == "itunes"
+
+
+def test_music_artwork_falls_back_to_lastfm_track(monkeypatch):
+    from api.config import artwork_cache
+
+    artwork_cache.clear()
+
+    async def no_itunes(*_args, **_kwargs):
+        return ""
+
+    async def lastfm_art(track: str, artist: str = "") -> str:
+        assert track == "Piya Aaye Na"
+        assert artist == "Tulsi Kumar"
+        return "https://lastfm.freetls.fastly.net/i/u/300x300/album.png"
+
+    monkeypatch.setattr("api.routes.media.fetch_itunes_artwork", no_itunes)
+    monkeypatch.setattr("api.routes.media.fetch_lastfm_track_artwork", lastfm_art)
+    client = TestClient(app)
+
+    response = client.get("/api/music/artwork?track=Piya%20Aaye%20Na&artist=Tulsi%20Kumar")
+
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["source"] == "lastfm-track"
+    assert payload["artwork_url"].endswith("/album.png")
 
 
 def test_music_artwork_returns_itunes_url(monkeypatch):
