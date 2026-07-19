@@ -5816,7 +5816,7 @@ img.about-image.animate-in {
 
 html.dark .section-faq .faq-item {
   border-color: rgba(255, 255, 255, 0.14);
-  background: #000;
+  background: #1c1c1e;
 }
 
 .section-faq .faq-item summary {
@@ -5826,7 +5826,7 @@ html.dark .section-faq .faq-item {
   font-size: 1.05rem;
   line-height: 1.35;
   padding: 0.95rem 0;
-  color: var(--apple-text, #1d1d1f);
+  color: var(--text-primary, #1d1d1f);
 }
 
 .section-faq .faq-item summary::-webkit-details-marker {
@@ -5835,7 +5835,7 @@ html.dark .section-faq .faq-item {
 
 .section-faq .faq-item p {
   margin: 0 0 1rem;
-  color: var(--apple-text-secondary, #6e6e73);
+  color: var(--text-secondary, #6e6e73);
   line-height: 1.55;
   font-size: 0.98rem;
 }
