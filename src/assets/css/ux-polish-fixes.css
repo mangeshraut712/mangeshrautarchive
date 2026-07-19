@@ -298,10 +298,9 @@ body .a11y-toolbar,
   max-width: none !important;
 }
 
+/* Main a11y FAB only — panel tools stay distinct chips (not a blue FAB tower). */
 body .a11y-toolbar__main,
-.a11y-toolbar__main,
-body .a11y-toolbar__panel button,
-.a11y-toolbar__panel button {
+.a11y-toolbar__main {
   width: var(--fab-size) !important;
   height: var(--fab-size) !important;
   min-width: var(--fab-size) !important;
@@ -315,19 +314,8 @@ body .a11y-toolbar__panel button,
   box-shadow: 0 8px 24px rgb(0 113 227 / 28%) !important;
 }
 
-body .a11y-toolbar__panel button,
-.a11y-toolbar__panel button {
-  width: 44px !important;
-  height: 44px !important;
-  min-width: 44px !important;
-  min-height: 44px !important;
-  box-shadow: 0 6px 16px rgb(0 113 227 / 28%) !important;
-}
-
 html.dark body .a11y-toolbar__main,
-html.dark .a11y-toolbar__main,
-html.dark body .a11y-toolbar__panel button,
-html.dark .a11y-toolbar__panel button {
+html.dark .a11y-toolbar__main {
   background: #0a84ff !important;
   background-color: #0a84ff !important;
   color: #ffffff !important;
@@ -337,17 +325,110 @@ html.dark .a11y-toolbar__panel button {
 
 body .a11y-toolbar__main i,
 body .a11y-toolbar__main svg,
-body .a11y-toolbar-button__icon,
+body .a11y-toolbar__main .a11y-toolbar-button__icon,
 body .a11y-toolbar__main .a11y-toolbar-button__icon i,
-body .a11y-toolbar__panel button i,
-body .a11y-toolbar__panel button svg,
-body .a11y-toolbar__panel button .a11y-toolbar-button__icon,
 .a11y-toolbar__main i,
-.a11y-toolbar__main svg,
-.a11y-toolbar-button__icon {
+.a11y-toolbar__main svg {
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
   fill: currentColor !important;
+}
+
+/* Open a11y tool rail: solid card + readable chips (not primary FAB clones) */
+body .a11y-toolbar.is-open .a11y-toolbar__panel,
+.a11y-toolbar.is-open .a11y-toolbar__panel {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  gap: 0.35rem !important;
+  padding: 0.45rem !important;
+  margin: 0 0 0.35rem !important;
+  border-radius: 22px !important;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  border: 1px solid #e5e5ea !important;
+  box-shadow: 0 14px 36px rgb(0 0 0 / 14%) !important;
+}
+
+html.dark body .a11y-toolbar.is-open .a11y-toolbar__panel,
+html.dark .a11y-toolbar.is-open .a11y-toolbar__panel {
+  background: #2c2c2e !important;
+  background-color: #2c2c2e !important;
+  border-color: #48484a !important;
+  box-shadow: 0 14px 36px rgb(0 0 0 / 55%) !important;
+}
+
+body .a11y-toolbar__panel button,
+.a11y-toolbar__panel button {
+  width: 40px !important;
+  height: 40px !important;
+  min-width: 40px !important;
+  min-height: 40px !important;
+  border-radius: 999px !important;
+  border: 1px solid #d2d2d7 !important;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  color: #0071e3 !important;
+  -webkit-text-fill-color: #0071e3 !important;
+  box-shadow: none !important;
+}
+
+html.dark body .a11y-toolbar__panel button,
+html.dark .a11y-toolbar__panel button {
+  border: 1px solid #3a3a3c !important;
+  background: #1c1c1e !important;
+  background-color: #1c1c1e !important;
+  color: #0a84ff !important;
+  -webkit-text-fill-color: #0a84ff !important;
+}
+
+body .a11y-toolbar__panel button i,
+body .a11y-toolbar__panel button svg,
+body .a11y-toolbar__panel button .a11y-toolbar-button__icon,
+body .a11y-toolbar__panel button .a11y-toolbar-button__icon i {
+  color: inherit !important;
+  -webkit-text-fill-color: inherit !important;
+  fill: currentColor !important;
+}
+
+body .a11y-toolbar__panel button.is-active,
+body .a11y-toolbar__panel button[aria-pressed='true'],
+body .a11y-toolbar__panel button.a11y-glass-active {
+  background: #0071e3 !important;
+  background-color: #0071e3 !important;
+  border-color: #0071e3 !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+html.dark body .a11y-toolbar__panel button.is-active,
+html.dark body .a11y-toolbar__panel button[aria-pressed='true'],
+html.dark body .a11y-toolbar__panel button.a11y-glass-active {
+  background: #0a84ff !important;
+  background-color: #0a84ff !important;
+  border-color: #0a84ff !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+/* Liquid Glass popover close — red circular X */
+body .a11y-glass-popover__close,
+button.a11y-glass-popover__close {
+  background: #ff3b30 !important;
+  background-color: #ff3b30 !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  border: none !important;
+  border-radius: 50% !important;
+  box-shadow: 0 8px 20px rgb(255 59 48 / 35%) !important;
+}
+
+body .a11y-glass-popover__close:hover,
+button.a11y-glass-popover__close:hover {
+  background: #ff453a !important;
+  background-color: #ff453a !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
 }
 
 /* Share close — red circular X (parity with chatbot / publication close) */

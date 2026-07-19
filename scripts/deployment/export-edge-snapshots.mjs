@@ -30,6 +30,14 @@ const reach = await getJson('/api/analytics/reach');
 const health = await getJson('/api/health-vitals/summary');
 const hd = health.data || {};
 
+const insights = { ...(reach.insights || {}) };
+// Edge cannot call GA4 realtime — never bake live rows into the static snapshot.
+insights.active_users_last_30_mins = 0;
+insights.realtime_countries = [];
+insights.realtime_fresh = false;
+insights.countries_mode =
+  Array.isArray(insights.top_countries) && insights.top_countries.length ? 'period' : 'empty';
+
 const snapshot = {
   exportedAt: new Date().toISOString(),
   reach: {
@@ -41,7 +49,7 @@ const snapshot = {
     analytics_url: reach.analytics_url || null,
     host: 'cloudflare-worker',
     message: 'Portfolio Reach mirrored from GA4/FastAPI for GitHub Pages (Vercel offline).',
-    insights: reach.insights || {},
+    insights,
     timestamp: reach.insights?.last_updated || new Date().toISOString(),
   },
   healthVitals: {

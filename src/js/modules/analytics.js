@@ -43,8 +43,13 @@
     realtimeBars: document.getElementById('reach-realtime-bars'),
   };
   const SESSION_TIMEOUT_MS = 30 * 60 * 1000;
-  const REACH_CACHE_KEY = 'portfolio-reach-snapshot-v2';
-  const REACH_CACHE_TTL_MS = 60 * 1000;
+  const REACH_CACHE_KEY = 'portfolio-reach-snapshot-v3';
+  const REACH_CACHE_TTL_MS = 30 * 1000;
+  try {
+    sessionStorage.removeItem('portfolio-reach-snapshot-v2');
+  } catch {
+    // ignore
+  }
   const API_TIMEOUT_MS = 5000;
   const STORAGE_KEYS = {
     SESSION_ID: 'portfolio_shared_session_id_v1',
@@ -233,7 +238,7 @@
       .replace(/'/g, '&#39;');
   }
 
-  const REALTIME_COUNTRY_LIMIT = 3;
+  const COUNTRY_DISPLAY_LIMIT = 3;
 
   function normalizeCountryEntry(entry) {
     const country = String(entry?.country || '').trim();
@@ -246,12 +251,69 @@
     return { country, users };
   }
 
-  function getTopCountries(entries, limit = REALTIME_COUNTRY_LIMIT) {
+  function getTopCountries(entries, limit = COUNTRY_DISPLAY_LIMIT) {
     return (Array.isArray(entries) ? entries : [])
       .map(normalizeCountryEntry)
       .filter(Boolean)
       .sort((a, b) => b.users - a.users)
       .slice(0, limit);
+  }
+
+  /**
+   * Drop stale live-country rows from edge/static snapshots.
+   * Only trust realtime when the FastAPI origin marked it fresh.
+   */
+  function sanitizeReachPayload(payload) {
+    if (!payload || typeof payload !== 'object') return payload;
+    const next = { ...payload, insights: { ...(payload.insights || {}) } };
+    const insights = next.insights;
+    const source = String(next.source || '');
+    const isEdgeSnapshot = /edge/i.test(source) || next.host === 'cloudflare-worker';
+    const realtimeFresh = insights.realtime_fresh === true && !isEdgeSnapshot;
+
+    if (!realtimeFresh) {
+      insights.active_users_last_30_mins = 0;
+      insights.realtime_countries = [];
+      insights.realtime_fresh = false;
+    }
+
+    return next;
+  }
+
+  /**
+   * Prefer GA4 realtime countries; when nobody is online, fall back to the
+   * last-30-days top_countries so the panel never looks broken.
+   */
+  function resolveCountryBreakdown(insights = {}, gaEnabled = false) {
+    const realtimeFresh = insights.realtime_fresh === true;
+    const realtime = realtimeFresh
+      ? getTopCountries(insights.realtime_countries, COUNTRY_DISPLAY_LIMIT)
+      : [];
+    if (realtime.length) {
+      return {
+        countries: realtime,
+        mode: 'realtime',
+        label: 'TOP COUNTRIES · REAL-TIME',
+        emptyMessage: 'No active users by country right now',
+      };
+    }
+
+    const period = getTopCountries(insights.top_countries, COUNTRY_DISPLAY_LIMIT);
+    if (period.length) {
+      return {
+        countries: period,
+        mode: 'period',
+        label: 'TOP COUNTRIES · LAST 30 DAYS',
+        emptyMessage: 'No country data yet',
+      };
+    }
+
+    return {
+      countries: [],
+      mode: 'empty',
+      label: gaEnabled ? 'TOP COUNTRIES · LAST 30 DAYS' : 'TOP COUNTRIES',
+      emptyMessage: gaEnabled ? 'No country data yet' : 'Connect GA4 for country breakdown',
+    };
   }
 
   function renderCountryRows(countries, emptyMessage) {
@@ -397,7 +459,7 @@
 
     const peak = trend.reduce((max, point) => Math.max(max, point[trendMetric] || 0), 0);
     const topCountries = getTopCountries(insights.top_countries, 10);
-    const realtimeCountries = getTopCountries(insights.realtime_countries, REALTIME_COUNTRY_LIMIT);
+    const countryBreakdown = resolveCountryBreakdown(insights, gaEnabled);
 
     // Core Metrics
     if (reachPanelEls.visitors) {
@@ -444,18 +506,25 @@
       });
     }
 
-    // Top 3 countries from GA real-time data
+    // Countries: realtime when live; otherwise last-30-days GA top countries
+    const countriesLabel = document.getElementById('reach-countries-label');
+    if (countriesLabel) {
+      countriesLabel.textContent = countryBreakdown.label;
+      countriesLabel.dataset.mode = countryBreakdown.mode;
+    }
+    const countriesBlock = document.querySelector('[data-reach-block="countries"]');
+    if (countriesBlock) {
+      countriesBlock.dataset.mode = countryBreakdown.mode;
+    }
+
     if (reachPanelEls.realtimeCountries) {
-      const emptyMessage = gaEnabled
-        ? 'No active users by country right now'
-        : 'Connect GA4 for live country breakdown';
       reachPanelEls.realtimeCountries.innerHTML = renderCountryRows(
-        realtimeCountries,
-        emptyMessage
+        countryBreakdown.countries,
+        countryBreakdown.emptyMessage
       );
     }
 
-    // 30-day country breakdown (when a secondary list is present)
+    // Secondary 30-day list when present in markup
     if (reachPanelEls.countriesList) {
       reachPanelEls.countriesList.innerHTML = renderCountryRows(topCountries, 'No country data');
     }
@@ -482,6 +551,8 @@
     reachPanel.hidden = !isOpen;
     reachPanel.classList.toggle('is-open', isOpen);
     if (isOpen) {
+      // Pull a fresh GA payload whenever the card opens (realtime must not be stale).
+      refreshReach({ track: false });
       requestAnimationFrame(() => positionReachPanel());
       window.dispatchEvent(new CustomEvent('hero-flyout-open', { detail: { id: 'reach' } }));
       window.dispatchEvent(new CustomEvent('vibe-stack-close'));
@@ -502,10 +573,11 @@
       return;
     }
 
-    const totalReach = payload.total_reach ?? 0;
+    const safePayload = sanitizeReachPayload(payload);
+    const totalReach = safePayload.total_reach ?? 0;
     // Edge placeholder has no GA4 — still show a number (0) rather than "Unavailable"
     const formattedValue = formatNumber(totalReach);
-    const isEdgePlaceholder = payload.source === 'edge-placeholder';
+    const isEdgePlaceholder = safePayload.source === 'edge-placeholder';
 
     reachCountEls.forEach(element => {
       animateReachValue(
@@ -522,7 +594,7 @@
         : reachBadge.title || 'Portfolio Reach insights';
       reachBadge.classList.remove('is-unavailable');
     }
-    updateReachPanel(payload);
+    updateReachPanel(safePayload);
   }
 
   /**

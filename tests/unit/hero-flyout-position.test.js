@@ -13,7 +13,7 @@ beforeEach(() => {
 });
 
 describe('hero flyout positioning', () => {
-  it('aligns the flyout to a laid-out music slot and covers the music card', () => {
+  it('uses restored card width, docks to music row, and covers the music card', () => {
     const anchor = document.createElement('button');
     const musicCard = document.createElement('article');
     const flyout = document.createElement('aside');
@@ -31,13 +31,13 @@ describe('hero flyout positioning', () => {
       y: 140,
     }));
     musicCard.getBoundingClientRect = vi.fn(() => ({
-      bottom: 620,
-      height: 260,
-      left: 340,
-      right: 660,
+      bottom: 420,
+      height: 60,
+      left: 615,
+      right: 845,
       top: 360,
-      width: 320.4,
-      x: 340,
+      width: 230,
+      x: 615,
       y: 360,
     }));
 
@@ -45,8 +45,11 @@ describe('hero flyout positioning', () => {
 
     globalThis.positionHeroFlyout({ flyout, anchor });
 
-    expect(flyout.style.width).toBe('320px');
-    expect(flyout.style.left).toBe('340px');
+    // Restored vibe card width (not the compact ~230px music pill).
+    expect(flyout.style.width).toBe('340px');
+    // Centered under the badge cluster.
+    expect(flyout.style.left).toBe('490px');
+    // Vertically docked to the music-card row.
     expect(flyout.style.top).toBe('360px');
     expect(flyout.classList.contains('hero-flyout--music-slot')).toBe(true);
     expect(musicCard.classList.contains('is-flyout-covered')).toBe(true);

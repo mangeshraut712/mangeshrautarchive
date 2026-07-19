@@ -264,12 +264,10 @@ class GoogleAnalyticsDataClient:
             "sessions_this_week": 1500,
             "countries_this_week": 7,
             "event_count": 44000,
-            "active_users_last_30_mins": 20,
-            "realtime_countries": [
-                {"country": "United States", "users": 45},
-                {"country": "India", "users": 28},
-                {"country": "United Kingdom", "users": 12},
-            ],
+            # Never invent live traffic in offline/mock mode.
+            "active_users_last_30_mins": 0,
+            "realtime_countries": [],
+            "realtime_fresh": False,
             "top_countries": [
                 {"country": "United States", "users": 2900},
                 {"country": "India", "users": 1500},
@@ -284,14 +282,52 @@ class GoogleAnalyticsDataClient:
             "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
         }
 
+    def _parse_realtime_report(self, realtime_data: Dict[str, Any]) -> Dict[str, Any]:
+        total_rt_users = 0
+        parsed_rt_countries: List[Dict[str, Any]] = []
+        for row in realtime_data.get("rows") or []:
+            users = self._metric_value(row, 0)
+            country = self._dimension_value(row, 0)
+            if users <= 0:
+                continue
+            total_rt_users += users
+            normalized = self._normalize_country_name(country)
+            if normalized:
+                parsed_rt_countries.append({"country": normalized, "users": users})
+        return {
+            "active_users_last_30_mins": total_rt_users,
+            "realtime_countries": self._top_countries(parsed_rt_countries, limit=3),
+            "realtime_fresh": True,
+        }
+
+    async def fetch_realtime_metrics(self) -> Dict[str, Any]:
+        """Always hit GA4 realtime — never reuse cached/stale live counts."""
+        empty = {
+            "active_users_last_30_mins": 0,
+            "realtime_countries": [],
+            "realtime_fresh": False,
+        }
+        if not self.enabled:
+            return empty
+        try:
+            realtime_data = await self.run_realtime_report(
+                metrics=["activeUsers"],
+                dimensions=["country"],
+                limit=25,
+            )
+            return self._parse_realtime_report(realtime_data if isinstance(realtime_data, dict) else {})
+        except Exception as re:
+            logger.error(f"Error querying realtime GA report: {re}", exc_info=True)
+            return empty
+
     async def _fetch_reach_snapshot_data(self) -> Dict[str, Any]:
+        """Historical GA metrics only (cached). Realtime is fetched separately."""
         await self._access_token()
         (
             total_report,
             week_country_report,
             week_totals_report,
             daily_report,
-            realtime_result,
         ) = await asyncio.gather(
             self.run_report(
                 start_date="2020-01-01",
@@ -314,11 +350,6 @@ class GoogleAnalyticsDataClient:
                 metrics=["screenPageViews", "activeUsers", "sessions"],
                 dimensions=["date"],
                 limit=10,
-            ),
-            self.run_realtime_report(
-                metrics=["activeUsers"],
-                dimensions=["country"],
-                limit=25,
             ),
             return_exceptions=True,
         )
@@ -349,30 +380,6 @@ class GoogleAnalyticsDataClient:
         event_count = self._metric_value(total_row, 3)
         if event_count <= 0:
             event_count = 25000
-
-        active_users_last_30_mins = 0
-        realtime_countries: List[Dict[str, Any]] = []
-        try:
-            if isinstance(realtime_result, BaseException):
-                raise realtime_result
-            realtime_data = realtime_result if isinstance(realtime_result, dict) else {}
-            total_rt_users = 0
-            parsed_rt_countries: List[Dict[str, Any]] = []
-            for row in realtime_data.get("rows", []):
-                users = self._metric_value(row, 0)
-                country = self._dimension_value(row, 0)
-                if users > 0:
-                    total_rt_users += users
-                    normalized = self._normalize_country_name(country)
-                    if normalized:
-                        parsed_rt_countries.append(
-                            {"country": normalized, "users": users}
-                        )
-            if total_rt_users > 0:
-                active_users_last_30_mins = total_rt_users
-            realtime_countries = self._top_countries(parsed_rt_countries, limit=3)
-        except Exception as re:
-            logger.error(f"Error querying realtime GA report: {re}", exc_info=True)
 
         trend_by_date = {}
         for row in daily_data.get("rows", []):
@@ -409,8 +416,6 @@ class GoogleAnalyticsDataClient:
             "unique_visitors": self._metric_value(total_row, 1),
             "sessions": self._metric_value(total_row, 2),
             "event_count": event_count,
-            "active_users_last_30_mins": active_users_last_30_mins,
-            "realtime_countries": realtime_countries,
             "unique_visitors_this_week": self._metric_value(week_row, 0),
             "sessions_this_week": self._metric_value(week_row, 1),
             "countries_this_week": len(top_countries),
@@ -430,27 +435,40 @@ class GoogleAnalyticsDataClient:
         finally:
             self._is_refreshing = False
 
-    async def get_reach_snapshot(self) -> Dict[str, Any]:
+    async def _get_historical_snapshot(self) -> Dict[str, Any]:
         if not self.enabled:
             return self._get_mock_snapshot()
 
         now = time.time()
         if self._snapshot and now < self._snapshot_expires_at:
-            return self._snapshot
+            return dict(self._snapshot)
 
         if self._snapshot:
             if not getattr(self, "_is_refreshing", False):
                 self._is_refreshing = True
                 asyncio.create_task(self._refresh_snapshot_background())
-            return self._snapshot
+            return dict(self._snapshot)
 
         try:
             self._snapshot = await self._fetch_reach_snapshot_data()
             self._snapshot_expires_at = now + 180
-            return self._snapshot
+            return dict(self._snapshot)
         except Exception as e:
             logger.error(f"Error querying Google Analytics API, falling back to mock snapshot: {e}", exc_info=True)
             return self._get_mock_snapshot()
+
+    async def get_reach_snapshot(self) -> Dict[str, Any]:
+        historical, realtime = await asyncio.gather(
+            self._get_historical_snapshot(),
+            self.fetch_realtime_metrics(),
+        )
+        merged = dict(historical or {})
+        # Always overwrite — never keep stale/mock realtime on the payload.
+        merged["active_users_last_30_mins"] = realtime.get("active_users_last_30_mins", 0)
+        merged["realtime_countries"] = realtime.get("realtime_countries") or []
+        merged["realtime_fresh"] = bool(realtime.get("realtime_fresh"))
+        merged["timestamp"] = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
+        return merged
 
 
 google_analytics_client = GoogleAnalyticsDataClient()

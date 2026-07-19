@@ -753,7 +753,7 @@ html.dark #home .hero-name-text {
       width: fit-content;
       max-width: min(22rem, 100%);
       margin: 0.35rem auto 0.45rem;
-      min-height: 56px;
+      min-height: 52px;
     }
 
     #home .music-card-inner {
@@ -761,8 +761,8 @@ html.dark #home .hero-name-text {
       align-items: center;
       width: fit-content;
       max-width: min(22rem, 100%);
-      min-height: 56px;
-      padding: 0.45rem 0.8rem 0.45rem 0.45rem;
+      min-height: 52px;
+      padding: 0.4rem 0.7rem 0.4rem 0.4rem;
       box-sizing: border-box;
       border-radius: 999px;
     }
@@ -1050,7 +1050,7 @@ html.dark #home .hero-name-text {
   <link rel="stylesheet" href="assets/css/apple-premium-overrides.css?v=20260719music1" media="print" onload="this.media='all'" />
   <link rel="stylesheet" href="assets/css/style.css?v=20260716aa" media="print" onload="this.media='all'" />
   <noscript><link rel="stylesheet" href="assets/css/style.css?v=20260716aa" /></noscript>
-  <link rel="stylesheet" href="assets/css/accessibility.css?v=20260719ui2" />
+  <link rel="stylesheet" href="assets/css/accessibility.css?v=20260719ui3" />
 <noscript
     >
 </noscript>
@@ -1068,21 +1068,21 @@ html.dark #home .hero-name-text {
   /></noscript>
   <link
     rel="stylesheet"
-    href="assets/css/theme-solid-surfaces.css?v=20260719ui2"
+    href="assets/css/theme-solid-surfaces.css?v=20260719ui4"
     media="print"
     class="js-defer-css"
   />
   <noscript
-    ><link rel="stylesheet" href="assets/css/theme-solid-surfaces.css?v=20260719ui2"
+    ><link rel="stylesheet" href="assets/css/theme-solid-surfaces.css?v=20260719ui4"
   /></noscript>
   <link
     rel="stylesheet"
-    href="assets/css/chrome-surfaces.css?v=20260719music1"
+    href="assets/css/chrome-surfaces.css?v=20260719music2"
     media="print"
     class="js-defer-css"
   />
   <noscript
-    ><link rel="stylesheet" href="assets/css/chrome-surfaces.css?v=20260719music1"
+    ><link rel="stylesheet" href="assets/css/chrome-surfaces.css?v=20260719music2"
   /></noscript>
   <link
     rel="stylesheet"
@@ -1103,7 +1103,7 @@ html.dark #home .hero-name-text {
     ><link rel="stylesheet" href="assets/css/apple-cards-luxury-2026.css?v=20260717clean"
   /></noscript>
   <!-- Render-blocking: homepage layout metrics must apply before first paint (desktop CLS). -->
-  <link rel="stylesheet" href="assets/css/homepage.css?v=20260719ui2" />
+  <link rel="stylesheet" href="assets/css/homepage.css?v=20260719reach3" />
   <link
     rel="stylesheet"
     href="assets/css/global-improvements.css?v=20260718edu"
@@ -1111,7 +1111,7 @@ html.dark #home .hero-name-text {
     class="js-defer-css"
   />
   <!-- Render-blocking: Spotlight command palette must win over deferred sheets -->
-  <link rel="stylesheet" href="assets/css/ux-polish-fixes.css?v=20260719ui2" />
+  <link rel="stylesheet" href="assets/css/ux-polish-fixes.css?v=20260719ui4" />
   <!-- Render-blocking: overflow/safe-area must apply before Chromium paints (Android/WhatsApp) -->
   <link rel="stylesheet" href="assets/css/mobile-viewport.css?v=20260719music1" />
   <link
@@ -1785,37 +1785,7 @@ html.dark #home .hero-name-text {
                           <span class="reach-panel-range" id="reach-panel-range">Last 30 days</span>
                         </div>
 
-                        <!-- 1) Active users (real-time) — always first -->
-                        <div class="reach-realtime-section" data-reach-block="active-users">
-                          <div class="reach-realtime-header">
-                            <span class="realtime-dot-pulse"></span>
-                            <span class="reach-realtime-title">ACTIVE USERS IN LAST 30 MINUTES</span>
-                          </div>
-                          <div class="reach-realtime-value" id="reach-realtime-value">—</div>
-
-                          <div class="reach-realtime-chart-container">
-                            <span class="reach-realtime-chart-label">ACTIVE USERS PER MINUTE</span>
-                            <div class="reach-realtime-chart-bars" id="reach-realtime-bars">
-                              <span class="reach-bar" data-h="38"></span>
-                              <span class="reach-bar" data-h="48"></span>
-                              <span class="reach-bar" data-h="12"></span>
-                              <span class="reach-bar" data-h="45"></span>
-                              <span class="reach-bar" data-h="25"></span>
-                              <span class="reach-bar" data-h="52"></span>
-                              <span class="reach-bar" data-h="65"></span>
-                              <span class="reach-bar" data-h="32"></span>
-                              <span class="reach-bar" data-h="75"></span>
-                              <span class="reach-bar" data-h="85"></span>
-                              <span class="reach-bar" data-h="40"></span>
-                              <span class="reach-bar" data-h="60"></span>
-                              <span class="reach-bar" data-h="95"></span>
-                              <span class="reach-bar" data-h="30"></span>
-                              <span class="reach-bar" data-h="55"></span>
-                            </div>
-                          </div>
-                        </div>
-
-                        <!-- 2) Core metrics -->
+                        <!-- Core metrics -->
                         <div class="reach-panel-metrics ga-metrics-grid" data-reach-block="metrics">
                           <div class="reach-panel-metric active" id="reach-metric-active-users">
                             <span>Active users</span>
@@ -1834,9 +1804,9 @@ html.dark #home .hero-name-text {
                           </div>
                         </div>
 
-                        <!-- 3) Top countries (below active users + metrics) -->
-                        <div class="reach-realtime-countries-block" data-reach-block="countries">
-                          <span class="reach-realtime-chart-label">TOP COUNTRIES · REAL-TIME</span>
+                        <!-- Top countries (realtime when live, else last 30 days from GA4) -->
+                        <div class="reach-realtime-countries-block" data-reach-block="countries" data-mode="period">
+                          <span class="reach-realtime-chart-label" id="reach-countries-label">TOP COUNTRIES · LAST 30 DAYS</span>
                           <div class="reach-realtime-countries" id="reach-realtime-countries" aria-live="polite">
                             <!-- Populated dynamically by JS -->
                           </div>
@@ -1851,7 +1821,7 @@ html.dark #home .hero-name-text {
                   if (!window.__PERF_AUDIT__) {
                     var heroFlyoutScript = document.createElement('script');
                     heroFlyoutScript.defer = true;
-                    heroFlyoutScript.src = 'js/modules/hero-flyout-position.js?v=20260719ui2';
+                    heroFlyoutScript.src = 'js/modules/hero-flyout-position.js?v=20260719reach2';
                     document.currentScript.parentNode.insertBefore(
                       heroFlyoutScript,
                       document.currentScript.nextSibling
@@ -1870,7 +1840,7 @@ html.dark #home .hero-name-text {
                   if (!window.__PERF_AUDIT__) {
                     var reachAnalytics = document.createElement('script');
                     reachAnalytics.defer = true;
-                    reachAnalytics.src = 'js/modules/analytics.js?v=20260716aa';
+                    reachAnalytics.src = 'js/modules/analytics.js?v=20260719reach5';
                     document.currentScript.parentNode.insertBefore(
                       reachAnalytics,
                       document.currentScript.nextSibling
@@ -1879,13 +1849,13 @@ html.dark #home .hero-name-text {
                 </script>
 
                 <!-- Apple Music Style - Last.fm Now Playing Card -->
-                <div class="music-card" id="music-card">
+                <div class="music-card" id="music-card" data-music-state="loading">
                   <div class="music-card-inner lg-interactive" data-lg-interactive>
                     <div class="album-art-container">
                       <img id="album-art"
                         src="assets/images/profile-icon.webp"
-                        alt="Music album artwork" class="album-art" width="56" height="56" loading="lazy" decoding="async" fetchpriority="low" />
-                      <div class="playing-indicator" id="playing-indicator">
+                        alt="Music album artwork" class="album-art" width="44" height="44" loading="lazy" decoding="async" fetchpriority="low" />
+                      <div class="playing-indicator" id="playing-indicator" aria-hidden="true">
                         <span></span>
                         <span></span>
                         <span></span>
@@ -1893,17 +1863,17 @@ html.dark #home .hero-name-text {
                     </div>
                     <div class="track-info">
                       <div class="status-row">
-                        <svg class="spotify-logo" viewBox="0 0 24 24" fill="currentColor" aria-label="Spotify">
+                        <svg class="spotify-logo" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                           <path
                             d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z" />
                         </svg>
-                        <span class="status-text" id="status-text">Last.fm</span>
+                        <span class="status-text" id="status-text">Listening</span>
                       </div>
-                      <p class="track-name" id="track-name" aria-live="polite" aria-atomic="true">Syncing…</p>
-                      <p class="artist-name" id="artist-name">Fetching recent plays</p>
+                      <p class="track-name" id="track-name" aria-live="polite" aria-atomic="true">Loading recent plays…</p>
+                      <p class="artist-name" id="artist-name">Last.fm</p>
                     </div>
                     <a href="https://open.spotify.com" target="_blank" rel="noopener noreferrer" class="music-card-spotify-link"
-                      title="Open in Spotify" aria-label="Open in Spotify">
+                      title="Open on Spotify" aria-label="Open on Spotify">
                       <i class="fab fa-spotify" aria-hidden="true"></i>
                     </a>
                   </div>
@@ -4770,7 +4740,7 @@ html.dark #home .hero-name-text {
           { src: 'js/utils/smart-navbar.js?v=20260716aa', module: true },
           { src: 'js/utils/theme.js?v=20260716aa', module: true },
           { src: 'js/utils/go-to-top.js?v=20260716aa', defer: true },
-          { src: 'js/core/bootstrap.js?v=20260718assistme', module: true },
+          { src: 'js/core/bootstrap.js?v=20260719ui4', module: true },
           { src: 'js/modules/share-widget.js?v=20260719fab1', module: true },
           { src: 'js/modules/name-pronounce.js?v=20260716aa', defer: true },
         ];

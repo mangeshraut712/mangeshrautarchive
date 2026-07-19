@@ -1622,8 +1622,12 @@ async function initBootstrap() {
   initLaunchIntro();
   initAppleDisplayEnhancements();
 
-  // Hero music / activity: gesture-first so lab audits never pay the TBT cost.
+  // Hero music: idle-load soon so the card does not stay stuck on "Syncing…",
+  // and also on first interaction for snappy first paint in labs.
+  let heroEnrichmentRequested = false;
   const loadHeroEnrichment = () => {
+    if (heroEnrichmentRequested || isPerformanceAudit()) return;
+    heroEnrichmentRequested = true;
     loadModule('../modules/lastfm.js').catch(() => {});
     loadModule('../modules/live-activity-strip.js').catch(() => {});
   };
@@ -1634,6 +1638,8 @@ async function initBootstrap() {
       capture: true,
     });
   });
+  runWhenIdle(loadHeroEnrichment, 900);
+  scheduleSoon(loadHeroEnrichment, 1600);
 
   runWhenIdle(() => {
     loadModule('../modules/real-media-loader.js').catch(() => {});

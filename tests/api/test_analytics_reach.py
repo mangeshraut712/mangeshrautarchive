@@ -88,7 +88,7 @@ def test_portfolio_reach_keeps_github_pages_cors_with_cdn_cache(monkeypatch):
     assert response.status_code == 200
     assert response.headers["access-control-allow-origin"] == "https://mangeshraut712.github.io"
     assert "Origin" in response.headers["vary"]
-    assert "s-maxage=60" in response.headers["cache-control"]
+    assert "s-maxage=15" in response.headers["cache-control"]
 
 
 def test_portfolio_reach_realtime_countries_limited_to_top_three(monkeypatch):
@@ -108,7 +108,10 @@ def test_portfolio_reach_realtime_countries_limited_to_top_three(monkeypatch):
                     {"country": "(not set)", "users": 8},
                     {"country": "India", "users": 40},
                     {"country": "Canada", "users": 13},
+                    {"country": "France", "users": 9},
+                    {"country": "Brazil", "users": 7},
                 ],
+                "realtime_fresh": True,
                 "top_countries": [],
                 "trend": [],
                 "analytics_url": "https://analytics.google.com/",
@@ -121,7 +124,9 @@ def test_portfolio_reach_realtime_countries_limited_to_top_three(monkeypatch):
     response = client.get("/api/analytics/reach")
 
     assert response.status_code == 200
-    countries = response.json()["insights"]["realtime_countries"]
+    insights = response.json()["insights"]
+    countries = insights["realtime_countries"]
+    assert insights["countries_mode"] == "realtime"
     assert len(countries) == 3
     assert [entry["country"] for entry in countries] == [
         "United States",
@@ -129,6 +134,39 @@ def test_portfolio_reach_realtime_countries_limited_to_top_three(monkeypatch):
         "Canada",
     ]
     assert countries[0]["users"] == 55
+
+
+def test_portfolio_reach_countries_mode_falls_back_to_period(monkeypatch):
+    class FakeGoogleAnalyticsClient:
+        enabled = True
+
+        async def get_reach_snapshot(self):
+            return {
+                "source": "google_analytics",
+                "total_views": 7300,
+                "unique_visitors": 6100,
+                "event_count": 25000,
+                "active_users_last_30_mins": 0,
+                "realtime_countries": [],
+                "top_countries": [
+                    {"country": "India", "users": 2908},
+                    {"country": "United States", "users": 2330},
+                ],
+                "trend": [],
+                "analytics_url": "https://analytics.google.com/",
+                "timestamp": "2026-06-21T12:00:00Z",
+            }
+
+    monkeypatch.setattr("api.routes.analytics.google_analytics_client", FakeGoogleAnalyticsClient())
+    client = TestClient(app)
+
+    response = client.get("/api/analytics/reach")
+
+    assert response.status_code == 200
+    insights = response.json()["insights"]
+    assert insights["countries_mode"] == "period"
+    assert insights["realtime_countries"] == []
+    assert insights["top_countries"][0]["country"] == "India"
 
 
 def test_google_analytics_top_countries_helper():

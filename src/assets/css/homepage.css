@@ -1046,24 +1046,19 @@ html.dark .portfolio-reach-badge i {
   min-width: 0;
 }
 
-/* Pin stack: header → active users → metrics → countries */
+/* Stack: header → metrics → countries */
 .reach-panel-main > .reach-panel-header {
   order: 0;
 }
 
-.reach-panel-main > .reach-realtime-section,
-.reach-panel-main > [data-reach-block='active-users'] {
-  order: 1;
-}
-
 .reach-panel-main > .reach-panel-metrics,
 .reach-panel-main > [data-reach-block='metrics'] {
-  order: 2;
+  order: 1;
 }
 
 .reach-panel-main > .reach-realtime-countries-block,
 .reach-panel-main > [data-reach-block='countries'] {
-  order: 3;
+  order: 2;
 }
 
 .reach-panel-header,
@@ -1445,29 +1440,43 @@ html.dark .reach-realtime-chart-bars span {
   background-color: #2997ff;
 }
 
-.reach-realtime-countries {
-  display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
-}
-
 .reach-realtime-countries-block {
-  margin-top: 0.65rem;
-  padding: 0.75rem 0.85rem;
-  background: #ffffff;
-  border: 1px solid rgb(0 0 0 / 8%);
-  border-radius: 16px;
+  margin-top: 0.55rem;
+  padding-top: 0.45rem;
+  border-top: 1px solid rgb(0 0 0 / 5%);
   text-align: left;
 }
 
 html.dark .reach-realtime-countries-block {
-  background: #000000;
-  border-color: rgb(255 255 255 / 12%);
+  border-top-color: rgb(255 255 255 / 8%);
 }
 
 .reach-realtime-countries-block .reach-realtime-chart-label {
   display: block;
-  margin-bottom: 0.35rem;
+  margin-bottom: 0.45rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: #6e6e73;
+}
+
+html.dark .reach-realtime-countries-block .reach-realtime-chart-label {
+  color: #a1a1a6;
+}
+
+.reach-realtime-countries-block[data-mode='realtime'] .reach-realtime-chart-label {
+  color: #0071e3;
+}
+
+html.dark .reach-realtime-countries-block[data-mode='realtime'] .reach-realtime-chart-label {
+  color: #0a84ff;
+}
+
+.reach-realtime-countries {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  min-height: 1.25rem;
 }
 
 .reach-country-empty {

@@ -48,52 +48,52 @@ html.dark {
 }
 
 .a11y-toolbar__panel button {
-  width: 44px !important;
-  height: 44px !important;
-  min-width: 44px !important;
-  min-height: 44px !important;
-  border: none !important;
-  background: #0071e3 !important;
-  background-color: #0071e3 !important;
-  color: #ffffff !important;
-  -webkit-text-fill-color: #ffffff !important;
+  width: 40px !important;
+  height: 40px !important;
+  min-width: 40px !important;
+  min-height: 40px !important;
+  border: 1px solid #d2d2d7 !important;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  color: #0071e3 !important;
+  -webkit-text-fill-color: #0071e3 !important;
+  box-shadow: none !important;
 }
 
 html.dark .a11y-toolbar__panel button {
-  background: #0a84ff !important;
-  background-color: #0a84ff !important;
-  color: #ffffff !important;
-  -webkit-text-fill-color: #ffffff !important;
+  border: 1px solid #3a3a3c !important;
+  background: #1c1c1e !important;
+  background-color: #1c1c1e !important;
+  color: #0a84ff !important;
+  -webkit-text-fill-color: #0a84ff !important;
 }
 
 .a11y-toolbar__panel button i,
 .a11y-toolbar__panel button svg,
 .a11y-toolbar__panel button .a11y-toolbar-button__icon {
-  color: #ffffff !important;
-  -webkit-text-fill-color: #ffffff !important;
+  color: inherit !important;
+  -webkit-text-fill-color: inherit !important;
   fill: currentColor !important;
 }
 
 .a11y-toolbar__panel button.is-active,
 .a11y-toolbar__panel button[aria-pressed='true'],
 .a11y-toolbar__panel button.a11y-glass-active {
-  box-shadow:
-    0 0 0 3px rgb(255 255 255 / 55%),
-    0 6px 16px rgb(0 113 227 / 35%) !important;
-  background: #0058b0 !important;
-  background-color: #0058b0 !important;
+  background: #0071e3 !important;
+  background-color: #0071e3 !important;
+  border-color: #0071e3 !important;
   color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
 }
 
 html.dark .a11y-toolbar__panel button.is-active,
 html.dark .a11y-toolbar__panel button[aria-pressed='true'],
 html.dark .a11y-toolbar__panel button.a11y-glass-active {
-  box-shadow:
-    0 0 0 3px rgb(255 255 255 / 40%),
-    0 6px 16px rgb(0 0 0 / 45%) !important;
-  background: #409cff !important;
-  background-color: #409cff !important;
+  background: #0a84ff !important;
+  background-color: #0a84ff !important;
+  border-color: #0a84ff !important;
   color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
 }
 
 /* Prefer reduced motion site-wide when class is set */
@@ -461,21 +461,21 @@ button.a11y-glass-popover__close,
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
-  width: 44px !important;
-  height: 44px !important;
-  min-width: 44px !important;
-  min-height: 44px !important;
-  margin: -0.35rem -0.35rem 0 0 !important;
+  width: 32px !important;
+  height: 32px !important;
+  min-width: 32px !important;
+  min-height: 32px !important;
+  margin: -0.2rem -0.2rem 0 0 !important;
   padding: 0 !important;
   border: none !important;
   border-radius: 50% !important;
-  background: var(--ag-elevated) !important;
-  background-color: var(--ag-elevated) !important;
+  background: #ff3b30 !important;
+  background-color: #ff3b30 !important;
   background-image: none !important;
-  color: var(--ag-subtle) !important;
-  -webkit-text-fill-color: var(--ag-subtle) !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
   cursor: pointer !important;
-  box-shadow: none !important;
+  box-shadow: 0 8px 20px rgb(255 59 48 / 35%) !important;
   transform: none !important;
 }
 
@@ -551,15 +551,17 @@ html.dark .a11y-glass-preview__label {
 }
 
 html.dark button.a11y-glass-popover__close {
-  background: #000000 !important;
-  background-color: #000000 !important;
-  color: #98989d !important;
-  -webkit-text-fill-color: #98989d !important;
+  background: #ff3b30 !important;
+  background-color: #ff3b30 !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
 }
 
 button.a11y-glass-popover__close:hover {
-  color: var(--ag-text) !important;
-  -webkit-text-fill-color: var(--ag-text) !important;
+  background: #ff453a !important;
+  background-color: #ff453a !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
   transform: none !important;
 }
 

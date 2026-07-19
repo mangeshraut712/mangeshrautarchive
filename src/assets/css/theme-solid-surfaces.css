@@ -475,7 +475,6 @@ html[data-lg-mode='tinted']:not(.dark)
 html.dark[data-lg-mode='tinted']
   :is(
     #chatbot-widget,
-    .a11y-toolbar__panel,
     .a11y-glass-popover,
     .website-share-dialog.active,
     .travel-nav,
@@ -484,6 +483,15 @@ html.dark[data-lg-mode='tinted']
   background: #000000 !important;
   background-color: #000000 !important;
   background-image: none !important;
+}
+
+/* Open a11y tool rail must sit above pure black so chips read as a card */
+html.dark[data-lg-mode='tinted'] .a11y-toolbar__panel,
+html.dark[data-lg-mode='tinted'] .a11y-toolbar.is-open .a11y-toolbar__panel {
+  background: #2c2c2e !important;
+  background-color: #2c2c2e !important;
+  background-image: none !important;
+  border-color: #48484a !important;
 }
 
 html[data-lg-mode='tinted'] .a11y-toolbar,
@@ -2204,8 +2212,7 @@ html:not(.dark)
     #go-to-top,
     #go-to-top.visible,
     #website-share-toggle.website-share-fab,
-    .a11y-toolbar__main,
-    .a11y-toolbar__panel button
+    .a11y-toolbar__main
   ) {
   background: #0071e3 !important;
   background-color: #0071e3 !important;
@@ -2218,8 +2225,7 @@ html.dark
     #go-to-top,
     #go-to-top.visible,
     #website-share-toggle.website-share-fab,
-    .a11y-toolbar__main,
-    .a11y-toolbar__panel button
+    .a11y-toolbar__main
   ) {
   background: #0a84ff !important;
   background-color: #0a84ff !important;
@@ -2227,17 +2233,47 @@ html.dark
 
 html
   body
-  :is(
-    #chatbot-toggle,
-    #go-to-top,
-    #website-share-toggle,
-    .a11y-toolbar__main,
-    .a11y-toolbar__panel button
-  )
+  :is(#chatbot-toggle, #go-to-top, #website-share-toggle, .a11y-toolbar__main)
   :is(i, svg, .a11y-toolbar-button__icon) {
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
   fill: currentColor !important;
+}
+
+/* A11y panel tools — readable chips; never clone the primary blue FAB stack */
+html:not(.dark) body .a11y-toolbar__panel button {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  border: 1px solid #d2d2d7 !important;
+  color: #0071e3 !important;
+  -webkit-text-fill-color: #0071e3 !important;
+  box-shadow: none !important;
+}
+
+html.dark body .a11y-toolbar__panel button {
+  background: #1c1c1e !important;
+  background-color: #1c1c1e !important;
+  border: 1px solid #3a3a3c !important;
+  color: #0a84ff !important;
+  -webkit-text-fill-color: #0a84ff !important;
+  box-shadow: none !important;
+}
+
+html body .a11y-toolbar__panel button :is(i, svg, .a11y-toolbar-button__icon) {
+  color: inherit !important;
+  -webkit-text-fill-color: inherit !important;
+  fill: currentColor !important;
+}
+
+html body .a11y-glass-popover__close,
+html:not(.dark) body .a11y-glass-popover__close,
+html.dark body .a11y-glass-popover__close {
+  background: #ff3b30 !important;
+  background-color: #ff3b30 !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  border: none !important;
+  border-radius: 50% !important;
 }
 
 /* Share dialog close — always Apple red, light + dark */

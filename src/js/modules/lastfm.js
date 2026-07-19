@@ -398,6 +398,13 @@ class LastFmService {
     this.showEmptyState();
   }
 
+  setHeroMusicState(state = 'loading') {
+    if (!this.hero?.musicCard) return;
+    this.hero.musicCard.dataset.musicState = state;
+    this.hero.musicCard.classList.toggle('is-playing', state === 'playing');
+    this.hero.playingIndicator?.classList.toggle('active', state === 'playing');
+  }
+
   updateHero(track) {
     if (!this.hero) return;
 
@@ -423,9 +430,13 @@ class LastFmService {
     this.hero.albumArt.alt = `${trackName} by ${artistName}`;
     if (this.hero.lastfmLink) {
       this.hero.lastfmLink.href = this.buildSpotifySearchUrl(trackName, artistName);
+      this.hero.lastfmLink.setAttribute(
+        'aria-label',
+        `Open ${trackName} by ${artistName} on Spotify`
+      );
+      this.hero.lastfmLink.title = `Open on Spotify`;
     }
-    this.hero.playingIndicator?.classList.toggle('active', isNowPlaying);
-    this.hero.musicCard?.classList.toggle('is-playing', isNowPlaying);
+    this.setHeroMusicState(isNowPlaying ? 'playing' : 'recent');
     this.hydrateFallbackArtwork(this.hero.albumArt, track, {
       fallbackUrl: this.isUsableArtwork(artwork) ? artwork : '',
     });
@@ -551,11 +562,10 @@ class LastFmService {
 
   showHeroLoadingState() {
     if (!this.hero) return;
-    this.hero.statusText.textContent = 'Syncing…';
-    this.hero.trackName.textContent = 'Fetching recent plays';
-    this.hero.artistName.textContent = '';
-    this.hero.playingIndicator?.classList.remove('active');
-    this.hero.musicCard?.classList.remove('is-playing');
+    this.hero.statusText.textContent = 'Listening';
+    this.hero.trackName.textContent = 'Loading recent plays…';
+    this.hero.artistName.textContent = 'Last.fm';
+    this.setHeroMusicState('loading');
   }
 
   showHeroEmptyState() {
@@ -563,8 +573,7 @@ class LastFmService {
     this.hero.statusText.textContent = 'Not playing';
     this.hero.trackName.textContent = 'No recent plays';
     this.hero.artistName.textContent = 'Open Spotify to scrobble';
-    this.hero.playingIndicator?.classList.remove('active');
-    this.hero.musicCard?.classList.remove('is-playing');
+    this.setHeroMusicState('empty');
   }
 
   showLoadingState() {

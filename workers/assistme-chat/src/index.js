@@ -899,6 +899,12 @@ function handleAnalyticsReach(cors) {
   insights.unique_visitors_this_week = EDGE_REACH_WEEK;
   insights.total_views_all_time = insights.total_views_all_time || EDGE_REACH_TOTAL;
   insights.active_users_all_time = insights.active_users_all_time || EDGE_REACH_TOTAL;
+  // Static edge snapshot cannot call GA4 realtime — never serve stale live rows.
+  insights.active_users_last_30_mins = 0;
+  insights.realtime_countries = [];
+  insights.realtime_fresh = false;
+  insights.countries_mode =
+    Array.isArray(insights.top_countries) && insights.top_countries.length ? 'period' : 'empty';
   return json(
     {
       ...base,

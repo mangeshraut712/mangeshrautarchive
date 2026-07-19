@@ -54,10 +54,11 @@ def _store_trend(analytics):
 
 
 def _reach_cache_headers(request: Request, cache_ttl: int) -> dict[str, str]:
+    # Keep CDN cache short — realtime fields are overlaid fresh on every origin hit.
     headers = {
-        "Cache-Control": f"public, max-age=0, s-maxage={cache_ttl}, stale-while-revalidate=300",
-        "CDN-Cache-Control": f"public, s-maxage={cache_ttl}, stale-while-revalidate=300",
-        "Vercel-CDN-Cache-Control": f"public, s-maxage={cache_ttl}, stale-while-revalidate=300",
+        "Cache-Control": f"public, max-age=0, s-maxage={cache_ttl}, stale-while-revalidate=30",
+        "CDN-Cache-Control": f"public, s-maxage={cache_ttl}, stale-while-revalidate=30",
+        "Vercel-CDN-Cache-Control": f"public, s-maxage={cache_ttl}, stale-while-revalidate=30",
         "Vary": "Origin, Accept-Encoding",
     }
     origin = request.headers.get("origin")
@@ -163,7 +164,14 @@ async def get_portfolio_reach(request: Request):
         _pick_int(views_data.get("this_week"), _sum_trend_metric(trend, "views")),
     )
     countries_this_week = _safe_int(ga_snapshot.get("countries_this_week"))
-    top_countries = ga_snapshot.get("top_countries") or []
+    top_countries = normalize_top_countries(ga_snapshot.get("top_countries") or [], limit=10)
+    realtime_countries = normalize_top_countries(
+        ga_snapshot.get("realtime_countries") or [],
+        limit=3,
+    )
+    countries_mode = (
+        "realtime" if realtime_countries else ("period" if top_countries else "empty")
+    )
     total_reach = unique_visitors if ga_enabled else page_views_total
     analytics_url = ga_snapshot.get("analytics_url") or ""
     timestamp = (
@@ -188,16 +196,15 @@ async def get_portfolio_reach(request: Request):
             "active_users_all_time": unique_visitors if ga_enabled else 0,
             "event_count_all_time": _safe_int(ga_snapshot.get("event_count"), 25000),
             "active_users_last_30_mins": _safe_int(ga_snapshot.get("active_users_last_30_mins")),
-            "realtime_countries": normalize_top_countries(
-                ga_snapshot.get("realtime_countries") or [],
-                limit=3,
-            ),
+            "realtime_countries": realtime_countries,
+            "realtime_fresh": bool(ga_snapshot.get("realtime_fresh")),
             "metric_primary_label": "Total Reach" if ga_enabled else "Total Views",
             "metric_weekly_label": "Active Users" if ga_enabled else "Weekly Views",
             "avg_views_per_day": analytics.get("avg_views_per_day", 0),
             "portfolio_age_days": analytics.get("portfolio_age_days", 1),
             "last_updated": timestamp,
             "top_countries": top_countries,
+            "countries_mode": countries_mode,
             "trend": trend,
             "trend_metric": "visitors" if ga_enabled else "views",
         },
@@ -215,10 +222,11 @@ async def get_portfolio_reach(request: Request):
         "formula": (
             "total_reach = GA4 activeUsers when configured, otherwise portfolio_store.views.total"
         ),
-        "cache_ttl_seconds": 60 if source == "google_analytics" else 0,
+        "cache_ttl_seconds": 15 if source == "google_analytics" else 0,
         "timestamp": timestamp,
     }
-    cache_ttl = 60 if source == "google_analytics" else 15
+    # Short CDN TTL so stale realtime country rows cannot linger at the edge.
+    cache_ttl = 15 if source == "google_analytics" else 10
     return JSONResponse(
         payload,
         headers=_reach_cache_headers(request, cache_ttl),

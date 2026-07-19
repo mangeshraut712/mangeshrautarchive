@@ -1060,25 +1060,26 @@ export class AccessibilityEnhancer {
           transform: translateY(0) scale(1);
         }
 
-        html.dark .a11y-toolbar__panel {
-          background: #1c1c1e;
-          border-color: rgb(255 255 255 / 14%);
-          box-shadow: 0 14px 36px rgb(0 0 0 / 45%);
+        html.dark .a11y-toolbar__panel,
+        html.dark .a11y-toolbar.is-open .a11y-toolbar__panel {
+          background: #2c2c2e;
+          border-color: #48484a;
+          box-shadow: 0 14px 36px rgb(0 0 0 / 55%);
         }
 
         .a11y-toolbar__panel button {
           position: relative;
-          width: 44px !important;
-          height: 44px !important;
-          min-width: 44px !important;
-          min-height: 44px !important;
+          width: 40px !important;
+          height: 40px !important;
+          min-width: 40px !important;
+          min-height: 40px !important;
           padding: 0;
           border-radius: 999px;
-          border: none !important;
-          background: #0071e3 !important;
-          background-color: #0071e3 !important;
-          color: #ffffff !important;
-          -webkit-text-fill-color: #ffffff !important;
+          border: 1px solid #d2d2d7 !important;
+          background: #ffffff !important;
+          background-color: #ffffff !important;
+          color: #0071e3 !important;
+          -webkit-text-fill-color: #0071e3 !important;
           cursor: pointer;
           display: inline-flex;
           align-items: center;
@@ -1087,17 +1088,17 @@ export class AccessibilityEnhancer {
           font-weight: 800;
           line-height: 1;
           letter-spacing: -0.01em;
-          box-shadow: 0 6px 16px rgb(0 113 227 / 28%);
+          box-shadow: none !important;
           transition: transform 0.2s ease, background 0.2s ease;
         }
 
         html.dark .a11y-toolbar__panel button {
-          background: #0a84ff !important;
-          background-color: #0a84ff !important;
-          border: none !important;
-          color: #ffffff !important;
-          -webkit-text-fill-color: #ffffff !important;
-          box-shadow: 0 6px 16px rgb(0 0 0 / 40%);
+          background: #1c1c1e !important;
+          background-color: #1c1c1e !important;
+          border: 1px solid #3a3a3c !important;
+          color: #0a84ff !important;
+          -webkit-text-fill-color: #0a84ff !important;
+          box-shadow: none !important;
         }
 
         .a11y-toolbar__panel button i,
@@ -1106,9 +1107,29 @@ export class AccessibilityEnhancer {
         html.dark .a11y-toolbar__panel button i,
         html.dark .a11y-toolbar__panel button svg,
         html.dark .a11y-toolbar__panel button .a11y-toolbar-button__icon {
+          color: inherit !important;
+          -webkit-text-fill-color: inherit !important;
+          fill: currentColor !important;
+        }
+
+        .a11y-toolbar__panel button.is-active,
+        .a11y-toolbar__panel button[aria-pressed='true'],
+        .a11y-toolbar__panel button.a11y-glass-active {
+          background: #0071e3 !important;
+          background-color: #0071e3 !important;
+          border-color: #0071e3 !important;
           color: #ffffff !important;
           -webkit-text-fill-color: #ffffff !important;
-          fill: currentColor !important;
+        }
+
+        html.dark .a11y-toolbar__panel button.is-active,
+        html.dark .a11y-toolbar__panel button[aria-pressed='true'],
+        html.dark .a11y-toolbar__panel button.a11y-glass-active {
+          background: #0a84ff !important;
+          background-color: #0a84ff !important;
+          border-color: #0a84ff !important;
+          color: #ffffff !important;
+          -webkit-text-fill-color: #ffffff !important;
         }
 
         html.reduce-motion .a11y-toolbar__main,

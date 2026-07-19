@@ -161,18 +161,19 @@ html[data-lg-mode='tinted'] #home .music-card-inner.lg-webgl-host .lg-webgl-canv
   flex-direction: row !important;
   align-items: center !important;
   justify-content: flex-start !important;
-  gap: 0.65rem !important;
+  gap: 0.55rem !important;
   width: fit-content !important;
   max-width: min(22rem, calc(100vw - 2.5rem)) !important;
   min-width: 0 !important;
   height: auto !important;
-  min-height: 56px !important;
+  min-height: 52px !important;
   max-height: none !important;
   margin: 0 auto !important;
-  padding: 0.45rem 0.8rem 0.45rem 0.45rem !important;
+  padding: 0.4rem 0.7rem 0.4rem 0.4rem !important;
   border-radius: 999px !important;
   box-sizing: border-box !important;
-  overflow: hidden !important;
+  /* Visible so the live badge is not clipped; canvas is still contained. */
+  overflow: visible !important;
   transition:
     border-color 0.2s ease,
     background 0.25s ease,
@@ -284,10 +285,10 @@ html.dark[data-lg-mode='tinted'] #home .music-card-inner.lg-webgl-host {
   display: flex !important;
   flex-direction: column !important;
   justify-content: center !important;
-  gap: 0.1rem !important;
+  gap: 0.05rem !important;
   flex: 0 1 auto !important;
   min-width: 0 !important;
-  max-width: min(14rem, 48vw) !important;
+  max-width: min(13.5rem, 48vw) !important;
   text-align: left !important;
 }
 
@@ -295,10 +296,18 @@ html.dark[data-lg-mode='tinted'] #home .music-card-inner.lg-webgl-host {
 #home .music-card-inner .lg-webgl-content .status-row {
   display: inline-flex !important;
   align-items: center !important;
-  gap: 0.35rem !important;
+  gap: 0.3rem !important;
   margin: 0 !important;
   min-width: 0 !important;
   max-width: 100% !important;
+}
+
+#home .music-card-inner .spotify-logo {
+  width: 12px !important;
+  height: 12px !important;
+  color: #1db954 !important;
+  fill: #1db954 !important;
+  flex-shrink: 0 !important;
 }
 
 #home .music-card-inner .status-text {
@@ -306,6 +315,24 @@ html.dark[data-lg-mode='tinted'] #home .music-card-inner.lg-webgl-host {
   text-overflow: ellipsis !important;
   white-space: nowrap !important;
   max-width: 100% !important;
+  font-size: 0.62rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.05em !important;
+  text-transform: uppercase !important;
+  color: #6e6e73 !important;
+  -webkit-text-fill-color: #6e6e73 !important;
+  line-height: 1.15 !important;
+}
+
+html.dark #home .music-card-inner .status-text {
+  color: #8e8e93 !important;
+  -webkit-text-fill-color: #8e8e93 !important;
+}
+
+#home .music-card[data-music-state='playing'] .status-text,
+#home .music-card.is-playing .status-text {
+  color: #1db954 !important;
+  -webkit-text-fill-color: #1db954 !important;
 }
 
 #home .music-card-inner .track-name,
@@ -315,17 +342,77 @@ html.dark[data-lg-mode='tinted'] #home .music-card-inner.lg-webgl-host {
   overflow: hidden !important;
   text-overflow: ellipsis !important;
   white-space: nowrap !important;
+  line-height: 1.2 !important;
+}
+
+#home .music-card-inner .track-name {
+  font-size: 0.84rem !important;
+  font-weight: 650 !important;
+  color: #1d1d1f !important;
+  -webkit-text-fill-color: #1d1d1f !important;
+}
+
+html.dark #home .music-card-inner .track-name {
+  color: #f5f5f7 !important;
+  -webkit-text-fill-color: #f5f5f7 !important;
+}
+
+#home .music-card-inner .artist-name {
+  font-size: 0.72rem !important;
+  font-weight: 500 !important;
+  color: #6e6e73 !important;
+  -webkit-text-fill-color: #6e6e73 !important;
+}
+
+html.dark #home .music-card-inner .artist-name {
+  color: #a1a1a6 !important;
+  -webkit-text-fill-color: #a1a1a6 !important;
 }
 
 #home .music-card-inner .album-art-container {
+  position: relative !important;
   width: 44px !important;
   height: 44px !important;
   flex-shrink: 0 !important;
+  overflow: visible !important;
 }
 
 #home .music-card-inner .album-art {
   width: 44px !important;
   height: 44px !important;
+  border-radius: 50% !important;
+  object-fit: cover !important;
+}
+
+/* Live bars sit on the art, not outside the clipped pill */
+#home .music-card-inner .playing-indicator {
+  position: absolute !important;
+  left: 50% !important;
+  bottom: 1px !important;
+  transform: translateX(-50%) !important;
+  display: flex !important;
+  align-items: flex-end !important;
+  gap: 2px !important;
+  height: 12px !important;
+  padding: 2px 5px !important;
+  background: rgb(29 185 84 / 95%) !important;
+  border-radius: 999px !important;
+  box-shadow: 0 2px 6px rgb(29 185 84 / 40%) !important;
+  opacity: 0 !important;
+  z-index: 2 !important;
+  pointer-events: none !important;
+}
+
+#home .music-card-inner .playing-indicator.active,
+#home .music-card.is-playing .playing-indicator,
+#home .music-card[data-music-state='playing'] .playing-indicator {
+  opacity: 1 !important;
+}
+
+#home .music-card-inner .playing-indicator span {
+  width: 2px !important;
+  border-radius: 2px !important;
+  background: #ffffff !important;
 }
 
 #home .music-card-spotify-link {
@@ -338,6 +425,36 @@ html.dark[data-lg-mode='tinted'] #home .music-card-inner.lg-webgl-host {
   margin-left: 0 !important;
   width: 28px !important;
   height: 28px !important;
+  min-width: 28px !important;
+  min-height: 28px !important;
+  border-radius: 50% !important;
+  background: rgb(29 185 84 / 12%) !important;
+  background-color: rgb(29 185 84 / 12%) !important;
+  color: #1db954 !important;
+  -webkit-text-fill-color: #1db954 !important;
+  border: none !important;
+  box-shadow: none !important;
+  text-decoration: none !important;
+  font-size: 1rem !important;
+  opacity: 1 !important;
+}
+
+#home .music-card-spotify-link i,
+#home .music-card-spotify-link .fab,
+#home .music-card-spotify-link svg {
+  color: #1db954 !important;
+  -webkit-text-fill-color: #1db954 !important;
+  fill: currentColor !important;
+}
+
+#home .music-card-spotify-link:hover {
+  background: rgb(29 185 84 / 20%) !important;
+  background-color: rgb(29 185 84 / 20%) !important;
+  transform: scale(1.06);
+}
+
+#home .music-card[data-music-state='loading'] .music-card-inner {
+  opacity: 0.92;
 }
 
 @media (max-width: 768px) {
@@ -350,21 +467,21 @@ html.dark[data-lg-mode='tinted'] #home .music-card-inner.lg-webgl-host {
   #home .music-card-inner,
   #home .music-card-inner.lg-webgl-host {
     max-width: min(100%, calc(100vw - 2rem)) !important;
-    min-height: 60px !important;
-    padding: 0.45rem 0.75rem 0.45rem 0.45rem !important;
-    gap: 0.65rem !important;
+    min-height: 52px !important;
+    padding: 0.38rem 0.65rem 0.38rem 0.38rem !important;
+    gap: 0.5rem !important;
   }
 
   #home .music-card-inner .track-info,
   #home .music-card-inner .track-name,
   #home .music-card-inner .artist-name {
-    max-width: min(14rem, 46vw) !important;
+    max-width: min(12.5rem, 46vw) !important;
   }
 
   #home .music-card-inner .album-art-container,
   #home .music-card-inner .album-art {
-    width: 42px !important;
-    height: 42px !important;
+    width: 40px !important;
+    height: 40px !important;
   }
 }
 
