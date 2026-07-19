@@ -5797,3 +5797,54 @@ img.about-image.animate-in {
   transform: none !important;
   animation: none !important;
 }
+
+/* Homepage FAQ — natural keyword answers, Apple-simple disclosure list */
+.section-faq .faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-width: 42rem;
+  margin-inline: auto;
+}
+
+.section-faq .faq-item {
+  border: 1px solid var(--apple-separator, rgba(0, 0, 0, 0.12));
+  border-radius: 12px;
+  background: var(--apple-bg-elevated, #fff);
+  padding: 0.15rem 1rem 0.15rem;
+}
+
+html.dark .section-faq .faq-item {
+  border-color: rgba(255, 255, 255, 0.14);
+  background: #000;
+}
+
+.section-faq .faq-item summary {
+  cursor: pointer;
+  list-style: none;
+  font-weight: 600;
+  font-size: 1.05rem;
+  line-height: 1.35;
+  padding: 0.95rem 0;
+  color: var(--apple-text, #1d1d1f);
+}
+
+.section-faq .faq-item summary::-webkit-details-marker {
+  display: none;
+}
+
+.section-faq .faq-item p {
+  margin: 0 0 1rem;
+  color: var(--apple-text-secondary, #6e6e73);
+  line-height: 1.55;
+  font-size: 0.98rem;
+}
+
+.section-faq .faq-item a {
+  color: var(--apple-blue, #0071e3);
+  text-decoration: none;
+}
+
+.section-faq .faq-item a:hover {
+  text-decoration: underline;
+}
