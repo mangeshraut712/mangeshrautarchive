@@ -194,52 +194,33 @@ html[data-lg-mode='tinted'] #home .music-card-inner.lg-webgl-host .lg-webgl-canv
   border-radius: inherit !important;
 }
 
-html:is([data-lg-mode='clear'], [data-lg-mode='balanced']):not(.dark) #home .music-card-inner,
-html:is([data-lg-mode='clear'], [data-lg-mode='balanced']):not(.dark)
-  #home
-  .music-card-inner.lg-webgl-host {
-  background: rgb(255 255 255 / var(--lg-card-light-alpha, 48%)) !important;
-  background-color: rgb(255 255 255 / var(--lg-card-light-alpha, 48%)) !important;
-  backdrop-filter: saturate(var(--lg-saturate, 180%)) blur(var(--lg-blur-card, 28px)) !important;
-  -webkit-backdrop-filter: saturate(var(--lg-saturate, 180%)) blur(var(--lg-blur-card, 28px)) !important;
-  border: 1px solid rgb(255 255 255 / var(--lg-border-light, 42%)) !important;
-  box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / var(--lg-specular-light, 70%)),
-    0 8px 28px rgb(0 0 0 / 8%) !important;
-}
-
-html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced']) #home .music-card-inner,
-html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced'])
-  #home
-  .music-card-inner.lg-webgl-host {
-  background: rgb(0 0 0 / var(--lg-card-dark-alpha, 52%)) !important;
-  background-color: rgb(0 0 0 / var(--lg-card-dark-alpha, 52%)) !important;
-  backdrop-filter: saturate(var(--lg-saturate, 180%)) blur(var(--lg-blur-card, 28px)) !important;
-  -webkit-backdrop-filter: saturate(var(--lg-saturate, 180%)) blur(var(--lg-blur-card, 28px)) !important;
-  border: 1px solid rgb(255 255 255 / var(--lg-border-dark, 14%)) !important;
-  box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / var(--lg-specular-dark, 12%)),
-    0 10px 32px rgb(0 0 0 / 40%) !important;
-}
-
-html[data-lg-mode='tinted']:not(.dark) #home .music-card-inner,
-html[data-lg-mode='tinted']:not(.dark) #home .music-card-inner.lg-webgl-host {
+/* Hero music card stays solid in every glass mode (no frosted grey fills). */
+html:not(.dark) #home .music-card-inner,
+html:not(.dark) #home .music-card-inner.lg-webgl-host,
+html:not(.dark) #home .music-card.is-playing .music-card-inner {
   background: #ffffff !important;
   background-color: #ffffff !important;
+  background-image: none !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
   border: 1px solid #e5e5ea !important;
   box-shadow: none !important;
 }
 
-html.dark[data-lg-mode='tinted'] #home .music-card-inner,
-html.dark[data-lg-mode='tinted'] #home .music-card-inner.lg-webgl-host {
+html.dark #home .music-card-inner,
+html.dark #home .music-card-inner.lg-webgl-host,
+html.dark #home .music-card.is-playing .music-card-inner {
   background: #000000 !important;
   background-color: #000000 !important;
+  background-image: none !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
   border: 1px solid #2c2c2e !important;
   box-shadow: none !important;
+}
+
+#home .music-card-inner.lg-webgl-host .lg-webgl-canvas {
+  display: none !important;
 }
 
 #home .music-card-inner .lg-webgl-content {
@@ -257,25 +238,11 @@ html.dark[data-lg-mode='tinted'] #home .music-card-inner.lg-webgl-host {
 }
 
 @media (hover: hover) and (pointer: fine) {
-  html:is([data-lg-mode='clear'], [data-lg-mode='balanced']):not(.dark)
-    #home
-    .music-card:hover
-    .music-card-inner {
-    border-color: rgb(0 113 227 / 55%) !important;
-  }
-
-  html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced'])
-    #home
-    .music-card:hover
-    .music-card-inner {
-    border-color: rgb(10 132 255 / 55%) !important;
-  }
-
-  html[data-lg-mode='tinted']:not(.dark) #home .music-card:hover .music-card-inner {
+  html:not(.dark) #home .music-card:hover .music-card-inner {
     border-color: #0071e3 !important;
   }
 
-  html.dark[data-lg-mode='tinted'] #home .music-card:hover .music-card-inner {
+  html.dark #home .music-card:hover .music-card-inner {
     border-color: #0a84ff !important;
   }
 }
@@ -548,6 +515,48 @@ body.uses-page button.uses-control-tile.is-active[type='button'] i,
 body.systems-page button.uses-control-tile.is-active[type='button'] i {
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
+}
+
+/* Hero badges + Portfolio Reach — solid white/black only */
+html:not(.dark) #home :is(.vibe-coder-badge, .portfolio-reach-badge, .hero-pill-badge),
+html:not(.dark) #home :is(.portfolio-reach-panel, .vibe-stack-card, .reach-realtime-section) {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  box-shadow: none !important;
+}
+
+html.dark #home :is(.vibe-coder-badge, .portfolio-reach-badge, .hero-pill-badge),
+html.dark #home :is(.portfolio-reach-panel, .vibe-stack-card, .reach-realtime-section) {
+  background: #000000 !important;
+  background-color: #000000 !important;
+  background-image: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  box-shadow: none !important;
+}
+
+html:not(.dark) #home :is(.portfolio-reach-panel, .vibe-stack-card, .reach-realtime-section) {
+  border-color: #e5e5ea !important;
+}
+
+html.dark #home :is(.portfolio-reach-panel, .vibe-stack-card, .reach-realtime-section) {
+  border-color: #2c2c2e !important;
+}
+
+/* A11y panel chips — solid canvas, not elevated grey */
+html:not(.dark) body .a11y-toolbar__panel button {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  border: 1px solid #d2d2d7 !important;
+}
+
+html.dark body .a11y-toolbar__panel button {
+  background: #000000 !important;
+  background-color: #000000 !important;
+  border: 1px solid #2c2c2e !important;
 }
 
 /* Uses filter chips — active state must stay white-on-blue (AA) */

@@ -43,10 +43,11 @@
     realtimeBars: document.getElementById('reach-realtime-bars'),
   };
   const SESSION_TIMEOUT_MS = 30 * 60 * 1000;
-  const REACH_CACHE_KEY = 'portfolio-reach-snapshot-v3';
+  const REACH_CACHE_KEY = 'portfolio-reach-snapshot-v4';
   const REACH_CACHE_TTL_MS = 30 * 1000;
   try {
     sessionStorage.removeItem('portfolio-reach-snapshot-v2');
+    sessionStorage.removeItem('portfolio-reach-snapshot-v3');
   } catch {
     // ignore
   }
@@ -281,15 +282,16 @@
   }
 
   /**
-   * Prefer GA4 realtime countries; when nobody is online, fall back to the
-   * last-30-days top_countries so the panel never looks broken.
+   * Prefer a full realtime top-3 when GA marks it fresh.
+   * Sparse live rows (1–2 countries / single visitor) fall back to the
+   * last-30-days top_countries so the panel shows meaningful ranking.
    */
   function resolveCountryBreakdown(insights = {}, gaEnabled = false) {
     const realtimeFresh = insights.realtime_fresh === true;
     const realtime = realtimeFresh
       ? getTopCountries(insights.realtime_countries, COUNTRY_DISPLAY_LIMIT)
       : [];
-    if (realtime.length) {
+    if (realtime.length >= COUNTRY_DISPLAY_LIMIT) {
       return {
         countries: realtime,
         mode: 'realtime',
@@ -305,6 +307,15 @@
         mode: 'period',
         label: 'TOP COUNTRIES · LAST 30 DAYS',
         emptyMessage: 'No country data yet',
+      };
+    }
+
+    if (realtime.length) {
+      return {
+        countries: realtime,
+        mode: 'realtime',
+        label: 'TOP COUNTRIES · REAL-TIME',
+        emptyMessage: 'No active users by country right now',
       };
     }
 

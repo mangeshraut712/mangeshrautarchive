@@ -169,6 +169,41 @@ def test_portfolio_reach_countries_mode_falls_back_to_period(monkeypatch):
     assert insights["top_countries"][0]["country"] == "India"
 
 
+def test_portfolio_reach_sparse_realtime_prefers_period_mode(monkeypatch):
+    class FakeGoogleAnalyticsClient:
+        enabled = True
+
+        async def get_reach_snapshot(self):
+            return {
+                "source": "google_analytics",
+                "total_views": 7300,
+                "unique_visitors": 6100,
+                "event_count": 25000,
+                "active_users_last_30_mins": 1,
+                "realtime_countries": [{"country": "India", "users": 1}],
+                "realtime_fresh": True,
+                "top_countries": [
+                    {"country": "India", "users": 2908},
+                    {"country": "United States", "users": 2330},
+                    {"country": "Singapore", "users": 6},
+                ],
+                "trend": [],
+                "analytics_url": "https://analytics.google.com/",
+                "timestamp": "2026-06-21T12:00:00Z",
+            }
+
+    monkeypatch.setattr("api.routes.analytics.google_analytics_client", FakeGoogleAnalyticsClient())
+    client = TestClient(app)
+
+    response = client.get("/api/analytics/reach")
+
+    assert response.status_code == 200
+    insights = response.json()["insights"]
+    assert insights["countries_mode"] == "period"
+    assert insights["top_countries"][0]["country"] == "India"
+    assert insights["top_countries"][1]["country"] == "United States"
+
+
 def test_google_analytics_top_countries_helper():
     from api.google_analytics import normalize_top_countries
 

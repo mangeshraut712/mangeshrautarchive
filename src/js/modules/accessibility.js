@@ -1062,9 +1062,9 @@ export class AccessibilityEnhancer {
 
         html.dark .a11y-toolbar__panel,
         html.dark .a11y-toolbar.is-open .a11y-toolbar__panel {
-          background: #2c2c2e;
-          border-color: #48484a;
-          box-shadow: 0 14px 36px rgb(0 0 0 / 55%);
+          background: #000000;
+          border-color: #2c2c2e;
+          box-shadow: none;
         }
 
         .a11y-toolbar__panel button {
@@ -1093,9 +1093,9 @@ export class AccessibilityEnhancer {
         }
 
         html.dark .a11y-toolbar__panel button {
-          background: #1c1c1e !important;
-          background-color: #1c1c1e !important;
-          border: 1px solid #3a3a3c !important;
+          background: #000000 !important;
+          background-color: #000000 !important;
+          border: 1px solid #2c2c2e !important;
           color: #0a84ff !important;
           -webkit-text-fill-color: #0a84ff !important;
           box-shadow: none !important;
@@ -1226,8 +1226,8 @@ export class AccessibilityEnhancer {
         }
 
         html.dark .a11y-glass-popover {
-          background: #1c1c1e !important;
-          background-color: #1c1c1e !important;
+          background: #000000 !important;
+          background-color: #000000 !important;
           border-color: #2c2c2e;
         }
 

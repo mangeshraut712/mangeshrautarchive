@@ -169,9 +169,15 @@ async def get_portfolio_reach(request: Request):
         ga_snapshot.get("realtime_countries") or [],
         limit=3,
     )
-    countries_mode = (
-        "realtime" if realtime_countries else ("period" if top_countries else "empty")
-    )
+    # Prefer a full realtime top-3; sparse live rows fall back to period ranking.
+    if len(realtime_countries) >= 3:
+        countries_mode = "realtime"
+    elif top_countries:
+        countries_mode = "period"
+    elif realtime_countries:
+        countries_mode = "realtime"
+    else:
+        countries_mode = "empty"
     total_reach = unique_visitors if ga_enabled else page_views_total
     analytics_url = ga_snapshot.get("analytics_url") or ""
     timestamp = (
