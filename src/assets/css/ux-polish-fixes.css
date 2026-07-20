@@ -1070,20 +1070,22 @@ html.dark .chatbot-input-container,
   box-shadow: none !important;
 }
 
-/* Master Unified Apple Red Circular Close Buttons */
-.apple-close-btn,
-.premium-close-btn,
-#close-menu-btn,
-#close-menu-btn.premium-close-btn,
-#search-overlay #search-close,
-#search-overlay #search-close.premium-close-btn,
-.chatbot-close-btn,
-#chatbot-widget .chatbot-close-btn,
-.project-xr-close-btn,
-.modal-close,
-.publication-modal-close,
-.case-study-close,
-.lightbox-close {
+/* Master Unified Apple Red Circular Close Buttons - Ultra High Specificity */
+html body #overlay-menu #close-menu-btn,
+html body #overlay-menu #close-menu-btn.premium-close-btn,
+html body #close-menu-btn,
+html body #close-menu-btn.premium-close-btn,
+html body #search-overlay #search-close,
+html body #search-overlay #search-close.premium-close-btn,
+html body #chatbot-widget .chatbot-close-btn,
+html body .chatbot-close-btn,
+html body .apple-close-btn,
+html body .premium-close-btn,
+html body .project-xr-close-btn,
+html body .modal-close,
+html body .publication-modal-close,
+html body .case-study-close,
+html body .lightbox-close {
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -1105,12 +1107,12 @@ html.dark .chatbot-input-container,
   z-index: 100005 !important;
 }
 
-.apple-close-btn i,
-.premium-close-btn i,
-#close-menu-btn i,
-#search-overlay #search-close i,
-.chatbot-close-btn i,
-#chatbot-widget .chatbot-close-btn i {
+html body #overlay-menu #close-menu-btn i,
+html body #close-menu-btn i,
+html body #search-overlay #search-close i,
+html body #chatbot-widget .chatbot-close-btn i,
+html body .apple-close-btn i,
+html body .premium-close-btn i {
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
   fill: #ffffff !important;
@@ -1118,14 +1120,12 @@ html.dark .chatbot-input-container,
   font-size: 0.9rem !important;
 }
 
-html.dark .apple-close-btn,
-html.dark .premium-close-btn,
-html.dark #close-menu-btn,
-html.dark #close-menu-btn.premium-close-btn,
-html.dark #search-overlay #search-close,
-html.dark #search-overlay #search-close.premium-close-btn,
-html.dark .chatbot-close-btn,
-html.dark #chatbot-widget .chatbot-close-btn {
+html.dark body #overlay-menu #close-menu-btn,
+html.dark body #close-menu-btn,
+html.dark body #search-overlay #search-close,
+html.dark body #chatbot-widget .chatbot-close-btn,
+html.dark body .apple-close-btn,
+html.dark body .premium-close-btn {
   background: #ff453a !important;
   background-color: #ff453a !important;
   color: #ffffff !important;
