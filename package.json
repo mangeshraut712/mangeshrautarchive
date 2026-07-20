@@ -75,7 +75,7 @@
     "@ogtirth/liquid-glass-oss": "^0.1.0",
     "@vercel/analytics": "^2.0.1",
     "html-to-image": "^1.11.13",
-    "isomorphic-dompurify": "^3.17.0",
+    "isomorphic-dompurify": "^3.19.0",
     "katex": "^0.17.0",
     "marked": "^18.0.6",
     "marked-footnote": "^1.2.2",
