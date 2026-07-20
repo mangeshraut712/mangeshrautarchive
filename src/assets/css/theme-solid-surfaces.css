@@ -2770,3 +2770,55 @@ html.dark
   height: 38px !important;
   border-radius: 50% !important;
 }
+
+/* ==========================================================================
+   Authentic Brand Technology Accents & Apple Typography Sync
+   ========================================================================== */
+:is(.tech-tag, .project-tag, .skill-badge, .badge, .tag)[data-tech='python'],
+:is(.tech-tag, .project-tag, .skill-badge, .badge, .tag):is([class*='python'], [class*='Python']) {
+  border-left: 3px solid #3776ab !important;
+}
+
+:is(.tech-tag, .project-tag, .skill-badge, .badge, .tag)[data-tech='typescript'],
+:is(.tech-tag, .project-tag, .skill-badge, .badge, .tag):is(
+  [class*='typescript'],
+  [class*='TypeScript']
+) {
+  border-left: 3px solid #3178c6 !important;
+}
+
+:is(.tech-tag, .project-tag, .skill-badge, .badge, .tag)[data-tech='javascript'],
+:is(.tech-tag, .project-tag, .skill-badge, .badge, .tag):is(
+  [class*='javascript'],
+  [class*='JavaScript']
+) {
+  border-left: 3px solid #f7df1e !important;
+}
+
+:is(.tech-tag, .project-tag, .skill-badge, .badge, .tag)[data-tech='react'],
+:is(.tech-tag, .project-tag, .skill-badge, .badge, .tag):is([class*='react'], [class*='React']) {
+  border-left: 3px solid #61dafb !important;
+}
+
+:is(.tech-tag, .project-tag, .skill-badge, .badge, .tag)[data-tech='swift'],
+:is(.tech-tag, .project-tag, .skill-badge, .badge, .tag):is([class*='swift'], [class*='Swift']) {
+  border-left: 3px solid #fa7343 !important;
+}
+
+:is(.tech-tag, .project-tag, .skill-badge, .badge, .tag)[data-tech='docker'],
+:is(.tech-tag, .project-tag, .skill-badge, .badge, .tag):is([class*='docker'], [class*='Docker']) {
+  border-left: 3px solid #2496ed !important;
+}
+
+:is(.tech-tag, .project-tag, .skill-badge, .badge, .tag)[data-tech='aws'],
+:is(.tech-tag, .project-tag, .skill-badge, .badge, .tag):is([class*='aws'], [class*='AWS']) {
+  border-left: 3px solid #ff9900 !important;
+}
+
+/* Apple Icon Alignment & High Contrast Rendering */
+:is(i.fa, i.fab, i.fas, i.far, svg) {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  vertical-align: middle !important;
+}
