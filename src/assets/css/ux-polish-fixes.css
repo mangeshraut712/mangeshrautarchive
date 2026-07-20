@@ -1132,3 +1132,95 @@ html.dark body .premium-close-btn {
   -webkit-text-fill-color: #ffffff !important;
   box-shadow: 0 4px 16px rgb(255 69 58 / 55%) !important;
 }
+
+/* ═══════════════════════════════════════════════════════════
+   APPLE SF DESIGN SYSTEM - HERO LAYOUT & TYPOGRAPHY POLISH
+   ═══════════════════════════════════════════════════════════ */
+
+/* Hero Section Container Alignment */
+html body #home.hero-section {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+html body #home .hero-header,
+html body #home .hero-body,
+html body #home .hero-footer {
+  width: 100% !important;
+  max-width: 44rem !important;
+  margin-inline: auto !important;
+  text-align: center !important;
+}
+
+/* Hero Description & Bio Line Master Rules */
+html body #home .hero-description,
+html body #home .hero-description-lines,
+html body #home .hero-description.hero-description-lines {
+  font-size: clamp(0.98rem, 1.25vw, 1.125rem) !important;
+  line-height: 1.55 !important;
+  font-weight: 400 !important;
+  letter-spacing: -0.012em !important;
+  color: #6e6e73 !important;
+  -webkit-text-fill-color: #6e6e73 !important;
+  text-align: center !important;
+  text-wrap: balance !important;
+  max-width: 42rem !important;
+  margin: 1.25rem auto 1.5rem auto !important;
+  padding: 0 1rem !important;
+}
+
+html.dark body #home .hero-description,
+html.dark body #home .hero-description-lines,
+html.dark body #home .hero-description.hero-description-lines {
+  color: #a1a1a6 !important;
+  -webkit-text-fill-color: #a1a1a6 !important;
+}
+
+html body #home .hero-description-line {
+  display: block !important;
+  margin: 0.35rem 0 !important;
+  text-align: center !important;
+}
+
+/* Mobile responsive refinements for Apple aesthetic */
+@media (max-width: 768px) {
+  html body #home .hero-description,
+  html body #home .hero-description-lines,
+  html body #home .hero-description.hero-description-lines {
+    font-size: 0.95rem !important;
+    line-height: 1.5 !important;
+    letter-spacing: -0.01em !important;
+    margin: 1rem auto 1.25rem auto !important;
+    padding: 0 0.75rem !important;
+  }
+
+  html body #home .hero-description-line {
+    display: inline !important;
+    margin: 0 !important;
+  }
+
+  html body #home .hero-description-line + .hero-description-line::before {
+    content: ' ' !important;
+  }
+
+  html body #home .hero-actions {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+    max-width: 290px !important;
+    margin: 1rem auto 0 auto !important;
+    gap: 0.75rem !important;
+  }
+
+  html body #home .hero-actions .hero-cta {
+    width: 100% !important;
+    margin: 0 !important;
+  }
+}

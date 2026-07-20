@@ -284,14 +284,26 @@ body.travel-body {
   #home .hero-description {
     /* Prefer % over 100vw — Android Chrome 100vw includes scrollbar / ignores body pad */
     max-width: min(100%, calc(100% - 1.5rem)) !important;
-    font-size: clamp(0.86rem, 2.8vw, 0.94rem) !important;
-    line-height: 1.42 !important;
-    margin-bottom: 0.75rem !important;
-    text-wrap: balance;
+    font-size: 0.975rem !important;
+    line-height: 1.5 !important;
+    letter-spacing: -0.011em !important;
+    color: #6e6e73 !important;
+    margin-bottom: 1rem !important;
+    text-align: center !important;
+    text-wrap: balance !important;
+  }
+
+  html.dark #home .hero-description {
+    color: #a1a1a6 !important;
   }
 
   #home .hero-description-line {
-    display: block !important;
+    display: inline !important;
+    margin: 0 !important;
+  }
+
+  #home .hero-description-line + .hero-description-line::before {
+    content: ' ' !important;
   }
 
   #home .hero-actions .hero-cta,
@@ -632,17 +644,26 @@ body.travel-body {
   }
 
   body #home.hero-section .hero-description {
-    max-width: min(86ch, calc(100vw - 6rem)) !important;
-    font-size: 0.9rem !important;
-    line-height: 1.46 !important;
+    max-width: min(44ch, calc(100vw - 2rem)) !important;
+    font-size: 0.975rem !important;
+    line-height: 1.5 !important;
+    letter-spacing: -0.011em !important;
+    color: #6e6e73 !important;
+    text-align: center !important;
+    margin: 1rem auto 1.25rem auto !important;
+  }
+
+  html.dark body #home.hero-section .hero-description {
+    color: #a1a1a6 !important;
   }
 
   body #home.hero-section .hero-description-line {
-    display: block !important;
+    display: inline !important;
+    margin: 0 !important;
   }
 
-  body #home.hero-section .hero-description-line + .hero-description-line {
-    margin-top: 0.32rem;
+  body #home.hero-section .hero-description-line + .hero-description-line::before {
+    content: ' ' !important;
   }
 }
 
