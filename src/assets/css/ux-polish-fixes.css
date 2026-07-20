@@ -871,11 +871,7 @@ html.dark #search-overlay #search-input {
 }
 
 #search-overlay #search-close,
-#search-overlay #search-close.premium-close-btn,
-#search-overlay #search-close:hover,
-#search-overlay #search-close:focus,
-#search-overlay #search-close:focus-visible,
-#search-overlay #search-close:active {
+#search-overlay #search-close.premium-close-btn {
   position: static !important;
   top: auto !important;
   right: auto !important;
@@ -885,44 +881,50 @@ html.dark #search-overlay #search-input {
   align-items: center !important;
   justify-content: center !important;
   flex: 0 0 auto !important;
-  width: 28px !important;
-  height: 28px !important;
-  min-width: 28px !important;
-  min-height: 28px !important;
+  width: 32px !important;
+  height: 32px !important;
+  min-width: 32px !important;
+  min-height: 32px !important;
   margin: 0 !important;
   padding: 0 !important;
-  border-radius: 999px !important;
-  border: 1px solid rgb(0 0 0 / 8%) !important;
-  background: #ffffff !important;
-  background-color: #ffffff !important;
+  border-radius: 50% !important;
+  border: none !important;
+  background: #ff3b30 !important;
+  background-color: #ff3b30 !important;
   background-image: none !important;
-  box-shadow: none !important;
-  color: #6e6e73 !important;
-  -webkit-text-fill-color: #6e6e73 !important;
+  box-shadow: 0 2px 10px rgb(255 59 48 / 45%) !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
   font-size: 0.85rem !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
-  z-index: 1 !important;
+  z-index: 10 !important;
+  cursor: pointer !important;
+}
+
+#search-overlay #search-close i {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  fill: #ffffff !important;
+  stroke: #ffffff !important;
 }
 
 #search-overlay #search-close:hover,
 #search-overlay #search-close:focus-visible {
-  background: #f5f5f7 !important;
-  background-color: #f5f5f7 !important;
-  color: #1d1d1f !important;
-  -webkit-text-fill-color: #1d1d1f !important;
+  background: #ff453a !important;
+  background-color: #ff453a !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  transform: scale(1.08) !important;
 }
 
 html.dark #search-overlay #search-close,
-html.dark #search-overlay #search-close.premium-close-btn,
-html.dark #search-overlay #search-close:hover,
-html.dark #search-overlay #search-close:focus,
-html.dark #search-overlay #search-close:focus-visible {
-  border-color: rgb(255 255 255 / 12%) !important;
-  background: #3a3a3c !important;
-  background-color: #3a3a3c !important;
-  color: #a1a1a6 !important;
-  -webkit-text-fill-color: #a1a1a6 !important;
+html.dark #search-overlay #search-close.premium-close-btn {
+  background: #ff453a !important;
+  background-color: #ff453a !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  box-shadow: 0 2px 10px rgb(255 69 58 / 50%) !important;
 }
 
 #search-overlay #search-results {

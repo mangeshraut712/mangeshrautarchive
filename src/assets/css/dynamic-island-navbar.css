@@ -779,26 +779,46 @@ html.dark #theme-icon-moon {
   color: #ffffff !important;
 }
 
-/* Premium Mobile Menu Close Button Fix */
+/* Premium Mobile Menu Close Button Fix - Apple Red Circular */
+#close-menu-btn,
 #close-menu-btn.premium-close-btn {
-  background: rgba(142, 142, 147, 0.15) !important;
-  border: 1px solid rgba(142, 142, 147, 0.25) !important;
-  color: #1d1d1f !important;
-  width: 44px !important;
-  height: 44px !important;
-  font-size: 1.2rem !important;
-  display: flex !important;
+  background: #ff3b30 !important;
+  background-color: #ff3b30 !important;
+  border: none !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  width: 36px !important;
+  height: 36px !important;
+  min-width: 36px !important;
+  min-height: 36px !important;
+  border-radius: 50% !important;
+  font-size: 0.95rem !important;
+  display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
+  box-shadow: 0 4px 12px rgb(255 59 48 / 45%) !important;
+  z-index: 100000 !important;
 }
 
-html.dark #close-menu-btn.premium-close-btn {
-  background: rgba(255, 255, 255, 0.12) !important;
-  border-color: rgba(255, 255, 255, 0.2) !important;
+#close-menu-btn i,
+#close-menu-btn.premium-close-btn i {
   color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  fill: #ffffff !important;
+  stroke: #ffffff !important;
+}
+
+html.dark #close-menu-btn,
+html.dark #close-menu-btn.premium-close-btn {
+  background: #ff453a !important;
+  background-color: #ff453a !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  box-shadow: 0 4px 14px rgb(255 69 58 / 55%) !important;
 }
 
 #close-menu-btn.premium-close-btn:hover {
-  background: rgba(142, 142, 147, 0.2) !important;
-  transform: scale(1.05) !important;
+  background: #ff453a !important;
+  transform: scale(1.08) !important;
+  box-shadow: 0 6px 16px rgb(255 69 58 / 60%) !important;
 }
