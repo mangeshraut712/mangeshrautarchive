@@ -328,45 +328,6 @@ function buildShell() {
               More
             </span>
           </p>
-
-          <!-- GitHub Activity Overview Card -->
-          <div class="gh-activity" id="gh-activity">
-            <div class="gh-activity__header">
-              <span class="gh-activity__badge"><i class="fas fa-terminal" aria-hidden="true"></i> @zed-industries</span>
-              <span class="gh-activity__badge"><i class="fas fa-magic" aria-hidden="true"></i> @Alchemyst-ai</span>
-            </div>
-            <div class="gh-activity__content">
-              <div class="gh-activity__left">
-                <h5 class="gh-activity__subtitle">Activity overview</h5>
-                <div class="gh-activity__item">
-                  <i class="fas fa-code-commit gh-activity__icon" aria-hidden="true"></i>
-                  <div class="gh-activity__text">
-                    <span>Contributed to</span>
-                    <a href="https://github.com/mangeshraut712/mangeshrautarchive" target="_blank" rel="noopener noreferrer">mangeshraut712/mangeshrautarchive</a>,
-                    <a href="https://github.com/mangeshraut712/AssistMe-VirtualAssistant" target="_blank" rel="noopener noreferrer">mangeshraut712/AssistMe-VirtualAssistant</a>,
-                    <a href="https://github.com/mangeshraut712/Hindai" target="_blank" rel="noopener noreferrer">mangeshraut712/Hindai</a>
-                    <span>and 41 other repositories</span>
-                  </div>
-                </div>
-              </div>
-              <div class="gh-activity__right">
-                <div class="gh-activity__radar">
-                  <svg width="220" height="180" viewBox="0 0 220 180" class="gh-activity__radar-svg" aria-label="Activity breakdown chart">
-                    <line x1="110" y1="25" x2="110" y2="155" stroke="var(--gh-border, #30363d)" stroke-width="1.5" stroke-dasharray="2 2"/>
-                    <line x1="30" y1="90" x2="190" y2="90" stroke="var(--gh-border, #30363d)" stroke-width="1.5" stroke-dasharray="2 2"/>
-                    <line x1="110" y1="90" x2="40" y2="90" stroke="#39d353" stroke-width="3" stroke-linecap="round"/>
-                    <circle cx="40" cy="90" r="5" fill="#39d353"/>
-                    <line x1="110" y1="90" x2="110" y2="105" stroke="#39d353" stroke-width="3" stroke-linecap="round"/>
-                    <circle cx="110" cy="105" r="4" fill="#39d353"/>
-                    <text x="110" y="16" text-anchor="middle" font-size="10" font-weight="500" fill="var(--project-muted-dark, #8b949e)">Code review</text>
-                    <text x="22" y="93" text-anchor="end" font-size="11" font-weight="700" fill="#39d353">98% Commits</text>
-                    <text x="198" y="93" text-anchor="start" font-size="10" font-weight="500" fill="var(--project-muted-dark, #8b949e)">Issues</text>
-                    <text x="110" y="172" text-anchor="middle" font-size="11" font-weight="700" fill="#39d353">2% Pull requests</text>
-                  </svg>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
 
@@ -490,6 +451,13 @@ function renderHeatmap(data) {
     cell.addEventListener('blur', hideTooltip);
     cell.addEventListener('touchstart', () => showTooltip(cell), { passive: true });
   });
+
+  const scroller = host.closest('.gh-contrib__heatmap-scroll');
+  if (scroller) {
+    requestAnimationFrame(() => {
+      scroller.scrollLeft = scroller.scrollWidth;
+    });
+  }
 }
 
 /* ------------------------------ 3D isometric ------------------------------ */

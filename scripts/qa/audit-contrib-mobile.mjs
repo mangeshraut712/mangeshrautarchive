@@ -71,18 +71,16 @@ async function testContributionGraph() {
         `  - Floating Tooltip: ${cellHoverResult.visible ? `✅ Active ("${cellHoverResult.text}")` : '❌ Inactive'}`
       );
 
-      // Verify Activity Overview section
+      // Verify Activity Overview section is removed
       const activityOverviewResult = await page.evaluate(() => {
         const overview = document.getElementById('gh-activity');
-        const text = overview?.querySelector('.gh-activity__text')?.textContent;
         return {
-          exists: Boolean(overview),
-          text: text?.trim().substring(0, 60),
+          removed: !overview,
         };
       });
 
       console.log(
-        `  - Activity Overview: ${activityOverviewResult.exists ? `✅ Rendered ("${activityOverviewResult.text}...")` : '❌ Missing'}`
+        `  - Activity Overview: ${activityOverviewResult.removed ? '✅ Cleanly Removed' : '❌ Still Present'}`
       );
     } catch (err) {
       console.error(`  Error on ${vp.name}:`, err.message);

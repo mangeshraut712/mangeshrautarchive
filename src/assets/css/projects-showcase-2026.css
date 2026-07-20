@@ -2764,21 +2764,24 @@ html.dark #projects .gh-contrib__settings-btn {
 
 #projects .gh-contrib__settings-menu {
   position: absolute;
-  right: 0;
+  left: 0;
   top: calc(100% + 6px);
-  z-index: 20;
+  z-index: 1000;
   width: 240px;
+  max-width: calc(100vw - 48px);
   padding: 0.85rem;
   border-radius: 12px;
   border: 1px solid var(--gh-border);
   background: var(--gh-surface);
-  box-shadow: var(--project-shadow-light);
+  box-shadow: 0 10px 30px rgb(0 0 0 / 18%);
   display: grid;
   gap: 0.6rem;
 }
 
 html.dark #projects .gh-contrib__settings-menu {
-  box-shadow: var(--project-shadow-dark);
+  background: #1c2128;
+  border-color: #30363d;
+  box-shadow: 0 10px 30px rgb(0 0 0 / 45%);
 }
 
 #projects .gh-contrib__settings-link {
@@ -2956,8 +2959,14 @@ html.dark #projects .gh-contrib__avg {
 #projects .gh-contrib__heatmap-scroll {
   overflow-x: auto;
   overscroll-behavior-x: contain;
-  scrollbar-width: thin;
-  padding-bottom: 0.35rem;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding: 0.4rem 0;
+  margin-bottom: 0.5rem;
+}
+
+#projects .gh-contrib__heatmap-scroll::-webkit-scrollbar {
+  display: none;
 }
 
 #projects .gh-hm {
