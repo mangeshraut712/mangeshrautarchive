@@ -3850,4 +3850,116 @@ html.dark #chatbot-toggle {
 #chatbot-toggle i {
   color: #fff !important;
 }
+
+/* ═══════════════════════════════════════════════════════════
+   UNIFIED APPLE RED CIRCULAR CLOSE BUTTONS (SITEWIDE)
+   ═══════════════════════════════════════════════════════════ */
+.apple-close-btn,
+.premium-close-btn,
+#close-menu-btn,
+#close-menu-btn.premium-close-btn,
+#search-overlay #search-close,
+#search-overlay #search-close.premium-close-btn,
+.chatbot-close-btn,
+#chatbot-widget .chatbot-close-btn,
+.project-xr-close-btn,
+.modal-close,
+.publication-modal-close,
+.case-study-close,
+.lightbox-close {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 32px !important;
+  height: 32px !important;
+  min-width: 32px !important;
+  min-height: 32px !important;
+  border-radius: 50% !important;
+  background: #ff3b30 !important;
+  background-color: #ff3b30 !important;
+  background-image: none !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  border: none !important;
+  box-shadow: 0 2px 8px rgb(255 59 48 / 40%) !important;
+  cursor: pointer !important;
+  transition:
+    transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+    background-color 0.2s ease,
+    box-shadow 0.2s ease !important;
+  padding: 0 !important;
+  outline: none !important;
+  font-size: 0.85rem !important;
+  line-height: 1 !important;
+  z-index: 10002 !important;
+}
+
+.apple-close-btn i,
+.premium-close-btn i,
+#close-menu-btn i,
+#search-overlay #search-close i,
+.chatbot-close-btn i,
+#chatbot-widget .chatbot-close-btn i,
+.project-xr-close-btn i,
+.modal-close i,
+.publication-modal-close i,
+.case-study-close i,
+.lightbox-close i {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  fill: #ffffff !important;
+  stroke: #ffffff !important;
+  font-size: 0.82rem !important;
+}
+
+.apple-close-btn:hover,
+.premium-close-btn:hover,
+#close-menu-btn:hover,
+#search-overlay #search-close:hover,
+.chatbot-close-btn:hover,
+#chatbot-widget .chatbot-close-btn:hover,
+.project-xr-close-btn:hover,
+.modal-close:hover,
+.publication-modal-close:hover,
+.case-study-close:hover,
+.lightbox-close:hover {
+  background: #ff453a !important;
+  background-color: #ff453a !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  transform: scale(1.08) !important;
+  box-shadow: 0 4px 14px rgb(255 69 58 / 55%) !important;
+}
+
+.apple-close-btn:active,
+.premium-close-btn:active,
+#close-menu-btn:active,
+#search-overlay #search-close:active,
+.chatbot-close-btn:active,
+#chatbot-widget .chatbot-close-btn:active,
+.project-xr-close-btn:active,
+.modal-close:active,
+.publication-modal-close:active,
+.case-study-close:active,
+.lightbox-close:active {
+  transform: scale(0.92) !important;
+}
+
+html.dark .apple-close-btn,
+html.dark .premium-close-btn,
+html.dark #close-menu-btn,
+html.dark #search-overlay #search-close,
+html.dark .chatbot-close-btn,
+html.dark #chatbot-widget .chatbot-close-btn,
+html.dark .project-xr-close-btn,
+html.dark .modal-close,
+html.dark .publication-modal-close,
+html.dark .case-study-close,
+html.dark .lightbox-close {
+  background: #ff453a !important;
+  background-color: #ff453a !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  box-shadow: 0 2px 10px rgb(255 69 58 / 50%) !important;
+}
 /* Accessibility toolbar card/border is restored site-wide in accessibility.css. */

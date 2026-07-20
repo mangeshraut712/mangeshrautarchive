@@ -3,58 +3,75 @@
    ═══════════════════════════════════════════════════════════ */
 
 @media (max-width: 768px) {
-  /* Widget — card over full-screen backdrop; shrinks above soft keyboard */
+  /* Widget — Docked Siri AI sheet */
   #chatbot-widget {
     position: fixed !important;
-    top: calc(var(--island-height, 58px) + max(8px, env(safe-area-inset-top))) !important;
-    right: max(10px, env(safe-area-inset-right)) !important;
+    top: calc(var(--island-height, 54px) + max(6px, env(safe-area-inset-top))) !important;
+    right: max(8px, env(safe-area-inset-right)) !important;
     bottom: calc(
-      var(--mobile-bottom-inset, max(10px, env(safe-area-inset-bottom))) +
-        var(--chat-keyboard-inset, 0px) + 0.35rem
+      var(--mobile-bottom-inset, max(8px, env(safe-area-inset-bottom))) +
+        var(--chat-keyboard-inset, 0px) + 0.25rem
     ) !important;
-    left: max(10px, env(safe-area-inset-left)) !important;
+    left: max(8px, env(safe-area-inset-left)) !important;
     width: auto !important;
     height: auto !important;
     min-height: 0 !important;
     max-height: none !important;
-    border-radius: 22px !important;
+    border-radius: 26px !important;
     margin: 0 !important;
-    box-shadow: 0 5px 30px rgba(0, 0, 0, 0.2) !important;
+    box-shadow:
+      0 16px 45px rgb(0 0 0 / 22%),
+      0 0 0 1px rgb(0 113 227 / 18%) !important;
     z-index: 100000 !important;
     display: flex !important;
     flex-direction: column !important;
-    background: #ffffff !important;
-    background-color: #ffffff !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
+    background: rgb(255 255 255 / 94%) !important;
+    background-color: rgb(255 255 255 / 94%) !important;
+    backdrop-filter: blur(25px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(25px) saturate(180%) !important;
+    border: 1px solid rgb(255 255 255 / 50%) !important;
   }
 
   #chatbot-widget.visible {
-    background: #ffffff !important;
-    background-color: #ffffff !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
+    background: rgb(255 255 255 / 94%) !important;
+    background-color: rgb(255 255 255 / 94%) !important;
+    backdrop-filter: blur(25px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(25px) saturate(180%) !important;
   }
 
   html.dark #chatbot-widget,
   html.dark #chatbot-widget.visible {
-    background: #000000 !important;
-    background-color: #000000 !important;
+    background: rgb(18 18 22 / 94%) !important;
+    background-color: rgb(18 18 22 / 94%) !important;
+    border: 1px solid rgb(255 255 255 / 12%) !important;
+    box-shadow:
+      0 20px 55px rgb(0 0 0 / 65%),
+      0 0 20px rgb(0 113 227 / 25%) !important;
   }
 
   /* Header */
   .chatbot-header {
-    min-height: 56px !important;
-    padding: 8px 10px 8px 14px !important;
+    min-height: 52px !important;
+    padding: 6px 12px 8px !important;
     flex-shrink: 0 !important;
-    background: rgba(255, 255, 255, 0.92) !important;
-    backdrop-filter: blur(20px) !important;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.06) !important;
+    background: transparent !important;
+    border-bottom: 1px solid rgb(0 0 0 / 6%) !important;
+  }
+
+  /* Top Siri Drag Handle */
+  .chatbot-header::before {
+    content: '' !important;
+    display: block !important;
+    width: 36px !important;
+    height: 4px !important;
+    border-radius: 999px !important;
+    background: rgb(120 120 128 / 30%) !important;
+    margin: 2px auto 6px !important;
   }
 
   html.dark .chatbot-header {
-    background: rgba(0, 0, 0, 0.92) !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+    background: transparent !important;
+    border-bottom: 1px solid rgb(255 255 255 / 10%) !important;
   }
 
   .chatbot-header-main {

@@ -2289,10 +2289,27 @@ html.dark .project-xr-activity-note strong {
     box-shadow 0.2s ease !important;
 }
 
-.project-xr-action-primary {
-  border-color: rgb(7 91 199 / 40%) !important;
-  background: linear-gradient(135deg, var(--project-accent), #1683ff) !important;
-  color: #fff !important;
+.project-xr-action-primary,
+a.project-xr-action-primary,
+.project-xr-btn-github,
+.project-xr-btn-demo {
+  border-color: #0071e3 !important;
+  background: #0071e3 !important;
+  background-color: #0071e3 !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+.project-xr-action-primary i,
+a.project-xr-action-primary i,
+.project-xr-btn-github i,
+.project-xr-btn-demo i,
+.project-xr-action-primary svg,
+a.project-xr-action-primary svg {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  fill: #ffffff !important;
+  stroke: #ffffff !important;
 }
 
 .project-xr-action-primary:hover,
@@ -2304,17 +2321,31 @@ html.dark .project-xr-activity-note strong {
   box-shadow: 0 12px 20px rgb(15 23 42 / 9%);
 }
 
-html.dark .project-xr-action-primary,
 html.dark .project-xr-action-secondary {
   border-color: var(--project-border-dark) !important;
   background: rgb(255 255 255 / 3%) !important;
   color: var(--project-text-dark) !important;
 }
 
-html.dark .project-xr-action-primary {
-  border-color: rgb(88 166 255 / 42%) !important;
-  background: linear-gradient(135deg, #0b63da, #218bff) !important;
-  color: #fff !important;
+html.dark .project-xr-action-primary,
+html.dark a.project-xr-action-primary,
+html.dark .project-xr-btn-github,
+html.dark .project-xr-btn-demo {
+  border-color: #0071e3 !important;
+  background: #0071e3 !important;
+  background-color: #0071e3 !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+html.dark .project-xr-action-primary i,
+html.dark a.project-xr-action-primary i,
+html.dark .project-xr-btn-github i,
+html.dark .project-xr-btn-demo i {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  fill: #ffffff !important;
+  stroke: #ffffff !important;
 }
 
 .project-xr-action-disabled {
