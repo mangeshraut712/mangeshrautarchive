@@ -189,7 +189,7 @@ jobs:
 
       - name: Setup Node
         if: steps.cf.outputs.present == 'true'
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
           node-version: '22'
 
@@ -245,7 +245,7 @@ jobs:
       - name: Deploy Worker (API Token)
         id: deploy
         if: steps.cf.outputs.present == 'true' && steps.cf.outputs.auth_mode != 'global'
-        uses: cloudflare/wrangler-action@v3
+        uses: cloudflare/wrangler-action@v4
         with:
           apiToken: ${{ env.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ env.CLOUDFLARE_ACCOUNT_ID }}
@@ -284,7 +284,7 @@ jobs:
       - name: Deploy Worker (Global API Key)
         id: deploy_global
         if: steps.cf.outputs.present == 'true' && steps.cf.outputs.auth_mode == 'global'
-        uses: cloudflare/wrangler-action@v3
+        uses: cloudflare/wrangler-action@v4
         with:
           accountId: ${{ env.CLOUDFLARE_ACCOUNT_ID }}
           workingDirectory: workers/assistme-chat
