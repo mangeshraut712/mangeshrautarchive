@@ -1157,26 +1157,51 @@ html body #home .hero-footer {
   text-align: center !important;
 }
 
-/* Hero Description & Bio Line Master Rules */
+/* Hero Description & Bio Line Master Rules — WWDC 2026 Apple Luxury Glass */
+html body #home .hero-body {
+  margin: 1.25rem auto 1.75rem auto !important;
+  max-width: 44rem !important;
+  display: flex !important;
+  justify-content: center !important;
+  width: 100% !important;
+}
+
+html body #home .hero-description--apple-luxury,
 html body #home .hero-description,
 html body #home .hero-description-lines,
 html body #home .hero-description.hero-description-lines {
+  background: rgba(255, 255, 255, 0.55) !important;
+  backdrop-filter: blur(20px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+  border: 1px solid rgba(0, 0, 0, 0.06) !important;
+  box-shadow:
+    0 10px 30px -10px rgba(0, 0, 0, 0.05),
+    0 1px 3px rgba(0, 0, 0, 0.02),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8) !important;
+  border-radius: 20px !important;
+  padding: 1.25rem 1.75rem !important;
   font-size: clamp(0.98rem, 1.25vw, 1.125rem) !important;
-  line-height: 1.55 !important;
+  line-height: 1.6 !important;
   font-weight: 400 !important;
   letter-spacing: -0.012em !important;
-  color: #6e6e73 !important;
-  -webkit-text-fill-color: #6e6e73 !important;
+  color: #424245 !important;
+  -webkit-text-fill-color: #424245 !important;
   text-align: center !important;
   text-wrap: balance !important;
   max-width: 42rem !important;
-  margin: 1.25rem auto 1.5rem auto !important;
-  padding: 0 1rem !important;
+  margin: 0 auto !important;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
+html.dark body #home .hero-description--apple-luxury,
 html.dark body #home .hero-description,
 html.dark body #home .hero-description-lines,
 html.dark body #home .hero-description.hero-description-lines {
+  background: rgba(28, 28, 30, 0.6) !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+  box-shadow:
+    0 16px 40px -12px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
   color: #a1a1a6 !important;
   -webkit-text-fill-color: #a1a1a6 !important;
 }
@@ -1187,16 +1212,33 @@ html body #home .hero-description-line {
   text-align: center !important;
 }
 
+/* Subtle Apple Gradient Highlight for Key Technical Terms */
+html body #home .hero-text-highlight {
+  font-weight: 600 !important;
+  color: #1d1d1f !important;
+  background: linear-gradient(135deg, #0071e3 0%, #005bb5 100%) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+}
+
+html.dark body #home .hero-text-highlight {
+  background: linear-gradient(135deg, #2997ff 0%, #64d2ff 100%) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+}
+
 /* Mobile responsive refinements for Apple aesthetic */
 @media (max-width: 768px) {
+  html body #home .hero-description--apple-luxury,
   html body #home .hero-description,
   html body #home .hero-description-lines,
   html body #home .hero-description.hero-description-lines {
     font-size: 0.95rem !important;
-    line-height: 1.5 !important;
+    line-height: 1.55 !important;
     letter-spacing: -0.01em !important;
-    margin: 1rem auto 1.25rem auto !important;
-    padding: 0 0.75rem !important;
+    padding: 1rem 1.15rem !important;
+    border-radius: 16px !important;
+    margin: 0 0.5rem !important;
   }
 
   html body #home .hero-description-line {
@@ -1215,7 +1257,7 @@ html body #home .hero-description-line {
     justify-content: center !important;
     width: 100% !important;
     max-width: 290px !important;
-    margin: 1rem auto 0 auto !important;
+    margin: 1.25rem auto 0 auto !important;
     gap: 0.75rem !important;
   }
 
