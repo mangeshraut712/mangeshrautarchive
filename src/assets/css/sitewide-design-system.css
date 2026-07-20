@@ -28,23 +28,25 @@ button:not(.gh-contrib__view-btn):not(.gh-contrib__year):not(.about-tab-btn):not
     .chatbot-followup-chips button
   ):not(#search-toggle):not(#search-close):not(#theme-toggle):not(.theme-toggle-nav):not(
     #menu-btn
-  ):not(.menu-toggle-button):not(#name-pronounce-btn):not(.name-pronounce-btn):not(
-    #avatar-toggle
-  ):not(.profile-image-toggle):not(.proj-filter-btn):not(.project-lens-chip):not(
-    .project-action-btn
-  ):not(.blog-read-btn):not(.blog-filter-chip):not(.blog-preview-btn):not(.travel-action):not(
-    .travel-nav__projection
-  ):not(.travel-nav__theme):not(.travel-nav__panel):not(.travel-filter-chip):not(.country-pill):not(
-    .travel-advanced-toggle
-  ):not(.travel-sidebar__handle):not(.a11y-toolbar button):not(.a11y-glass-preset):not(
-    .a11y-glass-popover__close
-  ):not([class*='maplibregl-ctrl']):not(.systems-arch-tab):not(.systems-hero-action):not(
-    .uses-control-tile
-  ):not(.uses-filter-chip):not(.portfolio-reach-badge):not(.hero-pill-badge):not(
-    .crypto-mini-btn
-  ):not(.robinhood-mini-btn):not(.calendly-panel-button):not(.ios-btn):not(.ios-btn-small):not(
-    .status-circle
-  ):not(.edit-btn):not(.contact-assistme-btn):not(.currently-tab):not(.section-preview-btn):not(
+  ):not(#close-menu-btn):not(.premium-close-btn):not(.apple-close-btn):not(.menu-toggle-button):not(
+    #name-pronounce-btn
+  ):not(.name-pronounce-btn):not(#avatar-toggle):not(.profile-image-toggle):not(
+    .proj-filter-btn
+  ):not(.project-lens-chip):not(.project-action-btn):not(.blog-read-btn):not(.blog-filter-chip):not(
+    .blog-preview-btn
+  ):not(.travel-action):not(.travel-nav__projection):not(.travel-nav__theme):not(
+    .travel-nav__panel
+  ):not(.travel-filter-chip):not(.country-pill):not(.travel-advanced-toggle):not(
+    .travel-sidebar__handle
+  ):not(.a11y-toolbar button):not(.a11y-glass-preset):not(.a11y-glass-popover__close):not(
+    [class*='maplibregl-ctrl']
+  ):not(.systems-arch-tab):not(.systems-hero-action):not(.uses-control-tile):not(
+    .uses-filter-chip
+  ):not(.portfolio-reach-badge):not(.hero-pill-badge):not(.crypto-mini-btn):not(
+    .robinhood-mini-btn
+  ):not(.calendly-panel-button):not(.ios-btn):not(.ios-btn-small):not(.status-circle):not(
+    .edit-btn
+  ):not(.contact-assistme-btn):not(.currently-tab):not(.section-preview-btn):not(
     .hero-cta-secondary
   ):not(.btn-secondary):not(.button-secondary):not(.apple-btn-secondary):not(.about-tab-btn):not(
     .proj-filter-btn
@@ -97,23 +99,25 @@ button:not(.gh-contrib__view-btn):not(.gh-contrib__year):not(.about-tab-btn):not
     .chatbot-followup-chips button
   ):not(#search-toggle):not(#search-close):not(#theme-toggle):not(.theme-toggle-nav):not(
     #menu-btn
-  ):not(.menu-toggle-button):not(#name-pronounce-btn):not(.name-pronounce-btn):not(
-    #avatar-toggle
-  ):not(.profile-image-toggle):not(.proj-filter-btn):not(.project-lens-chip):not(
-    .project-action-btn
-  ):not(.blog-read-btn):not(.blog-filter-chip):not(.blog-preview-btn):not(.travel-action):not(
-    .travel-nav__projection
-  ):not(.travel-nav__theme):not(.travel-nav__panel):not(.travel-filter-chip):not(.country-pill):not(
-    .travel-advanced-toggle
-  ):not(.travel-sidebar__handle):not(.a11y-toolbar button):not(.a11y-glass-preset):not(
-    .a11y-glass-popover__close
-  ):not([class*='maplibregl-ctrl']):not(.systems-arch-tab):not(.systems-hero-action):not(
-    .uses-control-tile
-  ):not(.uses-filter-chip):not(.portfolio-reach-badge):not(.hero-pill-badge):not(
-    .crypto-mini-btn
-  ):not(.robinhood-mini-btn):not(.calendly-panel-button):not(.ios-btn):not(.ios-btn-small):not(
-    .status-circle
-  ):not(.edit-btn):not(.contact-assistme-btn):not(.currently-tab):not(.section-preview-btn):not(
+  ):not(#close-menu-btn):not(.premium-close-btn):not(.apple-close-btn):not(.menu-toggle-button):not(
+    #name-pronounce-btn
+  ):not(.name-pronounce-btn):not(#avatar-toggle):not(.profile-image-toggle):not(
+    .proj-filter-btn
+  ):not(.project-lens-chip):not(.project-action-btn):not(.blog-read-btn):not(.blog-filter-chip):not(
+    .blog-preview-btn
+  ):not(.travel-action):not(.travel-nav__projection):not(.travel-nav__theme):not(
+    .travel-nav__panel
+  ):not(.travel-filter-chip):not(.country-pill):not(.travel-advanced-toggle):not(
+    .travel-sidebar__handle
+  ):not(.a11y-toolbar button):not(.a11y-glass-preset):not(.a11y-glass-popover__close):not(
+    [class*='maplibregl-ctrl']
+  ):not(.systems-arch-tab):not(.systems-hero-action):not(.uses-control-tile):not(
+    .uses-filter-chip
+  ):not(.portfolio-reach-badge):not(.hero-pill-badge):not(.crypto-mini-btn):not(
+    .robinhood-mini-btn
+  ):not(.calendly-panel-button):not(.ios-btn):not(.ios-btn-small):not(.status-circle):not(
+    .edit-btn
+  ):not(.contact-assistme-btn):not(.currently-tab):not(.section-preview-btn):not(
     .hero-cta-secondary
   ):not(.btn-secondary):not(.button-secondary):not(.apple-btn-secondary):not(.about-tab-btn):not(
     .proj-filter-btn
@@ -716,25 +720,27 @@ button:not(.gh-contrib__view-btn):not(.gh-contrib__year):not(.about-tab-btn):not
     .chatbot-followup-chips button
   ):not(#search-toggle):not(#search-close):not(#theme-toggle):not(.theme-toggle-nav):not(
     #menu-btn
-  ):not(.menu-toggle-button):not(#name-pronounce-btn):not(.name-pronounce-btn):not(
-    #avatar-toggle
-  ):not(.profile-image-toggle):not(.proj-filter-btn):not(.project-lens-chip):not(
-    .projects-view-all-btn
-  ):not(.project-action-btn):not(.blog-read-btn):not(.blog-filter-chip):not(.blog-preview-btn):not(
-    .travel-action
-  ):not(.travel-nav__projection):not(.travel-nav__theme):not(.travel-nav__panel):not(
-    .travel-filter-chip
-  ):not(.country-pill):not(.travel-advanced-toggle):not(.travel-sidebar__handle):not(
-    .travel-search__clear
-  ):not(.travel-empty-state__reset):not(.a11y-toolbar button):not(.a11y-glass-preset):not(
-    .a11y-glass-popover__close
-  ):not(.systems-arch-tab):not(.uses-control-tile):not(.portfolio-reach-badge):not(
-    .hero-pill-badge
-  ):not(.crypto-mini-btn):not(.robinhood-mini-btn):not(.calendly-panel-button):not(.ios-btn):not(
-    .ios-btn-small
-  ):not(.status-circle):not(.edit-btn):not(.contact-assistme-btn):not(.currently-tab):not(
-    .section-preview-btn
-  ):not(.hero-cta-secondary):not(.hero-cta-primary):not([class*='maplibregl-ctrl']),
+  ):not(#close-menu-btn):not(.premium-close-btn):not(.apple-close-btn):not(.menu-toggle-button):not(
+    #name-pronounce-btn
+  ):not(.name-pronounce-btn):not(#avatar-toggle):not(.profile-image-toggle):not(
+    .proj-filter-btn
+  ):not(.project-lens-chip):not(.projects-view-all-btn):not(.project-action-btn):not(
+    .blog-read-btn
+  ):not(.blog-filter-chip):not(.blog-preview-btn):not(.travel-action):not(
+    .travel-nav__projection
+  ):not(.travel-nav__theme):not(.travel-nav__panel):not(.travel-filter-chip):not(.country-pill):not(
+    .travel-advanced-toggle
+  ):not(.travel-sidebar__handle):not(.travel-search__clear):not(.travel-empty-state__reset):not(
+    .a11y-toolbar button
+  ):not(.a11y-glass-preset):not(.a11y-glass-popover__close):not(.systems-arch-tab):not(
+    .uses-control-tile
+  ):not(.portfolio-reach-badge):not(.hero-pill-badge):not(.crypto-mini-btn):not(
+    .robinhood-mini-btn
+  ):not(.calendly-panel-button):not(.ios-btn):not(.ios-btn-small):not(.status-circle):not(
+    .edit-btn
+  ):not(.contact-assistme-btn):not(.currently-tab):not(.section-preview-btn):not(
+    .hero-cta-secondary
+  ):not(.hero-cta-primary):not([class*='maplibregl-ctrl']),
 .project-tag,
 .badge {
   color: #fff !important;
