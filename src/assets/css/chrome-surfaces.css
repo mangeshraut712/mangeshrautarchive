@@ -454,12 +454,28 @@ html.dark #home .music-card-inner .artist-name {
 
 /* ─── Game section → footer breathing room (wins over apple-platform-features) ─── */
 main > section#debug-runner-section {
-  padding-bottom: clamp(3rem, 6vh, 5rem) !important;
+  padding-top: 1rem !important;
+  padding-bottom: 0.75rem !important;
+  margin-bottom: 0 !important;
 }
 
-main > section#debug-runner-section + footer {
-  margin-top: clamp(1.25rem, 2.5vh, 2rem) !important;
-  padding-top: clamp(1.5rem, 3vh, 2.25rem) !important;
+main > section#debug-runner-section + footer,
+footer {
+  margin-top: 0.25rem !important;
+  padding-top: 1rem !important;
+  padding-bottom: 1.75rem !important;
+}
+
+@media (max-width: 768px) {
+  #contact,
+  #contact .container,
+  .contact-info-all,
+  .support-donation-card,
+  #debug-runner-section,
+  footer,
+  .footer-wrapper {
+    padding-right: 1.5rem !important;
+  }
 }
 
 /* Uses page control tiles — late loaded so global mobile button rules cannot recolor them. */

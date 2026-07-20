@@ -2825,22 +2825,30 @@ html.dark .education-icon i {
   color: #fff !important;
 }
 
-/* --- Contact Icon Boxes --- */
+/* --- Contact Icon Boxes & Hover States --- */
 .icon-box {
   border-radius: 50% !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
+  width: 40px !important;
+  height: 40px !important;
+  min-width: 40px !important;
+  min-height: 40px !important;
+  transition:
+    transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+    background-color 0.2s ease,
+    box-shadow 0.2s ease !important;
 }
 
 .icon-box.blue {
-  background: rgb(0 122 255 / 12%) !important;
-  color: #007aff !important;
+  background: rgb(0 113 227 / 12%) !important;
+  color: #0071e3 !important;
 }
 
 .icon-box.green {
-  background: rgb(52 199 89 / 12%) !important;
-  color: #34c759 !important;
+  background: rgb(37 211 102 / 15%) !important;
+  color: #25d366 !important;
 }
 
 .icon-box.purple,
@@ -2850,19 +2858,70 @@ html.dark .education-icon i {
 }
 
 html.dark .icon-box.blue {
-  background: rgb(10 132 255 / 18%) !important;
+  background: rgb(10 132 255 / 20%) !important;
   color: #0a84ff !important;
 }
 
 html.dark .icon-box.green {
-  background: rgb(48 209 88 / 18%) !important;
-  color: #30d158 !important;
+  background: rgb(37 211 102 / 20%) !important;
+  color: #25d366 !important;
 }
 
 html.dark .icon-box.purple,
 html.dark .icon-box.location {
-  background: rgb(255 69 58 / 18%) !important;
+  background: rgb(255 69 58 / 20%) !important;
   color: #ff453a !important;
+}
+
+/* Contact Item Hover States - High-Contrast Apple Glow */
+.contact-link-item:hover .icon-box {
+  transform: scale(1.1) !important;
+}
+
+.contact-link-item:hover .icon-box i,
+.contact-link-item:hover .icon-box svg {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  fill: #ffffff !important;
+  stroke: #ffffff !important;
+}
+
+.contact-link-item:hover .icon-box.blue {
+  background: #0071e3 !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 16px rgb(0 113 227 / 45%) !important;
+}
+
+.contact-link-item:hover .icon-box.green {
+  background: #25d366 !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 16px rgb(37 211 102 / 45%) !important;
+}
+
+.contact-link-item:hover .icon-box.purple,
+.contact-link-item:hover .icon-box.location {
+  background: #ff3b30 !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 16px rgb(255 59 48 / 45%) !important;
+}
+
+html.dark .contact-link-item:hover .icon-box.blue {
+  background: #0a84ff !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 18px rgb(10 132 255 / 55%) !important;
+}
+
+html.dark .contact-link-item:hover .icon-box.green {
+  background: #25d366 !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 18px rgb(37 211 102 / 55%) !important;
+}
+
+html.dark .contact-link-item:hover .icon-box.purple,
+html.dark .contact-link-item:hover .icon-box.location {
+  background: #ff453a !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 18px rgb(255 69 58 / 55%) !important;
 }
 
 /* --- Donation/Donate Icons --- */
