@@ -182,3 +182,65 @@ def test_music_artwork_requires_search_term():
     response = client.get("/api/music/artwork")
 
     assert response.status_code == 400
+
+
+def test_pick_itunes_artwork_matches_correct_track_not_just_artist():
+    """Among songs by the same artist, pick the one whose track name matches."""
+    from api.routes.media import _pick_itunes_artwork
+
+    results = [
+        {
+            "artistName": "Coldplay",
+            "trackName": "The Scientist",
+            "collectionName": "A Rush of Blood to the Head",
+            "artworkUrl100": "https://itunes/scientist/100x100bb.jpg",
+        },
+        {
+            "artistName": "Coldplay",
+            "trackName": "Yellow",
+            "collectionName": "Parachutes",
+            "artworkUrl100": "https://itunes/yellow/100x100bb.jpg",
+        },
+    ]
+
+    artwork = _pick_itunes_artwork(results, track_hint="Yellow", artist_hint="Coldplay")
+
+    assert artwork == "https://itunes/yellow/600x600bb.jpg"
+
+
+def test_pick_itunes_artwork_rejects_unrelated_results():
+    """If neither artist nor track match, return nothing rather than wrong art."""
+    from api.routes.media import _pick_itunes_artwork
+
+    results = [
+        {
+            "artistName": "Someone Else",
+            "trackName": "A Different Song",
+            "collectionName": "Other Album",
+            "artworkUrl100": "https://itunes/wrong/100x100bb.jpg",
+        }
+    ]
+
+    artwork = _pick_itunes_artwork(results, track_hint="Yellow", artist_hint="Coldplay")
+
+    assert artwork == ""
+
+
+def test_pick_itunes_artwork_ignores_feat_and_remaster_noise():
+    """Normalization should still match despite (feat. …) / - Remastered suffixes."""
+    from api.routes.media import _pick_itunes_artwork
+
+    results = [
+        {
+            "artistName": "Eminem",
+            "trackName": "Stan (feat. Dido)",
+            "collectionName": "The Marshall Mathers LP",
+            "artworkUrl100": "https://itunes/stan/100x100bb.jpg",
+        }
+    ]
+
+    artwork = _pick_itunes_artwork(
+        results, track_hint="Stan - Remastered", artist_hint="Eminem"
+    )
+
+    assert artwork == "https://itunes/stan/600x600bb.jpg"

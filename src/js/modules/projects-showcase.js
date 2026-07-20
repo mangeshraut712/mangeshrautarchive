@@ -223,14 +223,22 @@ function setStatItem(id, value, { hideWhenEmpty = true } = {}) {
 
 function renderNoResults(container, query = '', lensLabel = '') {
   const parts = [];
-  if (query) parts.push(`"${query}"`);
-  if (lensLabel) parts.push(lensLabel);
-  const suffix = parts.length ? ` for ${parts.join(' and ')}` : '';
+  if (query) parts.push(`“${query}”`);
+  if (lensLabel && lensLabel.toLowerCase() !== 'all') parts.push(lensLabel);
+  const suffix = parts.length ? ` for ${parts.join(' · ')}` : '';
+  const canClear = Boolean(query) || (lensLabel && lensLabel.toLowerCase() !== 'all');
   container.innerHTML = `
-    <div class="projects-empty-state">
-      <i class="fas fa-folder-open"></i>
+    <div class="projects-empty-state" role="status">
+      <i class="fas fa-folder-open" aria-hidden="true"></i>
       <h4>No matching repositories${suffix}</h4>
-      <p>Try another project name, language, or tag.</p>
+      <p>Try another name, language, or tag — or clear filters to see everything.</p>
+      ${
+        canClear
+          ? `<button type="button" class="projects-clear-filters-btn" data-projects-clear-filters>
+               Clear filters
+             </button>`
+          : ''
+      }
     </div>
   `;
 }
@@ -324,11 +332,6 @@ function updateActivityStats(allRepos, visibleRepos = [], githubProjects = null)
 
   if (totals.activityRepos > 0 || totals.activeRepos > 0 || totals.releaseCheckedRepos > 0) {
     captionEl.textContent = formatActivityCaption(totals);
-    return;
-  }
-
-  if (totals.activityRepos > 0) {
-    captionEl.textContent = `${totals.activityRepos} repositories with live commit history and contributor activity in the last sync.`;
     return;
   }
 
@@ -505,11 +508,12 @@ function updateLensChipCounts(repos, githubProjects, activeLens = DEFAULT_PROJEC
       countEl.textContent = String(value);
     }
 
-    const shouldHide = key !== 'all' && value === 0;
-    chip.hidden = shouldHide;
-    chip.disabled = shouldHide;
+    const shouldDisable = key !== 'all' && value === 0;
+    chip.hidden = false;
+    chip.disabled = shouldDisable;
+    chip.classList.toggle('is-empty', shouldDisable);
 
-    if (shouldHide && nextActiveLens === key) {
+    if (shouldDisable && nextActiveLens === key) {
       nextActiveLens = DEFAULT_PROJECT_LENS;
     }
 
@@ -581,7 +585,11 @@ export async function initProjectShowcase({ username = DEFAULT_USERNAME } = {}) 
     const searchInput = document.getElementById('project-search-input');
     const sortSelect = document.getElementById('project-sort-select');
     const lensButtons = Array.from(document.querySelectorAll('[data-project-lens]'));
+    const expandWrap = document.getElementById('projects-expand-wrap');
+    const expandBtn = document.getElementById('projects-expand-btn');
     let activeLens = DEFAULT_PROJECT_LENS;
+    let showAllProjects = false;
+    let didInitialRealign = false;
 
     const getCurrentQuery = () => String(searchInput?.value || '').trim();
     const getCurrentSort = () =>
@@ -590,14 +598,68 @@ export async function initProjectShowcase({ username = DEFAULT_USERNAME } = {}) 
         .toLowerCase();
     const getCurrentLens = () => activeLens;
 
-    const getDisplayRepos = () => {
+    const announceResults = (count, query, lens) => {
+      const live = document.getElementById('projects-results-status');
+      if (!live) return;
+      const lensLabel = getLensLabel(lens);
+      if (count === 0) {
+        const bits = [];
+        if (query) bits.push(`“${query}”`);
+        if (lens !== DEFAULT_PROJECT_LENS) bits.push(lensLabel || LENS_LABELS[lens]);
+        live.textContent = bits.length
+          ? `No projects match ${bits.join(' · ')}.`
+          : 'No projects to show.';
+        return;
+      }
+      const filterHint = query ? ` matching “${query}”` : '';
+      if (lens !== DEFAULT_PROJECT_LENS && lensLabel) {
+        live.textContent = `${count} ${lensLabel}${filterHint}.`;
+        return;
+      }
+      live.textContent = `${count} project${count === 1 ? '' : 's'}${filterHint}.`;
+    };
+
+    const clearFilters = () => {
+      if (searchInput) searchInput.value = '';
+      activeLens = DEFAULT_PROJECT_LENS;
+      updateLensButtons(lensButtons, activeLens);
+      renderProjects().catch(error => {
+        console.error('Project showcase clear-filters render failed:', error);
+      });
+    };
+
+    const getFilteredSortedRepos = () => {
       const query = getCurrentQuery();
       const matcher = createSearchMatcher(query);
       const lensMatcher = createLensMatcher(getCurrentLens(), githubProjects);
       const filtered = allShowcaseRepos.filter(repo => matcher(repo) && lensMatcher(repo));
-      const sorted = [...filtered].toSorted(createSortComparator(getCurrentSort(), githubProjects));
-      const maxItems = getTwoRowLimit(container);
-      return sorted.slice(0, maxItems);
+      return [...filtered].toSorted(createSortComparator(getCurrentSort(), githubProjects));
+    };
+
+    const getDisplayRepos = () => {
+      const sorted = getFilteredSortedRepos();
+      if (showAllProjects) return sorted;
+      return sorted.slice(0, getTwoRowLimit(container));
+    };
+
+    const syncExpandControl = totalFiltered => {
+      if (!expandWrap || !expandBtn) return;
+
+      const previewLimit = getTwoRowLimit(container);
+      const needsExpand = totalFiltered > previewLimit;
+
+      if (!needsExpand) {
+        showAllProjects = false;
+        expandWrap.hidden = true;
+        expandBtn.setAttribute('aria-expanded', 'false');
+        return;
+      }
+
+      expandWrap.hidden = false;
+      expandBtn.setAttribute('aria-expanded', showAllProjects ? 'true' : 'false');
+      expandBtn.textContent = showAllProjects
+        ? 'Show fewer projects'
+        : `Show all ${totalFiltered} projects`;
     };
 
     const hydrationQueue = new Set();
@@ -714,35 +776,43 @@ export async function initProjectShowcase({ username = DEFAULT_USERNAME } = {}) 
     };
 
     const scheduleProjectsRealignment = () => {
-      let cancelled = false;
-      const cancelAlignment = () => {
-        cancelled = true;
-      };
-      const runRealignment = () => {
-        if (!cancelled) {
-          realignProjectsSection();
-        }
-      };
-
-      window.addEventListener('wheel', cancelAlignment, { passive: true, once: true });
-      window.addEventListener('touchstart', cancelAlignment, { passive: true, once: true });
-      window.addEventListener('keydown', cancelAlignment, { passive: true, once: true });
-
-      requestAnimationFrame(runRealignment);
-      [220, 700, 1400, 2400, 4200, 6600, 9000].forEach(delay => {
-        window.setTimeout(runRealignment, delay);
-      });
+      if (didInitialRealign || window.location.hash !== '#projects') return;
+      didInitialRealign = true;
+      requestAnimationFrame(() => realignProjectsSection());
+      window.setTimeout(() => realignProjectsSection(), 280);
     };
 
     const renderProjects = async ({ queueHydration = true } = {}) => {
       const query = getCurrentQuery();
-      const lens = getCurrentLens();
-      const displayRepos = getDisplayRepos();
+      let lens = getCurrentLens();
+      let filteredSorted = getFilteredSortedRepos();
+      let displayRepos = showAllProjects
+        ? filteredSorted
+        : filteredSorted.slice(0, getTwoRowLimit(container));
+
+      syncExpandControl(filteredSorted.length);
 
       if (displayRepos.length === 0) {
-        renderNoResults(container, query, getLensLabel(lens));
-        updateActivityStats(allRepos, [], githubProjects);
-        return;
+        const previousLens = lens;
+        activeLens = updateLensChipCounts(allShowcaseRepos, githubProjects, activeLens);
+        updateLensButtons(lensButtons, activeLens);
+        lens = activeLens;
+
+        // Empty lens (e.g. Active=0 after live fetch) → fall back to All and re-render once.
+        if (previousLens !== lens) {
+          filteredSorted = getFilteredSortedRepos();
+          displayRepos = showAllProjects
+            ? filteredSorted
+            : filteredSorted.slice(0, getTwoRowLimit(container));
+          syncExpandControl(filteredSorted.length);
+        }
+
+        if (displayRepos.length === 0) {
+          renderNoResults(container, query, getLensLabel(lens));
+          updateActivityStats(allRepos, [], githubProjects);
+          announceResults(0, query, lens);
+          return;
+        }
       }
 
       container.innerHTML = displayRepos
@@ -754,12 +824,11 @@ export async function initProjectShowcase({ username = DEFAULT_USERNAME } = {}) 
       updateActivityStats(allRepos, displayRepos, githubProjects);
       activeLens = updateLensChipCounts(allShowcaseRepos, githubProjects, activeLens);
       updateLensButtons(lensButtons, activeLens);
+      announceResults(filteredSorted.length, query, activeLens);
 
       if (queueHydration) {
         queueActivityHydration(displayRepos);
       }
-
-      scheduleProjectsRealignment();
     };
 
     const debouncedRender = debounce(() => {
@@ -771,6 +840,14 @@ export async function initProjectShowcase({ username = DEFAULT_USERNAME } = {}) 
     if (searchInput) {
       searchInput.addEventListener('input', debouncedRender);
       searchInput.addEventListener('search', debouncedRender);
+      searchInput.addEventListener('keydown', event => {
+        if (event.key !== 'Escape' || !searchInput.value) return;
+        event.preventDefault();
+        searchInput.value = '';
+        renderProjects().catch(error => {
+          console.error('Project showcase Escape-clear render failed:', error);
+        });
+      });
     }
 
     if (sortSelect) {
@@ -780,6 +857,11 @@ export async function initProjectShowcase({ username = DEFAULT_USERNAME } = {}) 
         });
       });
     }
+
+    container.addEventListener('click', event => {
+      if (!event.target.closest('[data-projects-clear-filters]')) return;
+      clearFilters();
+    });
 
     lensButtons.forEach(button => {
       button.addEventListener('click', () => {
@@ -791,6 +873,16 @@ export async function initProjectShowcase({ username = DEFAULT_USERNAME } = {}) 
         });
       });
     });
+
+    if (expandBtn) {
+      expandBtn.addEventListener('click', () => {
+        showAllProjects = !showAllProjects;
+        renderProjects().catch(error => {
+          console.error('Project showcase expand render failed:', error);
+        });
+      });
+    }
+
     activeLens = updateLensChipCounts(allShowcaseRepos, githubProjects, activeLens);
     updateLensButtons(lensButtons, activeLens);
 
@@ -804,6 +896,7 @@ export async function initProjectShowcase({ username = DEFAULT_USERNAME } = {}) 
     );
 
     await renderProjects();
+    scheduleProjectsRealignment();
     queueTopActivityHydration();
 
     githubProjects

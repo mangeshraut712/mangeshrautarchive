@@ -791,8 +791,8 @@ class GitHubProjects {
       if (activeAgeDays <= 14) key = 'active';
       else if (activeAgeDays <= 45) key = 'fresh';
       else if (activeAgeDays > 120) key = 'attention';
-      label = 'Checking release';
-      meta = 'Syncing latest GitHub release';
+      label = 'Syncing';
+      meta = 'Fetching latest release…';
     } else if (!hasRelease) {
       if (activeAgeDays <= 14) {
         key = 'active';
@@ -801,6 +801,7 @@ class GitHubProjects {
         key = 'attention';
         label = 'Stale';
       }
+      meta = 'No GitHub release yet';
     } else if (commitsSinceRelease !== null && commitsSinceRelease >= 25) {
       key = 'attention';
       label = 'Stale';
@@ -1302,7 +1303,8 @@ class GitHubProjects {
 
     const updatedRelativeCompact = this.formatRelativeDateCompact(repo.updated_at);
     const updatedAbsolute = this.formatAbsoluteDate(repo.updated_at);
-    const updatedBadgeText = `${updatedRelativeCompact} · ${updatedAbsolute}`;
+    // Relative-only in the chip so titles keep room on tablet/mobile; absolute stays in title=.
+    const updatedBadgeText = updatedRelativeCompact;
     const repoPath = repo.full_name || `${this.username}/${repo.name}`;
     const repoLicense = repo.license?.spdx_id || '';
     const repoSize = Number.isFinite(repo.size) ? repo.size : '';
@@ -1326,7 +1328,7 @@ class GitHubProjects {
     const safeReleaseKey = this.escapeHtml(releaseKey);
     const safeReleaseLabel = this.escapeHtml(releaseSignal.label);
     const safeReleaseMeta = this.escapeHtml(releaseSignal.meta);
-    const safeReleaseTag = this.escapeHtml(releaseSignal.tagName || 'No release');
+    const safeReleaseTag = this.escapeHtml(releaseSignal.tagName || '');
     const safeReleaseDate = this.escapeHtml(releaseSignal.releaseDate || '');
     const safeReleaseDateLabel = this.escapeHtml(
       releaseSignal.releaseDateLabel || 'No release date'
@@ -1346,10 +1348,22 @@ class GitHubProjects {
 
     const commitsText = commits30d === null ? '--' : this.formatCompactNumber(commits30d);
     const contributorsText = contributors === null ? '--' : this.formatCompactNumber(contributors);
-    const releaseCommitsText =
-      releaseSignal.commitsSinceRelease === null
-        ? 'n/a'
-        : this.formatCompactNumber(releaseSignal.commitsSinceRelease);
+    const hasReleaseTag = Boolean(releaseSignal.tagName);
+    const showCommitsSince = hasReleaseTag && releaseSignal.commitsSinceRelease !== null;
+    const releaseCommitsText = showCommitsSince
+      ? this.formatCompactNumber(releaseSignal.commitsSinceRelease)
+      : '';
+    const releaseTagHtml = hasReleaseTag
+      ? safeReleaseUrl
+        ? `<a class="project-release-tag" href="${safeReleaseUrl}" target="_blank" rel="noopener noreferrer" title="${safeReleaseDateLabel}">${safeReleaseTag}</a>`
+        : `<strong class="project-release-tag" title="${safeReleaseDateLabel}">${safeReleaseTag}</strong>`
+      : '';
+    const releaseCommitsHtml = showCommitsSince
+      ? `<span class="project-release-commits" title="Commits since latest release">
+              <i class="fas fa-code-branch" aria-hidden="true"></i>
+              ${releaseCommitsText} since
+            </span>`
+      : '';
 
     return `
       <article class="showcase-project-card apple-3d-project group lg-interactive" data-lg-interactive data-release-status="${safeReleaseKey}" aria-label="${safeName} project card">
@@ -1372,20 +1386,10 @@ class GitHubProjects {
           <p class="project-description">${safeDescription || 'No description available'}</p>
 
           <div class="project-release-strip" data-release-status="${safeReleaseKey}">
-            <div class="project-release-copy">
-              <span class="project-release-status project-release-${safeReleaseKey}">${safeReleaseLabel}</span>
-              <strong>${safeReleaseTag}</strong>
-            </div>
-            <div class="project-release-meta">
-              <span title="${safeReleaseDateLabel}">
-                <i class="fas fa-tag"></i>
-                ${safeReleaseMeta}
-              </span>
-              <span title="Commits since latest release">
-                <i class="fas fa-code-branch"></i>
-                ${releaseCommitsText}
-              </span>
-            </div>
+            <span class="project-release-status project-release-${safeReleaseKey}">${safeReleaseLabel}</span>
+            ${releaseTagHtml}
+            <span class="project-release-detail">${safeReleaseMeta}</span>
+            ${releaseCommitsHtml}
           </div>
 
           <div class="project-signal-row">
@@ -1395,13 +1399,7 @@ class GitHubProjects {
             <span class="project-signal-pill" title="Forks">
               <i class="fas fa-code-fork"></i>${this.formatCompactNumber(forks)}
             </span>
-            <span class="project-signal-pill" title="Commits in last 30 days">
-              <i class="fas fa-code-commit"></i>${commitsText}
-            </span>
-            <span class="project-signal-pill" title="Contributors">
-              <i class="fas fa-users"></i>${contributorsText}
-            </span>
-            <span class="project-signal-score">Signal ${safeScore}/100</span>
+            <span class="project-signal-score" title="Commits 30d ${commitsText} · Contributors ${contributorsText}">Signal ${safeScore}/100</span>
           </div>
 
           <div class="project-tags">

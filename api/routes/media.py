@@ -2,6 +2,7 @@ import asyncio
 import time
 import json
 import logging
+import re
 from typing import List, Optional
 from urllib.parse import quote
 from fastapi import APIRouter, HTTPException, BackgroundTasks, Request
@@ -96,6 +97,15 @@ def _track_artist_name(track: dict) -> str:
     return str(artist or "").strip()
 
 
+def _upscale_lastfm_image(url: str) -> str:
+    """Normalize Last.fm CDN thumbnails (/34s/, /64s/, /174s/) to /300x300/."""
+    return (
+        url.replace("/34s/", "/300x300/")
+        .replace("/64s/", "/300x300/")
+        .replace("/174s/", "/300x300/")
+    )
+
+
 def _best_lastfm_image(track: dict) -> str:
     images = track.get("image") or []
     if not isinstance(images, list):
@@ -109,13 +119,13 @@ def _best_lastfm_image(track: dict) -> str:
     for size in preferred:
         url = by_size.get(size, "")
         if url and LASTFM_PLACEHOLDER_HASH not in url:
-            return url.replace("/174s/", "/300x300/").replace("/64s/", "/300x300/")
+            return _upscale_lastfm_image(url)
     for img in reversed(images):
         if not isinstance(img, dict):
             continue
         url = str(img.get("#text") or "").strip()
         if url and LASTFM_PLACEHOLDER_HASH not in url:
-            return url.replace("/174s/", "/300x300/").replace("/64s/", "/300x300/")
+            return _upscale_lastfm_image(url)
     return ""
 
 
@@ -388,42 +398,93 @@ async def fetch_openlibrary_cover(title: str, author: str = "") -> str:
     return ""
 
 
-def _pick_itunes_artwork(results: list, artist_hint: str = "") -> str:
-    """Prefer an iTunes hit whose artist matches; fall back to the first artwork URL."""
+def _normalize_music_text(value: str) -> str:
+    """Lowercase and strip noise (feat., remaster/live tags, punctuation) for matching."""
+    text = str(value or "").lower().strip()
+    # Drop "(feat. ...)" / "ft. ..." and trailing " - Remastered 2011" style suffixes.
+    text = re.sub(r"\b(feat|ft|featuring)\b.*$", " ", text)
+    text = re.sub(r"[\(\[\{].*?[\)\]\}]", " ", text)
+    text = re.sub(r"\s[-–—]\s.*$", " ", text)
+    text = re.sub(r"[^a-z0-9]+", " ", text)
+    return " ".join(text.split())
+
+
+def _text_match_score(candidate: str, hint: str) -> int:
+    """3 = exact, 2 = substring, 1 = shared token, 0 = no relation."""
+    cand = _normalize_music_text(candidate)
+    want = _normalize_music_text(hint)
+    if not cand or not want:
+        return 0
+    if cand == want:
+        return 3
+    if want in cand or cand in want:
+        return 2
+    cand_tokens = set(cand.split())
+    want_tokens = set(want.split())
+    return 1 if cand_tokens & want_tokens else 0
+
+
+def _pick_itunes_artwork(results: list, track_hint: str = "", artist_hint: str = "") -> str:
+    """Pick the iTunes hit that matches BOTH the track and artist, not just artist.
+
+    Scoring weights artist and track equally; the album/collection name is used as a
+    secondary track signal (tracks are often titled after their album). Only results
+    that plausibly match (artist OR track substring match) are trusted, so we never
+    return confidently-wrong artwork for an unrelated song by the same artist.
+    """
     if not results:
         return ""
 
-    hint = artist_hint.strip().lower()
-    ranked = results
-    if hint:
-        scored = []
-        for idx, item in enumerate(results):
-            if not isinstance(item, dict):
-                continue
-            artist_name = str(item.get("artistName") or "").strip().lower()
-            score = 0
-            if artist_name == hint:
-                score = 3
-            elif hint in artist_name or artist_name in hint:
-                score = 2
-            elif any(part and part in artist_name for part in hint.split()):
-                score = 1
-            scored.append((score, -idx, item))
-        scored.sort(reverse=True)
-        ranked = [item for _, _, item in scored] if scored else results
-
-    for item in ranked:
+    scored = []
+    for idx, item in enumerate(results):
         if not isinstance(item, dict):
             continue
-        artwork = str(item.get("artworkUrl100") or "").strip()
-        if artwork:
-            return artwork.replace("/100x100bb.", "/600x600bb.")
-    return ""
+        if not str(item.get("artworkUrl100") or "").strip():
+            continue
+
+        artist_score = _text_match_score(item.get("artistName"), artist_hint) if artist_hint else 0
+        track_score = _text_match_score(item.get("trackName"), track_hint) if track_hint else 0
+        # An album titled like the song still counts as a (weaker) track signal.
+        collection_score = (
+            _text_match_score(item.get("collectionName"), track_hint) if track_hint else 0
+        )
+        effective_track = max(track_score, collection_score - 1)
+
+        total = artist_score * 3 + effective_track * 3
+        scored.append((total, artist_score, effective_track, -idx, item))
+
+    if not scored:
+        return ""
+
+    scored.sort(key=lambda entry: entry[:4], reverse=True)
+    best = scored[0]
+    _, best_artist, best_track, _, best_item = best
+
+    # Require real confidence: a strong artist match or a strong track match.
+    # Otherwise skip iTunes so we fall back to Last.fm's exact track metadata.
+    # Only enforce this when the result actually exposes metadata to judge against
+    # (real iTunes results always do); otherwise we can't do better than the top hit.
+    have_hints = bool(artist_hint) or bool(track_hint)
+    best_has_metadata = any(
+        str(best_item.get(field) or "").strip()
+        for field in ("artistName", "trackName", "collectionName")
+    )
+    confident = (best_artist >= 2) or (best_track >= 2) or (best_artist >= 1 and best_track >= 1)
+    if have_hints and best_has_metadata and not confident:
+        return ""
+
+    artwork = str(best_item.get("artworkUrl100") or "").strip()
+    return artwork.replace("/100x100bb.", "/600x600bb.") if artwork else ""
 
 
-async def fetch_itunes_artwork(search_term: str, artist_hint: str = "") -> str:
+async def fetch_itunes_artwork(
+    search_term: str, track_hint: str = "", artist_hint: str = ""
+) -> str:
     """Fetch album artwork from iTunes Search API (server-side to avoid browser CORS)."""
-    cache_key = f"itunes|{search_term.strip().lower()}|{artist_hint.strip().lower()}"
+    cache_key = (
+        f"itunes|{search_term.strip().lower()}"
+        f"|{track_hint.strip().lower()}|{artist_hint.strip().lower()}"
+    )
     if not search_term.strip():
         return ""
 
@@ -433,7 +494,7 @@ async def fetch_itunes_artwork(search_term: str, artist_hint: str = "") -> str:
 
     search_url = (
         "https://itunes.apple.com/search?"
-        f"term={quote(search_term)}&media=music&entity=song&limit=5"
+        f"term={quote(search_term)}&media=music&entity=song&limit=8"
     )
     headers = {
         "User-Agent": "AssistMe-Portfolio/3.0.0",
@@ -446,7 +507,9 @@ async def fetch_itunes_artwork(search_term: str, artist_hint: str = "") -> str:
             response.raise_for_status()
             data = response.json()
 
-        artwork = _pick_itunes_artwork(data.get("results") or [], artist_hint=artist_hint)
+        artwork = _pick_itunes_artwork(
+            data.get("results") or [], track_hint=track_hint, artist_hint=artist_hint
+        )
         if artwork:
             artwork_cache[cache_key] = {"url": artwork, "ts": time.time()}
             return artwork
@@ -503,9 +566,11 @@ async def fetch_lastfm_track_artwork(track: str, artist: str = "") -> str:
 
 
 async def resolve_external_artwork(track: str, artist: str = "") -> tuple[str, str]:
-    """Prefer iTunes, then Last.fm track metadata (edge-friendly fallback)."""
+    """Prefer iTunes (track+artist verified), then Last.fm track metadata."""
     search_term = f"{track.strip()} {artist.strip()}".strip()
-    itunes_url = await fetch_itunes_artwork(search_term, artist_hint=artist)
+    itunes_url = await fetch_itunes_artwork(
+        search_term, track_hint=track, artist_hint=artist
+    )
     if itunes_url:
         return itunes_url, "itunes"
 

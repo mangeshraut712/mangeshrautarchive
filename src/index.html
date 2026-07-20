@@ -49,21 +49,7 @@
   <title>Mangesh Raut | Software Engineer Portfolio — Java, Python, AWS, Full Stack</title>
   <meta name="viewport"
     content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover" />
-  <script>
-    (function preloadHeroProfileImage() {
-      var link = document.createElement('link');
-      link.rel = 'preload';
-      link.as = 'image';
-      link.href = 'assets/images/profile.webp';
-      link.setAttribute(
-        'imagesrcset',
-        'assets/images/profile-mobile.webp 160w, assets/images/profile.webp 320w'
-      );
-      link.setAttribute('imagesizes', '(max-width: 640px) 160px, 320px');
-      link.setAttribute('fetchpriority', 'high');
-      document.head.appendChild(link);
-    })();
-  </script>
+  <link rel="preload" as="image" href="assets/images/profile.webp" imagesrcset="assets/images/profile-mobile.webp 160w, assets/images/profile.webp 320w" imagesizes="(max-width: 640px) 160px, 320px" fetchpriority="high" />
   <meta name="view-transition" content="same-origin" />
   <meta name="HandheldFriendly" content="True" />
   <meta name="MobileOptimized" content="320" />
@@ -1200,7 +1186,7 @@ html.dark #home .hero-name-text {
   <link rel="stylesheet" data-href="assets/css/game-2026.css?v=20260716aa" data-lazy-style-key="game" />
   <link rel="stylesheet" data-href="assets/css/premium-enhancements.css?v=20260716aa" data-lazy-style-key="motion" />
   <link rel="stylesheet" data-href="assets/css/birthday-celebration.css?v=20260716aa" data-lazy-style-key="birthday" />
-  <link rel="stylesheet" data-href="assets/css/projects-showcase-2026.css?v=20260716aa" data-lazy-style-key="projects" />
+  <link rel="stylesheet" data-href="assets/css/projects-showcase-2026.css?v=20260720sc2" data-lazy-style-key="projects" />
   <link rel="stylesheet" data-href="assets/css/engineering-showcase.css?v=20260716aa" data-lazy-style-key="engineering" />
   <link rel="stylesheet" data-href="assets/css/share-widget.css?v=20260719ui2" data-lazy-style-key="share" />
   <link rel="stylesheet" data-href="assets/css/health-widget.css?v=20260716aa" data-lazy-style-key="currently" />
@@ -1580,7 +1566,7 @@ html.dark #home .hero-name-text {
           projectStyle.setAttribute('href', projectStyle.dataset.href);
         }
 
-        import('./js/modules/projects-showcase.js?v=20260716aa')
+        import('./js/modules/projects-showcase.js?v=20260720sc2')
           .then(function (module) {
             var init = module.initProjectShowcase || module.default;
             if (typeof init === 'function') {
@@ -2541,118 +2527,135 @@ html.dark #home .hero-name-text {
     <!-- Projects Section - Dynamic GitHub Integration -->
     <section id="projects" class="fade-in section-standard" aria-labelledby="projects-heading">
       <div class="container">
-        <h2 id="projects-heading">Project Showcase</h2>
-        <p class="section-subtitle">Full stack and AI projects from this software engineer portfolio — with live GitHub activity and release-freshness signals.</p>
-
         <div id="projects-showcase-shell" class="projects-showcase-shell">
-          <!-- GitHub Activity Overview -->
-          <div id="projects-activity-overview" class="projects-activity-overview" aria-live="polite">
-            <div class="activity-overview-head">
-              <div class="activity-overview-title-wrap">
-                <p class="activity-eyebrow">GitHub Operating View</p>
-                <h3 class="activity-title">Release-aware engineering momentum</h3>
-              </div>
-              <p id="projects-activity-caption" class="projects-activity-caption">
-                Syncing repository stars, forks, commits, and contributor activity...
-              </p>
-            </div>
+          <!-- Page 1: GitHub operating view -->
+          <div class="projects-page projects-page--github" id="projects-github-page">
+            <header class="projects-page-header">
+              <h2 id="projects-heading">Project Showcase</h2>
+              <p class="section-subtitle">Full stack and AI projects from this software engineer portfolio — with live GitHub activity and release-freshness signals.</p>
+            </header>
 
-            <div class="activity-overview-inner" id="activity-stats-container">
-              <div class="activity-stat-item skeleton">
-                <span class="activity-stat-value" id="stat-repos">--</span>
-                <span class="activity-stat-label">Public Repos</span>
-              </div>
-              <div class="activity-stat-item skeleton">
-                <span class="activity-stat-value" id="stat-contributors">--</span>
-                <span class="activity-stat-label">Contributors</span>
-              </div>
-              <div class="activity-stat-item skeleton">
-                <span class="activity-stat-value" id="stat-stars">--</span>
-                <span class="activity-stat-label">Stars</span>
-              </div>
-              <div class="activity-stat-item skeleton">
-                <span class="activity-stat-value" id="stat-forks">--</span>
-                <span class="activity-stat-label">Forks</span>
-              </div>
-              <div class="activity-stat-item skeleton">
-                <span class="activity-stat-value" id="stat-commits">--</span>
-                <span class="activity-stat-label">Commits (30d)</span>
-              </div>
-              <div class="activity-stat-item skeleton">
-                <span class="activity-stat-value" id="stat-active-repos">--</span>
-                <span class="activity-stat-label">Active (14d)</span>
-              </div>
-              <div class="activity-stat-item skeleton">
-                <span class="activity-stat-value" id="stat-languages">--</span>
-                <span class="activity-stat-label">Languages</span>
-              </div>
-            </div>
-
-            <div class="activity-github-graph-container gh-contrib" id="gh-contrib" data-view="both"
-              aria-live="polite"></div>
-
-          </div>
-
-          <div class="project-lens-bar" role="group" aria-label="Filter projects by stars, forks, or activity">
-            <button type="button" class="project-lens-chip active" data-project-lens="all" aria-pressed="true"
-              title="All showcase repositories">
-              <i class="fas fa-layer-group" aria-hidden="true"></i>
-              All <span class="project-lens-count" data-lens-count="all">—</span>
-            </button>
-            <button type="button" class="project-lens-chip" data-project-lens="stars" aria-pressed="false"
-              title="Repositories with GitHub stars">
-              <i class="fas fa-star" aria-hidden="true"></i>
-              Stars <span class="project-lens-count" data-lens-count="stars">—</span>
-            </button>
-            <button type="button" class="project-lens-chip" data-project-lens="forks" aria-pressed="false"
-              title="Repositories that have been forked">
-              <i class="fas fa-code-fork" aria-hidden="true"></i>
-              Forks <span class="project-lens-count" data-lens-count="forks">—</span>
-            </button>
-            <button type="button" class="project-lens-chip" data-project-lens="active" aria-pressed="false"
-              title="Pushed or updated within the last 14 days">
-              <i class="fas fa-bolt" aria-hidden="true"></i>
-              Active <span class="project-lens-count" data-lens-count="active">—</span>
-            </button>
-          </div>
-
-          <!-- Project Search & Filter -->
-          <div class="proj-search-container">
-            <div class="proj-input-group">
-              <i class="fas fa-search proj-search-icon" aria-hidden="true"></i>
-              <input type="text" id="project-search-input"
-                class="proj-search-input"
-                placeholder="Search projects by name, tag, or language (supports close matches)..."
-                aria-label="Search projects">
-            </div>
-            <div class="proj-controls-group">
-              <div class="proj-sort-field" data-proj-sort-root>
-                <label class="sr-only" for="project-sort-select">Sort projects</label>
-                <select id="project-sort-select" class="proj-sort-native" aria-label="Sort projects">
-                  <option value="popularity">Featured</option>
-                  <option value="stars">Most stars</option>
-                  <option value="date">Recently pushed</option>
-                  <option value="name">Name (A–Z)</option>
-                  <option value="language">Primary language</option>
-                </select>
-              </div>
-              <a href="https://github.com/mangeshraut712" target="_blank" rel="noopener noreferrer"
-                class="projects-view-all-btn"
-                aria-label="Visit GitHub profile">
-                <i class="fab fa-github" aria-hidden="true"></i><span>Visit GitHub Profile</span>
-              </a>
-            </div>
-          </div>
-
-          <!-- Projects Grid -->
-          <div class="section-container-wide">
-            <div id="github-projects-container" class="projects-grid-shell">
-              <!-- Projects will be dynamically loaded here -->
-              <div class="projects-loading-container">
-                <div class="projects-loading-inner">
-                  <div class="loading-spinner"></div>
-                  <p class="projects-loading-message">Loading projects from GitHub...</p>
+            <div id="projects-activity-overview" class="projects-activity-overview" aria-live="polite">
+              <div class="activity-overview-head">
+                <div class="activity-overview-title-wrap">
+                  <p class="activity-eyebrow">GitHub Operating View</p>
+                  <h3 class="activity-title">Release-aware engineering momentum</h3>
                 </div>
+                <p id="projects-activity-caption" class="projects-activity-caption">
+                  Syncing repository stars, forks, commits, and contributor activity...
+                </p>
+              </div>
+
+              <div class="activity-overview-inner" id="activity-stats-container">
+                <div class="activity-stat-item skeleton">
+                  <span class="activity-stat-value" id="stat-repos">--</span>
+                  <span class="activity-stat-label">Public Repos</span>
+                </div>
+                <div class="activity-stat-item skeleton">
+                  <span class="activity-stat-value" id="stat-contributors">--</span>
+                  <span class="activity-stat-label">Contributors</span>
+                </div>
+                <div class="activity-stat-item skeleton">
+                  <span class="activity-stat-value" id="stat-stars">--</span>
+                  <span class="activity-stat-label">Stars</span>
+                </div>
+                <div class="activity-stat-item skeleton">
+                  <span class="activity-stat-value" id="stat-forks">--</span>
+                  <span class="activity-stat-label">Forks</span>
+                </div>
+                <div class="activity-stat-item skeleton">
+                  <span class="activity-stat-value" id="stat-commits">--</span>
+                  <span class="activity-stat-label">Commits (30d)</span>
+                </div>
+                <div class="activity-stat-item skeleton">
+                  <span class="activity-stat-value" id="stat-active-repos">--</span>
+                  <span class="activity-stat-label">Active (14d)</span>
+                </div>
+                <div class="activity-stat-item skeleton">
+                  <span class="activity-stat-value" id="stat-languages">--</span>
+                  <span class="activity-stat-label">Languages</span>
+                </div>
+              </div>
+
+              <div class="activity-github-graph-container gh-contrib" id="gh-contrib" data-view="3d"
+                aria-live="polite"></div>
+            </div>
+          </div>
+
+          <!-- Page 2: Repository cards -->
+          <div class="projects-page projects-page--repos" id="projects-repos-page">
+            <div class="projects-repos-toolbar" role="region" aria-label="Project filters and search">
+              <div class="project-lens-bar" role="group" aria-label="Filter projects by stars, forks, or activity">
+                <button type="button" class="project-lens-chip active" data-project-lens="all" aria-pressed="true"
+                  title="All showcase repositories">
+                  <i class="fas fa-layer-group" aria-hidden="true"></i>
+                  All <span class="project-lens-count" data-lens-count="all">—</span>
+                </button>
+                <button type="button" class="project-lens-chip" data-project-lens="stars" aria-pressed="false"
+                  title="Repositories with GitHub stars">
+                  <i class="fas fa-star" aria-hidden="true"></i>
+                  Stars <span class="project-lens-count" data-lens-count="stars">—</span>
+                </button>
+                <button type="button" class="project-lens-chip" data-project-lens="forks" aria-pressed="false"
+                  title="Repositories that have been forked">
+                  <i class="fas fa-code-fork" aria-hidden="true"></i>
+                  Forks <span class="project-lens-count" data-lens-count="forks">—</span>
+                </button>
+                <button type="button" class="project-lens-chip" data-project-lens="active" aria-pressed="false"
+                  title="Pushed or updated within the last 14 days">
+                  <i class="fas fa-bolt" aria-hidden="true"></i>
+                  Active <span class="project-lens-count" data-lens-count="active">—</span>
+                </button>
+              </div>
+
+              <div class="proj-search-container">
+                <div class="proj-input-group">
+                  <i class="fas fa-search proj-search-icon" aria-hidden="true"></i>
+                  <input type="search" id="project-search-input"
+                    class="proj-search-input"
+                    placeholder="Search name, tag, or language…"
+                    aria-label="Search projects"
+                    autocomplete="off"
+                    enterkeyhint="search"
+                    spellcheck="false">
+                </div>
+                <div class="proj-controls-group">
+                  <div class="proj-sort-field" data-proj-sort-root>
+                    <label class="sr-only" for="project-sort-select">Sort projects</label>
+                    <select id="project-sort-select" class="proj-sort-native" aria-label="Sort projects">
+                      <option value="popularity">Featured</option>
+                      <option value="stars">Most stars</option>
+                      <option value="date">Recently pushed</option>
+                      <option value="name">Name (A–Z)</option>
+                      <option value="language">Primary language</option>
+                    </select>
+                  </div>
+                  <a href="https://github.com/mangeshraut712" target="_blank" rel="noopener noreferrer"
+                    class="projects-view-all-btn"
+                    aria-label="Visit GitHub profile">
+                    <i class="fab fa-github" aria-hidden="true"></i><span>Visit GitHub</span>
+                  </a>
+                </div>
+              </div>
+
+              <p id="projects-results-status" class="projects-results-status" aria-live="polite" aria-atomic="true"></p>
+            </div>
+
+            <!-- Projects Grid -->
+            <div class="section-container-wide">
+              <div id="github-projects-container" class="projects-grid-shell" role="region" aria-label="Project cards">
+                <!-- Projects will be dynamically loaded here -->
+                <div class="projects-loading-container">
+                  <div class="projects-loading-inner">
+                    <div class="loading-spinner"></div>
+                    <p class="projects-loading-message">Loading projects from GitHub...</p>
+                  </div>
+                </div>
+              </div>
+              <div id="projects-expand-wrap" class="projects-expand-wrap" hidden>
+                <button type="button" id="projects-expand-btn" class="projects-expand-btn" aria-expanded="false">
+                  Show all projects
+                </button>
               </div>
             </div>
           </div>

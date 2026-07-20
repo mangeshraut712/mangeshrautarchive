@@ -593,6 +593,13 @@ function trackArtistName(track) {
   return String(artist || '').trim();
 }
 
+function upscaleLastfmImage(url) {
+  return url
+    .replace('/34s/', '/300x300/')
+    .replace('/64s/', '/300x300/')
+    .replace('/174s/', '/300x300/');
+}
+
 function bestLastfmImage(track) {
   const images = Array.isArray(track?.image) ? track.image : [];
   const preferred = ['extralarge', 'large', 'medium', 'small'];
@@ -604,56 +611,91 @@ function bestLastfmImage(track) {
   for (const size of preferred) {
     const url = bySize.get(size) || '';
     if (url && !url.includes(LASTFM_PLACEHOLDER_HASH)) {
-      return url.replace('/174s/', '/300x300/').replace('/64s/', '/300x300/');
+      return upscaleLastfmImage(url);
     }
   }
   for (let i = images.length - 1; i >= 0; i -= 1) {
     const url = String(images[i]?.['#text'] || '').trim();
     if (url && !url.includes(LASTFM_PLACEHOLDER_HASH)) {
-      return url.replace('/174s/', '/300x300/').replace('/64s/', '/300x300/');
+      return upscaleLastfmImage(url);
     }
   }
   return '';
 }
 
-function pickItunesArtwork(results = [], artistHint = '') {
-  if (!Array.isArray(results) || !results.length) return '';
-  const hint = artistHint.trim().toLowerCase();
-  let ranked = results;
-  if (hint) {
-    ranked = [...results].sort((a, b) => {
-      const score = item => {
-        const name = String(item?.artistName || '')
-          .trim()
-          .toLowerCase();
-        if (name === hint) return 3;
-        if (name.includes(hint) || hint.includes(name)) return 2;
-        if (hint.split(/\s+/).some(part => part && name.includes(part))) return 1;
-        return 0;
-      };
-      return score(b) - score(a);
-    });
-  }
-  for (const item of ranked) {
-    const artwork = String(item?.artworkUrl100 || '').trim();
-    if (artwork) return artwork.replace('/100x100bb.', '/600x600bb.');
-  }
-  return '';
+function normalizeMusicText(value) {
+  let text = String(value || '')
+    .toLowerCase()
+    .trim();
+  text = text.replace(/\b(feat|ft|featuring)\b.*$/i, ' ');
+  text = text.replace(/[([{].*?[)\]}]/g, ' ');
+  text = text.replace(/\s[-–—]\s.*$/, ' ');
+  text = text.replace(/[^a-z0-9]+/g, ' ');
+  return text.trim().replace(/\s+/g, ' ');
 }
 
-async function fetchItunesArtwork(term, artistHint = '') {
+function textMatchScore(candidate, hint) {
+  const cand = normalizeMusicText(candidate);
+  const want = normalizeMusicText(hint);
+  if (!cand || !want) return 0;
+  if (cand === want) return 3;
+  if (cand.includes(want) || want.includes(cand)) return 2;
+  const candTokens = new Set(cand.split(' '));
+  return want.split(' ').some(tok => tok && candTokens.has(tok)) ? 1 : 0;
+}
+
+function pickItunesArtwork(results = [], trackHint = '', artistHint = '') {
+  if (!Array.isArray(results) || !results.length) return '';
+
+  const scored = [];
+  results.forEach((item, idx) => {
+    if (!item || typeof item !== 'object') return;
+    if (!String(item.artworkUrl100 || '').trim()) return;
+    const artistScore = artistHint ? textMatchScore(item.artistName, artistHint) : 0;
+    const trackScore = trackHint ? textMatchScore(item.trackName, trackHint) : 0;
+    const collectionScore = trackHint ? textMatchScore(item.collectionName, trackHint) : 0;
+    const effectiveTrack = Math.max(trackScore, collectionScore - 1);
+    const total = artistScore * 3 + effectiveTrack * 3;
+    scored.push({ total, artistScore, effectiveTrack, idx, item });
+  });
+
+  if (!scored.length) return '';
+
+  scored.sort((a, b) => {
+    if (b.total !== a.total) return b.total - a.total;
+    if (b.artistScore !== a.artistScore) return b.artistScore - a.artistScore;
+    if (b.effectiveTrack !== a.effectiveTrack) return b.effectiveTrack - a.effectiveTrack;
+    return a.idx - b.idx;
+  });
+
+  const best = scored[0];
+  const haveHints = Boolean(artistHint) || Boolean(trackHint);
+  const bestHasMetadata = ['artistName', 'trackName', 'collectionName'].some(field =>
+    String(best.item[field] || '').trim()
+  );
+  const confident =
+    best.artistScore >= 2 ||
+    best.effectiveTrack >= 2 ||
+    (best.artistScore >= 1 && best.effectiveTrack >= 1);
+  if (haveHints && bestHasMetadata && !confident) return '';
+
+  const artwork = String(best.item.artworkUrl100 || '').trim();
+  return artwork ? artwork.replace('/100x100bb.', '/600x600bb.') : '';
+}
+
+async function fetchItunesArtwork(term, trackHint = '', artistHint = '') {
   const qs = new URLSearchParams({
     term,
     media: 'music',
     entity: 'song',
-    limit: '5',
+    limit: '8',
   });
   const res = await fetch(`https://itunes.apple.com/search?${qs}`, {
     headers: { Accept: 'application/json', 'User-Agent': 'assistme-cloudflare-edge' },
   });
   if (!res.ok) return '';
   const data = await res.json();
-  return pickItunesArtwork(data?.results || [], artistHint);
+  return pickItunesArtwork(data?.results || [], trackHint, artistHint);
 }
 
 async function fetchLastfmTrackArtwork(trackName, artistName = '', apiKey = '') {
@@ -681,7 +723,7 @@ async function fetchLastfmTrackArtwork(trackName, artistName = '', apiKey = '') 
 
 async function resolveExternalArtwork(trackName, artistName = '', apiKey = '') {
   const term = `${trackName} ${artistName}`.trim();
-  const itunesUrl = await fetchItunesArtwork(term, artistName);
+  const itunesUrl = await fetchItunesArtwork(term, trackName, artistName);
   if (itunesUrl) return { url: itunesUrl, source: 'itunes' };
 
   const lastfmUrl = await fetchLastfmTrackArtwork(trackName, artistName, apiKey);

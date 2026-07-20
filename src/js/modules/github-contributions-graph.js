@@ -30,7 +30,7 @@ const state = {
   built: false,
   year: new Date().getFullYear(),
   dataByYear: new Map(),
-  view: 'both',
+  view: '3d',
   root: null,
   activeData: null,
 };
@@ -263,8 +263,8 @@ function buildShell() {
         </details>
         <div class="gh-contrib__view" role="group" aria-label="Contribution graph view mode">
           <button type="button" class="gh-contrib__view-btn" data-view="2d" aria-pressed="false">2D</button>
-          <button type="button" class="gh-contrib__view-btn" data-view="3d" aria-pressed="false">3D</button>
-          <button type="button" class="gh-contrib__view-btn is-active" data-view="both" aria-pressed="true">Both</button>
+          <button type="button" class="gh-contrib__view-btn is-active" data-view="3d" aria-pressed="true">3D</button>
+          <button type="button" class="gh-contrib__view-btn" data-view="both" aria-pressed="false">Both</button>
         </div>
       </div>
     </div>

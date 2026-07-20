@@ -763,6 +763,7 @@ svg {
 
   #home .hero-actions .hero-cta {
     width: 100% !important;
+    min-height: 44px !important;
     white-space: normal !important;
     text-align: center;
   }
@@ -770,5 +771,101 @@ svg {
   /* Chat FAB clearance on the right — keep CTAs from sitting under it */
   #chatbot-toggle {
     z-index: 9999 !important;
+  }
+
+  /* ==========================================================================
+     Mobile Viewport Audit Fixes — Touch Targets (44×44px min) & Font Floors (11px min)
+     ========================================================================== */
+
+  /* Touch Target Enhancements */
+  a.music-card-spotify-link,
+  .music-card-spotify-link {
+    min-width: 44px !important;
+    min-height: 44px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  button.card-speak-btn,
+  button.card-translate-btn,
+  .about-speak-btn,
+  .about-translate-btn,
+  #about button {
+    min-width: 44px !important;
+    min-height: 44px !important;
+  }
+
+  button#theme-toggle.monitor-page-nav__theme,
+  .monitor-page-nav__theme {
+    min-width: 44px !important;
+    min-height: 44px !important;
+  }
+
+  .monitor-page-nav a,
+  .monitor-page-nav__link,
+  .systems-section-rail a,
+  .monitor-section-rail a,
+  [data-section-link],
+  .systems-tile-link,
+  .systems-arch-tab,
+  .project-evidence-link,
+  .surface-link {
+    min-height: 44px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    padding-top: 0.4rem !important;
+    padding-bottom: 0.4rem !important;
+  }
+
+  a.uses-tech-link,
+  .uses-header-link,
+  a[href*='uses.tech'] {
+    min-height: 44px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+  }
+
+  input#uses-search {
+    min-height: 44px !important;
+  }
+
+  .chatbot-settings-btn,
+  #chatbot-privacy-btn,
+  #chatbot-clear-btn,
+  .chatbot-close-btn,
+  #chatbot-voice-btn {
+    min-width: 44px !important;
+    min-height: 44px !important;
+  }
+
+  /* Mobile Typography Floor (11px minimum for readable UI elements) */
+  span#status-text.status-text,
+  p#artist-name.artist-name {
+    font-size: max(0.72rem, 11px) !important;
+  }
+
+  .experience-timeline h3,
+  .experience-section h3 {
+    font-size: max(0.75rem, 12px) !important;
+  }
+
+  .systems-failure-status-badge,
+  .systems-principle-num,
+  .failure-kicker {
+    font-size: max(0.72rem, 11px) !important;
+  }
+
+  .monitor-summary-eyebrow,
+  .control-center-eyebrow,
+  p.visual-section-label,
+  span#overall-status.status-badge,
+  span.meta-stat-label {
+    font-size: max(0.72rem, 11px) !important;
+  }
+
+  span.uses-stat__label,
+  span.uses-pill {
+    font-size: max(0.72rem, 11px) !important;
   }
 }
