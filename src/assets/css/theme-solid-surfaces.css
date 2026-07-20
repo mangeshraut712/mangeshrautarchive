@@ -2392,15 +2392,49 @@ html:not(.dark)
     .tag,
     .badge,
     .project-release-status,
+    .project-release-strip,
+    .projects-repos-toolbar,
+    .project-lens-chip:not(.active),
+    .project-tag,
+    .project-language,
+    .project-signal-pill,
+    .project-evidence-link,
+    .project-evidence-row,
+    .project-action-btn,
+    .proj-input-group,
+    .proj-sort-native,
+    .activity-stat-item,
+    .projects-activity-overview,
     .systems-arch-card,
     .systems-bench-badge,
     .systems-case-flow,
     .systems-metric-panel,
+    .systems-evidence-card,
+    .systems-principle-card,
+    .eng-building-card,
+    .eng-design-card,
+    .systems-bento-tile,
     .monitor-badge,
+    .monitor-summary-card,
+    .endpoint-card,
+    .ops-card,
+    .health-item,
     .travel-card,
     .uses-card,
+    .experience-card,
     .experience-company,
     .experience-meta,
+    .company-logo-wrap,
+    .education-card,
+    .stat-card,
+    .about-card,
+    .about-highlight-card,
+    .about-pill,
+    .blog-card,
+    .blog-tag,
+    .newsletter-card,
+    .skill-card,
+    .currently-card,
     .currently-item,
     .vibe-tool-item,
     .doc-link-tile,
@@ -2412,12 +2446,23 @@ html:not(.dark)
     .chatbot-panel,
     .chatbot-header,
     .chatbot-footer,
+    .chatbot-input,
     .search-overlay-container,
+    .search-result-icon,
     .code-block,
     pre,
     code,
     .terminal-window
   ) {
+  background: #ffffff !important;
   background-color: #ffffff !important;
+  background-image: none !important;
   border-color: var(--card-border-rest, #e5e5ea) !important;
+}
+
+html:not(.dark) section#projects .project-lens-chip.active {
+  background: #0071e3 !important;
+  background-color: #0071e3 !important;
+  border-color: #0071e3 !important;
+  color: #ffffff !important;
 }

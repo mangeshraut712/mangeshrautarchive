@@ -3252,10 +3252,10 @@ section#projects {
   --sc-radius-card: 18px;
   --sc-radius-badge: 8px;
   --sc-ring: rgb(0 113 227 / 38%);
-  --sc-border: rgb(0 0 0 / 8%);
-  --sc-border-strong: rgb(0 0 0 / 16%);
-  --sc-muted-bg: rgb(0 0 0 / 4.5%);
-  --sc-muted-bg-hover: rgb(0 0 0 / 7%);
+  --sc-border: rgb(0 0 0 / 10%);
+  --sc-border-strong: rgb(0 0 0 / 18%);
+  --sc-muted-bg: #ffffff;
+  --sc-muted-bg-hover: #f5f5f7;
   --sc-muted-fg: #475569;
   --sc-shadow-sm: 0 1px 2px rgb(15 23 42 / 6%);
   --sc-shadow-md: 0 6px 20px rgb(15 23 42 / 10%);
