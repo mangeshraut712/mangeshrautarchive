@@ -968,7 +968,7 @@ html.dark #home .hero-name-text {
           "name": "Who is Mangesh Raut?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Mangesh Raut is a software engineer and AI builder based in Philadelphia. He holds an M.S. in Computer Science from Drexel University and builds full stack, cloud, and agentic systems. This site is his official software engineer portfolio and resume."
+            "text": "Mangesh Raut is a Software Development Engineer and AI builder based in Philadelphia. He holds an M.S. in Computer Science from Drexel University and builds full stack, cloud, and agentic systems. This site is his official software engineer portfolio and resume."
           }
         },
         {
@@ -976,15 +976,23 @@ html.dark #home .hero-name-text {
           "name": "Where can I find the Mangesh Raut portfolio and resume?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "The official Mangesh Raut portfolio is this website. Browse projects, systems case studies, and technical writing, then use the contact section for resume and collaboration requests."
+            "text": "This website is the official Mangesh Raut portfolio. Explore projects, systems case studies, education, and technical writing, then use Get In Touch for resume and collaboration requests."
           }
         },
         {
           "@type": "Question",
-          "name": "What does Mangesh Raut work on as a software engineer?",
+          "name": "What professional experience does Mangesh Raut have?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Mangesh Raut ships production software across Java, Python, AWS, and full stack delivery — including AI-native products, APIs, and cloud architecture."
+            "text": "Mangesh Raut has shipped production software as a Software Engineer at Customized Energy Solutions in Philadelphia, including Java Spring Boot backends, AngularJS frontends, RESTful APIs, and energy analytics dashboards. He is open to engineering roles and collaborations."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What technologies does Mangesh Raut use as a software engineer?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Core stack includes Java, Python, AWS, and full stack web delivery, plus LLMs, agentic workflows, APIs, and cloud infrastructure. Featured work includes HindAI and other AI-native products on this portfolio."
           }
         },
         {
@@ -992,7 +1000,15 @@ html.dark #home .hero-name-text {
           "name": "Did Mangesh Raut study at Drexel University?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Yes. Mangesh Raut earned a Master of Science in Computer Science from Drexel University in Philadelphia."
+            "text": "Yes. Mangesh Raut earned a Master of Science in Computer Science from Drexel University in Philadelphia (September 2021 – June 2023)."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is AssistMe, and how can I contact Mangesh Raut?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "AssistMe is the on-site AI portfolio assistant that answers questions about Mangesh Raut’s work, projects, and background. For hiring or collaboration, use Get In Touch or chat with AssistMe on this page."
           }
         }
       ]
@@ -2572,418 +2588,31 @@ html.dark #home .hero-name-text {
               </div>
             </div>
 
-            <div class="activity-github-graph-container" id="github-graph-container">
-              <div class="graph-header">
-                <div class="graph-header-left">
-                  <span id="graph-contrib-count" class="graph-contrib-count"></span>
-                  <h4 class="graph-title">contributions in the last year</h4>
-                </div>
-                <button id="refresh-graph-btn" class="graph-refresh-btn" aria-label="Refresh contribution graph"
-                  title="Load live data from GitHub">
-                  <i class="fas fa-sync-alt"></i>
-                </button>
-              </div>
-              <div class="github-graph-scroll" tabindex="0" role="region" aria-label="GitHub contribution graph">
-                <div class="contrib-tooltip" id="contrib-tooltip" aria-hidden="true"></div>
-                <div class="graph-loading" id="graph-loading">
-                  <div class="loading-spinner"></div>
-                  <span id="graph-loading-text">Loading contribution graph...</span>
-                  <button id="graph-retry-btn" class="graph-retry-btn" hidden
-                    onclick="loadGitHubGraph()">
-                    <i class="fas fa-redo"></i> Retry
-                  </button>
-                </div>
-                <div class="graph-error-container" id="graph-error" hidden>
-                  <i class="fas fa-exclamation-circle"></i>
-                  <span>Unable to load contribution graph</span>
-                  <button class="graph-retry-btn" onclick="loadGitHubGraph()">
-                    <i class="fas fa-redo"></i> Try Again
-                  </button>
-                </div>
-                <img id="github-chart-img"
-                  src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
-                  data-deferred-chart="true"
-                  alt="Mangesh Raut's Github contribution chart"
-                  class="github-graph-svg" width="660" height="110" loading="lazy" decoding="async"
-                  fetchpriority="low" referrerpolicy="no-referrer" hidden
-                  onload="if (this.dataset.deferredChart !== 'true') window.handleGraphLoadSuccess?.()"
-                  onerror="window.handleGraphLoadError?.()">
-              </div>
-              <div class="github-graph-legend" aria-hidden="true">
-                Less
-                <span data-level="0"></span>
-                <span data-level="1"></span>
-                <span data-level="2"></span>
-                <span data-level="3"></span>
-                <span data-level="4"></span>
-                More
-              </div>
-            </div>
+            <div class="activity-github-graph-container gh-contrib" id="gh-contrib" data-view="both"
+              aria-live="polite"></div>
 
-            <script>
-              (function () {
-                let graphLoadTimeout;
-                const GRAPH_TIMEOUT = 15000; // 15 seconds timeout
-                let retryCount = 0;
-                const MAX_RETRIES = 3;
-
-                function isDarkGraphTheme() {
-                  const root = document.documentElement;
-                  const theme = root.getAttribute('data-theme');
-                  if (theme === 'dark') return true;
-                  if (theme === 'light') return false;
-                  if (root.classList.contains('dark')) return true;
-                  if (root.classList.contains('light')) return false;
-                  return Boolean(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
-                }
-
-                function getGraphPalette() {
-                  const dark = isDarkGraphTheme();
-                  return {
-                    dark,
-                    colors: dark
-                      ? ['#161b22', '#0e4429', '#006d32', '#26a641', '#39d353']
-                      : ['#ebedf0', '#9be9a8', '#40c463', '#30a14e', '#216e39'],
-                    label: dark ? '#8b949e' : '#57606a',
-                  };
-                }
-
-                function getGraphChartUrl() {
-                  const dark = isDarkGraphTheme();
-                  const color = dark ? '39d353' : '216e39';
-                  return 'https://ghchart.rshah.org/' + color + '/mangeshraut712';
-                }
-
-                function removeFallbackGraph() {
-                  const fallbackSvg = document.getElementById('github-fallback-svg');
-                  if (fallbackSvg) fallbackSvg.remove();
-                }
-
-                function syncGraphLegendTheme() {
-                  const legend = document.querySelector('#github-graph-container .github-graph-legend');
-                  if (!legend) return;
-                  const { colors } = getGraphPalette();
-                  legend.querySelectorAll('span').forEach((chip, index) => {
-                    chip.style.background = colors[index] || colors[colors.length - 1];
-                    chip.setAttribute('data-level', String(index));
-                  });
-                }
-
-                window.handleGraphLoadSuccess = function () {
-                  clearTimeout(graphLoadTimeout);
-                  document.getElementById('graph-loading').style.display = 'none';
-                  document.getElementById('graph-error').hidden = true;
-                  const imgEl = document.getElementById('github-chart-img');
-                  if (imgEl) {
-                    imgEl.hidden = false;
-                    imgEl.style.display = 'block';
-                  }
-
-                  // Clean up fallback graph if it was previously rendered
-                  const fallbackSvg = document.getElementById('github-fallback-svg');
-                  if (fallbackSvg) fallbackSvg.remove();
-
-                  retryCount = 0;
-                  syncGraphLegendTheme();
-                };
-
-                window.handleGraphLoadError = function () {
-                  clearTimeout(graphLoadTimeout);
-                  showGraphError();
-                };
-
-                function showGraphError() {
-                  renderFallbackGraph();
-                }
-
-                function attachTooltipListeners(scrollEl) {
-                  const tooltip = document.getElementById('contrib-tooltip');
-                  if (!tooltip) return;
-
-                  scrollEl.addEventListener('mouseover', function (e) {
-                    const cell = e.target.closest('.contrib-cell');
-                    if (!cell || !cell.getAttribute('data-tooltip')) return;
-
-                    tooltip.textContent = cell.getAttribute('data-tooltip');
-                    tooltip.classList.add('visible');
-
-                    // Position tooltip above the cell
-                    const scrollRect = scrollEl.getBoundingClientRect();
-                    const cellRect = cell.getBoundingClientRect();
-                    const tooltipWidth = tooltip.offsetWidth;
-                    const cellCenterX = cellRect.left + cellRect.width / 2 - scrollRect.left + scrollEl.scrollLeft;
-                    const cellTopY = cellRect.top - scrollRect.top;
-
-                    tooltip.style.left = cellCenterX + 'px';
-                    tooltip.style.top = (cellTopY - tooltip.offsetHeight - 6) + 'px';
-
-                    // Keep tooltip within scroll bounds
-                    const tooltipLeft = cellCenterX - tooltipWidth / 2;
-                    if (tooltipLeft < 4) {
-                      tooltip.style.left = (tooltipWidth / 2 + 4) + 'px';
-                    } else if (tooltipLeft + tooltipWidth > scrollEl.scrollWidth - 4) {
-                      tooltip.style.left = (scrollEl.scrollWidth - tooltipWidth / 2 - 4) + 'px';
-                    }
-                  });
-
-                  scrollEl.addEventListener('mouseout', function (e) {
-                    const cell = e.target.closest('.contrib-cell');
-                    if (cell) {
-                      tooltip.classList.remove('visible');
-                    }
-                  });
-                }
-
-                function renderFallbackGraph() {
-                  const scrollEl = document.querySelector('#github-graph-container .github-graph-scroll');
-                  if (!scrollEl) return;
-
-                  // Hide loading, error, and picture
-                  document.getElementById('graph-loading').style.display = 'none';
-                  document.getElementById('graph-error').hidden = true;
-                  const imgEl = document.getElementById('github-chart-img');
-                  if (imgEl) {
-                    imgEl.hidden = true;
-                    imgEl.style.display = 'none';
-                  }
-
-                  removeFallbackGraph();
-
-                  const { colors, label } = getGraphPalette();
-
-                  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-                  svg.setAttribute('viewBox', '0 0 680 120');
-                  svg.setAttribute('class', 'github-graph-svg');
-                  svg.setAttribute('id', 'github-fallback-svg');
-                  svg.style.display = 'block';
-                  svg.style.animation = 'fadeIn 0.5s ease-out';
-
-                  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-                  const monthGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-                  monthGroup.setAttribute('fill', label);
-                  monthGroup.setAttribute('font-size', '9');
-                  monthGroup.setAttribute('font-family', '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif');
-
-                  const weekdayGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-                  weekdayGroup.setAttribute('fill', label);
-                  weekdayGroup.setAttribute('font-size', '9');
-                  weekdayGroup.setAttribute('font-family', '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif');
-
-                  const weekdayLabels = ['Mon', 'Wed', 'Fri'];
-                  const weekdayY = [37, 61, 85];
-                  for (let i = 0; i < 3; i++) {
-                    const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-                    text.setAttribute('x', '5');
-                    text.setAttribute('y', weekdayY[i].toString());
-                    text.textContent = weekdayLabels[i];
-                    weekdayGroup.appendChild(text);
-                  }
-
-                  const gridGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-                  gridGroup.setAttribute('transform', 'translate(30, 20)');
-
-                  function seededRandom(seed) {
-                    const x = Math.sin(seed) * 10000;
-                    return x - Math.floor(x);
-                  }
-
-                  let totalContributions = 0;
-                  const today = new Date();
-                  const startYear = new Date(today.getFullYear() - 1, today.getMonth(), today.getDate());
-
-                  let cellIndex = 0;
-                  let lastMonthName = '';
-                  for (let w = 0; w < 53; w++) {
-                    const weekDate = new Date(startYear.getTime() + w * 7 * 24 * 60 * 60 * 1000);
-                    const monthName = months[weekDate.getMonth()];
-
-                    if (monthName !== lastMonthName && w > 0 && w < 51) {
-                      const monthText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-                      monthText.setAttribute('x', (30 + w * 12).toString());
-                      monthText.setAttribute('y', '12');
-                      monthText.textContent = monthName;
-                      monthGroup.appendChild(monthText);
-                      lastMonthName = monthName;
-                    } else if (w === 0) {
-                      const monthText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-                      monthText.setAttribute('x', '30');
-                      monthText.setAttribute('y', '12');
-                      monthText.textContent = monthName;
-                      monthGroup.appendChild(monthText);
-                      lastMonthName = monthName;
-                    }
-
-                    for (let d = 0; d < 7; d++) {
-                      const dayDate = new Date(weekDate.getTime() + d * 24 * 60 * 60 * 1000);
-                      if (dayDate > today) continue;
-
-                      const rand = seededRandom(cellIndex + 42);
-                      let level = 0;
-                      const isWeekend = (d === 0 || d === 6);
-                      const threshold = isWeekend ? 0.88 : 0.42;
-
-                      if (rand > threshold) {
-                        const score = rand * 10;
-                        if (score > 8.8) level = 4;
-                        else if (score > 7.0) level = 3;
-                        else if (score > 5.0) level = 2;
-                        else level = 1;
-                      }
-
-                      const contributions = level === 1 ? 1 + Math.floor(rand * 2)
-                                          : level === 2 ? 3 + Math.floor(rand * 3)
-                                          : level === 3 ? 6 + Math.floor(rand * 4)
-                                          : level === 4 ? 10 + Math.floor(rand * 15) : 0;
-                      totalContributions += contributions;
-
-                      const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-                      rect.setAttribute('width', '10');
-                      rect.setAttribute('height', '10');
-                      rect.setAttribute('rx', '2');
-                      rect.setAttribute('ry', '2');
-                      rect.setAttribute('x', (w * 12).toString());
-                      rect.setAttribute('y', (d * 12).toString());
-                      rect.setAttribute('fill', colors[level]);
-                      rect.setAttribute('class', 'contrib-cell');
-
-                      const dateStr = dayDate.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
-                      const tooltipText = `${contributions > 0 ? contributions : 'No'} contribution${contributions === 1 ? '' : 's'} on ${dateStr}`;
-                      rect.setAttribute('data-tooltip', tooltipText);
-                      rect.setAttribute('data-date', dateStr);
-                      rect.setAttribute('data-count', contributions.toString());
-                      rect.setAttribute('data-level', level.toString());
-
-                      gridGroup.appendChild(rect);
-                      cellIndex++;
-                    }
-                  }
-
-                  svg.appendChild(monthGroup);
-                  svg.appendChild(weekdayGroup);
-                  svg.appendChild(gridGroup);
-
-                  scrollEl.appendChild(svg);
-                  syncGraphLegendTheme();
-                  attachTooltipListeners(scrollEl);
-
-                  // Update contribution count in header
-                  const countEl = document.getElementById('graph-contrib-count');
-                  if (countEl) {
-                    countEl.textContent = totalContributions.toLocaleString();
-                  }
-
-                  // Update caption
-                  const countLabel = document.getElementById('projects-activity-caption');
-                  if (countLabel && countLabel.textContent.includes('Syncing repository')) {
-                    countLabel.textContent = `${totalContributions.toLocaleString()} contributions in the last year`;
-                  }
-                }
-
-                function setGraphImageSrc(imgEl) {
-                  if (!imgEl) return;
-                  var baseUrl = getGraphChartUrl();
-                  var separator = baseUrl.indexOf('?') === -1 ? '?' : '&';
-                  // Real chart URL replaces the 1×1 placeholder; clear flag so onload runs success path
-                  delete imgEl.dataset.deferredChart;
-                  imgEl.src = baseUrl + separator + 't=' + Date.now();
-                }
-
-                function showOfflineGraphPreview() {
-                  retryCount = 0;
-                  clearTimeout(graphLoadTimeout);
-                  document.getElementById('graph-loading').style.display = 'none';
-                  document.getElementById('graph-error').hidden = true;
-                  document.getElementById('graph-retry-btn').hidden = true;
-                  renderFallbackGraph();
-                }
-
-                window.loadGitHubGraph = function () {
-                  if (retryCount >= MAX_RETRIES) {
-                    document.getElementById('graph-loading-text').textContent = 'Service temporarily unavailable';
-                    document.getElementById('graph-retry-btn').hidden = false;
-                    showOfflineGraphPreview();
-                    return;
-                  }
-
-                  retryCount++;
-                  const loadingEl = document.getElementById('graph-loading');
-                  const imgEl = document.getElementById('github-chart-img');
-                  const errorEl = document.getElementById('graph-error');
-
-                  removeFallbackGraph();
-                  loadingEl.style.display = 'flex';
-                  if (imgEl) {
-                    imgEl.hidden = true;
-                    imgEl.style.display = 'none';
-                  }
-                  errorEl.hidden = true;
-                  document.getElementById('graph-retry-btn').hidden = true;
-                  document.getElementById('graph-loading-text').textContent = retryCount > 1 ? `Retrying... (Attempt ${retryCount}/${MAX_RETRIES})` : 'Loading contribution graph...';
-
-                  // Clear previous image to force reload (keep 1×1 placeholder, never empty src)
-                  if (imgEl) {
-                    imgEl.dataset.deferredChart = 'true';
-                    imgEl.src =
-                      'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
-                  }
-
-                  // Set timeout for loading
-                  clearTimeout(graphLoadTimeout);
-                  graphLoadTimeout = setTimeout(function () {
-                    const chartImg = document.getElementById('github-chart-img');
-                    if (!chartImg || chartImg.hidden) {
-                      showGraphError();
-                    }
-                  }, GRAPH_TIMEOUT);
-
-                  // External chart is opt-in via refresh only; img load avoids fetch/CORS console noise.
-                  if (imgEl) {
-                    setGraphImageSrc(imgEl);
-                  }
-                };
-
-                // Initial load
-                document.addEventListener('DOMContentLoaded', function () {
-                  var scheduleGraph = function (fn) {
-                    if ('requestIdleCallback' in window) {
-                      requestIdleCallback(fn, { timeout: 1600 });
-                    } else {
-                      setTimeout(fn, 1200);
-                    }
-                  };
-                  scheduleGraph(showOfflineGraphPreview);
-                  syncGraphLegendTheme();
-
-                  document.addEventListener('portfolio-theme-change', function () {
-                    syncGraphLegendTheme();
-                    showOfflineGraphPreview();
-                  });
-
-                  // Refresh button handler
-                  const refreshBtn = document.getElementById('refresh-graph-btn');
-                  if (refreshBtn) {
-                    refreshBtn.addEventListener('click', function () {
-                      retryCount = 0;
-                      window.loadGitHubGraph();
-                    });
-                  }
-                });
-              })();
-            </script>
           </div>
 
-          <div class="project-lens-bar" role="group" aria-label="Filter projects by release freshness">
+          <div class="project-lens-bar" role="group" aria-label="Filter projects by stars, forks, or activity">
             <button type="button" class="project-lens-chip active" data-project-lens="all" aria-pressed="true"
               title="All showcase repositories">
+              <i class="fas fa-layer-group" aria-hidden="true"></i>
               All <span class="project-lens-count" data-lens-count="all">—</span>
+            </button>
+            <button type="button" class="project-lens-chip" data-project-lens="stars" aria-pressed="false"
+              title="Repositories with GitHub stars">
+              <i class="fas fa-star" aria-hidden="true"></i>
+              Stars <span class="project-lens-count" data-lens-count="stars">—</span>
+            </button>
+            <button type="button" class="project-lens-chip" data-project-lens="forks" aria-pressed="false"
+              title="Repositories that have been forked">
+              <i class="fas fa-code-fork" aria-hidden="true"></i>
+              Forks <span class="project-lens-count" data-lens-count="forks">—</span>
             </button>
             <button type="button" class="project-lens-chip" data-project-lens="active" aria-pressed="false"
               title="Pushed or updated within the last 14 days">
+              <i class="fas fa-bolt" aria-hidden="true"></i>
               Active <span class="project-lens-count" data-lens-count="active">—</span>
-            </button>
-            <button type="button" class="project-lens-chip" data-project-lens="busy" aria-pressed="false"
-              title="10 or more commits in the last 30 days">
-              Busy <span class="project-lens-count" data-lens-count="busy">—</span>
             </button>
           </div>
 
@@ -3765,35 +3394,90 @@ html.dark #home .hero-name-text {
     <section id="faq" class="fade-in section-standard section-faq" aria-labelledby="faq-heading">
       <div class="container">
         <h2 id="faq-heading">FAQ</h2>
-        <p class="section-subtitle">Quick answers about Mangesh Raut — software engineer portfolio, resume, and background.</p>
+        <p class="section-subtitle">
+          Straight answers about Mangesh Raut — software engineer portfolio, resume, experience, and how to get in touch.
+        </p>
         <div class="faq-list">
           <details class="faq-item">
-            <summary>Who is Mangesh Raut?</summary>
-            <p>
-              Mangesh Raut is a software engineer and AI builder based in Philadelphia. He holds an M.S. in Computer
-              Science from Drexel University and builds full stack, cloud, and agentic systems. This site is his
-              official software engineer portfolio and resume.
-            </p>
+            <summary>
+              <span class="faq-question">Who is Mangesh Raut?</span>
+              <span class="faq-chevron" aria-hidden="true"></span>
+            </summary>
+            <div class="faq-answer">
+              <p>
+                Mangesh Raut is a Software Development Engineer and AI builder based in Philadelphia. He holds an
+                M.S. in Computer Science from Drexel University and builds full stack, cloud, and agentic systems.
+                This site is his official software engineer portfolio and resume.
+              </p>
+            </div>
           </details>
           <details class="faq-item">
-            <summary>Where can I find the Mangesh Raut portfolio and resume?</summary>
-            <p>
-              You are on the official Mangesh Raut portfolio. Browse projects, systems case studies, and technical
-              writing above, then use <a href="#contact">Get In Touch</a> for resume and collaboration requests.
-            </p>
+            <summary>
+              <span class="faq-question">Where can I find the Mangesh Raut portfolio and resume?</span>
+              <span class="faq-chevron" aria-hidden="true"></span>
+            </summary>
+            <div class="faq-answer">
+              <p>
+                You are on the official Mangesh Raut portfolio. Explore
+                <a href="#projects">projects</a>,
+                <a href="systems.html">systems</a> case studies,
+                <a href="#education">education</a>, and technical writing, then use
+                <a href="#contact">Get In Touch</a> for resume and collaboration requests.
+              </p>
+            </div>
           </details>
           <details class="faq-item">
-            <summary>What does Mangesh Raut work on as a software engineer?</summary>
-            <p>
-              Production software across Java, Python, AWS, and full stack delivery — including AI-native products,
-              APIs, and cloud architecture. See the experience and projects sections for concrete examples.
-            </p>
+            <summary>
+              <span class="faq-question">What professional experience does Mangesh Raut have?</span>
+              <span class="faq-chevron" aria-hidden="true"></span>
+            </summary>
+            <div class="faq-answer">
+              <p>
+                As a Software Engineer at Customized Energy Solutions in Philadelphia, Mangesh Raut shipped
+                production energy analytics — Java Spring Boot backends, AngularJS frontends, and RESTful APIs that
+                cut data rendering latency. He is open to engineering roles and collaborations; see
+                <a href="#experience">experience</a> for the full timeline.
+              </p>
+            </div>
           </details>
           <details class="faq-item">
-            <summary>Did Mangesh Raut study at Drexel University?</summary>
-            <p>
-              Yes. Mangesh Raut earned a Master of Science in Computer Science from Drexel University in Philadelphia.
-            </p>
+            <summary>
+              <span class="faq-question">What technologies does Mangesh Raut use as a software engineer?</span>
+              <span class="faq-chevron" aria-hidden="true"></span>
+            </summary>
+            <div class="faq-answer">
+              <p>
+                Core delivery spans Java, Python, AWS, and full stack web systems, with depth in LLMs, agentic
+                workflows, APIs, and cloud infrastructure. Featured work includes HindAI and other AI-native products
+                in the projects section.
+              </p>
+            </div>
+          </details>
+          <details class="faq-item">
+            <summary>
+              <span class="faq-question">Did Mangesh Raut study at Drexel University?</span>
+              <span class="faq-chevron" aria-hidden="true"></span>
+            </summary>
+            <div class="faq-answer">
+              <p>
+                Yes. Mangesh Raut earned a Master of Science in Computer Science from Drexel University in
+                Philadelphia (September 2021 – June 2023). Transcripts and related credentials are linked under
+                <a href="#education">education</a>.
+              </p>
+            </div>
+          </details>
+          <details class="faq-item">
+            <summary>
+              <span class="faq-question">What is AssistMe, and how can I contact Mangesh Raut?</span>
+              <span class="faq-chevron" aria-hidden="true"></span>
+            </summary>
+            <div class="faq-answer">
+              <p>
+                AssistMe is the on-site AI portfolio assistant — ask about projects, background, or fit for a role.
+                For hiring and collaboration, use <a href="#contact">Get In Touch</a> or open AssistMe from the
+                chat control on this page.
+              </p>
+            </div>
           </details>
         </div>
       </div>

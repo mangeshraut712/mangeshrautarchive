@@ -157,9 +157,10 @@
     '#debug-runner-section .debug-runner-disclosure>summary,.debug-runner-disclosure>summary{display:flex!important;align-items:center!important;justify-content:center!important;gap:0.5rem!important;min-height:48px!important;min-width:48px!important;padding:0.85rem 1.25rem!important;box-sizing:border-box!important;line-height:1.3!important;font-size:1rem!important;list-style:none!important;cursor:pointer!important}' +
     '#debug-runner-section .debug-runner-disclosure>summary::-webkit-details-marker,.debug-runner-disclosure>summary::-webkit-details-marker{display:none!important}' +
     /* Homepage FAQ — homepage.css is stripped in perf-audit; keep tap targets ≥24×24 */
-    '.section-faq .faq-list{display:flex!important;flex-direction:column!important;gap:1rem!important}' +
-    '.section-faq .faq-item{box-sizing:border-box!important}' +
-    '.section-faq .faq-item>summary{display:flex!important;align-items:center!important;min-height:48px!important;min-width:48px!important;padding:0.95rem 0!important;box-sizing:border-box!important;line-height:1.35!important;font-size:1.05rem!important;list-style:none!important;cursor:pointer!important}' +
+    '.section-faq .faq-list{display:flex!important;flex-direction:column!important;gap:0.75rem!important}' +
+    '.section-faq .faq-item{box-sizing:border-box!important;background:#fff!important}' +
+    'html.dark .section-faq .faq-item{background:#000!important}' +
+    '.section-faq .faq-item>summary{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:1rem!important;min-height:48px!important;min-width:48px!important;padding:1rem 0!important;box-sizing:border-box!important;line-height:1.35!important;font-size:1.06rem!important;list-style:none!important;cursor:pointer!important}' +
     '.section-faq .faq-item>summary::-webkit-details-marker{display:none!important}';
   (document.head || document.documentElement).appendChild(critical);
 

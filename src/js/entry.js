@@ -25,6 +25,7 @@ import './modules/chatbot.js';
 import './modules/currently.js';
 import './modules/debug-runner.js';
 import './modules/external-config.js';
+import './modules/github-contributions-graph.js';
 import './modules/github-projects.js';
 import './modules/lastfm.js';
 import './modules/name-pronounce.js';

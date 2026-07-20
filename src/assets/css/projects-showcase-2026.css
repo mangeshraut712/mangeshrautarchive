@@ -322,7 +322,6 @@ html.dark #projects #projects-stats .stat-label {
     0 0 0 3px rgb(0 113 227 / 10%);
 }
 
-#projects .proj-filter-select,
 #projects .projects-view-all-btn {
   min-height: 48px !important;
   height: 48px !important;
@@ -331,35 +330,6 @@ html.dark #projects #projects-stats .stat-label {
   font-weight: 600 !important;
   letter-spacing: -0.01em !important;
   box-sizing: border-box !important;
-}
-
-#projects .proj-filter-select {
-  width: 100%;
-  min-width: 0 !important;
-  max-width: 220px;
-  padding: 0 2.85rem 0 1rem !important;
-  background-color: #fff !important;
-  color: var(--project-text-light) !important;
-  border: 1px solid rgb(0 0 0 / 10%) !important;
-  box-shadow: 0 8px 20px rgb(15 23 42 / 6%) !important;
-  line-height: 1.2 !important;
-  appearance: none !important;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-  background-image:
-    linear-gradient(45deg, transparent 50%, #7d8aa2 50%),
-    linear-gradient(135deg, #7d8aa2 50%, transparent 50%) !important;
-  background-position:
-    calc(100% - 1.05rem) calc(50% + 1px),
-    calc(100% - 0.55rem) calc(50% + 1px) !important;
-  background-size:
-    6px 6px,
-    6px 6px !important;
-  background-repeat: no-repeat !important;
-}
-
-#projects .projects-view-all-btn {
   padding: 0 1.35rem !important;
   background: linear-gradient(135deg, #0071e3 0%, #0a84ff 100%) !important;
   border: 1px solid transparent !important;
@@ -417,8 +387,7 @@ html.dark #projects .projects-view-all-btn:hover {
   box-shadow: 0 6px 22px rgb(10 132 255 / 40%) !important;
 }
 
-html.dark #projects .proj-input-group,
-html.dark #projects .proj-filter-select {
+html.dark #projects .proj-input-group {
   background: #000 !important;
   border-color: var(--project-border-dark) !important;
   color: var(--project-text-dark) !important;
@@ -461,21 +430,6 @@ html.dark #projects .proj-sort-native:focus-visible {
   box-shadow:
     0 14px 24px rgb(0 0 0 / 52%),
     0 0 0 3px rgb(41 151 255 / 13%) !important;
-}
-
-html.dark #projects .proj-filter-select {
-  color: var(--project-text-dark) !important;
-  background-color: #000 !important;
-  background-image:
-    linear-gradient(45deg, transparent 50%, #9aa7bc 50%),
-    linear-gradient(135deg, #9aa7bc 50%, transparent 50%) !important;
-  background-position:
-    calc(100% - 1.05rem) calc(50% + 1px),
-    calc(100% - 0.55rem) calc(50% + 1px) !important;
-  background-size:
-    6px 6px,
-    6px 6px !important;
-  background-repeat: no-repeat !important;
 }
 
 /* Activity overview banner — full shell width (no margin:auto shrink in grid) */
@@ -2447,11 +2401,24 @@ html.dark .project-xr-status {
     flex-wrap: nowrap !important;
   }
 
+  /* Stop flex-basis (190px) from becoming height in the stacked column layout */
+  #projects .proj-controls-group .proj-sort-field {
+    flex: 0 0 auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
   #projects .proj-controls-group .proj-sort-native,
   #projects .proj-controls-group .projects-view-all-btn {
     width: 100% !important;
     max-width: 100% !important;
     box-sizing: border-box !important;
+  }
+
+  /* Wrap the few short filter chips instead of clipping them in a scroller */
+  #projects .project-lens-bar {
+    flex-wrap: wrap !important;
+    overflow-x: visible !important;
   }
 
   #projects #github-projects-container {
@@ -2511,5 +2478,894 @@ html.dark .project-xr-status {
 @media (max-width: 380px) {
   #projects #github-projects-container .project-footer {
     grid-template-columns: 1fr !important;
+  }
+}
+
+/* =========================================================================
+   GitHub Contributions Graph — 2D / 3D / Both
+   Solid surfaces only (light #fff · dark #000), Apple-tuned typography.
+   ========================================================================= */
+
+#projects .gh-contrib {
+  --gh-l0: #ebedf0;
+  --gh-l1: #9be9a8;
+  --gh-l2: #40c463;
+  --gh-l3: #30a14e;
+  --gh-l4: #216e39;
+  --gh-cell: 11px;
+  --gh-gap: 3px;
+  --gh-wd: 30px;
+  --gh-accent-num: #1a7f37;
+  --gh-year-active: #0071e3;
+  --gh-surface: #ffffff;
+  --gh-border: var(--project-border-light);
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--project-border-light);
+}
+
+html.dark #projects .gh-contrib {
+  --gh-l0: #161b22;
+  --gh-l1: #0e4429;
+  --gh-l2: #006d32;
+  --gh-l3: #26a641;
+  --gh-l4: #39d353;
+  --gh-accent-num: #3fb950;
+  --gh-year-active: #388bfd;
+  --gh-surface: #000000;
+  --gh-border: var(--project-border-dark);
+  border-top-color: var(--project-border-dark);
+}
+
+/* ---- Top bar ---- */
+#projects .gh-contrib__topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+#projects .gh-contrib__heading {
+  margin: 0 !important;
+  font-size: 1.2rem !important;
+  font-weight: 640 !important;
+  letter-spacing: -0.02em;
+  color: var(--project-text-light) !important;
+}
+
+html.dark #projects .gh-contrib__heading {
+  color: var(--project-text-dark) !important;
+}
+
+#projects .gh-contrib__controls {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+/* ---- Segmented 2D / 3D / Both ---- */
+#projects .gh-contrib__view {
+  display: inline-flex;
+  padding: 3px;
+  border-radius: 10px;
+  border: 1px solid var(--gh-border);
+  background: var(--gh-surface);
+  gap: 2px;
+}
+
+#projects .gh-contrib__view-btn {
+  border: none !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  color: var(--project-muted-light) !important;
+  -webkit-text-fill-color: var(--project-muted-light) !important;
+  font-size: 0.8rem;
+  font-weight: 600 !important;
+  padding: 0.32rem 0.7rem !important;
+  border-radius: 7px !important;
+  box-shadow: none !important;
+  cursor: pointer;
+  min-height: 32px;
+  transition:
+    background 0.18s ease,
+    color 0.18s ease;
+}
+
+html.dark #projects .gh-contrib__view-btn {
+  color: var(--project-muted-dark) !important;
+  -webkit-text-fill-color: var(--project-muted-dark) !important;
+}
+
+#projects .gh-contrib__view-btn.is-active {
+  background: var(--gh-year-active) !important;
+  background-color: var(--gh-year-active) !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+#projects .gh-contrib__view-btn:not(.is-active):hover {
+  color: var(--project-accent) !important;
+  -webkit-text-fill-color: var(--project-accent) !important;
+}
+
+/* ---- Settings dropdown ---- */
+#projects .gh-contrib__settings {
+  position: relative;
+}
+
+#projects .gh-contrib__settings-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  list-style: none;
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--project-muted-light);
+  padding: 0.32rem 0.7rem;
+  min-height: 32px;
+  border: 1px solid var(--gh-border);
+  border-radius: 10px;
+  background: var(--gh-surface);
+}
+
+html.dark #projects .gh-contrib__settings-btn {
+  color: var(--project-muted-dark);
+}
+
+#projects .gh-contrib__settings-btn::-webkit-details-marker {
+  display: none;
+}
+
+#projects .gh-contrib__settings-btn i {
+  font-size: 0.6rem;
+  transition: transform 0.2s ease;
+}
+
+#projects .gh-contrib__settings[open] .gh-contrib__settings-btn i {
+  transform: rotate(180deg);
+}
+
+#projects .gh-contrib__settings-menu {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 6px);
+  z-index: 20;
+  width: 240px;
+  padding: 0.85rem;
+  border-radius: 12px;
+  border: 1px solid var(--gh-border);
+  background: var(--gh-surface);
+  box-shadow: var(--project-shadow-light);
+  display: grid;
+  gap: 0.6rem;
+}
+
+html.dark #projects .gh-contrib__settings-menu {
+  box-shadow: var(--project-shadow-dark);
+}
+
+#projects .gh-contrib__settings-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--project-accent);
+  text-decoration: none;
+}
+
+#projects .gh-contrib__settings-link:hover {
+  text-decoration: underline;
+}
+
+#projects .gh-contrib__source {
+  margin: 0;
+  font-size: 0.72rem;
+  color: var(--project-muted-light);
+}
+
+html.dark #projects .gh-contrib__source {
+  color: var(--project-muted-dark);
+}
+
+/* ---- Body layout: main + year rail ---- */
+#projects .gh-contrib__body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 92px;
+  gap: 1rem;
+  align-items: start;
+}
+
+#projects .gh-contrib__main {
+  min-width: 0;
+  display: grid;
+  gap: 1rem;
+}
+
+/* ---- View visibility ---- */
+#projects .gh-contrib[data-view='2d'] .gh-contrib__stage[data-view-block='3d'],
+#projects .gh-contrib[data-view='3d'] .gh-contrib__stage[data-view-block='2d'] {
+  display: none;
+}
+
+/* ---- 3D stage (card with floating panels) ---- */
+#projects .gh-contrib__stage[data-view-block='3d'] {
+  position: relative;
+  border: 1px solid var(--gh-border);
+  border-radius: 18px;
+  background: var(--gh-surface);
+  padding: 1.1rem;
+  min-height: 260px;
+  overflow: hidden;
+}
+
+#projects .gh-contrib__canvas {
+  display: block;
+  width: 100%;
+  max-width: 640px;
+  height: auto;
+}
+
+/* ---- Summary panels ---- */
+#projects .gh-contrib__panel {
+  border: 1px solid var(--gh-border);
+  border-radius: 14px;
+  background: var(--gh-surface);
+  padding: 0.85rem 1rem;
+}
+
+@media (min-width: 861px) {
+  #projects .gh-contrib__panel--contrib {
+    position: absolute;
+    top: 1.1rem;
+    right: 1.1rem;
+    width: 340px;
+  }
+
+  #projects .gh-contrib__panel--streaks {
+    position: absolute;
+    bottom: 1.1rem;
+    left: 1.1rem;
+    width: 300px;
+  }
+}
+
+#projects .gh-contrib__panel-title {
+  margin: 0 0 0.6rem;
+  font-size: 1rem;
+  font-weight: 640;
+  letter-spacing: -0.01em;
+  color: var(--project-text-light);
+}
+
+html.dark #projects .gh-contrib__panel-title {
+  color: var(--project-text-dark);
+}
+
+#projects .gh-contrib__stat-row {
+  display: flex;
+  gap: 1.4rem;
+}
+
+#projects .gh-contrib__stat {
+  display: grid;
+  gap: 0.1rem;
+  align-content: start;
+}
+
+#projects .gh-contrib__stat-num {
+  font-size: 1.7rem;
+  line-height: 1.05;
+  font-weight: 720;
+  letter-spacing: -0.03em;
+  color: var(--project-text-light);
+}
+
+html.dark #projects .gh-contrib__stat-num {
+  color: var(--project-text-dark);
+}
+
+#projects .gh-contrib__stat-num--accent {
+  color: var(--gh-accent-num);
+}
+
+#projects .gh-contrib__unit {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+#projects .gh-contrib__stat-label {
+  font-size: 0.82rem;
+  font-weight: 640;
+  color: var(--project-text-light);
+}
+
+html.dark #projects .gh-contrib__stat-label {
+  color: var(--project-text-dark);
+}
+
+#projects .gh-contrib__stat-sub {
+  font-size: 0.72rem;
+  color: var(--project-muted-light);
+}
+
+html.dark #projects .gh-contrib__stat-sub {
+  color: var(--project-muted-dark);
+}
+
+#projects .gh-contrib__avg {
+  margin: 0.75rem 0 0;
+  font-size: 0.82rem;
+  color: var(--project-muted-light);
+  text-align: right;
+}
+
+html.dark #projects .gh-contrib__avg {
+  color: var(--project-muted-dark);
+}
+
+#projects .gh-contrib__avg strong {
+  color: var(--gh-accent-num);
+}
+
+/* ---- 2D heatmap stage ---- */
+#projects .gh-contrib__stage[data-view-block='2d'] {
+  border: 1px solid var(--gh-border);
+  border-radius: 18px;
+  background: var(--gh-surface);
+  padding: 1.1rem;
+}
+
+#projects .gh-contrib__heatmap-scroll {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: thin;
+  padding-bottom: 0.35rem;
+}
+
+#projects .gh-hm {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+#projects .gh-hm__months {
+  display: grid;
+  column-gap: var(--gh-gap);
+  margin-left: var(--gh-wd);
+  font-size: 0.68rem;
+  color: var(--project-muted-light);
+}
+
+html.dark #projects .gh-hm__months {
+  color: var(--project-muted-dark);
+}
+
+#projects .gh-hm__month {
+  white-space: nowrap;
+}
+
+#projects .gh-hm__body {
+  display: flex;
+  gap: 6px;
+}
+
+#projects .gh-hm__weekdays {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gh-gap);
+  width: calc(var(--gh-wd) - 6px);
+}
+
+#projects .gh-hm__weekday {
+  height: var(--gh-cell);
+  line-height: var(--gh-cell);
+  font-size: 0.62rem;
+  color: var(--project-muted-light);
+}
+
+html.dark #projects .gh-hm__weekday {
+  color: var(--project-muted-dark);
+}
+
+#projects .gh-hm__weeks {
+  display: flex;
+  gap: var(--gh-gap);
+}
+
+#projects .gh-hm__week {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gh-gap);
+}
+
+#projects .gh-hm__cell {
+  width: var(--gh-cell);
+  height: var(--gh-cell);
+  border-radius: 2px;
+  background: var(--gh-l0);
+  outline: 1px solid rgb(27 31 35 / 6%);
+  outline-offset: -1px;
+}
+
+html.dark #projects .gh-hm__cell {
+  outline-color: rgb(255 255 255 / 5%);
+}
+
+#projects .gh-hm__cell--empty {
+  background: transparent;
+  outline: none;
+}
+
+#projects .gh-hm__cell[data-level='1'] {
+  background: var(--gh-l1);
+}
+
+#projects .gh-hm__cell[data-level='2'] {
+  background: var(--gh-l2);
+}
+
+#projects .gh-hm__cell[data-level='3'] {
+  background: var(--gh-l3);
+}
+
+#projects .gh-hm__cell[data-level='4'] {
+  background: var(--gh-l4);
+}
+
+/* ---- Legends ---- */
+#projects .gh-contrib__legend {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.7rem;
+  color: var(--project-muted-light);
+  margin: 0;
+}
+
+html.dark #projects .gh-contrib__legend {
+  color: var(--project-muted-dark);
+}
+
+#projects .gh-contrib__legend span[data-level] {
+  width: 11px;
+  height: 11px;
+  border-radius: 2px;
+  display: inline-block;
+  background: var(--gh-l0);
+}
+
+#projects .gh-contrib__legend span[data-level='1'] {
+  background: var(--gh-l1);
+}
+
+#projects .gh-contrib__legend span[data-level='2'] {
+  background: var(--gh-l2);
+}
+
+#projects .gh-contrib__legend span[data-level='3'] {
+  background: var(--gh-l3);
+}
+
+#projects .gh-contrib__legend span[data-level='4'] {
+  background: var(--gh-l4);
+}
+
+#projects .gh-contrib__legend--floor {
+  justify-content: space-between;
+  margin-top: 0.9rem;
+}
+
+#projects .gh-contrib__legend-scale {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+#projects .gh-contrib__learn {
+  color: var(--project-muted-light);
+  text-decoration: none;
+}
+
+#projects .gh-contrib__learn:hover {
+  color: var(--project-accent);
+  text-decoration: underline;
+}
+
+html.dark #projects .gh-contrib__learn {
+  color: var(--project-muted-dark);
+}
+
+/* ---- Year rail ---- */
+#projects .gh-contrib__years {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+#projects .gh-contrib__year {
+  width: 100%;
+  text-align: left;
+  padding: 0.5rem 0.75rem !important;
+  border: none !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  border-radius: 8px !important;
+  color: var(--project-muted-light) !important;
+  -webkit-text-fill-color: var(--project-muted-light) !important;
+  font-size: 0.85rem;
+  font-weight: 600 !important;
+  box-shadow: none !important;
+  cursor: pointer;
+  min-height: 40px;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
+}
+
+html.dark #projects .gh-contrib__year {
+  color: var(--project-muted-dark) !important;
+  -webkit-text-fill-color: var(--project-muted-dark) !important;
+}
+
+#projects .gh-contrib__year:hover {
+  background: var(--project-accent-soft) !important;
+  background-color: var(--project-accent-soft) !important;
+  color: var(--project-accent) !important;
+  -webkit-text-fill-color: var(--project-accent) !important;
+}
+
+#projects .gh-contrib__year.is-active {
+  background: var(--gh-year-active) !important;
+  background-color: var(--gh-year-active) !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+#projects .gh-contrib.is-loading .gh-contrib__main {
+  opacity: 0.55;
+  transition: opacity 0.2s ease;
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 860px) {
+  #projects .gh-contrib__body {
+    grid-template-columns: 1fr;
+  }
+
+  #projects .gh-contrib__panel {
+    width: 100% !important;
+    position: static !important;
+  }
+
+  #projects .gh-contrib__stage[data-view-block='3d'] {
+    display: grid;
+    gap: 1rem;
+    min-height: 0;
+  }
+
+  #projects .gh-contrib__canvas {
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
+  #projects .gh-contrib__years {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  #projects .gh-contrib__year {
+    width: auto;
+    min-width: 64px;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  #projects .gh-contrib__stat-row {
+    gap: 1rem;
+  }
+
+  #projects .gh-contrib__stat-num {
+    font-size: 1.4rem;
+  }
+
+  #projects .gh-contrib__heading {
+    font-size: 1.05rem !important;
+  }
+}
+
+/* =========================================================================
+   Project Showcase — shadcn UI/UX × Apple polish (final layer, loads last)
+   Hairline borders · flat controls · neutral secondary badges · unified
+   focus rings · solid surfaces (light #fff · dark #000).
+   ========================================================================= */
+
+section#projects {
+  --sc-radius: 12px;
+  --sc-radius-card: 18px;
+  --sc-radius-badge: 8px;
+  --sc-ring: rgb(0 113 227 / 38%);
+  --sc-border: rgb(0 0 0 / 8%);
+  --sc-border-strong: rgb(0 0 0 / 16%);
+  --sc-muted-bg: rgb(0 0 0 / 4.5%);
+  --sc-muted-bg-hover: rgb(0 0 0 / 7%);
+  --sc-muted-fg: #475569;
+  --sc-shadow-sm: 0 1px 2px rgb(15 23 42 / 6%);
+  --sc-shadow-md: 0 6px 20px rgb(15 23 42 / 10%);
+}
+
+html.dark section#projects {
+  --sc-ring: rgb(10 132 255 / 48%);
+  --sc-border: rgb(255 255 255 / 10%);
+  --sc-border-strong: rgb(255 255 255 / 20%);
+  --sc-muted-bg: rgb(255 255 255 / 6%);
+  --sc-muted-bg-hover: rgb(255 255 255 / 10%);
+  --sc-muted-fg: #aab4c2;
+  --sc-shadow-sm: 0 1px 2px rgb(0 0 0 / 40%);
+  --sc-shadow-md: 0 8px 26px rgb(0 0 0 / 55%);
+}
+
+/* ---- Search input (shadcn input) ---- */
+section#projects .proj-input-group {
+  border-radius: var(--sc-radius) !important;
+  border: 1px solid var(--sc-border) !important;
+  box-shadow: var(--sc-shadow-sm) !important;
+  min-height: 48px !important;
+  transition:
+    border-color 0.18s ease,
+    box-shadow 0.18s ease !important;
+}
+
+section#projects .proj-input-group:focus-within {
+  border-color: var(--sc-ring) !important;
+  box-shadow: 0 0 0 3px var(--sc-ring) !important;
+}
+
+/* ---- Sort select (shadcn select) ---- */
+section#projects .proj-sort-native {
+  border-radius: var(--sc-radius) !important;
+  border: 1px solid var(--sc-border) !important;
+  box-shadow: var(--sc-shadow-sm) !important;
+  min-height: 48px;
+  font-weight: 600;
+  transition:
+    border-color 0.18s ease,
+    box-shadow 0.18s ease !important;
+}
+
+section#projects .proj-sort-native:hover {
+  border-color: var(--sc-border-strong) !important;
+  box-shadow: var(--sc-shadow-sm) !important;
+}
+
+section#projects .proj-sort-native:focus-visible {
+  border-color: var(--sc-ring) !important;
+  box-shadow: 0 0 0 3px var(--sc-ring) !important;
+  outline: none !important;
+}
+
+html.dark section#projects .proj-sort-native {
+  background-color: #000 !important;
+}
+
+/* ---- Visit GitHub button (shadcn primary, flat) ---- */
+section#projects .projects-view-all-btn {
+  border-radius: var(--sc-radius) !important;
+  background: var(--project-accent, #0071e3) !important;
+  box-shadow: var(--sc-shadow-sm) !important;
+  height: 48px !important;
+  min-height: 48px !important;
+  font-weight: 600 !important;
+  transition:
+    background 0.18s ease,
+    box-shadow 0.18s ease,
+    transform 0.18s ease !important;
+}
+
+section#projects .projects-view-all-btn:hover {
+  transform: translateY(-1px) !important;
+  background: #0077ed !important;
+  box-shadow: var(--sc-shadow-md) !important;
+}
+
+section#projects .projects-view-all-btn:focus-visible {
+  outline: 2px solid var(--sc-ring) !important;
+  outline-offset: 2px !important;
+}
+
+html.dark section#projects .projects-view-all-btn {
+  background: #0a84ff !important;
+}
+
+/* ---- Release-lens toggle group (shadcn toggle group) ---- */
+section#projects .project-lens-chip {
+  border-radius: 10px !important;
+  border: 1px solid var(--sc-border) !important;
+  background: var(--sc-muted-bg) !important;
+  color: var(--sc-muted-fg) !important;
+  min-height: 40px;
+  transition:
+    background 0.16s ease,
+    border-color 0.16s ease,
+    color 0.16s ease,
+    transform 0.16s ease !important;
+}
+
+section#projects .project-lens-chip:hover:not(.active) {
+  transform: none !important;
+  background: var(--sc-muted-bg-hover) !important;
+  border-color: var(--sc-border-strong) !important;
+  color: var(--project-text-light) !important;
+}
+
+html.dark section#projects .project-lens-chip:hover:not(.active) {
+  color: var(--project-text-dark) !important;
+}
+
+section#projects .project-lens-chip.active {
+  transform: none !important;
+  background: var(--project-accent, #0071e3) !important;
+  border-color: var(--project-accent, #0071e3) !important;
+  color: #fff !important;
+}
+
+html.dark section#projects .project-lens-chip.active {
+  background: #0a84ff !important;
+  border-color: #0a84ff !important;
+  color: #fff !important;
+}
+
+section#projects .project-lens-chip.active .project-lens-count {
+  background: rgb(255 255 255 / 24%) !important;
+  color: #fff !important;
+}
+
+section#projects .project-lens-chip:focus-visible {
+  outline: 2px solid var(--sc-ring) !important;
+  outline-offset: 2px !important;
+}
+
+section#projects .project-lens-chip > i {
+  font-size: 0.78em !important;
+  opacity: 0.9 !important;
+}
+
+/* Card surface (border, radius, solid bg, accent hover) is owned by
+   theme-solid-surfaces.css — we intentionally do not override it here. */
+
+/* ---- Repo path link ---- */
+section#projects #github-projects-container .project-repo-link:focus-visible {
+  outline: 2px solid var(--sc-ring) !important;
+  outline-offset: 2px !important;
+  border-radius: 4px;
+}
+
+/* ---- Secondary badges: topics, language, signal pills go neutral ----
+   Reserve colour for the release-status pill only (shadcn hierarchy). */
+section#projects #github-projects-container .project-tag,
+section#projects #github-projects-container .project-language,
+section#projects .project-signal-pill,
+section#projects #github-projects-container .project-signal-pill {
+  border-radius: var(--sc-radius-badge) !important;
+  border: 1px solid var(--sc-border) !important;
+  background: var(--sc-muted-bg) !important;
+  color: var(--sc-muted-fg) !important;
+  font-weight: 600 !important;
+}
+
+html.dark section#projects #github-projects-container .project-tag,
+html.dark section#projects #github-projects-container .project-language,
+html.dark section#projects .project-signal-pill,
+html.dark section#projects #github-projects-container .project-signal-pill {
+  border-color: var(--sc-border) !important;
+  background: var(--sc-muted-bg) !important;
+  color: var(--sc-muted-fg) !important;
+}
+
+/* ---- Evidence links (shadcn secondary badge) ---- */
+section#projects #github-projects-container .project-evidence-link {
+  border-radius: var(--sc-radius-badge) !important;
+  border: 1px solid var(--sc-border) !important;
+  background: var(--sc-muted-bg) !important;
+  color: var(--sc-muted-fg) !important;
+}
+
+section#projects #github-projects-container .project-evidence-link:hover,
+section#projects #github-projects-container .project-evidence-link:focus-visible {
+  background: var(--sc-muted-bg-hover) !important;
+  border-color: var(--sc-border-strong) !important;
+  color: var(--project-text-light) !important;
+  outline: none !important;
+}
+
+html.dark section#projects #github-projects-container .project-evidence-link:hover,
+html.dark section#projects #github-projects-container .project-evidence-link:focus-visible {
+  color: var(--project-text-dark) !important;
+}
+
+/* ---- Release status pill radius (keep semantic colour) ---- */
+section#projects #github-projects-container .project-release-status {
+  border-radius: var(--sc-radius-badge) !important;
+}
+
+/* ---- Action buttons (shadcn primary + outline variants) ---- */
+section#projects #github-projects-container .project-action-btn {
+  border-radius: 10px !important;
+  min-height: 44px !important;
+  font-weight: 600 !important;
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease,
+    color 0.18s ease,
+    box-shadow 0.18s ease,
+    transform 0.18s ease !important;
+}
+
+section#projects #github-projects-container .project-action-btn.btn-ar {
+  background: var(--project-accent, #0071e3) !important;
+  border: 1px solid var(--project-accent, #0071e3) !important;
+  color: #fff !important;
+  box-shadow: var(--sc-shadow-sm) !important;
+}
+
+section#projects #github-projects-container .project-action-btn.btn-ar:hover {
+  transform: translateY(-1px) !important;
+  background: #0077ed !important;
+  box-shadow: var(--sc-shadow-md) !important;
+}
+
+html.dark section#projects #github-projects-container .project-action-btn.btn-ar {
+  background: #0a84ff !important;
+  border-color: #0a84ff !important;
+}
+
+/* Demo = solid secondary (surface owned by theme-solid-surfaces.css).
+   We refine only the hairline border, foreground text + a subtle lift. */
+section#projects #github-projects-container .project-action-btn.btn-demo {
+  border: 1px solid var(--sc-border-strong) !important;
+  color: var(--project-text-light) !important;
+  box-shadow: none !important;
+}
+
+section#projects
+  #github-projects-container
+  .project-action-btn.btn-demo:hover:not(.is-disabled):not([disabled]) {
+  transform: translateY(-1px) !important;
+}
+
+html.dark section#projects #github-projects-container .project-action-btn.btn-demo {
+  color: var(--project-text-dark) !important;
+}
+
+section#projects #github-projects-container .project-action-btn.btn-demo.is-disabled,
+section#projects #github-projects-container .project-action-btn.btn-demo[disabled] {
+  background: transparent !important;
+  border: 1px dashed var(--sc-border) !important;
+  color: var(--sc-muted-fg) !important;
+  box-shadow: none !important;
+  opacity: 0.75 !important;
+}
+
+section#projects #github-projects-container .project-action-btn:focus-visible {
+  outline: 2px solid var(--sc-ring) !important;
+  outline-offset: 2px !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  section#projects #github-projects-container .showcase-project-card,
+  section#projects #github-projects-container .project-action-btn,
+  section#projects .projects-view-all-btn,
+  section#projects .project-lens-chip {
+    transition: none !important;
   }
 }

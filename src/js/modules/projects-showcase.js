@@ -1,20 +1,23 @@
 import GitHubProjects from './github-projects.js';
 import { observeScrollAnimations } from './scroll-animations.js';
 import './project-xr.js';
+import './github-contributions-graph.js';
 
 const DEFAULT_USERNAME = 'mangeshraut712';
 const PROJECT_ROWS_LIMIT = 2;
 const DEFAULT_PROJECT_LENS = 'all';
-const LENS_KEYS = ['all', 'active', 'busy'];
+const LENS_KEYS = ['all', 'stars', 'forks', 'active'];
 const LENS_LABELS = {
   all: 'All',
+  stars: 'Stars',
+  forks: 'Forks',
   active: 'Active',
-  busy: 'Busy',
 };
 const LENS_HINTS = {
   all: 'Every showcase repository',
+  stars: 'Repositories with GitHub stars',
+  forks: 'Repositories that have been forked',
   active: 'Pushed or updated within the last 14 days',
-  busy: '10+ commits in the last 30 days',
 };
 
 function getProjectGridColumns(container) {
@@ -31,80 +34,6 @@ function getProjectGridColumns(container) {
 
   const columns = template.split(' ').filter(Boolean).length;
   return Math.max(1, columns || 3);
-}
-
-const SORT_LABELS = {
-  popularity: 'Featured',
-  stars: 'Most stars',
-  date: 'Recently pushed',
-  name: 'Name (A–Z)',
-  language: 'Primary language',
-};
-
-function initProjectSortMenu(onChange) {
-  const root = document.querySelector('[data-proj-sort-root]');
-  const select = document.getElementById('project-sort-select');
-  const trigger = document.getElementById('project-sort-trigger');
-  const menu = document.getElementById('project-sort-menu');
-  const labelEl = trigger?.querySelector('.proj-sort-trigger-label');
-  if (!root || !select) return;
-
-  if (!trigger || !menu || !labelEl) {
-    return;
-  }
-
-  const options = Array.from(menu.querySelectorAll('[data-sort-value]'));
-
-  const closeMenu = () => {
-    menu.hidden = true;
-    trigger.setAttribute('aria-expanded', 'false');
-  };
-
-  const syncUi = value => {
-    const normalized = SORT_LABELS[value] ? value : 'popularity';
-    select.value = normalized;
-    labelEl.textContent = SORT_LABELS[normalized] || SORT_LABELS.popularity;
-    options.forEach(option => {
-      const active = option.dataset.sortValue === normalized;
-      option.setAttribute('aria-selected', active ? 'true' : 'false');
-      option.classList.toggle('is-active', active);
-    });
-  };
-
-  trigger.addEventListener('click', event => {
-    event.stopPropagation();
-    const willOpen = menu.hidden;
-    closeMenu();
-    if (willOpen) {
-      menu.hidden = false;
-      trigger.setAttribute('aria-expanded', 'true');
-      options.find(option => option.dataset.sortValue === select.value)?.focus();
-    }
-  });
-
-  options.forEach(option => {
-    option.addEventListener('click', event => {
-      event.stopPropagation();
-      const value = String(option.dataset.sortValue || 'popularity');
-      syncUi(value);
-      closeMenu();
-      onChange();
-    });
-  });
-
-  document.addEventListener('click', event => {
-    if (!root.contains(event.target)) {
-      closeMenu();
-    }
-  });
-
-  document.addEventListener('keydown', event => {
-    if (event.key === 'Escape') {
-      closeMenu();
-    }
-  });
-
-  syncUi(select.value || 'popularity');
 }
 
 function getTwoRowLimit(container) {
@@ -260,7 +189,8 @@ function revealRenderedProjectCards(container) {
 function formatActivityCaption(totals) {
   const parts = [];
   if (totals.activeRepos > 0) parts.push(`${totals.activeRepos} active`);
-  if (totals.busyRepos > 0) parts.push(`${totals.busyRepos} busy`);
+  if (totals.totalStars > 0) parts.push(`${formatCompactNumber(totals.totalStars)} stars`);
+  if (totals.totalForks > 0) parts.push(`${formatCompactNumber(totals.totalForks)} forks`);
   if (totals.totalContributors > 0) {
     parts.push(`${formatCompactNumber(totals.totalContributors)} contributors`);
   }
@@ -352,12 +282,6 @@ function updateActivityStats(allRepos, visibleRepos = [], githubProjects = null)
         acc.activeRepos += 1;
       }
 
-      if (commits30d !== null && commits30d >= 10) {
-        acc.busyRepos += 1;
-      } else if (releaseSignal?.filters?.has('busy') || releaseSignal?.key === 'busy') {
-        acc.busyRepos += 1;
-      }
-
       const updatedTime = new Date(repo.updated_at || 0).getTime();
       if (Number.isFinite(updatedTime) && updatedTime > acc.latestUpdate) {
         acc.latestUpdate = updatedTime;
@@ -373,7 +297,6 @@ function updateActivityStats(allRepos, visibleRepos = [], githubProjects = null)
       activityRepos: 0,
       releaseCheckedRepos: 0,
       activeRepos: 0,
-      busyRepos: 0,
       languages: new Set(),
       latestUpdate: 0,
     }
@@ -521,10 +444,16 @@ function normalizeLens(value) {
 
 function getLensLabel(lens) {
   const labels = {
+    stars: 'starred projects',
+    forks: 'forked projects',
     active: 'active projects',
-    busy: 'busy projects',
   };
   return labels[lens] || '';
+}
+
+function isActiveRepo(repo, githubProjects) {
+  const age = githubProjects?.getRepoAgeDays?.(repo?.pushed_at || repo?.updated_at);
+  return Number.isFinite(age) && age <= 14;
 }
 
 function createLensMatcher(lens, githubProjects) {
@@ -532,44 +461,31 @@ function createLensMatcher(lens, githubProjects) {
   if (normalizedLens === DEFAULT_PROJECT_LENS) return () => true;
 
   return repo => {
-    if (!githubProjects || typeof githubProjects.getReleaseSignal !== 'function') {
-      return true;
+    if (normalizedLens === 'stars') {
+      return Number(repo?.stargazers_count || 0) > 0;
     }
-
-    const signal = githubProjects.getReleaseSignal(repo, repo.__activity || {});
+    if (normalizedLens === 'forks') {
+      return Number(repo?.forks_count || 0) > 0;
+    }
     if (normalizedLens === 'active') {
-      const age = githubProjects.getRepoAgeDays(repo?.pushed_at || repo?.updated_at);
-      return Number.isFinite(age) && age <= 14;
+      return isActiveRepo(repo, githubProjects);
     }
-    if (normalizedLens === 'busy') {
-      const commits30d = toFiniteMetric(repo.__activity?.commits30d);
-      if (commits30d !== null && commits30d >= 10) return true;
-      return signal.filters?.has('busy') === true || signal.key === 'busy';
-    }
-    return signal.key === normalizedLens;
+    return true;
   };
 }
 
 function countLensDistribution(repos, githubProjects) {
   const counts = {
     all: repos.length,
+    stars: 0,
+    forks: 0,
     active: 0,
-    busy: 0,
   };
 
   repos.forEach(repo => {
-    if (!githubProjects || typeof githubProjects.getReleaseSignal !== 'function') return;
-    const signal = githubProjects.getReleaseSignal(repo, repo.__activity || {});
-    const age = githubProjects.getRepoAgeDays(repo?.pushed_at || repo?.updated_at);
-    if (Number.isFinite(age) && age <= 14) counts.active += 1;
-    const commits30d = toFiniteMetric(repo.__activity?.commits30d);
-    if (
-      (commits30d !== null && commits30d >= 10) ||
-      signal.filters?.has('busy') ||
-      signal.key === 'busy'
-    ) {
-      counts.busy += 1;
-    }
+    if (Number(repo?.stargazers_count || 0) > 0) counts.stars += 1;
+    if (Number(repo?.forks_count || 0) > 0) counts.forks += 1;
+    if (isActiveRepo(repo, githubProjects)) counts.active += 1;
   });
 
   return counts;
@@ -666,12 +582,6 @@ export async function initProjectShowcase({ username = DEFAULT_USERNAME } = {}) 
     const sortSelect = document.getElementById('project-sort-select');
     const lensButtons = Array.from(document.querySelectorAll('[data-project-lens]'));
     let activeLens = DEFAULT_PROJECT_LENS;
-
-    initProjectSortMenu(() => {
-      renderProjects().catch(error => {
-        console.error('Project showcase sort render failed:', error);
-      });
-    });
 
     const getCurrentQuery = () => String(searchInput?.value || '').trim();
     const getCurrentSort = () =>
@@ -881,25 +791,8 @@ export async function initProjectShowcase({ username = DEFAULT_USERNAME } = {}) 
         });
       });
     });
-    updateLensButtons(lensButtons, activeLens);
     activeLens = updateLensChipCounts(allShowcaseRepos, githubProjects, activeLens);
     updateLensButtons(lensButtons, activeLens);
-
-    document.addEventListener('input', event => {
-      const target = event.target;
-      if (!(target instanceof HTMLInputElement)) return;
-      if (target.id !== 'project-search-input') return;
-      debouncedRender();
-    });
-
-    document.addEventListener('change', event => {
-      const target = event.target;
-      if (!(target instanceof HTMLSelectElement)) return;
-      if (target.id !== 'project-sort-select') return;
-      renderProjects().catch(error => {
-        console.error('Project showcase delegated sort render failed:', error);
-      });
-    });
 
     window.addEventListener(
       'resize',
