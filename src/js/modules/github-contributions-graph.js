@@ -16,7 +16,7 @@ const USERNAME = 'mangeshraut712';
 const API_BASE = 'https://github-contributions-api.jogruber.de/v4';
 const CACHE_TTL = 30 * 60 * 1000;
 const CACHE_PREFIX = `gh_contrib_${USERNAME}_`;
-const FIRST_YEAR = 2017;
+const FIRST_YEAR = 2021;
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 const WEEKDAY_ROWS = { 1: 'Mon', 3: 'Wed', 5: 'Fri' };
@@ -454,9 +454,12 @@ function renderHeatmap(data) {
 
   const scroller = host.closest('.gh-contrib__heatmap-scroll');
   if (scroller) {
-    requestAnimationFrame(() => {
+    const scrollToRight = () => {
       scroller.scrollLeft = scroller.scrollWidth;
-    });
+    };
+    requestAnimationFrame(scrollToRight);
+    setTimeout(scrollToRight, 50);
+    setTimeout(scrollToRight, 200);
   }
 }
 
