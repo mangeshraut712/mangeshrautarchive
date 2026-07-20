@@ -39,8 +39,7 @@ const SHARE_OPTIONS = [
   },
 ];
 
-const getQrCodeUrl = url =>
-  `https://api.qrserver.com/v1/create-qr-code/?size=256x256&ecc=H&margin=0&color=000000&bgcolor=FFFFFF&data=${encodeURIComponent(url)}`;
+const getQrCodeUrl = url => `https://quickchart.io/qr?size=256&text=${encodeURIComponent(url)}`;
 
 const waitForFrame = () =>
   new Promise(resolve => {
