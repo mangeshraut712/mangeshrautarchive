@@ -110,7 +110,9 @@ function generateSampleYear(year) {
     const level = count === 0 ? 0 : count < 3 ? 1 : count < 7 ? 2 : count < 12 ? 3 : 4;
     days.push({ date, count, level });
   }
-  return { year, days, total: days.reduce((s, x) => s + x.count, 0), isSample: true };
+  const calcTotal = days.reduce((s, x) => s + x.count, 0);
+  const total = year === 2026 || year === today.getFullYear() ? 3592 : calcTotal;
+  return { year, days, total, isSample: true };
 }
 
 function readCache(year) {
@@ -326,11 +328,51 @@ function buildShell() {
               More
             </span>
           </p>
+
+          <!-- GitHub Activity Overview Card -->
+          <div class="gh-activity" id="gh-activity">
+            <div class="gh-activity__header">
+              <span class="gh-activity__badge"><i class="fas fa-terminal" aria-hidden="true"></i> @zed-industries</span>
+              <span class="gh-activity__badge"><i class="fas fa-magic" aria-hidden="true"></i> @Alchemyst-ai</span>
+            </div>
+            <div class="gh-activity__content">
+              <div class="gh-activity__left">
+                <h5 class="gh-activity__subtitle">Activity overview</h5>
+                <div class="gh-activity__item">
+                  <i class="fas fa-code-commit gh-activity__icon" aria-hidden="true"></i>
+                  <div class="gh-activity__text">
+                    <span>Contributed to</span>
+                    <a href="https://github.com/mangeshraut712/mangeshrautarchive" target="_blank" rel="noopener noreferrer">mangeshraut712/mangeshrautarchive</a>,
+                    <a href="https://github.com/mangeshraut712/AssistMe-VirtualAssistant" target="_blank" rel="noopener noreferrer">mangeshraut712/AssistMe-VirtualAssistant</a>,
+                    <a href="https://github.com/mangeshraut712/Hindai" target="_blank" rel="noopener noreferrer">mangeshraut712/Hindai</a>
+                    <span>and 41 other repositories</span>
+                  </div>
+                </div>
+              </div>
+              <div class="gh-activity__right">
+                <div class="gh-activity__radar">
+                  <svg width="220" height="180" viewBox="0 0 220 180" class="gh-activity__radar-svg" aria-label="Activity breakdown chart">
+                    <line x1="110" y1="25" x2="110" y2="155" stroke="var(--gh-border, #30363d)" stroke-width="1.5" stroke-dasharray="2 2"/>
+                    <line x1="30" y1="90" x2="190" y2="90" stroke="var(--gh-border, #30363d)" stroke-width="1.5" stroke-dasharray="2 2"/>
+                    <line x1="110" y1="90" x2="40" y2="90" stroke="#39d353" stroke-width="3" stroke-linecap="round"/>
+                    <circle cx="40" cy="90" r="5" fill="#39d353"/>
+                    <line x1="110" y1="90" x2="110" y2="105" stroke="#39d353" stroke-width="3" stroke-linecap="round"/>
+                    <circle cx="110" cy="105" r="4" fill="#39d353"/>
+                    <text x="110" y="16" text-anchor="middle" font-size="10" font-weight="500" fill="var(--project-muted-dark, #8b949e)">Code review</text>
+                    <text x="22" y="93" text-anchor="end" font-size="11" font-weight="700" fill="#39d353">98% Commits</text>
+                    <text x="198" y="93" text-anchor="start" font-size="10" font-weight="500" fill="var(--project-muted-dark, #8b949e)">Issues</text>
+                    <text x="110" y="172" text-anchor="middle" font-size="11" font-weight="700" fill="#39d353">2% Pull requests</text>
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
       <ul class="gh-contrib__years" id="gh-contrib-years" role="tablist" aria-label="Contribution year"></ul>
     </div>
+    <div class="gh-contrib-tooltip" id="gh-contrib-tooltip" role="tooltip" aria-hidden="true"></div>
   `;
 
   container.querySelectorAll('.gh-contrib__view-btn').forEach(btn => {
@@ -408,8 +450,8 @@ function renderHeatmap(data) {
           if (!cell) return '<span class="gh-hm__cell gh-hm__cell--empty" data-level="0"></span>';
           const label = `${cell.count === 0 ? 'No' : cell.count} contribution${
             cell.count === 1 ? '' : 's'
-          } on ${fmtFull.format(cell.date)}`;
-          return `<span class="gh-hm__cell" data-level="${cell.level}" title="${label}"></span>`;
+          } on ${fmtFull.format(cell.date)}.`;
+          return `<span class="gh-hm__cell" data-level="${cell.level}" data-label="${label}" tabindex="0" aria-label="${label}"></span>`;
         })
         .join('');
       return `<div class="gh-hm__week">${dayCells}</div>`;
@@ -424,6 +466,30 @@ function renderHeatmap(data) {
       <div class="gh-hm__weeks">${weeksHtml}</div>
     </div>
   `;
+
+  const tooltip = document.getElementById('gh-contrib-tooltip');
+  const showTooltip = cell => {
+    if (!tooltip) return;
+    const label = cell.getAttribute('data-label');
+    if (!label) return;
+    tooltip.textContent = label;
+    tooltip.classList.add('is-visible');
+    const rect = cell.getBoundingClientRect();
+    tooltip.style.left = `${rect.left + window.scrollX + rect.width / 2}px`;
+    tooltip.style.top = `${rect.top + window.scrollY - 6}px`;
+  };
+
+  const hideTooltip = () => {
+    if (tooltip) tooltip.classList.remove('is-visible');
+  };
+
+  host.querySelectorAll('.gh-hm__cell:not(.gh-hm__cell--empty)').forEach(cell => {
+    cell.addEventListener('mouseenter', () => showTooltip(cell));
+    cell.addEventListener('mouseleave', hideTooltip);
+    cell.addEventListener('focus', () => showTooltip(cell));
+    cell.addEventListener('blur', hideTooltip);
+    cell.addEventListener('touchstart', () => showTooltip(cell), { passive: true });
+  });
 }
 
 /* ------------------------------ 3D isometric ------------------------------ */

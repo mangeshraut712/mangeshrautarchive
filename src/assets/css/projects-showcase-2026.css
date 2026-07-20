@@ -3805,3 +3805,147 @@ section#projects #github-projects-container .project-release-detail {
     margin-left: 0;
   }
 }
+
+/* ==========================================================================
+   GitHub Contribution Graph — Activity Overview & Floating Tooltip (shadcn UI)
+   ========================================================================== */
+
+/* 1. Floating Tooltip */
+.gh-contrib-tooltip {
+  position: absolute;
+  z-index: 9999;
+  pointer-events: none;
+  background: #24292e;
+  color: #ffffff;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.76rem;
+  font-weight: 500;
+  box-shadow: 0 6px 18px rgb(0 0 0 / 28%);
+  white-space: nowrap;
+  transform: translate(-50%, -100%);
+  opacity: 0;
+  transition:
+    opacity 0.15s ease,
+    transform 0.15s ease;
+}
+
+.gh-contrib-tooltip.is-visible {
+  opacity: 1;
+}
+
+html.dark .gh-contrib-tooltip {
+  background: #6e7681;
+  color: #ffffff;
+}
+
+/* 2. Activity Overview Card */
+.gh-activity {
+  margin-top: 1.25rem;
+  border-top: 1px solid var(--gh-border, #30363d);
+  padding-top: 1.25rem;
+}
+
+.gh-activity__header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-bottom: 1rem;
+}
+
+.gh-activity__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.25rem 0.65rem;
+  border-radius: 980px;
+  font-size: 0.8rem;
+  font-weight: 550;
+  background: var(--sc-muted-bg, rgb(0 0 0 / 4%));
+  border: 1px solid var(--gh-border, #30363d);
+  color: var(--project-accent, #0071e3);
+}
+
+html.dark .gh-activity__badge {
+  background: rgb(255 255 255 / 4%);
+  color: var(--project-accent-dark, #2997ff);
+}
+
+.gh-activity__content {
+  display: grid;
+  grid-template-columns: 1fr 240px;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+@media (max-width: 768px) {
+  .gh-activity__content {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+}
+
+.gh-activity__subtitle {
+  font-size: 0.88rem;
+  font-weight: 650;
+  margin: 0 0 0.75rem;
+  color: var(--project-heading-light, #1d1d1f);
+}
+
+html.dark .gh-activity__subtitle {
+  color: var(--project-heading-dark, #f5f5f7);
+}
+
+.gh-activity__item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.gh-activity__icon {
+  font-size: 1rem;
+  color: #39d353;
+  margin-top: 2px;
+}
+
+.gh-activity__text {
+  font-size: 0.84rem;
+  line-height: 1.5;
+  color: var(--project-muted-light, #6e6e73);
+}
+
+html.dark .gh-activity__text {
+  color: var(--project-muted-dark, #86868b);
+}
+
+.gh-activity__text a {
+  color: var(--project-accent, #0071e3);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+html.dark .gh-activity__text a {
+  color: var(--project-accent-dark, #2997ff);
+}
+
+.gh-activity__text a:hover {
+  text-decoration: underline;
+}
+
+.gh-activity__radar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 2D & Both View Responsiveness Guarantees */
+#projects .gh-contrib__heatmap {
+  min-width: 720px;
+  max-width: 100%;
+}
+
+#projects .gh-contrib[data-view='both'] .gh-contrib__main {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
