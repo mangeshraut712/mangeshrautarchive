@@ -1050,3 +1050,85 @@ html.dark #search-overlay .search-result-section {
     font-size: 1.05rem !important;
   }
 }
+
+/* ═══════════════════════════════════════════════════════════
+   WWDC 2026 APPLE SIRI AI CHATBOT & CLOSE BUTTON MASTER FIXES
+   ═══════════════════════════════════════════════════════════ */
+
+/* Remove extra border lines from Chatbot header & input container */
+.chatbot-header,
+html.dark .chatbot-header,
+#chatbot-widget .chatbot-header {
+  border-bottom: none !important;
+  box-shadow: none !important;
+}
+
+.chatbot-input-container,
+html.dark .chatbot-input-container,
+#chatbot-widget .chatbot-input-container {
+  border-top: none !important;
+  box-shadow: none !important;
+}
+
+/* Master Unified Apple Red Circular Close Buttons */
+.apple-close-btn,
+.premium-close-btn,
+#close-menu-btn,
+#close-menu-btn.premium-close-btn,
+#search-overlay #search-close,
+#search-overlay #search-close.premium-close-btn,
+.chatbot-close-btn,
+#chatbot-widget .chatbot-close-btn,
+.project-xr-close-btn,
+.modal-close,
+.publication-modal-close,
+.case-study-close,
+.lightbox-close {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 36px !important;
+  height: 36px !important;
+  min-width: 36px !important;
+  min-height: 36px !important;
+  border-radius: 50% !important;
+  background: #ff3b30 !important;
+  background-color: #ff3b30 !important;
+  background-image: none !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  border: none !important;
+  box-shadow: 0 4px 14px rgb(255 59 48 / 45%) !important;
+  cursor: pointer !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  z-index: 100005 !important;
+}
+
+.apple-close-btn i,
+.premium-close-btn i,
+#close-menu-btn i,
+#search-overlay #search-close i,
+.chatbot-close-btn i,
+#chatbot-widget .chatbot-close-btn i {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  fill: #ffffff !important;
+  stroke: #ffffff !important;
+  font-size: 0.9rem !important;
+}
+
+html.dark .apple-close-btn,
+html.dark .premium-close-btn,
+html.dark #close-menu-btn,
+html.dark #close-menu-btn.premium-close-btn,
+html.dark #search-overlay #search-close,
+html.dark #search-overlay #search-close.premium-close-btn,
+html.dark .chatbot-close-btn,
+html.dark #chatbot-widget .chatbot-close-btn {
+  background: #ff453a !important;
+  background-color: #ff453a !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  box-shadow: 0 4px 16px rgb(255 69 58 / 55%) !important;
+}

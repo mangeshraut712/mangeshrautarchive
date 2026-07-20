@@ -555,28 +555,32 @@ html.dark .menu-item:hover {
   top: 20px !important;
   right: 20px !important;
   z-index: 10005 !important;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: rgb(240 240 240 / 60%) !important;
-  color: #1d1d1f !important;
-  backdrop-filter: blur(10px);
+  width: 36px !important;
+  height: 36px !important;
+  min-width: 36px !important;
+  min-height: 36px !important;
+  border-radius: 50% !important;
+  background: #ff3b30 !important;
+  background-color: #ff3b30 !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
   border: none !important;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition:
-    color 0.2s,
-    background-color 0.2s,
-    border-color 0.2s,
-    box-shadow 0.2s,
-    transform 0.2s,
-    opacity 0.2s;
-  box-shadow: none !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-shadow: 0 4px 12px rgb(255 59 48 / 45%) !important;
+}
+
+#close-menu-btn i {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  fill: #ffffff !important;
+  stroke: #ffffff !important;
 }
 
 #close-menu-btn:hover {
-  transform: scale(1.1) !important;
+  background: #ff453a !important;
+  transform: scale(1.08) !important;
 }
 
 /* Mobile Adjustments */
@@ -657,8 +661,9 @@ html.dark .menu-item:hover {
 /* 7. Mobile Menu Improvements (Absolute Compact Top) */
 
 html.dark #close-menu-btn {
-  background: rgb(60 60 60 / 60%) !important;
-  color: #fff !important;
+  background: #ff453a !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
 }
 
 /* Menu Background */

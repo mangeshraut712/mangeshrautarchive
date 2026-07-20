@@ -592,44 +592,48 @@ body.menu-open .overlay-menu {
     visibility 0s linear 0s;
 }
 
-/* Close Button - Highly Visible Apple Style */
+/* Close Button - Apple Red Circular */
 #close-menu-btn {
   position: absolute;
   top: 16px;
   right: 16px;
-  width: 40px;
-  height: 40px;
-  background: rgb(0 0 0 / 10%);
-  border: 1px solid rgb(0 0 0 / 10%);
-  border-radius: 50%;
-  color: #1d1d1f !important;
+  width: 36px !important;
+  height: 36px !important;
+  min-width: 36px !important;
+  min-height: 36px !important;
+  background: #ff3b30 !important;
+  background-color: #ff3b30 !important;
+  border: none !important;
+  border-radius: 50% !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
   display: flex !important;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  z-index: 10001 !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  z-index: 10005 !important;
   opacity: 1 !important;
   visibility: visible !important;
   -webkit-tap-highlight-color: transparent;
   transition:
-    color 0.2s ease,
+    transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
     background-color 0.2s ease,
-    border-color 0.2s ease,
-    box-shadow 0.2s ease,
-    transform 0.2s ease,
-    opacity 0.2s ease;
-  box-shadow: 0 2px 12px rgb(0 0 0 / 15%);
+    box-shadow 0.2s ease !important;
+  box-shadow: 0 4px 12px rgb(255 59 48 / 45%) !important;
 }
 
 html.dark #close-menu-btn {
-  background: rgb(255 255 255 / 20%);
-  border-color: rgb(255 255 255 / 20%);
-  color: #fff !important;
+  background: #ff453a !important;
+  background-color: #ff453a !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  box-shadow: 0 4px 14px rgb(255 69 58 / 55%) !important;
 }
 
 #close-menu-btn:hover {
-  background: rgb(0 0 0 / 15%);
-  transform: scale(1.05);
+  background: #ff453a !important;
+  transform: scale(1.08) !important;
+  box-shadow: 0 6px 16px rgb(255 69 58 / 60%) !important;
 }
 
 html.dark #close-menu-btn:hover {
