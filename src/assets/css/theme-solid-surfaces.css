@@ -2580,3 +2580,193 @@ html.dark
   transform: translateY(-2px) scale(1.02) !important;
   box-shadow: 0 6px 22px rgb(10 132 255 / 36%) !important;
 }
+
+/* ==========================================================================
+   Apple & shadcn Sitewide Button Design System (Touch Targets, Pills, Micro-Interactions)
+   ========================================================================== */
+
+/* 1. Theme Toggle & Circle Nav Buttons */
+:is(
+  .theme-toggle-nav,
+  .monitor-page-nav__theme,
+  #search-overlay #search-close,
+  .premium-close-btn
+) {
+  min-width: 40px !important;
+  min-height: 40px !important;
+  width: 40px !important;
+  height: 40px !important;
+  border-radius: 50% !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0 !important;
+  transition:
+    transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+    background-color 0.2s ease,
+    border-color 0.2s ease !important;
+}
+
+:is(
+  .theme-toggle-nav,
+  .monitor-page-nav__theme,
+  #search-overlay #search-close,
+  .premium-close-btn
+):active {
+  transform: scale(0.94) !important;
+}
+
+/* 2. Tabs, Country Pills & Segmented Controls */
+:is(
+  .currently-tab,
+  .currently-tab-btn,
+  .systems-arch-tab,
+  .country-pill,
+  .control-center-refresh,
+  .uses-search__clear,
+  .project-lens-chip
+) {
+  min-height: 38px !important;
+  height: 38px !important;
+  font-size: 0.88rem !important;
+  font-weight: 550 !important;
+  letter-spacing: -0.01em !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.45rem !important;
+  padding: 0 1rem !important;
+  border-radius: 980px !important;
+  box-sizing: border-box !important;
+  transition:
+    transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease !important;
+}
+
+:is(
+  .currently-tab,
+  .currently-tab-btn,
+  .systems-arch-tab,
+  .country-pill,
+  .control-center-refresh,
+  .uses-search__clear,
+  .project-lens-chip
+):active {
+  transform: scale(0.97) !important;
+}
+
+/* 3. Primary & Secondary CTA Buttons */
+:is(
+  .btn-primary,
+  .hero-cta,
+  .contact-submit-btn,
+  .newsletter-submit-btn,
+  .btn-secondary,
+  .hero-secondary-cta
+) {
+  min-height: 48px !important;
+  height: 48px !important;
+  border-radius: 12px !important;
+  font-size: 0.94rem !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.01em !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.55rem !important;
+  padding: 0 1.6rem !important;
+  text-decoration: none !important;
+  box-sizing: border-box !important;
+  transition:
+    transform 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.22s ease,
+    background-color 0.22s ease !important;
+}
+
+:is(
+  .btn-primary,
+  .hero-cta,
+  .contact-submit-btn,
+  .newsletter-submit-btn,
+  .btn-secondary,
+  .hero-secondary-cta
+):active {
+  transform: translateY(0) scale(0.98) !important;
+}
+
+/* 4. Keyboard Focus Ring (Apple & shadcn UI standard) */
+:is(
+  button,
+  a.btn,
+  .btn-primary,
+  .btn-secondary,
+  .projects-view-all-btn,
+  .section-preview-btn,
+  .project-lens-chip,
+  .currently-tab,
+  .systems-arch-tab,
+  .country-pill,
+  .theme-toggle-nav,
+  .premium-close-btn
+):focus-visible {
+  outline: 2px solid #0071e3 !important;
+  outline-offset: 2px !important;
+}
+
+html.dark
+  :is(
+    button,
+    a.btn,
+    .btn-primary,
+    .btn-secondary,
+    .projects-view-all-btn,
+    .section-preview-btn,
+    .project-lens-chip,
+    .currently-tab,
+    .systems-arch-tab,
+    .country-pill,
+    .theme-toggle-nav,
+    .premium-close-btn
+  ):focus-visible {
+  outline: 2px solid #0a84ff !important;
+  outline-offset: 2px !important;
+}
+
+/* 5. Shadcn Badge Buttons & Micro Card Links */
+:is(.project-evidence-link, .watch-btn, .engineering-open-btn, .contact-assistme-btn) {
+  min-height: 36px !important;
+  height: 36px !important;
+  border-radius: 8px !important;
+  padding: 0 0.85rem !important;
+  font-size: 0.82rem !important;
+  font-weight: 550 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.4rem !important;
+  text-decoration: none !important;
+  box-sizing: border-box !important;
+  transition:
+    transform 0.18s cubic-bezier(0.16, 1, 0.3, 1),
+    background-color 0.18s ease,
+    border-color 0.18s ease,
+    color 0.18s ease !important;
+}
+
+:is(.project-evidence-link, .watch-btn, .engineering-open-btn, .contact-assistme-btn):hover {
+  transform: translateY(-1px) scale(1.02) !important;
+}
+
+:is(.project-evidence-link, .watch-btn, .engineering-open-btn):active {
+  transform: scale(0.97) !important;
+}
+
+.chatbot-plus-btn {
+  min-width: 38px !important;
+  min-height: 38px !important;
+  width: 38px !important;
+  height: 38px !important;
+  border-radius: 50% !important;
+}
