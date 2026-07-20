@@ -2370,3 +2370,54 @@ html.dark select#event-filter.event-filter-sr-only {
   background-color: #1c1c1e !important;
   color: #f5f5f7 !important;
 }
+
+/* ==========================================================================
+   Pure Solid White Light Mode Surface Enforcement
+   ========================================================================== */
+html:not(.dark)
+  :is(
+    input,
+    select,
+    textarea,
+    .search-input,
+    #search-overlay #search-input,
+    .projects-search-input,
+    .currently-tab-btn,
+    .section-tab,
+    .tab-btn,
+    .nav-rail-item,
+    .filter-btn,
+    .skill-badge,
+    .tech-tag,
+    .tag,
+    .badge,
+    .project-release-status,
+    .systems-arch-card,
+    .systems-bench-badge,
+    .systems-case-flow,
+    .systems-metric-panel,
+    .monitor-badge,
+    .travel-card,
+    .uses-card,
+    .experience-company,
+    .experience-meta,
+    .currently-item,
+    .vibe-tool-item,
+    .doc-link-tile,
+    .place-guide-card,
+    .travel-stat,
+    .modal-content,
+    .share-dialog,
+    .a11y-panel,
+    .chatbot-panel,
+    .chatbot-header,
+    .chatbot-footer,
+    .search-overlay-container,
+    .code-block,
+    pre,
+    code,
+    .terminal-window
+  ) {
+  background-color: #ffffff !important;
+  border-color: var(--card-border-rest, #e5e5ea) !important;
+}

@@ -374,7 +374,8 @@ html.dark .project-action-btn.btn-demo:hover:not(:disabled):not(.is-disabled) {
 .premium-close-btn {
   width: 44px !important;
   height: 44px !important;
-  background: #f5f5f7 !important;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
   color: #6e6e73 !important;
   -webkit-text-fill-color: #6e6e73 !important;
   border-radius: 50% !important;
