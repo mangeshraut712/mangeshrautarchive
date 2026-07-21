@@ -193,19 +193,50 @@ class LastFmService {
       return cached.promise;
     }
 
-    const pending = fetch(
-      `${this.artworkApiUrl}?${new URLSearchParams({
-        track: trackName,
-        artist: artistName,
-      })}`,
-      {
-        headers: { Accept: 'application/json' },
-        signal: AbortSignal.timeout?.(3500),
+    const pending = (async () => {
+      // 1. Try serverless backend API proxy
+      try {
+        const response = await fetch(
+          `${this.artworkApiUrl}?${new URLSearchParams({
+            track: trackName,
+            artist: artistName,
+          })}`,
+          {
+            headers: { Accept: 'application/json' },
+            signal: AbortSignal.timeout?.(3000),
+          }
+        );
+        if (response.ok) {
+          const data = await response.json();
+          if (data?.artwork_url) return data.artwork_url;
+        }
+      } catch {
+        // Backend API offline or timed out
       }
-    )
-      .then(response => (response.ok ? response.json() : null))
-      .then(data => data?.artwork_url || null)
-      .catch(() => null);
+
+      // 2. Direct client-side iTunes Search API fallback (CORS enabled by Apple)
+      try {
+        const query = encodeURIComponent(`${trackName} ${artistName}`);
+        const itunesResp = await fetch(
+          `https://itunes.apple.com/search?term=${query}&entity=song&limit=1`,
+          {
+            signal: AbortSignal.timeout?.(3500),
+          }
+        );
+        if (itunesResp.ok) {
+          const data = await itunesResp.json();
+          const artwork = data.results?.[0]?.artworkUrl100;
+          if (artwork) {
+            // Upgrade to high-resolution 600x600 artwork
+            return artwork.replace('100x100bb', '600x600bb');
+          }
+        }
+      } catch {
+        // iTunes API unavailable
+      }
+
+      return null;
+    })();
 
     this.artworkCache.set(cacheKey, { promise: pending, ts: Date.now() });
     return pending;
