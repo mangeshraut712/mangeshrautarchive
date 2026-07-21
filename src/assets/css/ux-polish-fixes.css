@@ -1592,3 +1592,240 @@ html.dark body #contact .media-info .book-btn:hover {
   border-color: #2997ff !important;
   box-shadow: 0 4px 14px rgba(41, 151, 255, 0.4) !important;
 }
+
+/* ─── Luxury Apple & shadcn UI AssistMe Chatbot Refactoring ─── */
+
+/* 1. Chatbot Floating Widget & Ambient Side Glow */
+#chatbot-widget,
+#chatbot-widget.visible {
+  background: rgba(255, 255, 255, 0.94) !important;
+  backdrop-filter: blur(28px) saturate(190%) !important;
+  -webkit-backdrop-filter: blur(28px) saturate(190%) !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  border-radius: 24px !important;
+  box-shadow:
+    0 24px 60px rgba(0, 0, 0, 0.12),
+    0 0 0 1px rgba(0, 0, 0, 0.06),
+    0 0 28px rgba(0, 113, 227, 0.14) !important;
+  transition:
+    transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.25s ease,
+    box-shadow 0.3s ease !important;
+}
+
+html.dark #chatbot-widget,
+html.dark #chatbot-widget.visible {
+  background: rgba(28, 28, 30, 0.94) !important;
+  backdrop-filter: blur(28px) saturate(190%) !important;
+  -webkit-backdrop-filter: blur(28px) saturate(190%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  border-radius: 24px !important;
+  box-shadow:
+    0 24px 70px rgba(0, 0, 0, 0.65),
+    0 0 0 1px rgba(255, 255, 255, 0.12),
+    0 0 35px rgba(0, 113, 227, 0.28) !important;
+}
+
+/* 2. Header & Action Buttons */
+#chatbot-widget .chatbot-header {
+  padding: 1rem 1.15rem 0.85rem 1.15rem !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06) !important;
+  background: transparent !important;
+}
+
+html.dark #chatbot-widget .chatbot-header {
+  border-bottom-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+#chatbot-widget .chatbot-header-main {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+}
+
+#chatbot-widget .chatbot-title {
+  font-size: 1.1rem !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.02em !important;
+  color: #1d1d1f !important;
+}
+
+html.dark #chatbot-widget .chatbot-title {
+  color: #ffffff !important;
+}
+
+#chatbot-widget .chatbot-header-actions {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.4rem !important;
+}
+
+/* Sleek Apple Action Buttons (Replacing Harsh Red Circle) */
+#chatbot-widget .chatbot-settings-btn,
+#chatbot-widget .chatbot-close-btn,
+.chatbot-close-btn,
+html body #chatbot-widget button.chatbot-close-btn {
+  width: 28px !important;
+  height: 28px !important;
+  min-width: 28px !important;
+  min-height: 28px !important;
+  border-radius: 999px !important;
+  background: rgba(120, 120, 128, 0.12) !important;
+  background-color: rgba(120, 120, 128, 0.12) !important;
+  border: 1px solid rgba(0, 0, 0, 0.04) !important;
+  color: #636366 !important;
+  -webkit-text-fill-color: #636366 !important;
+  box-shadow: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  padding: 0 !important;
+}
+
+html.dark #chatbot-widget .chatbot-settings-btn,
+html.dark #chatbot-widget .chatbot-close-btn,
+html.dark .chatbot-close-btn,
+html.dark body #chatbot-widget button.chatbot-close-btn {
+  background: rgba(255, 255, 255, 0.12) !important;
+  background-color: rgba(255, 255, 255, 0.12) !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+  color: #a1a1a6 !important;
+  -webkit-text-fill-color: #a1a1a6 !important;
+}
+
+#chatbot-widget .chatbot-settings-btn i,
+#chatbot-widget .chatbot-close-btn i,
+.chatbot-close-btn i,
+html body #chatbot-widget button.chatbot-close-btn i {
+  color: inherit !important;
+  -webkit-text-fill-color: inherit !important;
+  font-size: 0.76rem !important;
+}
+
+#chatbot-widget .chatbot-settings-btn:hover,
+#chatbot-widget .chatbot-close-btn:hover,
+.chatbot-close-btn:hover,
+html body #chatbot-widget button.chatbot-close-btn:hover {
+  background: rgba(120, 120, 128, 0.22) !important;
+  color: #1d1d1f !important;
+  -webkit-text-fill-color: #1d1d1f !important;
+  transform: scale(1.06) !important;
+}
+
+html.dark #chatbot-widget .chatbot-settings-btn:hover,
+html.dark #chatbot-widget .chatbot-close-btn:hover,
+html.dark .chatbot-close-btn:hover,
+html.dark body #chatbot-widget button.chatbot-close-btn:hover {
+  background: rgba(255, 255, 255, 0.22) !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+/* 3. Welcome Card & Viewing Context Badge */
+.welcome-header-row {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 0.5rem !important;
+  flex-wrap: wrap !important;
+  margin-bottom: 0.35rem !important;
+}
+
+.welcome-title {
+  font-size: 1.05rem !important;
+  font-weight: 700 !important;
+  color: #1d1d1f !important;
+}
+
+html.dark .welcome-title {
+  color: #ffffff !important;
+}
+
+.chatbot-context-chip {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.35rem !important;
+  padding: 0.22rem 0.55rem !important;
+  border-radius: 999px !important;
+  background: rgba(0, 113, 227, 0.08) !important;
+  border: 1px solid rgba(0, 113, 227, 0.18) !important;
+  font-size: 0.68rem !important;
+  font-weight: 600 !important;
+  color: #0071e3 !important;
+}
+
+html.dark .chatbot-context-chip {
+  background: rgba(41, 151, 255, 0.14) !important;
+  border-color: rgba(41, 151, 255, 0.28) !important;
+  color: #64d2ff !important;
+}
+
+.context-chip-dot {
+  width: 6px !important;
+  height: 6px !important;
+  border-radius: 50% !important;
+  background: #34c759 !important;
+  box-shadow: 0 0 6px rgba(52, 199, 89, 0.6) !important;
+  animation: pulseDot 2s infinite !important;
+}
+
+@keyframes pulseDot {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.4;
+    transform: scale(0.85);
+  }
+}
+
+/* 4. Messages Container & Input Area */
+#chatbot-messages {
+  padding: 1rem 1.15rem !important;
+}
+
+#chatbot-widget .chatbot-input-container {
+  padding: 0.85rem 1.15rem 1.15rem 1.15rem !important;
+  border-top: 1px solid rgba(0, 0, 0, 0.06) !important;
+  background: transparent !important;
+}
+
+html.dark #chatbot-widget .chatbot-input-container {
+  border-top-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+#chatbot-widget .input-wrapper {
+  background: #ffffff !important;
+  border: 1px solid rgba(0, 0, 0, 0.12) !important;
+  border-radius: 999px !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+html.dark #chatbot-widget .input-wrapper {
+  background: rgba(44, 44, 46, 0.8) !important;
+  border-color: rgba(255, 255, 255, 0.14) !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3) !important;
+}
+
+#chatbot-widget .input-wrapper:focus-within {
+  border-color: #0071e3 !important;
+  box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.2) !important;
+}
+
+html.dark #chatbot-widget .input-wrapper:focus-within {
+  border-color: #2997ff !important;
+  box-shadow: 0 0 0 3px rgba(41, 151, 255, 0.25) !important;
+}
+
+/* Hide Jump to Latest when hidden or when chat has no user messages */
+.chatbot-jump-latest[hidden],
+.chatbot-jump-latest:not(.is-visible) {
+  display: none !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}

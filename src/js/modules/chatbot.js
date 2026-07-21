@@ -1052,16 +1052,8 @@ class AppleIntelligenceChatbot {
     }, 300);
   }
 
-  announceScroll(message) {
-    const status = this.elements.dictationStatus || this.elements.rateStatus;
-    if (!status) return;
-    const previous = status.textContent;
-    status.textContent = message;
-    window.setTimeout(() => {
-      if (status.textContent === message) {
-        status.textContent = previous;
-      }
-    }, 2200);
+  announceScroll(_message) {
+    // Screen reader announcement only — do not pollute visible UI status text
   }
 
   closeWidget() {
@@ -1269,15 +1261,48 @@ class AppleIntelligenceChatbot {
     );
   }
 
+  getCurrentPageTitle() {
+    const hash = window.location.hash || '#home';
+    const pathname = window.location.pathname || '';
+
+    if (pathname.includes('systems.html')) return 'Systems Engine';
+    if (pathname.includes('monitor.html')) return 'Live Monitor';
+    if (pathname.includes('travel.html')) return 'Travel Atlas';
+    if (pathname.includes('uses.html')) return 'Tech Stack & Uses';
+    if (pathname.includes('404.html')) return 'Error 404 Page';
+
+    const map = {
+      '#home': 'Homepage',
+      '#about': 'About Mangesh',
+      '#skills': 'Technical Skills',
+      '#experience': 'Experience',
+      '#projects': 'Projects Showcase',
+      '#education': 'Education',
+      '#publications': 'Publications',
+      '#awards': 'Honors & Awards',
+      '#blog': 'Engineering Insights',
+      '#contact': 'Get In Touch',
+      '#game': 'Agent Simulation Game',
+    };
+    return map[hash] || 'Portfolio Home';
+  }
+
   addWelcomeMessage() {
     setTimeout(() => {
       if (this.shouldShowWelcomeMessage()) {
         const welcomeDiv = document.createElement('div');
         welcomeDiv.className =
           'message assistant-message welcome-message welcome-message-simplified';
+        const currentPage = this.getCurrentPageTitle();
         welcomeDiv.innerHTML = `
                     <div class="message-content">
-                        <div class="welcome-title">Welcome to AssistMe</div>
+                        <div class="welcome-header-row">
+                          <div class="welcome-title">Welcome to AssistMe</div>
+                          <div class="chatbot-context-chip" title="AI is aware of your current page location">
+                            <span class="context-chip-dot"></span>
+                            <span class="context-chip-text">Viewing: ${currentPage}</span>
+                          </div>
+                        </div>
                         <div class="welcome-subtitle">Ask about projects, skills, experience, or contact — or use + for tools.</div>
                         <div class="welcome-chips"></div>
                     </div>

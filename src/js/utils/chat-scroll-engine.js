@@ -418,11 +418,23 @@ export class ChatScrollEngine {
     this.jumpBtn = button;
   }
 
+  hasMessages() {
+    if (!this.messagesEl) return false;
+    if (this.messagesEl.children.length === 0) return false;
+    const hasWelcomeOnly =
+      this.messagesEl.children.length === 1 &&
+      this.messagesEl.querySelector('.welcome-message, .welcome-message-simplified');
+    return !hasWelcomeOnly;
+  }
+
   updateJumpAffordance() {
     if (!this.jumpBtn) return;
 
+    const hasMsgs = this.hasMessages();
     const show =
-      !this.following && (this.activityBelow || this.isStreaming || !this.isNearBottom());
+      hasMsgs &&
+      !this.following &&
+      (this.activityBelow || this.isStreaming || !this.isNearBottom());
     this.jumpBtn.hidden = !show;
     this.jumpBtn.tabIndex = show ? 0 : -1;
     this.jumpBtn.classList.toggle('is-streaming', this.isStreaming);
