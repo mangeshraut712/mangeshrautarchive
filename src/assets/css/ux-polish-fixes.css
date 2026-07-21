@@ -1180,17 +1180,21 @@ html body #home .hero-description.hero-description-lines {
   box-shadow: none !important;
   border-radius: 0 !important;
   padding: 0 !important;
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', 'Helvetica Neue', Helvetica,
+    Arial, sans-serif !important;
   font-size: clamp(0.925rem, 1.15vw, 1.05rem) !important;
   line-height: 1.5 !important;
   font-weight: 400 !important;
   letter-spacing: -0.012em !important;
   color: #515154 !important;
-  -webkit-text-fill-color: #515154 !important;
   text-align: center !important;
   text-wrap: balance !important;
   max-width: 40rem !important;
   margin: 0 auto !important;
   transition: all 0.3s ease !important;
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
 }
 
 html.dark body #home .hero-description--apple-compact,
@@ -1203,26 +1207,31 @@ html.dark body #home .hero-description.hero-description-lines {
   border: none !important;
   box-shadow: none !important;
   color: #a1a1a6 !important;
-  -webkit-text-fill-color: #a1a1a6 !important;
 }
 
 html body #home .hero-description-line {
   display: block !important;
   margin: 0.2rem 0 !important;
   text-align: center !important;
+  color: inherit !important;
 }
 
-/* Subtle Apple Gradient Highlight for Key Technical Terms */
+/* Safari & Chrome Cross-Browser Gradient Highlight for Key Technical Terms */
 html body #home .hero-text-highlight {
+  display: inline-block !important;
   font-weight: 600 !important;
-  color: #1d1d1f !important;
-  background: linear-gradient(135deg, #0071e3 0%, #005bb5 100%) !important;
+  color: transparent !important;
+  background-image: linear-gradient(135deg, #0071e3 0%, #005bb5 100%) !important;
+  background-clip: text !important;
   -webkit-background-clip: text !important;
   -webkit-text-fill-color: transparent !important;
+  vertical-align: baseline !important;
 }
 
 html.dark body #home .hero-text-highlight {
-  background: linear-gradient(135deg, #2997ff 0%, #64d2ff 100%) !important;
+  color: transparent !important;
+  background-image: linear-gradient(135deg, #2997ff 0%, #64d2ff 100%) !important;
+  background-clip: text !important;
   -webkit-background-clip: text !important;
   -webkit-text-fill-color: transparent !important;
 }

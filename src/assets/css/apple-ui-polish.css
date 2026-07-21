@@ -399,7 +399,6 @@ html body #home .hero-description-lines,
 html body #home .hero-description-line,
 html body #home .hero-description.hero-description-lines {
   color: #6e6e73 !important;
-  -webkit-text-fill-color: #6e6e73 !important;
   font-size: clamp(1rem, 1.2vw, 1.125rem) !important;
   line-height: 1.55 !important;
   font-weight: 400 !important;
@@ -420,7 +419,6 @@ html.dark body #home .hero-description-lines,
 html.dark body #home .hero-description-line,
 html.dark body #home .hero-description.hero-description-lines {
   color: #a1a1a6 !important;
-  -webkit-text-fill-color: #a1a1a6 !important;
 }
 
 /* ─── Body copy in content sections ──────────────────────────────── */
