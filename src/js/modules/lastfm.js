@@ -249,17 +249,19 @@ class LastFmService {
     const token = (this._artworkTokens.get(imageNode) || 0) + 1;
     this._artworkTokens.set(imageNode, token);
 
-    // Already have server-resolved or usable Last.fm art — paint immediately.
-    if (this.isUsableArtwork(fallbackUrl) && this.isSafeHttpsUrl(fallbackUrl)) {
+    // Always prefer authentic scrobbled Last.fm / Spotify album artwork! Paint immediately and return.
+    if (
+      this.isUsableArtwork(fallbackUrl) &&
+      this.isSafeHttpsUrl(fallbackUrl) &&
+      !fallbackUrl.startsWith('data:')
+    ) {
       if (imageNode.src !== fallbackUrl) {
         imageNode.src = fallbackUrl;
       }
-      // Skip iTunes when backend already resolved Apple Music art.
-      if (track.artwork_source === 'itunes' || String(fallbackUrl).includes('mzstatic.com')) {
-        return;
-      }
+      return;
     }
 
+    // Only query external search fallback when Last.fm has NO usable scrobbled artwork
     this.fetchAppleMusicArtwork(track.name || '', this.getArtistName(track)).then(artworkUrl => {
       if (this._artworkTokens.get(imageNode) !== token) {
         return;
