@@ -245,8 +245,11 @@ export class AgenticActionHandler {
     // Navigation actions
     this.registerAction('navigate', {
       patterns: [
-        /(?:go to|open|navigate to|take me to)\s+(?:the\s+)?(home|about|skills|projects|contact|experience|education)(?:\s+section)?/i,
-        /(?:show|view)\s+(?:my|your|the)?\s*(skills|projects|experience|education|contact)(?:\s+section)?/i,
+        // "go to / open / navigate to / navigate me to / take me to the Projects section"
+        /(?:go to|open|navigate(?:\s+me)?\s+to|take me to)\s+(?:the\s+)?(home|about|skills|projects|contact|experience|education|publications|awards|certifications|blog)(?:\s+section)?/i,
+        /(?:show|view)\s+(?:my|your|the)?\s*(skills|projects|experience|education|contact|publications|blog)(?:\s+section)?/i,
+        // bare "projects section" / "about section please"
+        /^(?:please\s+)?(?:the\s+)?(home|about|skills|projects|contact|experience|education)(?:\s+section)\b/i,
       ],
       handler: this.navigateToSection.bind(this),
       description: 'Navigate to a specific section of the portfolio',
@@ -430,11 +433,30 @@ export class AgenticActionHandler {
     if (element) {
       element.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
-      // Add highlight effect
-      element.style.cssText = 'transition: all 0.3s ease; transform: scale(1.02);';
+      // Keep URL hash in sync so Viewing / context awareness can resolve the section
+      // even while smooth scroll is still settling (pushState does not fire hashchange).
+      try {
+        if (typeof history !== 'undefined' && history.replaceState) {
+          history.replaceState(null, '', target);
+        } else if (typeof location !== 'undefined') {
+          location.hash = target;
+        }
+      } catch (_error) {
+        // ignore history failures (file://, sandboxed)
+      }
+
+      element.classList.add('agentic-nav-highlight');
+      setTimeout(() => element.classList.remove('agentic-nav-highlight'), 700);
+
+      const detail = {
+        sectionId: section === 'game' ? 'debug-runner-section' : section,
+        hash: target,
+      };
+      window.dispatchEvent(new CustomEvent('portfolio:sectionchange', { detail }));
+      // Second pulse after smooth scroll settles
       setTimeout(() => {
-        element.style.transform = 'scale(1)';
-      }, 300);
+        window.dispatchEvent(new CustomEvent('portfolio:sectionchange', { detail }));
+      }, 420);
 
       return {
         success: true,

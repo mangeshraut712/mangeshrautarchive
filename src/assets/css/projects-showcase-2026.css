@@ -2524,7 +2524,8 @@ html.dark .project-xr-status {
     padding: 1rem 0.9rem !important;
     max-width: 100% !important;
     min-width: 0 !important;
-    overflow: hidden !important;
+    overflow-x: clip !important;
+    overflow-y: visible !important;
     box-sizing: border-box !important;
   }
 
@@ -4014,4 +4015,40 @@ html.dark .gh-activity__text a {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+}
+
+/* =========================================================================
+   Mobile / tablet — natural full scroll (no half-viewport clips)
+   ========================================================================= */
+@media (max-width: 1024px) {
+  #projects,
+  #projects.section-standard,
+  #projects .projects-showcase-shell,
+  #projects .projects-page,
+  #projects .projects-page--github,
+  #projects .projects-page--repos,
+  #projects .section-container-wide {
+    max-height: none !important;
+    height: auto !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+  }
+
+  #projects .projects-activity-overview,
+  #projects .activity-github-graph-container,
+  #projects .gh-contrib {
+    max-height: none !important;
+    overflow-x: clip !important;
+    overflow-y: visible !important;
+  }
+
+  /* Keep expand / last cards clear of the mobile FAB stack */
+  #projects .projects-expand-wrap,
+  #projects #github-projects-container {
+    padding-bottom: 0.25rem;
+  }
+
+  #projects .projects-page--repos {
+    padding-bottom: calc(4.5rem + env(safe-area-inset-bottom, 0px));
+  }
 }

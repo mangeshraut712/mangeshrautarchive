@@ -411,8 +411,9 @@ export class ChatScrollEngine {
     button.hidden = true;
     button.tabIndex = -1;
     button.setAttribute('aria-label', 'Jump to latest message');
+    button.title = 'Jump to latest';
     button.innerHTML =
-      '<span class="chatbot-jump-latest__icon" aria-hidden="true">↓</span><span class="chatbot-jump-latest__label">Jump to latest</span>';
+      '<span class="chatbot-jump-latest__icon" aria-hidden="true"><i class="fas fa-arrow-down"></i></span><span class="chatbot-jump-latest__label sr-only">Jump to latest</span>';
     button.addEventListener('click', () => this.jumpToLatest());
     this.widgetEl.appendChild(button);
     this.jumpBtn = button;
@@ -420,11 +421,8 @@ export class ChatScrollEngine {
 
   hasMessages() {
     if (!this.messagesEl) return false;
-    if (this.messagesEl.children.length === 0) return false;
-    const hasWelcomeOnly =
-      this.messagesEl.children.length === 1 &&
-      this.messagesEl.querySelector('.welcome-message, .welcome-message-simplified');
-    return !hasWelcomeOnly;
+    // Ignore welcome + scroll-anchor — only real turns count
+    return Boolean(this.messagesEl.querySelector('.user-message, .action-message'));
   }
 
   updateJumpAffordance() {
@@ -439,10 +437,15 @@ export class ChatScrollEngine {
     this.jumpBtn.tabIndex = show ? 0 : -1;
     this.jumpBtn.classList.toggle('is-streaming', this.isStreaming);
     this.jumpBtn.classList.toggle('is-visible', show);
+    this.jumpBtn.setAttribute(
+      'aria-label',
+      this.isStreaming ? 'Reply streaming — jump to latest' : 'Jump to latest message'
+    );
 
     const label = this.jumpBtn.querySelector('.chatbot-jump-latest__label');
     if (label) {
-      label.textContent = this.isStreaming ? 'Reply streaming' : 'Jump to latest';
+      // Icon-only control — keep text for SR via aria-label
+      label.textContent = this.isStreaming ? 'Streaming' : 'Latest';
     }
   }
 

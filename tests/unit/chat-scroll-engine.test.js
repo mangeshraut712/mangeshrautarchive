@@ -97,6 +97,11 @@ describe('ChatScrollEngine', () => {
   it('jump button stays hidden until activity below while not following', () => {
     const widget = document.createElement('div');
     document.body.appendChild(widget);
+    // Real user turn required — welcome/empty chat must never show Jump
+    const user = document.createElement('div');
+    user.className = 'message user-message';
+    user.textContent = 'hello';
+    messages.appendChild(user);
     engine.dispose();
     engine = new ChatScrollEngine(messages, { widgetEl: widget });
     engine.bind();
@@ -107,6 +112,22 @@ describe('ChatScrollEngine', () => {
     expect(engine.jumpBtn.hidden).toBe(false);
     expect(engine.jumpBtn.tabIndex).toBe(0);
     expect(engine.jumpBtn.classList.contains('is-visible')).toBe(true);
+  });
+
+  it('jump button stays hidden on welcome-only chat even with activity below', () => {
+    const widget = document.createElement('div');
+    document.body.appendChild(widget);
+    const welcome = document.createElement('div');
+    welcome.className = 'message assistant-message welcome-message';
+    welcome.textContent = 'Welcome';
+    messages.appendChild(welcome);
+    engine.dispose();
+    engine = new ChatScrollEngine(messages, { widgetEl: widget });
+    engine.bind();
+    engine.pauseFollowing('test');
+    engine.markActivityBelow();
+    expect(engine.jumpBtn.hidden).toBe(true);
+    expect(engine.jumpBtn.classList.contains('is-visible')).toBe(false);
   });
 
   it('toggles aria-busy and scroll-fade class across stream lifecycle', () => {

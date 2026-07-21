@@ -116,7 +116,8 @@ function ensureChatbotChrome() {
         <form id="chatbot-form" class="chatbot-composer">
           <div class="input-wrapper" id="chatbot-input-wrapper">
             <button type="button" id="chatbot-voice-btn" class="chatbot-voice-btn"
-              aria-label="Dictate with Siri" aria-pressed="false" title="Apple Intelligence: Voice dictation">
+              aria-label="Dictate message" aria-pressed="false"
+              title="Tap to dictate · Hold to talk">
               <i class="fas fa-microphone" aria-hidden="true"></i>
               <span class="siri-voice-ring" aria-hidden="true"></span>
             </button>
@@ -132,6 +133,17 @@ function ensureChatbotChrome() {
             <button type="submit" class="chatbot-send-btn" aria-label="Send message">
               <i class="fas fa-arrow-up" aria-hidden="true"></i>
             </button>
+          </div>
+          <div id="chatbot-dictation-dock" class="chatbot-dictation-dock" hidden>
+            <div class="dictation-waveform" data-dictation-waveform aria-hidden="true"></div>
+            <div class="dictation-dock-body">
+              <span class="dictation-dock-label" data-dictation-label>Listening</span>
+              <div class="dictation-dock-actions">
+                <button type="button" class="dictation-dock-btn is-ghost" data-dictation-action="discard">Discard</button>
+                <button type="button" class="dictation-dock-btn" data-dictation-action="polish">Polish</button>
+                <button type="button" class="dictation-dock-btn is-primary" data-dictation-action="send">Send</button>
+              </div>
+            </div>
           </div>
           <div id="chatbot-composer-status" class="chatbot-composer-status is-idle" role="status" aria-live="polite" hidden>
             <span class="composer-status-chip" data-chip="agent" data-state="idle" hidden>

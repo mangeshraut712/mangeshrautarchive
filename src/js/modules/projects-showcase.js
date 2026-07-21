@@ -37,7 +37,10 @@ function getProjectGridColumns(container) {
 }
 
 function getTwoRowLimit(container) {
-  return getProjectGridColumns(container) * PROJECT_ROWS_LIMIT;
+  const columns = getProjectGridColumns(container);
+  // Phones (1-col): show 4 cards so the section feels full; tablet 2-col keeps 2 rows.
+  const rows = columns <= 1 ? 4 : PROJECT_ROWS_LIMIT;
+  return columns * rows;
 }
 
 function setTextById(id, value) {

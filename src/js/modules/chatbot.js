@@ -104,19 +104,29 @@ function normalizeFollowupPrompt(label) {
   return label.replace(/^[^A-Za-z0-9]+/, '').trim();
 }
 
-// ── Apple Intelligence Writing Tools (WWDC26) ──────────────────
+// ── Apple Intelligence Writing Tools (WWDC26 / shadcn sheet) ──────────────────
 const WRITING_TOOLS = [
   {
     id: 'proofread',
     icon: 'fa-spell-check',
     label: 'Proofread',
+    hint: 'Fix spelling & grammar',
     instruction:
       'Proofread the following message. Fix spelling, grammar, and punctuation only. Reply with ONLY the corrected text, nothing else:',
+  },
+  {
+    id: 'rewrite',
+    icon: 'fa-wand-magic-sparkles',
+    label: 'Rewrite',
+    hint: 'Clearer, natural wording',
+    instruction:
+      'Rewrite the following message so it sounds natural, clear, and conversational — like Wispr Flow cleanup. Keep the meaning. Reply with ONLY the rewritten text, nothing else:',
   },
   {
     id: 'friendly',
     icon: 'fa-face-smile',
     label: 'Friendly',
+    hint: 'Warm tone',
     instruction:
       'Rewrite the following message in a warm, friendly tone. Keep it short. Reply with ONLY the rewritten text, nothing else:',
   },
@@ -124,6 +134,7 @@ const WRITING_TOOLS = [
     id: 'professional',
     icon: 'fa-briefcase',
     label: 'Professional',
+    hint: 'Clear & polished',
     instruction:
       'Rewrite the following message in a clear, professional tone. Reply with ONLY the rewritten text, nothing else:',
   },
@@ -131,13 +142,25 @@ const WRITING_TOOLS = [
     id: 'concise',
     icon: 'fa-compress',
     label: 'Concise',
+    hint: 'Shorter version',
     instruction:
       'Rewrite the following message to be as concise as possible while keeping the meaning. Reply with ONLY the rewritten text, nothing else:',
   },
+  {
+    id: 'expand',
+    icon: 'fa-expand',
+    label: 'Expand',
+    hint: 'Add useful detail',
+    instruction:
+      'Expand the following message with one or two helpful details while staying concise. Reply with ONLY the expanded text, nothing else:',
+  },
 ];
+
+const DICTATION_WAVEFORM_BARS = 18;
 
 // On-screen awareness: section id → contextual prompt (Siri AI, WWDC26)
 const SECTION_CONTEXT_PROMPTS = {
+  home: ['Home', 'Give me a quick overview of this portfolio'],
   about: ['About Me', 'Give me a quick intro to Mangesh'],
   skills: ['Skills', "What are Mangesh's strongest skills?"],
   experience: ['Experience', "Walk me through Mangesh's work experience"],
@@ -149,48 +172,59 @@ const SECTION_CONTEXT_PROMPTS = {
   contact: ['Contact', 'How do I get in touch with Mangesh?'],
 };
 
-// ── Agentic action patterns ──────────────────────
+// Chip metadata keyed by agenticActions action names (post-execution)
+const AGENTIC_CHIP_BY_ACTION = {
+  navigate: { icon: '🧭', label: 'Navigate' },
+  download_resume: { icon: '📥', label: 'Download Resume' },
+  schedule_meeting: { icon: '📅', label: 'Schedule Meeting' },
+  copy_contact: { icon: '📋', label: 'Copy Contact' },
+  open_social: { icon: '🔗', label: 'Open Link' },
+  toggle_theme: { icon: '🎨', label: 'Toggle Theme' },
+  search: { icon: '🔍', label: 'Search' },
+};
+
+// ── Agentic action patterns (UI chip only — real execution is agentic-actions.js)
 const AGENTIC_PATTERNS = [
   {
-    pattern: /\b(download|get)\s+(my\s+)?resume\b/i,
-    action: 'resume',
+    pattern: /\b(download|get)\s+(my\s+)?(resume|cv)\b/i,
+    action: 'download_resume',
     icon: '📥',
     label: 'Download Resume',
   },
   {
     pattern:
-      /\b(navigate|go|scroll)\s+(to\s+)?(projects?|skills?|about|contact|experience|education)\b/i,
+      /\b(navigate|go|scroll|take\s+me|show|open)\s+(to\s+|me\s+)?(the\s+)?(home|projects?|skills?|about|contact|experience|education)\b/i,
     action: 'navigate',
     icon: '🧭',
     label: 'Navigate',
   },
   {
-    pattern: /\b(schedule|book|set\s*up)\s+(a\s+)?(meeting|call|chat)\b/i,
-    action: 'schedule',
+    pattern: /\b(schedule|book|set\s*up)\s+(a\s+)?(meeting|call|chat|appointment)\b/i,
+    action: 'schedule_meeting',
     icon: '📅',
     label: 'Schedule Meeting',
   },
   {
     pattern: /\b(copy|share)\s+(email|contact|phone)\b/i,
-    action: 'copy',
+    action: 'copy_contact',
     icon: '📋',
     label: 'Copy Contact',
   },
   {
-    pattern: /\b(open|visit|show)\s+(github|linkedin|portfolio)\b/i,
-    action: 'social',
+    pattern: /\b(open|visit)\s+(github|linkedin)\b/i,
+    action: 'open_social',
     icon: '🔗',
     label: 'Open Link',
   },
   {
-    pattern: /\b(search|find|filter)\s+(for\s+)?/i,
+    pattern: /\b(search|find)\s+(this\s+)?(site|portfolio)\b/i,
     action: 'search',
     icon: '🔍',
     label: 'Search',
   },
   {
-    pattern: /\btheme\b|\b(dark|light)\s*mode\b/i,
-    action: 'theme',
+    pattern: /\b(toggle|switch)\s+(to\s+)?(dark|light)\s*mode\b|\b(dark|light)\s*mode\b/i,
+    action: 'toggle_theme',
     icon: '🎨',
     label: 'Toggle Theme',
   },
@@ -205,8 +239,15 @@ class AppleIntelligenceChatbot {
     this.recognition = null;
     this.isListening = false;
     this.dictationBase = '';
-    this.autoSendOnFinal = true;
+    this.autoSendOnFinal = false; // Wispr-style: review, then Send / Polish
     this.dictationSendTimer = null;
+    this.dictationHoldActive = false;
+    this.dictationPointerId = null;
+    this.dictationMode = 'idle'; // idle | listening | review
+    this._dictationAudio = null;
+    this._dictationRaf = 0;
+    this._dictationSilenceTimer = null;
+    this._dictationLastSpeechAt = 0;
     this.lastUserMessage = '';
     this.messageCount = 0;
     this.retryCount = 0;
@@ -242,6 +283,12 @@ class AppleIntelligenceChatbot {
     this._viewportBound = false;
     this._onVisualViewport = null;
     this._mobileScrollLocked = false;
+    this.lastContextSectionId = null;
+    this._viewingBound = false;
+    this._viewingRaf = 0;
+    this._onViewingScroll = null;
+    this._onViewingHash = null;
+    this._onSectionChange = null;
 
     // Wait for chat API to be available
     this.waitForChatAPI();
@@ -260,16 +307,18 @@ class AppleIntelligenceChatbot {
   }
 
   ensureStatusIndicator() {
-    const headerMain = this.elements.widget?.querySelector('.chatbot-header-main');
+    const identity =
+      this.elements.widget?.querySelector('.chatbot-header-identity') ||
+      this.elements.widget?.querySelector('.chatbot-header-main');
     const titleRow = this.elements.widget?.querySelector('.chatbot-title-row');
-    if (!headerMain || !titleRow) return;
-    if (headerMain.querySelector('.chatbot-status')) return;
+    if (!identity || !titleRow) return;
+    if (identity.querySelector('.chatbot-status')) return;
 
     const status = document.createElement('div');
     status.className = 'chatbot-status';
     status.innerHTML =
       '<span class="chatbot-status-dot status-local" aria-hidden="true"></span>' +
-      '<span class="chatbot-status-text">Ready</span>';
+      '<span class="chatbot-status-text">Local Mode</span>';
     titleRow.insertAdjacentElement('afterend', status);
   }
 
@@ -315,6 +364,57 @@ class AppleIntelligenceChatbot {
     document.documentElement.style.removeProperty('--chat-keyboard-inset');
     this._viewportBound = false;
     this._onVisualViewport = null;
+  }
+
+  bindViewingContextTracking() {
+    if (this._viewingBound || typeof window === 'undefined') return;
+    this._viewingBound = true;
+    this._onViewingScroll = () => {
+      if (!this.isOpen) return;
+      if (this._viewingRaf) return;
+      this._viewingRaf = requestAnimationFrame(() => {
+        this._viewingRaf = 0;
+        this.showContextAwareness({ force: true });
+      });
+    };
+    this._onViewingHash = () => {
+      if (this.isOpen) this.showContextAwareness({ force: true });
+    };
+    this._onSectionChange = event => {
+      if (!this.isOpen) return;
+      const sectionId = event?.detail?.sectionId;
+      if (sectionId && SECTION_CONTEXT_PROMPTS[sectionId]) {
+        const [label, prompt] = SECTION_CONTEXT_PROMPTS[sectionId];
+        this.updateViewingBar({ sectionId, label, prompt });
+        this.lastContextSectionId = sectionId;
+        return;
+      }
+      this.showContextAwareness({ force: true });
+    };
+    window.addEventListener('scroll', this._onViewingScroll, { passive: true });
+    window.addEventListener('hashchange', this._onViewingHash);
+    window.addEventListener('portfolio:sectionchange', this._onSectionChange);
+  }
+
+  unbindViewingContextTracking() {
+    if (!this._viewingBound) return;
+    if (this._viewingRaf) {
+      cancelAnimationFrame(this._viewingRaf);
+      this._viewingRaf = 0;
+    }
+    if (this._onViewingScroll) {
+      window.removeEventListener('scroll', this._onViewingScroll);
+    }
+    if (this._onViewingHash) {
+      window.removeEventListener('hashchange', this._onViewingHash);
+    }
+    if (this._onSectionChange) {
+      window.removeEventListener('portfolio:sectionchange', this._onSectionChange);
+    }
+    this._viewingBound = false;
+    this._onViewingScroll = null;
+    this._onViewingHash = null;
+    this._onSectionChange = null;
   }
 
   setComposerBusy(busy) {
@@ -577,13 +677,7 @@ class AppleIntelligenceChatbot {
 
     this.realtimeVoice.checkAvailability().then(available => {
       this.realtimeAvailable = available;
-      if (available && this.elements.voiceBtn) {
-        this.elements.voiceBtn.title = 'Live voice via AI Gateway (tap). Hold Shift for dictation.';
-        this.elements.voiceBtn.setAttribute(
-          'aria-label',
-          'Start live voice conversation with AssistMe'
-        );
-      }
+      this.updateVoiceButtonState();
     });
   }
 
@@ -650,17 +744,21 @@ class AppleIntelligenceChatbot {
     }
 
     this.recognition = new SpeechRecognition();
-    this.recognition.continuous = false;
+    this.recognition.continuous = true;
     this.recognition.interimResults = true;
     this.recognition.lang = 'en-US';
     this.recognition.maxAlternatives = 1;
 
     this.recognition.onstart = () => {
       this.isListening = true;
+      this.dictationMode = 'listening';
+      this._dictationLastSpeechAt = Date.now();
       this.updateVoiceButtonState();
-      this.setDictationStatus('Listening…');
+      this.showDictationDock('listening');
+      this.setDictationStatus('');
       this.elements.inputWrapper?.classList.add('dictating');
       this.elements.input?.classList.add('dictating');
+      void this.startDictationWaveform();
     };
 
     this.recognition.onresult = event => {
@@ -678,53 +776,100 @@ class AppleIntelligenceChatbot {
       }
 
       if (finalTranscript) {
-        this.dictationBase += finalTranscript;
+        this.dictationBase += `${finalTranscript} `;
+        this._dictationLastSpeechAt = Date.now();
+      }
+
+      if (interimTranscript) {
+        this._dictationLastSpeechAt = Date.now();
+        this.setDictationDockLabel('Transcribing');
       }
 
       this.syncDictationToInput(interimTranscript);
-
-      if (interimTranscript) {
-        this.setDictationStatus('Dictating…');
-      }
+      this.scheduleDictationSilenceStop();
 
       const latestResult = event.results[event.results.length - 1];
-      if (latestResult?.isFinal && this.autoSendOnFinal) {
+      if (latestResult?.isFinal && this.autoSendOnFinal && !this.dictationHoldActive) {
         const text = this.normalizeInput(this.elements.input?.value);
         if (text) {
           clearTimeout(this.dictationSendTimer);
           this.dictationSendTimer = setTimeout(() => {
             this.stopDictation(false);
             this.handleSendMessage();
-          }, 180);
+          }, 420);
         }
       }
     };
 
     this.recognition.onend = () => {
-      this.isListening = false;
-      this.updateVoiceButtonState();
+      this.stopDictationWaveform();
       this.elements.inputWrapper?.classList.remove('dictating');
       this.elements.input?.classList.remove('dictating');
-      if (!this.normalizeInput(this.elements.input?.value)) {
+
+      // Continuous mode can end mid-session — restart unless we meant to stop
+      if (this._dictationWanted && this.dictationMode === 'listening') {
+        try {
+          this.recognition.start();
+          this.isListening = true;
+          void this.startDictationWaveform();
+          this.elements.inputWrapper?.classList.add('dictating');
+          this.elements.input?.classList.add('dictating');
+          this.updateVoiceButtonState();
+          return;
+        } catch (_error) {
+          // fall through to idle/review
+        }
+      }
+
+      this.isListening = false;
+      this.updateVoiceButtonState();
+
+      const draft = this.normalizeInput(this.elements.input?.value);
+      if (draft && this.dictationMode !== 'idle') {
+        this.enterDictationReview();
+      } else {
+        this.dictationMode = 'idle';
+        this.hideDictationDock();
         this.setDictationStatus('');
       }
     };
 
     this.recognition.onerror = event => {
       console.error('Speech recognition error:', event.error);
+      if (event.error === 'aborted') return;
+      if (event.error === 'no-speech' && this.dictationMode === 'listening') {
+        this.setDictationStatus("Still listening — didn't catch that yet");
+        this.setDictationDockLabel('Listening…');
+        return;
+      }
+
       this.isListening = false;
+      this.dictationMode = 'idle';
+      this.stopDictationWaveform();
       this.updateVoiceButtonState();
       this.elements.inputWrapper?.classList.remove('dictating');
       this.elements.input?.classList.remove('dictating');
+      this.hideDictationDock();
 
       const messages = {
         'not-allowed': 'Microphone access denied. Allow mic permission to dictate.',
         'no-speech': "Didn't catch that — tap the mic and try again.",
-        aborted: '',
         network: 'Network error during dictation. Check your connection.',
       };
       this.setDictationStatus(messages[event.error] || 'Dictation interrupted. Try again.');
     };
+  }
+
+  scheduleDictationSilenceStop() {
+    clearTimeout(this._dictationSilenceTimer);
+    if (this.dictationHoldActive || this.autoSendOnFinal) return;
+    // After ~1.8s of silence while continuous, offer review (Wispr-style pause)
+    this._dictationSilenceTimer = setTimeout(() => {
+      if (this.dictationMode !== 'listening') return;
+      if (Date.now() - this._dictationLastSpeechAt < 1600) return;
+      const draft = this.normalizeInput(this.elements.input?.value);
+      if (draft) this.stopDictation(false);
+    }, 1800);
   }
 
   syncDictationToInput(interimTranscript = '') {
@@ -741,9 +886,160 @@ class AppleIntelligenceChatbot {
     }
   }
 
+  setDictationDockLabel(message) {
+    const label = this.elements.dictationDock?.querySelector('[data-dictation-label]');
+    if (label) label.textContent = message || '';
+  }
+
+  ensureDictationDock() {
+    const dock = this.elements.dictationDock || document.getElementById('chatbot-dictation-dock');
+    this.elements.dictationDock = dock;
+    if (!dock) return null;
+
+    const wave = dock.querySelector('[data-dictation-waveform]');
+    if (wave && !wave.children.length) {
+      for (let i = 0; i < DICTATION_WAVEFORM_BARS; i++) {
+        const bar = document.createElement('span');
+        bar.className = 'dictation-wave-bar';
+        wave.appendChild(bar);
+      }
+    }
+
+    dock.querySelectorAll('[data-dictation-action]').forEach(btn => {
+      if (btn.dataset.bound === '1') return;
+      btn.dataset.bound = '1';
+      btn.addEventListener('click', event => {
+        event.preventDefault();
+        event.stopPropagation();
+        const action = btn.getAttribute('data-dictation-action');
+        this.handleDictationDockAction(action);
+      });
+    });
+    return dock;
+  }
+
+  showDictationDock(mode = 'listening') {
+    if (this.isProcessing && mode === 'review') {
+      this.hideDictationDock();
+      return;
+    }
+    const dock = this.ensureDictationDock();
+    if (!dock) return;
+    dock.hidden = false;
+    dock.dataset.mode = mode;
+    dock.classList.toggle('is-listening', mode === 'listening');
+    dock.classList.toggle('is-review', mode === 'review');
+    this.setDictationDockLabel(mode === 'review' ? 'Review' : 'Listening');
+  }
+
+  hideDictationDock() {
+    const dock = this.elements.dictationDock || document.getElementById('chatbot-dictation-dock');
+    if (!dock) return;
+    dock.hidden = true;
+    dock.dataset.mode = 'idle';
+    dock.classList.remove('is-listening', 'is-review');
+  }
+
+  enterDictationReview() {
+    this.dictationMode = 'review';
+    this.showDictationDock('review');
+    // Dock already explains actions — avoid duplicate status line
+    this.setDictationStatus('');
+    this.setDictationDockLabel('Review');
+    this.elements.input?.focus({ preventScroll: true });
+  }
+
+  handleDictationDockAction(action) {
+    if (action === 'send') {
+      this.hideDictationDock();
+      this.dictationMode = 'idle';
+      this.setDictationStatus('');
+      void this.handleSendMessage();
+      return;
+    }
+    if (action === 'discard') {
+      this.stopDictation(true);
+      this.dictationMode = 'idle';
+      this.hideDictationDock();
+      this.setDictationStatus('');
+      return;
+    }
+    if (action === 'polish') {
+      const rewrite = WRITING_TOOLS.find(t => t.id === 'rewrite') || WRITING_TOOLS[0];
+      this.hideDictationDock();
+      this.dictationMode = 'idle';
+      this.setDictationStatus('');
+      void this.applyWritingTool(rewrite);
+    }
+  }
+
+  async startDictationWaveform() {
+    this.stopDictationWaveform();
+    this.ensureDictationDock();
+    if (!navigator.mediaDevices?.getUserMedia) return;
+
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        audio: {
+          echoCancellation: true,
+          noiseSuppression: true,
+          autoGainControl: true,
+        },
+      });
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      const ctx = new AudioCtx();
+      const source = ctx.createMediaStreamSource(stream);
+      const analyser = ctx.createAnalyser();
+      analyser.fftSize = 64;
+      analyser.smoothingTimeConstant = 0.72;
+      source.connect(analyser);
+      this._dictationAudio = { stream, ctx, analyser };
+
+      const data = new Uint8Array(analyser.frequencyBinCount);
+      const bars = this.elements.dictationDock?.querySelectorAll('.dictation-wave-bar') || [];
+
+      const tick = () => {
+        if (!this._dictationAudio) return;
+        analyser.getByteFrequencyData(data);
+        bars.forEach((bar, index) => {
+          const sample = data[index % data.length] || 0;
+          const height = Math.max(3, Math.round((sample / 255) * 18));
+          bar.style.height = `${height}px`;
+        });
+        this._dictationRaf = requestAnimationFrame(tick);
+      };
+      this._dictationRaf = requestAnimationFrame(tick);
+    } catch (error) {
+      console.warn('Dictation waveform unavailable:', error);
+    }
+  }
+
+  stopDictationWaveform() {
+    if (this._dictationRaf) {
+      cancelAnimationFrame(this._dictationRaf);
+      this._dictationRaf = 0;
+    }
+    const audio = this._dictationAudio;
+    this._dictationAudio = null;
+    if (!audio) return;
+    try {
+      audio.stream?.getTracks?.().forEach(track => track.stop());
+      audio.ctx?.close?.();
+    } catch (_error) {
+      // ignore
+    }
+    this.elements.dictationDock?.querySelectorAll('.dictation-wave-bar').forEach(bar => {
+      bar.style.height = '3px';
+    });
+  }
+
   stopDictation(resetDraft = false) {
     clearTimeout(this.dictationSendTimer);
+    clearTimeout(this._dictationSilenceTimer);
     this.autoSendOnFinal = false;
+    this._dictationWanted = false;
+    const wasListening = this.dictationMode === 'listening' || this.isListening;
+    this.dictationMode = wasListening && !resetDraft ? 'review' : 'idle';
 
     if (this.recognition && this.isListening) {
       try {
@@ -754,6 +1050,7 @@ class AppleIntelligenceChatbot {
     }
 
     this.isListening = false;
+    this.stopDictationWaveform();
     this.updateVoiceButtonState();
     this.elements.inputWrapper?.classList.remove('dictating');
     this.elements.input?.classList.remove('dictating');
@@ -764,12 +1061,23 @@ class AppleIntelligenceChatbot {
         this.elements.input.value = '';
         this.autoResizeTextarea(this.elements.input);
       }
+      this.hideDictationDock();
+      this.setDictationStatus('');
+      this.dictationMode = 'idle';
+      return;
     }
 
-    this.setDictationStatus('');
+    const draft = this.normalizeInput(this.elements.input?.value);
+    if (draft) {
+      this.enterDictationReview();
+    } else {
+      this.dictationMode = 'idle';
+      this.hideDictationDock();
+      this.setDictationStatus('');
+    }
   }
 
-  startDictation() {
+  startDictation({ hold = false, autoSend = false } = {}) {
     if (!this.recognition) {
       this.addMessage(
         'Voice dictation is not supported in your browser. Try Chrome, Edge, or Safari.',
@@ -779,8 +1087,12 @@ class AppleIntelligenceChatbot {
     }
 
     if (this.isProcessing) return;
+    if (this.isRealtimeVoiceActive()) return;
 
-    this.autoSendOnFinal = true;
+    this.dictationHoldActive = hold;
+    this.autoSendOnFinal = Boolean(autoSend);
+    this.dictationMode = 'listening';
+    this._dictationWanted = true;
     this.dictationBase = this.elements.input?.value?.trim()
       ? `${this.elements.input.value.trim()} `
       : '';
@@ -789,57 +1101,59 @@ class AppleIntelligenceChatbot {
       this.recognition.start();
       this.isListening = true;
       this.updateVoiceButtonState();
+      this.showDictationDock('listening');
       window.voiceService?.dispatchEvent?.(new CustomEvent('listening-start'));
     } catch (error) {
+      // Already started is fine for continuous
+      if (String(error?.message || error).includes('started')) {
+        this.isListening = true;
+        this.updateVoiceButtonState();
+        this.showDictationDock('listening');
+        return;
+      }
       console.error('Voice recognition error:', error);
       this.isListening = false;
+      this.dictationMode = 'idle';
       this.updateVoiceButtonState();
       this.setDictationStatus('Unable to start dictation. Check microphone permissions.');
     }
   }
 
   updateVoiceButtonState(realtimeStatus = this.realtimeVoice?.status) {
-    if (this.elements.voiceBtn) {
-      const realtimeActive = ['connecting', 'connected', 'listening', 'speaking'].includes(
-        realtimeStatus
-      );
+    if (!this.elements.voiceBtn) return;
 
-      if (realtimeActive) {
-        this.elements.voiceBtn.classList.add('listening', 'realtime-active');
-        this.elements.voiceBtn.setAttribute('aria-pressed', 'true');
-        this.elements.voiceBtn.setAttribute('aria-label', 'Stop live voice conversation');
-        this.elements.voiceBtn.innerHTML =
-          '<i class="fas fa-wave-square" aria-hidden="true"></i><span class="siri-voice-ring" aria-hidden="true"></span>';
-        return;
-      }
+    const realtimeActive = ['connecting', 'connected', 'listening', 'speaking'].includes(
+      realtimeStatus
+    );
 
-      this.elements.voiceBtn.classList.remove('realtime-active');
-
-      if (this.isListening) {
-        this.elements.voiceBtn.classList.add('listening');
-        this.elements.voiceBtn.setAttribute('aria-pressed', 'true');
-        this.elements.voiceBtn.setAttribute('aria-label', 'Stop dictation');
-        this.elements.voiceBtn.title = 'Stop dictation';
-        this.elements.voiceBtn.innerHTML =
-          '<i class="fas fa-stop" aria-hidden="true"></i><span class="siri-voice-ring" aria-hidden="true"></span>';
-      } else {
-        this.elements.voiceBtn.classList.remove('listening');
-        this.elements.voiceBtn.setAttribute('aria-pressed', 'false');
-        if (this.realtimeAvailable) {
-          this.elements.voiceBtn.title =
-            'Live voice via AI Gateway (tap). Hold Shift for dictation.';
-          this.elements.voiceBtn.setAttribute(
-            'aria-label',
-            'Start live voice conversation with AssistMe'
-          );
-        } else {
-          this.elements.voiceBtn.setAttribute('aria-label', 'Dictate with Siri');
-          this.elements.voiceBtn.title = 'Apple Intelligence: Voice dictation';
-        }
-        this.elements.voiceBtn.innerHTML =
-          '<i class="fas fa-microphone" aria-hidden="true"></i><span class="siri-voice-ring" aria-hidden="true"></span>';
-      }
+    if (realtimeActive) {
+      this.elements.voiceBtn.classList.add('listening', 'realtime-active');
+      this.elements.voiceBtn.setAttribute('aria-pressed', 'true');
+      this.elements.voiceBtn.setAttribute('aria-label', 'Stop live voice conversation');
+      this.elements.voiceBtn.title = 'Stop live voice';
+      this.elements.voiceBtn.innerHTML =
+        '<i class="fas fa-wave-square" aria-hidden="true"></i><span class="siri-voice-ring" aria-hidden="true"></span>';
+      return;
     }
+
+    this.elements.voiceBtn.classList.remove('realtime-active');
+
+    if (this.isListening) {
+      this.elements.voiceBtn.classList.add('listening');
+      this.elements.voiceBtn.setAttribute('aria-pressed', 'true');
+      this.elements.voiceBtn.setAttribute('aria-label', 'Stop dictation');
+      this.elements.voiceBtn.title = 'Stop dictation';
+      this.elements.voiceBtn.innerHTML =
+        '<i class="fas fa-stop" aria-hidden="true"></i><span class="siri-voice-ring" aria-hidden="true"></span>';
+      return;
+    }
+
+    this.elements.voiceBtn.classList.remove('listening');
+    this.elements.voiceBtn.setAttribute('aria-pressed', 'false');
+    this.elements.voiceBtn.setAttribute('aria-label', 'Dictate message');
+    this.elements.voiceBtn.title = 'Tap to dictate · Hold to talk';
+    this.elements.voiceBtn.innerHTML =
+      '<i class="fas fa-microphone" aria-hidden="true"></i><span class="siri-voice-ring" aria-hidden="true"></span>';
   }
 
   initializeElements() {
@@ -859,6 +1173,7 @@ class AppleIntelligenceChatbot {
       sendBtn: document.querySelector('.chatbot-send-btn'),
       voiceBtn: document.getElementById('chatbot-voice-btn'),
       inputWrapper: document.getElementById('chatbot-input-wrapper'),
+      dictationDock: document.getElementById('chatbot-dictation-dock'),
       dictationStatus: document.getElementById('chatbot-dictation-status'),
       rateStatus: document.getElementById('chatbot-rate-status'),
       composerStatus: document.getElementById('chatbot-composer-status'),
@@ -919,7 +1234,11 @@ class AppleIntelligenceChatbot {
       privacyDashboard.open();
     });
     this.elements.summarizeBtn?.addEventListener('click', () => this.summarizeConversation());
-    this.elements.plusBtn?.addEventListener('click', () => this.togglePlusMenu());
+    this.elements.plusBtn?.addEventListener('click', event => {
+      event.preventDefault();
+      event.stopPropagation();
+      this.togglePlusMenu();
+    });
     this.elements.attachInput?.addEventListener('change', e => this.handleAttachFiles(e));
 
     this.elements.form?.addEventListener('submit', e => {
@@ -941,20 +1260,23 @@ class AppleIntelligenceChatbot {
     });
 
     this.elements.voiceBtn?.addEventListener('click', event => {
+      event.preventDefault();
+      event.stopPropagation();
+      // Hold-to-talk uses pointer events; ignore synthetic click after hold
+      if (this._dictationIgnoreClick) {
+        this._dictationIgnoreClick = false;
+        return;
+      }
       this.handleVoiceInput(event);
     });
+    this.bindDictationHold();
+    this.ensureDictationDock();
 
     document.addEventListener('click', e => {
       if (!this.isOpen || !e.isTrusted) return;
-      const target = e.target;
-      if (!(target instanceof Element)) return;
-      // Keep open when interacting with privacy sheet or other AssistMe overlays.
-      if (
-        this.elements.widget?.contains(target) ||
-        this.elements.toggle?.contains(target) ||
-        this.elements.backdrop?.contains(target) ||
-        target.closest('#privacy-dashboard, .privacy-dashboard, .website-share-dialog')
-      ) {
+      // Mic/dictation rebuilds button HTML mid-click; use composedPath so detached
+      // icon nodes don't look like "outside" clicks and close the widget.
+      if (this.isEventInsideChatChrome(e)) {
         return;
       }
       this.closeWidget();
@@ -962,9 +1284,7 @@ class AppleIntelligenceChatbot {
 
     document.addEventListener('click', e => {
       if (!this.isOpen) return;
-      const target = e.target;
-      if (!(target instanceof Element)) return;
-      if (target.closest('#chatbot-plus-btn, .composer-plus-popover, .writing-tools-popover')) {
+      if (this.isEventInsideChatChrome(e, { menusOnly: true })) {
         return;
       }
       this.closePlusMenu();
@@ -1013,6 +1333,40 @@ class AppleIntelligenceChatbot {
     }
   }
 
+  /**
+   * True when the event originated inside AssistMe chrome (including nodes that
+   * were replaced mid-click, e.g. mic icon innerHTML swap during dictation).
+   */
+  isEventInsideChatChrome(event, { menusOnly = false } = {}) {
+    const path = typeof event.composedPath === 'function' ? event.composedPath() : [];
+    const nodes = path.length
+      ? path.filter(node => node instanceof Element)
+      : event.target instanceof Element
+        ? [event.target]
+        : [];
+
+    if (menusOnly) {
+      return nodes.some(node =>
+        Boolean(
+          node.closest?.(
+            '#chatbot-plus-btn, #chatbot-voice-btn, .composer-plus-popover, .writing-tools-popover, .chatbot-attach-preview, .chatbot-dictation-dock'
+          )
+        )
+      );
+    }
+
+    return nodes.some(node => {
+      if (this.elements.widget?.contains(node)) return true;
+      if (this.elements.toggle?.contains(node)) return true;
+      if (this.elements.backdrop?.contains(node)) return true;
+      return Boolean(
+        node.closest?.(
+          '#chatbot-widget, #chatbot-toggle, #chatbot-backdrop, #privacy-dashboard, .privacy-dashboard, .website-share-dialog'
+        )
+      );
+    });
+  }
+
   toggleWidget() {
     if (this.isOpen) {
       this.closeWidget();
@@ -1026,6 +1380,7 @@ class AppleIntelligenceChatbot {
     document.body.classList.add('chatbot-open');
     this.syncMobileScrollLock();
     this.bindVisualViewportInsets();
+    this.bindViewingContextTracking();
     if (this.elements.backdrop) {
       this.elements.backdrop.classList.remove('hidden');
       this.elements.backdrop.classList.add('active');
@@ -1071,7 +1426,13 @@ class AppleIntelligenceChatbot {
     this.hideTypingIndicator?.();
     this.scrollEngine?.saveSession();
     this.closeWritingTools();
-    this.stopDictation(false);
+    this.closePlusMenu();
+    this._dictationWanted = false;
+    this.dictationHoldActive = false;
+    this.dictationMode = 'idle';
+    this.stopDictation(true);
+    this.hideDictationDock();
+    this.setDictationStatus('');
     if (this.isRealtimeVoiceActive()) {
       this.realtimeVoice.disconnect().catch(() => {});
       this.realtimeTranscriptEls = { user: null, assistant: null };
@@ -1080,6 +1441,7 @@ class AppleIntelligenceChatbot {
     this.isOpen = false;
     this.syncMobileScrollLock();
     this.unbindVisualViewportInsets();
+    this.unbindViewingContextTracking();
     if (this.elements.backdrop) {
       this.elements.backdrop.classList.remove('active');
       this.elements.backdrop.classList.add('hidden');
@@ -1293,16 +1655,9 @@ class AppleIntelligenceChatbot {
         const welcomeDiv = document.createElement('div');
         welcomeDiv.className =
           'message assistant-message welcome-message welcome-message-simplified';
-        const currentPage = this.getCurrentPageTitle();
         welcomeDiv.innerHTML = `
                     <div class="message-content">
-                        <div class="welcome-header-row">
-                          <div class="welcome-title">Welcome to AssistMe</div>
-                          <div class="chatbot-context-chip" title="AI is aware of your current page location">
-                            <span class="context-chip-dot"></span>
-                            <span class="context-chip-text">Viewing: ${currentPage}</span>
-                          </div>
-                        </div>
+                        <div class="welcome-title">Welcome to AssistMe</div>
                         <div class="welcome-subtitle">Ask about projects, skills, experience, or contact — or use + for tools.</div>
                         <div class="welcome-chips"></div>
                     </div>
@@ -1316,6 +1671,8 @@ class AppleIntelligenceChatbot {
           chips?.appendChild(this.createWelcomeActionChip(iconClass, label, prompt));
         });
         this.appendToMessages(welcomeDiv);
+        this.showContextAwareness();
+        this.scrollEngine?.updateJumpAffordance?.();
       }
     }, 600);
   }
@@ -1367,7 +1724,27 @@ class AppleIntelligenceChatbot {
   // ── Message Sending ──────────────────────
 
   async handleSendMessage() {
-    this.stopDictation(false);
+    // Sending must dismiss dictation review — do not re-enter review via stopDictation(false)
+    this._dictationWanted = false;
+    this.dictationHoldActive = false;
+    this.autoSendOnFinal = false;
+    clearTimeout(this.dictationSendTimer);
+    clearTimeout(this._dictationSilenceTimer);
+    if (this.recognition && this.isListening) {
+      try {
+        this.recognition.stop();
+      } catch {
+        /* already stopped */
+      }
+    }
+    this.isListening = false;
+    this.dictationMode = 'idle';
+    this.stopDictationWaveform();
+    this.hideDictationDock();
+    this.setDictationStatus('');
+    this.updateVoiceButtonState();
+    this.elements.inputWrapper?.classList.remove('dictating');
+    this.elements.input?.classList.remove('dictating');
 
     // ChatGPT-style: tap send while generating → Stop
     if (this.isProcessing) {
@@ -1419,10 +1796,12 @@ class AppleIntelligenceChatbot {
     }
     this.dictationBase = '';
 
-    // Detect and show agentic action
+    // Detect and show agentic action chip (real execution happens in ChatAPI)
+    this._agenticChipShown = false;
     const agenticAction = this.detectAgenticAction(text);
     if (agenticAction) {
       this.showAgenticChip(agenticAction);
+      this._agenticChipShown = true;
     }
 
     // Show enhanced typing indicator
@@ -1556,6 +1935,19 @@ class AppleIntelligenceChatbot {
             <span class="action-badge-text">ACTION EXECUTED</span>
           `;
       contentDiv.prepend(badge);
+
+      if (!this._agenticChipShown) {
+        const chipMeta = AGENTIC_CHIP_BY_ACTION[response.action] || {
+          icon: '⚡',
+          label: response.action || 'Action',
+        };
+        this.showAgenticChip(chipMeta);
+      }
+      this._agenticChipShown = false;
+
+      // Viewing bar: refresh now and after smooth scroll settles
+      this.showContextAwareness({ force: true });
+      setTimeout(() => this.showContextAwareness({ force: true }), 450);
     }
 
     if (window.Prism) {
@@ -2273,24 +2665,95 @@ class AppleIntelligenceChatbot {
     this.scrollEngine?.jumpToLatest({ announce: false, ...options });
   }
 
-  async handleVoiceInput(event) {
+  async handleVoiceInput(_event) {
+    // Active live session → stop
     if (this.isRealtimeVoiceActive()) {
       await this.toggleRealtimeVoice();
       return;
     }
 
-    const preferDictation = event?.shiftKey === true;
-    if (!preferDictation && this.realtimeAvailable) {
-      await this.toggleRealtimeVoice();
-      return;
-    }
-
-    if (this.isListening) {
+    // Mic is dictation-only. Live Voice lives under + menu (not Shift+tap).
+    if (this.isListening || this.dictationMode === 'listening') {
+      this.dictationHoldActive = false;
       this.stopDictation(false);
       return;
     }
 
-    this.startDictation();
+    if (this.dictationMode === 'review') {
+      // Second tap while reviewing continues dictation
+      this.startDictation({ hold: false, autoSend: false });
+      return;
+    }
+
+    this.startDictation({ hold: false, autoSend: false });
+  }
+
+  bindDictationHold() {
+    const btn = this.elements.voiceBtn;
+    if (!btn || btn.dataset.dictationHoldBound === '1') return;
+    btn.dataset.dictationHoldBound = '1';
+
+    const HOLD_MS = 220;
+    let holdTimer = 0;
+    let holdStarted = false;
+
+    const clearHoldTimer = () => {
+      if (holdTimer) {
+        clearTimeout(holdTimer);
+        holdTimer = 0;
+      }
+    };
+
+    const endHold = event => {
+      clearHoldTimer();
+      if (!holdStarted) return;
+      holdStarted = false;
+      this._dictationIgnoreClick = true;
+      this.dictationHoldActive = false;
+      if (this.dictationPointerId != null && btn.hasPointerCapture?.(this.dictationPointerId)) {
+        try {
+          btn.releasePointerCapture(this.dictationPointerId);
+        } catch (_error) {
+          // ignore
+        }
+      }
+      this.dictationPointerId = null;
+      if (this.isListening || this.dictationMode === 'listening') {
+        this.stopDictation(false);
+      }
+      event?.preventDefault?.();
+    };
+
+    btn.addEventListener('pointerdown', event => {
+      if (event.button != null && event.button !== 0) return;
+      if (this.isRealtimeVoiceActive() || this.isProcessing) return;
+      event.stopPropagation();
+      this.dictationPointerId = event.pointerId;
+      clearHoldTimer();
+      holdStarted = false;
+      holdTimer = window.setTimeout(() => {
+        holdStarted = true;
+        this._dictationIgnoreClick = true;
+        try {
+          btn.setPointerCapture?.(event.pointerId);
+        } catch (_error) {
+          // ignore
+        }
+        if (this.isListening) return;
+        this.startDictation({ hold: true, autoSend: false });
+        this.setDictationDockLabel('Hold to talk');
+      }, HOLD_MS);
+    });
+
+    btn.addEventListener('pointerup', event => {
+      event.stopPropagation();
+      endHold(event);
+    });
+    btn.addEventListener('pointercancel', endHold);
+    btn.addEventListener('pointerleave', event => {
+      if (holdStarted) endHold(event);
+      else clearHoldTimer();
+    });
   }
 
   // ── Apple Intelligence: Conversation Summary (WWDC26) ──────────
@@ -2401,6 +2864,15 @@ class AppleIntelligenceChatbot {
         label: 'Writing Tools',
         onSelect: () => this.toggleWritingTools(),
       },
+      ...(this.realtimeAvailable
+        ? [
+            {
+              icon: 'fa-wave-square',
+              label: this.isRealtimeVoiceActive() ? 'Stop Live Conversation' : 'Live Conversation',
+              onSelect: () => this.toggleRealtimeVoice(),
+            },
+          ]
+        : []),
       {
         icon: 'fa-wand-magic-sparkles',
         label: 'Summarize chat',
@@ -2453,8 +2925,13 @@ class AppleIntelligenceChatbot {
 
     const title = document.createElement('div');
     title.className = 'writing-tools-title';
-    title.innerHTML = '<i class="fas fa-wand-magic-sparkles"></i> Writing Tools';
+    title.innerHTML = '<i class="fas fa-wand-magic-sparkles" aria-hidden="true"></i> Writing Tools';
     popover.appendChild(title);
+
+    const subtitle = document.createElement('p');
+    subtitle.className = 'writing-tools-subtitle';
+    subtitle.textContent = 'Polish the draft in your composer';
+    popover.appendChild(subtitle);
 
     WRITING_TOOLS.forEach(tool => {
       const btn = document.createElement('button');
@@ -2464,8 +2941,22 @@ class AppleIntelligenceChatbot {
       btn.setAttribute('role', 'menuitem');
       const icon = document.createElement('i');
       icon.className = TRUSTED_ICON_CLASS.test(tool.icon) ? `fas ${tool.icon}` : 'fas fa-circle';
-      btn.append(icon, document.createTextNode(` ${tool.label}`));
-      btn.addEventListener('click', () => this.applyWritingTool(tool));
+      icon.setAttribute('aria-hidden', 'true');
+      const copy = document.createElement('span');
+      copy.className = 'writing-tool-copy';
+      const label = document.createElement('span');
+      label.className = 'writing-tool-label';
+      label.textContent = tool.label;
+      const hint = document.createElement('span');
+      hint.className = 'writing-tool-hint';
+      hint.textContent = tool.hint || '';
+      copy.append(label, hint);
+      btn.append(icon, copy);
+      btn.addEventListener('click', event => {
+        event.preventDefault();
+        event.stopPropagation();
+        this.applyWritingTool(tool);
+      });
       popover.appendChild(btn);
     });
 
@@ -2480,34 +2971,28 @@ class AppleIntelligenceChatbot {
     const draft = this.normalizeInput(this.elements.input?.value);
     this.closeWritingTools();
 
+    const setToolStatus = message => {
+      if (this.elements.rateStatus) this.elements.rateStatus.textContent = message || '';
+    };
+
     if (!draft) {
-      if (this.elements.rateStatus) {
-        this.elements.rateStatus.textContent = 'Type a message first, then pick a Writing Tool.';
-      }
+      setToolStatus('Type a message first, then pick a Writing Tool.');
       this.elements.input?.focus();
       return;
     }
 
     if (!this.chatAPI || typeof this.chatAPI.ask !== 'function') {
-      if (this.elements.rateStatus) {
-        this.elements.rateStatus.textContent = 'Writing Tools need the AI connection.';
-      }
+      setToolStatus('Writing Tools need the AI connection.');
       return;
     }
 
     if (this.getRemainingQueries() <= 0) {
-      if (this.elements.rateStatus) {
-        this.elements.rateStatus.textContent = 'Daily free-message estimate reached.';
-      }
+      setToolStatus('Daily free-message estimate reached.');
       return;
     }
 
-    const busyBtn = this.elements.plusBtn;
-    const originalIcon = busyBtn?.innerHTML;
-    if (busyBtn) {
-      busyBtn.innerHTML = '<i class="fas fa-spinner fa-spin" aria-hidden="true"></i>';
-      busyBtn.disabled = true;
-    }
+    setToolStatus(`${tool.label}…`);
+    const wasProcessing = this.isProcessing;
     this.isProcessing = true;
 
     try {
@@ -2524,27 +3009,21 @@ class AppleIntelligenceChatbot {
         this.elements.input.value = rewritten;
         this.autoResizeTextarea(this.elements.input);
         this.decrementRemainingQueries();
-        if (this.elements.rateStatus) {
-          this.elements.rateStatus.textContent = `${tool.label} applied — review and send.`;
-        }
-      } else if (this.elements.rateStatus) {
-        this.elements.rateStatus.textContent = 'Writing Tools returned nothing. Try again.';
+        setToolStatus(`${tool.label} applied — review and send.`);
+      } else {
+        setToolStatus('Writing Tools returned nothing. Try again.');
       }
     } catch (error) {
       console.warn('Writing Tools failed:', error);
-      if (this.elements.rateStatus) {
-        this.elements.rateStatus.textContent =
-          error?.code === 'RATE_LIMITED'
-            ? 'Too many requests — give it a moment.'
-            : 'Writing Tools hit a snag. Try again.';
-      }
+      setToolStatus(
+        error?.code === 'RATE_LIMITED'
+          ? 'Too many requests — give it a moment.'
+          : 'Writing Tools hit a snag. Try again.'
+      );
     } finally {
-      this.isProcessing = false;
-      if (busyBtn) {
-        busyBtn.innerHTML = originalIcon;
-        busyBtn.disabled = false;
-      }
+      this.isProcessing = wasProcessing;
       this.elements.input?.focus();
+      this.updateRateLimitBadge();
     }
   }
 
@@ -2654,6 +3133,16 @@ class AppleIntelligenceChatbot {
         return { sectionId, label: context[0], prompt: context[1] };
       }
     }
+
+    // Fallback when hash targets a section that isn't centered yet (e.g. mid-smooth-scroll)
+    const hashId = String(window.location.hash || '')
+      .replace(/^#/, '')
+      .trim();
+    if (hashId && SECTION_CONTEXT_PROMPTS[hashId]) {
+      const [label, prompt] = SECTION_CONTEXT_PROMPTS[hashId];
+      return { sectionId: hashId, label, prompt };
+    }
+
     return null;
   }
 
@@ -2675,28 +3164,35 @@ class AppleIntelligenceChatbot {
     };
   }
 
-  showContextAwareness() {
+  updateViewingBar(context) {
+    const bar = document.getElementById('chatbot-viewing-bar');
+    if (!bar) return;
+
+    const labelEl = bar.querySelector('[data-viewing-label]');
+    if (!context?.label) {
+      bar.hidden = true;
+      bar.onclick = null;
+      if (labelEl) labelEl.textContent = '—';
+      return;
+    }
+
+    if (labelEl) labelEl.textContent = context.label;
+    bar.hidden = false;
+    bar.title = `Ask about ${context.label}`;
+    bar.onclick = () => {
+      if (context.prompt) this.ask(context.prompt);
+    };
+  }
+
+  showContextAwareness({ force = false } = {}) {
     const context = this.getVisibleSectionContext();
-    if (!context || context.sectionId === this.lastContextSectionId) return;
-    this.lastContextSectionId = context.sectionId;
+    this.updateViewingBar(context);
 
+    if (!force && context && context.sectionId === this.lastContextSectionId) return;
+    this.lastContextSectionId = context?.sectionId || null;
+
+    // Viewing lives in the fixed header bar — remove leftover in-message chips.
     this.elements.messages?.querySelectorAll('.context-aware-chip').forEach(el => el.remove());
-
-    const chip = document.createElement('button');
-    chip.setAttribute('type', 'button');
-    chip.type = 'button';
-    chip.className = 'context-aware-chip';
-    chip.innerHTML = `
-      <span class="context-aware-glow" aria-hidden="true"></span>
-      <i class="fas fa-eye" aria-hidden="true"></i>
-      <span>You're viewing <strong>${this.escapeHtml(context.label)}</strong> — ask me about it</span>
-    `;
-    chip.addEventListener('click', () => {
-      chip.remove();
-      this.ask(context.prompt);
-    });
-
-    this.appendToMessages(chip);
   }
 
   /**

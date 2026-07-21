@@ -1077,8 +1077,6 @@ html body #close-menu-btn,
 html body #close-menu-btn.premium-close-btn,
 html body #search-overlay #search-close,
 html body #search-overlay #search-close.premium-close-btn,
-html body #chatbot-widget .chatbot-close-btn,
-html body .chatbot-close-btn,
 html body .apple-close-btn,
 html body .premium-close-btn,
 html body .project-xr-close-btn,
@@ -1110,7 +1108,6 @@ html body .lightbox-close {
 html body #overlay-menu #close-menu-btn i,
 html body #close-menu-btn i,
 html body #search-overlay #search-close i,
-html body #chatbot-widget .chatbot-close-btn i,
 html body .apple-close-btn i,
 html body .premium-close-btn i {
   color: #ffffff !important;
@@ -1123,7 +1120,6 @@ html body .premium-close-btn i {
 html.dark body #overlay-menu #close-menu-btn,
 html.dark body #close-menu-btn,
 html.dark body #search-overlay #search-close,
-html.dark body #chatbot-widget .chatbot-close-btn,
 html.dark body .apple-close-btn,
 html.dark body .premium-close-btn {
   background: #ff453a !important;
@@ -1563,7 +1559,8 @@ html body #contact .media-info .book-btn {
   font-size: 0.74rem !important;
   font-weight: 500 !important;
   background: rgba(0, 113, 227, 0.08) !important;
-  color: #0071e3 !important;
+  /* Darker than #0071e3 so WCAG AA holds on the light blue wash (~4.5:1+) */
+  color: #004494 !important;
   border: 1px solid rgba(0, 113, 227, 0.15) !important;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
   text-decoration: none !important;
@@ -1595,18 +1592,18 @@ html.dark body #contact .media-info .book-btn:hover {
 
 /* ─── Luxury Apple & shadcn UI AssistMe Chatbot Refactoring ─── */
 
-/* 1. Chatbot Floating Widget & Ambient Side Glow */
+/* 1. Chatbot floating card — solid Apple surfaces (no glass wash) */
 #chatbot-widget,
 #chatbot-widget.visible {
-  background: rgba(255, 255, 255, 0.94) !important;
-  backdrop-filter: blur(28px) saturate(190%) !important;
-  -webkit-backdrop-filter: blur(28px) saturate(190%) !important;
-  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border: 1px solid #e5e5ea !important;
   border-radius: 24px !important;
   box-shadow:
-    0 24px 60px rgba(0, 0, 0, 0.12),
-    0 0 0 1px rgba(0, 0, 0, 0.06),
-    0 0 28px rgba(0, 113, 227, 0.14) !important;
+    0 24px 60px rgba(0, 0, 0, 0.14),
+    0 0 0 1px rgba(0, 0, 0, 0.04) !important;
   transition:
     transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
     opacity 0.25s ease,
@@ -1615,15 +1612,13 @@ html.dark body #contact .media-info .book-btn:hover {
 
 html.dark #chatbot-widget,
 html.dark #chatbot-widget.visible {
-  background: rgba(28, 28, 30, 0.94) !important;
-  backdrop-filter: blur(28px) saturate(190%) !important;
-  -webkit-backdrop-filter: blur(28px) saturate(190%) !important;
-  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  background: #000000 !important;
+  background-color: #000000 !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border: 1px solid #2c2c2e !important;
   border-radius: 24px !important;
-  box-shadow:
-    0 24px 70px rgba(0, 0, 0, 0.65),
-    0 0 0 1px rgba(255, 255, 255, 0.12),
-    0 0 35px rgba(0, 113, 227, 0.28) !important;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.55) !important;
 }
 
 /* 2. Header & Action Buttons */
@@ -1641,6 +1636,9 @@ html.dark #chatbot-widget .chatbot-header {
   display: flex !important;
   align-items: center !important;
   justify-content: space-between !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  gap: 12px !important;
 }
 
 #chatbot-widget .chatbot-title {
@@ -1658,17 +1656,16 @@ html.dark #chatbot-widget .chatbot-title {
   display: flex !important;
   align-items: center !important;
   gap: 0.4rem !important;
+  margin-left: auto !important;
+  flex-shrink: 0 !important;
 }
 
-/* Sleek Apple Action Buttons (Replacing Harsh Red Circle) */
-#chatbot-widget .chatbot-settings-btn,
-#chatbot-widget .chatbot-close-btn,
-.chatbot-close-btn,
-html body #chatbot-widget button.chatbot-close-btn {
-  width: 28px !important;
-  height: 28px !important;
-  min-width: 28px !important;
-  min-height: 28px !important;
+/* Sleek Apple chrome — settings stays grey; close uses sitewide red (apple-premium) */
+#chatbot-widget .chatbot-settings-btn {
+  width: 36px !important;
+  height: 36px !important;
+  min-width: 36px !important;
+  min-height: 36px !important;
   border-radius: 999px !important;
   background: rgba(120, 120, 128, 0.12) !important;
   background-color: rgba(120, 120, 128, 0.12) !important;
@@ -1680,14 +1677,15 @@ html body #chatbot-widget button.chatbot-close-btn {
   align-items: center !important;
   justify-content: center !important;
   cursor: pointer !important;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  transition:
+    background-color 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+    color 0.2s,
+    transform 0.2s !important;
   padding: 0 !important;
+  z-index: auto !important;
 }
 
-html.dark #chatbot-widget .chatbot-settings-btn,
-html.dark #chatbot-widget .chatbot-close-btn,
-html.dark .chatbot-close-btn,
-html.dark body #chatbot-widget button.chatbot-close-btn {
+html.dark #chatbot-widget .chatbot-settings-btn {
   background: rgba(255, 255, 255, 0.12) !important;
   background-color: rgba(255, 255, 255, 0.12) !important;
   border-color: rgba(255, 255, 255, 0.08) !important;
@@ -1695,32 +1693,68 @@ html.dark body #chatbot-widget button.chatbot-close-btn {
   -webkit-text-fill-color: #a1a1a6 !important;
 }
 
-#chatbot-widget .chatbot-settings-btn i,
-#chatbot-widget .chatbot-close-btn i,
-.chatbot-close-btn i,
-html body #chatbot-widget button.chatbot-close-btn i {
+#chatbot-widget .chatbot-settings-btn i {
   color: inherit !important;
   -webkit-text-fill-color: inherit !important;
   font-size: 0.76rem !important;
 }
 
-#chatbot-widget .chatbot-settings-btn:hover,
-#chatbot-widget .chatbot-close-btn:hover,
-.chatbot-close-btn:hover,
-html body #chatbot-widget button.chatbot-close-btn:hover {
+#chatbot-widget .chatbot-settings-btn:hover {
   background: rgba(120, 120, 128, 0.22) !important;
+  background-color: rgba(120, 120, 128, 0.22) !important;
   color: #1d1d1f !important;
   -webkit-text-fill-color: #1d1d1f !important;
   transform: scale(1.06) !important;
+  box-shadow: none !important;
 }
 
-html.dark #chatbot-widget .chatbot-settings-btn:hover,
-html.dark #chatbot-widget .chatbot-close-btn:hover,
-html.dark .chatbot-close-btn:hover,
-html.dark body #chatbot-widget button.chatbot-close-btn:hover {
+html.dark #chatbot-widget .chatbot-settings-btn:hover {
   background: rgba(255, 255, 255, 0.22) !important;
+  background-color: rgba(255, 255, 255, 0.22) !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
+}
+
+/* Close matches sitewide Apple red traffic-light chrome */
+#chatbot-widget .chatbot-close-btn,
+.chatbot-close-btn,
+html body #chatbot-widget button.chatbot-close-btn {
+  width: 32px !important;
+  height: 32px !important;
+  min-width: 32px !important;
+  min-height: 32px !important;
+  border-radius: 50% !important;
+  background: #ff3b30 !important;
+  background-color: #ff3b30 !important;
+  border: none !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  box-shadow: 0 2px 8px rgb(255 59 48 / 40%) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0 !important;
+  filter: none !important;
+}
+
+#chatbot-widget .chatbot-close-btn i,
+.chatbot-close-btn i,
+html body #chatbot-widget button.chatbot-close-btn i {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  font-size: 0.82rem !important;
+}
+
+#chatbot-widget .chatbot-close-btn:hover,
+.chatbot-close-btn:hover,
+html body #chatbot-widget button.chatbot-close-btn:hover {
+  background: #ff453a !important;
+  background-color: #ff453a !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  transform: scale(1.08) !important;
+  box-shadow: 0 4px 14px rgb(255 69 58 / 55%) !important;
+  filter: none !important;
 }
 
 /* 3. Welcome Card & Viewing Context Badge */

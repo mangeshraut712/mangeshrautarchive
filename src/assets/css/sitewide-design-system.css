@@ -18,7 +18,9 @@ button:not(.gh-contrib__view-btn):not(.gh-contrib__year):not(.about-tab-btn):not
     .card-translate-option
   ):not(#go-to-top):not(#chatbot-toggle):not(#website-share-toggle):not(.website-share-close):not(
     .website-share-copy
-  ):not(.website-share-action):not(.chatbot-close-btn):not(.publication-modal-close):not(
+  ):not(.website-share-action):not(.chatbot-close-btn):not(.chatbot-viewing-bar):not(
+    .chatbot-jump-latest
+  ):not(.chatbot-clear-btn):not(.dictation-dock-btn):not(.publication-modal-close):not(
     .blog-modal-close
   ):not(.chatbot-send-btn):not(.chatbot-settings-btn):not(.chatbot-voice-btn):not(
     .chatbot-writing-btn
@@ -89,7 +91,9 @@ button:not(.gh-contrib__view-btn):not(.gh-contrib__year):not(.about-tab-btn):not
     .card-translate-option
   ):not(#go-to-top):not(#chatbot-toggle):not(#website-share-toggle):not(.website-share-close):not(
     .website-share-copy
-  ):not(.website-share-action):not(.chatbot-close-btn):not(.publication-modal-close):not(
+  ):not(.website-share-action):not(.chatbot-close-btn):not(.chatbot-viewing-bar):not(
+    .chatbot-jump-latest
+  ):not(.chatbot-clear-btn):not(.dictation-dock-btn):not(.publication-modal-close):not(
     .blog-modal-close
   ):not(.chatbot-send-btn):not(.chatbot-settings-btn):not(.chatbot-voice-btn):not(
     .chatbot-writing-btn
@@ -710,7 +714,9 @@ button:not(.gh-contrib__view-btn):not(.gh-contrib__year):not(.about-tab-btn):not
     .card-translate-option
   ):not(#go-to-top):not(#chatbot-toggle):not(#website-share-toggle):not(.website-share-close):not(
     .website-share-copy
-  ):not(.website-share-action):not(.chatbot-close-btn):not(.publication-modal-close):not(
+  ):not(.website-share-action):not(.chatbot-close-btn):not(.chatbot-viewing-bar):not(
+    .chatbot-jump-latest
+  ):not(.chatbot-clear-btn):not(.dictation-dock-btn):not(.publication-modal-close):not(
     .blog-modal-close
   ):not(.chatbot-send-btn):not(.chatbot-settings-btn):not(.chatbot-voice-btn):not(
     .chatbot-writing-btn
