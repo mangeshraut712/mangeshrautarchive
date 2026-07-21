@@ -112,20 +112,21 @@ class LastFmService {
   }
 
   getArtworkPlaceholder(trackName = 'Now Playing', artistName = 'Spotify') {
-    const safeTrack = this.escapeHtml(String(trackName).slice(0, 28));
-    const safeArtist = this.escapeHtml(String(artistName).slice(0, 26));
+    const safeTrack = this.escapeHtml(String(trackName).slice(0, 24));
+    const safeArtist = this.escapeHtml(String(artistName).slice(0, 24));
     const svg = `
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" fill="none">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240">
         <defs>
-          <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-            <stop stop-color="#f3f4f6"/>
-            <stop offset="1" stop-color="#e5e7eb"/>
+          <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#1db954"/>
+            <stop offset="100%" stop-color="#121212"/>
           </linearGradient>
         </defs>
-        <rect width="240" height="240" rx="28" fill="url(#g)"/>
-        <path fill="rgba(255,255,255,0.92)" d="M120 44l23.5 47.6 52.5 7.7-38 37 9 52.2L120 164l-47 24.5 9-52.2-38-37 52.5-7.7L120 44Z"/>
-        <text x="120" y="192" text-anchor="middle" fill="#6b7280" font-size="15" font-weight="700" font-family="system-ui,-apple-system,sans-serif">${safeTrack}</text>
-        <text x="120" y="212" text-anchor="middle" fill="#9ca3af" font-size="11" font-weight="500" font-family="system-ui,-apple-system,sans-serif">${safeArtist}</text>
+        <rect width="240" height="240" rx="20" fill="url(#bg)"/>
+        <circle cx="120" cy="105" r="40" fill="rgba(255,255,255,0.12)"/>
+        <path d="M120 80v45a16 16 0 1 1-12-15.4V90l30-7v26a16 16 0 1 1-12-15.4V80h-6z" fill="#ffffff"/>
+        <text x="120" y="190" text-anchor="middle" fill="#ffffff" font-size="13" font-weight="600" font-family="-apple-system,BlinkMacSystemFont,sans-serif">${safeTrack}</text>
+        <text x="120" y="210" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-size="11" font-weight="400" font-family="-apple-system,BlinkMacSystemFont,sans-serif">${safeArtist}</text>
       </svg>
     `;
     return `data:image/svg+xml;base64,${btoa(unescape(encodeURIComponent(svg)))}`;
