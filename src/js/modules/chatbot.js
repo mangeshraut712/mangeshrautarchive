@@ -1917,7 +1917,11 @@ class AppleIntelligenceChatbot {
   }
 
   addWelcomeMessage() {
+    if (this._hasPendingWelcome || !this.shouldShowWelcomeMessage()) return;
+    this._hasPendingWelcome = true;
+
     setTimeout(() => {
+      this._hasPendingWelcome = false;
       if (this.shouldShowWelcomeMessage()) {
         const welcomeDiv = document.createElement('div');
         welcomeDiv.className =
@@ -1945,7 +1949,7 @@ class AppleIntelligenceChatbot {
         this.showContextAwareness();
         this.scrollEngine?.updateJumpAffordance?.();
       }
-    }, 600);
+    }, 300);
   }
 
   createWelcomeActionChip(iconClass, label, prompt) {
