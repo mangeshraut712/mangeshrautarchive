@@ -17,6 +17,14 @@ const INTERACTIVE_SELECTOR = [
   '#go-to-top',
   '#website-share-toggle',
   '#projects #github-projects-container .showcase-project-card',
+  '.bento-card',
+  '.skills-category-card',
+  '.timeline-card',
+  '.publication-card',
+  '.award-card',
+  '.blog-card',
+  '.currently-card',
+  '.stat-card',
 ].join(', ');
 
 const POINTER_VARS = {

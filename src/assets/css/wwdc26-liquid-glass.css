@@ -3255,7 +3255,15 @@ html.dark[data-lg-mode='tinted']
 #chatbot-toggle.lg-interactive,
 #go-to-top.lg-interactive,
 #website-share-toggle.lg-interactive,
-#projects #github-projects-container .showcase-project-card.lg-interactive {
+#projects #github-projects-container .showcase-project-card.lg-interactive,
+.bento-card.lg-interactive,
+.skills-category-card.lg-interactive,
+.timeline-card.lg-interactive,
+.publication-card.lg-interactive,
+.award-card.lg-interactive,
+.blog-card.lg-interactive,
+.currently-card.lg-interactive,
+.stat-card.lg-interactive {
   overflow: hidden;
 }
 
