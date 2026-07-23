@@ -101,7 +101,6 @@ function applyPreview(container) {
   const expanded = container.classList.contains('is-expanded');
   const moreLabel = container.getAttribute('data-preview-more') || 'View more';
   const lessLabel = container.getAttribute('data-preview-less') || 'Show less';
-  const noun = container.getAttribute('data-preview-label') || 'items';
 
   items.forEach((item, index) => {
     const hide = !expanded && index >= limit;
@@ -125,12 +124,11 @@ function applyPreview(container) {
 
   actions.hidden = false;
   const remaining = excess;
-  button.textContent = expanded ? lessLabel : `${moreLabel} (${remaining})`;
+  const visibleLabel = expanded ? lessLabel : `${moreLabel} (${remaining})`;
+  button.textContent = visibleLabel;
   button.setAttribute('aria-expanded', expanded ? 'true' : 'false');
-  button.setAttribute(
-    'aria-label',
-    expanded ? `${lessLabel}, ${noun}` : `View ${remaining} more ${noun}`
-  );
+  // Accessible name must include visible label text (axe label-content-name-mismatch)
+  button.setAttribute('aria-label', visibleLabel);
 
   if (button.dataset.previewWired !== 'true') {
     button.dataset.previewWired = 'true';

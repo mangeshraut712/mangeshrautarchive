@@ -26,6 +26,7 @@ import {
 import { getRemainingFreeMessages, consumeFreeMessage } from '../chatbot/rate-limit.js';
 import { clearSessionMemory, saveConversation } from '../chatbot/session-memory.js';
 import { realtimeVoiceService } from '../services/RealtimeVoiceService.js';
+import { voiceModeService } from '../services/VoiceModeService.js';
 import { lockBodyScroll, unlockBodyScroll } from '../utils/scroll-lock.js';
 import appleSounds from './apple-sounds.js';
 
@@ -256,6 +257,8 @@ class AppleIntelligenceChatbot {
     this.realtimeVoice = realtimeVoiceService;
     this.realtimeAvailable = false;
     this.realtimeTranscriptEls = { user: null, assistant: null };
+    this.voiceMode = voiceModeService;
+    this.voiceModeAvailable = false;
     this.composerStates = {
       connection: 'local',
       agent: 'idle',
@@ -294,6 +297,7 @@ class AppleIntelligenceChatbot {
     this.waitForChatAPI();
     this.initVoiceRecognition();
     this.initRealtimeVoice();
+    this.initVoiceMode();
     this.bindEvents();
     this.ensureStatusIndicator();
     this.addWelcomeMessage();
@@ -643,42 +647,272 @@ class AppleIntelligenceChatbot {
   }
 
   initRealtimeVoice() {
+    // Legacy AI Gateway duplex kept for disconnect safety; Voice Mode replaces the UI entry.
     this.realtimeVoice.onStatusChange = status => {
       this.updateVoiceButtonState(status);
-      const realtimeMap = {
-        connecting: 'connecting',
-        connected: 'connected',
-        listening: 'listening',
-        speaking: 'speaking',
-      };
-      this.setComposerChip('realtime', realtimeMap[status] || 'off');
-      if (status === 'listening') {
-        this.setDictationStatus('Live voice — speak naturally');
-      } else if (status === 'speaking') {
-        this.setDictationStatus('AssistMe is responding…');
-      } else if (status === 'connecting') {
-        this.setDictationStatus('Starting live voice session…');
-      } else if (!this.isListening) {
+    };
+    this.realtimeVoice.checkAvailability().then(available => {
+      this.realtimeAvailable = available;
+    });
+  }
+
+  initVoiceMode() {
+    this.ensureVoiceModeOverlay();
+
+    this.voiceMode.onStatusChange = status => {
+      this.updateVoiceModeOverlay(status);
+      this.updateVoiceButtonState();
+      // Overlay owns Voice Mode status copy — avoid duplicating in composer footer.
+      this.setComposerChip('realtime', 'off');
+      if (!this.isListening) {
         this.setDictationStatus('');
       }
     };
 
-    this.realtimeVoice.onTranscript = ({ role, text, final }) => {
-      this.updateRealtimeTranscript(role, text, final);
+    this.voiceMode.onTranscript = ({ text, interim, final }) => {
+      this.updateVoiceModeTranscript(text, interim, final);
+      if (final && text?.trim()) {
+        this.addMessage(text.trim(), 'user', { forceScroll: true });
+        this.messageCount += 1;
+      }
     };
 
-    this.realtimeVoice.onError = error => {
-      console.error('Realtime voice error:', error);
-      this.addErrorMessage(
-        error?.message || 'Live voice is temporarily unavailable. Try typing instead.'
-      );
-      this.setDictationStatus('');
+    this.voiceMode.onAssistantText = ({ text }) => {
+      if (!text?.trim()) return;
+      this.addMessage(text.trim(), 'assistant', { forceScroll: true });
+      const live = this.elements.voiceModeOverlay?.querySelector('[data-voice-assistant]');
+      if (live) live.textContent = text.trim();
     };
 
-    this.realtimeVoice.checkAvailability().then(available => {
-      this.realtimeAvailable = available;
+    this.voiceMode.onError = error => {
+      console.error('Voice Mode error:', error);
+      // Spoken fallback is handled inside VoiceModeService; only surface hard failures here.
+      if (error?.message && /microphone|permission|not supported|not ready/i.test(error.message)) {
+        this.addErrorMessage(error.message);
+      }
+    };
+
+    this.voiceMode.onAudioLevel = level => {
+      const value = String(Math.max(0.12, Math.min(1, level || 0)));
+      const overlay = this.elements.voiceModeOverlay;
+      const orb = overlay?.querySelector('[data-voice-orb]');
+      overlay?.style.setProperty('--voice-level', value);
+      orb?.style.setProperty('--voice-level', value);
+    };
+
+    this.voiceMode.setAskHandler(async (text, options = {}) => {
+      if (!this.chatAPI?.ask) {
+        throw new Error('Chat is not ready yet.');
+      }
+      if (this.isProcessing) {
+        throw new Error('AssistMe is already answering. Please wait a moment.');
+      }
+      const remaining = this.getRemainingQueries();
+      if (remaining <= 0) {
+        throw new Error(
+          `Daily free message limit reached (${this.maxSessionMessages}). Try again later.`
+        );
+      }
+      const context = {
+        ...this.buildPageContextPayload(),
+        ...(options.context || {}),
+        mode: 'voice',
+      };
+      this.isProcessing = true;
+      this.setComposerBusy(true);
+      try {
+        const response = await this.chatAPI.ask(text, {
+          signal: options.signal,
+          context,
+          session_id: this.chatAPI.sessionId,
+          stream: options.stream !== false,
+        });
+        if (response && typeof response === 'object' && (response.answer || response.content)) {
+          this.decrementRemainingQueries();
+          this.updateRateLimitBadge();
+        }
+        return response;
+      } catch (error) {
+        if (
+          error?.name === 'AbortError' ||
+          error?.code === 'ABORT_ERR' ||
+          (typeof DOMException !== 'undefined' &&
+            error instanceof DOMException &&
+            error.name === 'AbortError')
+        ) {
+          // ask() already dropped the user turn from conversation — remove orphan bubble.
+          const lastUser = this.elements.messages?.querySelector(
+            '.message.user-message:last-of-type, .user-message:last-of-type'
+          );
+          lastUser?.remove();
+        }
+        throw error;
+      } finally {
+        this.isProcessing = false;
+        this.setComposerBusy(false);
+      }
+    });
+
+    this.voiceMode.checkAvailability().then(available => {
+      this.voiceModeAvailable = available;
       this.updateVoiceButtonState();
     });
+  }
+
+  getVoiceModeOverlayMarkup() {
+    return `
+      <div class="voice-mode-panel">
+        <p class="voice-mode-status" data-voice-status id="voice-mode-status-label">Listening…</p>
+        <button type="button" class="voice-mode-orb" data-voice-orb aria-labelledby="voice-mode-status-label" aria-label="Interrupt and listen">
+          <span class="voice-mode-orb-glow" aria-hidden="true"></span>
+          <span class="voice-mode-orb-halo" aria-hidden="true"></span>
+          <span class="voice-mode-orb-ring" aria-hidden="true"></span>
+          <span class="voice-mode-orb-core" aria-hidden="true">
+            <span class="voice-mode-orb-blob voice-mode-orb-blob--a"></span>
+            <span class="voice-mode-orb-blob voice-mode-orb-blob--b"></span>
+            <span class="voice-mode-orb-blob voice-mode-orb-blob--c"></span>
+            <span class="voice-mode-orb-sheen"></span>
+          </span>
+        </button>
+        <div class="voice-mode-captions">
+          <p class="voice-mode-user" data-voice-user></p>
+          <p class="voice-mode-assistant" data-voice-assistant></p>
+        </div>
+        <div class="voice-mode-actions">
+          <button type="button" class="voice-mode-btn voice-mode-btn--ghost" data-voice-mute aria-pressed="false">Mute</button>
+          <button type="button" class="voice-mode-btn voice-mode-btn--end" data-voice-end>End</button>
+        </div>
+      </div>
+    `;
+  }
+
+  ensureVoiceModeOverlay() {
+    if (!this.elements.widget) return;
+    let overlay = document.getElementById('chatbot-voice-mode');
+    const needsMarkupUpgrade = overlay && !overlay.querySelector('.voice-mode-orb-core');
+    if (!overlay) {
+      overlay = document.createElement('div');
+      overlay.id = 'chatbot-voice-mode';
+      overlay.className = 'chatbot-voice-mode';
+      overlay.hidden = true;
+      overlay.setAttribute('role', 'dialog');
+      overlay.setAttribute('aria-modal', 'true');
+      overlay.setAttribute('aria-label', 'AssistMe Voice Mode');
+      overlay.setAttribute('aria-hidden', 'true');
+      overlay.innerHTML = this.getVoiceModeOverlayMarkup();
+      // Mount as sibling of messages so Clear Chat cannot destroy the overlay.
+      const messages = this.elements.messages;
+      if (messages?.parentElement) {
+        messages.parentElement.insertBefore(overlay, messages.nextSibling);
+      } else {
+        this.elements.widget.appendChild(overlay);
+      }
+    } else if (needsMarkupUpgrade) {
+      overlay.innerHTML = this.getVoiceModeOverlayMarkup();
+      delete overlay.dataset.bound;
+    }
+    this.elements.voiceModeOverlay = overlay;
+
+    if (overlay.dataset.bound === '1') return;
+    overlay.dataset.bound = '1';
+
+    overlay.querySelector('[data-voice-orb]')?.addEventListener('click', () => {
+      if (this.voiceMode.status === 'speaking' || this.voiceMode.status === 'thinking') {
+        void this.voiceMode.interrupt();
+      }
+    });
+    overlay.querySelector('[data-voice-mute]')?.addEventListener('click', event => {
+      const muted = this.voiceMode.toggleMute();
+      event.currentTarget.setAttribute('aria-pressed', muted ? 'true' : 'false');
+      event.currentTarget.textContent = muted ? 'Unmute' : 'Mute';
+      const statusEl = overlay.querySelector('[data-voice-status]');
+      if (muted && statusEl) {
+        statusEl.textContent = 'Muted';
+      } else if (this.isVoiceModeActive()) {
+        void this.voiceMode.interrupt();
+      }
+    });
+    overlay.querySelector('[data-voice-end]')?.addEventListener('click', () => {
+      void this.toggleVoiceMode();
+    });
+  }
+
+  updateVoiceModeOverlay(status = this.voiceMode?.status) {
+    this.ensureVoiceModeOverlay();
+    const overlay = this.elements.voiceModeOverlay;
+    if (!overlay) return;
+    const active = this.isVoiceModeActive();
+    overlay.hidden = !active;
+    overlay.setAttribute('aria-hidden', active ? 'false' : 'true');
+    overlay.dataset.status = status || 'idle';
+    this.elements.widget?.classList.toggle('is-voice-mode', active);
+    if (this.elements.messages) {
+      this.elements.messages.toggleAttribute('inert', active);
+    }
+    const label = overlay.querySelector('[data-voice-status]');
+    const muteBtn = overlay.querySelector('[data-voice-mute]');
+    const muted = muteBtn?.getAttribute('aria-pressed') === 'true';
+    if (label) {
+      if (muted) {
+        label.textContent = 'Muted';
+      } else {
+        const copy = {
+          listening: 'Listening…',
+          thinking: 'Thinking…',
+          speaking: 'Speaking — tap to interrupt',
+          idle: 'Ready',
+        };
+        label.textContent = copy[status] || 'Voice Mode';
+      }
+    }
+    if (active && status === 'listening') {
+      overlay.querySelector('[data-voice-end]')?.focus?.({ preventScroll: true });
+    }
+  }
+
+  updateVoiceModeTranscript(text, interim, isFinal) {
+    const el = this.elements.voiceModeOverlay?.querySelector('[data-voice-user]');
+    if (!el) return;
+    const shown = [text, interim].filter(Boolean).join(' ').trim();
+    el.textContent = shown;
+    if (isFinal) el.dataset.final = 'true';
+  }
+
+  isVoiceModeActive() {
+    return Boolean(this.voiceMode?.isActive?.());
+  }
+
+  async toggleVoiceMode() {
+    if (this.isProcessing && !this.isVoiceModeActive()) {
+      return;
+    }
+
+    this.ensureVoiceModeOverlay();
+
+    if (this.isVoiceModeActive()) {
+      await this.voiceMode.stopSession();
+      this.updateVoiceModeOverlay('idle');
+      this.updateVoiceButtonState();
+      this.setDictationStatus('');
+      this.setComposerChip('realtime', 'off');
+      return;
+    }
+
+    this.stopDictation(false);
+    if (this.isRealtimeVoiceActive()) {
+      await this.realtimeVoice.disconnect().catch(() => {});
+    }
+
+    try {
+      await this.voiceMode.startSession();
+      this.updateVoiceModeOverlay(this.voiceMode.status);
+      this.updateVoiceButtonState();
+    } catch (error) {
+      console.error('Failed to start Voice Mode:', error);
+      this.addErrorMessage(
+        error?.message || 'Voice Mode could not start. Check microphone permissions.'
+      );
+    }
   }
 
   updateRealtimeTranscript(role, text, isFinal = false) {
@@ -978,6 +1212,8 @@ class AppleIntelligenceChatbot {
     this.ensureDictationDock();
     if (!navigator.mediaDevices?.getUserMedia) return;
 
+    const generation = (this._dictationWaveGen = (this._dictationWaveGen || 0) + 1);
+
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
         audio: {
@@ -986,6 +1222,10 @@ class AppleIntelligenceChatbot {
           autoGainControl: true,
         },
       });
+      if (generation !== this._dictationWaveGen || this.dictationMode === 'idle') {
+        stream.getTracks().forEach(t => t.stop());
+        return;
+      }
       const AudioCtx = window.AudioContext || window.webkitAudioContext;
       const ctx = new AudioCtx();
       const source = ctx.createMediaStreamSource(stream);
@@ -1015,6 +1255,7 @@ class AppleIntelligenceChatbot {
   }
 
   stopDictationWaveform() {
+    this._dictationWaveGen = (this._dictationWaveGen || 0) + 1;
     if (this._dictationRaf) {
       cancelAnimationFrame(this._dictationRaf);
       this._dictationRaf = 0;
@@ -1088,6 +1329,7 @@ class AppleIntelligenceChatbot {
 
     if (this.isProcessing) return;
     if (this.isRealtimeVoiceActive()) return;
+    if (this.isVoiceModeActive()) return;
 
     this.dictationHoldActive = hold;
     this.autoSendOnFinal = Boolean(autoSend);
@@ -1122,15 +1364,19 @@ class AppleIntelligenceChatbot {
   updateVoiceButtonState(realtimeStatus = this.realtimeVoice?.status) {
     if (!this.elements.voiceBtn) return;
 
+    const voiceModeActive = this.isVoiceModeActive();
     const realtimeActive = ['connecting', 'connected', 'listening', 'speaking'].includes(
       realtimeStatus
     );
 
-    if (realtimeActive) {
+    if (voiceModeActive || realtimeActive) {
       this.elements.voiceBtn.classList.add('listening', 'realtime-active');
       this.elements.voiceBtn.setAttribute('aria-pressed', 'true');
-      this.elements.voiceBtn.setAttribute('aria-label', 'Stop live voice conversation');
-      this.elements.voiceBtn.title = 'Stop live voice';
+      this.elements.voiceBtn.setAttribute(
+        'aria-label',
+        voiceModeActive ? 'Interrupt Voice Mode' : 'Stop live voice conversation'
+      );
+      this.elements.voiceBtn.title = voiceModeActive ? 'Interrupt Voice Mode' : 'Stop live voice';
       this.elements.voiceBtn.innerHTML =
         '<i class="fas fa-wave-square" aria-hidden="true"></i><span class="siri-voice-ring" aria-hidden="true"></span>';
       return;
@@ -1274,6 +1520,7 @@ class AppleIntelligenceChatbot {
 
     document.addEventListener('click', e => {
       if (!this.isOpen || !e.isTrusted) return;
+      if (Date.now() < (this._ignoreOutsideCloseUntil || 0)) return;
       // Mic/dictation rebuilds button HTML mid-click; use composedPath so detached
       // icon nodes don't look like "outside" clicks and close the widget.
       if (this.isEventInsideChatChrome(e)) {
@@ -1299,6 +1546,14 @@ class AppleIntelligenceChatbot {
         }
         if (this.elements.widget?.querySelector('.writing-tools-popover')) {
           this.closeWritingTools();
+          return;
+        }
+        if (this.isVoiceModeActive()) {
+          if (this.voiceMode.status === 'speaking' || this.voiceMode.status === 'thinking') {
+            void this.voiceMode.interrupt();
+          } else {
+            void this.toggleVoiceMode();
+          }
           return;
         }
         this.closeWidget();
@@ -1381,6 +1636,8 @@ class AppleIntelligenceChatbot {
     this.syncMobileScrollLock();
     this.bindVisualViewportInsets();
     this.bindViewingContextTracking();
+    // Ignore the same-tick document click that can follow a lazy-load open.
+    this._ignoreOutsideCloseUntil = Date.now() + 250;
     if (this.elements.backdrop) {
       this.elements.backdrop.classList.remove('hidden');
       this.elements.backdrop.classList.add('active');
@@ -1388,10 +1645,13 @@ class AppleIntelligenceChatbot {
       this.elements.backdrop.setAttribute('aria-hidden', 'false');
       this.elements.backdrop.removeAttribute('inert');
     }
-    this.elements.widget?.classList.remove('hidden');
-    this.elements.widget?.classList.add('visible');
-    this.elements.widget?.setAttribute('aria-hidden', 'false');
-    this.elements.widget?.removeAttribute('inert');
+    if (this.elements.widget) {
+      this.elements.widget.classList.remove('hidden');
+      this.elements.widget.classList.add('visible');
+      this.elements.widget.style.removeProperty('display');
+      this.elements.widget.setAttribute('aria-hidden', 'false');
+      this.elements.widget.removeAttribute('inert');
+    }
     this.isOpen = true;
     this.elements.toggle?.setAttribute('aria-expanded', 'true');
     this.updateRateLimitBadge();
@@ -1433,6 +1693,10 @@ class AppleIntelligenceChatbot {
     this.stopDictation(true);
     this.hideDictationDock();
     this.setDictationStatus('');
+    if (this.isVoiceModeActive()) {
+      this.voiceMode.stopSession().catch(() => {});
+      this.updateVoiceModeOverlay('idle');
+    }
     if (this.isRealtimeVoiceActive()) {
       this.realtimeVoice.disconnect().catch(() => {});
       this.realtimeTranscriptEls = { user: null, assistant: null };
@@ -1449,10 +1713,13 @@ class AppleIntelligenceChatbot {
       this.elements.backdrop.setAttribute('aria-hidden', 'true');
       this.elements.backdrop.setAttribute('inert', '');
     }
-    this.elements.widget?.classList.remove('visible');
-    this.elements.widget?.classList.add('hidden');
-    this.elements.widget?.setAttribute('aria-hidden', 'true');
-    this.elements.widget?.setAttribute('inert', '');
+    if (this.elements.widget) {
+      this.elements.widget.classList.remove('visible');
+      this.elements.widget.classList.add('hidden');
+      this.elements.widget.style.setProperty('display', 'none', 'important');
+      this.elements.widget.setAttribute('aria-hidden', 'true');
+      this.elements.widget.setAttribute('inert', '');
+    }
     this.elements.toggle?.setAttribute('aria-expanded', 'false');
     const focusTarget =
       this.lastFocusedElement && document.contains(this.lastFocusedElement)
@@ -1706,11 +1973,21 @@ class AppleIntelligenceChatbot {
     chipEl.className = 'chat-marker agentic-action-chip';
     chipEl.dataset.kind = 'tool';
     chipEl.setAttribute('role', 'status');
-    chipEl.innerHTML = `
-            <span class="agentic-icon" aria-hidden="true">${action.icon}</span>
-            <span class="chat-marker-label agentic-label">Agent: ${action.label}</span>
-            <span class="agentic-pulse" aria-hidden="true"></span>
-        `;
+
+    const icon = document.createElement('span');
+    icon.className = 'agentic-icon';
+    icon.setAttribute('aria-hidden', 'true');
+    icon.textContent = String(action?.icon || '⚡');
+
+    const label = document.createElement('span');
+    label.className = 'chat-marker-label agentic-label';
+    label.textContent = `Agent: ${String(action?.label || 'Action')}`;
+
+    const pulse = document.createElement('span');
+    pulse.className = 'agentic-pulse';
+    pulse.setAttribute('aria-hidden', 'true');
+
+    chipEl.append(icon, label, pulse);
     this.appendToMessages(chipEl, { pin: false });
 
     // Remove after a few seconds
@@ -1749,6 +2026,11 @@ class AppleIntelligenceChatbot {
     // ChatGPT-style: tap send while generating → Stop
     if (this.isProcessing) {
       this.stopGeneration();
+      return;
+    }
+
+    if (this.isVoiceModeActive()) {
+      this.addErrorMessage('End Voice Mode before sending a typed message.');
       return;
     }
 
@@ -1891,26 +2173,15 @@ class AppleIntelligenceChatbot {
     if (!contentDiv) return;
 
     const paintGeneration = this._streamPaintGeneration ?? 0;
-    const caret = '<span class="siri-stream-caret" aria-hidden="true"></span>';
-    const useRichMarkdown = markdownService.containsMarkdown(fullText);
-    const usePlainHtml = !useRichMarkdown && fullText.length >= 48;
-
-    if (useRichMarkdown) {
-      const html = await markdownService.renderAsync(fullText);
-      if (paintGeneration !== this._streamPaintGeneration) return;
-      contentDiv.innerHTML = `${html}${caret}`;
-    } else if (usePlainHtml) {
-      if (paintGeneration !== this._streamPaintGeneration) return;
-      contentDiv.innerHTML = `${markdownService.renderPlain(fullText)}${caret}`;
-    } else {
-      if (paintGeneration !== this._streamPaintGeneration) return;
-      contentDiv.replaceChildren();
-      contentDiv.append(document.createTextNode(fullText));
-      const caretNode = document.createElement('span');
-      caretNode.className = 'siri-stream-caret';
-      caretNode.setAttribute('aria-hidden', 'true');
-      contentDiv.appendChild(caretNode);
-    }
+    // Stream with plain text only — full markdown is deferred to finalizeStreamingContent
+    // to avoid O(n²) marked re-renders on long answers (vanilla JS hot path).
+    if (paintGeneration !== this._streamPaintGeneration) return;
+    contentDiv.replaceChildren();
+    contentDiv.append(document.createTextNode(fullText));
+    const caretNode = document.createElement('span');
+    caretNode.className = 'siri-stream-caret';
+    caretNode.setAttribute('aria-hidden', 'true');
+    contentDiv.appendChild(caretNode);
 
     this.scrollEngine?.followLiveContent(this.getStreamingMessageEl(contentDiv));
   }
@@ -1939,7 +2210,7 @@ class AppleIntelligenceChatbot {
       if (!this._agenticChipShown) {
         const chipMeta = AGENTIC_CHIP_BY_ACTION[response.action] || {
           icon: '⚡',
-          label: response.action || 'Action',
+          label: String(response.action || 'Action').slice(0, 80),
         };
         this.showAgenticChip(chipMeta);
       }
@@ -2137,6 +2408,17 @@ class AppleIntelligenceChatbot {
 
       this.schedulePinToBottom();
     } catch (error) {
+      if (
+        error?.name === 'AbortError' ||
+        error?.code === 'ABORT_ERR' ||
+        (typeof DOMException !== 'undefined' &&
+          error instanceof DOMException &&
+          error.name === 'AbortError')
+      ) {
+        messageDiv?.remove();
+        this.hideTypingIndicator();
+        throw error;
+      }
       if (error?.code === 'RATE_LIMITED') {
         throw error;
       }
@@ -2666,13 +2948,19 @@ class AppleIntelligenceChatbot {
   }
 
   async handleVoiceInput(_event) {
-    // Active live session → stop
+    // Voice Mode active → interrupt (ChatGPT-style barge-in)
+    if (this.isVoiceModeActive()) {
+      await this.voiceMode.interrupt();
+      return;
+    }
+
+    // Active legacy live session → stop
     if (this.isRealtimeVoiceActive()) {
       await this.toggleRealtimeVoice();
       return;
     }
 
-    // Mic is dictation-only. Live Voice lives under + menu (not Shift+tap).
+    // Mic is dictation-only. Voice Mode lives under + menu.
     if (this.isListening || this.dictationMode === 'listening') {
       this.dictationHoldActive = false;
       this.stopDictation(false);
@@ -2726,7 +3014,7 @@ class AppleIntelligenceChatbot {
 
     btn.addEventListener('pointerdown', event => {
       if (event.button != null && event.button !== 0) return;
-      if (this.isRealtimeVoiceActive() || this.isProcessing) return;
+      if (this.isRealtimeVoiceActive() || this.isVoiceModeActive() || this.isProcessing) return;
       event.stopPropagation();
       this.dictationPointerId = event.pointerId;
       clearHoldTimer();
@@ -2834,7 +3122,7 @@ class AppleIntelligenceChatbot {
 
   // ── Composer Plus menu (InputGroup pattern) ──────────────────
 
-  togglePlusMenu() {
+  async togglePlusMenu() {
     const existing = this.elements.widget?.querySelector('.composer-plus-popover');
     if (existing) {
       this.closePlusMenu();
@@ -2842,6 +3130,14 @@ class AppleIntelligenceChatbot {
     }
 
     this.closeWritingTools();
+
+    if (this.voiceMode && !this.voiceModeAvailable) {
+      try {
+        this.voiceModeAvailable = await this.voiceMode.checkAvailability();
+      } catch {
+        this.voiceModeAvailable = false;
+      }
+    }
 
     const popover = document.createElement('div');
     popover.className = 'composer-plus-popover';
@@ -2864,12 +3160,12 @@ class AppleIntelligenceChatbot {
         label: 'Writing Tools',
         onSelect: () => this.toggleWritingTools(),
       },
-      ...(this.realtimeAvailable
+      ...(this.voiceModeAvailable
         ? [
             {
-              icon: 'fa-wave-square',
-              label: this.isRealtimeVoiceActive() ? 'Stop Live Conversation' : 'Live Conversation',
-              onSelect: () => this.toggleRealtimeVoice(),
+              icon: 'fa-headset',
+              label: this.isVoiceModeActive() ? 'End Voice Mode' : 'Voice Mode',
+              onSelect: () => this.toggleVoiceMode(),
             },
           ]
         : []),

@@ -132,7 +132,9 @@
     'body{margin:0!important;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,sans-serif!important;background:#fff!important;color:#1d1d1f!important}' +
     'html.dark body{background:#000!important;color:#f5f5f7!important}' +
     '#home,#home .hero-text-block,#home .hero-header,#home-heading,#home .hero-name-text{opacity:1!important;visibility:visible!important;transform:none!important;animation:none!important;transition:none!important;filter:none!important}' +
-    '#home{padding:5rem 1.25rem 2rem!important;min-height:70vh!important}' +
+    /* Nav is hidden in audit mode — do not reserve island padding (avoids CLS vs critical CSS) */
+    '#main-content{padding-top:0!important}' +
+    '#home,#home.hero-section,#home.home-hero{padding:5rem 1.25rem 2rem!important;min-height:70vh!important;justify-content:flex-start!important;align-items:center!important;display:flex!important;flex-direction:column!important;box-sizing:border-box!important}' +
     '#home-heading,#home .hero-name-text{font-size:clamp(2.2rem,8vw,4.5rem)!important;font-weight:700!important;line-height:1.05!important;letter-spacing:-0.03em!important;margin:0!important}' +
     /* Solid hero paint for LCP — transparent gradient fill is not a valid LCP text node */
     '#home .hero-name-text{-webkit-text-fill-color:#0071e3!important;color:#0071e3!important;background:none!important;background-image:none!important;font-display:swap!important}' +

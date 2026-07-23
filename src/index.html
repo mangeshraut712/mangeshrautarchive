@@ -436,7 +436,14 @@
     }
 
     #chatbot-widget.hidden {
-      display: none;
+      display: none !important;
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+    }
+
+    #chatbot-backdrop.hidden {
+      display: none !important;
     }
 
     @media (width <=768px) {
@@ -487,6 +494,11 @@
     }
 
     /* Keep in sync with scripts/build/build.js heroLcpLock + homepage.css */
+    #main-content {
+      padding-top: calc(52px + env(safe-area-inset-top, 0px) + 16px);
+      box-sizing: border-box;
+    }
+
     #home.hero-section,
     #home.home-hero {
       padding-top: 20px;

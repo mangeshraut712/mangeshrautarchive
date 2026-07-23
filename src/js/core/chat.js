@@ -489,7 +489,7 @@ class IntelligentAssistant {
         },
         body: JSON.stringify({
           message: safeQuery,
-          messages: this._getConversationForServer(),
+          messages: this._getConversationForServer({ excludeTrailingUser: true }),
           context: options.context || {},
           session_id: options.session_id || this.sessionId || getOrCreateSessionId(),
           stream: isStreaming,
@@ -722,16 +722,23 @@ class IntelligentAssistant {
     return '';
   }
 
-  _getConversationForServer() {
-    return this.conversation.slice(-MAX_SERVER_HISTORY_MESSAGES).reduce((entries, entry) => {
+  _getConversationForServer({ excludeTrailingUser = false } = {}) {
+    const entries = this.conversation.slice(-MAX_SERVER_HISTORY_MESSAGES).reduce((acc, entry) => {
       const content = this._sanitizeMessageForServer(entry.content);
-      if (!content) return entries;
-      entries.push({
+      if (!content) return acc;
+      acc.push({
         role: entry.role === 'assistant' ? 'assistant' : 'user',
         content,
       });
-      return entries;
+      return acc;
     }, []);
+
+    // Server appends the current `message` as the user turn — drop the client
+    // copy already pushed into conversation to avoid duplicate user context.
+    if (excludeTrailingUser && entries.length && entries[entries.length - 1].role === 'user') {
+      entries.pop();
+    }
+    return entries;
   }
 
   _sanitizeMessageForServer(content) {

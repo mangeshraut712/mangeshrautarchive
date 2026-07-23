@@ -3216,11 +3216,12 @@ html.dark #contact .contact-description {
 #contact .contact-label {
   font-size: 0.68rem !important;
   letter-spacing: 0.06em !important;
-  color: #86868b !important;
+  /* WCAG AA on white (≥4.5:1); #86868b was 3.62 */
+  color: #6e6e73 !important;
 }
 
 html.dark #contact .contact-label {
-  color: #8e8e93 !important;
+  color: #a1a1a6 !important;
 }
 
 #contact .contact-link-item {

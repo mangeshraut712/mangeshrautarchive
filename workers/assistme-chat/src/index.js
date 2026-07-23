@@ -58,7 +58,7 @@ You are the site search + knowledge layer for this portfolio: prefer precise ans
 ## Rich media (Telegram-style, free)
 - Charts: use a \`\`\`chart JSON fence with type/labels/values.
 - Images: markdown \`![alt](https://image.pollinations.ai/prompt/...?width=768&height=768&nologo=true)\` (free). OpenRouter image generation is paid — do not claim Flux/Grok images.
-- Speech: suggest the chat Read Aloud control (OpenRouter TTS is not free).
+- Speech: use AssistMe Voice Mode (+ → Voice Mode) with OpenRouter TTS when configured; otherwise Read Aloud.
 
 ## Portfolio facts (prefer these when relevant)
 - Software Engineer at Customized Energy Solutions (Philadelphia) — energy analytics, microservices, AWS, Java/Spring, Python.
@@ -219,6 +219,135 @@ async function callOpenRouter(apiKey, model, messages, stream, env) {
       max_tokens: 1800,
     }),
   });
+}
+
+/** Best-effort per-isolate TTS throttle (mirrors FastAPI ~40/min). */
+const TTS_RATE_WINDOW_MS = 60_000;
+const TTS_RATE_MAX = 40;
+const ttsRateBuckets = new Map();
+
+function clientIpFromRequest(request) {
+  const cf = request.headers.get('CF-Connecting-IP');
+  if (cf) return cf.trim();
+  const xff = request.headers.get('X-Forwarded-For');
+  if (xff) return xff.split(',')[0].trim();
+  return 'unknown';
+}
+
+function enforceTtsRateLimit(request) {
+  const ip = clientIpFromRequest(request);
+  const now = Date.now();
+  let bucket = ttsRateBuckets.get(ip);
+  if (!bucket || now >= bucket.resetAt) {
+    bucket = { count: 0, resetAt: now + TTS_RATE_WINDOW_MS };
+    ttsRateBuckets.set(ip, bucket);
+  }
+  bucket.count += 1;
+  if (bucket.count > TTS_RATE_MAX) {
+    return false;
+  }
+  // Opportunistic prune
+  if (ttsRateBuckets.size > 2000) {
+    for (const [key, value] of ttsRateBuckets) {
+      if (now >= value.resetAt) ttsRateBuckets.delete(key);
+    }
+  }
+  return true;
+}
+
+async function handleTts(request, env, cors) {
+  if (!enforceTtsRateLimit(request)) {
+    return json(
+      {
+        success: false,
+        error: 'TTS rate limit exceeded. Please try again later.',
+      },
+      429,
+      cors
+    );
+  }
+
+  const apiKey = (env.OPENROUTER_API_KEY || '').trim();
+  if (!apiKey) {
+    return json(
+      {
+        success: false,
+        available: false,
+        error: 'OPENROUTER_API_KEY is not configured',
+        fallback: 'browser-speechSynthesis',
+      },
+      503,
+      cors
+    );
+  }
+
+  let body;
+  try {
+    body = await request.json();
+  } catch {
+    return json({ error: 'Invalid JSON body' }, 400, cors);
+  }
+
+  const text = String(body?.text || '')
+    .replace(/\*\*/g, '')
+    .replace(/https?:\/\/\S+/gi, 'link')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .slice(0, 2000);
+  if (!text) {
+    return json({ error: 'Text is required' }, 400, cors);
+  }
+
+  // Public surface: pin model/voice to env (ignore client overrides).
+  const model = String(env.OPENROUTER_TTS_MODEL || 'x-ai/grok-voice-tts-1.0').trim();
+  const voice = String(env.OPENROUTER_TTS_VOICE || 'eve').trim();
+  const responseFormat = body?.response_format === 'pcm' ? 'pcm' : 'mp3';
+  const speed =
+    typeof body?.speed === 'number' && body.speed >= 0.5 && body.speed <= 2.0 ? body.speed : 1;
+
+  const upstream = await fetch('https://openrouter.ai/api/v1/audio/speech', {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+      'Content-Type': 'application/json',
+      'HTTP-Referer':
+        env.OPENROUTER_SITE_URL || 'https://mangeshraut712.github.io/mangeshrautarchive',
+      'X-Title': env.OPENROUTER_SITE_TITLE || 'AssistMe Cloudflare Edge',
+    },
+    body: JSON.stringify({
+      model,
+      input: text,
+      voice,
+      response_format: responseFormat,
+      speed,
+    }),
+  });
+
+  if (!upstream.ok) {
+    const detail = await upstream.text();
+    const status = upstream.status === 402 || upstream.status === 429 ? upstream.status : 502;
+    return json(
+      {
+        success: false,
+        error: `OpenRouter TTS failed (${upstream.status})`,
+        upstream: detail.slice(0, 400),
+        fallback: 'browser-speechSynthesis',
+      },
+      status,
+      cors
+    );
+  }
+
+  const audio = await upstream.arrayBuffer();
+  const headers = new Headers(cors);
+  headers.set('Content-Type', responseFormat === 'pcm' ? 'audio/pcm' : 'audio/mpeg');
+  headers.set('Cache-Control', 'no-store');
+  headers.set('X-TTS-Provider', 'openrouter');
+  headers.set('X-TTS-Model', model);
+  headers.set('X-TTS-Voice', voice);
+  const generationId = upstream.headers.get('X-Generation-Id');
+  if (generationId) headers.set('X-Generation-Id', generationId);
+  return new Response(audio, { status: 200, headers });
 }
 
 function streamLocal(answer, cors, meta = {}) {
@@ -905,6 +1034,30 @@ const worker = {
       );
     }
 
+    if (request.method === 'GET' && (path === '/api/tts/health' || path === '/api/tts/status')) {
+      const key = (env.OPENROUTER_API_KEY || '').trim();
+      return json(
+        {
+          success: true,
+          available: Boolean(key),
+          provider: 'openrouter',
+          mode: 'modular-stt-llm-tts',
+          host: 'cloudflare-worker',
+          model: key ? env.OPENROUTER_TTS_MODEL || 'x-ai/grok-voice-tts-1.0' : null,
+          voice: key ? env.OPENROUTER_TTS_VOICE || 'eve' : null,
+          message: key
+            ? 'OpenRouter TTS ready for AssistMe Voice Mode.'
+            : 'Set OPENROUTER_API_KEY to enable neural Voice Mode TTS.',
+        },
+        200,
+        cors
+      );
+    }
+
+    if (request.method === 'POST' && (path === '/api/tts' || path === '/api/tts/synthesize')) {
+      return handleTts(request, env, cors);
+    }
+
     // Monitor surface (Cloudflare-primary for GitHub Pages)
     if (
       (request.method === 'GET' || request.method === 'POST') &&
@@ -1013,6 +1166,8 @@ const worker = {
             'GET /api/health',
             'GET /api/chat/health',
             'POST /api/chat',
+            'GET /api/tts/health',
+            'POST /api/tts',
             'GET /api/github/repos/public',
             'GET /api/github/proxy',
             'GET /api/music/recent',

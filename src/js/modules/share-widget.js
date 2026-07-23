@@ -82,7 +82,7 @@ function repairShareToggle() {
 }
 
 const createShareMarkup = () => `
-  <div id="website-share-dialog" class="website-share-dialog" role="dialog" aria-modal="true" aria-labelledby="website-share-title" aria-hidden="true" tabindex="-1">
+  <div id="website-share-dialog" class="website-share-dialog hidden" role="dialog" aria-modal="true" aria-labelledby="website-share-title" aria-hidden="true" tabindex="-1" style="display:none">
     <div class="website-share-backdrop" data-share-close></div>
     <div class="website-share-card" aria-describedby="website-share-description">
       <div class="website-share-card-top">

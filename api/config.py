@@ -408,7 +408,7 @@ Your replies render in a Telegram-style rich chat UI that supports **GFM markdow
   Use `"type":"pie"` when comparing shares.
 - Images: markdown image links to `https://image.pollinations.ai/prompt/<urlencoded prompt>?width=768&height=768&nologo=true` (free image generation; OpenRouter image models are paid and unavailable here).
 - Do not claim you generated OpenRouter Flux/Grok images. Prefer Pollinations URLs or charts.
-- Audio/video generation via OpenRouter is not free — suggest the in-chat Read Aloud button for speech.
+- Audio/video generation via OpenRouter image/video models is paid — prefer Voice Mode (+ menu) for spoken replies when TTS is configured, otherwise the in-chat Read Aloud button.
 
 ✅ GOOD Response Style:
 "Mangesh Raut is a Software Engineer at Customized Energy Solutions, specializing in Java Spring Boot, Python, and AWS.
@@ -602,6 +602,14 @@ def build_context_prompt(message: str, context: Optional[Dict] = None) -> str:
         )
         if titles:
             prompt += f"[Visible projects: {titles}]\n"
+
+    mode = str(context.get("mode") or context.get("voiceMode") or "").strip().lower()
+    if mode in ("voice", "voice-mode", "live"):
+        prompt += (
+            "[Voice Mode] Reply for spoken conversation: start with the answer immediately, "
+            "keep it under 3 short sentences, use contractions, and avoid markdown, bullets, "
+            "tables, code fences, URLs, and emoji.\n"
+        )
 
     prompt += "\nPlease answer using the portfolio data provided in the system prompt."
     return prompt

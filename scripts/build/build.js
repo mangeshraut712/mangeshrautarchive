@@ -306,6 +306,7 @@ async function bundleAboveFoldCss(distDir) {
   // Inject lean critical CSS. Defer the premium bundle outside Lighthouse / perf-audit.
   // Hero/nav metrics must match homepage.css + index critical styles (same first paint → no CLS).
   const heroLcpLock =
+    '#main-content{padding-top:calc(52px + env(safe-area-inset-top,0px) + 16px);box-sizing:border-box}' +
     '#home,#home .hero-text-block,#home .hero-header,#home-heading,#home .hero-name-text{opacity:1!important;visibility:visible!important;transform:none!important;animation:none!important;transition:none!important}' +
     '#home,#home.hero-section,#home.home-hero{padding:20px 1.25rem;min-height:clamp(380px,58vh,680px);display:flex;align-items:center;justify-content:flex-start;box-sizing:border-box}' +
     '#home>.container-fluid{width:100%;min-height:clamp(340px,52vh,620px);box-sizing:border-box}' +

@@ -896,6 +896,18 @@ function bindInteractionModuleLoader(
         setTimeout(() => {
           requestAnimationFrame(() => {
             delete element.dataset.lazyReplayScheduled;
+            // AssistMe: open directly. Replaying click() bubbles to the document
+            // outside-click handler and can flash open→close on first launch.
+            if (
+              elementId === 'chatbot-toggle' &&
+              window.appleIntelligenceChatbot &&
+              typeof window.appleIntelligenceChatbot.openWidget === 'function'
+            ) {
+              if (!window.appleIntelligenceChatbot.isOpen) {
+                window.appleIntelligenceChatbot.openWidget();
+              }
+              return;
+            }
             element.click();
           });
         }, 100);

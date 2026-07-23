@@ -32,7 +32,15 @@
     border: 1px solid #e5e5ea !important;
   }
 
+  #chatbot-widget.hidden {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+  }
+
   #chatbot-widget.visible {
+    display: flex !important;
     background: #ffffff !important;
     background-color: #ffffff !important;
     backdrop-filter: none !important;

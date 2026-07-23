@@ -6,9 +6,34 @@
 import { sitePath } from '../utils/site-base.js';
 
 const ASSISTANT_CSS = [
-  '/assets/css/ai-assistant.css?v=20260718glass2',
-  '/assets/css/ai-assistant-mobile.css?v=20260718chat',
+  '/assets/css/ai-assistant.css?v=20260722hide1',
+  '/assets/css/ai-assistant-mobile.css?v=20260722hide1',
 ];
+
+const CRITICAL_HIDE_STYLE_ID = 'assistme-critical-hide';
+
+function ensureCriticalHideStyles() {
+  if (document.getElementById(CRITICAL_HIDE_STYLE_ID)) return;
+  const style = document.createElement('style');
+  style.id = CRITICAL_HIDE_STYLE_ID;
+  // Sync hide BEFORE the widget enters the DOM — subpages lack homepage critical CSS,
+  // so an unstyled #chatbot-widget flashes open until ai-assistant.css arrives.
+  style.textContent = `
+    #chatbot-widget.hidden,
+    #chatbot-backdrop.hidden {
+      display: none !important;
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+    }
+    #go-to-top:not(.visible) {
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+    }
+  `;
+  document.head.appendChild(style);
+}
 
 function ensureStylesheet(href) {
   const resolved = href.startsWith('/') ? sitePath(href) : href;
@@ -24,6 +49,7 @@ function ensureStylesheet(href) {
 }
 
 function ensureAssistMeStyles() {
+  ensureCriticalHideStyles();
   ASSISTANT_CSS.forEach(ensureStylesheet);
 }
 
@@ -34,12 +60,27 @@ function ensureGoToTopButton() {
   button.type = 'button';
   button.setAttribute('aria-label', 'Go to top');
   button.title = 'Go to top';
+  button.setAttribute('aria-hidden', 'true');
+  button.tabIndex = -1;
   button.innerHTML = '<i class="fas fa-arrow-up" aria-hidden="true"></i>';
   document.body.appendChild(button);
 }
 
+function markChromeClosed(el) {
+  if (!el) return;
+  el.classList.add('hidden');
+  el.classList.remove('visible', 'active');
+  el.setAttribute('aria-hidden', 'true');
+  el.setAttribute('inert', '');
+  el.style.setProperty('display', 'none', 'important');
+}
+
 function ensureChatbotChrome() {
+  ensureCriticalHideStyles();
+
   if (document.getElementById('chatbot-toggle') && document.getElementById('chatbot-widget')) {
+    markChromeClosed(document.getElementById('chatbot-widget'));
+    markChromeClosed(document.getElementById('chatbot-backdrop'));
     return;
   }
 
@@ -65,15 +106,10 @@ function ensureChatbotChrome() {
     const backdrop = document.createElement('div');
     backdrop.id = 'chatbot-backdrop';
     backdrop.className = 'chatbot-backdrop hidden';
-    backdrop.setAttribute('aria-hidden', 'true');
-    backdrop.setAttribute('inert', '');
+    markChromeClosed(backdrop);
     document.body.appendChild(backdrop);
   } else {
-    const existingBackdrop = document.getElementById('chatbot-backdrop');
-    if (existingBackdrop?.classList.contains('hidden')) {
-      existingBackdrop.setAttribute('aria-hidden', 'true');
-      existingBackdrop.setAttribute('inert', '');
-    }
+    markChromeClosed(document.getElementById('chatbot-backdrop'));
   }
 
   if (!document.getElementById('chatbot-widget')) {
@@ -82,10 +118,9 @@ function ensureChatbotChrome() {
     widget.className = 'hidden';
     widget.setAttribute('role', 'dialog');
     widget.setAttribute('aria-modal', 'true');
-    widget.setAttribute('aria-hidden', 'true');
-    widget.setAttribute('inert', '');
     widget.setAttribute('aria-label', 'Apple Intelligence chat window');
     widget.tabIndex = -1;
+    markChromeClosed(widget);
     widget.innerHTML = `
       <div class="chatbot-header">
         <div class="chatbot-header-brand">
@@ -162,11 +197,7 @@ function ensureChatbotChrome() {
     `;
     document.body.appendChild(widget);
   } else {
-    const existingWidget = document.getElementById('chatbot-widget');
-    if (existingWidget?.classList.contains('hidden')) {
-      existingWidget.setAttribute('aria-hidden', 'true');
-      existingWidget.setAttribute('inert', '');
-    }
+    markChromeClosed(document.getElementById('chatbot-widget'));
   }
 }
 
@@ -194,14 +225,13 @@ function bindLazyChatbot() {
 
       try {
         const mod = await import('../modules/chatbot.js');
-        mod.initAppleIntelligenceChatbot?.();
-        // Replay so the freshly bound handler opens the panel.
-        requestAnimationFrame(() => {
-          setTimeout(() => {
-            loading = false;
-            toggle.click();
-          }, 80);
-        });
+        const bot = mod.initAppleIntelligenceChatbot?.();
+        // Open directly — do NOT replay toggle.click(). A synthetic click bubbles to the
+        // document outside-click closer and can open-then-immediately-close the panel.
+        loading = false;
+        if (bot && !bot.isOpen) {
+          bot.openWidget();
+        }
       } catch (_error) {
         loading = false;
       }
@@ -211,6 +241,7 @@ function bindLazyChatbot() {
 }
 
 async function initAssistMeChrome() {
+  ensureCriticalHideStyles();
   ensureGoToTopButton();
   ensureChatbotChrome();
   ensureAssistMeStyles();

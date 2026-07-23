@@ -22,6 +22,7 @@ class StreamingService extends EventTarget {
   constructor() {
     super();
     this._activeController = null;
+    this._handlerWrappers = new WeakMap();
   }
 
   // ─────────────────────────────────────────────
@@ -233,12 +234,23 @@ class StreamingService extends EventTarget {
    * @param {(detail: any) => void} handler
    */
   on(event, handler) {
-    this.addEventListener(event, e => handler(e.detail));
+    if (typeof handler !== 'function') return this;
+    let wrapper = this._handlerWrappers.get(handler);
+    if (!wrapper) {
+      wrapper = e => handler(e.detail);
+      this._handlerWrappers.set(handler, wrapper);
+    }
+    this.addEventListener(event, wrapper);
     return this; // chainable
   }
 
   off(event, handler) {
-    this.removeEventListener(event, handler);
+    if (typeof handler !== 'function') return this;
+    const wrapper = this._handlerWrappers.get(handler);
+    if (wrapper) {
+      this.removeEventListener(event, wrapper);
+      this._handlerWrappers.delete(handler);
+    }
     return this;
   }
 }

@@ -27,6 +27,7 @@ from api.routes import (
     personalization,
     integrations,
     realtime,
+    tts,
 )
 
 # Load environment variables (.env.local overrides .env).
@@ -153,6 +154,7 @@ app.include_router(general.router)
 app.include_router(personalization.router)
 app.include_router(integrations.router)
 app.include_router(realtime.router)
+app.include_router(tts.router)
 
 
 # Global exception handlers
