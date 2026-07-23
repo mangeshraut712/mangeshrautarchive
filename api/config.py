@@ -611,7 +611,13 @@ def build_context_prompt(message: str, context: Optional[Dict] = None) -> str:
             "tables, code fences, URLs, and emoji.\n"
         )
 
-    prompt += "\nPlease answer using the portfolio data provided in the system prompt."
+    prompt += (
+        "\nYou are an intelligent, multimodal AI assistant (powered by OpenRouter & Web Search). "
+        "For questions regarding Mangesh Raut's portfolio (skills, experience, projects, education, contact, systems), "
+        "answer accurately using the provided portfolio data. "
+        "For general world knowledge, current events, science, technology, math, code, or general queries, "
+        "provide direct, helpful, and accurate answers using your full knowledge base and web search capabilities."
+    )
     return prompt
 
 

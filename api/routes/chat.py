@@ -270,6 +270,19 @@ def generate_local_response(query: str, site_context: str = "") -> Dict:
             "category": "Achievements",
         }
 
+    # General World Knowledge & Trivia (e.g. Prime Minister of India, Capitals, Science)
+    if "prime minister" in query and "india" in query:
+        return {
+            "answer": "🇮🇳 The Prime Minister of India is **Narendra Modi**, serving as the 14th Prime Minister of India since May 2014.",
+            "category": "General Knowledge",
+        }
+
+    if "president" in query and "united states" in query or "president of us" in query:
+        return {
+            "answer": "🇺🇸 The President of the United States is **Joe Biden** (46th President).",
+            "category": "General Knowledge",
+        }
+
     # Astrology (public high-level only — no private PII)
     if any(k in query for k in ["horoscope", "astrology", "birth chart", "vedic"]):
         return {
