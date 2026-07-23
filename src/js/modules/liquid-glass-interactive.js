@@ -25,6 +25,18 @@ const INTERACTIVE_SELECTOR = [
   '.blog-card',
   '.currently-card',
   '.stat-card',
+  '.systems-card',
+  '.systems-evidence-card',
+  '.systems-metric-card',
+  '.systems-arch-stage',
+  '.monitor-card',
+  '.monitor-metric-tile',
+  '.travel-card',
+  '.travel-stat-chip',
+  '.travel-grid-card',
+  '.uses-card',
+  '.uses-item-card',
+  '.error-card',
 ].join(', ');
 
 const POINTER_VARS = {

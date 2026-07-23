@@ -3263,7 +3263,19 @@ html.dark[data-lg-mode='tinted']
 .award-card.lg-interactive,
 .blog-card.lg-interactive,
 .currently-card.lg-interactive,
-.stat-card.lg-interactive {
+.stat-card.lg-interactive,
+.systems-card.lg-interactive,
+.systems-evidence-card.lg-interactive,
+.systems-metric-card.lg-interactive,
+.systems-arch-stage.lg-interactive,
+.monitor-card.lg-interactive,
+.monitor-metric-tile.lg-interactive,
+.travel-card.lg-interactive,
+.travel-stat-chip.lg-interactive,
+.travel-grid-card.lg-interactive,
+.uses-card.lg-interactive,
+.uses-item-card.lg-interactive,
+.error-card.lg-interactive {
   overflow: hidden;
 }
 
