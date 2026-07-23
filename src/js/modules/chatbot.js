@@ -1890,32 +1890,6 @@ class AppleIntelligenceChatbot {
     );
   }
 
-  getCurrentPageTitle() {
-    const hash = window.location.hash || '#home';
-    const pathname = window.location.pathname || '';
-
-    if (pathname.includes('systems.html')) return 'Systems Engine';
-    if (pathname.includes('monitor.html')) return 'Live Monitor';
-    if (pathname.includes('travel.html')) return 'Travel Atlas';
-    if (pathname.includes('uses.html')) return 'Tech Stack & Uses';
-    if (pathname.includes('404.html')) return 'Error 404 Page';
-
-    const map = {
-      '#home': 'Homepage',
-      '#about': 'About Mangesh',
-      '#skills': 'Technical Skills',
-      '#experience': 'Experience',
-      '#projects': 'Projects Showcase',
-      '#education': 'Education',
-      '#publications': 'Publications',
-      '#awards': 'Honors & Awards',
-      '#blog': 'Engineering Insights',
-      '#contact': 'Get In Touch',
-      '#game': 'Agent Simulation Game',
-    };
-    return map[hash] || 'Portfolio Home';
-  }
-
   addWelcomeMessage() {
     if (this._hasPendingWelcome || !this.shouldShowWelcomeMessage()) return;
     this._hasPendingWelcome = true;
@@ -1926,13 +1900,9 @@ class AppleIntelligenceChatbot {
         const welcomeDiv = document.createElement('div');
         welcomeDiv.className =
           'message assistant-message welcome-message welcome-message-simplified';
-        const pageTitle = this.getCurrentPageTitle();
         welcomeDiv.innerHTML = `
                     <div class="message-content">
-                        <div class="welcome-header-row">
-                          <div class="welcome-title">Welcome to AssistMe</div>
-                          <div class="chatbot-context-chip"><span class="context-chip-dot"></span> Viewing: ${pageTitle}</div>
-                        </div>
+                        <div class="welcome-title">Welcome to AssistMe</div>
                         <div class="welcome-subtitle">Ask about projects, skills, experience, or contact — or use + for tools.</div>
                         <div class="welcome-chips"></div>
                     </div>
