@@ -1863,3 +1863,56 @@ html.dark #chatbot-widget .input-wrapper:focus-within {
   opacity: 0 !important;
   pointer-events: none !important;
 }
+
+/* 5. Multimodal Attachment Previews & Voice Siri Orb Glow */
+.chat-attachment-preview {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.6rem !important;
+  padding: 0.4rem 0.75rem !important;
+  margin-bottom: 0.5rem !important;
+  background: rgba(0, 113, 227, 0.06) !important;
+  border: 1px solid rgba(0, 113, 227, 0.16) !important;
+  border-radius: 14px !important;
+}
+
+html.dark .chat-attachment-preview {
+  background: rgba(41, 151, 255, 0.1) !important;
+  border-color: rgba(41, 151, 255, 0.22) !important;
+}
+
+.chat-attachment-thumb {
+  width: 36px !important;
+  height: 36px !important;
+  object-fit: cover !important;
+  border-radius: 8px !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Apple Siri Voice Orb Animations */
+.voice-orb-glow {
+  width: 84px !important;
+  height: 84px !important;
+  border-radius: 50% !important;
+  background: radial-gradient(circle at 35% 35%, #64d2ff 0%, #0071e3 50%, #bf5af2 100%) !important;
+  box-shadow:
+    0 0 35px rgba(0, 113, 227, 0.45),
+    inset 0 0 15px rgba(255, 255, 255, 0.5) !important;
+  animation: voiceOrbPulse 2.4s infinite ease-in-out !important;
+}
+
+@keyframes voiceOrbPulse {
+  0%,
+  100% {
+    transform: scale(1);
+    box-shadow:
+      0 0 35px rgba(0, 113, 227, 0.45),
+      inset 0 0 15px rgba(255, 255, 255, 0.5);
+  }
+  50% {
+    transform: scale(1.08);
+    box-shadow:
+      0 0 50px rgba(191, 90, 242, 0.6),
+      inset 0 0 22px rgba(255, 255, 255, 0.7);
+  }
+}

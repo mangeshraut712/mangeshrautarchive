@@ -1922,9 +1922,13 @@ class AppleIntelligenceChatbot {
         const welcomeDiv = document.createElement('div');
         welcomeDiv.className =
           'message assistant-message welcome-message welcome-message-simplified';
+        const pageTitle = this.getCurrentPageTitle();
         welcomeDiv.innerHTML = `
                     <div class="message-content">
-                        <div class="welcome-title">Welcome to AssistMe</div>
+                        <div class="welcome-header-row">
+                          <div class="welcome-title">Welcome to AssistMe</div>
+                          <div class="chatbot-context-chip"><span class="context-chip-dot"></span> Viewing: ${pageTitle}</div>
+                        </div>
                         <div class="welcome-subtitle">Ask about projects, skills, experience, or contact — or use + for tools.</div>
                         <div class="welcome-chips"></div>
                     </div>
