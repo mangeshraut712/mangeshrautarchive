@@ -200,8 +200,8 @@ async def github_api_proxy(request: Request, path: Optional[str] = None):
 async def github_repos_proxy(
     username: str = "mangeshraut712",
     sort: str = "updated",
-    limit: int = 20,
-    no_forks: bool = True,
+    limit: int = 100,
+    no_forks: bool = False,
 ):
     """
     Browser-safe proxy for GitHub repos.

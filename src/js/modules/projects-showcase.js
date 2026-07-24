@@ -190,16 +190,9 @@ function revealRenderedProjectCards(container) {
 }
 
 function formatActivityCaption(totals) {
-  const parts = [];
-  if (totals.activeRepos > 0) parts.push(`${totals.activeRepos} active`);
-  if (totals.totalStars > 0) parts.push(`${formatCompactNumber(totals.totalStars)} stars`);
-  if (totals.totalForks > 0) parts.push(`${formatCompactNumber(totals.totalForks)} forks`);
-  if (totals.totalContributors > 0) {
-    parts.push(`${formatCompactNumber(totals.totalContributors)} contributors`);
-  }
-
-  if (parts.length > 0) {
-    return `${parts.join(' · ')} across showcase repositories.`;
+  const repoCount = Number(totals.publicRepos || 0);
+  if (repoCount > 0) {
+    return `Live public catalog from github.com/mangeshraut712 — ${repoCount} repositories with release and activity signals.`;
   }
 
   if (totals.activityRepos > 0) {
@@ -270,6 +263,9 @@ function updateActivityStats(allRepos, visibleRepos = [], githubProjects = null)
 
       const activity = repo.__activity;
       const commits30d = toFiniteMetric(activity?.commits30d);
+      const contributorLogins = Array.isArray(activity?.contributorLogins)
+        ? activity.contributorLogins
+        : [];
       const contributors = toFiniteMetric(activity?.contributors);
       const hasLiveActivity =
         activity && activity.unavailable !== true && (commits30d !== null || contributors !== null);
@@ -277,8 +273,14 @@ function updateActivityStats(allRepos, visibleRepos = [], githubProjects = null)
       if (hasLiveActivity) {
         acc.activityRepos += 1;
         acc.totalCommits30d += commits30d ?? 0;
-        acc.totalContributors += contributors ?? 0;
       }
+
+      contributorLogins.forEach(login => {
+        const key = String(login || '')
+          .trim()
+          .toLowerCase();
+        if (key) acc.contributorIds.add(key);
+      });
 
       const releaseSignal =
         githubProjects && typeof githubProjects.getReleaseSignal === 'function'
@@ -301,10 +303,11 @@ function updateActivityStats(allRepos, visibleRepos = [], githubProjects = null)
       return acc;
     },
     {
+      publicRepos: source.length,
       totalStars: 0,
       totalForks: 0,
       totalCommits30d: 0,
-      totalContributors: 0,
+      contributorIds: new Set(),
       activityRepos: 0,
       releaseCheckedRepos: 0,
       activeRepos: 0,
@@ -312,6 +315,8 @@ function updateActivityStats(allRepos, visibleRepos = [], githubProjects = null)
       latestUpdate: 0,
     }
   );
+
+  const uniqueContributors = totals.contributorIds.size;
 
   setStatItem('stat-repos', source.length, { hideWhenEmpty: false });
   setStatItem('stat-stars', formatCompactNumber(totals.totalStars), { hideWhenEmpty: false });
@@ -322,7 +327,7 @@ function updateActivityStats(allRepos, visibleRepos = [], githubProjects = null)
   );
   setStatItem(
     'stat-contributors',
-    totals.activityRepos ? formatCompactNumber(totals.totalContributors) : '--'
+    uniqueContributors > 0 ? formatCompactNumber(uniqueContributors) : '--'
   );
   setStatItem(
     'stat-active-repos',
@@ -333,7 +338,7 @@ function updateActivityStats(allRepos, visibleRepos = [], githubProjects = null)
   const captionEl = document.getElementById('projects-activity-caption');
   if (!captionEl) return;
 
-  if (totals.activityRepos > 0 || totals.activeRepos > 0 || totals.releaseCheckedRepos > 0) {
+  if (source.length > 0) {
     captionEl.textContent = formatActivityCaption(totals);
     return;
   }
@@ -570,7 +575,7 @@ export async function initProjectShowcase({ username = DEFAULT_USERNAME } = {}) 
       }));
 
       const allReposByFullName = new Map(allRepos.map(repo => [repoKey(repo), repo]));
-      allShowcaseRepos = githubProjects.getShowcaseRepos(allRepos, 60).map((repo, index) => {
+      allShowcaseRepos = githubProjects.getShowcaseRepos(allRepos, 100).map((repo, index) => {
         const baseRepo = allReposByFullName.get(repoKey(repo)) || repo;
         baseRepo.__showcase = repo.__showcase || baseRepo.__showcase;
         baseRepo.originalIndex = index;
@@ -591,7 +596,7 @@ export async function initProjectShowcase({ username = DEFAULT_USERNAME } = {}) 
     const expandWrap = document.getElementById('projects-expand-wrap');
     const expandBtn = document.getElementById('projects-expand-btn');
     let activeLens = DEFAULT_PROJECT_LENS;
-    let showAllProjects = false;
+    let showAllProjects = true;
     let didInitialRealign = false;
 
     const getCurrentQuery = () => String(searchInput?.value || '').trim();
@@ -743,11 +748,8 @@ export async function initProjectShowcase({ username = DEFAULT_USERNAME } = {}) 
     };
 
     const queueTopActivityHydration = () => {
-      const topReposForActivity = allShowcaseRepos
-        .toSorted(createSortComparator('popularity', githubProjects))
-        .slice(0, 8);
-
-      queueActivityHydration(topReposForActivity);
+      // Hydrate the full public catalog so Operating View commits/contributors stay accurate.
+      queueActivityHydration(allShowcaseRepos);
     };
 
     const realignProjectsSection = () => {
