@@ -69,7 +69,7 @@ class GitHubProjects {
 
     this.activityCacheDuration = 15 * 60 * 1000;
     this.activityStoragePrefix = `github_repo_activity_${username}_`;
-    this.activitySchemaVersion = 4;
+    this.activitySchemaVersion = 5;
     this.repoActivityCache = new Map();
 
     this.featuredProjectOrder = [
@@ -1872,6 +1872,13 @@ class GitHubProjects {
         const pageCount = this.getLastPageFromLink(contributorsMeta.link);
         contributorCount = pageCount || contributorsPayload.length;
         contributorLogins = contributorsPayload
+          .filter(entry => {
+            const type = String(entry?.type || '').toLowerCase();
+            const login = String(entry?.login || '').toLowerCase();
+            if (type === 'bot') return false;
+            if (login.endsWith('[bot]') || login.includes('bot]')) return false;
+            return true;
+          })
           .map(entry => String(entry?.login || entry?.name || '').trim())
           .filter(Boolean);
       }

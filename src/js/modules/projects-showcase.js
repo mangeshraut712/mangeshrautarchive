@@ -275,12 +275,17 @@ function updateActivityStats(allRepos, visibleRepos = [], githubProjects = null)
         acc.totalCommits30d += commits30d ?? 0;
       }
 
-      contributorLogins.forEach(login => {
-        const key = String(login || '')
-          .trim()
-          .toLowerCase();
-        if (key) acc.contributorIds.add(key);
-      });
+      // Unique humans on owned repos only — skip forks (upstream authors) and bots.
+      if (!repo.fork) {
+        contributorLogins.forEach(login => {
+          const key = String(login || '')
+            .trim()
+            .toLowerCase();
+          if (!key) return;
+          if (key.endsWith('[bot]') || key.includes('bot]')) return;
+          acc.contributorIds.add(key);
+        });
+      }
 
       const releaseSignal =
         githubProjects && typeof githubProjects.getReleaseSignal === 'function'
