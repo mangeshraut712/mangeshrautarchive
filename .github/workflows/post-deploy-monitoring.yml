@@ -148,10 +148,12 @@ jobs:
         run: |
           set -euo pipefail
           # Prime CDN/edge caches so live Lighthouse is less sensitive to cold starts.
-          for _ in 1 2 3; do
-            curl -fsS --max-time 20 "${{ env.GH_PAGES_BASE }}/" >/dev/null
-            sleep 2
-          done
+          curl -fsS --max-time 20 "${{ env.GH_PAGES_BASE }}/" >/dev/null
+          sleep 2
+          curl -fsS --max-time 20 "${{ env.GH_PAGES_BASE }}/" >/dev/null
+          sleep 2
+          curl -fsS --max-time 20 "${{ env.GH_PAGES_BASE }}/" >/dev/null
+          sleep 2
 
       - name: Lighthouse — live GitHub Pages (desktop)
         id: lh_pages_desktop
