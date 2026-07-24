@@ -1,8 +1,7 @@
 /**
- * Debug Runner - Premium Cyberpunk 2026 Edition
- * Portfolio Upgrade
- * Apple Arcade-inspired aesthetic with retro audio synthesis, parallax code rain,
- * a perspective-moving neon vector grid, and high-fidelity animations.
+ * Debug Runner — Chrome Dino–inspired endless runner
+ * Developer-themed obstacles with Dino-core physics:
+ * jump, duck, mid-air fast-fall, 3-height flyers, night cycle, delta-time.
  */
 
 class DebugRunner {
@@ -13,8 +12,9 @@ class DebugRunner {
     this.gameOver = false;
     this.paused = false;
     this.score = 0;
-    this.highScore = parseInt(localStorage.getItem('debugRunnerHighScore')) || 0;
-    this.speed = 8;
+    this.highScore = parseInt(localStorage.getItem('debugRunnerHighScore'), 10) || 0;
+    this.baseSpeed = 8;
+    this.speed = this.baseSpeed;
     this.level = 1;
     this.gameLoop = null;
     this.groundY = 320;
@@ -36,6 +36,12 @@ class DebugRunner {
     this.floatingTexts = [];
     this.nextNoteTime = 0;
     this.noteIndex = 0;
+    this.lastFrameTime = 0;
+    this.nightMode = false;
+    this.screenShake = 0;
+    this.showLevelMessageUntil = 0;
+    this.gravity = 0.82;
+    this.fastFallVelocity = 14;
 
     // Audio & Sound
     this.audioCtx = null;
@@ -140,6 +146,13 @@ class DebugRunner {
     this.renderLeaderboard(board);
   }
 
+  persistHighScore() {
+    const stored = parseInt(localStorage.getItem('debugRunnerHighScore'), 10) || 0;
+    if (this.highScore > stored) {
+      localStorage.setItem('debugRunnerHighScore', String(Math.floor(this.highScore)));
+    }
+  }
+
   renderLeaderboard(board = null) {
     if (!board) {
       try {
@@ -177,7 +190,7 @@ class DebugRunner {
     this.canvas.tabIndex = 0;
     this.canvas.setAttribute(
       'aria-label',
-      'Debug Runner Game - Use Space, Up arrow, or W to jump, and Down arrow or S to duck. Focus first to play.'
+      'Debug Runner. Focus the canvas first. Space or Up to jump, Down to duck or fast-fall, P to pause.'
     );
 
     Object.assign(this.canvas.style, {
@@ -374,10 +387,37 @@ class DebugRunner {
     if (!this.gameRunning && this.ctx) {
       if (this.gameOver) {
         this.drawGameOver();
+      } else if (this.paused) {
+        this.render();
+        this.drawPauseOverlay();
       } else {
         this.drawStartScreen();
       }
     }
+  }
+
+  getActivePalette() {
+    // Night mode flips contrast (Chrome Dino day/night), without fighting site theme entirely.
+    if (!this.nightMode) return this.colors;
+    const isSiteDark = this.colors.bg === '#050508';
+    if (isSiteDark) {
+      return {
+        ...this.colors,
+        bg: '#f5f5f7',
+        text: '#1d1d1f',
+        textSecondary: '#6e6e73',
+        groundLine: '#d1d5db',
+        hero: '#1d1d1f',
+      };
+    }
+    return {
+      ...this.colors,
+      bg: '#050508',
+      text: '#ffffff',
+      textSecondary: '#86868b',
+      groundLine: '#1a1a2e',
+      hero: '#ffffff',
+    };
   }
 
   setupThemeObserver() {
@@ -525,15 +565,25 @@ class DebugRunner {
       if (document.activeElement !== this.canvas) return;
 
       if (e.type === 'keydown') {
+        if (e.code === 'KeyP' || e.code === 'Escape') {
+          e.preventDefault();
+          if (!this.gameRunning || this.gameOver) return;
+          if (this.paused) this.resume();
+          else this.pause();
+          return;
+        }
+
         if (e.code === 'Space' || e.code === 'ArrowUp' || e.code === 'KeyW') {
           e.preventDefault();
           if (!this.gameRunning || this.gameOver) {
             this.start();
+          } else if (this.paused) {
+            this.resume();
           } else {
             this.jump();
           }
         }
-        if ((e.code === 'ArrowDown' || e.code === 'KeyS') && this.gameRunning) {
+        if ((e.code === 'ArrowDown' || e.code === 'KeyS') && this.gameRunning && !this.paused) {
           e.preventDefault();
           this.duck();
         }
@@ -607,7 +657,7 @@ class DebugRunner {
     this.gameOver = false;
     this.paused = false;
     this.score = 0;
-    this.speed = 8;
+    this.speed = this.baseSpeed;
     this.level = 1;
     this.obstacles = [];
     this.powerUps = [];
@@ -615,6 +665,13 @@ class DebugRunner {
     this.floatingTexts = [];
     this.nextNoteTime = 0;
     this.noteIndex = 0;
+    this.lastFrameTime = 0;
+    this.nightMode = false;
+    this.screenShake = 0;
+    this.showLevelMessageUntil = 0;
+    this.invincible = false;
+    this.invincibleUntil = 0;
+    this.trail = [];
     this.resetHero();
     this.updateSideStats();
     this.playSound('powerup');
@@ -624,9 +681,9 @@ class DebugRunner {
       this.gameLoop = null;
     }
 
-    const loop = () => {
+    const loop = now => {
       if (!this.gameRunning || this.paused) return;
-      this.update();
+      this.update(now);
       this.gameLoop = requestAnimationFrame(loop);
     };
     this.gameLoop = requestAnimationFrame(loop);
@@ -646,73 +703,108 @@ class DebugRunner {
   }
 
   pause() {
-    if (!this.gameRunning || this.gameOver) return;
+    if (!this.gameRunning || this.gameOver || this.paused) return;
     this.paused = true;
     if (this.gameLoop) {
       cancelAnimationFrame(this.gameLoop);
       this.gameLoop = null;
     }
+    this.lastFrameTime = 0;
+    this.render();
+    this.drawPauseOverlay();
   }
 
   resume() {
     if (!this.gameRunning || !this.paused || this.gameOver) return;
     this.paused = false;
+    this.lastFrameTime = 0;
 
     if (this.gameLoop) cancelAnimationFrame(this.gameLoop);
-    const loop = () => {
+    const loop = now => {
       if (!this.gameRunning || this.paused) return;
-      this.update();
+      this.update(now);
       this.gameLoop = requestAnimationFrame(loop);
     };
     this.gameLoop = requestAnimationFrame(loop);
   }
 
   jump() {
-    if (this.dev.onGround && !this.dev.isDucking) {
+    if (this.paused || this.gameOver) return;
+
+    // Chrome Dino: ducking on ground cancels into a jump
+    if (this.dev.isDucking && this.dev.onGround) {
+      this.standUp();
+    }
+
+    if (this.dev.onGround) {
       this.dev.velocityY = -this.dev.jumpPower;
       this.dev.onGround = false;
       this.playSound('jump');
-      // Dust particles on jump
       this.createParticles(this.dev.x + 10, this.groundY, 8, 'rgba(0, 113, 227, 0.4)');
     }
   }
 
   duck() {
-    if (this.dev.onGround) {
+    if (this.paused || this.gameOver || !this.gameRunning) return;
+
+    // Chrome Dino fast-fall: Down in mid-air accelerates descent
+    if (!this.dev.onGround) {
+      if (this.dev.velocityY < this.fastFallVelocity) {
+        this.dev.velocityY = this.fastFallVelocity;
+      }
       this.dev.isDucking = true;
       this.dev.height = 30;
-      this.dev.y = this.groundY - 30;
-      // Sliding particles
-      this.createParticles(this.dev.x + 20, this.groundY, 3, this.colors.accent);
+      return;
     }
+
+    this.dev.isDucking = true;
+    this.dev.height = 30;
+    this.dev.y = this.groundY - 30;
+    this.createParticles(this.dev.x + 20, this.groundY, 3, this.colors.accent);
   }
 
   standUp() {
+    const wasDucking = this.dev.isDucking;
     this.dev.isDucking = false;
     this.dev.height = 56;
-    this.dev.y = this.groundY - 56;
+    if (this.dev.onGround) {
+      this.dev.y = this.groundY - 56;
+    } else if (wasDucking) {
+      // Keep feet-relative position when releasing duck mid-air
+      this.dev.y = Math.min(this.dev.y, this.groundY - 56);
+    }
   }
 
-  update() {
+  update(now = performance.now()) {
+    const dt = this.lastFrameTime ? Math.min(0.05, (now - this.lastFrameTime) / 1000) : 1 / 60;
+    this.lastFrameTime = now;
+    const frameScale = dt * 60; // normalize gameplay to ~60fps units
+
     // Background music loop
     if (this.gameRunning && !this.paused && !this.muted) {
       this.playBackgroundMusic();
     }
 
     // Gravity & physics
-    this.dev.velocityY += 0.82;
-    this.dev.y += this.dev.velocityY;
+    this.dev.velocityY += this.gravity * frameScale;
+    this.dev.y += this.dev.velocityY * frameScale;
 
     // Ground check
     if (this.dev.y >= this.groundY - this.dev.height) {
       this.dev.y = this.groundY - this.dev.height;
       this.dev.velocityY = 0;
       this.dev.onGround = true;
+      if (this.dev.isDucking) {
+        this.dev.height = 30;
+        this.dev.y = this.groundY - 30;
+      }
+    } else {
+      this.dev.onGround = false;
     }
 
-    // Spin during jump
-    if (!this.dev.onGround) {
-      this.dev.rotation += 0.1;
+    // Spin during jump (subtle)
+    if (!this.dev.onGround && !this.dev.isDucking) {
+      this.dev.rotation += 0.08 * frameScale;
     } else {
       this.dev.rotation = 0;
     }
@@ -722,15 +814,19 @@ class DebugRunner {
       this.createParticles(this.dev.x + 10, this.groundY, 2, '#FFD60A');
     }
 
-    // Speed progression
-    this.speed += 0.0012;
+    // Speed progression (Dino-like gradual ramp)
+    this.speed += 0.0012 * frameScale;
 
-    // Score increments
-    this.score++;
+    // Score tracks distance traveled
+    this.score += this.speed * 0.35 * frameScale;
     if (this.score > this.highScore) {
       this.highScore = this.score;
-      localStorage.setItem('debugRunnerHighScore', this.highScore);
     }
+
+    // Night cycle every ~700 display points (Chrome Dino cadence)
+    const displayScore = Math.floor(this.score / 10);
+    const nightCycle = Math.floor(displayScore / 700);
+    this.nightMode = nightCycle % 2 === 1;
 
     // Level up logic
     const newLevel = Math.floor(this.score / 1200) + 1;
@@ -744,16 +840,16 @@ class DebugRunner {
     }
 
     // Move grid offsets
-    this.gridOffset = (this.gridOffset - this.speed) % 80;
+    this.gridOffset = (this.gridOffset - this.speed * frameScale) % 80;
 
-    this.updateObstacles();
-    this.updatePowerUps();
-    this.updateParticles();
+    this.updateObstacles(frameScale);
+    this.updatePowerUps(frameScale);
+    this.updateParticles(frameScale);
 
     // Update floating texts
     this.floatingTexts.forEach(ft => {
-      ft.y += ft.vy;
-      ft.life -= 0.02;
+      ft.y += ft.vy * frameScale;
+      ft.life -= 0.02 * frameScale;
     });
     this.floatingTexts = this.floatingTexts.filter(ft => ft.life > 0);
 
@@ -781,56 +877,78 @@ class DebugRunner {
     }
   }
 
-  updateObstacles() {
+  updateObstacles(frameScale = 1) {
     // Spawning frequency proportional to speed
     const spawnRate = 0.012 + this.level * 0.002;
-    if (Math.random() < Math.min(0.03, spawnRate)) {
+    if (Math.random() < Math.min(0.03, spawnRate * frameScale)) {
+      const displayScore = Math.floor(this.score / 10);
       const type = Math.random();
       const obstacle = { x: 1250, speed: this.speed };
 
-      if (type < 0.25) {
-        // Bug obstacle
+      // After ~450 points, introduce 3-height flyers (Chrome Dino pterodactyl bands)
+      const flyersUnlocked = displayScore >= 450;
+
+      if (flyersUnlocked && type > 0.72) {
+        const band = Math.floor(Math.random() * 3); // 0 high / 1 mid / 2 low
+        obstacle.type = 'pointer';
+        obstacle.band = band;
+        obstacle.width = 44;
+        obstacle.height = 26;
+        obstacle.color = '#BF5AF2';
+        if (band === 0) {
+          // High — run under while standing
+          obstacle.y = this.groundY - 102;
+        } else if (band === 1) {
+          // Mid — must duck
+          obstacle.y = this.groundY - 72;
+        } else {
+          // Low — must jump
+          obstacle.y = this.groundY - 42;
+        }
+      } else if (type < 0.28) {
         obstacle.type = 'bug';
         obstacle.y = this.groundY - 32;
         obstacle.width = 32;
         obstacle.height = 32;
         obstacle.color = this.colors.bug;
-      } else if (type < 0.5) {
-        // Merge Conflict obstacle
+      } else if (type < 0.55) {
         obstacle.type = 'conflict';
         obstacle.y = this.groundY - 48;
         obstacle.width = 36;
         obstacle.height = 48;
         obstacle.color = this.colors.conflict;
-      } else if (type < 0.75) {
-        // Firewall Flame
+      } else if (type < 0.78 || !flyersUnlocked) {
         obstacle.type = 'fire';
         obstacle.y = this.groundY - 38;
         obstacle.width = 38;
         obstacle.height = 38;
         obstacle.color = this.colors.fire;
       } else {
-        // Null Pointer overhead obstacle (requires ducking!)
+        // Early mid flyer before full unlock mix
         obstacle.type = 'pointer';
-        obstacle.y = this.groundY - 58;
+        obstacle.band = 1;
+        obstacle.y = this.groundY - 72;
         obstacle.width = 40;
         obstacle.height = 24;
-        obstacle.color = '#BF5AF2'; // Purple
+        obstacle.color = '#BF5AF2';
       }
 
-      // Check distance from last obstacle
+      // Spacing scales with speed so clusters stay fair
+      const minGap = 260 + this.speed * 10;
       const lastObs = this.obstacles[this.obstacles.length - 1];
-      if (!lastObs || 1200 - lastObs.x > 260 + this.speed * 8) {
+      if (!lastObs || 1200 - lastObs.x > minGap) {
         this.obstacles.push(obstacle);
       }
     }
 
-    this.obstacles.forEach(obs => (obs.x -= obs.speed));
+    this.obstacles.forEach(obs => {
+      obs.x -= obs.speed * frameScale;
+    });
     this.obstacles = this.obstacles.filter(obs => obs.x > -100);
   }
 
-  updatePowerUps() {
-    if (Math.random() < 0.003) {
+  updatePowerUps(frameScale = 1) {
+    if (Math.random() < 0.003 * frameScale) {
       const type = Math.random() > 0.45 ? 'coffee' : 'stackoverflow';
       this.powerUps.push({
         x: 1250,
@@ -842,7 +960,9 @@ class DebugRunner {
       });
     }
 
-    this.powerUps.forEach(p => (p.x -= p.speed));
+    this.powerUps.forEach(p => {
+      p.x -= p.speed * frameScale;
+    });
     this.powerUps = this.powerUps.filter(p => p.x > -100);
 
     if (this.invincible && Date.now() > this.invincibleUntil) {
@@ -864,11 +984,11 @@ class DebugRunner {
     }
   }
 
-  updateParticles() {
+  updateParticles(frameScale = 1) {
     this.particles.forEach(p => {
-      p.x += p.vx;
-      p.y += p.vy;
-      p.life -= 0.045;
+      p.x += p.vx * frameScale;
+      p.y += p.vy * frameScale;
+      p.life -= 0.045 * frameScale;
     });
     this.particles = this.particles.filter(p => p.life > 0);
   }
@@ -888,6 +1008,7 @@ class DebugRunner {
           this.gameOver = true;
           this.createParticles(this.dev.x + 20, this.dev.y + 20, 35, this.colors.bug);
           this.stop();
+          this.persistHighScore();
           this.recordLeaderboardEntry();
           return;
         }
@@ -957,11 +1078,14 @@ class DebugRunner {
       this.ctx.translate(dx, dy);
     }
 
+    // Active palette (night invert like Chrome Dino)
+    const palette = this.getActivePalette();
+
     // 2. Cyberpunk Background Gradient
     const bgGrad = this.ctx.createLinearGradient(0, 0, 0, this.groundY);
-    if (this.colors.bg === '#050508') {
-      bgGrad.addColorStop(0, '#04020a');
-      bgGrad.addColorStop(1, '#0e0b24');
+    if (palette.bg === '#050508' || this.nightMode) {
+      bgGrad.addColorStop(0, this.nightMode ? '#0a0a12' : '#04020a');
+      bgGrad.addColorStop(1, this.nightMode ? '#14102a' : '#0e0b24');
     } else {
       bgGrad.addColorStop(0, '#f5f5f7');
       bgGrad.addColorStop(1, '#e5e7eb');
@@ -970,9 +1094,9 @@ class DebugRunner {
     this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
     // 3. Cyber Starfield / Nodes
-    this.ctx.fillStyle = this.colors.text;
+    this.ctx.fillStyle = palette.text;
     this.neonStars.forEach(star => {
-      this.ctx.globalAlpha = star.opacity;
+      this.ctx.globalAlpha = star.opacity * (this.nightMode ? 1 : 0.85);
       this.ctx.beginPath();
       this.ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
       this.ctx.fill();
@@ -982,8 +1106,8 @@ class DebugRunner {
 
     // 4. Parallax Scrolling Binary Stream
     this.binaryStreams.forEach(stream => {
-      this.ctx.fillStyle = this.colors.accent;
-      this.ctx.globalAlpha = stream.opacity;
+      this.ctx.fillStyle = palette.accent;
+      this.ctx.globalAlpha = stream.opacity * (this.nightMode ? 1.4 : 1);
       this.ctx.font = '12px monospace';
       stream.chars.forEach((char, idx) => {
         this.ctx.fillText(char, stream.x, stream.y + idx * 16);
@@ -1032,12 +1156,17 @@ class DebugRunner {
     }
 
     // Ground Edge line
-    this.ctx.strokeStyle = this.colors.accent;
+    this.ctx.strokeStyle = palette.accent;
     this.ctx.lineWidth = 3;
     this.ctx.beginPath();
     this.ctx.moveTo(0, this.groundY);
     this.ctx.lineTo(this.canvas.width, this.groundY);
     this.ctx.stroke();
+
+    if (this.nightMode) {
+      this.ctx.fillStyle = 'rgba(255, 255, 255, 0.03)';
+      this.ctx.fillRect(0, 0, this.canvas.width, this.groundY);
+    }
 
     // 7. Render Particles
     this.particles.forEach(p => {
@@ -1176,7 +1305,9 @@ class DebugRunner {
         this.ctx.fillStyle = obs.color;
         this.ctx.font = 'bold 9px monospace';
         this.ctx.textAlign = 'center';
-        this.ctx.fillText('NULL', bugX, obs.y - 4);
+        const bandLabel =
+          obs.band === 0 ? 'HIGH' : obs.band === 2 ? 'LOW' : obs.band === 1 ? 'DUCK' : 'NULL';
+        this.ctx.fillText(bandLabel, bugX, obs.y - 4);
       }
       this.ctx.restore();
     });
@@ -1199,9 +1330,9 @@ class DebugRunner {
       // Flash orange/yellow
       this.ctx.fillStyle = this.frame % 6 < 3 ? '#FFD60A' : '#FF9500';
     } else {
-      this.ctx.shadowColor = this.colors.accent;
+      this.ctx.shadowColor = palette.accent;
       this.ctx.shadowBlur = 12;
-      this.ctx.fillStyle = this.colors.hero;
+      this.ctx.fillStyle = palette.hero;
     }
 
     const px = this.dev.x;
@@ -1210,7 +1341,7 @@ class DebugRunner {
     const ph = this.dev.height;
 
     // Apply rotation for jump spin
-    if (!this.dev.onGround) {
+    if (!this.dev.onGround && !this.dev.isDucking) {
       this.ctx.translate(px + pw / 2, py + ph / 2);
       this.ctx.rotate(this.dev.rotation);
       this.ctx.translate(-(px + pw / 2), -(py + ph / 2));
@@ -1218,33 +1349,47 @@ class DebugRunner {
 
     // Cyber Suit Hood/Head
     this.ctx.beginPath();
-    this.ctx.arc(px + pw / 2, py + 12, 12, 0, Math.PI * 2);
+    this.ctx.arc(
+      px + pw / 2,
+      py + (this.dev.isDucking ? 8 : 12),
+      this.dev.isDucking ? 10 : 12,
+      0,
+      Math.PI * 2
+    );
     this.ctx.fill();
 
     // Cyber Visor Glow
-    this.ctx.fillStyle = this.invincible ? '#ffffff' : this.colors.heroVisor;
-    this.ctx.fillRect(px + pw / 2 - 2, py + 8, 12, 4);
+    this.ctx.fillStyle = this.invincible ? '#ffffff' : palette.heroVisor || this.colors.heroVisor;
+    this.ctx.fillRect(px + pw / 2 - 2, py + (this.dev.isDucking ? 6 : 8), 12, 4);
 
     // Glowing Cyber Coat Body
-    this.ctx.fillStyle = this.invincible ? '#FFD60A' : this.colors.hero;
-    this.drawRoundedRect(this.ctx, px + 2, py + 22, pw - 4, ph - 30, 8);
+    this.ctx.fillStyle = this.invincible ? '#FFD60A' : palette.hero;
+    this.drawRoundedRect(
+      this.ctx,
+      px + 2,
+      py + (this.dev.isDucking ? 14 : 22),
+      pw - 4,
+      ph - (this.dev.isDucking ? 18 : 30),
+      8
+    );
     this.ctx.fill();
 
     // Leg running cycles
     const cycle = Math.sin(this.frame * 0.22) * 8;
-    this.ctx.fillStyle = this.colors.accent;
-    if (this.dev.onGround) {
-      // Runner leg 1
+    this.ctx.fillStyle = palette.accent;
+    if (this.dev.onGround && !this.dev.isDucking) {
       this.drawRoundedRect(this.ctx, px + 6, py + ph - 8 + cycle, 12, 8, 4);
       this.ctx.fill();
-      // Runner leg 2
       this.drawRoundedRect(this.ctx, px + pw - 18, py + ph - 8 - cycle, 12, 8, 4);
       this.ctx.fill();
-    } else {
-      // Tuck legs on jump
+    } else if (!this.dev.isDucking) {
       this.drawRoundedRect(this.ctx, px + 6, py + ph - 12, 12, 12, 4);
       this.ctx.fill();
       this.drawRoundedRect(this.ctx, px + pw - 18, py + ph - 12, 12, 12, 4);
+      this.ctx.fill();
+    } else {
+      // Duck slide legs
+      this.drawRoundedRect(this.ctx, px + 4, py + ph - 6, pw - 8, 6, 3);
       this.ctx.fill();
     }
 
@@ -1264,26 +1409,32 @@ class DebugRunner {
 
     // 13. UI HUD Stats & Progress Bar
     this.ctx.save();
-    this.ctx.fillStyle = this.colors.text;
+    this.ctx.fillStyle = palette.text;
     this.ctx.font = 'bold 24px monospace';
     this.ctx.fillText(`SCORE: ${Math.floor(this.score / 10)}`, 30, 45);
 
-    this.ctx.fillStyle = this.colors.textSecondary;
+    this.ctx.fillStyle = palette.textSecondary;
     this.ctx.font = '14px monospace';
     this.ctx.fillText(`HI: ${Math.floor(this.highScore / 10)}`, 30, 72);
 
+    if (this.nightMode) {
+      this.ctx.fillStyle = palette.accent;
+      this.ctx.font = 'bold 12px monospace';
+      this.ctx.fillText('NIGHT', 30, 94);
+    }
+
     // Audio Speaker Icon (Interactive)
-    this.ctx.fillStyle = this.muted ? '#ff3b30' : this.colors.accent;
+    this.ctx.fillStyle = this.muted ? '#ff3b30' : palette.accent;
     this.ctx.beginPath();
     this.ctx.arc(1155, 35, 18, 0, Math.PI * 2);
     this.ctx.fillStyle = this.muted ? 'rgba(255, 59, 48, 0.1)' : 'rgba(0, 113, 227, 0.15)';
     this.ctx.fill();
-    this.ctx.strokeStyle = this.muted ? '#ff3b30' : this.colors.accent;
+    this.ctx.strokeStyle = this.muted ? '#ff3b30' : palette.accent;
     this.ctx.lineWidth = 1.5;
     this.ctx.stroke();
 
     // Speaker Shape
-    this.ctx.fillStyle = this.muted ? '#ff3b30' : this.colors.text;
+    this.ctx.fillStyle = this.muted ? '#ff3b30' : palette.text;
     this.ctx.beginPath();
     this.ctx.moveTo(1146, 31);
     this.ctx.lineTo(1151, 31);
@@ -1306,7 +1457,7 @@ class DebugRunner {
       this.ctx.stroke();
     } else {
       // Sound waves
-      this.ctx.strokeStyle = this.colors.text;
+      this.ctx.strokeStyle = palette.text;
       this.ctx.lineWidth = 1.5;
       this.ctx.beginPath();
       this.ctx.arc(1154, 35, 6, -Math.PI / 3, Math.PI / 3);
@@ -1330,14 +1481,14 @@ class DebugRunner {
     const barY = 35;
 
     // Bar background
-    this.ctx.fillStyle = this.colors.bg === '#050508' ? '#1c1c1e' : '#e5e7eb';
+    this.ctx.fillStyle = this.nightMode || palette.bg === '#050508' ? '#1c1c1e' : '#e5e7eb';
     this.drawRoundedRect(this.ctx, barX, barY, barWidth, barHeight, 4);
     this.ctx.fill();
 
     // Bar progress fill
     const gradFill = this.ctx.createLinearGradient(barX, 0, barX + barWidth, 0);
     gradFill.addColorStop(0, '#00E5FF');
-    gradFill.addColorStop(1, this.colors.accent);
+    gradFill.addColorStop(1, palette.accent);
     this.ctx.fillStyle = gradFill;
     const fillWidth = barWidth * progress;
     if (fillWidth > 1) {
@@ -1346,7 +1497,7 @@ class DebugRunner {
     }
 
     // Progress Level Label
-    this.ctx.fillStyle = this.colors.textSecondary;
+    this.ctx.fillStyle = palette.textSecondary;
     this.ctx.font = 'bold 11px monospace';
     this.ctx.textAlign = 'center';
     this.ctx.fillText(`LEVEL ${this.level}`, this.canvas.width / 2, 28);
@@ -1419,19 +1570,38 @@ class DebugRunner {
     this.ctx.textAlign = 'center';
     this.ctx.shadowColor = this.colors.accent;
     this.ctx.shadowBlur = 15;
-    this.ctx.fillText('DEBUG RUNNER', this.canvas.width / 2, this.canvas.height / 2 - 25);
+    this.ctx.fillText('DEBUG RUNNER', this.canvas.width / 2, this.canvas.height / 2 - 40);
 
-    this.ctx.font = '24px monospace';
+    this.ctx.font = '22px monospace';
     this.ctx.fillStyle = this.colors.accent;
-    const startText = this.isMobile ? 'Tap to Initialize' : 'Press SPACE or Tap to Initialize';
-    this.ctx.fillText(startText, this.canvas.width / 2, this.canvas.height / 2 + 35);
+    const startText = this.isMobile ? 'Tap to start' : 'Click canvas, then SPACE to start';
+    this.ctx.fillText(startText, this.canvas.width / 2, this.canvas.height / 2 + 20);
 
     this.ctx.font = '14px monospace';
     this.ctx.fillStyle = this.colors.textSecondary;
     const controlsInfo = this.isMobile
-      ? 'Use buttons below to Jump & Duck'
-      : 'W/Space = Jump, S/Arrow Down = Duck';
-    this.ctx.fillText(controlsInfo, this.canvas.width / 2, this.canvas.height / 2 + 75);
+      ? 'Jump / Duck buttons · swipe up/down on canvas'
+      : 'SPACE/↑ jump · ↓ duck / fast-fall · P pause · night mode at 700';
+    this.ctx.fillText(controlsInfo, this.canvas.width / 2, this.canvas.height / 2 + 55);
+    this.ctx.restore();
+  }
+
+  drawPauseOverlay() {
+    this.ctx.fillStyle =
+      this.colors.bg === '#050508' ? 'rgba(5, 5, 8, 0.72)' : 'rgba(245, 245, 247, 0.72)';
+    this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+    this.ctx.save();
+    this.ctx.fillStyle = this.colors.text;
+    this.ctx.font = 'bold 48px monospace';
+    this.ctx.textAlign = 'center';
+    this.ctx.fillText('PAUSED', this.canvas.width / 2, this.canvas.height / 2 - 10);
+    this.ctx.font = '16px monospace';
+    this.ctx.fillStyle = this.colors.accent;
+    this.ctx.fillText(
+      'Press P or SPACE to resume',
+      this.canvas.width / 2,
+      this.canvas.height / 2 + 35
+    );
     this.ctx.restore();
   }
 
@@ -1456,24 +1626,24 @@ class DebugRunner {
 
     this.ctx.save();
     this.ctx.fillStyle = this.colors.bug;
-    this.ctx.font = 'bold 72px monospace';
+    this.ctx.font = 'bold 56px monospace';
     this.ctx.textAlign = 'center';
     this.ctx.shadowColor = this.colors.bug;
     this.ctx.shadowBlur = 20;
-    this.ctx.fillText('CRITICAL EXCEPTION', this.canvas.width / 2, this.canvas.height / 2 - 30);
+    this.ctx.fillText('GAME OVER', this.canvas.width / 2, this.canvas.height / 2 - 40);
 
     this.ctx.fillStyle = this.colors.text;
     this.ctx.font = '28px monospace';
     this.ctx.fillText(
-      `Final Score: ${Math.floor(this.score / 10)}`,
+      `Score ${Math.floor(this.score / 10)}  ·  HI ${Math.floor(this.highScore / 10)}`,
       this.canvas.width / 2,
-      this.canvas.height / 2 + 35
+      this.canvas.height / 2 + 20
     );
 
     this.ctx.fillStyle = this.colors.accent;
     this.ctx.font = '18px monospace';
-    const restartText = this.isMobile ? 'Tap to Re-compile' : 'Press SPACE or Tap to Re-compile';
-    this.ctx.fillText(restartText, this.canvas.width / 2, this.canvas.height / 2 + 80);
+    const restartText = this.isMobile ? 'Tap to retry' : 'Press SPACE to retry';
+    this.ctx.fillText(restartText, this.canvas.width / 2, this.canvas.height / 2 + 65);
     this.ctx.restore();
   }
 }
