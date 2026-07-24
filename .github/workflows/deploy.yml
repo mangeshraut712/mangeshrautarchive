@@ -35,6 +35,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
 
+      - name: Lint GitHub Actions workflows
+        id: actionlint
+        run: |
+          set -euo pipefail
+          curl -sSfL https://raw.githubusercontent.com/rhysd/actionlint/v1.7.7/scripts/download-actionlint.bash \
+            | bash -s -- 1.7.7 /tmp
+          /tmp/actionlint -color
+          echo "- actionlint ✅" >> "$GITHUB_STEP_SUMMARY"
+
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
@@ -71,25 +80,32 @@ jobs:
             playwright-${{ runner.os }}-
 
       - name: Security — dependency vulnerability audit
+        id: npm_audit
         run: npm audit --audit-level=high --omit=dev
 
       - name: Security — scan for exposed secrets
+        id: secrets_scan
         run: npm run security-check
 
       - name: Lint — ESLint (JS)
+        id: lint_js
         run: npm run lint
 
       - name: Lint — Stylelint (CSS)
+        id: lint_css
         run: npm run lint:css
 
       - name: Format — Prettier check
+        id: format
         run: npm run format:check
 
       - name: Unit tests — Vitest
+        id: unit
         run: npm test
 
       - name: Doctor — env / production API surface (non-blocking)
         # Probes live API when reachable; does not require Vercel tokens in CI.
+        id: doctor_full
         continue-on-error: true
         run: |
           set -euo pipefail
@@ -112,12 +128,15 @@ jobs:
           uv pip install -r requirements.txt -r requirements-dev.txt
 
       - name: Python — dead-code scan
+        id: dead_code
         run: npm run lint:dead-code
 
       - name: Python — flake8
+        id: flake8
         run: npm run lint:python
 
       - name: API tests — pytest
+        id: api
         run: npm run test:api
 
       - name: Install Playwright Chromium
@@ -129,6 +148,7 @@ jobs:
         run: npx playwright install-deps chromium
 
       - name: Browser QA — smoke + accessibility
+        id: browser
         run: |
           set -euo pipefail
           NO_RELOAD=1 npm run dev &
@@ -157,6 +177,7 @@ jobs:
           npm run qa:browser:ci
 
       - name: Build production bundle
+        id: build
         run: npm run build
         env:
           OPENROUTER_APP_TITLE: AssistMe Portfolio Assistant
@@ -227,10 +248,19 @@ jobs:
             echo ""
             echo "| Check | Status |"
             echo "| --- | --- |"
-            echo "| Security + lint + unit + API | $(mark success) ran in this job |"
-            echo "| Browser QA (Playwright) | $(mark success) ran in this job |"
+            echo "| actionlint | $(mark '${{ steps.actionlint.outcome }}') |"
+            echo "| npm audit (high+) | $(mark '${{ steps.npm_audit.outcome }}') |"
+            echo "| Secret scan | $(mark '${{ steps.secrets_scan.outcome }}') |"
+            echo "| ESLint | $(mark '${{ steps.lint_js.outcome }}') |"
+            echo "| Stylelint | $(mark '${{ steps.lint_css.outcome }}') |"
+            echo "| Prettier | $(mark '${{ steps.format.outcome }}') |"
+            echo "| Vitest | $(mark '${{ steps.unit.outcome }}') |"
+            echo "| flake8 / dead-code | $(mark '${{ steps.flake8.outcome }}') / $(mark '${{ steps.dead_code.outcome }}') |"
+            echo "| API pytest | $(mark '${{ steps.api.outcome }}') |"
+            echo "| Browser QA (Playwright) | $(mark '${{ steps.browser.outcome }}') |"
+            echo "| Production build | $(mark '${{ steps.build.outcome }}') |"
             echo "| Lighthouse desktop + mobile (dist) | $(mark '${{ steps.lighthouse.outcome }}') |"
-            echo "| Doctor (env/API) | ⚠️ non-blocking |"
+            echo "| Doctor (env/API) | $(mark '${{ steps.doctor_full.outcome }}') (non-blocking) |"
             echo ""
             echo "- Event: \`${{ github.event_name }}\`"
             echo "- Ref: \`${{ github.ref }}\`"
@@ -322,6 +352,9 @@ jobs:
     timeout-minutes: 25
     steps:
       - uses: actions/checkout@v7
+        with:
+          # Full history so Vercel “ahead of this push” ancestor checks work.
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v6
@@ -337,7 +370,20 @@ jobs:
         run: |
           set -euo pipefail
           BASE="${{ env.GH_PAGES_BASE }}"
-          PATHS=("" "index.html" "travel.html" "monitor.html" "systems.html" "uses.html" "404.html" "build-config.json" "service-worker.js" "manifest.json")
+          PATHS=(
+            ""
+            "index.html"
+            "travel.html"
+            "monitor.html"
+            "systems.html"
+            "uses.html"
+            "changelog.html"
+            "blog/index.html"
+            "404.html"
+            "build-config.json"
+            "service-worker.js"
+            "manifest.json"
+          )
           for attempt in $(seq 1 18); do
             failed=0
             for path in "${PATHS[@]}"; do
@@ -425,7 +471,7 @@ jobs:
             if [ "$MATCH" -eq 1 ]; then
               echo "vercel_status=ok" >> "$GITHUB_OUTPUT"
               echo "✅ Vercel production healthy for this train"
-              for path in "" "systems" "monitor" "travel" "uses" "api/status"; do
+              for path in "" "systems" "monitor" "travel" "uses" "changelog" "blog" "api/status"; do
                 code=$(curl -sS -o /dev/null -w "%{http_code}" --max-time 15 "${BASE}/${path}")
                 echo "  ${BASE}/${path} → ${code}"
                 case "$code" in

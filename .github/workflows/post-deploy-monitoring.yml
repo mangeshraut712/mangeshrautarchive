@@ -49,6 +49,8 @@ jobs:
             "${{ env.GH_PAGES_BASE }}/monitor.html"
             "${{ env.GH_PAGES_BASE }}/systems.html"
             "${{ env.GH_PAGES_BASE }}/uses.html"
+            "${{ env.GH_PAGES_BASE }}/changelog.html"
+            "${{ env.GH_PAGES_BASE }}/blog/index.html"
             "${{ env.GH_PAGES_BASE }}/build-config.json"
             "${{ env.EDGE_API }}/api/health"
             "${{ env.EDGE_API }}/api/status"
@@ -142,7 +144,17 @@ jobs:
             echo "| Cloudflare edge | \`$edge\` |"
           } >> "$GITHUB_STEP_SUMMARY"
 
-      - name: Lighthouse — live GitHub Pages quality floor
+      - name: Warm GitHub Pages CDN before Lighthouse
+        run: |
+          set -euo pipefail
+          # Prime CDN/edge caches so live Lighthouse is less sensitive to cold starts.
+          for i in 1 2 3; do
+            curl -fsS --max-time 20 "${{ env.GH_PAGES_BASE }}/" >/dev/null
+            sleep 2
+          done
+
+      - name: Lighthouse — live GitHub Pages (desktop)
+        id: lh_pages_desktop
         run: |
           node scripts/deployment/lighthouse-gate.js \
             --url=${{ env.GH_PAGES_BASE }}/ \
@@ -151,7 +163,11 @@ jobs:
             --min-accessibility=90 \
             --min-best-practices=90 \
             --min-seo=90 \
-            --max-attempts=3
+            --max-attempts=4
+
+      - name: Lighthouse — live GitHub Pages (mobile)
+        id: lh_pages_mobile
+        run: |
           node scripts/deployment/lighthouse-gate.js \
             --url=${{ env.GH_PAGES_BASE }}/ \
             --form-factor=mobile \
@@ -163,6 +179,7 @@ jobs:
 
       - name: Lighthouse — live Vercel quality floor
         # Soft while Vercel may be DEPLOYMENT_DISABLED.
+        id: lh_vercel
         continue-on-error: true
         run: |
           node scripts/deployment/lighthouse-gate.js \
@@ -181,6 +198,14 @@ jobs:
       - name: Job summary
         if: always()
         run: |
+          mark() {
+            case "$1" in
+              success) echo "✅" ;;
+              failure) echo "❌" ;;
+              skipped|cancelled) echo "⏭️" ;;
+              *) echo "•" ;;
+            esac
+          }
           {
             echo ""
             echo "## Production monitoring"
@@ -190,6 +215,13 @@ jobs:
             echo "| GitHub Pages (primary) | ${{ env.GH_PAGES_BASE }} |"
             echo "| Cloudflare edge API | ${{ env.EDGE_API }} |"
             echo "| Vercel (optional) | ${{ env.VERCEL_PROD }} |"
+            echo ""
+            echo "| Check | Status |"
+            echo "| --- | --- |"
+            echo "| Reachability | $(mark '${{ steps.reachability.outcome }}') |"
+            echo "| Lighthouse Pages desktop | $(mark '${{ steps.lh_pages_desktop.outcome }}') |"
+            echo "| Lighthouse Pages mobile | $(mark '${{ steps.lh_pages_mobile.outcome }}') |"
+            echo "| Lighthouse Vercel | $(mark '${{ steps.lh_vercel.outcome }}') (soft) |"
             echo ""
             echo "Schedule: daily 14:00 UTC · also \`workflow_dispatch\`."
             echo "Hard gates: Pages + Worker only. Vercel is soft while DEPLOYMENT_DISABLED."
