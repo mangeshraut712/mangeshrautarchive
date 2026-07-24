@@ -143,8 +143,10 @@ def test_travel_summary_counts_usa_states_from_site_data():
 def test_blog_release_summary_finds_june_2026_titles():
     summary = format_blog_release_summary("June 2026 blog releases")
 
-    assert "WWDC 2026 Field Notes: Liquid Glass Maturity, Apple Intelligence, and Siri" in summary
-    assert "NotebookLM 2026 Field Notes: From Document Q&A to Research Workflow" in summary
+    assert "WWDC 2026 Field Notes: Siri AI, App Schemas, and Liquid Glass Year Two" in summary
+    assert "NotebookLM 2026 Field Notes: Source Grounding Under Agentic Pressure" in summary
+    assert "2026-06-12" in summary
+    assert "2026-06-10" in summary
 
 
 def test_chat_local_mode_answers_travel_state_and_blog_release_questions(client, monkeypatch):

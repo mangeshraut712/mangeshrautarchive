@@ -87,14 +87,16 @@ function primaryArea(entry) {
 }
 
 function getVisibleEntries() {
-  return changelogEntries
-    .filter(entry => {
-      if (state.type !== 'all' && entry.type !== state.type) return false;
-      if (state.tag !== 'all' && !(entry.tags || []).includes(state.tag)) return false;
-      return true;
-    })
-    .slice()
-    .sort((a, b) => String(b.date).localeCompare(String(a.date)));
+  const visible = [];
+  for (const entry of changelogEntries) {
+    if (state.type !== 'all' && entry.type !== state.type) continue;
+    if (state.tag !== 'all') {
+      const tagSet = new Set(entry.tags || []);
+      if (!tagSet.has(state.tag)) continue;
+    }
+    visible.push(entry);
+  }
+  return visible.sort((a, b) => String(b.date).localeCompare(String(a.date)));
 }
 
 function groupByMonth(entries) {

@@ -217,9 +217,10 @@ class PortfolioSearch {
 
         // GitHub project cards (github-projects.js): .project-tag + .project-language
         if (type === 'Project') {
-          const topics = Array.from(element.querySelectorAll('.project-tag'))
-            .map(t => t.textContent.trim())
-            .filter(Boolean);
+          const topics = Array.from(element.querySelectorAll('.project-tag')).flatMap(t => {
+            const text = t.textContent.trim();
+            return text ? [text] : [];
+          });
 
           const languageEl = element.querySelector('.project-language');
           const langText = languageEl?.textContent?.trim();
@@ -707,16 +708,21 @@ class PortfolioSearch {
     const tokens = trimmed
       .toLowerCase()
       .split(/[\s,/|+]+/)
-      .map(t => t.trim())
-      .filter(t => t.length >= 1);
+      .flatMap(t => {
+        const token = t.trim();
+        return token.length >= 1 ? [token] : [];
+      });
 
-    const results = this.searchableContent
-      .map(item => ({ item, score: this.scoreResult(item, trimmed.toLowerCase(), tokens) }))
-      .filter(entry => entry.score < 100)
-      .sort(
-        (a, b) => a.score - b.score || a.item.normalizedTitle.localeCompare(b.item.normalizedTitle)
-      )
-      .map(entry => entry.item);
+    const scored = [];
+    const queryLower = trimmed.toLowerCase();
+    for (const item of this.searchableContent) {
+      const score = this.scoreResult(item, queryLower, tokens);
+      if (score < 100) scored.push({ item, score });
+    }
+    scored.sort(
+      (a, b) => a.score - b.score || a.item.normalizedTitle.localeCompare(b.item.normalizedTitle)
+    );
+    const results = scored.map(entry => entry.item);
 
     // De-dupe by title+type (blog posts indexed both statically and from DOM)
     const seen = new Set();

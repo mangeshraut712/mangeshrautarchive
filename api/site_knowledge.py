@@ -228,9 +228,14 @@ def _extract_travel_stops(raw: str) -> List[Dict[str, str]]:
 
 
 def _extract_blog_posts(raw: str) -> List[Dict[str, str]]:
+    """Parse title/date pairs from blog-data.js object literals.
+
+    Field notes include summary/readerPromise/pullQuote/highlights between title and
+    date, so the window must be wide enough for longer metadata blocks.
+    """
     posts = []
     pattern = re.compile(
-        r"title:\s*'(?P<title>[^']+)'.{0,700}?date:\s*'(?P<date>\d{4}-\d{2}-\d{2})'",
+        r"""title:\s*['"](?P<title>[^'"]+)['"].{0,2500}?date:\s*['"](?P<date>\d{4}-\d{2}-\d{2})['"]""",
         re.S,
     )
     for match in pattern.finditer(raw):
