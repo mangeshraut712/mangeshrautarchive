@@ -172,9 +172,11 @@ jobs:
             exit 1
           fi
 
-          echo "present=true" >> "$GITHUB_OUTPUT"
-          echo "account_id=$ACCOUNT" >> "$GITHUB_OUTPUT"
-          echo "auth_mode=$AUTH_MODE" >> "$GITHUB_OUTPUT"
+          {
+            echo "present=true"
+            echo "account_id=$ACCOUNT"
+            echo "auth_mode=$AUTH_MODE"
+          } >> "$GITHUB_OUTPUT"
           {
             echo "CLOUDFLARE_ACCOUNT_ID=$ACCOUNT"
             if [ "$AUTH_MODE" = "global" ]; then
