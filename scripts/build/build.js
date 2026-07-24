@@ -780,6 +780,19 @@ async function addCacheBusting(distDir, version) {
           (match, attr, rawPath) => `${attr}="${appendVersion(rawPath)}"`
         );
 
+        // Dynamic/static imports inside inline <script> blocks (not covered by href/src).
+        content = content.replace(
+          /(import\(\s*['"])([^'"\n]+?\.js)(?:\?[^'"]*)?(['"]\s*\))/g,
+          (match, prefix, modPath, suffix) => `${prefix}${modPath}?v=${version}${suffix}`
+        );
+        content = content.replace(
+          /((?:import|from)\s*['"])([^'"\n]+?\.js)(?:\?[^'"]*)?(['"])/g,
+          (match, prefix, modPath, suffix) => {
+            if (/^(?:https?:)?\/\//i.test(modPath) || modPath.startsWith('data:')) return match;
+            return `${prefix}${modPath}?v=${version}${suffix}`;
+          }
+        );
+
         // Keep static asset paths repo-relative for GitHub Pages deployments.
         content = content.replace(
           /(href|src|data-href)="\/(assets|js)\//g,
