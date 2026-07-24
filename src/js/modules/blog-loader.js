@@ -4,6 +4,7 @@ import { rescanCardContentAccessibility } from './card-content-accessibility.js'
 import { refreshSectionPreview } from './section-preview.js';
 import { escapeHTML as escapeHtmlShared } from '../utils/escape-html.js';
 import { sitePath } from '../utils/site-base.js';
+import { mountArticleReactions } from './blog-reactions.js';
 
 /**
  * Blog Loader Module
@@ -202,7 +203,7 @@ class BlogLoader {
       .join('');
 
     modalBody.innerHTML = `
-            <article class="blog-article blog-article--editorial x-article">
+            <article class="blog-article blog-article--editorial x-article" data-post-id="${this.escapeHTML(post.id)}">
             <header class="article-header">
                 <p class="article-kicker">${this.escapeHTML(post.kicker || 'Field notes')}</p>
                 <h1 class="article-title" id="blog-modal-title">${this.escapeHTML(post.title)}</h1>
@@ -223,11 +224,15 @@ class BlogLoader {
             <div class="article-body article-body--measure">
                 ${htmlContent}
             </div>
+            <div data-blog-reactions-host></div>
             <footer class="article-footer article-footer--editorial x-article-footer">
               <a class="blog-read-btn x-article-footer__link" href="${fullPageHref}">Open full page</a>
             </footer>
             </article>
         `;
+
+    const reactionsHost = modalBody.querySelector('[data-blog-reactions-host]');
+    if (reactionsHost) mountArticleReactions(reactionsHost, post.id);
 
     this.modal.classList.remove('hidden');
     // Force browser reflow to enable CSS transition

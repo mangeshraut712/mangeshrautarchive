@@ -469,6 +469,14 @@ class PortfolioSearch {
         tags: 'uses setup stack tools hardware software',
       },
       {
+        title: 'Changelog',
+        description: 'Releases, improvements, and retirements across the portfolio',
+        icon: 'fa-clock-rotate-left',
+        url: sitePath('/changelog.html'),
+        type: 'Page',
+        tags: 'changelog release notes updates shipping voice assistme',
+      },
+      {
         title: 'Travel atlas',
         description: 'Interactive travel timeline, routes, and galleries',
         icon: 'fa-route',

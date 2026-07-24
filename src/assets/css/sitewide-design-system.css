@@ -45,6 +45,8 @@ button:not(.gh-contrib__view-btn):not(.gh-contrib__year):not(.about-tab-btn):not
   ):not(.a11y-glass-preset):not(.a11y-glass-popover__close):not([class*='maplibregl-ctrl']):not(
     .systems-arch-tab
   ):not(.systems-hero-action):not(.uses-control-tile):not(.uses-filter-chip):not(
+    .changelog-chip
+  ):not(.changelog-filters-toggle):not(.changelog-month__title):not(.article-reaction):not(
     .portfolio-reach-badge
   ):not(.hero-pill-badge):not(.crypto-mini-btn):not(.robinhood-mini-btn):not(
     .calendly-panel-button
@@ -118,6 +120,8 @@ button:not(.gh-contrib__view-btn):not(.gh-contrib__year):not(.about-tab-btn):not
   ):not(.a11y-glass-preset):not(.a11y-glass-popover__close):not([class*='maplibregl-ctrl']):not(
     .systems-arch-tab
   ):not(.systems-hero-action):not(.uses-control-tile):not(.uses-filter-chip):not(
+    .changelog-chip
+  ):not(.changelog-filters-toggle):not(.changelog-month__title):not(.article-reaction):not(
     .portfolio-reach-badge
   ):not(.hero-pill-badge):not(.crypto-mini-btn):not(.robinhood-mini-btn):not(
     .calendly-panel-button
@@ -679,7 +683,9 @@ body:not(.error-page)
         .engineering-open-btn
       ):not(.hero-cta):not(.contact-assistme-btn):not(.blog-title-link):not(.blog-read-btn):not(
         .article-related-card
-      ):not(.blog-back-link):not(.blog-archive-link):not(.blog-feed-link)
+      ):not(.blog-back-link):not(.blog-archive-link):not(.blog-feed-link):not(
+        .changelog-entry__title-link
+      ):not(.changelog-rail__link):not(.changelog-entry__commit)
   ),
 body:not(.error-page) .link,
 body:not(.error-page) .text-blue {
@@ -697,7 +703,9 @@ html.dark
         .engineering-open-btn
       ):not(.hero-cta):not(.contact-assistme-btn):not(.blog-title-link):not(.blog-read-btn):not(
         .article-related-card
-      ):not(.blog-back-link):not(.blog-archive-link):not(.blog-feed-link)
+      ):not(.blog-back-link):not(.blog-archive-link):not(.blog-feed-link):not(
+        .changelog-entry__title-link
+      ):not(.changelog-rail__link):not(.changelog-entry__commit)
   ),
 html.dark body:not(.error-page) .link,
 html.dark body:not(.error-page) .text-blue {
@@ -742,11 +750,13 @@ button:not(.gh-contrib__view-btn):not(.gh-contrib__year):not(.about-tab-btn):not
     .a11y-toolbar button
   ):not(.a11y-glass-preset):not(.a11y-glass-popover__close):not(.systems-arch-tab):not(
     .uses-control-tile
-  ):not(.portfolio-reach-badge):not(.hero-pill-badge):not(.crypto-mini-btn):not(
-    .robinhood-mini-btn
-  ):not(.calendly-panel-button):not(.ios-btn):not(.ios-btn-small):not(.status-circle):not(
-    .edit-btn
-  ):not(.contact-assistme-btn):not(.currently-tab):not(.section-preview-btn):not(
+  ):not(.uses-filter-chip):not(.changelog-chip):not(.changelog-filters-toggle):not(
+    .changelog-month__title
+  ):not(.article-reaction):not(.portfolio-reach-badge):not(.hero-pill-badge):not(
+    .crypto-mini-btn
+  ):not(.robinhood-mini-btn):not(.calendly-panel-button):not(.ios-btn):not(.ios-btn-small):not(
+    .status-circle
+  ):not(.edit-btn):not(.contact-assistme-btn):not(.currently-tab):not(.section-preview-btn):not(
     .hero-cta-secondary
   ):not(.hero-cta-primary):not([class*='maplibregl-ctrl']),
 .project-tag,

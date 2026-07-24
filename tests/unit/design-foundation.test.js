@@ -39,7 +39,7 @@ describe('design foundation ownership', () => {
   });
 
   it('does not double-link stylesheets outside noscript on subpages', () => {
-    const pages = ['systems.html', 'monitor.html', 'uses.html', 'travel.html'];
+    const pages = ['systems.html', 'monitor.html', 'uses.html', 'travel.html', 'changelog.html'];
     for (const page of pages) {
       const hrefs = stylesheetHrefsOutsideNoscript(readSrc(page));
       const counts = hrefs.reduce((acc, href) => {
@@ -56,7 +56,14 @@ describe('design foundation ownership', () => {
     expect(accessibility).toMatch(/html\.high-contrast/);
     expect(accessibility).toMatch(/Merged from:.*high-contrast/);
 
-    for (const page of ['index.html', 'systems.html', 'monitor.html', 'uses.html', 'travel.html']) {
+    for (const page of [
+      'index.html',
+      'systems.html',
+      'monitor.html',
+      'uses.html',
+      'travel.html',
+      'changelog.html',
+    ]) {
       expect(readSrc(page)).toMatch(/assets\/css\/accessibility\.css/);
     }
   });

@@ -17,7 +17,8 @@
     { "source": "/monitor.html", "destination": "/monitor", "permanent": true },
     { "source": "/travel.html", "destination": "/travel", "permanent": true },
     { "source": "/systems.html", "destination": "/systems", "permanent": true },
-    { "source": "/uses.html", "destination": "/uses", "permanent": true }
+    { "source": "/uses.html", "destination": "/uses", "permanent": true },
+    { "source": "/changelog.html", "destination": "/changelog", "permanent": true }
   ],
   "functions": {
     "api/index.py": {

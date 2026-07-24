@@ -387,6 +387,7 @@ async function inlineThemeHead(distDir) {
     resolve(distDir, 'monitor.html'),
     resolve(distDir, 'systems.html'),
     resolve(distDir, 'uses.html'),
+    resolve(distDir, 'changelog.html'),
     resolve(distDir, '404.html'),
   ];
 
@@ -627,6 +628,7 @@ async function generateSitemap(distDir) {
     { loc: `${siteUrl}/monitor`, lastmod: today, changefreq: 'daily', priority: '0.6' },
     { loc: `${siteUrl}/systems`, lastmod: today, changefreq: 'weekly', priority: '0.75' },
     { loc: `${siteUrl}/uses`, lastmod: today, changefreq: 'monthly', priority: '0.5' },
+    { loc: `${siteUrl}/changelog`, lastmod: today, changefreq: 'weekly', priority: '0.55' },
     { loc: `${siteUrl}/blog`, lastmod: latestPostDate, changefreq: 'weekly', priority: '0.8' },
     ...caseStudies.map(cs => ({
       loc: `${siteUrl}/case-studies/${cs.slug}`,
@@ -761,28 +763,33 @@ async function addCacheBusting(distDir, version) {
   };
 
   await Promise.all(
-    [htmlPath, monitorPath, travelPath, systemsPath, resolve(distDir, 'uses.html')].map(
-      async htmlFile => {
-        if (await pathExists(htmlFile)) {
-          let content = await readFile(htmlFile, 'utf8');
+    [
+      htmlPath,
+      monitorPath,
+      travelPath,
+      systemsPath,
+      resolve(distDir, 'uses.html'),
+      resolve(distDir, 'changelog.html'),
+    ].map(async htmlFile => {
+      if (await pathExists(htmlFile)) {
+        let content = await readFile(htmlFile, 'utf8');
 
-          // Add cache busting to CSS, JS, and data-href lazy styles
-          content = content.replace(
-            /(href|src|data-href)="([^"]+)"/g,
-            (match, attr, rawPath) => `${attr}="${appendVersion(rawPath)}"`
-          );
+        // Add cache busting to CSS, JS, and data-href lazy styles
+        content = content.replace(
+          /(href|src|data-href)="([^"]+)"/g,
+          (match, attr, rawPath) => `${attr}="${appendVersion(rawPath)}"`
+        );
 
-          // Keep static asset paths repo-relative for GitHub Pages deployments.
-          content = content.replace(
-            /(href|src|data-href)="\/(assets|js)\//g,
-            (match, attr, folder) => `${attr}="${folder}/`
-          );
+        // Keep static asset paths repo-relative for GitHub Pages deployments.
+        content = content.replace(
+          /(href|src|data-href)="\/(assets|js)\//g,
+          (match, attr, folder) => `${attr}="${folder}/`
+        );
 
-          await writeFile(htmlFile, content);
-          console.log(`🔄 Added cache busting to ${relative(distDir, htmlFile)}`);
-        }
+        await writeFile(htmlFile, content);
+        console.log(`🔄 Added cache busting to ${relative(distDir, htmlFile)}`);
       }
-    )
+    })
   );
 }
 

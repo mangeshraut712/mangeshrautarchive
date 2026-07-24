@@ -9,7 +9,8 @@ const DESTINATIONS = [
   { href: 'monitor.html', title: 'Monitor', key: '3' },
   { href: 'travel.html', title: 'Travel', key: '4' },
   { href: 'uses.html', title: 'Uses', key: '5' },
-  { href: 'index.html#contact', title: 'Contact', key: '6' },
+  { href: 'changelog.html', title: 'Changelog', key: '6' },
+  { href: 'index.html#contact', title: 'Contact', key: '7' },
 ];
 
 function resolveAttemptedPath() {

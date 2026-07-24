@@ -36,7 +36,8 @@
 ┌──────────────────────────────────────────────────────┐
 │  Vercel Edge / GitHub Pages (static)                 │
 │  src/index.html, src/systems.html, src/monitor.html  │
-│  src/travel.html, src/uses.html, src/404.html        │
+│  src/travel.html, src/uses.html, src/changelog.html, │
+│  src/404.html                                        │
 │  dist/ (esbuild output)                              │
 ├──────────────────────────────────────────────────────┤
 │  Vercel Serverless Functions                         │
@@ -122,7 +123,7 @@ npm run qa:lighthouse:vercel  # Live Vercel Lighthouse floors
 
 ### HTML
 
-- Semantic HTML5. Pages: `index.html`, `systems.html`, `monitor.html`, `travel.html`, `uses.html`, `404.html`.
+- Semantic HTML5. Pages: `index.html`, `systems.html`, `monitor.html`, `travel.html`, `uses.html`, `changelog.html`, `404.html`.
 - `systems.html` and `monitor.html` must never include footer elements.
 - PWA manifest at `src/manifest.json`, service worker at `src/service-worker.js`.
 

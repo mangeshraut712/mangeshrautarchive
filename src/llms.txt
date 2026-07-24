@@ -23,6 +23,7 @@
 - [Systems notebook](https://mangeshraut712.github.io/mangeshrautarchive/systems)
 - [System monitor](https://mangeshraut712.github.io/mangeshrautarchive/monitor)
 - [Uses / stack](https://mangeshraut712.github.io/mangeshrautarchive/uses)
+- [Changelog](https://mangeshraut712.github.io/mangeshrautarchive/changelog)
 - [Travel atlas](https://mangeshraut712.github.io/mangeshrautarchive/travel)
 - [RSS feed](https://mangeshraut712.github.io/mangeshrautarchive/rss.xml)
 - [Sitemap](https://mangeshraut712.github.io/mangeshrautarchive/sitemap.xml)
@@ -44,6 +45,7 @@ There is **no React, Vue, Angular, or Svelte runtime**. Tailwind CSS is build-ti
 | `/systems` | Engineering notebook — architecture, metrics, proof surfaces |
 | `/monitor` | Live system monitor / telemetry dashboard |
 | `/uses` | Hardware, software, and AI stack colophon |
+| `/changelog` | Product changelog — releases, improvements, retirements |
 | `/travel` | Travel atlas |
 | `/case-studies/{slug}` | Deep dives (portfolio, HindAI, CES Energy, AssistMe, bug tracker) |
 

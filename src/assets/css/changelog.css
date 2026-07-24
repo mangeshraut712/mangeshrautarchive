@@ -1,0 +1,492 @@
+/**
+ * Changelog — match github.blog/changelog structure.
+ * Solid Apple light/dark canvases (#fff / #000). No grid texture.
+ */
+
+body.changelog-page {
+  --cl-bg: #ffffff;
+  --cl-text: #1d1d1f;
+  --cl-secondary: #6e6e73;
+  --cl-muted: #86868b;
+  --cl-border: #d2d2d7;
+  --cl-surface: #f5f5f7;
+  --cl-chip-active: #e8e8ed;
+  --cl-blue: #0071e3;
+  --cl-release: #1a7f37;
+  --cl-improvement: #0969da;
+  --cl-retired: #bf5700;
+  --cl-badge-bg: #f0f0f2;
+  --cl-badge-text: #6e6e73;
+  color: var(--cl-text);
+  background: #ffffff !important;
+}
+
+html.dark body.changelog-page {
+  --cl-bg: #000000;
+  --cl-text: #ffffff;
+  --cl-secondary: #8b949e;
+  --cl-muted: #6e7681;
+  --cl-border: #30363d;
+  --cl-surface: #161b22;
+  --cl-chip-active: #21262d;
+  --cl-blue: #2f81f7;
+  --cl-release: #3fb950;
+  --cl-improvement: #58a6ff;
+  --cl-retired: #d29922;
+  --cl-badge-bg: #21262d;
+  --cl-badge-text: #8b949e;
+  color: var(--cl-text);
+  background: #000000 !important;
+}
+
+body.changelog-page .systems-shell.changelog-shell {
+  display: block;
+  max-width: min(50.75rem, 100%) !important;
+  width: 100%;
+  margin-inline: auto;
+  padding-top: 0.85rem;
+  text-align: left;
+}
+
+/* Slim hero — GitHub goes filters → months; we keep a light page title */
+body.changelog-page .changelog-hero {
+  display: grid;
+  gap: 0.35rem;
+  padding: 0.15rem 0 1rem;
+}
+
+body.changelog-page .changelog-hero-top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+}
+
+body.changelog-page .changelog-hero h1 {
+  margin: 0;
+  font-size: clamp(1.75rem, 3.5vw, 2.25rem);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  color: var(--cl-text);
+  text-align: left;
+}
+
+body.changelog-page .changelog-hero-lead {
+  margin: 0;
+  max-width: 34rem;
+  font-size: 0.9rem;
+  line-height: 1.45;
+  color: var(--cl-secondary);
+}
+
+body.changelog-page .changelog-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem 0.5rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--cl-muted);
+}
+
+body.changelog-page .changelog-meta time {
+  text-transform: none;
+  letter-spacing: -0.01em;
+  color: var(--cl-secondary);
+}
+
+/* Type filters — GitHub-style loose pills */
+body.changelog-page .changelog-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem 0.55rem;
+  margin: 0.25rem 0 0;
+  padding: 0.85rem 0 0.75rem;
+  border: 0;
+  border-bottom: 0;
+  background: var(--cl-bg);
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  position: sticky;
+  top: calc(env(safe-area-inset-top, 0px) + 3.45rem);
+  z-index: 5;
+}
+
+body.changelog-page .changelog-type-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.3rem;
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+body.changelog-page .changelog-chip {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  border: 0 !important;
+  background: transparent !important;
+  background-image: none !important;
+  color: var(--cl-secondary) !important;
+  -webkit-text-fill-color: var(--cl-secondary) !important;
+  border-radius: 980px !important;
+  padding: 0.45rem 0.8rem !important;
+  font-size: 0.8125rem !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  cursor: pointer;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+body.changelog-page .changelog-chip i {
+  font-size: 0.7rem;
+}
+
+body.changelog-page .changelog-chip:hover {
+  color: var(--cl-text) !important;
+  -webkit-text-fill-color: var(--cl-text) !important;
+  background: var(--cl-surface) !important;
+}
+
+body.changelog-page .changelog-chip:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--cl-blue) 50%, transparent);
+  outline-offset: 2px;
+}
+
+body.changelog-page .changelog-chip.is-active {
+  background: var(--cl-chip-active) !important;
+  color: var(--cl-text) !important;
+  -webkit-text-fill-color: var(--cl-text) !important;
+  box-shadow: none !important;
+}
+
+body.changelog-page .changelog-chip--release:not(.is-active) i {
+  color: var(--cl-release);
+}
+
+body.changelog-page .changelog-chip--improvement:not(.is-active) i {
+  color: var(--cl-improvement);
+}
+
+body.changelog-page .changelog-chip--retired:not(.is-active) i {
+  color: var(--cl-retired);
+}
+
+body.changelog-page .changelog-chip--release.is-active {
+  color: var(--cl-release) !important;
+  -webkit-text-fill-color: var(--cl-release) !important;
+}
+
+body.changelog-page .changelog-chip--improvement.is-active {
+  color: var(--cl-improvement) !important;
+  -webkit-text-fill-color: var(--cl-improvement) !important;
+}
+
+body.changelog-page .changelog-chip--retired.is-active {
+  color: var(--cl-retired) !important;
+  -webkit-text-fill-color: var(--cl-retired) !important;
+}
+
+body.changelog-page .changelog-filters-toggle {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-left: auto;
+  border: 1px solid var(--cl-border) !important;
+  background: transparent !important;
+  background-image: none !important;
+  color: var(--cl-secondary) !important;
+  -webkit-text-fill-color: var(--cl-secondary) !important;
+  border-radius: 980px !important;
+  padding: 0.42rem 0.8rem !important;
+  font-size: 0.72rem !important;
+  font-weight: 650 !important;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+body.changelog-page .changelog-filters-toggle:hover,
+body.changelog-page .changelog-filters-toggle[aria-expanded='true'] {
+  color: var(--cl-text) !important;
+  -webkit-text-fill-color: var(--cl-text) !important;
+  background: var(--cl-surface) !important;
+}
+
+body.changelog-page .changelog-filter-panel {
+  display: none;
+  width: 100%;
+  gap: 0.5rem;
+  padding: 0.55rem 0 0.1rem;
+}
+
+body.changelog-page .changelog-filter-panel.is-open {
+  display: grid;
+}
+
+body.changelog-page .changelog-toolbar__label {
+  margin: 0;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--cl-muted);
+  text-align: left;
+}
+
+body.changelog-page .changelog-chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+
+body.changelog-page .changelog-chip--tag {
+  border: 1px solid var(--cl-border) !important;
+  border-radius: 980px !important;
+  font-size: 0.75rem !important;
+  padding: 0.3rem 0.65rem !important;
+}
+
+body.changelog-page .changelog-chip--tag.is-active {
+  background: var(--cl-chip-active) !important;
+  color: var(--cl-text) !important;
+  -webkit-text-fill-color: var(--cl-text) !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
+
+body.changelog-page .changelog-results-label {
+  margin: 0.15rem 0 0.35rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--cl-muted);
+  text-align: left;
+}
+
+/* Month groups */
+body.changelog-page .changelog-timeline {
+  display: grid;
+  gap: 0;
+  padding: 0.5rem 0 3rem;
+  width: 100%;
+}
+
+body.changelog-page .changelog-month {
+  display: grid;
+  gap: 0;
+  padding-bottom: 2.5rem;
+  scroll-margin-top: 7.5rem;
+}
+
+body.changelog-page .changelog-month__title {
+  display: flex !important;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0 0 0.25rem !important;
+  padding: 1.25rem 0 0.5rem !important;
+  font-size: 1.75rem !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+  color: var(--cl-text) !important;
+  -webkit-text-fill-color: var(--cl-text) !important;
+  text-align: left !important;
+  border: 0 !important;
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  position: static;
+  cursor: pointer;
+  width: 100%;
+  appearance: none;
+  font-family: inherit;
+  transform: none !important;
+}
+
+body.changelog-page .changelog-month__title:hover,
+body.changelog-page .changelog-month__title:focus-visible {
+  background: transparent !important;
+  color: var(--cl-text) !important;
+  -webkit-text-fill-color: var(--cl-text) !important;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+body.changelog-page .changelog-month__title i {
+  font-size: 0.85rem;
+  color: var(--cl-muted);
+  transition: transform 0.2s ease;
+}
+
+body.changelog-page .changelog-month.is-collapsed .changelog-month__title i {
+  transform: rotate(-90deg);
+}
+
+body.changelog-page .changelog-month.is-collapsed .changelog-month__list {
+  display: none;
+}
+
+body.changelog-page .changelog-month__list {
+  display: grid;
+  gap: 0;
+}
+
+/* GitHub ChangelogItem pattern — kill systems-shell article card chrome */
+body.changelog-page .systems-shell article.changelog-entry,
+body.changelog-page .changelog-entry {
+  display: grid !important;
+  gap: 0.65rem;
+  padding: 2rem 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-bottom: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  text-align: left;
+}
+
+body.changelog-page .changelog-entry__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+body.changelog-page .changelog-entry__meta time {
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--cl-badge-text);
+  white-space: nowrap;
+}
+
+body.changelog-page .changelog-entry__badge {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 0.35rem;
+  padding: 0.2rem 0.4rem;
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  background: var(--cl-badge-bg);
+  color: var(--cl-badge-text);
+  white-space: nowrap;
+}
+
+body.changelog-page .changelog-entry[data-type='release'] .changelog-entry__badge {
+  color: var(--cl-release);
+}
+
+body.changelog-page .changelog-entry[data-type='improvement'] .changelog-entry__badge {
+  color: var(--cl-improvement);
+}
+
+body.changelog-page .changelog-entry[data-type='retired'] .changelog-entry__badge {
+  color: var(--cl-retired);
+}
+
+body.changelog-page .changelog-entry__main {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem 1.25rem;
+}
+
+body.changelog-page .changelog-entry__title {
+  margin: 0 !important;
+  flex: 1 1 16rem;
+  min-width: 0;
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.015em;
+  line-height: 1.4;
+  color: var(--cl-text) !important;
+  text-align: left !important;
+}
+
+body.changelog-page .changelog-entry__title a,
+body.changelog-page a.changelog-entry__title-link,
+html.dark body.changelog-page .changelog-entry__title a,
+html.dark body.changelog-page a.changelog-entry__title-link {
+  color: var(--cl-text) !important;
+  -webkit-text-fill-color: var(--cl-text) !important;
+  text-decoration: none !important;
+}
+
+body.changelog-page .changelog-entry__title a:hover,
+body.changelog-page a.changelog-entry__title-link:hover,
+html.dark body.changelog-page .changelog-entry__title a:hover,
+html.dark body.changelog-page a.changelog-entry__title-link:hover {
+  color: var(--cl-blue) !important;
+  -webkit-text-fill-color: var(--cl-blue) !important;
+}
+
+body.changelog-page .changelog-entry__area {
+  margin: 0.15rem 0 0;
+  flex: 0 0 auto;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--cl-muted);
+  white-space: nowrap;
+  max-width: 12rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+body.changelog-page .changelog-empty {
+  display: grid;
+  gap: 0.75rem;
+  justify-items: start;
+  padding: 2rem 0;
+  color: var(--cl-secondary);
+}
+
+@media (width <= 640px) {
+  body.changelog-page .changelog-entry {
+    padding: 1.5rem 0;
+  }
+
+  body.changelog-page .changelog-entry__main {
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  body.changelog-page .changelog-filters-toggle {
+    margin-left: 0;
+  }
+
+  body.changelog-page .changelog-month__title {
+    font-size: 1.45rem !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.changelog-page .changelog-month__title i {
+    transition: none;
+  }
+}

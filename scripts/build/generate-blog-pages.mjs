@@ -159,7 +159,7 @@ function renderBlogIndex(posts, tags) {
       <header class="blog-index-header">
         <p class="blog-index-kicker">Technical Writings</p>
         <h1 class="blog-index-title">Field notes on AI, systems, and product engineering</h1>
-        <p class="blog-index-lede">Long-form posts with reader promises, practical workflows, and honest tradeoffs — written for engineers who want signal, not hype.</p>
+        <p class="blog-index-lede">Long-form field notes with reader promises, practical workflows, and honest tradeoffs — written for engineers who want signal, not hype. Claims are labeled when they are judgment, and linked when they are facts.</p>
         <div class="blog-index-meta">
           <span>${posts.length} articles</span>
         </div>
@@ -223,9 +223,9 @@ function renderBlogPost(post, posts) {
 
   const body = `
     <div class="blog-reading-progress" id="blog-reading-progress" aria-hidden="true"></div>
-    <main id="main-content" class="blog-article-main">
+    <main id="main-content" class="blog-article-main" data-post-id="${escapeHTML(post.id)}">
       <a href="${blogIndexHref()}" class="blog-back-link"><i class="fas fa-arrow-left" aria-hidden="true"></i> All articles</a>
-      <article class="blog-article blog-article--editorial x-article">
+      <article class="blog-article blog-article--editorial x-article" data-post-id="${escapeHTML(post.id)}">
         <header class="article-header">
           <div class="article-header-tools" aria-hidden="false"></div>
           <p class="article-kicker">${escapeHTML(post.kicker || 'Field notes')}</p>
@@ -248,6 +248,7 @@ function renderBlogPost(post, posts) {
           ${toc ? `<aside class="blog-article-sidebar" id="blog-article-toc">${toc}</aside>` : ''}
           <div class="article-body article-body--measure">${html}</div>
         </div>
+        <div data-blog-reactions-host></div>
         ${relatedHtml}
       </article>
     </main>`;

@@ -2,6 +2,7 @@ import {
   initCardContentAccessibility,
   rescanCardContentAccessibility,
 } from './card-content-accessibility.js';
+import { initArticleReactions } from './blog-reactions.js';
 
 function initBlogFilters() {
   const container = document.getElementById('blog-posts-container');
@@ -128,6 +129,7 @@ function initBlogPage() {
   initBlogFilters();
   initReadingProgress();
   initTocSpy();
+  initArticleReactions();
 }
 
 if (document.readyState === 'loading') {

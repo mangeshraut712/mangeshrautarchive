@@ -16,6 +16,7 @@ Blog: https://mangeshraut.pro/blog
 Systems: https://mangeshraut.pro/systems
 Monitor: https://mangeshraut.pro/monitor
 Uses: https://mangeshraut.pro/uses
+Changelog: https://mangeshraut.pro/changelog
 Travel: https://mangeshraut.pro/travel
 Resume: https://mangeshraut.pro/assets/files/Mangesh_Raut_Resume.pdf
 RSS: https://mangeshraut.pro/rss.xml

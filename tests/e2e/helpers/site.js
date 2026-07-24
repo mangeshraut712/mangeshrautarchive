@@ -47,6 +47,7 @@ export const PAGES = {
   monitor: '/monitor',
   travel: '/travel',
   uses: '/uses',
+  changelog: '/changelog',
   offline: '/offline',
   notFound: '/404',
 };

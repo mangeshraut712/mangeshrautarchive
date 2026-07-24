@@ -255,6 +255,7 @@ export const evidenceFooterLinks = [
   { label: 'Resume', href: 'assets/files/Mangesh_Raut_Resume.pdf' },
   { label: 'GitHub', href: 'https://github.com/mangeshraut712', external: true },
   { label: 'Now', href: 'uses.html' },
+  { label: 'Changelog', href: 'changelog.html' },
   { label: 'Writings', href: 'blog/' },
 ];
 
