@@ -82,8 +82,8 @@ npm run lint:python         # flake8 (Python)
 npm run format:check        # Prettier check
 
 # Test
-npm test                    # Vitest unit tests (50 tests)
-npm run test:api            # pytest API tests (122 tests; activate venv first)
+npm test                    # Vitest unit tests (104 tests)
+npm run test:api            # pytest API tests (156 tests; activate venv first)
 npm run test:e2e:chrome     # Playwright E2E — Desktop Chrome
 npm run test:e2e:all        # Playwright E2E — all 16 browser projects
 
@@ -179,8 +179,8 @@ All three test suites must pass before any merge to `main`:
 
 | Suite | Runner     | Command                | Coverage                                    |
 | ----- | ---------- | ---------------------- | ------------------------------------------- |
-| Unit  | Vitest     | `npm test`             | 50 tests — JS modules, utilities, markdown  |
-| API   | pytest     | `npm run test:api`     | 122 tests — FastAPI endpoints, middleware   |
+| Unit  | Vitest     | `npm test`             | 104 tests — JS modules, utilities, markdown |
+| API   | pytest     | `npm run test:api`     | 156 tests — FastAPI endpoints, middleware   |
 | E2E   | Playwright | `npm run test:e2e:all` | Multi-spec suite across 16 browser projects |
 
 - Playwright configs include Desktop Chrome/Safari/Firefox/Edge, Pixel 7 Chrome, iPhone 14 Safari, iPad Pro Safari, and more.

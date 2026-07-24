@@ -87,20 +87,22 @@ class GitHubProjects {
       {
         name: 'mangeshrautarchive',
         full_name: 'mangeshraut712/mangeshrautarchive',
-        description: 'Full-stack developer portfolio with FastAPI + Next.js AI assistant',
-        homepage: 'https://mangeshraut.pro',
+        description:
+          'Agentic full-stack portfolio: vanilla ESM + FastAPI AssistMe, dual-host Pages/Worker, WebMCP, and public monitor',
+        homepage: 'https://mangeshraut712.github.io/mangeshrautarchive/',
         html_url: 'https://github.com/mangeshraut712/mangeshrautarchive',
         language: 'JavaScript',
         topics: [
-          '2026',
           'ai-assistant',
+          'cloudflare-workers',
           'developer-portfolio',
+          'esbuild',
           'fastapi',
-          'nextjs',
+          'github-pages',
           'portfolio',
           'python',
-          'typescript',
-          'vercel',
+          'vanilla-js',
+          'webmcp',
         ],
         stargazers_count: 0,
         forks_count: 0,
@@ -110,9 +112,9 @@ class GitHubProjects {
         size: 79988,
         license: { spdx_id: 'MIT' },
         default_branch: 'main',
-        updated_at: '2026-07-24T06:53:57Z',
+        updated_at: '2026-07-24T12:44:43Z',
         created_at: '2025-04-08T23:10:08Z',
-        pushed_at: '2026-07-24T06:53:53Z',
+        pushed_at: '2026-07-24T12:32:48Z',
         fork: false,
         archived: false,
       },
@@ -137,7 +139,7 @@ class GitHubProjects {
         stargazers_count: 3,
         forks_count: 2,
         open_issues_count: 1,
-        watchers_count: 0,
+        watchers_count: 3,
         subscribers_count: 0,
         size: 694,
         license: { spdx_id: 'MIT' },
@@ -235,7 +237,7 @@ class GitHubProjects {
         stargazers_count: 2,
         forks_count: 0,
         open_issues_count: 0,
-        watchers_count: 0,
+        watchers_count: 2,
         subscribers_count: 0,
         size: 137239,
         license: null,
@@ -251,7 +253,7 @@ class GitHubProjects {
         full_name: 'mangeshraut712/Hindai',
         description:
           'Hind AI digital gurukul — interactive learning for Indic scriptures with local Gemma via Ollama (Next.js).',
-        homepage: 'https://hindai-nine.vercel.app',
+        homepage: '',
         html_url: 'https://github.com/mangeshraut712/Hindai',
         language: 'TypeScript',
         topics: [
@@ -283,7 +285,7 @@ class GitHubProjects {
         full_name: 'mangeshraut712/Vitals.AI',
         description:
           'Privacy-first AI health dashboard for biomarkers, body composition, recovery, and digital twin insights.',
-        homepage: 'https://vitals-ai.vercel.app',
+        homepage: '',
         html_url: 'https://github.com/mangeshraut712/Vitals.AI',
         language: 'TypeScript',
         topics: [
@@ -315,7 +317,7 @@ class GitHubProjects {
         full_name: 'mangeshraut712/career-agent-pro',
         description:
           'AI job-search copilot for role analysis, resume tailoring, and application prep (Next.js + FastAPI).',
-        homepage: 'https://ai-job-helper-steel.vercel.app/',
+        homepage: '',
         html_url: 'https://github.com/mangeshraut712/career-agent-pro',
         language: 'TypeScript',
         topics: [
@@ -371,7 +373,7 @@ class GitHubProjects {
         full_name: 'mangeshraut712/Dotfit-Fitness',
         description:
           '🚀 Modern fitness platform with AI coaching, wearable integration, and 2026 tech. React + TypeScript + OpenAI for personalized workouts and health tracking.',
-        homepage: 'https://dotfit-fitness.vercel.app/',
+        homepage: '',
         html_url: 'https://github.com/mangeshraut712/Dotfit-Fitness',
         language: 'TypeScript',
         topics: [
@@ -429,7 +431,7 @@ class GitHubProjects {
         name: 'kashishbeautyparlour',
         full_name: 'mangeshraut712/kashishbeautyparlour',
         description: 'Website for Kashish Beauty Parlour and Training Center (Next.js).',
-        homepage: 'https://kashishbeautyparlour.vercel.app/',
+        homepage: '',
         html_url: 'https://github.com/mangeshraut712/kashishbeautyparlour',
         language: 'TypeScript',
         topics: [
@@ -459,7 +461,7 @@ class GitHubProjects {
         name: 'vidyaraut',
         full_name: 'mangeshraut712/vidyaraut',
         description: 'Portfolio website for Vidya Raut (Next.js).',
-        homepage: 'https://vidhyaraut.vercel.app/',
+        homepage: '',
         html_url: 'https://github.com/mangeshraut712/vidyaraut',
         language: 'TypeScript',
         topics: ['framer-motion', 'nextjs', 'personal-site', 'portfolio', 'react', 'typescript'],
@@ -482,7 +484,7 @@ class GitHubProjects {
         full_name: 'mangeshraut712/alpha-quant-academy',
         description:
           'Quant finance training platform with AI stock analysis and Monte Carlo backtesting.',
-        homepage: 'https://alpha-quant-academy.vercel.app/',
+        homepage: '',
         html_url: 'https://github.com/mangeshraut712/alpha-quant-academy',
         language: 'Jupyter Notebook',
         topics: [
@@ -818,6 +820,15 @@ class GitHubProjects {
     try {
       const parsed = new URL(withProtocol);
       if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') return '';
+      const host = String(parsed.hostname || '').toLowerCase();
+      // Vercel production is DEPLOYMENT_DISABLED (402) — do not surface dead demos.
+      if (
+        host === 'mangeshraut.pro' ||
+        host === 'www.mangeshraut.pro' ||
+        host.endsWith('.vercel.app')
+      ) {
+        return '';
+      }
       return parsed.toString();
     } catch {
       return '';

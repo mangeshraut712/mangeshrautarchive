@@ -1,7 +1,7 @@
 /**
  * AssistMe Voice Mode — ChatGPT / Grok / Gemini-style conversational voice.
  *
- * Modular pipeline (matches AssistMe-VirtualAssistant Standard mode + Google AI Mode):
+ * Modular pipeline for AssistMe Voice Mode (Standard + Google AI Mode style UX):
  *   VAD / Web Speech STT → /api/chat (voice prompt) → OpenRouter TTS via /api/tts
  *
  * Barge-in: tap overlay / End / Escape cancels playback and returns to listening.

@@ -12,7 +12,7 @@ Execute in the order below unless dependencies say otherwise. Each executor: rea
 | Check       | Command                                        | Notes                                  |
 | ----------- | ---------------------------------------------- | -------------------------------------- |
 | Stack guard | `npm run doctor:stack`                         | Vanilla ESM only — no React runtime    |
-| Unit        | `npm test`                                     | ~50 Vitest tests                       |
+| Unit        | `npm test`                                     | ~104 Vitest tests                      |
 | Lint+unit   | `npm run check`                                | ESLint + Stylelint + Prettier + Vitest |
 | API         | `source venv/bin/activate && npm run test:api` | pytest suite                           |
 | Security    | `npm run security-check`                       | no leaked secrets                      |
@@ -84,5 +84,5 @@ Status values: `TODO` | `IN PROGRESS` | `DONE` | `BLOCKED` | `REJECTED`
 | 1   | SW cache name stuck on `20260712w` while ASSET_VER is `20260716d` | bug/perf      | HIGH   | S      | LOW  | `src/service-worker.js:6` vs `scripts/build/asset-version.mjs:2` |
 | 2   | Rate limits in process memory only                                | security      | HIGH   | M      | MED  | `api/config.py` `rate_limit_store` + serverless multi-isolate    |
 | 3   | Duplicated `escapeHtml` / many `innerHTML` sinks                  | security/debt | MED    | M      | MED  | `uses-page.js`, `monitor.html`, modules under `src/js/modules/`  |
-| 4   | Thin unit coverage of portfolio chrome                            | tests         | MED    | M      | LOW  | 50 Vitest tests; flyout/nav untested                             |
+| 4   | Thin unit coverage of portfolio chrome                            | tests         | MED    | M      | LOW  | 104 Vitest tests; flyout/nav untested                            |
 | 5   | Subpage CSS duplicate/heavy heads                                 | perf/debt     | MED    | M      | MED  | ~60k CSS LOC; multi-link heads on systems/monitor/uses/travel    |

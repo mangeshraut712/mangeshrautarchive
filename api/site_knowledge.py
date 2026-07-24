@@ -323,6 +323,12 @@ def format_blog_release_summary(query: str, today: Optional[date] = None) -> str
     return f"Blog posts released in {target_year}-{target_month:02d}:\n{titles}"
 
 
+def format_recent_blog_summary(limit: int = 5) -> str:
+    posts = sorted(get_blog_posts(), key=lambda post: post["date"], reverse=True)[: max(1, limit)]
+    titles = "\n".join(f"- {post['date']}: {post['title']}" for post in posts)
+    return f"Latest Field Notes posts:\n{titles}"
+
+
 def build_derived_knowledge_text() -> str:
     travel = get_travel_summary()
     blog_june_2026 = format_blog_release_summary("June 2026")

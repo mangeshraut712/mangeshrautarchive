@@ -56,6 +56,7 @@ from api.model_router import (
 from api.site_knowledge import (
     build_site_knowledge_prompt,
     format_blog_release_summary,
+    format_recent_blog_summary,
     format_usa_state_summary,
     retrieve_site_context,
     should_use_web_tools,
@@ -87,7 +88,16 @@ def is_blog_release_query(query: str) -> bool:
     """Detect direct blog release questions that should use the local index."""
     return "blog" in query and any(
         term in query
-        for term in ["this month", "released", "release", "new", "latest", "june 2026"]
+        for term in [
+            "this month",
+            "released",
+            "release",
+            "new",
+            "latest",
+            "june 2026",
+            "july 2026",
+            "may 2026",
+        ]
     )
 
 
@@ -162,7 +172,7 @@ def generate_local_response(query: str, site_context: str = "") -> Dict:
     # Greetings
     if any(g in query for g in ["hello", "hi", "hey", "greetings"]):
         return {
-            "answer": "👋 Hello! I'm AssistMe, running in **Local Mode** (incorporating May 2026 updates like WebNN/Gemma 3). I can tell you about Mangesh's experience, skills, projects, and more. What would you like to know?",
+            "answer": "👋 Hello! I'm AssistMe, running in **Local Mode**. I can tell you about Mangesh's experience, skills, projects, Field Notes blogs, and more. What would you like to know?",
             "category": "Greeting",
         }
 
@@ -189,7 +199,15 @@ def generate_local_response(query: str, site_context: str = "") -> Dict:
         langs = ", ".join(PORTFOLIO_DATA["skills"]["languages"])
         frameworks = ", ".join(PORTFOLIO_DATA["skills"]["frameworks"][:4])
         return {
-            "answer": f"🛠️ **Technical Stack**:\n• **Languages**: {langs}\n• **Frameworks**: {frameworks}, FastAPI\n• **Cloud**: AWS, Docker, Kubernetes\n• **AI/ML**: WebNN, Gemma 3, TensorFlow, scikit-learn\n• **Databases**: Cloud Firestore, PostgreSQL, MongoDB, Redis",
+            "answer": (
+                f"🛠️ **Technical Stack**:\n"
+                f"• **Languages**: {langs}\n"
+                f"• **Frameworks**: {frameworks}, FastAPI\n"
+                f"• **Cloud**: AWS, Docker, Kubernetes\n"
+                f"• **AI/ML**: OpenRouter, TensorFlow, scikit-learn, RAG\n"
+                f"• **This site**: vanilla ESM + FastAPI + WebMCP (not React/Next)\n"
+                f"• **Databases**: PostgreSQL, MongoDB, Redis"
+            ),
             "category": "Skills",
         }
 
@@ -202,7 +220,11 @@ def generate_local_response(query: str, site_context: str = "") -> Dict:
     # Blogs
     if _query_has_word(query, "blog") or _query_has_any_word(query, ["write", "google i/o", "open x"]):
         return {
-            "answer": "✍️ **Recent Technical Writing** (Apple-style Dev Newsletter):\n• **Google I/O 2026: The Rise of Agentic Web, Gemini 2.5, Gemma 3, and WebNN** (May 2026)\n• **Inside the Open X Algorithm** (May 2026)\n• **Decentralized AI Agents and WebGPU** (April 2026)\n\nYou can read all these blogs in the 'Technical Writings' section of the homepage!",
+            "answer": (
+                "✍️ **Recent Field Notes**\n\n"
+                f"{format_recent_blog_summary(5)}\n\n"
+                "Browse all posts in the Field Notes / Technical Writings section."
+            ),
             "category": "Blogs",
         }
 
@@ -211,11 +233,15 @@ def generate_local_response(query: str, site_context: str = "") -> Dict:
         projects_list = "\n".join(
             [
                 f"• **{p['name']}**: {p['achievements']}"
-                for p in PORTFOLIO_DATA["projects"][:3]
+                for p in PORTFOLIO_DATA["projects"][:4]
             ]
         )
         return {
-            "answer": f"🚀 **Key Projects**:\n{projects_list}\n• **Hybrid Edge/Cloud Portfolio**: Built this high-performance site featuring real-time Firestore analytics and WebNN integrations.",
+            "answer": (
+                f"🚀 **Key Projects**:\n{projects_list}\n"
+                "• Live showcase cards pull from public GitHub repos "
+                "(GitHub Pages primary; Vercel demos may be offline while DEPLOYMENT_DISABLED)."
+            ),
             "category": "Projects",
         }
 

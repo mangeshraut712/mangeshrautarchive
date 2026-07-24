@@ -47,7 +47,7 @@ const FREE_VISION_MODELS = [
   'openrouter/free',
 ];
 
-const SYSTEM_PROMPT = `You are AssistMe — a premium, Apple Intelligence–inspired AI assistant for Mangesh Raut's professional portfolio (WWDC 2026 Siri-class: warm, direct, personal, action-oriented). GitHub Pages + mangeshraut.pro.
+const SYSTEM_PROMPT = `You are AssistMe — a premium, Apple Intelligence–inspired AI assistant for Mangesh Raut's professional portfolio (WWDC 2026 Siri-class: warm, direct, personal, action-oriented). Primary live host: GitHub Pages (mangeshraut.pro may be unavailable while Vercel is DEPLOYMENT_DISABLED).
 
 ## Identity
 You are intelligent, warm, concise, and useful — like a capable personal assistant. Lead with the answer, stay focused, and offer a natural next step. You specialize in Mangesh's career, but you also answer general questions (science, tech, math, culture, public knowledge) clearly — never refuse just because a question is not portfolio-related.
@@ -64,8 +64,10 @@ You are the site search + knowledge layer for this portfolio: prefer precise ans
 - Software Engineer at Customized Energy Solutions (Philadelphia) — energy analytics, microservices, AWS, Java/Spring, Python.
 - Prior: IoasiZ microservices; Aramark cloud automation.
 - MSCS, Drexel University (GPA ~3.76); BE Computer Engineering, SPPU.
-- Stack: Java Spring Boot, Python (FastAPI), AWS, Terraform, React/Angular, ML/LLMs (TensorFlow, Gemma), agentic systems.
-- Highlights: ~40% dashboard latency reduction, ~35% faster CI/CD, ~25% ML accuracy improvement.
+- Career stack: Java Spring Boot, Python (FastAPI), AWS, Terraform, React/Angular, ML/LLMs (TensorFlow), agentic systems.
+- This portfolio site: vanilla ESM + FastAPI + OpenRouter + WebMCP (not a React/Next.js app).
+- Highlights: ~40% dashboard latency reduction (REST/query optimization), ~35% faster CI/CD, ~25% ML accuracy improvement.
+- Flagship public repos: mangeshrautarchive, Gravity-SaaS-Agent, ai-ml-portfolio, HindAI, agent-console, Stanford-CS336.
 - Contact: mbr63@drexel.edu · linkedin.com/in/mangeshraut71298 · github.com/mangeshraut712
 - Portfolio surfaces: Home, About, Skills, Experience, Projects, Education, Blog, Contact, Systems, Travel, Monitor, Uses.
 
@@ -134,7 +136,7 @@ function localAnswer(message) {
     return '**M.S. Computer Science, Drexel University** (GPA ~3.76) · **B.E. Computer Engineering**, SPPU.';
   }
   if (/project|github|portfolio|hindai/.test(q)) {
-    return 'Projects live at [github.com/mangeshraut712](https://github.com/mangeshraut712). Standouts include this portfolio (AssistMe + WebMCP) and **HindAI**.';
+    return 'Standouts: **mangeshrautarchive** (AssistMe + WebMCP), **Gravity-SaaS-Agent**, **ai-ml-portfolio**, **HindAI**, **agent-console**. Browse [github.com/mangeshraut712](https://github.com/mangeshraut712).';
   }
   if (/contact|email|linkedin|hire|reach/.test(q)) {
     return '**mbr63@drexel.edu** · [LinkedIn](https://linkedin.com/in/mangeshraut71298) · [GitHub](https://github.com/mangeshraut712)';

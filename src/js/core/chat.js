@@ -887,7 +887,7 @@ class IntelligentAssistant {
       (lower.includes('who') && lower.includes('you'))
     ) {
       return portfolio(
-        '**Mangesh Raut** is a Software Engineer based in Philadelphia (and Pune roots). He builds AI-native full-stack systems with production reliability — Java Spring Boot, Python, AWS, and ML. Live site: [mangeshraut.pro](https://mangeshraut.pro) · code: [github.com/mangeshraut712](https://github.com/mangeshraut712).'
+        '**Mangesh Raut** is a Software Engineer based in Philadelphia (and Pune roots). He builds AI-native full-stack systems with production reliability — Java Spring Boot, Python, AWS, and ML. Live site: [GitHub Pages](https://mangeshraut712.github.io/mangeshrautarchive/) · code: [github.com/mangeshraut712](https://github.com/mangeshraut712).'
       );
     }
 

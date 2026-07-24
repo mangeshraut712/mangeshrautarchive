@@ -2741,7 +2741,7 @@ class AppleIntelligenceChatbot {
       return 'Mangesh is currently a Software Engineer at Customized Energy Solutions, optimizing energy analytics with 40% efficiency gains. Previously at IoasiZ, he refactored monoliths into microservices and resolved 50+ critical bugs.';
     }
     if (lowerMessage.includes('project')) {
-      return "Mangesh's key projects include this AI-powered portfolio with RAG chatbot, a Bug Reporting System (Django + React), demand forecasting with LSTM, and a DevVit Reddit game. Visit the Projects section to explore more.";
+      return "Mangesh's key projects include this vanilla ESM + FastAPI portfolio (AssistMe), Gravity SaaS Agent, ai-ml-portfolio, HindAI, agent-console, and energy demand forecasting with LSTM. Visit the Projects section for live GitHub cards.";
     }
     if (lowerMessage.includes('education')) {
       return "Mangesh holds a Master of Science in Computer Science from Drexel University (GPA 3.76) and a Bachelor of Engineering from Savitribai Phule Pune University. He's also published research at IEEE on ML-based intrusion detection.";

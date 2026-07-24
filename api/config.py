@@ -242,11 +242,12 @@ PORTFOLIO_DATA = {
     "phone": "+1 (609) 505 3500",
     "linkedin": "linkedin.com/in/mangeshraut71298",
     "github": "github.com/mangeshraut712",
-    "website": "https://mangeshraut.pro",
+    "website": "https://mangeshraut712.github.io/mangeshrautarchive/",
     "resume_url": "/assets/files/Mangesh_Raut_Resume.pdf",
     "summary": (
         "Software Engineer with 6+ years of experience in Java Spring Boot, Python, React, Angular, AWS, and machine learning. "
-        "Currently optimizing energy analytics at Customized Energy Solutions with 40% efficiency gains."
+        "Currently optimizing energy analytics at Customized Energy Solutions with 40% efficiency gains. "
+        "This portfolio ships as vanilla ESM + FastAPI (AssistMe), not a React/Next.js app."
     ),
     "experience": [
         {
@@ -255,7 +256,7 @@ PORTFOLIO_DATA = {
             "period": "Aug 2024 - Present",
             "location": "Philadelphia, PA",
             "achievements": [
-                "Reduced dashboard latency by 40% through React optimization",
+                "Reduced dashboard latency by 40% through REST/query optimization",
                 "Accelerated CI/CD deployments by 35% with Jenkins automation",
                 "Improved ML model accuracy by 25% for energy forecasting",
                 "Architected scalable microservices with Spring Boot and AWS",
@@ -304,44 +305,44 @@ PORTFOLIO_DATA = {
     ],
     "projects": [
         {
-            "name": "Starlight Blogging Website",
-            "tech": ["Angular", "Flask", "SQLite"],
-            "achievements": "100+ users, authentication, content management",
+            "name": "mangeshrautarchive (this site)",
+            "tech": ["Vanilla ESM", "FastAPI", "OpenRouter", "GitHub Pages", "Cloudflare Workers"],
+            "achievements": "AssistMe chat/voice, WebMCP tools, dual-host deploy, public monitor",
+        },
+        {
+            "name": "Gravity SaaS Agent",
+            "tech": ["Next.js", "TypeScript", "MCP", "WhatsApp"],
+            "achievements": "Multi-tenant AI agent platform with billing and messaging integrations",
+        },
+        {
+            "name": "ai-ml-portfolio",
+            "tech": ["Python", "NumPy", "RAG", "speech VAD"],
+            "achievements": "Applied AI monorepo for speech, retrieval evals, and ML-from-scratch labs",
+        },
+        {
+            "name": "HindAI",
+            "tech": ["TypeScript", "Next.js", "Gemma", "Ollama"],
+            "achievements": "Indic learning assistant with local/open model pathways",
+        },
+        {
+            "name": "agent-console",
+            "tech": ["TypeScript", "Next.js", "WebSockets"],
+            "achievements": "Real-time agent console with tool-calling and observability",
         },
         {
             "name": "Face Emotion Recognition",
-            "tech": ["Python", "OpenCV", "ML"],
-            "achievements": "95% accuracy, real-time processing",
-        },
-        {
-            "name": "PC Crime Detector",
-            "tech": ["Java", "Database", "Automation"],
-            "achievements": "80% breach reduction",
-        },
-        {
-            "name": "AI Portfolio (This Website)",
-            "tech": ["HTML/CSS/JS", "FastAPI", "OpenRouter", "Vercel"],
-            "achievements": "AI chatbot, agentic actions, PWA, 3D animations",
+            "tech": ["Python", "OpenCV", "TensorFlow", "React"],
+            "achievements": "Real-time emotion recognition with dashboard UI",
         },
         {
             "name": "Energy Demand Forecasting",
             "tech": ["Python", "TensorFlow", "LSTM", "AWS"],
-            "achievements": "25% ML accuracy improvement, time-series forecasting",
+            "achievements": "25% ML accuracy improvement, time-series forecasting at CES",
         },
         {
-            "name": "Microservices E-Commerce Platform",
-            "tech": ["Java", "Spring Boot", "Docker", "Redis"],
-            "achievements": "3x faster data retrieval, 50+ bug fixes, microservices architecture",
-        },
-        {
-            "name": "DevVit Reddit Game",
-            "tech": ["TypeScript", "Devvit SDK", "WASM"],
-            "achievements": "Hackathon submission, browser-based game on Reddit",
-        },
-        {
-            "name": "Sarvam AI Cookbook",
+            "name": "Sarvam AI Cookbook (fork)",
             "tech": ["Next.js", "Python", "Sarvam API"],
-            "achievements": "Showcase of Indian-language AI models and examples",
+            "achievements": "Indic speech/VAD and multilingual LLM cookbook adaptations",
         },
     ],
     "publications": [
@@ -378,20 +379,21 @@ SYSTEM_PROMPT = """You are AssistMe — a premium, Apple Intelligence–inspired
 You're intelligent, conversational, and useful — like a capable personal assistant. Lead with the answer, stay concise, and offer a natural next step. You specialize in Mangesh's professional background but can discuss any topic thoughtfully.
 
 ## Mini Google of this portfolio
-You are the site search + knowledge layer for mangeshraut.pro: retrieve precise answers from portfolio facts (projects, skills, experience, education, contact, systems). Prefer grounded answers over speculation. When the user is viewing a page section (provided in context), bias toward that section. If unsure, say so and suggest the best on-site place to look next.
+You are the site search + knowledge layer for this portfolio (primary live host: GitHub Pages; mangeshraut.pro may be unavailable while Vercel is DEPLOYMENT_DISABLED): retrieve precise answers from portfolio facts (projects, skills, experience, education, contact, systems). Prefer grounded answers over speculation. When the user is viewing a page section (provided in context), bias toward that section. If unsure, say so and suggest the best on-site place to look next.
 
 ## Mangesh Raut — Quick Profile
 - Software Engineer at Customized Energy Solutions (Philadelphia, PA, Aug 2024 - Present, ~2 years)
 - Full-Stack Developer & AI/ML Engineer with 6+ years of total software engineering experience
-- Core stack: Java, Spring Boot, Python, SQL, JavaScript, TypeScript, React, Angular, AWS (EC2, S3, Lambda), Docker, Kubernetes
+- Core stack (career): Java, Spring Boot, Python, SQL, JavaScript, TypeScript, React, Angular, AWS (EC2, S3, Lambda), Docker, Kubernetes
+- This portfolio site stack: vanilla HTML/CSS/ESM, FastAPI, OpenRouter, GitHub Pages + Cloudflare Worker, WebMCP
 - MS in Computer Science from Drexel University (Completed June 2025, GPA 3.76)
 - BE in Computer Engineering from Savitribai Phule Pune University (2014-2017, GPA 3.6)
-- Key achievements: 40% dashboard latency reduction, 35% faster CI/CD, 25% ML accuracy improvement, 3x faster data retrieval using Redis
-- Hybrid AI Web Stack: Architected the portfolio's edge/cloud execution pipeline, enabling client-side browser inference via WebNN + Gemma 3 and cloud fallback via OpenRouter (Gemini 2.5 Pro/Flash).
+- Key achievements: 40% dashboard latency reduction (REST/query optimization at CES), 35% faster CI/CD, 25% ML accuracy improvement, 3x faster data retrieval using Redis
+- Hybrid AI Web Stack: Architected the portfolio's edge/cloud execution pipeline with OpenRouter chat/voice and Cloudflare Worker fallbacks for GitHub Pages.
 - Published: IEEE paper on ML algorithms for network intrusion detection (2024)
 - Certifications: AWS Cloud Practitioner, Oracle Certified Java SE, TensorFlow Developer
 - Awards: Dean's List (Drexel, 3 semesters), Best Project Award (Pune University)
-- Recent content: Authored a technical blog on "Google I/O 2026: The Rise of Agentic Web, Gemini 2.5, Gemma 3, and WebNN" (May 2026) and "Inside the Open X Algorithm" (May 2026).
+- Recent content: 14 Field Notes posts including OpenRouter routing (Jul 2026), Grok 4.5 / Grok Build (Jul 2026), WWDC26 Siri AI, NotebookLM, Google I/O 2026 WebMCP, and the open X algorithm.
 - Public location context: works with CES (US/India hybrid engineering); based in the Pune / Philadelphia professional corridor when relevant to career questions.
 - Interests visitors may ask about at a high level: open-source, AI engineering, travel, and continuous learning. Do **not** invent or disclose private home addresses, medical data, blood group, caste, or detailed family PII — those are not part of the public portfolio surface.
 - USA career narrative (public): MSCS in the United States; SDE tenure at CES; continues global engineering work with interest in US tech opportunities (Northeast / Northwest corridors).
@@ -414,7 +416,7 @@ Your replies render in a Telegram-style rich chat UI that supports **GFM markdow
 "Mangesh Raut is a Software Engineer at Customized Energy Solutions, specializing in Java Spring Boot, Python, and AWS.
 
 **Key highlights**
-- 40% dashboard latency reduction (React optimization)
+- 40% dashboard latency reduction (REST/query optimization)
 - 25% ML forecasting accuracy improvement (TensorFlow)
 - MS in Computer Science, Drexel University (GPA 3.76)
 

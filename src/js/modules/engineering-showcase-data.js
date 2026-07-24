@@ -27,8 +27,8 @@ export const heroStats = [
   { value: deployLighthouse, unit: '', label: 'Lighthouse CI gate', href: '#production' },
   { value: String(WEBMCP_TOOL_COUNT), unit: '', label: 'WebMCP tools', href: '#architecture' },
   { value: '40', unit: '%', label: 'Dashboard improvement', href: '#projects' },
-  { value: '12', unit: '', label: 'Technical articles', href: '#writing' },
-  { value: '40+', unit: '', label: 'Repositories', href: '#open-source' },
+  { value: '14', unit: '', label: 'Technical articles', href: '#writing' },
+  { value: '15', unit: '', label: 'Public repositories', href: '#open-source' },
   { value: 'Live', unit: '', label: 'Production monitor', href: 'monitor.html' },
 ];
 
@@ -211,7 +211,7 @@ export const openSourceActivity = {
     { label: 'Recent PR', value: '—', liveKey: 'recentPr' },
     { label: 'Recent issue', value: '—', liveKey: 'recentIssue' },
     { label: 'Most active repo', value: 'mangeshrautarchive', liveKey: 'activeRepo' },
-    { label: 'Repositories', value: '40+' },
+    { label: 'Repositories', value: '15' },
     { label: 'Contributions', value: 'Active', liveKey: 'streak' },
   ],
   repoUrl: 'https://github.com/mangeshraut712',
