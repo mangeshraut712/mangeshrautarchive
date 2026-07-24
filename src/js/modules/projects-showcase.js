@@ -4,7 +4,8 @@ import './project-xr.js';
 import './github-contributions-graph.js';
 
 const DEFAULT_USERNAME = 'mangeshraut712';
-const PROJECT_ROWS_LIMIT = 2;
+const PREVIEW_CARD_MIN = 3;
+const PREVIEW_CARD_MAX = 6;
 const DEFAULT_PROJECT_LENS = 'all';
 const LENS_KEYS = ['all', 'stars', 'forks', 'active'];
 const LENS_LABELS = {
@@ -36,11 +37,12 @@ function getProjectGridColumns(container) {
   return Math.max(1, columns || 3);
 }
 
-function getTwoRowLimit(container) {
+function getPreviewLimit(container) {
   const columns = getProjectGridColumns(container);
-  // Phones (1-col): show 4 cards so the section feels full; tablet 2-col keeps 2 rows.
-  const rows = columns <= 1 ? 4 : PROJECT_ROWS_LIMIT;
-  return columns * rows;
+  // Keep the first viewport light: 3 on phones, 4 on 2-col, 6 on desktop.
+  if (columns <= 1) return PREVIEW_CARD_MIN;
+  if (columns === 2) return 4;
+  return PREVIEW_CARD_MAX;
 }
 
 function setTextById(id, value) {
@@ -601,7 +603,7 @@ export async function initProjectShowcase({ username = DEFAULT_USERNAME } = {}) 
     const expandWrap = document.getElementById('projects-expand-wrap');
     const expandBtn = document.getElementById('projects-expand-btn');
     let activeLens = DEFAULT_PROJECT_LENS;
-    let showAllProjects = true;
+    let showAllProjects = false;
     let didInitialRealign = false;
 
     const getCurrentQuery = () => String(searchInput?.value || '').trim();
@@ -652,13 +654,13 @@ export async function initProjectShowcase({ username = DEFAULT_USERNAME } = {}) 
     const getDisplayRepos = () => {
       const sorted = getFilteredSortedRepos();
       if (showAllProjects) return sorted;
-      return sorted.slice(0, getTwoRowLimit(container));
+      return sorted.slice(0, getPreviewLimit(container));
     };
 
     const syncExpandControl = totalFiltered => {
       if (!expandWrap || !expandBtn) return;
 
-      const previewLimit = getTwoRowLimit(container);
+      const previewLimit = getPreviewLimit(container);
       const needsExpand = totalFiltered > previewLimit;
 
       if (!needsExpand) {
@@ -798,7 +800,7 @@ export async function initProjectShowcase({ username = DEFAULT_USERNAME } = {}) 
       let filteredSorted = getFilteredSortedRepos();
       let displayRepos = showAllProjects
         ? filteredSorted
-        : filteredSorted.slice(0, getTwoRowLimit(container));
+        : filteredSorted.slice(0, getPreviewLimit(container));
 
       syncExpandControl(filteredSorted.length);
 
@@ -813,7 +815,7 @@ export async function initProjectShowcase({ username = DEFAULT_USERNAME } = {}) 
           filteredSorted = getFilteredSortedRepos();
           displayRepos = showAllProjects
             ? filteredSorted
-            : filteredSorted.slice(0, getTwoRowLimit(container));
+            : filteredSorted.slice(0, getPreviewLimit(container));
           syncExpandControl(filteredSorted.length);
         }
 
