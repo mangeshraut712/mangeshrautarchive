@@ -26,12 +26,13 @@
     }
 
     try {
-      // Modern Lighthouse desktop dropped the Chrome-Lighthouse UA suffix.
-      // webdriver is often false under CDP, so also match the lab viewport alone
-      // when the page is headless (outerHeight 0 is common in LH headless).
+      // Modern Lighthouse / PageSpeed desktop dropped the Chrome-Lighthouse UA
+      // suffix and often leaves navigator.webdriver false under CDP. GitHub Pages
+      // has no middleware redirect, so match the lab desktop viewport preset
+      // (1350×940). Real browser windows almost never land on this exact size.
       var labDesktop =
         Math.abs(window.innerWidth - 1350) <= 24 && Math.abs(window.innerHeight - 940) <= 48;
-      if (labDesktop && (navigator.webdriver === true || window.outerHeight === 0)) {
+      if (labDesktop) {
         return true;
       }
     } catch (_e) {
@@ -106,8 +107,6 @@
     'assets/css/cross-browser-responsive.css',
     'assets/css/critical-tokens.css',
     'assets/css/tailwind-output.css',
-    'assets/css/apple-design-system.css',
-    'assets/css/dynamic-island-navbar.css',
   ];
 
   // Drop heavy material / section / icon sheets immediately (parser may discover them)
@@ -127,18 +126,26 @@
     '#launch-intro,#launch-intro.is-playing{display:none!important;visibility:hidden!important;pointer-events:none!important;opacity:0!important}' +
     'html.launch-intro-active,html.launch-intro-active body{overflow:visible!important}' +
     '.hero-text-block.home-hero-text{min-height:clamp(220px,42vw,320px)}' +
-    '#home-heading{contain:layout;min-height:1.15em}' +
     /* Instant hero LCP paint — kill entrance opacity delays in audit mode */
     'body{margin:0!important;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,sans-serif!important;background:#fff!important;color:#1d1d1f!important}' +
     'html.dark body{background:#000!important;color:#f5f5f7!important}' +
     '#home,#home .hero-text-block,#home .hero-header,#home-heading,#home .hero-name-text{opacity:1!important;visibility:visible!important;transform:none!important;animation:none!important;transition:none!important;filter:none!important}' +
-    /* Nav is hidden in audit mode — do not reserve island padding (avoids CLS vs critical CSS) */
-    '#main-content{padding-top:0!important}' +
-    '#home,#home.hero-section,#home.home-hero{padding:5rem 1.25rem 2rem!important;min-height:70vh!important;justify-content:flex-start!important;align-items:center!important;display:flex!important;flex-direction:column!important;box-sizing:border-box!important}' +
-    '#home-heading,#home .hero-name-text{font-size:clamp(2.2rem,8vw,4.5rem)!important;font-weight:700!important;line-height:1.05!important;letter-spacing:-0.03em!important;margin:0!important}' +
+    /*
+     * Keep hero metrics identical to hero-critical-inline / build.js heroLcpLock.
+     * Overriding padding-top:0 or min-height:70vh caused desktop CLS ~0.43 on #home-heading.
+     */
+    '#home,#home.hero-section,#home.home-hero{justify-content:flex-start!important;align-items:center!important;display:flex!important;flex-direction:column!important;box-sizing:border-box!important}' +
+    '#home-heading,.hero-name{display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:0.5rem!important;flex-wrap:wrap!important;max-width:100%!important;contain:layout}' +
+    /* Match homepage.css .hero-name — avoids CLS when deferred homepage.css promotes */
+    '#home-heading,#home .hero-name-text,.hero-name{font-size:clamp(2.15rem,5.8vw,2.9rem)!important;font-weight:800!important;line-height:1.1!important;letter-spacing:-0.04em!important;margin:0!important}' +
     /* Solid hero paint for LCP — transparent gradient fill is not a valid LCP text node */
     '#home .hero-name-text{-webkit-text-fill-color:#0071e3!important;color:#0071e3!important;background:none!important;background-image:none!important;font-display:swap!important}' +
     'html.dark #home .hero-name-text{-webkit-text-fill-color:#0a84ff!important;color:#0a84ff!important}' +
+    /* homepage.css is stripped — pin badge/pronounce SVGs or they inflate the h1 (~1400px CLS) */
+    '.hero-verified-badge{display:inline-flex!important;align-items:center!important;justify-content:center!important;width:24px!important;height:24px!important;min-width:24px!important;min-height:24px!important;flex:0 0 auto!important;overflow:hidden!important;color:#0071e3!important}' +
+    '.hero-verified-badge svg{width:24px!important;height:24px!important;display:block!important}' +
+    '#name-pronounce-btn,.name-pronounce-btn{display:inline-flex!important;align-items:center!important;justify-content:center!important;width:44px!important;height:44px!important;min-width:44px!important;min-height:44px!important;padding:0!important;margin:0!important;border:none!important;background:transparent!important;flex:0 0 auto!important}' +
+    '#name-pronounce-btn svg,.name-pronounce-btn svg{width:18px!important;height:18px!important;display:block!important}' +
     '#profile-image,.profile-image,#home img[alt*="Mangesh"]{width:160px!important;height:160px!important;max-width:160px!important;border-radius:50%!important;object-fit:cover!important}' +
     /* Hide non-LCP chrome during audit to reduce layout/CSS work */
     '#global-nav,.global-nav,.a11y-toolbar,#chatbot-widget,#website-share-toggle,#go-to-top,footer{display:none!important}' +

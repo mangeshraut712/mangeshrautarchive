@@ -225,8 +225,8 @@ const HERO_CRITICAL_CSS = [
 ];
 
 /** Deferred after first paint — non-blocking via media=print onload.
- *  homepage.css + dynamic-island-navbar.css stay as real <link> tags in HTML
- *  (render-blocking). Deferring them caused desktop full-load CLS ~0.6. */
+ *  homepage.css + dynamic-island-navbar.css are also deferred (js-defer-css);
+ *  hero/nav metrics are locked in heroLcpLock to prevent desktop CLS. */
 const PREMIUM_DEFERRED_CSS = [
   'assets/css/accessibility.css',
   'assets/css/tailwind-output.css',
@@ -314,8 +314,12 @@ async function bundleAboveFoldCss(distDir) {
     '@media (min-width:1025px){:root{--site-nav-offset:4.25rem}#home,#home.hero-section,#home.home-hero{min-height:calc(100vh - var(--site-nav-offset));padding:clamp(2.5rem,8vh,5.5rem) 1.25rem clamp(1.5rem,4vh,3rem);flex-direction:column;justify-content:flex-start}#home>.container-fluid{min-height:0;padding-block:0}}' +
     '.global-nav.dynamic-island{height:52px;min-height:52px}' +
     '.global-nav.dynamic-island .nav-link{display:inline-flex;align-items:center;justify-content:center;min-height:30px;padding:5px 10px;font-size:12.5px;line-height:1;box-sizing:border-box}' +
-    '#home-heading,#home .hero-name-text{font-size:clamp(2.2rem,8vw,4.5rem);font-weight:700;line-height:1.05;letter-spacing:-.03em;margin:0;color:#0071e3;-webkit-text-fill-color:#0071e3;background:none}' +
+    '#home-heading,#home .hero-name-text,.hero-name{font-size:clamp(2.15rem,5.8vw,2.9rem);font-weight:800;line-height:1.1;letter-spacing:-.04em;margin:0;color:#0071e3;-webkit-text-fill-color:#0071e3;background:none}' +
     'html.dark #home .hero-name-text{color:#0a84ff;-webkit-text-fill-color:#0a84ff}' +
+    '.hero-verified-badge{display:inline-flex;width:24px;height:24px;min-width:24px;min-height:24px;flex:0 0 auto;overflow:hidden}' +
+    '.hero-verified-badge svg{width:24px;height:24px;display:block}' +
+    '#name-pronounce-btn,.name-pronounce-btn{display:inline-flex;width:44px;height:44px;min-width:44px;min-height:44px;padding:0;border:none;background:transparent;flex:0 0 auto}' +
+    '#name-pronounce-btn svg,.name-pronounce-btn svg{width:18px;height:18px;display:block}' +
     'body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,sans-serif;background:#fff;color:#1d1d1f}' +
     'html.dark body{background:#000;color:#f5f5f7}';
 

@@ -629,10 +629,10 @@
 
     #home .hero-name-text {
       font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
-      font-size: clamp(2.5rem, 6vw, 4rem);
+      font-size: clamp(2.15rem, 5.8vw, 2.9rem);
       font-weight: 800;
-      letter-spacing: -0.03em;
-      line-height: 1.05;
+      letter-spacing: -0.04em;
+      line-height: 1.1;
       /*
        * Solid paint for LCP: transparent gradient fill is not counted as LCP text,
        * which forced Lighthouse to wait on below-fold about subtitle (~7s mobile).
@@ -641,6 +641,49 @@
       color: #0071e3;
       -webkit-text-fill-color: #0071e3;
       background: none;
+    }
+
+    #home-heading.hero-name {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      max-width: 100%;
+    }
+
+    .hero-verified-badge {
+      display: inline-flex;
+      width: 24px;
+      height: 24px;
+      min-width: 24px;
+      min-height: 24px;
+      flex: 0 0 auto;
+      overflow: hidden;
+    }
+
+    .hero-verified-badge svg {
+      width: 24px;
+      height: 24px;
+      display: block;
+    }
+
+    #name-pronounce-btn.name-pronounce-btn {
+      display: inline-flex;
+      width: 44px;
+      height: 44px;
+      min-width: 44px;
+      min-height: 44px;
+      padding: 0;
+      border: none;
+      background: transparent;
+      flex: 0 0 auto;
+    }
+
+    #name-pronounce-btn.name-pronounce-btn svg {
+      width: 18px;
+      height: 18px;
+      display: block;
     }
 
     .profile-image-wrapper {
@@ -1106,11 +1149,20 @@ html.dark #home .hero-name-text {
   <link rel="stylesheet" href="assets/css/apple-premium-overrides.css?v=20260721chat6" media="print" onload="this.media='all'" />
   <link rel="stylesheet" href="assets/css/style.css?v=20260719seo" media="print" onload="this.media='all'" />
   <noscript><link rel="stylesheet" href="assets/css/style.css?v=20260719seo" /></noscript>
-  <link rel="stylesheet" href="assets/css/accessibility.css?v=20260719ui3" />
-<noscript
-    >
-</noscript>
-  <link rel="stylesheet" href="assets/css/dynamic-island-navbar.css?v=20260718glass2" />
+  <link
+    rel="stylesheet"
+    href="assets/css/accessibility.css?v=20260719ui3"
+    media="print"
+    class="js-defer-css"
+  />
+  <noscript><link rel="stylesheet" href="assets/css/accessibility.css?v=20260719ui3" /></noscript>
+  <link
+    rel="stylesheet"
+    href="assets/css/dynamic-island-navbar.css?v=20260718glass2"
+    media="print"
+    class="js-defer-css"
+  />
+  <noscript><link rel="stylesheet" href="assets/css/dynamic-island-navbar.css?v=20260718glass2" /></noscript>
 
   <!-- Non-critical material sheets: media=print until post-load promote (skipped in perf-audit) -->
   <link
@@ -1158,18 +1210,35 @@ html.dark #home .hero-name-text {
   <noscript
     ><link rel="stylesheet" href="assets/css/apple-cards-luxury-2026.css?v=20260719vibe1"
   /></noscript>
-  <!-- Render-blocking: homepage layout metrics must apply before first paint (desktop CLS). -->
-  <link rel="stylesheet" href="assets/css/homepage.css?v=20260719vibe1" />
+  <!-- Non-blocking: critical hero/nav metrics live in hero-critical-inline; promote after paint. -->
+  <link
+    rel="stylesheet"
+    href="assets/css/homepage.css?v=20260719vibe1"
+    media="print"
+    class="js-defer-css"
+  />
+  <noscript><link rel="stylesheet" href="assets/css/homepage.css?v=20260719vibe1" /></noscript>
   <link
     rel="stylesheet"
     href="assets/css/global-improvements.css?v=20260718edu"
     media="print"
     class="js-defer-css"
   />
-  <!-- Render-blocking: Spotlight command palette must win over deferred sheets -->
-  <link rel="stylesheet" href="assets/css/ux-polish-fixes.css?v=20260721voice2" />
-  <!-- Render-blocking: overflow/safe-area must apply before Chromium paints (Android/WhatsApp) -->
-  <link rel="stylesheet" href="assets/css/mobile-viewport.css?v=20260719music1" />
+  <!-- Spotlight / polish — defer so desktop PSI is not blocked on ~80KB sheet -->
+  <link
+    rel="stylesheet"
+    href="assets/css/ux-polish-fixes.css?v=20260721voice2"
+    media="print"
+    class="js-defer-css"
+  />
+  <noscript><link rel="stylesheet" href="assets/css/ux-polish-fixes.css?v=20260721voice2" /></noscript>
+  <link
+    rel="stylesheet"
+    href="assets/css/mobile-viewport.css?v=20260719music1"
+    media="print"
+    class="js-defer-css"
+  />
+  <noscript><link rel="stylesheet" href="assets/css/mobile-viewport.css?v=20260719music1" /></noscript>
   <link
     rel="stylesheet"
     href="assets/css/apple-super-retina-display.css?v=20260716aa"
@@ -1322,8 +1391,8 @@ html.dark #home .hero-name-text {
         <a class="nav-logo" href="#home" aria-label="Mangesh Raut home">
           <picture>
             <source srcset="assets/images/profile-icon.webp" type="image/webp" />
-            <img src="assets/images/profile-icon.png" alt="Mangesh Raut" width="32" height="32" loading="eager"
-              fetchpriority="high" />
+            <img src="assets/images/profile-icon.png" alt="Mangesh Raut" width="32" height="32" loading="lazy"
+              decoding="async" fetchpriority="low" />
           </picture>
         </a>
       </div>
@@ -1725,7 +1794,7 @@ html.dark #home .hero-name-text {
                 <h1 id="home-heading" class="hero-name xdr-highlight">
                   <span class="hero-name-text">Mangesh Raut</span>
                   <span class="hero-verified-badge" role="img" aria-label="Verified profile">
-                    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" aria-hidden="true">
                       <path
                         d="M12 2.75 14.83 5l3.58.56.56 3.58L21.25 12 19 14.83l-.56 3.58-3.58.56L12 21.25 9.17 19l-3.58-.56-.56-3.58L2.75 12 5 9.17l.56-3.58L9.17 5 12 2.75Z"
                         fill="currentColor"></path>
@@ -1735,7 +1804,7 @@ html.dark #home .hero-name-text {
                   </span>
                   <button id="name-pronounce-btn" class="name-pronounce-btn" type="button"
                     aria-label="Listen to name pronunciation" title="Hear how to pronounce my name">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"
                       stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                       <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
                       <path class="sound-wave" d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>

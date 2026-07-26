@@ -1,7 +1,8 @@
-const EAGER_MODULES = ['../modules/accessibility.js', '../modules/section-preview.js'];
+const EAGER_MODULES = ['../modules/section-preview.js'];
 
-/** Paint-visible polish — CSS already shows content; defer class sweeps off TBT path. */
-const POST_PAINT_IDLE_MODULES = ['../modules/scroll-animations.js'];
+/** Paint-visible polish — CSS already shows content; defer class sweeps off TBT path.
+ *  accessibility.js adds has-a11y-toolbar (body pad) — keep off the LCP/TBT critical path. */
+const POST_PAINT_IDLE_MODULES = ['../modules/accessibility.js', '../modules/scroll-animations.js'];
 
 /** WebGL / chrome glass — CSS glass paints first; load on interaction or late idle. */
 const IDLE_EAGER_MODULES = [
