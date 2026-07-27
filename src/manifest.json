@@ -8,16 +8,10 @@
   "display_override": ["standalone", "minimal-ui"],
   "background_color": "#ffffff",
   "theme_color": "#0071e3",
-  "description": "Portfolio of Mangesh Raut — Software Engineer specializing in production AI products, Java, Python, AWS, and full-stack systems.",
+  "description": "Portfolio of Mangesh Raut \u2014 Software Engineer specializing in production AI products, Java, Python, AWS, and full-stack systems.",
   "orientation": "any",
   "categories": ["portfolio", "technology", "education", "productivity"],
   "icons": [
-    {
-      "src": "/icon.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
-      "purpose": "any"
-    },
     {
       "src": "/favicon-32x32.png",
       "sizes": "32x32",

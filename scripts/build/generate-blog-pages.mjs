@@ -85,9 +85,8 @@ function pageShell({
     <title>${escapeHTML(title)}</title>
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32" />
-    <link rel="icon" href="/icon.svg" type="image/svg+xml" sizes="any" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
-    <link rel="manifest" href="${ASSET_PREFIX}/manifest.json" />
+<link rel="manifest" href="${ASSET_PREFIX}/manifest.json" />
     <link rel="alternate" type="application/rss+xml" title="RSS" href="${SITE_URL}/rss.xml" />
     <link rel="alternate" type="application/atom+xml" title="Atom" href="${SITE_URL}/feed.xml" />
     <link rel="stylesheet" href="${fontAwesomeStylesheet(ASSET_PREFIX)}" media="print" onload="this.media='all'" />
