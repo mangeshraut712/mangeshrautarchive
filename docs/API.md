@@ -67,5 +67,5 @@ npm run test:api   # 156 pytest tests in tests/api/
 ## Deploy notes
 
 - **GitHub Pages** ships static `dist/` only (no `/api` on Pages).
-- **Vercel** serves `dist/` + `/api/*` → `api/index.py`. `vercel.json` sets `git.deploymentEnabled: false`; production API deploys are manual or via separate Vercel project hooks, not auto on every `main` push.
+- **Vercel** serves `dist/` + `/api/*` → `api/index.py`. `vercel.json` sets `git.deploymentEnabled: false` and the project has `gitProviderOptions.createDeployments: disabled`; production deploys are **manual** (`vercel deploy --prod`) so Hobby Fluid CPU / Edge quotas are not burned by every `main` push.
 - **Cloudflare Worker** (`workers/assistme-chat/`) can front chat when Vercel apex is `DEPLOYMENT_DISABLED`.

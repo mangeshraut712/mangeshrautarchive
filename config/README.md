@@ -10,7 +10,7 @@ Root-level configs that must remain at `/` (package managers / CLIs hard-code pa
 
 - `eslint.config.js`, `.prettierrc`, `.stylelintrc.json`
 - `vitest.config.js`, `playwright.config.js`
-- `vercel.json`, `middleware.js`
+- `vercel.json`
 - `pyproject.toml`, `ruff.toml`, `.flake8`
 
 ## Repo doctor

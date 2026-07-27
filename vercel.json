@@ -27,7 +27,7 @@
       "excludeFiles": "{tests/**,docs/**,.github/**,artifacts/**,coverage/**,playwright-report/**,test-results/**,**/*.test.js,**/*.spec.js}"
     },
     "api/realtime-ws.js": {
-      "maxDuration": 300
+      "maxDuration": 60
     }
   },
   "crons": [],

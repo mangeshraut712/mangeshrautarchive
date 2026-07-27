@@ -10,8 +10,7 @@ mangeshrautarchive/
 │
 ├── package.json              # Node ≥22 · scripts · deps (root — required)
 ├── .nvmrc · .node-version    # Pin local Node 22 for nvm / asdf / fnm
-├── vercel.json               # Vercel routes · functions · headers
-├── middleware.js             # Vercel edge (Lighthouse perf-audit rewrite)
+├── vercel.json               # Vercel routes · functions · headers (git auto-deploy OFF)
 ├── index.js                  # Static-analysis entry → src/js/entry.js
 ├── playwright.config.js      # E2E multi-browser
 ├── vitest.config.js          # Unit tests → tests/unit/**
@@ -93,7 +92,7 @@ mangeshrautarchive/
 
 ## Root files that must stay at root
 
-Tooling expects these paths: `package.json`, `vercel.json`, `playwright.config.js`, `vitest.config.js`, `eslint.config.js`, `.prettierrc`, `.stylelintrc.json`, `middleware.js`, `CNAME`, `pyproject.toml`, `requirements*.txt`.
+Tooling expects these paths: `package.json`, `vercel.json`, `playwright.config.js`, `vitest.config.js`, `eslint.config.js`, `.prettierrc`, `.stylelintrc.json`, `CNAME`, `pyproject.toml`, `requirements*.txt`.
 
 Do **not** move them into `config/` without updating every consumer.
 
