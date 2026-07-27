@@ -782,7 +782,8 @@ async function addCacheBusting(distDir, version) {
     const [pathWithQuery, hash = ''] = String(rawPath).split('#');
     const [base, queryString = ''] = pathWithQuery.split('?');
 
-    if (!/\.(css|js)$/i.test(base)) {
+    // Version CSS/JS plus Safari tab/favorite icons so stale ICO/PNG caches bust.
+    if (!/\.(css|js|ico|png|svg|webp)$/i.test(base)) {
       return rawPath;
     }
 
