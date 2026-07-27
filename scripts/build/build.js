@@ -496,6 +496,7 @@ async function build() {
     generateCaseStudyPages(distDir),
     generateSitemap(distDir),
     generateRobotsTxt(distDir),
+    generateAiTxt(distDir),
     generateFeeds(distDir),
   ]);
 
@@ -509,6 +510,15 @@ function escapeXml(value = '') {
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&apos;');
+}
+
+/** Canonical static host for sitemap, robots.txt, ai.txt (GitHub Pages default). */
+function resolveProductionSiteUrl() {
+  return (
+    process.env.OPENROUTER_SITE_URL ||
+    process.env.PAGES_SITE_URL ||
+    'https://mangeshraut712.github.io/mangeshrautarchive'
+  ).replace(/\/$/, '');
 }
 
 function getSortedBlogPosts() {
@@ -616,10 +626,7 @@ ${atomEntries}
 }
 
 async function generateSitemap(distDir) {
-  const siteUrl =
-    process.env.OPENROUTER_SITE_URL ||
-    process.env.PAGES_SITE_URL ||
-    'https://mangeshraut712.github.io/mangeshrautarchive';
+  const siteUrl = resolveProductionSiteUrl();
   const today = new Date().toISOString().slice(0, 10);
   const posts = getSortedBlogPosts();
   const latestPostDate = posts[0]?.date || today;
@@ -680,11 +687,7 @@ ${urlEntries}
  * primary domain (mangeshraut.pro 402) while the live mirror is GitHub Pages.
  */
 async function generateRobotsTxt(distDir) {
-  const siteUrl = (
-    process.env.OPENROUTER_SITE_URL ||
-    process.env.PAGES_SITE_URL ||
-    'https://mangeshraut712.github.io/mangeshrautarchive'
-  ).replace(/\/$/, '');
+  const siteUrl = resolveProductionSiteUrl();
   const robotsPath = resolve(distDir, 'robots.txt');
   if (!(await pathExists(robotsPath))) {
     console.warn('⚠️  robots.txt missing in dist — skipped Sitemap/Host rewrite');
@@ -699,6 +702,30 @@ async function generateRobotsTxt(distDir) {
   }
   await writeFile(robotsPath, robots, 'utf8');
   console.log(`🤖 robots.txt Sitemap/Host → ${siteUrl}`);
+}
+
+/**
+ * Align ai.txt discovery URLs with dist/sitemap.xml (GitHub Pages while apex is offline).
+ */
+async function generateAiTxt(distDir) {
+  const siteUrl = resolveProductionSiteUrl();
+  const aiPath = resolve(distDir, 'ai.txt');
+  if (!(await pathExists(aiPath))) {
+    console.warn('⚠️  ai.txt missing in dist — skipped discovery rewrite');
+    return;
+  }
+
+  let ai = await readFile(aiPath, 'utf8');
+  const legacyHosts = [
+    'https://mangeshraut.pro',
+    'https://www.mangeshraut.pro',
+    'https://mangeshraut712.github.io/mangeshrautarchive',
+  ];
+  for (const host of legacyHosts) {
+    ai = ai.split(host).join(siteUrl);
+  }
+  await writeFile(aiPath, ai, 'utf8');
+  console.log(`🤖 ai.txt discovery URLs → ${siteUrl}`);
 }
 
 // Minify HTML files for better PageSpeed scores

@@ -114,10 +114,15 @@
   <meta name="twitter:site" content="@mrcommando712" />
   <meta name="twitter:creator" content="@mrcommando712" />
 
+  <!-- Favicons early in <head> — Safari tabs/favorites request /favicon.ico before late CSS. -->
+  <link rel="icon" href="favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/favicon-16x16.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon.png" />
+  <link rel="mask-icon" href="assets/icons/icon.svg" color="#0071e3" />
+  <meta name="msapplication-TileColor" content="#0071e3" />
+  <meta name="msapplication-TileImage" content="assets/icons/icon-192.png" />
   <link rel="manifest" href="manifest.json" />
-  <link rel="mask-icon" href="assets/icons/icon.svg" color="#007AFF" />
-  <link rel="apple-touch-icon" href="assets/images/profile-icon.png" sizes="180x180" />
-  <link rel="apple-touch-icon" href="assets/images/profile-icon.png" sizes="192x192" />
   <link rel="apple-touch-startup-image" href="assets/images/pwa-splash-iphone-17-pro-max.png"
     media="(device-width: 440px) and (device-height: 956px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" />
   <meta name="apple-touch-fullscreen" content="yes" />
@@ -1271,8 +1276,6 @@ html.dark #home .hero-name-text {
   <link rel="stylesheet" data-href="assets/css/engineering-showcase.css?v=20260716aa" data-lazy-style-key="engineering" />
   <link rel="stylesheet" data-href="assets/css/share-widget.css?v=20260719ui2" data-lazy-style-key="share" />
   <link rel="stylesheet" data-href="assets/css/health-widget.css?v=20260716aa" data-lazy-style-key="currently" />
-
-<link rel="icon" type="image/png" href="assets/images/profile-icon.png?v=20260716aa" />
 
   <script>
     (function () {

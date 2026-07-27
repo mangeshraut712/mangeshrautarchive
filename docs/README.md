@@ -3,6 +3,7 @@
 | Doc                                                                        | Contents                                                    |
 | -------------------------------------------------------------------------- | ----------------------------------------------------------- |
 | [STRUCTURE.md](./STRUCTURE.md)                                             | Canonical folder map — **start here when organizing code**  |
+| [API.md](./API.md)                                                         | FastAPI routes, chat flow, integrations, deploy notes       |
 | [foglamp-scan.md](./foglamp-scan.md)                                       | Public AI architecture map (Foglamp) + keep-alive           |
 | [seo/gsc-keyword-notepad-2026-07.md](./seo/gsc-keyword-notepad-2026-07.md) | Search Console query notepad + underserved keyword plan     |
 | [plans/](./plans/)                                                         | Improve-skill / audit execution plans (historical + active) |
