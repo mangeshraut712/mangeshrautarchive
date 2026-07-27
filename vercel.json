@@ -247,19 +247,6 @@
       ]
     },
     {
-      "source": "/icon.svg",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=604800, immutable"
-        },
-        {
-          "key": "Content-Type",
-          "value": "image/svg+xml"
-        }
-      ]
-    },
-    {
       "source": "/assets/icons/(.*)",
       "headers": [
         {
