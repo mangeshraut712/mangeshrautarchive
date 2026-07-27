@@ -782,8 +782,9 @@ async function addCacheBusting(distDir, version) {
     const [pathWithQuery, hash = ''] = String(rawPath).split('#');
     const [base, queryString = ''] = pathWithQuery.split('?');
 
-    // Version CSS/JS plus Safari tab/favorite icons so stale ICO/PNG caches bust.
-    if (!/\.(css|js|ico|png|svg|webp)$/i.test(base)) {
+    // Only version CSS/JS. Never cache-bust favicons — Safari loads ?v= icons then
+    // falls back to a letter tile when it also probes bare /favicon.ico.
+    if (!/\.(css|js)$/i.test(base)) {
       return rawPath;
     }
 
