@@ -6,9 +6,9 @@
 const BLESSING_CONFIG = {
   ganesh: {
     title: '🕉️ Shree Ganapati Aarti',
-    subtitle: 'Sukhkarta Dukhharta • Divine Chanting & Blessings',
-    embedUrl: 'https://www.youtube-nocookie.com/embed/v3xL9x9VlHk?autoplay=1&rel=0',
-    watchUrl: 'https://www.youtube.com/watch?v=v3xL9x9VlHk',
+    subtitle: 'Shendur Lal Chhadhayo / Sukhkarta Dukhharta • Divine Chanting',
+    embedUrl: 'https://www.youtube-nocookie.com/embed/w0W8Wh-8UCg?autoplay=1&rel=0',
+    watchUrl: 'https://www.youtube.com/watch?v=w0W8Wh-8UCg',
     badge: 'Ganapati Bappa Morya',
   },
   hanuman: {
