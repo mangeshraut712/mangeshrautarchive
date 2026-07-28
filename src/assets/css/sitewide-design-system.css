@@ -54,7 +54,9 @@ button:not(.gh-contrib__view-btn):not(.gh-contrib__year):not(.about-tab-btn):not
     .contact-assistme-btn
   ):not(.currently-tab):not(.section-preview-btn):not(.hero-cta-secondary):not(.btn-secondary):not(
     .button-secondary
-  ):not(.apple-btn-secondary):not(.about-tab-btn):not(.proj-filter-btn),
+  ):not(.apple-btn-secondary):not(.about-tab-btn):not(.proj-filter-btn):not(
+    .blessing-modal-close
+  ):not(.blessing-modal-launch-btn):not(.blessing-modal-poster-play),
 .contact-submit,
 .project-link,
 .read-more-btn,
@@ -129,7 +131,9 @@ button:not(.gh-contrib__view-btn):not(.gh-contrib__year):not(.about-tab-btn):not
     .contact-assistme-btn
   ):not(.currently-tab):not(.section-preview-btn):not(.hero-cta-secondary):not(.btn-secondary):not(
     .button-secondary
-  ):not(.apple-btn-secondary):not(.about-tab-btn):not(.proj-filter-btn):hover,
+  ):not(.apple-btn-secondary):not(.about-tab-btn):not(.proj-filter-btn):not(
+    .blessing-modal-close
+  ):not(.blessing-modal-launch-btn):not(.blessing-modal-poster-play):hover,
 .contact-submit:hover,
 .project-link:hover,
 .read-more-btn:hover,
@@ -758,7 +762,9 @@ button:not(.gh-contrib__view-btn):not(.gh-contrib__year):not(.about-tab-btn):not
     .status-circle
   ):not(.edit-btn):not(.contact-assistme-btn):not(.currently-tab):not(.section-preview-btn):not(
     .hero-cta-secondary
-  ):not(.hero-cta-primary):not([class*='maplibregl-ctrl']),
+  ):not(.hero-cta-primary):not([class*='maplibregl-ctrl']):not(.blessing-modal-close):not(
+    .blessing-modal-launch-btn
+  ):not(.blessing-modal-poster-play),
 .project-tag,
 .badge {
   color: #fff !important;

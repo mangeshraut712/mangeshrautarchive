@@ -101,6 +101,13 @@ const CARD_PROFILES = [
       '.travel-stop__name, .travel-stop__tagline, .travel-stop__story, .travel-stop__detail-text, .place-guide-card__body p, .place-guide-card__body h4, .place-guide__header p',
     dynamic: true,
   },
+  {
+    selector: '.blessing-lyrics-card',
+    toolbarAnchor: '.blessing-lyrics-header',
+    blocks: '.blessing-lyric-line',
+    dynamic: true,
+    sourceLang: 'hi',
+  },
 ];
 
 const translationCache = new Map();
@@ -162,12 +169,13 @@ function chunkText(text, size = 420) {
   return chunks.filter(Boolean);
 }
 
-async function translateViaMyMemory(text, targetLang) {
+async function translateViaMyMemory(text, targetLang, sourceLang = 'en') {
   const chunks = chunkText(text);
   const translated = [];
+  const pair = `${sourceLang}|${targetLang}`;
 
   for (const chunk of chunks) {
-    const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(chunk)}&langpair=en|${encodeURIComponent(targetLang)}`;
+    const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(chunk)}&langpair=${encodeURIComponent(pair)}`;
     const response = await fetch(url);
     if (!response.ok) {
       throw new Error('Translation request failed');
@@ -183,7 +191,7 @@ async function translateViaMyMemory(text, targetLang) {
   return translated.join(' ');
 }
 
-async function translateViaAi(text, langMeta) {
+async function translateViaAi(text, langMeta, sourceMeta = getLanguageMeta('en')) {
   if (!canUseAiTranslation()) {
     throw new Error('AI translation unavailable');
   }
@@ -196,9 +204,13 @@ async function translateViaAi(text, langMeta) {
       Origin: window.location.origin,
     },
     body: JSON.stringify({
-      message: `Translate the following English text into ${langMeta.label} (${langMeta.native}). Return ONLY the translated text with no quotes, labels, or commentary:\n\n${text}`,
+      message: `Translate the following ${sourceMeta.label} text into ${langMeta.label} (${langMeta.native}). Return ONLY the translated text with no quotes, labels, or commentary:\n\n${text}`,
       messages: [],
-      context: { mode: 'card-translate', targetLang: langMeta.code },
+      context: {
+        mode: 'card-translate',
+        sourceLang: sourceMeta.code,
+        targetLang: langMeta.code,
+      },
       stream: false,
     }),
     signal: AbortSignal.timeout(28000),
@@ -224,20 +236,21 @@ async function translateViaAi(text, langMeta) {
   return cleaned;
 }
 
-async function translateText(text, targetLang) {
-  if (!text?.trim() || targetLang === 'en') {
+async function translateText(text, targetLang, sourceLang = 'en') {
+  if (!text?.trim() || targetLang === sourceLang) {
     return text;
   }
 
-  const cacheKey = `${targetLang}:${text}`;
+  const cacheKey = `${sourceLang}:${targetLang}:${text}`;
   if (translationCache.has(cacheKey)) {
     return translationCache.get(cacheKey);
   }
 
   const langMeta = getLanguageMeta(targetLang);
+  const sourceMeta = getLanguageMeta(sourceLang);
 
   try {
-    const memoryResult = await translateViaMyMemory(text, targetLang);
+    const memoryResult = await translateViaMyMemory(text, targetLang, sourceLang);
     if (memoryResult && memoryResult.toLowerCase() !== text.trim().toLowerCase()) {
       translationCache.set(cacheKey, memoryResult);
       return memoryResult;
@@ -246,9 +259,13 @@ async function translateText(text, targetLang) {
     console.warn('MyMemory translation fallback to AI:', error);
   }
 
-  const aiResult = await translateViaAi(text, langMeta);
+  const aiResult = await translateViaAi(text, langMeta, sourceMeta);
   translationCache.set(cacheKey, aiResult);
   return aiResult;
+}
+
+function getSourceLang(state) {
+  return state.profile?.sourceLang || 'en';
 }
 
 function pickVoice(langCode = 'en') {
@@ -363,7 +380,7 @@ function buildToolbar(card, profile) {
     popover,
     restoreBtn: null,
     speaking: false,
-    translatedLang: 'en',
+    translatedLang: profile.sourceLang || 'en',
     blocks: [],
   };
 
@@ -417,7 +434,7 @@ async function toggleSpeak(state) {
   refreshBlocks(state);
   if (!state.blocks.length) return;
 
-  const speakLang = state.translatedLang || 'en';
+  const speakLang = state.translatedLang || getSourceLang(state);
 
   state.speaking = true;
   state.card.classList.add('speech-active', 'card-readable');
@@ -481,10 +498,11 @@ function ensureRestoreButton(state) {
 }
 
 async function applyTranslation(state, lang, optionButton) {
-  if (lang === 'en') {
+  const sourceLang = getSourceLang(state);
+  if (lang === sourceLang) {
     restoreOriginal(state);
     closePopover(state);
-    markActiveLanguage(state, 'en');
+    markActiveLanguage(state, sourceLang);
     return;
   }
 
@@ -499,7 +517,7 @@ async function applyTranslation(state, lang, optionButton) {
       if (block.dataset.originalText == null) {
         block.dataset.originalText = block.textContent;
       }
-      const translated = await translateText(block.dataset.originalText, lang);
+      const translated = await translateText(block.dataset.originalText, lang, sourceLang);
       block.textContent = translated;
     }
 
@@ -530,12 +548,13 @@ function restoreOriginal(state) {
     }
     block.removeAttribute('dir');
   });
-  state.translatedLang = 'en';
+  const sourceLang = getSourceLang(state);
+  state.translatedLang = sourceLang;
   state.card.classList.remove('is-translated');
   if (state.restoreBtn) {
     state.restoreBtn.hidden = true;
   }
-  markActiveLanguage(state, 'en');
+  markActiveLanguage(state, sourceLang);
 }
 
 function removeToolbar(card) {
@@ -580,7 +599,7 @@ function mountToolbar(card, profile) {
   }
 
   refreshBlocks(activeCards.get(card));
-  markActiveLanguage(activeCards.get(card), 'en');
+  markActiveLanguage(activeCards.get(card), profile.sourceLang || 'en');
 
   if (profile.watchTabs) {
     card.querySelectorAll('.about-tab-btn').forEach(tab => {
