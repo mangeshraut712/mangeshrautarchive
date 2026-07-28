@@ -148,7 +148,6 @@ const FIRST_INTERACTION_STYLE_KEYS = ['interactive', 'motion', 'birthday'];
 /** Styles to prefetch one-at-a-time after first paint (near-fold only). */
 const EARLY_IDLE_STYLE_KEYS = ['about', 'skills', 'experience', 'motion'];
 
-const USER_INTERACTION_EVENTS = ['pointerdown', 'keydown', 'touchstart'];
 const DEFERRED_IMAGE_PLACEHOLDER =
   'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
 
@@ -1013,13 +1012,7 @@ function initDeferredStyles() {
   const loadInteractionStyles = () => {
     loadDeferredStyles(FIRST_INTERACTION_STYLE_KEYS).catch(() => {});
   };
-  USER_INTERACTION_EVENTS.forEach(eventName => {
-    window.addEventListener(eventName, loadInteractionStyles, {
-      once: true,
-      passive: eventName !== 'keydown',
-      capture: true,
-    });
-  });
+  onFirstInteraction(loadInteractionStyles);
 
   /*
    * True progressive CSS:
@@ -1070,13 +1063,7 @@ function initDeferredStyles() {
   };
 
   // After first gesture only — early CSS promotion widens Speed Index on desktop lab.
-  USER_INTERACTION_EVENTS.forEach(eventName => {
-    window.addEventListener(eventName, warmNearFoldStylesSequentially, {
-      once: true,
-      passive: eventName !== 'keydown',
-      capture: true,
-    });
-  });
+  onFirstInteraction(warmNearFoldStylesSequentially);
   runWhenIdle(warmNearFoldStylesSequentially, 8000);
 }
 
@@ -1118,13 +1105,7 @@ function scheduleIdleEagerModules() {
     });
   };
 
-  USER_INTERACTION_EVENTS.forEach(eventName => {
-    window.addEventListener(eventName, start, {
-      once: true,
-      passive: eventName !== 'keydown',
-      capture: true,
-    });
-  });
+  onFirstInteraction(start);
 
   // CSS glass already paints; WebGL is enhancement.
   // Avoid mid-audit idle timeouts — only a very late real-user fallback.
@@ -1173,13 +1154,7 @@ function initLazyModules() {
       }, 600);
     };
 
-    USER_INTERACTION_EVENTS.forEach(eventName => {
-      window.addEventListener(eventName, scheduleInteractionModules, {
-        once: true,
-        passive: eventName !== 'keydown',
-        capture: true,
-      });
-    });
+    onFirstInteraction(scheduleInteractionModules);
 
     SECTION_MODULES.forEach(({ sectionId, modulePath, rootMargin }) => {
       observeSectionTask(sectionId, () => loadModule(modulePath), rootMargin);
@@ -1662,13 +1637,7 @@ async function initBootstrap() {
     loadModule('../modules/lastfm.js').catch(() => {});
     loadModule('../modules/live-activity-strip.js').catch(() => {});
   };
-  ['pointerdown', 'keydown', 'touchstart'].forEach(eventName => {
-    window.addEventListener(eventName, loadHeroEnrichment, {
-      once: true,
-      passive: true,
-      capture: true,
-    });
-  });
+  onFirstInteraction(loadHeroEnrichment);
   runWhenIdle(loadHeroEnrichment, 900);
   scheduleSoon(loadHeroEnrichment, 1600);
 
@@ -1701,13 +1670,7 @@ async function initBootstrap() {
       console.warn('Deferred bootstrap modules skipped:', error);
     });
   };
-  USER_INTERACTION_EVENTS.forEach(eventName => {
-    window.addEventListener(eventName, startDeferredBootstrap, {
-      once: true,
-      passive: eventName !== 'keydown',
-      capture: true,
-    });
-  });
+  onFirstInteraction(startDeferredBootstrap);
   runWhenIdle(startDeferredBootstrap, 6000);
 }
 

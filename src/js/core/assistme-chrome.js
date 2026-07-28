@@ -164,7 +164,7 @@ function ensureChatbotChrome() {
               <i class="fas fa-plus" aria-hidden="true"></i>
             </button>
             <input type="file" id="chatbot-attach-input" class="sr-only"
-              accept="image/png,image/jpeg,image/webp,image/gif" />
+              accept="image/png,image/jpeg,image/webp,image/gif" aria-label="Attach file" />
             <button type="submit" class="chatbot-send-btn" aria-label="Send message">
               <i class="fas fa-arrow-up" aria-hidden="true"></i>
             </button>

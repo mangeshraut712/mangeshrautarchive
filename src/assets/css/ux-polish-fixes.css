@@ -1071,10 +1071,6 @@ html.dark .chatbot-input-container,
 }
 
 /* Master Unified Apple Red Circular Close Buttons - Ultra High Specificity */
-html body #overlay-menu #close-menu-btn,
-html body #overlay-menu #close-menu-btn.premium-close-btn,
-html body #close-menu-btn,
-html body #close-menu-btn.premium-close-btn,
 html body #search-overlay #search-close,
 html body #search-overlay #search-close.premium-close-btn,
 html body .apple-close-btn,
@@ -1091,6 +1087,32 @@ html body .lightbox-close {
   height: 36px !important;
   min-width: 36px !important;
   min-height: 36px !important;
+  border-radius: 50% !important;
+  background: #ff3b30 !important;
+  background-color: #ff3b30 !important;
+  background-image: none !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  border: none !important;
+  box-shadow: 0 4px 14px rgb(255 59 48 / 45%) !important;
+  cursor: pointer !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  z-index: 100005 !important;
+}
+
+/* Overlay menu close — Apple HIG 44px minimum touch target */
+html body #overlay-menu #close-menu-btn,
+html body #overlay-menu #close-menu-btn.premium-close-btn,
+html body #close-menu-btn,
+html body #close-menu-btn.premium-close-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 44px !important;
+  height: 44px !important;
+  min-width: 44px !important;
+  min-height: 44px !important;
   border-radius: 50% !important;
   background: #ff3b30 !important;
   background-color: #ff3b30 !important;

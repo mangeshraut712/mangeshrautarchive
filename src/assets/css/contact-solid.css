@@ -250,11 +250,15 @@ html
     button.calendly-panel-button,
     button.contact-assistme-btn,
     .calendly-panel-button,
-    .contact-assistme-btn
+    .contact-assistme-btn,
+    #contact-chatbot-cta
   ),
-html:not(.dark) body #contact :is(.calendly-panel-button, .contact-assistme-btn),
-html.light body #contact :is(.calendly-panel-button, .contact-assistme-btn) {
+html:not(.dark)
+  body
+  #contact
+  :is(.calendly-panel-button, .contact-assistme-btn, #contact-chatbot-cta) {
   background: #0071e3 !important;
+  background-color: #0071e3 !important;
   background-image: none !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
@@ -265,6 +269,11 @@ html.light body #contact :is(.calendly-panel-button, .contact-assistme-btn) {
   box-shadow: none !important;
 }
 
+html body #contact :is(.calendly-panel-button, .contact-assistme-btn, #contact-chatbot-cta) * {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
 html.dark
   body
   #contact
@@ -272,18 +281,28 @@ html.dark
     button.calendly-panel-button,
     button.contact-assistme-btn,
     .calendly-panel-button,
-    .contact-assistme-btn
+    .contact-assistme-btn,
+    #contact-chatbot-cta
   ) {
   background: #0a84ff !important;
+  background-color: #0a84ff !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
 }
 
-html body #contact :is(.calendly-panel-button, .contact-assistme-btn):hover {
+html.dark body #contact :is(.calendly-panel-button, .contact-assistme-btn, #contact-chatbot-cta) * {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+html body #contact :is(.calendly-panel-button, .contact-assistme-btn, #contact-chatbot-cta):hover {
   background: #0077ed !important;
 }
 
-html.dark body #contact :is(.calendly-panel-button, .contact-assistme-btn):hover {
+html.dark
+  body
+  #contact
+  :is(.calendly-panel-button, .contact-assistme-btn, #contact-chatbot-cta):hover {
   background: #409cff !important;
 }
 
