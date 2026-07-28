@@ -20,6 +20,7 @@
   :root {
     /* Apple Core Colors */
     --apple-blue: #0071e3;
+    --apple-chrome-top: calc(env(safe-area-inset-top, 0px) + var(--island-height, 52px));
     --apple-blue-light: #0077ed;
     --apple-blue-dark: #0051a8;
     --apple-indigo: #5856d6;
