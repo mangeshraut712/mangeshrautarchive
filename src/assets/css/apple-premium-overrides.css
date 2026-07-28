@@ -351,16 +351,16 @@ button,
 }
 
 html.dark .projects-view-all-btn {
-  background: #0a84ff !important;
+  background: #0071e3 !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
-  border-color: #0a84ff !important;
+  border-color: #0071e3 !important;
   box-shadow: 0 1px 2px rgb(0 0 0 / 40%) !important;
 }
 
 html.dark .projects-view-all-btn:hover {
-  background: #2997ff !important;
-  border-color: #2997ff !important;
+  background: #0077ed !important;
+  border-color: #0077ed !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
 }

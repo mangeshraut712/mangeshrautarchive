@@ -287,21 +287,25 @@ html.dark #recommendations .author-company-link:hover {
    5. EDUCATION - HIGH CONTRAST FIXES
    ======================================== */
 
-/* Education badges - Apple-inspired green with high contrast */
+/* Education badges — darker green so white label meets WCAG AA 4.5:1 */
 .education-badge.completed {
-  background: linear-gradient(135deg, #34c759 0%, #30d158 100%) !important; /* Apple system green */
+  background: #1f7a37 !important;
+  background-color: #1f7a37 !important;
+  background-image: none !important;
   color: #ffffff !important;
   font-weight: 700 !important;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) !important;
-  box-shadow: 0 2px 8px rgba(48, 209, 88, 0.4) !important;
-  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  text-shadow: none !important;
+  box-shadow: none !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
 }
 
 html.dark .education-badge.completed {
-  background: linear-gradient(135deg, #30d158 0%, #28cd41 100%) !important;
+  background: #1f7a37 !important;
+  background-color: #1f7a37 !important;
+  background-image: none !important;
   color: #ffffff !important;
-  box-shadow: 0 2px 8px rgba(48, 209, 88, 0.3) !important;
-  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  box-shadow: none !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
 }
 
 /* Education text */

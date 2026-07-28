@@ -416,19 +416,20 @@ html.dark #projects .projects-page--repos {
 }
 
 html.dark #projects .projects-view-all-btn {
-  background: #0a84ff !important;
-  background-color: #0a84ff !important;
-  border-color: #0a84ff !important;
+  /* #0a84ff fails AA with white (~3.6:1); use light-mode Apple blue */
+  background: #0071e3 !important;
+  background-color: #0071e3 !important;
+  border-color: #0071e3 !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
   box-shadow: 0 1px 2px rgb(0 0 0 / 40%) !important;
 }
 
 html.dark #projects .projects-view-all-btn:hover {
-  background: #2997ff !important;
-  background-color: #2997ff !important;
-  border-color: #2997ff !important;
-  box-shadow: 0 6px 22px rgb(10 132 255 / 28%) !important;
+  background: #0077ed !important;
+  background-color: #0077ed !important;
+  border-color: #0077ed !important;
+  box-shadow: 0 6px 22px rgb(0 113 227 / 28%) !important;
 }
 
 html.dark #projects .proj-input-group {
@@ -3453,9 +3454,9 @@ section#projects .projects-view-all-btn span {
 }
 
 html.dark section#projects .projects-view-all-btn {
-  background: #0a84ff !important;
-  background-color: #0a84ff !important;
-  border-color: #0a84ff !important;
+  background: #0071e3 !important;
+  background-color: #0071e3 !important;
+  border-color: #0071e3 !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
 }
@@ -4347,9 +4348,9 @@ section#projects .projects-view-all-btn:visited {
 
 html.dark section#projects .projects-view-all-btn:visited,
 html[data-theme='dark'] section#projects .projects-view-all-btn:visited {
-  background: #0a84ff !important;
-  background-color: #0a84ff !important;
-  border-color: #0a84ff !important;
+  background: #0071e3 !important;
+  background-color: #0071e3 !important;
+  border-color: #0071e3 !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
 }

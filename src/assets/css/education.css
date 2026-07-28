@@ -399,7 +399,9 @@ html.dark .education-period {
 }
 
 .education-badge.completed {
-  background: linear-gradient(135deg, #30d158, #28cd41) !important;
+  background: #1f7a37 !important;
+  background-color: #1f7a37 !important;
+  background-image: none !important;
   color: #fff !important;
   box-shadow: none !important;
   border: 1px solid rgb(255 255 255 / 20%) !important;
@@ -407,7 +409,9 @@ html.dark .education-period {
 }
 
 html.dark .education-badge.completed {
-  background: linear-gradient(135deg, #34c759, #30d158) !important;
+  background: #1f7a37 !important;
+  background-color: #1f7a37 !important;
+  background-image: none !important;
   color: #fff !important;
   box-shadow: none !important;
   border: 1px solid rgb(255 255 255 / 10%) !important;

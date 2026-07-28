@@ -3008,8 +3008,9 @@ html[data-theme='dark'] .watch-btn i {
 
 html:not(.dark) .education-badge.completed,
 html[data-theme='light'] .education-badge.completed {
-  background: #34c759 !important;
-  background-color: #34c759 !important;
+  /* #34c759 fails AA with white (~2.2:1); #1f7a37 clears 4.5:1 */
+  background: #1f7a37 !important;
+  background-color: #1f7a37 !important;
   background-image: none !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
@@ -3017,8 +3018,9 @@ html[data-theme='light'] .education-badge.completed {
 
 html.dark .education-badge.completed,
 html[data-theme='dark'] .education-badge.completed {
-  background: #30d158 !important;
-  background-color: #30d158 !important;
+  /* #30d158 fails AA with white (~2.0:1); keep dark-mode green AA-safe */
+  background: #1f7a37 !important;
+  background-color: #1f7a37 !important;
   background-image: none !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
