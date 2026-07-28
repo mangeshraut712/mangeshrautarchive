@@ -339,7 +339,10 @@ html.dark[data-lg-mode='tinted']
 }
 
 /* ── Support premium buttons ── */
-html body #contact :is(.support-stripe-btn.premium, .support-paypal-btn.premium) {
+html
+  body
+  #contact
+  :is(.support-stripe-btn.premium, .support-paypal-btn.premium, .support-coffee-btn.premium) {
   border-radius: 980px !important;
   min-height: 44px !important;
   font-weight: 600 !important;

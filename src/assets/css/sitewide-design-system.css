@@ -164,10 +164,10 @@ a.button:hover,
    BUY ME A COFFEE BUTTON - APPLE YELLOW EXCEPTION
    ======================================== */
 .support-coffee-btn {
-  background: #ffd60a !important;
+  background: #ffdd00 !important;
 
-  /* Apple Yellow */
-  color: #000 !important;
+  /* Buy Me a Coffee yellow */
+  color: #0d0c22 !important;
 
   /* Solid Black Text */
   border: none !important;
@@ -188,23 +188,23 @@ a.button:hover,
 }
 
 .support-coffee-btn:hover {
-  background: #fd3 !important;
+  background: #ffe34d !important;
 
-  /* Lighter Yellow */
+  /* Lighter BMC yellow */
   transform: translateY(-2px) !important;
-  box-shadow: 0 6px 16px rgb(255 214 10 / 40%) !important;
-  color: #000 !important;
+  box-shadow: 0 6px 16px rgb(255 221 0 / 40%) !important;
+  color: #0d0c22 !important;
 }
 
 /* Ensure it stays Yellow/Black in Dark Mode */
 html.dark .support-coffee-btn {
-  background: #ffd60a !important;
-  color: #000 !important;
+  background: #ffdd00 !important;
+  color: #0d0c22 !important;
 }
 
 html.dark .support-coffee-btn:hover {
-  background: #fd3 !important;
-  color: #000 !important;
+  background: #ffe34d !important;
+  color: #0d0c22 !important;
 }
 
 /* ========================================

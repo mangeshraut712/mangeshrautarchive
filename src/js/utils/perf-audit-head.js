@@ -170,7 +170,12 @@
     '.section-faq .faq-item{box-sizing:border-box!important;background:#fff!important}' +
     'html.dark .section-faq .faq-item{background:#000!important}' +
     '.section-faq .faq-item>summary{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:1rem!important;min-height:48px!important;min-width:48px!important;padding:1rem 0!important;box-sizing:border-box!important;line-height:1.35!important;font-size:1.06rem!important;list-style:none!important;cursor:pointer!important}' +
-    '.section-faq .faq-item>summary::-webkit-details-marker{display:none!important}';
+    '.section-faq .faq-item>summary::-webkit-details-marker{display:none!important}' +
+    /* Support blessing avatars — contact.css stripped + ganesh/hanuman imgs hidden in audit */
+    '.donation-compact-header{display:flex!important;align-items:center!important;justify-content:center!important;gap:0.75rem!important;flex-wrap:nowrap!important}' +
+    '.ganesh-glow-container,.hanuman-glow-container,.blessing-avatar-trigger{display:inline-flex!important;align-items:center!important;justify-content:center!important;width:48px!important;height:48px!important;min-width:48px!important;min-height:48px!important;max-width:48px!important;flex:0 0 48px!important;box-sizing:border-box!important;position:relative!important;border-radius:50%!important;overflow:visible!important;margin:0!important;padding:0!important;background:#f5f5f7!important;border:2px solid rgba(245,158,11,0.35)!important}' +
+    'html.dark .ganesh-glow-container,html.dark .hanuman-glow-container,html.dark .blessing-avatar-trigger{background:#2c2c2e!important;border-color:rgba(251,191,36,0.45)!important}' +
+    '.blessing-play-badge{position:absolute!important;bottom:-2px!important;right:-2px!important;width:24px!important;height:24px!important;min-width:24px!important;min-height:24px!important;border-radius:50%!important;display:flex!important;align-items:center!important;justify-content:center!important;pointer-events:none!important}';
   (document.head || document.documentElement).appendChild(critical);
 
   function isAllowedStylesheet(href) {
