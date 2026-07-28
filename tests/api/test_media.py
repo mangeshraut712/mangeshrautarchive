@@ -41,7 +41,8 @@ def test_music_recent_serves_stale_cache_before_refresh(monkeypatch):
                 ]
             }
         },
-        "ts": time.time() - 90,
+        # Outside fresh (25s) but inside stale-while-revalidate window (25+45).
+        "ts": time.time() - 40,
     }
 
     async def noop_refresh(*_args, **_kwargs):

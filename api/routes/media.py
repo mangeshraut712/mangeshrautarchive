@@ -37,7 +37,7 @@ def _enforce_media_rate_limit(request: Request, bucket: str) -> None:
 
 
 router = APIRouter()
-LASTFM_STALE_TTL = 5 * 60
+LASTFM_STALE_TTL = 45  # seconds — serve briefly while background refresh runs
 LASTFM_PLACEHOLDER_HASH = "2a96cbd8b46e442fc41c2b86b821562f"
 _lastfm_refreshing = set()
 

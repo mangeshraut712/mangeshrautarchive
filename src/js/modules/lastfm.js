@@ -18,7 +18,11 @@ function ensureLastFmPreconnect() {
 }
 
 const LASTFM_JSONP_TIMEOUT_MS = 4500;
-const LASTFM_PROXY_TIMEOUT_MS = 3500;
+/** Worker may enrich up to 8 tracks; keep headroom above cold-start + iTunes lookups. */
+const LASTFM_PROXY_TIMEOUT_MS = 10000;
+const API_DEAD_COOLDOWN_MS = 2 * 60 * 1000;
+const API_HOST_DEAD_KEY = 'portfolio_api_host_dead_v1';
+const API_HOST_DEAD_UNTIL_KEY = 'portfolio_api_host_dead_until_v1';
 
 class LastFmService {
   constructor() {
@@ -26,13 +30,16 @@ class LastFmService {
     this.PLACEHOLDER_HASH = '2a96cbd8b46e442fc41c2b86b821562f';
     this.UPDATE_INTERVAL_MS = 20000; // 20s — beats 25s backend cache TTL
     this.ARTWORK_CACHE_TTL_MS = 10 * 60 * 1000; // 10 min artwork cache
-    this.LOCAL_CACHE_KEY = 'assistme:lastfm:recent:v2';
-    this.LOCAL_STALE_TTL_MS = 24 * 60 * 60 * 1000;
+    this.LOCAL_CACHE_KEY = 'assistme:lastfm:recent:v3';
+    /** Instant paint only — never keep a day-old shelf as “current”. */
+    this.LOCAL_STALE_TTL_MS = 15 * 60 * 1000;
     this.artworkCache = new Map(); // key => { promise, ts }
     this.cachedTracks = null;
     this.started = false;
     this.intervalId = null;
     this._currentTrackId = null; // track identity for change detection
+    this._shelfSignature = '';
+    this._hydratedFromLocal = false;
     this._artworkTokens = new WeakMap();
 
     const apiBaseUrl = this.resolveMusicApiBase();
@@ -187,14 +194,14 @@ class LastFmService {
     const cacheKey = `${trackName}::${artistName}`.trim().toLowerCase();
     if (!cacheKey) return null;
 
-    // Check cache with TTL
+    // Check cache with TTL — never stick a failed null forever within the window.
     const cached = this.artworkCache.get(cacheKey);
     if (cached && Date.now() - cached.ts < this.ARTWORK_CACHE_TTL_MS) {
       return cached.promise;
     }
 
     const pending = (async () => {
-      // 1. Try serverless backend API proxy
+      // 1. Try serverless backend API proxy (scored match on server)
       try {
         const response = await fetch(
           `${this.artworkApiUrl}?${new URLSearchParams({
@@ -203,33 +210,32 @@ class LastFmService {
           })}`,
           {
             headers: { Accept: 'application/json' },
-            signal: AbortSignal.timeout?.(3000),
+            signal: AbortSignal.timeout?.(4000),
           }
         );
         if (response.ok) {
           const data = await response.json();
-          if (data?.artwork_url) return data.artwork_url;
+          if (data?.artwork_url && this.isSafeHttpsUrl(data.artwork_url)) {
+            return data.artwork_url;
+          }
         }
       } catch {
         // Backend API offline or timed out
       }
 
-      // 2. Direct client-side iTunes Search API fallback (CORS enabled by Apple)
+      // 2. Direct client-side iTunes Search — pick best artist/track match, not results[0]
       try {
-        const query = encodeURIComponent(`${trackName} ${artistName}`);
+        const query = encodeURIComponent(`${trackName} ${artistName}`.trim());
         const itunesResp = await fetch(
-          `https://itunes.apple.com/search?term=${query}&entity=song&limit=1`,
+          `https://itunes.apple.com/search?term=${query}&entity=song&limit=5`,
           {
-            signal: AbortSignal.timeout?.(3500),
+            signal: AbortSignal.timeout?.(4000),
           }
         );
         if (itunesResp.ok) {
           const data = await itunesResp.json();
-          const artwork = data.results?.[0]?.artworkUrl100;
-          if (artwork) {
-            // Upgrade to high-resolution 600x600 artwork
-            return artwork.replace('100x100bb', '600x600bb');
-          }
+          const artwork = this.pickItunesArtwork(data?.results || [], trackName, artistName);
+          if (artwork) return artwork;
         }
       } catch {
         // iTunes API unavailable
@@ -240,6 +246,43 @@ class LastFmService {
 
     this.artworkCache.set(cacheKey, { promise: pending, ts: Date.now() });
     return pending;
+  }
+
+  pickItunesArtwork(results = [], trackName = '', artistName = '') {
+    if (!Array.isArray(results) || !results.length) return null;
+
+    const norm = value =>
+      String(value || '')
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, ' ')
+        .trim();
+    const wantTrack = norm(trackName);
+    const wantArtist = norm(artistName);
+
+    let best = null;
+    let bestScore = -1;
+    for (const item of results) {
+      const gotTrack = norm(item?.trackName);
+      const gotArtist = norm(item?.artistName);
+      let score = 0;
+      if (wantTrack && gotTrack === wantTrack) score += 5;
+      else if (wantTrack && gotTrack.includes(wantTrack)) score += 3;
+      else if (wantTrack && wantTrack.includes(gotTrack) && gotTrack.length > 3) score += 2;
+      if (wantArtist && gotArtist === wantArtist) score += 5;
+      else if (wantArtist && gotArtist.includes(wantArtist)) score += 3;
+      else if (wantArtist && wantArtist.includes(gotArtist) && gotArtist.length > 2) score += 2;
+      if (score > bestScore && item?.artworkUrl100) {
+        bestScore = score;
+        best = item.artworkUrl100;
+      }
+    }
+
+    if (!best && results[0]?.artworkUrl100 && bestScore < 0) {
+      // No scored match — only accept first hit when we had no artist/title to compare.
+      if (!wantTrack && !wantArtist) best = results[0].artworkUrl100;
+    }
+
+    return best ? String(best).replace('100x100bb', '600x600bb') : null;
   }
 
   hydrateFallbackArtwork(imageNode, track, { fallbackUrl = '', trackId = '' } = {}) {
@@ -283,8 +326,17 @@ class LastFmService {
   }
 
   hydrateFromLocalCache() {
+    if (this._hydratedFromLocal) {
+      return Boolean(this.cachedTracks?.length);
+    }
+    this._hydratedFromLocal = true;
+
     try {
-      const raw = globalThis.localStorage?.getItem(this.LOCAL_CACHE_KEY);
+      // Prefer v3; migrate readable v2 once if still fresh enough.
+      let raw = globalThis.localStorage?.getItem(this.LOCAL_CACHE_KEY);
+      if (!raw) {
+        raw = globalThis.localStorage?.getItem('assistme:lastfm:recent:v2');
+      }
       if (!raw) return false;
       const parsed = JSON.parse(raw);
       const tracks = Array.isArray(parsed?.tracks) ? parsed.tracks : null;
@@ -314,7 +366,61 @@ class LastFmService {
   }
 
   getTracksFromPayload(payload) {
-    return Array.isArray(payload?.recenttracks?.track) ? payload.recenttracks.track : [];
+    const raw = payload?.recenttracks?.track;
+    if (Array.isArray(raw)) return raw;
+    if (raw && typeof raw === 'object') return [raw];
+    return [];
+  }
+
+  buildShelfSignature(tracks = []) {
+    return tracks
+      .map(track => {
+        const name = track?.name || '';
+        const artist = this.getArtistName(track);
+        const np = track?.['@attr']?.nowplaying === 'true' ? '1' : '0';
+        const art = track?.resolved_artwork || '';
+        return `${np}|${name}|${artist}|${art}`;
+      })
+      .join('||');
+  }
+
+  isApiHostCoolingDown() {
+    try {
+      const until = Number(sessionStorage.getItem(API_HOST_DEAD_UNTIL_KEY) || 0);
+      if (until && Date.now() < until) {
+        return true;
+      }
+      if (until && Date.now() >= until) {
+        sessionStorage.removeItem(API_HOST_DEAD_UNTIL_KEY);
+        sessionStorage.removeItem(API_HOST_DEAD_KEY);
+      }
+      return sessionStorage.getItem(API_HOST_DEAD_KEY) === '1' && !until;
+    } catch {
+      return false;
+    }
+  }
+
+  markApiHostTransientFailure(status = 0) {
+    try {
+      // Only hard-skip on fair-use / payment blocks. Timeouts & 5xx get a short cooldown.
+      if (status === 402) {
+        sessionStorage.setItem(API_HOST_DEAD_KEY, '1');
+        sessionStorage.setItem(API_HOST_DEAD_UNTIL_KEY, String(Date.now() + 30 * 60 * 1000));
+        return;
+      }
+      sessionStorage.setItem(API_HOST_DEAD_UNTIL_KEY, String(Date.now() + API_DEAD_COOLDOWN_MS));
+    } catch {
+      // ignore
+    }
+  }
+
+  clearApiHostFailure() {
+    try {
+      sessionStorage.removeItem(API_HOST_DEAD_KEY);
+      sessionStorage.removeItem(API_HOST_DEAD_UNTIL_KEY);
+    } catch {
+      // ignore
+    }
   }
 
   applyRecentPayload(payload, source) {
@@ -323,14 +429,26 @@ class LastFmService {
       return false;
     }
 
+    const signature = this.buildShelfSignature(tracks);
+    const unchanged = signature === this._shelfSignature && this.cachedTracks?.length;
     this.cachedTracks = tracks;
     this.persistLocalCache(tracks);
-    this.updateHero(tracks[0]);
-    this.updateCurrently(tracks);
+    this.clearApiHostFailure();
+
+    if (!unchanged) {
+      this._shelfSignature = signature;
+      this.updateHero(tracks[0]);
+      this.updateCurrently(tracks);
+    } else if (this.hero && tracks[0]) {
+      // Same tracks — still refresh now-playing badge / status text.
+      this.updateHero(tracks[0]);
+    }
+
     analytics?.track?.('music_loaded', {
       source,
       track_count: tracks.length,
       has_now_playing: tracks.some(track => track?.['@attr']?.nowplaying === 'true'),
+      unchanged: Boolean(unchanged),
     });
     return true;
   }
@@ -340,10 +458,12 @@ class LastFmService {
     const timeoutId = globalThis.setTimeout(() => controller.abort(), LASTFM_PROXY_TIMEOUT_MS);
 
     try {
+      const bust = Date.now();
       const response = await fetch(
-        `${this.apiUrl}?user=${encodeURIComponent(this.USERNAME)}&limit=${encodeURIComponent(limit)}`,
+        `${this.apiUrl}?user=${encodeURIComponent(this.USERNAME)}&limit=${encodeURIComponent(limit)}&_=${bust}`,
         {
           signal: controller.signal,
+          cache: 'no-store',
           headers: {
             Accept: 'application/json',
           },
@@ -351,7 +471,9 @@ class LastFmService {
       );
 
       if (!response.ok) {
-        throw new Error(`HTTP ${response.status}`);
+        const err = new Error(`HTTP ${response.status}`);
+        err.status = response.status;
+        throw err;
       }
 
       return response.json();
@@ -403,42 +525,22 @@ class LastFmService {
   }
 
   async fetchRecent() {
-    // Hydrate from local cache first so GitHub Pages paints music without waiting on a dead API.
-    this.hydrateFromLocalCache();
+    // Local cache is for first paint only — never re-apply it on every 20s poll
+    // (that flickered day-old scrobbles over live Now Playing).
+    if (!this._hydratedFromLocal) {
+      this.hydrateFromLocalCache();
+    }
 
-    const apiDead = (() => {
-      try {
-        return sessionStorage.getItem('portfolio_api_host_dead_v1') === '1';
-      } catch {
-        return false;
-      }
-    })();
+    const apiCoolingDown = this.isApiHostCoolingDown();
 
-    const onGithubPages =
-      typeof window !== 'undefined' && window.location.hostname.endsWith('github.io');
-
-    if (!apiDead && !onGithubPages) {
+    if (!apiCoolingDown) {
       try {
         const payload = await this.fetchRecentFromProxy(10);
         if (this.applyRecentPayload(payload, 'proxy')) {
           return;
         }
-      } catch {
-        // Quiet fail — try JSONP / cache
-      }
-    } else if (!apiDead && onGithubPages) {
-      // One quiet attempt; mark host dead on 402 so analytics/github stop hammering Vercel
-      try {
-        const payload = await this.fetchRecentFromProxy(10);
-        if (this.applyRecentPayload(payload, 'proxy')) {
-          return;
-        }
-      } catch {
-        try {
-          sessionStorage.setItem('portfolio_api_host_dead_v1', '1');
-        } catch {
-          // ignore
-        }
+      } catch (error) {
+        this.markApiHostTransientFailure(Number(error?.status) || 0);
       }
     }
 
