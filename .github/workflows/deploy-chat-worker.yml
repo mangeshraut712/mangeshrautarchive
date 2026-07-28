@@ -27,7 +27,8 @@ permissions:
 
 concurrency:
   group: assistme-chat-worker
-  cancel-in-progress: true
+  # Never cancel mid-wrangler-deploy — a second push must wait.
+  cancel-in-progress: false
 
 jobs:
   verify-openrouter:
@@ -45,7 +46,7 @@ jobs:
             exit 1
           fi
           echo "OPENROUTER_API_KEY length: ${#OPENROUTER_API_KEY}"
-          HTTP=$(curl -sS -o /tmp/or.json -w "%{http_code}" \
+          HTTP=$(curl -sS --connect-timeout 10 --max-time 30 -o /tmp/or.json -w "%{http_code}" \
             -X POST "https://openrouter.ai/api/v1/chat/completions" \
             -H "Authorization: Bearer ${OPENROUTER_API_KEY}" \
             -H "Content-Type: application/json" \
@@ -105,7 +106,7 @@ jobs:
           fi
 
           # --- Auth probe ---
-          RESP=$(curl -sS -H "Authorization: Bearer ${TOKEN}" \
+          RESP=$(curl -sS --connect-timeout 10 --max-time 30 -H "Authorization: Bearer ${TOKEN}" \
             "https://api.cloudflare.com/client/v4/accounts?per_page=5" || echo '{}')
           mapfile -t _P < <(echo "$RESP" | python3 scripts/deployment/cf-parse-accounts.py)
           SUCCESS="${_P[0]:-FAIL}"

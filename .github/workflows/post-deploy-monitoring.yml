@@ -157,6 +157,7 @@ jobs:
 
       - name: Lighthouse — live GitHub Pages (desktop)
         id: lh_pages_desktop
+        timeout-minutes: 12
         run: |
           node scripts/deployment/lighthouse-gate.js \
             --url=${{ env.GH_PAGES_BASE }}/ \
@@ -169,6 +170,7 @@ jobs:
 
       - name: Lighthouse — live GitHub Pages (mobile)
         id: lh_pages_mobile
+        timeout-minutes: 12
         run: |
           node scripts/deployment/lighthouse-gate.js \
             --url=${{ env.GH_PAGES_BASE }}/ \
@@ -182,6 +184,7 @@ jobs:
       - name: Lighthouse — live Vercel quality floor
         # Soft while Vercel may be DEPLOYMENT_DISABLED.
         id: lh_vercel
+        timeout-minutes: 8
         continue-on-error: true
         run: |
           node scripts/deployment/lighthouse-gate.js \

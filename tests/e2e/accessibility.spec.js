@@ -2,6 +2,9 @@ import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 import { PAGES, gotoSite } from './helpers/site.js';
 
+// Deterministic contrast/a11y failures should fail once — retries only burn CI time.
+test.describe.configure({ retries: 0 });
+
 const MAIN_PAGES = [
   { path: PAGES.home, name: 'homepage' },
   { path: PAGES.systems, name: 'systems' },

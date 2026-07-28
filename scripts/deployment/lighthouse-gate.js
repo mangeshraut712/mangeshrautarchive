@@ -109,7 +109,20 @@ function runLighthouseAudit() {
   const run = spawnSync(npxCommand, [...lighthouseBaseArgs, `--output-path=${output}`], {
     stdio: 'inherit',
     env: process.env,
+    // Bound each Lighthouse Chrome run so a stuck audit cannot hold CI until job timeout.
+    timeout: 180_000,
+    killSignal: 'SIGKILL',
   });
+
+  if (run.error) {
+    console.error(`[lighthouse:${formFactor}] spawn failed:`, run.error.message);
+    process.exit(1);
+  }
+
+  if (run.signal) {
+    console.error(`[lighthouse:${formFactor}] killed by ${run.signal} (likely timeout after 180s)`);
+    process.exit(1);
+  }
 
   if (run.status !== 0) {
     process.exit(run.status ?? 1);

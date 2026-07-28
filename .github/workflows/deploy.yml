@@ -39,7 +39,8 @@ jobs:
         id: actionlint
         run: |
           set -euo pipefail
-          curl -sSfL https://raw.githubusercontent.com/rhysd/actionlint/v1.7.7/scripts/download-actionlint.bash \
+          curl -sSfL --connect-timeout 10 --max-time 60 \
+            https://raw.githubusercontent.com/rhysd/actionlint/v1.7.7/scripts/download-actionlint.bash \
             | bash -s -- 1.7.7 /tmp
           /tmp/actionlint -color
           echo "- actionlint ✅" >> "$GITHUB_STEP_SUMMARY"
@@ -139,23 +140,51 @@ jobs:
         id: api
         run: npm run test:api
 
+      # apt/dpkg locks on ubuntu-latest can stall Playwright --with-deps / install-deps
+      # for tens of minutes (runner-images#11347). Kill background apt + bound each step.
+      - name: Stop apt background services
+        run: |
+          set -euo pipefail
+          sudo systemctl stop apt-daily.service apt-daily-upgrade.service unattended-upgrades.service 2>/dev/null || true
+          sudo systemctl stop apt-daily.timer apt-daily-upgrade.timer 2>/dev/null || true
+          sudo flock --wait 30 /var/lib/dpkg/lock-frontend true 2>/dev/null || true
+
       - name: Install Playwright Chromium
         if: steps.playwright-cache.outputs.cache-hit != 'true'
-        run: npx playwright install --with-deps chromium
+        timeout-minutes: 10
+        run: |
+          set -euo pipefail
+          export DEBIAN_FRONTEND=noninteractive
+          setsid timeout --kill-after=30s 8m npx playwright install --with-deps chromium
 
       - name: Install Playwright system deps (cache hit)
         if: steps.playwright-cache.outputs.cache-hit == 'true'
-        run: npx playwright install-deps chromium
-
-      - name: Browser QA — smoke + accessibility
-        id: browser
+        timeout-minutes: 5
         run: |
           set -euo pipefail
-          NO_RELOAD=1 npm run dev &
+          export DEBIAN_FRONTEND=noninteractive
+          setsid timeout --kill-after=30s 4m npx playwright install-deps chromium
+
+      - name: Browser QA — smoke + accessibility + FPS
+        id: browser
+        timeout-minutes: 25
+        run: |
+          set -euo pipefail
+          # Own session so cleanup reaps frontend + backend children (not just the shell PID).
+          setsid bash -c 'NO_RELOAD=1 exec npm run dev' &
           DEV_PID=$!
-          trap 'kill $DEV_PID 2>/dev/null || true' EXIT
+          cleanup() {
+            if kill -0 "$DEV_PID" 2>/dev/null; then
+              kill -TERM -"$DEV_PID" 2>/dev/null || kill -TERM "$DEV_PID" 2>/dev/null || true
+              sleep 1
+              kill -KILL -"$DEV_PID" 2>/dev/null || kill -KILL "$DEV_PID" 2>/dev/null || true
+            fi
+            lsof -ti:4000 | xargs kill -9 2>/dev/null || true
+            lsof -ti:8001 | xargs kill -9 2>/dev/null || true
+          }
+          trap cleanup EXIT
           for i in $(seq 1 60); do
-            if curl -fsS http://127.0.0.1:4000/ >/dev/null 2>&1; then
+            if curl -fsS --max-time 2 http://127.0.0.1:4000/ >/dev/null 2>&1; then
               echo "Dev server ready (${i}s)"
               break
             fi
@@ -172,12 +201,16 @@ jobs:
           PLAYWRIGHT_BASE_URL=http://127.0.0.1:4000 \
             npx playwright test \
               tests/e2e/smoke.spec.js \
+              --project="Desktop Chrome"
+          PLAYWRIGHT_BASE_URL=http://127.0.0.1:4000 \
+            npx playwright test \
               tests/e2e/accessibility.spec.js \
               --project="Desktop Chrome"
-          npm run qa:browser:ci
+          PLAYWRIGHT_BASE_URL=http://127.0.0.1:4000 npm run qa:browser:ci
 
       - name: Build production bundle
         id: build
+        timeout-minutes: 10
         run: npm run build
         env:
           OPENROUTER_APP_TITLE: AssistMe Portfolio Assistant
@@ -194,14 +227,23 @@ jobs:
 
       - name: Lighthouse gates — desktop + mobile (dist)
         id: lighthouse
+        timeout-minutes: 15
         run: |
           set -euo pipefail
           lsof -ti:4000 | xargs kill -9 2>/dev/null || true
-          PORT=4000 npm run serve:dist &
+          setsid bash -c 'PORT=4000 exec npm run serve:dist' &
           SERVE_PID=$!
-          trap 'kill $SERVE_PID 2>/dev/null || true' EXIT
+          cleanup() {
+            if kill -0 "$SERVE_PID" 2>/dev/null; then
+              kill -TERM -"$SERVE_PID" 2>/dev/null || kill -TERM "$SERVE_PID" 2>/dev/null || true
+              sleep 1
+              kill -KILL -"$SERVE_PID" 2>/dev/null || kill -KILL "$SERVE_PID" 2>/dev/null || true
+            fi
+            lsof -ti:4000 | xargs kill -9 2>/dev/null || true
+          }
+          trap cleanup EXIT
           for i in $(seq 1 60); do
-            if curl -fsS http://127.0.0.1:4000/ >/dev/null 2>&1; then
+            if curl -fsS --max-time 2 http://127.0.0.1:4000/ >/dev/null 2>&1; then
               echo "Production server ready (${i}s)"
               break
             fi
@@ -257,7 +299,7 @@ jobs:
             echo "| Vitest | $(mark '${{ steps.unit.outcome }}') |"
             echo "| flake8 / dead-code | $(mark '${{ steps.flake8.outcome }}') / $(mark '${{ steps.dead_code.outcome }}') |"
             echo "| API pytest | $(mark '${{ steps.api.outcome }}') |"
-            echo "| Browser QA (Playwright) | $(mark '${{ steps.browser.outcome }}') |"
+            echo "| Browser QA (smoke + a11y + FPS) | $(mark '${{ steps.browser.outcome }}') |"
             echo "| Production build | $(mark '${{ steps.build.outcome }}') |"
             echo "| Lighthouse desktop + mobile (dist) | $(mark '${{ steps.lighthouse.outcome }}') |"
             echo "| Doctor (env/API) | $(mark '${{ steps.doctor_full.outcome }}') (non-blocking) |"
@@ -367,6 +409,7 @@ jobs:
         run: npm install --no-audit --no-fund
 
       - name: Verify GitHub Pages core paths
+        timeout-minutes: 8
         run: |
           set -euo pipefail
           BASE="${{ env.GH_PAGES_BASE }}"
@@ -404,6 +447,7 @@ jobs:
           exit 1
 
       - name: Verify GitHub Pages commit matches push
+        timeout-minutes: 8
         run: |
           set -euo pipefail
           BASE="${{ env.GH_PAGES_BASE }}"
@@ -425,6 +469,7 @@ jobs:
 
       - name: Verify Vercel production commit + API health
         id: vercel_surface
+        timeout-minutes: 5
         run: |
           set -euo pipefail
           BASE="${{ env.VERCEL_PROD }}"
