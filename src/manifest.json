@@ -81,7 +81,7 @@
     {
       "name": "Field Notes",
       "short_name": "Blog",
-      "url": "./blog/",
+      "url": "./#blog",
       "description": "Technical writing on AI, systems, and product engineering"
     },
     {

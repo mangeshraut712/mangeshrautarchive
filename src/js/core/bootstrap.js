@@ -28,6 +28,21 @@ import { clearPortfolioStorage } from '../utils/storage-cleanup.js';
 
 initScrollLockRecovery();
 
+/**
+ * Register a one-shot callback that fires on the first user interaction.
+ * Cleans up all listeners across pointerdown, keydown, and touchstart once any gesture fires.
+ */
+function onFirstInteraction(callback) {
+  const events = ['pointerdown', 'keydown', 'touchstart'];
+  const handler = e => {
+    events.forEach(evt => window.removeEventListener(evt, handler, { capture: true }));
+    callback(e);
+  };
+  events.forEach(evt =>
+    window.addEventListener(evt, handler, { once: true, passive: true, capture: true })
+  );
+}
+
 function loadEnhancementModules() {
   if (isPerformanceAudit()) {
     return;
@@ -357,13 +372,7 @@ function warmCriticalSectionPreloads() {
     }, 400);
   };
 
-  ['pointerdown', 'keydown', 'touchstart'].forEach(eventName => {
-    window.addEventListener(eventName, warmAfterGesture, {
-      once: true,
-      passive: true,
-      capture: true,
-    });
-  });
+  onFirstInteraction(warmAfterGesture);
 
   // Residual deferred images only — cheap, no showcase JS.
   runWhenIdle(() => {

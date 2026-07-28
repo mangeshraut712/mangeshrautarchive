@@ -116,10 +116,10 @@
 
   .chatbot-settings-btn,
   .chatbot-clear-btn {
-    width: 36px !important;
-    height: 36px !important;
-    min-width: 36px !important;
-    min-height: 36px !important;
+    width: 44px !important;
+    height: 44px !important;
+    min-width: 44px !important;
+    min-height: 44px !important;
     border-radius: 50% !important;
     background: rgb(120 120 128 / 12%) !important;
     background-color: rgb(120 120 128 / 12%) !important;
@@ -137,10 +137,10 @@
 
   .chatbot-close-btn,
   #chatbot-widget .chatbot-close-btn {
-    width: 32px !important;
-    height: 32px !important;
-    min-width: 32px !important;
-    min-height: 32px !important;
+    width: 44px !important;
+    height: 44px !important;
+    min-width: 44px !important;
+    min-height: 44px !important;
     border-radius: 50% !important;
     background: #ff3b30 !important;
     background-color: #ff3b30 !important;

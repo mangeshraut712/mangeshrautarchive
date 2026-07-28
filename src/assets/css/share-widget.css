@@ -4,9 +4,6 @@
 #website-share-toggle.website-share-fab,
 .website-share-fab {
   position: fixed !important;
-  left: auto !important;
-  right: max(14px, env(safe-area-inset-right, 0px)) !important;
-  bottom: calc(max(14px, env(safe-area-inset-bottom, 0px)) + (48px + 10px) * 2) !important;
   z-index: 9998 !important;
   width: 48px !important;
   height: 48px !important;
@@ -32,6 +29,15 @@
     background-color 0.25s ease,
     border-color 0.25s ease,
     backdrop-filter 0.25s ease !important;
+}
+
+@media (min-width: 769px) {
+  #website-share-toggle.website-share-fab,
+  .website-share-fab {
+    left: auto !important;
+    right: max(14px, env(safe-area-inset-right, 0px)) !important;
+    bottom: calc(max(14px, env(safe-area-inset-bottom, 0px)) + (48px + 10px) * 2) !important;
+  }
 }
 
 /* Share FAB always matches chatbot: solid Apple blue + white glyph (all glass modes). */

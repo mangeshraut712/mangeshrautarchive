@@ -225,7 +225,7 @@ html.dark .global-nav.dynamic-island.scrolled {
   align-items: center;
   justify-content: center;
   position: relative;
-  min-height: 30px !important;
+  min-height: 44px !important;
   /* Keep idle padding equal to .active — padding jump was Primary sections CLS */
   padding: 5px 10px !important;
   font-size: var(--island-link-size) !important;
@@ -787,10 +787,10 @@ html.dark #theme-icon-moon {
   border: none !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
-  width: 36px !important;
-  height: 36px !important;
-  min-width: 36px !important;
-  min-height: 36px !important;
+  width: 44px !important;
+  height: 44px !important;
+  min-width: 44px !important;
+  min-height: 44px !important;
   border-radius: 50% !important;
   font-size: 0.95rem !important;
   display: inline-flex !important;

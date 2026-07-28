@@ -291,7 +291,7 @@ html.dark .health-widget-container {
 }
 
 .last-sync-time i {
-  font-size: 0.6rem;
+  font-size: 0.72rem;
   transition: transform 0.3s ease;
 }
 
