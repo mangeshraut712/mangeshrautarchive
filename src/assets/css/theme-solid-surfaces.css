@@ -2748,6 +2748,10 @@ html.dark
   gap: 0.4rem !important;
   text-decoration: none !important;
   box-sizing: border-box !important;
+  background: #0071e3 !important;
+  background-color: #0071e3 !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
   transition:
     transform 0.18s cubic-bezier(0.16, 1, 0.3, 1),
     background-color 0.18s ease,

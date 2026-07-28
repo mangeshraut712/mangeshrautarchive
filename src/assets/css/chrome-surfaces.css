@@ -286,8 +286,8 @@ html.dark #home .music-card.is-playing .music-card-inner {
   font-weight: 700 !important;
   letter-spacing: 0.05em !important;
   text-transform: uppercase !important;
-  color: #6e6e73 !important;
-  -webkit-text-fill-color: #6e6e73 !important;
+  color: #48484a !important;
+  -webkit-text-fill-color: #48484a !important;
   line-height: 1.15 !important;
 }
 
@@ -327,8 +327,8 @@ html.dark #home .music-card-inner .track-name {
 #home .music-card-inner .artist-name {
   font-size: 0.72rem !important;
   font-weight: 500 !important;
-  color: #6e6e73 !important;
-  -webkit-text-fill-color: #6e6e73 !important;
+  color: #48484a !important;
+  -webkit-text-fill-color: #48484a !important;
 }
 
 html.dark #home .music-card-inner .artist-name {

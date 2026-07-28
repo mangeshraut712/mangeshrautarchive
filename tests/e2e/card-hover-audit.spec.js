@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { gotoSite } from './helpers/site.js';
 
 const INDEX_CARD_CHECKS = [
   { section: '#about', selector: '#about .about-text-card', lightBorder: 'rgb(0, 113, 227)' },
@@ -221,7 +222,7 @@ async function assertCardHover(page, { section, selector }) {
 
 test.describe('Sitewide card hover audit', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('/', { waitUntil: 'domcontentloaded' });
+    await gotoSite(page);
     await page.waitForSelector('#main-content', { state: 'attached', timeout: 30_000 });
     await page.waitForLoadState('load');
     await page.waitForTimeout(1500);
