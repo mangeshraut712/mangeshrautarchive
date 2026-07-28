@@ -1028,21 +1028,24 @@ html.dark .blessing-play-badge {
   margin-bottom: 0.5rem;
 }
 
-html .blessing-modal-card .blessing-modal-title,
-.blessing-modal-card h3.blessing-modal-title,
+html .blessing-modal-title,
+html:not(.dark) .blessing-modal-title,
+body .blessing-modal-card .blessing-modal-title,
 .blessing-modal-title {
-  font-size: 1.3rem !important;
+  font-size: 1.35rem !important;
   font-weight: 700 !important;
   margin: 0 0 0.25rem 0 !important;
   color: #ffffff !important;
   letter-spacing: -0.01em;
 }
 
-html .blessing-modal-card .blessing-modal-subtitle,
+html .blessing-modal-subtitle,
+html:not(.dark) .blessing-modal-subtitle,
+body .blessing-modal-card .blessing-modal-subtitle,
 .blessing-modal-subtitle {
   font-size: 0.88rem !important;
   color: rgba(255, 255, 255, 0.85) !important;
-  margin: 0;
+  margin: 0 !important;
 }
 
 .blessing-modal-close {
