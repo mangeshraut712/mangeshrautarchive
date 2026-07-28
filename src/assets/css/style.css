@@ -441,6 +441,23 @@ a:hover {
   box-shadow: 0 4px 12px rgb(0 113 227 / 30%);
 }
 
+.blessing-avatar-trigger {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  position: relative !important;
+  min-width: 48px !important;
+  min-height: 48px !important;
+  width: 72px;
+  height: 72px;
+  cursor: pointer;
+  box-sizing: border-box;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: none !important;
+  background: transparent !important;
+}
+
 .btn:hover {
   background: #0077ed;
 

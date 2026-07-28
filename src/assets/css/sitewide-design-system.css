@@ -163,11 +163,15 @@ a.button:hover,
 /* ========================================
    BUY ME A COFFEE BUTTON - APPLE YELLOW EXCEPTION
    ======================================== */
-.support-coffee-btn {
+.support-coffee-btn,
+.support-coffee-btn:visited,
+.support-coffee-btn:hover,
+.support-coffee-btn:focus-visible {
   background: #ffdd00 !important;
 
-  /* Buy Me a Coffee yellow */
+  /* Buy Me a Coffee yellow — black text for AA contrast on yellow */
   color: #0d0c22 !important;
+  -webkit-text-fill-color: #0d0c22 !important;
 
   /* Solid Black Text */
   border: none !important;
@@ -178,6 +182,7 @@ a.button:hover,
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
+  text-decoration: none !important;
   transition:
     color 0.3s ease,
     background-color 0.3s ease,
@@ -187,6 +192,11 @@ a.button:hover,
     opacity 0.3s ease !important;
 }
 
+.support-coffee-btn span {
+  color: #0d0c22 !important;
+  -webkit-text-fill-color: #0d0c22 !important;
+}
+
 .support-coffee-btn:hover {
   background: #ffe34d !important;
 
@@ -194,17 +204,28 @@ a.button:hover,
   transform: translateY(-2px) !important;
   box-shadow: 0 6px 16px rgb(255 221 0 / 40%) !important;
   color: #0d0c22 !important;
+  -webkit-text-fill-color: #0d0c22 !important;
 }
 
 /* Ensure it stays Yellow/Black in Dark Mode */
-html.dark .support-coffee-btn {
+html.dark .support-coffee-btn,
+html.dark .support-coffee-btn:visited,
+html.dark .support-coffee-btn:hover,
+html.dark .support-coffee-btn:focus-visible {
   background: #ffdd00 !important;
   color: #0d0c22 !important;
+  -webkit-text-fill-color: #0d0c22 !important;
+}
+
+html.dark .support-coffee-btn span {
+  color: #0d0c22 !important;
+  -webkit-text-fill-color: #0d0c22 !important;
 }
 
 html.dark .support-coffee-btn:hover {
   background: #ffe34d !important;
   color: #0d0c22 !important;
+  -webkit-text-fill-color: #0d0c22 !important;
 }
 
 /* ========================================
@@ -689,7 +710,9 @@ body:not(.error-page)
         .article-related-card
       ):not(.blog-back-link):not(.blog-archive-link):not(.blog-feed-link):not(
         .changelog-entry__title-link
-      ):not(.changelog-rail__link):not(.changelog-entry__commit)
+      ):not(.changelog-rail__link):not(.changelog-entry__commit):not(.support-coffee-btn):not(
+        .support-stripe-btn
+      ):not(.support-paypal-btn)
   ),
 body:not(.error-page) .link,
 body:not(.error-page) .text-blue {
@@ -709,11 +732,28 @@ html.dark
         .article-related-card
       ):not(.blog-back-link):not(.blog-archive-link):not(.blog-feed-link):not(
         .changelog-entry__title-link
-      ):not(.changelog-rail__link):not(.changelog-entry__commit)
+      ):not(.changelog-rail__link):not(.changelog-entry__commit):not(.support-coffee-btn):not(
+        .support-stripe-btn
+      ):not(.support-paypal-btn)
   ),
 html.dark body:not(.error-page) .link,
 html.dark body:not(.error-page) .text-blue {
   color: #2997ff !important;
+}
+
+/* BMC yellow CTA — beat any later link/span blue inheritance (contact.css is lazy). */
+body:not(.error-page) a.support-coffee-btn,
+body:not(.error-page) a.support-coffee-btn:visited,
+body:not(.error-page) a.support-coffee-btn:hover,
+body:not(.error-page) a.support-coffee-btn:focus-visible,
+body:not(.error-page) a.support-coffee-btn span,
+html.dark body:not(.error-page) a.support-coffee-btn,
+html.dark body:not(.error-page) a.support-coffee-btn:visited,
+html.dark body:not(.error-page) a.support-coffee-btn:hover,
+html.dark body:not(.error-page) a.support-coffee-btn:focus-visible,
+html.dark body:not(.error-page) a.support-coffee-btn span {
+  color: #0d0c22 !important;
+  -webkit-text-fill-color: #0d0c22 !important;
 }
 
 /* Exclude buttons from text color override.

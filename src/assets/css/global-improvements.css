@@ -499,8 +499,10 @@ html.dark #contact .dream-car-item[title='Toyota'] .car-logo {
 
 #contact a.support-stripe-btn,
 #contact a.support-paypal-btn,
+#contact a.support-coffee-btn,
 #contact .support-stripe-btn.premium,
-#contact .support-paypal-btn.premium {
+#contact .support-paypal-btn.premium,
+#contact .support-coffee-btn.premium {
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -520,6 +522,8 @@ html.dark #contact .dream-car-item[title='Toyota'] .car-logo {
 
 #contact .support-stripe-btn .payment-logo,
 #contact .support-paypal-btn .payment-logo,
+#contact .support-coffee-btn .payment-logo,
+#contact .support-coffee-btn .bmc-logo,
 #contact .support-stripe-btn svg,
 #contact .support-paypal-btn svg {
   width: 1.25rem !important;
@@ -538,6 +542,21 @@ html.dark #contact .dream-car-item[title='Toyota'] .car-logo {
 #contact .support-paypal-btn.premium {
   background: linear-gradient(135deg, #003087 0%, #0070ba 100%) !important;
   color: #fff !important;
+}
+
+#contact a.support-coffee-btn,
+#contact a.support-coffee-btn:visited,
+#contact a.support-coffee-btn:hover,
+#contact .support-coffee-btn.premium {
+  background: #ffdd00 !important;
+  color: #0d0c22 !important;
+  -webkit-text-fill-color: #0d0c22 !important;
+}
+
+#contact .support-coffee-btn span,
+#contact .support-coffee-btn.premium span {
+  color: #0d0c22 !important;
+  -webkit-text-fill-color: #0d0c22 !important;
 }
 
 /* Crypto tiles — sizing/colors owned by contact.css (logo + full name labels) */
