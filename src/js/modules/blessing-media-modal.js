@@ -1,6 +1,7 @@
 /**
  * Blessing Media Modal Module
  * Interactive player for Ganapati Aarti and Hanuman Chalisa on deity avatar clicks.
+ * Theme-aware Apple HIG & shadcn UI design system.
  */
 
 const BLESSING_CONFIG = {
@@ -14,9 +15,9 @@ const BLESSING_CONFIG = {
   },
   hanuman: {
     title: '🙏 Shree Hanuman Chalisa',
-    subtitle: 'Jai Shri Ram • Full Devotional Chanting & Lyrics',
-    embedUrl: 'https://www.youtube-nocookie.com/embed/2BybOeHIDSM?autoplay=1&rel=0',
-    watchUrl: 'https://www.youtube.com/watch?v=2BybOeHIDSM',
+    subtitle: 'Jai Shri Ram • Soothing Devotional Mantra Chanting & Lyrics',
+    embedUrl: 'https://www.youtube-nocookie.com/embed/6dinnygUx_w?autoplay=1&rel=0',
+    watchUrl: 'https://www.youtube.com/watch?v=6dinnygUx_w',
     badge: 'Jai Bajrangbali',
     image: 'assets/images/hanuman.png',
   },
@@ -72,7 +73,9 @@ export function openBlessingModal(key) {
           <div class="blessing-modal-title">${config.title}</div>
           <p class="blessing-modal-subtitle">${config.subtitle}</p>
         </div>
-        <button type="button" class="blessing-modal-close" aria-label="Close modal">&times;</button>
+        <button type="button" class="blessing-modal-close" aria-label="Close modal">
+          <i class="fas fa-times"></i>
+        </button>
       </div>
 
       <div class="blessing-modal-player-container">

@@ -968,9 +968,9 @@ html.dark .blessing-play-badge {
 .blessing-modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.78);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
   z-index: 100000;
   display: flex;
   align-items: center;
@@ -989,18 +989,27 @@ html.dark .blessing-play-badge {
 .blessing-modal-card {
   width: 100%;
   max-width: 580px;
-  background: rgba(28, 28, 32, 0.92);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.94);
+  border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 24px;
   padding: 1.5rem;
   box-shadow:
-    0 30px 70px rgba(0, 0, 0, 0.6),
-    0 0 0 1px rgba(245, 158, 11, 0.2);
-  color: #ffffff;
-  transform: scale(0.92) translateY(10px);
+    0 24px 60px -12px rgba(0, 0, 0, 0.25),
+    0 0 0 1px rgba(245, 158, 11, 0.15);
+  color: #1d1d1f;
+  transform: scale(0.94) translateY(12px);
   transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
   display: flex;
   flex-direction: column;
+}
+
+html.dark .blessing-modal-card {
+  background: rgba(24, 24, 28, 0.94);
+  border-color: rgba(255, 255, 255, 0.14);
+  box-shadow:
+    0 30px 80px rgba(0, 0, 0, 0.6),
+    0 0 0 1px rgba(245, 158, 11, 0.25);
+  color: #f5f5f7;
 }
 
 .blessing-modal-overlay.is-visible .blessing-modal-card {
@@ -1016,46 +1025,62 @@ html.dark .blessing-play-badge {
 
 .blessing-badge {
   display: inline-block;
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: #fbbf24;
-  background: rgba(245, 158, 11, 0.15);
-  border: 1px solid rgba(245, 158, 11, 0.3);
+  color: #d97706;
+  background: rgba(245, 158, 11, 0.12);
+  border: 1px solid rgba(245, 158, 11, 0.28);
   padding: 0.25rem 0.65rem;
   border-radius: 12px;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.4rem;
 }
 
-html .blessing-modal-title,
-html:not(.dark) .blessing-modal-title,
-body .blessing-modal-card .blessing-modal-title,
+html.dark .blessing-badge {
+  color: #fbbf24;
+  background: rgba(245, 158, 11, 0.18);
+  border-color: rgba(245, 158, 11, 0.35);
+}
+
+html .blessing-modal-card .blessing-modal-title,
+html:not(.dark) .blessing-modal-card .blessing-modal-title,
 .blessing-modal-title {
   font-size: 1.35rem !important;
   font-weight: 700 !important;
   margin: 0 0 0.25rem 0 !important;
-  color: #ffffff !important;
-  letter-spacing: -0.01em;
+  color: #1d1d1f !important;
+  letter-spacing: -0.015em;
+  line-height: 1.25;
 }
 
-html .blessing-modal-subtitle,
-html:not(.dark) .blessing-modal-subtitle,
-body .blessing-modal-card .blessing-modal-subtitle,
+html.dark .blessing-modal-card .blessing-modal-title,
+html.dark .blessing-modal-title {
+  color: #f5f5f7 !important;
+}
+
+html .blessing-modal-card .blessing-modal-subtitle,
+html:not(.dark) .blessing-modal-card .blessing-modal-subtitle,
 .blessing-modal-subtitle {
   font-size: 0.88rem !important;
-  color: rgba(255, 255, 255, 0.85) !important;
+  color: #6e6e73 !important;
   margin: 0 !important;
+  line-height: 1.4;
+}
+
+html.dark .blessing-modal-card .blessing-modal-subtitle,
+html.dark .blessing-modal-subtitle {
+  color: #a1a1a6 !important;
 }
 
 .blessing-modal-close {
-  background: rgba(255, 255, 255, 0.12);
-  border: none;
-  color: #ffffff;
-  width: 34px;
-  height: 34px;
+  background: rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  color: #1d1d1f;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
-  font-size: 1.2rem;
+  font-size: 0.9rem;
   line-height: 1;
   cursor: pointer;
   display: flex;
@@ -1067,20 +1092,32 @@ body .blessing-modal-card .blessing-modal-subtitle,
   flex-shrink: 0;
 }
 
+html.dark .blessing-modal-close {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.14);
+  color: #f5f5f7;
+}
+
 .blessing-modal-close:hover {
-  background: rgba(255, 255, 255, 0.25);
+  background: rgba(0, 0, 0, 0.12);
   transform: scale(1.08);
+}
+
+html.dark .blessing-modal-close:hover {
+  background: rgba(255, 255, 255, 0.2);
 }
 
 .blessing-modal-video-wrap {
   position: relative;
   width: 100%;
   padding-top: 56.25%; /* 16:9 aspect ratio */
-  border-radius: 16px;
+  border-radius: 18px;
   overflow: hidden;
-  margin: 1.25rem 0 0.75rem 0;
+  margin: 1.25rem 0 1.25rem 0;
   background: #000000;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.2),
+    0 0 0 1px rgba(255, 255, 255, 0.08);
 }
 
 .blessing-modal-video-wrap iframe {
@@ -1089,67 +1126,6 @@ body .blessing-modal-card .blessing-modal-subtitle,
   width: 100%;
   height: 100%;
   border: none;
-}
-
-.blessing-modal-fallback-card {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  padding: 0.9rem 1.1rem;
-  margin-bottom: 1rem;
-  background: rgba(245, 158, 11, 0.12);
-  border: 1px solid rgba(245, 158, 11, 0.3);
-  border-radius: 16px;
-}
-
-.blessing-fallback-img {
-  width: 52px;
-  height: 52px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid #f59e0b;
-  flex-shrink: 0;
-}
-
-.blessing-fallback-info {
-  display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
-}
-
-html .blessing-modal-card .blessing-fallback-title {
-  font-size: 0.95rem !important;
-  font-weight: 700 !important;
-  color: #ffffff !important;
-  margin: 0 !important;
-}
-
-.blessing-fallback-text {
-  font-size: 0.78rem;
-  color: rgba(255, 255, 255, 0.8);
-  margin: 0;
-  line-height: 1.35;
-}
-
-.blessing-fallback-play-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  margin-top: 0.35rem;
-  padding: 0.45rem 0.9rem;
-  border-radius: 12px;
-  background: #ff0000;
-  color: #ffffff;
-  font-size: 0.8rem;
-  font-weight: 600;
-  text-decoration: none;
-  width: fit-content;
-  transition: background 0.2s ease;
-}
-
-.blessing-fallback-play-btn:hover {
-  background: #d90000;
-  color: #ffffff;
 }
 
 .blessing-modal-footer {
@@ -1163,35 +1139,53 @@ html .blessing-modal-card .blessing-fallback-title {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.65rem 1.2rem;
-  border-radius: 14px;
+  padding: 0.65rem 1.25rem;
+  border-radius: 12px;
   background: #ff0000;
   color: #ffffff;
   font-size: 0.88rem;
   font-weight: 600;
   text-decoration: none;
-  box-shadow: 0 4px 14px rgba(255, 0, 0, 0.35);
+  box-shadow: 0 4px 14px rgba(255, 0, 0, 0.3);
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.blessing-modal-yt-btn:hover {
+  background: #e60000;
+  color: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(255, 0, 0, 0.4);
+}
+
+.blessing-modal-done-btn {
+  padding: 0.65rem 1.35rem;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  color: #1d1d1f;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
   transition:
     background 0.2s ease,
     transform 0.2s ease;
 }
 
-.blessing-modal-yt-btn:hover {
-  background: #cc0000;
-  color: #ffffff;
-  transform: translateY(-1px);
+html.dark .blessing-modal-done-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.16);
+  color: #f5f5f7;
 }
 
-.blessing-modal-done-btn {
-  padding: 0.65rem 1.35rem;
-  border-radius: 14px;
-  background: rgba(255, 255, 255, 0.12);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  color: #ffffff;
-  font-size: 0.88rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.2s ease;
+.blessing-modal-done-btn:hover {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+html.dark .blessing-modal-done-btn:hover {
+  background: rgba(255, 255, 255, 0.18);
 }
 
 .blessing-modal-done-btn:hover {
