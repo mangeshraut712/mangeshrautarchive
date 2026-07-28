@@ -82,11 +82,13 @@ test.describe('Share widget cross-browser', () => {
     await openShareDialog(page);
 
     const initialSrc = await page.locator('.website-share-qr').getAttribute('src');
-    expect(initialSrc).toContain(encodeURIComponent('https://mangeshraut.pro'));
+    expect(initialSrc).toContain(
+      encodeURIComponent('https://mangeshraut712.github.io/mangeshrautarchive/')
+    );
 
     await page.locator('.share-mirror-tab[data-mirror-idx="1"]').click();
     const vercelSrc = await page.locator('.website-share-qr').getAttribute('src');
-    expect(vercelSrc).toContain(encodeURIComponent('https://mraut.vercel.app'));
+    expect(vercelSrc).toContain(encodeURIComponent('https://mangeshraut.pro'));
     expect(vercelSrc).not.toBe(initialSrc);
   });
 });

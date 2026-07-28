@@ -2139,6 +2139,8 @@ html.dark .support-paypal-btn.premium svg {
     background-color 0.3s ease;
 }
 
+#contact .support-coffee-btn span,
+#contact a.support-coffee-btn span,
 .support-coffee-btn.premium span {
   color: #0d0c22 !important;
   -webkit-text-fill-color: #0d0c22 !important;
