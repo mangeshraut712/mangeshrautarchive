@@ -3,8 +3,6 @@
  * Lyrics card (Listen + Translate) + Play on YouTube — no embedded player.
  */
 
-import { rescanCardContentAccessibility } from './card-content-accessibility.js';
-
 const BLESSING_CONFIG = {
   ganesh: {
     title: 'Shree Ganapati Aarti',
@@ -240,7 +238,11 @@ export function openBlessingModal(key) {
   activeModalEl = overlay;
   document.body.style.overflow = 'hidden';
 
-  rescanCardContentAccessibility(overlay);
+  import('./card-content-accessibility.js')
+    .then(({ rescanCardContentAccessibility }) => {
+      rescanCardContentAccessibility(overlay);
+    })
+    .catch(() => {});
 
   requestAnimationFrame(() => {
     overlay.classList.add('is-visible');
