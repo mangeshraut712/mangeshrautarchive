@@ -2735,7 +2735,7 @@ html.dark
 }
 
 /* 5. Shadcn Badge Buttons & Micro Card Links */
-:is(.project-evidence-link, .watch-btn, .engineering-open-btn, .contact-assistme-btn) {
+:is(.project-evidence-link, .engineering-open-btn, .contact-assistme-btn) {
   min-height: 36px !important;
   height: 36px !important;
   border-radius: 8px !important;
@@ -2759,11 +2759,11 @@ html.dark
     color 0.18s ease !important;
 }
 
-:is(.project-evidence-link, .watch-btn, .engineering-open-btn, .contact-assistme-btn):hover {
+:is(.project-evidence-link, .engineering-open-btn, .contact-assistme-btn):hover {
   transform: translateY(-1px) scale(1.02) !important;
 }
 
-:is(.project-evidence-link, .watch-btn, .engineering-open-btn):active {
+:is(.project-evidence-link, .engineering-open-btn):active {
   transform: scale(0.97) !important;
 }
 
