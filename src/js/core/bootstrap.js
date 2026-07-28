@@ -1,8 +1,12 @@
-const EAGER_MODULES = ['../modules/section-preview.js'];
+const EAGER_MODULES = ['../modules/section-preview.js', '../modules/blessing-media-modal.js'];
 
 /** Paint-visible polish — CSS already shows content; defer class sweeps off TBT path.
  *  accessibility.js adds has-a11y-toolbar (body pad) — keep off the LCP/TBT critical path. */
-const POST_PAINT_IDLE_MODULES = ['../modules/accessibility.js', '../modules/scroll-animations.js'];
+const POST_PAINT_IDLE_MODULES = [
+  '../modules/accessibility.js',
+  '../modules/scroll-animations.js',
+  '../modules/blessing-media-modal.js',
+];
 
 /** WebGL / chrome glass — CSS glass paints first; load on interaction or late idle. */
 const IDLE_EAGER_MODULES = [
@@ -40,6 +44,7 @@ const INTERACTION_MODULES = [
   '../modules/agentic-actions.js',
   '../modules/premium-enhancements.js',
   '../modules/birthday-celebration.js',
+  '../modules/blessing-media-modal.js',
 ];
 
 /* Tighter rootMargin = modules load when near, not all at once mid-page */
@@ -202,6 +207,10 @@ const MODULE_IMPORTERS = {
     import('../modules/section-preview.js').then(module => {
       module.initSectionPreviews?.();
       module.initContactExtras?.();
+    }),
+  '../modules/blessing-media-modal.js': () =>
+    import('../modules/blessing-media-modal.js').then(module => {
+      module.initBlessingMediaModal?.();
     }),
 };
 

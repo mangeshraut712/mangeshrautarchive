@@ -3659,7 +3659,7 @@ html.dark #home .hero-name-text {
                   <!-- Compact Header with Ganesh and Hanuman -->
                   <div class="donation-compact-header">
                     <!-- Ganesh Image (Left) -->
-                    <div class="ganesh-glow-container">
+                    <div class="ganesh-glow-container blessing-avatar-trigger" data-blessing="ganesh" role="button" tabindex="0" aria-label="Play Ganapati Aarti" title="🕉️ Click to play Ganapati Aarti">
                       <picture>
                         <source
                           type="image/webp"
@@ -3669,9 +3669,10 @@ html.dark #home .hero-name-text {
                             assets/images/ganesh-desktop.webp 1920w"
                           sizes="70px" />
                         <img src="assets/images/ganesh.png" alt="Lord Ganesh" class="ganesh-blessing-img"
-                          title="🕉️ Om Gan Ganapataye Namah" width="70" height="70" loading="lazy" decoding="async">
+                          title="🕉️ Click to play Ganapati Aarti" width="70" height="70" loading="lazy" decoding="async">
                       </picture>
                       <div class="glow-ring"></div>
+                      <span class="blessing-play-badge" aria-hidden="true"><i class="fas fa-play"></i></span>
                     </div>
                     <!-- Support My Work (Center) -->
                     <div class="donation-info">
@@ -3679,7 +3680,7 @@ html.dark #home .hero-name-text {
                       <p class="support-subheadline">bless your journey!</p>
                     </div>
                     <!-- Hanuman Image (Right) -->
-                    <div class="hanuman-glow-container">
+                    <div class="hanuman-glow-container blessing-avatar-trigger" data-blessing="hanuman" role="button" tabindex="0" aria-label="Play Hanuman Chalisa" title="🙏 Click to play Hanuman Chalisa">
                       <picture>
                         <source
                           type="image/webp"
@@ -3689,9 +3690,10 @@ html.dark #home .hero-name-text {
                             assets/images/hanuman-desktop.webp 1920w"
                           sizes="70px" />
                         <img src="assets/images/hanuman.png" alt="Lord Hanuman" class="hanuman-blessing-img"
-                          title="🙏 Jai Hanuman" width="70" height="70" loading="lazy" decoding="async">
+                          title="🙏 Click to play Hanuman Chalisa" width="70" height="70" loading="lazy" decoding="async">
                       </picture>
                       <div class="glow-ring"></div>
+                      <span class="blessing-play-badge" aria-hidden="true"><i class="fas fa-play"></i></span>
                     </div>
                   </div>
 
@@ -4614,6 +4616,7 @@ html.dark #home .hero-name-text {
           { src: 'js/utils/theme.js?v=20260716aa', module: true },
           { src: 'js/utils/go-to-top.js?v=20260716aa', defer: true },
           { src: 'js/core/bootstrap.js?v=20260719ui4', module: true },
+          { src: 'js/modules/blessing-media-modal.js?v=20260728', module: true },
           { src: 'js/modules/share-widget.js?v=20260724dino1', module: true },
           { src: 'js/modules/name-pronounce.js?v=20260716aa', defer: true },
         ];
