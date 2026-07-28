@@ -77,11 +77,6 @@ const SECTION_MODULES = [
   },
   /* live-activity-strip + lastfm are delayed in initBootstrap (home is always intersecting). */
   {
-    sectionId: 'projects',
-    modulePath: '../modules/quick-look.js',
-    rootMargin: '250px 0px',
-  },
-  {
     sectionId: 'skills',
     modulePath: '../modules/skills-visualization.js',
     rootMargin: '80px 0px',
@@ -207,7 +202,6 @@ const MODULE_IMPORTERS = {
   '../modules/health-widget.js': () => import('../modules/health-widget.js'),
   '../modules/debug-runner.js': () => import('../modules/debug-runner.js'),
   '../modules/chatbot.js': () => import('../modules/chatbot.js'),
-  '../modules/quick-look.js': () => import('../modules/quick-look.js'),
   '../modules/live-activity-strip.js': () => import('../modules/live-activity-strip.js'),
   '../modules/experience-interactivity.js': () => import('../modules/experience-interactivity.js'),
   '../modules/awards-shelf.js': () => import('../modules/awards-shelf.js'),

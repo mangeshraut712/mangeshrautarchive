@@ -3,26 +3,15 @@ import { escapeHtml } from '../utils/escape-html.js';
 
 function ensureContactSolidStyles() {
   const id = 'contact-solid-css';
-  let link = document.getElementById(id);
-  if (!link) {
-    link = document.createElement('link');
-    link.id = id;
-    link.rel = 'stylesheet';
-    link.href = 'assets/css/contact-solid.css?v=20260717clean';
+  const href = 'assets/css/contact-solid.css?v=20260729theme1';
+  if (document.getElementById(id) || document.querySelector(`link[href*="contact-solid.css"]`)) {
+    return;
   }
-  // Always re-append as last stylesheet so solid beats deferred glass sheets
+  const link = document.createElement('link');
+  link.id = id;
+  link.rel = 'stylesheet';
+  link.href = href;
   document.head.appendChild(link);
-
-  // Luxury card depth must load after contact-solid (which can flatten shadows)
-  const luxId = 'apple-cards-luxury-2026-css';
-  let lux = document.getElementById(luxId);
-  if (!lux) {
-    lux = document.createElement('link');
-    lux.id = luxId;
-    lux.rel = 'stylesheet';
-    lux.href = 'assets/css/apple-cards-luxury-2026.css?v=20260717clean';
-  }
-  document.head.appendChild(lux);
 }
 
 export class CalendarWidget {

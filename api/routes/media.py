@@ -56,7 +56,138 @@ def build_lastfm_unconfigured_response(user: str):
         },
         "source": "lastfm-unconfigured",
         "message": "Last.fm API key is not configured for this environment.",
+        "listen_now": build_listen_now_meta(user, []),
     }
+
+
+def lastfm_profile_url(user: str) -> str:
+    return f"https://www.last.fm/user/{quote(user or LASTFM_DEFAULT_USERNAME, safe='')}"
+
+
+def build_week_bins(tracks: List[dict], now: Optional[float] = None) -> List[dict]:
+    """Last 7 UTC days of scrobble counts from recent-track timestamps."""
+    from datetime import datetime, timedelta, timezone
+
+    now_ts = time.time() if now is None else float(now)
+    now_dt = datetime.fromtimestamp(now_ts, tz=timezone.utc)
+    start_today = datetime(now_dt.year, now_dt.month, now_dt.day, tzinfo=timezone.utc)
+    bins = []
+    for i in range(6, -1, -1):
+        day_start = start_today - timedelta(days=i)
+        bins.append(
+            {
+                "day": day_start.strftime("%a")[:2],
+                "count": 0,
+                "start": int(day_start.timestamp()),
+            }
+        )
+
+    for track in tracks:
+        date = track.get("date") or {}
+        raw_uts = date.get("uts") if isinstance(date, dict) else None
+        if raw_uts is None:
+            continue
+        try:
+            uts = int(raw_uts)
+        except (TypeError, ValueError):
+            continue
+        for bucket in bins:
+            if bucket["start"] <= uts < bucket["start"] + 86400:
+                bucket["count"] += 1
+                break
+
+    return [{"day": bucket["day"], "count": bucket["count"]} for bucket in bins]
+
+
+def derive_top_artists_from_tracks(tracks: List[dict], limit: int = 5) -> List[dict]:
+    counts: dict[str, int] = {}
+    urls: dict[str, str] = {}
+    for track in tracks:
+        name = _track_artist_name(track)
+        if not name:
+            continue
+        counts[name] = counts.get(name, 0) + 1
+        artist = track.get("artist") or {}
+        if isinstance(artist, dict):
+            artist_url = str(artist.get("url") or "").strip()
+            if artist_url:
+                urls[name] = artist_url
+        if name not in urls:
+            urls[name] = f"https://www.last.fm/music/{quote(name)}"
+    ranked = sorted(counts.items(), key=lambda item: (-item[1], item[0].lower()))[:limit]
+    return [
+        {"name": name, "playcount": str(playcount), "url": urls.get(name, "")}
+        for name, playcount in ranked
+    ]
+
+
+def build_listen_now_meta(
+    user: str,
+    tracks: List[dict],
+    top_artists: Optional[List[dict]] = None,
+) -> dict:
+    artists = [artist for artist in (top_artists or []) if isinstance(artist, dict) and artist.get("name")]
+    if not artists:
+        artists = derive_top_artists_from_tracks(tracks)
+    return {
+        "profile_url": lastfm_profile_url(user),
+        "top_artists": artists[:5],
+        "week_bins": build_week_bins(tracks),
+    }
+
+
+def ensure_listen_now_meta(payload: dict, user: str) -> dict:
+    """Keep Listen Now mini meta present on cached/stale payloads."""
+    tracks = _normalize_tracks(payload)
+    existing = payload.get("listen_now") if isinstance(payload.get("listen_now"), dict) else {}
+    top = existing.get("top_artists") if isinstance(existing.get("top_artists"), list) else []
+    payload["listen_now"] = build_listen_now_meta(user, tracks, top)
+    return payload
+
+
+async def fetch_lastfm_top_artists(user: str, limit: int = 5, period: str = "7day") -> List[dict]:
+    if not LASTFM_API_KEY:
+        return []
+
+    url = "https://ws.audioscrobbler.com/2.0/"
+    params = {
+        "method": "user.gettopartists",
+        "user": user,
+        "api_key": LASTFM_API_KEY,
+        "format": "json",
+        "limit": str(max(1, min(limit, 10))),
+        "period": period,
+    }
+    headers = {
+        "User-Agent": "AssistMe-Portfolio/3.0.0",
+        "Accept": "application/json",
+    }
+
+    async with httpx.AsyncClient(timeout=2.5, follow_redirects=True) as client:
+        response = await client.post(url, data=params, headers=headers)
+
+    if response.status_code != 200:
+        return []
+
+    data = response.json()
+    raw = ((data.get("topartists") or {}).get("artist")) or []
+    if isinstance(raw, dict):
+        raw = [raw]
+    artists = []
+    for artist in raw:
+        if not isinstance(artist, dict):
+            continue
+        name = str(artist.get("name") or "").strip()
+        if not name:
+            continue
+        artists.append(
+            {
+                "name": name,
+                "playcount": str(artist.get("playcount") or "0"),
+                "url": str(artist.get("url") or f"https://www.last.fm/music/{quote(name)}"),
+            }
+        )
+    return artists[:limit]
 
 
 def build_lastfm_headers(cache_state: str, started_at: float, extra: Optional[dict] = None):
@@ -162,7 +293,10 @@ async def fetch_lastfm_recent_payload(user: str, limit: int) -> dict:
     data = response.json()
     if not data.get("recenttracks"):
         raise HTTPException(status_code=502, detail="Last.fm returned unexpected data format")
-    return await enrich_recent_tracks_with_artwork(data)
+    data = await enrich_recent_tracks_with_artwork(data)
+    top_artists = await fetch_lastfm_top_artists(user)
+    data["listen_now"] = build_listen_now_meta(user, _normalize_tracks(data), top_artists)
+    return data
 
 
 async def refresh_lastfm_recent_cache(cache_key: str, user: str, limit: int):
@@ -639,6 +773,7 @@ async def get_recent_music(
         if _tracks_need_enrichment(data):
             data = await enrich_recent_tracks_with_artwork(data)
             lastfm_recent_cache[cache_key] = {"data": data, "ts": cached["ts"]}
+        data = ensure_listen_now_meta(data, user)
         return JSONResponse(
             content=data,
             headers=build_lastfm_headers("HIT", started_at),
@@ -658,6 +793,7 @@ async def get_recent_music(
         if _tracks_need_enrichment(data):
             data = await enrich_recent_tracks_with_artwork(data)
             lastfm_recent_cache[cache_key] = {"data": data, "ts": cached["ts"]}
+        data = ensure_listen_now_meta(data, user)
         return JSONResponse(
             content=data,
             headers=build_lastfm_headers("STALE", started_at, {"X-Lastfm-Stale": "1"}),
@@ -674,7 +810,7 @@ async def get_recent_music(
     except HTTPException:
         if cached:
             return JSONResponse(
-                content=cached["data"],
+                content=ensure_listen_now_meta(cached["data"], user),
                 headers=build_lastfm_headers("STALE", started_at, {"X-Lastfm-Stale": "1"}),
             )
         raise
@@ -682,7 +818,7 @@ async def get_recent_music(
         print("⏰ Last.fm request timed out")
         if cached:
             return JSONResponse(
-                content=cached["data"],
+                content=ensure_listen_now_meta(cached["data"], user),
                 headers=build_lastfm_headers("STALE", started_at, {"X-Lastfm-Stale": "1"}),
             )
         return JSONResponse(
@@ -696,7 +832,7 @@ async def get_recent_music(
         print("🌐 Connection error to Last.fm")
         if cached:
             return JSONResponse(
-                content=cached["data"],
+                content=ensure_listen_now_meta(cached["data"], user),
                 headers=build_lastfm_headers("STALE", started_at, {"X-Lastfm-Stale": "1"}),
             )
         return JSONResponse(
@@ -710,7 +846,7 @@ async def get_recent_music(
         print(f"💥 Music Proxy JSON Parse Exception: {str(e)}")
         if cached:
             return JSONResponse(
-                content=cached["data"],
+                content=ensure_listen_now_meta(cached["data"], user),
                 headers=build_lastfm_headers("STALE", started_at, {"X-Lastfm-Stale": "1"}),
             )
         return JSONResponse(
@@ -724,7 +860,7 @@ async def get_recent_music(
         print(f"💥 Music Proxy Exception: {type(e).__name__} - {str(e)}")
         if cached:
             return JSONResponse(
-                content=cached["data"],
+                content=ensure_listen_now_meta(cached["data"], user),
                 headers=build_lastfm_headers("STALE", started_at, {"X-Lastfm-Stale": "1"}),
             )
         logger.error("Music proxy failed: %s", type(e).__name__, exc_info=True)

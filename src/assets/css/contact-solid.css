@@ -319,9 +319,12 @@ html[data-lg-mode='tinted']:not(.dark) body #contact .contact-link-item {
 }
 
 html.dark[data-lg-mode='tinted'] body #contact a.contact-link-item,
-html.dark[data-lg-mode='tinted'] body #contact .contact-link-item {
+html.dark[data-lg-mode='tinted'] body #contact .contact-link-item,
+html[data-theme='dark'][data-lg-mode='tinted'] body #contact a.contact-link-item,
+html[data-theme='dark'][data-lg-mode='tinted'] body #contact .contact-link-item {
   background: #000000 !important;
   background-color: #000000 !important;
+  border: 1px solid #2c2c2e !important;
   border-color: #2c2c2e !important;
   color: #f5f5f7 !important;
 }
@@ -603,4 +606,45 @@ html.dark[data-lg-mode='balanced'] body #main-content #contact .health-widget-co
     rgb(255 255 255 / 0%) 40%
   ) !important;
   border-color: rgb(255 255 255 / var(--lg-border-dark, 14%)) !important;
+}
+
+/* Watch / stream chips — readable on light & dark */
+html:not(.dark) body #contact .watch-btn,
+html[data-theme='light'] body #contact .watch-btn {
+  background: #e8f1fc !important;
+  background-color: #e8f1fc !important;
+  color: #003d7a !important;
+  -webkit-text-fill-color: #003d7a !important;
+}
+
+html.dark body #contact .watch-btn,
+html[data-theme='dark'] body #contact .watch-btn {
+  background: rgb(10 132 255 / 22%) !important;
+  background-color: rgb(10 132 255 / 22%) !important;
+  color: #e8f1ff !important;
+  -webkit-text-fill-color: #e8f1ff !important;
+}
+
+html body #contact .watch-btn span,
+html body #contact .watch-btn i {
+  color: inherit !important;
+  -webkit-text-fill-color: inherit !important;
+}
+
+html:not(.dark) body #contact .currently-tab:not(.active),
+html[data-theme='light'] body #contact .currently-tab:not(.active) {
+  color: #3a3a3c !important;
+  -webkit-text-fill-color: #3a3a3c !important;
+}
+
+html.dark body #contact .currently-tab:not(.active),
+html[data-theme='dark'] body #contact .currently-tab:not(.active) {
+  color: #d2d2d7 !important;
+  -webkit-text-fill-color: #d2d2d7 !important;
+}
+
+html.dark body #contact .currently-tab.active,
+html[data-theme='dark'] body #contact .currently-tab.active {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
 }

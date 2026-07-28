@@ -893,6 +893,102 @@ async function enrichRecentTracksWithArtwork(payload, apiKey = '', maxTracks = 8
   return payload;
 }
 
+function normalizeRecentTracks(payload) {
+  const raw = payload?.recenttracks?.track;
+  if (Array.isArray(raw)) return raw.filter(track => track && typeof track === 'object');
+  if (raw && typeof raw === 'object') return [raw];
+  return [];
+}
+
+function buildWeekBins(tracks = [], nowMs = Date.now()) {
+  const startToday = new Date(nowMs);
+  startToday.setUTCHours(0, 0, 0, 0);
+  const bins = [];
+  for (let i = 6; i >= 0; i -= 1) {
+    const dayStart = new Date(startToday.getTime() - i * 86400000);
+    bins.push({
+      day: dayStart.toLocaleDateString('en-US', { weekday: 'short', timeZone: 'UTC' }).slice(0, 2),
+      count: 0,
+      start: Math.floor(dayStart.getTime() / 1000),
+    });
+  }
+  for (const track of tracks) {
+    const uts = Number(track?.date?.uts);
+    if (!Number.isFinite(uts)) continue;
+    for (const bucket of bins) {
+      if (uts >= bucket.start && uts < bucket.start + 86400) {
+        bucket.count += 1;
+        break;
+      }
+    }
+  }
+  return bins.map(({ day, count }) => ({ day, count }));
+}
+
+function deriveTopArtistsFromTracks(tracks = [], limit = 5) {
+  const counts = new Map();
+  const urls = new Map();
+  for (const track of tracks) {
+    const name = trackArtistName(track);
+    if (!name) continue;
+    counts.set(name, (counts.get(name) || 0) + 1);
+    const artistUrl =
+      typeof track?.artist === 'object' ? String(track.artist.url || '').trim() : '';
+    if (artistUrl) urls.set(name, artistUrl);
+    if (!urls.has(name)) {
+      urls.set(name, `https://www.last.fm/music/${encodeURIComponent(name)}`);
+    }
+  }
+  return [...counts.entries()]
+    .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+    .slice(0, limit)
+    .map(([name, playcount]) => ({
+      name,
+      playcount: String(playcount),
+      url: urls.get(name) || '',
+    }));
+}
+
+function buildListenNowMeta(user, tracks = [], topArtists = []) {
+  const artists = Array.isArray(topArtists)
+    ? topArtists.filter(artist => artist && artist.name).slice(0, 5)
+    : [];
+  return {
+    profile_url: `https://www.last.fm/user/${encodeURIComponent(user || 'mbr63')}`,
+    top_artists: artists.length ? artists : deriveTopArtistsFromTracks(tracks),
+    week_bins: buildWeekBins(tracks),
+  };
+}
+
+async function fetchLastfmTopArtists(user, apiKey, limit = 5) {
+  if (!apiKey) return [];
+  const qs = new URLSearchParams({
+    method: 'user.gettopartists',
+    user,
+    api_key: apiKey,
+    format: 'json',
+    limit: String(limit),
+    period: '7day',
+  });
+  const res = await fetch(`https://ws.audioscrobbler.com/2.0/?${qs}`);
+  if (!res.ok) return [];
+  const data = await res.json();
+  const raw = data?.topartists?.artist;
+  const list = Array.isArray(raw) ? raw : raw ? [raw] : [];
+  return list
+    .map(artist => {
+      const name = String(artist?.name || '').trim();
+      if (!name) return null;
+      return {
+        name,
+        playcount: String(artist?.playcount || '0'),
+        url: String(artist?.url || `https://www.last.fm/music/${encodeURIComponent(name)}`),
+      };
+    })
+    .filter(Boolean)
+    .slice(0, limit);
+}
+
 async function handleMusicRecent(url, env, cors) {
   const user = url.searchParams.get('user') || env.LASTFM_USERNAME || 'mbr63';
   const limit = Math.min(20, Math.max(1, Number(url.searchParams.get('limit') || 10)));
@@ -903,6 +999,7 @@ async function handleMusicRecent(url, env, cors) {
         success: false,
         error: 'LASTFM_API_KEY not configured on worker',
         recenttracks: { track: [] },
+        listen_now: buildListenNowMeta(user, []),
       },
       200,
       cors
@@ -916,12 +1013,17 @@ async function handleMusicRecent(url, env, cors) {
       format: 'json',
       limit: String(limit),
     });
-    const res = await fetch(`https://ws.audioscrobbler.com/2.0/?${qs}`);
+    const [res, topArtists] = await Promise.all([
+      fetch(`https://ws.audioscrobbler.com/2.0/?${qs}`),
+      fetchLastfmTopArtists(user, key).catch(() => []),
+    ]);
     if (!res.ok) {
       return json({ success: false, error: `Last.fm HTTP ${res.status}` }, 502, cors);
     }
     const data = await res.json();
     const enriched = await enrichRecentTracksWithArtwork(data, key);
+    const tracks = normalizeRecentTracks(enriched);
+    enriched.listen_now = buildListenNowMeta(user, tracks, topArtists);
     return json({ ...enriched, host: 'cloudflare-worker', success: true }, 200, cors);
   } catch (e) {
     return json({ success: false, error: e.message }, 502, cors);

@@ -105,8 +105,9 @@ html.dark .certification-card:hover {
 }
 
 html.dark .certification-category {
-  background: rgb(41 151 255 / 15%) !important;
-  color: #2997ff !important;
+  background: rgb(10 132 255 / 22%) !important;
+  color: #e8f1ff !important;
+  -webkit-text-fill-color: #e8f1ff !important;
 }
 
 /* Header - Compact */

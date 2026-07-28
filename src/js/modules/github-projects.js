@@ -8,7 +8,6 @@
  * 3) direct GitHub API fallback
  */
 
-import { renderRepoEvidenceRow } from './case-studies-data.js';
 import { escapeHtml as escapeHtmlShared } from '../utils/escape-html.js';
 
 // Hoisted Intl formatters for performance
@@ -1938,16 +1937,11 @@ class GitHubProjects {
     return repos;
   }
 
-  buildProjectEvidenceRow(repo) {
-    return renderRepoEvidenceRow(repo);
-  }
-
   createProjectCard(repo, _index) {
     const showcase = repo.__showcase || this.getShowcaseScore(repo);
     const language = repo.language || 'Unknown';
     const languageColor = this.getLanguageColor(language);
     const description = repo.description || 'No repository description provided yet.';
-
     const stars = Number(repo.stargazers_count || 0);
     const forks = Number(repo.forks_count || 0);
     const openIssues = Number(repo.open_issues_count || 0);
@@ -1966,16 +1960,14 @@ class GitHubProjects {
 
     const homepage = this.normalizeHomepageUrl(repo.homepage);
     const hasDemo = Boolean(homepage);
-
-    const updatedRelativeCompact = this.formatRelativeDateCompact(repo.updated_at);
     const updatedAbsolute = this.formatAbsoluteDate(repo.updated_at);
-    // Relative-only in the chip so titles keep room on tablet/mobile; absolute stays in title=.
-    const updatedBadgeText = updatedRelativeCompact;
+    const updatedBadgeText = this.formatRelativeDateCompact(repo.updated_at);
     const repoPath = repo.full_name || `${this.username}/${repo.name}`;
     const repoLicense = repo.license?.spdx_id || '';
     const repoSize = Number.isFinite(repo.size) ? repo.size : '';
     const repoBranch = repo.default_branch || '';
     const aiInsight = this.buildAiInsight(repo, showcase);
+    const topics = this.getTopics(repo);
 
     const safeName = this.escapeHtml(repo.name);
     const safeRepoPath = this.escapeHtml(repoPath);
@@ -2003,17 +1995,12 @@ class GitHubProjects {
     const safeReleaseCommits = this.escapeHtml(
       releaseSignal.commitsSinceRelease === null ? '' : releaseSignal.commitsSinceRelease
     );
-
-    const topics = this.getTopics(repo);
     const topicsJson = this.escapeHtml(JSON.stringify(topics));
-
     const updatedAt = this.escapeHtml(repo.updated_at || '');
     const createdAt = this.escapeHtml(repo.created_at || '');
     const pushedAt = this.escapeHtml(repo.pushed_at || '');
     const lastCommitAtSafe = this.escapeHtml(latestCommitAt);
 
-    const commitsText = commits30d === null ? '--' : this.formatCompactNumber(commits30d);
-    const contributorsText = contributors === null ? '--' : this.formatCompactNumber(contributors);
     const hasReleaseTag = Boolean(releaseSignal.tagName);
     const showCommitsSince = hasReleaseTag && releaseSignal.commitsSinceRelease !== null;
     const releaseCommitsText = showCommitsSince
@@ -2030,6 +2017,35 @@ class GitHubProjects {
               ${releaseCommitsText} since
             </span>`
       : '';
+    const releaseStripHtml = hasReleaseTag
+      ? `<div class="project-release-strip" data-release-status="${safeReleaseKey}">
+            <span class="project-release-status project-release-${safeReleaseKey}">${safeReleaseLabel}</span>
+            ${releaseTagHtml}
+            <span class="project-release-detail">${safeReleaseMeta}</span>
+            ${releaseCommitsHtml}
+          </div>`
+      : '';
+
+    const languageHtml =
+      language !== 'Unknown'
+        ? `<span class="project-language">
+                <span class="language-dot" style="background-color: ${languageColor}"></span>
+                ${safeLanguage}
+              </span>`
+        : '';
+    const topicsHtml =
+      topics.length > 0
+        ? topics
+            .slice(0, 3)
+            .map(topic => `<span class="project-tag">${this.escapeHtml(topic)}</span>`)
+            .join('')
+        : '';
+    const demoHtml = hasDemo
+      ? `<a href="${safeHomepage}" target="_blank" rel="noopener noreferrer" class="project-action-btn btn-demo" aria-label="Open ${safeName} demo">
+                <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i>
+                <span>Demo</span>
+              </a>`
+      : '';
 
     return `
       <article class="showcase-project-card apple-3d-project group lg-interactive" data-lg-interactive data-release-status="${safeReleaseKey}" aria-label="${safeName} project card">
@@ -2039,60 +2055,41 @@ class GitHubProjects {
               <h3 class="project-title">
                 <span class="project-title-text">${safeName}</span>
               </h3>
-              <a class="project-repo-link" href="${safeRepoUrl}" target="_blank" rel="noopener noreferrer">
-                ${safeRepoPath}
-              </a>
             </div>
             <span class="project-repo-updated" title="Updated ${safeUpdatedAbsolute}">
-              <i class="fas fa-clock"></i>
+              <i class="fas fa-clock" aria-hidden="true"></i>
               ${safeUpdatedBadgeText}
             </span>
           </div>
 
           <p class="project-description">${safeDescription || 'No description available'}</p>
 
-          <div class="project-release-strip" data-release-status="${safeReleaseKey}">
-            <span class="project-release-status project-release-${safeReleaseKey}">${safeReleaseLabel}</span>
-            ${releaseTagHtml}
-            <span class="project-release-detail">${safeReleaseMeta}</span>
-            ${releaseCommitsHtml}
-          </div>
+          ${releaseStripHtml}
 
-          <div class="project-signal-row">
-            <span class="project-signal-pill" title="Stars">
-              <i class="fas fa-star"></i>${this.formatCompactNumber(stars)}
+          <div class="project-meta-row" aria-label="Repository stats">
+            <span class="project-meta-stat" title="Stars">
+              <i class="fas fa-star" aria-hidden="true"></i>${this.formatCompactNumber(stars)}
             </span>
-            <span class="project-signal-pill" title="Forks">
-              <i class="fas fa-code-fork"></i>${this.formatCompactNumber(forks)}
+            <span class="project-meta-stat" title="Forks">
+              <i class="fas fa-code-fork" aria-hidden="true"></i>${this.formatCompactNumber(forks)}
             </span>
-            <span class="project-signal-score" title="Commits 30d ${commitsText} · Contributors ${contributorsText}">Signal ${safeScore}/100</span>
-          </div>
-
-          <div class="project-tags">
-            ${
-              language !== 'Unknown'
-                ? `
-              <span class="project-language">
-                <span class="language-dot" style="background-color: ${languageColor}"></span>
-                ${safeLanguage}
-              </span>
-            `
-                : ''
-            }
-            ${
-              topics.length > 0
-                ? topics
-                    .slice(0, 3)
-                    .map(topic => `<span class="project-tag">${this.escapeHtml(topic)}</span>`)
-                    .join('')
-                : ''
-            }
+            ${languageHtml}
+            ${topicsHtml}
           </div>
         </div>
 
-        ${this.buildProjectEvidenceRow(repo)}
-
         <div class="project-footer">
+          <a
+            href="${safeRepoUrl}"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="project-action-btn btn-github"
+            aria-label="Open ${safeName} on GitHub"
+          >
+            <i class="fab fa-github" aria-hidden="true"></i>
+            <span>Open Repo</span>
+          </a>
+          ${demoHtml}
           <button
             type="button"
             class="project-action-btn btn-ar"
@@ -2127,21 +2124,9 @@ class GitHubProjects {
             data-project-ai-insight="${safeInsight}"
             aria-label="${safeName}: Spatial View"
           >
-            <i class="fas fa-cube"></i>
-            <span>Spatial View</span>
+            <i class="fas fa-cube" aria-hidden="true"></i>
+            <span>Spatial</span>
           </button>
-
-          ${
-            hasDemo
-              ? `<a href="${safeHomepage}" target="_blank" rel="noopener noreferrer" class="project-action-btn btn-demo" aria-label="${safeName}: Demo Website">
-                <i class="fas fa-arrow-up-right-from-square"></i>
-                <span>Demo Website</span>
-              </a>`
-              : `<button type="button" class="project-action-btn btn-demo is-disabled" disabled aria-disabled="true" aria-label="Demo unavailable">
-                <i class="fas fa-link-slash"></i>
-                <span>Demo Unavailable</span>
-              </button>`
-          }
         </div>
       </article>
     `;

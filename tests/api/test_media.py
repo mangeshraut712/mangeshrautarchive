@@ -22,7 +22,35 @@ def test_music_recent_returns_latency_headers_when_lastfm_unconfigured(monkeypat
     assert response.headers["X-Music-Source"] == "lastfm-proxy"
     assert response.headers["X-Lastfm-Cache"] == "UNCONFIGURED"
     assert int(response.headers["X-Lastfm-Latency-Ms"]) >= 0
-    assert response.json()["source"] == "lastfm-unconfigured"
+    payload = response.json()
+    assert payload["source"] == "lastfm-unconfigured"
+    assert payload["listen_now"]["profile_url"].endswith("/user/mbr63")
+    assert payload["listen_now"]["week_bins"] == [
+        {"day": day["day"], "count": 0} for day in payload["listen_now"]["week_bins"]
+    ]
+    assert len(payload["listen_now"]["week_bins"]) == 7
+
+
+def test_listen_now_meta_bins_and_derives_top_artists():
+    from api.routes.media import build_listen_now_meta, build_week_bins
+
+    now = 1753718400.0  # 2025-07-28 16:00:00 UTC-ish fixed
+    # Use a controlled "now" via week bins helper
+    today = 1753660800  # 2025-07-28 00:00:00 UTC
+    tracks = [
+        {"artist": {"#text": "Arijit"}, "date": {"uts": str(today + 100)}},
+        {"artist": {"#text": "Arijit"}, "date": {"uts": str(today + 200)}},
+        {"artist": {"#text": "Shreya"}, "date": {"uts": str(today - 86400 + 50)}},
+    ]
+    bins = build_week_bins(tracks, now=today + 3600 * 12)
+    assert len(bins) == 7
+    assert bins[-1]["count"] == 2
+    assert bins[-2]["count"] == 1
+
+    meta = build_listen_now_meta("mbr63", tracks)
+    assert meta["profile_url"].endswith("/user/mbr63")
+    assert meta["top_artists"][0]["name"] == "Arijit"
+    assert meta["top_artists"][0]["playcount"] == "2"
 
 
 def test_music_recent_serves_stale_cache_before_refresh(monkeypatch):
@@ -58,7 +86,9 @@ def test_music_recent_serves_stale_cache_before_refresh(monkeypatch):
     assert response.headers["X-Lastfm-Stale"] == "1"
     assert response.headers["Access-Control-Allow-Origin"] == "*"
     assert int(response.headers["X-Lastfm-Latency-Ms"]) >= 0
-    assert response.json()["recenttracks"]["track"][0]["name"] == "Cached Track"
+    payload = response.json()
+    assert payload["recenttracks"]["track"][0]["name"] == "Cached Track"
+    assert payload["listen_now"]["top_artists"][0]["name"] == "Cached Artist"
 
 
 def test_music_recent_enriches_placeholder_artwork(monkeypatch):

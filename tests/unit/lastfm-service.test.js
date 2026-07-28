@@ -64,4 +64,43 @@ describe('LastFmService payload + artwork helpers', () => {
     ];
     expect(service.buildShelfSignature(recent)).not.toBe(service.buildShelfSignature(playing));
   });
+
+  it('formats relative listen times from Last.fm uts', () => {
+    const now = Date.UTC(2026, 6, 28, 12, 0, 0);
+    expect(service.formatRelativeListenTime(Math.floor(now / 1000) - 12, now)).toBe('Just now');
+    expect(service.formatRelativeListenTime(Math.floor(now / 1000) - 12 * 60, now)).toBe('12m ago');
+    expect(service.formatRelativeListenTime(Math.floor(now / 1000) - 3 * 3600, now)).toBe('3h ago');
+    expect(service.formatRelativeListenTime(Math.floor(now / 1000) - 2 * 86400, now)).toBe(
+      '2d ago'
+    );
+  });
+
+  it('builds a 7-day week sparkline from recent track timestamps', () => {
+    const now = Date.UTC(2026, 6, 28, 15, 0, 0);
+    const todayStart = Math.floor(Date.UTC(2026, 6, 28) / 1000);
+    const yesterday = todayStart - 86400;
+    const bins = service.buildWeekBins(
+      [
+        { date: { uts: String(todayStart + 100) } },
+        { date: { uts: String(todayStart + 200) } },
+        { date: { uts: String(yesterday + 50) } },
+      ],
+      now
+    );
+    expect(bins).toHaveLength(7);
+    expect(bins[6].count).toBe(2);
+    expect(bins[5].count).toBe(1);
+  });
+
+  it('normalizes listen_now meta and falls back to derived top artists', () => {
+    const tracks = [
+      { name: 'One', artist: { '#text': 'Arijit' }, date: { uts: '1' } },
+      { name: 'Two', artist: { '#text': 'Arijit' }, date: { uts: '2' } },
+      { name: 'Three', artist: { '#text': 'Shreya' }, date: { uts: '3' } },
+    ];
+    const meta = service.normalizeListenNow({}, tracks);
+    expect(meta.profile_url).toContain('/user/mbr63');
+    expect(meta.top_artists[0].name).toBe('Arijit');
+    expect(meta.week_bins).toHaveLength(7);
+  });
 });

@@ -1148,9 +1148,9 @@ html.dark #home .hero-name-text {
 
   <!-- Core Styles -->
   <link rel="stylesheet" href="assets/css/apple-design-system.css?v=20260716aa" />
-  <link rel="stylesheet" href="assets/css/sitewide-design-system.css?v=20260728bmc" media="print" onload="this.media='all'" />
-  <noscript><link rel="stylesheet" href="assets/css/sitewide-design-system.css?v=20260728bmc" /></noscript>
-  <link rel="stylesheet" href="assets/css/apple-premium-overrides.css?v=20260721chat6" media="print" onload="this.media='all'" />
+  <link rel="stylesheet" href="assets/css/sitewide-design-system.css?v=20260729sync1" media="print" onload="this.media='all'" />
+  <noscript><link rel="stylesheet" href="assets/css/sitewide-design-system.css?v=20260729sync1" /></noscript>
+  <link rel="stylesheet" href="assets/css/apple-premium-overrides.css?v=20260729sync1" media="print" onload="this.media='all'" />
   <link rel="stylesheet" href="assets/css/style.css?v=20260728bmc" media="print" onload="this.media='all'" />
   <noscript><link rel="stylesheet" href="assets/css/style.css?v=20260728bmc" /></noscript>
   <link
@@ -1180,21 +1180,21 @@ html.dark #home .hero-name-text {
   /></noscript>
   <link
     rel="stylesheet"
-    href="assets/css/theme-solid-surfaces.css?v=20260719ui4"
+    href="assets/css/theme-solid-surfaces.css?v=20260729sync1"
     media="print"
     class="js-defer-css"
   />
   <noscript
-    ><link rel="stylesheet" href="assets/css/theme-solid-surfaces.css?v=20260719ui4"
+    ><link rel="stylesheet" href="assets/css/theme-solid-surfaces.css?v=20260729sync1"
   /></noscript>
   <link
     rel="stylesheet"
-    href="assets/css/chrome-surfaces.css?v=20260719vibe1"
+    href="assets/css/chrome-surfaces.css?v=20260729sync1"
     media="print"
     class="js-defer-css"
   />
   <noscript
-    ><link rel="stylesheet" href="assets/css/chrome-surfaces.css?v=20260719vibe1"
+    ><link rel="stylesheet" href="assets/css/chrome-surfaces.css?v=20260729sync1"
   /></noscript>
   <link
     rel="stylesheet"
@@ -1207,12 +1207,12 @@ html.dark #home .hero-name-text {
   /></noscript>
   <link
     rel="stylesheet"
-    href="assets/css/apple-cards-luxury-2026.css?v=20260719vibe1"
+    href="assets/css/apple-cards-luxury-2026.css?v=20260729sync1"
     media="print"
     class="js-defer-css"
   />
   <noscript
-    ><link rel="stylesheet" href="assets/css/apple-cards-luxury-2026.css?v=20260719vibe1"
+    ><link rel="stylesheet" href="assets/css/apple-cards-luxury-2026.css?v=20260729sync1"
   /></noscript>
   <!-- Non-blocking: critical hero/nav metrics live in hero-critical-inline; promote after paint. -->
   <link
@@ -1254,7 +1254,8 @@ html.dark #home .hero-name-text {
   /></noscript>
 
   <!-- Lazy-loaded Section Styles (data-href only — loaded near section / idle) -->
-  <link rel="stylesheet" data-href="assets/css/contact.css?v=20260728lyrics" data-lazy-style-key="contact" />
+  <link rel="stylesheet" data-href="assets/css/contact.css?v=20260729sync1" data-lazy-style-key="contact" />
+  <link rel="stylesheet" data-href="assets/css/contact-solid.css?v=20260729sync1" data-lazy-style-key="contact" />
   <link rel="stylesheet" data-href="assets/css/animations.css?v=20260716aa" data-lazy-style-key="motion" />
   <link rel="stylesheet" data-href="assets/css/publications.css?v=20260724dino1" data-lazy-style-key="publications" />
   <link rel="stylesheet" data-href="assets/css/education.css?v=20260718edu" data-lazy-style-key="education" />
@@ -1271,7 +1272,7 @@ html.dark #home .hero-name-text {
   <link rel="stylesheet" data-href="assets/css/game-2026.css?v=20260724dino1" data-lazy-style-key="game" />
   <link rel="stylesheet" data-href="assets/css/premium-enhancements.css?v=20260716aa" data-lazy-style-key="motion" />
   <link rel="stylesheet" data-href="assets/css/birthday-celebration.css?v=20260716aa" data-lazy-style-key="birthday" />
-  <link rel="stylesheet" data-href="assets/css/projects-showcase-2026.css?v=20260724dino1" data-lazy-style-key="projects" />
+  <link rel="stylesheet" data-href="assets/css/projects-showcase-2026.css?v=20260729sync1" data-lazy-style-key="projects" />
   <link rel="stylesheet" data-href="assets/css/engineering-showcase.css?v=20260716aa" data-lazy-style-key="engineering" />
   <link rel="stylesheet" data-href="assets/css/share-widget.css?v=20260719ui2" data-lazy-style-key="share" />
   <link rel="stylesheet" data-href="assets/css/health-widget.css?v=20260716aa" data-lazy-style-key="currently" />
@@ -1654,7 +1655,7 @@ html.dark #home .hero-name-text {
           projectStyle.setAttribute('href', projectStyle.dataset.href);
         }
 
-        import('./js/modules/projects-showcase.js?v=20260724dino1')
+        import('./js/modules/projects-showcase.js?v=20260729sync1')
           .then(function (module) {
             var init = module.initProjectShowcase || module.default;
             if (typeof init === 'function') {
@@ -1979,7 +1980,7 @@ html.dark #home .hero-name-text {
                   }
                 </script>
 
-                <!-- Apple Music Style - Last.fm Now Playing Card -->
+                <!-- Apple Music Style - Now Playing Card -->
                 <div class="music-card" id="music-card" data-music-state="loading">
                   <div class="music-card-inner lg-interactive" data-lg-interactive>
                     <div class="album-art-container">
@@ -1994,19 +1995,22 @@ html.dark #home .hero-name-text {
                     </div>
                     <div class="track-info">
                       <div class="status-row">
-                        <svg class="spotify-logo" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                          <path
-                            d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z" />
-                        </svg>
                         <span class="status-text" id="status-text">Listening</span>
+                        <a
+                          id="music-spotify-link"
+                          class="music-card-spotify-link"
+                          href="https://open.spotify.com"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          aria-label="Open this track on Spotify"
+                          title="Open on Spotify"
+                        >
+                          <i class="fab fa-spotify" aria-hidden="true"></i>
+                        </a>
                       </div>
                       <p class="track-name" id="track-name" aria-live="polite" aria-atomic="true">Loading recent plays…</p>
-                      <p class="artist-name" id="artist-name">Last.fm</p>
+                      <p class="artist-name" id="artist-name">Music</p>
                     </div>
-                    <a href="https://open.spotify.com" target="_blank" rel="noopener noreferrer" class="music-card-spotify-link"
-                      title="Open on Spotify" aria-label="Open on Spotify">
-                      <i class="fab fa-spotify" aria-hidden="true"></i>
-                    </a>
                   </div>
                 </div>
 
@@ -4284,7 +4288,7 @@ html.dark #home .hero-name-text {
                 </div>
               </div>
 
-              <!-- Music Section - Last.fm Now Playing -->
+              <!-- Music Section - Now Playing shelf -->
               <div class="currently-content" id="music-content" role="tabpanel" aria-labelledby="currently-tab-music" hidden>
                 <div class="media-grid music-shelf-grid" id="music-grid" aria-busy="true">
                   <!-- Featured / now playing card -->
@@ -4309,18 +4313,18 @@ html.dark #home .hero-name-text {
                     </div>
                     <div class="media-info">
                       <h4>Syncing music…</h4>
-                      <p class="currently-meta-subtitle">Pulling recent listening from Last.fm</p>
+                      <p class="currently-meta-subtitle">Pulling recent listening</p>
                     </div>
                   </div>
 
                   <!-- Error/Empty State -->
                   <div class="media-card currently-music-card currently-music-state empty" id="music-empty" hidden>
                     <div class="media-poster music-poster-empty currently-poster-empty">
-                      <i class="fab fa-spotify currently-spotify-icon"></i>
+                      <i class="fas fa-music currently-spotify-icon"></i>
                     </div>
                     <div class="media-info">
                       <h4>No live playback</h4>
-                      <p class="currently-meta-subtitle">Open Spotify and keep scrobbling to refresh this shelf</p>
+                      <p class="currently-meta-subtitle">Play something to refresh this shelf</p>
                       <a href="https://open.spotify.com" target="_blank" rel="noopener" class="watch-btn">
                         <i class="fas fa-arrow-up-right-from-square"></i> View
                       </a>
@@ -4597,7 +4601,7 @@ html.dark #home .hero-name-text {
           { src: 'js/utils/smart-navbar.js?v=20260716aa', module: true },
           { src: 'js/utils/theme.js?v=20260716aa', module: true },
           { src: 'js/utils/go-to-top.js?v=20260716aa', defer: true },
-          { src: 'js/core/bootstrap.js?v=20260719ui4', module: true },
+          { src: 'js/core/bootstrap.js?v=20260729sync1', module: true },
           { src: 'js/modules/blessing-media-modal.js?v=20260728e', module: true },
           { src: 'js/modules/share-widget.js?v=20260724dino1', module: true },
           { src: 'js/modules/name-pronounce.js?v=20260716aa', defer: true },

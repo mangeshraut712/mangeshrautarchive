@@ -30,11 +30,12 @@ class LastFmService {
     this.PLACEHOLDER_HASH = '2a96cbd8b46e442fc41c2b86b821562f';
     this.UPDATE_INTERVAL_MS = 20000; // 20s — beats 25s backend cache TTL
     this.ARTWORK_CACHE_TTL_MS = 10 * 60 * 1000; // 10 min artwork cache
-    this.LOCAL_CACHE_KEY = 'assistme:lastfm:recent:v3';
+    this.LOCAL_CACHE_KEY = 'assistme:lastfm:recent:v4';
     /** Instant paint only — never keep a day-old shelf as “current”. */
     this.LOCAL_STALE_TTL_MS = 15 * 60 * 1000;
     this.artworkCache = new Map(); // key => { promise, ts }
     this.cachedTracks = null;
+    this.cachedListenNow = null;
     this.started = false;
     this.intervalId = null;
     this._currentTrackId = null; // track identity for change detection
@@ -116,6 +117,92 @@ class LastFmService {
     return query
       ? `https://open.spotify.com/search/${encodeURIComponent(query)}`
       : 'https://open.spotify.com';
+  }
+
+  buildLastFmProfileUrl(user = this.USERNAME) {
+    return `https://www.last.fm/user/${encodeURIComponent(user || 'mbr63')}`;
+  }
+
+  formatRelativeListenTime(uts, nowMs = Date.now()) {
+    if (uts == null || uts === '') return '';
+    const seconds = Math.max(0, Math.floor(nowMs / 1000 - Number(uts)));
+    if (!Number.isFinite(seconds)) return '';
+    if (seconds < 45) return 'Just now';
+    if (seconds < 3600) return `${Math.floor(seconds / 60)}m ago`;
+    if (seconds < 86400) return `${Math.floor(seconds / 3600)}h ago`;
+    if (seconds < 86400 * 7) return `${Math.floor(seconds / 86400)}d ago`;
+    try {
+      return new Date(Number(uts) * 1000).toLocaleDateString(undefined, {
+        month: 'short',
+        day: 'numeric',
+      });
+    } catch {
+      return '';
+    }
+  }
+
+  buildWeekBins(tracks = [], nowMs = Date.now()) {
+    const startToday = new Date(nowMs);
+    startToday.setUTCHours(0, 0, 0, 0);
+    const bins = [];
+    for (let i = 6; i >= 0; i -= 1) {
+      const dayStart = new Date(startToday.getTime() - i * 86400000);
+      bins.push({
+        day: dayStart
+          .toLocaleDateString('en-US', { weekday: 'short', timeZone: 'UTC' })
+          .slice(0, 2),
+        count: 0,
+        start: Math.floor(dayStart.getTime() / 1000),
+      });
+    }
+    for (const track of tracks) {
+      const uts = Number(track?.date?.uts);
+      if (!Number.isFinite(uts)) continue;
+      for (const bucket of bins) {
+        if (uts >= bucket.start && uts < bucket.start + 86400) {
+          bucket.count += 1;
+          break;
+        }
+      }
+    }
+    return bins.map(({ day, count }) => ({ day, count }));
+  }
+
+  deriveTopArtistsFromTracks(tracks = [], limit = 5) {
+    const counts = new Map();
+    for (const track of tracks) {
+      const name = this.getArtistName(track);
+      if (!name || name === 'Unknown Artist') continue;
+      counts.set(name, (counts.get(name) || 0) + 1);
+    }
+    return [...counts.entries()]
+      .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+      .slice(0, limit)
+      .map(([name, playcount]) => ({
+        name,
+        playcount: String(playcount),
+        url: `https://www.last.fm/music/${encodeURIComponent(name)}`,
+      }));
+  }
+
+  normalizeListenNow(payload, tracks = []) {
+    const meta =
+      payload?.listen_now && typeof payload.listen_now === 'object' ? payload.listen_now : {};
+    const topArtists = Array.isArray(meta.top_artists)
+      ? meta.top_artists.filter(artist => artist?.name).slice(0, 5)
+      : [];
+    const weekBins =
+      Array.isArray(meta.week_bins) && meta.week_bins.length
+        ? meta.week_bins.map(bin => ({
+            day: String(bin?.day || '').slice(0, 2) || '·',
+            count: Math.max(0, Number(bin?.count) || 0),
+          }))
+        : this.buildWeekBins(tracks);
+    return {
+      profile_url: meta.profile_url || this.buildLastFmProfileUrl(),
+      top_artists: topArtists.length ? topArtists : this.deriveTopArtistsFromTracks(tracks),
+      week_bins: weekBins,
+    };
   }
 
   getArtworkPlaceholder(trackName = 'Now Playing', artistName = 'Spotify') {
@@ -332,8 +419,11 @@ class LastFmService {
     this._hydratedFromLocal = true;
 
     try {
-      // Prefer v3; migrate readable v2 once if still fresh enough.
+      // Prefer v4; migrate readable older caches once if still fresh enough.
       let raw = globalThis.localStorage?.getItem(this.LOCAL_CACHE_KEY);
+      if (!raw) {
+        raw = globalThis.localStorage?.getItem('assistme:lastfm:recent:v3');
+      }
       if (!raw) {
         raw = globalThis.localStorage?.getItem('assistme:lastfm:recent:v2');
       }
@@ -346,19 +436,25 @@ class LastFmService {
       }
 
       this.cachedTracks = tracks;
+      this.cachedListenNow = this.normalizeListenNow(parsed, tracks);
       this.updateHero(tracks[0]);
       this.updateCurrently(tracks);
+      this.updateListenNowMini(this.cachedListenNow);
       return true;
     } catch {
       return false;
     }
   }
 
-  persistLocalCache(tracks) {
+  persistLocalCache(tracks, listenNow = null) {
     try {
       globalThis.localStorage?.setItem(
         this.LOCAL_CACHE_KEY,
-        JSON.stringify({ ts: Date.now(), tracks })
+        JSON.stringify({
+          ts: Date.now(),
+          tracks,
+          listen_now: listenNow || this.cachedListenNow || null,
+        })
       );
     } catch {
       // ignore localStorage failures
@@ -429,10 +525,12 @@ class LastFmService {
       return false;
     }
 
+    const listenNow = this.normalizeListenNow(payload, tracks);
     const signature = this.buildShelfSignature(tracks);
     const unchanged = signature === this._shelfSignature && this.cachedTracks?.length;
     this.cachedTracks = tracks;
-    this.persistLocalCache(tracks);
+    this.cachedListenNow = listenNow;
+    this.persistLocalCache(tracks, listenNow);
     this.clearApiHostFailure();
 
     if (!unchanged) {
@@ -443,12 +541,14 @@ class LastFmService {
       // Same tracks — still refresh now-playing badge / status text.
       this.updateHero(tracks[0]);
     }
+    this.updateListenNowMini(listenNow);
 
     analytics?.track?.('music_loaded', {
       source,
       track_count: tracks.length,
       has_now_playing: tracks.some(track => track?.['@attr']?.nowplaying === 'true'),
       unchanged: Boolean(unchanged),
+      top_artists: listenNow.top_artists?.length || 0,
     });
     return true;
   }
@@ -548,6 +648,7 @@ class LastFmService {
       if (this.cachedTracks?.length) {
         this.updateHero(this.cachedTracks[0]);
         this.updateCurrently(this.cachedTracks);
+        this.updateListenNowMini(this.cachedListenNow);
         return;
       }
 
@@ -567,6 +668,7 @@ class LastFmService {
     if (this.cachedTracks?.length) {
       this.updateHero(this.cachedTracks[0]);
       this.updateCurrently(this.cachedTracks);
+      this.updateListenNowMini(this.cachedListenNow);
       return;
     }
 
@@ -604,23 +706,32 @@ class LastFmService {
     this.hero.trackName.textContent = trackName;
     this.hero.artistName.textContent = artistName;
     if (this.hero.statusText) {
-      this.hero.statusText.textContent = isNowPlaying ? 'Now playing' : 'Recently played';
+      this.hero.statusText.textContent = isNowPlaying ? 'Now Playing' : 'Recently Played';
     }
-    this.hero.albumArt.alt = `${trackName} by ${artistName}`;
-    if (this.hero.lastfmLink) {
-      this.hero.lastfmLink.href = this.buildSpotifySearchUrl(trackName, artistName);
-      this.hero.lastfmLink.setAttribute(
+    if (this.hero.spotifyLink) {
+      const spotifyUrl = this.buildSpotifySearchUrl(trackName, artistName);
+      this.hero.spotifyLink.href = spotifyUrl;
+      this.hero.spotifyLink.setAttribute(
         'aria-label',
         `Open ${trackName} by ${artistName} on Spotify`
       );
-      this.hero.lastfmLink.title = `Open on Spotify`;
+      this.hero.spotifyLink.title = `Open on Spotify`;
+      this.hero.spotifyLink.hidden = false;
     }
+    this.hero.albumArt.alt = `${trackName} by ${artistName}`;
     this.setHeroMusicState(isNowPlaying ? 'playing' : 'recent');
     this.hydrateFallbackArtwork(this.hero.albumArt, track, {
       fallbackUrl: usableArtwork ? artwork : '',
       trackId,
     });
     window.dispatchEvent(new CustomEvent('liquid-glass:sync-chrome'));
+  }
+
+  updateListenNowMini(_listenNow = null) {
+    // Listen Now mini chrome removed — keep shelf simple (Apple Music style).
+    if (this.currently?.listenNowMini) {
+      this.currently.listenNowMini.hidden = true;
+    }
   }
 
   populateFeaturedTrack(_track, _isNowPlaying) {
@@ -687,7 +798,7 @@ class LastFmService {
       }
 
       const badge = document.createElement('span');
-      badge.className = 'media-badge playing';
+      badge.className = `media-badge playing${isNowPlaying ? ' is-live' : ''}`;
       badge.textContent = badgeText;
 
       poster.append(img, badge);
@@ -705,7 +816,7 @@ class LastFmService {
       action.target = '_blank';
       action.rel = 'noopener';
       action.className = 'watch-btn';
-      action.setAttribute('aria-label', `Open ${trackName} by ${artistName} in Spotify`);
+      action.setAttribute('aria-label', `Open ${trackName} by ${artistName}`);
       action.innerHTML = `<i class="fas ${actionIcon}" aria-hidden="true"></i><span></span>`;
       const actionLabel = action.querySelector('span');
       if (actionLabel) actionLabel.textContent = actionText;
@@ -751,16 +862,16 @@ class LastFmService {
   showHeroLoadingState() {
     if (!this.hero) return;
     this.hero.statusText.textContent = 'Listening';
-    this.hero.trackName.textContent = 'Loading recent plays…';
-    this.hero.artistName.textContent = 'Last.fm';
+    this.hero.trackName.textContent = 'Loading…';
+    this.hero.artistName.textContent = 'Music';
     this.setHeroMusicState('loading');
   }
 
   showHeroEmptyState() {
     if (!this.hero) return;
-    this.hero.statusText.textContent = 'Not playing';
+    this.hero.statusText.textContent = 'Not Playing';
     this.hero.trackName.textContent = 'No recent plays';
-    this.hero.artistName.textContent = 'Open Spotify to scrobble';
+    this.hero.artistName.textContent = 'Music';
     this.setHeroMusicState('empty');
   }
 
@@ -770,6 +881,7 @@ class LastFmService {
     this.setCardVisibility(this.currently.loadingEl, true);
     this.setCardVisibility(this.currently.emptyEl, false);
     this.setCardVisibility(this.currently.nowPlayingCard, false);
+    if (this.currently.listenNowMini) this.currently.listenNowMini.hidden = true;
     this.currently.recentContainer.innerHTML = '';
   }
 
@@ -779,6 +891,7 @@ class LastFmService {
     this.setCardVisibility(this.currently.loadingEl, false);
     this.setCardVisibility(this.currently.nowPlayingCard, false);
     this.setCardVisibility(this.currently.emptyEl, true);
+    if (this.currently.listenNowMini) this.currently.listenNowMini.hidden = true;
     this.currently.recentContainer.innerHTML = '';
   }
 
@@ -810,7 +923,7 @@ function initLastFmService() {
     statusText: document.getElementById('status-text'),
     playingIndicator: document.getElementById('playing-indicator'),
     musicCard: document.getElementById('music-card'),
-    lastfmLink: document.querySelector('#home .music-card-spotify-link'),
+    spotifyLink: document.getElementById('music-spotify-link'),
   };
 
   if (heroElements.trackName && heroElements.albumArt) {

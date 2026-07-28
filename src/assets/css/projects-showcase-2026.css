@@ -4,30 +4,30 @@
 */
 
 :root {
-  --project-bg-light: #fff;
-  --project-surface-light: #fff;
-  --project-text-light: #111827;
-  --project-muted-light: #48484a;
-  --project-border-light: rgb(0 0 0 / 6%);
-  --project-shadow-light: 0 14px 30px rgb(15 23 42 / 8%);
-  --project-shadow-light-hover: 0 18px 38px rgb(15 23 42 / 12%);
+  --project-bg-light: #ffffff;
+  --project-surface-light: #ffffff;
+  --project-text-light: #1d1d1f;
+  --project-muted-light: #6e6e73;
+  --project-border-light: #d2d2d7;
+  --project-shadow-light: 0 1px 2px rgb(0 0 0 / 4%), 0 8px 24px rgb(15 23 42 / 6%);
+  --project-shadow-light-hover: 0 2px 6px rgb(0 113 227 / 8%), 0 14px 36px rgb(15 23 42 / 8%);
 
   --project-bg-dark: #000;
   --project-surface-dark: #000;
-  --project-text-dark: #f5f7ff;
-  --project-muted-dark: #9aa5b5;
-  --project-border-dark: rgb(255 255 255 / 8%);
-  --project-shadow-dark: 0 18px 34px rgb(0 0 0 / 58%);
-  --project-shadow-dark-hover: 0 22px 46px rgb(0 0 0 / 70%);
+  --project-text-dark: #f5f5f7;
+  --project-muted-dark: #a1a1a6;
+  --project-border-dark: #2c2c2e;
+  --project-shadow-dark: none;
+  --project-shadow-dark-hover: 0 18px 36px rgb(0 0 0 / 45%);
 
-  --project-accent: #005bb5;
-  --project-accent-strong: #0059d7;
-  --project-accent-soft: rgb(10 111 239 / 12%);
-  --project-accent-soft-border: rgb(0 113 227 / 15%);
+  --project-accent: #0071e3;
+  --project-accent-strong: #0077ed;
+  --project-accent-soft: rgb(0 113 227 / 10%);
+  --project-accent-soft-border: rgb(0 113 227 / 18%);
 
   --github-graph-canvas: #ffffff;
-  --github-graph-canvas-border: #d0d7de;
-  --github-graph-label: #57606a;
+  --github-graph-canvas-border: #d2d2d7;
+  --github-graph-label: #6e6e73;
 }
 
 html.dark {
@@ -68,15 +68,17 @@ html.dark .project-evidence-row {
 }
 
 #projects #github-projects-container .project-evidence-link {
-  color: #004494 !important;
-  background: rgb(0 74 148 / 11%) !important;
-  border-color: rgb(0 74 148 / 22%) !important;
+  color: #6e6e73 !important;
+  -webkit-text-fill-color: #6e6e73 !important;
+  background: #f5f5f7 !important;
+  border-color: rgb(0 0 0 / 10%) !important;
 }
 
 html.dark #projects #github-projects-container .project-evidence-link {
-  color: #9ed0ff !important;
-  background: rgb(88 166 255 / 14%) !important;
-  border-color: rgb(88 166 255 / 28%) !important;
+  color: #a1a1a6 !important;
+  -webkit-text-fill-color: #a1a1a6 !important;
+  background: rgb(255 255 255 / 6%) !important;
+  border-color: rgb(255 255 255 / 12%) !important;
 }
 
 .project-evidence-link:hover,
@@ -366,16 +368,19 @@ html.dark #projects .projects-page--repos {
 #projects .projects-view-all-btn {
   min-height: 48px !important;
   height: 48px !important;
-  border-radius: 980px !important;
+  border-radius: 12px !important;
   font-size: 0.92rem !important;
   font-weight: 600 !important;
   letter-spacing: -0.01em !important;
   box-sizing: border-box !important;
   padding: 0 1.35rem !important;
-  background: linear-gradient(135deg, #0071e3 0%, #0a84ff 100%) !important;
-  border: 1px solid transparent !important;
+  background: #0071e3 !important;
+  background-color: #0071e3 !important;
+  background-image: none !important;
+  border: 1px solid #0071e3 !important;
   color: #ffffff !important;
-  box-shadow: 0 4px 16px rgb(0 113 227 / 28%) !important;
+  -webkit-text-fill-color: #ffffff !important;
+  box-shadow: 0 1px 2px rgb(15 23 42 / 8%) !important;
   gap: 0.5rem !important;
   display: inline-flex !important;
   align-items: center !important;
@@ -383,49 +388,47 @@ html.dark #projects .projects-page--repos {
   white-space: nowrap !important;
   text-decoration: none !important;
   transition:
-    transform 0.28s cubic-bezier(0.25, 0.8, 0.25, 1),
-    box-shadow 0.28s ease,
-    background 0.28s ease !important;
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    background 0.18s ease !important;
   position: relative;
   overflow: hidden;
 }
 
 #projects .projects-view-all-btn::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(90deg, transparent, rgb(255 255 255 / 22%), transparent);
-  transform: translateX(-100%);
-  transition: transform 0.45s ease;
-}
-
-#projects .projects-view-all-btn:hover::before {
-  transform: translateX(100%);
+  content: none;
 }
 
 #projects .projects-view-all-btn i,
 #projects .projects-view-all-btn span {
-  color: currentColor !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
 }
 
 #projects .projects-view-all-btn:hover {
-  transform: translateY(-2px) scale(1.02) !important;
-  border-color: transparent !important;
-  background: linear-gradient(135deg, #0077ed 0%, #2997ff 100%) !important;
+  transform: translateY(-1px) !important;
+  border-color: #0077ed !important;
+  background: #0077ed !important;
+  background-color: #0077ed !important;
   color: #ffffff !important;
-  box-shadow: 0 6px 22px rgb(0 113 227 / 36%) !important;
+  -webkit-text-fill-color: #ffffff !important;
+  box-shadow: 0 6px 20px rgb(0 113 227 / 22%) !important;
 }
 
 html.dark #projects .projects-view-all-btn {
-  background: linear-gradient(135deg, #0071e3 0%, #0a84ff 100%) !important;
-  border-color: transparent !important;
+  background: #0a84ff !important;
+  background-color: #0a84ff !important;
+  border-color: #0a84ff !important;
   color: #ffffff !important;
-  box-shadow: 0 4px 16px rgb(10 132 255 / 32%) !important;
+  -webkit-text-fill-color: #ffffff !important;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 40%) !important;
 }
 
 html.dark #projects .projects-view-all-btn:hover {
-  background: linear-gradient(135deg, #0077ed 0%, #2997ff 100%) !important;
-  box-shadow: 0 6px 22px rgb(10 132 255 / 40%) !important;
+  background: #2997ff !important;
+  background-color: #2997ff !important;
+  border-color: #2997ff !important;
+  box-shadow: 0 6px 22px rgb(10 132 255 / 28%) !important;
 }
 
 html.dark #projects .proj-input-group {
@@ -596,14 +599,16 @@ html.dark #projects .activity-stat-value {
 }
 
 #projects .activity-stat-label {
-  color: var(--project-muted-light) !important;
+  color: #3a3a3c !important;
+  -webkit-text-fill-color: #3a3a3c !important;
   font-size: 0.72rem !important;
   text-transform: uppercase;
   letter-spacing: 0.06em !important;
 }
 
 html.dark #projects .activity-stat-label {
-  color: var(--project-muted-dark) !important;
+  color: #c7c7cc !important;
+  -webkit-text-fill-color: #c7c7cc !important;
 }
 
 #projects .graph-title {
@@ -1280,41 +1285,44 @@ html.dark #projects #github-projects-container .showcase-project-card:hover {
   gap: 0.3rem !important;
   flex-shrink: 0 !important;
   border-radius: 999px !important;
-  border: 1px solid var(--project-accent-soft-border) !important;
-  background: var(--project-accent-soft) !important;
-  color: #0a58be !important;
+  border: 1px solid rgb(0 0 0 / 10%) !important;
+  background: #f5f5f7 !important;
+  color: #6e6e73 !important;
+  -webkit-text-fill-color: #6e6e73 !important;
   padding: 0.28rem 0.55rem !important;
   font-size: 0.7rem !important;
-  font-weight: 640 !important;
+  font-weight: 600 !important;
   line-height: 1 !important;
   white-space: nowrap !important;
   max-width: 8.5rem;
 }
 
 html.dark #projects #github-projects-container .project-repo-updated {
-  color: #9dccff !important;
-  border-color: rgb(88 166 255 / 30%) !important;
-  background: rgb(88 166 255 / 14%) !important;
+  color: #a1a1a6 !important;
+  -webkit-text-fill-color: #a1a1a6 !important;
+  border-color: rgb(255 255 255 / 12%) !important;
+  background: rgb(255 255 255 / 6%) !important;
 }
 
 #projects #github-projects-container .project-repo-path,
 #projects #github-projects-container .project-repo-link {
   margin: 0 !important;
-  color: #0071e3 !important;
+  color: #6e6e73 !important;
   font-size: 0.74rem !important;
   line-height: 1.35 !important;
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  display: block !important;
+  max-width: 100%;
 }
 
 #projects #github-projects-container .project-repo-link {
-  display: block !important;
   min-height: 0 !important;
-  max-width: 100%;
   padding: 0.1rem 0 !important;
   text-decoration: none !important;
+  color: #0071e3 !important;
 }
 
 #projects #github-projects-container .project-repo-link:hover,
@@ -1322,7 +1330,10 @@ html.dark #projects #github-projects-container .project-repo-updated {
   text-decoration: underline !important;
 }
 
-html.dark #projects #github-projects-container .project-repo-path,
+html.dark #projects #github-projects-container .project-repo-path {
+  color: #a1a1a6 !important;
+}
+
 html.dark #projects #github-projects-container .project-repo-link {
   color: #0a84ff !important;
 }
@@ -1631,43 +1642,49 @@ html.dark #projects #github-projects-container .project-footer {
 }
 
 #projects #github-projects-container .btn-ar {
-  background: linear-gradient(135deg, var(--project-accent), #1683ff) !important;
-  border: 1px solid rgb(7 91 199 / 40%) !important;
+  background: #0071e3 !important;
+  background-color: #0071e3 !important;
+  background-image: none !important;
+  border: 1px solid #0071e3 !important;
   color: #fff !important;
-  box-shadow: 0 10px 20px rgb(10 111 239 / 28%) !important;
+  -webkit-text-fill-color: #fff !important;
+  box-shadow: 0 1px 2px rgb(15 23 42 / 8%) !important;
 }
 
 #projects #github-projects-container .btn-demo {
   background: #ffffff !important;
-  color: #0071e3 !important;
-  -webkit-text-fill-color: #0071e3 !important;
-  border: 1px solid rgb(0 113 227 / 35%) !important;
+  color: #1d1d1f !important;
+  -webkit-text-fill-color: #1d1d1f !important;
+  border: 1px solid rgb(0 0 0 / 14%) !important;
   box-shadow: none !important;
 }
 
 html.dark #projects #github-projects-container .btn-demo {
   background: #000000 !important;
-  color: #0a84ff !important;
-  -webkit-text-fill-color: #0a84ff !important;
-  border: 1px solid rgb(10 132 255 / 40%) !important;
+  color: #f5f5f7 !important;
+  -webkit-text-fill-color: #f5f5f7 !important;
+  border: 1px solid rgb(255 255 255 / 18%) !important;
 }
 
 #projects #github-projects-container .btn-ar:hover:not(:disabled) {
-  transform: translateY(-2px) scale(1.02) !important;
-  box-shadow: 0 4px 16px rgb(0 113 227 / 32%) !important;
-  border-color: #0071e3 !important;
+  transform: translateY(-1px) !important;
+  background: #0077ed !important;
+  box-shadow: 0 6px 20px rgb(0 113 227 / 22%) !important;
+  border-color: #0077ed !important;
 }
 
 #projects #github-projects-container .btn-demo:hover:not(:disabled) {
   transform: translateY(-1px) !important;
   background: #ffffff !important;
-  border-color: #0071e3 !important;
+  border-color: rgb(0 113 227 / 45%) !important;
+  color: #0071e3 !important;
+  -webkit-text-fill-color: #0071e3 !important;
   box-shadow: 0 4px 14px rgb(0 113 227 / 12%) !important;
 }
 
 html.dark #projects #github-projects-container .btn-demo:hover:not(:disabled) {
   background: #000000 !important;
-  border-color: #0a84ff !important;
+  border-color: rgb(10 132 255 / 55%) !important;
   color: #2997ff !important;
   -webkit-text-fill-color: #2997ff !important;
   box-shadow: 0 4px 14px rgb(10 132 255 / 16%) !important;
@@ -3321,22 +3338,35 @@ section#projects {
   --sc-ring: rgb(0 113 227 / 38%);
   --sc-border: rgb(0 0 0 / 10%);
   --sc-border-strong: rgb(0 0 0 / 18%);
-  --sc-muted-bg: #ffffff;
-  --sc-muted-bg-hover: #f5f5f7;
-  --sc-muted-fg: #475569;
+  --sc-muted-bg: #f5f5f7;
+  --sc-muted-bg-hover: #ebebed;
+  --sc-muted-fg: #6e6e73;
   --sc-shadow-sm: 0 1px 2px rgb(15 23 42 / 6%);
   --sc-shadow-md: 0 6px 20px rgb(15 23 42 / 10%);
 }
 
-html.dark section#projects {
+html.dark section#projects,
+html[data-theme='dark'] section#projects {
   --sc-ring: rgb(10 132 255 / 48%);
   --sc-border: rgb(255 255 255 / 10%);
   --sc-border-strong: rgb(255 255 255 / 20%);
   --sc-muted-bg: rgb(255 255 255 / 6%);
   --sc-muted-bg-hover: rgb(255 255 255 / 10%);
-  --sc-muted-fg: #aab4c2;
+  --sc-muted-fg: #a1a1a6;
   --sc-shadow-sm: 0 1px 2px rgb(0 0 0 / 40%);
   --sc-shadow-md: 0 8px 26px rgb(0 0 0 / 55%);
+}
+
+html:not(.dark) section#projects,
+html[data-theme='light'] section#projects {
+  --sc-ring: rgb(0 113 227 / 38%);
+  --sc-border: rgb(0 0 0 / 10%);
+  --sc-border-strong: rgb(0 0 0 / 18%);
+  --sc-muted-bg: #f5f5f7;
+  --sc-muted-bg-hover: #ebebed;
+  --sc-muted-fg: #6e6e73;
+  --sc-shadow-sm: 0 1px 2px rgb(15 23 42 / 6%);
+  --sc-shadow-md: 0 6px 20px rgb(15 23 42 / 10%);
 }
 
 /* ---- Search input (shadcn input) ---- */
@@ -3385,7 +3415,12 @@ html.dark section#projects .proj-sort-native {
 /* ---- Visit GitHub button (shadcn primary, flat) ---- */
 section#projects .projects-view-all-btn {
   border-radius: var(--sc-radius) !important;
-  background: var(--project-accent, #0071e3) !important;
+  background: #0071e3 !important;
+  background-color: #0071e3 !important;
+  background-image: none !important;
+  border: 1px solid #0071e3 !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
   box-shadow: var(--sc-shadow-sm) !important;
   height: 48px !important;
   min-height: 48px !important;
@@ -3399,6 +3434,10 @@ section#projects .projects-view-all-btn {
 section#projects .projects-view-all-btn:hover {
   transform: translateY(-1px) !important;
   background: #0077ed !important;
+  background-color: #0077ed !important;
+  border-color: #0077ed !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
   box-shadow: var(--sc-shadow-md) !important;
 }
 
@@ -3407,8 +3446,18 @@ section#projects .projects-view-all-btn:focus-visible {
   outline-offset: 2px !important;
 }
 
+section#projects .projects-view-all-btn i,
+section#projects .projects-view-all-btn span {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
 html.dark section#projects .projects-view-all-btn {
   background: #0a84ff !important;
+  background-color: #0a84ff !important;
+  border-color: #0a84ff !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
 }
 
 /* ---- Release-lens toggle group (shadcn toggle group) ---- */
@@ -3450,8 +3499,16 @@ html.dark section#projects .project-lens-chip.active {
 }
 
 section#projects .project-lens-chip.active .project-lens-count {
-  background: rgb(255 255 255 / 24%) !important;
-  color: #fff !important;
+  background: #ffffff !important;
+  color: #0051a8 !important;
+  -webkit-text-fill-color: #0051a8 !important;
+}
+
+html.dark section#projects .project-lens-chip.active .project-lens-count,
+html[data-theme='dark'] section#projects .project-lens-chip.active .project-lens-count {
+  background: #ffffff !important;
+  color: #003d82 !important;
+  -webkit-text-fill-color: #003d82 !important;
 }
 
 section#projects .project-lens-chip:focus-visible {
@@ -3501,20 +3558,42 @@ section#projects #github-projects-container .project-evidence-link {
   border-radius: var(--sc-radius-badge) !important;
   border: 1px solid var(--sc-border) !important;
   background: var(--sc-muted-bg) !important;
+  background-color: var(--sc-muted-bg) !important;
   color: var(--sc-muted-fg) !important;
+  -webkit-text-fill-color: var(--sc-muted-fg) !important;
+}
+
+section#projects #github-projects-container .project-evidence-link > i,
+section#projects #github-projects-container .project-evidence-link > span {
+  color: inherit !important;
+  -webkit-text-fill-color: inherit !important;
 }
 
 section#projects #github-projects-container .project-evidence-link:hover,
 section#projects #github-projects-container .project-evidence-link:focus-visible {
   background: var(--sc-muted-bg-hover) !important;
   border-color: var(--sc-border-strong) !important;
-  color: var(--project-text-light) !important;
+  color: #1d1d1f !important;
+  -webkit-text-fill-color: #1d1d1f !important;
   outline: none !important;
 }
 
 html.dark section#projects #github-projects-container .project-evidence-link:hover,
 html.dark section#projects #github-projects-container .project-evidence-link:focus-visible {
-  color: var(--project-text-dark) !important;
+  color: #f5f5f7 !important;
+  -webkit-text-fill-color: #f5f5f7 !important;
+}
+
+html.dark section#projects #github-projects-container .project-evidence-link {
+  color: var(--sc-muted-fg) !important;
+  -webkit-text-fill-color: var(--sc-muted-fg) !important;
+}
+
+section#projects #github-projects-container .project-evidence-link.is-unavailable {
+  color: var(--sc-muted-fg) !important;
+  -webkit-text-fill-color: var(--sc-muted-fg) !important;
+  background: transparent !important;
+  opacity: 0.55 !important;
 }
 
 /* ---- Action buttons (shadcn primary + outline variants) ---- */
@@ -3538,40 +3617,100 @@ section#projects #github-projects-container .project-action-btn > span {
   white-space: nowrap;
 }
 
-section#projects #github-projects-container .project-action-btn.btn-ar {
+/* Visit GitHub = primary CTA */
+section#projects #github-projects-container .project-action-btn.btn-github {
   background: var(--project-accent, #0071e3) !important;
   border: 1px solid var(--project-accent, #0071e3) !important;
   color: #fff !important;
+  -webkit-text-fill-color: #fff !important;
   box-shadow: var(--sc-shadow-sm) !important;
 }
 
-section#projects #github-projects-container .project-action-btn.btn-ar:hover {
+section#projects #github-projects-container .project-action-btn.btn-github:hover {
   transform: translateY(-1px) !important;
   background: #0077ed !important;
   box-shadow: var(--sc-shadow-md) !important;
 }
 
-html.dark section#projects #github-projects-container .project-action-btn.btn-ar {
+html.dark section#projects #github-projects-container .project-action-btn.btn-github {
   background: #0a84ff !important;
   border-color: #0a84ff !important;
 }
 
-/* Demo = solid secondary (surface owned by theme-solid-surfaces.css).
-   We refine only the hairline border, foreground text + a subtle lift. */
+section#projects #github-projects-container .project-action-btn.btn-github > span,
+section#projects #github-projects-container .project-action-btn.btn-github > i {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+/* Spatial View = outline secondary (was primary blue; GitHub owns that role now) */
+section#projects #github-projects-container .project-action-btn.btn-ar {
+  background: #ffffff !important;
+  border: 1px solid rgb(0 0 0 / 14%) !important;
+  color: #1d1d1f !important;
+  -webkit-text-fill-color: #1d1d1f !important;
+  box-shadow: none !important;
+}
+
+section#projects #github-projects-container .project-action-btn.btn-ar:hover:not(:disabled) {
+  transform: translateY(-1px) !important;
+  color: #0071e3 !important;
+  -webkit-text-fill-color: #0071e3 !important;
+  border-color: rgb(0 113 227 / 35%) !important;
+  background: #ffffff !important;
+  box-shadow: none !important;
+}
+
+html.dark section#projects #github-projects-container .project-action-btn.btn-ar {
+  background: #000000 !important;
+  border-color: rgb(255 255 255 / 18%) !important;
+  color: #f5f5f7 !important;
+  -webkit-text-fill-color: #f5f5f7 !important;
+}
+
+html.dark
+  section#projects
+  #github-projects-container
+  .project-action-btn.btn-ar:hover:not(:disabled) {
+  color: #2997ff !important;
+  -webkit-text-fill-color: #2997ff !important;
+  border-color: rgb(41 151 255 / 45%) !important;
+  background: #000000 !important;
+}
+
+/* Demo = outline secondary (surface owned by theme-solid-surfaces.css). */
 section#projects #github-projects-container .project-action-btn.btn-demo {
   border: 1px solid var(--sc-border-strong) !important;
-  color: var(--project-text-light) !important;
+  color: #1d1d1f !important;
+  -webkit-text-fill-color: #1d1d1f !important;
   box-shadow: none !important;
+}
+
+section#projects #github-projects-container .project-action-btn.btn-demo > span,
+section#projects #github-projects-container .project-action-btn.btn-demo > i {
+  color: inherit !important;
+  -webkit-text-fill-color: inherit !important;
 }
 
 section#projects
   #github-projects-container
   .project-action-btn.btn-demo:hover:not(.is-disabled):not([disabled]) {
   transform: translateY(-1px) !important;
+  color: #0071e3 !important;
+  -webkit-text-fill-color: #0071e3 !important;
 }
 
 html.dark section#projects #github-projects-container .project-action-btn.btn-demo {
-  color: var(--project-text-dark) !important;
+  color: #f5f5f7 !important;
+  -webkit-text-fill-color: #f5f5f7 !important;
+}
+
+html.dark
+  section#projects
+  #github-projects-container
+  .project-action-btn.btn-demo:hover:not(.is-disabled):not([disabled]) {
+  color: #2997ff !important;
+  -webkit-text-fill-color: #2997ff !important;
 }
 
 section#projects #github-projects-container .project-action-btn.btn-demo.is-disabled,
@@ -3579,6 +3718,7 @@ section#projects #github-projects-container .project-action-btn.btn-demo[disable
   background: transparent !important;
   border: 1px dashed var(--sc-border) !important;
   color: var(--sc-muted-fg) !important;
+  -webkit-text-fill-color: var(--sc-muted-fg) !important;
   box-shadow: none !important;
   opacity: 0.75 !important;
 }
@@ -3657,19 +3797,22 @@ section#projects .projects-expand-wrap {
 }
 
 section#projects .projects-expand-btn {
-  appearance: none;
-  border: 1px solid var(--sc-border-strong);
-  border-radius: var(--sc-radius);
-  background: transparent;
-  color: var(--project-text-light);
-  min-height: 44px;
-  padding: 0.65rem 1.25rem;
+  appearance: none !important;
+  border: 1px solid var(--sc-border-strong) !important;
+  border-radius: var(--sc-radius) !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  color: #1d1d1f !important;
+  -webkit-text-fill-color: #1d1d1f !important;
+  min-height: 44px !important;
+  padding: 0.65rem 1.25rem !important;
   font: inherit;
-  font-size: 0.92rem;
-  font-weight: 600;
-  letter-spacing: -0.01em;
+  font-size: 0.92rem !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.01em !important;
   cursor: pointer;
-  box-shadow: var(--sc-shadow-sm);
+  box-shadow: var(--sc-shadow-sm) !important;
   transition:
     background 0.16s ease,
     border-color 0.16s ease,
@@ -3678,27 +3821,36 @@ section#projects .projects-expand-btn {
 }
 
 html.dark section#projects .projects-expand-btn {
-  color: var(--project-text-dark);
+  color: #f5f5f7 !important;
+  -webkit-text-fill-color: #f5f5f7 !important;
+  background: transparent !important;
+  background-color: transparent !important;
 }
 
 section#projects .projects-expand-btn:hover {
-  background: var(--sc-muted-bg);
-  border-color: var(--project-accent, #0071e3);
-  color: var(--project-accent, #0071e3);
+  background: var(--sc-muted-bg) !important;
+  background-color: var(--sc-muted-bg) !important;
+  border-color: #0071e3 !important;
+  color: #0071e3 !important;
+  -webkit-text-fill-color: #0071e3 !important;
+  box-shadow: none !important;
+  transform: none !important;
 }
 
 html.dark section#projects .projects-expand-btn:hover {
-  color: #0a84ff;
-  border-color: #0a84ff;
+  color: #0a84ff !important;
+  -webkit-text-fill-color: #0a84ff !important;
+  border-color: #0a84ff !important;
+  background: rgb(255 255 255 / 6%) !important;
 }
 
 section#projects .projects-expand-btn:focus-visible {
-  outline: 2px solid var(--sc-ring);
-  outline-offset: 2px;
+  outline: 2px solid var(--sc-ring) !important;
+  outline-offset: 2px !important;
 }
 
 section#projects .projects-expand-btn[aria-expanded='true'] {
-  background: var(--sc-muted-bg);
+  background: var(--sc-muted-bg) !important;
 }
 
 /* ---- Empty state clear CTA (shadcn outline) ---- */
@@ -3728,19 +3880,22 @@ section#projects .projects-empty-state p {
 }
 
 section#projects .projects-clear-filters-btn {
-  appearance: none;
+  appearance: none !important;
   margin-top: 0.35rem;
-  border: 1px solid var(--sc-border-strong);
-  border-radius: var(--sc-radius);
-  background: transparent;
-  color: var(--project-accent, #0071e3);
-  min-height: 40px;
-  padding: 0.55rem 1.05rem;
+  border: 1px solid var(--sc-border-strong) !important;
+  border-radius: var(--sc-radius) !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  color: #0071e3 !important;
+  -webkit-text-fill-color: #0071e3 !important;
+  min-height: 40px !important;
+  padding: 0.55rem 1.05rem !important;
   font: inherit;
-  font-size: 0.9rem;
-  font-weight: 600;
+  font-size: 0.9rem !important;
+  font-weight: 600 !important;
   cursor: pointer;
-  box-shadow: var(--sc-shadow-sm);
+  box-shadow: var(--sc-shadow-sm) !important;
   transition:
     background 0.16s ease,
     border-color 0.16s ease,
@@ -3748,17 +3903,20 @@ section#projects .projects-clear-filters-btn {
 }
 
 section#projects .projects-clear-filters-btn:hover {
-  background: var(--sc-muted-bg);
-  border-color: var(--project-accent, #0071e3);
+  background: var(--sc-muted-bg) !important;
+  border-color: #0071e3 !important;
+  box-shadow: none !important;
+  transform: none !important;
 }
 
 section#projects .projects-clear-filters-btn:focus-visible {
-  outline: 2px solid var(--sc-ring);
-  outline-offset: 2px;
+  outline: 2px solid var(--sc-ring) !important;
+  outline-offset: 2px !important;
 }
 
 html.dark section#projects .projects-clear-filters-btn {
-  color: #0a84ff;
+  color: #0a84ff !important;
+  -webkit-text-fill-color: #0a84ff !important;
 }
 
 /* ---- Graph controls focus rings (2D/3D/Both + year rail) ---- */
@@ -4051,4 +4209,310 @@ html.dark .gh-activity__text a {
   #projects .projects-page--repos {
     padding-bottom: calc(4.5rem + env(safe-area-inset-bottom, 0px));
   }
+}
+
+/* =========================================================================
+   Light / dark card authority — single source after earlier showcase layers
+   Matches both .dark class and data-theme attribute.
+   ========================================================================= */
+html:not(.dark) section#projects #github-projects-container .showcase-project-card,
+html:not(.dark) section#projects #github-projects-container article.showcase-project-card,
+html[data-theme='light'] section#projects #github-projects-container .showcase-project-card,
+html[data-theme='light'] section#projects #github-projects-container article.showcase-project-card {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  border: 1px solid #c7c7cc !important;
+  box-shadow:
+    0 1px 2px rgb(0 0 0 / 5%),
+    0 10px 28px rgb(15 23 42 / 8%) !important;
+  color: #1d1d1f !important;
+  -webkit-text-fill-color: #1d1d1f !important;
+}
+
+html.dark section#projects #github-projects-container .showcase-project-card,
+html.dark section#projects #github-projects-container article.showcase-project-card,
+html[data-theme='dark'] section#projects #github-projects-container .showcase-project-card,
+html[data-theme='dark'] section#projects #github-projects-container article.showcase-project-card {
+  background: #000000 !important;
+  background-color: #000000 !important;
+  border: 1px solid #2c2c2e !important;
+  box-shadow: none !important;
+  color: #f5f5f7 !important;
+  -webkit-text-fill-color: #f5f5f7 !important;
+}
+
+html:not(.dark) section#projects #github-projects-container .project-title,
+html:not(.dark) section#projects #github-projects-container .project-title-text,
+html:not(.dark) section#projects #github-projects-container .project-title-text *,
+html[data-theme='light'] section#projects #github-projects-container .project-title,
+html[data-theme='light'] section#projects #github-projects-container .project-title-text,
+html[data-theme='light'] section#projects #github-projects-container .project-title-text * {
+  color: #1d1d1f !important;
+  -webkit-text-fill-color: #1d1d1f !important;
+  background: none !important;
+  background-image: none !important;
+  -webkit-background-clip: border-box !important;
+  background-clip: border-box !important;
+}
+
+html.dark section#projects #github-projects-container .project-title,
+html.dark section#projects #github-projects-container .project-title-text,
+html.dark section#projects #github-projects-container .project-title-text *,
+html[data-theme='dark'] section#projects #github-projects-container .project-title,
+html[data-theme='dark'] section#projects #github-projects-container .project-title-text,
+html[data-theme='dark'] section#projects #github-projects-container .project-title-text * {
+  color: #f5f5f7 !important;
+  -webkit-text-fill-color: #f5f5f7 !important;
+  background: none !important;
+  background-image: none !important;
+  -webkit-background-clip: border-box !important;
+  background-clip: border-box !important;
+}
+
+html:not(.dark) section#projects #github-projects-container .project-description,
+html[data-theme='light'] section#projects #github-projects-container .project-description {
+  color: #1d1d1f !important;
+  -webkit-text-fill-color: #1d1d1f !important;
+}
+
+html.dark section#projects #github-projects-container .project-description,
+html[data-theme='dark'] section#projects #github-projects-container .project-description {
+  color: #d2d2d7 !important;
+  -webkit-text-fill-color: #d2d2d7 !important;
+}
+
+html:not(.dark)
+  section#projects
+  #github-projects-container
+  :is(
+    .project-tag,
+    .project-language,
+    .project-signal-pill,
+    .project-meta-stat,
+    .project-evidence-link,
+    .project-evidence-link:visited
+  ),
+html[data-theme='light']
+  section#projects
+  #github-projects-container
+  :is(
+    .project-tag,
+    .project-language,
+    .project-signal-pill,
+    .project-meta-stat,
+    .project-evidence-link,
+    .project-evidence-link:visited
+  ) {
+  background: #f5f5f7 !important;
+  background-color: #f5f5f7 !important;
+  border: 1px solid rgb(0 0 0 / 12%) !important;
+  color: #1d1d1f !important;
+  -webkit-text-fill-color: #1d1d1f !important;
+}
+
+html.dark
+  section#projects
+  #github-projects-container
+  :is(
+    .project-tag,
+    .project-language,
+    .project-signal-pill,
+    .project-evidence-link,
+    .project-evidence-link:visited
+  ),
+html[data-theme='dark']
+  section#projects
+  #github-projects-container
+  :is(
+    .project-tag,
+    .project-language,
+    .project-signal-pill,
+    .project-evidence-link,
+    .project-evidence-link:visited
+  ) {
+  background: rgb(255 255 255 / 8%) !important;
+  background-color: rgb(255 255 255 / 8%) !important;
+  border: 1px solid rgb(255 255 255 / 14%) !important;
+  color: #f5f5f7 !important;
+  -webkit-text-fill-color: #f5f5f7 !important;
+}
+
+section#projects .projects-view-all-btn:visited {
+  background: #0071e3 !important;
+  background-color: #0071e3 !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  border-color: #0071e3 !important;
+}
+
+html.dark section#projects .projects-view-all-btn:visited,
+html[data-theme='dark'] section#projects .projects-view-all-btn:visited {
+  background: #0a84ff !important;
+  background-color: #0a84ff !important;
+  border-color: #0a84ff !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+section#projects #github-projects-container .project-action-btn.btn-ar > span,
+section#projects #github-projects-container .project-action-btn.btn-ar > i {
+  color: inherit !important;
+  -webkit-text-fill-color: inherit !important;
+}
+
+html:not(.dark)
+  section#projects
+  #github-projects-container
+  .project-action-btn.btn-demo:not(.is-disabled):not([disabled]),
+html[data-theme='light']
+  section#projects
+  #github-projects-container
+  .project-action-btn.btn-demo:not(.is-disabled):not([disabled]) {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  color: #1d1d1f !important;
+  -webkit-text-fill-color: #1d1d1f !important;
+  border: 1px solid rgb(0 0 0 / 14%) !important;
+}
+
+html.dark
+  section#projects
+  #github-projects-container
+  .project-action-btn.btn-demo:not(.is-disabled):not([disabled]),
+html[data-theme='dark']
+  section#projects
+  #github-projects-container
+  .project-action-btn.btn-demo:not(.is-disabled):not([disabled]) {
+  background: #000000 !important;
+  background-color: #000000 !important;
+  color: #f5f5f7 !important;
+  -webkit-text-fill-color: #f5f5f7 !important;
+  border: 1px solid rgb(255 255 255 / 18%) !important;
+}
+
+html:not(.dark) section#projects .projects-expand-btn,
+html[data-theme='light'] section#projects .projects-expand-btn {
+  color: #1d1d1f !important;
+  -webkit-text-fill-color: #1d1d1f !important;
+  border: 1px solid rgb(0 0 0 / 14%) !important;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+}
+
+html:not(.dark) section#projects .projects-view-all-btn,
+html[data-theme='light'] section#projects .projects-view-all-btn {
+  background: #0071e3 !important;
+  background-color: #0071e3 !important;
+  border-color: #0071e3 !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+html:not(.dark) section#projects .projects-repos-toolbar,
+html[data-theme='light'] section#projects .projects-repos-toolbar {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  border: 1px solid #d2d2d7 !important;
+}
+
+html:not(.dark) section#projects .proj-input-group,
+html:not(.dark) section#projects .proj-sort-native,
+html[data-theme='light'] section#projects .proj-input-group,
+html[data-theme='light'] section#projects .proj-sort-native {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  border-color: #d2d2d7 !important;
+  color: #1d1d1f !important;
+}
+
+/* Open Repo always full-width primary; secondary actions share the next row */
+section#projects #github-projects-container .project-footer {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 0.55rem !important;
+}
+
+section#projects #github-projects-container .project-footer .btn-github {
+  grid-column: 1 / -1 !important;
+}
+
+section#projects #github-projects-container .project-footer .project-action-btn {
+  flex: unset !important;
+  min-width: 0 !important;
+  width: 100% !important;
+}
+
+section#projects #github-projects-container .project-footer:not(:has(.btn-demo)) .btn-ar {
+  grid-column: 1 / -1 !important;
+}
+
+/* Unified meta chips (stars/forks/language/topics) */
+section#projects #github-projects-container .project-meta-row {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: center !important;
+  gap: 0.35rem !important;
+  margin-top: 0.15rem !important;
+}
+
+section#projects #github-projects-container .project-meta-stat {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.28rem !important;
+  border-radius: 999px !important;
+  border: 1px solid rgb(0 0 0 / 12%) !important;
+  background: #f5f5f7 !important;
+  color: #1d1d1f !important;
+  -webkit-text-fill-color: #1d1d1f !important;
+  padding: 0.24rem 0.56rem !important;
+  font-size: 0.73rem !important;
+  font-weight: 630 !important;
+  line-height: 1 !important;
+}
+
+html.dark section#projects #github-projects-container .project-meta-stat,
+html[data-theme='dark'] section#projects #github-projects-container .project-meta-stat {
+  border-color: rgb(255 255 255 / 14%) !important;
+  background: rgb(255 255 255 / 8%) !important;
+  color: #f5f5f7 !important;
+  -webkit-text-fill-color: #f5f5f7 !important;
+}
+
+section#projects #github-projects-container .project-meta-row .project-language,
+section#projects #github-projects-container .project-meta-row .project-tag {
+  margin: 0 !important;
+}
+
+/* Hide leftover evidence / disabled demo / old path chrome */
+section#projects #github-projects-container .project-evidence-row,
+section#projects #github-projects-container .project-signal-score,
+section#projects #github-projects-container .project-repo-path,
+section#projects #github-projects-container .project-repo-link,
+section#projects #github-projects-container .project-action-btn.btn-demo.is-disabled,
+section#projects #github-projects-container .project-action-btn.btn-demo[disabled] {
+  display: none !important;
+}
+
+html:not(.dark) section#projects #github-projects-container .project-repo-path,
+html[data-theme='light'] section#projects #github-projects-container .project-repo-path {
+  color: #6e6e73 !important;
+  -webkit-text-fill-color: #6e6e73 !important;
+}
+
+html.dark section#projects #github-projects-container .project-repo-path,
+html[data-theme='dark'] section#projects #github-projects-container .project-repo-path {
+  color: #a1a1a6 !important;
+  -webkit-text-fill-color: #a1a1a6 !important;
+}
+
+html:not(.dark) section#projects #github-projects-container .project-repo-updated,
+html[data-theme='light'] section#projects #github-projects-container .project-repo-updated {
+  color: #6e6e73 !important;
+  -webkit-text-fill-color: #6e6e73 !important;
+}
+
+html.dark section#projects #github-projects-container .project-repo-updated,
+html[data-theme='dark'] section#projects #github-projects-container .project-repo-updated {
+  color: #a1a1a6 !important;
+  -webkit-text-fill-color: #a1a1a6 !important;
 }

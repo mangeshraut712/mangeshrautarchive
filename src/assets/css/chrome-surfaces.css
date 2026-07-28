@@ -196,8 +196,11 @@ html[data-lg-mode='tinted'] #home .music-card-inner.lg-webgl-host .lg-webgl-canv
 
 /* Hero music card stays solid in every glass mode (no frosted grey fills). */
 html:not(.dark) #home .music-card-inner,
+html[data-theme='light'] #home .music-card-inner,
 html:not(.dark) #home .music-card-inner.lg-webgl-host,
-html:not(.dark) #home .music-card.is-playing .music-card-inner {
+html[data-theme='light'] #home .music-card-inner.lg-webgl-host,
+html:not(.dark) #home .music-card.is-playing .music-card-inner,
+html[data-theme='light'] #home .music-card.is-playing .music-card-inner {
   background: #ffffff !important;
   background-color: #ffffff !important;
   background-image: none !important;
@@ -208,8 +211,11 @@ html:not(.dark) #home .music-card.is-playing .music-card-inner {
 }
 
 html.dark #home .music-card-inner,
+html[data-theme='dark'] #home .music-card-inner,
 html.dark #home .music-card-inner.lg-webgl-host,
-html.dark #home .music-card.is-playing .music-card-inner {
+html[data-theme='dark'] #home .music-card-inner.lg-webgl-host,
+html.dark #home .music-card.is-playing .music-card-inner,
+html[data-theme='dark'] #home .music-card.is-playing .music-card-inner {
   background: #000000 !important;
   background-color: #000000 !important;
   background-image: none !important;
@@ -267,14 +273,12 @@ html.dark #home .music-card.is-playing .music-card-inner {
   margin: 0 !important;
   min-width: 0 !important;
   max-width: 100% !important;
+  width: 100% !important;
 }
 
-#home .music-card-inner .spotify-logo {
-  width: 12px !important;
-  height: 12px !important;
-  color: #1db954 !important;
-  fill: #1db954 !important;
-  flex-shrink: 0 !important;
+#home .music-card-inner .spotify-logo,
+#home .music-card-lastfm-link {
+  display: none !important;
 }
 
 #home .music-card-inner .status-text {
@@ -389,7 +393,7 @@ html.dark #home .music-card-inner .artist-name {
   align-items: center !important;
   justify-content: center !important;
   flex-shrink: 0 !important;
-  margin-left: 0 !important;
+  margin-left: auto !important;
   width: 28px !important;
   height: 28px !important;
   min-width: 28px !important;
@@ -404,6 +408,62 @@ html.dark #home .music-card-inner .artist-name {
   text-decoration: none !important;
   font-size: 1rem !important;
   opacity: 1 !important;
+}
+
+#home .music-card-lastfm-link {
+  position: relative !important;
+  z-index: 1 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-shrink: 0 !important;
+  width: 28px !important;
+  height: 28px !important;
+  min-width: 28px !important;
+  min-height: 28px !important;
+  border-radius: 50% !important;
+  background: rgb(213 16 7 / 10%) !important;
+  background-color: rgb(213 16 7 / 10%) !important;
+  color: #d51007 !important;
+  -webkit-text-fill-color: #d51007 !important;
+  border: none !important;
+  box-shadow: none !important;
+  text-decoration: none !important;
+  font-size: 0.95rem !important;
+  opacity: 1 !important;
+}
+
+#home .music-card-lastfm-link i,
+#home .music-card-lastfm-link .fab {
+  color: #d51007 !important;
+  -webkit-text-fill-color: #d51007 !important;
+}
+
+#home .music-card-lastfm-link:hover {
+  background: rgb(213 16 7 / 18%) !important;
+  background-color: rgb(213 16 7 / 18%) !important;
+  transform: scale(1.06);
+}
+
+#home .music-card.is-playing .album-art-container {
+  animation: listen-now-art-glow 2.4s ease-in-out infinite;
+}
+
+@keyframes listen-now-art-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgb(29 185 84 / 0%);
+  }
+
+  50% {
+    box-shadow: 0 0 0 4px rgb(29 185 84 / 18%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #home .music-card.is-playing .album-art-container {
+    animation: none;
+  }
 }
 
 #home .music-card-spotify-link i,
@@ -660,4 +720,47 @@ body.uses-page button.uses-filter-chip.is-active[type='button'] i {
     min-width: 48px !important;
     min-height: 48px !important;
   }
+}
+
+/* ==========================================================================
+   Safari ↔ Chrome parity locks (music + project surfaces)
+   Safari honors -webkit-text-fill-color over color; keep both aligned.
+   ========================================================================== */
+
+html.browser-safari #home .music-card-inner .status-text,
+html.browser-safari #home .music-card-inner .track-name,
+html.browser-safari #home .music-card-inner .artist-name {
+  -webkit-text-fill-color: currentColor !important;
+}
+
+html.browser-safari #home .music-card-spotify-link,
+html.browser-safari #home .music-card-spotify-link i,
+html.browser-safari #home .music-card-spotify-link .fab {
+  color: #1db954 !important;
+  -webkit-text-fill-color: #1db954 !important;
+}
+
+html.browser-safari section#projects #github-projects-container .project-title-text,
+html.browser-safari section#projects #github-projects-container .project-description,
+html.browser-safari section#projects #github-projects-container .project-meta-stat,
+html.browser-safari section#projects #github-projects-container .project-tag,
+html.browser-safari section#projects #github-projects-container .project-language {
+  -webkit-text-fill-color: currentColor !important;
+}
+
+html.browser-safari section#projects #github-projects-container .project-action-btn.btn-github,
+html.browser-safari
+  section#projects
+  #github-projects-container
+  .project-action-btn.btn-github
+  > span,
+html.browser-safari section#projects #github-projects-container .project-action-btn.btn-github > i {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+/* Avoid Safari flex min-height collapse on premium cards */
+html.browser-safari #home .music-card-inner,
+html.browser-chromium #home .music-card-inner {
+  min-height: 56px !important;
 }
