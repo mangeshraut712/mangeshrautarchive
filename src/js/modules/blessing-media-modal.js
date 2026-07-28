@@ -7,17 +7,17 @@
 const BLESSING_CONFIG = {
   ganesh: {
     title: '🕉️ Shree Ganapati Aarti',
-    subtitle: 'Sukhkarta Dukhharta • Divine Chanting & Lyrics',
-    embedUrl: 'https://www.youtube-nocookie.com/embed/q5Y-fTGM6FM?autoplay=1&rel=0',
-    watchUrl: 'https://www.youtube.com/watch?v=q5Y-fTGM6FM',
+    subtitle: 'Shendur Lal Chhadhayo / Sukhkarta Dukhharta • T-Series Devotional',
+    watchUrl: 'https://www.youtube.com/watch?v=w0W8Wh-8UCg&list=RDw0W8Wh-8UCg&start_radio=1',
+    embedUrl: 'https://www.youtube-nocookie.com/embed/w0W8Wh-8UCg?autoplay=1&rel=0&enablejsapi=1',
     badge: 'Ganapati Bappa Morya',
     image: 'assets/images/ganesh.png',
   },
   hanuman: {
     title: '🙏 Shree Hanuman Chalisa',
-    subtitle: 'Jai Shri Ram • Soothing Devotional Mantra Chanting & Lyrics',
-    embedUrl: 'https://www.youtube-nocookie.com/embed/6dinnygUx_w?autoplay=1&rel=0',
-    watchUrl: 'https://www.youtube.com/watch?v=6dinnygUx_w',
+    subtitle: 'Gulshan Kumar • Hariharan • Official T-Series Video',
+    watchUrl: 'https://www.youtube.com/watch?v=AETFvQonfV8&list=RDAETFvQonfV8&start_radio=1',
+    embedUrl: 'https://www.youtube-nocookie.com/embed/AETFvQonfV8?autoplay=1&rel=0&enablejsapi=1',
     badge: 'Jai Bajrangbali',
     image: 'assets/images/hanuman.png',
   },
@@ -79,7 +79,24 @@ export function openBlessingModal(key) {
       </div>
 
       <div class="blessing-modal-player-container">
-        <!-- Embedded YouTube Frame -->
+        <!-- Devotional Media Preview Card -->
+        <div class="blessing-player-visualizer">
+          <img src="${config.image}" alt="${config.title}" class="blessing-player-avatar">
+          <div class="blessing-player-info">
+            <div class="blessing-player-tag"><i class="fas fa-volume-up"></i> Official Devotional Music Stream</div>
+            <h4 class="blessing-player-track-title">${config.title}</h4>
+            <p class="blessing-player-track-sub">${config.subtitle}</p>
+            <div class="blessing-equalizer" aria-hidden="true">
+              <span class="eq-bar eq-1"></span>
+              <span class="eq-bar eq-2"></span>
+              <span class="eq-bar eq-3"></span>
+              <span class="eq-bar eq-4"></span>
+              <span class="eq-bar eq-5"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Embedded Frame Container -->
         <div class="blessing-modal-video-wrap">
           <iframe
             src="${config.embedUrl}"
@@ -93,7 +110,7 @@ export function openBlessingModal(key) {
 
       <div class="blessing-modal-footer">
         <a href="${config.watchUrl}" target="_blank" rel="noopener noreferrer" class="blessing-modal-yt-btn">
-          <i class="fab fa-youtube"></i> Watch Full Video on YouTube
+          <i class="fab fa-youtube"></i> Watch / Stream Full Video on YouTube
         </a>
         <button type="button" class="blessing-modal-done-btn">Done</button>
       </div>
