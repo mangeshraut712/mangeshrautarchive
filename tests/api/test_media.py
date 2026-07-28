@@ -34,8 +34,7 @@ def test_music_recent_returns_latency_headers_when_lastfm_unconfigured(monkeypat
 def test_listen_now_meta_bins_and_derives_top_artists():
     from api.routes.media import build_listen_now_meta, build_week_bins
 
-    now = 1753718400.0  # 2025-07-28 16:00:00 UTC-ish fixed
-    # Use a controlled "now" via week bins helper
+    # Controlled week window via week bins helper
     today = 1753660800  # 2025-07-28 00:00:00 UTC
     tracks = [
         {"artist": {"#text": "Arijit"}, "date": {"uts": str(today + 100)}},
