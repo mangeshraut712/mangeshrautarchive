@@ -768,11 +768,7 @@ html[data-lg-mode='tinted']:not(.dark)
   #projects
   #github-projects-container
   article.showcase-project-card {
-  box-shadow:
-    0 1px 0 rgb(255 255 255 / 70%) inset,
-    0 1px 2px rgb(0 0 0 / 4%),
-    0 8px 24px rgb(0 0 0 / 6%),
-    0 20px 48px rgb(15 23 42 / 4%) !important;
+  box-shadow: none !important;
 }
 
 html.dark[data-lg-mode='tinted']
@@ -816,10 +812,7 @@ html.dark[data-lg-mode='tinted']
   #projects
   #github-projects-container
   article.showcase-project-card {
-  box-shadow:
-    0 1px 0 rgb(255 255 255 / 6%) inset,
-    0 1px 0 rgb(0 0 0 / 40%),
-    0 12px 40px rgb(0 0 0 / 55%) !important;
+  box-shadow: none !important;
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -827,21 +820,41 @@ html.dark[data-lg-mode='tinted']
     body
     :is(
       .experience-content,
+      .education-card,
+      .education-content,
+      .stat-card,
       .blog-card,
       .publication-card,
+      .award-card,
+      .recommendation-card,
+      .certification-card,
       .showcase-project-card,
+      .about-highlight-card,
       .about-text-card,
       .contact-card,
+      .newsletter-card,
+      .support-donation-card,
+      .currently-card,
       .skill-category,
-      .award-card,
-      .certification-card,
+      .timeline-content,
+      .monitor-summary-card,
+      .ops-card,
+      .endpoint-card,
+      .doc-card,
+      body.monitor-page .doc-card,
+      .travel-stop,
+      .place-guide-card,
+      .eng-showcase-card,
+      .systems-bento-tile,
+      .systems-evidence-card,
+      #blog .blog-card,
+      #blog .newsletter-card,
+      #skills .skill-category,
+      #skills-container .skill-category,
+      #projects #github-projects-container .showcase-project-card,
       #projects #github-projects-container article.showcase-project-card
     ):hover {
-    box-shadow:
-      0 1px 0 rgb(255 255 255 / 80%) inset,
-      0 2px 6px rgb(0 113 227 / 8%),
-      0 14px 36px rgb(0 0 0 / 8%),
-      0 28px 64px rgb(0 113 227 / 10%) !important;
+    box-shadow: none !important;
     border-color: #0071e3 !important;
   }
 
@@ -849,21 +862,41 @@ html.dark[data-lg-mode='tinted']
     body
     :is(
       .experience-content,
+      .education-card,
+      .education-content,
+      .stat-card,
       .blog-card,
       .publication-card,
+      .award-card,
+      .recommendation-card,
+      .certification-card,
       .showcase-project-card,
+      .about-highlight-card,
       .about-text-card,
       .contact-card,
+      .newsletter-card,
+      .support-donation-card,
+      .currently-card,
       .skill-category,
-      .award-card,
-      .certification-card,
+      .timeline-content,
+      .monitor-summary-card,
+      .ops-card,
+      .endpoint-card,
+      .doc-card,
+      body.monitor-page .doc-card,
+      .travel-stop,
+      .place-guide-card,
+      .eng-showcase-card,
+      .systems-bento-tile,
+      .systems-evidence-card,
+      #blog .blog-card,
+      #blog .newsletter-card,
+      #skills .skill-category,
+      #skills-container .skill-category,
+      #projects #github-projects-container .showcase-project-card,
       #projects #github-projects-container article.showcase-project-card
     ):hover {
-    box-shadow:
-      0 1px 0 rgb(255 255 255 / 10%) inset,
-      0 0 0 1px rgb(10 132 255 / 18%),
-      0 16px 48px rgb(0 0 0 / 65%),
-      0 0 40px rgb(10 132 255 / 12%) !important;
+    box-shadow: none !important;
     border-color: #0a84ff !important;
   }
 }

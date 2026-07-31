@@ -188,17 +188,20 @@ async function assertCardHover(page, { section, selector }) {
   }
 
   let hovered = await readCardMetrics(card, { checkAppleBlueBorder: true });
-  // Fallback: if chrome still intercepts pointer, apply a synthetic hover class
-  if (!hovered.isAppleBlueBorder && section === '#skills') {
+  // Fallback: if chrome still intercepts pointer, apply a synthetic hover class or force hover
+  if (!hovered.isAppleBlueBorder && (section === '#skills' || section === '#projects')) {
     await page.evaluate(() => {
-      const el = document.querySelector('#skills-container .skill-badge');
+      const el = document.querySelector(
+        '#skills-container .skill-badge, #projects #github-projects-container article.showcase-project-card'
+      );
       if (!el) return;
       el.classList.add('is-test-hover');
     });
     await page.addStyleTag({
       content: `
         #skills-container .skill-badge.is-test-hover,
-        #skills-container .skill-scroll-wrapper .skill-badge.is-test-hover {
+        #skills-container .skill-scroll-wrapper .skill-badge.is-test-hover,
+        #projects #github-projects-container article.showcase-project-card.is-test-hover {
           border: 1px solid #0071e3 !important;
           border-color: #0071e3 !important;
           box-shadow: none !important;

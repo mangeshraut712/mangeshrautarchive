@@ -794,3 +794,86 @@ html.dark .about-text-card.speech-active .highlight-target {
     margin-right: 0.25rem !important;
   }
 }
+
+/* Active project lens chip — solid Apple blue for 4.5:1+ WCAG AA contrast */
+#projects .project-lens-chip.active,
+section#projects .project-lens-chip.active,
+html.dark #projects .project-lens-chip.active {
+  background: #0071e3 !important;
+  background-color: #0071e3 !important;
+  border-color: #0071e3 !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+/* Contact AI chatbot assistant CTA button contrast lock */
+.contact-assistme-btn,
+#contact-chatbot-cta,
+#contact .contact-assistme-btn {
+  background: #0071e3 !important;
+  background-color: #0071e3 !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+/* Primary Hero CTA (Download Resume) contrast lock: #0055b8 provides 6.5:1 contrast against white text with no box-shadow or specular wash */
+.hero-cta-primary,
+.hero-cta-primary:hover,
+#home .hero-actions .hero-cta-primary,
+#home .hero-actions .hero-cta-primary:hover,
+#home .hero-actions .hero-cta:nth-child(1),
+#home .hero-actions .hero-cta:nth-child(1):hover,
+#home a.hero-cta-primary,
+#home a.hero-cta-primary:hover {
+  background: #0055b8 !important;
+  background-color: #0055b8 !important;
+  background-image: none !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  box-shadow: none !important;
+  filter: none !important;
+}
+
+.hero-cta-primary::after,
+#home .hero-actions .hero-cta-primary::after,
+#home .hero-actions .hero-cta:nth-child(1)::after,
+#home a.hero-cta-primary::after {
+  display: none !important;
+}
+
+/* Contrast fixes for footer copy/tagline, artist name, and projects view-all button */
+.footer-copy,
+.footer-tagline,
+p.footer-copy,
+p.footer-tagline,
+footer .footer-copy,
+footer .footer-tagline,
+html:not(.dark) .footer-copy,
+html:not(.dark) .footer-tagline {
+  color: #48484a !important;
+  -webkit-text-fill-color: #48484a !important;
+}
+
+#artist-name,
+p#artist-name.artist-name,
+#home .artist-name {
+  color: #48484a !important;
+  -webkit-text-fill-color: #48484a !important;
+}
+
+.projects-view-all-btn,
+section#projects .projects-view-all-btn,
+#projects .projects-view-all-btn {
+  background: #0055b8 !important;
+  background-color: #0055b8 !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+.projects-view-all-btn span,
+.projects-view-all-btn i,
+section#projects .projects-view-all-btn span,
+section#projects .projects-view-all-btn i {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}

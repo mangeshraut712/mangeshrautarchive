@@ -2271,24 +2271,28 @@ html.dark .vibe-stack-card {
 #skills .skill-badge:hover,
 #about .about-image-wrapper:hover,
 html body #about div.about-text-card:hover,
-html.dark body #about div.about-text-card:hover,
 html body #about div.about-highlight-card:hover,
-html.dark body #about div.about-highlight-card:hover,
 html body #projects #github-projects-container article.showcase-project-card:hover,
-html.dark body #projects #github-projects-container article.showcase-project-card:hover,
 html body #blog div.newsletter-card:hover,
-html.dark body #blog div.newsletter-card:hover,
 html body #contact #music-content .currently-music-card:hover .media-poster,
-html.dark body #contact #music-content .currently-music-card:hover .media-poster,
 html body #contact #music-content .recent-track-card:hover .media-poster,
-html.dark body #contact #music-content .recent-track-card:hover .media-poster,
 #experience .experience-content:hover,
-html.dark #experience .experience-content:hover,
 .monitor-summary-card:hover,
+.travel-sidebar:hover {
+  border-color: #0071e3 !important;
+  box-shadow: none !important;
+}
+
+html.dark body #about div.about-text-card:hover,
+html.dark body #about div.about-highlight-card:hover,
+html.dark body #projects #github-projects-container article.showcase-project-card:hover,
+html.dark body #blog div.newsletter-card:hover,
+html.dark body #contact #music-content .currently-music-card:hover .media-poster,
+html.dark body #contact #music-content .recent-track-card:hover .media-poster,
+html.dark #experience .experience-content:hover,
 html.dark .monitor-summary-card:hover,
-.travel-sidebar:hover,
 html.dark .travel-sidebar:hover {
-  border: 1px solid var(--theme-card-border-hover) !important;
+  border-color: #0a84ff !important;
   box-shadow: none !important;
 }
 
@@ -3375,4 +3379,12 @@ html:is([data-lg-mode='tinted']) [data-lg-interactive]::after {
   [data-lg-interactive]::after {
     display: none !important;
   }
+}
+
+/* Disable specular highlight wash on hero-cta-primary for WCAG AA contrast */
+.hero-cta-primary::after,
+#home .hero-actions .hero-cta-primary::after,
+#home .hero-actions .hero-cta:nth-child(1)::after,
+#home a.hero-cta-primary::after {
+  display: none !important;
 }

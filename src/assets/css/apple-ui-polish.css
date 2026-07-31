@@ -615,20 +615,20 @@ html.dark .skill-badge-percentage {
 #home .hero-cta-primary {
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
-  background: #0071e3 !important;
-  background-color: #0071e3 !important;
+  background: #0055b8 !important;
+  background-color: #0055b8 !important;
   background-image: none !important;
   border: 1px solid transparent !important;
   border-radius: 980px !important;
-  box-shadow: 0 4px 16px rgb(0 113 227 / 28%) !important;
+  box-shadow: 0 4px 16px rgb(0 85 184 / 28%) !important;
 }
 
 #home .hero-actions a.hero-cta-primary:hover,
 #home .hero-actions .hero-cta.hero-cta-primary:hover,
 #home a.hero-cta-primary:hover,
 #home .hero-cta-primary:hover {
-  background: #0077ed !important;
-  background-color: #0077ed !important;
+  background: #0055b8 !important;
+  background-color: #0055b8 !important;
   background-image: none !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
@@ -638,8 +638,8 @@ html.dark #home .hero-actions a.hero-cta-primary,
 html.dark #home .hero-actions .hero-cta.hero-cta-primary,
 html.dark #home a.hero-cta-primary,
 html.dark #home .hero-cta-primary {
-  background: #0071e3 !important;
-  background-color: #0071e3 !important;
+  background: #0055b8 !important;
+  background-color: #0055b8 !important;
   background-image: none !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
@@ -837,7 +837,7 @@ html.dark .footer-wrapper {
 
 .footer-copy,
 .footer-tagline {
-  color: #6e6e73 !important;
+  color: #48484a !important;
   font-size: 0.8125rem !important;
   line-height: 1.5 !important;
 }
