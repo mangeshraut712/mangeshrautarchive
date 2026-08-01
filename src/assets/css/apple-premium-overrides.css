@@ -2012,11 +2012,11 @@ html.dark .apple-tldr:hover {
   #home.hero-section,
   #home.hero-section.home-hero,
   section#home.hero-section.home-hero {
-    min-height: calc(100vh - var(--site-nav-offset, 4.25rem)) !important;
+    min-height: auto !important;
     max-height: none !important;
     height: auto !important;
-    padding-top: clamp(2.5rem, 8vh, 5.5rem) !important;
-    padding-bottom: clamp(1.5rem, 4vh, 3rem) !important;
+    padding-top: clamp(1.5rem, 4vh, 3rem) !important;
+    padding-bottom: clamp(1rem, 2.5vh, 2rem) !important;
     display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
@@ -2535,11 +2535,11 @@ p {
 
 @media (min-width: 1025px) {
   #home.hero-section.home-hero {
-    min-height: calc(100vh - var(--site-nav-offset, 4.25rem)) !important;
+    min-height: auto !important;
     max-height: none !important;
     height: auto !important;
-    padding-top: clamp(2.5rem, 8vh, 5.5rem) !important;
-    padding-bottom: clamp(1.5rem, 4vh, 3rem) !important;
+    padding-top: clamp(1.5rem, 4vh, 3rem) !important;
+    padding-bottom: clamp(1rem, 2.5vh, 2rem) !important;
     justify-content: flex-start !important;
   }
 }

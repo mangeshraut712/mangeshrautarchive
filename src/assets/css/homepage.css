@@ -491,7 +491,7 @@ html.dark .hero-social-link:hover {
     scroll-snap-type: none;
   }
 
-  /* Home: full first screen. flex-start + fixed pad — NOT justify-center
+  /* Home: content-fit first screen. flex-start + fixed pad — NOT justify-center
      (centering reflows when fonts/CSS land and caused ~0.6 desktop CLS). */
   section#home,
   #home.hero-section,
@@ -500,12 +500,11 @@ html.dark .hero-social-link:hover {
   section#home.hero-section.home-hero,
   body #home.hero-section.home-hero,
   #home {
-    /* vh (not svh): avoids mid-audit viewport-unit retarget CLS in Lighthouse */
-    min-height: calc(100vh - var(--site-nav-offset)) !important;
+    min-height: auto !important;
     max-height: none !important;
     height: auto !important;
-    padding-top: clamp(2.5rem, 8vh, 5.5rem) !important;
-    padding-bottom: clamp(1.5rem, 4vh, 3rem) !important;
+    padding-top: clamp(1.5rem, 4vh, 3rem) !important;
+    padding-bottom: clamp(1rem, 2.5vh, 2rem) !important;
     margin: 0 !important;
     box-sizing: border-box !important;
     display: flex !important;
