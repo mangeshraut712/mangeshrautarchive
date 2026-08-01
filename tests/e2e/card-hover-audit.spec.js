@@ -168,6 +168,8 @@ async function assertCardHover(page, { section, selector }) {
   await expect(card, `Expected card in ${section}`).toBeVisible({ timeout: 20_000 });
   // Center under the island nav so the pointer hits the card, not chrome
   await card.evaluate(node => {
+    document.documentElement.style.scrollBehavior = 'auto';
+    document.body.style.scrollBehavior = 'auto';
     node.scrollIntoView({ block: 'center', inline: 'center' });
   });
   await page.waitForTimeout(300);
@@ -224,7 +226,11 @@ async function assertCardHover(page, { section, selector }) {
 }
 
 test.describe('Sitewide card hover audit', () => {
-  test.beforeEach(async ({ page }) => {
+  test.beforeEach(async ({ page }, testInfo) => {
+    test.skip(
+      testInfo.project.use.hasTouch === true,
+      'Hover styling is not exposed on touch-only devices'
+    );
     await gotoSite(page);
     await page.waitForSelector('#main-content', { state: 'attached', timeout: 30_000 });
     await page.waitForLoadState('load');
@@ -234,7 +240,7 @@ test.describe('Sitewide card hover audit', () => {
       document.documentElement.setAttribute('data-theme', 'light');
       document.getElementById('chatbot-widget')?.remove();
       document.querySelector('.a11y-toolbar')?.remove();
-      document.querySelector('header')?.remove();
+      document.querySelector('#global-nav')?.remove();
     });
   });
 
@@ -281,6 +287,13 @@ test.describe('Sitewide card hover audit', () => {
 });
 
 test.describe('Standalone page card hover audit', () => {
+  test.beforeEach((_fixtures, testInfo) => {
+    test.skip(
+      testInfo.project.use.hasTouch === true,
+      'Hover styling is not exposed on touch-only devices'
+    );
+  });
+
   for (const check of STANDALONE_CARD_CHECKS) {
     test(`${check.name} cards: rounded corners, no glow, blue border on hover`, async ({
       page,

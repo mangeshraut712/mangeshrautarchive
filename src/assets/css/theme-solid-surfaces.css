@@ -3117,3 +3117,39 @@ html[data-theme='dark'] #projects .activity-stat-label {
   color: #c7c7cc !important;
   -webkit-text-fill-color: #c7c7cc !important;
 }
+
+/* Monitor documentation cards stay flat; hover is communicated by border color. */
+html body.monitor-page main#main-content .doc-card,
+html.dark body.monitor-page main#main-content .doc-card,
+html[data-lg-mode] body.monitor-page main#main-content .doc-card {
+  box-shadow: none !important;
+}
+
+html body.monitor-page main#main-content .doc-card:hover,
+html body.monitor-page main#main-content .doc-card:focus-within,
+html.dark body.monitor-page main#main-content .doc-card:hover,
+html.dark body.monitor-page main#main-content .doc-card:focus-within,
+html[data-lg-mode] body.monitor-page main#main-content .doc-card:hover,
+html[data-lg-mode] body.monitor-page main#main-content .doc-card:focus-within {
+  border-color: #0071e3 !important;
+  box-shadow: none !important;
+}
+
+/* Final focused locks for selectors that otherwise inherit :is() ID specificity. */
+html:not(.dark) body #main-content #experience .experience-content:hover {
+  border: 1px solid #0071e3 !important;
+  border-color: #0071e3 !important;
+  box-shadow: none !important;
+}
+
+html.dark body #main-content #experience .experience-content:hover {
+  border: 1px solid #0a84ff !important;
+  border-color: #0a84ff !important;
+  box-shadow: none !important;
+}
+
+html:not(.dark) body.monitor-page .text-accent-blue,
+html[data-theme='light'] body.monitor-page .text-accent-blue {
+  color: #0066cc !important;
+  -webkit-text-fill-color: #0066cc !important;
+}

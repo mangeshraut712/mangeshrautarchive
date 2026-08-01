@@ -3,6 +3,7 @@ import { readFile, stat } from 'fs/promises';
 import { brotliCompressSync, gzipSync } from 'zlib';
 import { fileURLToPath } from 'url';
 import { dirname, extname, join, resolve } from 'path';
+import { isPathInsideRoot, resolveStaticCandidate } from './static-path.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -108,7 +109,7 @@ function getCompressedPayload(filePath, buffer, encoding, fileStat) {
 }
 
 async function tryResolveExistingFile(filePath) {
-  if (!filePath.startsWith(distDir)) {
+  if (!isPathInsideRoot(distDir, filePath)) {
     return null;
   }
 
@@ -125,10 +126,9 @@ async function tryResolveExistingFile(filePath) {
 }
 
 async function resolveFile(requestPath) {
-  const normalizedPath =
-    requestPath.length > 1 && requestPath.endsWith('/') ? requestPath.slice(0, -1) : requestPath;
-  const safePath = normalizedPath === '/' ? '/index.html' : normalizedPath;
-  const resolvedPath = resolve(distDir, `.${safePath}`);
+  const candidate = resolveStaticCandidate(distDir, requestPath);
+  if (!candidate) return null;
+  const { safePath, filePath: resolvedPath } = candidate;
 
   const directMatch = await tryResolveExistingFile(resolvedPath);
   if (directMatch) {

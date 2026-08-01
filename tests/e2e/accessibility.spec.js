@@ -50,8 +50,12 @@ async function waitForAccessiblePage(page, path) {
 
   if (path === PAGES.home) {
     // skills-visualization.js loads lazily when #skills enters the viewport.
-    await page.locator('#skills, #skills-container').first().scrollIntoViewIfNeeded();
-    await page.waitForFunction(() => !document.getElementById('skills-loading'), {
+    await page.evaluate(() => {
+      document.documentElement.style.scrollBehavior = 'auto';
+      window.location.hash = 'skills';
+      document.getElementById('skills')?.scrollIntoView({ behavior: 'auto' });
+    });
+    await page.waitForFunction(() => !document.getElementById('skills-loading'), undefined, {
       timeout: 20_000,
     });
   }

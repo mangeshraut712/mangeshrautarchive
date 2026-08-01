@@ -2,15 +2,14 @@ import { mkdir, writeFile } from 'fs/promises';
 import { dirname, resolve } from 'path';
 import { fileURLToPath } from 'url';
 import { caseStudies } from '../../src/js/modules/case-studies-data.js';
-import { LIVE_SITE_URL } from '../../src/js/data/portfolio-public-data.js';
+import { SITE_URL as CANONICAL_SITE_URL } from '../../src/js/data/portfolio-public-data.js';
 import { ASSET_VER, fontAwesomeStylesheet } from './asset-version.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-/** Canonical host while apex (mangeshraut.pro) is DEPLOYMENT_DISABLED. */
 const SITE_URL = (
   process.env.OPENROUTER_SITE_URL ||
   process.env.PAGES_SITE_URL ||
-  LIVE_SITE_URL
+  CANONICAL_SITE_URL
 ).replace(/\/$/, '');
 const ASSET_PREFIX = '..';
 
@@ -113,9 +112,10 @@ function pageShell({ title, description, canonical, body }) {
     <meta name="author" content="Mangesh Raut" />
     <link rel="canonical" href="${canonical}" />
     <title>${escapeHTML(title)}</title>
-    <link rel="icon" href="/favicon.ico" sizes="48x48" />
-    <link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
+    <link rel="icon" href="${ASSET_PREFIX}/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="${ASSET_PREFIX}/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="${ASSET_PREFIX}/favicon-32x32.png" type="image/png" sizes="32x32" />
+    <link rel="apple-touch-icon" href="${ASSET_PREFIX}/apple-touch-icon.png" sizes="180x180" />
     <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/apple-design-system.css?v=${ASSET_VER}" />
     <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/sitewide-design-system.css?v=${ASSET_VER}" />
     <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/monitor.css?v=${ASSET_VER}" />

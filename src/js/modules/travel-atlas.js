@@ -16,6 +16,7 @@ const VISITED_PIN_COLOR = '#ff3b30';
 const MAPLIBRE_VERSION = '5.24.0';
 const MAPLIBRE_CSS = `https://cdn.jsdelivr.net/npm/maplibre-gl@${MAPLIBRE_VERSION}/dist/maplibre-gl.css`;
 const MAPLIBRE_JS = `https://cdn.jsdelivr.net/npm/maplibre-gl@${MAPLIBRE_VERSION}/dist/maplibre-gl.js`;
+const TRAVEL_MAP_AUTO_START_MS = 8_000;
 const mapWarningMessages = new Set();
 const waypointSearchCache = new WeakMap();
 const waypointCategoryCache = new WeakMap();
@@ -35,6 +36,7 @@ const state = {
   routeVisible: true,
   projectionType: 'globe',
   mapInteractionsBound: false,
+  mapInitPromise: null,
 };
 
 function waypointColor() {
@@ -489,7 +491,7 @@ function renderTimeline() {
     .map(({ waypoint, index }) => {
       const countryGroupHeader =
         waypoint.locality.country !== currentGroupCountry
-          ? `<div class="travel-timeline__country-header"><h3>${escapeHtml(waypoint.locality.emoji)} ${escapeHtml(waypoint.locality.country)}</h3></div>`
+          ? `<div class="travel-timeline__country-header"><h2>${escapeHtml(waypoint.locality.emoji)} ${escapeHtml(waypoint.locality.country)}</h2></div>`
           : '';
       currentGroupCountry = waypoint.locality.country;
       return renderStopCard(waypoint, index, countryGroupHeader);
@@ -576,15 +578,16 @@ function renderStopCard(waypoint, index, countryGroupHeader) {
     !sameText(whyVisit, experience);
   const detailsId = `travel-stop-details-${index}`;
   const summaryId = `travel-stop-summary-${index}`;
+  const nameId = `travel-stop-name-${index}`;
   const ariaLabel = `Open details for ${waypoint.title} in ${waypoint.locality.city}, ${waypoint.locality.country}`;
 
   return `
     ${countryGroupHeader}
     <article class="travel-stop${activeClass}" data-index="${index}" data-city="${escapeHtml(waypoint.locality.city)}" data-country="${escapeHtml(waypoint.locality.country)}" style="--stop-color: ${waypointColor()}" aria-label="${escapeHtml(ariaLabel)}">
-      <div class="travel-stop__main" role="button" tabindex="0" aria-label="${escapeHtml(ariaLabel)}" aria-describedby="${summaryId}" aria-controls="${detailsId}" aria-expanded="${index === state.activeIndex}">
+      <div class="travel-stop__main" role="button" tabindex="0" aria-labelledby="${nameId}" aria-describedby="${summaryId}" aria-controls="${detailsId}" aria-expanded="${index === state.activeIndex}">
         <div class="travel-stop__dot"></div>
         <div class="travel-stop__order">${escapeHtml(waypoint.locality.region)}, ${escapeHtml(waypoint.locality.country)} ${homeBadge}</div>
-        <h3 class="travel-stop__name">${escapeHtml(waypoint.title)}</h3>
+        <h3 class="travel-stop__name" id="${nameId}">${escapeHtml(waypoint.title)}</h3>
         ${placeContext}
         <div class="travel-stop__tagline" id="${summaryId}">${escapeHtml(experience)}</div>
         <div class="travel-stop__details" id="${detailsId}">
@@ -1288,7 +1291,10 @@ async function initMap() {
 
   state.map.on('load', () => {
     state.ready = true;
-    document.getElementById('map-container')?.setAttribute('data-map-ready', 'true');
+    const mapContainer = document.getElementById('map-container');
+    mapContainer?.setAttribute('data-map-ready', 'true');
+    mapContainer?.setAttribute('aria-busy', 'false');
+    document.getElementById('travel-map-load')?.setAttribute('hidden', '');
     setMapProjection();
     restoreMapDataLayers();
     fitMapToVisiblePlaces();
@@ -1299,10 +1305,23 @@ async function initMap() {
 }
 
 function scheduleMapInit() {
+  const mapContainer = document.getElementById('map-container');
+  const loadButton = document.getElementById('travel-map-load');
+  const loadLabel = loadButton?.querySelector('[data-map-load-label]');
+
   const start = () => {
-    initMap().catch(error => {
+    if (state.mapInitPromise || state.map) return;
+    mapContainer?.setAttribute('aria-busy', 'true');
+    if (loadButton) loadButton.disabled = true;
+    if (loadLabel) loadLabel.textContent = 'Loading interactive map…';
+
+    state.mapInitPromise = initMap().catch(error => {
       const message = error?.message || 'Map initialization failed';
-      document.getElementById('map-container')?.setAttribute('data-map-error', message);
+      mapContainer?.setAttribute('data-map-error', message);
+      mapContainer?.setAttribute('aria-busy', 'false');
+      if (loadButton) loadButton.disabled = false;
+      if (loadLabel) loadLabel.textContent = 'Retry interactive map';
+      state.mapInitPromise = null;
       if (!mapWarningMessages.has(message)) {
         mapWarningMessages.add(message);
         console.warn(`Travel map unavailable: ${message}`);
@@ -1310,7 +1329,8 @@ function scheduleMapInit() {
     });
   };
 
-  window.setTimeout(start, 0);
+  loadButton?.addEventListener('click', start);
+  window.setTimeout(start, TRAVEL_MAP_AUTO_START_MS);
 }
 
 function addMapSources() {

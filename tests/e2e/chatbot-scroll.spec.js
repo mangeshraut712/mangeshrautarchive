@@ -308,8 +308,15 @@ test.describe('Chatbot scroll engineering', () => {
     await expect(page.locator('#chatbot-messages .message.user-message')).toBeVisible({
       timeout: 15_000,
     });
+    await expect(page.locator('#chatbot-messages')).toHaveAttribute('aria-busy', 'false', {
+      timeout: 15_000,
+    });
 
-    await page.locator('#chatbot-clear-btn').click();
+    const clearButton = page.locator('#chatbot-clear-btn');
+    await clearButton.focus();
+    await page.keyboard.down('Space');
+    await page.waitForTimeout(1_050);
+    await page.keyboard.up('Space');
     await expect(page.locator('#chatbot-messages .welcome-message')).toBeVisible({
       timeout: 2_000,
     });

@@ -20,11 +20,6 @@
       return true;
     }
 
-    // Lighthouse / PageSpeed mobile presets (with or without year suffix).
-    if (/moto g power/i.test(userAgent)) {
-      return true;
-    }
-
     try {
       // Modern Lighthouse / PageSpeed desktop dropped the Chrome-Lighthouse UA
       // suffix and often leaves navigator.webdriver false under CDP. GitHub Pages

@@ -22,11 +22,6 @@ function matchesPerfAuditSignals() {
     return true;
   }
 
-  // Lighthouse / PageSpeed mobile presets (with or without year suffix).
-  if (/moto g power|Nexus 5X|Pixel 7/i.test(userAgent)) {
-    return true;
-  }
-
   try {
     // Modern Lighthouse desktop no longer appends "Chrome-Lighthouse" to the UA.
     // Detect lab viewport (1350×940); Playwright desktop is usually 1280×720.

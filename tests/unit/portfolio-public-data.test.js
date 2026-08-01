@@ -4,6 +4,7 @@ import {
   formatQualitySummary,
   LIGHTHOUSE_DEPLOY_GATES,
   PWA_POLICY,
+  SITE_URL,
   SITE_THEME,
   SOCIAL_IMAGE,
   TEST_COUNTS,
@@ -25,9 +26,9 @@ describe('portfolio-public-data', () => {
   });
 
   it('documents consistent test counts and WebMCP tools', () => {
-    expect(TEST_COUNTS.pytest).toBe(156);
+    expect(TEST_COUNTS.pytest).toBe(157);
     expect(TEST_COUNTS.playwrightProjects).toBe(16);
-    expect(TEST_COUNTS.vitest).toBe(104);
+    expect(TEST_COUNTS.vitest).toBe(119);
     expect(WEBMCP_TOOL_COUNT).toBe(10);
     expect(formatQualitySummary()).toContain(`${TEST_COUNTS.vitest} Vitest`);
     expect(formatQualitySummary()).toContain(`${TEST_COUNTS.pytest} pytest`);
@@ -53,7 +54,7 @@ describe('portfolio-public-data', () => {
   it('keeps social image and theme tokens aligned', () => {
     expect(SOCIAL_IMAGE.width).toBe(3024);
     expect(SOCIAL_IMAGE.height).toBe(1722);
-    expect(SOCIAL_IMAGE.url).toContain('github.io/mangeshrautarchive');
+    expect(SOCIAL_IMAGE.url).toBe(`${SITE_URL}/assets/images/home.png`);
     expect(SITE_THEME.appleBlue).toBe('#0071e3');
   });
 });

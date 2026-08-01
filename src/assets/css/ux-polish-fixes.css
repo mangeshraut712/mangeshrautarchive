@@ -690,6 +690,15 @@ html.dark #debug-runner-section .debug-runner-disclosure > summary {
   }
 }
 
+@media (max-width: 640px) {
+  /* Reserve a narrow right rail for the persistent FAB stack on the hero. */
+  html body #home .hero-text-block {
+    width: calc(100% - var(--fab-size) - var(--fab-gap) - 0.5rem) !important;
+    margin-right: auto !important;
+    margin-left: 0 !important;
+  }
+}
+
 /* Press feedback for primary interactive chrome */
 button:not(:disabled):active,
 .btn-primary:active,

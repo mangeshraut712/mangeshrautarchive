@@ -4,7 +4,7 @@
  * Lighthouse floors mirror `.github/workflows/deploy.yml` and `package.json` qa:lighthouse:* scripts.
  */
 
-/** Brand / custom domain (may be offline while Vercel is DEPLOYMENT_DISABLED). */
+/** Canonical brand and production origin. */
 export const SITE_URL = 'https://mangeshraut.pro';
 
 /** Live static host — use for OG images and public demos until apex is restored. */
@@ -19,7 +19,7 @@ export const SITE_THEME = {
 
 export const SOCIAL_IMAGE = {
   path: '/assets/images/home.png',
-  url: `${LIVE_SITE_URL}/assets/images/home.png`,
+  url: `${SITE_URL}/assets/images/home.png`,
   width: 3024,
   height: 1722,
   alt: 'Mangesh Raut Software Engineer Portfolio',
@@ -44,8 +44,8 @@ export const LIGHTHOUSE_VERCEL_GATES = {
 };
 
 export const TEST_COUNTS = {
-  vitest: 104,
-  pytest: 156,
+  vitest: 119,
+  pytest: 157,
   playwrightProjects: 16,
 };
 

@@ -7,6 +7,16 @@ import {
 import { mountLiquidGlassSurface } from '../utils/liquid-glass-surface.js';
 import { isPerformanceAudit } from '../utils/perf-audit.js';
 
+function isWebGLEnhancementRequested() {
+  if (typeof window === 'undefined') return false;
+  if (window.__LG_WEBGL_ENABLED__ === true) return true;
+  try {
+    return localStorage.getItem('liquid-glass-webgl') === '1';
+  } catch {
+    return false;
+  }
+}
+
 class LiquidGlassEngine {
   constructor() {
     // Lazy: WebGL probe itself is a long task — defer until init/attach.
@@ -34,8 +44,13 @@ class LiquidGlassEngine {
   resolveEnabled() {
     if (this._enabledResolved) return this.enabled;
     this._enabledResolved = true;
-    // iPhone / low-power: CSS glass only — WebGL multi-surface rAF OOMs Mobile Safari
-    this.enabled = isLiquidGlassCaptureSupported() && !isPerformanceAudit() && !isLowPowerClient();
+    // CSS glass is the zero-cost baseline. WebGL is an explicit enhancement because its
+    // capability probe and renderer startup can block interaction on otherwise fast pages.
+    this.enabled =
+      isWebGLEnhancementRequested() &&
+      isLiquidGlassCaptureSupported() &&
+      !isPerformanceAudit() &&
+      !isLowPowerClient();
     return this.enabled;
   }
 

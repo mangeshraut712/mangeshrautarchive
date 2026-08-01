@@ -1133,8 +1133,22 @@ body.offline-page .offline-destinations a:focus-visible {
   }
 
   body.systems-page .systems-bento--telemetry {
-    grid-template-columns: 1fr 1fr !important;
+    grid-template-columns: 1fr !important;
   }
+}
+
+/* Monitor cards are information surfaces, not illuminated controls. */
+html[data-lg-mode] body.monitor-page main#main-content .doc-card,
+html:not([data-lg-mode]) body.monitor-page main#main-content .doc-card {
+  box-shadow: none !important;
+}
+
+html[data-lg-mode] body.monitor-page main#main-content .doc-card:hover,
+html[data-lg-mode] body.monitor-page main#main-content .doc-card:focus-within,
+html:not([data-lg-mode]) body.monitor-page main#main-content .doc-card:hover,
+html:not([data-lg-mode]) body.monitor-page main#main-content .doc-card:focus-within {
+  border-color: #0071e3 !important;
+  box-shadow: none !important;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1217,7 +1231,7 @@ body.travel-body
     .travel-search input,
     .travel-stop__detail-text,
     .travel-stat__value,
-    .travel-timeline__country-header h3
+    .travel-timeline__country-header h2
   ) {
   color: var(--travel-text) !important;
   -webkit-text-fill-color: var(--travel-text) !important;

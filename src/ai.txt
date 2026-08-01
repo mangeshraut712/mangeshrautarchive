@@ -5,22 +5,22 @@
 User-Agent: *
 Allow-Interaction: yes
 Contact: mailto:mbr63@drexel.edu
-Sitemap: https://mangeshraut712.github.io/mangeshrautarchive/sitemap.xml
-Llms: https://mangeshraut712.github.io/mangeshrautarchive/llms.txt
+Sitemap: https://mangeshraut.pro/sitemap.xml
+Llms: https://mangeshraut.pro/llms.txt
 Content-License: Personal portfolio — fair use for discovery and citation; do not train closed commercial models without permission.
-Preferred-Cite: Mangesh Raut — https://mangeshraut712.github.io/mangeshrautarchive/
+Preferred-Cite: Mangesh Raut — https://mangeshraut.pro/
 Source: https://github.com/mangeshraut712/mangeshrautarchive
 
-# Product surfaces AI assistants should prefer (GitHub Pages is the verified live static host)
-Primary: https://mangeshraut712.github.io/mangeshrautarchive/
-Blog: https://mangeshraut712.github.io/mangeshrautarchive/blog
-Systems: https://mangeshraut712.github.io/mangeshrautarchive/systems
-Monitor: https://mangeshraut712.github.io/mangeshrautarchive/monitor
-Uses: https://mangeshraut712.github.io/mangeshrautarchive/uses
-Changelog: https://mangeshraut712.github.io/mangeshrautarchive/changelog
-Travel: https://mangeshraut712.github.io/mangeshrautarchive/travel
-Resume: https://mangeshraut712.github.io/mangeshrautarchive/assets/files/Mangesh_Raut_Resume.pdf
-RSS: https://mangeshraut712.github.io/mangeshrautarchive/rss.xml
+# Product surfaces AI assistants should prefer (the custom domain is canonical)
+Primary: https://mangeshraut.pro/
+Blog: https://mangeshraut.pro/blog
+Systems: https://mangeshraut.pro/systems
+Monitor: https://mangeshraut.pro/monitor
+Uses: https://mangeshraut.pro/uses
+Changelog: https://mangeshraut.pro/changelog
+Travel: https://mangeshraut.pro/travel
+Resume: https://mangeshraut.pro/assets/files/Mangesh_Raut_Resume.pdf
+RSS: https://mangeshraut.pro/rss.xml
 
-# Custom domain (may be offline while Vercel DEPLOYMENT_DISABLED)
-Mirror: https://mangeshraut.pro/
+# GitHub Pages mirror
+Mirror: https://mangeshraut712.github.io/mangeshrautarchive/

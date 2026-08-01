@@ -118,11 +118,17 @@ test.describe('Chrome smoke tests', () => {
     const isMobile = page.viewportSize() ? page.viewportSize().width <= 768 : false;
     expect(timelineHeight).toBeGreaterThan(isMobile ? 150 : 300);
 
-    await page.locator('#spotlight-tour').click();
-    await expect(page.locator('#spotlight-tour')).toHaveAttribute('aria-pressed', 'true');
+    if (isMobile) {
+      await expect(page.locator('#spotlight-tour')).toBeHidden();
+    } else {
+      await page.locator('#spotlight-tour').click();
+      await expect(page.locator('#spotlight-tour')).toHaveAttribute('aria-pressed', 'true');
+    }
 
     await page.locator('#place-search').fill('zzzz-no-match');
-    await expect(page.locator('#spotlight-tour')).toHaveAttribute('aria-pressed', 'false');
+    if (!isMobile) {
+      await expect(page.locator('#spotlight-tour')).toHaveAttribute('aria-pressed', 'false');
+    }
     await expect(page.locator('.travel-empty-state')).toBeVisible();
 
     await page.locator('[data-reset-travel]').click();

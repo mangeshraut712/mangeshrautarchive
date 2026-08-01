@@ -3094,7 +3094,7 @@ html:not(.dark) .hero-stat-label {
   #home.hero-section,
   #home.home-hero,
   section#home {
-    padding-top: max(4.75rem, calc(3.25rem + env(safe-area-inset-top, 0px))) !important;
+    padding-top: max(2.5rem, calc(1.75rem + env(safe-area-inset-top, 0px))) !important;
     padding-bottom: 24px !important;
     min-height: 0 !important;
     height: auto !important;

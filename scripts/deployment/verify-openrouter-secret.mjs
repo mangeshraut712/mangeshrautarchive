@@ -15,8 +15,7 @@ const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
   headers: {
     Authorization: `Bearer ${key}`,
     'Content-Type': 'application/json',
-    'HTTP-Referer':
-      process.env.OPENROUTER_SITE_URL || 'https://mangeshraut712.github.io/mangeshrautarchive',
+    'HTTP-Referer': process.env.OPENROUTER_SITE_URL || 'https://mangeshraut.pro',
     'X-Title': 'AssistMe OpenRouter Probe',
   },
   body: JSON.stringify({

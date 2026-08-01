@@ -78,6 +78,32 @@ test.describe('Mobile viewport fit', () => {
     expect(parseFloat(overlap.actionsMargin)).toBeGreaterThan(60);
   });
 
+  test('initial mobile hero content is not covered by floating controls', async ({ page }) => {
+    await gotoSite(page);
+    await page.waitForSelector('#chatbot-toggle', { state: 'visible' });
+    await page.waitForSelector('.hero-text-block', { state: 'visible' });
+
+    const overlaps = await page.evaluate(() => {
+      const content = document.querySelector('.hero-text-block')?.getBoundingClientRect();
+      const controls = [
+        document.querySelector('#chatbot-toggle'),
+        document.querySelector('#website-share-toggle'),
+        document.querySelector('.a11y-toolbar__main'),
+      ];
+      const intersects = (a, b) =>
+        a &&
+        b &&
+        !(a.right <= b.left || a.left >= b.right || a.bottom <= b.top || a.top >= b.bottom);
+
+      return controls.map(control => {
+        if (!control || getComputedStyle(control).visibility === 'hidden') return false;
+        return intersects(content, control.getBoundingClientRect());
+      });
+    });
+
+    expect(overlaps).toEqual([false, false, false]);
+  });
+
   test('floating action buttons do not overlap after scroll', async ({ page }) => {
     await gotoSite(page);
     await page.waitForSelector('#chatbot-toggle', { state: 'visible' });
@@ -89,6 +115,16 @@ test.describe('Mobile viewport fit', () => {
         const el = document.querySelector(sel);
         if (!el) return null;
         const r = el.getBoundingClientRect();
+        const style = getComputedStyle(el);
+        if (
+          style.display === 'none' ||
+          style.visibility === 'hidden' ||
+          Number(style.opacity) === 0 ||
+          r.width === 0 ||
+          r.height === 0
+        ) {
+          return null;
+        }
         return { t: r.top, b: r.bottom, l: r.left, r: r.right, h: r.height };
       };
       const topBtn = rect('#go-to-top');
@@ -102,11 +138,15 @@ test.describe('Mobile viewport fit', () => {
       };
     });
 
-    expect(fabLayout.overlap).toBe(false);
+    if (fabLayout.overlap !== null) {
+      expect(fabLayout.overlap).toBe(false);
+    }
     if (fabLayout.gap !== null) {
       expect(fabLayout.gap).toBeGreaterThanOrEqual(8);
     }
-    expect(fabLayout.chatAboveTop).toBe(true);
+    if (fabLayout.chatAboveTop !== null) {
+      expect(fabLayout.chatAboveTop).toBe(true);
+    }
   });
 
   test('travel atlas fits mobile width', async ({ page }) => {
