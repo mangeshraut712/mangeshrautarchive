@@ -527,8 +527,8 @@
       #home {
         min-height: 0;
         height: auto;
-        padding-top: max(4.75rem, calc(3.25rem + env(safe-area-inset-top, 0px)));
-        padding-bottom: 1.5rem;
+        padding-top: max(3.5rem, calc(2.25rem + env(safe-area-inset-top, 0px)));
+        padding-bottom: 1rem;
         overflow-x: clip;
       }
 
@@ -1252,6 +1252,13 @@ html.dark #home .hero-name-text {
   <noscript
     ><link rel="stylesheet" href="assets/css/apple-super-retina-display.css?v=20260716aa"
   /></noscript>
+  <link
+    rel="stylesheet"
+    href="assets/css/homepage-hero-polish.css?v=20260804hero1"
+    media="print"
+    class="js-defer-css"
+  />
+  <noscript><link rel="stylesheet" href="assets/css/homepage-hero-polish.css?v=20260804hero1" /></noscript>
 
   <!-- Lazy-loaded Section Styles (data-href only — loaded near section / idle) -->
   <link rel="stylesheet" data-href="assets/css/contact.css?v=20260729sync1" data-lazy-style-key="contact" />
@@ -2060,7 +2067,7 @@ html.dark #home .hero-name-text {
     <!-- About Section — full next screen on desktop (no hero peek) -->
     <section id="about" class="section-about" aria-labelledby="about-heading">
       <div class="container">
-        <h2 id="about-heading">About Mangesh Raut</h2>
+        <h2 id="about-heading">About</h2>
         <p class="section-subtitle">Software engineer portfolio of an AI builder and product thinker — from Drexel University in Philadelphia to production systems.</p>
 
         <div class="about-content">

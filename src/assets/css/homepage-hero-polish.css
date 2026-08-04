@@ -1,0 +1,374 @@
+/* =============================================================
+   homepage-hero-polish.css
+   Apple-grade hero section layout polish for desktop + mobile.
+   Loaded AFTER homepage.css + apple-premium-overrides.css so
+   these high-specificity selectors win cleanly.
+   ============================================================= */
+
+/* ═════════════════════════════════════════════════════════════
+   1. Desktop One-Page Fit (≥769px)
+   Guarantees 100% zero-peek desktop fit. The entire hero section
+   fits inside ~380px content height so #about is 100% hidden below fold.
+   ═════════════════════════════════════════════════════════════ */
+@media (min-width: 769px) {
+  #home.hero-section,
+  #home.home-hero,
+  #home.hero-section.home-hero,
+  section#home,
+  body #home {
+    min-height: calc(100vh - var(--site-nav-offset, 4.25rem) - 1px) !important;
+    height: auto !important;
+    max-height: calc(100vh - var(--site-nav-offset, 4.25rem) - 1px) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    padding-block: 0 !important;
+    margin: 0 !important;
+    margin-block: 0 !important;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+  }
+
+  #home > .container-fluid,
+  #home .hero-intro-wrapper,
+  #home .hero-layout-wrapper {
+    height: 100% !important;
+    max-height: 100% !important;
+    width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin-inline: auto !important;
+    padding-block: 0 !important;
+    gap: 0.1rem !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Compact Desktop Avatar: 108px */
+  #home.hero-section .profile-image-wrapper,
+  body #home .profile-image-wrapper {
+    width: 108px !important;
+    height: 108px !important;
+    min-width: 108px !important;
+    min-height: 108px !important;
+  }
+
+  #home.hero-section .hero-image-block {
+    margin-bottom: 0.2rem !important;
+  }
+
+  /* Main Name Heading */
+  #home.hero-section .hero-name,
+  #home .hero-name {
+    font-size: clamp(1.85rem, 3.2vw, 2.35rem) !important;
+    font-weight: 800 !important;
+    line-height: 1.08 !important;
+    letter-spacing: -0.038em !important;
+    margin-bottom: 0.05rem !important;
+  }
+
+  /* Subtitle */
+  #home.hero-section .hero-title,
+  #home .hero-title {
+    font-size: clamp(0.95rem, 1.1vw, 1.08rem) !important;
+    font-weight: 600 !important;
+    letter-spacing: -0.015em !important;
+    color: #6e6e73 !important;
+    margin: 0.04rem auto 0.1rem !important;
+  }
+
+  html.dark #home.hero-section .hero-title,
+  html.dark #home .hero-title {
+    color: #86868b !important;
+  }
+
+  /* Identity strip ("he/him") */
+  #home .hero-identity-strip {
+    font-size: 0.8rem !important;
+    font-weight: 500 !important;
+    color: #86868b !important;
+    margin-bottom: 0.08rem !important;
+  }
+
+  /* Role Flip */
+  #home .hero-role-flip,
+  body .hero-role-flip {
+    font-size: clamp(0.92rem, 1.05vw, 1.02rem) !important;
+    font-weight: 600 !important;
+    color: #515154 !important;
+    min-height: 1.8rem !important;
+    margin: 0.04rem auto 0.12rem !important;
+    gap: 0.3rem !important;
+    display: inline-flex !important;
+    align-items: baseline !important;
+    justify-content: center !important;
+  }
+
+  #home .hero-role-flip strong,
+  #home .hero-role-flip #hero-role-word,
+  body .hero-role-flip strong {
+    font-size: clamp(1.1rem, 1.25vw, 1.22rem) !important;
+    font-weight: 800 !important;
+    min-height: 1.25em !important;
+    min-width: 0 !important;
+  }
+
+  /* Insights band (badges) */
+  #home.hero-section .hero-insights-band {
+    margin-top: 0.1rem !important;
+    margin-bottom: 0.1rem !important;
+    min-height: 2.2rem !important;
+  }
+
+  #home .hero-pill-badge,
+  #home .vibe-coder-badge,
+  #home .portfolio-reach-badge {
+    padding: 0.35rem 0.85rem !important;
+    font-size: 0.8rem !important;
+  }
+
+  /* Music card compact */
+  #home .music-card {
+    margin-top: 0.08rem !important;
+    margin-bottom: 0.04rem !important;
+    padding: 0.35rem 0.75rem !important;
+  }
+
+  /* Description Body */
+  #home.hero-section .hero-description,
+  #home .hero-description {
+    font-size: clamp(0.9rem, 1vw, 0.98rem) !important;
+    line-height: 1.38 !important;
+    letter-spacing: -0.012em !important;
+    color: #1d1d1f !important;
+    max-width: 42rem !important;
+  }
+
+  html.dark #home.hero-section .hero-description,
+  html.dark #home .hero-description {
+    color: #f5f5f7 !important;
+  }
+
+  #home.hero-section .hero-body {
+    margin: 0.18rem auto 0.25rem !important;
+  }
+
+  /* CTA Buttons */
+  #home.hero-section .hero-actions {
+    margin-top: 0.08rem !important;
+    gap: 0.6rem !important;
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: center !important;
+    align-items: center !important;
+  }
+
+  #home.hero-section .hero-cta {
+    padding: 0.5rem 1.2rem !important;
+    font-size: 0.88rem !important;
+    font-weight: 600 !important;
+    border-radius: 980px !important;
+  }
+}
+
+/* ═════════════════════════════════════════════════════════════
+   2. Cross-Viewport Center Alignment Guarantee
+   ═════════════════════════════════════════════════════════════ */
+
+#home.hero-section,
+section#home,
+.home-hero {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin-inline: auto !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  text-align: center !important;
+  box-sizing: border-box !important;
+}
+
+#home > .container-fluid,
+#home .hero-intro-wrapper,
+#home .hero-layout-wrapper {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin-inline: auto !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  box-sizing: border-box !important;
+}
+
+/* Force override of ux-polish-fixes.css left-margin offset on mobile */
+html body #home .hero-text-block,
+#home.hero-section .hero-text-block,
+#home .hero-text-block,
+.hero-text-block {
+  width: 100% !important;
+  max-width: 760px !important;
+  margin-inline: auto !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  text-align: center !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-sizing: border-box !important;
+}
+
+#home .hero-image-block,
+#home .hero-header,
+#home .hero-identity-strip,
+#home .hero-title,
+#home .hero-role-flip,
+#home .hero-insights-band,
+#home .hero-badge-cluster,
+#home .music-card,
+#home .hero-body,
+#home .hero-footer,
+#home .hero-actions {
+  width: 100% !important;
+  margin-inline: auto !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  text-align: center !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+#home .hero-description {
+  display: block !important;
+  width: 100% !important;
+  margin-inline: auto !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  text-align: center !important;
+}
+
+/* Profile photo centered */
+#home.hero-section .profile-image-wrapper,
+body #home .profile-image-wrapper,
+.profile-image-wrapper {
+  margin-inline: auto !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+/* Heading centered */
+#home.hero-section .hero-name,
+#home .hero-name {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+  margin-inline: auto !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  text-align: center !important;
+}
+
+/* ── Mobile (≤768px) — Preserved exact user-approved styling ── */
+@media (max-width: 768px) {
+  #home.hero-section .profile-image-wrapper,
+  body #home .profile-image-wrapper,
+  .profile-image-wrapper {
+    width: 96px !important;
+    height: 96px !important;
+    min-width: 96px !important;
+    min-height: 96px !important;
+    margin-bottom: 0.35rem !important;
+    margin-inline: auto !important;
+  }
+
+  #home.hero-section.home-hero,
+  .home-hero,
+  #home.hero-section,
+  section#home {
+    padding-top: max(3.25rem, calc(2rem + env(safe-area-inset-top, 0px))) !important;
+    padding-bottom: 14px !important;
+  }
+
+  html body #home .hero-text-block,
+  #home.hero-section .hero-text-block,
+  #home .hero-text-block {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-inline: auto !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    padding-inline: 0.75rem !important;
+    text-align: center !important;
+  }
+
+  #home .hero-name {
+    font-size: clamp(1.65rem, 6vw, 2.1rem) !important;
+    margin-bottom: 0.12rem !important;
+  }
+
+  #home .hero-title {
+    font-size: clamp(0.92rem, 3.6vw, 1.05rem) !important;
+    margin-bottom: 0.18rem !important;
+  }
+
+  #home .hero-description {
+    font-size: clamp(0.88rem, 3vw, 0.98rem) !important;
+    margin-bottom: 0.4rem !important;
+  }
+
+  #home .hero-role-flip,
+  .hero-role-flip {
+    min-height: 2.6rem !important;
+    margin: 0.05rem auto 0.3rem !important;
+    gap: 0.12rem !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+  }
+
+  #home .hero-role-flip strong,
+  #home .hero-role-flip #hero-role-word,
+  #hero-role-word,
+  .hero-role-flip strong {
+    font-size: clamp(1.25rem, 5.2vw, 1.55rem) !important;
+    min-height: 1.35em !important;
+    min-width: 0 !important;
+    text-align: center !important;
+  }
+
+  #home.hero-section .hero-actions {
+    margin-top: 0.1rem !important;
+    gap: 0.5rem !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: min(100%, 20rem) !important;
+    margin-inline: auto !important;
+  }
+}
+
+/* ── Small Mobile (≤480px) ──────────────────────────────────── */
+@media (max-width: 480px) {
+  #home.hero-section .profile-image-wrapper,
+  body #home .profile-image-wrapper,
+  .profile-image-wrapper {
+    width: 90px !important;
+    height: 90px !important;
+    min-width: 90px !important;
+    min-height: 90px !important;
+  }
+}
