@@ -1,5 +1,6 @@
 import express from 'express';
 import http from 'node:http';
+import zlib from 'node:zlib';
 import { Readable } from 'node:stream';
 import { fileURLToPath } from 'url';
 import { dirname, join, resolve } from 'path';
@@ -254,6 +255,52 @@ app.use((req, res, next) => {
 
 const staticPath = join(projectRoot, 'src');
 const distPath = join(projectRoot, 'dist');
+
+// Gzip compression for all text-based responses.
+// Without this, Lighthouse simulated mobile 4G penalises the 260KB HTML harshly.
+app.use((req, res, next) => {
+  const acceptEncoding = req.headers['accept-encoding'] || '';
+  if (!/\bgzip\b/i.test(acceptEncoding)) return next();
+
+  const origEnd = res.end.bind(res);
+  const origWrite = res.write.bind(res);
+  const chunks = [];
+  let intercepting = false;
+
+  res.write = function (chunk, encoding, cb) {
+    const ct = res.getHeader('content-type') || '';
+    // Only compress text-based content types
+    if (!intercepting && /text|javascript|json|xml|css|svg|html/i.test(ct)) {
+      intercepting = true;
+    }
+    if (intercepting) {
+      chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk, encoding));
+      if (typeof cb === 'function') cb();
+      return true;
+    }
+    return origWrite(chunk, encoding, cb);
+  };
+
+  res.end = function (chunk, encoding, cb) {
+    if (chunk && intercepting) {
+      chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk, encoding));
+    }
+    if (!intercepting) {
+      return origEnd(chunk, encoding, cb);
+    }
+    const body = Buffer.concat(chunks);
+    zlib.gzip(body, (err, compressed) => {
+      if (err) return origEnd(body, encoding, cb);
+      res.setHeader('Content-Encoding', 'gzip');
+      res.setHeader('Vary', 'Accept-Encoding');
+      res.removeHeader('Content-Length');
+      origEnd(compressed, undefined, cb);
+    });
+  };
+
+  next();
+});
+
 const staticOpts = {
   extensions: ['html'],
   // Avoid redirect fights with the no-trailing-slash middleware above.

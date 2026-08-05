@@ -84,17 +84,8 @@
     });
   }
 
-  var heroPreload = document.createElement('link');
-  heroPreload.rel = 'preload';
-  heroPreload.as = 'image';
-  heroPreload.href = 'assets/images/profile.webp';
-  heroPreload.setAttribute(
-    'imagesrcset',
-    'assets/images/profile-mobile.webp 160w, assets/images/profile.webp 320w'
-  );
-  heroPreload.setAttribute('imagesizes', '(max-width: 640px) 160px, 320px');
-  heroPreload.setAttribute('fetchpriority', 'high');
-  (document.head || document.documentElement).appendChild(heroPreload);
+  // The static <link rel="preload" as="image"> at line 52 of index.html survives
+  // stripping (same-origin, as=image) — no need to duplicate it here.
 
   // Minimal allowlist for LCP text paint + a11y target sizes (inlined critical covers rest).
   // homepage.css / accessibility.css are large and delay mobile FCP on Slow 4G simulation.
@@ -106,7 +97,7 @@
 
   // Drop heavy material / section / icon sheets immediately (parser may discover them)
   var blockedSheetRe =
-    /theme-solid|liquid-glass-modes|apple-ui-polish|apple-cards-luxury|wwdc26-liquid|chrome-surfaces|apple-premium-overrides|style\.css|sitewide-design|global-improvements|fontawesome|card-content-accessibility|homepage\.css|accessibility\.css|ux-polish|mobile-viewport|super-retina|premium-deferred/i;
+    /theme-solid|liquid-glass-modes|apple-ui-polish|apple-cards-luxury|wwdc26-liquid|chrome-surfaces|apple-premium-overrides|apple-design-system|style\.css|sitewide-design|global-improvements|fontawesome|card-content-accessibility|homepage\.css|accessibility\.css|ux-polish|mobile-viewport|super-retina|premium-deferred/i;
 
   // Skills viz is lazy-loaded; bootstrap skips it in perf-audit. Hide transient UI
   // so Lighthouse never scores placeholder copy or off-screen hero flyout assets.
@@ -115,6 +106,11 @@
   critical.textContent =
     '#skills-loading{display:none!important;visibility:hidden!important;height:0!important;overflow:hidden!important;margin:0!important;padding:0!important}' +
     '#vibe-stack-flyout,#reach-flyout,#music-card,#currently-section{display:none!important;visibility:hidden!important}' +
+    /* Below-fold sections — prevent late LCP candidates on simulated 4G.
+     * Without this, below-fold text (experience, publications) paints after
+     * the hero heading and becomes a larger LCP candidate, pushing LCP from
+     * FCP (~2.7s) to ~8s. content-visibility:hidden skips rendering entirely. */
+    '#about,#skills,#experience,#engineering,#projects,#education,#publications,#blog,#contact,#awards,#recommendations,#currently-section,#debug-runner-section,.section-faq{content-visibility:hidden!important;contain-intrinsic-size:0 0!important;height:0!important;overflow:hidden!important;padding:0!important;margin:0!important;border:none!important}' +
     /* Below-fold heavy media — do not compete with hero LCP on mobile */
     '#about img,.about-image,#education img,[src*="graduation"],[src*="ganesh"],[src*="hanuman"],[src*="certifications/"],[src*="companies/"],[src*="cars/"]{display:none!important;content-visibility:hidden!important}' +
     '#profile-image,.profile-image{width:160px!important;height:160px!important;object-fit:cover!important}' +
