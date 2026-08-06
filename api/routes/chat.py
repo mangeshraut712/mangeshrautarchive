@@ -292,7 +292,7 @@ def generate_local_response(query: str, site_context: str = "") -> Dict:
     # Achievements
     if "achievement" in query or "award" in query or "accomplishment" in query:
         return {
-            "answer": "🏆 **Key Achievements**:\n• Reduced dashboard latency by **40%** at Customized Energy Solutions\n• Built AI systems with **95% accuracy**\n• Published ML intrusion detection research paper in IEEE (2024)\n• Graduated MS CS from Drexel University with 3.76 GPA",
+            "answer": "🏆 **Key Achievements**:\n• Refactored enterprise codebase with **20% code reduction** at IoasiZ\n• Built AI systems with **95% accuracy**\n• Published ML intrusion detection research paper in IEEE (2024)\n• Graduated MS CS from Drexel University with 3.76 GPA",
             "category": "Achievements",
         }
 
@@ -329,7 +329,7 @@ def generate_local_response(query: str, site_context: str = "") -> Dict:
             "answer": (
                 "🌍 **USA career context (public)**:\n"
                 "Mangesh completed his **MSCS in the United States** and worked as a full-time **Software Development Engineer** "
-                "at Customized Energy Solutions. He continues global engineering work with interest in US tech opportunities "
+                "at IoasiZ in Piscataway, NJ. He continues global engineering work with interest in US tech opportunities "
                 "across the **Northeast corridor** and **West Coast** tech hubs.\n\n"
                 "Ask about experience, skills, or projects for hiring-oriented detail."
             ),

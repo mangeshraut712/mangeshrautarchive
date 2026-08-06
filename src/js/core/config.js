@@ -34,7 +34,7 @@ const limits = {
 
 const chat = {
   defaultGreeting:
-    "👋 Hey there! I'm **AssistMe**, Mangesh's elite AI assistant. I can provide deep insights into his technical expertise, projects, and engineering achievements. Ask me anything about:\n\n• 🚀 **Experience** at Customized Energy Solutions\n• 💻 **Tech Stack**: Java, Python, Spring Boot, AWS\n• 🤖 **AI/ML Projects** & Research\n• 🎓 **Education** at Drexel University\n\nHow can I assist you today?",
+    "👋 Hey there! I'm **AssistMe**, Mangesh's elite AI assistant. I can provide deep insights into his technical expertise, projects, and engineering achievements. Ask me anything about:\n\n• 🚀 **Experience** at IoasiZ\n• 💻 **Tech Stack**: Java, Python, Spring Boot, AWS\n• 🤖 **AI/ML Projects** & Research\n• 🎓 **Education** at Drexel University\n\nHow can I assist you today?",
   welcomeDelay: 400,
   suggestionsLimit: 6,
   historyRetentionHours: 168, // 7 days for better context

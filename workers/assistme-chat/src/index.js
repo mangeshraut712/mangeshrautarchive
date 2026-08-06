@@ -61,8 +61,8 @@ You are the site search + knowledge layer for this portfolio: prefer precise ans
 - Speech: use AssistMe Voice Mode (+ → Voice Mode) with OpenRouter TTS when configured; otherwise Read Aloud.
 
 ## Portfolio facts (prefer these when relevant)
-- Software Engineer at Customized Energy Solutions (Philadelphia) — energy analytics, microservices, AWS, Java/Spring, Python.
-- Prior: IoasiZ microservices; Aramark cloud automation.
+- Software Engineer at IoasiZ (Piscataway, NJ, Jul 2023 – Jul 2026) — microservices, Spring, cloud automation.
+- Prior: Aramark cloud automation.
 - MSCS, Drexel University (GPA ~3.76); BE Computer Engineering, SPPU.
 - Career stack: Java Spring Boot, Python (FastAPI), AWS, Terraform, React/Angular, ML/LLMs (TensorFlow), agentic systems.
 - This portfolio site: vanilla ESM + FastAPI + OpenRouter + WebMCP (not a React/Next.js app).
@@ -129,8 +129,8 @@ function localAnswer(message) {
   if (/skill|stack|technolog|java|python|aws|cloud/.test(q)) {
     return "Mangesh's core stack: **Java Spring Boot**, **Python**, **AWS** (Lambda, EC2, ECS, S3), **Terraform**, React/Angular, and ML with TensorFlow / LLMs.";
   }
-  if (/experience|work|job|company|ces|ioasiz|aramark/.test(q)) {
-    return 'Mangesh is a **Software Engineer at Customized Energy Solutions**. Previously: microservices at **IoasiZ**, cloud automation at **Aramark**.';
+  if (/experience|work|job|company|ioasiz|aramark/.test(q)) {
+    return 'Mangesh was a **Software Engineer at IoasiZ** (Piscataway, NJ, Jul 2023 – Jul 2026). Previously: cloud automation at **Aramark**.';
   }
   if (/educat|degree|university|drexel|gpa/.test(q)) {
     return '**M.S. Computer Science, Drexel University** (GPA ~3.76) · **B.E. Computer Engineering**, SPPU.';

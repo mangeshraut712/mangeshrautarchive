@@ -246,27 +246,15 @@ PORTFOLIO_DATA = {
     "resume_url": "/assets/files/Mangesh_Raut_Resume.pdf",
     "summary": (
         "Software Engineer with 6+ years of experience in Java Spring Boot, Python, React, Angular, AWS, and machine learning. "
-        "Currently optimizing energy analytics at Customized Energy Solutions with 40% efficiency gains. "
+        "Engineered scalable microservices and cloud infrastructure at IoasiZ. "
         "This portfolio ships as vanilla ESM + FastAPI (AssistMe), not a React/Next.js app."
     ),
     "experience": [
         {
             "title": "Software Engineer",
-            "company": "Customized Energy Solutions",
-            "period": "Aug 2024 - Present",
-            "location": "Philadelphia, PA",
-            "achievements": [
-                "Reduced dashboard latency by 40% through REST/query optimization",
-                "Accelerated CI/CD deployments by 35% with Jenkins automation",
-                "Improved ML model accuracy by 25% for energy forecasting",
-                "Architected scalable microservices with Spring Boot and AWS",
-            ],
-        },
-        {
-            "title": "Software Engineer",
             "company": "IoasiZ",
-            "period": "Jul 2023 - Jul 2024",
-            "location": "Remote",
+            "period": "Jul 2023 - Jul 2026",
+            "location": "Piscataway, NJ",
             "achievements": [
                 "Refactored legacy codebase with 20% code reduction",
                 "Resolved 50+ critical microservices bugs",
@@ -382,21 +370,21 @@ You're intelligent, conversational, and useful — like a capable personal assis
 You are the site search + knowledge layer for this portfolio (primary live host: GitHub Pages; mangeshraut.pro may be unavailable while Vercel is DEPLOYMENT_DISABLED): retrieve precise answers from portfolio facts (projects, skills, experience, education, contact, systems). Prefer grounded answers over speculation. When the user is viewing a page section (provided in context), bias toward that section. If unsure, say so and suggest the best on-site place to look next.
 
 ## Mangesh Raut — Quick Profile
-- Software Engineer at Customized Energy Solutions (Philadelphia, PA, Aug 2024 - Present, ~2 years)
+- Software Engineer at IoasiZ (Piscataway, NJ, Jul 2023 - Jul 2026)
 - Full-Stack Developer & AI/ML Engineer with 6+ years of total software engineering experience
 - Core stack (career): Java, Spring Boot, Python, SQL, JavaScript, TypeScript, React, Angular, AWS (EC2, S3, Lambda), Docker, Kubernetes
 - This portfolio site stack: vanilla HTML/CSS/ESM, FastAPI, OpenRouter, GitHub Pages + Cloudflare Worker, WebMCP
 - MS in Computer Science from Drexel University (Completed June 2025, GPA 3.76)
 - BE in Computer Engineering from Savitribai Phule Pune University (2014-2017, GPA 3.6)
-- Key achievements: 40% dashboard latency reduction (REST/query optimization at CES), 35% faster CI/CD, 25% ML accuracy improvement, 3x faster data retrieval using Redis
+- Key achievements: 20% code reduction via Spring refactoring, 50+ critical microservices bugs resolved, 3x faster data retrieval using Redis
 - Hybrid AI Web Stack: Architected the portfolio's edge/cloud execution pipeline with OpenRouter chat/voice and Cloudflare Worker fallbacks for GitHub Pages.
 - Published: IEEE paper on ML algorithms for network intrusion detection (2024)
 - Certifications: AWS Cloud Practitioner, Oracle Certified Java SE, TensorFlow Developer
 - Awards: Dean's List (Drexel, 3 semesters), Best Project Award (Pune University)
 - Recent content: 14 Field Notes posts including OpenRouter routing (Jul 2026), Grok 4.5 / Grok Build (Jul 2026), WWDC26 Siri AI, NotebookLM, Google I/O 2026 WebMCP, and the open X algorithm.
-- Public location context: works with CES (US/India hybrid engineering); based in the Pune / Philadelphia professional corridor when relevant to career questions.
+- Public location context: based in Piscataway, NJ / Philadelphia professional corridor when relevant to career questions.
 - Interests visitors may ask about at a high level: open-source, AI engineering, travel, and continuous learning. Do **not** invent or disclose private home addresses, medical data, blood group, caste, or detailed family PII — those are not part of the public portfolio surface.
-- USA career narrative (public): MSCS in the United States; SDE tenure at CES; continues global engineering work with interest in US tech opportunities (Northeast / Northwest corridors).
+- USA career narrative (public): MSCS in the United States; SDE tenure at IoasiZ (Piscataway, NJ); continues global engineering work with interest in US tech opportunities (Northeast / Northwest corridors).
 
 ## Response Style — Rich Markdown for Chat UI
 
@@ -413,22 +401,22 @@ Your replies render in a Telegram-style rich chat UI that supports **GFM markdow
 - Audio/video generation via OpenRouter image/video models is paid — prefer Voice Mode (+ menu) for spoken replies when TTS is configured, otherwise the in-chat Read Aloud button.
 
 ✅ GOOD Response Style:
-"Mangesh Raut is a Software Engineer at Customized Energy Solutions, specializing in Java Spring Boot, Python, and AWS.
+"Mangesh Raut is a Software Engineer at IoasiZ in Piscataway, NJ, specializing in Java Spring Boot, microservices, and AWS.
 
 **Key highlights**
-- 40% dashboard latency reduction (REST/query optimization)
-- 25% ML forecasting accuracy improvement (TensorFlow)
+- Refactored legacy codebase with 20% code reduction
+- Resolved 50+ critical microservices bugs (JUnit/Mockito)
 - MS in Computer Science, Drexel University (GPA 3.76)
 
 | Area | Strength |
 | --- | --- |
-| Backend | Java, Spring Boot |
+| Backend | Java, Spring Boot, Microservices |
 | AI/ML | TensorFlow, scikit-learn |
 
 Interested in his AI projects or work experience?"
 
 ❌ BAD Response Style (Avoid This):
-"**Mangesh Raut** is a **Software Engineer** | **Full-Stack Developer** | **AI/ML Engineer** with **40%** efficiency gains at **Customized Energy Solutions**. **Key Achievements**: - Reduced dashboard latency **40%** via React..."
+"**Mangesh Raut** is a **Software Engineer** | **Full-Stack Developer** | **AI/ML Engineer** with **20%** efficiency gains at **IoasiZ**. **Key Achievements**: - Refactored monoliths..."
 
 ## Formatting Rules
 

@@ -897,7 +897,7 @@ class IntelligentAssistant {
       lower.includes('work history')
     ) {
       return portfolio(
-        'Mangesh is currently a **Software Engineer at Customized Energy Solutions**, optimizing energy forecasting and analytics systems (Java/Python/AWS). Previously he built scalable microservices at **IoasiZ** and automated cloud workflows at **Aramark**.'
+        'Mangesh was a **Software Engineer at IoasiZ** (Piscataway, NJ, Jul 2023 – Jul 2026), building scalable microservices and cloud workflows with Java Spring Boot and AWS.'
       );
     }
 
@@ -937,7 +937,7 @@ class IntelligentAssistant {
       lower.includes('devops')
     ) {
       return portfolio(
-        '**Cloud / DevOps:** AWS Lambda, EC2, ECS, S3; infrastructure as code with **Terraform**; Dockerized CI/CD; production automation at CES, IoasiZ, and Aramark.'
+        '**Cloud / DevOps:** AWS Lambda, EC2, ECS, S3; infrastructure as code with **Terraform**; Dockerized CI/CD; production automation at IoasiZ and Aramark.'
       );
     }
 
@@ -1019,7 +1019,7 @@ class IntelligentAssistant {
         '🌍 Foreign Settlement & USA Career Context:\n' +
         "Yes, absolutely. Mangesh's chart displays a powerful placement of the Ascendant Lord (Venus) aligned with wealth-generating planets, strongly favoring a career tied to international tech landscapes, multinational corporations, and long-term residency in foreign lands like the USA.\n\n" +
         'The Corporate Narrative:\n' +
-        '"Mangesh successfully attained his MSCS in the United States and accumulated excellent corporate tenure operating as a full-time Software Development Engineer (SDE) at CES in the US. Due to a technical/administrative delay during an H1B visa transfer protocol to a new corporate entity, he temporarily transited back to his home operations in Pune, India. He remains fully employed, handling global engineering assignments remotely while actively executing structural paths to transition seamlessly back into the US tech industry."\n\n' +
+        '"Mangesh successfully attained his MSCS in the United States and accumulated excellent corporate tenure operating as a full-time Software Development Engineer (SDE) at IoasiZ in the US. He continues global engineering assignments while actively executing structural paths to transition seamlessly back into the US tech industry."\n\n' +
         'Optimal Locations:\n' +
         'His absolute best geographical zones for maximizing wealth and long-term tech status within the USA are the North-East Corridor (New York, New Jersey, Boston) and the North-West Coast (Seattle, Silicon Valley/Northern California).';
       result.type = 'astrology';

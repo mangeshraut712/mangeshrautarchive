@@ -2738,7 +2738,7 @@ class AppleIntelligenceChatbot {
       return 'Mangesh is proficient in Java, Python, Spring Boot, React, Angular, AWS, and Machine Learning. His expertise spans full-stack development, cloud infrastructure, and AI/ML engineering.';
     }
     if (lowerMessage.includes('experience') || lowerMessage.includes('work')) {
-      return 'Mangesh is currently a Software Engineer at Customized Energy Solutions, optimizing energy analytics with 40% efficiency gains. Previously at IoasiZ, he refactored monoliths into microservices and resolved 50+ critical bugs.';
+      return 'Mangesh was a Software Engineer at IoasiZ in Piscataway, NJ (Jul 2023 – Jul 2026), refactoring monoliths into Spring microservices and resolving 50+ critical bugs.';
     }
     if (lowerMessage.includes('project')) {
       return "Mangesh's key projects include this vanilla ESM + FastAPI portfolio (AssistMe), Gravity SaaS Agent, ai-ml-portfolio, HindAI, agent-console, and energy demand forecasting with LSTM. Visit the Projects section for live GitHub cards.";
