@@ -46,7 +46,7 @@ jobs:
           echo "- actionlint ✅" >> "$GITHUB_STEP_SUMMARY"
 
       - name: Setup Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
@@ -72,7 +72,7 @@ jobs:
           echo "Playwright $VER"
 
       - name: Cache Playwright browsers
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         id: playwright-cache
         with:
           path: ~/.cache/ms-playwright
@@ -117,7 +117,7 @@ jobs:
           fi
 
       - name: Setup Python (uv)
-        uses: astral-sh/setup-uv@v7
+        uses: astral-sh/setup-uv@v8
         with:
           python-version: ${{ env.PYTHON_VERSION }}
           enable-cache: true
@@ -349,6 +349,10 @@ jobs:
     needs: quality
     if: github.ref == 'refs/heads/main'
     timeout-minutes: 10
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
     steps:
       - name: Setup Pages
         uses: actions/configure-pages@v6
@@ -399,7 +403,7 @@ jobs:
           fetch-depth: 0
 
       - name: Setup Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm

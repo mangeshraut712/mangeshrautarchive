@@ -26,7 +26,7 @@ jobs:
         env:
           INTEGRATION_SYNC_ADMIN_TOKEN: ${{ secrets.INTEGRATION_SYNC_ADMIN_TOKEN }}
           CRON_SECRET: ${{ secrets.CRON_SECRET }}
-          EDGE_URL: https://assistme-chat.mangeshraut712.workers.dev
+          EDGE_URL: ${{ vars.CHAT_API_BASE || 'https://assistme-chat.mangeshraut712.workers.dev' }}
         run: |
           set -euo pipefail
           TOKEN="${CRON_SECRET:-${INTEGRATION_SYNC_ADMIN_TOKEN:-}}"
