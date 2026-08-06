@@ -117,7 +117,7 @@ jobs:
           fi
 
       - name: Setup Python (uv)
-        uses: astral-sh/setup-uv@v8
+        uses: astral-sh/setup-uv@v7
         with:
           python-version: ${{ env.PYTHON_VERSION }}
           enable-cache: true
