@@ -493,7 +493,9 @@ export class AgenticActionHandler {
 
     // Correct resume file paths in the project
     const resumeLinks = [
-      '/assets/files/Mangesh_Raut_Resume.pdf', // Primary location
+      '/assets/files/001_Mangesh_Resume_USA.pdf', // USA Resume
+      '/assets/files/001_Mangesh_Resume_Pune.pdf', // Pune Resume
+      '/assets/files/Mangesh_Raut_Resume.pdf', // Primary fallback location
       apiBaseNormalized ? `${apiBaseNormalized}/api/resume` : '/api/resume', // API endpoint
       'assets/files/Mangesh_Raut_Resume.pdf', // Relative path
       '../assets/files/Mangesh_Raut_Resume.pdf', // Parent relative

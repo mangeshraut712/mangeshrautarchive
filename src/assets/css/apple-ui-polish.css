@@ -1102,3 +1102,206 @@ html.dark .a11y-toolbar #website-share-toggle {
   background-color: #000000 !important;
   border-color: #2c2c2e !important;
 }
+
+/* ===== Apple-Style Resume Dropdown ===== */
+.resume-dropdown-wrapper {
+  position: relative;
+  display: inline-block;
+  z-index: 105;
+}
+
+.resume-dropdown-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  border: none;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.resume-dropdown-toggle .chevron-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  margin-left: 2px;
+}
+
+.resume-dropdown-toggle .chevron-icon svg {
+  width: 14px;
+  height: 14px;
+}
+
+.resume-dropdown-wrapper.is-open .resume-dropdown-toggle .chevron-icon {
+  transform: rotate(180deg);
+}
+
+.resume-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 0;
+  min-width: 290px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 20px;
+  padding: 8px;
+  box-shadow:
+    0 16px 40px rgba(0, 0, 0, 0.16),
+    0 4px 14px rgba(0, 0, 0, 0.08);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px) scale(0.96);
+  transform-origin: top left;
+  transition:
+    opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+    visibility 0.25s;
+  z-index: 200;
+}
+
+html.dark .resume-dropdown-menu {
+  background: rgba(28, 28, 30, 0.95);
+  border-color: rgba(255, 255, 255, 0.18);
+  box-shadow:
+    0 16px 44px rgba(0, 0, 0, 0.6),
+    0 4px 16px rgba(0, 0, 0, 0.4);
+}
+
+.resume-dropdown-wrapper.is-open .resume-dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
+}
+
+.resume-menu-header {
+  padding: 8px 12px 6px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  margin-bottom: 6px;
+}
+
+html.dark .resume-menu-header {
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+.resume-menu-title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: #86868b;
+}
+
+html.dark .resume-menu-title {
+  color: #98989d;
+}
+
+.resume-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  text-decoration: none !important;
+  color: #1d1d1f !important;
+  transition:
+    background-color 0.2s ease,
+    transform 0.15s ease;
+}
+
+html.dark .resume-dropdown-item {
+  color: #f5f5f7 !important;
+}
+
+.resume-dropdown-item:hover,
+.resume-dropdown-item:focus-visible {
+  background: rgba(0, 113, 227, 0.09);
+  transform: translateX(2px);
+  outline: none;
+}
+
+html.dark .resume-dropdown-item:hover,
+html.dark .resume-dropdown-item:focus-visible {
+  background: rgba(10, 132, 255, 0.2);
+}
+
+.resume-item-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: rgba(0, 113, 227, 0.12);
+  color: #0071e3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+html.dark .resume-item-icon {
+  background: rgba(10, 132, 255, 0.22);
+  color: #0a84ff;
+}
+
+.resume-item-icon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.resume-item-content {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.resume-item-title {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.resume-item-desc {
+  font-size: 11px;
+  color: #6e6e73;
+  margin-top: 2px;
+}
+
+html.dark .resume-item-desc {
+  color: #86868b;
+}
+
+.resume-item-badge {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: 20px;
+  background: #f2f2f7;
+  color: #1d1d1f;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+html.dark .resume-item-badge {
+  background: #2c2c2e;
+  color: #f5f5f7;
+}
+
+@media (max-width: 768px) {
+  .resume-dropdown-wrapper {
+    width: 100%;
+  }
+
+  .resume-dropdown-toggle {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .resume-dropdown-menu {
+    min-width: 100%;
+    left: 0;
+    right: 0;
+  }
+}

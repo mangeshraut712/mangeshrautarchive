@@ -55,9 +55,15 @@ class PortfolioSearch {
           description: 'Ask the portfolio assistant',
         },
         {
-          title: 'Download Resume',
+          title: 'Download Resume (USA)',
           icon: 'fa-file-arrow-down',
-          url: sitePath('/assets/files/Mangesh_Raut_Resume.pdf'),
+          url: sitePath('/assets/files/001_Mangesh_Resume_USA.pdf'),
+          type: 'Action',
+        },
+        {
+          title: 'Download Resume (India)',
+          icon: 'fa-file-arrow-down',
+          url: sitePath('/assets/files/001_Mangesh_Resume_Pune.pdf'),
           type: 'Action',
         },
       ];
@@ -407,12 +413,20 @@ class PortfolioSearch {
         tags: 'dark mode light mode appearance theme',
       },
       {
-        title: 'Download Resume',
-        description: 'Open Mangesh Raut resume PDF',
+        title: 'Download Resume (USA / Global)',
+        description: 'Open Mangesh Raut US SDE format resume PDF',
         icon: 'fa-file-arrow-down',
-        url: sitePath('/assets/files/Mangesh_Raut_Resume.pdf'),
+        url: sitePath('/assets/files/001_Mangesh_Resume_USA.pdf'),
         type: 'Action',
-        tags: 'resume cv pdf download',
+        tags: 'resume cv pdf download usa global us',
+      },
+      {
+        title: 'Download Resume (India / Pune)',
+        description: 'Open Mangesh Raut India / Pune format resume PDF',
+        icon: 'fa-file-arrow-down',
+        url: sitePath('/assets/files/001_Mangesh_Resume_Pune.pdf'),
+        type: 'Action',
+        tags: 'resume cv pdf download india pune regional',
       },
       {
         title: 'GitHub Profile',

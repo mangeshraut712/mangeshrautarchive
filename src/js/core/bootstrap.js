@@ -1,4 +1,8 @@
-const EAGER_MODULES = ['../modules/section-preview.js', '../modules/blessing-media-modal.js'];
+const EAGER_MODULES = [
+  '../modules/section-preview.js',
+  '../modules/blessing-media-modal.js',
+  '../modules/resume-dropdown.js',
+];
 
 /** Paint-visible polish — CSS already shows content; defer class sweeps off TBT path.
  *  accessibility.js adds has-a11y-toolbar (body pad) — keep off the LCP/TBT critical path. */
@@ -219,6 +223,10 @@ const MODULE_IMPORTERS = {
   '../modules/blessing-media-modal.js': () =>
     import('../modules/blessing-media-modal.js').then(module => {
       module.initBlessingMediaModal?.();
+    }),
+  '../modules/resume-dropdown.js': () =>
+    import('../modules/resume-dropdown.js').then(module => {
+      module.initResumeDropdown?.();
     }),
 };
 

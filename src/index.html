@@ -2035,18 +2035,65 @@ html.dark #home .hero-name-text {
 
               <div class="hero-footer">
                 <div class="hero-actions">
-                  <a href="assets/files/Mangesh_Raut_Resume.pdf" download="Mangesh_Raut_Resume.pdf" class="btn hero-cta hero-cta-primary"
-                    aria-label="Download Resume">
-                    <span class="inline-icon" aria-hidden="true">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <path d="M12 3v12"></path>
-                        <path d="m7 10 5 5 5-5"></path>
-                        <path d="M5 21h14"></path>
-                      </svg>
-                    </span>
-                    Download Resume
-                  </a>
+                  <div class="resume-dropdown-wrapper">
+                    <button type="button" class="btn hero-cta hero-cta-primary resume-dropdown-toggle"
+                      id="resume-dropdown-toggle"
+                      aria-haspopup="true"
+                      aria-expanded="false"
+                      aria-controls="resume-dropdown-menu"
+                      aria-label="Download Resume - Select Version">
+                      <span class="inline-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                          stroke-linejoin="round">
+                          <path d="M12 3v12"></path>
+                          <path d="m7 10 5 5 5-5"></path>
+                          <path d="M5 21h14"></path>
+                        </svg>
+                      </span>
+                      <span>Download Resume</span>
+                      <span class="inline-icon chevron-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                          stroke-linejoin="round">
+                          <path d="m6 9 6 6 6-6"></path>
+                        </svg>
+                      </span>
+                    </button>
+
+                    <div class="resume-dropdown-menu" id="resume-dropdown-menu" role="menu" aria-labelledby="resume-dropdown-toggle" aria-hidden="true">
+                      <div class="resume-menu-header">
+                        <span class="resume-menu-title">Select Resume Format</span>
+                      </div>
+                      
+                      <a href="assets/files/001_Mangesh_Resume_USA.pdf" download="Mangesh_Raut_Resume_USA.pdf" class="resume-dropdown-item" role="menuitem">
+                        <div class="resume-item-icon" aria-hidden="true">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"></path>
+                            <path d="M2 12h20"></path>
+                          </svg>
+                        </div>
+                        <div class="resume-item-content">
+                          <span class="resume-item-title">USA / Global Resume</span>
+                          <span class="resume-item-desc">US SDE & Global Tech Format</span>
+                        </div>
+                        <span class="resume-item-badge">USA</span>
+                      </a>
+
+                      <a href="assets/files/001_Mangesh_Resume_Pune.pdf" download="Mangesh_Raut_Resume_Pune.pdf" class="resume-dropdown-item" role="menuitem">
+                        <div class="resume-item-icon" aria-hidden="true">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path>
+                            <circle cx="12" cy="10" r="3"></circle>
+                          </svg>
+                        </div>
+                        <div class="resume-item-content">
+                          <span class="resume-item-title">India / Pune Resume</span>
+                          <span class="resume-item-desc">India & Regional SDE Format</span>
+                        </div>
+                        <span class="resume-item-badge">India</span>
+                      </a>
+                    </div>
+                  </div>
                   <a href="#projects" class="btn hero-cta hero-cta-secondary lg-interactive" data-lg-interactive aria-label="View Projects">
                     <span class="inline-icon" aria-hidden="true">
                       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
