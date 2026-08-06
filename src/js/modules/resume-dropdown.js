@@ -10,16 +10,22 @@ export function initResumeDropdown() {
 
   if (!wrapper || !toggle || !menu) return;
 
+  const items = menu.querySelectorAll('.resume-dropdown-item');
+
   function openMenu() {
     wrapper.classList.add('is-open');
     toggle.setAttribute('aria-expanded', 'true');
     menu.setAttribute('aria-hidden', 'false');
+    menu.removeAttribute('inert');
+    items.forEach(item => item.setAttribute('tabindex', '0'));
   }
 
   function closeMenu() {
     wrapper.classList.remove('is-open');
     toggle.setAttribute('aria-expanded', 'false');
     menu.setAttribute('aria-hidden', 'true');
+    menu.setAttribute('inert', '');
+    items.forEach(item => item.setAttribute('tabindex', '-1'));
   }
 
   function toggleMenu(e) {
@@ -35,7 +41,6 @@ export function initResumeDropdown() {
   toggle.addEventListener('click', toggleMenu);
 
   // Close on item click
-  const items = menu.querySelectorAll('.resume-dropdown-item');
   items.forEach(item => {
     item.addEventListener('click', () => {
       closeMenu();

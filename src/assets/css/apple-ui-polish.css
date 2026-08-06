@@ -1140,6 +1140,7 @@ html.dark .a11y-toolbar #website-share-toggle {
 }
 
 .resume-dropdown-menu {
+  display: none;
   position: absolute;
   top: calc(100% + 10px);
   left: 0;
@@ -1173,6 +1174,7 @@ html.dark .resume-dropdown-menu {
 }
 
 .resume-dropdown-wrapper.is-open .resume-dropdown-menu {
+  display: block;
   opacity: 1;
   visibility: visible;
   transform: translateY(0) scale(1);
