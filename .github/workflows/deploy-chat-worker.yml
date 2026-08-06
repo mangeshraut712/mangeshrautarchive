@@ -195,6 +195,7 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: '22'
+          cache: 'npm'
 
       - name: Register workers.dev subdomain
         if: steps.cf.outputs.present == 'true'
