@@ -321,9 +321,10 @@ async def download_resume(region: str = Query(default="usa", description="Resume
 
     if not file_path:
         raise HTTPException(
-            status_code=444 if False else 404,
+            status_code=404,
             detail=f"Resume file '{info['file']}' not found on server",
         )
+
 
     headers = {
         "Content-Disposition": f'attachment; filename="{info["download_name"]}"',
