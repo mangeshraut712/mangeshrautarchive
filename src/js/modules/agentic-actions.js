@@ -12,6 +12,8 @@
  */
 
 import { openCalendlyPopup } from '../utils/calendly.js';
+import { sitePath } from '../utils/site-base.js';
+import { forceDownloadFile } from './resume-dropdown.js';
 
 export class AgenticActionHandler {
   constructor() {
@@ -474,63 +476,39 @@ export class AgenticActionHandler {
   }
 
   async downloadResume(_match) {
-    const base =
-      globalThis.APP_CONFIG?.apiBaseUrl ||
-      (typeof globalThis.buildConfig !== 'undefined' && globalThis.buildConfig.apiBaseUrl) ||
-      '';
-    let apiBase = base;
-    if (
-      !apiBase &&
-      typeof window !== 'undefined' &&
-      window.location.hostname.endsWith('github.io')
-    ) {
-      apiBase = 'https://assistme-chat.mangeshraut712.workers.dev';
-    }
-    if (apiBase && /mangeshraut\.pro|vercel\.app/i.test(apiBase)) {
-      apiBase = 'https://assistme-chat.mangeshraut712.workers.dev';
-    }
-    const apiBaseNormalized = apiBase ? apiBase.replace(/\/$/, '') : '';
-
-    // Correct resume file paths in the project
     const resumeLinks = [
-      '/assets/files/001_Mangesh_Resume_USA.pdf', // USA Resume
-      '/assets/files/001_Mangesh_Resume_Pune.pdf', // Pune Resume
-      '/assets/files/Mangesh_Raut_Resume.pdf', // Primary fallback location
-      apiBaseNormalized ? `${apiBaseNormalized}/api/resume` : '/api/resume', // API endpoint
-      'assets/files/Mangesh_Raut_Resume.pdf', // Relative path
-      '../assets/files/Mangesh_Raut_Resume.pdf', // Parent relative
+      {
+        url: sitePath('/assets/files/001_Mangesh_Resume_USA.pdf'),
+        filename: 'Mangesh_Raut_Resume_USA.pdf',
+      },
+      {
+        url: sitePath('/assets/files/Mangesh_Raut_Resume.pdf'),
+        filename: 'Mangesh_Raut_Resume.pdf',
+      },
+      {
+        url: sitePath('/assets/files/001_Mangesh_Resume_Pune.pdf'),
+        filename: 'Mangesh_Raut_Resume_Pune.pdf',
+      },
     ];
 
-    const resumeChecks = await Promise.all(
-      resumeLinks.map(async link => {
-        try {
-          const response = await fetch(link, { method: 'HEAD' });
-          return response.ok ? link : null;
-        } catch (_error) {
-          return null;
+    for (const candidate of resumeLinks) {
+      try {
+        const head = await fetch(candidate.url, { method: 'HEAD', cache: 'no-cache' });
+        if (!head.ok) continue;
+        const ok = await forceDownloadFile(candidate.url, candidate.filename);
+        if (ok) {
+          return {
+            success: true,
+            message: '✅ Resume download started. Check your downloads folder.',
+            action: 'download_resume',
+            file: candidate.url,
+          };
         }
-      })
-    );
-
-    const availableResumeLink = resumeChecks.find(Boolean);
-    if (availableResumeLink) {
-      const downloadLink = document.createElement('a');
-      downloadLink.href = availableResumeLink;
-      downloadLink.download = 'Mangesh_Raut_Resume.pdf';
-      downloadLink.target = '_blank';
-      document.body.appendChild(downloadLink);
-      downloadLink.click();
-      document.body.removeChild(downloadLink);
-
-      return {
-        success: true,
-        message: '✅ Resume download initiated! Check your downloads folder.',
-        action: 'download_resume',
-        file: availableResumeLink,
-      };
+      } catch {
+        // try next candidate
+      }
     }
 
-    // If no PDF found, provide alternative
     return {
       success: false,
       message:
