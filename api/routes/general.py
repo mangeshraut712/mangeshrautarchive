@@ -325,7 +325,6 @@ async def download_resume(region: str = Query(default="usa", description="Resume
             detail=f"Resume file '{info['file']}' not found on server",
         )
 
-
     headers = {
         "Content-Disposition": f'attachment; filename="{info["download_name"]}"',
         "Content-Type": "application/pdf",
@@ -340,4 +339,3 @@ async def download_resume(region: str = Query(default="usa", description="Resume
         filename=info["download_name"],
         headers=headers,
     )
-
