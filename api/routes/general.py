@@ -2,7 +2,9 @@ import base64
 import os
 import re
 from datetime import datetime, timezone
-from fastapi import APIRouter, HTTPException, Request
+from fastapi import APIRouter, HTTPException, Query, Request
+from fastapi.responses import FileResponse
+from pathlib import Path
 
 import httpx
 import logging
@@ -243,3 +245,98 @@ async def status_check():
         "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
         "success": True
     }
+
+
+RESUME_EDITIONS = {
+    "usa": {
+        "id": "usa",
+        "title": "USA / International Resume",
+        "file": "001_Mangesh_Resume_USA.pdf",
+        "download_name": "Mangesh_Raut_Resume_USA.pdf",
+        "static_url": "/assets/files/001_Mangesh_Resume_USA.pdf",
+        "region": "USA & Global",
+    },
+    "india": {
+        "id": "india",
+        "title": "India / Pune Resume",
+        "file": "001_Mangesh_Resume_Pune.pdf",
+        "download_name": "Mangesh_Raut_Resume_Pune.pdf",
+        "static_url": "/assets/files/001_Mangesh_Resume_Pune.pdf",
+        "region": "India & Asia",
+    },
+    "primary": {
+        "id": "primary",
+        "title": "Primary Resume",
+        "file": "Mangesh_Raut_Resume.pdf",
+        "download_name": "Mangesh_Raut_Resume.pdf",
+        "static_url": "/assets/files/Mangesh_Raut_Resume.pdf",
+        "region": "Global",
+    },
+}
+
+
+def _resolve_resume_file_path(filename: str) -> Path | None:
+    """Find resume PDF in dist/assets/files or src/assets/files."""
+    project_root = Path(__file__).resolve().parent.parent.parent
+    candidates = [
+        project_root / "dist" / "assets" / "files" / filename,
+        project_root / "src" / "assets" / "files" / filename,
+    ]
+    for p in candidates:
+        if p.is_file():
+            return p
+    return None
+
+
+@router.get("/api/resume", tags=["resume"], summary="List available resume editions")
+async def get_resume_info():
+    """Returns metadata for all available resume versions."""
+    resumes = {}
+    for key, info in RESUME_EDITIONS.items():
+        file_path = _resolve_resume_file_path(info["file"])
+        resumes[key] = {
+            **info,
+            "available": file_path is not None,
+            "size_bytes": file_path.stat().st_size if file_path else 0,
+            "download_api": f"/api/resume/download?region={key}",
+        }
+
+    return {
+        "success": True,
+        "default": "usa",
+        "editions": resumes,
+        "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+    }
+
+
+@router.get("/api/resume/download", tags=["resume"], summary="Download a specific resume PDF edition")
+async def download_resume(region: str = Query(default="usa", description="Resume edition: usa, india, or primary")):
+    """Streams requested resume PDF with Content-Disposition attachment header."""
+    edition_key = (region or "usa").strip().lower()
+    if edition_key not in RESUME_EDITIONS:
+        edition_key = "usa"
+
+    info = RESUME_EDITIONS[edition_key]
+    file_path = _resolve_resume_file_path(info["file"])
+
+    if not file_path:
+        raise HTTPException(
+            status_code=444 if False else 404,
+            detail=f"Resume file '{info['file']}' not found on server",
+        )
+
+    headers = {
+        "Content-Disposition": f'attachment; filename="{info["download_name"]}"',
+        "Content-Type": "application/pdf",
+        "Cache-Control": "public, max-age=0, must-revalidate",
+        "X-Content-Type-Options": "nosniff",
+    }
+
+    logger.info(f"📄 Resume download served: {info['id']} ({info['download_name']})")
+    return FileResponse(
+        path=file_path,
+        media_type="application/pdf",
+        filename=info["download_name"],
+        headers=headers,
+    )
+

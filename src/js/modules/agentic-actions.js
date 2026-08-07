@@ -67,10 +67,20 @@ export class AgenticActionHandler {
       navigator.modelContext.registerTool(
         {
           name: 'download_resume',
-          description: "Initiate the download of Mangesh's resume PDF.",
-          inputSchema: { type: 'object', properties: {} },
-          execute: async () => {
-            return this.downloadResume();
+          description:
+            "Initiate the download of Mangesh's resume PDF (USA, India, or Primary edition).",
+          inputSchema: {
+            type: 'object',
+            properties: {
+              edition: {
+                type: 'string',
+                description:
+                  'The resume edition to download: "usa", "india", or "primary" (default: "usa").',
+              },
+            },
+          },
+          execute: async input => {
+            return this.downloadResume([null, input?.edition]);
           },
         },
         { signal }
@@ -475,23 +485,51 @@ export class AgenticActionHandler {
     }
   }
 
-  async downloadResume(_match) {
-    const resumeLinks = [
-      {
+  async downloadResume(match) {
+    const rawEdition = String((Array.isArray(match) ? match[1] : match) || '')
+      .toLowerCase()
+      .trim();
+    let preferredKey = 'usa';
+    if (rawEdition.includes('india') || rawEdition.includes('pune')) {
+      preferredKey = 'india';
+    } else if (
+      rawEdition.includes('usa') ||
+      rawEdition.includes('us') ||
+      rawEdition.includes('international')
+    ) {
+      preferredKey = 'usa';
+    } else if (rawEdition.includes('primary') || rawEdition.includes('general')) {
+      preferredKey = 'primary';
+    }
+
+    const candidateMap = {
+      usa: {
         url: sitePath('/assets/files/001_Mangesh_Resume_USA.pdf'),
+        apiUrl: sitePath('/api/resume/download?region=usa'),
         filename: 'Mangesh_Raut_Resume_USA.pdf',
+        name: 'USA / International Resume',
       },
-      {
-        url: sitePath('/assets/files/Mangesh_Raut_Resume.pdf'),
-        filename: 'Mangesh_Raut_Resume.pdf',
-      },
-      {
+      india: {
         url: sitePath('/assets/files/001_Mangesh_Resume_Pune.pdf'),
+        apiUrl: sitePath('/api/resume/download?region=india'),
         filename: 'Mangesh_Raut_Resume_Pune.pdf',
+        name: 'India / Pune Resume',
       },
+      primary: {
+        url: sitePath('/assets/files/Mangesh_Raut_Resume.pdf'),
+        apiUrl: sitePath('/api/resume/download?region=primary'),
+        filename: 'Mangesh_Raut_Resume.pdf',
+        name: 'Primary Resume',
+      },
+    };
+
+    const orderedKeys = [
+      preferredKey,
+      ...Object.keys(candidateMap).filter(k => k !== preferredKey),
     ];
 
-    for (const candidate of resumeLinks) {
+    for (const key of orderedKeys) {
+      const candidate = candidateMap[key];
       try {
         const head = await fetch(candidate.url, { method: 'HEAD', cache: 'no-cache' });
         if (!head.ok) continue;
@@ -499,8 +537,9 @@ export class AgenticActionHandler {
         if (ok) {
           return {
             success: true,
-            message: '✅ Resume download started. Check your downloads folder.',
+            message: `✅ Downloading Mangesh's ${candidate.name}. Check your downloads folder.`,
             action: 'download_resume',
+            edition: key,
             file: candidate.url,
           };
         }
