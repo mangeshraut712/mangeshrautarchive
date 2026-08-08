@@ -541,6 +541,106 @@ a[href*='x.com'] i {
   -webkit-text-fill-color: #1da1f2 !important;
 }
 
+/* Tech & Framework Brand Icons across all cards & sections */
+i.fa-java,
+.fa-brands.fa-java,
+.tech-icon.fa-java {
+  color: #007396 !important;
+  -webkit-text-fill-color: #007396 !important;
+}
+
+i.fa-python,
+.fa-brands.fa-python,
+.tech-icon.fa-python {
+  color: #3776ab !important;
+  -webkit-text-fill-color: #3776ab !important;
+}
+
+i.fa-js,
+.fa-brands.fa-js,
+.fa-brands.fa-js-square,
+.tech-icon.fa-js {
+  color: #f7df1e !important;
+  -webkit-text-fill-color: #f7df1e !important;
+}
+
+i.fa-react,
+.fa-brands.fa-react,
+.tech-icon.fa-react {
+  color: #61dafb !important;
+  -webkit-text-fill-color: #61dafb !important;
+}
+
+i.fa-angular,
+.fa-brands.fa-angular,
+.tech-icon.fa-angular {
+  color: #dd0031 !important;
+  -webkit-text-fill-color: #dd0031 !important;
+}
+
+i.fa-node,
+i.fa-node-js,
+.fa-brands.fa-node,
+.fa-brands.fa-node-js,
+.tech-icon.fa-node {
+  color: #339933 !important;
+  -webkit-text-fill-color: #339933 !important;
+}
+
+i.fa-aws,
+.fa-brands.fa-aws,
+.tech-icon.fa-aws {
+  color: #ff9900 !important;
+  -webkit-text-fill-color: #ff9900 !important;
+}
+
+i.fa-docker,
+.fa-brands.fa-docker,
+.tech-icon.fa-docker {
+  color: #2496ed !important;
+  -webkit-text-fill-color: #2496ed !important;
+}
+
+i.fa-git,
+i.fa-git-alt,
+.fa-brands.fa-git,
+.fa-brands.fa-git-alt,
+.tech-icon.fa-git-alt {
+  color: #f05032 !important;
+  -webkit-text-fill-color: #f05032 !important;
+}
+
+i.fa-linux,
+.fa-brands.fa-linux,
+.tech-icon.fa-linux {
+  color: #fcc624 !important;
+  -webkit-text-fill-color: #fcc624 !important;
+}
+
+i.fa-html5,
+.fa-brands.fa-html5,
+.tech-icon.fa-html5 {
+  color: #e34f26 !important;
+  -webkit-text-fill-color: #e34f26 !important;
+}
+
+i.fa-css3,
+i.fa-css3-alt,
+.fa-brands.fa-css3,
+.fa-brands.fa-css3-alt,
+.tech-icon.fa-css3-alt {
+  color: #1572b6 !important;
+  -webkit-text-fill-color: #1572b6 !important;
+}
+
+i.fa-database,
+.fa-solid.fa-database,
+.fas.fa-database,
+.tech-icon.fa-database {
+  color: #336791 !important;
+  -webkit-text-fill-color: #336791 !important;
+}
+
 /* ═══════════════════════════════════════════════════════════════════
    16. BACK TO TOP BUTTON ENHANCEMENT
    ═══════════════════════════════════════════════════════════════════ */
