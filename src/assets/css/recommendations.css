@@ -226,34 +226,52 @@ html.dark .author-company {
 /* Animation removed for performance and visibility */
 
 /* LinkedIn Verification Links */
-.linkedin-verify {
+.linkedin-verify,
+.author-name .linkedin-verify {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   margin-left: 6px;
-  color: #0a66c2 !important; /* Official LinkedIn Signature Blue */
-  font-size: 0.95em;
   vertical-align: middle;
-  transition:
-    opacity 0.2s ease,
-    transform 0.2s ease,
-    color 0.2s ease;
+  transition: transform 0.2s ease;
   text-decoration: none !important;
   border-bottom: none !important;
 }
 
 .linkedin-verify:hover {
-  opacity: 1;
-  transform: scale(1.2);
+  transform: scale(1.25);
+}
+
+.linkedin-verify i,
+.linkedin-verify .fab,
+.linkedin-verify .fa-linkedin,
+.linkedin-verify .fa-linkedin-in,
+.author-name .linkedin-verify i {
+  color: #0a66c2 !important;
+  -webkit-text-fill-color: #0a66c2 !important;
+  background-color: #ffffff !important;
+  border-radius: 2px;
+  font-size: 1.05em !important;
+  line-height: 1 !important;
+  display: inline-block !important;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.linkedin-verify:hover i,
+.linkedin-verify:hover .fa-linkedin {
   color: #004182 !important;
+  -webkit-text-fill-color: #004182 !important;
 }
 
-html.dark .linkedin-verify {
-  color: #70b5f9 !important; /* Vibrant high contrast LinkedIn blue for dark backgrounds */
-}
-
-html.dark .linkedin-verify:hover {
-  color: #a0d1ff !important;
+html.dark .linkedin-verify i,
+html.dark .linkedin-verify .fa-linkedin,
+html.dark .author-name .linkedin-verify i {
+  color: #0a66c2 !important;
+  -webkit-text-fill-color: #0a66c2 !important;
+  background-color: #ffffff !important;
 }
 
 .author-company-link {

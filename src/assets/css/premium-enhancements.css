@@ -486,42 +486,49 @@ html.dark select:focus {
 .social-link[href*='linkedin'],
 a[href*='linkedin'] i {
   color: #0a66c2 !important;
+  -webkit-text-fill-color: #0a66c2 !important;
 }
 
 .footer-social a[href*='github'],
 .social-link[href*='github'],
 a[href*='github'] i {
   color: #24292e !important;
+  -webkit-text-fill-color: #24292e !important;
 }
 
 html.dark .footer-social a[href*='github'],
 html.dark .social-link[href*='github'],
 html.dark a[href*='github'] i {
   color: #f5f5f7 !important;
+  -webkit-text-fill-color: #f5f5f7 !important;
 }
 
 .footer-social a[href*='spotify'],
 .social-link[href*='spotify'],
 a[href*='spotify'] i {
   color: #1db954 !important;
+  -webkit-text-fill-color: #1db954 !important;
 }
 
 .footer-social a[href*='youtube'],
 .social-link[href*='youtube'],
 a[href*='youtube'] i {
   color: #ff0000 !important;
+  -webkit-text-fill-color: #ff0000 !important;
 }
 
 .footer-social a[href*='instagram'],
 .social-link[href*='instagram'],
 a[href*='instagram'] i {
   color: #e4405f !important;
+  -webkit-text-fill-color: #e4405f !important;
 }
 
 .footer-social a[href*='leetcode'],
 .social-link[href*='leetcode'],
 a[href*='leetcode'] i {
   color: #ffa116 !important;
+  -webkit-text-fill-color: #ffa116 !important;
 }
 
 .footer-social a[href*='twitter'],
@@ -531,6 +538,7 @@ a[href*='leetcode'] i {
 a[href*='twitter'] i,
 a[href*='x.com'] i {
   color: #1da1f2 !important;
+  -webkit-text-fill-color: #1da1f2 !important;
 }
 
 /* ═══════════════════════════════════════════════════════════════════
