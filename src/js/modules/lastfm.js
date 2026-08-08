@@ -680,6 +680,7 @@ class LastFmService {
     this.hero.musicCard.dataset.musicState = state;
     this.hero.musicCard.classList.toggle('is-playing', state === 'playing');
     this.hero.playingIndicator?.classList.toggle('active', state === 'playing');
+    this.hero.statusLiveDot?.classList.toggle('active', state === 'playing');
   }
 
   updateHero(track) {
@@ -924,6 +925,8 @@ function initLastFmService() {
     playingIndicator: document.getElementById('playing-indicator'),
     musicCard: document.getElementById('music-card'),
     spotifyLink: document.getElementById('music-spotify-link'),
+    lastfmLink: document.getElementById('music-lastfm-link'),
+    statusLiveDot: document.getElementById('status-live-dot'),
   };
 
   if (heroElements.trackName && heroElements.albumArt) {
