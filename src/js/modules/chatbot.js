@@ -38,14 +38,14 @@ const SITE_SEARCH_PROMPT =
   'Act as a site search engine for this portfolio. Give me a concise map of what I can ask about (projects, skills, experience, education, contact) and one suggested starter question for each.';
 
 function normalizeImagePayloads(images) {
-  return (images || [])
-    .map(img => {
-      if (typeof img === 'string') return img;
-      if (img && typeof img.src === 'string') return img.src;
-      return '';
-    })
-    .filter(Boolean)
-    .slice(0, 2);
+  const normalized = [];
+  for (const image of images || []) {
+    const src =
+      typeof image === 'string' ? image : image && typeof image.src === 'string' ? image.src : '';
+    if (src) normalized.push(src);
+    if (normalized.length === 2) break;
+  }
+  return normalized;
 }
 
 function imageDisplayName(image, index = 0) {
@@ -3316,35 +3316,41 @@ class AppleIntelligenceChatbot {
     if (event?.target) event.target.value = '';
     if (!files.length) return;
 
+    let attachmentError = '';
+    const supportsBitmapDecode = typeof globalThis.createImageBitmap === 'function';
+    const decodedImages = await Promise.all(
+      files.slice(0, 2).map(async (file, index) => {
+        if (!file.type.startsWith('image/')) return null;
+        if (file.size > 1_200_000) {
+          attachmentError ||= 'Image too large — keep under ~1.2MB.';
+          return null;
+        }
+
+        const dimensions = await decodeImageBitmap(file);
+        if (supportsBitmapDecode && !dimensions) {
+          attachmentError ||= 'Image could not be decoded.';
+          return null;
+        }
+
+        const dataUrl = await this.readFileAsDataUrl(file);
+        return dataUrl
+          ? {
+              src: dataUrl,
+              name: file.name || `image-${index + 1}.png`,
+            }
+          : null;
+      })
+    );
     const next = [];
-    for (const file of files.slice(0, 2)) {
-      if (!file.type.startsWith('image/')) continue;
-      if (file.size > 1_200_000) {
-        if (this.elements.rateStatus) {
-          this.elements.rateStatus.textContent = 'Image too large — keep under ~1.2MB.';
-        }
-        continue;
-      }
-      const supportsBitmapDecode = typeof globalThis.createImageBitmap === 'function';
-      const dimensions = await decodeImageBitmap(file);
-      if (supportsBitmapDecode && !dimensions) {
-        if (this.elements.rateStatus) {
-          this.elements.rateStatus.textContent = 'Image could not be decoded.';
-        }
-        continue;
-      }
-      const dataUrl = await this.readFileAsDataUrl(file);
-      if (dataUrl) {
-        next.push({
-          src: dataUrl,
-          name: file.name || `image-${next.length + 1}.png`,
-        });
-      }
+    for (const image of decodedImages) {
+      if (image) next.push(image);
     }
     this.pendingImages = next.slice(0, 2);
     this.renderAttachPreview();
     if (this.pendingImages.length && this.elements.rateStatus) {
       this.elements.rateStatus.textContent = `${this.pendingImages.length} image attached`;
+    } else if (attachmentError && this.elements.rateStatus) {
+      this.elements.rateStatus.textContent = attachmentError;
     } else {
       this.updateRateLimitBadge();
     }
@@ -3440,12 +3446,14 @@ class AppleIntelligenceChatbot {
 
   buildPageContextPayload() {
     const pageCtx = this.getVisibleSectionContext();
-    const projects = Array.from(document.querySelectorAll('[data-project-title], .project-card h3'))
-      .slice(0, 6)
-      .map(el => ({
-        title: (el.getAttribute('data-project-title') || el.textContent || '').trim().slice(0, 80),
-      }))
-      .filter(p => p.title);
+    const projects = [];
+    for (const element of document.querySelectorAll('[data-project-title], .project-card h3')) {
+      const title = (element.getAttribute('data-project-title') || element.textContent || '')
+        .trim()
+        .slice(0, 80);
+      if (title) projects.push({ title });
+      if (projects.length === 6) break;
+    }
 
     return {
       currentSection: pageCtx?.label || pageCtx?.sectionId || '',
