@@ -63,17 +63,15 @@ body.travel-body {
     --mobile-type-floor: 0.75rem;
   }
 
-  /* Accessibility dock — same vertical stack as desktop (above share) */
-  /* Accessibility dock — stacked vertically on right bottom corner above share */
+  /* Accessibility dock & FAB stack — deferred to ux-polish-fixes.css slot calculations */
   .a11y-toolbar {
     left: auto !important;
-    right: max(1rem, env(safe-area-inset-right)) !important;
-    bottom: var(--mobile-a11y-bottom) !important;
+    right: var(--fab-edge) !important;
     top: auto !important;
     transform: none !important;
     z-index: 9997 !important;
     max-width: none !important;
-    width: auto !important;
+    width: var(--fab-size) !important;
     display: flex !important;
     flex-direction: column-reverse !important;
     align-items: flex-end !important;
@@ -83,34 +81,20 @@ body.travel-body {
     border: none !important;
     box-shadow: none !important;
     padding: 0 !important;
+    margin: 0 !important;
   }
 
   body.monitor-page .a11y-toolbar,
   body.systems-page .a11y-toolbar,
   body.uses-page .a11y-toolbar {
-    bottom: var(--mobile-a11y-bottom) !important;
-  }
-
-  /* Share FAB — stacked vertically on right bottom corner above chatbot */
-  #website-share-toggle.website-share-fab,
-  .website-share-fab {
-    left: auto !important;
-    right: max(1rem, env(safe-area-inset-right)) !important;
-    bottom: calc(
-      var(--mobile-bottom-inset) + var(--mobile-fab-size) + var(--mobile-fab-gap)
-    ) !important;
-    width: var(--mobile-fab-size) !important;
-    height: var(--mobile-fab-size) !important;
-    min-width: var(--mobile-fab-size) !important;
-    min-height: var(--mobile-fab-size) !important;
-    z-index: 9998 !important;
+    right: var(--fab-edge) !important;
   }
 
   .a11y-toolbar__main {
-    width: var(--mobile-fab-size) !important;
-    height: var(--mobile-fab-size) !important;
-    min-width: var(--mobile-fab-size) !important;
-    min-height: var(--mobile-fab-size) !important;
+    width: var(--fab-size) !important;
+    height: var(--fab-size) !important;
+    min-width: var(--fab-size) !important;
+    min-height: var(--fab-size) !important;
   }
 
   .a11y-toolbar__panel {
@@ -125,9 +109,9 @@ body.travel-body {
 
   /* Glass popover — right-aligned solid card */
   .a11y-glass-popover {
-    bottom: calc(var(--mobile-a11y-bottom) + var(--mobile-fab-size) + 0.75rem) !important;
+    bottom: calc(var(--fab-slot-3) + var(--fab-size) + 0.75rem) !important;
     left: auto !important;
-    right: max(1rem, env(safe-area-inset-right)) !important;
+    right: var(--fab-edge) !important;
     top: auto !important;
     transform: none !important;
     width: min(20.5rem, calc(100vw - 1.6rem)) !important;
@@ -143,34 +127,6 @@ body.travel-body {
   html.dark .a11y-glass-popover {
     background: #000000 !important;
     background-color: #000000 !important;
-  }
-
-  /* Right FAB stack — go-to-top lowest, chatbot above */
-  body #go-to-top,
-  body #go-to-top.visible {
-    position: fixed !important;
-    left: auto !important;
-    right: max(1rem, env(safe-area-inset-right)) !important;
-    bottom: var(--mobile-bottom-inset) !important;
-    top: auto !important;
-    width: var(--mobile-fab-size) !important;
-    height: var(--mobile-fab-size) !important;
-    min-width: var(--mobile-fab-size) !important;
-    min-height: var(--mobile-fab-size) !important;
-    z-index: 9999 !important;
-  }
-
-  body #chatbot-toggle {
-    position: fixed !important;
-    left: auto !important;
-    right: max(1rem, env(safe-area-inset-right)) !important;
-    bottom: var(--mobile-bottom-inset) !important;
-    top: auto !important;
-    width: var(--mobile-fab-size) !important;
-    height: var(--mobile-fab-size) !important;
-    min-width: var(--mobile-fab-size) !important;
-    min-height: var(--mobile-fab-size) !important;
-    z-index: 9999 !important;
   }
 
   html {

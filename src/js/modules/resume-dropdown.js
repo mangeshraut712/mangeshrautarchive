@@ -302,6 +302,16 @@ export function initResumeDropdown() {
     }
   });
 
+  window.addEventListener(
+    'scroll',
+    () => {
+      if (wrapper.classList.contains('is-open')) {
+        closeMenu();
+      }
+    },
+    { passive: true }
+  );
+
   document.addEventListener('keydown', event => {
     const isOpen = wrapper.classList.contains('is-open');
 
