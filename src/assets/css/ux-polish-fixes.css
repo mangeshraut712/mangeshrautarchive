@@ -1295,13 +1295,27 @@ html.dark body #home .hero-text-highlight {
     margin: 0 auto !important;
   }
 
+  html body #home .hero-description-lines {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 0.35rem !important;
+    width: 100% !important;
+  }
+
   html body #home .hero-description-line {
-    display: inline !important;
+    display: block !important;
+    width: 100% !important;
+    text-align: center !important;
+    font-size: clamp(0.72rem, 3.05vw, 0.88rem) !important;
+    line-height: 1.35 !important;
+    white-space: nowrap !important;
     margin: 0 !important;
   }
 
   html body #home .hero-description-line + .hero-description-line::before {
-    content: ' ' !important;
+    content: none !important;
+    display: none !important;
   }
 
   html body #home .hero-actions {

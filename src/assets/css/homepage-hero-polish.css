@@ -487,8 +487,20 @@ html body #home.hero-section .hero-actions .hero-cta.hero-cta-primary:focus-visi
 
   #home.hero-section .hero-description,
   #home.hero-section .hero-description-lines {
-    font-size: clamp(0.82rem, 3.4vw, 0.92rem) !important;
-    line-height: 1.4 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 0.35rem !important;
+    width: 100% !important;
+    font-size: clamp(0.72rem, 3.05vw, 0.88rem) !important;
+    line-height: 1.35 !important;
+  }
+
+  #home.hero-section .hero-description-line {
+    display: block !important;
+    width: 100% !important;
+    text-align: center !important;
+    white-space: nowrap !important;
   }
 
   html body #home.hero-section .hero-actions {
