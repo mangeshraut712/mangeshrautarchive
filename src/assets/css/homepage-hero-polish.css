@@ -506,12 +506,12 @@ html body #home.hero-section .hero-actions .hero-cta.hero-cta-primary:focus-visi
     font-size: 0.9rem !important;
   }
 
-  #home .resume-dropdown-wrapper {
+  #home .hero-cta-secondary {
     order: 1 !important;
     width: 100% !important;
   }
 
-  #home .hero-cta-secondary {
+  #home .resume-dropdown-wrapper {
     order: 2 !important;
     width: 100% !important;
   }

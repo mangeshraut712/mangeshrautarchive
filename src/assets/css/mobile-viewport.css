@@ -64,9 +64,10 @@ body.travel-body {
   }
 
   /* Accessibility dock — same vertical stack as desktop (above share) */
+  /* Accessibility dock — stacked vertically on right bottom corner above share */
   .a11y-toolbar {
-    left: max(1rem, env(safe-area-inset-left)) !important;
-    right: auto !important;
+    left: auto !important;
+    right: max(1rem, env(safe-area-inset-right)) !important;
     bottom: var(--mobile-a11y-bottom) !important;
     top: auto !important;
     transform: none !important;
@@ -75,7 +76,7 @@ body.travel-body {
     width: auto !important;
     display: flex !important;
     flex-direction: column-reverse !important;
-    align-items: flex-start !important;
+    align-items: flex-end !important;
     gap: 0.5rem !important;
     overflow: visible !important;
     background: transparent !important;
@@ -90,11 +91,14 @@ body.travel-body {
     bottom: var(--mobile-a11y-bottom) !important;
   }
 
-  /* Share FAB — bottom-left dock (under a11y), same as desktop */
+  /* Share FAB — stacked vertically on right bottom corner above chatbot */
   #website-share-toggle.website-share-fab,
   .website-share-fab {
-    left: max(1rem, env(safe-area-inset-left)) !important;
-    bottom: var(--mobile-bottom-inset) !important;
+    left: auto !important;
+    right: max(1rem, env(safe-area-inset-right)) !important;
+    bottom: calc(
+      var(--mobile-bottom-inset) + var(--mobile-fab-size) + var(--mobile-fab-gap)
+    ) !important;
     width: var(--mobile-fab-size) !important;
     height: var(--mobile-fab-size) !important;
     min-width: var(--mobile-fab-size) !important;
@@ -112,17 +116,18 @@ body.travel-body {
   .a11y-toolbar__panel {
     flex-direction: column !important;
     overflow: hidden !important;
+    align-items: flex-end !important;
   }
 
   .a11y-toolbar.is-open .a11y-toolbar__panel {
     max-height: min(22rem, 55vh) !important;
   }
 
-  /* Glass popover — solid card, same structure as desktop */
+  /* Glass popover — right-aligned solid card */
   .a11y-glass-popover {
     bottom: calc(var(--mobile-a11y-bottom) + var(--mobile-fab-size) + 0.75rem) !important;
-    left: max(1rem, env(safe-area-inset-left)) !important;
-    right: auto !important;
+    left: auto !important;
+    right: max(1rem, env(safe-area-inset-right)) !important;
     top: auto !important;
     transform: none !important;
     width: min(20.5rem, calc(100vw - 1.6rem)) !important;
@@ -140,12 +145,12 @@ body.travel-body {
     background-color: #000000 !important;
   }
 
-  /* Right FAB stack — go-to-top lowest, chatbot above with explicit gap */
+  /* Right FAB stack — go-to-top lowest, chatbot above */
   body #go-to-top,
   body #go-to-top.visible {
     position: fixed !important;
     left: auto !important;
-    right: var(--mobile-edge-inset) !important;
+    right: max(1rem, env(safe-area-inset-right)) !important;
     bottom: var(--mobile-bottom-inset) !important;
     top: auto !important;
     width: var(--mobile-fab-size) !important;
@@ -158,10 +163,8 @@ body.travel-body {
   body #chatbot-toggle {
     position: fixed !important;
     left: auto !important;
-    right: var(--mobile-edge-inset) !important;
-    bottom: calc(
-      var(--mobile-bottom-inset) + var(--mobile-fab-size) + var(--mobile-fab-gap)
-    ) !important;
+    right: max(1rem, env(safe-area-inset-right)) !important;
+    bottom: var(--mobile-bottom-inset) !important;
     top: auto !important;
     width: var(--mobile-fab-size) !important;
     height: var(--mobile-fab-size) !important;
