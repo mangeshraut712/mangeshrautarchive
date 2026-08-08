@@ -121,6 +121,7 @@ export function initResumeDropdown() {
   let activeIndex = -1;
   let positionFrame = 0;
   let portaled = false;
+  let openScrollY = 0;
 
   // Normalize hrefs for dual-host deploys and attach download metadata
   items.forEach(item => {
@@ -209,6 +210,7 @@ export function initResumeDropdown() {
     // Focus first item after paint so screen readers announce the menu
     requestAnimationFrame(() => {
       positionMenu();
+      openScrollY = window.scrollY;
       items[0]?.focus({ preventScroll: true });
     });
   }
@@ -305,7 +307,7 @@ export function initResumeDropdown() {
   window.addEventListener(
     'scroll',
     () => {
-      if (wrapper.classList.contains('is-open')) {
+      if (wrapper.classList.contains('is-open') && Math.abs(window.scrollY - openScrollY) > 20) {
         closeMenu();
       }
     },
