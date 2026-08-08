@@ -47,6 +47,7 @@ test.describe('Mobile viewport fit', () => {
 
   test('hero actions clear floating chrome after scroll', async ({ page }) => {
     await gotoSite(page);
+    await page.waitForLoadState('load');
     await page.waitForSelector('.hero-actions', { state: 'visible' });
     await page.evaluate(() => {
       document
@@ -75,7 +76,7 @@ test.describe('Mobile viewport fit', () => {
 
     expect(overlap.actionsToolbar).toBe(false);
     expect(overlap.actionsChat).toBe(false);
-    expect(parseFloat(overlap.actionsMargin)).toBeGreaterThan(60);
+    expect(parseFloat(overlap.actionsMargin)).toBeLessThanOrEqual(16);
   });
 
   test('initial mobile hero content is not covered by floating controls', async ({ page }) => {
@@ -115,8 +116,179 @@ test.describe('Mobile viewport fit', () => {
     expect(overlaps).toEqual([false, false, false]);
   });
 
-  test('floating action buttons do not overlap after scroll', async ({ page }) => {
+  test('mobile identity and utility dock are centered', async ({ page }) => {
+    await page.setViewportSize({ width: 500, height: 862 });
     await gotoSite(page);
+    await page.waitForLoadState('load');
+    await page.waitForSelector('#chatbot-toggle', { state: 'visible' });
+    await page.waitForTimeout(300);
+
+    const layout = await page.evaluate(() => {
+      const rect = selector => document.querySelector(selector)?.getBoundingClientRect() ?? null;
+      const controls = [
+        rect('.a11y-toolbar__main'),
+        rect('#website-share-toggle'),
+        rect('#chatbot-toggle'),
+      ];
+      const nameText = rect('.hero-name-text');
+      const verified = rect('.hero-verified-badge');
+      const nameLeft = Math.min(
+        nameText?.left ?? Number.POSITIVE_INFINITY,
+        verified?.left ?? Number.POSITIVE_INFINITY
+      );
+      const nameRight = Math.max(
+        nameText?.right ?? Number.NEGATIVE_INFINITY,
+        verified?.right ?? Number.NEGATIVE_INFINITY
+      );
+      const dockLeft = Math.min(
+        ...controls.map(control => control?.left ?? Number.POSITIVE_INFINITY)
+      );
+      const dockRight = Math.max(
+        ...controls.map(control => control?.right ?? Number.NEGATIVE_INFINITY)
+      );
+      const dockCentersY = controls.map(control =>
+        control ? control.top + control.height / 2 : Number.POSITIVE_INFINITY
+      );
+
+      return {
+        nameCenterDelta: Math.abs((nameLeft + nameRight) / 2 - window.innerWidth / 2),
+        dockCenterDelta: Math.abs((dockLeft + dockRight) / 2 - window.innerWidth / 2),
+        dockRowDelta: Math.max(...dockCentersY) - Math.min(...dockCentersY),
+        dockBottom: Math.max(...controls.map(control => control?.bottom ?? 0)),
+        viewportHeight: window.innerHeight,
+      };
+    });
+
+    expect(layout.nameCenterDelta).toBeLessThanOrEqual(2);
+    expect(layout.dockCenterDelta).toBeLessThanOrEqual(2);
+    expect(layout.dockRowDelta).toBeLessThanOrEqual(2);
+    expect(layout.dockBottom).toBeLessThanOrEqual(layout.viewportHeight - 12);
+  });
+
+  test('mobile hero keeps projects above resume within the first viewport', async ({ page }) => {
+    await gotoSite(page);
+    await page.waitForLoadState('load');
+
+    const layout = await page.evaluate(() => {
+      const projects = document.querySelector('.hero-cta-secondary')?.getBoundingClientRect();
+      const resume = document.querySelector('.resume-dropdown-wrapper')?.getBoundingClientRect();
+      const about = document.querySelector('#about')?.getBoundingClientRect();
+      return {
+        projectsTop: projects?.top ?? Number.POSITIVE_INFINITY,
+        resumeTop: resume?.top ?? Number.NEGATIVE_INFINITY,
+        resumeBottom: resume?.bottom ?? Number.POSITIVE_INFINITY,
+        aboutTop: about?.top ?? Number.NEGATIVE_INFINITY,
+        viewportHeight: window.innerHeight,
+      };
+    });
+
+    expect(layout.projectsTop).toBeLessThan(layout.resumeTop);
+    expect(layout.resumeBottom).toBeLessThanOrEqual(layout.viewportHeight + 1);
+    expect(layout.aboutTop).toBeGreaterThanOrEqual(layout.viewportHeight - 1);
+  });
+
+  test('compact resume choices open below without scrolling or colliding with the dock', async ({
+    page,
+  }) => {
+    await gotoSite(page);
+    await page.waitForLoadState('load');
+    const scrollBefore = await page.evaluate(() => window.scrollY);
+    await page.locator('#resume-dropdown-toggle').click();
+    await expect(page.locator('#resume-dropdown-menu')).toHaveAttribute('data-placement', 'bottom');
+
+    const layout = await page.evaluate(() => {
+      const toggle = document.querySelector('#resume-dropdown-toggle')?.getBoundingClientRect();
+      const menu = document.querySelector('#resume-dropdown-menu')?.getBoundingClientRect();
+      const dockControls = [
+        document.querySelector('.a11y-toolbar'),
+        document.querySelector('#website-share-toggle'),
+        document.querySelector('#chatbot-toggle'),
+      ];
+      return {
+        gap: toggle && menu ? menu.top - toggle.bottom : Number.NEGATIVE_INFINITY,
+        menuBottom: menu?.bottom ?? Number.POSITIVE_INFINITY,
+        menuHeight: menu?.height ?? Number.POSITIVE_INFINITY,
+        scrollAfter: window.scrollY,
+        viewportHeight: window.innerHeight,
+        dockHidden: dockControls.every(control => {
+          if (!control) return true;
+          const style = getComputedStyle(control);
+          return style.visibility === 'hidden' && style.pointerEvents === 'none';
+        }),
+      };
+    });
+
+    expect(layout.gap).toBeGreaterThanOrEqual(8);
+    expect(layout.menuBottom).toBeLessThanOrEqual(layout.viewportHeight - 8);
+    expect(layout.menuHeight).toBeLessThanOrEqual(112);
+    expect(Math.abs(layout.scrollAfter - scrollBefore)).toBeLessThanOrEqual(1);
+    expect(layout.dockHidden).toBe(true);
+  });
+
+  test('wide phone hero keeps compact order without duplicate rings', async ({ page }) => {
+    await page.setViewportSize({ width: 574, height: 859 });
+    await gotoSite(page);
+    await page.waitForLoadState('load');
+
+    const layout = await page.evaluate(() => {
+      const projects = document.querySelector('.hero-cta-secondary')?.getBoundingClientRect();
+      const resume = document.querySelector('.resume-dropdown-wrapper')?.getBoundingClientRect();
+      const avatar = document.querySelector('.profile-image-wrapper')?.getBoundingClientRect();
+      const image = document.querySelector('#profile-image');
+      const wrapper = document.querySelector('.profile-image-wrapper');
+      const primary = document.querySelector('.hero-cta-primary');
+      const about = document.querySelector('#about')?.getBoundingClientRect();
+      return {
+        projectsTop: projects?.top ?? Number.POSITIVE_INFINITY,
+        resumeTop: resume?.top ?? Number.NEGATIVE_INFINITY,
+        resumeBottom: resume?.bottom ?? Number.POSITIVE_INFINITY,
+        avatarWidth: avatar?.width ?? Number.POSITIVE_INFINITY,
+        imageBorder: image ? getComputedStyle(image).borderTopWidth : '',
+        wrapperBorder: wrapper ? getComputedStyle(wrapper).borderTopWidth : '',
+        primaryShadow: primary ? getComputedStyle(primary).boxShadow : '',
+        primaryBefore: primary ? getComputedStyle(primary, '::before').content : '',
+        aboutTop: about?.top ?? Number.NEGATIVE_INFINITY,
+        viewportHeight: window.innerHeight,
+      };
+    });
+
+    expect(layout.projectsTop).toBeLessThan(layout.resumeTop);
+    expect(layout.resumeBottom).toBeLessThanOrEqual(layout.viewportHeight + 1);
+    expect(layout.avatarWidth).toBeLessThanOrEqual(76);
+    expect(layout.imageBorder).toBe('0px');
+    expect(layout.wrapperBorder).toBe('2px');
+    expect(['none', 'rgba(0, 0, 0, 0) 0px 0px 0px 0px']).toContain(layout.primaryShadow);
+    expect(layout.primaryBefore).toBe('none');
+    expect(layout.aboutTop).toBeGreaterThanOrEqual(layout.viewportHeight - 1);
+  });
+
+  test('Chrome responsive viewport keeps the hero close to the mobile navbar', async ({ page }) => {
+    await page.setViewportSize({ width: 500, height: 862 });
+    await gotoSite(page);
+    await page.waitForLoadState('load');
+    await page.waitForTimeout(500);
+
+    const layout = await page.evaluate(() => {
+      const nav = document.querySelector('#global-nav')?.getBoundingClientRect();
+      const hero = document.querySelector('.hero-layout-wrapper')?.getBoundingClientRect();
+      const actions = document.querySelector('.hero-actions')?.getBoundingClientRect();
+      const about = document.querySelector('#about')?.getBoundingClientRect();
+      return {
+        topGap: (hero?.top ?? Number.POSITIVE_INFINITY) - (nav?.bottom ?? 0),
+        actionsBottom: actions?.bottom ?? Number.POSITIVE_INFINITY,
+        aboutTop: about?.top ?? Number.NEGATIVE_INFINITY,
+        viewportHeight: window.innerHeight,
+      };
+    });
+
+    expect(layout.topGap).toBeLessThanOrEqual(72);
+    expect(layout.actionsBottom).toBeLessThanOrEqual(layout.viewportHeight);
+    expect(layout.aboutTop).toBeGreaterThanOrEqual(layout.viewportHeight - 1);
+  });
+
+  test('mobile utility controls stay in one centered row after scroll', async ({ page }) => {
+    await gotoSite(page);
+    await page.waitForLoadState('load');
     await page.waitForSelector('#chatbot-toggle', { state: 'visible' });
     await page.evaluate(() => window.scrollTo({ top: 900, behavior: 'instant' }));
     await page.waitForTimeout(400);
@@ -138,26 +310,29 @@ test.describe('Mobile viewport fit', () => {
         }
         return { t: r.top, b: r.bottom, l: r.left, r: r.right, h: r.height };
       };
-      const topBtn = rect('#go-to-top');
-      const chatBtn = rect('#chatbot-toggle');
-      const hits = (a, b) => a && b && !(a.r <= b.l || a.l >= b.r || a.b <= b.t || a.t >= b.b);
-      const gap = topBtn && chatBtn ? topBtn.t - chatBtn.b : null;
+      const controls = [
+        rect('.a11y-toolbar__main'),
+        rect('#website-share-toggle'),
+        rect('#chatbot-toggle'),
+        rect('#go-to-top'),
+      ].filter(Boolean);
+      const centersY = controls.map(control => (control.t + control.b) / 2);
+      const left = Math.min(...controls.map(control => control.l));
+      const right = Math.max(...controls.map(control => control.r));
+      const ordered = [...controls].sort((a, b) => a.l - b.l);
+      const gaps = ordered.slice(1).map((control, index) => control.l - ordered[index].r);
       return {
-        overlap: hits(topBtn, chatBtn),
-        gap,
-        chatAboveTop: chatBtn && topBtn ? chatBtn.b <= topBtn.t : null,
+        controlCount: controls.length,
+        rowDelta: Math.max(...centersY) - Math.min(...centersY),
+        centerDelta: Math.abs((left + right) / 2 - window.innerWidth / 2),
+        minimumGap: Math.min(...gaps),
       };
     });
 
-    if (fabLayout.overlap !== null) {
-      expect(fabLayout.overlap).toBe(false);
-    }
-    if (fabLayout.gap !== null) {
-      expect(fabLayout.gap).toBeGreaterThanOrEqual(8);
-    }
-    if (fabLayout.chatAboveTop !== null) {
-      expect(fabLayout.chatAboveTop).toBe(true);
-    }
+    expect(fabLayout.controlCount).toBe(4);
+    expect(fabLayout.rowDelta).toBeLessThanOrEqual(2);
+    expect(fabLayout.centerDelta).toBeLessThanOrEqual(2);
+    expect(fabLayout.minimumGap).toBeGreaterThanOrEqual(8);
   });
 
   test('travel atlas fits mobile width', async ({ page }) => {
@@ -194,6 +369,7 @@ test.describe('Mobile viewport fit', () => {
 
   test('chatbot shows blurred backdrop and opaque panel on mobile', async ({ page }) => {
     await gotoSite(page);
+    await page.waitForLoadState('load');
     await page.locator('#chatbot-toggle').click();
     await page.waitForSelector('#chatbot-widget.visible', { state: 'visible' });
 

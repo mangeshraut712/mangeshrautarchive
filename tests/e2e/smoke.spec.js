@@ -105,6 +105,9 @@ test.describe('Chrome smoke tests', () => {
     const metrics = await page.locator('#home').evaluate(home => {
       const layout = home.querySelector('.hero-layout-wrapper');
       const layoutStyle = layout ? getComputedStyle(layout) : null;
+      const layoutBox = layout?.getBoundingClientRect();
+      const homeBox = home.getBoundingClientRect();
+      const aboutBox = document.querySelector('#about')?.getBoundingClientRect();
       const boxes = [
         '.hero-image-block',
         '.hero-header',
@@ -119,10 +122,16 @@ test.describe('Chrome smoke tests', () => {
 
       return {
         viewportWidth: window.innerWidth,
+        viewportHeight: window.innerHeight,
         width: home.scrollWidth,
         clientWidth: home.clientWidth,
         layoutDisplay: layoutStyle?.display ?? '',
-        layoutColumns: layoutStyle?.gridTemplateColumns ?? '',
+        layoutDirection: layoutStyle?.flexDirection ?? '',
+        centerDelta: layoutBox
+          ? Math.abs(layoutBox.left + layoutBox.width / 2 - window.innerWidth / 2)
+          : Number.POSITIVE_INFINITY,
+        homeBottom: homeBox.bottom,
+        aboutTop: aboutBox?.top ?? 0,
         largestGap: boxes
           .slice(1)
           .reduce((max, box, index) => Math.max(max, box.top - boxes[index].bottom), 0),
@@ -130,13 +139,46 @@ test.describe('Chrome smoke tests', () => {
     });
 
     expect(metrics.width).toBeLessThanOrEqual(metrics.clientWidth + 1);
-    if (metrics.viewportWidth >= 960) {
-      expect(metrics.layoutDisplay).toBe('grid');
-      expect(metrics.layoutColumns.split(' ').length).toBeGreaterThanOrEqual(2);
-    } else {
-      expect(metrics.layoutDisplay).toBe('flex');
-    }
+    expect(metrics.layoutDisplay).toBe('flex');
+    expect(metrics.layoutDirection).toBe('column');
+    expect(metrics.centerDelta).toBeLessThanOrEqual(2);
+    expect(metrics.homeBottom).toBeGreaterThanOrEqual(metrics.viewportHeight - 1);
+    expect(metrics.aboutTop).toBeGreaterThanOrEqual(metrics.viewportHeight - 1);
     expect(metrics.largestGap).toBeLessThan(32);
+  });
+
+  test('resume dropdown opens below its button without a translucent panel', async ({ page }) => {
+    await gotoSiteReady(page);
+
+    const toggle = page.locator('#resume-dropdown-toggle');
+    const menu = page.locator('#resume-dropdown-menu');
+    await toggle.click();
+    await expect(menu).toHaveAttribute('data-placement', 'bottom');
+
+    const placement = await page.evaluate(() => {
+      const toggleBox = document.querySelector('#resume-dropdown-toggle')?.getBoundingClientRect();
+      const menuNode = document.querySelector('#resume-dropdown-menu');
+      const menuBox = menuNode?.getBoundingClientRect();
+      const style = menuNode ? getComputedStyle(menuNode) : null;
+      return {
+        gap: toggleBox && menuBox ? menuBox.top - toggleBox.bottom : Number.NEGATIVE_INFINITY,
+        bottom: menuBox?.bottom ?? Number.POSITIVE_INFINITY,
+        height: menuBox?.height ?? Number.POSITIVE_INFINITY,
+        viewportHeight: window.innerHeight,
+        background: style?.backgroundColor ?? '',
+        backdrop: style?.backdropFilter ?? '',
+        overflowY: style?.overflowY ?? '',
+      };
+    });
+
+    expect(placement.gap).toBeGreaterThanOrEqual(8);
+    expect(placement.bottom).toBeLessThanOrEqual(placement.viewportHeight + 1);
+    expect(placement.height).toBeLessThanOrEqual(112);
+    expect(placement.background).toBe('rgb(255, 255, 255)');
+    expect(placement.backdrop).toBe('none');
+    expect(placement.overflowY).toBe('visible');
+    await expect(menu.locator('.resume-dropdown-item')).toHaveCount(2);
+    await expect(menu.locator('.resume-menu-header')).toHaveCount(0);
   });
 
   test('travel atlas search, empty state, and reset flow work', async ({ page }) => {

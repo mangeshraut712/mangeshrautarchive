@@ -158,19 +158,20 @@ export function initResumeDropdown() {
   function positionMenu() {
     if (!wrapper.classList.contains('is-open')) return;
 
-    const toggleRect = toggle.getBoundingClientRect();
+    let toggleRect = toggle.getBoundingClientRect();
     const menuWidth = Math.min(
-      Math.max(toggleRect.width, 300),
-      Math.max(280, window.innerWidth - 24)
+      Math.max(toggleRect.width, 280),
+      Math.max(260, window.innerWidth - 24)
     );
     const gap = 10;
     const viewportPad = 12;
+    const menuHeight = Math.ceil(menu.getBoundingClientRect().height || menu.scrollHeight);
+    const overflowBelow = toggleRect.bottom + gap + menuHeight + viewportPad - window.innerHeight;
 
-    // Measure after making visible for accurate height
-    const estimatedHeight = Math.max(menu.scrollHeight || 0, 160);
-    const spaceBelow = window.innerHeight - toggleRect.bottom - viewportPad;
-    const spaceAbove = toggleRect.top - viewportPad;
-    const openAbove = spaceBelow < estimatedHeight && spaceAbove > spaceBelow;
+    if (overflowBelow > 0) {
+      window.scrollBy({ top: Math.ceil(overflowBelow), behavior: 'instant' });
+      toggleRect = toggle.getBoundingClientRect();
+    }
 
     let left = toggleRect.left + toggleRect.width / 2 - menuWidth / 2;
     left = Math.max(viewportPad, Math.min(left, window.innerWidth - menuWidth - viewportPad));
@@ -181,16 +182,10 @@ export function initResumeDropdown() {
     menu.style.right = 'auto';
     menu.style.zIndex = '12050';
     menu.style.margin = '0';
-
-    if (openAbove) {
-      menu.style.top = 'auto';
-      menu.style.bottom = `${Math.round(window.innerHeight - toggleRect.top + gap)}px`;
-      menu.dataset.placement = 'top';
-    } else {
-      menu.style.bottom = 'auto';
-      menu.style.top = `${Math.round(toggleRect.bottom + gap)}px`;
-      menu.dataset.placement = 'bottom';
-    }
+    menu.style.bottom = 'auto';
+    menu.style.top = `${Math.round(toggleRect.bottom + gap)}px`;
+    menu.style.overflowY = 'visible';
+    menu.dataset.placement = 'bottom';
   }
 
   function schedulePosition() {
@@ -235,6 +230,7 @@ export function initResumeDropdown() {
     menu.style.position = '';
     menu.style.zIndex = '';
     menu.style.margin = '';
+    menu.style.overflowY = '';
     menu.removeAttribute('data-placement');
     restoreMenuHome();
     if (restoreFocus) {

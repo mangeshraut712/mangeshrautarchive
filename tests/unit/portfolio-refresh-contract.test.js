@@ -17,6 +17,34 @@ describe('portfolio visual refresh contracts', () => {
     expect(html).toMatch(/\.launch-intro-hello\s*\{[\s\S]*?width:/);
   });
 
+  it('owns a centered first-viewport hero and bottom resume menu', async () => {
+    const [css, html, resume] = await Promise.all([
+      read('src/assets/css/homepage-hero-polish.css'),
+      read('src/index.html'),
+      read('src/js/modules/resume-dropdown.js'),
+    ]);
+
+    expect(css).not.toContain('grid-template-columns');
+    expect(css).toContain('min-height: calc(100svh - var(--site-nav-offset');
+    expect(css).toMatch(
+      /#home\.hero-section \.hero-layout-wrapper\s*\{[\s\S]*?display:\s*flex !important;[\s\S]*?flex-direction:\s*column !important;/
+    );
+    expect(css).toMatch(/\.resume-dropdown-menu\s*\{[\s\S]*?background:\s*#ffffff !important;/);
+    expect(css).toMatch(
+      /#home\.hero-section \.profile-image-wrapper[\s\S]*?box-shadow:\s*none !important;/
+    );
+    expect(css).toMatch(
+      /#home\.hero-section #profile-image\s*\{[\s\S]*?border:\s*0 !important;[\s\S]*?box-shadow:\s*none !important;/
+    );
+    expect(css).toContain('@media (max-width: 768px)');
+    expect(html).toMatch(/\.launch-intro-path\s*\{[\s\S]*?stroke-dashoffset:\s*1/);
+    expect(html).not.toContain('resume-menu-header');
+    expect(html.match(/class="resume-dropdown-item"/g)).toHaveLength(2);
+    expect(resume).not.toContain("menu.dataset.placement = 'top'");
+    expect(resume).toContain("menu.dataset.placement = 'bottom'");
+    expect(resume).not.toContain("menu.style.overflowY = 'auto'");
+  });
+
   it('versions every explicit homepage icon reference', async () => {
     const [html, versionSource] = await Promise.all([
       read('src/index.html'),

@@ -1254,7 +1254,7 @@ html body #home .hero-description-line {
 
 /* Safari & Chrome Cross-Browser Gradient Highlight for Key Technical Terms */
 html body #home .hero-text-highlight {
-  display: inline-block !important;
+  display: inline !important;
   font-weight: 600 !important;
   color: transparent !important;
   background-image: linear-gradient(135deg, #0071e3 0%, #005bb5 100%) !important;

@@ -1437,7 +1437,7 @@ html:not(.dark)
     .contact-submit,
     .engineering-open-btn,
     #projects #github-projects-container .btn-github
-  ):not(.is-disabled):not(:disabled) {
+  ):not(#resume-dropdown-toggle):not(.is-disabled):not(:disabled) {
   background: #0071e3 !important;
   background-color: #0071e3 !important;
   background-image: none !important;
@@ -1456,7 +1456,7 @@ html.dark
     .contact-submit,
     .engineering-open-btn,
     #projects #github-projects-container .btn-github
-  ):not(.is-disabled):not(:disabled) {
+  ):not(#resume-dropdown-toggle):not(.is-disabled):not(:disabled) {
   /* Keep #0071e3 for WCAG AA (white on #0a84ff fails ~3.64:1) */
   background: #0071e3 !important;
   background-color: #0071e3 !important;
@@ -2397,20 +2397,67 @@ html body:has(#go-to-top.visible) .a11y-toolbar {
 }
 
 @media (width <= 768px) {
-  /* Keep the initial hero clear; the standard bottom rail returns after scrolling. */
+  /* A compact, centered utility dock keeps controls out of the hero's reading path. */
+  html body:not(:has(#go-to-top.visible)) .a11y-toolbar,
+  html body:not(:has(#go-to-top.visible)) #website-share-toggle.website-share-fab,
+  html body:not(:has(#go-to-top.visible)) #chatbot-toggle,
+  html body:has(#go-to-top.visible) .a11y-toolbar,
+  html body:has(#go-to-top.visible) #website-share-toggle.website-share-fab,
+  html body:has(#go-to-top.visible) #chatbot-toggle,
+  html body:has(#go-to-top.visible) #go-to-top,
+  html body:has(#go-to-top.visible) #go-to-top.visible {
+    top: auto !important;
+    right: auto !important;
+    bottom: max(1rem, env(safe-area-inset-bottom, 0px)) !important;
+    transform: none !important;
+  }
+
+  html body .a11y-toolbar__main,
+  html body #website-share-toggle.website-share-fab,
+  html body #chatbot-toggle,
+  html body #go-to-top {
+    width: 44px !important;
+    height: 44px !important;
+    min-width: 44px !important;
+    min-height: 44px !important;
+  }
+
   html body:not(:has(#go-to-top.visible)) .a11y-toolbar {
-    top: max(68px, calc(env(safe-area-inset-top, 0px) + 68px)) !important;
-    bottom: auto !important;
+    left: calc(50% - 76px) !important;
   }
 
   html body:not(:has(#go-to-top.visible)) #website-share-toggle.website-share-fab {
-    top: max(120px, calc(env(safe-area-inset-top, 0px) + 120px)) !important;
-    bottom: auto !important;
+    left: calc(50% - 22px) !important;
   }
 
   html body:not(:has(#go-to-top.visible)) #chatbot-toggle {
-    top: max(172px, calc(env(safe-area-inset-top, 0px) + 172px)) !important;
-    bottom: auto !important;
+    left: calc(50% + 32px) !important;
+  }
+
+  html body:has(#go-to-top.visible) .a11y-toolbar {
+    left: calc(50% - 103px) !important;
+  }
+
+  html body:has(#go-to-top.visible) #website-share-toggle.website-share-fab {
+    left: calc(50% - 49px) !important;
+  }
+
+  html body:has(#go-to-top.visible) #chatbot-toggle {
+    left: calc(50% + 5px) !important;
+  }
+
+  html body:has(#go-to-top.visible) #go-to-top,
+  html body:has(#go-to-top.visible) #go-to-top.visible {
+    left: calc(50% + 59px) !important;
+  }
+
+  html body:has(.resume-dropdown-wrapper.is-open) .a11y-toolbar,
+  html body:has(.resume-dropdown-wrapper.is-open) #website-share-toggle.website-share-fab,
+  html body:has(.resume-dropdown-wrapper.is-open) #chatbot-toggle,
+  html body:has(.resume-dropdown-wrapper.is-open) #go-to-top {
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
   }
 }
 
