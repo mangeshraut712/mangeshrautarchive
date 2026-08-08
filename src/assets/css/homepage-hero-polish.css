@@ -4,10 +4,10 @@
 #home.home-hero,
 section#home.hero-section.home-hero {
   display: flex !important;
-  min-height: calc(100svh - var(--site-nav-offset, 4.25rem) - 1px) !important;
+  min-height: calc(100vh - var(--site-nav-offset, 4.25rem)) !important;
   height: auto !important;
   max-height: none !important;
-  padding: clamp(1rem, 2.4vh, 1.75rem) 1rem !important;
+  padding: clamp(2rem, 4.5vh, 4rem) 1.5rem !important;
   align-items: center !important;
   justify-content: center !important;
   overflow: visible !important;
@@ -30,9 +30,9 @@ section#home.hero-section.home-hero {
 
 #home.hero-section .hero-layout-wrapper {
   display: flex !important;
-  gap: clamp(0.5rem, 1.1vh, 0.85rem) !important;
-  width: min(100%, 48rem) !important;
-  max-width: 48rem !important;
+  gap: clamp(1.15rem, 2.6vh, 2rem) !important;
+  width: min(100%, 52rem) !important;
+  max-width: 52rem !important;
   min-height: 0 !important;
   height: auto !important;
   margin: 0 auto !important;
@@ -55,15 +55,15 @@ section#home.hero-section.home-hero {
 
 #home.hero-section .profile-image-wrapper,
 body #home.hero-section .profile-image-wrapper {
-  width: 108px !important;
-  height: 108px !important;
-  min-width: 108px !important;
-  min-height: 108px !important;
+  width: 124px !important;
+  height: 124px !important;
+  min-width: 124px !important;
+  min-height: 124px !important;
   margin: 0 auto !important;
   border: 2px solid var(--apple-blue, #0071e3) !important;
   border-radius: 50% !important;
   background: var(--apple-bg, #fff) !important;
-  box-shadow: none !important;
+  box-shadow: 0 0 24px rgba(0, 113, 227, 0.22) !important;
 }
 
 html.dark #home.hero-section .profile-image-wrapper {
@@ -89,7 +89,7 @@ html.dark #home.hero-section .profile-image-wrapper {
 html body #home.hero-section .hero-text-block {
   display: flex !important;
   width: 100% !important;
-  max-width: 48rem !important;
+  max-width: 52rem !important;
   min-width: 0 !important;
   min-height: 0 !important;
   margin: 0 !important;
@@ -97,7 +97,7 @@ html body #home.hero-section .hero-text-block {
   flex-direction: column !important;
   align-items: center !important;
   justify-content: center !important;
-  gap: clamp(0.5rem, 1.05vh, 0.75rem) !important;
+  gap: clamp(0.9rem, 2.1vh, 1.4rem) !important;
   text-align: center !important;
   box-sizing: border-box !important;
 }
@@ -109,7 +109,7 @@ html body #home.hero-section .hero-text-block {
   margin: 0 !important;
   flex-direction: column !important;
   align-items: center !important;
-  gap: clamp(0.25rem, 0.65vh, 0.45rem) !important;
+  gap: clamp(0.35rem, 0.9vh, 0.65rem) !important;
   text-align: center !important;
 }
 
@@ -120,11 +120,11 @@ html body #home.hero-section .hero-text-block {
   margin: 0 !important;
   align-items: center !important;
   justify-content: center !important;
-  gap: 0.55rem !important;
+  gap: 0.65rem !important;
   flex-wrap: wrap !important;
-  font-size: clamp(2.2rem, 4vw, 3.2rem) !important;
-  line-height: 1.02 !important;
-  letter-spacing: -0.045em !important;
+  font-size: clamp(2.5rem, 4.4vw, 3.5rem) !important;
+  line-height: 1.05 !important;
+  letter-spacing: -0.04em !important;
   text-align: center !important;
 }
 
@@ -278,43 +278,46 @@ html.dark #home #name-pronounce-btn.name-pronounce-btn {
 #home.hero-section .hero-description,
 #home.hero-section .hero-description-lines {
   width: 100% !important;
-  max-width: 43rem !important;
-  margin: 0 !important;
+  max-width: 48rem !important;
+  margin: 0 auto !important;
   padding: 0 !important;
   color: var(--apple-text-secondary, #515154) !important;
-  font-size: clamp(0.95rem, 1.25vw, 1.08rem) !important;
-  line-height: 1.45 !important;
-  letter-spacing: -0.018em !important;
+  font-size: clamp(1rem, 1.3vw, 1.15rem) !important;
+  line-height: 1.65 !important;
+  letter-spacing: -0.015em !important;
   text-align: center !important;
 }
 
 #home .hero-description-line {
+  display: block !important;
   margin: 0 !important;
   text-align: center !important;
+  white-space: nowrap !important;
 }
 
 #home.hero-section .hero-actions {
   display: flex !important;
   width: 100% !important;
-  margin: 0 !important;
+  margin: 0.25rem auto 0 auto !important;
   align-items: center !important;
   justify-content: center !important;
-  gap: 0.75rem !important;
+  gap: 1.25rem !important;
   flex-wrap: wrap !important;
   overflow: visible !important;
 }
 
 html body #home.hero-section .hero-actions {
-  margin: 0 !important;
+  margin: 0.25rem auto 0 auto !important;
+  gap: 1.25rem !important;
 }
 
 #home .hero-cta {
-  min-height: 48px !important;
+  min-height: 50px !important;
   margin: 0 !important;
-  padding: 0.75rem 1.4rem !important;
-  border-radius: 999px !important;
-  font-size: 0.95rem !important;
-  font-weight: 650 !important;
+  padding: 0.75rem 1.8rem !important;
+  border-radius: 9999px !important;
+  font-size: 1rem !important;
+  font-weight: 600 !important;
 }
 
 html body #home.hero-section .hero-actions .hero-cta.hero-cta-primary,
@@ -413,7 +416,7 @@ html body #home.hero-section .hero-actions .hero-cta.hero-cta-primary:focus-visi
   #home.home-hero,
   section#home.hero-section.home-hero {
     min-height: calc(100svh - var(--site-nav-offset, 4.25rem)) !important;
-    padding: clamp(1.5rem, 3vh, 2.5rem) 1rem 1.25rem !important;
+    padding: clamp(1.75rem, 3.5vh, 2.75rem) 1.25rem 1.5rem !important;
     display: flex !important;
     flex-direction: column !important;
     justify-content: center !important;
@@ -421,68 +424,68 @@ html body #home.hero-section .hero-actions .hero-cta.hero-cta-primary:focus-visi
   }
 
   #home.hero-section .hero-layout-wrapper {
-    gap: clamp(0.65rem, 1.6vh, 1.1rem) !important;
+    gap: clamp(0.95rem, 2.2vh, 1.45rem) !important;
     width: 100% !important;
-    max-width: 28rem !important;
+    max-width: 30rem !important;
     margin: 0 auto !important;
   }
 
   #home.hero-section .hero-text-block.home-hero-text,
   html body #home.hero-section .hero-text-block {
-    gap: clamp(0.55rem, 1.4vh, 0.95rem) !important;
+    gap: clamp(0.75rem, 1.8vh, 1.15rem) !important;
   }
 
   #home.hero-section .profile-image-wrapper,
   body #home.hero-section .profile-image-wrapper {
-    width: 80px !important;
-    height: 80px !important;
-    min-width: 80px !important;
-    min-height: 80px !important;
+    width: 104px !important;
+    height: 104px !important;
+    min-width: 104px !important;
+    min-height: 104px !important;
   }
 
   #home.hero-section .hero-header {
-    gap: 0.35rem !important;
+    gap: 0.45rem !important;
   }
 
   #home.hero-section .hero-name,
   #home-heading.hero-name {
-    font-size: clamp(1.85rem, 8vw, 2.25rem) !important;
-    line-height: 1.15 !important;
+    font-size: clamp(2.15rem, 7.8vw, 2.55rem) !important;
+    line-height: 1.12 !important;
   }
 
   #home .hero-identity-item {
-    min-height: 32px !important;
-    padding: 0.3rem 0.75rem !important;
+    min-height: 34px !important;
+    padding: 0.35rem 0.8rem !important;
   }
 
   #home .hero-title {
-    font-size: 0.92rem !important;
+    font-size: clamp(1.02rem, 3.8vw, 1.18rem) !important;
   }
 
   #home .hero-role-flip {
-    min-height: 1.75rem !important;
-    font-size: 1rem !important;
+    min-height: 1.9rem !important;
+    font-size: clamp(1.08rem, 3.8vw, 1.25rem) !important;
   }
 
   #home .hero-role-flip #hero-role-word,
   #home .hero-role-flip strong {
-    font-size: 1.18rem !important;
+    font-size: clamp(1.22rem, 4.4vw, 1.42rem) !important;
   }
 
   #home.hero-section .hero-insights-band {
-    min-height: 36px !important;
-    gap: 0.5rem !important;
+    min-height: 38px !important;
+    gap: 0.55rem !important;
   }
 
   #home .hero-pill-badge {
-    min-height: 36px !important;
-    padding: 0.4rem 0.85rem !important;
-    font-size: 0.82rem !important;
+    min-height: 38px !important;
+    padding: 0.45rem 0.9rem !important;
+    font-size: 0.85rem !important;
   }
 
   #home.hero-section .music-card,
   #home.hero-section #music-card {
-    min-height: 48px !important;
+    min-height: 50px !important;
   }
 
   #home.hero-section .hero-description,
@@ -490,10 +493,11 @@ html body #home.hero-section .hero-actions .hero-cta.hero-cta-primary:focus-visi
     display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
-    gap: 0.35rem !important;
+    gap: 0.4rem !important;
     width: 100% !important;
-    font-size: clamp(0.72rem, 3.05vw, 0.88rem) !important;
-    line-height: 1.35 !important;
+    font-size: clamp(0.75rem, 3.1vw, 0.88rem) !important;
+    line-height: 1.45 !important;
+    letter-spacing: -0.015em !important;
   }
 
   #home.hero-section .hero-description-line {
@@ -501,15 +505,16 @@ html body #home.hero-section .hero-actions .hero-cta.hero-cta-primary:focus-visi
     width: 100% !important;
     text-align: center !important;
     white-space: nowrap !important;
+    font-size: clamp(0.75rem, 3.1vw, 0.88rem) !important;
   }
 
   html body #home.hero-section .hero-actions {
-    width: min(100%, 22rem) !important;
-    margin: 0.35rem auto 0 !important;
+    width: min(100%, 21.5rem) !important;
+    margin: 0.5rem auto 0 auto !important;
     flex-direction: column !important;
     align-items: center !important;
     justify-content: center !important;
-    gap: 0.75rem !important;
+    gap: 0.8rem !important;
   }
 
   #home.hero-section .hero-actions > *,
@@ -517,13 +522,13 @@ html body #home.hero-section .hero-actions .hero-cta.hero-cta-primary:focus-visi
   #home .resume-dropdown-wrapper,
   #home .resume-dropdown-toggle {
     width: 100% !important;
-    max-width: 22rem !important;
+    max-width: 21.5rem !important;
   }
 
   html body #home.hero-section .hero-actions .hero-cta {
-    min-height: 46px !important;
-    padding: 0.65rem 1.25rem !important;
-    font-size: 0.92rem !important;
+    min-height: 48px !important;
+    padding: 0.7rem 1.25rem !important;
+    font-size: 0.98rem !important;
   }
 
   #home .hero-cta-secondary {
