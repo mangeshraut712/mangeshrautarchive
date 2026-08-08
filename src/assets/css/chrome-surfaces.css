@@ -436,23 +436,24 @@ html.dark #home .music-card-inner .artist-name {
   margin-left: auto !important;
 }
 
-/* Live bars sit on the art, not outside the clipped pill */
+/* Live equalizer bars sit inline next to status text */
 #home .music-card-inner .playing-indicator {
-  position: absolute !important;
-  left: 50% !important;
-  bottom: 1px !important;
-  transform: translateX(-50%) !important;
-  display: flex !important;
+  position: relative !important;
+  inset: auto !important;
+  transform: none !important;
+  display: inline-flex !important;
   align-items: flex-end !important;
   gap: 2px !important;
   height: 12px !important;
-  padding: 2px 5px !important;
-  background: rgb(29 185 84 / 95%) !important;
-  border-radius: 999px !important;
-  box-shadow: 0 2px 6px rgb(29 185 84 / 40%) !important;
+  padding: 0 !important;
+  margin-left: 0.25rem !important;
+  background: transparent !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
   opacity: 0 !important;
-  z-index: 2 !important;
+  z-index: 1 !important;
   pointer-events: none !important;
+  vertical-align: middle !important;
 }
 
 #home .music-card-inner .playing-indicator.active,
@@ -463,102 +464,54 @@ html.dark #home .music-card-inner .artist-name {
 
 #home .music-card-inner .playing-indicator span {
   width: 2px !important;
-  border-radius: 2px !important;
-  background: #ffffff !important;
+  border-radius: 1px !important;
+  background: #34c759 !important;
 }
 
 #home .music-card-spotify-link {
   position: relative !important;
-  z-index: 1 !important;
+  z-index: 2 !important;
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
   flex-shrink: 0 !important;
   margin-left: auto !important;
-  width: 28px !important;
-  height: 28px !important;
-  min-width: 28px !important;
-  min-height: 28px !important;
+  width: 30px !important;
+  height: 30px !important;
+  min-width: 30px !important;
+  min-height: 30px !important;
   border-radius: 50% !important;
-  background: rgb(29 185 84 / 12%) !important;
-  background-color: rgb(29 185 84 / 12%) !important;
+  background: rgba(29, 185, 84, 0.12) !important;
+  background-color: rgba(29, 185, 84, 0.12) !important;
   color: #1db954 !important;
   -webkit-text-fill-color: #1db954 !important;
-  border: none !important;
+  border: 1px solid rgba(29, 185, 84, 0.25) !important;
   box-shadow: none !important;
   text-decoration: none !important;
-  font-size: 1rem !important;
+  font-size: 1.05rem !important;
   opacity: 1 !important;
-}
-
-#home .music-card-lastfm-link {
-  position: relative !important;
-  z-index: 1 !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  flex-shrink: 0 !important;
-  width: 28px !important;
-  height: 28px !important;
-  min-width: 28px !important;
-  min-height: 28px !important;
-  border-radius: 50% !important;
-  background: rgb(213 16 7 / 10%) !important;
-  background-color: rgb(213 16 7 / 10%) !important;
-  color: #d51007 !important;
-  -webkit-text-fill-color: #d51007 !important;
-  border: none !important;
-  box-shadow: none !important;
-  text-decoration: none !important;
-  font-size: 0.95rem !important;
-  opacity: 1 !important;
-}
-
-#home .music-card-lastfm-link i,
-#home .music-card-lastfm-link .fab {
-  color: #d51007 !important;
-  -webkit-text-fill-color: #d51007 !important;
-}
-
-#home .music-card-lastfm-link:hover {
-  background: rgb(213 16 7 / 18%) !important;
-  background-color: rgb(213 16 7 / 18%) !important;
-  transform: scale(1.06);
-}
-
-#home .music-card.is-playing .album-art-container {
-  animation: listen-now-art-glow 2.4s ease-in-out infinite;
-}
-
-@keyframes listen-now-art-glow {
-  0%,
-  100% {
-    box-shadow: 0 0 0 0 rgb(29 185 84 / 0%);
-  }
-
-  50% {
-    box-shadow: 0 0 0 4px rgb(29 185 84 / 18%);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  #home .music-card.is-playing .album-art-container {
-    animation: none;
-  }
-}
-
-#home .music-card-spotify-link i,
-#home .music-card-spotify-link .fab,
-#home .music-card-spotify-link svg {
-  color: #1db954 !important;
-  -webkit-text-fill-color: #1db954 !important;
-  fill: currentColor !important;
+  transition:
+    transform 0.22s ease,
+    background 0.22s ease,
+    color 0.22s ease,
+    box-shadow 0.22s ease !important;
 }
 
 #home .music-card-spotify-link:hover {
-  background: rgb(29 185 84 / 20%) !important;
-  background-color: rgb(29 185 84 / 20%) !important;
-  transform: scale(1.06);
+  transform: scale(1.12) !important;
+  background: #1db954 !important;
+  background-color: #1db954 !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  box-shadow: 0 4px 14px rgba(29, 185, 84, 0.45) !important;
+}
+
+#home .music-card-spotify-link:hover i,
+#home .music-card-spotify-link:hover .fab,
+#home .music-card-spotify-link:hover svg {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  fill: #ffffff !important;
 }
 
 #home .music-card[data-music-state='loading'] .music-card-inner {

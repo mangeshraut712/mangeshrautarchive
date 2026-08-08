@@ -925,7 +925,6 @@ function initLastFmService() {
     playingIndicator: document.getElementById('playing-indicator'),
     musicCard: document.getElementById('music-card'),
     spotifyLink: document.getElementById('music-spotify-link'),
-    lastfmLink: document.getElementById('music-lastfm-link'),
     statusLiveDot: document.getElementById('status-live-dot'),
   };
 
