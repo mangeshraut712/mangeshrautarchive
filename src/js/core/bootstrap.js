@@ -681,8 +681,8 @@ function initLaunchIntro(documentRef = document) {
 
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const root = documentRef.documentElement;
-    // Meta finishes ~1.55s; hold ~700ms; then 500ms exit (shadcn overlay pacing).
-    const totalDuration = prefersReducedMotion ? 560 : 2300;
+    // Hindi stroke draw finishes around 1.12s; hold briefly before the 500ms exit.
+    const totalDuration = prefersReducedMotion ? 560 : 1800;
     const fadeDuration = 500;
     const wasPrimed = globalThis.__portfolioLaunchIntroPrimed === true;
 

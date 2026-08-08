@@ -287,7 +287,8 @@ test.describe('Sitewide card hover audit', () => {
 });
 
 test.describe('Standalone page card hover audit', () => {
-  test.beforeEach((_fixtures, testInfo) => {
+  test.beforeEach(({ page }, testInfo) => {
+    void page;
     test.skip(
       testInfo.project.use.hasTouch === true,
       'Hover styling is not exposed on touch-only devices'

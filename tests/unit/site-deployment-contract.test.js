@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
+import { ASSET_VER } from '../../scripts/build/asset-version.mjs';
 
 const root = process.cwd();
 const publicPages = [
@@ -24,14 +25,23 @@ describe('public deployment contract', () => {
   it('uses project-path-safe favicon URLs on every source page', () => {
     for (const page of publicPages) {
       const html = readProjectFile(`src/${page}`);
-      expect(html, page).toContain('rel="icon" href="favicon.svg"');
+      expect(html, page).toContain(`rel="icon" href="favicon.svg?v=${ASSET_VER}"`);
       expect(html, page).not.toMatch(/(?:href|src)="\/favicon/);
       expect(html, page).not.toMatch(/href="\/apple-touch-icon/);
+
+      const iconHrefs = [
+        ...html.matchAll(/<link[^>]+rel="(?:icon|apple-touch-icon)"[^>]+href="([^"]+)"/g),
+      ].map(match => match[1]);
+      expect(iconHrefs.length, page).toBeGreaterThan(0);
+      for (const href of iconHrefs) {
+        expect(href, `${page}: ${href}`).toContain(`?v=${ASSET_VER}`);
+      }
     }
 
     const manifest = JSON.parse(readProjectFile('src/manifest.json'));
     for (const icon of manifest.icons) {
       expect(icon.src).not.toMatch(/^\//);
+      expect(icon.src).toContain(`?v=${ASSET_VER}`);
     }
   });
 

@@ -84,12 +84,22 @@ test.describe('Mobile viewport fit', () => {
     await page.waitForSelector('.hero-text-block', { state: 'visible' });
 
     const overlaps = await page.evaluate(() => {
-      const content = document.querySelector('.hero-text-block')?.getBoundingClientRect();
       const controls = [
         document.querySelector('#chatbot-toggle'),
         document.querySelector('#website-share-toggle'),
         document.querySelector('.a11y-toolbar__main'),
       ];
+      const content = [
+        '.hero-name',
+        '.hero-title',
+        '.hero-role-flip',
+        '.hero-badge-cluster',
+        '.music-card',
+        '.hero-description-line',
+        '.hero-cta',
+      ].flatMap(selector =>
+        [...document.querySelectorAll(selector)].flatMap(element => [...element.getClientRects()])
+      );
       const intersects = (a, b) =>
         a &&
         b &&
@@ -97,7 +107,8 @@ test.describe('Mobile viewport fit', () => {
 
       return controls.map(control => {
         if (!control || getComputedStyle(control).visibility === 'hidden') return false;
-        return intersects(content, control.getBoundingClientRect());
+        const controlRect = control.getBoundingClientRect();
+        return content.some(contentRect => intersects(contentRect, controlRect));
       });
     });
 

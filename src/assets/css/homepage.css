@@ -2052,7 +2052,7 @@ html.launch-intro-active body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: min(90vw, 960px);
+  width: min(76vw, 760px);
   text-align: center;
   transform: scale(0.96);
   opacity: 0;
@@ -2080,8 +2080,9 @@ html.launch-intro-active body {
 .launch-intro-hello {
   position: relative;
   display: block;
-  width: min(72vw, 820px);
+  width: 100%;
   height: auto;
+  max-height: 52vh;
   color: #30231d;
   filter: drop-shadow(0 14px 28px rgb(48 35 29 / 8%));
 }
@@ -2150,48 +2151,6 @@ html.dark .launch-intro-hello {
 .launch-intro-hello .launch-intro-path:nth-of-type(10) {
   --hello-duration: 0.22s;
   --hello-delay: 0.9s;
-}
-
-.launch-intro-meta {
-  margin-top: clamp(18px, 2.5vw, 28px);
-  opacity: 0;
-  animation: launchIntroMetaIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) 1.05s forwards;
-}
-
-.launch-intro-kicker,
-.launch-intro-label {
-  margin: 0;
-  font-weight: 500;
-  color: rgb(77 58 50 / 58%) !important;
-  text-transform: uppercase;
-}
-
-html.dark .launch-intro-kicker,
-html.dark .launch-intro-label {
-  color: rgb(241 231 220 / 72%) !important;
-}
-
-.launch-intro-kicker {
-  font-size: clamp(0.8rem, 0.9vw, 0.95rem);
-  letter-spacing: 0.18em;
-}
-
-.launch-intro-label {
-  margin-top: 0.8rem;
-  font-size: clamp(0.88rem, 1vw, 1.05rem);
-  letter-spacing: 0.42em;
-}
-
-@keyframes launchIntroMetaIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
 
 @keyframes heroHelloReveal {
@@ -3076,20 +3035,6 @@ html:not(.dark) .hero-stat-label {
     width: min(88vw, 520px);
   }
 
-  .launch-intro-meta {
-    margin-top: 1rem;
-  }
-
-  .launch-intro-kicker {
-    font-size: 0.72rem;
-    letter-spacing: 0.14em;
-  }
-
-  .launch-intro-label {
-    font-size: 0.82rem;
-    letter-spacing: 0.3em;
-  }
-
   .home-hero,
   #home.hero-section,
   #home.home-hero,
@@ -3309,12 +3254,6 @@ html:not(.dark) .hero-stat-label {
     animation: none;
     opacity: 1;
     stroke-dashoffset: 0;
-  }
-
-  .launch-intro-meta {
-    animation: none;
-    opacity: 1;
-    transform: none;
   }
 }
 

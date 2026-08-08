@@ -81,10 +81,10 @@ function pageShell({
     <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
     <meta name="color-scheme" content="light dark" />
     <title>${escapeHTML(title)}</title>
-    <link rel="icon" href="${ASSET_PREFIX}/favicon.svg" type="image/svg+xml" />
-    <link rel="icon" href="${ASSET_PREFIX}/favicon.ico" sizes="48x48" />
-    <link rel="icon" href="${ASSET_PREFIX}/favicon-32x32.png" type="image/png" sizes="32x32" />
-    <link rel="apple-touch-icon" href="${ASSET_PREFIX}/apple-touch-icon.png" sizes="180x180" />
+    <link rel="icon" href="${ASSET_PREFIX}/favicon.svg?v=${ASSET_VER}" type="image/svg+xml" />
+    <link rel="icon" href="${ASSET_PREFIX}/favicon.ico?v=${ASSET_VER}" sizes="48x48" />
+    <link rel="icon" href="${ASSET_PREFIX}/favicon-32x32.png?v=${ASSET_VER}" type="image/png" sizes="32x32" />
+    <link rel="apple-touch-icon" href="${ASSET_PREFIX}/apple-touch-icon.png?v=${ASSET_VER}" sizes="180x180" />
 <link rel="manifest" href="${ASSET_PREFIX}/manifest.json" />
     <link rel="alternate" type="application/rss+xml" title="RSS" href="${SITE_URL}/rss.xml" />
     <link rel="alternate" type="application/atom+xml" title="Atom" href="${SITE_URL}/feed.xml" />

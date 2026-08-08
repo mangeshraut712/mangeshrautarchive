@@ -30,6 +30,15 @@
   --duration-ui-fast: 140ms;
 }
 
+@media (width <= 768px) {
+  :root {
+    --fab-size: 44px;
+    --fab-gap: 8px;
+    --fab-edge: max(2px, env(safe-area-inset-right, 0px));
+    --fab-bottom: max(10px, env(safe-area-inset-bottom, 0px));
+  }
+}
+
 /* ─── Apple HIG: minimum 44×44 interactive chrome ─── */
 @media (pointer: coarse), (max-width: 900px) {
   #global-nav.global-nav.dynamic-island .nav-link,

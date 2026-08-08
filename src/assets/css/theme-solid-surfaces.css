@@ -44,6 +44,15 @@
   --card-border-hover: #0071e3;
 }
 
+@media (width <= 768px) {
+  :root {
+    --theme-fab-edge: max(2px, env(safe-area-inset-right, 0px));
+    --theme-fab-bottom: max(10px, env(safe-area-inset-bottom, 0px));
+    --theme-fab-size: 44px;
+    --theme-fab-gap: 8px;
+  }
+}
+
 html.dark,
 html[data-theme='dark'] {
   --card-border-rest: #2c2c2e;
@@ -2385,6 +2394,24 @@ html body:has(#go-to-top.visible) #website-share-toggle.website-share-fab {
 
 html body:has(#go-to-top.visible) .a11y-toolbar {
   bottom: var(--fab-slot-3) !important;
+}
+
+@media (width <= 768px) {
+  /* Keep the initial hero clear; the standard bottom rail returns after scrolling. */
+  html body:not(:has(#go-to-top.visible)) .a11y-toolbar {
+    top: max(68px, calc(env(safe-area-inset-top, 0px) + 68px)) !important;
+    bottom: auto !important;
+  }
+
+  html body:not(:has(#go-to-top.visible)) #website-share-toggle.website-share-fab {
+    top: max(120px, calc(env(safe-area-inset-top, 0px) + 120px)) !important;
+    bottom: auto !important;
+  }
+
+  html body:not(:has(#go-to-top.visible)) #chatbot-toggle {
+    top: max(172px, calc(env(safe-area-inset-top, 0px) + 172px)) !important;
+    bottom: auto !important;
+  }
 }
 
 /* ==========================================================================

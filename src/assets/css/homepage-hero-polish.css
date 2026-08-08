@@ -1,391 +1,388 @@
-/* =============================================================
-   homepage-hero-polish.css
-   Apple-grade hero section layout polish for desktop + mobile.
-   Loaded AFTER homepage.css + apple-premium-overrides.css so
-   these high-specificity selectors win cleanly.
-   ============================================================= */
-
-/* ═════════════════════════════════════════════════════════════
-   1. Desktop One-Page Fit (≥769px)
-   Guarantees 100% zero-peek desktop fit. The entire hero section
-   fits inside ~380px content height so #about is 100% hidden below fold.
-   ═════════════════════════════════════════════════════════════ */
-@media (min-width: 769px) {
-  #home.hero-section,
-  #home.home-hero,
-  #home.hero-section.home-hero,
-  section#home,
-  body #home {
-    min-height: calc(100vh - var(--site-nav-offset, 4.25rem) - 1px) !important;
-    height: auto !important;
-    max-height: calc(100vh - var(--site-nav-offset, 4.25rem) - 1px) !important;
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    justify-content: center !important;
-    padding-top: 0 !important;
-    padding-bottom: 0 !important;
-    padding-block: 0 !important;
-    margin: 0 !important;
-    margin-block: 0 !important;
-    overflow: hidden !important;
-    box-sizing: border-box !important;
-  }
-
-  #home > .container-fluid,
-  #home .hero-intro-wrapper,
-  #home .hero-layout-wrapper {
-    height: 100% !important;
-    max-height: 100% !important;
-    width: 100% !important;
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    justify-content: center !important;
-    margin-inline: auto !important;
-    padding-block: 0 !important;
-    gap: 0.1rem !important;
-    box-sizing: border-box !important;
-  }
-
-  /* Compact Desktop Avatar: 108px */
-  #home.hero-section .profile-image-wrapper,
-  body #home .profile-image-wrapper {
-    width: 108px !important;
-    height: 108px !important;
-    min-width: 108px !important;
-    min-height: 108px !important;
-  }
-
-  #home.hero-section .hero-image-block {
-    margin-bottom: 0.2rem !important;
-  }
-
-  /* Main Name Heading */
-  #home.hero-section .hero-name,
-  #home .hero-name {
-    font-size: clamp(1.85rem, 3.2vw, 2.35rem) !important;
-    font-weight: 800 !important;
-    line-height: 1.08 !important;
-    letter-spacing: -0.038em !important;
-    margin-bottom: 0.05rem !important;
-  }
-
-  /* Subtitle */
-  #home.hero-section .hero-title,
-  #home .hero-title {
-    font-size: clamp(0.95rem, 1.1vw, 1.08rem) !important;
-    font-weight: 600 !important;
-    letter-spacing: -0.015em !important;
-    color: #6e6e73 !important;
-    margin: 0.04rem auto 0.1rem !important;
-  }
-
-  html.dark #home.hero-section .hero-title,
-  html.dark #home .hero-title {
-    color: #86868b !important;
-  }
-
-  /* Identity strip ("he/him") */
-  #home .hero-identity-strip {
-    font-size: 0.8rem !important;
-    font-weight: 500 !important;
-    color: #86868b !important;
-    margin-bottom: 0.08rem !important;
-  }
-
-  /* Role Flip */
-  #home .hero-role-flip,
-  body .hero-role-flip {
-    font-size: clamp(0.92rem, 1.05vw, 1.02rem) !important;
-    font-weight: 600 !important;
-    color: #515154 !important;
-    min-height: 1.8rem !important;
-    margin: 0.04rem auto 0.12rem !important;
-    gap: 0.3rem !important;
-    display: inline-flex !important;
-    align-items: baseline !important;
-    justify-content: center !important;
-  }
-
-  #home .hero-role-flip strong,
-  #home .hero-role-flip #hero-role-word,
-  body .hero-role-flip strong {
-    font-size: clamp(1.1rem, 1.25vw, 1.22rem) !important;
-    font-weight: 800 !important;
-    min-height: 1.25em !important;
-    min-width: 0 !important;
-  }
-
-  /* Insights band (badges) */
-  #home.hero-section .hero-insights-band {
-    margin-top: 0.1rem !important;
-    margin-bottom: 0.1rem !important;
-    min-height: 2.2rem !important;
-  }
-
-  #home .hero-pill-badge,
-  #home .vibe-coder-badge,
-  #home .portfolio-reach-badge {
-    padding: 0.35rem 0.85rem !important;
-    font-size: 0.8rem !important;
-  }
-
-  /* Music card compact */
-  #home .music-card {
-    margin-top: 0.08rem !important;
-    margin-bottom: 0.04rem !important;
-    padding: 0.35rem 0.75rem !important;
-  }
-
-  /* Description Body */
-  #home.hero-section .hero-description,
-  #home .hero-description {
-    font-size: clamp(0.9rem, 1vw, 0.98rem) !important;
-    line-height: 1.38 !important;
-    letter-spacing: -0.012em !important;
-    color: #1d1d1f !important;
-    max-width: 42rem !important;
-  }
-
-  html.dark #home.hero-section .hero-description,
-  html.dark #home .hero-description {
-    color: #f5f5f7 !important;
-  }
-
-  #home.hero-section .hero-body {
-    margin: 0.18rem auto 0.25rem !important;
-  }
-
-  /* CTA Buttons — Apple pill CTAs */
-  #home.hero-section .hero-actions {
-    margin-top: 0.08rem !important;
-    gap: 0.65rem !important;
-    display: flex !important;
-    flex-direction: row !important;
-    justify-content: center !important;
-    align-items: center !important;
-    flex-wrap: wrap !important;
-    position: relative !important;
-    z-index: 20 !important;
-    overflow: visible !important;
-  }
-
-  #home.hero-section .hero-footer {
-    overflow: visible !important;
-    position: relative !important;
-    z-index: 20 !important;
-  }
-
-  #home.hero-section .hero-cta {
-    padding: 0.62rem 1.35rem !important;
-    font-size: 0.92rem !important;
-    font-weight: 600 !important;
-    letter-spacing: -0.01em !important;
-    border-radius: 980px !important;
-    min-height: 44px !important;
-  }
-
-  #home.hero-section .resume-dropdown-wrapper {
-    position: relative !important;
-    z-index: 30 !important;
-  }
-}
-
-/* ═════════════════════════════════════════════════════════════
-   2. Cross-Viewport Center Alignment Guarantee
-   ═════════════════════════════════════════════════════════════ */
+/* Final homepage layout ownership. Loaded after the shared component sheets. */
 
 #home.hero-section,
-section#home,
-.home-hero {
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  width: 100% !important;
-  max-width: 100% !important;
-  margin-inline: auto !important;
-  margin-left: auto !important;
-  margin-right: auto !important;
-  text-align: center !important;
+#home.home-hero,
+section#home.hero-section.home-hero {
+  min-height: 0 !important;
+  height: auto !important;
+  max-height: none !important;
+  padding: clamp(3.5rem, 7vw, 6.5rem) clamp(1rem, 4vw, 3rem) !important;
+  overflow: clip !important;
   box-sizing: border-box !important;
 }
 
 #home > .container-fluid,
-#home .hero-intro-wrapper,
-#home .hero-layout-wrapper {
+#home .hero-intro-wrapper {
   width: 100% !important;
   max-width: 100% !important;
-  margin-inline: auto !important;
-  margin-left: auto !important;
-  margin-right: auto !important;
-  display: flex !important;
-  flex-direction: column !important;
+  min-height: 0 !important;
+  height: auto !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+  overflow: visible !important;
+}
+
+#home.hero-section .hero-layout-wrapper {
+  display: grid !important;
+  grid-template-columns: minmax(14rem, 0.7fr) minmax(28rem, 1.3fr) !important;
+  gap: clamp(2.5rem, 7vw, 7rem) !important;
+  width: min(100%, 72rem) !important;
+  max-width: 72rem !important;
+  min-height: 0 !important;
+  height: auto !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
   align-items: center !important;
   justify-content: center !important;
-  text-align: center !important;
+  text-align: left !important;
   box-sizing: border-box !important;
 }
 
-/* Force override of ux-polish-fixes.css left-margin offset on mobile */
-html body #home .hero-text-block,
-#home.hero-section .hero-text-block,
-#home .hero-text-block,
-.hero-text-block {
-  width: 100% !important;
-  max-width: 760px !important;
-  margin-inline: auto !important;
-  margin-left: auto !important;
-  margin-right: auto !important;
-  text-align: center !important;
+#home.hero-section .hero-image-block {
   display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  justify-content: center !important;
-  box-sizing: border-box !important;
-}
-
-#home .hero-image-block,
-#home .hero-header,
-#home .hero-identity-strip,
-#home .hero-title,
-#home .hero-role-flip,
-#home .hero-insights-band,
-#home .hero-badge-cluster,
-#home .music-card,
-#home .hero-body,
-#home .hero-footer,
-#home .hero-actions {
   width: 100% !important;
-  margin-inline: auto !important;
-  margin-left: auto !important;
-  margin-right: auto !important;
-  text-align: center !important;
+  min-width: 0 !important;
+  margin: 0 !important;
   align-items: center !important;
   justify-content: center !important;
 }
 
-#home .hero-description {
-  display: block !important;
-  width: 100% !important;
-  margin-inline: auto !important;
-  margin-left: auto !important;
-  margin-right: auto !important;
-  text-align: center !important;
-}
-
-/* Profile photo centered */
 #home.hero-section .profile-image-wrapper,
-body #home .profile-image-wrapper,
-.profile-image-wrapper {
-  margin-inline: auto !important;
-  margin-left: auto !important;
-  margin-right: auto !important;
+body #home.hero-section .profile-image-wrapper {
+  width: clamp(10rem, 15vw, 12.5rem) !important;
+  height: clamp(10rem, 15vw, 12.5rem) !important;
+  min-width: clamp(10rem, 15vw, 12.5rem) !important;
+  min-height: clamp(10rem, 15vw, 12.5rem) !important;
+  margin: 0 auto !important;
+  border: 2px solid var(--apple-blue, #0071e3) !important;
+  border-radius: 50% !important;
+  background: var(--apple-bg, #fff) !important;
+  box-shadow:
+    0 0 0 8px color-mix(in srgb, var(--apple-blue, #0071e3) 7%, transparent),
+    0 24px 60px rgb(0 0 0 / 12%) !important;
 }
 
-/* Heading centered */
-#home.hero-section .hero-name,
-#home .hero-name {
-  display: flex !important;
-  flex-wrap: wrap !important;
-  align-items: center !important;
-  justify-content: center !important;
+html.dark #home.hero-section .profile-image-wrapper {
+  background: var(--apple-bg, #000) !important;
+  box-shadow:
+    0 0 0 8px color-mix(in srgb, var(--apple-blue, #0a84ff) 12%, transparent),
+    0 24px 60px rgb(0 0 0 / 48%) !important;
+}
+
+#home.hero-section .profile-image {
   width: 100% !important;
-  margin-inline: auto !important;
-  margin-left: auto !important;
-  margin-right: auto !important;
-  text-align: center !important;
+  height: 100% !important;
+  border-radius: 50% !important;
+  object-fit: cover !important;
 }
 
-/* ── Mobile (≤768px) — Preserved exact user-approved styling ── */
-@media (max-width: 768px) {
-  #home.hero-section .profile-image-wrapper,
-  body #home .profile-image-wrapper,
-  .profile-image-wrapper {
-    width: 96px !important;
-    height: 96px !important;
-    min-width: 96px !important;
-    min-height: 96px !important;
-    margin-bottom: 0.35rem !important;
-    margin-inline: auto !important;
-  }
+#home.hero-section .hero-text-block.home-hero-text,
+html body #home.hero-section .hero-text-block {
+  display: flex !important;
+  width: 100% !important;
+  max-width: 44rem !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  justify-content: center !important;
+  gap: clamp(1rem, 1.6vw, 1.35rem) !important;
+  text-align: left !important;
+  box-sizing: border-box !important;
+}
 
-  #home.hero-section.home-hero,
-  .home-hero,
+#home.hero-section .hero-header {
+  display: flex !important;
+  width: 100% !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  gap: 0.65rem !important;
+  text-align: left !important;
+}
+
+#home.hero-section .hero-name,
+#home-heading.hero-name {
+  display: flex !important;
+  width: 100% !important;
+  margin: 0 !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 0.55rem !important;
+  flex-wrap: wrap !important;
+  font-size: clamp(2.65rem, 4.5vw, 4.25rem) !important;
+  line-height: 0.98 !important;
+  letter-spacing: -0.055em !important;
+  text-align: left !important;
+}
+
+#home .hero-verified-badge {
+  width: clamp(1.35rem, 2vw, 1.75rem) !important;
+  height: clamp(1.35rem, 2vw, 1.75rem) !important;
+  min-width: clamp(1.35rem, 2vw, 1.75rem) !important;
+  min-height: clamp(1.35rem, 2vw, 1.75rem) !important;
+}
+
+#home .hero-verified-badge svg {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+#home .hero-identity-strip {
+  width: auto !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+}
+
+#home .hero-identity-item {
+  min-height: 36px !important;
+  padding: 0.42rem 0.8rem !important;
+  border-color: color-mix(in srgb, var(--apple-text, #1d1d1f) 12%, transparent) !important;
+  background: color-mix(in srgb, var(--apple-bg, #fff) 92%, transparent) !important;
+}
+
+#home .hero-title {
+  width: 100% !important;
+  margin: 0 !important;
+  color: var(--apple-text-secondary, #6e6e73) !important;
+  font-size: clamp(1rem, 1.3vw, 1.2rem) !important;
+  font-weight: 600 !important;
+  line-height: 1.35 !important;
+  letter-spacing: -0.02em !important;
+  text-align: left !important;
+}
+
+#home .hero-role-flip {
+  display: flex !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-height: 3.4rem !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  align-items: baseline !important;
+  justify-content: flex-start !important;
+  gap: 0.5rem !important;
+  flex-flow: row wrap !important;
+  color: var(--apple-text-secondary, #6e6e73) !important;
+  font-size: clamp(1.15rem, 1.6vw, 1.45rem) !important;
+  line-height: 1.2 !important;
+  text-align: left !important;
+}
+
+#home .hero-role-flip #hero-role-prefix {
+  width: auto !important;
+  margin: 0 !important;
+  white-space: nowrap !important;
+}
+
+#home .hero-role-flip #hero-role-word,
+#home .hero-role-flip strong {
+  display: inline !important;
+  width: auto !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  color: var(--apple-blue, #0071e3) !important;
+  font-size: clamp(1.45rem, 2.3vw, 2.15rem) !important;
+  font-weight: 750 !important;
+  line-height: 1.12 !important;
+  letter-spacing: -0.035em !important;
+  white-space: normal !important;
+  text-wrap: balance !important;
+}
+
+#home.hero-section .hero-insights-band {
+  display: flex !important;
+  width: 100% !important;
+  min-height: 44px !important;
+  margin: 0 !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+}
+
+#home .hero-badge-cluster {
+  width: auto !important;
+  margin: 0 !important;
+  justify-content: flex-start !important;
+  gap: 0.65rem !important;
+}
+
+#home .hero-pill-badge {
+  min-height: 44px !important;
+  padding: 0.55rem 1rem !important;
+  border-radius: 999px !important;
+  font-size: 0.9rem !important;
+}
+
+#home.hero-section .music-card,
+#home.hero-section #music-card {
+  width: fit-content !important;
+  max-width: min(22rem, 100%) !important;
+  min-height: 52px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  justify-content: flex-start !important;
+}
+
+#home.hero-section .hero-body,
+#home.hero-section .hero-footer {
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  text-align: left !important;
+}
+
+#home.hero-section .hero-description,
+#home.hero-section .hero-description-lines {
+  width: 100% !important;
+  max-width: 43rem !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  color: var(--apple-text-secondary, #515154) !important;
+  font-size: clamp(1rem, 1.35vw, 1.18rem) !important;
+  line-height: 1.55 !important;
+  letter-spacing: -0.018em !important;
+  text-align: left !important;
+}
+
+#home .hero-description-line {
+  margin: 0 !important;
+  text-align: left !important;
+}
+
+#home.hero-section .hero-actions {
+  display: flex !important;
+  width: 100% !important;
+  margin: 0 !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 0.75rem !important;
+  flex-wrap: wrap !important;
+  overflow: visible !important;
+}
+
+#home .hero-cta {
+  min-height: 48px !important;
+  margin: 0 !important;
+  padding: 0.75rem 1.4rem !important;
+  border-radius: 999px !important;
+  font-size: 0.95rem !important;
+  font-weight: 650 !important;
+}
+
+@media (max-width: 959px) {
   #home.hero-section,
-  section#home {
-    padding-top: max(3.25rem, calc(2rem + env(safe-area-inset-top, 0px))) !important;
-    padding-bottom: 14px !important;
+  #home.home-hero,
+  section#home.hero-section.home-hero {
+    padding: max(3.75rem, calc(2.5rem + env(safe-area-inset-top, 0px))) 1rem 2.75rem !important;
+    overflow: visible !important;
   }
 
-  html body #home .hero-text-block,
-  #home.hero-section .hero-text-block,
-  #home .hero-text-block {
-    width: 100% !important;
-    max-width: 100% !important;
-    margin-inline: auto !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
-    padding-inline: 0.75rem !important;
+  #home.hero-section .hero-layout-wrapper {
+    display: flex !important;
+    width: min(100%, 38rem) !important;
+    max-width: 38rem !important;
+    flex-direction: column !important;
+    gap: 1.35rem !important;
     text-align: center !important;
   }
 
-  #home .hero-name {
-    font-size: clamp(1.65rem, 6vw, 2.1rem) !important;
-    margin-bottom: 0.12rem !important;
+  #home.hero-section .profile-image-wrapper,
+  body #home.hero-section .profile-image-wrapper {
+    width: 104px !important;
+    height: 104px !important;
+    min-width: 104px !important;
+    min-height: 104px !important;
   }
 
-  #home .hero-title {
-    font-size: clamp(0.92rem, 3.6vw, 1.05rem) !important;
-    margin-bottom: 0.18rem !important;
-  }
-
-  #home .hero-description {
-    font-size: clamp(0.88rem, 3vw, 0.98rem) !important;
-    margin-bottom: 0.4rem !important;
-  }
-
+  #home.hero-section .hero-text-block.home-hero-text,
+  html body #home.hero-section .hero-text-block,
+  #home.hero-section .hero-header,
   #home .hero-role-flip,
-  .hero-role-flip {
-    min-height: 2.6rem !important;
-    margin: 0.05rem auto 0.3rem !important;
-    gap: 0.12rem !important;
-    display: flex !important;
-    flex-direction: column !important;
+  #home .hero-insights-band,
+  #home .hero-badge-cluster,
+  #home .music-card,
+  #home.hero-section .hero-body,
+  #home.hero-section .hero-footer,
+  #home.hero-section .hero-actions {
     align-items: center !important;
     justify-content: center !important;
     text-align: center !important;
   }
 
-  #home .hero-role-flip strong,
-  #home .hero-role-flip #hero-role-word,
-  #hero-role-word,
-  .hero-role-flip strong {
-    font-size: clamp(1.25rem, 5.2vw, 1.55rem) !important;
-    min-height: 1.35em !important;
-    min-width: 0 !important;
+  #home.hero-section .hero-text-block.home-hero-text,
+  html body #home.hero-section .hero-text-block {
+    max-width: 38rem !important;
+    gap: 1rem !important;
+  }
+
+  #home.hero-section .hero-name,
+  #home-heading.hero-name {
+    justify-content: center !important;
+    font-size: clamp(2rem, 8.5vw, 3rem) !important;
     text-align: center !important;
+  }
+
+  #home .hero-title,
+  #home.hero-section .hero-description,
+  #home .hero-description-line {
+    text-align: center !important;
+  }
+
+  #home .hero-role-flip {
+    min-height: 4rem !important;
+    gap: 0.35rem !important;
+    justify-content: center !important;
+  }
+
+  #home .hero-role-flip #hero-role-word,
+  #home .hero-role-flip strong {
+    font-size: clamp(1.35rem, 5.8vw, 1.8rem) !important;
+    text-align: center !important;
+  }
+
+  #home.hero-section .hero-description,
+  #home.hero-section .hero-description-lines {
+    max-width: 36rem !important;
+    font-size: clamp(0.95rem, 3.8vw, 1.08rem) !important;
+    line-height: 1.5 !important;
+  }
+}
+
+@media (max-width: 560px) {
+  #home.hero-section .hero-layout-wrapper {
+    gap: 1rem !important;
+  }
+
+  #home.hero-section .hero-text-block.home-hero-text,
+  html body #home.hero-section .hero-text-block {
+    gap: 0.85rem !important;
+  }
+
+  #home .hero-role-flip {
+    min-height: 4.25rem !important;
   }
 
   #home.hero-section .hero-actions {
-    margin-top: 0.1rem !important;
-    gap: 0.5rem !important;
+    width: min(100%, 21rem) !important;
     flex-direction: column !important;
-    align-items: center !important;
-    justify-content: center !important;
-    width: min(100%, 20rem) !important;
-    margin-inline: auto !important;
+  }
+
+  #home.hero-section .hero-actions > *,
+  #home .hero-cta,
+  #home .resume-dropdown-wrapper,
+  #home .resume-dropdown-toggle {
+    width: 100% !important;
+    max-width: 21rem !important;
   }
 }
 
-/* ── Small Mobile (≤480px) ──────────────────────────────────── */
-@media (max-width: 480px) {
-  #home.hero-section .profile-image-wrapper,
-  body #home .profile-image-wrapper,
-  .profile-image-wrapper {
-    width: 90px !important;
-    height: 90px !important;
-    min-width: 90px !important;
-    min-height: 90px !important;
+@media (prefers-reduced-motion: reduce) {
+  #home .profile-image-toggle:hover,
+  #home .hero-cta:hover {
+    transform: none !important;
   }
 }

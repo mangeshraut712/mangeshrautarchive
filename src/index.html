@@ -114,11 +114,11 @@
   <meta name="twitter:site" content="@mrcommando712" />
   <meta name="twitter:creator" content="@mrcommando712" />
 
-  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
-  <link rel="icon" href="favicon.ico" sizes="48x48" />
-  <link rel="icon" href="favicon-32x32.png" type="image/png" sizes="32x32" />
-  <link rel="icon" href="favicon-16x16.png" type="image/png" sizes="16x16" />
-  <link rel="apple-touch-icon" href="apple-touch-icon.png" sizes="180x180" />
+  <link rel="icon" href="favicon.svg?v=20260808portfolio1" type="image/svg+xml" />
+  <link rel="icon" href="favicon.ico?v=20260808portfolio1" sizes="48x48" />
+  <link rel="icon" href="favicon-32x32.png?v=20260808portfolio1" type="image/png" sizes="32x32" />
+  <link rel="icon" href="favicon-16x16.png?v=20260808portfolio1" type="image/png" sizes="16x16" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png?v=20260808portfolio1" sizes="180x180" />
 <meta name="msapplication-TileColor" content="#0071e3" />
   <meta name="msapplication-TileImage" content="assets/icons/icon-192.png" />
   <link rel="manifest" href="manifest.json" />
@@ -608,6 +608,50 @@
         min-height: 0;
         padding-block: 0;
       }
+
+      #home .hero-layout-wrapper {
+        display: grid;
+        grid-template-columns: minmax(14rem, 0.7fr) minmax(28rem, 1.3fr);
+        gap: clamp(2.5rem, 7vw, 7rem);
+        width: min(100%, 72rem);
+        max-width: 72rem;
+        margin: 0 auto;
+        align-items: center;
+        text-align: left;
+      }
+
+      #home .hero-image-block {
+        display: flex;
+        width: 100%;
+        justify-content: center;
+      }
+
+      #home .profile-image-wrapper {
+        width: clamp(10rem, 15vw, 12.5rem);
+        height: clamp(10rem, 15vw, 12.5rem);
+        min-width: clamp(10rem, 15vw, 12.5rem);
+        min-height: clamp(10rem, 15vw, 12.5rem);
+      }
+
+      #home .hero-text-block,
+      #home .hero-header {
+        align-items: flex-start;
+        text-align: left;
+      }
+
+      #home-heading.hero-name,
+      #home .hero-role-flip,
+      #home .hero-badge-cluster,
+      #home .hero-actions {
+        justify-content: flex-start;
+        text-align: left;
+      }
+
+      #home .hero-name-text,
+      #hero-role-word,
+      #home .hero-description-line {
+        text-align: left;
+      }
     }
 
     /* Reserve island link box so active-state / late CSS cannot expand the rail */
@@ -784,6 +828,20 @@ html.dark #home .hero-name-text {
     html.dark .launch-intro {
       background: #000 !important;
       color: #f5f5f7;
+    }
+
+    .launch-intro-content {
+      display: grid;
+      width: min(76vw, 760px);
+      place-items: center;
+    }
+
+    .launch-intro-hello {
+      display: block;
+      width: 100%;
+      height: auto;
+      max-height: 52vh;
+      overflow: visible;
     }
 
     /* Reserve scrollbar space so overlay chrome cannot shift the hero (CLS). */
@@ -1255,11 +1313,11 @@ html.dark #home .hero-name-text {
   /></noscript>
   <link
     rel="stylesheet"
-    href="assets/css/homepage-hero-polish.css?v=20260807resume1"
+    href="assets/css/homepage-hero-polish.css?v=20260808portfolio1"
     media="print"
     class="js-defer-css"
   />
-  <noscript><link rel="stylesheet" href="assets/css/homepage-hero-polish.css?v=20260804hero1" /></noscript>
+  <noscript><link rel="stylesheet" href="assets/css/homepage-hero-polish.css?v=20260808portfolio1" /></noscript>
 
   <!-- Lazy-loaded Section Styles (data-href only — loaded near section / idle) -->
   <link rel="stylesheet" data-href="assets/css/contact.css?v=20260729sync1" data-lazy-style-key="contact" />
@@ -1347,10 +1405,6 @@ html.dark #home .hero-name-text {
         <path class="launch-intro-path" pathLength="1"
           d="M7.44434 88.6792C30.9102 88.8706 59.0093 89.2085 95.3706 89.2085C132.178 89.2085 208.165 89.2571 253.623 89.2047C295.091 89.1568 396.683 89.0223 452.784 89.0234C506.182 89.0244 552.847 88.4444 596.931 87.2836" />
       </svg>
-      <div class="launch-intro-meta">
-        <p class="launch-intro-kicker">Mangesh Raut</p>
-        <p class="launch-intro-label">ARCHIVE</p>
-      </div>
     </div>
   </div>
   <script>

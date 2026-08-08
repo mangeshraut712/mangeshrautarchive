@@ -28,6 +28,7 @@ import { clearSessionMemory, saveConversation } from '../chatbot/session-memory.
 import { realtimeVoiceService } from '../services/RealtimeVoiceService.js';
 import { voiceModeService } from '../services/VoiceModeService.js';
 import { lockBodyScroll, unlockBodyScroll } from '../utils/scroll-lock.js';
+import { decodeImageBitmap } from '../utils/image-bitmap.js';
 import appleSounds from './apple-sounds.js';
 
 const MAX_CHAT_INPUT_LENGTH = SHARED_MAX_CHAT_INPUT;
@@ -1425,9 +1426,14 @@ class AppleIntelligenceChatbot {
       composerStatus: document.getElementById('chatbot-composer-status'),
     };
 
-    // Create Shadow Div for smooth resizing
-    if (elements.input && !this.shadowDiv) {
+    this.fieldSizingSupported = globalThis.CSS?.supports?.('field-sizing', 'content') === true;
+
+    if (elements.input) {
       elements.input.maxLength = MAX_CHAT_INPUT_LENGTH;
+    }
+
+    // Baseline field-sizing owns supported browsers; retain the shadow fallback elsewhere.
+    if (elements.input && !this.shadowDiv && !this.fieldSizingSupported) {
       this.shadowDiv = document.createElement('div');
       this.shadowDiv.style.cssText = `
         position: absolute;
@@ -1460,6 +1466,10 @@ class AppleIntelligenceChatbot {
   }
 
   autoResizeTextarea(textarea) {
+    if (this.fieldSizingSupported) {
+      textarea?.style.removeProperty('height');
+      return;
+    }
     if (!textarea || !this.shadowDiv) return;
     if (!this.textareaWidth || this.textareaWidth !== textarea.clientWidth) {
       this.textareaWidth = textarea.clientWidth;
@@ -3312,6 +3322,14 @@ class AppleIntelligenceChatbot {
       if (file.size > 1_200_000) {
         if (this.elements.rateStatus) {
           this.elements.rateStatus.textContent = 'Image too large — keep under ~1.2MB.';
+        }
+        continue;
+      }
+      const supportsBitmapDecode = typeof globalThis.createImageBitmap === 'function';
+      const dimensions = await decodeImageBitmap(file);
+      if (supportsBitmapDecode && !dimensions) {
+        if (this.elements.rateStatus) {
+          this.elements.rateStatus.textContent = 'Image could not be decoded.';
         }
         continue;
       }

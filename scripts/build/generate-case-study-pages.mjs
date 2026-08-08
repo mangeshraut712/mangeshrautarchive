@@ -112,10 +112,10 @@ function pageShell({ title, description, canonical, body }) {
     <meta name="author" content="Mangesh Raut" />
     <link rel="canonical" href="${canonical}" />
     <title>${escapeHTML(title)}</title>
-    <link rel="icon" href="${ASSET_PREFIX}/favicon.svg" type="image/svg+xml" />
-    <link rel="icon" href="${ASSET_PREFIX}/favicon.ico" sizes="48x48" />
-    <link rel="icon" href="${ASSET_PREFIX}/favicon-32x32.png" type="image/png" sizes="32x32" />
-    <link rel="apple-touch-icon" href="${ASSET_PREFIX}/apple-touch-icon.png" sizes="180x180" />
+    <link rel="icon" href="${ASSET_PREFIX}/favicon.svg?v=${ASSET_VER}" type="image/svg+xml" />
+    <link rel="icon" href="${ASSET_PREFIX}/favicon.ico?v=${ASSET_VER}" sizes="48x48" />
+    <link rel="icon" href="${ASSET_PREFIX}/favicon-32x32.png?v=${ASSET_VER}" type="image/png" sizes="32x32" />
+    <link rel="apple-touch-icon" href="${ASSET_PREFIX}/apple-touch-icon.png?v=${ASSET_VER}" sizes="180x180" />
     <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/apple-design-system.css?v=${ASSET_VER}" />
     <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/sitewide-design-system.css?v=${ASSET_VER}" />
     <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/monitor.css?v=${ASSET_VER}" />

@@ -204,7 +204,6 @@ export function initResumeDropdown() {
   function openMenu() {
     wrapper.classList.add('is-open');
     menu.classList.add('is-open');
-    document.documentElement.classList.add('resume-menu-open');
     toggle.setAttribute('aria-expanded', 'true');
     menu.setAttribute('aria-hidden', 'false');
     menu.removeAttribute('inert');
@@ -223,7 +222,6 @@ export function initResumeDropdown() {
     if (!wrapper.classList.contains('is-open')) return;
     wrapper.classList.remove('is-open');
     menu.classList.remove('is-open');
-    document.documentElement.classList.remove('resume-menu-open');
     toggle.setAttribute('aria-expanded', 'false');
     menu.setAttribute('aria-hidden', 'true');
     menu.setAttribute('inert', '');

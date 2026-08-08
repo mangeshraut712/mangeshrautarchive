@@ -97,6 +97,48 @@ test.describe('Chrome smoke tests', () => {
     await expect(page.locator('section#contact')).toBeAttached();
   });
 
+  test('homepage hero keeps a composed first viewport without oversized internal gaps', async ({
+    page,
+  }) => {
+    await gotoSiteReady(page);
+
+    const metrics = await page.locator('#home').evaluate(home => {
+      const layout = home.querySelector('.hero-layout-wrapper');
+      const layoutStyle = layout ? getComputedStyle(layout) : null;
+      const boxes = [
+        '.hero-image-block',
+        '.hero-header',
+        '.hero-role-flip',
+        '.hero-insights-band',
+        '.music-card',
+        '.hero-body',
+        '.hero-footer',
+      ]
+        .map(selector => home.querySelector(selector)?.getBoundingClientRect())
+        .filter(Boolean);
+
+      return {
+        viewportWidth: window.innerWidth,
+        width: home.scrollWidth,
+        clientWidth: home.clientWidth,
+        layoutDisplay: layoutStyle?.display ?? '',
+        layoutColumns: layoutStyle?.gridTemplateColumns ?? '',
+        largestGap: boxes
+          .slice(1)
+          .reduce((max, box, index) => Math.max(max, box.top - boxes[index].bottom), 0),
+      };
+    });
+
+    expect(metrics.width).toBeLessThanOrEqual(metrics.clientWidth + 1);
+    if (metrics.viewportWidth >= 960) {
+      expect(metrics.layoutDisplay).toBe('grid');
+      expect(metrics.layoutColumns.split(' ').length).toBeGreaterThanOrEqual(2);
+    } else {
+      expect(metrics.layoutDisplay).toBe('flex');
+    }
+    expect(metrics.largestGap).toBeLessThan(32);
+  });
+
   test('travel atlas search, empty state, and reset flow work', async ({ page }) => {
     test.setTimeout(150_000);
     await gotoSite(page, '/travel');
