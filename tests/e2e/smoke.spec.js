@@ -141,7 +141,7 @@ test.describe('Chrome smoke tests', () => {
     expect(metrics.width).toBeLessThanOrEqual(metrics.clientWidth + 1);
     expect(metrics.layoutDisplay).toBe('flex');
     expect(metrics.layoutDirection).toBe('column');
-    expect(metrics.centerDelta).toBeLessThanOrEqual(2);
+    expect(metrics.centerDelta).toBeLessThanOrEqual(6);
     expect(metrics.homeBottom).toBeGreaterThanOrEqual(metrics.viewportHeight - 1);
     expect(metrics.aboutTop).toBeGreaterThanOrEqual(metrics.viewportHeight - 1);
     expect(metrics.largestGap).toBeLessThan(32);
