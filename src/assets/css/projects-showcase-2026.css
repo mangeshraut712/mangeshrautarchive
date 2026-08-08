@@ -2758,20 +2758,25 @@ html.dark #projects .gh-contrib__heading {
 }
 
 html.dark #projects .gh-contrib__view-btn {
-  color: var(--project-muted-dark) !important;
-  -webkit-text-fill-color: var(--project-muted-dark) !important;
+  color: #c7c7cc !important;
+  -webkit-text-fill-color: #c7c7cc !important;
 }
 
-#projects .gh-contrib__view-btn.is-active {
-  background: var(--gh-year-active) !important;
-  background-color: var(--gh-year-active) !important;
+#projects .gh-contrib__view-btn.is-active,
+html.dark #projects .gh-contrib__view-btn.is-active {
+  background: var(--gh-year-active, #0071e3) !important;
+  background-color: var(--gh-year-active, #0071e3) !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
+  font-weight: 700 !important;
+  box-shadow: 0 2px 8px rgba(0, 113, 227, 0.4) !important;
 }
 
-#projects .gh-contrib__view-btn:not(.is-active):hover {
-  color: var(--project-accent) !important;
-  -webkit-text-fill-color: var(--project-accent) !important;
+#projects .gh-contrib__view-btn:not(.is-active):hover,
+html.dark #projects .gh-contrib__view-btn:not(.is-active):hover {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  background-color: rgba(255, 255, 255, 0.12) !important;
 }
 
 /* ---- Settings dropdown ---- */
@@ -3230,22 +3235,26 @@ html.dark #projects .gh-contrib__learn {
 }
 
 html.dark #projects .gh-contrib__year {
-  color: var(--project-muted-dark) !important;
-  -webkit-text-fill-color: var(--project-muted-dark) !important;
+  color: #c7c7cc !important;
+  -webkit-text-fill-color: #c7c7cc !important;
 }
 
-#projects .gh-contrib__year:hover {
+#projects .gh-contrib__year:hover,
+html.dark #projects .gh-contrib__year:hover {
   background: var(--project-accent-soft) !important;
   background-color: var(--project-accent-soft) !important;
-  color: var(--project-accent) !important;
-  -webkit-text-fill-color: var(--project-accent) !important;
-}
-
-#projects .gh-contrib__year.is-active {
-  background: var(--gh-year-active) !important;
-  background-color: var(--gh-year-active) !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
+}
+
+#projects .gh-contrib__year.is-active,
+html.dark #projects .gh-contrib__year.is-active {
+  background: var(--gh-year-active, #0071e3) !important;
+  background-color: var(--gh-year-active, #0071e3) !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  font-weight: 700 !important;
+  box-shadow: 0 2px 8px rgba(0, 113, 227, 0.4) !important;
 }
 
 #projects .gh-contrib.is-loading .gh-contrib__main {

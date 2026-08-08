@@ -642,6 +642,36 @@ i.fa-database,
 }
 
 /* ═══════════════════════════════════════════════════════════════════
+   GITHUB GRAPH CONTROLS: 2D/3D & YEAR PILL CONTRAST & READABILITY
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* Unselected View & Year Buttons: High-Contrast Readable Text */
+#projects .gh-contrib__view-btn:not(.is-active),
+#projects .gh-contrib__year:not(.is-active) {
+  color: #c7c7cc !important;
+  -webkit-text-fill-color: #c7c7cc !important;
+}
+
+html.dark #projects .gh-contrib__view-btn:not(.is-active),
+html.dark #projects .gh-contrib__year:not(.is-active) {
+  color: #d1d1d6 !important;
+  -webkit-text-fill-color: #d1d1d6 !important;
+}
+
+/* Active View & Year Buttons: Pure Crisp White Text on Blue Badge */
+#projects .gh-contrib__view-btn.is-active,
+#projects .gh-contrib__year.is-active,
+html.dark #projects .gh-contrib__view-btn.is-active,
+html.dark #projects .gh-contrib__year.is-active {
+  background-color: #0071e3 !important;
+  background-image: linear-gradient(135deg, #2997ff 0%, #0071e3 100%) !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  font-weight: 700 !important;
+  box-shadow: 0 2px 8px rgba(0, 113, 227, 0.45) !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
    16. BACK TO TOP BUTTON ENHANCEMENT
    ═══════════════════════════════════════════════════════════════════ */
 
