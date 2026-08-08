@@ -481,24 +481,55 @@ html.dark select:focus {
   transform: translateY(-5px) scale(1.1);
 }
 
-/* Social icon specific colors on hover */
-.footer-social a[href*='linkedin']:hover,
-.social-link[href*='linkedin']:hover {
+/* Social icon specific colors (always vibrant with authentic brand color) */
+.footer-social a[href*='linkedin'],
+.social-link[href*='linkedin'],
+a[href*='linkedin'] i {
   color: #0a66c2 !important;
 }
 
-.footer-social a[href*='github']:hover,
-.social-link[href*='github']:hover {
-  color: #333 !important;
+.footer-social a[href*='github'],
+.social-link[href*='github'],
+a[href*='github'] i {
+  color: #24292e !important;
 }
 
-html.dark .footer-social a[href*='github']:hover,
-html.dark .social-link[href*='github']:hover {
-  color: #fff !important;
+html.dark .footer-social a[href*='github'],
+html.dark .social-link[href*='github'],
+html.dark a[href*='github'] i {
+  color: #f5f5f7 !important;
 }
 
-.footer-social a[href*='twitter']:hover,
-.social-link[href*='twitter']:hover {
+.footer-social a[href*='spotify'],
+.social-link[href*='spotify'],
+a[href*='spotify'] i {
+  color: #1db954 !important;
+}
+
+.footer-social a[href*='youtube'],
+.social-link[href*='youtube'],
+a[href*='youtube'] i {
+  color: #ff0000 !important;
+}
+
+.footer-social a[href*='instagram'],
+.social-link[href*='instagram'],
+a[href*='instagram'] i {
+  color: #e4405f !important;
+}
+
+.footer-social a[href*='leetcode'],
+.social-link[href*='leetcode'],
+a[href*='leetcode'] i {
+  color: #ffa116 !important;
+}
+
+.footer-social a[href*='twitter'],
+.footer-social a[href*='x.com'],
+.social-link[href*='twitter'],
+.social-link[href*='x.com'],
+a[href*='twitter'] i,
+a[href*='x.com'] i {
   color: #1da1f2 !important;
 }
 

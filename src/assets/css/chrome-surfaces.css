@@ -797,5 +797,52 @@ html.browser-safari section#projects #github-projects-container .project-action-
 /* Avoid Safari flex min-height collapse on premium cards */
 html.browser-safari #home .music-card-inner,
 html.browser-chromium #home .music-card-inner {
-  min-height: 56px !important;
+  min-height: 64px !important;
+}
+
+/* ==========================================================================
+   FullHD 4K Retina Display Quality & Subpixel Contrast
+   ========================================================================== */
+
+html {
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+  text-rendering: optimizeLegibility !important;
+}
+
+/* Ensure ultra-crisp image and SVG rendering on high-DPI / 4K displays */
+img,
+svg,
+.album-art,
+.profile-avatar-img,
+.author-avatar img {
+  image-rendering: -webkit-optimize-contrast !important;
+}
+
+@supports (image-rendering: crisp-edges) {
+  img,
+  svg,
+  .album-art,
+  .profile-avatar-img,
+  .author-avatar img {
+    image-rendering: crisp-edges !important;
+  }
+}
+
+/* 4K Glass contrast enhancement for cards across the portfolio */
+.project-card,
+.recommendation-card,
+.skill-card,
+.timeline-item,
+.systems-card {
+  backdrop-filter: blur(20px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+}
+
+html.dark .project-card,
+html.dark .recommendation-card,
+html.dark .skill-card,
+html.dark .systems-card {
+  border-color: rgba(255, 255, 255, 0.15) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
 }
