@@ -226,12 +226,13 @@ class LastFmService {
     return `data:image/svg+xml;base64,${btoa(unescape(encodeURIComponent(svg)))}`;
   }
 
-  normalizeArtworkUrl(url = '', preferredSize = '300x300') {
+  normalizeArtworkUrl(url = '', preferredSize = '600x600') {
     if (!url) return '';
     return url
       .replace('/34s/', `/${preferredSize}/`)
       .replace('/64s/', `/${preferredSize}/`)
-      .replace('/174s/', `/${preferredSize}/`);
+      .replace('/174s/', `/${preferredSize}/`)
+      .replace('/300x300/', `/${preferredSize}/`);
   }
 
   isUsableArtwork(url = '') {
@@ -239,7 +240,7 @@ class LastFmService {
   }
 
   getBestImage(track, preferredSizes = ['extralarge', 'large', 'medium', 'small']) {
-    const resolved = this.normalizeArtworkUrl(track?.resolved_artwork || '', '300x300');
+    const resolved = this.normalizeArtworkUrl(track?.resolved_artwork || '', '600x600');
     if (this.isUsableArtwork(resolved) && this.isSafeHttpsUrl(resolved)) {
       return resolved;
     }
@@ -253,14 +254,14 @@ class LastFmService {
 
     for (const size of preferredSizes) {
       const image = imageMap.get(size);
-      const normalized = this.normalizeArtworkUrl(image?.['#text'] || '', '300x300');
+      const normalized = this.normalizeArtworkUrl(image?.['#text'] || '', '600x600');
       if (this.isUsableArtwork(normalized)) {
         return normalized;
       }
     }
 
     for (let i = track.image.length - 1; i >= 0; i -= 1) {
-      const normalized = this.normalizeArtworkUrl(track.image[i]?.['#text'] || '', '300x300');
+      const normalized = this.normalizeArtworkUrl(track.image[i]?.['#text'] || '', '600x600');
       if (this.isUsableArtwork(normalized)) {
         return normalized;
       }

@@ -161,15 +161,15 @@ html[data-lg-mode='tinted'] #home .music-card-inner.lg-webgl-host .lg-webgl-canv
   flex-direction: row !important;
   align-items: center !important;
   justify-content: flex-start !important;
-  gap: 0.55rem !important;
+  gap: 0.85rem !important;
   width: fit-content !important;
-  max-width: min(22rem, calc(100vw - 2.5rem)) !important;
+  max-width: min(28rem, calc(100vw - 2rem)) !important;
   min-width: 0 !important;
   height: auto !important;
-  min-height: 52px !important;
+  min-height: 64px !important;
   max-height: none !important;
   margin: 0 auto !important;
-  padding: 0.4rem 0.7rem 0.4rem 0.4rem !important;
+  padding: 0.55rem 1.1rem 0.55rem 0.55rem !important;
   border-radius: 999px !important;
   box-sizing: border-box !important;
   /* Visible so the live badge is not clipped; canvas is still contained. */
@@ -201,13 +201,14 @@ html:not(.dark) #home .music-card-inner.lg-webgl-host,
 html[data-theme='light'] #home .music-card-inner.lg-webgl-host,
 html:not(.dark) #home .music-card.is-playing .music-card-inner,
 html[data-theme='light'] #home .music-card.is-playing .music-card-inner {
-  background: #ffffff !important;
-  background-color: #ffffff !important;
-  background-image: none !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-  border: 1px solid #e5e5ea !important;
-  box-shadow: none !important;
+  background: rgba(255, 255, 255, 0.94) !important;
+  background-color: rgba(255, 255, 255, 0.94) !important;
+  backdrop-filter: blur(20px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.8),
+    0 8px 28px rgba(0, 0, 0, 0.08) !important;
 }
 
 html.dark #home .music-card-inner,
@@ -216,13 +217,14 @@ html.dark #home .music-card-inner.lg-webgl-host,
 html[data-theme='dark'] #home .music-card-inner.lg-webgl-host,
 html.dark #home .music-card.is-playing .music-card-inner,
 html[data-theme='dark'] #home .music-card.is-playing .music-card-inner {
-  background: #000000 !important;
-  background-color: #000000 !important;
-  background-image: none !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-  border: 1px solid #2c2c2e !important;
-  box-shadow: none !important;
+  background: rgba(20, 20, 24, 0.85) !important;
+  background-color: rgba(20, 20, 24, 0.85) !important;
+  backdrop-filter: blur(20px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    0 12px 40px rgba(0, 0, 0, 0.55) !important;
 }
 
 #home .music-card-inner.lg-webgl-host .lg-webgl-canvas {
@@ -236,7 +238,7 @@ html[data-theme='dark'] #home .music-card.is-playing .music-card-inner {
   flex-direction: row !important;
   align-items: center !important;
   justify-content: flex-start !important;
-  gap: 0.65rem !important;
+  gap: 0.85rem !important;
   flex: 0 1 auto !important;
   width: auto !important;
   max-width: 100% !important;
@@ -258,18 +260,17 @@ html[data-theme='dark'] #home .music-card.is-playing .music-card-inner {
   display: flex !important;
   flex-direction: column !important;
   justify-content: center !important;
-  gap: 0.05rem !important;
-  flex: 0 1 auto !important;
+  gap: 0.15rem !important;
   min-width: 0 !important;
-  max-width: min(13.5rem, 48vw) !important;
-  text-align: left !important;
+  flex: 1 1 auto !important;
+  max-width: 100% !important;
 }
 
 #home .music-card-inner .status-row,
 #home .music-card-inner .lg-webgl-content .status-row {
   display: inline-flex !important;
   align-items: center !important;
-  gap: 0.3rem !important;
+  gap: 0.4rem !important;
   margin: 0 !important;
   min-width: 0 !important;
   max-width: 100% !important;
@@ -285,9 +286,9 @@ html[data-theme='dark'] #home .music-card.is-playing .music-card-inner {
   text-overflow: ellipsis !important;
   white-space: nowrap !important;
   max-width: 100% !important;
-  font-size: 0.72rem !important;
+  font-size: 0.74rem !important;
   font-weight: 700 !important;
-  letter-spacing: 0.05em !important;
+  letter-spacing: 0.06em !important;
   text-transform: uppercase !important;
   color: #48484a !important;
   -webkit-text-fill-color: #48484a !important;
@@ -312,11 +313,11 @@ html.dark #home .music-card-inner .status-text {
   overflow: hidden !important;
   text-overflow: ellipsis !important;
   white-space: nowrap !important;
-  line-height: 1.2 !important;
+  line-height: 1.25 !important;
 }
 
 #home .music-card-inner .track-name {
-  font-size: 0.84rem !important;
+  font-size: 0.94rem !important;
   font-weight: 650 !important;
   color: #1d1d1f !important;
   -webkit-text-fill-color: #1d1d1f !important;
@@ -328,8 +329,8 @@ html.dark #home .music-card-inner .track-name {
 }
 
 #home .music-card-inner .artist-name {
-  font-size: 0.72rem !important;
-  font-weight: 500 !important;
+  font-size: 0.78rem !important;
+  font-weight: 450 !important;
   color: #48484a !important;
   -webkit-text-fill-color: #48484a !important;
 }
@@ -341,17 +342,17 @@ html.dark #home .music-card-inner .artist-name {
 
 #home .music-card-inner .album-art-container {
   position: relative !important;
-  width: 44px !important;
-  height: 44px !important;
+  width: 56px !important;
+  height: 56px !important;
   flex-shrink: 0 !important;
   overflow: visible !important;
   border-radius: 50% !important;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.22) !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28) !important;
 }
 
 #home .music-card-inner .album-art {
-  width: 44px !important;
-  height: 44px !important;
+  width: 56px !important;
+  height: 56px !important;
   border-radius: 50% !important;
   object-fit: cover !important;
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.25) !important;
@@ -476,19 +477,19 @@ html.dark #home .music-card-inner .artist-name {
   justify-content: center !important;
   flex-shrink: 0 !important;
   margin-left: auto !important;
-  width: 30px !important;
-  height: 30px !important;
-  min-width: 30px !important;
-  min-height: 30px !important;
+  width: 36px !important;
+  height: 36px !important;
+  min-width: 36px !important;
+  min-height: 36px !important;
   border-radius: 50% !important;
-  background: rgba(29, 185, 84, 0.12) !important;
-  background-color: rgba(29, 185, 84, 0.12) !important;
+  background: rgba(29, 185, 84, 0.14) !important;
+  background-color: rgba(29, 185, 84, 0.14) !important;
   color: #1db954 !important;
   -webkit-text-fill-color: #1db954 !important;
-  border: 1px solid rgba(29, 185, 84, 0.25) !important;
+  border: 1px solid rgba(29, 185, 84, 0.28) !important;
   box-shadow: none !important;
   text-decoration: none !important;
-  font-size: 1.05rem !important;
+  font-size: 1.2rem !important;
   opacity: 1 !important;
   transition:
     transform 0.22s ease,
