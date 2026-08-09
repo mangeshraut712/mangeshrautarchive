@@ -824,31 +824,6 @@ html.dark #projects .project-lens-chip.active {
   -webkit-text-fill-color: #ffffff !important;
 }
 
-/* Primary Hero CTA (Download Resume) contrast lock: #0055b8 provides 6.5:1 contrast against white text with no box-shadow or specular wash */
-.hero-cta-primary,
-.hero-cta-primary:hover,
-#home .hero-actions .hero-cta-primary,
-#home .hero-actions .hero-cta-primary:hover,
-#home .hero-actions .hero-cta:nth-child(1),
-#home .hero-actions .hero-cta:nth-child(1):hover,
-#home a.hero-cta-primary,
-#home a.hero-cta-primary:hover {
-  background: #0055b8 !important;
-  background-color: #0055b8 !important;
-  background-image: none !important;
-  color: #ffffff !important;
-  -webkit-text-fill-color: #ffffff !important;
-  box-shadow: none !important;
-  filter: none !important;
-}
-
-.hero-cta-primary::after,
-#home .hero-actions .hero-cta-primary::after,
-#home .hero-actions .hero-cta:nth-child(1)::after,
-#home a.hero-cta-primary::after {
-  display: none !important;
-}
-
 /* Contrast fixes for footer copy/tagline, artist name, and projects view-all button */
 .footer-copy,
 .footer-tagline,

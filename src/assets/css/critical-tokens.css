@@ -115,9 +115,9 @@ html:not(.dark) body #home p#artist-name.artist-name {
 
 html:not(.dark) body section#projects a.projects-view-all-btn,
 html[data-theme='light'] body section#projects a.projects-view-all-btn {
-  background: #0055b8 !important;
-  background-color: #0055b8 !important;
-  border-color: #0055b8 !important;
+  background: #0071e3 !important;
+  background-color: #0071e3 !important;
+  border-color: #0071e3 !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
 }
@@ -132,9 +132,9 @@ html body #about button.about-tab-btn.active,
 html.dark body #about button.about-tab-btn.active,
 html body #projects button.project-lens-chip.active,
 html.dark body #projects button.project-lens-chip.active {
-  background: #0055b8 !important;
-  background-color: #0055b8 !important;
-  border-color: #0055b8 !important;
+  background: #0071e3 !important;
+  background-color: #0071e3 !important;
+  border-color: #0071e3 !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
 }
@@ -149,9 +149,9 @@ html.dark body #projects button.project-lens-chip.active * {
 
 html body #engineering a.engineering-open-btn,
 html.dark body #engineering a.engineering-open-btn {
-  background: #0055b8 !important;
-  background-color: #0055b8 !important;
-  border-color: #0055b8 !important;
+  background: #0071e3 !important;
+  background-color: #0071e3 !important;
+  border-color: #0071e3 !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
 }
@@ -165,8 +165,8 @@ html.dark body #engineering a.engineering-open-btn * {
 /* Blocking WCAG AA locks for controls audited before deferred CSS finishes. */
 html body #contact button#contact-chatbot-cta.contact-assistme-btn,
 html.dark body #contact button#contact-chatbot-cta.contact-assistme-btn {
-  background: #0055b8 !important;
-  background-color: #0055b8 !important;
+  background: #0071e3 !important;
+  background-color: #0071e3 !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
 }
@@ -179,8 +179,8 @@ html.dark body #contact button#contact-chatbot-cta.contact-assistme-btn * {
 
 html body #contact button.currently-tab.active,
 html.dark body #contact button.currently-tab.active {
-  background: #0055b8 !important;
-  background-color: #0055b8 !important;
+  background: #0071e3 !important;
+  background-color: #0071e3 !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
 }
