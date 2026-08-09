@@ -968,3 +968,131 @@ html.dark .skeleton {
 
   /* removed h2::after transition override */
 }
+
+/* ═══════════════════════════════════════════════════════════════════
+   SITEWIDE APPLE DESIGN SYSTEM BUTTON STYLING (LIGHT & DARK MODE)
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* --- 1. GENERAL BUTTON BASE (SF Pro Text, Crisp Alignment & Touch Target) --- */
+button,
+.btn,
+.hero-cta-primary,
+.hero-cta-secondary,
+.project-action-btn,
+.read-more-btn,
+.blog-read-btn,
+.contact-send-btn,
+.watch-btn,
+.modal-close,
+.a11y-toggle-btn {
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', system-ui, sans-serif !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.01em !important;
+  transition:
+    background-color 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+    color 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+}
+
+button:active,
+.btn:active,
+.hero-cta-primary:active,
+.hero-cta-secondary:active,
+.project-action-btn:active {
+  transform: scale(0.98) !important;
+}
+
+/* --- 2. PRIMARY BUTTONS (Apple Blue Badge, White Text, High Contrast Shadow) --- */
+.btn-primary,
+.hero-cta-primary,
+.contact-send-btn,
+.newsletter-form .btn-primary,
+.submit-btn,
+.btn-demo {
+  background-color: #0071e3 !important;
+  background-image: linear-gradient(180deg, #0077ed 0%, #0066cc 100%) !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
+  box-shadow: 0 3px 12px rgba(0, 113, 227, 0.35) !important;
+}
+
+.btn-primary *,
+.hero-cta-primary *,
+.contact-send-btn *,
+.newsletter-form .btn-primary *,
+.submit-btn *,
+.btn-demo * {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+.btn-primary:hover,
+.hero-cta-primary:hover,
+.contact-send-btn:hover,
+.newsletter-form .btn-primary:hover,
+.submit-btn:hover,
+.btn-demo:hover {
+  background-color: #0077ed !important;
+  background-image: linear-gradient(180deg, #0080ff 0%, #0071e3 100%) !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  box-shadow: 0 6px 20px rgba(0, 113, 227, 0.45) !important;
+  transform: translateY(-1px) !important;
+}
+
+/* --- 3. SECONDARY / OUTLINE / GLASS BUTTONS --- */
+/* Light Mode Secondary Buttons */
+html:not(.dark) .btn-secondary,
+html:not(.dark) .hero-cta-secondary,
+html:not(.dark) .btn-glass,
+html:not(.dark) .projects-view-all-btn,
+html:not(.dark) .project-action-btn:not(.btn-primary):not(.btn-demo) {
+  background-color: #f5f5f7 !important;
+  color: #1d1d1f !important;
+  -webkit-text-fill-color: #1d1d1f !important;
+  border: 1px solid rgba(0, 0, 0, 0.12) !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+}
+
+html:not(.dark) .btn-secondary:hover,
+html:not(.dark) .hero-cta-secondary:hover,
+html:not(.dark) .btn-glass:hover,
+html:not(.dark) .projects-view-all-btn:hover,
+html:not(.dark) .project-action-btn:not(.btn-primary):not(.btn-demo):hover {
+  background-color: rgba(0, 113, 227, 0.08) !important;
+  color: #0071e3 !important;
+  -webkit-text-fill-color: #0071e3 !important;
+  border-color: #0071e3 !important;
+  box-shadow: 0 4px 14px rgba(0, 113, 227, 0.15) !important;
+  transform: translateY(-1px) !important;
+}
+
+/* Dark Mode Secondary Buttons */
+html.dark .btn-secondary,
+html.dark .hero-cta-secondary,
+html.dark .btn-glass,
+html.dark .projects-view-all-btn,
+html.dark .project-action-btn:not(.btn-primary):not(.btn-demo) {
+  background-color: #1c1c1e !important;
+  color: #f5f5f7 !important;
+  -webkit-text-fill-color: #f5f5f7 !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+}
+
+html.dark .btn-secondary:hover,
+html.dark .hero-cta-secondary:hover,
+html.dark .btn-glass:hover,
+html.dark .projects-view-all-btn:hover,
+html.dark .project-action-btn:not(.btn-primary):not(.btn-demo):hover {
+  background-color: rgba(41, 151, 255, 0.15) !important;
+  color: #2997ff !important;
+  -webkit-text-fill-color: #2997ff !important;
+  border-color: #2997ff !important;
+  box-shadow: 0 4px 16px rgba(41, 151, 255, 0.22) !important;
+  transform: translateY(-1px) !important;
+}
