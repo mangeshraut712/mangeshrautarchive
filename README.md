@@ -427,6 +427,15 @@ Live reachability (Vercel + Pages) · Lighthouse floors · commit parity. Vercel
 
 The badges above are branch-scoped to `main`. Historical failures or cancellations belong to superseded commits; the latest run for the current `main` SHA is the release status to trust.
 
+To inspect the current release check from a terminal:
+
+```bash
+gh run list --workflow deploy.yml --branch main --limit 1
+gh run view <run-id> --web
+```
+
+Wait for the dual-surface verifier to report matching `build-config.json` commits before sharing a release URL.
+
 ### Monthly `foglamp-scan-keepalive.yml`
 
 Republishes [`.foglamp/scan.json`](.foglamp/scan.json) to the same public URL using secret `FOGLAMP_SCAN_EDIT_TOKEN` (see [docs/foglamp-scan.md](docs/foglamp-scan.md)).
