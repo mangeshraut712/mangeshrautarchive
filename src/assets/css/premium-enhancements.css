@@ -1096,3 +1096,220 @@ html.dark .project-action-btn:not(.btn-primary):not(.btn-demo):hover {
   box-shadow: 0 4px 16px rgba(41, 151, 255, 0.22) !important;
   transform: translateY(-1px) !important;
 }
+
+/* --- 4. TOUCH TARGETS & MINIMUM HEIGHT LOCK (Apple HIG Compliance) --- */
+.watch-btn,
+body .project-evidence-link,
+.btn-sm,
+.read-more-btn,
+.blog-read-btn,
+.changelog-link,
+.gh-contrib__view-btn {
+  min-height: 38px !important;
+  padding: 0 16px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 999px !important;
+  font-size: 0.85rem !important;
+  font-weight: 600 !important;
+}
+
+.btn-primary,
+.hero-cta-primary,
+.contact-send-btn,
+.newsletter-form .btn-primary,
+.submit-btn {
+  min-height: 44px !important;
+  padding: 0 24px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 999px !important;
+}
+
+/* --- 5. SITEWIDE SOLID SURFACE CARD DESIGN SYSTEM (Apple & shadcn UI) --- */
+:is(
+  .project-card,
+  .featured-project-card,
+  .luxury-project-card,
+  .experience-card,
+  .experience-item,
+  .education-card,
+  .cert-card,
+  .skill-card,
+  .skill-category-card,
+  .uses-card,
+  .uses-control-tile,
+  .changelog-item,
+  .changelog-entry,
+  .systems-architecture-card,
+  .system-card,
+  .monitor-card,
+  .metric-card,
+  .travel-card,
+  .travel-photo-card,
+  .currently-read-card,
+  .currently-watch-card,
+  .recommendation-card,
+  .about-highlight-card,
+  .about-quick-stat,
+  .contact-card,
+  .modal-card,
+  .github-project-card
+) {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border-radius: 18px !important;
+  transition:
+    background-color 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+}
+
+/* Light Mode Solid Cards */
+html:not(.dark)
+  :is(
+    .project-card,
+    .featured-project-card,
+    .luxury-project-card,
+    .experience-card,
+    .experience-item,
+    .education-card,
+    .cert-card,
+    .skill-card,
+    .skill-category-card,
+    .uses-card,
+    .uses-control-tile,
+    .changelog-item,
+    .changelog-entry,
+    .systems-architecture-card,
+    .system-card,
+    .monitor-card,
+    .metric-card,
+    .travel-card,
+    .travel-photo-card,
+    .currently-read-card,
+    .currently-watch-card,
+    .recommendation-card,
+    .about-highlight-card,
+    .about-quick-stat,
+    .contact-card,
+    .modal-card,
+    .github-project-card
+  ) {
+  background-color: #ffffff !important;
+  border: 1px solid #e5e5ea !important;
+  box-shadow:
+    0 4px 16px rgba(0, 0, 0, 0.05),
+    0 1px 3px rgba(0, 0, 0, 0.03) !important;
+}
+
+html:not(.dark)
+  :is(
+    .project-card,
+    .featured-project-card,
+    .luxury-project-card,
+    .experience-card,
+    .cert-card,
+    .skill-card,
+    .uses-card,
+    .system-card,
+    .monitor-card,
+    .travel-card,
+    .currently-read-card,
+    .currently-watch-card,
+    .recommendation-card
+  ):hover {
+  border-color: #0071e3 !important;
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.08),
+    0 2px 6px rgba(0, 0, 0, 0.04) !important;
+  transform: translateY(-3px) !important;
+}
+
+/* Dark Mode Solid Cards */
+html.dark
+  :is(
+    .project-card,
+    .featured-project-card,
+    .luxury-project-card,
+    .experience-card,
+    .experience-item,
+    .education-card,
+    .cert-card,
+    .skill-card,
+    .skill-category-card,
+    .uses-card,
+    .uses-control-tile,
+    .changelog-item,
+    .changelog-entry,
+    .systems-architecture-card,
+    .system-card,
+    .monitor-card,
+    .metric-card,
+    .travel-card,
+    .travel-photo-card,
+    .currently-read-card,
+    .currently-watch-card,
+    .recommendation-card,
+    .about-highlight-card,
+    .about-quick-stat,
+    .contact-card,
+    .modal-card,
+    .github-project-card
+  ) {
+  background-color: #121214 !important;
+  border: 1px solid #27272a !important;
+  box-shadow:
+    0 8px 28px rgba(0, 0, 0, 0.55),
+    0 2px 6px rgba(0, 0, 0, 0.4) !important;
+}
+
+html.dark
+  :is(
+    .project-card,
+    .featured-project-card,
+    .luxury-project-card,
+    .experience-card,
+    .cert-card,
+    .skill-card,
+    .uses-card,
+    .system-card,
+    .monitor-card,
+    .travel-card,
+    .currently-read-card,
+    .currently-watch-card,
+    .recommendation-card
+  ):hover {
+  border-color: #2997ff !important;
+  box-shadow:
+    0 12px 36px rgba(0, 0, 0, 0.65),
+    0 4px 12px rgba(0, 0, 0, 0.5) !important;
+  transform: translateY(-3px) !important;
+}
+
+/* --- 6. SECTION EYEBROW BADGES (Apple Pill Style) --- */
+:is(.eyebrow-badge, .section-eyebrow, .section-badge, .badge-pill) {
+  display: inline-flex !important;
+  align-items: center !important;
+  padding: 4px 12px !important;
+  border-radius: 999px !important;
+  font-size: 0.78rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.04em !important;
+  text-transform: uppercase !important;
+}
+
+html:not(.dark) :is(.eyebrow-badge, .section-eyebrow, .section-badge, .badge-pill) {
+  background-color: rgba(0, 113, 227, 0.08) !important;
+  color: #0071e3 !important;
+  border: 1px solid rgba(0, 113, 227, 0.2) !important;
+}
+
+html.dark :is(.eyebrow-badge, .section-eyebrow, .section-badge, .badge-pill) {
+  background-color: rgba(41, 151, 255, 0.15) !important;
+  color: #2997ff !important;
+  border: 1px solid rgba(41, 151, 255, 0.3) !important;
+}

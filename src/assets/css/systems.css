@@ -2908,12 +2908,13 @@ body.systems-page .project-evidence-row {
 body.systems-page .project-evidence-link {
   display: inline-flex;
   align-items: center;
-  min-height: 32px;
-  padding: 0.3rem 0.7rem;
+  justify-content: center;
+  min-height: 38px !important;
+  padding: 0 16px !important;
   border-radius: 999px;
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.02em;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
   text-decoration: none;
   /* !important: sitewide a{} used #0071e3 !important and failed AA on tinted chips */
   color: #004494 !important;
