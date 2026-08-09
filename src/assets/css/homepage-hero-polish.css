@@ -335,6 +335,22 @@ html body #home.hero-section .hero-actions .hero-cta.hero-cta-primary:focus-visi
   content: none !important;
 }
 
+/* Keep the resume CTA readable on first paint and outrank lazy premium styles. */
+html body #home.hero-section .hero-actions .resume-dropdown-toggle,
+html body #home.hero-section .hero-actions .resume-dropdown-toggle:hover,
+html body #home.hero-section .hero-actions .resume-dropdown-toggle:focus-visible {
+  background: #0071e3 !important;
+  background-color: #0071e3 !important;
+  background-image: none !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+html body #home.hero-section .hero-actions .resume-dropdown-toggle > * {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
 @media (max-width: 959px) {
   #home.hero-section,
   #home.home-hero,

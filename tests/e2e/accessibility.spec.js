@@ -101,6 +101,27 @@ test.describe('Chrome accessibility baseline', () => {
     });
   }
 
+  test('dark homepage resume CTA keeps readable first paint', async ({ page }) => {
+    await configureAccessibilityMode(page, { theme: 'dark' });
+    await gotoSite(page, PAGES.home);
+    await page.waitForLoadState('load');
+
+    const styles = await page.locator('#resume-dropdown-toggle').evaluate(button => {
+      const label = button.querySelector(':scope > span:nth-child(2)');
+      const buttonStyle = getComputedStyle(button);
+      const labelStyle = label ? getComputedStyle(label) : null;
+      return {
+        backgroundColor: buttonStyle.backgroundColor,
+        backgroundImage: buttonStyle.backgroundImage,
+        labelColor: labelStyle?.color,
+      };
+    });
+
+    expect(styles.backgroundColor).toBe('rgb(0, 113, 227)');
+    expect(styles.backgroundImage).toBe('none');
+    expect(styles.labelColor).toBe('rgb(255, 255, 255)');
+  });
+
   test('homepage has no critical/serious axe violations in high contrast', async ({ page }) => {
     await configureAccessibilityMode(page, { highContrast: true });
     await waitForAccessiblePage(page, PAGES.home);

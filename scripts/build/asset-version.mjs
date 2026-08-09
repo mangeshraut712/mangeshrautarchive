@@ -1,5 +1,5 @@
 /** Single source of truth for static asset cache-bust query strings. */
-export const ASSET_VER = '20260808center8';
+export const ASSET_VER = '20260808center9';
 
 export const FONTAWESOME_VENDOR_CSS = 'assets/vendor/fontawesome/css/all.min.css';
 
