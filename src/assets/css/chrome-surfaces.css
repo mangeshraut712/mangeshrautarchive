@@ -194,21 +194,21 @@ html[data-lg-mode='tinted'] #home .music-card-inner.lg-webgl-host .lg-webgl-canv
   border-radius: inherit !important;
 }
 
-/* Hero music card stays solid in every glass mode (no frosted grey fills). */
+/* Hero music card stays solid in every mode (Apple & shadcn UI inspired solid surfaces). */
 html:not(.dark) #home .music-card-inner,
 html[data-theme='light'] #home .music-card-inner,
 html:not(.dark) #home .music-card-inner.lg-webgl-host,
 html[data-theme='light'] #home .music-card-inner.lg-webgl-host,
 html:not(.dark) #home .music-card.is-playing .music-card-inner,
 html[data-theme='light'] #home .music-card.is-playing .music-card-inner {
-  background: rgba(255, 255, 255, 0.94) !important;
-  background-color: rgba(255, 255, 255, 0.94) !important;
-  backdrop-filter: blur(20px) saturate(180%) !important;
-  -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
-  border: 1px solid rgba(0, 0, 0, 0.1) !important;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border: 1px solid #e5e5ea !important;
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.8),
-    0 8px 28px rgba(0, 0, 0, 0.08) !important;
+    0 4px 16px rgba(0, 0, 0, 0.06),
+    0 1px 3px rgba(0, 0, 0, 0.04) !important;
 }
 
 html.dark #home .music-card-inner,
@@ -217,14 +217,14 @@ html.dark #home .music-card-inner.lg-webgl-host,
 html[data-theme='dark'] #home .music-card-inner.lg-webgl-host,
 html.dark #home .music-card.is-playing .music-card-inner,
 html[data-theme='dark'] #home .music-card.is-playing .music-card-inner {
-  background: rgba(20, 20, 24, 0.85) !important;
-  background-color: rgba(20, 20, 24, 0.85) !important;
-  backdrop-filter: blur(20px) saturate(180%) !important;
-  -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
-  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+  background: #121214 !important;
+  background-color: #121214 !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border: 1px solid #27272a !important;
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.2),
-    0 12px 40px rgba(0, 0, 0, 0.55) !important;
+    0 8px 28px rgba(0, 0, 0, 0.55),
+    0 2px 6px rgba(0, 0, 0, 0.4) !important;
 }
 
 #home .music-card-inner.lg-webgl-host .lg-webgl-canvas {
@@ -248,10 +248,16 @@ html[data-theme='dark'] #home .music-card.is-playing .music-card-inner {
 @media (hover: hover) and (pointer: fine) {
   html:not(.dark) #home .music-card:hover .music-card-inner {
     border-color: #0071e3 !important;
+    box-shadow:
+      0 8px 24px rgba(0, 113, 227, 0.14),
+      0 2px 6px rgba(0, 0, 0, 0.04) !important;
   }
 
   html.dark #home .music-card:hover .music-card-inner {
-    border-color: #0a84ff !important;
+    border-color: #2997ff !important;
+    box-shadow:
+      0 10px 32px rgba(41, 151, 255, 0.22),
+      0 2px 8px rgba(0, 0, 0, 0.5) !important;
   }
 }
 
