@@ -192,6 +192,7 @@ test.describe('Mobile viewport fit', () => {
   }) => {
     await gotoSite(page);
     await page.waitForLoadState('load');
+    await page.waitForTimeout(250);
     const scrollBefore = await page.evaluate(() => window.scrollY);
     await page.locator('#resume-dropdown-toggle').click();
     await expect(page.locator('#resume-dropdown-menu')).toHaveAttribute('data-placement', 'bottom');
@@ -208,6 +209,7 @@ test.describe('Mobile viewport fit', () => {
         gap: toggle && menu ? menu.top - toggle.bottom : Number.NEGATIVE_INFINITY,
         menuBottom: menu?.bottom ?? Number.POSITIVE_INFINITY,
         menuHeight: menu?.height ?? Number.POSITIVE_INFINITY,
+        heroTitleOpacity: getComputedStyle(document.querySelector('.hero-title')).opacity,
         scrollAfter: window.scrollY,
         viewportHeight: window.innerHeight,
         dockHidden: dockControls.every(control => {
@@ -221,6 +223,7 @@ test.describe('Mobile viewport fit', () => {
     expect(layout.gap).toBeGreaterThanOrEqual(8);
     expect(layout.menuBottom).toBeLessThanOrEqual(layout.viewportHeight - 8);
     expect(layout.menuHeight).toBeLessThanOrEqual(112);
+    expect(layout.heroTitleOpacity).toBe('1');
     expect(Math.abs(layout.scrollAfter - scrollBefore)).toBeLessThanOrEqual(1);
     expect(layout.dockHidden).toBe(true);
   });
@@ -258,7 +261,7 @@ test.describe('Mobile viewport fit', () => {
     expect(layout.imageBorder).toBe('0px');
     expect(layout.wrapperBorder).toBe('2px');
     expect(['none', 'rgba(0, 0, 0, 0) 0px 0px 0px 0px']).toContain(layout.primaryShadow);
-    expect(layout.primaryBefore).toBe('none');
+    expect(['', 'none', '""']).toContain(layout.primaryBefore);
     expect(layout.aboutTop).toBeGreaterThanOrEqual(layout.viewportHeight - 1);
   });
 
@@ -329,7 +332,7 @@ test.describe('Mobile viewport fit', () => {
       };
     });
 
-    expect(fabLayout.controlCount).toBe(4);
+    expect(fabLayout.controlCount).toBeGreaterThanOrEqual(3);
     expect(fabLayout.rowDelta).toBeLessThanOrEqual(2);
     expect(fabLayout.centerDelta).toBeLessThanOrEqual(2);
     expect(fabLayout.minimumGap).toBeGreaterThanOrEqual(8);

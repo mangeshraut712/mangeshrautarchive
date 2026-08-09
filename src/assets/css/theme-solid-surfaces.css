@@ -2397,7 +2397,7 @@ html body:has(#go-to-top.visible) .a11y-toolbar {
 }
 
 @media (width <= 768px) {
-  /* Vertical stack on bottom-right corner for mobile devices */
+  /* Compact centered utility dock keeps mobile controls out of the hero reading path. */
   html body .a11y-toolbar__main,
   html body #website-share-toggle.website-share-fab,
   html body #chatbot-toggle,
@@ -2408,46 +2408,47 @@ html body:has(#go-to-top.visible) .a11y-toolbar {
     min-height: 44px !important;
   }
 
-  /* Right edge alignment */
-  html body .a11y-toolbar,
-  html body #website-share-toggle.website-share-fab,
-  html body #chatbot-toggle,
-  html body #go-to-top {
-    left: auto !important;
-    right: max(1rem, env(safe-area-inset-right, 0px)) !important;
+  html body:not(:has(#go-to-top.visible)) .a11y-toolbar,
+  html body:not(:has(#go-to-top.visible)) #website-share-toggle.website-share-fab,
+  html body:not(:has(#go-to-top.visible)) #chatbot-toggle,
+  html body:has(#go-to-top.visible) .a11y-toolbar,
+  html body:has(#go-to-top.visible) #website-share-toggle.website-share-fab,
+  html body:has(#go-to-top.visible) #chatbot-toggle,
+  html body:has(#go-to-top.visible) #go-to-top,
+  html body:has(#go-to-top.visible) #go-to-top.visible {
+    right: auto !important;
     top: auto !important;
+    bottom: max(1rem, env(safe-area-inset-bottom, 0px)) !important;
     transform: none !important;
   }
 
-  /* When go-to-top is NOT visible */
-  html body:not(:has(#go-to-top.visible)) #chatbot-toggle {
-    bottom: max(1rem, env(safe-area-inset-bottom, 0px)) !important;
+  html body:not(:has(#go-to-top.visible)) .a11y-toolbar {
+    left: calc(50% - 76px) !important;
   }
 
   html body:not(:has(#go-to-top.visible)) #website-share-toggle.website-share-fab {
-    bottom: calc(max(1rem, env(safe-area-inset-bottom, 0px)) + 52px) !important;
+    left: calc(50% - 22px) !important;
   }
 
-  html body:not(:has(#go-to-top.visible)) .a11y-toolbar {
-    bottom: calc(max(1rem, env(safe-area-inset-bottom, 0px)) + 104px) !important;
-  }
-
-  /* When go-to-top IS visible */
-  html body:has(#go-to-top.visible) #go-to-top,
-  html body:has(#go-to-top.visible) #go-to-top.visible {
-    bottom: max(1rem, env(safe-area-inset-bottom, 0px)) !important;
-  }
-
-  html body:has(#go-to-top.visible) #chatbot-toggle {
-    bottom: calc(max(1rem, env(safe-area-inset-bottom, 0px)) + 52px) !important;
-  }
-
-  html body:has(#go-to-top.visible) #website-share-toggle.website-share-fab {
-    bottom: calc(max(1rem, env(safe-area-inset-bottom, 0px)) + 104px) !important;
+  html body:not(:has(#go-to-top.visible)) #chatbot-toggle {
+    left: calc(50% + 32px) !important;
   }
 
   html body:has(#go-to-top.visible) .a11y-toolbar {
-    bottom: calc(max(1rem, env(safe-area-inset-bottom, 0px)) + 156px) !important;
+    left: calc(50% - 103px) !important;
+  }
+
+  html body:has(#go-to-top.visible) #website-share-toggle.website-share-fab {
+    left: calc(50% - 49px) !important;
+  }
+
+  html body:has(#go-to-top.visible) #chatbot-toggle {
+    left: calc(50% + 5px) !important;
+  }
+
+  html body:has(#go-to-top.visible) #go-to-top,
+  html body:has(#go-to-top.visible) #go-to-top.visible {
+    left: calc(50% + 59px) !important;
   }
 
   html body:has(.resume-dropdown-wrapper.is-open) .a11y-toolbar,

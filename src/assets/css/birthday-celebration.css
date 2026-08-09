@@ -268,7 +268,7 @@ html.dark .ios-body {
 
 /* Effect: "Typewriter" Reveal */
 
-.hero-title {
+.birthday-celebration .hero-title {
   font-size: clamp(4rem, 15vw, 9rem);
   font-weight: 800;
   line-height: 0.95;
@@ -282,7 +282,7 @@ html.dark .ios-body {
   text-shadow: 0 18px 48px rgba(0, 0, 0, 0.36);
 }
 
-.hero-subtitle {
+.birthday-celebration .hero-subtitle {
   font-size: clamp(1.5rem, 5vw, 2.5rem);
   font-weight: 500;
   opacity: 0;
@@ -292,7 +292,7 @@ html.dark .ios-body {
   letter-spacing: -0.02em;
 }
 
-.hero-badge {
+.birthday-celebration .hero-badge {
   margin-top: 10px;
   padding: 8px 20px;
   border: 1px solid rgb(255 255 255 / 20%);
@@ -1061,9 +1061,9 @@ html.dark .birthday-continue-btn:hover {
 @media (prefers-reduced-motion: reduce) {
   .birthday-notification,
   .aurora-gradient,
-  .hero-title,
-  .hero-subtitle,
-  .hero-badge,
+  .birthday-celebration .hero-title,
+  .birthday-celebration .hero-subtitle,
+  .birthday-celebration .hero-badge,
   .birthday-message,
   .birthday-cake,
   .birthday-continue-btn,
