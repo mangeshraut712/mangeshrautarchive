@@ -1206,25 +1206,35 @@ html.dark .day-cell:hover:not(.empty, .selected, .today) {
   transform: scale(0.9);
 }
 
-/* Today Pulse — darker red so white day numbers meet WCAG AA 4.5:1 */
-
 .day-cell.today {
-  background: #c41e1a;
-  color: #ffffff !important;
+  --calendar-today-color: #ff3b30;
+  --calendar-today-shadow: rgb(255 59 48 / 40%);
+  --calendar-today-shadow-strong: rgb(255 59 48 / 60%);
+
+  background: var(--calendar-today-color);
+  color: #000000 !important;
   font-weight: 700;
-  box-shadow: 0 4px 12px rgb(196 30 26 / 35%);
+  box-shadow: 0 4px 12px var(--calendar-today-shadow);
   animation: gentle-pulse 3s infinite;
+}
+
+html.dark .day-cell.today {
+  --calendar-today-color: #ff453a;
+  --calendar-today-shadow: rgb(255 69 58 / 40%);
+  --calendar-today-shadow-strong: rgb(255 69 58 / 60%);
+
+  background: #ff453a;
 }
 
 @keyframes gentle-pulse {
   0%,
   100% {
-    box-shadow: 0 4px 12px rgb(196 30 26 / 35%);
+    box-shadow: 0 4px 12px var(--calendar-today-shadow);
     transform: scale(1);
   }
 
   50% {
-    box-shadow: 0 8px 20px rgb(196 30 26 / 50%);
+    box-shadow: 0 8px 20px var(--calendar-today-shadow-strong);
     transform: scale(1.05);
   }
 }
@@ -1337,7 +1347,7 @@ html.dark .day-cell.has-event:not(.today, .selected) .event-dot {
 
 .ios-weekdays span:first-child,
 .day-cell:nth-child(7n + 1) {
-  color: #d01c1c;
+  color: #ff3b30;
 }
 
 html.dark .ios-weekdays span:first-child,
@@ -1349,7 +1359,10 @@ html.dark .ios-btn-small {
   background: #007aff !important;
 }
 
-.day-cell.today:nth-child(7n + 1),
+.day-cell.today:nth-child(7n + 1) {
+  color: #000000 !important;
+}
+
 .day-cell.selected:nth-child(7n + 1) {
   color: white !important;
 }

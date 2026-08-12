@@ -369,15 +369,15 @@ html.dark .health-widget-container {
 /* WHOOP Sleep and Recovery traffic-light tones; Strain stays target-relative. */
 .whoop-metric.metric-green .metric-value,
 .whoop-metric.metric-green .metric-icon {
-  color: #1b7f37 !important;
+  color: #34c759 !important;
 }
 .whoop-metric.metric-yellow .metric-value,
 .whoop-metric.metric-yellow .metric-icon {
-  color: #9a4d00 !important;
+  color: #ffcc00 !important;
 }
 .whoop-metric.metric-red .metric-value,
 .whoop-metric.metric-red .metric-icon {
-  color: #c41e1a !important;
+  color: #ff3b30 !important;
 }
 
 html.dark .whoop-metric.metric-green .metric-value,
@@ -386,11 +386,11 @@ html.dark .whoop-metric.metric-green .metric-icon {
 }
 html.dark .whoop-metric.metric-yellow .metric-value,
 html.dark .whoop-metric.metric-yellow .metric-icon {
-  color: #ffb340 !important;
+  color: #ffd60a !important;
 }
 html.dark .whoop-metric.metric-red .metric-value,
 html.dark .whoop-metric.metric-red .metric-icon {
-  color: #ff6961 !important;
+  color: #ff453a !important;
 }
 
 /* Health vitals — solid only in tinted mode; clear/balanced use liquid glass */

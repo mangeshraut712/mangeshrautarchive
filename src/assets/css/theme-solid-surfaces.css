@@ -2397,7 +2397,7 @@ html body:has(#go-to-top.visible) .a11y-toolbar {
 }
 
 @media (width <= 768px) {
-  /* Compact centered utility dock keeps mobile controls out of the hero reading path. */
+  /* Keep mobile utilities in one safe-area-aware column at the bottom-right. */
   html body .a11y-toolbar__main,
   html body #website-share-toggle.website-share-fab,
   html body #chatbot-toggle,
@@ -2417,39 +2417,10 @@ html body:has(#go-to-top.visible) .a11y-toolbar {
   html body:has(#go-to-top.visible) #chatbot-toggle,
   html body:has(#go-to-top.visible) #go-to-top,
   html body:has(#go-to-top.visible) #go-to-top.visible {
-    right: auto !important;
+    right: var(--fab-edge, max(1rem, env(safe-area-inset-right, 0px))) !important;
+    left: auto !important;
     top: auto !important;
-    bottom: max(1rem, env(safe-area-inset-bottom, 0px)) !important;
     transform: none !important;
-  }
-
-  html body:not(:has(#go-to-top.visible)) .a11y-toolbar {
-    left: calc(50% - 76px) !important;
-  }
-
-  html body:not(:has(#go-to-top.visible)) #website-share-toggle.website-share-fab {
-    left: calc(50% - 22px) !important;
-  }
-
-  html body:not(:has(#go-to-top.visible)) #chatbot-toggle {
-    left: calc(50% + 32px) !important;
-  }
-
-  html body:has(#go-to-top.visible) .a11y-toolbar {
-    left: calc(50% - 103px) !important;
-  }
-
-  html body:has(#go-to-top.visible) #website-share-toggle.website-share-fab {
-    left: calc(50% - 49px) !important;
-  }
-
-  html body:has(#go-to-top.visible) #chatbot-toggle {
-    left: calc(50% + 5px) !important;
-  }
-
-  html body:has(#go-to-top.visible) #go-to-top,
-  html body:has(#go-to-top.visible) #go-to-top.visible {
-    left: calc(50% + 59px) !important;
   }
 
   html body:has(.resume-dropdown-wrapper.is-open) .a11y-toolbar,

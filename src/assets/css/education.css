@@ -399,22 +399,20 @@ html.dark .education-period {
 }
 
 .education-badge.completed {
-  background: #1f7a37 !important;
-  background-color: #1f7a37 !important;
+  background: #34c759 !important;
   background-image: none !important;
-  color: #fff !important;
+  color: #000 !important;
   box-shadow: none !important;
-  border: 1px solid rgb(255 255 255 / 20%) !important;
+  border: 1px solid rgb(0 0 0 / 12%) !important;
   cursor: default !important;
 }
 
 html.dark .education-badge.completed {
-  background: #1f7a37 !important;
-  background-color: #1f7a37 !important;
+  background: #30d158 !important;
   background-image: none !important;
-  color: #fff !important;
+  color: #000 !important;
   box-shadow: none !important;
-  border: 1px solid rgb(255 255 255 / 10%) !important;
+  border-color: rgb(255 255 255 / 16%) !important;
 }
 
 /* Header Layout */

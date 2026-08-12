@@ -442,7 +442,9 @@ html body #home.hero-section .hero-actions .resume-dropdown-toggle > * {
   }
 
   #home.hero-section .hero-layout-wrapper {
-    gap: 0.5rem !important;
+    position: relative !important;
+    top: -0.75rem !important;
+    gap: 0.875rem !important;
     width: 100% !important;
     max-width: 30rem !important;
     margin: 0 auto !important;
@@ -450,7 +452,7 @@ html body #home.hero-section .hero-actions .resume-dropdown-toggle > * {
 
   #home.hero-section .hero-text-block.home-hero-text,
   html body #home.hero-section .hero-text-block {
-    gap: 0.5rem !important;
+    gap: 0.875rem !important;
   }
 
   #home.hero-section .profile-image-wrapper,
@@ -462,7 +464,7 @@ html body #home.hero-section .hero-actions .resume-dropdown-toggle > * {
   }
 
   #home.hero-section .hero-header {
-    gap: 0.25rem !important;
+    gap: 0.375rem !important;
   }
 
   #home.hero-section .hero-name,
@@ -532,7 +534,7 @@ html body #home.hero-section .hero-actions .resume-dropdown-toggle > * {
     flex-direction: column !important;
     align-items: center !important;
     justify-content: center !important;
-    gap: 0.45rem !important;
+    gap: 0.5rem !important;
   }
 
   #home.hero-section .hero-actions > *,
@@ -560,11 +562,25 @@ html body #home.hero-section .hero-actions .resume-dropdown-toggle > * {
   }
 }
 
+@media (max-width: 420px) {
+  html body #home.hero-section .hero-actions,
+  #home.hero-section .hero-actions > *,
+  #home .hero-cta,
+  #home .resume-dropdown-wrapper,
+  #home .resume-dropdown-toggle {
+    max-width: 17rem !important;
+  }
+}
+
 @media (max-width: 768px) and (max-height: 700px) {
   #home.hero-section,
   #home.home-hero,
   section#home.hero-section.home-hero {
     justify-content: flex-start !important;
+  }
+
+  #home.hero-section .hero-layout-wrapper {
+    top: 0 !important;
   }
 }
 

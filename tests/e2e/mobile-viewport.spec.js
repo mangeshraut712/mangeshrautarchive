@@ -120,7 +120,7 @@ test.describe('Mobile viewport fit', () => {
     expect(overlaps).toEqual([false, false, false]);
   });
 
-  test('mobile identity and utility dock are centered', async ({ page }) => {
+  test('mobile identity stays centered beside a vertical utility dock', async ({ page }) => {
     await page.setViewportSize({ width: 500, height: 862 });
     await gotoSite(page);
     await page.waitForLoadState('load');
@@ -144,28 +144,30 @@ test.describe('Mobile viewport fit', () => {
         nameText?.right ?? Number.NEGATIVE_INFINITY,
         verified?.right ?? Number.NEGATIVE_INFINITY
       );
-      const dockLeft = Math.min(
-        ...controls.map(control => control?.left ?? Number.POSITIVE_INFINITY)
+      const dockCentersX = controls.map(control =>
+        control ? control.left + control.width / 2 : Number.POSITIVE_INFINITY
       );
-      const dockRight = Math.max(
-        ...controls.map(control => control?.right ?? Number.NEGATIVE_INFINITY)
-      );
-      const dockCentersY = controls.map(control =>
-        control ? control.top + control.height / 2 : Number.POSITIVE_INFINITY
-      );
+      const ordered = [...controls].sort((first, second) => (first?.top ?? 0) - (second?.top ?? 0));
+      const gaps = ordered
+        .slice(1)
+        .map((control, index) => (control?.top ?? 0) - (ordered[index]?.bottom ?? 0));
 
       return {
         nameCenterDelta: Math.abs((nameLeft + nameRight) / 2 - window.innerWidth / 2),
-        dockCenterDelta: Math.abs((dockLeft + dockRight) / 2 - window.innerWidth / 2),
-        dockRowDelta: Math.max(...dockCentersY) - Math.min(...dockCentersY),
+        dockColumnDelta: Math.max(...dockCentersX) - Math.min(...dockCentersX),
+        dockRightInset:
+          window.innerWidth - Math.max(...controls.map(control => control?.right ?? 0)),
+        minimumGap: Math.min(...gaps),
         dockBottom: Math.max(...controls.map(control => control?.bottom ?? 0)),
         viewportHeight: window.innerHeight,
       };
     });
 
     expect(layout.nameCenterDelta).toBeLessThanOrEqual(2);
-    expect(layout.dockCenterDelta).toBeLessThanOrEqual(2);
-    expect(layout.dockRowDelta).toBeLessThanOrEqual(2);
+    expect(layout.dockColumnDelta).toBeLessThanOrEqual(2);
+    expect(layout.dockRightInset).toBeGreaterThanOrEqual(12);
+    expect(layout.minimumGap).toBeGreaterThanOrEqual(8);
+    expect(layout.minimumGap).toBeLessThanOrEqual(12);
     expect(layout.dockBottom).toBeLessThanOrEqual(layout.viewportHeight - 12);
   });
 
@@ -269,7 +271,9 @@ test.describe('Mobile viewport fit', () => {
     expect(layout.aboutTop).toBeGreaterThanOrEqual(layout.viewportHeight - 1);
   });
 
-  test('Chrome responsive viewport vertically balances the mobile hero', async ({ page }) => {
+  test('mobile hero spacing stays balanced without compressing content groups', async ({
+    page,
+  }) => {
     await page.setViewportSize({ width: 500, height: 862 });
     await gotoSite(page);
     await page.waitForLoadState('load');
@@ -280,18 +284,45 @@ test.describe('Mobile viewport fit', () => {
       const hero = document.querySelector('.hero-layout-wrapper')?.getBoundingClientRect();
       const home = document.querySelector('#home')?.getBoundingClientRect();
       const about = document.querySelector('#about')?.getBoundingClientRect();
+      const heroLayout = document.querySelector('.hero-layout-wrapper');
+      const heroText = document.querySelector('.hero-text-block');
       return {
         topGap: (hero?.top ?? Number.POSITIVE_INFINITY) - (nav?.bottom ?? 0),
         bottomGap: (home?.bottom ?? 0) - (hero?.bottom ?? Number.POSITIVE_INFINITY),
         heroBottom: hero?.bottom ?? Number.POSITIVE_INFINITY,
         aboutTop: about?.top ?? Number.NEGATIVE_INFINITY,
         viewportHeight: window.innerHeight,
+        layoutGap: Number.parseFloat(getComputedStyle(heroLayout).gap),
+        textGap: Number.parseFloat(getComputedStyle(heroText).gap),
       };
     });
 
     expect(Math.abs(layout.topGap - layout.bottomGap)).toBeLessThanOrEqual(24);
     expect(layout.heroBottom).toBeLessThanOrEqual(layout.viewportHeight);
     expect(layout.aboutTop).toBeGreaterThanOrEqual(layout.viewportHeight - 1);
+    expect(layout.layoutGap).toBeGreaterThanOrEqual(12);
+    expect(layout.textGap).toBeGreaterThanOrEqual(12);
+  });
+
+  test('short mobile hero uses natural scrolling below the navigation', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 680 });
+    await gotoSite(page);
+    await page.waitForLoadState('load');
+
+    const layout = await page.evaluate(() => {
+      const nav = document.querySelector('#global-nav')?.getBoundingClientRect();
+      const hero = document.querySelector('.hero-layout-wrapper')?.getBoundingClientRect();
+      const home = document.querySelector('#home')?.getBoundingClientRect();
+      return {
+        contentStartsBelowNav: (hero?.top ?? 0) >= (nav?.bottom ?? Number.POSITIVE_INFINITY),
+        homeExtendsPastViewport: (home?.bottom ?? 0) > window.innerHeight,
+        documentCanScroll: document.documentElement.scrollHeight > window.innerHeight,
+      };
+    });
+
+    expect(layout.contentStartsBelowNav).toBe(true);
+    expect(layout.homeExtendsPastViewport).toBe(true);
+    expect(layout.documentCanScroll).toBe(true);
   });
 
   test('support card keeps both blessing images visible and all crypto options in one row', async ({
@@ -335,35 +366,129 @@ test.describe('Mobile viewport fit', () => {
     await expect(page.locator('.blessing-modal-overlay')).toBeVisible();
   });
 
-  test('earned degree badge uses the single solid green treatment', async ({ page }) => {
+  test('earned degree badge uses the original Apple green in both themes', async ({ page }) => {
     await gotoSite(page);
     await page.waitForLoadState('load');
     await page.locator('#education').scrollIntoViewIfNeeded();
     const badge = page.locator('.education-badge.completed').first();
     await expect(badge).toBeVisible();
-    await page.waitForFunction(
-      () =>
-        getComputedStyle(document.querySelector('.education-badge.completed')).backgroundColor ===
-        'rgb(31, 122, 55)',
-      null,
-      { timeout: 15_000 }
-    );
+    await expect
+      .poll(() => badge.evaluate(element => getComputedStyle(element).backgroundColor))
+      .not.toBe('rgba(0, 0, 0, 0)');
 
-    const style = await badge.evaluate(element => {
-      const computed = getComputedStyle(element);
-      return {
-        backgroundColor: computed.backgroundColor,
-        backgroundImage: computed.backgroundImage,
-        color: computed.color,
-      };
+    const colors = {};
+    for (const theme of ['light', 'dark']) {
+      await page.evaluate(activeTheme => {
+        document.documentElement.classList.toggle('dark', activeTheme === 'dark');
+        document.documentElement.dataset.theme = activeTheme;
+      }, theme);
+      colors[theme] = await badge.evaluate(element => {
+        const computed = getComputedStyle(element);
+        return {
+          backgroundColor: computed.backgroundColor,
+          backgroundImage: computed.backgroundImage,
+        };
+      });
+    }
+
+    expect(colors.light).toEqual({
+      backgroundColor: 'rgb(52, 199, 89)',
+      backgroundImage: 'none',
     });
-
-    expect(style.backgroundColor).toBe('rgb(31, 122, 55)');
-    expect(style.backgroundImage).toBe('none');
-    expect(style.color).toBe('rgb(255, 255, 255)');
+    expect(colors.dark).toEqual({
+      backgroundColor: 'rgb(48, 209, 88)',
+      backgroundImage: 'none',
+    });
   });
 
-  test('mobile utility controls stay in one centered row after scroll', async ({ page }) => {
+  test('calendar today marker and Sunday labels use the original Apple red', async ({ page }) => {
+    await gotoSite(page);
+    await page.waitForLoadState('load');
+    await page.locator('#contact').scrollIntoViewIfNeeded();
+    await expect(page.locator('.day-cell.today')).toBeVisible();
+
+    const colors = {};
+    for (const theme of ['light', 'dark']) {
+      const expectedToday = theme === 'dark' ? 'rgb(255, 69, 58)' : 'rgb(255, 59, 48)';
+      await page.evaluate(activeTheme => {
+        document.documentElement.classList.toggle('dark', activeTheme === 'dark');
+        document.documentElement.dataset.theme = activeTheme;
+      }, theme);
+      await expect
+        .poll(() =>
+          page
+            .locator('.day-cell.today')
+            .evaluate(element => getComputedStyle(element).backgroundColor)
+        )
+        .toBe(expectedToday);
+      colors[theme] = await page.evaluate(() => ({
+        today: getComputedStyle(document.querySelector('.day-cell.today')).backgroundColor,
+        sunday: getComputedStyle(document.querySelector('.ios-weekdays span:first-child')).color,
+      }));
+    }
+
+    expect(colors.light).toEqual({
+      today: 'rgb(255, 59, 48)',
+      sunday: 'rgb(255, 59, 48)',
+    });
+    expect(colors.dark).toEqual({
+      today: 'rgb(255, 69, 58)',
+      sunday: 'rgb(255, 69, 58)',
+    });
+  });
+
+  test('WHOOP readiness colors use the vivid traffic-light palette in both themes', async ({
+    page,
+  }) => {
+    await gotoSite(page);
+    await page.waitForLoadState('load');
+    await page.locator('#currently-section').evaluate(element => {
+      element.scrollIntoView({ block: 'center', behavior: 'instant' });
+    });
+    await expect
+      .poll(() =>
+        page
+          .locator('link[data-lazy-style-key="currently"]')
+          .evaluate(link => link.dataset.styleLoaded)
+      )
+      .toBe('true');
+    const metric = page.locator('#whoop-recovery-card');
+    await expect(metric).toBeVisible();
+
+    const expected = {
+      light: {
+        green: 'rgb(52, 199, 89)',
+        yellow: 'rgb(255, 204, 0)',
+        red: 'rgb(255, 59, 48)',
+      },
+      dark: {
+        green: 'rgb(48, 209, 88)',
+        yellow: 'rgb(255, 214, 10)',
+        red: 'rgb(255, 69, 58)',
+      },
+    };
+    const colors = { light: {}, dark: {} };
+
+    for (const theme of ['light', 'dark']) {
+      await page.evaluate(activeTheme => {
+        document.documentElement.classList.toggle('dark', activeTheme === 'dark');
+        document.documentElement.dataset.theme = activeTheme;
+      }, theme);
+      for (const tone of ['green', 'yellow', 'red']) {
+        colors[theme][tone] = await metric.evaluate((element, activeTone) => {
+          element.classList.remove('metric-green', 'metric-yellow', 'metric-red');
+          element.classList.add(`metric-${activeTone}`);
+          return getComputedStyle(element.querySelector('.metric-value')).color;
+        }, tone);
+      }
+    }
+
+    expect(colors).toEqual(expected);
+  });
+
+  test('mobile utility controls stay in a vertical bottom-right dock after scroll', async ({
+    page,
+  }) => {
     await gotoSite(page);
     await page.waitForLoadState('load');
     await page.waitForSelector('#chatbot-toggle', { state: 'visible' });
@@ -393,23 +518,24 @@ test.describe('Mobile viewport fit', () => {
         rect('#chatbot-toggle'),
         rect('#go-to-top'),
       ].filter(Boolean);
-      const centersY = controls.map(control => (control.t + control.b) / 2);
-      const left = Math.min(...controls.map(control => control.l));
-      const right = Math.max(...controls.map(control => control.r));
-      const ordered = [...controls].sort((a, b) => a.l - b.l);
-      const gaps = ordered.slice(1).map((control, index) => control.l - ordered[index].r);
+      const centersX = controls.map(control => (control.l + control.r) / 2);
+      const ordered = [...controls].sort((a, b) => a.t - b.t);
+      const gaps = ordered.slice(1).map((control, index) => control.t - ordered[index].b);
       return {
         controlCount: controls.length,
-        rowDelta: Math.max(...centersY) - Math.min(...centersY),
-        centerDelta: Math.abs((left + right) / 2 - window.innerWidth / 2),
+        columnDelta: Math.max(...centersX) - Math.min(...centersX),
+        rightInset: window.innerWidth - Math.max(...controls.map(control => control.r)),
+        bottomInset: window.innerHeight - Math.max(...controls.map(control => control.b)),
         minimumGap: Math.min(...gaps),
       };
     });
 
     expect(fabLayout.controlCount).toBeGreaterThanOrEqual(3);
-    expect(fabLayout.rowDelta).toBeLessThanOrEqual(2);
-    expect(fabLayout.centerDelta).toBeLessThanOrEqual(2);
+    expect(fabLayout.columnDelta).toBeLessThanOrEqual(2);
+    expect(fabLayout.rightInset).toBeGreaterThanOrEqual(12);
+    expect(fabLayout.bottomInset).toBeGreaterThanOrEqual(12);
     expect(fabLayout.minimumGap).toBeGreaterThanOrEqual(8);
+    expect(fabLayout.minimumGap).toBeLessThanOrEqual(12);
   });
 
   test('travel atlas fits mobile width', async ({ page }) => {
