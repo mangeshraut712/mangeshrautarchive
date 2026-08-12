@@ -1195,7 +1195,6 @@ body .project-evidence-link,
   .featured-project-card,
   .luxury-project-card,
   .experience-card,
-  .experience-item,
   .education-card,
   .cert-card,
   .skill-card,
@@ -1236,7 +1235,6 @@ html:not(.dark)
     .featured-project-card,
     .luxury-project-card,
     .experience-card,
-    .experience-item,
     .education-card,
     .cert-card,
     .skill-card,
@@ -1297,7 +1295,6 @@ html.dark
     .featured-project-card,
     .luxury-project-card,
     .experience-card,
-    .experience-item,
     .education-card,
     .cert-card,
     .skill-card,
@@ -1373,4 +1370,16 @@ html.dark :is(.eyebrow-badge, .section-eyebrow, .section-badge, .badge-pill) {
   background-color: rgba(41, 151, 255, 0.15) !important;
   color: #2997ff !important;
   border: 1px solid rgba(41, 151, 255, 0.3) !important;
+}
+
+/* Timeline item container reset - ensure .experience-item is strictly transparent with no outer border */
+html body #experience .experience-item,
+html.dark body #experience .experience-item {
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
 }
