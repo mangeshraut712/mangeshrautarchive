@@ -247,17 +247,39 @@ html[data-theme='dark'] #home .music-card.is-playing .music-card-inner {
 
 @media (hover: hover) and (pointer: fine) {
   html:not(.dark) #home .music-card:hover .music-card-inner {
+    border-radius: 20px !important;
+    padding: 0.7rem 1.15rem 0.7rem 0.7rem !important;
+    gap: 1.05rem !important;
     border-color: #0071e3 !important;
+    background: #ffffff !important;
+    background-color: #ffffff !important;
     box-shadow:
-      0 8px 24px rgba(0, 113, 227, 0.14),
+      0 10px 32px rgba(0, 113, 227, 0.16),
       0 2px 6px rgba(0, 0, 0, 0.04) !important;
+    transform: translateY(-2px) !important;
   }
 
   html.dark #home .music-card:hover .music-card-inner {
-    border-color: #2997ff !important;
+    border-radius: 20px !important;
+    padding: 0.7rem 1.15rem 0.7rem 0.7rem !important;
+    gap: 1.05rem !important;
+    border-color: #0a84ff !important;
+    background: #18181b !important;
+    background-color: #18181b !important;
     box-shadow:
-      0 10px 32px rgba(41, 151, 255, 0.22),
+      0 14px 40px rgba(10, 132, 255, 0.24),
       0 2px 8px rgba(0, 0, 0, 0.5) !important;
+    transform: translateY(-2px) !important;
+  }
+
+  #home .music-card:hover .album-art-container {
+    width: 60px !important;
+    height: 60px !important;
+  }
+
+  #home .music-card:hover .album-art {
+    width: 60px !important;
+    height: 60px !important;
   }
 }
 
@@ -505,20 +527,21 @@ html.dark #home .music-card-inner .artist-name {
 }
 
 #home .music-card-spotify-link:hover {
-  transform: scale(1.12) !important;
-  background: #1db954 !important;
-  background-color: #1db954 !important;
-  color: #ffffff !important;
-  -webkit-text-fill-color: #ffffff !important;
-  box-shadow: 0 4px 14px rgba(29, 185, 84, 0.45) !important;
+  transform: scale(1.08) !important;
+  background: rgba(29, 185, 84, 0.18) !important;
+  background-color: rgba(29, 185, 84, 0.18) !important;
+  color: #1db954 !important;
+  -webkit-text-fill-color: #1db954 !important;
+  border-color: rgba(29, 185, 84, 0.45) !important;
+  box-shadow: none !important;
 }
 
 #home .music-card-spotify-link:hover i,
 #home .music-card-spotify-link:hover .fab,
 #home .music-card-spotify-link:hover svg {
-  color: #ffffff !important;
-  -webkit-text-fill-color: #ffffff !important;
-  fill: #ffffff !important;
+  color: #1db954 !important;
+  -webkit-text-fill-color: #1db954 !important;
+  fill: #1db954 !important;
 }
 
 #home .music-card[data-music-state='loading'] .music-card-inner {
