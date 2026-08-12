@@ -3450,16 +3450,6 @@ html.dark .theme-toggle-nav i.fa-moon {
   }
 }
 
-@keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-
-  to {
-    transform: rotate(360deg);
-  }
-}
-
 /* Contact Information Icons */
 
 .fa-solid.fa-envelope,
@@ -5756,29 +5746,6 @@ html.dark .book-author-text {
    auto-reveals via CSS after 450ms even if JS/IO never runs.
    This prevents permanent blank sections during fast scroll.
    ═══════════════════════════════════════════════════════════ */
-@keyframes microReveal {
-  from {
-    opacity: 1;
-    transform: translate3d(0, 8px, 0);
-  }
-
-  to {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
-  }
-}
-
-@keyframes microScaleIn {
-  from {
-    opacity: 1;
-    transform: scale(0.96);
-  }
-
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
 
 @keyframes headingReveal {
   from {

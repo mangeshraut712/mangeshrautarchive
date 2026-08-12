@@ -72,7 +72,6 @@ class GitHubConnector:
         """Fetch user profile information"""
         cache_key = f"profile:{username}"
 
-        # Check cache
         if self._is_cached(cache_key):
             return self.cache[cache_key]['data']
 
@@ -88,7 +87,6 @@ class GitHubConnector:
                 response.raise_for_status()
                 data = response.json()
 
-                # Extract relevant info
                 profile = {
                     'username': data.get('login'),
                     'name': data.get('name'),
@@ -153,7 +151,6 @@ class GitHubConnector:
                 response.raise_for_status()
                 repos_data = response.json()
 
-                # Extract key info
                 repos = []
                 for repo in repos_data:
                     repos.append({
@@ -206,23 +203,18 @@ class GitHubConnector:
         if not repos:
             return {'error': 'No repositories found'}
 
-        # Analyze languages across all repos
         language_stats = {}
         for repo in repos:
             lang = repo.get('language')
             if lang:
                 language_stats[lang] = language_stats.get(lang, 0) + 1
 
-        # Sort by usage
         top_languages = sorted(language_stats.items(), key=lambda x: x[1], reverse=True)[:5]
 
-        # Find most popular projects
         popular_projects = sorted(repos, key=lambda r: r.get('stars', 0), reverse=True)[:5]
 
-        # Recent projects
         recent_projects = sorted(repos, key=lambda r: r.get('updated_at', ''), reverse=True)[:5]
 
-        # Calculate activity metrics
         total_stars = sum(r.get('stars', 0) for r in repos)
         total_forks = sum(r.get('forks', 0) for r in repos)
         active_repo_count = sum(1 for r in repos if self._is_recently_updated(r.get('updated_at')))

@@ -427,15 +427,6 @@ html.dark #home .music-card:hover .music-card-inner {
   animation-play-state: running;
 }
 
-@keyframes albumSpin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
 #home .playing-indicator {
   position: absolute;
   bottom: -6px;

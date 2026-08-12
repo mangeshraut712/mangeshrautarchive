@@ -225,17 +225,6 @@ html.dark .chatbot-title {
   color: #0a84ff;
 }
 
-@keyframes shimmer {
-  0%,
-  100% {
-    filter: drop-shadow(0 0 12px rgb(46 136 249 / 25%));
-  }
-
-  50% {
-    filter: drop-shadow(0 0 18px rgb(46 136 249 / 35%));
-  }
-}
-
 .chatbot-header-actions {
   display: flex;
   align-items: center;
@@ -436,18 +425,6 @@ html.dark .suggested-prompt-btn:hover {
   background: linear-gradient(135deg, rgba(10, 132, 255, 0.15), rgba(41, 151, 255, 0.12));
   box-shadow: 0 6px 20px rgba(10, 132, 255, 0.25);
   border-color: rgba(10, 132, 255, 0.35);
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -857,18 +834,6 @@ html.dark .welcome-action-chip:hover {
   background: linear-gradient(135deg, #0a84ff 0%, #0066cc 100%);
   color: white;
   border-color: transparent;
-}
-
-@keyframes neuralReveal {
-  from {
-    opacity: 0;
-    transform: translateY(20px) scale(0.9);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
 }
 
 .assistant-message .message-content {
@@ -1366,20 +1331,6 @@ html.dark .msg-action-btn.success {
 html.dark .msg-action-btn.speaking {
   background: rgb(255 159 10 / 20%);
   color: #ff9f0a;
-}
-
-@keyframes pulse {
-  0% {
-    transform: scale(1);
-  }
-
-  50% {
-    transform: scale(1.05);
-  }
-
-  100% {
-    transform: scale(1);
-  }
 }
 
 /* ═══════════════════════════════════════════════════════════

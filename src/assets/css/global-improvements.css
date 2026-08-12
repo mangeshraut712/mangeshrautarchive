@@ -7,10 +7,10 @@
    GLOBAL BUTTON STANDARDIZATION
    ======================================== */
 
-/* Solid primary CTAs only — outline/soft buttons excluded */
-.btn:not(.hero-cta-secondary):not(.section-preview-btn):not(.hero-cta-primary),
-.btn-primary:not(.hero-cta-primary),
-.hero-cta:not(.hero-cta-secondary):not(.hero-cta-primary),
+/* Solid primary CTAs only — outline/soft buttons excluded
+   .btn-primary is styled by premium-enhancements.css (gradient + shine) */
+.btn:not(.hero-cta-secondary):not(.section-preview-btn):not(.hero-cta-primary):not(.btn-primary),
+.hero-cta:not(.hero-cta-secondary):not(.hero-cta-primary):not(.btn-primary),
 .cta-button,
 .action-btn,
 .download-btn,
@@ -42,9 +42,10 @@ input[type='submit'] {
   overflow: hidden;
 }
 
-.btn:not(.hero-cta-secondary):not(.section-preview-btn):not(.hero-cta-primary)::before,
-.btn-primary:not(.hero-cta-primary)::before,
-.hero-cta:not(.hero-cta-secondary):not(.hero-cta-primary)::before,
+.btn:not(.hero-cta-secondary):not(.section-preview-btn):not(.hero-cta-primary):not(
+    .btn-primary
+  )::before,
+.hero-cta:not(.hero-cta-secondary):not(.hero-cta-primary):not(.btn-primary)::before,
 .cta-button::before {
   content: '';
   position: absolute;
@@ -56,16 +57,18 @@ input[type='submit'] {
   transition: left 0.5s;
 }
 
-.btn:not(.hero-cta-secondary):not(.section-preview-btn):not(.hero-cta-primary):hover::before,
-.btn-primary:not(.hero-cta-primary):hover::before,
-.hero-cta:not(.hero-cta-secondary):not(.hero-cta-primary):hover::before,
+.btn:not(.hero-cta-secondary):not(.section-preview-btn):not(.hero-cta-primary):not(
+    .btn-primary
+  ):hover::before,
+.hero-cta:not(.hero-cta-secondary):not(.hero-cta-primary):not(.btn-primary):hover::before,
 .cta-button:hover::before {
   left: 100%;
 }
 
-.btn:not(.hero-cta-secondary):not(.section-preview-btn):not(.hero-cta-primary):hover,
-.btn-primary:not(.hero-cta-primary):hover,
-.hero-cta:not(.hero-cta-secondary):not(.hero-cta-primary):hover,
+.btn:not(.hero-cta-secondary):not(.section-preview-btn):not(.hero-cta-primary):not(
+    .btn-primary
+  ):hover,
+.hero-cta:not(.hero-cta-secondary):not(.hero-cta-primary):not(.btn-primary):hover,
 .cta-button:hover,
 .action-btn:hover,
 .download-btn:hover {
@@ -75,18 +78,20 @@ input[type='submit'] {
   transform: translateY(-2px);
 }
 
-html.dark .btn:not(.hero-cta-secondary):not(.section-preview-btn):not(.hero-cta-primary),
-html.dark .btn-primary:not(.hero-cta-primary),
-html.dark .hero-cta:not(.hero-cta-secondary):not(.hero-cta-primary),
+html.dark
+  .btn:not(.hero-cta-secondary):not(.section-preview-btn):not(.hero-cta-primary):not(.btn-primary),
+html.dark .hero-cta:not(.hero-cta-secondary):not(.hero-cta-primary):not(.btn-primary),
 html.dark .cta-button {
   background: #0a84ff;
   background-image: none;
   color: #fff !important;
 }
 
-html.dark .btn:not(.hero-cta-secondary):not(.section-preview-btn):not(.hero-cta-primary):hover,
-html.dark .btn-primary:not(.hero-cta-primary):hover,
-html.dark .hero-cta:not(.hero-cta-secondary):not(.hero-cta-primary):hover,
+html.dark
+  .btn:not(.hero-cta-secondary):not(.section-preview-btn):not(.hero-cta-primary):not(
+    .btn-primary
+  ):hover,
+html.dark .hero-cta:not(.hero-cta-secondary):not(.hero-cta-primary):not(.btn-primary):hover,
 html.dark .cta-button:hover {
   background: #2997ff;
   background-image: none;

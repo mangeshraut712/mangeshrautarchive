@@ -867,16 +867,6 @@ html.dark .certification-card:hover {
    19. LOADING SKELETON ANIMATION
    ═══════════════════════════════════════════════════════════════════ */
 
-@keyframes shimmer {
-  0% {
-    background-position: -200% 0;
-  }
-
-  100% {
-    background-position: 200% 0;
-  }
-}
-
 .skeleton {
   background: linear-gradient(
     90deg,

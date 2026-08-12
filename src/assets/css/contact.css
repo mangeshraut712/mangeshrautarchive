@@ -3280,18 +3280,6 @@ html.dark .currently-tab {
   display: none !important;
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
 /* Media Grid - Apple TV Style Horizontal Scroll */
 
 .media-grid,

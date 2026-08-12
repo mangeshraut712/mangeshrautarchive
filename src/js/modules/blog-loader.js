@@ -63,7 +63,6 @@ class BlogLoader {
   }
 
   renderPosts() {
-    // Sort posts by date (most recent first)
     const sortedPosts = blogPosts.toSorted((a, b) => new Date(b.date) - new Date(a.date));
 
     this.container.innerHTML = sortedPosts

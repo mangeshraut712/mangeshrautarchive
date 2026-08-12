@@ -299,15 +299,6 @@ html.dark .health-widget-container {
   animation: spin 1s linear infinite;
 }
 
-@keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
 @keyframes pulseHighlight {
   0% {
     transform: scale(1);

@@ -1094,6 +1094,12 @@ html.dark .portfolio-reach-badge i {
   font-size: 1.05rem !important;
   line-height: 1.15 !important;
   letter-spacing: 0 !important;
+  text-align: left !important;
+  width: auto !important;
+  -webkit-text-fill-color: inherit !important;
+  background: none !important;
+  background-clip: border-box !important;
+  -webkit-background-clip: border-box !important;
 }
 
 .reach-panel-range {
@@ -2508,16 +2514,6 @@ html.dark .hero-2026-item::before {
 
 .music-card.is-playing .album-art {
   animation-play-state: running;
-}
-
-@keyframes albumSpin {
-  from {
-    transform: rotate(0deg);
-  }
-
-  to {
-    transform: rotate(360deg);
-  }
 }
 
 /* Playing Indicator - Centered Bottom */

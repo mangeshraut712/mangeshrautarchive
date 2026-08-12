@@ -20,10 +20,8 @@ class MonitoringMiddleware(BaseHTTPMiddleware):
         start_time = time.time()
 
         try:
-            # Process request
             response = await call_next(request)
 
-            # Calculate response time
             response_time = (time.time() - start_time) * 1000
 
             # Skip monitoring if monitor is not available (e.g., failed to initialize)
@@ -44,7 +42,6 @@ class MonitoringMiddleware(BaseHTTPMiddleware):
                 else:
                     client_ip = request.client.host if request.client else "unknown"
 
-            # Record metrics
             self.monitor.record_request(
                 path=request.url.path,
                 method=request.method,
@@ -54,7 +51,6 @@ class MonitoringMiddleware(BaseHTTPMiddleware):
                 client_ip=client_ip,
             )
 
-            # Log slow requests
             if response_time > 5000:  # 5 seconds
                 self.monitor.log_event(
                     f"Slow request: {request.method} {request.url.path} took {response_time:.0f}ms",
@@ -65,7 +61,6 @@ class MonitoringMiddleware(BaseHTTPMiddleware):
 
             # Ensure we always return proper JSON for API endpoints
             if request.url.path.startswith("/api") and response.status_code >= 400:
-                # Log the error
                 if response.status_code >= 500:
                     self.monitor.log_event(
                         f"Server error {response.status_code}: {request.method} {request.url.path}",

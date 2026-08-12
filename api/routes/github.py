@@ -230,7 +230,6 @@ async def github_repos_proxy(
             "GITHUB_UNREACHABLE", "GitHub API is unreachable. Please try again.", 503
         )
 
-    # Sort
     sort_key = {
         "updated": "pushed_at",
         "created": "created_at",
@@ -238,7 +237,6 @@ async def github_repos_proxy(
     }.get(sort, "pushed_at")
     repos.sort(key=lambda r: r.get(sort_key) or "", reverse=True)
 
-    # Filter forks
     if no_forks:
         repos = [r for r in repos if not r.get("fork", False)]
 

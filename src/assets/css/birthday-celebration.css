@@ -417,12 +417,6 @@ html.dark .ios-body {
   transform: translateX(100%);
 }
 
-@keyframes fadeIn {
-  to {
-    opacity: 1;
-  }
-}
-
 @keyframes slideDown {
   from {
     transform: translateX(-50%) translateY(-120px);
@@ -432,17 +426,6 @@ html.dark .ios-body {
   to {
     transform: translateX(-50%) translateY(0);
     opacity: 1;
-  }
-}
-
-@keyframes pulse {
-  0%,
-  100% {
-    transform: translateX(-50%) translateY(0) scale(1);
-  }
-
-  50% {
-    transform: translateX(-50%) translateY(0) scale(1.02);
   }
 }
 
@@ -613,18 +596,6 @@ html.dark .birthday-celebration {
     float 3s ease-in-out 1.5s infinite;
 }
 
-@keyframes scaleIn {
-  from {
-    transform: scale(0.5) translateY(50px);
-    opacity: 0;
-  }
-
-  to {
-    transform: scale(1) translateY(0);
-    opacity: 1;
-  }
-}
-
 @keyframes float {
   0%,
   100% {
@@ -648,17 +619,6 @@ html.dark .birthday-celebration {
   background-clip: text;
   filter: none;
   text-shadow: none;
-}
-
-@keyframes shimmer {
-  0%,
-  100% {
-    background-position: 0% 50%;
-  }
-
-  50% {
-    background-position: 100% 50%;
-  }
 }
 
 .birthday-subtitle {
@@ -761,18 +721,6 @@ html.dark .birthday-continue-btn {
   box-shadow: 0 10px 30px rgb(0 0 0 / 50%);
   background: linear-gradient(135deg, #0071e3 0%, #2997ff 100%);
   color: #fff;
-}
-
-@keyframes fadeInUp {
-  from {
-    transform: translateY(30px);
-    opacity: 0;
-  }
-
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
 }
 
 @keyframes btnPulse {

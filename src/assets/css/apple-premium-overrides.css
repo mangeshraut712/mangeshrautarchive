@@ -2263,19 +2263,6 @@ html.dark .profile-image {
   animation: spatialPulse 4s ease-in-out infinite;
 }
 
-@keyframes spatialPulse {
-  0%,
-  100% {
-    transform: scale(1);
-    opacity: 0.5;
-  }
-
-  50% {
-    transform: scale(1.15);
-    opacity: 0.8;
-  }
-}
-
 /* Spatial Storytelling - About Section Parallax */
 #about {
   perspective: none;
@@ -3198,15 +3185,6 @@ html.dark #home .music-card:hover .music-card-inner {
   animation: albumSpin 8s linear infinite;
 }
 
-@keyframes albumSpin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
 /* Playing Indicator Bars - Centered Bottom */
 .playing-indicator {
   position: absolute;
@@ -3455,17 +3433,6 @@ html.dark .media-poster img.error {
 .currently-content.active {
   display: block;
   animation: fadeIn 0.3s ease;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
 
 /* Media info styling improvements */

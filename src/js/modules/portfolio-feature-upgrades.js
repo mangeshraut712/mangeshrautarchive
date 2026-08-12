@@ -1,3 +1,11 @@
+let roleTimerId;
+let updateTimerId;
+
+window.addEventListener('pagehide', () => {
+  if (roleTimerId) window.clearInterval(roleTimerId);
+  if (updateTimerId) window.clearInterval(updateTimerId);
+});
+
 const ROLE_WORDS = [
   'AI Builder',
   'Research-Driven Problem Solver',
@@ -45,7 +53,7 @@ function initHeroRoleFlip() {
   if (!prefersReducedMotion) {
     const startRotation = () => {
       index = 1 % ROLE_WORDS.length;
-      window.setInterval(setRole, 2400);
+      roleTimerId = window.setInterval(setRole, 2400);
     };
     const arm = () => {
       window.setTimeout(startRotation, 12000);
@@ -74,7 +82,7 @@ function initHeroLocalTimes() {
   };
 
   update();
-  window.setInterval(update, 30000);
+  updateTimerId = window.setInterval(update, 30000);
 }
 
 async function initBlogPostCount() {

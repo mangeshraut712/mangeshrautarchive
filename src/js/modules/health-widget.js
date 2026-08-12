@@ -98,6 +98,11 @@ class HealthWidget {
     const container = document.getElementById('health-section');
     if (!container) return;
 
+    this.els = {
+      recoveryCard: document.getElementById('whoop-recovery-card'),
+      widget: document.querySelector('.health-widget-container'),
+    };
+
     this.updateUI();
     this.startRelativeTimeUpdater();
     this.fetchFromApi();
@@ -117,6 +122,17 @@ class HealthWidget {
     this.refreshTimer = window.setInterval(() => {
       this.fetchFromApi({ background: true });
     }, HEALTH_REFRESH_INTERVAL_MS);
+  }
+
+  destroy() {
+    if (this.refreshTimer) {
+      window.clearInterval(this.refreshTimer);
+      this.refreshTimer = null;
+    }
+    if (this.timeUpdater) {
+      window.clearInterval(this.timeUpdater);
+      this.timeUpdater = null;
+    }
   }
 
   normalizeStrainValue(data = {}) {
@@ -248,7 +264,9 @@ class HealthWidget {
       this.metrics.recovery === null ? '--%' : `${Math.round(this.metrics.recovery)}%`
     );
 
-    const recoveryCard = document.getElementById('whoop-recovery-card');
+    const recoveryCard = this.els
+      ? this.els.recoveryCard
+      : document.getElementById('whoop-recovery-card');
     if (recoveryCard) {
       recoveryCard.classList.remove('recovery-green', 'recovery-yellow', 'recovery-red');
       if (this.metrics.recovery !== null) {
@@ -286,7 +304,7 @@ class HealthWidget {
     );
     this.setTextContent('whoop-hrv-val', this.metrics.hrvTrend ? this.metrics.hrvTrend : '--');
 
-    const widget = document.querySelector('.health-widget-container');
+    const widget = this.els ? this.els.widget : document.querySelector('.health-widget-container');
     if (widget) {
       widget.classList.remove(
         'health-status-live',
@@ -306,7 +324,11 @@ class HealthWidget {
   }
 
   setTextContent(id, text) {
-    const el = document.getElementById(id);
+    if (!this.els) this.els = {};
+    if (this.els[id] === undefined) {
+      this.els[id] = document.getElementById(id);
+    }
+    const el = this.els[id];
     if (el) el.textContent = text;
   }
 

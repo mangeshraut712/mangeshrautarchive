@@ -69,7 +69,6 @@ async def send_contact_message(payload: ContactMessage, req: Request):
             retry_after=RATE_LIMIT_WINDOW,
         )
 
-    # Basic email validation
     email_re = re.compile(r"^[^\s@]+@[^\s@]+\.[^\s@]+$")
     if not email_re.match(payload.email):
         raise HTTPException(status_code=400, detail="Invalid email address")

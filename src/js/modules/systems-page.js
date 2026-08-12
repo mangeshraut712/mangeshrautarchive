@@ -661,6 +661,16 @@ async function hydrateTelemetry({ initial = false } = {}) {
 
   if (initial && !telemetryTimer) {
     telemetryTimer = window.setInterval(() => hydrateTelemetry(), 30_000);
+    window.addEventListener(
+      'pagehide',
+      () => {
+        if (telemetryTimer) {
+          window.clearInterval(telemetryTimer);
+          telemetryTimer = null;
+        }
+      },
+      { once: true }
+    );
   }
 }
 

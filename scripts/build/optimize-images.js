@@ -20,7 +20,6 @@ const OUTPUT_DIR = join(__dirname, '../../src/assets/images/optimized');
 const WEBP_QUALITY = 85;
 const JPEG_QUALITY = 85;
 
-// Ensure output directory exists
 if (!existsSync(OUTPUT_DIR)) {
   mkdirSync(OUTPUT_DIR, { recursive: true });
 }
@@ -125,14 +124,12 @@ async function processImages() {
       const baseName = basename(file.name, extname(file.name));
       const outputSubdir = join(OUTPUT_DIR, file.dir);
 
-      // Ensure subdirectory exists
       if (!existsSync(outputSubdir)) {
         mkdirSync(outputSubdir, { recursive: true });
       }
 
       console.log(`\n📷 Processing: ${file.relativePath}`);
 
-      // Get original size
       const originalStats = statSync(file.fullPath);
       const originalSize = originalStats.size;
 
@@ -140,7 +137,6 @@ async function processImages() {
       const webpPath = join(outputSubdir, `${baseName}.webp`);
       await convertToWebP(file.fullPath, webpPath, null);
 
-      // Calculate savings
       try {
         const webpStats = statSync(webpPath);
         const savings = originalSize - webpStats.size;
@@ -152,7 +148,6 @@ async function processImages() {
         // WebP creation failed, skip savings calc
       }
 
-      // Generate optimized original format
       const optimizedPath = join(outputSubdir, file.name);
       await optimizeImage(file.fullPath, optimizedPath);
     })
@@ -164,7 +159,6 @@ async function processImages() {
     `📊 Total: ${processedCount} images, ${(totalSavings / 1024 / 1024).toFixed(2)} MB saved`
   );
 
-  // Generate usage examples
   if (imageFiles.length > 0) {
     generateUsageExamples(imageFiles[0].name);
   }

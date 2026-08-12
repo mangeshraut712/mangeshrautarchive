@@ -2238,7 +2238,6 @@ class GitHubProjects {
     });
   }
 
-  // Sort repositories by different criteria
   sortRepos(repos, sortBy = 'updated') {
     const sorted = [...repos];
 
@@ -2264,7 +2263,6 @@ class GitHubProjects {
     return sorted;
   }
 
-  // Get repositories ready for search indexing
   async getSearchableProjects() {
     const repos = await this.fetchRepositories();
     return repos.map(repo => ({
