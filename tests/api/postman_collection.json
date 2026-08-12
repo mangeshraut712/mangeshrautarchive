@@ -1,0 +1,118 @@
+{
+  "info": {
+    "_postman_id": "mangeshraut-portfolio-api-collection",
+    "name": "AssistMe AI Portfolio API Specification & Postman Test Suite",
+    "description": "Postman v2.1 collection covering all FastAPI endpoints for mangeshraut.pro backend serverless functions.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "General & Health",
+      "item": [
+        {
+          "name": "API Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/health",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "health"]
+            }
+          }
+        },
+        {
+          "name": "Metrics Dashboard",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/monitor/metrics",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "monitor", "metrics"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Chatbot & AI Intelligence",
+      "item": [
+        {
+          "name": "Send Chat Query",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"message\": \"What is Mangesh's experience with Java and Spring Boot?\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/chat",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "chat"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Vector RAG & Article Ingestion",
+      "item": [
+        {
+          "name": "Vector Similarity Search",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"query\": \"Java Spring Framework microservices\",\n  \"top_k\": 3\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/vector-search",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "vector-search"]
+            }
+          }
+        },
+        {
+          "name": "Firecrawl Ingest URL",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"url\": \"https://mangeshraut.pro\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/ingest-url",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "ingest-url"]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://127.0.0.1:8001"
+    }
+  ]
+}
