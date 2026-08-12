@@ -449,7 +449,6 @@ html.dark .award-card p {
 
 /* ─── Cards — solid white (light) / solid black (dark) ───────────── */
 .blog-card,
-.experience-item,
 .education-item,
 .publication-card,
 .award-card,
@@ -472,7 +471,6 @@ html.dark .award-card p {
 }
 
 html.dark .blog-card,
-html.dark .experience-item,
 html.dark .education-item,
 html.dark .publication-card,
 html.dark .award-card,
@@ -734,7 +732,6 @@ html.dark #projects .project-repo-link {
 
 /* Card borders — consistent Apple hairline */
 .blog-card,
-.experience-item,
 .education-item,
 .publication-card,
 .award-card,

@@ -3112,15 +3112,37 @@ html.dark #projects .gh-hm__weekday {
   background: var(--gh-l0);
   outline: 1px solid rgb(27 31 35 / 6%);
   outline-offset: -1px;
+  transition:
+    transform 0.12s ease,
+    outline-color 0.12s ease;
+  cursor: pointer;
+}
+
+#projects .gh-hm__cell:hover,
+#projects .gh-hm__cell:focus-visible {
+  transform: scale(1.25);
+  outline: 1.5px solid #0071e3 !important;
+  z-index: 10;
 }
 
 html.dark #projects .gh-hm__cell {
   outline-color: rgb(255 255 255 / 5%);
 }
 
+html.dark #projects .gh-hm__cell:hover,
+html.dark #projects .gh-hm__cell:focus-visible {
+  outline-color: #0a84ff !important;
+}
+
 #projects .gh-hm__cell--empty {
   background: transparent;
   outline: none;
+  cursor: default;
+}
+
+#projects .gh-hm__cell--empty:hover {
+  transform: none;
+  outline: none !important;
 }
 
 #projects .gh-hm__cell[data-level='1'] {
@@ -4050,33 +4072,52 @@ section#projects #github-projects-container .project-release-detail {
    GitHub Contribution Graph — Activity Overview & Floating Tooltip (shadcn UI)
    ========================================================================== */
 
-/* 1. Floating Tooltip */
+/* 1. Floating Tooltip (Shadcn UI style) */
 .gh-contrib-tooltip {
-  position: absolute;
-  z-index: 9999;
-  pointer-events: none;
-  background: #24292e;
-  color: #ffffff;
-  padding: 6px 12px;
-  border-radius: 6px;
-  font-size: 0.76rem;
-  font-weight: 500;
-  box-shadow: 0 6px 18px rgb(0 0 0 / 28%);
-  white-space: nowrap;
-  transform: translate(-50%, -100%);
+  position: fixed !important;
+  z-index: 99999 !important;
+  pointer-events: none !important;
+  background: #000000 !important;
+  color: #ffffff !important;
+  padding: 6px 12px !important;
+  border-radius: 6px !important;
+  font-size: 0.76rem !important;
+  font-weight: 500 !important;
+  letter-spacing: -0.01em !important;
+  box-shadow: 0 8px 24px rgb(0 0 0 / 40%) !important;
+  white-space: nowrap !important;
+  transform: translate(-50%, -100%) !important;
   opacity: 0;
   transition:
-    opacity 0.15s ease,
-    transform 0.15s ease;
+    opacity 0.12s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.12s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.gh-contrib-tooltip::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 4px solid #000000;
 }
 
 .gh-contrib-tooltip.is-visible {
-  opacity: 1;
+  opacity: 1 !important;
 }
 
 html.dark .gh-contrib-tooltip {
-  background: #6e7681;
-  color: #ffffff;
+  background: #09090b !important;
+  color: #ffffff !important;
+  border: 1px solid #27272a;
+}
+
+html.dark .gh-contrib-tooltip::after {
+  border-top-color: #09090b;
 }
 
 /* 2. Activity Overview Card */

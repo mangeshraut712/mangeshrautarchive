@@ -125,10 +125,16 @@ html.dark #experience .timeline-section-header h3 {
    TIMELINE ITEMS
    ======================================== */
 
-.experience-item {
+.experience-item,
+html.dark .experience-item {
   position: relative;
   margin-bottom: 2rem;
   padding-left: 90px;
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
 }
 
 .experience-item:last-child {

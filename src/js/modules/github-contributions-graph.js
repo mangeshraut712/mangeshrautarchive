@@ -79,7 +79,7 @@ function shade(hex, factor) {
 }
 
 const fmtShort = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric' });
-const fmtFull = new Intl.DateTimeFormat('en-US', {
+const _fmtFull = new Intl.DateTimeFormat('en-US', {
   weekday: 'long',
   month: 'long',
   day: 'numeric',
@@ -409,9 +409,12 @@ function renderHeatmap(data) {
         .map((_, r) => {
           const cell = week[r];
           if (!cell) return '<span class="gh-hm__cell gh-hm__cell--empty" data-level="0"></span>';
+          const dayStr = String(cell.date.getDate()).padStart(2, '0');
+          const monthStr = String(cell.date.getMonth() + 1).padStart(2, '0');
+          const yearStr = cell.date.getFullYear();
           const label = `${cell.count === 0 ? 'No' : cell.count} contribution${
             cell.count === 1 ? '' : 's'
-          } on ${fmtFull.format(cell.date)}.`;
+          } on ${dayStr}.${monthStr}.${yearStr}`;
           return `<span class="gh-hm__cell" data-level="${cell.level}" data-label="${label}" tabindex="0" aria-label="${label}"></span>`;
         })
         .join('');
@@ -436,8 +439,8 @@ function renderHeatmap(data) {
     tooltip.textContent = label;
     tooltip.classList.add('is-visible');
     const rect = cell.getBoundingClientRect();
-    tooltip.style.left = `${rect.left + window.scrollX + rect.width / 2}px`;
-    tooltip.style.top = `${rect.top + window.scrollY - 6}px`;
+    tooltip.style.left = `${rect.left + rect.width / 2}px`;
+    tooltip.style.top = `${rect.top - 6}px`;
   };
 
   const hideTooltip = () => {
