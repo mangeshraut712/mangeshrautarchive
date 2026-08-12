@@ -5,7 +5,7 @@ Exposes POST /api/ingest-url endpoint for Markdown scraping & site knowledge ind
 
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
-from typing import Dict, Any, Optional
+from typing import Optional
 from api.integrations.firecrawl_ingest import firecrawl_service
 
 router = APIRouter(prefix="/api", tags=["ingest"])

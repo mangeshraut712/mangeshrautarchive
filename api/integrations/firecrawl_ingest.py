@@ -6,7 +6,6 @@ Supports remote Firecrawl API with fallback to local readability extraction.
 """
 
 import os
-import re
 import logging
 from typing import Dict, Any, Optional
 
