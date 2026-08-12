@@ -3016,7 +3016,12 @@ html.dark .dream-car-item.logo-mono:hover .logo-light {
 /* Colorful logos: keep brand color, slight lift on dark canvas */
 html.dark .dream-company-item:not(.logo-mono):not(.has-dark-logo) .company-logo,
 html.dark .dream-car-item:not(.logo-mono):not(.has-dark-logo) .car-logo {
-  filter: brightness(1.08) contrast(1.04);
+  filter: brightness(1.15) contrast(1.08) saturate(1.1) !important;
+}
+
+html.dark .dream-car-item[title='Toyota'] .car-logo {
+  filter: brightness(1.15) contrast(1.15) saturate(1.25) !important;
+  opacity: 1 !important;
 }
 
 html.dark .dream-company-item:not(.logo-mono):not(.has-dark-logo):hover .company-logo,
@@ -3087,7 +3092,7 @@ html:not(.dark) .dream-car-item.logo-mono .car-logo {
 }
 
 .dream-car-item[title='Toyota'] .car-logo {
-  max-width: 72px !important;
+  max-width: 88px !important;
   height: 44px !important;
 }
 

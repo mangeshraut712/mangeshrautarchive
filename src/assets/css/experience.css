@@ -170,7 +170,7 @@ html.dark .experience-icon {
 #experience .experience-content {
   position: relative;
   overflow: hidden;
-  border: 1px solid var(--card-border-rest);
+  border: 1px solid var(--card-border-rest) !important;
   border-radius: 22px !important;
   background: #ffffff !important;
   box-shadow: none !important;

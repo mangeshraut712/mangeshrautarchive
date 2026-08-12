@@ -1,4 +1,11 @@
-const TONE_CLASSES = ['metric-green', 'metric-yellow', 'metric-red'];
+const TONE_CLASSES = [
+  'metric-green',
+  'metric-yellow',
+  'metric-red',
+  'strain-light',
+  'strain-medium',
+  'strain-heavy',
+];
 
 export function getWhoopMetricTone(metric, value) {
   if (value === null || value === undefined || value === '') return null;
@@ -15,6 +22,12 @@ export function getWhoopMetricTone(metric, value) {
     if (score >= 85) return 'metric-green';
     if (score >= 70) return 'metric-yellow';
     return 'metric-red';
+  }
+
+  if (metric === 'strain') {
+    if (score < 7) return 'strain-light';
+    if (score < 14) return 'strain-medium';
+    return 'strain-heavy';
   }
 
   return null;

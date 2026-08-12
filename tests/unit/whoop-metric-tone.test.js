@@ -25,8 +25,18 @@ describe('WHOOP traffic-light tones', () => {
     expect(getWhoopMetricTone('sleep', score)).toBe(expected);
   });
 
-  it('keeps Strain neutral because its target is personal', () => {
-    expect(getWhoopMetricTone('strain', 17.2)).toBeNull();
+  it.each([
+    [0, 'strain-light'],
+    [5.5, 'strain-light'],
+    [6.9, 'strain-light'],
+    [7, 'strain-medium'],
+    [10, 'strain-medium'],
+    [13.9, 'strain-medium'],
+    [14, 'strain-heavy'],
+    [17.2, 'strain-heavy'],
+    [21, 'strain-heavy'],
+  ])('classifies Strain score %s', (score, expected) => {
+    expect(getWhoopMetricTone('strain', score)).toBe(expected);
   });
 
   it('keeps unavailable values neutral', () => {

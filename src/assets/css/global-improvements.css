@@ -124,7 +124,7 @@ html.dark .cta-button:hover {
 .blog-card {
   padding: 2rem;
   border-radius: 20px;
-  border: 2px solid var(--card-border-rest);
+  border: 1px solid var(--card-border-rest);
   background: #fff;
   box-shadow: 0 8px 32px rgb(0 0 0 / 8%);
   transition:
@@ -483,13 +483,13 @@ html.dark #contact .dream-car-item.logo-mono .logo-light {
 /* Colored logos without dark variants — slight lift for dark surfaces */
 html.dark #contact .dream-company-item:not(.has-dark-logo):not(.logo-mono) .logo-light,
 html.dark #contact .dream-car-item:not(.has-dark-logo):not(.logo-mono) .car-logo {
-  filter: brightness(1.12) contrast(1.08) saturate(1.05) !important;
+  filter: brightness(1.18) contrast(1.1) saturate(1.12) !important;
   opacity: 1 !important;
 }
 
 /* Toyota red remains readable on dark canvas */
 html.dark #contact .dream-car-item[title='Toyota'] .car-logo {
-  filter: brightness(1.08) contrast(1.1) saturate(1.15) !important;
+  filter: brightness(1.15) contrast(1.15) saturate(1.25) !important;
   opacity: 1 !important;
 }
 

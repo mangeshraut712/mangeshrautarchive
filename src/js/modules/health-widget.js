@@ -103,6 +103,7 @@ class HealthWidget {
     this.els = {
       sleepCard: document.getElementById('whoop-sleep-card'),
       recoveryCard: document.getElementById('whoop-recovery-card'),
+      strainCard: document.getElementById('whoop-strain-card'),
       widget: document.querySelector('.health-widget-container'),
     };
 
@@ -277,6 +278,10 @@ class HealthWidget {
       'whoop-strain-val',
       this.metrics.strain === null ? '--' : this.metrics.strain.toFixed(1)
     );
+    const strainCard = this.els
+      ? this.els.strainCard
+      : document.getElementById('whoop-strain-card');
+    applyWhoopMetricTone(strainCard, 'strain', this.metrics.strain);
 
     this.setTextContent(
       'withings-weight-val',

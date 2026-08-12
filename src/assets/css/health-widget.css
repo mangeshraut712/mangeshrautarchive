@@ -393,6 +393,37 @@ html.dark .whoop-metric.metric-red .metric-icon {
   color: #ff453a !important;
 }
 
+/* WHOOP Strain — blue intensity scale (light → medium → deep) */
+.whoop-metric.strain-light .metric-value,
+.whoop-metric.strain-light .metric-icon {
+  color: #5ac8fa !important;
+}
+
+.whoop-metric.strain-medium .metric-value,
+.whoop-metric.strain-medium .metric-icon {
+  color: #0071e3 !important;
+}
+
+.whoop-metric.strain-heavy .metric-value,
+.whoop-metric.strain-heavy .metric-icon {
+  color: #0040a0 !important;
+}
+
+html.dark .whoop-metric.strain-light .metric-value,
+html.dark .whoop-metric.strain-light .metric-icon {
+  color: #64d2ff !important;
+}
+
+html.dark .whoop-metric.strain-medium .metric-value,
+html.dark .whoop-metric.strain-medium .metric-icon {
+  color: #0a84ff !important;
+}
+
+html.dark .whoop-metric.strain-heavy .metric-value,
+html.dark .whoop-metric.strain-heavy .metric-icon {
+  color: #0055d4 !important;
+}
+
 /* Health vitals — solid only in tinted mode; clear/balanced use liquid glass */
 html[data-lg-mode='tinted']:not(.dark) .health-widget-container {
   background: #ffffff !important;
