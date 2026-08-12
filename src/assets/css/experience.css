@@ -36,15 +36,15 @@ html.dark #experience {
   position: absolute;
   top: 0;
   bottom: 0;
-  left: 32px;
-  z-index: 0;
-  width: 2px;
+  left: 31px !important;
+  z-index: 1 !important;
+  width: 2px !important;
   border-radius: 999px;
-  background: linear-gradient(to bottom, #0071e3, #2997ff);
+  background: linear-gradient(to bottom, #0071e3 0%, #2997ff 100%) !important;
 }
 
 html.dark .experience-timeline::before {
-  background: linear-gradient(to bottom, #2997ff, #0a84ff);
+  background: linear-gradient(to bottom, #2997ff 0%, #0a84ff 100%) !important;
 }
 
 /* ========================================

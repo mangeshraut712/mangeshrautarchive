@@ -633,12 +633,25 @@ i.fa-css3-alt,
   -webkit-text-fill-color: #1572b6 !important;
 }
 
-i.fa-database,
-.fa-solid.fa-database,
-.fas.fa-database,
+:not(.experience-icon):not(.education-icon) > i.fa-database,
+:not(.experience-icon):not(.education-icon) > .fa-solid.fa-database,
+:not(.experience-icon):not(.education-icon) > .fas.fa-database,
 .tech-icon.fa-database {
   color: #336791 !important;
   -webkit-text-fill-color: #336791 !important;
+}
+
+.experience-icon i,
+.education-icon i,
+.experience-icon .fas,
+.education-icon .fas,
+.experience-icon .fa-solid,
+.education-icon .fa-solid {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  fill: #ffffff !important;
+  opacity: 1 !important;
+  visibility: visible !important;
 }
 
 /* ═══════════════════════════════════════════════════════════════════
@@ -1270,9 +1283,15 @@ html:not(.dark)
     .project-card,
     .featured-project-card,
     .luxury-project-card,
+    .github-project-card,
+    .showcase-project-card,
     .experience-card,
+    .experience-content,
+    .education-card,
     .cert-card,
     .skill-card,
+    .skill-category-card,
+    .skill-category,
     .uses-card,
     .system-card,
     .monitor-card,
@@ -1283,7 +1302,7 @@ html:not(.dark)
   ):hover {
   border-color: #0071e3 !important;
   box-shadow:
-    0 8px 24px rgba(0, 0, 0, 0.08),
+    0 8px 24px rgba(0, 113, 227, 0.12),
     0 2px 6px rgba(0, 0, 0, 0.04) !important;
   transform: translateY(-3px) !important;
 }
@@ -1330,9 +1349,15 @@ html.dark
     .project-card,
     .featured-project-card,
     .luxury-project-card,
+    .github-project-card,
+    .showcase-project-card,
     .experience-card,
+    .experience-content,
+    .education-card,
     .cert-card,
     .skill-card,
+    .skill-category-card,
+    .skill-category,
     .uses-card,
     .system-card,
     .monitor-card,
@@ -1341,9 +1366,9 @@ html.dark
     .currently-watch-card,
     .recommendation-card
   ):hover {
-  border-color: #2997ff !important;
+  border-color: #0a84ff !important;
   box-shadow:
-    0 12px 36px rgba(0, 0, 0, 0.65),
+    0 12px 36px rgba(10, 132, 255, 0.18),
     0 4px 12px rgba(0, 0, 0, 0.5) !important;
   transform: translateY(-3px) !important;
 }

@@ -431,16 +431,20 @@ function renderHeatmap(data) {
     </div>
   `;
 
-  const tooltip = document.getElementById('gh-contrib-tooltip');
+  let tooltip = document.getElementById('gh-contrib-tooltip');
+  if (tooltip && tooltip.parentElement !== document.body) {
+    document.body.appendChild(tooltip);
+  }
   const showTooltip = cell => {
     if (!tooltip) return;
     const label = cell.getAttribute('data-label');
     if (!label) return;
     tooltip.textContent = label;
-    tooltip.classList.add('is-visible');
     const rect = cell.getBoundingClientRect();
+    tooltip.style.position = 'fixed';
     tooltip.style.left = `${rect.left + rect.width / 2}px`;
-    tooltip.style.top = `${rect.top - 6}px`;
+    tooltip.style.top = `${rect.top - 8}px`;
+    tooltip.classList.add('is-visible');
   };
 
   const hideTooltip = () => {
