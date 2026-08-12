@@ -2402,6 +2402,7 @@ html body:has(#go-to-top.visible) .a11y-toolbar {
   html body #website-share-toggle.website-share-fab,
   html body #chatbot-toggle,
   html body #go-to-top {
+    box-sizing: border-box !important;
     width: 44px !important;
     height: 44px !important;
     min-width: 44px !important;
@@ -3096,26 +3097,6 @@ html[data-theme='dark'] .watch-btn span,
 html[data-theme='dark'] .watch-btn i {
   color: #e8f1ff !important;
   -webkit-text-fill-color: #e8f1ff !important;
-}
-
-html:not(.dark) .education-badge.completed,
-html[data-theme='light'] .education-badge.completed {
-  /* #34c759 fails AA with white (~2.2:1); #1f7a37 clears 4.5:1 */
-  background: #1f7a37 !important;
-  background-color: #1f7a37 !important;
-  background-image: none !important;
-  color: #ffffff !important;
-  -webkit-text-fill-color: #ffffff !important;
-}
-
-html.dark .education-badge.completed,
-html[data-theme='dark'] .education-badge.completed {
-  /* #30d158 fails AA with white (~2.0:1); keep dark-mode green AA-safe */
-  background: #1f7a37 !important;
-  background-color: #1f7a37 !important;
-  background-image: none !important;
-  color: #ffffff !important;
-  -webkit-text-fill-color: #ffffff !important;
 }
 
 html:not(.dark) .support-stripe-btn.premium,

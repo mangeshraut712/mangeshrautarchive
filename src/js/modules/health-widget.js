@@ -1,3 +1,5 @@
+import { applyWhoopMetricTone } from '../utils/whoop-metric-tone.js';
+
 /**
  * Health Widget Module
  * Manages Whoop and Withings metrics, localStorage persistence,
@@ -99,6 +101,7 @@ class HealthWidget {
     if (!container) return;
 
     this.els = {
+      sleepCard: document.getElementById('whoop-sleep-card'),
       recoveryCard: document.getElementById('whoop-recovery-card'),
       widget: document.querySelector('.health-widget-container'),
     };
@@ -264,21 +267,12 @@ class HealthWidget {
       this.metrics.recovery === null ? '--%' : `${Math.round(this.metrics.recovery)}%`
     );
 
+    const sleepCard = this.els ? this.els.sleepCard : document.getElementById('whoop-sleep-card');
     const recoveryCard = this.els
       ? this.els.recoveryCard
       : document.getElementById('whoop-recovery-card');
-    if (recoveryCard) {
-      recoveryCard.classList.remove('recovery-green', 'recovery-yellow', 'recovery-red');
-      if (this.metrics.recovery !== null) {
-        if (this.metrics.recovery >= 67) {
-          recoveryCard.classList.add('recovery-green');
-        } else if (this.metrics.recovery >= 34) {
-          recoveryCard.classList.add('recovery-yellow');
-        } else {
-          recoveryCard.classList.add('recovery-red');
-        }
-      }
-    }
+    applyWhoopMetricTone(sleepCard, 'sleep', this.metrics.sleep);
+    applyWhoopMetricTone(recoveryCard, 'recovery', this.metrics.recovery);
     this.setTextContent(
       'whoop-strain-val',
       this.metrics.strain === null ? '--' : this.metrics.strain.toFixed(1)

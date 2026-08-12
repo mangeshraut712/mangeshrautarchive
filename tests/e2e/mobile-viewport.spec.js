@@ -83,6 +83,7 @@ test.describe('Mobile viewport fit', () => {
     await gotoSite(page);
     await page.waitForSelector('#chatbot-toggle', { state: 'visible' });
     await page.waitForSelector('.hero-text-block', { state: 'visible' });
+    await page.waitForTimeout(300);
 
     const overlaps = await page.evaluate(() => {
       const controls = [
@@ -90,6 +91,7 @@ test.describe('Mobile viewport fit', () => {
         document.querySelector('#website-share-toggle'),
         document.querySelector('.a11y-toolbar__main'),
       ];
+      const home = document.querySelector('#home');
       const content = [
         '.hero-name',
         '.hero-title',
@@ -99,7 +101,9 @@ test.describe('Mobile viewport fit', () => {
         '.hero-description-line',
         '.hero-cta',
       ].flatMap(selector =>
-        [...document.querySelectorAll(selector)].flatMap(element => [...element.getClientRects()])
+        [...(home?.querySelectorAll(selector) ?? [])].flatMap(element => [
+          ...element.getClientRects(),
+        ])
       );
       const intersects = (a, b) =>
         a &&
@@ -265,7 +269,7 @@ test.describe('Mobile viewport fit', () => {
     expect(layout.aboutTop).toBeGreaterThanOrEqual(layout.viewportHeight - 1);
   });
 
-  test('Chrome responsive viewport keeps the hero close to the mobile navbar', async ({ page }) => {
+  test('Chrome responsive viewport vertically balances the mobile hero', async ({ page }) => {
     await page.setViewportSize({ width: 500, height: 862 });
     await gotoSite(page);
     await page.waitForLoadState('load');
@@ -274,19 +278,89 @@ test.describe('Mobile viewport fit', () => {
     const layout = await page.evaluate(() => {
       const nav = document.querySelector('#global-nav')?.getBoundingClientRect();
       const hero = document.querySelector('.hero-layout-wrapper')?.getBoundingClientRect();
-      const actions = document.querySelector('.hero-actions')?.getBoundingClientRect();
+      const home = document.querySelector('#home')?.getBoundingClientRect();
       const about = document.querySelector('#about')?.getBoundingClientRect();
       return {
         topGap: (hero?.top ?? Number.POSITIVE_INFINITY) - (nav?.bottom ?? 0),
-        actionsBottom: actions?.bottom ?? Number.POSITIVE_INFINITY,
+        bottomGap: (home?.bottom ?? 0) - (hero?.bottom ?? Number.POSITIVE_INFINITY),
+        heroBottom: hero?.bottom ?? Number.POSITIVE_INFINITY,
         aboutTop: about?.top ?? Number.NEGATIVE_INFINITY,
         viewportHeight: window.innerHeight,
       };
     });
 
-    expect(layout.topGap).toBeLessThanOrEqual(72);
-    expect(layout.actionsBottom).toBeLessThanOrEqual(layout.viewportHeight);
+    expect(Math.abs(layout.topGap - layout.bottomGap)).toBeLessThanOrEqual(24);
+    expect(layout.heroBottom).toBeLessThanOrEqual(layout.viewportHeight);
     expect(layout.aboutTop).toBeGreaterThanOrEqual(layout.viewportHeight - 1);
+  });
+
+  test('support card keeps both blessing images visible and all crypto options in one row', async ({
+    page,
+  }) => {
+    await gotoSite(page, '/#contact');
+    await page.waitForLoadState('load');
+    await page.locator('.support-donation-card').scrollIntoViewIfNeeded();
+    await page.waitForFunction(
+      () =>
+        getComputedStyle(document.querySelector('.ganesh-blessing-img')).objectFit === 'contain',
+      null,
+      { timeout: 15_000 }
+    );
+
+    const layout = await page.evaluate(() => {
+      const images = [...document.querySelectorAll('.ganesh-blessing-img, .hanuman-blessing-img')];
+      const crypto = [...document.querySelectorAll('.crypto-mini-btn')];
+      const centers = crypto.map(item => {
+        const rect = item.getBoundingClientRect();
+        return rect.top + rect.height / 2;
+      });
+      const card = document.querySelector('.support-donation-card');
+      const cardStyle = card ? getComputedStyle(card) : null;
+      return {
+        imageFits: images.map(image => getComputedStyle(image).objectFit),
+        cryptoCount: crypto.length,
+        cryptoRowDelta: Math.max(...centers) - Math.min(...centers),
+        backgroundImage: cardStyle?.backgroundImage ?? '',
+        backdropFilter: cardStyle?.backdropFilter ?? '',
+      };
+    });
+
+    expect(layout.imageFits).toEqual(['contain', 'contain']);
+    expect(layout.cryptoCount).toBe(5);
+    expect(layout.cryptoRowDelta).toBeLessThanOrEqual(2);
+    expect(layout.backgroundImage).toBe('none');
+    expect(['none', '']).toContain(layout.backdropFilter);
+
+    await page.locator('[data-blessing="ganesh"]').click();
+    await expect(page.locator('.blessing-modal-overlay')).toBeVisible();
+  });
+
+  test('earned degree badge uses the single solid green treatment', async ({ page }) => {
+    await gotoSite(page);
+    await page.waitForLoadState('load');
+    await page.locator('#education').scrollIntoViewIfNeeded();
+    const badge = page.locator('.education-badge.completed').first();
+    await expect(badge).toBeVisible();
+    await page.waitForFunction(
+      () =>
+        getComputedStyle(document.querySelector('.education-badge.completed')).backgroundColor ===
+        'rgb(31, 122, 55)',
+      null,
+      { timeout: 15_000 }
+    );
+
+    const style = await badge.evaluate(element => {
+      const computed = getComputedStyle(element);
+      return {
+        backgroundColor: computed.backgroundColor,
+        backgroundImage: computed.backgroundImage,
+        color: computed.color,
+      };
+    });
+
+    expect(style.backgroundColor).toBe('rgb(31, 122, 55)');
+    expect(style.backgroundImage).toBe('none');
+    expect(style.color).toBe('rgb(255, 255, 255)');
   });
 
   test('mobile utility controls stay in one centered row after scroll', async ({ page }) => {

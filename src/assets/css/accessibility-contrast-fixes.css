@@ -295,27 +295,6 @@ html.dark #recommendations .author-company-link:hover {
    5. EDUCATION - HIGH CONTRAST FIXES
    ======================================== */
 
-/* Education badges — darker green so white label meets WCAG AA 4.5:1 */
-.education-badge.completed {
-  background: #1f7a37 !important;
-  background-color: #1f7a37 !important;
-  background-image: none !important;
-  color: #ffffff !important;
-  font-weight: 700 !important;
-  text-shadow: none !important;
-  box-shadow: none !important;
-  border: 1px solid rgba(255, 255, 255, 0.2) !important;
-}
-
-html.dark .education-badge.completed {
-  background: #1f7a37 !important;
-  background-color: #1f7a37 !important;
-  background-image: none !important;
-  color: #ffffff !important;
-  box-shadow: none !important;
-  border: 1px solid rgba(255, 255, 255, 0.15) !important;
-}
-
 /* Education text */
 .education-title,
 .education-degree {

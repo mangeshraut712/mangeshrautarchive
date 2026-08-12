@@ -366,30 +366,30 @@ html.dark .health-widget-container {
   }
 }
 
-/* WHOOP Recovery Score Color Themes — AA on light surfaces */
-.whoop-metric.recovery-green .metric-value,
-.whoop-metric.recovery-green .metric-icon {
+/* WHOOP Sleep and Recovery traffic-light tones; Strain stays target-relative. */
+.whoop-metric.metric-green .metric-value,
+.whoop-metric.metric-green .metric-icon {
   color: #1b7f37 !important;
 }
-.whoop-metric.recovery-yellow .metric-value,
-.whoop-metric.recovery-yellow .metric-icon {
+.whoop-metric.metric-yellow .metric-value,
+.whoop-metric.metric-yellow .metric-icon {
   color: #9a4d00 !important;
 }
-.whoop-metric.recovery-red .metric-value,
-.whoop-metric.recovery-red .metric-icon {
+.whoop-metric.metric-red .metric-value,
+.whoop-metric.metric-red .metric-icon {
   color: #c41e1a !important;
 }
 
-html.dark .whoop-metric.recovery-green .metric-value,
-html.dark .whoop-metric.recovery-green .metric-icon {
+html.dark .whoop-metric.metric-green .metric-value,
+html.dark .whoop-metric.metric-green .metric-icon {
   color: #30d158 !important;
 }
-html.dark .whoop-metric.recovery-yellow .metric-value,
-html.dark .whoop-metric.recovery-yellow .metric-icon {
+html.dark .whoop-metric.metric-yellow .metric-value,
+html.dark .whoop-metric.metric-yellow .metric-icon {
   color: #ffb340 !important;
 }
-html.dark .whoop-metric.recovery-red .metric-value,
-html.dark .whoop-metric.recovery-red .metric-icon {
+html.dark .whoop-metric.metric-red .metric-value,
+html.dark .whoop-metric.metric-red .metric-icon {
   color: #ff6961 !important;
 }
 

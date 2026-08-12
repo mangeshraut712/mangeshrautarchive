@@ -840,7 +840,8 @@ html.dark .support-subheadline {
   width: 100%;
   height: 100%;
   border-radius: 50%;
-  object-fit: cover;
+  object-fit: contain;
+  background: #fff7ed;
   border: 2px solid rgba(245, 158, 11, 0.35);
   box-shadow:
     0 4px 14px rgba(245, 158, 11, 0.22),
@@ -856,6 +857,7 @@ html.dark .support-subheadline {
 
 html.dark .hanuman-blessing-img,
 html.dark .ganesh-blessing-img {
+  background: #1c1917;
   border-color: rgba(251, 191, 36, 0.45);
   box-shadow:
     0 6px 20px rgba(245, 158, 11, 0.4),
@@ -1530,10 +1532,11 @@ html.dark .crypto-label {
 }
 
 .crypto-wallets {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.75rem 0.85rem;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  align-items: start;
+  gap: 0.5rem;
+  width: 100%;
   margin: 0.5rem 0;
 }
 
@@ -1544,9 +1547,9 @@ html.dark .crypto-label {
   align-items: center !important;
   justify-content: flex-start !important;
   gap: 0.4rem !important;
-  width: auto !important;
-  min-width: 4.75rem !important;
-  max-width: 6rem !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: none !important;
   height: auto !important;
   min-height: 0 !important;
   max-height: none !important;
@@ -1640,7 +1643,7 @@ html.dark .crypto-mini-btn {
   text-transform: none !important;
   color: #1d1d1f !important;
   -webkit-text-fill-color: #1d1d1f !important;
-  white-space: normal !important;
+  white-space: nowrap !important;
   overflow: visible !important;
   word-break: keep-all;
 }
@@ -4359,10 +4362,7 @@ html.dark[data-lg-mode='tinted'] #contact .support-donation-card {
   }
 }
 
-/* ════════════════════════════════════════════════════════════════
-   Contact surfaces — solid only in tinted mode.
-   Clear + balanced use liquid glass (see end-of-file unlock).
-   ════════════════════════════════════════════════════════════════ */
+/* Contact surfaces use one solid background in every display mode. */
 
 #contact .contact-card,
 #contact .support-donation-card,
@@ -4372,6 +4372,11 @@ html.dark[data-lg-mode='tinted'] #contact .support-donation-card {
 #contact .reminder-card,
 #contact .calendly-panel {
   border-color: #e5e5ea !important;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
   color: #1d1d1f !important;
 }
 
@@ -4383,35 +4388,12 @@ html.dark #contact .ios-widget-wrapper,
 html.dark #contact .reminder-card,
 html.dark #contact .calendly-panel {
   border-color: #2c2c2e !important;
-  color: #f5f5f7 !important;
-}
-
-html[data-lg-mode='tinted']:not(.dark) #contact .contact-card,
-html[data-lg-mode='tinted']:not(.dark) #contact .support-donation-card,
-html[data-lg-mode='tinted']:not(.dark) #contact .currently-card,
-html[data-lg-mode='tinted']:not(.dark) #contact .calendar-wrapper-clean,
-html[data-lg-mode='tinted']:not(.dark) #contact .ios-widget-wrapper,
-html[data-lg-mode='tinted']:not(.dark) #contact .reminder-card {
-  background: #ffffff !important;
-  background-color: #ffffff !important;
-  background-image: none !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-  box-shadow: none !important;
-}
-
-html.dark[data-lg-mode='tinted'] #contact .contact-card,
-html.dark[data-lg-mode='tinted'] #contact .support-donation-card,
-html.dark[data-lg-mode='tinted'] #contact .currently-card,
-html.dark[data-lg-mode='tinted'] #contact .calendar-wrapper-clean,
-html.dark[data-lg-mode='tinted'] #contact .ios-widget-wrapper,
-html.dark[data-lg-mode='tinted'] #contact .reminder-card {
   background: #000000 !important;
   background-color: #000000 !important;
   background-image: none !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
-  box-shadow: none !important;
+  color: #f5f5f7 !important;
 }
 
 /* Inner widget is content only — one outer shell */

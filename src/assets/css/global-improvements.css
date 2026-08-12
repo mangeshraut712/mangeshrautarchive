@@ -564,14 +564,6 @@ html.dark #contact .dream-car-item[title='Toyota'] .car-logo {
   -webkit-text-fill-color: #0d0c22 !important;
 }
 
-/* Crypto tiles — sizing/colors owned by contact.css (logo + full name labels) */
-#contact .crypto-wallets {
-  display: flex !important;
-  flex-wrap: wrap !important;
-  justify-content: center !important;
-  gap: 0.75rem 0.85rem !important;
-}
-
 /* Currently media shelf — horizontal scroll only (never multi-row stack) */
 #contact .media-grid,
 #contact #shows-grid,
