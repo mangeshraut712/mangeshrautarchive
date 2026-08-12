@@ -106,13 +106,15 @@ html.dark .project-evidence-link.is-unavailable {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 1.15rem;
-  width: 100%;
-  max-width: 100%;
-  margin: 0;
+  padding: 4px !important;
+  margin: 0 -4px !important;
+  width: calc(100% + 8px) !important;
+  max-width: calc(100% + 8px) !important;
   min-height: 0;
-  overflow-x: clip;
+  overflow: visible !important;
   align-items: stretch;
   justify-items: stretch;
+  box-sizing: border-box !important;
 }
 
 /* Section and global nav alignment */

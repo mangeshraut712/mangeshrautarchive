@@ -1278,6 +1278,50 @@ html:not(.dark)
     0 1px 3px rgba(0, 0, 0, 0.03) !important;
 }
 
+/* Sitewide Card Grid Overflow Protection — prevents 4-side card borders & shadows from clipping */
+:is(
+  .recommendations-grid,
+  .projects-grid-shell,
+  #github-projects-container,
+  #skills-container,
+  .publications-grid,
+  .awards-grid,
+  .certifications-grid,
+  .contact-grid,
+  .education-grid
+) {
+  overflow: visible !important;
+  padding: 4px !important;
+  box-sizing: border-box !important;
+}
+
+/* Ensure all cards preserve box-sizing and 4-side borders without clipping */
+:is(
+  .project-card,
+  .featured-project-card,
+  .luxury-project-card,
+  .github-project-card,
+  .showcase-project-card,
+  .experience-card,
+  .experience-content,
+  .education-card,
+  .cert-card,
+  .skill-card,
+  .skill-category-card,
+  .skill-category,
+  .uses-card,
+  .system-card,
+  .monitor-card,
+  .travel-card,
+  .currently-read-card,
+  .currently-watch-card,
+  .recommendation-card,
+  .about-highlight-card,
+  .contact-card
+) {
+  box-sizing: border-box !important;
+}
+
 html:not(.dark)
   :is(
     .project-card,
