@@ -209,8 +209,7 @@ html.dark .skill-category > h3:not(.skill-category-title) {
 /* Marquee container — clips inside rounded category card */
 .skill-scroll-container {
   position: relative;
-  overflow-x: auto;
-  overflow-y: hidden;
+  overflow: hidden;
   border-radius: 14px;
   background: rgb(0 0 0 / 2%);
   border: 1px solid rgb(0 0 0 / 4%);
