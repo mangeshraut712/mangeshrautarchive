@@ -527,22 +527,22 @@ html:is([data-lg-mode='clear'], [data-lg-mode='balanced']):not(.dark)
   body
   #contact
   :is(a.contact-link-item, .contact-link-item) {
-  background: rgb(255 255 255 / var(--lg-card-light-alpha, 48%)) !important;
-  background-color: rgb(255 255 255 / var(--lg-card-light-alpha, 48%)) !important;
-  backdrop-filter: saturate(var(--lg-saturate, 180%)) blur(var(--lg-blur-control, 20px)) !important;
-  -webkit-backdrop-filter: saturate(var(--lg-saturate, 180%)) blur(var(--lg-blur-control, 20px)) !important;
-  border-color: rgb(255 255 255 / var(--lg-border-light, 40%)) !important;
+  background: #f2f2f7 !important;
+  background-color: #f2f2f7 !important;
+  border: 1px solid #e5e5ea !important;
+  border-color: #e5e5ea !important;
+  color: #1d1d1f !important;
 }
 
 html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced'])
   body
   #contact
   :is(a.contact-link-item, .contact-link-item) {
-  background: rgb(0 0 0 / var(--lg-card-dark-alpha, 52%)) !important;
-  background-color: rgb(0 0 0 / var(--lg-card-dark-alpha, 52%)) !important;
-  backdrop-filter: saturate(var(--lg-saturate, 180%)) blur(var(--lg-blur-control, 20px)) !important;
-  -webkit-backdrop-filter: saturate(var(--lg-saturate, 180%)) blur(var(--lg-blur-control, 20px)) !important;
-  border-color: rgb(255 255 255 / var(--lg-border-dark, 14%)) !important;
+  background: #121214 !important;
+  background-color: #121214 !important;
+  border: 1px solid #27272a !important;
+  border-color: #27272a !important;
+  color: #f5f5f7 !important;
 }
 
 /* NUCLEAR CLEAR CONTACT GLASS */
@@ -576,14 +576,15 @@ html[data-lg-mode='balanced']:not(.dark) body #main-content #contact .currently-
 html[data-lg-mode='balanced']:not(.dark) body #main-content #contact .calendar-wrapper-clean,
 html[data-lg-mode='balanced']:not(.dark) body #main-content #contact .reminder-card,
 html[data-lg-mode='balanced']:not(.dark) body #main-content #contact .health-widget-container {
-  background: rgb(255 255 255 / var(--lg-card-light-alpha, 68%)) !important;
-  background-color: rgb(255 255 255 / var(--lg-card-light-alpha, 68%)) !important;
+  background: rgb(255 255 255 / var(--lg-card-light-alpha, 82%)) !important;
+  background-color: rgb(255 255 255 / var(--lg-card-light-alpha, 82%)) !important;
   background-image: linear-gradient(
     165deg,
     rgb(255 255 255 / var(--lg-card-highlight-light, 55%)) 0%,
     rgb(255 255 255 / 0%) 45%
   ) !important;
-  border-color: rgb(255 255 255 / var(--lg-border-light, 40%)) !important;
+  border: 1px solid #d2d2d7 !important;
+  border-color: #d2d2d7 !important;
 }
 
 html.dark[data-lg-mode='clear'] body #main-content #contact .contact-card,
@@ -598,14 +599,11 @@ html.dark[data-lg-mode='balanced'] body #main-content #contact .currently-card,
 html.dark[data-lg-mode='balanced'] body #main-content #contact .calendar-wrapper-clean,
 html.dark[data-lg-mode='balanced'] body #main-content #contact .reminder-card,
 html.dark[data-lg-mode='balanced'] body #main-content #contact .health-widget-container {
-  background: rgb(0 0 0 / var(--lg-card-dark-alpha, 64%)) !important;
-  background-color: rgb(0 0 0 / var(--lg-card-dark-alpha, 64%)) !important;
-  background-image: linear-gradient(
-    165deg,
-    rgb(255 255 255 / var(--lg-card-highlight-dark, 10%)) 0%,
-    rgb(255 255 255 / 0%) 40%
-  ) !important;
-  border-color: rgb(255 255 255 / var(--lg-border-dark, 14%)) !important;
+  background: #000000 !important;
+  background-color: #000000 !important;
+  background-image: none !important;
+  border: 1px solid #27272a !important;
+  border-color: #27272a !important;
 }
 
 /* Watch / stream chips — readable on light & dark */

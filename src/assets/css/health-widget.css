@@ -5,8 +5,8 @@
   --health-text: #1d1d1f;
   --health-text-dim: rgba(29, 29, 31, 0.72);
   --health-text-label: rgba(29, 29, 31, 0.72);
-  --health-border: rgba(0, 0, 0, 0.08);
-  --health-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), 0 8px 32px rgba(0, 0, 0, 0.08);
+  --health-border: #e5e5ea;
+  --health-shadow: none;
   --health-bg-filter: grayscale(85%) brightness(0.96) contrast(0.9) opacity(0.12);
   --health-overlay-bg: #ffffff;
   --health-status-accent: #0071e3;
@@ -69,8 +69,8 @@ html.dark .health-widget-container {
   --health-text: #ffffff;
   --health-text-dim: rgba(255, 255, 255, 0.85);
   --health-text-label: rgba(255, 255, 255, 0.5);
-  --health-border: rgba(255, 255, 255, 0.1);
-  --health-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 8px 32px rgba(0, 0, 0, 0.3);
+  --health-border: #27272a;
+  --health-shadow: none;
   --health-bg-filter: grayscale(85%) brightness(0.22) contrast(1.1) opacity(1);
   --health-overlay-bg: #000000;
   --health-divider: linear-gradient(
