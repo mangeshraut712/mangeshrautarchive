@@ -5342,15 +5342,7 @@ html.dark .education-period {
   opacity: 0 !important;
 }
 
-/* Remove border-left and border-right that could appear as vertical lines */
-
-[style*='border-left'],
-[style*='border-right'],
-[style*='border-left-width'],
-[style*='border-right-width'] {
-  border-left: none !important;
-  border-right: none !important;
-}
+/* Clean border inheritance reset */
 
 /* Remove all ::before and ::after pseudo-elements that could create lines */
 

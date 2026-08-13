@@ -1344,7 +1344,12 @@ html:not(.dark)
     .currently-watch-card,
     .recommendation-card
   ):hover {
+  border: 1px solid #0071e3 !important;
   border-color: #0071e3 !important;
+  border-top-color: #0071e3 !important;
+  border-right-color: #0071e3 !important;
+  border-bottom-color: #0071e3 !important;
+  border-left-color: #0071e3 !important;
   box-shadow:
     0 8px 24px rgba(0, 113, 227, 0.12),
     0 2px 6px rgba(0, 0, 0, 0.04) !important;
@@ -1410,7 +1415,12 @@ html.dark
     .currently-watch-card,
     .recommendation-card
   ):hover {
+  border: 1px solid #0a84ff !important;
   border-color: #0a84ff !important;
+  border-top-color: #0a84ff !important;
+  border-right-color: #0a84ff !important;
+  border-bottom-color: #0a84ff !important;
+  border-left-color: #0a84ff !important;
   box-shadow:
     0 12px 36px rgba(10, 132, 255, 0.18),
     0 4px 12px rgba(0, 0, 0, 0.5) !important;

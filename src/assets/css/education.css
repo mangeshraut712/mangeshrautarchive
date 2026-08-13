@@ -72,8 +72,9 @@ html.dark #education #education-heading {
   width: 100%;
   margin: 0 auto;
   position: relative;
-  padding: 0.25rem 0 0;
-  overflow-x: clip;
+  padding: 4px !important;
+  overflow: visible !important;
+  box-sizing: border-box !important;
 }
 
 /* Timeline Vertical Line */
@@ -98,6 +99,7 @@ html.dark .education-timeline::before {
   position: relative;
   padding-left: 90px;
   margin-bottom: 2rem;
+  overflow: visible !important;
 }
 
 .education-item:last-child {
@@ -136,9 +138,15 @@ html.dark .education-icon {
    EDUCATION CARD (Content)
    ======================================== */
 
-.education-content {
+.education-content,
+.education-card {
   background: #fff !important;
-  border: 1px solid var(--card-border-rest, #e5e5ea) !important;
+  border: 1px solid #e5e5ea !important;
+  border-color: #e5e5ea !important;
+  border-top-color: #e5e5ea !important;
+  border-right-color: #e5e5ea !important;
+  border-bottom-color: #e5e5ea !important;
+  border-left-color: #e5e5ea !important;
   border-radius: 22px !important;
   padding: 2rem !important;
   box-shadow: none !important;
@@ -146,31 +154,52 @@ html.dark .education-icon {
     transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
     border-color 0.3s ease !important;
   position: relative;
-  overflow: hidden;
+  overflow: visible !important;
+  box-sizing: border-box !important;
   display: flex;
   flex-direction: column;
   gap: 0;
 }
 
 /* Remove top glow stripe on education cards */
-.education-content::after {
+.education-content::after,
+.education-card::after {
   display: none !important;
 }
 
-html.dark .education-content {
+html.dark .education-content,
+html.dark .education-card {
   background: #000 !important;
-  border-color: var(--card-border-rest, #2c2c2e) !important;
+  border: 1px solid #27272a !important;
+  border-color: #27272a !important;
+  border-top-color: #27272a !important;
+  border-right-color: #27272a !important;
+  border-bottom-color: #27272a !important;
+  border-left-color: #27272a !important;
   box-shadow: none !important;
 }
 
-.education-content:hover {
+.education-content:hover,
+.education-card:hover {
+  border: 1px solid #0071e3 !important;
   border-color: #0071e3 !important;
+  border-top-color: #0071e3 !important;
+  border-right-color: #0071e3 !important;
+  border-bottom-color: #0071e3 !important;
+  border-left-color: #0071e3 !important;
   transform: translateY(-5px) !important;
-  box-shadow: none !important;
+  box-shadow: 0 8px 24px rgba(0, 113, 227, 0.12) !important;
 }
 
-html.dark .education-content:hover {
+html.dark .education-content:hover,
+html.dark .education-card:hover {
+  border: 1px solid #0a84ff !important;
   border-color: #0a84ff !important;
+  border-top-color: #0a84ff !important;
+  border-right-color: #0a84ff !important;
+  border-bottom-color: #0a84ff !important;
+  border-left-color: #0a84ff !important;
+  box-shadow: 0 8px 24px rgba(10, 132, 255, 0.2) !important;
 }
 
 /* ========================================
