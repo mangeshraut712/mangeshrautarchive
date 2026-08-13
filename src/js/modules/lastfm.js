@@ -60,6 +60,16 @@ class LastFmService {
 
   initHero(elements) {
     this.hero = elements;
+    if (this.hero?.musicCard && !this.hero.musicCard.dataset.clickBound) {
+      this.hero.musicCard.dataset.clickBound = '1';
+      this.hero.musicCard.style.cursor = 'pointer';
+      this.hero.musicCard.addEventListener('click', e => {
+        if (e.target.closest('#music-spotify-link')) return;
+        if (this.hero.spotifyLink?.href) {
+          window.open(this.hero.spotifyLink.href, '_blank', 'noopener,noreferrer');
+        }
+      });
+    }
   }
 
   initCurrently(elements) {
