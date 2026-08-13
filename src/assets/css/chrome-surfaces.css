@@ -136,12 +136,12 @@ html[data-lg-mode='tinted'] #home .music-card-inner.lg-webgl-host .lg-webgl-canv
   justify-content: center !important;
   align-items: center !important;
   width: fit-content !important;
-  max-width: min(22rem, 100%) !important;
+  max-width: min(24rem, 100%) !important;
   min-width: 0 !important;
   height: auto !important;
   min-height: 0 !important;
   max-height: none !important;
-  margin: 0.35rem auto 0.45rem !important;
+  margin: 0.75rem auto !important;
   padding: 0 !important;
   background: transparent !important;
   background-color: transparent !important;
@@ -160,28 +160,27 @@ html[data-lg-mode='tinted'] #home .music-card-inner.lg-webgl-host .lg-webgl-canv
   display: inline-flex !important;
   flex-direction: row !important;
   align-items: center !important;
-  justify-content: flex-start !important;
+  justify-content: space-between !important;
   gap: 0.85rem !important;
   width: fit-content !important;
   max-width: min(28rem, calc(100vw - 2rem)) !important;
   min-width: 0 !important;
   height: auto !important;
-  min-height: 64px !important;
+  min-height: 56px !important;
   max-height: none !important;
   margin: 0 auto !important;
-  padding: 0.55rem 1.1rem 0.55rem 0.55rem !important;
+  padding: 0.45rem 0.85rem 0.45rem 0.45rem !important;
   border-radius: 999px !important;
   box-sizing: border-box !important;
-  /* Visible so the live badge is not clipped; canvas is still contained. */
   overflow: visible !important;
   transition:
-    border-color 0.2s ease,
+    border-color 0.25s ease,
     background 0.25s ease,
     box-shadow 0.25s ease,
     transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
 }
 
-/* Keep WebGL canvas painted inside the pill (never a flex sibling that stretches) */
+/* Keep WebGL canvas painted inside the pill */
 #home .music-card-inner > .lg-webgl-canvas {
   position: absolute !important;
   inset: 0 !important;
@@ -207,8 +206,8 @@ html[data-theme='light'] #home .music-card.is-playing .music-card-inner {
   -webkit-backdrop-filter: none !important;
   border: 1px solid #e5e5ea !important;
   box-shadow:
-    0 4px 16px rgba(0, 0, 0, 0.06),
-    0 1px 3px rgba(0, 0, 0, 0.04) !important;
+    0 4px 16px rgb(0 0 0 / 6%),
+    0 1px 3px rgb(0 0 0 / 4%) !important;
 }
 
 html.dark #home .music-card-inner,
@@ -223,8 +222,8 @@ html[data-theme='dark'] #home .music-card.is-playing .music-card-inner {
   -webkit-backdrop-filter: none !important;
   border: 1px solid #27272a !important;
   box-shadow:
-    0 8px 28px rgba(0, 0, 0, 0.75),
-    0 2px 6px rgba(0, 0, 0, 0.5) !important;
+    0 8px 28px rgb(0 0 0 / 75%),
+    0 2px 6px rgb(0 0 0 / 50%) !important;
 }
 
 #home .music-card-inner.lg-webgl-host .lg-webgl-canvas {
@@ -237,9 +236,9 @@ html[data-theme='dark'] #home .music-card.is-playing .music-card-inner {
   display: inline-flex !important;
   flex-direction: row !important;
   align-items: center !important;
-  justify-content: flex-start !important;
+  justify-content: space-between !important;
   gap: 0.85rem !important;
-  flex: 0 1 auto !important;
+  flex: 1 1 auto !important;
   width: auto !important;
   max-width: 100% !important;
   min-width: 0 !important;
@@ -247,39 +246,40 @@ html[data-theme='dark'] #home .music-card.is-playing .music-card-inner {
 
 @media (hover: hover) and (pointer: fine) {
   html:not(.dark) #home .music-card:hover .music-card-inner {
-    border-radius: 20px !important;
-    padding: 0.7rem 1.15rem 0.7rem 0.7rem !important;
-    gap: 1.05rem !important;
+    border-radius: 999px !important;
+    padding: 0.45rem 0.85rem 0.45rem 0.45rem !important;
+    gap: 0.85rem !important;
     border-color: #0071e3 !important;
     background: #ffffff !important;
     background-color: #ffffff !important;
     box-shadow:
-      0 10px 32px rgba(0, 113, 227, 0.16),
-      0 2px 6px rgba(0, 0, 0, 0.04) !important;
+      0 8px 24px rgb(0 113 227 / 16%),
+      0 2px 6px rgb(0 0 0 / 4%) !important;
     transform: translateY(-2px) !important;
   }
 
   html.dark #home .music-card:hover .music-card-inner {
-    border-radius: 20px !important;
-    padding: 0.7rem 1.15rem 0.7rem 0.7rem !important;
-    gap: 1.05rem !important;
+    border-radius: 999px !important;
+    padding: 0.45rem 0.85rem 0.45rem 0.45rem !important;
+    gap: 0.85rem !important;
     border-color: #0a84ff !important;
     background: #000000 !important;
     background-color: #000000 !important;
     box-shadow:
-      0 14px 40px rgba(10, 132, 255, 0.24),
-      0 2px 8px rgba(0, 0, 0, 0.6) !important;
+      0 10px 32px rgb(10 132 255 / 24%),
+      0 2px 8px rgb(0 0 0 / 60%) !important;
     transform: translateY(-2px) !important;
   }
 
   #home .music-card:hover .album-art-container {
-    width: 60px !important;
-    height: 60px !important;
+    width: 44px !important;
+    height: 44px !important;
   }
 
   #home .music-card:hover .album-art {
-    width: 60px !important;
-    height: 60px !important;
+    width: 44px !important;
+    height: 44px !important;
+    transform: scale(1.05) !important;
   }
 }
 
