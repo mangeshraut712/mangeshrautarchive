@@ -678,8 +678,9 @@ html.dark .social-section {
 
 html.dark .support-donation-card {
   background: #000000 !important;
-  border: 1px solid var(--contact-border-dark) !important;
-  box-shadow: none;
+  background-color: #000000 !important;
+  border: 1px solid #27272a !important;
+  box-shadow: none !important;
 }
 
 .support-donation-card:hover {

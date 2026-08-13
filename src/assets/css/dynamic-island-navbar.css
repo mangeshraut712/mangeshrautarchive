@@ -439,11 +439,15 @@ html.dark .global-nav.dynamic-island #menu-btn:hover {
 .global-nav.dynamic-island .menu-toggle-button i,
 .global-nav.dynamic-island #search-toggle i,
 .global-nav.dynamic-island #theme-toggle i,
+.global-nav.dynamic-island #theme-toggle-icon,
 .global-nav.dynamic-island #menu-btn i {
   color: currentcolor !important;
   font-size: var(--island-control-icon-size) !important;
   line-height: 1 !important;
   pointer-events: none;
+  background: transparent !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
 }
 
 .global-nav.dynamic-island .menu-toggle-icon {
