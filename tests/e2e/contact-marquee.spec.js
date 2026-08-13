@@ -135,4 +135,46 @@ test.describe('Contact marquees', () => {
       }
     });
   }
+
+  test('painted logos remain fully contained during marquee motion', async ({ page }) => {
+    await openContactWithTheme(page, 'light');
+
+    const clipped = await page.evaluate(async () => {
+      const tracks = [
+        document.querySelector('.dream-companies-track'),
+        document.querySelector('.dream-cars-track'),
+      ].filter(Boolean);
+
+      for (const track of tracks) {
+        const animation = track.getAnimations()[0];
+        if (animation) {
+          animation.pause();
+          animation.currentTime = 2000;
+        }
+      }
+
+      await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+
+      return tracks.flatMap(track => {
+        const viewport = track.parentElement.getBoundingClientRect();
+        return [...track.querySelectorAll('.company-logo, .car-logo')]
+          .map(logo => {
+            const box = logo.getBoundingClientRect();
+            const painted = box.right > viewport.left && box.left < viewport.right;
+            const fullyContained = box.left >= viewport.left && box.right <= viewport.right;
+            return {
+              label: logo.getAttribute('alt') || 'logo',
+              painted,
+              fullyContained,
+            };
+          })
+          .filter(logo => logo.painted && !logo.fullyContained);
+      });
+    });
+
+    expect(
+      clipped,
+      `partially clipped logos: ${clipped.map(logo => logo.label).join(', ')}`
+    ).toEqual([]);
+  });
 });
