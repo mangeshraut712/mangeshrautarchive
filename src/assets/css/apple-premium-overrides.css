@@ -3027,59 +3027,63 @@ html.dark .contact-assistme-icon {
    Sun = Apple System Orange/Yellow, Moon = Apple System Blue/Indigo
    ======================================== */
 
-/* Sun icon - Apple System Orange in light mode */
+/* Sun icon - High-contrast Deep Amber in light mode */
 .fa-sun,
 .sun-icon,
 .theme-toggle .fa-sun,
 #theme-toggle .fa-sun {
-  color: #ff9500 !important;
-  background: linear-gradient(135deg, #ffcc00 0%, #ff9500 100%) !important;
-  -webkit-background-clip: text !important;
-  -webkit-text-fill-color: transparent !important;
-  background-clip: text !important;
+  color: #d97706 !important;
+  -webkit-text-fill-color: #d97706 !important;
+  background: transparent !important;
+  background-image: none !important;
 }
 
-/* Moon icon - Apple System Indigo in light mode */
+/* Moon icon - Apple Dark Charcoal in light mode */
 .fa-moon,
 .moon-icon,
 .theme-toggle .fa-moon,
 #theme-toggle .fa-moon {
-  color: #ffcc00 !important;
-  background: linear-gradient(135deg, #ffe066 0%, #ffcc00 100%) !important;
-  -webkit-background-clip: text !important;
-  -webkit-text-fill-color: transparent !important;
-  background-clip: text !important;
+  color: #1d1d1f !important;
+  -webkit-text-fill-color: #1d1d1f !important;
+  background: transparent !important;
+  background-image: none !important;
 }
 
-/* Dark mode - Apple System Colors */
+/* Auto theme icon - Apple Blue in light mode */
+.auto-icon,
+.fa-circle-half-stroke,
+.theme-toggle .auto-icon,
+#theme-toggle .auto-icon {
+  color: #0071e3 !important;
+  -webkit-text-fill-color: #0071e3 !important;
+  background: transparent !important;
+  background-image: none !important;
+}
+
+/* Dark mode - Crisp Gold / Apple Yellow */
 html.dark .fa-sun,
 html.dark .sun-icon,
 html.dark .theme-toggle .fa-sun,
-html.dark #theme-toggle .fa-sun {
-  color: #ff9f0a !important;
-  background: linear-gradient(135deg, #ffd60a 0%, #ff9f0a 100%) !important;
-  -webkit-background-clip: text !important;
-  -webkit-text-fill-color: transparent !important;
-  background-clip: text !important;
-}
-
+html.dark #theme-toggle .fa-sun,
 html.dark .fa-moon,
 html.dark .moon-icon,
 html.dark .theme-toggle .fa-moon,
-html.dark #theme-toggle .fa-moon {
+html.dark #theme-toggle .fa-moon,
+html.dark .auto-icon,
+html.dark .fa-circle-half-stroke,
+html.dark #theme-toggle .auto-icon {
   color: #ffd60a !important;
-  background: linear-gradient(135deg, #ffea00 0%, #ffd60a 100%) !important;
-  -webkit-background-clip: text !important;
-  -webkit-text-fill-color: transparent !important;
-  background-clip: text !important;
+  -webkit-text-fill-color: #ffd60a !important;
+  background: transparent !important;
+  background-image: none !important;
 }
 
 /* Theme toggle + search button styling */
 #search-toggle,
 #theme-toggle,
 .theme-toggle {
-  background: transparent !important;
-  border: 1px solid rgb(0 0 0 / 10%) !important;
+  background: rgba(0, 0, 0, 0.03) !important;
+  border: 1px solid rgba(0, 0, 0, 0.16) !important;
   border-radius: 50% !important;
   width: 34px !important;
   height: 34px !important;
@@ -3090,19 +3094,19 @@ html.dark #theme-toggle .fa-moon {
   align-items: center !important;
   justify-content: center !important;
   transition:
-    color 0.3s ease,
-    background-color 0.3s ease,
-    border-color 0.3s ease,
-    box-shadow 0.3s ease,
-    transform 0.3s ease,
-    opacity 0.3s ease !important;
+    color 0.25s ease,
+    background-color 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    transform 0.25s ease !important;
   box-shadow: none !important;
 }
 
 #search-toggle:hover,
 #theme-toggle:hover,
 .theme-toggle:hover {
-  background: rgb(0 0 0 / 5%) !important;
+  background: rgba(0, 113, 227, 0.08) !important;
+  border-color: rgba(0, 113, 227, 0.35) !important;
   transform: scale(1.05) !important;
   box-shadow: none !important;
 }
@@ -3110,13 +3114,15 @@ html.dark #theme-toggle .fa-moon {
 html.dark #search-toggle,
 html.dark #theme-toggle,
 html.dark .theme-toggle {
-  border-color: rgb(255 255 255 / 20%) !important;
+  background: rgba(255, 255, 255, 0.06) !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
 }
 
 html.dark #search-toggle:hover,
 html.dark #theme-toggle:hover,
 html.dark .theme-toggle:hover {
-  background: rgb(255 255 255 / 10%) !important;
+  background: rgba(255, 255, 255, 0.12) !important;
+  border-color: rgba(78, 161, 255, 0.45) !important;
 }
 
 #name-pronounce-btn.name-pronounce-btn {
