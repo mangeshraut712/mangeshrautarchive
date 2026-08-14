@@ -38,9 +38,9 @@ const CITY_INTELLIGENCE = {
         summary:
           'The former Peshwa seat and one of Pune’s strongest cultural symbols, known for Delhi Darwaja, palace remains, fountains, and evening history shows.',
         image:
-          'https://cdn.s3waas.gov.in/s3ffeabd223de0d4eacb9a3e6e53e5448d/uploads/bfi_thumb/2018040254-olwe31n5ph474jwoxra06pxchcyt06jg01vxl63iz8.jpg',
-        source: 'District Pune',
-        sourceUrl: 'https://pune.gov.in/en/tourist-place/shaniwarwada/',
+          'https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Delhi_gate_shaniwar_wada.jpg/960px-Delhi_gate_shaniwar_wada.jpg',
+        source: 'Wikimedia Commons',
+        sourceUrl: 'https://commons.wikimedia.org/wiki/File:Delhi_gate_shaniwar_wada.jpg',
       },
       {
         title: 'Aga Khan Palace',
@@ -58,9 +58,9 @@ const CITY_INTELLIGENCE = {
         summary:
           'A Sahyadri fort near Pune tied to Tanaji Malusare, sweeping hill views, monsoon trails, and classic kanda bhaji stops.',
         image:
-          'https://cdn.s3waas.gov.in/s3ffeabd223de0d4eacb9a3e6e53e5448d/uploads/bfi_thumb/2018042587-olwe37a6uhbx27oi0tprloi41o70ad5u0tsugtv5xw.jpg',
-        source: 'District Pune',
-        sourceUrl: 'https://pune.gov.in/en/tourist-place/sinhagad/',
+          'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Sinhagad_fort_pune.jpg/960px-Sinhagad_fort_pune.jpg',
+        source: 'Wikimedia Commons',
+        sourceUrl: 'https://commons.wikimedia.org/wiki/File:Sinhagad_fort_pune.jpg',
       },
       {
         title: 'Dagdusheth Ganpati',

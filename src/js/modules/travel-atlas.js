@@ -742,7 +742,7 @@ function renderPlaceGuide(waypoint) {
 
       return `
         <article class="place-guide-card${image ? '' : ' place-guide-card--image-missing'}">
-          ${image ? `<img src="${image}" alt="${escapeHtml(item.title)} in ${escapeHtml(waypoint.title)}" loading="lazy" referrerpolicy="no-referrer" />` : ''}
+          ${image ? `<img src="${image}" alt="${escapeHtml(item.title)} in ${escapeHtml(waypoint.title)}" loading="lazy" referrerpolicy="no-referrer" onerror="this.onerror=null;this.closest('.place-guide-card')?.classList.add('place-guide-card--image-missing');this.remove();" />` : ''}
           <div class="place-guide-card__body">
             <div class="place-guide-card__meta">${escapeHtml(item.category)}</div>
             <h4>${escapeHtml(item.title)}</h4>

@@ -102,7 +102,7 @@ const createShareMarkup = () => `
 
       <div class="website-share-qr-section">
         <div class="website-share-qr-shell" aria-label="QR code for webpage">
-          <img class="website-share-qr" src="${getQrCodeUrl(activeMirrorUrl)}" alt="QR code" width="160" height="160" loading="lazy" decoding="async">
+          <img class="website-share-qr" data-src="${getQrCodeUrl(activeMirrorUrl)}" alt="QR code" width="160" height="160" loading="lazy" decoding="async" onerror="this.onerror=null;this.closest('.website-share-qr-section')?.classList.add('is-hidden');">
           <span class="website-share-qr-logo" aria-hidden="true">
             <img src="assets/images/profile-icon.webp" alt="" width="28" height="28" loading="lazy" decoding="async">
           </span>
@@ -146,6 +146,10 @@ function setDialogState(dialog, trigger, isOpen) {
   if (isOpen) {
     dialog.classList.remove('hidden');
     dialog.style.removeProperty('display');
+    const qrImg = dialog.querySelector('.website-share-qr');
+    if (qrImg && !qrImg.getAttribute('src') && qrImg.dataset.src) {
+      qrImg.src = qrImg.dataset.src;
+    }
   } else {
     dialog.classList.add('hidden');
     dialog.style.display = 'none';
