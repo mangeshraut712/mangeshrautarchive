@@ -29,7 +29,7 @@ describe('portfolio-public-data', () => {
     expect(TEST_COUNTS.pytest).toBe(157);
     expect(TEST_COUNTS.playwrightProjects).toBe(16);
     expect(TEST_COUNTS.vitest).toBe(119);
-    expect(WEBMCP_TOOL_COUNT).toBe(10);
+    expect(WEBMCP_TOOL_COUNT).toBe(13);
     expect(formatQualitySummary()).toContain(`${TEST_COUNTS.vitest} Vitest`);
     expect(formatQualitySummary()).toContain(`${TEST_COUNTS.pytest} pytest`);
     expect(formatQualitySummary()).toContain('Lighthouse deploy gate 100/100/100/100');

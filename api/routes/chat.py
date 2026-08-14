@@ -101,6 +101,13 @@ def is_blog_release_query(query: str) -> bool:
     )
 
 
+def is_music_query(query: str) -> bool:
+    """Detect direct music, song, Spotify, and now-playing queries."""
+    q = query.lower()
+    music_terms = ["music", "song", "track", "listening", "scrobble", "spotify", "now playing"]
+    return any(term in q for term in music_terms)
+
+
 def openrouter_request_body(
     model: str,
     messages: List[Dict],
@@ -215,6 +222,17 @@ def generate_local_response(query: str, site_context: str = "") -> Dict:
         return {
             "answer": f"📝 **Blog Releases**\n\n{format_blog_release_summary(query)}",
             "category": "Blogs",
+        }
+
+    if is_music_query(query):
+        return {
+            "answer": (
+                "🎵 **Now Playing & Music Activity**:\n"
+                "Mangesh connects his **Spotify** listening live to **Last.fm** (user: **[mbr63](https://www.last.fm/user/mbr63)**).\n\n"
+                "• **Live Hero Music Card**: Look directly under the badges on the homepage to see what's currently playing or recently scrobbled!\n"
+                "• **Spotify Profile**: [Open Last.fm mbr63](https://www.last.fm/user/mbr63)"
+            ),
+            "category": "Music",
         }
 
     # Blogs
@@ -448,6 +466,71 @@ async def handle_direct_command(message: str) -> Optional[Dict]:
             "source": "Site Knowledge",
             "model": "Blog Index",
             "category": "Blogs",
+            "confidence": 1.0,
+            "runtime": "0ms",
+            "type": "direct",
+            "knowledge_context": True,
+            "web_tools": False,
+        }
+
+    if is_music_query(lower):
+        from api.routes.media import lastfm_recent_cache, fetch_lastfm_recent_payload, LASTFM_API_KEY
+        from urllib.parse import quote
+        cached = (
+            lastfm_recent_cache.get("mbr63:2")
+            or lastfm_recent_cache.get("mbr63:1")
+            or lastfm_recent_cache.get("mbr63:10")
+        )
+        track = None
+        if cached and "data" in cached:
+            tracks = cached["data"].get("recenttracks", {}).get("track", [])
+            if tracks:
+                track = tracks[0] if isinstance(tracks, list) else tracks
+        if not track and LASTFM_API_KEY:
+            try:
+                payload = await fetch_lastfm_recent_payload("mbr63", 2)
+                tracks = payload.get("recenttracks", {}).get("track", [])
+                if tracks:
+                    track = tracks[0] if isinstance(tracks, list) else tracks
+            except Exception:
+                pass
+
+        if track:
+            track_name = track.get("name", "Unknown Track")
+            artist = track.get("artist", {})
+            artist_name = (
+                artist.get("#text") or artist.get("name") or str(artist)
+                if isinstance(artist, dict)
+                else str(artist)
+            )
+            album = track.get("album", {})
+            album_name = album.get("#text") or album.get("name") if isinstance(album, dict) else ""
+            is_now_playing = track.get("@attr", {}).get("nowplaying") == "true"
+            artwork = track.get("resolved_artwork") or ""
+            spotify_url = f"https://open.spotify.com/search/{quote(f'{track_name} {artist_name}')}"
+
+            badge = "🟢 **Now Playing on Spotify**" if is_now_playing else "🎵 **Recently Played on Spotify**"
+            album_str = f" • *{album_name}*" if album_name else ""
+            lines = [
+                f"{badge}\n",
+                f"**[{track_name}]({spotify_url})**",
+                f"by {artist_name}{album_str}",
+            ]
+            if artwork and "2a96cbd8b46e442fc41c2b86b821562f" not in artwork:
+                lines.append(f"\n![{track_name} Cover]({artwork})")
+            lines.append(f"\n🔗 [Open in Spotify]({spotify_url}) · [Last.fm Profile](https://www.last.fm/user/mbr63)")
+            ans = "\n".join(lines)
+        else:
+            ans = (
+                "🎵 Mangesh connects his Spotify listening live to Last.fm (**[mbr63](https://www.last.fm/user/mbr63)**).\n\n"
+                "You can see what he's currently playing on the **Hero Music Card** on the homepage or visit his [Last.fm Profile](https://www.last.fm/user/mbr63)!"
+            )
+
+        return {
+            "answer": ans,
+            "source": "Site Knowledge",
+            "model": "Last.fm Scrobbler",
+            "category": "Music",
             "confidence": 1.0,
             "runtime": "0ms",
             "type": "direct",

@@ -49,7 +49,7 @@ export const TEST_COUNTS = {
   playwrightProjects: 16,
 };
 
-export const WEBMCP_TOOL_COUNT = 10;
+export const WEBMCP_TOOL_COUNT = 13;
 
 export const PWA_POLICY = {
   installable: true,

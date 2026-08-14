@@ -70,6 +70,12 @@ You are the site search + knowledge layer for this portfolio: prefer precise ans
 - Flagship public repos: mangeshrautarchive, Gravity-SaaS-Agent, ai-ml-portfolio, HindAI, agent-console, Stanford-CS336.
 - Contact: mbr63@drexel.edu · linkedin.com/in/mangeshraut71298 · github.com/mangeshraut712
 - Portfolio surfaces: Home, About, Skills, Experience, Projects, Education, Blog, Contact, Systems, Travel, Monitor, Uses.
+- Live Telemetry & Widgets:
+  • Live Music: Mangesh's Spotify listening is connected to Last.fm (user: mbr63) and shown on the Hero Music Card (#music-card).
+  • Health & Biometrics: Whoop 4.0 (strain/recovery/sleep) and Withings body telemetry on /monitor and homepage health widget.
+  • Travel Atlas: 32+ cities visited across US and India documented on /travel.
+  • Uses Setup: MacBook Pro M-series and software stack on /uses.
+  • WebMCP Tools: 13 deterministic browser tools support navigation, resume downloads, music queries (get_now_playing), travel stats (get_travel_stats), and system metrics (get_system_status).
 
 ## How to answer
 1. Lead with a direct answer to what the user asked.
@@ -125,6 +131,15 @@ function localAnswer(message) {
   const q = String(message || '').toLowerCase();
   if (/hello|hi\b|hey/.test(q)) {
     return "Hello — I'm **AssistMe**. Ask about Mangesh's skills, experience, projects, education, or anything else you're curious about.";
+  }
+  if (/music|song|track|listening|spotify|scrobble|now\s*playing/.test(q)) {
+    return "Mangesh's live music listening is powered by his **Spotify ↔ Last.fm** connection (user: **mbr63**). Check the **Hero Music Card** on the homepage to see what he's currently playing, or visit [last.fm/user/mbr63](https://www.last.fm/user/mbr63).";
+  }
+  if (/whoop|health|fitness|recovery|strain|sleep|withings/.test(q)) {
+    return 'Mangesh tracks his biometric recovery, sleep performance, and strain using **Whoop 4.0** and **Withings**. Check the live health widget on the homepage or visit the [System Monitor](/monitor).';
+  }
+  if (/travel|trip|city|cities|places|visited/.test(q)) {
+    return 'Mangesh has logged travels across 32+ cities throughout the US and India. Explore the interactive 3D globe and city cards on the [Travel Atlas](/travel).';
   }
   if (/skill|stack|technolog|java|python|aws|cloud/.test(q)) {
     return "Mangesh's core stack: **Java Spring Boot**, **Python**, **AWS** (Lambda, EC2, ECS, S3), **Terraform**, React/Angular, and ML with TensorFlow / LLMs.";

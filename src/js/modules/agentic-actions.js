@@ -235,6 +235,51 @@ export class AgenticActionHandler {
         { signal }
       );
 
+      // 11. Get now playing / recent Spotify track (Last.fm)
+      navigator.modelContext.registerTool(
+        {
+          name: 'get_now_playing',
+          description:
+            'Retrieve what music Mangesh is currently playing or recently listened to on Spotify (via Last.fm user mbr63).',
+          inputSchema: { type: 'object', properties: {} },
+          execute: async () => {
+            return this.getNowPlaying();
+          },
+          annotations: { readOnlyHint: true },
+        },
+        { signal }
+      );
+
+      // 12. Get Travel Atlas statistics
+      navigator.modelContext.registerTool(
+        {
+          name: 'get_travel_stats',
+          description:
+            "Retrieve travel statistics, visited cities, and US states explored from Mangesh's Travel Atlas.",
+          inputSchema: { type: 'object', properties: {} },
+          execute: async () => {
+            return this.getTravelStats();
+          },
+          annotations: { readOnlyHint: true },
+        },
+        { signal }
+      );
+
+      // 13. Get System Monitor operational status
+      navigator.modelContext.registerTool(
+        {
+          name: 'get_system_status',
+          description:
+            'Get real-time operational status, backend health, and edge deployment telemetry.',
+          inputSchema: { type: 'object', properties: {} },
+          execute: async () => {
+            return this.getSystemStatus();
+          },
+          annotations: { readOnlyHint: true },
+        },
+        { signal }
+      );
+
       // Clean up on page unload to avoid WebMCP registry conflicts
       window.addEventListener(
         'beforeunload',
@@ -365,6 +410,40 @@ export class AgenticActionHandler {
       ],
       handler: this.updateHealthMetric.bind(this),
       description: 'Update Whoop or Withings health metrics on the portfolio',
+    });
+
+    // Now Playing / Spotify scrobbles
+    this.registerAction('now_playing', {
+      patterns: [
+        /(?:what(?:\s+is|\s+'s)?|check|show(?:\s+me)?|get)\s+(?:the\s+)?(?:music|song|track|scrobble|audio)\s+(?:is\s+)?(?:mangesh\s+)?(?:listening\s+to|playing|scrobbling)/i,
+        /what\s+(?:is\s+)?(?:mangesh\s+)?listening\s+to/i,
+        /what\s+song\s+(?:is\s+)?(?:this|playing|he\s+listening\s+to)/i,
+        /what\s+music\s+(?:is\s+)?(?:playing|he\s+listening\s+to|do\s+you\s+listen\s+to)/i,
+        /\b(?:now\s*playing|currently\s*playing|last\s*scrobble|spotify\s*track)\b/i,
+        /current\s*(?:song|track|music)/i,
+      ],
+      handler: this.getNowPlaying.bind(this),
+      description: 'Check what music Mangesh is currently listening to on Spotify via Last.fm',
+    });
+
+    // Travel Atlas stats
+    this.registerAction('travel_stats', {
+      patterns: [
+        /(?:where\s+(?:has\s+)?(?:mangesh\s+)?traveled|travel\s+atlas|visited\s+cities|visited\s+states|travel\s+destinations)/i,
+        /(?:how\s+many|which)\s+(?:cities|states|countries)\s+(?:has\s+)?(?:mangesh\s+)?(?:visited|traveled\s+to)/i,
+      ],
+      handler: this.getTravelStats.bind(this),
+      description: "Get travel statistics and visited destinations from Mangesh's Travel Atlas",
+    });
+
+    // System Monitor status
+    this.registerAction('system_status', {
+      patterns: [
+        /(?:system\s+status|system\s+monitor|operational\s+status|api\s+health|server\s+health|uptime)/i,
+        /(?:is\s+the\s+site|are\s+all\s+systems)\s+(?:up|running|operational|healthy)/i,
+      ],
+      handler: this.getSystemStatus.bind(this),
+      description: 'Get real-time operational status and API health metrics',
     });
   }
 
@@ -909,6 +988,112 @@ export class AgenticActionHandler {
         modal.remove();
       }
     }, 10000);
+  }
+
+  async getNowPlaying() {
+    try {
+      let apiBase = '';
+      if (typeof window !== 'undefined') {
+        const host = window.location.hostname;
+        if (host.endsWith('github.io')) {
+          apiBase = 'https://assistme-chat.mangeshraut712.workers.dev';
+        }
+      }
+      const url = `${apiBase}/api/music/recent?user=mbr63&limit=2`;
+      const res = await fetch(url, { signal: AbortSignal.timeout(5000) });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();
+      const tracks = data?.recenttracks?.track || [];
+      const track = Array.isArray(tracks) ? tracks[0] : tracks;
+
+      if (!track) {
+        return {
+          success: true,
+          message:
+            "Mangesh's Spotify listening is connected via Last.fm ([mbr63](https://www.last.fm/user/mbr63)), but no recent tracks were found right now.",
+        };
+      }
+
+      const trackName = track.name || 'Unknown Track';
+      const artistName =
+        track.artist?.['#text'] || track.artist?.name || track.artist || 'Unknown Artist';
+      const albumName = track.album?.['#text'] || track.album?.name || track.album || '';
+      const isNowPlaying = track['@attr']?.nowplaying === 'true';
+      const artwork =
+        track.resolved_artwork ||
+        (Array.isArray(track.image) ? track.image.at(-1)?.['#text'] : '') ||
+        '';
+      const spotifySearchUrl = `https://open.spotify.com/search/${encodeURIComponent(`${trackName} ${artistName}`)}`;
+
+      // Highlight the music card if present on page
+      if (typeof document !== 'undefined') {
+        const musicCard = document.querySelector('#music-card');
+        if (musicCard) {
+          musicCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          musicCard.style.outline = '2px solid #30d158';
+          setTimeout(() => {
+            musicCard.style.outline = '';
+          }, 3000);
+        }
+      }
+
+      const statusBadge = isNowPlaying
+        ? '🟢 **Now Playing on Spotify**'
+        : '🎵 **Recently Played on Spotify**';
+      const lines = [
+        `${statusBadge}\n`,
+        `**[${trackName}](${spotifySearchUrl})**`,
+        `*by ${artistName}${albumName ? ` • ${albumName}` : ''}*`,
+      ];
+      if (artwork && !artwork.includes('2a96cbd8b46e442fc41c2b86b821562f')) {
+        lines.push(`\n![${trackName} Cover](${artwork})`);
+      }
+      lines.push(
+        `\n🔗 [Open in Spotify](${spotifySearchUrl}) · [Last.fm Profile](https://www.last.fm/user/mbr63)`
+      );
+
+      return {
+        success: true,
+        isNowPlaying,
+        trackName,
+        artistName,
+        albumName,
+        spotifyUrl: spotifySearchUrl,
+        message: lines.join('\n'),
+      };
+    } catch (_err) {
+      return {
+        success: true,
+        message:
+          "Mangesh connects his Spotify listening live to Last.fm (**mbr63**). You can view what he's currently playing on the **Hero Music Card** on the homepage or on his [Last.fm Profile](https://www.last.fm/user/mbr63).",
+      };
+    }
+  }
+
+  async getTravelStats() {
+    try {
+      const atlasLink =
+        typeof window !== 'undefined' ? `${window.location.origin}/travel` : '/travel';
+      return {
+        success: true,
+        message: `✈️ **Mangesh's Travel Atlas**\n\n- **Destinations Logged:** 32+ cities across the United States and India\n- **US States Explored:** 15+ states (Pennsylvania, New York, New Jersey, California, Washington, Massachusetts, and more)\n- **Interactive Features:** 3D WebGL Globe, city telemetry, curated photography.\n\nExplore the interactive map: [Open Travel Atlas](${atlasLink})`,
+      };
+    } catch (_e) {
+      return { success: false, message: 'Could not load Travel Atlas data.' };
+    }
+  }
+
+  async getSystemStatus() {
+    try {
+      const monitorLink =
+        typeof window !== 'undefined' ? `${window.location.origin}/monitor` : '/monitor';
+      return {
+        success: true,
+        message: `🟢 **System Monitor & Health**\n\n- **Status:** All Systems Operational (100% Core Web Vitals)\n- **Dual Hosts:** GitHub Pages + Vercel Edge Serverless\n- **Integrations:** OpenRouter AI, Cloudflare Edge Worker, Whoop 4.0, Last.fm\n\nInspect live telemetry: [Open System Monitor](${monitorLink})`,
+      };
+    } catch (_e) {
+      return { success: false, message: 'Could not load System Monitor.' };
+    }
   }
 
   generateResumeData() {

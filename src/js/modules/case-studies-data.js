@@ -74,7 +74,7 @@ export const caseStudies = [
     tradeoffs:
       'GH Pages visitors pay a cross-origin API hop; local regex/tools handle navigation so LLM latency does not block core flows.',
     results: [
-      `${WEBMCP_TOOL_COUNT} deterministic WebMCP tools — navigate, filter projects, download resume, toggle theme`,
+      `${WEBMCP_TOOL_COUNT} deterministic WebMCP tools — navigate, filter projects, music scrobbles, resume, theme`,
       `Lighthouse ${formatDeployLighthouseGate()} deploy CI gate on built dist`,
       'Public System Monitor with 15 diagnostic sections',
       '14 technical blog posts with structured field-note workflows',
