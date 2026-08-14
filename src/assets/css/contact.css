@@ -2880,8 +2880,8 @@ html.dark .media-poster {
 .dream-cars-marquee,
 #contact .dream-companies-marquee,
 #contact .dream-cars-marquee {
-  --contact-marquee-gap: clamp(1.75rem, 4vw, 2.75rem);
-  --contact-marquee-duration: 52s;
+  --contact-marquee-gap: clamp(1.5rem, 3vw, 2.25rem);
+  --contact-marquee-duration: 35s;
   width: 100% !important;
   max-width: 100% !important;
   height: auto !important;
@@ -2896,15 +2896,9 @@ html.dark .media-poster {
   box-sizing: border-box;
   display: block !important;
   background: transparent !important;
-  /* elegant fade edges */
-  mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
-  -webkit-mask-image: linear-gradient(
-    to right,
-    transparent 0%,
-    black 8%,
-    black 92%,
-    transparent 100%
-  );
+  /* elegant fade edges synced with skills marquee */
+  mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
 }
 
 /* Scrolling Track — MUST stay horizontal row (never stack logos vertically) */
@@ -2923,23 +2917,16 @@ html.dark .media-poster {
   max-width: none !important;
   height: auto !important;
   max-height: none !important;
-  animation: marquee-scroll var(--contact-marquee-duration) linear infinite;
+  animation: marquee-scroll var(--contact-marquee-duration, 35s) linear infinite;
   will-change: transform;
 }
 
-.dream-companies-track,
-#contact .dream-companies-track {
-  animation-timing-function: steps(17, end);
-}
-
-.dream-cars-track,
-#contact .dream-cars-track {
-  animation-duration: 58s;
-  animation-timing-function: steps(19, end);
-}
-
+.dream-companies-marquee:hover .dream-companies-track,
+.dream-cars-marquee:hover .dream-cars-track,
 .dream-companies-track:hover,
-.dream-cars-track:hover {
+.dream-cars-track:hover,
+#contact .dream-companies-marquee:hover .dream-companies-track,
+#contact .dream-cars-marquee:hover .dream-cars-track {
   animation-play-state: paused;
 }
 

@@ -27,7 +27,7 @@
   <img src="https://img.shields.io/badge/FastAPI-0.139-009688?style=flat-square&logo=fastapi&logoColor=white" alt="FastAPI">
   <img src="https://img.shields.io/badge/ESM-vanilla-yellow?style=flat-square" alt="Vanilla ESM">
   <img src="https://img.shields.io/badge/OpenRouter-Grok%204.3%20%2B%20Nemotron%20free-black?style=flat-square" alt="OpenRouter">
-  <img src="https://img.shields.io/badge/Tests-126%20unit%20%2B%20161%20API-brightgreen?style=flat-square" alt="126 unit tests and 161 API tests">
+  <img src="https://img.shields.io/badge/Tests-148%20unit%20%2B%20165%20API-brightgreen?style=flat-square" alt="148 unit tests and 165 API tests">
   <img src="https://img.shields.io/badge/Lighthouse-100%2F100%2F100%2F100-0cce6b?style=flat-square" alt="Lighthouse">
   <img src="https://img.shields.io/badge/Playwright-16%20projects-2EAD33?style=flat-square&logo=playwright&logoColor=white" alt="Playwright">
   <a href="https://foglamp.dev/scan/mangeshrautarchive-jtspx4"><img src="https://img.shields.io/badge/Foglamp-AI%20map-0071e3?style=flat-square" alt="Foglamp architecture map"></a>
@@ -61,17 +61,17 @@
 
 **mangeshrautarchive** is the production codebase for Mangesh Raut’s agentic full-stack portfolio (branded domain **[mangeshraut.pro](https://mangeshraut.pro)**). It is a **static-first** website (no React, Next.js, Vue, Angular, or Svelte **runtime**) with a **Python 3.12 FastAPI** backend on Vercel serverless and a **GitHub Pages** static publish path.
 
-**Public status (verified 2026-08-09):** [GitHub Pages](https://mangeshraut712.github.io/mangeshrautarchive/) and [Vercel production](https://mangeshraut.pro) are reachable and serve the same build commit. Run `npm run qa:surfaces` to verify the two hosts' titles, required paths, and `build-config.json` parity. GitHub Pages routes AssistMe through the Cloudflare Worker; Vercel exposes the FastAPI API under the same origin.
+**Public status (verified August 2026):** [GitHub Pages](https://mangeshraut712.github.io/mangeshrautarchive/) and [Vercel production](https://mangeshraut.pro) are reachable and serve the same build commit. Run `npm run qa:surfaces` to verify the two hosts' titles, required paths, and `build-config.json` parity. GitHub Pages routes AssistMe through the Cloudflare Worker; Vercel exposes the FastAPI API under the same origin.
 
 As of **August 2026**, the product combines:
 
 | Pillar                 | What it delivers                                                                                           |
 | ---------------------- | ---------------------------------------------------------------------------------------------------------- |
-| **Portfolio surfaces** | Home, Systems, Monitor, Travel, Uses, Blog, case studies, offline/404                                      |
-| **Agentic AI**         | AssistMe chatbot · 10 WebMCP tools · Plus menu tools · OpenRouter NDJSON stream · rich media               |
+| **Portfolio surfaces** | Home, Systems, Monitor, Travel, Uses, Changelog, Blog, case studies, offline/404                           |
+| **Agentic AI**         | AssistMe chatbot · 13 WebMCP tools · Plus menu tools · OpenRouter NDJSON stream · rich media               |
 | **Apple-inspired UI**  | Dynamic Island nav · liquid glass **clear / balanced / tinted** · solid page canvas · a11y dock            |
 | **Operations**         | Platform health probes · portfolio catalog · dual-host commit parity · Foglamp map keep-alive              |
-| **Quality**            | **126** Vitest · **161** pytest · 16 Playwright projects · Lighthouse **100/100/100/100** gates · security |
+| **Quality**            | **148** Vitest · **165** pytest · 16 Playwright projects · Lighthouse **100/100/100/100** gates · security |
 
 This document is the **canonical technology report** for the repository: stack versions, libraries, architecture, features, and how to run it. Counts and URLs below were checked against the current `main` tree and live probes.
 
@@ -193,10 +193,10 @@ Pinned from this repo’s `package.json`, `requirements.txt`, `pyproject.toml`, 
 
 | Suite        | Runner                         | Count / target (August 2026)                                                            |
 | ------------ | ------------------------------ | --------------------------------------------------------------------------------------- |
-| **Unit**     | Vitest 4.1                     | **126** tests · chatbot, bootstrap, modules                                             |
-| **API**      | pytest                         | **161** tests · FastAPI routes / middleware                                             |
+| **Unit**     | Vitest 4.1                     | **148** tests · chatbot, bootstrap, modules, WebMCP, data contracts                     |
+| **API**      | pytest                         | **165** tests · FastAPI routes / telemetry / middleware                                 |
 | **E2E**      | Playwright 1.61                | **16** projects (desktop + phone + tablet, incl. iPhone 17 Pro Max)                     |
-| **A11y**     | axe-core + a11y toolbar        | CI + runtime high contrast / reduced motion / liquid glass                              |
+| **A11y**     | axe-core + a11y toolbar        | CI + runtime high contrast / reduced motion / liquid glass (16/16 baseline passing)     |
 | **Perf**     | Lighthouse gate (`deploy.yml`) | **100 / 100 / 100 / 100** desktop + mobile on `dist/` (`?perf-audit=1`); full-load also |
 | **Stack**    | `npm run doctor:strict`        | Vanilla ESM + FastAPI layout and dependency guard                                       |
 | **Security** | `security-check` + `npm audit` | Secret scan before merge                                                                |
@@ -207,36 +207,40 @@ Pinned from this repo’s `package.json`, `requirements.txt`, `pyproject.toml`, 
 
 | Area                | Highlights                                                                                                                                                                                                  |
 | ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **AssistMe**        | Mic · input · **+** · send · 10 WebMCP tools · Writing Tools / attach / summarize via Plus · NDJSON stream · KaTeX + DOMPurify · Nemotron free chain · Pollinations + charts · session memory · scroll a11y |
+| **AssistMe**        | Mic · input · **+** · send · 13 WebMCP tools · Writing Tools / attach / summarize via Plus · NDJSON stream · KaTeX + DOMPurify · Nemotron free chain · Pollinations + charts · session memory · scroll a11y |
 | **Liquid Glass**    | Clear / balanced / tinted materials on chrome · solid white/black page canvas · WebGL optional · a11y slider                                                                                                |
 | **System Monitor**  | Apple Status densify · platform probes · portfolio catalog · CSP / AI metrics                                                                                                                               |
 | **Systems page**    | Evidence cards · architecture diagrams · hiring Q&A                                                                                                                                                         |
 | **Projects**        | Live GitHub grid · release lens · evidence rows · Spatial View hooks                                                                                                                                        |
 | **Field Notes**     | 14 long-form articles · X-style feed cards · no stock hero images · charts + source embeds                                                                                                                  |
 | **Case studies**    | 5 static deep-dives (portfolio, HindAI, CES Energy, AssistMe, Bug Tracker)                                                                                                                                  |
-| **Currently**       | Shows / books / music · Last.fm proxy · local posters                                                                                                                                                       |
+| **Currently**       | Shows / books / music · Last.fm Spotify live scrobbles · local posters                                                                                                                                      |
 | **Health**          | WHOOP + Withings · Supabase · daily cron                                                                                                                                                                    |
-| **Travel**          | MapLibre atlas · filters · glass sidebar                                                                                                                                                                    |
-| **Uses**            | Hardware / software / AI stack board                                                                                                                                                                        |
+| **Travel**          | MapLibre 3D WebGL atlas · filters · glass sidebar · 32+ destination guides                                                                                                                                  |
+| **Uses & Stack**    | Apple-standard hardware / software / AI stack board with instant search & category pill filtering                                                                                                           |
+| **Marquees**        | Synchronized smooth linear gliding tickers across Skills, Dream Companies, and Dream Cars with hover pause                                                                                                  |
 | **Command palette** | `⌘K` / `Ctrl+K` · sections, blog, actions                                                                                                                                                                   |
 | **A11y**            | Floating dock · liquid glass control · listen/translate · 44px targets · reduced transparency → solid                                                                                                       |
 | **PWA**             | Install via manifest, shortcuts, splash assets; SW unregistered for iOS stability; offline.html reconnect only                                                                                              |
-| **Share**           | Glass share FAB · system share sheet style dialog                                                                                                                                                           |
+| **Share**           | Glass share FAB · system share sheet style dialog with lazy QR code generation                                                                                                                              |
 
 ### AssistMe · WebMCP tools
 
-| Tool                   | Action                         |
-| ---------------------- | ------------------------------ |
-| `navigate_to_section`  | Scroll to a section            |
-| `download_resume`      | Resume PDF                     |
-| `schedule_meeting`     | Calendly                       |
-| `open_contact_form`    | Focus contact                  |
-| `copy_contact_info`    | Copy email / socials           |
-| `search_portfolio`     | Command palette query          |
-| `filter_projects`      | Project lens by tech           |
-| `open_social_media`    | GitHub / LinkedIn / X          |
-| `toggle_theme`         | Light / dark / system          |
-| `update_health_metric` | Health widget (when connected) |
+| Tool                   | Action                                |
+| ---------------------- | ------------------------------------- |
+| `navigate_to_section`  | Scroll to a section                   |
+| `download_resume`      | Resume PDF (US / India / Research)    |
+| `schedule_meeting`     | Calendly scheduling modal             |
+| `open_contact_form`    | Focus contact form                    |
+| `copy_contact_info`    | Copy email / socials to clipboard     |
+| `search_portfolio`     | Command palette query                 |
+| `filter_projects`      | Project lens by tech stack            |
+| `open_social_media`    | GitHub / LinkedIn / X profiles        |
+| `toggle_theme`         | Light / dark / system theme toggle    |
+| `update_health_metric` | Health widget (WHOOP / Withings)      |
+| `get_now_playing`      | Current / recent Spotify scrobbles    |
+| `get_travel_stats`     | Travel Atlas countries / cities count |
+| `get_system_status`    | System Monitor health status probe    |
 
 ---
 
@@ -371,7 +375,7 @@ npm run build && PORT=4174 npm run serve:dist   # production preview
 | `npm run doctor` / `doctor:stack`        | Root layout + no React/Next runtime               |
 | `npm run dev`                            | Frontend + backend                                |
 | `npm run build`                          | Production `dist/` (+ blog/case study generation) |
-| `npm test` / `npm run test:api`          | Vitest **126** / pytest **161**                   |
+| `npm test` / `npm run test:api`          | Vitest **148** / pytest **165**                   |
 | `npm run check`                          | ESLint + Stylelint + Prettier + Vitest            |
 | `npm run lint:dead-code` / `lint:python` | Vulture + flake8 for the FastAPI codebase         |
 | `npm run test:e2e:all`                   | Playwright across all **16** browser projects     |
@@ -408,10 +412,10 @@ Never commit `.env` / `.env.local`. See [`.env.example`](.env.example).
 
 1. `npm audit` + `security-check`
 2. ESLint · Stylelint 17 · Prettier
-3. Vitest (**126**)
+3. Vitest (**148**)
 4. Env parity (non-blocking)
-5. flake8 · dead-code · pytest (**161**)
-6. Browser QA smoke, accessibility, and promotion/FPS checks
+5. flake8 · dead-code · pytest (**165**)
+6. Browser QA smoke, accessibility (16/16), and promotion/FPS checks
 7. `npm run build` + Lighthouse on `dist/` (**100/100/100/100** desktop + mobile, `?perf-audit=1`)
 8. GitHub Pages deploy + dual-surface verify
 
@@ -442,8 +446,8 @@ Republishes [`.foglamp/scan.json`](.foglamp/scan.json) to the same public URL us
 
 | Suite               | Target                                                     |
 | ------------------- | ---------------------------------------------------------- |
-| Vitest              | 126                                                        |
-| pytest              | 161                                                        |
+| Vitest              | 148                                                        |
+| pytest              | 165                                                        |
 | Playwright projects | 16                                                         |
 | Lighthouse CI       | **100** Performance / Accessibility / Best Practices / SEO |
 
