@@ -58,8 +58,8 @@ test.describe('Chatbot Agentic Actions & WebMCP Tool Registration', () => {
       tools.map(t => t.tool.name)
     );
 
-    // Assert that we registered all 10 tools
-    expect(tools.length).toBe(10);
+    // Assert that we registered all 13 tools
+    expect(tools.length).toBe(13);
 
     // Check specific tools
     const toolNames = tools.map(t => t.tool.name);
@@ -73,6 +73,9 @@ test.describe('Chatbot Agentic Actions & WebMCP Tool Registration', () => {
     expect(toolNames).toContain('open_social_media');
     expect(toolNames).toContain('toggle_theme');
     expect(toolNames).toContain('update_health_metric');
+    expect(toolNames).toContain('get_now_playing');
+    expect(toolNames).toContain('get_travel_stats');
+    expect(toolNames).toContain('get_system_status');
   });
 
   // Test 2: Local agentic action regex interception and visual feedback
