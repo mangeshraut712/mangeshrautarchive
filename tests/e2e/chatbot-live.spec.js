@@ -1,10 +1,11 @@
 import { expect, test } from '@playwright/test';
 
-test('test live chatbot on mangeshraut.pro', async ({ page }) => {
-  console.log('🌐 Navigating to https://mangeshraut.pro ...');
-  // Disable timeout limits for slow loading
+test('test live chatbot on deployed portfolio', async ({ page }) => {
+  const targetUrl =
+    process.env.E2E_BASE_URL || 'https://mangeshraut712.github.io/mangeshrautarchive/';
+  console.log(`🌐 Navigating to ${targetUrl} ...`);
   test.setTimeout(60000);
-  await page.goto('https://mangeshraut.pro', { waitUntil: 'networkidle' });
+  await page.goto(targetUrl, { waitUntil: 'networkidle' });
 
   console.log('🔍 Locating chatbot toggle button...');
   const toggleBtn = page.locator('#chatbot-toggle');
