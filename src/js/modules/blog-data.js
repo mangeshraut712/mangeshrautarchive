@@ -32,6 +32,7 @@ export const blogPosts = [
     pullQuote:
       'The gateway is not the intelligence. The gateway is the contract that keeps intelligence online when models, prices, and providers move.',
     highlights: ['Sticky routing', 'Cache economics', 'AssistMe-style policy'],
+    tags: ['OpenRouter', 'AI Routing', 'Model Gateways', 'System Design'],
     date: '2026-07-05',
     readTime: '12 min read',
     content: `In 2026 the hard problem is rarely "can I call a model?" It is "can I keep calling *useful* models when prices move, providers flake, caches miss, and geopolitics reshapes token share?" OpenRouter increasingly feels like a USB hub for intelligence: one plug shape, many devices behind it, and a routing policy that decides which cable actually carries power.

@@ -123,6 +123,28 @@ function initTocSpy() {
   headings.forEach(heading => observer.observe(heading));
 }
 
+function initCodeCopy() {
+  document.addEventListener('click', event => {
+    const copyBtn = event.target.closest('[data-copy-code]');
+    if (!copyBtn) return;
+    const wrap = copyBtn.closest('.article-code-wrap');
+    const codeEl = wrap?.querySelector('code');
+    if (!codeEl) return;
+    const originalHtml = copyBtn.innerHTML;
+    navigator.clipboard
+      .writeText(codeEl.innerText)
+      .then(() => {
+        copyBtn.classList.add('is-copied');
+        copyBtn.innerHTML = '<i class="fas fa-check" aria-hidden="true"></i> <span>Copied!</span>';
+        setTimeout(() => {
+          copyBtn.classList.remove('is-copied');
+          copyBtn.innerHTML = originalHtml;
+        }, 2000);
+      })
+      .catch(() => {});
+  });
+}
+
 function initBlogPage() {
   initCardContentAccessibility();
   rescanCardContentAccessibility(document);
@@ -130,6 +152,7 @@ function initBlogPage() {
   initReadingProgress();
   initTocSpy();
   initArticleReactions();
+  initCodeCopy();
 }
 
 if (document.readyState === 'loading') {

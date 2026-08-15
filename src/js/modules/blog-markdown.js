@@ -141,12 +141,25 @@ function renderMediaBlock(kind, body) {
     </figure>`;
   }
   if (kind === 'callout') {
-    const type = ['note', 'warn', 'tip', 'source'].includes(a.type) ? a.type : 'note';
-    const label = escapeHTML(a.label || type.toUpperCase());
+    const type = ['note', 'warn', 'tip', 'source', 'architecture', 'security'].includes(a.type)
+      ? a.type
+      : 'note';
+    const defaultLabels = {
+      note: 'NOTE',
+      warn: 'WARNING',
+      tip: 'PRO TIP',
+      source: 'PRIMARY SOURCE',
+      architecture: 'ARCHITECTURE DECISION',
+      security: 'SECURITY NOTICE',
+    };
+    const label = escapeHTML(a.label || defaultLabels[type] || type.toUpperCase());
     const text = parseInline(a.text || body.replace(/^type:.*$/im, '').trim());
     return `<aside class="article-callout article-callout--${type}" role="note">
-      <span class="article-callout__label">${label}</span>
-      <p>${text}</p>
+      <div class="article-callout__header">
+        <span class="article-callout__icon" aria-hidden="true"></span>
+        <span class="article-callout__label">${label}</span>
+      </div>
+      <p class="article-callout__text">${text}</p>
     </aside>`;
   }
   if (kind === 'embed') {
@@ -156,6 +169,7 @@ function renderMediaBlock(kind, body) {
       <span class="article-embed-card__kicker">${escapeHTML(a.kicker || 'Source')}</span>
       <strong class="article-embed-card__title">${escapeHTML(a.title || href)}</strong>
       ${a.desc ? `<span class="article-embed-card__desc">${escapeHTML(a.desc)}</span>` : ''}
+      <span class="article-embed-card__arrow" aria-hidden="true"><i class="fas fa-arrow-up-right-from-square"></i></span>
     </a>`;
   }
   return '';
@@ -218,11 +232,27 @@ export function parseBlogContent(content, { addHeadingIds = false } = {}) {
       closeList();
       const found = codeMap.get(block);
       if (found) {
-        const escapedCode = found.code
+        const langMatch = found.code.match(/^([a-zA-Z0-9_#-]+)\n/);
+        const lang = langMatch ? langMatch[1] : '';
+        const rawCode = langMatch ? found.code.slice(langMatch[0].length) : found.code;
+        const escapedCode = rawCode
           .replace(/&/g, '&amp;')
           .replace(/</g, '&lt;')
           .replace(/>/g, '&gt;');
-        html.push(`<pre class="article-code-block"><code>${escapedCode}</code></pre>`);
+        const langBadge = lang
+          ? `<span class="article-code-lang">${escapeHTML(lang)}</span>`
+          : '<span class="article-code-lang">code</span>';
+        html.push(`
+          <div class="article-code-wrap">
+            <div class="article-code-header">
+              ${langBadge}
+              <button type="button" class="article-code-copy-btn" data-copy-code aria-label="Copy code to clipboard">
+                <i class="fas fa-copy" aria-hidden="true"></i> <span>Copy</span>
+              </button>
+            </div>
+            <pre class="article-code-block"><code class="language-${escapeHTML(lang || 'text')}">${escapedCode}</code></pre>
+          </div>
+        `);
       }
       continue;
     }
@@ -269,6 +299,39 @@ export function parseBlogContent(content, { addHeadingIds = false } = {}) {
     }
 
     const lines = block.split('\n');
+
+    // Markdown Table parsing
+    if (
+      lines.length >= 2 &&
+      lines[0].trim().startsWith('|') &&
+      lines[0].trim().endsWith('|') &&
+      lines[1].includes('---')
+    ) {
+      closeList();
+      const headerCells = lines[0]
+        .trim()
+        .split('|')
+        .slice(1, -1)
+        .map(c => c.trim());
+      const bodyRows = lines
+        .slice(2)
+        .map(l => l.trim())
+        .filter(l => l.startsWith('|') && l.endsWith('|'))
+        .map(l =>
+          l
+            .split('|')
+            .slice(1, -1)
+            .map(c => c.trim())
+        );
+
+      const thead = `<thead><tr>${headerCells.map(h => `<th>${parseInline(h)}</th>`).join('')}</tr></thead>`;
+      const tbody = `<tbody>${bodyRows.map(row => `<tr>${row.map(cell => `<td>${parseInline(cell)}</td>`).join('')}</tr>`).join('')}</tbody>`;
+      html.push(
+        `<div class="article-table-wrap" tabindex="0" role="region" aria-label="Data table"><table class="article-table">${thead}${tbody}</table></div>`
+      );
+      continue;
+    }
+
     const firstLine = lines[0].trim();
     if (firstLine.startsWith('- ') || firstLine.startsWith('* ') || firstLine.startsWith('• ')) {
       if (!inList) {

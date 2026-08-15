@@ -2571,3 +2571,230 @@ body.blog-standalone-page .article-promise {
   line-height: 1.55;
   color: var(--text-secondary, #6e6e73);
 }
+
+/* ==========================================================================
+   Luxury Rich Format: Filter Chips Container & Status
+   ========================================================================== */
+
+.blog-filter-chips {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.35rem;
+  border-radius: var(--lux-radius-pill, 980px);
+  background: color-mix(in srgb, var(--bg-secondary, #f5f5f7) 70%, transparent);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--lux-border, rgb(0 0 0 / 8%));
+}
+
+html.dark .blog-filter-chips {
+  background: rgb(255 255 255 / 4%);
+  border-color: rgb(255 255 255 / 10%);
+}
+
+.blog-card.is-filter-hidden {
+  display: none !important;
+}
+
+/* ==========================================================================
+   Luxury Rich Format: Responsive Data Tables (:::table)
+   ========================================================================== */
+
+.article-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  margin: 2rem 0;
+  border-radius: var(--lux-radius, 16px);
+  border: 1px solid var(--lux-border, rgb(0 0 0 / 8%));
+  background: var(--bg-primary, #ffffff);
+  box-shadow: 0 4px 16px rgb(0 0 0 / 4%);
+  -webkit-overflow-scrolling: touch;
+}
+
+html.dark .article-table-wrap {
+  background: #000000;
+  border-color: rgb(255 255 255 / 10%);
+  box-shadow: 0 4px 20px rgb(0 0 0 / 40%);
+}
+
+.article-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.925rem;
+  line-height: 1.5;
+}
+
+.article-table thead {
+  background: color-mix(in srgb, var(--bg-secondary, #f5f5f7) 85%, transparent);
+  border-bottom: 1px solid var(--lux-border, rgb(0 0 0 / 8%));
+}
+
+html.dark .article-table thead {
+  background: rgb(255 255 255 / 5%);
+  border-bottom-color: rgb(255 255 255 / 10%);
+}
+
+.article-table th {
+  padding: 0.85rem 1.15rem;
+  font-weight: 600;
+  color: var(--text-primary, #1d1d1f);
+  font-family: var(--font-display, 'SF Pro Display', -apple-system, sans-serif);
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+
+html.dark .article-table th {
+  color: #f5f5f7;
+}
+
+.article-table td {
+  padding: 0.85rem 1.15rem;
+  border-bottom: 1px solid var(--lux-border, rgb(0 0 0 / 5%));
+  color: var(--text-secondary, #6e6e73);
+}
+
+html.dark .article-table td {
+  border-bottom-color: rgb(255 255 255 / 6%);
+  color: #a1a1a6;
+}
+
+.article-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.article-table tbody tr:hover {
+  background: color-mix(in srgb, var(--apple-blue, #0071e3) 4%, transparent);
+}
+
+html.dark .article-table tbody tr:hover {
+  background: rgb(255 255 255 / 3%);
+}
+
+/* ==========================================================================
+   Luxury Rich Format: Code Chrome with Copy Button
+   ========================================================================== */
+
+.article-code-wrap {
+  position: relative;
+  margin: 1.85rem 0;
+  border-radius: var(--lux-radius, 14px);
+  border: 1px solid var(--lux-border, rgb(0 0 0 / 10%));
+  overflow: hidden;
+  background: #1e1e1e;
+  box-shadow: 0 8px 24px rgb(0 0 0 / 12%);
+}
+
+html.dark .article-code-wrap {
+  background: #000000;
+  border-color: rgb(255 255 255 / 12%);
+  box-shadow: 0 10px 30px rgb(0 0 0 / 60%);
+}
+
+.article-code-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 1rem;
+  background: rgb(255 255 255 / 6%);
+  border-bottom: 1px solid rgb(255 255 255 / 8%);
+}
+
+.article-code-lang {
+  font-family: SFMono-Regular, Consolas, Menlo, monospace;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #a1a1a6;
+}
+
+.article-code-copy-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.28rem 0.65rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #d1d1d6;
+  background: rgb(255 255 255 / 8%);
+  border: 1px solid rgb(255 255 255 / 12%);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.article-code-copy-btn:hover {
+  background: rgb(255 255 255 / 16%);
+  color: #ffffff;
+  border-color: rgb(255 255 255 / 24%);
+}
+
+.article-code-copy-btn.is-copied {
+  background: rgb(48 209 88 / 20%);
+  color: #30d158;
+  border-color: rgb(48 209 88 / 40%);
+}
+
+.article-code-wrap .article-code-block {
+  margin: 0;
+  padding: 1.25rem;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  border-radius: 0;
+  color: #e5e5ea;
+}
+
+/* ==========================================================================
+   Luxury Rich Format: Callout Headers & Custom Variants
+   ========================================================================== */
+
+.article-callout__header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.article-callout__text {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.article-callout--architecture,
+.article-callout--security {
+  background: color-mix(in srgb, #bf5af2 7%, transparent);
+  border-color: color-mix(in srgb, #bf5af2 25%, transparent);
+  color: var(--text-primary, #1d1d1f);
+}
+
+.article-callout--architecture .article-callout__label,
+.article-callout--security .article-callout__label {
+  color: #af52de;
+}
+
+html.dark .article-callout--architecture .article-callout__label,
+html.dark .article-callout--security .article-callout__label {
+  color: #bf5af2;
+}
+
+.article-embed-card__arrow {
+  position: absolute;
+  top: 1.25rem;
+  right: 1.4rem;
+  font-size: 0.85rem;
+  color: var(--text-secondary, #6e6e73);
+  transition:
+    transform 0.2s ease,
+    color 0.2s ease;
+}
+
+.article-embed-card:hover .article-embed-card__arrow {
+  color: var(--apple-blue, #0071e3);
+  transform: translate(2px, -2px);
+}
