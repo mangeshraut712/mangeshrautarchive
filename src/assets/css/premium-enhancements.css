@@ -782,7 +782,7 @@ html.dark .currently-tab.active,
 html.dark .uses-control-tile.is-active,
 html.dark .uses-control-tile.active {
   background-color: #0071e3 !important;
-  background-image: linear-gradient(135deg, #2997ff 0%, #0071e3 100%) !important;
+  background-image: none !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
   font-weight: 700 !important;
@@ -1093,7 +1093,7 @@ button:active,
   transform: scale(0.98) !important;
 }
 
-/* --- 2. PRIMARY BUTTONS (Vibrant Apple Blue + Specular Shining Sheen) --- */
+/* --- 2. PRIMARY BUTTONS (Authentic Solid Apple Blue - No Shining Gradient) --- */
 .btn-primary,
 .hero-cta-primary,
 .btn-resume,
@@ -1104,14 +1104,15 @@ button:active,
 #home .hero-actions .hero-cta-primary,
 #home .hero-actions a.hero-cta-primary,
 #home a.hero-cta-primary {
+  background: #0071e3 !important;
   background-color: #0071e3 !important;
-  background-image: linear-gradient(135deg, #0077ed 0%, #0071e3 50%, #005bb5 100%) !important;
+  background-image: none !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
-  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
   box-shadow:
-    0 4px 16px rgba(0, 113, 227, 0.38),
-    0 2px 4px rgba(0, 0, 0, 0.08) !important;
+    0 2px 8px rgba(0, 113, 227, 0.28),
+    0 1px 2px rgba(0, 0, 0, 0.06) !important;
   position: relative !important;
   overflow: hidden !important;
   isolation: isolate !important;
@@ -1131,7 +1132,7 @@ button:active,
   z-index: 2 !important;
 }
 
-/* Specular Metallic Shining Sheen Overlay */
+/* Remove shining sheen overlays */
 .btn-primary::before,
 .hero-cta-primary::before,
 .btn-resume::before,
@@ -1140,36 +1141,9 @@ button:active,
 .submit-btn::before,
 .btn-demo::before,
 #home .hero-actions .hero-cta-primary::before {
-  content: '' !important;
-  position: absolute !important;
-  top: -50% !important;
-  left: -130% !important;
-  width: 100% !important;
-  height: 200% !important;
-  background: linear-gradient(
-    120deg,
-    transparent 0%,
-    rgba(255, 255, 255, 0.08) 25%,
-    rgba(255, 255, 255, 0.65) 50%,
-    rgba(255, 255, 255, 0.08) 75%,
-    transparent 100%
-  ) !important;
-  transform: rotate(25deg) !important;
-  pointer-events: none !important;
-  animation: appleBtnShine 4.5s cubic-bezier(0.4, 0, 0.2, 1) infinite !important;
-  z-index: 1 !important;
-}
-
-@keyframes appleBtnShine {
-  0% {
-    left: -130%;
-  }
-  20% {
-    left: 140%;
-  }
-  100% {
-    left: 140%;
-  }
+  display: none !important;
+  content: none !important;
+  animation: none !important;
 }
 
 .btn-primary:hover,
@@ -1180,14 +1154,15 @@ button:active,
 .submit-btn:hover,
 .btn-demo:hover,
 #home .hero-actions .hero-cta-primary:hover {
+  background: #0077ed !important;
   background-color: #0077ed !important;
-  background-image: linear-gradient(135deg, #0080ff 0%, #0071e3 50%, #0066cc 100%) !important;
+  background-image: none !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
   box-shadow:
-    0 8px 24px rgba(0, 113, 227, 0.48),
-    0 3px 8px rgba(0, 0, 0, 0.12) !important;
-  transform: translateY(-2px) scale(1.02) !important;
+    0 4px 14px rgba(0, 113, 227, 0.38),
+    0 2px 4px rgba(0, 0, 0, 0.08) !important;
+  transform: translateY(-1px) scale(1.01) !important;
 }
 
 .btn-primary:hover::before,
@@ -1198,9 +1173,9 @@ button:active,
 .submit-btn:hover::before,
 .btn-demo:hover::before,
 #home .hero-actions .hero-cta-primary:hover::before {
+  display: none !important;
+  content: none !important;
   animation: none !important;
-  left: 140% !important;
-  transition: left 0.6s ease-in-out !important;
 }
 
 /* --- 3. SECONDARY / OUTLINE / GLASS BUTTONS --- */

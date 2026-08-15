@@ -803,16 +803,19 @@ html.dark #go-to-top.visible:hover {
 /* ─── Go-to-top: always visible blue control (not flattened by solid surfaces) ─── */
 #go-to-top,
 #go-to-top.visible {
-  background: linear-gradient(135deg, #007aff 0%, #0051d5 100%) !important;
-  background-color: transparent !important;
+  background: #0071e3 !important;
+  background-color: #0071e3 !important;
+  background-image: none !important;
   color: #fff !important;
   -webkit-text-fill-color: #fff !important;
-  border: 2px solid transparent !important;
+  border: none !important;
 }
 
 html.dark #go-to-top,
 html.dark #go-to-top.visible {
-  background: linear-gradient(135deg, #0a84ff 0%, #0066cc 100%) !important;
+  background: #0071e3 !important;
+  background-color: #0071e3 !important;
+  background-image: none !important;
   color: #fff !important;
 }
 

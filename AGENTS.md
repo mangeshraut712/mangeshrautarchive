@@ -7,6 +7,7 @@
 
 ## Agent Operating Principles
 
+- When creating or updating UI elements, components, cards, pages, buttons, or themes, always consult and adhere to [docs/DESIGN.md](docs/DESIGN.md) (solid Apple Blue `#0071e3`, unified circular red close buttons `#ff3b30`, authentic glassmorphism, zero shiny sheen animations).
 - When explaining a concept or relationship to the user, use the `visualize` skill when a visual materially improves understanding.
 - Be concise, direct, and candid. Challenge weak assumptions and distinguish verified facts from uncertainty.
 - Ground research in authoritative, current sources and link important evidence.
@@ -97,7 +98,7 @@ npm run lint:python         # flake8 (Python)
 npm run format:check        # Prettier check
 
 # Test
-npm test                    # Vitest unit tests (159 tests)
+npm test                    # Vitest unit tests (160 tests)
 npm run test:api            # pytest API tests (165 tests; activate venv first)
 npm run test:e2e:chrome     # Playwright E2E — Desktop Chrome
 npm run test:e2e:all        # Playwright E2E — all 16 browser projects
@@ -194,7 +195,7 @@ All three test suites must pass before any merge to `main`:
 
 | Suite | Runner     | Command                | Coverage                                    |
 | ----- | ---------- | ---------------------- | ------------------------------------------- |
-| Unit  | Vitest     | `npm test`             | 159 tests — JS modules, utilities, markdown |
+| Unit  | Vitest     | `npm test`             | 160 tests — JS modules, utilities, markdown |
 | API   | pytest     | `npm run test:api`     | 165 tests — FastAPI endpoints, middleware   |
 | E2E   | Playwright | `npm run test:e2e:all` | Multi-spec suite across 16 browser projects |
 

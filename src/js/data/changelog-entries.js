@@ -42,6 +42,17 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'b147e92d',
+    date: '2026-08-15',
+    type: 'improvement',
+    title: 'Apple HIG Design System specification & solid button standardization',
+    summary:
+      'Published comprehensive docs/DESIGN.md design system guidelines, replaced shining diagonal multi-stop button gradients and specular sheen animations with authentic solid Apple Blue styling, and harmonized sitewide color cascades.',
+    tags: ['design', 'performance'],
+    sha: 'b147e92d',
+    link: 'docs/DESIGN.md',
+  },
+  {
     id: 'a932d84c',
     date: '2026-08-15',
     type: 'improvement',

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -97,5 +97,19 @@ describe('design foundation ownership', () => {
     const appleOverrides = readSrc('assets/css/apple-premium-overrides.css');
     expect(appleOverrides).toMatch(/\.shortcuts-modal__close/);
     expect(appleOverrides).toMatch(/\.blog-modal-close/);
+  });
+
+  it('documents Apple HIG design standard in docs/DESIGN.md and enforces solid Apple Blue buttons', () => {
+    expect(existsSync(join(root, 'docs/DESIGN.md'))).toBe(true);
+    expect(existsSync(join(root, 'DESIGN.md'))).toBe(true);
+
+    const designMd = readFileSync(join(root, 'docs/DESIGN.md'), 'utf-8');
+    expect(designMd).toContain('# DESIGN.md — Apple Human Interface Portfolio Design System');
+    expect(designMd).toContain('#0071e3');
+    expect(designMd).toContain('#ff3b30');
+
+    const premium = readSrc('assets/css/premium-enhancements.css');
+    expect(premium).not.toContain('appleBtnShine');
+    expect(premium).toMatch(/\.btn-primary,\s*\.hero-cta-primary[^}]*background:\s*#0071e3/);
   });
 });
