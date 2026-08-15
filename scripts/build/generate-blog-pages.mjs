@@ -201,7 +201,10 @@ function renderBlogIndex(posts, tags) {
 }
 
 function renderBlogPost(post, posts) {
-  const { html, headings } = parseBlogContent(post.content, { addHeadingIds: true });
+  const { html, headings } = parseBlogContent(post.content, {
+    addHeadingIds: true,
+    assetPrefix: '..',
+  });
   const toc = buildTableOfContents(headings);
   const related = getRelatedPosts(posts, post.id, 3);
 

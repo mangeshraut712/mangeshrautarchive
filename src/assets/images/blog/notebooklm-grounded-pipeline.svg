@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" width="1200" height="675">
+  <defs>
+    <linearGradient id="nb-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0c0d12"/>
+      <stop offset="50%" stop-color="#141724"/>
+      <stop offset="100%" stop-color="#090a0f"/>
+    </linearGradient>
+    <linearGradient id="nb-glass" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0.03"/>
+    </linearGradient>
+    <linearGradient id="google-flow" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#4285f4"/>
+      <stop offset="33%" stop-color="#ea4335"/>
+      <stop offset="66%" stop-color="#fbbc05"/>
+      <stop offset="100%" stop-color="#34a853"/>
+    </linearGradient>
+    <filter id="nb-glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+  <rect width="1200" height="675" fill="url(#nb-bg)"/>
+
+  <!-- Title -->
+  <text x="600" y="55" font-family="-apple-system, SF Pro Display, sans-serif" font-size="28" font-weight="700" fill="#f5f5f7" text-anchor="middle" letter-spacing="-0.5">NOTEBOOKLM: GROUNDED RESEARCH &amp; AUDIO OVERVIEW PIPELINE</text>
+  <text x="600" y="85" font-family="-apple-system, SF Pro Text, sans-serif" font-size="15" fill="#86868b" text-anchor="middle">Source-Grounded Vector Indexing with Gemini 2.5 Flash &amp; Neural Dual-Host Dialogue</text>
+
+  <!-- 3 Main Pipeline Pillars -->
+  <!-- Pillar 1: Multi-Modal Document Ingestion -->
+  <rect x="60" y="130" width="320" height="470" rx="24" fill="url(#nb-glass)" stroke="#ffffff" stroke-opacity="0.15" stroke-width="1.5"/>
+  <text x="220" y="175" font-family="-apple-system, SF Pro Display, sans-serif" font-size="19" font-weight="700" fill="#4285f4" text-anchor="middle">1. MULTI-SOURCE INGESTION</text>
+  <text x="220" y="200" font-family="-apple-system, SF Pro Text, sans-serif" font-size="13" fill="#a1a1a6" text-anchor="middle">Zero Hallucination Constraint</text>
+
+  <rect x="85" y="230" width="270" height="70" rx="14" fill="#000000" fill-opacity="0.4" stroke="#4285f4" stroke-opacity="0.4"/>
+  <text x="105" y="260" font-family="-apple-system, sans-serif" font-size="14" font-weight="600" fill="#f5f5f7">PDF, EPUB &amp; Text Docs</text>
+  <text x="105" y="282" font-family="-apple-system, sans-serif" font-size="12" fill="#86868b">Up to 50 sources · 25M total words</text>
+
+  <rect x="85" y="320" width="270" height="70" rx="14" fill="#000000" fill-opacity="0.4" stroke="#ea4335" stroke-opacity="0.4"/>
+  <text x="105" y="350" font-family="-apple-system, sans-serif" font-size="14" font-weight="600" fill="#f5f5f7">YouTube URLs &amp; Audio</text>
+  <text x="105" y="372" font-family="-apple-system, sans-serif" font-size="12" fill="#86868b">Automatic transcript extraction &amp; sync</text>
+
+  <rect x="85" y="410" width="270" height="70" rx="14" fill="#000000" fill-opacity="0.4" stroke="#34a853" stroke-opacity="0.4"/>
+  <text x="105" y="440" font-family="-apple-system, sans-serif" font-size="14" font-weight="600" fill="#f5f5f7">Google Docs &amp; Web URLs</text>
+  <text x="105" y="462" font-family="-apple-system, sans-serif" font-size="12" fill="#86868b">Live cloud document synchronization</text>
+
+  <text x="220" y="540" font-family="-apple-system, sans-serif" font-size="13" font-weight="600" fill="#86868b" text-anchor="middle">Personal Source Knowledge Base</text>
+
+  <!-- Flow Arrow 1 -> 2 -->
+  <path d="M 380 365 L 440 365" stroke="url(#google-flow)" stroke-width="4" fill="none" filter="url(#nb-glow)"/>
+
+  <!-- Pillar 2: Grounded Reasoning Index -->
+  <rect x="440" y="130" width="320" height="470" rx="24" fill="url(#nb-glass)" stroke="#ffffff" stroke-opacity="0.15" stroke-width="1.5"/>
+  <text x="600" y="175" font-family="-apple-system, SF Pro Display, sans-serif" font-size="19" font-weight="700" fill="#fbbc05" text-anchor="middle">2. CITATION-BOUND RAG</text>
+  <text x="600" y="200" font-family="-apple-system, SF Pro Text, sans-serif" font-size="13" fill="#a1a1a6" text-anchor="middle">Gemini 2.5 Flash 1M Context</text>
+
+  <rect x="465" y="230" width="270" height="70" rx="14" fill="#000000" fill-opacity="0.4" stroke="#fbbc05" stroke-opacity="0.4"/>
+  <text x="485" y="260" font-family="-apple-system, sans-serif" font-size="14" font-weight="600" fill="#f5f5f7">Dense Vector Chunking</text>
+  <text x="485" y="282" font-family="-apple-system, sans-serif" font-size="12" fill="#86868b">Semantic embeddings with line-level offsets</text>
+
+  <rect x="465" y="320" width="270" height="70" rx="14" fill="#000000" fill-opacity="0.4" stroke="#ffffff" stroke-opacity="0.1"/>
+  <text x="485" y="350" font-family="-apple-system, sans-serif" font-size="14" font-weight="600" fill="#f5f5f7">Strict Anchor Citation</text>
+  <text x="485" y="372" font-family="-apple-system, sans-serif" font-size="12" fill="#86868b">Every answer bullet links to source excerpt</text>
+
+  <rect x="465" y="410" width="270" height="70" rx="14" fill="#000000" fill-opacity="0.4" stroke="#34a853" stroke-opacity="0.4"/>
+  <text x="485" y="440" font-family="-apple-system, sans-serif" font-size="14" font-weight="600" fill="#34a853">Cross-Doc Synthesis</text>
+  <text x="485" y="462" font-family="-apple-system, sans-serif" font-size="12" fill="#86868b">Detect contradictions &amp; synthesize insights</text>
+
+  <text x="600" y="540" font-family="-apple-system, sans-serif" font-size="13" font-weight="600" fill="#86868b" text-anchor="middle">Grounded Synthesis Engine</text>
+
+  <!-- Flow Arrow 2 -> 3 -->
+  <path d="M 760 365 L 820 365" stroke="url(#google-flow)" stroke-width="4" fill="none" filter="url(#nb-glow)"/>
+
+  <!-- Pillar 3: Audio Overview & Study Guides -->
+  <rect x="820" y="130" width="320" height="470" rx="24" fill="url(#nb-glass)" stroke="#ffffff" stroke-opacity="0.15" stroke-width="1.5"/>
+  <text x="980" y="175" font-family="-apple-system, SF Pro Display, sans-serif" font-size="19" font-weight="700" fill="#34a853" text-anchor="middle">3. AUDIO OVERVIEW</text>
+  <text x="980" y="200" font-family="-apple-system, SF Pro Text, sans-serif" font-size="13" fill="#a1a1a6" text-anchor="middle">Dual-Host Conversational Podcast</text>
+
+  <rect x="845" y="230" width="270" height="70" rx="14" fill="#000000" fill-opacity="0.4" stroke="#34a853" stroke-opacity="0.4"/>
+  <text x="865" y="260" font-family="-apple-system, sans-serif" font-size="14" font-weight="600" fill="#f5f5f7">Natural Dialogue Synthesis</text>
+  <text x="865" y="282" font-family="-apple-system, sans-serif" font-size="12" fill="#86868b">Interjections, humor, analogies &amp; pacing</text>
+
+  <rect x="845" y="320" width="270" height="70" rx="14" fill="#000000" fill-opacity="0.4" stroke="#4285f4" stroke-opacity="0.4"/>
+  <text x="865" y="350" font-family="-apple-system, sans-serif" font-size="14" font-weight="600" fill="#f5f5f7">Neural Multi-Voice TTS</text>
+  <text x="865" y="372" font-family="-apple-system, sans-serif" font-size="12" fill="#86868b">Two expressive AI co-hosts deep-diving</text>
+
+  <rect x="845" y="410" width="270" height="70" rx="14" fill="#000000" fill-opacity="0.4" stroke="#ea4335" stroke-opacity="0.4"/>
+  <text x="865" y="440" font-family="-apple-system, sans-serif" font-size="14" font-weight="600" fill="#f5f5f7">Study Guide &amp; FAQ Export</text>
+  <text x="865" y="462" font-family="-apple-system, sans-serif" font-size="12" fill="#86868b">Briefing docs, timelines &amp; flashcards</text>
+
+  <text x="980" y="540" font-family="-apple-system, sans-serif" font-size="13" font-weight="600" fill="#86868b" text-anchor="middle">Multi-Format Learning Output</text>
+</svg>

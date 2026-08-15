@@ -71,20 +71,32 @@ function parseBlockAttrs(body = '') {
   return attrs;
 }
 
-function renderMediaBlock(kind, body) {
+function resolveMediaUrl(src, assetPrefix = '') {
+  let url = safeMediaSrc(src);
+  if (!url) return '';
+  if (assetPrefix && url.startsWith('assets/')) {
+    url = `${assetPrefix}/${url}`;
+  }
+  return url;
+}
+
+function renderMediaBlock(kind, body, options = {}) {
   const a = parseBlockAttrs(body);
+  const assetPrefix = options.assetPrefix || '';
   if (kind === 'figure') {
-    const src = safeMediaSrc(a.src);
+    const src = resolveMediaUrl(a.src, assetPrefix);
     if (!src) return '';
     const alt = escapeHTML(a.alt || a.caption || '');
-    const caption = a.caption ? `<figcaption>${escapeHTML(a.caption)}</figcaption>` : '';
+    const caption = a.caption
+      ? `<figcaption class="article-figure__caption">${escapeHTML(a.caption)}</figcaption>`
+      : '';
     return `<figure class="article-figure">
-      <img src="${escapeHTML(src)}" alt="${alt}" loading="lazy" decoding="async" width="${escapeHTML(a.width || '1200')}" height="${escapeHTML(a.height || '675')}" />
+      <img src="${escapeHTML(src)}" alt="${alt}" loading="lazy" decoding="async" width="${escapeHTML(a.width || '1200')}" height="${escapeHTML(a.height || '675')}" class="article-figure__img" />
       ${caption}
     </figure>`;
   }
   if (kind === 'video') {
-    const src = safeMediaSrc(a.src);
+    const src = resolveMediaUrl(a.src, assetPrefix);
     if (!src) return '';
     const title = escapeHTML(a.title || 'Embedded video');
     const isYoutube = /youtube\.com|youtu\.be|youtube-nocookie/.test(src);
@@ -97,7 +109,7 @@ function renderMediaBlock(kind, body) {
       </figure>`;
     }
     return `<figure class="article-video">
-      <video controls preload="metadata" playsinline poster="${escapeHTML(safeMediaSrc(a.poster) || '')}">
+      <video controls preload="metadata" playsinline poster="${escapeHTML(resolveMediaUrl(a.poster, assetPrefix) || '')}">
         <source src="${escapeHTML(src)}" type="${escapeHTML(a.type || 'video/mp4')}" />
         Your browser does not support the video tag.
       </video>
@@ -105,7 +117,7 @@ function renderMediaBlock(kind, body) {
     </figure>`;
   }
   if (kind === 'audio') {
-    const src = safeMediaSrc(a.src);
+    const src = resolveMediaUrl(a.src, assetPrefix);
     if (!src) return '';
     return `<figure class="article-audio">
       <div class="article-audio__meta">
@@ -175,8 +187,9 @@ function renderMediaBlock(kind, body) {
   return '';
 }
 
-export function parseBlogContent(content, { addHeadingIds = false } = {}) {
+export function parseBlogContent(content, options = {}) {
   if (!content) return { html: '', headings: [] };
+  const { addHeadingIds = false } = options;
 
   const codeBlocks = [];
   let placeholderCount = 0;
@@ -261,7 +274,7 @@ export function parseBlogContent(content, { addHeadingIds = false } = {}) {
       closeList();
       const found = mediaMap.get(block);
       if (found) {
-        const rendered = renderMediaBlock(found.kind, found.body);
+        const rendered = renderMediaBlock(found.kind, found.body, options);
         if (rendered) html.push(rendered);
       }
       continue;

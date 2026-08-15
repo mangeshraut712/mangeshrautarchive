@@ -88,4 +88,29 @@ desc: Routing parameters and failover policies
     expect(toc).toContain('class="article-toc"');
     expect(toc).toContain('#fast-context');
   });
+
+  it('parses figure blocks into semantic HTML figures with image and caption', () => {
+    const figureMd = `:::figure
+src: assets/images/blog/openrouter-routing.jpg
+alt: OpenRouter 2026 Routing
+caption: Figure 1.0 — Intelligent routing lanes
+:::`;
+
+    const { html } = parseBlogContent(figureMd, { assetPrefix: '..' });
+    expect(html).toContain('class="article-figure"');
+    expect(html).toContain('src="../assets/images/blog/openrouter-routing.jpg"');
+    expect(html).toContain('alt="OpenRouter 2026 Routing"');
+    expect(html).toContain(
+      '<figcaption class="article-figure__caption">Figure 1.0 — Intelligent routing lanes</figcaption>'
+    );
+  });
+
+  it('verifies all 14 blog posts contain rich media figures', () => {
+    blogPosts.forEach(post => {
+      expect(post.content).toContain(':::figure');
+      expect(post.content).toMatch(/src:\s*assets\/images\/blog\/[\w.-]+/);
+      expect(post.content).toContain('alt:');
+      expect(post.content).toContain('caption:');
+    });
+  });
 });

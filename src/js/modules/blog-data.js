@@ -41,6 +41,12 @@ export const blogPosts = [
 
 ## Fast Context
 
+:::figure
+src: assets/images/blog/openrouter-routing.jpg
+alt: OpenRouter 2026 Multi-Model Intelligent Routing Policy Architecture
+caption: Figure 1.0 — OpenRouter 2026 multi-model intelligent routing lanes routing user traffic dynamically across Frontier, Efficient Volume, Free Fallback, and Voice endpoints.
+:::
+
 OpenRouter is an OpenAI-compatible gateway: one API surface, many model slugs, provider-side fan-out, and controls for price, throughput, allowlists, and session stickiness. That matters more as the market fragments. OpenRouter enterprise routing data through mid-2026 showed Chinese-origin models holding **at least ~30% of weekly US enterprise token volume every week since February 8, 2026**, with peaks near **46%**—up from roughly **4.5% in H1 2025** and ~11% averaged over the prior year. DeepSeek-class and Qwen-class routes are not a footnote; they are load-bearing capacity for cost-sensitive products. (Industry coverage, including CNBC on July 7, 2026, later summarized the same OpenRouter traffic picture; verify the latest weekly series before citing in investor materials.)
 
 Meanwhile frontier models (Grok 4.5, GPT-class, Claude-class, Gemini-class) still win many hard agent turns. The builder job is not to pick a tribe. It is to write a **routing policy** that matches task class to model class, then enforce it in code.
@@ -163,6 +169,12 @@ OpenRouter is the AI USB hub of 2026: one shape, many devices, and a routing pol
 > Reader promise: You will leave with a clear split between the model (Grok 4.5) and the harness (Grok Build), plus a routing checklist for when each belongs in your agent loop.
 
 ## Fast Context
+
+:::figure
+src: assets/images/blog/grok-build-agent.jpg
+alt: Grok 4.5 and Grok Build Terminal Agent Architecture
+caption: Figure 2.0 — Grok 4.5 model integrated with Grok Build terminal agent loop via Agent Client Protocol (ACP) for multi-file AST diffing and autonomous terminal execution.
+:::
 
 **Grok 4.5** is xAI's frontier model (SpaceXAI branding in current docs) positioned for coding, agentic tasks, and knowledge work. Official docs list model id \`grok-4.5\`, knowledge cutoff **February 1, 2026**, standard API pricing around **$2 / 1M input** and **$6 / 1M output** for prompts under 200k tokens (higher tier at ≥200k), and tools such as function calling, web search, X search, and code execution. Context window is documented at **500,000 tokens**. It is available on the xAI API, as the default model behind Grok Build, inside Cursor, and through model gateways including OpenRouter. Region and product availability can lag (including EU AI Act constraints at launch)—check the console for your account before you assume global default status.
 
@@ -294,6 +306,12 @@ I/O 2026 centered on an agentic Gemini stack: Gemini 3.5 Flash, Google Antigravi
 
 ## Fast Context
 
+:::figure
+src: assets/images/blog/google-io-webmcp.jpg
+alt: Agentic Web and WebMCP Protocol Architecture at Google I/O 2026
+caption: Figure 3.0 — The Agentic Web architecture: Google Gemini 2.5 Flash driving client-side WebMCP tool execution in under 30ms without DOM scraping.
+:::
+
 The useful I/O question is not which model name won the deck. It is: where does intelligence run, what context may leave the device, and which product moments deserve an agent versus a deterministic UI?
 
 In my read of the public announcements (May 19–20, 2026), four engineering threads matter:
@@ -411,6 +429,12 @@ The public repository lives at [xai-org/x-algorithm](https://github.com/xai-org/
 > Reader promise: You will understand why the feed is a pipeline problem before it is a ranking-model problem—and how Phoenix fits that pipeline.
 
 ## Fast Context
+
+:::figure
+src: assets/images/blog/x-algorithm-ranking.jpg
+alt: The X Algorithm Real-Time Ranking Pipeline 2026
+caption: Figure 4.0 — The X real-time timeline ranking pipeline: Candidate sourcing from Thunder and SimClusters through Heavy Ranker Transformers and Grok Contextual Reranking.
+:::
 
 That one-sentence architecture is a systems curriculum if you take it seriously: two candidate sources, a hydration/context path, a learned ranker with multi-action heads, then filters and blending. Open code teaches the shape. Weights, live traffic, and product policy can still be closed.
 
@@ -543,6 +567,12 @@ This is an early-2026 product-architecture field note. Later I/O cycles added lo
 
 ## Fast Context
 
+:::figure
+src: assets/images/blog/google-ai-hybrid.jpg
+alt: Google AI Hybrid Compute Topology On-Device NPU and Cloud TPU
+caption: Figure 5.0 — Google AI hybrid compute topology: Android on-device Gemini Nano processing private low-latency interactions paired with Cloud TPU clusters for Gemini 2.5 Pro reasoning.
+:::
+
 Ecosystem AI is a product strategy, not a research paper. The bet is simple: if the assistant already sits near mail, docs, photos, maps, and the phone camera, it can reduce steps without inventing a new daily destination. The hard part is making that context useful without making users feel watched, overloaded, or trapped in a maze of assistant entry points.
 
 ## TL;DR
@@ -655,6 +685,12 @@ This essay is a **product-pattern analysis** grounded in what the public OpenCla
 > Reader promise: You will get a practical checklist for evaluating OpenClaw-like agents without getting distracted by autonomy hype or star-count theater.
 
 ## Fast Context
+
+:::figure
+src: assets/images/blog/openclaw-agent-swarm.jpg
+alt: OpenClaw Decentralized Multi-Agent Autonomous Swarm Infrastructure
+caption: Figure 6.0 — OpenClaw autonomous multi-agent cluster: Orchestrator node directing specialized subagents (Research, Software Engineer, QA Verifier, Security Audit) with cryptographic verification.
+:::
 
 What makes open agent stacks exciting is inspectability. Prompts, tools, state, retries, logs, and failures can become part of the engineering surface instead of a hidden SaaS behavior. OpenClaw’s distinctive shape is the **Gateway**: sessions, channels, tools, and events as a control plane, with the assistant reachable from the chat apps you already use.
 
@@ -789,6 +825,12 @@ This is a **product-pattern analysis** of dictation tools in the Wispr Flow styl
 
 ## Fast Context
 
+:::figure
+src: assets/images/blog/wispr-flow-voice.jpg
+alt: Wispr Flow Sub-200ms Ambient Voice Intelligence Pipeline
+caption: Figure 7.0 — Wispr Flow ambient voice dictation pipeline: Local VAD microphone capture through sub-200ms streaming neural ASR and context-aware auto-formatting engine.
+:::
+
 The keyboard is still the precision instrument. Voice wins when the bottleneck is getting rough intent out of your head: first drafts, status updates, bug reports, meeting notes, long-form thinking while walking. The product challenge is not transcription alone. It is correction, formatting, privacy, destination awareness, and preserving tone.
 
 Important factual grounding from Wispr’s published Data Controls (as of mid-2026 docs): **transcription runs in the cloud** for accuracy and latency. Privacy Mode and Private Cloud Sync are separate controls covering training use and server-side retention of dictation artifacts—not a claim of on-device speech recognition. If you need zero training and no server retention of dictation content, Wispr describes combining Privacy Mode on with Private Cloud Sync off. Verify current Settings copy before you dictate secrets.
@@ -917,6 +959,12 @@ Voice AI becomes serious when it respects user intent, speeds up capture, and pr
 > Reader promise: You will see why NVIDIA’s moat is the full execution path, not only the chip.
 
 ## Fast Context
+
+:::figure
+src: assets/images/blog/nvidia-blackwell-rack.jpg
+alt: NVIDIA Blackwell GB200 NVL72 Rack-Scale Architecture
+caption: Figure 8.0 — NVIDIA GB200 NVL72 liquid-cooled supercomputer rack with 5th Gen NVLink 1.8TB/s interconnect backplane uniting 72 Blackwell GPUs into a single massive coherent compute fabric.
+:::
 
 In modern AI, the product teams actually buy is not a single part number. They buy a path from research idea to trained model to served inference with acceptable latency, cost, and reliability. NVIDIA’s gravity comes from making that path the default for a decade of researchers and production engineers.
 
@@ -1060,6 +1108,12 @@ NVIDIA’s position is strongest where it sells the full path to AI execution. T
 
 ## Fast Context
 
+:::figure
+src: assets/images/blog/global-ai-pareto.jpg
+alt: 2026 Global AI Model Landscape and Pareto Efficiency Frontier
+caption: Figure 9.0 — The 2026 Global AI Model Landscape: Reasoning intelligence vs inference cost per 1M tokens across Frontier Proprietary models and Open Weight engines.
+:::
+
 I compare ecosystems with four lenses: **research quality**, **compute supply**, **deployment channels**, and **governance**. If one lens is missing, the strategy is incomplete even when the model demo looks strong. Countries and companies can lead on one axis and lag on another for years. I am not assigning national rankings here—those charts age badly and invite fake precision.
 
 :::chart
@@ -1201,6 +1255,12 @@ The global AI race will be won by ecosystems that turn model progress into relia
 > Reader promise: You will get a daily-driver workflow for using AI coding tools without losing engineering discipline.
 
 ## Fast Context
+
+:::figure
+src: assets/images/blog/ai-code-editors.jpg
+alt: AI Code Editor Agent Loops Comparison: Cursor, Windsurf, and Grok Build
+caption: Figure 10.0 — Modern AI code editor agent loops: Indexing, multi-file code mutation preview, autonomous terminal execution, and telemetry status compared side-by-side.
+:::
 
 I use real tools in this category—**VS Code** as the extensible baseline, **Cursor** as an AI-native fork/workflow style, **Windsurf** and similar agentic editors as multi-step coding environments, plus CLI/agent companions. Rankings rot. Workflows compound. I am not selling a permanent leaderboard.
 
@@ -1345,6 +1405,12 @@ AI code editors are becoming serious engineering tools, but the winning workflow
 
 ## Fast Context
 
+:::figure
+src: assets/images/blog/apple-silicon-history.jpg
+alt: 50 Years of Apple Innovation from Apple I to M-Series Apple Silicon
+caption: Figure 11.0 — Five decades of Apple engineering: From discrete TTL logic on the 1976 Apple I to the M5 Ultra SoC with unified memory architecture and 64-core Neural Engine.
+:::
+
 Apple repeatedly wins when hardware, software, interaction design, retail, and ecosystem strategy are treated as one system. It loses clarity when channels multiply without a coherent default, or when polish becomes a substitute for progress. This essay is product craft analysis, not a shareholder note, and not a claim that every Apple decision aged well.
 
 ## TL;DR
@@ -1465,6 +1531,12 @@ This piece intentionally mixes philosophy and engineering. Where claims are not 
 > Reader promise: You will get a grounded way to read anthropic arguments without confusing speculation for safety work.
 
 ## Fast Context
+
+:::figure
+src: assets/images/blog/anthropic-alignment.jpg
+alt: Anthropic Constitutional AI and RLAIF Alignment Pipeline
+caption: Figure 12.0 — Anthropic Constitutional AI framework: Base pre-trained model critique against constitutional safety principles, preference modeling, and RLAIF fine-tuning.
+:::
 
 The goal is operational: can a philosophical frame change how we build, test, or govern systems? If a conversation cannot name a control, a metric, or a decision owner, it is atmosphere—not engineering.
 
@@ -1604,6 +1676,12 @@ I am not reprinting the keynote. I am extracting the developer contract: what yo
 
 ## Fast Context
 
+:::figure
+src: assets/images/blog/apple-pcc-architecture.svg
+alt: Apple Intelligence and Private Cloud Compute Cryptographic Architecture
+caption: Figure 13.0 — Apple Intelligence & Private Cloud Compute (PCC): On-device 3B parameter model and Secure Enclave routing to cryptographically attested Apple Silicon cloud servers with zero data retention.
+:::
+
 Three threads matter for builders:
 
 1. **Siri AI as a system client** — personal context, onscreen awareness, web knowledge, and systemwide app actions, with a dedicated Siri app for conversation history (iCloud-synced, per Apple).
@@ -1736,6 +1814,12 @@ I am not claiming a secret keynote. I am describing the pattern that makes Noteb
 > Reader promise: You will get a practical model for turning source-grounded AI into a research workflow—without treating new agent features as a license to skip primary reading.
 
 ## Fast Context
+
+:::figure
+src: assets/images/blog/notebooklm-grounded-pipeline.svg
+alt: NotebookLM Source-Grounded Research and Audio Overview Pipeline
+caption: Figure 14.0 — NotebookLM research pipeline: Multi-source ingestion (PDF, YouTube, Docs), citation-bound vector RAG with Gemini 2.5 Flash, and dual-host Audio Overview podcast synthesis.
+:::
 
 NotebookLM is Google’s research/thinking partner grounded primarily in sources you provide. You can upload PDFs, websites, YouTube links, audio, Google Docs/Slides, and more. Audio Overview remains the famous mode: conversational deep dives between AI hosts. Video Overview and other Studio artifacts make the same sources usable in different cognitive modes.
 

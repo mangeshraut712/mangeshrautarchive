@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" width="1200" height="675">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0a0a0c"/>
+      <stop offset="50%" stop-color="#12131a"/>
+      <stop offset="100%" stop-color="#08080a"/>
+    </linearGradient>
+    <linearGradient id="glass" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0.02"/>
+    </linearGradient>
+    <linearGradient id="cyan-glow" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#2997ff"/>
+      <stop offset="100%" stop-color="#bf5af2"/>
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+  <rect width="1200" height="675" fill="url(#bg)"/>
+  
+  <!-- Title -->
+  <text x="600" y="55" font-family="-apple-system, SF Pro Display, sans-serif" font-size="28" font-weight="700" fill="#f5f5f7" text-anchor="middle" letter-spacing="-0.5">APPLE INTELLIGENCE &amp; PRIVATE CLOUD COMPUTE (PCC)</text>
+  <text x="600" y="85" font-family="-apple-system, SF Pro Text, sans-serif" font-size="15" fill="#86868b" text-anchor="middle">Verifiable Cryptographic Attestation &amp; Silicon-Enforced Privacy (2026)</text>
+
+  <!-- Left: On-Device Tier -->
+  <rect x="60" y="130" width="310" height="470" rx="24" fill="url(#glass)" stroke="#ffffff" stroke-opacity="0.15" stroke-width="1.5"/>
+  <text x="215" y="175" font-family="-apple-system, SF Pro Display, sans-serif" font-size="20" font-weight="700" fill="#2997ff" text-anchor="middle">ON-DEVICE INTELLIGENCE</text>
+  <text x="215" y="200" font-family="-apple-system, SF Pro Text, sans-serif" font-size="13" fill="#a1a1a6" text-anchor="middle">iPhone, iPad &amp; Mac (Apple Silicon)</text>
+
+  <rect x="85" y="230" width="260" height="75" rx="14" fill="#000000" fill-opacity="0.4" stroke="#2997ff" stroke-opacity="0.4"/>
+  <text x="105" y="260" font-family="-apple-system, sans-serif" font-size="15" font-weight="600" fill="#f5f5f7">3B Parameter Local Model</text>
+  <text x="105" y="285" font-family="-apple-system, sans-serif" font-size="12" fill="#86868b">Sub-20ms latency · zero cloud hops</text>
+
+  <rect x="85" y="325" width="260" height="75" rx="14" fill="#000000" fill-opacity="0.4" stroke="#ffffff" stroke-opacity="0.1"/>
+  <text x="105" y="355" font-family="-apple-system, sans-serif" font-size="15" font-weight="600" fill="#f5f5f7">Semantic Index</text>
+  <text x="105" y="380" font-family="-apple-system, sans-serif" font-size="12" fill="#86868b">On-device vector embeddings of personal data</text>
+
+  <rect x="85" y="420" width="260" height="75" rx="14" fill="#000000" fill-opacity="0.4" stroke="#30d158" stroke-opacity="0.4"/>
+  <text x="105" y="450" font-family="-apple-system, sans-serif" font-size="15" font-weight="600" fill="#30d158">Secure Enclave Gate</text>
+  <text x="105" y="475" font-family="-apple-system, sans-serif" font-size="12" fill="#86868b">Hardware-signed encryption keypairs</text>
+
+  <text x="215" y="550" font-family="-apple-system, sans-serif" font-size="13" font-weight="600" fill="#86868b" text-anchor="middle">Executes 80%+ of Daily Prompts Locally</text>
+
+  <!-- Middle: Cryptographic Transit Conduit -->
+  <path d="M 370 365 L 530 365" stroke="url(#cyan-glow)" stroke-width="4" fill="none" filter="url(#glow)"/>
+  <circle cx="450" cy="365" r="28" fill="#12131a" stroke="#bf5af2" stroke-width="2"/>
+  <text x="450" y="360" font-family="-apple-system, sans-serif" font-size="11" font-weight="700" fill="#bf5af2" text-anchor="middle">TLS 1.3</text>
+  <text x="450" y="376" font-family="-apple-system, sans-serif" font-size="9" fill="#86868b" text-anchor="middle">PCC ATTEST</text>
+
+  <!-- Right: Private Cloud Compute Tier -->
+  <rect x="530" y="130" width="610" height="470" rx="24" fill="url(#glass)" stroke="#ffffff" stroke-opacity="0.15" stroke-width="1.5"/>
+  <text x="835" y="175" font-family="-apple-system, SF Pro Display, sans-serif" font-size="20" font-weight="700" fill="#bf5af2" text-anchor="middle">PRIVATE CLOUD COMPUTE (PCC) CLUSTER</text>
+  <text x="835" y="200" font-family="-apple-system, SF Pro Text, sans-serif" font-size="13" fill="#a1a1a6" text-anchor="middle">Custom Apple Silicon Servers · Secure Enclave Protected</text>
+
+  <!-- PCC Feature Grid -->
+  <rect x="560" y="230" width="260" height="105" rx="14" fill="#000000" fill-opacity="0.4" stroke="#30d158" stroke-opacity="0.4"/>
+  <text x="580" y="260" font-family="-apple-system, sans-serif" font-size="15" font-weight="600" fill="#30d158">1. No Data Retention</text>
+  <text x="580" y="285" font-family="-apple-system, sans-serif" font-size="12" fill="#d1d1d6">Prompt data is wiped from volatile</text>
+  <text x="580" y="305" font-family="-apple-system, sans-serif" font-size="12" fill="#86868b">RAM immediately after turn execution.</text>
+
+  <rect x="845" y="230" width="260" height="105" rx="14" fill="#000000" fill-opacity="0.4" stroke="#2997ff" stroke-opacity="0.4"/>
+  <text x="865" y="260" font-family="-apple-system, sans-serif" font-size="15" font-weight="600" fill="#2997ff">2. Cryptographic Attestation</text>
+  <text x="865" y="285" font-family="-apple-system, sans-serif" font-size="12" fill="#d1d1d6">Device verifies server image hash</text>
+  <text x="865" y="305" font-family="-apple-system, sans-serif" font-size="12" fill="#86868b">before transmitting any encrypted tokens.</text>
+
+  <rect x="560" y="355" width="260" height="105" rx="14" fill="#000000" fill-opacity="0.4" stroke="#ff9f0a" stroke-opacity="0.4"/>
+  <text x="580" y="385" font-family="-apple-system, sans-serif" font-size="15" font-weight="600" fill="#ff9f0a">3. No Privileged Access</text>
+  <text x="580" y="410" font-family="-apple-system, sans-serif" font-size="12" fill="#d1d1d6">No remote shell, no root admin,</text>
+  <text x="580" y="430" font-family="-apple-system, sans-serif" font-size="12" fill="#86868b">no bypass mechanism for Apple staff.</text>
+
+  <rect x="845" y="355" width="260" height="105" rx="14" fill="#000000" fill-opacity="0.4" stroke="#bf5af2" stroke-opacity="0.4"/>
+  <text x="865" y="385" font-family="-apple-system, sans-serif" font-size="15" font-weight="600" fill="#bf5af2">4. Public Security Research</text>
+  <text x="865" y="410" font-family="-apple-system, sans-serif" font-size="12" fill="#d1d1d6">Production builds published in Virtual</text>
+  <text x="865" y="430" font-family="-apple-system, sans-serif" font-size="12" fill="#86868b">Research Environment for audit.</text>
+
+  <!-- PCC Bottom Banner -->
+  <rect x="560" y="480" width="545" height="85" rx="14" fill="#2997ff" fill-opacity="0.08" stroke="#2997ff" stroke-opacity="0.3"/>
+  <text x="835" y="515" font-family="-apple-system, sans-serif" font-size="14" font-weight="700" fill="#2997ff" text-anchor="middle">Large Foundation Model Serverless Inference (Claude / GPT Tier Capacity)</text>
+  <text x="835" y="540" font-family="-apple-system, sans-serif" font-size="12" fill="#86868b" text-anchor="middle">Scaled dynamically on Apple Silicon data center nodes with Swift runtime</text>
+</svg>
