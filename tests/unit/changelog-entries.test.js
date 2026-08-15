@@ -26,6 +26,7 @@ describe('changelog entries', () => {
   it('spans multiple months from real history', () => {
     const months = new Set(changelogEntries.map(e => e.date.slice(0, 7)));
     expect(months.size).toBeGreaterThanOrEqual(6);
+    expect(months.has('2026-08')).toBe(true);
     expect(months.has('2026-07')).toBe(true);
     expect(months.has('2025-12')).toBe(true);
   });

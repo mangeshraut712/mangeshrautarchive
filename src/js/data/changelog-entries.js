@@ -40,6 +40,106 @@ export const CHANGELOG_TAGS = [
 
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
+  // ── August 2026 ────────────────────────────────────────────
+  {
+    id: 'e85515d2',
+    date: '2026-08-15',
+    type: 'improvement',
+    title: 'Marquee ticker speed & hover behavior synchronization',
+    summary:
+      'Synchronized Dream Companies and Dream Cars marquee tickers with Skills continuous linear glide (35s duration), hover pause, GPU translation, and updated repository documentation.',
+    tags: ['design', 'performance'],
+    sha: 'e85515d2',
+    link: 'index.html#contact',
+  },
+  {
+    id: 'd9fc8da4',
+    date: '2026-08-15',
+    type: 'improvement',
+    title: 'WCAG AA 4.5:1 color contrast lock sitewide',
+    summary:
+      'Enhanced small-text and category tag color contrast across Uses, Monitor, and Systems pages, achieving 16/16 passing automated axe-core baseline accessibility tests.',
+    tags: ['design', 'deploy'],
+    sha: 'd9fc8da4',
+    link: 'uses.html',
+  },
+  {
+    id: '64b2e395',
+    date: '2026-08-15',
+    type: 'release',
+    title: 'Subpage redesign with Apple-standard craftsmanship',
+    summary:
+      'Harmonized Uses, System Monitor, and Travel Atlas pages to match Changelog luxury typography, centered responsive containers (54–58rem), hairline borders, and solid surface cards.',
+    tags: ['design', 'monitor', 'systems'],
+    sha: '64b2e395',
+    link: 'systems.html',
+  },
+  {
+    id: '338ff900',
+    date: '2026-08-15',
+    type: 'release',
+    title: 'WebMCP tool expansion to 13 agentic actions',
+    summary:
+      'Added live Spotify now-playing inspection (get_now_playing), travel statistics queries (get_travel_stats), and platform telemetry probes (get_system_status) to AssistMe chatbot.',
+    tags: ['assistme', 'api'],
+    sha: '338ff900',
+    link: 'index.html#assistme',
+  },
+  {
+    id: 'ecc6a4b8',
+    date: '2026-08-13',
+    type: 'improvement',
+    title: 'Apple Music luxury hero music card & live Spotify integration',
+    summary:
+      'Elevated hero music card into a stable pill with 56px vinyl artwork, animated equalizer bars, live now-playing badge, and direct Spotify search navigation.',
+    tags: ['design', 'assistme'],
+    sha: 'ecc6a4b8',
+    link: 'index.html',
+  },
+  {
+    id: 'a35de6b0',
+    date: '2026-08-12',
+    type: 'release',
+    title: 'Context7 RAG & Firecrawl web ingestion pipeline',
+    summary:
+      'Engineered FastAPI serverless backend integrations for Context7 vector RAG semantic search, Firecrawl markdown ingestion, and full Postman automated test suites.',
+    tags: ['api', 'assistme'],
+    sha: 'a35de6b0',
+    link: 'systems.html',
+  },
+  {
+    id: '1bbaff87',
+    date: '2026-08-09',
+    type: 'improvement',
+    title: 'Specular metallic sheen & HIG 44px touch compliance',
+    summary:
+      'Enforced 100% Apple HIG touch compliance across all button controls with vibrant Apple Blue gradient sweep animations and solid surface card elevations.',
+    tags: ['design', 'performance'],
+    sha: '1bbaff87',
+    link: 'index.html',
+  },
+  {
+    id: 'cb3fb18d',
+    date: '2026-08-06',
+    type: 'release',
+    title: 'Interactive multi-edition resume download dropdown',
+    summary:
+      'Added luxury Apple-style animated dropdown allowing instant selection between US format, Indian format, and academic research PDF resume downloads with telemetry tracking.',
+    tags: ['design', 'api'],
+    sha: 'cb3fb18d',
+    link: 'index.html',
+  },
+  {
+    id: '82904f39',
+    date: '2026-08-04',
+    type: 'release',
+    title: 'Offline Dino Debug Runner game & system recovery',
+    summary:
+      'Shipped custom canvas-based Dino Debug Runner arcade game with high scores, sound toggles, and network reconnect detection on offline / system error screens.',
+    tags: ['design', 'performance'],
+    sha: '82904f39',
+    link: 'offline.html',
+  },
   // ── July 2026 ──────────────────────────────────────────────
   {
     id: '516c5fe3',

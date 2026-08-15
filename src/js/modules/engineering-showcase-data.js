@@ -179,7 +179,7 @@ export const currentWork = [
   {
     phase: 'Shipping',
     title: 'Agentic Portfolio',
-    progress: '95%',
+    progress: '100%',
     href: 'case-studies/portfolio.html',
   },
   { phase: 'Research', title: 'HindAI RAG evaluation', progress: 'Active', href: '#projects' },
