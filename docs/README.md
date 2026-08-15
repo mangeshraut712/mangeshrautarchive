@@ -1,18 +1,19 @@
 # Documentation
 
-| Doc                                                                        | Contents                                                    |
-| -------------------------------------------------------------------------- | ----------------------------------------------------------- |
-| [STRUCTURE.md](./STRUCTURE.md)                                             | Canonical folder map — **start here when organizing code**  |
-| [API.md](./API.md)                                                         | FastAPI routes, chat flow, integrations, deploy notes       |
-| [foglamp-scan.md](./foglamp-scan.md)                                       | Public AI architecture map (Foglamp) + keep-alive           |
-| [seo/gsc-keyword-notepad-2026-07.md](./seo/gsc-keyword-notepad-2026-07.md) | Search Console query notepad + underserved keyword plan     |
-| [plans/](./plans/)                                                         | Improve-skill / audit execution plans (historical + active) |
-| [../README.md](../README.md)                                               | Public project README                                       |
-| [../AGENTS.md](../AGENTS.md)                                               | AI agent briefing                                           |
-| [../SECURITY.md](../SECURITY.md)                                           | Security policy                                             |
-| [../.env.example](../.env.example)                                         | Environment variable template                               |
-| [../scripts/README.md](../scripts/README.md)                               | Tooling map (build / deploy / qa)                           |
-| [../tests/README.md](../tests/README.md)                                   | Unit / API / E2E conventions                                |
+| Doc                                                                        | Contents                                                        |
+| -------------------------------------------------------------------------- | --------------------------------------------------------------- |
+| [DESIGN.md](./DESIGN.md)                                                   | Apple Human Interface Portfolio Design System (source of truth) |
+| [STRUCTURE.md](./STRUCTURE.md)                                             | Canonical folder map — **start here when organizing code**      |
+| [API.md](./API.md)                                                         | FastAPI routes, chat flow, integrations, deploy notes           |
+| [foglamp-scan.md](./foglamp-scan.md)                                       | Public AI architecture map (Foglamp) + keep-alive               |
+| [seo/gsc-keyword-notepad-2026-07.md](./seo/gsc-keyword-notepad-2026-07.md) | Search Console query notepad + underserved keyword plan         |
+| [plans/](./plans/)                                                         | Improve-skill / audit execution plans (historical + active)     |
+| [../README.md](../README.md)                                               | Public project README                                           |
+| [../AGENTS.md](../AGENTS.md)                                               | AI agent briefing                                               |
+| [../SECURITY.md](../SECURITY.md)                                           | Security policy                                                 |
+| [../.env.example](../.env.example)                                         | Environment variable template                                   |
+| [../scripts/README.md](../scripts/README.md)                               | Tooling map (build / deploy / qa)                               |
+| [../tests/README.md](../tests/README.md)                                   | Unit / API / E2E conventions                                    |
 
 ### Keep out of `docs/`
 
