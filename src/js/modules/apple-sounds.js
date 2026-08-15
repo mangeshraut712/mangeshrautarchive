@@ -42,6 +42,21 @@ class AppleSoundSystem {
     document.addEventListener('click', unlock, { capture: true, once: true, passive: true });
     document.addEventListener('keydown', unlock, { capture: true, once: true, passive: true });
     document.addEventListener('touchstart', unlock, { capture: true, once: true, passive: true });
+
+    // Delegated UI click sounds on interactive Apple elements
+    document.addEventListener(
+      'click',
+      e => {
+        if (!this._enabled || !this._userInteracted) return;
+        const target = e.target?.closest?.(
+          'button, .btn-primary, .hero-cta-primary, .apple-close-btn, .shortcuts-modal__close, .blog-modal-close, #search-close, #close-menu-btn, .photo-gallery-close, .website-share-close, .blog-filter-chip, .proj-filter-btn, .uses-control-tile, .a11y-glass-preset, #chatbot-toggle, #go-to-top'
+        );
+        if (target && !target.closest('#theme-toggle')) {
+          this.playClick();
+        }
+      },
+      { passive: true }
+    );
   }
 
   _getCtx() {

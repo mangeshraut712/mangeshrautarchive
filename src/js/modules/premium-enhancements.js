@@ -353,26 +353,29 @@
       const centerX = rect.width / 2;
       const centerY = rect.height / 2;
 
-      const rotateX = -((y - centerY) / 20);
-      const rotateY = (x - centerX) / 20;
+      const rotateX = -((y - centerY) / 35);
+      const rotateY = (x - centerX) / 35;
 
-      card.style.cssText = `transform: perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02); transition: none;`;
+      card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.015, 1.015, 1.015)`;
+      card.style.transition = 'none';
     });
 
     card.addEventListener('mouseleave', () => {
-      card.style.cssText =
-        'transform: perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1); transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);';
+      card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+      card.style.transition = 'transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)';
     });
 
     card.addEventListener('mouseenter', () => {
-      card.style.transition = 'transform 0.1s ease-out';
+      card.style.transition = 'transform 0.15s cubic-bezier(0.16, 1, 0.3, 1)';
     });
   }
 
   function initCardTilt() {
-    if (prefersReducedMotion) return;
+    if (prefersReducedMotion || lowPowerDevice) return;
 
-    const cards = document.querySelectorAll('.project-card, .blog-card, .apple-3d-project');
+    const cards = document.querySelectorAll(
+      '.bento-card, .apple-card, .project-card, .blog-card, .apple-3d-project, .uses-hero-showcase, .case-study-hero, .systems-overview-card, .stat-card'
+    );
     cards.forEach(applyTiltToElement);
   }
 
