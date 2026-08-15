@@ -58,6 +58,7 @@ mangeshrautarchive/
 │   └── vulture.toml          # Python dead-code (lint:dead-code)
 │
 ├── docs/                     # Human docs + archived plans
+│   ├── DESIGN.md             # Apple Human Interface Portfolio Design System (source of truth)
 │   ├── STRUCTURE.md          # This file
 │   ├── README.md             # Doc index
 │   ├── plans/                # Improve-skill execution plans
