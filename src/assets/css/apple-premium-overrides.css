@@ -3878,7 +3878,11 @@ html.dark #chatbot-toggle {
 .modal-close,
 .publication-modal-close,
 .case-study-close,
-.lightbox-close {
+.lightbox-close,
+.shortcuts-modal__close,
+button.shortcuts-modal__close,
+.blog-modal-close,
+button.blog-modal-close {
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -3944,10 +3948,16 @@ html.dark #chatbot-toggle {
 .modal-close i,
 .publication-modal-close i,
 .case-study-close i,
-.lightbox-close i {
+.lightbox-close i,
+.shortcuts-modal__close i,
+.shortcuts-modal__close svg,
+.shortcuts-modal__close path,
+.blog-modal-close i,
+.blog-modal-close svg,
+.blog-modal-close path {
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
-  fill: #ffffff !important;
+  fill: none !important;
   stroke: #ffffff !important;
   font-size: 0.82rem !important;
 }
@@ -3962,7 +3972,9 @@ html.dark #chatbot-toggle {
 .modal-close:hover,
 .publication-modal-close:hover,
 .case-study-close:hover,
-.lightbox-close:hover {
+.lightbox-close:hover,
+.shortcuts-modal__close:hover,
+.blog-modal-close:hover {
   background: #ff453a !important;
   background-color: #ff453a !important;
   color: #ffffff !important;
@@ -3981,7 +3993,9 @@ html.dark #chatbot-toggle {
 .modal-close:active,
 .publication-modal-close:active,
 .case-study-close:active,
-.lightbox-close:active {
+.lightbox-close:active,
+.shortcuts-modal__close:active,
+.blog-modal-close:active {
   transform: scale(0.92) !important;
 }
 
@@ -3995,7 +4009,9 @@ html.dark .project-xr-close-btn,
 html.dark .modal-close,
 html.dark .publication-modal-close,
 html.dark .case-study-close,
-html.dark .lightbox-close {
+html.dark .lightbox-close,
+html.dark .shortcuts-modal__close,
+html.dark .blog-modal-close {
   background: #ff453a !important;
   background-color: #ff453a !important;
   color: #ffffff !important;

@@ -1090,43 +1090,73 @@ html.dark .shortcuts-modal__subtitle {
   color: #a1a1a6;
 }
 
+button.shortcuts-modal__close,
 .shortcuts-modal__close {
-  appearance: none;
-  flex: 0 0 auto;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 44px;
-  height: 44px;
-  min-width: 44px;
-  min-height: 44px;
-  margin: -0.35rem -0.35rem 0 0;
-  padding: 0;
-  border: none;
-  border-radius: 50%;
-  background: #ffffff;
-  color: #6e6e73;
-  cursor: pointer;
+  appearance: none !important;
+  flex: 0 0 auto !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 32px !important;
+  height: 32px !important;
+  min-width: 32px !important;
+  min-height: 32px !important;
+  margin: -0.2rem -0.2rem 0 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  border-radius: 50% !important;
+  background: #ff3b30 !important;
+  background-color: #ff3b30 !important;
+  background-image: none !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  cursor: pointer !important;
+  box-shadow: 0 2px 8px rgba(255, 59, 48, 0.4) !important;
+  transform: none !important;
+  transition:
+    transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+    background-color 0.2s ease,
+    box-shadow 0.2s ease !important;
 }
 
+html.dark button.shortcuts-modal__close,
 html.dark .shortcuts-modal__close {
-  background: #000000;
-  color: #a1a1a6;
+  background: #ff3b30 !important;
+  background-color: #ff3b30 !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  box-shadow: 0 2px 8px rgba(255, 59, 48, 0.4) !important;
 }
 
+button.shortcuts-modal__close:hover,
 .shortcuts-modal__close:hover {
-  color: #1d1d1f;
-  background: #e8e8ed;
+  background: #ff453a !important;
+  background-color: #ff453a !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  transform: scale(1.06) !important;
+  box-shadow: 0 4px 12px rgba(255, 59, 48, 0.5) !important;
 }
 
+html.dark button.shortcuts-modal__close:hover,
 html.dark .shortcuts-modal__close:hover {
-  color: #f5f5f7;
-  background: #000000;
+  background: #ff453a !important;
+  background-color: #ff453a !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  transform: scale(1.06) !important;
+  box-shadow: 0 4px 12px rgba(255, 59, 48, 0.5) !important;
 }
 
+button.shortcuts-modal__close:active,
+.shortcuts-modal__close:active {
+  transform: scale(0.94) !important;
+}
+
+button.shortcuts-modal__close:focus-visible,
 .shortcuts-modal__close:focus-visible {
-  outline: 3px solid var(--a11y-focus-ring);
-  outline-offset: 2px;
+  outline: 2px solid #0071e3 !important;
+  outline-offset: 2px !important;
 }
 
 .shortcuts-modal__body {

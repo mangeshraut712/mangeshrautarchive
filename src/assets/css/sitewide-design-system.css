@@ -22,9 +22,9 @@ button:not(#resume-dropdown-toggle):not(.gh-contrib__view-btn):not(.gh-contrib__
     .chatbot-jump-latest
   ):not(.chatbot-clear-btn):not(.dictation-dock-btn):not(.publication-modal-close):not(
     .blog-modal-close
-  ):not(.chatbot-send-btn):not(.chatbot-settings-btn):not(.chatbot-voice-btn):not(
-    .voice-mode-orb
-  ):not(.voice-mode-btn):not(.chatbot-writing-btn):not(.chatbot-plus-btn):not(
+  ):not(.shortcuts-modal__close):not(.chatbot-send-btn):not(.chatbot-settings-btn):not(
+    .chatbot-voice-btn
+  ):not(.voice-mode-orb):not(.voice-mode-btn):not(.chatbot-writing-btn):not(.chatbot-plus-btn):not(
     .composer-plus-option
   ):not(.chat-attachment-remove):not(.chatbot-retry-btn):not(.welcome-action-chip):not(
     .writing-tool-option
@@ -99,9 +99,9 @@ button:not(#resume-dropdown-toggle):not(.gh-contrib__view-btn):not(.gh-contrib__
     .chatbot-jump-latest
   ):not(.chatbot-clear-btn):not(.dictation-dock-btn):not(.publication-modal-close):not(
     .blog-modal-close
-  ):not(.chatbot-send-btn):not(.chatbot-settings-btn):not(.chatbot-voice-btn):not(
-    .voice-mode-orb
-  ):not(.voice-mode-btn):not(.chatbot-writing-btn):not(.chatbot-plus-btn):not(
+  ):not(.shortcuts-modal__close):not(.chatbot-send-btn):not(.chatbot-settings-btn):not(
+    .chatbot-voice-btn
+  ):not(.voice-mode-orb):not(.voice-mode-btn):not(.chatbot-writing-btn):not(.chatbot-plus-btn):not(
     .composer-plus-option
   ):not(.chat-attachment-remove):not(.chatbot-retry-btn):not(.welcome-action-chip):not(
     .writing-tool-option
@@ -772,9 +772,9 @@ button:not(#resume-dropdown-toggle):not(.gh-contrib__view-btn):not(.gh-contrib__
     .chatbot-jump-latest
   ):not(.chatbot-clear-btn):not(.dictation-dock-btn):not(.publication-modal-close):not(
     .blog-modal-close
-  ):not(.chatbot-send-btn):not(.chatbot-settings-btn):not(.chatbot-voice-btn):not(
-    .voice-mode-orb
-  ):not(.voice-mode-btn):not(.chatbot-writing-btn):not(.chatbot-plus-btn):not(
+  ):not(.shortcuts-modal__close):not(.chatbot-send-btn):not(.chatbot-settings-btn):not(
+    .chatbot-voice-btn
+  ):not(.voice-mode-orb):not(.voice-mode-btn):not(.chatbot-writing-btn):not(.chatbot-plus-btn):not(
     .composer-plus-option
   ):not(.chat-attachment-remove):not(.chatbot-retry-btn):not(.welcome-action-chip):not(
     .writing-tool-option

@@ -80,4 +80,22 @@ describe('design foundation ownership', () => {
     const accessibility = readSrc('assets/css/accessibility.css');
     expect(accessibility).toMatch(/\.a11y-glass-popover__badge\[data-mode='tinted'\]/);
   });
+
+  it('unifies modal red circular close buttons and prevents ghost pseudo-elements', () => {
+    const accessibility = readSrc('assets/css/accessibility.css');
+    expect(accessibility).toMatch(
+      /button\.shortcuts-modal__close,\s*\.shortcuts-modal__close\s*\{[^}]*background:\s*#ff3b30/
+    );
+
+    const blogCss = readSrc('assets/css/blog.css');
+    expect(blogCss).toMatch(
+      /button\.blog-modal-close,\s*\.blog-modal-close\s*\{[^}]*background:\s*#ff3b30/
+    );
+    expect(blogCss).toMatch(/button\.blog-modal-close::before/);
+    expect(blogCss).toMatch(/\.article-code-block code\s*\{[^}]*color:\s*#f5f5f7/);
+
+    const appleOverrides = readSrc('assets/css/apple-premium-overrides.css');
+    expect(appleOverrides).toMatch(/\.shortcuts-modal__close/);
+    expect(appleOverrides).toMatch(/\.blog-modal-close/);
+  });
 });

@@ -1974,26 +1974,40 @@ html.dark .travel-timeline__country-header {
   box-shadow: var(--shadow-2xl);
 }
 
+button.photo-gallery-close,
 .photo-gallery-close {
-  position: absolute;
-  top: var(--space-4);
-  right: var(--space-4);
-  z-index: 10;
-  width: 44px;
-  height: 44px;
-  border: none;
-  border-radius: 50%;
-  background: rgba(0, 0, 0, 0.6);
-  color: white;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background var(--duration-fast) var(--ease-apple);
+  position: absolute !important;
+  top: 1.25rem !important;
+  right: 1.25rem !important;
+  z-index: 10 !important;
+  width: 32px !important;
+  height: 32px !important;
+  min-width: 32px !important;
+  min-height: 32px !important;
+  border: none !important;
+  border-radius: 50% !important;
+  background: #ff3b30 !important;
+  background-color: #ff3b30 !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  box-shadow: 0 2px 8px rgba(255, 59, 48, 0.4) !important;
+  cursor: pointer !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0 !important;
+  transition:
+    transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+    background-color 0.2s ease,
+    box-shadow 0.2s ease !important;
 }
 
+button.photo-gallery-close:hover,
 .photo-gallery-close:hover {
-  background: rgba(0, 0, 0, 0.8);
+  background: #ff453a !important;
+  background-color: #ff453a !important;
+  transform: scale(1.06) !important;
+  box-shadow: 0 4px 12px rgba(255, 59, 48, 0.5) !important;
 }
 
 .photo-gallery-content {

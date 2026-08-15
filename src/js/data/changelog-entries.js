@@ -42,6 +42,17 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'a932d84c',
+    date: '2026-08-15',
+    type: 'improvement',
+    title: 'Unified Apple red modal close buttons & blog code contrast polish',
+    summary:
+      'Standardized Keyboard Shortcuts and Blog Preview modal close controls to signature Apple red circles with clean vector glyphs, eliminated duplicate pseudo-element artifacts, and elevated light mode code block contrast.',
+    tags: ['design', 'performance'],
+    sha: 'a932d84c',
+    link: 'index.html#blog',
+  },
+  {
     id: 'f872a0b1',
     date: '2026-08-15',
     type: 'improvement',
