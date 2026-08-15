@@ -42,6 +42,28 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: '43c29b47',
+    date: '2026-08-15',
+    type: 'release',
+    title: 'August 2026 Technical Field Notes: Meta Muse Code & Grok 4.6',
+    summary:
+      'Published two August 2026 engineering field notes covering Meta Muse Code (multi-token prediction, Git worktrees) and Grok 4.6 & Grok Bot (500k context, Copilot integration, always-on loops).',
+    tags: ['blog', 'design'],
+    sha: '43c29b47',
+    link: 'index.html#blog',
+  },
+  {
+    id: '71a9688f',
+    date: '2026-08-15',
+    type: 'release',
+    title: 'Rich media architecture diagrams & figures sitewide',
+    summary:
+      'Engineered dedicated high-resolution architecture diagrams and figures for all 16 technical writings with Apple HIG glassmorphic frames, markdown figure parsing, and multi-context path resolution.',
+    tags: ['blog', 'design', 'performance'],
+    sha: '71a9688f',
+    link: 'index.html#blog',
+  },
+  {
     id: 'e85515d2',
     date: '2026-08-15',
     type: 'improvement',
