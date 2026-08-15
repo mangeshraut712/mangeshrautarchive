@@ -67,4 +67,17 @@ describe('design foundation ownership', () => {
       expect(readSrc(page)).toMatch(/assets\/css\/accessibility\.css/);
     }
   });
+
+  it('guarantees active blog chips and segmented glass presets do not suffer from white-on-white text in light mode', () => {
+    const solidSurfaces = readSrc('assets/css/theme-solid-surfaces.css');
+    expect(solidSurfaces).toMatch(/\.blog-filter-chip:not\(\.active\)/);
+    expect(solidSurfaces).toMatch(/\.uses-control-tile:not\(\.active\)/);
+
+    const premium = readSrc('assets/css/premium-enhancements.css');
+    expect(premium).toMatch(/\.blog-filter-chip\.is-active/);
+    expect(premium).toMatch(/button\.a11y-glass-preset\.is-active/);
+
+    const accessibility = readSrc('assets/css/accessibility.css');
+    expect(accessibility).toMatch(/\.a11y-glass-popover__badge\[data-mode='tinted'\]/);
+  });
 });

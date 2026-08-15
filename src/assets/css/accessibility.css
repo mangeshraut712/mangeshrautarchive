@@ -425,10 +425,10 @@ html.dark .a11y-glass-popover__badge[data-mode='balanced'] {
 }
 
 .a11y-glass-popover__badge[data-mode='tinted'] {
-  border-color: rgb(94 92 230 / 28%) !important;
-  background: rgb(94 92 230 / 12%) !important;
-  color: #5e5ce6 !important;
-  -webkit-text-fill-color: #5e5ce6 !important;
+  border-color: rgb(79 70 229 / 30%) !important;
+  background: rgb(79 70 229 / 12%) !important;
+  color: #4338ca !important;
+  -webkit-text-fill-color: #4338ca !important;
 }
 
 html.dark .a11y-glass-popover__badge[data-mode='tinted'] {

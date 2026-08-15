@@ -42,6 +42,17 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'f872a0b1',
+    date: '2026-08-15',
+    type: 'improvement',
+    title: 'Light mode active pill & Liquid Glass contrast lock',
+    summary:
+      'Resolved white-on-white text collisions on active blog filter chips and Liquid Glass flyout segmented presets, enforcing accessible contrast across both light and dark themes.',
+    tags: ['design', 'performance'],
+    sha: 'f872a0b1',
+    link: 'index.html#blog',
+  },
+  {
     id: '43c29b47',
     date: '2026-08-15',
     type: 'release',

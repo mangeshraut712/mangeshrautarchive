@@ -737,18 +737,24 @@ html.dark .a11y-glass-preset:not(.is-active):not(.active):hover {
 .proj-filter-btn.active,
 .blog-filter-btn.is-active,
 .blog-filter-btn.active,
+.blog-filter-chip.is-active,
+.blog-filter-chip.active,
 .uses-filter-chip.is-active,
 .uses-filter-chip.active,
 .changelog-chip.is-active,
 .changelog-chip.active,
+.travel-filter-chip.is-active,
+.travel-filter-chip.active,
+.country-pill.is-active,
+.country-pill.active,
+.systems-arch-tab.is-active,
+.systems-arch-tab.active,
 .about-tab-btn.is-active,
 .about-tab-btn.active,
 .currently-tab.is-active,
 .currently-tab.active,
 .uses-control-tile.is-active,
 .uses-control-tile.active,
-.a11y-glass-preset.is-active,
-.a11y-glass-preset.active,
 html.dark #projects .gh-contrib__view-btn.is-active,
 html.dark #projects .gh-contrib__year.is-active,
 html.dark .project-lens-chip.active,
@@ -757,18 +763,24 @@ html.dark .proj-filter-btn.is-active,
 html.dark .proj-filter-btn.active,
 html.dark .blog-filter-btn.is-active,
 html.dark .blog-filter-btn.active,
+html.dark .blog-filter-chip.is-active,
+html.dark .blog-filter-chip.active,
 html.dark .uses-filter-chip.is-active,
 html.dark .uses-filter-chip.active,
 html.dark .changelog-chip.is-active,
 html.dark .changelog-chip.active,
+html.dark .travel-filter-chip.is-active,
+html.dark .travel-filter-chip.active,
+html.dark .country-pill.is-active,
+html.dark .country-pill.active,
+html.dark .systems-arch-tab.is-active,
+html.dark .systems-arch-tab.active,
 html.dark .about-tab-btn.is-active,
 html.dark .about-tab-btn.active,
 html.dark .currently-tab.is-active,
 html.dark .currently-tab.active,
 html.dark .uses-control-tile.is-active,
-html.dark .uses-control-tile.active,
-html.dark .a11y-glass-preset.is-active,
-html.dark .a11y-glass-preset.active {
+html.dark .uses-control-tile.active {
   background-color: #0071e3 !important;
   background-image: linear-gradient(135deg, #2997ff 0%, #0071e3 100%) !important;
   color: #ffffff !important;
@@ -785,18 +797,24 @@ html.dark .a11y-glass-preset.active {
 .proj-filter-btn.active *,
 .blog-filter-btn.is-active *,
 .blog-filter-btn.active *,
+.blog-filter-chip.is-active *,
+.blog-filter-chip.active *,
 .uses-filter-chip.is-active *,
 .uses-filter-chip.active *,
 .changelog-chip.is-active *,
 .changelog-chip.active *,
+.travel-filter-chip.is-active *,
+.travel-filter-chip.active *,
+.country-pill.is-active *,
+.country-pill.active *,
+.systems-arch-tab.is-active *,
+.systems-arch-tab.active *,
 .about-tab-btn.is-active *,
 .about-tab-btn.active *,
 .currently-tab.is-active *,
 .currently-tab.active *,
 .uses-control-tile.is-active *,
 .uses-control-tile.active *,
-.a11y-glass-preset.is-active *,
-.a11y-glass-preset.active *,
 html.dark #projects .gh-contrib__view-btn.is-active *,
 html.dark #projects .gh-contrib__year.is-active *,
 html.dark .project-lens-chip.active *,
@@ -805,20 +823,87 @@ html.dark .proj-filter-btn.is-active *,
 html.dark .proj-filter-btn.active *,
 html.dark .blog-filter-btn.is-active *,
 html.dark .blog-filter-btn.active *,
+html.dark .blog-filter-chip.is-active *,
+html.dark .blog-filter-chip.active *,
 html.dark .uses-filter-chip.is-active *,
 html.dark .uses-filter-chip.active *,
 html.dark .changelog-chip.is-active *,
 html.dark .changelog-chip.active *,
+html.dark .travel-filter-chip.is-active *,
+html.dark .travel-filter-chip.active *,
+html.dark .country-pill.is-active *,
+html.dark .country-pill.active *,
+html.dark .systems-arch-tab.is-active *,
+html.dark .systems-arch-tab.active *,
 html.dark .about-tab-btn.is-active *,
 html.dark .about-tab-btn.active *,
 html.dark .currently-tab.is-active *,
 html.dark .currently-tab.active *,
 html.dark .uses-control-tile.is-active *,
-html.dark .uses-control-tile.active *,
-html.dark .a11y-glass-preset.is-active *,
-html.dark .a11y-glass-preset.active * {
+html.dark .uses-control-tile.active * {
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
+}
+
+/* Accessible Segmented Controls (A11y Glass Presets) */
+button.a11y-glass-preset.is-active,
+.a11y-glass-preset.is-active,
+button.a11y-glass-preset.active,
+.a11y-glass-preset.active {
+  background-color: #ffffff !important;
+  background-image: none !important;
+  border: 1px solid #d1d1d6 !important;
+  color: #0071e3 !important;
+  -webkit-text-fill-color: #0071e3 !important;
+  font-weight: 700 !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+button.a11y-glass-preset.is-active *,
+.a11y-glass-preset.is-active *,
+button.a11y-glass-preset.active *,
+.a11y-glass-preset.active * {
+  color: #0071e3 !important;
+  -webkit-text-fill-color: #0071e3 !important;
+}
+
+button.a11y-glass-preset.is-active .a11y-glass-preset__meta,
+.a11y-glass-preset.is-active .a11y-glass-preset__meta,
+button.a11y-glass-preset.active .a11y-glass-preset__meta,
+.a11y-glass-preset.active .a11y-glass-preset__meta {
+  color: #0071e3 !important;
+  -webkit-text-fill-color: #0071e3 !important;
+  opacity: 0.9 !important;
+}
+
+html.dark button.a11y-glass-preset.is-active,
+html.dark .a11y-glass-preset.is-active,
+html.dark button.a11y-glass-preset.active,
+html.dark .a11y-glass-preset.active {
+  background-color: #000000 !important;
+  background-image: none !important;
+  border: 1px solid #3a3a3c !important;
+  color: #0a84ff !important;
+  -webkit-text-fill-color: #0a84ff !important;
+  font-weight: 700 !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5) !important;
+}
+
+html.dark button.a11y-glass-preset.is-active *,
+html.dark .a11y-glass-preset.is-active *,
+html.dark button.a11y-glass-preset.active *,
+html.dark .a11y-glass-preset.active * {
+  color: #0a84ff !important;
+  -webkit-text-fill-color: #0a84ff !important;
+}
+
+html.dark button.a11y-glass-preset.is-active .a11y-glass-preset__meta,
+html.dark .a11y-glass-preset.is-active .a11y-glass-preset__meta,
+html.dark button.a11y-glass-preset.active .a11y-glass-preset__meta,
+html.dark .a11y-glass-preset.active .a11y-glass-preset__meta {
+  color: #0a84ff !important;
+  -webkit-text-fill-color: #0a84ff !important;
+  opacity: 0.9 !important;
 }
 
 /* ═══════════════════════════════════════════════════════════════════

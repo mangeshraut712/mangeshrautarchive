@@ -891,7 +891,8 @@ html:is([data-lg-mode='clear'], [data-lg-mode='balanced']):not(.dark)
     .section-preview-btn,
     .about-tab-btn,
     .proj-sort-native,
-    .blog-filter-btn:not(.is-active)
+    .blog-filter-btn:not(.is-active):not(.active),
+    .blog-filter-chip:not(.is-active):not(.active)
   ) {
   background: rgb(255 255 255 / var(--lg-card-light-alpha)) !important;
   background-color: rgb(255 255 255 / var(--lg-card-light-alpha)) !important;
@@ -909,7 +910,8 @@ html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced'])
     .section-preview-btn,
     .about-tab-btn,
     .proj-sort-native,
-    .blog-filter-btn:not(.is-active)
+    .blog-filter-btn:not(.is-active):not(.active),
+    .blog-filter-chip:not(.is-active):not(.active)
   ) {
   background: rgb(0 0 0 / var(--lg-card-dark-alpha)) !important;
   background-color: rgb(0 0 0 / var(--lg-card-dark-alpha)) !important;
