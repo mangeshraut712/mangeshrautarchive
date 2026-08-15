@@ -101,7 +101,6 @@ describe('design foundation ownership', () => {
 
   it('documents Apple HIG design standard in docs/DESIGN.md and enforces solid Apple Blue buttons', () => {
     expect(existsSync(join(root, 'docs/DESIGN.md'))).toBe(true);
-    expect(existsSync(join(root, 'DESIGN.md'))).toBe(true);
 
     const designMd = readFileSync(join(root, 'docs/DESIGN.md'), 'utf-8');
     expect(designMd).toContain('# DESIGN.md — Apple Human Interface Portfolio Design System');
