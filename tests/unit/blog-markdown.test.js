@@ -61,8 +61,8 @@ desc: Routing parameters and failover policies
     expect(html).toContain('https://openrouter.ai/docs/routers');
   });
 
-  it('verifies all 14 blog posts have complete tags and metadata', () => {
-    expect(blogPosts).toHaveLength(14);
+  it('verifies all 16 blog posts have complete tags and metadata', () => {
+    expect(blogPosts).toHaveLength(16);
     blogPosts.forEach(post => {
       expect(post.id).toBeTruthy();
       expect(post.title).toBeTruthy();
@@ -105,12 +105,34 @@ caption: Figure 1.0 — Intelligent routing lanes
     );
   });
 
-  it('verifies all 14 blog posts contain rich media figures', () => {
+  it('verifies all 16 blog posts contain rich media figures', () => {
     blogPosts.forEach(post => {
       expect(post.content).toContain(':::figure');
       expect(post.content).toMatch(/src:\s*assets\/images\/blog\/[\w.-]+/);
       expect(post.content).toContain('alt:');
       expect(post.content).toContain('caption:');
     });
+  });
+
+  it('validates Meta Muse Code and Muse Spark 1.2 August 2026 post content', () => {
+    const musePost = blogPosts.find(p => p.id === 'meta-muse-code-spark-1-2-2026');
+    expect(musePost).toBeDefined();
+    expect(musePost.date).toBe('2026-08-06');
+    expect(musePost.tags).toContain('Meta AI');
+    expect(musePost.tags).toContain('Muse Code');
+    expect(musePost.content).toContain('meta-muse-code-architecture.svg');
+    expect(musePost.content).toContain('Multi-Token Prediction');
+    expect(musePost.content).toContain('Git worktrees');
+  });
+
+  it('validates Grok 4.6 and Grok Bot August 2026 post content', () => {
+    const grokPost = blogPosts.find(p => p.id === 'grok-4-6-grok-bot-systems-2026');
+    expect(grokPost).toBeDefined();
+    expect(grokPost.date).toBe('2026-08-13');
+    expect(grokPost.tags).toContain('Grok 4.6');
+    expect(grokPost.tags).toContain('Grok Bot');
+    expect(grokPost.content).toContain('grok-4-6-bot-architecture.svg');
+    expect(grokPost.content).toContain('500,000-token context');
+    expect(grokPost.content).toContain('GitHub Copilot');
   });
 });

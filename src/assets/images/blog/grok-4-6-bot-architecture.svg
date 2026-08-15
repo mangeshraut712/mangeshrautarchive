@@ -1,0 +1,108 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" width="1200" height="675">
+  <defs>
+    <linearGradient id="grok-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0a0a0c"/>
+      <stop offset="50%" stop-color="#141419"/>
+      <stop offset="100%" stop-color="#08080a"/>
+    </linearGradient>
+    <linearGradient id="grok-glass" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0.02"/>
+    </linearGradient>
+    <linearGradient id="amber-stream" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#ff9f0a"/>
+      <stop offset="50%" stop-color="#ff375f"/>
+      <stop offset="100%" stop-color="#ff9f0a"/>
+    </linearGradient>
+    <linearGradient id="cyan-copilot" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#2997ff"/>
+      <stop offset="100%" stop-color="#00f0ff"/>
+    </linearGradient>
+    <filter id="glow-grok" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+  <rect width="1200" height="675" fill="url(#grok-bg)"/>
+
+  <!-- Title & Header -->
+  <text x="600" y="52" font-family="-apple-system, SF Pro Display, sans-serif" font-size="26" font-weight="700" fill="#f5f5f7" text-anchor="middle" letter-spacing="-0.5">GROK 4.6 &amp; GROK BOT: REAL-TIME AUTONOMOUS AGENT ECOSYSTEM</text>
+  <text x="600" y="80" font-family="-apple-system, SF Pro Text, sans-serif" font-size="14" fill="#86868b" text-anchor="middle">500k Context Reasoning, GitHub Copilot IDE Integration &amp; Always-On Digital Teammate Loops (August 2026)</text>
+
+  <!-- Left: Real-Time Event & Webhook Layer -->
+  <rect x="50" y="120" width="310" height="490" rx="20" fill="url(#grok-glass)" stroke="#ffffff" stroke-opacity="0.14" stroke-width="1.5"/>
+  <rect x="70" y="140" width="270" height="38" rx="8" fill="#ff9f0a" fill-opacity="0.15" stroke="#ff9f0a" stroke-opacity="0.4"/>
+  <text x="205" y="164" font-family="-apple-system, SF Pro Display, sans-serif" font-size="16" font-weight="700" fill="#ff9f0a" text-anchor="middle">1. REAL-TIME EVENT STREAM</text>
+
+  <rect x="70" y="195" width="270" height="85" rx="12" fill="#000000" fill-opacity="0.5" stroke="#ff9f0a" stroke-opacity="0.4"/>
+  <text x="88" y="222" font-family="-apple-system, sans-serif" font-size="14" font-weight="600" fill="#ff9f0a">X Live Stream Ingestion</text>
+  <text x="88" y="244" font-family="-apple-system, sans-serif" font-size="12" fill="#d1d1d6">Sub-second mention capture</text>
+  <text x="88" y="264" font-family="-apple-system, sans-serif" font-size="12" fill="#86868b">Multi-modal video, audio &amp; text feeds</text>
+
+  <rect x="70" y="295" width="270" height="115" rx="12" fill="#000000" fill-opacity="0.5" stroke="#ffffff" stroke-opacity="0.08"/>
+  <text x="88" y="322" font-family="-apple-system, sans-serif" font-size="14" font-weight="600" fill="#f5f5f7">Grok Imagine 2.0 Inpainting</text>
+  <text x="88" y="344" font-family="-apple-system, sans-serif" font-size="12" fill="#86868b">• Quality Mode region editing</text>
+  <text x="88" y="364" font-family="-apple-system, sans-serif" font-size="12" fill="#86868b">• Multi-reference visual reasoning</text>
+  <text x="88" y="384" font-family="-apple-system, sans-serif" font-size="12" fill="#30d158">• Real-time visual understanding</text>
+
+  <rect x="70" y="425" width="270" height="160" rx="12" fill="#000000" fill-opacity="0.5" stroke="#ffffff" stroke-opacity="0.08"/>
+  <text x="88" y="452" font-family="-apple-system, sans-serif" font-size="14" font-weight="600" fill="#f5f5f7">Developer Webhooks</text>
+  <text x="88" y="474" font-family="-apple-system, sans-serif" font-size="12" fill="#86868b">• GitHub issue &amp; PR triggers</text>
+  <text x="88" y="494" font-family="-apple-system, sans-serif" font-size="12" fill="#86868b">• Slack / Discord team events</text>
+  <text x="88" y="514" font-family="-apple-system, sans-serif" font-size="12" fill="#86868b">• Asynchronous task dispatch</text>
+  <text x="88" y="534" font-family="-apple-system, sans-serif" font-size="12" fill="#30d158">• Always-on teammate status</text>
+
+  <!-- Connectors -->
+  <path d="M 360 365 L 430 365" stroke="url(#amber-stream)" stroke-width="3" fill="none" filter="url(#glow-grok)"/>
+
+  <!-- Middle: Grok 4.6 Reasoning Core -->
+  <rect x="430" y="120" width="340" height="490" rx="20" fill="url(#grok-glass)" stroke="#ffffff" stroke-opacity="0.14" stroke-width="1.5"/>
+  <rect x="450" y="140" width="300" height="38" rx="8" fill="#ffffff" fill-opacity="0.1" stroke="#ffffff" stroke-opacity="0.3"/>
+  <text x="600" y="164" font-family="-apple-system, SF Pro Display, sans-serif" font-size="16" font-weight="700" fill="#f5f5f7" text-anchor="middle">2. GROK 4.6 REASONING CORE</text>
+
+  <rect x="450" y="195" width="300" height="110" rx="12" fill="#000000" fill-opacity="0.5" stroke="#ff9f0a" stroke-opacity="0.4"/>
+  <text x="470" y="224" font-family="-apple-system, sans-serif" font-size="15" font-weight="600" fill="#ff9f0a">500,000 Token Context</text>
+  <text x="470" y="248" font-family="-apple-system, sans-serif" font-size="12" fill="#d1d1d6">Sub-linear attention across long repos</text>
+  <text x="470" y="270" font-family="-apple-system, sans-serif" font-size="12" fill="#86868b">Deep test-time compute scaling</text>
+  <text x="470" y="290" font-family="-apple-system, sans-serif" font-size="12" fill="#30d158">Long-horizon autonomous planning</text>
+
+  <rect x="450" y="320" width="300" height="115" rx="12" fill="#000000" fill-opacity="0.5" stroke="#2997ff" stroke-opacity="0.4"/>
+  <text x="470" y="348" font-family="-apple-system, sans-serif" font-size="15" font-weight="600" fill="#2997ff">Colossus 100k GPU Training</text>
+  <text x="470" y="372" font-family="-apple-system, sans-serif" font-size="12" fill="#86868b">• Massive cluster synthetic training data</text>
+  <text x="470" y="392" font-family="-apple-system, sans-serif" font-size="12" fill="#86868b">• Rigorous tool verification loops</text>
+  <text x="470" y="412" font-family="-apple-system, sans-serif" font-size="12" fill="#86868b">• Native AST &amp; compiler diagnostics</text>
+
+  <rect x="450" y="450" width="300" height="135" rx="12" fill="#000000" fill-opacity="0.5" stroke="#ffffff" stroke-opacity="0.08"/>
+  <text x="470" y="478" font-family="-apple-system, sans-serif" font-size="14" font-weight="600" fill="#f5f5f7">xAI API &amp; OpenRouter Routing</text>
+  <text x="470" y="502" font-family="-apple-system, sans-serif" font-size="12" fill="#d1d1d6">Model slug: grok-4.6</text>
+  <text x="470" y="524" font-family="-apple-system, sans-serif" font-size="12" fill="#86868b">Prompt cache reads at ~0.25x price</text>
+  <text x="470" y="546" font-family="-apple-system, sans-serif" font-size="12" fill="#86868b">Function calling &amp; code interpreter</text>
+  <text x="470" y="566" font-family="-apple-system, sans-serif" font-size="12" fill="#30d158">Direct gateway compatibility</text>
+
+  <!-- Connectors -->
+  <path d="M 770 365 L 840 365" stroke="url(#cyan-copilot)" stroke-width="3" fill="none" filter="url(#glow-grok)"/>
+
+  <!-- Right: Tool Execution & Copilot Integration -->
+  <rect x="840" y="120" width="310" height="490" rx="20" fill="url(#grok-glass)" stroke="#ffffff" stroke-opacity="0.14" stroke-width="1.5"/>
+  <rect x="860" y="140" width="270" height="38" rx="8" fill="#2997ff" fill-opacity="0.15" stroke="#2997ff" stroke-opacity="0.4"/>
+  <text x="995" y="164" font-family="-apple-system, SF Pro Display, sans-serif" font-size="16" font-weight="700" fill="#2997ff" text-anchor="middle">3. COPILOT &amp; BOT EXECUTION</text>
+
+  <rect x="860" y="195" width="270" height="110" rx="12" fill="#000000" fill-opacity="0.5" stroke="#2997ff" stroke-opacity="0.4"/>
+  <text x="880" y="224" font-family="-apple-system, sans-serif" font-size="14" font-weight="600" fill="#2997ff">GitHub Copilot Multi-IDE</text>
+  <text x="880" y="248" font-family="-apple-system, sans-serif" font-size="12" fill="#d1d1d6">VS Code · JetBrains · Xcode (Aug 14)</text>
+  <text x="880" y="268" font-family="-apple-system, sans-serif" font-size="12" fill="#86868b">Native day-one Copilot provider</text>
+  <text x="880" y="288" font-family="-apple-system, sans-serif" font-size="12" fill="#30d158">Whole-workspace agent chat</text>
+
+  <rect x="860" y="320" width="270" height="115" rx="12" fill="#000000" fill-opacity="0.5" stroke="#30d158" stroke-opacity="0.4"/>
+  <text x="880" y="348" font-family="-apple-system, sans-serif" font-size="14" font-weight="600" fill="#30d158">Grok Bot Digital Teammate</text>
+  <text x="880" y="372" font-family="-apple-system, sans-serif" font-size="12" fill="#86868b">• Logs into developer tooling</text>
+  <text x="880" y="392" font-family="-apple-system, sans-serif" font-size="12" fill="#86868b">• Multi-step workflow automation</text>
+  <text x="880" y="412" font-family="-apple-system, sans-serif" font-size="12" fill="#86868b">• Autonomous branch PR reviews</text>
+
+  <rect x="860" y="450" width="270" height="135" rx="12" fill="#000000" fill-opacity="0.5" stroke="#ffffff" stroke-opacity="0.08"/>
+  <text x="880" y="478" font-family="-apple-system, sans-serif" font-size="14" font-weight="600" fill="#f5f5f7">Grok Build Harness (ACP)</text>
+  <text x="880" y="502" font-family="-apple-system, sans-serif" font-size="12" fill="#86868b">• Open source Apache-2.0 TUI</text>
+  <text x="880" y="522" font-family="-apple-system, sans-serif" font-size="12" fill="#86868b">• Sandboxed shell tool execution</text>
+  <text x="880" y="542" font-family="-apple-system, sans-serif" font-size="12" fill="#86868b">• Streaming JSON-RPC to CI bots</text>
+  <text x="880" y="562" font-family="-apple-system, sans-serif" font-size="12" fill="#30d158">• Multi-file atomic diff commits</text>
+</svg>

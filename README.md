@@ -27,7 +27,7 @@
   <img src="https://img.shields.io/badge/FastAPI-0.139-009688?style=flat-square&logo=fastapi&logoColor=white" alt="FastAPI">
   <img src="https://img.shields.io/badge/ESM-vanilla-yellow?style=flat-square" alt="Vanilla ESM">
   <img src="https://img.shields.io/badge/OpenRouter-Grok%204.3%20%2B%20Nemotron%20free-black?style=flat-square" alt="OpenRouter">
-  <img src="https://img.shields.io/badge/Tests-155%20unit%20%2B%20165%20API-brightgreen?style=flat-square" alt="155 unit tests and 165 API tests">
+  <img src="https://img.shields.io/badge/Tests-157%20unit%20%2B%20165%20API-brightgreen?style=flat-square" alt="157 unit tests and 165 API tests">
   <img src="https://img.shields.io/badge/Lighthouse-100%2F100%2F100%2F100-0cce6b?style=flat-square" alt="Lighthouse">
   <img src="https://img.shields.io/badge/Playwright-16%20projects-2EAD33?style=flat-square&logo=playwright&logoColor=white" alt="Playwright">
   <a href="https://foglamp.dev/scan/mangeshrautarchive-jtspx4"><img src="https://img.shields.io/badge/Foglamp-AI%20map-0071e3?style=flat-square" alt="Foglamp architecture map"></a>

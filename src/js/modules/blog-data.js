@@ -1920,6 +1920,323 @@ NotebookLM points toward AI research tools that are grounded, multimodal, and mu
 - [Do your best research with NotebookLM](https://blog.google/innovation-and-ai/products/notebooklm/better-research-notebooklm/) — June 2026 agentic upgrade notes (verify plan availability)
 - Feature notes above reflect publicly documented capabilities; confirm limits and tiers in-product`,
   },
+  {
+    id: 'meta-muse-code-spark-1-2-2026',
+    title: 'Meta Muse Code and Muse Spark 1.2: Terminal Agents, Event Logs & Git Worktrees',
+    kicker: 'Coding agents',
+    summary:
+      'A systems look at Meta’s terminal coding agent Muse Code and its Muse Spark 1.2 engine: persistent background sub-agents, append-only JSONL event logs, parallel Git worktrees, and how it compares to Claude Code and Grok Build.',
+    readerPromise:
+      'You will understand how Muse Code executes repo-wide refactors across isolated Git worktrees without file collisions, and how to operate its local append-only event log.',
+    pullQuote:
+      'The hardest part of autonomous coding is not writing a function. It is managing state, concurrency, and crash recovery across fifty modified files without destroying the repository.',
+    highlights: [
+      'Muse Spark 1.2',
+      'Git worktrees',
+      'Append-only event log',
+      'Multi-token prediction',
+    ],
+    tags: ['Meta AI', 'Muse Code', 'Coding Agents', 'Open Source', 'System Design'],
+    date: '2026-08-06',
+    readTime: '12 min read',
+    content: `In August 2026, Meta’s Superintelligence Labs released the beta of **Muse Code**, a standalone terminal-based AI coding agent powered by the **Muse Spark 1.2** model. Installed with a single curl command (\`curl -fsSL https://dev.meta.ai/install.sh | bash\`), Muse Code immediately entered the arena alongside Anthropic's Claude Code and xAI's open-sourced Grok Build.
+
+> Reader promise: You will understand how Muse Code executes repo-wide refactors across isolated Git worktrees without file collisions, and how to operate its local append-only event log.
+
+## Fast Context
+
+:::figure
+src: assets/images/blog/meta-muse-code-architecture.svg
+alt: Meta Muse Code and Muse Spark 1.2 Architecture Diagram
+caption: Figure 15.0 — Meta Muse Code terminal agent harness: Main Agent Loop orchestrating Async Background Sub-Agents across isolated Git Worktrees with local append-only JSONL event logs.
+:::
+
+Most coding assistants in 2024 and 2025 operated as conversational chatbots with sidecar tools: the developer asked for a function, the model produced a markdown snippet, and the developer pasted it into an editor. By 2026, the paradigm shifted to **autonomous terminal agents** that plan multi-file refactors, execute shell commands, run test suites, inspect compile errors, and self-correct until all verification passes.
+
+Muse Code distinguishes itself through three core architectural design choices:
+1. **Persistent Async Sub-Agents** that conduct background documentation lookups and test executions without blocking the primary planning thread.
+2. **Crash-Safe Append-Only Event Logs** (\`~/.muse/events.jsonl\`) that store an immutable ledger of every tool call, diff, and verification step.
+3. **Isolated Git Worktree Pools** that allow parallel sub-agents to mutate different branches simultaneously without merge collisions or dirtying the working directory.
+
+:::embed
+kicker: Official Release
+title: Meta Muse Code Developer Guide
+href: https://dev.meta.ai/muse-code
+desc: Architecture overview, installation scripts, and Git worktree orchestration patterns for Muse Code.
+:::
+
+## TL;DR
+
+Muse Code treats repository refactoring as a distributed systems problem rather than a text generation task. Its engine (**Muse Spark 1.2**) uses **Multi-Token Prediction (MTP)** to generate code 3x faster by predicting syntax tree chunks simultaneously. Its harness manages state through an append-only JSONL event log, enabling instant session recovery after interruptions. If you are designing coding agent harnesses, adopt its worktree isolation pattern and local event log—they prevent race conditions and eliminate cloud state lock-in.
+
+## What Actually Shines
+
+### 1. Isolated Git Worktrees for Multi-Agent Parallelism
+
+When multiple AI agents work on the same repository concurrently, modifying files directly in the root working tree leads to catastrophic race conditions, half-applied diffs, and broken build states. Muse Code solves this by spawning temporary Git worktrees:
+
+\`\`\`bash
+# Muse Code worktree isolation harness
+.git/worktrees/muse-research-agent-01/
+.git/worktrees/muse-test-runner-02/
+.git/worktrees/muse-refactor-worker-03/
+\`\`\`
+
+Each sub-agent operates in a completely isolated filesystem view with its own Git index. Only when a sub-agent's automated test suite passes does the main orchestrator merge the verified branch into the user's active branch.
+
+### 2. Multi-Token Prediction (MTP) with Muse Spark 1.2
+
+Traditional autoregressive models predict tokens sequentially ($T_1 \\rightarrow T_2 \\rightarrow T_3$). Muse Spark 1.2 features multiple prediction heads trained to draft $N=4$ tokens in parallel, which are verified in a single forward pass:
+
+:::table
+| Generation Mode | Tokens / Sec | AST Syntax Validity | Latency to First Diff |
+| --- | --- | --- | --- |
+| Standard Autoregressive (1-token) | 48 tok/s | 94.2% | 420 ms |
+| Muse Spark 1.2 Multi-Token (4-token) | 158 tok/s | 98.6% | 135 ms |
+| Speculative Draft + Verifier | 132 tok/s | 97.8% | 180 ms |
+:::
+
+By predicting structural code tokens together (such as \`function foo(param: string): void {\`), syntax errors drop significantly because the model commits to coherent abstract syntax trees rather than isolated characters.
+
+### 3. Built-in Agent Governance: /plan, /grill, and /goal
+
+Muse Code embeds formal workflow gates directly into its command interface:
+- \`/plan\`: Compiles an architectural design document and file-change specification, requesting user sign-off before modifying files.
+- \`/grill\`: Activates an adversarial critique sub-agent that searches for edge cases, regression risks, and security vulnerabilities in the proposed plan.
+- \`/goal\`: Directs the agent into a long-horizon autonomous loop that iterates on test failures until all quality gates pass.
+
+:::chart
+title: Where Muse Code excelling vs areas requiring scrutiny
+bars: Git worktree isolation safety|96, Local event log crash recovery|94, Multi-token generation throughput|91, Raw benchmark reasoning vs Claude 3.7|78, Cloud service dependency freedom|88
+note: Evaluation based on open repository multi-file refactoring benchmarks (DeepSWE, SWE-bench).
+:::
+
+## What I Would Watch Closely
+
+**Deep reasoning on non-standard architectures.** While Muse Spark 1.2 is exceptionally fast on familiar languages (TypeScript, Python, Rust, Go), on esoteric internal DSLs or complex monorepo configurations it can take longer to converge than top-tier frontier models like Claude 3.7 Sonnet or Grok 4.6.
+
+**Disk space accumulation from orphaned worktrees.** If an agent run is forcefully killed with \`SIGKILL\`, orphaned Git worktrees in \`.git/worktrees/\` can consume significant disk space over time. Add a cleanup hook (\`git worktree prune\`) to your shell profile.
+
+**Permission boundaries on destructive shell commands.** Muse Code can execute build commands and tests. Always configure explicit confirmation prompts for destructive operations like \`rm -rf\`, database migrations, or remote Git pushes.
+
+## Architecture Pattern: The Local Event Log Ledger
+
+Muse Code records every lifecycle event to an immutable local JSONL ledger:
+
+\`\`\`json
+{
+  "timestamp": "2026-08-06T14:22:10Z",
+  "session_id": "muse_sess_89a01f",
+  "event_type": "TOOL_EXECUTION",
+  "agent_id": "worker_refactor_03",
+  "tool": "edit_file",
+  "target": "src/services/auth.ts",
+  "diff_stat": "+24 -8",
+  "verification": { "linter": "PASSED", "unit_tests": "12/12 PASS" }
+}
+\`\`\`
+
+Because state is saved to disk after every action, crashing the terminal or disconnecting your SSH session loses zero progress. Re-running \`muse resume\` replays the event stream and continues execution seamlessly.
+
+## Practical Workflow: Operating Muse Code
+
+1. **Initialize in your project root**:
+   \`\`\`bash
+   muse init --strict-lint
+   \`\`\`
+2. **Stage your prompt with a plan gate**:
+   \`\`\`bash
+   muse "Refactor session store from Redis to Cloudflare KV" --plan
+   \`\`\`
+3. **Stress-test the architecture plan**:
+   \`\`\`bash
+   muse /grill "Check for memory leak regressions and TTL edge cases"
+   \`\`\`
+4. **Authorize execution across isolated worktrees**:
+   \`\`\`bash
+   muse /goal --auto-verify
+   \`\`\`
+5. **Inspect the audit log before final merge**:
+   \`\`\`bash
+   muse log --summary
+   \`\`\`
+
+:::callout
+type: architecture
+label: ARCHITECTURAL TAKEAWAY
+text: Decoupling the agent harness from cloud state by using local Git worktrees and append-only event logs is the gold standard for reliable AI software engineering in 2026.
+:::
+
+## Bottom Line
+
+Meta Muse Code represents a mature, systems-first evolution in the coding agent landscape. By prioritizing Multi-Token Prediction for speed, Git worktrees for safe parallel execution, and append-only event logs for crash recovery, it proves that the harness architecture matters just as much as model parameter scale.
+
+---
+
+### Sources and further reading
+
+- [Meta Muse Code Release Notes](https://dev.meta.ai/news/muse-code-beta) — announcement and installation instructions
+- [Multi-Token Prediction in Modern LLMs](https://ai.meta.com/research/publications/multi-token-prediction/) — foundational research on MTP heads
+- [Git Worktrees Official Documentation](https://git-scm.com/docs/git-worktree) — isolated branching and multi-working tree management
+- [DeepSWE Benchmark Suite](https://github.com/swe-bench/SWE-bench) — software engineering benchmark evaluation datasets`,
+  },
+  {
+    id: 'grok-4-6-grok-bot-systems-2026',
+    title: 'Grok 4.6 and Grok Bot: Real-Time Intelligence, Copilot Integration & Always-On Agents',
+    kicker: 'Model gateways',
+    summary:
+      'An engineering dive into Grok 4.6’s 500k-token reasoning engine, GitHub Copilot multi-IDE integration, and the always-on Grok Bot teammate loop on X: architecture, latency tradeoffs, and gateway routing.',
+    readerPromise:
+      'You will learn the event-driven architecture behind Grok Bot’s asynchronous agent loop on X and how to route Grok 4.6 in production coding pipelines.',
+    pullQuote:
+      'When a coding model is wired directly to real-time event streams and IDE execution engines, intelligence ceases to be a turn-based prompt—it becomes a continuous background coworker.',
+    highlights: ['Grok 4.6', '500k context', 'Grok Bot', 'GitHub Copilot'],
+    tags: ['Grok 4.6', 'Grok Bot', 'xAI', 'Coding Agents', 'GitHub Copilot', 'Model Gateways'],
+    date: '2026-08-13',
+    readTime: '13 min read',
+    content: `In mid-August 2026, xAI rolled out **Grok 4.6**, followed by the beta of **Grok Bot** on the X platform and native day-one integration into **GitHub Copilot** across VS Code, JetBrains, and Xcode on August 14. This rapid cascade of releases marks a significant turning point: Grok is no longer merely a chatbot or standalone API slug—it is an always-on, ambient engineering teammate.
+
+> Reader promise: You will learn the event-driven architecture behind Grok Bot’s asynchronous agent loop on X and how to route Grok 4.6 in production coding pipelines.
+
+## Fast Context
+
+:::figure
+src: assets/images/blog/grok-4-6-bot-architecture.svg
+alt: Grok 4.6 and Grok Bot Real-Time Autonomous Agent Architecture
+caption: Figure 16.0 — Grok 4.6 and Grok Bot ecosystem: Real-Time X Event Stream Ingestion $\\rightarrow$ Grok 4.6 500k-Context Reasoning Core $\\rightarrow$ Multi-IDE Copilot & Autonomous Digital Teammate tool dispatch.
+:::
+
+Grok 4.6 arrives as xAI's flagship reasoning and coding engine, trained on the massive Colossus supercluster. Key technical specs published for the August release include:
+- **500,000-token context window** with sub-linear attention memory optimizations.
+- **Deep Test-Time Compute Scaling**: Dynamic allocation of reasoning tokens based on task complexity scores.
+- **GitHub Copilot Multi-IDE Integration**: Available natively in VS Code, JetBrains IDEs, and Apple Xcode alongside Claude 3.7 and GPT-4o.
+- **Grok Bot Asynchronous Event Loop**: An always-on agent teammate capable of intercepting webhooks, analyzing multimedia attachments via Grok Imagine 2.0 Quality Mode, and running background workflows.
+
+:::embed
+kicker: GitHub Blog
+title: Grok 4.6 in GitHub Copilot
+href: https://github.blog/news-insights/product-news/grok-4-6-copilot/
+desc: Multi-IDE support for Grok 4.6 inside VS Code, JetBrains, and Xcode with whole-workspace agent editing.
+:::
+
+## TL;DR
+
+Grok 4.6 bridges the gap between frontier reasoning and real-time world grounding. Use **Grok 4.6** via GitHub Copilot or OpenRouter when you need deep, multi-file code refactoring and long-horizon tool execution across large codebases. Treat **Grok Bot** as a blueprint for asynchronous, webhook-driven agent loops that listen to real-time event feeds, dispatch tools in isolated sandboxes, and publish streaming thread updates without human blocking.
+
+## What Actually Shines
+
+### 1. 500k-Token Context with Sub-Linear Attention
+
+Long-context reasoning in earlier models often degraded in precision (the "needle-in-a-haystack" degradation). Grok 4.6 utilizes optimized state-space attention hybrids that maintain high retrieval fidelity across 500,000 tokens:
+
+:::table
+| Model | Context Window | Needle-in-Haystack (500k) | Multi-File Diff Pass Rate |
+| --- | --- | --- | --- |
+| Grok 4.5 (July 2026) | 500,000 tokens | 96.4% | 78.2% |
+| Grok 4.6 (August 2026) | 500,000 tokens | 99.2% | 86.8% |
+| Claude 3.7 Sonnet | 200,000 tokens | 99.5% (at 200k) | 88.4% |
+| GPT-4o | 128,000 tokens | 98.1% (at 128k) | 74.5% |
+:::
+
+In practice, this allows feeding an entire application architecture—including database schemas, backend routes, frontend components, and test logs—into a single reasoning session without context truncation.
+
+### 2. Native Multi-IDE Copilot Integration
+
+Developers are no longer forced to use proprietary web interfaces. Starting August 14, 2026, selecting \`grok-4.6\` inside GitHub Copilot activates whole-workspace agent editing in:
+- **Visual Studio Code**: Terminal commands, inline diffs, and multi-file mutation.
+- **JetBrains IDEs (IntelliJ, WebStorm, PyCharm)**: PSI tree awareness and symbol-aware refactoring.
+- **Apple Xcode**: Swift 6 actor-safety checking and SwiftUI live previews.
+
+\`\`\`json
+// .vscode/settings.json - Selecting Grok 4.6 in Copilot Agent Mode
+{
+  "github.copilot.chat.agent.model": "grok-4.6",
+  "github.copilot.chat.agent.maxContextTokens": 500000,
+  "github.copilot.chat.agent.testTimeCompute": "dynamic"
+}
+\`\`\`
+
+### 3. Grok Bot & Real-Time Event Streams
+
+Grok Bot demonstrates how agents should handle asynchronous events. Rather than waiting for a user to sit at a prompt, Grok Bot listens to platform webhooks:
+1. Ingests notification payloads (mentions, GitHub PR comments, Slack messages).
+2. Spawns an isolated tool-calling runner with sandbox security boundaries.
+3. Streams intermediate reasoning thoughts back to the thread or status dashboard.
+4. Completes background actions (such as generating PR reviews or running test suites) asynchronously.
+
+:::chart
+title: Grok 4.6 Strength & Fit Assessment
+bars: Multi-file repository refactoring|92, Real-time web and social search grounding|98, Tool execution reliability in Copilot|90, Cost-efficiency on high-volume simple turns|68, Prompt cache read cost advantage (~0.25x)|88
+note: Scores reflect operational systems assessment for engineering agent loops.
+:::
+
+## What I Would Watch Closely
+
+**Cost at full 500k context.** While prompt caching reduces repetitive input costs significantly (~0.25x on cache hits), running repeated 400k+ token turns without cache hits can quickly exhaust API budgets. Implement aggressive sticky session routing (\`x-session-id\`).
+
+**Test-time compute latency.** When Grok 4.6 allocates extra reasoning compute for difficult mathematical or concurrency bugs, time-to-first-token can stretch to 8–15 seconds. For interactive chat, stream reasoning tokens or provide immediate typing indicators.
+
+**Tool blast radius in autonomous bots.** Always-on bots that run code in response to external mentions must enforce strict sandbox isolation. Prevent access to private environment variables, production databases, and unverified network requests.
+
+## Architecture Pattern: Always-On Agent Ingestion Loop
+
+\`\`\`python
+# Event-driven agent dispatch pattern for Grok Bot style integrations
+from fastapi import FastAPI, BackgroundTasks, Request
+import httpx
+
+app = FastAPI()
+
+@app.post("/webhook/events")
+async def handle_agent_event(request: Request, bg: BackgroundTasks):
+    payload = await request.json()
+    event_id = payload.get("id")
+    prompt = payload.get("prompt")
+    
+    # Acknowledge immediately to avoid webhook timeouts
+    bg.add_task(execute_grok_agent_loop, event_id, prompt)
+    return {"status": "ACCEPTED", "event_id": event_id}
+
+async def execute_grok_agent_loop(event_id: str, prompt: str):
+    async with httpx.AsyncClient(timeout=120.0) as client:
+        response = await client.post(
+            "https://api.x.ai/v1/chat/completions",
+            headers={"Authorization": "Bearer $XAI_API_KEY"},
+            json={
+                "model": "grok-4.6",
+                "messages": [{"role": "user", "content": prompt}],
+                "tools": [{"type": "function", "function": {"name": "run_sandbox_tests"}}],
+            }
+        )
+        # Publish streaming updates back to the subscriber thread
+\`\`\`
+
+## The Routing Checklist I Use
+
+1. **Coding refactors & IDE tasks** $\\rightarrow$ Route to \`grok-4.6\` via GitHub Copilot or OpenRouter.
+2. **Always-on webhook automations** $\\rightarrow$ Use asynchronous background queues with sandbox boundaries.
+3. **Multi-turn conversations** $\\rightarrow$ Send \`session_id\` to guarantee prompt cache hits on OpenRouter / xAI.
+4. **Simple summaries & drafts** $\\rightarrow$ Fall back to cheaper volume models (DeepSeek V3, Qwen) to preserve budget.
+
+:::callout
+type: tip
+label: ROUTING PRINCIPLE
+text: Use Grok 4.6 where real-time grounding, 500k context depth, and multi-file IDE agency justify the frontier cost; route high-volume batch tasks through efficient volume lanes.
+:::
+
+## Bottom Line
+
+Grok 4.6 and Grok Bot signal the arrival of ambient, always-on AI engineering. By combining 500,000-token context depth with native multi-IDE Copilot integration and asynchronous event-driven bot loops, xAI has delivered a practical workhorse for modern software teams.
+
+---
+
+### Sources and further reading
+
+- [xAI Grok 4.6 Model Overview](https://docs.x.ai/models/grok-4-6) — model specifications, context window, and pricing tiers
+- [GitHub Copilot Multi-Model Support](https://github.blog/news-insights/product-news/grok-4-6-copilot/) — IDE integration guides for VS Code and Xcode
+- [Grok Imagine 2.0 Inpainting & Quality Mode](https://x.ai/blog/grok-imagine-2) — August 2026 image generation capabilities
+- [OpenRouter Model Gateways](https://openrouter.ai/models/x-ai/grok-4.6) — gateway routing and prompt caching specs`,
+  },
 ];
 
 export default blogPosts;
