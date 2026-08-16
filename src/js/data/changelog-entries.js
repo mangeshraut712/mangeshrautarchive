@@ -42,6 +42,17 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: '27561b8',
+    date: '2026-08-16',
+    type: 'improvement',
+    title: 'Mobile layout decongestion & fit-to-screen polish for iPhone 17 Pro Max',
+    summary:
+      'Audited and resolved mobile layout congestion across all 7 website pages. Standardized experience and education timelines to eliminate line strike-through, converted System Monitor control center telemetry into clean 2-row tiles, and restructured Systems Keynote stats into a balanced 2-column grid with horizontal scrolling rails.',
+    tags: ['design', 'performance', 'systems', 'monitor'],
+    sha: '27561b8',
+    link: 'index.html#experience',
+  },
+  {
     id: 'b147e92d',
     date: '2026-08-15',
     type: 'improvement',
