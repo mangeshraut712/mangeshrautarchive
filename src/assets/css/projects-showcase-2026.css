@@ -2552,15 +2552,15 @@ html.dark .project-xr-status {
   }
 
   #projects .proj-controls-group {
-    flex-direction: column !important;
-    align-items: stretch !important;
-    gap: 0.75rem !important;
-    flex-wrap: nowrap !important;
+    display: grid !important;
+    grid-template-columns: 1.1fr 1fr !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+    width: 100% !important;
   }
 
   /* Stop flex-basis (190px) from becoming height in the stacked column layout */
   #projects .proj-controls-group .proj-sort-field {
-    flex: 0 0 auto !important;
     width: 100% !important;
     max-width: 100% !important;
   }
@@ -2569,8 +2569,8 @@ html.dark .project-xr-status {
   #projects .proj-controls-group .projects-view-all-btn {
     width: 100% !important;
     max-width: 100% !important;
-    flex: 0 0 auto !important;
     box-sizing: border-box !important;
+    min-height: 40px !important;
   }
 
   /* Wrap the few short filter chips instead of clipping them in a scroller */

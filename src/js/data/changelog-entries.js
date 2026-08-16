@@ -42,6 +42,18 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'a57f92de',
+    date: '2026-08-16',
+    type: 'improvement',
+    title:
+      'Mobile Card & Section Polish: Uncongested Timelines, Refined Radar Chart, and Universal 18px Squircles',
+    summary:
+      'Refined mobile card geometries across all sections. Expanded timeline card width by +28px with compact 28px/32px icons and unified 36px/42px left offsets. Optimized Engineering Depth Radar SVG viewBox and label offsets for zero-clipping on 375px/390px screens. Standardized 18px squircle border-radii and verified flawless mobile visual aesthetics across all 13 pages.',
+    tags: ['design', 'performance', 'mobile'],
+    sha: 'a57f92de',
+    link: 'index.html#experience',
+  },
+  {
     id: 'e4b31a89',
     date: '2026-08-16',
     type: 'improvement',

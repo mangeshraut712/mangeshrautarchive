@@ -265,3 +265,38 @@ html.dark .telemetry-spark-line {
 html.dark .telemetry-spark-dot {
   fill: #2997ff;
 }
+
+@media (width <= 600px) {
+  .telemetry-rings-wrapper {
+    padding: 1.15rem 1rem;
+    border-radius: 18px;
+    margin: 1.25rem 0;
+  }
+
+  .telemetry-rings-heading {
+    font-size: 1.2rem;
+  }
+
+  .telemetry-rings-grid {
+    gap: 1.25rem;
+  }
+
+  .telemetry-rings-visual-pane {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .telemetry-rings-legend {
+    width: 100%;
+  }
+
+  .telemetry-kpis-list {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+
+  .telemetry-kpi-card {
+    padding: 0.75rem 0.85rem;
+    border-radius: 14px;
+  }
+}

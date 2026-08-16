@@ -51,7 +51,7 @@ export class SkillsRadarChart {
       },
     ];
     this.center = 200;
-    this.radius = 140;
+    this.radius = 115;
 
     this.init();
   }
@@ -99,7 +99,7 @@ export class SkillsRadarChart {
 
         <div class="skills-radar-body">
           <div class="skills-radar-chart-pane">
-            <svg class="skills-radar-svg" viewBox="0 0 400 400" preserveAspectRatio="xMidYMid meet">
+            <svg class="skills-radar-svg" viewBox="-25 -15 450 430" preserveAspectRatio="xMidYMid meet">
               <defs>
                 <radialGradient id="radar-gradient" cx="50%" cy="50%" r="50%">
                   <stop offset="0%" stop-color="#0071e3" stop-opacity="0.35" />
@@ -154,7 +154,7 @@ export class SkillsRadarChart {
               <g class="radar-labels">
                 ${this.categories
                   .map((cat, i) => {
-                    const c = this.getCoordinates(i * angleStep, this.radius + 24);
+                    const c = this.getCoordinates(i * angleStep, this.radius + 18);
                     const anchor =
                       c.x > this.center + 10 ? 'start' : c.x < this.center - 10 ? 'end' : 'middle';
                     return `

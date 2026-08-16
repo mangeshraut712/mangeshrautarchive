@@ -273,3 +273,42 @@ html.dark .skills-radar-bar-fill {
   color: var(--text-secondary, #86868b);
   font-weight: 500;
 }
+
+@media (width <= 600px) {
+  .skills-radar-wrapper {
+    padding: 1.15rem 1rem;
+    border-radius: 18px;
+    margin: 1.25rem 0;
+  }
+
+  .skills-radar-header {
+    margin-bottom: 1rem;
+  }
+
+  .skills-radar-heading {
+    font-size: 1.2rem;
+  }
+
+  .skills-radar-score-badge strong {
+    font-size: 1.25rem;
+  }
+
+  .skills-radar-body {
+    gap: 1.25rem;
+  }
+
+  .skills-radar-svg {
+    max-width: 100%;
+  }
+
+  .radar-axis-label {
+    font-size: 10.5px;
+    font-weight: 650;
+  }
+
+  .skills-radar-item {
+    padding: 0.75rem 0.85rem;
+    border-radius: 14px;
+    margin-bottom: 0.5rem;
+  }
+}

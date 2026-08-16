@@ -580,6 +580,28 @@ section,
     max-width: 100%;
     min-width: 0;
   }
+
+  /* Universal Apple Mobile Card Geometry & Squircle Radius */
+  :is(
+    .showcase-project-card,
+    .experience-content,
+    .education-content,
+    .about-card,
+    .skill-category,
+    .blog-card,
+    .publication-card,
+    .recommendation-card,
+    .award-card,
+    .certification-card,
+    .contact-card,
+    .hero-card,
+    .currently-card,
+    .health-widget-container
+  ) {
+    border-radius: 18px !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
 }
 
 @media (min-width: 769px) and (max-height: 760px) {
