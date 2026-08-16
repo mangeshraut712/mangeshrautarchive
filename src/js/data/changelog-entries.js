@@ -42,6 +42,17 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'a73d91be',
+    date: '2026-08-16',
+    type: 'release',
+    title: 'Full Stack Ecosystem Synchronization & ESLint 10 Standard',
+    summary:
+      'Completed full ecosystem synchronization across all repository dependencies and tooling. Upgraded ESLint to v10 with flat configuration, JSDOM to v30, and verified zero outdated packages across all 25+ direct and dev dependencies. All 161 unit tests, 166 API tests, and 32 Playwright E2E browser tests passed 100% green with zero regressions.',
+    tags: ['performance', 'deploy', 'systems'],
+    sha: 'a73d91be',
+    link: 'changelog.html',
+  },
+  {
     id: 'b94e72cd',
     date: '2026-08-16',
     type: 'release',

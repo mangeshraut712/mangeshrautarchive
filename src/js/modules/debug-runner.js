@@ -132,7 +132,7 @@ class DebugRunner {
 
   recordLeaderboardEntry() {
     const entry = { score: Math.floor(this.score / 10), at: Date.now() };
-    let board = [];
+    let board;
     try {
       board = JSON.parse(localStorage.getItem('debugRunnerLeaderboard') || '[]');
       if (!Array.isArray(board)) board = [];

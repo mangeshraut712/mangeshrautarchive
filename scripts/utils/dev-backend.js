@@ -61,8 +61,8 @@ async function runBackend() {
     uvicornArgs.push('--reload');
   }
 
-  let command = 'python3';
-  let args = ['-m', 'uvicorn', ...uvicornArgs];
+  let command;
+  let args;
 
   if (useVenv) {
     command = './venv/bin/python';

@@ -523,7 +523,7 @@ class AppleIntelligenceChatbot {
     // Probe chat health so "Connected" means OpenRouter is actually configured/online.
     // Treat Vercel DEPLOYMENT_DISABLED (402) / network failures as Local Mode so
     // GitHub Pages still answers from the client portfolio knowledge base.
-    let status = 'local';
+    let status;
     try {
       // chat.js exports buildApiUrl; resolve API base the same way as ask()
       const { buildApiUrl } = await import('../core/chat.js');

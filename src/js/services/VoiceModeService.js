@@ -317,7 +317,7 @@ class VoiceModeService {
     this._stopRecognition();
     this._setStatus('thinking');
 
-    let assistantText = '';
+    let assistantText;
     try {
       if (typeof this._askFn !== 'function') {
         throw new Error('Voice Mode chat handler is not ready.');

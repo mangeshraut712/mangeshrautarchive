@@ -1464,7 +1464,7 @@ class GitHubProjects {
 
     let key = 'open';
     let label = 'Open repo';
-    let meta = 'No GitHub release yet';
+    let meta;
 
     if (!releaseChecked) {
       if (activeAgeDays <= 14) key = 'active';
