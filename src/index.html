@@ -2353,8 +2353,23 @@ html.dark #home .hero-name-text {
           </noscript>
         </div>
 
-        <!-- Interactive Skills Capability Radar -->
-        <div id="skills-radar-container" class="skills-radar-container" aria-live="polite"></div>
+        <!-- Interactive Skills Capability Radar Disclosure Button -->
+        <div class="skills-radar-disclosure section-preview-actions" style="margin-top: 2rem;">
+          <button
+            type="button"
+            class="section-preview-btn skills-radar-toggle-btn"
+            id="skills-radar-toggle-btn"
+            aria-expanded="false"
+            aria-controls="skills-radar-container"
+            aria-label="Explore Engineering Depth Radar"
+          >
+            <span class="btn-text">View Competency Matrix & Radar</span>
+            <span class="btn-icon" aria-hidden="true" style="margin-left: 0.35rem; display: inline-block; transition: transform 0.3s ease;">↓</span>
+          </button>
+        </div>
+
+        <!-- Interactive Skills Capability Radar (Revealed on View More) -->
+        <div id="skills-radar-container" class="skills-radar-container is-preview-hidden" aria-live="polite" hidden></div>
       </div>
     </section>
 
@@ -2671,8 +2686,23 @@ html.dark #home .hero-name-text {
           </div>
         </div>
 
-        <!-- Interactive Full-Stack Architecture Tree -->
-        <div id="architecture-tree-container" class="architecture-tree-container" aria-live="polite"></div>
+        <!-- Interactive Full-Stack Architecture Tree Disclosure Button -->
+        <div class="arch-tree-disclosure section-preview-actions" style="margin-top: 2rem;">
+          <button
+            type="button"
+            class="section-preview-btn arch-tree-toggle-btn"
+            id="arch-tree-toggle-btn"
+            aria-expanded="false"
+            aria-controls="architecture-tree-container"
+            aria-label="Explore System Topology"
+          >
+            <span class="btn-text">View System Topology & Pipeline</span>
+            <span class="btn-icon" aria-hidden="true" style="margin-left: 0.35rem; display: inline-block; transition: transform 0.3s ease;">↓</span>
+          </button>
+        </div>
+
+        <!-- Interactive Full-Stack Architecture Tree (Revealed on View More) -->
+        <div id="architecture-tree-container" class="architecture-tree-container is-preview-hidden" aria-live="polite" hidden></div>
       </div>
     </section>
 

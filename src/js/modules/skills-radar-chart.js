@@ -217,8 +217,9 @@ export class SkillsRadarChart {
 
 export function initSkillsRadarChart(selector = '#skills-radar-container') {
   const el = document.querySelector(selector);
-  if (el) {
-    return new SkillsRadarChart(el);
-  }
-  return null;
+  if (!el) return null;
+  if (el.dataset.radarHydrated === 'true') return null;
+  el.dataset.radarHydrated = 'true';
+
+  return new SkillsRadarChart(el);
 }

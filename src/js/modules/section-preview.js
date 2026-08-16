@@ -207,9 +207,92 @@ export function initContactExtras(root = document) {
   });
 }
 
+/**
+ * Standalone disclosure toggles for high-density visual widgets:
+ * 1. Engineering Depth Radar
+ * 2. System Topology Tree
+ */
+export function initWidgetDisclosures(root = document) {
+  // 1. Skills Depth Radar Toggle
+  const radarBtn =
+    root.getElementById?.('skills-radar-toggle-btn') ||
+    root.querySelector?.('#skills-radar-toggle-btn');
+  const radarContainer =
+    root.getElementById?.('skills-radar-container') ||
+    root.querySelector?.('#skills-radar-container');
+  if (radarBtn && radarContainer && radarBtn.dataset.wired !== 'true') {
+    radarBtn.dataset.wired = 'true';
+    radarBtn.addEventListener('click', async () => {
+      const isExpanded = radarBtn.getAttribute('aria-expanded') === 'true';
+      const nextState = !isExpanded;
+      radarBtn.setAttribute('aria-expanded', String(nextState));
+
+      const textEl = radarBtn.querySelector('.btn-text');
+      const iconEl = radarBtn.querySelector('.btn-icon');
+
+      if (nextState) {
+        radarContainer.removeAttribute('hidden');
+        radarContainer.classList.add('is-expanded');
+        if (textEl) textEl.textContent = 'Hide Competency Matrix & Radar';
+        if (iconEl) iconEl.style.transform = 'rotate(180deg)';
+
+        try {
+          const { initSkillsRadarChart } = await import('./skills-radar-chart.js');
+          initSkillsRadarChart('#skills-radar-container');
+        } catch (e) {
+          console.warn('Failed to load skills radar module', e);
+        }
+      } else {
+        radarContainer.setAttribute('hidden', '');
+        radarContainer.classList.remove('is-expanded');
+        if (textEl) textEl.textContent = 'View Competency Matrix & Radar';
+        if (iconEl) iconEl.style.transform = 'rotate(0deg)';
+      }
+    });
+  }
+
+  // 2. Architecture Tree Toggle
+  const archBtn =
+    root.getElementById?.('arch-tree-toggle-btn') || root.querySelector?.('#arch-tree-toggle-btn');
+  const archContainer =
+    root.getElementById?.('architecture-tree-container') ||
+    root.querySelector?.('#architecture-tree-container');
+  if (archBtn && archContainer && archBtn.dataset.wired !== 'true') {
+    archBtn.dataset.wired = 'true';
+    archBtn.addEventListener('click', async () => {
+      const isExpanded = archBtn.getAttribute('aria-expanded') === 'true';
+      const nextState = !isExpanded;
+      archBtn.setAttribute('aria-expanded', String(nextState));
+
+      const textEl = archBtn.querySelector('.btn-text');
+      const iconEl = archBtn.querySelector('.btn-icon');
+
+      if (nextState) {
+        archContainer.removeAttribute('hidden');
+        archContainer.classList.add('is-expanded');
+        if (textEl) textEl.textContent = 'Hide System Topology & Pipeline';
+        if (iconEl) iconEl.style.transform = 'rotate(180deg)';
+
+        try {
+          const { initArchitectureTree } = await import('./architecture-tree.js');
+          initArchitectureTree('#architecture-tree-container');
+        } catch (e) {
+          console.warn('Failed to load architecture tree module', e);
+        }
+      } else {
+        archContainer.setAttribute('hidden', '');
+        archContainer.classList.remove('is-expanded');
+        if (textEl) textEl.textContent = 'View System Topology & Pipeline';
+        if (iconEl) iconEl.style.transform = 'rotate(0deg)';
+      }
+    });
+  }
+}
+
 function boot() {
   initSectionPreviews(document);
   initContactExtras(document);
+  initWidgetDisclosures(document);
 }
 
 if (document.readyState === 'loading') {
@@ -218,4 +301,9 @@ if (document.readyState === 'loading') {
   boot();
 }
 
-export default { initSectionPreviews, refreshSectionPreview, initContactExtras };
+export default {
+  initSectionPreviews,
+  refreshSectionPreview,
+  initContactExtras,
+  initWidgetDisclosures,
+};

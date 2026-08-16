@@ -312,3 +312,26 @@ html.dark .skills-radar-bar-fill {
     margin-bottom: 0.5rem;
   }
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   Skills Radar Disclosure & Progressive Expansion
+   ═══════════════════════════════════════════════════════════════ */
+.skills-radar-container[hidden] {
+  display: none !important;
+}
+
+.skills-radar-container.is-expanded {
+  display: block !important;
+  animation: appleRadarExpand 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes appleRadarExpand {
+  0% {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.99);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}

@@ -42,6 +42,17 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: '9f3c1d84',
+    date: '2026-08-16',
+    type: 'improvement',
+    title: 'Progressive Disclosure: Collapsible Competency Radar and Architecture Tree Toggles',
+    summary:
+      'Implemented Apple-style progressive disclosure toggle controls for Engineering Depth Radar and Full-Stack System Topology. Both complex visual widgets remain collapsed by default behind accessible "View more" buttons to streamline vertical scroll flow, expanding smoothly with animated reveals and dynamic on-demand module hydration.',
+    tags: ['design', 'performance', 'accessibility'],
+    sha: '9f3c1d84',
+    link: 'index.html#skills',
+  },
+  {
     id: 'a57f92de',
     date: '2026-08-16',
     type: 'improvement',

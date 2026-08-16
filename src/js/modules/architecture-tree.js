@@ -236,8 +236,9 @@ export class ArchitectureTree {
 
 export function initArchitectureTree(selector = '#architecture-tree-container') {
   const el = document.querySelector(selector);
-  if (el) {
-    return new ArchitectureTree(el);
-  }
-  return null;
+  if (!el) return null;
+  if (el.dataset.treeHydrated === 'true') return null;
+  el.dataset.treeHydrated = 'true';
+
+  return new ArchitectureTree(el);
 }

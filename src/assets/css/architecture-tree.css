@@ -393,3 +393,26 @@ html.dark .arch-metric-val {
     border-radius: 10px;
   }
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   Architecture Tree Disclosure & Progressive Expansion
+   ═══════════════════════════════════════════════════════════════ */
+.architecture-tree-container[hidden] {
+  display: none !important;
+}
+
+.architecture-tree-container.is-expanded {
+  display: block !important;
+  animation: appleTreeExpand 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes appleTreeExpand {
+  0% {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.99);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
