@@ -1088,11 +1088,12 @@ html.dark .global-nav {
   transition:
     transform 0.2s ease,
     opacity 0.2s ease;
+  opacity: 1;
 }
 
 .nav-logo:hover {
-  transform: scale(1.05);
-  opacity: 0.85;
+  transform: scale(1.06);
+  opacity: 1;
 }
 
 .nav-logo img {
@@ -1101,6 +1102,7 @@ html.dark .global-nav {
   object-fit: cover;
   display: block;
   border-radius: 8px;
+  opacity: 1;
 }
 
 .nav-links {

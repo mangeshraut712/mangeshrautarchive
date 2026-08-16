@@ -42,6 +42,18 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'a71e84d9',
+    date: '2026-08-16',
+    type: 'release',
+    title:
+      'Music Card Refinement, Spotify Icon De-encapsulation & Sitewide Solid Theme Backgrounds',
+    summary:
+      'Polished hero music card geometry with Apple HIG pill styling, eliminated the outer circle container on the Spotify link for a clean brand icon footprint, resolved hover logo visibility with bright #1ed760 highlights and 100% opacity in both light and dark themes, and enforced pure solid backgrounds (#ffffff in light, #000000 in dark) across all pages.',
+    tags: ['design', 'accessibility', 'performance'],
+    sha: 'a71e84d9',
+    link: 'index.html#home',
+  },
+  {
     id: 'f93c1e82',
     date: '2026-08-16',
     type: 'improvement',
