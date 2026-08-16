@@ -42,6 +42,17 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'e4b31a89',
+    date: '2026-08-16',
+    type: 'improvement',
+    title: 'Mobile Safari WebKit Viewport Containment & Fit-to-Screen Hardening',
+    summary:
+      'Hardened responsive viewport containment and touch overflow boundaries across all 13 pages on Mobile Safari (iOS). Added CSS overscroll containment, paint clipping on horizontal navigation rails and marquee carousels, constrained travel search dimensions, and validated 36/36 viewport checks across iPhone SE, iPhone 14, and iPhone 17 Pro Max.',
+    tags: ['design', 'performance', 'deploy'],
+    sha: 'e4b31a89',
+    link: 'index.html',
+  },
+  {
     id: 'c7e2b10a',
     date: '2026-08-16',
     type: 'improvement',

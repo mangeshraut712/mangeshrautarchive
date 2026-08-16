@@ -515,6 +515,10 @@ html.dark .travel-sidebar {
   padding-bottom: 2px;
   scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+  contain: paint;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .travel-countries::-webkit-scrollbar {
@@ -560,6 +564,9 @@ html.dark .travel-sidebar {
   border: 1px solid color-mix(in srgb, var(--separator) 78%, transparent);
   border-radius: var(--radius-full);
   background: color-mix(in srgb, var(--fill-secondary) 80%, transparent);
+  box-sizing: border-box;
+  max-width: 100%;
+  width: 100%;
 }
 
 .travel-search i {

@@ -88,6 +88,8 @@ body.monitor-page .monitor-edge-banner p {
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
   overscroll-behavior-x: contain;
+  contain: paint;
+  box-sizing: border-box;
   isolation: isolate;
 }
 

@@ -291,6 +291,9 @@ html.dark .systems-hero-action--primary:hover {
   gap: 0.35rem;
   overflow-x: auto;
   overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+  contain: paint;
+  box-sizing: border-box;
   scrollbar-width: none;
   scroll-padding-inline: 1rem;
   padding: 0.35rem;

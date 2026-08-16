@@ -271,6 +271,10 @@ body.uses-page .uses-filters {
   padding-bottom: 2px;
   scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+  contain: paint;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 body.uses-page .uses-filters::-webkit-scrollbar {
