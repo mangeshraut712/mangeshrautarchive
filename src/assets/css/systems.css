@@ -3142,12 +3142,14 @@ html.dark .systems-public-statement {
   font-size: 1.2rem;
   font-weight: 700;
   font-family: monospace;
-  opacity: 0.15;
+  color: var(--apple-secondary-text, #6e6e73);
+  opacity: 0.85;
   line-height: 1;
 }
 
 html.dark .decision-number {
-  opacity: 0.25;
+  color: var(--apple-secondary-text, #a1a1a6);
+  opacity: 0.85;
 }
 
 .decision-badge {

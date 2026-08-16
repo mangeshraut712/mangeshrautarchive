@@ -241,7 +241,7 @@ function renderDecisionGrid(rootId, decisions) {
       return `
         <div class="systems-decision-row lg-glass-card">
           <div class="systems-decision-meta">
-            <span class="decision-number">${String(idx + 1).padStart(2, '0')}</span>
+            <span class="decision-number" aria-hidden="true">${String(idx + 1).padStart(2, '0')}</span>
             <span class="decision-badge ${badgeClass}">
               <i class="fa-solid ${badgeIcon}" aria-hidden="true"></i>
               <span>${badgeLabel}</span>
