@@ -171,6 +171,15 @@ describe('MarkdownService.bindRichInteractions', () => {
     expect(button.textContent).toBe('Show less');
     expect(button.getAttribute('aria-expanded')).toBe('true');
   });
+
+  it('attaches copy buttons to code blocks', () => {
+    root.innerHTML = '<pre><code>const test = 123;</code></pre>';
+    markdownService.bindRichInteractions(root);
+
+    const copyBtn = root.querySelector('.rich-code-copy-btn');
+    expect(copyBtn).toBeTruthy();
+    expect(copyBtn.getAttribute('aria-label')).toBe('Copy code to clipboard');
+  });
 });
 
 describe('MarkdownService.containsMarkdown', () => {

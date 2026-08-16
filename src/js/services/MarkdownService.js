@@ -520,6 +520,48 @@ class MarkdownService {
         button.textContent = expanded ? 'Show less' : 'Show more';
       });
     });
+
+    root.querySelectorAll('pre:not([data-rich-copy-bound])').forEach(pre => {
+      pre.dataset.richCopyBound = 'true';
+      const code = pre.querySelector('code');
+      if (!code) return;
+
+      const copyBtn = document.createElement('button');
+      copyBtn.type = 'button';
+      copyBtn.className = 'rich-code-copy-btn';
+      copyBtn.setAttribute('aria-label', 'Copy code to clipboard');
+      copyBtn.innerHTML = '<i class="fa-regular fa-copy" aria-hidden="true"></i><span>Copy</span>';
+
+      copyBtn.addEventListener('click', async () => {
+        const textToCopy = code.innerText || code.textContent || '';
+        try {
+          if (navigator.clipboard?.writeText) {
+            await navigator.clipboard.writeText(textToCopy);
+          } else {
+            const textarea = document.createElement('textarea');
+            textarea.value = textToCopy;
+            textarea.style.position = 'fixed';
+            textarea.style.opacity = '0';
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+          }
+          copyBtn.classList.add('copied');
+          copyBtn.innerHTML =
+            '<i class="fa-solid fa-check" aria-hidden="true"></i><span>Copied!</span>';
+          setTimeout(() => {
+            copyBtn.classList.remove('copied');
+            copyBtn.innerHTML =
+              '<i class="fa-regular fa-copy" aria-hidden="true"></i><span>Copy</span>';
+          }, 2000);
+        } catch (_err) {
+          copyBtn.innerHTML = '<span>Failed</span>';
+        }
+      });
+
+      pre.appendChild(copyBtn);
+    });
   }
 
   containsMarkdown(text) {

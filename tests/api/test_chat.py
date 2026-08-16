@@ -293,3 +293,14 @@ def test_build_context_prompt_handles_sanitized_visible_projects():
     assert "[User is viewing: Home]" in prompt
     assert "AssistMe" in prompt
     assert "Portfolio" in prompt
+
+
+def test_direct_changelog_command_returns_recent_releases():
+    import asyncio
+    from api.routes.chat import handle_direct_command
+
+    res = asyncio.run(handle_direct_command("what's new in the changelog"))
+    assert res is not None
+    assert res["category"] == "Changelog"
+    assert "Recent Portfolio Releases" in res["answer"]
+    assert "/changelog" in res["answer"]

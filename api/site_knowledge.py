@@ -59,6 +59,18 @@ PUBLIC_SOURCES: Sequence[Dict[str, str]] = (
         "kind": "html",
     },
     {
+        "path": "src/changelog.html",
+        "title": "Portfolio Changelog and release notes page",
+        "url": "https://mangeshraut.pro/changelog",
+        "kind": "html",
+    },
+    {
+        "path": "src/js/data/changelog-entries.js",
+        "title": "Portfolio Changelog canonical entries",
+        "url": "https://mangeshraut.pro/changelog",
+        "kind": "javascript",
+    },
+    {
         "path": "src/js/data/portfolio-public-data.js",
         "title": "Canonical portfolio public facts",
         "url": "https://mangeshraut.pro/systems",
@@ -94,6 +106,7 @@ SECTION_HINTS = {
     "monitor": "system monitor operations api backend vercel github status",
     "systems": "systems engineering evidence benchmarks architecture lighthouse quality gates",
     "uses": "uses hardware software ai stack tools colophon setup",
+    "changelog": "changelog releases shipped features updates bug fixes commits version history",
 }
 
 WEB_FRESHNESS_RE = re.compile(
@@ -329,9 +342,41 @@ def format_recent_blog_summary(limit: int = 5) -> str:
     return f"Latest Field Notes posts:\n{titles}"
 
 
+def _extract_changelog_entries(raw: str) -> List[Dict[str, str]]:
+    """Parse id, date, title, and summary from changelog-entries.js."""
+    entries = []
+    pattern = re.compile(
+        r"""date:\s*['"](?P<date>\d{4}-\d{2}-\d{2})['"].{0,250}?title:\s*['"](?P<title>[^'"]+)['"].{0,1500}?summary:\s*['"](?P<summary>[^'"]+)['"]""",
+        re.S,
+    )
+    for match in pattern.finditer(raw):
+        entries.append(
+            {
+                "date": match.group("date"),
+                "title": match.group("title"),
+                "summary": match.group("summary"),
+            }
+        )
+    return entries
+
+
+@lru_cache(maxsize=1)
+def get_changelog_entries() -> List[Dict[str, str]]:
+    return _extract_changelog_entries(_read_public_source("src/js/data/changelog-entries.js"))
+
+
+def format_recent_changelog_summary(limit: int = 5) -> str:
+    entries = get_changelog_entries()[: max(1, limit)]
+    if not entries:
+        return "No recent changelog entries indexed."
+    titles = "\n".join(f"- {entry['date']}: {entry['title']}" for entry in entries)
+    return f"Latest Portfolio Releases & Changelog:\n{titles}"
+
+
 def build_derived_knowledge_text() -> str:
     travel = get_travel_summary()
     blog_june_2026 = format_blog_release_summary("June 2026")
+    changelog_summary = format_recent_changelog_summary(5)
     country_lines = [
         f"{country}: {data['stops']} stops"
         for country, data in travel["countries"].items()
@@ -341,7 +386,8 @@ def build_derived_knowledge_text() -> str:
         f"Travel Atlas total stops: {travel['total_stops']} across {travel['country_count']} countries. "
         f"Country stop counts: {'; '.join(country_lines)}. "
         f"{format_usa_state_summary()} "
-        f"{blog_june_2026}"
+        f"{blog_june_2026} "
+        f"{changelog_summary}"
     )
 
 

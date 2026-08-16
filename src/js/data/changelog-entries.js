@@ -42,6 +42,18 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'e41b9d72',
+    date: '2026-08-16',
+    type: 'release',
+    title:
+      'AssistMe AI Chatbot Modernization: One-Click Code Copy, Changelog Knowledge Ingestion, and Apple Design Polish',
+    summary:
+      'Upgraded the entire AssistMe AI chatbot across frontend and backend. Added one-click copy-to-clipboard buttons with tactile feedback to code blocks inside chat messages, expanded site knowledge indexing to include canonical changelog entries and release history, synchronized backend test metrics (160 Vitest + 165 pytest tests), extended dynamic follow-up chips across systems, travel, uses, and changelog domains, and perfected strict Apple design tokens with zero outer glowing artifacts.',
+    tags: ['assistme', 'design', 'performance', 'api'],
+    sha: 'e41b9d72',
+    link: 'index.html#home',
+  },
+  {
     id: 'c94b7e12',
     date: '2026-08-16',
     type: 'release',

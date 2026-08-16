@@ -81,11 +81,24 @@ const FOLLOWUP_CHIPS = {
   certifications: ['AWS certified?', 'Java certifications?', 'ML certs?'],
   aiml: ['ML models used?', 'Data pipeline?', 'NLP experience?'],
   agents: ['What can you do?', 'Schedule meeting', 'Download resume'],
+  changelog: ['Latest releases?', 'Recent updates?', 'Git commit history?'],
+  systems: ['Architecture diagrams?', 'Lighthouse score?', 'Quality gates?'],
+  travel: ['Cities visited?', 'USA state count?', 'Travel Atlas?'],
+  uses: ['Hardware setup?', 'Dev stack?', 'AI tools used?'],
+  monitor: ['API latency?', 'Health status?', 'System telemetry?'],
+  code: ['FastAPI backend?', 'Vitest suite?', 'WebMCP tools?'],
   default: ['About Mangesh', 'Top projects', 'AI/ML skills'],
 };
 
 function inferFollowupContext(assistantText) {
   const t = (assistantText || '').toLowerCase();
+  if (/\b(changelog|release notes|releases|shipped|version)\b/.test(t)) return 'changelog';
+  if (/\b(system|systems|architecture|quality gate|lighthouse|benchmark)\b/.test(t))
+    return 'systems';
+  if (/\b(travel|atlas|city|cities|visited|stops)\b/.test(t)) return 'travel';
+  if (/\b(uses|hardware|macbook|setup)\b/.test(t)) return 'uses';
+  if (/\b(monitor|latency|uptime|telemetry|health check)\b/.test(t)) return 'monitor';
+  if (/\b(fastapi|pytest|vitest|playwright|backend code|api route)\b/.test(t)) return 'code';
   if (
     /\b(tensorflow|pytorch|scikit|ml model|neural|nlp|deep learning|ai|machine learning)\b/.test(t)
   )

@@ -57,6 +57,7 @@ from api.site_knowledge import (
     build_site_knowledge_prompt,
     format_blog_release_summary,
     format_recent_blog_summary,
+    format_recent_changelog_summary,
     format_usa_state_summary,
     retrieve_site_context,
     should_use_web_tools,
@@ -96,7 +97,27 @@ def is_blog_release_query(query: str) -> bool:
             "latest",
             "june 2026",
             "july 2026",
+            "august 2026",
             "may 2026",
+        ]
+    )
+
+
+def is_changelog_query(query: str) -> bool:
+    """Detect direct changelog, release notes, and update questions."""
+    q = query.lower()
+    return any(
+        term in q
+        for term in [
+            "changelog",
+            "release notes",
+            "what's new",
+            "whats new",
+            "recent updates",
+            "recent changes",
+            "latest release",
+            "latest releases",
+            "recent commits",
         ]
     )
 
@@ -466,6 +487,19 @@ async def handle_direct_command(message: str) -> Optional[Dict]:
             "source": "Site Knowledge",
             "model": "Blog Index",
             "category": "Blogs",
+            "confidence": 1.0,
+            "runtime": "0ms",
+            "type": "direct",
+            "knowledge_context": True,
+            "web_tools": False,
+        }
+
+    if is_changelog_query(lower):
+        return {
+            "answer": f"🚀 **Recent Portfolio Releases**\n\n{format_recent_changelog_summary(5)}\n\nExplore all release notes and git commits at [/changelog](https://mangeshraut.pro/changelog)!",
+            "source": "Site Knowledge",
+            "model": "Changelog Index",
+            "category": "Changelog",
             "confidence": 1.0,
             "runtime": "0ms",
             "type": "direct",
