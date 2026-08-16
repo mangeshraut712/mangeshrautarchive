@@ -54,34 +54,34 @@
     "foglamp:publish": "node scripts/integrations/publish-foglamp-scan.mjs"
   },
   "devDependencies": {
-    "@axe-core/playwright": "^4.12.1",
+    "@axe-core/playwright": "^4.13.0",
     "@eslint/js": "^9.39.5",
-    "@playwright/test": "^1.61.1",
-    "@tailwindcss/cli": "^4.3.2",
+    "@playwright/test": "^1.62.1",
+    "@tailwindcss/cli": "^4.3.3",
     "cross-env": "^10.1.0",
     "dotenv": "^17.4.2",
-    "esbuild": "^0.28.0",
+    "esbuild": "^0.28.2",
     "eslint": "^9.39.5",
     "express": "^5.2.1",
-    "globals": "^17.7.0",
+    "globals": "^17.11.0",
     "jsdom": "^29.1.1",
-    "prettier": "^3.9.5",
+    "prettier": "^3.9.6",
     "sharp": "^0.35.2",
-    "start-server-and-test": "^3.0.11",
-    "stylelint": "^17.14.0",
+    "start-server-and-test": "^3.0.12",
+    "stylelint": "^17.14.1",
     "stylelint-config-standard": "^40.0.0",
-    "tailwindcss": "^4.0.9",
+    "tailwindcss": "^4.3.3",
     "vitest": "^4.1.10"
   },
   "dependencies": {
     "@ogtirth/liquid-glass-oss": "^0.1.0",
     "@vercel/analytics": "^2.0.1",
     "html-to-image": "^1.11.13",
-    "isomorphic-dompurify": "^3.21.0",
-    "katex": "^0.17.0",
-    "marked": "^18.0.6",
+    "isomorphic-dompurify": "^3.22.0",
+    "katex": "^0.18.4",
+    "marked": "^18.0.9",
     "marked-footnote": "^1.2.2",
-    "ws": "^8.21.0"
+    "ws": "^8.21.3"
   },
   "engines": {
     "node": ">=22 <27"

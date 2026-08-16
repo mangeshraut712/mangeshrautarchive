@@ -42,6 +42,17 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'b94e72cd',
+    date: '2026-08-16',
+    type: 'release',
+    title: 'Node 22 LTS Runtime Standard & Full Dependency Modernization',
+    summary:
+      'Modernized development environment and runtime to Node 22 LTS standard, configuring automatic PATH detection across all git pre-commit hooks and shell configs. Upgraded all core npm dependencies (Playwright, Tailwind CSS v4, esbuild, KaTeX, DOMPurify, Marked, Stylelint, Prettier, and ws) to their latest stable releases with zero breaking changes or runtime regressions.',
+    tags: ['performance', 'deploy', 'systems'],
+    sha: 'b94e72cd',
+    link: 'changelog.html',
+  },
+  {
     id: 'f83a12bc',
     date: '2026-08-16',
     type: 'release',
