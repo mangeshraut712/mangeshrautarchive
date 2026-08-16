@@ -26,7 +26,8 @@ html.dark:has(body.travel-body) {
   background-color: #000000 !important;
 }
 
-.travel-body {
+.travel-body,
+body.travel-page {
   margin: 0;
   padding: 0;
   overflow: hidden !important;
@@ -42,7 +43,8 @@ html.dark:has(body.travel-body) {
   font-family: var(--font-text, -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif);
 }
 
-html.dark .travel-body {
+html.dark .travel-body,
+html.dark body.travel-page {
   background: #000000 !important;
   background-color: #000000 !important;
   color: #f5f5f7;

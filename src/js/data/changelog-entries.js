@@ -42,6 +42,17 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'f948a12c',
+    date: '2026-08-16',
+    type: 'improvement',
+    title: '100/100 Apple HIG design alignment across all 13 website pages',
+    summary:
+      'Completed comprehensive visual audit achieving 100/100 Apple Design System alignment across all 13 pages and subpage templates. Locked solid #000000 dark canvas surfaces on Travel Atlas, standardized SF Pro Display typography on standalone Case Studies, unified squircle card geometry across all sections, and validated zero horizontal overflow.',
+    tags: ['design', 'performance', 'systems'],
+    sha: 'f948a12c',
+    link: 'systems.html',
+  },
+  {
     id: '0700b214',
     date: '2026-08-16',
     type: 'improvement',

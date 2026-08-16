@@ -393,6 +393,22 @@ html.browser-gecko body.travel-body {
   background-image: none !important;
 }
 
+html.dark:has(body.travel-body),
+html.dark:has(body.travel-body) body,
+html.dark body.travel-body,
+html.dark.browser-chromium:not(.launch-intro-active):has(body.travel-body),
+html.dark.browser-chromium:not(.launch-intro-active) body.travel-body:not(.menu-open),
+html.dark.browser-chromium body.travel-body,
+html.dark.browser-webkit:has(body.travel-body),
+html.dark.browser-webkit body.travel-body,
+html.dark.browser-gecko:has(body.travel-body),
+html.dark.browser-gecko body.travel-body,
+html[data-theme='dark'] body.travel-body {
+  background: #000000 !important;
+  background-color: #000000 !important;
+  background-image: none !important;
+}
+
 @supports (height: 100svh) {
   html:has(body.travel-body),
   html.browser-chromium:has(body.travel-body),

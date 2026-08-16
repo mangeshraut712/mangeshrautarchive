@@ -2303,6 +2303,16 @@ html.dark .systems-footer-links {
 /* Case study standalone (generated pages) */
 body.case-study-standalone {
   padding-top: calc(84px + env(safe-area-inset-top, 0px));
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  color: var(--systems-text, #1d1d1f);
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+}
+
+html.dark body.case-study-standalone {
+  background: #000000 !important;
+  background-color: #000000 !important;
+  color: #f5f5f7;
 }
 
 .case-study-page {
@@ -2321,6 +2331,7 @@ body.case-study-standalone {
   font-weight: 700;
   line-height: 1.1;
   letter-spacing: -0.03em;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
 }
 
 .case-study-tagline {
@@ -2409,6 +2420,7 @@ html.dark .case-study-evidence-bar a {
   font-size: 1.05rem;
   font-weight: 620;
   letter-spacing: -0.02em;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
 }
 
 .case-study-step p,
