@@ -4574,3 +4574,203 @@ html[data-theme='dark'] section#projects #github-projects-container .project-rep
   color: #a1a1a6 !important;
   -webkit-text-fill-color: #a1a1a6 !important;
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   Tech Stack Filter Chips Rail
+   ═══════════════════════════════════════════════════════════════ */
+.project-tech-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 0.5rem;
+  margin: 0.75rem 0 1rem;
+}
+
+.project-tech-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 34px;
+  padding: 0.35rem 0.85rem;
+  border-radius: 980px;
+  font-size: 0.82rem;
+  font-weight: 550;
+  letter-spacing: -0.01em;
+  background: rgba(0, 0, 0, 0.04);
+  color: #1d1d1f;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-sizing: border-box;
+}
+
+.project-tech-chip:hover {
+  background: rgba(0, 0, 0, 0.08);
+  border-color: rgba(0, 0, 0, 0.15);
+  transform: translateY(-1px);
+}
+
+.project-tech-chip.active {
+  background: #0071e3 !important;
+  color: #ffffff !important;
+  border-color: #0071e3 !important;
+  box-shadow: 0 4px 12px rgba(0, 113, 227, 0.25);
+}
+
+.tech-chip-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.tech-chip-dot--ts {
+  background-color: #3178c6;
+}
+
+.tech-chip-dot--py {
+  background-color: #3572a5;
+}
+
+.tech-chip-dot--js {
+  background-color: #f7df1e;
+}
+
+.tech-chip-dot--fastapi {
+  background-color: #059669;
+}
+
+.tech-chip-icon--ai {
+  font-size: 0.75rem;
+  color: #a855f7;
+}
+
+.project-tech-chip.active .tech-chip-icon--ai {
+  color: #ffffff !important;
+}
+
+html.dark .project-tech-chip {
+  background: rgba(255, 255, 255, 0.06);
+  color: #f5f5f7;
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+html.dark .project-tech-chip:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+html.dark .project-tech-chip.active {
+  background: #0071e3 !important;
+  color: #ffffff !important;
+  border-color: #0071e3 !important;
+  box-shadow: 0 4px 14px rgba(0, 113, 227, 0.4);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Search Shortcut Badge Hint
+   ═══════════════════════════════════════════════════════════════ */
+.proj-input-group {
+  position: relative;
+}
+
+.search-kbd-hint {
+  position: absolute;
+  right: 0.85rem;
+  top: 50%;
+  transform: translateY(-50%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 0.35rem;
+  font-family: inherit;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #6e6e73;
+  background: rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 6px;
+  pointer-events: none;
+}
+
+html.dark .search-kbd-hint {
+  color: #a1a1a6;
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Clone Button & Recent Pulse Indicator
+   ═══════════════════════════════════════════════════════════════ */
+.project-head-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.project-clone-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.22rem 0.55rem;
+  border-radius: 980px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #0071e3;
+  background: rgba(0, 113, 227, 0.08);
+  border: 1px solid rgba(0, 113, 227, 0.2);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.project-clone-btn:hover {
+  background: #0071e3;
+  color: #ffffff;
+  border-color: #0071e3;
+  transform: translateY(-1px);
+}
+
+.project-clone-btn.is-copied {
+  background: #34c759 !important;
+  color: #ffffff !important;
+  border-color: #34c759 !important;
+}
+
+html.dark .project-clone-btn {
+  color: #2997ff;
+  background: rgba(41, 151, 255, 0.12);
+  border-color: rgba(41, 151, 255, 0.28);
+}
+
+html.dark .project-clone-btn:hover {
+  background: #0071e3;
+  color: #ffffff;
+  border-color: #0071e3;
+}
+
+.project-pulse-dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin-left: 0.35rem;
+  border-radius: 50%;
+  background-color: #34c759;
+  box-shadow: 0 0 0 0 rgba(52, 199, 89, 0.7);
+  animation: projectPulse 2s infinite;
+  vertical-align: middle;
+}
+
+@keyframes projectPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(52, 199, 89, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 6px rgba(52, 199, 89, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(52, 199, 89, 0);
+  }
+}

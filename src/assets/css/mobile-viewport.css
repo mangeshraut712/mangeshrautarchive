@@ -627,24 +627,35 @@ section,
   }
 
   body #home.hero-section .music-card-inner {
-    /* Height/padding owned by chrome-surfaces.css */
-    min-height: 56px !important;
+    min-height: 52px !important;
+    padding: 0.38rem 0.75rem 0.38rem 0.38rem !important;
+    gap: 0.65rem !important;
   }
 
-  body #home.hero-section .album-art-container {
-    width: 38px !important;
-    height: 38px !important;
+  body #home.hero-section .album-art-container,
+  body #home.hero-section .album-art {
+    width: 44px !important;
+    height: 44px !important;
+    min-width: 44px !important;
+    min-height: 44px !important;
   }
 
   body #home.hero-section .track-name {
-    font-size: 0.86rem !important;
+    font-size: 0.82rem !important;
     line-height: 1.2 !important;
+    max-width: 150px !important;
   }
 
-  body #home.hero-section .artist-name,
-  body #home.hero-section .status-row {
-    font-size: 0.72rem !important;
+  body #home.hero-section .artist-name {
+    font-size: 0.7rem !important;
     line-height: 1.2 !important;
+    max-width: 150px !important;
+  }
+
+  body #home.hero-section .status-row {
+    font-size: 0.62rem !important;
+    line-height: 1 !important;
+    margin-top: 0.12rem !important;
   }
 
   body #home.hero-section .hero-description {

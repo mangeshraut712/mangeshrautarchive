@@ -403,68 +403,6 @@ html.dark #home .music-card:hover .music-card-inner {
   transform: translateY(-2px);
 }
 
-#home .album-art-container {
-  position: relative;
-  width: 44px;
-  height: 44px;
-  flex-shrink: 0;
-}
-
-#home .album-art {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  object-fit: cover;
-  box-shadow: var(--shadow-apple-sm);
-  animation: albumSpin 8s linear infinite;
-  animation-play-state: paused;
-  transition:
-    transform 0.3s ease,
-    opacity 0.4s ease;
-}
-
-#home .music-card.is-playing .album-art {
-  animation-play-state: running;
-}
-
-#home .playing-indicator {
-  position: absolute;
-  bottom: -6px;
-  right: -6px;
-  display: flex;
-  gap: 2px;
-  padding: 4px 6px;
-  background: var(--apple-green);
-  border-radius: 6px;
-  box-shadow: 0 2px 8px rgb(52 199 89 / 40%);
-}
-
-#home .playing-indicator span {
-  width: 3px;
-  height: 12px;
-  background: white;
-  border-radius: 2px;
-  animation: sound-bar 0.8s ease-in-out infinite;
-}
-
-#home .playing-indicator span:nth-child(2) {
-  animation-delay: 0.1s;
-}
-
-#home .playing-indicator span:nth-child(3) {
-  animation-delay: 0.2s;
-}
-
-@keyframes sound-bar {
-  0%,
-  100% {
-    transform: scaleY(0.4);
-  }
-  50% {
-    transform: scaleY(1);
-  }
-}
-
 #home .track-info {
   flex: 0 1 auto;
   min-width: 0;
@@ -1039,6 +977,70 @@ html.dark {
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
   --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.3);
   --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.4);
+}
+
+/* Section Content Visibility & Rendering Containment */
+#about.section-about {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 500px;
+}
+
+#skills.section-standard {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 600px;
+}
+
+#experience.section-standard {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 800px;
+}
+
+#engineering.section-standard {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 600px;
+}
+
+#projects.section-standard {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 900px;
+}
+
+#education.section-standard {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 700px;
+}
+
+#publications.section-standard {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 800px;
+}
+
+#blog.section-blog {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 600px;
+}
+
+#contact.section-standard {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 500px;
+}
+
+/* Progressive Disclosure Action Toggles */
+.section-preview-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 1.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.section-preview-btn .btn-icon {
+  margin-left: 0.35rem;
+  display: inline-block;
+  transition: transform 0.3s ease;
+}
+
+.section-preview-btn[aria-expanded='true'] .btn-icon {
+  transform: rotate(180deg);
 }
 
 /* ===== PRINT STYLES ===== */

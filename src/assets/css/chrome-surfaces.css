@@ -247,39 +247,39 @@ html[data-theme='dark'] #home .music-card.is-playing .music-card-inner {
 @media (hover: hover) and (pointer: fine) {
   html:not(.dark) #home .music-card:hover .music-card-inner {
     border-radius: 999px !important;
-    padding: 0.45rem 0.85rem 0.45rem 0.45rem !important;
-    gap: 0.85rem !important;
-    border-color: #0071e3 !important;
+    padding: 0.42rem 0.85rem 0.42rem 0.42rem !important;
+    gap: 0.75rem !important;
+    border-color: rgba(0, 113, 227, 0.35) !important;
     background: #ffffff !important;
     background-color: #ffffff !important;
     box-shadow:
-      0 8px 24px rgb(0 113 227 / 16%),
-      0 2px 6px rgb(0 0 0 / 4%) !important;
-    transform: translateY(-2px) !important;
+      0 6px 20px rgb(0 113 227 / 12%),
+      0 1px 3px rgb(0 0 0 / 4%) !important;
+    transform: translateY(-1.5px) !important;
   }
 
   html.dark #home .music-card:hover .music-card-inner {
     border-radius: 999px !important;
-    padding: 0.45rem 0.85rem 0.45rem 0.45rem !important;
-    gap: 0.85rem !important;
-    border-color: #0a84ff !important;
-    background: #000000 !important;
-    background-color: #000000 !important;
+    padding: 0.42rem 0.85rem 0.42rem 0.42rem !important;
+    gap: 0.75rem !important;
+    border-color: rgba(10, 132, 255, 0.4) !important;
+    background: #18181a !important;
+    background-color: #18181a !important;
     box-shadow:
-      0 10px 32px rgb(10 132 255 / 24%),
-      0 2px 8px rgb(0 0 0 / 60%) !important;
-    transform: translateY(-2px) !important;
+      0 8px 28px rgb(0 0 0 / 60%),
+      0 2px 6px rgb(0 0 0 / 40%) !important;
+    transform: translateY(-1.5px) !important;
   }
 
   #home .music-card:hover .album-art-container {
-    width: 44px !important;
-    height: 44px !important;
+    width: 48px !important;
+    height: 48px !important;
   }
 
   #home .music-card:hover .album-art {
-    width: 44px !important;
-    height: 44px !important;
-    transform: scale(1.05) !important;
+    width: 48px !important;
+    height: 48px !important;
+    transform: none !important;
   }
 }
 
@@ -288,18 +288,19 @@ html[data-theme='dark'] #home .music-card.is-playing .music-card-inner {
   display: flex !important;
   flex-direction: column !important;
   justify-content: center !important;
-  gap: 0.15rem !important;
+  gap: 0.1rem !important;
   min-width: 0 !important;
   flex: 1 1 auto !important;
   max-width: 100% !important;
+  text-align: left !important;
 }
 
 #home .music-card-inner .status-row,
 #home .music-card-inner .lg-webgl-content .status-row {
   display: inline-flex !important;
   align-items: center !important;
-  gap: 0.4rem !important;
-  margin: 0 !important;
+  gap: 0.35rem !important;
+  margin: 0.15rem 0 0 !important;
   min-width: 0 !important;
   max-width: 100% !important;
   width: 100% !important;
@@ -314,13 +315,13 @@ html[data-theme='dark'] #home .music-card.is-playing .music-card-inner {
   text-overflow: ellipsis !important;
   white-space: nowrap !important;
   max-width: 100% !important;
-  font-size: 0.74rem !important;
-  font-weight: 700 !important;
-  letter-spacing: 0.06em !important;
+  font-size: 0.63rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.05em !important;
   text-transform: uppercase !important;
-  color: #48484a !important;
-  -webkit-text-fill-color: #48484a !important;
-  line-height: 1.15 !important;
+  color: #8e8e93 !important;
+  -webkit-text-fill-color: #8e8e93 !important;
+  line-height: 1 !important;
 }
 
 html.dark #home .music-card-inner .status-text {
@@ -330,23 +331,24 @@ html.dark #home .music-card-inner .status-text {
 
 #home .music-card[data-music-state='playing'] .status-text,
 #home .music-card.is-playing .status-text {
-  color: #1db954 !important;
-  -webkit-text-fill-color: #1db954 !important;
+  color: #34c759 !important;
+  -webkit-text-fill-color: #34c759 !important;
 }
 
 #home .music-card-inner .track-name,
 #home .music-card-inner .artist-name {
-  max-width: 100% !important;
+  max-width: 175px !important;
   margin: 0 !important;
   overflow: hidden !important;
   text-overflow: ellipsis !important;
   white-space: nowrap !important;
-  line-height: 1.25 !important;
+  line-height: 1.22 !important;
 }
 
 #home .music-card-inner .track-name {
-  font-size: 0.94rem !important;
+  font-size: 0.86rem !important;
   font-weight: 650 !important;
+  letter-spacing: -0.015em !important;
   color: #1d1d1f !important;
   -webkit-text-fill-color: #1d1d1f !important;
 }
@@ -357,10 +359,10 @@ html.dark #home .music-card-inner .track-name {
 }
 
 #home .music-card-inner .artist-name {
-  font-size: 0.78rem !important;
+  font-size: 0.72rem !important;
   font-weight: 450 !important;
-  color: #48484a !important;
-  -webkit-text-fill-color: #48484a !important;
+  color: #6e6e73 !important;
+  -webkit-text-fill-color: #6e6e73 !important;
 }
 
 html.dark #home .music-card-inner .artist-name {
@@ -370,20 +372,24 @@ html.dark #home .music-card-inner .artist-name {
 
 #home .music-card-inner .album-art-container {
   position: relative !important;
-  width: 56px !important;
-  height: 56px !important;
+  width: 48px !important;
+  height: 48px !important;
+  min-width: 48px !important;
+  min-height: 48px !important;
   flex-shrink: 0 !important;
-  overflow: visible !important;
+  overflow: hidden !important;
   border-radius: 50% !important;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18) !important;
 }
 
 #home .music-card-inner .album-art {
-  width: 56px !important;
-  height: 56px !important;
+  width: 48px !important;
+  height: 48px !important;
+  min-width: 48px !important;
+  min-height: 48px !important;
   border-radius: 50% !important;
   object-fit: cover !important;
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.25) !important;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.2) !important;
   transition: transform 0.3s ease !important;
 }
 
@@ -406,12 +412,12 @@ html.dark #home .music-card-inner .artist-name {
   top: 50% !important;
   left: 50% !important;
   transform: translate(-50%, -50%) !important;
-  width: 9px !important;
-  height: 9px !important;
+  width: 8px !important;
+  height: 8px !important;
   border-radius: 50% !important;
   background: radial-gradient(circle, #0d0d0f 0%, #1c1c1e 100%) !important;
-  border: 1.5px solid rgba(255, 255, 255, 0.65) !important;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6) !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.75) !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5) !important;
   pointer-events: none !important;
   z-index: 2 !important;
 }
@@ -419,27 +425,26 @@ html.dark #home .music-card-inner .artist-name {
 #home .music-card-inner .status-badge {
   display: inline-flex !important;
   align-items: center !important;
-  gap: 0.35rem !important;
+  gap: 0.28rem !important;
 }
 
 #home .music-card-inner .status-live-dot {
   display: inline-block !important;
-  width: 6px !important;
-  height: 6px !important;
+  width: 5px !important;
+  height: 5px !important;
   border-radius: 50% !important;
   background-color: #8e8e93 !important;
   flex-shrink: 0 !important;
-  transition:
-    background-color 0.3s ease,
-    box-shadow 0.3s ease !important;
+  box-shadow: none !important;
+  transition: background-color 0.3s ease !important;
 }
 
 #home .music-card-inner .status-live-dot.active,
 #home .music-card.is-playing .status-live-dot,
 #home .music-card[data-music-state='playing'] .status-live-dot {
   background-color: #34c759 !important;
-  box-shadow: 0 0 8px rgba(52, 199, 89, 0.9) !important;
-  animation: livePing 1.8s cubic-bezier(0, 0, 0.2, 1) infinite !important;
+  box-shadow: none !important;
+  animation: livePing 2s ease-in-out infinite !important;
 }
 
 @keyframes livePing {
@@ -448,9 +453,8 @@ html.dark #home .music-card-inner .artist-name {
     opacity: 1;
   }
   50% {
-    transform: scale(1.35);
+    transform: scale(1.25);
     opacity: 0.85;
-    box-shadow: 0 0 10px rgba(52, 199, 89, 1);
   }
   100% {
     transform: scale(1);
@@ -505,43 +509,43 @@ html.dark #home .music-card-inner .artist-name {
   justify-content: center !important;
   flex-shrink: 0 !important;
   margin-left: auto !important;
-  width: 36px !important;
-  height: 36px !important;
-  min-width: 36px !important;
-  min-height: 36px !important;
+  width: 34px !important;
+  height: 34px !important;
+  min-width: 34px !important;
+  min-height: 34px !important;
   border-radius: 50% !important;
-  background: rgba(29, 185, 84, 0.14) !important;
-  background-color: rgba(29, 185, 84, 0.14) !important;
+  background: rgba(29, 185, 84, 0.1) !important;
+  background-color: rgba(29, 185, 84, 0.1) !important;
   color: #1db954 !important;
   -webkit-text-fill-color: #1db954 !important;
-  border: 1px solid rgba(29, 185, 84, 0.28) !important;
+  border: 1px solid rgba(29, 185, 84, 0.24) !important;
   box-shadow: none !important;
   text-decoration: none !important;
-  font-size: 1.2rem !important;
+  font-size: 1.15rem !important;
   opacity: 1 !important;
   transition:
     transform 0.22s ease,
     background 0.22s ease,
-    color 0.22s ease,
-    box-shadow 0.22s ease !important;
+    border-color 0.22s ease,
+    color 0.22s ease !important;
 }
 
 #home .music-card-spotify-link:hover {
-  transform: scale(1.08) !important;
-  background: rgba(29, 185, 84, 0.18) !important;
-  background-color: rgba(29, 185, 84, 0.18) !important;
-  color: #1db954 !important;
-  -webkit-text-fill-color: #1db954 !important;
-  border-color: rgba(29, 185, 84, 0.45) !important;
+  transform: scale(1.06) !important;
+  background: #1db954 !important;
+  background-color: #1db954 !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  border-color: #1db954 !important;
   box-shadow: none !important;
 }
 
 #home .music-card-spotify-link:hover i,
 #home .music-card-spotify-link:hover .fab,
 #home .music-card-spotify-link:hover svg {
-  color: #1db954 !important;
-  -webkit-text-fill-color: #1db954 !important;
-  fill: #1db954 !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  fill: #ffffff !important;
 }
 
 #home .music-card[data-music-state='loading'] .music-card-inner {

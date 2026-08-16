@@ -30,6 +30,7 @@ CLAUDE.md
 
 # Tooling caches (local only)
 .gitnexus/
+.tempmediaStorage/
 
 # IDE and AI Agent files
 .vscode/

@@ -2519,19 +2519,14 @@ html.dark .hero-2026-item::before {
 /* Playing Indicator - Centered Bottom */
 
 .playing-indicator {
-  position: absolute;
-  bottom: -4px;
-  left: 50%;
-  display: flex;
+  display: inline-flex;
   align-items: flex-end;
   gap: 2px;
-  height: 16px;
-  padding: 3px 6px;
-  background: rgb(255 59 48 / 95%);
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgb(255 59 48 / 40%);
+  height: 10px;
+  padding: 0;
+  background: transparent;
+  box-shadow: none;
   opacity: 0;
-  transform: translateX(-50%);
   transition: opacity 0.3s ease;
 }
 

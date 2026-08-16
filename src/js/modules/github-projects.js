@@ -1384,6 +1384,13 @@ class GitHubProjects {
     return Math.max(0, Math.floor(diff / (1000 * 60 * 60 * 24)));
   }
 
+  formatRepoSize(sizeInKb) {
+    const kb = Number(sizeInKb);
+    if (!Number.isFinite(kb) || kb <= 0) return '';
+    if (kb < 1024) return `${kb} KB`;
+    return `${(kb / 1024).toFixed(1)} MB`;
+  }
+
   getShowcaseScore(repo) {
     const stars = repo.stargazers_count || 0;
     const forks = repo.forks_count || 0;
@@ -2001,6 +2008,12 @@ class GitHubProjects {
     const pushedAt = this.escapeHtml(repo.pushed_at || '');
     const lastCommitAtSafe = this.escapeHtml(latestCommitAt);
 
+    const pushedAgeDays = this.getRepoAgeDays(repo?.pushed_at || repo?.updated_at);
+    const isRecentlyActive = Number.isFinite(pushedAgeDays) && pushedAgeDays <= 7;
+    const pulseDotHtml = isRecentlyActive
+      ? '<span class="project-pulse-dot" title="Active release momentum (< 7 days)"></span>'
+      : '';
+
     const hasReleaseTag = Boolean(releaseSignal.tagName);
     const showCommitsSince = hasReleaseTag && releaseSignal.commitsSinceRelease !== null;
     const releaseCommitsText = showCommitsSince
@@ -2040,6 +2053,16 @@ class GitHubProjects {
             .map(topic => `<span class="project-tag">${this.escapeHtml(topic)}</span>`)
             .join('')
         : '';
+    const licenseHtml = safeLicense
+      ? `<span class="project-meta-stat project-license-badge" title="License: ${safeLicense}">
+              <i class="fas fa-scale-balanced" aria-hidden="true"></i>${safeLicense}
+            </span>`
+      : '';
+    const sizeHtml = repoSize
+      ? `<span class="project-meta-stat project-size-badge" title="Repository size">
+              <i class="fas fa-database" aria-hidden="true"></i>${this.formatRepoSize(repoSize)}
+            </span>`
+      : '';
     const demoHtml = hasDemo
       ? `<a href="${safeHomepage}" target="_blank" rel="noopener noreferrer" class="project-action-btn btn-demo" aria-label="Open ${safeName} demo">
                 <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i>
@@ -2053,13 +2076,19 @@ class GitHubProjects {
           <div class="project-head-top">
             <div class="project-title-wrap">
               <h3 class="project-title">
-                <span class="project-title-text">${safeName}</span>
+                <span class="project-title-text">${safeName}</span>${pulseDotHtml}
               </h3>
             </div>
-            <span class="project-repo-updated" title="Updated ${safeUpdatedAbsolute}">
-              <i class="fas fa-clock" aria-hidden="true"></i>
-              ${safeUpdatedBadgeText}
-            </span>
+            <div class="project-head-actions">
+              <button type="button" class="project-clone-btn" data-repo-clone="${safeRepoUrl}.git" title="Copy git clone ${safeRepoUrl}.git" aria-label="Copy git clone command for ${safeName}">
+                <i class="fas fa-terminal" aria-hidden="true"></i>
+                <span class="clone-label">Clone</span>
+              </button>
+              <span class="project-repo-updated" title="Updated ${safeUpdatedAbsolute}">
+                <i class="fas fa-clock" aria-hidden="true"></i>
+                ${safeUpdatedBadgeText}
+              </span>
+            </div>
           </div>
 
           <p class="project-description">${safeDescription || 'No description available'}</p>
@@ -2075,6 +2104,8 @@ class GitHubProjects {
             </span>
             ${languageHtml}
             ${topicsHtml}
+            ${licenseHtml}
+            ${sizeHtml}
           </div>
         </div>
 

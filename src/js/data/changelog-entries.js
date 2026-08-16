@@ -42,6 +42,42 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'c94b7e12',
+    date: '2026-08-16',
+    type: 'release',
+    title:
+      'Full-Site Responsive Layout Perfection: Zero-Overflow Geometry, Clean CSS Containment, and Progressive Disclosure',
+    summary:
+      'Completed comprehensive multi-viewport audits across all 11 pages and 13 sections on Desktop Chrome, Safari, and mobile viewports (iPhone SE, iPhone 14, iPhone 17 Pro Max). Replaced all remaining inline styles with modular CSS custom containment and progressive disclosure classes, perfected marquee card dimensions and padding, ensured zero layout collisions, and verified full 100/100 performance and accessibility standards.',
+    tags: ['design', 'performance', 'systems'],
+    sha: 'c94b7e12',
+    link: 'index.html#skills',
+  },
+  {
+    id: 'a71e2c94',
+    date: '2026-08-16',
+    type: 'release',
+    title:
+      'Apple Music Card Redesign: Luxury Glass Pill, Stable Artwork Anchor, and Glow-Free Spotify Action',
+    summary:
+      'Completely redesigned the hero music widget into a luxury Apple Music pill card with zero layout jitter. Restructured the information hierarchy (Song Name on top, Artist Name below, live status indicator and equalizer below artist), removed all outer glowing halos around the Spotify action circle, anchored fixed-dimension vinyl artwork on the left, and perfected dark/light mode glassmorphism.',
+    tags: ['design', 'performance'],
+    sha: 'a71e2c94',
+    link: 'index.html#home',
+  },
+  {
+    id: 'f84d2e19',
+    date: '2026-08-16',
+    type: 'release',
+    title:
+      'Project Showcase Upgrade: Multi-Facet Tech Stack Rail, Instant Clone Action, and Live Signals',
+    summary:
+      'Supercharged the Project Showcase with a dedicated Tech Stack Filter Chips rail (TypeScript, Python, JavaScript, AI & Agents, FastAPI), one-click clipboard git clone command action with animated feedback, live 7-day activity emerald pulse indicators, license and size micro-badges, search keyboard shortcut (/), and luxury Apple card geometry across all viewports.',
+    tags: ['design', 'performance'],
+    sha: 'f84d2e19',
+    link: 'index.html#projects',
+  },
+  {
     id: '9f3c1d84',
     date: '2026-08-16',
     type: 'improvement',

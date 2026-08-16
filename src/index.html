@@ -2173,7 +2173,7 @@ html.dark #home .hero-name-text {
       </div>
     </section>
     <!-- About Section — full next screen on desktop (no hero peek) -->
-    <section id="about" class="section-about" aria-labelledby="about-heading" style="content-visibility:auto;contain-intrinsic-size:auto 500px">
+    <section id="about" class="section-about" aria-labelledby="about-heading">
       <div class="container">
         <h2 id="about-heading">About</h2>
         <p class="section-subtitle">Software engineer portfolio of an AI builder and product thinker — from Drexel University in Philadelphia to production systems.</p>
@@ -2217,76 +2217,86 @@ html.dark #home .hero-name-text {
                 </p>
 
                 <p class="about-paragraph highlight-target">
-                  Originally from India and educated in the United States, I earned a <strong>Master’s degree in Computer Science</strong> from <strong>Drexel University</strong> and have spent years building software across web applications, artificial intelligence, cloud platforms, automation systems, and developer tools — including Java, Python, AWS, and full stack delivery.
+                  Originally from India and educated in the United States, I earned a <strong>Master’s degree in Computer Science from Drexel University</strong> in Philadelphia (GPA 3.91), following a <strong>Bachelor’s degree in Computer Engineering from Savitribai Phule Pune University</strong> (First Class with Distinction).
                 </p>
 
                 <p class="about-paragraph highlight-target">
-                  What excites me most isn’t technology itself—it’s what technology enables.
+                  My work focuses on building <strong>scalable, high-performance systems</strong> that bridge machine intelligence and user experience. Whether architecting backend services, optimizing microservices, or creating fluid user interfaces, I value <em>clean architecture, measurable impact, and exceptional craft</em>.
                 </p>
 
                 <p class="about-paragraph highlight-target">
-                  Whether it’s an AI system that makes knowledge more accessible, a platform that helps people make better decisions, or a product that saves someone hours of work, I enjoy building things that solve real problems and create measurable impact.
-                </p>
-
-                <p class="about-paragraph highlight-target">
-                  Today, much of my work focuses on <strong>artificial intelligence</strong>, <strong>large language models</strong>, <strong>agentic systems</strong>, <strong>developer productivity tools</strong>, and <strong>full-stack software engineering</strong>. Recent projects include <strong>HindAI</strong>, an AI-powered platform built on Google’s Gemma models to explore Indian knowledge systems and philosophy, AI-enhanced web applications, intelligent assistants, and modern digital experiences inspired by Apple’s design philosophy.
-                </p>
-
-                <p class="about-paragraph highlight-target">
-                  I believe the future belongs to builders who can combine engineering, creativity, and product thinking. The best software isn’t just technically impressive—it feels <strong>intuitive</strong>, <strong>useful</strong>, and <strong>human</strong>.
-                </p>
-
-                <p class="about-paragraph highlight-target">
-                  Outside of software, interests include cricket, fitness, health optimization, emerging technologies, entrepreneurship, and understanding how AI can be used responsibly to improve people’s lives.
-                </p>
-
-                <p class="about-paragraph highlight-target">
-                  Every project is an opportunity to learn something new. Every challenge is a chance to build something better.
+                  Beyond software engineering, I have a passion for traveling across the United States, exploring local food scenes, capturing moments through photography, and tracking personal health analytics via WHOOP and Withings.
                 </p>
               </div>
 
-              <!-- Quick Summary Panel -->
-              <div id="quick-summary-panel" class="about-tab-panel" role="tabpanel" aria-labelledby="tab-quick-summary" aria-hidden="true" hidden>
-                <h3 class="about-intro-title">Quick Summary</h3>
-                <p class="about-brand-line">Production AI products with Apple-level engineering quality.</p>
+              <!-- Quick Summary Panel (TL;DR) -->
+              <div id="quick-summary-panel" class="about-tab-panel" role="tabpanel" aria-labelledby="tab-quick-summary" aria-hidden="true" tabindex="0" hidden>
+                <h3 class="about-intro-title">Quick Snapshot</h3>
 
-                <div class="summary-grid">
-                  <div class="summary-item highlight-target">
-                    <span class="summary-label">Role & Education</span>
-                    <p class="summary-text"><strong>Software Engineer & AI Builder</strong> with an <strong>M.S. in Computer Science</strong> from <strong>Drexel University</strong>. This is the Mangesh Raut software engineer portfolio and resume.</p>
+                <div class="about-summary-grid">
+                  <div class="about-summary-item">
+                    <span class="about-summary-icon"><i class="fas fa-graduation-cap"></i></span>
+                    <div>
+                      <strong>Education</strong>
+                      <p>MS CS, Drexel University (3.91 GPA) &bull; BS CE, Savitribai Phule Pune University</p>
+                    </div>
                   </div>
 
-                  <div class="summary-item highlight-target">
-                    <span class="summary-label">Expertise</span>
-                    <p class="summary-text">Distributed full stack web systems, large language models (LLMs), agentic workflows, cloud infrastructure, and developer productivity tools.</p>
+                  <div class="about-summary-item">
+                    <span class="about-summary-icon"><i class="fas fa-code-branch"></i></span>
+                    <div>
+                      <strong>Experience</strong>
+                      <p>6+ years full stack engineering: IoasiZ, Harshwardhan, Customized Energy Solutions</p>
+                    </div>
                   </div>
 
-                  <div class="summary-item highlight-target">
-                    <span class="summary-label">Key Projects</span>
-                    <p class="summary-text"><strong>HindAI</strong> (exploring Indian philosophy via Gemma LLM), intelligent web applications, AI assistants, and Apple-inspired modern interfaces.</p>
+                  <div class="about-summary-item">
+                    <span class="about-summary-icon"><i class="fas fa-layer-group"></i></span>
+                    <div>
+                      <strong>Specialization</strong>
+                      <p>Scalable backends, AI agents, cloud architectures, responsive design systems</p>
+                    </div>
                   </div>
 
-                  <div class="summary-item highlight-target">
-                    <span class="summary-label">Philosophy</span>
-                    <p class="summary-text">Crafting software that isn't just technically scalable, but feels <strong>intuitive, purposeful, and human</strong>.</p>
+                  <div class="about-summary-item">
+                    <span class="about-summary-icon"><i class="fas fa-compass"></i></span>
+                    <div>
+                      <strong>Philosophy</strong>
+                      <p>Build with intent, measure with rigor, and sweat the details</p>
+                    </div>
                   </div>
+                </div>
+              </div>
 
-                  <div class="summary-item highlight-target">
-                    <span class="summary-label">Interests</span>
-                    <p class="summary-text">Emerging tech, entrepreneurship, cricket, physical fitness, health optimization, and responsible AI alignment.</p>
+              <!-- TTS & Translation Bar -->
+              <div class="about-tts-bar" aria-label="Audio reader and translation controls">
+                <button type="button" id="about-tts-btn" class="about-tts-btn" aria-label="Listen to About summary" title="Listen to About summary" data-speaking="false">
+                  <i class="fas fa-volume-up" aria-hidden="true"></i>
+                  <span class="about-tts-label">Listen</span>
+                </button>
+                <div class="about-translate-wrapper">
+                  <button type="button" id="about-translate-btn" class="about-translate-btn" aria-label="Translate About section" title="Translate About summary" aria-expanded="false" aria-haspopup="listbox">
+                    <i class="fas fa-language" aria-hidden="true"></i>
+                    <span class="about-translate-label">Translate</span>
+                  </button>
+                  <div id="about-lang-menu" class="about-lang-menu" role="listbox" aria-label="Select language" hidden>
+                    <button type="button" class="about-lang-option active" role="option" aria-selected="true" data-lang="en">English (Original)</button>
+                    <button type="button" class="about-lang-option" role="option" aria-selected="false" data-lang="es">Español</button>
+                    <button type="button" class="about-lang-option" role="option" aria-selected="false" data-lang="hi">हिन्दी</button>
+                    <button type="button" class="about-lang-option" role="option" aria-selected="false" data-lang="mr">मराठी</button>
+                    <button type="button" class="about-lang-option" role="option" aria-selected="false" data-lang="fr">Français</button>
+                    <button type="button" class="about-lang-option" role="option" aria-selected="false" data-lang="de">Deutsch</button>
+                    <button type="button" class="about-lang-option" role="option" aria-selected="false" data-lang="ja">日本語</button>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-
-          <!-- Highlights Grid -->
-          <div class="about-highlights"></div>
         </div>
       </div>
     </section>
     <!-- Skills Section -->
-    <section id="skills" class="fade-in section-standard" aria-labelledby="skills-heading" style="content-visibility:auto;contain-intrinsic-size:auto 600px">
+    <section id="skills" class="fade-in section-standard" aria-labelledby="skills-heading">
       <div class="container">
         <h2 id="skills-heading">Skills & Technologies</h2>
         <p class="section-subtitle skills-section-subtitle">Languages, frameworks, and platforms I use to ship production software.</p>
@@ -2354,7 +2364,7 @@ html.dark #home .hero-name-text {
         </div>
 
         <!-- Interactive Skills Capability Radar Disclosure Button -->
-        <div class="skills-radar-disclosure section-preview-actions" style="margin-top: 2rem;">
+        <div class="skills-radar-disclosure section-preview-actions">
           <button
             type="button"
             class="section-preview-btn skills-radar-toggle-btn"
@@ -2364,7 +2374,7 @@ html.dark #home .hero-name-text {
             aria-label="Explore Engineering Depth Radar"
           >
             <span class="btn-text">View Competency Matrix & Radar</span>
-            <span class="btn-icon" aria-hidden="true" style="margin-left: 0.35rem; display: inline-block; transition: transform 0.3s ease;">↓</span>
+            <span class="btn-icon" aria-hidden="true">↓</span>
           </button>
         </div>
 
@@ -2374,7 +2384,7 @@ html.dark #home .hero-name-text {
     </section>
 
     <!-- Experience Section -->
-    <section id="experience" class="fade-in section-standard" aria-labelledby="experience-heading" style="content-visibility:auto;contain-intrinsic-size:auto 800px">
+    <section id="experience" class="fade-in section-standard" aria-labelledby="experience-heading">
       <div class="container">
         <h2 id="experience-heading">Professional Experience</h2>
         <p class="section-subtitle">Six+ years across full stack engineering, cloud DevOps, and enterprise systems — from energy analytics to network infrastructure.</p>
@@ -2667,7 +2677,7 @@ html.dark #home .hero-name-text {
     </section>
 
     <!-- Engineering Teaser -->
-    <section id="engineering" class="fade-in section-standard" aria-labelledby="engineering-heading" style="content-visibility:auto;contain-intrinsic-size:auto 600px">
+    <section id="engineering" class="fade-in section-standard" aria-labelledby="engineering-heading">
       <div class="container">
         <h2 id="engineering-heading">Systems</h2>
         <p class="section-subtitle">
@@ -2687,7 +2697,7 @@ html.dark #home .hero-name-text {
         </div>
 
         <!-- Interactive Full-Stack Architecture Tree Disclosure Button -->
-        <div class="arch-tree-disclosure section-preview-actions" style="margin-top: 2rem;">
+        <div class="arch-tree-disclosure section-preview-actions">
           <button
             type="button"
             class="section-preview-btn arch-tree-toggle-btn"
@@ -2697,7 +2707,7 @@ html.dark #home .hero-name-text {
             aria-label="Explore System Topology"
           >
             <span class="btn-text">View System Topology & Pipeline</span>
-            <span class="btn-icon" aria-hidden="true" style="margin-left: 0.35rem; display: inline-block; transition: transform 0.3s ease;">↓</span>
+            <span class="btn-icon" aria-hidden="true">↓</span>
           </button>
         </div>
 
@@ -2707,7 +2717,7 @@ html.dark #home .hero-name-text {
     </section>
 
     <!-- Projects Section - Dynamic GitHub Integration -->
-    <section id="projects" class="fade-in section-standard" aria-labelledby="projects-heading" style="content-visibility:auto;contain-intrinsic-size:auto 900px">
+    <section id="projects" class="fade-in section-standard" aria-labelledby="projects-heading">
       <div class="container">
         <div id="projects-showcase-shell" class="projects-showcase-shell">
           <!-- Page 1: GitHub operating view -->
@@ -2846,7 +2856,7 @@ html.dark #home .hero-name-text {
     </section>
 
     <!-- Education Section -->
-    <section id="education" class="fade-in section-standard" aria-labelledby="education-heading" style="content-visibility:auto;contain-intrinsic-size:auto 700px">
+    <section id="education" class="fade-in section-standard" aria-labelledby="education-heading">
       <div class="container">
         <h2 id="education-heading">Education</h2>
         <p class="section-subtitle">Graduate and undergraduate foundations in computer science, software engineering, and applied systems — with official transcripts available for each qualification.</p>
@@ -3079,7 +3089,7 @@ html.dark #home .hero-name-text {
     </section>
 
     <!-- Publications Section -->
-    <section id="publications" class="fade-in section-standard" aria-labelledby="publications-heading" style="content-visibility:auto;contain-intrinsic-size:auto 800px">
+    <section id="publications" class="fade-in section-standard" aria-labelledby="publications-heading">
       <div class="container">
         <h2 id="publications-heading">Recent Publications</h2>
         <p class="section-subtitle">Peer-reviewed research spanning machine learning, cloud systems, and applied computer science.</p>
@@ -3536,7 +3546,7 @@ html.dark #home .hero-name-text {
       </div>
     </section>
     <!-- Blog Section -->
-    <section id="blog" class="section-blog" aria-labelledby="blog-heading" aria-label="Blog posts" style="content-visibility:auto;contain-intrinsic-size:auto 600px">
+    <section id="blog" class="section-blog" aria-labelledby="blog-heading" aria-label="Blog posts">
       <div class="container">
         <h2 id="blog-heading">Technical Writings <span id="blog-post-count" class="section-count">(16)</span></h2>
         <p class="section-subtitle">Field notes on AI systems, product engineering, and cloud architecture — written like long-form posts, not marketing pages.</p>
@@ -3668,7 +3678,7 @@ html.dark #home .hero-name-text {
       </div>
     </section>
 
-    <section id="contact" class="fade-in section-standard" aria-labelledby="contact-heading" style="content-visibility:auto;contain-intrinsic-size:auto 500px">
+    <section id="contact" class="fade-in section-standard" aria-labelledby="contact-heading">
       <div class="container">
         <h2 id="contact-heading">Get In Touch</h2>
         <p class="section-subtitle">Open to engineering roles, collaborations, and conversations about building reliable software.</p>

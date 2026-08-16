@@ -492,6 +492,60 @@ function createLensMatcher(lens, githubProjects) {
   };
 }
 
+const DEFAULT_TECH_FILTER = 'all';
+
+function createTechMatcher(tech) {
+  const normalized = String(tech || DEFAULT_TECH_FILTER)
+    .toLowerCase()
+    .trim();
+  if (normalized === 'all') return () => true;
+
+  return repo => {
+    const lang = String(repo.language || '').toLowerCase();
+    const topics = Array.isArray(repo.topics) ? repo.topics.map(t => String(t).toLowerCase()) : [];
+    const desc = String(repo.description || '').toLowerCase();
+    const name = String(repo.name || '').toLowerCase();
+
+    if (normalized === 'typescript') {
+      return lang === 'typescript' || topics.includes('typescript') || topics.includes('ts');
+    }
+    if (normalized === 'python') {
+      return lang === 'python' || topics.includes('python') || topics.includes('py');
+    }
+    if (normalized === 'javascript') {
+      return lang === 'javascript' || topics.includes('javascript') || topics.includes('js');
+    }
+    if (normalized === 'ai-agents') {
+      return (
+        topics.includes('ai-agents') ||
+        topics.includes('agentic') ||
+        topics.includes('mcp') ||
+        topics.includes('ai-assistant') ||
+        topics.includes('rag') ||
+        topics.includes('machine-learning') ||
+        topics.includes('nlp') ||
+        name.includes('agent') ||
+        desc.includes('agent') ||
+        desc.includes('ai ') ||
+        desc.includes('llm')
+      );
+    }
+    if (normalized === 'fastapi') {
+      return (
+        topics.includes('fastapi') ||
+        topics.includes('backend') ||
+        topics.includes('spring-boot') ||
+        topics.includes('microservices') ||
+        desc.includes('fastapi') ||
+        desc.includes('backend') ||
+        desc.includes('microservices')
+      );
+    }
+
+    return lang === normalized || topics.includes(normalized);
+  };
+}
+
 function countLensDistribution(repos, githubProjects) {
   const counts = {
     all: repos.length,
@@ -600,9 +654,11 @@ export async function initProjectShowcase({ username = DEFAULT_USERNAME } = {}) 
     const searchInput = document.getElementById('project-search-input');
     const sortSelect = document.getElementById('project-sort-select');
     const lensButtons = Array.from(document.querySelectorAll('[data-project-lens]'));
+    const techButtons = Array.from(document.querySelectorAll('[data-project-tech]'));
     const expandWrap = document.getElementById('projects-expand-wrap');
     const expandBtn = document.getElementById('projects-expand-btn');
     let activeLens = DEFAULT_PROJECT_LENS;
+    let activeTech = DEFAULT_TECH_FILTER;
     let showAllProjects = false;
     let didInitialRealign = false;
 
@@ -621,6 +677,7 @@ export async function initProjectShowcase({ username = DEFAULT_USERNAME } = {}) 
         const bits = [];
         if (query) bits.push(`“${query}”`);
         if (lens !== DEFAULT_PROJECT_LENS) bits.push(lensLabel || LENS_LABELS[lens]);
+        if (activeTech !== DEFAULT_TECH_FILTER) bits.push(activeTech);
         live.textContent = bits.length
           ? `No projects match ${bits.join(' · ')}.`
           : 'No projects to show.';
@@ -637,7 +694,13 @@ export async function initProjectShowcase({ username = DEFAULT_USERNAME } = {}) 
     const clearFilters = () => {
       if (searchInput) searchInput.value = '';
       activeLens = DEFAULT_PROJECT_LENS;
+      activeTech = DEFAULT_TECH_FILTER;
       updateLensButtons(lensButtons, activeLens);
+      techButtons.forEach(b => {
+        const isAct = (b.dataset.projectTech || 'all') === DEFAULT_TECH_FILTER;
+        b.classList.toggle('active', isAct);
+        b.setAttribute('aria-pressed', isAct ? 'true' : 'false');
+      });
       renderProjects().catch(error => {
         console.error('Project showcase clear-filters render failed:', error);
       });
@@ -647,7 +710,10 @@ export async function initProjectShowcase({ username = DEFAULT_USERNAME } = {}) 
       const query = getCurrentQuery();
       const matcher = createSearchMatcher(query);
       const lensMatcher = createLensMatcher(getCurrentLens(), githubProjects);
-      const filtered = allShowcaseRepos.filter(repo => matcher(repo) && lensMatcher(repo));
+      const techMatcher = createTechMatcher(activeTech);
+      const filtered = allShowcaseRepos.filter(
+        repo => matcher(repo) && lensMatcher(repo) && techMatcher(repo)
+      );
       return [...filtered].toSorted(createSortComparator(getCurrentSort(), githubProjects));
     };
 
@@ -870,9 +936,35 @@ export async function initProjectShowcase({ username = DEFAULT_USERNAME } = {}) 
       });
     }
 
-    container.addEventListener('click', event => {
-      if (!event.target.closest('[data-projects-clear-filters]')) return;
-      clearFilters();
+    container.addEventListener('click', async event => {
+      if (event.target.closest('[data-projects-clear-filters]')) {
+        clearFilters();
+        return;
+      }
+
+      const cloneBtn = event.target.closest('.project-clone-btn');
+      if (cloneBtn) {
+        event.preventDefault();
+        event.stopPropagation();
+        const repoCloneUrl = cloneBtn.dataset.repoClone || '';
+        if (!repoCloneUrl) return;
+        const cloneCmd = `git clone ${repoCloneUrl}`;
+        try {
+          await navigator.clipboard.writeText(cloneCmd);
+          const label = cloneBtn.querySelector('.clone-label');
+          if (label) {
+            const orig = label.textContent;
+            label.textContent = 'Copied! ✓';
+            cloneBtn.classList.add('is-copied');
+            window.setTimeout(() => {
+              label.textContent = orig;
+              cloneBtn.classList.remove('is-copied');
+            }, 2000);
+          }
+        } catch (err) {
+          console.warn('Clipboard write failed:', err);
+        }
+      }
     });
 
     lensButtons.forEach(button => {
@@ -884,6 +976,40 @@ export async function initProjectShowcase({ username = DEFAULT_USERNAME } = {}) 
           console.error('Project showcase lens render failed:', error);
         });
       });
+    });
+
+    techButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const tech = button.dataset.projectTech || DEFAULT_TECH_FILTER;
+        if (activeTech === tech) return;
+        activeTech = tech;
+        techButtons.forEach(b => {
+          const isAct = (b.dataset.projectTech || DEFAULT_TECH_FILTER) === activeTech;
+          b.classList.toggle('active', isAct);
+          b.setAttribute('aria-pressed', isAct ? 'true' : 'false');
+        });
+        renderProjects().catch(error => {
+          console.error('Project showcase tech filter render failed:', error);
+        });
+      });
+    });
+
+    // Keyboard shortcut / to focus search
+    window.addEventListener('keydown', event => {
+      if (
+        event.key === '/' &&
+        !['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement?.tagName)
+      ) {
+        if (searchInput) {
+          event.preventDefault();
+          searchInput.focus();
+          searchInput.select();
+          const projSection = document.getElementById('projects');
+          if (projSection) {
+            projSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        }
+      }
     });
 
     if (expandBtn) {
