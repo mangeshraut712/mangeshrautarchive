@@ -1119,8 +1119,17 @@ body.offline-page .offline-destinations a:focus-visible {
   body.monitor-page .monitor-section-rail {
     /* Keep sticky rails below floating nav on tablet/phone too */
     top: var(--subpage-sticky-top) !important;
-    border-radius: 14px;
+    border-radius: 999px;
     position: sticky;
+    overflow-x: auto !important;
+    flex-wrap: nowrap !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: none !important;
+  }
+
+  body.systems-page .systems-section-rail::-webkit-scrollbar,
+  body.monitor-page .monitor-section-rail::-webkit-scrollbar {
+    display: none !important;
   }
 }
 
@@ -1139,6 +1148,21 @@ body.offline-page .offline-destinations a:focus-visible {
 
   body.systems-page .systems-bento--telemetry {
     grid-template-columns: 1fr !important;
+  }
+
+  body.systems-page .systems-decision-row {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 0.65rem !important;
+    padding: 1rem !important;
+  }
+
+  body.systems-page .systems-decision-meta {
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    width: 100% !important;
+    min-width: 0 !important;
   }
 }
 

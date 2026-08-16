@@ -543,3 +543,33 @@ html.dark .education-header {
     margin-top: 1rem;
   }
 }
+
+@media (width <= 480px) {
+  .education-timeline::before {
+    left: 20px !important;
+  }
+
+  .education-item {
+    padding-left: 58px !important;
+    margin-bottom: 1.5rem !important;
+  }
+
+  .education-icon {
+    width: 40px !important;
+    height: 40px !important;
+    border-width: 3px !important;
+  }
+
+  .education-icon i {
+    font-size: 0.95rem !important;
+  }
+
+  .education-content {
+    padding: 1.15rem 1rem !important;
+    border-radius: 18px !important;
+  }
+
+  .education-degree {
+    font-size: 1.1rem !important;
+  }
+}

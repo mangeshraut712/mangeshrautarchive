@@ -681,11 +681,7 @@ html.dark #close-menu-btn:hover {
 .overlay-nav-link {
   font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
   font-size: 19px;
-
-  /* Medium size */
   font-weight: 500;
-
-  /* Medium weight */
   color: var(--text-primary);
   text-decoration: none;
   transition:
@@ -695,18 +691,18 @@ html.dark #close-menu-btn:hover {
     box-shadow 0.2s ease,
     transform 0.2s ease,
     opacity 0.2s ease;
-  padding: 4px 12px;
+  padding: 8px 16px;
+  min-height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   width: auto;
-
-  /* Auto width for clean look */
   text-align: center;
   opacity: 0;
   transform: translateY(10px);
   letter-spacing: 0.01em;
   background: transparent;
-
-  /* No card background */
-  border-radius: 8px;
+  border-radius: 999px;
 }
 
 html.dark .overlay-nav-link {

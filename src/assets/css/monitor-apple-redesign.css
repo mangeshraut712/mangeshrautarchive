@@ -1191,7 +1191,8 @@ body.monitor-page .monitor-section-rail a:focus-visible {
       'volume' !important;
   }
 
-  body.monitor-page .control-center-grid {
+  body.monitor-page .control-center-grid,
+  body.monitor-page .control-center-grid:has(#status-distribution-chart:empty) {
     grid-template-columns: minmax(0, 1fr) !important;
     grid-template-areas:
       'info'
@@ -1201,12 +1202,46 @@ body.monitor-page .monitor-section-rail a:focus-visible {
   }
 
   body.monitor-page .control-center-telemetry {
-    grid-template-columns: 1fr 1fr !important;
-    height: auto;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    height: auto !important;
+    gap: 0.5rem !important;
   }
 
   body.monitor-page .control-center-telemetry > .visual-section-label {
-    grid-column: 1 / -1;
+    grid-column: 1 / -1 !important;
+  }
+
+  body.monitor-page .control-center-telemetry .overview-item {
+    min-width: 0 !important;
+    min-height: 58px !important;
+    height: auto !important;
+    padding: 0.6rem 0.75rem !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    justify-content: center !important;
+    gap: 0.3rem !important;
+  }
+
+  body.monitor-page .control-center-telemetry .overview-item-label {
+    width: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.4rem !important;
+  }
+
+  body.monitor-page .control-center-telemetry .overview-item-label span {
+    word-break: normal !important;
+    overflow-wrap: normal !important;
+    white-space: nowrap !important;
+    font-size: 0.75rem !important;
+  }
+
+  body.monitor-page .control-center-telemetry strong {
+    font-size: 0.95rem !important;
+    text-align: left !important;
+    width: 100% !important;
+    font-weight: 700 !important;
   }
 
   body.monitor-page .control-center-info,

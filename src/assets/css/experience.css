@@ -614,35 +614,36 @@ html.dark .experience-disclosure:hover {
 
 @media (width <= 480px) {
   .experience-timeline::before {
-    left: 20px;
+    left: 20px !important;
   }
 
   #experience .timeline-section-header {
-    padding-left: 58px;
+    padding-left: 58px !important;
   }
 
   #experience .timeline-section-header::before {
-    left: 11px;
+    left: 11px !important;
   }
 
   #experience .timeline-section-header::after {
-    left: 33px;
-    width: 14px;
+    left: 31px !important;
+    width: 16px !important;
   }
 
   .experience-item {
-    display: grid;
-    grid-template-columns: 40px minmax(0, 1fr);
-    gap: 0.65rem;
-    padding-left: 0 !important;
+    display: block !important;
+    position: relative !important;
+    padding-left: 58px !important;
+    margin-bottom: 1.5rem !important;
   }
 
   .experience-icon {
-    position: relative;
-    top: 0;
-    left: 0;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
     width: 40px !important;
     height: 40px !important;
+    border-width: 3px !important;
   }
 
   .experience-icon i {
@@ -650,9 +651,20 @@ html.dark .experience-disclosure:hover {
   }
 
   #experience .experience-content {
-    grid-column: 1 / -1;
-    min-width: 0;
-    padding: 1rem !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    padding: 1.15rem 1rem !important;
+    border-radius: 18px !important;
+    box-sizing: border-box !important;
+  }
+
+  .experience-tags {
+    gap: 0.4rem !important;
+  }
+
+  #experience .experience-tag {
+    padding: 0.35rem 0.65rem !important;
+    font-size: 0.75rem !important;
   }
 
   .experience-period,
