@@ -686,6 +686,29 @@ body.monitor-page .portfolio-surface-card__meta {
   justify-content: space-between;
 }
 
+body.monitor-page .surface-link {
+  color: var(--apple-blue, #0071e3) !important;
+  -webkit-text-fill-color: var(--apple-blue, #0071e3) !important;
+  text-decoration: underline !important;
+  text-underline-offset: 3px !important;
+  font-weight: 600 !important;
+  font-size: 0.8125rem !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  transition: opacity 0.2s ease;
+}
+
+html.dark body.monitor-page .surface-link {
+  color: #64d2ff !important;
+  -webkit-text-fill-color: #64d2ff !important;
+}
+
+body.monitor-page .surface-link:hover,
+body.monitor-page .surface-link:focus-visible {
+  opacity: 0.8;
+  text-decoration: underline !important;
+}
+
 /* Performance grid */
 body.monitor-page .resource-trends-grid {
   display: grid !important;

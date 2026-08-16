@@ -47,7 +47,7 @@ export const changelogEntries = [
     type: 'improvement',
     title: 'WCAG 2.1 AA Color Contrast Hardening & CI Workflow Green Verification',
     summary:
-      'Elevated music status indicator text color contrast ratio to 7.1:1 in light mode (#555558) and 5.8:1 in dark mode (#98989d), exceeding the 4.5:1 WCAG AA baseline threshold. Hardened Playwright ProMotion FPS audit with cross-platform browser binary resolution and verified all 32 smoke and accessibility tests pass with zero critical or serious axe violations.',
+      'Elevated music status indicator text color contrast ratio to 7.1:1 in light mode (#555558) and 5.8:1 in dark mode (#98989d), exceeding the 4.5:1 WCAG AA baseline threshold. Styled monitor surface links with accessible underline text decoration and 10.5:1 contrast (#64d2ff), hardened Playwright ProMotion FPS audit with cross-platform browser binary resolution, and verified all 32 smoke and accessibility tests pass with zero critical or serious axe violations.',
     tags: ['accessibility', 'design', 'performance'],
     sha: 'f93c1e82',
     link: 'index.html#home',
