@@ -47,15 +47,37 @@ body.travel-body {
 
 #main-content,
 main,
-section,
-.container,
-.section-standard,
-.section-container-wide,
-.section-wrapper,
-.global-nav.dynamic-island {
-  max-width: 100% !important;
+section {
   width: 100%;
   box-sizing: border-box !important;
+}
+
+@media (min-width: 769px) {
+  .container {
+    width: 100%;
+    max-width: 1200px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    padding-left: 24px;
+    padding-right: 24px;
+    box-sizing: border-box !important;
+  }
+
+  .section-container-wide {
+    width: 100%;
+    max-width: 1280px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    box-sizing: border-box !important;
+  }
+
+  .section-wrapper {
+    width: 100%;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    box-sizing: border-box;
+  }
 }
 
 .dream-companies-marquee,
@@ -66,7 +88,24 @@ section,
   contain: paint !important;
 }
 
-@media (width <=768px) {
+@media (width <= 768px) {
+  #main-content,
+  main,
+  section,
+  .container,
+  .section-standard,
+  .section-container-wide,
+  .section-wrapper {
+    max-width: 100% !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .container {
+    padding-left: var(--mobile-gutter, 16px) !important;
+    padding-right: var(--mobile-gutter, 16px) !important;
+  }
+
   :root {
     /* Match desktop 48px FABs so a11y/share feel the same on phone */
     --mobile-fab-size: 48px;

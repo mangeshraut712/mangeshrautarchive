@@ -42,6 +42,17 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'f83a12bc',
+    date: '2026-08-16',
+    type: 'release',
+    title: 'Desktop Viewport Container Geometry & Sitewide Feature Deduplication',
+    summary:
+      'Restored mathematically centered desktop container geometry (1200px width with automatic margins) and fixed global CSS scoping to eliminate desktop layout expansion during mobile optimizations. Deduplicated redundant components across the homepage: converted hero vibe-coder and portfolio-reach badges into direct subpage links to uses.html and monitor.html, removed duplicate AssistMe chat CTA and divider in contact calendar block, and removed duplicate social and marquee blocks from contact cards.',
+    tags: ['design', 'performance', 'systems'],
+    sha: 'f83a12bc',
+    link: 'index.html',
+  },
+  {
     id: 'e42c8d19',
     date: '2026-08-16',
     type: 'release',
