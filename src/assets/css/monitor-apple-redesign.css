@@ -119,28 +119,47 @@ html.dark .monitor-section-rail {
   display: inline-flex;
   align-items: center;
   min-height: 34px;
-  padding: 0.3rem 0.7rem;
-  border-radius: 999px;
+  padding: 0.42rem 0.82rem;
+  border-radius: 980px;
   color: var(--text-secondary, #6e6e73);
-  font-size: 0.75rem;
-  font-weight: 650;
+  font-size: 0.8125rem;
+  font-weight: 600;
   letter-spacing: -0.01em;
   text-decoration: none;
   white-space: nowrap;
   transition:
-    background 0.15s ease,
+    background-color 0.15s ease,
     color 0.15s ease;
 }
 
 .monitor-section-rail a:hover,
 .monitor-section-rail a:focus-visible {
-  background: color-mix(in srgb, var(--accent-blue, #0071e3) 12%, transparent);
-  color: var(--accent-blue, #0071e3);
+  background: #f0f0f2;
+  color: #1d1d1f;
   outline: none;
 }
 
 html.dark .monitor-section-rail a {
-  color: #a1a1a6;
+  color: #8b949e;
+}
+
+html.dark .monitor-section-rail a:hover,
+html.dark .monitor-section-rail a:focus-visible {
+  background: #1c2128;
+  color: #ffffff;
+}
+
+.monitor-section-rail a.is-active,
+.monitor-section-rail a[aria-current='true'] {
+  background: #e8e8ed !important;
+  color: #1d1d1f !important;
+  font-weight: 650 !important;
+}
+
+html.dark .monitor-section-rail a.is-active,
+html.dark .monitor-section-rail a[aria-current='true'] {
+  background: #21262d !important;
+  color: #ffffff !important;
 }
 
 /* ─── Top hero row — equal height, no dead air ─── */

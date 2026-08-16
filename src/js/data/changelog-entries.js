@@ -42,6 +42,17 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'e42c8d19',
+    date: '2026-08-16',
+    type: 'release',
+    title: 'Subpage Design Unification Across Systems, Uses, Monitor & Travel',
+    summary:
+      'Extended the minimalist, clean, and beautiful design language of the changelog page to systems.html, uses.html, monitor.html, travel.html, and 404.html. Unified sticky section rails and category filters with loose pill styling, standardized typography and hero headers with SF Pro Display tight tracking, and aligned all card surfaces to solid Apple palettes (#f5f5f7 / #121214) with subtle hairline borders.',
+    tags: ['design', 'systems', 'performance'],
+    sha: 'e42c8d19',
+    link: 'changelog.html',
+  },
+  {
     id: 'a71e84d9',
     date: '2026-08-16',
     type: 'release',

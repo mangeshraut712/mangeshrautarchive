@@ -1333,3 +1333,309 @@ body.travel-body :is(.travel-stop, .place-guide-card, .travel-sidebar, .travel-n
   background-color: var(--travel-surface) !important;
   color: var(--travel-text) !important;
 }
+
+/* ════════════════════════════════════════════════════════════════
+   CHANGELOG-STANDARD DESIGN UNIFICATION ACROSS ALL SUBPAGES
+   Clean, simple, solid, balanced typography and pill filters
+   ════════════════════════════════════════════════════════════════ */
+
+/* ─── 1. Subpage Heroes & Typographic Hierarchy ─── */
+body.systems-page .systems-keynote-hero,
+body.uses-page .uses-hero,
+body.changelog-page .changelog-hero,
+body.monitor-page .monitor-header,
+body.travel-body .travel-sidebar__header {
+  text-align: left;
+  padding: clamp(0.6rem, 1.8vw, 1.25rem) 0 0.85rem !important;
+  display: grid;
+  gap: 0.4rem;
+}
+
+body.systems-page .systems-eyebrow,
+body.uses-page .systems-eyebrow,
+body.monitor-page .monitor-edge-banner__title,
+body.travel-body .travel-nav__kicker {
+  font-size: 0.72rem !important;
+  font-weight: 650 !important;
+  letter-spacing: 0.05em !important;
+  text-transform: uppercase !important;
+  color: #6e6e73 !important;
+  -webkit-text-fill-color: #6e6e73 !important;
+  margin: 0 !important;
+}
+
+html.dark body.systems-page .systems-eyebrow,
+html.dark body.uses-page .systems-eyebrow,
+html.dark body.monitor-page .monitor-edge-banner__title,
+html.dark body.travel-body .travel-nav__kicker {
+  color: #8b949e !important;
+  -webkit-text-fill-color: #8b949e !important;
+}
+
+body.systems-page .systems-keynote-hero h1,
+body.uses-page .uses-hero h1,
+body.changelog-page .changelog-hero h1,
+body.travel-body .travel-sidebar__header h1 {
+  font-size: clamp(1.75rem, 3.5vw, 2.25rem) !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.03em !important;
+  line-height: 1.12 !important;
+  margin: 0 !important;
+}
+
+body.systems-page .systems-hero-lead,
+body.uses-page .uses-hero-lead,
+body.changelog-page .changelog-hero-lead {
+  font-size: 0.95rem !important;
+  line-height: 1.48 !important;
+  color: #6e6e73 !important;
+  max-width: 42rem !important;
+  margin: 0 !important;
+}
+
+html.dark body.systems-page .systems-hero-lead,
+html.dark body.uses-page .uses-hero-lead,
+html.dark body.changelog-page .changelog-hero-lead {
+  color: #8b949e !important;
+}
+
+/* ─── 2. Unified Changelog-Standard Pill Section Rails & Filter Toolbars ─── */
+body.systems-page .systems-section-rail,
+body.monitor-page .monitor-section-rail,
+body.uses-page .uses-filters,
+body.travel-body .travel-filter-chips {
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  align-items: center !important;
+  gap: 0.35rem !important;
+  padding: 0.35rem 0.55rem !important;
+  border-radius: 980px !important;
+  border: 1px solid #d2d2d7 !important;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 4%) !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  scrollbar-width: none !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+html.dark body.systems-page .systems-section-rail,
+html.dark body.monitor-page .monitor-section-rail,
+html.dark body.uses-page .uses-filters,
+html.dark body.travel-body .travel-filter-chips {
+  background: #000000 !important;
+  background-color: #000000 !important;
+  border-color: #30363d !important;
+  box-shadow: 0 2px 10px rgb(0 0 0 / 30%) !important;
+}
+
+body.systems-page .systems-section-rail a,
+body.monitor-page .monitor-section-rail a,
+body.uses-page .uses-chip,
+body.uses-page .uses-filters button,
+body.travel-body .travel-filter-chip {
+  appearance: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.35rem !important;
+  border: none !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  color: #6e6e73 !important;
+  -webkit-text-fill-color: #6e6e73 !important;
+  border-radius: 980px !important;
+  padding: 0.42rem 0.82rem !important;
+  font-size: 0.8125rem !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.01em !important;
+  line-height: 1.2 !important;
+  white-space: nowrap !important;
+  text-decoration: none !important;
+  cursor: pointer !important;
+  box-shadow: none !important;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease,
+    transform 0.15s ease !important;
+}
+
+html.dark body.systems-page .systems-section-rail a,
+html.dark body.monitor-page .monitor-section-rail a,
+html.dark body.uses-page .uses-chip,
+html.dark body.uses-page .uses-filters button,
+html.dark body.travel-body .travel-filter-chip {
+  color: #8b949e !important;
+  -webkit-text-fill-color: #8b949e !important;
+}
+
+body.systems-page .systems-section-rail a:hover,
+body.monitor-page .monitor-section-rail a:hover,
+body.uses-page .uses-chip:hover,
+body.uses-page .uses-filters button:hover,
+body.travel-body .travel-filter-chip:hover {
+  background: #f0f0f2 !important;
+  background-color: #f0f0f2 !important;
+  color: #1d1d1f !important;
+  -webkit-text-fill-color: #1d1d1f !important;
+  transform: none !important;
+}
+
+html.dark body.systems-page .systems-section-rail a:hover,
+html.dark body.monitor-page .monitor-section-rail a:hover,
+html.dark body.uses-page .uses-chip:hover,
+html.dark body.uses-page .uses-filters button:hover,
+html.dark body.travel-body .travel-filter-chip:hover {
+  background: #1c2128 !important;
+  background-color: #1c2128 !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+body.systems-page .systems-section-rail a.is-active,
+body.systems-page .systems-section-rail a[aria-current='true'],
+body.monitor-page .monitor-section-rail a.is-active,
+body.monitor-page .monitor-section-rail a[aria-current='true'],
+body.uses-page .uses-chip.is-active,
+body.uses-page .uses-filters button.is-active,
+body.uses-page .uses-filters button[aria-pressed='true'],
+body.travel-body .travel-filter-chip.active,
+body.travel-body .travel-filter-chip[aria-pressed='true'] {
+  background: #e8e8ed !important;
+  background-color: #e8e8ed !important;
+  color: #1d1d1f !important;
+  -webkit-text-fill-color: #1d1d1f !important;
+  font-weight: 650 !important;
+}
+
+html.dark body.systems-page .systems-section-rail a.is-active,
+html.dark body.systems-page .systems-section-rail a[aria-current='true'],
+html.dark body.monitor-page .monitor-section-rail a.is-active,
+html.dark body.monitor-page .monitor-section-rail a[aria-current='true'],
+html.dark body.uses-page .uses-chip.is-active,
+html.dark body.uses-page .uses-filters button.is-active,
+html.dark body.uses-page .uses-filters button[aria-pressed='true'],
+html.dark body.travel-body .travel-filter-chip.active,
+html.dark body.travel-body .travel-filter-chip[aria-pressed='true'] {
+  background: #21262d !important;
+  background-color: #21262d !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  font-weight: 650 !important;
+}
+
+/* ─── 3. Unified Solid Cards & Fine Hairlines ─── */
+body.systems-page .systems-evidence-card,
+body.systems-page .systems-metric-panel,
+body.systems-page .systems-now-card,
+body.systems-page .systems-principle-card,
+body.systems-page .systems-bento-tile,
+body.systems-page .systems-decision-row,
+body.systems-page .systems-failure-row,
+body.systems-page .systems-arch-stage,
+body.uses-page .uses-section,
+body.uses-page .uses-featured__card,
+body.uses-page .uses-stat,
+body.monitor-page .metric-card,
+body.monitor-page .probe-card,
+body.monitor-page .monitor-card,
+body.error-page .error-container,
+body.error-page .error-dest-item {
+  border-radius: 16px !important;
+  border: 1px solid #d2d2d7 !important;
+  background: #f5f5f7 !important;
+  background-color: #f5f5f7 !important;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 3%) !important;
+  transition:
+    transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.2s ease,
+    border-color 0.2s ease !important;
+}
+
+html.dark body.systems-page .systems-evidence-card,
+html.dark body.systems-page .systems-metric-panel,
+html.dark body.systems-page .systems-now-card,
+html.dark body.systems-page .systems-principle-card,
+html.dark body.systems-page .systems-bento-tile,
+html.dark body.systems-page .systems-decision-row,
+html.dark body.systems-page .systems-failure-row,
+html.dark body.systems-page .systems-arch-stage,
+html.dark body.uses-page .uses-section,
+html.dark body.uses-page .uses-featured__card,
+html.dark body.uses-page .uses-stat,
+html.dark body.monitor-page .metric-card,
+html.dark body.monitor-page .probe-card,
+html.dark body.monitor-page .monitor-card,
+html.dark body.error-page .error-container,
+html.dark body.error-page .error-dest-item {
+  background: #121214 !important;
+  background-color: #121214 !important;
+  border-color: #30363d !important;
+  box-shadow: 0 2px 10px rgb(0 0 0 / 25%) !important;
+}
+
+body.systems-page .systems-evidence-card:hover,
+body.systems-page .systems-metric-panel:hover,
+body.systems-page .systems-bento-tile:hover,
+body.uses-page .uses-section:hover,
+body.uses-page .uses-featured__card:hover,
+body.monitor-page .metric-card:hover,
+body.monitor-page .probe-card:hover,
+body.error-page .error-dest-item:hover {
+  border-color: #0071e3 !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 14px rgb(0 0 0 / 6%) !important;
+}
+
+html.dark body.systems-page .systems-evidence-card:hover,
+html.dark body.systems-page .systems-metric-panel:hover,
+html.dark body.systems-page .systems-bento-tile:hover,
+html.dark body.uses-page .uses-section:hover,
+html.dark body.uses-page .uses-featured__card:hover,
+html.dark body.monitor-page .metric-card:hover,
+html.dark body.monitor-page .probe-card:hover,
+html.dark body.error-page .error-dest-item:hover {
+  border-color: #2f81f7 !important;
+  box-shadow: 0 4px 16px rgb(0 0 0 / 45%) !important;
+}
+
+/* ─── 4. Subpage Clean Search Inputs ─── */
+body.uses-page .uses-search,
+body.travel-body .travel-search,
+body.error-page .error-search {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+  border-radius: 980px !important;
+  border: 1px solid #d2d2d7 !important;
+  background: #f5f5f7 !important;
+  background-color: #f5f5f7 !important;
+  padding: 0.35rem 0.85rem !important;
+  box-shadow: none !important;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease !important;
+}
+
+html.dark body.uses-page .uses-search,
+html.dark body.travel-body .travel-search,
+html.dark body.error-page .error-search {
+  background: #161b22 !important;
+  background-color: #161b22 !important;
+  border-color: #30363d !important;
+}
+
+body.uses-page .uses-search:focus-within,
+body.travel-body .travel-search:focus-within,
+body.error-page .error-search:focus-within {
+  border-color: #0071e3 !important;
+  box-shadow: 0 0 0 3px rgb(0 113 227 / 18%) !important;
+}
+
+html.dark body.uses-page .uses-search:focus-within,
+html.dark body.travel-body .travel-search:focus-within,
+html.dark body.error-page .error-search:focus-within {
+  border-color: #2f81f7 !important;
+  box-shadow: 0 0 0 3px rgb(47 129 247 / 24%) !important;
+}
