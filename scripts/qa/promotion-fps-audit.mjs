@@ -5,6 +5,7 @@
  * Gates on *idle* frame timing only. Scroll is stress-sampled for reporting
  * (instant scroll jumps always create short low-FPS bursts and must not fail CI).
  */
+import { existsSync } from 'node:fs';
 import { chromium } from '@playwright/test';
 
 const BASE = process.argv[2] || 'http://127.0.0.1:4000';
@@ -12,6 +13,17 @@ const IDLE_SAMPLE_MS = Number(process.env.PROMOTION_IDLE_MS || 2500);
 const SCROLL_SAMPLE_MS = Number(process.env.PROMOTION_SCROLL_MS || 2000);
 const TARGET_FPS = Number(process.env.PROMOTION_TARGET_FPS || 55);
 const VIEWPORT = { width: 440, height: 956 };
+
+function getExecutablePath() {
+  if (process.env.CHROME_BIN && existsSync(process.env.CHROME_BIN)) {
+    return process.env.CHROME_BIN;
+  }
+  const macChrome = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
+  if (process.platform === 'darwin' && existsSync(macChrome)) {
+    return macChrome;
+  }
+  return undefined;
+}
 
 async function sampleFps(page, sampleMs, { scroll = false } = {}) {
   return page.evaluate(
@@ -79,7 +91,11 @@ async function sampleFps(page, sampleMs, { scroll = false } = {}) {
 }
 
 async function audit() {
-  const browser = await chromium.launch({ headless: true });
+  const executablePath = getExecutablePath();
+  const browser = await chromium.launch({
+    headless: true,
+    ...(executablePath ? { executablePath } : {}),
+  });
   const context = await browser.newContext({
     viewport: VIEWPORT,
     deviceScaleFactor: 3,

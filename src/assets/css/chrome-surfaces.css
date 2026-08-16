@@ -315,24 +315,40 @@ html[data-theme='dark'] #home .music-card.is-playing .music-card-inner {
   text-overflow: ellipsis !important;
   white-space: nowrap !important;
   max-width: 100% !important;
-  font-size: 0.63rem !important;
+  font-size: 0.6875rem !important;
   font-weight: 600 !important;
   letter-spacing: 0.05em !important;
   text-transform: uppercase !important;
-  color: #8e8e93 !important;
-  -webkit-text-fill-color: #8e8e93 !important;
+  color: #555558 !important;
+  -webkit-text-fill-color: #555558 !important;
   line-height: 1 !important;
 }
 
 html.dark #home .music-card-inner .status-text {
-  color: #8e8e93 !important;
-  -webkit-text-fill-color: #8e8e93 !important;
+  color: #98989d !important;
+  -webkit-text-fill-color: #98989d !important;
+}
+
+html.high-contrast #home .music-card-inner .status-text {
+  color: #000000 !important;
+  -webkit-text-fill-color: #000000 !important;
+}
+
+html.dark.high-contrast #home .music-card-inner .status-text {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
 }
 
 #home .music-card[data-music-state='playing'] .status-text,
 #home .music-card.is-playing .status-text {
-  color: #34c759 !important;
-  -webkit-text-fill-color: #34c759 !important;
+  color: #248a3d !important;
+  -webkit-text-fill-color: #248a3d !important;
+}
+
+html.dark #home .music-card[data-music-state='playing'] .status-text,
+html.dark #home .music-card.is-playing .status-text {
+  color: #30d158 !important;
+  -webkit-text-fill-color: #30d158 !important;
 }
 
 #home .music-card-inner .track-name,

@@ -3257,13 +3257,13 @@ html.dark .theme-toggle:hover {
 .status-text {
   font-size: 0.65rem;
   font-weight: 600;
-  color: #6e6e73;
+  color: #555558;
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
 
 html.dark .status-text {
-  color: #8e8e93;
+  color: #98989d;
 }
 
 .track-name {
