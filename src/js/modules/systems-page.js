@@ -27,6 +27,7 @@ import {
 import { isPerformanceAudit } from '../utils/perf-audit.js';
 import { blogPosts } from './blog-data.js';
 import { escapeHtml } from '../utils/escape-html.js';
+import { initArchitectureTree } from './architecture-tree.js';
 
 function bindCardPress() {
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -731,6 +732,7 @@ export function initSystemsPage() {
   renderCaseStudyFlows();
   mountArchitectureDiagrams();
   initArchitectureTabs();
+  initArchitectureTree('#systems-arch-tree-container');
   initSectionRail();
   initCaseStudyRails();
   bindCardPress();

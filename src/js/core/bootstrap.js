@@ -85,6 +85,21 @@ const SECTION_MODULES = [
     modulePath: '../modules/skills-visualization.js',
     rootMargin: '80px 0px',
   },
+  {
+    sectionId: 'skills',
+    modulePath: '../modules/skills-radar-chart.js',
+    rootMargin: '100px 0px',
+  },
+  {
+    sectionId: 'engineering',
+    modulePath: '../modules/architecture-tree.js',
+    rootMargin: '200px 0px',
+  },
+  {
+    sectionId: 'reach',
+    modulePath: '../modules/telemetry-rings.js',
+    rootMargin: '200px 0px',
+  },
   { sectionId: 'blog', modulePath: '../modules/blog-loader.js', rootMargin: '250px 0px' },
   { sectionId: 'blog', modulePath: '../modules/newsletter.js', rootMargin: '200px 0px' },
   {
@@ -196,6 +211,18 @@ const MODULE_IMPORTERS = {
   '../modules/premium-enhancements.js': () => import('../modules/premium-enhancements.js'),
   '../modules/birthday-celebration.js': () => import('../modules/birthday-celebration.js'),
   '../modules/skills-visualization.js': () => import('../modules/skills-visualization.js'),
+  '../modules/skills-radar-chart.js': () =>
+    import('../modules/skills-radar-chart.js').then(module => {
+      module.initSkillsRadarChart?.();
+    }),
+  '../modules/architecture-tree.js': () =>
+    import('../modules/architecture-tree.js').then(module => {
+      module.initArchitectureTree?.();
+    }),
+  '../modules/telemetry-rings.js': () =>
+    import('../modules/telemetry-rings.js').then(module => {
+      module.initTelemetryRings?.();
+    }),
   '../modules/blog-loader.js': () => import('../modules/blog-loader.js'),
   '../modules/publications-preview.js': () => import('../modules/publications-preview.js'),
   '../modules/newsletter.js': () => import('../modules/newsletter.js'),

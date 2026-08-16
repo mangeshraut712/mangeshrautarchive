@@ -1,0 +1,275 @@
+/* ═══════════════════════════════════════════════════════════════
+   Skills Depth Radar — Luxury Apple Styling
+   ═══════════════════════════════════════════════════════════════ */
+
+.skills-radar-wrapper {
+  padding: clamp(1.25rem, 3vw, 2.25rem);
+  border-radius: 20px;
+  background: var(--glass-bg, rgba(255, 255, 255, 0.75));
+  border: 1px solid var(--card-border-rest, rgba(0, 0, 0, 0.08));
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.04);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  margin: 2rem 0;
+}
+
+html.dark .skills-radar-wrapper {
+  background: var(--glass-bg-dark, rgba(22, 22, 24, 0.75));
+  border-color: var(--card-border-rest-dark, rgba(255, 255, 255, 0.1));
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+}
+
+.skills-radar-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.skills-radar-pill {
+  display: inline-block;
+  padding: 0.3rem 0.75rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--apple-blue, #0071e3);
+  background: rgba(0, 113, 227, 0.08);
+  border: 1px solid rgba(0, 113, 227, 0.2);
+  border-radius: 999px;
+  margin-bottom: 0.35rem;
+}
+
+html.dark .skills-radar-pill {
+  color: #2997ff;
+  background: rgba(41, 151, 255, 0.12);
+  border-color: rgba(41, 151, 255, 0.25);
+}
+
+.skills-radar-heading {
+  margin: 0;
+  font-size: clamp(1.2rem, 2.5vw, 1.5rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-primary, #1d1d1f);
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+}
+
+html.dark .skills-radar-heading {
+  color: #f5f5f7;
+}
+
+.skills-radar-score-badge {
+  text-align: right;
+}
+
+.skills-radar-score-badge strong {
+  display: block;
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--apple-blue, #0071e3);
+  letter-spacing: -0.03em;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+}
+
+html.dark .skills-radar-score-badge strong {
+  color: #2997ff;
+}
+
+.skills-radar-score-badge span {
+  font-size: 0.75rem;
+  color: var(--text-secondary, #86868b);
+  font-weight: 550;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.skills-radar-body {
+  display: grid;
+  grid-template-columns: 1fr 1.15fr;
+  align-items: center;
+  gap: 2rem;
+}
+
+@media (max-width: 860px) {
+  .skills-radar-body {
+    grid-template-columns: 1fr;
+  }
+}
+
+.skills-radar-chart-pane {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.skills-radar-svg {
+  width: 100%;
+  max-width: 380px;
+  height: auto;
+  overflow: visible;
+}
+
+/* ─── Web & Spoke Lines ─── */
+.radar-web-ring {
+  fill: none;
+  stroke: rgba(0, 0, 0, 0.08);
+  stroke-width: 1px;
+}
+
+html.dark .radar-web-ring {
+  stroke: rgba(255, 255, 255, 0.1);
+}
+
+.radar-axis-line {
+  stroke: rgba(0, 0, 0, 0.08);
+  stroke-width: 1px;
+  stroke-dasharray: 2 2;
+}
+
+html.dark .radar-axis-line {
+  stroke: rgba(255, 255, 255, 0.1);
+}
+
+.radar-data-polygon {
+  fill: url('#radar-gradient');
+  stroke: #0071e3;
+  stroke-width: 2.5px;
+  filter: drop-shadow(0 4px 16px rgba(0, 113, 227, 0.3));
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html.dark .radar-data-polygon {
+  stroke: #2997ff;
+  filter: drop-shadow(0 6px 20px rgba(41, 151, 255, 0.4));
+}
+
+.radar-vertex-dot {
+  fill: #ffffff;
+  stroke: #0071e3;
+  stroke-width: 2.5px;
+  transition:
+    transform 0.2s ease,
+    r 0.2s ease,
+    fill 0.2s ease;
+  cursor: pointer;
+}
+
+html.dark .radar-vertex-dot {
+  fill: #1c1c1e;
+  stroke: #2997ff;
+}
+
+.radar-vertex-dot.is-hovered {
+  r: 7.5;
+  fill: #0071e3;
+}
+
+html.dark .radar-vertex-dot.is-hovered {
+  fill: #2997ff;
+}
+
+.radar-axis-label {
+  font-size: 11px;
+  font-weight: 650;
+  fill: var(--text-secondary, #6e6e73);
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+}
+
+html.dark .radar-axis-label {
+  fill: #a1a1a6;
+}
+
+/* ─── Breakdown List ─── */
+.skills-radar-list {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.skills-radar-item {
+  padding: 0.85rem 1.1rem;
+  border-radius: 12px;
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+html.dark .skills-radar-item {
+  background: #1c1c1e;
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.skills-radar-item:hover,
+.skills-radar-item.is-hovered {
+  transform: translateX(4px);
+  border-color: #0071e3;
+  box-shadow: 0 4px 16px rgba(0, 113, 227, 0.12);
+}
+
+html.dark .skills-radar-item:hover,
+html.dark .skills-radar-item.is-hovered {
+  border-color: #2997ff;
+  box-shadow: 0 6px 20px rgba(41, 151, 255, 0.2);
+}
+
+.skills-radar-item-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.4rem;
+}
+
+.skills-radar-item-label {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--text-primary, #1d1d1f);
+}
+
+html.dark .skills-radar-item-label {
+  color: #f5f5f7;
+}
+
+.skills-radar-item-score {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--apple-blue, #0071e3);
+}
+
+html.dark .skills-radar-item-score {
+  color: #2997ff;
+}
+
+.skills-radar-bar-track {
+  width: 100%;
+  height: 5px;
+  background: rgba(0, 0, 0, 0.06);
+  border-radius: 999px;
+  overflow: hidden;
+  margin-bottom: 0.45rem;
+}
+
+html.dark .skills-radar-bar-track {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.skills-radar-bar-fill {
+  height: 100%;
+  background: #0071e3;
+  border-radius: 999px;
+  transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html.dark .skills-radar-bar-fill {
+  background: #2997ff;
+}
+
+.skills-radar-item-tools {
+  font-size: 0.78rem;
+  color: var(--text-secondary, #86868b);
+  font-weight: 500;
+}

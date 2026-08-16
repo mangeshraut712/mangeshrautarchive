@@ -89,6 +89,7 @@
     <link rel="stylesheet" href="assets/css/accessibility.css?v=20260719ui2" data-perf-defer />
     <link rel="stylesheet" href="assets/css/monitor.css?v=20260718sub2" data-perf-defer />
     <link rel="stylesheet" href="assets/css/systems.css?v=20260724dino1" data-perf-defer />
+    <link rel="stylesheet" href="assets/css/architecture-tree.css?v=20260816lux" data-perf-defer />
     <link
       rel="stylesheet"
       href="assets/css/mobile-viewport.css?v=20260719chrome2"
@@ -319,6 +320,15 @@
             >
               Active countries
             </button>
+            <button
+              type="button"
+              class="systems-arch-tab"
+              data-arch-tab="agentic"
+              role="tab"
+              aria-selected="false"
+            >
+              Agentic Stack
+            </button>
           </div>
           <div class="systems-arch-panels">
             <article
@@ -364,6 +374,15 @@
               hidden
             >
               <div class="systems-arch-diagram-host" data-arch-diagram="countries"></div>
+            </article>
+            <article
+              class="systems-arch-panel"
+              data-arch-panel="agentic"
+              id="architecture-agentic"
+              role="tabpanel"
+              hidden
+            >
+              <div id="systems-arch-tree-container"></div>
             </article>
           </div>
         </div>

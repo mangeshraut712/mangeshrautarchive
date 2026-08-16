@@ -42,6 +42,17 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'c7e2b10a',
+    date: '2026-08-16',
+    type: 'improvement',
+    title: 'Interactive Architecture Tree, Capability Radar, and Telemetry Rings',
+    summary:
+      'Elevated portfolio data representations and card systems with luxury Apple-style interactive SVG visualizations: 5-node Agentic Architecture Tree with active signal particle animations, 6-axis Engineering Depth Capability Radar polygon chart, and 3-ring Apple Watch-style System Vitality Telemetry dials with real-time KPI sparklines. Maintained 100/100 Apple HIG design score and zero external framework dependencies.',
+    tags: ['design', 'systems', 'performance'],
+    sha: 'c7e2b10a',
+    link: 'index.html#engineering',
+  },
+  {
     id: 'f948a12c',
     date: '2026-08-16',
     type: 'improvement',
