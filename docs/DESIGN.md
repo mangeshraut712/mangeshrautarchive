@@ -152,3 +152,16 @@ CSS files in `src/assets/css/` are layered systematically:
 - When adding or modifying styles, prefer using standard CSS custom properties (`var(--apple-blue)`, `var(--apple-bg)`, etc.).
 - Avoid redundant `!important` declarations except where overriding third-party resets or legacy rules.
 - Test across both Light Mode (`html:not(.dark)`) and Dark Mode (`html.dark`), as well as High-Contrast mode (`html.high-contrast`).
+
+---
+
+## 6. Mobile Responsiveness & Viewport Standards (iPhone 17 Pro Max & Apple HIG)
+
+1. **Zero Horizontal Overflow**: `document.documentElement.scrollWidth <= window.innerWidth` across all pages (`index.html`, `systems.html`, `monitor.html`, `travel.html`, `uses.html`, `changelog.html`, `404.html`) and scroll offsets.
+2. **Safe-Area Insets & Dynamic Island**: All top navigation bars and full-screen overlays account for `env(safe-area-inset-top)` and `env(safe-area-inset-bottom)` with proper spacing so content never collides with hardware cutouts.
+3. **Card & Grid Decongestion**:
+   - On screens $\le 640\text{px}$, avoid forced multi-column cards that squeeze horizontal text.
+   - Timelines (`experience.css`, `education.css`): Maintain a clean `padding-left: 58px` / `70px` with a 40px icon centered on the vertical spine line to prevent strike-through artifacts across card text.
+   - Telemetry Panels (`monitor-apple-redesign.css`): Stack control center metrics into structured 2-row tiles (`label row` top, `value row` bottom).
+   - Keynote Statistics (`systems.css`): Sized as a compact 2-column grid with full-width CI status badges and horizontally scrollable pill rails.
+4. **Touch Target Accessibility**: All interactive buttons, chips, links, and switches must satisfy minimum dimensions of $44 \times 44\text{px}$ (or $\ge 40\text{px}$ with tap padding).

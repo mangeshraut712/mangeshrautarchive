@@ -71,7 +71,7 @@ As of **August 2026**, the product combines:
 | **Agentic AI**         | AssistMe chatbot · 13 WebMCP tools · Plus menu tools · OpenRouter NDJSON stream · rich media               |
 | **Apple-inspired UI**  | Dynamic Island nav · liquid glass **clear / balanced / tinted** · solid page canvas · a11y dock            |
 | **Operations**         | Platform health probes · portfolio catalog · dual-host commit parity · Foglamp map keep-alive              |
-| **Quality**            | **148** Vitest · **165** pytest · 16 Playwright projects · Lighthouse **100/100/100/100** gates · security |
+| **Quality**            | **160** Vitest · **165** pytest · 16 Playwright projects · Lighthouse **100/100/100/100** gates · security |
 
 This document is the **canonical technology report** for the repository: stack versions, libraries, architecture, features, and how to run it. Counts and URLs below were checked against the current `main` tree and live probes.
 
@@ -193,7 +193,7 @@ Pinned from this repo’s `package.json`, `requirements.txt`, `pyproject.toml`, 
 
 | Suite        | Runner                         | Count / target (August 2026)                                                            |
 | ------------ | ------------------------------ | --------------------------------------------------------------------------------------- |
-| **Unit**     | Vitest 4.1                     | **148** tests · chatbot, bootstrap, modules, WebMCP, data contracts                     |
+| **Unit**     | Vitest 4.1                     | **160** tests · chatbot, bootstrap, modules, WebMCP, data contracts                     |
 | **API**      | pytest                         | **165** tests · FastAPI routes / telemetry / middleware                                 |
 | **E2E**      | Playwright 1.61                | **16** projects (desktop + phone + tablet, incl. iPhone 17 Pro Max)                     |
 | **A11y**     | axe-core + a11y toolbar        | CI + runtime high contrast / reduced motion / liquid glass (16/16 baseline passing)     |
@@ -375,7 +375,7 @@ npm run build && PORT=4174 npm run serve:dist   # production preview
 | `npm run doctor` / `doctor:stack`        | Root layout + no React/Next runtime               |
 | `npm run dev`                            | Frontend + backend                                |
 | `npm run build`                          | Production `dist/` (+ blog/case study generation) |
-| `npm test` / `npm run test:api`          | Vitest **148** / pytest **165**                   |
+| `npm test` / `npm run test:api`          | Vitest **160** / pytest **165**                   |
 | `npm run check`                          | ESLint + Stylelint + Prettier + Vitest            |
 | `npm run lint:dead-code` / `lint:python` | Vulture + flake8 for the FastAPI codebase         |
 | `npm run test:e2e:all`                   | Playwright across all **16** browser projects     |
@@ -412,7 +412,7 @@ Never commit `.env` / `.env.local`. See [`.env.example`](.env.example).
 
 1. `npm audit` + `security-check`
 2. ESLint · Stylelint 17 · Prettier
-3. Vitest (**148**)
+3. Vitest (**160**)
 4. Env parity (non-blocking)
 5. flake8 · dead-code · pytest (**165**)
 6. Browser QA smoke, accessibility (16/16), and promotion/FPS checks
@@ -446,7 +446,7 @@ Republishes [`.foglamp/scan.json`](.foglamp/scan.json) to the same public URL us
 
 | Suite               | Target                                                     |
 | ------------------- | ---------------------------------------------------------- |
-| Vitest              | 148                                                        |
+| Vitest              | 160                                                        |
 | pytest              | 165                                                        |
 | Playwright projects | 16                                                         |
 | Lighthouse CI       | **100** Performance / Accessibility / Best Practices / SEO |
