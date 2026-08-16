@@ -27,7 +27,7 @@
   <img src="https://img.shields.io/badge/FastAPI-0.139-009688?style=flat-square&logo=fastapi&logoColor=white" alt="FastAPI">
   <img src="https://img.shields.io/badge/ESM-vanilla-yellow?style=flat-square" alt="Vanilla ESM">
   <img src="https://img.shields.io/badge/OpenRouter-Grok%204.3%20%2B%20Nemotron%20free-black?style=flat-square" alt="OpenRouter">
-  <img src="https://img.shields.io/badge/Tests-160%20unit%20%2B%20165%20API-brightgreen?style=flat-square" alt="160 unit tests and 165 API tests">
+  <img src="https://img.shields.io/badge/Tests-161%20unit%20%2B%20166%20API-brightgreen?style=flat-square" alt="161 unit tests and 166 API tests">
   <img src="https://img.shields.io/badge/Lighthouse-100%2F100%2F100%2F100-0cce6b?style=flat-square" alt="Lighthouse">
   <img src="https://img.shields.io/badge/Playwright-16%20projects-2EAD33?style=flat-square&logo=playwright&logoColor=white" alt="Playwright">
   <a href="https://foglamp.dev/scan/mangeshrautarchive-jtspx4"><img src="https://img.shields.io/badge/Foglamp-AI%20map-0071e3?style=flat-square" alt="Foglamp architecture map"></a>
@@ -302,6 +302,18 @@ flowchart LR
   API --> INT
   CDN --> HTML
 ```
+
+### Vector Architecture &amp; Workflow Diagrams
+
+High-resolution, Apple HIG-standard vector diagrams committed in `src/assets/images/diagrams/`:
+
+| Diagram                        | Description                                                              | Direct Link                                                                                       |
+| ------------------------------ | ------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------- |
+| 🏛️ **System Architecture**     | Full-Stack Edge CDN + Serverless FastAPI Gateway + Multi-Model AI Router | [`system-architecture.svg`](src/assets/images/diagrams/system-architecture.svg)                   |
+| 👁️ **AssistMe Multimodal AI**  | Client Multimodal Ingestion + Safety Sanitization + OpenRouter Streaming | [`assistme-multimodal-workflow.svg`](src/assets/images/diagrams/assistme-multimodal-workflow.svg) |
+| 🛡️ **CI/CD Quality Matrix**    | 3-Tier Quality Gates + 327 Automated Tests + 100/100 Lighthouse Standard | [`ci-cd-quality-pipeline.svg`](src/assets/images/diagrams/ci-cd-quality-pipeline.svg)             |
+| 🌐 **Dual-Host Edge Topology** | Vercel Global Edge + GitHub Pages Standby + Cloudflare Proxy Failover    | [`dual-host-edge-topology.svg`](src/assets/images/diagrams/dual-host-edge-topology.svg)           |
+| 🎵 **Live Spotify Scrobble**   | Last.fm Realtime Webhook + FastAPI 25s Cache + Apple Music Pill Card     | [`spotify-live-scrobble-flow.svg`](src/assets/images/diagrams/spotify-live-scrobble-flow.svg)     |
 
 ### Chat path
 

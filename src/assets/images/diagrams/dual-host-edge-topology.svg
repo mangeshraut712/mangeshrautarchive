@@ -1,0 +1,113 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" width="100%" height="100%" role="img" aria-label="Dual Host Edge Network Topology">
+  <style>
+    .bg { fill: #fbfbfd; }
+    .card-bg { fill: #ffffff; stroke: #e5e5ea; stroke-width: 1.5px; }
+    .card-bg-accent { fill: #f5f8ff; stroke: #0071e3; stroke-width: 1.5px; }
+    .node-title { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif; font-size: 14px; font-weight: 700; fill: #1d1d1f; }
+    .node-sub { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif; font-size: 11px; fill: #86868b; }
+    .node-tag { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif; font-size: 10px; font-weight: 600; fill: #0071e3; }
+    .edge { stroke: #0071e3; stroke-width: 2px; fill: none; stroke-linecap: round; stroke-dasharray: 6 4; }
+    .edge-solid { stroke: #d2d2d7; stroke-width: 1.5px; fill: none; stroke-linecap: round; }
+    .badge-pill { fill: #e8f2ff; rx: 6px; }
+    .section-title { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif; font-size: 20px; font-weight: 700; fill: #1d1d1f; }
+    .section-desc { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif; font-size: 12px; fill: #6e6e73; }
+    @media (prefers-color-scheme: dark) {
+      .bg { fill: #000000; }
+      .card-bg { fill: #1c1c1e; stroke: #2c2c2e; }
+      .card-bg-accent { fill: #0f1c2e; stroke: #0a84ff; }
+      .node-title { fill: #f5f5f7; }
+      .node-sub { fill: #98989d; }
+      .node-tag { fill: #64d2ff; }
+      .edge { stroke: #0a84ff; }
+      .edge-solid { stroke: #38383a; }
+      .badge-pill { fill: #102a45; }
+      .section-title { fill: #f5f5f7; }
+      .section-desc { fill: #86868b; }
+    }
+  </style>
+
+  <rect width="960" height="540" rx="20" class="bg" />
+
+  <!-- Header Section -->
+  <g transform="translate(40, 40)">
+    <text class="section-title" x="0" y="0">Dual-Host Edge Topology &amp; Failover Resilience</text>
+    <text class="section-desc" x="0" y="22">Primary Vercel Global Edge • Standby GitHub Pages Static Mirror • Cloudflare Worker API Gateway</text>
+  </g>
+
+  <!-- Flow Edges -->
+  <path class="edge" d="M 160 270 C 220 270, 220 180, 280 180" />
+  <path class="edge" d="M 160 270 C 220 270, 220 360, 280 360" />
+  
+  <path class="edge-solid" d="M 460 180 L 520 180" />
+  <path class="edge-solid" d="M 460 360 L 520 360" />
+
+  <path class="edge" d="M 700 180 C 760 180, 760 270, 800 270" />
+  <path class="edge" d="M 700 360 C 760 360, 760 270, 800 270" />
+
+  <!-- Node 1: Client Ingress -->
+  <g transform="translate(40, 200)">
+    <rect width="120" height="140" rx="14" class="card-bg" />
+    <circle cx="60" cy="45" r="22" fill="#0071e3" opacity="0.12" />
+    <text x="60" y="52" text-anchor="middle" font-size="22">🌍</text>
+    <text class="node-title" x="60" y="88" text-anchor="middle">Client Traffic</text>
+    <text class="node-sub" x="60" y="106" text-anchor="middle">Global Ingress</text>
+    <text class="node-sub" x="60" y="122" text-anchor="middle">Anycast DNS</text>
+  </g>
+
+  <!-- Route A: Vercel Primary -->
+  <g transform="translate(280, 110)">
+    <rect width="180" height="140" rx="14" class="card-bg-accent" />
+    <rect x="15" y="15" width="66" height="18" class="badge-pill" />
+    <text class="node-tag" x="48" y="28" text-anchor="middle">PRIMARY</text>
+    <text class="node-title" x="15" y="58">Vercel Edge</text>
+    <text class="node-sub" x="15" y="78">mangeshraut.pro</text>
+    <text class="node-sub" x="15" y="96">• Global Anycast Edge</text>
+    <text class="node-sub" x="15" y="112">• Sub-30ms TTFB</text>
+    <text class="node-sub" x="15" y="128">• Serverless Python</text>
+  </g>
+
+  <!-- Route B: GitHub Pages Standby -->
+  <g transform="translate(280, 290)">
+    <rect width="180" height="140" rx="14" class="card-bg" />
+    <rect x="15" y="15" width="66" height="18" class="badge-pill" />
+    <text class="node-tag" x="48" y="28" text-anchor="middle">STANDBY</text>
+    <text class="node-title" x="15" y="58">GitHub Pages</text>
+    <text class="node-sub" x="15" y="78">mangeshraut712.github.io</text>
+    <text class="node-sub" x="15" y="96">• Immutable Static Shell</text>
+    <text class="node-sub" x="15" y="112">• CDN Redundancy</text>
+    <text class="node-sub" x="15" y="128">• Automated Action Sync</text>
+  </g>
+
+  <!-- Middleware: FastAPI & CF Worker -->
+  <g transform="translate(520, 110)">
+    <rect width="180" height="140" rx="14" class="card-bg-accent" />
+    <rect x="15" y="15" width="60" height="18" class="badge-pill" />
+    <text class="node-tag" x="45" y="28" text-anchor="middle">SERVERLESS</text>
+    <text class="node-title" x="15" y="58">FastAPI Routing</text>
+    <text class="node-sub" x="15" y="78">api/index.py</text>
+    <text class="node-sub" x="15" y="96">• Direct /api/* handler</text>
+    <text class="node-sub" x="15" y="112">• OpenRouter Gateway</text>
+    <text class="node-sub" x="15" y="128">• Health Probes</text>
+  </g>
+
+  <g transform="translate(520, 290)">
+    <rect width="180" height="140" rx="14" class="card-bg" />
+    <rect x="15" y="15" width="56" height="18" class="badge-pill" />
+    <text class="node-tag" x="43" y="28" text-anchor="middle">PROXY</text>
+    <text class="node-title" x="15" y="58">Cloudflare Proxy</text>
+    <text class="node-sub" x="15" y="78">Edge Worker</text>
+    <text class="node-sub" x="15" y="96">• Rewrites /api requests</text>
+    <text class="node-sub" x="15" y="112">• CORS Header Injection</text>
+    <text class="node-sub" x="15" y="128">• Rate-limit fallback</text>
+  </g>
+
+  <!-- Destination: Live User Experience -->
+  <g transform="translate(800, 200)">
+    <rect width="120" height="140" rx="14" class="card-bg-accent" />
+    <circle cx="60" cy="45" r="22" fill="#0071e3" opacity="0.12" />
+    <text x="60" y="52" text-anchor="middle" font-size="22">✨</text>
+    <text class="node-title" x="60" y="88" text-anchor="middle">Seamless</text>
+    <text class="node-sub" x="60" y="106" text-anchor="middle">100% Uptime</text>
+    <text class="node-sub" x="60" y="122" text-anchor="middle">Zero Latency</text>
+  </g>
+</svg>

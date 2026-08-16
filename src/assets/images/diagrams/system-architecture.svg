@@ -1,0 +1,137 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" width="100%" height="100%" role="img" aria-label="mangeshraut.pro Full Stack System Architecture">
+  <style>
+    .bg { fill: #fbfbfd; }
+    .card-bg { fill: #ffffff; stroke: #e5e5ea; stroke-width: 1.5px; }
+    .card-bg-accent { fill: #f5f8ff; stroke: #0071e3; stroke-width: 1.5px; }
+    .node-title { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif; font-size: 14px; font-weight: 700; fill: #1d1d1f; }
+    .node-sub { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif; font-size: 11px; fill: #86868b; }
+    .node-tag { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif; font-size: 10px; font-weight: 600; fill: #0071e3; }
+    .edge { stroke: #0071e3; stroke-width: 2px; fill: none; stroke-linecap: round; stroke-dasharray: 6 4; animation: dash 20s linear infinite; }
+    .edge-solid { stroke: #d2d2d7; stroke-width: 1.5px; fill: none; stroke-linecap: round; }
+    .badge-pill { fill: #e8f2ff; rx: 6px; }
+    .section-title { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif; font-size: 20px; font-weight: 700; fill: #1d1d1f; }
+    .section-desc { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif; font-size: 12px; fill: #6e6e73; }
+    @media (prefers-color-scheme: dark) {
+      .bg { fill: #000000; }
+      .card-bg { fill: #1c1c1e; stroke: #2c2c2e; }
+      .card-bg-accent { fill: #0f1c2e; stroke: #0a84ff; }
+      .node-title { fill: #f5f5f7; }
+      .node-sub { fill: #98989d; }
+      .node-tag { fill: #64d2ff; }
+      .edge { stroke: #0a84ff; }
+      .edge-solid { stroke: #38383a; }
+      .badge-pill { fill: #102a45; }
+      .section-title { fill: #f5f5f7; }
+      .section-desc { fill: #86868b; }
+    }
+  </style>
+
+  <rect width="960" height="540" rx="20" class="bg" />
+
+  <!-- Header Section -->
+  <g transform="translate(40, 40)">
+    <text class="section-title" x="0" y="0">mangeshraut.pro — Full-Stack Edge Architecture</text>
+    <text class="section-desc" x="0" y="22">Dual-Host CDN Static Edge • Serverless Python 3.12 FastAPI Gateway • Multi-Model OpenRouter AI Router</text>
+  </g>
+
+  <!-- Flow Edges -->
+  <path class="edge" d="M 140 180 L 220 180" />
+  <path class="edge" d="M 360 180 L 440 180" />
+  <path class="edge" d="M 580 180 L 660 180" />
+  <path class="edge" d="M 800 180 L 850 180" />
+
+  <path class="edge-solid" d="M 290 230 L 290 320" />
+  <path class="edge-solid" d="M 510 230 L 510 320" />
+  <path class="edge-solid" d="M 730 230 L 730 320" />
+
+  <!-- Column 1: Client Layer -->
+  <g transform="translate(40, 110)">
+    <rect width="100" height="140" rx="14" class="card-bg" />
+    <circle cx="50" cy="45" r="20" fill="#0071e3" opacity="0.12" />
+    <text x="50" y="50" text-anchor="middle" font-size="20">🌐</text>
+    <text class="node-title" x="50" y="85" text-anchor="middle">Client</text>
+    <text class="node-sub" x="50" y="102" text-anchor="middle">Safari / Chrome</text>
+    <text class="node-sub" x="50" y="118" text-anchor="middle">Desktop &amp; Mobile</text>
+  </g>
+
+  <!-- Column 2: Edge Delivery -->
+  <g transform="translate(220, 110)">
+    <rect width="140" height="140" rx="14" class="card-bg-accent" />
+    <rect x="15" y="15" width="46" height="18" class="badge-pill" />
+    <text class="node-tag" x="38" y="28" text-anchor="middle">EDGE</text>
+    <text class="node-title" x="15" y="58">Vercel CDN</text>
+    <text class="node-sub" x="15" y="76">mangeshraut.pro</text>
+    <text class="node-sub" x="15" y="96">• Static Cache</text>
+    <text class="node-sub" x="15" y="112">• Brotli Compression</text>
+    <text class="node-sub" x="15" y="128">• Smart DNS Routing</text>
+  </g>
+
+  <!-- Column 3: Frontend Runtime -->
+  <g transform="translate(440, 110)">
+    <rect width="140" height="140" rx="14" class="card-bg" />
+    <rect x="15" y="15" width="48" height="18" class="badge-pill" />
+    <text class="node-tag" x="39" y="28" text-anchor="middle">SHELL</text>
+    <text class="node-title" x="15" y="58">Vanilla ESM</text>
+    <text class="node-sub" x="15" y="76">Zero Frameworks</text>
+    <text class="node-sub" x="15" y="96">• Web Components</text>
+    <text class="node-sub" x="15" y="112">• Liquid Glass Engine</text>
+    <text class="node-sub" x="15" y="128">• Lazy Modules Loader</text>
+  </g>
+
+  <!-- Column 4: FastAPI Gateway -->
+  <g transform="translate(660, 110)">
+    <rect width="140" height="140" rx="14" class="card-bg-accent" />
+    <rect x="15" y="15" width="54" height="18" class="badge-pill" />
+    <text class="node-tag" x="42" y="28" text-anchor="middle">API GW</text>
+    <text class="node-title" x="15" y="58">FastAPI /api</text>
+    <text class="node-sub" x="15" y="76">Python 3.12 Core</text>
+    <text class="node-sub" x="15" y="96">• /api/chat (NDJSON)</text>
+    <text class="node-sub" x="15" y="112">• /api/media/recent</text>
+    <text class="node-sub" x="15" y="128">• /api/monitor/*</text>
+  </g>
+
+  <!-- Column 5: Intelligence & External Services -->
+  <g transform="translate(850, 110)">
+    <rect width="70" height="140" rx="14" class="card-bg" />
+    <text x="35" y="45" text-anchor="middle" font-size="20">🤖</text>
+    <text class="node-title" x="35" y="75" text-anchor="middle">AI</text>
+    <text class="node-sub" x="35" y="95" text-anchor="middle">Grok 4.3</text>
+    <text class="node-sub" x="35" y="110" text-anchor="middle">Claude</text>
+    <text class="node-sub" x="35" y="125" text-anchor="middle">Gemini</text>
+  </g>
+
+  <!-- Lower Row: Subsystems & Redundancy -->
+  <!-- Redundancy 1: GitHub Pages Mirror -->
+  <g transform="translate(220, 320)">
+    <rect width="140" height="150" rx="14" class="card-bg" />
+    <text class="node-title" x="15" y="32">GitHub Pages</text>
+    <text class="node-sub" x="15" y="50">Static Mirror Host</text>
+    <text class="node-sub" x="15" y="72">• mangeshraut712.github.io</text>
+    <text class="node-sub" x="15" y="88">• Zero downtime failover</text>
+    <text class="node-sub" x="15" y="104">• Cloudflare Worker Proxy</text>
+    <text class="node-sub" x="15" y="120">• SHA Parity Guard</text>
+  </g>
+
+  <!-- Redundancy 2: Client Subsystems -->
+  <g transform="translate(440, 320)">
+    <rect width="140" height="150" rx="14" class="card-bg" />
+    <text class="node-title" x="15" y="32">Interactive UI</text>
+    <text class="node-sub" x="15" y="50">Modular Subsystems</text>
+    <text class="node-sub" x="15" y="72">• Hero Music Pill Card</text>
+    <text class="node-sub" x="15" y="88">• Project Search &amp; Chips</text>
+    <text class="node-sub" x="15" y="104">• Skills Depth Radar</text>
+    <text class="node-sub" x="15" y="120">• Travel Atlas &amp; Map</text>
+    <text class="node-sub" x="15" y="136">• System Telemetry Ring</text>
+  </g>
+
+  <!-- Redundancy 3: Backend Security & Verification -->
+  <g transform="translate(660, 320)">
+    <rect width="140" height="150" rx="14" class="card-bg" />
+    <text class="node-title" x="15" y="32">Safety &amp; Telemetry</text>
+    <text class="node-sub" x="15" y="50">Edge Security Layer</text>
+    <text class="node-sub" x="15" y="72">• HMAC Session Auth</text>
+    <text class="node-sub" x="15" y="88">• Prompt Injection Filter</text>
+    <text class="node-sub" x="15" y="104">• In-Memory 25s Cache</text>
+    <text class="node-sub" x="15" y="120">• 161 Vitest + 166 pytest</text>
+  </g>
+</svg>

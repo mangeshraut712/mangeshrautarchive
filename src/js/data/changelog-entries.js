@@ -42,6 +42,17 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'd82f1b4a',
+    date: '2026-08-16',
+    type: 'release',
+    title: 'High-Resolution Vector Architecture Diagrams & Workflow Assets Suite',
+    summary:
+      'Engineered and committed 5 pixel-perfect, Apple HIG-standard vector SVG architecture and workflow diagrams into src/assets/images/diagrams/. Documented full-stack dual-host edge routing, AssistMe multimodal AI ingestion & streaming pipeline, 3-tier CI/CD automated test & Lighthouse matrix, and realtime Spotify scrobble architecture with dark/light mode CSS custom property styling.',
+    tags: ['systems', 'design', 'performance'],
+    sha: 'd82f1b4a',
+    link: 'systems.html',
+  },
+  {
     id: 'e41b9d72',
     date: '2026-08-16',
     type: 'release',

@@ -1,0 +1,125 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" width="100%" height="100%" role="img" aria-label="Spotify Live Scrobble &amp; Apple Music Pill Flow">
+  <style>
+    .bg { fill: #fbfbfd; }
+    .card-bg { fill: #ffffff; stroke: #e5e5ea; stroke-width: 1.5px; }
+    .card-bg-accent { fill: #f5f8ff; stroke: #0071e3; stroke-width: 1.5px; }
+    .card-bg-green { fill: #f5fff8; stroke: #1db954; stroke-width: 1.5px; }
+    .node-title { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif; font-size: 14px; font-weight: 700; fill: #1d1d1f; }
+    .node-sub { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif; font-size: 11px; fill: #86868b; }
+    .node-tag { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif; font-size: 10px; font-weight: 600; fill: #0071e3; }
+    .node-tag-green { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif; font-size: 10px; font-weight: 600; fill: #1db954; }
+    .edge { stroke: #1db954; stroke-width: 2px; fill: none; stroke-linecap: round; stroke-dasharray: 6 4; }
+    .edge-blue { stroke: #0071e3; stroke-width: 2px; fill: none; stroke-linecap: round; stroke-dasharray: 6 4; }
+    .badge-pill { fill: #e8f2ff; rx: 6px; }
+    .badge-pill-green { fill: #eafaf1; rx: 6px; }
+    .section-title { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif; font-size: 20px; font-weight: 700; fill: #1d1d1f; }
+    .section-desc { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif; font-size: 12px; fill: #6e6e73; }
+    @media (prefers-color-scheme: dark) {
+      .bg { fill: #000000; }
+      .card-bg { fill: #1c1c1e; stroke: #2c2c2e; }
+      .card-bg-accent { fill: #0f1c2e; stroke: #0a84ff; }
+      .card-bg-green { fill: #082411; stroke: #1db954; }
+      .node-title { fill: #f5f5f7; }
+      .node-sub { fill: #98989d; }
+      .node-tag { fill: #64d2ff; }
+      .node-tag-green { fill: #1ed760; }
+      .edge { stroke: #1ed760; }
+      .edge-blue { stroke: #0a84ff; }
+      .badge-pill { fill: #102a45; }
+      .badge-pill-green { fill: #0b3818; }
+      .section-title { fill: #f5f5f7; }
+      .section-desc { fill: #86868b; }
+    }
+  </style>
+
+  <rect width="960" height="540" rx="20" class="bg" />
+
+  <!-- Header Section -->
+  <g transform="translate(40, 40)">
+    <text class="section-title" x="0" y="0">Real-Time Spotify Scrobble &amp; Apple Music Pill Architecture</text>
+    <text class="section-desc" x="0" y="22">Last.fm Realtime Webhook &amp; Polling • FastAPI 25s Edge Memory Cache • Zero Jitter CSS Glass Pill</text>
+  </g>
+
+  <!-- Flow Edges -->
+  <path class="edge" d="M 210 180 L 270 180" />
+  <path class="edge-blue" d="M 460 180 L 520 180" />
+  <path class="edge-blue" d="M 710 180 L 760 180" />
+
+  <!-- Node 1: Spotify Activity -->
+  <g transform="translate(40, 100)">
+    <rect width="170" height="160" rx="14" class="card-bg-green" />
+    <rect x="15" y="15" width="60" height="18" class="badge-pill-green" />
+    <text class="node-tag-green" x="45" y="28" text-anchor="middle">SPOTIFY</text>
+    <text class="node-title" x="15" y="58">Spotify Playback</text>
+    <text class="node-sub" x="15" y="78">🎧 Active Desktop / Mobile</text>
+    <text class="node-sub" x="15" y="96">• Track Title &amp; Artist</text>
+    <text class="node-sub" x="15" y="114">• Album Art Hi-Res URL</text>
+    <text class="node-sub" x="15" y="132">• Scrobble Timestamp</text>
+    <text class="node-sub" x="15" y="148">• Real-time WebSocket hook</text>
+  </g>
+
+  <!-- Node 2: Last.fm API Sync -->
+  <g transform="translate(270, 100)">
+    <rect width="190" height="160" rx="14" class="card-bg" />
+    <rect x="15" y="15" width="56" height="18" class="badge-pill" />
+    <text class="node-tag" x="43" y="28" text-anchor="middle">LAST.FM</text>
+    <text class="node-title" x="15" y="58">Last.fm Aggregator</text>
+    <text class="node-sub" x="15" y="78">user.getRecentTracks</text>
+    <text class="node-sub" x="15" y="96">• @attr: nowplaying="true"</text>
+    <text class="node-sub" x="15" y="114">• Extralarge cover image</text>
+    <text class="node-sub" x="15" y="132">• Canonical Spotify links</text>
+    <text class="node-sub" x="15" y="148">• Track provenance</text>
+  </g>
+
+  <!-- Node 3: FastAPI Backend Proxy & Cache -->
+  <g transform="translate(520, 100)">
+    <rect width="190" height="160" rx="14" class="card-bg-accent" />
+    <rect x="15" y="15" width="56" height="18" class="badge-pill" />
+    <text class="node-tag" x="43" y="28" text-anchor="middle">FASTAPI</text>
+    <text class="node-title" x="15" y="58">/api/media/recent</text>
+    <text class="node-sub" x="15" y="78">• 25-Second Memory Cache</text>
+    <text class="node-sub" x="15" y="96">• Rate-limit shield (429 free)</text>
+    <text class="node-sub" x="15" y="114">• Fallback Canned Track</text>
+    <text class="node-sub" x="15" y="132">• Cache-Control: max-age=20</text>
+    <text class="node-sub" x="15" y="148">• Async httpx Client</text>
+  </g>
+
+  <!-- Node 4: Apple Music Card UI -->
+  <g transform="translate(760, 100)">
+    <rect width="160" height="160" rx="14" class="card-bg" />
+    <circle cx="80" cy="50" r="22" fill="#0071e3" opacity="0.12" />
+    <text x="80" y="57" text-anchor="middle" font-size="22">🎵</text>
+    <text class="node-title" x="80" y="90" text-anchor="middle">Hero Pill Card</text>
+    <text class="node-sub" x="80" y="108" text-anchor="middle">Apple Music UX</text>
+    <text class="node-sub" x="80" y="124" text-anchor="middle">Zero Jitter Layout</text>
+    <text class="node-sub" x="80" y="140" text-anchor="middle">Equalizer Animation</text>
+  </g>
+
+  <!-- Lower Row: Visual Representation of the Hero Pill -->
+  <g transform="translate(40, 300)">
+    <rect width="880" height="180" rx="16" class="card-bg" />
+    <text class="node-title" x="30" y="36">Luxury Apple Music Pill Card Layout Hierarchy</text>
+    <text class="node-sub" x="30" y="54">Strict structural hierarchy designed to eliminate layout shifts across dark and light themes</text>
+
+    <!-- Visual Pill Representation -->
+    <g transform="translate(240, 80)">
+      <!-- Pill Container -->
+      <rect width="400" height="74" rx="37" class="card-bg" stroke="#0071e3" stroke-width="1.5px" />
+      
+      <!-- Vinyl Artwork Anchor -->
+      <circle cx="45" cy="37" r="26" fill="#1c1c1e" />
+      <circle cx="45" cy="37" r="10" fill="#0071e3" />
+      <circle cx="45" cy="37" r="3" fill="#ffffff" />
+      
+      <!-- Song & Artist Details -->
+      <text class="node-title" x="85" y="28">Song Name (Top Hierarchy)</text>
+      <text class="node-sub" x="85" y="44">Artist Name • Album Details</text>
+      <circle cx="88" cy="56" r="3" fill="#34c759" />
+      <text class="node-sub" x="96" y="59" font-size="10px">LISTENING NOW</text>
+      
+      <!-- Spotify Logo Circle Anchor -->
+      <circle cx="360" cy="37" r="18" fill="#1db954" />
+      <text x="360" y="42" text-anchor="middle" font-size="14" fill="#ffffff">🎧</text>
+    </g>
+  </g>
+</svg>

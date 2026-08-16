@@ -1,0 +1,138 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" width="100%" height="100%" role="img" aria-label="mangeshraut.pro CI/CD Quality Pipeline">
+  <style>
+    .bg { fill: #fbfbfd; }
+    .card-bg { fill: #ffffff; stroke: #e5e5ea; stroke-width: 1.5px; }
+    .card-bg-accent { fill: #f5f8ff; stroke: #0071e3; stroke-width: 1.5px; }
+    .card-bg-green { fill: #f5fff8; stroke: #34c759; stroke-width: 1.5px; }
+    .node-title { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif; font-size: 14px; font-weight: 700; fill: #1d1d1f; }
+    .node-sub { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif; font-size: 11px; fill: #86868b; }
+    .node-tag { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif; font-size: 10px; font-weight: 600; fill: #0071e3; }
+    .node-tag-green { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif; font-size: 10px; font-weight: 600; fill: #34c759; }
+    .edge { stroke: #0071e3; stroke-width: 2px; fill: none; stroke-linecap: round; stroke-dasharray: 6 4; }
+    .badge-pill { fill: #e8f2ff; rx: 6px; }
+    .badge-pill-green { fill: #eafaf1; rx: 6px; }
+    .section-title { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif; font-size: 20px; font-weight: 700; fill: #1d1d1f; }
+    .section-desc { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif; font-size: 12px; fill: #6e6e73; }
+    .score-circle { fill: #34c759; }
+    .score-text { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif; font-size: 11px; font-weight: 700; fill: #ffffff; }
+    @media (prefers-color-scheme: dark) {
+      .bg { fill: #000000; }
+      .card-bg { fill: #1c1c1e; stroke: #2c2c2e; }
+      .card-bg-accent { fill: #0f1c2e; stroke: #0a84ff; }
+      .card-bg-green { fill: #0d2818; stroke: #30d158; }
+      .node-title { fill: #f5f5f7; }
+      .node-sub { fill: #98989d; }
+      .node-tag { fill: #64d2ff; }
+      .node-tag-green { fill: #30d158; }
+      .edge { stroke: #0a84ff; }
+      .badge-pill { fill: #102a45; }
+      .badge-pill-green { fill: #123d24; }
+      .section-title { fill: #f5f5f7; }
+      .section-desc { fill: #86868b; }
+    }
+  </style>
+
+  <rect width="960" height="540" rx="20" class="bg" />
+
+  <!-- Header Section -->
+  <g transform="translate(40, 40)">
+    <text class="section-title" x="0" y="0">Continuous Integration &amp; Autonomous Quality Gates</text>
+    <text class="section-desc" x="0" y="22">3-Tier Verification Matrix • 327 Automated Tests • Zero-Tolerance Security Guard • 100/100 Lighthouse Standard</text>
+  </g>
+
+  <!-- Flow Edges -->
+  <path class="edge" d="M 210 180 L 260 180" />
+  <path class="edge" d="M 440 180 L 490 180" />
+  <path class="edge" d="M 670 180 L 720 180" />
+
+  <!-- Stage 1: Static Code Lints & Formatting -->
+  <g transform="translate(40, 100)">
+    <rect width="170" height="160" rx="14" class="card-bg" />
+    <rect x="15" y="15" width="54" height="18" class="badge-pill" />
+    <text class="node-tag" x="42" y="28" text-anchor="middle">GATE 1</text>
+    <text class="node-title" x="15" y="58">Static Quality</text>
+    <text class="node-sub" x="15" y="78">⚡ ESLint 9.x (0 errors)</text>
+    <text class="node-sub" x="15" y="96">🎨 Stylelint 17.x (0 errors)</text>
+    <text class="node-sub" x="15" y="114">📐 Prettier 3.x (100% check)</text>
+    <text class="node-sub" x="15" y="132">🐍 flake8 (Python 3.12)</text>
+    <text class="node-sub" x="15" y="148">🔒 Secret &amp; Credential Scan</text>
+  </g>
+
+  <!-- Stage 2: Automated Unit & API Suites -->
+  <g transform="translate(260, 100)">
+    <rect width="180" height="160" rx="14" class="card-bg-accent" />
+    <rect x="15" y="15" width="54" height="18" class="badge-pill" />
+    <text class="node-tag" x="42" y="28" text-anchor="middle">GATE 2</text>
+    <text class="node-title" x="15" y="58">Automated Tests</text>
+    <text class="node-sub" x="15" y="78">🧪 161 Vitest Unit Tests</text>
+    <text class="node-sub" x="15" y="96">🐍 166 pytest API Tests</text>
+    <text class="node-sub" x="15" y="114">🌐 16 Playwright Projects</text>
+    <text class="node-sub" x="15" y="132">📱 Multi-Device Emulation</text>
+    <text class="node-sub" x="15" y="148">♿ axe-core a11y Audit</text>
+  </g>
+
+  <!-- Stage 3: Bundling & Asset Synthesis -->
+  <g transform="translate(490, 100)">
+    <rect width="180" height="160" rx="14" class="card-bg" />
+    <rect x="15" y="15" width="54" height="18" class="badge-pill" />
+    <text class="node-tag" x="42" y="28" text-anchor="middle">GATE 3</text>
+    <text class="node-title" x="15" y="58">Build &amp; Inlining</text>
+    <text class="node-sub" x="15" y="78">⚡ esbuild Production JS</text>
+    <text class="node-sub" x="15" y="96">🎨 Tailwind v4 CSS Engine</text>
+    <text class="node-sub" x="15" y="114">📥 Hero Critical CSS Inline</text>
+    <text class="node-sub" x="15" y="132">🔄 Cache-Busting Versioning</text>
+    <text class="node-sub" x="15" y="148">📝 RSS / Sitemap / Case Studies</text>
+  </g>
+
+  <!-- Stage 4: Production Deployment -->
+  <g transform="translate(720, 100)">
+    <rect width="200" height="160" rx="14" class="card-bg-green" />
+    <rect x="15" y="15" width="64" height="18" class="badge-pill-green" />
+    <text class="node-tag-green" x="47" y="28" text-anchor="middle">DEPLOY</text>
+    <text class="node-title" x="15" y="58">Dual Host Parity</text>
+    <text class="node-sub" x="15" y="78">▲ Vercel Edge Primary</text>
+    <text class="node-sub" x="15" y="96">🐙 GitHub Pages Mirror</text>
+    <text class="node-sub" x="15" y="114">☁️ Cloudflare Failover Proxy</text>
+    <text class="node-sub" x="15" y="132">📋 Commit SHA Verified</text>
+    <text class="node-sub" x="15" y="148">🚀 0-Downtime Atomic Sync</text>
+  </g>
+
+  <!-- Lower Row: Lighthouse 100/100 Standards -->
+  <g transform="translate(40, 300)">
+    <rect width="880" height="180" rx="16" class="card-bg" />
+    <text class="node-title" x="30" y="36">Lighthouse Score Floors &amp; Core Web Vitals (CWV)</text>
+    <text class="node-sub" x="30" y="54">Enforced automatically in GitHub Actions CI prior to production promotion</text>
+
+    <!-- Score 1: Performance -->
+    <g transform="translate(40, 80)">
+      <circle cx="36" cy="36" r="32" class="score-circle" />
+      <text class="score-text" x="36" y="41" text-anchor="middle">100</text>
+      <text class="node-title" x="85" y="32">Performance</text>
+      <text class="node-sub" x="85" y="50">LCP &lt; 0.8s • INP &lt; 50ms • CLS = 0.000</text>
+    </g>
+
+    <!-- Score 2: Accessibility -->
+    <g transform="translate(260, 80)">
+      <circle cx="36" cy="36" r="32" class="score-circle" />
+      <text class="score-text" x="36" y="41" text-anchor="middle">100</text>
+      <text class="node-title" x="85" y="32">Accessibility</text>
+      <text class="node-sub" x="85" y="50">WCAG 2.1 AAA • Keyboard Trap Free</text>
+    </g>
+
+    <!-- Score 3: Best Practices -->
+    <g transform="translate(480, 80)">
+      <circle cx="36" cy="36" r="32" class="score-circle" />
+      <text class="score-text" x="36" y="41" text-anchor="middle">100</text>
+      <text class="node-title" x="85" y="32">Best Practices</text>
+      <text class="node-sub" x="85" y="50">HTTPS • CSP Headers • Modern APIs</text>
+    </g>
+
+    <!-- Score 4: SEO -->
+    <g transform="translate(700, 80)">
+      <circle cx="36" cy="36" r="32" class="score-circle" />
+      <text class="score-text" x="36" y="41" text-anchor="middle">100</text>
+      <text class="node-title" x="85" y="32">SEO</text>
+      <text class="node-sub" x="85" y="50">JSON-LD • OpenGraph • Schema.org</text>
+    </g>
+  </g>
+</svg>

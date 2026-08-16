@@ -1,0 +1,134 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" width="100%" height="100%" role="img" aria-label="AssistMe Multimodal AI Working Flow">
+  <style>
+    .bg { fill: #fbfbfd; }
+    .card-bg { fill: #ffffff; stroke: #e5e5ea; stroke-width: 1.5px; }
+    .card-bg-accent { fill: #f5f8ff; stroke: #0071e3; stroke-width: 1.5px; }
+    .node-title { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif; font-size: 14px; font-weight: 700; fill: #1d1d1f; }
+    .node-sub { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif; font-size: 11px; fill: #86868b; }
+    .node-tag { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif; font-size: 10px; font-weight: 600; fill: #0071e3; }
+    .edge { stroke: #0071e3; stroke-width: 2px; fill: none; stroke-linecap: round; stroke-dasharray: 6 4; }
+    .edge-solid { stroke: #d2d2d7; stroke-width: 1.5px; fill: none; stroke-linecap: round; }
+    .badge-pill { fill: #e8f2ff; rx: 6px; }
+    .section-title { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif; font-size: 20px; font-weight: 700; fill: #1d1d1f; }
+    .section-desc { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif; font-size: 12px; fill: #6e6e73; }
+    @media (prefers-color-scheme: dark) {
+      .bg { fill: #000000; }
+      .card-bg { fill: #1c1c1e; stroke: #2c2c2e; }
+      .card-bg-accent { fill: #0f1c2e; stroke: #0a84ff; }
+      .node-title { fill: #f5f5f7; }
+      .node-sub { fill: #98989d; }
+      .node-tag { fill: #64d2ff; }
+      .edge { stroke: #0a84ff; }
+      .edge-solid { stroke: #38383a; }
+      .badge-pill { fill: #102a45; }
+      .section-title { fill: #f5f5f7; }
+      .section-desc { fill: #86868b; }
+    }
+  </style>
+
+  <rect width="960" height="540" rx="20" class="bg" />
+
+  <!-- Header Section -->
+  <g transform="translate(40, 40)">
+    <text class="section-title" x="0" y="0">AssistMe — Multimodal AI Pipeline &amp; Routing Engine</text>
+    <text class="section-desc" x="0" y="22">Client Multi-Input • Off-Thread Image Decode • Safety Ingestion • OpenRouter Multi-Model Streaming</text>
+  </g>
+
+  <!-- Flow Edges -->
+  <path class="edge" d="M 200 180 L 260 180" />
+  <path class="edge" d="M 420 180 L 480 180" />
+  <path class="edge" d="M 640 180 L 700 180" />
+
+  <!-- Flow to Lower Level (Streaming & WebMCP) -->
+  <path class="edge-solid" d="M 780 260 L 780 340 L 700 380" />
+  <path class="edge" d="M 540 380 L 480 380" />
+  <path class="edge" d="M 320 380 L 260 380" />
+
+  <!-- Stage 1: Multimodal Ingestion -->
+  <g transform="translate(40, 100)">
+    <rect width="160" height="160" rx="14" class="card-bg" />
+    <rect x="15" y="15" width="56" height="18" class="badge-pill" />
+    <text class="node-tag" x="43" y="28" text-anchor="middle">STAGE 1</text>
+    <text class="node-title" x="15" y="58">Multimodal Input</text>
+    <text class="node-sub" x="15" y="78">💬 Text (Max 1.8k chars)</text>
+    <text class="node-sub" x="15" y="96">🖼️ Vision (Max 2 images)</text>
+    <text class="node-sub" x="15" y="114">🎙️ Live Voice Dictation</text>
+    <text class="node-sub" x="15" y="132">✨ Writing Tools Options</text>
+    <text class="node-sub" x="15" y="148">⚡ Follow-Up Chip Tap</text>
+  </g>
+
+  <!-- Stage 2: Client Preprocessing -->
+  <g transform="translate(260, 100)">
+    <rect width="160" height="160" rx="14" class="card-bg" />
+    <rect x="15" y="15" width="56" height="18" class="badge-pill" />
+    <text class="node-tag" x="43" y="28" text-anchor="middle">STAGE 2</text>
+    <text class="node-title" x="15" y="58">Browser Pipeline</text>
+    <text class="node-sub" x="15" y="78">• createImageBitmap()</text>
+    <text class="node-sub" x="15" y="96">• FileReader Base64</text>
+    <text class="node-sub" x="15" y="114">• Removable Image Card</text>
+    <text class="node-sub" x="15" y="132">• Context Snapshotting</text>
+    <text class="node-sub" x="15" y="148">• Rate-Limit Guard</text>
+  </g>
+
+  <!-- Stage 3: FastAPI Backend Gateway -->
+  <g transform="translate(480, 100)">
+    <rect width="160" height="160" rx="14" class="card-bg-accent" />
+    <rect x="15" y="15" width="56" height="18" class="badge-pill" />
+    <text class="node-tag" x="43" y="28" text-anchor="middle">STAGE 3</text>
+    <text class="node-title" x="15" y="58">FastAPI /api/chat</text>
+    <text class="node-sub" x="15" y="78">• Regex Image Sanitize</text>
+    <text class="node-sub" x="15" y="96">• Prompt Guard Checks</text>
+    <text class="node-sub" x="15" y="114">• Site Knowledge Inject</text>
+    <text class="node-sub" x="15" y="132">• Canonical Changelog</text>
+    <text class="node-sub" x="15" y="148">• Memory Window Slice</text>
+  </g>
+
+  <!-- Stage 4: Model Router & OpenRouter -->
+  <g transform="translate(700, 100)">
+    <rect width="160" height="160" rx="14" class="card-bg-accent" />
+    <rect x="15" y="15" width="56" height="18" class="badge-pill" />
+    <text class="node-tag" x="43" y="28" text-anchor="middle">STAGE 4</text>
+    <text class="node-title" x="15" y="58">Model Routing</text>
+    <text class="node-sub" x="15" y="78">⚡ Grok 4.3 (Agentic)</text>
+    <text class="node-sub" x="15" y="96">👁️ Gemma Vision (Free)</text>
+    <text class="node-sub" x="15" y="114">🧠 Claude 3.5 Sonnet</text>
+    <text class="node-sub" x="15" y="132">🚀 Gemini 2.5 Flash</text>
+    <text class="node-sub" x="15" y="148">🔒 Local Mode Fallback</text>
+  </g>
+
+  <!-- Stage 5: Streaming Execution -->
+  <g transform="translate(700, 310)">
+    <rect width="160" height="140" rx="14" class="card-bg" />
+    <rect x="15" y="15" width="56" height="18" class="badge-pill" />
+    <text class="node-tag" x="43" y="28" text-anchor="middle">STAGE 5</text>
+    <text class="node-title" x="15" y="58">NDJSON Stream</text>
+    <text class="node-sub" x="15" y="78">• SSE / Chunk Reader</text>
+    <text class="node-sub" x="15" y="96">• Sub-100ms TTFT</text>
+    <text class="node-sub" x="15" y="114">• ChatScrollEngine</text>
+    <text class="node-sub" x="15" y="130">• Safe Autoscroll Pin</text>
+  </g>
+
+  <!-- Stage 6: Rich Rendering & Code Copy -->
+  <g transform="translate(480, 310)">
+    <rect width="160" height="140" rx="14" class="card-bg" />
+    <rect x="15" y="15" width="56" height="18" class="badge-pill" />
+    <text class="node-tag" x="43" y="28" text-anchor="middle">STAGE 6</text>
+    <text class="node-title" x="15" y="58">Rich Markdown</text>
+    <text class="node-sub" x="15" y="78">• GFM Tables &amp; Quotes</text>
+    <text class="node-sub" x="15" y="96">• KaTeX Math Formulae</text>
+    <text class="node-sub" x="15" y="114">• 1-Click Code Copy</text>
+    <text class="node-sub" x="15" y="130">• Animated Feedback</text>
+  </g>
+
+  <!-- Stage 7: Agentic Action Execution (WebMCP) -->
+  <g transform="translate(100, 310)">
+    <rect width="220" height="140" rx="14" class="card-bg-accent" />
+    <rect x="15" y="15" width="60" height="18" class="badge-pill" />
+    <text class="node-tag" x="45" y="28" text-anchor="middle">WEBMCP</text>
+    <text class="node-title" x="15" y="58">Agentic In-Page Actions</text>
+    <text class="node-sub" x="15" y="78">• navigate_to_section (Smooth Scroll)</text>
+    <text class="node-sub" x="15" y="94">• reveal_competency_radar (Radar Trigger)</text>
+    <text class="node-sub" x="15" y="110">• get_now_playing (Spotify Scrobbles)</text>
+    <text class="node-sub" x="15" y="126">• schedule_meeting (Calendly Bridge)</text>
+  </g>
+</svg>
