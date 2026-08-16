@@ -1,13 +1,14 @@
 # AGENTS.md — Universal AI Agent Briefing
 
 > **Standard:** Linux Foundation AGENTS.md v1.0 (2026)
-> **Last updated:** 2026-08-13
+> **Last updated:** 2026-08-16
 
 ---
 
 ## Agent Operating Principles
 
-- When creating or updating UI elements, components, cards, pages, buttons, or themes, always consult and adhere to [docs/DESIGN.md](docs/DESIGN.md) (solid Apple Blue `#0071e3`, unified circular red close buttons `#ff3b30`, authentic glassmorphism, zero shiny sheen animations).
+- When creating or updating UI elements, components, cards, pages, buttons, or themes, always consult and adhere to [docs/DESIGN.md](docs/DESIGN.md) (solid Apple Blue `#0071e3`, unified circular red close buttons `#ff3b30`, authentic glassmorphism, zero shiny sheen animations, zero horizontal overflow).
+- **Autonomous Changelog & LLM Observability**: Whenever executing code modifications, fixes, or releases, ALWAYS automatically update `src/js/data/changelog-entries.js` with a typed entry and record the active LLM model name (e.g., `gemini-2.5-pro`, `claude-3.7-sonnet`, `grok-4.3`) and token consumption details in the commit message and documentation without requiring user prompting.
 - When explaining a concept or relationship to the user, use the `visualize` skill when a visual materially improves understanding.
 - Be concise, direct, and candid. Challenge weak assumptions and distinguish verified facts from uncertainty.
 - Ground research in authoritative, current sources and link important evidence.
@@ -149,10 +150,15 @@ npm run qa:lighthouse:vercel  # Live Vercel Lighthouse floors
 - FastAPI with Pydantic v2 models for request/response validation.
 - All API routes in `api/routes/` directory.
 
-### Git
+### Git & Release Protocol
 
-- Commit format: `type(scope): description` — e.g., `feat(chatbot): add streaming response support`.
+- Commit format: `type(scope): description` — e.g., `fix(mobile): decongest layout and fix fit-to-screen across all viewports`.
 - Branch naming: `feature/short-description`, `fix/issue-description`, `chore/cleanup-task`.
+- **MANDATORY Pre-Commit & Release Checklist (Always Execute Automatically)**:
+  1. **Update Changelog (`src/js/data/changelog-entries.js`)**: Add a new typed entry to `changelogEntries` detailing the shipped fixes, features, or design polish.
+  2. **Track LLM Usage & Model**: In the commit body and documentation updates, record the active LLM model (e.g. `gemini-2.5-pro`, `claude-3.7-sonnet`, `grok-4.3`), reasoning mode, and token consumption metrics.
+  3. **Run Full Quality Gate**: Run `npm run check` (ESLint + Stylelint + Prettier + Vitest 160 tests), `npm run security-check`, and `npm run build` with Node 22 (`export PATH="/opt/homebrew/opt/node@22/bin:/opt/homebrew/Cellar/node@22/22.23.2/bin:$PATH"`).
+  4. **Sync Documentation**: Keep test counts, architecture files, and design system rules synchronized across `README.md`, `AGENTS.md`, and `docs/DESIGN.md`.
 
 ---
 

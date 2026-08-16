@@ -144,6 +144,12 @@ export const usesCatalog = [
         featured: true,
       },
       {
+        name: 'Google Antigravity (Gemini)',
+        note: 'Autonomous agentic assistant for architectural planning, audits, and test execution.',
+        tag: 'Agent',
+        featured: true,
+      },
+      {
         name: 'Codex',
         note: 'Secondary pair-programmer for alternate model opinions.',
         tag: 'Agent',

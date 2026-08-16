@@ -61,11 +61,16 @@ OpenRouter API (grok-4.3) for AI features.
 - Never commit `.env` files — they are git-ignored.
 - Never expose OpenRouter API keys or any backend secret to the client bundle.
 
-## Git Commits
+## Git Commits & Autonomous Release Protocol
 
 - Use conventional commit format: `type(scope): description`
 - Types: `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`, `perf`
 - Keep commits atomic — one logical change per commit.
+- **Mandatory Pre-Commit Actions (Execute Automatically without Prompts)**:
+  1. **Changelog**: Add a typed entry to `src/js/data/changelog-entries.js` for every fix, release, or UI polish.
+  2. **LLM Observability**: Record the active LLM model name (e.g. `gemini-2.5-pro`, `claude-3.7-sonnet`, `grok-4.3`) and token usage in commit messages and documentation.
+  3. **Quality Gates**: Ensure `npm run check` (ESLint + Stylelint + Prettier + Vitest), `npm run security-check`, and `npm run build` all pass with zero errors before committing.
+  4. **Documentation**: Automatically update `README.md`, `AGENTS.md`, and `docs/DESIGN.md` whenever adding features or altering architecture.
 
 ## Build Tooling
 
