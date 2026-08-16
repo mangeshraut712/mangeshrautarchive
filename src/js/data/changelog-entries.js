@@ -42,14 +42,25 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
-    id: 'a73d91be',
+    id: 'cb2f2e19',
+    date: '2026-08-16',
+    type: 'release',
+    title: 'Automated Chrome Browser Audit Across Viewports & Quality Verification',
+    summary:
+      'Implemented automated multi-viewport Playwright Chrome browser audit script (scripts/qa/comprehensive-chrome-audit.mjs). Verified all 7 pages and core interactive features (AssistMe streaming chatbot, global search palette, music player, skills radar, mobile navigation drawer) across Desktop (1440x900) and Mobile (390x844) with zero unhandled console errors, zero broken network requests, and zero horizontal overflow.',
+    tags: ['performance', 'deploy', 'systems'],
+    sha: 'cb2f2e19',
+    link: 'changelog.html',
+  },
+  {
+    id: '82e19ee8',
     date: '2026-08-16',
     type: 'release',
     title: 'Full Stack Ecosystem Synchronization & ESLint 10 Standard',
     summary:
-      'Completed full ecosystem synchronization across all repository dependencies and tooling. Upgraded ESLint to v10 with flat configuration, JSDOM to v30, and verified zero outdated packages across all 25+ direct and dev dependencies. All 161 unit tests, 166 API tests, and 32 Playwright E2E browser tests passed 100% green with zero regressions.',
+      'Completed full ecosystem synchronization across all repository dependencies and tooling. Upgraded ESLint to v10 with flat configuration, JSDOM to v30, Playwright to v1.62.1, and axe-core to v4.13.0. Verified zero outdated packages across all direct and dev dependencies with 100% green CI/CD deployment parity.',
     tags: ['performance', 'deploy', 'systems'],
-    sha: 'a73d91be',
+    sha: '82e19ee8',
     link: 'changelog.html',
   },
   {
