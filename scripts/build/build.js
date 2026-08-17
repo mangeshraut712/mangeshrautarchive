@@ -391,7 +391,6 @@ async function inlineThemeHead(distDir) {
     resolve(distDir, 'monitor.html'),
     resolve(distDir, 'systems.html'),
     resolve(distDir, 'uses.html'),
-    resolve(distDir, 'contact.html'),
     resolve(distDir, 'changelog.html'),
     resolve(distDir, '404.html'),
   ];
@@ -807,7 +806,6 @@ async function addCacheBusting(distDir, version) {
       travelPath,
       systemsPath,
       resolve(distDir, 'uses.html'),
-      resolve(distDir, 'contact.html'),
       resolve(distDir, 'changelog.html'),
     ].map(async htmlFile => {
       if (await pathExists(htmlFile)) {

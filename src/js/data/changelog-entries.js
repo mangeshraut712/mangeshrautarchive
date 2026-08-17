@@ -42,6 +42,18 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'a71e2c90',
+    date: '2026-08-17',
+    type: 'release',
+    title:
+      'Consolidate Contact Experience to Homepage #contact with 2-Column Apple Grid and 12 Follow Channels',
+    summary:
+      'Removed standalone contact.html subpage in favor of a consolidated, high-performance experience on index.html#contact with seamless routing redirects in vercel.json. Restructured #contact into individual luxury Apple cards in a balanced 2-column desktop grid and single-column mobile stack: Column 1 houses Direct Outreach & Locations, Send a Message direct inbox form, Connect on Platforms with all 12 restored channels (LinkedIn, GitHub, X, Instagram, Facebook, YouTube, LeetCode, Snapchat, Telegram, Spotify, Strava, WHOOP), and seamless 38-logo marquees for Dream Companies & Automotive Engineering; Column 2 houses Schedule a Meeting calendar widget, Support & Devotional Blessings (Lord Ganesha & Lord Hanuman audio triggers, Bhagavad Gita quote, Stripe/PayPal/BMC, and 1-click SOL/BTC/USDC/ETH/DOGE copy buttons), and Live Health Vitals & Currently. Verified all 161 Vitest unit tests, 166 API pytest tests, and Playwright E2E suites.',
+    tags: ['design', 'performance', 'deploy'],
+    sha: 'a71e2c9',
+    link: null,
+  },
+  {
     id: 'f93d18e2',
     date: '2026-08-17',
     type: 'release',
