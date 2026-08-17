@@ -47,6 +47,7 @@
   }
 
   vibeBadge.addEventListener('click', event => {
+    event.preventDefault();
     event.stopPropagation();
     setVibeStackOpen(!vibeFlyout.classList.contains('is-open'));
   });
@@ -82,6 +83,10 @@
     'scroll',
     () => {
       if (vibeFlyout.classList.contains('is-open')) {
+        if (window.scrollY > 200) {
+          setVibeStackOpen(false);
+          return;
+        }
         if (!scrollTicking) {
           scrollTicking = true;
           requestAnimationFrame(() => {

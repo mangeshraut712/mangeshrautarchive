@@ -42,6 +42,17 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'a71e892c',
+    date: '2026-08-17',
+    type: 'improvement',
+    title:
+      'Restore Vibe Coder & Portfolio Reach Hero Flyout Cards and Fix Floating Dock Bottom Visibility',
+    summary:
+      'Restored the interactive Vibe Coder tools marquee card and real-time Portfolio Reach telemetry flyout card on the homepage hero, ensuring badge clicks open floating glass cards in place rather than navigating away to subpages. Fixed floating action dock vertical positioning by increasing bottom and safe-area margins (24px desktop, 1.5rem mobile) to eliminate clipping on scroll-to-top and utility action controls across all pages, enhanced FAQ accordion chevron transitions, and verified internal routes.',
+    tags: ['design', 'performance', 'monitor'],
+    sha: 'a71e892c',
+  },
+  {
     id: 'f82d194c',
     date: '2026-08-17',
     type: 'improvement',

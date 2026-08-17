@@ -1901,15 +1901,17 @@ html.dark #home .hero-name-text {
                   <strong id="hero-role-word">AI Builder</strong>
                 </p>
 
-                <!-- Hero badges — direct links to dedicated subpages (Uses & Monitor) -->
+                <!-- Hero badges — interactive flyout cards (Vibe Coder tools stack & Portfolio Reach telemetry) -->
                 <div class="hero-insights-band" id="hero-insights-band">
                   <div class="hero-badge-cluster vibe-coder-badge-wrapper">
-                    <a
-                      href="uses.html"
+                    <button
+                      type="button"
                       class="vibe-coder-badge hero-pill-badge"
                       id="vibe-coder-badge"
-                      title="Vibe Coder — View Tools & Gear"
+                      title="Vibe Coder — View Tools & Stack"
                       aria-label="Vibe Coder tools and setup"
+                      aria-expanded="false"
+                      aria-controls="vibe-stack-flyout"
                     >
                       <span class="inline-icon" aria-hidden="true">
                         <svg viewBox="0 0 24 24" fill="currentColor">
@@ -1917,14 +1919,16 @@ html.dark #home .hero-name-text {
                         </svg>
                       </span>
                       Vibe Coder
-                    </a>
-                    <a
-                      href="monitor.html"
+                    </button>
+                    <button
+                      type="button"
                       class="portfolio-reach-badge hero-pill-badge"
                       id="portfolio-reach"
                       title="Portfolio Reach — View Telemetry & Analytics"
                       aria-label="Portfolio Reach telemetry"
                       aria-labelledby="portfolio-reach-label reach-count"
+                      aria-expanded="false"
+                      aria-controls="reach-flyout"
                     >
                       <span id="portfolio-reach-label" class="sr-only">Portfolio Reach</span>
                       <span class="inline-icon reach-eye-icon" aria-hidden="true">
@@ -1935,18 +1939,140 @@ html.dark #home .hero-name-text {
                         </svg>
                       </span>
                       <span class="reach-count" id="reach-count" aria-live="polite">Live</span>
-                    </a>
+                    </button>
+                  </div>
+
+                  <!-- Vibe Stack Flyout Card -->
+                  <div class="hero-flyout hero-flyout--left" id="vibe-stack-flyout" hidden>
+                    <div class="vibe-stack-card lg-glass-card" role="dialog" aria-label="Vibe coding tools I use">
+                      <div class="vibe-stack-marquee" aria-hidden="true">
+                        <div class="vibe-stack-marquee-track">
+                          <a class="vibe-tool-chip" href="https://openai.com/index/introducing-codex/" target="_blank" rel="noopener noreferrer" title="OpenAI Codex"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/codex.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Codex</span></a>
+                          <a class="vibe-tool-chip" href="https://cursor.com" target="_blank" rel="noopener noreferrer" title="Cursor"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/cursor.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Cursor</span></a>
+                          <a class="vibe-tool-chip" href="https://claude.ai/code" target="_blank" rel="noopener noreferrer" title="Claude Code"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/claude.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Claude</span></a>
+                          <a class="vibe-tool-chip vibe-tool-chip--wide" href="https://github.com/features/copilot" target="_blank" rel="noopener noreferrer" title="GitHub Copilot / Antigravity tools"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/antigravity.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Antigravity</span></a>
+                          <a class="vibe-tool-chip" href="https://windsurf.com" target="_blank" rel="noopener noreferrer" title="Windsurf"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/windsurf.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Windsurf</span></a>
+                          <a class="vibe-tool-chip" href="https://kilo.ai" target="_blank" rel="noopener noreferrer" title="Kilo Code"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/kilo.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Kilo</span></a>
+                          <a class="vibe-tool-chip" href="https://cline.bot" target="_blank" rel="noopener noreferrer" title="Cline"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/cline.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Cline</span></a>
+                          <a class="vibe-tool-chip" href="https://replit.com" target="_blank" rel="noopener noreferrer" title="Replit"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/replit.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Replit</span></a>
+                          <a class="vibe-tool-chip" href="https://lovable.dev" target="_blank" rel="noopener noreferrer" title="Lovable"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/lovable.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Lovable</span></a>
+                          <a class="vibe-tool-chip" href="https://www.figma.com" target="_blank" rel="noopener noreferrer" title="Figma"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/figma.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Figma</span></a>
+                          <a class="vibe-tool-chip" href="https://openai.com/index/introducing-codex/" target="_blank" rel="noopener noreferrer" title="OpenAI Codex"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/codex.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Codex</span></a>
+                          <a class="vibe-tool-chip" href="https://cursor.com" target="_blank" rel="noopener noreferrer" title="Cursor"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/cursor.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Cursor</span></a>
+                          <a class="vibe-tool-chip" href="https://claude.ai/code" target="_blank" rel="noopener noreferrer" title="Claude Code"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/claude.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Claude</span></a>
+                          <a class="vibe-tool-chip vibe-tool-chip--wide" href="https://github.com/features/copilot" target="_blank" rel="noopener noreferrer" title="GitHub Copilot / Antigravity tools"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/antigravity.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Antigravity</span></a>
+                          <a class="vibe-tool-chip" href="https://windsurf.com" target="_blank" rel="noopener noreferrer" title="Windsurf"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/windsurf.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Windsurf</span></a>
+                          <a class="vibe-tool-chip" href="https://kilo.ai" target="_blank" rel="noopener noreferrer" title="Kilo Code"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/kilo.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Kilo</span></a>
+                          <a class="vibe-tool-chip" href="https://cline.bot" target="_blank" rel="noopener noreferrer" title="Cline"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/cline.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Cline</span></a>
+                          <a class="vibe-tool-chip" href="https://replit.com" target="_blank" rel="noopener noreferrer" title="Replit"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/replit.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Replit</span></a>
+                          <a class="vibe-tool-chip" href="https://lovable.dev" target="_blank" rel="noopener noreferrer" title="Lovable"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/lovable.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Lovable</span></a>
+                          <a class="vibe-tool-chip" href="https://www.figma.com" target="_blank" rel="noopener noreferrer" title="Figma"><span class="vibe-tool-icon"><img src="assets/images/vibe-tools/figma.png" alt="" role="presentation" width="20" height="20" loading="lazy" decoding="async" /></span><span>Figma</span></a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Portfolio Reach Flyout Card -->
+                  <div class="hero-flyout hero-flyout--right" id="reach-flyout" hidden>
+                    <div class="portfolio-reach-panel" id="portfolio-reach-panel" role="dialog"
+                      aria-label="Portfolio Reach insights" hidden>
+                      <div class="reach-panel-layout">
+                        <div class="reach-panel-main">
+                          <div class="reach-panel-header">
+                            <div>
+                              <p class="reach-panel-eyebrow">Insights</p>
+                              <h2>Portfolio Reach</h2>
+                            </div>
+                            <span class="reach-panel-range" id="reach-panel-range">Last 30 days</span>
+                          </div>
+
+                          <!-- Real-time Active Users Panel -->
+                          <div class="reach-realtime-section">
+                            <div class="reach-realtime-header">
+                              <span class="realtime-dot-pulse"></span>
+                              <span class="reach-realtime-title">ACTIVE USERS IN LAST 30 MINUTES</span>
+                            </div>
+                            <div class="reach-realtime-value" id="reach-realtime-value">—</div>
+
+                            <!-- Active Users Per Minute (Visual Bars) -->
+                            <div class="reach-realtime-chart-container">
+                              <span class="reach-realtime-chart-label">ACTIVE USERS PER MINUTE</span>
+                              <div class="reach-realtime-chart-bars" id="reach-realtime-bars">
+                                <span style="height: 38%"></span>
+                                <span style="height: 48%"></span>
+                                <span style="height: 12%"></span>
+                                <span style="height: 45%"></span>
+                                <span style="height: 25%"></span>
+                                <span style="height: 52%"></span>
+                                <span style="height: 65%"></span>
+                                <span style="height: 32%"></span>
+                                <span style="height: 75%"></span>
+                                <span style="height: 85%"></span>
+                                <span style="height: 40%"></span>
+                                <span style="height: 60%"></span>
+                                <span style="height: 95%"></span>
+                                <span style="height: 30%"></span>
+                                <span style="height: 55%"></span>
+                              </div>
+                            </div>
+
+                            <!-- Top 3 countries (GA real-time) -->
+                            <div class="reach-realtime-countries-block">
+                              <span class="reach-realtime-chart-label">TOP COUNTRIES · REAL-TIME</span>
+                              <div class="reach-realtime-countries" id="reach-realtime-countries" aria-live="polite">
+                                <!-- Populated dynamically by JS -->
+                              </div>
+                            </div>
+                          </div>
+
+                          <!-- Core Metrics Grid -->
+                          <div class="reach-panel-metrics ga-metrics-grid">
+                            <div class="reach-panel-metric active" id="reach-metric-active-users">
+                              <span>Active users</span>
+                              <strong id="reach-panel-visitors">6.1K</strong>
+                              <small>Jan - Today</small>
+                            </div>
+                            <div class="reach-panel-metric" id="reach-metric-event-count">
+                              <span>Event count</span>
+                              <strong id="reach-panel-event-count">25K</strong>
+                              <small>Jan - Today</small>
+                            </div>
+                            <div class="reach-panel-metric" id="reach-metric-views-count">
+                              <span>Reach</span>
+                              <strong id="reach-panel-total">7.3K</strong>
+                              <small id="reach-panel-total-caption">Jan - Today</small>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
                 <script>
                   if (!window.__PERF_AUDIT__) {
+                    var heroFlyoutScript = document.createElement('script');
+                    heroFlyoutScript.defer = true;
+                    heroFlyoutScript.src = 'js/modules/hero-flyout-position.js?v=20260716b';
+                    document.currentScript.parentNode.insertBefore(
+                      heroFlyoutScript,
+                      document.currentScript.nextSibling
+                    );
+
+                    var vibeStackScript = document.createElement('script');
+                    vibeStackScript.defer = true;
+                    vibeStackScript.src = 'js/modules/vibe-stack.js?v=20260716b';
+                    document.currentScript.parentNode.insertBefore(
+                      vibeStackScript,
+                      heroFlyoutScript.nextSibling
+                    );
+
                     var reachAnalytics = document.createElement('script');
                     reachAnalytics.defer = true;
                     reachAnalytics.src = 'js/modules/analytics.js?v=20260719reach5';
                     document.currentScript.parentNode.insertBefore(
                       reachAnalytics,
-                      document.currentScript.nextSibling
+                      vibeStackScript.nextSibling
                     );
                   }
                 </script>

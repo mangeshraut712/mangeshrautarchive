@@ -15,8 +15,8 @@
   --z-toast: 12000;
   --fab-size: 48px;
   --fab-gap: 10px;
-  --fab-edge: max(14px, env(safe-area-inset-right, 0px));
-  --fab-bottom: max(14px, env(safe-area-inset-bottom, 0px));
+  --fab-edge: max(20px, env(safe-area-inset-right, 0px));
+  --fab-bottom: max(24px, env(safe-area-inset-bottom, 0px));
   /* Single right-column stack (bottom → top): top, chat, share, a11y */
   --fab-slot-0: var(--fab-bottom);
   --fab-slot-1: calc(var(--fab-bottom) + var(--fab-size) + var(--fab-gap));
@@ -34,8 +34,8 @@
   :root {
     --fab-size: 44px;
     --fab-gap: 10px;
-    --fab-edge: max(1rem, env(safe-area-inset-right, 0px));
-    --fab-bottom: max(1.25rem, env(safe-area-inset-bottom, 0px));
+    --fab-edge: max(12px, env(safe-area-inset-right, 0px));
+    --fab-bottom: max(1.5rem, env(safe-area-inset-bottom, 0px));
   }
 }
 

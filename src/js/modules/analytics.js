@@ -798,6 +798,10 @@
       'scroll',
       () => {
         if (reachFlyout?.classList.contains('is-open')) {
+          if (window.scrollY > 200) {
+            setReachPanelOpen(false);
+            return;
+          }
           if (!scrollTicking) {
             scrollTicking = true;
             requestAnimationFrame(() => {

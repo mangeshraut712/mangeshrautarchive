@@ -1253,6 +1253,14 @@ html.dark .reach-panel-chart-meta {
   color: #a1a1a6;
 }
 
+html.dark .reach-panel-metric strong {
+  color: #f5f5f7;
+}
+
+html.dark .reach-panel-metric span {
+  color: #86868b;
+}
+
 html.dark .reach-chart-grid {
   stroke: rgb(255 255 255 / 10%);
 }

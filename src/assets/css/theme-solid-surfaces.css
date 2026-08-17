@@ -36,8 +36,8 @@
   );
   --theme-card-radius: 22px;
   /* Keep in sync with ux-polish-fixes FAB stack (48px right column) */
-  --theme-fab-edge: max(14px, env(safe-area-inset-right, 0px));
-  --theme-fab-bottom: max(14px, env(safe-area-inset-bottom, 0px));
+  --theme-fab-edge: max(20px, env(safe-area-inset-right, 0px));
+  --theme-fab-bottom: max(24px, env(safe-area-inset-bottom, 0px));
   --theme-fab-size: 48px;
   --theme-fab-gap: 10px;
   --card-border-rest: #e5e5ea;
@@ -46,8 +46,8 @@
 
 @media (width <= 768px) {
   :root {
-    --theme-fab-edge: max(2px, env(safe-area-inset-right, 0px));
-    --theme-fab-bottom: max(10px, env(safe-area-inset-bottom, 0px));
+    --theme-fab-edge: max(12px, env(safe-area-inset-right, 0px));
+    --theme-fab-bottom: max(1.5rem, env(safe-area-inset-bottom, 0px));
     --theme-fab-size: 44px;
     --theme-fab-gap: 8px;
   }
