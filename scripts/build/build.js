@@ -391,6 +391,7 @@ async function inlineThemeHead(distDir) {
     resolve(distDir, 'monitor.html'),
     resolve(distDir, 'systems.html'),
     resolve(distDir, 'uses.html'),
+    resolve(distDir, 'contact.html'),
     resolve(distDir, 'changelog.html'),
     resolve(distDir, '404.html'),
   ];
@@ -637,6 +638,7 @@ async function generateSitemap(distDir) {
     { loc: `${siteUrl}/monitor`, lastmod: today, changefreq: 'daily', priority: '0.6' },
     { loc: `${siteUrl}/systems`, lastmod: today, changefreq: 'weekly', priority: '0.75' },
     { loc: `${siteUrl}/uses`, lastmod: today, changefreq: 'monthly', priority: '0.5' },
+    { loc: `${siteUrl}/contact`, lastmod: today, changefreq: 'monthly', priority: '0.8' },
     { loc: `${siteUrl}/changelog`, lastmod: today, changefreq: 'weekly', priority: '0.55' },
     { loc: `${siteUrl}/blog`, lastmod: latestPostDate, changefreq: 'weekly', priority: '0.8' },
     ...caseStudies.map(cs => ({
@@ -805,6 +807,7 @@ async function addCacheBusting(distDir, version) {
       travelPath,
       systemsPath,
       resolve(distDir, 'uses.html'),
+      resolve(distDir, 'contact.html'),
       resolve(distDir, 'changelog.html'),
     ].map(async htmlFile => {
       if (await pathExists(htmlFile)) {

@@ -1,0 +1,690 @@
+/* ════════════════════════════════════════════════════════════════
+   Apple Luxury Contact Page & Section Styling (2026 Standard)
+   - Solid theme surfaces (#ffffff light, #000000 dark)
+   - Authentic Apple Glassmorphism & High-Contrast Borders
+   - Fluid Responsive Geometry across Desktop & Mobile Viewports
+   - Infinite Smooth Marquee for Dream Companies & Dream Cars
+   ════════════════════════════════════════════════════════════════ */
+
+:root {
+  --contact-primary-blue: #0071e3;
+  --contact-primary-blue-hover: #0077ed;
+  --contact-accent-green: #34c759;
+  --contact-accent-purple: #af52de;
+  --contact-accent-orange: #ff9500;
+  --contact-card-bg-light: #ffffff;
+  --contact-card-bg-dark: #1c1c1e;
+  --contact-card-border-light: rgba(0, 0, 0, 0.08);
+  --contact-card-border-dark: rgba(255, 255, 255, 0.12);
+  --contact-card-shadow-light: 0 4px 24px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
+  --contact-card-shadow-dark: 0 4px 24px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* ── Standalone Contact Subpage Shell ── */
+body.contact-subpage {
+  background-color: var(--apple-bg, #ffffff) !important;
+  color: var(--apple-text, #1d1d1f);
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Icons', 'Helvetica Neue', Helvetica,
+    Arial, sans-serif;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+html.dark body.contact-subpage,
+html[data-theme='dark'] body.contact-subpage {
+  background-color: #000000 !important;
+  color: #f5f5f7;
+}
+
+.contact-shell {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: clamp(1.5rem, 4vw, 3.5rem) 1.25rem 5rem;
+  box-sizing: border-box;
+}
+
+/* ── Keynote Header ── */
+.contact-hero {
+  text-align: center;
+  margin-bottom: clamp(2rem, 5vw, 3.5rem);
+}
+
+.contact-hero .systems-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--apple-blue, #0071e3);
+  margin-bottom: 0.75rem;
+  background: rgba(0, 113, 227, 0.08);
+  padding: 0.35rem 0.85rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(0, 113, 227, 0.2);
+}
+
+html.dark .contact-hero .systems-eyebrow {
+  color: #2997ff;
+  background: rgba(41, 151, 255, 0.12);
+  border-color: rgba(41, 151, 255, 0.25);
+}
+
+.contact-hero h1 {
+  font-size: clamp(2rem, 4.5vw, 3.5rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  margin: 0 0 1rem;
+  color: var(--apple-text, #1d1d1f);
+}
+
+html.dark .contact-hero h1 {
+  color: #f5f5f7;
+}
+
+.contact-hero-lead {
+  font-size: clamp(1rem, 1.8vw, 1.25rem);
+  line-height: 1.5;
+  color: var(--apple-secondary-text, #6e6e73);
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+html.dark .contact-hero-lead {
+  color: #a1a1a6;
+}
+
+/* ── Contact Bento Grid ── */
+.contact-bento-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: clamp(1rem, 2vw, 1.5rem);
+  margin-bottom: 3rem;
+}
+
+.contact-card-apple {
+  background: var(--contact-card-bg-light);
+  border: 1px solid var(--contact-card-border-light);
+  border-radius: 20px;
+  padding: clamp(1.25rem, 2.5vw, 2rem);
+  box-shadow: var(--contact-card-shadow-light);
+  transition:
+    transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+}
+
+html.dark .contact-card-apple {
+  background: var(--contact-card-bg-dark);
+  border-color: var(--contact-card-border-dark);
+  box-shadow: var(--contact-card-shadow-dark);
+}
+
+.contact-card-apple:hover {
+  border-color: var(--contact-primary-blue);
+  box-shadow: 0 8px 32px rgba(0, 113, 227, 0.08);
+}
+
+html.dark .contact-card-apple:hover {
+  border-color: #0a84ff;
+  box-shadow: 0 8px 32px rgba(10, 132, 255, 0.15);
+}
+
+/* ── Bento Grid Sizing ── */
+.contact-bento-channels {
+  grid-column: span 12;
+}
+
+@media (min-width: 900px) {
+  .contact-bento-channels {
+    grid-column: span 7;
+  }
+  .contact-bento-form {
+    grid-column: span 5;
+  }
+  .contact-bento-social {
+    grid-column: span 12;
+  }
+  .contact-bento-calendar {
+    grid-column: span 6;
+  }
+  .contact-bento-support {
+    grid-column: span 6;
+  }
+  .contact-bento-companies {
+    grid-column: span 12;
+  }
+  .contact-bento-cars {
+    grid-column: span 12;
+  }
+}
+
+@media (max-width: 899px) {
+  .contact-bento-channels,
+  .contact-bento-form,
+  .contact-bento-social,
+  .contact-bento-calendar,
+  .contact-bento-support,
+  .contact-bento-companies,
+  .contact-bento-cars {
+    grid-column: span 12;
+  }
+}
+
+/* ── Section Headers inside Cards ── */
+.contact-card-title {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  margin: 0 0 0.5rem;
+  color: var(--apple-text, #1d1d1f);
+}
+
+html.dark .contact-card-title {
+  color: #f5f5f7;
+}
+
+.contact-card-title i {
+  color: var(--contact-primary-blue);
+  font-size: 1.125rem;
+}
+
+.contact-card-subtitle {
+  font-size: 0.9375rem;
+  line-height: 1.45;
+  color: var(--apple-secondary-text, #6e6e73);
+  margin: 0 0 1.5rem;
+}
+
+html.dark .contact-card-subtitle {
+  color: #a1a1a6;
+}
+
+/* ── Direct Contact Channel Items ── */
+.contact-channels-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+@media (min-width: 600px) {
+  .contact-channels-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.contact-channel-item {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.85rem 1rem;
+  border-radius: 14px;
+  background: rgba(0, 0, 0, 0.02);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.2s ease;
+  min-height: 48px;
+  box-sizing: border-box;
+}
+
+html.dark .contact-channel-item {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.contact-channel-item:hover {
+  background: rgba(0, 113, 227, 0.06);
+  border-color: var(--contact-primary-blue);
+  transform: translateY(-2px);
+}
+
+html.dark .contact-channel-item:hover {
+  background: rgba(10, 132, 255, 0.1);
+  border-color: #0a84ff;
+}
+
+.contact-channel-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.contact-channel-icon.blue {
+  background: rgba(0, 113, 227, 0.12);
+  color: var(--contact-primary-blue);
+}
+
+.contact-channel-icon.green {
+  background: rgba(52, 199, 89, 0.12);
+  color: #34c759;
+}
+
+.contact-channel-icon.purple {
+  background: rgba(175, 82, 222, 0.12);
+  color: #af52de;
+}
+
+.contact-channel-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.contact-channel-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--apple-secondary-text, #6e6e73);
+}
+
+html.dark .contact-channel-label {
+  color: #a1a1a6;
+}
+
+.contact-channel-val {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--apple-text, #1d1d1f);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+html.dark .contact-channel-val {
+  color: #f5f5f7;
+}
+
+/* ── Social Profiles Grid ── */
+.contact-social-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 0.85rem;
+}
+
+.contact-social-pill {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  color: var(--apple-text, #1d1d1f);
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 600;
+  min-height: 44px;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+html.dark .contact-social-pill {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.08);
+  color: #f5f5f7;
+}
+
+.contact-social-pill svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+.contact-social-pill:hover {
+  background: var(--contact-primary-blue);
+  color: #ffffff !important;
+  border-color: var(--contact-primary-blue);
+  transform: translateY(-2px);
+}
+
+.contact-social-pill:hover svg {
+  fill: #ffffff;
+}
+
+/* ── Interactive Message Form ── */
+.apple-contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.form-group-apple {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.form-group-apple label {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--apple-secondary-text, #6e6e73);
+}
+
+html.dark .form-group-apple label {
+  color: #a1a1a6;
+}
+
+.apple-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.02);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  color: var(--apple-text, #1d1d1f);
+  font-size: 0.9375rem;
+  font-family: inherit;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+  box-sizing: border-box;
+}
+
+html.dark .apple-input {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.12);
+  color: #f5f5f7;
+}
+
+.apple-input:focus {
+  outline: none;
+  border-color: var(--contact-primary-blue);
+  box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.15);
+}
+
+.apple-textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.apple-submit-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.85rem 1.5rem;
+  background: var(--contact-primary-blue);
+  color: #ffffff;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
+  min-height: 48px;
+}
+
+.apple-submit-btn:hover {
+  background: var(--contact-primary-blue-hover);
+  transform: translateY(-1px);
+}
+
+.apple-submit-btn:active {
+  transform: translateY(0);
+}
+
+/* ── Dream Companies & Dream Cars Marquee ── */
+.marquee-container-luxury {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  padding: 0.5rem 0;
+  mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+}
+
+.marquee-track-luxury {
+  display: flex;
+  align-items: center;
+  width: max-content;
+  gap: 1.5rem;
+  animation: contact-marquee-scroll 40s linear infinite;
+  will-change: transform;
+}
+
+.marquee-track-luxury:hover {
+  animation-play-state: paused;
+}
+
+@keyframes contact-marquee-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.marquee-item-luxury {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1rem;
+  height: 52px;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.02);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease;
+}
+
+html.dark .marquee-item-luxury {
+  background: rgba(255, 255, 255, 0.03);
+  border-color: rgba(255, 255, 255, 0.06);
+}
+
+.marquee-item-luxury:hover {
+  transform: scale(1.06);
+  border-color: var(--contact-primary-blue);
+}
+
+.marquee-item-luxury img {
+  max-height: 32px;
+  max-width: 110px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  filter: grayscale(0.2);
+  transition: filter 0.2s ease;
+}
+
+.marquee-item-luxury:hover img {
+  filter: grayscale(0);
+}
+
+/* Light / Dark logo switching */
+html.dark .marquee-item-luxury .logo-light {
+  display: none !important;
+}
+
+html.dark .marquee-item-luxury .logo-dark {
+  display: inline-block !important;
+}
+
+html:not(.dark) .marquee-item-luxury .logo-dark {
+  display: none !important;
+}
+
+html:not(.dark) .marquee-item-luxury .logo-light {
+  display: inline-block !important;
+}
+
+/* Invert monochrome logos in dark theme */
+html.dark .marquee-item-luxury.logo-mono img {
+  filter: brightness(0) invert(1);
+}
+
+/* ── Support & Blessings Styling ── */
+.support-blessing-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.blessing-avatar-trigger {
+  cursor: pointer;
+  position: relative;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid var(--contact-primary-blue);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+  flex-shrink: 0;
+}
+
+.blessing-avatar-trigger:hover {
+  transform: scale(1.08);
+  box-shadow: 0 0 16px rgba(0, 113, 227, 0.4);
+}
+
+.blessing-avatar-trigger img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.support-actions-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.support-pill-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1.15rem;
+  border-radius: 12px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-decoration: none;
+  color: #ffffff;
+  background: var(--contact-primary-blue);
+  transition: all 0.2s ease;
+  min-height: 44px;
+  box-sizing: border-box;
+}
+
+.support-pill-btn.stripe {
+  background: #635bff;
+}
+
+.support-pill-btn.paypal {
+  background: #0070ba;
+}
+
+.support-pill-btn.coffee {
+  background: #ffdd00;
+  color: #000000;
+}
+
+.support-pill-btn:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.08);
+}
+
+/* ── Crypto Buttons Row ── */
+.crypto-pill-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.crypto-badge-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 0.75rem;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  color: var(--apple-text, #1d1d1f);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+html.dark .crypto-badge-btn {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.12);
+  color: #f5f5f7;
+}
+
+.crypto-badge-btn:hover {
+  background: var(--contact-primary-blue);
+  color: #ffffff;
+  border-color: var(--contact-primary-blue);
+}
+
+.crypto-badge-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* ── Subpage Footer Navigation ── */
+.contact-footer-nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: clamp(0.75rem, 2vw, 1.5rem);
+  margin-top: 3.5rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--contact-card-border-light);
+}
+
+html.dark .contact-footer-nav {
+  border-top-color: var(--contact-card-border-dark);
+}
+
+.contact-footer-link {
+  color: var(--apple-secondary-text, #6e6e73);
+  text-decoration: none;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+html.dark .contact-footer-link {
+  color: #a1a1a6;
+}
+
+.contact-footer-link:hover {
+  color: var(--contact-primary-blue);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track-luxury {
+    animation: none;
+    overflow-x: auto;
+  }
+}

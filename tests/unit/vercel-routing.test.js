@@ -36,6 +36,7 @@ describe('Vercel FastAPI routing', () => {
     expect(bySource['/monitor.html']?.destination).toBe('/monitor');
     expect(bySource['/travel.html']?.destination).toBe('/travel');
     expect(bySource['/systems.html']?.destination).toBe('/systems');
+    expect(bySource['/contact.html']?.destination).toBe('/contact');
     expect(bySource['/about.html']?.destination).toBe('/');
     expect(bySource['/index.html']?.destination).toBe('/');
     expect(bySource['/monitor.html']?.permanent).toBe(true);

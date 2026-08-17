@@ -42,6 +42,17 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'c8f49b12',
+    date: '2026-08-17',
+    type: 'release',
+    title: 'Apple-Style Contact Page Architecture, Bento Grid Layout & Marquee Restoration',
+    summary:
+      'Reimplemented and modernized the Contact experience into an Apple luxury Bento Grid layout with standalone contact.html subpage and responsive homepage #contact section. Restored the full suite of contact modules: Direct Outreach & Locations, interactive Send a Message form, Connect on Platforms social channels, Schedule a Meeting calendar integration, Support & Devotional Blessings modal with Ganesh Aarti and Hanuman Chalisa audio lyrics, and dual infinite marquees for Dream Companies (Google, Apple, Microsoft, Amazon, Meta, NVIDIA, OpenAI, Anthropic, SpaceX, Tesla) and Dream Cars (BMW, Audi, Rolls-Royce, Porsche, Lexus, Ferrari, Lamborghini, McLaren). Verified zero overflow and zero console errors across desktop and mobile viewports.',
+    tags: ['design', 'performance', 'systems'],
+    sha: 'c8f49b12',
+    link: 'contact.html',
+  },
+  {
     id: 'cb2f2e19',
     date: '2026-08-16',
     type: 'release',
