@@ -29,6 +29,26 @@ async function runAudit() {
     if (followCard) {
       await followCard.screenshot({ path: path.join(outDir, '04_follow_card_light.png') });
     }
+
+    // Hover on X (Twitter) in row 1
+    const xIcon = await page.$('.contact-social-wrapper .icon.x');
+    if (xIcon) {
+      await xIcon.hover();
+      await page.waitForTimeout(300);
+      if (followCard) {
+        await followCard.screenshot({ path: path.join(outDir, '06_hover_x_row1.png') });
+      }
+    }
+
+    // Hover on Spotify in row 2
+    const spotifyIcon = await page.$('.contact-social-wrapper .icon.spotify');
+    if (spotifyIcon) {
+      await spotifyIcon.hover();
+      await page.waitForTimeout(300);
+      if (followCard) {
+        await followCard.screenshot({ path: path.join(outDir, '07_hover_spotify_row2.png') });
+      }
+    }
     await page.close();
   }
 

@@ -42,6 +42,17 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'f82d194c',
+    date: '2026-08-17',
+    type: 'improvement',
+    title: 'Reorganize Follow Me Social Grid into Two Rows of 6 and Expand Tooltip Clearance',
+    summary:
+      'Reorganized the 12 social media and engineering platform icons in the Follow Me card into a strict 6-column grid across two rows (Top 6: Instagram, Facebook, YouTube, X, GitHub, LinkedIn; Bottom 6: LeetCode, Snapchat, Telegram, Spotify, Strava, WHOOP). Expanded vertical row gap to 3.75rem (3.25rem on mobile) and adjusted card bottom spacing to guarantee generous breathing room and completely prevent hover/focus floating tooltips from overlapping neighboring icons below.',
+    tags: ['design', 'accessibility', 'performance'],
+    sha: 'f82d194',
+    link: null,
+  },
+  {
     id: 'c39e8b15',
     date: '2026-08-17',
     type: 'improvement',
