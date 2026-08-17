@@ -2980,7 +2980,7 @@ html.dark #music-content .currently-music-card .watch-btn:hover {
   color: #ffffff !important;
   font-weight: 600;
   font-size: 0.85rem;
-  border-radius: 12px;
+  border-radius: 9999px;
   text-decoration: none;
   box-shadow: none !important;
   transition:
@@ -3041,7 +3041,7 @@ html.dark .support-stripe-btn.premium svg {
   color: #ffffff !important;
   font-weight: 600;
   font-size: 0.85rem;
-  border-radius: 12px;
+  border-radius: 9999px;
   text-decoration: none;
   box-shadow: none !important;
   transition:
@@ -3104,7 +3104,7 @@ html.dark .support-paypal-btn.premium svg {
   -webkit-text-fill-color: #0d0c22 !important;
   font-weight: 700;
   font-size: 0.85rem;
-  border-radius: 12px;
+  border-radius: 9999px;
   text-decoration: none !important;
   box-shadow: none !important;
   border: none !important;

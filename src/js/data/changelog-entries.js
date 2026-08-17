@@ -42,6 +42,18 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'f72a49d0',
+    date: '2026-08-17',
+    type: 'release',
+    title:
+      'Restore Exact Follow Me Floating Bubbles and Support My Work Devotional Card in Contact Page',
+    summary:
+      'Restored the original high-fidelity design of the Contact page in index.html matching user reference specifications. Reinstated the Follow Me card with 12 circular floating icon bubbles (LinkedIn, GitHub, X, Instagram, Facebook, YouTube, LeetCode, Snapchat, Telegram, Spotify, Strava, WHOOP) complete with animated tooltips and authentic brand colors. Restored the Support My Work card featuring Lord Ganesha and Lord Hanuman avatars with interactive blessing play badges, the inspiring Bhagavad Gita quote, 3 full-width rounded pill payment action buttons (Stripe, PayPal, Buy Me a Coffee), and 5 one-click cryptocurrency address copy buttons (Solana, Bitcoin, USDC, Ethereum, Dogecoin). Maintained full visual and behavioral fidelity across Desktop and Mobile viewports in both Light and Dark themes.',
+    tags: ['design', 'release', 'accessibility'],
+    sha: 'f72a49d',
+    link: null,
+  },
+  {
     id: 'b83c27d1',
     date: '2026-08-17',
     type: 'improvement',

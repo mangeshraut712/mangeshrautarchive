@@ -518,9 +518,9 @@ html.dark #contact .dream-car-item[title='Toyota'] .car-logo {
   max-height: 52px !important;
   padding: 0.55rem 1rem !important;
   box-sizing: border-box !important;
-  overflow: hidden !important;
   text-decoration: none !important;
-  border-radius: 12px !important;
+  border-radius: 9999px !important;
+  font-size: 0.95rem !important;
   font-weight: 600 !important;
   line-height: 1.2 !important;
 }
