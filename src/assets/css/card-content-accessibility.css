@@ -345,7 +345,8 @@ html.dark .about-text-card.speech-active .highlight-target.is-speaking {
   }
 
   .about-card-header .card-read-toolbar {
-    margin-left: 0;
+    margin-left: auto;
+    align-self: flex-end;
     justify-content: flex-end;
   }
 

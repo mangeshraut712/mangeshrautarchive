@@ -42,6 +42,18 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'b83c27d1',
+    date: '2026-08-17',
+    type: 'improvement',
+    title:
+      'Remove Duplicate About Listen/Translate Controls and Perfect Sitewide Accessibility Toolbar Alignment',
+    summary:
+      'Eliminated duplicate static Speak and Translate buttons situated beneath the About section narrative text in index.html in favor of the interactive Card Content Accessibility module toolbar. Perfected positioning and responsive alignment across all narrative cards: on Desktop, toolbars align to the top right alongside segmented controls and card headers; on Mobile, the About card header organizes the segmented control into a full-width top row with Listen & Translate pill buttons aligned cleanly to the right on the second row above the dividing rule. Compact icon buttons across Experience, Awards, and Blog cards prevent title crowding on smaller screens. Passed all 161 Vitest unit tests, 166 API pytest tests, and full Playwright visual verification.',
+    tags: ['design', 'performance', 'accessibility'],
+    sha: 'b83c27d',
+    link: null,
+  },
+  {
     id: 'e45b18f0',
     date: '2026-08-17',
     type: 'release',

@@ -570,7 +570,7 @@ section {
 
   #about .card-read-toolbar {
     width: 100% !important;
-    justify-content: flex-start !important;
+    justify-content: flex-end !important;
   }
 
   .about-image-badge {
