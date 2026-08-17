@@ -42,6 +42,17 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'a91d4e02',
+    date: '2026-08-17',
+    type: 'release',
+    title: 'Refine WHOOP Monogram Logo and Rearrange Contact Grid Desktop Columns',
+    summary:
+      'Updated the WHOOP icon in Follow Me with the authentic 3-stripe diagonal W monogram logo and rearranged the desktop layout of the Contact section into two dedicated columns: Left Column (Follow Me, Support My Work, Health Vitals & Currently, Dream Companies & Teams, Automotive Engineering & Dream Cars) and Right Column (Direct Outreach & Locations, Send a Message direct inbox form, Schedule a Meeting calendar widget). Verified responsive stacking across mobile viewports and tested full visual fidelity in both Light and Dark modes.',
+    tags: ['design', 'release', 'performance'],
+    sha: 'a91d4e0',
+    link: null,
+  },
+  {
     id: 'f72a49d0',
     date: '2026-08-17',
     type: 'release',
