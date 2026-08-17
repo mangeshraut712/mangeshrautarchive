@@ -42,6 +42,18 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'e45b18f0',
+    date: '2026-08-17',
+    type: 'release',
+    title:
+      'Enhanced Support & Devotional Blessings Suite with 2 Deities, 2 Quotes, 3 Donates, 5 Crypto, and 12 Brand Socials',
+    summary:
+      'Upgraded the Support & Devotional Blessings and Connect on Platforms cards on the portfolio. Restored authentic brand colors across all 12 social platform links (LinkedIn, GitHub, X, Instagram, Facebook, YouTube, LeetCode, Snapchat, Telegram, Spotify, Strava, WHOOP) with custom logo badge backgrounds and hover dynamics. Enhanced Support & Devotional Blessings with dual deity devotional cards for Lord Ganesha (Shree Ganapati Aarti) and Lord Hanuman (Shree Hanuman Chalisa) featuring interactive lyrics modal triggers and direct YouTube links, 2 sacred Bhagavad Gita quotes, 3 direct donation channels (Stripe, PayPal, Buy Me a Coffee), and a single-row grid of 5 1-click crypto copy wallets (SOL, BTC, USDC, ETH, DOGE). Passed all 161 Vitest unit tests, 166 API pytest tests, and full Playwright verification.',
+    tags: ['design', 'performance', 'deploy'],
+    sha: 'e45b18f',
+    link: null,
+  },
+  {
     id: 'a71e2c90',
     date: '2026-08-17',
     type: 'release',
