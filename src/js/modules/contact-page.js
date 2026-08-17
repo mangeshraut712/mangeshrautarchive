@@ -72,10 +72,10 @@ function initContactForm() {
       submitBtn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Sending…';
     }
 
-    const name = form.querySelector('#name')?.value || '';
-    const _email = form.querySelector('#email')?.value || '';
-    const _subject = form.querySelector('#subject')?.value || '';
-    const _message = form.querySelector('#message')?.value || '';
+    const name = form.querySelector('#name, #contact-name')?.value || '';
+    const _email = form.querySelector('#email, #contact-email')?.value || '';
+    const _subject = form.querySelector('#subject, #contact-subject')?.value || '';
+    const _message = form.querySelector('#message, #contact-message')?.value || '';
 
     try {
       // Simulate network request or post to /api/chat or webhook if available

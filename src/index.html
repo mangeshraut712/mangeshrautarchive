@@ -3661,19 +3661,80 @@ html.dark #home .hero-name-text {
                 </div>
               </div>
 
-              <!-- Follow Me / Social Media Profiles -->
+              <!-- Send a Message Direct Form -->
+              <div class="contact-section form-section">
+                <h3>Send a Message</h3>
+                <p class="contact-description">Drop a note directly to my inbox with response within 24 hours.</p>
+                <form id="contact-form" class="apple-contact-form" novalidate>
+                  <div class="form-group-apple">
+                    <label for="contact-name">Your Name</label>
+                    <input
+                      type="text"
+                      id="contact-name"
+                      name="name"
+                      autocomplete="name"
+                      placeholder="John Appleseed"
+                      class="apple-input"
+                      required
+                    />
+                  </div>
+                  <div class="form-group-apple">
+                    <label for="contact-email">Email Address</label>
+                    <input
+                      type="email"
+                      id="contact-email"
+                      name="email"
+                      autocomplete="email"
+                      placeholder="john@example.com"
+                      class="apple-input"
+                      required
+                    />
+                  </div>
+                  <div class="form-group-apple">
+                    <label for="contact-subject">Subject</label>
+                    <input
+                      type="text"
+                      id="contact-subject"
+                      name="subject"
+                      autocomplete="off"
+                      placeholder="Project or Opportunity"
+                      class="apple-input"
+                      required
+                    />
+                  </div>
+                  <div class="form-group-apple">
+                    <label for="contact-message">Message</label>
+                    <textarea
+                      id="contact-message"
+                      name="message"
+                      autocomplete="off"
+                      rows="3"
+                      placeholder="Tell me about your project or goal…"
+                      class="apple-input apple-textarea"
+                      required
+                    ></textarea>
+                  </div>
+                  <button type="submit" class="apple-submit-btn">
+                    <span>Send Message</span>
+                    <i class="fas fa-arrow-right" aria-hidden="true"></i>
+                  </button>
+                  <div id="contact-form-feedback" class="form-feedback-toast" role="status" aria-live="polite"></div>
+                </form>
+              </div>
+
+              <!-- Follow Me / Social Media Profiles (12 Channels) -->
               <div class="contact-section follow-section">
                 <h3>Follow Me</h3>
                 <p class="contact-description">Connect with me on social and engineering platforms.</p>
                 <ul class="wrapper contact-social-wrapper" aria-label="Social media profiles">
                   <li class="icon linkedin"><a href="https://www.linkedin.com/in/mangeshraut71298/" target="_blank"
-                      rel="noopener noreferrer" aria-label="Linkedin">
-                      <span class="tooltip">Linkedin</span>
+                      rel="noopener noreferrer" aria-label="LinkedIn">
+                      <span class="tooltip">LinkedIn</span>
                       <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
                     </a></li>
                   <li class="icon github"><a href="https://github.com/mangeshraut712" target="_blank"
-                      rel="noopener noreferrer" aria-label="Github">
-                      <span class="tooltip">Github</span>
+                      rel="noopener noreferrer" aria-label="GitHub">
+                      <span class="tooltip">GitHub</span>
                       <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
                     </a></li>
                   <li class="icon x"><a href="https://x.com/mrcommando712" target="_blank" rel="noopener noreferrer"
@@ -3700,6 +3761,31 @@ html.dark #home .hero-name-text {
                       rel="noopener noreferrer" aria-label="LeetCode">
                       <span class="tooltip">LeetCode</span>
                       <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M13.483 0a1.374 1.374 0 00-.961.438L7.116 6.226l-3.854 4.126a5.266 5.266 0 00-1.209 2.104 5.35 5.35 0 00-.125.513 5.527 5.527 0 00.062 2.362 5.83 5.83 0 00.349 1.017 5.938 5.938 0 001.271 1.818l4.277 4.193.039.038c2.248 2.165 5.852 2.133 8.063-.074l2.396-2.392c.54-.54.54-1.414.003-1.955a1.378 1.378 0 00-1.951-.003l-2.396 2.392a3.021 3.021 0 01-4.205.038l-.02-.019-4.276-4.193c-.652-.64-.972-1.469-.948-2.263a2.68 2.68 0 01.066-.523 2.545 2.545 0 01.619-1.164L9.13 8.114c1.058-1.134 3.204-1.27 4.43-.278l3.501 2.831c.593.48 1.461.387 1.94-.207a1.384 1.384 0 00-.207-1.943l-3.5-2.831c-.8-.647-1.766-1.045-2.774-1.202l2.015-2.158A1.384 1.384 0 0013.483 0zm-2.866 12.815a1.38 1.38 0 00-1.38 1.382 1.38 1.38 0 001.38 1.382H20.79a1.38 1.38 0 001.38-1.382 1.38 1.38 0 00-1.38-1.382z"/></svg>
+                    </a></li>
+                  <li class="icon snapchat"><a href="https://snapchat.com/t/nk1K673G" target="_blank"
+                      rel="noopener noreferrer" aria-label="Snapchat">
+                      <span class="tooltip">Snapchat</span>
+                      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12.206.793c.99 0 4.347.276 5.93 3.821.529 1.193.403 3.219.299 4.847l-.003.06c-.012.18-.022.345-.03.51.075.045.203.09.401.09.3-.016.659-.12 1.033-.301.165-.088.344-.104.464-.104.182 0 .359.029.509.09.45.149.734.479.734.838.015.449-.39.839-1.213 1.168-.089.029-.209.075-.344.119-.45.135-1.139.36-1.333.81-.09.224-.061.524.12.868l.015.015c.06.136 1.526 3.475 4.791 4.014.255.044.435.27.42.509 0 .075-.015.149-.045.225-.24.569-1.273.988-3.146 1.271-.059.091-.12.375-.164.57-.029.179-.074.36-.134.553-.076.271-.27.405-.555.405h-.03c-.135 0-.313-.031-.538-.074-.36-.075-.765-.135-1.273-.135-.3 0-.599.015-.913.074-.6.104-1.123.464-1.723.884-.853.599-1.826 1.288-3.294 1.288-.06 0-.119-.015-.18-.015h-.149c-1.468 0-2.427-.675-3.279-1.288-.599-.42-1.107-.779-1.707-.884-.314-.045-.629-.074-.928-.074-.54 0-.958.089-1.272.149-.211.043-.391.074-.54.074-.374 0-.523-.224-.583-.42-.061-.192-.09-.389-.135-.567-.046-.181-.105-.494-.166-.57-1.918-.222-2.95-.642-3.189-1.226-.031-.063-.052-.15-.055-.225-.015-.243.165-.465.42-.509 3.264-.54 4.73-3.879 4.791-4.02l.016-.029c.18-.345.224-.645.119-.869-.195-.434-.884-.658-1.332-.809-.121-.029-.24-.074-.346-.119-1.107-.435-1.257-.93-1.197-1.273.09-.479.674-.793 1.168-.793.146 0 .27.029.383.074.42.194.789.3 1.104.3.234 0 .384-.06.465-.105l-.046-.569c-.098-1.626-.225-3.651.307-4.837C7.392 1.077 10.739.807 11.727.807l.419-.015h.06z"/></svg>
+                    </a></li>
+                  <li class="icon telegram"><a href="https://t.me/mangesh71298" target="_blank"
+                      rel="noopener noreferrer" aria-label="Telegram">
+                      <span class="tooltip">Telegram</span>
+                      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M11.944 0A12 12 0 000 12a12 12 0 0012 12 12 12 0 0012-12A12 12 0 0012 0a12 12 0 00-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 01.171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+                    </a></li>
+                  <li class="icon spotify"><a href="https://open.spotify.com/user/9re9kwhwkucuv02b4vfvvld62?si=QClj640tRP2BXpT7jynzYw" target="_blank"
+                      rel="noopener noreferrer" aria-label="Spotify">
+                      <span class="tooltip">Spotify</span>
+                      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
+                    </a></li>
+                  <li class="icon strava"><a href="https://strava.app.link/uwiFkT9xH3b" target="_blank"
+                      rel="noopener noreferrer" aria-label="Strava">
+                      <span class="tooltip">Strava</span>
+                      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M15.387 17.944l-2.089-4.116h-3.065L15.387 24l5.15-10.172h-3.066m-7.008-5.599l2.836 5.598h4.172L10.463 0l-7 13.828h4.169"/></svg>
+                    </a></li>
+                  <li class="icon whoop"><a href="https://join.whoop.com/10398D8A" target="_blank"
+                      rel="noopener noreferrer" aria-label="Get a free WHOOP">
+                      <span class="tooltip">Get a free WHOOP!</span>
+                      <svg viewBox="0 0 45 32" aria-hidden="true" focusable="false"><path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M1 .002L7.129 19.465H10.96L4.832.002H1zm9.85 31.293L20.7.002h3.833L14.683 31.295h-3.833zm13.572-19.463L30.55 31.295h3.833L44.233.002h-3.832L32.483 25.198 28.254 11.832h-3.832z"/></svg>
                     </a></li>
                 </ul>
               </div>

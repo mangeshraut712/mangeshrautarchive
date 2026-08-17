@@ -108,6 +108,7 @@ const SECTION_MODULES = [
     rootMargin: '200px 0px',
   },
   { sectionId: 'contact', modulePath: '../modules/calendar.js', rootMargin: '200px 0px' },
+  { sectionId: 'contact', modulePath: '../modules/contact-page.js', rootMargin: '200px 0px' },
   {
     sectionId: 'currently-section',
     modulePath: '../modules/currently.js',

@@ -42,6 +42,18 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'f93d18e2',
+    date: '2026-08-17',
+    type: 'release',
+    title:
+      'Two-Column Desktop & Fluid Mobile Contact Architecture with Full 12-Channel Social Suite and Contact Form',
+    summary:
+      'Refactored the Contact layout into an elegant 2-column desktop grid and fluid 1-column mobile stack across both the standalone /contact.html page and homepage #contact section. Restored the full 12-platform social profile suite (LinkedIn, GitHub, X, Instagram, Facebook, YouTube, LeetCode, Snapchat, Telegram, Spotify, Strava, WHOOP) with interactive SVG icons and tooltips. Restored and unified the Send a Message direct inbox form with Apple styling and toast feedback. Realigned all cards in unified Apple aesthetics with 20px radius and solid theme tokens. Passed all 161 Vitest unit tests, 165 API pytest tests, Playwright E2E suites, and verified zero horizontal overflow.',
+    tags: ['design', 'performance', 'deploy'],
+    sha: 'f93d18e',
+    link: null,
+  },
+  {
     id: 'c8f49b12',
     date: '2026-08-17',
     type: 'release',

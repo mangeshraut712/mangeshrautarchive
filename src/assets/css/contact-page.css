@@ -99,12 +99,33 @@ html.dark .contact-hero-lead {
   color: #a1a1a6;
 }
 
-/* ── Contact Bento Grid ── */
-.contact-bento-grid {
+/* ── Contact 2-Column Desktop / 1-Column Mobile Layout ── */
+.contact-columns-grid {
   display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  gap: clamp(1rem, 2vw, 1.5rem);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(1.25rem, 2.5vw, 1.75rem);
+  align-items: start;
+  width: 100%;
   margin-bottom: 3rem;
+}
+
+.contact-column-stack {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.25rem, 2.5vw, 1.75rem);
+  min-width: 0;
+  width: 100%;
+}
+
+@media (max-width: 1023px) {
+  .contact-columns-grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  .contact-column-stack {
+    gap: 1.25rem;
+  }
 }
 
 .contact-card-apple {
@@ -120,6 +141,7 @@ html.dark .contact-hero-lead {
   box-sizing: border-box;
   position: relative;
   overflow: hidden;
+  width: 100%;
 }
 
 html.dark .contact-card-apple {
@@ -136,47 +158,6 @@ html.dark .contact-card-apple {
 html.dark .contact-card-apple:hover {
   border-color: #0a84ff;
   box-shadow: 0 8px 32px rgba(10, 132, 255, 0.15);
-}
-
-/* ── Bento Grid Sizing ── */
-.contact-bento-channels {
-  grid-column: span 12;
-}
-
-@media (min-width: 900px) {
-  .contact-bento-channels {
-    grid-column: span 7;
-  }
-  .contact-bento-form {
-    grid-column: span 5;
-  }
-  .contact-bento-social {
-    grid-column: span 12;
-  }
-  .contact-bento-calendar {
-    grid-column: span 6;
-  }
-  .contact-bento-support {
-    grid-column: span 6;
-  }
-  .contact-bento-companies {
-    grid-column: span 12;
-  }
-  .contact-bento-cars {
-    grid-column: span 12;
-  }
-}
-
-@media (max-width: 899px) {
-  .contact-bento-channels,
-  .contact-bento-form,
-  .contact-bento-social,
-  .contact-bento-calendar,
-  .contact-bento-support,
-  .contact-bento-companies,
-  .contact-bento-cars {
-    grid-column: span 12;
-  }
 }
 
 /* ── Section Headers inside Cards ── */
