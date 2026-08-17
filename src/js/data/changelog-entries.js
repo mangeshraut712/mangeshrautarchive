@@ -42,6 +42,17 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'c39e8b15',
+    date: '2026-08-17',
+    type: 'improvement',
+    title: 'Workspace Cleanup, Dead-Code Elimination, Cache Purge, and SVG Syntax Validation',
+    summary:
+      'Executed a comprehensive repository cleanup and diagnostic audit across the full stack. Cleaned temporary build artifacts, vite caches, pytest and flake8 caches, and dead node_modules artifacts via clean.js. Verified zero dead Python code via vulture and zero flake8 lint errors. Repaired malformed bezier curve command in WHOOP wordmark SVG path resolving browser console parse errors. Validated complete health via repo doctor (57/57 passed), ESLint, Stylelint, Prettier, Vitest unit suite (161 tests passing), FastAPI pytest suite (166 tests passing), and Playwright E2E desktop/mobile suites (112 tests passing with zero errors).',
+    tags: ['performance', 'deploy', 'accessibility', 'systems'],
+    sha: 'c39e8b1',
+    link: null,
+  },
+  {
     id: 'a91d4e02',
     date: '2026-08-17',
     type: 'release',
