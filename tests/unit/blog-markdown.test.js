@@ -114,25 +114,25 @@ caption: Figure 1.0 — Intelligent routing lanes
     });
   });
 
-  it('validates Cursor Origin and Anysphere August 2026 post content', () => {
-    const cursorPost = blogPosts.find(p => p.id === 'cursor-origin-anysphere-ai-ide-revolution');
+  it('validates Cursor Origin August 2026 post content', () => {
+    const cursorPost = blogPosts.find(p => p.id === 'cursor-origin-agent-native-code-hosting');
     expect(cursorPost).toBeDefined();
     expect(cursorPost.date).toBe('2026-08-06');
     expect(cursorPost.tags).toContain('Cursor');
-    expect(cursorPost.tags).toContain('Anysphere');
-    expect(cursorPost.content).toContain('cursor-anysphere-architecture.svg');
-    expect(cursorPost.content).toContain('Shadow Workspace');
-    expect(cursorPost.content).toContain('Extension Trap');
+    expect(cursorPost.tags).toContain('Cursor Origin');
+    expect(cursorPost.content).toContain('cursor-origin-architecture.svg');
+    expect(cursorPost.content).toContain('Two-Way Real-Time GitHub Sync');
+    expect(cursorPost.content).toContain('Vercel');
   });
 
-  it('validates Grok Bot and xAI Autonomous Systems August 2026 post content', () => {
-    const grokPost = blogPosts.find(p => p.id === 'grok-bot-xai-autonomous-systems-2026');
-    expect(grokPost).toBeDefined();
-    expect(grokPost.date).toBe('2026-08-13');
-    expect(grokPost.tags).toContain('Grok Bot');
-    expect(grokPost.tags).toContain('xAI');
-    expect(grokPost.content).toContain('grok-4-6-bot-architecture.svg');
-    expect(grokPost.content).toContain('500k-Token MoE Reasoning Engine');
-    expect(grokPost.content).toContain('x_search');
+  it('validates Razorpay Vulcan August 2026 post content', () => {
+    const vulcanPost = blogPosts.find(p => p.id === 'razorpay-vulcan-payments-foundation-model');
+    expect(vulcanPost).toBeDefined();
+    expect(vulcanPost.date).toBe('2026-08-13');
+    expect(vulcanPost.tags).toContain('Razorpay Vulcan');
+    expect(vulcanPost.tags).toContain('NVIDIA');
+    expect(vulcanPost.content).toContain('razorpay-vulcan-architecture.svg');
+    expect(vulcanPost.content).toContain('4 billion payments');
+    expect(vulcanPost.content).toContain('3 trillion data points');
   });
 });

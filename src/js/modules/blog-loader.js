@@ -373,7 +373,7 @@ class BlogLoader {
                 <h1 class="article-title" id="blog-modal-title">${this.escapeHTML(post.title)}</h1>
                 <p class="article-promise">${this.escapeHTML(post.readerPromise || post.summary)}</p>
                 <div class="article-byline article-byline--editorial">
-                  <img class="article-byline__avatar" src="assets/images/profile-icon.webp" width="40" height="40" alt="" loading="lazy" decoding="async" />
+                  <img class="article-byline__avatar" src="assets/images/profile.webp" width="40" height="40" alt="Mangesh Raut" loading="lazy" decoding="async" />
                   <div class="article-byline__text">
                     <span class="article-byline__name">Mangesh Raut</span>
                     <span class="article-byline__meta">

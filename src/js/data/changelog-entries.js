@@ -42,15 +42,15 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
-    id: 'c83d910f',
+    id: 'e94d821a',
     date: '2026-08-18',
     type: 'improvement',
     title:
-      'Upgrade About Me with Resume Bento Grid & Publish Deep Research on Cursor Origin and Grok Bot',
+      'Fix Light Theme Code Contrast, Standardize Author Avatar, and Publish Cursor Origin & Razorpay Vulcan Blogs',
     summary:
-      'Overhauled the About Me experience following Apple Keynote design guidelines: enriched Full Story with Drexel MSCS (3.91 GPA), SPPU Distinction, MSBTE Student of the Year, IoasiZ/Aramark/Drexel/Harshwardhan engineering milestones, IJFGCN research publication, and glass milestone badges; redesigned Quick Summary as a 6-tile Apple Bento grid. Replaced August technical blogs with two deep-dive systems research articles: "The Origin of Cursor: How Anysphere Escaped the Extension Trap to Build the AI-Native IDE" and "Grok Bot & xAI Autonomous Systems: Real-Time Stream Reasoning, x_search, and Persistent Agents".',
-    tags: ['feature', 'design', 'ai', 'research'],
-    sha: 'c83d910f',
+      'Resolved light mode code block contrast and washed-out text issues permanently by removing blanket pre/code surface overrides and establishing crisp Apple terminal styling; replaced author byline placeholder icons with Mangesh Raut’s personal portrait (profile.webp); enshrined theme contrast and typography standards in docs/DESIGN.md. Published two comprehensive August deep systems research articles: "Cursor Origin: The Agent-Native Code Hosting Platform and the Post-GitHub Loop" and "Razorpay Vulcan: 4 Billion Payments, 3 Trillion Tokens, and India’s Transformer Foundation Model for Money".',
+    tags: ['design', 'ai', 'performance', 'research'],
+    sha: 'e94d821a',
   },
   {
     id: 'a71e892c',

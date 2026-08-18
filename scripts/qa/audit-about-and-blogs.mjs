@@ -68,15 +68,53 @@ async function runAudit() {
     });
     console.log('Saved 04_desktop_dark_about_full_story.png');
 
-    // 5. Blog Section - Cursor and Grok posts in list
+    // 5. Blog Section & Light Mode Article Modal Inspection
+    await page.evaluate(() => document.documentElement.classList.remove('dark'));
+    await page.waitForTimeout(300);
+
     const blogSection = page.locator('#blog');
     if ((await blogSection.count()) > 0) {
       await blogSection.scrollIntoViewIfNeeded();
       await page.waitForTimeout(500);
       await page.screenshot({
-        path: path.join(ARTIFACTS_DIR, '05_blog_section_cards.png'),
+        path: path.join(ARTIFACTS_DIR, '05_blog_section_cards_light.png'),
       });
-      console.log('Saved 05_blog_section_cards.png');
+      console.log('Saved 05_blog_section_cards_light.png');
+
+      // Click the first article preview button
+      const firstBlogOpenBtn = page.locator('.blog-preview-btn').first();
+      if ((await firstBlogOpenBtn.count()) > 0) {
+        await firstBlogOpenBtn.click();
+        await page.waitForTimeout(600);
+        await page.screenshot({
+          path: path.join(ARTIFACTS_DIR, '08_desktop_light_blog_modal_opened.png'),
+        });
+        console.log('Saved 08_desktop_light_blog_modal_opened.png');
+
+        // Scroll modal down to code block
+        const codeBlock = page.locator('.article-code-wrap, pre').first();
+        if ((await codeBlock.count()) > 0) {
+          await codeBlock.scrollIntoViewIfNeeded();
+          await page.waitForTimeout(400);
+        }
+        await page.screenshot({
+          path: path.join(ARTIFACTS_DIR, '09_desktop_light_blog_code_block_contrast.png'),
+        });
+        console.log('Saved 09_desktop_light_blog_code_block_contrast.png');
+
+        // Test in Dark Mode too
+        await page.evaluate(() => document.documentElement.classList.add('dark'));
+        await page.waitForTimeout(300);
+        await page.screenshot({
+          path: path.join(ARTIFACTS_DIR, '10_desktop_dark_blog_code_block_contrast.png'),
+        });
+        console.log('Saved 10_desktop_dark_blog_code_block_contrast.png');
+
+        // Close modal
+        const closeBtn = page.locator('.blog-modal-close');
+        await closeBtn.click();
+        await page.waitForTimeout(300);
+      }
     }
 
     // 6. Mobile 390px Viewport - Full Story & Quick Summary

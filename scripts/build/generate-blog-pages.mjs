@@ -236,7 +236,7 @@ function renderBlogPost(post, posts) {
           <h1 class="article-title">${escapeHTML(post.title)}</h1>
           <p class="article-promise">${escapeHTML(post.readerPromise || post.summary)}</p>
           <div class="article-byline article-byline--editorial">
-            <img class="article-byline__avatar" src="${ASSET_PREFIX}/assets/images/profile-icon.webp" width="40" height="40" alt="" loading="lazy" decoding="async" />
+            <img class="article-byline__avatar" src="${ASSET_PREFIX}/assets/images/profile.webp" width="40" height="40" alt="Mangesh Raut" loading="lazy" decoding="async" />
             <div class="article-byline__text">
               <span class="article-byline__name">Mangesh Raut</span>
               <span class="article-byline__meta">

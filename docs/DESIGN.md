@@ -130,11 +130,28 @@ The portfolio follows authentic **Apple Design Principles**:
 
 ### 2. Code Blocks (`.article-code-wrap`, `.article-code-block`)
 
-- **Container**: Dark charcoal terminal `#1c1c1e` (Light) / `#000000` (Dark) with 1px border `#2c2c2e`.
-- **Code Text**: Crisp `#f5f5f7 !important; -webkit-text-fill-color: #f5f5f7 !important; font-family: SFMono-Regular, Consolas, Menlo, monospace;`.
+- **Container**: Dark charcoal terminal `#1c1c1e` (Light Mode) / `#000000` (Dark Mode) with 1px border `#2c2c2e`.
+- **Header Bar (`.article-code-header`)**: `#252528` (Light) / `#141416` (Dark) with uppercase monospace language tag `#a1a1a6` and solid Apple Blue `#0071e3` copy button.
+- **Code Content (`pre`, `code`)**: Always transparent background with crisp, high-contrast `#f5f5f7 !important; -webkit-text-fill-color: #f5f5f7 !important; font-family: SFMono-Regular, Consolas, Menlo, monospace; font-size: 0.88rem; line-height: 1.65;`.
+- **Strict Theme Guard**: Global light mode rules (`html:not(.dark)`) must NEVER force `pre` or `code` inside terminal containers to `background: #ffffff`.
 - **Inline Code (`.article-inline-code`)**:
   - Light Mode: `background: #f2f2f7; border: 1px solid #d1d1d6; color: #0071e3; font-weight: 600;`
   - Dark Mode: `background: #1c1c1e; border: 1px solid #3a3a3c; color: #ff9f0a;`
+
+### 3. Author Byline & Profile Avatar Standard
+
+- **Avatar Image**: Always use Mangesh Raut's personal portrait (`assets/images/profile.webp` / `assets/images/profile-mobile.webp`), NEVER generic icons (`profile-icon.webp`), placeholder logos, or abstract symbols.
+- **Byline Typography**: Author name in bold `#1d1d1f` (Dark: `#f5f5f7`), date & read-time metadata in `#6e6e73` (Dark: `#a1a1a6`).
+
+### 4. Blog & Longform Article Typography System
+
+- **Kicker (`.article-kicker`)**: Apple Blue `#0071e3` (`#2997ff` in dark), `0.8rem`, `750` weight, uppercase with `0.06em` tracking.
+- **Title (`.article-title`)**: Heavy Display `-apple-system, BlinkMacSystemFont, 'SF Pro Display'`, `clamp(1.85rem, 4.5vw, 2.75rem)`, `800` weight, `#1d1d1f` (Dark: `#f5f5f7`), line height `1.12`.
+- **Reader Promise (`.article-promise`)**: `#515154` (Dark: `#a1a1a6`), `1.05rem` – `1.18rem`, line height `1.55`.
+- **Body Text (`.article-body`, `.article-p`)**: SF Pro Text, `1.0625rem` (`17px`), line height `1.75`, color `#1d1d1f` (Dark: `#f5f5f7`).
+- **Section Headings (`h2`, `h3`)**: SF Pro Display, bold `700`, `#1d1d1f` (Dark: `#f5f5f7`), with subtle 1px border underline on `h2`.
+- **Callouts (`.article-callout`)**: Light tinted backgrounds (Tip: Green, Architecture: Purple, Info: Blue) with 1px border and high-contrast dark text `#1d1d1f` in light mode.
+- **Tables (`.article-table`)**: Clean Apple Developer table style with `#f2f2f7` headers (Dark: `#2c2c2e`), 1px borders, and hover row highlights.
 
 ---
 
