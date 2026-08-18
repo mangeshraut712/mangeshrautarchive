@@ -42,6 +42,17 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'c83d910f',
+    date: '2026-08-18',
+    type: 'improvement',
+    title:
+      'Upgrade About Me with Resume Bento Grid & Publish Deep Research on Cursor Origin and Grok Bot',
+    summary:
+      'Overhauled the About Me experience following Apple Keynote design guidelines: enriched Full Story with Drexel MSCS (3.91 GPA), SPPU Distinction, MSBTE Student of the Year, IoasiZ/Aramark/Drexel/Harshwardhan engineering milestones, IJFGCN research publication, and glass milestone badges; redesigned Quick Summary as a 6-tile Apple Bento grid. Replaced August technical blogs with two deep-dive systems research articles: "The Origin of Cursor: How Anysphere Escaped the Extension Trap to Build the AI-Native IDE" and "Grok Bot & xAI Autonomous Systems: Real-Time Stream Reasoning, x_search, and Persistent Agents".',
+    tags: ['feature', 'design', 'ai', 'research'],
+    sha: 'c83d910f',
+  },
+  {
     id: 'a71e892c',
     date: '2026-08-17',
     type: 'improvement',
