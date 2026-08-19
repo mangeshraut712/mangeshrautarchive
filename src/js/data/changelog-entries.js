@@ -42,6 +42,16 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'a7e03c52',
+    date: '2026-08-19',
+    type: 'improvement',
+    title: 'About Section: Content Truthfulness, Deduplication, and Apple-Style Typography Polish',
+    summary:
+      'Corrected false "34+ US states" claim to verified 18 US states (cross-referenced travel-locations.js data), fixed duplicate HTML loading/decoding attributes on the graduation image, rewrote Full Story in a clear first-person voice with identical verified facts (same education, work history, research, and personal details), replaced filler "Core Philosophy" summary card with a factual "Explorer & Interests" card, reduced intro title from 2.5rem to 1.75rem for better card proportion, tightened paragraph spacing and summary grid gap, and increased card header border contrast to match Apple design tokens.',
+    tags: ['design'],
+    sha: 'a7e03c52',
+  },
+  {
     id: 'f3a921d7',
     date: '2026-08-19',
     type: 'improvement',
