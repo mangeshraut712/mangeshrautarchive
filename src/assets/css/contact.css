@@ -1778,8 +1778,8 @@ html.dark .blessing-play-badge {
 
 html.dark .blessing-modal-card {
   border-color: #2c2c2e !important;
-  background: #1c1c1e !important;
-  box-shadow: 0 28px 56px rgba(0, 0, 0, 0.65) !important;
+  background: #000000 !important;
+  box-shadow: 0 28px 56px rgba(0, 0, 0, 0.85) !important;
   color: #f5f5f7 !important;
 }
 
@@ -2720,10 +2720,10 @@ html[data-theme='dark'] #music-content .listen-now-meta {
 }
 
 html.dark #music-content .currently-music-card {
-  background: #121214 !important;
-  background-color: #121214 !important;
-  border-color: #27272a !important;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5) !important;
+  background: #000000 !important;
+  background-color: #000000 !important;
+  border-color: #2c2c2e !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6) !important;
 }
 
 #music-content .currently-music-card:hover {
@@ -5269,7 +5269,7 @@ body > .blessing-modal-overlay .blessing-modal-card {
 }
 
 html.dark body > .blessing-modal-overlay .blessing-modal-card {
-  background: #1c1c1e !important;
+  background: #000000 !important;
   border-color: #2c2c2e !important;
 }
 

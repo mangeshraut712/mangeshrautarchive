@@ -1479,9 +1479,9 @@ html body #contact .recent-track-card {
 html.dark body #contact .media-card,
 html.dark body #contact .currently-music-card,
 html.dark body #contact .recent-track-card {
-  background: #1c1c1e !important;
-  border-color: rgba(255, 255, 255, 0.08) !important;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
+  background: #000000 !important;
+  border-color: #2c2c2e !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45) !important;
 }
 
 html body #contact .media-card:hover,
@@ -1494,7 +1494,7 @@ html body #contact .recent-track-card:hover {
 html.dark body #contact .media-card:hover,
 html.dark body #contact .currently-music-card:hover,
 html.dark body #contact .recent-track-card:hover {
-  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.5) !important;
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.6) !important;
 }
 
 html body #contact .media-poster {
@@ -1504,12 +1504,12 @@ html body #contact .media-poster {
   border-radius: 0 !important;
   overflow: hidden !important;
   position: relative !important;
-  background: #f2f2f7 !important;
+  background: #ffffff !important;
   flex-shrink: 0 !important;
 }
 
 html.dark body #contact .media-poster {
-  background: #2c2c2e !important;
+  background: #000000 !important;
 }
 
 html body #contact #music-content .media-poster,

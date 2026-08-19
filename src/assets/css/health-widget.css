@@ -73,6 +73,8 @@ html.dark .health-widget-container {
   --health-shadow: none;
   --health-bg-filter: grayscale(85%) brightness(0.22) contrast(1.1) opacity(1);
   --health-overlay-bg: #000000;
+  background: #000000 !important;
+  background-color: #000000 !important;
   --health-divider: linear-gradient(
     to bottom,
     rgba(255, 255, 255, 0.03),

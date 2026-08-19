@@ -187,8 +187,8 @@ html.dark .telemetry-legend-val {
 }
 
 html.dark .telemetry-sparkline-card {
-  background: #1c1c1e;
-  border-color: rgba(255, 255, 255, 0.08);
+  background: #000000;
+  border-color: #2c2c2e;
 }
 
 .telemetry-sparkline-card:hover {

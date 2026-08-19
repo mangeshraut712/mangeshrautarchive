@@ -5,11 +5,11 @@
 
 body.uses-page {
   --uses-text: #1d1d1f;
-  --uses-text-secondary: #515154;
-  --uses-text-muted: #515154;
-  --uses-surface: #f5f5f7;
+  --uses-text-secondary: #6e6e73;
+  --uses-text-muted: #6e6e73;
+  --uses-surface: #ffffff;
   --uses-surface-muted: #ffffff;
-  --uses-border: #d2d2d7;
+  --uses-border: #e5e5ea;
   --uses-blue: #0071e3;
   --uses-blue-soft: rgb(0 113 227 / 10%);
   /* Soft/accent pills must stay AA on their chip fills (axe color-contrast). */
@@ -23,14 +23,14 @@ body.uses-page {
 }
 
 html.dark body.uses-page {
-  --uses-text: #ffffff;
-  --uses-text-secondary: #8b949e;
-  --uses-text-muted: #6e7681;
-  --uses-surface: #121214;
-  --uses-surface-muted: #1c1c1e;
-  --uses-border: #27272a;
-  --uses-blue: #2f81f7;
-  --uses-blue-soft: rgb(47 129 247 / 16%);
+  --uses-text: #f5f5f7;
+  --uses-text-secondary: #a1a1a6;
+  --uses-text-muted: #86868b;
+  --uses-surface: #000000;
+  --uses-surface-muted: #000000;
+  --uses-border: #2c2c2e;
+  --uses-blue: #2997ff;
+  --uses-blue-soft: rgb(41 151 255 / 16%);
   --uses-pill-soft-fg: #58a6ff;
   --uses-pill-accent-bg: #0071e3;
   --uses-pill-accent-fg: #ffffff;

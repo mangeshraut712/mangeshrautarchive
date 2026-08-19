@@ -200,8 +200,8 @@ html.dark .radar-axis-label {
 }
 
 html.dark .skills-radar-item {
-  background: #1c1c1e;
-  border-color: rgba(255, 255, 255, 0.08);
+  background: #000000;
+  border-color: #2c2c2e;
 }
 
 .skills-radar-item:hover,

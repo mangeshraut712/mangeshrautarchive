@@ -370,7 +370,12 @@ html:not(.dark)
     body.monitor-page .doc-link-tile,
     #projects .proj-input-group,
     #projects .proj-sort-native,
-    #projects #github-projects-container .showcase-project-card
+    #projects #github-projects-container .showcase-project-card,
+    .health-widget-container,
+    .merged-health-currently-card,
+    #contact .currently-card,
+    #contact .merged-health-currently-card,
+    .health-widget-container-spaced
   ) {
   background: #ffffff !important;
   background-color: #ffffff !important;
@@ -481,7 +486,12 @@ html.dark
     body.monitor-page .doc-link-tile,
     #projects .proj-input-group,
     #projects .proj-sort-native,
-    #projects #github-projects-container .showcase-project-card
+    #projects #github-projects-container .showcase-project-card,
+    .health-widget-container,
+    .merged-health-currently-card,
+    #contact .currently-card,
+    #contact .merged-health-currently-card,
+    .health-widget-container-spaced
   ) {
   background: #000000 !important;
   background-color: #000000 !important;

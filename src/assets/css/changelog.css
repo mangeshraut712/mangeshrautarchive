@@ -8,14 +8,14 @@ body.changelog-page {
   --cl-text: #1d1d1f;
   --cl-secondary: #6e6e73;
   --cl-muted: #86868b;
-  --cl-border: #d2d2d7;
-  --cl-surface: #f5f5f7;
-  --cl-chip-active: #e8e8ed;
+  --cl-border: #e5e5ea;
+  --cl-surface: #ffffff;
+  --cl-chip-active: #0071e3;
   --cl-blue: #0071e3;
   --cl-release: #1a7f37;
   --cl-improvement: #0969da;
   --cl-retired: #bf5700;
-  --cl-badge-bg: #f0f0f2;
+  --cl-badge-bg: #ffffff;
   --cl-badge-text: #6e6e73;
   color: var(--cl-text);
   background: #ffffff !important;
@@ -23,18 +23,18 @@ body.changelog-page {
 
 html.dark body.changelog-page {
   --cl-bg: #000000;
-  --cl-text: #ffffff;
-  --cl-secondary: #8b949e;
-  --cl-muted: #6e7681;
-  --cl-border: #30363d;
-  --cl-surface: #161b22;
-  --cl-chip-active: #21262d;
-  --cl-blue: #2f81f7;
+  --cl-text: #f5f5f7;
+  --cl-secondary: #a1a1a6;
+  --cl-muted: #86868b;
+  --cl-border: #2c2c2e;
+  --cl-surface: #000000;
+  --cl-chip-active: #0071e3;
+  --cl-blue: #2997ff;
   --cl-release: #3fb950;
   --cl-improvement: #58a6ff;
   --cl-retired: #d29922;
-  --cl-badge-bg: #21262d;
-  --cl-badge-text: #8b949e;
+  --cl-badge-bg: #000000;
+  --cl-badge-text: #a1a1a6;
   color: var(--cl-text);
   background: #000000 !important;
 }

@@ -971,9 +971,9 @@ html.dark .blog-read-btn i {
 }
 
 html.dark .blog-modal-container {
-  background: #1c1c1e;
-  border-color: rgba(255, 255, 255, 0.12);
-  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.75);
+  background: #000000;
+  border-color: rgba(255, 255, 255, 0.14);
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.85);
 }
 
 button.blog-modal-close,
@@ -2765,7 +2765,7 @@ html.dark .article-code-wrap {
 }
 
 html.dark .article-code-header {
-  background: #141416 !important;
+  background: #000000 !important;
   border-bottom-color: #242426 !important;
 }
 

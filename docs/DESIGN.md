@@ -36,13 +36,14 @@ The portfolio follows authentic **Apple Design Principles**:
 
 ### Surfaces & Backgrounds
 
-| Token / Surface                   | Light Mode                                  | Dark Mode                                         | High-Contrast Mode                          |
-| :-------------------------------- | :------------------------------------------ | :------------------------------------------------ | :------------------------------------------ |
-| **Canvas Background**             | `#ffffff`                                   | `#000000`                                         | `#ffffff` / `#000000`                       |
-| **Secondary Background / Card**   | `#f5f5f7` (`#f2f2f7`)                       | `#1c1c1e` (`#161618`)                             | `#ffffff` / `#000000` with 2px solid border |
-| **Tertiary / Grouped Background** | `#e5e5ea`                                   | `#2c2c2e`                                         | `#000000` / `#ffffff`                       |
-| **Elevated Glass Card**           | `rgba(255, 255, 255, 0.8)` + `blur(20px)`   | `rgba(28, 28, 30, 0.8)` + `blur(20px)`            | Solid `#ffffff` / `#000000`                 |
-| **Border Sub-surface**            | `1px solid rgba(0, 0, 0, 0.08)` / `#d1d1d6` | `1px solid rgba(255, 255, 255, 0.12)` / `#2c2c2e` | `2px solid #000000` / `#ffffff`             |
+| Token / Surface                   | Light Mode (Solid White)                    | Dark Mode (Solid Black)                            | High-Contrast Mode                          |
+| :-------------------------------- | :------------------------------------------ | :------------------------------------------------- | :------------------------------------------ |
+| **Canvas Background**             | `#ffffff` (Solid Pure White)                | `#000000` (Solid Pure Black)                       | `#ffffff` / `#000000`                       |
+| **Secondary Background / Card**   | `#ffffff` (Solid Pure White)                | `#000000` (Solid Pure Black)                       | `#ffffff` / `#000000` with 2px solid border |
+| **Tertiary / Grouped Background** | `#ffffff` (Solid Pure White)                | `#000000` (Solid Pure Black)                       | `#000000` / `#ffffff`                       |
+| **Elevated Glass Card**           | `#ffffff` with subtle border `#e5e5ea`      | `#000000` with subtle border `#2c2c2e`             | Solid `#ffffff` / `#000000`                 |
+| **Terminal / Code Block**         | `#1c1c1e` (macOS Dark Terminal)             | `#000000` (1px border `rgba(255, 255, 255, 0.12)`) | Solid `#000000` with white monospace text   |
+| **Border Sub-surface**            | `1px solid #e5e5ea` (`rgba(0, 0, 0, 0.08)`) | `1px solid #2c2c2e` (`rgba(255, 255, 255, 0.12)`)  | `2px solid #000000` / `#ffffff`             |
 
 ### Typography Hierarchy
 

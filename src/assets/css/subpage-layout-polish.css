@@ -1502,10 +1502,10 @@ body.uses-page .uses-filters button.is-active,
 body.uses-page .uses-filters button[aria-pressed='true'],
 body.travel-body .travel-filter-chip.active,
 body.travel-body .travel-filter-chip[aria-pressed='true'] {
-  background: #e8e8ed !important;
-  background-color: #e8e8ed !important;
-  color: #1d1d1f !important;
-  -webkit-text-fill-color: #1d1d1f !important;
+  background: #0071e3 !important;
+  background-color: #0071e3 !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
   font-weight: 650 !important;
 }
 
@@ -1518,8 +1518,8 @@ html.dark body.uses-page .uses-filters button.is-active,
 html.dark body.uses-page .uses-filters button[aria-pressed='true'],
 html.dark body.travel-body .travel-filter-chip.active,
 html.dark body.travel-body .travel-filter-chip[aria-pressed='true'] {
-  background: #21262d !important;
-  background-color: #21262d !important;
+  background: #0071e3 !important;
+  background-color: #0071e3 !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
   font-weight: 650 !important;
@@ -1543,9 +1543,9 @@ body.monitor-page .monitor-card,
 body.error-page .error-container,
 body.error-page .error-dest-item {
   border-radius: 16px !important;
-  border: 1px solid #d2d2d7 !important;
-  background: #f5f5f7 !important;
-  background-color: #f5f5f7 !important;
+  border: 1px solid #e5e5ea !important;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
   box-shadow: 0 1px 3px rgb(0 0 0 / 3%) !important;
   transition:
     transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
@@ -1569,10 +1569,10 @@ html.dark body.monitor-page .probe-card,
 html.dark body.monitor-page .monitor-card,
 html.dark body.error-page .error-container,
 html.dark body.error-page .error-dest-item {
-  background: #121214 !important;
-  background-color: #121214 !important;
-  border-color: #30363d !important;
-  box-shadow: 0 2px 10px rgb(0 0 0 / 25%) !important;
+  background: #000000 !important;
+  background-color: #000000 !important;
+  border-color: #2c2c2e !important;
+  box-shadow: 0 2px 10px rgb(0 0 0 / 45%) !important;
 }
 
 body.systems-page .systems-evidence-card:hover,
@@ -1596,7 +1596,7 @@ html.dark body.uses-page .uses-featured__card:hover,
 html.dark body.monitor-page .metric-card:hover,
 html.dark body.monitor-page .probe-card:hover,
 html.dark body.error-page .error-dest-item:hover {
-  border-color: #2f81f7 !important;
+  border-color: #2997ff !important;
   box-shadow: 0 4px 16px rgb(0 0 0 / 45%) !important;
 }
 
@@ -1608,9 +1608,9 @@ body.error-page .error-search {
   align-items: center !important;
   gap: 0.5rem !important;
   border-radius: 980px !important;
-  border: 1px solid #d2d2d7 !important;
-  background: #f5f5f7 !important;
-  background-color: #f5f5f7 !important;
+  border: 1px solid #e5e5ea !important;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
   padding: 0.35rem 0.85rem !important;
   box-shadow: none !important;
   transition:
@@ -1621,9 +1621,9 @@ body.error-page .error-search {
 html.dark body.uses-page .uses-search,
 html.dark body.travel-body .travel-search,
 html.dark body.error-page .error-search {
-  background: #161b22 !important;
-  background-color: #161b22 !important;
-  border-color: #30363d !important;
+  background: #000000 !important;
+  background-color: #000000 !important;
+  border-color: #2c2c2e !important;
 }
 
 body.uses-page .uses-search:focus-within,
@@ -1636,6 +1636,6 @@ body.error-page .error-search:focus-within {
 html.dark body.uses-page .uses-search:focus-within,
 html.dark body.travel-body .travel-search:focus-within,
 html.dark body.error-page .error-search:focus-within {
-  border-color: #2f81f7 !important;
-  box-shadow: 0 0 0 3px rgb(47 129 247 / 24%) !important;
+  border-color: #2997ff !important;
+  box-shadow: 0 0 0 3px rgb(41 151 255 / 24%) !important;
 }

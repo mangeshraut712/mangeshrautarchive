@@ -39,18 +39,18 @@
     --apple-gray-5: #e5e5ea;
     --apple-gray-6: #f2f2f7;
 
-    /* Light Mode — apple.com product canvas with Apple surface elevation */
+    /* Light Mode — solid white canvas (#ffffff) */
     --bg-primary: #ffffff;
-    --bg-secondary: #f5f5f7;
-    --bg-tertiary: #e8e8ed;
+    --bg-secondary: #ffffff;
+    --bg-tertiary: #ffffff;
     --text-primary: #1d1d1f;
     --text-secondary: #6e6e73;
     --text-tertiary: #86868b;
     --separator: rgba(0, 0, 0, 0.08);
     --separator-strong: rgba(0, 0, 0, 0.16);
     --fill: #ffffff;
-    --fill-secondary: #f5f5f7;
-    --fill-tertiary: #e8e8ed;
+    --fill-secondary: #ffffff;
+    --fill-tertiary: #ffffff;
 
     /* Typography */
     --font-display:
@@ -157,18 +157,18 @@
   }
 
   html.dark {
-    /* Pure black canvas (portfolio) with Apple surface elevation */
+    /* Pure solid black canvas (#000000) with Apple surface elevation */
     --bg-primary: #000000;
-    --bg-secondary: #1c1c1e;
-    --bg-tertiary: #2c2c2e;
+    --bg-secondary: #000000;
+    --bg-tertiary: #000000;
     --text-primary: #f5f5f7;
     --text-secondary: #a1a1a6;
-    --text-tertiary: #6e6e73;
+    --text-tertiary: #86868b;
     --separator: rgba(255, 255, 255, 0.08);
     --separator-strong: rgba(255, 255, 255, 0.16);
     --fill: #000000;
-    --fill-secondary: #1c1c1e;
-    --fill-tertiary: #2c2c2e;
+    --fill-secondary: #000000;
+    --fill-tertiary: #000000;
     --glass-bg: rgba(0, 0, 0, 0.72);
     --glass-bg-strong: rgba(0, 0, 0, 0.85);
     --glass-border: rgba(255, 255, 255, 0.1);

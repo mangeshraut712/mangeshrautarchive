@@ -42,6 +42,17 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'b82c4f19',
+    date: '2026-08-19',
+    type: 'improvement',
+    title:
+      'Enforce Sitewide Solid White (Light Mode) and Solid Black (Dark Mode) Surfaces with High-Contrast Typography',
+    summary:
+      'Audited and unified background color tokens across all pages (Home, Systems, Monitor, Travel, Uses, Changelog, 404, Blog Reader), replacing muddy/grey backgrounds with pure solid #ffffff in Light Mode and pure solid #000000 in Dark Mode. Standardized card elevations, search inputs, filter chips, health vitals, and metadata tags with WCAG AAA/AA high-contrast color cascades and refined borders.',
+    tags: ['design', 'performance', 'systems'],
+    sha: 'b82c4f19',
+  },
+  {
     id: 'e94d821a',
     date: '2026-08-18',
     type: 'improvement',

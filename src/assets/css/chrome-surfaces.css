@@ -263,8 +263,8 @@ html[data-theme='dark'] #home .music-card.is-playing .music-card-inner {
     padding: 0.42rem 0.85rem 0.42rem 0.42rem !important;
     gap: 0.75rem !important;
     border-color: rgba(10, 132, 255, 0.4) !important;
-    background: #18181a !important;
-    background-color: #18181a !important;
+    background: #000000 !important;
+    background-color: #000000 !important;
     box-shadow:
       0 8px 28px rgb(0 0 0 / 60%),
       0 2px 6px rgb(0 0 0 / 40%) !important;
