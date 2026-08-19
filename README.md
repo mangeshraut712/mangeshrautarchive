@@ -71,7 +71,7 @@ As of **August 2026**, the product combines:
 | **Agentic AI**         | AssistMe chatbot · 13 WebMCP tools · Plus menu tools · OpenRouter NDJSON stream · rich media               |
 | **Apple-inspired UI**  | Dynamic Island nav · liquid glass **clear / balanced / tinted** · solid page canvas · a11y dock            |
 | **Operations**         | Platform health probes · portfolio catalog · dual-host commit parity · Foglamp map keep-alive              |
-| **Quality**            | **160** Vitest · **165** pytest · 16 Playwright projects · Lighthouse **100/100/100/100** gates · security |
+| **Quality**            | **161** Vitest · **166** pytest · 16 Playwright projects · Lighthouse **100/100/100/100** gates · security |
 
 This document is the **canonical technology report** for the repository: stack versions, libraries, architecture, features, and how to run it. Counts and URLs below were checked against the current `main` tree and live probes.
 
@@ -90,7 +90,7 @@ Both public hosts use the same generated `dist/` bundle. Pages is the static mir
 | **Monitor**          | [/monitor](https://mangeshraut712.github.io/mangeshrautarchive/monitor)                                           | Apple Status-style health, probes, catalog                                                |
 | **Travel**           | [/travel](https://mangeshraut712.github.io/mangeshrautarchive/travel)                                             | MapLibre atlas                                                                            |
 | **Uses**             | [/uses](https://mangeshraut712.github.io/mangeshrautarchive/uses)                                                 | Hardware / software / AI stack                                                            |
-| **Field Notes**      | [/blog/](https://mangeshraut712.github.io/mangeshrautarchive/blog/)                                               | **14** build-generated long-form articles                                                 |
+| **Field Notes**      | [/blog/](https://mangeshraut712.github.io/mangeshrautarchive/blog/)                                               | **16** build-generated long-form articles                                                 |
 | **Case studies**     | [/case-studies/](https://mangeshraut712.github.io/mangeshrautarchive/case-studies/portfolio.html)                 | **5** static write-ups (portfolio, HindAI, CES, AssistMe, bug tracker)                    |
 | **AI architecture**  | [Foglamp scan](https://foglamp.dev/scan/mangeshrautarchive-jtspx4)                                                | **41** nodes · **51** edges · keep-alive CI                                               |
 
@@ -193,8 +193,8 @@ Pinned from this repo’s `package.json`, `requirements.txt`, `pyproject.toml`, 
 
 | Suite        | Runner                         | Count / target (August 2026)                                                            |
 | ------------ | ------------------------------ | --------------------------------------------------------------------------------------- |
-| **Unit**     | Vitest 4.1                     | **160** tests · chatbot, bootstrap, modules, WebMCP, data contracts                     |
-| **API**      | pytest                         | **165** tests · FastAPI routes / telemetry / middleware                                 |
+| **Unit**     | Vitest 4.1                     | **161** tests · chatbot, bootstrap, modules, WebMCP, data contracts                     |
+| **API**      | pytest                         | **166** tests · FastAPI routes / telemetry / middleware                                 |
 | **E2E**      | Playwright 1.61                | **16** projects (desktop + phone + tablet, incl. iPhone 17 Pro Max)                     |
 | **A11y**     | axe-core + a11y toolbar        | CI + runtime high contrast / reduced motion / liquid glass (16/16 baseline passing)     |
 | **Perf**     | Lighthouse gate (`deploy.yml`) | **100 / 100 / 100 / 100** desktop + mobile on `dist/` (`?perf-audit=1`); full-load also |
@@ -212,7 +212,7 @@ Pinned from this repo’s `package.json`, `requirements.txt`, `pyproject.toml`, 
 | **System Monitor**  | Apple Status densify · platform probes · portfolio catalog · CSP / AI metrics                                                                                                                               |
 | **Systems page**    | Evidence cards · architecture diagrams · hiring Q&A                                                                                                                                                         |
 | **Projects**        | Live GitHub grid · release lens · evidence rows · Spatial View hooks                                                                                                                                        |
-| **Field Notes**     | 14 long-form articles · X-style feed cards · no stock hero images · charts + source embeds                                                                                                                  |
+| **Field Notes**     | 16 long-form articles · X-style feed cards · no stock hero images · charts + source embeds                                                                                                                  |
 | **Case studies**    | 5 static deep-dives (portfolio, HindAI, CES Energy, AssistMe, Bug Tracker)                                                                                                                                  |
 | **Currently**       | Shows / books / music · Last.fm Spotify live scrobbles · local posters                                                                                                                                      |
 | **Health**          | WHOOP + Withings · Supabase · daily cron                                                                                                                                                                    |
@@ -387,7 +387,7 @@ npm run build && PORT=4174 npm run serve:dist   # production preview
 | `npm run doctor` / `doctor:stack`        | Root layout + no React/Next runtime               |
 | `npm run dev`                            | Frontend + backend                                |
 | `npm run build`                          | Production `dist/` (+ blog/case study generation) |
-| `npm test` / `npm run test:api`          | Vitest **160** / pytest **165**                   |
+| `npm test` / `npm run test:api`          | Vitest **161** / pytest **166**                   |
 | `npm run check`                          | ESLint + Stylelint + Prettier + Vitest            |
 | `npm run lint:dead-code` / `lint:python` | Vulture + flake8 for the FastAPI codebase         |
 | `npm run test:e2e:all`                   | Playwright across all **16** browser projects     |
@@ -424,9 +424,9 @@ Never commit `.env` / `.env.local`. See [`.env.example`](.env.example).
 
 1. `npm audit` + `security-check`
 2. ESLint · Stylelint 17 · Prettier
-3. Vitest (**160**)
+3. Vitest (**161**)
 4. Env parity (non-blocking)
-5. flake8 · dead-code · pytest (**165**)
+5. flake8 · dead-code · pytest (**166**)
 6. Browser QA smoke, accessibility (16/16), and promotion/FPS checks
 7. `npm run build` + Lighthouse on `dist/` (**100/100/100/100** desktop + mobile, `?perf-audit=1`)
 8. GitHub Pages deploy + dual-surface verify
@@ -458,8 +458,8 @@ Republishes [`.foglamp/scan.json`](.foglamp/scan.json) to the same public URL us
 
 | Suite               | Target                                                     |
 | ------------------- | ---------------------------------------------------------- |
-| Vitest              | 160                                                        |
-| pytest              | 165                                                        |
+| Vitest              | 161                                                        |
+| pytest              | 166                                                        |
 | Playwright projects | 16                                                         |
 | Lighthouse CI       | **100** Performance / Accessibility / Best Practices / SEO |
 
@@ -552,9 +552,9 @@ npm run qa:postdeploy
 
 ## 13. Blog & case studies
 
-**Field Notes (14)** — from `src/js/modules/blog-data.js` → `dist/blog/`:
+**Field Notes (16)** — from `src/js/modules/blog-data.js` → `dist/blog/`:
 
-Google I/O 2026 · X Algorithm / Phoenix · Google AI ecosystem · OpenClaw · Wispr Flow · NVIDIA · Global AI race · AI code editors · Apple at 50 · Anthropic Mythos · WWDC 2026 · NotebookLM 2026.
+Cursor Origin Agent-Native Hosting · Razorpay Vulcan · Google I/O 2026 · X Algorithm / Phoenix · Google AI ecosystem · OpenClaw · Wispr Flow · NVIDIA · Global AI race · AI code editors · Apple at 50 · Anthropic Mythos · WWDC 2026 · NotebookLM 2026.
 
 **Case studies (5)** — from `src/js/modules/case-studies-data.js` → `dist/case-studies/`:
 
@@ -574,10 +574,10 @@ Articles use X-style author cards, solid theme settings, charts + official sourc
 - **AssistMe UX (`d30e5612` / `0b045319`)** — composer Plus menu (attach / Writing Tools / summarize); MessageScroller a11y; scroll fades + text shimmer; attachment cards; decluttered header/status/welcome; free rich media (Pollinations + charts); Nemotron Super free chain on FastAPI + Cloudflare Worker.
 - **Foglamp architecture map** — committed `.foglamp/scan.json` (41 nodes · 51 edges); public URL keep-alive via `npm run foglamp:publish` + monthly GitHub Action ([live scan](https://foglamp.dev/scan/mangeshrautarchive-jtspx4)).
 - **Liquid Glass materials** — clear / balanced / tinted parity on light + dark; chrome glass vs solid content discipline; a11y + share FAB materials aligned.
-- **Blog system** — 14 field notes; X-style author cards; `/blog` index routing hardened for local Express.
+- **Blog system** — 16 field notes; X-style author cards; `/blog` index routing hardened for local Express.
 - **Project Showcase** — equal card grid alignment; shell width parity across activity / lens / search / grid.
 - **Solid theme** — white light / black dark page canvas; dual-host edge AssistMe path documented.
-- **Quality** — **126** Vitest · **161** pytest · 16 Playwright projects · CI Lighthouse 100 floors · `ASSET_VER=20260808center9` · vanilla stack (no React runtime).
+- **Quality** — **161** Vitest · **166** pytest · 16 Playwright projects · CI Lighthouse 100 floors · `ASSET_VER=20260808center9` · vanilla stack (no React runtime).
 
 ---
 
