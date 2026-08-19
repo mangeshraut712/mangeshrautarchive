@@ -234,18 +234,20 @@ _reach_cache: Dict[str, Any] = {"data": None, "ts": 0}
 REACH_CACHE_TTL = 300  # 5 minutes
 
 # Portfolio Data - Enhanced
+# Portfolio Data - Enhanced
 PORTFOLIO_DATA = {
     "name": "Mangesh Raut",
     "title": "Software Engineer | Full-Stack Developer | AI/ML Engineer",
-    "location": "Philadelphia, PA",
-    "email": "mbr63@drexel.edu",
-    "phone": "+1 (609) 505 3500",
+    "location": "Pune, MH, India 🇮🇳 (Primary) | Philadelphia, PA, USA 🇺🇸 (Academic)",
+    "email": "mbr63drexel@gmail.com",
+    "academic_email": "mbr63@drexel.edu",
+    "phone": "+91 727 681 9090 / +1 (609) 505-3500",
     "linkedin": "linkedin.com/in/mangeshraut71298",
     "github": "github.com/mangeshraut712",
-    "website": "https://mangeshraut712.github.io/mangeshrautarchive/",
+    "website": "https://mangeshraut.pro",
     "resume_url": "/assets/files/Mangesh_Raut_Resume.pdf",
     "summary": (
-        "Software Engineer with 6+ years of experience in Java Spring Boot, Python, React, Angular, AWS, and machine learning. "
+        "Software Engineer with 6+ years of experience across full stack engineering, cloud DevOps, and enterprise systems. "
         "Engineered scalable microservices and cloud infrastructure at IoasiZ. "
         "This portfolio ships as vanilla ESM + FastAPI (AssistMe), not a React/Next.js app."
     ),
@@ -256,46 +258,88 @@ PORTFOLIO_DATA = {
             "period": "Jul 2023 - Jul 2026",
             "location": "Piscataway, NJ",
             "achievements": [
-                "Refactored legacy codebase with 20% code reduction",
-                "Resolved 50+ critical microservices bugs",
-                "Integrated Redis caching for 3x faster data retrieval",
-                "Improved network latency by 35%",
+                "Refactored legacy Java monoliths into modular Spring services, reducing code redundancy by 20%",
+                "Resolved 50+ critical bugs in distributed microservices with JUnit/Mockito test suites",
+                "Integrated Redis caching for inventory APIs, achieving 30% faster response times",
+            ],
+        },
+        {
+            "title": "Network Engineer",
+            "company": "Harshwardhan Enterprises",
+            "period": "Jun 2020 - Jun 2021",
+            "location": "Pune, India",
+            "achievements": [
+                "Deployed Cisco ASR 9000 routers with OSPF/BGP protocols, slashing latency by 35%",
+                "Resolved 500+ connectivity issues via Wireshark analysis with 90% SLA compliance",
+                "Created Python monitoring tools reducing manual diagnostics by 50%",
+            ],
+        },
+        {
+            "title": "Database Administrator (Intern)",
+            "company": "Aramark",
+            "period": "Jun 2022 - Jun 2023",
+            "location": "Philadelphia, PA",
+            "achievements": [
+                "Developed Python automation scripts for event inventory systems on AWS",
+                "Transitioned 3+ legacy databases to AWS RDS for high-traffic analytics",
+            ],
+        },
+        {
+            "title": "Database Administrator (Part-Time)",
+            "company": "Drexel University",
+            "period": "Sep 2021 - May 2022",
+            "location": "Philadelphia, PA",
+            "achievements": [
+                "Maintained HIPAA-compliant MySQL databases for 5K+ student health records with 99.9% accuracy",
+                "Streamlined data reporting workflows using Tableau and Excel",
             ],
         },
     ],
     "skills": {
-        "languages": ["Java", "Python", "SQL", "JavaScript", "TypeScript"],
+        "languages": ["Java", "Python", "SQL", "JavaScript", "TypeScript", "C", "C++"],
         "frameworks": [
             "Spring Boot",
-            "AngularJS",
+            "FastAPI",
             "React",
+            "Angular",
             "TensorFlow",
             "scikit-learn",
         ],
-        "cloud": ["AWS (EC2, S3, Lambda)", "Docker", "Jenkins", "Terraform"],
-        "databases": ["PostgreSQL", "MongoDB", "MySQL", "Redis"],
+        "cloud": ["AWS (EC2, S3, RDS, Lambda)", "Docker", "Jenkins", "CI/CD"],
+        "databases": ["PostgreSQL", "MySQL", "Redis", "MongoDB"],
         "tools": ["Git", "Jira", "Tableau", "Wireshark", "Postman"],
     },
     "education": [
         {
             "degree": "Master of Science in Computer Science",
             "school": "Drexel University",
-            "period": "2023-2025",
-            "gpa": "3.76",
-            "status": "Completed",
+            "period": "Sep 2021 - Jun 2023",
+            "gpa": "3.91 / 4.0",
+            "status": "Degree Earned",
         },
         {
             "degree": "Bachelor of Engineering in Computer Engineering",
-            "school": "Savitribai Phule Pune University",
-            "period": "2014-2017",
-            "gpa": "3.6",
+            "school": "JSPM Rajarshi Shahu College of Engineering / Savitribai Phule Pune University",
+            "period": "Jun 2017 - Jun 2020",
+            "status": "First Class with Distinction",
+        },
+        {
+            "degree": "Diploma in Computer Engineering",
+            "school": "Y.B. Patil Polytechnic / MSBTE",
+            "period": "Jun 2014 - Jun 2017",
+            "status": "Student of the Year",
         },
     ],
     "projects": [
         {
             "name": "mangeshrautarchive (this site)",
-            "tech": ["Vanilla ESM", "FastAPI", "OpenRouter", "GitHub Pages", "Cloudflare Workers"],
+            "tech": ["Vanilla ESM", "FastAPI", "OpenRouter", "GitHub Pages", "WebMCP"],
             "achievements": "AssistMe chat/voice, WebMCP tools, dual-host deploy, public monitor",
+        },
+        {
+            "name": "HindAI",
+            "tech": ["TypeScript", "Next.js", "Gemma", "Ollama", "RAG"],
+            "achievements": "Indic learning + grounded scripture assistant with local and open model pathways",
         },
         {
             "name": "Gravity SaaS Agent",
@@ -308,46 +352,36 @@ PORTFOLIO_DATA = {
             "achievements": "Applied AI monorepo for speech, retrieval evals, and ML-from-scratch labs",
         },
         {
-            "name": "HindAI",
-            "tech": ["TypeScript", "Next.js", "Gemma", "Ollama"],
-            "achievements": "Indic learning assistant with local/open model pathways",
-        },
-        {
             "name": "agent-console",
             "tech": ["TypeScript", "Next.js", "WebSockets"],
             "achievements": "Real-time agent console with tool-calling and observability",
         },
         {
-            "name": "Face Emotion Recognition",
-            "tech": ["Python", "OpenCV", "TensorFlow", "React"],
-            "achievements": "Real-time emotion recognition with dashboard UI",
-        },
-        {
-            "name": "Energy Demand Forecasting",
-            "tech": ["Python", "TensorFlow", "LSTM", "AWS"],
-            "achievements": "25% ML accuracy improvement, time-series forecasting at CES",
-        },
-        {
-            "name": "Sarvam AI Cookbook (fork)",
-            "tech": ["Next.js", "Python", "Sarvam API"],
-            "achievements": "Indic speech/VAD and multilingual LLM cookbook adaptations",
+            "name": "Real-Time Face Emotion Recognition System",
+            "tech": ["Python", "OpenCV", "TensorFlow", "CNN"],
+            "achievements": "CNN-based live facial affect detection with real-time dashboard UI (IJFGCN 2020)",
         },
     ],
     "publications": [
         {
-            "title": "Analysis of Machine Learning Algorithms for Network Intrusion Detection",
-            "venue": "IEEE Conference",
-            "year": "2024",
+            "title": "Real-Time Face Emotion Recognition System",
+            "venue": "International Journal of Future Generation Communication and Networking (IJFGCN)",
+            "details": "Vol. 13, No. 3, (2020), pp. 3306-3313",
+            "year": "2020",
         },
     ],
     "certifications": [
-        "AWS Cloud Practitioner",
-        "Oracle Certified Java SE Programmer",
-        "TensorFlow Developer Certificate",
+        "HackerRank Software Engineer",
+        "Google Prompt Design in Vertex AI",
+        "IBM Data Fundamentals",
+        "IBM Cybersecurity Fundamentals",
+        "Cisco Networking Basics & CCNP",
+        "Microsoft JavaScript Programming",
+        "Apple Search Ads",
     ],
     "awards": [
-        "Dean's List — Drexel University (3 semesters)",
-        "Best Project Award — Pune University CS Department",
+        "Graduate Academic Honors in MSCS — Drexel University (3.91 GPA)",
+        "Student of the Year — Y.B. Patil Polytechnic (MSBTE)",
     ],
     # Public-only cultural/personality notes — never store home address, medical,
     # caste, or detailed family PII in this structure (it can be serialized to prompts).
@@ -355,8 +389,8 @@ PORTFOLIO_DATA = {
         "languages": ["English (Professional)", "Marathi (Native)", "Hindi"],
         "working_style": "Balanced, diplomatic, systems-thinking engineer",
         "usa_interest_corridors": [
-            "Northeast (NY / NJ / Boston)",
-            "Northwest (Seattle / Bay Area)",
+            "Northeast (NY / NJ / Boston / Philadelphia)",
+            "Northwest / West (Seattle / Bay Area)",
         ],
     },
 }
@@ -372,18 +406,19 @@ You are the site search + knowledge layer for this portfolio (primary live host:
 ## Mangesh Raut — Quick Profile
 - Software Engineer at IoasiZ (Piscataway, NJ, Jul 2023 - Jul 2026)
 - Full-Stack Developer & AI/ML Engineer with 6+ years of total software engineering experience
-- Core stack (career): Java, Spring Boot, Python, SQL, JavaScript, TypeScript, React, Angular, AWS (EC2, S3, Lambda), Docker, Kubernetes
+- Core stack (career): Java, Spring Boot, Python, SQL, JavaScript, TypeScript, React, Angular, AWS (EC2, S3, RDS, Lambda), Docker, Kubernetes
 - This portfolio site stack: vanilla HTML/CSS/ESM, FastAPI, OpenRouter, GitHub Pages + Cloudflare Worker, WebMCP
-- Quality & Test coverage: 160 Vitest unit tests, 165 pytest API tests, 16 Playwright browser projects, 100/100 Lighthouse deploy gates
-- MS in Computer Science from Drexel University (Completed June 2025, GPA 3.76)
-- BE in Computer Engineering from Savitribai Phule Pune University (2014-2017, GPA 3.6)
-- Key achievements: 20% code reduction via Spring refactoring, 50+ critical microservices bugs resolved, 3x faster data retrieval using Redis
+- Quality & Test coverage: 161 Vitest unit tests, 166 pytest API tests, 16 Playwright browser projects, 100/100 Lighthouse deploy gates
+- MS in Computer Science from Drexel University (Completed June 2023, GPA 3.91/4.0)
+- BE in Computer Engineering from Savitribai Phule Pune University (Jun 2017 - Jun 2020, First Class with Distinction)
+- Diploma in Computer Engineering from Y.B. Patil Polytechnic / MSBTE (Jun 2014 - Jun 2017, Student of the Year)
+- Key achievements: 20% code redundancy reduction via Spring refactoring, 50+ microservices bugs resolved, 30% faster API responses using Redis caching
 - Hybrid AI Web Stack: Architected the portfolio's edge/cloud execution pipeline with OpenRouter chat/voice and Cloudflare Worker fallbacks for GitHub Pages.
-- Published: IEEE paper on ML algorithms for network intrusion detection (2024)
-- Certifications: AWS Cloud Practitioner, Oracle Certified Java SE, TensorFlow Developer
-- Awards: Dean's List (Drexel, 3 semesters), Best Project Award (Pune University)
-- Recent content: 14 Field Notes posts including OpenRouter routing (Jul 2026), Grok 4.5 / Grok Build (Jul 2026), WWDC26 Siri AI, NotebookLM, Google I/O 2026 WebMCP, and the open X algorithm.
-- Public location context: based in Piscataway, NJ / Philadelphia professional corridor when relevant to career questions.
+- Published: "Real-Time Face Emotion Recognition System" in IJFGCN (Vol. 13, No. 3, 2020, pp. 3306-3313)
+- Certifications: HackerRank Software Engineer, Google Vertex AI, IBM Data & Cybersecurity, Cisco Networking Basics/CCNP, Microsoft JS, Apple Search Ads
+- Awards: Graduate Academic Honors (Drexel, 3.91 GPA), Student of the Year (MSBTE)
+- Recent content: 16 Field Notes posts including OpenRouter routing, Grok 4.5 / Grok Build, WWDC26 Siri AI, NotebookLM, Google I/O 2026 WebMCP, Cursor Origin, Razorpay Vulcan, and the open X algorithm.
+- Public location context: based in Pune, MH, India (Primary Base) & Philadelphia, PA (Academic Base).
 - Interests visitors may ask about at a high level: open-source, AI engineering, travel, and continuous learning. Do **not** invent or disclose private home addresses, medical data, blood group, caste, or detailed family PII — those are not part of the public portfolio surface.
 - USA career narrative (public): MSCS in the United States; SDE tenure at IoasiZ (Piscataway, NJ); continues global engineering work with interest in US tech opportunities (Northeast / Northwest corridors).
 
@@ -392,7 +427,7 @@ You are the site search + knowledge layer for this portfolio (primary live host:
 - **Changelog & Releases**: Real git-backed commits and release notes are catalogued on [Changelog](https://mangeshraut.pro/changelog).
 - **Systems Engineering**: Architecture benchmarks, test runner contracts, and quality gates on [Systems](https://mangeshraut.pro/systems).
 - **Health & Biometrics**: Whoop 4.0 (strain, recovery, sleep) and Withings body telemetry are tracked on the homepage health widget and [System Monitor](https://mangeshraut.pro/monitor).
-- **Travel Atlas**: 32+ cities across the United States and India are catalogued on [Travel Atlas](https://mangeshraut.pro/travel).
+- **Travel Atlas**: 34+ states and 32+ cities across the United States and India are catalogued on [Travel Atlas](https://mangeshraut.pro/travel).
 - **Uses Setup**: Hardware (MacBook Pro) and dev stack documented on [Uses](https://mangeshraut.pro/uses).
 - **WebMCP Agentic Tools**: 13 deterministic browser tools support navigation, resume downloads, Calendly scheduling, live music lookup (`get_now_playing`), travel stats (`get_travel_stats`), and system health (`get_system_status`).
 
@@ -411,12 +446,12 @@ Your replies render in a Telegram-style rich chat UI that supports **GFM markdow
 - Audio/video generation via OpenRouter image/video models is paid — prefer Voice Mode (+ menu) for spoken replies when TTS is configured, otherwise the in-chat Read Aloud button.
 
 ✅ GOOD Response Style:
-"Mangesh Raut is a Software Engineer at IoasiZ in Piscataway, NJ, specializing in Java Spring Boot, microservices, and AWS.
+"Mangesh Raut is a Software Engineer with extensive experience in Java Spring Boot, microservices, and AWS.
 
 **Key highlights**
 - Refactored legacy codebase with 20% code reduction
 - Resolved 50+ critical microservices bugs (JUnit/Mockito)
-- MS in Computer Science, Drexel University (GPA 3.76)
+- MS in Computer Science, Drexel University (GPA 3.91/4.0)
 
 | Area | Strength |
 | --- | --- |

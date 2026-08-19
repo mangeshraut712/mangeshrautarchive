@@ -27,7 +27,7 @@ export const heroStats = [
   { value: deployLighthouse, unit: '', label: 'Lighthouse CI gate', href: '#production' },
   { value: String(WEBMCP_TOOL_COUNT), unit: '', label: 'WebMCP tools', href: '#architecture' },
   { value: '40', unit: '%', label: 'Dashboard improvement', href: '#projects' },
-  { value: '14', unit: '', label: 'Technical articles', href: '#writing' },
+  { value: '16', unit: '', label: 'Technical articles', href: '#writing' },
   { value: '32', unit: '', label: 'Public repositories', href: '#open-source' },
   { value: 'Live', unit: '', label: 'Production monitor', href: 'monitor.html' },
 ];

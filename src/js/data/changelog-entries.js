@@ -42,6 +42,17 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'f3a921d7',
+    date: '2026-08-19',
+    type: 'improvement',
+    title:
+      'Truthfulness, Fact-Checking, and De-duplication Audit across Profile, Education, Research, and AI Knowledge Base',
+    summary:
+      'Conducted a rigorous audit across all portfolio surfaces, API configurations, AssistMe chatbot knowledge bases, and Cloudflare Worker fallbacks. Verified official academic records (Drexel MSCS 3.91/4.0 GPA, SPPU Computer Engineering Distinction, MSBTE Student of the Year), corrected publication metadata to the peer-reviewed IJFGCN 2020 Real-Time Face Emotion Recognition System paper, purged inaccurate metrics and repetitive statements, and aligned test counts and technical article counts sitewide.',
+    tags: ['assistme', 'systems', 'design'],
+    sha: 'f3a921d7',
+  },
+  {
     id: 'b82c4f19',
     date: '2026-08-19',
     type: 'improvement',

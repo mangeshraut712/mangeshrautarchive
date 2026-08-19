@@ -63,17 +63,17 @@ You are the site search + knowledge layer for this portfolio: prefer precise ans
 ## Portfolio facts (prefer these when relevant)
 - Software Engineer at IoasiZ (Piscataway, NJ, Jul 2023 – Jul 2026) — microservices, Spring, cloud automation.
 - Prior: Aramark cloud automation.
-- MSCS, Drexel University (GPA ~3.76); BE Computer Engineering, SPPU.
+- MSCS, Drexel University (GPA 3.91 / 4.0); BE Computer Engineering, SPPU.
 - Career stack: Java Spring Boot, Python (FastAPI), AWS, Terraform, React/Angular, ML/LLMs (TensorFlow), agentic systems.
 - This portfolio site: vanilla ESM + FastAPI + OpenRouter + WebMCP (not a React/Next.js app).
 - Highlights: ~40% dashboard latency reduction (REST/query optimization), ~35% faster CI/CD, ~25% ML accuracy improvement.
 - Flagship public repos: mangeshrautarchive, Gravity-SaaS-Agent, ai-ml-portfolio, HindAI, agent-console, Stanford-CS336.
-- Contact: mbr63@drexel.edu · linkedin.com/in/mangeshraut71298 · github.com/mangeshraut712
+- Contact: mbr63drexel@gmail.com · mbr63@drexel.edu · linkedin.com/in/mangeshraut71298 · github.com/mangeshraut712
 - Portfolio surfaces: Home, About, Skills, Experience, Projects, Education, Blog, Contact, Systems, Travel, Monitor, Uses.
 - Live Telemetry & Widgets:
   • Live Music: Mangesh's Spotify listening is connected to Last.fm (user: mbr63) and shown on the Hero Music Card (#music-card).
   • Health & Biometrics: Whoop 4.0 (strain/recovery/sleep) and Withings body telemetry on /monitor and homepage health widget.
-  • Travel Atlas: 32+ cities visited across US and India documented on /travel.
+  • Travel Atlas: 34+ states and 32+ cities visited across US and India documented on /travel.
   • Uses Setup: MacBook Pro M-series and software stack on /uses.
   • WebMCP Tools: 13 deterministic browser tools support navigation, resume downloads, music queries (get_now_playing), travel stats (get_travel_stats), and system metrics (get_system_status).
 
@@ -139,7 +139,7 @@ function localAnswer(message) {
     return 'Mangesh tracks his biometric recovery, sleep performance, and strain using **Whoop 4.0** and **Withings**. Check the live health widget on the homepage or visit the [System Monitor](/monitor).';
   }
   if (/travel|trip|city|cities|places|visited/.test(q)) {
-    return 'Mangesh has logged travels across 32+ cities throughout the US and India. Explore the interactive 3D globe and city cards on the [Travel Atlas](/travel).';
+    return 'Mangesh has logged travels across 34+ states and 32+ cities throughout the US and India. Explore the interactive 3D globe and city cards on the [Travel Atlas](/travel).';
   }
   if (/skill|stack|technolog|java|python|aws|cloud/.test(q)) {
     return "Mangesh's core stack: **Java Spring Boot**, **Python**, **AWS** (Lambda, EC2, ECS, S3), **Terraform**, React/Angular, and ML with TensorFlow / LLMs.";
@@ -148,7 +148,7 @@ function localAnswer(message) {
     return 'Mangesh was a **Software Engineer at IoasiZ** (Piscataway, NJ, Jul 2023 – Jul 2026). Previously: cloud automation at **Aramark**.';
   }
   if (/educat|degree|university|drexel|gpa/.test(q)) {
-    return '**M.S. Computer Science, Drexel University** (GPA ~3.76) · **B.E. Computer Engineering**, SPPU.';
+    return '**M.S. Computer Science, Drexel University** (GPA 3.91/4.0) · **B.E. Computer Engineering**, SPPU.';
   }
   if (/project|github|portfolio|hindai/.test(q)) {
     return 'Standouts: **mangeshrautarchive** (AssistMe + WebMCP), **Gravity-SaaS-Agent**, **ai-ml-portfolio**, **HindAI**, **agent-console**. Browse [github.com/mangeshraut712](https://github.com/mangeshraut712).';

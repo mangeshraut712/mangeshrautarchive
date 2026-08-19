@@ -324,14 +324,21 @@ def generate_local_response(query: str, site_context: str = "") -> Dict:
         return {
             "answer": f"🎓 **Education**:\n{edu_list}"
             if edu_list
-            else "🎓 Mangesh holds a Master's in Computer Science from Drexel University (Graduated June 2025).",
+            else "🎓 Mangesh holds a Master of Science in Computer Science from Drexel University (GPA 3.91/4.0, June 2023).",
             "category": "Education",
         }
 
     # Achievements
     if "achievement" in query or "award" in query or "accomplishment" in query:
         return {
-            "answer": "🏆 **Key Achievements**:\n• Refactored enterprise codebase with **20% code reduction** at IoasiZ\n• Built AI systems with **95% accuracy**\n• Published ML intrusion detection research paper in IEEE (2024)\n• Graduated MS CS from Drexel University with 3.76 GPA",
+            "answer": (
+                "🏆 **Key Achievements**:\n"
+                "• Refactored legacy Java monoliths with **20% code reduction** at IoasiZ\n"
+                "• Resolved **50+ critical microservices bugs** with JUnit/Mockito test suites\n"
+                "• Published Real-Time Face Emotion Recognition System research in **IJFGCN (2020)**\n"
+                "• Earned MS in Computer Science from Drexel University with **3.91 / 4.0 GPA**\n"
+                "• Honored as **Student of the Year** at Y.B. Patil Polytechnic (MSBTE)"
+            ),
             "category": "Achievements",
         }
 

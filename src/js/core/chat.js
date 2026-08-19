@@ -960,7 +960,7 @@ class IntelligentAssistant {
       lower.includes('drexel')
     ) {
       return portfolio(
-        '**Education**\n- M.S. Computer Science — **Drexel University** (GPA 3.76)\n- B.E. Computer Engineering — **Savitribai Phule Pune University**'
+        '**Education**\n- M.S. Computer Science — **Drexel University** (GPA 3.91/4.0)\n- B.E. Computer Engineering — **Savitribai Phule Pune University** (Distinction)\n- Diploma in Computer Engineering — **Y.B. Patil Polytechnic / MSBTE** (Student of the Year)'
       );
     }
 
