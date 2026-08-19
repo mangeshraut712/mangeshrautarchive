@@ -821,12 +821,11 @@ async def get_recent_music(
                 content=ensure_listen_now_meta(cached["data"], user),
                 headers=build_lastfm_headers("STALE", started_at, {"X-Lastfm-Stale": "1"}),
             )
+        data = build_lastfm_unconfigured_response(user)
+        data["message"] = "Last.fm API request timed out, serving fallback."
         return JSONResponse(
-            status_code=504,
-            content={
-                "error": "Request timeout",
-                "details": "Last.fm API took too long to respond",
-            },
+            content=data,
+            headers=build_lastfm_headers("TIMEOUT", started_at, {"X-Lastfm-Error": "timeout"}),
         )
     except httpx.ConnectError:
         print("🌐 Connection error to Last.fm")
@@ -835,12 +834,11 @@ async def get_recent_music(
                 content=ensure_listen_now_meta(cached["data"], user),
                 headers=build_lastfm_headers("STALE", started_at, {"X-Lastfm-Stale": "1"}),
             )
+        data = build_lastfm_unconfigured_response(user)
+        data["message"] = "Unable to connect to Last.fm servers, serving fallback."
         return JSONResponse(
-            status_code=503,
-            content={
-                "error": "Connection failed",
-                "details": "Unable to connect to Last.fm servers",
-            },
+            content=data,
+            headers=build_lastfm_headers("OFFLINE", started_at, {"X-Lastfm-Error": "connect-error"}),
         )
     except json.JSONDecodeError as e:
         print(f"💥 Music Proxy JSON Parse Exception: {str(e)}")

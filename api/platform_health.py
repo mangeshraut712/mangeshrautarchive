@@ -54,8 +54,10 @@ PORTFOLIO_API_CATALOG: List[Dict[str, str]] = [
 
 def _public_base_url() -> str:
     return (
-        os.getenv("OPENROUTER_SITE_URL")
+        os.getenv("PORTFOLIO_PROBE_BASE_URL")
+        or os.getenv("OPENROUTER_SITE_URL")
         or os.getenv("NEXT_PUBLIC_SITE_URL")
+        or (f"https://{os.getenv('VERCEL_URL')}" if os.getenv("VERCEL_URL") else None)
         or "https://mangeshraut.pro"
     ).rstrip("/")
 
@@ -70,10 +72,10 @@ async def _probe_public_path(client: httpx.AsyncClient, base: str, entry: Dict[s
         url = f"{base}{path if path.startswith('/') else '/' + path}"
     start = datetime.now(timezone.utc)
     try:
-        response = await client.get(url, timeout=6.0, follow_redirects=True)
+        response = await client.get(url, timeout=3.0, follow_redirects=True)
         latency_ms = int((datetime.now(timezone.utc) - start).total_seconds() * 1000)
         ok = 200 <= response.status_code < 400
-        warn = response.status_code in {401, 403, 404, 429}
+        warn = response.status_code in {401, 402, 403, 404, 429}
         status = "healthy" if ok else ("degraded" if warn else "unhealthy")
         return {
             "id": entry["id"],
@@ -104,7 +106,8 @@ async def probe_portfolio_catalog() -> Dict[str, Any]:
     """Live probe of public portfolio pages and primary API routes."""
     base = _public_base_url()
     catalog = [*PORTFOLIO_PAGE_CATALOG, *PORTFOLIO_API_CATALOG]
-    async with httpx.AsyncClient() as client:
+    limits = httpx.Limits(max_connections=20, max_keepalive_connections=10)
+    async with httpx.AsyncClient(limits=limits, timeout=3.0) as client:
         results = await asyncio.gather(*[_probe_public_path(client, base, item) for item in catalog])
     items = list(results)
     summary = {

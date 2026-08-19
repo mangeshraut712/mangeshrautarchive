@@ -42,6 +42,16 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'e48b92c1',
+    date: '2026-08-19',
+    type: 'improvement',
+    title: 'API Probe Resilience, Network Error Suppression, and Last.fm Fallback Handling',
+    summary:
+      'Optimized portfolio health probes in api/platform_health.py with connection pooling limits, 3s fast-timeout per probe, and graceful fallback for upstream rate limits and access challenges. Replaced verbose stack trace dumps in Google Analytics realtime/historical queries with clean logging when offline or timing out, and hardened the Last.fm music endpoint in api/routes/media.py to return structured fallback payloads instead of 504 gateway timeout errors.',
+    tags: ['api', 'monitor', 'systems'],
+    sha: 'e48b92c1',
+  },
+  {
     id: 'a7e03c52',
     date: '2026-08-19',
     type: 'improvement',

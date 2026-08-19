@@ -316,8 +316,11 @@ class GoogleAnalyticsDataClient:
                 limit=25,
             )
             return self._parse_realtime_report(realtime_data if isinstance(realtime_data, dict) else {})
+        except (httpx.TimeoutException, httpx.ConnectError) as re:
+            logger.warning(f"GA realtime query unreachable ({type(re).__name__}), defaulting to 0 active users")
+            return empty
         except Exception as re:
-            logger.error(f"Error querying realtime GA report: {re}", exc_info=True)
+            logger.error(f"Error querying realtime GA report: {re}")
             return empty
 
     async def _fetch_reach_snapshot_data(self) -> Dict[str, Any]:
@@ -430,8 +433,10 @@ class GoogleAnalyticsDataClient:
             data = await self._fetch_reach_snapshot_data()
             self._snapshot = data
             self._snapshot_expires_at = time.time() + 180
+        except (httpx.TimeoutException, httpx.ConnectError) as e:
+            logger.warning(f"Background GA reach refresh unreachable ({type(e).__name__}): {e}")
         except Exception as e:
-            logger.error(f"Error refreshing GA reach snapshot in background: {e}", exc_info=True)
+            logger.error(f"Error refreshing GA reach snapshot in background: {e}")
         finally:
             self._is_refreshing = False
 
@@ -453,8 +458,11 @@ class GoogleAnalyticsDataClient:
             self._snapshot = await self._fetch_reach_snapshot_data()
             self._snapshot_expires_at = now + 180
             return dict(self._snapshot)
+        except (httpx.TimeoutException, httpx.ConnectError) as e:
+            logger.warning(f"Google Analytics API unreachable ({type(e).__name__}), falling back to mock snapshot")
+            return self._get_mock_snapshot()
         except Exception as e:
-            logger.error(f"Error querying Google Analytics API, falling back to mock snapshot: {e}", exc_info=True)
+            logger.error(f"Error querying Google Analytics API, falling back to mock snapshot: {e}")
             return self._get_mock_snapshot()
 
     async def get_reach_snapshot(self) -> Dict[str, Any]:
