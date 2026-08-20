@@ -43,6 +43,17 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'e7b1a904',
+    date: '2026-08-20',
+    type: 'improvement',
+    title:
+      'Website Overhaul Phase 3 & 4: Vendor Bundle Compression, Media Query Normalization, and Contact Fallback',
+    summary:
+      'Compressed the rich-markdown vendor bundle by ~45% (from 604 KB to 334 KB) via esbuild production minification, normalized inline CSS media queries in index.html to level-3 max-width syntax for legacy mobile browser compatibility, connected contact form directly to email client dispatch with prefilled content, and expanded mini-button touch target hit areas to 44px for WCAG compliance.',
+    tags: ['performance', 'assistme', 'design'],
+    sha: 'e7b1a904',
+  },
+  {
     id: 'd8f2b149',
     date: '2026-08-20',
     type: 'improvement',

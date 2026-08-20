@@ -18,6 +18,7 @@ await esbuild.build({
   format: 'esm',
   platform: 'browser',
   target: ['es2020'],
+  minify: true,
   legalComments: 'none',
   logLevel: 'info',
 });

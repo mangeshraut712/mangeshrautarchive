@@ -54,18 +54,24 @@ function initContactForm() {
     }
 
     const name = form.querySelector('#name, #contact-name')?.value || '';
-    const _email = form.querySelector('#email, #contact-email')?.value || '';
-    const _subject = form.querySelector('#subject, #contact-subject')?.value || '';
-    const _message = form.querySelector('#message, #contact-message')?.value || '';
+    const email = form.querySelector('#email, #contact-email')?.value || '';
+    const subject = form.querySelector('#subject, #contact-subject')?.value || '';
+    const message = form.querySelector('#message, #contact-message')?.value || '';
 
     try {
-      // Simulate network request or post to /api/chat or webhook if available
-      await new Promise(resolve => setTimeout(resolve, 800));
+      const mailSubject = encodeURIComponent(
+        subject || `Portfolio Contact from ${name || 'Visitor'}`
+      );
+      const mailBody = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`);
+      const mailtoUrl = `mailto:mraut712@gmail.com?subject=${mailSubject}&body=${mailBody}`;
 
-      showToast(`Thank you, ${name || 'friend'}! Your message has been received.`, 'success');
+      // Open mail client
+      window.location.href = mailtoUrl;
+
+      showToast(`Opening your email client to send to Mangesh...`, 'success');
       form.reset();
     } catch {
-      showToast('Could not send message. Please reach out directly via email.', 'error');
+      showToast('Please reach out directly via email to mraut712@gmail.com', 'error');
     } finally {
       if (submitBtn) {
         submitBtn.disabled = false;
