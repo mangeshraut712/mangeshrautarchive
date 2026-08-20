@@ -114,6 +114,9 @@ function pageShell({
     ${jsonLd ? `<script type="application/ld+json">${jsonLd}</script>` : ''}
   </head>
   <body class="blog-standalone-page">
+    <div class="skip-links" role="navigation" aria-label="Skip links">
+      <a href="#main-content" class="skip-link">Skip to main content</a>
+    </div>
     ${body}
     <script type="module" src="${ASSET_PREFIX}/js/core/subpage-chrome.js?v=${ASSET_VER}"></script>
     <script type="module" src="${ASSET_PREFIX}/js/modules/blog-page.js"></script>

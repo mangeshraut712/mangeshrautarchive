@@ -43,6 +43,17 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'd8f2b149',
+    date: '2026-08-20',
+    type: 'improvement',
+    title:
+      'Website Overhaul Phase 2: Clean Canonical URLs, Case Study Social Meta, and Skip Navigation',
+    summary:
+      'Standardized canonical URLs, alternate links, OG URLs, and JSON-LD schemas across all subpages to clean routes (preventing 301 redirect loops), enriched generated case study pages with Open Graph, Twitter cards, and TechArticle JSON-LD schemas, deferred non-critical icon stylesheets, and integrated accessibility skip-navigation links across standalone blog and case study surfaces.',
+    tags: ['deploy', 'performance', 'systems'],
+    sha: 'd8f2b149',
+  },
+  {
     id: 'c4e91a72',
     date: '2026-08-20',
     type: 'improvement',

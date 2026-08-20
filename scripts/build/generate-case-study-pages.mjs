@@ -49,10 +49,10 @@ function renderCaseStudyBody(cs) {
   return `
     <nav class="monitor-page-nav case-study-nav" aria-label="Case study navigation">
       <div class="monitor-page-nav__left">
-        <a class="monitor-page-nav__home" href="${ASSET_PREFIX}/index.html#home" aria-label="Home">
+        <a class="monitor-page-nav__home" href="${ASSET_PREFIX}/" aria-label="Home">
           <img src="${ASSET_PREFIX}/assets/images/profile-icon.png" alt="" width="28" height="28" />
         </a>
-        <a class="monitor-page-nav__back" href="${ASSET_PREFIX}/systems.html#projects">
+        <a class="monitor-page-nav__back" href="${ASSET_PREFIX}/systems#projects">
           <i class="fas fa-chevron-left" aria-hidden="true"></i>
           <span>Notebook</span>
         </a>
@@ -95,8 +95,8 @@ function renderCaseStudyBody(cs) {
       </article>
 
       <footer class="systems-footer-links">
-        <a href="${ASSET_PREFIX}/index.html#projects">All projects</a>
-        <a href="${ASSET_PREFIX}/index.html#home">Portfolio home</a>
+        <a href="${ASSET_PREFIX}/#projects">All projects</a>
+        <a href="${ASSET_PREFIX}/">Portfolio home</a>
       </footer>
     </main>
   `;
@@ -112,6 +112,38 @@ function pageShell({ title, description, canonical, body }) {
     <meta name="author" content="Mangesh Raut" />
     <link rel="canonical" href="${canonical}" />
     <title>${escapeHTML(title)}</title>
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="${canonical}" />
+    <meta property="og:title" content="${escapeHTML(title)}" />
+    <meta property="og:description" content="${escapeHTML(description)}" />
+    <meta property="og:image" content="https://mangeshraut.pro/assets/images/home.png" />
+    <meta property="og:image:width" content="3024" />
+    <meta property="og:image:height" content="1722" />
+    <meta property="og:image:alt" content="${escapeHTML(title)}" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="${escapeHTML(title)}" />
+    <meta name="twitter:description" content="${escapeHTML(description)}" />
+    <meta name="twitter:image" content="https://mangeshraut.pro/assets/images/home.png" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "${escapeHTML(title)}",
+        "description": "${escapeHTML(description)}",
+        "url": "${canonical}",
+        "image": "https://mangeshraut.pro/assets/images/home.png",
+        "author": {
+          "@type": "Person",
+          "name": "Mangesh Raut",
+          "url": "https://mangeshraut.pro"
+        },
+        "publisher": {
+          "@type": "Person",
+          "name": "Mangesh Raut",
+          "url": "https://mangeshraut.pro"
+        }
+      }
+    </script>
     <link rel="icon" href="${ASSET_PREFIX}/favicon.svg?v=${ASSET_VER}" type="image/svg+xml" />
     <link rel="icon" href="${ASSET_PREFIX}/favicon.ico?v=${ASSET_VER}" sizes="48x48" />
     <link rel="icon" href="${ASSET_PREFIX}/favicon-32x32.png?v=${ASSET_VER}" type="image/png" sizes="32x32" />
@@ -126,11 +158,15 @@ function pageShell({ title, description, canonical, body }) {
     <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/apple-platform-features.css?v=${ASSET_VER}" />
     <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/chrome-surfaces.css?v=${ASSET_VER}" />
     <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/ux-polish-fixes.css?v=${ASSET_VER}" />
-    <link rel="stylesheet" href="${fontAwesomeStylesheet(ASSET_PREFIX)}" />
+    <link rel="stylesheet" href="${fontAwesomeStylesheet(ASSET_PREFIX)}" media="print" onload="this.media='all'" />
+    <noscript><link rel="stylesheet" href="${fontAwesomeStylesheet(ASSET_PREFIX)}" /></noscript>
     <script src="${ASSET_PREFIX}/js/utils/liquid-glass-boot.js?v=${ASSET_VER}"></script>
     <script src="${ASSET_PREFIX}/js/utils/theme-head.js"></script>
   </head>
   <body class="systems-page case-study-standalone">
+    <div class="skip-links" role="navigation" aria-label="Skip links">
+      <a href="#main-content" class="skip-link">Skip to main content</a>
+    </div>
     ${body}
     <script type="module" src="${ASSET_PREFIX}/js/core/subpage-chrome.js?v=${ASSET_VER}"></script>
     <script type="module" src="${ASSET_PREFIX}/js/utils/theme.js"></script>
