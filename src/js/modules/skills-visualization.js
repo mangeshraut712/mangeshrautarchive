@@ -164,7 +164,7 @@ class SkillsVisualization {
             <div class="skill-badge-bar">
               <div class="skill-badge-progress" style="width: ${percentage}%; background: ${skill.color}"></div>
             </div>
-            <span class="skill-badge-percentage">${percentage}%</span>
+            <span class="skill-badge-percentage">${skill.level >= 90 ? 'Core' : skill.level >= 80 ? 'Proficient' : 'Familiar'}</span>
           </div>
         </div>
       </div>

@@ -43,6 +43,17 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'f9a3c718',
+    date: '2026-08-20',
+    type: 'improvement',
+    title:
+      'Website Overhaul Phase 5: Monitor Page Modular Architecture and Evidence-Based Skill Tiers',
+    summary:
+      'Refactored monitor.html by extracting ~3,000 lines of inline JavaScript into a dedicated ES module (src/js/modules/monitor-page.js) with full build bundling, tree-shaking, and ESLint coverage (reducing monitor.html size from 158 KB to 37 KB). Upgraded skills visualization badges from arbitrary percentages to evidence-based competency tiers (Core, Proficient, Familiar) and unified internal routing paths across systems, travel, uses, and monitor pages.',
+    tags: ['monitor', 'performance', 'systems'],
+    sha: 'f9a3c718',
+  },
+  {
     id: 'e7b1a904',
     date: '2026-08-20',
     type: 'improvement',
