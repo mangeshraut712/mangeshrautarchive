@@ -110,7 +110,9 @@ test.describe('Engineering evidence dashboard', () => {
     await gotoSite(page, PAGES.uses);
     await page.waitForSelector('#uses-grid .uses-section', { timeout: 15_000 });
     await expect(page.locator('#uses-grid .uses-section')).toHaveCount(8);
-    await expect(page.locator('.systems-footer-links a[href="systems.html"]')).toBeVisible();
+    await expect(
+      page.locator('.systems-footer-links a', { hasText: 'Systems notebook' })
+    ).toBeVisible();
   });
 
   test('case study flows expose Repo/Demo/Architecture/Story evidence links', async ({ page }) => {
