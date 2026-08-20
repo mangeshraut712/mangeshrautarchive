@@ -770,7 +770,7 @@ async def google_calendar_webhook(request: Request):
     if resource_state == "sync":
         return {"success": True, "status": "acknowledged"}
 
-    if not channel_id or not await integration_is_connected("google_calendar"):
+    if not channel_id or not channel_token or not await integration_is_connected("google_calendar"):
         raise HTTPException(status_code=403, detail="Calendar webhook rejected.")
 
     sync_state = await fetch_sync_state("google_calendar")

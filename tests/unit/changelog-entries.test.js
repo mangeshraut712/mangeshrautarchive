@@ -16,7 +16,7 @@ describe('changelog entries', () => {
     for (const entry of changelogEntries) {
       expect(entry.id).toBeTruthy();
       expect(entry.date).toMatch(/^\d{4}-\d{2}-\d{2}$/);
-      expect(['release', 'improvement', 'retired']).toContain(entry.type);
+      expect(['release', 'improvement', 'fix', 'retired']).toContain(entry.type);
       expect(entry.title.trim().length).toBeGreaterThan(0);
       expect(entry.summary.trim().length).toBeGreaterThan(0);
       expect(entry.sha).toMatch(/^[0-9a-f]{7,40}$/i);

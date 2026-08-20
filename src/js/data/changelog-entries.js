@@ -10,6 +10,7 @@ export const CHANGELOG_TYPES = [
   { id: 'all', label: 'All' },
   { id: 'release', label: 'Release' },
   { id: 'improvement', label: 'Improvement' },
+  { id: 'fix', label: 'Fix' },
   { id: 'retired', label: 'Retired' },
 ];
 
@@ -41,6 +42,16 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
+  {
+    id: 'b7d41f03',
+    date: '2026-08-20',
+    type: 'fix',
+    title: 'Backend Audit: Google Calendar Webhook Null-Check Security Fix',
+    summary:
+      'Fixed a missing null check for the X-Goog-Channel-Token header in the Google Calendar webhook handler (api/routes/integrations.py). Without the header, len(None) would throw a TypeError resulting in a 500 Internal Server Error instead of the intended 403 Forbidden. Deep code review of all 20 backend files confirmed this was the only implementation bug; all 20 API endpoints verified returning HTTP 200 on live probe.',
+    tags: ['api', 'security'],
+    sha: 'b7d41f03',
+  },
   {
     id: 'e48b92c1',
     date: '2026-08-19',
