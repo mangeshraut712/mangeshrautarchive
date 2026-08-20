@@ -43,6 +43,16 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'c4e91a72',
+    date: '2026-08-20',
+    type: 'improvement',
+    title: 'Website Overhaul Phase 1: Design Compliance, Dead Code Elimination, and DOM Cleanup',
+    summary:
+      'Enforced solid Apple Blue #0071e3 on publications and hero typography across CSS layers (eliminating prohibited gradient text fills and resolving LCP paint conflicts), cleaned duplicate loading/decoding attributes on certification cards, removed obsolete VoiceService and crypto copy scripts, modernized skills visualization to standard ESM, and refactored contact toast notifications to use CSS custom properties.',
+    tags: ['design', 'performance', 'assistme'],
+    sha: 'c4e91a72',
+  },
+  {
     id: 'b7d41f03',
     date: '2026-08-20',
     type: 'fix',

@@ -284,11 +284,6 @@ class SkillsVisualization {
   }
 }
 
-// Export for use in other modules
-if (typeof module !== 'undefined' && module.exports) {
-  module.exports = SkillsVisualization;
-}
-
 // Make available globally
 // Make available globally
 window.SkillsVisualization = SkillsVisualization;

@@ -18,29 +18,10 @@ function showToast(message, type = 'info') {
   if (existing) existing.remove();
 
   const toast = document.createElement('div');
-  toast.className = `contact-feedback-toast toast-${type}`;
+  toast.className = `contact-feedback-toast toast-notification toast-${type}`;
   toast.setAttribute('role', 'status');
   toast.setAttribute('aria-live', 'polite');
   toast.textContent = message;
-
-  Object.assign(toast.style, {
-    position: 'fixed',
-    bottom: '24px',
-    left: '50%',
-    transform: 'translateX(-50%) translateY(20px)',
-    background: type === 'success' ? '#34c759' : '#0071e3',
-    color: '#ffffff',
-    padding: '10px 20px',
-    borderRadius: '24px',
-    fontSize: '0.875rem',
-    fontWeight: '600',
-    fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif',
-    boxShadow: '0 8px 24px rgba(0, 0, 0, 0.25)',
-    zIndex: '99999',
-    opacity: '0',
-    transition: 'all 0.25s cubic-bezier(0.16, 1, 0.3, 1)',
-    pointerEvents: 'none',
-  });
 
   document.body.appendChild(toast);
 

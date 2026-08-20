@@ -48,8 +48,6 @@ import './modules/vercel-analytics.js';
 import './services/AnalyticsService.js';
 import './services/MarkdownService.js';
 import './services/StreamingService.js';
-// VoiceService retained for window.voiceService events; VoiceModeService is primary conversational voice.
-import './services/VoiceService.js';
 import './services/RealtimeVoiceService.js';
 import './services/VoiceModeService.js';
 import './chatbot/index.js';

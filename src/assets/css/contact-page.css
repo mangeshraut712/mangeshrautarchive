@@ -669,3 +669,28 @@ html.dark .contact-footer-link {
     overflow-x: auto;
   }
 }
+
+.toast-notification {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  color: var(--apple-text, #ffffff);
+  padding: 10px 20px;
+  border-radius: 24px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  z-index: 99999;
+  opacity: 0;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+}
+.toast-notification.toast-success {
+  background: var(--apple-green, #34c759);
+}
+.toast-notification.toast-error,
+.toast-notification.toast-info {
+  background: var(--apple-blue, #0071e3);
+}
