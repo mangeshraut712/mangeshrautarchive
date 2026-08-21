@@ -1,640 +1,345 @@
-# Mangesh Raut — Agentic Full-Stack Portfolio
+# Mangesh Raut — Agentic Full-Stack Portfolio & Open Architecture
 
 <p align="center">
   <a href="https://mangeshraut.pro">
-    <img src="src/assets/images/homepage-light.png" alt="Portfolio homepage — light mode" width="380">
-    <img src="src/assets/images/homepage-dark.png" alt="Portfolio homepage — dark mode" width="380">
+    <img src="src/assets/images/homepage-light.png" alt="Portfolio homepage — light mode" width="390">
+    <img src="src/assets/images/homepage-dark.png" alt="Portfolio homepage — dark mode" width="390">
   </a>
 </p>
 
 <p align="center">
-  <sub>Homepage · Light (left) · Dark (right) · <strong>Technology report · August 2026</strong> · verified vs <code>main</code></sub>
+  <sub><strong>mangeshraut.pro</strong> · Light Mode (left) · Dark Mode (right) · <strong>Production Release · August 2026</strong> · Verified on <code>main</code></sub>
 </p>
 
 <p align="center">
   <a href="https://mangeshraut712.github.io/mangeshrautarchive/"><img src="https://img.shields.io/badge/Live-GitHub_Pages-24292e?style=for-the-badge&logo=github&logoColor=white" alt="Live GitHub Pages"></a>
-  <a href="https://mangeshraut.pro"><img src="https://img.shields.io/badge/Domain-mangeshraut.pro-0071e3?style=for-the-badge&logo=vercel&logoColor=white" alt="Custom domain"></a>
-  <a href="https://github.com/mangeshraut712/mangeshrautarchive/actions/workflows/deploy.yml"><img src="https://img.shields.io/github/actions/workflow/status/mangeshraut712/mangeshrautarchive/deploy.yml?branch=main&style=for-the-badge&logo=githubactions&logoColor=white&label=CI" alt="CI status"></a>
+  <a href="https://mangeshraut.pro"><img src="https://img.shields.io/badge/Production-mangeshraut.pro-0071e3?style=for-the-badge&logo=vercel&logoColor=white" alt="Custom domain"></a>
+  <a href="https://github.com/mangeshraut712/mangeshrautarchive/actions/workflows/deploy.yml"><img src="https://img.shields.io/github/actions/workflow/status/mangeshraut712/mangeshrautarchive/deploy.yml?branch=main&style=for-the-badge&logo=githubactions&logoColor=white&label=CI%20%E2%86%92%20Deploy" alt="CI status"></a>
   <a href="https://github.com/mangeshraut712/mangeshrautarchive/actions/workflows/post-deploy-monitoring.yml"><img src="https://img.shields.io/github/actions/workflow/status/mangeshraut712/mangeshrautarchive/post-deploy-monitoring.yml?branch=main&style=for-the-badge&logo=githubactions&logoColor=white&label=Monitoring" alt="Production monitoring status"></a>
-  <a href="https://github.com/mangeshraut712/mangeshrautarchive/actions/workflows/health-vitals-sync.yml"><img src="https://img.shields.io/github/actions/workflow/status/mangeshraut712/mangeshrautarchive/health-vitals-sync.yml?branch=main&style=for-the-badge&logo=githubactions&logoColor=white&label=Health%20sync" alt="Health vitals sync status"></a>
-  <a href="https://github.com/mangeshraut712/mangeshrautarchive/actions/workflows/deploy-chat-worker.yml"><img src="https://img.shields.io/github/actions/workflow/status/mangeshraut712/mangeshrautarchive/deploy-chat-worker.yml?branch=main&style=for-the-badge&logo=githubactions&logoColor=white&label=AssistMe%20Worker" alt="AssistMe Worker deployment status"></a>
-  <a href="LICENSE"><img src="https://img.shields.io/github/license/mangeshraut712/mangeshrautarchive?style=for-the-badge" alt="MIT License"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge" alt="MIT License"></a>
+  <a href="CODE_OF_CONDUCT.md"><img src="https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg?style=for-the-badge" alt="Code of Conduct"></a>
 </p>
 
 <p align="center">
   <img src="https://img.shields.io/badge/Node-%E2%89%A522%20%3C27-339933?style=flat-square&logo=node.js&logoColor=white" alt="Node 22+">
-  <img src="https://img.shields.io/badge/Python-3.12-3776AB?style=flat-square&logo=python&logoColor=white" alt="Python 3.12">
-  <img src="https://img.shields.io/badge/FastAPI-0.139-009688?style=flat-square&logo=fastapi&logoColor=white" alt="FastAPI">
-  <img src="https://img.shields.io/badge/ESM-vanilla-yellow?style=flat-square" alt="Vanilla ESM">
-  <img src="https://img.shields.io/badge/OpenRouter-Grok%204.3%20%2B%20Nemotron%20free-black?style=flat-square" alt="OpenRouter">
-  <img src="https://img.shields.io/badge/Tests-172%20unit%20%2B%20166%20API-brightgreen?style=flat-square" alt="172 unit tests and 166 API tests">
-  <img src="https://img.shields.io/badge/Lighthouse-100%2F100%2F100%2F100-0cce6b?style=flat-square" alt="Lighthouse">
-  <img src="https://img.shields.io/badge/Playwright-16%20projects-2EAD33?style=flat-square&logo=playwright&logoColor=white" alt="Playwright">
-  <a href="https://foglamp.dev/scan/mangeshrautarchive-jtspx4"><img src="https://img.shields.io/badge/Foglamp-AI%20map-0071e3?style=flat-square" alt="Foglamp architecture map"></a>
-  <a href="https://github.com/sponsors/mangeshraut712"><img src="https://img.shields.io/badge/Sponsor-♥-ea4aaa?style=flat-square&logo=github-sponsors&logoColor=white" alt="Sponsors"></a>
+  <img src="https://img.shields.io/badge/Python-3.12+-3776AB?style=flat-square&logo=python&logoColor=white" alt="Python 3.12">
+  <img src="https://img.shields.io/badge/FastAPI-0.141.1-009688?style=flat-square&logo=fastapi&logoColor=white" alt="FastAPI">
+  <img src="https://img.shields.io/badge/ESM-Vanilla%20JS-F7DF1E?style=flat-square&logo=javascript&logoColor=black" alt="Vanilla ESM">
+  <img src="https://img.shields.io/badge/OpenRouter-Grok%204.3%20%2B%20Nemotron-black?style=flat-square" alt="OpenRouter">
+  <img src="https://img.shields.io/badge/Vitest-172%20passed-729B1B?style=flat-square&logo=vitest&logoColor=white" alt="172 Vitest unit tests">
+  <img src="https://img.shields.io/badge/pytest-166%20passed-0A9EDC?style=flat-square&logo=pytest&logoColor=white" alt="166 pytest API tests">
+  <img src="https://img.shields.io/badge/Playwright-16%20browser%20configs-2EAD33?style=flat-square&logo=playwright&logoColor=white" alt="Playwright">
+  <img src="https://img.shields.io/badge/Lighthouse-100%2F100%2F100%2F100-0cce6b?style=flat-square&logo=lighthouse&logoColor=white" alt="Lighthouse 100">
+  <a href="https://foglamp.dev/scan/mangeshrautarchive-jtspx4"><img src="https://img.shields.io/badge/Foglamp-AI%20Architecture%20Map-0071e3?style=flat-square" alt="Foglamp architecture map"></a>
 </p>
 
 <p align="center">
-  <strong>AI-first · Apple-inspired UI · dual hosting · production CI</strong><br>
-  <sub>Vanilla ESM · FastAPI serverless · OpenRouter · WebMCP · Liquid Glass clear/balanced/tinted · solid light/dark</sub>
+  <strong>Zero Framework Runtime · Native Vanilla ESM · FastAPI Serverless · Agentic WebMCP · Apple HIG Liquid Glass</strong><br>
+  <sub>High-contrast solid canvas (`#ffffff` / `#000000`) · Multi-Model AI Routing · 1,820+ Git Commits Open Chronicle</sub>
 </p>
 
 <p align="center">
-  <a href="https://mangeshraut712.github.io/mangeshrautarchive/"><b>Live (Pages)</b></a>
+  <a href="https://mangeshraut.pro"><b>Live Website</b></a>
   ·
-  <a href="https://mangeshraut712.github.io/mangeshrautarchive/monitor"><b>Monitor</b></a>
+  <a href="https://mangeshraut.pro/systems"><b>Systems Notebook</b></a>
   ·
-  <a href="https://mangeshraut712.github.io/mangeshrautarchive/systems"><b>Systems</b></a>
+  <a href="https://mangeshraut.pro/monitor"><b>System Monitor</b></a>
   ·
-  <a href="https://foglamp.dev/scan/mangeshrautarchive-jtspx4"><b>AI map</b></a>
+  <a href="https://mangeshraut.pro/travel"><b>Travel Atlas</b></a>
   ·
-  <a href="https://mangeshraut712.github.io/mangeshrautarchive/blog/"><b>Field Notes</b></a>
+  <a href="https://mangeshraut.pro/uses"><b>Uses & Stack</b></a>
   ·
-  <a href="#7-quick-start"><b>Quick start</b></a>
+  <a href="https://mangeshraut.pro/changelog"><b>Changelog</b></a>
   ·
-  <a href="#3-technology-report-august-2026"><b>Tech report</b></a>
+  <a href="https://mangeshraut.pro/blog/"><b>Field Notes</b></a>
+  ·
+  <a href="#7-quick-start--development"><b>Quick Start</b></a>
 </p>
 
 ---
 
-## 1. Executive summary
+## 📑 Table of Contents
 
-**mangeshrautarchive** is the production codebase for Mangesh Raut’s agentic full-stack portfolio (branded domain **[mangeshraut.pro](https://mangeshraut.pro)**). It is a **static-first** website (no React, Next.js, Vue, Angular, or Svelte **runtime**) with a **Python 3.12 FastAPI** backend on Vercel serverless and a **GitHub Pages** static publish path.
-
-**Public status (verified August 2026):** [GitHub Pages](https://mangeshraut712.github.io/mangeshrautarchive/) and [Vercel production](https://mangeshraut.pro) are reachable and serve the same build commit. Run `npm run qa:surfaces` to verify the two hosts' titles, required paths, and `build-config.json` parity. GitHub Pages routes AssistMe through the Cloudflare Worker; Vercel exposes the FastAPI API under the same origin.
-
-As of **August 2026**, the product combines:
-
-| Pillar                 | What it delivers                                                                                           |
-| ---------------------- | ---------------------------------------------------------------------------------------------------------- |
-| **Portfolio surfaces** | Home, Systems, Monitor, Travel, Uses, Changelog, Blog, case studies, offline/404                           |
-| **Agentic AI**         | AssistMe chatbot · 13 WebMCP tools · Plus menu tools · OpenRouter NDJSON stream · rich media               |
-| **Apple-inspired UI**  | Dynamic Island nav · liquid glass **clear / balanced / tinted** · solid page canvas · a11y dock            |
-| **Operations**         | Platform health probes · portfolio catalog · dual-host commit parity · Foglamp map keep-alive              |
-| **Quality**            | **172** Vitest · **166** pytest · 16 Playwright projects · Lighthouse **100/100/100/100** gates · security |
-
-This document is the **canonical technology report** for the repository: stack versions, libraries, architecture, features, and how to run it. Counts and URLs below were checked against the current `main` tree and live probes.
+1. [Executive Summary](#1-executive-summary)
+2. [Visual Architecture & System Diagrams](#2-visual-architecture--system-diagrams)
+3. [Core Technical Stack](#3-core-technical-stack)
+4. [Authentic AI & Development Tooling](#4-authentic-ai--development-tooling)
+5. [Product Surfaces & Capabilities](#5-product-surfaces--capabilities)
+6. [Testing & Quality Matrix](#6-testing--quality-matrix)
+7. [Quick Start & Development](#7-quick-start--development)
+8. [Open Source Governance & Guidelines](#8-open-source-governance--guidelines)
+9. [Verified Biographical & Project Facts](#9-verified-biographical--project-facts)
+10. [License, Citation & Contact](#10-license-citation--contact)
 
 ---
 
-## 2. Live surfaces (August 2026)
+## 1. Executive Summary
 
-Both public hosts use the same generated `dist/` bundle. Pages is the static mirror; Vercel is the production alias with the FastAPI serverless API.
+**mangeshrautarchive** is the open-source production codebase for Mangesh Raut's agentic full-stack portfolio ([**mangeshraut.pro**](https://mangeshraut.pro)). It is engineered with a **static-first, zero-framework runtime philosophy** (no React, Next.js, Vue, Angular, or Svelte runtime dependencies) paired with a **Python 3.12+ FastAPI** backend on serverless edge functions and a dual-host **GitHub Pages** static publishing pipeline.
 
-| Surface              | URL                                                                                                               | Role                                                                                      |
-| -------------------- | ----------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
-| **Portfolio (live)** | [GitHub Pages](https://mangeshraut712.github.io/mangeshrautarchive/) · [mangeshraut.pro](https://mangeshraut.pro) | Same static build · parity checked by `npm run qa:surfaces` · `ASSET_VER=20260808center9` |
-| **Vercel API**       | [mangeshraut.pro/api/health](https://mangeshraut.pro/api/health)                                                  | FastAPI serverless routes under the production origin                                     |
-| **AssistMe API**     | [Worker `/api/health`](https://assistme-chat.mangeshraut712.workers.dev/api/health)                               | Pages chat edge · OpenRouter (Nemotron free default when unpaid)                          |
-| **Systems**          | [/systems](https://mangeshraut712.github.io/mangeshrautarchive/systems)                                           | Architecture evidence, hiring Q&A, engineering log                                        |
-| **Monitor**          | [/monitor](https://mangeshraut712.github.io/mangeshrautarchive/monitor)                                           | Apple Status-style health, probes, catalog                                                |
-| **Travel**           | [/travel](https://mangeshraut712.github.io/mangeshrautarchive/travel)                                             | MapLibre atlas                                                                            |
-| **Uses**             | [/uses](https://mangeshraut712.github.io/mangeshrautarchive/uses)                                                 | Hardware / software / AI stack                                                            |
-| **Field Notes**      | [/blog/](https://mangeshraut712.github.io/mangeshrautarchive/blog/)                                               | **16** build-generated long-form articles                                                 |
-| **Case studies**     | [/case-studies/](https://mangeshraut712.github.io/mangeshrautarchive/case-studies/portfolio.html)                 | **5** static write-ups (portfolio, HindAI, CES, AssistMe, bug tracker)                    |
-| **AI architecture**  | [Foglamp scan](https://foglamp.dev/scan/mangeshrautarchive-jtspx4)                                                | **41** nodes · **51** edges · keep-alive CI                                               |
-
----
-
-## 3. Technology report (August 2026)
-
-Pinned from this repo’s `package.json`, `requirements.txt`, `pyproject.toml`, and runtime configs.
-
-### 3.1 Runtime platforms
-
-| Layer              | Technology         | Version / constraint                  | Notes                                              |
-| ------------------ | ------------------ | ------------------------------------- | -------------------------------------------------- |
-| **JS runtime**     | Node.js            | **≥22 &lt;27** (`.nvmrc` → **22**)    | Required by Stylelint 17, Vitest 4, modern tooling |
-| **Module system**  | Native **ESM**     | `"type": "module"`                    | `.js` extensions in imports; no TS/JSX app runtime |
-| **Python**         | CPython            | **3.12** (`requires-python ~=3.12.0`) | FastAPI serverless + local uvicorn                 |
-| **Local API**      | Uvicorn            | **0.51**                              | Dev backend on port **8001**                       |
-| **Local frontend** | Express **^5.2.1** | Dev static + proxy                    | Port **4000**                                      |
-
-### 3.2 Frontend libraries & tooling
-
-| Category            | Package                   | Version (range)         | Role                                                            |
-| ------------------- | ------------------------- | ----------------------- | --------------------------------------------------------------- |
-| **UI framework**    | —                         | —                       | **None** — vanilla HTML/CSS/JS only                             |
-| **Build**           | esbuild                   | **^0.28.0**             | JS bundling / pipeline support                                  |
-| **CSS utilities**   | tailwindcss + CLI         | **^4.0.9** / **^4.3.2** | Generate utility CSS **file only** — no utility classes in HTML |
-| **Markdown**        | marked                    | **^18.0.6**             | Chat + blog rich text                                           |
-| **Sanitization**    | isomorphic-dompurify      | **^3.21.0**             | XSS-safe HTML                                                   |
-| **Math**            | KaTeX                     | **^0.17.0**             | Chat/math rendering                                             |
-| **Footnotes**       | marked-footnote           | **^1.2.2**              | Markdown footnotes                                              |
-| **Liquid Glass**    | @ogtirth/liquid-glass-oss | **^0.1.0**              | WebGL glass material (optional; off on low-power/iOS)           |
-| **Share / capture** | html-to-image             | **^1.11.13**            | Client image export helpers                                     |
-| **Realtime (dev)**  | ws                        | **^8.21.0**             | WebSocket tooling                                               |
-| **Analytics**       | @vercel/analytics         | **^2.0.1**              | Optional Vercel Analytics                                       |
-| **Images**          | sharp                     | **^0.35.2**             | Optimize pipeline                                               |
-| **Unit tests**      | Vitest                    | **^4.1.10**             | **126** unit tests                                              |
-| **E2E**             | Playwright                | **^1.61.1**             | **16** browser projects                                         |
-| **A11y E2E**        | @axe-core/playwright      | **^4.12.1**             | Accessibility assertions                                        |
-| **Lint JS**         | ESLint 9 + @eslint/js     | **^9.39.5**             | Flat config                                                     |
-| **Lint CSS**        | Stylelint 17              | **^17.14.0**            | Standard config 40                                              |
-| **Format**          | Prettier                  | **^3.9.5**              | Repo-wide style                                                 |
-| **Env**             | dotenv                    | **^17.4.2**             | Local tooling                                                   |
-
-**Design system (first-party CSS, not npm UI kits):**
-
-- Apple-inspired tokens (`--apple-blue`, solid light/dark page canvas)
-- **Liquid Glass modes:** `clear` · `balanced` (default ~42% tint) · `tinted`
-- Dynamic Island–style global nav, control FABs, subpage glass pills
-- Lazy section CSS via `data-href` + viewport warm (`ASSET_VER` cache bust)
-
-### 3.3 Backend libraries (Python)
-
-| Package           | Version     | Role                                      |
-| ----------------- | ----------- | ----------------------------------------- |
-| **fastapi**       | **0.139.0** | HTTP API, OpenAPI                         |
-| **pydantic**      | **2.13.4**  | Request/response models (v2)              |
-| **uvicorn**       | **0.51.0**  | ASGI server (local)                       |
-| **httpx**         | **0.28.1**  | Upstream HTTP (OpenRouter, GitHub, media) |
-| **websockets**    | **16.1**    | Realtime voice / WS paths                 |
-| **cryptography**  | **49.0.0**  | OAuth state, secrets handling             |
-| **aiofiles**      | **25.1.0**  | Async file IO                             |
-| **psutil**        | **7.2.2**   | Process / resource probes                 |
-| **python-dotenv** | **1.2.2**   | Env loading                               |
-
-**Tooling:** pytest (API suite), flake8 / ruff / vulture as configured in scripts.
-
-### 3.4 AI & integrations (August 2026)
-
-| Integration             | Technology                                                         | Advancement                                                         |
-| ----------------------- | ------------------------------------------------------------------ | ------------------------------------------------------------------- |
-| **LLM gateway**         | [OpenRouter](https://openrouter.ai)                                | Multi-model routing; free-tier failover on HTTP 402 / empty streams |
-| **Primary model**       | `x-ai/grok-4.3`                                                    | Portfolio default when paid credits available                       |
-| **Credit-safe default** | `nvidia/nemotron-3-super-120b-a12b:free`                           | Strongest free AssistMe path; then Gemma 4 free · `openrouter/free` |
-| **Vision (free)**       | `google/gemma-4-26b-a4b-it:free`                                   | Image attach / multimodal turns                                     |
-| **Fusion / Auto**       | `openrouter/fusion`, `openrouter/auto`                             | Compare / open-domain routing                                       |
-| **Fast paid**           | `google/gemini-2.5-flash`                                          | Lightweight paid fallback                                           |
-| **Streaming**           | NDJSON over `POST /api/chat`                                       | Progressive AssistMe UI                                             |
-| **Rich media (free)**   | Pollinations images · client chart SVG fences                      | No paid OpenRouter image/audio models                               |
-| **Local agents**        | WebMCP + regex `detectAndExecute`                                  | Browser actions in ms before LLM                                    |
-| **GitHub**              | REST API (+ optional PAT)                                          | Project showcase grid, rate-limit resilience                        |
-| **Music**               | Last.fm server proxy                                               | Currently shelf artwork                                             |
-| **Health**              | WHOOP + Withings OAuth · Supabase                                  | Vitals snapshots + cron                                             |
-| **Reach**               | GA4 Data API (optional)                                            | Hero portfolio-reach panel                                          |
-| **Calendar**            | Google Calendar OAuth (optional)                                   | Scheduling surfaces                                                 |
-| **Edge assist**         | Cloudflare Worker `assistme-chat`                                  | Pages-friendly chat fallback and health-sync endpoint               |
-| **Architecture map**    | [Foglamp scan](https://foglamp.dev/scan/mangeshrautarchive-jtspx4) | 41 nodes · 51 edges · monthly keep-alive CI                         |
-
-### 3.5 Hosting & delivery
-
-| Surface            | Stack                                                   | Advances                                                                 |
-| ------------------ | ------------------------------------------------------- | ------------------------------------------------------------------------ |
-| **GitHub Pages**   | Static `dist/` only                                     | **Verified live** · API via `build-config` → Cloudflare Worker           |
-| **Vercel**         | Static `dist/` + Python serverless `api/index.py`       | Production alias with same-origin `/api/*`                               |
-| **Edge AssistMe**  | Cloudflare Worker `assistme-chat`                       | Pages-friendly chat when Vercel API is unavailable                       |
-| **CDN assets**     | esbuild + Sharp + `ASSET_VER`                           | Cache-busted CSS/JS (`20260808center9`)                                  |
-| **PWA**            | `manifest.json` (installable); SW registration disabled | Standalone shortcuts; offline.html reconnect-only; no full offline cache |
-| **CSP / security** | Headers in `vercel.json` · report endpoint              | Rate limits, server-only secrets, HMAC OAuth state                       |
-
-### 3.6 Quality matrix
-
-| Suite        | Runner                         | Count / target (August 2026)                                                            |
-| ------------ | ------------------------------ | --------------------------------------------------------------------------------------- |
-| **Unit**     | Vitest 4.1                     | **172** tests · chatbot, bootstrap, modules, WebMCP, data contracts                     |
-| **API**      | pytest                         | **166** tests · FastAPI routes / telemetry / middleware                                 |
-| **E2E**      | Playwright 1.61                | **16** projects (desktop + phone + tablet, incl. iPhone 17 Pro Max)                     |
-| **A11y**     | axe-core + a11y toolbar        | CI + runtime high contrast / reduced motion / liquid glass (16/16 baseline passing)     |
-| **Perf**     | Lighthouse gate (`deploy.yml`) | **100 / 100 / 100 / 100** desktop + mobile on `dist/` (`?perf-audit=1`); full-load also |
-| **Stack**    | `npm run doctor:strict`        | Vanilla ESM + FastAPI layout and dependency guard                                       |
-| **Security** | `security-check` + `npm audit` | Secret scan before merge                                                                |
-
----
-
-## 4. Product features (August 2026)
-
-| Area                | Highlights                                                                                                                                                                                                  |
-| ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **AssistMe**        | Mic · input · **+** · send · 13 WebMCP tools · Writing Tools / attach / summarize via Plus · NDJSON stream · KaTeX + DOMPurify · Nemotron free chain · Pollinations + charts · session memory · scroll a11y |
-| **Liquid Glass**    | Clear / balanced / tinted materials on chrome · solid white/black page canvas · WebGL optional · a11y slider                                                                                                |
-| **System Monitor**  | Apple Status densify · platform probes · portfolio catalog · CSP / AI metrics                                                                                                                               |
-| **Systems page**    | Evidence cards · architecture diagrams · hiring Q&A                                                                                                                                                         |
-| **Projects**        | Live GitHub grid · release lens · evidence rows · Spatial View hooks                                                                                                                                        |
-| **Field Notes**     | 16 long-form articles · X-style feed cards · no stock hero images · charts + source embeds                                                                                                                  |
-| **Case studies**    | 5 static deep-dives (portfolio, HindAI, CES Energy, AssistMe, Bug Tracker)                                                                                                                                  |
-| **Currently**       | Shows / books / music · Last.fm Spotify live scrobbles · local posters                                                                                                                                      |
-| **Health**          | WHOOP + Withings · Supabase · daily cron                                                                                                                                                                    |
-| **Travel**          | MapLibre 3D WebGL atlas · filters · glass sidebar · 32+ destination guides                                                                                                                                  |
-| **Uses & Stack**    | Apple-standard hardware / software / AI stack board with instant search & category pill filtering                                                                                                           |
-| **Marquees**        | Synchronized smooth linear gliding tickers across Skills, Dream Companies, and Dream Cars with hover pause                                                                                                  |
-| **Command palette** | `⌘K` / `Ctrl+K` · sections, blog, actions                                                                                                                                                                   |
-| **A11y**            | Floating dock · liquid glass control · listen/translate · 44px targets · reduced transparency → solid                                                                                                       |
-| **PWA**             | Install via manifest, shortcuts, splash assets; SW unregistered for iOS stability; offline.html reconnect only                                                                                              |
-| **Share**           | Glass share FAB · system share sheet style dialog with lazy QR code generation                                                                                                                              |
-
-### AssistMe · WebMCP tools
-
-| Tool                   | Action                                |
-| ---------------------- | ------------------------------------- |
-| `navigate_to_section`  | Scroll to a section                   |
-| `download_resume`      | Resume PDF (US / India / Research)    |
-| `schedule_meeting`     | Calendly scheduling modal             |
-| `open_contact_form`    | Focus contact form                    |
-| `copy_contact_info`    | Copy email / socials to clipboard     |
-| `search_portfolio`     | Command palette query                 |
-| `filter_projects`      | Project lens by tech stack            |
-| `open_social_media`    | GitHub / LinkedIn / X profiles        |
-| `toggle_theme`         | Light / dark / system theme toggle    |
-| `update_health_metric` | Health widget (WHOOP / Withings)      |
-| `get_now_playing`      | Current / recent Spotify scrobbles    |
-| `get_travel_stats`     | Travel Atlas countries / cities count |
-| `get_system_status`    | System Monitor health status probe    |
-
----
-
-## 5. Architecture
-
-### Interactive AI map (Foglamp)
-
-High-level map of AssistMe agents, models, tools, integrations, and flows — **no code or secrets**.
-
-<p align="center">
-  <a href="https://foglamp.dev/scan/mangeshrautarchive-jtspx4"><img src="https://img.shields.io/badge/Foglamp_Scan-mangeshrautarchive-0B0B0F?style=for-the-badge&labelColor=0071e3" alt="Open interactive Foglamp architecture scan"></a>
-  <a href=".foglamp/scan.json"><img src="https://img.shields.io/badge/scan.json-41_nodes_·_51_edges-24292e?style=for-the-badge" alt="Committed scan data"></a>
-  <a href="docs/foglamp-scan.md"><img src="https://img.shields.io/badge/Keep--alive-docs-6e6e73?style=for-the-badge" alt="How to refresh the public map"></a>
-</p>
-
-|                     |                                                                                                  |
-| ------------------- | ------------------------------------------------------------------------------------------------ |
-| **Live (unlisted)** | [foglamp.dev/scan/mangeshrautarchive-jtspx4](https://foglamp.dev/scan/mangeshrautarchive-jtspx4) |
-| **Source data**     | [`.foglamp/scan.json`](.foglamp/scan.json) (committed)                                           |
-| **Edit token**      | `.foglamp/scan.lock.json` (**gitignored**) — use `npm run foglamp:publish` or monthly CI         |
-
-Foglamp links expire (~90 days). Republishing with the saved `editToken` **keeps the same URL** and extends expiry. Setup: [docs/foglamp-scan.md](docs/foglamp-scan.md).
-
-### Always-on diagram (in-repo)
-
-GitHub renders this Mermaid block forever — use it when the external map is offline or expired.
-
-```mermaid
-flowchart LR
-  subgraph Client
-    HTML[Static pages]
-    BOOT[bootstrap.js]
-    MCP[WebMCP + regex]
-    CHAT[AssistMe UI]
-    LG[Liquid Glass tokens]
-  end
-
-  subgraph Edge["Host / edge"]
-    CDN[dist/ CDN]
-    API[FastAPI api/index.py]
-    R[model_router.py]
-    W[assistme-chat Worker optional]
-  end
-
-  subgraph External
-    OR[OpenRouter]
-    GH[GitHub]
-    INT[Health / Last.fm / GA4]
-  end
-
-  HTML --> BOOT --> CHAT
-  BOOT --> LG
-  CHAT --> MCP
-  MCP -->|local action| HTML
-  CHAT -->|POST /api/chat NDJSON| API
-  CHAT -.->|Pages fallback| W
-  API --> R --> OR
-  API --> GH
-  API --> INT
-  CDN --> HTML
+```
+┌────────────────────────────────────────────────────────────────────────────────────────┐
+│                                 CORE ARCHITECTURAL PILLARS                              │
+├────────────────────────────────────────────────────────────────────────────────────────┤
+│  ⚡ Zero-Framework ESM: Native JavaScript modules, esbuild bundling, custom properties │
+│  🤖 Agentic AI: AssistMe chatbot, OpenRouter (grok-4.3), 13 WebMCP browser actions    │
+│  🎨 Apple HIG Design: Solid white/black canvases, authentic Liquid Glass shaders       │
+│  📊 Real-Time Telemetry: WHOOP vitals, GA4 realtime reach, platform health probes      │
+│  🛡️ Quality Gates: 172 Vitest tests, 166 pytest tests, 100/100/100/100 Lighthouse CI  │
+│  📜 Open Chronicle: Complete Git history from day 1 (April 8, 2025) to August 2026     │
+└────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-### Vector Architecture &amp; Workflow Diagrams
+---
 
-High-resolution, Apple HIG-standard vector diagrams committed in `src/assets/images/diagrams/`:
+## 2. Visual Architecture & System Diagrams
 
-| Diagram                        | Description                                                              | Direct Link                                                                                       |
-| ------------------------------ | ------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------- |
-| 🏛️ **System Architecture**     | Full-Stack Edge CDN + Serverless FastAPI Gateway + Multi-Model AI Router | [`system-architecture.svg`](src/assets/images/diagrams/system-architecture.svg)                   |
-| 👁️ **AssistMe Multimodal AI**  | Client Multimodal Ingestion + Safety Sanitization + OpenRouter Streaming | [`assistme-multimodal-workflow.svg`](src/assets/images/diagrams/assistme-multimodal-workflow.svg) |
-| 🛡️ **CI/CD Quality Matrix**    | 3-Tier Quality Gates + 327 Automated Tests + 100/100 Lighthouse Standard | [`ci-cd-quality-pipeline.svg`](src/assets/images/diagrams/ci-cd-quality-pipeline.svg)             |
-| 🌐 **Dual-Host Edge Topology** | Vercel Global Edge + GitHub Pages Standby + Cloudflare Proxy Failover    | [`dual-host-edge-topology.svg`](src/assets/images/diagrams/dual-host-edge-topology.svg)           |
-| 🎵 **Live Spotify Scrobble**   | Last.fm Realtime Webhook + FastAPI 25s Cache + Apple Music Pill Card     | [`spotify-live-scrobble-flow.svg`](src/assets/images/diagrams/spotify-live-scrobble-flow.svg)     |
+### 🏛️ System Architecture Topology
 
-### Chat path
+High-resolution vector architecture committed in [`src/assets/images/diagrams/system-architecture.svg`](src/assets/images/diagrams/system-architecture.svg):
 
-1. **Browser** — WebMCP / regex (`navigate`, resume, theme, filters) in milliseconds.
-2. **Site knowledge** — Deterministic portfolio facts without an LLM.
-3. **OpenRouter** — Routed model (Grok when credited; otherwise Nemotron Super free → Gemma free → `openrouter/free`).
-4. **Graceful degradation** — Honest UX for 402 credits, rate limits, and upstream errors.
+<p align="center">
+  <img src="src/assets/images/diagrams/system-architecture.svg" alt="System Architecture Diagram" width="780">
+</p>
 
-### Dual hosting
+### 👁️ AssistMe Agentic AI & WebMCP Workflow
 
-| Host                           | Serves            | API                                                     |
-| ------------------------------ | ----------------- | ------------------------------------------------------- |
-| **GitHub Pages** (live)        | `dist/` only      | `build-config.json` → `assistme-chat` Worker (verified) |
-| **Vercel** (`mangeshraut.pro`) | `dist/` + FastAPI | Production alias with same-origin `/api/*`              |
+Client-side tool execution, memory management, and OpenRouter NDJSON streaming:
 
-Both stamp `build-config.json` with `gitCommit` for deploy parity. `npm run qa:surfaces` retries the CDN, checks required pages and titles, and confirms the Pages/Vercel commits match; use `npm run qa:postdeploy` for the longer post-release retry window.
+<p align="center">
+  <img src="src/assets/images/diagrams/assistme-multimodal-workflow.svg" alt="AssistMe Multimodal AI Workflow" width="780">
+</p>
+
+### 🛡️ CI/CD Quality Pipeline & 3-Tier Quality Gates
+
+Automated repository health verification enforcing 100/100/100/100 Lighthouse scores:
+
+<p align="center">
+  <img src="src/assets/images/diagrams/ci-cd-quality-pipeline.svg" alt="CI/CD Quality Pipeline" width="780">
+</p>
+
+### 🌐 Dual-Host Edge Topology & Failover
+
+Vercel Production Edge + GitHub Pages Standby Mirror + Cloudflare Worker Proxy:
+
+<p align="center">
+  <img src="src/assets/images/diagrams/dual-host-edge-topology.svg" alt="Dual-Host Edge Topology" width="780">
+</p>
+
+```mermaid
+flowchart TD
+  subgraph Client ["Client Browser (Vanilla ESM)"]
+    DOM[HTML5 Shells]
+    JS[Core Modules / Bootstrap]
+    MCP[WebMCP Action Engine]
+    UI[Apple HIG Liquid Glass UI]
+  end
+
+  subgraph Edge ["Global Edge & Serverless"]
+    Pages["GitHub Pages (Static Mirror)"]
+    Vercel["Vercel Edge Gateway"]
+    Worker["Cloudflare Worker (assistme-chat)"]
+    FastAPI["Python 3.12 FastAPI (/api/*)"]
+  end
+
+  subgraph Upstream ["Upstream AI & Cloud Integrations"]
+    OR["OpenRouter (Grok 4.3 / Nemotron / Gemma)"]
+    GH["GitHub REST API"]
+    Supa["Supabase PostgreSQL (Vitals Store)"]
+    WHOOP["WHOOP & Withings APIs"]
+    GA4["Google Analytics 4 Realtime"]
+  end
+
+  DOM --> JS --> UI
+  JS --> MCP
+  MCP -->|Browser Actions| DOM
+  JS -->|POST /api/chat NDJSON| FastAPI
+  JS -.->|Pages Failover| Worker
+  FastAPI --> OR
+  FastAPI --> GH
+  FastAPI --> Supa
+  FastAPI --> WHOOP
+  FastAPI --> GA4
+  Pages --> DOM
+  Vercel --> FastAPI
+```
 
 ---
 
-## 6. AI model routing
+## 3. Core Technical Stack
 
-| Tier                  | Model                                                  | When                                                 |
-| --------------------- | ------------------------------------------------------ | ---------------------------------------------------- |
-| **Portfolio primary** | `x-ai/grok-4.3`                                        | Default when paid credits available                  |
-| **Env override**      | `OPENROUTER_MODEL`                                     | Force a slug (including free) for credit-safe online |
-| **Free chain**        | Nemotron Super free → Gemma 4 free → `openrouter/free` | Automatic after 402 / empty / primary fail           |
-| **Vision free**       | `google/gemma-4-26b-a4b-it:free` (+ free vision chain) | Image attach turns                                   |
-| **Fusion**            | `openrouter/fusion`                                    | Compare / trade-off (non-stream)                     |
-| **Auto**              | `openrouter/auto`                                      | Open-domain                                          |
-| **Fast paid**         | `google/gemini-2.5-flash`                              | Lightweight paid fallback                            |
+### 3.1 Runtime & Platforms
 
-Configure with `OPENROUTER_API_KEY` + optional `OPENROUTER_MODEL`. Implementation: `api/config.py` + `api/model_router.py` (+ mirrored free chain in `workers/assistme-chat`).
+| Layer                   | Technology        | Version                         | Purpose                                                  |
+| ----------------------- | ----------------- | ------------------------------- | -------------------------------------------------------- |
+| **JavaScript Engine**   | Node.js           | **≥22 <27** (`.nvmrc` → **22**) | Build toolchain, Vitest 4, ESLint 10, Stylelint 17       |
+| **Module Architecture** | Native ES Modules | `"type": "module"`              | Native browser execution (`.js` explicit imports)        |
+| **Python Runtime**      | CPython           | **3.12+**                       | FastAPI serverless functions & API test suite            |
+| **Backend Framework**   | FastAPI           | **0.141.1**                     | Async HTTP API, OpenAPI specs, Pydantic v2 schemas       |
+| **ASGI Server**         | Uvicorn           | **0.52.3**                      | High-performance async server for local & serverless API |
+| **Bundling Tool**       | esbuild           | **0.28.2**                      | Lightning-fast asset compilation and minification        |
+
+### 3.2 Frontend Architecture (Zero Runtime Dependencies)
+
+- **Pure HTML5 / CSS3 / ES Modules**: Zero React, Vue, Angular, or Svelte runtime overhead.
+- **Design Tokens**: Standardized CSS custom properties (`--apple-blue: #0071e3`, `--apple-bg`, `--apple-surface`).
+- **Surface Contrast**: Solid `#ffffff` in light mode and solid `#000000` in dark mode.
+- **Liquid Glass Materials**: Real-time glassmorphic shaders (`clear`, `balanced` 42% tint, `tinted`).
+- **Rich Rendering**: KaTeX math rendering, marked Markdown parser, DOMPurify HTML sanitization.
 
 ---
 
-## 7. Quick start
+## 4. Authentic AI & Development Tooling
 
-**Requirements:** Node **≥22** (see `.nvmrc`), Python **3.12+**. Node 18 fails Stylelint 17 / Vitest 4.
+This repository was built and refined using verified daily-driver AI tools and development environments:
+
+| Tool                   | Role & Workflow Context                                                | Telemetry & Usage                    |
+| ---------------------- | ---------------------------------------------------------------------- | ------------------------------------ |
+| **Google Antigravity** | Multi-agent pair programming, test running, and full-repo architecture | Gemini 3.7 Flash & 2.5 Pro reasoning |
+| **Cursor**             | Primary AI-native IDE with full-codebase context orchestration         | Daily-driver IDE                     |
+| **Anthropic Claude**   | Deep conceptual reasoning, architectural blueprints, and refactoring   | Claude 3.7 Sonnet & Opus             |
+| **OpenAI Codex**       | Unit test scaffolding, schema validation, and pair programming         | GPT-4o / Codex engine                |
+| **OpenRouter**         | Multi-model proxy routing with live streaming                          | Grok 4.3, Nemotron 120B, Gemma 27B   |
+| **Cline**              | Autonomous agentic coding for browser testing and refactors            | Browser automation & QA              |
+| **Windsurf**           | Cascade agentic flow development and interactive iteration             | Cascade flow IDE                     |
+| **KiloChat**           | Interactive chat evaluation, knowledge auditing, and verification      | Model assessment                     |
+| **VS Code**            | Primary workspace, extensions, terminal environments                   | Daily developer terminal             |
+| **Figma**              | UI/UX design, wireframing, and Apple HIG component layout              | Design system specification          |
+
+---
+
+## 5. Product Surfaces & Capabilities
+
+| Surface / Route                                                             | Primary Purpose & Key Features                                                                       |
+| --------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| [**`/` (Homepage)**](https://mangeshraut.pro)                               | Dynamic Island hero, engineering evidence grid, experience, skills marquee, contact form.            |
+| [**`/systems`**](https://mangeshraut.pro/systems)                           | Systems engineering notebook, multi-model token telemetry, daily-driver stack, architecture FAQ.     |
+| [**`/monitor`**](https://mangeshraut.pro/monitor)                           | Real-time platform health, hosting status, WHOOP vitals summary, GA4 realtime reach.                 |
+| [**`/travel`**](https://mangeshraut.pro/travel)                             | MapLibre 3D WebGL interactive atlas covering 18 US States and 4 Countries.                           |
+| [**`/uses`**](https://mangeshraut.pro/uses)                                 | Hardware, developer tooling, software, and everyday carry with category filtering.                   |
+| [**`/changelog`**](https://mangeshraut.pro/changelog)                       | Complete chronological release history spanning from repo creation (April 8, 2025) to August 2026.   |
+| [**`/blog/`**](https://mangeshraut.pro/blog/)                               | 16 long-form technical field notes and deep dives with source embeds and KaTeX math.                 |
+| [**`/case-studies/`**](https://mangeshraut.pro/case-studies/portfolio.html) | 5 architectural case studies (Portfolio Architecture, HindAI, CES Energy, AssistMe VA, Bug Tracker). |
+
+---
+
+## 6. Testing & Quality Matrix
+
+All quality gates are enforced locally and verified automatically in GitHub Actions CI:
+
+| Test Suite            | Runner            |        Test Count         | Scope & Coverage                                                            |
+| --------------------- | ----------------- | :-----------------------: | --------------------------------------------------------------------------- |
+| **Unit Tests**        | Vitest 4.1        | **172 passed** (36 files) | JS modules, services, markdown parser, WebMCP actions, data contracts       |
+| **API Tests**         | pytest            | **166 passed** (26 files) | FastAPI endpoints, streaming chat, health probes, OAuth token stores        |
+| **E2E Browser Tests** | Playwright        |      **16 projects**      | Multi-browser suite (Desktop Chrome, Safari, Firefox, iPhone 17, Pixel 7)   |
+| **Accessibility**     | axe-core          |    **16/16 baseline**     | Zero critical/serious WCAG violations across light, dark, and high contrast |
+| **Lighthouse CI**     | Google Lighthouse |    **100/100/100/100**    | Performance, Accessibility, Best Practices, SEO deploy gates                |
+| **Repo Doctor**       | `repo-doctor.mjs` |     **60/60 checks**      | Stack guard, pin verification, root layout hygiene, zero React runtime      |
+
+---
+
+## 7. Quick Start & Development
+
+### 7.1 Prerequisites
+
+- **Node.js**: ≥22.0.0 and <27.0.0 (`.nvmrc` → `22`)
+- **Python**: 3.12+
+- **Git**: 2.30+
+
+### 7.2 Installation & Local Dev
 
 ```bash
+# 1. Clone the repository
 git clone https://github.com/mangeshraut712/mangeshrautarchive.git
 cd mangeshrautarchive
 
-node -v                                 # v22.x–v26.x
-npm install --no-audit --no-fund      # documented install path
+# 2. Install Node.js dependencies
+npm install --no-audit --no-fund
 
-# Python 3.12 — venv named `venv` for dev-backend auto-detect
-python3 -m venv venv && source venv/bin/activate
+# 3. Create and activate Python virtual environment
+python3 -m venv venv
+source venv/bin/activate
 pip install -r requirements.txt -r requirements-dev.txt
 
-cp .env.example .env                    # OPENROUTER_API_KEY optional
-npm run doctor                          # layout + stack guard
-npm run dev                             # http://127.0.0.1:4000  ·  API :8001
+# 4. Copy environment template (API keys optional for offline fallback)
+cp .env.example .env
+
+# 5. Run layout & stack guard
+npm run doctor:strict
+
+# 6. Start development servers
+npm run dev
+# Frontend: http://127.0.0.1:4000
+# FastAPI:  http://127.0.0.1:8001 (Docs: /docs)
 ```
 
-| URL                        | Service                 |
-| -------------------------- | ----------------------- |
-| http://127.0.0.1:4000      | Frontend + `/api` proxy |
-| http://127.0.0.1:8001      | FastAPI direct          |
-| http://127.0.0.1:8001/docs | OpenAPI                 |
+### 7.3 Essential Quality Commands
 
 ```bash
-npm run build && PORT=4174 npm run serve:dist   # production preview
-```
-
-### Essential commands
-
-| Command                                  | Purpose                                           |
-| ---------------------------------------- | ------------------------------------------------- |
-| `npm run check-node`                     | Fail if Node is outside `engines`                 |
-| `npm run doctor` / `doctor:stack`        | Root layout + no React/Next runtime               |
-| `npm run dev`                            | Frontend + backend                                |
-| `npm run build`                          | Production `dist/` (+ blog/case study generation) |
-| `npm test` / `npm run test:api`          | Vitest **172** / pytest **166**                   |
-| `npm run check`                          | ESLint + Stylelint + Prettier + Vitest            |
-| `npm run lint:dead-code` / `lint:python` | Vulture + flake8 for the FastAPI codebase         |
-| `npm run test:e2e:all`                   | Playwright across all **16** browser projects     |
-| `npm run qa:prod-ready`                  | Full pre-deploy matrix                            |
-| `npm run qa:surfaces`                    | Live Pages ↔ Vercel parity and required paths     |
-| `npm run verify:deploy-sync`             | Live parity check (default retry window)          |
-| `npm run security-check`                 | Secret scan                                       |
-| `npm run foglamp:publish`                | Refresh public Foglamp architecture map           |
-| `npm run clean`                          | Purge dist/artifacts (keeps venvs)                |
-
----
-
-## 8. Environment (server-side only)
-
-| Group          | Keys                                     | Notes                                        |
-| -------------- | ---------------------------------------- | -------------------------------------------- |
-| **AI**         | `OPENROUTER_API_KEY`, `OPENROUTER_MODEL` | Chat; Nemotron/Gemma free work at $0 balance |
-| **GitHub**     | `GITHUB_TOKEN` / `GITHUB_PAT`            | Rate limits for project grid                 |
-| **Last.fm**    | `LASTFM_API_KEY`, `LASTFM_USERNAME`      | Music shelf                                  |
-| **Analytics**  | `GA4_*`, service account JSON            | Portfolio reach panel                        |
-| **Health**     | WHOOP / Withings / Calendar OAuth        | Optional                                     |
-| **Supabase**   | URL + service role                       | Vitals persistence                           |
-| **Voice**      | `AI_GATEWAY_API_KEY`                     | Optional realtime speech                     |
-| **Edge**       | `CHAT_API_BASE`, Cloudflare token        | Pages AssistMe worker                        |
-| **Foglamp CI** | `FOGLAMP_SCAN_EDIT_TOKEN` (Actions only) | Keep-alive for public architecture map       |
-
-Never commit `.env` / `.env.local`. See [`.env.example`](.env.example).
-
----
-
-## 9. Quality & CI
-
-### `deploy.yml` (push / PR → `main`)
-
-1. `npm audit` + `security-check`
-2. ESLint · Stylelint 17 · Prettier
-3. Vitest (**172**)
-4. Env parity (non-blocking)
-5. flake8 · dead-code · pytest (**166**)
-6. Browser QA smoke, accessibility (16/16), and promotion/FPS checks
-7. `npm run build` + Lighthouse on `dist/` (**100/100/100/100** desktop + mobile, `?perf-audit=1`)
-8. GitHub Pages deploy + dual-surface verify
-
-### Nightly `post-deploy-monitoring.yml`
-
-Live reachability (Vercel + Pages) · Lighthouse floors · commit parity. Vercel checks remain non-blocking so a provider incident cannot hide a healthy Pages release.
-
-### Other active workflows
-
-- **`deploy-chat-worker.yml`** — deploys the Cloudflare AssistMe Worker when worker code or its deployment workflow changes.
-- **`health-vitals-sync.yml`** — triggers the protected edge health sync every 30 minutes (and on manual dispatch).
-- **`foglamp-scan-keepalive.yml`** — refreshes the public architecture map monthly (and on manual dispatch).
-
-The badges above are branch-scoped to `main`. Historical failures or cancellations belong to superseded commits; the latest run for the current `main` SHA is the release status to trust.
-
-To inspect the current release check from a terminal:
-
-```bash
-gh run list --workflow deploy.yml --branch main --limit 1
-gh run view <run-id> --web
-```
-
-Wait for the dual-surface verifier to report matching `build-config.json` commits before sharing a release URL.
-
-### Monthly `foglamp-scan-keepalive.yml`
-
-Republishes [`.foglamp/scan.json`](.foglamp/scan.json) to the same public URL using secret `FOGLAMP_SCAN_EDIT_TOKEN` (see [docs/foglamp-scan.md](docs/foglamp-scan.md)).
-
-| Suite               | Target                                                     |
-| ------------------- | ---------------------------------------------------------- |
-| Vitest              | 172                                                        |
-| pytest              | 166                                                        |
-| Playwright projects | 16                                                         |
-| Lighthouse CI       | **100** Performance / Accessibility / Best Practices / SEO |
-
----
-
-## 10. Project structure
-
-```text
-mangeshrautarchive/
-├── src/                    # Frontend shells + assets → npm run build → dist/
-│   ├── *.html              # index, systems, monitor, travel, uses, 404, offline
-│   ├── js/core|modules|services|utils|data|vendor|chatbot/
-│   └── assets/css|images|files|icons|vendor/
-├── api/                    # FastAPI (Vercel entry: api/index.py)
-│   ├── routes/ · integrations/
-│   └── config.py · model_router.py · monitoring.py · …
-├── workers/assistme-chat/  # Optional Cloudflare Worker chat edge
-├── scripts/                # Tooling (not shipped to browsers)
-│   ├── build/              # esbuild pipeline, ASSET_VER, blog/case generators
-│   ├── deployment/         # Lighthouse, security, deploy sync
-│   ├── utils/              # dev servers, check-node, lint runners
-│   └── qa/ · integrations/ # includes publish-foglamp-scan.mjs
-├── tests/unit|api|e2e/     # Vitest · pytest · Playwright
-├── docs/                   # STRUCTURE.md · foglamp-scan.md · design-plans/ · plans/
-├── .foglamp/scan.json      # Public AI architecture graph (lock file gitignored)
-├── .github/workflows/      # deploy · monitoring · foglamp-scan-keepalive
-├── package.json · vercel.json · pyproject.toml · .nvmrc
-└── AGENTS.md               # AI / contributor brief
-```
-
-**Do not** add React/Next/Vue/Svelte app scaffolds. **Map:** [docs/STRUCTURE.md](docs/STRUCTURE.md) · [docs/foglamp-scan.md](docs/foglamp-scan.md) · [scripts/README.md](scripts/README.md) · [tests/README.md](tests/README.md)
-
----
-
-## 11. API (production)
-
-**Pages / edge (verified):** base `https://assistme-chat.mangeshraut712.workers.dev`  
-**Vercel same-origin:** `https://mangeshraut.pro/api/*` when that deployment is enabled  
-**Local:** `http://127.0.0.1:8001`
-
-```bash
-# Edge worker (used by GitHub Pages build-config)
-curl -s https://assistme-chat.mangeshraut712.workers.dev/api/health
-curl -s https://assistme-chat.mangeshraut712.workers.dev/api/chat/health
-
-# Local FastAPI (after npm run dev / dev:backend)
-curl -s http://127.0.0.1:8001/api/health
-curl -s http://127.0.0.1:8001/api/monitor/platform-health | head
-curl -s -X POST http://127.0.0.1:8001/api/chat \
-  -H 'Content-Type: application/json' \
-  -d '{"message":"What are Mangesh top skills?","stream":false}'
-```
-
-| Area    | Endpoints                                                  |
-| ------- | ---------------------------------------------------------- |
-| Core    | `/api/health` · `/api/status` · `/api/models`              |
-| Chat    | `/api/chat` · `/api/chat/health`                           |
-| GitHub  | `/api/github/profile` · `/api/github/repos/*`              |
-| Media   | `/api/music/recent` · `/api/music/artwork`                 |
-| Health  | `/api/health-vitals/summary` · integrations                |
-| Monitor | `/api/monitor/*` · `platform-health` · `portfolio-catalog` |
-| Forms   | `POST /api/contact` · `POST /api/newsletter/subscribe`     |
-
-Local OpenAPI: `http://127.0.0.1:8001/docs`
-
----
-
-## 12. Deployment
-
-| Surface           | How                                                                                |
-| ----------------- | ---------------------------------------------------------------------------------- |
-| **GitHub Pages**  | CI artifact after quality gates — **current public host**                          |
-| **Vercel**        | Git `main` · FastAPI + `dist/` · Node 22 · Python serverless · production alias    |
-| **Cache bust**    | `ASSET_VER` in `scripts/build/asset-version.mjs` (sync with `src/**/*.html` `?v=`) |
-| **Edge AssistMe** | `workers/assistme-chat` · Pages `apiBaseUrl` in `build-config.json`                |
-
-**Vercel Ignored Build Step** (optional):
-
-```bash
-bash scripts/deployment/vercel-ignore-build.sh
-```
-
-```bash
-npm run build
-npm run qa:surfaces
-npm run qa:postdeploy
+npm run check             # Run ESLint + Stylelint + Prettier + 172 Vitest tests
+npm run test:api          # Run 166 pytest API tests
+npm run doctor:strict     # Run 60-point strict repository layout check
+npm run security-check    # Scan for exposed API keys and credentials
+npm run build             # Production bundle compilation to dist/
+npm run qa:prod-ready     # Full pre-deployment verification matrix
 ```
 
 ---
 
-## 13. Blog & case studies
+## 8. Open Source Governance & Guidelines
 
-**Field Notes (16)** — from `src/js/modules/blog-data.js` → `dist/blog/`:
+We adhere to industry-standard open-source community health and governance standards:
 
-Cursor Origin Agent-Native Hosting · Razorpay Vulcan · Google I/O 2026 · X Algorithm / Phoenix · Google AI ecosystem · OpenClaw · Wispr Flow · NVIDIA · Global AI race · AI code editors · Apple at 50 · Anthropic Mythos · WWDC 2026 · NotebookLM 2026.
-
-**Case studies (5)** — from `src/js/modules/case-studies-data.js` → `dist/case-studies/`:
-
-`portfolio` · `hindai` · `ces-energy` · `assistme-va` · `bug-tracker`.
-
-Articles use X-style author cards, solid theme settings, charts + official source embeds (no stock hero images).
-
----
-
-## 14. Changelog highlights — August 2026
-
-- **Centered responsive hero (2026-08-09)** — consolidated duplicate hero rules, restored one centered layout across desktop and mobile, and kept the View Projects / Download Resume order stable on narrow screens.
-- **Favicon and cache parity (2026-08-09)** — all page shells and the manifest use the same logo favicon set with `ASSET_VER=20260808center9`, so Pages and Vercel invalidate the same browser cache entries.
-- **Vercel deployment sync (2026-08-08)** — enabled Git-based production deployment and verified Pages/Vercel commit parity with `npm run qa:surfaces`.
-
-- **Lighthouse / CLS (2026-07-18)** — render-blocking `homepage.css` + `dynamic-island-navbar.css`; hero `flex-start` + stable padding (no center reflow); nav idle/active padding parity; `heroLcpLock` aligned in `build.js`. Local `dist` audits: gate + full-load **100/100/100/100** desktop and mobile.
-- **AssistMe UX (`d30e5612` / `0b045319`)** — composer Plus menu (attach / Writing Tools / summarize); MessageScroller a11y; scroll fades + text shimmer; attachment cards; decluttered header/status/welcome; free rich media (Pollinations + charts); Nemotron Super free chain on FastAPI + Cloudflare Worker.
-- **Foglamp architecture map** — committed `.foglamp/scan.json` (41 nodes · 51 edges); public URL keep-alive via `npm run foglamp:publish` + monthly GitHub Action ([live scan](https://foglamp.dev/scan/mangeshrautarchive-jtspx4)).
-- **Liquid Glass materials** — clear / balanced / tinted parity on light + dark; chrome glass vs solid content discipline; a11y + share FAB materials aligned.
-- **Blog system** — 16 field notes; X-style author cards; `/blog` index routing hardened for local Express.
-- **Project Showcase** — equal card grid alignment; shell width parity across activity / lens / search / grid.
-- **Solid theme** — white light / black dark page canvas; dual-host edge AssistMe path documented.
-- **Quality** — **172** Vitest · **166** pytest · 16 Playwright projects · CI Lighthouse 100 floors · `ASSET_VER=20260808center9` · vanilla stack (no React runtime).
+| Document                                               | Purpose                                                                                               |
+| ------------------------------------------------------ | ----------------------------------------------------------------------------------------------------- |
+| **[`CONTRIBUTING.md`](CONTRIBUTING.md)**               | Step-by-step contribution workflow, coding conventions, testing guidelines, and PR template.          |
+| **[`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md)**         | **Contributor Covenant v2.1** community standards and enforcement guidelines.                         |
+| **[`SECURITY.md`](SECURITY.md)**                       | Vulnerability reporting procedure, coordinated disclosure policy, and `security.txt` RFC 9116 parity. |
+| **[`AGENTS.md`](AGENTS.md)**                           | **Linux Foundation AGENTS.md v1.0** standard for AI agent coordination and observability.             |
+| **[`CITATION.cff`](CITATION.cff)**                     | **Citation File Format v1.2.0** metadata for academic and software citations.                         |
+| **[`.github/dependabot.yml`](.github/dependabot.yml)** | Automated security updates for npm packages, pip dependencies, and GitHub Actions.                    |
 
 ---
 
-## 15. Documentation
+## 9. Verified Biographical & Project Facts
 
-| Doc                                          | Purpose                             |
-| -------------------------------------------- | ----------------------------------- |
-| [CONTRIBUTING.md](CONTRIBUTING.md)           | Contribution guidelines & dev setup |
-| [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)     | Community standards (Covenant v2.1) |
-| [SECURITY.md](SECURITY.md)                   | Security policy & disclosure        |
-| [AGENTS.md](AGENTS.md)                       | AI agent / contributor brief        |
-| [CITATION.cff](CITATION.cff)                 | Academic & open-source citation     |
-| [.env.example](.env.example)                 | Env template                        |
-| [docs/README.md](docs/README.md)             | Doc index                           |
-| [docs/STRUCTURE.md](docs/STRUCTURE.md)       | Full file map                       |
-| [docs/foglamp-scan.md](docs/foglamp-scan.md) | Public AI map + keep-alive          |
-| [docs/design-plans/](docs/design-plans/)     | AssistMe UX design plans (executed) |
+All facts across the portfolio website are verified against primary records:
 
----
-
-## 16. Sponsors
-
-<p align="center">
-  <a href="https://github.com/sponsors/mangeshraut712"><img src="https://img.shields.io/badge/GitHub_Sponsors-Support-ea4aaa?style=for-the-badge&logo=github-sponsors&logoColor=white" alt="GitHub Sponsors"></a>
-  <a href="https://buy.stripe.com/14A3cufGUgcV5ePfuA14401"><img src="https://img.shields.io/badge/Stripe-Sponsor-635bff?style=for-the-badge&logo=stripe&logoColor=white" alt="Stripe"></a>
-  <a href="https://www.paypal.com/ncp/payment/LXNHJ5SUGNP82"><img src="https://img.shields.io/badge/PayPal-Sponsor-00457C?style=for-the-badge&logo=paypal&logoColor=white" alt="PayPal"></a>
-</p>
+- **Education**:
+  - **Master of Science in Computer Science** — Drexel University, Philadelphia, PA (June 2023, GPA: 3.91/4.0)
+  - **Bachelor of Engineering in Computer Engineering** — SPPU, Pune, India (June 2020, First Class with Distinction)
+  - **Diploma in Computer Technology** — MSBTE, Mumbai, India (June 2017, Student of the Year)
+- **Professional Experience**:
+  - **Software Development Engineer** — IoasiZ Inc., Piscataway, NJ (Jul 2023 – Jul 2026)
+  - **Graduate Technical Specialist** — Aramark / Drexel University, Philadelphia, PA (Sep 2021 – Jun 2023)
+  - **Software Engineer** — Harshwardhan Enterprises, Pune, India (Jun 2020 – Jul 2021)
+- **Research & Publications**:
+  - _RTFERS: Real-Time Facial Expression Recognition System with Emotion Analytics_ — IJFGCN, SERSC Australia (Vol. 13, No. 4, 2020)
+- **Geographic Footprint**:
+  - 18 US States: CT, DE, DC, FL, IL, ME, MD, MA, NH, NJ, NY, NC, PA, RI, SC, TX, VT, VA
+  - 4 Countries: United States, India, United Arab Emirates, Mexico
 
 ---
 
-## 17. Contributing
+## 10. License, Citation & Contact
 
-We welcome contributions from everyone! Please review [CONTRIBUTING.md](CONTRIBUTING.md) and our [Code of Conduct](CODE_OF_CONDUCT.md) before opening a pull request.
-
-```bash
-npm run check          # Lint + format + 172 Vitest tests
-npm run test:api       # 166 pytest API tests
-npm run doctor         # Stack guard & repo layout check
-npm run qa:prod-ready  # Full pre-deploy matrix
-```
-
-Issues and PRs welcome under MIT. Keep the stack **vanilla ESM + FastAPI** — no UI framework runtimes.
-
----
-
-## 18. License, Citation & Contact
-
-- **License**: **MIT** — [LICENSE](LICENSE) · Copyright © 2025–2026 Mangesh Raut
-- **Citation**: [CITATION.cff](CITATION.cff)
+- **License**: **MIT License** — [LICENSE](LICENSE) · Copyright © 2025–2026 Mangesh Raut
+- **Citation**: See [CITATION.cff](CITATION.cff) or cite as:
+  ```bibtex
+  @software{raut2026mangeshrautarchive,
+    author = {Raut, Mangesh},
+    title = {mangeshrautarchive: Agentic Full-Stack Portfolio and Open Engineering Architecture},
+    year = {2026},
+    url = {https://mangeshraut.pro},
+    version = {2.5.0}
+  }
+  ```
 - **Security**: [SECURITY.md](SECURITY.md) · [security.txt](https://mangeshraut712.github.io/mangeshrautarchive/.well-known/security.txt)
-- **Code of Conduct**: [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
-
-**Mangesh Raut** · MS CS, Drexel University  
-[Portfolio (Pages)](https://mangeshraut712.github.io/mangeshrautarchive/) · [mangeshraut.pro](https://mangeshraut.pro) · [LinkedIn](https://www.linkedin.com/in/mangeshraut71298) · [GitHub](https://github.com/mangeshraut712) · mbr63@drexel.edu
+- **Author**: **Mangesh Raut** · MS CS, Drexel University  
+  [Website](https://mangeshraut.pro) · [GitHub](https://github.com/mangeshraut712) · [LinkedIn](https://www.linkedin.com/in/mangeshraut71298) · [Email](mailto:mbr63@drexel.edu)
 
 ---
 
 <p align="center">
-  <a href="#mangesh-raut--agentic-full-stack-portfolio">↑ Back to top</a>
+  <a href="#mangesh-raut--agentic-full-stack-portfolio--open-architecture">↑ Back to top</a>
 </p>

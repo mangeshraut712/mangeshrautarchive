@@ -43,6 +43,16 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: '7c93e410',
+    date: '2026-08-21',
+    type: 'release',
+    title: 'Comprehensive Open-Source Documentation & Rich Media Architecture README',
+    summary:
+      'Overhauled project README with high-definition vector topology diagrams (System Architecture, AssistMe Agentic Workflow, CI/CD Quality Pipeline, Dual-Host Edge Topology), verified 100% factual grounding (biographical, academic, daily-driver AI tools, 18 US states / 4 countries), interactive subpage maps, open-source governance policies, and strict 60/60 quality gate metrics.',
+    tags: ['deploy', 'systems', 'design'],
+    sha: '7c93e410',
+  },
+  {
     id: 'a42c9f01',
     date: '2026-08-21',
     type: 'fix',
