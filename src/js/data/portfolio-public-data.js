@@ -139,7 +139,7 @@ export const usesCatalog = [
       },
       {
         name: 'OpenRouter',
-        note: 'Model gateway for AssistMe and server-side chat routing.',
+        note: 'Model gateway for AssistMe and server-side chat routing (Grok 4.3, Gemma, Nemotron).',
         tag: 'API',
         featured: true,
       },
@@ -153,6 +153,21 @@ export const usesCatalog = [
         name: 'Codex',
         note: 'Secondary pair-programmer for alternate model opinions.',
         tag: 'Agent',
+      },
+      {
+        name: 'Cline',
+        note: 'Autonomous coding agent for browser automation and precision refactoring.',
+        tag: 'Agent',
+      },
+      {
+        name: 'Windsurf',
+        note: 'Agentic cascade workflows and contextual code synthesis.',
+        tag: 'IDE',
+      },
+      {
+        name: 'KiloChat',
+        note: 'Human-in-the-loop chat interface and model evaluation.',
+        tag: 'Chat',
       },
     ],
   },

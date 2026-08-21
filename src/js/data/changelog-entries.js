@@ -43,6 +43,16 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'b84c2f10',
+    date: '2026-08-21',
+    type: 'release',
+    title: 'Full Repository History & Open-Source Build Transparency Chronicle',
+    summary:
+      'Published comprehensive engineering history spanning from repository creation (April 8, 2025, commit 7e598ecb) through August 2026 across systems timeline, changelog catalog, and uses stack. Documented complete multi-model AI tokenization telemetry (5.2B+ tokens across Gemini, Claude, Grok, Codex, Antigravity, Cursor, and Cline), design patterns (Apple HIG, Solid Surfaces, Liquid Glass shaders), and zero-framework ESM architecture.',
+    tags: ['systems', 'deploy', 'design', 'assistme'],
+    sha: 'b84c2f10',
+  },
+  {
     id: 'a1e8c903',
     date: '2026-08-21',
     type: 'improvement',
@@ -1089,6 +1099,64 @@ export const changelogEntries = [
     summary: 'Vercel Web Analytics added for production traffic insight on the primary host.',
     tags: ['deploy', 'api'],
     sha: 'fa2de084',
+    link: null,
+  },
+  // ── October 2025 ───────────────────────────────────────────
+  {
+    id: '277e6a22',
+    date: '2025-10-12',
+    type: 'improvement',
+    title: 'AssistMe fallback search and interactive commands',
+    summary:
+      'Enhanced chatbot with Wikipedia fallback, weather queries, and interactive command processing.',
+    tags: ['assistme'],
+    sha: '277e6a22',
+    link: null,
+  },
+  {
+    id: 'c4b54fd1',
+    date: '2025-10-03',
+    type: 'release',
+    title: 'AssistMe AI chatbot v1 integration',
+    summary:
+      'Integrated the first-generation AssistMe AI chatbot with voice interaction and local portfolio knowledge base.',
+    tags: ['assistme', 'voice'],
+    sha: 'c4b54fd1',
+    link: null,
+  },
+  // ── June 2025 ──────────────────────────────────────────────
+  {
+    id: '85307946',
+    date: '2025-06-04',
+    type: 'improvement',
+    title: 'Typography unification and section color consistency',
+    summary:
+      'Unified heading colors and ensured consistent text rendering across all portfolio sections.',
+    tags: ['design'],
+    sha: '85307946',
+    link: null,
+  },
+  // ── April 2025 ─────────────────────────────────────────────
+  {
+    id: 'f10168c4',
+    date: '2025-04-09',
+    type: 'improvement',
+    title: 'Firebase configuration and visitor counter telemetry',
+    summary:
+      'Added Firebase configuration and visitor counter functionality for initial traffic monitoring.',
+    tags: ['api'],
+    sha: 'f10168c4',
+    link: null,
+  },
+  {
+    id: '7e598ecb',
+    date: '2025-04-08',
+    type: 'release',
+    title: 'Initial open-source portfolio repository creation',
+    summary:
+      'Initial open-source release of Mangesh Raut’s full-stack portfolio website on GitHub.',
+    tags: ['deploy', 'design'],
+    sha: '7e598ecb',
     link: null,
   },
 ];

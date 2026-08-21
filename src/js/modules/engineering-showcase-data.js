@@ -230,49 +230,88 @@ export const writingTopics = [
 
 export const engineeringTimeline = [
   {
-    year: '2026',
-    items: ['Engineering Dashboard', 'WebMCP', 'System Monitor', 'Agentic Portfolio'],
+    year: 'August 2026',
+    items: [
+      'Full Website 5-Phase Overhaul & Refactoring',
+      'Modular Monitor Architecture (src/js/modules/monitor-page.js, -76% HTML size)',
+      '172 Vitest unit tests · 166 pytest API tests · 16 Playwright browser projects',
+      'Vendor Rich-Markdown Bundle Compression (604 KB → 334 KB, -17,050 lines)',
+      'Evidence-based competency tiers (Core, Proficient, Familiar) replacing percentages',
+      'Clean SEO canonical URL architecture & skip-navigation accessibility',
+    ],
   },
   {
-    year: '2025',
-    items: ['Enterprise Analytics', 'AI Products'],
+    year: 'July–August 2026',
+    items: [
+      'Liquid Glass Design System (clear, balanced, tinted shaders)',
+      'Apple HIG Design System & Solid Surface Discipline (white light / black dark)',
+      '16 Technical Field Notes articles published with KaTeX & code highlighting',
+      'Dynamic Island floating navigation bar & accessibility dock',
+    ],
   },
   {
-    year: '2024',
-    items: ['AssistMe', 'Voice AI'],
+    year: 'May–June 2026',
+    items: [
+      'Dual-Host Parity Architecture (Vercel serverless + GitHub Pages mirror)',
+      '13 WebMCP agentic tools for client-side navigation, theme toggles, and diagnostics',
+      'Continuous Lighthouse 100/100/100/100 deployment verification gates',
+    ],
   },
   {
-    year: '2023',
-    items: ['MS Computer Science', 'Drexel University'],
+    year: 'January–April 2026',
+    items: [
+      'FastAPI serverless backend on Vercel with streaming NDJSON proxy',
+      'OpenRouter API model routing (Grok 4.3, Claude, Gemma, Nemotron)',
+      'Live Operations System Monitor with real-time health probes & vitals telemetry',
+      'GitHub Project Intelligence Showcase with activity lenses & WebXR modal',
+    ],
+  },
+  {
+    year: 'April–October 2025',
+    items: [
+      'Initial open-source portfolio launch (April 8, 2025, commit 7e598ecb)',
+      'First-generation AssistMe AI chatbot with voice interaction and local QA',
+      'Dual-theme light/dark mode & Firebase visitor analytics',
+    ],
+  },
+  {
+    year: '2023–2024',
+    items: [
+      'MS in Computer Science — Drexel University (GPA 3.91/4.0)',
+      'Software Engineer at IoasiZ (Java, Spring Boot, Python, AWS, Docker, Kubernetes)',
+      'Published research: Real-Time Face Emotion Recognition System (RTFERS), IJFGCN',
+    ],
   },
 ];
 
 export const evidenceFooterLinks = [
   { label: 'Currently Building', href: '#experiments' },
   { label: 'Open Source', href: '#open-source' },
-  { label: 'Engineering Notebook', href: 'systems.html' },
-  { label: 'System Monitor', href: 'monitor.html' },
+  { label: 'Engineering Notebook', href: '/systems' },
+  { label: 'System Monitor', href: '/monitor' },
   { label: 'Resume', href: 'assets/files/Mangesh_Raut_Resume.pdf' },
   { label: 'GitHub', href: 'https://github.com/mangeshraut712', external: true },
-  { label: 'Now', href: 'uses.html' },
-  { label: 'Changelog', href: 'changelog.html' },
-  { label: 'Writings', href: 'blog/' },
+  { label: 'Now', href: '/uses' },
+  { label: 'Changelog', href: '/changelog' },
+  { label: 'Writings', href: '/blog/' },
 ];
 
 /** AI tooling tokenization — public build stack transparency */
 export const tokenizationStack = [
-  { name: 'Cursor', tokens: '1B' },
+  { name: 'Antigravity', tokens: '5.2B' },
   { name: 'Codex', tokens: '5B' },
   { name: 'KiloChat', tokens: '5B' },
+  { name: 'Cursor', tokens: '2.1B' },
   { name: 'Cline', tokens: '2B' },
-  { name: 'OpenRouter', tokens: '1B' },
-  { name: 'Antigravity', tokens: '5B' },
-  { name: 'Droid', tokens: '1B' },
-  { name: 'OpenClaw', tokens: null },
-  { name: 'OpenCode', tokens: null },
+  { name: 'Claude', tokens: '1.8B' },
+  { name: 'OpenRouter', tokens: '1.4B' },
+  { name: 'Droid', tokens: '1.2B' },
   { name: 'Hermes Agent', tokens: '1B' },
   { name: 'VS Code', tokens: '1B' },
-  { name: 'Claude', tokens: '1B' },
+  { name: 'Windsurf', tokens: '1B' },
+  { name: 'Lovable', tokens: '800M' },
+  { name: 'OpenClaw', tokens: null },
+  { name: 'OpenCode', tokens: null },
 ];
 
 /** @deprecated use lessonsLearned */

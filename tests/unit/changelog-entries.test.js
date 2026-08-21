@@ -29,6 +29,8 @@ describe('changelog entries', () => {
     expect(months.has('2026-08')).toBe(true);
     expect(months.has('2026-07')).toBe(true);
     expect(months.has('2025-12')).toBe(true);
+    expect(months.has('2025-10')).toBe(true);
+    expect(months.has('2025-04')).toBe(true);
   });
 
   it('exposes type and tag catalogs', () => {

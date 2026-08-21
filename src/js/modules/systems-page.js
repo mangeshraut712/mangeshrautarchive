@@ -365,30 +365,33 @@ function renderTokenization() {
     if (!t) return 0;
     if (t.endsWith('B')) return parseFloat(t) * 1e9;
     if (t.endsWith('M')) return parseFloat(t) * 1e6;
-    return parseFloat(t);
+    if (t.endsWith('k') || t.endsWith('K')) return parseFloat(t) * 1e3;
+    return parseFloat(t) || 0;
   };
 
+  const maxTokens = Math.max(...tokenizationStack.map(t => parseTokens(t.tokens)), 5.2e9);
+
   const getTokenWidth = tokens => {
-    if (!tokens) return 10;
-    if (tokens === '5B') return 100;
-    if (tokens === '2B') return 40;
-    if (tokens === '1B') return 20;
-    return 15;
+    const parsed = parseTokens(tokens);
+    if (!parsed) return 12;
+    return Math.max(15, Math.min(100, Math.round((parsed / maxTokens) * 100)));
   };
 
   const toolContexts = {
-    Cursor: 'Primary IDE environment & context orchestration',
-    Codex: 'Generative codebase translation & autocomplete',
+    Antigravity: 'Autonomous multi-agent pair programming & architectural refactoring',
+    Codex: 'Generative codebase synthesis & unit test scaffolding',
     KiloChat: 'Chat interface & human-in-the-loop coordination',
+    Cursor: 'Primary IDE environment & full-repo context orchestration',
     Cline: 'Agentic file-editing & browser automation',
-    OpenRouter: 'Unified API gateway & smart model routing',
-    Antigravity: 'Autonomous multi-agent pair programming',
+    Claude: 'Direct chat model reasoning & conceptual system modeling',
+    OpenRouter: 'Unified API gateway & smart model routing (Grok, Claude, Gemma)',
     Droid: 'Background validation & unit testing companion',
-    OpenClaw: 'Dynamic execution environment',
-    OpenCode: 'Secondary fallback code generation agent',
     'Hermes Agent': 'System-level shell tool invocation specialist',
     'VS Code': 'Secondary code viewing & workspace management',
-    Claude: 'Direct chat model interaction & conceptual modeling',
+    Windsurf: 'AI flow & cascade agentic development',
+    Lovable: 'Rapid visual prototype scaffolding & UI layout',
+    OpenClaw: 'Dynamic execution environment',
+    OpenCode: 'Secondary fallback code generation agent',
   };
 
   const sortedStack = [...tokenizationStack].sort((a, b) => {
