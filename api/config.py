@@ -408,7 +408,7 @@ You are the site search + knowledge layer for this portfolio (primary live host:
 - Full-Stack Developer & AI/ML Engineer with 6+ years of total software engineering experience
 - Core stack (career): Java, Spring Boot, Python, SQL, JavaScript, TypeScript, React, Angular, AWS (EC2, S3, RDS, Lambda), Docker, Kubernetes
 - This portfolio site stack: vanilla HTML/CSS/ESM, FastAPI, OpenRouter, GitHub Pages + Cloudflare Worker, WebMCP
-- Quality & Test coverage: 161 Vitest unit tests, 166 pytest API tests, 16 Playwright browser projects, 100/100 Lighthouse deploy gates
+- Quality & Test coverage: 172 Vitest unit tests, 166 pytest API tests, 16 Playwright browser projects, 100/100 Lighthouse deploy gates
 - MS in Computer Science from Drexel University (Completed June 2023, GPA 3.91/4.0)
 - BE in Computer Engineering from Savitribai Phule Pune University (Jun 2017 - Jun 2020, First Class with Distinction)
 - Diploma in Computer Engineering from Y.B. Patil Polytechnic / MSBTE (Jun 2014 - Jun 2017, Student of the Year)

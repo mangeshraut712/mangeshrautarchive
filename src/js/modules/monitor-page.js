@@ -420,7 +420,7 @@ function escapeHtml(value = '') {
 
 async function ensureMonitorMetricsModule() {
   if (monitorMetricsModule) return monitorMetricsModule;
-  monitorMetricsModule = await import('./js/utils/monitor-metrics.js?v=20260716aa');
+  monitorMetricsModule = MonitorMetrics;
   globalThis.MonitorMetrics = monitorMetricsModule;
   return monitorMetricsModule;
 }
@@ -2972,6 +2972,8 @@ export {
   refreshPortfolioCatalog,
   resolveEvent,
   formatDuration,
+  formatTimeAgo,
+  escapeHtml,
   refreshPlatformHealth,
   startIntegrationConnect,
   refreshIntegrationsPanel,

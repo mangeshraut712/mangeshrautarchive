@@ -43,6 +43,16 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'a1e8c903',
+    date: '2026-08-21',
+    type: 'improvement',
+    title: 'Unit Test Suite Expansion: Monitor Page and Skills Visualization Module Hardening',
+    summary:
+      'Expanded the Vitest test suite to 172 unit tests across 36 test files by introducing dedicated test suites for the newly modularized monitor-page.js (testing duration formatting, relative time calculation, HTML escaping, and metric bindings) and skills-visualization.js (verifying category metadata, evidence tier mapping, and triple-track marquee generation). Synchronized test metrics across portfolio data and documentation.',
+    tags: ['performance', 'deploy', 'systems'],
+    sha: 'a1e8c903',
+  },
+  {
     id: 'f9a3c718',
     date: '2026-08-20',
     type: 'improvement',

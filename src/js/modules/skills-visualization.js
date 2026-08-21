@@ -284,9 +284,9 @@ class SkillsVisualization {
   }
 }
 
-// Make available globally
-// Make available globally
+// Make available globally and as ES module export
 window.SkillsVisualization = SkillsVisualization;
+export { SkillsVisualization };
 
 // Auto-initialize if container exists
 const initSkillsVisualization = () => {

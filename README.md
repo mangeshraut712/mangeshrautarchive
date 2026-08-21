@@ -27,7 +27,7 @@
   <img src="https://img.shields.io/badge/FastAPI-0.139-009688?style=flat-square&logo=fastapi&logoColor=white" alt="FastAPI">
   <img src="https://img.shields.io/badge/ESM-vanilla-yellow?style=flat-square" alt="Vanilla ESM">
   <img src="https://img.shields.io/badge/OpenRouter-Grok%204.3%20%2B%20Nemotron%20free-black?style=flat-square" alt="OpenRouter">
-  <img src="https://img.shields.io/badge/Tests-161%20unit%20%2B%20166%20API-brightgreen?style=flat-square" alt="161 unit tests and 166 API tests">
+  <img src="https://img.shields.io/badge/Tests-172%20unit%20%2B%20166%20API-brightgreen?style=flat-square" alt="172 unit tests and 166 API tests">
   <img src="https://img.shields.io/badge/Lighthouse-100%2F100%2F100%2F100-0cce6b?style=flat-square" alt="Lighthouse">
   <img src="https://img.shields.io/badge/Playwright-16%20projects-2EAD33?style=flat-square&logo=playwright&logoColor=white" alt="Playwright">
   <a href="https://foglamp.dev/scan/mangeshrautarchive-jtspx4"><img src="https://img.shields.io/badge/Foglamp-AI%20map-0071e3?style=flat-square" alt="Foglamp architecture map"></a>
@@ -71,7 +71,7 @@ As of **August 2026**, the product combines:
 | **Agentic AI**         | AssistMe chatbot · 13 WebMCP tools · Plus menu tools · OpenRouter NDJSON stream · rich media               |
 | **Apple-inspired UI**  | Dynamic Island nav · liquid glass **clear / balanced / tinted** · solid page canvas · a11y dock            |
 | **Operations**         | Platform health probes · portfolio catalog · dual-host commit parity · Foglamp map keep-alive              |
-| **Quality**            | **161** Vitest · **166** pytest · 16 Playwright projects · Lighthouse **100/100/100/100** gates · security |
+| **Quality**            | **172** Vitest · **166** pytest · 16 Playwright projects · Lighthouse **100/100/100/100** gates · security |
 
 This document is the **canonical technology report** for the repository: stack versions, libraries, architecture, features, and how to run it. Counts and URLs below were checked against the current `main` tree and live probes.
 
@@ -193,7 +193,7 @@ Pinned from this repo’s `package.json`, `requirements.txt`, `pyproject.toml`, 
 
 | Suite        | Runner                         | Count / target (August 2026)                                                            |
 | ------------ | ------------------------------ | --------------------------------------------------------------------------------------- |
-| **Unit**     | Vitest 4.1                     | **161** tests · chatbot, bootstrap, modules, WebMCP, data contracts                     |
+| **Unit**     | Vitest 4.1                     | **172** tests · chatbot, bootstrap, modules, WebMCP, data contracts                     |
 | **API**      | pytest                         | **166** tests · FastAPI routes / telemetry / middleware                                 |
 | **E2E**      | Playwright 1.61                | **16** projects (desktop + phone + tablet, incl. iPhone 17 Pro Max)                     |
 | **A11y**     | axe-core + a11y toolbar        | CI + runtime high contrast / reduced motion / liquid glass (16/16 baseline passing)     |
@@ -387,7 +387,7 @@ npm run build && PORT=4174 npm run serve:dist   # production preview
 | `npm run doctor` / `doctor:stack`        | Root layout + no React/Next runtime               |
 | `npm run dev`                            | Frontend + backend                                |
 | `npm run build`                          | Production `dist/` (+ blog/case study generation) |
-| `npm test` / `npm run test:api`          | Vitest **161** / pytest **166**                   |
+| `npm test` / `npm run test:api`          | Vitest **172** / pytest **166**                   |
 | `npm run check`                          | ESLint + Stylelint + Prettier + Vitest            |
 | `npm run lint:dead-code` / `lint:python` | Vulture + flake8 for the FastAPI codebase         |
 | `npm run test:e2e:all`                   | Playwright across all **16** browser projects     |
@@ -424,7 +424,7 @@ Never commit `.env` / `.env.local`. See [`.env.example`](.env.example).
 
 1. `npm audit` + `security-check`
 2. ESLint · Stylelint 17 · Prettier
-3. Vitest (**161**)
+3. Vitest (**172**)
 4. Env parity (non-blocking)
 5. flake8 · dead-code · pytest (**166**)
 6. Browser QA smoke, accessibility (16/16), and promotion/FPS checks
@@ -458,7 +458,7 @@ Republishes [`.foglamp/scan.json`](.foglamp/scan.json) to the same public URL us
 
 | Suite               | Target                                                     |
 | ------------------- | ---------------------------------------------------------- |
-| Vitest              | 161                                                        |
+| Vitest              | 172                                                        |
 | pytest              | 166                                                        |
 | Playwright projects | 16                                                         |
 | Lighthouse CI       | **100** Performance / Accessibility / Best Practices / SEO |
@@ -577,7 +577,7 @@ Articles use X-style author cards, solid theme settings, charts + official sourc
 - **Blog system** — 16 field notes; X-style author cards; `/blog` index routing hardened for local Express.
 - **Project Showcase** — equal card grid alignment; shell width parity across activity / lens / search / grid.
 - **Solid theme** — white light / black dark page canvas; dual-host edge AssistMe path documented.
-- **Quality** — **161** Vitest · **166** pytest · 16 Playwright projects · CI Lighthouse 100 floors · `ASSET_VER=20260808center9` · vanilla stack (no React runtime).
+- **Quality** — **172** Vitest · **166** pytest · 16 Playwright projects · CI Lighthouse 100 floors · `ASSET_VER=20260808center9` · vanilla stack (no React runtime).
 
 ---
 
