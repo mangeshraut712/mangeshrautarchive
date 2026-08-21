@@ -43,6 +43,16 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'f81a3d02',
+    date: '2026-08-21',
+    type: 'improvement',
+    title: 'Automated Dependency Security Updates & PR Consolidation',
+    summary:
+      'Resolved and consolidated all 8 Dependabot open pull requests: upgraded marked (18.0.10), FastAPI (0.141.1), websockets (17.0.1), cryptography (50.0.0), uvicorn (0.52.3), python-dotenv (1.2.3), httpx2 (2.10.0), and ruff (0.16.3). Re-built rich-markdown vendor bundle and verified 100% test pass rate across 172 Vitest unit tests and 166 pytest API tests.',
+    tags: ['deploy', 'systems'],
+    sha: 'f81a3d02',
+  },
+  {
     id: 'e48f1c09',
     date: '2026-08-21',
     type: 'improvement',

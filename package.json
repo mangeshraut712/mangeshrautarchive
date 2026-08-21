@@ -79,7 +79,7 @@
     "html-to-image": "^1.11.13",
     "isomorphic-dompurify": "^3.22.0",
     "katex": "^0.18.4",
-    "marked": "^18.0.9",
+    "marked": "^18.0.10",
     "marked-footnote": "^1.2.2",
     "ws": "^8.21.3"
   },
