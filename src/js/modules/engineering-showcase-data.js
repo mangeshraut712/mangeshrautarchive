@@ -299,19 +299,14 @@ export const evidenceFooterLinks = [
 /** AI tooling tokenization — public build stack transparency */
 export const tokenizationStack = [
   { name: 'Antigravity', tokens: '5.2B' },
-  { name: 'Codex', tokens: '5B' },
-  { name: 'KiloChat', tokens: '5B' },
   { name: 'Cursor', tokens: '2.1B' },
-  { name: 'Cline', tokens: '2B' },
   { name: 'Claude', tokens: '1.8B' },
+  { name: 'Codex', tokens: '1.5B' },
   { name: 'OpenRouter', tokens: '1.4B' },
-  { name: 'Droid', tokens: '1.2B' },
-  { name: 'Hermes Agent', tokens: '1B' },
-  { name: 'VS Code', tokens: '1B' },
-  { name: 'Windsurf', tokens: '1B' },
-  { name: 'Lovable', tokens: '800M' },
-  { name: 'OpenClaw', tokens: null },
-  { name: 'OpenCode', tokens: null },
+  { name: 'Cline', tokens: '800M' },
+  { name: 'Windsurf', tokens: '600M' },
+  { name: 'KiloChat', tokens: '500M' },
+  { name: 'VS Code', tokens: null },
 ];
 
 /** @deprecated use lessonsLearned */

@@ -379,19 +379,14 @@ function renderTokenization() {
 
   const toolContexts = {
     Antigravity: 'Autonomous multi-agent pair programming & architectural refactoring',
-    Codex: 'Generative codebase synthesis & unit test scaffolding',
-    KiloChat: 'Chat interface & human-in-the-loop coordination',
     Cursor: 'Primary IDE environment & full-repo context orchestration',
-    Cline: 'Agentic file-editing & browser automation',
     Claude: 'Direct chat model reasoning & conceptual system modeling',
+    Codex: 'Generative codebase synthesis & unit test scaffolding',
     OpenRouter: 'Unified API gateway & smart model routing (Grok, Claude, Gemma)',
-    Droid: 'Background validation & unit testing companion',
-    'Hermes Agent': 'System-level shell tool invocation specialist',
-    'VS Code': 'Secondary code viewing & workspace management',
+    Cline: 'Agentic file-editing & browser automation',
     Windsurf: 'AI flow & cascade agentic development',
-    Lovable: 'Rapid visual prototype scaffolding & UI layout',
-    OpenClaw: 'Dynamic execution environment',
-    OpenCode: 'Secondary fallback code generation agent',
+    KiloChat: 'Chat interface & human-in-the-loop coordination',
+    'VS Code': 'Primary code editor & workspace management',
   };
 
   const sortedStack = [...tokenizationStack].sort((a, b) => {

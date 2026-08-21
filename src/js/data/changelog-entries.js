@@ -43,6 +43,16 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'c93e1b04',
+    date: '2026-08-21',
+    type: 'improvement',
+    title: 'Tooling Stack Truthfulness & Factual Accuracy Verification Audit',
+    summary:
+      'Conducted a ground-truth factual audit across all pages and data sources. Removed unused placeholder tools (Lovable, Replit, Droid, Hermes Agent, OpenClaw, OpenCode) from the systems tokenization grid and vibe coder marquee, ensuring only authentic daily-driver AI tools and models (Antigravity, Cursor, Claude, Codex, OpenRouter, Cline, Windsurf, KiloChat, VS Code) are presented.',
+    tags: ['systems', 'design'],
+    sha: 'c93e1b04',
+  },
+  {
     id: 'b84c2f10',
     date: '2026-08-21',
     type: 'release',
