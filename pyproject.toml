@@ -21,6 +21,7 @@ line-length = 120
 exclude = [".git", "__pycache__", "old", "build", "dist", ".venv", "venv", "node_modules"]
 
 [tool.ruff.lint]
+select = ["E", "F", "W"]
 ignore = ["E203", "E402", "E501", "W291", "W293"]
 
 [tool.pytest.ini_options]

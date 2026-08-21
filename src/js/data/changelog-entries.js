@@ -43,6 +43,16 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'a42c9f01',
+    date: '2026-08-21',
+    type: 'fix',
+    title: 'Python Dead-Code & Ruff 0.16 Lint Policy Parity',
+    summary:
+      'Aligned ruff.toml and pyproject.toml lint rules with flake8 policy (select E, F, W) for Ruff 0.16 compatibility, updated run-python-dead-code runner to support standard venv binary paths, and verified 100% passing across lint:dead-code, lint:python, and pytest suites in CI.',
+    tags: ['deploy', 'systems'],
+    sha: 'a42c9f01',
+  },
+  {
     id: 'f81a3d02',
     date: '2026-08-21',
     type: 'improvement',

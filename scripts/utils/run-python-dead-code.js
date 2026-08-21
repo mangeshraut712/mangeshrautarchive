@@ -8,11 +8,13 @@ import { fileURLToPath } from 'node:url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const projectRoot = resolve(__dirname, '../..');
-const localPython = resolve(projectRoot, '.venv/bin/python');
+const venvPython = resolve(projectRoot, 'venv/bin/python');
+const dotVenvPython = resolve(projectRoot, '.venv/bin/python');
 
 const pythonCandidates = [
   process.env.PYTHON,
-  existsSync(localPython) ? localPython : null,
+  existsSync(venvPython) ? venvPython : null,
+  existsSync(dotVenvPython) ? dotVenvPython : null,
   'python3',
   'python',
 ].filter(Boolean);
@@ -57,8 +59,19 @@ if (python) {
   process.exit(0);
 }
 
-if (run('uvx', ['--from', 'ruff==0.14.8', 'ruff', 'check', 'api'])) {
-  run('uvx', ['--from', 'vulture==2.14', 'vulture', '--config', 'config/vulture.toml']);
+const uvCheck = spawnSync('uv', ['run', 'ruff', '--version'], {
+  cwd: projectRoot,
+  stdio: 'ignore',
+  env: process.env,
+});
+if (!uvCheck.error && uvCheck.status === 0) {
+  run('uv', ['run', 'ruff', 'check', 'api']);
+  run('uv', ['run', 'vulture', '--config', 'config/vulture.toml']);
+  process.exit(0);
+}
+
+if (run('uvx', ['--from', 'ruff==0.16.3', 'ruff', 'check', 'api'])) {
+  run('uvx', ['--from', 'vulture==2.16', 'vulture', '--config', 'config/vulture.toml']);
   process.exit(0);
 }
 

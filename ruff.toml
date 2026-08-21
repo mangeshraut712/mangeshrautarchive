@@ -4,5 +4,6 @@ line-length = 120
 exclude = [".git", "__pycache__", "old", "build", "dist", ".venv", "venv", "node_modules"]
 
 [lint]
+select = ["E", "F", "W"]
 # Mirror .flake8 extend-ignore (W503 is not a Ruff code)
 ignore = ["E203", "E402", "E501", "W291", "W293"]
