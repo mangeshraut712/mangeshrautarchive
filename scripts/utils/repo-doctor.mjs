@@ -153,6 +153,9 @@ const requiredRoot = [
   'README.md',
   'LICENSE',
   'SECURITY.md',
+  'CODE_OF_CONDUCT.md',
+  'CONTRIBUTING.md',
+  'CITATION.cff',
 ];
 for (const f of requiredRoot) {
   mustExist(f);
@@ -200,7 +203,10 @@ const allowedRootDirs = new Set([
 ]);
 const allowedRootFiles = new Set([
   'AGENTS.md',
+  'CITATION.cff',
   'CNAME',
+  'CODE_OF_CONDUCT.md',
+  'CONTRIBUTING.md',
   'LICENSE',
   'README.md',
   'SECURITY.md',

@@ -43,6 +43,16 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'd7a12b04',
+    date: '2026-08-21',
+    type: 'release',
+    title: 'Industry-Level Open Source Governance & Community Health Implementation',
+    summary:
+      'Implemented industry gold-standard open source governance files: Contributor Covenant v2.1 Code of Conduct (CODE_OF_CONDUCT.md), complete Contribution Guidelines with Node 22/Python 3.12 dev workflows and zero-framework architecture guardrails (CONTRIBUTING.md), Citation File Format metadata (CITATION.cff), modern GitHub Issue Form feature request template, automated Dependabot security updates (.github/dependabot.yml), and updated repo-doctor layout validation to 60/60 checks.',
+    tags: ['deploy', 'systems'],
+    sha: 'd7a12b04',
+  },
+  {
     id: 'c93e1b04',
     date: '2026-08-21',
     type: 'improvement',

@@ -1,0 +1,23 @@
+cff-version: 1.2.0
+message: 'If you use or reference this software, architecture, or research, please cite it as below.'
+authors:
+  - family-names: 'Raut'
+    given-names: 'Mangesh'
+    orcid: 'https://orcid.org/0009-0002-3635-7151'
+    affiliation: 'Drexel University'
+title: 'mangeshrautarchive: Agentic Full-Stack Portfolio and Open Engineering Architecture'
+version: 2.5.0
+date-released: 2025-04-08
+url: 'https://mangeshraut.pro'
+repository-code: 'https://github.com/mangeshraut712/mangeshrautarchive'
+license: MIT
+keywords:
+  - portfolio
+  - full-stack
+  - fastapi
+  - vanilla-javascript
+  - webmcp
+  - agentic-ai
+  - openrouter
+  - apple-hig
+  - liquid-glass

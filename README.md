@@ -585,8 +585,11 @@ Articles use X-style author cards, solid theme settings, charts + official sourc
 
 | Doc                                          | Purpose                             |
 | -------------------------------------------- | ----------------------------------- |
+| [CONTRIBUTING.md](CONTRIBUTING.md)           | Contribution guidelines & dev setup |
+| [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)     | Community standards (Covenant v2.1) |
+| [SECURITY.md](SECURITY.md)                   | Security policy & disclosure        |
 | [AGENTS.md](AGENTS.md)                       | AI agent / contributor brief        |
-| [SECURITY.md](SECURITY.md)                   | Security policy                     |
+| [CITATION.cff](CITATION.cff)                 | Academic & open-source citation     |
 | [.env.example](.env.example)                 | Env template                        |
 | [docs/README.md](docs/README.md)             | Doc index                           |
 | [docs/STRUCTURE.md](docs/STRUCTURE.md)       | Full file map                       |
@@ -607,19 +610,25 @@ Articles use X-style author cards, solid theme settings, charts + official sourc
 
 ## 17. Contributing
 
+We welcome contributions from everyone! Please review [CONTRIBUTING.md](CONTRIBUTING.md) and our [Code of Conduct](CODE_OF_CONDUCT.md) before opening a pull request.
+
 ```bash
-npm run check          # minimum before PR
-npm run qa:prod-ready  # larger changes
+npm run check          # Lint + format + 172 Vitest tests
+npm run test:api       # 166 pytest API tests
+npm run doctor         # Stack guard & repo layout check
+npm run qa:prod-ready  # Full pre-deploy matrix
 ```
 
 Issues and PRs welcome under MIT. Keep the stack **vanilla ESM + FastAPI** — no UI framework runtimes.
 
 ---
 
-## 18. License & contact
+## 18. License, Citation & Contact
 
-**MIT** — [LICENSE](LICENSE) · Copyright © 2025–2026 Mangesh Raut  
-Security reports: [SECURITY.md](SECURITY.md) · [security.txt](https://mangeshraut712.github.io/mangeshrautarchive/.well-known/security.txt)
+- **License**: **MIT** — [LICENSE](LICENSE) · Copyright © 2025–2026 Mangesh Raut
+- **Citation**: [CITATION.cff](CITATION.cff)
+- **Security**: [SECURITY.md](SECURITY.md) · [security.txt](https://mangeshraut712.github.io/mangeshrautarchive/.well-known/security.txt)
+- **Code of Conduct**: [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
 
 **Mangesh Raut** · MS CS, Drexel University  
 [Portfolio (Pages)](https://mangeshraut712.github.io/mangeshrautarchive/) · [mangeshraut.pro](https://mangeshraut.pro) · [LinkedIn](https://www.linkedin.com/in/mangeshraut71298) · [GitHub](https://github.com/mangeshraut712) · mbr63@drexel.edu

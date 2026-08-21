@@ -1,0 +1,48 @@
+name: 💡 Feature Request or Architectural Proposal
+description: Suggest an idea, architectural enhancement, or design polish for mangeshrautarchive
+labels: ['enhancement']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for suggesting an improvement to **mangeshrautarchive**! Please describe your proposal clearly and explain how it benefits visitors or the codebase.
+  - type: input
+    id: summary
+    attributes:
+      label: Summary
+      description: A concise, one-sentence description of the feature or architectural idea.
+      placeholder: 'e.g., Add WebXR preview mode for architecture diagrams'
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem or Motivation
+      description: What problem does this solve, or what opportunity does it unlock?
+      placeholder: 'Describe the current limitation or user friction...'
+    validations:
+      required: true
+  - type: textarea
+    id: proposed-solution
+    attributes:
+      label: Proposed Solution & Architecture
+      description: How should this be implemented? Mention specific components (frontend ESM, FastAPI backend, WebMCP tools, CSS design tokens).
+      placeholder: 'Detail the technical approach...'
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives Considered
+      description: Did you consider other approaches or rejected architectures?
+  - type: checkboxes
+    id: checkboxes
+    attributes:
+      label: Standards Compliance
+      options:
+        - label: 'This proposal respects the zero-framework Vanilla ESM + FastAPI architecture (no React/Vue runtime).'
+          required: true
+        - label: 'This proposal adheres to Apple HIG design tokens and solid surface discipline.'
+          required: true
+        - label: 'I have checked that a similar issue or PR does not already exist.'
+          required: true
