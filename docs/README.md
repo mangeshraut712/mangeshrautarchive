@@ -9,8 +9,11 @@
 | [seo/gsc-keyword-notepad-2026-07.md](./seo/gsc-keyword-notepad-2026-07.md) | Search Console query notepad + underserved keyword plan         |
 | [plans/](./plans/)                                                         | Improve-skill / audit execution plans (historical + active)     |
 | [../README.md](../README.md)                                               | Public project README                                           |
-| [../AGENTS.md](../AGENTS.md)                                               | AI agent briefing                                               |
-| [../SECURITY.md](../SECURITY.md)                                           | Security policy                                                 |
+| [../CONTRIBUTING.md](../CONTRIBUTING.md)                                   | Contribution guidelines & dev workflow                          |
+| [../CODE_OF_CONDUCT.md](../CODE_OF_CONDUCT.md)                             | Community code of conduct (Covenant v2.1)                       |
+| [../SECURITY.md](../SECURITY.md)                                           | Security policy & vulnerability reporting                       |
+| [../AGENTS.md](../AGENTS.md)                                               | AI agent operating brief                                        |
+| [../CITATION.cff](../CITATION.cff)                                         | Software citation metadata                                      |
 | [../.env.example](../.env.example)                                         | Environment variable template                                   |
 | [../scripts/README.md](../scripts/README.md)                               | Tooling map (build / deploy / qa)                               |
 | [../tests/README.md](../tests/README.md)                                   | Unit / API / E2E conventions                                    |

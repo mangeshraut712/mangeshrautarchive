@@ -1,11 +1,14 @@
-# Project structure (July 2026)
+# Project structure (August 2026)
 
 Canonical layout for **mangeshrautarchive**. Prefer this map when adding files so everything stays findable.
 
 ```text
 mangeshrautarchive/
-├── README.md                 # Public project docs
-├── AGENTS.md                 # AI / contributor brief (must stay accurate)
+├── README.md                 # Public project docs & canonical report
+├── AGENTS.md                 # AI agent operating brief (Linux Foundation standard)
+├── CONTRIBUTING.md           # Contribution guidelines, dev setup & PR rules
+├── CODE_OF_CONDUCT.md        # Community standards (Contributor Covenant v2.1)
+├── CITATION.cff              # Academic & open-source citation metadata
 ├── SECURITY.md · LICENSE
 │
 ├── package.json              # Node ≥22 · scripts · deps (root — required)

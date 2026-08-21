@@ -2,8 +2,8 @@
 
 | Suite       | Path                 | Runner     | Command                                         | Count (Aug 2026) |
 | ----------- | -------------------- | ---------- | ----------------------------------------------- | ---------------- |
-| **Unit**    | `tests/unit/`        | Vitest     | `npm test`                                      | 160              |
-| **API**     | `tests/api/`         | pytest     | `npm run test:api` (activate `venv` first)      | 165              |
+| **Unit**    | `tests/unit/`        | Vitest     | `npm test`                                      | 172              |
+| **API**     | `tests/api/`         | pytest     | `npm run test:api` (activate `venv` first)      | 166              |
 | **E2E**     | `tests/e2e/`         | Playwright | `npm run test:e2e:chrome` / `test:e2e:all`      | 16 projects      |
 | **Helpers** | `tests/e2e/helpers/` | —          | Shared `gotoSite`, `PAGES`, GitHub Pages prefix | —                |
 

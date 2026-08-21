@@ -43,6 +43,16 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'e48f1c09',
+    date: '2026-08-21',
+    type: 'improvement',
+    title: 'Senior-Level Documentation Synchronization & Repository Architecture Audit',
+    summary:
+      'Synchronized all documentation files (docs/STRUCTURE.md, docs/README.md, docs/API.md, tests/README.md) with canonical test metrics (172 Vitest unit tests across 36 files, 166 pytest API tests across 26 files), verified clean routing and navigation paths across all page shells, and passed strict repository doctor validation with 60/60 checks.',
+    tags: ['systems', 'deploy'],
+    sha: 'e48f1c09',
+  },
+  {
     id: 'd7a12b04',
     date: '2026-08-21',
     type: 'release',
