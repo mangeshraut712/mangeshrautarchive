@@ -97,10 +97,7 @@ function corsHeaders(origin, allowed) {
   ];
   const allowList = list.length ? list : defaults;
   const isLocal = !origin || /localhost|127\.0\.0\.1/.test(origin);
-  const ok =
-    isLocal ||
-    allowList.includes(origin) ||
-    allowList.some(a => origin.startsWith(a.replace(/\/$/, '')));
+  const ok = isLocal || allowList.includes(origin);
   const headers = {
     'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type, Accept, Authorization, Origin',
@@ -1261,6 +1258,9 @@ const worker = {
     if (request.method === 'POST' && path === '/api/newsletter/subscribe') {
       return handleNewsletterSubscribe(request, env, cors);
     }
+    if (request.method === 'POST' && path === '/api/contact') {
+      return handleContactMessage(request, env, cors);
+    }
 
     // Client-local personalization on Pages — accept so privacy dashboard does not 404.
     if (path.startsWith('/api/personalization/')) {
@@ -1300,6 +1300,7 @@ const worker = {
             'GET /api/integrations/withings/connect',
             'GET /api/integrations/withings/callback',
             'POST /api/newsletter/subscribe',
+            'POST /api/contact',
             'GET|POST /api/cron/health-vitals-sync',
           ],
         },
@@ -1382,14 +1383,97 @@ function handleAnalyticsTrack(cors) {
 }
 
 const NEWSLETTER_EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const FORM_RATE_LIMITS = new Map();
+const FORM_RATE_WINDOW_MS = 10 * 60 * 1000;
+const FORM_RATE_MAX = 5;
+
+function isFormRateLimited(request, formName) {
+  const ip = String(request.headers.get('CF-Connecting-IP') || '').trim();
+  if (!ip) return false;
+  const now = Date.now();
+  const key = `${formName}:${ip}`;
+  const current = FORM_RATE_LIMITS.get(key);
+  if (!current || now - current.startedAt >= FORM_RATE_WINDOW_MS) {
+    FORM_RATE_LIMITS.set(key, { count: 1, startedAt: now });
+    return false;
+  }
+  if (current.count >= FORM_RATE_MAX) return true;
+  current.count += 1;
+  return false;
+}
+
+function cleanContext(value, maxLength, fallback = '') {
+  const cleaned = String(value || '').trim();
+  return (cleaned || fallback).slice(0, maxLength);
+}
+
+async function readFormPayload(request, cors) {
+  const contentLength = Number(request.headers.get('content-length') || 0);
+  if (contentLength > 12_000) {
+    return { error: json({ success: false, error: 'Request is too large.' }, 413, cors) };
+  }
+  try {
+    const payload = await request.json();
+    if (!payload || typeof payload !== 'object' || Array.isArray(payload)) {
+      throw new TypeError('Invalid JSON object');
+    }
+    if (String(payload.website || '').trim()) {
+      return { error: json({ success: false, error: 'Unable to submit this form.' }, 400, cors) };
+    }
+    return { payload };
+  } catch {
+    return { error: json({ success: false, error: 'Invalid JSON body.' }, 400, cors) };
+  }
+}
+
+function getSupabaseConfig(env) {
+  return {
+    base: String(env.SUPABASE_URL || '')
+      .trim()
+      .replace(/\/$/, ''),
+    key: String(env.SUPABASE_SERVICE_ROLE_KEY || '').trim(),
+  };
+}
+
+async function persistFormRecord(env, table, record, { onConflict = '' } = {}) {
+  const { base, key } = getSupabaseConfig(env);
+  if (!base || !key) {
+    return { ok: false, status: 503, error: 'Form storage is temporarily unavailable.' };
+  }
+
+  const conflict = onConflict ? `?on_conflict=${encodeURIComponent(onConflict)}` : '';
+  try {
+    const response = await fetch(`${base}/rest/v1/${table}${conflict}`, {
+      method: 'POST',
+      headers: {
+        apikey: key,
+        Authorization: `Bearer ${key}`,
+        'Content-Type': 'application/json',
+        Prefer: `${onConflict ? 'resolution=merge-duplicates,' : ''}return=representation`,
+      },
+      body: JSON.stringify(record),
+    });
+    if (!response.ok) {
+      return { ok: false, status: 502, error: 'Form storage rejected the submission.' };
+    }
+    const rows = await response.json().catch(() => []);
+    return { ok: true, id: Array.isArray(rows) ? rows[0]?.id || null : rows?.id || null };
+  } catch {
+    return { ok: false, status: 503, error: 'Form storage could not be reached.' };
+  }
+}
 
 async function handleNewsletterSubscribe(request, env, cors) {
-  let payload = {};
-  try {
-    payload = await request.json();
-  } catch {
-    return json({ success: false, error: 'Invalid JSON body.' }, 400, cors);
+  if (isFormRateLimited(request, 'newsletter')) {
+    return json(
+      { success: false, persisted: false, error: 'Too many attempts. Try again later.' },
+      429,
+      cors
+    );
   }
+  const parsed = await readFormPayload(request, cors);
+  if (parsed.error) return parsed.error;
+  const { payload } = parsed;
   const email = String(payload.email || '')
     .trim()
     .toLowerCase();
@@ -1397,55 +1481,108 @@ async function handleNewsletterSubscribe(request, env, cors) {
     return json({ success: false, error: 'Enter a valid email address.' }, 400, cors);
   }
 
-  const base = String(env.SUPABASE_URL || '')
-    .trim()
-    .replace(/\/$/, '');
-  const key = String(env.SUPABASE_SERVICE_ROLE_KEY || '').trim();
-  if (base && key) {
-    try {
-      const now = new Date().toISOString();
-      const res = await fetch(`${base}/rest/v1/newsletter_subscribers?on_conflict=email`, {
-        method: 'POST',
-        headers: {
-          apikey: key,
-          Authorization: `Bearer ${key}`,
-          'Content-Type': 'application/json',
-          Prefer: 'resolution=merge-duplicates,return=minimal',
-        },
-        body: JSON.stringify({
-          email,
-          source: 'blog_newsletter_edge',
-          created_at: now,
-          updated_at: now,
-        }),
-      });
-      if (res.ok || res.status === 201 || res.status === 204) {
-        return json(
-          {
-            success: true,
-            message: 'Thanks for subscribing!',
-            alreadySubscribed: false,
-            host: 'cloudflare-worker',
-            persisted: true,
-          },
-          200,
-          cors
-        );
-      }
-    } catch {
-      // fall through to soft accept
-    }
+  const now = new Date().toISOString();
+  const stored = await persistFormRecord(
+    env,
+    'newsletter_subscribers',
+    {
+      email,
+      status: 'subscribed',
+      source: cleanContext(payload.source, 64, 'blog_newsletter_edge'),
+      landing_path: cleanContext(payload.landingPath, 512, '/'),
+      referrer: cleanContext(payload.referrer, 1024),
+      utm_source: cleanContext(payload.utmSource, 128),
+      utm_medium: cleanContext(payload.utmMedium, 128),
+      utm_campaign: cleanContext(payload.utmCampaign, 128),
+      user_agent: cleanContext(request.headers.get('user-agent'), 512),
+      updated_at: now,
+    },
+    { onConflict: 'email' }
+  );
+  if (!stored.ok) {
+    return json(
+      { success: false, persisted: false, error: stored.error, host: 'cloudflare-worker' },
+      stored.status,
+      cors
+    );
   }
 
-  // Never 503 on Pages — soft-accept and point to email for guaranteed delivery.
   return json(
     {
       success: true,
-      message:
-        'Thanks — we recorded your interest. For a guaranteed subscribe, email mbr63@drexel.edu.',
+      message: 'Thanks for subscribing! Your email was saved.',
       alreadySubscribed: false,
+      id: stored.id,
       host: 'cloudflare-worker',
-      persisted: false,
+      persisted: true,
+    },
+    200,
+    cors
+  );
+}
+
+async function handleContactMessage(request, env, cors) {
+  if (isFormRateLimited(request, 'contact')) {
+    return json(
+      { success: false, persisted: false, error: 'Too many attempts. Try again later.' },
+      429,
+      cors
+    );
+  }
+  const parsed = await readFormPayload(request, cors);
+  if (parsed.error) return parsed.error;
+  const { payload } = parsed;
+  const name = String(payload.name || '').trim();
+  const email = String(payload.email || '')
+    .trim()
+    .toLowerCase();
+  const subject = String(payload.subject || '').trim();
+  const message = String(payload.message || '').trim();
+
+  if (
+    !name ||
+    name.length > 100 ||
+    !NEWSLETTER_EMAIL_RE.test(email) ||
+    email.length > 200 ||
+    !subject ||
+    subject.length > 200 ||
+    !message ||
+    message.length > 2000
+  ) {
+    return json(
+      { success: false, persisted: false, error: 'Check all contact form fields.' },
+      400,
+      cors
+    );
+  }
+
+  const stored = await persistFormRecord(env, 'contact_messages', {
+    name,
+    email,
+    subject,
+    message,
+    status: 'new',
+    source: cleanContext(payload.source, 64, 'github_pages_contact'),
+    landing_path: cleanContext(payload.landingPath, 512, '/'),
+    referrer: cleanContext(payload.referrer, 1024),
+    user_agent: cleanContext(request.headers.get('user-agent'), 512),
+    updated_at: new Date().toISOString(),
+  });
+  if (!stored.ok) {
+    return json(
+      { success: false, persisted: false, error: stored.error, host: 'cloudflare-worker' },
+      stored.status,
+      cors
+    );
+  }
+
+  return json(
+    {
+      success: true,
+      persisted: true,
+      id: stored.id,
+      message: 'Message saved. Mangesh will get back to you soon.',
+      host: 'cloudflare-worker',
     },
     200,
     cors

@@ -2,27 +2,9 @@
  * Dev newsletter subscription form
  */
 
-const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+import { getSubmissionContext, submitStoredForm } from '../services/form-submission.js';
 
-function getApiBase() {
-  if (typeof window === 'undefined') {
-    return globalThis.APP_CONFIG?.apiBaseUrl || '';
-  }
-  const host = window.location.hostname || '';
-  if (['localhost', '127.0.0.1', '0.0.0.0'].includes(host)) {
-    return 'http://127.0.0.1:8001';
-  }
-  // GitHub Pages: Cloudflare edge (newsletter may soft-fail if route absent)
-  if (host.endsWith('github.io')) {
-    const configured = window.APP_CONFIG?.apiBaseUrl || '';
-    if (configured && !/mangeshraut\.pro|vercel\.app/i.test(configured)) {
-      return configured.replace(/\/$/, '');
-    }
-    return 'https://assistme-chat.mangeshraut712.workers.dev';
-  }
-  // Vercel / apex: same-origin relative API
-  return window.APP_CONFIG?.apiBaseUrl || '';
-}
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 function setStatus(statusEl, message, type = 'info') {
   if (!statusEl) return;
@@ -43,36 +25,19 @@ function setSubmitting(submitBtn, isSubmitting) {
   }
 }
 
-async function subscribeEmail(email) {
-  const response = await fetch(`${getApiBase()}/api/newsletter/subscribe`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email }),
+async function subscribeEmail(form, email) {
+  return submitStoredForm('/api/newsletter/subscribe', {
+    email,
+    website: form.elements.website?.value || '',
+    ...getSubmissionContext({ source: form.dataset.source || 'blog_newsletter' }),
   });
-
-  const payload = await response.json().catch(() => ({}));
-
-  if (!response.ok) {
-    const detail =
-      payload?.detail ||
-      (typeof payload?.error === 'string' ? payload.error : payload?.error?.message) ||
-      payload?.message ||
-      (response.status === 503
-        ? 'Newsletter is offline on this mirror — email mbr63@drexel.edu instead.'
-        : 'Subscription failed. Please try again.');
-    throw new Error(typeof detail === 'string' ? detail : 'Subscription failed. Please try again.');
-  }
-
-  return payload;
 }
 
-export function initNewsletterForm() {
-  const form = document.getElementById('newsletter-form');
+function bindNewsletterForm(form) {
   if (!form || form.dataset.bound === 'true') return;
-
-  const emailInput = form.querySelector('#newsletter-email');
-  const statusEl = form.querySelector('#newsletter-status');
-  const submitBtn = form.querySelector('#newsletter-submit');
+  const emailInput = form.querySelector('input[name="email"]');
+  const statusEl = form.querySelector('[data-newsletter-status], .newsletter-status');
+  const submitBtn = form.querySelector('button[type="submit"]');
 
   if (!emailInput || !submitBtn) return;
 
@@ -92,7 +57,7 @@ export function initNewsletterForm() {
     setSubmitting(submitBtn, true);
 
     try {
-      const result = await subscribeEmail(email);
+      const result = await subscribeEmail(form, email);
       setStatus(statusEl, result.message || 'Thanks for subscribing!', 'success');
       form.reset();
       globalThis.analytics?.track?.('newsletter_subscribe', {
@@ -111,8 +76,15 @@ export function initNewsletterForm() {
   });
 }
 
+export function initNewsletterForms(root = document) {
+  const forms = root.querySelectorAll('[data-newsletter-form], #newsletter-form');
+  forms.forEach(bindNewsletterForm);
+}
+
+export const initNewsletterForm = initNewsletterForms;
+
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initNewsletterForm, { once: true });
+  document.addEventListener('DOMContentLoaded', () => initNewsletterForms(), { once: true });
 } else {
-  initNewsletterForm();
+  initNewsletterForms();
 }

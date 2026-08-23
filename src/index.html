@@ -3604,16 +3604,20 @@ html.dark #home .hero-name-text {
           </div>
           <h3>Subscribe to the Dev Newsletter</h3>
           <p>Monthly notes on Spring Boot, AWS architecture, AI systems, and practical engineering decisions.</p>
-          <form id="newsletter-form" class="newsletter-form" novalidate>
+          <form id="newsletter-form" class="newsletter-form" data-newsletter-form data-source="homepage_newsletter" novalidate>
             <label class="sr-only" for="newsletter-email">Email address for newsletter</label>
             <input type="email" id="newsletter-email" name="email" class="apple-input"
               placeholder="you@example.com" autocomplete="email" inputmode="email" spellcheck="false"
-              required aria-required="true" />
+              required aria-required="true" maxlength="200" />
+            <label class="form-honeypot" aria-hidden="true">Website
+              <input type="text" name="website" tabindex="-1" autocomplete="off" />
+            </label>
             <button type="submit" id="newsletter-submit" class="btn-primary newsletter-submit-btn">
               <span class="newsletter-submit-text">Subscribe</span>
             </button>
             <p id="newsletter-status" class="newsletter-status" role="status" aria-live="polite" hidden></p>
           </form>
+          <p class="newsletter-privacy">Your email is stored securely for newsletter updates only.</p>
         </div>
       </div>
     </section>
@@ -4510,6 +4514,7 @@ html.dark #home .hero-name-text {
                     autocomplete="name"
                     placeholder="John Appleseed"
                     class="apple-input"
+                    maxlength="100"
                     required
                   />
                 </div>
@@ -4522,6 +4527,7 @@ html.dark #home .hero-name-text {
                     autocomplete="email"
                     placeholder="john@example.com"
                     class="apple-input"
+                    maxlength="200"
                     required
                   />
                 </div>
@@ -4534,6 +4540,7 @@ html.dark #home .hero-name-text {
                     autocomplete="off"
                     placeholder="Project or Opportunity"
                     class="apple-input"
+                    maxlength="200"
                     required
                   />
                 </div>
@@ -4546,9 +4553,13 @@ html.dark #home .hero-name-text {
                     rows="3"
                     placeholder="Tell me about your project or goal…"
                     class="apple-input apple-textarea"
+                    maxlength="2000"
                     required
                   ></textarea>
                 </div>
+                <label class="form-honeypot" aria-hidden="true">Website
+                  <input type="text" name="website" tabindex="-1" autocomplete="off" />
+                </label>
                 <button type="submit" class="apple-submit-btn">
                   <span>Send Message</span>
                   <i class="fas fa-arrow-right" aria-hidden="true"></i>
@@ -4796,6 +4807,7 @@ html.dark #home .hero-name-text {
           { src: 'js/utils/theme.js?v=20260716aa', module: true },
           { src: 'js/utils/go-to-top.js?v=20260716aa', defer: true },
           { src: 'js/core/bootstrap.js?v=20260729sync1', module: true },
+          { src: 'js/modules/contact-page.js?v=20260823forms1', module: true },
           { src: 'js/modules/blessing-media-modal.js?v=20260728e', module: true },
           { src: 'js/modules/share-widget.js?v=20260724dino1', module: true },
           { src: 'js/modules/name-pronounce.js?v=20260716aa', defer: true },

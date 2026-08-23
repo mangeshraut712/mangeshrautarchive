@@ -122,7 +122,12 @@ async def send_contact_message(payload: ContactMessage, req: Request):
 
         doc_id = resp.json().get("name", "").split("/")[-1]
         logger.info(f"✅ Contact message saved: {doc_id}")
-        return {"success": True, "message": "Message sent successfully!", "id": doc_id}
+        return {
+            "success": True,
+            "persisted": True,
+            "message": "Message saved successfully!",
+            "id": doc_id,
+        }
 
     except httpx.RequestError as exc:
         logger.error(f"❌ Network error saving contact: {exc}", exc_info=True)
@@ -193,8 +198,10 @@ async def subscribe_newsletter(payload: NewsletterSubscribe, req: Request):
         if resp.status_code == 409:
             return {
                 "success": True,
+                "persisted": True,
                 "message": "You are already subscribed. Thanks for reading!",
                 "alreadySubscribed": True,
+                "id": doc_id,
             }
 
         if not resp.is_success:
@@ -209,6 +216,7 @@ async def subscribe_newsletter(payload: NewsletterSubscribe, req: Request):
         logger.info(f"✅ Newsletter subscriber saved: {doc_name}")
         return {
             "success": True,
+            "persisted": True,
             "message": "Thanks for subscribing! Watch your inbox for the next issue.",
             "id": doc_name,
         }

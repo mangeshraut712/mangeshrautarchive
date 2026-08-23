@@ -90,7 +90,7 @@ async function injectApiKeys(distDir) {
 
   // Cloudflare Worker is the primary API for GitHub Pages. Vercel is optional/offline.
   const EDGE_API = 'https://assistme-chat.mangeshraut712.workers.dev';
-  const CANONICAL_SITE = 'https://mangeshraut.pro';
+  const CANONICAL_SITE = 'https://mangeshraut712.github.io/mangeshrautarchive';
   const apiBaseUrl =
     process.env.CHAT_API_BASE ||
     process.env.NEXT_PUBLIC_API_BASE ||
@@ -517,7 +517,7 @@ function resolveProductionSiteUrl() {
   return (
     process.env.OPENROUTER_SITE_URL ||
     process.env.PAGES_SITE_URL ||
-    'https://mangeshraut.pro'
+    'https://mangeshraut712.github.io/mangeshrautarchive'
   ).replace(/\/$/, '');
 }
 
@@ -553,7 +553,9 @@ async function syncServiceWorkerCacheVersion(distDir) {
 
 async function generateFeeds(distDir) {
   const siteUrl =
-    process.env.OPENROUTER_SITE_URL || process.env.PAGES_SITE_URL || 'https://mangeshraut.pro';
+    process.env.OPENROUTER_SITE_URL ||
+    process.env.PAGES_SITE_URL ||
+    'https://mangeshraut712.github.io/mangeshrautarchive';
   const updatedAt = new Date().toUTCString();
   const atomUpdatedAt = new Date().toISOString();
   const posts = getSortedBlogPosts();

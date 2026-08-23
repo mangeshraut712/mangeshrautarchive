@@ -42,3 +42,38 @@ def test_newsletter_unconfigured_returns_503(client, monkeypatch):
     )
 
     assert response.status_code == 503
+
+
+def test_newsletter_success_confirms_persistence(client, monkeypatch):
+    class Response:
+        status_code = 200
+        is_success = True
+        text = ""
+
+        @staticmethod
+        def json():
+            return {"name": "projects/test/documents/newsletter_subscribers/subscriber-id"}
+
+    class AsyncClient:
+        def __init__(self, **_kwargs):
+            pass
+
+        async def __aenter__(self):
+            return self
+
+        async def __aexit__(self, *_args):
+            return None
+
+        async def post(self, *_args, **_kwargs):
+            return Response()
+
+    monkeypatch.setenv("FIREBASE_API_KEY", "test-key")
+    monkeypatch.setattr("api.routes.general.httpx.AsyncClient", AsyncClient)
+
+    response = client.post(
+        "/api/newsletter/subscribe", json={"email": "reader@example.com"}
+    )
+
+    assert response.status_code == 200
+    assert response.json()["persisted"] is True
+    assert response.json()["id"] == "subscriber-id"

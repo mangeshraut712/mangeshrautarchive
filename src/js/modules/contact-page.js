@@ -5,6 +5,7 @@
  */
 
 import { initBlessingMediaModal } from './blessing-media-modal.js';
+import { getSubmissionContext, submitStoredForm } from '../services/form-submission.js';
 
 export function initContactInteractions() {
   initBlessingMediaModal();
@@ -59,19 +60,25 @@ function initContactForm() {
     const message = form.querySelector('#message, #contact-message')?.value || '';
 
     try {
-      const mailSubject = encodeURIComponent(
-        subject || `Portfolio Contact from ${name || 'Visitor'}`
-      );
-      const mailBody = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`);
-      const mailtoUrl = `mailto:mraut712@gmail.com?subject=${mailSubject}&body=${mailBody}`;
-
-      // Open mail client
-      window.location.href = mailtoUrl;
-
-      showToast(`Opening your email client to send to Mangesh...`, 'success');
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+      const result = await submitStoredForm('/api/contact', {
+        name,
+        email,
+        subject,
+        message,
+        website: form.elements.website?.value || '',
+        ...getSubmissionContext({ source: 'github_pages_contact' }),
+      });
+      showToast(result.message || 'Message saved. Mangesh will get back to you soon.', 'success');
       form.reset();
-    } catch {
-      showToast('Please reach out directly via email to mraut712@gmail.com', 'error');
+    } catch (error) {
+      showToast(
+        `${error.message || 'Message could not be saved.'} Email mraut712@gmail.com if this continues.`,
+        'error'
+      );
     } finally {
       if (submitBtn) {
         submitBtn.disabled = false;

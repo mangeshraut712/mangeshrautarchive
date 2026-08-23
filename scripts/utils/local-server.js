@@ -390,7 +390,7 @@ function escapeXml(value = '') {
 }
 
 async function generateLocalFeeds() {
-  const siteUrl = 'https://mangeshraut.pro';
+  const siteUrl = 'https://mangeshraut712.github.io/mangeshrautarchive';
   const posts = [...blogPosts].sort((a, b) => new Date(b.date) - new Date(a.date));
   const updatedAt = new Date().toUTCString();
   const atomUpdatedAt = new Date().toISOString();

@@ -14,7 +14,9 @@ import { ASSET_VER, fontAwesomeStylesheet } from './asset-version.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const SITE_URL =
-  process.env.OPENROUTER_SITE_URL || process.env.PAGES_SITE_URL || 'https://mangeshraut.pro';
+  process.env.OPENROUTER_SITE_URL ||
+  process.env.PAGES_SITE_URL ||
+  'https://mangeshraut712.github.io/mangeshrautarchive';
 const ASSET_PREFIX = '..';
 
 /** Deploy path prefix ('' on Vercel apex, '/mangeshrautarchive' on GitHub Pages). */
@@ -42,6 +44,35 @@ function sortedPosts() {
   return [...blogPosts].sort((a, b) => new Date(b.date) - new Date(a.date));
 }
 
+function postImagePath(post) {
+  const match = String(post?.content || '').match(/:::figure[\s\S]*?^src:\s*([^\s]+)\s*$/m);
+  return match?.[1] || 'assets/images/profile-icon.png';
+}
+
+function postImageUrl(post) {
+  const image = postImagePath(post);
+  return /^https?:\/\//i.test(image) ? image : `${SITE_URL}/${image.replace(/^\/+/, '')}`;
+}
+
+function newsletterCard({ id, source, title }) {
+  const safeId = String(id)
+    .replace(/[^a-z0-9-]/gi, '-')
+    .toLowerCase();
+  return `<aside class="newsletter-card newsletter-card--standalone" aria-labelledby="${safeId}-title">
+    <div class="icon-box blue newsletter-icon" aria-hidden="true"><i class="fas fa-envelope-open-text"></i></div>
+    <h2 id="${safeId}-title">${escapeHTML(title)}</h2>
+    <p>One practical field note on AI systems, developer tools, and cloud architecture every two weeks.</p>
+    <form class="newsletter-form" data-newsletter-form data-source="${escapeHTML(source)}" novalidate>
+      <label class="sr-only" for="${safeId}-email">Email address for newsletter</label>
+      <input class="apple-input" id="${safeId}-email" name="email" type="email" maxlength="200" autocomplete="email" inputmode="email" placeholder="you@example.com" required aria-required="true" />
+      <label class="form-honeypot" aria-hidden="true">Website<input type="text" name="website" tabindex="-1" autocomplete="off" /></label>
+      <button class="btn-primary newsletter-submit-btn" type="submit"><span class="newsletter-submit-text">Subscribe</span></button>
+      <p class="newsletter-status" data-newsletter-status role="status" aria-live="polite" hidden></p>
+    </form>
+    <p class="newsletter-privacy">Your email is stored securely for newsletter updates only.</p>
+  </aside>`;
+}
+
 function topicPills(tags = [], limit = 3) {
   return (tags || [])
     .slice(0, limit)
@@ -57,6 +88,7 @@ function pageShell({
   jsonLd,
   body,
   extraHead = '',
+  image = `${SITE_URL}/assets/images/profile-icon.png`,
 }) {
   return `<!doctype html>
 <html lang="en">
@@ -66,17 +98,18 @@ function pageShell({
     <meta name="view-transition" content="same-origin" />
     <meta name="description" content="${escapeHTML(description)}" />
     <meta name="author" content="Mangesh Raut" />
-    <meta name="robots" content="index, follow, max-image-preview:standard" />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
     <link rel="canonical" href="${canonical}" />
     <meta property="og:type" content="${ogType}" />
     <meta property="og:url" content="${canonical}" />
     <meta property="og:title" content="${escapeHTML(title)}" />
     <meta property="og:description" content="${escapeHTML(description)}" />
-    <meta property="og:image" content="${SITE_URL}/assets/images/profile-icon.png" />
-    <meta name="twitter:card" content="summary" />
+    <meta property="og:image" content="${escapeHTML(image)}" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:creator" content="@mrcommando712" />
     <meta name="twitter:title" content="${escapeHTML(title)}" />
     <meta name="twitter:description" content="${escapeHTML(description)}" />
-    <meta name="twitter:image" content="${SITE_URL}/assets/images/profile-icon.png" />
+    <meta name="twitter:image" content="${escapeHTML(image)}" />
     <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
     <meta name="color-scheme" content="light dark" />
@@ -168,6 +201,7 @@ function renderBlogIndex(posts, tags) {
           <span>${posts.length} articles</span>
         </div>
       </header>
+      ${newsletterCard({ id: 'blog-index-newsletter', source: 'blog_index_newsletter', title: 'Get the next field note' })}
       <div class="blog-filter-bar" role="group" aria-label="Filter by topic">
         <button type="button" class="blog-filter-chip active" data-tag="all" aria-pressed="true">All topics</button>
         ${tagFilters}
@@ -200,6 +234,7 @@ function renderBlogIndex(posts, tags) {
     canonical: `${SITE_URL}/blog`,
     jsonLd,
     body,
+    image: postImageUrl(posts[0]),
   });
 }
 
@@ -255,6 +290,7 @@ function renderBlogPost(post, posts) {
           ${toc ? `<aside class="blog-article-sidebar" id="blog-article-toc">${toc}</aside>` : ''}
           <div class="article-body article-body--measure">${html}</div>
         </div>
+        ${newsletterCard({ id: `blog-${post.id}-newsletter`, source: 'blog_article_newsletter', title: 'Continue the field notes' })}
         <div data-blog-reactions-host></div>
         ${relatedHtml}
       </article>
@@ -273,6 +309,7 @@ function renderBlogPost(post, posts) {
     url: `${SITE_URL}/blog/${post.id}`,
     keywords: (post.tags || []).join(', '),
     articleSection: post.kicker || 'Technical Writings',
+    image: postImageUrl(post),
   });
 
   return pageShell({
@@ -282,6 +319,7 @@ function renderBlogPost(post, posts) {
     ogType: 'article',
     jsonLd,
     body,
+    image: postImageUrl(post),
   });
 }
 

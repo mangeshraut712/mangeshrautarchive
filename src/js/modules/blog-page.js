@@ -3,6 +3,7 @@ import {
   rescanCardContentAccessibility,
 } from './card-content-accessibility.js';
 import { initArticleReactions } from './blog-reactions.js';
+import { initNewsletterForms } from './newsletter.js';
 
 function initBlogFilters() {
   const container = document.getElementById('blog-posts-container');
@@ -152,6 +153,7 @@ function initBlogPage() {
   initReadingProgress();
   initTocSpy();
   initArticleReactions();
+  initNewsletterForms();
   initCodeCopy();
 }
 

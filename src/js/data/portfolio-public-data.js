@@ -4,11 +4,11 @@
  * Lighthouse floors mirror `.github/workflows/deploy.yml` and `package.json` qa:lighthouse:* scripts.
  */
 
-/** Canonical brand and production origin. */
-export const SITE_URL = 'https://mangeshraut.pro';
-
 /** Live static host — use for OG images and public demos until apex is restored. */
 export const LIVE_SITE_URL = 'https://mangeshraut712.github.io/mangeshrautarchive';
+
+/** Canonical production origin while the Vercel apex deployment is disabled. */
+export const SITE_URL = LIVE_SITE_URL;
 
 export const SITE_THEME = {
   appleBlue: '#0071e3',
