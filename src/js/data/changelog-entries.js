@@ -43,6 +43,16 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'af6ee1cf',
+    date: '2026-08-23',
+    type: 'release',
+    title: 'Live Google Calendar Booking, Invitations, and Reminders',
+    summary:
+      'Replaced the fictional Contact calendar/reminder cards and Calendly popup with real Google Calendar free/busy slots, HMAC-signed booking tokens, server-side conflict checks, private event creation, Google Meet links, attendee invitation emails, 24-hour owner email reminders, 30-minute popup reminders, encrypted OAuth token refresh, and RLS-protected Supabase booking audit storage. Built with GPT-5 Codex; internal reasoning and token totals are not exposed by the runtime.',
+    tags: ['api', 'deploy', 'design'],
+    sha: 'af6ee1cf',
+  },
+  {
     id: '37854e81',
     date: '2026-08-23',
     type: 'release',

@@ -46,6 +46,14 @@ Provider logic lives under `api/integrations/`:
 - **Withings** — body composition measures
 - **Google Calendar** — availability / watch sync
 
+The active Cloudflare Worker also exposes:
+
+- `GET /api/calendar/availability` — sanitized 30-minute free slots only.
+- `POST /api/calendar/book` — signed-slot booking with conflict recheck, Calendar invitation email, Google Meet, and owner reminders.
+- `GET /api/integrations/google-calendar/connect` and `GET /api/calendar/callback/google` — protected owner OAuth on the permanent Worker callback.
+
+Google access uses only `calendar.events.owned` and `calendar.freebusy`; Gmail mailbox access is not requested. OAuth tokens remain encrypted in Supabase, while booking audit rows are RLS-protected and service-role-only.
+
 Connect flows use `api/integrations/oauth_state.py` and optional `INTEGRATION_ADMIN_TOKEN` for admin-only sync endpoints.
 
 ## Environment
