@@ -118,7 +118,7 @@ test.describe('Chrome accessibility baseline', () => {
     });
 
     expect(styles.backgroundColor).toBe('rgb(0, 113, 227)');
-    expect(styles.backgroundImage).toBe('none');
+    expect(styles.backgroundImage).toContain('linear-gradient');
     expect(styles.labelColor).toBe('rgb(255, 255, 255)');
   });
 
