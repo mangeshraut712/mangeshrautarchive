@@ -1341,7 +1341,7 @@ function renderIntegrationsPanel(data) {
                     <i class="fas fa-vial"></i>
                     <span>Verify API</span>
                   </a>`
-        : `<span class="integration-hint">Calendar API is FastAPI-only (Pages uses Calendly).</span>`;
+        : `<span class="integration-hint">Calendar needs owner reauthorization before live booking can resume.</span>`;
 
       return `
               <div class="health-item ${statusClass}">

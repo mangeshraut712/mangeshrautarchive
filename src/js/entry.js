@@ -52,7 +52,6 @@ import './services/RealtimeVoiceService.js';
 import './services/VoiceModeService.js';
 import './chatbot/index.js';
 
-import './utils/calendly.js';
 import './utils/go-to-top.js';
 import './utils/smart-navbar.js';
 import './utils/theme.js';

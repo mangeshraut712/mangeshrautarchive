@@ -181,4 +181,63 @@ describe('Cloudflare edge form storage', () => {
     expect(responses[5].status).toBe(429);
     expect(databaseFetch).toHaveBeenCalledTimes(5);
   });
+
+  it('exposes a safe Calendar availability contract when OAuth is not configured', async () => {
+    const response = await worker.fetch(
+      new Request('https://assistme-chat.test/api/calendar/availability', {
+        headers: { Origin: ORIGIN },
+      }),
+      { ALLOWED_ORIGINS: ORIGIN },
+      ctx
+    );
+
+    expect(response.status).toBe(200);
+    await expect(response.json()).resolves.toMatchObject({
+      success: true,
+      status: 'not_configured',
+      slots: [],
+    });
+  });
+
+  it('creates a short-lived owner Google Calendar connect URL behind the admin header', async () => {
+    const response = await worker.fetch(
+      new Request('https://assistme-chat.test/api/integrations/admin/connect-url/google_calendar', {
+        headers: {
+          Origin: ORIGIN,
+          'x-integration-admin-token': 'admin-secret',
+        },
+      }),
+      {
+        ...ENV,
+        GOOGLE_CALENDAR_CLIENT_ID: 'google-client-id',
+        GOOGLE_CALENDAR_CLIENT_SECRET: 'google-client-secret',
+        INTEGRATION_ENCRYPTION_KEY: 'integration-secret',
+        INTEGRATION_SYNC_ADMIN_TOKEN: 'admin-secret',
+      },
+      ctx
+    );
+
+    expect(response.status).toBe(200);
+    await expect(response.json()).resolves.toMatchObject({
+      success: true,
+      provider: 'google_calendar',
+      expiresIn: 600,
+    });
+  });
+
+  it('validates public Calendar booking payloads at the Worker route', async () => {
+    const response = await worker.fetch(
+      request('/api/calendar/book', {
+        name: '',
+        email: 'invalid',
+        topic: '',
+        slotToken: '',
+        website: '',
+      }),
+      ENV,
+      ctx
+    );
+
+    expect(response.status).toBe(400);
+  });
 });

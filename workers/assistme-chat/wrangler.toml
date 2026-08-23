@@ -19,6 +19,7 @@ WHOOP_REDIRECT_URI = "https://assistme-chat.mangeshraut712.workers.dev/api/integ
 WITHINGS_REDIRECT_URI = "https://assistme-chat.mangeshraut712.workers.dev/api/integrations/withings/callback"
 OAUTH_SUCCESS_REDIRECT = "https://mangeshraut712.github.io/mangeshrautarchive/monitor.html#integrations-whoop"
 PUBLIC_SITE_URL = "https://mangeshraut712.github.io/mangeshrautarchive"
+GOOGLE_CALENDAR_REDIRECT_URI = "https://assistme-chat.mangeshraut712.workers.dev/api/calendar/callback/google"
 
 # Keepalive every 30m — WHOOP access tokens last ~1h; refresh before expiry under lock.
 [triggers]

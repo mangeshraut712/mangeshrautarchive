@@ -224,8 +224,8 @@ function buildRuntime(env) {
       whoop_client_secret: has('WHOOP_CLIENT_SECRET'),
       withings_client_id: has('WITHINGS_CLIENT_ID'),
       withings_client_secret: has('WITHINGS_CLIENT_SECRET'),
-      google_calendar_client_id: false,
-      google_calendar_client_secret: false,
+      google_calendar_client_id: has('GOOGLE_CALENDAR_CLIENT_ID'),
+      google_calendar_client_secret: has('GOOGLE_CALENDAR_CLIENT_SECRET'),
     },
   };
 }

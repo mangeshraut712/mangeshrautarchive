@@ -11,7 +11,6 @@
  * - Copy contact information
  */
 
-import { openCalendlyPopup } from '../utils/calendly.js';
 import { sitePath } from '../utils/site-base.js';
 import { forceDownloadFile } from './resume-dropdown.js';
 
@@ -90,7 +89,7 @@ export class AgenticActionHandler {
       navigator.modelContext.registerTool(
         {
           name: 'schedule_meeting',
-          description: 'Open the Calendly booking popup to schedule a meeting with Mangesh.',
+          description: 'Open live Google Calendar availability to schedule a meeting with Mangesh.',
           inputSchema: { type: 'object', properties: {} },
           execute: async () => {
             return this.scheduleMeeting();
@@ -640,18 +639,16 @@ export class AgenticActionHandler {
   }
 
   async scheduleMeeting(_match) {
-    // Navigate to contact section and open calendar
     const contactSection = document.querySelector('#contact');
     if (contactSection) {
-      contactSection.scrollIntoView({ behavior: 'smooth' });
+      contactSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
-
-    await openCalendlyPopup();
+    document.querySelector('#calendar-widget [data-calendar-slot]')?.focus();
 
     return {
       success: true,
       message:
-        '📅 Opening Calendly to schedule a meeting. Please select a date and time, or email mbr63@drexel.edu directly.',
+        '📅 Opening the live Google Calendar availability in Contact. Choose a time to receive an emailed invitation.',
       action: 'schedule_meeting',
     };
   }
@@ -814,18 +811,16 @@ export class AgenticActionHandler {
   }
 
   async showAvailability(_match) {
-    // Navigate to contact section
     const contactSection = document.querySelector('#contact');
     if (contactSection) {
       contactSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
-
-    await openCalendlyPopup();
+    document.querySelector('#calendar-widget [data-calendar-slot]')?.focus();
 
     return {
       success: true,
       message:
-        '📅 Here is my Calendly schedule! Generally available for meetings weekdays 9 AM - 5 PM EST.',
+        '📅 Live Google Calendar availability is open in Contact. Only currently free 30-minute slots are shown.',
       action: 'show_availability',
     };
   }

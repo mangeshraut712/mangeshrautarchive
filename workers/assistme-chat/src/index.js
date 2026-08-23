@@ -19,6 +19,12 @@
 
 import { EDGE_DATA_SNAPSHOT } from './edge-data-snapshot.js';
 import { authorizeCron, syncConnectedHealthProviders } from './health-sync.js';
+import {
+  handleCalendarAvailability,
+  handleCalendarBooking,
+  handleGoogleCalendarCallback,
+  handleGoogleCalendarConnect,
+} from './google-calendar.js';
 import { handleMonitorEdge } from './monitor-edge.js';
 import {
   handleAdminConnectUrl,
@@ -1219,6 +1225,18 @@ const worker = {
     if (request.method === 'GET' && path === '/api/integrations/withings/callback') {
       return handleWithingsCallback(request, env, cors);
     }
+    if (request.method === 'GET' && path === '/api/integrations/google-calendar/connect') {
+      return handleGoogleCalendarConnect(request, env, cors);
+    }
+    if (request.method === 'GET' && path === '/api/calendar/callback/google') {
+      return handleGoogleCalendarCallback(request, env, cors);
+    }
+    if (request.method === 'GET' && path === '/api/calendar/availability') {
+      return handleCalendarAvailability(request, env, cors);
+    }
+    if (request.method === 'POST' && path === '/api/calendar/book') {
+      return handleCalendarBooking(request, env, cors);
+    }
 
     // Soft analytics + health vitals so Pages does not depend on blocked Vercel
     if (request.method === 'GET' && path === '/api/analytics/reach') {
@@ -1299,6 +1317,10 @@ const worker = {
             'GET /api/integrations/whoop/callback',
             'GET /api/integrations/withings/connect',
             'GET /api/integrations/withings/callback',
+            'GET /api/integrations/google-calendar/connect',
+            'GET /api/calendar/callback/google',
+            'GET /api/calendar/availability',
+            'POST /api/calendar/book',
             'POST /api/newsletter/subscribe',
             'POST /api/contact',
             'GET|POST /api/cron/health-vitals-sync',

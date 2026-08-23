@@ -9,6 +9,12 @@ import {
   whoopRedirectUri,
   withingsRedirectUri,
 } from './health-sync.js';
+import {
+  GOOGLE_CALENDAR_SCOPES,
+  createGoogleCalendarOwnerUrl,
+  getGoogleCalendarStatus,
+  googleCalendarRedirectUri,
+} from './google-calendar.js';
 
 const WHOOP_AUTH_URL = 'https://api.prod.whoop.com/oauth/oauth2/auth';
 const WHOOP_TOKEN_URL = 'https://api.prod.whoop.com/oauth/oauth2/token';
@@ -475,9 +481,28 @@ export async function handleAdminConnectUrl(request, env, provider, cors = {}) {
       cors
     );
   }
+  if (normalized === 'google_calendar') {
+    const google = await getGoogleCalendarStatus(env);
+    if (!google.configured) {
+      return json({ error: 'Google Calendar OAuth is not configured.' }, 503, cors);
+    }
+    return json(
+      {
+        success: true,
+        provider: 'google_calendar',
+        url: await createGoogleCalendarOwnerUrl(env),
+        expiresIn: 600,
+        redirectUri: googleCalendarRedirectUri(env),
+        host: 'cloudflare-worker',
+        timestamp: new Date().toISOString(),
+      },
+      200,
+      cors
+    );
+  }
   return json(
     {
-      error: 'Edge OAuth supports WHOOP and Withings only (Google Calendar stays FastAPI).',
+      error: 'Unknown edge OAuth provider.',
       provider: normalized,
     },
     404,
@@ -488,9 +513,10 @@ export async function handleAdminConnectUrl(request, env, provider, cors = {}) {
 export async function handleIntegrationsStatus(env, cors = {}) {
   const whoopConfiguredFlag = whoopConfigured(env);
   const withingsConfiguredFlag = withingsConfigured(env);
-  const [whoop, withings] = await Promise.all([
+  const [whoop, withings, googleCalendar] = await Promise.all([
     readProviderStatus(env, 'whoop'),
     readProviderStatus(env, 'withings'),
+    getGoogleCalendarStatus(env),
   ]);
 
   return json(
@@ -546,10 +572,21 @@ export async function handleIntegrationsStatus(env, cors = {}) {
           redirectUri: withingsRedirectUri(env),
         },
         googleCalendar: {
-          configured: false,
-          connected: false,
-          purpose: 'Portfolio UI uses Calendly; Google Calendar OAuth is optional FastAPI-only.',
-          requiresOwnerAuth: false,
+          configured: googleCalendar.configured,
+          connected: googleCalendar.connected,
+          status: googleCalendar.status,
+          needsReauth: googleCalendar.status === 'needs_reauth',
+          purpose: 'Live free/busy availability, booking invitations, and owner reminders.',
+          scopes: GOOGLE_CALENDAR_SCOPES,
+          connectUrl: null,
+          requiresOwnerAuth: googleCalendar.configured,
+          nextStep:
+            googleCalendar.status === 'needs_reauth'
+              ? 'Reconnect Google Calendar once through the protected owner workflow.'
+              : googleCalendar.connected
+                ? 'Connected — visitors can book live availability from Contact.'
+                : 'Connect Google Calendar through the protected owner workflow.',
+          redirectUri: googleCalendarRedirectUri(env),
         },
       },
       privacy: {

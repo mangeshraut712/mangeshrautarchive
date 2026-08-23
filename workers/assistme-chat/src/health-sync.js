@@ -6,6 +6,7 @@
 const WHOOP_TOKEN_URL = 'https://api.prod.whoop.com/oauth/oauth2/token';
 const WHOOP_API = 'https://api.prod.whoop.com/developer/v2';
 const WITHINGS_TOKEN_URL = 'https://wbsapi.withings.net/v2/oauth2';
+const GOOGLE_TOKEN_URL = 'https://oauth2.googleapis.com/token';
 const WITHINGS_MEASURE_URL = 'https://wbsapi.withings.net/measure';
 
 const STALE_MS = 4 * 60 * 60 * 1000;
@@ -481,6 +482,26 @@ async function refreshWithings(env, refreshToken) {
   };
 }
 
+async function refreshGoogleCalendar(env, refreshToken) {
+  const body = new URLSearchParams({
+    grant_type: 'refresh_token',
+    refresh_token: refreshToken,
+    client_id: String(env.GOOGLE_CALENDAR_CLIENT_ID || '').trim(),
+    client_secret: String(env.GOOGLE_CALENDAR_CLIENT_SECRET || '').trim(),
+  });
+  const res = await fetch(GOOGLE_TOKEN_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body,
+  });
+  if (!res.ok) {
+    const err = new Error(`google_calendar_refresh_${res.status}`);
+    err.status = res.status;
+    throw err;
+  }
+  return res.json();
+}
+
 async function decryptTokenBundle(env, tokenRow) {
   const encKey = env.INTEGRATION_ENCRYPTION_KEY;
   if (!encKey || !tokenRow) return null;
@@ -500,7 +521,7 @@ async function decryptTokenBundle(env, tokenRow) {
   }
 }
 
-async function getValidAccessToken(env, provider, { forceRefresh = false } = {}) {
+export async function getValidAccessToken(env, provider, { forceRefresh = false } = {}) {
   const account = await getConnectedAccount(env, provider);
   if (!account) return null;
   if (!String(env.INTEGRATION_ENCRYPTION_KEY || '').trim()) return null;
@@ -548,10 +569,15 @@ async function getValidAccessToken(env, provider, { forceRefresh = false } = {})
     const seenUpdatedAt = bundle.updatedAt;
     let refreshed;
     try {
-      refreshed =
-        provider === 'whoop'
-          ? await refreshWhoop(env, bundle.refreshToken)
-          : await refreshWithings(env, bundle.refreshToken);
+      if (provider === 'whoop') {
+        refreshed = await refreshWhoop(env, bundle.refreshToken);
+      } else if (provider === 'withings') {
+        refreshed = await refreshWithings(env, bundle.refreshToken);
+      } else if (provider === 'google_calendar') {
+        refreshed = await refreshGoogleCalendar(env, bundle.refreshToken);
+      } else {
+        return null;
+      }
     } catch (error) {
       if (error?.status === 400 || error?.status === 401) {
         const racedRow = await getTokenRow(env, account.id);

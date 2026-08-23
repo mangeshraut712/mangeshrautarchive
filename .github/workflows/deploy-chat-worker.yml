@@ -270,6 +270,8 @@ jobs:
             WHOOP_CLIENT_SECRET
             WITHINGS_CLIENT_ID
             WITHINGS_CLIENT_SECRET
+            GOOGLE_CALENDAR_CLIENT_ID
+            GOOGLE_CALENDAR_CLIENT_SECRET
         env:
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
           LASTFM_API_KEY: ${{ secrets.LASTFM_API_KEY }}
@@ -284,6 +286,8 @@ jobs:
           WHOOP_CLIENT_SECRET: ${{ secrets.WHOOP_CLIENT_SECRET }}
           WITHINGS_CLIENT_ID: ${{ secrets.WITHINGS_CLIENT_ID }}
           WITHINGS_CLIENT_SECRET: ${{ secrets.WITHINGS_CLIENT_SECRET }}
+          GOOGLE_CALENDAR_CLIENT_ID: ${{ secrets.GOOGLE_CALENDAR_CLIENT_ID }}
+          GOOGLE_CALENDAR_CLIENT_SECRET: ${{ secrets.GOOGLE_CALENDAR_CLIENT_SECRET }}
 
       - name: Deploy Worker (Global API Key)
         id: deploy_global
@@ -308,6 +312,8 @@ jobs:
             WHOOP_CLIENT_SECRET
             WITHINGS_CLIENT_ID
             WITHINGS_CLIENT_SECRET
+            GOOGLE_CALENDAR_CLIENT_ID
+            GOOGLE_CALENDAR_CLIENT_SECRET
         env:
           CLOUDFLARE_API_KEY: ${{ env.CLOUDFLARE_API_KEY }}
           CLOUDFLARE_EMAIL: ${{ env.CLOUDFLARE_EMAIL }}
@@ -324,6 +330,8 @@ jobs:
           WHOOP_CLIENT_SECRET: ${{ secrets.WHOOP_CLIENT_SECRET }}
           WITHINGS_CLIENT_ID: ${{ secrets.WITHINGS_CLIENT_ID }}
           WITHINGS_CLIENT_SECRET: ${{ secrets.WITHINGS_CLIENT_SECRET }}
+          GOOGLE_CALENDAR_CLIENT_ID: ${{ secrets.GOOGLE_CALENDAR_CLIENT_ID }}
+          GOOGLE_CALENDAR_CLIENT_SECRET: ${{ secrets.GOOGLE_CALENDAR_CLIENT_SECRET }}
 
       - name: Resolve worker URL
         if: steps.cf.outputs.present == 'true'
