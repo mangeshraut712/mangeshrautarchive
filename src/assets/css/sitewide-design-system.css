@@ -86,50 +86,11 @@
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
-/* Primary Button Hover State */
-:is(
-  .btn-primary,
-  .hero-cta-primary,
-  .btn-resume,
-  .resume-dropdown-toggle,
-  .projects-view-all-btn,
-  .publication-read-btn,
-  .apple-submit-btn,
-  .contact-send-btn,
-  .newsletter-submit-btn,
-  .newsletter-form .btn-primary,
-  .submit-btn,
-  .contact-submit,
-  .project-link,
-  .read-more-btn,
-  .download-btn,
-  .hero-btn,
-  .about-btn,
-  .cta-button,
-  .error-btn--primary,
-  .error-home-link,
-  .support-stripe-btn.premium,
-  .support-paypal-btn.premium,
-  .support-coffee-btn.premium,
-  .project-action-btn.btn-demo,
-  .btn.btn-demo,
-  .case-study-hero-cta,
-  .travel-map-load
-):hover {
-  background-color: #0077ed !important;
-  background-image: linear-gradient(135deg, #0080ff 0%, #0071e3 50%, #0066cc 100%) !important;
-  transform: translateY(-2px) scale(1.02) !important;
-  box-shadow:
-    0 8px 24px rgba(0, 113, 227, 0.48),
-    0 3px 8px rgba(0, 0, 0, 0.12) !important;
-}
-
 :is(
     .btn-primary,
     .hero-cta-primary,
     .btn-resume,
     .resume-dropdown-toggle,
-    .projects-view-all-btn,
     .publication-read-btn,
     .apple-submit-btn,
     .contact-send-btn,
@@ -151,7 +112,83 @@
     .project-action-btn.btn-demo,
     .btn.btn-demo,
     .case-study-hero-cta,
-    .travel-map-load
+    .travel-map-load,
+    #projects-github-cta,
+    .projects-github-cta
+  )
+  * {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+/* Primary Button Hover State */
+:is(
+  .btn-primary,
+  .hero-cta-primary,
+  .btn-resume,
+  .resume-dropdown-toggle,
+  .publication-read-btn,
+  .apple-submit-btn,
+  .contact-send-btn,
+  .newsletter-submit-btn,
+  .newsletter-form .btn-primary,
+  .submit-btn,
+  .contact-submit,
+  .project-link,
+  .read-more-btn,
+  .download-btn,
+  .hero-btn,
+  .about-btn,
+  .cta-button,
+  .error-btn--primary,
+  .error-home-link,
+  .support-stripe-btn.premium,
+  .support-paypal-btn.premium,
+  .support-coffee-btn.premium,
+  .project-action-btn.btn-demo,
+  .btn.btn-demo,
+  .case-study-hero-cta,
+  .travel-map-load,
+  #projects-github-cta,
+  .projects-github-cta
+):hover {
+  background-color: #0077ed !important;
+  background-image: linear-gradient(135deg, #0080ff 0%, #0071e3 50%, #0066cc 100%) !important;
+  transform: translateY(-2px) scale(1.02) !important;
+  box-shadow:
+    0 8px 24px rgba(0, 113, 227, 0.48),
+    0 3px 8px rgba(0, 0, 0, 0.12) !important;
+}
+
+:is(
+    .btn-primary,
+    .hero-cta-primary,
+    .btn-resume,
+    .resume-dropdown-toggle,
+    .publication-read-btn,
+    .apple-submit-btn,
+    .contact-send-btn,
+    .newsletter-submit-btn,
+    .newsletter-form .btn-primary,
+    .submit-btn,
+    .contact-submit,
+    .project-link,
+    .read-more-btn,
+    .download-btn,
+    .hero-btn,
+    .about-btn,
+    .cta-button,
+    .error-btn--primary,
+    .error-home-link,
+    .support-stripe-btn.premium,
+    .support-paypal-btn.premium,
+    .support-coffee-btn.premium,
+    .project-action-btn.btn-demo,
+    .btn.btn-demo,
+    .case-study-hero-cta,
+    .travel-map-load,
+    #projects-github-cta,
+    .projects-github-cta
   ):hover
   * {
   color: #ffffff !important;
@@ -212,12 +249,32 @@ html:not(.dark)
   background-image: linear-gradient(
     180deg,
     rgba(255, 255, 255, 0.95) 0%,
-    rgba(245, 245, 247, 0.8) 100%
+    rgba(245, 245, 247, 0.85) 100%
   ) !important;
   color: #1d1d1f !important;
   -webkit-text-fill-color: #1d1d1f !important;
   border: 1px solid rgba(0, 0, 0, 0.14) !important;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05) !important;
+}
+
+html:not(.dark)
+  :is(
+    .btn-secondary,
+    .button-secondary,
+    .apple-btn-secondary,
+    .hero-cta-secondary,
+    .btn-github,
+    .btn-ar,
+    .btn-glass,
+    .error-btn--secondary,
+    .dictation-dock-btn:not(.is-primary),
+    .project-action-btn:not(.btn-demo),
+    .health-item .btn,
+    .integration-actions .btn
+  )
+  * {
+  color: #1d1d1f !important;
+  -webkit-text-fill-color: #1d1d1f !important;
 }
 
 html.dark
@@ -247,6 +304,26 @@ html.dark
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
 }
 
+html.dark
+  :is(
+    .btn-secondary,
+    .button-secondary,
+    .apple-btn-secondary,
+    .hero-cta-secondary,
+    .btn-github,
+    .btn-ar,
+    .btn-glass,
+    .error-btn--secondary,
+    .dictation-dock-btn:not(.is-primary),
+    .project-action-btn:not(.btn-demo),
+    .health-item .btn,
+    .integration-actions .btn
+  )
+  * {
+  color: #f5f5f7 !important;
+  -webkit-text-fill-color: #f5f5f7 !important;
+}
+
 @media (hover: hover) and (pointer: fine) {
   html:not(.dark)
     :is(
@@ -267,8 +344,33 @@ html.dark
     -webkit-text-fill-color: #0071e3 !important;
     border-color: #0071e3 !important;
     background-color: rgba(0, 113, 227, 0.06) !important;
+    background-image: linear-gradient(
+      180deg,
+      rgba(0, 113, 227, 0.06) 0%,
+      rgba(0, 113, 227, 0.02) 100%
+    ) !important;
     box-shadow: 0 6px 18px rgba(0, 113, 227, 0.18) !important;
     transform: translateY(-2px) scale(1.02) !important;
+  }
+
+  html:not(.dark)
+    :is(
+      .btn-secondary,
+      .button-secondary,
+      .apple-btn-secondary,
+      .hero-cta-secondary,
+      .btn-github,
+      .btn-ar,
+      .btn-glass,
+      .error-btn--secondary,
+      .dictation-dock-btn:not(.is-primary),
+      .project-action-btn:not(.btn-demo),
+      .health-item .btn,
+      .integration-actions .btn
+    ):hover
+    * {
+    color: #0071e3 !important;
+    -webkit-text-fill-color: #0071e3 !important;
   }
 
   html.dark
@@ -290,8 +392,33 @@ html.dark
     -webkit-text-fill-color: #2997ff !important;
     border-color: #2997ff !important;
     background-color: rgba(41, 151, 255, 0.14) !important;
+    background-image: linear-gradient(
+      180deg,
+      rgba(41, 151, 255, 0.18) 0%,
+      rgba(41, 151, 255, 0.06) 100%
+    ) !important;
     box-shadow: 0 6px 18px rgba(41, 151, 255, 0.25) !important;
     transform: translateY(-2px) scale(1.02) !important;
+  }
+
+  html.dark
+    :is(
+      .btn-secondary,
+      .button-secondary,
+      .apple-btn-secondary,
+      .hero-cta-secondary,
+      .btn-github,
+      .btn-ar,
+      .btn-glass,
+      .error-btn--secondary,
+      .dictation-dock-btn:not(.is-primary),
+      .project-action-btn:not(.btn-demo),
+      .health-item .btn,
+      .integration-actions .btn
+    ):hover
+    * {
+    color: #2997ff !important;
+    -webkit-text-fill-color: #2997ff !important;
   }
 }
 
@@ -314,7 +441,9 @@ html.dark
   .log-tab-btn,
   .monitor-filter-btn,
   .skills-radar-pill,
-  .share-mirror-tab
+  .share-mirror-tab,
+  .project-clone-btn,
+  .clone-btn
 ) {
   font-family:
     -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', 'Helvetica Neue', Arial,
@@ -354,7 +483,9 @@ html:not(.dark)
     .log-tab-btn,
     .monitor-filter-btn,
     .skills-radar-pill,
-    .share-mirror-tab
+    .share-mirror-tab,
+    .project-clone-btn,
+    .clone-btn
   ):not(.is-active):not(.active):not([aria-selected='true']):not([aria-pressed='true']) {
   background-color: rgba(0, 0, 0, 0.04) !important;
   background-image: linear-gradient(180deg, #ffffff 0%, #f5f5f7 100%) !important;
@@ -362,6 +493,34 @@ html:not(.dark)
   -webkit-text-fill-color: #1d1d1f !important;
   border: 1px solid rgba(0, 0, 0, 0.14) !important;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06) !important;
+}
+
+html:not(.dark)
+  :is(
+    .proj-filter-btn,
+    .project-lens-chip,
+    .about-tab-btn,
+    .systems-arch-tab,
+    .systems-filter-chip,
+    .systems-benchmarks-tab,
+    .country-pill,
+    .travel-filter-chip,
+    .travel-action,
+    .travel-advanced-toggle,
+    .uses-filter-chip,
+    .uses-control-tile,
+    .changelog-chip,
+    .changelog-filters-toggle,
+    .log-tab-btn,
+    .monitor-filter-btn,
+    .skills-radar-pill,
+    .share-mirror-tab,
+    .project-clone-btn,
+    .clone-btn
+  ):not(.is-active):not(.active):not([aria-selected='true']):not([aria-pressed='true'])
+  * {
+  color: #1d1d1f !important;
+  -webkit-text-fill-color: #1d1d1f !important;
 }
 
 /* Inactive State - Dark Mode */
@@ -384,7 +543,9 @@ html.dark
     .log-tab-btn,
     .monitor-filter-btn,
     .skills-radar-pill,
-    .share-mirror-tab
+    .share-mirror-tab,
+    .project-clone-btn,
+    .clone-btn
   ):not(.is-active):not(.active):not([aria-selected='true']):not([aria-pressed='true']) {
   background-color: rgba(255, 255, 255, 0.06) !important;
   background-image: linear-gradient(
@@ -396,6 +557,34 @@ html.dark
   -webkit-text-fill-color: #f5f5f7 !important;
   border: 1px solid rgba(255, 255, 255, 0.16) !important;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3) !important;
+}
+
+html.dark
+  :is(
+    .proj-filter-btn,
+    .project-lens-chip,
+    .about-tab-btn,
+    .systems-arch-tab,
+    .systems-filter-chip,
+    .systems-benchmarks-tab,
+    .country-pill,
+    .travel-filter-chip,
+    .travel-action,
+    .travel-advanced-toggle,
+    .uses-filter-chip,
+    .uses-control-tile,
+    .changelog-chip,
+    .changelog-filters-toggle,
+    .log-tab-btn,
+    .monitor-filter-btn,
+    .skills-radar-pill,
+    .share-mirror-tab,
+    .project-clone-btn,
+    .clone-btn
+  ):not(.is-active):not(.active):not([aria-selected='true']):not([aria-pressed='true'])
+  * {
+  color: #f5f5f7 !important;
+  -webkit-text-fill-color: #f5f5f7 !important;
 }
 
 /* Chip / Pill Hover State */
@@ -419,13 +608,74 @@ html.dark
       .log-tab-btn,
       .monitor-filter-btn,
       .skills-radar-pill,
-      .share-mirror-tab
+      .share-mirror-tab,
+      .project-clone-btn,
+      .clone-btn
     ):not(.is-active):not(.active):not([aria-selected='true']):not([aria-pressed='true']):hover {
     color: #0071e3 !important;
     -webkit-text-fill-color: #0071e3 !important;
     border-color: rgba(0, 113, 227, 0.45) !important;
     background-color: rgba(0, 113, 227, 0.06) !important;
     box-shadow: 0 3px 10px rgba(0, 113, 227, 0.15) !important;
+    transform: translateY(-1px) !important;
+  }
+
+  html:not(.dark)
+    :is(
+      .proj-filter-btn,
+      .project-lens-chip,
+      .about-tab-btn,
+      .systems-arch-tab,
+      .systems-filter-chip,
+      .systems-benchmarks-tab,
+      .country-pill,
+      .travel-filter-chip,
+      .travel-action,
+      .travel-advanced-toggle,
+      .uses-filter-chip,
+      .uses-control-tile,
+      .changelog-chip,
+      .changelog-filters-toggle,
+      .log-tab-btn,
+      .monitor-filter-btn,
+      .skills-radar-pill,
+      .share-mirror-tab,
+      .project-clone-btn,
+      .clone-btn
+    ):not(.is-active):not(.active):not([aria-selected='true']):not([aria-pressed='true']):hover
+    * {
+    color: #0071e3 !important;
+    -webkit-text-fill-color: #0071e3 !important;
+  }
+
+  html.dark
+    :is(
+      .proj-filter-btn,
+      .project-lens-chip,
+      .about-tab-btn,
+      .systems-arch-tab,
+      .systems-filter-chip,
+      .systems-benchmarks-tab,
+      .country-pill,
+      .travel-filter-chip,
+      .travel-action,
+      .travel-advanced-toggle,
+      .uses-filter-chip,
+      .uses-control-tile,
+      .changelog-chip,
+      .changelog-filters-toggle,
+      .log-tab-btn,
+      .monitor-filter-btn,
+      .skills-radar-pill,
+      .share-mirror-tab,
+      .project-clone-btn,
+      .clone-btn
+    ):not(.is-active):not(.active):not([aria-selected='true']):not([aria-pressed='true']):hover {
+    color: #2997ff !important;
+    -webkit-text-fill-color: #2997ff !important;
+    border-color: rgba(41, 151, 255, 0.45) !important;
+    background-color: rgba(41, 151, 255, 0.12) !important;
+    box-shadow: 0 3px 10px rgba(41, 151, 255, 0.2) !important;
     transform: translateY(-1px) !important;
   }
 
@@ -448,14 +698,13 @@ html.dark
       .log-tab-btn,
       .monitor-filter-btn,
       .skills-radar-pill,
-      .share-mirror-tab
-    ):not(.is-active):not(.active):not([aria-selected='true']):not([aria-pressed='true']):hover {
+      .share-mirror-tab,
+      .project-clone-btn,
+      .clone-btn
+    ):not(.is-active):not(.active):not([aria-selected='true']):not([aria-pressed='true']):hover
+    * {
     color: #2997ff !important;
     -webkit-text-fill-color: #2997ff !important;
-    border-color: rgba(41, 151, 255, 0.45) !important;
-    background-color: rgba(41, 151, 255, 0.12) !important;
-    box-shadow: 0 3px 10px rgba(41, 151, 255, 0.2) !important;
-    transform: translateY(-1px) !important;
   }
 }
 
@@ -478,7 +727,9 @@ html.dark
   .log-tab-btn,
   .monitor-filter-btn,
   .skills-radar-pill,
-  .share-mirror-tab
+  .share-mirror-tab,
+  .project-clone-btn,
+  .clone-btn
 ):is(.is-active, .active, [aria-selected='true'], [aria-pressed='true']) {
   background-color: #0071e3 !important;
   background-image: linear-gradient(135deg, #0077ed 0%, #0071e3 50%, #005bb5 100%) !important;
@@ -507,7 +758,9 @@ html.dark
     .log-tab-btn,
     .monitor-filter-btn,
     .skills-radar-pill,
-    .share-mirror-tab
+    .share-mirror-tab,
+    .project-clone-btn,
+    .clone-btn
   ):is(.is-active, .active, [aria-selected='true'], [aria-pressed='true'])
   * {
   color: #ffffff !important;
@@ -519,13 +772,15 @@ html.dark
   .section-preview-btn,
   .skills-radar-toggle-btn,
   .arch-tree-toggle-btn,
+  .projects-expand-btn,
+  .projects-view-all-btn,
+  .engineering-open-btn,
   .blog-view-more-btn,
   .view-more-btn,
   .btn-view-more,
   .systems-view-more-btn,
   .travel-view-more-btn,
-  .uses-view-more-btn,
-  .engineering-open-btn
+  .uses-view-more-btn
 ) {
   font-family:
     -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', 'Helvetica Neue', Arial,
@@ -553,20 +808,42 @@ html:not(.dark)
     .section-preview-btn,
     .skills-radar-toggle-btn,
     .arch-tree-toggle-btn,
+    .projects-expand-btn,
+    .projects-view-all-btn,
+    .engineering-open-btn,
     .blog-view-more-btn,
     .view-more-btn,
     .btn-view-more,
     .systems-view-more-btn,
     .travel-view-more-btn,
-    .uses-view-more-btn,
-    .engineering-open-btn
+    .uses-view-more-btn
   ) {
   background-color: rgba(0, 113, 227, 0.04) !important;
   background-image: linear-gradient(180deg, #ffffff 0%, #f5f5f7 100%) !important;
   color: #0071e3 !important;
   -webkit-text-fill-color: #0071e3 !important;
-  border: 1px solid rgba(0, 113, 227, 0.3) !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+  border: 1px solid rgba(0, 113, 227, 0.35) !important;
+  box-shadow: 0 2px 8px rgba(0, 113, 227, 0.08) !important;
+}
+
+html:not(.dark)
+  :is(
+    .section-preview-btn,
+    .skills-radar-toggle-btn,
+    .arch-tree-toggle-btn,
+    .projects-expand-btn,
+    .projects-view-all-btn,
+    .engineering-open-btn,
+    .blog-view-more-btn,
+    .view-more-btn,
+    .btn-view-more,
+    .systems-view-more-btn,
+    .travel-view-more-btn,
+    .uses-view-more-btn
+  )
+  * {
+  color: #0071e3 !important;
+  -webkit-text-fill-color: #0071e3 !important;
 }
 
 html.dark
@@ -574,13 +851,15 @@ html.dark
     .section-preview-btn,
     .skills-radar-toggle-btn,
     .arch-tree-toggle-btn,
+    .projects-expand-btn,
+    .projects-view-all-btn,
+    .engineering-open-btn,
     .blog-view-more-btn,
     .view-more-btn,
     .btn-view-more,
     .systems-view-more-btn,
     .travel-view-more-btn,
-    .uses-view-more-btn,
-    .engineering-open-btn
+    .uses-view-more-btn
   ) {
   background-color: rgba(41, 151, 255, 0.08) !important;
   background-image: linear-gradient(
@@ -590,8 +869,28 @@ html.dark
   ) !important;
   color: #2997ff !important;
   -webkit-text-fill-color: #2997ff !important;
-  border: 1px solid rgba(41, 151, 255, 0.35) !important;
+  border: 1px solid rgba(41, 151, 255, 0.4) !important;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+}
+
+html.dark
+  :is(
+    .section-preview-btn,
+    .skills-radar-toggle-btn,
+    .arch-tree-toggle-btn,
+    .projects-expand-btn,
+    .projects-view-all-btn,
+    .engineering-open-btn,
+    .blog-view-more-btn,
+    .view-more-btn,
+    .btn-view-more,
+    .systems-view-more-btn,
+    .travel-view-more-btn,
+    .uses-view-more-btn
+  )
+  * {
+  color: #2997ff !important;
+  -webkit-text-fill-color: #2997ff !important;
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -599,13 +898,15 @@ html.dark
     .section-preview-btn,
     .skills-radar-toggle-btn,
     .arch-tree-toggle-btn,
+    .projects-expand-btn,
+    .projects-view-all-btn,
+    .engineering-open-btn,
     .blog-view-more-btn,
     .view-more-btn,
     .btn-view-more,
     .systems-view-more-btn,
     .travel-view-more-btn,
-    .uses-view-more-btn,
-    .engineering-open-btn
+    .uses-view-more-btn
   ):hover {
     background-color: #0077ed !important;
     background-image: linear-gradient(135deg, #0080ff 0%, #0071e3 50%, #0066cc 100%) !important;
@@ -620,13 +921,15 @@ html.dark
       .section-preview-btn,
       .skills-radar-toggle-btn,
       .arch-tree-toggle-btn,
+      .projects-expand-btn,
+      .projects-view-all-btn,
+      .engineering-open-btn,
       .blog-view-more-btn,
       .view-more-btn,
       .btn-view-more,
       .systems-view-more-btn,
       .travel-view-more-btn,
-      .uses-view-more-btn,
-      .engineering-open-btn
+      .uses-view-more-btn
     ):hover
     * {
     color: #ffffff !important;

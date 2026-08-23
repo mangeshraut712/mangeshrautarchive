@@ -1371,8 +1371,7 @@ html.dark:not([data-lg-mode])
   .apple-btn-secondary,
   #projects #github-projects-container .btn-github,
   #projects #github-projects-container .btn-ar,
-  #home .hero-actions .hero-cta-secondary,
-  .section-preview-btn:not(.btn-primary)
+  #home .hero-actions .hero-cta-secondary
 ) {
   backdrop-filter: blur(12px) !important;
   -webkit-backdrop-filter: blur(12px) !important;
@@ -1385,19 +1384,32 @@ html:not(.dark)
     .apple-btn-secondary,
     #projects #github-projects-container .btn-github,
     #projects #github-projects-container .btn-ar,
-    #home .hero-actions .hero-cta-secondary,
-    .section-preview-btn:not(.btn-primary)
+    #home .hero-actions .hero-cta-secondary
   ):not(.is-disabled):not(:disabled) {
   background-color: rgba(0, 0, 0, 0.04) !important;
   background-image: linear-gradient(
     180deg,
-    rgba(255, 255, 255, 0.9) 0%,
-    rgba(245, 245, 247, 0.7) 100%
+    rgba(255, 255, 255, 0.95) 0%,
+    rgba(245, 245, 247, 0.85) 100%
   ) !important;
   color: #1d1d1f !important;
   -webkit-text-fill-color: #1d1d1f !important;
-  border: 1px solid rgba(0, 0, 0, 0.12) !important;
+  border: 1px solid rgba(0, 0, 0, 0.14) !important;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+}
+
+html:not(.dark)
+  :is(
+    .btn-secondary,
+    .button-secondary,
+    .apple-btn-secondary,
+    #projects #github-projects-container .btn-github,
+    #projects #github-projects-container .btn-ar,
+    #home .hero-actions .hero-cta-secondary
+  ):not(.is-disabled):not(:disabled)
+  * {
+  color: #1d1d1f !important;
+  -webkit-text-fill-color: #1d1d1f !important;
 }
 
 html.dark
@@ -1407,8 +1419,7 @@ html.dark
     .apple-btn-secondary,
     #projects #github-projects-container .btn-github,
     #projects #github-projects-container .btn-ar,
-    #home .hero-actions .hero-cta-secondary,
-    .section-preview-btn:not(.btn-primary)
+    #home .hero-actions .hero-cta-secondary
   ):not(.is-disabled):not(:disabled) {
   background-color: rgba(255, 255, 255, 0.08) !important;
   background-image: linear-gradient(
@@ -1418,8 +1429,22 @@ html.dark
   ) !important;
   color: #f5f5f7 !important;
   -webkit-text-fill-color: #f5f5f7 !important;
-  border: 1px solid rgba(255, 255, 255, 0.16) !important;
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+}
+
+html.dark
+  :is(
+    .btn-secondary,
+    .button-secondary,
+    .apple-btn-secondary,
+    #projects #github-projects-container .btn-github,
+    #projects #github-projects-container .btn-ar,
+    #home .hero-actions .hero-cta-secondary
+  ):not(.is-disabled):not(:disabled)
+  * {
+  color: #f5f5f7 !important;
+  -webkit-text-fill-color: #f5f5f7 !important;
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -1430,19 +1455,54 @@ html.dark
       .apple-btn-secondary,
       #projects #github-projects-container .btn-github,
       #projects #github-projects-container .btn-ar,
-      #home .hero-actions .hero-cta-secondary,
-      .section-preview-btn:not(.btn-primary)
+      #home .hero-actions .hero-cta-secondary
     ):hover:not(:disabled) {
-    background-color: rgba(0, 113, 227, 0.08) !important;
+    background-color: rgba(0, 113, 227, 0.06) !important;
     background-image: linear-gradient(
       180deg,
-      rgba(0, 113, 227, 0.08) 0%,
-      rgba(0, 113, 227, 0.04) 100%
+      rgba(0, 113, 227, 0.06) 0%,
+      rgba(0, 113, 227, 0.02) 100%
     ) !important;
-    border-color: rgba(0, 113, 227, 0.4) !important;
+    border-color: #0071e3 !important;
     color: #0071e3 !important;
     -webkit-text-fill-color: #0071e3 !important;
-    box-shadow: 0 4px 16px rgba(0, 113, 227, 0.18) !important;
+    box-shadow: 0 6px 18px rgba(0, 113, 227, 0.18) !important;
+    transform: translateY(-2px) scale(1.02);
+  }
+
+  html:not(.dark)
+    :is(
+      .btn-secondary,
+      .button-secondary,
+      .apple-btn-secondary,
+      #projects #github-projects-container .btn-github,
+      #projects #github-projects-container .btn-ar,
+      #home .hero-actions .hero-cta-secondary
+    ):hover:not(:disabled)
+    * {
+    color: #0071e3 !important;
+    -webkit-text-fill-color: #0071e3 !important;
+  }
+
+  html.dark
+    :is(
+      .btn-secondary,
+      .button-secondary,
+      .apple-btn-secondary,
+      #projects #github-projects-container .btn-github,
+      #projects #github-projects-container .btn-ar,
+      #home .hero-actions .hero-cta-secondary
+    ):hover:not(:disabled) {
+    background-color: rgba(41, 151, 255, 0.14) !important;
+    background-image: linear-gradient(
+      180deg,
+      rgba(41, 151, 255, 0.18) 0%,
+      rgba(41, 151, 255, 0.06) 100%
+    ) !important;
+    border-color: #2997ff !important;
+    color: #2997ff !important;
+    -webkit-text-fill-color: #2997ff !important;
+    box-shadow: 0 6px 18px rgba(41, 151, 255, 0.25) !important;
     transform: translateY(-2px) scale(1.02);
   }
 
@@ -1453,20 +1513,11 @@ html.dark
       .apple-btn-secondary,
       #projects #github-projects-container .btn-github,
       #projects #github-projects-container .btn-ar,
-      #home .hero-actions .hero-cta-secondary,
-      .section-preview-btn:not(.btn-primary)
-    ):hover:not(:disabled) {
-    background-color: rgba(41, 151, 255, 0.16) !important;
-    background-image: linear-gradient(
-      180deg,
-      rgba(41, 151, 255, 0.2) 0%,
-      rgba(41, 151, 255, 0.08) 100%
-    ) !important;
-    border-color: rgba(41, 151, 255, 0.4) !important;
+      #home .hero-actions .hero-cta-secondary
+    ):hover:not(:disabled)
+    * {
     color: #2997ff !important;
     -webkit-text-fill-color: #2997ff !important;
-    box-shadow: 0 4px 18px rgba(41, 151, 255, 0.25) !important;
-    transform: translateY(-2px) scale(1.02);
   }
 }
 
@@ -1480,14 +1531,15 @@ html:not(.dark)
     .contact-submit,
     .apple-submit-btn,
     .newsletter-submit-btn,
-    .engineering-open-btn,
     .publication-read-btn,
     .error-btn--primary,
     .error-home-link,
     .dictation-dock-btn.is-primary,
     .btn-demo,
     #projects #github-projects-container .btn-demo,
-    .project-action-btn.btn-demo
+    .project-action-btn.btn-demo,
+    #projects-github-cta,
+    .projects-github-cta
   ):not(#resume-dropdown-toggle):not(.is-disabled):not(:disabled) {
   background-color: #0071e3 !important;
   background-image: linear-gradient(135deg, #0077ed 0%, #0071e3 50%, #005bb5 100%) !important;
@@ -1499,6 +1551,30 @@ html:not(.dark)
     0 2px 4px rgba(0, 0, 0, 0.08) !important;
 }
 
+html:not(.dark)
+  :is(
+    .btn-primary,
+    .hero-cta-primary,
+    #home .hero-actions .hero-cta-primary,
+    button[type='submit']:not(.btn-secondary),
+    .contact-submit,
+    .apple-submit-btn,
+    .newsletter-submit-btn,
+    .publication-read-btn,
+    .error-btn--primary,
+    .error-home-link,
+    .dictation-dock-btn.is-primary,
+    .btn-demo,
+    #projects #github-projects-container .btn-demo,
+    .project-action-btn.btn-demo,
+    #projects-github-cta,
+    .projects-github-cta
+  ):not(#resume-dropdown-toggle):not(.is-disabled):not(:disabled)
+  * {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
 html.dark
   :is(
     .btn-primary,
@@ -1508,14 +1584,15 @@ html.dark
     .contact-submit,
     .apple-submit-btn,
     .newsletter-submit-btn,
-    .engineering-open-btn,
     .publication-read-btn,
     .error-btn--primary,
     .error-home-link,
     .dictation-dock-btn.is-primary,
     .btn-demo,
     #projects #github-projects-container .btn-demo,
-    .project-action-btn.btn-demo
+    .project-action-btn.btn-demo,
+    #projects-github-cta,
+    .projects-github-cta
   ):not(#resume-dropdown-toggle):not(.is-disabled):not(:disabled) {
   background-color: #0071e3 !important;
   background-image: linear-gradient(135deg, #0077ed 0%, #0071e3 50%, #005bb5 100%) !important;
@@ -1525,6 +1602,30 @@ html.dark
   box-shadow:
     0 4px 16px rgba(0, 113, 227, 0.45),
     0 2px 4px rgba(0, 0, 0, 0.2) !important;
+}
+
+html.dark
+  :is(
+    .btn-primary,
+    .hero-cta-primary,
+    #home .hero-actions .hero-cta-primary,
+    button[type='submit']:not(.btn-secondary),
+    .contact-submit,
+    .apple-submit-btn,
+    .newsletter-submit-btn,
+    .publication-read-btn,
+    .error-btn--primary,
+    .error-home-link,
+    .dictation-dock-btn.is-primary,
+    .btn-demo,
+    #projects #github-projects-container .btn-demo,
+    .project-action-btn.btn-demo,
+    #projects-github-cta,
+    .projects-github-cta
+  ):not(#resume-dropdown-toggle):not(.is-disabled):not(:disabled)
+  * {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
 }
 
 /* Project card footer — flat, not grey gradient */

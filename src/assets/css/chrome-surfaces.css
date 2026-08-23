@@ -856,17 +856,6 @@ html.browser-safari section#projects #github-projects-container .project-languag
   -webkit-text-fill-color: currentColor !important;
 }
 
-html.browser-safari section#projects #github-projects-container .project-action-btn.btn-github,
-html.browser-safari
-  section#projects
-  #github-projects-container
-  .project-action-btn.btn-github
-  > span,
-html.browser-safari section#projects #github-projects-container .project-action-btn.btn-github > i {
-  color: #ffffff !important;
-  -webkit-text-fill-color: #ffffff !important;
-}
-
 /* Avoid Safari flex min-height collapse on premium cards */
 html.browser-safari #home .music-card-inner,
 html.browser-chromium #home .music-card-inner {

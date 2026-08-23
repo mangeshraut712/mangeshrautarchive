@@ -43,6 +43,16 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: '7e92a10c',
+    date: '2026-08-23',
+    type: 'fix',
+    title: 'Universal Button Font Contrast Parity & Descendant Wildcard Color Enforcement',
+    summary:
+      'Resolved font color visibility collisions across light and dark themes for project action buttons (Open Repo and Spatial), skills radar disclosure toggles, architecture topology controls, and catalog expansion pills. Implemented universal descendant selector styling (:is(...) *, > span, > i) with color inheritance across all stylesheets to guarantee high-contrast readability and Apple design consistency sitewide.',
+    tags: ['design', 'fix', 'polish'],
+    sha: '7e92a10c',
+  },
+  {
     id: 'f3a819c4',
     date: '2026-08-23',
     type: 'improvement',

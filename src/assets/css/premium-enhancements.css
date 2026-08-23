@@ -1124,16 +1124,11 @@ button:active,
 .project-action-btn.btn-demo,
 #projects #github-projects-container .project-action-btn.btn-demo,
 section#projects #github-projects-container .project-action-btn.btn-demo,
+#projects-github-cta,
+.projects-github-cta,
 #home .hero-actions .hero-cta-primary,
 #home .hero-actions a.hero-cta-primary,
 #home a.hero-cta-primary,
-.section-preview-btn,
-.skills-radar-toggle-btn,
-.arch-tree-toggle-btn,
-.projects-view-all-btn.btn-primary,
-.projects-view-all-btn,
-.engineering-open-btn.btn-primary,
-.engineering-open-btn,
 .resume-dropdown-toggle,
 .publication-read-btn,
 a.publication-read-btn,
@@ -1170,12 +1165,9 @@ a.publication-read-btn,
 .project-action-btn.btn-demo *,
 #projects #github-projects-container .project-action-btn.btn-demo *,
 section#projects #github-projects-container .project-action-btn.btn-demo *,
+#projects-github-cta *,
+.projects-github-cta *,
 #home .hero-actions .hero-cta-primary *,
-.section-preview-btn *,
-.skills-radar-toggle-btn *,
-.arch-tree-toggle-btn *,
-.projects-view-all-btn *,
-.engineering-open-btn *,
 .resume-dropdown-toggle *,
 .publication-read-btn *,
 a.publication-read-btn *,
@@ -1206,14 +1198,9 @@ a.publication-read-btn *,
 .project-action-btn.btn-demo::before,
 #projects #github-projects-container .project-action-btn.btn-demo::before,
 section#projects #github-projects-container .project-action-btn.btn-demo::before,
+#projects-github-cta::before,
+.projects-github-cta::before,
 #home .hero-actions .hero-cta-primary::before,
-.section-preview-btn::before,
-.skills-radar-toggle-btn::before,
-.arch-tree-toggle-btn::before,
-.projects-view-all-btn.btn-primary::before,
-.projects-view-all-btn::before,
-.engineering-open-btn.btn-primary::before,
-.engineering-open-btn::before,
 .resume-dropdown-toggle::before,
 .publication-read-btn::before,
 a.publication-read-btn::before,
@@ -1270,14 +1257,9 @@ a.publication-read-btn::before,
 .project-action-btn.btn-demo:hover,
 #projects #github-projects-container .project-action-btn.btn-demo:hover,
 section#projects #github-projects-container .project-action-btn.btn-demo:hover,
+#projects-github-cta:hover,
+.projects-github-cta:hover,
 #home .hero-actions .hero-cta-primary:hover,
-.section-preview-btn:hover,
-.skills-radar-toggle-btn:hover,
-.arch-tree-toggle-btn:hover,
-.projects-view-all-btn.btn-primary:hover,
-.projects-view-all-btn:hover,
-.engineering-open-btn.btn-primary:hover,
-.engineering-open-btn:hover,
 .resume-dropdown-toggle:hover,
 .publication-read-btn:hover,
 a.publication-read-btn:hover,
@@ -1311,14 +1293,9 @@ a.publication-read-btn:hover,
 .project-action-btn.btn-demo:hover::before,
 #projects #github-projects-container .project-action-btn.btn-demo:hover::before,
 section#projects #github-projects-container .project-action-btn.btn-demo:hover::before,
+#projects-github-cta:hover::before,
+.projects-github-cta:hover::before,
 #home .hero-actions .hero-cta-primary:hover::before,
-.section-preview-btn:hover::before,
-.skills-radar-toggle-btn:hover::before,
-.arch-tree-toggle-btn:hover::before,
-.projects-view-all-btn.btn-primary:hover::before,
-.projects-view-all-btn:hover::before,
-.engineering-open-btn.btn-primary:hover::before,
-.engineering-open-btn:hover::before,
 .resume-dropdown-toggle:hover::before,
 .publication-read-btn:hover::before,
 a.publication-read-btn:hover::before,
@@ -1338,47 +1315,85 @@ a.publication-read-btn:hover::before,
 /* --- 3. SECONDARY / OUTLINE / GLASS BUTTONS --- */
 /* Light Mode Secondary Buttons */
 html:not(.dark) .btn-secondary,
+html:not(.dark) .button-secondary,
+html:not(.dark) .apple-btn-secondary,
 html:not(.dark) .hero-cta-secondary,
 html:not(.dark) .btn-glass,
-html:not(.dark) .projects-view-all-btn:not(.btn-primary),
+html:not(.dark) .btn-github,
+html:not(.dark) .btn-ar,
+html:not(.dark) .error-btn--secondary,
 html:not(.dark) .project-action-btn:not(.btn-primary):not(.btn-demo) {
   background-color: rgba(0, 0, 0, 0.04) !important;
   background-image: linear-gradient(
     180deg,
-    rgba(255, 255, 255, 0.9) 0%,
-    rgba(245, 245, 247, 0.7) 100%
+    rgba(255, 255, 255, 0.95) 0%,
+    rgba(245, 245, 247, 0.85) 100%
   ) !important;
   color: #1d1d1f !important;
   -webkit-text-fill-color: #1d1d1f !important;
-  border: 1px solid rgba(0, 0, 0, 0.12) !important;
+  border: 1px solid rgba(0, 0, 0, 0.14) !important;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
   backdrop-filter: blur(12px) !important;
   -webkit-backdrop-filter: blur(12px) !important;
 }
 
+html:not(.dark) .btn-secondary *,
+html:not(.dark) .button-secondary *,
+html:not(.dark) .apple-btn-secondary *,
+html:not(.dark) .hero-cta-secondary *,
+html:not(.dark) .btn-glass *,
+html:not(.dark) .btn-github *,
+html:not(.dark) .btn-ar *,
+html:not(.dark) .error-btn--secondary *,
+html:not(.dark) .project-action-btn:not(.btn-primary):not(.btn-demo) * {
+  color: #1d1d1f !important;
+  -webkit-text-fill-color: #1d1d1f !important;
+}
+
 html:not(.dark) .btn-secondary:hover,
+html:not(.dark) .button-secondary:hover,
+html:not(.dark) .apple-btn-secondary:hover,
 html:not(.dark) .hero-cta-secondary:hover,
 html:not(.dark) .btn-glass:hover,
-html:not(.dark) .projects-view-all-btn:not(.btn-primary):hover,
+html:not(.dark) .btn-github:hover,
+html:not(.dark) .btn-ar:hover,
+html:not(.dark) .error-btn--secondary:hover,
 html:not(.dark) .project-action-btn:not(.btn-primary):not(.btn-demo):hover {
-  background-color: rgba(0, 113, 227, 0.08) !important;
+  background-color: rgba(0, 113, 227, 0.06) !important;
   background-image: linear-gradient(
     180deg,
-    rgba(0, 113, 227, 0.08) 0%,
-    rgba(0, 113, 227, 0.04) 100%
+    rgba(0, 113, 227, 0.06) 0%,
+    rgba(0, 113, 227, 0.02) 100%
   ) !important;
   color: #0071e3 !important;
   -webkit-text-fill-color: #0071e3 !important;
-  border-color: rgba(0, 113, 227, 0.4) !important;
-  box-shadow: 0 4px 16px rgba(0, 113, 227, 0.18) !important;
+  border-color: #0071e3 !important;
+  box-shadow: 0 6px 18px rgba(0, 113, 227, 0.18) !important;
   transform: translateY(-2px) scale(1.02) !important;
+}
+
+html:not(.dark) .btn-secondary:hover *,
+html:not(.dark) .button-secondary:hover *,
+html:not(.dark) .apple-btn-secondary:hover *,
+html:not(.dark) .hero-cta-secondary:hover *,
+html:not(.dark) .btn-glass:hover *,
+html:not(.dark) .btn-github:hover *,
+html:not(.dark) .btn-ar:hover *,
+html:not(.dark) .error-btn--secondary:hover *,
+html:not(.dark) .project-action-btn:not(.btn-primary):not(.btn-demo):hover * {
+  color: #0071e3 !important;
+  -webkit-text-fill-color: #0071e3 !important;
 }
 
 /* Dark Mode Secondary Buttons */
 html.dark .btn-secondary,
+html.dark .button-secondary,
+html.dark .apple-btn-secondary,
 html.dark .hero-cta-secondary,
 html.dark .btn-glass,
-html.dark .projects-view-all-btn:not(.btn-primary),
+html.dark .btn-github,
+html.dark .btn-ar,
+html.dark .error-btn--secondary,
 html.dark .project-action-btn:not(.btn-primary):not(.btn-demo) {
   background-color: rgba(255, 255, 255, 0.08) !important;
   background-image: linear-gradient(
@@ -1388,28 +1403,207 @@ html.dark .project-action-btn:not(.btn-primary):not(.btn-demo) {
   ) !important;
   color: #f5f5f7 !important;
   -webkit-text-fill-color: #f5f5f7 !important;
-  border: 1px solid rgba(255, 255, 255, 0.16) !important;
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
   backdrop-filter: blur(12px) !important;
   -webkit-backdrop-filter: blur(12px) !important;
 }
 
+html.dark .btn-secondary *,
+html.dark .button-secondary *,
+html.dark .apple-btn-secondary *,
+html.dark .hero-cta-secondary *,
+html.dark .btn-glass *,
+html.dark .btn-github *,
+html.dark .btn-ar *,
+html.dark .error-btn--secondary *,
+html.dark .project-action-btn:not(.btn-primary):not(.btn-demo) * {
+  color: #f5f5f7 !important;
+  -webkit-text-fill-color: #f5f5f7 !important;
+}
+
 html.dark .btn-secondary:hover,
+html.dark .button-secondary:hover,
+html.dark .apple-btn-secondary:hover,
 html.dark .hero-cta-secondary:hover,
 html.dark .btn-glass:hover,
-html.dark .projects-view-all-btn:not(.btn-primary):hover,
+html.dark .btn-github:hover,
+html.dark .btn-ar:hover,
+html.dark .error-btn--secondary:hover,
 html.dark .project-action-btn:not(.btn-primary):not(.btn-demo):hover {
-  background-color: rgba(41, 151, 255, 0.16) !important;
+  background-color: rgba(41, 151, 255, 0.14) !important;
   background-image: linear-gradient(
     180deg,
-    rgba(41, 151, 255, 0.2) 0%,
-    rgba(41, 151, 255, 0.08) 100%
+    rgba(41, 151, 255, 0.18) 0%,
+    rgba(41, 151, 255, 0.06) 100%
   ) !important;
   color: #2997ff !important;
   -webkit-text-fill-color: #2997ff !important;
-  border-color: rgba(41, 151, 255, 0.4) !important;
-  box-shadow: 0 4px 18px rgba(41, 151, 255, 0.25) !important;
+  border-color: #2997ff !important;
+  box-shadow: 0 6px 18px rgba(41, 151, 255, 0.25) !important;
   transform: translateY(-2px) scale(1.02) !important;
+}
+
+html.dark .btn-secondary:hover *,
+html.dark .button-secondary:hover *,
+html.dark .apple-btn-secondary:hover *,
+html.dark .hero-cta-secondary:hover *,
+html.dark .btn-glass:hover *,
+html.dark .btn-github:hover *,
+html.dark .btn-ar:hover *,
+html.dark .error-btn--secondary:hover *,
+html.dark .project-action-btn:not(.btn-primary):not(.btn-demo):hover * {
+  color: #2997ff !important;
+  -webkit-text-fill-color: #2997ff !important;
+}
+
+/* --- TIER 4: DISCLOSURE / PREVIEW / VIEW MORE BUTTONS --- */
+.section-preview-btn,
+.skills-radar-toggle-btn,
+.arch-tree-toggle-btn,
+.projects-expand-btn,
+.projects-view-all-btn,
+.engineering-open-btn,
+.blog-view-more-btn,
+.view-more-btn,
+.btn-view-more,
+.systems-view-more-btn,
+.travel-view-more-btn,
+.uses-view-more-btn {
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', 'Helvetica Neue', Arial,
+    sans-serif !important;
+  font-size: 0.92rem !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.01em !important;
+  min-height: 46px !important;
+  border-radius: 9999px !important;
+  padding: 0.65rem 1.6rem !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.5rem !important;
+  text-decoration: none !important;
+  cursor: pointer !important;
+  position: relative !important;
+  overflow: hidden !important;
+  isolation: isolate !important;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+html:not(.dark) .section-preview-btn,
+html:not(.dark) .skills-radar-toggle-btn,
+html:not(.dark) .arch-tree-toggle-btn,
+html:not(.dark) .projects-expand-btn,
+html:not(.dark) .projects-view-all-btn,
+html:not(.dark) .engineering-open-btn,
+html:not(.dark) .blog-view-more-btn,
+html:not(.dark) .view-more-btn,
+html:not(.dark) .btn-view-more,
+html:not(.dark) .systems-view-more-btn,
+html:not(.dark) .travel-view-more-btn,
+html:not(.dark) .uses-view-more-btn {
+  background-color: rgba(0, 113, 227, 0.04) !important;
+  background-image: linear-gradient(180deg, #ffffff 0%, #f5f5f7 100%) !important;
+  color: #0071e3 !important;
+  -webkit-text-fill-color: #0071e3 !important;
+  border: 1px solid rgba(0, 113, 227, 0.35) !important;
+  box-shadow: 0 2px 8px rgba(0, 113, 227, 0.08) !important;
+}
+
+html:not(.dark) .section-preview-btn *,
+html:not(.dark) .skills-radar-toggle-btn *,
+html:not(.dark) .arch-tree-toggle-btn *,
+html:not(.dark) .projects-expand-btn *,
+html:not(.dark) .projects-view-all-btn *,
+html:not(.dark) .engineering-open-btn *,
+html:not(.dark) .blog-view-more-btn *,
+html:not(.dark) .view-more-btn *,
+html:not(.dark) .btn-view-more *,
+html:not(.dark) .systems-view-more-btn *,
+html:not(.dark) .travel-view-more-btn *,
+html:not(.dark) .uses-view-more-btn * {
+  color: #0071e3 !important;
+  -webkit-text-fill-color: #0071e3 !important;
+}
+
+html.dark .section-preview-btn,
+html.dark .skills-radar-toggle-btn,
+html.dark .arch-tree-toggle-btn,
+html.dark .projects-expand-btn,
+html.dark .projects-view-all-btn,
+html.dark .engineering-open-btn,
+html.dark .blog-view-more-btn,
+html.dark .view-more-btn,
+html.dark .btn-view-more,
+html.dark .systems-view-more-btn,
+html.dark .travel-view-more-btn,
+html.dark .uses-view-more-btn {
+  background-color: rgba(41, 151, 255, 0.08) !important;
+  background-image: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.08) 0%,
+    rgba(255, 255, 255, 0.02) 100%
+  ) !important;
+  color: #2997ff !important;
+  -webkit-text-fill-color: #2997ff !important;
+  border: 1px solid rgba(41, 151, 255, 0.4) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+}
+
+html.dark .section-preview-btn *,
+html.dark .skills-radar-toggle-btn *,
+html.dark .arch-tree-toggle-btn *,
+html.dark .projects-expand-btn *,
+html.dark .projects-view-all-btn *,
+html.dark .engineering-open-btn *,
+html.dark .blog-view-more-btn *,
+html.dark .view-more-btn *,
+html.dark .btn-view-more *,
+html.dark .systems-view-more-btn *,
+html.dark .travel-view-more-btn *,
+html.dark .uses-view-more-btn * {
+  color: #2997ff !important;
+  -webkit-text-fill-color: #2997ff !important;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .section-preview-btn:hover,
+  .skills-radar-toggle-btn:hover,
+  .arch-tree-toggle-btn:hover,
+  .projects-expand-btn:hover,
+  .projects-view-all-btn:hover,
+  .engineering-open-btn:hover,
+  .blog-view-more-btn:hover,
+  .view-more-btn:hover,
+  .btn-view-more:hover,
+  .systems-view-more-btn:hover,
+  .travel-view-more-btn:hover,
+  .uses-view-more-btn:hover {
+    background-color: #0077ed !important;
+    background-image: linear-gradient(135deg, #0080ff 0%, #0071e3 50%, #0066cc 100%) !important;
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+    border-color: rgba(255, 255, 255, 0.35) !important;
+    box-shadow: 0 8px 24px rgba(0, 113, 227, 0.45) !important;
+    transform: translateY(-2px) scale(1.02) !important;
+  }
+
+  .section-preview-btn:hover *,
+  .skills-radar-toggle-btn:hover *,
+  .arch-tree-toggle-btn:hover *,
+  .projects-expand-btn:hover *,
+  .projects-view-all-btn:hover *,
+  .engineering-open-btn:hover *,
+  .blog-view-more-btn:hover *,
+  .view-more-btn:hover *,
+  .btn-view-more:hover *,
+  .systems-view-more-btn:hover *,
+  .travel-view-more-btn:hover *,
+  .uses-view-more-btn:hover * {
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+  }
 }
 
 /* --- 4. TOUCH TARGETS & MINIMUM HEIGHT LOCK (Apple HIG Compliance) --- */
