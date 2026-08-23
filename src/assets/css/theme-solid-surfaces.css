@@ -1350,7 +1350,7 @@ html.dark:not([data-lg-mode])
   }
 }
 
-/* ─── Secondary buttons: solid surface + blue border (not primary blue) ─── */
+/* ─── Secondary buttons: frosted glass + subtle border ─── */
 :is(
   .btn-secondary,
   .button-secondary,
@@ -1360,8 +1360,8 @@ html.dark:not([data-lg-mode])
   #home .hero-actions .hero-cta-secondary,
   .section-preview-btn
 ) {
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
 }
 
 html:not(.dark)
@@ -1374,13 +1374,16 @@ html:not(.dark)
     #home .hero-actions .hero-cta-secondary,
     .section-preview-btn
   ):not(.is-disabled):not(:disabled) {
-  background: #ffffff !important;
-  background-color: #ffffff !important;
-  background-image: none !important;
+  background-color: rgba(0, 0, 0, 0.04) !important;
+  background-image: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.9) 0%,
+    rgba(245, 245, 247, 0.7) 100%
+  ) !important;
   color: #1d1d1f !important;
   -webkit-text-fill-color: #1d1d1f !important;
-  border: 1px solid rgb(0 0 0 / 14%) !important;
-  box-shadow: none !important;
+  border: 1px solid rgba(0, 0, 0, 0.12) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
 }
 
 html.dark
@@ -1393,13 +1396,16 @@ html.dark
     #home .hero-actions .hero-cta-secondary,
     .section-preview-btn
   ):not(.is-disabled):not(:disabled) {
-  background: #000000 !important;
-  background-color: #000000 !important;
-  background-image: none !important;
+  background-color: rgba(255, 255, 255, 0.08) !important;
+  background-image: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.12) 0%,
+    rgba(255, 255, 255, 0.04) 100%
+  ) !important;
   color: #f5f5f7 !important;
   -webkit-text-fill-color: #f5f5f7 !important;
-  border: 1px solid rgb(255 255 255 / 18%) !important;
-  box-shadow: none !important;
+  border: 1px solid rgba(255, 255, 255, 0.16) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -1413,12 +1419,17 @@ html.dark
       #home .hero-actions .hero-cta-secondary,
       .section-preview-btn
     ):hover:not(:disabled) {
-    background: #ffffff !important;
-    border-color: rgb(0 113 227 / 45%) !important;
+    background-color: rgba(0, 113, 227, 0.08) !important;
+    background-image: linear-gradient(
+      180deg,
+      rgba(0, 113, 227, 0.08) 0%,
+      rgba(0, 113, 227, 0.04) 100%
+    ) !important;
+    border-color: rgba(0, 113, 227, 0.4) !important;
     color: #0071e3 !important;
     -webkit-text-fill-color: #0071e3 !important;
-    box-shadow: 0 4px 14px rgb(0 113 227 / 12%) !important;
-    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(0, 113, 227, 0.18) !important;
+    transform: translateY(-2px) scale(1.02);
   }
 
   html.dark
@@ -1431,16 +1442,21 @@ html.dark
       #home .hero-actions .hero-cta-secondary,
       .section-preview-btn
     ):hover:not(:disabled) {
-    background: #000000 !important;
-    border-color: rgb(10 132 255 / 55%) !important;
+    background-color: rgba(41, 151, 255, 0.16) !important;
+    background-image: linear-gradient(
+      180deg,
+      rgba(41, 151, 255, 0.2) 0%,
+      rgba(41, 151, 255, 0.08) 100%
+    ) !important;
+    border-color: rgba(41, 151, 255, 0.4) !important;
     color: #2997ff !important;
     -webkit-text-fill-color: #2997ff !important;
-    box-shadow: 0 4px 14px rgb(10 132 255 / 16%) !important;
-    transform: translateY(-1px);
+    box-shadow: 0 4px 18px rgba(41, 151, 255, 0.25) !important;
+    transform: translateY(-2px) scale(1.02);
   }
 }
 
-/* Primary CTAs stay solid Apple blue */
+/* Primary CTAs — Vibrant Apple Blue Gradient */
 html:not(.dark)
   :is(
     .btn-primary,
@@ -1451,13 +1467,14 @@ html:not(.dark)
     .engineering-open-btn,
     #projects #github-projects-container .btn-github
   ):not(#resume-dropdown-toggle):not(.is-disabled):not(:disabled) {
-  background: #0071e3 !important;
   background-color: #0071e3 !important;
-  background-image: none !important;
+  background-image: linear-gradient(135deg, #0077ed 0%, #0071e3 50%, #005bb5 100%) !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
-  border: none !important;
-  box-shadow: 0 4px 14px rgb(0 113 227 / 24%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+  box-shadow:
+    0 4px 16px rgba(0, 113, 227, 0.38),
+    0 2px 4px rgba(0, 0, 0, 0.08) !important;
 }
 
 html.dark
@@ -1470,14 +1487,14 @@ html.dark
     .engineering-open-btn,
     #projects #github-projects-container .btn-github
   ):not(#resume-dropdown-toggle):not(.is-disabled):not(:disabled) {
-  /* Keep #0071e3 for WCAG AA (white on #0a84ff fails ~3.64:1) */
-  background: #0071e3 !important;
   background-color: #0071e3 !important;
-  background-image: none !important;
+  background-image: linear-gradient(135deg, #0077ed 0%, #0071e3 50%, #005bb5 100%) !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
-  border: none !important;
-  box-shadow: 0 4px 14px rgb(0 113 227 / 28%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+  box-shadow:
+    0 4px 16px rgba(0, 113, 227, 0.45),
+    0 2px 4px rgba(0, 0, 0, 0.2) !important;
 }
 
 /* Project card footer — flat, not grey gradient */

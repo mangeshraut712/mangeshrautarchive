@@ -11,13 +11,11 @@
 The portfolio follows authentic **Apple Design Principles**:
 
 1. **Clarity & Content First**: Typography and hierarchy guide the eye effortlessly. Text is crisp with high contrast (WCAG AA compliant, ≥ 4.5:1 for body, ≥ 3.0:1 for large text).
-2. **Authentic Apple Colors**: Crisp, solid Apple system colors (Apple Blue `#0071e3`, Apple Red `#ff3b30`, Apple Green `#34c759`, Apple Purple `#af52de`). No gaudy multi-color gradients on buttons or text.
+2. **Authentic Apple Colors & Gradients**: Vibrant Apple system colors with polished depth (Apple Blue `#0071e3`, Apple Red `#ff3b30`, Apple Green `#34c759`, Apple Purple `#af52de`). Primary CTAs feature vibrant Apple linear gradients (`135deg, #0077ed 0%, #0071e3 50%, #005bb5 100%`) paired with specular metallic sweep sheen animations.
 3. **Restrained Depth & Glassmorphism**: Frosted translucency (`backdrop-filter: blur(20px)`), subtle 1px border highlights (`rgba(255, 255, 255, 0.15)` in dark, `rgba(0, 0, 0, 0.08)` in light), and soft ambient shadows.
 4. **Physicality & Tactile Feedback**: Micro-interactions use cubic-bezier curves (`cubic-bezier(0.16, 1, 0.3, 1)` or `scale(0.98)` on press).
 5. **Zero Cliché Anti-Patterns**:
-   - 🚫 **NO shining sheen animations** (`@keyframes` specular sliding beams or glossy glares across buttons).
-   - 🚫 **NO multi-stop diagonal blue gradients** (`linear-gradient(135deg, #0077ed 0%, #0071e3 50%, #005bb5 100%)`) on buttons or chips.
-   - 🚫 **NO gradient text fills** on headlines.
+   - 🚫 **NO raw horizontal overflow** or layout shift.
    - 🚫 **NO low-contrast text** (e.g. white text on light backgrounds or faint gray comments in code blocks).
 
 ---
@@ -63,18 +61,19 @@ The portfolio follows authentic **Apple Design Principles**:
 
 ### 1. Primary Action Button (`.btn-primary`, `.hero-cta-primary`, `.contact-send-btn`)
 
-- **Visual Style**: Solid Apple Blue with crisp white text.
+- **Visual Style**: Vibrant Apple Blue Gradient (`linear-gradient(135deg, #0077ed 0%, #0071e3 50%, #005bb5 100%)`) with specular metallic sweep animation (`@keyframes appleBtnShine`) and glowing drop shadow.
 - **Rules**:
-  - `background: #0071e3 !important;`
   - `background-color: #0071e3 !important;`
-  - `background-image: none !important;`
+  - `background-image: linear-gradient(135deg, #0077ed 0%, #0071e3 50%, #005bb5 100%) !important;`
   - `color: #ffffff !important;`
+  - `-webkit-text-fill-color: #ffffff !important;`
+  - `border: 1px solid rgba(255, 255, 255, 0.25) !important;`
   - `border-radius: 12px;` (or `9999px` for pill CTA)
-  - `box-shadow: 0 2px 8px rgba(0, 113, 227, 0.28);`
+  - `box-shadow: 0 4px 16px rgba(0, 113, 227, 0.38), 0 2px 4px rgba(0, 0, 0, 0.08) !important;`
 - **States**:
-  - **Hover**: `background: #0077ed !important; transform: translateY(-1px) scale(1.01); box-shadow: 0 4px 14px rgba(0, 113, 227, 0.38);`
-  - **Active / Press**: `background: #0062c4 !important; transform: scale(0.98);`
-  - **Forbidden**: NO shining sheen overlays (`::before`), NO multi-stop linear gradients.
+  - **Hover**: `background-image: linear-gradient(135deg, #0080ff 0%, #0071e3 50%, #0066cc 100%) !important; transform: translateY(-2px) scale(1.02); box-shadow: 0 8px 24px rgba(0, 113, 227, 0.48), 0 3px 8px rgba(0, 0, 0, 0.12) !important;`
+  - **Active / Press**: `transform: scale(0.97);`
+  - **Shine Animation**: Specular translucent sweep on `::before` pseudo-element with 4.5s loop.
 
 ### 2. Secondary & Ghost Buttons (`.btn-secondary`, `.hero-cta-secondary`, `.btn-glass`)
 

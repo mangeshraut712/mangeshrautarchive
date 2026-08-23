@@ -99,7 +99,7 @@ describe('design foundation ownership', () => {
     expect(appleOverrides).toMatch(/\.blog-modal-close/);
   });
 
-  it('documents Apple HIG design standard in docs/DESIGN.md and enforces solid Apple Blue buttons', () => {
+  it('documents Apple HIG design standard in docs/DESIGN.md and enforces vibrant Apple Blue gradient buttons', () => {
     expect(existsSync(join(root, 'docs/DESIGN.md'))).toBe(true);
 
     const designMd = readFileSync(join(root, 'docs/DESIGN.md'), 'utf-8');
@@ -108,7 +108,7 @@ describe('design foundation ownership', () => {
     expect(designMd).toContain('#ff3b30');
 
     const premium = readSrc('assets/css/premium-enhancements.css');
-    expect(premium).not.toContain('appleBtnShine');
-    expect(premium).toMatch(/\.btn-primary,\s*\.hero-cta-primary[^}]*background:\s*#0071e3/);
+    expect(premium).toContain('appleBtnShine');
+    expect(premium).toMatch(/\.btn-primary,\s*\.hero-cta-primary[^}]*background-color:\s*#0071e3/);
   });
 });

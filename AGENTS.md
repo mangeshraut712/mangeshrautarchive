@@ -7,7 +7,7 @@
 
 ## Agent Operating Principles
 
-- When creating or updating UI elements, components, cards, pages, buttons, or themes, always consult and adhere to [docs/DESIGN.md](docs/DESIGN.md) (solid Apple Blue `#0071e3`, unified circular red close buttons `#ff3b30`, authentic glassmorphism, zero shiny sheen animations, zero horizontal overflow).
+- When creating or updating UI elements, components, cards, pages, buttons, or themes, always consult and adhere to [docs/DESIGN.md](docs/DESIGN.md) (vibrant Apple Blue `#0071e3` gradient with specular metallic shine animation, unified circular red close buttons `#ff3b30`, authentic glassmorphism, zero horizontal overflow).
 - **Autonomous Changelog & LLM Observability**: Whenever executing code modifications, fixes, or releases, ALWAYS automatically update `src/js/data/changelog-entries.js` with a typed entry and record the active LLM model name (e.g., `gemini-2.5-pro`, `claude-3.7-sonnet`, `grok-4.3`) and token consumption details in the commit message and documentation without requiring user prompting.
 - When explaining a concept or relationship to the user, use the `visualize` skill when a visual materially improves understanding.
 - Be concise, direct, and candid. Challenge weak assumptions and distinguish verified facts from uncertainty.

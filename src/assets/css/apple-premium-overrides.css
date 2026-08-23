@@ -3634,63 +3634,80 @@ html.dark ::-webkit-scrollbar-thumb:hover {
 
 /* 15. Homepage Apple Styling Refinements */
 
-/* Secondary Button (View Projects) — outline, solid white/black base */
+/* Secondary Button (View Projects) */
 #home .hero-actions .hero-cta:nth-child(2),
 #home .hero-actions .hero-cta-secondary {
-  background: #ffffff !important;
-  background-color: #ffffff !important;
-  background-image: none !important;
-  color: #0071e3 !important;
-  -webkit-text-fill-color: #0071e3 !important;
-  border: 1px solid rgb(0 113 227 / 35%) !important;
+  background-color: rgba(0, 0, 0, 0.04) !important;
+  background-image: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.9) 0%,
+    rgba(245, 245, 247, 0.7) 100%
+  ) !important;
+  color: #1d1d1f !important;
+  -webkit-text-fill-color: #1d1d1f !important;
+  border: 1px solid rgba(0, 0, 0, 0.12) !important;
   border-radius: 9999px !important;
   padding: 0.8rem 1.8rem !important;
-  box-shadow: none !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
 }
 
 #home .hero-actions .hero-cta:nth-child(2):hover,
 #home .hero-actions .hero-cta-secondary:hover {
-  background: rgb(0 113 227 / 8%) !important;
-  background-image: none !important;
-  border-color: #0071e3 !important;
+  background-color: rgba(0, 113, 227, 0.08) !important;
+  background-image: linear-gradient(
+    180deg,
+    rgba(0, 113, 227, 0.08) 0%,
+    rgba(0, 113, 227, 0.04) 100%
+  ) !important;
+  border-color: rgba(0, 113, 227, 0.4) !important;
   color: #0071e3 !important;
   -webkit-text-fill-color: #0071e3 !important;
-  box-shadow: none !important;
+  box-shadow: 0 4px 16px rgba(0, 113, 227, 0.18) !important;
   transform: translateY(-2px) scale(1.02) !important;
 }
 
 html.dark #home .hero-actions .hero-cta:nth-child(2),
 html.dark #home .hero-actions .hero-cta-secondary {
-  background: #000000 !important;
-  background-color: #000000 !important;
-  background-image: none !important;
-  color: #0a84ff !important;
-  -webkit-text-fill-color: #0a84ff !important;
-  border: 1px solid rgb(10 132 255 / 45%) !important;
-  box-shadow: none !important;
+  background-color: rgba(255, 255, 255, 0.08) !important;
+  background-image: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.12) 0%,
+    rgba(255, 255, 255, 0.04) 100%
+  ) !important;
+  color: #f5f5f7 !important;
+  -webkit-text-fill-color: #f5f5f7 !important;
+  border: 1px solid rgba(255, 255, 255, 0.16) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
 }
 
 html.dark #home .hero-actions .hero-cta:nth-child(2):hover,
 html.dark #home .hero-actions .hero-cta-secondary:hover {
-  background: rgb(10 132 255 / 14%) !important;
-  background-image: none !important;
-  border-color: #0a84ff !important;
-  color: #0a84ff !important;
-  -webkit-text-fill-color: #0a84ff !important;
-  box-shadow: none !important;
+  background-color: rgba(41, 151, 255, 0.16) !important;
+  background-image: linear-gradient(
+    180deg,
+    rgba(41, 151, 255, 0.2) 0%,
+    rgba(41, 151, 255, 0.08) 100%
+  ) !important;
+  border-color: rgba(41, 151, 255, 0.4) !important;
+  color: #2997ff !important;
+  -webkit-text-fill-color: #2997ff !important;
+  box-shadow: 0 4px 18px rgba(41, 151, 255, 0.25) !important;
+  transform: translateY(-2px) scale(1.02) !important;
 }
 
 /* Premium Frosted Glass Badges */
 #home .vibe-coder-badge,
 #home .portfolio-reach-badge {
-  background: #ffffff !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-  border: 1px solid var(--card-border-rest) !important;
+  background: rgba(255, 255, 255, 0.75) !important;
+  backdrop-filter: blur(14px) !important;
+  -webkit-backdrop-filter: blur(14px) !important;
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
   color: #1d1d1f !important;
-  box-shadow: none !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
   transition:
     transform 0.28s cubic-bezier(0.25, 0.8, 0.25, 1),
     border-color 0.28s ease,
@@ -3702,26 +3719,27 @@ html.dark #home .hero-actions .hero-cta-secondary:hover {
   background: #ffffff !important;
   border-color: #0071e3 !important;
   transform: translateY(-2px) !important;
-  box-shadow: 0 2px 10px rgb(0 0 0 / 6%) !important;
+  box-shadow: 0 4px 14px rgba(0, 113, 227, 0.16) !important;
 }
 
 /* Dark Mode Badges */
 html.dark #home .vibe-coder-badge,
 html.dark #home .portfolio-reach-badge {
-  background: #000000 !important;
-  background-color: #000000 !important;
-  border: 1px solid rgb(255 255 255 / 14%) !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+  backdrop-filter: blur(14px) !important;
+  -webkit-backdrop-filter: blur(14px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.16) !important;
   border-radius: 980px !important;
   color: #f5f5f7 !important;
-  box-shadow: none !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
 }
 
 html.dark #home .vibe-coder-badge:hover,
 html.dark #home .portfolio-reach-badge:hover {
-  background: #000000 !important;
-  background-color: #000000 !important;
+  background: rgba(255, 255, 255, 0.14) !important;
   border-color: #0a84ff !important;
-  box-shadow: none !important;
+  box-shadow: 0 4px 16px rgba(10, 132, 255, 0.25) !important;
+  transform: translateY(-2px) !important;
 }
 
 /* 16. Homepage Apple Styling hierarchy & visibility tweaks */

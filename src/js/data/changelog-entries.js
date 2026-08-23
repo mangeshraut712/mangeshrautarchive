@@ -43,6 +43,16 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'b5e91c20',
+    date: '2026-08-23',
+    type: 'improvement',
+    title: 'Vibrant Apple Blue Gradient & Specular Metallic Shining Sweep Animation Restoration',
+    summary:
+      'Eliminated flat/dull button overrides across the stylesheet cascade to restore authentic Apple HIG aesthetics: reinstated linear gradients (135deg #0077ed to #005bb5), glowing elevation drop shadows, frosted glassmorphism secondary buttons (backdrop-filter blur 12px), and specular metallic sweep sheen keyframe animations (appleBtnShine) across all primary CTAs, hero actions, badge pills, and subpages.',
+    tags: ['design', 'performance'],
+    sha: 'b5e91c20',
+  },
+  {
     id: '7c93e410',
     date: '2026-08-21',
     type: 'release',

@@ -323,32 +323,127 @@ html body #home.hero-section .hero-actions {
   font-weight: 600 !important;
 }
 
+/* Hero Primary Button (Download Resume / Primary CTA) */
 html body #home.hero-section .hero-actions .hero-cta.hero-cta-primary,
-html body #home.hero-section .hero-actions .hero-cta.hero-cta-primary:hover,
-html body #home.hero-section .hero-actions .hero-cta.hero-cta-primary:focus-visible {
-  animation: none !important;
-  box-shadow: none !important;
-}
-
-#home .hero-cta::before {
-  display: none !important;
-  content: none !important;
-}
-
-/* Keep the resume CTA readable on first paint and outrank lazy premium styles. */
-html body #home.hero-section .hero-actions .resume-dropdown-toggle,
-html body #home.hero-section .hero-actions .resume-dropdown-toggle:hover,
-html body #home.hero-section .hero-actions .resume-dropdown-toggle:focus-visible {
-  background: #0071e3 !important;
+html body #home.hero-section .hero-actions .resume-dropdown-toggle {
   background-color: #0071e3 !important;
-  background-image: none !important;
+  background-image: linear-gradient(135deg, #0077ed 0%, #0071e3 50%, #005bb5 100%) !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+  box-shadow:
+    0 4px 16px rgba(0, 113, 227, 0.38),
+    0 2px 4px rgba(0, 0, 0, 0.08) !important;
+  position: relative !important;
+  overflow: hidden !important;
+  isolation: isolate !important;
 }
 
-html body #home.hero-section .hero-actions .resume-dropdown-toggle > * {
+html body #home.hero-section .hero-actions .hero-cta.hero-cta-primary *,
+html body #home.hero-section .hero-actions .resume-dropdown-toggle * {
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
+  position: relative !important;
+  z-index: 2 !important;
+}
+
+html body #home.hero-section .hero-actions .hero-cta.hero-cta-primary::before,
+html body #home.hero-section .hero-actions .resume-dropdown-toggle::before {
+  content: '' !important;
+  position: absolute !important;
+  top: -50% !important;
+  left: -130% !important;
+  width: 100% !important;
+  height: 200% !important;
+  background: linear-gradient(
+    120deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.08) 25%,
+    rgba(255, 255, 255, 0.65) 50%,
+    rgba(255, 255, 255, 0.08) 75%,
+    transparent 100%
+  ) !important;
+  transform: rotate(25deg) !important;
+  pointer-events: none !important;
+  animation: appleBtnShine 4.5s cubic-bezier(0.4, 0, 0.2, 1) infinite !important;
+  z-index: 1 !important;
+  display: block !important;
+}
+
+html body #home.hero-section .hero-actions .hero-cta.hero-cta-primary:hover,
+html body #home.hero-section .hero-actions .resume-dropdown-toggle:hover {
+  background-color: #0077ed !important;
+  background-image: linear-gradient(135deg, #0080ff 0%, #0071e3 50%, #0066cc 100%) !important;
+  box-shadow:
+    0 8px 24px rgba(0, 113, 227, 0.48),
+    0 3px 8px rgba(0, 0, 0, 0.12) !important;
+  transform: translateY(-2px) scale(1.02) !important;
+}
+
+html body #home.hero-section .hero-actions .hero-cta.hero-cta-primary:hover::before,
+html body #home.hero-section .hero-actions .resume-dropdown-toggle:hover::before {
+  animation: none !important;
+  left: 140% !important;
+  transition: left 0.6s ease-in-out !important;
+}
+
+/* Hero Secondary Button (View Projects) */
+html body #home.hero-section .hero-actions .hero-cta.hero-cta-secondary {
+  background-color: rgba(0, 0, 0, 0.04) !important;
+  background-image: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.9) 0%,
+    rgba(245, 245, 247, 0.7) 100%
+  ) !important;
+  color: #1d1d1f !important;
+  -webkit-text-fill-color: #1d1d1f !important;
+  border: 1px solid rgba(0, 0, 0, 0.12) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+}
+
+html body #home.hero-section .hero-actions .hero-cta.hero-cta-secondary:hover {
+  background-color: rgba(0, 113, 227, 0.08) !important;
+  background-image: linear-gradient(
+    180deg,
+    rgba(0, 113, 227, 0.08) 0%,
+    rgba(0, 113, 227, 0.04) 100%
+  ) !important;
+  color: #0071e3 !important;
+  -webkit-text-fill-color: #0071e3 !important;
+  border-color: rgba(0, 113, 227, 0.4) !important;
+  box-shadow: 0 4px 16px rgba(0, 113, 227, 0.18) !important;
+  transform: translateY(-2px) scale(1.02) !important;
+}
+
+html.dark body #home.hero-section .hero-actions .hero-cta.hero-cta-secondary {
+  background-color: rgba(255, 255, 255, 0.08) !important;
+  background-image: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.12) 0%,
+    rgba(255, 255, 255, 0.04) 100%
+  ) !important;
+  color: #f5f5f7 !important;
+  -webkit-text-fill-color: #f5f5f7 !important;
+  border: 1px solid rgba(255, 255, 255, 0.16) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+}
+
+html.dark body #home.hero-section .hero-actions .hero-cta.hero-cta-secondary:hover {
+  background-color: rgba(41, 151, 255, 0.16) !important;
+  background-image: linear-gradient(
+    180deg,
+    rgba(41, 151, 255, 0.2) 0%,
+    rgba(41, 151, 255, 0.08) 100%
+  ) !important;
+  color: #2997ff !important;
+  -webkit-text-fill-color: #2997ff !important;
+  border-color: rgba(41, 151, 255, 0.4) !important;
+  box-shadow: 0 4px 18px rgba(41, 151, 255, 0.25) !important;
+  transform: translateY(-2px) scale(1.02) !important;
 }
 
 @media (max-width: 959px) {
