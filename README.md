@@ -26,8 +26,8 @@
   <img src="https://img.shields.io/badge/FastAPI-0.141.1-009688?style=flat-square&logo=fastapi&logoColor=white" alt="FastAPI">
   <img src="https://img.shields.io/badge/ESM-Vanilla%20JS-F7DF1E?style=flat-square&logo=javascript&logoColor=black" alt="Vanilla ESM">
   <img src="https://img.shields.io/badge/OpenRouter-Grok%204.3%20%2B%20Nemotron-black?style=flat-square" alt="OpenRouter">
-  <img src="https://img.shields.io/badge/Vitest-172%20passed-729B1B?style=flat-square&logo=vitest&logoColor=white" alt="172 Vitest unit tests">
-  <img src="https://img.shields.io/badge/pytest-166%20passed-0A9EDC?style=flat-square&logo=pytest&logoColor=white" alt="166 pytest API tests">
+  <img src="https://img.shields.io/badge/Vitest-182%20passed-729B1B?style=flat-square&logo=vitest&logoColor=white" alt="182 Vitest unit tests">
+  <img src="https://img.shields.io/badge/pytest-169%20passed-0A9EDC?style=flat-square&logo=pytest&logoColor=white" alt="169 pytest API tests">
   <img src="https://img.shields.io/badge/Playwright-16%20browser%20configs-2EAD33?style=flat-square&logo=playwright&logoColor=white" alt="Playwright">
   <img src="https://img.shields.io/badge/Lighthouse-100%2F100%2F100%2F100-0cce6b?style=flat-square&logo=lighthouse&logoColor=white" alt="Lighthouse 100">
   <a href="https://foglamp.dev/scan/mangeshrautarchive-jtspx4"><img src="https://img.shields.io/badge/Foglamp-AI%20Architecture%20Map-0071e3?style=flat-square" alt="Foglamp architecture map"></a>
@@ -47,11 +47,11 @@
   ·
   <a href="https://mangeshraut.pro/travel"><b>Travel Atlas</b></a>
   ·
-  <a href="https://mangeshraut.pro/uses"><b>Uses & Stack</b></a>
+  <a href="https://mangeshraut712.github.io/mangeshrautarchive/uses"><b>Uses & Stack</b></a>
   ·
-  <a href="https://mangeshraut.pro/changelog"><b>Changelog</b></a>
+  <a href="https://mangeshraut712.github.io/mangeshrautarchive/changelog"><b>Changelog</b></a>
   ·
-  <a href="https://mangeshraut.pro/blog/"><b>Field Notes</b></a>
+  <a href="https://mangeshraut712.github.io/mangeshrautarchive/blog/"><b>Field Notes</b></a>
   ·
   <a href="#7-quick-start--development"><b>Quick Start</b></a>
 </p>
@@ -75,7 +75,7 @@
 
 ## 1. Executive Summary
 
-**mangeshrautarchive** is the open-source production codebase for Mangesh Raut's agentic full-stack portfolio ([**mangeshraut.pro**](https://mangeshraut.pro)). It is engineered with a **static-first, zero-framework runtime philosophy** (no React, Next.js, Vue, Angular, or Svelte runtime dependencies) paired with a **Python 3.12+ FastAPI** backend on serverless edge functions and a dual-host **GitHub Pages** static publishing pipeline.
+**mangeshrautarchive** is the open-source production codebase for Mangesh Raut's [agentic full-stack portfolio on GitHub Pages](https://mangeshraut712.github.io/mangeshrautarchive/). It is engineered with a **static-first, zero-framework runtime philosophy** (no React, Next.js, Vue, Angular, or Svelte runtime dependencies), a Cloudflare Worker API for the active Pages surface, and a Python 3.12+ FastAPI compatibility backend for the optional Vercel surface.
 
 ```
 ┌────────────────────────────────────────────────────────────────────────────────────────┐
@@ -85,7 +85,7 @@
 │  🤖 Agentic AI: AssistMe chatbot, OpenRouter (grok-4.3), 13 WebMCP browser actions    │
 │  🎨 Apple HIG Design: Solid white/black canvases, authentic Liquid Glass shaders       │
 │  📊 Real-Time Telemetry: WHOOP vitals, GA4 realtime reach, platform health probes      │
-│  🛡️ Quality Gates: 172 Vitest tests, 166 pytest tests, 100/100/100/100 Lighthouse CI  │
+│  🛡️ Quality Gates: 182 Vitest tests, 169 pytest tests, 100/100/100/100 Lighthouse CI  │
 │  📜 Open Chronicle: Complete Git history from day 1 (April 8, 2025) to August 2026     │
 └────────────────────────────────────────────────────────────────────────────────────────┘
 ```
@@ -120,7 +120,7 @@ Automated repository health verification enforcing 100/100/100/100 Lighthouse sc
 
 ### 🌐 Dual-Host Edge Topology & Failover
 
-Vercel Production Edge + GitHub Pages Standby Mirror + Cloudflare Worker Proxy:
+GitHub Pages primary publishing + Cloudflare Worker API, with Vercel/FastAPI retained as an optional compatibility surface:
 
 <p align="center">
   <img src="src/assets/images/diagrams/dual-host-edge-topology.svg" alt="Dual-Host Edge Topology" width="780">
@@ -136,8 +136,8 @@ flowchart TD
   end
 
   subgraph Edge ["Global Edge & Serverless"]
-    Pages["GitHub Pages (Static Mirror)"]
-    Vercel["Vercel Edge Gateway"]
+    Pages["GitHub Pages (Primary Static Host)"]
+    Vercel["Vercel Edge Gateway (Optional/Disabled)"]
     Worker["Cloudflare Worker (assistme-chat)"]
     FastAPI["Python 3.12 FastAPI (/api/*)"]
   end
@@ -145,7 +145,7 @@ flowchart TD
   subgraph Upstream ["Upstream AI & Cloud Integrations"]
     OR["OpenRouter (Grok 4.3 / Nemotron / Gemma)"]
     GH["GitHub REST API"]
-    Supa["Supabase PostgreSQL (Vitals Store)"]
+    Supa["Supabase PostgreSQL (Forms, Integrations, Vitals)"]
     WHOOP["WHOOP & Withings APIs"]
     GA4["Google Analytics 4 Realtime"]
   end
@@ -153,15 +153,15 @@ flowchart TD
   DOM --> JS --> UI
   JS --> MCP
   MCP -->|Browser Actions| DOM
-  JS -->|POST /api/chat NDJSON| FastAPI
-  JS -.->|Pages Failover| Worker
-  FastAPI --> OR
-  FastAPI --> GH
-  FastAPI --> Supa
-  FastAPI --> WHOOP
-  FastAPI --> GA4
+  JS -->|Pages /api calls| Worker
+  Worker --> OR
+  Worker --> GH
+  Worker --> Supa
+  Worker --> WHOOP
+  Vercel -.-> FastAPI
+  FastAPI -.-> OR
+  FastAPI -.-> GA4
   Pages --> DOM
-  Vercel --> FastAPI
 ```
 
 ---
@@ -210,16 +210,16 @@ This repository was built and refined using verified daily-driver AI tools and d
 
 ## 5. Product Surfaces & Capabilities
 
-| Surface / Route                                                             | Primary Purpose & Key Features                                                                       |
-| --------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
-| [**`/` (Homepage)**](https://mangeshraut.pro)                               | Dynamic Island hero, engineering evidence grid, experience, skills marquee, contact form.            |
-| [**`/systems`**](https://mangeshraut.pro/systems)                           | Systems engineering notebook, multi-model token telemetry, daily-driver stack, architecture FAQ.     |
-| [**`/monitor`**](https://mangeshraut.pro/monitor)                           | Real-time platform health, hosting status, WHOOP vitals summary, GA4 realtime reach.                 |
-| [**`/travel`**](https://mangeshraut.pro/travel)                             | MapLibre 3D WebGL interactive atlas covering 18 US States and 4 Countries.                           |
-| [**`/uses`**](https://mangeshraut.pro/uses)                                 | Hardware, developer tooling, software, and everyday carry with category filtering.                   |
-| [**`/changelog`**](https://mangeshraut.pro/changelog)                       | Complete chronological release history spanning from repo creation (April 8, 2025) to August 2026.   |
-| [**`/blog/`**](https://mangeshraut.pro/blog/)                               | 16 long-form technical field notes and deep dives with source embeds and KaTeX math.                 |
-| [**`/case-studies/`**](https://mangeshraut.pro/case-studies/portfolio.html) | 5 architectural case studies (Portfolio Architecture, HindAI, CES Energy, AssistMe VA, Bug Tracker). |
+| Surface / Route                                                                                         | Primary Purpose & Key Features                                                                       |
+| ------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| [**`/` (Homepage)**](https://mangeshraut712.github.io/mangeshrautarchive/)                              | Dynamic Island hero, engineering evidence grid, experience, skills marquee, contact form.            |
+| [**`/systems`**](https://mangeshraut712.github.io/mangeshrautarchive/systems)                           | Systems engineering notebook, multi-model token telemetry, daily-driver stack, architecture FAQ.     |
+| [**`/monitor`**](https://mangeshraut712.github.io/mangeshrautarchive/monitor)                           | Real-time platform health, hosting status, WHOOP vitals summary, GA4 realtime reach.                 |
+| [**`/travel`**](https://mangeshraut712.github.io/mangeshrautarchive/travel)                             | MapLibre 3D WebGL interactive atlas covering 18 US States and 4 Countries.                           |
+| [**`/uses`**](https://mangeshraut712.github.io/mangeshrautarchive/uses)                                 | Hardware, developer tooling, software, and everyday carry with category filtering.                   |
+| [**`/changelog`**](https://mangeshraut712.github.io/mangeshrautarchive/changelog)                       | Complete chronological release history spanning from repo creation (April 8, 2025) to August 2026.   |
+| [**`/blog/`**](https://mangeshraut712.github.io/mangeshrautarchive/blog/)                               | 16 long-form technical field notes and deep dives with source embeds and KaTeX math.                 |
+| [**`/case-studies/`**](https://mangeshraut712.github.io/mangeshrautarchive/case-studies/portfolio.html) | 5 architectural case studies (Portfolio Architecture, HindAI, CES Energy, AssistMe VA, Bug Tracker). |
 
 ---
 
@@ -229,8 +229,8 @@ All quality gates are enforced locally and verified automatically in GitHub Acti
 
 | Test Suite            | Runner            |        Test Count         | Scope & Coverage                                                            |
 | --------------------- | ----------------- | :-----------------------: | --------------------------------------------------------------------------- |
-| **Unit Tests**        | Vitest 4.1        | **172 passed** (36 files) | JS modules, services, markdown parser, WebMCP actions, data contracts       |
-| **API Tests**         | pytest            | **166 passed** (26 files) | FastAPI endpoints, streaming chat, health probes, OAuth token stores        |
+| **Unit Tests**        | Vitest 4.1        | **182 passed** (39 files) | JS modules, services, markdown parser, WebMCP actions, data contracts       |
+| **API Tests**         | pytest            | **169 passed** (26 files) | FastAPI endpoints, streaming chat, health probes, OAuth token stores        |
 | **E2E Browser Tests** | Playwright        |      **16 projects**      | Multi-browser suite (Desktop Chrome, Safari, Firefox, iPhone 17, Pixel 7)   |
 | **Accessibility**     | axe-core          |    **16/16 baseline**     | Zero critical/serious WCAG violations across light, dark, and high contrast |
 | **Lighthouse CI**     | Google Lighthouse |    **100/100/100/100**    | Performance, Accessibility, Best Practices, SEO deploy gates                |
@@ -276,8 +276,8 @@ npm run dev
 ### 7.3 Essential Quality Commands
 
 ```bash
-npm run check             # Run ESLint + Stylelint + Prettier + 172 Vitest tests
-npm run test:api          # Run 166 pytest API tests
+npm run check             # Run ESLint + Stylelint + Prettier + 182 Vitest tests
+npm run test:api          # Run 169 pytest API tests
 npm run doctor:strict     # Run 60-point strict repository layout check
 npm run security-check    # Scan for exposed API keys and credentials
 npm run build             # Production bundle compilation to dist/

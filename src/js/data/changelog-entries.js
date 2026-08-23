@@ -43,6 +43,16 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: '37854e81',
+    date: '2026-08-23',
+    type: 'release',
+    title: 'Persistent GitHub Pages Newsletter and Contact Forms',
+    summary:
+      'Promoted GitHub Pages and the Cloudflare Worker to the active publishing path, added secured Supabase storage for newsletter subscribers and contact messages, removed false-success responses, added daily.dev attribution and article-specific discovery metadata, and verified form behavior in Desktop Chrome and iPhone Safari. Built with GPT-5 Codex; internal reasoning and token totals are not exposed by the runtime.',
+    tags: ['blog', 'api', 'deploy'],
+    sha: '37854e81',
+  },
+  {
     id: '7e92a10c',
     date: '2026-08-23',
     type: 'fix',

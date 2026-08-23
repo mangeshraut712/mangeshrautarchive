@@ -1,7 +1,7 @@
 # AGENTS.md — Universal AI Agent Briefing
 
 > **Standard:** Linux Foundation AGENTS.md v1.0 (2026)
-> **Last updated:** 2026-08-16
+> **Last updated:** 2026-08-23
 
 ---
 
@@ -28,8 +28,8 @@
 
 | Attribute       | Value                                                                                                             |
 | --------------- | ----------------------------------------------------------------------------------------------------------------- |
-| Primary URL     | [mangeshraut.pro](https://mangeshraut.pro) (Vercel)                                                               |
-| Mirror URL      | [mangeshraut712.github.io/mangeshrautarchive](https://mangeshraut712.github.io/mangeshrautarchive) (GitHub Pages) |
+| Primary URL     | [mangeshraut712.github.io/mangeshrautarchive](https://mangeshraut712.github.io/mangeshrautarchive) (GitHub Pages) |
+| Optional URL    | [mangeshraut.pro](https://mangeshraut.pro) (Vercel; currently disabled)                                           |
 | License         | MIT                                                                                                               |
 | Node.js         | ≥22 &lt;27 (`.nvmrc` → 22), ESM (`"type": "module"`)                                                              |
 | Python          | 3.12+ (FastAPI backend)                                                                                           |
@@ -99,8 +99,8 @@ npm run lint:python         # flake8 (Python)
 npm run format:check        # Prettier check
 
 # Test
-npm test                    # Vitest unit tests (172 tests)
-npm run test:api            # pytest API tests (166 tests; activate venv first)
+npm test                    # Vitest unit tests (182 tests)
+npm run test:api            # pytest API tests (169 tests; activate venv first)
 npm run test:e2e:chrome     # Playwright E2E — Desktop Chrome
 npm run test:e2e:all        # Playwright E2E — all 16 browser projects
 
@@ -157,7 +157,7 @@ npm run qa:lighthouse:vercel  # Live Vercel Lighthouse floors
 - **MANDATORY Pre-Commit & Release Checklist (Always Execute Automatically)**:
   1. **Update Changelog (`src/js/data/changelog-entries.js`)**: Add a new typed entry to `changelogEntries` detailing the shipped fixes, features, or design polish.
   2. **Track LLM Usage & Model**: In the commit body and documentation updates, record the active LLM model (e.g. `gemini-2.5-pro`, `claude-3.7-sonnet`, `grok-4.3`), reasoning mode, and token consumption metrics.
-  3. **Run Full Quality Gate**: Run `npm run check` (ESLint + Stylelint + Prettier + Vitest 172 tests), `npm run security-check`, and `npm run build` with Node 22 (`export PATH="/opt/homebrew/opt/node@22/bin:/opt/homebrew/Cellar/node@22/22.23.2/bin:$PATH"`).
+  3. **Run Full Quality Gate**: Run `npm run check` (ESLint + Stylelint + Prettier + Vitest 182 tests), `npm run security-check`, and `npm run build` with Node 22 (`export PATH="/opt/homebrew/opt/node@22/bin:/opt/homebrew/Cellar/node@22/22.23.2/bin:$PATH"`).
   4. **Sync Documentation**: Keep test counts, architecture files, and design system rules synchronized across `README.md`, `AGENTS.md`, and `docs/DESIGN.md`.
 
 ---
@@ -201,8 +201,8 @@ All three test suites must pass before any merge to `main`:
 
 | Suite | Runner     | Command                | Coverage                                    |
 | ----- | ---------- | ---------------------- | ------------------------------------------- |
-| Unit  | Vitest     | `npm test`             | 172 tests — JS modules, utilities, markdown |
-| API   | pytest     | `npm run test:api`     | 166 tests — FastAPI endpoints, middleware   |
+| Unit  | Vitest     | `npm test`             | 182 tests — JS modules, utilities, markdown |
+| API   | pytest     | `npm run test:api`     | 169 tests — FastAPI endpoints, middleware   |
 | E2E   | Playwright | `npm run test:e2e:all` | Multi-spec suite across 16 browser projects |
 
 - Playwright configs include Desktop Chrome/Safari/Firefox/Edge, Pixel 7 Chrome, iPhone 14 Safari, iPad Pro Safari, and more.

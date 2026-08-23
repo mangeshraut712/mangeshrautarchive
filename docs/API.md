@@ -61,11 +61,11 @@ Integration keys (Supabase, WHOOP, Withings, Google) are optional for local dev.
 
 ```bash
 source venv/bin/activate
-npm run test:api   # 166 pytest tests in tests/api/
+npm run test:api   # 169 pytest tests in tests/api/
 ```
 
 ## Deploy notes
 
-- **GitHub Pages** ships static `dist/` only (no `/api` on Pages).
+- **GitHub Pages** ships static `dist/`; browser API calls use the Cloudflare Worker. The Worker persists newsletter and contact submissions in RLS-protected Supabase tables with server-only service-role credentials.
 - **Vercel** serves `dist/` + `/api/*` → `api/index.py`. `vercel.json` sets `git.deploymentEnabled: false` and the project has `gitProviderOptions.createDeployments: disabled`; production deploys are **manual** (`vercel deploy --prod`) so Hobby Fluid CPU / Edge quotas are not burned by every `main` push.
-- **Cloudflare Worker** (`workers/assistme-chat/`) can front chat when Vercel apex is `DEPLOYMENT_DISABLED`.
+- **Cloudflare Worker** (`workers/assistme-chat/`) is the active Pages API while the Vercel apex is `DEPLOYMENT_DISABLED`.
