@@ -57,66 +57,73 @@ The portfolio follows authentic **Apple Design Principles**:
 
 ---
 
-## 3. Standard Component & Button Hierarchy
+## 3. Standard 6-Tier Component & Button Hierarchy
 
-### 1. Primary Action Buttons (`.btn-primary`, `.hero-cta-primary`, `.contact-send-btn`, `.apple-submit-btn`, `.newsletter-submit-btn`, `.btn-demo`, `.project-action-btn.btn-demo`, `.projects-view-all-btn`, `.engineering-open-btn`, `.publication-read-btn`, `.error-btn--primary`, `.dictation-dock-btn.is-primary`)
+The design system enforces a strictly unified 6-tier button architecture across all 7 pages (`index.html`, `systems.html`, `monitor.html`, `travel.html`, `uses.html`, `changelog.html`, `404.html`):
+
+### Tier 1: Primary Action CTAs (`.btn-primary`, `.hero-cta-primary`, `.btn-resume`, `.contact-send-btn`, `.apple-submit-btn`, `.newsletter-submit-btn`, `.btn-demo`, `.project-action-btn.btn-demo`, `.projects-view-all-btn`, `.engineering-open-btn`, `.publication-read-btn`, `.error-btn--primary`, `.dictation-dock-btn.is-primary`)
 
 - **Visual Style**: Vibrant Apple Blue Gradient (`linear-gradient(135deg, #0077ed 0%, #0071e3 50%, #005bb5 100%)`) with specular metallic sweep animation (`@keyframes appleBtnShine`) and glowing drop shadow.
-- **Rules**:
-  - `background-color: #0071e3 !important;`
+- **Specifications**:
+  - `min-height: 48px; padding: 0.75rem 1.6rem; border-radius: 12px;` (or `9999px` for pill CTA)
   - `background-image: linear-gradient(135deg, #0077ed 0%, #0071e3 50%, #005bb5 100%) !important;`
-  - `color: #ffffff !important;`
-  - `-webkit-text-fill-color: #ffffff !important;`
+  - `color: #ffffff !important; -webkit-text-fill-color: #ffffff !important;`
   - `border: 1px solid rgba(255, 255, 255, 0.25) !important;`
-  - `border-radius: 12px;` (or `9999px` for pill CTA)
   - `box-shadow: 0 4px 16px rgba(0, 113, 227, 0.38), 0 2px 4px rgba(0, 0, 0, 0.08) !important;`
 - **States**:
   - **Hover**: `background-image: linear-gradient(135deg, #0080ff 0%, #0071e3 50%, #0066cc 100%) !important; transform: translateY(-2px) scale(1.02); box-shadow: 0 8px 24px rgba(0, 113, 227, 0.48), 0 3px 8px rgba(0, 0, 0, 0.12) !important;`
   - **Active / Press**: `transform: scale(0.97);`
   - **Shine Animation**: Specular translucent sweep on `::before` pseudo-element with 4.5s loop (`@keyframes appleBtnShine`).
 
-### 2. Secondary & Ghost Buttons (`.btn-secondary`, `.hero-cta-secondary`, `.btn-glass`)
+### Tier 2: Secondary & Frosted Glass Action Buttons (`.btn-secondary`, `.button-secondary`, `.apple-btn-secondary`, `.hero-cta-secondary`, `.btn-glass`, `.btn-github`, `.btn-ar`, `.error-btn--secondary`)
 
+- **Specifications**:
+  - `min-height: 48px; padding: 0.75rem 1.5rem; border-radius: 12px; font-weight: 600;`
+  - `backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);`
 - **Light Mode**:
-  - `background: #f2f2f7;` (or `rgba(0, 0, 0, 0.04)`)
-  - `color: #1d1d1f;`
-  - `border: 1px solid rgba(0, 0, 0, 0.1);`
-  - **Hover**: `background: #e5e5ea; color: #0071e3; border-color: #0071e3;`
+  - `background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.95) 0%, rgba(245, 245, 247, 0.8) 100%);`
+  - `color: #1d1d1f !important; -webkit-text-fill-color: #1d1d1f !important;`
+  - `border: 1px solid rgba(0, 0, 0, 0.14); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);`
+  - **Hover**: `color: #0071e3; border-color: #0071e3; background-color: rgba(0, 113, 227, 0.06); box-shadow: 0 6px 18px rgba(0, 113, 227, 0.18); transform: translateY(-2px) scale(1.02);`
 - **Dark Mode**:
-  - `background: #1c1c1e;` (or `rgba(255, 255, 255, 0.08)`)
-  - `color: #f5f5f7;`
-  - `border: 1px solid rgba(255, 255, 255, 0.12);`
-  - **Hover**: `background: #2c2c2e; color: #0a84ff; border-color: #0a84ff;`
+  - `background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.04) 100%);`
+  - `color: #f5f5f7 !important; -webkit-text-fill-color: #f5f5f7 !important;`
+  - `border: 1px solid rgba(255, 255, 255, 0.18); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);`
+  - **Hover**: `color: #2997ff; border-color: #2997ff; background-color: rgba(41, 151, 255, 0.14); box-shadow: 0 6px 18px rgba(41, 151, 255, 0.25); transform: translateY(-2px) scale(1.02);`
 
-### 3. Filter Chips & Segmented Controls (`.blog-filter-chip`, `.proj-filter-btn`, `.uses-control-tile`, `.a11y-glass-preset`)
+### Tier 3: Filter Chips, Segmented Tabs & Category Pills (`.proj-filter-btn`, `.project-lens-chip`, `.about-tab-btn`, `.systems-arch-tab`, `.systems-filter-chip`, `.country-pill`, `.travel-filter-chip`, `.travel-action`, `.travel-advanced-toggle`, `.uses-filter-chip`, `.uses-control-tile`, `.changelog-chip`, `.changelog-filters-toggle`, `.log-tab-btn`, `.monitor-filter-btn`, `.skills-radar-pill`, `.share-mirror-tab`)
 
+- **Specifications**: `min-height: 38px; border-radius: 9999px; font-size: 0.88rem; font-weight: 580;`
 - **Inactive State**:
-  - Light Mode: `background: #f2f2f7; color: #1d1d1f; border: 1px solid #d1d1d6;`
-  - Dark Mode: `background: #1c1c1e; color: #f5f5f7; border: 1px solid #3a3a3c;`
-- **Active State (`.active`, `.is-active`)**:
-  - `background: #0071e3 !important;`
-  - `background-color: #0071e3 !important;`
-  - `background-image: none !important;`
-  - `color: #ffffff !important;`
-  - `-webkit-text-fill-color: #ffffff !important;`
-  - `box-shadow: 0 2px 8px rgba(0, 113, 227, 0.35) !important;`
+  - Light Mode: `background-image: linear-gradient(180deg, #ffffff 0%, #f5f5f7 100%); color: #1d1d1f; border: 1px solid rgba(0, 0, 0, 0.14); box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);`
+  - Dark Mode: `background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.03) 100%); color: #f5f5f7; border: 1px solid rgba(255, 255, 255, 0.16); box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);`
+  - Hover: subtle elevation lift `translateY(-1px)`, border colored with Apple Blue (`#0071e3` / `#2997ff`).
+- **Active State (`.active`, `.is-active`, `[aria-selected="true"]`, `[aria-pressed="true"]`)**:
+  - `background-image: linear-gradient(135deg, #0077ed 0%, #0071e3 50%, #005bb5 100%) !important;`
+  - `color: #ffffff !important; -webkit-text-fill-color: #ffffff !important;`
+  - `border: 1px solid rgba(255, 255, 255, 0.25) !important;`
+  - `box-shadow: 0 3px 12px rgba(0, 113, 227, 0.4) !important;`
 
-### 4. Unified Apple Red Circular Close Buttons (`.apple-close-btn`, `.shortcuts-modal__close`, `.blog-modal-close`, `#search-close`, `#close-menu-btn`, `.photo-gallery-close`, `.website-share-close`)
+### Tier 4: Disclosure / Preview / "View More" Buttons (`.section-preview-btn`, `.skills-radar-toggle-btn`, `.arch-tree-toggle-btn`, `.blog-view-more-btn`, `.view-more-btn`, `.btn-view-more`, `.systems-view-more-btn`, `.travel-view-more-btn`, `.uses-view-more-btn`, `.engineering-open-btn`)
+
+- **Specifications**: `min-height: 46px; border-radius: 9999px; padding: 0.65rem 1.6rem; font-size: 0.92rem; font-weight: 600;`
+- **Rest State**: Frosted surface with Apple Blue outline and text.
+- **Hover State**: Vibrant Apple Blue gradient fill with pure white text and glowing shadow.
+
+### Tier 5: Floating Action Buttons (FABs) & System Controls (`#chatbot-toggle`, `#go-to-top`, `#website-share-toggle`, `.a11y-toolbar__main`, `.travel-nav__projection`, `.travel-nav__theme`, `.travel-nav__panel`, `.monitor-page-nav__theme`, `.error-theme-btn`)
+
+- **Dimensions**: `48px × 48px` circular (`border-radius: 50%`).
+- **Color**: Solid Apple Blue gradient or frosted glass with Apple Blue hover.
+- **Shadow**: `0 4px 16px rgba(0, 113, 227, 0.35)`.
+
+### Tier 6: Circular Red Close Buttons (`.apple-close-btn`, `.shortcuts-modal__close`, `.blog-modal-close`, `.publication-modal-close`, `#search-close`, `#close-menu-btn`, `.photo-gallery-close`, `.website-share-close`, `.chatbot-close-btn`, `.blessing-modal-close`)
 
 - **Dimensions**: `32px × 32px` (Min: `32px`, Max: `36px`)
 - **Shape**: `border-radius: 50% !important;`
 - **Color**: `background: #ff3b30 !important; color: #ffffff !important;`
 - **Icon**: Clean SVG cross vector or FontAwesome `xmark` (centered, white).
-- **Hover**: `background: #ff453a !important; transform: scale(1.06) !important; box-shadow: 0 4px 12px rgba(255, 59, 48, 0.45) !important;`
+- **Hover**: `background: #ff453a !important; transform: scale(1.08) !important; box-shadow: 0 4px 12px rgba(255, 59, 48, 0.45) !important;`
 - **Active**: `transform: scale(0.94) !important;`
-- **Rule**: NO duplicate pseudo-elements (`::before`/`::after` lines removed).
-
-### 5. Floating Action Buttons (FABs) (`#chatbot-toggle`, `#go-to-top`)
-
-- **Dimensions**: `48px – 54px` circular button.
-- **Color**: Solid Apple Blue `#0071e3` (`#0a84ff` in dark mode).
-- **Shadow**: `0 4px 16px rgba(0, 113, 227, 0.35)`.
-- **Hover**: `background: #0077ed; transform: scale(1.06);`.
 
 ---
 

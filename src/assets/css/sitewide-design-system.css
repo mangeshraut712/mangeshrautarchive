@@ -7,147 +7,703 @@
    1. GLOBAL BUTTON STYLES - APPLE BLUE
    ======================================== */
 
-/* Target ALL buttons across the site to ensure they are BLUE.
-   Contact chrome (crypto, calendar, calendly) is excluded so brand tiles keep their own look. */
-.btn:not(#resume-dropdown-toggle):not(.hero-cta-secondary):not(.section-preview-btn):not(
-    .btn-secondary
-  ):not(.button-secondary):not(.apple-btn-secondary),
-button:not(#resume-dropdown-toggle):not(.gh-contrib__view-btn):not(.gh-contrib__year):not(
-    .about-tab-btn
-  ):not(.about-speak-btn):not(.card-speak-btn):not(.card-translate-btn):not(.card-restore-btn):not(
-    .card-translate-option
-  ):not(#go-to-top):not(#chatbot-toggle):not(#website-share-toggle):not(.website-share-close):not(
-    .website-share-copy
-  ):not(.website-share-action):not(.chatbot-close-btn):not(.chatbot-viewing-bar):not(
-    .chatbot-jump-latest
-  ):not(.chatbot-clear-btn):not(.dictation-dock-btn):not(.publication-modal-close):not(
-    .blog-modal-close
-  ):not(.shortcuts-modal__close):not(.chatbot-send-btn):not(.chatbot-settings-btn):not(
-    .chatbot-voice-btn
-  ):not(.voice-mode-orb):not(.voice-mode-btn):not(.chatbot-writing-btn):not(.chatbot-plus-btn):not(
-    .composer-plus-option
-  ):not(.chat-attachment-remove):not(.chatbot-retry-btn):not(.welcome-action-chip):not(
-    .writing-tool-option
-  ):not(.context-aware-chip):not(.chatbot-followup-chips button):not(#search-toggle):not(
-    #search-close
-  ):not(#theme-toggle):not(.theme-toggle-nav):not(#menu-btn):not(#close-menu-btn):not(
-    .premium-close-btn
-  ):not(.apple-close-btn):not(.menu-toggle-button):not(#name-pronounce-btn):not(
-    .name-pronounce-btn
-  ):not(#avatar-toggle):not(.profile-image-toggle):not(.proj-filter-btn):not(
-    .project-lens-chip
-  ):not(.project-action-btn):not(.projects-expand-btn):not(.projects-clear-filters-btn):not(
-    .projects-view-all-btn
-  ):not(.blog-read-btn):not(.blog-filter-chip):not(.blog-preview-btn):not(.travel-action):not(
-    .travel-nav__projection
-  ):not(.travel-nav__theme):not(.travel-nav__panel):not(.travel-filter-chip):not(.country-pill):not(
-    .travel-advanced-toggle
-  ):not(.travel-sidebar__handle):not(.a11y-toolbar button):not(.a11y-glass-preset):not(
-    .a11y-glass-popover__close
-  ):not([class*='maplibregl-ctrl']):not(.systems-arch-tab):not(.systems-hero-action):not(
-    .uses-control-tile
-  ):not(.uses-filter-chip):not(.changelog-chip):not(.changelog-filters-toggle):not(
-    .changelog-month__title
-  ):not(.article-reaction):not(.portfolio-reach-badge):not(.hero-pill-badge):not(
-    .crypto-mini-btn
-  ):not(.robinhood-mini-btn):not(.calendly-panel-button):not(.ios-btn):not(.ios-btn-small):not(
-    .status-circle
-  ):not(.edit-btn):not(.contact-assistme-btn):not(.currently-tab):not(.section-preview-btn):not(
-    .hero-cta-secondary
-  ):not(.btn-secondary):not(.button-secondary):not(.apple-btn-secondary):not(.about-tab-btn):not(
-    .proj-filter-btn
-  ):not(.blessing-modal-close):not(.blessing-modal-launch-btn):not(.blessing-modal-poster-play),
-.contact-submit,
-.project-link,
-.read-more-btn,
-.hero-btn,
-.about-btn,
-.download-btn,
-.submit-btn,
-a.button,
-.cta-button {
+/* ========================================
+   1. GLOBAL BUTTON STYLES — UNIFIED APPLE DESIGN SYSTEM
+   6-Tier Button Architecture:
+   - Tier 1: Primary Action CTAs (Apple Blue Gradient + Specular Shine)
+   - Tier 2: Secondary / Frosted Glass Action Buttons
+   - Tier 3: Filter Chips, Segmented Tabs & Category Pills (All Pages)
+   - Tier 4: Disclosure / Preview / "View More" Buttons
+   - Tier 5: Floating Action Buttons (FABs) & System Controls
+   - Tier 6: Circular Red Close Buttons
+   ======================================== */
+
+/* --- TIER 1: PRIMARY ACTION & CALL-TO-ACTION BUTTONS --- */
+:is(
+  .btn-primary,
+  .hero-cta-primary,
+  .btn-resume,
+  .resume-dropdown-toggle,
+  .projects-view-all-btn,
+  .publication-read-btn,
+  .apple-submit-btn,
+  .contact-send-btn,
+  .newsletter-submit-btn,
+  .newsletter-form .btn-primary,
+  .submit-btn,
+  .contact-submit,
+  .project-link,
+  .read-more-btn,
+  .download-btn,
+  .hero-btn,
+  .about-btn,
+  .cta-button,
+  .error-btn--primary,
+  .error-home-link,
+  .support-stripe-btn.premium,
+  .support-paypal-btn.premium,
+  .support-coffee-btn.premium,
+  .project-action-btn.btn-demo,
+  .btn.btn-demo,
+  .case-study-hero-cta,
+  .travel-map-load,
+  .btn:not(.btn-secondary):not(.button-secondary):not(.apple-btn-secondary):not(
+      .hero-cta-secondary
+    ):not(.section-preview-btn):not(.btn-github):not(.btn-ar):not(.btn-glass):not(
+      .error-btn--secondary
+    ):not(.project-action-btn):not([class*='chip']):not([class*='pill']):not([class*='tab']):not(
+      [class*='tile']
+    ):not([class*='close']):not([class*='toggle']):not([class*='dock']):not([class*='nav']):not(
+      [class*='ctrl']
+    ):not([class*='option']):not([class*='fab']):not([class*='preset']):not([class*='month'])
+) {
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', 'Helvetica Neue', Arial,
+    sans-serif !important;
+  font-size: 0.94rem !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.01em !important;
+  min-height: 48px !important;
+  border-radius: 12px !important;
+  padding: 0.75rem 1.6rem !important;
   background-color: #0071e3 !important;
   background-image: linear-gradient(135deg, #0077ed 0%, #0071e3 50%, #005bb5 100%) !important;
-  color: #fff !important;
-  -webkit-text-fill-color: #fff !important;
-  border: none !important;
-  font-weight: 600 !important;
-  border-radius: 12px !important;
-  padding: 0.75rem 1.5rem !important;
-  transition:
-    color 0.3s ease,
-    background-color 0.3s ease,
-    border-color 0.3s ease,
-    box-shadow 0.3s ease,
-    transform 0.3s ease,
-    opacity 0.3s ease !important;
-  box-shadow: 0 4px 16px rgb(0 113 227 / 30%) !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+  box-shadow:
+    0 4px 16px rgba(0, 113, 227, 0.38),
+    0 2px 4px rgba(0, 0, 0, 0.08) !important;
+  position: relative !important;
+  overflow: hidden !important;
+  isolation: isolate !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.5rem !important;
+  text-decoration: none !important;
+  cursor: pointer !important;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
-/* Hover State */
-.btn:not(#resume-dropdown-toggle):not(.hero-cta-secondary):not(.section-preview-btn):not(
-    .btn-secondary
-  ):not(.button-secondary):not(.apple-btn-secondary):hover,
-button:not(#resume-dropdown-toggle):not(.gh-contrib__view-btn):not(.gh-contrib__year):not(
-    .about-tab-btn
-  ):not(.about-speak-btn):not(.card-speak-btn):not(.card-translate-btn):not(.card-restore-btn):not(
-    .card-translate-option
-  ):not(#go-to-top):not(#chatbot-toggle):not(#website-share-toggle):not(.website-share-close):not(
-    .website-share-copy
-  ):not(.website-share-action):not(.chatbot-close-btn):not(.chatbot-viewing-bar):not(
-    .chatbot-jump-latest
-  ):not(.chatbot-clear-btn):not(.dictation-dock-btn):not(.publication-modal-close):not(
-    .blog-modal-close
-  ):not(.shortcuts-modal__close):not(.chatbot-send-btn):not(.chatbot-settings-btn):not(
-    .chatbot-voice-btn
-  ):not(.voice-mode-orb):not(.voice-mode-btn):not(.chatbot-writing-btn):not(.chatbot-plus-btn):not(
-    .composer-plus-option
-  ):not(.chat-attachment-remove):not(.chatbot-retry-btn):not(.welcome-action-chip):not(
-    .writing-tool-option
-  ):not(.context-aware-chip):not(.chatbot-followup-chips button):not(#search-toggle):not(
-    #search-close
-  ):not(#theme-toggle):not(.theme-toggle-nav):not(#menu-btn):not(#close-menu-btn):not(
-    .premium-close-btn
-  ):not(.apple-close-btn):not(.menu-toggle-button):not(#name-pronounce-btn):not(
-    .name-pronounce-btn
-  ):not(#avatar-toggle):not(.profile-image-toggle):not(.proj-filter-btn):not(
-    .project-lens-chip
-  ):not(.project-action-btn):not(.projects-expand-btn):not(.projects-clear-filters-btn):not(
-    .projects-view-all-btn
-  ):not(.blog-read-btn):not(.blog-filter-chip):not(.blog-preview-btn):not(.travel-action):not(
-    .travel-nav__projection
-  ):not(.travel-nav__theme):not(.travel-nav__panel):not(.travel-filter-chip):not(.country-pill):not(
-    .travel-advanced-toggle
-  ):not(.travel-sidebar__handle):not(.a11y-toolbar button):not(.a11y-glass-preset):not(
-    .a11y-glass-popover__close
-  ):not([class*='maplibregl-ctrl']):not(.systems-arch-tab):not(.systems-hero-action):not(
-    .uses-control-tile
-  ):not(.uses-filter-chip):not(.changelog-chip):not(.changelog-filters-toggle):not(
-    .changelog-month__title
-  ):not(.article-reaction):not(.portfolio-reach-badge):not(.hero-pill-badge):not(
-    .crypto-mini-btn
-  ):not(.robinhood-mini-btn):not(.calendly-panel-button):not(.ios-btn):not(.ios-btn-small):not(
-    .status-circle
-  ):not(.edit-btn):not(.contact-assistme-btn):not(.currently-tab):not(.section-preview-btn):not(
-    .hero-cta-secondary
-  ):not(.btn-secondary):not(.button-secondary):not(.apple-btn-secondary):not(.about-tab-btn):not(
-    .proj-filter-btn
-  ):not(.blessing-modal-close):not(.blessing-modal-launch-btn):not(
-    .blessing-modal-poster-play
-  ):hover,
-.contact-submit:hover,
-.project-link:hover,
-.read-more-btn:hover,
-.hero-btn:hover,
-.about-btn:hover,
-.download-btn:hover,
-.submit-btn:hover,
-a.button:hover,
-.cta-button:hover {
+/* Primary Button Hover State */
+:is(
+  .btn-primary,
+  .hero-cta-primary,
+  .btn-resume,
+  .resume-dropdown-toggle,
+  .projects-view-all-btn,
+  .publication-read-btn,
+  .apple-submit-btn,
+  .contact-send-btn,
+  .newsletter-submit-btn,
+  .newsletter-form .btn-primary,
+  .submit-btn,
+  .contact-submit,
+  .project-link,
+  .read-more-btn,
+  .download-btn,
+  .hero-btn,
+  .about-btn,
+  .cta-button,
+  .error-btn--primary,
+  .error-home-link,
+  .support-stripe-btn.premium,
+  .support-paypal-btn.premium,
+  .support-coffee-btn.premium,
+  .project-action-btn.btn-demo,
+  .btn.btn-demo,
+  .case-study-hero-cta,
+  .travel-map-load
+):hover {
   background-color: #0077ed !important;
   background-image: linear-gradient(135deg, #0080ff 0%, #0071e3 50%, #0066cc 100%) !important;
-  transform: translateY(-2px) !important;
-  box-shadow: 0 8px 24px rgb(0 113 227 / 40%) !important;
+  transform: translateY(-2px) scale(1.02) !important;
+  box-shadow:
+    0 8px 24px rgba(0, 113, 227, 0.48),
+    0 3px 8px rgba(0, 0, 0, 0.12) !important;
+}
+
+:is(
+    .btn-primary,
+    .hero-cta-primary,
+    .btn-resume,
+    .resume-dropdown-toggle,
+    .projects-view-all-btn,
+    .publication-read-btn,
+    .apple-submit-btn,
+    .contact-send-btn,
+    .newsletter-submit-btn,
+    .newsletter-form .btn-primary,
+    .submit-btn,
+    .contact-submit,
+    .project-link,
+    .read-more-btn,
+    .download-btn,
+    .hero-btn,
+    .about-btn,
+    .cta-button,
+    .error-btn--primary,
+    .error-home-link,
+    .support-stripe-btn.premium,
+    .support-paypal-btn.premium,
+    .support-coffee-btn.premium,
+    .project-action-btn.btn-demo,
+    .btn.btn-demo,
+    .case-study-hero-cta,
+    .travel-map-load
+  ):hover
+  * {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+/* --- TIER 2: SECONDARY & GHOST ACTION BUTTONS --- */
+:is(
+  .btn-secondary,
+  .button-secondary,
+  .apple-btn-secondary,
+  .hero-cta-secondary,
+  .btn-github,
+  .btn-ar,
+  .btn-glass,
+  .error-btn--secondary,
+  .dictation-dock-btn:not(.is-primary),
+  .project-action-btn:not(.btn-demo),
+  .health-item .btn,
+  .integration-actions .btn
+) {
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', 'Helvetica Neue', Arial,
+    sans-serif !important;
+  font-size: 0.94rem !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.01em !important;
+  min-height: 48px !important;
+  border-radius: 12px !important;
+  padding: 0.75rem 1.5rem !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.5rem !important;
+  text-decoration: none !important;
+  cursor: pointer !important;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+html:not(.dark)
+  :is(
+    .btn-secondary,
+    .button-secondary,
+    .apple-btn-secondary,
+    .hero-cta-secondary,
+    .btn-github,
+    .btn-ar,
+    .btn-glass,
+    .error-btn--secondary,
+    .dictation-dock-btn:not(.is-primary),
+    .project-action-btn:not(.btn-demo),
+    .health-item .btn,
+    .integration-actions .btn
+  ) {
+  background-color: rgba(0, 0, 0, 0.04) !important;
+  background-image: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.95) 0%,
+    rgba(245, 245, 247, 0.8) 100%
+  ) !important;
+  color: #1d1d1f !important;
+  -webkit-text-fill-color: #1d1d1f !important;
+  border: 1px solid rgba(0, 0, 0, 0.14) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05) !important;
+}
+
+html.dark
+  :is(
+    .btn-secondary,
+    .button-secondary,
+    .apple-btn-secondary,
+    .hero-cta-secondary,
+    .btn-github,
+    .btn-ar,
+    .btn-glass,
+    .error-btn--secondary,
+    .dictation-dock-btn:not(.is-primary),
+    .project-action-btn:not(.btn-demo),
+    .health-item .btn,
+    .integration-actions .btn
+  ) {
+  background-color: rgba(255, 255, 255, 0.08) !important;
+  background-image: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.12) 0%,
+    rgba(255, 255, 255, 0.04) 100%
+  ) !important;
+  color: #f5f5f7 !important;
+  -webkit-text-fill-color: #f5f5f7 !important;
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  html:not(.dark)
+    :is(
+      .btn-secondary,
+      .button-secondary,
+      .apple-btn-secondary,
+      .hero-cta-secondary,
+      .btn-github,
+      .btn-ar,
+      .btn-glass,
+      .error-btn--secondary,
+      .dictation-dock-btn:not(.is-primary),
+      .project-action-btn:not(.btn-demo),
+      .health-item .btn,
+      .integration-actions .btn
+    ):hover {
+    color: #0071e3 !important;
+    -webkit-text-fill-color: #0071e3 !important;
+    border-color: #0071e3 !important;
+    background-color: rgba(0, 113, 227, 0.06) !important;
+    box-shadow: 0 6px 18px rgba(0, 113, 227, 0.18) !important;
+    transform: translateY(-2px) scale(1.02) !important;
+  }
+
+  html.dark
+    :is(
+      .btn-secondary,
+      .button-secondary,
+      .apple-btn-secondary,
+      .hero-cta-secondary,
+      .btn-github,
+      .btn-ar,
+      .btn-glass,
+      .error-btn--secondary,
+      .dictation-dock-btn:not(.is-primary),
+      .project-action-btn:not(.btn-demo),
+      .health-item .btn,
+      .integration-actions .btn
+    ):hover {
+    color: #2997ff !important;
+    -webkit-text-fill-color: #2997ff !important;
+    border-color: #2997ff !important;
+    background-color: rgba(41, 151, 255, 0.14) !important;
+    box-shadow: 0 6px 18px rgba(41, 151, 255, 0.25) !important;
+    transform: translateY(-2px) scale(1.02) !important;
+  }
+}
+
+/* --- TIER 3: FILTER CHIPS, SEGMENTED TABS & CATEGORY PILLS (ALL PAGES) --- */
+:is(
+  .proj-filter-btn,
+  .project-lens-chip,
+  .about-tab-btn,
+  .systems-arch-tab,
+  .systems-filter-chip,
+  .systems-benchmarks-tab,
+  .country-pill,
+  .travel-filter-chip,
+  .travel-action,
+  .travel-advanced-toggle,
+  .uses-filter-chip,
+  .uses-control-tile,
+  .changelog-chip,
+  .changelog-filters-toggle,
+  .log-tab-btn,
+  .monitor-filter-btn,
+  .skills-radar-pill,
+  .share-mirror-tab
+) {
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', 'Helvetica Neue', Arial,
+    sans-serif !important;
+  font-size: 0.88rem !important;
+  font-weight: 580 !important;
+  letter-spacing: -0.01em !important;
+  min-height: 38px !important;
+  border-radius: 9999px !important;
+  padding: 0.4rem 1.1rem !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.4rem !important;
+  text-decoration: none !important;
+  cursor: pointer !important;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+/* Inactive State - Light Mode (High Contrast & Visible Outline) */
+html:not(.dark)
+  :is(
+    .proj-filter-btn,
+    .project-lens-chip,
+    .about-tab-btn,
+    .systems-arch-tab,
+    .systems-filter-chip,
+    .systems-benchmarks-tab,
+    .country-pill,
+    .travel-filter-chip,
+    .travel-action,
+    .travel-advanced-toggle,
+    .uses-filter-chip,
+    .uses-control-tile,
+    .changelog-chip,
+    .changelog-filters-toggle,
+    .log-tab-btn,
+    .monitor-filter-btn,
+    .skills-radar-pill,
+    .share-mirror-tab
+  ):not(.is-active):not(.active):not([aria-selected='true']):not([aria-pressed='true']) {
+  background-color: rgba(0, 0, 0, 0.04) !important;
+  background-image: linear-gradient(180deg, #ffffff 0%, #f5f5f7 100%) !important;
+  color: #1d1d1f !important;
+  -webkit-text-fill-color: #1d1d1f !important;
+  border: 1px solid rgba(0, 0, 0, 0.14) !important;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06) !important;
+}
+
+/* Inactive State - Dark Mode */
+html.dark
+  :is(
+    .proj-filter-btn,
+    .project-lens-chip,
+    .about-tab-btn,
+    .systems-arch-tab,
+    .systems-filter-chip,
+    .systems-benchmarks-tab,
+    .country-pill,
+    .travel-filter-chip,
+    .travel-action,
+    .travel-advanced-toggle,
+    .uses-filter-chip,
+    .uses-control-tile,
+    .changelog-chip,
+    .changelog-filters-toggle,
+    .log-tab-btn,
+    .monitor-filter-btn,
+    .skills-radar-pill,
+    .share-mirror-tab
+  ):not(.is-active):not(.active):not([aria-selected='true']):not([aria-pressed='true']) {
+  background-color: rgba(255, 255, 255, 0.06) !important;
+  background-image: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0.03) 100%
+  ) !important;
+  color: #f5f5f7 !important;
+  -webkit-text-fill-color: #f5f5f7 !important;
+  border: 1px solid rgba(255, 255, 255, 0.16) !important;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Chip / Pill Hover State */
+@media (hover: hover) and (pointer: fine) {
+  html:not(.dark)
+    :is(
+      .proj-filter-btn,
+      .project-lens-chip,
+      .about-tab-btn,
+      .systems-arch-tab,
+      .systems-filter-chip,
+      .systems-benchmarks-tab,
+      .country-pill,
+      .travel-filter-chip,
+      .travel-action,
+      .travel-advanced-toggle,
+      .uses-filter-chip,
+      .uses-control-tile,
+      .changelog-chip,
+      .changelog-filters-toggle,
+      .log-tab-btn,
+      .monitor-filter-btn,
+      .skills-radar-pill,
+      .share-mirror-tab
+    ):not(.is-active):not(.active):not([aria-selected='true']):not([aria-pressed='true']):hover {
+    color: #0071e3 !important;
+    -webkit-text-fill-color: #0071e3 !important;
+    border-color: rgba(0, 113, 227, 0.45) !important;
+    background-color: rgba(0, 113, 227, 0.06) !important;
+    box-shadow: 0 3px 10px rgba(0, 113, 227, 0.15) !important;
+    transform: translateY(-1px) !important;
+  }
+
+  html.dark
+    :is(
+      .proj-filter-btn,
+      .project-lens-chip,
+      .about-tab-btn,
+      .systems-arch-tab,
+      .systems-filter-chip,
+      .systems-benchmarks-tab,
+      .country-pill,
+      .travel-filter-chip,
+      .travel-action,
+      .travel-advanced-toggle,
+      .uses-filter-chip,
+      .uses-control-tile,
+      .changelog-chip,
+      .changelog-filters-toggle,
+      .log-tab-btn,
+      .monitor-filter-btn,
+      .skills-radar-pill,
+      .share-mirror-tab
+    ):not(.is-active):not(.active):not([aria-selected='true']):not([aria-pressed='true']):hover {
+    color: #2997ff !important;
+    -webkit-text-fill-color: #2997ff !important;
+    border-color: rgba(41, 151, 255, 0.45) !important;
+    background-color: rgba(41, 151, 255, 0.12) !important;
+    box-shadow: 0 3px 10px rgba(41, 151, 255, 0.2) !important;
+    transform: translateY(-1px) !important;
+  }
+}
+
+/* Active State (Both Light & Dark) */
+:is(
+  .proj-filter-btn,
+  .project-lens-chip,
+  .about-tab-btn,
+  .systems-arch-tab,
+  .systems-filter-chip,
+  .systems-benchmarks-tab,
+  .country-pill,
+  .travel-filter-chip,
+  .travel-action,
+  .travel-advanced-toggle,
+  .uses-filter-chip,
+  .uses-control-tile,
+  .changelog-chip,
+  .changelog-filters-toggle,
+  .log-tab-btn,
+  .monitor-filter-btn,
+  .skills-radar-pill,
+  .share-mirror-tab
+):is(.is-active, .active, [aria-selected='true'], [aria-pressed='true']) {
+  background-color: #0071e3 !important;
+  background-image: linear-gradient(135deg, #0077ed 0%, #0071e3 50%, #005bb5 100%) !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+  box-shadow: 0 3px 12px rgba(0, 113, 227, 0.4) !important;
+  transform: none !important;
+}
+
+:is(
+    .proj-filter-btn,
+    .project-lens-chip,
+    .about-tab-btn,
+    .systems-arch-tab,
+    .systems-filter-chip,
+    .systems-benchmarks-tab,
+    .country-pill,
+    .travel-filter-chip,
+    .travel-action,
+    .travel-advanced-toggle,
+    .uses-filter-chip,
+    .uses-control-tile,
+    .changelog-chip,
+    .changelog-filters-toggle,
+    .log-tab-btn,
+    .monitor-filter-btn,
+    .skills-radar-pill,
+    .share-mirror-tab
+  ):is(.is-active, .active, [aria-selected='true'], [aria-pressed='true'])
+  * {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+/* --- TIER 4: DISCLOSURE / PREVIEW / "VIEW MORE" BUTTONS --- */
+:is(
+  .section-preview-btn,
+  .skills-radar-toggle-btn,
+  .arch-tree-toggle-btn,
+  .blog-view-more-btn,
+  .view-more-btn,
+  .btn-view-more,
+  .systems-view-more-btn,
+  .travel-view-more-btn,
+  .uses-view-more-btn,
+  .engineering-open-btn
+) {
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', 'Helvetica Neue', Arial,
+    sans-serif !important;
+  font-size: 0.92rem !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.01em !important;
+  min-height: 46px !important;
+  border-radius: 9999px !important;
+  padding: 0.65rem 1.6rem !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.5rem !important;
+  text-decoration: none !important;
+  cursor: pointer !important;
+  position: relative !important;
+  overflow: hidden !important;
+  isolation: isolate !important;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+html:not(.dark)
+  :is(
+    .section-preview-btn,
+    .skills-radar-toggle-btn,
+    .arch-tree-toggle-btn,
+    .blog-view-more-btn,
+    .view-more-btn,
+    .btn-view-more,
+    .systems-view-more-btn,
+    .travel-view-more-btn,
+    .uses-view-more-btn,
+    .engineering-open-btn
+  ) {
+  background-color: rgba(0, 113, 227, 0.04) !important;
+  background-image: linear-gradient(180deg, #ffffff 0%, #f5f5f7 100%) !important;
+  color: #0071e3 !important;
+  -webkit-text-fill-color: #0071e3 !important;
+  border: 1px solid rgba(0, 113, 227, 0.3) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+}
+
+html.dark
+  :is(
+    .section-preview-btn,
+    .skills-radar-toggle-btn,
+    .arch-tree-toggle-btn,
+    .blog-view-more-btn,
+    .view-more-btn,
+    .btn-view-more,
+    .systems-view-more-btn,
+    .travel-view-more-btn,
+    .uses-view-more-btn,
+    .engineering-open-btn
+  ) {
+  background-color: rgba(41, 151, 255, 0.08) !important;
+  background-image: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.08) 0%,
+    rgba(255, 255, 255, 0.02) 100%
+  ) !important;
+  color: #2997ff !important;
+  -webkit-text-fill-color: #2997ff !important;
+  border: 1px solid rgba(41, 151, 255, 0.35) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  :is(
+    .section-preview-btn,
+    .skills-radar-toggle-btn,
+    .arch-tree-toggle-btn,
+    .blog-view-more-btn,
+    .view-more-btn,
+    .btn-view-more,
+    .systems-view-more-btn,
+    .travel-view-more-btn,
+    .uses-view-more-btn,
+    .engineering-open-btn
+  ):hover {
+    background-color: #0077ed !important;
+    background-image: linear-gradient(135deg, #0080ff 0%, #0071e3 50%, #0066cc 100%) !important;
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+    border-color: rgba(255, 255, 255, 0.35) !important;
+    box-shadow: 0 8px 24px rgba(0, 113, 227, 0.45) !important;
+    transform: translateY(-2px) scale(1.02) !important;
+  }
+
+  :is(
+      .section-preview-btn,
+      .skills-radar-toggle-btn,
+      .arch-tree-toggle-btn,
+      .blog-view-more-btn,
+      .view-more-btn,
+      .btn-view-more,
+      .systems-view-more-btn,
+      .travel-view-more-btn,
+      .uses-view-more-btn,
+      .engineering-open-btn
+    ):hover
+    * {
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+  }
+}
+
+/* --- TIER 5: FLOATING ACTION BUTTONS (FABS) & SYSTEM CONTROLS --- */
+:is(
+  #chatbot-toggle,
+  #go-to-top,
+  #website-share-toggle,
+  .a11y-toolbar__main,
+  .travel-nav__projection,
+  .travel-nav__theme,
+  .travel-nav__panel,
+  .monitor-page-nav__theme,
+  .error-theme-btn
+) {
+  border-radius: 50% !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+/* --- TIER 6: CIRCULAR RED CLOSE BUTTONS --- */
+:is(
+  .apple-close-btn,
+  .shortcuts-modal__close,
+  .blog-modal-close,
+  .publication-modal-close,
+  #search-close,
+  #close-menu-btn,
+  .photo-gallery-close,
+  .website-share-close,
+  .chatbot-close-btn,
+  .blessing-modal-close
+) {
+  width: 32px !important;
+  height: 32px !important;
+  min-width: 32px !important;
+  min-height: 32px !important;
+  max-width: 32px !important;
+  max-height: 32px !important;
+  border-radius: 50% !important;
+  background: #ff3b30 !important;
+  background-color: #ff3b30 !important;
+  background-image: none !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  border: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-shadow: 0 2px 6px rgba(255, 59, 48, 0.3) !important;
+  cursor: pointer !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+:is(
+  .apple-close-btn,
+  .shortcuts-modal__close,
+  .blog-modal-close,
+  .publication-modal-close,
+  #search-close,
+  #close-menu-btn,
+  .photo-gallery-close,
+  .website-share-close,
+  .chatbot-close-btn,
+  .blessing-modal-close
+):hover {
+  background: #ff453a !important;
+  background-color: #ff453a !important;
+  transform: scale(1.08) !important;
+  box-shadow: 0 4px 12px rgba(255, 59, 48, 0.45) !important;
 }
 
 /* Specific override for any red buttons */
@@ -759,57 +1315,29 @@ html.dark body:not(.error-page) a.support-coffee-btn span {
 /* Exclude buttons from text color override.
    Outline / soft CTAs keep their own blue labels — never force white here.
    Travel atlas controls use solid grey/white chips (not primary blue). */
-.btn:not(#resume-dropdown-toggle):not(.hero-cta-secondary):not(.section-preview-btn),
-button:not(#resume-dropdown-toggle):not(.gh-contrib__view-btn):not(.gh-contrib__year):not(
-    .about-tab-btn
-  ):not(.about-speak-btn):not(.card-speak-btn):not(.card-translate-btn):not(.card-restore-btn):not(
-    .card-translate-option
-  ):not(#go-to-top):not(#chatbot-toggle):not(#website-share-toggle):not(.website-share-close):not(
-    .website-share-copy
-  ):not(.website-share-action):not(.chatbot-close-btn):not(.chatbot-viewing-bar):not(
-    .chatbot-jump-latest
-  ):not(.chatbot-clear-btn):not(.dictation-dock-btn):not(.publication-modal-close):not(
-    .blog-modal-close
-  ):not(.shortcuts-modal__close):not(.chatbot-send-btn):not(.chatbot-settings-btn):not(
-    .chatbot-voice-btn
-  ):not(.voice-mode-orb):not(.voice-mode-btn):not(.chatbot-writing-btn):not(.chatbot-plus-btn):not(
-    .composer-plus-option
-  ):not(.chat-attachment-remove):not(.chatbot-retry-btn):not(.welcome-action-chip):not(
-    .writing-tool-option
-  ):not(.context-aware-chip):not(.chatbot-followup-chips button):not(#search-toggle):not(
-    #search-close
-  ):not(#theme-toggle):not(.theme-toggle-nav):not(#menu-btn):not(#close-menu-btn):not(
-    .premium-close-btn
-  ):not(.apple-close-btn):not(.menu-toggle-button):not(#name-pronounce-btn):not(
-    .name-pronounce-btn
-  ):not(#avatar-toggle):not(.profile-image-toggle):not(.proj-filter-btn):not(
-    .project-lens-chip
-  ):not(.project-action-btn):not(.projects-expand-btn):not(.projects-clear-filters-btn):not(
-    .projects-view-all-btn
-  ):not(.blog-read-btn):not(.blog-filter-chip):not(.blog-preview-btn):not(.travel-action):not(
-    .travel-nav__projection
-  ):not(.travel-nav__theme):not(.travel-nav__panel):not(.travel-filter-chip):not(.country-pill):not(
-    .travel-advanced-toggle
-  ):not(.travel-sidebar__handle):not(.travel-search__clear):not(.travel-empty-state__reset):not(
-    .a11y-toolbar button
-  ):not(.a11y-glass-preset):not(.a11y-glass-popover__close):not(.systems-arch-tab):not(
-    .uses-control-tile
-  ):not(.uses-filter-chip):not(.changelog-chip):not(.changelog-filters-toggle):not(
-    .changelog-month__title
-  ):not(.article-reaction):not(.portfolio-reach-badge):not(.hero-pill-badge):not(
-    .crypto-mini-btn
-  ):not(.robinhood-mini-btn):not(.calendly-panel-button):not(.ios-btn):not(.ios-btn-small):not(
-    .status-circle
-  ):not(.edit-btn):not(.contact-assistme-btn):not(.currently-tab):not(.section-preview-btn):not(
-    .hero-cta-secondary
-  ):not(.hero-cta-primary):not([class*='maplibregl-ctrl']):not(.blessing-modal-close):not(
-    .blessing-modal-launch-btn
-  ):not(.blessing-modal-poster-play),
-.project-tag,
-.badge {
-  color: #fff !important;
-
-  /* Keep solid primary buttons white text */
+/* Primary CTAs, project tags & badges white text */
+:is(
+  .btn-primary,
+  .hero-cta-primary,
+  .btn-resume,
+  .resume-dropdown-toggle,
+  .projects-view-all-btn,
+  .publication-read-btn,
+  .apple-submit-btn,
+  .contact-send-btn,
+  .newsletter-submit-btn,
+  .submit-btn,
+  .btn-demo,
+  .project-action-btn.btn-demo,
+  .case-study-hero-cta,
+  .support-stripe-btn.premium,
+  .support-paypal-btn.premium,
+  .support-coffee-btn.premium,
+  .project-tag,
+  .badge
+) {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
 }
 
 /* Exclude specific text elements that need to be gray */

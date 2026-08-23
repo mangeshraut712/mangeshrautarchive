@@ -620,27 +620,41 @@ html.dark
   background-color: var(--theme-page-bg, #000000) !important;
 }
 
-/* ─── Systems rails / tabs (were semi-transparent grey) ─── */
-html:not(.dark)
-  body.systems-page
-  :is(.systems-section-rail, .systems-arch-tabs, .systems-flow-rail) {
-  background: #ffffff !important;
-  background-color: #ffffff !important;
+/* ─── Systems rails / tabs (Unified Apple Glass & Solid Theme) ─── */
+html:not(.dark) body.systems-page :is(.systems-section-rail, .systems-flow-rail) {
+  background: rgba(0, 0, 0, 0.04) !important;
+  background-color: rgba(0, 0, 0, 0.04) !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+}
+
+html:not(.dark) body.systems-page .systems-arch-tabs {
+  background: rgba(0, 0, 0, 0.04) !important;
+  background-color: rgba(0, 0, 0, 0.04) !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
 }
 
 html.dark body.systems-page :is(.systems-section-rail, .systems-arch-tabs, .systems-flow-rail) {
-  background: #000000 !important;
-  background-color: #000000 !important;
+  background: rgba(255, 255, 255, 0.06) !important;
+  background-color: rgba(255, 255, 255, 0.06) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
 }
 
 html:not(.dark) body.systems-page .systems-arch-tab.is-active {
-  background: #ffffff !important;
-  box-shadow: 0 2px 8px rgb(0 0 0 / 6%) !important;
+  background-color: #0071e3 !important;
+  background-image: linear-gradient(135deg, #0077ed 0%, #0071e3 50%, #005bb5 100%) !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  box-shadow: 0 3px 12px rgba(0, 113, 227, 0.4) !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
 }
 
 html.dark body.systems-page .systems-arch-tab.is-active {
-  background: #000000 !important;
-  box-shadow: 0 2px 12px rgb(0 0 0 / 40%) !important;
+  background-color: #0071e3 !important;
+  background-image: linear-gradient(135deg, #0077ed 0%, #0071e3 50%, #005bb5 100%) !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  box-shadow: 0 3px 12px rgba(0, 113, 227, 0.45) !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
 }
 
 /* ─── Card hover: blue border, no blue glow ─── */
@@ -2867,7 +2881,6 @@ html.dark
   .systems-arch-tab,
   .country-pill,
   .control-center-refresh,
-  .uses-search__clear,
   .project-lens-chip
 ) {
   min-height: 38px !important;
@@ -2895,7 +2908,6 @@ html.dark
   .systems-arch-tab,
   .country-pill,
   .control-center-refresh,
-  .uses-search__clear,
   .project-lens-chip
 ):active {
   transform: scale(0.97) !important;

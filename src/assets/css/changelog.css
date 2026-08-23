@@ -135,42 +135,74 @@ body.changelog-page .changelog-chip {
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
-  border: 0 !important;
-  background: transparent !important;
-  background-image: none !important;
-  color: var(--cl-secondary) !important;
-  -webkit-text-fill-color: var(--cl-secondary) !important;
-  border-radius: 980px !important;
-  padding: 0.45rem 0.8rem !important;
-  font-size: 0.8125rem !important;
-  font-weight: 600 !important;
+  min-height: 34px !important;
+  border-radius: 9999px !important;
+  padding: 0.4rem 0.95rem !important;
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', sans-serif !important;
+  font-size: 0.82rem !important;
+  font-weight: 580 !important;
   letter-spacing: -0.01em;
   line-height: 1.2;
   cursor: pointer;
-  box-shadow: none !important;
-  transform: none !important;
+  background-color: rgba(0, 0, 0, 0.04) !important;
+  background-image: linear-gradient(180deg, #ffffff 0%, #f5f5f7 100%) !important;
+  color: #1d1d1f !important;
+  -webkit-text-fill-color: #1d1d1f !important;
+  border: 1px solid rgba(0, 0, 0, 0.14) !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+  transition: all 0.2s ease;
+}
+
+html.dark body.changelog-page .changelog-chip {
+  background-color: rgba(255, 255, 255, 0.06) !important;
+  background-image: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0.03) 100%
+  ) !important;
+  color: #f5f5f7 !important;
+  -webkit-text-fill-color: #f5f5f7 !important;
+  border-color: rgba(255, 255, 255, 0.16) !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) !important;
 }
 
 body.changelog-page .changelog-chip i {
-  font-size: 0.7rem;
+  font-size: 0.75rem;
 }
 
 body.changelog-page .changelog-chip:hover {
-  color: var(--cl-text) !important;
-  -webkit-text-fill-color: var(--cl-text) !important;
-  background: var(--cl-surface) !important;
+  color: #0071e3 !important;
+  -webkit-text-fill-color: #0071e3 !important;
+  border-color: rgba(0, 113, 227, 0.45) !important;
+  background-color: rgba(0, 113, 227, 0.06) !important;
+  box-shadow: 0 3px 10px rgba(0, 113, 227, 0.15) !important;
+  transform: translateY(-1px) !important;
 }
 
-body.changelog-page .changelog-chip:focus-visible {
-  outline: 2px solid color-mix(in srgb, var(--cl-blue) 50%, transparent);
-  outline-offset: 2px;
+html.dark body.changelog-page .changelog-chip:hover {
+  color: #2997ff !important;
+  -webkit-text-fill-color: #2997ff !important;
+  border-color: rgba(41, 151, 255, 0.45) !important;
+  background-color: rgba(41, 151, 255, 0.12) !important;
+  box-shadow: 0 3px 10px rgba(41, 151, 255, 0.2) !important;
 }
 
-body.changelog-page .changelog-chip.is-active {
-  background: var(--cl-chip-active) !important;
-  color: var(--cl-text) !important;
-  -webkit-text-fill-color: var(--cl-text) !important;
-  box-shadow: none !important;
+body.changelog-page .changelog-chip.is-active,
+body.changelog-page .changelog-chip.active {
+  background-color: #0071e3 !important;
+  background-image: linear-gradient(135deg, #0077ed 0%, #0071e3 50%, #005bb5 100%) !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+  box-shadow: 0 3px 12px rgba(0, 113, 227, 0.4) !important;
+  transform: none !important;
+}
+
+body.changelog-page .changelog-chip.is-active *,
+body.changelog-page .changelog-chip.active * {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
 }
 
 body.changelog-page .changelog-chip--release:not(.is-active) i {
@@ -185,48 +217,68 @@ body.changelog-page .changelog-chip--retired:not(.is-active) i {
   color: var(--cl-retired);
 }
 
-body.changelog-page .changelog-chip--release.is-active {
-  color: var(--cl-release) !important;
-  -webkit-text-fill-color: var(--cl-release) !important;
-}
-
-body.changelog-page .changelog-chip--improvement.is-active {
-  color: var(--cl-improvement) !important;
-  -webkit-text-fill-color: var(--cl-improvement) !important;
-}
-
-body.changelog-page .changelog-chip--retired.is-active {
-  color: var(--cl-retired) !important;
-  -webkit-text-fill-color: var(--cl-retired) !important;
-}
-
 body.changelog-page .changelog-filters-toggle {
   appearance: none;
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
   margin-left: auto;
-  border: 1px solid var(--cl-border) !important;
-  background: transparent !important;
-  background-image: none !important;
-  color: var(--cl-secondary) !important;
-  -webkit-text-fill-color: var(--cl-secondary) !important;
-  border-radius: 980px !important;
-  padding: 0.42rem 0.8rem !important;
-  font-size: 0.72rem !important;
+  min-height: 32px !important;
+  border-radius: 9999px !important;
+  padding: 0.35rem 0.85rem !important;
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', sans-serif !important;
+  font-size: 0.75rem !important;
   font-weight: 650 !important;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.03em;
   text-transform: uppercase;
   cursor: pointer;
-  box-shadow: none !important;
-  transform: none !important;
+  background-color: rgba(0, 0, 0, 0.04) !important;
+  background-image: linear-gradient(180deg, #ffffff 0%, #f5f5f7 100%) !important;
+  color: #1d1d1f !important;
+  -webkit-text-fill-color: #1d1d1f !important;
+  border: 1px solid rgba(0, 0, 0, 0.14) !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+  transition: all 0.2s ease;
 }
 
-body.changelog-page .changelog-filters-toggle:hover,
+html.dark body.changelog-page .changelog-filters-toggle {
+  background-color: rgba(255, 255, 255, 0.06) !important;
+  background-image: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0.03) 100%
+  ) !important;
+  color: #f5f5f7 !important;
+  -webkit-text-fill-color: #f5f5f7 !important;
+  border-color: rgba(255, 255, 255, 0.16) !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) !important;
+}
+
+body.changelog-page .changelog-filters-toggle:hover {
+  color: #0071e3 !important;
+  -webkit-text-fill-color: #0071e3 !important;
+  border-color: rgba(0, 113, 227, 0.45) !important;
+  background-color: rgba(0, 113, 227, 0.06) !important;
+  box-shadow: 0 3px 10px rgba(0, 113, 227, 0.15) !important;
+  transform: translateY(-1px) !important;
+}
+
+html.dark body.changelog-page .changelog-filters-toggle:hover {
+  color: #2997ff !important;
+  -webkit-text-fill-color: #2997ff !important;
+  border-color: rgba(41, 151, 255, 0.45) !important;
+  background-color: rgba(41, 151, 255, 0.12) !important;
+  box-shadow: 0 3px 10px rgba(41, 151, 255, 0.2) !important;
+}
+
 body.changelog-page .changelog-filters-toggle[aria-expanded='true'] {
-  color: var(--cl-text) !important;
-  -webkit-text-fill-color: var(--cl-text) !important;
-  background: var(--cl-surface) !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  background-color: #0071e3 !important;
+  background-image: linear-gradient(135deg, #0077ed 0%, #0071e3 50%, #005bb5 100%) !important;
+  border-color: rgba(255, 255, 255, 0.25) !important;
+  box-shadow: 0 3px 12px rgba(0, 113, 227, 0.4) !important;
 }
 
 body.changelog-page .changelog-filter-panel {

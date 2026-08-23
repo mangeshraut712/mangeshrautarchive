@@ -43,6 +43,16 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'f3a819c4',
+    date: '2026-08-23',
+    type: 'improvement',
+    title: 'Sitewide Unified 6-Tier Button Design System & Dual-Theme Visibility Architecture',
+    summary:
+      'Unanimously standardized button design patterns, dimensions, typography, and geometry across all 7 pages into a 6-tier architecture: Tier 1 Primary Action CTAs with specular metallic shine, Tier 2 Frosted Glass secondary buttons, Tier 3 Segmented Pill filter chips and tabs with high-contrast light/dark surfaces, Tier 4 Disclosure toggles, Tier 5 48px circular FABs, and Tier 6 32px circular red close buttons. Fixed invisible text and background collisions across Skills, Systems, Uses, and Changelog in Light Mode.',
+    tags: ['design', 'polish', 'systems'],
+    sha: 'f3a819c4',
+  },
+  {
     id: 'd4f82a10',
     date: '2026-08-23',
     type: 'improvement',

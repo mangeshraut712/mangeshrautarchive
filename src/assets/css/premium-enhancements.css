@@ -658,7 +658,7 @@ i.fa-css3-alt,
    SITEWIDE DUAL-THEME (LIGHT & DARK) CONTROLS & CHIPS READABILITY LOCK
    ═══════════════════════════════════════════════════════════════════ */
 
-/* --- 1. LIGHT MODE UNSELECTED CONTROLS (#1d1d1f Deep Charcoal Text) --- */
+/* --- 1. LIGHT MODE UNSELECTED CONTROLS (#1d1d1f Deep Charcoal Text + Frosted Pill) --- */
 #projects .gh-contrib__view-btn:not(.is-active),
 #projects .gh-contrib__year:not(.is-active),
 #projects .gh-contrib__settings-btn,
@@ -673,7 +673,11 @@ i.fa-css3-alt,
 .a11y-glass-preset:not(.is-active):not(.active) {
   color: #1d1d1f !important;
   -webkit-text-fill-color: #1d1d1f !important;
-  font-weight: 600 !important;
+  font-weight: 580 !important;
+  background-color: rgba(0, 0, 0, 0.04) !important;
+  background-image: linear-gradient(180deg, #ffffff 0%, #f5f5f7 100%) !important;
+  border: 1px solid rgba(0, 0, 0, 0.14) !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
 }
 
 #projects .gh-contrib__view-btn:not(.is-active):hover,
@@ -690,7 +694,10 @@ i.fa-css3-alt,
 .a11y-glass-preset:not(.is-active):not(.active):hover {
   color: #0071e3 !important;
   -webkit-text-fill-color: #0071e3 !important;
-  background-color: rgba(0, 113, 227, 0.08) !important;
+  border-color: rgba(0, 113, 227, 0.45) !important;
+  background-color: rgba(0, 113, 227, 0.06) !important;
+  box-shadow: 0 3px 10px rgba(0, 113, 227, 0.15) !important;
+  transform: translateY(-1px) !important;
 }
 
 /* --- 2. DARK MODE UNSELECTED CONTROLS (#f5f5f7 Crisp Off-White Text) --- */
@@ -708,7 +715,15 @@ html.dark .uses-control-tile:not(.is-active):not(.active),
 html.dark .a11y-glass-preset:not(.is-active):not(.active) {
   color: #f5f5f7 !important;
   -webkit-text-fill-color: #f5f5f7 !important;
-  font-weight: 600 !important;
+  font-weight: 580 !important;
+  background-color: rgba(255, 255, 255, 0.06) !important;
+  background-image: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0.03) 100%
+  ) !important;
+  border: 1px solid rgba(255, 255, 255, 0.16) !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) !important;
 }
 
 html.dark #projects .gh-contrib__view-btn:not(.is-active):hover,
@@ -725,7 +740,10 @@ html.dark .uses-control-tile:not(.is-active):not(.active):hover,
 html.dark .a11y-glass-preset:not(.is-active):not(.active):hover {
   color: #2997ff !important;
   -webkit-text-fill-color: #2997ff !important;
-  background-color: rgba(41, 151, 255, 0.15) !important;
+  border-color: rgba(41, 151, 255, 0.45) !important;
+  background-color: rgba(41, 151, 255, 0.12) !important;
+  box-shadow: 0 3px 10px rgba(41, 151, 255, 0.2) !important;
+  transform: translateY(-1px) !important;
 }
 
 /* --- 3. ACTIVE STATE CONTROLS (#ffffff Pure Crisp White Text + Apple Blue Badge) --- */
@@ -778,15 +796,15 @@ html.dark .systems-arch-tab.active,
 html.dark .about-tab-btn.is-active,
 html.dark .about-tab-btn.active,
 html.dark .currently-tab.is-active,
-html.dark .currently-tab.active,
 html.dark .uses-control-tile.is-active,
 html.dark .uses-control-tile.active {
   background-color: #0071e3 !important;
-  background-image: none !important;
+  background-image: linear-gradient(135deg, #0077ed 0%, #0071e3 50%, #005bb5 100%) !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
-  font-weight: 700 !important;
-  box-shadow: 0 2px 10px rgba(0, 113, 227, 0.45) !important;
+  font-weight: 600 !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+  box-shadow: 0 3px 12px rgba(0, 113, 227, 0.4) !important;
 }
 
 #projects .gh-contrib__view-btn.is-active *,
