@@ -59,7 +59,7 @@ The portfolio follows authentic **Apple Design Principles**:
 
 ## 3. Standard Component & Button Hierarchy
 
-### 1. Primary Action Button (`.btn-primary`, `.hero-cta-primary`, `.contact-send-btn`)
+### 1. Primary Action Buttons (`.btn-primary`, `.hero-cta-primary`, `.contact-send-btn`, `.apple-submit-btn`, `.newsletter-submit-btn`, `.btn-demo`, `.project-action-btn.btn-demo`, `.projects-view-all-btn`, `.engineering-open-btn`, `.publication-read-btn`, `.error-btn--primary`, `.dictation-dock-btn.is-primary`)
 
 - **Visual Style**: Vibrant Apple Blue Gradient (`linear-gradient(135deg, #0077ed 0%, #0071e3 50%, #005bb5 100%)`) with specular metallic sweep animation (`@keyframes appleBtnShine`) and glowing drop shadow.
 - **Rules**:
@@ -73,7 +73,7 @@ The portfolio follows authentic **Apple Design Principles**:
 - **States**:
   - **Hover**: `background-image: linear-gradient(135deg, #0080ff 0%, #0071e3 50%, #0066cc 100%) !important; transform: translateY(-2px) scale(1.02); box-shadow: 0 8px 24px rgba(0, 113, 227, 0.48), 0 3px 8px rgba(0, 0, 0, 0.12) !important;`
   - **Active / Press**: `transform: scale(0.97);`
-  - **Shine Animation**: Specular translucent sweep on `::before` pseudo-element with 4.5s loop.
+  - **Shine Animation**: Specular translucent sweep on `::before` pseudo-element with 4.5s loop (`@keyframes appleBtnShine`).
 
 ### 2. Secondary & Ghost Buttons (`.btn-secondary`, `.hero-cta-secondary`, `.btn-glass`)
 

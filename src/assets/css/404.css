@@ -283,35 +283,49 @@ html[data-theme='dark'] .error-path {
 .error-btn--primary,
 .error-home-link {
   color: #ffffff !important;
-  background: #0071e3 !important;
+  -webkit-text-fill-color: #ffffff !important;
   background-color: #0071e3 !important;
-  background-image: none !important;
-  box-shadow: none;
-  border: none;
+  background-image: linear-gradient(135deg, #0077ed 0%, #0071e3 50%, #005bb5 100%) !important;
+  box-shadow:
+    0 4px 16px rgba(0, 113, 227, 0.38),
+    0 2px 4px rgba(0, 0, 0, 0.08) !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
   min-width: 10.5rem;
+  position: relative !important;
+  overflow: hidden !important;
+  isolation: isolate !important;
 }
 
 html.dark .error-btn--primary,
 html.dark .error-home-link,
 html[data-theme='dark'] .error-btn--primary,
 html[data-theme='dark'] .error-home-link {
-  background: #0a84ff !important;
-  background-color: #0a84ff !important;
+  background-color: #0071e3 !important;
+  background-image: linear-gradient(135deg, #0077ed 0%, #0071e3 50%, #005bb5 100%) !important;
+  box-shadow:
+    0 4px 16px rgba(0, 113, 227, 0.45),
+    0 2px 4px rgba(0, 0, 0, 0.2) !important;
 }
 
 .error-btn--primary:hover,
 .error-home-link:hover {
-  background: #0051d5 !important;
-  background-color: #0051d5 !important;
-  transform: scale(1.02);
+  background-color: #0077ed !important;
+  background-image: linear-gradient(135deg, #0080ff 0%, #0071e3 50%, #0066cc 100%) !important;
+  box-shadow:
+    0 8px 24px rgba(0, 113, 227, 0.48),
+    0 3px 8px rgba(0, 0, 0, 0.12) !important;
+  transform: translateY(-2px) scale(1.02) !important;
 }
 
 html.dark .error-btn--primary:hover,
 html.dark .error-home-link:hover,
 html[data-theme='dark'] .error-btn--primary:hover,
 html[data-theme='dark'] .error-home-link:hover {
-  background: #2997ff !important;
-  background-color: #2997ff !important;
+  background-color: #0077ed !important;
+  background-image: linear-gradient(135deg, #0080ff 0%, #0071e3 50%, #0066cc 100%) !important;
+  box-shadow:
+    0 8px 24px rgba(0, 113, 227, 0.55),
+    0 3px 8px rgba(0, 0, 0, 0.25) !important;
 }
 
 .error-btn--secondary {

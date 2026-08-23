@@ -3717,39 +3717,53 @@ html.dark
   background: #000000 !important;
 }
 
-/* Demo = outline secondary (surface owned by theme-solid-surfaces.css). */
+/* Demo = Primary Action (Apple Blue Gradient + Specular Shine) */
 section#projects #github-projects-container .project-action-btn.btn-demo {
-  border: 1px solid var(--sc-border-strong) !important;
-  color: #1d1d1f !important;
-  -webkit-text-fill-color: #1d1d1f !important;
-  box-shadow: none !important;
+  background-color: #0071e3 !important;
+  background-image: linear-gradient(135deg, #0077ed 0%, #0071e3 50%, #005bb5 100%) !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+  box-shadow:
+    0 4px 16px rgba(0, 113, 227, 0.38),
+    0 2px 4px rgba(0, 0, 0, 0.08) !important;
+  position: relative !important;
+  overflow: hidden !important;
+  isolation: isolate !important;
 }
 
 section#projects #github-projects-container .project-action-btn.btn-demo > span,
 section#projects #github-projects-container .project-action-btn.btn-demo > i {
-  color: inherit !important;
-  -webkit-text-fill-color: inherit !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  position: relative !important;
+  z-index: 2 !important;
 }
 
 section#projects
   #github-projects-container
   .project-action-btn.btn-demo:hover:not(.is-disabled):not([disabled]) {
-  transform: translateY(-1px) !important;
-  color: #0071e3 !important;
-  -webkit-text-fill-color: #0071e3 !important;
+  background-color: #0077ed !important;
+  background-image: linear-gradient(135deg, #0080ff 0%, #0071e3 50%, #0066cc 100%) !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  box-shadow:
+    0 8px 24px rgba(0, 113, 227, 0.48),
+    0 3px 8px rgba(0, 0, 0, 0.12) !important;
+  transform: translateY(-2px) scale(1.02) !important;
 }
 
 html.dark section#projects #github-projects-container .project-action-btn.btn-demo {
-  color: #f5f5f7 !important;
-  -webkit-text-fill-color: #f5f5f7 !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
 }
 
 html.dark
   section#projects
   #github-projects-container
   .project-action-btn.btn-demo:hover:not(.is-disabled):not([disabled]) {
-  color: #2997ff !important;
-  -webkit-text-fill-color: #2997ff !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
 }
 
 section#projects #github-projects-container .project-action-btn.btn-demo.is-disabled,
@@ -4426,11 +4440,14 @@ html[data-theme='light']
   section#projects
   #github-projects-container
   .project-action-btn.btn-demo:not(.is-disabled):not([disabled]) {
-  background: #ffffff !important;
-  background-color: #ffffff !important;
-  color: #1d1d1f !important;
-  -webkit-text-fill-color: #1d1d1f !important;
-  border: 1px solid rgb(0 0 0 / 14%) !important;
+  background-color: #0071e3 !important;
+  background-image: linear-gradient(135deg, #0077ed 0%, #0071e3 50%, #005bb5 100%) !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+  box-shadow:
+    0 4px 16px rgba(0, 113, 227, 0.38),
+    0 2px 4px rgba(0, 0, 0, 0.08) !important;
 }
 
 html.dark
@@ -4441,11 +4458,14 @@ html[data-theme='dark']
   section#projects
   #github-projects-container
   .project-action-btn.btn-demo:not(.is-disabled):not([disabled]) {
-  background: #000000 !important;
-  background-color: #000000 !important;
-  color: #f5f5f7 !important;
-  -webkit-text-fill-color: #f5f5f7 !important;
-  border: 1px solid rgb(255 255 255 / 18%) !important;
+  background-color: #0071e3 !important;
+  background-image: linear-gradient(135deg, #0077ed 0%, #0071e3 50%, #005bb5 100%) !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+  box-shadow:
+    0 4px 16px rgba(0, 113, 227, 0.45),
+    0 2px 4px rgba(0, 0, 0, 0.2) !important;
 }
 
 html:not(.dark) section#projects .projects-expand-btn,

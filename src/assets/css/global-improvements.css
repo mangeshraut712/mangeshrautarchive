@@ -17,8 +17,8 @@
 button[type='submit'],
 input[type='submit'] {
   padding: 1rem 2rem;
-  background: #0071e3;
-  background-image: none;
+  background-color: #0071e3;
+  background-image: linear-gradient(135deg, #0077ed 0%, #0071e3 50%, #005bb5 100%);
   color: #fff !important;
   border: 2px solid var(--card-border-rest);
   border-radius: 16px;

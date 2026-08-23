@@ -672,19 +672,24 @@ html.dark #home .hero-cta-secondary:hover {
   transform: translateY(-2px) scale(1.02) !important;
 }
 
-/* Section “View more” — soft outline, blue label (never white-on-tint) */
+/* Section “View more” / Preview Buttons — Frosted Glass Rest + Apple Blue Gradient Hover */
 button.section-preview-btn,
 .section-preview-btn,
 main button.section-preview-btn,
 main .section-preview-btn {
-  color: #0051a8 !important;
-  -webkit-text-fill-color: #0051a8 !important;
-  background: #ffffff !important;
-  background-color: #ffffff !important;
-  background-image: none !important;
-  border: 1px solid rgb(0 81 168 / 35%) !important;
+  color: #0071e3 !important;
+  -webkit-text-fill-color: #0071e3 !important;
+  background-color: rgba(0, 113, 227, 0.06) !important;
+  background-image: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.95) 0%,
+    rgba(245, 245, 247, 0.85) 100%
+  ) !important;
+  border: 1px solid rgba(0, 113, 227, 0.3) !important;
   border-radius: 980px !important;
-  box-shadow: none !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
   min-height: 44px !important;
 }
 
@@ -692,32 +697,44 @@ button.section-preview-btn:hover,
 .section-preview-btn:hover,
 main button.section-preview-btn:hover,
 main .section-preview-btn:hover {
-  background: rgb(0 113 227 / 14%) !important;
-  background-color: rgb(0 113 227 / 14%) !important;
-  border-color: rgb(0 113 227 / 50%) !important;
-  color: #0071e3 !important;
-  -webkit-text-fill-color: #0071e3 !important;
+  background-color: #0077ed !important;
+  background-image: linear-gradient(135deg, #0080ff 0%, #0071e3 50%, #0066cc 100%) !important;
+  border-color: rgba(255, 255, 255, 0.35) !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  box-shadow: 0 8px 24px rgba(0, 113, 227, 0.45) !important;
+  transform: translateY(-2px) scale(1.02) !important;
 }
 
 html.dark button.section-preview-btn,
 html.dark .section-preview-btn,
 html.dark main button.section-preview-btn,
 html.dark main .section-preview-btn {
-  color: #64d2ff !important;
-  -webkit-text-fill-color: #64d2ff !important;
-  background: #000000 !important;
-  background-color: #000000 !important;
-  border-color: rgb(100 210 255 / 45%) !important;
+  color: #2997ff !important;
+  -webkit-text-fill-color: #2997ff !important;
+  background-color: rgba(41, 151, 255, 0.12) !important;
+  background-image: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.12) 0%,
+    rgba(255, 255, 255, 0.04) 100%
+  ) !important;
+  border-color: rgba(41, 151, 255, 0.4) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
 }
 
 html.dark button.section-preview-btn:hover,
 html.dark .section-preview-btn:hover,
 html.dark main button.section-preview-btn:hover,
 html.dark main .section-preview-btn:hover {
-  background: rgb(10 132 255 / 20%) !important;
-  background-color: rgb(10 132 255 / 20%) !important;
-  color: #0a84ff !important;
-  -webkit-text-fill-color: #0a84ff !important;
+  background-color: #0077ed !important;
+  background-image: linear-gradient(135deg, #0080ff 0%, #0071e3 50%, #0066cc 100%) !important;
+  border-color: rgba(255, 255, 255, 0.35) !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  box-shadow: 0 8px 24px rgba(0, 113, 227, 0.55) !important;
+  transform: translateY(-2px) scale(1.02) !important;
 }
 
 /* Selection + focus polish */
@@ -993,80 +1010,58 @@ html.dark .website-share-dialog.active .website-share-card {
   color: #f5f5f7 !important;
 }
 
-/* ─── FABs — solid Apple blue (no glass / no multi-stop gradient) ─── */
+/* ─── FABs — Vibrant Apple Blue Gradient + Glowing Elevation ─── */
 #chatbot-toggle,
-body #chatbot-toggle {
-  background: #0071e3 !important;
+body #chatbot-toggle,
+#go-to-top,
+body #go-to-top {
   background-color: #0071e3 !important;
-  background-image: none !important;
+  background-image: linear-gradient(135deg, #0077ed 0%, #0071e3 50%, #005bb5 100%) !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
-  border: none !important;
-  border-radius: 50% !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-  box-shadow: 0 4px 16px rgb(0 113 227 / 32%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+  box-shadow:
+    0 4px 16px rgba(0, 113, 227, 0.38),
+    0 2px 4px rgba(0, 0, 0, 0.08) !important;
 }
 
 html.dark #chatbot-toggle,
-html.dark body #chatbot-toggle {
-  background: #0a84ff !important;
-  background-color: #0a84ff !important;
-  background-image: none !important;
+html.dark body #chatbot-toggle,
+html.dark #go-to-top,
+html.dark body #go-to-top {
+  background-color: #0071e3 !important;
+  background-image: linear-gradient(135deg, #0077ed 0%, #0071e3 50%, #005bb5 100%) !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
-  box-shadow: 0 4px 16px rgb(10 132 255 / 40%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+  box-shadow:
+    0 4px 16px rgba(0, 113, 227, 0.45),
+    0 2px 4px rgba(0, 0, 0, 0.2) !important;
 }
 
 #chatbot-toggle:hover,
-body #chatbot-toggle:hover {
-  background: #0077ed !important;
+body #chatbot-toggle:hover,
+#go-to-top:hover,
+body #go-to-top:hover {
   background-color: #0077ed !important;
-  background-image: none !important;
+  background-image: linear-gradient(135deg, #0080ff 0%, #0071e3 50%, #0066cc 100%) !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
+  box-shadow:
+    0 8px 24px rgba(0, 113, 227, 0.48),
+    0 3px 8px rgba(0, 0, 0, 0.12) !important;
+  transform: translateY(-2px) scale(1.04) !important;
 }
 
 html.dark #chatbot-toggle:hover,
-html.dark body #chatbot-toggle:hover {
-  background: #2997ff !important;
-  background-color: #2997ff !important;
-  background-image: none !important;
-}
-
-#go-to-top,
-body #go-to-top {
-  background: #0071e3 !important;
-  background-color: #0071e3 !important;
-  background-image: none !important;
-  color: #ffffff !important;
-  -webkit-text-fill-color: #ffffff !important;
-  border: none !important;
-  box-shadow: 0 4px 14px rgb(0 113 227 / 32%) !important;
-}
-
-html.dark #go-to-top,
-html.dark body #go-to-top {
-  background: #0a84ff !important;
-  background-color: #0a84ff !important;
-  background-image: none !important;
-  color: #ffffff !important;
-  -webkit-text-fill-color: #ffffff !important;
-  box-shadow: 0 4px 16px rgb(10 132 255 / 40%) !important;
-}
-
-#go-to-top:hover,
-body #go-to-top:hover {
-  background: #0077ed !important;
-  background-color: #0077ed !important;
-  background-image: none !important;
-}
-
+html.dark body #chatbot-toggle:hover,
 html.dark #go-to-top:hover,
 html.dark body #go-to-top:hover {
-  background: #2997ff !important;
-  background-color: #2997ff !important;
-  background-image: none !important;
+  background-color: #0077ed !important;
+  background-image: linear-gradient(135deg, #0080ff 0%, #0071e3 50%, #0066cc 100%) !important;
+  box-shadow:
+    0 8px 24px rgba(0, 113, 227, 0.55),
+    0 3px 8px rgba(0, 0, 0, 0.25) !important;
 }
 
 /* A11y toolbar share control — solid tile, readable glyph */

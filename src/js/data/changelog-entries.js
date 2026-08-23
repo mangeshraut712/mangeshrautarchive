@@ -43,6 +43,17 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'd4f82a10',
+    date: '2026-08-23',
+    type: 'improvement',
+    title:
+      'Sitewide Primary Action Polish: Apple Blue Gradients & Metallic Shining Sweep Animations',
+    summary:
+      'Standardized and applied Apple Blue linear gradients (135deg #0077ed to #005bb5), glowing elevation shadows, and specular metallic sweep sheen keyframe animations (appleBtnShine) across all primary interactive actions: project card Live Demo launches, academic publication read buttons, contact & newsletter form submissions, systems architecture toggles, and floating assistant action triggers.',
+    tags: ['design', 'polish', 'performance'],
+    sha: 'd4f82a10',
+  },
+  {
     id: 'b5e91c20',
     date: '2026-08-23',
     type: 'improvement',

@@ -1355,10 +1355,10 @@ html.dark:not([data-lg-mode])
   .btn-secondary,
   .button-secondary,
   .apple-btn-secondary,
-  #projects #github-projects-container .btn-demo,
+  #projects #github-projects-container .btn-github,
   #projects #github-projects-container .btn-ar,
   #home .hero-actions .hero-cta-secondary,
-  .section-preview-btn
+  .section-preview-btn:not(.btn-primary)
 ) {
   backdrop-filter: blur(12px) !important;
   -webkit-backdrop-filter: blur(12px) !important;
@@ -1369,10 +1369,10 @@ html:not(.dark)
     .btn-secondary,
     .button-secondary,
     .apple-btn-secondary,
-    #projects #github-projects-container .btn-demo,
+    #projects #github-projects-container .btn-github,
     #projects #github-projects-container .btn-ar,
     #home .hero-actions .hero-cta-secondary,
-    .section-preview-btn
+    .section-preview-btn:not(.btn-primary)
   ):not(.is-disabled):not(:disabled) {
   background-color: rgba(0, 0, 0, 0.04) !important;
   background-image: linear-gradient(
@@ -1391,10 +1391,10 @@ html.dark
     .btn-secondary,
     .button-secondary,
     .apple-btn-secondary,
-    #projects #github-projects-container .btn-demo,
+    #projects #github-projects-container .btn-github,
     #projects #github-projects-container .btn-ar,
     #home .hero-actions .hero-cta-secondary,
-    .section-preview-btn
+    .section-preview-btn:not(.btn-primary)
   ):not(.is-disabled):not(:disabled) {
   background-color: rgba(255, 255, 255, 0.08) !important;
   background-image: linear-gradient(
@@ -1414,10 +1414,10 @@ html.dark
       .btn-secondary,
       .button-secondary,
       .apple-btn-secondary,
-      #projects #github-projects-container .btn-demo,
+      #projects #github-projects-container .btn-github,
       #projects #github-projects-container .btn-ar,
       #home .hero-actions .hero-cta-secondary,
-      .section-preview-btn
+      .section-preview-btn:not(.btn-primary)
     ):hover:not(:disabled) {
     background-color: rgba(0, 113, 227, 0.08) !important;
     background-image: linear-gradient(
@@ -1437,10 +1437,10 @@ html.dark
       .btn-secondary,
       .button-secondary,
       .apple-btn-secondary,
-      #projects #github-projects-container .btn-demo,
+      #projects #github-projects-container .btn-github,
       #projects #github-projects-container .btn-ar,
       #home .hero-actions .hero-cta-secondary,
-      .section-preview-btn
+      .section-preview-btn:not(.btn-primary)
     ):hover:not(:disabled) {
     background-color: rgba(41, 151, 255, 0.16) !important;
     background-image: linear-gradient(
@@ -1464,8 +1464,16 @@ html:not(.dark)
     #home .hero-actions .hero-cta-primary,
     button[type='submit']:not(.btn-secondary),
     .contact-submit,
+    .apple-submit-btn,
+    .newsletter-submit-btn,
     .engineering-open-btn,
-    #projects #github-projects-container .btn-github
+    .publication-read-btn,
+    .error-btn--primary,
+    .error-home-link,
+    .dictation-dock-btn.is-primary,
+    .btn-demo,
+    #projects #github-projects-container .btn-demo,
+    .project-action-btn.btn-demo
   ):not(#resume-dropdown-toggle):not(.is-disabled):not(:disabled) {
   background-color: #0071e3 !important;
   background-image: linear-gradient(135deg, #0077ed 0%, #0071e3 50%, #005bb5 100%) !important;
@@ -1484,8 +1492,16 @@ html.dark
     #home .hero-actions .hero-cta-primary,
     button[type='submit']:not(.btn-secondary),
     .contact-submit,
+    .apple-submit-btn,
+    .newsletter-submit-btn,
     .engineering-open-btn,
-    #projects #github-projects-container .btn-github
+    .publication-read-btn,
+    .error-btn--primary,
+    .error-home-link,
+    .dictation-dock-btn.is-primary,
+    .btn-demo,
+    #projects #github-projects-container .btn-demo,
+    .project-action-btn.btn-demo
   ):not(#resume-dropdown-toggle):not(.is-disabled):not(:disabled) {
   background-color: #0071e3 !important;
   background-image: linear-gradient(135deg, #0077ed 0%, #0071e3 50%, #005bb5 100%) !important;
@@ -2317,8 +2333,11 @@ html:not(.dark)
     #website-share-toggle.website-share-fab,
     .a11y-toolbar__main
   ) {
-  background: #0071e3 !important;
   background-color: #0071e3 !important;
+  background-image: linear-gradient(135deg, #0077ed 0%, #0071e3 50%, #005bb5 100%) !important;
+  box-shadow:
+    0 4px 16px rgba(0, 113, 227, 0.38),
+    0 2px 4px rgba(0, 0, 0, 0.08) !important;
 }
 
 html.dark
@@ -2330,8 +2349,11 @@ html.dark
     #website-share-toggle.website-share-fab,
     .a11y-toolbar__main
   ) {
-  background: #0a84ff !important;
-  background-color: #0a84ff !important;
+  background-color: #0071e3 !important;
+  background-image: linear-gradient(135deg, #0077ed 0%, #0071e3 50%, #005bb5 100%) !important;
+  box-shadow:
+    0 4px 16px rgba(0, 113, 227, 0.45),
+    0 2px 4px rgba(0, 0, 0, 0.2) !important;
 }
 
 html
@@ -2756,9 +2778,10 @@ html:not(.dark)
     .travel-view-more-btn,
     .uses-view-more-btn
   ):hover {
-  background: #0071e3 !important;
-  background-color: #0071e3 !important;
+  background-color: #0077ed !important;
+  background-image: linear-gradient(135deg, #0080ff 0%, #0071e3 50%, #0066cc 100%) !important;
   color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
   border-color: #0071e3 !important;
   transform: translateY(-2px) scale(1.02) !important;
   box-shadow: 0 6px 20px rgb(0 113 227 / 28%) !important;
@@ -2793,10 +2816,11 @@ html.dark
     .travel-view-more-btn,
     .uses-view-more-btn
   ):hover {
-  background: #0a84ff !important;
-  background-color: #0a84ff !important;
+  background-color: #0077ed !important;
+  background-image: linear-gradient(135deg, #0080ff 0%, #0071e3 50%, #0066cc 100%) !important;
   color: #ffffff !important;
-  border-color: #0a84ff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  border-color: #2997ff !important;
   transform: translateY(-2px) scale(1.02) !important;
   box-shadow: 0 6px 22px rgb(10 132 255 / 36%) !important;
 }
