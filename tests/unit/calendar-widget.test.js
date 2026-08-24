@@ -13,6 +13,12 @@ const slots = [
     timeZone: 'America/New_York',
     token: 'signed-slot-two',
   },
+  {
+    start: '2026-08-27T17:00:00.000Z',
+    end: '2026-08-27T17:30:00.000Z',
+    timeZone: 'America/New_York',
+    token: 'signed-slot-three',
+  },
 ];
 
 beforeEach(() => {
@@ -22,7 +28,7 @@ beforeEach(() => {
 });
 
 describe('Contact Google Calendar booking widget', () => {
-  it('renders real availability without fictional reminders or dummy event dots', async () => {
+  it('restores the month, events, reminders, and Calendly around real availability', async () => {
     const fetchImpl = vi.fn(
       async () =>
         new Response(
@@ -40,15 +46,54 @@ describe('Contact Google Calendar booking widget', () => {
     const { CalendarBookingWidget } = await import('../../src/js/modules/calendar.js');
     document.body.innerHTML = '<div id="calendar-widget"></div>';
 
-    const widget = new CalendarBookingWidget('calendar-widget');
+    const widget = new CalendarBookingWidget('calendar-widget', {
+      now: new Date('2026-08-24T12:00:00.000Z'),
+    });
     await widget.init();
 
-    expect(document.querySelectorAll('[data-calendar-slot]')).toHaveLength(2);
-    expect(document.body.textContent).toContain('Live Google Calendar availability');
+    expect(document.querySelector('.ios-calendar-section')).not.toBeNull();
+    expect(document.querySelector('[data-calendar-date="2026-08-26"]')).not.toBeNull();
+    expect(
+      document
+        .querySelector('[data-calendar-date="2026-08-26"]')
+        .classList.contains('has-availability')
+    ).toBe(true);
+    expect(document.querySelector('.calendar-events-section')).not.toBeNull();
+    expect(document.querySelector('.ios-reminders-section')).not.toBeNull();
+    expect(document.querySelector('.calendly-panel')).not.toBeNull();
+    expect(document.querySelectorAll('[data-calendar-slot]')).toHaveLength(3);
+    expect(document.body.textContent).toContain('Live Multi-Calendar Availability');
+    expect(document.body.textContent).toContain('Google Calendar Invitation');
+    expect(document.body.textContent).toContain('Outlook & To-Do Sync');
+    expect(document.body.textContent).toContain('Apple Calendar & Reminders');
+    expect(document.body.textContent).toContain('30-minute popup reminder');
     expect(document.body.textContent).not.toContain('Review Portfolio Design');
     expect(document.body.textContent).not.toContain('AI Model Training');
-    expect(document.querySelectorAll('.reminder-card')).toHaveLength(0);
-    expect(document.querySelectorAll('.event-dot')).toHaveLength(0);
+    expect(document.querySelectorAll('.reminder-card')).toHaveLength(4);
+  });
+
+  it('filters live slots when an available calendar day is selected', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(
+        async () =>
+          new Response(
+            JSON.stringify({ success: true, status: 'live', timeZone: 'America/New_York', slots }),
+            { status: 200, headers: { 'Content-Type': 'application/json' } }
+          )
+      )
+    );
+    const { CalendarBookingWidget } = await import('../../src/js/modules/calendar.js');
+    document.body.innerHTML = '<div id="calendar-widget"></div>';
+    const widget = new CalendarBookingWidget('calendar-widget', {
+      now: new Date('2026-08-24T12:00:00.000Z'),
+    });
+    await widget.init();
+
+    document.querySelector('[data-calendar-date="2026-08-27"]').click();
+
+    expect(document.querySelectorAll('[data-calendar-slot]')).toHaveLength(1);
+    expect(document.querySelector('[data-calendar-slot]').dataset.calendarSlot).toBe('2');
   });
 
   it('submits the selected signed slot and confirms the emailed invitation', async () => {
@@ -79,7 +124,9 @@ describe('Contact Google Calendar booking widget', () => {
     vi.stubGlobal('fetch', fetchImpl);
     const { CalendarBookingWidget } = await import('../../src/js/modules/calendar.js');
     document.body.innerHTML = '<div id="calendar-widget"></div>';
-    const widget = new CalendarBookingWidget('calendar-widget');
+    const widget = new CalendarBookingWidget('calendar-widget', {
+      now: new Date('2026-08-24T12:00:00.000Z'),
+    });
     await widget.init();
 
     document.querySelector('[data-calendar-slot]').click();
@@ -103,6 +150,11 @@ describe('Contact Google Calendar booking widget', () => {
     });
     expect(document.querySelector('[data-calendar-booking-form]')).toBeNull();
     expect(document.querySelectorAll('[data-calendar-download]')).toHaveLength(2);
+    expect(document.querySelector('.calendar-event-card')).not.toBeNull();
+    expect(document.querySelector('.calendar-event-card').textContent).toContain(
+      'Architecture review'
+    );
+    expect(document.querySelector('.ios-reminders-section').textContent).toContain('Active');
   });
 
   it('shows an honest owner-reauthorization fallback without fake availability', async () => {
@@ -119,12 +171,37 @@ describe('Contact Google Calendar booking widget', () => {
     const { CalendarBookingWidget } = await import('../../src/js/modules/calendar.js');
     document.body.innerHTML = '<div id="calendar-widget"></div>';
 
-    const widget = new CalendarBookingWidget('calendar-widget');
+    const widget = new CalendarBookingWidget('calendar-widget', {
+      now: new Date('2026-08-24T12:00:00.000Z'),
+    });
     await widget.init();
 
     expect(document.body.textContent).toContain('Calendar connection is being refreshed');
     expect(document.querySelector('a[href^="mailto:"]')).not.toBeNull();
     expect(document.querySelectorAll('[data-calendar-slot]')).toHaveLength(0);
+  });
+
+  it('keeps the integrated Calendly fallback panel working', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(
+        async () =>
+          new Response(
+            JSON.stringify({ success: true, status: 'live', timeZone: 'America/New_York', slots }),
+            { status: 200, headers: { 'Content-Type': 'application/json' } }
+          )
+      )
+    );
+    window.Calendly = { initPopupWidget: vi.fn() };
+    const { CalendarBookingWidget } = await import('../../src/js/modules/calendar.js');
+    document.body.innerHTML = '<div id="calendar-widget"></div>';
+    const widget = new CalendarBookingWidget('calendar-widget', {
+      now: new Date('2026-08-24T12:00:00.000Z'),
+    });
+    await widget.init();
+
+    document.querySelector('.calendly-panel-button').click();
+    await vi.waitFor(() => expect(window.Calendly.initPopupWidget).toHaveBeenCalledOnce());
   });
 
   it('creates one standards-based event file for Apple Calendar and Outlook', async () => {

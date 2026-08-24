@@ -2,7 +2,7 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Replace the fake Contact calendar and reminders with secure Google Calendar availability, booking invitations, and owner reminders on GitHub Pages.
+**Goal:** Restore the Apple-style Contact calendar, real event/reminder state, and integrated Calendly fallback around secure Google Calendar booking on GitHub Pages.
 
 **Architecture:** The Cloudflare Worker owns Google OAuth, token refresh, signed availability slots, event creation, and Supabase audit writes. The browser consumes only sanitized slots and submits a signed slot token plus visitor details.
 
@@ -76,7 +76,8 @@
 
 **Files:**
 
-- Replace: `src/js/modules/calendar.js`
+- Modify: `src/js/modules/calendar.js`
+- Restore: `src/js/utils/calendly.js`
 - Modify: `src/assets/css/contact.css`
 - Modify: `src/assets/css/contact-solid.css`
 - Modify: `src/index.html`
@@ -88,9 +89,9 @@
 - Consumes: sanitized availability and booking endpoints.
 - Produces: accessible slot picker and booking form with truthful connection/error states.
 
-- [ ] Write failing DOM tests for live slots, fake-reminder removal, booking payload, and success/error states.
-- [ ] Implement the new Calendar widget using the existing public API base configuration.
-- [ ] Remove Calendly from the Contact widget and render visitor-local times with ET context.
+- [ ] Write failing DOM tests for month navigation, Google-derived availability dots, day filtering, session events/reminders, Calendly fallback, booking payload, and success/error states.
+- [ ] Restore the Apple month/event/reminder composition around the existing public API base configuration.
+- [ ] Restore the integrated Calendly popup panel and render visitor-local times with ET context.
 - [ ] Generate one RFC 5545 `.ics` fallback locally and expose it through Apple Calendar and Outlook download actions after booking.
 - [ ] Add responsive Apple-style status, slot, and form styling.
 - [ ] Run focused unit and desktop/iPhone Playwright tests.

@@ -3,7 +3,7 @@ import secrets
 from datetime import datetime, timezone
 from typing import Any, Dict, List
 
-from api.integrations import google_calendar, whoop, withings
+from api.integrations import apple_calendar, google_calendar, microsoft_calendar, whoop, withings
 from api.integrations.token_manager import get_valid_access_token
 from api.integrations.supabase_store import (
     integration_is_connected,
@@ -251,12 +251,79 @@ async def register_google_calendar_watch() -> Dict[str, Any]:
         return {"provider": "google_calendar", "status": "degraded"}
 
 
+async def sync_microsoft_calendar_availability(days: int = 7) -> Dict[str, Any]:
+    if not await integration_is_connected("microsoft_calendar"):
+        return {"provider": "microsoft_calendar", "status": "not_connected"}
+    token = await get_valid_access_token("microsoft_calendar")
+    if not token:
+        return {"provider": "microsoft_calendar", "status": "degraded", "message": "Missing Microsoft token"}
+    try:
+        availability = await microsoft_calendar.fetch_availability(token, days=days)
+        await update_sync_state("microsoft_calendar", last_success_at=_utc_now(), last_error=None)
+        return {
+            "provider": "microsoft_calendar",
+            "status": "live",
+            "daysSynced": len(availability),
+        }
+    except Exception:
+        await update_sync_state("microsoft_calendar", last_error="freebusy_fetch_failed")
+        return {"provider": "microsoft_calendar", "status": "degraded"}
+
+
+async def sync_apple_calendar_availability(days: int = 7) -> Dict[str, Any]:
+    if not await integration_is_connected("apple_calendar"):
+        return {"provider": "apple_calendar", "status": "not_connected"}
+    token = await get_valid_access_token("apple_calendar")
+    if not token:
+        return {"provider": "apple_calendar", "status": "degraded", "message": "Missing Apple token"}
+    try:
+        availability = await apple_calendar.fetch_availability(token, days=days)
+        await update_sync_state("apple_calendar", last_success_at=_utc_now(), last_error=None)
+        return {
+            "provider": "apple_calendar",
+            "status": "live",
+            "daysSynced": len(availability),
+        }
+    except Exception:
+        await update_sync_state("apple_calendar", last_error="freebusy_fetch_failed")
+        return {"provider": "apple_calendar", "status": "degraded"}
+
+
+def merge_multi_calendar_availability(*calendar_days_lists: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    """Merge free/busy day lists from multiple providers into a unified busy interval list."""
+    day_map: Dict[str, Dict[str, Any]] = {}
+    for days_list in calendar_days_lists:
+        if not days_list:
+            continue
+        for day in days_list:
+            date_key = day.get("date")
+            if not date_key:
+                continue
+            if date_key not in day_map:
+                day_map[date_key] = {
+                    "date": date_key,
+                    "busy": [],
+                    "start": day.get("start"),
+                    "end": day.get("end"),
+                }
+            for busy in day.get("busy") or []:
+                day_map[date_key]["busy"].append(busy)
+
+    # Sort days chronologically
+    sorted_days = [day_map[k] for k in sorted(day_map.keys())]
+    return sorted_days
+
+
 async def sync_all_providers() -> Dict[str, Any]:
     results: List[Dict[str, Any]] = []
     health_payload = await sync_connected_health_providers()
     results.extend(health_payload.get("results") or [])
     if await integration_is_connected("google_calendar"):
         results.append(await sync_google_calendar_availability())
+    if await integration_is_connected("microsoft_calendar"):
+        results.append(await sync_microsoft_calendar_availability())
+    if await integration_is_connected("apple_calendar"):
+        results.append(await sync_apple_calendar_availability())
     return {
         "success": True,
         "timestamp": _utc_now(),

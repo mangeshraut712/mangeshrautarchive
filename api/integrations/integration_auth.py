@@ -9,6 +9,10 @@ from api.integrations.oauth_state import verify_connect_auth_token
 PROVIDER_SLUGS = {
     "google_calendar": "google-calendar",
     "google-calendar": "google_calendar",
+    "microsoft_calendar": "microsoft-calendar",
+    "microsoft-calendar": "microsoft_calendar",
+    "apple_calendar": "apple-calendar",
+    "apple-calendar": "apple_calendar",
     "whoop": "whoop",
     "withings": "withings",
 }
@@ -16,7 +20,7 @@ PROVIDER_SLUGS = {
 
 def normalize_provider(provider: str) -> str:
     normalized = provider.strip().replace("-", "_")
-    if normalized not in {"google_calendar", "whoop", "withings"}:
+    if normalized not in {"google_calendar", "microsoft_calendar", "apple_calendar", "whoop", "withings"}:
         raise HTTPException(status_code=404, detail="Unknown integration provider.")
     return normalized
 

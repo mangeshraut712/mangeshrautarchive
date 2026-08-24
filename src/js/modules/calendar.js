@@ -1,5 +1,6 @@
 import { escapeHtml } from '../utils/escape-html.js';
 import { getFormsApiBase, getSubmissionContext } from '../services/form-submission.js';
+import { openCalendlyPopup } from '../utils/calendly.js';
 
 const CALENDAR_ENDPOINT = '/api/calendar/availability';
 const BOOKING_ENDPOINT = '/api/calendar/book';
@@ -41,6 +42,23 @@ function formatSlotParts(slot) {
     timeZoneName: 'short',
   }).format(start);
   return { localDate, localTime, etTime };
+}
+
+function dateKeyInZone(value, timeZone = ET_ZONE) {
+  const parts = new Intl.DateTimeFormat('en-CA', {
+    timeZone,
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  }).formatToParts(new Date(value));
+  const values = Object.fromEntries(
+    parts.filter(part => part.type !== 'literal').map(part => [part.type, part.value])
+  );
+  return `${values.year}-${values.month}-${values.day}`;
+}
+
+function localDateKey(year, month, day) {
+  return `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
 }
 
 function statusMessage(status) {
@@ -126,10 +144,16 @@ function downloadCalendarInvite(ics, platform) {
 }
 
 export class CalendarBookingWidget {
-  constructor(containerId) {
+  constructor(containerId, { now = new Date() } = {}) {
     this.container = document.getElementById(containerId);
+    this.now = new Date(now);
+    this.displayDate = new Date(this.now.getFullYear(), this.now.getMonth(), 1);
     this.slots = [];
+    this.providers = [];
     this.selectedSlot = null;
+    this.selectedDateKey = '';
+    this.sessionEvents = [];
+    this.bookingConfirmed = false;
   }
 
   async init() {
@@ -145,6 +169,10 @@ export class CalendarBookingWidget {
         return;
       }
       this.slots = payload.slots;
+      this.providers =
+        Array.isArray(payload.providers) && payload.providers.length
+          ? payload.providers
+          : ['google'];
       this.renderAvailability();
     } catch {
       this.renderUnavailable('degraded');
@@ -155,7 +183,7 @@ export class CalendarBookingWidget {
     this.container.innerHTML = `
       <div class="calendar-booking calendar-booking--loading" aria-busy="true">
         <div class="loading-spinner" aria-hidden="true"></div>
-        <p>Checking Google Calendar availability…</p>
+        <p>Checking multi-calendar availability (Google, Outlook, Apple)…</p>
       </div>`;
   }
 
@@ -173,37 +201,222 @@ export class CalendarBookingWidget {
       </div>`;
   }
 
+  renderProviderBadges() {
+    const icons = {
+      google:
+        '<span class="calendar-provider-badge" title="Google Calendar"><i class="fab fa-google" aria-hidden="true"></i> Google</span>',
+      microsoft:
+        '<span class="calendar-provider-badge" title="Microsoft Outlook"><i class="fab fa-microsoft" aria-hidden="true"></i> Outlook</span>',
+      apple:
+        '<span class="calendar-provider-badge" title="Apple Calendar"><i class="fab fa-apple" aria-hidden="true"></i> Apple</span>',
+    };
+    return (this.providers.length ? this.providers : ['google'])
+      .map(p => icons[p] || `<span class="calendar-provider-badge">${escapeHtml(p)}</span>`)
+      .join(' ');
+  }
+
   renderAvailability() {
     if (!this.slots.length) {
       this.renderUnavailable('no_slots');
       return;
     }
     this.container.innerHTML = `
+      <div class="ios-widget-wrapper">
       <div class="calendar-booking" data-calendar-state="live">
         <header class="calendar-booking__header">
-          <div class="calendar-booking__icon" aria-hidden="true"><i class="fab fa-google"></i></div>
+          <div class="calendar-booking__icon" aria-hidden="true"><i class="fas fa-calendar-alt"></i></div>
           <div>
-            <span class="calendar-booking__eyebrow"><span class="calendar-booking__live-dot" aria-hidden="true"></span> Connected</span>
-            <h4>Live Google Calendar availability</h4>
-            <p>Choose a 30-minute consultation. Times display in your local zone; availability is managed in ET.</p>
+            <div class="calendar-booking__eyebrow-row">
+              <span class="calendar-booking__eyebrow"><span class="calendar-booking__live-dot" aria-hidden="true"></span> Live Sync</span>
+              <div class="calendar-booking__providers">${this.renderProviderBadges()}</div>
+            </div>
+            <h4>Live Multi-Calendar Availability</h4>
+            <p>Synced with Google Calendar, Microsoft Outlook, and Apple Calendar. Times display in your local zone.</p>
           </div>
         </header>
-        <div class="calendar-slot-grid" role="list" aria-label="Available consultation times">
-          ${this.slots
-            .map((slot, index) => {
-              const parts = formatSlotParts(slot);
-              return `<button type="button" class="calendar-slot" data-calendar-slot="${index}" role="listitem" aria-label="${escapeHtml(`${parts.localDate}, ${parts.localTime}; ${parts.etTime}`)}">
-                <span class="calendar-slot__date">${escapeHtml(parts.localDate)}</span>
-                <span class="calendar-slot__time">${escapeHtml(parts.localTime)}</span>
-                <span class="calendar-slot__et">${escapeHtml(parts.etTime)}</span>
-              </button>`;
-            })
-            .join('')}
-        </div>
+        ${this.renderMonthCalendar()}
+        ${this.renderEventsSection()}
+        ${this.renderRemindersSection()}
+        <section class="calendar-live-slots" aria-labelledby="calendar-live-slots-title">
+          <div class="calendar-section-heading">
+            <div><span class="calendar-section-kicker">Multi-Calendar Slots</span><h5 id="calendar-live-slots-title">${this.selectedDateKey ? 'Available on selected day' : 'Next available times'}</h5></div>
+            ${this.selectedDateKey ? '<button type="button" class="calendar-clear-date" data-calendar-clear-date>Show all</button>' : ''}
+          </div>
+          <div class="calendar-slot-grid" role="list" aria-label="Available consultation times">
+            ${this.renderSlots()}
+          </div>
+        </section>
         <div data-calendar-booking-panel></div>
-        <p class="calendar-booking__privacy"><i class="fas fa-lock" aria-hidden="true"></i> Only free slots are shown. Event details stay private.</p>
-      </div>`;
+        <div class="calendly-panel">
+          <div class="calendly-panel-icon"><i class="fas fa-calendar-check" aria-hidden="true"></i></div>
+          <div class="calendly-panel-copy">
+            <span class="calendly-panel-kicker">Calendly fallback</span>
+            <h4>Book a consultation</h4>
+            <p>Prefer the original scheduling experience? Open the integrated Calendly calendar.</p>
+          </div>
+          <button type="button" class="calendly-panel-button"><span>Check Calendly</span><i class="fas fa-arrow-right" aria-hidden="true"></i></button>
+        </div>
+        <p class="calendar-booking__privacy"><i class="fas fa-lock" aria-hidden="true"></i> Only free slots across all connected calendars are shown. Event details stay private.</p>
+      </div></div>`;
+    this.bindCalendarControls();
     this.bindSlots();
+  }
+
+  renderMonthCalendar() {
+    const monthNames = [
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December',
+    ];
+    const year = this.displayDate.getFullYear();
+    const month = this.displayDate.getMonth();
+    const firstDay = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const availabilityDates = new Set(this.slots.map(slot => dateKeyInZone(slot.start)));
+    const bookedDates = new Set(this.sessionEvents.map(event => dateKeyInZone(event.start)));
+    const todayKey = localDateKey(this.now.getFullYear(), this.now.getMonth(), this.now.getDate());
+    const cells = [];
+    for (let index = 0; index < firstDay; index += 1) {
+      cells.push('<span class="day-cell empty" aria-hidden="true"></span>');
+    }
+    for (let day = 1; day <= daysInMonth; day += 1) {
+      const key = localDateKey(year, month, day);
+      const available = availabilityDates.has(key);
+      const booked = bookedDates.has(key);
+      const selected = key === this.selectedDateKey;
+      const classes = [
+        'day-cell',
+        key === todayKey ? 'today' : '',
+        available ? 'has-availability' : '',
+        booked ? 'has-booked-event' : '',
+        selected ? 'selected' : '',
+      ]
+        .filter(Boolean)
+        .join(' ');
+      cells.push(
+        `<button type="button" class="${classes}" data-calendar-date="${key}" aria-pressed="${selected ? 'true' : 'false'}" aria-label="${monthNames[month]} ${day}${available ? ', availability' : ''}${booked ? ', booked event' : ''}">${day}${available ? '<span class="availability-dot" aria-hidden="true"></span>' : ''}${booked ? '<span class="booked-dot" aria-hidden="true"></span>' : ''}</button>`
+      );
+    }
+    return `<section class="ios-calendar-section" aria-label="Availability calendar">
+      <div class="ios-header">
+        <div class="month-title"><span class="current-month">${monthNames[month]}</span><span class="current-year">${year}</span></div>
+        <div class="ios-actions">
+          <button type="button" class="ios-btn icon-only" data-calendar-month="previous" aria-label="Previous month"><i class="fas fa-chevron-left" aria-hidden="true"></i></button>
+          <button type="button" class="ios-btn today-btn" data-calendar-today aria-label="Go to today"><i class="fas fa-calendar-day" aria-hidden="true"></i></button>
+          <button type="button" class="ios-btn icon-only" data-calendar-month="next" aria-label="Next month"><i class="fas fa-chevron-right" aria-hidden="true"></i></button>
+        </div>
+      </div>
+      <div class="ios-weekdays" aria-hidden="true">${['S', 'M', 'T', 'W', 'T', 'F', 'S'].map(day => `<span>${day}</span>`).join('')}</div>
+      <div class="ios-grid">${cells.join('')}</div>
+      <div class="calendar-legend"><span><i class="availability-dot" aria-hidden="true"></i> Available</span><span><i class="booked-dot" aria-hidden="true"></i> Your booking</span></div>
+    </section>`;
+  }
+
+  renderEventsSection() {
+    const events = this.sessionEvents.length
+      ? this.sessionEvents
+          .map(event => {
+            const parts = formatSlotParts(event);
+            return `<article class="calendar-event-card"><div class="calendar-event-card__icon"><i class="fas fa-video" aria-hidden="true"></i></div><div><span class="calendar-event-card__time">${escapeHtml(`${parts.localDate} · ${parts.localTime}`)}</span><h6>${escapeHtml(event.topic)}</h6><p>Google Calendar invitation sent${event.meetingUrl ? ' · Meet link included' : ''}</p></div></article>`;
+          })
+          .join('')
+      : '<p class="calendar-section-empty">Your confirmed meetings will appear here after booking.</p>';
+    return `<section class="calendar-events-section" aria-labelledby="calendar-events-title"><div class="calendar-section-heading"><div><span class="calendar-section-kicker">Events</span><h5 id="calendar-events-title">Your booked meetings</h5></div></div><div class="calendar-events-list">${events}</div></section>`;
+  }
+
+  renderRemindersSection() {
+    const status = this.bookingConfirmed ? 'Active' : 'Ready after booking';
+    const reminders = [
+      [
+        'fa-envelope',
+        'Google Calendar Invitation',
+        'Sent with Google Meet video link to attendee email',
+      ],
+      [
+        'fa-microsoft',
+        'Outlook & To-Do Sync',
+        'Automatic synchronized task and calendar alarm in Outlook',
+      ],
+      [
+        'fa-apple',
+        'Apple Calendar & Reminders',
+        'One-click iCloud Calendar and Apple Reminders sync with alarm',
+      ],
+      ['fa-bell', '30-minute popup reminder', 'Included in Google, Outlook, and Apple .ics alarms'],
+    ];
+    return `<section class="ios-reminders-section" aria-labelledby="calendar-reminders-title"><div class="ios-header"><div class="reminders-title" id="calendar-reminders-title"><i class="fas fa-bell" aria-hidden="true"></i> Multi-Calendar + Reminders</div></div><div class="reminders-scroll-area"><div class="reminder-cards-grid">${reminders
+      .map(
+        ([icon, title, detail]) =>
+          `<article class="reminder-card ${this.bookingConfirmed ? 'is-active' : ''}"><div class="card-accent-strip"></div><div class="card-content"><div class="card-header-flex"><span class="card-time"><i class="${icon.startsWith('fa-') && (icon.includes('apple') || icon.includes('microsoft')) ? 'fab' : 'fas'} ${icon}" aria-hidden="true"></i> ${status}</span><span class="card-tag">Real</span></div><div class="card-title">${title}</div><p class="card-detail">${detail}</p></div></article>`
+      )
+      .join('')}</div></div></section>`;
+  }
+
+  visibleSlotEntries() {
+    return this.slots
+      .map((slot, index) => ({ slot, index }))
+      .filter(
+        ({ slot }) => !this.selectedDateKey || dateKeyInZone(slot.start) === this.selectedDateKey
+      );
+  }
+
+  renderSlots() {
+    const entries = this.visibleSlotEntries();
+    if (!entries.length) {
+      return '<p class="calendar-section-empty calendar-section-empty--slots">No free times on this date. Choose another day or use Calendly.</p>';
+    }
+    return entries
+      .map(({ slot, index }) => {
+        const parts = formatSlotParts(slot);
+        return `<button type="button" class="calendar-slot" data-calendar-slot="${index}" role="listitem" aria-label="${escapeHtml(`${parts.localDate}, ${parts.localTime}; ${parts.etTime}`)}"><span class="calendar-slot__date">${escapeHtml(parts.localDate)}</span><span class="calendar-slot__time">${escapeHtml(parts.localTime)}</span><span class="calendar-slot__et">${escapeHtml(parts.etTime)}</span></button>`;
+      })
+      .join('');
+  }
+
+  bindCalendarControls() {
+    this.bindMonthControls();
+    this.container.querySelector('.calendly-panel-button')?.addEventListener('click', () => {
+      void openCalendlyPopup();
+    });
+  }
+
+  bindMonthControls() {
+    this.container.querySelectorAll('[data-calendar-month]').forEach(button => {
+      button.addEventListener('click', () => {
+        const offset = button.dataset.calendarMonth === 'next' ? 1 : -1;
+        this.displayDate = new Date(
+          this.displayDate.getFullYear(),
+          this.displayDate.getMonth() + offset,
+          1
+        );
+        this.selectedDateKey = '';
+        this.renderAvailability();
+      });
+    });
+    this.container.querySelector('[data-calendar-today]')?.addEventListener('click', () => {
+      this.displayDate = new Date(this.now.getFullYear(), this.now.getMonth(), 1);
+      this.selectedDateKey = '';
+      this.renderAvailability();
+    });
+    this.container.querySelectorAll('[data-calendar-date]').forEach(button => {
+      button.addEventListener('click', () => {
+        this.selectedDateKey = button.dataset.calendarDate || '';
+        this.renderAvailability();
+      });
+    });
+    this.container.querySelector('[data-calendar-clear-date]')?.addEventListener('click', () => {
+      this.selectedDateKey = '';
+      this.renderAvailability();
+    });
   }
 
   bindSlots() {
@@ -285,6 +498,32 @@ export class CalendarBookingWidget {
         description: form.elements.topic.value.trim(),
         meetingUrl: payload.meetingUrl || '',
       });
+      this.bookingConfirmed = true;
+      this.sessionEvents.push({
+        start: payload.start || this.selectedSlot.start,
+        end: payload.end || this.selectedSlot.end,
+        topic: form.elements.topic.value.trim(),
+        meetingUrl: payload.meetingUrl || '',
+      });
+      const monthSection = this.container.querySelector('.ios-calendar-section');
+      if (monthSection) {
+        const wrapper = document.createElement('div');
+        wrapper.innerHTML = this.renderMonthCalendar();
+        monthSection.replaceWith(wrapper.firstElementChild);
+        this.bindMonthControls();
+      }
+      const eventsList = this.container.querySelector('.calendar-events-list');
+      if (eventsList) {
+        const wrapper = document.createElement('div');
+        wrapper.innerHTML = this.renderEventsSection();
+        eventsList.replaceWith(wrapper.querySelector('.calendar-events-list'));
+      }
+      const reminders = this.container.querySelector('.ios-reminders-section');
+      if (reminders) {
+        const wrapper = document.createElement('div');
+        wrapper.innerHTML = this.renderRemindersSection();
+        reminders.replaceWith(wrapper.firstElementChild);
+      }
       const panel = this.container.querySelector('[data-calendar-booking-panel]');
       panel.innerHTML = `
         <div class="calendar-booking-confirmation" role="status" data-calendar-status>

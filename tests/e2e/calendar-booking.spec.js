@@ -18,6 +18,13 @@ const slots = [
 
 async function openContactCalendar(page, availabilityStatus = 'live') {
   let bookingPayload;
+  await page.addInitScript(() => {
+    window.Calendly = {
+      initPopupWidget: options => {
+        document.documentElement.dataset.calendlyOpened = options?.url || 'opened';
+      },
+    };
+  });
   await page.route('**/api/calendar/availability', route =>
     route.fulfill({
       status: 200,
@@ -59,6 +66,10 @@ test.describe('Contact Google Calendar booking', () => {
     const { calendar, getBookingPayload } = await openContactCalendar(page);
     await expect(calendar.getByText('Live Google Calendar availability')).toBeVisible();
     await expect(calendar.locator('[data-calendar-slot]')).toHaveCount(2);
+    await expect(calendar.locator('.ios-calendar-section')).toBeVisible();
+    await expect(calendar.locator('.calendar-events-section')).toBeVisible();
+    await expect(calendar.locator('.ios-reminders-section')).toBeVisible();
+    await expect(calendar.locator('.calendly-panel')).toBeVisible();
     await expect(calendar.getByText('Review Portfolio Design')).toHaveCount(0);
     await expect(calendar.getByText('AI Model Training')).toHaveCount(0);
 
@@ -73,6 +84,8 @@ test.describe('Contact Google Calendar booking', () => {
     await expect(calendar.getByText(/emailed your invitation/i)).toBeVisible();
     await expect(calendar.getByRole('button', { name: /Apple Calendar/i })).toBeVisible();
     await expect(calendar.getByRole('button', { name: /Outlook/i })).toBeVisible();
+    await expect(calendar.locator('.calendar-event-card')).toContainText('Architecture review');
+    await expect(calendar.locator('.reminder-card.is-active')).toHaveCount(3);
     expect(getBookingPayload()).toMatchObject({
       name: 'Ada Lovelace',
       email: 'ada@example.com',
@@ -80,6 +93,16 @@ test.describe('Contact Google Calendar booking', () => {
       slotToken: 'signed-slot-one',
       source: 'github_pages_calendar',
     });
+  });
+
+  test('keeps the original integrated Calendly fallback working', async ({ page }) => {
+    const { calendar } = await openContactCalendar(page);
+
+    await calendar.getByRole('button', { name: /Check Calendly/i }).click();
+
+    await expect
+      .poll(() => page.locator('html').getAttribute('data-calendly-opened'))
+      .toContain('calendly.com');
   });
 
   test('uses an honest email fallback while owner reauthorization is required', async ({
@@ -95,13 +118,54 @@ test.describe('Contact Google Calendar booking', () => {
   test('fits the mobile viewport without horizontal overflow', async ({ page }) => {
     const { calendar } = await openContactCalendar(page);
     await expect(calendar.locator('[data-calendar-slot]').first()).toBeVisible();
-    const metrics = await page.evaluate(() => ({
-      scrollWidth: document.documentElement.scrollWidth,
-      innerWidth: window.innerWidth,
-      calendarWidth: document.getElementById('calendar-widget')?.getBoundingClientRect().width || 0,
-    }));
+    const metrics = await page.evaluate(() => {
+      const root = document.getElementById('calendar-widget')?.getBoundingClientRect();
+      const sectionSelectors = [
+        '.calendar-booking',
+        '.calendar-booking__header',
+        '.ios-calendar-section',
+        '.ios-grid',
+        '.calendar-events-section',
+        '.ios-reminders-section',
+        '.calendar-live-slots',
+        '.calendar-slot-grid',
+        '.calendly-panel',
+      ];
+      const sections = sectionSelectors.map(selector => {
+        const rect = document
+          .querySelector(`#calendar-widget ${selector}`)
+          ?.getBoundingClientRect();
+        return {
+          selector,
+          left: rect?.left || 0,
+          right: rect?.right || 0,
+          width: rect?.width || 0,
+        };
+      });
+
+      return {
+        scrollWidth: document.documentElement.scrollWidth,
+        innerWidth: window.innerWidth,
+        root: root ? { left: root.left, right: root.right, width: root.width } : null,
+        sections,
+      };
+    });
 
     expect(metrics.scrollWidth).toBeLessThanOrEqual(metrics.innerWidth + 1);
-    expect(metrics.calendarWidth).toBeLessThanOrEqual(metrics.innerWidth);
+    expect(metrics.root?.width).toBeLessThanOrEqual(metrics.innerWidth);
+    for (const section of metrics.sections) {
+      expect(
+        section.width,
+        `${section.selector} should render with a positive width`
+      ).toBeGreaterThan(0);
+      expect(
+        section.left,
+        `${section.selector} should stay inside the calendar card`
+      ).toBeGreaterThanOrEqual((metrics.root?.left || 0) - 1);
+      expect(
+        section.right,
+        `${section.selector} should stay inside the calendar card`
+      ).toBeLessThanOrEqual((metrics.root?.right || metrics.innerWidth) + 1);
+    }
   });
 });

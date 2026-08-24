@@ -43,6 +43,16 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'f49a21e0',
+    date: '2026-08-24',
+    type: 'release',
+    title: 'Microsoft Outlook & Apple iCloud Multi-Calendar OAuth and Reminders',
+    summary:
+      'Integrated Microsoft Graph API OAuth (Outlook Calendar & To-Do) and Apple iCloud Calendar/Reminders OAuth/CalDAV alongside Google Calendar. Availability endpoint aggregates all connected calendars to prevent double-booking. Added encrypted AES-256-GCM token storage in Supabase, interactive CLI wizards, multi-calendar provider indicators in the Contact widget, and synchronized reminder channels. Built with Gemini 2.5 Pro; token usage tracked via total_usage.',
+    tags: ['api', 'deploy', 'design'],
+    sha: 'f49a21e0',
+  },
+  {
     id: '8b01a779',
     date: '2026-08-24',
     type: 'improvement',

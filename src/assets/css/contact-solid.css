@@ -640,3 +640,82 @@ html[data-theme='dark'] body #contact .currently-tab.active {
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
 }
+
+/* Restored Calendar containment — wins over legacy compact-widget flex rules. */
+html body #contact #calendar-widget,
+html body #contact #calendar-widget .calendar-booking,
+html body #contact #calendar-widget .ios-widget-wrapper,
+html
+  body
+  #contact
+  #calendar-widget
+  :is(
+    .calendar-booking__header,
+    .ios-calendar-section,
+    .calendar-events-section,
+    .ios-reminders-section,
+    .calendar-live-slots,
+    .calendly-panel,
+    .ios-grid,
+    .calendar-events-list,
+    .reminder-cards-grid,
+    .calendar-slot-grid
+  ) {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+}
+
+html body #contact #calendar-widget .calendar-booking,
+html body #contact #calendar-widget .ios-widget-wrapper {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+}
+
+html
+  body
+  #contact
+  #calendar-widget
+  :is(
+    .ios-calendar-section,
+    .calendar-events-section,
+    .ios-reminders-section,
+    .calendar-live-slots
+  ) {
+  display: block !important;
+}
+
+html body #contact #calendar-widget .calendar-booking__header {
+  display: grid !important;
+  grid-template-columns: 48px minmax(0, 1fr) !important;
+}
+
+html body #contact #calendar-widget :is(.calendar-booking__header > *, .calendly-panel > *) {
+  min-width: 0 !important;
+}
+
+html body #contact #calendar-widget :is(.ios-weekdays, .ios-grid) {
+  display: grid !important;
+  grid-template-columns: repeat(7, minmax(0, 1fr)) !important;
+}
+
+html body #contact #calendar-widget .calendly-panel {
+  display: grid !important;
+  grid-template-columns: auto minmax(0, 1fr) auto !important;
+}
+
+@media (width <= 720px) {
+  html body #contact #calendar-widget .calendar-booking {
+    padding: 0.875rem !important;
+  }
+
+  html body #contact #calendar-widget .calendly-panel {
+    grid-template-columns: auto minmax(0, 1fr) !important;
+  }
+
+  html body #contact #calendar-widget .calendly-panel-button {
+    grid-column: 1 / -1 !important;
+    width: 100% !important;
+  }
+}

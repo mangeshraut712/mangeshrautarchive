@@ -9,7 +9,7 @@ from fastapi import APIRouter, HTTPException, Request
 from fastapi.responses import JSONResponse, RedirectResponse
 from pydantic import BaseModel, Field
 
-from api.integrations import google_calendar, whoop, withings
+from api.integrations import apple_calendar, google_calendar, microsoft_calendar, whoop, withings
 from api.integrations.integration_auth import (
     integration_admin_token,
     normalize_provider,
@@ -19,10 +19,13 @@ from api.integrations.integration_auth import (
 )
 from api.integrations.oauth_state import create_connect_auth_token, create_oauth_state, verify_oauth_state
 from api.integrations.sync_engine import (
+    merge_multi_calendar_availability,
     register_google_calendar_watch,
     sync_all_providers,
+    sync_apple_calendar_availability,
     sync_connected_health_providers,
     sync_google_calendar_availability,
+    sync_microsoft_calendar_availability,
 )
 from api.integrations.supabase_store import (
     disconnect_provider,
@@ -264,10 +267,20 @@ def _health_summary_response(payload: Dict[str, Any]) -> JSONResponse:
 
 async def _provider_status() -> Dict[str, Dict[str, Any]]:
     google_configured = google_calendar.is_configured()
+    microsoft_configured = microsoft_calendar.is_configured()
+    apple_configured = apple_calendar.is_configured()
     whoop_configured = _oauth_ready("WHOOP_CLIENT_ID", "WHOOP_CLIENT_SECRET")
     withings_configured = _oauth_ready("WITHINGS_CLIENT_ID", "WITHINGS_CLIENT_SECRET")
-    google_connected, whoop_connected, withings_connected = await asyncio.gather(
+    (
+        google_connected,
+        microsoft_connected,
+        apple_connected,
+        whoop_connected,
+        withings_connected,
+    ) = await asyncio.gather(
         integration_is_connected("google_calendar"),
+        integration_is_connected("microsoft_calendar"),
+        integration_is_connected("apple_calendar"),
         integration_is_connected("whoop"),
         integration_is_connected("withings"),
     )
@@ -321,6 +334,29 @@ async def _provider_status() -> Dict[str, Dict[str, Any]]:
             "connectUrl": None,
             "requiresOwnerAuth": google_configured,
             "nextStep": "Create a Google OAuth client and connect calendar access.",
+        },
+        "microsoftCalendar": {
+            "configured": microsoft_configured,
+            "connected": microsoft_connected,
+            "purpose": "Outlook Calendar free/busy availability and Microsoft To-Do task reminders.",
+            "scopes": [
+                "Calendars.Read",
+                "Calendars.Read.Shared",
+                "Tasks.ReadWrite",
+                "offline_access",
+            ],
+            "connectUrl": None,
+            "requiresOwnerAuth": microsoft_configured,
+            "nextStep": "Register an app in Microsoft Entra Admin Center and connect Outlook.",
+        },
+        "appleCalendar": {
+            "configured": apple_configured,
+            "connected": apple_connected,
+            "purpose": "iCloud Calendar availability and Apple Reminders synchronization.",
+            "scopes": ["name", "email", "caldav"],
+            "connectUrl": None,
+            "requiresOwnerAuth": apple_configured,
+            "nextStep": "Configure Apple Services ID or iCloud CalDAV credentials.",
         },
     }
 
@@ -477,76 +513,107 @@ async def sync_health_vitals(request: Request, payload: Optional[HealthVitalsUps
 @router.get(
     "/api/calendar/availability",
     tags=["core"],
-    summary="Public calendar availability contract",
+    summary="Public calendar availability contract aggregating Google, Microsoft, and Apple",
 )
 async def get_calendar_availability():
-    provider = (await _provider_status())["googleCalendar"]
-    if not provider["configured"]:
+    status_map = await _provider_status()
+    google_info = status_map["googleCalendar"]
+    ms_info = status_map["microsoftCalendar"]
+    apple_info = status_map["appleCalendar"]
+
+    any_configured = google_info["configured"] or ms_info["configured"] or apple_info["configured"]
+    any_connected = google_info["connected"] or ms_info["connected"] or apple_info["connected"]
+
+    if not any_configured:
         return {
             "success": True,
             "timestamp": _utc_now(),
             "status": "not_configured",
             "source": "fallback",
+            "providers": [],
             "days": [],
             "connectUrl": None,
-            "message": "Google Calendar OAuth is not configured yet.",
-            "privacy": "Availability should expose free/busy windows only, not private event details.",
+            "message": "Calendar OAuth is not configured yet.",
+            "privacy": "Availability exposes free/busy windows only, not private event details.",
         }
 
-    if not provider["connected"]:
+    if not any_connected:
         return {
             "success": True,
             "timestamp": _utc_now(),
             "status": "needs_auth",
-            "source": "google-calendar",
+            "source": "multi-calendar",
+            "providers": [],
             "days": [],
             "connectUrl": None,
             "requiresOwnerAuth": True,
-            "message": "Google Calendar is configured but not connected yet.",
-            "privacy": "Availability should expose free/busy windows only, not private event details.",
+            "message": "Calendar is configured but no provider is connected yet.",
+            "privacy": "Availability exposes free/busy windows only, not private event details.",
         }
 
-    access_token = await get_provider_access_token("google_calendar")
-    if not access_token:
+    connected_providers: List[str] = []
+    calendar_days_lists: List[List[Dict[str, Any]]] = []
+
+    if google_info["connected"]:
+        access_token = await get_provider_access_token("google_calendar")
+        if access_token:
+            try:
+                g_days = await google_calendar.fetch_availability(access_token)
+                calendar_days_lists.append(g_days)
+                connected_providers.append("google")
+                await update_sync_state("google_calendar", last_success_at=_utc_now(), last_error=None)
+            except Exception:
+                await update_sync_state("google_calendar", last_error="freebusy_fetch_failed")
+
+    if ms_info["connected"]:
+        access_token = await get_provider_access_token("microsoft_calendar")
+        if access_token:
+            try:
+                ms_days = await microsoft_calendar.fetch_availability(access_token)
+                calendar_days_lists.append(ms_days)
+                connected_providers.append("microsoft")
+                await update_sync_state("microsoft_calendar", last_success_at=_utc_now(), last_error=None)
+            except Exception:
+                await update_sync_state("microsoft_calendar", last_error="freebusy_fetch_failed")
+
+    if apple_info["connected"]:
+        access_token = await get_provider_access_token("apple_calendar")
+        if access_token:
+            try:
+                a_days = await apple_calendar.fetch_availability(access_token)
+                calendar_days_lists.append(a_days)
+                connected_providers.append("apple")
+                await update_sync_state("apple_calendar", last_success_at=_utc_now(), last_error=None)
+            except Exception:
+                await update_sync_state("apple_calendar", last_error="freebusy_fetch_failed")
+
+    if not connected_providers and not calendar_days_lists:
         return {
             "success": True,
             "timestamp": _utc_now(),
             "status": "degraded",
-            "source": "google-calendar",
+            "source": "multi-calendar",
+            "providers": [],
             "days": [],
             "connectUrl": None,
             "requiresOwnerAuth": True,
-            "message": "Calendar token storage is unavailable.",
-            "privacy": "Availability should expose free/busy windows only, not private event details.",
+            "message": "Connected calendar token storage is unavailable or tokens expired.",
+            "privacy": "Availability exposes free/busy windows only, not private event details.",
         }
 
-    try:
-        days = await google_calendar.fetch_availability(access_token)
-        await update_sync_state("google_calendar", last_success_at=_utc_now(), last_error=None)
-        return {
-            "success": True,
-            "timestamp": _utc_now(),
-            "status": "live",
-            "source": "google-calendar",
-            "days": days,
-            "connectUrl": None,
-            "requiresOwnerAuth": False,
-            "message": None,
-            "privacy": "Availability should expose free/busy windows only, not private event details.",
-        }
-    except Exception:
-        await update_sync_state("google_calendar", last_error="freebusy_fetch_failed")
-        return {
-            "success": True,
-            "timestamp": _utc_now(),
-            "status": "degraded",
-            "source": "google-calendar",
-            "days": [],
-            "connectUrl": None,
-            "requiresOwnerAuth": True,
-            "message": "Calendar free/busy lookup failed.",
-            "privacy": "Availability should expose free/busy windows only, not private event details.",
-        }
+    merged_days = merge_multi_calendar_availability(*calendar_days_lists)
+    return {
+        "success": True,
+        "timestamp": _utc_now(),
+        "status": "live",
+        "source": "multi-calendar",
+        "providers": connected_providers,
+        "days": merged_days,
+        "connectUrl": None,
+        "requiresOwnerAuth": False,
+        "message": None,
+        "privacy": "Availability exposes free/busy windows only, not private event details.",
+    }
 
 
 @router.get(
@@ -606,6 +673,123 @@ async def google_calendar_callback(code: Optional[str] = None, state: Optional[s
         ) from exc
     except Exception as exc:
         raise HTTPException(status_code=502, detail="Google Calendar OAuth callback failed.") from exc
+
+
+@router.get(
+    "/api/integrations/microsoft-calendar/connect",
+    tags=["core"],
+    summary="Start Microsoft Calendar OAuth",
+)
+async def connect_microsoft_calendar(request: Request, auth: Optional[str] = None):
+    _enforce_rate_limit(request)
+    if not microsoft_calendar.is_configured():
+        raise HTTPException(status_code=503, detail="Microsoft Calendar OAuth is not configured.")
+    verify_oauth_connect_access(request, "microsoft_calendar", auth)
+    state = create_oauth_state("microsoft_calendar")
+    return RedirectResponse(microsoft_calendar.build_authorize_url(state), status_code=302)
+
+
+@router.get(
+    "/api/calendar/callback/microsoft",
+    tags=["core"],
+    summary="Microsoft Calendar OAuth callback",
+)
+async def microsoft_calendar_callback(code: Optional[str] = None, state: Optional[str] = None, error: Optional[str] = None):
+    if error:
+        raise HTTPException(status_code=400, detail=f"Microsoft OAuth error: {error}")
+    if not code or not verify_oauth_state(state or "", "microsoft_calendar"):
+        raise HTTPException(status_code=400, detail="Invalid Microsoft OAuth callback.")
+
+    try:
+        token_payload = await microsoft_calendar.exchange_code(code)
+        access_token = token_payload.get("access_token")
+        if not access_token:
+            raise HTTPException(status_code=502, detail="Microsoft OAuth token exchange failed.")
+
+        refresh_token = token_payload.get("refresh_token")
+        expires_at = _expires_at_from_token_payload(token_payload)
+
+        subject = await microsoft_calendar.fetch_user_email(access_token)
+        saved = await save_provider_tokens(
+            "microsoft_calendar",
+            provider_subject=subject,
+            scopes=list(microsoft_calendar.SCOPES),
+            access_token=access_token,
+            refresh_token=refresh_token,
+            expires_at=expires_at,
+        )
+        if not saved:
+            raise HTTPException(status_code=502, detail="Failed to persist Microsoft Calendar tokens.")
+
+        await update_sync_state("microsoft_calendar", last_success_at=_utc_now(), last_error=None)
+        return RedirectResponse(_oauth_success_redirect("microsoft_calendar"), status_code=302)
+    except HTTPException:
+        raise
+    except httpx.HTTPStatusError as exc:
+        raise HTTPException(
+            status_code=502,
+            detail="Microsoft Calendar OAuth token exchange failed.",
+        ) from exc
+    except Exception as exc:
+        raise HTTPException(status_code=502, detail="Microsoft Calendar OAuth callback failed.") from exc
+
+
+@router.get(
+    "/api/integrations/apple-calendar/connect",
+    tags=["core"],
+    summary="Start Apple Calendar OAuth / CalDAV Connect",
+)
+async def connect_apple_calendar(request: Request, auth: Optional[str] = None):
+    _enforce_rate_limit(request)
+    if not apple_calendar.is_configured():
+        raise HTTPException(status_code=503, detail="Apple Calendar is not configured.")
+    verify_oauth_connect_access(request, "apple_calendar", auth)
+    state = create_oauth_state("apple_calendar")
+    return RedirectResponse(apple_calendar.build_authorize_url(state), status_code=302)
+
+
+@router.get(
+    "/api/calendar/callback/apple",
+    tags=["core"],
+    summary="Apple Calendar OAuth callback",
+)
+async def apple_calendar_callback(code: Optional[str] = None, state: Optional[str] = None, error: Optional[str] = None):
+    if error:
+        raise HTTPException(status_code=400, detail=f"Apple OAuth error: {error}")
+    if not code or not verify_oauth_state(state or "", "apple_calendar"):
+        raise HTTPException(status_code=400, detail="Invalid Apple OAuth callback.")
+
+    try:
+        token_payload = await apple_calendar.exchange_code(code)
+        access_token = token_payload.get("access_token")
+        if not access_token:
+            raise HTTPException(status_code=502, detail="Apple OAuth token exchange failed.")
+
+        refresh_token = token_payload.get("refresh_token")
+        expires_at = _expires_at_from_token_payload(token_payload)
+
+        saved = await save_provider_tokens(
+            "apple_calendar",
+            provider_subject=os.getenv("APPLE_CALENDAR_APPLE_ID", "apple-user"),
+            scopes=list(apple_calendar.SCOPES),
+            access_token=access_token,
+            refresh_token=refresh_token,
+            expires_at=expires_at,
+        )
+        if not saved:
+            raise HTTPException(status_code=502, detail="Failed to persist Apple Calendar tokens.")
+
+        await update_sync_state("apple_calendar", last_success_at=_utc_now(), last_error=None)
+        return RedirectResponse(_oauth_success_redirect("apple_calendar"), status_code=302)
+    except HTTPException:
+        raise
+    except httpx.HTTPStatusError as exc:
+        raise HTTPException(
+            status_code=502,
+            detail="Apple Calendar OAuth token exchange failed.",
+        ) from exc
+    except Exception as exc:
+        raise HTTPException(status_code=502, detail="Apple Calendar OAuth callback failed.") from exc
 
 
 @router.get(
@@ -737,7 +921,7 @@ async def sync_all_integrations(request: Request):
 async def disconnect_integration(provider: str, request: Request):
     _require_integration_admin(request)
     normalized = provider.replace("-", "_")
-    if normalized not in {"whoop", "withings", "google_calendar"}:
+    if normalized not in {"whoop", "withings", "google_calendar", "microsoft_calendar", "apple_calendar"}:
         raise HTTPException(status_code=404, detail="Unknown integration provider.")
     disconnected = await disconnect_provider(normalized)
     if not disconnected:

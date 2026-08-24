@@ -6,7 +6,7 @@ from typing import Any, Dict, Optional, Tuple
 
 import httpx
 
-from api.integrations import whoop, withings
+from api.integrations import apple_calendar, microsoft_calendar, whoop, withings
 from api.integrations.supabase_store import (
     acquire_token_refresh_lock,
     get_provider_token_bundle,
@@ -70,6 +70,10 @@ async def _refresh_google(refresh_token: str) -> Dict[str, Any]:
 async def _provider_refresh(provider: str, refresh_token: str) -> Dict[str, Any]:
     if provider == "google_calendar":
         return await _refresh_google(refresh_token)
+    if provider == "microsoft_calendar":
+        return await microsoft_calendar.refresh_access_token(refresh_token)
+    if provider == "apple_calendar":
+        return await apple_calendar.refresh_access_token(refresh_token)
     if provider == "whoop":
         return await whoop.refresh_access_token(refresh_token)
     if provider == "withings":

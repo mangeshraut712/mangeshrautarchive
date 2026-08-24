@@ -2,7 +2,7 @@
 
 ## Goal
 
-Replace the Contact page's fictional calendar/reminders and Calendly popup with real availability and booking backed by Mangesh's primary Google Calendar on the active GitHub Pages + Cloudflare Worker architecture.
+Restore the Contact page's Apple-style calendar, event/reminder sections, and integrated Calendly fallback while backing all displayed availability and booking state with the live Google Calendar flow on the active GitHub Pages + Cloudflare Worker architecture.
 
 ## Selected approach
 
@@ -26,12 +26,15 @@ If Google rejects event creation, the reservation is marked failed and the UI re
 
 ## Contact UI
 
-- Replace hard-coded event dots and fake reminder cards with a connection status and real slot list.
+- Restore the navigable Apple-style month grid. Availability dots come only from signed Google free slots; private busy-event details never render.
+- Selecting a day filters the live slot list to that date.
+- Restore an Events section that is empty before booking and shows only the meeting confirmed by the current visitor during the current session.
+- Restore a Reminders section backed by the actual booking policy: attendee invitation email, owner email reminder at 24 hours, owner popup reminder at 30 minutes, and Apple/Outlook fallback availability after confirmation.
 - Show times in the visitor's locale while retaining `ET` in accessible copy.
 - Selecting a slot reveals name, email, and topic fields.
 - Successful booking shows that a Google Calendar invitation was emailed.
 - When Calendar needs owner reauthorization, visitors see a direct-email fallback rather than fake availability.
-- Retire the Calendly runtime dependency from this widget.
+- Restore the original integrated Calendly panel and popup as a separate scheduling fallback without making it the source of Google availability.
 
 ## Apple Calendar and Outlook compatibility
 
@@ -48,6 +51,6 @@ Google remains the organizer and source of truth. Its attendee email invitation 
 ## Verification
 
 - Unit tests prove signed-slot validation, slot generation, conflict rejection, event payload/reminders, OAuth exchange, refresh, and database state transitions.
-- Playwright verifies connection, slot selection, booking success/failure, Apple/Outlook fallback actions, mobile fit, and removal of fake reminder content.
+- Playwright verifies month navigation, real availability dots, day filtering, session event/reminder state, Calendly fallback, booking success/failure, Apple/Outlook actions, and mobile fit.
 - Supabase MCP verifies schema, RLS, grants, advisors, and test-row cleanup.
 - Live verification creates one synthetic event/booking, confirms Calendar API success and Supabase state, deletes the event and booking, and leaves no test data.
