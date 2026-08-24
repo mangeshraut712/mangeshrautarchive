@@ -330,3 +330,135 @@ async def sync_all_providers() -> Dict[str, Any]:
         "results": results,
         "healthSaved": health_payload.get("saved"),
     }
+
+
+def _get_signing_secret() -> str:
+    return (
+        os.getenv("INTEGRATION_ENCRYPTION_KEY", "").strip()
+        or os.getenv("INTEGRATION_SYNC_ADMIN_TOKEN", "").strip()
+        or os.getenv("SESSION_AUTH_SECRET", "portfolio-calendar-fallback-secret-2026").strip()
+    )
+
+
+def sign_slot_token(slot: Dict[str, Any], ttl_seconds: int = 1800) -> str:
+    import base64
+    import hashlib
+    import hmac
+    import json
+
+    secret = _get_signing_secret()
+    exp = int(datetime.now(timezone.utc).timestamp()) + ttl_seconds
+    payload = {
+        "kind": "calendar-slot",
+        "start": slot["start"],
+        "end": slot["end"],
+        "exp": exp,
+    }
+    raw = json.dumps(payload, separators=(",", ":")).encode("utf-8")
+    b64_payload = base64.urlsafe_b64encode(raw).decode("utf-8").rstrip("=")
+    sig = hmac.new(secret.encode("utf-8"), b64_payload.encode("utf-8"), hashlib.sha256).hexdigest()
+    return f"{b64_payload}.{sig}"
+
+
+def verify_slot_token(token: str) -> Dict[str, Any] | None:
+    import base64
+    import hashlib
+    import hmac
+    import json
+
+    try:
+        parts = token.split(".")
+        if len(parts) != 2:
+            return None
+        b64_payload, supplied_sig = parts
+        secret = _get_signing_secret()
+        expected_sig = hmac.new(secret.encode("utf-8"), b64_payload.encode("utf-8"), hashlib.sha256).hexdigest()
+        if not hmac.compare_digest(supplied_sig, expected_sig):
+            return None
+        padded = b64_payload + "=" * ((4 - len(b64_payload) % 4) % 4)
+        raw = base64.urlsafe_b64decode(padded.encode("utf-8"))
+        payload = json.loads(raw.decode("utf-8"))
+        if payload.get("kind") != "calendar-slot":
+            return None
+        if payload.get("exp", 0) < int(datetime.now(timezone.utc).timestamp()):
+            return None
+        return payload
+    except Exception:
+        return None
+
+
+def generate_available_slots(
+    now: datetime | None = None,
+    busy_intervals: List[Dict[str, Any]] | None = None,
+    days: int = 14,
+    max_slots: int = 24,
+) -> List[Dict[str, Any]]:
+    from datetime import timedelta
+    from zoneinfo import ZoneInfo
+
+    eastern_tz = ZoneInfo("America/New_York")
+    if now is None:
+        now = datetime.now(timezone.utc)
+    if busy_intervals is None:
+        busy_intervals = []
+
+    parsed_busy = []
+    for b in busy_intervals:
+        s_str = str(b.get("start") or "")
+        e_str = str(b.get("end") or "")
+        try:
+            s_dt = datetime.fromisoformat(s_str.replace("Z", "+00:00"))
+            e_dt = datetime.fromisoformat(e_str.replace("Z", "+00:00"))
+            parsed_busy.append((s_dt.timestamp(), e_dt.timestamp()))
+        except Exception:
+            continue
+
+    min_lead_seconds = 24 * 3600
+    earliest_time = now.timestamp() + min_lead_seconds
+
+    now_et = now.astimezone(eastern_tz)
+    start_date_et = now_et.date()
+
+    slots: List[Dict[str, Any]] = []
+    for day_offset in range(max(1, min(days, 14))):
+        current_date_et = start_date_et + timedelta(days=day_offset)
+        if current_date_et.weekday() >= 5:  # Skip Saturday and Sunday
+            continue
+
+        for hour in range(10, 16):  # 10:00 AM to 4:00 PM ET
+            for minute in (0, 30):
+                slot_start_et = datetime(
+                    current_date_et.year,
+                    current_date_et.month,
+                    current_date_et.day,
+                    hour,
+                    minute,
+                    tzinfo=eastern_tz,
+                )
+                slot_start_utc = slot_start_et.astimezone(timezone.utc)
+                slot_end_utc = slot_start_utc + timedelta(minutes=30)
+
+                s_ts = slot_start_utc.timestamp()
+                e_ts = slot_end_utc.timestamp()
+
+                if s_ts < earliest_time:
+                    continue
+
+                overlaps = any(s_ts < b_end and e_ts > b_start for b_start, b_end in parsed_busy)
+                if overlaps:
+                    continue
+
+                start_iso = slot_start_utc.strftime("%Y-%m-%dT%H:%M:%S.000Z")
+                end_iso = slot_end_utc.strftime("%Y-%m-%dT%H:%M:%S.000Z")
+                slot_dict = {
+                    "start": start_iso,
+                    "end": end_iso,
+                    "timeZone": "America/New_York",
+                }
+                slot_dict["token"] = sign_slot_token(slot_dict)
+                slots.append(slot_dict)
+                if len(slots) >= max_slots:
+                    return slots
+
+    return slots
+

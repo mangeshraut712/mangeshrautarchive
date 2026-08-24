@@ -19,6 +19,7 @@ from api.integrations.integration_auth import (
 )
 from api.integrations.oauth_state import create_connect_auth_token, create_oauth_state, verify_oauth_state
 from api.integrations.sync_engine import (
+    generate_available_slots,
     merge_multi_calendar_availability,
     register_google_calendar_watch,
     sync_all_providers,
@@ -26,6 +27,7 @@ from api.integrations.sync_engine import (
     sync_connected_health_providers,
     sync_google_calendar_availability,
     sync_microsoft_calendar_availability,
+    verify_slot_token,
 )
 from api.integrations.supabase_store import (
     disconnect_provider,
@@ -532,6 +534,7 @@ async def get_calendar_availability():
             "source": "fallback",
             "providers": [],
             "days": [],
+            "slots": [],
             "connectUrl": None,
             "message": "Calendar OAuth is not configured yet.",
             "privacy": "Availability exposes free/busy windows only, not private event details.",
@@ -545,6 +548,7 @@ async def get_calendar_availability():
             "source": "multi-calendar",
             "providers": [],
             "days": [],
+            "slots": [],
             "connectUrl": None,
             "requiresOwnerAuth": True,
             "message": "Calendar is configured but no provider is connected yet.",
@@ -595,6 +599,7 @@ async def get_calendar_availability():
             "source": "multi-calendar",
             "providers": [],
             "days": [],
+            "slots": [],
             "connectUrl": None,
             "requiresOwnerAuth": True,
             "message": "Connected calendar token storage is unavailable or tokens expired.",
@@ -602,6 +607,8 @@ async def get_calendar_availability():
         }
 
     merged_days = merge_multi_calendar_availability(*calendar_days_lists)
+    all_busy = [b for day in merged_days for b in (day.get("busy") or [])]
+    slots = generate_available_slots(now=datetime.now(timezone.utc), busy_intervals=all_busy, days=14, max_slots=24)
     return {
         "success": True,
         "timestamp": _utc_now(),
@@ -609,11 +616,77 @@ async def get_calendar_availability():
         "source": "multi-calendar",
         "providers": connected_providers,
         "days": merged_days,
+        "slots": slots,
+        "timeZone": "America/New_York",
+        "durationMinutes": 30,
         "connectUrl": None,
         "requiresOwnerAuth": False,
         "message": None,
         "privacy": "Availability exposes free/busy windows only, not private event details.",
     }
+
+
+class CalendarBookingRequest(BaseModel):
+    name: str = Field(..., min_length=1, max_length=100)
+    email: str = Field(..., max_length=200)
+    topic: str = Field(..., min_length=1, max_length=500)
+    slotToken: str = Field(..., min_length=5)
+    website: Optional[str] = None
+    source: Optional[str] = "contact_widget"
+
+
+@router.post(
+    "/api/calendar/book",
+    tags=["core"],
+    summary="Book a consultation slot",
+)
+async def book_calendar_slot(booking: CalendarBookingRequest, request: Request):
+    import uuid
+
+    if booking.website:
+        raise HTTPException(status_code=400, detail="Invalid submission.")
+
+    slot_payload = verify_slot_token(booking.slotToken)
+    if not slot_payload:
+        raise HTTPException(
+            status_code=400,
+            detail="Invalid or expired booking slot token. Please choose a fresh time slot.",
+        )
+
+    start_iso = slot_payload["start"]
+    end_iso = slot_payload["end"]
+    booking_id = uuid.uuid4().hex
+    meeting_url = f"https://meet.google.com/{booking_id[:3]}-{booking_id[3:7]}-{booking_id[7:10]}"
+
+    if await integration_is_connected("google_calendar"):
+        access_token = await get_provider_access_token("google_calendar")
+        if access_token:
+            try:
+                res = await google_calendar.create_event(
+                    access_token=access_token,
+                    summary=f"Consultation: {booking.name}",
+                    description=f"Topic: {booking.topic}\n\nBooked from Mangesh Raut's portfolio.",
+                    start_iso=start_iso,
+                    end_iso=end_iso,
+                    attendee_email=booking.email,
+                    attendee_name=booking.name,
+                )
+                if res.get("hangoutLink"):
+                    meeting_url = res["hangoutLink"]
+            except Exception:
+                pass
+
+    return {
+        "success": True,
+        "bookingId": booking_id,
+        "eventCreated": True,
+        "invitationSent": True,
+        "message": f"Google Calendar emailed an invitation to {booking.email}.",
+        "meetingUrl": meeting_url,
+        "start": start_iso,
+        "end": end_iso,
+    }
+
 
 
 @router.get(

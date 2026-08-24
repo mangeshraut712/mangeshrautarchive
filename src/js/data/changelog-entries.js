@@ -43,6 +43,16 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'c52e1b80',
+    date: '2026-08-24',
+    type: 'improvement',
+    title: 'Multi-Calendar Consultation Booking & Apple-Style Card Fallback',
+    summary:
+      'Enhanced the contact booking module to preserve the full Apple-style month calendar, session events list, 2x2 multi-calendar reminders grid, and integrated Calendly fallback panel even in offline or unconfigured states. Added FastAPI consultation slot generation with HMAC-signed tokens, direct /api/calendar/book endpoint with Google Meet links, and robust fallback handling. Built with Gemini 2.5 Pro; token usage tracked via total_usage.',
+    tags: ['api', 'design', 'deploy'],
+    sha: 'c52e1b80',
+  },
+  {
     id: 'f49a21e0',
     date: '2026-08-24',
     type: 'release',

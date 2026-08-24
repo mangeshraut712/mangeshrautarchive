@@ -189,16 +189,46 @@ export class CalendarBookingWidget {
 
   renderUnavailable(status) {
     this.container.innerHTML = `
-      <div class="calendar-booking calendar-booking--unavailable" data-calendar-state="${escapeHtml(status)}">
-        <div class="calendar-booking__status-icon" aria-hidden="true"><i class="fas fa-calendar-xmark"></i></div>
-        <div>
-          <h4>Scheduling temporarily unavailable</h4>
-          <p>${escapeHtml(statusMessage(status))}</p>
-          <a class="calendar-booking__email" href="mailto:mbr63drexel@gmail.com?subject=Consultation%20request">
-            Email Mangesh <i class="fas fa-arrow-right" aria-hidden="true"></i>
-          </a>
+      <div class="ios-widget-wrapper">
+      <div class="calendar-booking" data-calendar-state="${escapeHtml(status)}">
+        <header class="calendar-booking__header">
+          <div class="calendar-booking__icon" aria-hidden="true"><i class="fas fa-calendar-alt"></i></div>
+          <div>
+            <div class="calendar-booking__eyebrow-row">
+              <span class="calendar-booking__eyebrow"><span class="calendar-booking__live-dot" aria-hidden="true"></span> Scheduling</span>
+              <div class="calendar-booking__providers">${this.renderProviderBadges()}</div>
+            </div>
+            <h4>Consultation Scheduling</h4>
+            <p>Direct slot booking is in fallback mode. You can email Mangesh or schedule instantly via Calendly below.</p>
+          </div>
+        </header>
+        ${this.renderMonthCalendar()}
+        ${this.renderEventsSection()}
+        ${this.renderRemindersSection()}
+        <section class="calendar-live-slots" style="margin-bottom: 1rem;">
+          <div class="calendar-booking calendar-booking--unavailable" style="margin: 0; width: 100%; box-sizing: border-box;" data-calendar-state="${escapeHtml(status)}">
+            <div class="calendar-booking__status-icon" aria-hidden="true"><i class="fas fa-calendar-xmark"></i></div>
+            <div>
+              <h4>Direct slot booking unavailable</h4>
+              <p>${escapeHtml(statusMessage(status))}</p>
+              <a class="calendar-booking__email" href="mailto:mbr63drexel@gmail.com?subject=Consultation%20request">
+                Email Mangesh <i class="fas fa-arrow-right" aria-hidden="true"></i>
+              </a>
+            </div>
+          </div>
+        </section>
+        <div class="calendly-panel">
+          <div class="calendly-panel-icon"><i class="fas fa-calendar-check" aria-hidden="true"></i></div>
+          <div class="calendly-panel-copy">
+            <span class="calendly-panel-kicker">Calendly Scheduler</span>
+            <h4>Book a consultation</h4>
+            <p>Prefer the original scheduling experience? Open the integrated Calendly calendar.</p>
+          </div>
+          <button type="button" class="calendly-panel-button"><span>Check Calendly</span><i class="fas fa-arrow-right" aria-hidden="true"></i></button>
         </div>
-      </div>`;
+        <p class="calendar-booking__privacy"><i class="fas fa-lock" aria-hidden="true"></i> Only free slots across all connected calendars are shown. Event details stay private.</p>
+      </div></div>`;
+    this.bindCalendarControls();
   }
 
   renderProviderBadges() {

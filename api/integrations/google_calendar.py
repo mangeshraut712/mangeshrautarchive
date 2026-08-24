@@ -159,3 +159,46 @@ async def register_watch(
         )
     response.raise_for_status()
     return response.json()
+
+
+async def create_event(
+    access_token: str,
+    summary: str,
+    description: str,
+    start_iso: str,
+    end_iso: str,
+    attendee_email: str,
+    attendee_name: str,
+) -> Dict[str, Any]:
+    import secrets
+
+    payload = {
+        "summary": summary,
+        "description": description,
+        "start": {"dateTime": start_iso},
+        "end": {"dateTime": end_iso},
+        "attendees": [{"email": attendee_email, "displayName": attendee_name}],
+        "conferenceData": {
+            "createRequest": {
+                "requestId": secrets.token_hex(8),
+                "conferenceSolutionKey": {"type": "hangoutsMeet"},
+            }
+        },
+        "reminders": {
+            "useDefault": False,
+            "overrides": [
+                {"method": "email", "minutes": 24 * 60},
+                {"method": "popup", "minutes": 30},
+            ],
+        },
+    }
+    async with httpx.AsyncClient(timeout=10.0) as client:
+        response = await client.post(
+            "https://www.googleapis.com/calendar/v3/calendars/primary/events?conferenceDataVersion=1&sendUpdates=all",
+            headers={"Authorization": f"Bearer {access_token}"},
+            json=payload,
+        )
+    if response.status_code < 400:
+        return response.json()
+    return {}
+
