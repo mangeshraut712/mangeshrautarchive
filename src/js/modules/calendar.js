@@ -27,9 +27,12 @@ export class CalendarWidget {
     this.date = new Date();
     this.selectedDate = new Date();
     this.selectedDayCell = null;
+    this.selectedDayFilter = null;
+    this.activeFilter = 'all';
     this.liveSlots = [];
     this.liveEvents = [];
     this.liveProviders = ['google'];
+    this.aiAgentStatus = null;
     this.availabilityLoaded = false;
 
     // "Smart" Reminders & Live Calendar Data
@@ -38,40 +41,55 @@ export class CalendarWidget {
         id: 999,
         text: "Mangesh's Birthday 🎂",
         time: 'Dec 7',
+        dateKey: '12-07',
+        category: 'birthdays',
         tag: 'Special',
         color: 'gold',
+        icon: 'cake-candles',
         completed: false,
       },
       {
         id: 100,
         text: 'Google Calendar Sync',
         time: 'Live Auto-Sync',
+        dateKey: '',
+        category: 'reminders',
         tag: 'Google',
         color: 'blue',
+        icon: 'calendar-check',
         completed: false,
       },
       {
         id: 1,
         text: 'Review Portfolio Design',
         time: '10:00 AM',
+        dateKey: '',
+        category: 'reminders',
         tag: 'Design',
         color: 'blue',
+        icon: 'palette',
         completed: false,
       },
       {
         id: 2,
         text: 'Email Mangesh',
         time: '2:00 PM',
+        dateKey: '',
+        category: 'reminders',
         tag: 'Urgent',
         color: 'red',
+        icon: 'envelope',
         completed: false,
       },
       {
         id: 3,
         text: 'AI Model Training',
         time: '4:30 PM',
+        dateKey: '',
+        category: 'reminders',
         tag: 'Dev',
         color: 'purple',
+        icon: 'brain',
         completed: false,
       },
     ];
@@ -99,6 +117,7 @@ export class CalendarWidget {
           Array.isArray(payload.providers) && payload.providers.length
             ? payload.providers
             : ['google'];
+        this.aiAgentStatus = payload.aiAgent || null;
         this.availabilityLoaded = true;
 
         const isAppleConnected = this.liveProviders.includes('apple');
@@ -131,16 +150,53 @@ export class CalendarWidget {
             );
             if (!existing) {
               const lowerTitle = ev.title.toLowerCase();
+              const isBirthday = lowerTitle.includes('birthday') || lowerTitle.includes('bday');
               const isCursor = lowerTitle.includes('cursor');
               const isClaude = lowerTitle.includes('claude');
-              const tag = isCursor ? 'Cursor' : isClaude ? 'Claude' : 'Apple';
-              const color = isCursor ? 'blue' : isClaude ? 'orange' : 'purple';
+              const isTravel =
+                lowerTitle.includes('flight') ||
+                lowerTitle.includes('hertz') ||
+                lowerTitle.includes('stay');
 
-              let timeLabel = 'Aug 29';
+              let category = 'events';
+              let tag = 'Event';
+              let color = 'blue';
+              let icon = 'calendar-day';
+
+              if (isBirthday) {
+                category = 'birthdays';
+                tag = 'Birthday';
+                color = 'pink';
+                icon = 'cake-candles';
+              } else if (isCursor) {
+                category = 'events';
+                tag = 'Cursor';
+                color = 'blue';
+                icon = 'terminal';
+              } else if (isClaude) {
+                category = 'events';
+                tag = 'Claude';
+                color = 'orange';
+                icon = 'laptop-code';
+              } else if (isTravel) {
+                category = 'events';
+                tag = 'Travel';
+                color = 'cyan';
+                icon = 'plane';
+              } else if (ev.tag) {
+                tag = ev.tag;
+                color = ev.color || 'purple';
+                category = ev.category === 'birthday' ? 'birthdays' : 'events';
+                icon = ev.icon || 'calendar-day';
+              }
+
+              let timeLabel = 'Upcoming';
+              let dKey = '';
               if (ev.start) {
                 const d = new Date(ev.start);
                 const mStr = d.toLocaleString('en-US', { month: 'short' });
                 const dayNum = d.getDate();
+                dKey = dateKey(d.getFullYear(), d.getMonth(), dayNum);
                 if (ev.start.includes('T00:00:00') && ev.end && ev.end.includes('T00:00:00')) {
                   timeLabel = `${mStr} ${dayNum} · All Day`;
                 } else {
@@ -157,8 +213,13 @@ export class CalendarWidget {
                 eventTitle: ev.title,
                 text: ev.title,
                 time: timeLabel,
+                dateKey: dKey,
+                category,
                 tag,
                 color,
+                icon,
+                location: ev.location || '',
+                description: ev.description || '',
                 completed: false,
                 isImportedEvent: true,
               });
@@ -197,6 +258,49 @@ export class CalendarWidget {
     return eventDays;
   }
 
+  getEventDotColor(year, month, day) {
+    const dKey = dateKey(year, month, day);
+    const ev = this.liveEvents.find(e => e.start && e.start.startsWith(dKey));
+    if (ev) {
+      const lower = ev.title.toLowerCase();
+      if (lower.includes('cursor')) return 'dot-blue';
+      if (lower.includes('claude')) return 'dot-orange';
+      if (lower.includes('birthday')) return 'dot-pink';
+      if (lower.includes('flight') || lower.includes('stay')) return 'dot-cyan';
+      return 'dot-purple';
+    }
+    return 'dot-blue';
+  }
+
+  getFilteredReminders() {
+    let list = this.reminders;
+
+    // Filter by category tab
+    if (this.activeFilter === 'events') {
+      list = list.filter(r => r.category === 'events' || r.isImportedEvent);
+    } else if (this.activeFilter === 'reminders') {
+      list = list.filter(r => r.category === 'reminders' && !r.isImportedEvent);
+    } else if (this.activeFilter === 'birthdays') {
+      list = list.filter(
+        r => r.category === 'birthdays' || r.text.toLowerCase().includes('birthday')
+      );
+    }
+
+    // Filter by clicked date inspector if active
+    if (this.selectedDayFilter) {
+      const dayMatches = list.filter(
+        r =>
+          (r.dateKey && r.dateKey === this.selectedDayFilter) ||
+          (r.time && r.time.includes(this.selectedDayFilter.slice(5)))
+      );
+      if (dayMatches.length > 0) {
+        return dayMatches;
+      }
+    }
+
+    return list;
+  }
+
   render() {
     const monthNames = [
       'January',
@@ -222,6 +326,17 @@ export class CalendarWidget {
     const daysInMonth = new Date(year, month + 1, 0).getDate();
 
     const liveEventDays = this.getLiveEventDays(year, month);
+    const filteredReminders = this.getFilteredReminders();
+
+    const totalEventsCount = this.reminders.filter(
+      r => r.category === 'events' || r.isImportedEvent
+    ).length;
+    const totalRemindersCount = this.reminders.filter(
+      r => r.category === 'reminders' && !r.isImportedEvent
+    ).length;
+    const totalBirthdaysCount = this.reminders.filter(
+      r => r.category === 'birthdays' || r.text.toLowerCase().includes('birthday')
+    ).length;
 
     let html = `
       <div class="ios-widget-wrapper">
@@ -271,11 +386,12 @@ export class CalendarWidget {
         this.selectedDate.getDate() === i;
 
       if (isSelected) classes += ' selected';
+      const dotColorClass = this.getEventDotColor(year, month, i);
 
       html += `
         <span class="${classes}" data-day="${i}" data-date-key="${thisKey}" ${isBirthday ? 'title="Mangesh\'s Birthday 🎂"' : ''}>
           ${i}
-          ${hasEvent && !isBirthday ? '<div class="event-dot" title="Available consultation slot"></div>' : ''}
+          ${hasEvent && !isBirthday ? `<div class="event-dot ${dotColorClass}" title="Calendar Event / Available Slot"></div>` : ''}
           ${isBirthday ? '<div class="birthday-dot"></div>' : ''}
         </span>`;
     }
@@ -290,26 +406,54 @@ export class CalendarWidget {
             <div class="reminders-title">
               <i class="fas fa-layer-group" aria-hidden="true"></i> Smart Reminders & Events
             </div>
-            <button type="button" class="ios-btn-small" aria-label="Add new reminder"><i class="fas fa-plus" aria-hidden="true"></i> New</button>
+            <div class="header-right-actions" style="display:flex;align-items:center;gap:6px;">
+              <span class="ai-sync-pill" title="AI synchronization active across Google and Apple Calendar"><i class="fas fa-bolt" aria-hidden="true"></i> AI Sync</span>
+              <button type="button" class="ios-btn-small" aria-label="Add new reminder"><i class="fas fa-plus" aria-hidden="true"></i> New</button>
+            </div>
           </div>
+          
+          <!-- Category Filter Tabs -->
+          <div class="calendar-filter-tabs" role="tablist" aria-label="Reminder categories">
+            <button type="button" class="filter-tab ${this.activeFilter === 'all' ? 'active' : ''}" data-filter="all">All (${this.reminders.length})</button>
+            <button type="button" class="filter-tab ${this.activeFilter === 'events' ? 'active' : ''}" data-filter="events">Events (${totalEventsCount})</button>
+            <button type="button" class="filter-tab ${this.activeFilter === 'reminders' ? 'active' : ''}" data-filter="reminders">Reminders (${totalRemindersCount})</button>
+            <button type="button" class="filter-tab ${this.activeFilter === 'birthdays' ? 'active' : ''}" data-filter="birthdays">Birthdays (${totalBirthdaysCount})</button>
+          </div>
+
+          ${
+            this.selectedDayFilter
+              ? `
+            <div class="day-inspector-banner">
+              <span><i class="fas fa-calendar-day" aria-hidden="true"></i> Day Filter: ${escapeHtml(this.selectedDayFilter)}</span>
+              <button type="button" class="day-inspector-clear" aria-label="Clear day filter"><i class="fas fa-times" aria-hidden="true"></i> Show All</button>
+            </div>
+          `
+              : ''
+          }
           
           <div class="reminders-scroll-area">
             <div class="reminder-cards-grid">
-              ${this.reminders
+              ${filteredReminders
                 .map(
                   r => `
-                <div class="reminder-card ${r.completed ? 'completed' : ''} accent-${escapeHtml(r.color)}" data-id="${r.id}">
+                <div class="reminder-card ${r.completed ? 'completed' : ''} accent-${escapeHtml(r.color)}" data-id="${r.id}" data-title="${escapeHtml(r.text)}">
                   <div class="card-accent-strip"></div>
                   <div class="card-content">
                     <div class="card-header-flex">
-                       <span class="card-time"><i class="fas fa-${r.tag === 'Google' ? 'calendar-check' : r.tag === 'Special' ? 'cake-candles' : 'clock'}" aria-hidden="true"></i> ${escapeHtml(r.time)}</span>
+                       <span class="card-time"><i class="fas fa-${r.icon || (r.tag === 'Google' ? 'calendar-check' : r.tag === 'Special' || r.tag === 'Birthday' ? 'cake-candles' : 'clock')}" aria-hidden="true"></i> ${escapeHtml(r.time)}</span>
                        <span class="card-tag">${escapeHtml(r.tag)}</span>
                     </div>
                     <div class="card-title">${escapeHtml(r.text)}</div>
                   </div>
-                  <div class="card-action-area">
+                  <div class="card-action-area" style="display:flex;align-items:center;gap:4px;">
+                    <button type="button" class="card-action-btn ask-ai-btn" title="Ask AI assistant about this event" aria-label="Ask AI about ${escapeHtml(r.text)}">
+                      <i class="fas fa-robot" aria-hidden="true"></i>
+                    </button>
+                    <button type="button" class="card-action-btn ical-btn" title="Download .ics event" aria-label="Download iCal event">
+                      <i class="fas fa-calendar-plus" aria-hidden="true"></i>
+                    </button>
                     <button type="button" class="edit-btn" aria-label="Edit Reminder">
-                        <i class="fas fa-pencil-alt" aria-hidden="true"></i>
+                      <i class="fas fa-pencil-alt" aria-hidden="true"></i>
                     </button>
                     <button type="button" class="status-circle" aria-label="Toggle Complete">
                       <i class="fas fa-check" aria-hidden="true"></i>
@@ -343,6 +487,57 @@ export class CalendarWidget {
     this.bindEvents();
   }
 
+  downloadIcsForEvent(reminder) {
+    const summary = reminder.text || 'Portfolio Event';
+    const now = new Date();
+    const dtstamp = now.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+    const dtstart =
+      reminder.time && reminder.time.includes('Aug 29') ? '20260829T103000Z' : dtstamp;
+    const dtend = reminder.time && reminder.time.includes('Aug 29') ? '20260829T133000Z' : dtstamp;
+
+    const icsContent = [
+      'BEGIN:VCALENDAR',
+      'VERSION:2.0',
+      'PRODID:-//Mangesh Raut//Portfolio Calendar Widget//EN',
+      'CALSCALE:GREGORIAN',
+      'METHOD:PUBLISH',
+      'BEGIN:VEVENT',
+      `UID:event-${reminder.id}@mangeshraut.pro`,
+      `DTSTAMP:${dtstamp}`,
+      `DTSTART:${dtstart}`,
+      `DTEND:${dtend}`,
+      `SUMMARY:${summary}`,
+      `DESCRIPTION:Event synchronized from Mangesh Raut Portfolio Calendar (https://mangeshraut.pro)`,
+      'STATUS:CONFIRMED',
+      'END:VEVENT',
+      'END:VCALENDAR',
+    ].join('\r\n');
+
+    const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${summary.replace(/[^a-zA-Z0-9]/g, '_')}.ics`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  askAiAboutEvent(reminder) {
+    const chatbotToggle = document.getElementById('chatbot-toggle');
+    if (chatbotToggle) {
+      chatbotToggle.click();
+      setTimeout(() => {
+        const input = document.getElementById('chatbot-input');
+        if (input) {
+          input.value = `Tell me more about "${reminder.text}" on ${reminder.time} from your calendar.`;
+          input.focus();
+        }
+      }, 300);
+    }
+  }
+
   bindEvents() {
     // Month Navigation
     const prevBtn = this.container.querySelector('.ios-actions button:first-child');
@@ -353,12 +548,33 @@ export class CalendarWidget {
     if (todayBtn) todayBtn.onclick = () => this.goToToday();
     if (nextBtn) nextBtn.onclick = () => this.changeMonth(1);
 
-    // Reminder Toggle (Target new Card class)
+    // Filter Tabs
+    this.container.querySelectorAll('.filter-tab').forEach(tab => {
+      tab.onclick = () => {
+        this.activeFilter = tab.dataset.filter || 'all';
+        this.render();
+      };
+    });
+
+    // Clear Day Inspector
+    const clearDayBtn = this.container.querySelector('.day-inspector-clear');
+    if (clearDayBtn) {
+      clearDayBtn.onclick = () => {
+        this.selectedDayFilter = null;
+        this.render();
+      };
+    }
+
+    // Reminder Cards Actions & Toggles
     this.container.querySelectorAll('.reminder-card').forEach(item => {
       // Toggle Complete on Card Click
       item.onclick = e => {
-        // Ignore if clicking buttons inside
-        if (e.target.closest('.edit-btn')) return;
+        if (
+          e.target.closest('.edit-btn') ||
+          e.target.closest('.ask-ai-btn') ||
+          e.target.closest('.ical-btn')
+        )
+          return;
 
         const id = parseInt(item.dataset.id, 10);
         const reminder = this.reminders.find(r => r.id === id);
@@ -372,7 +588,7 @@ export class CalendarWidget {
       const editBtn = item.querySelector('.edit-btn');
       if (editBtn) {
         editBtn.onclick = e => {
-          e.stopPropagation(); // Stop card click
+          e.stopPropagation();
           const id = parseInt(item.dataset.id, 10);
           const reminder = this.reminders.find(r => r.id === id);
           if (reminder) {
@@ -381,6 +597,32 @@ export class CalendarWidget {
               reminder.text = newText;
               this.render();
             }
+          }
+        };
+      }
+
+      // Ask AI Button Logic
+      const askAiBtn = item.querySelector('.ask-ai-btn');
+      if (askAiBtn) {
+        askAiBtn.onclick = e => {
+          e.stopPropagation();
+          const id = parseInt(item.dataset.id, 10);
+          const reminder = this.reminders.find(r => r.id === id);
+          if (reminder) {
+            this.askAiAboutEvent(reminder);
+          }
+        };
+      }
+
+      // iCal Download Button Logic
+      const icalBtn = item.querySelector('.ical-btn');
+      if (icalBtn) {
+        icalBtn.onclick = e => {
+          e.stopPropagation();
+          const id = parseInt(item.dataset.id, 10);
+          const reminder = this.reminders.find(r => r.id === id);
+          if (reminder) {
+            this.downloadIcsForEvent(reminder);
           }
         };
       }
@@ -394,11 +636,14 @@ export class CalendarWidget {
           id: Date.now(),
           text: 'New Reminder',
           time: 'Now',
+          dateKey: '',
+          category: 'reminders',
           color: ['blue', 'red', 'orange', 'green', 'purple'][Math.floor(Math.random() * 5)],
           tag: 'Inbox',
+          icon: 'bell',
           completed: false,
         };
-        this.reminders.unshift(newReminder); // Add to top
+        this.reminders.unshift(newReminder);
         this.render();
       };
     }
@@ -410,17 +655,17 @@ export class CalendarWidget {
       };
     }
 
-    // Day Selection
+    // Day Selection & Day Filter
     this.container.querySelectorAll('.day-cell:not(.empty)').forEach(day => {
       day.addEventListener('click', () => {
         this.selectedDayCell?.classList.remove('selected');
         day.classList.add('selected');
         this.selectedDayCell = day;
-        this.selectedDate = new Date(
-          this.date.getFullYear(),
-          this.date.getMonth(),
-          parseInt(day.dataset.day, 10)
-        );
+        const dayNum = parseInt(day.dataset.day, 10);
+        this.selectedDate = new Date(this.date.getFullYear(), this.date.getMonth(), dayNum);
+        this.selectedDayFilter =
+          day.dataset.dateKey || dateKey(this.date.getFullYear(), this.date.getMonth(), dayNum);
+        this.render();
       });
     });
   }
@@ -430,8 +675,11 @@ export class CalendarWidget {
       id: Date.now(),
       text: title || 'Confirmed Consultation (Google Meet)',
       time: time || 'Confirmed',
+      dateKey: '',
+      category: 'events',
       color: 'green',
       tag,
+      icon: 'calendar-check',
       completed: false,
     };
     this.reminders.unshift(bookingReminder);
@@ -440,12 +688,14 @@ export class CalendarWidget {
 
   changeMonth(offset) {
     this.date.setMonth(this.date.getMonth() + offset);
+    this.selectedDayFilter = null;
     this.render();
   }
 
   goToToday() {
     this.date = new Date();
     this.selectedDate = new Date();
+    this.selectedDayFilter = null;
     this.render();
   }
 }

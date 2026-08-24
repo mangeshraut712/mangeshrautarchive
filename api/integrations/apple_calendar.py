@@ -157,11 +157,33 @@ def _join_url(base: str, path: str) -> str:
     return f"{base.rstrip('/')}/{path.lstrip('/')}"
 
 
+def infer_event_metadata(title: str, description: str = "", location: str = "") -> Dict[str, str]:
+    """Classify events into smart Apple categories with tailored tags and colors."""
+    lower = f"{title} {description} {location}".lower()
+    if any(k in lower for k in ["birthday", "bday", "birth"]):
+        return {"category": "birthday", "tag": "Birthday", "color": "pink", "icon": "cake-candles"}
+    elif "cursor" in lower:
+        return {"category": "meetup", "tag": "Cursor", "color": "blue", "icon": "terminal"}
+    elif "claude" in lower:
+        return {"category": "meetup", "tag": "Claude", "color": "orange", "icon": "laptop-code"}
+    elif any(k in lower for k in ["wwdc", "hackathon", "codefest", "unpacked", "keynote", "meetup", "developer"]):
+        return {"category": "meetup", "tag": "Tech", "color": "purple", "icon": "code"}
+    elif any(k in lower for k in ["flight", "airline", "hertz", "car rental", "stay:", "hotel", "tour", "rainforest"]):
+        return {"category": "travel", "tag": "Travel", "color": "cyan", "icon": "plane"}
+    elif any(k in lower for k in ["interview", "co-op", "advisor", "internship", "ibm", "guidewire", "sap"]):
+        return {"category": "work", "tag": "Work", "color": "green", "icon": "briefcase"}
+    elif any(k in lower for k in ["blood", "donation", "clinic", "vaccine", "patient"]):
+        return {"category": "health", "tag": "Health", "color": "red", "icon": "heart-pulse"}
+    elif any(k in lower for k in ["puja", "marriage", "wedding", "ceremony", "nikah"]):
+        return {"category": "special", "tag": "Celebration", "color": "gold", "icon": "star"}
+    return {"category": "event", "tag": "Event", "color": "blue", "icon": "calendar"}
+
+
 async def _fetch_caldav_calendar_data(
     app_password_override: str = "",
     days: int = 14,
 ) -> Tuple[Dict[str, List[Dict[str, str]]], List[Dict[str, Any]]]:
-    """Query Apple iCloud CalDAV to extract real events and busy windows."""
+    """Query Apple iCloud CalDAV to extract real events, reminders, birthdays, and busy windows."""
     import re
     import xml.etree.ElementTree as ET
 
@@ -279,6 +301,8 @@ async def _fetch_caldav_calendar_data(
                                 summary_m = re.search(r"^SUMMARY:(.+)$", text, re.M)
                                 dtstart_m = re.search(r"^DTSTART(?:;[^:]+)?:(.+)$", text, re.M)
                                 dtend_m = re.search(r"^DTEND(?:;[^:]+)?:(.+)$", text, re.M)
+                                loc_m = re.search(r"^LOCATION:(.+)$", text, re.M)
+                                desc_m = re.search(r"^DESCRIPTION:(.+)$", text, re.M)
                                 if summary_m and dtstart_m:
                                     title = summary_m.group(1).strip()
                                     s_iso = _parse_ics_datetime(dtstart_m.group(1).strip())
@@ -287,17 +311,26 @@ async def _fetch_caldav_calendar_data(
                                         if dtend_m
                                         else s_iso
                                     )
+                                    loc = loc_m.group(1).strip() if loc_m else ""
+                                    desc = desc_m.group(1).strip() if desc_m else ""
                                     if s_iso:
                                         d_str = s_iso[:10]
                                         key = f"{title}_{s_iso}"
                                         if key not in seen_keys:
                                             seen_keys.add(key)
+                                            meta = infer_event_metadata(title, desc, loc)
                                             events.append(
                                                 {
                                                     "title": title,
                                                     "start": s_iso,
                                                     "end": e_iso or s_iso,
                                                     "date": d_str,
+                                                    "location": loc,
+                                                    "description": desc,
+                                                    "category": meta["category"],
+                                                    "tag": meta["tag"],
+                                                    "color": meta["color"],
+                                                    "icon": meta["icon"],
                                                     "provider": "apple",
                                                 }
                                             )

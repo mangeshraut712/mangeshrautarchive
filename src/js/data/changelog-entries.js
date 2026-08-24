@@ -43,6 +43,16 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'f87b321a',
+    date: '2026-08-24',
+    type: 'release',
+    title: 'Smart AI Agentic Calendar & Reminders with Category Filters & Day Inspection',
+    summary:
+      'Transformed the Contact page Calendar & Reminders widget into an AI agentic scheduling and event discovery system. Added interactive category filter pills (All, Events, Reminders, Birthdays), a click-to-inspect day banner, multi-colored event dots (blue for meetups, pink for birthdays, orange for talks, cyan for travel), one-click .ics calendar export, and direct "Ask AI" chatbot integration. Built with Gemini 2.5 Pro; token metrics tracked via total_usage.',
+    tags: ['api', 'design', 'assistme'],
+    sha: 'f87b321a',
+  },
+  {
     id: 'a93f41de',
     date: '2026-08-24',
     type: 'release',

@@ -219,6 +219,66 @@ describe('Apple-style Calendar and Smart Reminders Widget', () => {
     expect(day29.querySelector('.event-dot')).not.toBeNull();
   });
 
+  it('filters reminders by category tabs and day inspector', async () => {
+    const { CalendarWidget } = await import('../../src/js/modules/calendar.js');
+    document.body.innerHTML = '<div id="calendar-widget"></div>';
+
+    const widget = new CalendarWidget('calendar-widget');
+    widget.date = new Date(2026, 7, 24); // August 2026
+    widget.init();
+
+    // Click on Birthdays tab
+    const birthdayTab = document.querySelector('[data-filter="birthdays"]');
+    expect(birthdayTab).not.toBeNull();
+    birthdayTab.click();
+
+    expect(document.body.textContent).toContain("Mangesh's Birthday 🎂");
+
+    // Click on Events tab
+    const eventsTab = document.querySelector('[data-filter="events"]');
+    expect(eventsTab).not.toBeNull();
+    eventsTab.click();
+
+    // Click on All tab
+    const allTab = document.querySelector('[data-filter="all"]');
+    allTab.click();
+    expect(document.querySelectorAll('.reminder-card')).toHaveLength(5);
+
+    // Click on a day cell to inspect
+    const dayCell = document.querySelector('[data-day="25"]');
+    dayCell.click();
+    expect(document.querySelector('.day-inspector-banner')).not.toBeNull();
+
+    // Clear day inspector
+    const clearBtn = document.querySelector('.day-inspector-clear');
+    expect(clearBtn).not.toBeNull();
+    clearBtn.click();
+    expect(document.querySelector('.day-inspector-banner')).toBeNull();
+  });
+
+  it('triggers ask AI and iCal export buttons on reminder cards', async () => {
+    const { CalendarWidget } = await import('../../src/js/modules/calendar.js');
+    document.body.innerHTML = `
+      <div id="chatbot-toggle"></div>
+      <input id="chatbot-input" />
+      <div id="calendar-widget"></div>
+    `;
+
+    const widget = new CalendarWidget('calendar-widget');
+    widget.init();
+
+    const askAiBtn = document.querySelector('.ask-ai-btn');
+    expect(askAiBtn).not.toBeNull();
+    askAiBtn.click();
+
+    const icalBtn = document.querySelector('.ical-btn');
+    expect(icalBtn).not.toBeNull();
+    // Verify downloadIcsForEvent spy
+    const spy = vi.spyOn(widget, 'downloadIcsForEvent');
+    icalBtn.click();
+    expect(spy).toHaveBeenCalled();
+  });
+
   it('triggers Calendly popup when Calendly button is clicked', async () => {
     window.Calendly = { initPopupWidget: vi.fn() };
     const { CalendarWidget } = await import('../../src/js/modules/calendar.js');
