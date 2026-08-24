@@ -123,7 +123,11 @@ describe('Google Calendar edge booking', () => {
       }),
       createEvent: vi.fn(async (_token, event) => {
         captured.event = event;
-        return { id: 'google-event-id', htmlLink: 'https://calendar.google.com/event' };
+        return {
+          id: 'google-event-id',
+          htmlLink: 'https://calendar.google.com/event',
+          hangoutLink: 'https://meet.google.com/abc-defg-hij',
+        };
       }),
       confirmBooking: vi.fn(async () => true),
       failBooking: vi.fn(async () => true),
@@ -152,6 +156,7 @@ describe('Google Calendar edge booking', () => {
       eventCreated: true,
       invitationSent: true,
       start: '2026-08-26T14:00:00.000Z',
+      meetingUrl: 'https://meet.google.com/abc-defg-hij',
     });
     expect(deps.isSlotBusy).toHaveBeenCalledWith(
       'access-token',

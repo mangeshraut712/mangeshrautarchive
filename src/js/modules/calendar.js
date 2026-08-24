@@ -53,6 +53,78 @@ function statusMessage(status) {
   return 'Live availability is temporarily unavailable. Email Mangesh to schedule.';
 }
 
+function escapeIcsText(value) {
+  return String(value || '')
+    .replace(/\\/g, '\\\\')
+    .replace(/\r?\n/g, '\\n')
+    .replace(/;/g, '\\;')
+    .replace(/,/g, '\\,');
+}
+
+function formatIcsUtc(value) {
+  const date = value instanceof Date ? value : new Date(value);
+  if (!Number.isFinite(date.getTime())) throw new Error('Invalid calendar date');
+  return date
+    .toISOString()
+    .replace(/[-:]/g, '')
+    .replace(/\.\d{3}Z$/, 'Z');
+}
+
+export function buildCalendarInviteIcs({
+  uid,
+  start,
+  end,
+  summary,
+  description = '',
+  meetingUrl = '',
+  now = new Date(),
+}) {
+  const lines = [
+    'BEGIN:VCALENDAR',
+    'VERSION:2.0',
+    'PRODID:-//Mangesh Raut Portfolio//Calendar Booking//EN',
+    'CALSCALE:GREGORIAN',
+    'METHOD:PUBLISH',
+    'BEGIN:VEVENT',
+    `UID:${escapeIcsText(uid)}`,
+    `DTSTAMP:${formatIcsUtc(now)}`,
+    `DTSTART:${formatIcsUtc(start)}`,
+    `DTEND:${formatIcsUtc(end)}`,
+    `SUMMARY:${escapeIcsText(summary)}`,
+    `DESCRIPTION:${escapeIcsText(description)}`,
+    'STATUS:CONFIRMED',
+    'TRANSP:OPAQUE',
+  ];
+  if (meetingUrl) {
+    lines.push(`LOCATION:${escapeIcsText(`Google Meet: ${meetingUrl}`)}`);
+    lines.push(`URL:${meetingUrl}`);
+  }
+  lines.push(
+    'BEGIN:VALARM',
+    'TRIGGER:-PT30M',
+    'ACTION:DISPLAY',
+    'DESCRIPTION:Portfolio consultation starts in 30 minutes',
+    'END:VALARM',
+    'END:VEVENT',
+    'END:VCALENDAR',
+    ''
+  );
+  return lines.join('\r\n');
+}
+
+function downloadCalendarInvite(ics, platform) {
+  const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = `mangesh-raut-consultation-${platform}.ics`;
+  link.hidden = true;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 0);
+}
+
 export class CalendarBookingWidget {
   constructor(containerId) {
     this.container = document.getElementById(containerId);
@@ -205,12 +277,33 @@ export class CalendarBookingWidget {
       if (!response.ok || !payload.success || !payload.eventCreated || !payload.invitationSent) {
         throw new Error(payload.error || 'Booking could not be completed.');
       }
+      const invite = buildCalendarInviteIcs({
+        uid: `${payload.bookingId || crypto.randomUUID()}@mangeshraut.pro`,
+        start: payload.start || this.selectedSlot.start,
+        end: payload.end || this.selectedSlot.end,
+        summary: 'Portfolio consultation with Mangesh Raut',
+        description: form.elements.topic.value.trim(),
+        meetingUrl: payload.meetingUrl || '',
+      });
       const panel = this.container.querySelector('[data-calendar-booking-panel]');
       panel.innerHTML = `
         <div class="calendar-booking-confirmation" role="status" data-calendar-status>
           <div class="calendar-booking-confirmation__icon" aria-hidden="true"><i class="fas fa-check"></i></div>
-          <div><h5>Meeting booked</h5><p>${escapeHtml(payload.message || 'Google Calendar emailed your invitation.')}</p></div>
+          <div>
+            <h5>Meeting booked</h5>
+            <p>${escapeHtml(payload.message || 'Google Calendar emailed your invitation.')}</p>
+            <p class="calendar-booking-confirmation__hint">Use the standard event file if you prefer Apple Calendar or Outlook.</p>
+            <div class="calendar-booking-confirmation__actions" aria-label="Add meeting to another calendar">
+              <button type="button" class="calendar-download" data-calendar-download="apple"><i class="fab fa-apple" aria-hidden="true"></i> Apple Calendar</button>
+              <button type="button" class="calendar-download" data-calendar-download="outlook"><i class="fab fa-microsoft" aria-hidden="true"></i> Outlook</button>
+            </div>
+          </div>
         </div>`;
+      panel.querySelectorAll('[data-calendar-download]').forEach(button => {
+        button.addEventListener('click', () => {
+          downloadCalendarInvite(invite, button.dataset.calendarDownload || 'calendar');
+        });
+      });
       this.container.querySelectorAll('[data-calendar-slot]').forEach(button => {
         button.disabled = true;
       });

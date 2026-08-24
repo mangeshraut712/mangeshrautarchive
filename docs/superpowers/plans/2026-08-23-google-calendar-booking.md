@@ -91,6 +91,7 @@
 - [ ] Write failing DOM tests for live slots, fake-reminder removal, booking payload, and success/error states.
 - [ ] Implement the new Calendar widget using the existing public API base configuration.
 - [ ] Remove Calendly from the Contact widget and render visitor-local times with ET context.
+- [ ] Generate one RFC 5545 `.ics` fallback locally and expose it through Apple Calendar and Outlook download actions after booking.
 - [ ] Add responsive Apple-style status, slot, and form styling.
 - [ ] Run focused unit and desktop/iPhone Playwright tests.
 

@@ -40,6 +40,10 @@ async function openContactCalendar(page, availabilityStatus = 'live') {
         persisted: true,
         eventCreated: true,
         invitationSent: true,
+        bookingId: 'booking-test-id',
+        start: slots[0].start,
+        end: slots[0].end,
+        meetingUrl: 'https://meet.google.com/abc-defg-hij',
         message: 'Booked. Google Calendar emailed your invitation.',
       }),
     });
@@ -67,6 +71,8 @@ test.describe('Contact Google Calendar booking', () => {
 
     await expect(calendar.getByText('Meeting booked')).toBeVisible();
     await expect(calendar.getByText(/emailed your invitation/i)).toBeVisible();
+    await expect(calendar.getByRole('button', { name: /Apple Calendar/i })).toBeVisible();
+    await expect(calendar.getByRole('button', { name: /Outlook/i })).toBeVisible();
     expect(getBookingPayload()).toMatchObject({
       name: 'Ada Lovelace',
       email: 'ada@example.com',

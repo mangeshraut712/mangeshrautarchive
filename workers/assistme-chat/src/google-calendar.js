@@ -453,6 +453,10 @@ export async function handleCalendarBooking(request, env, cors = {}, overrides =
       end: slot.end,
     });
     const created = await deps.createEvent(accessToken, event);
+    const meetingUrl =
+      created.hangoutLink ||
+      created.conferenceData?.entryPoints?.find(entry => entry.entryPointType === 'video')?.uri ||
+      '';
     await deps.confirmBooking(reservation.id, {
       eventId: created.id,
       eventLink: created.htmlLink || '',
@@ -467,6 +471,7 @@ export async function handleCalendarBooking(request, env, cors = {}, overrides =
         start: slot.start,
         end: slot.end,
         timeZone: CALENDAR_TIME_ZONE,
+        meetingUrl,
         message: 'Booked. Google Calendar emailed your invitation.',
       },
       200,

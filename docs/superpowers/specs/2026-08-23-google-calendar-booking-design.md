@@ -33,6 +33,10 @@ If Google rejects event creation, the reservation is marked failed and the UI re
 - When Calendar needs owner reauthorization, visitors see a direct-email fallback rather than fake availability.
 - Retire the Calendly runtime dependency from this widget.
 
+## Apple Calendar and Outlook compatibility
+
+Google remains the organizer and source of truth. Its attendee email invitation can be accepted by accounts connected to Apple Calendar or Outlook. After a successful booking, the confirmation also offers **Add to Apple Calendar** and **Add to Outlook** actions that generate the same RFC 5545 `.ics` event locally in the browser. The file contains the confirmed UTC start/end, private consultation title, Google Meet URL when available, and a 30-minute display alarm. No Apple ID, Microsoft account, mailbox permission, or additional OAuth token is requested or stored.
+
 ## Security
 
 - Google credentials, OAuth tokens, Supabase service-role keys, and integration admin tokens remain server-only.
@@ -44,6 +48,6 @@ If Google rejects event creation, the reservation is marked failed and the UI re
 ## Verification
 
 - Unit tests prove signed-slot validation, slot generation, conflict rejection, event payload/reminders, OAuth exchange, refresh, and database state transitions.
-- Playwright verifies connection, slot selection, booking success/failure, mobile fit, and removal of fake reminder content.
+- Playwright verifies connection, slot selection, booking success/failure, Apple/Outlook fallback actions, mobile fit, and removal of fake reminder content.
 - Supabase MCP verifies schema, RLS, grants, advisors, and test-row cleanup.
 - Live verification creates one synthetic event/booking, confirms Calendar API success and Supabase state, deletes the event and booking, and leaves no test data.
