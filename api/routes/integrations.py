@@ -612,6 +612,15 @@ async def get_calendar_availability():
     merged_days = merge_multi_calendar_availability(*calendar_days_lists)
     all_busy = [b for day in merged_days for b in (day.get("busy") or [])]
     slots = generate_available_slots(now=datetime.now(timezone.utc), busy_intervals=all_busy, days=14, max_slots=24)
+
+    discovered_events: List[Dict[str, Any]] = []
+    if "apple" in connected_providers:
+        try:
+            apple_events = await apple_calendar.fetch_events(days=14)
+            discovered_events.extend(apple_events)
+        except Exception:
+            pass
+
     return {
         "success": True,
         "timestamp": _utc_now(),
@@ -619,6 +628,7 @@ async def get_calendar_availability():
         "source": "multi-calendar",
         "providers": connected_providers,
         "days": merged_days,
+        "events": discovered_events,
         "slots": slots,
         "timeZone": "America/New_York",
         "durationMinutes": 30,

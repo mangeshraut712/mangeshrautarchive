@@ -1,6 +1,6 @@
 import os
 from datetime import datetime, timedelta, timezone
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Tuple
 from urllib.parse import urlencode
 
 import httpx
@@ -133,19 +133,199 @@ def _day_bounds(day_offset: int) -> Dict[str, str]:
     return {"start": fmt(start), "end": fmt(end)}
 
 
+def _parse_ics_datetime(val: Optional[str]) -> Optional[str]:
+    if not val:
+        return None
+    val = val.strip()
+    try:
+        if "T" in val:
+            clean = val.replace("Z", "")
+            if len(clean) >= 15:
+                dt = datetime.strptime(clean[:15], "%Y%m%dT%H%M%S").replace(tzinfo=timezone.utc)
+                return dt.isoformat().replace("+00:00", "Z")
+        elif len(val) >= 8 and val[:8].isdigit():
+            dt = datetime.strptime(val[:8], "%Y%m%d").replace(tzinfo=timezone.utc)
+            return dt.isoformat().replace("+00:00", "Z")
+    except Exception:
+        pass
+    return None
+
+
+def _join_url(base: str, path: str) -> str:
+    if path.startswith("http://") or path.startswith("https://"):
+        return path
+    return f"{base.rstrip('/')}/{path.lstrip('/')}"
+
+
+async def _fetch_caldav_calendar_data(days: int = 14) -> Tuple[Dict[str, List[Dict[str, str]]], List[Dict[str, Any]]]:
+    """Query Apple iCloud CalDAV to extract real events and busy windows."""
+    import re
+    import xml.etree.ElementTree as ET
+
+    apple_id = _apple_id()
+    app_pwd = _app_specific_password()
+    if not apple_id or not app_pwd:
+        return {}, []
+
+    auth = (apple_id, app_pwd)
+    base_url = _caldav_url()
+    busy_by_date: Dict[str, List[Dict[str, str]]] = {}
+    events: List[Dict[str, Any]] = []
+
+    try:
+        async with httpx.AsyncClient(timeout=12.0) as client:
+            # 1. Principal discovery
+            propfind_body = """<?xml version="1.0" encoding="utf-8" ?>
+<D:propfind xmlns:D="DAV:"><D:prop><D:current-user-principal/></D:prop></D:propfind>"""
+            res = await client.request(
+                "PROPFIND",
+                base_url,
+                content=propfind_body,
+                headers={"Depth": "0"},
+                auth=auth,
+            )
+            if res.status_code != 207:
+                return {}, []
+
+            root = ET.fromstring(res.text)
+            principal_el = root.find(".//{DAV:}current-user-principal/{DAV:}href")
+            if principal_el is None or not principal_el.text:
+                return {}, []
+            principal = principal_el.text.strip()
+
+            # 2. Calendar Home Set discovery
+            p_url = _join_url(base_url, principal)
+            home_body = """<?xml version="1.0" encoding="utf-8" ?>
+<D:propfind xmlns:D="DAV:" xmlns:C="urn:ietf:params:xml:ns:caldav"><D:prop><C:calendar-home-set/></D:prop></D:propfind>"""
+            res2 = await client.request(
+                "PROPFIND",
+                p_url,
+                content=home_body,
+                headers={"Depth": "0"},
+                auth=auth,
+            )
+            if res2.status_code != 207:
+                return {}, []
+
+            root2 = ET.fromstring(res2.text)
+            cal_home_el = root2.find(".//{urn:ietf:params:xml:ns:caldav}calendar-home-set/{DAV:}href")
+            if cal_home_el is None or not cal_home_el.text:
+                return {}, []
+            cal_home = cal_home_el.text.strip()
+
+            parts = cal_home.split("/")
+            home_base = "/".join(parts[:3]) if len(parts) >= 3 else base_url
+
+            # 3. List calendar collections
+            list_body = """<?xml version="1.0" encoding="utf-8" ?>
+<D:propfind xmlns:D="DAV:" xmlns:C="urn:ietf:params:xml:ns:caldav"><D:prop><D:resourcetype/><D:displayname/></D:prop></D:propfind>"""
+            res3 = await client.request(
+                "PROPFIND",
+                cal_home,
+                content=list_body,
+                headers={"Depth": "1"},
+                auth=auth,
+            )
+            if res3.status_code != 207:
+                return {}, []
+
+            root3 = ET.fromstring(res3.text)
+            now = datetime.now(timezone.utc)
+            start_iso_q = (now - timedelta(days=1)).strftime("%Y%m%dT000000Z")
+            end_iso_q = (now + timedelta(days=days + 1)).strftime("%Y%m%dT235959Z")
+
+            report_body = f"""<?xml version="1.0" encoding="utf-8" ?>
+<C:calendar-query xmlns:D="DAV:" xmlns:C="urn:ietf:params:xml:ns:caldav">
+  <D:prop><D:getetag/><C:calendar-data/></D:prop>
+  <C:filter>
+    <C:comp-filter name="VCALENDAR">
+      <C:comp-filter name="VEVENT">
+        <C:time-range start="{start_iso_q}" end="{end_iso_q}"/>
+      </C:comp-filter>
+    </C:comp-filter>
+  </C:filter>
+</C:calendar-query>"""
+
+            seen_keys = set()
+
+            for resp in root3.findall("{DAV:}response"):
+                href_el = resp.find("{DAV:}href")
+                if href_el is None or not href_el.text:
+                    continue
+                href = href_el.text.strip()
+                if any(skip in href for skip in ["/inbox", "/outbox", "/notification"]):
+                    continue
+                if href.rstrip("/") == cal_home.replace(home_base, "").rstrip("/"):
+                    continue
+
+                cal_url = _join_url(home_base, href)
+                try:
+                    res_rep = await client.request(
+                        "REPORT",
+                        cal_url,
+                        content=report_body,
+                        headers={"Depth": "1", "Content-Type": "application/xml; charset=utf-8"},
+                        auth=auth,
+                    )
+                    if res_rep.status_code == 207:
+                        root_rep = ET.fromstring(res_rep.text)
+                        for item in root_rep.findall("{DAV:}response"):
+                            cdata = item.find(".//{urn:ietf:params:xml:ns:caldav}calendar-data")
+                            if cdata is not None and cdata.text:
+                                text = cdata.text
+                                summary_m = re.search(r"^SUMMARY:(.+)$", text, re.M)
+                                dtstart_m = re.search(r"^DTSTART(?:;[^:]+)?:(.+)$", text, re.M)
+                                dtend_m = re.search(r"^DTEND(?:;[^:]+)?:(.+)$", text, re.M)
+                                if summary_m and dtstart_m:
+                                    title = summary_m.group(1).strip()
+                                    s_iso = _parse_ics_datetime(dtstart_m.group(1).strip())
+                                    e_iso = (
+                                        _parse_ics_datetime(dtend_m.group(1).strip())
+                                        if dtend_m
+                                        else s_iso
+                                    )
+                                    if s_iso:
+                                        d_str = s_iso[:10]
+                                        key = f"{title}_{s_iso}"
+                                        if key not in seen_keys:
+                                            seen_keys.add(key)
+                                            events.append(
+                                                {
+                                                    "title": title,
+                                                    "start": s_iso,
+                                                    "end": e_iso or s_iso,
+                                                    "date": d_str,
+                                                    "provider": "apple",
+                                                }
+                                            )
+                                            busy_by_date.setdefault(d_str, []).append(
+                                                {"start": s_iso, "end": e_iso or s_iso}
+                                            )
+                except Exception:
+                    continue
+    except Exception:
+        pass
+
+    return busy_by_date, events
+
+
+async def fetch_events(access_token_or_creds: str = "", days: int = 14) -> List[Dict[str, Any]]:
+    """Fetch real upcoming events from Apple iCloud Calendar."""
+    _, events = await _fetch_caldav_calendar_data(days=days)
+    return events
+
+
 async def fetch_availability(access_token_or_creds: str, days: int = 7) -> List[Dict[str, Any]]:
-    """Fetch availability for Apple Calendar across the next N days.
-    
-    If iCloud CalDAV credentials exist, queries CalDAV free-busy; otherwise evaluates
-    connected Apple Calendar OAuth state.
-    """
+    """Fetch availability for Apple Calendar across the next N days."""
+    busy_by_date, _ = await _fetch_caldav_calendar_data(days=days)
     results: List[Dict[str, Any]] = []
     for offset in range(max(1, min(days, 14))):
         bounds = _day_bounds(offset)
+        d_str = bounds["start"][:10]
         results.append(
             {
-                "date": bounds["start"][:10],
-                "busy": [],
+                "date": d_str,
+                "busy": busy_by_date.get(d_str, []),
                 "start": bounds["start"],
                 "end": bounds["end"],
             }

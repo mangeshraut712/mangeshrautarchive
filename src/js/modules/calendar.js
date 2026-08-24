@@ -28,6 +28,7 @@ export class CalendarWidget {
     this.selectedDate = new Date();
     this.selectedDayCell = null;
     this.liveSlots = [];
+    this.liveEvents = [];
     this.liveProviders = ['google'];
     this.availabilityLoaded = false;
 
@@ -91,8 +92,9 @@ export class CalendarWidget {
       });
       if (!response.ok) return;
       const payload = await response.json();
-      if (payload && Array.isArray(payload.slots) && payload.slots.length > 0) {
-        this.liveSlots = payload.slots;
+      if (payload && (Array.isArray(payload.slots) || Array.isArray(payload.events))) {
+        this.liveSlots = Array.isArray(payload.slots) ? payload.slots : [];
+        this.liveEvents = Array.isArray(payload.events) ? payload.events : [];
         this.liveProviders =
           Array.isArray(payload.providers) && payload.providers.length
             ? payload.providers
@@ -107,16 +109,60 @@ export class CalendarWidget {
         if (syncReminder) {
           if (isGoogleConnected && isAppleConnected) {
             syncReminder.text = 'Google & Apple Calendar Sync';
-            syncReminder.time = `${payload.slots.length} Free Slots`;
+            syncReminder.time = `${this.liveSlots.length} Free Slots`;
             syncReminder.tag = 'Live Sync';
           } else if (isAppleConnected) {
             syncReminder.text = 'Apple iCloud Calendar & CalDAV';
-            syncReminder.time = `${payload.slots.length} Free Slots`;
+            syncReminder.time = `${this.liveSlots.length} Free Slots`;
             syncReminder.tag = 'Apple';
           } else {
             syncReminder.text = 'Google Calendar & Meet Live';
-            syncReminder.time = `${payload.slots.length} Free Slots`;
+            syncReminder.time = `${this.liveSlots.length} Free Slots`;
             syncReminder.tag = 'Live';
+          }
+        }
+
+        // Dynamically import real Apple & Google Calendar events into Smart Reminders
+        if (this.liveEvents.length > 0) {
+          for (const ev of this.liveEvents) {
+            if (!ev.title) continue;
+            const existing = this.reminders.find(
+              r => (r.eventTitle && r.eventTitle === ev.title) || r.text === ev.title
+            );
+            if (!existing) {
+              const lowerTitle = ev.title.toLowerCase();
+              const isCursor = lowerTitle.includes('cursor');
+              const isClaude = lowerTitle.includes('claude');
+              const tag = isCursor ? 'Cursor' : isClaude ? 'Claude' : 'Apple';
+              const color = isCursor ? 'blue' : isClaude ? 'orange' : 'purple';
+
+              let timeLabel = 'Aug 29';
+              if (ev.start) {
+                const d = new Date(ev.start);
+                const mStr = d.toLocaleString('en-US', { month: 'short' });
+                const dayNum = d.getDate();
+                if (ev.start.includes('T00:00:00') && ev.end && ev.end.includes('T00:00:00')) {
+                  timeLabel = `${mStr} ${dayNum} · All Day`;
+                } else {
+                  const timeStr = d.toLocaleTimeString('en-US', {
+                    hour: 'numeric',
+                    minute: '2-digit',
+                  });
+                  timeLabel = `${mStr} ${dayNum} · ${timeStr}`;
+                }
+              }
+
+              this.reminders.push({
+                id: Date.now() + Math.floor(Math.random() * 1000),
+                eventTitle: ev.title,
+                text: ev.title,
+                time: timeLabel,
+                tag,
+                color,
+                completed: false,
+                isImportedEvent: true,
+              });
+            }
           }
         }
 
@@ -129,7 +175,7 @@ export class CalendarWidget {
 
   getLiveEventDays(year, month) {
     const eventDays = new Set();
-    if (this.liveSlots.length > 0) {
+    if (this.liveSlots.length > 0 || this.liveEvents.length > 0) {
       for (const slot of this.liveSlots) {
         if (!slot.start) continue;
         const d = new Date(slot.start);
@@ -137,9 +183,16 @@ export class CalendarWidget {
           eventDays.add(d.getDate());
         }
       }
+      for (const ev of this.liveEvents) {
+        if (!ev.start) continue;
+        const d = new Date(ev.start);
+        if (d.getFullYear() === year && d.getMonth() === month) {
+          eventDays.add(d.getDate());
+        }
+      }
     } else {
       // Default event days for visual polish when offline
-      [5, 12, 18, 25].forEach(d => eventDays.add(d));
+      [5, 12, 18, 25, 29].forEach(d => eventDays.add(d));
     }
     return eventDays;
   }

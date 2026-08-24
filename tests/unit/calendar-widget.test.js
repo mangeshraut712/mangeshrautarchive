@@ -174,6 +174,51 @@ describe('Apple-style Calendar and Smart Reminders Widget', () => {
     expect(document.body.textContent).toContain('Google Meet');
   });
 
+  it('imports live Apple Calendar events and marks event days', async () => {
+    const { CalendarWidget } = await import('../../src/js/modules/calendar.js');
+    document.body.innerHTML = '<div id="calendar-widget"></div>';
+
+    global.fetch = vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({
+        success: true,
+        status: 'live',
+        providers: ['google', 'apple'],
+        slots: [{ start: '2026-08-25T14:00:00Z', end: '2026-08-25T14:30:00Z' }],
+        events: [
+          {
+            title: 'Ticket: Cafe Cursor Pune',
+            start: '2026-08-29T00:00:00Z',
+            end: '2026-08-30T00:00:00Z',
+            date: '2026-08-29',
+            provider: 'apple',
+          },
+          {
+            title: 'Pune | Claude Code Meetup',
+            start: '2026-08-29T10:30:00Z',
+            end: '2026-08-29T13:30:00Z',
+            date: '2026-08-29',
+            provider: 'apple',
+          },
+        ],
+      }),
+    });
+
+    const widget = new CalendarWidget('calendar-widget');
+    widget.date = new Date(2026, 7, 24); // August 2026
+    widget.init();
+
+    await vi.waitFor(() => {
+      expect(document.body.textContent).toContain('Ticket: Cafe Cursor Pune');
+      expect(document.body.textContent).toContain('Pune | Claude Code Meetup');
+    });
+
+    const day29 = document.querySelector('[data-day="29"]');
+    expect(day29).not.toBeNull();
+    expect(day29.classList.contains('has-event')).toBe(true);
+    expect(day29.querySelector('.event-dot')).not.toBeNull();
+  });
+
   it('triggers Calendly popup when Calendly button is clicked', async () => {
     window.Calendly = { initPopupWidget: vi.fn() };
     const { CalendarWidget } = await import('../../src/js/modules/calendar.js');

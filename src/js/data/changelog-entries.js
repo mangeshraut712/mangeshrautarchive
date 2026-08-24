@@ -43,6 +43,16 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'a93f41de',
+    date: '2026-08-24',
+    type: 'release',
+    title: 'Live Apple iCloud CalDAV Events Import & Free-Busy Availability',
+    summary:
+      'Implemented real iCloud CalDAV query engine to extract upcoming Apple Calendar events and reminders (including August 29 Cafe Cursor Pune and Claude Code Meetup). Dynamically injects event dots onto calendar day cells and populates custom branded reminder cards with provider tags and accent strips while preventing consultation double-booking. Built with Gemini 2.5 Pro; token usage tracked via total_usage.',
+    tags: ['api', 'design', 'assistme'],
+    sha: 'a93f41de',
+  },
+  {
     id: 'e68c12a4',
     date: '2026-08-24',
     type: 'release',
