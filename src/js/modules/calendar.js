@@ -119,7 +119,7 @@ export class CalendarWidget {
       },
     ];
 
-    // Inject recent Changelog Releases as Calendar entries
+    // Inject recent Changelog Releases as Calendar milestone entries
     if (Array.isArray(changelogEntries)) {
       changelogEntries.slice(0, 10).forEach((entry, idx) => {
         if (!entry.date) return;
@@ -132,8 +132,7 @@ export class CalendarWidget {
           tag: 'Release',
           color: 'purple',
           icon: 'rocket',
-          description: entry.summary,
-          completed: true,
+          completed: false,
           isChangelog: true,
           changelogId: entry.id,
         });
@@ -271,7 +270,6 @@ export class CalendarWidget {
                 color,
                 icon,
                 location: ev.location || '',
-                description: ev.description || '',
                 completed: false,
                 isImportedEvent: true,
               });
@@ -372,6 +370,7 @@ export class CalendarWidget {
       const mmDd = targetDateKey.slice(5); // e.g. "08-24"
 
       return list.filter(r => {
+        if (r.isChangelog) return false;
         if (r.dateKey) {
           return (
             r.dateKey === targetDateKey || r.dateKey === mmDd || r.dateKey.endsWith(`-${mmDd}`)
@@ -397,7 +396,8 @@ export class CalendarWidget {
       return list.filter(r => r.category === 'changelog' || r.isChangelog);
     }
 
-    return list;
+    // "all" shows all tasks, events, and birthdays (excluding changelog entries)
+    return list.filter(r => !r.isChangelog);
   }
 
   render() {
@@ -431,6 +431,7 @@ export class CalendarWidget {
       this.selectedDayFilter ||
       dateKey(year, month, this.selectedDate ? this.selectedDate.getDate() : today);
     const dayMatchesCount = this.reminders.filter(r => {
+      if (r.isChangelog) return false;
       if (r.dateKey) {
         return r.dateKey === currentDayKey || r.dateKey.endsWith(`-${currentDayKey.slice(5)}`);
       }
@@ -449,7 +450,7 @@ export class CalendarWidget {
     const totalChangelogCount = this.reminders.filter(
       r => r.category === 'changelog' || r.isChangelog
     ).length;
-    const totalCount = this.reminders.length;
+    const totalCount = this.reminders.filter(r => !r.isChangelog).length;
 
     let html = `
       <div class="ios-widget-wrapper">
@@ -570,8 +571,6 @@ export class CalendarWidget {
               : ''
           }
           
-                )
-                .join('')}
           <div class="reminders-list" id="reminders-list-container">
             ${
               filteredReminders.length === 0
@@ -610,22 +609,42 @@ export class CalendarWidget {
                     ${r.tag ? `<span class="card-tag tag-${escapeHtml(r.color || 'blue')}">${escapeHtml(r.tag)}</span>` : ''}
                   </div>
                   <div class="card-title">${escapeHtml(r.text)}</div>
-                  ${r.description ? `<div class="card-desc">${escapeHtml(r.description)}</div>` : ''}
                   ${r.location ? `<div class="card-location"><i class="fas fa-map-pin"></i> ${escapeHtml(r.location)}</div>` : ''}
                 </div>
                 <div class="card-action-area">
                   <button type="button" class="card-action-btn ask-ai-btn" data-id="${r.id}" title="Ask AI Assistant about this item" aria-label="Ask AI about ${escapeHtml(r.text)}">
-                    <i class="fas fa-sparkles" aria-hidden="true"></i>
+                    <i class="fas fa-wand-magic-sparkles" aria-hidden="true"></i>
                   </button>
-                  <button type="button" class="card-action-btn ical-btn" data-id="${r.id}" title="Download .ics Calendar Event" aria-label="Download iCal event">
-                    <i class="fas fa-calendar-arrow-down" aria-hidden="true"></i>
-                  </button>
-                  <button type="button" class="card-action-btn edit-btn" data-id="${r.id}" title="Edit text" aria-label="Edit reminder">
-                    <i class="fas fa-pen" aria-hidden="true"></i>
-                  </button>
-                  <button type="button" class="status-circle ${r.completed ? 'checked' : ''}" data-id="${r.id}" title="Toggle Complete" aria-label="Toggle Complete">
-                    <i class="fas fa-check" aria-hidden="true"></i>
-                  </button>
+                  ${
+                    r.isImportedEvent || r.category === 'birthdays'
+                      ? `
+                    <button type="button" class="card-action-btn ical-btn" data-id="${r.id}" title="Download .ics Calendar Event" aria-label="Download iCal event">
+                      <i class="fas fa-download" aria-hidden="true"></i>
+                    </button>
+                  `
+                      : ''
+                  }
+                  ${
+                    !r.isChangelog && !r.isImportedEvent && r.id !== 100
+                      ? `
+                    <button type="button" class="card-action-btn edit-btn" data-id="${r.id}" title="Edit text" aria-label="Edit reminder">
+                      <i class="fas fa-pen" aria-hidden="true"></i>
+                    </button>
+                    <button type="button" class="status-circle ${r.completed ? 'checked' : ''}" data-id="${r.id}" title="Toggle Complete" aria-label="Toggle Complete">
+                      <i class="fas fa-check" aria-hidden="true"></i>
+                    </button>
+                  `
+                      : ''
+                  }
+                  ${
+                    r.id === 100
+                      ? `
+                    <button type="button" class="card-action-btn sync-book-btn" title="Book Consultation" aria-label="Book Consultation">
+                      <i class="fas fa-arrow-right" aria-hidden="true"></i>
+                    </button>
+                  `
+                      : ''
+                  }
                 </div>
               </div>
             `
@@ -762,6 +781,15 @@ export class CalendarWidget {
         icalBtn.onclick = e => {
           e.stopPropagation();
           this.downloadIcsForEvent(reminder);
+        };
+      }
+
+      // Sync Card Book Button
+      const syncBookBtn = item.querySelector('.sync-book-btn');
+      if (syncBookBtn) {
+        syncBookBtn.onclick = e => {
+          e.stopPropagation();
+          openCalendlyPopup();
         };
       }
     });

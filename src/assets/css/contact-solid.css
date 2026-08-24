@@ -9,8 +9,8 @@
    (or dual-ID glass :is() borders using var(--card-border-rest)) cannot
    paint dark hairlines on light contact shells. */
 html body #contact,
-html:not(.dark) body #contact,
-html.light body #contact {
+html.light body #contact,
+html:not(.dark):not([data-theme='dark']) body #contact {
   --contact-solid-bg: #ffffff;
   --contact-solid-fg: #1d1d1f;
   --contact-solid-muted: #6e6e73;
@@ -26,7 +26,8 @@ html.light body #contact {
 }
 
 html.dark body #contact,
-html[data-theme='dark'] body #contact {
+html[data-theme='dark'] body #contact,
+html.dark:not(.light) body #contact {
   --contact-solid-bg: #000000;
   --contact-solid-fg: #f5f5f7;
   --contact-solid-muted: #a1a1a6;
@@ -37,17 +38,6 @@ html[data-theme='dark'] body #contact {
   --card-border-hover: #0a84ff;
   --theme-card-border: #2c2c2e;
   --theme-card-border-hover: #0a84ff;
-}
-
-/* Prefer class-based theme when class + data-theme disagree */
-html.light body #contact,
-html:not(.dark):not([data-theme='dark']) body #contact {
-  --contact-solid-bg: #ffffff;
-  --contact-solid-fg: #1d1d1f;
-  --contact-solid-muted: #6e6e73;
-  --contact-solid-border: #e5e5ea;
-  --card-border-rest: #e5e5ea;
-  --theme-card-border: #e5e5ea;
 }
 
 /* ── Primary card shells (all major contact sections) ──
@@ -371,16 +361,54 @@ html
 }
 
 /* ── Typography ── */
-html body #contact :is(h3, .month-title, .reminders-title, .card-title) {
+html body #contact :is(h3, .contact-card-title, .month-title, .reminders-title, .card-title) {
   color: var(--contact-solid-fg) !important;
   -webkit-text-fill-color: var(--contact-solid-fg) !important;
+}
+
+html.dark body #contact :is(h3, .contact-card-title, .month-title, .reminders-title, .card-title),
+html[data-theme='dark']
+  body
+  #contact
+  :is(h3, .contact-card-title, .month-title, .reminders-title, .card-title) {
+  color: #f5f5f7 !important;
+  -webkit-text-fill-color: #f5f5f7 !important;
 }
 
 html
   body
   #contact
-  :is(.contact-description, .crypto-label, .calendly-panel p, .contact-assistme-note) {
+  :is(
+    .contact-description,
+    .contact-card-subtitle,
+    .crypto-label,
+    .calendly-panel p,
+    .contact-assistme-note
+  ) {
   color: var(--contact-solid-muted) !important;
+}
+
+html.dark
+  body
+  #contact
+  :is(
+    .contact-description,
+    .contact-card-subtitle,
+    .crypto-label,
+    .calendly-panel p,
+    .contact-assistme-note
+  ),
+html[data-theme='dark']
+  body
+  #contact
+  :is(
+    .contact-description,
+    .contact-card-subtitle,
+    .crypto-label,
+    .calendly-panel p,
+    .contact-assistme-note
+  ) {
+  color: #a1a1a6 !important;
 }
 
 html body #contact .card-action-area {

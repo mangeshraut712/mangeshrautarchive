@@ -43,6 +43,16 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'c42e88a1',
+    date: '2026-08-24',
+    type: 'fix',
+    title: 'Apple Calendar Visual Polish, Scroll Containment & Action Area Fixes',
+    summary:
+      'Eliminated stray syntax glitch, prevented changelog paragraph flood in day inspector by isolating releases to the Changelog tab, added smooth scroll containment to the reminders list, updated Font Awesome 6 icons (fa-wand-magic-sparkles and fa-download), and enforced authentic Apple dark mode contrast across contact headers and cards. Built with Gemini 2.5 Pro; token metrics tracked via total_usage.',
+    tags: ['design', 'performance', 'assistme'],
+    sha: 'c42e88a1',
+  },
+  {
     id: 'b19c43d2',
     date: '2026-08-24',
     type: 'release',
