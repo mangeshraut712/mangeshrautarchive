@@ -85,7 +85,7 @@
 │  🤖 Agentic AI: AssistMe chatbot, OpenRouter (grok-4.3), 13 WebMCP browser actions    │
 │  🎨 Apple HIG Design: Solid white/black canvases, authentic Liquid Glass shaders       │
 │  📊 Real-Time Telemetry: WHOOP vitals, GA4 realtime reach, platform health probes      │
-│  🛡️ Quality Gates: 196 Vitest tests, 169 pytest tests, 100/100/100/100 Lighthouse CI  │
+│  🛡️ Quality Gates: 197 Vitest tests, 169 pytest tests, 100/100/100/100 Lighthouse CI  │
 │  📜 Open Chronicle: Complete Git history from day 1 (April 8, 2025) to August 2026     │
 └────────────────────────────────────────────────────────────────────────────────────────┘
 ```
@@ -212,16 +212,16 @@ This repository was built and refined using verified daily-driver AI tools and d
 
 ## 5. Product Surfaces & Capabilities
 
-| Surface / Route                                                                                         | Primary Purpose & Key Features                                                                             |
-| ------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
-| [**`/` (Homepage)**](https://mangeshraut712.github.io/mangeshrautarchive/)                              | Dynamic Island hero, engineering evidence grid, persistent contact form, and live Google Calendar booking. |
-| [**`/systems`**](https://mangeshraut712.github.io/mangeshrautarchive/systems)                           | Systems engineering notebook, multi-model token telemetry, daily-driver stack, architecture FAQ.           |
-| [**`/monitor`**](https://mangeshraut712.github.io/mangeshrautarchive/monitor)                           | Real-time platform health, hosting status, WHOOP vitals summary, GA4 realtime reach.                       |
-| [**`/travel`**](https://mangeshraut712.github.io/mangeshrautarchive/travel)                             | MapLibre 3D WebGL interactive atlas covering 18 US States and 4 Countries.                                 |
-| [**`/uses`**](https://mangeshraut712.github.io/mangeshrautarchive/uses)                                 | Hardware, developer tooling, software, and everyday carry with category filtering.                         |
-| [**`/changelog`**](https://mangeshraut712.github.io/mangeshrautarchive/changelog)                       | Complete chronological release history spanning from repo creation (April 8, 2025) to August 2026.         |
-| [**`/blog/`**](https://mangeshraut712.github.io/mangeshrautarchive/blog/)                               | 16 long-form technical field notes and deep dives with source embeds and KaTeX math.                       |
-| [**`/case-studies/`**](https://mangeshraut712.github.io/mangeshrautarchive/case-studies/portfolio.html) | 5 architectural case studies (Portfolio Architecture, HindAI, CES Energy, AssistMe VA, Bug Tracker).       |
+| Surface / Route                                                                                         | Primary Purpose & Key Features                                                                       |
+| ------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| [**`/` (Homepage)**](https://mangeshraut712.github.io/mangeshrautarchive/)                              | Dynamic Island hero, persistent contact, live Google booking, and Apple/Outlook event fallbacks.     |
+| [**`/systems`**](https://mangeshraut712.github.io/mangeshrautarchive/systems)                           | Systems engineering notebook, multi-model token telemetry, daily-driver stack, architecture FAQ.     |
+| [**`/monitor`**](https://mangeshraut712.github.io/mangeshrautarchive/monitor)                           | Real-time platform health, hosting status, WHOOP vitals summary, GA4 realtime reach.                 |
+| [**`/travel`**](https://mangeshraut712.github.io/mangeshrautarchive/travel)                             | MapLibre 3D WebGL interactive atlas covering 18 US States and 4 Countries.                           |
+| [**`/uses`**](https://mangeshraut712.github.io/mangeshrautarchive/uses)                                 | Hardware, developer tooling, software, and everyday carry with category filtering.                   |
+| [**`/changelog`**](https://mangeshraut712.github.io/mangeshrautarchive/changelog)                       | Complete chronological release history spanning from repo creation (April 8, 2025) to August 2026.   |
+| [**`/blog/`**](https://mangeshraut712.github.io/mangeshrautarchive/blog/)                               | 16 long-form technical field notes and deep dives with source embeds and KaTeX math.                 |
+| [**`/case-studies/`**](https://mangeshraut712.github.io/mangeshrautarchive/case-studies/portfolio.html) | 5 architectural case studies (Portfolio Architecture, HindAI, CES Energy, AssistMe VA, Bug Tracker). |
 
 ---
 
@@ -231,7 +231,7 @@ All quality gates are enforced locally and verified automatically in GitHub Acti
 
 | Test Suite            | Runner            |        Test Count         | Scope & Coverage                                                            |
 | --------------------- | ----------------- | :-----------------------: | --------------------------------------------------------------------------- |
-| **Unit Tests**        | Vitest 4.1        | **196 passed** (42 files) | JS modules, services, markdown parser, WebMCP actions, data contracts       |
+| **Unit Tests**        | Vitest 4.1        | **197 passed** (42 files) | JS modules, services, markdown parser, WebMCP actions, data contracts       |
 | **API Tests**         | pytest            | **169 passed** (26 files) | FastAPI endpoints, streaming chat, health probes, OAuth token stores        |
 | **E2E Browser Tests** | Playwright        |      **16 projects**      | Multi-browser suite (Desktop Chrome, Safari, Firefox, iPhone 17, Pixel 7)   |
 | **Accessibility**     | axe-core          |    **16/16 baseline**     | Zero critical/serious WCAG violations across light, dark, and high contrast |
@@ -278,7 +278,7 @@ npm run dev
 ### 7.3 Essential Quality Commands
 
 ```bash
-npm run check             # Run ESLint + Stylelint + Prettier + 196 Vitest tests
+npm run check             # Run ESLint + Stylelint + Prettier + 197 Vitest tests
 npm run test:api          # Run 169 pytest API tests
 npm run doctor:strict     # Run 60-point strict repository layout check
 npm run security-check    # Scan for exposed API keys and credentials

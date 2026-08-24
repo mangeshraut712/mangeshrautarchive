@@ -44,7 +44,7 @@ export const LIGHTHOUSE_VERCEL_GATES = {
 };
 
 export const TEST_COUNTS = {
-  vitest: 196,
+  vitest: 197,
   pytest: 169,
   playwrightProjects: 16,
 };

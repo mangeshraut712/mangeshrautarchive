@@ -54,6 +54,8 @@ The active Cloudflare Worker also exposes:
 
 Google access uses only `calendar.events.owned` and `calendar.freebusy`; Gmail mailbox access is not requested. OAuth tokens remain encrypted in Supabase, while booking audit rows are RLS-protected and service-role-only.
 
+After a confirmed booking, the browser can generate one RFC 5545 `.ics` event locally for Apple Calendar or Outlook. This fallback does not contact Apple or Microsoft and does not require another OAuth grant.
+
 Connect flows use `api/integrations/oauth_state.py` and optional `INTEGRATION_ADMIN_TOKEN` for admin-only sync endpoints.
 
 ## Environment

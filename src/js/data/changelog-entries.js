@@ -43,6 +43,16 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: '8b01a779',
+    date: '2026-08-24',
+    type: 'improvement',
+    title: 'Apple Calendar and Outlook Booking Compatibility',
+    summary:
+      'Added standards-based RFC 5545 event downloads after confirmed Google Calendar bookings, giving visitors dedicated Apple Calendar and Outlook fallback actions with confirmed UTC times, Google Meet URL, and a 30-minute display reminder—without adding Apple or Microsoft OAuth permissions or token storage. Built with GPT-5 Codex; internal reasoning and token totals are not exposed by the runtime.',
+    tags: ['design', 'api'],
+    sha: '8b01a779',
+  },
+  {
     id: 'af6ee1cf',
     date: '2026-08-23',
     type: 'release',
