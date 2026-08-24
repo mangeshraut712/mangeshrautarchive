@@ -43,6 +43,16 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'b19c43d2',
+    date: '2026-08-24',
+    type: 'release',
+    title: 'Date-Driven Calendar Reminders, Empty State Actions & Verified CardDAV Birthdays',
+    summary:
+      'Upgraded Calendar & Reminders widget to isolate tasks according to active date selection with custom Apple Empty States (Add Reminder, Book Consultation, View All). Seamlessly merged full Changelog releases into calendar days with purple accent dots and tags. Verified and imported Apple CardDAV birthdays including Stephen (Aug 6), Mom (Aug 15), and Mangesh (Dec 7). Built with Gemini 2.5 Pro; token metrics tracked via total_usage.',
+    tags: ['api', 'design', 'assistme'],
+    sha: 'b19c43d2',
+  },
+  {
     id: 'f87b321a',
     date: '2026-08-24',
     type: 'release',

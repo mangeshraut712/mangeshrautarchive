@@ -32,7 +32,7 @@ LIGHTHOUSE_PAGES_GATES: Dict[str, Dict[str, int]] = {
     "mobile": {"performance": 85, "accessibility": 90, "best_practices": 90, "seo": 90},
 }
 
-TEST_COUNTS = {"vitest": 206, "pytest": 175, "playwright_projects": 16}
+TEST_COUNTS = {"vitest": 209, "pytest": 175, "playwright_projects": 16}
 
 WEBMCP_TOOL_COUNT = 13
 

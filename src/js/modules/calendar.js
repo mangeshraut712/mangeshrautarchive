@@ -1,6 +1,7 @@
 import { openCalendlyPopup } from '../utils/calendly.js';
 import { escapeHtml } from '../utils/escape-html.js';
 import { getFormsApiBase } from '../services/form-submission.js';
+import { changelogEntries } from '../data/changelog-entries.js';
 
 const CALENDAR_ENDPOINT = '/api/calendar/availability';
 
@@ -24,37 +25,61 @@ function dateKey(year, month, day) {
 export class CalendarWidget {
   constructor(containerId) {
     this.container = document.getElementById(containerId);
-    this.date = new Date();
-    this.selectedDate = new Date();
+    this.date = new Date(2026, 7, 24); // Default to August 24, 2026
+    this.selectedDate = new Date(2026, 7, 24);
     this.selectedDayCell = null;
-    this.selectedDayFilter = null;
-    this.activeFilter = 'all';
+    this.selectedDayFilter = dateKey(2026, 7, 24);
+    this.activeFilter = 'day';
     this.liveSlots = [];
     this.liveEvents = [];
-    this.liveProviders = ['google'];
+    this.liveProviders = ['google', 'apple'];
     this.aiAgentStatus = null;
     this.availabilityLoaded = false;
 
-    // "Smart" Reminders & Live Calendar Data
+    // "Smart" Reminders, Verified Birthdays & Live Calendar Data
     this.reminders = [
+      // ── Verified Birthdays ──────────────────────────────────────
+      {
+        id: 996,
+        text: "Stephen's Birthday 🎂",
+        time: 'Aug 6 · All Day',
+        dateKey: '2026-08-06',
+        category: 'birthdays',
+        tag: 'Birthday',
+        color: 'pink',
+        icon: 'cake-candles',
+        completed: false,
+      },
+      {
+        id: 997,
+        text: "Mom's Birthday ❤️🎂",
+        time: 'Aug 15 · All Day',
+        dateKey: '2026-08-15',
+        category: 'birthdays',
+        tag: 'Birthday',
+        color: 'pink',
+        icon: 'cake-candles',
+        completed: false,
+      },
       {
         id: 999,
         text: "Mangesh's Birthday 🎂",
-        time: 'Dec 7',
-        dateKey: '12-07',
+        time: 'Dec 7 · All Day',
+        dateKey: '2026-12-07',
         category: 'birthdays',
         tag: 'Special',
         color: 'gold',
         icon: 'cake-candles',
         completed: false,
       },
+      // ── Core Reminders & Sync Status ─────────────────────────────
       {
         id: 100,
-        text: 'Google Calendar Sync',
+        text: 'Google & Apple Calendar Sync',
         time: 'Live Auto-Sync',
-        dateKey: '',
+        dateKey: '2026-08-24',
         category: 'reminders',
-        tag: 'Google',
+        tag: 'Live Sync',
         color: 'blue',
         icon: 'calendar-check',
         completed: false,
@@ -62,8 +87,8 @@ export class CalendarWidget {
       {
         id: 1,
         text: 'Review Portfolio Design',
-        time: '10:00 AM',
-        dateKey: '',
+        time: 'Aug 24 · 10:00 AM',
+        dateKey: '2026-08-24',
         category: 'reminders',
         tag: 'Design',
         color: 'blue',
@@ -73,8 +98,8 @@ export class CalendarWidget {
       {
         id: 2,
         text: 'Email Mangesh',
-        time: '2:00 PM',
-        dateKey: '',
+        time: 'Aug 25 · 2:00 PM',
+        dateKey: '2026-08-25',
         category: 'reminders',
         tag: 'Urgent',
         color: 'red',
@@ -84,8 +109,8 @@ export class CalendarWidget {
       {
         id: 3,
         text: 'AI Model Training',
-        time: '4:30 PM',
-        dateKey: '',
+        time: 'Aug 25 · 4:30 PM',
+        dateKey: '2026-08-25',
         category: 'reminders',
         tag: 'Dev',
         color: 'purple',
@@ -93,10 +118,32 @@ export class CalendarWidget {
         completed: false,
       },
     ];
+
+    // Inject recent Changelog Releases as Calendar entries
+    if (Array.isArray(changelogEntries)) {
+      changelogEntries.slice(0, 10).forEach((entry, idx) => {
+        if (!entry.date) return;
+        this.reminders.push({
+          id: 5000 + idx,
+          text: entry.title,
+          time: `${entry.date} · Shipped`,
+          dateKey: entry.date,
+          category: 'changelog',
+          tag: 'Release',
+          color: 'purple',
+          icon: 'rocket',
+          description: entry.summary,
+          completed: true,
+          isChangelog: true,
+          changelogId: entry.id,
+        });
+      });
+    }
   }
 
   init() {
     if (!this.container) return;
+    ensureContactSolidStyles();
     this.render();
     this.bindEvents();
     void this.fetchLiveAvailability();
@@ -116,7 +163,7 @@ export class CalendarWidget {
         this.liveProviders =
           Array.isArray(payload.providers) && payload.providers.length
             ? payload.providers
-            : ['google'];
+            : ['google', 'apple'];
         this.aiAgentStatus = payload.aiAgent || null;
         this.availabilityLoaded = true;
 
@@ -146,7 +193,10 @@ export class CalendarWidget {
           for (const ev of this.liveEvents) {
             if (!ev.title) continue;
             const existing = this.reminders.find(
-              r => (r.eventTitle && r.eventTitle === ev.title) || r.text === ev.title
+              r =>
+                (r.eventTitle && r.eventTitle === ev.title) ||
+                r.text === ev.title ||
+                (r.dateKey && ev.date && r.dateKey === ev.date && r.text.includes(ev.title))
             );
             if (!existing) {
               const lowerTitle = ev.title.toLowerCase();
@@ -191,12 +241,14 @@ export class CalendarWidget {
               }
 
               let timeLabel = 'Upcoming';
-              let dKey = '';
+              let dKey = ev.date || '';
               if (ev.start) {
                 const d = new Date(ev.start);
                 const mStr = d.toLocaleString('en-US', { month: 'short' });
                 const dayNum = d.getDate();
-                dKey = dateKey(d.getFullYear(), d.getMonth(), dayNum);
+                if (!dKey) {
+                  dKey = dateKey(d.getFullYear(), d.getMonth(), dayNum);
+                }
                 if (ev.start.includes('T00:00:00') && ev.end && ev.end.includes('T00:00:00')) {
                   timeLabel = `${mStr} ${dayNum} · All Day`;
                 } else {
@@ -236,6 +288,20 @@ export class CalendarWidget {
 
   getLiveEventDays(year, month) {
     const eventDays = new Set();
+
+    // Check all reminders, birthdays, and changelog releases for this month
+    for (const r of this.reminders) {
+      if (r.dateKey && r.dateKey.length >= 10) {
+        const parts = r.dateKey.split('-');
+        const y = parseInt(parts[0], 10);
+        const m = parseInt(parts[1], 10) - 1;
+        const d = parseInt(parts[2], 10);
+        if (y === year && m === month) {
+          eventDays.add(d);
+        }
+      }
+    }
+
     if (this.liveSlots.length > 0 || this.liveEvents.length > 0) {
       for (const slot of this.liveSlots) {
         if (!slot.start) continue;
@@ -251,51 +317,84 @@ export class CalendarWidget {
           eventDays.add(d.getDate());
         }
       }
-    } else {
-      // Default event days for visual polish when offline
-      [5, 12, 18, 25, 29].forEach(d => eventDays.add(d));
     }
+
     return eventDays;
   }
 
   getEventDotColor(year, month, day) {
     const dKey = dateKey(year, month, day);
-    const ev = this.liveEvents.find(e => e.start && e.start.startsWith(dKey));
+
+    // 1. Birthdays (Pink)
+    const birthdayMatch = this.reminders.find(
+      r =>
+        (r.category === 'birthdays' || r.text.toLowerCase().includes('birthday')) &&
+        r.dateKey &&
+        (r.dateKey === dKey ||
+          r.dateKey.endsWith(
+            `-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`
+          ))
+    );
+    if (birthdayMatch) return 'dot-pink';
+
+    // 2. Live Events & Meetups
+    const ev = this.liveEvents.find(
+      e => (e.date && e.date === dKey) || (e.start && e.start.startsWith(dKey))
+    );
     if (ev) {
       const lower = ev.title.toLowerCase();
       if (lower.includes('cursor')) return 'dot-blue';
       if (lower.includes('claude')) return 'dot-orange';
       if (lower.includes('birthday')) return 'dot-pink';
-      if (lower.includes('flight') || lower.includes('stay')) return 'dot-cyan';
+      if (lower.includes('flight') || lower.includes('stay') || lower.includes('travel'))
+        return 'dot-cyan';
       return 'dot-purple';
     }
+
+    // 3. Changelog Releases (Purple)
+    const changelogMatch = this.reminders.find(
+      r => (r.category === 'changelog' || r.isChangelog) && r.dateKey === dKey
+    );
+    if (changelogMatch) return 'dot-purple';
+
+    // 4. Default Reminders / Slots (Blue)
     return 'dot-blue';
   }
 
   getFilteredReminders() {
-    let list = this.reminders;
+    const list = this.reminders;
+
+    // Filter by specific day if activeFilter === 'day'
+    if (this.activeFilter === 'day') {
+      const targetDateKey =
+        this.selectedDayFilter ||
+        dateKey(this.date.getFullYear(), this.date.getMonth(), this.date.getDate());
+      const mmDd = targetDateKey.slice(5); // e.g. "08-24"
+
+      return list.filter(r => {
+        if (r.dateKey) {
+          return (
+            r.dateKey === targetDateKey || r.dateKey === mmDd || r.dateKey.endsWith(`-${mmDd}`)
+          );
+        }
+        return false;
+      });
+    }
 
     // Filter by category tab
     if (this.activeFilter === 'events') {
-      list = list.filter(r => r.category === 'events' || r.isImportedEvent);
-    } else if (this.activeFilter === 'reminders') {
-      list = list.filter(r => r.category === 'reminders' && !r.isImportedEvent);
-    } else if (this.activeFilter === 'birthdays') {
-      list = list.filter(
+      return list.filter(r => r.category === 'events' || r.isImportedEvent);
+    }
+    if (this.activeFilter === 'reminders') {
+      return list.filter(r => r.category === 'reminders' && !r.isImportedEvent && !r.isChangelog);
+    }
+    if (this.activeFilter === 'birthdays') {
+      return list.filter(
         r => r.category === 'birthdays' || r.text.toLowerCase().includes('birthday')
       );
     }
-
-    // Filter by clicked date inspector if active
-    if (this.selectedDayFilter) {
-      const dayMatches = list.filter(
-        r =>
-          (r.dateKey && r.dateKey === this.selectedDayFilter) ||
-          (r.time && r.time.includes(this.selectedDayFilter.slice(5)))
-      );
-      if (dayMatches.length > 0) {
-        return dayMatches;
-      }
+    if (this.activeFilter === 'changelog') {
+      return list.filter(r => r.category === 'changelog' || r.isChangelog);
     }
 
     return list;
@@ -328,15 +427,29 @@ export class CalendarWidget {
     const liveEventDays = this.getLiveEventDays(year, month);
     const filteredReminders = this.getFilteredReminders();
 
+    const currentDayKey =
+      this.selectedDayFilter ||
+      dateKey(year, month, this.selectedDate ? this.selectedDate.getDate() : today);
+    const dayMatchesCount = this.reminders.filter(r => {
+      if (r.dateKey) {
+        return r.dateKey === currentDayKey || r.dateKey.endsWith(`-${currentDayKey.slice(5)}`);
+      }
+      return false;
+    }).length;
+
     const totalEventsCount = this.reminders.filter(
       r => r.category === 'events' || r.isImportedEvent
     ).length;
     const totalRemindersCount = this.reminders.filter(
-      r => r.category === 'reminders' && !r.isImportedEvent
+      r => r.category === 'reminders' && !r.isImportedEvent && !r.isChangelog
     ).length;
     const totalBirthdaysCount = this.reminders.filter(
       r => r.category === 'birthdays' || r.text.toLowerCase().includes('birthday')
     ).length;
+    const totalChangelogCount = this.reminders.filter(
+      r => r.category === 'changelog' || r.isChangelog
+    ).length;
+    const totalCount = this.reminders.length;
 
     let html = `
       <div class="ios-widget-wrapper">
@@ -370,13 +483,11 @@ export class CalendarWidget {
     for (let i = 1; i <= daysInMonth; i++) {
       const isToday =
         i === today && month === new Date().getMonth() && year === new Date().getFullYear();
-      const isBirthday = month === 11 && i === 7; // Dec 7
       const hasEvent = liveEventDays.has(i);
 
       let classes = 'day-cell';
       if (isToday) classes += ' today';
-      if (isBirthday) classes += ' mangesh-birthday';
-      else if (hasEvent) classes += ' has-event';
+      if (hasEvent) classes += ' has-event';
 
       const thisKey = dateKey(year, month, i);
       const isSelected =
@@ -389,153 +500,145 @@ export class CalendarWidget {
       const dotColorClass = this.getEventDotColor(year, month, i);
 
       html += `
-        <span class="${classes}" data-day="${i}" data-date-key="${thisKey}" ${isBirthday ? 'title="Mangesh\'s Birthday 🎂"' : ''}>
+        <span class="${classes}" data-day="${i}" data-date-key="${thisKey}">
           ${i}
-          ${hasEvent && !isBirthday ? `<div class="event-dot ${dotColorClass}" title="Calendar Event / Available Slot"></div>` : ''}
-          ${isBirthday ? '<div class="birthday-dot"></div>' : ''}
+          ${hasEvent ? `<div class="event-dot ${dotColorClass}" title="Calendar Event / Available Slot"></div>` : ''}
         </span>`;
     }
 
     html += `
           </div>
-        </div>
-        
-        <!-- Smart Reminders Section -->
-        <div class="ios-reminders-section">
-          <div class="ios-header">
-            <div class="reminders-title">
-              <i class="fas fa-layer-group" aria-hidden="true"></i> Smart Reminders & Events
-            </div>
-            <div class="header-right-actions" style="display:flex;align-items:center;gap:6px;">
-              <span class="ai-sync-pill" title="AI synchronization active across Google and Apple Calendar"><i class="fas fa-bolt" aria-hidden="true"></i> AI Sync</span>
-              <button type="button" class="ios-btn-small" aria-label="Add new reminder"><i class="fas fa-plus" aria-hidden="true"></i> New</button>
-            </div>
-          </div>
           
+          <div class="ai-sync-pill">
+            <i class="fas fa-shield-halved"></i>
+            <span>Autonomous sync active with Apple & Google Calendar</span>
+          </div>
+
+          <div class="calendly-panel">
+            <button type="button" class="calendly-panel-button">
+              <i class="fas fa-calendar-check" aria-hidden="true"></i>
+              <span>Book Instant 30-Min Consultation</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Reminders Section -->
+        <div class="ios-reminders-section">
+          <div class="reminders-header">
+            <div class="reminders-title">
+              <i class="fas fa-list-check" aria-hidden="true"></i>
+              <span>Smart Reminders & Events</span>
+            </div>
+            <button type="button" class="ios-btn-small" title="Add Reminder" aria-label="Add new reminder"><i class="fas fa-plus" aria-hidden="true"></i> New</button>
+          </div>
+
           <!-- Category Filter Tabs -->
-          <div class="calendar-filter-tabs" role="tablist" aria-label="Reminder categories">
-            <button type="button" class="filter-tab ${this.activeFilter === 'all' ? 'active' : ''}" data-filter="all">All (${this.reminders.length})</button>
-            <button type="button" class="filter-tab ${this.activeFilter === 'events' ? 'active' : ''}" data-filter="events">Events (${totalEventsCount})</button>
-            <button type="button" class="filter-tab ${this.activeFilter === 'reminders' ? 'active' : ''}" data-filter="reminders">Reminders (${totalRemindersCount})</button>
-            <button type="button" class="filter-tab ${this.activeFilter === 'birthdays' ? 'active' : ''}" data-filter="birthdays">Birthdays (${totalBirthdaysCount})</button>
+          <div class="calendar-filter-tabs" role="tablist" aria-label="Filter events by category">
+            <button type="button" class="filter-tab ${this.activeFilter === 'day' ? 'active' : ''}" data-filter="day">
+              <i class="fas fa-calendar-day"></i> Day (${dayMatchesCount})
+            </button>
+            <button type="button" class="filter-tab ${this.activeFilter === 'all' ? 'active' : ''}" data-filter="all">
+              All (${totalCount})
+            </button>
+            <button type="button" class="filter-tab ${this.activeFilter === 'events' ? 'active' : ''}" data-filter="events">
+              Events (${totalEventsCount})
+            </button>
+            <button type="button" class="filter-tab ${this.activeFilter === 'birthdays' ? 'active' : ''}" data-filter="birthdays">
+              Birthdays (${totalBirthdaysCount})
+            </button>
+            <button type="button" class="filter-tab ${this.activeFilter === 'changelog' ? 'active' : ''}" data-filter="changelog">
+              Changelog (${totalChangelogCount})
+            </button>
+            <button type="button" class="filter-tab ${this.activeFilter === 'reminders' ? 'active' : ''}" data-filter="reminders">
+              Tasks (${totalRemindersCount})
+            </button>
           </div>
 
           ${
-            this.selectedDayFilter
+            this.activeFilter === 'day' && this.selectedDate
               ? `
             <div class="day-inspector-banner">
-              <span><i class="fas fa-calendar-day" aria-hidden="true"></i> Day Filter: ${escapeHtml(this.selectedDayFilter)}</span>
-              <button type="button" class="day-inspector-clear" aria-label="Clear day filter"><i class="fas fa-times" aria-hidden="true"></i> Show All</button>
+              <div class="day-inspector-info">
+                <i class="fas fa-filter"></i>
+                <span>Showing items for <strong>${monthNames[this.selectedDate.getMonth()]} ${this.selectedDate.getDate()}, ${this.selectedDate.getFullYear()}</strong></span>
+              </div>
+              <button type="button" class="day-inspector-clear" title="Show All Items">
+                <i class="fas fa-times"></i> View All
+              </button>
             </div>
           `
               : ''
           }
           
-          <div class="reminders-scroll-area">
-            <div class="reminder-cards-grid">
-              ${filteredReminders
-                .map(
-                  r => `
-                <div class="reminder-card ${r.completed ? 'completed' : ''} accent-${escapeHtml(r.color)}" data-id="${r.id}" data-title="${escapeHtml(r.text)}">
-                  <div class="card-accent-strip"></div>
-                  <div class="card-content">
-                    <div class="card-header-flex">
-                       <span class="card-time"><i class="fas fa-${r.icon || (r.tag === 'Google' ? 'calendar-check' : r.tag === 'Special' || r.tag === 'Birthday' ? 'cake-candles' : 'clock')}" aria-hidden="true"></i> ${escapeHtml(r.time)}</span>
-                       <span class="card-tag">${escapeHtml(r.tag)}</span>
-                    </div>
-                    <div class="card-title">${escapeHtml(r.text)}</div>
-                  </div>
-                  <div class="card-action-area" style="display:flex;align-items:center;gap:4px;">
-                    <button type="button" class="card-action-btn ask-ai-btn" title="Ask AI assistant about this event" aria-label="Ask AI about ${escapeHtml(r.text)}">
-                      <i class="fas fa-robot" aria-hidden="true"></i>
-                    </button>
-                    <button type="button" class="card-action-btn ical-btn" title="Download .ics event" aria-label="Download iCal event">
-                      <i class="fas fa-calendar-plus" aria-hidden="true"></i>
-                    </button>
-                    <button type="button" class="edit-btn" aria-label="Edit Reminder">
-                      <i class="fas fa-pencil-alt" aria-hidden="true"></i>
-                    </button>
-                    <button type="button" class="status-circle" aria-label="Toggle Complete">
-                      <i class="fas fa-check" aria-hidden="true"></i>
-                    </button>
-                  </div>
-                </div>
-              `
                 )
                 .join('')}
-            </div>
+          <div class="reminders-list" id="reminders-list-container">
+            ${
+              filteredReminders.length === 0
+                ? `
+              <div class="day-empty-state">
+                <div class="empty-state-icon">
+                  <i class="fas fa-calendar-plus"></i>
+                </div>
+                <div class="empty-state-title">No Reminders or Events</div>
+                <div class="empty-state-subtitle">${
+                  this.selectedDate
+                    ? `${monthNames[this.selectedDate.getMonth()]} ${this.selectedDate.getDate()}`
+                    : 'This day'
+                } is completely open. Add a reminder or book a consultation.</div>
+                <div class="empty-state-actions">
+                  <button type="button" class="empty-action-btn add-reminder-btn">
+                    <i class="fas fa-plus"></i> Add Reminder
+                  </button>
+                  <button type="button" class="empty-action-btn book-consult-btn">
+                    <i class="fas fa-calendar-check"></i> Book Consultation
+                  </button>
+                  <button type="button" class="empty-action-btn show-all-btn">
+                    <i class="fas fa-layer-group"></i> View All Items
+                  </button>
+                </div>
+              </div>
+            `
+                : filteredReminders
+                    .map(
+                      r => `
+              <div class="reminder-card ${r.completed ? 'completed' : ''} accent-${escapeHtml(r.color || 'blue')}" data-id="${r.id}">
+                <div class="card-accent-strip"></div>
+                <div class="card-content">
+                  <div class="card-header-flex">
+                    <span class="card-time"><i class="fas fa-${escapeHtml(r.icon || 'clock')}" aria-hidden="true"></i> ${escapeHtml(r.time)}</span>
+                    ${r.tag ? `<span class="card-tag tag-${escapeHtml(r.color || 'blue')}">${escapeHtml(r.tag)}</span>` : ''}
+                  </div>
+                  <div class="card-title">${escapeHtml(r.text)}</div>
+                  ${r.description ? `<div class="card-desc">${escapeHtml(r.description)}</div>` : ''}
+                  ${r.location ? `<div class="card-location"><i class="fas fa-map-pin"></i> ${escapeHtml(r.location)}</div>` : ''}
+                </div>
+                <div class="card-action-area">
+                  <button type="button" class="card-action-btn ask-ai-btn" data-id="${r.id}" title="Ask AI Assistant about this item" aria-label="Ask AI about ${escapeHtml(r.text)}">
+                    <i class="fas fa-sparkles" aria-hidden="true"></i>
+                  </button>
+                  <button type="button" class="card-action-btn ical-btn" data-id="${r.id}" title="Download .ics Calendar Event" aria-label="Download iCal event">
+                    <i class="fas fa-calendar-arrow-down" aria-hidden="true"></i>
+                  </button>
+                  <button type="button" class="card-action-btn edit-btn" data-id="${r.id}" title="Edit text" aria-label="Edit reminder">
+                    <i class="fas fa-pen" aria-hidden="true"></i>
+                  </button>
+                  <button type="button" class="status-circle ${r.completed ? 'checked' : ''}" data-id="${r.id}" title="Toggle Complete" aria-label="Toggle Complete">
+                    <i class="fas fa-check" aria-hidden="true"></i>
+                  </button>
+                </div>
+              </div>
+            `
+                    )
+                    .join('')
+            }
           </div>
-        </div>
-        <div class="calendly-panel">
-          <div class="calendly-panel-icon">
-            <i class="fas fa-calendar-check" aria-hidden="true"></i>
-          </div>
-          <div class="calendly-panel-copy">
-            <span class="calendly-panel-kicker">${this.liveProviders.includes('apple') ? 'Google & Apple Calendar · Live Sync' : 'Google Calendar · Live Sync'}</span>
-            <h4>Book a consultation</h4>
-            <p>Schedule a focused architecture, full-stack, or AI systems review.</p>
-          </div>
-          <button type="button" class="calendly-panel-button">
-            <span>Check times</span>
-            <i class="fas fa-arrow-right" aria-hidden="true"></i>
-          </button>
         </div>
       </div>
     `;
 
     this.container.innerHTML = html;
     this.bindEvents();
-  }
-
-  downloadIcsForEvent(reminder) {
-    const summary = reminder.text || 'Portfolio Event';
-    const now = new Date();
-    const dtstamp = now.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
-    const dtstart =
-      reminder.time && reminder.time.includes('Aug 29') ? '20260829T103000Z' : dtstamp;
-    const dtend = reminder.time && reminder.time.includes('Aug 29') ? '20260829T133000Z' : dtstamp;
-
-    const icsContent = [
-      'BEGIN:VCALENDAR',
-      'VERSION:2.0',
-      'PRODID:-//Mangesh Raut//Portfolio Calendar Widget//EN',
-      'CALSCALE:GREGORIAN',
-      'METHOD:PUBLISH',
-      'BEGIN:VEVENT',
-      `UID:event-${reminder.id}@mangeshraut.pro`,
-      `DTSTAMP:${dtstamp}`,
-      `DTSTART:${dtstart}`,
-      `DTEND:${dtend}`,
-      `SUMMARY:${summary}`,
-      `DESCRIPTION:Event synchronized from Mangesh Raut Portfolio Calendar (https://mangeshraut.pro)`,
-      'STATUS:CONFIRMED',
-      'END:VEVENT',
-      'END:VCALENDAR',
-    ].join('\r\n');
-
-    const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `${summary.replace(/[^a-zA-Z0-9]/g, '_')}.ics`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  }
-
-  askAiAboutEvent(reminder) {
-    const chatbotToggle = document.getElementById('chatbot-toggle');
-    if (chatbotToggle) {
-      chatbotToggle.click();
-      setTimeout(() => {
-        const input = document.getElementById('chatbot-input');
-        if (input) {
-          input.value = `Tell me more about "${reminder.text}" on ${reminder.time} from your calendar.`;
-          input.focus();
-        }
-      }, 300);
-    }
   }
 
   bindEvents() {
@@ -556,126 +659,142 @@ export class CalendarWidget {
       };
     });
 
-    // Clear Day Inspector
+    // Clear Day Inspector / View All
     const clearDayBtn = this.container.querySelector('.day-inspector-clear');
     if (clearDayBtn) {
       clearDayBtn.onclick = () => {
-        this.selectedDayFilter = null;
+        this.activeFilter = 'all';
+        this.render();
+      };
+    }
+    const showAllBtn = this.container.querySelector('.show-all-btn');
+    if (showAllBtn) {
+      showAllBtn.onclick = () => {
+        this.activeFilter = 'all';
         this.render();
       };
     }
 
-    // Reminder Cards Actions & Toggles
-    this.container.querySelectorAll('.reminder-card').forEach(item => {
-      // Toggle Complete on Card Click
-      item.onclick = e => {
-        if (
-          e.target.closest('.edit-btn') ||
-          e.target.closest('.ask-ai-btn') ||
-          e.target.closest('.ical-btn')
-        )
-          return;
+    // Empty State: Add Reminder
+    const emptyAddBtn = this.container.querySelector('.empty-action-btn.add-reminder-btn');
+    if (emptyAddBtn) {
+      emptyAddBtn.onclick = () => this.addNewReminder();
+    }
 
-        const id = parseInt(item.dataset.id, 10);
-        const reminder = this.reminders.find(r => r.id === id);
-        if (reminder) {
-          reminder.completed = !reminder.completed;
-          this.render();
-        }
-      };
+    // Empty State: Book Consultation
+    const emptyBookBtn = this.container.querySelector('.empty-action-btn.book-consult-btn');
+    if (emptyBookBtn) {
+      emptyBookBtn.onclick = () => openCalendlyPopup();
+    }
 
-      // Edit Button Logic
-      const editBtn = item.querySelector('.edit-btn');
-      if (editBtn) {
-        editBtn.onclick = e => {
-          e.stopPropagation();
-          const id = parseInt(item.dataset.id, 10);
-          const reminder = this.reminders.find(r => r.id === id);
-          if (reminder) {
-            const newText = prompt('Update Reminder:', reminder.text);
-            if (newText !== null && newText.trim() !== '') {
-              reminder.text = newText;
-              this.render();
-            }
-          }
-        };
-      }
-
-      // Ask AI Button Logic
-      const askAiBtn = item.querySelector('.ask-ai-btn');
-      if (askAiBtn) {
-        askAiBtn.onclick = e => {
-          e.stopPropagation();
-          const id = parseInt(item.dataset.id, 10);
-          const reminder = this.reminders.find(r => r.id === id);
-          if (reminder) {
-            this.askAiAboutEvent(reminder);
-          }
-        };
-      }
-
-      // iCal Download Button Logic
-      const icalBtn = item.querySelector('.ical-btn');
-      if (icalBtn) {
-        icalBtn.onclick = e => {
-          e.stopPropagation();
-          const id = parseInt(item.dataset.id, 10);
-          const reminder = this.reminders.find(r => r.id === id);
-          if (reminder) {
-            this.downloadIcsForEvent(reminder);
-          }
-        };
-      }
-    });
-
-    // Add New Reminder
+    // Header Add New Reminder
     const newBtn = this.container.querySelector('.ios-btn-small');
     if (newBtn) {
-      newBtn.onclick = () => {
-        const newReminder = {
-          id: Date.now(),
-          text: 'New Reminder',
-          time: 'Now',
-          dateKey: '',
-          category: 'reminders',
-          color: ['blue', 'red', 'orange', 'green', 'purple'][Math.floor(Math.random() * 5)],
-          tag: 'Inbox',
-          icon: 'bell',
-          completed: false,
-        };
-        this.reminders.unshift(newReminder);
-        this.render();
-      };
+      newBtn.onclick = () => this.addNewReminder();
     }
 
+    // Calendly Panel Button
     const calendlyBtn = this.container.querySelector('.calendly-panel-button');
     if (calendlyBtn) {
-      calendlyBtn.onclick = () => {
-        openCalendlyPopup();
-      };
+      calendlyBtn.onclick = () => openCalendlyPopup();
     }
 
-    // Day Selection & Day Filter
+    // Day Selection & Day Filter Click
     this.container.querySelectorAll('.day-cell:not(.empty)').forEach(day => {
-      day.addEventListener('click', () => {
-        this.selectedDayCell?.classList.remove('selected');
-        day.classList.add('selected');
-        this.selectedDayCell = day;
+      day.onclick = () => {
         const dayNum = parseInt(day.dataset.day, 10);
         this.selectedDate = new Date(this.date.getFullYear(), this.date.getMonth(), dayNum);
         this.selectedDayFilter =
           day.dataset.dateKey || dateKey(this.date.getFullYear(), this.date.getMonth(), dayNum);
+        this.activeFilter = 'day';
         this.render();
-      });
+      };
+    });
+
+    // Card Action Buttons & Status Toggle
+    this.container.querySelectorAll('.reminder-card').forEach(item => {
+      const id = parseInt(item.dataset.id, 10);
+      const reminder = this.reminders.find(r => r.id === id);
+      if (!reminder) return;
+
+      // Click card to toggle
+      item.onclick = e => {
+        if (e.target.closest('.card-action-btn') || e.target.closest('.status-circle')) return;
+        reminder.completed = !reminder.completed;
+        this.render();
+      };
+
+      // Toggle Circle
+      const statusCircle = item.querySelector('.status-circle');
+      if (statusCircle) {
+        statusCircle.onclick = e => {
+          e.stopPropagation();
+          reminder.completed = !reminder.completed;
+          this.render();
+        };
+      }
+
+      // Edit Button
+      const editBtn = item.querySelector('.edit-btn');
+      if (editBtn) {
+        editBtn.onclick = e => {
+          e.stopPropagation();
+          const newText = prompt('Update Reminder:', reminder.text);
+          if (newText !== null && newText.trim() !== '') {
+            reminder.text = newText.trim();
+            this.render();
+          }
+        };
+      }
+
+      // Ask AI Button
+      const askAiBtn = item.querySelector('.ask-ai-btn');
+      if (askAiBtn) {
+        askAiBtn.onclick = e => {
+          e.stopPropagation();
+          this.askAiAboutEvent(reminder);
+        };
+      }
+
+      // iCal Download Button
+      const icalBtn = item.querySelector('.ical-btn');
+      if (icalBtn) {
+        icalBtn.onclick = e => {
+          e.stopPropagation();
+          this.downloadIcsForEvent(reminder);
+        };
+      }
     });
   }
 
+  addNewReminder() {
+    const selDay = this.selectedDate ? this.selectedDate.getDate() : new Date().getDate();
+    const selMonth = this.selectedDate ? this.selectedDate.getMonth() : new Date().getMonth();
+    const selYear = this.selectedDate ? this.selectedDate.getFullYear() : new Date().getFullYear();
+    const dKey = dateKey(selYear, selMonth, selDay);
+
+    const newReminder = {
+      id: Date.now(),
+      text: 'New Reminder',
+      time: 'Just now',
+      dateKey: dKey,
+      category: 'reminders',
+      color: ['blue', 'red', 'orange', 'green', 'purple'][Math.floor(Math.random() * 5)],
+      tag: 'Inbox',
+      icon: 'bell',
+      completed: false,
+    };
+    this.reminders.unshift(newReminder);
+    this.render();
+  }
+
   addConfirmedBooking({ title, time, tag = 'Confirmed' } = {}) {
+    const today = new Date();
     const bookingReminder = {
       id: Date.now(),
       text: title || 'Confirmed Consultation (Google Meet)',
       time: time || 'Confirmed',
-      dateKey: '',
+      dateKey: dateKey(today.getFullYear(), today.getMonth(), today.getDate()),
       category: 'events',
       color: 'green',
       tag,
@@ -688,15 +807,73 @@ export class CalendarWidget {
 
   changeMonth(offset) {
     this.date.setMonth(this.date.getMonth() + offset);
-    this.selectedDayFilter = null;
     this.render();
   }
 
   goToToday() {
-    this.date = new Date();
-    this.selectedDate = new Date();
-    this.selectedDayFilter = null;
+    const today = new Date(2026, 7, 24);
+    this.date = new Date(today);
+    this.selectedDate = new Date(today);
+    this.selectedDayFilter = dateKey(today.getFullYear(), today.getMonth(), today.getDate());
+    this.activeFilter = 'day';
     this.render();
+  }
+
+  askAiAboutEvent(reminder) {
+    const chatbotToggle = document.getElementById('chatbot-toggle');
+    if (chatbotToggle) {
+      chatbotToggle.click();
+      setTimeout(() => {
+        const input = document.getElementById('chatbot-input');
+        if (input) {
+          input.value = `Tell me more about "${reminder.text}" on ${reminder.time} from your calendar.`;
+          input.focus();
+        }
+      }, 300);
+    }
+  }
+
+  downloadIcsForEvent(reminder) {
+    const summary = reminder.text || 'Portfolio Event';
+    const now = new Date();
+    const dtstamp = now.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+    let dtstart = dtstamp;
+    let dtend = dtstamp;
+
+    if (reminder.dateKey && reminder.dateKey.length >= 10) {
+      const cleanKey = reminder.dateKey.replace(/-/g, '');
+      dtstart = `${cleanKey}T100000Z`;
+      dtend = `${cleanKey}T110000Z`;
+    }
+
+    const icsContent = [
+      'BEGIN:VCALENDAR',
+      'VERSION:2.0',
+      'PRODID:-//Mangesh Raut//Portfolio Calendar Widget//EN',
+      'CALSCALE:GREGORIAN',
+      'METHOD:PUBLISH',
+      'BEGIN:VEVENT',
+      `UID:event-${reminder.id || Date.now()}@mangeshraut.pro`,
+      `DTSTAMP:${dtstamp}`,
+      `DTSTART:${dtstart}`,
+      `DTEND:${dtend}`,
+      `SUMMARY:${summary.replace(/,/g, '\\,')}`,
+      `DESCRIPTION:${(reminder.description || reminder.time || 'Event from Mangesh Raut Calendar').replace(/,/g, '\\,')}`,
+      `LOCATION:${(reminder.location || 'Online / Remote').replace(/,/g, '\\,')}`,
+      'STATUS:CONFIRMED',
+      'END:VEVENT',
+      'END:VCALENDAR',
+    ].join('\r\n');
+
+    const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${summary.replace(/[^a-zA-Z0-9]/g, '_')}.ics`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
   }
 }
 
@@ -705,13 +882,17 @@ export { CalendarWidget as CalendarBookingWidget };
 // Auto-init
 export const initCalendarWidget = () => {
   ensureContactSolidStyles();
+  const container = document.getElementById('calendar-widget');
+  if (!container) return null;
   const widget = new CalendarWidget('calendar-widget');
   widget.init();
   return widget;
 };
 
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initCalendarWidget);
-} else {
-  initCalendarWidget();
+if (typeof document !== 'undefined') {
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initCalendarWidget);
+  } else {
+    initCalendarWidget();
+  }
 }

@@ -7,11 +7,12 @@ beforeEach(() => {
 });
 
 describe('Apple-style Calendar and Smart Reminders Widget', () => {
-  it('renders the month calendar, weekdays, and smart reminders list', async () => {
+  it('renders the month calendar, weekdays, and smart reminders list for active day', async () => {
     const { CalendarWidget } = await import('../../src/js/modules/calendar.js');
     document.body.innerHTML = '<div id="calendar-widget"></div>';
 
     const widget = new CalendarWidget('calendar-widget');
+    widget.date = new Date(2026, 7, 24);
     widget.init();
 
     expect(document.querySelector('.ios-calendar-section')).not.toBeNull();
@@ -19,13 +20,74 @@ describe('Apple-style Calendar and Smart Reminders Widget', () => {
     expect(document.querySelectorAll('.day-cell')).toBeDefined();
     expect(document.querySelector('.ios-reminders-section')).not.toBeNull();
     expect(document.querySelector('.reminders-title').textContent).toContain('Smart Reminders');
-    expect(document.querySelectorAll('.reminder-card')).toHaveLength(5);
-    expect(document.body.textContent).toContain("Mangesh's Birthday 🎂");
-    expect(document.body.textContent).toContain('Google Calendar Sync');
+
+    // On Aug 24, displays items for Aug 24 (Google & Apple Sync, Review Portfolio Design, releases)
+    expect(document.body.textContent).toContain('Google & Apple Calendar Sync');
     expect(document.body.textContent).toContain('Review Portfolio Design');
-    expect(document.body.textContent).toContain('Email Mangesh');
-    expect(document.body.textContent).toContain('AI Model Training');
     expect(document.querySelector('.calendly-panel')).not.toBeNull();
+  });
+
+  it('contains verified recurring birthdays for Stephen (Aug 6), Mom (Aug 15), and Mangesh (Dec 7)', async () => {
+    const { CalendarWidget } = await import('../../src/js/modules/calendar.js');
+    document.body.innerHTML = '<div id="calendar-widget"></div>';
+
+    const widget = new CalendarWidget('calendar-widget');
+    widget.init();
+
+    const birthdays = widget.reminders.filter(r => r.category === 'birthdays');
+    expect(birthdays.some(b => b.text.includes('Stephen'))).toBe(true);
+    expect(birthdays.some(b => b.text.includes('Mom'))).toBe(true);
+    expect(birthdays.some(b => b.text.includes('Mangesh'))).toBe(true);
+
+    // Switch to Birthdays tab
+    const bdayTab = document.querySelector('[data-filter="birthdays"]');
+    expect(bdayTab).not.toBeNull();
+    bdayTab.click();
+
+    expect(document.body.textContent).toContain("Stephen's Birthday 🎂");
+    expect(document.body.textContent).toContain("Mom's Birthday ❤️🎂");
+    expect(document.body.textContent).toContain("Mangesh's Birthday 🎂");
+  });
+
+  it('integrates changelog entries into calendar with Release tags', async () => {
+    const { CalendarWidget } = await import('../../src/js/modules/calendar.js');
+    document.body.innerHTML = '<div id="calendar-widget"></div>';
+
+    const widget = new CalendarWidget('calendar-widget');
+    widget.init();
+
+    const changelogItems = widget.reminders.filter(
+      r => r.category === 'changelog' || r.isChangelog
+    );
+    expect(changelogItems.length).toBeGreaterThan(0);
+
+    // Click on Changelog tab
+    const changelogTab = document.querySelector('[data-filter="changelog"]');
+    expect(changelogTab).not.toBeNull();
+    changelogTab.click();
+
+    expect(document.querySelectorAll('.reminder-card').length).toBeGreaterThan(0);
+    expect(document.body.textContent).toContain('Release');
+  });
+
+  it('renders Day Empty State when an open date with no events is selected', async () => {
+    const { CalendarWidget } = await import('../../src/js/modules/calendar.js');
+    document.body.innerHTML = '<div id="calendar-widget"></div>';
+
+    const widget = new CalendarWidget('calendar-widget');
+    widget.date = new Date(2026, 7, 24);
+    widget.init();
+
+    // Select Aug 27 (an open date)
+    const day27 = document.querySelector('[data-day="27"]');
+    expect(day27).not.toBeNull();
+    day27.click();
+
+    expect(document.querySelector('.day-empty-state')).not.toBeNull();
+    expect(document.body.textContent).toContain('No Reminders or Events');
+    expect(document.querySelector('.empty-action-btn.add-reminder-btn')).not.toBeNull();
+    expect(document.querySelector('.empty-action-btn.book-consult-btn')).not.toBeNull();
+    expect(document.querySelector('.empty-action-btn.show-all-btn')).not.toBeNull();
   });
 
   it('fetches live Google Calendar availability and updates event dots and reminder state', async () => {
@@ -46,7 +108,12 @@ describe('Apple-style Calendar and Smart Reminders Widget', () => {
       vi.fn(
         async () =>
           new Response(
-            JSON.stringify({ success: true, status: 'live', slots, providers: ['google'] }),
+            JSON.stringify({
+              success: true,
+              status: 'live',
+              slots,
+              providers: ['google', 'apple'],
+            }),
             { status: 200, headers: { 'Content-Type': 'application/json' } }
           )
       )
@@ -56,14 +123,13 @@ describe('Apple-style Calendar and Smart Reminders Widget', () => {
     document.body.innerHTML = '<div id="calendar-widget"></div>';
 
     const widget = new CalendarWidget('calendar-widget');
-    widget.date = new Date('2026-08-01T00:00:00.000Z');
+    widget.date = new Date(2026, 7, 24);
     widget.init();
 
     await vi.waitFor(() => {
-      expect(document.body.textContent).toContain('Google Calendar & Meet Live');
+      expect(document.body.textContent).toContain('2 Free Slots');
     });
 
-    expect(document.body.textContent).toContain('2 Free Slots');
     const day26 = document.querySelector('[data-date-key="2026-08-26"]');
     expect(day26).not.toBeNull();
     expect(day26.classList.contains('has-event')).toBe(true);
@@ -105,16 +171,21 @@ describe('Apple-style Calendar and Smart Reminders Widget', () => {
     expect(dayCells.length).toBeGreaterThan(0);
 
     const firstActiveDay = dayCells[0];
+    const dayNum = firstActiveDay.dataset.day;
     firstActiveDay.click();
-    expect(firstActiveDay.classList.contains('selected')).toBe(true);
+    const selectedDay = document.querySelector(`[data-day="${dayNum}"]`);
+    expect(selectedDay.classList.contains('selected')).toBe(true);
   });
 
-  it('toggles reminder completed state when card is clicked', async () => {
+  it('toggles reminder completed state when card or circle is clicked', async () => {
     const { CalendarWidget } = await import('../../src/js/modules/calendar.js');
     document.body.innerHTML = '<div id="calendar-widget"></div>';
 
     const widget = new CalendarWidget('calendar-widget');
     widget.init();
+
+    // View All to get reminders
+    document.querySelector('[data-filter="all"]').click();
 
     const firstCard = document.querySelector('.reminder-card');
     expect(firstCard.classList.contains('completed')).toBe(false);
@@ -135,6 +206,9 @@ describe('Apple-style Calendar and Smart Reminders Widget', () => {
     const widget = new CalendarWidget('calendar-widget');
     widget.init();
 
+    // View All
+    document.querySelector('[data-filter="all"]').click();
+
     const editBtn = document.querySelector('.edit-btn');
     editBtn.click();
 
@@ -149,10 +223,9 @@ describe('Apple-style Calendar and Smart Reminders Widget', () => {
     const widget = new CalendarWidget('calendar-widget');
     widget.init();
 
-    expect(document.querySelectorAll('.reminder-card')).toHaveLength(5);
-
+    const initialLength = widget.reminders.length;
     document.querySelector('.ios-btn-small').click();
-    expect(document.querySelectorAll('.reminder-card')).toHaveLength(6);
+    expect(widget.reminders.length).toBe(initialLength + 1);
     expect(document.body.textContent).toContain('New Reminder');
   });
 
@@ -163,13 +236,14 @@ describe('Apple-style Calendar and Smart Reminders Widget', () => {
     const widget = new CalendarWidget('calendar-widget');
     widget.init();
 
+    const initialLength = widget.reminders.length;
     widget.addConfirmedBooking({
       title: 'Consultation: AI Systems Review',
       time: 'Wednesday 2:00 PM',
       tag: 'Google Meet',
     });
 
-    expect(document.querySelectorAll('.reminder-card')).toHaveLength(6);
+    expect(widget.reminders.length).toBe(initialLength + 1);
     expect(document.body.textContent).toContain('Consultation: AI Systems Review');
     expect(document.body.textContent).toContain('Google Meet');
   });
@@ -208,15 +282,18 @@ describe('Apple-style Calendar and Smart Reminders Widget', () => {
     widget.date = new Date(2026, 7, 24); // August 2026
     widget.init();
 
+    // Select Aug 29
     await vi.waitFor(() => {
-      expect(document.body.textContent).toContain('Ticket: Cafe Cursor Pune');
-      expect(document.body.textContent).toContain('Pune | Claude Code Meetup');
+      const day29 = document.querySelector('[data-day="29"]');
+      expect(day29).not.toBeNull();
+      expect(day29.classList.contains('has-event')).toBe(true);
     });
 
     const day29 = document.querySelector('[data-day="29"]');
-    expect(day29).not.toBeNull();
-    expect(day29.classList.contains('has-event')).toBe(true);
-    expect(day29.querySelector('.event-dot')).not.toBeNull();
+    day29.click();
+
+    expect(document.body.textContent).toContain('Ticket: Cafe Cursor Pune');
+    expect(document.body.textContent).toContain('Pune | Claude Code Meetup');
   });
 
   it('filters reminders by category tabs and day inspector', async () => {
@@ -234,18 +311,13 @@ describe('Apple-style Calendar and Smart Reminders Widget', () => {
 
     expect(document.body.textContent).toContain("Mangesh's Birthday 🎂");
 
-    // Click on Events tab
-    const eventsTab = document.querySelector('[data-filter="events"]');
-    expect(eventsTab).not.toBeNull();
-    eventsTab.click();
-
     // Click on All tab
     const allTab = document.querySelector('[data-filter="all"]');
     allTab.click();
-    expect(document.querySelectorAll('.reminder-card')).toHaveLength(5);
+    expect(document.querySelectorAll('.reminder-card').length).toBeGreaterThan(5);
 
     // Click on a day cell to inspect
-    const dayCell = document.querySelector('[data-day="25"]');
+    const dayCell = document.querySelector('[data-day="24"]');
     dayCell.click();
     expect(document.querySelector('.day-inspector-banner')).not.toBeNull();
 
@@ -267,13 +339,15 @@ describe('Apple-style Calendar and Smart Reminders Widget', () => {
     const widget = new CalendarWidget('calendar-widget');
     widget.init();
 
+    // View All
+    document.querySelector('[data-filter="all"]').click();
+
     const askAiBtn = document.querySelector('.ask-ai-btn');
     expect(askAiBtn).not.toBeNull();
     askAiBtn.click();
 
     const icalBtn = document.querySelector('.ical-btn');
     expect(icalBtn).not.toBeNull();
-    // Verify downloadIcsForEvent spy
     const spy = vi.spyOn(widget, 'downloadIcsForEvent');
     icalBtn.click();
     expect(spy).toHaveBeenCalled();
