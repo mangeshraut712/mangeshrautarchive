@@ -24,7 +24,7 @@ describe('Apple-style Calendar and Smart Reminders Widget', () => {
     // On Aug 24, displays items for Aug 24 (Google & Apple Sync, Review Portfolio Design, releases)
     expect(document.body.textContent).toContain('Google & Apple Calendar Sync');
     expect(document.body.textContent).toContain('Review Portfolio Design');
-    expect(document.querySelector('.calendly-panel')).not.toBeNull();
+    expect(document.querySelector('.ios-calendar-section')).not.toBeNull();
   });
 
   it('contains verified recurring birthdays for Stephen (Aug 6), Mom (Aug 15), and Mangesh (Dec 7)', async () => {
@@ -353,15 +353,20 @@ describe('Apple-style Calendar and Smart Reminders Widget', () => {
     expect(spy).toHaveBeenCalled();
   });
 
-  it('triggers Calendly popup when Calendly button is clicked', async () => {
+  it('triggers Calendly popup when Book Consultation button is clicked', async () => {
     window.Calendly = { initPopupWidget: vi.fn() };
     const { CalendarWidget } = await import('../../src/js/modules/calendar.js');
     document.body.innerHTML = '<div id="calendar-widget"></div>';
 
     const widget = new CalendarWidget('calendar-widget');
+    widget.date = new Date(2026, 7, 24);
     widget.init();
 
-    document.querySelector('.calendly-panel-button').click();
+    // Select Aug 27 (an open date to show empty state actions)
+    document.querySelector('[data-day="27"]').click();
+    const bookBtn = document.querySelector('.empty-action-btn.book-consult-btn');
+    expect(bookBtn).not.toBeNull();
+    bookBtn.click();
     await vi.waitFor(() => expect(window.Calendly.initPopupWidget).toHaveBeenCalledOnce());
   });
 

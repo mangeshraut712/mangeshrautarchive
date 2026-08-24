@@ -6,12 +6,25 @@
 
 import { initBlessingMediaModal } from './blessing-media-modal.js';
 import { getSubmissionContext, submitStoredForm } from '../services/form-submission.js';
+import { openCalendlyPopup } from '../utils/calendly.js';
 
 export function initContactInteractions() {
   initBlessingMediaModal();
   initContactForm();
   initCryptoCopyButtons();
   initEmailCopyButtons();
+  initCalendlyButton();
+}
+
+function initCalendlyButton() {
+  document.addEventListener('click', e => {
+    const btn = e.target.closest(
+      '.calendly-panel-button, #contact-book-meeting-btn, [data-open-calendly]'
+    );
+    if (!btn) return;
+    e.preventDefault();
+    void openCalendlyPopup();
+  });
 }
 
 function showToast(message, type = 'info') {

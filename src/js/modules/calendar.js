@@ -567,13 +567,6 @@ export class CalendarWidget {
 
     html += `
           </div>
-
-          <div class="calendly-panel">
-            <button type="button" class="calendly-panel-button">
-              <i class="fas fa-calendar-check" aria-hidden="true"></i>
-              <span>Book Instant 30-Min Consultation</span>
-            </button>
-          </div>
         </div>
 
         <!-- Reminders Section -->

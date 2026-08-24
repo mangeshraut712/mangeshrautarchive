@@ -43,6 +43,16 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'a93f17d2',
+    date: '2026-08-24',
+    type: 'improvement',
+    title: 'Consultation CTA Relocation to Message Form & Uncluttered Calendar Architecture',
+    summary:
+      'Relocated the Calendly Consultation CTA button directly beneath the Send Message contact form with a sleek OR divider, creating an intuitive dual outreach pathway (Message or Live Consultation). Streamlined the Calendar & Smart Reminders widget into a clean, distraction-free Apple widget layout where the monthly grid connects seamlessly to strictly categorized Smart Reminders, verified Events, and Birthdays. Built with Gemini 2.5 Pro; token metrics tracked via total_usage.',
+    tags: ['design', 'performance', 'assistme'],
+    sha: 'a93f17d2',
+  },
+  {
     id: 'f82d19b4',
     date: '2026-08-24',
     type: 'improvement',
