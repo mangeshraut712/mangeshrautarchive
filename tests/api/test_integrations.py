@@ -213,7 +213,15 @@ def test_health_vitals_sync_requires_admin_token(client):
     assert "admin token" in response.json()["error"]["message"]
 
 
-def test_calendar_availability_is_freebusy_only_when_unconfigured(client):
+def test_calendar_availability_is_freebusy_only_when_unconfigured(client, monkeypatch):
+    async def mock_unconfigured():
+        return {
+            "googleCalendar": {"configured": False, "connected": False},
+            "microsoftCalendar": {"configured": False, "connected": False},
+            "appleCalendar": {"configured": False, "connected": False},
+        }
+
+    monkeypatch.setattr("api.routes.integrations._provider_status", mock_unconfigured)
     response = client.get("/api/calendar/availability")
 
     assert response.status_code == 200

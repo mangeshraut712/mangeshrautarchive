@@ -353,11 +353,11 @@ async def _provider_status() -> Dict[str, Dict[str, Any]]:
         },
         "appleCalendar": {
             "configured": apple_configured,
-            "connected": apple_connected,
+            "connected": apple_connected or (apple_configured and bool(apple_calendar._app_specific_password())),
             "purpose": "iCloud Calendar availability and Apple Reminders synchronization.",
             "scopes": ["name", "email", "caldav"],
             "connectUrl": None,
-            "requiresOwnerAuth": apple_configured,
+            "requiresOwnerAuth": apple_configured and not bool(apple_calendar._app_specific_password()),
             "nextStep": "Configure Apple Services ID or iCloud CalDAV credentials.",
         },
     }
@@ -581,7 +581,10 @@ async def get_calendar_availability():
                 await update_sync_state("microsoft_calendar", last_error="freebusy_fetch_failed")
 
     if apple_info["connected"]:
-        access_token = await get_provider_access_token("apple_calendar")
+        access_token = (
+            await get_provider_access_token("apple_calendar")
+            or apple_calendar._app_specific_password()
+        )
         if access_token:
             try:
                 a_days = await apple_calendar.fetch_availability(access_token)

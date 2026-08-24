@@ -99,12 +99,25 @@ export class CalendarWidget {
             : ['google'];
         this.availabilityLoaded = true;
 
-        // Update Google Calendar Sync reminder card to show real live slots status
+        const isAppleConnected = this.liveProviders.includes('apple');
+        const isGoogleConnected = this.liveProviders.includes('google');
+
+        // Update Calendar Sync reminder card to show real live slots status
         const syncReminder = this.reminders.find(r => r.id === 100);
         if (syncReminder) {
-          syncReminder.text = 'Google Calendar & Meet Live';
-          syncReminder.time = `${payload.slots.length} Free Slots`;
-          syncReminder.tag = 'Live';
+          if (isGoogleConnected && isAppleConnected) {
+            syncReminder.text = 'Google & Apple Calendar Sync';
+            syncReminder.time = `${payload.slots.length} Free Slots`;
+            syncReminder.tag = 'Live Sync';
+          } else if (isAppleConnected) {
+            syncReminder.text = 'Apple iCloud Calendar & CalDAV';
+            syncReminder.time = `${payload.slots.length} Free Slots`;
+            syncReminder.tag = 'Apple';
+          } else {
+            syncReminder.text = 'Google Calendar & Meet Live';
+            syncReminder.time = `${payload.slots.length} Free Slots`;
+            syncReminder.tag = 'Live';
+          }
         }
 
         this.render();
@@ -261,7 +274,7 @@ export class CalendarWidget {
             <i class="fas fa-calendar-check" aria-hidden="true"></i>
           </div>
           <div class="calendly-panel-copy">
-            <span class="calendly-panel-kicker">Google Calendar · Live Sync</span>
+            <span class="calendly-panel-kicker">${this.liveProviders.includes('apple') ? 'Google & Apple Calendar · Live Sync' : 'Google Calendar · Live Sync'}</span>
             <h4>Book a consultation</h4>
             <p>Schedule a focused architecture, full-stack, or AI systems review.</p>
           </div>
