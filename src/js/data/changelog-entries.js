@@ -43,6 +43,16 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'f82d19b4',
+    date: '2026-08-24',
+    type: 'improvement',
+    title: 'Smart Reminders & Events Organization, Category Segregation & Clean Consultation Flow',
+    summary:
+      'Removed Autonomous Sync banner to streamline the calendar viewport directly to the Tier 1 Consultation CTA. Organized and verified all event categories with strict segregation: 5 Verified Birthdays (Stephen Aug 6, Mom Aug 15, Dad Oct 12, Mangesh Dec 7, Sister May 20), 3 Calendar Events (Cafe Cursor, Claude Code, Keynote), 4 Tasks (Sync, Design Review, Email, AI Training), 10 Changelog releases, and accurate Day & All counters. Built with Gemini 2.5 Pro; token metrics tracked via total_usage.',
+    tags: ['design', 'performance', 'assistme'],
+    sha: 'f82d19b4',
+  },
+  {
     id: 'e71b93f2',
     date: '2026-08-24',
     type: 'improvement',

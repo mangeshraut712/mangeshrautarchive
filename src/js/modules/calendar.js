@@ -38,7 +38,7 @@ export class CalendarWidget {
 
     // "Smart" Reminders, Verified Birthdays & Live Calendar Data
     this.reminders = [
-      // ── Verified Birthdays ──────────────────────────────────────
+      // ── Verified Birthdays (5) ──────────────────────────────────
       {
         id: 996,
         text: "Stephen's Birthday 🎂",
@@ -62,6 +62,17 @@ export class CalendarWidget {
         completed: false,
       },
       {
+        id: 998,
+        text: "Dad's Birthday 🎂",
+        time: 'Oct 12 · All Day',
+        dateKey: '2026-10-12',
+        category: 'birthdays',
+        tag: 'Birthday',
+        color: 'pink',
+        icon: 'cake-candles',
+        completed: false,
+      },
+      {
         id: 999,
         text: "Mangesh's Birthday 🎂",
         time: 'Dec 7 · All Day',
@@ -72,7 +83,55 @@ export class CalendarWidget {
         icon: 'cake-candles',
         completed: false,
       },
-      // ── Core Reminders & Sync Status ─────────────────────────────
+      {
+        id: 995,
+        text: "Sister's Birthday 🌸🎂",
+        time: 'May 20 · All Day',
+        dateKey: '2026-05-20',
+        category: 'birthdays',
+        tag: 'Birthday',
+        color: 'pink',
+        icon: 'cake-candles',
+        completed: false,
+      },
+      // ── Calendar Events & Meetups (3) ───────────────────────────
+      {
+        id: 201,
+        text: 'Ticket: Cafe Cursor Pune',
+        time: 'Aug 29 · 11:00 AM',
+        dateKey: '2026-08-29',
+        category: 'events',
+        tag: 'Cursor',
+        color: 'orange',
+        icon: 'mug-hot',
+        location: 'Cursor Community Hub',
+        completed: false,
+      },
+      {
+        id: 202,
+        text: 'Pune | Claude Code Meetup',
+        time: 'Aug 29 · 3:00 PM',
+        dateKey: '2026-08-29',
+        category: 'events',
+        tag: 'Claude',
+        color: 'purple',
+        icon: 'code',
+        location: 'Anthropic Discord & Livestream',
+        completed: false,
+      },
+      {
+        id: 203,
+        text: 'Agentic Full-Stack Keynote & Live Demo',
+        time: 'Aug 31 · 5:00 PM',
+        dateKey: '2026-08-31',
+        category: 'events',
+        tag: 'Keynote',
+        color: 'blue',
+        icon: 'microphone',
+        location: 'Virtual Tech Stage',
+        completed: false,
+      },
+      // ── Core Tasks & Sync Status (4) ────────────────────────────
       {
         id: 100,
         text: 'Google & Apple Calendar Sync',
@@ -326,7 +385,8 @@ export class CalendarWidget {
     // 1. Birthdays (Pink)
     const birthdayMatch = this.reminders.find(
       r =>
-        (r.category === 'birthdays' || r.text.toLowerCase().includes('birthday')) &&
+        r.category === 'birthdays' &&
+        !r.isChangelog &&
         r.dateKey &&
         (r.dateKey === dKey ||
           r.dateKey.endsWith(
@@ -388,9 +448,7 @@ export class CalendarWidget {
       return list.filter(r => r.category === 'reminders' && !r.isImportedEvent && !r.isChangelog);
     }
     if (this.activeFilter === 'birthdays') {
-      return list.filter(
-        r => r.category === 'birthdays' || r.text.toLowerCase().includes('birthday')
-      );
+      return list.filter(r => r.category === 'birthdays' && !r.isChangelog);
     }
     if (this.activeFilter === 'changelog') {
       return list.filter(r => r.category === 'changelog' || r.isChangelog);
@@ -439,13 +497,13 @@ export class CalendarWidget {
     }).length;
 
     const totalEventsCount = this.reminders.filter(
-      r => r.category === 'events' || r.isImportedEvent
+      r => (r.category === 'events' || r.isImportedEvent) && !r.isChangelog
     ).length;
     const totalRemindersCount = this.reminders.filter(
       r => r.category === 'reminders' && !r.isImportedEvent && !r.isChangelog
     ).length;
     const totalBirthdaysCount = this.reminders.filter(
-      r => r.category === 'birthdays' || r.text.toLowerCase().includes('birthday')
+      r => r.category === 'birthdays' && !r.isChangelog
     ).length;
     const totalChangelogCount = this.reminders.filter(
       r => r.category === 'changelog' || r.isChangelog
@@ -508,11 +566,6 @@ export class CalendarWidget {
     }
 
     html += `
-          </div>
-          
-          <div class="ai-sync-pill">
-            <i class="fas fa-shield-halved"></i>
-            <span>Autonomous sync active with Apple & Google Calendar</span>
           </div>
 
           <div class="calendly-panel">
