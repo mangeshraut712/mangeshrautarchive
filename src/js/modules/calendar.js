@@ -795,24 +795,58 @@ export class CalendarWidget {
     });
   }
 
-  addNewReminder() {
+  addNewReminder(titleOverride) {
     const selDay = this.selectedDate ? this.selectedDate.getDate() : new Date().getDate();
     const selMonth = this.selectedDate ? this.selectedDate.getMonth() : new Date().getMonth();
     const selYear = this.selectedDate ? this.selectedDate.getFullYear() : new Date().getFullYear();
     const dKey = dateKey(selYear, selMonth, selDay);
+    const monthNames = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
+    ];
+
+    let title = typeof titleOverride === 'string' && titleOverride ? titleOverride : null;
+    if (!title && typeof window !== 'undefined' && typeof window.prompt === 'function') {
+      try {
+        const inputTitle = window.prompt(
+          `Add New Reminder / Event for ${monthNames[selMonth]} ${selDay}, ${selYear}:`,
+          'New Reminder'
+        );
+        if (inputTitle === null) return;
+        if (typeof inputTitle === 'string') {
+          title = inputTitle.trim() || 'New Reminder';
+        }
+      } catch {
+        title = 'New Reminder';
+      }
+    }
+    if (!title) {
+      title = 'New Reminder';
+    }
 
     const newReminder = {
       id: Date.now(),
-      text: 'New Reminder',
-      time: 'Just now',
+      text: title,
+      time: `${monthNames[selMonth]} ${selDay} · Scheduled`,
       dateKey: dKey,
       category: 'reminders',
       color: ['blue', 'red', 'orange', 'green', 'purple'][Math.floor(Math.random() * 5)],
-      tag: 'Inbox',
+      tag: 'Custom',
       icon: 'bell',
       completed: false,
     };
     this.reminders.unshift(newReminder);
+    this.activeFilter = 'day';
     this.render();
   }
 

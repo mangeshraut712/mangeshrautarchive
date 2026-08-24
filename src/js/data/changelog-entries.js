@@ -43,6 +43,16 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'e71b93f2',
+    date: '2026-08-24',
+    type: 'improvement',
+    title: 'Apple Calendar, Reminders & Consultation CTA HIG Design Alignment',
+    summary:
+      'Elevated Calendar, Reminders, and Calendly sections to full DESIGN.md fidelity: Tier 1 full-width Consultation CTA with metallic sheen animation, high-contrast Apple Red today indicator (#ff3b30) and Apple Blue selected halo (#0071e3), non-wrapping category filter chips rail, and clean prompt-powered reminder creation. Built with Gemini 2.5 Pro; token metrics tracked via total_usage.',
+    tags: ['design', 'performance', 'assistme'],
+    sha: 'e71b93f2',
+  },
+  {
     id: 'c42e88a1',
     date: '2026-08-24',
     type: 'fix',
