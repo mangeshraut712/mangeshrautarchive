@@ -81,6 +81,18 @@
   gtag('js', new Date());
   gtag('config', MEASUREMENT_ID, buildGtagConfig());
 
+  /** Global portfolio event tracking helper */
+  window.trackPortfolioEvent = function (eventName, params = {}) {
+    try {
+      gtag('event', eventName, {
+        host: hostname,
+        ...params,
+      });
+    } catch {
+      // Safe fallback if GA4 fails
+    }
+  };
+
   let loaded = false;
   const loadGtag = () => {
     if (loaded) return;
@@ -91,7 +103,8 @@
     document.head.appendChild(script);
   };
 
-  ['pointerdown', 'keydown', 'scroll', 'touchstart'].forEach(eventName => {
+  // Immediate loading on user interaction
+  ['pointerdown', 'keydown', 'scroll', 'touchstart', 'mousemove'].forEach(eventName => {
     window.addEventListener(eventName, loadGtag, {
       once: true,
       passive: true,
@@ -99,6 +112,69 @@
     });
   });
 
-  // Bounce visits without interaction — keep past typical Lighthouse observation windows.
-  window.setTimeout(loadGtag, 15000);
+  // Load when tab visibility changes or user leaves
+  ['visibilitychange', 'pagehide'].forEach(eventName => {
+    window.addEventListener(eventName, loadGtag, {
+      once: true,
+      passive: true,
+    });
+  });
+
+  // Idle background loader after paint (does not block LCP/FCP)
+  if ('requestIdleCallback' in window) {
+    window.requestIdleCallback(
+      () => {
+        window.setTimeout(loadGtag, 3500);
+      },
+      { timeout: 6000 }
+    );
+  } else {
+    window.setTimeout(loadGtag, 4000);
+  }
+
+  // Automatic high-intent event tracking delegation
+  document.addEventListener(
+    'click',
+    event => {
+      const target =
+        event.target && event.target.closest ? event.target.closest('a, button') : null;
+      if (!target) return;
+
+      // Resume downloads
+      const href = target.getAttribute('href') || '';
+      if (
+        href.includes('resume') ||
+        href.includes('Mangesh_Raut_Resume') ||
+        target.classList.contains('btn-resume')
+      ) {
+        window.trackPortfolioEvent('resume_download', {
+          link_url: href,
+          button_text: (target.textContent || '').trim().slice(0, 50),
+        });
+      }
+
+      // Consultation / Calendly clicks
+      if (
+        target.id === 'contact-book-meeting-btn' ||
+        target.classList.contains('calendly-panel-button') ||
+        target.hasAttribute('data-open-calendly')
+      ) {
+        window.trackPortfolioEvent('book_consultation_click', {
+          placement: target.closest('#contact') ? 'contact_section' : 'site_header',
+        });
+      }
+
+      // Outbound social profiles
+      if (
+        href.includes('github.com/mangeshraut712') ||
+        href.includes('linkedin.com/in/mangeshraut712') ||
+        href.includes('x.com/mangeshraut712')
+      ) {
+        window.trackPortfolioEvent('social_profile_click', {
+          destination: href,
+        });
+      }
+    },
+    { passive: true }
+  );
 })();

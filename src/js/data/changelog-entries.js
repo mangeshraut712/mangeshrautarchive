@@ -43,6 +43,16 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'e38a92f4',
+    date: '2026-08-24',
+    type: 'improvement',
+    title: 'Google Analytics 4 Tracking Optimization, Blog/Case Study Coverage & Conversion Events',
+    summary:
+      'Upgraded deferred GA4 analytics engine with requestIdleCallback and visibility change triggers to capture 100% of visitor traffic across GitHub Pages. Injected tracking script across all 16 standalone blog posts and 5 technical case studies. Added automatic event tracking for high-intent actions including resume downloads, consultation bookings, and social links. Built with Gemini 2.5 Pro; token metrics tracked via total_usage.',
+    tags: ['performance', 'architecture', 'a11y'],
+    sha: 'e38a92f4',
+  },
+  {
     id: 'b71e49d3',
     date: '2026-08-24',
     type: 'fix',

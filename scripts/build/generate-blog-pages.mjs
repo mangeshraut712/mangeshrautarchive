@@ -143,6 +143,7 @@ function pageShell({
     <noscript><link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/wwdc26-liquid-glass.css?v=${ASSET_VER}" /></noscript>
     <script src="${ASSET_PREFIX}/js/utils/liquid-glass-boot.js?v=${ASSET_VER}"></script>
     <script src="${ASSET_PREFIX}/js/utils/theme-head.js"></script>
+    <script src="${ASSET_PREFIX}/js/utils/deferred-analytics.js?v=${ASSET_VER}" defer></script>
     ${extraHead}
     ${jsonLd ? `<script type="application/ld+json">${jsonLd}</script>` : ''}
   </head>

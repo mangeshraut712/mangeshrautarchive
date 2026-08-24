@@ -20,4 +20,11 @@ describe('deferred-analytics production host allowlist', () => {
     expect(source).toContain("host.endsWith('.github.io')");
     expect(source).toContain('cookie_domain');
   });
+
+  it('exposes trackPortfolioEvent helper and idle-friendly loader', () => {
+    expect(source).toContain('window.trackPortfolioEvent');
+    expect(source).toContain('requestIdleCallback');
+    expect(source).toContain('resume_download');
+    expect(source).toContain('book_consultation_click');
+  });
 });
