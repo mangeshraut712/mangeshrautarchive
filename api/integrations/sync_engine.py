@@ -461,4 +461,3 @@ def generate_available_slots(
                     return slots
 
     return slots
-

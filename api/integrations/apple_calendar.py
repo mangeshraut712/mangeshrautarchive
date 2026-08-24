@@ -157,13 +157,16 @@ def _join_url(base: str, path: str) -> str:
     return f"{base.rstrip('/')}/{path.lstrip('/')}"
 
 
-async def _fetch_caldav_calendar_data(days: int = 14) -> Tuple[Dict[str, List[Dict[str, str]]], List[Dict[str, Any]]]:
+async def _fetch_caldav_calendar_data(
+    app_password_override: str = "",
+    days: int = 14,
+) -> Tuple[Dict[str, List[Dict[str, str]]], List[Dict[str, Any]]]:
     """Query Apple iCloud CalDAV to extract real events and busy windows."""
     import re
     import xml.etree.ElementTree as ET
 
     apple_id = _apple_id()
-    app_pwd = _app_specific_password()
+    app_pwd = app_password_override.strip() if app_password_override.strip() else _app_specific_password()
     if not apple_id or not app_pwd:
         return {}, []
 
@@ -311,13 +314,13 @@ async def _fetch_caldav_calendar_data(days: int = 14) -> Tuple[Dict[str, List[Di
 
 async def fetch_events(access_token_or_creds: str = "", days: int = 14) -> List[Dict[str, Any]]:
     """Fetch real upcoming events from Apple iCloud Calendar."""
-    _, events = await _fetch_caldav_calendar_data(days=days)
+    _, events = await _fetch_caldav_calendar_data(app_password_override=access_token_or_creds, days=days)
     return events
 
 
-async def fetch_availability(access_token_or_creds: str, days: int = 7) -> List[Dict[str, Any]]:
+async def fetch_availability(access_token_or_creds: str = "", days: int = 7) -> List[Dict[str, Any]]:
     """Fetch availability for Apple Calendar across the next N days."""
-    busy_by_date, _ = await _fetch_caldav_calendar_data(days=days)
+    busy_by_date, _ = await _fetch_caldav_calendar_data(app_password_override=access_token_or_creds, days=days)
     results: List[Dict[str, Any]] = []
     for offset in range(max(1, min(days, 14))):
         bounds = _day_bounds(offset)

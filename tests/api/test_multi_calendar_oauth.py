@@ -1,8 +1,5 @@
 """Unit tests for Microsoft & Apple Calendar OAuth modules and multi-calendar availability."""
 
-import pytest
-from datetime import datetime, timezone
-
 from api.integrations import apple_calendar, microsoft_calendar, sync_engine
 
 

@@ -2,7 +2,7 @@ import os
 import asyncio
 import hmac
 from datetime import datetime, timedelta, timezone
-from typing import Any, Dict, Optional
+from typing import Any, Dict, List, Optional
 
 import httpx
 from fastapi import APIRouter, HTTPException, Request
@@ -23,10 +23,8 @@ from api.integrations.sync_engine import (
     merge_multi_calendar_availability,
     register_google_calendar_watch,
     sync_all_providers,
-    sync_apple_calendar_availability,
     sync_connected_health_providers,
     sync_google_calendar_availability,
-    sync_microsoft_calendar_availability,
     verify_slot_token,
 )
 from api.integrations.supabase_store import (
@@ -699,7 +697,6 @@ async def book_calendar_slot(booking: CalendarBookingRequest, request: Request):
         "start": start_iso,
         "end": end_iso,
     }
-
 
 
 @router.get(

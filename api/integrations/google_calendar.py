@@ -201,4 +201,3 @@ async def create_event(
     if response.status_code < 400:
         return response.json()
     return {}
-
