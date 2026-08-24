@@ -19,12 +19,54 @@ describe('Apple-style Calendar and Smart Reminders Widget', () => {
     expect(document.querySelectorAll('.day-cell')).toBeDefined();
     expect(document.querySelector('.ios-reminders-section')).not.toBeNull();
     expect(document.querySelector('.reminders-title').textContent).toContain('Smart Reminders');
-    expect(document.querySelectorAll('.reminder-card')).toHaveLength(4);
+    expect(document.querySelectorAll('.reminder-card')).toHaveLength(5);
     expect(document.body.textContent).toContain("Mangesh's Birthday 🎂");
+    expect(document.body.textContent).toContain('Google Calendar Sync');
     expect(document.body.textContent).toContain('Review Portfolio Design');
     expect(document.body.textContent).toContain('Email Mangesh');
     expect(document.body.textContent).toContain('AI Model Training');
     expect(document.querySelector('.calendly-panel')).not.toBeNull();
+  });
+
+  it('fetches live Google Calendar availability and updates event dots and reminder state', async () => {
+    const slots = [
+      {
+        start: '2026-08-26T14:00:00.000Z',
+        end: '2026-08-26T14:30:00.000Z',
+        timeZone: 'America/New_York',
+      },
+      {
+        start: '2026-08-27T16:00:00.000Z',
+        end: '2026-08-27T16:30:00.000Z',
+        timeZone: 'America/New_York',
+      },
+    ];
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(
+        async () =>
+          new Response(
+            JSON.stringify({ success: true, status: 'live', slots, providers: ['google'] }),
+            { status: 200, headers: { 'Content-Type': 'application/json' } }
+          )
+      )
+    );
+
+    const { CalendarWidget } = await import('../../src/js/modules/calendar.js');
+    document.body.innerHTML = '<div id="calendar-widget"></div>';
+
+    const widget = new CalendarWidget('calendar-widget');
+    widget.date = new Date('2026-08-01T00:00:00.000Z');
+    widget.init();
+
+    await vi.waitFor(() => {
+      expect(document.body.textContent).toContain('Google Calendar & Meet Live');
+    });
+
+    expect(document.body.textContent).toContain('2 Free Slots');
+    const day26 = document.querySelector('[data-date-key="2026-08-26"]');
+    expect(day26).not.toBeNull();
+    expect(day26.classList.contains('has-event')).toBe(true);
   });
 
   it('navigates months with previous, next, and today buttons', async () => {
@@ -107,11 +149,29 @@ describe('Apple-style Calendar and Smart Reminders Widget', () => {
     const widget = new CalendarWidget('calendar-widget');
     widget.init();
 
-    expect(document.querySelectorAll('.reminder-card')).toHaveLength(4);
+    expect(document.querySelectorAll('.reminder-card')).toHaveLength(5);
 
     document.querySelector('.ios-btn-small').click();
-    expect(document.querySelectorAll('.reminder-card')).toHaveLength(5);
+    expect(document.querySelectorAll('.reminder-card')).toHaveLength(6);
     expect(document.body.textContent).toContain('New Reminder');
+  });
+
+  it('adds confirmed booking dynamically to top of reminders stack', async () => {
+    const { CalendarWidget } = await import('../../src/js/modules/calendar.js');
+    document.body.innerHTML = '<div id="calendar-widget"></div>';
+
+    const widget = new CalendarWidget('calendar-widget');
+    widget.init();
+
+    widget.addConfirmedBooking({
+      title: 'Consultation: AI Systems Review',
+      time: 'Wednesday 2:00 PM',
+      tag: 'Google Meet',
+    });
+
+    expect(document.querySelectorAll('.reminder-card')).toHaveLength(6);
+    expect(document.body.textContent).toContain('Consultation: AI Systems Review');
+    expect(document.body.textContent).toContain('Google Meet');
   });
 
   it('triggers Calendly popup when Calendly button is clicked', async () => {

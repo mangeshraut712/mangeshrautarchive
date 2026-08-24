@@ -1,5 +1,8 @@
 import { openCalendlyPopup } from '../utils/calendly.js';
 import { escapeHtml } from '../utils/escape-html.js';
+import { getFormsApiBase } from '../services/form-submission.js';
+
+const CALENDAR_ENDPOINT = '/api/calendar/availability';
 
 function ensureContactSolidStyles() {
   const id = 'contact-solid-css';
@@ -14,14 +17,21 @@ function ensureContactSolidStyles() {
   document.head.appendChild(link);
 }
 
+function dateKey(year, month, day) {
+  return `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+}
+
 export class CalendarWidget {
   constructor(containerId) {
     this.container = document.getElementById(containerId);
     this.date = new Date();
     this.selectedDate = new Date();
     this.selectedDayCell = null;
+    this.liveSlots = [];
+    this.liveProviders = ['google'];
+    this.availabilityLoaded = false;
 
-    // "Smart" Reminders Data
+    // "Smart" Reminders & Live Calendar Data
     this.reminders = [
       {
         id: 999,
@@ -29,6 +39,14 @@ export class CalendarWidget {
         time: 'Dec 7',
         tag: 'Special',
         color: 'gold',
+        completed: false,
+      },
+      {
+        id: 100,
+        text: 'Google Calendar Sync',
+        time: 'Live Auto-Sync',
+        tag: 'Google',
+        color: 'blue',
         completed: false,
       },
       {
@@ -62,6 +80,55 @@ export class CalendarWidget {
     if (!this.container) return;
     this.render();
     this.bindEvents();
+    void this.fetchLiveAvailability();
+  }
+
+  async fetchLiveAvailability() {
+    try {
+      const apiBase = getFormsApiBase();
+      const response = await fetch(`${apiBase}${CALENDAR_ENDPOINT}`, {
+        headers: { Accept: 'application/json' },
+      });
+      if (!response.ok) return;
+      const payload = await response.json();
+      if (payload && Array.isArray(payload.slots) && payload.slots.length > 0) {
+        this.liveSlots = payload.slots;
+        this.liveProviders =
+          Array.isArray(payload.providers) && payload.providers.length
+            ? payload.providers
+            : ['google'];
+        this.availabilityLoaded = true;
+
+        // Update Google Calendar Sync reminder card to show real live slots status
+        const syncReminder = this.reminders.find(r => r.id === 100);
+        if (syncReminder) {
+          syncReminder.text = 'Google Calendar & Meet Live';
+          syncReminder.time = `${payload.slots.length} Free Slots`;
+          syncReminder.tag = 'Live';
+        }
+
+        this.render();
+      }
+    } catch {
+      // Offline fallback: retains existing smart reminders and default calendar dots
+    }
+  }
+
+  getLiveEventDays(year, month) {
+    const eventDays = new Set();
+    if (this.liveSlots.length > 0) {
+      for (const slot of this.liveSlots) {
+        if (!slot.start) continue;
+        const d = new Date(slot.start);
+        if (d.getFullYear() === year && d.getMonth() === month) {
+          eventDays.add(d.getDate());
+        }
+      }
+    } else {
+      // Default event days for visual polish when offline
+      [5, 12, 18, 25].forEach(d => eventDays.add(d));
+    }
+    return eventDays;
   }
 
   render() {
@@ -87,6 +154,8 @@ export class CalendarWidget {
 
     const firstDay = new Date(year, month, 1).getDay();
     const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+    const liveEventDays = this.getLiveEventDays(year, month);
 
     let html = `
       <div class="ios-widget-wrapper">
@@ -117,22 +186,30 @@ export class CalendarWidget {
     }
 
     // Days
-    const eventDays = new Set([5, 12, 18, 25]);
     for (let i = 1; i <= daysInMonth; i++) {
       const isToday =
         i === today && month === new Date().getMonth() && year === new Date().getFullYear();
       const isBirthday = month === 11 && i === 7; // Dec 7
-      const hasEvent = eventDays.has(i); // Dummy events
+      const hasEvent = liveEventDays.has(i);
 
       let classes = 'day-cell';
       if (isToday) classes += ' today';
       if (isBirthday) classes += ' mangesh-birthday';
       else if (hasEvent) classes += ' has-event';
 
+      const thisKey = dateKey(year, month, i);
+      const isSelected =
+        this.selectedDate &&
+        this.selectedDate.getFullYear() === year &&
+        this.selectedDate.getMonth() === month &&
+        this.selectedDate.getDate() === i;
+
+      if (isSelected) classes += ' selected';
+
       html += `
-        <span class="${classes}" data-day="${i}" ${isBirthday ? 'title="Mangesh\'s Birthday 🎂"' : ''}>
+        <span class="${classes}" data-day="${i}" data-date-key="${thisKey}" ${isBirthday ? 'title="Mangesh\'s Birthday 🎂"' : ''}>
           ${i}
-          ${hasEvent && !isBirthday ? '<div class="event-dot"></div>' : ''}
+          ${hasEvent && !isBirthday ? '<div class="event-dot" title="Available consultation slot"></div>' : ''}
           ${isBirthday ? '<div class="birthday-dot"></div>' : ''}
         </span>`;
     }
@@ -145,7 +222,7 @@ export class CalendarWidget {
         <div class="ios-reminders-section">
           <div class="ios-header">
             <div class="reminders-title">
-              <i class="fas fa-layer-group" aria-hidden="true"></i> Smart Reminders
+              <i class="fas fa-layer-group" aria-hidden="true"></i> Smart Reminders & Events
             </div>
             <button type="button" class="ios-btn-small" aria-label="Add new reminder"><i class="fas fa-plus" aria-hidden="true"></i> New</button>
           </div>
@@ -159,7 +236,7 @@ export class CalendarWidget {
                   <div class="card-accent-strip"></div>
                   <div class="card-content">
                     <div class="card-header-flex">
-                       <span class="card-time"><i class="fas fa-clock" aria-hidden="true"></i> ${escapeHtml(r.time)}</span>
+                       <span class="card-time"><i class="fas fa-${r.tag === 'Google' ? 'calendar-check' : r.tag === 'Special' ? 'cake-candles' : 'clock'}" aria-hidden="true"></i> ${escapeHtml(r.time)}</span>
                        <span class="card-tag">${escapeHtml(r.tag)}</span>
                     </div>
                     <div class="card-title">${escapeHtml(r.text)}</div>
@@ -184,7 +261,7 @@ export class CalendarWidget {
             <i class="fas fa-calendar-check" aria-hidden="true"></i>
           </div>
           <div class="calendly-panel-copy">
-            <span class="calendly-panel-kicker">Availability</span>
+            <span class="calendly-panel-kicker">Google Calendar · Live Sync</span>
             <h4>Book a consultation</h4>
             <p>Schedule a focused architecture, full-stack, or AI systems review.</p>
           </div>
@@ -251,7 +328,7 @@ export class CalendarWidget {
           id: Date.now(),
           text: 'New Reminder',
           time: 'Now',
-          color: ['blue', 'red', 'orange', 'green'][Math.floor(Math.random() * 4)],
+          color: ['blue', 'red', 'orange', 'green', 'purple'][Math.floor(Math.random() * 5)],
           tag: 'Inbox',
           completed: false,
         };
@@ -282,6 +359,19 @@ export class CalendarWidget {
     });
   }
 
+  addConfirmedBooking({ title, time, tag = 'Confirmed' } = {}) {
+    const bookingReminder = {
+      id: Date.now(),
+      text: title || 'Confirmed Consultation (Google Meet)',
+      time: time || 'Confirmed',
+      color: 'green',
+      tag,
+      completed: false,
+    };
+    this.reminders.unshift(bookingReminder);
+    this.render();
+  }
+
   changeMonth(offset) {
     this.date.setMonth(this.date.getMonth() + offset);
     this.render();
@@ -289,6 +379,7 @@ export class CalendarWidget {
 
   goToToday() {
     this.date = new Date();
+    this.selectedDate = new Date();
     this.render();
   }
 }

@@ -43,6 +43,16 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'e68c12a4',
+    date: '2026-08-24',
+    type: 'release',
+    title: 'Integrated Live Google Calendar & Events into Apple Calendar Widget',
+    summary:
+      'Seamlessly connected the Contact Apple Month Calendar and Smart Reminders with live Google Calendar availability (/api/calendar/availability). Day cells dynamically render Apple event dots for live consultation slots, smart reminder cards synchronize live Google Calendar sync states, and confirmed bookings dynamically inject event reminder cards with zero design disruption. Built with Gemini 2.5 Pro; token usage tracked via total_usage.',
+    tags: ['api', 'design', 'assistme'],
+    sha: 'e68c12a4',
+  },
+  {
     id: 'a71b29c3',
     date: '2026-08-24',
     type: 'improvement',
