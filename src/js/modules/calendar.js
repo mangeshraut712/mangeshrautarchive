@@ -38,7 +38,7 @@ export class CalendarWidget {
 
     // "Smart" Reminders, Verified Birthdays & Live Calendar Data
     this.reminders = [
-      // ── Verified Birthdays (5) ──────────────────────────────────
+      // ── Verified Birthdays (3) ──────────────────────────────────
       {
         id: 996,
         text: "Stephen's Birthday 🎂",
@@ -62,17 +62,6 @@ export class CalendarWidget {
         completed: false,
       },
       {
-        id: 998,
-        text: "Dad's Birthday 🎂",
-        time: 'Oct 12 · All Day',
-        dateKey: '2026-10-12',
-        category: 'birthdays',
-        tag: 'Birthday',
-        color: 'pink',
-        icon: 'cake-candles',
-        completed: false,
-      },
-      {
         id: 999,
         text: "Mangesh's Birthday 🎂",
         time: 'Dec 7 · All Day',
@@ -80,17 +69,6 @@ export class CalendarWidget {
         category: 'birthdays',
         tag: 'Special',
         color: 'gold',
-        icon: 'cake-candles',
-        completed: false,
-      },
-      {
-        id: 995,
-        text: "Sister's Birthday 🌸🎂",
-        time: 'May 20 · All Day',
-        dateKey: '2026-05-20',
-        category: 'birthdays',
-        tag: 'Birthday',
-        color: 'pink',
         icon: 'cake-candles',
         completed: false,
       },

@@ -43,6 +43,16 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'b71e49d3',
+    date: '2026-08-24',
+    type: 'fix',
+    title: 'Calendar Data Purification & Unverified Birthday Entries Removal',
+    summary:
+      'Purged all unverified and synthetic calendar entries (removed Oct 12 and May 20 entries). Standardized verified calendar data strictly to 3 verified annual birthdays (Stephen Aug 6, Mom Aug 15, Mangesh Dec 7) with accurate counter badges across all views. Built with Gemini 2.5 Pro; token metrics tracked via total_usage.',
+    tags: ['design', 'performance', 'assistme'],
+    sha: 'b71e49d3',
+  },
+  {
     id: 'c47e81b9',
     date: '2026-08-24',
     type: 'improvement',

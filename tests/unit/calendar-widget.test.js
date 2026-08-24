@@ -35,9 +35,12 @@ describe('Apple-style Calendar and Smart Reminders Widget', () => {
     widget.init();
 
     const birthdays = widget.reminders.filter(r => r.category === 'birthdays');
+    expect(birthdays.length).toBe(3);
     expect(birthdays.some(b => b.text.includes('Stephen'))).toBe(true);
     expect(birthdays.some(b => b.text.includes('Mom'))).toBe(true);
     expect(birthdays.some(b => b.text.includes('Mangesh'))).toBe(true);
+    expect(birthdays.some(b => b.text.includes('Dad'))).toBe(false);
+    expect(birthdays.some(b => b.text.includes('Sister'))).toBe(false);
 
     // Switch to Birthdays tab
     const bdayTab = document.querySelector('[data-filter="birthdays"]');
