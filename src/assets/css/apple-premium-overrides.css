@@ -1370,32 +1370,44 @@ html.dark .day-cell:nth-child(7n + 1):not(.today):not(.selected) {
 
 .ios-reminders-section {
   padding: 16px 20px !important;
-
-  /* Reduced section padding */
   background: transparent !important;
-  border-top: 1px solid rgb(0 0 0 / 6%) !important;
+  border-top: 1px solid rgba(0, 0, 0, 0.06) !important;
 }
 
 html.dark .ios-reminders-section {
-  border-top: 1px solid rgb(255 255 255 / 10%) !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.reminders-header {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  margin-bottom: 12px !important;
+  width: 100% !important;
 }
 
 .reminders-title {
   font-size: 1rem !important;
-
-  /* Smaller Header */
   font-weight: 700 !important;
-  margin-bottom: 12px !important;
-
-  /* Compact margin */
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  letter-spacing: -0.01em !important;
+  margin: 0 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
   color: #1d1d1f !important;
+}
+
+.reminders-title i {
+  color: #0071e3 !important;
+  font-size: 0.95rem !important;
 }
 
 html.dark .reminders-title {
   color: #f5f5f7 !important;
+}
+
+html.dark .reminders-title i {
+  color: #2997ff !important;
 }
 
 /* Edit Button (Pencil) */
@@ -1447,59 +1459,43 @@ html.dark .edit-btn {
   /* Tight Grid */
 }
 
-/* Individual Card - Compact */
+/* Individual Card - Compact Apple HIG */
 
 .reminder-card {
   position: relative;
-  background: #fff !important;
-
-  /* Solid White */
-  border-radius: 12px !important;
-
-  /* Tighter radius */
-  padding: 10px 12px !important;
-
-  /* Compact Padding */
+  background: #ffffff !important;
+  border-radius: 14px !important;
+  padding: 10px 14px 10px 16px !important;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  box-shadow: 0 2px 8px rgb(0 0 0 / 6%) !important;
-
-  /* Shadow needed for visibility on white */
-  border: 1px solid rgb(0 0 0 / 5%) !important;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04) !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
   overflow: hidden;
-  transition:
-    color 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
-    background-color 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
-    border-color 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
-    box-shadow 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
-    transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
-    opacity 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   cursor: pointer;
-  min-height: 50px;
+  min-height: 48px;
 }
 
 html.dark .reminder-card {
-  background: #000 !important;
-
-  /* Solid Black */
-  border: 1px solid rgb(255 255 255 / 15%) !important;
-
-  /* Border for visibility */
-  box-shadow: 0 4px 12px rgb(0 0 0 / 50%) !important;
+  background: #141416 !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
 }
 
 /* Hover Effect */
 
 .reminder-card:hover {
-  transform: scale(1.02);
+  transform: translateY(-1px);
   z-index: 2;
-  box-shadow: 0 8px 16px rgb(0 0 0 / 12%) !important;
+  border-color: rgba(0, 113, 227, 0.3) !important;
+  box-shadow: 0 4px 14px rgba(0, 113, 227, 0.12) !important;
 }
 
 html.dark .reminder-card:hover {
-  border-color: rgb(255 255 255 / 30%) !important;
-  box-shadow: 0 8px 24px rgb(255 255 255 / 10%) !important;
+  background: #1c1c1e !important;
+  border-color: rgba(10, 132, 255, 0.35) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5) !important;
 }
 
 /* Accent Strip (Left Color Bar) */
@@ -1584,7 +1580,8 @@ html.dark .reminder-card.accent-indigo .card-tag {
   flex-wrap: nowrap !important;
   gap: 6px !important;
   overflow-x: auto !important;
-  padding: 4px 2px 10px !important;
+  padding: 2px 2px 8px !important;
+  margin-bottom: 8px !important;
   scrollbar-width: none !important;
   -webkit-overflow-scrolling: touch !important;
 }
@@ -1594,30 +1591,36 @@ html.dark .reminder-card.accent-indigo .card-tag {
 }
 
 .filter-tab {
-  min-height: 30px !important;
+  flex: 0 0 auto !important;
+  min-height: 28px !important;
   border-radius: 9999px !important;
-  font-size: 0.76rem !important;
-  font-weight: 580 !important;
-  padding: 3px 12px !important;
+  font-size: 0.74rem !important;
+  font-weight: 600 !important;
+  padding: 4px 11px !important;
   cursor: pointer !important;
   white-space: nowrap !important;
   display: inline-flex !important;
   align-items: center !important;
-  gap: 4px !important;
+  gap: 5px !important;
   background: linear-gradient(180deg, #ffffff 0%, #f5f5f7 100%) !important;
-  border: 1px solid rgba(0, 0, 0, 0.12) !important;
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
   color: #1d1d1f !important;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.filter-tab i {
+  font-size: 0.72rem !important;
+  opacity: 0.85;
 }
 
 html.dark .filter-tab {
   background: linear-gradient(
     180deg,
-    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0.08) 0%,
     rgba(255, 255, 255, 0.03) 100%
   ) !important;
-  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
   color: #f5f5f7 !important;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) !important;
 }
@@ -1637,14 +1640,19 @@ html.dark .filter-tab:hover {
   background-image: linear-gradient(135deg, #0077ed 0%, #0071e3 50%, #005bb5 100%) !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
-  border: 1px solid rgba(255, 255, 255, 0.25) !important;
-  box-shadow: 0 3px 12px rgba(0, 113, 227, 0.4) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  box-shadow: 0 2px 8px rgba(0, 113, 227, 0.38) !important;
+}
+
+.filter-tab.active i {
+  color: #ffffff !important;
+  opacity: 1;
 }
 
 html.dark .filter-tab.active {
   background-image: linear-gradient(135deg, #0077ed 0%, #0071e3 50%, #005bb5 100%) !important;
-  border-color: rgba(255, 255, 255, 0.25) !important;
-  box-shadow: 0 3px 12px rgba(10, 132, 255, 0.45) !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
+  box-shadow: 0 2px 10px rgba(10, 132, 255, 0.45) !important;
 }
 
 /* Day Inspector Banner */
@@ -1652,31 +1660,31 @@ html.dark .filter-tab.active {
   display: flex !important;
   align-items: center !important;
   justify-content: space-between !important;
-  padding: 8px 14px !important;
-  border-radius: 12px !important;
-  font-size: 0.78rem !important;
-  font-weight: 600 !important;
-  background: rgba(0, 113, 227, 0.06) !important;
-  border: 1px solid rgba(0, 113, 227, 0.18) !important;
+  padding: 6px 12px !important;
+  border-radius: 10px !important;
+  font-size: 0.76rem !important;
+  font-weight: 500 !important;
+  background: rgba(0, 113, 227, 0.05) !important;
+  border: 1px solid rgba(0, 113, 227, 0.15) !important;
   color: #0071e3 !important;
   margin-bottom: 8px !important;
   animation: fadeIn 0.2s ease !important;
 }
 
 html.dark .day-inspector-banner {
-  background: rgba(10, 132, 255, 0.12) !important;
-  border-color: rgba(10, 132, 255, 0.25) !important;
+  background: rgba(10, 132, 255, 0.08) !important;
+  border-color: rgba(10, 132, 255, 0.2) !important;
   color: #409cff !important;
 }
 
 .day-inspector-clear {
   background: rgba(0, 113, 227, 0.08) !important;
-  border: 1px solid rgba(0, 113, 227, 0.2) !important;
+  border: 1px solid rgba(0, 113, 227, 0.18) !important;
   cursor: pointer !important;
   color: inherit !important;
-  font-size: 0.72rem !important;
+  font-size: 0.7rem !important;
   font-weight: 600 !important;
-  padding: 3px 8px !important;
+  padding: 2px 8px !important;
   border-radius: 9999px !important;
   transition: all 0.15s ease !important;
 }

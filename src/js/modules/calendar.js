@@ -589,22 +589,22 @@ export class CalendarWidget {
           <!-- Category Filter Tabs -->
           <div class="calendar-filter-tabs" role="tablist" aria-label="Filter events by category">
             <button type="button" class="filter-tab ${this.activeFilter === 'day' ? 'active' : ''}" data-filter="day">
-              <i class="fas fa-calendar-day"></i> Day (${dayMatchesCount})
+              <i class="fas fa-calendar-day" aria-hidden="true"></i> Day (${dayMatchesCount})
             </button>
             <button type="button" class="filter-tab ${this.activeFilter === 'all' ? 'active' : ''}" data-filter="all">
-              All (${totalCount})
+              <i class="fas fa-layer-group" aria-hidden="true"></i> All (${totalCount})
             </button>
             <button type="button" class="filter-tab ${this.activeFilter === 'events' ? 'active' : ''}" data-filter="events">
-              Events (${totalEventsCount})
+              <i class="fas fa-calendar-check" aria-hidden="true"></i> Events (${totalEventsCount})
             </button>
             <button type="button" class="filter-tab ${this.activeFilter === 'birthdays' ? 'active' : ''}" data-filter="birthdays">
-              Birthdays (${totalBirthdaysCount})
+              <i class="fas fa-cake-candles" aria-hidden="true"></i> Birthdays (${totalBirthdaysCount})
             </button>
             <button type="button" class="filter-tab ${this.activeFilter === 'changelog' ? 'active' : ''}" data-filter="changelog">
-              Changelog (${totalChangelogCount})
+              <i class="fas fa-rocket" aria-hidden="true"></i> Changelog (${totalChangelogCount})
             </button>
             <button type="button" class="filter-tab ${this.activeFilter === 'reminders' ? 'active' : ''}" data-filter="reminders">
-              Tasks (${totalRemindersCount})
+              <i class="fas fa-list-check" aria-hidden="true"></i> Tasks (${totalRemindersCount})
             </button>
           </div>
 
