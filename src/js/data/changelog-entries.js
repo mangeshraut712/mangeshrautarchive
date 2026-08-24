@@ -43,6 +43,16 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'a71b29c3',
+    date: '2026-08-24',
+    type: 'improvement',
+    title: 'Restored Classic Apple Calendar & Smart Reminders Section',
+    summary:
+      'Restored the original signature Apple-style Month Calendar with interactive date selection and birthday indicator, Smart Reminders stack with interactive completion toggles, prompt-based editing, and new reminder creation, alongside the integrated Calendly consultation panel. Removed multi-calendar slot list overrides and preserved clean Apple design aesthetics. Built with Gemini 2.5 Pro; token usage tracked via total_usage.',
+    tags: ['design', 'assistme'],
+    sha: 'a71b29c3',
+  },
+  {
     id: 'c52e1b80',
     date: '2026-08-24',
     type: 'improvement',
