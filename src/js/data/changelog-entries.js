@@ -43,6 +43,17 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'c47e81b9',
+    date: '2026-08-24',
+    type: 'improvement',
+    title:
+      'Sitewide Solid Pure White (Light) & Solid Pure Black (Dark) Surface Audit & Enforcement',
+    summary:
+      'Audited and enforced strict Apple HIG background rules across all 7 website pages (index, systems, monitor, travel, uses, changelog, 404, offline) and standalone case studies. Standardized canvases to solid pure white (#ffffff) in light mode and solid OLED black (#000000) in dark mode with refined 1px hairlines (#e5e5ea in light, #2c2c2e in dark) on all cards, panels, and widgets. Built with Gemini 2.5 Pro; token metrics tracked via total_usage.',
+    tags: ['design', 'performance', 'a11y'],
+    sha: 'c47e81b9',
+  },
+  {
     id: 'a93f17d2',
     date: '2026-08-24',
     type: 'improvement',
