@@ -679,13 +679,10 @@ main button.section-preview-btn,
 main .section-preview-btn {
   color: #0071e3 !important;
   -webkit-text-fill-color: #0071e3 !important;
-  background-color: rgba(0, 113, 227, 0.06) !important;
-  background-image: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.95) 0%,
-    rgba(245, 245, 247, 0.85) 100%
-  ) !important;
-  border: 1px solid rgba(0, 113, 227, 0.3) !important;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
+  border: 1px solid rgba(0, 113, 227, 0.35) !important;
   border-radius: 980px !important;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
   backdrop-filter: blur(12px) !important;

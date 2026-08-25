@@ -1755,10 +1755,11 @@ html.dark .systems-arch-tabs {
   flex: 1 1 auto;
   min-width: fit-content;
   padding: 0.45rem 1.1rem;
-  border: 1px solid rgba(0, 0, 0, 0.12);
+  border: 1px solid rgba(0, 0, 0, 0.14);
   border-radius: 9999px;
-  background: rgba(0, 0, 0, 0.04);
-  background-image: linear-gradient(180deg, #ffffff 0%, #f5f5f7 100%);
+  background: #ffffff;
+  background-color: #ffffff;
+  background-image: none;
   color: #1d1d1f;
   -webkit-text-fill-color: #1d1d1f;
   font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', sans-serif;
@@ -1799,7 +1800,9 @@ body.systems-page .systems-arch-tab:hover {
   color: #0071e3 !important;
   -webkit-text-fill-color: #0071e3 !important;
   border-color: rgba(0, 113, 227, 0.45) !important;
-  background-color: rgba(0, 113, 227, 0.06) !important;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
   box-shadow: 0 3px 10px rgba(0, 113, 227, 0.15) !important;
   transform: translateY(-1px) !important;
 }

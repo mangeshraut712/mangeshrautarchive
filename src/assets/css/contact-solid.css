@@ -645,10 +645,12 @@ html.dark[data-lg-mode='balanced'] body #main-content #contact .health-widget-co
 /* Watch / stream chips — readable on light & dark */
 html:not(.dark) body #contact .watch-btn,
 html[data-theme='light'] body #contact .watch-btn {
-  background: #e8f1fc !important;
-  background-color: #e8f1fc !important;
-  color: #003d7a !important;
-  -webkit-text-fill-color: #003d7a !important;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
+  border: 1px solid rgba(0, 113, 227, 0.25) !important;
+  color: #0071e3 !important;
+  -webkit-text-fill-color: #0071e3 !important;
 }
 
 html.dark body #contact .watch-btn,

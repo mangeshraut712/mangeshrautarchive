@@ -674,8 +674,9 @@ i.fa-css3-alt,
   color: #1d1d1f !important;
   -webkit-text-fill-color: #1d1d1f !important;
   font-weight: 580 !important;
-  background-color: rgba(0, 0, 0, 0.04) !important;
-  background-image: linear-gradient(180deg, #ffffff 0%, #f5f5f7 100%) !important;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
   border: 1px solid rgba(0, 0, 0, 0.14) !important;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
 }
@@ -695,7 +696,9 @@ i.fa-css3-alt,
   color: #0071e3 !important;
   -webkit-text-fill-color: #0071e3 !important;
   border-color: rgba(0, 113, 227, 0.45) !important;
-  background-color: rgba(0, 113, 227, 0.06) !important;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
   box-shadow: 0 3px 10px rgba(0, 113, 227, 0.15) !important;
   transform: translateY(-1px) !important;
 }
@@ -716,14 +719,11 @@ html.dark .a11y-glass-preset:not(.is-active):not(.active) {
   color: #f5f5f7 !important;
   -webkit-text-fill-color: #f5f5f7 !important;
   font-weight: 580 !important;
-  background-color: rgba(255, 255, 255, 0.06) !important;
-  background-image: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.1) 0%,
-    rgba(255, 255, 255, 0.03) 100%
-  ) !important;
-  border: 1px solid rgba(255, 255, 255, 0.16) !important;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) !important;
+  background: #000000 !important;
+  background-color: #000000 !important;
+  background-image: none !important;
+  border: 1px solid #2c2c2e !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4) !important;
 }
 
 html.dark #projects .gh-contrib__view-btn:not(.is-active):hover,
@@ -740,8 +740,10 @@ html.dark .uses-control-tile:not(.is-active):not(.active):hover,
 html.dark .a11y-glass-preset:not(.is-active):not(.active):hover {
   color: #2997ff !important;
   -webkit-text-fill-color: #2997ff !important;
-  border-color: rgba(41, 151, 255, 0.45) !important;
-  background-color: rgba(41, 151, 255, 0.12) !important;
+  border-color: rgba(41, 151, 255, 0.55) !important;
+  background: #000000 !important;
+  background-color: #000000 !important;
+  background-image: none !important;
   box-shadow: 0 3px 10px rgba(41, 151, 255, 0.2) !important;
   transform: translateY(-1px) !important;
 }
@@ -1323,12 +1325,9 @@ html:not(.dark) .btn-github,
 html:not(.dark) .btn-ar,
 html:not(.dark) .error-btn--secondary,
 html:not(.dark) .project-action-btn:not(.btn-primary):not(.btn-demo) {
-  background-color: rgba(0, 0, 0, 0.04) !important;
-  background-image: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.95) 0%,
-    rgba(245, 245, 247, 0.85) 100%
-  ) !important;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
   color: #1d1d1f !important;
   -webkit-text-fill-color: #1d1d1f !important;
   border: 1px solid rgba(0, 0, 0, 0.14) !important;
@@ -1359,12 +1358,9 @@ html:not(.dark) .btn-github:hover,
 html:not(.dark) .btn-ar:hover,
 html:not(.dark) .error-btn--secondary:hover,
 html:not(.dark) .project-action-btn:not(.btn-primary):not(.btn-demo):hover {
-  background-color: rgba(0, 113, 227, 0.06) !important;
-  background-image: linear-gradient(
-    180deg,
-    rgba(0, 113, 227, 0.06) 0%,
-    rgba(0, 113, 227, 0.02) 100%
-  ) !important;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
   color: #0071e3 !important;
   -webkit-text-fill-color: #0071e3 !important;
   border-color: #0071e3 !important;
@@ -1497,8 +1493,9 @@ html:not(.dark) .btn-view-more,
 html:not(.dark) .systems-view-more-btn,
 html:not(.dark) .travel-view-more-btn,
 html:not(.dark) .uses-view-more-btn {
-  background-color: rgba(0, 113, 227, 0.04) !important;
-  background-image: linear-gradient(180deg, #ffffff 0%, #f5f5f7 100%) !important;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
   color: #0066cc !important;
   -webkit-text-fill-color: #0066cc !important;
   font-weight: 600 !important;

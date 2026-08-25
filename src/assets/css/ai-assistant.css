@@ -386,8 +386,10 @@ html.dark .suggested-prompts-label {
 }
 
 .suggested-prompt-btn {
-  background: rgba(255, 255, 255, 0.8);
-  border: 1.5px solid rgba(0, 113, 227, 0.15);
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
+  border: 1.5px solid rgba(0, 113, 227, 0.2) !important;
   padding: 12px 18px;
   border-radius: 22px;
   font-size: 14px;
@@ -418,10 +420,13 @@ html.dark .suggested-prompt-btn {
 }
 
 .suggested-prompt-btn:hover {
-  background: linear-gradient(135deg, rgba(0, 113, 227, 0.08), rgba(41, 151, 255, 0.08));
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
+  color: #0071e3 !important;
   transform: translateY(-3px) scale(1.02);
   box-shadow: 0 6px 20px rgba(0, 113, 227, 0.15);
-  border-color: rgba(0, 113, 227, 0.3);
+  border-color: rgba(0, 113, 227, 0.45) !important;
 }
 
 html.dark .suggested-prompt-btn:hover {

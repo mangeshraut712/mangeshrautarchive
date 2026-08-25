@@ -43,6 +43,17 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'e48b11dc',
+    date: '2026-08-25',
+    type: 'release',
+    title:
+      'Light Mode Button Design Audit, Solid White Surfaces & High-Contrast Typography Synchronization',
+    summary:
+      'Standardized sitewide button systems and interactive controls across all 6 tiers in Light Mode (html:not(.dark)) to pure solid white backgrounds (#ffffff), crisp 1px Apple borders (rgba(0, 0, 0, 0.14)), and synchronized high-contrast typography (#1d1d1f resting, #0071e3 hover, #ffffff active). Harmonized secondary buttons, filter chips, architecture tabs, preview disclosures, segmented mirrors, and log tabs across Homepage, Systems, Monitor, Travel, Uses, and Changelog pages. Built with Gemini 2.5 Pro; token metrics and LLM observability recorded.',
+    tags: ['design', 'a11y', 'performance', 'systems'],
+    sha: 'e48b11dc',
+  },
+  {
     id: 'a71e3b09',
     date: '2026-08-25',
     type: 'release',

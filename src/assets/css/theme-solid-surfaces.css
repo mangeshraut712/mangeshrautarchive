@@ -1412,14 +1412,16 @@ html:not(.dark)
     .apple-btn-secondary,
     #projects #github-projects-container .btn-github,
     #projects #github-projects-container .btn-ar,
-    #home .hero-actions .hero-cta-secondary
+    #home .hero-actions .hero-cta-secondary,
+    .btn-glass,
+    .btn-github,
+    .btn-ar,
+    .error-btn--secondary,
+    .project-action-btn:not(.btn-primary):not(.btn-demo)
   ):not(.is-disabled):not(:disabled) {
-  background-color: rgba(0, 0, 0, 0.04) !important;
-  background-image: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.95) 0%,
-    rgba(245, 245, 247, 0.85) 100%
-  ) !important;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
   color: #1d1d1f !important;
   -webkit-text-fill-color: #1d1d1f !important;
   border: 1px solid rgba(0, 0, 0, 0.14) !important;
@@ -1433,7 +1435,12 @@ html:not(.dark)
     .apple-btn-secondary,
     #projects #github-projects-container .btn-github,
     #projects #github-projects-container .btn-ar,
-    #home .hero-actions .hero-cta-secondary
+    #home .hero-actions .hero-cta-secondary,
+    .btn-glass,
+    .btn-github,
+    .btn-ar,
+    .error-btn--secondary,
+    .project-action-btn:not(.btn-primary):not(.btn-demo)
   ):not(.is-disabled):not(:disabled)
   * {
   color: #1d1d1f !important;
@@ -1490,14 +1497,16 @@ html.dark
       .apple-btn-secondary,
       #projects #github-projects-container .btn-github,
       #projects #github-projects-container .btn-ar,
-      #home .hero-actions .hero-cta-secondary
+      #home .hero-actions .hero-cta-secondary,
+      .btn-glass,
+      .btn-github,
+      .btn-ar,
+      .error-btn--secondary,
+      .project-action-btn:not(.btn-primary):not(.btn-demo)
     ):hover:not(:disabled) {
-    background-color: rgba(0, 113, 227, 0.06) !important;
-    background-image: linear-gradient(
-      180deg,
-      rgba(0, 113, 227, 0.06) 0%,
-      rgba(0, 113, 227, 0.02) 100%
-    ) !important;
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    background-image: none !important;
     border-color: #0071e3 !important;
     color: #0071e3 !important;
     -webkit-text-fill-color: #0071e3 !important;
@@ -1512,7 +1521,12 @@ html.dark
       .apple-btn-secondary,
       #projects #github-projects-container .btn-github,
       #projects #github-projects-container .btn-ar,
-      #home .hero-actions .hero-cta-secondary
+      #home .hero-actions .hero-cta-secondary,
+      .btn-glass,
+      .btn-github,
+      .btn-ar,
+      .error-btn--secondary,
+      .project-action-btn:not(.btn-primary):not(.btn-demo)
     ):hover:not(:disabled)
     * {
     color: #0071e3 !important;
