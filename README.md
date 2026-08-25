@@ -299,7 +299,6 @@ We adhere to industry-standard open-source community health and governance stand
 | **[`SECURITY.md`](SECURITY.md)**                       | Vulnerability reporting procedure, coordinated disclosure policy, and `security.txt` RFC 9116 parity. |
 | **[`AGENTS.md`](AGENTS.md)**                           | **Linux Foundation AGENTS.md v1.0** standard for AI agent coordination and observability.             |
 | **[`CITATION.cff`](CITATION.cff)**                     | **Citation File Format v1.2.0** metadata for academic and software citations.                         |
-| **[`.github/dependabot.yml`](.github/dependabot.yml)** | Automated security updates for npm packages, pip dependencies, and GitHub Actions.                    |
 
 ---
 

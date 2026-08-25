@@ -50,7 +50,7 @@ This portfolio implements these practices on `main` as of July 2026:
 - **Content Security Policy (CSP)** — strict CSP headers with reporting where configured
 - **HSTS** — Strict-Transport-Security (production hosts)
 - **Automated secret scanning** — `npm run security-check` blocks exposed API keys before commit
-- **Dependency hygiene** — `npm audit` in CI; Dependabot monitors known CVEs
+- **Dependency hygiene** — `npm audit` in CI; dependency versions are reviewed and updated manually
 - **Server-side secrets only** — OpenRouter and other provider keys stay on FastAPI / edge workers; never shipped to browsers
 - **Input sanitization** — chatbot and user-facing inputs are sanitized before processing
 - **GitHub Pages `.nojekyll`** — so `/.well-known/security.txt` and other agent discovery files publish correctly
