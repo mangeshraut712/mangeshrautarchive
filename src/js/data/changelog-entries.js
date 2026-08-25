@@ -43,6 +43,17 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'b7e2c94a',
+    date: '2026-08-25',
+    type: 'improvement',
+    title: 'About Section Squircle Alignment & Calendly Secondary CTA Luxury Redesign',
+    summary:
+      'Refined About section layout with synchronized equal-height grid stretch across Full Story and Quick Summary tabs, visionOS glassmorphic image badge, and tactile milestone pills. Upgraded Calendly 30-min consultation CTA with authentic Apple Blue outlined luxury surface, distinct visual hierarchy from primary Send Message CTA, and smooth hover glow across Light and Dark themes.',
+    tags: ['design', 'ui', 'components'],
+    sha: 'b7e2c94a',
+    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/b7e2c94a',
+  },
+  {
     id: 'a7f104d8',
     date: '2026-08-25',
     type: 'improvement',

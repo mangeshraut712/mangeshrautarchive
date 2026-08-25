@@ -160,6 +160,14 @@ The design system enforces a strictly unified 6-tier button architecture across 
 - **Callouts (`.article-callout`)**: Light tinted backgrounds (Tip: Green, Architecture: Purple, Info: Blue) with 1px border and high-contrast dark text `#1d1d1f` in light mode.
 - **Tables (`.article-table`)**: Clean Apple Developer table style with `#f2f2f7` headers (Dark: `#2c2c2e`), 1px borders, and hover row highlights.
 
+### About Section (`#about`)
+
+- **Layout**: One two-column block — graduation photo + a single information card. No extra chapter cards or highlight grids below.
+- **Hierarchy**: Section title `About` → lede → Full Story / Quick Summary segmented control inside the card.
+- **Full Story**: Five narrative paragraphs in the card, then compact milestone pills (not duplicate cards). Body `#3c3c43` / Dark `#d2d2d7`.
+- **Quick Summary**: The same facts as a 2-column bento inside the same card (1-column ≤700px). Do not repeat those tiles outside the tab.
+- **Visibility**: Active tab uses Apple Blue with white text; inactive tabs keep high-contrast labels in both themes.
+
 ---
 
 ## 5. CSS Cascade & File Organization

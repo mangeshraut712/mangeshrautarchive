@@ -44,9 +44,7 @@ export function initAboutInteractivity() {
         panel.hidden = false;
         panel.style.removeProperty('display');
         panel.setAttribute('aria-hidden', 'false');
-        // Scrollable tabpanels need keyboard focus (axe scrollable-region-focusable)
-        panel.setAttribute('tabindex', '0');
-        panel.scrollTop = 0;
+        panel.removeAttribute('tabindex');
       } else {
         panel.hidden = true;
         panel.style.removeProperty('display');
