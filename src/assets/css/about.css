@@ -249,24 +249,23 @@ html.dark .about-text-card:hover {
 
 .about-intro-title {
   font-family:
-    'SF Pro Display',
-    -apple-system,
-    BlinkMacSystemFont,
-    sans-serif;
-  font-size: clamp(1.55rem, 2.4vw, 1.95rem);
+    -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', sans-serif;
+  font-size: clamp(1.65rem, 2.5vw, 2.05rem);
   font-weight: 700;
   letter-spacing: -0.025em;
-  line-height: 1.15;
-  color: var(--text-primary);
-  margin: 0 0 0.4rem 0;
+  line-height: 1.2;
+  color: var(--text-primary, #1d1d1f);
+  margin: 0 0 0.45rem 0;
 }
 
 .about-brand-line {
-  margin: 0 0 1.25rem;
-  font-size: 1rem;
-  font-weight: 560;
-  color: #0071e3;
-  letter-spacing: -0.01em;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', sans-serif;
+  font-size: 0.94rem;
+  font-weight: 600;
+  color: var(--apple-blue, #0071e3);
+  letter-spacing: 0.03em;
+  line-height: 1.4;
+  margin: 0 0 1.65rem 0;
 }
 
 html.dark .about-brand-line {
@@ -504,7 +503,13 @@ html:not(.dark) .about-highlight-text {
   }
 
   .about-intro-title {
-    font-size: 1.35rem !important;
+    font-size: 1.45rem !important;
+    margin-bottom: 0.45rem !important;
+  }
+
+  .about-brand-line {
+    font-size: 0.88rem !important;
+    margin-bottom: 1.35rem !important;
   }
 
   .about-intro-text {
@@ -512,8 +517,11 @@ html:not(.dark) .about-highlight-text {
   }
 
   .about-paragraph {
-    font-size: 0.95rem !important;
-    line-height: 1.6 !important;
+    font-size: 1.08rem !important;
+    line-height: 1.95 !important;
+    letter-spacing: 0.018em !important;
+    word-spacing: 0.03em !important;
+    margin-bottom: 1.65rem !important;
   }
 
   .about-highlights {
@@ -712,22 +720,33 @@ html.dark .about-card-header {
 }
 
 /* ================================================================
-   ABOUT STORY TYPOGRAPHY (Matching FAQ Style & Spacing)
-   - Apple SF Pro Text / Display font-family
-   - Font size: 0.98rem
-   - Line-height: 1.6 (clean, breathable, comfortable reading)
-   - Color: #6e6e73 (Light) / #a1a1a6 (Dark)
-   - Bold Highlights: #1d1d1f (Light) / #f5f5f7 (Dark)
+   ABOUT STORY EDITORIAL TYPOGRAPHY (Ultra Open Spacing)
+   - Inspired by Minion Pro & AWeber editorial publishing standard
+   - Font family: Minion Pro, New York, Georgia, Charter, Times New Roman, serif
+   - Font size: 1.08rem (Desktop) / 1.02rem (Mobile)
+   - Line-height: 2.0 (Ultra Open, maximum breathing room, effortless reading)
+   - Margin: 0 0 1.85rem 0
+   - Color: #2c2c2e (Light) / #e5e5ea (Dark)
+   - Bold Highlights: #000000 (Light) / #ffffff (Dark), font-weight: 700
+   - Italics: font-style: italic, color: #1d1d1f (Light) / #ffffff (Dark)
    ================================================================ */
 
 .about-paragraph {
   font-family:
-    -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', 'Helvetica Neue', sans-serif !important;
-  font-size: 0.98rem !important;
-  line-height: 1.6 !important;
-  letter-spacing: -0.012em !important;
-  color: #6e6e73 !important;
-  margin: 0 0 1rem !important;
+    'Minion Pro',
+    'New York',
+    -apple-system-ui-serif,
+    'Charter',
+    'Georgia',
+    'Cambria',
+    'Times New Roman',
+    serif !important;
+  font-size: 1.16rem !important;
+  line-height: 2.05 !important;
+  letter-spacing: 0.022em !important;
+  word-spacing: 0.04em !important;
+  color: #2c2c2e !important;
+  margin: 0 0 2rem !important;
   max-width: 44rem;
   transition:
     opacity 0.25s ease,
@@ -739,22 +758,26 @@ html.dark .about-card-header {
 }
 
 html.dark .about-paragraph {
-  color: #a1a1a6 !important;
+  color: #e5e5ea !important;
 }
 
 .about-paragraph strong {
   font-family: inherit !important;
-  font-weight: 600 !important;
-  color: #1d1d1f !important;
+  font-weight: 700 !important;
+  color: #000000 !important;
 }
 
 html.dark .about-paragraph strong {
-  color: #f5f5f7 !important;
+  color: #ffffff !important;
 }
 
 .about-paragraph em {
   font-style: italic !important;
-  color: inherit !important;
+  color: #1d1d1f !important;
+}
+
+html.dark .about-paragraph em {
+  color: #ffffff !important;
 }
 
 /* Highlight speech effects */
@@ -769,7 +792,7 @@ html.dark .about-paragraph strong {
 }
 
 html.dark .about-text-card.speech-active .highlight-target {
-  color: #98989d !important;
+  color: #86868b !important;
 }
 
 html.dark .about-text-card.speech-active .highlight-target.is-speaking {

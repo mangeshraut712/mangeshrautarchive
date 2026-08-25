@@ -43,6 +43,28 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'c529fa01',
+    date: '2026-08-25',
+    type: 'improvement',
+    title: 'Ultra Open Editorial Spacing & Minion Pro Serif Typography for About Story',
+    summary:
+      'Engineered an ultra-open, high-comfort reading layout for the About story inspired by premier long-form editorial design. Upgraded leading to 2.0 line-height, expanded paragraph rhythm to 1.85rem, enlarged body typography to 1.08rem Minion Pro / New York / Charter serif stack, increased brand kicker spacing to 1.65rem, and enhanced mobile viewport responsiveness with 1.9 line-height and 1.55rem rhythm.',
+    tags: ['design', 'ui', 'typography', 'editorial', 'spacing'],
+    sha: 'c529fa01',
+    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/c529fa01',
+  },
+  {
+    id: 'a937d04e',
+    date: '2026-08-25',
+    type: 'improvement',
+    title: 'Editorial Serif Typography & Breathable Spacing (Minion Pro & AWeber Standard)',
+    summary:
+      'Transformed the About story into a high-readability editorial layout inspired by Minion Pro and top publishing typography. Features a bold modern display heading, refined uppercase category kicker, generous 1.78 line-height leading, 1.35rem paragraph rhythm, 1.05rem serif font stack, and soft warm charcoal text colors (#2c2c2e / #e5e5ea) for effortless long-form reading across desktop and mobile.',
+    tags: ['design', 'ui', 'typography', 'editorial'],
+    sha: 'a937d04e',
+    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/a937d04e',
+  },
+  {
     id: 'e410b89a',
     date: '2026-08-25',
     type: 'improvement',
