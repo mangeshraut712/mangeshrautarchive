@@ -53,8 +53,8 @@ html:not(.dark) #about {
 .about-main,
 #about .about-main {
   display: grid;
-  grid-template-columns: minmax(280px, 0.92fr) minmax(0, 1.28fr);
-  gap: clamp(1.75rem, 3.2vw, 3.25rem);
+  grid-template-columns: minmax(320px, 1fr) minmax(0, 1.35fr);
+  gap: clamp(2rem, 3.5vw, 3.5rem);
   margin-bottom: 0;
   align-items: stretch;
 }
@@ -63,8 +63,9 @@ html:not(.dark) #about {
 #about .about-image-wrapper {
   position: relative;
   top: auto;
-  height: 100%;
-  min-height: 480px;
+  height: var(--about-pair-height, clamp(520px, 58vh, 640px)) !important;
+  min-height: var(--about-pair-height, clamp(520px, 58vh, 640px)) !important;
+  max-height: var(--about-pair-height, clamp(520px, 58vh, 640px)) !important;
   border-radius: 24px;
   border: 1px solid var(--card-border-rest, #e5e5ea);
   overflow: hidden;
@@ -157,19 +158,20 @@ html.dark .about-image-badge i {
   gap: 1.5rem;
 }
 
-/* About Text Card — expands with story content (no inner scroller) */
+/* About Text Card — equal-height paired with image, scrollable tab panels */
 .about-text-card,
 #about .about-text-card {
   border-radius: 24px;
-  padding: clamp(1.6rem, 2.8vw, 2.4rem) clamp(1.4rem, 2.8vw, 2.4rem);
-  display: flex;
-  flex-direction: column;
+  padding: clamp(1.6rem, 2.5vw, 2.2rem);
+  display: flex !important;
+  flex-direction: column !important;
   gap: 1.15rem;
-  height: auto;
-  min-height: 0;
-  max-height: none;
-  overflow: visible;
+  height: var(--about-pair-height, clamp(520px, 58vh, 640px)) !important;
+  min-height: var(--about-pair-height, clamp(520px, 58vh, 640px)) !important;
+  max-height: var(--about-pair-height, clamp(520px, 58vh, 640px)) !important;
+  overflow: hidden !important;
   box-sizing: border-box;
+  align-self: stretch;
   transition:
     transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
     border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
@@ -177,14 +179,41 @@ html.dark .about-image-badge i {
 
 #about .about-card-header {
   flex: 0 0 auto;
-  margin-bottom: 0;
+  margin-bottom: 0.35rem;
 }
 
 #about .about-tab-panel {
-  flex: 0 1 auto;
+  flex: 1 1 auto;
   min-height: 0;
-  overflow: visible;
-  padding-right: 0;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  padding-right: 0.5rem;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.16) transparent;
+}
+
+/* Sleek Apple-style scrollbar */
+#about .about-tab-panel::-webkit-scrollbar {
+  width: 5px;
+}
+
+#about .about-tab-panel::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+#about .about-tab-panel::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.16);
+  border-radius: 999px;
+}
+
+html.dark #about .about-tab-panel::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.22);
+}
+
+html.dark #about .about-tab-panel {
+  scrollbar-color: rgba(255, 255, 255, 0.22) transparent;
 }
 
 /* Hover overrides removed — unified card hover in wwdc26 §15 */
@@ -382,40 +411,54 @@ html:not(.dark) .about-highlight-text {
   color: #6e6e73;
 }
 
+@media (min-width: 1025px) {
+  #about {
+    --about-pair-height: clamp(520px, 58vh, 640px);
+  }
+}
+
 @media (width <= 1024px) {
   #about {
-    --about-image-height: min(420px, 58vw);
+    --about-pair-height: clamp(460px, 52vh, 560px);
   }
 
   .about-main,
   #about .about-main {
     grid-template-columns: 1fr;
-    gap: 1.5rem;
+    gap: 1.75rem;
     align-items: stretch;
-    margin-bottom: 1.75rem;
+    margin-bottom: 2.5rem;
   }
 
   .about-image-wrapper,
   #about .about-image-wrapper {
     position: relative;
     top: auto;
-    height: var(--about-image-height);
-    min-height: var(--about-image-height);
-    max-height: none;
+    height: var(--about-pair-height) !important;
+    min-height: var(--about-pair-height) !important;
+    max-height: var(--about-pair-height) !important;
     width: 100%;
   }
 
   .about-text-card,
   #about .about-text-card {
-    height: auto !important;
-    min-height: 0 !important;
-    max-height: none !important;
-    overflow: visible !important;
+    height: var(--about-pair-height) !important;
+    min-height: var(--about-pair-height) !important;
+    max-height: var(--about-pair-height) !important;
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-self: stretch;
   }
 
   #about .about-tab-panel {
-    overflow: visible !important;
-    padding-right: 0;
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    padding-right: 0.5rem;
   }
 
   .about-image-badge {
@@ -427,7 +470,8 @@ html:not(.dark) .about-highlight-text {
 
 @media (width <= 768px) {
   #about {
-    --about-image-height: min(360px, 72vw);
+    --about-pair-height: clamp(400px, 50vh, 500px);
+    --about-image-height: min(340px, 68vw);
     padding-block: 2.75rem 3.25rem;
   }
 
@@ -454,11 +498,20 @@ html:not(.dark) .about-highlight-text {
   }
 
   #about .about-text-card {
+    height: var(--about-pair-height) !important;
+    min-height: var(--about-pair-height) !important;
+    max-height: var(--about-pair-height) !important;
     padding: 1.25rem 1.1rem 1.5rem;
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
   }
 
   .about-image-wrapper,
   #about .about-image-wrapper {
+    height: var(--about-image-height) !important;
+    min-height: var(--about-image-height) !important;
+    max-height: var(--about-image-height) !important;
     border-radius: 20px;
   }
 
@@ -470,6 +523,16 @@ html:not(.dark) .about-highlight-text {
   .about-content,
   #about .about-content {
     margin-top: 1.5rem;
+  }
+
+  #about .about-tab-panel {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    padding-right: 0.35rem;
   }
 }
 

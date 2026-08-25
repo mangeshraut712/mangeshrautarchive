@@ -494,7 +494,7 @@ html.dark #home .hero-cta:last-child {
 /* ===== ABOUT SECTION - PREMIUM UPGRADE ===== */
 #about {
   background: #ffffff !important;
-  --about-image-height: clamp(420px, 52vh, 640px);
+  --about-pair-height: clamp(520px, 58vh, 640px);
 }
 
 html.dark #about {
@@ -508,16 +508,20 @@ html.dark #about {
 
 #about .about-main {
   display: grid;
-  grid-template-columns: minmax(280px, 0.92fr) minmax(0, 1.28fr);
-  gap: clamp(1.75rem, 3.2vw, 3.25rem);
+  grid-template-columns: minmax(320px, 1fr) minmax(0, 1.35fr);
+  gap: clamp(2rem, 3.5vw, 3.5rem);
   align-items: stretch;
   margin-bottom: 0;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
+  #about {
+    --about-pair-height: clamp(460px, 52vh, 560px);
+  }
+
   #about .about-main {
     grid-template-columns: 1fr;
-    gap: 2rem;
+    gap: 1.75rem;
   }
 }
 
@@ -527,8 +531,9 @@ html.dark #about {
   border-radius: 24px;
   overflow: hidden;
   box-shadow: var(--shadow-apple-xl);
-  height: auto;
-  min-height: var(--about-image-height);
+  height: var(--about-pair-height) !important;
+  min-height: var(--about-pair-height) !important;
+  max-height: var(--about-pair-height) !important;
 }
 
 #about .about-image-wrapper picture {
@@ -581,13 +586,13 @@ html.dark #about .about-image-badge {
   transition:
     transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
     box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  height: auto;
-  min-height: 0;
-  max-height: none;
+  height: var(--about-pair-height) !important;
+  min-height: var(--about-pair-height) !important;
+  max-height: var(--about-pair-height) !important;
   display: flex;
   flex-direction: column;
-  padding: clamp(1.6rem, 2.8vw, 2.4rem) clamp(1.4rem, 2.8vw, 2.4rem) !important;
-  overflow: visible;
+  padding: clamp(1.6rem, 2.5vw, 2.2rem) !important;
+  overflow: hidden;
   box-sizing: border-box;
 }
 
@@ -645,19 +650,19 @@ html.dark #about .about-description strong {
 
 @media (min-width: 1025px) {
   #about {
-    --about-image-height: clamp(420px, 52vh, 640px);
+    --about-pair-height: clamp(520px, 58vh, 640px);
   }
 
   #about .about-main {
-    grid-template-columns: minmax(280px, 0.92fr) minmax(0, 1.28fr);
-    gap: 2.75rem;
+    grid-template-columns: minmax(320px, 1fr) minmax(0, 1.35fr);
+    gap: clamp(2rem, 3.5vw, 3.5rem);
     align-items: stretch;
   }
 }
 
 @media (max-width: 1024px) {
   #about {
-    --about-image-height: min(420px, 58vw);
+    --about-pair-height: clamp(460px, 52vh, 560px);
   }
 
   #about .about-main {
@@ -668,16 +673,16 @@ html.dark #about .about-description strong {
   #about .about-image-wrapper {
     position: relative;
     top: auto;
-    height: var(--about-image-height) !important;
-    min-height: var(--about-image-height) !important;
-    max-height: none !important;
+    height: var(--about-pair-height) !important;
+    min-height: var(--about-pair-height) !important;
+    max-height: var(--about-pair-height) !important;
   }
 
   #about .about-text-card {
-    height: auto !important;
-    min-height: 0 !important;
-    max-height: none !important;
-    overflow: visible !important;
+    height: var(--about-pair-height) !important;
+    min-height: var(--about-pair-height) !important;
+    max-height: var(--about-pair-height) !important;
+    overflow: hidden !important;
   }
 
   #about .about-image-wrapper picture {
@@ -693,23 +698,42 @@ html.dark #about .about-description strong {
   }
 
   #about .about-tab-panel {
-    overflow: visible !important;
-    flex: 0 1 auto;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    flex: 1 1 auto;
     min-height: 0;
   }
 }
 
-@media (max-width: 576px) {
+@media (max-width: 768px) {
+  #about {
+    --about-pair-height: clamp(400px, 50vh, 500px);
+    --about-image-height: min(340px, 68vw);
+  }
+
+  #about .about-image-wrapper {
+    height: var(--about-image-height) !important;
+    min-height: var(--about-image-height) !important;
+    max-height: var(--about-image-height) !important;
+  }
+
   #about .about-text-card {
-    padding: 1.35rem 1.15rem !important;
+    height: var(--about-pair-height) !important;
+    min-height: var(--about-pair-height) !important;
+    max-height: var(--about-pair-height) !important;
+    padding: 1.25rem 1.1rem !important;
   }
 }
 
 #about .about-tab-panel {
-  flex: 0 1 auto;
+  flex: 1 1 auto;
   min-height: 0;
-  overflow: visible;
-  padding-right: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
 }
 
 /* ===== SKILLS SECTION - PREMIUM UPGRADE ===== */

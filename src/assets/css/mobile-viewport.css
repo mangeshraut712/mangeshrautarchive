@@ -517,7 +517,8 @@ section {
   }
 
   #about {
-    --about-image-height: min(360px, 72vw);
+    --about-pair-height: clamp(400px, 50vh, 500px);
+    --about-image-height: min(340px, 68vw);
   }
 
   #about .about-main {
@@ -531,27 +532,36 @@ section {
     top: auto !important;
     height: var(--about-image-height) !important;
     min-height: var(--about-image-height) !important;
-    max-height: none !important;
+    max-height: var(--about-image-height) !important;
+    border-radius: 20px !important;
   }
 
   #about .about-image-wrapper img.about-image {
     height: 100% !important;
-    max-height: none !important;
+    max-height: 100% !important;
     object-fit: cover !important;
+    border-radius: 20px !important;
   }
 
   #about .about-text-card {
-    height: auto !important;
-    min-height: 0 !important;
-    max-height: none !important;
-    overflow: visible !important;
+    height: var(--about-pair-height) !important;
+    min-height: var(--about-pair-height) !important;
+    max-height: var(--about-pair-height) !important;
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+    padding: 1.25rem 1.1rem 1.5rem !important;
+    border-radius: 20px !important;
   }
 
   #about .about-tab-panel {
-    overflow: visible !important;
-    max-height: none !important;
-    flex: 0 1 auto !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    -webkit-overflow-scrolling: touch !important;
+    overscroll-behavior: contain !important;
+    flex: 1 1 auto !important;
     min-height: 0 !important;
+    padding-right: 0.35rem !important;
   }
 
   #about .about-card-header {

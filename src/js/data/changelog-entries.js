@@ -43,6 +43,17 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'e391b8a4',
+    date: '2026-08-25',
+    type: 'improvement',
+    title: 'About Photo & Narrative Card Equal-Height Sync and Multi-Viewport One-Page Fit',
+    summary:
+      'Restored the original paired height architecture for the About section across Desktop, Tablet, and Mobile viewports. Synchronized the graduation photo bento wrapper and the interactive narrative card with identical clamp heights (clamp(520px, 58vh, 640px) on desktop, clamp(460px, 52vh, 560px) on tablet, clamp(400px, 50vh, 500px) on mobile). Re-enabled smooth Apple glassmorphic internal scrolling (overflow-y: auto with sleek thin scrollbar) for both Full Story and Quick Summary tab panels to maintain clean, one-page viewport fit without vertical page sprawl.',
+    tags: ['design', 'ui', 'components', 'responsive'],
+    sha: 'e391b8a4',
+    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/e391b8a4',
+  },
+  {
     id: 'f4d92a18',
     date: '2026-08-25',
     type: 'improvement',

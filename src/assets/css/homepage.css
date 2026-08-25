@@ -557,32 +557,32 @@ html.dark .hero-social-link:hover {
 
   /* About: photo + information card, matched height */
   #about {
-    --about-image-height: clamp(420px, 52vh, 640px);
+    --about-pair-height: clamp(520px, 58vh, 640px);
   }
 
   #about .about-main {
     display: grid !important;
-    grid-template-columns: minmax(280px, 0.92fr) minmax(0, 1.28fr);
-    gap: clamp(1.75rem, 3.2vw, 3rem);
+    grid-template-columns: minmax(320px, 1fr) minmax(0, 1.35fr);
+    gap: clamp(2rem, 3.5vw, 3.5rem);
     align-items: stretch !important;
     margin-bottom: 0 !important;
   }
 
   #about .about-image-wrapper {
-    height: auto !important;
-    min-height: var(--about-image-height) !important;
-    max-height: none !important;
+    height: var(--about-pair-height) !important;
+    min-height: var(--about-pair-height) !important;
+    max-height: var(--about-pair-height) !important;
     border-radius: 24px;
     overflow: hidden;
   }
 
   #about .about-text-card {
-    height: auto !important;
-    min-height: 0 !important;
-    max-height: none !important;
+    height: var(--about-pair-height) !important;
+    min-height: var(--about-pair-height) !important;
+    max-height: var(--about-pair-height) !important;
     display: flex !important;
     flex-direction: column !important;
-    overflow: visible !important;
+    overflow: hidden !important;
   }
 
   #about .about-image-wrapper picture,
@@ -595,9 +595,12 @@ html.dark .hero-social-link:hover {
   }
 
   #about .about-tab-panel {
-    flex: 0 1 auto;
+    flex: 1 1 auto;
     min-height: 0;
-    overflow: visible;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
   }
 
   #about .about-content {
@@ -2717,21 +2720,22 @@ html.dark .artist-name {
 
 /* About image + information card (critical, before lazy about.css) */
 #about {
-  --about-image-height: clamp(420px, 52vh, 640px);
+  --about-pair-height: clamp(520px, 58vh, 640px);
 }
 
 #about .about-main {
   display: grid;
-  grid-template-columns: minmax(280px, 0.92fr) minmax(0, 1.28fr);
-  gap: clamp(1.5rem, 3vw, 2.75rem);
+  grid-template-columns: minmax(320px, 1fr) minmax(0, 1.35fr);
+  gap: clamp(2rem, 3.5vw, 3.5rem);
   align-items: stretch;
 }
 
 #about .about-image-wrapper {
   position: relative;
   top: auto;
-  height: auto;
-  min-height: var(--about-image-height);
+  height: var(--about-pair-height);
+  min-height: var(--about-pair-height);
+  max-height: var(--about-pair-height);
   box-sizing: border-box;
   border-radius: 24px;
   overflow: hidden;
@@ -2752,34 +2756,40 @@ html.dark .artist-name {
 }
 
 #about .about-text-card {
+  height: var(--about-pair-height);
+  min-height: var(--about-pair-height);
+  max-height: var(--about-pair-height);
   display: flex;
   flex-direction: column;
-  overflow: visible;
+  overflow: hidden;
 }
 
 #about .about-tab-panel {
-  flex: 0 1 auto;
+  flex: 1 1 auto;
   min-height: 0;
-  overflow: visible;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
 }
 
 @media (max-width: 1024px) {
   #about {
-    --about-image-height: min(420px, 58vw);
+    --about-pair-height: clamp(460px, 52vh, 560px);
   }
 
   #about .about-main {
     grid-template-columns: 1fr;
     align-items: stretch;
-    gap: 1.5rem;
+    gap: 1.75rem;
   }
 
   #about .about-image-wrapper {
     position: relative !important;
     top: auto !important;
-    height: var(--about-image-height) !important;
-    min-height: var(--about-image-height) !important;
-    max-height: none !important;
+    height: var(--about-pair-height) !important;
+    min-height: var(--about-pair-height) !important;
+    max-height: var(--about-pair-height) !important;
     width: 100%;
     overflow: hidden !important;
     box-sizing: border-box;
@@ -2797,17 +2807,20 @@ html.dark .artist-name {
   #about .about-text-card {
     display: flex !important;
     flex-direction: column !important;
-    height: auto !important;
-    min-height: 0 !important;
-    max-height: none !important;
-    overflow: visible !important;
+    height: var(--about-pair-height) !important;
+    min-height: var(--about-pair-height) !important;
+    max-height: var(--about-pair-height) !important;
+    overflow: hidden !important;
     box-sizing: border-box;
   }
 
   #about .about-tab-panel {
-    flex: 0 1 auto !important;
+    flex: 1 1 auto !important;
     min-height: 0 !important;
-    overflow: visible !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
   }
 }
 
