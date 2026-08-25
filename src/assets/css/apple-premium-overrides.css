@@ -1826,9 +1826,9 @@ html.dark .reminders-list::-webkit-scrollbar-thumb {
 }
 
 html.dark .card-action-btn {
-  background: rgba(255, 255, 255, 0.08) !important;
-  border-color: rgba(255, 255, 255, 0.12) !important;
-  color: #a1a1a6 !important;
+  background: #000000 !important;
+  border-color: #2c2c2e !important;
+  color: #f5f5f7 !important;
 }
 
 html.dark .card-action-btn:hover {
@@ -1958,9 +1958,9 @@ html.dark .empty-state-title {
 }
 
 html.dark .empty-action-btn {
-  background: rgba(10, 132, 255, 0.15);
-  color: #2997ff;
-  border-color: rgba(10, 132, 255, 0.3);
+  background: #000000 !important;
+  color: #2997ff !important;
+  border-color: rgba(41, 151, 255, 0.45) !important;
 }
 
 html.dark .empty-action-btn:hover {

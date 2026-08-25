@@ -687,9 +687,10 @@ button.a11y-glass-preset:hover:not(.is-active),
 }
 
 html.dark button.a11y-glass-preset:hover:not(.is-active) {
-  color: #f5f5f7 !important;
-  -webkit-text-fill-color: #f5f5f7 !important;
-  background: rgb(255 255 255 / 8%) !important;
+  color: #2997ff !important;
+  -webkit-text-fill-color: #2997ff !important;
+  background: #000000 !important;
+  border-color: #2997ff !important;
 }
 
 button.a11y-glass-preset:focus-visible,

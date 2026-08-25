@@ -1395,16 +1395,13 @@ html.dark .btn-github,
 html.dark .btn-ar,
 html.dark .error-btn--secondary,
 html.dark .project-action-btn:not(.btn-primary):not(.btn-demo) {
-  background-color: rgba(255, 255, 255, 0.08) !important;
-  background-image: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.12) 0%,
-    rgba(255, 255, 255, 0.04) 100%
-  ) !important;
+  background: #000000 !important;
+  background-color: #000000 !important;
+  background-image: none !important;
   color: #f5f5f7 !important;
   -webkit-text-fill-color: #f5f5f7 !important;
-  border: 1px solid rgba(255, 255, 255, 0.18) !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+  border: 1px solid #2c2c2e !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4) !important;
   backdrop-filter: blur(12px) !important;
   -webkit-backdrop-filter: blur(12px) !important;
 }
@@ -1431,12 +1428,9 @@ html.dark .btn-github:hover,
 html.dark .btn-ar:hover,
 html.dark .error-btn--secondary:hover,
 html.dark .project-action-btn:not(.btn-primary):not(.btn-demo):hover {
-  background-color: rgba(41, 151, 255, 0.14) !important;
-  background-image: linear-gradient(
-    180deg,
-    rgba(41, 151, 255, 0.18) 0%,
-    rgba(41, 151, 255, 0.06) 100%
-  ) !important;
+  background: #000000 !important;
+  background-color: #000000 !important;
+  background-image: none !important;
   color: #2997ff !important;
   -webkit-text-fill-color: #2997ff !important;
   border-color: #2997ff !important;
@@ -1534,23 +1528,19 @@ html.dark .skills-radar-toggle-btn,
 html.dark .arch-tree-toggle-btn,
 html.dark .projects-expand-btn,
 html.dark .projects-view-all-btn,
-html.dark .engineering-open-btn,
 html.dark .blog-view-more-btn,
 html.dark .view-more-btn,
 html.dark .btn-view-more,
 html.dark .systems-view-more-btn,
 html.dark .travel-view-more-btn,
 html.dark .uses-view-more-btn {
-  background-color: rgba(41, 151, 255, 0.08) !important;
-  background-image: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.08) 0%,
-    rgba(255, 255, 255, 0.02) 100%
-  ) !important;
+  background: #000000 !important;
+  background-color: #000000 !important;
+  background-image: none !important;
   color: #2997ff !important;
   -webkit-text-fill-color: #2997ff !important;
-  border: 1px solid rgba(41, 151, 255, 0.4) !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+  border: 1px solid rgba(41, 151, 255, 0.45) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4) !important;
 }
 
 html.dark .section-preview-btn *,

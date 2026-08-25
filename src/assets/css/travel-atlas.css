@@ -2191,16 +2191,14 @@ html.dark body.travel-body .travel-action,
 html.dark body.travel-body .travel-filter-chip,
 html.dark body.travel-body .travel-advanced-toggle,
 html.dark body.travel-body .place-guide__chips span {
-  background-color: rgba(255, 255, 255, 0.06) !important;
-  background-image: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.1) 0%,
-    rgba(255, 255, 255, 0.03) 100%
-  ) !important;
-  border-color: rgba(255, 255, 255, 0.16) !important;
+  background: #000000 !important;
+  background-color: #000000 !important;
+  background-image: none !important;
+  border: 1px solid #2c2c2e !important;
+  border-color: #2c2c2e !important;
   color: #f5f5f7 !important;
   -webkit-text-fill-color: #f5f5f7 !important;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4) !important;
 }
 
 /* Primary text */

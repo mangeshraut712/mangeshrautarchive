@@ -191,12 +191,12 @@ html.dark #home .profile-image {
 }
 
 html.dark #home .name-pronounce-btn {
-  color: #636366;
+  color: #86868b;
 }
 
 html.dark #home .name-pronounce-btn:hover {
   color: #2997ff;
-  background: rgb(41 151 255 / 10%) !important;
+  background: #000000 !important;
 }
 
 /* Hero Name - Premium Typography */

@@ -43,6 +43,17 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'a71e3b09',
+    date: '2026-08-25',
+    type: 'release',
+    title:
+      'Dark Mode Button Design Audit, Solid Black Surfaces & High-Contrast Typography Synchronization',
+    summary:
+      'Standardized sitewide button systems and interactive controls across all 6 tiers in Dark Mode (html.dark) to pure solid black background (#000000), crisp 1px Apple borders (#2c2c2e), and synchronized high-contrast font colors (#f5f5f7, #ffffff, #2997ff). Harmonized secondary buttons, filter chips, architecture tabs, preview disclosures, and utility toggles across Homepage, Systems, Monitor, Travel, Uses, and Changelog pages. Built with Gemini 2.5 Pro; token metrics and LLM observability recorded.',
+    tags: ['design', 'a11y', 'performance', 'systems'],
+    sha: 'a71e3b09',
+  },
+  {
     id: 'f94a21cb',
     date: '2026-08-25',
     type: 'release',
