@@ -273,11 +273,11 @@ html.dark .about-brand-line {
 }
 
 html.dark .about-intro-title {
-  color: #f5f5f7;
+  color: #ffffff;
 }
 
 html:not(.dark) .about-intro-title {
-  color: #1d1d1f;
+  color: #000000;
 }
 
 .about-intro-text {
@@ -731,6 +731,7 @@ html.dark .about-card-header {
    - Italics: font-style: italic, color: #1d1d1f (Light) / #ffffff (Dark)
    ================================================================ */
 
+#about .about-paragraph,
 .about-paragraph {
   font-family:
     'Minion Pro',
@@ -745,7 +746,7 @@ html.dark .about-card-header {
   line-height: 2.05 !important;
   letter-spacing: 0.022em !important;
   word-spacing: 0.04em !important;
-  color: #2c2c2e !important;
+  color: #000000 !important;
   margin: 0 0 2rem !important;
   max-width: 44rem;
   transition:
@@ -753,29 +754,35 @@ html.dark .about-card-header {
     color 0.25s ease;
 }
 
+#about .about-paragraph:last-child,
 .about-paragraph:last-child {
   margin-bottom: 0 !important;
 }
 
+html.dark #about .about-paragraph,
 html.dark .about-paragraph {
-  color: #e5e5ea !important;
+  color: #ffffff !important;
 }
 
+#about .about-paragraph strong,
 .about-paragraph strong {
   font-family: inherit !important;
   font-weight: 700 !important;
   color: #000000 !important;
 }
 
+html.dark #about .about-paragraph strong,
 html.dark .about-paragraph strong {
   color: #ffffff !important;
 }
 
+#about .about-paragraph em,
 .about-paragraph em {
   font-style: italic !important;
-  color: #1d1d1f !important;
+  color: #000000 !important;
 }
 
+html.dark #about .about-paragraph em,
 html.dark .about-paragraph em {
   color: #ffffff !important;
 }

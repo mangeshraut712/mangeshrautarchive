@@ -43,6 +43,17 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'b281f09c',
+    date: '2026-08-25',
+    type: 'improvement',
+    title: 'Solid Black & White High-Contrast Typography with Expanded Letter Spacing',
+    summary:
+      'Rendered pure solid black (#000000) typography for the About narrative in Light mode and pure solid white (#ffffff) in Dark mode for maximum reading contrast. Increased body font size to 1.16rem (18.5px desktop / 1.08rem mobile), applied +0.022em letter-spacing tracking and +0.04em word-spacing, with ultra-open 2.05 line-height and 2.0rem paragraph margin.',
+    tags: ['design', 'ui', 'typography', 'contrast', 'accessibility'],
+    sha: 'b281f09c',
+    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/b281f09c',
+  },
+  {
     id: 'c529fa01',
     date: '2026-08-25',
     type: 'improvement',

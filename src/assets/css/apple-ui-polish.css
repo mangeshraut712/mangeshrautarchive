@@ -422,7 +422,6 @@ html.dark body #home .hero-description.hero-description-lines {
 }
 
 /* ─── Body copy in content sections ──────────────────────────────── */
-#about .about-paragraph,
 #about .about-description,
 .experience-content,
 .education-content,
@@ -436,7 +435,6 @@ html.dark body #home .hero-description.hero-description-lines {
   font-size: 1.0625rem;
 }
 
-html.dark #about .about-paragraph,
 html.dark #about .about-description,
 html.dark .experience-content,
 html.dark .education-content,
