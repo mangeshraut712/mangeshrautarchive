@@ -408,9 +408,13 @@
 
   /* Hide FABs when open to prevent overlap */
   body.chatbot-open #chatbot-toggle,
-  body.chatbot-open #go-to-top {
-    display: none !important;
+  body.chatbot-open #go-to-top,
+  body.resume-menu-open #chatbot-toggle,
+  body.resume-menu-open #website-share-toggle,
+  body.resume-menu-open .a11y-toolbar,
+  body.resume-menu-open #go-to-top {
     opacity: 0 !important;
+    visibility: hidden !important;
     pointer-events: none !important;
   }
 

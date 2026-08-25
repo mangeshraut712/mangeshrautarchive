@@ -947,7 +947,7 @@ html.dark .ios-widget-wrapper {
   align-items: center !important;
   text-align: center !important;
   margin: 16px 0 12px !important;
-  color: #86868b !important;
+  color: #555558 !important;
   font-size: 0.72rem !important;
   font-weight: 700 !important;
   letter-spacing: 0.08em !important;
@@ -957,7 +957,7 @@ html.dark .ios-widget-wrapper {
 .contact-or-divider::after {
   content: '' !important;
   flex: 1 !important;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12) !important;
 }
 
 .contact-or-divider span {
@@ -965,12 +965,20 @@ html.dark .ios-widget-wrapper {
 }
 
 html.dark .contact-or-divider {
-  color: #98989d !important;
+  color: #a1a1a6 !important;
 }
 
 html.dark .contact-or-divider::before,
 html.dark .contact-or-divider::after {
-  border-bottom-color: rgba(255, 255, 255, 0.12) !important;
+  border-bottom-color: rgba(255, 255, 255, 0.16) !important;
+}
+
+html.high-contrast .contact-or-divider {
+  color: #000000 !important;
+}
+
+html.high-contrast.dark .contact-or-divider {
+  color: #ffffff !important;
 }
 
 .calendly-panel {
@@ -4470,4 +4478,41 @@ html.dark #calendar-widget .month-title {
 html.dark .contact-card-subtitle,
 html.dark .contact-card .contact-card-subtitle {
   color: #a1a1a6 !important;
+}
+
+body.resume-menu-open .a11y-toolbar,
+body.resume-menu-open #website-share-toggle,
+body.resume-menu-open #chatbot-toggle,
+body.resume-menu-open .a11y-toolbar__main,
+html:has(.resume-dropdown-menu.is-open) .a11y-toolbar,
+html:has(.resume-dropdown-menu.is-open) #website-share-toggle,
+html:has(.resume-dropdown-menu.is-open) #chatbot-toggle,
+html:has(.resume-dropdown-wrapper.is-open) .a11y-toolbar,
+html:has(.resume-dropdown-wrapper.is-open) #website-share-toggle,
+html:has(.resume-dropdown-wrapper.is-open) #chatbot-toggle {
+  visibility: hidden !important;
+  pointer-events: none !important;
+  opacity: 0 !important;
+}
+
+.footer-tagline,
+.footer-copy,
+footer .footer-tagline,
+footer .footer-copy,
+body .footer-tagline,
+body .footer-copy,
+p.footer-copy,
+p.footer-tagline {
+  color: #48484a !important;
+  -webkit-text-fill-color: #48484a !important;
+}
+
+html.dark .footer-tagline,
+html.dark .footer-copy,
+html.dark footer .footer-tagline,
+html.dark footer .footer-copy,
+html.dark body .footer-tagline,
+html.dark body .footer-copy {
+  color: #a1a1a6 !important;
+  -webkit-text-fill-color: #a1a1a6 !important;
 }

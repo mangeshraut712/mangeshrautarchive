@@ -875,12 +875,15 @@ export class CalendarWidget {
   }
 
   addConfirmedBooking({ title, time, tag = 'Confirmed' } = {}) {
-    const today = new Date();
+    const targetDate = this.selectedDate || this.date || new Date();
+    const bookingDateKey =
+      this.selectedDayFilter ||
+      dateKey(targetDate.getFullYear(), targetDate.getMonth(), targetDate.getDate());
     const bookingReminder = {
       id: Date.now(),
       text: title || 'Confirmed Consultation (Google Meet)',
       time: time || 'Confirmed',
-      dateKey: dateKey(today.getFullYear(), today.getMonth(), today.getDate()),
+      dateKey: bookingDateKey,
       category: 'events',
       color: 'green',
       tag,

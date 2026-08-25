@@ -1284,6 +1284,20 @@ html:has(body > .resume-dropdown-menu.is-open) #home {
   overflow: visible !important;
 }
 
+body.resume-menu-open .a11y-toolbar,
+body.resume-menu-open #website-share-toggle,
+body.resume-menu-open #chatbot-toggle,
+body.resume-menu-open .a11y-toolbar__main,
+html:has(.resume-dropdown-menu.is-open) .a11y-toolbar,
+html:has(.resume-dropdown-menu.is-open) #website-share-toggle,
+html:has(.resume-dropdown-menu.is-open) #chatbot-toggle,
+html:has(.resume-dropdown-wrapper.is-open) .a11y-toolbar,
+html:has(.resume-dropdown-wrapper.is-open) #website-share-toggle,
+html:has(.resume-dropdown-wrapper.is-open) #chatbot-toggle {
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
 @media (max-width: 768px) {
   .resume-dropdown-wrapper {
     width: 100%;

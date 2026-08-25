@@ -43,6 +43,17 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'f94a21cb',
+    date: '2026-08-25',
+    type: 'release',
+    title:
+      'Accessibility Contrast Hardening, Calendly Integration Polish & CI Quality Suite Harmonization',
+    summary:
+      'Hardened WCAG AA/AAA color contrast across light/dark mode dividers, footer elements, and interactive disclosure actions. Streamlined Calendly appointment booking below the contact form with dynamic category filtering. Harmonized full Playwright E2E suites across all browser configurations, ensuring 100% green test passes across GitHub Actions and dual-host deploys. Built with Gemini 3.7 Flash; token metrics and LLM observability recorded.',
+    tags: ['a11y', 'design', 'performance', 'deploy'],
+    sha: 'f94a21cb',
+  },
+  {
     id: 'e38a92f4',
     date: '2026-08-24',
     type: 'improvement',

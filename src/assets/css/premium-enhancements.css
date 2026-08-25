@@ -1505,8 +1505,9 @@ html:not(.dark) .travel-view-more-btn,
 html:not(.dark) .uses-view-more-btn {
   background-color: rgba(0, 113, 227, 0.04) !important;
   background-image: linear-gradient(180deg, #ffffff 0%, #f5f5f7 100%) !important;
-  color: #0071e3 !important;
-  -webkit-text-fill-color: #0071e3 !important;
+  color: #0066cc !important;
+  -webkit-text-fill-color: #0066cc !important;
+  font-weight: 600 !important;
   border: 1px solid rgba(0, 113, 227, 0.35) !important;
   box-shadow: 0 2px 8px rgba(0, 113, 227, 0.08) !important;
 }
@@ -1523,8 +1524,9 @@ html:not(.dark) .btn-view-more *,
 html:not(.dark) .systems-view-more-btn *,
 html:not(.dark) .travel-view-more-btn *,
 html:not(.dark) .uses-view-more-btn * {
-  color: #0071e3 !important;
-  -webkit-text-fill-color: #0071e3 !important;
+  color: #0066cc !important;
+  -webkit-text-fill-color: #0066cc !important;
+  font-weight: 600 !important;
 }
 
 html.dark .section-preview-btn,

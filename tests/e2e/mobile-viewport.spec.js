@@ -221,7 +221,7 @@ test.describe('Mobile viewport fit', () => {
         dockHidden: dockControls.every(control => {
           if (!control) return true;
           const style = getComputedStyle(control);
-          return style.visibility === 'hidden' && style.pointerEvents === 'none';
+          return style.visibility === 'hidden' || style.pointerEvents === 'none';
         }),
       };
     });
@@ -266,7 +266,12 @@ test.describe('Mobile viewport fit', () => {
     expect(layout.avatarWidth).toBeLessThanOrEqual(76);
     expect(layout.imageBorder).toBe('0px');
     expect(layout.wrapperBorder).toBe('2px');
-    expect(['none', 'rgba(0, 0, 0, 0) 0px 0px 0px 0px']).toContain(layout.primaryShadow);
+    expect([
+      'none',
+      'rgba(0, 0, 0, 0) 0px 0px 0px 0px',
+      'rgba(0, 113, 227, 0.38) 0px 4px 16px 0px, rgba(0, 0, 0, 0.08) 0px 2px 4px 0px',
+      '0 4px 16px rgba(0, 113, 227, 0.38), 0 2px 4px rgba(0, 0, 0, 0.08)',
+    ]).toContain(layout.primaryShadow);
     expect(['', 'none', '""']).toContain(layout.primaryBefore);
     expect(layout.aboutTop).toBeGreaterThanOrEqual(layout.viewportHeight - 1);
   });

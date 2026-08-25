@@ -200,6 +200,16 @@ export function initResumeDropdown() {
   function openMenu() {
     wrapper.classList.add('is-open');
     menu.classList.add('is-open');
+    document.body.classList.add('resume-menu-open');
+    const dock = document.querySelector('.a11y-toolbar');
+    const share = document.getElementById('website-share-toggle');
+    const chat = document.getElementById('chatbot-toggle');
+    [dock, share, chat].forEach(el => {
+      if (el) {
+        el.style.setProperty('visibility', 'hidden', 'important');
+        el.style.setProperty('pointer-events', 'none', 'important');
+      }
+    });
     toggle.setAttribute('aria-expanded', 'true');
     menu.setAttribute('aria-hidden', 'false');
     menu.removeAttribute('inert');
@@ -219,6 +229,16 @@ export function initResumeDropdown() {
     if (!wrapper.classList.contains('is-open')) return;
     wrapper.classList.remove('is-open');
     menu.classList.remove('is-open');
+    document.body.classList.remove('resume-menu-open');
+    const dock = document.querySelector('.a11y-toolbar');
+    const share = document.getElementById('website-share-toggle');
+    const chat = document.getElementById('chatbot-toggle');
+    [dock, share, chat].forEach(el => {
+      if (el) {
+        el.style.removeProperty('visibility');
+        el.style.removeProperty('pointer-events');
+      }
+    });
     toggle.setAttribute('aria-expanded', 'false');
     menu.setAttribute('aria-hidden', 'true');
     menu.setAttribute('inert', '');
