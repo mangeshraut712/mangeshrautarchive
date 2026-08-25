@@ -43,6 +43,17 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'e639a04f',
+    date: '2026-08-25',
+    type: 'improvement',
+    title: 'Updated About Me Narrative — Systems, Cloud & Agentic AI Focus',
+    summary:
+      'Refreshed the core About Me story narrative with an authentic deep dive into 6+ years of engineering across backend distributed microservices, cloud infrastructure, full-stack products, and agentic AI systems engineering. Highlights production reliability, applied AI evaluations, Drexel MSCS, Aramark, IoasiZ, Harshwardhan Enterprises, and research.',
+    tags: ['content', 'about', 'bio', 'story', 'ai-systems'],
+    sha: 'e639a04f',
+    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/e639a04f',
+  },
+  {
     id: 'd8471e9a',
     date: '2026-08-25',
     type: 'improvement',
