@@ -43,6 +43,17 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'e410b89a',
+    date: '2026-08-25',
+    type: 'improvement',
+    title: 'Harmonize About Story Typography with FAQ Answers (Apple SF Pro & 1.6 Leading)',
+    summary:
+      'Standardized the About Full Story narrative typography to match the exact Apple SF Pro font stack, 0.98rem sizing, 1.6 line-height, and refined #6e6e73 / #a1a1a6 color hierarchy used across the FAQ answers. Removed temporary font switchers to provide a cohesive, distraction-free reading experience across desktop and mobile viewports in both light and dark themes.',
+    tags: ['design', 'ui', 'typography', 'polish'],
+    sha: 'e410b89a',
+    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/e410b89a',
+  },
+  {
     id: 'f892d10c',
     date: '2026-08-25',
     type: 'improvement',
