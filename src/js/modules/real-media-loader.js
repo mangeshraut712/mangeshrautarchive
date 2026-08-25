@@ -85,7 +85,7 @@ class RealMediaLoader {
         const safePlatform = this.escapeText(item.platform || '');
         const safeTitle = this.escapeText(this.getShortTitle(item.title));
         return `
-        <div class="media-card">
+        <div class="media-card show-card">
           <div class="media-poster">
               <img
                 src="${safePoster}"

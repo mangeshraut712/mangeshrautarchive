@@ -43,6 +43,18 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'b7194f28',
+    date: '2026-08-25',
+    type: 'fix',
+    title:
+      'Calendly Clean Luxury Pill CTA & Currently Media Suite with Apple iBooks, TV+, and Music Experiences',
+    summary:
+      'Eliminated nested double borders on the Calendly consultation panel by removing card container wrappers and crafting a unified Apple luxury secondary pill CTA with single 1.5px border, Apple Blue accents, and smooth hover gradient with white text. Re-architected Currently media cards: optimized Steve Jobs biography and book covers to 100% full uncropped visibility with 3D hardcover book spines and iBooks perspective tilt animation; upgraded Shows & Movies with 14px squircles, specular glass sheen, and Apple TV+ floating scale animation; and refined Music with 1:1 square artwork and Apple Music vinyl lift effect.',
+    tags: ['design', 'ui', 'components', 'animation'],
+    sha: 'b7194f28',
+    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/b7194f28',
+  },
+  {
     id: 'c47189fa',
     date: '2026-08-25',
     type: 'fix',

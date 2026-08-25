@@ -462,8 +462,7 @@ html.dark .award-card p {
 .newsletter-card,
 .about-text-card,
 .ios-widget-wrapper,
-.reminder-card,
-.calendly-panel {
+.reminder-card {
   background: #ffffff !important;
   background-color: #ffffff !important;
   border-color: #e5e5ea;
@@ -484,8 +483,7 @@ html.dark .calendar-wrapper-clean,
 html.dark .newsletter-card,
 html.dark .about-text-card,
 html.dark .ios-widget-wrapper,
-html.dark .reminder-card,
-html.dark .calendly-panel {
+html.dark .reminder-card {
   background: #000000 !important;
   background-color: #000000 !important;
   border-color: #2c2c2e;
