@@ -82,10 +82,40 @@ export function initAboutInteractivity() {
     if (activeBtn) updateSlider(activeBtn);
   });
 
-  const activeBtn = card.querySelector('.about-tab-btn.active');
-  if (activeBtn) {
-    setTimeout(() => updateSlider(activeBtn), 150);
+  // ── Font Family Switcher (New York, SF Pro, SF Rounded) ──
+  const fontButtons = card.querySelectorAll('.about-font-btn');
+  const applyFont = font => {
+    if (!font) return;
+    card.setAttribute('data-about-font', font);
+    fontButtons.forEach(btn => {
+      const isMatch = btn.dataset.font === font;
+      btn.classList.toggle('active', isMatch);
+      btn.setAttribute('aria-pressed', isMatch ? 'true' : 'false');
+    });
+    try {
+      localStorage.setItem('about-font', font);
+    } catch {
+      // ignore localstorage errors
+    }
+  };
+
+  // Restore saved font or default to Apple New York (Serif)
+  let savedFont = 'new-york';
+  try {
+    const stored = localStorage.getItem('about-font');
+    if (stored && ['new-york', 'sf-pro', 'sf-rounded'].includes(stored)) {
+      savedFont = stored;
+    }
+  } catch {
+    // fallback
   }
+  applyFont(savedFont);
+
+  fontButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      applyFont(btn.dataset.font);
+    });
+  });
 }
 
 // Auto-initialize if not loaded as a module

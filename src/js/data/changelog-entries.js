@@ -43,6 +43,18 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'f892d10c',
+    date: '2026-08-25',
+    type: 'improvement',
+    title:
+      'Apple Typography Suite (Serif New York, SF Pro, SF Rounded) & Verified Narrative Polish',
+    summary:
+      'Refined the About Full Story narrative with 100% fact-checked, compelling engineering copy covering Pune foundations, Student of the Year honor, SPPU distinction, Drexel MSCS (3.91 GPA & Honors), IoasiZ microservices, Aramark AWS inventory pipelines, and published IJFGCN ML research. Integrated line-height 1.5 for optimal editorial readability and introduced an interactive 3-font Apple typography switcher (Apple New York Serif, Apple SF Pro Modern Sans, and Apple SF Pro Rounded) with local storage persistence across Light and Dark themes.',
+    tags: ['design', 'ui', 'typography', 'content'],
+    sha: 'f892d10c',
+    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/f892d10c',
+  },
+  {
     id: 'b7194f28',
     date: '2026-08-25',
     type: 'fix',

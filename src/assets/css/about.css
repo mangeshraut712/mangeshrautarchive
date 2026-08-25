@@ -512,8 +512,8 @@ html:not(.dark) .about-highlight-text {
   }
 
   .about-paragraph {
-    font-size: 1.02rem !important;
-    line-height: 1.68 !important;
+    font-size: 0.98rem !important;
+    line-height: 1.5 !important;
   }
 
   .about-highlights {
@@ -576,7 +576,33 @@ html:not(.dark) .about-highlight-text {
 
   #about .about-card-header {
     flex: 0 0 auto !important;
-    margin-bottom: 0.5rem !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 0.5rem !important;
+    flex-wrap: nowrap !important;
+    margin-bottom: 0.85rem !important;
+    padding-bottom: 0.65rem !important;
+  }
+
+  #about .about-segmented-control {
+    flex: 1 1 auto !important;
+    max-width: 220px !important;
+  }
+
+  #about .about-segmented-control .about-tab-btn {
+    padding: 0.38rem 0.6rem !important;
+    font-size: 0.78rem !important;
+  }
+
+  #about .about-font-picker {
+    flex: 0 0 auto !important;
+    margin-left: auto !important;
+  }
+
+  #about .about-font-btn {
+    padding: 0.2rem 0.45rem !important;
+    font-size: 0.68rem !important;
   }
 
   #about .about-tab-panel {
@@ -591,22 +617,6 @@ html:not(.dark) .about-highlight-text {
 }
 
 /* ===== INTERACTIVE CARD UPGRADES ===== */
-
-/* Card Header & Controls */
-.about-card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 0.35rem;
-  flex-wrap: wrap;
-  gap: 1rem;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-  padding-bottom: 1rem;
-}
-
-html.dark .about-card-header {
-  border-bottom-color: rgba(255, 255, 255, 0.08);
-}
 
 /* iOS Segmented Control */
 /* iOS Segmented Control - Solid Theme Override */
@@ -682,6 +692,98 @@ html.dark .about-tab-btn.active {
   display: none !important;
 }
 
+/* ── About Card Header with Story Tabs and Font Picker ── */
+.about-card-header {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 0.75rem !important;
+  margin-bottom: 1.15rem !important;
+  padding-bottom: 0.85rem !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
+  flex-wrap: wrap !important;
+}
+
+html.dark .about-card-header {
+  border-bottom-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+.about-font-picker {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.45rem !important;
+  margin-left: auto !important;
+}
+
+.about-font-label {
+  font-size: 0.72rem !important;
+  color: #86868b !important;
+  display: inline-flex;
+  align-items: center;
+}
+
+html.dark .about-font-label {
+  color: #98989d !important;
+}
+
+.about-font-segmented {
+  display: inline-flex !important;
+  background: rgba(118, 118, 128, 0.12) !important;
+  padding: 2px !important;
+  border-radius: 8px !important;
+  gap: 2px !important;
+}
+
+html.dark .about-font-segmented {
+  background: rgba(118, 118, 128, 0.24) !important;
+}
+
+.about-font-btn {
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  padding: 0.22rem 0.6rem !important;
+  font-size: 0.72rem !important;
+  font-weight: 550 !important;
+  border-radius: 6px !important;
+  color: #636366 !important;
+  -webkit-text-fill-color: #636366 !important;
+  cursor: pointer !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+html.dark .about-font-btn {
+  color: #a1a1a6 !important;
+  -webkit-text-fill-color: #a1a1a6 !important;
+}
+
+.about-font-btn:hover {
+  color: #0071e3 !important;
+  -webkit-text-fill-color: #0071e3 !important;
+}
+
+html.dark .about-font-btn:hover {
+  color: #2997ff !important;
+  -webkit-text-fill-color: #2997ff !important;
+}
+
+.about-font-btn.active {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  color: #0071e3 !important;
+  -webkit-text-fill-color: #0071e3 !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12) !important;
+  font-weight: 650 !important;
+}
+
+html.dark .about-font-btn.active {
+  background: #2c2c2e !important;
+  background-color: #2c2c2e !important;
+  color: #2997ff !important;
+  -webkit-text-fill-color: #2997ff !important;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4) !important;
+}
+
 /* Tab Panels & Fade Animation */
 .about-tab-panel {
   display: block;
@@ -699,32 +801,199 @@ html.dark .about-tab-btn.active {
   }
 }
 
+/* ================================================================
+   ABOUT STORY TYPOGRAPHY MODES (Line-Height: 1.5, Apple Design)
+   Mode 1: 'new-york'   → Apple New York Serif Editorial
+   Mode 2: 'sf-pro'     → Apple SF Pro Modernist Sans
+   Mode 3: 'sf-rounded' → Apple SF Pro Rounded Warm Humanist
+   ================================================================ */
+
 .about-paragraph {
-  font-size: 1.0625rem !important;
-  line-height: 1.68 !important;
-  letter-spacing: -0.012em !important;
-  color: #3c3c43 !important;
-  margin: 0 0 1.15rem !important;
-  max-width: 42rem;
+  line-height: 1.5 !important;
+  margin: 0 0 1rem !important;
+  max-width: 44rem;
   transition:
-    opacity 0.3s ease,
-    color 0.3s ease;
+    opacity 0.25s ease,
+    color 0.25s ease;
 }
 
 .about-paragraph:last-child {
   margin-bottom: 0 !important;
 }
 
-html.dark .about-paragraph {
-  color: #d2d2d7 !important;
+/* ── 1. Apple New York (Serif Editorial — The Apple Books Standard) ── */
+.about-text-card[data-about-font='new-york'] .about-intro-title,
+.about-text-card:not([data-about-font]) .about-intro-title {
+  font-family:
+    ui-serif,
+    'New York',
+    -apple-system-ui-serif,
+    'Charter',
+    'Georgia',
+    'Cambria',
+    serif !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.02em !important;
+  font-size: 1.45rem !important;
 }
 
-.about-paragraph strong {
-  font-weight: 600 !important;
+.about-text-card[data-about-font='new-york'] .about-brand-line,
+.about-text-card:not([data-about-font]) .about-brand-line {
+  font-family:
+    ui-serif,
+    'New York',
+    -apple-system-ui-serif,
+    'Charter',
+    'Georgia',
+    'Cambria',
+    serif !important;
+  font-style: italic !important;
+  letter-spacing: -0.01em !important;
+  font-size: 0.95rem !important;
+  margin-bottom: 1.15rem !important;
+}
+
+.about-text-card[data-about-font='new-york'] .about-paragraph,
+.about-text-card:not([data-about-font]) .about-paragraph {
+  font-family:
+    ui-serif,
+    'New York',
+    -apple-system-ui-serif,
+    'Charter',
+    'Georgia',
+    'Cambria',
+    serif !important;
+  font-size: 1.02rem !important;
+  line-height: 1.5 !important;
+  letter-spacing: -0.003em !important;
+  color: #2c2c2e !important;
+}
+
+html.dark .about-text-card[data-about-font='new-york'] .about-paragraph,
+html.dark .about-text-card:not([data-about-font]) .about-paragraph {
+  color: #e5e5ea !important;
+}
+
+.about-text-card[data-about-font='new-york'] .about-paragraph strong,
+.about-text-card:not([data-about-font]) .about-paragraph strong {
+  font-family:
+    ui-serif,
+    'New York',
+    -apple-system-ui-serif,
+    'Charter',
+    'Georgia',
+    'Cambria',
+    serif !important;
+  font-weight: 700 !important;
   color: #000000 !important;
 }
 
-html.dark .about-paragraph strong {
+html.dark .about-text-card[data-about-font='new-york'] .about-paragraph strong,
+html.dark .about-text-card:not([data-about-font]) .about-paragraph strong {
+  color: #ffffff !important;
+}
+
+/* ── 2. Apple SF Pro (Clean Modernist Sans — The Apple UI Standard) ── */
+.about-text-card[data-about-font='sf-pro'] .about-intro-title {
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', sans-serif !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.025em !important;
+  font-size: 1.42rem !important;
+}
+
+.about-text-card[data-about-font='sf-pro'] .about-brand-line {
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', sans-serif !important;
+  font-weight: 500 !important;
+  letter-spacing: -0.01em !important;
+  font-size: 0.94rem !important;
+  margin-bottom: 1.15rem !important;
+}
+
+.about-text-card[data-about-font='sf-pro'] .about-paragraph {
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', sans-serif !important;
+  font-size: 0.98rem !important;
+  line-height: 1.5 !important;
+  letter-spacing: -0.012em !important;
+  color: #3a3a3c !important;
+}
+
+html.dark .about-text-card[data-about-font='sf-pro'] .about-paragraph {
+  color: #d1d1d6 !important;
+}
+
+.about-text-card[data-about-font='sf-pro'] .about-paragraph strong {
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', sans-serif !important;
+  font-weight: 650 !important;
+  color: #000000 !important;
+}
+
+html.dark .about-text-card[data-about-font='sf-pro'] .about-paragraph strong {
+  color: #ffffff !important;
+}
+
+/* ── 3. Apple SF Pro Rounded (Warm Modern — Notes & Fitness Standard) ── */
+.about-text-card[data-about-font='sf-rounded'] .about-intro-title {
+  font-family:
+    ui-rounded,
+    'SF Pro Rounded',
+    -apple-system,
+    BlinkMacSystemFont,
+    'SF Pro Text',
+    sans-serif !important;
+  font-weight: 750 !important;
+  letter-spacing: -0.02em !important;
+  font-size: 1.42rem !important;
+}
+
+.about-text-card[data-about-font='sf-rounded'] .about-brand-line {
+  font-family:
+    ui-rounded,
+    'SF Pro Rounded',
+    -apple-system,
+    BlinkMacSystemFont,
+    'SF Pro Text',
+    sans-serif !important;
+  font-weight: 550 !important;
+  letter-spacing: -0.008em !important;
+  font-size: 0.94rem !important;
+  margin-bottom: 1.15rem !important;
+}
+
+.about-text-card[data-about-font='sf-rounded'] .about-paragraph {
+  font-family:
+    ui-rounded,
+    'SF Pro Rounded',
+    -apple-system,
+    BlinkMacSystemFont,
+    'SF Pro Text',
+    sans-serif !important;
+  font-size: 0.98rem !important;
+  line-height: 1.5 !important;
+  letter-spacing: -0.008em !important;
+  color: #3a3a3c !important;
+}
+
+html.dark .about-text-card[data-about-font='sf-rounded'] .about-paragraph {
+  color: #d1d1d6 !important;
+}
+
+.about-text-card[data-about-font='sf-rounded'] .about-paragraph strong {
+  font-family:
+    ui-rounded,
+    'SF Pro Rounded',
+    -apple-system,
+    BlinkMacSystemFont,
+    'SF Pro Text',
+    sans-serif !important;
+  font-weight: 700 !important;
+  color: #000000 !important;
+}
+
+html.dark .about-text-card[data-about-font='sf-rounded'] .about-paragraph strong {
   color: #ffffff !important;
 }
 
