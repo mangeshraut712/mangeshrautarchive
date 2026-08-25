@@ -693,7 +693,11 @@ main .section-preview-btn {
 button.section-preview-btn:hover,
 .section-preview-btn:hover,
 main button.section-preview-btn:hover,
-main .section-preview-btn:hover {
+main .section-preview-btn:hover,
+button.section-preview-btn:hover *,
+.section-preview-btn:hover *,
+main button.section-preview-btn:hover *,
+main .section-preview-btn:hover * {
   background-color: #0077ed !important;
   background-image: linear-gradient(135deg, #0080ff 0%, #0071e3 50%, #0066cc 100%) !important;
   border-color: rgba(255, 255, 255, 0.35) !important;
@@ -722,7 +726,11 @@ html.dark main .section-preview-btn {
 html.dark button.section-preview-btn:hover,
 html.dark .section-preview-btn:hover,
 html.dark main button.section-preview-btn:hover,
-html.dark main .section-preview-btn:hover {
+html.dark main .section-preview-btn:hover,
+html.dark button.section-preview-btn:hover *,
+html.dark .section-preview-btn:hover *,
+html.dark main button.section-preview-btn:hover *,
+html.dark main .section-preview-btn:hover * {
   background-color: #0077ed !important;
   background-image: linear-gradient(135deg, #0080ff 0%, #0071e3 50%, #0066cc 100%) !important;
   border-color: rgba(255, 255, 255, 0.35) !important;

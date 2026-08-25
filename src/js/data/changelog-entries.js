@@ -43,6 +43,17 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'c47189fa',
+    date: '2026-08-25',
+    type: 'fix',
+    title: 'Disclosure Button Hover Text Contrast & Mobile Scrollable About Information Card',
+    summary:
+      'Fixed hover visibility on progressive disclosure buttons (Competency Matrix & Radar, System Topology & Pipeline, and all section preview controls) by applying ultra-high specificity white text and icon overrides (#ffffff !important) across both Light and Dark themes. Restored bounded clamp height (clamp(420px, 52vh, 500px)) with smooth Apple internal scrolling for the About information card on mobile, keeping the narrative cleanly contained on screen without overflowing.',
+    tags: ['design', 'ui', 'accessibility', 'mobile', 'components'],
+    sha: 'c47189fa',
+    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/c47189fa',
+  },
+  {
     id: 'a94df10b',
     date: '2026-08-25',
     type: 'improvement',

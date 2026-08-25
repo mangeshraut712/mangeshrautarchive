@@ -1557,18 +1557,18 @@ html.dark .uses-view-more-btn * {
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .section-preview-btn:hover,
-  .skills-radar-toggle-btn:hover,
-  .arch-tree-toggle-btn:hover,
-  .projects-expand-btn:hover,
-  .projects-view-all-btn:hover,
-  .engineering-open-btn:hover,
-  .blog-view-more-btn:hover,
-  .view-more-btn:hover,
-  .btn-view-more:hover,
-  .systems-view-more-btn:hover,
-  .travel-view-more-btn:hover,
-  .uses-view-more-btn:hover {
+  html:is(:not(.dark), .dark) .section-preview-btn:hover,
+  html:is(:not(.dark), .dark) .skills-radar-toggle-btn:hover,
+  html:is(:not(.dark), .dark) .arch-tree-toggle-btn:hover,
+  html:is(:not(.dark), .dark) .projects-expand-btn:hover,
+  html:is(:not(.dark), .dark) .projects-view-all-btn:hover,
+  html:is(:not(.dark), .dark) .engineering-open-btn:hover,
+  html:is(:not(.dark), .dark) .blog-view-more-btn:hover,
+  html:is(:not(.dark), .dark) .view-more-btn:hover,
+  html:is(:not(.dark), .dark) .btn-view-more:hover,
+  html:is(:not(.dark), .dark) .systems-view-more-btn:hover,
+  html:is(:not(.dark), .dark) .travel-view-more-btn:hover,
+  html:is(:not(.dark), .dark) .uses-view-more-btn:hover {
     background-color: #0077ed !important;
     background-image: linear-gradient(135deg, #0080ff 0%, #0071e3 50%, #0066cc 100%) !important;
     color: #ffffff !important;
@@ -1578,18 +1578,18 @@ html.dark .uses-view-more-btn * {
     transform: translateY(-2px) scale(1.02) !important;
   }
 
-  .section-preview-btn:hover *,
-  .skills-radar-toggle-btn:hover *,
-  .arch-tree-toggle-btn:hover *,
-  .projects-expand-btn:hover *,
-  .projects-view-all-btn:hover *,
-  .engineering-open-btn:hover *,
-  .blog-view-more-btn:hover *,
-  .view-more-btn:hover *,
-  .btn-view-more:hover *,
-  .systems-view-more-btn:hover *,
-  .travel-view-more-btn:hover *,
-  .uses-view-more-btn:hover * {
+  html:is(:not(.dark), .dark) .section-preview-btn:hover *,
+  html:is(:not(.dark), .dark) .skills-radar-toggle-btn:hover *,
+  html:is(:not(.dark), .dark) .arch-tree-toggle-btn:hover *,
+  html:is(:not(.dark), .dark) .projects-expand-btn:hover *,
+  html:is(:not(.dark), .dark) .projects-view-all-btn:hover *,
+  html:is(:not(.dark), .dark) .engineering-open-btn:hover *,
+  html:is(:not(.dark), .dark) .blog-view-more-btn:hover *,
+  html:is(:not(.dark), .dark) .view-more-btn:hover *,
+  html:is(:not(.dark), .dark) .btn-view-more:hover *,
+  html:is(:not(.dark), .dark) .systems-view-more-btn:hover *,
+  html:is(:not(.dark), .dark) .travel-view-more-btn:hover *,
+  html:is(:not(.dark), .dark) .uses-view-more-btn:hover * {
     color: #ffffff !important;
     -webkit-text-fill-color: #ffffff !important;
   }

@@ -2808,19 +2808,22 @@ html.dark .artist-name {
   #about .about-text-card {
     display: flex !important;
     flex-direction: column !important;
-    height: auto !important;
-    min-height: 0 !important;
-    max-height: none !important;
-    overflow: visible !important;
+    height: clamp(460px, 52vh, 560px) !important;
+    min-height: clamp(460px, 52vh, 560px) !important;
+    max-height: clamp(460px, 52vh, 560px) !important;
+    overflow: hidden !important;
     box-sizing: border-box;
     border-radius: 26px;
-    padding: 2rem 1.75rem !important;
+    padding: 1.75rem 1.5rem !important;
   }
 
   #about .about-tab-panel {
-    flex: 0 1 auto !important;
+    flex: 1 1 auto !important;
     min-height: 0 !important;
-    overflow: visible !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
   }
 }
 
@@ -2839,8 +2842,22 @@ html.dark .artist-name {
   }
 
   #about .about-text-card {
+    height: clamp(420px, 52vh, 500px) !important;
+    min-height: clamp(420px, 52vh, 500px) !important;
+    max-height: clamp(420px, 52vh, 500px) !important;
     border-radius: 24px !important;
-    padding: 1.6rem 1.25rem 1.85rem !important;
+    padding: 1.4rem 1.15rem 1.4rem !important;
+    overflow: hidden !important;
+  }
+
+  #about .about-tab-panel {
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    -webkit-overflow-scrolling: touch !important;
+    overscroll-behavior: contain !important;
+    padding-right: 0.4rem !important;
   }
 }
 
