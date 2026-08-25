@@ -68,7 +68,7 @@ html.dark .publications-divider {
 
 html.dark .publication-card {
   background: #000 !important;
-  border-color: rgb(255 255 255 / 8%) !important;
+  border-color: var(--card-border-rest, #2c2c2e) !important;
   box-shadow: none !important;
 }
 

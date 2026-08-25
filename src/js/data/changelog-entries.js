@@ -43,6 +43,17 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'a7f104d8',
+    date: '2026-08-25',
+    type: 'improvement',
+    title: 'Site-Wide Border Audit, Double-Border Elimination & Apple HIG Radii Harmonization',
+    summary:
+      'Conducted a comprehensive automated and visual border audit across all 7 portfolio pages (index, systems, monitor, travel, uses, changelog, 404). Harmonized all container and card borders with authentic Apple Human Interface Guidelines: resolved subpixel image clipping in the About photo bento card by anchoring the 24px squircle hairline border to the outer wrapper, harmonized Publications card dark mode border tokens with --card-border-rest (#2c2c2e), eliminated double repeated bottom borders in Monitor telemetry and metrics tables using tr:last-child overrides, and validated zero collision anomalies across all light and dark theme surfaces.',
+    tags: ['design', 'systems', 'performance'],
+    sha: 'a7f104d8',
+    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/a7f104d8',
+  },
+  {
     id: 'e4c871a0',
     date: '2026-08-25',
     type: 'release',

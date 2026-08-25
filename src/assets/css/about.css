@@ -44,8 +44,15 @@ html:not(.dark) #about {
   min-height: var(--about-pair-height);
   max-height: var(--about-pair-height);
   border-radius: 24px;
+  border: 1px solid var(--card-border-rest, #e5e5ea);
   overflow: hidden;
   align-self: stretch;
+  box-sizing: border-box;
+}
+
+html.dark .about-image-wrapper,
+html.dark #about .about-image-wrapper {
+  border-color: var(--card-border-rest, #2c2c2e);
 }
 
 .about-image-wrapper picture,
@@ -63,14 +70,15 @@ html:not(.dark) #about {
   max-height: 100%;
   object-fit: cover;
   object-position: center top;
-  border-radius: 24px;
+  border-radius: 0;
   box-shadow: none;
-  border: 1px solid var(--border-color);
+  border: none;
   display: block;
 }
 
 html.dark .about-image {
   box-shadow: none;
+  border: none;
 }
 
 .about-image-badge {

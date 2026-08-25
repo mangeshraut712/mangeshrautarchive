@@ -844,6 +844,11 @@ body.monitor-page .metrics-table td {
   white-space: nowrap;
 }
 
+body.monitor-page .metrics-table tr:last-child td,
+body.monitor-page .metrics-table tr:last-child th {
+  border-bottom: none !important;
+}
+
 body.monitor-page .metrics-table td:first-child {
   white-space: normal;
   word-break: break-word;
