@@ -43,6 +43,17 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'e459a182',
+    date: '2026-08-25',
+    type: 'fix',
+    title: 'Remove Duplicate Outer Border on Consultation CTA & Ensure Solid Apple Styling',
+    summary:
+      'Fixed a double-border defect on the "Book Instant 30-Min Consultation" button caused by an inherited card border rule on its container. Streamlined container styling to transparent and ensured a clean single Apple Blue pill border in both Light and Dark modes adhering to DESIGN.md.',
+    tags: ['ui', 'fix', 'contact', 'buttons', 'apple-design', 'design-system'],
+    sha: 'e459a182',
+    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/e459a182',
+  },
+  {
     id: 'b719c35d',
     date: '2026-08-25',
     type: 'improvement',
