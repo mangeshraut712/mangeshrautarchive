@@ -51,6 +51,14 @@ class VoiceModeService {
     this.ttsAvailable = false;
     this.muted = false;
     this.sessionActive = false;
+    this.selectedVoice =
+      (typeof localStorage !== 'undefined' && localStorage.getItem('assistme_voice')) || 'eve';
+    this.availableVoices = [
+      { id: 'eve', name: 'Eve', desc: 'Natural & Balanced' },
+      { id: 'rex', name: 'Rex', desc: 'Crisp & Direct' },
+      { id: 'leo', name: 'Leo', desc: 'Warm & Authoritative' },
+      { id: 'sage', name: 'Sage', desc: 'Calm & Reflective' },
+    ];
     this.onStatusChange = null;
     this.onTranscript = null;
     this.onAssistantText = null;
@@ -103,6 +111,21 @@ class VoiceModeService {
 
   setAskHandler(askFn) {
     this._askFn = askFn;
+  }
+
+  getAvailableVoices() {
+    return this.availableVoices;
+  }
+
+  setVoice(voiceId) {
+    if (!voiceId) return;
+    const match = this.availableVoices.find(v => v.id === voiceId);
+    if (match) {
+      this.selectedVoice = match.id;
+      if (typeof localStorage !== 'undefined') {
+        localStorage.setItem('assistme_voice', match.id);
+      }
+    }
   }
 
   isActive() {
@@ -412,6 +435,7 @@ class VoiceModeService {
       body: JSON.stringify({
         text,
         response_format: 'mp3',
+        voice: this.selectedVoice || 'eve',
       }),
       signal,
     });

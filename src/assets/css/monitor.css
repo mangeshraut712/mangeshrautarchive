@@ -4097,3 +4097,189 @@ html:not(.dark) body.monitor-page .badge-blue,
 html:not(.dark) body.monitor-page [class*='chip'][class*='blue'] {
   color: #004d99 !important;
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   ENGINEERING BENCHMARKS & LIVE TERMINAL LOG CONSOLE
+   ═══════════════════════════════════════════════════════════════ */
+.benchmark-metric-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin: 16px 0;
+}
+
+.benchmark-metric-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px;
+  background: rgb(0 0 0 / 3%);
+  border-radius: 12px;
+  border: 1px solid var(--border-color, rgba(0, 0, 0, 0.08));
+}
+
+html.dark .benchmark-metric-item {
+  background: rgb(255 255 255 / 4%);
+  border-color: rgb(255 255 255 / 10%);
+}
+
+.benchmark-metric-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-secondary);
+}
+
+.benchmark-metric-val {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.benchmark-badges-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+}
+
+.benchmark-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 980px;
+  font-size: 12px;
+  font-weight: 500;
+  background: rgb(0 0 0 / 4%);
+  border: 1px solid var(--border-color, rgba(0, 0, 0, 0.08));
+}
+
+html.dark .benchmark-pill {
+  background: rgb(255 255 255 / 6%);
+  border-color: rgb(255 255 255 / 12%);
+  color: #f5f5f7;
+}
+
+.terminal-log-console {
+  margin: 16px 0 24px;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #0d1117;
+  border: 1px solid rgb(255 255 255 / 12%);
+  box-shadow: 0 8px 32px rgb(0 0 0 / 40%);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+.terminal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  background: #161b22;
+  border-bottom: 1px solid rgb(255 255 255 / 8%);
+}
+
+.terminal-controls {
+  display: flex;
+  gap: 6px;
+}
+
+.terminal-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.dot-red {
+  background: #ff5f56;
+}
+.dot-yellow {
+  background: #ffbd2e;
+}
+.dot-green {
+  background: #27c93f;
+}
+
+.terminal-title {
+  font-size: 12px;
+  font-weight: 500;
+  color: rgb(255 255 255 / 75%);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.terminal-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.terminal-btn {
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 11px;
+  border: 1px solid rgb(255 255 255 / 15%);
+  background: rgb(255 255 255 / 8%);
+  color: rgb(255 255 255 / 85%);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.15s ease;
+}
+
+.terminal-btn:hover {
+  background: rgb(255 255 255 / 15%);
+  color: #fff;
+}
+
+.terminal-body {
+  padding: 14px 16px;
+  max-height: 220px;
+  overflow-y: auto;
+  font-size: 12px;
+  line-height: 1.6;
+  color: #e6edf3;
+}
+
+.terminal-line {
+  margin-bottom: 4px;
+  word-break: break-all;
+  color: #e6edf3;
+}
+
+.terminal-time {
+  color: #8b949e;
+  margin-right: 6px;
+}
+
+.terminal-tag {
+  display: inline-block;
+  font-weight: 600;
+  padding: 1px 4px;
+  border-radius: 4px;
+  font-size: 11px;
+  margin-right: 6px;
+}
+
+.tag-info {
+  background: rgb(56 139 253 / 20%);
+  color: #58a6ff;
+}
+
+.tag-success {
+  background: rgb(46 160 67 / 20%);
+  color: #3fb950;
+}
+
+.tag-warning {
+  background: rgb(210 153 34 / 20%);
+  color: #d29922;
+}
+
+.tag-error {
+  background: rgb(248 81 73 / 20%);
+  color: #f85149;
+}

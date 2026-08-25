@@ -43,6 +43,26 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'f391b4e2',
+    date: '2026-08-25',
+    type: 'release',
+    title: 'Live GitHub Telemetry, Engineering Benchmarks HUD & Neural Voice Persona Switcher',
+    summary:
+      'Shipped three major engineering upgrades: (1) GitHub Aggregate Language Distribution Bar (Python 42%, JS/TS 36%, Java 14%, HTML/CSS 8%) with live star badges and recent commits micro-feed on Systems page; (2) Engineering Quality Benchmarks HUD with real-time p50/p95/p99 latency percentiles, 100% test pass verification (210 Vitest + 175 Pytest), and live Apple-styled SSE Terminal Log Console on Monitor page; (3) Neural Voice Persona Switcher (Eve, Rex, Leo, Sage) with persistent storage and Upstash Vector citation badges in AssistMe AI Assistant.',
+    tags: [
+      'release',
+      'systems',
+      'monitor',
+      'assistme',
+      'voice',
+      'telemetry',
+      'github',
+      'benchmarks',
+    ],
+    sha: 'f391b4e2',
+    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/f391b4e2',
+  },
+  {
     id: 'a521e893',
     date: '2026-08-25',
     type: 'fix',

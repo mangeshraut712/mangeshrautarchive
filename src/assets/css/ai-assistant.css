@@ -4387,3 +4387,78 @@ html.dark .rich-code-copy-btn.copied {
   color: #30d158 !important;
   border-color: rgb(48 209 88 / 35%) !important;
 }
+
+/* ═══════════════════════════════════════════════════════════
+   VOICE PERSONA SELECTOR & VECTOR CITATION BADGES
+   ═══════════════════════════════════════════════════════════ */
+.voice-mode-persona-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 14px 0 6px;
+  flex-wrap: wrap;
+}
+
+.voice-persona-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: rgb(255 255 255 / 60%);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.voice-persona-chip {
+  padding: 4px 12px;
+  border-radius: 980px;
+  font-size: 12px;
+  font-weight: 500;
+  border: 1px solid rgb(255 255 255 / 15%);
+  background: rgb(255 255 255 / 8%);
+  color: rgb(255 255 255 / 85%);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.voice-persona-chip:hover {
+  background: rgb(255 255 255 / 18%);
+  border-color: rgb(255 255 255 / 30%);
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+.voice-persona-chip.active {
+  background: var(--apple-blue, #0071e3);
+  border-color: var(--apple-blue, #0071e3);
+  color: #fff;
+  font-weight: 600;
+  box-shadow: 0 2px 10px rgb(0 113 227 / 40%);
+}
+
+.vector-citation-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 980px;
+  font-size: 11px;
+  font-weight: 500;
+  margin-bottom: 8px;
+  background: rgb(0 113 227 / 8%);
+  border: 1px solid rgb(0 113 227 / 20%);
+  color: var(--apple-blue, #0071e3);
+  backdrop-filter: blur(10px);
+}
+
+html.dark .vector-citation-badge {
+  background: rgb(10 132 255 / 12%);
+  border-color: rgb(10 132 255 / 25%);
+  color: #64d2ff;
+}
+
+.vector-citation-badge i {
+  font-size: 10px;
+}

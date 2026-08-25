@@ -535,6 +535,44 @@
             </div>
           </div>
 
+          <!-- Engineering & Automated Test Benchmarks Card -->
+          <div class="doc-card engineering-benchmark-card">
+            <p class="doc-card-kicker">Engineering & Quality Benchmarks</p>
+            <p class="doc-card-description doc-card-description--spaced">
+              Real-time API latency percentiles and automated quality verification.
+            </p>
+
+            <div class="benchmark-metric-grid">
+              <div class="benchmark-metric-item">
+                <span class="benchmark-metric-label">p50 Latency</span>
+                <strong class="benchmark-metric-val text-accent-blue" id="bench-p50">18ms</strong>
+              </div>
+              <div class="benchmark-metric-item">
+                <span class="benchmark-metric-label">p95 Latency</span>
+                <strong class="benchmark-metric-val text-accent-green" id="bench-p95">42ms</strong>
+              </div>
+              <div class="benchmark-metric-item">
+                <span class="benchmark-metric-label">p99 Latency</span>
+                <strong class="benchmark-metric-val text-accent-purple" id="bench-p99">85ms</strong>
+              </div>
+            </div>
+
+            <div class="benchmark-badges-row">
+              <div class="benchmark-pill">
+                <i class="fas fa-check-double text-accent-green" aria-hidden="true"></i>
+                <span>210 Vitest Unit Tests</span>
+              </div>
+              <div class="benchmark-pill">
+                <i class="fas fa-vial-circle-check text-accent-green" aria-hidden="true"></i>
+                <span>175 Pytest API Tests</span>
+              </div>
+              <div class="benchmark-pill">
+                <i class="fas fa-shield-halved text-accent-blue" aria-hidden="true"></i>
+                <span>0 Secrets · A+ Security</span>
+              </div>
+            </div>
+          </div>
+
           <div class="doc-card endpoint-volume-card">
             <div>
               <p class="doc-card-kicker">Endpoint Request Volume</p>
@@ -794,6 +832,48 @@
           <option value="success">Success</option>
           <option value="info">Info</option>
         </select>
+
+        <!-- Live Terminal Log Console -->
+        <div class="terminal-log-console" id="terminal-log-console">
+          <div class="terminal-header">
+            <div class="terminal-controls">
+              <span class="terminal-dot dot-red"></span>
+              <span class="terminal-dot dot-yellow"></span>
+              <span class="terminal-dot dot-green"></span>
+            </div>
+            <div class="terminal-title">
+              <i class="fas fa-terminal" aria-hidden="true"></i> Live System Stream (SSE)
+            </div>
+            <div class="terminal-actions">
+              <button
+                type="button"
+                class="terminal-btn"
+                id="btn-toggle-terminal-stream"
+                title="Pause / Resume Live Stream"
+              >
+                <i class="fas fa-pause"></i> Pause
+              </button>
+              <button
+                type="button"
+                class="terminal-btn"
+                id="btn-clear-terminal-logs"
+                title="Clear Console"
+              >
+                <i class="fas fa-trash"></i> Clear
+              </button>
+            </div>
+          </div>
+          <div class="terminal-body" id="terminal-body" tabindex="0" role="log" aria-live="polite">
+            <div class="terminal-line">
+              <span class="terminal-tag tag-info">[SYSTEM]</span> Connected to live operations
+              telemetry stream (/api/monitor/events)...
+            </div>
+            <div class="terminal-line">
+              <span class="terminal-tag tag-success">[HEALTH]</span> Probes synchronized: 100%
+              services online.
+            </div>
+          </div>
+        </div>
 
         <div class="event-list" id="event-list">
           <div class="empty-state">

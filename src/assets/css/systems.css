@@ -3648,3 +3648,163 @@ html.dark .systems-token-bar-fill {
   line-height: 1.4;
   opacity: 0.85;
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   GITHUB AGGREGATE LANGUAGE BAR & RECENT COMMITS FEED
+   ═══════════════════════════════════════════════════════════════ */
+.systems-oss-stars-badge {
+  font-size: 0.84rem;
+  color: var(--systems-text-secondary);
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.github-lang-dist-container {
+  margin: 16px 0 20px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: rgb(0 0 0 / 3%);
+  border: 1px solid var(--systems-border, rgba(0, 0, 0, 0.08));
+}
+
+html.dark .github-lang-dist-container {
+  background: rgb(255 255 255 / 4%);
+  border-color: rgb(255 255 255 / 10%);
+}
+
+.github-lang-dist-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.github-lang-dist-title {
+  font-size: 0.78rem;
+  font-weight: 650;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--systems-accent);
+}
+
+.github-lang-dist-stats {
+  font-size: 0.76rem;
+  color: var(--systems-text-secondary);
+  font-weight: 500;
+}
+
+.github-lang-bar-track {
+  height: 8px;
+  border-radius: 4px;
+  overflow: hidden;
+  display: flex;
+  width: 100%;
+  background: rgb(0 0 0 / 8%);
+  margin-bottom: 10px;
+}
+
+html.dark .github-lang-bar-track {
+  background: rgb(255 255 255 / 10%);
+}
+
+.github-lang-segment {
+  height: 100%;
+  width: var(--lang-pct, 0%);
+  transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.github-lang-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-size: 0.75rem;
+  color: var(--systems-text-secondary);
+}
+
+.github-lang-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: 500;
+}
+
+.github-lang-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.systems-recent-commits-feed {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--systems-border, rgba(0, 0, 0, 0.08));
+}
+
+.systems-recent-commits-title {
+  font-size: 0.82rem;
+  font-weight: 650;
+  color: var(--systems-text);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.systems-commit-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.systems-commit-item {
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgb(0 0 0 / 2%);
+  border: 1px solid var(--systems-border, rgba(0, 0, 0, 0.06));
+}
+
+html.dark .systems-commit-item {
+  background: rgb(255 255 255 / 3%);
+  border-color: rgb(255 255 255 / 8%);
+}
+
+.systems-commit-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.76rem;
+  margin-bottom: 4px;
+}
+
+.systems-commit-repo {
+  font-weight: 600;
+  color: var(--systems-accent);
+}
+
+.systems-commit-sha {
+  font-family: ui-monospace, monospace;
+  font-size: 0.72rem;
+  padding: 1px 4px;
+  border-radius: 4px;
+  background: rgb(0 0 0 / 6%);
+  color: var(--systems-text);
+}
+
+html.dark .systems-commit-sha {
+  background: rgb(255 255 255 / 10%);
+}
+
+.systems-commit-time {
+  margin-left: auto;
+  color: var(--systems-text-secondary);
+}
+
+.systems-commit-msg {
+  font-size: 0.78rem;
+  color: var(--systems-text-secondary);
+  line-height: 1.4;
+  margin: 0;
+}

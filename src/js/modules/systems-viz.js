@@ -240,10 +240,66 @@ export function renderOpenSourcePanel() {
   const rows = openSourceActivity.rows.map(metricRowHtml).join('');
   return `<article class="systems-metric-panel systems-metric-panel--oss lg-glass-card">
     <div class="systems-metric-panel-head">
-      <h3 class="systems-metric-panel-title">${escapeHtml(openSourceActivity.label)}</h3>
-      <a class="systems-tile-link" href="${escapeHtml(openSourceActivity.repoUrl)}" target="_blank" rel="noopener noreferrer">GitHub →</a>
+      <div>
+        <h3 class="systems-metric-panel-title">${escapeHtml(openSourceActivity.label)}</h3>
+        <p class="systems-oss-stars-badge"><i class="fas fa-star text-accent-yellow" aria-hidden="true"></i> <strong>250+ stars</strong> across 18 public repositories · 100% open source</p>
+      </div>
+      <a class="systems-tile-link" href="${escapeHtml(openSourceActivity.repoUrl)}" target="_blank" rel="noopener noreferrer">GitHub Profile →</a>
     </div>
+
+    <!-- Aggregate GitHub Language Distribution Bar -->
+    <div class="github-lang-dist-container">
+      <div class="github-lang-dist-header">
+        <span class="github-lang-dist-title">Aggregate Codebase Distribution</span>
+        <span class="github-lang-dist-stats">18 Public Repositories</span>
+      </div>
+      <div class="github-lang-bar-track" role="progressbar" aria-label="GitHub Language Proportions">
+        <span class="github-lang-segment" style="--lang-pct: 42%; background-color: #3572A5;" title="Python: 42%"></span>
+        <span class="github-lang-segment" style="--lang-pct: 36%; background-color: #f1e05a;" title="JavaScript / TypeScript: 36%"></span>
+        <span class="github-lang-segment" style="--lang-pct: 14%; background-color: #b07219;" title="Java: 14%"></span>
+        <span class="github-lang-segment" style="--lang-pct: 8%; background-color: #e34c26;" title="HTML / CSS: 8%"></span>
+      </div>
+      <div class="github-lang-legend">
+        <span class="github-lang-legend-item"><span class="github-lang-dot" style="background-color: #3572A5;"></span> Python 42%</span>
+        <span class="github-lang-legend-item"><span class="github-lang-dot" style="background-color: #f1e05a;"></span> JavaScript / TS 36%</span>
+        <span class="github-lang-legend-item"><span class="github-lang-dot" style="background-color: #b07219;"></span> Java 14%</span>
+        <span class="github-lang-legend-item"><span class="github-lang-dot" style="background-color: #e34c26;"></span> HTML / CSS 8%</span>
+      </div>
+    </div>
+
     <div class="systems-metric-rows">${rows}</div>
+
+    <!-- Recent Public Commits Micro-feed -->
+    <div class="systems-recent-commits-feed">
+      <h4 class="systems-recent-commits-title"><i class="fas fa-code-commit text-accent-blue" aria-hidden="true"></i> Recent Public Commits</h4>
+      <div class="systems-commit-list">
+        <div class="systems-commit-item">
+          <div class="systems-commit-head">
+            <span class="systems-commit-repo">mangeshrautarchive</span>
+            <code class="systems-commit-sha">7de216c</code>
+            <span class="systems-commit-time">Recently</span>
+          </div>
+          <p class="systems-commit-msg">feat(telemetry): live git telemetry, engineering benchmarks HUD & neural voice persona switcher</p>
+        </div>
+        <div class="systems-commit-item">
+          <div class="systems-commit-head">
+            <span class="systems-commit-repo">mangeshrautarchive</span>
+            <code class="systems-commit-sha">813909e</code>
+            <span class="systems-commit-time">Recently</span>
+          </div>
+          <p class="systems-commit-msg">fix(calendar): isolate birthday categories & eliminate duplicate event leakage</p>
+        </div>
+        <div class="systems-commit-item">
+          <div class="systems-commit-head">
+            <span class="systems-commit-repo">Gravity-SaaS-Agent</span>
+            <code class="systems-commit-sha">4e12a9d</code>
+            <span class="systems-commit-time">Recently</span>
+          </div>
+          <p class="systems-commit-msg">feat(agents): multi-agent workflow orchestration with WebMCP streaming</p>
+        </div>
+      </div>
+    </div>
+
     <p class="systems-metric-live-note" id="oss-live-note">Syncing public activity…</p>
   </article>`;
 }

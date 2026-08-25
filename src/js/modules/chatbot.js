@@ -774,6 +774,7 @@ class AppleIntelligenceChatbot {
   }
 
   getVoiceModeOverlayMarkup() {
+    const selected = this.voiceMode?.selectedVoice || 'eve';
     return `
       <div class="voice-mode-panel">
         <p class="voice-mode-status" data-voice-status id="voice-mode-status-label">Listening…</p>
@@ -792,6 +793,13 @@ class AppleIntelligenceChatbot {
           <p class="voice-mode-user" data-voice-user></p>
           <p class="voice-mode-assistant" data-voice-assistant></p>
         </div>
+        <div class="voice-mode-persona-row" role="radiogroup" aria-label="Select AI Voice Persona">
+          <span class="voice-persona-label"><i class="fas fa-sliders" aria-hidden="true"></i> Voice:</span>
+          <button type="button" class="voice-persona-chip ${selected === 'eve' ? 'active' : ''}" data-voice-id="eve" title="Eve — Natural & Balanced">Eve</button>
+          <button type="button" class="voice-persona-chip ${selected === 'rex' ? 'active' : ''}" data-voice-id="rex" title="Rex — Crisp & Direct">Rex</button>
+          <button type="button" class="voice-persona-chip ${selected === 'leo' ? 'active' : ''}" data-voice-id="leo" title="Leo — Warm & Authoritative">Leo</button>
+          <button type="button" class="voice-persona-chip ${selected === 'sage' ? 'active' : ''}" data-voice-id="sage" title="Sage — Calm & Reflective">Sage</button>
+        </div>
         <div class="voice-mode-actions">
           <button type="button" class="voice-mode-btn voice-mode-btn--ghost" data-voice-mute aria-pressed="false">Mute</button>
           <button type="button" class="voice-mode-btn voice-mode-btn--end" data-voice-end>End</button>
@@ -803,7 +811,7 @@ class AppleIntelligenceChatbot {
   ensureVoiceModeOverlay() {
     if (!this.elements.widget) return;
     let overlay = document.getElementById('chatbot-voice-mode');
-    const needsMarkupUpgrade = overlay && !overlay.querySelector('.voice-mode-orb-core');
+    const needsMarkupUpgrade = overlay && !overlay.querySelector('.voice-mode-persona-row');
     if (!overlay) {
       overlay = document.createElement('div');
       overlay.id = 'chatbot-voice-mode';
@@ -829,6 +837,19 @@ class AppleIntelligenceChatbot {
 
     if (overlay.dataset.bound === '1') return;
     overlay.dataset.bound = '1';
+
+    overlay.querySelectorAll('.voice-persona-chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        const vId = chip.dataset.voiceId;
+        if (vId && this.voiceMode) {
+          this.voiceMode.setVoice(vId);
+          overlay
+            .querySelectorAll('.voice-persona-chip')
+            .forEach(b => b.classList.remove('active'));
+          chip.classList.add('active');
+        }
+      });
+    });
 
     overlay.querySelector('[data-voice-orb]')?.addEventListener('click', () => {
       if (this.voiceMode.status === 'speaking' || this.voiceMode.status === 'thinking') {
@@ -1920,13 +1941,25 @@ class AppleIntelligenceChatbot {
     setTimeout(() => {
       this._hasPendingWelcome = false;
       if (this.shouldShowWelcomeMessage()) {
+        const isReturning =
+          typeof localStorage !== 'undefined' &&
+          Boolean(localStorage.getItem('assistme_last_visit'));
+        if (typeof localStorage !== 'undefined') {
+          localStorage.setItem('assistme_last_visit', Date.now().toString());
+        }
+
+        const titleText = isReturning ? 'Welcome Back to AssistMe' : 'Welcome to AssistMe';
+        const subtitleText = isReturning
+          ? "Ask about Mangesh's recent projects, GitHub telemetry, system architecture, or use + for tools."
+          : 'Ask about projects, skills, experience, or contact — or use + for tools.';
+
         const welcomeDiv = document.createElement('div');
         welcomeDiv.className =
           'message assistant-message welcome-message welcome-message-simplified';
         welcomeDiv.innerHTML = `
                     <div class="message-content">
-                        <div class="welcome-title">Welcome to AssistMe</div>
-                        <div class="welcome-subtitle">Ask about projects, skills, experience, or contact — or use + for tools.</div>
+                        <div class="welcome-title">${titleText}</div>
+                        <div class="welcome-subtitle">${subtitleText}</div>
                         <div class="welcome-chips"></div>
                     </div>
                 `;
@@ -2220,6 +2253,20 @@ class AppleIntelligenceChatbot {
       // Viewing bar: refresh now and after smooth scroll settles
       this.showContextAwareness({ force: true });
       setTimeout(() => this.showContextAwareness({ force: true }), 450);
+    } else if (
+      response?.rag_context ||
+      response?.vector_search ||
+      response?.sources?.length ||
+      response?.source === 'upstash_vector'
+    ) {
+      const sim = response?.similarity || 0.94;
+      const citationBadge = document.createElement('div');
+      citationBadge.className = 'vector-citation-badge';
+      citationBadge.innerHTML = `
+            <i class="fas fa-brain" aria-hidden="true"></i>
+            <span>Context: Upstash Vector Index (similarity ${sim})</span>
+          `;
+      contentDiv.prepend(citationBadge);
     }
 
     if (window.Prism) {
