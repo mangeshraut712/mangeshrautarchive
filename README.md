@@ -292,13 +292,13 @@ npm run qa:prod-ready     # Full pre-deployment verification matrix
 
 We adhere to industry-standard open-source community health and governance standards:
 
-| Document                                               | Purpose                                                                                               |
-| ------------------------------------------------------ | ----------------------------------------------------------------------------------------------------- |
-| **[`CONTRIBUTING.md`](CONTRIBUTING.md)**               | Step-by-step contribution workflow, coding conventions, testing guidelines, and PR template.          |
-| **[`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md)**         | **Contributor Covenant v2.1** community standards and enforcement guidelines.                         |
-| **[`SECURITY.md`](SECURITY.md)**                       | Vulnerability reporting procedure, coordinated disclosure policy, and `security.txt` RFC 9116 parity. |
-| **[`AGENTS.md`](AGENTS.md)**                           | **Linux Foundation AGENTS.md v1.0** standard for AI agent coordination and observability.             |
-| **[`CITATION.cff`](CITATION.cff)**                     | **Citation File Format v1.2.0** metadata for academic and software citations.                         |
+| Document                                       | Purpose                                                                                               |
+| ---------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| **[`CONTRIBUTING.md`](CONTRIBUTING.md)**       | Step-by-step contribution workflow, coding conventions, testing guidelines, and PR template.          |
+| **[`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md)** | **Contributor Covenant v2.1** community standards and enforcement guidelines.                         |
+| **[`SECURITY.md`](SECURITY.md)**               | Vulnerability reporting procedure, coordinated disclosure policy, and `security.txt` RFC 9116 parity. |
+| **[`AGENTS.md`](AGENTS.md)**                   | **Linux Foundation AGENTS.md v1.0** standard for AI agent coordination and observability.             |
+| **[`CITATION.cff`](CITATION.cff)**             | **Citation File Format v1.2.0** metadata for academic and software citations.                         |
 
 ---
 

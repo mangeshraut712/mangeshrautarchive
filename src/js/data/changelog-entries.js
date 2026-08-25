@@ -43,6 +43,17 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'f4d92a18',
+    date: '2026-08-25',
+    type: 'improvement',
+    title: 'Mobile Card Layout, Symmetrical Geometry & Touch-Grid Apple Polish Sitewide',
+    summary:
+      'Audited mobile responsiveness across all 7 portfolio pages (index, systems, monitor, travel, uses, changelog, 404) across 390px (iPhone 14) and 360px (Android) viewports. Fixed skills category cards by widening marquee badges to 155px min-width with 16px squircles to eliminate label and level truncation; aligned experience and education timeline rails with a 14px node rail offset; balanced GitHub stats overview with symmetrical column-spanning layout; optimized project card action bars for single-row button touch targets; and harmonized card geometry across Light and Dark themes.',
+    tags: ['mobile', 'design', 'ui', 'performance'],
+    sha: 'f4d92a18',
+    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/f4d92a18',
+  },
+  {
     id: 'b7e2c94a',
     date: '2026-08-25',
     type: 'improvement',
