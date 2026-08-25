@@ -18,8 +18,8 @@
 .skip-link {
   position: fixed;
   left: 1rem;
-  top: 0;
-  transform: translateY(-200%);
+  top: -9999px;
+  transform: none;
   display: inline-flex;
   align-items: center;
   min-height: 44px;
@@ -37,11 +37,16 @@
   white-space: nowrap;
 }
 
-.skip-link:focus,
 .skip-link:focus-visible {
+  top: 0;
   transform: translateY(0);
   outline: 3px solid #ffcc00;
   outline-offset: 3px;
+}
+
+.skip-link:focus:not(:focus-visible) {
+  top: -9999px;
+  outline: none;
 }
 
 html.dark .skip-link {

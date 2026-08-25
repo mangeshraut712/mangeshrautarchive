@@ -135,13 +135,14 @@
       top: 0;
       left: 0;
       z-index: 10001;
+      pointer-events: none;
     }
 
     .skip-link {
       position: absolute;
       left: 1rem;
-      top: 0;
-      transform: translateY(-200%);
+      top: -9999px;
+      transform: none;
       padding: 0.875rem 1.25rem;
       background: #0071e3;
       color: #fff;
@@ -153,16 +154,18 @@
       box-shadow: 0 8px 24px rgba(0, 113, 227, 0.4);
       z-index: 10002;
       outline: none;
+      pointer-events: auto;
     }
 
-    .skip-link:focus,
     .skip-link:focus-visible {
+      top: 0;
       transform: translateY(0);
       outline: 3px solid #fff;
       outline-offset: -3px;
     }
 
     .skip-link:focus:not(:focus-visible) {
+      top: -9999px;
       outline: none;
     }
 
@@ -4156,7 +4159,7 @@ html.dark #home .hero-name-text {
             </div>
 
             <!-- Card 4: Dream Companies & Teams -->
-            <div class="contact-card contact-card-apple">
+            <div class="contact-card contact-card-apple dream-companies-card">
               <h3 class="contact-card-title"><i class="fas fa-city" aria-hidden="true"></i> Dream Companies &amp; Teams</h3>
               <p class="contact-card-subtitle">Visionary technology organizations and pioneering engineering groups I admire.</p>
               <div class="dream-companies-marquee marquee-surface-apple" aria-label="Dream companies logos">
@@ -4301,7 +4304,7 @@ html.dark #home .hero-name-text {
             </div>
 
             <!-- Card 5: Dream Cars Marquee -->
-            <div class="contact-card contact-card-apple">
+            <div class="contact-card contact-card-apple dream-cars-card">
               <h3 class="contact-card-title"><i class="fas fa-car" aria-hidden="true"></i> Automotive Engineering &amp; Dream Cars</h3>
               <p class="contact-card-subtitle">Mechanical artistry, aerodynamics, and high-performance precision automotive engineering.</p>
               <div class="dream-cars-marquee marquee-surface-apple" aria-label="Dream cars logos">
@@ -4433,7 +4436,7 @@ html.dark #home .hero-name-text {
           <!-- Column 2 (Right Stack) -->
           <div class="contact-column">
             <!-- Card 1: Direct Outreach & Locations -->
-            <div class="contact-card contact-card-apple">
+            <div class="contact-card contact-card-apple direct-outreach-card">
               <h3 class="contact-card-title"><i class="fas fa-paper-plane" aria-hidden="true"></i> Direct Outreach &amp; Locations</h3>
               <p class="contact-card-subtitle">Direct communication channels for recruiting, technical consulting, and architectural inquiries.</p>
 
@@ -4501,7 +4504,7 @@ html.dark #home .hero-name-text {
             </div>
 
             <!-- Card 2: Send a Message Direct Form -->
-            <div class="contact-card contact-card-apple">
+            <div class="contact-card contact-card-apple send-message-card">
               <h3 class="contact-card-title"><i class="fas fa-comment-dots" aria-hidden="true"></i> Send a Message</h3>
               <p class="contact-card-subtitle">Drop a note directly to my inbox with response within 24 hours.</p>
               <form id="contact-form" class="apple-contact-form" novalidate>
@@ -4581,7 +4584,7 @@ html.dark #home .hero-name-text {
             </div>
 
             <!-- Card 3: Interactive Calendar & Smart Reminders -->
-            <div class="contact-card contact-card-apple">
+            <div class="contact-card contact-card-apple calendar-reminders-card">
               <h3 class="contact-card-title"><i class="fas fa-calendar-alt" aria-hidden="true"></i> Calendar &amp; Smart Reminders</h3>
               <p class="contact-card-subtitle">Interactive monthly schedule, verified events &amp; smart task tracker.</p>
               <div id="calendar-widget">

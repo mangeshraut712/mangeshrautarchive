@@ -43,6 +43,18 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'e4c871a0',
+    date: '2026-08-25',
+    type: 'release',
+    title:
+      'Contact Section & Channels Luxury Apple Redesign, Mobile Order Optimization & Specular Form CTA Hierarchy',
+    summary:
+      'Engineered a comprehensive luxury Apple redesign for the portfolio Contact section and interactive messaging experience. Reordered mobile card stacking to elevate Direct Outreach channels and Send Message form above lifestyle marquees. Elevated Direct Outreach channel pills with 14px squircles and hover lift, established high-contrast button hierarchy with a specular Apple Blue gradient CTA for message submission and a luxury outlined solid surface pill for instant Calendly consultation, fixed Smart Reminders button wrapping on mobile viewports, and secured skip-link focus-visible positioning.',
+    tags: ['design', 'performance', 'systems'],
+    sha: 'e4c871a0',
+    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/e4c871a0',
+  },
+  {
     id: 'b91a27e4',
     date: '2026-08-25',
     type: 'release',
