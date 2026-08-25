@@ -43,6 +43,17 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'f824b01e',
+    date: '2026-08-25',
+    type: 'fix',
+    title: 'Fix Calendar & Smart Reminders Active Date Selection & Today Highlighting',
+    summary:
+      'Resolved a dual-highlight state where an outdated hardcoded default date caused a simultaneous blue selection circle alongside the red today badge. Dynamically synchronized widget date initialization, today button resets, and live sync card availability with the current date.',
+    tags: ['fix', 'calendar', 'reminders', 'ui', 'apple-design'],
+    sha: 'f824b01e',
+    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/f824b01e',
+  },
+  {
     id: 'a914f27c',
     date: '2026-08-25',
     type: 'improvement',

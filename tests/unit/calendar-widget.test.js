@@ -13,6 +13,7 @@ describe('Apple-style Calendar and Smart Reminders Widget', () => {
 
     const widget = new CalendarWidget('calendar-widget');
     widget.date = new Date(2026, 7, 24);
+    widget.selectedDate = new Date(2026, 7, 24);
     widget.init();
 
     expect(document.querySelector('.ios-calendar-section')).not.toBeNull();
@@ -21,8 +22,7 @@ describe('Apple-style Calendar and Smart Reminders Widget', () => {
     expect(document.querySelector('.ios-reminders-section')).not.toBeNull();
     expect(document.querySelector('.reminders-title').textContent).toContain('Smart Reminders');
 
-    // On Aug 24, displays items for Aug 24 (Google & Apple Sync, Review Portfolio Design, releases)
-    expect(document.body.textContent).toContain('Google & Apple Calendar Sync');
+    // On Aug 24, displays items for Aug 24 (Review Portfolio Design, releases)
     expect(document.body.textContent).toContain('Review Portfolio Design');
     expect(document.querySelector('.ios-calendar-section')).not.toBeNull();
   });

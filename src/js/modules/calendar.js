@@ -25,10 +25,11 @@ function dateKey(year, month, day) {
 export class CalendarWidget {
   constructor(containerId) {
     this.container = document.getElementById(containerId);
-    this.date = new Date(2026, 7, 24); // Default to August 24, 2026
-    this.selectedDate = new Date(2026, 7, 24);
+    const now = new Date();
+    this.date = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    this.selectedDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
     this.selectedDayCell = null;
-    this.selectedDayFilter = dateKey(2026, 7, 24);
+    this.selectedDayFilter = dateKey(now.getFullYear(), now.getMonth(), now.getDate());
     this.activeFilter = 'day';
     this.liveSlots = [];
     this.liveEvents = [];
@@ -114,7 +115,7 @@ export class CalendarWidget {
         id: 100,
         text: 'Google & Apple Calendar Sync',
         time: 'Live Auto-Sync',
-        dateKey: '2026-08-24',
+        dateKey: dateKey(now.getFullYear(), now.getMonth(), now.getDate()),
         category: 'reminders',
         tag: 'Live Sync',
         color: 'blue',
@@ -180,6 +181,24 @@ export class CalendarWidget {
   init() {
     if (!this.container) return;
     ensureContactSolidStyles();
+    if (this.selectedDate) {
+      this.selectedDayFilter = dateKey(
+        this.selectedDate.getFullYear(),
+        this.selectedDate.getMonth(),
+        this.selectedDate.getDate()
+      );
+    } else if (this.date) {
+      this.selectedDate = new Date(
+        this.date.getFullYear(),
+        this.date.getMonth(),
+        this.date.getDate()
+      );
+      this.selectedDayFilter = dateKey(
+        this.selectedDate.getFullYear(),
+        this.selectedDate.getMonth(),
+        this.selectedDate.getDate()
+      );
+    }
     this.render();
     this.bindEvents();
     void this.fetchLiveAvailability();
@@ -209,6 +228,12 @@ export class CalendarWidget {
         // Update Calendar Sync reminder card to show real live slots status
         const syncReminder = this.reminders.find(r => r.id === 100);
         if (syncReminder) {
+          const activeDate = this.selectedDate || new Date();
+          syncReminder.dateKey = dateKey(
+            activeDate.getFullYear(),
+            activeDate.getMonth(),
+            activeDate.getDate()
+          );
           if (isGoogleConnected && isAppleConnected) {
             syncReminder.text = 'Google & Apple Calendar Sync';
             syncReminder.time = `${this.liveSlots.length} Free Slots`;
@@ -900,9 +925,9 @@ export class CalendarWidget {
   }
 
   goToToday() {
-    const today = new Date(2026, 7, 24);
-    this.date = new Date(today);
-    this.selectedDate = new Date(today);
+    const today = new Date();
+    this.date = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    this.selectedDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
     this.selectedDayFilter = dateKey(today.getFullYear(), today.getMonth(), today.getDate());
     this.activeFilter = 'day';
     this.render();
