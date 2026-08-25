@@ -43,6 +43,17 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'c8310f92',
+    date: '2026-08-25',
+    type: 'improvement',
+    title: 'Center Blog Topic Filter Bar on Desktop & Refine Balanced Mobile Multi-Row Layout',
+    summary:
+      'Reverted FAQ container max-width to its focused 44rem layout. Centered the blog topic filter bar across desktop viewports above dual-column blog cards, and refined mobile responsiveness to eliminate distorted outer capsule borders by rendering balanced 3x3 wrapped pill chips across Light and Dark modes.',
+    tags: ['ui', 'blog', 'mobile', 'responsive', 'apple-design', 'layout'],
+    sha: 'c8310f92',
+    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/c8310f92',
+  },
+  {
     id: 'e459a182',
     date: '2026-08-25',
     type: 'fix',

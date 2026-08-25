@@ -3319,7 +3319,7 @@ html:not(.dark) .hero-stat-label {
   display: flex;
   flex-direction: column;
   gap: 0.875rem;
-  max-width: min(1100px, calc(100% - 3rem));
+  max-width: 44rem;
   margin-inline: auto;
   width: 100%;
 }
