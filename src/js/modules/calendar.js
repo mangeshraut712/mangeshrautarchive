@@ -445,13 +445,13 @@ export class CalendarWidget {
 
     // Filter by category tab
     if (this.activeFilter === 'events') {
-      return list.filter(r => r.category === 'events' || r.isImportedEvent);
+      return list.filter(r => r.category === 'events');
     }
     if (this.activeFilter === 'reminders') {
-      return list.filter(r => r.category === 'reminders' && !r.isImportedEvent && !r.isChangelog);
+      return list.filter(r => r.category === 'reminders');
     }
     if (this.activeFilter === 'birthdays') {
-      return list.filter(r => r.category === 'birthdays' && !r.isChangelog);
+      return list.filter(r => r.category === 'birthdays');
     }
     if (this.activeFilter === 'changelog') {
       return list.filter(r => r.category === 'changelog' || r.isChangelog);
@@ -500,10 +500,10 @@ export class CalendarWidget {
     }).length;
 
     const totalEventsCount = this.reminders.filter(
-      r => (r.category === 'events' || r.isImportedEvent) && !r.isChangelog
+      r => r.category === 'events' && !r.isChangelog
     ).length;
     const totalRemindersCount = this.reminders.filter(
-      r => r.category === 'reminders' && !r.isImportedEvent && !r.isChangelog
+      r => r.category === 'reminders' && !r.isChangelog
     ).length;
     const totalBirthdaysCount = this.reminders.filter(
       r => r.category === 'birthdays' && !r.isChangelog

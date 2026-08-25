@@ -43,6 +43,17 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'a521e893',
+    date: '2026-08-25',
+    type: 'fix',
+    title: 'Strict Category Segregation for Calendar Events and Verified Birthdays',
+    summary:
+      'Isolated imported birthdays (including Rochelle Fernands) exclusively under the Birthdays filter tab, eliminating category leakage into Events. Standardized category counts and rendering so Events (3), Birthdays (4), Tasks (4), Changelog (10), and Day (1) operate with deterministic, mutually exclusive filters.',
+    tags: ['fix', 'calendar', 'birthdays', 'events', 'categories', 'ui'],
+    sha: 'a521e893',
+    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/a521e893',
+  },
+  {
     id: 'c8310f92',
     date: '2026-08-25',
     type: 'improvement',
