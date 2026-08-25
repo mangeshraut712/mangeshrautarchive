@@ -43,6 +43,17 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'b91a27e4',
+    date: '2026-08-25',
+    type: 'release',
+    title:
+      'Project Showcase GitHub Repository Cards Apple Luxury Redesign & Unified Single-Row Action System',
+    summary:
+      'Redesigned and elevated GitHub repository showcase cards into an authentic luxury Apple aesthetic with 20px squircle geometry, pure OLED solid black in dark mode (#000000) and pure solid white in light mode (#ffffff). Enhanced top bar layout with Octocat badge anchor, active pulse momentum dot, quick clone terminal pill, and updated timestamp. Restructured title into full-width SF Pro Display typography (font-size: 1.12rem, font-weight: 700) eliminating awkward line-breaks. Organized metadata into structured tech stack capsules (language with official color dot + topic pills) and clean secondary metrics (stars, forks, license, size). Replaced stacked multi-row button grids with a balanced single-row action bar (Apple Blue gradient Live Demo CTA, solid Code button, and Vision Pro 3D Spatial trigger). Built with Gemini 2.5 Pro; token metrics and LLM observability recorded.',
+    tags: ['design', 'performance', 'systems'],
+    sha: 'b91a27e4',
+  },
+  {
     id: 'e48b11dc',
     date: '2026-08-25',
     type: 'release',

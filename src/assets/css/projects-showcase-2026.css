@@ -1185,10 +1185,10 @@ html.dark #projects .projects-empty-state {
   margin-bottom: 0.75rem;
 }
 
-/* Project cards — consistent internal zones + equal row height */
+/* Project cards — luxury Apple squircle + consistent internal zones */
 #projects #github-projects-container .showcase-project-card {
-  --project-card-pad-x: 1rem;
-  --project-card-pad-y: 0.95rem;
+  --project-card-pad-x: 1.15rem;
+  --project-card-pad-y: 1.1rem;
   position: relative !important;
   display: flex !important;
   flex-direction: column !important;
@@ -1196,14 +1196,25 @@ html.dark #projects .projects-empty-state {
   height: 100% !important;
   margin: 0 !important;
   margin-bottom: 0 !important;
-  border-radius: 18px !important;
+  border-radius: 20px !important;
   color: var(--project-text-light) !important;
   overflow: hidden !important;
   box-sizing: border-box !important;
   transition:
-    transform 0.24s ease,
-    border-color 0.24s ease,
-    box-shadow 0.24s ease !important;
+    transform 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.28s ease,
+    box-shadow 0.28s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+#projects #github-projects-container .showcase-project-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 20px;
+  pointer-events: none;
+  border: 1px solid transparent;
+  transition: border-color 0.28s ease;
+  z-index: 2;
 }
 
 #projects #github-projects-container .showcase-project-card::after {
@@ -1212,21 +1223,23 @@ html.dark #projects .projects-empty-state {
   inset: auto var(--project-card-pad-x) 0.55rem;
   height: 2px;
   border-radius: 999px;
-  background: linear-gradient(90deg, transparent 0%, rgb(10 111 239 / 35%) 50%, transparent 100%);
+  background: linear-gradient(90deg, transparent 0%, rgba(0, 113, 227, 0.45) 50%, transparent 100%);
   opacity: 0;
-  transition: opacity 0.24s ease;
+  transition: opacity 0.28s ease;
   pointer-events: none;
 }
 
-/* Interactive hover — lift only, keep grid alignment */
+/* Interactive hover — smooth lift with luxury ambient glow */
 #projects #github-projects-container .showcase-project-card:hover {
-  transform: translateY(-4px) !important;
-  box-shadow: 0 16px 32px rgb(15 23 42 / 10%) !important;
-  border-color: #0071e3 !important;
+  transform: translateY(-5px) scale(1.006) !important;
+  box-shadow:
+    0 16px 36px rgba(0, 113, 227, 0.12),
+    0 2px 8px rgba(0, 0, 0, 0.04) !important;
+  border-color: rgba(0, 113, 227, 0.5) !important;
 }
 
 #projects #github-projects-container .showcase-project-card:hover::after {
-  opacity: 0.8 !important;
+  opacity: 1 !important;
 }
 
 html.dark #projects #github-projects-container .showcase-project-card {
@@ -1234,84 +1247,142 @@ html.dark #projects #github-projects-container .showcase-project-card {
 }
 
 html.dark #projects #github-projects-container .showcase-project-card:hover {
-  transform: translateY(-4px) !important;
-  box-shadow: 0 18px 36px rgb(0 0 0 / 45%) !important;
-  border-color: #0a84ff !important;
+  transform: translateY(-5px) scale(1.006) !important;
+  box-shadow:
+    0 20px 40px rgba(0, 0, 0, 0.7),
+    0 0 24px rgba(41, 151, 255, 0.18) !important;
+  border-color: rgba(41, 151, 255, 0.55) !important;
 }
 
 #projects #github-projects-container .project-header {
-  padding: var(--project-card-pad-y) var(--project-card-pad-x) 0.7rem !important;
+  padding: var(--project-card-pad-y) var(--project-card-pad-x) 0.75rem !important;
   display: flex !important;
   flex-direction: column !important;
-  gap: 0.55rem !important;
+  gap: 0.65rem !important;
   flex: 1 1 auto !important;
   min-height: 0 !important;
   min-width: 0 !important;
 }
 
 #projects #github-projects-container .project-head-top {
-  display: grid !important;
-  grid-template-columns: minmax(0, 1fr) auto !important;
-  align-items: start !important;
-  column-gap: 0.55rem !important;
-  row-gap: 0.35rem !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 0.65rem !important;
   width: 100% !important;
 }
 
+#projects #github-projects-container .project-brand-meta {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.45rem !important;
+  flex-shrink: 0 !important;
+}
+
+#projects #github-projects-container .project-repo-badge {
+  width: 32px !important;
+  height: 32px !important;
+  border-radius: 10px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 1.05rem !important;
+  flex-shrink: 0 !important;
+  background: #f5f5f7 !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  color: #1d1d1f !important;
+  transition: all 0.2s ease !important;
+}
+
+html.dark #projects #github-projects-container .project-repo-badge {
+  background: #1c1c1e !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  color: #f5f5f7 !important;
+}
+
+#projects #github-projects-container .showcase-project-card:hover .project-repo-badge {
+  background: rgba(0, 113, 227, 0.1) !important;
+  border-color: rgba(0, 113, 227, 0.3) !important;
+  color: #0071e3 !important;
+}
+
+html.dark #projects #github-projects-container .showcase-project-card:hover .project-repo-badge {
+  background: rgba(41, 151, 255, 0.15) !important;
+  border-color: rgba(41, 151, 255, 0.4) !important;
+  color: #2997ff !important;
+}
+
 #projects #github-projects-container .project-title-wrap {
-  min-width: 0;
-  display: grid;
-  gap: 0.2rem;
-  grid-column: 1;
+  width: 100% !important;
+  min-width: 0 !important;
+  margin: 0.1rem 0 !important;
 }
 
 #projects #github-projects-container .project-title {
   margin: 0 !important;
+  width: 100% !important;
   min-width: 0 !important;
   color: inherit !important;
+  line-height: 1.25 !important;
 }
 
 #projects #github-projects-container .project-title-text {
-  font-size: 1.05rem !important;
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', sans-serif !important;
+  font-size: 1.12rem !important;
   font-weight: 700 !important;
-  line-height: 1.25 !important;
-  letter-spacing: -0.02em !important;
+  line-height: 1.3 !important;
+  letter-spacing: -0.018em !important;
   display: -webkit-box !important;
   -webkit-box-orient: vertical !important;
   -webkit-line-clamp: 2 !important;
   line-clamp: 2 !important;
   overflow: hidden !important;
-  word-break: break-word !important;
+  word-break: normal !important;
   overflow-wrap: anywhere !important;
+  hyphens: none !important;
+  transition: color 0.2s ease !important;
+}
+
+#projects #github-projects-container .showcase-project-card:hover .project-title-text {
+  color: #0071e3 !important;
+  -webkit-text-fill-color: #0071e3 !important;
+}
+
+html.dark #projects #github-projects-container .showcase-project-card:hover .project-title-text {
+  color: #2997ff !important;
+  -webkit-text-fill-color: #2997ff !important;
+}
+
+#projects #github-projects-container .project-head-actions {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.4rem !important;
+  flex-shrink: 0 !important;
 }
 
 #projects #github-projects-container .project-repo-updated {
-  grid-column: 2;
-  grid-row: 1;
-  justify-self: end;
-  align-self: start;
   display: inline-flex !important;
   align-items: center !important;
-  gap: 0.3rem !important;
+  gap: 0.28rem !important;
   flex-shrink: 0 !important;
   border-radius: 999px !important;
-  border: 1px solid rgb(0 0 0 / 10%) !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
   background: #f5f5f7 !important;
   color: #6e6e73 !important;
   -webkit-text-fill-color: #6e6e73 !important;
-  padding: 0.28rem 0.55rem !important;
+  padding: 0.24rem 0.52rem !important;
   font-size: 0.7rem !important;
-  font-weight: 600 !important;
+  font-weight: 550 !important;
   line-height: 1 !important;
   white-space: nowrap !important;
-  max-width: 8.5rem;
 }
 
 html.dark #projects #github-projects-container .project-repo-updated {
   color: #a1a1a6 !important;
   -webkit-text-fill-color: #a1a1a6 !important;
-  border-color: rgb(255 255 255 / 12%) !important;
-  background: rgb(255 255 255 / 6%) !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  background: rgba(255, 255, 255, 0.06) !important;
 }
 
 #projects #github-projects-container .project-repo-path,
@@ -1350,21 +1421,25 @@ html.dark #projects #github-projects-container .project-repo-link {
 
 #projects #github-projects-container .project-description {
   margin: 0 !important;
-  color: #374151 !important;
-  font-size: 0.875rem !important;
-  line-height: 1.5 !important;
-  letter-spacing: -0.004em !important;
-  /* Reserve 2 lines so cards stay compact without uneven gaps */
-  min-height: calc(1.5em * 2) !important;
+  color: #48484a !important;
+  -webkit-text-fill-color: #48484a !important;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif !important;
+  font-size: 0.86rem !important;
+  line-height: 1.55 !important;
+  letter-spacing: -0.006em !important;
+  min-height: 2.7rem !important;
+  max-height: 2.7rem !important;
   display: -webkit-box !important;
   -webkit-line-clamp: 2 !important;
   line-clamp: 2 !important;
   -webkit-box-orient: vertical !important;
   overflow: hidden !important;
+  text-overflow: ellipsis !important;
 }
 
 html.dark #projects #github-projects-container .project-description {
-  color: #d4dde8 !important;
+  color: #a1a1a6 !important;
+  -webkit-text-fill-color: #a1a1a6 !important;
 }
 
 #projects #github-projects-container .project-release-strip {
@@ -1565,15 +1640,20 @@ html.dark #projects #github-projects-container .project-signal-score {
   color: var(--project-muted-dark);
 }
 
-#projects #github-projects-container .project-tags {
+#projects #github-projects-container .project-meta-row {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.5rem !important;
+  margin-top: auto !important;
+  padding-top: 0.35rem !important;
+}
+
+#projects #github-projects-container .project-tech-pills {
   display: flex !important;
   flex-wrap: wrap !important;
-  gap: 0.3rem !important;
   align-items: center !important;
-  min-height: 1.55rem !important;
-  /* Cap tag row height so cards stay even when topic counts differ */
-  max-height: 3.4rem !important;
-  overflow: hidden !important;
+  gap: 0.35rem !important;
+  min-height: 24px !important;
 }
 
 #projects #github-projects-container .project-language,
@@ -1582,43 +1662,70 @@ html.dark #projects #github-projects-container .project-signal-score {
   align-items: center !important;
   gap: 0.3rem !important;
   border-radius: 999px !important;
-  border: 1px solid var(--project-accent-soft-border) !important;
-  background: var(--project-accent-soft) !important;
-  color: #0a58be !important;
-  padding: 0.22rem 0.58rem !important;
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
+  background: #f5f5f7 !important;
+  color: #1d1d1f !important;
+  -webkit-text-fill-color: #1d1d1f !important;
+  padding: 0.22rem 0.55rem !important;
   font-size: 0.72rem !important;
-  font-weight: 620 !important;
+  font-weight: 600 !important;
+  line-height: 1 !important;
+  white-space: nowrap !important;
+  transition: all 0.2s ease !important;
+}
+
+#projects #github-projects-container .project-language .language-dot {
+  width: 7px !important;
+  height: 7px !important;
+  border-radius: 50% !important;
+  display: inline-block !important;
+  flex-shrink: 0 !important;
 }
 
 html.dark #projects #github-projects-container .project-language,
 html.dark #projects #github-projects-container .project-tag {
-  color: #9dccff !important;
-  border-color: rgb(88 166 255 / 30%) !important;
-  background: rgb(88 166 255 / 15%) !important;
+  color: #f5f5f7 !important;
+  -webkit-text-fill-color: #f5f5f7 !important;
+  border-color: rgba(255, 255, 255, 0.14) !important;
+  background: rgba(255, 255, 255, 0.08) !important;
 }
 
-/* Evidence links share the same horizontal inset as header/footer */
-#projects #github-projects-container .project-evidence-row {
-  margin: 0 !important;
-  padding: 0.55rem var(--project-card-pad-x, 1rem) 0.15rem !important;
-  border-top: 1px solid var(--project-border-light);
-  flex: 0 0 auto;
-  width: 100%;
-  box-sizing: border-box;
-  gap: 0.3rem 0.4rem;
+#projects #github-projects-container .project-stats-pills {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: center !important;
+  gap: 0.65rem !important;
+  font-size: 0.72rem !important;
+  color: #6e6e73 !important;
+  padding-top: 0.1rem !important;
 }
 
-html.dark #projects #github-projects-container .project-evidence-row {
-  border-top-color: var(--project-border-dark);
+html.dark #projects #github-projects-container .project-stats-pills {
+  color: #86868b !important;
+}
+
+#projects #github-projects-container .project-meta-stat {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.28rem !important;
+  font-size: 0.72rem !important;
+  font-weight: 550 !important;
+  line-height: 1 !important;
+  color: inherit !important;
+}
+
+#projects #github-projects-container .project-meta-stat i {
+  font-size: 0.68rem !important;
+  opacity: 0.8 !important;
 }
 
 #projects #github-projects-container .project-footer {
   margin-top: auto !important;
-  display: grid !important;
-  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-  gap: 0.5rem !important;
-  padding: 0.7rem var(--project-card-pad-x, 1rem) 0.9rem !important;
-  border-top: 1px solid var(--project-border-light) !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.45rem !important;
+  padding: 0.75rem var(--project-card-pad-x, 1.15rem) 0.95rem !important;
+  border-top: 1px solid rgba(0, 0, 0, 0.08) !important;
   background: #ffffff !important;
   flex: 0 0 auto !important;
   width: 100% !important;
@@ -1626,83 +1733,118 @@ html.dark #projects #github-projects-container .project-evidence-row {
 }
 
 html.dark #projects #github-projects-container .project-footer {
-  border-top-color: var(--project-border-dark) !important;
+  border-top-color: rgba(255, 255, 255, 0.1) !important;
   background: #000000 !important;
 }
 
 #projects #github-projects-container .project-action-btn {
-  min-height: 42px !important;
-  border-radius: 11px !important;
-  padding: 0.5rem 0.55rem !important;
+  min-height: 38px !important;
+  height: 38px !important;
+  border-radius: 10px !important;
+  padding: 0 0.5rem !important;
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
-  gap: 0.35rem !important;
-  font-size: 0.8rem !important;
-  font-weight: 640 !important;
+  gap: 0.32rem !important;
+  font-size: 0.78rem !important;
+  font-weight: 620 !important;
   letter-spacing: -0.01em !important;
   text-decoration: none !important;
   white-space: nowrap !important;
-  width: 100% !important;
-  min-width: 0 !important;
   box-sizing: border-box !important;
+  flex: 1 1 0 !important;
+  min-width: 0 !important;
   transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease !important;
+    transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.2s ease,
+    border-color 0.2s ease,
+    background 0.2s ease !important;
 }
 
-#projects #github-projects-container .btn-ar {
-  background: #0071e3 !important;
-  background-color: #0071e3 !important;
-  background-image: none !important;
-  border: 1px solid #0071e3 !important;
-  color: #fff !important;
-  -webkit-text-fill-color: #fff !important;
-  box-shadow: 0 1px 2px rgb(15 23 42 / 8%) !important;
+#projects #github-projects-container .project-action-btn:hover {
+  transform: translateY(-2px) scale(1.02) !important;
 }
 
-#projects #github-projects-container .btn-demo {
-  background: #ffffff !important;
-  color: #1d1d1f !important;
-  -webkit-text-fill-color: #1d1d1f !important;
-  border: 1px solid rgb(0 0 0 / 14%) !important;
-  box-shadow: none !important;
-}
-
-html.dark #projects #github-projects-container .btn-demo {
-  background: #000000 !important;
-  color: #f5f5f7 !important;
-  -webkit-text-fill-color: #f5f5f7 !important;
-  border: 1px solid rgb(255 255 255 / 18%) !important;
-}
-
-#projects #github-projects-container .btn-ar:hover:not(:disabled) {
-  transform: translateY(-1px) !important;
-  background: #0077ed !important;
-  box-shadow: 0 6px 20px rgb(0 113 227 / 22%) !important;
-  border-color: #0077ed !important;
-}
-
-#projects #github-projects-container .btn-demo:hover:not(:disabled) {
-  transform: translateY(-1px) !important;
-  background: #ffffff !important;
-  border-color: rgb(0 113 227 / 45%) !important;
-  color: #0071e3 !important;
-  -webkit-text-fill-color: #0071e3 !important;
-  box-shadow: 0 4px 14px rgb(0 113 227 / 12%) !important;
-}
-
-html.dark #projects #github-projects-container .btn-demo:hover:not(:disabled) {
-  background: #000000 !important;
-  border-color: rgb(10 132 255 / 55%) !important;
-  color: #2997ff !important;
-  -webkit-text-fill-color: #2997ff !important;
-  box-shadow: 0 4px 14px rgb(10 132 255 / 16%) !important;
+#projects #github-projects-container .project-action-btn:active {
+  transform: translateY(0) scale(0.99) !important;
 }
 
 #projects #github-projects-container .project-action-btn:focus-visible {
-  outline: 2px solid rgb(10 111 239 / 58%);
+  outline: 2px solid #0071e3;
   outline-offset: 2px;
+}
+
+/* Base button surfaces */
+html:not(.dark) #projects #github-projects-container .project-action-btn:not(.btn-demo) {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  border: 1px solid rgba(0, 0, 0, 0.14) !important;
+  color: #1d1d1f !important;
+  -webkit-text-fill-color: #1d1d1f !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+}
+
+html:not(.dark) #projects #github-projects-container .project-action-btn:not(.btn-demo):hover {
+  border-color: #0071e3 !important;
+  color: #0071e3 !important;
+  -webkit-text-fill-color: #0071e3 !important;
+  box-shadow: 0 4px 12px rgba(0, 113, 227, 0.14) !important;
+}
+
+html.dark #projects #github-projects-container .project-action-btn:not(.btn-demo) {
+  background: #000000 !important;
+  background-color: #000000 !important;
+  border: 1px solid #2c2c2e !important;
+  color: #f5f5f7 !important;
+  -webkit-text-fill-color: #f5f5f7 !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4) !important;
+}
+
+html.dark #projects #github-projects-container .project-action-btn:not(.btn-demo):hover {
+  border-color: #2997ff !important;
+  color: #2997ff !important;
+  -webkit-text-fill-color: #2997ff !important;
+  box-shadow: 0 4px 12px rgba(41, 151, 255, 0.25) !important;
+}
+
+/* Primary Demo CTA styling */
+#projects #github-projects-container .btn-demo {
+  background-color: #0071e3 !important;
+  background-image: linear-gradient(135deg, #0077ed 0%, #0071e3 50%, #005bb5 100%) !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+  box-shadow:
+    0 3px 12px rgba(0, 113, 227, 0.35),
+    0 1px 2px rgba(0, 0, 0, 0.08) !important;
+}
+
+#projects #github-projects-container .btn-demo:hover {
+  background-image: linear-gradient(135deg, #0080ff 0%, #0077ed 50%, #0066cc 100%) !important;
+  box-shadow:
+    0 6px 18px rgba(0, 113, 227, 0.45),
+    0 2px 4px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Flex sizing rules */
+#projects #github-projects-container .project-footer.has-demo .btn-demo {
+  flex: 1.15 1 0 !important;
+}
+
+#projects #github-projects-container .project-footer.has-demo .btn-github {
+  flex: 0.92 1 0 !important;
+}
+
+#projects #github-projects-container .project-footer.has-demo .btn-ar {
+  flex: 0.93 1 0 !important;
+}
+
+#projects #github-projects-container .project-footer.no-demo .btn-github {
+  flex: 1.1 1 0 !important;
+}
+
+#projects #github-projects-container .project-footer.no-demo .btn-ar {
+  flex: 1 1 0 !important;
 }
 
 #projects #github-projects-container .project-action-btn.is-disabled,
@@ -4326,10 +4468,10 @@ html[data-theme='light'] section#projects #github-projects-container .showcase-p
 html[data-theme='light'] section#projects #github-projects-container article.showcase-project-card {
   background: #ffffff !important;
   background-color: #ffffff !important;
-  border: 1px solid #c7c7cc !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
   box-shadow:
-    0 1px 2px rgb(0 0 0 / 5%),
-    0 10px 28px rgb(15 23 42 / 8%) !important;
+    0 2px 14px rgba(0, 0, 0, 0.04),
+    0 1px 2px rgba(0, 0, 0, 0.02) !important;
   color: #1d1d1f !important;
   -webkit-text-fill-color: #1d1d1f !important;
 }
@@ -4340,8 +4482,8 @@ html[data-theme='dark'] section#projects #github-projects-container .showcase-pr
 html[data-theme='dark'] section#projects #github-projects-container article.showcase-project-card {
   background: #000000 !important;
   background-color: #000000 !important;
-  border: 1px solid #2c2c2e !important;
-  box-shadow: none !important;
+  border: 1px solid #242426 !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45) !important;
   color: #f5f5f7 !important;
   -webkit-text-fill-color: #f5f5f7 !important;
 }
@@ -4536,62 +4678,88 @@ html[data-theme='light'] section#projects .proj-sort-native {
   color: #1d1d1f !important;
 }
 
-/* Open Repo always full-width primary; secondary actions share the next row */
+/* Unified single-row action bar across all cards */
 section#projects #github-projects-container .project-footer {
-  display: grid !important;
-  grid-template-columns: 1fr 1fr !important;
-  gap: 0.55rem !important;
-}
-
-section#projects #github-projects-container .project-footer .btn-github {
-  grid-column: 1 / -1 !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.45rem !important;
+  padding: 0.75rem var(--project-card-pad-x, 1.15rem) 0.95rem !important;
 }
 
 section#projects #github-projects-container .project-footer .project-action-btn {
-  flex: unset !important;
+  flex: 1 1 0 !important;
   min-width: 0 !important;
-  width: 100% !important;
+  width: auto !important;
+  height: 38px !important;
+  padding: 0 0.5rem !important;
+  font-size: 0.78rem !important;
+  gap: 0.32rem !important;
 }
 
-section#projects #github-projects-container .project-footer:not(:has(.btn-demo)) .btn-ar {
-  grid-column: 1 / -1 !important;
+section#projects #github-projects-container .project-footer.has-demo .btn-demo {
+  flex: 1.15 1 0 !important;
 }
 
-/* Unified meta chips (stars/forks/language/topics) */
+section#projects #github-projects-container .project-footer.has-demo .btn-github {
+  flex: 0.92 1 0 !important;
+}
+
+section#projects #github-projects-container .project-footer.has-demo .btn-ar {
+  flex: 0.93 1 0 !important;
+}
+
+section#projects #github-projects-container .project-footer.no-demo .btn-github {
+  flex: 1.1 1 0 !important;
+}
+
+section#projects #github-projects-container .project-footer.no-demo .btn-ar {
+  flex: 1 1 0 !important;
+}
+
+/* Unified meta chips (tech pills + stats) */
 section#projects #github-projects-container .project-meta-row {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.5rem !important;
+  margin-top: auto !important;
+}
+
+section#projects #github-projects-container .project-tech-pills {
   display: flex !important;
   flex-wrap: wrap !important;
   align-items: center !important;
   gap: 0.35rem !important;
-  margin-top: 0.15rem !important;
+}
+
+section#projects #github-projects-container .project-stats-pills {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: center !important;
+  gap: 0.65rem !important;
+  font-size: 0.72rem !important;
 }
 
 section#projects #github-projects-container .project-meta-stat {
   display: inline-flex !important;
   align-items: center !important;
   gap: 0.28rem !important;
-  border-radius: 999px !important;
-  border: 1px solid rgb(0 0 0 / 12%) !important;
-  background: #f5f5f7 !important;
-  color: #1d1d1f !important;
-  -webkit-text-fill-color: #1d1d1f !important;
-  padding: 0.24rem 0.56rem !important;
-  font-size: 0.73rem !important;
-  font-weight: 630 !important;
+  font-size: 0.72rem !important;
+  font-weight: 550 !important;
   line-height: 1 !important;
+  border: none !important;
+  background: transparent !important;
+}
+
+html:not(.dark) section#projects #github-projects-container .project-meta-stat,
+html[data-theme='light'] section#projects #github-projects-container .project-meta-stat {
+  color: #6e6e73 !important;
+  -webkit-text-fill-color: #6e6e73 !important;
 }
 
 html.dark section#projects #github-projects-container .project-meta-stat,
 html[data-theme='dark'] section#projects #github-projects-container .project-meta-stat {
-  border-color: rgb(255 255 255 / 14%) !important;
-  background: rgb(255 255 255 / 8%) !important;
-  color: #f5f5f7 !important;
-  -webkit-text-fill-color: #f5f5f7 !important;
-}
-
-section#projects #github-projects-container .project-meta-row .project-language,
-section#projects #github-projects-container .project-meta-row .project-tag {
-  margin: 0 !important;
+  color: #86868b !important;
+  -webkit-text-fill-color: #86868b !important;
 }
 
 /* Hide leftover evidence / disabled demo / old path chrome */

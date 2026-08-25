@@ -2064,20 +2064,21 @@ class GitHubProjects {
             </span>`
       : '';
     const demoHtml = hasDemo
-      ? `<a href="${safeHomepage}" target="_blank" rel="noopener noreferrer" class="project-action-btn btn-demo" aria-label="Open ${safeName} demo">
+      ? `<a href="${safeHomepage}" target="_blank" rel="noopener noreferrer" class="project-action-btn btn-demo" aria-label="Open ${safeName} live demo">
                 <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i>
-                <span>Demo</span>
+                <span>Live Demo</span>
               </a>`
       : '';
 
     return `
-      <article class="showcase-project-card apple-3d-project group lg-interactive" data-lg-interactive data-release-status="${safeReleaseKey}" aria-label="${safeName} project card">
+      <article class="showcase-project-card apple-3d-project group lg-interactive ${hasDemo ? 'has-live-demo' : ''}" data-lg-interactive data-release-status="${safeReleaseKey}" aria-label="${safeName} project card">
         <div class="project-header">
           <div class="project-head-top">
-            <div class="project-title-wrap">
-              <h3 class="project-title">
-                <span class="project-title-text">${safeName}</span>${pulseDotHtml}
-              </h3>
+            <div class="project-brand-meta">
+              <span class="project-repo-badge" aria-hidden="true">
+                <i class="fab fa-github"></i>
+              </span>
+              ${pulseDotHtml}
             </div>
             <div class="project-head-actions">
               <button type="button" class="project-clone-btn" data-repo-clone="${safeRepoUrl}.git" title="Copy git clone ${safeRepoUrl}.git" aria-label="Copy git clone command for ${safeName}">
@@ -2091,36 +2092,46 @@ class GitHubProjects {
             </div>
           </div>
 
-          <p class="project-description">${safeDescription || 'No description available'}</p>
+          <div class="project-title-wrap">
+            <h3 class="project-title">
+              <span class="project-title-text" title="${safeName}">${safeName}</span>
+            </h3>
+          </div>
+
+          <p class="project-description" title="${safeDescription || 'No description available'}">${safeDescription || 'No description available'}</p>
 
           ${releaseStripHtml}
 
-          <div class="project-meta-row" aria-label="Repository stats">
-            <span class="project-meta-stat" title="Stars">
-              <i class="fas fa-star" aria-hidden="true"></i>${this.formatCompactNumber(stars)}
-            </span>
-            <span class="project-meta-stat" title="Forks">
-              <i class="fas fa-code-fork" aria-hidden="true"></i>${this.formatCompactNumber(forks)}
-            </span>
-            ${languageHtml}
-            ${topicsHtml}
-            ${licenseHtml}
-            ${sizeHtml}
+          <div class="project-meta-row" aria-label="Repository stats and technologies">
+            <div class="project-tech-pills">
+              ${languageHtml}
+              ${topicsHtml}
+            </div>
+            <div class="project-stats-pills">
+              <span class="project-meta-stat project-star-stat" title="Stars: ${stars}">
+                <i class="fas fa-star" aria-hidden="true"></i>${this.formatCompactNumber(stars)}
+              </span>
+              <span class="project-meta-stat project-fork-stat" title="Forks: ${forks}">
+                <i class="fas fa-code-fork" aria-hidden="true"></i>${this.formatCompactNumber(forks)}
+              </span>
+              ${licenseHtml}
+              ${sizeHtml}
+            </div>
           </div>
         </div>
 
-        <div class="project-footer">
+        <div class="project-footer ${hasDemo ? 'has-demo' : 'no-demo'}">
+          ${demoHtml}
           <a
             href="${safeRepoUrl}"
             target="_blank"
             rel="noopener noreferrer"
-            class="project-action-btn btn-github"
+            class="project-action-btn btn-github ${!hasDemo ? 'btn-primary-action' : ''}"
             aria-label="Open ${safeName} on GitHub"
           >
             <i class="fab fa-github" aria-hidden="true"></i>
-            <span>Open Repo</span>
+            <span>${hasDemo ? 'Code' : 'Open Repo'}</span>
           </a>
-          ${demoHtml}
           <button
             type="button"
             class="project-action-btn btn-ar"
