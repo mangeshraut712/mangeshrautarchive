@@ -61,7 +61,7 @@
     "cross-env": "^10.1.0",
     "dotenv": "^17.4.2",
     "esbuild": "^0.28.2",
-    "eslint": "^10.0.1",
+    "eslint": "^10.9.0",
     "express": "^5.2.1",
     "globals": "^17.11.0",
     "jsdom": "^30.0.1",
@@ -71,7 +71,7 @@
     "stylelint": "^17.14.1",
     "stylelint-config-standard": "^40.0.0",
     "tailwindcss": "^4.3.3",
-    "vitest": "^4.1.10"
+    "vitest": "^4.1.11"
   },
   "dependencies": {
     "@ogtirth/liquid-glass-oss": "^0.1.0",
