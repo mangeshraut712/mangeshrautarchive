@@ -43,6 +43,18 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'd8471e9a',
+    date: '2026-08-25',
+    type: 'improvement',
+    title:
+      'Harmonize Blog Article Typography (Minion Pro, Ultra-Open 2.05 Leading & High Contrast)',
+    summary:
+      'Extended the ultra-comfortable Minion Pro / Editorial Serif typography suite across all blog articles, modals, and standalone post readers. Applied 1.16rem body sizing (1.08rem mobile), 2.05 line-height leading, 2.0rem paragraph margin, +0.022em letter-spacing, +0.04em word-spacing, pure solid black (#000000) Light mode text, and pure solid white (#ffffff) Dark mode text for unified reading excellence.',
+    tags: ['design', 'ui', 'typography', 'blog', 'editorial'],
+    sha: 'd8471e9a',
+    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/d8471e9a',
+  },
+  {
     id: 'b281f09c',
     date: '2026-08-25',
     type: 'improvement',
