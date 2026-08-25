@@ -557,13 +557,13 @@ html.dark .hero-social-link:hover {
 
   /* About: photo + information card, matched height */
   #about {
-    --about-pair-height: clamp(520px, 58vh, 640px);
+    --about-pair-height: clamp(580px, 64vh, 700px);
   }
 
   #about .about-main {
     display: grid !important;
-    grid-template-columns: minmax(320px, 1fr) minmax(0, 1.35fr);
-    gap: clamp(2rem, 3.5vw, 3.5rem);
+    grid-template-columns: minmax(340px, 0.95fr) minmax(0, 1.3fr);
+    gap: clamp(2.25rem, 3.5vw, 3.5rem);
     align-items: stretch !important;
     margin-bottom: 0 !important;
   }
@@ -572,7 +572,7 @@ html.dark .hero-social-link:hover {
     height: var(--about-pair-height) !important;
     min-height: var(--about-pair-height) !important;
     max-height: var(--about-pair-height) !important;
-    border-radius: 24px;
+    border-radius: 28px;
     overflow: hidden;
   }
 
@@ -583,6 +583,8 @@ html.dark .hero-social-link:hover {
     display: flex !important;
     flex-direction: column !important;
     overflow: hidden !important;
+    border-radius: 28px;
+    padding: clamp(1.85rem, 2.6vw, 2.5rem);
   }
 
   #about .about-image-wrapper picture,
@@ -590,7 +592,7 @@ html.dark .hero-social-link:hover {
     width: 100%;
     height: 100% !important;
     object-fit: cover;
-    object-position: center top;
+    object-position: center 15%;
     display: block;
   }
 
@@ -2774,10 +2776,6 @@ html.dark .artist-name {
 }
 
 @media (max-width: 1024px) {
-  #about {
-    --about-pair-height: clamp(460px, 52vh, 560px);
-  }
-
   #about .about-main {
     grid-template-columns: 1fr;
     align-items: stretch;
@@ -2787,12 +2785,14 @@ html.dark .artist-name {
   #about .about-image-wrapper {
     position: relative !important;
     top: auto !important;
-    height: var(--about-pair-height) !important;
-    min-height: var(--about-pair-height) !important;
-    max-height: var(--about-pair-height) !important;
+    aspect-ratio: 4 / 5 !important;
+    min-height: 480px !important;
+    max-height: 580px !important;
+    height: auto !important;
     width: 100%;
     overflow: hidden !important;
     box-sizing: border-box;
+    border-radius: 26px;
   }
 
   #about .about-image-wrapper picture,
@@ -2800,27 +2800,47 @@ html.dark .artist-name {
     width: 100%;
     height: 100% !important;
     object-fit: cover !important;
-    object-position: center top;
+    object-position: center 15%;
     display: block;
+    border-radius: 26px;
   }
 
   #about .about-text-card {
     display: flex !important;
     flex-direction: column !important;
-    height: var(--about-pair-height) !important;
-    min-height: var(--about-pair-height) !important;
-    max-height: var(--about-pair-height) !important;
-    overflow: hidden !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: visible !important;
     box-sizing: border-box;
+    border-radius: 26px;
+    padding: 2rem 1.75rem !important;
   }
 
   #about .about-tab-panel {
-    flex: 1 1 auto !important;
+    flex: 0 1 auto !important;
     min-height: 0 !important;
-    overflow-y: auto !important;
-    overflow-x: hidden !important;
-    -webkit-overflow-scrolling: touch;
-    overscroll-behavior: contain;
+    overflow: visible !important;
+  }
+}
+
+@media (max-width: 768px) {
+  #about .about-image-wrapper {
+    aspect-ratio: 4 / 5 !important;
+    min-height: 440px !important;
+    max-height: 520px !important;
+    height: auto !important;
+    border-radius: 24px !important;
+  }
+
+  #about .about-image-wrapper picture,
+  #about .about-image {
+    border-radius: 24px !important;
+  }
+
+  #about .about-text-card {
+    border-radius: 24px !important;
+    padding: 1.6rem 1.25rem 1.85rem !important;
   }
 }
 

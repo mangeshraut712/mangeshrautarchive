@@ -43,6 +43,17 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'a94df10b',
+    date: '2026-08-25',
+    type: 'improvement',
+    title: 'About Heading Centering, Milestone Badge De-clutter & Luxury Mobile Portrait Geometry',
+    summary:
+      'Harmonized the About section heading and lede subtitle with sitewide centered section hierarchy. Removed redundant milestone badge pills below the narrative to eliminate visual clutter and ensure 100% WCAG AA color contrast compliance. Upgraded the mobile graduation portrait with a 4:5 aspect ratio (440–520px) to reveal the complete Drexel commencement scoreboard and stadium background without awkward top/bottom cropping. Formatted the narrative card on mobile into a natural expanding luxury Apple surface with 24px squircles and keyboard accessible tab panels.',
+    tags: ['design', 'ui', 'accessibility', 'mobile', 'components'],
+    sha: 'a94df10b',
+    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/a94df10b',
+  },
+  {
     id: 'e391b8a4',
     date: '2026-08-25',
     type: 'improvement',
