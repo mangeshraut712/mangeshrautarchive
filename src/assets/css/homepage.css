@@ -3318,18 +3318,19 @@ html:not(.dark) .hero-stat-label {
 .section-faq .faq-list {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
-  max-width: 44rem;
+  gap: 0.875rem;
+  max-width: min(1100px, calc(100% - 3rem));
   margin-inline: auto;
+  width: 100%;
 }
 
 .section-faq .faq-item {
   border: 1px solid #e5e5ea;
-  border-radius: 16px;
+  border-radius: 18px;
   background: #ffffff !important;
   background-color: #ffffff !important;
   background-image: none !important;
-  padding: 0 1.25rem;
+  padding: 0 1.5rem;
   box-shadow: none !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
@@ -3359,16 +3360,16 @@ html.dark .section-faq .faq-item[open] {
   cursor: pointer;
   list-style: none;
   font-weight: 600;
-  font-size: 1.06rem;
-  letter-spacing: -0.01em;
-  line-height: 1.35;
-  min-height: 48px;
+  font-size: 1.125rem;
+  letter-spacing: -0.015em;
+  line-height: 1.4;
+  min-height: 52px;
   min-width: 48px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem;
-  padding: 1rem 0;
+  gap: 1.25rem;
+  padding: 1.1rem 0;
   box-sizing: border-box;
   color: #1d1d1f;
 }

@@ -1614,17 +1614,12 @@ html.dark .reminder-card.accent-indigo .card-tag {
 
 .calendar-filter-tabs {
   display: flex !important;
-  flex-wrap: nowrap !important;
-  gap: 6px !important;
-  overflow-x: auto !important;
-  padding: 2px 2px 8px !important;
+  flex-wrap: wrap !important;
+  gap: 8px !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  padding: 4px 2px 10px !important;
   margin-bottom: 8px !important;
-  scrollbar-width: none !important;
-  -webkit-overflow-scrolling: touch !important;
-}
-
-.calendar-filter-tabs::-webkit-scrollbar {
-  display: none !important;
 }
 
 .filter-tab {

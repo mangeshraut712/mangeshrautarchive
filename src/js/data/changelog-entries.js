@@ -43,6 +43,17 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'b719c35d',
+    date: '2026-08-25',
+    type: 'improvement',
+    title: 'Align FAQ to Dual-Column Blog Width & Polish Calendar Smart Filter Tabs',
+    summary:
+      'Expanded the FAQ section width to seamlessly match the dual-column blog card container width (1100px max-width) with updated questions, answers, and JSON-LD schema. Enabled graceful multi-row flex wrapping and balanced spacing across all Calendar & Smart Reminders filter tabs (Day, All, Events, Birthdays, Changelog, Tasks) without horizontal cutoff.',
+    tags: ['ui', 'faq', 'calendar', 'layout', 'design-system', 'seo'],
+    sha: 'b719c35d',
+    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/b719c35d',
+  },
+  {
     id: 'f824b01e',
     date: '2026-08-25',
     type: 'fix',
