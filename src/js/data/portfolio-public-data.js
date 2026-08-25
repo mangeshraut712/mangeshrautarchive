@@ -222,17 +222,23 @@ export const usesCatalog = [
     id: 'fonts',
     label: 'Fonts',
     icon: 'fa-font',
-    blurb: 'System-first typography with Apple SF Pro as the design voice.',
+    blurb: 'System-first typography with SF Pro for UI and Minion Pro for long-form reading.',
     items: [
       {
-        name: 'SF Pro',
-        note: 'Display + text faces for headings and UI chrome.',
-        tag: 'Primary',
+        name: 'SF Pro (Display & Text)',
+        note: 'Primary typography for interface chrome, cards, headings, and system data.',
+        tag: 'UI',
+        featured: true,
+      },
+      {
+        name: 'Minion Pro / Editorial Serif',
+        note: 'Editorial serif stack for long-form About Me narrative and technical writings.',
+        tag: 'Editorial',
         featured: true,
       },
       {
         name: 'Inter (fallback)',
-        note: 'Cross-platform fallback when SF Pro is unavailable.',
+        note: 'Cross-platform clean fallback when SF Pro is unavailable.',
         tag: 'Fallback',
       },
     ],

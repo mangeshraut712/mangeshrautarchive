@@ -43,6 +43,17 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'a914f27c',
+    date: '2026-08-25',
+    type: 'improvement',
+    title: 'Comprehensive Site-Wide Copy Proofreading & Humanizer Refinement',
+    summary:
+      'Conducted a rigorous proofreading pass across all homepage and subpage surfaces (Hero, Experience, Education, Awards, Recommendations, Technical Writings, and Uses Stack). Eliminated resume clichés and buzzwords, refined operational volunteer and award descriptions, formatted recommendation quotes cleanly, and harmonized public font colophon details.',
+    tags: ['content', 'editorial', 'experience', 'systems', 'copy'],
+    sha: 'a914f27c',
+    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/a914f27c',
+  },
+  {
     id: 'e639a04f',
     date: '2026-08-25',
     type: 'improvement',
