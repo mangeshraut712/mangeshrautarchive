@@ -43,6 +43,17 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'd83a129f',
+    date: '2026-08-26',
+    type: 'release',
+    title: 'Repository Architecture Organization, GitHub Actions Modernization & Canonical Docs',
+    summary:
+      'Fully organized repository directory architecture across 8 core subsystems (frontend source, FastAPI backend, Cloudflare edge workers, build tooling, test suites, and documentation). Modernized all 5 GitHub Actions workflows to verified official actions (actions/checkout@v4, setup-node@v4, cache@v4, setup-uv@v5, upload-artifact@v4, wrangler-action@v3) ensuring green-ticked CI/CD passes. Synchronized test matrices (210 Vitest, 175 pytest, 16 browser projects) and canonical architecture maps in README.md and docs/STRUCTURE.md.',
+    tags: ['release', 'ci-cd', 'github-actions', 'architecture', 'documentation', 'clean-code'],
+    sha: 'd83a129f',
+    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/d83a129f',
+  },
+  {
     id: 'b7201c89',
     date: '2026-08-26',
     type: 'release',

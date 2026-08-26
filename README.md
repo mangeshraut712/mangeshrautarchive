@@ -26,8 +26,8 @@
   <img src="https://img.shields.io/badge/FastAPI-0.141.1-009688?style=flat-square&logo=fastapi&logoColor=white" alt="FastAPI">
   <img src="https://img.shields.io/badge/ESM-Vanilla%20JS-F7DF1E?style=flat-square&logo=javascript&logoColor=black" alt="Vanilla ESM">
   <img src="https://img.shields.io/badge/OpenRouter-Grok%204.3%20%2B%20Nemotron-black?style=flat-square" alt="OpenRouter">
-  <img src="https://img.shields.io/badge/Vitest-196%20passed-729B1B?style=flat-square&logo=vitest&logoColor=white" alt="196 Vitest unit tests">
-  <img src="https://img.shields.io/badge/pytest-169%20passed-0A9EDC?style=flat-square&logo=pytest&logoColor=white" alt="169 pytest API tests">
+  <img src="https://img.shields.io/badge/Vitest-210%20passed-729B1B?style=flat-square&logo=vitest&logoColor=white" alt="210 Vitest unit tests">
+  <img src="https://img.shields.io/badge/pytest-175%20passed-0A9EDC?style=flat-square&logo=pytest&logoColor=white" alt="175 pytest API tests">
   <img src="https://img.shields.io/badge/Playwright-16%20browser%20configs-2EAD33?style=flat-square&logo=playwright&logoColor=white" alt="Playwright">
   <img src="https://img.shields.io/badge/Lighthouse-100%2F100%2F100%2F100-0cce6b?style=flat-square&logo=lighthouse&logoColor=white" alt="Lighthouse 100">
   <a href="https://foglamp.dev/scan/mangeshrautarchive-jtspx4"><img src="https://img.shields.io/badge/Foglamp-AI%20Architecture%20Map-0071e3?style=flat-square" alt="Foglamp architecture map"></a>
@@ -63,13 +63,14 @@
 1. [Executive Summary](#1-executive-summary)
 2. [Visual Architecture & System Diagrams](#2-visual-architecture--system-diagrams)
 3. [Core Technical Stack](#3-core-technical-stack)
-4. [Authentic AI & Development Tooling](#4-authentic-ai--development-tooling)
-5. [Product Surfaces & Capabilities](#5-product-surfaces--capabilities)
-6. [Testing & Quality Matrix](#6-testing--quality-matrix)
-7. [Quick Start & Development](#7-quick-start--development)
-8. [Open Source Governance & Guidelines](#8-open-source-governance--guidelines)
-9. [Verified Biographical & Project Facts](#9-verified-biographical--project-facts)
-10. [License, Citation & Contact](#10-license-citation--contact)
+4. [Repository Structure & Subsystems](#4-repository-structure--subsystems)
+5. [Authentic AI & Development Tooling](#5-authentic-ai--development-tooling)
+6. [Product Surfaces & Capabilities](#6-product-surfaces--capabilities)
+7. [Testing & Quality Matrix](#7-testing--quality-matrix)
+8. [Quick Start & Development](#8-quick-start--development)
+9. [Open Source Governance & Guidelines](#9-open-source-governance--guidelines)
+10. [Verified Biographical & Project Facts](#10-verified-biographical--project-facts)
+11. [License, Citation & Contact](#11-license-citation--contact)
 
 ---
 
@@ -83,9 +84,9 @@
 ├────────────────────────────────────────────────────────────────────────────────────────┤
 │  ⚡ Zero-Framework ESM: Native JavaScript modules, esbuild bundling, custom properties │
 │  🤖 Agentic AI: AssistMe chatbot, OpenRouter (grok-4.3), 13 WebMCP browser actions    │
-│  🎨 Apple HIG Design: Solid white/black canvases, authentic Liquid Glass shaders       │
+│  🎨 Apple HIG Design: Solid white/black canvases, 3D kinetic interaction model        │
 │  📊 Real-Time Telemetry: WHOOP vitals, GA4 realtime reach, platform health probes      │
-│  🛡️ Quality Gates: 209 Vitest tests, 175 pytest tests, 100/100/100/100 Lighthouse CI  │
+│  🛡️ Quality Gates: 210 Vitest tests, 175 pytest tests, 100/100/100/100 Lighthouse CI  │
 │  📜 Open Chronicle: Complete Git history from day 1 (April 8, 2025) to August 2026     │
 └────────────────────────────────────────────────────────────────────────────────────────┘
 ```
@@ -186,12 +187,39 @@ flowchart TD
 - **Pure HTML5 / CSS3 / ES Modules**: Zero React, Vue, Angular, or Svelte runtime overhead.
 - **Design Tokens**: Standardized CSS custom properties (`--apple-blue: #0071e3`, `--apple-bg`, `--apple-surface`).
 - **Surface Contrast**: Solid `#ffffff` in light mode and solid `#000000` in dark mode.
+- **3D Interactive Kinetics**: Specular metallic sheen animations, perspective hover lift, and tactile spring click micro-physics across all 6 button tiers.
 - **Liquid Glass Materials**: Real-time glassmorphic shaders (`clear`, `balanced` 42% tint, `tinted`).
 - **Rich Rendering**: KaTeX math rendering, marked Markdown parser, DOMPurify HTML sanitization.
 
 ---
 
-## 4. Authentic AI & Development Tooling
+## 4. Repository Structure & Subsystems
+
+The codebase is organized into modular subsystems so every file is purpose-built and easy to find:
+
+```text
+mangeshrautarchive/
+├── src/                      # ★ Production Frontend Source (Vanilla HTML, CSS, ESM)
+│   ├── *.html                # Page shells (index, systems, monitor, travel, uses, changelog, 404)
+│   ├── js/core|modules|services|utils|data|vendor/ # Modular client engine & WebMCP tools
+│   └── assets/css|images|files|icons|vendor/       # 6-tier design system & media assets
+├── api/                      # ★ FastAPI Backend (Python 3.12+ Serverless & Local Intelligence)
+│   ├── routes/               # Modular HTTP route handlers (chat, monitor, media, integrations)
+│   ├── integrations/         # Third-party OAuth connectors & health probes
+│   └── config.py · model_router.py · monitoring.py
+├── workers/                  # ★ Cloudflare Workers (Edge AI Proxy & Cron Telemetry)
+│   └── assistme-chat/        # Standalone Edge Worker for AssistMe AI & WebMCP proxy
+├── scripts/                  # ★ Developer Tooling & Build Pipeline (esbuild, QA, security, sync)
+├── tests/                    # ★ Automated Test Suite (210 Vitest, 175 pytest, 16 Playwright targets)
+├── docs/                     # Documentation (DESIGN.md source of truth, STRUCTURE.md, plans)
+└── .github/workflows/        # Automated CI/CD (GitHub Pages deploy, monitoring, edge sync)
+```
+
+> 📖 **Full Layout Map**: See [**`docs/STRUCTURE.md`**](docs/STRUCTURE.md) for the complete directory specification and where to add new files.
+
+---
+
+## 5. Authentic AI & Development Tooling
 
 This repository was built and refined using verified daily-driver AI tools and development environments:
 
@@ -210,7 +238,7 @@ This repository was built and refined using verified daily-driver AI tools and d
 
 ---
 
-## 5. Product Surfaces & Capabilities
+## 6. Product Surfaces & Capabilities
 
 | Surface / Route                                                                                         | Primary Purpose & Key Features                                                                       |
 | ------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
@@ -225,14 +253,14 @@ This repository was built and refined using verified daily-driver AI tools and d
 
 ---
 
-## 6. Testing & Quality Matrix
+## 7. Testing & Quality Matrix
 
 All quality gates are enforced locally and verified automatically in GitHub Actions CI:
 
 | Test Suite            | Runner            |        Test Count         | Scope & Coverage                                                            |
 | --------------------- | ----------------- | :-----------------------: | --------------------------------------------------------------------------- |
-| **Unit Tests**        | Vitest 4.1        | **197 passed** (42 files) | JS modules, services, markdown parser, WebMCP actions, data contracts       |
-| **API Tests**         | pytest            | **169 passed** (26 files) | FastAPI endpoints, streaming chat, health probes, OAuth token stores        |
+| **Unit Tests**        | Vitest 4.1        | **210 passed** (42 files) | JS modules, services, markdown parser, WebMCP actions, data contracts       |
+| **API Tests**         | pytest            | **175 passed** (26 files) | FastAPI endpoints, streaming chat, health probes, OAuth token stores        |
 | **E2E Browser Tests** | Playwright        |      **16 projects**      | Multi-browser suite (Desktop Chrome, Safari, Firefox, iPhone 17, Pixel 7)   |
 | **Accessibility**     | axe-core          |    **16/16 baseline**     | Zero critical/serious WCAG violations across light, dark, and high contrast |
 | **Lighthouse CI**     | Google Lighthouse |    **100/100/100/100**    | Performance, Accessibility, Best Practices, SEO deploy gates                |
@@ -240,15 +268,15 @@ All quality gates are enforced locally and verified automatically in GitHub Acti
 
 ---
 
-## 7. Quick Start & Development
+## 8. Quick Start & Development
 
-### 7.1 Prerequisites
+### 8.1 Prerequisites
 
 - **Node.js**: ≥22.0.0 and <27.0.0 (`.nvmrc` → `22`)
 - **Python**: 3.12+
 - **Git**: 2.30+
 
-### 7.2 Installation & Local Dev
+### 8.2 Installation & Local Dev
 
 ```bash
 # 1. Clone the repository
@@ -275,10 +303,10 @@ npm run dev
 # FastAPI:  http://127.0.0.1:8001 (Docs: /docs)
 ```
 
-### 7.3 Essential Quality Commands
+### 8.3 Essential Quality Commands
 
 ```bash
-npm run check             # Run ESLint + Stylelint + Prettier + 209 Vitest tests
+npm run check             # Run ESLint + Stylelint + Prettier + 210 Vitest tests
 npm run test:api          # Run 175 pytest API tests
 npm run doctor:strict     # Run 60-point strict repository layout check
 npm run security-check    # Scan for exposed API keys and credentials

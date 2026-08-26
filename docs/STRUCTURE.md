@@ -1,76 +1,83 @@
-# Project structure (August 2026)
+# Project Structure & Architecture Map (August 2026)
 
-Canonical layout for **mangeshrautarchive**. Prefer this map when adding files so everything stays findable.
+Canonical layout for **mangeshrautarchive**. All files and directories are organized strictly by purpose and lifecycle.
 
 ```text
 mangeshrautarchive/
-├── README.md                 # Public project docs & canonical report
-├── AGENTS.md                 # AI agent operating brief (Linux Foundation standard)
+├── README.md                 # Public project docs, architecture overview & benchmark matrix
+├── AGENTS.md                 # Universal AI Agent Briefing (Linux Foundation AGENTS.md standard)
 ├── CONTRIBUTING.md           # Contribution guidelines, dev setup & PR rules
 ├── CODE_OF_CONDUCT.md        # Community standards (Contributor Covenant v2.1)
-├── CITATION.cff              # Academic & open-source citation metadata
-├── SECURITY.md · LICENSE
+├── CITATION.cff              # Academic & open-source citation metadata (CFF v1.2.0)
+├── SECURITY.md · LICENSE     # Security disclosure policy & MIT open-source license
 │
-├── package.json              # Node ≥22 · scripts · deps (root — required)
-├── .nvmrc · .node-version    # Pin local Node 22 for nvm / asdf / fnm
-├── vercel.json               # Vercel routes · functions · headers (git auto-deploy OFF)
-├── index.js                  # Static-analysis entry → src/js/entry.js
-├── playwright.config.js      # E2E multi-browser
-├── vitest.config.js          # Unit tests → tests/unit/**
-├── eslint.config.js          # ESLint flat config
-├── pyproject.toml            # Python deps + Ruff/pytest tool config
-├── requirements.txt          # Runtime pip pins
-├── requirements-dev.txt      # Dev/test pip pins
-├── ruff.toml · .flake8       # Python lint CLI defaults
-├── jsconfig.json · globals.d.ts
+├── package.json              # Node ≥22 engine, scripts, dev dependencies (root required)
+├── .nvmrc · .node-version    # Pin local Node v22 for nvm / asdf / fnm / volta
+├── vercel.json               # Vercel serverless routes, headers, functions configuration
+├── index.js                  # Static-analysis entrypoint → src/js/entry.js
+├── playwright.config.js      # Multi-browser Playwright E2E configuration (16 browser profiles)
+├── vitest.config.js          # Unit testing configuration → tests/unit/**/*.test.js
+├── eslint.config.js          # ESLint 10+ flat configuration
+├── pyproject.toml            # Python 3.12+ project config + pytest / Ruff tool configurations
+├── requirements.txt          # Production Python API dependencies (FastAPI, Pydantic, etc.)
+├── requirements-dev.txt      # Python testing & developer tooling (pytest, flake8, httpx, etc.)
+├── ruff.toml · .flake8       # Python style, linting, and formatting CLI defaults
+├── jsconfig.json · globals.d.ts # IDE code intelligence & ambient JS type declarations
 │
-├── src/                      # ★ Frontend source (built → dist/)
-│   ├── *.html                # Page shells
+├── src/                      # ★ Production Frontend Source (esbuild compilation target → dist/)
+│   ├── *.html                # Page shells (index, systems, monitor, travel, uses, changelog, 404, offline)
 │   ├── js/
-│   │   ├── core/             # bootstrap, chat, config, subpage-chrome
-│   │   ├── modules/          # Feature modules (chatbot, projects, …)
-│   │   ├── services/         # Markdown, streaming, voice, analytics
-│   │   ├── utils/            # Shared helpers
-│   │   ├── data/             # Travel / media data
-│   │   └── vendor/           # Vendored third-party JS
+│   │   ├── core/             # Application lifecycle, bootstrap, subpage chrome, theme managers
+│   │   ├── modules/          # Feature modules (chatbot, projects showcase, calendar, telemetry, …)
+│   │   ├── services/         # Rich markdown engine, streaming parser, audio/voice, analytics
+│   │   ├── utils/            # Pure helpers, DOM utilities, security sanitizers, date formatters
+│   │   ├── data/             # Static datasets (changelog entries, projects, certifications, travel, blog)
+│   │   └── vendor/           # Vendored client libraries (marked, KaTeX, DOMPurify)
 │   └── assets/
-│       ├── css/              # Vanilla CSS design system
-│       ├── images|files|icons|vendor/
+│       ├── css/              # Vanilla CSS 6-tier design system, Apple typography & theme styles
+│       └── images|files|icons|vendor/ # Media assets, vector diagrams, brand iconography
 │
-├── api/                      # ★ FastAPI backend (Vercel serverless)
-│   ├── index.py              # App entry
-│   ├── routes/               # HTTP route modules
-│   ├── integrations/         # OAuth / GitHub / Supabase / …
-│   ├── config.py · model_router.py · monitoring.py · …
-│   └── realtime-ws.js        # WebSocket edge for voice
+├── api/                      # ★ Python 3.12+ FastAPI Backend (Serverless & Local Dev)
+│   ├── index.py              # Application initialization, middleware stack, exception handlers
+│   ├── routes/               # Modular HTTP routes (chat, monitor, media, integrations, github, etc.)
+│   ├── integrations/         # Third-party OAuth connectors, token stores, health probes
+│   ├── config.py             # Environment configuration & model router defaults
+│   ├── model_router.py       # Multi-model routing (Grok 4.3, Nemotron 120B, Gemma 27B)
+│   └── monitoring.py         # System health, telemetry, probe handlers
 │
-├── scripts/                  # ★ Tooling (not shipped to browsers)
-│   ├── build/                # esbuild, generators, clean, assets
-│   ├── deployment/           # Lighthouse, security, env parity, deploy sync
-│   ├── utils/                # dev servers, check-node, serve-dist, flake8/vulture
-│   ├── qa/                   # Browser / FPS / device audits (+ manual/)
-│   ├── integrations/         # OAuth setup helpers, OpenRouter tests
-│   └── offline/              # Offline data builders (travel DB)
+├── workers/                  # ★ Cloudflare Workers (Edge AI & GitHub Pages API Proxy)
+│   └── assistme-chat/        # Standalone Edge Worker for AssistMe AI Chat & WebMCP proxy
 │
-├── tests/                    # ★ All automated tests
-│   ├── unit/                 # Vitest (vanilla JS)
-│   ├── api/                  # pytest (FastAPI)
-│   └── e2e/                  # Playwright specs (+ helpers/)
+├── scripts/                  # ★ Developer Tooling & Build Pipeline (Not shipped to browser)
+│   ├── build/                # esbuild bundlers, static generators (blog, case studies, icons), clean
+│   ├── deployment/           # Security scanning, secret audit, deploy sync verification, Lighthouse
+│   ├── utils/                # Dev servers (frontend port 4000, backend port 8001), check-node, doctor
+│   ├── qa/                   # Automated browser audits, device viewport tests, accessibility checks
+│   ├── integrations/         # OAuth setup helpers, OpenRouter connectivity tests
+│   └── offline/              # Offline data builders (travel GeoJSON database)
 │
-├── config/                   # Shared non-root tool config
-│   └── vulture.toml          # Python dead-code (lint:dead-code)
+├── tests/                    # ★ Complete Automated Test Suite
+│   ├── unit/                 # 210 Vitest unit tests (JavaScript modules, utilities, WebMCP actions)
+│   ├── api/                  # 175 pytest API tests (FastAPI routes, streaming, OAuth, middleware)
+│   └── e2e/                  # Playwright multi-browser end-to-end specifications across 16 targets
 │
-├── docs/                     # Human docs + archived plans
-│   ├── DESIGN.md             # Apple Human Interface Portfolio Design System (source of truth)
-│   ├── STRUCTURE.md          # This file
-│   ├── README.md             # Doc index
-│   ├── plans/                # Improve-skill execution plans
-│   └── design-plans/         # AssistMe shadcn-inspired UX plans (executed)
+├── config/                   # Non-root tool configuration (e.g. vulture.toml dead-code scanner)
 │
-├── .github/workflows/        # CI · deploy · monitoring (no React Doctor)
-├── skills-lock.json          # Agent skills lock (tracked)
-├── dist/                     # Build output (gitignored)
-└── node_modules/ · venv/     # Install trees (gitignored)
+├── docs/                     # Human Documentation, Design Systems & Architecture Plans
+│   ├── DESIGN.md             # Apple Human Interface Portfolio Design System (Canonical Source of Truth)
+│   ├── STRUCTURE.md          # This file — Complete repository directory map and guide
+│   ├── README.md             # Documentation directory index
+│   └── plans/                # Architecture plans & implementation blueprints
+│
+├── .github/workflows/        # Automated CI/CD, Deployment & Health Monitoring Workflows
+│   ├── deploy.yml            # Primary CI pipeline → Quality gates → GitHub Pages deployment
+│   ├── deploy-chat-worker.yml # Deploy Cloudflare Worker edge API
+│   ├── health-vitals-sync.yml # Edge WHOOP / Withings cron telemetry sync
+│   ├── post-deploy-monitoring.yml # Production reachability & Lighthouse monitoring
+│   └── foglamp-scan-keepalive.yml # Architecture map keep-alive
+│
+├── dist/                     # Production compiled bundle output (Git-ignored)
+└── node_modules/ · venv/     # Dependencies & virtual environments (Git-ignored)
 ```
 
 ## Where to put new work
