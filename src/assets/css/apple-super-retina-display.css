@@ -62,11 +62,13 @@ html.is-scrolling .a11y-toolbar {
 }
 
 /* Always-On Display dim — OLED true black + lowered decorative luminance when idle/hidden */
-html.dark.aod-dim {
+html.dark.aod-dim,
+html[data-theme='dark'].aod-dim {
   background-color: #000000 !important;
 }
 
-html.dark.aod-dim body {
+html.dark.aod-dim body,
+html[data-theme='dark'].aod-dim body {
   background-color: #000000 !important;
   color: #8e8e93 !important;
 }

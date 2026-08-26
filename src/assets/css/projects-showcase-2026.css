@@ -511,11 +511,16 @@ html.dark #projects .projects-activity-overview {
 
 #projects .activity-eyebrow {
   margin: 0 !important;
-  color: var(--project-accent) !important;
+  color: #005bb5 !important;
   font-size: 0.76rem !important;
   font-weight: 700 !important;
   text-transform: uppercase;
   letter-spacing: 0.08em !important;
+}
+
+html.dark #projects .activity-eyebrow,
+html[data-theme='dark'] #projects .activity-eyebrow {
+  color: #58a6ff !important;
 }
 
 #projects .activity-title {

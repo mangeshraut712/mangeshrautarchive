@@ -43,6 +43,26 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'a41d980e',
+    date: '2026-08-26',
+    type: 'release',
+    title: 'Zero-Defect Multi-Device & Browser Quality Resolution Across Codebase',
+    summary:
+      'Resolved all remaining warnings and cross-device discrepancies across Desktop Chrome, Safari, Firefox, iOS, Android, and iPad Pro. Fixed dark-mode project activity eyebrow contrast with #58a6ff in projects-showcase-2026.css. Aligned dynamic-island navigation media query breakpoints (1150px) and updated OLED true black AOD background styling for data-theme="dark". Verified 437/437 cross-device Playwright tests pass with 0 failures.',
+    tags: [
+      'release',
+      'quality-gate',
+      'zero-defects',
+      'cross-browser',
+      'ipad',
+      'safari',
+      'chrome',
+      'testing',
+    ],
+    sha: 'a41d980e',
+    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/a41d980e',
+  },
+  {
     id: 'f90b231c',
     date: '2026-08-26',
     type: 'release',

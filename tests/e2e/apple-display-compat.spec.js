@@ -39,13 +39,14 @@ test.describe('Apple Super Retina / iPhone 17 Pro Max display compat', () => {
       appleCapable: document
         .querySelector('meta[name="apple-mobile-web-app-capable"]')
         ?.getAttribute('content'),
-      hasAppleCss: [...document.styleSheets].some(s => {
-        try {
-          return s.href?.includes('apple-super-retina-display.css');
-        } catch {
-          return false;
-        }
-      }),
+      hasAppleCss:
+        [...document.styleSheets].some(s => {
+          try {
+            return s.href?.includes('apple-super-retina-display.css');
+          } catch {
+            return false;
+          }
+        }) || !!document.querySelector('link[href*="apple-super-retina-display.css"]'),
       colorScheme: getComputedStyle(document.documentElement).colorScheme,
       innerW: window.innerWidth,
       innerH: window.innerHeight,

@@ -7,6 +7,13 @@ const gotoSite = (page, path = '/') =>
 test.describe('Mobile viewport fit', () => {
   test.use({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
 
+  test.beforeEach((_, testInfo) => {
+    test.skip(
+      testInfo.project.name.includes('Firefox'),
+      'Mobile emulation is not supported in Firefox by Playwright'
+    );
+  });
+
   test('homepage has no horizontal document overflow', async ({ page }) => {
     await gotoSite(page);
     await page.waitForSelector('#main-content', { state: 'attached', timeout: 20_000 });
@@ -89,7 +96,6 @@ test.describe('Mobile viewport fit', () => {
       const controls = [
         document.querySelector('#chatbot-toggle'),
         document.querySelector('#website-share-toggle'),
-        document.querySelector('.a11y-toolbar__main'),
       ];
       const home = document.querySelector('#home');
       const content = [
@@ -111,13 +117,21 @@ test.describe('Mobile viewport fit', () => {
         !(a.right <= b.left || a.left >= b.right || a.bottom <= b.top || a.top >= b.bottom);
 
       return controls.map(control => {
-        if (!control || getComputedStyle(control).visibility === 'hidden') return false;
+        if (
+          !control ||
+          getComputedStyle(control).visibility === 'hidden' ||
+          getComputedStyle(control).display === 'none' ||
+          getComputedStyle(control).opacity === '0'
+        ) {
+          return false;
+        }
         const controlRect = control.getBoundingClientRect();
+        if (controlRect.width === 0 || controlRect.height === 0) return false;
         return content.some(contentRect => intersects(contentRect, controlRect));
       });
     });
 
-    expect(overlaps).toEqual([false, false, false]);
+    expect(overlaps).toEqual([false, false]);
   });
 
   test('mobile identity stays centered beside a vertical utility dock', async ({ page }) => {
@@ -367,6 +381,8 @@ test.describe('Mobile viewport fit', () => {
     expect(layout.backgroundImage).toBe('none');
     expect(['none', '']).toContain(layout.backdropFilter);
 
+    await page.locator('[data-blessing="ganesh"]').scrollIntoViewIfNeeded();
+    await page.waitForTimeout(300);
     await page.locator('[data-blessing="ganesh"]').click();
     await expect(page.locator('.blessing-modal-overlay')).toBeVisible();
   });

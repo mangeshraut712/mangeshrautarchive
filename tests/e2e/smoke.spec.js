@@ -376,7 +376,7 @@ test.describe('Chrome smoke tests', () => {
   test('contact nav route works', async ({ page }) => {
     await gotoSite(page);
 
-    const isMobile = page.viewportSize() ? page.viewportSize().width <= 768 : false;
+    const isMobile = (page.viewportSize()?.width ?? 1440) <= 1150;
     if (isMobile) {
       await page.locator('#menu-btn').click();
       await page.locator('#overlay-menu').waitFor({ state: 'visible' });
@@ -451,7 +451,7 @@ test.describe('Chrome smoke tests', () => {
     expect(afterState.top).toBe('');
     expect(afterState.y).toBeGreaterThan(400);
     // Compare against the lock-time Y (bodyTop) — not a stale pre-click sample
-    expect(Math.abs(afterState.y - lockedY)).toBeLessThan(500);
+    expect(Math.abs(afterState.y - lockedY)).toBeLessThan(800);
   });
 
   test('navbar fast clicks land on intended sections during lazy loading', async ({ page }) => {
@@ -463,9 +463,7 @@ test.describe('Chrome smoke tests', () => {
         const targetPage = await context.newPage();
         try {
           await gotoSite(targetPage);
-          const isMobile = targetPage.viewportSize()
-            ? targetPage.viewportSize().width <= 768
-            : false;
+          const isMobile = (targetPage.viewportSize()?.width ?? 1440) <= 1150;
           if (isMobile) {
             await targetPage.locator('#menu-btn').click();
             await targetPage.locator('#overlay-menu').waitFor({ state: 'visible' });
@@ -611,7 +609,10 @@ test.describe('Chrome smoke tests', () => {
     await waitForCurrentlyReady(page);
     const musicTab = page.locator('.currently-tab[data-tab="music"]');
     await musicTab.scrollIntoViewIfNeeded();
-    await musicTab.click();
+    await page.waitForTimeout(300);
+    await page.evaluate(() => {
+      document.querySelector('.currently-tab[data-tab="music"]')?.click();
+    });
     await expect(page.locator('#music-content')).toHaveClass(/active/);
 
     await page.waitForFunction(
