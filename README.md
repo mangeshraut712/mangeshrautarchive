@@ -1,15 +1,29 @@
 # Mangesh Raut — Agentic Full-Stack Portfolio & Open Architecture
 
-<p align="center">
-  <a href="https://mangeshraut.pro">
-    <img src="src/assets/images/homepage-light.png" alt="Portfolio homepage — light mode" width="390">
-    <img src="src/assets/images/homepage-dark.png" alt="Portfolio homepage — dark mode" width="390">
-  </a>
-</p>
+<div align="center">
 
-<p align="center">
-  <sub><strong>mangeshraut.pro</strong> · Light Mode (left) · Dark Mode (right) · <strong>Production Release · August 2026</strong> · Verified on <code>main</code></sub>
-</p>
+  <table>
+    <tr>
+      <td align="center" width="50%">
+        <a href="https://mangeshraut712.github.io/mangeshrautarchive/">
+          <img src="src/assets/images/homepage-light.png" alt="Portfolio homepage — light mode" width="100%">
+        </a>
+        <br>
+        <sub><b>☀️ Light Canvas (<code>#ffffff</code>)</b></sub>
+      </td>
+      <td align="center" width="50%">
+        <a href="https://mangeshraut712.github.io/mangeshrautarchive/">
+          <img src="src/assets/images/homepage-dark.png" alt="Portfolio homepage — dark mode" width="100%">
+        </a>
+        <br>
+        <sub><b>🌙 Dark Canvas (<code>#000000</code>)</b></sub>
+      </td>
+    </tr>
+  </table>
+
+<sub><strong>mangeshraut.pro</strong> · <strong>Production Release · August 2026</strong> · Verified 100% Green on <code>main</code></sub>
+
+</div>
 
 <p align="center">
   <a href="https://mangeshraut712.github.io/mangeshrautarchive/"><img src="https://img.shields.io/badge/Live-GitHub_Pages-24292e?style=for-the-badge&logo=github&logoColor=white" alt="Live GitHub Pages"></a>
@@ -35,17 +49,17 @@
 
 <p align="center">
   <strong>Zero Framework Runtime · Native Vanilla ESM · FastAPI Serverless · Agentic WebMCP · Apple HIG Liquid Glass</strong><br>
-  <sub>High-contrast solid canvas (`#ffffff` / `#000000`) · Multi-Model AI Routing · 1,820+ Git Commits Open Chronicle</sub>
+  <sub>High-contrast solid canvas (<code>#ffffff</code> / <code>#000000</code>) · Multi-Model AI Routing · 1,820+ Git Commits Open Chronicle</sub>
 </p>
 
 <p align="center">
-  <a href="https://mangeshraut.pro"><b>Live Website</b></a>
+  <a href="https://mangeshraut712.github.io/mangeshrautarchive/"><b>Live Website</b></a>
   ·
-  <a href="https://mangeshraut.pro/systems"><b>Systems Notebook</b></a>
+  <a href="https://mangeshraut712.github.io/mangeshrautarchive/systems"><b>Systems Notebook</b></a>
   ·
-  <a href="https://mangeshraut.pro/monitor"><b>System Monitor</b></a>
+  <a href="https://mangeshraut712.github.io/mangeshrautarchive/monitor"><b>System Monitor</b></a>
   ·
-  <a href="https://mangeshraut.pro/travel"><b>Travel Atlas</b></a>
+  <a href="https://mangeshraut712.github.io/mangeshrautarchive/travel"><b>Travel Atlas</b></a>
   ·
   <a href="https://mangeshraut712.github.io/mangeshrautarchive/uses"><b>Uses & Stack</b></a>
   ·
@@ -53,7 +67,7 @@
   ·
   <a href="https://mangeshraut712.github.io/mangeshrautarchive/blog/"><b>Field Notes</b></a>
   ·
-  <a href="#7-quick-start--development"><b>Quick Start</b></a>
+  <a href="#8-quick-start--development"><b>Quick Start</b></a>
 </p>
 
 ---
@@ -66,7 +80,7 @@
 4. [Repository Structure & Subsystems](#4-repository-structure--subsystems)
 5. [Authentic AI & Development Tooling](#5-authentic-ai--development-tooling)
 6. [Product Surfaces & Capabilities](#6-product-surfaces--capabilities)
-7. [Testing & Quality Matrix](#7-testing--quality-matrix)
+7. [Testing & Quality Assurance Matrix](#7-testing--quality-assurance-matrix)
 8. [Quick Start & Development](#8-quick-start--development)
 9. [Open Source Governance & Guidelines](#9-open-source-governance--guidelines)
 10. [Verified Biographical & Project Facts](#10-verified-biographical--project-facts)
@@ -83,11 +97,11 @@
 │                                 CORE ARCHITECTURAL PILLARS                              │
 ├────────────────────────────────────────────────────────────────────────────────────────┤
 │  ⚡ Zero-Framework ESM: Native JavaScript modules, esbuild bundling, custom properties │
-│  🤖 Agentic AI: AssistMe chatbot, OpenRouter (grok-4.3), 13 WebMCP browser actions    │
-│  🎨 Apple HIG Design: Solid white/black canvases, 3D kinetic interaction model        │
-│  📊 Real-Time Telemetry: WHOOP vitals, GA4 realtime reach, platform health probes      │
-│  🛡️ Quality Gates: 210 Vitest tests, 175 pytest tests, 100/100/100/100 Lighthouse CI  │
-│  📜 Open Chronicle: Complete Git history from day 1 (April 8, 2025) to August 2026     │
+│  🤖 Agentic AI: AssistMe chatbot, OpenRouter (grok-4.3), 13 WebMCP browser actions     │
+│  🎨 Apple HIG Design: Solid white/black canvases, 3D kinetic interaction model         │
+│  📊 Real-Time Telemetry: WHOOP vitals, GA4 realtime reach, platform health probes       │
+│  🛡️ Quality Gates: 210 Vitest tests, 175 pytest tests, 100/100/100/100 Lighthouse CI   │
+│  📜 Open Chronicle: Complete Git history from day 1 (April 8, 2025) to August 2026      │
 └────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -95,73 +109,103 @@
 
 ## 2. Visual Architecture & System Diagrams
 
-### 🏛️ System Architecture Topology
+### 🏛️ 2.1 System Architecture Topology
 
 High-resolution vector architecture committed in [`src/assets/images/diagrams/system-architecture.svg`](src/assets/images/diagrams/system-architecture.svg):
 
-<p align="center">
-  <img src="src/assets/images/diagrams/system-architecture.svg" alt="System Architecture Diagram" width="780">
-</p>
+<div align="center">
+  <img src="src/assets/images/diagrams/system-architecture.svg" alt="System Architecture Diagram" width="820">
+  <br>
+  <sub><b>Figure 1: Full-stack system topology spanning client browser, edge routing, AI models, and upstream APIs.</b></sub>
+</div>
 
-### 👁️ AssistMe Agentic AI & WebMCP Workflow
+<br>
 
-Client-side tool execution, memory management, and OpenRouter NDJSON streaming:
+### 👁️ 2.2 AssistMe Agentic AI & WebMCP Workflow
 
-<p align="center">
-  <img src="src/assets/images/diagrams/assistme-multimodal-workflow.svg" alt="AssistMe Multimodal AI Workflow" width="780">
-</p>
+Client-side tool execution, memory management, and OpenRouter NDJSON streaming committed in [`src/assets/images/diagrams/assistme-multimodal-workflow.svg`](src/assets/images/diagrams/assistme-multimodal-workflow.svg):
 
-### 🛡️ CI/CD Quality Pipeline & 3-Tier Quality Gates
+<div align="center">
+  <img src="src/assets/images/diagrams/assistme-multimodal-workflow.svg" alt="AssistMe Multimodal AI Workflow" width="820">
+  <br>
+  <sub><b>Figure 2: Multimodal AssistMe chatbot pipeline with WebMCP action execution and streaming intelligence.</b></sub>
+</div>
 
-Automated repository health verification enforcing 100/100/100/100 Lighthouse scores:
+<br>
 
-<p align="center">
-  <img src="src/assets/images/diagrams/ci-cd-quality-pipeline.svg" alt="CI/CD Quality Pipeline" width="780">
-</p>
+### 🛡️ 2.3 CI/CD Quality Pipeline & 3-Tier Quality Gates
 
-### 🌐 Dual-Host Edge Topology & Failover
+Automated repository health verification enforcing 100/100/100/100 Lighthouse scores committed in [`src/assets/images/diagrams/ci-cd-quality-pipeline.svg`](src/assets/images/diagrams/ci-cd-quality-pipeline.svg):
 
-GitHub Pages primary publishing + Cloudflare Worker API, with Vercel/FastAPI retained as an optional compatibility surface:
+<div align="center">
+  <img src="src/assets/images/diagrams/ci-cd-quality-pipeline.svg" alt="CI/CD Quality Pipeline" width="820">
+  <br>
+  <sub><b>Figure 3: 3-tier automated CI/CD pipeline enforcing static security, linting, unit tests, and Lighthouse floors.</b></sub>
+</div>
 
-<p align="center">
-  <img src="src/assets/images/diagrams/dual-host-edge-topology.svg" alt="Dual-Host Edge Topology" width="780">
-</p>
+<br>
+
+### 🌐 2.4 Dual-Host Edge Topology & Failover
+
+GitHub Pages primary publishing + Cloudflare Worker API, with Vercel/FastAPI retained as an optional compatibility surface committed in [`src/assets/images/diagrams/dual-host-edge-topology.svg`](src/assets/images/diagrams/dual-host-edge-topology.svg):
+
+<div align="center">
+  <img src="src/assets/images/diagrams/dual-host-edge-topology.svg" alt="Dual-Host Edge Topology" width="820">
+  <br>
+  <sub><b>Figure 4: Global edge delivery network with zero-cold-start static distribution and live serverless API proxying.</b></sub>
+</div>
+
+<br>
+
+### 🎵 2.5 Real-Time Spotify Scrobble & Media Pipeline
+
+Live music listening telemetry, Last.fm scrobble synchronization, and cached artwork loading committed in [`src/assets/images/diagrams/spotify-live-scrobble-flow.svg`](src/assets/images/diagrams/spotify-live-scrobble-flow.svg):
+
+<div align="center">
+  <img src="src/assets/images/diagrams/spotify-live-scrobble-flow.svg" alt="Spotify Live Scrobble Flow" width="820">
+  <br>
+  <sub><b>Figure 5: Real-time Spotify listening feed with Last.fm API caching, cover artwork rendering, and fallbacks.</b></sub>
+</div>
+
+<br>
+
+### ⚡ 2.6 Interactive Mermaid Topology
 
 ```mermaid
 flowchart TD
   subgraph Client ["Client Browser (Vanilla ESM)"]
-    DOM[HTML5 Shells]
-    JS[Core Modules / Bootstrap]
-    MCP[WebMCP Action Engine]
-    UI[Apple HIG Liquid Glass UI]
+    DOM["HTML5 Semantic Shells"]
+    JS["Core Modules & Bootstrap"]
+    MCP["WebMCP Action Engine (13 Tools)"]
+    UI["Apple HIG Liquid Glass UI"]
   end
 
-  subgraph Edge ["Global Edge & Serverless"]
+  subgraph Edge ["Global Edge & Serverless Layer"]
     Pages["GitHub Pages (Primary Static Host)"]
-    Vercel["Vercel Edge Gateway (Optional/Disabled)"]
-    Worker["Cloudflare Worker (assistme-chat)"]
-    FastAPI["Python 3.12 FastAPI (/api/*)"]
+    Worker["Cloudflare Worker (assistme-chat API)"]
+    FastAPI["FastAPI Python 3.12 (Vercel Surface)"]
   end
 
   subgraph Upstream ["Upstream AI & Cloud Integrations"]
     OR["OpenRouter (Grok 4.3 / Nemotron / Gemma)"]
-    GH["GitHub REST API"]
-    Supa["Supabase PostgreSQL (Forms, Bookings, Integrations, Vitals)"]
-    GCal["Google Calendar (Free/Busy, Events, Invites, Reminders)"]
-    WHOOP["WHOOP & Withings APIs"]
-    GA4["Google Analytics 4 Realtime"]
+    GH["GitHub REST API (Projects & Stats)"]
+    Supa["Supabase PostgreSQL (Forms & Bookings)"]
+    GCal["Google Calendar (Free/Busy & Invites)"]
+    WHOOP["WHOOP & Withings Health Telemetry"]
+    GA4["Google Analytics 4 Realtime Reach"]
+    LFM["Last.fm Live Scrobble Feed"]
   end
 
   DOM --> JS --> UI
   JS --> MCP
-  MCP -->|Browser Actions| DOM
-  JS -->|Pages /api calls| Worker
+  MCP -->|Execute Actions| DOM
+  JS -->|/api/* calls| Worker
   Worker --> OR
   Worker --> GH
   Worker --> Supa
   Worker --> WHOOP
   Worker --> GCal
-  Vercel -.-> FastAPI
+  Worker --> LFM
   FastAPI -.-> OR
   FastAPI -.-> GA4
   Pages --> DOM
@@ -171,16 +215,17 @@ flowchart TD
 
 ## 3. Core Technical Stack
 
-### 3.1 Runtime & Platforms
+### 3.1 Runtime, Platforms & Build Engines
 
-| Layer                   | Technology        | Version                         | Purpose                                                  |
-| ----------------------- | ----------------- | ------------------------------- | -------------------------------------------------------- |
-| **JavaScript Engine**   | Node.js           | **≥22 <27** (`.nvmrc` → **22**) | Build toolchain, Vitest 4, ESLint 10, Stylelint 17       |
-| **Module Architecture** | Native ES Modules | `"type": "module"`              | Native browser execution (`.js` explicit imports)        |
-| **Python Runtime**      | CPython           | **3.12+**                       | FastAPI serverless functions & API test suite            |
-| **Backend Framework**   | FastAPI           | **0.141.1**                     | Async HTTP API, OpenAPI specs, Pydantic v2 schemas       |
-| **ASGI Server**         | Uvicorn           | **0.52.3**                      | High-performance async server for local & serverless API |
-| **Bundling Tool**       | esbuild           | **0.28.2**                      | Lightning-fast asset compilation and minification        |
+| Layer                   | Technology         | Version                         | Purpose                                                  |
+| :---------------------- | :----------------- | :------------------------------ | :------------------------------------------------------- |
+| **JavaScript Engine**   | Node.js            | **≥22 <27** (`.nvmrc` → **22**) | Build toolchain, Vitest 4, ESLint 10, Stylelint 17       |
+| **Module Architecture** | Native ES Modules  | `"type": "module"`              | Native browser execution (`.js` explicit imports)        |
+| **Python Runtime**      | CPython            | **3.12+**                       | FastAPI serverless functions & pytest API suite          |
+| **Backend Framework**   | FastAPI            | **0.141.1**                     | Async HTTP API, OpenAPI specs, Pydantic v2 schemas       |
+| **Edge Compute**        | Cloudflare Workers | **ESM standard**                | Low-latency Edge AI routing & OAuth proxying             |
+| **ASGI Server**         | Uvicorn            | **0.52.3**                      | High-performance async server for local & serverless API |
+| **Bundling Tool**       | esbuild            | **0.28.2**                      | Lightning-fast asset compilation and minification        |
 
 ### 3.2 Frontend Architecture (Zero Runtime Dependencies)
 
@@ -221,31 +266,30 @@ mangeshrautarchive/
 
 ## 5. Authentic AI & Development Tooling
 
-This repository was built and refined using verified daily-driver AI tools and development environments:
+This repository was engineered and refined using verified daily-driver AI tools and development environments:
 
-| Tool                   | Role & Workflow Context                                                | Telemetry & Usage                    |
-| ---------------------- | ---------------------------------------------------------------------- | ------------------------------------ |
-| **Google Antigravity** | Multi-agent pair programming, test running, and full-repo architecture | Gemini 3.7 Flash & 2.5 Pro reasoning |
-| **Cursor**             | Primary AI-native IDE with full-codebase context orchestration         | Daily-driver IDE                     |
-| **Anthropic Claude**   | Deep conceptual reasoning, architectural blueprints, and refactoring   | Claude 3.7 Sonnet & Opus             |
-| **OpenAI Codex**       | Unit test scaffolding, schema validation, and pair programming         | GPT-4o / Codex engine                |
-| **OpenRouter**         | Multi-model proxy routing with live streaming                          | Grok 4.3, Nemotron 120B, Gemma 27B   |
-| **Cline**              | Autonomous agentic coding for browser testing and refactors            | Browser automation & QA              |
-| **Windsurf**           | Cascade agentic flow development and interactive iteration             | Cascade flow IDE                     |
-| **KiloChat**           | Interactive chat evaluation, knowledge auditing, and verification      | Model assessment                     |
-| **VS Code**            | Primary workspace, extensions, terminal environments                   | Daily developer terminal             |
-| **Figma**              | UI/UX design, wireframing, and Apple HIG component layout              | Design system specification          |
+| Tool                   |                                                   Icon                                                   | Role & Workflow Context                                                | Telemetry & Usage                    |
+| :--------------------- | :------------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------- | :----------------------------------- |
+| **Google Antigravity** | <img src="src/assets/images/vibe-tools/antigravity.png" width="22" height="22" alt="Google Antigravity"> | Multi-agent pair programming, test running, and full-repo architecture | Gemini 3.7 Flash & 2.5 Pro reasoning |
+| **Cursor**             |         <img src="src/assets/images/vibe-tools/cursor.png" width="22" height="22" alt="Cursor">          | Primary AI-native IDE with full-codebase context orchestration         | Daily-driver IDE                     |
+| **Anthropic Claude**   |         <img src="src/assets/images/vibe-tools/claude.png" width="22" height="22" alt="Claude">          | Deep conceptual reasoning, architectural blueprints, and refactoring   | Claude 3.7 Sonnet & Opus             |
+| **OpenAI Codex**       |       <img src="src/assets/images/vibe-tools/codex.png" width="22" height="22" alt="OpenAI Codex">       | Unit test scaffolding, schema validation, and pair programming         | GPT-4o / Codex engine                |
+| **OpenRouter**         |        <img src="src/assets/images/vibe-tools/kilo.png" width="22" height="22" alt="OpenRouter">         | Multi-model proxy routing with live streaming                          | Grok 4.3, Nemotron 120B, Gemma 27B   |
+| **Cline**              |          <img src="src/assets/images/vibe-tools/cline.png" width="22" height="22" alt="Cline">           | Autonomous agentic coding for browser testing and refactors            | Browser automation & QA              |
+| **Windsurf**           |       <img src="src/assets/images/vibe-tools/windsurf.png" width="22" height="22" alt="Windsurf">        | Cascade agentic flow development and interactive iteration             | Cascade flow IDE                     |
+| **KiloChat**           |         <img src="src/assets/images/vibe-tools/kilo.png" width="22" height="22" alt="KiloChat">          | Interactive chat evaluation, knowledge auditing, and verification      | Model assessment                     |
+| **Figma**              |          <img src="src/assets/images/vibe-tools/figma.png" width="22" height="22" alt="Figma">           | UI/UX design, wireframing, and Apple HIG component layout              | Design system specification          |
 
 ---
 
 ## 6. Product Surfaces & Capabilities
 
 | Surface / Route                                                                                         | Primary Purpose & Key Features                                                                       |
-| ------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| :------------------------------------------------------------------------------------------------------ | :--------------------------------------------------------------------------------------------------- |
 | [**`/` (Homepage)**](https://mangeshraut712.github.io/mangeshrautarchive/)                              | Dynamic Island hero, persistent contact, live Google booking, and Apple/Outlook event fallbacks.     |
 | [**`/systems`**](https://mangeshraut712.github.io/mangeshrautarchive/systems)                           | Systems engineering notebook, multi-model token telemetry, daily-driver stack, architecture FAQ.     |
 | [**`/monitor`**](https://mangeshraut712.github.io/mangeshrautarchive/monitor)                           | Real-time platform health, hosting status, WHOOP vitals summary, GA4 realtime reach.                 |
-| [**`/travel`**](https://mangeshraut712.github.io/mangeshrautarchive/travel)                             | MapLibre 3D WebGL interactive atlas covering 18 US States and 4 Countries.                           |
+| [**`/travel`**](https://mangeshraut712.github.io/mangeshrautarchive/travel)                             | MapLibre 3D WebGL interactive atlas covering 18 US States and 4 Countries with flight arcs.          |
 | [**`/uses`**](https://mangeshraut712.github.io/mangeshrautarchive/uses)                                 | Hardware, developer tooling, software, and everyday carry with category filtering.                   |
 | [**`/changelog`**](https://mangeshraut712.github.io/mangeshrautarchive/changelog)                       | Complete chronological release history spanning from repo creation (April 8, 2025) to August 2026.   |
 | [**`/blog/`**](https://mangeshraut712.github.io/mangeshrautarchive/blog/)                               | 16 long-form technical field notes and deep dives with source embeds and KaTeX math.                 |
@@ -253,12 +297,12 @@ This repository was built and refined using verified daily-driver AI tools and d
 
 ---
 
-## 7. Testing & Quality Matrix
+## 7. Testing & Quality Assurance Matrix
 
 All quality gates are enforced locally and verified automatically in GitHub Actions CI:
 
 | Test Suite            | Runner            |        Test Count         | Scope & Coverage                                                            |
-| --------------------- | ----------------- | :-----------------------: | --------------------------------------------------------------------------- |
+| :-------------------- | :---------------- | :-----------------------: | :-------------------------------------------------------------------------- |
 | **Unit Tests**        | Vitest 4.1        | **210 passed** (42 files) | JS modules, services, markdown parser, WebMCP actions, data contracts       |
 | **API Tests**         | pytest            | **175 passed** (26 files) | FastAPI endpoints, streaming chat, health probes, OAuth token stores        |
 | **E2E Browser Tests** | Playwright        |      **16 projects**      | Multi-browser suite (Desktop Chrome, Safari, Firefox, iPhone 17, Pixel 7)   |
@@ -316,12 +360,12 @@ npm run qa:prod-ready     # Full pre-deployment verification matrix
 
 ---
 
-## 8. Open Source Governance & Guidelines
+## 9. Open Source Governance & Guidelines
 
 We adhere to industry-standard open-source community health and governance standards:
 
 | Document                                       | Purpose                                                                                               |
-| ---------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| :--------------------------------------------- | :---------------------------------------------------------------------------------------------------- |
 | **[`CONTRIBUTING.md`](CONTRIBUTING.md)**       | Step-by-step contribution workflow, coding conventions, testing guidelines, and PR template.          |
 | **[`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md)** | **Contributor Covenant v2.1** community standards and enforcement guidelines.                         |
 | **[`SECURITY.md`](SECURITY.md)**               | Vulnerability reporting procedure, coordinated disclosure policy, and `security.txt` RFC 9116 parity. |
@@ -330,7 +374,7 @@ We adhere to industry-standard open-source community health and governance stand
 
 ---
 
-## 9. Verified Biographical & Project Facts
+## 10. Verified Biographical & Project Facts
 
 All facts across the portfolio website are verified against primary records:
 
@@ -344,13 +388,20 @@ All facts across the portfolio website are verified against primary records:
   - **Software Engineer** — Harshwardhan Enterprises, Pune, India (Jun 2020 – Jul 2021)
 - **Research & Publications**:
   - _RTFERS: Real-Time Facial Expression Recognition System with Emotion Analytics_ — IJFGCN, SERSC Australia (Vol. 13, No. 4, 2020)
+- **Industry Certifications**:
+  - <img src="src/assets/images/certifications/apple.png" width="16" height="16" alt="Apple"> **Apple Certified iOS Developer**
+  - <img src="src/assets/images/certifications/google.png" width="16" height="16" alt="Google"> **Google Cloud Associate Cloud Engineer**
+  - <img src="src/assets/images/certifications/microsoft.png" width="16" height="16" alt="Microsoft"> **Microsoft Certified: Azure Fundamentals (AZ-900)**
+  - <img src="src/assets/images/certifications/ibm.png" width="16" height="16" alt="IBM"> **IBM AI Foundations for Business**
+  - <img src="src/assets/images/certifications/cisco.png" width="16" height="16" alt="Cisco"> **Cisco CCNA: Introduction to Networks**
+  - <img src="src/assets/images/certifications/hackerrank.png" width="16" height="16" alt="HackerRank"> **HackerRank Problem Solving (Advanced) & Python (Gold)**
 - **Geographic Footprint**:
-  - 18 US States: CT, DE, DC, FL, IL, ME, MD, MA, NH, NJ, NY, NC, PA, RI, SC, TX, VT, VA
-  - 4 Countries: United States, India, United Arab Emirates, Mexico
+  - **18 US States**: CT, DE, DC, FL, IL, ME, MD, MA, NH, NJ, NY, NC, PA, RI, SC, TX, VT, VA
+  - **4 Countries**: United States, India, United Arab Emirates, Mexico
 
 ---
 
-## 10. License, Citation & Contact
+## 11. License, Citation & Contact
 
 - **License**: **MIT License** — [LICENSE](LICENSE) · Copyright © 2025–2026 Mangesh Raut
 - **Citation**: See [CITATION.cff](CITATION.cff) or cite as:
@@ -359,13 +410,13 @@ All facts across the portfolio website are verified against primary records:
     author = {Raut, Mangesh},
     title = {mangeshrautarchive: Agentic Full-Stack Portfolio and Open Engineering Architecture},
     year = {2026},
-    url = {https://mangeshraut.pro},
+    url = {https://mangeshraut712.github.io/mangeshrautarchive/},
     version = {2.5.0}
   }
   ```
 - **Security**: [SECURITY.md](SECURITY.md) · [security.txt](https://mangeshraut712.github.io/mangeshrautarchive/.well-known/security.txt)
 - **Author**: **Mangesh Raut** · MS CS, Drexel University  
-  [Website](https://mangeshraut.pro) · [GitHub](https://github.com/mangeshraut712) · [LinkedIn](https://www.linkedin.com/in/mangeshraut71298) · [Email](mailto:mbr63@drexel.edu)
+  [Website](https://mangeshraut712.github.io/mangeshrautarchive/) · [GitHub](https://github.com/mangeshraut712) · [LinkedIn](https://www.linkedin.com/in/mangeshraut71298) · [Email](mailto:mbr63@drexel.edu)
 
 ---
 
