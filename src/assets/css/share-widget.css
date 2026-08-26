@@ -352,6 +352,19 @@ html.dark .share-mirror-tab.active {
   margin: 0.85rem 0 0.5rem;
 }
 
+/* Generative Botanical/Neural Tree Canvas (tree.icqr.com) */
+.qr-tree-canvas {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 300px;
+  height: 270px;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.95;
+}
+
 /* Ethereal Ambient Pulse Halo (Organic Aura) */
 .website-share-qr-ambient {
   position: absolute;
@@ -406,9 +419,35 @@ html.dark .share-mirror-tab.active {
   box-sizing: border-box;
   overflow: hidden;
   z-index: 1;
+  transform-style: preserve-3d;
+  will-change: transform;
   transition:
-    transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
-    box-shadow 0.3s ease;
+    transform 0.18s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.25s ease;
+}
+
+/* Glass Specular Reflection Overlay */
+.qr-specular-gloss {
+  position: absolute;
+  inset: 0;
+  border-radius: 22px;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.4) 0%,
+    rgba(255, 255, 255, 0.08) 45%,
+    transparent 100%
+  );
+  pointer-events: none;
+  z-index: 4;
+}
+
+html.dark .qr-specular-gloss {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.2) 0%,
+    rgba(255, 255, 255, 0.03) 45%,
+    transparent 100%
+  );
 }
 
 .website-share-qr-shell:hover {

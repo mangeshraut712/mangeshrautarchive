@@ -1346,8 +1346,7 @@ html.dark #chatbot-widget .chatbot-plus-btn {
 
 /* Apple Intelligence response typography */
 #chatbot-widget .siri-intelligence-text {
-  font-family:
-    -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', system-ui, sans-serif;
+  font-family: var(--font-text);
   font-size: 15px;
   line-height: 1.55;
   letter-spacing: -0.018em;

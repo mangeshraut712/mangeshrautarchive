@@ -1093,8 +1093,7 @@ button,
 .watch-btn,
 .modal-close,
 .a11y-toggle-btn {
-  font-family:
-    -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', system-ui, sans-serif !important;
+  font-family: var(--font-text) !important;
   font-weight: 600 !important;
   letter-spacing: -0.01em !important;
   transition:
@@ -1460,9 +1459,7 @@ html.dark .project-action-btn:not(.btn-primary):not(.btn-demo):hover * {
 .systems-view-more-btn,
 .travel-view-more-btn,
 .uses-view-more-btn {
-  font-family:
-    -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', 'Helvetica Neue', Arial,
-    sans-serif !important;
+  font-family: var(--font-text) !important;
   font-size: 0.92rem !important;
   font-weight: 600 !important;
   letter-spacing: -0.01em !important;

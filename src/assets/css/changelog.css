@@ -138,8 +138,7 @@ body.changelog-page .changelog-chip {
   min-height: 34px !important;
   border-radius: 9999px !important;
   padding: 0.4rem 0.95rem !important;
-  font-family:
-    -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', sans-serif !important;
+  font-family: var(--font-text) !important;
   font-size: 0.82rem !important;
   font-weight: 580 !important;
   letter-spacing: -0.01em;
@@ -229,8 +228,7 @@ body.changelog-page .changelog-filters-toggle {
   min-height: 32px !important;
   border-radius: 9999px !important;
   padding: 0.35rem 0.85rem !important;
-  font-family:
-    -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', sans-serif !important;
+  font-family: var(--font-text) !important;
   font-size: 0.75rem !important;
   font-weight: 650 !important;
   letter-spacing: 0.03em;

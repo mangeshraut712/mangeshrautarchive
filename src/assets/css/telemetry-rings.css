@@ -54,7 +54,7 @@ html.dark .telemetry-rings-pill {
   font-weight: 700;
   letter-spacing: -0.02em;
   color: var(--text-primary, #1d1d1f);
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+  font-family: var(--font-display);
 }
 
 html.dark .telemetry-rings-heading {
@@ -216,7 +216,7 @@ html.dark .telemetry-sparkline-card:hover {
   font-size: 1.1rem;
   font-weight: 800;
   color: var(--text-primary, #1d1d1f);
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+  font-family: var(--font-display);
 }
 
 html.dark .telemetry-spark-current {

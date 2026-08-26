@@ -1231,9 +1231,7 @@ html.dark .shortcut-item {
   border: 1px solid #d2d2d7;
   background: #ffffff;
   color: #1d1d1f;
-  font-family:
-    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New',
-    monospace;
+  font-family: var(--font-mono);
   font-size: 0.75rem;
   font-weight: 650;
   letter-spacing: -0.01em;

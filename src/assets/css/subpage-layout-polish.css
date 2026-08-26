@@ -924,7 +924,7 @@ body.offline-page {
   place-items: center;
   padding: max(1.25rem, env(safe-area-inset-top)) max(1.25rem, env(safe-area-inset-right))
     max(1.25rem, env(safe-area-inset-bottom)) max(1.25rem, env(safe-area-inset-left));
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', sans-serif;
+  font-family: var(--font-text);
   background: #ffffff !important;
   background-color: #ffffff !important;
   background-image: none !important;

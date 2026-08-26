@@ -24,7 +24,7 @@
   padding: 20px 24px;
 
   /* Increased padding as requested */
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+  font-family: var(--font-text);
   cursor: default;
   user-select: none;
 

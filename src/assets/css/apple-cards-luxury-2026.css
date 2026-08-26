@@ -152,9 +152,7 @@ html.dark {
   border-style: solid !important;
   border-color: var(--lux-border) !important;
   color: var(--lux-fg);
-  font-family:
-    -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, 'Helvetica Neue',
-    Helvetica, Arial, sans-serif;
+  font-family: var(--font-text);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   letter-spacing: -0.011em;
@@ -446,9 +444,7 @@ html:not([data-lg-mode]).dark
     .systems-evidence-card
   )
   :is(h2, h3, h4, .card-title, .blog-title, .project-title, .publication-title) {
-  font-family:
-    -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Segoe UI', Roboto,
-    'Helvetica Neue', Helvetica, Arial, sans-serif !important;
+  font-family: var(--font-display) !important;
   font-weight: 600 !important;
   letter-spacing: -0.022em !important;
   line-height: 1.2 !important;
@@ -516,8 +512,7 @@ main > section > .container > h2,
 main > section > h2,
 #main-content > section > .container > h2,
 section.section-standard > .container > h2 {
-  font-family:
-    -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', sans-serif !important;
+  font-family: var(--font-display) !important;
   font-weight: 700 !important;
   letter-spacing: -0.03em !important;
   line-height: 1.05 !important;

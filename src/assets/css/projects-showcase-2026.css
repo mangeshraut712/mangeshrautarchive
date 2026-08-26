@@ -1327,8 +1327,7 @@ html.dark #projects #github-projects-container .showcase-project-card:hover .pro
 }
 
 #projects #github-projects-container .project-title-text {
-  font-family:
-    -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', sans-serif !important;
+  font-family: var(--font-display) !important;
   font-size: 1.12rem !important;
   font-weight: 700 !important;
   line-height: 1.3 !important;
@@ -1391,7 +1390,7 @@ html.dark #projects #github-projects-container .project-repo-updated {
   color: #6e6e73 !important;
   font-size: 0.74rem !important;
   line-height: 1.35 !important;
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-family: var(--font-mono);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1423,7 +1422,7 @@ html.dark #projects #github-projects-container .project-repo-link {
   margin: 0 !important;
   color: #48484a !important;
   -webkit-text-fill-color: #48484a !important;
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif !important;
+  font-family: var(--font-text) !important;
   font-size: 0.86rem !important;
   line-height: 1.55 !important;
   letter-spacing: -0.006em !important;
@@ -1981,7 +1980,7 @@ html.dark .project-xr-updated-chip {
   margin: 0.3rem 0 0 !important;
   font-size: 0.79rem !important;
   color: var(--project-muted-light) !important;
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-family: var(--font-mono);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -3792,9 +3791,7 @@ section#projects #github-projects-container .project-evidence-link.is-unavailabl
 
 /* ---- Action buttons (shadcn primary + outline variants) ---- */
 section#projects #github-projects-container .project-action-btn {
-  font-family:
-    -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', 'Helvetica Neue', Arial,
-    sans-serif !important;
+  font-family: var(--font-text) !important;
   font-size: 0.88rem !important;
   font-weight: 600 !important;
   letter-spacing: -0.01em !important;
@@ -4018,9 +4015,7 @@ section#projects .projects-expand-wrap {
 }
 
 section#projects .projects-expand-btn {
-  font-family:
-    -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', 'Helvetica Neue', Arial,
-    sans-serif !important;
+  font-family: var(--font-text) !important;
   font-size: 0.92rem !important;
   font-weight: 600 !important;
   letter-spacing: -0.01em !important;

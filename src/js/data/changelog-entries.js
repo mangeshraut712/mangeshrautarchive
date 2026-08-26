@@ -47,10 +47,20 @@ export const changelogEntries = [
     date: '2026-08-26',
     type: 'release',
     title:
-      'Year Progress HUD Widget, Tree-Inspired Aesthetic QR Code & Sitewide Apple HIG Typography System',
+      'Year Progress HUD Widget, In-Built Tree/ICQR Aesthetic QR Canvas & Sitewide Apple HIG Typography System',
     summary:
-      'Engineered an authentic Apple-style Year Progress HUD widget above the interactive calendar dynamically calculating elapsed days, days remaining, and percentage passed with glowing progress track. Elevated the Share Card QR experience with organic Tree/ICQR-inspired ambient pulse halo, viewfinder corner brackets, laser scanning sweep, and camera scan prompt. Standardized sitewide typography to canonical Apple HIG specifications (--font-display, --font-text, --font-mono) across all 7 pages and updated DESIGN.md.',
-    tags: ['release', 'design', 'calendar', 'typography', 'share', 'qr', 'apple-hig', 'ui'],
+      'Engineered an authentic Apple-style Year Progress HUD widget above the interactive calendar dynamically calculating elapsed days, days remaining, and percentage passed with a glowing progress track. Implemented an in-built generative botanical/neural tree canvas animation behind the Share Card QR code (inspired by tree.icqr.com) with breathing luminescent nodes, synaptic pulses, upward drifting light spores, 3D Apple parallax glass tilt, viewfinder corner reticles, and laser scanning sweep. Fully standardized sitewide typography to canonical Apple HIG font tokens (--font-display, --font-text, --font-mono) across all 30+ stylesheets and updated DESIGN.md.',
+    tags: [
+      'release',
+      'design',
+      'calendar',
+      'typography',
+      'share',
+      'qr',
+      'canvas',
+      'apple-hig',
+      'ui',
+    ],
     sha: 'e481b920',
     link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/e481b920',
   },

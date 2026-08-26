@@ -142,9 +142,7 @@ pre {
       [class*='ctrl']
     ):not([class*='option']):not([class*='fab']):not([class*='preset']):not([class*='month'])
 ) {
-  font-family:
-    -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', 'Helvetica Neue', Arial,
-    sans-serif !important;
+  font-family: var(--font-text) !important;
   font-size: 0.94rem !important;
   font-weight: 600 !important;
   letter-spacing: -0.01em !important;
@@ -295,9 +293,7 @@ pre {
   .health-item .btn,
   .integration-actions .btn
 ) {
-  font-family:
-    -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', 'Helvetica Neue', Arial,
-    sans-serif !important;
+  font-family: var(--font-text) !important;
   font-size: 0.94rem !important;
   font-weight: 600 !important;
   letter-spacing: -0.01em !important;
@@ -518,9 +514,7 @@ html.dark
   .project-clone-btn,
   .clone-btn
 ) {
-  font-family:
-    -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', 'Helvetica Neue', Arial,
-    sans-serif !important;
+  font-family: var(--font-text) !important;
   font-size: 0.88rem !important;
   font-weight: 580 !important;
   letter-spacing: -0.01em !important;
@@ -857,9 +851,7 @@ html.dark
   .travel-view-more-btn,
   .uses-view-more-btn
 ) {
-  font-family:
-    -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', 'Helvetica Neue', Arial,
-    sans-serif !important;
+  font-family: var(--font-text) !important;
   font-size: 0.92rem !important;
   font-weight: 600 !important;
   letter-spacing: -0.01em !important;

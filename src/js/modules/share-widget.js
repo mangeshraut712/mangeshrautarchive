@@ -102,11 +102,17 @@ const createShareMarkup = () => `
       </div>
 
       <div class="website-share-qr-section">
+        <!-- Generative Botanical/Neural Tree Canvas (tree.icqr.com inspired) -->
+        <canvas class="qr-tree-canvas" width="300" height="270" aria-hidden="true"></canvas>
+
         <div class="website-share-qr-ambient" aria-hidden="true">
           <div class="qr-ambient-pulse qr-pulse-1"></div>
           <div class="qr-ambient-pulse qr-pulse-2"></div>
         </div>
         <div class="website-share-qr-shell" aria-label="QR code for webpage">
+          <!-- Glass Specular Reflection -->
+          <div class="qr-specular-gloss" aria-hidden="true"></div>
+
           <!-- Cyber/Apple Viewfinder Corner Brackets -->
           <div class="qr-corner-bracket qr-bracket-tl" aria-hidden="true"></div>
           <div class="qr-corner-bracket qr-bracket-tr" aria-hidden="true"></div>
@@ -162,7 +168,259 @@ const createShareMarkup = () => `
   </div>
 `;
 
-function setDialogState(dialog, trigger, isOpen) {
+class QrTreeAnimation {
+  constructor(canvas) {
+    this.canvas = canvas;
+    this.ctx = canvas.getContext('2d');
+    this.isRunning = false;
+    this.animId = null;
+    this.time = 0;
+    this.particles = [];
+    this.pulses = [];
+    this.width = 300;
+    this.height = 270;
+    this.initCanvasSize();
+    this.initParticles();
+    this.initPulses();
+  }
+
+  initCanvasSize() {
+    if (!this.canvas || !this.ctx) return;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    this.canvas.width = this.width * dpr;
+    this.canvas.height = this.height * dpr;
+    this.ctx.setTransform(1, 0, 0, 1, 0, 0);
+    this.ctx.scale(dpr, dpr);
+  }
+
+  initParticles() {
+    this.particles = Array.from({ length: 22 }, () => ({
+      x: 30 + Math.random() * (this.width - 60),
+      y: 40 + Math.random() * (this.height - 60),
+      vx: (Math.random() - 0.5) * 0.35,
+      vy: -0.35 - Math.random() * 0.45,
+      radius: 1 + Math.random() * 2,
+      baseAlpha: 0.2 + Math.random() * 0.5,
+      phase: Math.random() * Math.PI * 2,
+      pulseSpeed: 0.02 + Math.random() * 0.03,
+    }));
+  }
+
+  initPulses() {
+    this.pulses = [
+      { progress: 0, speed: 0.007, branchIndex: 0 },
+      { progress: 0.33, speed: 0.006, branchIndex: 1 },
+      { progress: 0.66, speed: 0.008, branchIndex: 2 },
+      { progress: 0.5, speed: 0.0065, branchIndex: 3 },
+    ];
+  }
+
+  start() {
+    if (this.isRunning || !this.ctx) return;
+    this.isRunning = true;
+    this.initCanvasSize();
+    this.loop();
+  }
+
+  stop() {
+    this.isRunning = false;
+    if (this.animId) {
+      cancelAnimationFrame(this.animId);
+      this.animId = null;
+    }
+  }
+
+  getBranches(time) {
+    const cx = this.width / 2;
+    const cy = this.height / 2;
+    const sway1 = Math.sin(time * 0.0012) * 5;
+    const sway2 = Math.cos(time * 0.0016) * 6;
+    const sway3 = Math.sin(time * 0.001) * 4;
+
+    return [
+      // Left side branches wrapping around the QR code
+      {
+        start: { x: cx - 20, y: this.height - 15 },
+        cp1: { x: cx - 70 + sway1, y: this.height - 60 },
+        cp2: { x: cx - 110 + sway2, y: cy + 40 },
+        end: { x: cx - 95 + sway1, y: cy - 20 },
+        subBranches: [
+          {
+            start: { x: cx - 100 + sway2, y: cy + 30 },
+            cp: { x: cx - 130 + sway3, y: cy },
+            end: { x: cx - 120 + sway1, y: cy - 50 },
+          },
+          {
+            start: { x: cx - 95 + sway1, y: cy - 20 },
+            cp: { x: cx - 90 + sway2, y: cy - 70 },
+            end: { x: cx - 60 + sway3, y: cy - 90 },
+          },
+        ],
+      },
+      // Right side branches wrapping around the QR code
+      {
+        start: { x: cx + 20, y: this.height - 15 },
+        cp1: { x: cx + 70 - sway1, y: this.height - 60 },
+        cp2: { x: cx + 110 - sway2, y: cy + 40 },
+        end: { x: cx + 95 - sway1, y: cy - 20 },
+        subBranches: [
+          {
+            start: { x: cx + 100 - sway2, y: cy + 30 },
+            cp: { x: cx + 130 - sway3, y: cy },
+            end: { x: cx + 120 - sway1, y: cy - 50 },
+          },
+          {
+            start: { x: cx + 95 - sway1, y: cy - 20 },
+            cp: { x: cx + 90 - sway2, y: cy - 70 },
+            end: { x: cx + 60 - sway3, y: cy - 90 },
+          },
+        ],
+      },
+      // Top crown canopy branches
+      {
+        start: { x: cx - 40, y: cy - 80 },
+        cp1: { x: cx - 30 + sway2, y: cy - 105 },
+        cp2: { x: cx - 10 + sway1, y: cy - 115 },
+        end: { x: cx + sway3, y: cy - 118 },
+        subBranches: [
+          {
+            start: { x: cx + 40, y: cy - 80 },
+            cp: { x: cx + 20 + sway1, y: cy - 112 },
+            end: { x: cx + sway3, y: cy - 118 },
+          },
+        ],
+      },
+    ];
+  }
+
+  draw() {
+    if (!this.ctx) return;
+    const isDark = document.documentElement.classList.contains('dark');
+    this.ctx.clearRect(0, 0, this.width, this.height);
+
+    const branchColor = isDark ? 'rgba(41, 151, 255, 0.42)' : 'rgba(0, 113, 227, 0.28)';
+    const glowColor = isDark ? 'rgba(100, 210, 255, 0.7)' : 'rgba(0, 113, 227, 0.5)';
+    const nodeColor = isDark ? '#64d2ff' : '#0071e3';
+
+    const branches = this.getBranches(this.time);
+
+    // Draw main trunks and sub-branches
+    this.ctx.lineWidth = 1.6;
+    this.ctx.lineCap = 'round';
+    this.ctx.strokeStyle = branchColor;
+
+    branches.forEach(b => {
+      this.ctx.beginPath();
+      this.ctx.moveTo(b.start.x, b.start.y);
+      this.ctx.bezierCurveTo(b.cp1.x, b.cp1.y, b.cp2.x, b.cp2.y, b.end.x, b.end.y);
+      this.ctx.stroke();
+
+      // Node at main branch tip
+      this.drawGlowNode(b.end.x, b.end.y, 2.5, nodeColor, glowColor);
+
+      if (b.subBranches) {
+        b.subBranches.forEach(sb => {
+          this.ctx.beginPath();
+          this.ctx.moveTo(sb.start.x, sb.start.y);
+          this.ctx.quadraticCurveTo(sb.cp.x, sb.cp.y, sb.end.x, sb.end.y);
+          this.ctx.stroke();
+
+          // Node at sub-branch tip
+          this.drawGlowNode(sb.end.x, sb.end.y, 2, nodeColor, glowColor);
+        });
+      }
+    });
+
+    // Draw synaptic light pulses moving along branches
+    this.pulses.forEach(p => {
+      p.progress += p.speed;
+      if (p.progress > 1) p.progress = 0;
+      const b = branches[p.branchIndex % branches.length];
+      if (b) {
+        const t = p.progress;
+        const u = 1 - t;
+        const tt = t * t;
+        const uu = u * u;
+        const uuu = uu * u;
+        const ttt = tt * t;
+        const px = uuu * b.start.x + 3 * uu * t * b.cp1.x + 3 * u * tt * b.cp2.x + ttt * b.end.x;
+        const py = uuu * b.start.y + 3 * uu * t * b.cp1.y + 3 * u * tt * b.cp2.y + ttt * b.end.y;
+        this.drawPulseGlow(px, py, isDark);
+      }
+    });
+
+    // Draw floating bioluminescent particles/spores
+    this.particles.forEach(p => {
+      p.y += p.vy;
+      p.x += p.vx + Math.sin(this.time * 0.002 + p.phase) * 0.25;
+      p.phase += p.pulseSpeed;
+
+      if (p.y < 10) {
+        p.y = this.height - 20;
+        p.x = 40 + Math.random() * (this.width - 80);
+      }
+
+      const alpha = p.baseAlpha * (0.6 + 0.4 * Math.sin(p.phase));
+      this.ctx.fillStyle = isDark ? `rgba(100, 210, 255, ${alpha})` : `rgba(0, 113, 227, ${alpha})`;
+      this.ctx.beginPath();
+      this.ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+      this.ctx.fill();
+    });
+  }
+
+  drawGlowNode(x, y, radius, color, glow) {
+    const pulse = 1 + 0.25 * Math.sin(this.time * 0.003 + x);
+    this.ctx.save();
+    this.ctx.shadowColor = glow;
+    this.ctx.shadowBlur = 8;
+    this.ctx.fillStyle = color;
+    this.ctx.beginPath();
+    this.ctx.arc(x, y, radius * pulse, 0, Math.PI * 2);
+    this.ctx.fill();
+    this.ctx.restore();
+  }
+
+  drawPulseGlow(x, y, isDark) {
+    this.ctx.save();
+    this.ctx.fillStyle = isDark ? '#ffffff' : '#0071e3';
+    this.ctx.shadowColor = isDark ? '#64d2ff' : '#2997ff';
+    this.ctx.shadowBlur = 10;
+    this.ctx.beginPath();
+    this.ctx.arc(x, y, 3, 0, Math.PI * 2);
+    this.ctx.fill();
+    this.ctx.restore();
+  }
+
+  loop() {
+    if (!this.isRunning) return;
+    this.time = performance.now();
+    this.draw();
+    this.animId = requestAnimationFrame(() => this.loop());
+  }
+}
+
+function initQr3dParallax(cardSection, qrShell) {
+  if (!cardSection || !qrShell) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  const onMouseMove = e => {
+    const rect = cardSection.getBoundingClientRect();
+    const x = e.clientX - rect.left - rect.width / 2;
+    const y = e.clientY - rect.top - rect.height / 2;
+    const rotateX = (-y / (rect.height / 2)) * 10;
+    const rotateY = (x / (rect.width / 2)) * 10;
+    qrShell.style.transform = `perspective(600px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) scale3d(1.02, 1.02, 1.02)`;
+  };
+
+  const onMouseLeave = () => {
+    qrShell.style.transform = 'perspective(600px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+  };
+
+  cardSection.addEventListener('mousemove', onMouseMove);
+  cardSection.addEventListener('mouseleave', onMouseLeave);
+}
+
+function setDialogState(dialog, trigger, isOpen, treeAnim) {
   dialog.classList.toggle('active', isOpen);
   if (isOpen) {
     dialog.classList.remove('hidden');
@@ -171,9 +429,15 @@ function setDialogState(dialog, trigger, isOpen) {
     if (qrImg && !qrImg.getAttribute('src') && qrImg.dataset.src) {
       qrImg.src = qrImg.dataset.src;
     }
+    if (treeAnim) {
+      treeAnim.start();
+    }
   } else {
     dialog.classList.add('hidden');
     dialog.style.display = 'none';
+    if (treeAnim) {
+      treeAnim.stop();
+    }
   }
   dialog.setAttribute('aria-hidden', String(!isOpen));
   if (trigger) {
@@ -277,16 +541,23 @@ async function initShareWidget() {
   document.body.insertAdjacentHTML('beforeend', createShareMarkup());
 
   const dialog = document.getElementById('website-share-dialog');
+  const canvas = dialog.querySelector('.qr-tree-canvas');
+  const treeAnim = canvas ? new QrTreeAnimation(canvas) : null;
+
   // Force closed layout even if stylesheet is still loading
-  setDialogState(dialog, document.getElementById(SHARE_TOGGLE_ID), false);
+  setDialogState(dialog, document.getElementById(SHARE_TOGGLE_ID), false, treeAnim);
   const card = dialog.querySelector('.website-share-card');
+  const qrSection = dialog.querySelector('.website-share-qr-section');
+  const qrShell = dialog.querySelector('.website-share-qr-shell');
   const copyButton = document.getElementById('website-share-copy');
   const nativeShareButton = document.getElementById('website-native-share');
   const status = document.getElementById('website-share-status');
 
+  initQr3dParallax(qrSection, qrShell);
+
   const closeDialog = () => {
     const trigger = document.getElementById(SHARE_TOGGLE_ID);
-    setDialogState(dialog, trigger, false);
+    setDialogState(dialog, trigger, false, treeAnim);
     if (trigger) {
       trigger.focus({ preventScroll: true });
     }
@@ -295,7 +566,7 @@ async function initShareWidget() {
   const openDialog = () => {
     const trigger = document.getElementById(SHARE_TOGGLE_ID);
     status.textContent = '';
-    setDialogState(dialog, trigger, true);
+    setDialogState(dialog, trigger, true, treeAnim);
     dialog.focus({ preventScroll: true });
   };
 

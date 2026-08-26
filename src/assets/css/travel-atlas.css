@@ -2171,8 +2171,7 @@ body.travel-body .travel-action,
 body.travel-body .travel-filter-chip,
 body.travel-body .travel-advanced-toggle,
 body.travel-body .place-guide__chips span {
-  font-family:
-    -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', sans-serif !important;
+  font-family: var(--font-text) !important;
   font-size: 0.84rem !important;
   font-weight: 580 !important;
   border-radius: 9999px !important;

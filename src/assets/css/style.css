@@ -286,9 +286,7 @@ html.dark body {
 /* Body & Base Styles */
 
 body {
-  font-family:
-    -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica,
-    Arial, sans-serif;
+  font-family: var(--font-text);
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -679,7 +677,7 @@ html.dark #close-menu-btn:hover {
 }
 
 .overlay-nav-link {
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+  font-family: var(--font-text);
   font-size: 19px;
   font-weight: 500;
   color: var(--text-primary);
@@ -1547,9 +1545,7 @@ h5,
 h6 {
   letter-spacing: -0.02em;
   color: #000;
-  font-family:
-    -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica,
-    Arial, sans-serif;
+  font-family: var(--font-display);
   opacity: 1;
 }
 
@@ -2081,7 +2077,7 @@ footer {
   background: var(--footer-bg);
   color: #86868b;
   font-size: 12px;
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+  font-family: var(--font-text);
   background-color: #ffffff !important;
   border-top: 1px solid rgba(0, 0, 0, 0.05) !important;
   padding: 0.75rem 0 0.625rem !important;
@@ -5066,7 +5062,7 @@ html.dark .debug-instruction-card:hover {
   color: #fff !important;
   padding: 5px 12px !important;
   border-radius: 10px !important;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
+  font-family: var(--font-mono) !important;
   font-weight: 800 !important;
   font-size: 1.2rem !important;
   margin-right: 15px !important;

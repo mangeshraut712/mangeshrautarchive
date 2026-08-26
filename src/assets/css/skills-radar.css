@@ -54,7 +54,7 @@ html.dark .skills-radar-pill {
   font-weight: 700;
   letter-spacing: -0.02em;
   color: var(--text-primary, #1d1d1f);
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+  font-family: var(--font-display);
 }
 
 html.dark .skills-radar-heading {
@@ -71,7 +71,7 @@ html.dark .skills-radar-heading {
   font-weight: 800;
   color: var(--apple-blue, #0071e3);
   letter-spacing: -0.03em;
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+  font-family: var(--font-display);
 }
 
 html.dark .skills-radar-score-badge strong {
@@ -175,7 +175,7 @@ html.dark .radar-vertex-dot.is-hovered {
   font-size: 11px;
   font-weight: 650;
   fill: var(--text-secondary, #6e6e73);
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+  font-family: var(--font-text);
 }
 
 html.dark .radar-axis-label {

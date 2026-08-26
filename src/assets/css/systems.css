@@ -119,7 +119,7 @@ html.dark .systems-eyebrow {
 .systems-keynote-hero h1 {
   margin: 0 auto;
   max-width: 22ch;
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+  font-family: var(--font-display);
   font-size: clamp(2.15rem, 5.8vw, 3.35rem);
   font-weight: 800;
   line-height: 1.06;
@@ -443,7 +443,7 @@ html.dark .systems-keynote-section:nth-of-type(even) {
   align-items: center;
   gap: 10px;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+  font-family: var(--font-display);
   font-size: clamp(1.35rem, 2.8vw, 1.5625rem);
   font-weight: 750;
   letter-spacing: -0.02em;
@@ -1762,7 +1762,7 @@ html.dark .systems-arch-tabs {
   background-image: none;
   color: #1d1d1f;
   -webkit-text-fill-color: #1d1d1f;
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', sans-serif;
+  font-family: var(--font-text);
   font-size: 0.88rem;
   font-weight: 580;
   cursor: pointer;
@@ -1855,7 +1855,7 @@ html.dark .systems-arch-svg .arch-node {
 .systems-arch-svg .arch-node-text {
   fill: var(--systems-text);
   font-size: 11px;
-  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: var(--font-text);
   font-weight: 560;
 }
 
@@ -1931,7 +1931,7 @@ html.dark .systems-arch-svg .arch-node {
   fill: var(--systems-text);
   font-size: 12px;
   font-weight: 620;
-  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: var(--font-display);
 }
 
 .systems-arch-svg .arch-queue-box {
@@ -1951,7 +1951,7 @@ html.dark .systems-arch-svg .arch-queue-box {
   font-weight: 650;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: var(--font-text);
 }
 
 .systems-arch-svg .arch-stack-item {
@@ -1968,7 +1968,7 @@ html.dark .systems-arch-svg .arch-queue-box {
 .systems-arch-svg .arch-stack-text {
   fill: var(--systems-text);
   font-size: 9px;
-  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: var(--font-text);
 }
 
 .systems-arch-svg .arch-tree-edge {

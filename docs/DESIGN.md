@@ -217,3 +217,21 @@ CSS files in `src/assets/css/` are layered systematically:
    - Telemetry Panels (`monitor-apple-redesign.css`): Stack control center metrics into structured 2-row tiles (`label row` top, `value row` bottom).
    - Keynote Statistics (`systems.css`): Sized as a compact 2-column grid with full-width CI status badges and horizontally scrollable pill rails.
 4. **Touch Target Accessibility**: All interactive buttons, chips, links, and switches must satisfy minimum dimensions of $44 \times 44\text{px}$ (or $\ge 40\text{px}$ with tap padding).
+
+---
+
+## 7. Interactive Micro-Experiences & Widgets
+
+### Year Progress HUD Widget (`#calendar-container .year-progress-widget`)
+
+- **Location**: Rendered dynamically above the interactive calendar section in `src/js/modules/calendar.js`.
+- **Aesthetic**: Apple HIG minimalist dashboard HUD with high-contrast display typography, leap-year-aware telemetry, percentage completion gauge, and glass progress track with white luminescent glow in dark mode and specular sheen in light mode.
+
+### In-Built Tree/ICQR Aesthetic Share Card Experience (`#website-share-dialog`)
+
+- **Location**: Standalone share modal in `src/js/modules/share-widget.js` and `src/assets/css/share-widget.css`.
+- **Aesthetic**:
+  - **Generative Botanical Tree Canvas**: Organic procedural branch paths curving harmoniously around the QR code matrix with breathing luminescent nodes and synaptic light pulses.
+  - **Bioluminescent Particle Spores**: Lightweight, 60fps upward drifting spores that automatically pause on modal close to preserve 100% CPU and battery.
+  - **3D Apple Parallax Glass Tilt**: Interactive gyroscope/mouse perspective tilt with specular highlight gloss overlay.
+  - **Cyber/Apple Viewfinder Brackets & Laser Scanner**: Precision corner reticles and oscillating laser sweep line.
