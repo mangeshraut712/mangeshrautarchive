@@ -15,10 +15,10 @@
   --ai-border-light: rgba(0, 0, 0, 0.08);
   --ai-border-dark: rgba(255, 255, 255, 0.15);
 
-  /* Typography - Using Inter for modern, readable text */
-  --ai-font:
-    'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
-  --ai-font-mono: 'SF Mono', 'Fira Code', 'JetBrains Mono', Consolas, monospace;
+  /* Typography - Canonical Apple HIG tokens */
+  --ai-font: var(--font-text);
+  --ai-font-stack: var(--font-text);
+  --ai-font-mono: var(--font-mono);
 
   /* Font Sizes - EXACTLY Matching Mobile's Clean Typography */
   --ai-fs-title: 1.25rem;

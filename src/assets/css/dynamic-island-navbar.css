@@ -10,7 +10,7 @@
 .global-nav.dynamic-island {
   /* Variables */
   /* System stack only — Inter late-load was shifting Primary sections rail (CLS). */
-  --island-font: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', sans-serif;
+  --island-font: var(--font-text);
   --island-height: 52px;
   --island-height-compact: 46px;
   --island-side-pad: clamp(28px, 4vw, 48px);
