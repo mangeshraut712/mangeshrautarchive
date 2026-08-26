@@ -43,6 +43,17 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'c912ef04',
+    date: '2026-08-26',
+    type: 'release',
+    title: 'Showcase Show Fewer Fix, Zero Project Duplications & 3D Map Hover Animations',
+    summary:
+      'Refined the Show fewer projects button with dynamic chevron indicators and smooth viewport scroll recovery. Enforced strict deduplication and verified authentic live demo links across all project cards (filtering out duplicate repo links and placeholder URLs). Added interactive MapLibre 3D map hover popups with Apple liquid glass cards, dynamic pulsing stop halos, and 3D kinetic hover lift on travel atlas waypoints.',
+    tags: ['release', 'projects', '3d-map', 'travel-atlas', 'hover-effects', 'ui'],
+    sha: 'c912ef04',
+    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/c912ef04',
+  },
+  {
     id: 'd83a129f',
     date: '2026-08-26',
     type: 'release',

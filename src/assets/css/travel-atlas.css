@@ -847,7 +847,11 @@ html.dark .travel-filter-chip[aria-pressed='true'] {
   contain-intrinsic-size: 160px;
   background: #ffffff;
   border: 1px solid color-mix(in srgb, var(--separator) 85%, transparent);
-  transition: transform var(--duration-normal) var(--ease-spring);
+  transition:
+    transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+    border-color 0.18s ease,
+    box-shadow 0.2s ease,
+    background-color 0.18s ease !important;
 }
 
 html.dark .travel-stop {
@@ -855,32 +859,24 @@ html.dark .travel-stop {
   border-color: rgba(255, 255, 255, 0.12);
 }
 
-/* The dot */
-.travel-stop__dot {
-  position: absolute;
-  top: 22px;
-  left: 18px;
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  background: var(--bg-primary);
-  border: 3px solid var(--stop-color, var(--apple-blue));
-  z-index: 2;
-  transition:
-    color var(--duration-normal) var(--ease-spring),
-    background-color var(--duration-normal) var(--ease-spring),
-    border-color var(--duration-normal) var(--ease-spring),
-    box-shadow var(--duration-normal) var(--ease-spring),
-    transform var(--duration-normal) var(--ease-spring),
-    opacity var(--duration-normal) var(--ease-spring);
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+@media (hover: hover) and (pointer: fine) {
+  .travel-stop:hover {
+    transform: translateY(-2.5px) scale(1.012) translateZ(0) !important;
+    border-color: rgba(0, 113, 227, 0.5) !important;
+    box-shadow: 0 8px 24px rgba(0, 113, 227, 0.12) !important;
+  }
+
+  html.dark .travel-stop:hover {
+    border-color: rgba(41, 151, 255, 0.5) !important;
+    box-shadow:
+      0 8px 24px rgba(0, 0, 0, 0.5),
+      0 0 12px rgba(41, 151, 255, 0.2) !important;
+  }
 }
 
-/* Hover — border glow in wwdc26 §15 */
-.travel-stop:hover {
-  transform: translateY(-1px);
-  border-color: #0071e3;
-  box-shadow: none;
+.travel-stop:active {
+  transform: translateY(1px) scale(0.985) translateZ(0) !important;
+  transition: transform 0.08s ease !important;
 }
 
 /* Active state — selected stop keeps blue accent */
@@ -2354,4 +2350,98 @@ body.travel-body .travel-empty-state {
 
 body.travel-body .travel-empty-state strong {
   color: var(--travel-text) !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   3D Map Interactive Hover Popup & Kinetic Animations
+   ═══════════════════════════════════════════════════════════════ */
+.travel-map-hover-popup {
+  z-index: 100;
+  pointer-events: none;
+}
+
+.travel-map-hover-popup .maplibregl-popup-content {
+  padding: 0 !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 16px !important;
+}
+
+.travel-map-hover-popup .maplibregl-popup-tip {
+  border-top-color: #ffffff !important;
+}
+
+html.dark .travel-map-hover-popup .maplibregl-popup-tip {
+  border-top-color: #000000 !important;
+}
+
+.travel-popup-card {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 8px 14px;
+  border-radius: 14px;
+  background: #ffffff;
+  border: 1px solid rgba(0, 113, 227, 0.35);
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.15),
+    0 2px 8px rgba(0, 113, 227, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  animation: travelPopupPopIn 0.18s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+html.dark .travel-popup-card {
+  background: #000000;
+  border: 1px solid rgba(41, 151, 255, 0.45);
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.6),
+    0 2px 10px rgba(0, 113, 227, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
+}
+
+.travel-popup-title {
+  font-family: var(--font-display, -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif);
+  font-size: 13px;
+  font-weight: 700;
+  color: #1d1d1f;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+
+html.dark .travel-popup-title {
+  color: #f5f5f7;
+}
+
+.travel-popup-location {
+  font-family: var(--font-text, -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif);
+  font-size: 11px;
+  font-weight: 600;
+  color: #0071e3;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  line-height: 1.2;
+}
+
+html.dark .travel-popup-location {
+  color: #2997ff;
+}
+
+.travel-popup-location i {
+  font-size: 10px;
+  color: #ff3b30;
+}
+
+@keyframes travelPopupPopIn {
+  0% {
+    opacity: 0;
+    transform: translateY(6px) scale(0.92);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }

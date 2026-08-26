@@ -1357,6 +1357,11 @@ function addMapSources() {
     type: 'geojson',
     data: { type: 'FeatureCollection', features: [] },
   });
+
+  state.map.addSource('hovered-marker', {
+    type: 'geojson',
+    data: { type: 'FeatureCollection', features: [] },
+  });
 }
 
 function buildLineFeatureCollection(coordinates) {
@@ -1471,6 +1476,29 @@ function addMapLayers() {
   });
 
   state.map.addLayer({
+    id: 'hovered-marker-halo',
+    type: 'circle',
+    source: 'hovered-marker',
+    paint: {
+      'circle-color': '#0071e3',
+      'circle-radius': 18,
+      'circle-opacity': 0.28,
+    },
+  });
+
+  state.map.addLayer({
+    id: 'hovered-marker-circle',
+    type: 'circle',
+    source: 'hovered-marker',
+    paint: {
+      'circle-color': '#0071e3',
+      'circle-radius': 8.5,
+      'circle-stroke-width': 2.5,
+      'circle-stroke-color': '#ffffff',
+    },
+  });
+
+  state.map.addLayer({
     id: 'active-marker-circle',
     type: 'circle',
     source: 'active-marker',
@@ -1502,18 +1530,73 @@ function addMapLayers() {
 
   if (!state.mapInteractionsBound) {
     state.mapInteractionsBound = true;
+
+    let hoverPopup = null;
+    if (window.maplibregl?.Popup) {
+      hoverPopup = new window.maplibregl.Popup({
+        closeButton: false,
+        closeOnClick: false,
+        className: 'travel-map-hover-popup',
+        offset: [0, -12],
+      });
+    }
+
     state.map.on('click', 'all-stops-circles', event => {
       const index = Number(event.features[0].properties.index);
       if (state.visibleIndexes.includes(index)) {
+        if (hoverPopup) hoverPopup.remove();
+        state.map.getSource('hovered-marker')?.setData({ type: 'FeatureCollection', features: [] });
         stopTour();
         setActive(index);
       }
     });
-    state.map.on('mouseenter', 'all-stops-circles', () => {
+
+    state.map.on('mousemove', 'all-stops-circles', event => {
       state.map.getCanvas().style.cursor = 'pointer';
+      if (!event.features || event.features.length === 0) return;
+      const feat = event.features[0];
+      const index = Number(feat.properties.index);
+      const waypoint = travelData.waypoints[index];
+      if (!waypoint || !state.visibleIndexes.includes(index)) return;
+
+      const coords = feat.geometry.coordinates.slice();
+      state.map.getSource('hovered-marker')?.setData({
+        type: 'FeatureCollection',
+        features: [
+          {
+            type: 'Feature',
+            geometry: { type: 'Point', coordinates: coords },
+            properties: { name: waypoint.title },
+          },
+        ],
+      });
+
+      if (hoverPopup) {
+        const title = escapeHtml(waypoint.title);
+        const city = escapeHtml(waypoint.locality.city || '');
+        const stateOrCountry = escapeHtml(
+          waypoint.locality.state || waypoint.locality.country || ''
+        );
+        const locationText = [city, stateOrCountry].filter(Boolean).join(', ');
+
+        hoverPopup
+          .setLngLat(coords)
+          .setHTML(
+            `<div class="travel-popup-card">
+              <div class="travel-popup-title">${title}</div>
+              <div class="travel-popup-location"><i class="fas fa-location-dot" aria-hidden="true"></i> ${locationText}</div>
+            </div>`
+          )
+          .addTo(state.map);
+      }
     });
+
     state.map.on('mouseleave', 'all-stops-circles', () => {
       state.map.getCanvas().style.cursor = '';
+      if (hoverPopup) {
+        hoverPopup.remove();
+      }
+      state.map.getSource('hovered-marker')?.setData({ type: 'FeatureCollection', features: [] });
     });
   }
 }

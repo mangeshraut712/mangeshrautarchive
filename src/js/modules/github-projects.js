@@ -162,7 +162,7 @@ class GitHubProjects {
         full_name: 'mangeshraut712/ai-ml-portfolio',
         description:
           'Applied AI monorepo: speech VAD, RAG evaluation, NumPy ML from scratch — portfolio for AI Engineer roles',
-        homepage: 'https://github.com/mangeshraut712/ai-ml-portfolio',
+        homepage: '',
         html_url: 'https://github.com/mangeshraut712/ai-ml-portfolio',
         language: 'Python',
         topics: [
@@ -227,7 +227,7 @@ class GitHubProjects {
         full_name: 'mangeshraut712/Stanford-CS336',
         description:
           'Self-study notes and labs for Stanford CS336: language modeling, transformers, GRPO, BPE',
-        homepage: 'https://cs336.stanford.edu',
+        homepage: '',
         html_url: 'https://github.com/mangeshraut712/Stanford-CS336',
         language: 'Python',
         topics: [
@@ -1015,7 +1015,7 @@ class GitHubProjects {
         full_name: 'mangeshraut712/ThreadPulse-Daily',
         description:
           'A community-powered daily word puzzle game for the Reddit ecosystem. Built for the Reddit Daily Games Hackathon 2026.',
-        homepage: 'https://www.reddit.com/r/ThreadPulse2026',
+        homepage: '',
         html_url: 'https://github.com/mangeshraut712/ThreadPulse-Daily',
         language: 'TypeScript',
         topics: [
@@ -1336,13 +1336,13 @@ class GitHubProjects {
   }
 
   formatAbsoluteDate(dateString) {
-    if (!dateString) return 'Unknown';
+    if (!dateString) return '';
     const date = new Date(dateString);
-    if (Number.isNaN(date.getTime())) return 'Unknown';
+    if (Number.isNaN(date.getTime())) return '';
     return absoluteDateFormatter.format(date);
   }
 
-  normalizeHomepageUrl(homepage) {
+  normalizeHomepageUrl(homepage, repoHtmlUrl = '') {
     if (!homepage) return '';
     const value = String(homepage).trim();
     if (!value) return '';
@@ -1357,6 +1357,17 @@ class GitHubProjects {
         host === 'mangeshraut.pro' ||
         host === 'www.mangeshraut.pro' ||
         host.endsWith('.vercel.app')
+      ) {
+        return '';
+      }
+      // If the homepage points to github.com repository itself, reddit placeholder, or matches repo url
+      if (
+        host === 'github.com' ||
+        host === 'www.github.com' ||
+        host.includes('reddit.com') ||
+        (repoHtmlUrl &&
+          parsed.href.replace(/\/$/, '').toLowerCase() ===
+            String(repoHtmlUrl).trim().replace(/\/$/, '').toLowerCase())
       ) {
         return '';
       }
@@ -1413,24 +1424,20 @@ class GitHubProjects {
     return { score, freshness, traction, completeness, updatedAgeDays };
   }
 
-  buildAiInsight(repo, showcaseScore) {
+  buildAiInsight(repo, _showcaseScore) {
     const topics = this.getTopics(repo);
-    const hasDemo = Boolean(this.normalizeHomepageUrl(repo.homepage));
+    const hasDemo = Boolean(this.normalizeHomepageUrl(repo.homepage, repo.html_url));
     const updated = this.formatDate(repo.updated_at);
     const stars = repo.stargazers_count || 0;
-    const forks = repo.forks_count || 0;
-    const traction = stars + forks;
 
-    const signals = [];
-    signals.push(`Updated ${updated}`);
-    if (hasDemo) signals.push('live demo available');
-    if (topics.length) signals.push(`${Math.min(topics.length, 4)} tagged capabilities`);
-    if (traction > 0) signals.push(`${traction} public engagement signals`);
+    const parts = [];
+    if (stars > 0) parts.push(`${stars} star${stars === 1 ? '' : 's'}`);
+    if (repo.language) parts.push(repo.language);
+    if (topics.length > 0) parts.push(topics.slice(0, 2).join(', '));
+    if (hasDemo) parts.push('Live demo available');
+    if (updated) parts.push(`Updated ${updated}`);
 
-    const confidenceBand =
-      showcaseScore.score >= 72 ? 'strong' : showcaseScore.score >= 52 ? 'balanced' : 'emerging';
-
-    return `AI brief: ${signals.join(' · ')}. Quality signal: ${confidenceBand} (${showcaseScore.score}/100).`;
+    return parts.join(' · ') || 'Active project';
   }
 
   normalizeReleasePayload(release) {
@@ -1451,70 +1458,47 @@ class GitHubProjects {
   }
 
   getReleaseSignal(repo, activity = {}) {
+    const releaseChecked = Boolean(activity.releaseChecked);
     const latestRelease = activity.latestRelease || null;
-    const releaseChecked = activity.releaseChecked === true;
     const hasRelease = Boolean(latestRelease?.tagName);
+    const releaseDate = latestRelease?.publishedAt || '';
+    const releaseAgeDays = this.getRepoAgeDays(releaseDate);
+    const activeAgeDays = this.getRepoAgeDays(repo.pushed_at || repo.updated_at);
     const commitsSinceRelease = this.toFiniteMetric(activity.commitsSinceRelease);
     const commits30d = this.toFiniteMetric(activity.commits30d);
-    const pushedAgeDays = this.getRepoAgeDays(repo?.pushed_at || repo?.updated_at);
-    const updatedAgeDays = this.getRepoAgeDays(repo?.updated_at || repo?.pushed_at);
-    const activeAgeDays = Math.min(pushedAgeDays, updatedAgeDays);
-    const releaseDate = latestRelease?.publishedAt || latestRelease?.createdAt || '';
-    const releaseAgeDays = this.getRepoAgeDays(releaseDate);
 
     let key = 'open';
-    let label = 'Open repo';
-    let meta;
+    let label = 'Active';
+    let meta = 'Main branch active';
 
-    if (!releaseChecked) {
-      if (activeAgeDays <= 14) key = 'active';
-      else if (activeAgeDays <= 45) key = 'fresh';
-      else if (activeAgeDays > 120) key = 'attention';
-      label = 'Syncing';
-      meta = 'Fetching latest release…';
-    } else if (!hasRelease) {
-      if (activeAgeDays <= 14) {
-        key = 'active';
-        label = 'Active';
-      } else if (activeAgeDays > 120) {
-        key = 'attention';
-        label = 'Stale';
-      }
-      meta = 'No GitHub release yet';
-    } else if (commitsSinceRelease !== null && commitsSinceRelease >= 25) {
-      key = 'attention';
-      label = 'Stale';
-      meta = `${this.formatCompactNumber(commitsSinceRelease)} commits since ${latestRelease.tagName}`;
-    } else if (releaseAgeDays > 180) {
-      key = 'attention';
-      label = 'Stale';
-      meta = `Released ${this.formatRelativeDateCompact(releaseDate)}`;
-    } else if (commitsSinceRelease !== null && commitsSinceRelease >= 10) {
-      key = 'busy';
-      label = 'Busy';
-      meta = `${this.formatCompactNumber(commitsSinceRelease)} commits since ${latestRelease.tagName}`;
-    } else if (releaseAgeDays <= 45) {
-      key = 'fresh';
-      label = 'Fresh';
-      meta = `Released ${this.formatRelativeDateCompact(releaseDate)}`;
-    } else {
+    if (hasRelease) {
       key = 'released';
       label = 'Released';
       meta = `Released ${this.formatRelativeDateCompact(releaseDate)}`;
+    } else if (commits30d !== null && commits30d >= 10) {
+      key = 'busy';
+      label = 'High Activity';
+      meta = `${commits30d} commits / 30d`;
+    } else if (activeAgeDays <= 14) {
+      key = 'active';
+      label = 'Active Momentum';
+      meta = `Updated ${this.formatRelativeDateCompact(repo.pushed_at || repo.updated_at)}`;
+    } else if (activeAgeDays <= 45) {
+      key = 'fresh';
+      label = 'Fresh';
+      meta = `Updated ${this.formatRelativeDateCompact(repo.pushed_at || repo.updated_at)}`;
+    } else if (releaseChecked && activeAgeDays > 120) {
+      key = 'attention';
+      label = 'Stable Archive';
+      meta = 'Maintained reference';
     }
 
     const filters = new Set(['all', key]);
     if (hasRelease) filters.add('released');
     if (commits30d !== null && commits30d >= 10) filters.add('busy');
     if (activeAgeDays <= 14) filters.add('active');
-    if (activeAgeDays <= 45 || (hasRelease && releaseAgeDays <= 45)) filters.add('fresh');
-    if (
-      key === 'attention' ||
-      (releaseChecked && !hasRelease && activeAgeDays > 120) ||
-      (hasRelease && commitsSinceRelease !== null && commitsSinceRelease >= 25)
-    ) {
-      filters.add('attention');
-    }
+    if (activeAgeDays <= 45) filters.add('fresh');
+    if (key === 'attention') filters.add('attention');
 
     return {
       key,
@@ -1553,9 +1537,24 @@ class GitHubProjects {
     const eligible = repos.filter(repo => this.isRepositoryShowcaseReady(repo));
     if (eligible.length === 0) return [];
 
+    // Deduplicate by repo name and full_name
+    const seen = new Set();
+    const uniqueEligible = [];
+    for (const repo of eligible) {
+      const key = String(
+        repo.full_name || `${repo.owner?.login || ''}/${repo.name || ''}` || repo.name
+      )
+        .trim()
+        .toLowerCase();
+      if (!seen.has(key)) {
+        seen.add(key);
+        uniqueEligible.push(repo);
+      }
+    }
+
     const featuredMap = new Map(this.featuredProjectOrder.map((name, index) => [name, index]));
 
-    const scored = eligible
+    const scored = uniqueEligible
       .map(repo => ({
         ...repo,
         __showcase: this.getShowcaseScore(repo),
@@ -1965,7 +1964,7 @@ class GitHubProjects {
       ? releaseSignal.key
       : 'open';
 
-    const homepage = this.normalizeHomepageUrl(repo.homepage);
+    const homepage = this.normalizeHomepageUrl(repo.homepage, repo.html_url);
     const hasDemo = Boolean(homepage);
     const updatedAbsolute = this.formatAbsoluteDate(repo.updated_at);
     const updatedBadgeText = this.formatRelativeDateCompact(repo.updated_at);

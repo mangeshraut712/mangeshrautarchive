@@ -738,9 +738,9 @@ export async function initProjectShowcase({ username = DEFAULT_USERNAME } = {}) 
 
       expandWrap.hidden = false;
       expandBtn.setAttribute('aria-expanded', showAllProjects ? 'true' : 'false');
-      expandBtn.textContent = showAllProjects
-        ? 'Show fewer projects'
-        : `Show all ${totalFiltered} projects`;
+      expandBtn.innerHTML = showAllProjects
+        ? '<i class="fa-solid fa-chevron-up" aria-hidden="true"></i> <span>Show fewer projects</span>'
+        : `<i class="fa-solid fa-chevron-down" aria-hidden="true"></i> <span>Show all ${totalFiltered} projects</span>`;
     };
 
     const hydrationQueue = new Set();
@@ -1014,10 +1014,20 @@ export async function initProjectShowcase({ username = DEFAULT_USERNAME } = {}) 
 
     if (expandBtn) {
       expandBtn.addEventListener('click', () => {
+        const wasShowingAll = showAllProjects;
         showAllProjects = !showAllProjects;
-        renderProjects().catch(error => {
-          console.error('Project showcase expand render failed:', error);
-        });
+        renderProjects()
+          .then(() => {
+            if (wasShowingAll) {
+              const projSection = document.getElementById('projects');
+              if (projSection) {
+                projSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }
+            }
+          })
+          .catch(error => {
+            console.error('Project showcase expand render failed:', error);
+          });
       });
     }
 
