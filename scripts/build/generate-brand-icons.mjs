@@ -7,10 +7,42 @@ const scriptDir = dirname(fileURLToPath(import.meta.url));
 const projectRoot = resolve(scriptDir, '../..');
 const sourceIcon = resolve(projectRoot, 'src/favicon.svg');
 
-async function renderPng(size) {
-  return sharp(sourceIcon)
+async function renderTransparentPng(size) {
+  const svg = await import('node:fs/promises').then(fs => fs.readFile(sourceIcon, 'utf8'));
+  const whiteSvg = svg
+    .replace(/--brand-fill:\s*#1d1d1f;/g, '--brand-fill: #ffffff;')
+    .replace(
+      /fill="var\(--brand-fill\)"/g,
+      'fill="#ffffff" style="filter: drop-shadow(0px 4px 12px rgba(0,0,0,0.6));"'
+    );
+
+  return sharp(Buffer.from(whiteSvg))
     .resize(size, size, { fit: 'contain', background: { r: 0, g: 0, b: 0, alpha: 0 } })
     .png({ compressionLevel: 9, palette: false })
+    .toBuffer();
+}
+
+async function renderSquircleTouchIcon(size) {
+  const svg = await import('node:fs/promises').then(fs => fs.readFile(sourceIcon, 'utf8'));
+  const whiteSvg = svg
+    .replace(/--brand-fill:\s*#1d1d1f;/g, '--brand-fill: #ffffff;')
+    .replace(/fill="var\(--brand-fill\)"/g, 'fill="#ffffff"');
+
+  const squircleSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+    <rect width="512" height="512" rx="106" fill="#000000"/>
+  </svg>`;
+
+  const squircleBg = await sharp(Buffer.from(squircleSvg)).resize(size, size).png().toBuffer();
+  const innerSize = Math.round(size * 0.75);
+  const offset = Math.round((size - innerSize) / 2);
+  const innerLogo = await sharp(Buffer.from(whiteSvg))
+    .resize(innerSize, innerSize)
+    .png()
+    .toBuffer();
+
+  return sharp(squircleBg)
+    .composite([{ input: innerLogo, top: offset, left: offset }])
+    .png({ compressionLevel: 9 })
     .toBuffer();
 }
 
@@ -41,31 +73,40 @@ function createPngIco(images) {
 }
 
 export async function generateBrandIcons() {
-  const sizes = new Map();
-  for (const size of [16, 32, 48, 180, 192, 512]) {
-    sizes.set(size, await renderPng(size));
-  }
+  const [png16, png32, png48, touch180, pwa192, pwa512] = await Promise.all([
+    renderTransparentPng(16),
+    renderTransparentPng(32),
+    renderTransparentPng(48),
+    renderSquircleTouchIcon(180),
+    renderSquircleTouchIcon(192),
+    renderSquircleTouchIcon(512),
+  ]);
 
-  const ico = createPngIco([16, 32, 48].map(size => ({ size, buffer: sizes.get(size) })));
+  const ico = createPngIco([
+    { size: 16, buffer: png16 },
+    { size: 32, buffer: png32 },
+    { size: 48, buffer: png48 },
+  ]);
+
   const writes = [
-    ['src/favicon-16x16.png', sizes.get(16)],
-    ['src/favicon-32x32.png', sizes.get(32)],
+    ['src/favicon-16x16.png', png16],
+    ['src/favicon-32x32.png', png32],
     ['src/favicon.ico', ico],
-    ['src/apple-touch-icon.png', sizes.get(180)],
-    ['src/apple-touch-icon-precomposed.png', sizes.get(180)],
-    ['src/assets/icons/favicon-16x16.png', sizes.get(16)],
-    ['src/assets/icons/favicon-32x32.png', sizes.get(32)],
-    ['src/assets/icons/favicon-48x48.png', sizes.get(48)],
+    ['src/apple-touch-icon.png', touch180],
+    ['src/apple-touch-icon-precomposed.png', touch180],
+    ['src/assets/icons/favicon-16x16.png', png16],
+    ['src/assets/icons/favicon-32x32.png', png32],
+    ['src/assets/icons/favicon-48x48.png', png48],
     ['src/assets/icons/favicon.ico', ico],
-    ['src/assets/icons/apple-touch-icon.png', sizes.get(180)],
-    ['src/assets/icons/icon-192.png', sizes.get(192)],
-    ['src/assets/icons/icon-512.png', sizes.get(512)],
+    ['src/assets/icons/apple-touch-icon.png', touch180],
+    ['src/assets/icons/icon-192.png', pwa192],
+    ['src/assets/icons/icon-512.png', pwa512],
   ];
 
   await Promise.all(
     writes.map(([path, contents]) => writeFile(resolve(projectRoot, path), contents))
   );
-  console.log('🎨 Brand favicon and Apple touch assets regenerated from favicon.svg');
+  console.log('🎨 Brand favicon and Apple touch assets regenerated successfully');
 }
 
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
