@@ -1293,11 +1293,16 @@ async function initMap() {
     state.ready = true;
     const mapContainer = document.getElementById('map-container');
     mapContainer?.setAttribute('data-map-ready', 'true');
-    mapContainer?.setAttribute('aria-busy', 'false');
     document.getElementById('travel-map-load')?.setAttribute('hidden', '');
     setMapProjection();
     restoreMapDataLayers();
     fitMapToVisiblePlaces();
+    state.map.on('dragstart', () => {
+      state.isDragging = true;
+    });
+    state.map.on('dragend', () => {
+      state.isDragging = false;
+    });
     startSpin();
     bindThemeSync();
     updateTravelStatus();
@@ -1684,12 +1689,23 @@ function setMapProjection() {
 }
 
 function startSpin() {
-  let bearing = 0;
+  if (state.spinFrame) cancelAnimationFrame(state.spinFrame);
   function tick() {
-    if (state.activeIndex !== null || state.tourTimer) return;
-    bearing -= 0.06;
-    if (bearing < -180) bearing += 360;
-    state.map.setBearing(bearing);
+    if (
+      state.map &&
+      state.ready &&
+      state.activeIndex === null &&
+      !state.tourTimer &&
+      !state.isDragging &&
+      state.projectionType === 'globe'
+    ) {
+      const zoom = state.map.getZoom();
+      if (zoom < 6) {
+        let bearing = state.map.getBearing();
+        bearing = (bearing - 0.08) % 360;
+        state.map.setBearing(bearing);
+      }
+    }
     state.spinFrame = requestAnimationFrame(tick);
   }
   state.spinFrame = requestAnimationFrame(tick);

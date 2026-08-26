@@ -43,6 +43,17 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'b71a4f90',
+    date: '2026-08-26',
+    type: 'release',
+    title: 'Interactive 3D Map Kinetics, Synced 3D Expand Button & Cleaned Search Layout',
+    summary:
+      'Removed redundant "43 projects." status text below search input while preserving full polite screen-reader accessibility. Fully synchronized the "Show all projects" expand button with Apple Blue 3D button styling, specular sheen, white text and icons, and tactile press dynamics. Upgraded the 3D isometric GitHub contributions graph with hit-testing hover detection, elevated block lighting, specular glow, fixed tooltip popups, and stage perspective gyro tilt. Enhanced 3D travel atlas with resilient idle globe rotation and drag recovery.',
+    tags: ['release', '3d-map', 'github-graph', 'projects', 'ui', 'animations', 'buttons'],
+    sha: 'b71a4f90',
+    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/b71a4f90',
+  },
+  {
     id: 'e840a17b',
     date: '2026-08-26',
     type: 'release',

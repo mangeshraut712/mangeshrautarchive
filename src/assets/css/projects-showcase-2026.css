@@ -3047,6 +3047,8 @@ html.dark #projects .gh-contrib__source {
   padding: 1.1rem;
   min-height: 260px;
   overflow: hidden;
+  perspective: 1200px;
+  transform-style: preserve-3d;
 }
 
 #projects .gh-contrib__canvas {
@@ -3054,6 +3056,12 @@ html.dark #projects .gh-contrib__source {
   width: 100%;
   max-width: 640px;
   height: auto;
+  transform: perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1);
+  transition:
+    transform 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 0.2s ease;
+  transform-style: preserve-3d;
+  will-change: transform;
 }
 
 /* ---- Summary panels ---- */
@@ -4017,63 +4025,94 @@ section#projects .projects-expand-wrap {
 section#projects .projects-expand-btn {
   font-family: var(--font-text) !important;
   font-size: 0.92rem !important;
-  font-weight: 600 !important;
+  font-weight: 650 !important;
   letter-spacing: -0.01em !important;
   min-height: 46px !important;
   border-radius: 9999px !important;
-  padding: 0.65rem 1.6rem !important;
+  padding: 0.65rem 1.75rem !important;
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
-  gap: 0.5rem !important;
+  gap: 0.55rem !important;
   text-decoration: none !important;
   cursor: pointer !important;
   position: relative !important;
   overflow: hidden !important;
   isolation: isolate !important;
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  background: #0071e3 !important;
+  background-color: #0071e3 !important;
+  background-image: linear-gradient(135deg, #0077ed 0%, #0071e3 50%, #0062c4 100%) !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+  box-shadow:
+    0 4px 14px rgba(0, 113, 227, 0.35),
+    inset 0 1px 0.5px rgba(255, 255, 255, 0.45) !important;
+  transform: translateZ(0) !important;
+  transition:
+    transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.18s ease,
+    background 0.18s ease,
+    border-color 0.18s ease !important;
 }
 
 section#projects .projects-expand-btn * {
-  color: inherit !important;
-  -webkit-text-fill-color: inherit !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
 }
 
 html:not(.dark) section#projects .projects-expand-btn {
-  background: #ffffff !important;
-  background-color: #ffffff !important;
-  background-image: none !important;
-  color: #0071e3 !important;
-  -webkit-text-fill-color: #0071e3 !important;
-  border: 1px solid rgba(0, 113, 227, 0.35) !important;
-  box-shadow: 0 2px 8px rgba(0, 113, 227, 0.08) !important;
+  background: #0071e3 !important;
+  background-color: #0071e3 !important;
+  background-image: linear-gradient(135deg, #0077ed 0%, #0071e3 50%, #0062c4 100%) !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  box-shadow:
+    0 4px 14px rgba(0, 113, 227, 0.35),
+    inset 0 1px 0.5px rgba(255, 255, 255, 0.45) !important;
 }
 
 html.dark section#projects .projects-expand-btn {
-  background: #000000 !important;
-  background-color: #000000 !important;
-  background-image: none !important;
-  color: #2997ff !important;
-  -webkit-text-fill-color: #2997ff !important;
-  border: 1px solid rgba(41, 151, 255, 0.45) !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4) !important;
+  background: #0071e3 !important;
+  background-color: #0071e3 !important;
+  background-image: linear-gradient(135deg, #0077ed 0%, #0071e3 50%, #005bb5 100%) !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  box-shadow:
+    0 4px 16px rgba(0, 113, 227, 0.4),
+    inset 0 1px 0.5px rgba(255, 255, 255, 0.3) !important;
 }
 
 @media (hover: hover) and (pointer: fine) {
   section#projects .projects-expand-btn:hover {
-    background-color: #0077ed !important;
-    background-image: linear-gradient(135deg, #0080ff 0%, #0071e3 50%, #0066cc 100%) !important;
+    background-color: #007bf5 !important;
+    background-image: linear-gradient(135deg, #1a8cff 0%, #0077ed 50%, #006bd6 100%) !important;
     color: #ffffff !important;
     -webkit-text-fill-color: #ffffff !important;
-    border-color: rgba(255, 255, 255, 0.35) !important;
-    box-shadow: 0 8px 24px rgba(0, 113, 227, 0.45) !important;
-    transform: translateY(-2px) scale(1.02) !important;
+    border-color: rgba(255, 255, 255, 0.5) !important;
+    box-shadow:
+      0 8px 24px rgba(0, 113, 227, 0.55),
+      0 2px 6px rgba(0, 0, 0, 0.15),
+      inset 0 1px 1px rgba(255, 255, 255, 0.6) !important;
+    transform: translateY(-2.5px) scale(1.02) translateZ(0) !important;
   }
 }
 
+section#projects .projects-expand-btn:active {
+  transform: translateY(1.5px) scale(0.96) translateZ(0) !important;
+  box-shadow:
+    0 2px 6px rgba(0, 113, 227, 0.3),
+    inset 0 1px 2px rgba(0, 0, 0, 0.2) !important;
+  transition:
+    transform 0.08s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.08s ease !important;
+}
+
 section#projects .projects-expand-btn:focus-visible {
-  outline: 2px solid #0071e3 !important;
-  outline-offset: 2px !important;
+  outline: 3px solid rgba(0, 113, 227, 0.5) !important;
+  outline-offset: 3px !important;
 }
 
 /* ---- Empty state clear CTA (shadcn outline) ---- */
@@ -4186,13 +4225,15 @@ section#projects .projects-repos-toolbar .project-lens-bar {
 }
 
 section#projects .projects-results-status {
-  margin: 0;
-  min-height: 1.15em;
-  font-size: 0.8rem;
-  font-weight: 550;
-  letter-spacing: -0.01em;
-  color: var(--sc-muted-fg);
-  line-height: 1.35;
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
 }
 
 section#projects .projects-results-status:empty {
@@ -4638,14 +4679,7 @@ html[data-theme='dark']
     0 2px 4px rgba(0, 0, 0, 0.2) !important;
 }
 
-html:not(.dark) section#projects .projects-expand-btn,
-html[data-theme='light'] section#projects .projects-expand-btn {
-  color: #1d1d1f !important;
-  -webkit-text-fill-color: #1d1d1f !important;
-  border: 1px solid rgb(0 0 0 / 14%) !important;
-  background: #ffffff !important;
-  background-color: #ffffff !important;
-}
+/* .projects-expand-btn unified with primary Apple Blue 3D button */
 
 html:not(.dark) section#projects .projects-view-all-btn,
 html[data-theme='light'] section#projects .projects-view-all-btn {

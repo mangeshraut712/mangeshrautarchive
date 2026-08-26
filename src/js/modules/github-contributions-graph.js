@@ -33,6 +33,10 @@ const state = {
   view: '3d',
   root: null,
   activeData: null,
+  hovered3DItem: null,
+  items3D: [],
+  layout3D: null,
+  events3DBound: false,
 };
 
 /* ---------------------------------- utils --------------------------------- */
@@ -472,7 +476,117 @@ function renderHeatmap(data) {
 
 /* ------------------------------ 3D isometric ------------------------------ */
 
-function render3D(data) {
+function bind3DEvents(canvas) {
+  if (state.events3DBound) return;
+  state.events3DBound = true;
+
+  const stage = canvas.closest(".gh-contrib__stage[data-view-block='3d']");
+  const tooltip = document.getElementById('gh-contrib-tooltip');
+
+  const handlePointerMove = e => {
+    if (!state.items3D || !state.items3D.length || !state.layout3D || state.view === '2d') return;
+    const rect = canvas.getBoundingClientRect();
+    if (!rect.width || !rect.height) return;
+
+    const { logicalW, logicalH, TILE_W, TILE_H } = state.layout3D;
+    const mx = (e.clientX - rect.left) * (logicalW / rect.width);
+    const my = (e.clientY - rect.top) * (logicalH / rect.height);
+
+    // Hit-test in reverse painter's order (front to back)
+    let hit = null;
+    const reversed = [...state.items3D].reverse();
+    for (const item of reversed) {
+      const { cx, cyBase, cyTop, h } = item;
+
+      if (h > 0) {
+        const inTop =
+          Math.abs((mx - cx) / (TILE_W / 2)) + Math.abs((my - cyTop) / (TILE_H / 2)) <= 1.08;
+        const inLeft =
+          mx >= cx - TILE_W / 2 && mx <= cx && my >= cyTop && my <= cyBase + TILE_H / 2;
+        const inRight =
+          mx >= cx && mx <= cx + TILE_W / 2 && my >= cyTop && my <= cyBase + TILE_H / 2;
+        if (inTop || inLeft || inRight) {
+          hit = item;
+          break;
+        }
+      } else {
+        const inBase =
+          Math.abs((mx - cx) / (TILE_W / 2)) + Math.abs((my - cyBase) / (TILE_H / 2)) <= 1.08;
+        if (inBase) {
+          hit = item;
+          break;
+        }
+      }
+    }
+
+    if (hit !== state.hovered3DItem) {
+      state.hovered3DItem = hit;
+      if (state.activeData) {
+        draw3DScene(state.activeData);
+      }
+    }
+
+    if (hit && tooltip) {
+      canvas.style.cursor = 'pointer';
+      const screenX = rect.left + (hit.cx / logicalW) * rect.width;
+      const screenY = rect.top + (hit.cyTop / logicalH) * rect.height;
+      const countStr =
+        hit.cell.count === 0
+          ? 'No contributions'
+          : `${hit.cell.count} contribution${hit.cell.count === 1 ? '' : 's'}`;
+      tooltip.innerHTML = `<strong>${countStr}</strong> on ${_fmtFull.format(hit.cell.date)}`;
+      tooltip.style.position = 'fixed';
+      tooltip.style.left = `${screenX}px`;
+      tooltip.style.top = `${screenY - 10}px`;
+      tooltip.classList.add('is-visible');
+    } else if (tooltip) {
+      canvas.style.cursor = 'default';
+      tooltip.classList.remove('is-visible');
+    }
+
+    // Interactive 3D Perspective Gyro Tilt
+    if (stage) {
+      const stageRect = stage.getBoundingClientRect();
+      const normX = (e.clientX - stageRect.left) / stageRect.width - 0.5;
+      const normY = (e.clientY - stageRect.top) / stageRect.height - 0.5;
+      const rotX = -normY * 10;
+      const rotY = normX * 14;
+      canvas.style.transform = `perspective(1000px) rotateX(${rotX.toFixed(2)}deg) rotateY(${rotY.toFixed(2)}deg) scale3d(1.02, 1.02, 1.02)`;
+    }
+  };
+
+  const handlePointerLeave = () => {
+    if (state.hovered3DItem) {
+      state.hovered3DItem = null;
+      if (state.activeData) {
+        draw3DScene(state.activeData);
+      }
+    }
+    if (tooltip) tooltip.classList.remove('is-visible');
+    canvas.style.cursor = 'default';
+    canvas.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+  };
+
+  canvas.addEventListener('mousemove', handlePointerMove, { passive: true });
+  canvas.addEventListener('mouseleave', handlePointerLeave, { passive: true });
+  canvas.addEventListener(
+    'touchstart',
+    e => {
+      if (e.touches[0]) handlePointerMove(e.touches[0]);
+    },
+    { passive: true }
+  );
+  canvas.addEventListener(
+    'touchmove',
+    e => {
+      if (e.touches[0]) handlePointerMove(e.touches[0]);
+    },
+    { passive: true }
+  );
+  canvas.addEventListener('touchend', handlePointerLeave, { passive: true });
+}
+
+function draw3DScene(data) {
   const canvas = document.getElementById('gh-contrib-canvas');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
@@ -535,6 +649,16 @@ function render3D(data) {
   const ox = -minX + pad;
   const oy = -minY + pad;
 
+  // Store layout geometry for hit testing
+  items.forEach(item => {
+    item.cx = item.base.x + ox;
+    item.cyBase = item.base.y + oy;
+    item.cyTop = item.cyBase - item.h;
+  });
+
+  state.items3D = items;
+  state.layout3D = { ox, oy, logicalW, logicalH, pad, TILE_W, TILE_H };
+
   // Painter's order: back (small col+row) first
   items.sort((a, b) => a.col + a.row - (b.col + b.row) || a.col - b.col);
 
@@ -547,21 +671,35 @@ function render3D(data) {
     ctx.closePath();
   };
 
-  items.forEach(({ cell, base, h }) => {
-    const cx = base.x + ox;
-    const cyBase = base.y + oy;
-    const cyTop = cyBase - h;
+  items.forEach(item => {
+    const { cell, cx, cyBase, h } = item;
+    const isHovered =
+      state.hovered3DItem &&
+      state.hovered3DItem.col === item.col &&
+      state.hovered3DItem.row === item.row;
+    const extraLift = isHovered ? (h > 0 ? 5 : 2) : 0;
+    const cyTop = cyBase - h - extraLift;
     const level = cell.level;
     const topColor = colors[level];
     const emptyBase = dark ? '#0d1117' : '#ebedf0';
 
     if (h <= 0) {
       // Flat floor tile for empty days
-      diamond(cx, cyBase);
-      ctx.fillStyle = level === 0 ? emptyBase : topColor;
+      diamond(cx, cyBase - extraLift);
+      ctx.fillStyle = isHovered
+        ? dark
+          ? '#1f2937'
+          : '#d1d5db'
+        : level === 0
+          ? emptyBase
+          : topColor;
       ctx.fill();
-      ctx.strokeStyle = dark ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.05)';
-      ctx.lineWidth = 0.5;
+      ctx.strokeStyle = isHovered
+        ? '#0071e3'
+        : dark
+          ? 'rgba(255,255,255,0.04)'
+          : 'rgba(0,0,0,0.05)';
+      ctx.lineWidth = isHovered ? 1.5 : 0.5;
       ctx.stroke();
       return;
     }
@@ -573,7 +711,7 @@ function render3D(data) {
     ctx.lineTo(cx, cyBase + TILE_H / 2);
     ctx.lineTo(cx - TILE_W / 2, cyBase);
     ctx.closePath();
-    ctx.fillStyle = shade(topColor, 0.62);
+    ctx.fillStyle = shade(topColor, isHovered ? 0.75 : 0.62);
     ctx.fill();
 
     // Right face
@@ -583,14 +721,31 @@ function render3D(data) {
     ctx.lineTo(cx, cyBase + TILE_H / 2);
     ctx.lineTo(cx + TILE_W / 2, cyBase);
     ctx.closePath();
-    ctx.fillStyle = shade(topColor, 0.8);
+    ctx.fillStyle = shade(topColor, isHovered ? 0.92 : 0.8);
     ctx.fill();
 
     // Top face
     diamond(cx, cyTop);
     ctx.fillStyle = topColor;
-    ctx.fill();
+    if (isHovered) {
+      ctx.save();
+      ctx.shadowColor = dark ? 'rgba(57, 211, 83, 0.7)' : 'rgba(33, 110, 57, 0.5)';
+      ctx.shadowBlur = 10;
+      ctx.fill();
+      ctx.restore();
+      ctx.strokeStyle = '#ffffff';
+      ctx.lineWidth = 1.25;
+      ctx.stroke();
+    } else {
+      ctx.fill();
+    }
   });
+
+  bind3DEvents(canvas);
+}
+
+function render3D(data) {
+  draw3DScene(data);
 }
 
 /* -------------------------------- render ---------------------------------- */
