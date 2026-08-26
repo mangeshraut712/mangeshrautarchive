@@ -43,6 +43,17 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'b7201c89',
+    date: '2026-08-26',
+    type: 'release',
+    title: '3D Tactile Kinetics, Specular Metallic Sheen & Snappy Micro-Interactions Sitewide',
+    summary:
+      'Synchronized all 6 button tiers across all 7 pages with authentic 3D perspective lift on hover (translateY(-2.5px) scale(1.02) translateZ(0)), tactile click kinetics on :active (translateY(1.5px) scale(0.96)), continuous specular metallic sheen animation, and snappy Apple spring transitions (0.18s cubic-bezier(0.34, 1.56, 0.64, 1)). Eliminated sluggish transitions and standardized calendar controls, smart reminder chips, floating action buttons, and circular close triggers.',
+    tags: ['release', 'design', 'buttons', '3d-animation', 'micro-interactions', 'ui'],
+    sha: 'b7201c89',
+    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/b7201c89',
+  },
+  {
     id: 'e481b920',
     date: '2026-08-26',
     type: 'release',

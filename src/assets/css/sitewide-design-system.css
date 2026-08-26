@@ -131,7 +131,16 @@ pre {
   .project-action-btn.btn-demo,
   .btn.btn-demo,
   .case-study-hero-cta,
+  .case-study-demo-btn,
+  .case-study-back-link,
   .travel-map-load,
+  #calendar-add-event-btn,
+  .calendar-add-event-btn,
+  #book-consultation-btn,
+  .calendly-embed-btn,
+  .calendly-panel-button,
+  #projects-github-cta,
+  .projects-github-cta,
   .btn:not(.btn-secondary):not(.button-secondary):not(.apple-btn-secondary):not(
       .hero-cta-secondary
     ):not(.section-preview-btn):not(.btn-github):not(.btn-ar):not(.btn-glass):not(
@@ -155,8 +164,9 @@ pre {
   -webkit-text-fill-color: #ffffff !important;
   border: 1px solid rgba(255, 255, 255, 0.25) !important;
   box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.08),
     0 4px 16px rgba(0, 113, 227, 0.38),
-    0 2px 4px rgba(0, 0, 0, 0.08) !important;
+    inset 0 1px 0 rgba(255, 255, 255, 0.35) !important;
   position: relative !important;
   overflow: hidden !important;
   isolation: isolate !important;
@@ -166,7 +176,12 @@ pre {
   gap: 0.5rem !important;
   text-decoration: none !important;
   cursor: pointer !important;
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  transform: translateZ(0) !important;
+  transition:
+    transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.18s ease,
+    background 0.18s ease,
+    border-color 0.18s ease !important;
 }
 
 :is(
@@ -195,7 +210,14 @@ pre {
     .project-action-btn.btn-demo,
     .btn.btn-demo,
     .case-study-hero-cta,
+    .case-study-demo-btn,
+    .case-study-back-link,
     .travel-map-load,
+    #calendar-add-event-btn,
+    .calendar-add-event-btn,
+    #book-consultation-btn,
+    .calendly-embed-btn,
+    .calendly-panel-button,
     #projects-github-cta,
     .projects-github-cta
   )
@@ -204,7 +226,7 @@ pre {
   -webkit-text-fill-color: #ffffff !important;
 }
 
-/* Primary Button Hover State */
+/* Primary Button 3D Hover State */
 :is(
   .btn-primary,
   .hero-cta-primary,
@@ -231,51 +253,71 @@ pre {
   .project-action-btn.btn-demo,
   .btn.btn-demo,
   .case-study-hero-cta,
+  .case-study-demo-btn,
+  .case-study-back-link,
   .travel-map-load,
+  #calendar-add-event-btn,
+  .calendar-add-event-btn,
+  #book-consultation-btn,
+  .calendly-embed-btn,
+  .calendly-panel-button,
   #projects-github-cta,
   .projects-github-cta
 ):hover {
   background-color: #0077ed !important;
   background-image: linear-gradient(135deg, #0080ff 0%, #0071e3 50%, #0066cc 100%) !important;
-  transform: translateY(-2px) scale(1.02) !important;
+  transform: translateY(-2.5px) scale(1.02) translateZ(0) !important;
   box-shadow:
-    0 8px 24px rgba(0, 113, 227, 0.48),
-    0 3px 8px rgba(0, 0, 0, 0.12) !important;
+    0 1px 2px rgba(0, 0, 0, 0.12),
+    0 8px 24px rgba(0, 113, 227, 0.5),
+    inset 0 1px 0.5px rgba(255, 255, 255, 0.45) !important;
 }
 
+/* Primary Button 3D Active / Press Kinetics */
 :is(
-    .btn-primary,
-    .hero-cta-primary,
-    .btn-resume,
-    .resume-dropdown-toggle,
-    .publication-read-btn,
-    .apple-submit-btn,
-    .contact-send-btn,
-    .newsletter-submit-btn,
-    .newsletter-form .btn-primary,
-    .submit-btn,
-    .contact-submit,
-    .project-link,
-    .read-more-btn,
-    .download-btn,
-    .hero-btn,
-    .about-btn,
-    .cta-button,
-    .error-btn--primary,
-    .error-home-link,
-    .support-stripe-btn.premium,
-    .support-paypal-btn.premium,
-    .support-coffee-btn.premium,
-    .project-action-btn.btn-demo,
-    .btn.btn-demo,
-    .case-study-hero-cta,
-    .travel-map-load,
-    #projects-github-cta,
-    .projects-github-cta
-  ):hover
-  * {
-  color: #ffffff !important;
-  -webkit-text-fill-color: #ffffff !important;
+  .btn-primary,
+  .hero-cta-primary,
+  .btn-resume,
+  .resume-dropdown-toggle,
+  .publication-read-btn,
+  .apple-submit-btn,
+  .contact-send-btn,
+  .newsletter-submit-btn,
+  .newsletter-form .btn-primary,
+  .submit-btn,
+  .contact-submit,
+  .project-link,
+  .read-more-btn,
+  .download-btn,
+  .hero-btn,
+  .about-btn,
+  .cta-button,
+  .error-btn--primary,
+  .error-home-link,
+  .support-stripe-btn.premium,
+  .support-paypal-btn.premium,
+  .support-coffee-btn.premium,
+  .project-action-btn.btn-demo,
+  .btn.btn-demo,
+  .case-study-hero-cta,
+  .case-study-demo-btn,
+  .case-study-back-link,
+  .travel-map-load,
+  #calendar-add-event-btn,
+  .calendar-add-event-btn,
+  #book-consultation-btn,
+  .calendly-embed-btn,
+  .calendly-panel-button,
+  #projects-github-cta,
+  .projects-github-cta
+):active {
+  transform: translateY(1.5px) scale(0.96) translateZ(0) !important;
+  box-shadow:
+    0 1px 4px rgba(0, 113, 227, 0.25),
+    inset 0 1.5px 3px rgba(0, 0, 0, 0.2) !important;
+  transition:
+    transform 0.08s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.08s ease !important;
 }
 
 /* --- TIER 2: SECONDARY & GHOST ACTION BUTTONS --- */
@@ -291,7 +333,13 @@ pre {
   .dictation-dock-btn:not(.is-primary),
   .project-action-btn:not(.btn-demo),
   .health-item .btn,
-  .integration-actions .btn
+  .integration-actions .btn,
+  .share-action-row,
+  .copy-btn,
+  .code-copy-btn,
+  .article-copy-btn,
+  .calendar-sync-btn,
+  .calendar-view-toggle
 ) {
   font-family: var(--font-text) !important;
   font-size: 0.94rem !important;
@@ -308,7 +356,13 @@ pre {
   gap: 0.5rem !important;
   text-decoration: none !important;
   cursor: pointer !important;
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  transform: translateZ(0) !important;
+  transition:
+    transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.18s ease,
+    background 0.18s ease,
+    border-color 0.18s ease,
+    color 0.15s ease !important;
 }
 
 html:not(.dark)
@@ -324,7 +378,13 @@ html:not(.dark)
     .dictation-dock-btn:not(.is-primary),
     .project-action-btn:not(.btn-demo),
     .health-item .btn,
-    .integration-actions .btn
+    .integration-actions .btn,
+    .share-action-row,
+    .copy-btn,
+    .code-copy-btn,
+    .article-copy-btn,
+    .calendar-sync-btn,
+    .calendar-view-toggle
   ) {
   background: #ffffff !important;
   background-color: #ffffff !important;
@@ -348,7 +408,13 @@ html:not(.dark)
     .dictation-dock-btn:not(.is-primary),
     .project-action-btn:not(.btn-demo),
     .health-item .btn,
-    .integration-actions .btn
+    .integration-actions .btn,
+    .share-action-row,
+    .copy-btn,
+    .code-copy-btn,
+    .article-copy-btn,
+    .calendar-sync-btn,
+    .calendar-view-toggle
   )
   * {
   color: #1d1d1f !important;
@@ -368,15 +434,23 @@ html.dark
     .dictation-dock-btn:not(.is-primary),
     .project-action-btn:not(.btn-demo),
     .health-item .btn,
-    .integration-actions .btn
+    .integration-actions .btn,
+    .share-action-row,
+    .copy-btn,
+    .code-copy-btn,
+    .article-copy-btn,
+    .calendar-sync-btn,
+    .calendar-view-toggle
   ) {
   background: #000000 !important;
   background-color: #000000 !important;
   background-image: none !important;
   color: #f5f5f7 !important;
   -webkit-text-fill-color: #f5f5f7 !important;
-  border: 1px solid #2c2c2e !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4) !important;
+  border: 1px solid rgba(255, 255, 255, 0.14) !important;
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
 }
 
 html.dark
@@ -392,7 +466,13 @@ html.dark
     .dictation-dock-btn:not(.is-primary),
     .project-action-btn:not(.btn-demo),
     .health-item .btn,
-    .integration-actions .btn
+    .integration-actions .btn,
+    .share-action-row,
+    .copy-btn,
+    .code-copy-btn,
+    .article-copy-btn,
+    .calendar-sync-btn,
+    .calendar-view-toggle
   )
   * {
   color: #f5f5f7 !important;
@@ -413,16 +493,21 @@ html.dark
       .dictation-dock-btn:not(.is-primary),
       .project-action-btn:not(.btn-demo),
       .health-item .btn,
-      .integration-actions .btn
+      .integration-actions .btn,
+      .share-action-row,
+      .copy-btn,
+      .code-copy-btn,
+      .article-copy-btn,
+      .calendar-sync-btn,
+      .calendar-view-toggle
     ):hover {
     color: #0071e3 !important;
     -webkit-text-fill-color: #0071e3 !important;
     border-color: #0071e3 !important;
     background: #ffffff !important;
     background-color: #ffffff !important;
-    background-image: none !important;
     box-shadow: 0 6px 18px rgba(0, 113, 227, 0.18) !important;
-    transform: translateY(-2px) scale(1.02) !important;
+    transform: translateY(-2.5px) scale(1.02) translateZ(0) !important;
   }
 
   html:not(.dark)
@@ -438,7 +523,13 @@ html.dark
       .dictation-dock-btn:not(.is-primary),
       .project-action-btn:not(.btn-demo),
       .health-item .btn,
-      .integration-actions .btn
+      .integration-actions .btn,
+      .share-action-row,
+      .copy-btn,
+      .code-copy-btn,
+      .article-copy-btn,
+      .calendar-sync-btn,
+      .calendar-view-toggle
     ):hover
     * {
     color: #0071e3 !important;
@@ -458,16 +549,21 @@ html.dark
       .dictation-dock-btn:not(.is-primary),
       .project-action-btn:not(.btn-demo),
       .health-item .btn,
-      .integration-actions .btn
+      .integration-actions .btn,
+      .share-action-row,
+      .copy-btn,
+      .code-copy-btn,
+      .article-copy-btn,
+      .calendar-sync-btn,
+      .calendar-view-toggle
     ):hover {
     color: #2997ff !important;
     -webkit-text-fill-color: #2997ff !important;
     border-color: #2997ff !important;
     background: #000000 !important;
     background-color: #000000 !important;
-    background-image: none !important;
     box-shadow: 0 6px 18px rgba(41, 151, 255, 0.25) !important;
-    transform: translateY(-2px) scale(1.02) !important;
+    transform: translateY(-2.5px) scale(1.02) translateZ(0) !important;
   }
 
   html.dark
@@ -483,12 +579,46 @@ html.dark
       .dictation-dock-btn:not(.is-primary),
       .project-action-btn:not(.btn-demo),
       .health-item .btn,
-      .integration-actions .btn
+      .integration-actions .btn,
+      .share-action-row,
+      .copy-btn,
+      .code-copy-btn,
+      .article-copy-btn,
+      .calendar-sync-btn,
+      .calendar-view-toggle
     ):hover
     * {
     color: #2997ff !important;
     -webkit-text-fill-color: #2997ff !important;
   }
+}
+
+/* Secondary Button 3D Active State */
+:is(
+  .btn-secondary,
+  .button-secondary,
+  .apple-btn-secondary,
+  .hero-cta-secondary,
+  .btn-github,
+  .btn-ar,
+  .btn-glass,
+  .error-btn--secondary,
+  .dictation-dock-btn:not(.is-primary),
+  .project-action-btn:not(.btn-demo),
+  .health-item .btn,
+  .integration-actions .btn,
+  .share-action-row,
+  .copy-btn,
+  .code-copy-btn,
+  .article-copy-btn,
+  .calendar-sync-btn,
+  .calendar-view-toggle
+):active {
+  transform: translateY(1.5px) scale(0.96) translateZ(0) !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2) !important;
+  transition:
+    transform 0.08s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.08s ease !important;
 }
 
 /* --- TIER 3: FILTER CHIPS, SEGMENTED TABS & CATEGORY PILLS (ALL PAGES) --- */
@@ -512,7 +642,18 @@ html.dark
   .skills-radar-pill,
   .share-mirror-tab,
   .project-clone-btn,
-  .clone-btn
+  .clone-btn,
+  .reminders-tab,
+  .reminders-filter-chip,
+  .calendar-view-all-btn,
+  #calendar-view-all-btn,
+  .reminders-view-all-btn,
+  .ai-suggestion-chip,
+  .ai-suggestion-btn,
+  .case-study-tag,
+  .case-study-chip,
+  .game-control-btn,
+  .sound-toggle-btn
 ) {
   font-family: var(--font-text) !important;
   font-size: 0.88rem !important;
@@ -527,7 +668,13 @@ html.dark
   gap: 0.4rem !important;
   text-decoration: none !important;
   cursor: pointer !important;
-  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  transform: translateZ(0) !important;
+  transition:
+    transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.18s ease,
+    background 0.18s ease,
+    border-color 0.18s ease,
+    color 0.15s ease !important;
 }
 
 /* Inactive State - Light Mode (High Contrast & Visible Outline) */
@@ -552,7 +699,18 @@ html:not(.dark)
     .skills-radar-pill,
     .share-mirror-tab,
     .project-clone-btn,
-    .clone-btn
+    .clone-btn,
+    .reminders-tab,
+    .reminders-filter-chip,
+    .calendar-view-all-btn,
+    #calendar-view-all-btn,
+    .reminders-view-all-btn,
+    .ai-suggestion-chip,
+    .ai-suggestion-btn,
+    .case-study-tag,
+    .case-study-chip,
+    .game-control-btn,
+    .sound-toggle-btn
   ):not(.is-active):not(.active):not([aria-selected='true']):not([aria-pressed='true']) {
   background: #ffffff !important;
   background-color: #ffffff !important;
@@ -584,7 +742,18 @@ html:not(.dark)
     .skills-radar-pill,
     .share-mirror-tab,
     .project-clone-btn,
-    .clone-btn
+    .clone-btn,
+    .reminders-tab,
+    .reminders-filter-chip,
+    .calendar-view-all-btn,
+    #calendar-view-all-btn,
+    .reminders-view-all-btn,
+    .ai-suggestion-chip,
+    .ai-suggestion-btn,
+    .case-study-tag,
+    .case-study-chip,
+    .game-control-btn,
+    .sound-toggle-btn
   ):not(.is-active):not(.active):not([aria-selected='true']):not([aria-pressed='true'])
   * {
   color: #1d1d1f !important;
@@ -613,14 +782,25 @@ html.dark
     .skills-radar-pill,
     .share-mirror-tab,
     .project-clone-btn,
-    .clone-btn
+    .clone-btn,
+    .reminders-tab,
+    .reminders-filter-chip,
+    .calendar-view-all-btn,
+    #calendar-view-all-btn,
+    .reminders-view-all-btn,
+    .ai-suggestion-chip,
+    .ai-suggestion-btn,
+    .case-study-tag,
+    .case-study-chip,
+    .game-control-btn,
+    .sound-toggle-btn
   ):not(.is-active):not(.active):not([aria-selected='true']):not([aria-pressed='true']) {
   background: #000000 !important;
   background-color: #000000 !important;
   background-image: none !important;
   color: #f5f5f7 !important;
   -webkit-text-fill-color: #f5f5f7 !important;
-  border: 1px solid #2c2c2e !important;
+  border: 1px solid rgba(255, 255, 255, 0.14) !important;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4) !important;
 }
 
@@ -645,7 +825,18 @@ html.dark
     .skills-radar-pill,
     .share-mirror-tab,
     .project-clone-btn,
-    .clone-btn
+    .clone-btn,
+    .reminders-tab,
+    .reminders-filter-chip,
+    .calendar-view-all-btn,
+    #calendar-view-all-btn,
+    .reminders-view-all-btn,
+    .ai-suggestion-chip,
+    .ai-suggestion-btn,
+    .case-study-tag,
+    .case-study-chip,
+    .game-control-btn,
+    .sound-toggle-btn
   ):not(.is-active):not(.active):not([aria-selected='true']):not([aria-pressed='true'])
   * {
   color: #f5f5f7 !important;
@@ -675,44 +866,26 @@ html.dark
       .skills-radar-pill,
       .share-mirror-tab,
       .project-clone-btn,
-      .clone-btn
+      .clone-btn,
+      .reminders-tab,
+      .reminders-filter-chip,
+      .calendar-view-all-btn,
+      #calendar-view-all-btn,
+      .reminders-view-all-btn,
+      .ai-suggestion-chip,
+      .ai-suggestion-btn,
+      .case-study-tag,
+      .case-study-chip,
+      .game-control-btn,
+      .sound-toggle-btn
     ):not(.is-active):not(.active):not([aria-selected='true']):not([aria-pressed='true']):hover {
     color: #0071e3 !important;
     -webkit-text-fill-color: #0071e3 !important;
     border-color: rgba(0, 113, 227, 0.45) !important;
     background: #ffffff !important;
     background-color: #ffffff !important;
-    background-image: none !important;
     box-shadow: 0 3px 10px rgba(0, 113, 227, 0.15) !important;
-    transform: translateY(-1px) !important;
-  }
-
-  html:not(.dark)
-    :is(
-      .proj-filter-btn,
-      .project-lens-chip,
-      .about-tab-btn,
-      .systems-arch-tab,
-      .systems-filter-chip,
-      .systems-benchmarks-tab,
-      .country-pill,
-      .travel-filter-chip,
-      .travel-action,
-      .travel-advanced-toggle,
-      .uses-filter-chip,
-      .uses-control-tile,
-      .changelog-chip,
-      .changelog-filters-toggle,
-      .log-tab-btn,
-      .monitor-filter-btn,
-      .skills-radar-pill,
-      .share-mirror-tab,
-      .project-clone-btn,
-      .clone-btn
-    ):not(.is-active):not(.active):not([aria-selected='true']):not([aria-pressed='true']):hover
-    * {
-    color: #0071e3 !important;
-    -webkit-text-fill-color: #0071e3 !important;
+    transform: translateY(-1.5px) scale(1.03) translateZ(0) !important;
   }
 
   html.dark
@@ -736,48 +909,30 @@ html.dark
       .skills-radar-pill,
       .share-mirror-tab,
       .project-clone-btn,
-      .clone-btn
+      .clone-btn,
+      .reminders-tab,
+      .reminders-filter-chip,
+      .calendar-view-all-btn,
+      #calendar-view-all-btn,
+      .reminders-view-all-btn,
+      .ai-suggestion-chip,
+      .ai-suggestion-btn,
+      .case-study-tag,
+      .case-study-chip,
+      .game-control-btn,
+      .sound-toggle-btn
     ):not(.is-active):not(.active):not([aria-selected='true']):not([aria-pressed='true']):hover {
     color: #2997ff !important;
     -webkit-text-fill-color: #2997ff !important;
     border-color: rgba(41, 151, 255, 0.55) !important;
     background: #000000 !important;
     background-color: #000000 !important;
-    background-image: none !important;
     box-shadow: 0 3px 10px rgba(41, 151, 255, 0.2) !important;
-    transform: translateY(-1px) !important;
-  }
-
-  html.dark
-    :is(
-      .proj-filter-btn,
-      .project-lens-chip,
-      .about-tab-btn,
-      .systems-arch-tab,
-      .systems-filter-chip,
-      .systems-benchmarks-tab,
-      .country-pill,
-      .travel-filter-chip,
-      .travel-action,
-      .travel-advanced-toggle,
-      .uses-filter-chip,
-      .uses-control-tile,
-      .changelog-chip,
-      .changelog-filters-toggle,
-      .log-tab-btn,
-      .monitor-filter-btn,
-      .skills-radar-pill,
-      .share-mirror-tab,
-      .project-clone-btn,
-      .clone-btn
-    ):not(.is-active):not(.active):not([aria-selected='true']):not([aria-pressed='true']):hover
-    * {
-    color: #2997ff !important;
-    -webkit-text-fill-color: #2997ff !important;
+    transform: translateY(-1.5px) scale(1.03) translateZ(0) !important;
   }
 }
 
-/* Active State (Both Light & Dark) */
+/* Chip Active Selection State */
 :is(
   .proj-filter-btn,
   .project-lens-chip,
@@ -798,15 +953,28 @@ html.dark
   .skills-radar-pill,
   .share-mirror-tab,
   .project-clone-btn,
-  .clone-btn
+  .clone-btn,
+  .reminders-tab,
+  .reminders-filter-chip,
+  .calendar-view-all-btn,
+  #calendar-view-all-btn,
+  .reminders-view-all-btn,
+  .ai-suggestion-chip,
+  .ai-suggestion-btn,
+  .case-study-tag,
+  .case-study-chip,
+  .game-control-btn,
+  .sound-toggle-btn
 ):is(.is-active, .active, [aria-selected='true'], [aria-pressed='true']) {
   background-color: #0071e3 !important;
   background-image: linear-gradient(135deg, #0077ed 0%, #0071e3 50%, #005bb5 100%) !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
   border: 1px solid rgba(255, 255, 255, 0.25) !important;
-  box-shadow: 0 3px 12px rgba(0, 113, 227, 0.4) !important;
-  transform: none !important;
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.1),
+    0 3px 12px rgba(0, 113, 227, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
 }
 
 :is(
@@ -829,11 +997,62 @@ html.dark
     .skills-radar-pill,
     .share-mirror-tab,
     .project-clone-btn,
-    .clone-btn
+    .clone-btn,
+    .reminders-tab,
+    .reminders-filter-chip,
+    .calendar-view-all-btn,
+    #calendar-view-all-btn,
+    .reminders-view-all-btn,
+    .ai-suggestion-chip,
+    .ai-suggestion-btn,
+    .case-study-tag,
+    .case-study-chip,
+    .game-control-btn,
+    .sound-toggle-btn
   ):is(.is-active, .active, [aria-selected='true'], [aria-pressed='true'])
   * {
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
+}
+
+/* Chip 3D Press Kinetics */
+:is(
+  .proj-filter-btn,
+  .project-lens-chip,
+  .about-tab-btn,
+  .systems-arch-tab,
+  .systems-filter-chip,
+  .systems-benchmarks-tab,
+  .country-pill,
+  .travel-filter-chip,
+  .travel-action,
+  .travel-advanced-toggle,
+  .uses-filter-chip,
+  .uses-control-tile,
+  .changelog-chip,
+  .changelog-filters-toggle,
+  .log-tab-btn,
+  .monitor-filter-btn,
+  .skills-radar-pill,
+  .share-mirror-tab,
+  .project-clone-btn,
+  .clone-btn,
+  .reminders-tab,
+  .reminders-filter-chip,
+  .calendar-view-all-btn,
+  #calendar-view-all-btn,
+  .reminders-view-all-btn,
+  .ai-suggestion-chip,
+  .ai-suggestion-btn,
+  .case-study-tag,
+  .case-study-chip,
+  .game-control-btn,
+  .sound-toggle-btn
+):active {
+  transform: translateY(1px) scale(0.95) translateZ(0) !important;
+  transition:
+    transform 0.08s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.08s ease !important;
 }
 
 /* --- TIER 4: DISCLOSURE / PREVIEW / "VIEW MORE" BUTTONS --- */
@@ -867,7 +1086,12 @@ html.dark
   position: relative !important;
   overflow: hidden !important;
   isolation: isolate !important;
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  transform: translateZ(0) !important;
+  transition:
+    transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.18s ease,
+    background 0.18s ease,
+    border-color 0.18s ease !important;
 }
 
 html:not(.dark)
@@ -894,26 +1118,6 @@ html:not(.dark)
   box-shadow: 0 2px 8px rgba(0, 113, 227, 0.08) !important;
 }
 
-html:not(.dark)
-  :is(
-    .section-preview-btn,
-    .skills-radar-toggle-btn,
-    .arch-tree-toggle-btn,
-    .projects-expand-btn,
-    .projects-view-all-btn,
-    .engineering-open-btn,
-    .blog-view-more-btn,
-    .view-more-btn,
-    .btn-view-more,
-    .systems-view-more-btn,
-    .travel-view-more-btn,
-    .uses-view-more-btn
-  )
-  * {
-  color: #0071e3 !important;
-  -webkit-text-fill-color: #0071e3 !important;
-}
-
 html.dark
   :is(
     .section-preview-btn,
@@ -938,26 +1142,6 @@ html.dark
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4) !important;
 }
 
-html.dark
-  :is(
-    .section-preview-btn,
-    .skills-radar-toggle-btn,
-    .arch-tree-toggle-btn,
-    .projects-expand-btn,
-    .projects-view-all-btn,
-    .engineering-open-btn,
-    .blog-view-more-btn,
-    .view-more-btn,
-    .btn-view-more,
-    .systems-view-more-btn,
-    .travel-view-more-btn,
-    .uses-view-more-btn
-  )
-  * {
-  color: #2997ff !important;
-  -webkit-text-fill-color: #2997ff !important;
-}
-
 @media (hover: hover) and (pointer: fine) {
   html:is(:not(.dark), .dark)
     :is(
@@ -979,29 +1163,32 @@ html.dark
     color: #ffffff !important;
     -webkit-text-fill-color: #ffffff !important;
     border-color: rgba(255, 255, 255, 0.35) !important;
-    box-shadow: 0 8px 24px rgba(0, 113, 227, 0.45) !important;
-    transform: translateY(-2px) scale(1.02) !important;
+    box-shadow:
+      0 1px 2px rgba(0, 0, 0, 0.12),
+      0 8px 24px rgba(0, 113, 227, 0.5),
+      inset 0 1px 0.5px rgba(255, 255, 255, 0.45) !important;
+    transform: translateY(-2.5px) scale(1.02) translateZ(0) !important;
   }
+}
 
-  html:is(:not(.dark), .dark)
-    :is(
-      .section-preview-btn,
-      .skills-radar-toggle-btn,
-      .arch-tree-toggle-btn,
-      .projects-expand-btn,
-      .projects-view-all-btn,
-      .engineering-open-btn,
-      .blog-view-more-btn,
-      .view-more-btn,
-      .btn-view-more,
-      .systems-view-more-btn,
-      .travel-view-more-btn,
-      .uses-view-more-btn
-    ):hover
-    * {
-    color: #ffffff !important;
-    -webkit-text-fill-color: #ffffff !important;
-  }
+:is(
+  .section-preview-btn,
+  .skills-radar-toggle-btn,
+  .arch-tree-toggle-btn,
+  .projects-expand-btn,
+  .projects-view-all-btn,
+  .engineering-open-btn,
+  .blog-view-more-btn,
+  .view-more-btn,
+  .btn-view-more,
+  .systems-view-more-btn,
+  .travel-view-more-btn,
+  .uses-view-more-btn
+):active {
+  transform: translateY(1.5px) scale(0.96) translateZ(0) !important;
+  transition:
+    transform 0.08s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.08s ease !important;
 }
 
 /* --- TIER 5: FLOATING ACTION BUTTONS (FABS) & SYSTEM CONTROLS --- */
@@ -1010,6 +1197,10 @@ html.dark
   #go-to-top,
   #website-share-toggle,
   .a11y-toolbar__main,
+  .calendar-nav-btn,
+  .calendar-nav-prev,
+  .calendar-nav-next,
+  .calendar-nav-today,
   .travel-nav__projection,
   .travel-nav__theme,
   .travel-nav__panel,
@@ -1021,7 +1212,53 @@ html.dark
   align-items: center !important;
   justify-content: center !important;
   cursor: pointer !important;
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  transform: translateZ(0) !important;
+  transition:
+    transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.2s ease,
+    background 0.2s ease !important;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  :is(
+    #chatbot-toggle,
+    #go-to-top,
+    #website-share-toggle,
+    .a11y-toolbar__main,
+    .calendar-nav-btn,
+    .calendar-nav-prev,
+    .calendar-nav-next,
+    .calendar-nav-today,
+    .travel-nav__projection,
+    .travel-nav__theme,
+    .travel-nav__panel,
+    .monitor-page-nav__theme,
+    .error-theme-btn
+  ):hover {
+    transform: translateY(-3.5px) scale(1.08) translateZ(0) !important;
+    box-shadow: 0 8px 24px rgba(0, 113, 227, 0.45) !important;
+  }
+}
+
+:is(
+  #chatbot-toggle,
+  #go-to-top,
+  #website-share-toggle,
+  .a11y-toolbar__main,
+  .calendar-nav-btn,
+  .calendar-nav-prev,
+  .calendar-nav-next,
+  .calendar-nav-today,
+  .travel-nav__projection,
+  .travel-nav__theme,
+  .travel-nav__panel,
+  .monitor-page-nav__theme,
+  .error-theme-btn
+):active {
+  transform: translateY(1px) scale(0.92) translateZ(0) !important;
+  transition:
+    transform 0.08s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.08s ease !important;
 }
 
 /* --- TIER 6: CIRCULAR RED CLOSE BUTTONS --- */
@@ -1055,7 +1292,11 @@ html.dark
   justify-content: center !important;
   box-shadow: 0 2px 6px rgba(255, 59, 48, 0.3) !important;
   cursor: pointer !important;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  transform: translateZ(0) !important;
+  transition:
+    transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+    background-color 0.18s ease,
+    box-shadow 0.18s ease !important;
 }
 
 :is(
@@ -1072,8 +1313,24 @@ html.dark
 ):hover {
   background: #ff453a !important;
   background-color: #ff453a !important;
-  transform: scale(1.08) !important;
-  box-shadow: 0 4px 12px rgba(255, 59, 48, 0.45) !important;
+  transform: scale(1.12) rotate(90deg) translateZ(0) !important;
+  box-shadow: 0 4px 16px rgba(255, 59, 48, 0.5) !important;
+}
+
+:is(
+  .apple-close-btn,
+  .shortcuts-modal__close,
+  .blog-modal-close,
+  .publication-modal-close,
+  #search-close,
+  #close-menu-btn,
+  .photo-gallery-close,
+  .website-share-close,
+  .chatbot-close-btn,
+  .blessing-modal-close
+):active {
+  transform: scale(0.92) rotate(90deg) translateZ(0) !important;
+  transition: transform 0.08s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
 }
 
 /* Specific override for any red buttons */
