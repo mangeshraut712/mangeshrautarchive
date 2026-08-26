@@ -47,17 +47,17 @@ export const changelogEntries = [
     date: '2026-08-26',
     type: 'release',
     title:
-      'Year Progress HUD Widget, In-Built Tree/ICQR Aesthetic QR Canvas & Sitewide Apple HIG Typography System',
+      'Year Progress HUD Solid Card, Apple Squircle Brand Favicon & Sitewide Typography System',
     summary:
-      'Engineered an authentic Apple-style Year Progress HUD widget above the interactive calendar dynamically calculating elapsed days, days remaining, and percentage passed with a glowing progress track. Implemented an in-built generative botanical/neural tree canvas animation behind the Share Card QR code (inspired by tree.icqr.com) with breathing luminescent nodes, synaptic pulses, upward drifting light spores, 3D Apple parallax glass tilt, viewfinder corner reticles, and laser scanning sweep. Fully standardized sitewide typography to canonical Apple HIG font tokens (--font-display, --font-text, --font-mono) across all 30+ stylesheets and updated DESIGN.md.',
+      'Polished the Year Progress HUD widget above the interactive calendar to follow strict solid card surfaces (pure white #ffffff in light mode, solid #1c1c1e in dark mode) with 22px Apple rounded corners, prominent 2.5rem bold display numerals, and smooth blue progress track. Completely revamped the sitewide SVG, PNG, and ICO favicon system with genuine transparent alpha corner margins and continuous Apple squircle geometries, eliminating harsh box borders in Google Chrome tabs. Standardized sitewide typography to canonical Apple HIG tokens (--font-display, --font-text, --font-mono) and updated DESIGN.md.',
     tags: [
       'release',
       'design',
       'calendar',
+      'favicon',
       'typography',
       'share',
       'qr',
-      'canvas',
       'apple-hig',
       'ui',
     ],

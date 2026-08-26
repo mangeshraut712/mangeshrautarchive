@@ -5,11 +5,11 @@ import sharp from 'sharp';
 
 const scriptDir = dirname(fileURLToPath(import.meta.url));
 const projectRoot = resolve(scriptDir, '../..');
-const sourceIcon = resolve(projectRoot, 'src/assets/icons/icon-512.png');
+const sourceIcon = resolve(projectRoot, 'src/favicon.svg');
 
 async function renderPng(size) {
   return sharp(sourceIcon)
-    .resize(size, size, { fit: 'cover', kernel: sharp.kernel.lanczos3 })
+    .resize(size, size, { fit: 'contain', background: { r: 0, g: 0, b: 0, alpha: 0 } })
     .png({ compressionLevel: 9, palette: false })
     .toBuffer();
 }
@@ -42,7 +42,7 @@ function createPngIco(images) {
 
 export async function generateBrandIcons() {
   const sizes = new Map();
-  for (const size of [16, 32, 48, 180, 192]) {
+  for (const size of [16, 32, 48, 180, 192, 512]) {
     sizes.set(size, await renderPng(size));
   }
 
@@ -59,12 +59,13 @@ export async function generateBrandIcons() {
     ['src/assets/icons/favicon.ico', ico],
     ['src/assets/icons/apple-touch-icon.png', sizes.get(180)],
     ['src/assets/icons/icon-192.png', sizes.get(192)],
+    ['src/assets/icons/icon-512.png', sizes.get(512)],
   ];
 
   await Promise.all(
     writes.map(([path, contents]) => writeFile(resolve(projectRoot, path), contents))
   );
-  console.log('🎨 Brand favicon and Apple touch assets regenerated from icon-512.png');
+  console.log('🎨 Brand favicon and Apple touch assets regenerated from favicon.svg');
 }
 
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
