@@ -1320,14 +1320,14 @@ html.dark .article-body h2 {
 }
 
 html.dark .article-inline-code {
-  background: #1c1c1e !important;
+  background: #000000 !important;
   border-color: #3a3a3c !important;
   color: #ff9f0a !important;
   -webkit-text-fill-color: #ff9f0a !important;
 }
 
 .article-code-block {
-  background: #1c1c1e !important;
+  background: #000000 !important;
   padding: 1.25rem 1.5rem !important;
   border-radius: 12px !important;
   overflow-x: auto !important;

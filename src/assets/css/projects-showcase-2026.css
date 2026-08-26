@@ -1295,7 +1295,7 @@ html.dark #projects #github-projects-container .showcase-project-card:hover {
 }
 
 html.dark #projects #github-projects-container .project-repo-badge {
-  background: #1c1c1e !important;
+  background: #000000 !important;
   border-color: rgba(255, 255, 255, 0.12) !important;
   color: #f5f5f7 !important;
 }

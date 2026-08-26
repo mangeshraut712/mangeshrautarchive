@@ -342,8 +342,8 @@ html.dark .arch-drawer-desc {
 }
 
 html.dark .arch-metric-tile {
-  background: #1c1c1e;
-  border-color: rgba(255, 255, 255, 0.08);
+  background: #000000;
+  border-color: rgba(255, 255, 255, 0.12);
 }
 
 .arch-metric-key {
