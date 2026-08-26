@@ -43,6 +43,17 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'e840a17b',
+    date: '2026-08-26',
+    type: 'release',
+    title: 'Automated Browser Cache Invalidation, Dev Server No-Cache Headers & Asset Version Bump',
+    summary:
+      'Bumped global asset cache version to 20260826cache1 across all shell HTML pages, manifest, and service worker to automatically purge and bypass stale Chrome/Safari browser caches. Configured development server static headers with Cache-Control: no-cache, no-store, must-revalidate so edits reflect instantly in live browsers without manual hard-refreshing. Updated build pipeline to recursively version all dist HTML templates.',
+    tags: ['release', 'cache-busting', 'service-worker', 'performance', 'dev-server', 'dx'],
+    sha: 'e840a17b',
+    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/e840a17b',
+  },
+  {
     id: 'c912ef04',
     date: '2026-08-26',
     type: 'release',

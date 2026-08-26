@@ -9,6 +9,8 @@ const PORTFOLIO_STORAGE_KEYS = [
   'wwdc26-liquid-glass-tint',
   'portfolio-sw-cleanup-v20260509',
   'portfolio-sw-cleanup-v20260615',
+  'portfolio-sw-cleanup-v20260712',
+  'portfolio-sw-cleanup-v20260812',
 ];
 
 const PORTFOLIO_SESSION_KEYS = ['portfolio-session'];

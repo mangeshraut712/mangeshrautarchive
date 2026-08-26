@@ -769,11 +769,6 @@ async function minifyHtmlFiles(dir) {
 
 // Add cache busting query parameters to CSS and JS assets in HTML
 async function addCacheBusting(distDir, version) {
-  const htmlPath = resolve(distDir, 'index.html');
-  const monitorPath = resolve(distDir, 'monitor.html');
-  const travelPath = resolve(distDir, 'travel.html');
-  const systemsPath = resolve(distDir, 'systems.html');
-
   const appendVersion = rawPath => {
     if (!rawPath) return rawPath;
 
@@ -801,15 +796,25 @@ async function addCacheBusting(distDir, version) {
     return hash ? `${nextPath}#${hash}` : nextPath;
   };
 
+  // Recursively collect all HTML files in distDir
+  async function getHtmlFiles(dir) {
+    const entries = await readdir(dir, { withFileTypes: true });
+    const files = [];
+    for (const entry of entries) {
+      const fullPath = resolve(dir, entry.name);
+      if (entry.isDirectory()) {
+        files.push(...(await getHtmlFiles(fullPath)));
+      } else if (entry.isFile() && entry.name.endsWith('.html')) {
+        files.push(fullPath);
+      }
+    }
+    return files;
+  }
+
+  const allHtmlFiles = await getHtmlFiles(distDir);
+
   await Promise.all(
-    [
-      htmlPath,
-      monitorPath,
-      travelPath,
-      systemsPath,
-      resolve(distDir, 'uses.html'),
-      resolve(distDir, 'changelog.html'),
-    ].map(async htmlFile => {
+    allHtmlFiles.map(async htmlFile => {
       if (await pathExists(htmlFile)) {
         let content = await readFile(htmlFile, 'utf8');
 

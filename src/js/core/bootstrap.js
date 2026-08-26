@@ -1349,11 +1349,29 @@ function initEngineeringTeaserOnDemand() {
  * fallback page only — not SW-served.
  */
 function initServiceWorker() {
+  window.clearAllCaches = async () => {
+    try {
+      if ('serviceWorker' in navigator) {
+        const regs = await navigator.serviceWorker.getRegistrations();
+        await Promise.all(regs.map(registration => registration.unregister()));
+      }
+      if ('caches' in window) {
+        const cacheNames = await caches.keys();
+        await Promise.all(cacheNames.map(cacheName => caches.delete(cacheName)));
+      }
+      clearPortfolioStorage();
+      sessionStorage.clear();
+      localStorage.removeItem('portfolio-version');
+    } catch (_e) {
+      /* ignore */
+    }
+  };
+
   if (!('serviceWorker' in navigator)) {
     return;
   }
 
-  const cleanupKey = 'portfolio-sw-cleanup-v20260712';
+  const cleanupKey = 'portfolio-sw-cleanup-v20260826';
   try {
     if (sessionStorage.getItem(cleanupKey) === '1') {
       return;
@@ -1381,21 +1399,10 @@ function initServiceWorker() {
           } catch (_error) {
             // Stale-cache cleanup already ran; storage support is optional.
           }
-
-          window.clearAllCaches = async () => {
-            const regs = await navigator.serviceWorker.getRegistrations();
-            await Promise.all(regs.map(registration => registration.unregister()));
-            if ('caches' in window) {
-              const cacheNames = await caches.keys();
-              await Promise.all(cacheNames.map(cacheName => caches.delete(cacheName)));
-            }
-            clearPortfolioStorage();
-            sessionStorage.removeItem(cleanupKey);
-          };
         } catch (_error) {
           // Service worker cleanup is best-effort; failures are non-critical
         }
-      }, 2500);
+      }, 1000);
     },
     { once: true }
   );

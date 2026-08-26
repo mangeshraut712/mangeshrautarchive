@@ -308,6 +308,12 @@ const staticOpts = {
   index: 'index.html',
   // Required so /.well-known/security.txt is served (Express defaults to ignoring dotfiles).
   dotfiles: 'allow',
+  setHeaders: (res, _path) => {
+    // In local development, prevent browser caching so Chrome always loads fresh changes
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
+  },
 };
 // Generated at dev start (not in src/) — serve before the src static root.
 // Explicit index routes: mount + no-trailing-slash + redirect:false otherwise 404s /blog.
