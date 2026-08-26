@@ -513,8 +513,37 @@ export class CalendarWidget {
     ).length;
     const totalCount = this.reminders.filter(r => !r.isChangelog).length;
 
+    // Year Progress Calculation (Apple HIG Progress HUD)
+    const currentYear = new Date().getFullYear();
+    const startOfYear = new Date(currentYear, 0, 1);
+    const now = new Date();
+    const diffMs = now - startOfYear;
+    const dayOfYear = Math.floor(diffMs / (1000 * 60 * 60 * 24)) + 1;
+    const isLeapYear =
+      (currentYear % 4 === 0 && currentYear % 100 !== 0) || currentYear % 400 === 0;
+    const totalYearDays = isLeapYear ? 366 : 365;
+    const daysLeft = Math.max(0, totalYearDays - dayOfYear);
+    const percentPassed = Math.min(100, Math.max(0, Math.round((dayOfYear / totalYearDays) * 100)));
+
     let html = `
       <div class="ios-widget-wrapper">
+        <!-- ═══════════════════════════════════════════════════════
+             YEAR PROGRESS HUD WIDGET (Apple HIG Standard)
+             ═══════════════════════════════════════════════════════ -->
+        <div class="year-progress-widget" aria-label="Year ${currentYear} Progress: ${percentPassed}% passed, ${daysLeft} days left">
+          <div class="year-progress-header">
+            <span class="year-progress-year">${currentYear}</span>
+            <span class="year-progress-percent">${percentPassed}%</span>
+          </div>
+          <div class="year-progress-track" role="progressbar" aria-valuenow="${percentPassed}" aria-valuemin="0" aria-valuemax="100">
+            <div class="year-progress-fill" style="width: ${percentPassed}%;"></div>
+          </div>
+          <div class="year-progress-footer">
+            <span class="year-progress-sub-left">${percentPassed}% of the year has passed</span>
+            <span class="year-progress-sub-right">${daysLeft} days left</span>
+          </div>
+        </div>
+
         <!-- Calendar Section -->
         <div class="ios-calendar-section">
           <div class="ios-header">

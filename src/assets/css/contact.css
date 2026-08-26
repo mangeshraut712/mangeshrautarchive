@@ -146,6 +146,118 @@ html.dark .calendar-wrapper-clean {
   min-width: 0;
 }
 
+/* ═══════════════════════════════════════════════════════════
+   YEAR PROGRESS HUD WIDGET (Apple HIG Reference Standard)
+   ═══════════════════════════════════════════════════════════ */
+.year-progress-widget {
+  width: 100%;
+  background: #f5f5f7;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 18px;
+  padding: 16px 20px;
+  margin-bottom: 1.25rem;
+  box-sizing: border-box;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+html.dark .year-progress-widget {
+  background: #1c1c1e;
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35);
+}
+
+.year-progress-widget:hover {
+  border-color: var(--apple-blue, #0071e3);
+}
+
+html.dark .year-progress-widget:hover {
+  border-color: #0a84ff;
+}
+
+.year-progress-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.year-progress-year {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 3.5vw, 1.85rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--text-primary, #1d1d1f);
+  line-height: 1;
+}
+
+html.dark .year-progress-year {
+  color: #f5f5f7;
+}
+
+.year-progress-percent {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 3.5vw, 1.85rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--text-primary, #1d1d1f);
+  line-height: 1;
+}
+
+html.dark .year-progress-percent {
+  color: #f5f5f7;
+}
+
+.year-progress-track {
+  width: 100%;
+  height: 6px;
+  border-radius: 9999px;
+  background: rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  position: relative;
+  margin: 10px 0 10px 0;
+}
+
+html.dark .year-progress-track {
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.year-progress-fill {
+  height: 100%;
+  border-radius: 9999px;
+  background: linear-gradient(90deg, #0071e3 0%, #2997ff 100%);
+  box-shadow: 0 0 10px rgba(0, 113, 227, 0.4);
+  transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html.dark .year-progress-fill {
+  background: #ffffff;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+.year-progress-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.year-progress-sub-left,
+.year-progress-sub-right {
+  font-family: var(--font-text);
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--text-secondary, #6e6e73);
+  letter-spacing: -0.005em;
+}
+
+html.dark .year-progress-sub-left,
+html.dark .year-progress-sub-right {
+  color: var(--text-secondary, #a1a1a6);
+}
+
 /* Calendar / reminders / Calendly expand naturally — no inner scroll cages */
 #contact #calendar-widget,
 #contact #calendar-widget .reminders-scroll-area,

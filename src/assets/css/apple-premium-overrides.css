@@ -175,13 +175,17 @@ h2,
 h3,
 h4,
 h5,
-h6,
+h6 {
+  font-family: var(--font-display) !important;
+  letter-spacing: -0.02em;
+}
+
 p,
 span,
 a,
 li {
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', Inter, sans-serif !important;
-  letter-spacing: -0.01em;
+  font-family: var(--font-text) !important;
+  letter-spacing: -0.005em;
 }
 
 h2 {
@@ -196,8 +200,7 @@ code *,
 kbd,
 samp,
 .font-mono {
-  font-family:
-    'SF Mono', SFMono-Regular, ui-monospace, Menlo, Monaco, Consolas, monospace !important;
+  font-family: var(--font-mono) !important;
 }
 
 /* 2.1 Global Section Headings - Unified Style */
@@ -3175,13 +3178,7 @@ html.dark #home.hero-section .hero-description {
 }
 
 body {
-  font-family:
-    'SF Pro Text',
-    -apple-system,
-    BlinkMacSystemFont,
-    'Segoe UI',
-    Inter,
-    sans-serif !important;
+  font-family: var(--font-text) !important;
   line-height: 1.58 !important;
   letter-spacing: -0.01em !important;
 }
@@ -3192,16 +3189,10 @@ h3,
 h4,
 h5,
 h6 {
-  font-family:
-    'SF Pro Display',
-    -apple-system,
-    BlinkMacSystemFont,
-    'Segoe UI',
-    Inter,
-    sans-serif !important;
+  font-family: var(--font-display) !important;
   font-weight: 700 !important;
   line-height: 1.14 !important;
-  letter-spacing: -0.03em !important;
+  letter-spacing: -0.025em !important;
   text-wrap: balance;
 }
 

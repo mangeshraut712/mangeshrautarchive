@@ -1,11 +1,96 @@
 /* ========================================
-   SITEWIDE DESIGN SYSTEM - SOLID THEME & BLUE BUTTONS
-   Enforces Solid White/Black Theme & Apple Blue Buttons Globally
+   SITEWIDE DESIGN SYSTEM - SOLID THEME & APPLE TYPOGRAPHY
+   Enforces Solid White/Black Theme, Apple Typography & Apple Blue Buttons Globally
    ======================================== */
 
 /* ========================================
-   1. GLOBAL BUTTON STYLES - APPLE BLUE
+   0. GLOBAL CANONICAL APPLE TYPOGRAPHY
    ======================================== */
+:root {
+  --font-family-display:
+    -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica,
+    Arial, sans-serif;
+  --font-family-body:
+    -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', 'Helvetica Neue', Helvetica,
+    Arial, sans-serif;
+  --font-family-mono:
+    ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono',
+    'Courier New', monospace;
+
+  --font-display: var(--font-family-display);
+  --font-text: var(--font-family-body);
+  --font-primary: var(--font-family-body);
+  --font-sans: var(--font-family-body);
+  --font-mono: var(--font-family-mono);
+  --ai-font: var(--font-family-body);
+  --ios-font: var(--font-family-body);
+
+  --social-surface-light: #ffffff;
+  --social-surface-dark: #000000;
+  --social-border-dark: rgba(255, 255, 255, 0.12);
+  --social-brand-facebook: #1877f2;
+  --social-brand-instagram: #e4405f;
+  --social-brand-linkedin: #0177b5;
+  --social-brand-youtube: #ff0000;
+  --social-brand-github: #24292e;
+  --social-brand-x: #0f1419;
+  --social-brand-leetcode: #ffa116;
+  --social-brand-snapchat: #fffc00;
+  --social-brand-telegram: #229ed9;
+  --social-brand-spotify: #1db954;
+  --social-brand-strava: #fc4c02;
+  --social-brand-whoop: #000000;
+  --social-brand-anthropic: #d97757;
+  --social-brand-xai: #0f1419;
+  --facebook-color: var(--social-brand-facebook);
+  --instagram-color: var(--social-brand-instagram);
+  --linkedin-color: var(--social-brand-linkedin);
+  --youtube-color: var(--social-brand-youtube);
+  --github-color: var(--social-brand-github);
+  --x-color: var(--social-brand-x);
+  --leetcode-color: var(--social-brand-leetcode);
+  --snapchat-color: var(--social-brand-snapchat);
+  --telegram-color: var(--social-brand-telegram);
+  --spotify-color: var(--social-brand-spotify);
+  --strava-color: var(--social-brand-strava);
+  --whoop-color: var(--social-brand-whoop);
+  --anthropic-color: var(--social-brand-anthropic);
+  --xai-color: var(--social-brand-xai);
+}
+
+html,
+body {
+  font-family: var(--font-family-body);
+  background: var(--theme-page-bg, #ffffff) !important;
+  background-color: var(--theme-page-bg, #ffffff) !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-family-display);
+}
+
+button,
+input,
+optgroup,
+select,
+textarea {
+  font-family: var(--font-family-body);
+}
+
+code,
+kbd,
+samp,
+pre {
+  font-family: var(--font-family-mono);
+}
 
 /* ========================================
    1. GLOBAL BUTTON STYLES — UNIFIED APPLE DESIGN SYSTEM
@@ -1361,12 +1446,6 @@ html.dark textarea:focus {
    Homepage shells only; travel/monitor keep local surfaces.
    ======================================== */
 
-html,
-body {
-  background: var(--theme-page-bg, #ffffff) !important;
-  background-color: var(--theme-page-bg, #ffffff) !important;
-}
-
 html.dark,
 html.dark body {
   background: var(--theme-page-bg, #000000) !important;
@@ -1746,40 +1825,6 @@ html:not(.dark) .health-item:hover {
    10. SOCIAL MEDIA ICON TILES (Contact + Footer)
    Always loaded — style.css social block is lazy-loaded
    ======================================== */
-
-:root {
-  --social-surface-light: #ffffff;
-  --social-surface-dark: #000000;
-  --social-border-dark: rgba(255, 255, 255, 0.12);
-  --social-brand-facebook: #1877f2;
-  --social-brand-instagram: #e4405f;
-  --social-brand-linkedin: #0177b5;
-  --social-brand-youtube: #ff0000;
-  --social-brand-github: #24292e;
-  --social-brand-x: #0f1419;
-  --social-brand-leetcode: #ffa116;
-  --social-brand-snapchat: #fffc00;
-  --social-brand-telegram: #229ed9;
-  --social-brand-spotify: #1db954;
-  --social-brand-strava: #fc4c02;
-  --social-brand-whoop: #000000;
-  --social-brand-anthropic: #d97757;
-  --social-brand-xai: #0f1419;
-  --facebook-color: var(--social-brand-facebook);
-  --instagram-color: var(--social-brand-instagram);
-  --linkedin-color: var(--social-brand-linkedin);
-  --youtube-color: var(--social-brand-youtube);
-  --github-color: var(--social-brand-github);
-  --x-color: var(--social-brand-x);
-  --leetcode-color: var(--social-brand-leetcode);
-  --snapchat-color: var(--social-brand-snapchat);
-  --telegram-color: var(--social-brand-telegram);
-  --spotify-color: var(--social-brand-spotify);
-  --strava-color: var(--social-brand-strava);
-  --whoop-color: var(--social-brand-whoop);
-  --anthropic-color: var(--social-brand-anthropic);
-  --xai-color: var(--social-brand-xai);
-}
 
 html.dark {
   --github-color: #f5f5f7;

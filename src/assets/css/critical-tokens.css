@@ -21,7 +21,27 @@
   --color-grey-900: hsl(210deg 10% 10%);
   --color-blue-700: hsl(210deg 95% 42%);
   --color-blue-400: hsl(210deg 100% 75%);
-  --text-primary-light: var(--color-black);
+
+  /* === UNIFIED APPLE TYPOGRAPHY SYSTEM === */
+  --font-family-display:
+    -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica,
+    Arial, sans-serif;
+  --font-family-body:
+    -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', 'Helvetica Neue', Helvetica,
+    Arial, sans-serif;
+  --font-family-mono:
+    ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono',
+    'Courier New', monospace;
+
+  --font-display: var(--font-family-display);
+  --font-text: var(--font-family-body);
+  --font-primary: var(--font-family-body);
+  --font-sans: var(--font-family-body);
+  --font-mono: var(--font-family-mono);
+  --ai-font: var(--font-family-body);
+  --ios-font: var(--font-family-body);
+
+  --text-primary-light: #1d1d1f;
 
   /* Match apple-design-system.css --text-secondary so first paint and
      steady state render the same secondary text color. */

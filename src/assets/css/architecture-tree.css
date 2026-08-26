@@ -57,7 +57,7 @@ html.dark .arch-tree-pill {
   font-weight: 700;
   letter-spacing: -0.02em;
   color: var(--text-primary, #1d1d1f);
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+  font-family: var(--font-display);
 }
 
 html.dark .arch-tree-heading {
@@ -199,7 +199,7 @@ html.dark .arch-node-icon-symbol {
   font-size: 13px;
   font-weight: 700;
   fill: #1d1d1f;
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+  font-family: var(--font-display);
 }
 
 html.dark .arch-node-title {
@@ -210,7 +210,7 @@ html.dark .arch-node-title {
   font-size: 10px;
   font-weight: 600;
   fill: #86868b;
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+  font-family: var(--font-text);
 }
 
 .arch-node-divider {
@@ -227,7 +227,7 @@ html.dark .arch-node-divider {
   font-weight: 700;
   letter-spacing: 0.03em;
   fill: #0071e3;
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+  font-family: var(--font-text);
 }
 
 html.dark .arch-node-subtext {

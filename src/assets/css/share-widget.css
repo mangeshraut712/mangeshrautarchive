@@ -340,52 +340,246 @@ html.dark .share-mirror-tab.active {
   box-shadow: 0 1px 4px rgba(0, 113, 227, 0.4);
 }
 
-/* Centered QR Code */
+/* ═══════════════════════════════════════════════════════════
+   APPLE AESTHETIC QR CODE EXPERIENCE (Tree/ICQR Inspired)
+   ═══════════════════════════════════════════════════════════ */
 .website-share-qr-section {
   display: flex;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
+  position: relative;
+  margin: 0.85rem 0 0.5rem;
+}
+
+/* Ethereal Ambient Pulse Halo (Organic Aura) */
+.website-share-qr-ambient {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 220px;
+  height: 220px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.qr-ambient-pulse {
+  position: absolute;
+  inset: 0;
+  border-radius: 36px;
+  border: 1.5px solid rgba(0, 113, 227, 0.25);
+  animation: qrAmbientPulse 4s cubic-bezier(0.25, 1, 0.5, 1) infinite;
+}
+
+.qr-pulse-2 {
+  animation-delay: 2s;
+}
+
+@keyframes qrAmbientPulse {
+  0% {
+    transform: scale(0.88);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.08);
+    opacity: 0.25;
+    border-color: rgba(41, 151, 255, 0.4);
+  }
+  100% {
+    transform: scale(1.18);
+    opacity: 0;
+  }
 }
 
 .website-share-qr-shell {
   position: relative;
-  width: 170px;
-  height: 170px;
+  width: 176px;
+  height: 176px;
   background: #ffffff;
-  padding: 8px;
-  border-radius: 18px;
-  border: 1px solid rgba(0, 0, 0, 0.06);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.04);
+  padding: 10px;
+  border-radius: 22px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow:
+    0 12px 32px rgba(0, 113, 227, 0.12),
+    0 4px 12px rgba(0, 0, 0, 0.04);
+  box-sizing: border-box;
+  overflow: hidden;
+  z-index: 1;
+  transition:
+    transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.3s ease;
+}
+
+.website-share-qr-shell:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow:
+    0 16px 40px rgba(0, 113, 227, 0.2),
+    0 6px 16px rgba(0, 0, 0, 0.08);
 }
 
 html.dark .website-share-qr-shell {
-  border-color: rgba(255, 255, 255, 0.08);
+  background: #1c1c1e;
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow:
+    0 12px 32px rgba(0, 113, 227, 0.25),
+    0 4px 14px rgba(0, 0, 0, 0.6);
+}
+
+/* Cyber / Apple Viewfinder Corner Brackets */
+.qr-corner-bracket {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-color: #0071e3;
+  border-style: solid;
+  pointer-events: none;
+  z-index: 3;
+  transition: all 0.25s ease;
+}
+
+html.dark .qr-corner-bracket {
+  border-color: #2997ff;
+}
+
+.qr-bracket-tl {
+  top: 6px;
+  left: 6px;
+  border-width: 2.5px 0 0 2.5px;
+  border-top-left-radius: 8px;
+}
+
+.qr-bracket-tr {
+  top: 6px;
+  right: 6px;
+  border-width: 2.5px 2.5px 0 0;
+  border-top-right-radius: 8px;
+}
+
+.qr-bracket-bl {
+  bottom: 6px;
+  left: 6px;
+  border-width: 0 0 2.5px 2.5px;
+  border-bottom-left-radius: 8px;
+}
+
+.qr-bracket-br {
+  bottom: 6px;
+  right: 6px;
+  border-width: 0 2.5px 2.5px 0;
+  border-bottom-right-radius: 8px;
+}
+
+/* Animated Laser Scanner Line */
+.qr-laser-scanner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+  overflow: hidden;
+}
+
+.qr-laser-line {
+  position: absolute;
+  left: 6px;
+  right: 6px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #0071e3, #2997ff, #0071e3, transparent);
+  box-shadow:
+    0 0 8px #0071e3,
+    0 0 16px rgba(41, 151, 255, 0.6);
+  animation: qrLaserSweep 3.2s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite alternate;
+}
+
+html.dark .qr-laser-line {
+  background: linear-gradient(90deg, transparent, #2997ff, #64d2ff, #2997ff, transparent);
+  box-shadow:
+    0 0 10px #2997ff,
+    0 0 20px rgba(100, 210, 255, 0.8);
+}
+
+@keyframes qrLaserSweep {
+  0% {
+    top: 8px;
+    opacity: 0.2;
+  }
+  15% {
+    opacity: 1;
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    top: calc(100% - 10px);
+    opacity: 0.2;
+  }
 }
 
 .website-share-qr {
   width: 100%;
   height: 100%;
   display: block;
+  border-radius: 12px;
+  object-fit: contain;
+  background: #ffffff;
 }
 
+/* Center Avatar Logo Badge */
 .website-share-qr-logo {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 28px;
-  height: 28px;
+  width: 34px;
+  height: 34px;
   background: #ffffff;
   border: 2.5px solid #ffffff;
-  border-radius: 7px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.15),
+    0 0 0 1.5px #0071e3;
   overflow: hidden;
+  z-index: 3;
+}
+
+html.dark .website-share-qr-logo {
+  background: #1c1c1e;
+  border-color: #1c1c1e;
+  box-shadow:
+    0 2px 10px rgba(0, 0, 0, 0.5),
+    0 0 0 1.5px #2997ff;
 }
 
 .website-share-qr-logo img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 5px;
+  border-radius: 50%;
+}
+
+/* Subtitle Scan Prompt Badge */
+.qr-scan-hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 10px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: rgba(0, 113, 227, 0.08);
+  color: var(--apple-blue, #0071e3);
+  font-family: var(--font-text);
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  z-index: 1;
+}
+
+html.dark .qr-scan-hint {
+  background: rgba(41, 151, 255, 0.14);
+  color: #2997ff;
 }
 
 /* Vertical actions list */

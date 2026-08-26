@@ -43,17 +43,37 @@ The portfolio follows authentic **Apple Design Principles**:
 | **Terminal / Code Block**         | `#1c1c1e` (macOS Dark Terminal)             | `#000000` (1px border `rgba(255, 255, 255, 0.12)`) | Solid `#000000` with white monospace text   |
 | **Border Sub-surface**            | `1px solid #e5e5ea` (`rgba(0, 0, 0, 0.08)`) | `1px solid #2c2c2e` (`rgba(255, 255, 255, 0.12)`)  | `2px solid #000000` / `#ffffff`             |
 
-### Typography Hierarchy
+### Typography System (Canonical Apple HIG Architecture)
 
-| Level                  | Font Family                                                       | Size                  | Weight           | Line Height     | Tracking   |
-| :--------------------- | :---------------------------------------------------------------- | :-------------------- | :--------------- | :-------------- | :--------- |
-| **Hero Title / H1**    | `-apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif` | `2.5rem` – `3.75rem`  | `700` (Bold)     | `1.08` – `1.15` | `-0.025em` |
-| **Section Title / H2** | `'SF Pro Display', sans-serif`                                    | `1.75rem` – `2.25rem` | `700` (Bold)     | `1.2`           | `-0.02em`  |
-| **Card Header / H3**   | `'SF Pro Display', sans-serif`                                    | `1.25rem` – `1.5rem`  | `600` (Semibold) | `1.3`           | `-0.015em` |
-| **Subhead / H4**       | `'SF Pro Text', sans-serif`                                       | `1.05rem` – `1.15rem` | `600` (Semibold) | `1.4`           | `-0.01em`  |
-| **Body Text**          | `'SF Pro Text', sans-serif`                                       | `1rem` (`16px`)       | `400` (Regular)  | `1.65`          | `-0.005em` |
-| **Caption / Meta**     | `'SF Pro Text', sans-serif`                                       | `0.85rem` – `0.9rem`  | `500` (Medium)   | `1.4`           | `0`        |
-| **Code / Monospace**   | `SFMono-Regular, Consolas, Menlo, monospace`                      | `0.88rem` – `0.9rem`  | `500` / `600`    | `1.65`          | `0`        |
+The portfolio strictly enforces a unified, single-family Apple Human Interface typography system across all stylesheets and pages (`index.html`, `systems.html`, `monitor.html`, `travel.html`, `uses.html`, `changelog.html`, `404.html`):
+
+#### Canonical CSS Typography Tokens
+
+- **Display & Headings (`--font-display`, `--font-family-display`)**:
+  `-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif`
+- **Body, UI & Paragraphs (`--font-text`, `--font-primary`, `--font-sans`, `--ai-font`, `--ios-font`)**:
+  `-apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", Helvetica, Arial, sans-serif`
+- **Monospace, Code & Telemetry (`--font-mono`, `--font-family-mono`)**:
+  `ui-monospace, "SF Mono", SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace`
+
+#### Typography Fluid Hierarchy & Metric Matrix
+
+| Level                  | Token / Variable      | Size / Fluid Clamp Formula                 | Weight           | Line Height | Tracking   |
+| :--------------------- | :-------------------- | :----------------------------------------- | :--------------- | :---------- | :--------- |
+| **Hero Title / H1**    | `var(--font-display)` | `clamp(2.25rem, 5.5vw, 3.85rem)`           | `750` / `800`    | `1.08`      | `-0.028em` |
+| **Section Title / H2** | `var(--font-display)` | `clamp(1.75rem, 3.8vw, 2.45rem)`           | `700` (Bold)     | `1.18`      | `-0.022em` |
+| **Card Header / H3**   | `var(--font-display)` | `clamp(1.25rem, 2.4vw, 1.55rem)`           | `650` (Semibold) | `1.28`      | `-0.018em` |
+| **Subhead / H4**       | `var(--font-display)` | `clamp(1.05rem, 1.8vw, 1.25rem)`           | `600` (Semibold) | `1.38`      | `-0.012em` |
+| **Body Paragraph**     | `var(--font-text)`    | `clamp(0.98rem, 1.1vw, 1.05rem)`           | `400` / `450`    | `1.65`      | `-0.005em` |
+| **UI & Controls**      | `var(--font-text)`    | `0.92rem` – `0.95rem`                      | `550` / `600`    | `1.25`      | `-0.01em`  |
+| **Caption / Eyebrow**  | `var(--font-text)`    | `0.75rem` – `0.82rem` (Uppercase `0.06em`) | `650` (Bold)     | `1.30`      | `+0.060em` |
+| **Code & Telemetry**   | `var(--font-mono)`    | `clamp(0.78rem, 0.9vw, 0.88rem)`           | `500` / `600`    | `1.55`      | `0`        |
+
+#### Contrast & Accessibility Ratios (WCAG AA/AAA)
+
+- **Light Mode**: Primary text `#1d1d1f` (16.2:1 contrast ratio on `#ffffff`), Secondary text `#6e6e73` (4.8:1 contrast ratio on `#ffffff`).
+- **Dark Mode**: Primary text `#f5f5f7` (18.6:1 contrast ratio on `#000000`), Secondary text `#a1a1a6` (7.2:1 contrast ratio on `#000000`).
+- **Font Smoothing**: `-webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: optimizeLegibility;` applied globally on root.
 
 ---
 

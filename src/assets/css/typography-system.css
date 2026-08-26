@@ -9,14 +9,24 @@
    CSS CUSTOM PROPERTIES - TYPOGRAPHY TOKENS
    ═══════════════════════════════════════════════════════════════════════════ */
 :root {
-  /* === FONT FAMILIES === */
-  --font-primary:
-    -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Segoe UI', Roboto, Oxygen,
-    Ubuntu, sans-serif;
-  --font-display:
-    -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
-  --font-mono:
-    'SF Mono', 'Fira Code', 'Cascadia Code', 'JetBrains Mono', Consolas, 'Courier New', monospace;
+  /* === CANONICAL APPLE FONT FAMILIES === */
+  --font-family-display:
+    -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica,
+    Arial, sans-serif;
+  --font-family-body:
+    -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', 'Helvetica Neue', Helvetica,
+    Arial, sans-serif;
+  --font-family-mono:
+    ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono',
+    'Courier New', monospace;
+
+  --font-primary: var(--font-family-body);
+  --font-text: var(--font-family-body);
+  --font-sans: var(--font-family-body);
+  --font-display: var(--font-family-display);
+  --font-mono: var(--font-family-mono);
+  --ai-font: var(--font-family-body);
+  --ios-font: var(--font-family-body);
 
   /* === FONT WEIGHTS === */
   --fw-light: 300;

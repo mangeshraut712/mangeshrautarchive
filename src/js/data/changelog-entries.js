@@ -43,6 +43,18 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'e481b920',
+    date: '2026-08-26',
+    type: 'release',
+    title:
+      'Year Progress HUD Widget, Tree-Inspired Aesthetic QR Code & Sitewide Apple HIG Typography System',
+    summary:
+      'Engineered an authentic Apple-style Year Progress HUD widget above the interactive calendar dynamically calculating elapsed days, days remaining, and percentage passed with glowing progress track. Elevated the Share Card QR experience with organic Tree/ICQR-inspired ambient pulse halo, viewfinder corner brackets, laser scanning sweep, and camera scan prompt. Standardized sitewide typography to canonical Apple HIG specifications (--font-display, --font-text, --font-mono) across all 7 pages and updated DESIGN.md.',
+    tags: ['release', 'design', 'calendar', 'typography', 'share', 'qr', 'apple-hig', 'ui'],
+    sha: 'e481b920',
+    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/e481b920',
+  },
+  {
     id: 'f391b4e2',
     date: '2026-08-25',
     type: 'release',

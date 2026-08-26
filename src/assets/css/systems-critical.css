@@ -43,9 +43,7 @@ body.uses-page {
   background-color: #ffffff !important;
   background-image: none !important;
   color: var(--systems-text, #1d1d1f);
-  font-family:
-    -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', 'Segoe UI', Roboto,
-    'Helvetica Neue', sans-serif;
+  font-family: var(--font-text);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   padding-top: var(--subpage-body-pad-top);
@@ -124,7 +122,7 @@ html.dark .monitor-page-nav__theme i {
 body.systems-page h1,
 body.uses-page h1,
 body.monitor-page h1 {
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+  font-family: var(--font-display);
   letter-spacing: -0.03em;
   font-weight: 700;
   color: inherit;
@@ -376,7 +374,7 @@ html.dark .systems-section-rail a {
   align-items: center;
   gap: 10px;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+  font-family: var(--font-display);
   font-size: clamp(1.3rem, 2.6vw, 1.5rem);
   font-weight: 750;
   letter-spacing: -0.02em;
@@ -420,7 +418,7 @@ html.dark .systems-eyebrow {
 .systems-keynote-hero h1 {
   margin: 0 auto;
   max-width: 22ch;
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+  font-family: var(--font-display);
   font-size: clamp(2.15rem, 5.8vw, 3.35rem);
   font-weight: 800;
   line-height: 1.06;

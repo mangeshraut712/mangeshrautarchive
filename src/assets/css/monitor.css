@@ -1100,7 +1100,7 @@ html:not(.dark) .method-delete {
 
 .doc-endpoint-copy code {
   display: block;
-  font-family: 'SF Mono', Monaco, monospace;
+  font-family: var(--font-mono);
   font-size: 13px;
   color: var(--text-primary);
   margin-bottom: 4px;
@@ -1462,7 +1462,7 @@ html:not(.dark) .method-delete {
 .event-details {
   font-size: 12px;
   color: var(--text-secondary);
-  font-family: 'SF Mono', Monaco, monospace;
+  font-family: var(--font-mono);
   background: rgba(0, 0, 0, 0.03);
   padding: 8px 12px;
   border-radius: 6px;
@@ -1558,7 +1558,7 @@ html:not(.dark) .method-delete {
 }
 
 .endpoint-path {
-  font-family: 'SF Mono', Monaco, monospace;
+  font-family: var(--font-mono);
   font-size: 13px;
   color: var(--accent-blue);
 }
@@ -2209,7 +2209,7 @@ html:not(.dark) .method-delete {
   margin-bottom: 2px;
 }
 .security-threat-path {
-  font-family: 'SF Mono', Monaco, monospace;
+  font-family: var(--font-mono);
   color: var(--text-secondary);
   font-size: 12px;
   word-break: break-all;
@@ -2239,7 +2239,7 @@ html:not(.dark) .method-delete {
 }
 
 .rate-limit-ip {
-  font-family: 'SF Mono', Monaco, monospace;
+  font-family: var(--font-mono);
   font-weight: 700;
 }
 
@@ -2312,7 +2312,7 @@ html:not(.dark) .method-delete {
 .log-tab-btn {
   padding: 6px 14px;
   border-radius: 9999px;
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', sans-serif;
+  font-family: var(--font-text);
   font-size: 0.82rem;
   font-weight: 580;
   background: #ffffff !important;
@@ -2808,7 +2808,7 @@ html.dark body.monitor-page .integration-owner-auth,
 
 #summary-uptime,
 #summary-last-refresh {
-  font-family: monospace;
+  font-family: var(--font-mono);
 }
 
 .control-center-visuals {
@@ -2895,7 +2895,7 @@ html.dark body.monitor-page .integration-owner-auth,
 #success-rate,
 #avg-response,
 #error-count {
-  font-family: monospace;
+  font-family: var(--font-mono);
 }
 
 .metric-icon-backend {
@@ -3334,7 +3334,7 @@ body.monitor-page .monitor-summary-card {
 .ops-list-row strong,
 .ops-bar-row__header strong {
   color: var(--text-primary);
-  font-family: ui-monospace, SFMono-Regular, SFMono, Menlo, monospace;
+  font-family: var(--font-mono);
   font-size: 11px;
   white-space: nowrap;
 }
@@ -3421,7 +3421,7 @@ body.monitor-page .monitor-summary-card {
 
 .endpoint-volume-bar strong {
   color: var(--text-secondary);
-  font-family: ui-monospace, SFMono-Regular, SFMono, Menlo, monospace;
+  font-family: var(--font-mono);
   font-size: 10px;
 }
 
@@ -4016,7 +4016,7 @@ html.dark .ai-model-row {
   border-color: rgba(255, 255, 255, 0.06);
 }
 .ai-model-name {
-  font-family: monospace;
+  font-family: var(--font-mono);
   font-size: 11px;
   color: var(--text-primary);
   text-overflow: ellipsis;
@@ -4169,7 +4169,7 @@ html.dark .benchmark-pill {
   background: #0d1117;
   border: 1px solid rgb(255 255 255 / 12%);
   box-shadow: 0 8px 32px rgb(0 0 0 / 40%);
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-family: var(--font-mono);
 }
 
 .terminal-header {

@@ -39,7 +39,8 @@ const SHARE_OPTIONS = [
   },
 ];
 
-const getQrCodeUrl = url => `https://quickchart.io/qr?size=256&text=${encodeURIComponent(url)}`;
+const getQrCodeUrl = url =>
+  `https://quickchart.io/qr?size=320&dark=0071e3&light=ffffff&ecLevel=H&margin=1&text=${encodeURIComponent(url)}`;
 
 const waitForFrame = () =>
   new Promise(resolve => {
@@ -101,11 +102,31 @@ const createShareMarkup = () => `
       </div>
 
       <div class="website-share-qr-section">
+        <div class="website-share-qr-ambient" aria-hidden="true">
+          <div class="qr-ambient-pulse qr-pulse-1"></div>
+          <div class="qr-ambient-pulse qr-pulse-2"></div>
+        </div>
         <div class="website-share-qr-shell" aria-label="QR code for webpage">
-          <img class="website-share-qr" data-src="${getQrCodeUrl(activeMirrorUrl)}" alt="QR code" width="160" height="160" loading="lazy" decoding="async" onerror="this.onerror=null;this.closest('.website-share-qr-section')?.classList.add('is-hidden');">
+          <!-- Cyber/Apple Viewfinder Corner Brackets -->
+          <div class="qr-corner-bracket qr-bracket-tl" aria-hidden="true"></div>
+          <div class="qr-corner-bracket qr-bracket-tr" aria-hidden="true"></div>
+          <div class="qr-corner-bracket qr-bracket-bl" aria-hidden="true"></div>
+          <div class="qr-corner-bracket qr-bracket-br" aria-hidden="true"></div>
+          
+          <!-- Animated Laser Scanning Beam -->
+          <div class="qr-laser-scanner" aria-hidden="true">
+            <div class="qr-laser-line"></div>
+            <div class="qr-laser-glow"></div>
+          </div>
+
+          <img class="website-share-qr" data-src="${getQrCodeUrl(activeMirrorUrl)}" alt="QR code" width="168" height="168" loading="lazy" decoding="async" onerror="this.onerror=null;this.closest('.website-share-qr-section')?.classList.add('is-hidden');">
           <span class="website-share-qr-logo" aria-hidden="true">
-            <img src="assets/images/profile-icon.webp" alt="" width="28" height="28" loading="lazy" decoding="async">
+            <img src="assets/images/profile.webp" alt="Mangesh Raut" width="32" height="32" loading="lazy" decoding="async">
           </span>
+        </div>
+        <div class="qr-scan-hint" aria-hidden="true">
+          <i class="fa-solid fa-camera" aria-hidden="true"></i>
+          <span>Scan to visit portfolio</span>
         </div>
       </div>
 

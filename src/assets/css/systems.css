@@ -1997,7 +1997,7 @@ html.dark .systems-arch-svg .arch-queue-box {
 .systems-arch-svg .arch-tree-text {
   fill: var(--systems-text);
   font-size: 9px;
-  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: var(--font-text);
 }
 
 .systems-arch-svg .arch-pipeline-stage {
@@ -2010,7 +2010,7 @@ html.dark .systems-arch-svg .arch-queue-box {
   fill: var(--systems-muted);
   font-size: 9px;
   font-weight: 560;
-  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: var(--font-text);
 }
 
 .systems-arch-svg .arch-bar-track {
@@ -2044,7 +2044,7 @@ html.dark .systems-arch-svg .arch-bar-track {
 .systems-arch-svg .arch-bar-value {
   fill: var(--systems-muted);
   font-size: 8px;
-  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: var(--font-text);
 }
 
 /* Content grids */
@@ -2313,7 +2313,7 @@ body.case-study-standalone {
   background: #ffffff !important;
   background-color: #ffffff !important;
   color: var(--systems-text, #1d1d1f);
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+  font-family: var(--font-text);
 }
 
 html.dark body.case-study-standalone {
@@ -2338,7 +2338,7 @@ html.dark body.case-study-standalone {
   font-weight: 700;
   line-height: 1.1;
   letter-spacing: -0.03em;
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+  font-family: var(--font-display);
 }
 
 .case-study-tagline {
@@ -2427,7 +2427,7 @@ html.dark .case-study-evidence-bar a {
   font-size: 1.05rem;
   font-weight: 620;
   letter-spacing: -0.02em;
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+  font-family: var(--font-display);
 }
 
 .case-study-step p,
@@ -3145,7 +3145,7 @@ html.dark .systems-public-statement {
 .decision-number {
   font-size: 1.2rem;
   font-weight: 700;
-  font-family: monospace;
+  font-family: var(--font-mono);
   color: var(--apple-secondary-text, #6e6e73);
   opacity: 0.85;
   line-height: 1;
@@ -3785,7 +3785,7 @@ html.dark .systems-commit-item {
 }
 
 .systems-commit-sha {
-  font-family: ui-monospace, monospace;
+  font-family: var(--font-mono);
   font-size: 0.72rem;
   padding: 1px 4px;
   border-radius: 4px;
