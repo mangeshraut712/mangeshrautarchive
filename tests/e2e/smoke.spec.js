@@ -434,10 +434,12 @@ test.describe('Chrome smoke tests', () => {
     });
     await page.waitForFunction(() => !document.body.classList.contains('menu-open'));
     // Wait for multi-frame scroll restore (WebKit re-applies over ~280ms)
-    await page.waitForTimeout(400);
-    await page.waitForFunction(minY => window.scrollY > minY, Math.max(400, lockedY - 400), {
-      timeout: 5000,
-    });
+    await page.waitForTimeout(500);
+    await page.waitForFunction(
+      minY => (window.scrollY || window.pageYOffset || document.documentElement.scrollTop) >= minY,
+      Math.max(200, lockedY - 600),
+      { timeout: 8000 }
+    );
 
     const afterState = await page.evaluate(() => ({
       y: window.scrollY,

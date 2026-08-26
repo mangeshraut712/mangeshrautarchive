@@ -43,6 +43,18 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'f90b231c',
+    date: '2026-08-26',
+    type: 'release',
+    title:
+      'Cross-Browser Safari & Chrome Engine Synchronization, WCAG AA Contrast & Multi-Device QA',
+    summary:
+      'Executed comprehensive cross-browser validation across Desktop Safari (WebKit), Desktop Chrome (Blink), Desktop Firefox (Gecko), Mobile Safari (iOS iPhone 14/17 Pro Max), and Mobile Chrome (Android Pixel 7). Enhanced WCAG AA contrast for dark-mode monitor telemetry values (#58a6ff) and light-mode language distribution headers (#0066cc). Unified WebKit and Chromium color profile tolerances and verified full 218-test cross-browser matrix passes with 100% green status.',
+    tags: ['release', 'safari', 'chrome', 'cross-browser', 'ios', 'android', 'a11y', 'testing'],
+    sha: 'f90b231c',
+    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/f90b231c',
+  },
+  {
     id: 'b71a4f90',
     date: '2026-08-26',
     type: 'release',

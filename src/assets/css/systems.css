@@ -3686,6 +3686,10 @@ html.dark .github-lang-dist-container {
   font-weight: 650;
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  color: #0066cc;
+}
+
+html.dark .github-lang-dist-title {
   color: var(--systems-accent);
 }
 

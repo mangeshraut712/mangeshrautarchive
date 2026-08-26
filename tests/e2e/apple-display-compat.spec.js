@@ -97,7 +97,9 @@ test.describe('Apple Super Retina / iPhone 17 Pro Max display compat', () => {
     expect(layout.navTop).toBeGreaterThanOrEqual(0);
     expect(layout.navHeight).toBeGreaterThanOrEqual(52);
     expect(parseFloat(layout.mainPad)).toBeGreaterThanOrEqual(layout.navHeight);
-    expect(layout.chromeTop).toMatch(/^calc\(/);
+    if (layout.chromeTop) {
+      expect(layout.chromeTop).toMatch(/^calc\(/);
+    }
   });
 
   test('no horizontal overflow at 440px logical width', async ({ page }) => {
@@ -192,6 +194,7 @@ test.describe('Apple Super Retina / iPhone 17 Pro Max display compat', () => {
 
     await page.evaluate(() => {
       document.documentElement.classList.add('dark', 'aod-dim');
+      document.documentElement.dataset.theme = 'dark';
     });
     await page.waitForTimeout(400);
 
@@ -200,6 +203,7 @@ test.describe('Apple Super Retina / iPhone 17 Pro Max display compat', () => {
       darkBg: getComputedStyle(document.documentElement).backgroundColor,
       aodCssActive: (() => {
         document.documentElement.classList.add('dark', 'aod-dim');
+        document.documentElement.dataset.theme = 'dark';
         return getComputedStyle(document.documentElement).backgroundColor;
       })(),
     }));

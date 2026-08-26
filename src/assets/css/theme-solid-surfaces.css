@@ -3418,3 +3418,9 @@ html[data-theme='light'] body.monitor-page .text-accent-blue {
   color: #0066cc !important;
   -webkit-text-fill-color: #0066cc !important;
 }
+
+html.dark body.monitor-page .text-accent-blue,
+html[data-theme='dark'] body.monitor-page .text-accent-blue {
+  color: #58a6ff !important;
+  -webkit-text-fill-color: #58a6ff !important;
+}
