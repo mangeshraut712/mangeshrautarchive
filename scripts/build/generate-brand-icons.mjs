@@ -1,4 +1,4 @@
-import { writeFile } from 'node:fs/promises';
+import { readFile, writeFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import sharp from 'sharp';
@@ -7,35 +7,30 @@ const scriptDir = dirname(fileURLToPath(import.meta.url));
 const projectRoot = resolve(scriptDir, '../..');
 const sourceIcon = resolve(projectRoot, 'src/favicon.svg');
 
-async function renderTransparentPng(size) {
-  const svg = await import('node:fs/promises').then(fs => fs.readFile(sourceIcon, 'utf8'));
-  const whiteSvg = svg
-    .replace(/--brand-fill:\s*#1d1d1f;/g, '--brand-fill: #ffffff;')
-    .replace(
-      /fill="var\(--brand-fill\)"/g,
-      'fill="#ffffff" style="filter: drop-shadow(0px 4px 12px rgba(0,0,0,0.6));"'
-    );
+function getCleanLogoSvg(pathD, fill = '#ffffff') {
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+    <path fill="${fill}" fill-rule="evenodd" d="${pathD}" />
+  </svg>`;
+}
 
-  return sharp(Buffer.from(whiteSvg))
+async function renderTransparentPng(pathD, size, fill = '#ffffff') {
+  const logoSvg = getCleanLogoSvg(pathD, fill);
+  return sharp(Buffer.from(logoSvg))
     .resize(size, size, { fit: 'contain', background: { r: 0, g: 0, b: 0, alpha: 0 } })
     .png({ compressionLevel: 9, palette: false })
     .toBuffer();
 }
 
-async function renderSquircleTouchIcon(size) {
-  const svg = await import('node:fs/promises').then(fs => fs.readFile(sourceIcon, 'utf8'));
-  const whiteSvg = svg
-    .replace(/--brand-fill:\s*#1d1d1f;/g, '--brand-fill: #ffffff;')
-    .replace(/fill="var\(--brand-fill\)"/g, 'fill="#ffffff"');
-
+async function renderSquircleTouchIcon(pathD, size) {
   const squircleSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
     <rect width="512" height="512" rx="106" fill="#000000"/>
   </svg>`;
 
   const squircleBg = await sharp(Buffer.from(squircleSvg)).resize(size, size).png().toBuffer();
-  const innerSize = Math.round(size * 0.75);
+  const innerSize = Math.round(size * 0.7);
   const offset = Math.round((size - innerSize) / 2);
-  const innerLogo = await sharp(Buffer.from(whiteSvg))
+  const whiteLogoSvg = getCleanLogoSvg(pathD, '#ffffff');
+  const innerLogo = await sharp(Buffer.from(whiteLogoSvg))
     .resize(innerSize, innerSize)
     .png()
     .toBuffer();
@@ -73,13 +68,20 @@ function createPngIco(images) {
 }
 
 export async function generateBrandIcons() {
+  const svgContent = await readFile(sourceIcon, 'utf8');
+  const pathMatch = svgContent.match(/<path[\s\S]*?d="([\s\S]*?)"/);
+  if (!pathMatch) {
+    throw new Error('Unable to extract path data from src/favicon.svg');
+  }
+  const pathD = pathMatch[1];
+
   const [png16, png32, png48, touch180, pwa192, pwa512] = await Promise.all([
-    renderTransparentPng(16),
-    renderTransparentPng(32),
-    renderTransparentPng(48),
-    renderSquircleTouchIcon(180),
-    renderSquircleTouchIcon(192),
-    renderSquircleTouchIcon(512),
+    renderTransparentPng(pathD, 16, '#ffffff'),
+    renderTransparentPng(pathD, 32, '#ffffff'),
+    renderTransparentPng(pathD, 48, '#ffffff'),
+    renderSquircleTouchIcon(pathD, 180),
+    renderSquircleTouchIcon(pathD, 192),
+    renderSquircleTouchIcon(pathD, 512),
   ]);
 
   const ico = createPngIco([

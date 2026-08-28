@@ -43,6 +43,17 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'c529f81a',
+    date: '2026-08-28',
+    type: 'fix',
+    title: 'Safari Favorites & Apple Touch Brand Icon Rasterization Restoration',
+    summary:
+      'Fixed brand icon generator in scripts/build/generate-brand-icons.mjs to extract vector path data and inject direct solid fill attributes (fill="#ffffff") for librsvg/sharp rasterization instead of unresolvable CSS custom properties. Restored crisp white MR crown monogram on luxury black squircle across apple-touch-icon.png, apple-touch-icon-precomposed.png, icon-192.png, icon-512.png, and favicon suite for Safari Start Page Favorites and iOS/Android home screens.',
+    tags: ['fix', 'safari', 'apple-touch-icon', 'favicon', 'pwa', 'design'],
+    sha: 'c529f81a',
+    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/c529f81a',
+  },
+  {
     id: 'e78c142b',
     date: '2026-08-28',
     type: 'fix',
