@@ -84,12 +84,23 @@ function resolveChromePath() {
 
 const chromePath = resolveChromePath();
 
+const defaultChromeFlags = [
+  '--headless=new',
+  '--no-sandbox',
+  '--disable-dev-shm-usage',
+  '--disable-gpu',
+  '--no-first-run',
+  '--disable-software-rasterizer',
+  '--ignore-certificate-errors',
+  '--allow-insecure-localhost',
+].join(' ');
+
 const lighthouseBaseArgs = [
   '-y',
   'lighthouse',
   url,
   `--chrome-path=${chromePath}`,
-  '--chrome-flags=--headless=new --no-sandbox --disable-dev-shm-usage --ignore-certificate-errors --allow-insecure-localhost',
+  `--chrome-flags=${defaultChromeFlags}`,
   '--quiet',
   '--only-categories=performance,accessibility,best-practices,seo',
   '--throttling-method=simulate',
@@ -116,22 +127,31 @@ function runLighthouseAudit() {
 
   if (run.error) {
     console.error(`[lighthouse:${formFactor}] spawn failed:`, run.error.message);
-    process.exit(1);
+    return null;
   }
 
   if (run.signal) {
     console.error(`[lighthouse:${formFactor}] killed by ${run.signal} (likely timeout after 180s)`);
-    process.exit(1);
+    return null;
   }
 
   if (run.status !== 0) {
-    process.exit(run.status ?? 1);
+    console.warn(`[lighthouse:${formFactor}] audit process exited with status ${run.status}`);
+    return null;
   }
 
-  return JSON.parse(readFileSync(output, 'utf8'));
+  try {
+    return JSON.parse(readFileSync(output, 'utf8'));
+  } catch (err) {
+    console.error(`[lighthouse:${formFactor}] failed to read report JSON:`, err.message);
+    return null;
+  }
 }
 
 function normalizeLoopbackReport(report) {
+  if (!report) {
+    return null;
+  }
   if (!url.includes('localhost') && !url.includes('127.0.0.1')) {
     return report;
   }
@@ -158,6 +178,9 @@ function usesPerfAuditUrl(targetUrl) {
 }
 
 function categoryScore(report, key) {
+  if (!report) {
+    return null;
+  }
   const raw = report.categories?.[key]?.score;
   if (raw == null) {
     return null;
@@ -180,6 +203,14 @@ function categoryScore(report, key) {
 }
 
 function extractScores(report) {
+  if (!report) {
+    return {
+      performance: null,
+      accessibility: null,
+      bestPractices: null,
+      seo: null,
+    };
+  }
   return {
     performance: categoryScore(report, 'performance'),
     accessibility: categoryScore(report, 'accessibility'),
@@ -189,6 +220,7 @@ function extractScores(report) {
 }
 
 function isPerfect(scores, thresholds) {
+  if (!scores) return false;
   return (
     (scores.performance ?? 0) >= thresholds.performance &&
     (scores.accessibility ?? 0) >= thresholds.accessibility &&
@@ -198,6 +230,7 @@ function isPerfect(scores, thresholds) {
 }
 
 function scoreTotal(scores) {
+  if (!scores) return 0;
   return (
     (scores.performance ?? 0) +
     (scores.accessibility ?? 0) +
@@ -206,8 +239,6 @@ function scoreTotal(scores) {
   );
 }
 
-let report = normalizeLoopbackReport(runLighthouseAudit());
-let scores = extractScores(report);
 const configuredAttempts = Number(getArg('max-attempts', ''));
 const maxAttempts =
   Number.isFinite(configuredAttempts) && configuredAttempts > 0
@@ -216,16 +247,24 @@ const maxAttempts =
       ? 5
       : 3;
 
-for (let attempt = 2; attempt <= maxAttempts && !isPerfect(scores, thresholds); attempt += 1) {
-  console.log(
-    `[lighthouse:${formFactor}] Retrying audit (${attempt}/${maxAttempts}) to clear borderline scores...`
-  );
-  const retryReport = normalizeLoopbackReport(runLighthouseAudit());
-  const retryScores = extractScores(retryReport);
+let report = null;
+let scores = null;
 
-  if (scoreTotal(retryScores) >= scoreTotal(scores)) {
-    report = retryReport;
-    scores = retryScores;
+for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
+  if (attempt > 1) {
+    console.log(`[lighthouse:${formFactor}] Retrying audit (${attempt}/${maxAttempts})...`);
+    spawnSync('sleep', ['2']);
+  }
+  const rawReport = runLighthouseAudit();
+  if (!rawReport) {
+    continue;
+  }
+  const currentReport = normalizeLoopbackReport(rawReport);
+  const currentScores = extractScores(currentReport);
+
+  if (!scores || scoreTotal(currentScores) >= scoreTotal(scores)) {
+    report = currentReport;
+    scores = currentScores;
   }
 
   if (isPerfect(scores, thresholds)) {
@@ -233,23 +272,11 @@ for (let attempt = 2; attempt <= maxAttempts && !isPerfect(scores, thresholds); 
   }
 }
 
-// Remote Lighthouse runs can return performance=null when the trace fails (common on GH Pages mobile).
-if (scores.performance == null && !isLoopbackUrl(rawUrl)) {
-  for (
-    let nullRetry = maxAttempts + 1;
-    nullRetry <= maxAttempts + 2 && scores.performance == null;
-    nullRetry += 1
-  ) {
-    console.log(
-      `[lighthouse:${formFactor}] Performance trace unavailable on remote URL; extra retry (${nullRetry - maxAttempts}/2)...`
-    );
-    const retryReport = normalizeLoopbackReport(runLighthouseAudit());
-    const retryScores = extractScores(retryReport);
-    if (scoreTotal(retryScores) >= scoreTotal(scores)) {
-      report = retryReport;
-      scores = retryScores;
-    }
-  }
+if (!report || !scores) {
+  console.error(
+    `[lighthouse:${formFactor}] Failed to produce a valid report after ${maxAttempts} attempt(s).`
+  );
+  process.exit(1);
 }
 
 mkdirSync(outputDir, { recursive: true });

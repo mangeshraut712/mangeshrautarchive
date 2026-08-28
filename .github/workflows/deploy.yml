@@ -257,6 +257,8 @@ jobs:
             fi
             sleep 1
           done
+          # Warm up the server and cache
+          curl -fsS --max-time 10 http://127.0.0.1:4000/?perf-audit=1 >/dev/null 2>&1 || true
           node scripts/deployment/lighthouse-gate.js \
             --url=http://127.0.0.1:4000/ \
             --form-factor=desktop \

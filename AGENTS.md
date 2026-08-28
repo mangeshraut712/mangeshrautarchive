@@ -157,8 +157,9 @@ npm run qa:lighthouse:vercel  # Live Vercel Lighthouse floors
 - **MANDATORY Pre-Commit & Release Checklist (Always Execute Automatically)**:
   1. **Update Changelog (`src/js/data/changelog-entries.js`)**: Add a new typed entry to `changelogEntries` detailing the shipped fixes, features, or design polish.
   2. **Track LLM Usage & Model**: In the commit body and documentation updates, record the active LLM model (e.g. `gemini-2.5-pro`, `claude-3.7-sonnet`, `grok-4.3`), reasoning mode, and token consumption metrics.
-  3. **Run Full Quality Gate**: Run `npm run check` (ESLint + Stylelint + Prettier + Vitest 209 tests), `npm run security-check`, and `npm run build` with Node 22 (`export PATH="/opt/homebrew/opt/node@22/bin:/opt/homebrew/Cellar/node@22/22.23.2/bin:$PATH"`).
+  3. **Run Full Quality Gate**: Run `npm run check` (ESLint + Stylelint + Prettier + Vitest 210 tests), `npm run security-check`, and `npm run build` with Node 22 (`export PATH="/opt/homebrew/opt/node@22/bin:/opt/homebrew/Cellar/node@22/22.23.2/bin:$PATH"`).
   4. **Sync Documentation**: Keep test counts, architecture files, and design system rules synchronized across `README.md`, `AGENTS.md`, and `docs/DESIGN.md`.
+  5. **Guarantee 100% Green CI/CD Protocol**: Always monitor GitHub Actions after every `git push` to `main` via `gh run list` / `gh run view` to confirm all remote jobs (actionlint, linting, Vitest, pytest, Playwright, Lighthouse 100/100/100/100 gates, and Pages deployment) complete with green checks. Never consider a task finished with failing remote CI runs.
 
 ---
 

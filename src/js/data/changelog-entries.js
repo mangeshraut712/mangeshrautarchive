@@ -43,6 +43,17 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'b1704e38',
+    date: '2026-08-28',
+    type: 'improvement',
+    title: 'GitHub Actions CI/CD Resilience & Lighthouse Runner Hardening',
+    summary:
+      'Enhanced scripts/deployment/lighthouse-gate.js with --disable-gpu, --no-first-run, and graceful retry error handling to prevent transient runner crashes. Added preview server warm-up in .github/workflows/deploy.yml and codified mandatory 100% Green CI/CD protocol in AGENTS.md.',
+    tags: ['ci-cd', 'github-actions', 'lighthouse', 'deploy', 'quality-gate'],
+    sha: 'b1704e38',
+    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/b1704e38',
+  },
+  {
     id: 'c529f81a',
     date: '2026-08-28',
     type: 'fix',
