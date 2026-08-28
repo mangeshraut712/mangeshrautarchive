@@ -3128,8 +3128,13 @@ html.dark #projects .gh-contrib__stat-num {
   color: var(--project-text-dark);
 }
 
-#projects .gh-contrib__stat-num--accent {
-  color: var(--gh-accent-num);
+#projects .gh-contrib__stat-num--accent,
+html.dark #projects .gh-contrib__stat-num--accent,
+#projects #gh-total,
+html.dark #projects #gh-total,
+#projects #gh-longest,
+html.dark #projects #gh-longest {
+  color: var(--gh-accent-num) !important;
 }
 
 #projects .gh-contrib__unit {
@@ -4311,6 +4316,7 @@ section#projects #github-projects-container .project-release-detail {
   pointer-events: none !important;
   background: #000000 !important;
   color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
   padding: 6px 12px !important;
   border-radius: 6px !important;
   font-size: 0.76rem !important;
@@ -4323,6 +4329,14 @@ section#projects #github-projects-container .project-release-detail {
   transition:
     opacity 0.12s cubic-bezier(0.16, 1, 0.3, 1),
     transform 0.12s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.gh-contrib-tooltip,
+.gh-contrib-tooltip *,
+.gh-contrib-tooltip strong,
+.gh-contrib-tooltip span {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
 }
 
 .gh-contrib-tooltip::after {
@@ -4345,7 +4359,16 @@ section#projects #github-projects-container .project-release-detail {
 html.dark .gh-contrib-tooltip {
   background: #09090b !important;
   color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
   border: 1px solid #27272a;
+}
+
+html.dark .gh-contrib-tooltip,
+html.dark .gh-contrib-tooltip *,
+html.dark .gh-contrib-tooltip strong,
+html.dark .gh-contrib-tooltip span {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
 }
 
 html.dark .gh-contrib-tooltip::after {

@@ -336,10 +336,7 @@ html.dark .travel-nav__panel {
 }
 
 .travel-nav__projection i,
-.travel-nav__theme i,
-.travel-nav__panel i,
-.travel-nav__theme .fa-moon,
-.travel-nav__theme .fa-sun {
+.travel-nav__panel i {
   font-size: 15px !important;
   line-height: 1;
   color: #1d1d1f !important;
@@ -347,13 +344,36 @@ html.dark .travel-nav__panel {
   opacity: 1 !important;
 }
 
+.travel-nav__theme .fa-sun {
+  font-size: 15px !important;
+  line-height: 1;
+  color: #f59e0b !important;
+  -webkit-text-fill-color: #f59e0b !important;
+  opacity: 1 !important;
+}
+
+.travel-nav__theme .fa-moon {
+  font-size: 15px !important;
+  line-height: 1;
+  color: #0071e3 !important;
+  -webkit-text-fill-color: #0071e3 !important;
+  opacity: 1 !important;
+}
+
 html.dark .travel-nav__projection i,
-html.dark .travel-nav__theme i,
-html.dark .travel-nav__panel i,
-html.dark .travel-nav__theme .fa-moon,
-html.dark .travel-nav__theme .fa-sun {
+html.dark .travel-nav__panel i {
   color: #f5f5f7 !important;
   -webkit-text-fill-color: #f5f5f7 !important;
+}
+
+html.dark .travel-nav__theme .fa-sun {
+  color: #ffd60a !important;
+  -webkit-text-fill-color: #ffd60a !important;
+}
+
+html.dark .travel-nav__theme .fa-moon {
+  color: #58a6ff !important;
+  -webkit-text-fill-color: #58a6ff !important;
 }
 
 .travel-nav__projection:hover,

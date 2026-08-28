@@ -3452,27 +3452,29 @@ html.dark .contact-assistme-icon {
 
 /* ========================================
    THEME TOGGLE ICON COLORS
-   Sun = Apple System Orange/Yellow, Moon = Apple System Blue/Indigo
+   Sun = Apple System Warm Amber/Gold, Moon = Apple System Indigo/Blue
    ======================================== */
 
-/* Sun icon - High-contrast Deep Amber in light mode */
+/* Sun icon - Vibrant Warm Amber in light mode */
 .fa-sun,
 .sun-icon,
 .theme-toggle .fa-sun,
-#theme-toggle .fa-sun {
-  color: #d97706 !important;
-  -webkit-text-fill-color: #d97706 !important;
+#theme-toggle .fa-sun,
+#theme-toggle-icon .fa-sun {
+  color: #f59e0b !important;
+  -webkit-text-fill-color: #f59e0b !important;
   background: transparent !important;
   background-image: none !important;
 }
 
-/* Moon icon - Apple Dark Charcoal in light mode */
+/* Moon icon - Vibrant Apple Blue / Celestial Indigo in light mode */
 .fa-moon,
 .moon-icon,
 .theme-toggle .fa-moon,
-#theme-toggle .fa-moon {
-  color: #1d1d1f !important;
-  -webkit-text-fill-color: #1d1d1f !important;
+#theme-toggle .fa-moon,
+#theme-toggle-icon .fa-moon {
+  color: #0071e3 !important;
+  -webkit-text-fill-color: #0071e3 !important;
   background: transparent !important;
   background-image: none !important;
 }
@@ -3481,27 +3483,46 @@ html.dark .contact-assistme-icon {
 .auto-icon,
 .fa-circle-half-stroke,
 .theme-toggle .auto-icon,
-#theme-toggle .auto-icon {
+#theme-toggle .auto-icon,
+#theme-toggle-icon .auto-icon {
   color: #0071e3 !important;
   -webkit-text-fill-color: #0071e3 !important;
   background: transparent !important;
   background-image: none !important;
 }
 
-/* Dark mode - Crisp Gold / Apple Yellow */
+/* Dark mode - Crisp Radiant Gold for Sun */
 html.dark .fa-sun,
 html.dark .sun-icon,
 html.dark .theme-toggle .fa-sun,
 html.dark #theme-toggle .fa-sun,
+html.dark #theme-toggle-icon .fa-sun {
+  color: #ffd60a !important;
+  -webkit-text-fill-color: #ffd60a !important;
+  background: transparent !important;
+  background-image: none !important;
+}
+
+/* Dark mode - Luminous Celestial Blue for Moon */
 html.dark .fa-moon,
 html.dark .moon-icon,
 html.dark .theme-toggle .fa-moon,
 html.dark #theme-toggle .fa-moon,
+html.dark #theme-toggle-icon .fa-moon {
+  color: #58a6ff !important;
+  -webkit-text-fill-color: #58a6ff !important;
+  background: transparent !important;
+  background-image: none !important;
+}
+
+/* Dark mode - Electric Blue for Auto icon */
 html.dark .auto-icon,
 html.dark .fa-circle-half-stroke,
-html.dark #theme-toggle .auto-icon {
-  color: #ffd60a !important;
-  -webkit-text-fill-color: #ffd60a !important;
+html.dark .theme-toggle .auto-icon,
+html.dark #theme-toggle .auto-icon,
+html.dark #theme-toggle-icon .auto-icon {
+  color: #58a6ff !important;
+  -webkit-text-fill-color: #58a6ff !important;
   background: transparent !important;
   background-image: none !important;
 }

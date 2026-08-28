@@ -858,7 +858,10 @@ async function boot() {
 
   window.addEventListener('resize', onResize, { passive: true });
   document.addEventListener('portfolio-theme-change', () => {
-    if (state.activeData) render3D(state.activeData);
+    if (state.activeData) {
+      render3D(state.activeData);
+      renderHeatmap(state.activeData);
+    }
   });
 
   await selectYear(state.year);

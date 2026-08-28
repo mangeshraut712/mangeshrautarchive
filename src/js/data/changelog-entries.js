@@ -43,6 +43,17 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'e78c142b',
+    date: '2026-08-28',
+    type: 'fix',
+    title: 'Theme Color Consistency & 3D Contributions Tooltip Visibility Resolution',
+    summary:
+      'Fixed theme toggle Moon icon color cascade to use authentic Apple Celestial Indigo/Blue (#0071e3 light / #58a6ff dark) alongside golden Sun icon (#f59e0b light / #ffd60a dark). Guaranteed 100% white text visibility for 3D/2D contributions graph floating tooltips across all themes. Preserved green accent text (#gh-total, #gh-longest) in dark mode specificity cascade and synchronized 2D/3D graph redraw on theme changes.',
+    tags: ['fix', 'design', 'themes', 'dark-mode', 'a11y', 'performance'],
+    sha: 'e78c142b',
+    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/e78c142b',
+  },
+  {
     id: 'a41d980e',
     date: '2026-08-26',
     type: 'release',
