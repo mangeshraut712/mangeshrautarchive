@@ -14,9 +14,9 @@
   --z-modal: 11000;
   --z-toast: 12000;
   --fab-size: 48px;
-  --fab-gap: 10px;
-  --fab-edge: max(20px, env(safe-area-inset-right, 0px));
-  --fab-bottom: max(24px, env(safe-area-inset-bottom, 0px));
+  --fab-gap: 12px;
+  --fab-edge: max(24px, env(safe-area-inset-right, 0px));
+  --fab-bottom: max(32px, calc(env(safe-area-inset-bottom, 0px) + 20px));
   /* Single right-column stack (bottom → top): top, chat, share, a11y */
   --fab-slot-0: var(--fab-bottom);
   --fab-slot-1: calc(var(--fab-bottom) + var(--fab-size) + var(--fab-gap));

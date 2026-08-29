@@ -4868,10 +4868,10 @@ footer p {
 
 #go-to-top {
   position: fixed;
-  bottom: 28px;
-  right: 24px;
-  width: 56px;
-  height: 56px;
+  bottom: var(--fab-slot-0, max(32px, calc(env(safe-area-inset-bottom, 0px) + 20px)));
+  right: var(--theme-fab-edge, max(24px, env(safe-area-inset-right, 0px)));
+  width: var(--theme-fab-size, 48px);
+  height: var(--theme-fab-size, 48px);
   background: #0071e3;
   background-image: none;
   color: #fff;
@@ -4879,43 +4879,55 @@ footer p {
   border-radius: 50%;
   cursor: pointer;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 2px;
-  box-shadow: 0 4px 12px rgb(0 113 227 / 30%);
+  box-shadow: 0 4px 14px rgb(0 113 227 / 30%);
   opacity: 0;
   visibility: hidden;
-  transform: translateY(30px) scale(0.85);
+  transform: translateY(20px) scale(0.9);
   transition:
-    color 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
-    background-color 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
-    border-color 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
-    box-shadow 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
-    transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
-    opacity 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    color 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+    background-color 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+    border-color 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+    transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+    opacity 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
   z-index: 100000;
 }
 
+#go-to-top i,
+#go-to-top svg {
+  font-size: 1.15rem;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
+}
+
 .go-to-top-label {
-  font-size: 8px;
+  position: absolute;
+  bottom: 4px;
+  font-size: 7px;
   font-weight: 800;
   letter-spacing: 0.05em;
   opacity: 0;
-  transform: translateY(4px);
+  transform: translateY(2px);
+  pointer-events: none;
   transition:
-    color 0.3s cubic-bezier(0.23, 1, 0.32, 1),
-    background-color 0.3s cubic-bezier(0.23, 1, 0.32, 1),
-    border-color 0.3s cubic-bezier(0.23, 1, 0.32, 1),
-    box-shadow 0.3s cubic-bezier(0.23, 1, 0.32, 1),
-    transform 0.3s cubic-bezier(0.23, 1, 0.32, 1),
-    opacity 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+    opacity 0.2s ease,
+    transform 0.2s ease;
 }
 
 #go-to-top:hover .go-to-top-label,
 #go-to-top:focus-visible .go-to-top-label {
   opacity: 1;
   transform: translateY(0);
+}
+
+#go-to-top:hover i,
+#go-to-top:hover svg {
+  transform: translateY(-2px);
 }
 
 #go-to-top.visible {

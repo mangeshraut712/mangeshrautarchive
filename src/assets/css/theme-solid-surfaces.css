@@ -36,10 +36,10 @@
   );
   --theme-card-radius: 22px;
   /* Keep in sync with ux-polish-fixes FAB stack (48px right column) */
-  --theme-fab-edge: max(20px, env(safe-area-inset-right, 0px));
-  --theme-fab-bottom: max(24px, env(safe-area-inset-bottom, 0px));
+  --theme-fab-edge: max(24px, env(safe-area-inset-right, 0px));
+  --theme-fab-bottom: max(32px, calc(env(safe-area-inset-bottom, 0px) + 20px));
   --theme-fab-size: 48px;
-  --theme-fab-gap: 10px;
+  --theme-fab-gap: 12px;
   --card-border-rest: #e5e5ea;
   --card-border-hover: #0071e3;
 }

@@ -43,6 +43,17 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'a91d4e72',
+    date: '2026-08-29',
+    type: 'fix',
+    title: 'Floating Action Dock Bottom Clearance & Centered Scroll Icon Polish',
+    summary:
+      'Elevated bottom viewport clearance across all floating action button slots (--fab-bottom: max(32px, safe-area-inset-bottom + 20px)), eliminating Safari window bezel clipping for the bottom-most scroll-to-top button (#go-to-top). Re-centered the arrow glyph and switched the TOP label to absolute positioning to preserve full icon visibility and circular geometry across all screen heights.',
+    tags: ['ui-ux', 'fab', 'floating-dock', 'go-to-top', 'safari', 'viewport', 'accessibility'],
+    sha: 'a91d4e72',
+    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/a91d4e72',
+  },
+  {
     id: 'f8329a1c',
     date: '2026-08-29',
     type: 'fix',
