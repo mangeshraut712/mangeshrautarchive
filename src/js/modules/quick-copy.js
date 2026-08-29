@@ -1,7 +1,7 @@
 /**
  * Quick Copy Component (shadcn UI/UX style)
- * Provides seamless copy-to-clipboard functionality with SVG morphing checkmark
- * and an Apple glass floating toast notification.
+ * Provides seamless copy-to-clipboard functionality with SVG morphing checkmark,
+ * Apple glass floating toast notification, and automated code block copy buttons.
  */
 
 let toastTimer = null;
@@ -99,12 +99,57 @@ export async function handleCopyAction(button, text, label = 'Copied to clipboar
 }
 
 /**
+ * Auto-attach sleek Apple-glass copy buttons to all code blocks and terminal snippets.
+ */
+export function attachCodeBlockCopyButtons() {
+  const codeBlocks = document.querySelectorAll('pre, .code-snippet-box, .terminal-box');
+  codeBlocks.forEach(block => {
+    if (block.dataset.copyAttached === 'true') return;
+    block.dataset.copyAttached = 'true';
+
+    // Ensure relative positioning
+    const style = window.getComputedStyle(block);
+    if (style.position === 'static') {
+      block.style.position = 'relative';
+    }
+
+    const copyBtn = document.createElement('button');
+    copyBtn.type = 'button';
+    copyBtn.className = 'code-block-copy-btn shadcn-copy-btn';
+    copyBtn.setAttribute('aria-label', 'Copy code snippet');
+    copyBtn.title = 'Copy code';
+    copyBtn.innerHTML = `
+      <svg class="copy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect width="14" height="14" x="8" y="8" rx="2" ry="2"/>
+        <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>
+      </svg>
+      <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M20 6 9 17l-5-5"/>
+      </svg>
+      <span class="code-copy-text">Copy</span>
+    `;
+
+    copyBtn.addEventListener('click', e => {
+      e.preventDefault();
+      e.stopPropagation();
+      const codeEl = block.querySelector('code') || block;
+      const text = (codeEl.textContent || '').trim();
+      if (text) {
+        handleCopyAction(copyBtn, text, 'Code copied to clipboard!');
+      }
+    });
+
+    block.appendChild(copyBtn);
+  });
+}
+
+/**
  * Initialize universal copy-to-clipboard listeners across the page.
  */
 export function initQuickCopy() {
   document.addEventListener('click', e => {
     const copyBtn = e.target.closest('[data-copy-text], .shadcn-copy-btn, .quick-copy-trigger');
-    if (!copyBtn) {
+    if (!copyBtn || copyBtn.classList.contains('code-block-copy-btn')) {
       return;
     }
 
@@ -119,6 +164,9 @@ export function initQuickCopy() {
     const label = copyBtn.getAttribute('data-copy-label') || 'Copied to clipboard!';
     handleCopyAction(copyBtn, textToCopy, label);
   });
+
+  // Attach to code blocks
+  attachCodeBlockCopyButtons();
 }
 
 // Auto-initialize when DOM is ready

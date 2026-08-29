@@ -1,6 +1,7 @@
 // @vitest-environment jsdom
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import {
+  attachCodeBlockCopyButtons,
   copyToClipboard,
   handleCopyAction,
   initQuickCopy,
@@ -16,6 +17,7 @@ describe('quick-copy module', () => {
           <span class="check-icon">✓</span>
           <span>Copy</span>
         </button>
+        <pre><code id="code-sample">git clone https://github.com/mangeshraut712/mangeshrautarchive.git</code></pre>
       </div>
     `;
 
@@ -76,5 +78,20 @@ describe('quick-copy module', () => {
     await Promise.resolve();
 
     expect(navigator.clipboard.writeText).toHaveBeenCalledWith('test@example.com');
+  });
+
+  it('automatically attaches copy buttons to code blocks and handles clicking', async () => {
+    attachCodeBlockCopyButtons();
+    const pre = document.querySelector('pre');
+    const copyBtn = pre.querySelector('.code-block-copy-btn');
+
+    expect(copyBtn).toBeTruthy();
+
+    copyBtn.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    await Promise.resolve();
+
+    expect(navigator.clipboard.writeText).toHaveBeenCalledWith(
+      'git clone https://github.com/mangeshraut712/mangeshrautarchive.git'
+    );
   });
 });

@@ -1,27 +1,44 @@
 import { expect, test } from '@playwright/test';
 
-test.describe('Marathi Name Translation and shadcn Copy Features', () => {
+test.describe('Marathi Name Translation, Speech Controls, and shadcn Copy Features', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/');
     await page.waitForLoadState('domcontentloaded');
   });
 
-  test('hero name translates instantly to Marathi on heading click', async ({ page }) => {
+  test('hero name translates instantly to Marathi on heading click and back', async ({ page }) => {
     const heading = page.locator('#home-heading');
     const nameText = heading.locator('.hero-name-text');
-    const translateBtn = page.locator('#name-translate-btn');
 
     await expect(nameText).toHaveText('Mangesh Raut');
 
-    // Click heading
+    // Click heading to translate to Marathi
     await heading.click();
     await expect(nameText).toHaveText('मंगेश राऊत');
-    await expect(translateBtn).toHaveClass(/is-active/);
 
-    // Click translate icon button in identity strip to switch back
-    await translateBtn.click();
+    // Click heading again to translate back to English
+    await heading.click();
     await expect(nameText).toHaveText('Mangesh Raut');
-    await expect(translateBtn).not.toHaveClass(/is-active/);
+  });
+
+  test('speech settings menu opens and displays speed and voice options', async ({ page }) => {
+    const settingsBtn = page.locator('#name-pronounce-settings-btn');
+    const menu = page.locator('#name-pronounce-menu');
+
+    await expect(settingsBtn).toBeVisible();
+    await expect(menu).toBeHidden();
+
+    // Click settings button
+    await settingsBtn.click();
+    await expect(menu).toBeVisible();
+
+    const speedPills = menu.locator('.speed-pill');
+    await expect(speedPills).toHaveCount(3);
+
+    // Select 0.75x speed
+    const slowPill = menu.locator('.speed-pill[data-speed="0.75"]');
+    await slowPill.click();
+    await expect(slowPill).toHaveClass(/is-active/);
   });
 
   test('contact channel copy button copies email and triggers toast', async ({

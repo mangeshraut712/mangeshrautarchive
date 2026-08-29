@@ -284,6 +284,46 @@ class LastFmService {
     return !this.isUsableArtwork(url) || url.startsWith('data:') || !this.isSafeHttpsUrl(url);
   }
 
+  fetchAppleMusicArtworkViaJsonp(trackName = '', artistName = '') {
+    if (typeof globalThis.document === 'undefined') return Promise.resolve(null);
+    return new Promise(resolve => {
+      const query = encodeURIComponent(`${trackName} ${artistName}`.trim());
+      const callbackName = `__itunesCb_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
+      const script = globalThis.document.createElement('script');
+      let settled = false;
+
+      const cleanup = () => {
+        if (!settled) settled = true;
+        clearTimeout(timer);
+        try {
+          delete globalThis[callbackName];
+        } catch (_err) {
+          // Ignore deletion error
+        }
+        if (script.parentNode) script.parentNode.removeChild(script);
+      };
+
+      const timer = globalThis.setTimeout(() => {
+        cleanup();
+        resolve(null);
+      }, 4500);
+
+      globalThis[callbackName] = data => {
+        cleanup();
+        const artwork = this.pickItunesArtwork(data?.results || [], trackName, artistName);
+        resolve(artwork || null);
+      };
+
+      script.src = `https://itunes.apple.com/search?term=${query}&entity=song&limit=5&callback=${callbackName}`;
+      script.async = true;
+      script.onerror = () => {
+        cleanup();
+        resolve(null);
+      };
+      globalThis.document.head.appendChild(script);
+    });
+  }
+
   async fetchAppleMusicArtwork(trackName = '', artistName = '') {
     if (isPerformanceAudit()) {
       return null;
@@ -321,19 +361,11 @@ class LastFmService {
         // Backend API offline or timed out
       }
 
-      // 2. Direct client-side iTunes Search — pick best artist/track match, not results[0]
+      // 2. Direct client-side iTunes Search via JSONP (bypasses browser CORS restrictions completely)
       try {
-        const query = encodeURIComponent(`${trackName} ${artistName}`.trim());
-        const itunesResp = await fetch(
-          `https://itunes.apple.com/search?term=${query}&entity=song&limit=5`,
-          {
-            signal: AbortSignal.timeout?.(4000),
-          }
-        );
-        if (itunesResp.ok) {
-          const data = await itunesResp.json();
-          const artwork = this.pickItunesArtwork(data?.results || [], trackName, artistName);
-          if (artwork) return artwork;
+        const jsonpArtwork = await this.fetchAppleMusicArtworkViaJsonp(trackName, artistName);
+        if (jsonpArtwork && this.isSafeHttpsUrl(jsonpArtwork)) {
+          return jsonpArtwork;
         }
       } catch {
         // iTunes API unavailable
@@ -570,7 +602,7 @@ class LastFmService {
 
     try {
       const bust = Date.now();
-      const response = await fetch(
+      let response = await fetch(
         `${this.apiUrl}?user=${encodeURIComponent(this.USERNAME)}&limit=${encodeURIComponent(limit)}&_=${bust}`,
         {
           signal: controller.signal,
@@ -579,11 +611,24 @@ class LastFmService {
             Accept: 'application/json',
           },
         }
-      );
+      ).catch(() => null);
 
-      if (!response.ok) {
-        const err = new Error(`HTTP ${response.status}`);
-        err.status = response.status;
+      if (!response || !response.ok) {
+        const edgeUrl = `https://assistme-chat.mangeshraut712.workers.dev/api/music/recent?user=${encodeURIComponent(this.USERNAME)}&limit=${encodeURIComponent(limit)}&_=${bust}`;
+        if (this.apiUrl !== 'https://assistme-chat.mangeshraut712.workers.dev/api/music/recent') {
+          response = await fetch(edgeUrl, {
+            signal: controller.signal,
+            cache: 'no-store',
+            headers: {
+              Accept: 'application/json',
+            },
+          }).catch(() => null);
+        }
+      }
+
+      if (!response || !response.ok) {
+        const err = new Error(`HTTP ${response?.status || 0}`);
+        err.status = response?.status || 0;
         throw err;
       }
 

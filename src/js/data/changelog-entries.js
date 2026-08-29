@@ -43,6 +43,26 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'b712c93a',
+    date: '2026-08-29',
+    type: 'improvement',
+    title: 'Music Artwork Resilience, Multi-Speed Speech Controls & Smart Text-Selection Actions',
+    summary:
+      'Engineered CORS-free iTunes JSONP album artwork hydration with Edge Worker proxy fallbacks and high-res SVG music placeholders. Upgraded name pronunciation with an Apple-glass speech controller supporting 0.75x/1.0x/1.25x playback speeds and multilingual voice selection (Native Audio / Marathi TTS / English TTS). Added iOS-style floating action bar for highlighted text selections and universal code block copying across all pages.',
+    tags: [
+      'music',
+      'artwork',
+      'tts',
+      'speech',
+      'text-selection',
+      'shadcn',
+      'clipboard',
+      'apple-glass',
+    ],
+    sha: 'b712c93a',
+    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/b712c93a',
+  },
+  {
     id: 'a87e419b',
     date: '2026-08-29',
     type: 'improvement',
