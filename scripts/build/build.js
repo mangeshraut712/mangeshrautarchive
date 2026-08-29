@@ -489,9 +489,10 @@ async function build() {
   console.log(`🔖 Cache-bust version: ${version}`);
   await cacheBustJsModules(distDir, version);
 
+  await addCacheBusting(distDir, version);
+  await minifyHtmlFiles(distDir);
+
   await Promise.all([
-    addCacheBusting(distDir, version),
-    minifyHtmlFiles(distDir),
     generateBlogPages(distDir),
     generateCaseStudyPages(distDir),
     generateSitemap(distDir),

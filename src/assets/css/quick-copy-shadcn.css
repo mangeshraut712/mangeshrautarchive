@@ -1,0 +1,216 @@
+/**
+ * shadcn-inspired Quick Copy & Interactive Native Name Translation
+ * Apple standard glassmorphism, fluid typography transitions, and accessible UI feedback.
+ */
+
+/* ─── Hero Heading Translation Interaction ────────────────────────── */
+.hero-name--interactive {
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 12px;
+  transition:
+    transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.2s ease;
+}
+
+.hero-name--interactive:focus-visible {
+  outline: 2px solid var(--apple-blue, #0071e3);
+  outline-offset: 4px;
+}
+
+.hero-name-text {
+  display: inline-block;
+  transition:
+    opacity 0.15s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hero-name-text--flipping {
+  opacity: 0;
+  transform: translateY(4px) scale(0.98);
+}
+
+.hero-name-text.is-marathi {
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'Kohinoor Devanagari', 'Mukta', 'SF Pro Display', sans-serif;
+  letter-spacing: -0.02em;
+}
+
+/* ─── shadcn UI / Apple Glass Copy Button ──────────────────────────── */
+.shadcn-copy-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  padding: 0.35rem 0.65rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  line-height: 1;
+  color: var(--apple-text, #1d1d1f);
+  background: rgba(255, 255, 255, 0.65);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
+  cursor: pointer;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.15s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.2s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+html.dark .shadcn-copy-btn {
+  color: var(--apple-text-dark, #f5f5f7);
+  background: rgba(30, 30, 32, 0.7);
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.shadcn-copy-btn:hover {
+  background: rgba(255, 255, 255, 0.9);
+  border-color: rgba(0, 113, 227, 0.3);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 113, 227, 0.1);
+}
+
+html.dark .shadcn-copy-btn:hover {
+  background: rgba(45, 45, 48, 0.9);
+  border-color: rgba(10, 132, 255, 0.4);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+}
+
+.shadcn-copy-btn:active {
+  transform: translateY(0) scale(0.97);
+}
+
+.shadcn-copy-btn .copy-icon {
+  width: 14px;
+  height: 14px;
+  stroke: currentColor;
+  stroke-width: 2;
+  transition:
+    transform 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.shadcn-copy-btn .check-icon {
+  display: none;
+  width: 14px;
+  height: 14px;
+  stroke: #34c759;
+  stroke-width: 2.5;
+}
+
+html.dark .shadcn-copy-btn .check-icon {
+  stroke: #30d158;
+}
+
+.shadcn-copy-btn.is-copied {
+  border-color: #34c759;
+  color: #34c759;
+}
+
+html.dark .shadcn-copy-btn.is-copied {
+  border-color: #30d158;
+  color: #30d158;
+}
+
+.shadcn-copy-btn.is-copied .copy-icon {
+  display: none;
+}
+
+.shadcn-copy-btn.is-copied .check-icon {
+  display: inline-block;
+  animation: shadcnCheckPop 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Icon-only compact copy button */
+.shadcn-copy-btn--icon-only {
+  padding: 0.4rem;
+  min-width: 30px;
+  min-height: 30px;
+  border-radius: 6px;
+}
+
+@keyframes shadcnCheckPop {
+  0% {
+    transform: scale(0.6);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* ─── Floating Apple Glass Copy Toast ──────────────────────────────── */
+.shadcn-copy-toast {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px) scale(0.95);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1.15rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #1d1d1f;
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 9999px;
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.12),
+    0 1px 3px rgba(0, 0, 0, 0.06);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  z-index: 999999;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html.dark .shadcn-copy-toast {
+  color: #f5f5f7;
+  background: rgba(28, 28, 30, 0.88);
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.45);
+}
+
+.shadcn-copy-toast.is-visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.shadcn-copy-toast.is-hidden {
+  opacity: 0;
+  transform: translateX(-50%) translateY(10px) scale(0.96);
+  pointer-events: none;
+}
+
+.shadcn-copy-toast .toast-check-icon {
+  color: #34c759;
+  flex-shrink: 0;
+}
+
+html.dark .shadcn-copy-toast .toast-check-icon {
+  color: #30d158;
+}
+
+@media (max-width: 640px) {
+  .shadcn-copy-toast {
+    bottom: 5rem;
+    font-size: 0.8125rem;
+    padding: 0.55rem 1rem;
+  }
+}
