@@ -43,6 +43,28 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'f8329a1c',
+    date: '2026-08-29',
+    type: 'fix',
+    title: 'WHOOP Sleep Performance Score Thresholds & Metric Tone Calibration',
+    summary:
+      'Calibrated WHOOP Sleep Performance traffic-light color scoring to official WHOOP performance bands (Green: 85-100%, Yellow: 50-84%, Red: 0-49%), ensuring moderate sleep scores such as 66% render in warm yellow rather than alarmist red. Preserved Recovery scoring (Green: 67%+, Yellow: 34-66%, Red: 0-33%) and Strain load tiers.',
+    tags: ['whoop', 'health', 'vitals', 'scoring', 'calibration', 'vitest'],
+    sha: 'f8329a1c',
+    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/f8329a1c',
+  },
+  {
+    id: 'e15f829d',
+    date: '2026-08-29',
+    type: 'improvement',
+    title: 'Direct Outreach Grid Alignment & Embedded Copy Actions Layout Polish',
+    summary:
+      'Integrated quick-copy actions directly inside .contact-channel-item pills with ellipsis overflow protection and right-aligned trigger layout, fixing grid row boundary clipping in the 2-column Direct Outreach card. Synchronized quick-copy stylesheet across subpages (changelog, monitor, travel, systems, uses) for unified Apple glass aesthetics.',
+    tags: ['ui-ux', 'layout', 'grid', 'contact', 'alignment', 'apple-design', 'glassmorphism'],
+    sha: 'e15f829d',
+    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/e15f829d',
+  },
+  {
     id: 'c4e9271a',
     date: '2026-08-29',
     type: 'improvement',

@@ -273,16 +273,22 @@ html.dark .shadcn-copy-btn.is-copied {
   animation: shadcnCheckPop 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-.contact-channel-row {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  width: 100%;
+.contact-channel-item.has-copy-action {
+  padding-right: 0.5rem !important;
 }
 
-.contact-channel-row .contact-channel-item {
+.contact-channel-item .contact-channel-text {
   flex: 1 1 auto;
   min-width: 0;
+}
+
+.contact-channel-item .contact-channel-val {
+  display: block;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* ─── Contact Channel Compact Copy Button ──────────────────────────── */
@@ -290,12 +296,12 @@ html.dark .shadcn-copy-btn.is-copied {
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
-  width: 32px !important;
-  height: 32px !important;
-  min-width: 32px !important;
-  min-height: 32px !important;
+  width: 28px !important;
+  height: 28px !important;
+  min-width: 28px !important;
+  min-height: 28px !important;
   padding: 0 !important;
-  border-radius: 8px !important;
+  border-radius: 6px !important;
   border: 1px solid rgba(0, 0, 0, 0.08) !important;
   background: rgba(255, 255, 255, 0.75) !important;
   color: #86868b !important;
@@ -304,6 +310,7 @@ html.dark .shadcn-copy-btn.is-copied {
   -webkit-backdrop-filter: blur(12px);
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
   flex: 0 0 auto !important;
+  margin-left: 0.35rem !important;
 }
 
 .contact-channel-copy-btn:hover {

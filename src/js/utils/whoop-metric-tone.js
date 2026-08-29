@@ -20,7 +20,7 @@ export function getWhoopMetricTone(metric, value) {
 
   if (metric === 'sleep') {
     if (score >= 85) return 'metric-green';
-    if (score >= 70) return 'metric-yellow';
+    if (score >= 50) return 'metric-yellow';
     return 'metric-red';
   }
 

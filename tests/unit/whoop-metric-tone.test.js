@@ -19,7 +19,9 @@ describe('WHOOP traffic-light tones', () => {
     [85, 'metric-green'],
     [84, 'metric-yellow'],
     [70, 'metric-yellow'],
-    [69, 'metric-red'],
+    [66, 'metric-yellow'],
+    [50, 'metric-yellow'],
+    [49, 'metric-red'],
     [0, 'metric-red'],
   ])('classifies Sleep Performance score %s', (score, expected) => {
     expect(getWhoopMetricTone('sleep', score)).toBe(expected);
