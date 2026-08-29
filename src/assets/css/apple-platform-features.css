@@ -77,9 +77,9 @@ html[data-lg-mode='clear'] #experience .timeline-section-header h3 {
   min-width: 48px !important;
   min-height: 48px !important;
   flex-shrink: 0 !important;
-  border-radius: 50% !important;
+  border-radius: 10px !important;
   overflow: hidden !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
 }
 
 #home .music-card-inner .album-art {
@@ -87,14 +87,14 @@ html[data-lg-mode='clear'] #experience .timeline-section-header h3 {
   height: 48px !important;
   min-width: 48px !important;
   min-height: 48px !important;
-  border-radius: 50% !important;
+  border-radius: 10px !important;
   object-fit: cover !important;
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.2) !important;
   transition: transform 0.3s ease !important;
 }
 
 #home .music-card.is-playing .album-art-container {
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
 }
 
 #home .music-card-inner .track-info {

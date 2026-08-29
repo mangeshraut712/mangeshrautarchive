@@ -43,6 +43,17 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'c4e9271a',
+    date: '2026-08-29',
+    type: 'improvement',
+    title: 'Apple-Standard Rounded Square Music Artwork & Minimal Name Pronounce Player',
+    summary:
+      'Refined hero name pronunciation to a single, uncluttered audio speaker button without complex options dropdowns. Transformed music card album artwork into a crisp Apple Music-standard rounded square (border-radius: 10px, specular inner border, drop shadow) and removed circular vinyl cropping and center pin overlay for optimal track artwork visibility across all viewports.',
+    tags: ['ui-ux', 'music', 'artwork', 'audio', 'apple-design', 'glassmorphism', 'minimalism'],
+    sha: 'c4e9271a',
+    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/c4e9271a',
+  },
+  {
     id: 'b712c93a',
     date: '2026-08-29',
     type: 'improvement',

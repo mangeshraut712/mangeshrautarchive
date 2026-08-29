@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 
-test.describe('Marathi Name Translation, Speech Controls, and shadcn Copy Features', () => {
+test.describe('Marathi Name Translation, Clean Speech Player, and shadcn Copy Features', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/');
     await page.waitForLoadState('domcontentloaded');
@@ -21,24 +21,27 @@ test.describe('Marathi Name Translation, Speech Controls, and shadcn Copy Featur
     await expect(nameText).toHaveText('Mangesh Raut');
   });
 
-  test('speech settings menu opens and displays speed and voice options', async ({ page }) => {
+  test('hero pronounce button is clean single button and clickable', async ({ page }) => {
+    const pronounceBtn = page.locator('#name-pronounce-btn');
+    await expect(pronounceBtn).toBeVisible();
+
+    // Verify settings button and menu are removed
     const settingsBtn = page.locator('#name-pronounce-settings-btn');
-    const menu = page.locator('#name-pronounce-menu');
+    await expect(settingsBtn).toHaveCount(0);
 
-    await expect(settingsBtn).toBeVisible();
-    await expect(menu).toBeHidden();
+    // Click pronounce button
+    await pronounceBtn.click();
+    await expect(pronounceBtn).toBeVisible();
+  });
 
-    // Click settings button
-    await settingsBtn.click();
-    await expect(menu).toBeVisible();
+  test('music card album art renders as crisp rounded square artwork without pin', async ({
+    page,
+  }) => {
+    const albumArt = page.locator('#album-art');
+    await expect(albumArt).toBeVisible();
 
-    const speedPills = menu.locator('.speed-pill');
-    await expect(speedPills).toHaveCount(3);
-
-    // Select 0.75x speed
-    const slowPill = menu.locator('.speed-pill[data-speed="0.75"]');
-    await slowPill.click();
-    await expect(slowPill).toHaveClass(/is-active/);
+    const pin = page.locator('.album-art-pin');
+    await expect(pin).toBeHidden();
   });
 
   test('contact channel copy button copies email and triggers toast', async ({

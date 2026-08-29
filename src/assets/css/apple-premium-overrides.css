@@ -3625,10 +3625,6 @@ html.dark .theme-toggle:hover {
   transition: transform 0.3s ease;
 }
 
-.music-card.is-playing .album-art {
-  animation: albumSpin 8s linear infinite;
-}
-
 /* Playing Indicator Bars - Inline Equalizer */
 .playing-indicator {
   display: inline-flex;

@@ -16,10 +16,7 @@ describe('name-translate module', () => {
           <span class="hero-verified-badge">Verified</span>
         </h1>
         <div class="hero-identity-strip">
-          <div class="name-pronounce-wrapper">
-            <button id="name-pronounce-btn" class="name-pronounce-btn" type="button">Audio</button>
-            <button id="name-pronounce-settings-btn" class="name-pronounce-settings-btn" type="button">Settings</button>
-          </div>
+          <button id="name-pronounce-btn" class="name-pronounce-btn" type="button">Audio</button>
         </div>
       </div>
     `;
