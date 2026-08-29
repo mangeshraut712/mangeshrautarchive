@@ -43,6 +43,27 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'c47b198d',
+    date: '2026-08-29',
+    type: 'improvement',
+    title: 'Circular Rotating Vinyl Music Artwork & Sitewide Icon-Only Accessibility Toolbars',
+    summary:
+      'Restored dynamic circular vinyl album artwork (border-radius: 50%) with 8s linear spin rotation on play state in the Hero music card. Unified Speak (🔊) and Translate (文A) actions into sleek circular icon-only buttons across all narrative cards (About, Experience, Awards, Recommendations, Blog, Travel), synchronizing About segmented control and toolbars onto a single balanced header row across mobile and desktop viewports.',
+    tags: [
+      'ui-ux',
+      'music-card',
+      'vinyl',
+      'accessibility',
+      'icons',
+      'speak',
+      'translate',
+      'about',
+      'apple-design',
+    ],
+    sha: 'c47b198d',
+    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/c47b198d',
+  },
+  {
     id: 'a91d4e72',
     date: '2026-08-29',
     type: 'fix',

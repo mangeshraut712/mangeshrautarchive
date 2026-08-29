@@ -2487,14 +2487,14 @@ html.dark .hero-2026-item::before {
   box-shadow: none;
 }
 
-/* Album Art Container - Apple Music Rounded Square Design */
+/* Album Art Container - Circular Rotating Vinyl Artwork */
 
 .album-art-container {
   position: relative;
   width: 48px;
   height: 48px;
   flex-shrink: 0;
-  border-radius: 10px;
+  border-radius: 50%;
   overflow: hidden;
 }
 
@@ -2502,15 +2502,22 @@ html.dark .hero-2026-item::before {
   width: 100% !important;
   height: 100% !important;
   object-fit: cover !important;
-  border-radius: 10px !important;
+  border-radius: 50% !important;
   box-shadow:
     0 4px 12px rgb(0 0 0 / 15%),
     inset 0 0 0 1px rgb(255 255 255 / 20%);
+  animation: albumSpin 8s linear infinite;
+  animation-play-state: paused;
   /* Smooth crossfade when src changes */
   transition:
     transform 0.3s ease,
     opacity 0.4s ease;
   aspect-ratio: 1 / 1 !important;
+}
+
+.music-card.is-playing .album-art,
+#home .music-card.is-playing .album-art {
+  animation-play-state: running !important;
 }
 
 .album-art-pin {
@@ -2520,7 +2527,7 @@ html.dark .hero-2026-item::before {
 @media (max-width: 768px) {
   .album-art,
   #home .music-card-inner .album-art {
-    border-radius: 10px !important;
+    border-radius: 50% !important;
   }
 }
 

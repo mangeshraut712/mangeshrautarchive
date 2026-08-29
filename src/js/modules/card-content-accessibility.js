@@ -335,7 +335,7 @@ function buildToolbar(card, profile) {
   speakBtn.setAttribute('aria-pressed', 'false');
   speakBtn.setAttribute('aria-label', 'Listen to this card');
   speakBtn.title = 'Listen to this content';
-  speakBtn.innerHTML = `${SPEAK_ICON}<span class="card-tool-label" aria-hidden="true">Listen</span><span class="sr-only">Listen</span>`;
+  speakBtn.innerHTML = `${SPEAK_ICON}<span class="sr-only">Listen</span>`;
 
   const translateWrap = document.createElement('div');
   translateWrap.className = 'card-translate-wrap';
@@ -346,7 +346,7 @@ function buildToolbar(card, profile) {
   translateBtn.setAttribute('aria-expanded', 'false');
   translateBtn.setAttribute('aria-label', 'Translate this card');
   translateBtn.title = 'Translate this content';
-  translateBtn.innerHTML = `${TRANSLATE_ICON}<span class="card-tool-label" aria-hidden="true">Translate</span><span class="sr-only">Translate</span>`;
+  translateBtn.innerHTML = `${TRANSLATE_ICON}<span class="sr-only">Translate</span>`;
 
   const popover = document.createElement('div');
   popover.className = 'card-translate-popover';

@@ -1473,13 +1473,14 @@ html.dark #projects #github-projects-container .showcase-project-card:hover {
   flex-wrap: nowrap !important;
   align-items: center !important;
   justify-content: center !important;
-  width: auto !important;
-  height: 36px !important;
-  min-width: 36px !important;
-  min-height: 36px !important;
-  max-height: 36px !important;
-  padding: 0 0.7rem !important;
-  gap: 0.35rem !important;
+  width: 34px !important;
+  min-width: 34px !important;
+  max-width: 34px !important;
+  height: 34px !important;
+  min-height: 34px !important;
+  max-height: 34px !important;
+  padding: 0 !important;
+  gap: 0 !important;
   border-radius: 999px !important;
   border: 1px solid #d2d2d7 !important;
   background: #ffffff !important;
@@ -1495,9 +1496,7 @@ html.dark #projects #github-projects-container .showcase-project-card:hover {
 }
 
 .card-read-toolbar .card-tool-label {
-  display: inline !important;
-  line-height: 1 !important;
-  white-space: nowrap !important;
+  display: none !important;
 }
 
 /* Keep Listen/Translate beside segmented control on About */
@@ -1524,44 +1523,34 @@ html.dark #projects #github-projects-container .showcase-project-card:hover {
 @media (width <= 640px) {
   .about-card-header {
     display: flex !important;
-    flex-direction: column !important;
-    align-items: stretch !important;
-    gap: 0.75rem !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 0.5rem !important;
   }
 
   .about-card-header .about-segmented-control {
-    width: 100% !important;
-    flex: 0 0 auto !important;
+    flex: 0 1 auto !important;
   }
 
   .about-card-header .card-read-toolbar {
-    display: flex !important;
+    display: inline-flex !important;
     flex-direction: row !important;
     width: auto !important;
     justify-content: flex-end !important;
     margin-left: auto !important;
-    align-self: flex-end !important;
+    align-self: center !important;
   }
 
-  .about-card-header .card-read-toolbar .card-tool-label {
-    display: inline !important;
-    font-size: 0.75rem !important;
-  }
-
-  .about-card-header .card-read-toolbar .card-speak-btn,
-  .about-card-header .card-read-toolbar .card-translate-btn,
-  .about-card-header .card-read-toolbar .card-restore-btn {
-    width: auto !important;
-    min-width: 36px !important;
-    height: 34px !important;
-    min-height: 34px !important;
-    padding: 0 0.65rem !important;
-  }
-
+  .about-card-header .card-read-toolbar .card-tool-label,
   .card-read-toolbar .card-tool-label {
     display: none !important;
   }
 
+  .about-card-header .card-read-toolbar .card-speak-btn,
+  .about-card-header .card-read-toolbar .card-translate-btn,
+  .about-card-header .card-read-toolbar .card-restore-btn,
   .card-read-toolbar .card-speak-btn,
   .card-read-toolbar .card-translate-btn,
   .card-read-toolbar .card-restore-btn {

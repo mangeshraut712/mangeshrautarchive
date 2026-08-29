@@ -34,7 +34,7 @@ test.describe('Marathi Name Translation, Clean Speech Player, and shadcn Copy Fe
     await expect(pronounceBtn).toBeVisible();
   });
 
-  test('music card album art renders as crisp rounded square artwork without pin', async ({
+  test('music card album art renders as circular rotating artwork without pin', async ({
     page,
   }) => {
     const albumArt = page.locator('#album-art');
