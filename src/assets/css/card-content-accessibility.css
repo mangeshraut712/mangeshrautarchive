@@ -101,8 +101,8 @@ html.dark .card-read-toolbar .card-restore-btn {
 .card-read-toolbar .card-speak-btn.is-speaking,
 .card-read-toolbar .card-speak-btn[aria-pressed='true'] {
   background: #0071e3 !important;
-  color: #fff !important;
-  -webkit-text-fill-color: #fff !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
   border-color: #0071e3 !important;
 }
 
@@ -110,6 +110,17 @@ html.dark .card-read-toolbar .card-speak-btn.is-speaking,
 html.dark .card-read-toolbar .card-speak-btn[aria-pressed='true'] {
   background: #0a84ff !important;
   border-color: #0a84ff !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+.card-read-toolbar .card-speak-btn.is-speaking svg,
+.card-read-toolbar .card-speak-btn[aria-pressed='true'] svg,
+html.dark .card-read-toolbar .card-speak-btn.is-speaking svg,
+html.dark .card-read-toolbar .card-speak-btn[aria-pressed='true'] svg {
+  stroke: #ffffff !important;
+  color: #ffffff !important;
+  fill: none !important;
 }
 
 .card-read-toolbar .card-translate-btn[aria-expanded='true'] {
@@ -132,7 +143,7 @@ html.dark .card-read-toolbar .card-speak-btn[aria-pressed='true'] {
   position: absolute;
   top: calc(100% + 8px);
   right: 0;
-  z-index: 40;
+  z-index: 10000;
   width: min(260px, calc(100vw - 32px));
   padding: 0.65rem;
   border-radius: 16px;
@@ -140,13 +151,13 @@ html.dark .card-read-toolbar .card-speak-btn[aria-pressed='true'] {
   background: rgb(255 255 255 / 96%);
   backdrop-filter: saturate(180%) blur(20px);
   -webkit-backdrop-filter: saturate(180%) blur(20px);
-  box-shadow: 0 16px 40px rgb(0 0 0 / 14%);
+  box-shadow: 0 16px 40px rgb(0 0 0 / 18%);
 }
 
 html.dark .card-translate-popover {
   border-color: rgb(255 255 255 / 12%);
   background: rgb(18 18 20 / 96%);
-  box-shadow: 0 18px 44px rgb(0 0 0 / 48%);
+  box-shadow: 0 18px 44px rgb(0 0 0 / 52%);
 }
 
 .card-translate-popover[hidden] {
@@ -168,25 +179,25 @@ html.dark .card-translate-popover__title {
 }
 
 .card-translate-popover__scroll {
-  max-height: min(280px, 46vh);
+  max-height: min(220px, 32vh);
   overflow: hidden auto;
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
-  padding-right: 0.1rem;
+  padding: 0.1rem 0.2rem 0.3rem 0;
   scrollbar-width: thin;
 }
 
 .card-translate-popover__scroll::-webkit-scrollbar {
-  width: 6px;
+  width: 5px;
 }
 
 .card-translate-popover__scroll::-webkit-scrollbar-thumb {
-  background: rgb(0 0 0 / 18%);
+  background: rgb(0 0 0 / 22%);
   border-radius: 999px;
 }
 
 html.dark .card-translate-popover__scroll::-webkit-scrollbar-thumb {
-  background: rgb(255 255 255 / 22%);
+  background: rgb(255 255 255 / 26%);
 }
 
 .card-translate-popover__grid {
@@ -201,8 +212,8 @@ html.dark .card-translate-popover__scroll::-webkit-scrollbar-thumb {
   justify-content: space-between;
   gap: 0.75rem;
   width: 100%;
-  min-height: 44px;
-  padding: 0.55rem 0.65rem;
+  min-height: 40px;
+  padding: 0.45rem 0.65rem;
   border: none;
   border-radius: 11px;
   background: transparent !important;
@@ -211,7 +222,9 @@ html.dark .card-translate-popover__scroll::-webkit-scrollbar-thumb {
   box-shadow: none !important;
   cursor: pointer;
   text-align: left;
-  transition: background 0.18s ease;
+  transition:
+    background 0.18s ease,
+    transform 0.18s ease;
 }
 
 html.dark .card-translate-option {
@@ -221,32 +234,34 @@ html.dark .card-translate-option {
 
 .card-translate-option:hover,
 .card-translate-option:focus-visible {
-  background: rgb(0 113 227 / 10%) !important;
+  background: rgb(0 113 227 / 12%) !important;
+  transform: translateX(2px);
+}
+
+html.dark .card-translate-option:hover,
+html.dark .card-translate-option:focus-visible {
+  background: rgb(10 132 255 / 20%) !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
 }
 
 .card-translate-option.is-active {
-  background: rgb(0 113 227 / 14%) !important;
-  box-shadow: inset 0 0 0 1px rgb(0 113 227 / 24%) !important;
+  background: #0071e3 !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  box-shadow: 0 2px 8px rgb(0 113 227 / 35%) !important;
 }
 
-.card-translate-option__native {
-  flex: 1 1 auto;
-  min-width: 0;
-  font-size: 0.95rem;
-  font-weight: 600;
-  line-height: 1.25;
-  overflow-wrap: anywhere;
+html.dark .card-translate-option.is-active {
+  background: #0a84ff !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  box-shadow: 0 2px 8px rgb(10 132 255 / 40%) !important;
 }
 
-.card-translate-option__label {
-  flex: 0 0 auto;
-  font-size: 0.72rem;
-  color: #6e6e73;
-  white-space: nowrap;
-}
-
-html.dark .card-translate-option__label {
-  color: #98989d;
+.card-translate-option.is-active .card-translate-option__label,
+html.dark .card-translate-option.is-active .card-translate-option__label {
+  color: rgba(255, 255, 255, 0.85) !important;
 }
 
 .card-translate-option.is-loading {

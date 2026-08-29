@@ -43,6 +43,26 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'd83b1a20',
+    date: '2026-08-29',
+    type: 'fix',
+    title: 'Mobile Speak Icon Active State & Translation Popover Scroll/Z-Index Polish',
+    summary:
+      'Fixed speak button active state by enforcing crisp white stroke & fill on speech icons when active, elevated translation popover z-index to 10000 above floating dock controls, calibrated listbox scrolling with touch containment (max-height: min(220px, 32vh)), and polished mobile header spacing and hover states across all narrative cards.',
+    tags: [
+      'ui-ux',
+      'accessibility',
+      'speak',
+      'translation',
+      'popover',
+      'scrolling',
+      'z-index',
+      'mobile-polish',
+    ],
+    sha: 'd83b1a20',
+    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/d83b1a20',
+  },
+  {
     id: 'b7194f2a',
     date: '2026-08-29',
     type: 'fix',
