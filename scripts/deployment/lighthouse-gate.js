@@ -88,9 +88,7 @@ const defaultChromeFlags = [
   '--headless=new',
   '--no-sandbox',
   '--disable-dev-shm-usage',
-  '--disable-gpu',
   '--no-first-run',
-  '--disable-software-rasterizer',
   '--ignore-certificate-errors',
   '--allow-insecure-localhost',
 ].join(' ');

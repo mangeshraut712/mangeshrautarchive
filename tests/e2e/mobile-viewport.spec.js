@@ -7,7 +7,7 @@ const gotoSite = (page, path = '/') =>
 test.describe('Mobile viewport fit', () => {
   test.use({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
 
-  test.beforeEach((_, testInfo) => {
+  test.beforeEach(({ page: _page }, testInfo) => {
     test.skip(
       testInfo.project.name.includes('Firefox'),
       'Mobile emulation is not supported in Firefox by Playwright'

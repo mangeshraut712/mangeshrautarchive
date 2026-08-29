@@ -43,6 +43,17 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'f931d82c',
+    date: '2026-08-29',
+    type: 'improvement',
+    title: 'Multi-Layer JSDOM & Playwright Testing Validation & Gate Hardening',
+    summary:
+      'Completed multi-layer quality validation across JSDOM unit tests (210/210 passed in 2.5s), pytest backend API (175/175 passed), and real browser Lighthouse audits (100/100/100/100 desktop & mobile). Fixed Playwright test.beforeEach fixture destructuring in tests/e2e/mobile-viewport.spec.js and sanitized Chrome headless flags in scripts/deployment/lighthouse-gate.js for cross-platform stability.',
+    tags: ['testing', 'jsdom', 'vitest', 'playwright', 'lighthouse', 'quality-gate'],
+    sha: 'f931d82c',
+    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/f931d82c',
+  },
+  {
     id: 'b1704e38',
     date: '2026-08-28',
     type: 'improvement',
