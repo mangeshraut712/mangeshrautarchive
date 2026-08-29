@@ -43,6 +43,17 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'b7194f2a',
+    date: '2026-08-29',
+    type: 'fix',
+    title: 'Cross-Device Circular Vinyl Artwork & Continuous Playback Rotation Calibration',
+    summary:
+      'Injected explicit @keyframes albumSpin definitions across core stylesheets (homepage.css, chrome-surfaces.css, apple-platform-features.css) and applied -webkit-border-radius: 50% !important with responsive mobile scaling, guaranteeing seamless continuous rotation and perfect circular geometry on both desktop and mobile devices when tracks are playing.',
+    tags: ['music-card', 'vinyl', 'album-art', 'keyframes', 'animation', 'mobile-sync', 'safari'],
+    sha: 'b7194f2a',
+    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/b7194f2a',
+  },
+  {
     id: 'c47b198d',
     date: '2026-08-29',
     type: 'improvement',

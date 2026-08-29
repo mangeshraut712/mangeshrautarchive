@@ -226,7 +226,7 @@ class LastFmService {
             <stop offset="100%" stop-color="#121212"/>
           </linearGradient>
         </defs>
-        <rect width="240" height="240" rx="20" fill="url(#bg)"/>
+        <circle cx="120" cy="120" r="120" fill="url(#bg)"/>
         <circle cx="120" cy="105" r="40" fill="rgba(255,255,255,0.12)"/>
         <path d="M120 80v45a16 16 0 1 1-12-15.4V90l30-7v26a16 16 0 1 1-12-15.4V80h-6z" fill="#ffffff"/>
         <text x="120" y="190" text-anchor="middle" fill="#ffffff" font-size="13" font-weight="600" font-family="-apple-system,BlinkMacSystemFont,sans-serif">${safeTrack}</text>

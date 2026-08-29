@@ -40,8 +40,19 @@ test.describe('Marathi Name Translation, Clean Speech Player, and shadcn Copy Fe
     const albumArt = page.locator('#album-art');
     await expect(albumArt).toBeVisible();
 
+    // Verify circular border radius
+    const borderRadius = await albumArt.evaluate(el => getComputedStyle(el).borderRadius);
+    expect(borderRadius).toMatch(/50%|\d+px/);
+
     const pin = page.locator('.album-art-pin');
     await expect(pin).toBeHidden();
+
+    // Verify animation runs when is-playing is present
+    await page.locator('#music-card').evaluate(el => {
+      el.classList.add('is-playing');
+    });
+    const playState = await albumArt.evaluate(el => getComputedStyle(el).animationPlayState);
+    expect(playState).toBe('running');
   });
 
   test('contact channel copy button copies email and triggers toast', async ({

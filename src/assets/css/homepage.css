@@ -2489,34 +2489,56 @@ html.dark .hero-2026-item::before {
 
 /* Album Art Container - Circular Rotating Vinyl Artwork */
 
-.album-art-container {
+@keyframes albumSpin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.album-art-container,
+#home .album-art-container,
+#home .music-card-inner .album-art-container {
   position: relative;
   width: 48px;
   height: 48px;
+  min-width: 48px;
+  min-height: 48px;
   flex-shrink: 0;
-  border-radius: 50%;
-  overflow: hidden;
+  border-radius: 50% !important;
+  -webkit-border-radius: 50% !important;
+  overflow: hidden !important;
 }
 
-.album-art {
+.album-art,
+#home .album-art,
+#album-art,
+#home .music-card-inner .album-art {
   width: 100% !important;
   height: 100% !important;
+  min-width: 100% !important;
+  min-height: 100% !important;
   object-fit: cover !important;
   border-radius: 50% !important;
+  -webkit-border-radius: 50% !important;
   box-shadow:
     0 4px 12px rgb(0 0 0 / 15%),
     inset 0 0 0 1px rgb(255 255 255 / 20%);
-  animation: albumSpin 8s linear infinite;
-  animation-play-state: paused;
+  animation: albumSpin 8s linear infinite !important;
+  animation-play-state: paused !important;
   /* Smooth crossfade when src changes */
-  transition:
-    transform 0.3s ease,
-    opacity 0.4s ease;
+  transition: opacity 0.4s ease;
   aspect-ratio: 1 / 1 !important;
 }
 
 .music-card.is-playing .album-art,
-#home .music-card.is-playing .album-art {
+#home .music-card.is-playing .album-art,
+#home .music-card.is-playing #album-art,
+#home .music-card.is-playing .music-card-inner .album-art,
+.music-card[data-music-state='playing'] .album-art,
+#home .music-card[data-music-state='playing'] .album-art {
   animation-play-state: running !important;
 }
 
@@ -2525,9 +2547,22 @@ html.dark .hero-2026-item::before {
 }
 
 @media (max-width: 768px) {
+  .album-art-container,
+  #home .album-art-container,
+  #home .music-card-inner .album-art-container {
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    min-height: 44px;
+    border-radius: 50% !important;
+  }
+
   .album-art,
+  #home .album-art,
+  #album-art,
   #home .music-card-inner .album-art {
     border-radius: 50% !important;
+    -webkit-border-radius: 50% !important;
   }
 }
 

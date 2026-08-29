@@ -386,6 +386,15 @@ html.dark #home .music-card-inner .artist-name {
   -webkit-text-fill-color: #a1a1a6 !important;
 }
 
+@keyframes albumSpin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 #home .music-card-inner .album-art-container {
   position: relative !important;
   width: 48px !important;
@@ -395,6 +404,7 @@ html.dark #home .music-card-inner .artist-name {
   flex-shrink: 0 !important;
   overflow: hidden !important;
   border-radius: 50% !important;
+  -webkit-border-radius: 50% !important;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
 }
 
@@ -404,17 +414,19 @@ html.dark #home .music-card-inner .artist-name {
   min-width: 48px !important;
   min-height: 48px !important;
   border-radius: 50% !important;
+  -webkit-border-radius: 50% !important;
   object-fit: cover !important;
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.2) !important;
   animation: albumSpin 8s linear infinite !important;
   animation-play-state: paused !important;
-  transition:
-    transform 0.3s ease,
-    opacity 0.4s ease !important;
+  transition: opacity 0.4s ease !important;
 }
 
 #home .music-card.is-playing .music-card-inner .album-art,
-#home .music-card.is-playing .album-art {
+#home .music-card.is-playing .album-art,
+#home .music-card.is-playing #album-art,
+.music-card[data-music-state='playing'] .album-art,
+#home .music-card[data-music-state='playing'] .album-art {
   animation-play-state: running !important;
 }
 
@@ -601,6 +613,8 @@ html.dark #home .music-card-spotify-link:hover svg {
   #home .music-card-inner .album-art {
     width: 40px !important;
     height: 40px !important;
+    border-radius: 50% !important;
+    -webkit-border-radius: 50% !important;
   }
 }
 
