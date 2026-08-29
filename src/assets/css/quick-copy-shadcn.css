@@ -1,6 +1,6 @@
 /**
  * shadcn-inspired Quick Copy & Interactive Native Name Translation
- * Apple standard glassmorphism, fluid typography transitions, and accessible UI feedback.
+ * Apple standard glassmorphism, instant typography transitions, and accessible UI feedback.
  */
 
 /* ─── Hero Heading Translation Interaction ────────────────────────── */
@@ -25,20 +25,74 @@
 
 .hero-name-text {
   display: inline-block;
-  transition:
-    opacity 0.15s cubic-bezier(0.16, 1, 0.3, 1),
-    transform 0.15s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.hero-name-text--flipping {
-  opacity: 0;
-  transform: translateY(4px) scale(0.98);
+  transition: opacity 0.1s ease;
 }
 
 .hero-name-text.is-marathi {
   font-family:
-    -apple-system, BlinkMacSystemFont, 'Kohinoor Devanagari', 'Mukta', 'SF Pro Display', sans-serif;
+    -apple-system, BlinkMacSystemFont, 'Kohinoor Devanagari', 'Mukta', 'SF Pro Display', sans-serif !important;
   letter-spacing: -0.02em;
+}
+
+/* ─── Hero Translate Icon Button (matches #name-pronounce-btn) ────── */
+#name-translate-btn.name-translate-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 44px !important;
+  height: 44px !important;
+  min-width: 44px !important;
+  min-height: 44px !important;
+  max-width: 44px !important;
+  max-height: 44px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: none !important;
+  background: transparent !important;
+  color: #86868b !important;
+  cursor: pointer;
+  border-radius: 50% !important;
+  transition:
+    color 0.25s cubic-bezier(0.25, 0.8, 0.25, 1),
+    background-color 0.25s cubic-bezier(0.25, 0.8, 0.25, 1),
+    transform 0.25s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+  position: relative;
+  top: -2px;
+  flex: 0 0 auto !important;
+  outline: none !important;
+}
+
+#name-translate-btn.name-translate-btn svg {
+  width: 18px !important;
+  height: 18px !important;
+  min-width: 18px !important;
+  min-height: 18px !important;
+  display: block !important;
+}
+
+#name-translate-btn.name-translate-btn:hover {
+  color: #0071e3 !important;
+  background: rgba(0, 113, 227, 0.08) !important;
+  transform: scale(1.15);
+}
+
+html.dark #name-translate-btn.name-translate-btn {
+  color: #a1a1a6 !important;
+}
+
+html.dark #name-translate-btn.name-translate-btn:hover {
+  color: #2997ff !important;
+  background: rgba(41, 151, 255, 0.12) !important;
+}
+
+#name-translate-btn.name-translate-btn.is-active {
+  color: #0071e3 !important;
+  background: rgba(0, 113, 227, 0.12) !important;
+}
+
+html.dark #name-translate-btn.name-translate-btn.is-active {
+  color: #2997ff !important;
+  background: rgba(41, 151, 255, 0.2) !important;
 }
 
 /* ─── shadcn UI / Apple Glass Copy Button ──────────────────────────── */
@@ -95,13 +149,11 @@ html.dark .shadcn-copy-btn:hover {
   height: 14px;
   stroke: currentColor;
   stroke-width: 2;
-  transition:
-    transform 0.2s ease,
-    opacity 0.2s ease;
+  display: block;
 }
 
 .shadcn-copy-btn .check-icon {
-  display: none;
+  display: none !important;
   width: 14px;
   height: 14px;
   stroke: #34c759;
@@ -113,30 +165,107 @@ html.dark .shadcn-copy-btn .check-icon {
 }
 
 .shadcn-copy-btn.is-copied {
-  border-color: #34c759;
-  color: #34c759;
+  border-color: #34c759 !important;
+  color: #34c759 !important;
 }
 
 html.dark .shadcn-copy-btn.is-copied {
-  border-color: #30d158;
-  color: #30d158;
+  border-color: #30d158 !important;
+  color: #30d158 !important;
 }
 
 .shadcn-copy-btn.is-copied .copy-icon {
-  display: none;
+  display: none !important;
 }
 
 .shadcn-copy-btn.is-copied .check-icon {
-  display: inline-block;
+  display: inline-block !important;
   animation: shadcnCheckPop 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-/* Icon-only compact copy button */
-.shadcn-copy-btn--icon-only {
-  padding: 0.4rem;
-  min-width: 30px;
-  min-height: 30px;
-  border-radius: 6px;
+.contact-channel-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.contact-channel-row .contact-channel-item {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* ─── Contact Channel Compact Copy Button ──────────────────────────── */
+.contact-channel-copy-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 32px !important;
+  height: 32px !important;
+  min-width: 32px !important;
+  min-height: 32px !important;
+  padding: 0 !important;
+  border-radius: 8px !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  background: rgba(255, 255, 255, 0.75) !important;
+  color: #86868b !important;
+  cursor: pointer;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  flex: 0 0 auto !important;
+}
+
+.contact-channel-copy-btn:hover {
+  background: #ffffff !important;
+  color: #0071e3 !important;
+  border-color: rgba(0, 113, 227, 0.35) !important;
+  transform: scale(1.1);
+  box-shadow: 0 2px 8px rgba(0, 113, 227, 0.15);
+}
+
+html.dark .contact-channel-copy-btn {
+  background: rgba(36, 36, 40, 0.8) !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  color: #a1a1a6 !important;
+}
+
+html.dark .contact-channel-copy-btn:hover {
+  background: rgba(50, 50, 56, 0.95) !important;
+  color: #2997ff !important;
+  border-color: rgba(41, 151, 255, 0.4) !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+}
+
+.contact-channel-copy-btn .copy-icon {
+  width: 14px !important;
+  height: 14px !important;
+  display: block !important;
+}
+
+.contact-channel-copy-btn .check-icon {
+  width: 14px !important;
+  height: 14px !important;
+  display: none !important;
+}
+
+.contact-channel-copy-btn.is-copied {
+  border-color: #34c759 !important;
+  color: #34c759 !important;
+}
+
+html.dark .contact-channel-copy-btn.is-copied {
+  border-color: #30d158 !important;
+  color: #30d158 !important;
+}
+
+.contact-channel-copy-btn.is-copied .copy-icon {
+  display: none !important;
+}
+
+.contact-channel-copy-btn.is-copied .check-icon {
+  display: block !important;
+  animation: shadcnCheckPop 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 @keyframes shadcnCheckPop {

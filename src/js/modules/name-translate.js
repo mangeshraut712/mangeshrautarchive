@@ -1,25 +1,67 @@
 /**
  * Native Language Name Translation (English <-> Marathi)
- * Allows users to toggle Mangesh Raut's name between English ("Mangesh Raut")
- * and native Marathi script ("मंगेश राऊत") with smooth Apple typography transitions.
+ * Fast, instant toggle between English ("Mangesh Raut") and native Marathi script ("मंगेश राऊत"),
+ * mirroring the instant interactive behavior of the avatar toggle.
  */
 
 const STORAGE_KEY = 'portfolio-name-lang';
 const TEXT_EN = 'Mangesh Raut';
 const TEXT_MR = 'मंगेश राऊत';
 
-/**
- * Initialize the interactive name translation on the hero heading.
- */
-export function initNameTranslate() {
+export function applyNameLanguage(lang) {
   const heading = document.getElementById('home-heading');
-  const nameText = heading?.querySelector('.hero-name-text');
+  const nameText =
+    heading?.querySelector('.hero-name-text') || document.querySelector('.hero-name-text');
+  const translateBtn = document.getElementById('name-translate-btn');
 
-  if (!heading || !nameText) {
+  if (!nameText) {
     return;
   }
 
-  // Load persisted language preference or default to English
+  const isMarathi = lang === 'mr';
+  const text = isMarathi ? TEXT_MR : TEXT_EN;
+  const nextTarget = isMarathi ? 'English' : 'Marathi (मराठी)';
+  const titleHint = `Click to translate name to ${nextTarget}`;
+  const ariaLabel = isMarathi
+    ? 'मंगेश राऊत (Marathi). Click to translate to English.'
+    : 'Mangesh Raut (English). Click to translate to native Marathi script (मंगेश राऊत).';
+
+  // Instant synchronous text update
+  nameText.textContent = text;
+  nameText.setAttribute('lang', isMarathi ? 'mr' : 'en');
+
+  if (isMarathi) {
+    nameText.classList.add('is-marathi');
+    heading?.classList.add('is-marathi-mode');
+    translateBtn?.classList.add('is-active');
+  } else {
+    nameText.classList.remove('is-marathi');
+    heading?.classList.remove('is-marathi-mode');
+    translateBtn?.classList.remove('is-active');
+  }
+
+  if (heading) {
+    heading.setAttribute('aria-label', ariaLabel);
+    heading.setAttribute('title', titleHint);
+    heading.setAttribute('role', 'button');
+    heading.setAttribute('tabindex', '0');
+    heading.classList.add('hero-name--interactive');
+  }
+
+  if (translateBtn) {
+    translateBtn.setAttribute('title', titleHint);
+    translateBtn.setAttribute('aria-label', `Translate name to ${nextTarget}`);
+    translateBtn.setAttribute('aria-pressed', isMarathi ? 'true' : 'false');
+  }
+
+  try {
+    localStorage.setItem(STORAGE_KEY, lang);
+  } catch {
+    // Storage unavailable
+  }
+}
+
+export function toggleNameLanguage() {
   let currentLang = 'en';
   try {
     const saved = localStorage.getItem(STORAGE_KEY);
@@ -30,79 +72,71 @@ export function initNameTranslate() {
     currentLang = 'en';
   }
 
-  function applyLanguage(lang, animate = false) {
-    currentLang = lang;
-    const isMarathi = lang === 'mr';
-    const text = isMarathi ? TEXT_MR : TEXT_EN;
-    const titleHint = isMarathi
-      ? 'Click to translate to English'
-      : 'Click to translate to Marathi (मराठी)';
-    const ariaLabel = isMarathi
-      ? 'Mangesh Raut (displayed in Marathi script: मंगेश राऊत). Click to translate to English.'
-      : 'Mangesh Raut. Click to translate to native Marathi script (मंगेश राऊत).';
+  const nextLang = currentLang === 'en' ? 'mr' : 'en';
+  applyNameLanguage(nextLang);
+  return nextLang;
+}
 
-    heading.setAttribute('aria-label', ariaLabel);
-    heading.setAttribute('title', titleHint);
-    heading.setAttribute('role', 'button');
-    heading.setAttribute('tabindex', '0');
-    heading.classList.add('hero-name--interactive');
-
-    if (animate) {
-      nameText.classList.add('hero-name-text--flipping');
-      setTimeout(() => {
-        nameText.textContent = text;
-        nameText.setAttribute('lang', lang);
-        if (isMarathi) {
-          nameText.classList.add('is-marathi');
-        } else {
-          nameText.classList.remove('is-marathi');
-        }
-        nameText.classList.remove('hero-name-text--flipping');
-      }, 150);
-    } else {
-      nameText.textContent = text;
-      nameText.setAttribute('lang', lang);
-      if (isMarathi) {
-        nameText.classList.add('is-marathi');
-      } else {
-        nameText.classList.remove('is-marathi');
-      }
-    }
-
-    try {
-      localStorage.setItem(STORAGE_KEY, lang);
-    } catch {
-      // Storage unavailable
-    }
-  }
-
-  function toggleLanguage() {
-    const nextLang = currentLang === 'en' ? 'mr' : 'en';
-    applyLanguage(nextLang, true);
-  }
-
-  // Click & touch interactions
-  heading.addEventListener('click', e => {
-    // Avoid interfering if the user clicks directly on the audio pronounce button
-    if (e.target.closest('#name-pronounce-btn') || e.target.closest('.name-pronounce-btn')) {
-      return;
-    }
-    toggleLanguage();
-  });
-
-  // Keyboard accessibility (Enter or Space)
-  heading.addEventListener('keydown', e => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      if (e.target.closest('#name-pronounce-btn') || e.target.closest('.name-pronounce-btn')) {
+export function initNameTranslate() {
+  // Bind global handler for instant onclick invocation
+  window.__toggleHeroName = event => {
+    if (event) {
+      if (
+        event.target &&
+        (event.target.closest('#name-pronounce-btn') || event.target.closest('.name-pronounce-btn'))
+      ) {
         return;
       }
-      e.preventDefault();
-      toggleLanguage();
+      if (event.preventDefault) {
+        event.preventDefault();
+      }
+      if (event.stopPropagation) {
+        event.stopPropagation();
+      }
     }
-  });
+    toggleNameLanguage();
+  };
 
-  // Initialize initial state without animation
-  applyLanguage(currentLang, false);
+  const heading = document.getElementById('home-heading');
+  const translateBtn = document.getElementById('name-translate-btn');
+
+  // Load saved preference
+  let initialLang = 'en';
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved === 'mr' || saved === 'en') {
+      initialLang = saved;
+    }
+  } catch {
+    initialLang = 'en';
+  }
+
+  applyNameLanguage(initialLang);
+
+  // Keyboard accessibility on heading (Enter or Space)
+  if (heading && !heading.dataset.translateBound) {
+    heading.dataset.translateBound = 'true';
+    heading.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        if (e.target.closest('#name-pronounce-btn') || e.target.closest('.name-pronounce-btn')) {
+          return;
+        }
+        e.preventDefault();
+        toggleNameLanguage();
+      }
+    });
+  }
+
+  // Keyboard accessibility on translate button
+  if (translateBtn && !translateBtn.dataset.translateBound) {
+    translateBtn.dataset.translateBound = 'true';
+    translateBtn.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        toggleNameLanguage();
+      }
+    });
+  }
 }
 
 // Auto-initialize when DOM is ready

@@ -46,9 +46,9 @@ export const changelogEntries = [
     id: 'a87e419b',
     date: '2026-08-29',
     type: 'improvement',
-    title: 'Interactive Marathi Name Translation Toggle & shadcn-Style Quick Copy Actions',
+    title: 'Instant Marathi Name Translation Toggle & Contextual Quick-Copy Actions',
     summary:
-      'Implemented accessible interactive name translation toggle on hero heading transitioning between English ("Mangesh Raut") and native Marathi script ("मंगेश राऊत") with smooth Apple typography transitions. Added modern shadcn-styled quick copy component with SVG morphing checkmarks, floating glass toast notifications, and integrated copy triggers across hero identity strip, contact channels, and system subpages.',
+      'Refined hero name translation into an instant, zero-latency toggle between English ("Mangesh Raut") and native Marathi script ("मंगेश राऊत") accessible directly via heading click and dedicated hero translate button (#name-translate-btn). Relocated copy actions to contact channels with sleek shadcn copy buttons, SVG checkmark morph animations, and floating glass toast alerts.',
     tags: ['i18n', 'marathi', 'shadcn', 'clipboard', 'ui-ux', 'accessibility', 'glassmorphism'],
     sha: 'a87e419b',
     link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/a87e419b',
