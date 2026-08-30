@@ -210,3 +210,48 @@ html.dark body #contact button.currently-tab.active * {
   color: inherit !important;
   -webkit-text-fill-color: inherit !important;
 }
+
+/* Critical layout & touch targets for persona lens selector */
+.persona-lens-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin: 0.9rem auto 0.25rem;
+  box-sizing: border-box;
+}
+
+.persona-lens-selector {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.5rem;
+  border-radius: 9999px;
+  box-sizing: border-box;
+}
+
+.persona-lens-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.38rem;
+  padding: 0.45rem 0.85rem;
+  border-radius: 9999px;
+  border: none;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  min-height: 36px;
+  min-width: 44px;
+  box-sizing: border-box;
+}
+
+.persona-lens-pill.is-active,
+html.dark .persona-lens-pill.is-active {
+  background: #0071e3 !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  font-weight: 700 !important;
+}
