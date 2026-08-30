@@ -1598,6 +1598,16 @@ async function handleContactMessage(request, env, cors) {
     );
   }
 
+  // Asynchronously dispatch real-time notifications to Telegram/Discord/Webhooks
+  dispatchContactNotification(env, {
+    name,
+    email,
+    subject,
+    message,
+    role: cleanContext(payload.role || payload.lens, 64, 'General Visitor'),
+    source: cleanContext(payload.source, 64, 'github_pages_contact'),
+  }).catch(() => {});
+
   return json(
     {
       success: true,
@@ -1609,6 +1619,83 @@ async function handleContactMessage(request, env, cors) {
     200,
     cors
   );
+}
+
+async function dispatchContactNotification(env, { name, email, subject, message, role, source }) {
+  const timestamp = new Date().toISOString();
+  const alertText =
+    `📬 *New Portfolio Contact Submission*\n\n` +
+    `👤 *Name:* ${name || 'Anonymous'}\n` +
+    `📧 *Email:* ${email || 'N/A'}\n` +
+    `📌 *Subject:* ${subject || 'General Inquiry'}\n` +
+    `🎯 *Persona / Lens:* ${role || 'General'}\n` +
+    `🌐 *Source:* ${source || 'Contact Form'}\n\n` +
+    `💬 *Message:*\n${message || '(No message)'}\n\n` +
+    `⏰ *Time:* ${timestamp}`;
+
+  const dispatches = [];
+
+  // 1. Telegram Bot alert
+  const tgToken = env.TELEGRAM_BOT_TOKEN;
+  const tgChatId = env.TELEGRAM_CHAT_ID;
+  if (tgToken && tgChatId) {
+    dispatches.push(
+      fetch(`https://api.telegram.org/bot${tgToken}/sendMessage`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          chat_id: tgChatId,
+          text: alertText,
+          parse_mode: 'Markdown',
+        }),
+      }).catch(e => console.warn('Telegram notify error:', e.message))
+    );
+  }
+
+  // 2. Discord Webhook alert
+  const discordWebhook = env.DISCORD_WEBHOOK_URL;
+  if (discordWebhook) {
+    dispatches.push(
+      fetch(discordWebhook, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          embeds: [
+            {
+              title: `📬 New Portfolio Lead: ${name || 'Visitor'}`,
+              color: 0x0071e3,
+              fields: [
+                { name: 'Email', value: email || 'N/A', inline: true },
+                { name: 'Subject', value: subject || 'N/A', inline: true },
+                { name: 'Persona / Lens', value: role || 'General', inline: true },
+                { name: 'Message', value: (message || '').slice(0, 1000) || '(No message text)' },
+              ],
+              footer: { text: `mangeshrautarchive · ${timestamp}` },
+            },
+          ],
+        }),
+      }).catch(e => console.warn('Discord notify error:', e.message))
+    );
+  }
+
+  // 3. Generic Webhook (Slack / Zapier / n8n / Make)
+  const genericWebhook = env.CONTACT_NOTIFICATION_WEBHOOK_URL;
+  if (genericWebhook) {
+    dispatches.push(
+      fetch(genericWebhook, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          event: 'contact_form_submitted',
+          data: { name, email, subject, message, role, source, timestamp },
+        }),
+      }).catch(e => console.warn('Webhook notify error:', e.message))
+    );
+  }
+
+  if (dispatches.length) {
+    await Promise.allSettled(dispatches);
+  }
 }
 
 function handlePersonalizationStub(request, path, cors) {

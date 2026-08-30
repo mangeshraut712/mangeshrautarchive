@@ -1,0 +1,82 @@
+name: Broken Link Checker
+
+on:
+  schedule:
+    # Run weekly on Sunday at 08:00 UTC
+    - cron: '0 8 * * 0'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: link-checker
+  cancel-in-progress: true
+
+env:
+  NODE_VERSION: '22'
+  GH_PAGES_BASE: https://mangeshraut712.github.io/mangeshrautarchive
+
+jobs:
+  check-links:
+    name: Audit Internal & External Links
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: package-lock.json
+
+      - name: Install Dependencies
+        run: npm install --no-audit --no-fund
+
+      - name: Build Production Distribution
+        run: npm run build
+
+      - name: Check HTML File Links (lychee)
+        uses: lycheeverse/lychee-action@v2
+        with:
+          args: >-
+            --verbose
+            --no-progress
+            --exclude-mail
+            --max-concurrency 8
+            --timeout 20
+            --max-retries 3
+            --accept 200,206,301,302,307,308,403,429
+            --exclude '(linkedin\.com|instagram\.com|facebook\.com|strava\.com|t\.me|twitter\.com|x\.com)'
+            'dist/**/*.html'
+          fail: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Verify Live Pages Core Paths
+        run: |
+          set -euo pipefail
+          urls=(
+            "${{ env.GH_PAGES_BASE }}/"
+            "${{ env.GH_PAGES_BASE }}/about.html"
+            "${{ env.GH_PAGES_BASE }}/systems.html"
+            "${{ env.GH_PAGES_BASE }}/monitor.html"
+            "${{ env.GH_PAGES_BASE }}/travel.html"
+            "${{ env.GH_PAGES_BASE }}/uses.html"
+            "${{ env.GH_PAGES_BASE }}/changelog.html"
+            "${{ env.GH_PAGES_BASE }}/sitemap.xml"
+            "${{ env.GH_PAGES_BASE }}/robots.txt"
+            "${{ env.GH_PAGES_BASE }}/ai.txt"
+          )
+          for url in "${urls[@]}"; do
+            CODE=$(curl -sS -o /dev/null -w "%{http_code}" --connect-timeout 10 --max-time 30 "$url" || true)
+            echo "Checking $url -> HTTP $CODE"
+            if [ "$CODE" != "200" ]; then
+              echo "::warning::Non-200 status for $url: HTTP $CODE"
+            fi
+          done

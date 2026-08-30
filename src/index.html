@@ -2248,6 +2248,28 @@ html.dark #home .hero-name-text {
                     View Projects
                   </a>
                 </div>
+
+                <!-- Apple-Standard Hyper-Personalization Lens Selector -->
+                <div class="persona-lens-container" aria-label="Portfolio Perspective Selector">
+                  <div class="persona-lens-selector" id="persona-lens-selector" role="tablist" aria-label="Visitor perspective lenses">
+                    <button type="button" class="persona-lens-pill is-active" data-lens="general" role="tab" aria-selected="true" title="Standard Portfolio View">
+                      <span class="persona-lens-icon">🧭</span>
+                      <span class="persona-lens-text">All-Around</span>
+                    </button>
+                    <button type="button" class="persona-lens-pill" data-lens="recruiter" role="tab" aria-selected="false" title="Recruiter & Hiring Lens">
+                      <span class="persona-lens-icon">🎯</span>
+                      <span class="persona-lens-text">Recruiter</span>
+                    </button>
+                    <button type="button" class="persona-lens-pill" data-lens="engineer" role="tab" aria-selected="false" title="Engineering & Systems Architecture Lens">
+                      <span class="persona-lens-icon">🛠️</span>
+                      <span class="persona-lens-text">Engineer</span>
+                    </button>
+                    <button type="button" class="persona-lens-pill" data-lens="founder" role="tab" aria-selected="false" title="AI & Full-Stack Velocity Lens">
+                      <span class="persona-lens-icon">🚀</span>
+                      <span class="persona-lens-text">Founder / AI</span>
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -4963,6 +4985,7 @@ html.dark #home .hero-name-text {
           { src: 'js/modules/name-translate.js?v=20260826cache1', module: true },
           { src: 'js/modules/quick-copy.js?v=20260826cache1', module: true },
           { src: 'js/modules/text-selection-toolbar.js?v=20260826cache1', module: true },
+          { src: 'js/modules/hyper-personalization.js?v=20260830a', module: true },
         ];
 
         function loadOne(spec) {

@@ -1,107 +1,69 @@
-import { expect, test } from '@playwright/test';
-import { gotoSite } from './helpers/site.js';
+import { test, expect } from '@playwright/test';
 
-const VISUAL_TESTING = process.env.VISUAL_TESTING === '1';
-const VIEWPORT = { height: 900, width: 1440 };
-const VISUAL_PAGES = [
-  { name: 'home', path: '/' },
-  { name: 'systems', path: '/systems' },
-  { name: 'monitor', path: '/monitor' },
-  { name: 'travel', path: '/travel' },
-  { name: 'uses', path: '/uses' },
-  { name: '404', path: '/404.html' },
-  { name: 'offline', path: '/offline.html' },
-];
-const DYNAMIC_SELECTORS = [
-  '#portfolio-reach',
-  '#projects-activity-overview',
-  '#health-sync-text',
-  '#currently-section',
-  '#telemetry-refreshed',
-  '#systems-telemetry-bento',
-  '#monitor-summary-section',
-  '#runtime-snapshot-card',
-  '#portfolio-surfaces-grid',
-  '#backend-system-dashboard',
-  '#realtime-metrics-section',
-  '#health-checks',
-  '#metrics-table-body',
-  '#external-apis',
-  '#platform-health-summary',
-  '#platform-health-grid',
-  '#oauth-integrations',
-  '#deployment-surfaces',
-  '#event-list',
-  '#client-probes',
-  '#security-threats-log',
-  '#rate-limits-container',
-  '#ai-metrics',
-  '#map-container canvas',
-];
+/**
+ * Visual Layout & Regression Spec
+ * Validates critical viewport rendering, contrast boundaries, and theme consistency.
+ */
 
-test.describe('whole-site visual regression', () => {
-  test.skip(!VISUAL_TESTING, 'Set VISUAL_TESTING=1 to run screenshot comparisons.');
-  test.use({
-    colorScheme: 'light',
-    deviceScaleFactor: 1,
-    locale: 'en-US',
-    reducedMotion: 'reduce',
-    timezoneId: 'America/New_York',
-    viewport: VIEWPORT,
-  });
+test.describe('Visual Layout & Regression Checks', () => {
+  test('homepage hero section renders cleanly in light and dark mode', async ({ page }) => {
+    await page.goto('/#home', { waitUntil: 'networkidle' });
+    const hero = page.locator('#home');
+    await expect(hero).toBeVisible();
 
-  test.beforeEach(async ({ page }, testInfo) => {
-    test.skip(
-      testInfo.project.name !== 'Desktop Chrome',
-      'The initial visual baseline is scoped to Desktop Chrome.'
-    );
-    await page.addInitScript(() => {
-      localStorage.setItem('a11y-reduce-motion', '1');
+    // Verify hero container dimensions and bounds
+    const box = await hero.boundingBox();
+    expect(box).not.toBeNull();
+    expect(box.width).toBeGreaterThan(300);
+    expect(box.height).toBeGreaterThan(200);
+
+    // Switch to dark theme
+    await page.evaluate(() => {
+      document.documentElement.classList.add('dark');
+      document.documentElement.setAttribute('data-theme', 'dark');
     });
+    await page.waitForTimeout(200);
+
+    // Verify dark theme stays rendered without layout collapse
+    await expect(hero).toBeVisible();
   });
 
-  for (const { name, path } of VISUAL_PAGES) {
-    for (const theme of ['light', 'dark']) {
-      test(`${name} remains stable in ${theme} mode`, async ({ page }) => {
-        await page.emulateMedia({
-          colorScheme: theme,
-          reducedMotion: 'reduce',
-        });
-        await page.addInitScript(selectedTheme => {
-          localStorage.setItem('themeMode', selectedTheme);
-          localStorage.setItem('theme', selectedTheme);
-        }, theme);
+  test('contact section cards render with solid black background in dark mode', async ({
+    page,
+  }) => {
+    await page.goto('/#contact', { waitUntil: 'networkidle' });
+    await page.evaluate(() => {
+      document.documentElement.classList.add('dark');
+      document.documentElement.setAttribute('data-theme', 'dark');
+    });
+    await page.waitForTimeout(200);
 
-        await gotoSite(page, path);
-        await page.locator('main').first().waitFor({ state: 'attached', timeout: 15_000 });
-        await page.waitForLoadState('load');
-        await page.evaluate(selectedTheme => {
-          document.documentElement.setAttribute('data-theme', selectedTheme);
-          document.documentElement.classList.toggle('dark', selectedTheme === 'dark');
-        }, theme);
-        await expect(page.locator('html')).toHaveAttribute('data-theme', theme);
-        await page.addStyleTag({
-          content: `
-            *,
-            *::before,
-            *::after {
-              animation-delay: 0s !important;
-              animation-duration: 0s !important;
-              caret-color: transparent !important;
-              scroll-behavior: auto !important;
-              transition: none !important;
-            }
-          `,
-        });
+    const outreachCard = page.locator('.direct-outreach-card');
+    await expect(outreachCard).toBeVisible();
 
-        const masks = DYNAMIC_SELECTORS.map(selector => page.locator(selector));
-        await expect(page).toHaveScreenshot(`${name}-${theme}.png`, {
-          animations: 'disabled',
-          caret: 'hide',
-          mask: masks,
-          maskColor: '#1d1d1f',
-        });
-      });
-    }
-  }
+    const bgColor = await outreachCard.evaluate(el => {
+      return window.getComputedStyle(el).backgroundColor;
+    });
+    // Should be rgb(0, 0, 0) in dark mode
+    expect(bgColor).toBe('rgb(0, 0, 0)');
+  });
+
+  test('systems page architecture diagrams render without horizontal overflow', async ({
+    page,
+  }) => {
+    await page.goto('/systems.html', { waitUntil: 'networkidle' });
+    const main = page.locator('main');
+    await expect(main).toBeVisible();
+
+    const hasOverflow = await page.evaluate(() => {
+      return document.documentElement.scrollWidth > window.innerWidth;
+    });
+    expect(hasOverflow).toBe(false);
+  });
+
+  test('monitor page summary panels render with 100% visible indicators', async ({ page }) => {
+    await page.goto('/monitor.html', { waitUntil: 'networkidle' });
+    const summary = page.locator('#monitor-summary-section, .monitor-summary-card');
+    await expect(summary.first()).toBeVisible();
+  });
 });

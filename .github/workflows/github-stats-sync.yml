@@ -1,0 +1,57 @@
+name: GitHub Repository & Stats Sync
+
+on:
+  schedule:
+    # Run every Monday at 04:00 UTC
+    - cron: '0 4 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: github-stats-sync
+  cancel-in-progress: true
+
+env:
+  NODE_VERSION: '22'
+
+jobs:
+  sync-stats:
+    name: Fetch & Cache GitHub Stats
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: package-lock.json
+
+      - name: Install Dependencies
+        run: npm install --no-audit --no-fund
+
+      - name: Run GitHub Stats Sync
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/integrations/sync-github-stats.mjs
+
+      - name: Commit & Push changes if updated
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          if ! git diff --quiet src/js/data/github-stats.json; then
+            git add src/js/data/github-stats.json
+            git commit -m "chore(data): auto-sync GitHub stats cache [skip ci]"
+            git push origin main
+            echo "GitHub stats updated and pushed."
+          else
+            echo "No changes in GitHub stats."
+          fi

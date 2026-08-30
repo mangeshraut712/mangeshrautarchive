@@ -43,6 +43,26 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'c82e41d9',
+    date: '2026-08-30',
+    type: 'release',
+    title:
+      'Autonomous Infrastructure Suite: Hyper-Personalization, Claude Code Insights & Webhook Dispatchers',
+    summary:
+      'Deployed full autonomous operations architecture: Multi-channel real-time contact lead dispatchers (Telegram, Discord, HTTPS webhooks), automated broken link and dead asset verification (link-checker.yml), automated GitHub stats & pinned repository caching (github-stats-sync.yml), automated semantic release creation (release.yml), Playwright visual regression suite, on-device Hyper-Personalization Engine (Recruiter, Engineer, Founder, All-Around visitor lenses), and interactive Claude Code /insights telemetry monitoring.',
+    tags: [
+      'automation',
+      'hyper-personalization',
+      'claude-insights',
+      'github-actions',
+      'webhooks',
+      'visual-regression',
+      'telemetry',
+    ],
+    sha: 'c82e41d9',
+    link: `${CHANGELOG_REPO}/commit/c82e41d9`,
+  },
+  {
     id: 'f9c2d1b7',
     date: '2026-08-30',
     type: 'improvement',

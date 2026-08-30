@@ -126,6 +126,10 @@ async def send_contact_message(payload: ContactMessage, req: Request):
 
         doc_id = resp.json().get("name", "").split("/")[-1]
         logger.info(f"✅ Contact message saved: {doc_id}")
+
+        # Asynchronously dispatch webhooks (Telegram / Discord / Generic)
+        await _dispatch_contact_notifications(payload, req)
+
         return {
             "success": True,
             "persisted": True,
@@ -136,6 +140,70 @@ async def send_contact_message(payload: ContactMessage, req: Request):
     except httpx.RequestError as exc:
         logger.error(f"❌ Network error saving contact: {exc}", exc_info=True)
         raise HTTPException(status_code=503, detail="Network error. Please try again.")
+
+
+async def _dispatch_contact_notifications(payload: ContactMessage, req: Request):
+    """Dispatches instant notifications to Telegram, Discord, or generic Webhooks if configured."""
+    timestamp = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
+    tg_token = os.getenv("TELEGRAM_BOT_TOKEN")
+    tg_chat_id = os.getenv("TELEGRAM_CHAT_ID")
+    discord_url = os.getenv("DISCORD_WEBHOOK_URL")
+    webhook_url = os.getenv("CONTACT_NOTIFICATION_WEBHOOK_URL")
+
+    if not any([tg_token and tg_chat_id, discord_url, webhook_url]):
+        return
+
+    try:
+        async with httpx.AsyncClient(timeout=5.0) as client:
+            if tg_token and tg_chat_id:
+                tg_text = (
+                    f"📬 *New Portfolio Contact Submission*\n\n"
+                    f"👤 *Name:* {payload.name}\n"
+                    f"📧 *Email:* {payload.email}\n"
+                    f"📌 *Subject:* {payload.subject}\n\n"
+                    f"💬 *Message:*\n{payload.message}\n\n"
+                    f"⏰ *Time:* {timestamp}"
+                )
+                await client.post(
+                    f"https://api.telegram.org/bot{tg_token}/sendMessage",
+                    json={"chat_id": tg_chat_id, "text": tg_text, "parse_mode": "Markdown"},
+                )
+
+            if discord_url:
+                await client.post(
+                    discord_url,
+                    json={
+                        "embeds": [
+                            {
+                                "title": f"📬 New Portfolio Lead: {payload.name}",
+                                "color": 0x0071E3,
+                                "fields": [
+                                    {"name": "Email", "value": payload.email, "inline": True},
+                                    {"name": "Subject", "value": payload.subject, "inline": True},
+                                    {"name": "Message", "value": payload.message[:1000]},
+                                ],
+                                "footer": {"text": f"mangeshrautarchive · {timestamp}"},
+                            }
+                        ]
+                    },
+                )
+
+            if webhook_url:
+                await client.post(
+                    webhook_url,
+                    json={
+                        "event": "contact_form_submitted",
+                        "data": {
+                            "name": payload.name,
+                            "email": payload.email,
+                            "subject": payload.subject,
+                            "message": payload.message,
+                            "timestamp": timestamp,
+                        },
+                    },
+                )
+    except Exception as e:
+        logger.warning(f"⚠️ Notification dispatch error: {e}")
 
 
 def _newsletter_doc_id(email: str) -> str:
