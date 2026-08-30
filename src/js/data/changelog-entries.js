@@ -43,6 +43,25 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'e639a02f',
+    date: '2026-08-30',
+    type: 'improvement',
+    title: 'Cross-Browser Contact Section Polish: Safari & Chrome Responsive Elevation',
+    summary:
+      'Completed full visual and responsive design audit across desktop (1440px) and mobile (390px) viewports in both Chromium and WebKit (Safari). Upgraded contact cards to authentic Apple secondary system surfaces (#ffffff in light theme, #1c1c1e in dark theme with 22px radius and refined elevation shadows), enhanced form inputs with Apple Blue focus rings, hid honeypot field across all mobile viewports, and ensured smooth continuous logo marquee tracks with gradient edge fades.',
+    tags: [
+      'design',
+      'contact',
+      'safari',
+      'chrome',
+      'responsive',
+      'apple-design',
+      'mobile-optimization',
+      'ui-ux',
+    ],
+    sha: 'e639a02f',
+  },
+  {
     id: 'b41f893e',
     date: '2026-08-30',
     type: 'improvement',
