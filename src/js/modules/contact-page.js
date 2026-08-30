@@ -71,7 +71,7 @@ function initSupportDonationInteractions() {
 
   const QR_TARGETS = {
     stripe: {
-      url: 'https://buy.stripe.com/14A3cufGUgcV5ePfuA14401',
+      url: 'https://buy.stripe.com/bJe8wOeCQ0dXePp6Y414402',
       label: 'Stripe Checkout (Apple Pay & Google Pay)',
     },
     paypal: {
@@ -79,7 +79,7 @@ function initSupportDonationInteractions() {
       label: 'PayPal & Venmo Checkout',
     },
     bmc: {
-      url: 'https://buymeacoffee.com/xzvwsqf84xy',
+      url: 'https://buymeacoffee.com/mangeshraut',
       label: 'Buy Me a Coffee (Mangesh Bharat Raut)',
     },
     solana: {

@@ -43,6 +43,25 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: '83e16b9d',
+    date: '2026-08-30',
+    type: 'release',
+    title: 'Live Browser Payment Optimization: Open-Amount Stripe Link & Custom BMC Vanity Slug',
+    summary:
+      'Programmatically optimized all live payment channels in browser: Created and deployed a brand new live Stripe Hosted Payment Link (bJe8wOeCQ0dXePp6Y414402) with "Customers choose what to pay", $10 suggested preset, $1 minimum limit, Apple Pay, Google Pay, Cards, Cash App Pay, and Amazon Pay. Successfully claimed the clean custom creator vanity URL (buymeacoffee.com/mangeshraut), and verified the live PayPal NCP button (LXNHJ5SUGNP82) across the portfolio and .github/FUNDING.yml.',
+    tags: [
+      'payments',
+      'stripe',
+      'buymeacoffee',
+      'paypal',
+      'browser-automation',
+      'vanity-url',
+      'funding',
+    ],
+    sha: '83e16b9d',
+    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/83e16b9d',
+  },
+  {
     id: 'a932d18f',
     date: '2026-08-30',
     type: 'release',

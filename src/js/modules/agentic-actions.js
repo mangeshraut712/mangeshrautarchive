@@ -1124,13 +1124,13 @@ export class AgenticActionHandler {
       }
       return {
         success: true,
-        message: `💖 **Support & Sponsorship Options**\n\nThank you for supporting Mangesh's work! Here are the active channels:\n\n- **[Stripe Checkout](https://buy.stripe.com/14A3cufGUgcV5ePfuA14401):** Apple Pay, Google Pay, Cards\n- **[PayPal & Venmo](https://www.paypal.com/ncp/payment/LXNHJ5SUGNP82):** PayPal balance, Venmo, Cards\n- **[Buy Me a Coffee](https://buymeacoffee.com/xzvwsqf84xy):** Micro-tips, notes & monthly memberships\n- **[GitHub Sponsors](https://github.com/sponsors/mangeshraut712):** Monthly open-source sponsorship\n- **Crypto Wallets:** Solana (\`3LaZpBbm...mkcc\`), Bitcoin (\`bc1qe55r...0j44j\`), USDC, Ethereum, Dogecoin\n\nI have scrolled you directly to the **Support My Work** card on the page!`,
+        message: `💖 **Support & Sponsorship Options**\n\nThank you for supporting Mangesh's work! Here are the active channels:\n\n- **[Stripe Checkout](https://buy.stripe.com/bJe8wOeCQ0dXePp6Y414402):** Apple Pay, Google Pay, Cards\n- **[PayPal & Venmo](https://www.paypal.com/ncp/payment/LXNHJ5SUGNP82):** PayPal balance, Venmo, Cards\n- **[Buy Me a Coffee](https://buymeacoffee.com/mangeshraut):** Micro-tips, notes & monthly memberships\n- **[GitHub Sponsors](https://github.com/sponsors/mangeshraut712):** Monthly open-source sponsorship\n- **Crypto Wallets:** Solana (\`3LaZpBbm...mkcc\`), Bitcoin (\`bc1qe55r...0j44j\`), USDC, Ethereum, Dogecoin\n\nI have scrolled you directly to the **Support My Work** card on the page!`,
       };
     } catch (_e) {
       return {
         success: true,
         message:
-          'You can support Mangesh via [Stripe](https://buy.stripe.com/14A3cufGUgcV5ePfuA14401), [PayPal](https://www.paypal.com/ncp/payment/LXNHJ5SUGNP82), [Buy Me a Coffee](https://buymeacoffee.com/xzvwsqf84xy), or [GitHub Sponsors](https://github.com/sponsors/mangeshraut712).',
+          'You can support Mangesh via [Stripe](https://buy.stripe.com/bJe8wOeCQ0dXePp6Y414402), [PayPal](https://www.paypal.com/ncp/payment/LXNHJ5SUGNP82), [Buy Me a Coffee](https://buymeacoffee.com/mangeshraut), or [GitHub Sponsors](https://github.com/sponsors/mangeshraut712).',
       };
     }
   }
