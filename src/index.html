@@ -3910,18 +3910,6 @@ html.dark #home .hero-name-text {
 
               <!-- Panel 1: One-Time Contribution -->
               <div id="support-panel-onetime" class="support-panel" role="tabpanel" aria-labelledby="support-tab-onetime">
-                <!-- Suggested Amount Preset Chips -->
-                <div class="donation-preset-container">
-                  <p class="preset-label">Suggested amount:</p>
-                  <div class="donation-preset-chips" role="group" aria-label="Suggested amounts">
-                    <button type="button" class="donation-chip" data-amount="5" aria-label="$5 coffee"><strong>$5</strong> <span>Coffee</span></button>
-                    <button type="button" class="donation-chip is-selected" data-amount="10" aria-label="$10 support"><strong>$10</strong> <span>Support</span></button>
-                    <button type="button" class="donation-chip" data-amount="25" aria-label="$25 sponsor"><strong>$25</strong> <span>Sponsor</span></button>
-                    <button type="button" class="donation-chip" data-amount="50" aria-label="$50 super sponsor"><strong>$50</strong> <span>Super</span></button>
-                    <button type="button" class="donation-chip" data-amount="custom" aria-label="Custom amount"><strong>Custom</strong></button>
-                  </div>
-                </div>
-
                 <!-- Payment Buttons -->
                 <div class="support-buttons-container">
                   <p class="payment-label">Choose your preferred checkout channel:</p>
@@ -3961,26 +3949,6 @@ html.dark #home .hero-name-text {
                       <span class="payment-badge">Cards</span>
                     </div>
                   </a>
-
-                  <!-- Buy Me a Coffee -->
-                  <a href="https://buymeacoffee.com/mangeshraut" target="_blank" rel="noopener noreferrer"
-                    class="support-coffee-btn premium" aria-label="Buy Me a Coffee">
-                    <div class="payment-btn-main">
-                      <img src="assets/images/buymeacoffee.svg" alt="" class="payment-logo bmc-logo" width="22" height="22" loading="lazy" decoding="async" aria-hidden="true" />
-                      <span>Buy Me a Coffee</span>
-                    </div>
-                    <div class="payment-badges-pill bmc-badges" aria-hidden="true">
-                      <span class="payment-badge">☕ Tips</span>
-                      <span class="payment-badge">⭐ Members</span>
-                      <span class="payment-badge">💬 Notes</span>
-                    </div>
-                  </a>
-
-                  <!-- QR Code Mobile Scanner Button -->
-                  <button type="button" class="support-qr-trigger-btn" id="open-payment-qr-btn" aria-haspopup="dialog" aria-expanded="false">
-                    <i class="fas fa-qrcode" aria-hidden="true"></i>
-                    <span>Scan QR Code to Pay on Mobile</span>
-                  </button>
 
                   <!-- Divider -->
                   <div class="support-divider">
@@ -4071,36 +4039,6 @@ html.dark #home .hero-name-text {
                       <span>Join on Buy Me a Coffee</span> <i class="fas fa-arrow-right" aria-hidden="true"></i>
                     </a>
                   </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Instant Payment QR Code Modal -->
-            <div id="payment-qr-modal" class="payment-qr-modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="payment-qr-title" hidden>
-              <div class="payment-qr-card-surface">
-                <button type="button" class="payment-qr-close-btn" id="close-payment-qr-btn" aria-label="Close QR modal">
-                  <i class="fas fa-times" aria-hidden="true"></i>
-                </button>
-                <div class="payment-qr-header">
-                  <div class="payment-qr-icon-badge" aria-hidden="true"><i class="fas fa-qrcode"></i></div>
-                  <h3 id="payment-qr-title">Instant Mobile Checkout</h3>
-                  <p class="payment-qr-subtitle">Scan with your smartphone camera to open payment directly.</p>
-                </div>
-                <div class="payment-qr-tabs" role="tablist" aria-label="QR payment channel">
-                  <button type="button" class="payment-qr-tab is-active" data-qr-target="stripe" role="tab" aria-selected="true">Stripe</button>
-                  <button type="button" class="payment-qr-tab" data-qr-target="paypal" role="tab" aria-selected="false">PayPal</button>
-                  <button type="button" class="payment-qr-tab" data-qr-target="bmc" role="tab" aria-selected="false">BuyMeCoffee</button>
-                  <button type="button" class="payment-qr-tab" data-qr-target="solana" role="tab" aria-selected="false">Solana</button>
-                  <button type="button" class="payment-qr-tab" data-qr-target="bitcoin" role="tab" aria-selected="false">Bitcoin</button>
-                </div>
-                <div class="payment-qr-display-container">
-                  <div class="payment-qr-frame">
-                    <img id="payment-qr-image" src="https://quickchart.io/qr?size=280&dark=0071e3&light=ffffff&ecLevel=H&margin=1&text=https%3A%2F%2Fbuy.stripe.com%2FbJe8wOeCQ0dXePp6Y414402" alt="Payment QR code" width="200" height="200" loading="eager" decoding="async" />
-                  </div>
-                  <p class="payment-qr-channel-label" id="payment-qr-channel-label">Stripe Checkout (Apple Pay &amp; Google Pay)</p>
-                  <a href="https://buy.stripe.com/bJe8wOeCQ0dXePp6Y414402" id="payment-qr-direct-link" target="_blank" rel="noopener noreferrer" class="payment-qr-open-link">
-                    <span>Open direct checkout in browser</span> <i class="fas fa-external-link-alt" aria-hidden="true"></i>
-                  </a>
                 </div>
               </div>
             </div>

@@ -43,6 +43,26 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: '72b9a4c1',
+    date: '2026-08-30',
+    type: 'improvement',
+    title: 'Streamlined Support Architecture: One-Time (Stripe & PayPal) vs Monthly (GitHub & BMC)',
+    summary:
+      'Refined and streamlined the Support My Work card architecture per Apple HIG minimalism: One-Time Contribution panel now cleanly focuses on Stripe Hosted Checkout and PayPal & Venmo alongside 1-click cryptocurrency wallets; Monthly Sponsorship panel hosts dedicated tier cards for GitHub Sponsors and Buy Me a Coffee Monthly Memberships. Removed obsolete preset chips and QR modal overlay for a cleaner, high-conversion direct checkout experience.',
+    tags: [
+      'payments',
+      'stripe',
+      'paypal',
+      'buymeacoffee',
+      'github-sponsors',
+      'ui-ux',
+      'apple-design',
+      'refactor',
+    ],
+    sha: '72b9a4c1',
+    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/72b9a4c1',
+  },
+  {
     id: '83e16b9d',
     date: '2026-08-30',
     type: 'release',
