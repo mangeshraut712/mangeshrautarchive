@@ -2347,24 +2347,26 @@ html.dark .support-description {
 
 /* Support Buttons Container - Apple Inspired */
 
-/* Support Mode Toggle — Segmented Apple Pill */
+/* Support Mode Toggle — Segmented Apple Pill (Solid Theme-Aware) */
 .support-mode-toggle {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.35rem;
-  background: rgba(0, 0, 0, 0.05);
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.12);
   border-radius: 9999px;
   padding: 0.25rem;
   margin: 0 0 1rem 0;
   width: 100%;
   box-sizing: border-box;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
 html.dark .support-mode-toggle {
-  background: rgba(255, 255, 255, 0.06);
-  border-color: rgba(255, 255, 255, 0.12);
+  background: #1c1c1e;
+  border-color: rgba(255, 255, 255, 0.14);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
 
 .support-mode-pill {
@@ -2373,40 +2375,40 @@ html.dark .support-mode-toggle {
   align-items: center;
   justify-content: center;
   gap: 0.4rem;
-  padding: 0.45rem 0.85rem;
-  font-size: 0.8rem;
-  font-weight: 600;
+  padding: 0.5rem 0.85rem;
+  font-size: 0.82rem;
+  font-weight: 650;
   border-radius: 9999px;
   border: none;
   background: transparent;
-  color: #6e6e73;
-  -webkit-text-fill-color: #6e6e73;
+  color: #1d1d1f;
+  -webkit-text-fill-color: #1d1d1f;
   cursor: pointer;
-  min-height: 36px;
+  min-height: 38px;
   transition:
-    background 0.22s ease,
+    background 0.22s cubic-bezier(0.16, 1, 0.3, 1),
     color 0.22s ease,
     box-shadow 0.22s ease,
     transform 0.18s ease;
 }
 
 html.dark .support-mode-pill {
-  color: #a1a1a6;
-  -webkit-text-fill-color: #a1a1a6;
+  color: #f5f5f7;
+  -webkit-text-fill-color: #f5f5f7;
 }
 
 .support-mode-pill.is-active {
-  background: #ffffff;
-  color: #0071e3;
-  -webkit-text-fill-color: #0071e3;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  background: #0071e3 !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  box-shadow: 0 3px 10px rgba(0, 113, 227, 0.35);
 }
 
 html.dark .support-mode-pill.is-active {
-  background: #1c1c1e;
-  color: #2997ff;
-  -webkit-text-fill-color: #2997ff;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+  background: #0a84ff !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  box-shadow: 0 3px 12px rgba(10, 132, 255, 0.45);
 }
 
 .support-panel {
@@ -2426,7 +2428,7 @@ html.dark .support-mode-pill.is-active {
   gap: 0.55rem;
 }
 
-/* Sponsorship Tiers Grid */
+/* Sponsorship Tiers Grid (Solid Theme-Aware) */
 .sponsorship-tiers-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -2444,33 +2446,33 @@ html.dark .support-mode-pill.is-active {
   display: flex;
   flex-direction: column;
   gap: 0.45rem;
-  padding: 0.9rem;
-  border-radius: 16px;
+  padding: 1rem;
+  border-radius: 18px;
   border: 1px solid rgba(0, 0, 0, 0.08);
-  background: rgba(255, 255, 255, 0.85);
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+  background: #ffffff;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
   position: relative;
   transition:
-    transform 0.22s ease,
+    transform 0.22s cubic-bezier(0.16, 1, 0.3, 1),
     box-shadow 0.22s ease,
     border-color 0.22s ease;
 }
 
 html.dark .sponsorship-tier-card {
-  border-color: rgba(255, 255, 255, 0.1);
-  background: rgba(28, 28, 30, 0.85);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  border-color: rgba(255, 255, 255, 0.12);
+  background: #1c1c1e;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.4);
 }
 
 .sponsorship-tier-card:hover {
   transform: translateY(-2px);
-  border-color: rgba(0, 113, 227, 0.3);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  border-color: rgba(0, 113, 227, 0.4);
+  box-shadow: 0 8px 24px rgba(0, 113, 227, 0.12);
 }
 
 html.dark .sponsorship-tier-card:hover {
-  border-color: rgba(10, 132, 255, 0.4);
-  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.45);
+  border-color: rgba(10, 132, 255, 0.5);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.6);
 }
 
 .tier-header-row {
@@ -2485,17 +2487,17 @@ html.dark .sponsorship-tier-card:hover {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  padding: 0.2rem 0.5rem;
+  padding: 0.2rem 0.55rem;
   border-radius: 9999px;
-  background: rgba(0, 0, 0, 0.06);
-  color: #1d1d1f;
-  -webkit-text-fill-color: #1d1d1f;
+  background: rgba(0, 113, 227, 0.1);
+  color: #0071e3;
+  -webkit-text-fill-color: #0071e3;
 }
 
 html.dark .tier-badge {
-  background: rgba(255, 255, 255, 0.1);
-  color: #f5f5f7;
-  -webkit-text-fill-color: #f5f5f7;
+  background: rgba(10, 132, 255, 0.18);
+  color: #2997ff;
+  -webkit-text-fill-color: #2997ff;
 }
 
 .tier-badge.featured-badge {

@@ -43,6 +43,26 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'b41f893e',
+    date: '2026-08-30',
+    type: 'improvement',
+    title: 'Solid Apple Design Polish: $25 Default Support Minimum & $20/mo Monthly Sponsorship',
+    summary:
+      'Updated default contribution baseline across payment channels to $25 minimum and monthly sponsorship tiers (GitHub Sponsors and Buy Me a Coffee) to $20/month. Polished the visual architecture to Apple HIG design specifications with pure solid theme-aware surfaces (crisp solid white in light theme, solid deep black/charcoal in dark theme with zero muddy grey), accented with specular metallic Apple Blue (#0071e3 / #0a84ff) active states.',
+    tags: [
+      'payments',
+      'pricing',
+      'apple-design',
+      'theme-polish',
+      'stripe',
+      'github-sponsors',
+      'buymeacoffee',
+      'ui-ux',
+    ],
+    sha: 'b41f893e',
+    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/b41f893e',
+  },
+  {
     id: '72b9a4c1',
     date: '2026-08-30',
     type: 'improvement',
