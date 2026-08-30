@@ -19,6 +19,12 @@ class SecurityChecker {
       { pattern: /sk-or-v1-[a-zA-Z0-9_-]{40,}/g, name: 'OpenRouter API Key' },
       { pattern: /hf_[a-zA-Z0-9]{20,}/g, name: 'Hugging Face API Key' },
       { pattern: /ghp_[a-zA-Z0-9]{36}/g, name: 'GitHub Personal Access Token' },
+      {
+        pattern: /https:\/\/discord(?:app)?\.com\/api\/webhooks\/[0-9]{15,22}\/[a-zA-Z0-9_-]{50,}/g,
+        name: 'Discord Webhook URL',
+      },
+      { pattern: /[0-9]{8,12}:AA[a-zA-Z0-9_-]{30,38}/g, name: 'Telegram Bot Token' },
+      { pattern: /-----BEGIN (?:RSA |EC )?PRIVATE KEY-----/g, name: 'Private Key' },
     ];
 
     // High-risk files are checked first to fail fast.
