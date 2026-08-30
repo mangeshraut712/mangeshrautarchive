@@ -169,7 +169,7 @@ html.dark[data-lg-mode='tinted']
     div.reminder-card,
     div.health-widget-container
   ) {
-  border: 1px solid #2c2c2e !important;
+  border: 1px solid rgba(255, 255, 255, 0.14) !important;
 }
 
 /* ── Media / music shelf cards (Currently) — solid, no glass ── */

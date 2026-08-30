@@ -43,6 +43,17 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'f9c2d1b7',
+    date: '2026-08-30',
+    type: 'improvement',
+    title: 'Zero-Grey Dark Surface Elimination: Solid Black (#000000) Contact & Card Elevation',
+    summary:
+      'Eliminated elevated grey background fills across the contact section and related card sub-elements in dark theme in strict accordance with Apple HIG solid surfaces. Migrated Direct Outreach channel tiles, Sponsorship tier cards, Support mode toggle pill, GitHub Sponsors button, and form inputs to pure solid black (#000000) with crisp 1px subtle borders (rgba(255, 255, 255, 0.12-0.14)), removing all grey box artifacts.',
+    tags: ['design', 'dark-theme', 'contact', 'apple-design', 'zero-grey', 'ui-ux'],
+    sha: 'f9c2d1b7',
+    link: `${CHANGELOG_REPO}/commit/f9c2d1b7`,
+  },
+  {
     id: 'a81d4b29',
     date: '2026-08-30',
     type: 'improvement',

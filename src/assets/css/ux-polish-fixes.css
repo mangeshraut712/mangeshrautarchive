@@ -1003,7 +1003,9 @@ html.dark #search-overlay .search-result-item:hover {
 }
 
 html.dark #search-overlay .search-result-icon {
-  background: #2c2c2e !important;
+  background: #000000 !important;
+  background-color: #000000 !important;
+  border-color: rgba(255, 255, 255, 0.14) !important;
   color: #0a84ff !important;
 }
 
