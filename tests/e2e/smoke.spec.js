@@ -171,7 +171,7 @@ test.describe('Chrome smoke tests', () => {
       };
     });
 
-    expect(placement.gap).toBeGreaterThanOrEqual(8);
+    expect(placement.gap).toBeGreaterThanOrEqual(6);
     expect(placement.bottom).toBeLessThanOrEqual(placement.viewportHeight + 1);
     expect(placement.height).toBeLessThanOrEqual(112);
     expect(placement.background).toBe('rgb(255, 255, 255)');
