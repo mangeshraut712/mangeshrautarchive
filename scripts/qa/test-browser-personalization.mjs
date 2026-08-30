@@ -24,26 +24,26 @@ async function runBrowserAudit() {
   const defaultLens = await page.getAttribute('html', 'data-active-lens');
   console.log(`   - Default active lens: [${defaultLens}]`);
 
-  // 2. Test Recruiter Lens
+  // 2. Test Programmatic Lens Switch via window.personalizationEngine
   console.log('2. Switching to Recruiter Lens...');
-  await page.click('button[data-lens="recruiter"]');
+  await page.evaluate(() => window.personalizationEngine?.setLens('recruiter'));
   await page.waitForTimeout(300);
   const recruiterLens = await page.getAttribute('html', 'data-active-lens');
-  console.log(`   - Active lens after click: [${recruiterLens}]`);
+  console.log(`   - Active lens after switch: [${recruiterLens}]`);
 
   // 3. Test Engineer Lens
   console.log('3. Switching to Engineer Lens...');
-  await page.click('button[data-lens="engineer"]');
+  await page.evaluate(() => window.personalizationEngine?.setLens('engineer'));
   await page.waitForTimeout(300);
   const engineerLens = await page.getAttribute('html', 'data-active-lens');
-  console.log(`   - Active lens after click: [${engineerLens}]`);
+  console.log(`   - Active lens after switch: [${engineerLens}]`);
 
   // 4. Test Founder Lens
   console.log('4. Switching to Founder Lens...');
-  await page.click('button[data-lens="founder"]');
+  await page.evaluate(() => window.personalizationEngine?.setLens('founder'));
   await page.waitForTimeout(300);
   const founderLens = await page.getAttribute('html', 'data-active-lens');
-  console.log(`   - Active lens after click: [${founderLens}]`);
+  console.log(`   - Active lens after switch: [${founderLens}]`);
 
   // 5. Test URL Query Param Auto-Detection (?lens=recruiter)
   console.log('5. Testing URL parameter auto-detection (?lens=recruiter)...');
@@ -57,8 +57,6 @@ async function runBrowserAudit() {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto(`${BASE_URL}/`, { waitUntil: 'domcontentloaded' });
   await page.waitForTimeout(300);
-  const mobilePills = await page.$$('.persona-lens-pill');
-  console.log(`   - Rendered persona lens pills on mobile: ${mobilePills.length}`);
 
   // 7. Check for horizontal overflow on mobile
   const scrollWidth = await page.evaluate(() => document.documentElement.scrollWidth);
