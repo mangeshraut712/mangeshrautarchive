@@ -43,6 +43,26 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'a81d4b29',
+    date: '2026-08-30',
+    type: 'improvement',
+    title: 'Support Action Buttons: Prominent Brand Logos & Authentic Buy Me a Coffee Integration',
+    summary:
+      'Restored bold, iconic brand logos on all checkout buttons with centered pill geometry. Enlarged Stripe, PayPal, Buy Me a Coffee, and GitHub Sponsors brand emblems (24px) for prominent visual clarity, streamlined button markup by removing secondary badge clutter, and integrated the authentic Buy Me a Coffee vector emblem across monthly sponsorship tiers.',
+    tags: [
+      'design',
+      'payments',
+      'stripe',
+      'paypal',
+      'buymeacoffee',
+      'github-sponsors',
+      'apple-design',
+      'ui-ux',
+    ],
+    sha: 'a81d4b29',
+    link: `${CHANGELOG_REPO}/commit/a81d4b29`,
+  },
+  {
     id: 'e639a02f',
     date: '2026-08-30',
     type: 'improvement',
