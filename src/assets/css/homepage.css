@@ -3573,18 +3573,13 @@ html.dark .persona-lens-pill:hover {
   -webkit-text-fill-color: #0a84ff;
 }
 
-.persona-lens-pill.is-active {
+.persona-lens-pill.is-active,
+html.dark .persona-lens-pill.is-active {
   background: #0071e3 !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
-  box-shadow: 0 2px 8px rgba(0, 113, 227, 0.35) !important;
-}
-
-html.dark .persona-lens-pill.is-active {
-  background: #0a84ff !important;
-  color: #ffffff !important;
-  -webkit-text-fill-color: #ffffff !important;
-  box-shadow: 0 2px 10px rgba(10, 132, 255, 0.45) !important;
+  font-weight: 700 !important;
+  box-shadow: 0 2px 10px rgba(0, 113, 227, 0.45) !important;
 }
 
 .persona-lens-icon {
