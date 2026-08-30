@@ -43,6 +43,26 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'f189a42c',
+    date: '2026-08-30',
+    type: 'improvement',
+    title: 'Payment & Sponsorship Channels Verification and GitHub FUNDING Sync',
+    summary:
+      'Conducted a comprehensive forensic audit of all payment, donation, and sponsorship channels across the portfolio. Verified live HTTP 200 health on Stripe Hosted Checkout, PayPal No-Code Payment (NCP), Buy Me a Coffee creator profile, and verified all 5 one-click cryptocurrency address copy triggers (SOL, BTC, USDC, ETH, DOGE). Synchronized .github/FUNDING.yml with native buy_me_a_coffee integration.',
+    tags: [
+      'payments',
+      'stripe',
+      'paypal',
+      'buymeacoffee',
+      'crypto',
+      'sponsorships',
+      'funding',
+      'security',
+    ],
+    sha: 'f189a42c',
+    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/f189a42c',
+  },
+  {
     id: 'd83b1a20',
     date: '2026-08-29',
     type: 'fix',
