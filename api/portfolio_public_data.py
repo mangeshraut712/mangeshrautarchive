@@ -34,7 +34,7 @@ LIGHTHOUSE_PAGES_GATES: Dict[str, Dict[str, int]] = {
 
 TEST_COUNTS = {"vitest": 209, "pytest": 175, "playwright_projects": 16}
 
-WEBMCP_TOOL_COUNT = 13
+WEBMCP_TOOL_COUNT = 14
 
 PWA_POLICY = {
     "installable": True,

@@ -3854,11 +3854,11 @@ html.dark #home .hero-name-text {
             </div>
 
             <!-- Card 2: Support My Work -->
-            <div class="contact-card contact-card-apple support-donation-card">
+            <div class="contact-card contact-card-apple support-donation-card" id="support-my-work-card">
               <!-- Compact Header with Ganesh and Hanuman -->
               <div class="donation-compact-header">
                 <!-- Ganesh Image (Left) -->
-                <div class="ganesh-glow-container blessing-avatar-trigger" data-blessing="ganesh" role="button" tabindex="0" aria-label="Play Ganapati Aarti" title="🕉️ Click to play Ganapati Aarti">
+                <button type="button" class="ganesh-glow-container blessing-avatar-trigger" data-blessing="ganesh" aria-label="Play Ganapati Aarti" title="🕉️ Click to play Ganapati Aarti">
                   <picture>
                     <source type="image/webp" srcset="assets/images/ganesh.webp 1x, assets/images/ganesh-desktop.webp 2x" />
                     <img src="assets/images/ganesh.png" alt="Lord Ganesh" class="ganesh-blessing-img"
@@ -3866,14 +3866,14 @@ html.dark #home .hero-name-text {
                   </picture>
                   <div class="glow-ring"></div>
                   <span class="blessing-play-badge" aria-hidden="true"><i class="fas fa-play"></i></span>
-                </div>
+                </button>
                 <!-- Support My Work (Center) -->
                 <div class="donation-info">
                   <h3 class="support-headline">Support My Work</h3>
                   <p class="support-subheadline">Bless your journey.</p>
                 </div>
                 <!-- Hanuman Image (Right) -->
-                <div class="hanuman-glow-container blessing-avatar-trigger" data-blessing="hanuman" role="button" tabindex="0" aria-label="Play Hanuman Chalisa" title="🙏 Click to play Hanuman Chalisa">
+                <button type="button" class="hanuman-glow-container blessing-avatar-trigger" data-blessing="hanuman" aria-label="Play Hanuman Chalisa" title="🙏 Click to play Hanuman Chalisa">
                   <picture>
                     <source type="image/webp" srcset="assets/images/hanuman.webp 1x, assets/images/hanuman-desktop.webp 2x" />
                     <img src="assets/images/hanuman.png" alt="Lord Hanuman" class="hanuman-blessing-img"
@@ -3881,7 +3881,7 @@ html.dark #home .hero-name-text {
                   </picture>
                   <div class="glow-ring"></div>
                   <span class="blessing-play-badge" aria-hidden="true"><i class="fas fa-play"></i></span>
-                </div>
+                </button>
               </div>
 
               <!-- Bhagavad Gita Quote -->
@@ -3898,87 +3898,209 @@ html.dark #home .hero-name-text {
                 Every contribution keeps me building. 🙏
               </p>
 
-              <!-- Payment Buttons -->
-              <div class="support-buttons-container">
-                <p class="payment-label">Choose your preferred way to support:</p>
+              <!-- Support Mode Toggle: One-Time vs. Monthly Sponsorship -->
+              <div class="support-mode-toggle" role="tablist" aria-label="Support type">
+                <button type="button" class="support-mode-pill is-active" role="tab" id="support-tab-onetime" aria-selected="true" aria-controls="support-panel-onetime" data-support-mode="onetime">
+                  <i class="fas fa-heart" aria-hidden="true"></i> One-Time Contribution
+                </button>
+                <button type="button" class="support-mode-pill" role="tab" id="support-tab-monthly" aria-selected="false" aria-controls="support-panel-monthly" data-support-mode="monthly">
+                  <i class="fas fa-rocket" aria-hidden="true"></i> Monthly Sponsorship
+                </button>
+              </div>
 
-                <!-- Stripe Button - Primary -->
-                <a href="https://buy.stripe.com/14A3cufGUgcV5ePfuA14401" target="_blank" rel="noopener noreferrer"
-                  class="support-stripe-btn premium" aria-label="Support via Stripe">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-                    class="payment-logo" aria-hidden="true">
-                    <path
-                      d="M13.976 9.15c-2.172-.806-3.356-1.426-3.356-2.409 0-.831.683-1.305 1.901-1.305 2.227 0 4.515.858 6.09 1.631l.89-5.494C18.252.975 15.697 0 12.165 0 9.667 0 7.589.654 6.104 1.872 4.56 3.147 3.757 4.992 3.757 7.218c0 4.039 2.467 5.76 6.476 7.219 2.585.92 3.445 1.574 3.445 2.583 0 .98-.84 1.545-2.354 1.545-1.875 0-4.965-.921-6.99-2.109l-.9 5.555C5.175 22.99 8.385 24 11.714 24c2.641 0 4.843-.624 6.328-1.813 1.664-1.305 2.525-3.236 2.525-5.732 0-4.128-2.524-5.851-6.591-7.305z" />
-                  </svg>
-                  <span>Stripe</span>
-                </a>
-
-                <!-- PayPal Button -->
-                <a href="https://www.paypal.com/ncp/payment/LXNHJ5SUGNP82" target="_blank" rel="noopener noreferrer"
-                  class="support-paypal-btn premium" aria-label="Support via PayPal">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-                    class="payment-logo" aria-hidden="true">
-                    <path
-                      d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797h-2.19c-.524 0-.968.382-1.05.9l-1.12 7.106zm14.146-14.42a3.35 3.35 0 0 0-.607-.541c-.013.076-.026.175-.041.254-.59 3.025-2.566 6.082-8.558 6.082H9.63l-1.496 9.478h2.79c.457 0 .85-.334.922-.788l.04-.19.73-4.627.047-.255a.933.933 0 0 1 .922-.788h.58c3.76 0 6.704-1.528 7.565-5.621.35-1.774.195-3.248-.656-4.393-.18-.239-.376-.451-.578-.65z" />
-                  </svg>
-                  <span>PayPal</span>
-                </a>
-
-                <!-- Buy Me a Coffee -->
-                <a href="https://buymeacoffee.com/xzvwsqf84xy" target="_blank" rel="noopener noreferrer"
-                  class="support-coffee-btn premium" aria-label="Buy Me a Coffee">
-                  <img src="assets/images/buymeacoffee.svg" alt="" class="payment-logo bmc-logo" width="22" height="22" loading="lazy" decoding="async" aria-hidden="true" />
-                  <span>Buy Me a Coffee</span>
-                </a>
-
-                <!-- Divider -->
-                <div class="support-divider">
-                  <span>OR</span>
+              <!-- Panel 1: One-Time Contribution -->
+              <div id="support-panel-onetime" class="support-panel" role="tabpanel" aria-labelledby="support-tab-onetime">
+                <!-- Suggested Amount Preset Chips -->
+                <div class="donation-preset-container">
+                  <p class="preset-label">Suggested amount:</p>
+                  <div class="donation-preset-chips" role="group" aria-label="Suggested amounts">
+                    <button type="button" class="donation-chip" data-amount="5" aria-label="$5 coffee"><strong>$5</strong> <span>Coffee</span></button>
+                    <button type="button" class="donation-chip is-selected" data-amount="10" aria-label="$10 support"><strong>$10</strong> <span>Support</span></button>
+                    <button type="button" class="donation-chip" data-amount="25" aria-label="$25 sponsor"><strong>$25</strong> <span>Sponsor</span></button>
+                    <button type="button" class="donation-chip" data-amount="50" aria-label="$50 super sponsor"><strong>$50</strong> <span>Super</span></button>
+                    <button type="button" class="donation-chip" data-amount="custom" aria-label="Custom amount"><strong>Custom</strong></button>
+                  </div>
                 </div>
 
-                <!-- Crypto Support -->
-                <div class="crypto-support-mini">
-                  <p class="crypto-label">Crypto</p>
-                  <div class="crypto-wallets">
-                    <button type="button" class="crypto-mini-btn" data-copy-crypto="3LaZpBbmJVnFtR8oNGSY1EmYBo3vevXDDvJJEfSFmkcc" title="Copy Solana Address" aria-label="Copy Solana address">
-                      <svg class="crypto-logo crypto-logo-sol" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
-                        <circle cx="16" cy="16" r="16" fill="#9945FF"></circle>
-                        <path fill="#FFFFFF" d="M9.2 19.6c.15-.15.36-.24.58-.24h13.5c.37 0 .55.44.3.72l-2.08 2.3c-.15.15-.36.24-.58.24H7.42c-.37 0-.55-.44-.3-.72l2.08-2.3zm0-10c.15-.15.36-.24.58-.24h13.5c.37 0 .55.44.3.72l-2.08 2.3c-.15.15-.36.24-.58.24H7.42c-.37 0-.55-.44-.3-.72l2.08-2.3zm13.6 5c-.15.15-.36.24-.58.24H8.72c-.37 0-.55-.44-.3-.72l2.08-2.3c.15-.15.36-.24.58-.24h13.5c.37 0 .55.44.3.72l-2.08 2.3z"></path>
+                <!-- Payment Buttons -->
+                <div class="support-buttons-container">
+                  <p class="payment-label">Choose your preferred checkout channel:</p>
+
+                  <!-- Stripe Button - Primary -->
+                  <a href="https://buy.stripe.com/14A3cufGUgcV5ePfuA14401" target="_blank" rel="noopener noreferrer"
+                    class="support-stripe-btn premium" aria-label="Support via Stripe">
+                    <div class="payment-btn-main">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                        class="payment-logo" aria-hidden="true">
+                        <path
+                          d="M13.976 9.15c-2.172-.806-3.356-1.426-3.356-2.409 0-.831.683-1.305 1.901-1.305 2.227 0 4.515.858 6.09 1.631l.89-5.494C18.252.975 15.697 0 12.165 0 9.667 0 7.589.654 6.104 1.872 4.56 3.147 3.757 4.992 3.757 7.218c0 4.039 2.467 5.76 6.476 7.219 2.585.92 3.445 1.574 3.445 2.583 0 .98-.84 1.545-2.354 1.545-1.875 0-4.965-.921-6.99-2.109l-.9 5.555C5.175 22.99 8.385 24 11.714 24c2.641 0 4.843-.624 6.328-1.813 1.664-1.305 2.525-3.236 2.525-5.732 0-4.128-2.524-5.851-6.591-7.305z" />
                       </svg>
-                      <span>Solana</span>
-                    </button>
-                    <button type="button" class="crypto-mini-btn" data-copy-crypto="bc1qe55rgghcfgwhwdt0j33gjt4mnfvkgzpkn0j44j" title="Copy Bitcoin Address" aria-label="Copy Bitcoin address">
-                      <svg class="crypto-logo crypto-logo-btc" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
-                        <circle cx="16" cy="16" r="16" fill="#F7931A"></circle>
-                        <path fill="#FFFFFF" d="M23.189 14.02c.314-2.096-1.283-3.223-3.465-3.975l.708-2.84-1.728-.43-.69 2.765c-.454-.114-.92-.22-1.385-.324l.695-2.783L15.596 6l-.708 2.839c-.376-.086-.746-.17-1.104-.26l.002-.009-2.384-.595-.46 1.846s1.283.294 1.256.312c.7.175.826.638.805 1.006l-.806 3.235c.048.012.11.03.18.057l-.183-.045-1.13 4.532c-.086.212-.303.531-.79.41.018.025-1.256-.313-1.256-.313l-.858 1.978 2.25.561c.418.105.828.215 1.231.318l-.715 2.872 1.727.43.708-2.84c.472.127.93.245 1.378.357l-.706 2.828 1.728.43.715-2.866c2.948.558 5.164.333 6.097-2.333.752-2.146-.037-3.385-1.588-4.192 1.13-.26 1.98-1.003 2.207-2.538zm-3.95 5.538c-.533 2.147-4.148.986-5.32.656l.95-3.805c1.172.293 4.929.872 4.37 3.149zm.535-5.569c-.487 1.953-3.495.96-4.47.717l.86-3.45c.975.243 4.118.696 3.61 2.733z"></path>
+                      <span>Stripe Checkout</span>
+                    </div>
+                    <div class="payment-badges-pill" aria-hidden="true">
+                      <span class="payment-badge"><i class="fab fa-apple"></i> Pay</span>
+                      <span class="payment-badge"><i class="fab fa-google"></i> Pay</span>
+                      <span class="payment-badge"><i class="far fa-credit-card"></i> Cards</span>
+                    </div>
+                  </a>
+
+                  <!-- PayPal Button -->
+                  <a href="https://www.paypal.com/ncp/payment/LXNHJ5SUGNP82" target="_blank" rel="noopener noreferrer"
+                    class="support-paypal-btn premium" aria-label="Support via PayPal">
+                    <div class="payment-btn-main">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                        class="payment-logo" aria-hidden="true">
+                        <path
+                          d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797h-2.19c-.524 0-.968.382-1.05.9l-1.12 7.106zm14.146-14.42a3.35 3.35 0 0 0-.607-.541c-.013.076-.026.175-.041.254-.59 3.025-2.566 6.082-8.558 6.082H9.63l-1.496 9.478h2.79c.457 0 .85-.334.922-.788l.04-.19.73-4.627.047-.255a.933.933 0 0 1 .922-.788h.58c3.76 0 6.704-1.528 7.565-5.621.35-1.774.195-3.248-.656-4.393-.18-.239-.376-.451-.578-.65z" />
                       </svg>
-                      <span>Bitcoin</span>
-                    </button>
-                    <button type="button" class="crypto-mini-btn" data-copy-crypto="3LaZpBbmJVnFtR8oNGSY1EmYBo3vevXDDvJJEfSFmkcc" title="Copy USDC Address (Solana)" aria-label="Copy USDC address">
-                      <svg class="crypto-logo crypto-logo-usdc" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
-                        <circle cx="16" cy="16" r="16" fill="#2775CA"></circle>
-                        <path fill="#FFFFFF" d="M16 7.5c-4.7 0-8.5 3.8-8.5 8.5s3.8 8.5 8.5 8.5 8.5-3.8 8.5-8.5S20.7 7.5 16 7.5zm0 1.6c3.8 0 6.9 3.1 6.9 6.9s-3.1 6.9-6.9 6.9-6.9-3.1-6.9-6.9 3.1-6.9 6.9-6.9zm-.15 2.1h1.55v1.15c1.35.2 2.25 1.05 2.25 2.35 0 1.1-.6 1.85-1.55 2.15.15.1.3.25.4.4l1.15 1.55h-1.85l-.85-1.15c-.2-.25-.4-.35-.7-.35h-.4v1.5h-1.55v-7.6zm1.55 2.55v1.7c.55-.05.9-.4.9-.9s-.35-.75-.9-.8z"></path>
-                      </svg>
-                      <span>USDC</span>
-                    </button>
-                    <button type="button" class="crypto-mini-btn" data-copy-crypto="0xe3d2dbb3e4c157a390025e98ac2ce9cacb771310" title="Copy Ethereum Address" aria-label="Copy Ethereum address">
-                      <svg class="crypto-logo crypto-logo-eth" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
-                        <circle cx="16" cy="16" r="16" fill="#627EEA"></circle>
-                        <path fill="#FFFFFF" fill-opacity="0.9" d="M16.1 6.5 15.9 7.1v11.7l.2.2 6.6-3.9z"></path>
-                        <path fill="#FFFFFF" d="m16.1 6.5-6.6 9.1 6.6 3.9z"></path>
-                        <path fill="#FFFFFF" fill-opacity="0.9" d="m16.1 20.7-.1.1v5.2l.1.4 6.6-9.3z"></path>
-                        <path fill="#FFFFFF" d="M16.1 26.4v-5.7l-6.6-3.9z"></path>
-                      </svg>
-                      <span>Ethereum</span>
-                    </button>
-                    <button type="button" class="crypto-mini-btn" data-copy-crypto="D5GijLAnCuPWWrH6NgmooYJsYtxrQGZ99h" title="Copy Dogecoin Address" aria-label="Copy Dogecoin address">
-                      <svg class="crypto-logo crypto-logo-doge" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
-                        <circle cx="16" cy="16" r="16" fill="#C2A633"></circle>
-                        <path fill="#FFFFFF" d="M13.5 8h5.2c4.1 0 6.9 2.5 6.9 6.4 0 3.9-2.8 6.4-6.9 6.4H15.5v4.5h-2V8zm2 2.1v8.6h2.4c2.75 0 4.5-1.55 4.5-4.3s-1.75-4.3-4.5-4.3H15.5z"></path>
-                      </svg>
-                      <span>Dogecoin</span>
-                    </button>
+                      <span>PayPal &amp; Venmo</span>
+                    </div>
+                    <div class="payment-badges-pill" aria-hidden="true">
+                      <span class="payment-badge">PayPal</span>
+                      <span class="payment-badge">Venmo</span>
+                      <span class="payment-badge">Cards</span>
+                    </div>
+                  </a>
+
+                  <!-- Buy Me a Coffee -->
+                  <a href="https://buymeacoffee.com/xzvwsqf84xy" target="_blank" rel="noopener noreferrer"
+                    class="support-coffee-btn premium" aria-label="Buy Me a Coffee">
+                    <div class="payment-btn-main">
+                      <img src="assets/images/buymeacoffee.svg" alt="" class="payment-logo bmc-logo" width="22" height="22" loading="lazy" decoding="async" aria-hidden="true" />
+                      <span>Buy Me a Coffee</span>
+                    </div>
+                    <div class="payment-badges-pill bmc-badges" aria-hidden="true">
+                      <span class="payment-badge">☕ Tips</span>
+                      <span class="payment-badge">⭐ Members</span>
+                      <span class="payment-badge">💬 Notes</span>
+                    </div>
+                  </a>
+
+                  <!-- QR Code Mobile Scanner Button -->
+                  <button type="button" class="support-qr-trigger-btn" id="open-payment-qr-btn" aria-haspopup="dialog" aria-expanded="false">
+                    <i class="fas fa-qrcode" aria-hidden="true"></i>
+                    <span>Scan QR Code to Pay on Mobile</span>
+                  </button>
+
+                  <!-- Divider -->
+                  <div class="support-divider">
+                    <span>OR PAY WITH CRYPTO</span>
                   </div>
+
+                  <!-- Crypto Support -->
+                  <div class="crypto-support-mini">
+                    <div class="crypto-wallets">
+                      <button type="button" class="crypto-mini-btn" data-copy-crypto="3LaZpBbmJVnFtR8oNGSY1EmYBo3vevXDDvJJEfSFmkcc" title="Copy Solana Address" aria-label="Copy Solana address">
+                        <svg class="crypto-logo crypto-logo-sol" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+                          <circle cx="16" cy="16" r="16" fill="#9945FF"></circle>
+                          <path fill="#FFFFFF" d="M9.2 19.6c.15-.15.36-.24.58-.24h13.5c.37 0 .55.44.3.72l-2.08 2.3c-.15.15-.36.24-.58.24H7.42c-.37 0-.55-.44-.3-.72l2.08-2.3zm0-10c.15-.15.36-.24.58-.24h13.5c.37 0 .55.44.3.72l-2.08 2.3c-.15.15-.36.24-.58.24H7.42c-.37 0-.55-.44-.3-.72l2.08-2.3zm13.6 5c-.15.15-.36.24-.58.24H8.72c-.37 0-.55-.44-.3-.72l2.08-2.3c.15-.15.36-.24.58-.24h13.5c.37 0 .55.44.3.72l-2.08 2.3z"></path>
+                        </svg>
+                        <span>Solana</span>
+                      </button>
+                      <button type="button" class="crypto-mini-btn" data-copy-crypto="bc1qe55rgghcfgwhwdt0j33gjt4mnfvkgzpkn0j44j" title="Copy Bitcoin Address" aria-label="Copy Bitcoin address">
+                        <svg class="crypto-logo crypto-logo-btc" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+                          <circle cx="16" cy="16" r="16" fill="#F7931A"></circle>
+                          <path fill="#FFFFFF" d="M23.189 14.02c.314-2.096-1.283-3.223-3.465-3.975l.708-2.84-1.728-.43-.69 2.765c-.454-.114-.92-.22-1.385-.324l.695-2.783L15.596 6l-.708 2.839c-.376-.086-.746-.17-1.104-.26l.002-.009-2.384-.595-.46 1.846s1.283.294 1.256.312c.7.175.826.638.805 1.006l-.806 3.235c.048.012.11.03.18.057l-.183-.045-1.13 4.532c-.086.212-.303.531-.79.41.018.025-1.256-.313-1.256-.313l-.858 1.978 2.25.561c.418.105.828.215 1.231.318l-.715 2.872 1.727.43.708-2.84c.472.127.93.245 1.378.357l-.706 2.828 1.728.43.715-2.866c2.948.558 5.164.333 6.097-2.333.752-2.146-.037-3.385-1.588-4.192 1.13-.26 1.98-1.003 2.207-2.538zm-3.95 5.538c-.533 2.147-4.148.986-5.32.656l.95-3.805c1.172.293 4.929.872 4.37 3.149zm.535-5.569c-.487 1.953-3.495.96-4.47.717l.86-3.45c.975.243 4.118.696 3.61 2.733z"></path>
+                        </svg>
+                        <span>Bitcoin</span>
+                      </button>
+                      <button type="button" class="crypto-mini-btn" data-copy-crypto="3LaZpBbmJVnFtR8oNGSY1EmYBo3vevXDDvJJEfSFmkcc" title="Copy USDC Address (Solana)" aria-label="Copy USDC address">
+                        <svg class="crypto-logo crypto-logo-usdc" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+                          <circle cx="16" cy="16" r="16" fill="#2775CA"></circle>
+                          <path fill="#FFFFFF" d="M16 7.5c-4.7 0-8.5 3.8-8.5 8.5s3.8 8.5 8.5 8.5 8.5-3.8 8.5-8.5S20.7 7.5 16 7.5zm0 1.6c3.8 0 6.9 3.1 6.9 6.9s-3.1 6.9-6.9 6.9-6.9-3.1-6.9-6.9 3.1-6.9 6.9-6.9zm-.15 2.1h1.55v1.15c1.35.2 2.25 1.05 2.25 2.35 0 1.1-.6 1.85-1.55 2.15.15.1.3.25.4.4l1.15 1.55h-1.85l-.85-1.15c-.2-.25-.4-.35-.7-.35h-.4v1.5h-1.55v-7.6zm1.55 2.55v1.7c.55-.05.9-.4.9-.9s-.35-.75-.9-.8z"></path>
+                        </svg>
+                        <span>USDC</span>
+                      </button>
+                      <button type="button" class="crypto-mini-btn" data-copy-crypto="0xe3d2dbb3e4c157a390025e98ac2ce9cacb771310" title="Copy Ethereum Address" aria-label="Copy Ethereum address">
+                        <svg class="crypto-logo crypto-logo-eth" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+                          <circle cx="16" cy="16" r="16" fill="#627EEA"></circle>
+                          <path fill="#FFFFFF" fill-opacity="0.9" d="M16.1 6.5 15.9 7.1v11.7l.2.2 6.6-3.9z"></path>
+                          <path fill="#FFFFFF" d="m16.1 6.5-6.6 9.1 6.6 3.9z"></path>
+                          <path fill="#FFFFFF" fill-opacity="0.9" d="m16.1 20.7-.1.1v5.2l.1.4 6.6-9.3z"></path>
+                          <path fill="#FFFFFF" d="M16.1 26.4v-5.7l-6.6-3.9z"></path>
+                        </svg>
+                        <span>Ethereum</span>
+                      </button>
+                      <button type="button" class="crypto-mini-btn" data-copy-crypto="D5GijLAnCuPWWrH6NgmooYJsYtxrQGZ99h" title="Copy Dogecoin Address" aria-label="Copy Dogecoin address">
+                        <svg class="crypto-logo crypto-logo-doge" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+                          <circle cx="16" cy="16" r="16" fill="#C2A633"></circle>
+                          <path fill="#FFFFFF" d="M13.5 8h5.2c4.1 0 6.9 2.5 6.9 6.4 0 3.9-2.8 6.4-6.9 6.4H15.5v4.5h-2V8zm2 2.1v8.6h2.4c2.75 0 4.5-1.55 4.5-4.3s-1.75-4.3-4.5-4.3H15.5z"></path>
+                        </svg>
+                        <span>Dogecoin</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Panel 2: Monthly Sponsorship -->
+              <div id="support-panel-monthly" class="support-panel" role="tabpanel" aria-labelledby="support-tab-monthly" hidden>
+                <div class="sponsorship-tiers-grid">
+                  <!-- Tier 1: GitHub Sponsors -->
+                  <div class="sponsorship-tier-card">
+                    <div class="tier-header-row">
+                      <span class="tier-badge">Open Source</span>
+                      <span class="tier-price">$5<small>/mo</small></span>
+                    </div>
+                    <h4 class="tier-title"><i class="fab fa-github" aria-hidden="true"></i> GitHub Sponsor</h4>
+                    <p class="tier-desc">Directly fund open-source systems research, benchmarks, and production-grade developer tooling.</p>
+                    <ul class="tier-perks-list">
+                      <li><i class="fas fa-check" aria-hidden="true"></i> Sponsor badge on GitHub profile</li>
+                      <li><i class="fas fa-check" aria-hidden="true"></i> Early access to architectural notebooks</li>
+                    </ul>
+                    <a href="https://github.com/sponsors/mangeshraut712" target="_blank" rel="noopener noreferrer"
+                      class="tier-cta-btn github-sponsor-btn" aria-label="Sponsor on GitHub">
+                      <span>Sponsor on GitHub</span> <i class="fas fa-arrow-right" aria-hidden="true"></i>
+                    </a>
+                  </div>
+
+                  <!-- Tier 2: BMC Monthly Membership -->
+                  <div class="sponsorship-tier-card featured">
+                    <div class="tier-header-row">
+                      <span class="tier-badge featured-badge">Community</span>
+                      <span class="tier-price">$5<small>/mo</small></span>
+                    </div>
+                    <h4 class="tier-title"><i class="fas fa-mug-hot" aria-hidden="true"></i> Coffee Supporter</h4>
+                    <p class="tier-desc">Join the monthly inner circle on Buy Me a Coffee with supporter notes and direct project chats.</p>
+                    <ul class="tier-perks-list">
+                      <li><i class="fas fa-check" aria-hidden="true"></i> Monthly supporter recognition</li>
+                      <li><i class="fas fa-check" aria-hidden="true"></i> Direct messaging &amp; feedback</li>
+                    </ul>
+                    <a href="https://buymeacoffee.com/xzvwsqf84xy" target="_blank" rel="noopener noreferrer"
+                      class="tier-cta-btn bmc-member-btn" aria-label="Join on Buy Me a Coffee">
+                      <span>Join on Buy Me a Coffee</span> <i class="fas fa-arrow-right" aria-hidden="true"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Instant Payment QR Code Modal -->
+            <div id="payment-qr-modal" class="payment-qr-modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="payment-qr-title" hidden>
+              <div class="payment-qr-card-surface">
+                <button type="button" class="payment-qr-close-btn" id="close-payment-qr-btn" aria-label="Close QR modal">
+                  <i class="fas fa-times" aria-hidden="true"></i>
+                </button>
+                <div class="payment-qr-header">
+                  <div class="payment-qr-icon-badge" aria-hidden="true"><i class="fas fa-qrcode"></i></div>
+                  <h3 id="payment-qr-title">Instant Mobile Checkout</h3>
+                  <p class="payment-qr-subtitle">Scan with your smartphone camera to open payment directly.</p>
+                </div>
+                <div class="payment-qr-tabs" role="tablist" aria-label="QR payment channel">
+                  <button type="button" class="payment-qr-tab is-active" data-qr-target="stripe" role="tab" aria-selected="true">Stripe</button>
+                  <button type="button" class="payment-qr-tab" data-qr-target="paypal" role="tab" aria-selected="false">PayPal</button>
+                  <button type="button" class="payment-qr-tab" data-qr-target="bmc" role="tab" aria-selected="false">BuyMeCoffee</button>
+                  <button type="button" class="payment-qr-tab" data-qr-target="solana" role="tab" aria-selected="false">Solana</button>
+                  <button type="button" class="payment-qr-tab" data-qr-target="bitcoin" role="tab" aria-selected="false">Bitcoin</button>
+                </div>
+                <div class="payment-qr-display-container">
+                  <div class="payment-qr-frame">
+                    <img id="payment-qr-image" src="https://quickchart.io/qr?size=280&dark=0071e3&light=ffffff&ecLevel=H&margin=1&text=https%3A%2F%2Fbuy.stripe.com%2F14A3cufGUgcV5ePfuA14401" alt="Payment QR code" width="200" height="200" loading="eager" decoding="async" />
+                  </div>
+                  <p class="payment-qr-channel-label" id="payment-qr-channel-label">Stripe Checkout (Apple Pay &amp; Google Pay)</p>
+                  <a href="https://buy.stripe.com/14A3cufGUgcV5ePfuA14401" id="payment-qr-direct-link" target="_blank" rel="noopener noreferrer" class="payment-qr-open-link">
+                    <span>Open direct checkout in browser</span> <i class="fas fa-external-link-alt" aria-hidden="true"></i>
+                  </a>
                 </div>
               </div>
             </div>

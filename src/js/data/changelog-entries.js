@@ -43,6 +43,27 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── August 2026 ────────────────────────────────────────────
   {
+    id: 'a932d18f',
+    date: '2026-08-30',
+    type: 'release',
+    title: 'Apple-Grade Support & Sponsorship Suite with QR Mobile Checkout & Presets',
+    summary:
+      'Upgraded the Support My Work card to a multi-tiered interactive experience adhering strictly to Apple HIG. Added an Apple segmented mode switcher (One-Time Contribution vs. Monthly Sponsorship), interactive donation preset chips ($5, $10, $25, $50, Custom), capability badges on payment buttons (Apple Pay, Google Pay, Cards, Venmo), dedicated Monthly Sponsorship tier cards for GitHub Sponsors & Buy Me a Coffee Memberships, and an authentic Apple-glass QR Code modal for instant mobile smartphone checkout across Stripe, PayPal, BMC, and Crypto. Registered show_support_options WebMCP tool expanding agentic tool suite to 14 tools.',
+    tags: [
+      'payments',
+      'stripe',
+      'paypal',
+      'buymeacoffee',
+      'qr-code',
+      'sponsorships',
+      'webmcp',
+      'ui-ux',
+      'apple-design',
+    ],
+    sha: 'a932d18f',
+    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/a932d18f',
+  },
+  {
     id: 'f189a42c',
     date: '2026-08-30',
     type: 'improvement',

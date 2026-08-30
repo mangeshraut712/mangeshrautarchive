@@ -279,6 +279,20 @@ export class AgenticActionHandler {
         { signal }
       );
 
+      // 14. Support & Sponsorship options (Stripe, PayPal, BuyMeCoffee, Crypto)
+      navigator.modelContext.registerTool(
+        {
+          name: 'show_support_options',
+          description:
+            "Show available ways to support Mangesh's work (Stripe, PayPal, Buy Me a Coffee, GitHub Sponsors, and Crypto).",
+          inputSchema: { type: 'object', properties: {} },
+          execute: async () => {
+            return this.showSupportOptions();
+          },
+        },
+        { signal }
+      );
+
       // Clean up on page unload to avoid WebMCP registry conflicts
       window.addEventListener(
         'beforeunload',
@@ -443,6 +457,17 @@ export class AgenticActionHandler {
       ],
       handler: this.getSystemStatus.bind(this),
       description: 'Get real-time operational status and API health metrics',
+    });
+
+    // Support / Donation / Sponsorship
+    this.registerAction('support_my_work', {
+      patterns: [
+        /(?:how(?:\s+can\s+i)?\s+)?(?:support|donate(?:\s+to)?|sponsor|buy(?:\s+you)?\s+a\s+coffee|tip)\s+(?:you|mangesh|your\s+work)/i,
+        /(?:donation|payment|sponsor|stripe|paypal|buymeacoffee|crypto)\s+(?:options?|methods?|links?)/i,
+        /^(?:support|donate|sponsor|buy\s+a\s+coffee|tip)\b/i,
+      ],
+      handler: this.showSupportOptions.bind(this),
+      description: 'Show payment, donation, and sponsorship channels to support Mangesh',
     });
   }
 
@@ -1088,6 +1113,25 @@ export class AgenticActionHandler {
       };
     } catch (_e) {
       return { success: false, message: 'Could not load System Monitor.' };
+    }
+  }
+
+  async showSupportOptions() {
+    try {
+      const supportCard = document.getElementById('support-my-work-card');
+      if (supportCard) {
+        supportCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+      return {
+        success: true,
+        message: `💖 **Support & Sponsorship Options**\n\nThank you for supporting Mangesh's work! Here are the active channels:\n\n- **[Stripe Checkout](https://buy.stripe.com/14A3cufGUgcV5ePfuA14401):** Apple Pay, Google Pay, Cards\n- **[PayPal & Venmo](https://www.paypal.com/ncp/payment/LXNHJ5SUGNP82):** PayPal balance, Venmo, Cards\n- **[Buy Me a Coffee](https://buymeacoffee.com/xzvwsqf84xy):** Micro-tips, notes & monthly memberships\n- **[GitHub Sponsors](https://github.com/sponsors/mangeshraut712):** Monthly open-source sponsorship\n- **Crypto Wallets:** Solana (\`3LaZpBbm...mkcc\`), Bitcoin (\`bc1qe55r...0j44j\`), USDC, Ethereum, Dogecoin\n\nI have scrolled you directly to the **Support My Work** card on the page!`,
+      };
+    } catch (_e) {
+      return {
+        success: true,
+        message:
+          'You can support Mangesh via [Stripe](https://buy.stripe.com/14A3cufGUgcV5ePfuA14401), [PayPal](https://www.paypal.com/ncp/payment/LXNHJ5SUGNP82), [Buy Me a Coffee](https://buymeacoffee.com/xzvwsqf84xy), or [GitHub Sponsors](https://github.com/sponsors/mangeshraut712).',
+      };
     }
   }
 

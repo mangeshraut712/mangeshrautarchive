@@ -14,6 +14,157 @@ export function initContactInteractions() {
   initCryptoCopyButtons();
   initEmailCopyButtons();
   initCalendlyButton();
+  initSupportDonationInteractions();
+}
+
+function initSupportDonationInteractions() {
+  // 1. Support Mode Toggle (One-Time vs. Monthly Sponsorship)
+  const modePills = document.querySelectorAll('.support-mode-pill');
+  const onetimePanel = document.getElementById('support-panel-onetime');
+  const monthlyPanel = document.getElementById('support-panel-monthly');
+
+  modePills.forEach(pill => {
+    pill.addEventListener('click', () => {
+      const mode = pill.getAttribute('data-support-mode');
+      modePills.forEach(p => {
+        const isActive = p === pill;
+        p.classList.toggle('is-active', isActive);
+        p.setAttribute('aria-selected', isActive ? 'true' : 'false');
+      });
+
+      if (mode === 'monthly') {
+        if (onetimePanel) onetimePanel.hidden = true;
+        if (monthlyPanel) monthlyPanel.hidden = false;
+      } else {
+        if (onetimePanel) onetimePanel.hidden = false;
+        if (monthlyPanel) monthlyPanel.hidden = true;
+      }
+    });
+  });
+
+  // 2. Donation Preset Chips
+  const presetChips = document.querySelectorAll('.donation-chip');
+  presetChips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      presetChips.forEach(c => c.classList.remove('is-selected'));
+      chip.classList.add('is-selected');
+      const amount = chip.getAttribute('data-amount');
+      if (amount === 'custom') {
+        showToast('You can enter any custom contribution amount on checkout! 🙏', 'info');
+      } else {
+        showToast(
+          `Selected $${amount} contribution tier. Choose your payment method below!`,
+          'success'
+        );
+      }
+    });
+  });
+
+  // 3. Payment QR Code Modal
+  const openQrBtn = document.getElementById('open-payment-qr-btn');
+  const qrModal = document.getElementById('payment-qr-modal');
+  const closeQrBtn = document.getElementById('close-payment-qr-btn');
+  const qrImage = document.getElementById('payment-qr-image');
+  const qrChannelLabel = document.getElementById('payment-qr-channel-label');
+  const qrDirectLink = document.getElementById('payment-qr-direct-link');
+  const qrTabs = document.querySelectorAll('.payment-qr-tab');
+
+  const QR_TARGETS = {
+    stripe: {
+      url: 'https://buy.stripe.com/14A3cufGUgcV5ePfuA14401',
+      label: 'Stripe Checkout (Apple Pay & Google Pay)',
+    },
+    paypal: {
+      url: 'https://www.paypal.com/ncp/payment/LXNHJ5SUGNP82',
+      label: 'PayPal & Venmo Checkout',
+    },
+    bmc: {
+      url: 'https://buymeacoffee.com/xzvwsqf84xy',
+      label: 'Buy Me a Coffee (Mangesh Bharat Raut)',
+    },
+    solana: {
+      url: 'solana:3LaZpBbmJVnFtR8oNGSY1EmYBo3vevXDDvJJEfSFmkcc',
+      label: 'Solana Wallet (3LaZpBbm...mkcc)',
+    },
+    bitcoin: {
+      url: 'bitcoin:bc1qe55rgghcfgwhwdt0j33gjt4mnfvkgzpkn0j44j',
+      label: 'Bitcoin Wallet (bc1qe55r...0j44j)',
+    },
+  };
+
+  function updateQrDisplay(targetKey) {
+    const config = QR_TARGETS[targetKey] || QR_TARGETS.stripe;
+    const qrUrl = `https://quickchart.io/qr?size=280&dark=0071e3&light=ffffff&ecLevel=H&margin=1&text=${encodeURIComponent(config.url)}`;
+    if (qrImage) {
+      qrImage.src = qrUrl;
+      qrImage.alt = `${config.label} QR Code`;
+    }
+    if (qrChannelLabel) qrChannelLabel.textContent = config.label;
+    if (qrDirectLink) {
+      qrDirectLink.href = config.url;
+      qrDirectLink.style.display = config.url.startsWith('http') ? 'inline-flex' : 'none';
+    }
+  }
+
+  function openModal() {
+    if (!qrModal) return;
+    qrModal.hidden = false;
+    requestAnimationFrame(() => {
+      qrModal.classList.add('is-open');
+      if (closeQrBtn) closeQrBtn.focus();
+    });
+    if (openQrBtn) openQrBtn.setAttribute('aria-expanded', 'true');
+  }
+
+  function closeModal() {
+    if (!qrModal) return;
+    qrModal.classList.remove('is-open');
+    setTimeout(() => {
+      qrModal.hidden = true;
+      if (openQrBtn) {
+        openQrBtn.setAttribute('aria-expanded', 'false');
+        openQrBtn.focus();
+      }
+    }, 250);
+  }
+
+  if (openQrBtn) {
+    openQrBtn.addEventListener('click', () => {
+      updateQrDisplay('stripe');
+      qrTabs.forEach(t =>
+        t.classList.toggle('is-active', t.getAttribute('data-qr-target') === 'stripe')
+      );
+      openModal();
+    });
+  }
+
+  if (closeQrBtn) {
+    closeQrBtn.addEventListener('click', closeModal);
+  }
+
+  if (qrModal) {
+    qrModal.addEventListener('click', e => {
+      if (e.target === qrModal) closeModal();
+    });
+  }
+
+  qrTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      qrTabs.forEach(t => {
+        const isActive = t === tab;
+        t.classList.toggle('is-active', isActive);
+        t.setAttribute('aria-selected', isActive ? 'true' : 'false');
+      });
+      const target = tab.getAttribute('data-qr-target');
+      if (target) updateQrDisplay(target);
+    });
+  });
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && qrModal && !qrModal.hidden) {
+      closeModal();
+    }
+  });
 }
 
 function initCalendlyButton() {
