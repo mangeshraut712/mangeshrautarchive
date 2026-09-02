@@ -8,7 +8,10 @@
 ## Agent Operating Principles
 
 - When creating or updating UI elements, components, cards, pages, buttons, or themes, always consult and adhere to [docs/DESIGN.md](docs/DESIGN.md) (vibrant Apple Blue `#0071e3` gradient with specular metallic shine animation, unified circular red close buttons `#ff3b30`, authentic glassmorphism, zero horizontal overflow).
-- **Autonomous Changelog & LLM Observability**: Whenever executing code modifications, fixes, or releases, ALWAYS automatically update `src/js/data/changelog-entries.js` with a typed entry and record the active LLM model name (e.g., `gemini-2.5-pro`, `claude-3.7-sonnet`, `grok-4.3`) and token consumption details in the commit message and documentation without requiring user prompting.
+- **Mandatory Model Check & Purpose Observability**: For EVERY code modification, design polish, bugfix, or release, ALWAYS inspect and identify the exact active AI model being used (e.g., `gemini-3.7-flash`, `gemini-2.5-pro`, `claude-3.7-sonnet`, `grok-4.3`, `gpt-4o`). Explicitly record the model's dedicated engineering purpose and token consumption details in:
+  1. `src/js/data/changelog-entries.js` (typed changelog entry)
+  2. `README.md` (Section 5 / 5.1 AI Models & Engineering Purpose Matrix)
+  3. The Git commit message body and session documentation without requiring user prompting.
 - When explaining a concept or relationship to the user, use the `visualize` skill when a visual materially improves understanding.
 - Be concise, direct, and candid. Challenge weak assumptions and distinguish verified facts from uncertainty.
 - Ground research in authoritative, current sources and link important evidence.
@@ -155,9 +158,9 @@ npm run qa:lighthouse:vercel  # Live Vercel Lighthouse floors
 - Commit format: `type(scope): description` — e.g., `fix(mobile): decongest layout and fix fit-to-screen across all viewports`.
 - Branch naming: `feature/short-description`, `fix/issue-description`, `chore/cleanup-task`.
 - **MANDATORY Pre-Commit & Release Checklist (Always Execute Automatically)**:
-  1. **Update Changelog (`src/js/data/changelog-entries.js`)**: Add a new typed entry to `changelogEntries` detailing the shipped fixes, features, or design polish.
-  2. **Track LLM Usage & Model**: In the commit body and documentation updates, record the active LLM model (e.g. `gemini-2.5-pro`, `claude-3.7-sonnet`, `grok-4.3`), reasoning mode, and token consumption metrics.
-  3. **Run Full Quality Gate**: Run `npm run check` (ESLint + Stylelint + Prettier + Vitest 210 tests), `npm run security-check`, and `npm run build` with Node 22 (`export PATH="/opt/homebrew/opt/node@22/bin:/opt/homebrew/Cellar/node@22/22.23.2/bin:$PATH"`).
+  1. **Update Changelog (`src/js/data/changelog-entries.js`)**: Add a new typed entry to `changelogEntries` detailing the shipped fixes, features, or design polish, with explicit active model attribution and purpose.
+  2. **Track Active LLM Model, Purpose & Metrics in Markdown**: In `README.md` (Section 5.1), documentation files, and the commit body, record the active LLM model (e.g. `gemini-3.7-flash`, `gemini-2.5-pro`, `claude-3.7-sonnet`, `grok-4.3`), its dedicated purpose (e.g. visual layout auditing, CSS refactoring, architectural contract), reasoning mode, and token consumption metrics.
+  3. **Run Full Quality Gate**: Run `npm run check` (ESLint + Stylelint + Prettier + Vitest 236 tests), `npm run security-check`, and `npm run build` with Node 22 (`export PATH="/opt/homebrew/opt/node@22/bin:/opt/homebrew/Cellar/node@22/22.23.2/bin:$PATH"`).
   4. **Sync Documentation**: Keep test counts, architecture files, and design system rules synchronized across `README.md`, `AGENTS.md`, and `docs/DESIGN.md`.
   5. **Guarantee 100% Green CI/CD Protocol**: Always monitor GitHub Actions after every `git push` to `main` via `gh run list` / `gh run view` to confirm all remote jobs (actionlint, linting, Vitest, pytest, Playwright, Lighthouse 100/100/100/100 gates, and Pages deployment) complete with green checks. Never consider a task finished with failing remote CI runs.
 
