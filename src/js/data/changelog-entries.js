@@ -41,6 +41,18 @@ export const CHANGELOG_TAGS = [
 
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
+  // ── September 2026 ──────────────────────────────────────────
+  {
+    id: 'a9e41b22',
+    date: '2026-09-02',
+    type: 'improvement',
+    title: 'Interactive Calendar & Schedule Sync: September-October 2026 Events & Milestones',
+    summary:
+      'Synchronized interactive Apple Calendar widget and Smart Reminders with active September-October 2026 technical events, hackathons, and architecture milestones (including SF AI Agent Summit, Global Open Source & WebMCP Symposium, Pune Developer Circle Claude Code Meetup, and FastAPI High-Concurrency Architecture reviews) alongside real-time multi-calendar provider synchronization.',
+    tags: ['design', 'contact', 'events', 'apple-design', 'smart-reminders', 'live-sync'],
+    sha: 'a9e41b22',
+    link: `${CHANGELOG_REPO}/commit/a9e41b22`,
+  },
   // ── August 2026 ────────────────────────────────────────────
   {
     id: 'c82e41d9',
