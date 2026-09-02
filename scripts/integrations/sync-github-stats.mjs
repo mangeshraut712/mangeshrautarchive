@@ -79,7 +79,7 @@ async function fetchGitHubStats() {
     };
 
     fs.mkdirSync(path.dirname(OUTPUT_FILE), { recursive: true });
-    fs.writeFileSync(OUTPUT_FILE, JSON.stringify(statsPayload, null, 2), 'utf-8');
+    fs.writeFileSync(OUTPUT_FILE, JSON.stringify(statsPayload, null, 2) + '\n', 'utf-8');
     console.log(`[github-sync] Successfully written GitHub stats to ${OUTPUT_FILE}`);
     console.log(
       `[github-sync] Total stars: ${totalStars} | Public Repos: ${userData.public_repos}`
@@ -98,7 +98,7 @@ async function fetchGitHubStats() {
         repositories: [],
       };
       fs.mkdirSync(path.dirname(OUTPUT_FILE), { recursive: true });
-      fs.writeFileSync(OUTPUT_FILE, JSON.stringify(fallback, null, 2), 'utf-8');
+      fs.writeFileSync(OUTPUT_FILE, JSON.stringify(fallback, null, 2) + '\n', 'utf-8');
     }
   }
 }

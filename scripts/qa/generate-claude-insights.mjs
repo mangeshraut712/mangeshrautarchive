@@ -108,12 +108,12 @@ async function generateInsights() {
   fs.mkdirSync(DOCS_DIR, { recursive: true });
 
   const jsonOutPath = path.join(ARTIFACTS_DIR, 'claude-insights.json');
-  fs.writeFileSync(jsonOutPath, JSON.stringify(insightsPayload, null, 2), 'utf-8');
+  fs.writeFileSync(jsonOutPath, JSON.stringify(insightsPayload, null, 2) + '\n', 'utf-8');
 
   // Also write to src/js/data/claude-insights.json for direct client consumption
   const staticDataPath = path.join(ROOT_DIR, 'src/js/data/claude-insights.json');
   fs.mkdirSync(path.dirname(staticDataPath), { recursive: true });
-  fs.writeFileSync(staticDataPath, JSON.stringify(insightsPayload, null, 2), 'utf-8');
+  fs.writeFileSync(staticDataPath, JSON.stringify(insightsPayload, null, 2) + '\n', 'utf-8');
 
   const markdownContent = `# 🧠 Claude Code & Agentic Codebase Insights
 
