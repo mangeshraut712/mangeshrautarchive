@@ -56,6 +56,10 @@ class LastFmService {
 
     this.hero = null;
     this.currently = null;
+    this.audioPlayer = null;
+    this.currentPreviewUrl = '';
+    this.isAudioPlaying = false;
+    this._currentTrackData = null;
   }
 
   initHero(elements) {
@@ -64,11 +68,267 @@ class LastFmService {
       this.hero.musicCard.dataset.clickBound = '1';
       this.hero.musicCard.style.cursor = 'pointer';
       this.hero.musicCard.addEventListener('click', e => {
-        if (e.target.closest('#music-spotify-link')) return;
+        if (
+          e.target.closest('#music-spotify-link') ||
+          e.target.closest('#music-apple-link') ||
+          e.target.closest('#music-preview-btn') ||
+          e.target.closest('#music-scrubber-container')
+        ) {
+          return;
+        }
         if (this.hero.spotifyLink?.href) {
           window.open(this.hero.spotifyLink.href, '_blank', 'noopener,noreferrer');
         }
       });
+    }
+
+    if (this.hero?.albumArt && !this.hero.albumArt.dataset.bound) {
+      this.hero.albumArt.dataset.bound = '1';
+      this.hero.albumArt.style.cursor = 'pointer';
+      this.hero.albumArt.title = 'Click to toggle 30s audio preview';
+      this.hero.albumArt.addEventListener('click', e => {
+        e.stopPropagation();
+        this.toggleAudioPreview();
+      });
+    }
+
+    if (this.hero?.previewBtn && !this.hero.previewBtn.dataset.bound) {
+      this.hero.previewBtn.dataset.bound = '1';
+      this.hero.previewBtn.addEventListener('click', e => {
+        e.stopPropagation();
+        this.toggleAudioPreview();
+      });
+    }
+
+    if (this.hero?.scrubberTrack && !this.hero.scrubberTrack.dataset.bound) {
+      this.hero.scrubberTrack.dataset.bound = '1';
+      this.hero.scrubberTrack.addEventListener('click', e => {
+        e.stopPropagation();
+        this.handleScrubberSeek(e);
+      });
+      this.hero.scrubberTrack.addEventListener('keydown', e => {
+        if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+          e.preventDefault();
+          e.stopPropagation();
+          const step = e.key === 'ArrowRight' ? 2 : -2;
+          if (this.audioPlayer) {
+            const dur = this.audioPlayer.duration || 30;
+            this.audioPlayer.currentTime = Math.max(
+              0,
+              Math.min(dur, (this.audioPlayer.currentTime || 0) + step)
+            );
+            this.updateAudioProgress();
+          }
+        }
+      });
+    }
+  }
+
+  setupAudioPlayer() {
+    if (this.audioPlayer || typeof window === 'undefined') return;
+    try {
+      this.audioPlayer = new Audio();
+      this.audioPlayer.preload = 'none';
+      this.audioPlayer.crossOrigin = 'anonymous';
+
+      this.audioPlayer.addEventListener('timeupdate', () => {
+        this.updateAudioProgress();
+      });
+
+      this.audioPlayer.addEventListener('ended', () => {
+        this.stopAudioPreview();
+      });
+
+      this.audioPlayer.addEventListener('pause', () => {
+        if (!this.audioPlayer?.seeking) {
+          this.isAudioPlaying = false;
+          this.syncAudioPlayerUI();
+        }
+      });
+
+      this.audioPlayer.addEventListener('play', () => {
+        this.isAudioPlaying = true;
+        this.syncAudioPlayerUI();
+      });
+
+      this.audioPlayer.addEventListener('error', () => {
+        this.stopAudioPreview();
+      });
+    } catch {
+      // Audio not supported in environment
+    }
+  }
+
+  async toggleAudioPreview() {
+    this.setupAudioPlayer();
+    if (!this.audioPlayer) return;
+
+    if (this.isAudioPlaying) {
+      this.audioPlayer.pause();
+      this.isAudioPlaying = false;
+      this.syncAudioPlayerUI();
+      return;
+    }
+
+    if (!this.currentPreviewUrl && this._currentTrackData) {
+      const details = await this.fetchAppleMusicDetails(
+        this._currentTrackData.name || '',
+        this.getArtistName(this._currentTrackData)
+      );
+      if (details?.previewUrl) {
+        this.currentPreviewUrl = details.previewUrl;
+        if (details.appleMusicUrl && this.hero?.appleLink) {
+          this.hero.appleLink.href = details.appleMusicUrl;
+        }
+      }
+    }
+
+    if (!this.currentPreviewUrl) {
+      if (this.hero?.previewTag) {
+        this.hero.previewTag.textContent = 'Preview Unavailable';
+        setTimeout(() => {
+          if (this.hero?.previewTag) {
+            this.hero.previewTag.textContent = '30s Preview';
+          }
+        }, 2200);
+      }
+      return;
+    }
+
+    try {
+      if (this.audioPlayer.src !== this.currentPreviewUrl) {
+        this.audioPlayer.src = this.currentPreviewUrl;
+      }
+      await this.audioPlayer.play();
+      this.isAudioPlaying = true;
+      this.syncAudioPlayerUI();
+    } catch {
+      this.stopAudioPreview();
+    }
+  }
+
+  stopAudioPreview() {
+    if (this.audioPlayer) {
+      this.audioPlayer.pause();
+      this.audioPlayer.currentTime = 0;
+    }
+    this.isAudioPlaying = false;
+    this.syncAudioPlayerUI();
+    this.updateAudioProgress(0, 30);
+  }
+
+  syncAudioPlayerUI() {
+    if (!this.hero?.musicCard) return;
+    const isNowPlaying = this.hero.musicCard.dataset.musicState === 'playing';
+    const shouldSpin = this.isAudioPlaying || isNowPlaying;
+
+    this.hero.musicCard.classList.toggle('is-audio-previewing', this.isAudioPlaying);
+    this.hero.musicCard.classList.toggle('is-playing', shouldSpin);
+
+    if (this.hero.previewBtn) {
+      this.hero.previewBtn.setAttribute(
+        'aria-label',
+        this.isAudioPlaying ? 'Pause audio preview' : 'Play 30-second audio preview'
+      );
+      this.hero.previewBtn.title = this.isAudioPlaying ? 'Pause Preview' : 'Play 30s Audio Preview';
+    }
+    if (this.hero.previewIcon) {
+      this.hero.previewIcon.className = this.isAudioPlaying ? 'fas fa-pause' : 'fas fa-play';
+    }
+    if (this.hero.playingIndicator) {
+      this.hero.playingIndicator.classList.toggle('active', shouldSpin);
+    }
+    if (this.hero.statusLiveDot) {
+      this.hero.statusLiveDot.classList.toggle('active', shouldSpin);
+    }
+  }
+
+  formatTime(seconds = 0) {
+    const s = Math.max(0, Math.floor(seconds));
+    const mins = Math.floor(s / 60);
+    const secs = s % 60;
+    return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+  }
+
+  updateAudioProgress(cur = null, dur = null) {
+    if (!this.hero?.scrubberFill) return;
+    const currentTime = cur !== null ? cur : this.audioPlayer?.currentTime || 0;
+    const duration = dur !== null ? dur : this.audioPlayer?.duration || 30;
+    const pct = duration > 0 ? Math.min(100, Math.max(0, (currentTime / duration) * 100)) : 0;
+
+    this.hero.scrubberFill.style.width = `${pct}%`;
+    if (this.hero.scrubberThumb) {
+      this.hero.scrubberThumb.style.left = `${pct}%`;
+    }
+    if (this.hero.scrubberTrack) {
+      this.hero.scrubberTrack.setAttribute('aria-valuenow', Math.round(pct));
+    }
+    if (this.hero.timeCurrent) {
+      this.hero.timeCurrent.textContent = this.formatTime(currentTime);
+    }
+    if (this.hero.timeDuration) {
+      this.hero.timeDuration.textContent = this.formatTime(duration);
+    }
+  }
+
+  handleScrubberSeek(e) {
+    if (!this.hero?.scrubberTrack || !this.audioPlayer) return;
+    const rect = this.hero.scrubberTrack.getBoundingClientRect();
+    const clientX = e.clientX ?? e.touches?.[0]?.clientX ?? 0;
+    const offsetX = Math.max(0, Math.min(clientX - rect.left, rect.width));
+    const percentage = rect.width > 0 ? offsetX / rect.width : 0;
+    const duration = this.audioPlayer.duration || 30;
+    this.audioPlayer.currentTime = percentage * duration;
+    this.updateAudioProgress();
+  }
+
+  updateAmbientGlow(artworkUrl = '') {
+    if (!this.hero?.ambientGlow || !artworkUrl || artworkUrl.startsWith('data:')) return;
+    try {
+      const img = new Image();
+      img.crossOrigin = 'anonymous';
+      img.onload = () => {
+        try {
+          const canvas = document.createElement('canvas');
+          canvas.width = 16;
+          canvas.height = 16;
+          const ctx = canvas.getContext('2d', { willReadFrequently: true });
+          if (!ctx) return;
+          ctx.drawImage(img, 0, 0, 16, 16);
+          const data = ctx.getImageData(0, 0, 16, 16).data;
+          let r = 0,
+            g = 0,
+            b = 0,
+            count = 0;
+          for (let i = 0; i < data.length; i += 16) {
+            const pr = data[i];
+            const pg = data[i + 1];
+            const pb = data[i + 2];
+            const max = Math.max(pr, pg, pb);
+            const min = Math.min(pr, pg, pb);
+            if (max > 30 && max - min > 15) {
+              r += pr;
+              g += pg;
+              b += pb;
+              count += 1;
+            }
+          }
+          if (count > 0) {
+            r = Math.round(r / count);
+            g = Math.round(g / count);
+            b = Math.round(b / count);
+            this.hero.ambientGlow.style.setProperty(
+              '--music-glow-color',
+              `radial-gradient(circle at 40% 50%, rgba(${r}, ${g}, ${b}, 0.5), rgba(${r}, ${g}, ${b}, 0.15) 50%, transparent 75%)`
+            );
+          }
+        } catch {
+          // Canvas tainted or unavailable
+        }
+      };
+      img.src = artworkUrl;
+    } catch {
+      // Image load failed
     }
   }
 
@@ -236,13 +496,14 @@ class LastFmService {
     return `data:image/svg+xml;base64,${btoa(unescape(encodeURIComponent(svg)))}`;
   }
 
-  normalizeArtworkUrl(url = '', preferredSize = '600x600') {
+  normalizeArtworkUrl(url = '', preferredSize = '1000x1000') {
     if (!url) return '';
     return url
       .replace('/34s/', `/${preferredSize}/`)
       .replace('/64s/', `/${preferredSize}/`)
       .replace('/174s/', `/${preferredSize}/`)
-      .replace('/300x300/', `/${preferredSize}/`);
+      .replace('/300x300/', `/${preferredSize}/`)
+      .replace('/600x600/', `/${preferredSize}/`);
   }
 
   isUsableArtwork(url = '') {
@@ -250,7 +511,7 @@ class LastFmService {
   }
 
   getBestImage(track, preferredSizes = ['extralarge', 'large', 'medium', 'small']) {
-    const resolved = this.normalizeArtworkUrl(track?.resolved_artwork || '', '600x600');
+    const resolved = this.normalizeArtworkUrl(track?.resolved_artwork || '', '1000x1000');
     if (this.isUsableArtwork(resolved) && this.isSafeHttpsUrl(resolved)) {
       return resolved;
     }
@@ -264,14 +525,14 @@ class LastFmService {
 
     for (const size of preferredSizes) {
       const image = imageMap.get(size);
-      const normalized = this.normalizeArtworkUrl(image?.['#text'] || '', '600x600');
+      const normalized = this.normalizeArtworkUrl(image?.['#text'] || '', '1000x1000');
       if (this.isUsableArtwork(normalized)) {
         return normalized;
       }
     }
 
     for (let i = track.image.length - 1; i >= 0; i -= 1) {
-      const normalized = this.normalizeArtworkUrl(track.image[i]?.['#text'] || '', '600x600');
+      const normalized = this.normalizeArtworkUrl(track.image[i]?.['#text'] || '', '1000x1000');
       if (this.isUsableArtwork(normalized)) {
         return normalized;
       }
@@ -284,7 +545,62 @@ class LastFmService {
     return !this.isUsableArtwork(url) || url.startsWith('data:') || !this.isSafeHttpsUrl(url);
   }
 
-  fetchAppleMusicArtworkViaJsonp(trackName = '', artistName = '') {
+  pickItunesDetails(results = [], trackName = '', artistName = '') {
+    if (!Array.isArray(results) || !results.length) return null;
+
+    const norm = value =>
+      String(value || '')
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, ' ')
+        .trim();
+    const wantTrack = norm(trackName);
+    const wantArtist = norm(artistName);
+
+    let bestItem = null;
+    let bestScore = -1;
+    for (const item of results) {
+      const gotTrack = norm(item?.trackName);
+      const gotArtist = norm(item?.artistName);
+      let score = 0;
+      if (wantTrack && gotTrack === wantTrack) score += 5;
+      else if (wantTrack && gotTrack.includes(wantTrack)) score += 3;
+      else if (wantTrack && wantTrack.includes(gotTrack) && gotTrack.length > 3) score += 2;
+      if (wantArtist && gotArtist === wantArtist) score += 5;
+      else if (wantArtist && gotArtist.includes(wantArtist)) score += 3;
+      else if (wantArtist && wantArtist.includes(gotArtist) && gotArtist.length > 2) score += 2;
+      if (score > bestScore && item?.artworkUrl100) {
+        bestScore = score;
+        bestItem = item;
+      }
+    }
+
+    if (!bestItem && results[0]?.artworkUrl100 && bestScore < 0) {
+      if (!wantTrack && !wantArtist) bestItem = results[0];
+    }
+
+    if (!bestItem) return null;
+
+    const artwork = bestItem.artworkUrl100
+      ? String(bestItem.artworkUrl100).replace('100x100bb', '1000x1000bb')
+      : null;
+
+    return {
+      artwork,
+      previewUrl: bestItem.previewUrl || '',
+      appleMusicUrl: bestItem.trackViewUrl || '',
+      genre: bestItem.primaryGenreName || '',
+      durationMs: bestItem.trackTimeMillis || 0,
+      trackName: bestItem.trackName || trackName,
+      artistName: bestItem.artistName || artistName,
+    };
+  }
+
+  pickItunesArtwork(results = [], trackName = '', artistName = '') {
+    const details = this.pickItunesDetails(results, trackName, artistName);
+    return details?.artwork || null;
+  }
+
+  fetchAppleMusicDetailsViaJsonp(trackName = '', artistName = '') {
     if (typeof globalThis.document === 'undefined') return Promise.resolve(null);
     return new Promise(resolve => {
       const query = encodeURIComponent(`${trackName} ${artistName}`.trim());
@@ -310,8 +626,8 @@ class LastFmService {
 
       globalThis[callbackName] = data => {
         cleanup();
-        const artwork = this.pickItunesArtwork(data?.results || [], trackName, artistName);
-        resolve(artwork || null);
+        const details = this.pickItunesDetails(data?.results || [], trackName, artistName);
+        resolve(details || null);
       };
 
       script.src = `https://itunes.apple.com/search?term=${query}&entity=song&limit=5&callback=${callbackName}`;
@@ -324,22 +640,37 @@ class LastFmService {
     });
   }
 
-  async fetchAppleMusicArtwork(trackName = '', artistName = '') {
+  fetchAppleMusicArtworkViaJsonp(trackName = '', artistName = '') {
+    return this.fetchAppleMusicDetailsViaJsonp(trackName, artistName).then(
+      details => details?.artwork || null
+    );
+  }
+
+  async fetchAppleMusicDetails(trackName = '', artistName = '') {
     if (isPerformanceAudit()) {
       return null;
     }
 
-    const cacheKey = `${trackName}::${artistName}`.trim().toLowerCase();
+    const cacheKey = `details::${trackName}::${artistName}`.trim().toLowerCase();
     if (!cacheKey) return null;
 
-    // Check cache with TTL — never stick a failed null forever within the window.
     const cached = this.artworkCache.get(cacheKey);
     if (cached && Date.now() - cached.ts < this.ARTWORK_CACHE_TTL_MS) {
       return cached.promise;
     }
 
     const pending = (async () => {
-      // 1. Try serverless backend API proxy (scored match on server)
+      // 1. Direct client-side iTunes Search via JSONP
+      try {
+        const jsonpDetails = await this.fetchAppleMusicDetailsViaJsonp(trackName, artistName);
+        if (jsonpDetails) {
+          return jsonpDetails;
+        }
+      } catch {
+        // iTunes API unavailable
+      }
+
+      // 2. Try serverless backend API proxy
       try {
         const response = await fetch(
           `${this.artworkApiUrl}?${new URLSearchParams({
@@ -354,21 +685,16 @@ class LastFmService {
         if (response.ok) {
           const data = await response.json();
           if (data?.artwork_url && this.isSafeHttpsUrl(data.artwork_url)) {
-            return data.artwork_url;
+            return {
+              artwork: data.artwork_url,
+              previewUrl: data.preview_url || '',
+              appleMusicUrl: data.apple_music_url || '',
+              genre: data.genre || '',
+            };
           }
         }
       } catch {
         // Backend API offline or timed out
-      }
-
-      // 2. Direct client-side iTunes Search via JSONP (bypasses browser CORS restrictions completely)
-      try {
-        const jsonpArtwork = await this.fetchAppleMusicArtworkViaJsonp(trackName, artistName);
-        if (jsonpArtwork && this.isSafeHttpsUrl(jsonpArtwork)) {
-          return jsonpArtwork;
-        }
-      } catch {
-        // iTunes API unavailable
       }
 
       return null;
@@ -378,41 +704,9 @@ class LastFmService {
     return pending;
   }
 
-  pickItunesArtwork(results = [], trackName = '', artistName = '') {
-    if (!Array.isArray(results) || !results.length) return null;
-
-    const norm = value =>
-      String(value || '')
-        .toLowerCase()
-        .replace(/[^a-z0-9]+/g, ' ')
-        .trim();
-    const wantTrack = norm(trackName);
-    const wantArtist = norm(artistName);
-
-    let best = null;
-    let bestScore = -1;
-    for (const item of results) {
-      const gotTrack = norm(item?.trackName);
-      const gotArtist = norm(item?.artistName);
-      let score = 0;
-      if (wantTrack && gotTrack === wantTrack) score += 5;
-      else if (wantTrack && gotTrack.includes(wantTrack)) score += 3;
-      else if (wantTrack && wantTrack.includes(gotTrack) && gotTrack.length > 3) score += 2;
-      if (wantArtist && gotArtist === wantArtist) score += 5;
-      else if (wantArtist && gotArtist.includes(wantArtist)) score += 3;
-      else if (wantArtist && wantArtist.includes(gotArtist) && gotArtist.length > 2) score += 2;
-      if (score > bestScore && item?.artworkUrl100) {
-        bestScore = score;
-        best = item.artworkUrl100;
-      }
-    }
-
-    if (!best && results[0]?.artworkUrl100 && bestScore < 0) {
-      // No scored match — only accept first hit when we had no artist/title to compare.
-      if (!wantTrack && !wantArtist) best = results[0].artworkUrl100;
-    }
-
-    return best ? String(best).replace('100x100bb', '600x600bb') : null;
+  async fetchAppleMusicArtwork(trackName = '', artistName = '') {
+    const details = await this.fetchAppleMusicDetails(trackName, artistName);
+    return details?.artwork || null;
   }
 
   hydrateFallbackArtwork(imageNode, track, { fallbackUrl = '', trackId = '' } = {}) {
@@ -750,12 +1044,18 @@ class LastFmService {
     const usableArtwork = this.isUsableArtwork(artwork) && this.isSafeHttpsUrl(artwork);
     const placeholder = this.getArtworkPlaceholder(trackName, artistName);
 
+    this._currentTrackData = track;
     this.hero.albumArt.dataset.trackId = trackId;
 
     // Detect track change — paint usable art immediately (or placeholder).
     if (this._currentTrackId !== trackId) {
+      if (this.isAudioPlaying) {
+        this.stopAudioPreview();
+      }
+      this.currentPreviewUrl = '';
       this._currentTrackId = trackId;
       this.hero.albumArt.src = usableArtwork ? artwork : placeholder;
+      this.updateAudioProgress(0, 30);
     } else if (usableArtwork && this.hero.albumArt.src !== artwork) {
       this.hero.albumArt.src = artwork;
     }
@@ -775,12 +1075,44 @@ class LastFmService {
       this.hero.spotifyLink.title = `Open on Spotify`;
       this.hero.spotifyLink.hidden = false;
     }
+    if (this.hero.appleLink) {
+      const appleSearchUrl = `https://music.apple.com/us/search?term=${encodeURIComponent(
+        `${trackName} ${artistName}`.trim()
+      )}`;
+      this.hero.appleLink.href = appleSearchUrl;
+      this.hero.appleLink.setAttribute(
+        'aria-label',
+        `Open ${trackName} by ${artistName} on Apple Music`
+      );
+      this.hero.appleLink.title = `Open on Apple Music`;
+    }
+
     this.hero.albumArt.alt = `${trackName} by ${artistName}`;
     this.setHeroMusicState(isNowPlaying ? 'playing' : 'recent');
+    this.updateAmbientGlow(usableArtwork ? artwork : '');
+
     this.hydrateFallbackArtwork(this.hero.albumArt, track, {
       fallbackUrl: usableArtwork ? artwork : '',
       trackId,
     });
+
+    // Fetch rich Apple Music details (preview audio + direct Apple Music link + genre)
+    this.fetchAppleMusicDetails(trackName, artistName).then(details => {
+      if (this._currentTrackId !== trackId || !details) return;
+      if (details.previewUrl) {
+        this.currentPreviewUrl = details.previewUrl;
+      }
+      if (details.appleMusicUrl && this.hero.appleLink) {
+        this.hero.appleLink.href = details.appleMusicUrl;
+      }
+      if (details.genre && this.hero.previewTag) {
+        this.hero.previewTag.textContent = details.genre;
+      }
+      if (details.artwork) {
+        this.updateAmbientGlow(details.artwork);
+      }
+    });
+
     window.dispatchEvent(new CustomEvent('liquid-glass:sync-chrome'));
   }
 
@@ -980,8 +1312,19 @@ function initLastFmService() {
     statusText: document.getElementById('status-text'),
     playingIndicator: document.getElementById('playing-indicator'),
     musicCard: document.getElementById('music-card'),
+    ambientGlow: document.getElementById('music-ambient-glow'),
+    previewBtn: document.getElementById('music-preview-btn'),
+    previewIcon: document.getElementById('music-preview-icon'),
+    appleLink: document.getElementById('music-apple-link'),
     spotifyLink: document.getElementById('music-spotify-link'),
     statusLiveDot: document.getElementById('status-live-dot'),
+    audioBadge: document.getElementById('apple-audio-badge'),
+    scrubberTrack: document.getElementById('music-scrubber-track'),
+    scrubberFill: document.getElementById('music-scrubber-fill'),
+    scrubberThumb: document.getElementById('music-scrubber-thumb'),
+    timeCurrent: document.getElementById('music-time-current'),
+    timeDuration: document.getElementById('music-time-duration'),
+    previewTag: document.getElementById('music-preview-tag'),
   };
 
   if (heroElements.trackName && heroElements.albumArt) {

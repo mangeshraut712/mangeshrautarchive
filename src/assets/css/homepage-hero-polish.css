@@ -262,10 +262,10 @@ html.dark #home #name-pronounce-btn.name-pronounce-btn {
 
 #home.hero-section .music-card,
 #home.hero-section #music-card {
-  width: fit-content !important;
-  max-width: min(22rem, 100%) !important;
+  width: 100% !important;
+  max-width: min(28rem, 100%) !important;
   min-height: 52px !important;
-  margin: 0 !important;
+  margin: 0.5rem auto !important;
   padding: 0 !important;
   justify-content: center !important;
 }

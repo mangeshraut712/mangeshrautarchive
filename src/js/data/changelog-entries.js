@@ -43,6 +43,30 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── September 2026 ──────────────────────────────────────────
   {
+    id: 'e49a2107',
+    date: '2026-09-02',
+    type: 'improvement',
+    title:
+      'Apple Music Player Polish: Ultra Full HD Artwork, Pure Disc Rotation & Dedicated Controls',
+    summary:
+      'Refined the Apple Music interactive hero card according to DESIGN.md specification: removed the center circle cut-out for pure Full HD edge-to-edge 1000x1000 artwork rendering, enabled smooth 360-degree disc spin during live listening and 30-second audio previews, enforced solid black/white background surfaces across themes, and streamlined the action controls cluster (▶/❚❚ Preview,  Apple Music, 🟢 Spotify).',
+    tags: ['design', 'apple-design', 'audio', 'performance', 'lastfm'],
+    sha: 'e49a2107',
+    link: `${CHANGELOG_REPO}/commit/e49a2107`,
+  },
+  {
+    id: 'f83b1940',
+    date: '2026-09-02',
+    type: 'release',
+    title:
+      'Apple Music Interactive Experience: 30s Audio Preview, Ambient Artwork Aura & Scrubber Timeline',
+    summary:
+      'Elevated the hero music card into an authentic Apple Music iOS 18/macOS Sequoia interactive player featuring native 30-second AAC audio preview playback, dynamic artwork ambient aura color extraction, seekable timeline scrubber with keyboard controls, Apple Lossless audio badges, and dual  Music / Spotify deep streaming integration.',
+    tags: ['design', 'apple-design', 'audio', 'lastfm', 'itunes', 'performance'],
+    sha: 'f83b1940',
+    link: `${CHANGELOG_REPO}/commit/f83b1940`,
+  },
+  {
     id: 'a9e41b22',
     date: '2026-09-02',
     type: 'improvement',

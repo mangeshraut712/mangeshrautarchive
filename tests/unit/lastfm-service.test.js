@@ -50,7 +50,7 @@ describe('LastFmService payload + artwork helpers', () => {
       'Kalyanji-Anandji'
     );
     expect(artwork).toContain('right.jpg');
-    expect(artwork).toContain('600x600bb');
+    expect(artwork).toContain('1000x1000bb');
   });
 
   it('builds a shelf signature that changes when now-playing flips', () => {
@@ -102,5 +102,55 @@ describe('LastFmService payload + artwork helpers', () => {
     expect(meta.profile_url).toContain('/user/mbr63');
     expect(meta.top_artists[0].name).toBe('Arijit');
     expect(meta.week_bins).toHaveLength(7);
+  });
+
+  it('extracts full Apple Music details including previewUrl and trackViewUrl', () => {
+    const details = service.pickItunesDetails(
+      [
+        {
+          trackName: 'Blinding Lights',
+          artistName: 'The Weeknd',
+          artworkUrl100: 'https://example.com/100x100bb/weeknd.jpg',
+          previewUrl: 'https://audio-ssl.itunes.apple.com/preview/blinding-lights.m4a',
+          trackViewUrl: 'https://music.apple.com/us/album/blinding-lights/123456',
+          primaryGenreName: 'R&B/Soul',
+          trackTimeMillis: 200000,
+        },
+      ],
+      'Blinding Lights',
+      'The Weeknd'
+    );
+    expect(details).not.toBeNull();
+    expect(details.previewUrl).toBe(
+      'https://audio-ssl.itunes.apple.com/preview/blinding-lights.m4a'
+    );
+    expect(details.appleMusicUrl).toBe('https://music.apple.com/us/album/blinding-lights/123456');
+    expect(details.genre).toBe('R&B/Soul');
+    expect(details.artwork).toBe('https://example.com/1000x1000bb/weeknd.jpg');
+  });
+
+  it('formats audio time seconds into mm:ss accurately', () => {
+    expect(service.formatTime(0)).toBe('0:00');
+    expect(service.formatTime(9)).toBe('0:09');
+    expect(service.formatTime(30)).toBe('0:30');
+    expect(service.formatTime(75)).toBe('1:15');
+    expect(service.formatTime(215)).toBe('3:35');
+  });
+
+  it('updates scrubber fill and thumb DOM based on currentTime and duration', () => {
+    const mockHero = {
+      scrubberFill: { style: { width: '0%' } },
+      scrubberThumb: { style: { left: '0%' } },
+      scrubberTrack: { setAttribute: vi.fn() },
+      timeCurrent: { textContent: '' },
+      timeDuration: { textContent: '' },
+    };
+    service.hero = mockHero;
+    service.updateAudioProgress(15, 30);
+    expect(mockHero.scrubberFill.style.width).toBe('50%');
+    expect(mockHero.scrubberThumb.style.left).toBe('50%');
+    expect(mockHero.timeCurrent.textContent).toBe('0:15');
+    expect(mockHero.timeDuration.textContent).toBe('0:30');
+    expect(mockHero.scrubberTrack.setAttribute).toHaveBeenCalledWith('aria-valuenow', 50);
   });
 });

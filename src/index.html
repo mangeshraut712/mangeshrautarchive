@@ -1376,6 +1376,8 @@ html.dark #home .hero-name-text {
   <link rel="stylesheet" href="assets/css/homepage-hero-polish.css?v=20260808center9" />
   <link rel="stylesheet" href="assets/css/quick-copy-shadcn.css?v=20260826cache1" media="print" onload="this.media='all'" />
   <noscript><link rel="stylesheet" href="assets/css/quick-copy-shadcn.css?v=20260826cache1" /></noscript>
+  <link rel="stylesheet" href="assets/css/apple-music-card.css?v=20260902lux1" media="print" onload="this.media='all'" />
+  <noscript><link rel="stylesheet" href="assets/css/apple-music-card.css?v=20260902lux1" /></noscript>
 
   <!-- Lazy-loaded Section Styles (data-href only — loaded near section / idle) -->
   <link rel="stylesheet" data-href="assets/css/contact.css?v=20260729sync1" data-lazy-style-key="contact" />
@@ -2132,14 +2134,14 @@ html.dark #home .hero-name-text {
                 <!-- System Telemetry & Vitality Rings -->
                 <div id="telemetry-rings-container" class="telemetry-rings-container" aria-live="polite"></div>
 
-                <!-- Deluxe Saloon & Apple Music Style - Now Playing Pill Card -->
+                <!-- Apple Music Interactive Experience Card -->
                 <div class="music-card" id="music-card" data-music-state="loading">
+                  <div class="music-ambient-glow" id="music-ambient-glow" aria-hidden="true"></div>
                   <div class="music-card-inner lg-interactive" data-lg-interactive>
-                    <div class="album-art-container">
+                    <div class="album-art-container" id="album-art-container">
                       <img id="album-art"
                         src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 240'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%231db954'/%3E%3Cstop offset='100%25' stop-color='%23121212'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='120' cy='120' r='120' fill='url(%23g)'/%3E%3Ccircle cx='120' cy='105' r='40' fill='rgba(255,255,255,0.12)'/%3E%3Cpath d='M120 80v45a16 16 0 1 1-12-15.4V90l30-7v26a16 16 0 1 1-12-15.4V80h-6z' fill='%23ffffff'/%3E%3C/svg%3E"
-                        alt="Music album artwork" class="album-art" width="54" height="54" loading="lazy" decoding="async" fetchpriority="low" />
-                      <div class="album-art-pin" aria-hidden="true"></div>
+                        alt="Music album artwork" class="album-art" width="58" height="58" loading="lazy" decoding="async" fetchpriority="low" />
                     </div>
                     <div class="track-info">
                       <div class="status-row">
@@ -2152,19 +2154,55 @@ html.dark #home .hero-name-text {
                             <span></span>
                           </div>
                         </span>
-                        <a
-                          id="music-spotify-link"
-                          class="music-card-spotify-link"
-                          href="https://open.spotify.com"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          aria-label="Open this track on Spotify"
-                        >
-                          <i class="fab fa-spotify" aria-hidden="true"></i>
-                        </a>
+                        <div class="music-header-meta">
+                          <div class="music-card-actions">
+                            <button
+                              type="button"
+                              id="music-preview-btn"
+                              class="music-card-service-link music-card-preview-link"
+                              aria-label="Play 30-second audio preview"
+                              title="Play 30s Audio Preview"
+                            >
+                              <i class="fas fa-play" id="music-preview-icon" aria-hidden="true"></i>
+                            </button>
+                            <a
+                              id="music-apple-link"
+                              class="music-card-service-link music-card-apple-link"
+                              href="https://music.apple.com"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              aria-label="Open track on Apple Music"
+                              title="Open on Apple Music"
+                            >
+                              <i class="fab fa-apple" aria-hidden="true"></i>
+                            </a>
+                            <a
+                              id="music-spotify-link"
+                              class="music-card-service-link music-card-spotify-link"
+                              href="https://open.spotify.com"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              aria-label="Open track on Spotify"
+                              title="Open on Spotify"
+                            >
+                              <i class="fab fa-spotify" aria-hidden="true"></i>
+                            </a>
+                          </div>
+                        </div>
                       </div>
                       <p class="track-name" id="track-name" aria-live="polite" aria-atomic="true">Loading recent plays…</p>
                       <p class="artist-name" id="artist-name">Music</p>
+                      <div class="music-scrubber-container" id="music-scrubber-container" aria-label="Audio preview playback timeline">
+                        <div class="music-scrubber-track" id="music-scrubber-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" tabindex="0" aria-label="Audio preview progress bar">
+                          <div class="music-scrubber-fill" id="music-scrubber-fill"></div>
+                          <div class="music-scrubber-thumb" id="music-scrubber-thumb"></div>
+                        </div>
+                        <div class="music-time-row">
+                          <span class="music-time-current" id="music-time-current">0:00</span>
+                          <span class="music-preview-tag" id="music-preview-tag">30s Preview</span>
+                          <span class="music-time-duration" id="music-time-duration">0:30</span>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>

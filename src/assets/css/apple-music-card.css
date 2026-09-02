@@ -1,0 +1,639 @@
+/**
+ * Apple Music Card — Luxury iOS 18 / macOS Sequoia Style Player
+ * Adheres strictly to docs/DESIGN.md:
+ * - Light Mode: Solid Pure White (#ffffff) with subtle border (#e5e5ea)
+ * - Dark Mode: Solid Pure Black (#000000) with subtle border (#27272a / #2c2c2e)
+ * - Smooth Rotating Circle Vinyl Artwork (Spinning Disc without internal button clutter)
+ * - Dedicated Action Cluster Controls: ▶/❚❚ Preview +  Music + 🟢 Spotify
+ */
+
+:root {
+  --music-glow-color: radial-gradient(
+    circle at 40% 50%,
+    rgba(0, 113, 227, 0.3),
+    rgba(175, 82, 222, 0.15),
+    transparent 70%
+  );
+  --music-accent-blue: #0071e3;
+  --music-accent-blue-dark: #0a84ff;
+}
+
+/* ── Container & Ambient Glow Aura ──────────────────────────────── */
+.music-card,
+#home .music-card,
+#home #music-card {
+  position: relative !important;
+  width: 100% !important;
+  max-width: 460px !important;
+  margin: 0.75rem auto !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  isolation: isolate;
+}
+
+.music-ambient-glow {
+  position: absolute;
+  inset: -8px;
+  border-radius: 30px;
+  background: var(--music-glow-color);
+  filter: blur(28px);
+  opacity: 0.45;
+  pointer-events: none;
+  z-index: -1;
+  transition:
+    opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+    background 0.8s ease;
+  will-change: opacity, background;
+}
+
+.music-card.is-audio-previewing .music-ambient-glow,
+.music-card.is-playing .music-ambient-glow {
+  opacity: 0.8;
+  filter: blur(32px);
+}
+
+/* ── Card Surface: Solid White (Light) & Solid Black (Dark) per DESIGN.md ── */
+.music-card-inner,
+#home .music-card-inner,
+#home .music-card.is-playing .music-card-inner {
+  position: relative !important;
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  gap: 14px !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  padding: 12px 16px !important;
+  border-radius: 22px !important;
+  box-sizing: border-box !important;
+  overflow: hidden !important;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  border: 1px solid #e5e5ea !important;
+  box-shadow:
+    0 4px 16px rgba(0, 0, 0, 0.06),
+    0 1px 3px rgba(0, 0, 0, 0.04) !important;
+  transition:
+    transform 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.28s ease !important;
+  z-index: 1;
+}
+
+html.dark .music-card-inner,
+html[data-theme='dark'] .music-card-inner,
+html.dark #home .music-card-inner,
+html[data-theme='dark'] #home .music-card-inner,
+html.dark #home .music-card.is-playing .music-card-inner,
+html[data-theme='dark'] #home .music-card.is-playing .music-card-inner {
+  background: #000000 !important;
+  background-color: #000000 !important;
+  border: 1px solid #27272a !important;
+  box-shadow:
+    0 8px 28px rgba(0, 0, 0, 0.75),
+    0 2px 6px rgba(0, 0, 0, 0.5) !important;
+}
+
+.music-card:hover .music-card-inner,
+#home .music-card:hover .music-card-inner {
+  transform: translateY(-2px) !important;
+  border-color: rgba(0, 113, 227, 0.35) !important;
+  box-shadow:
+    0 8px 24px rgba(0, 113, 227, 0.12),
+    0 2px 6px rgba(0, 0, 0, 0.06) !important;
+}
+
+html.dark .music-card:hover .music-card-inner,
+html.dark #home .music-card:hover .music-card-inner {
+  border-color: rgba(10, 132, 255, 0.45) !important;
+  box-shadow:
+    0 10px 32px rgba(10, 132, 255, 0.2),
+    0 2px 8px rgba(0, 0, 0, 0.7) !important;
+}
+
+/* ── Rotating Circle Vinyl Artwork (Pure Unobstructed Disc) ──────── */
+@keyframes albumSpin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.album-art-container,
+#home .music-card-inner .album-art-container,
+#home .music-card:hover .album-art-container {
+  position: relative !important;
+  width: 58px !important;
+  height: 58px !important;
+  min-width: 58px !important;
+  min-height: 58px !important;
+  max-width: 58px !important;
+  max-height: 58px !important;
+  border-radius: 50% !important;
+  -webkit-border-radius: 50% !important;
+  overflow: hidden !important;
+  flex-shrink: 0 !important;
+  background: #111113 !important;
+  box-shadow:
+    0 4px 14px rgba(0, 0, 0, 0.25),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.15) !important;
+  cursor: pointer;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.album-art-container:hover {
+  transform: scale(1.04);
+}
+
+.album-art,
+#home .album-art,
+#home #album-art,
+#home .music-card-inner .album-art,
+#home .music-card:hover .album-art {
+  width: 100% !important;
+  height: 100% !important;
+  min-width: 100% !important;
+  min-height: 100% !important;
+  border-radius: 50% !important;
+  -webkit-border-radius: 50% !important;
+  object-fit: cover !important;
+  image-rendering: -webkit-optimize-contrast;
+  display: block !important;
+  animation: albumSpin 8s linear infinite !important;
+  animation-play-state: paused !important;
+  transition: opacity 0.3s ease !important;
+}
+
+/* Run continuous rotation when playing (Last.fm live listening or 30s preview) */
+.music-card.is-playing .album-art,
+.music-card.is-playing #album-art,
+.music-card.is-playing .music-card-inner .album-art,
+.music-card.is-playing .album-art-container .album-art,
+#home .music-card.is-playing .album-art,
+#home .music-card.is-playing #album-art,
+#home .music-card.is-playing .music-card-inner .album-art,
+.music-card[data-music-state='playing'] .album-art,
+.music-card[data-music-state='playing'] #album-art,
+#home .music-card[data-music-state='playing'] .album-art,
+#home .music-card[data-music-state='playing'] #album-art,
+.music-card.is-audio-previewing .album-art,
+.music-card.is-audio-previewing #album-art,
+#home .music-card.is-audio-previewing .album-art,
+#home .music-card.is-audio-previewing #album-art {
+  animation: albumSpin 8s linear infinite !important;
+  animation-play-state: running !important;
+}
+
+/* Hide any legacy center pin for pure Full HD edge-to-edge artwork */
+.album-art-pin,
+#home .music-card-inner .album-art-pin {
+  display: none !important;
+}
+
+/* ── Track Info Column ──────────────────────────────────────────── */
+.music-card-inner .track-info,
+#home .music-card-inner .track-info {
+  display: flex !important;
+  flex-direction: column !important;
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  gap: 2px !important;
+  justify-content: center !important;
+  text-align: left !important;
+}
+
+/* ── Status Row & Actions Cluster ───────────────────────────────── */
+.music-card-inner .status-row,
+#home .music-card-inner .status-row {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 8px !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin-bottom: 2px !important;
+  flex-wrap: nowrap !important;
+}
+
+.status-badge,
+#home .music-card-inner .status-badge {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 5px !important;
+  font-size: 9.5px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.04em !important;
+  text-transform: uppercase !important;
+  color: #6e6e73 !important;
+  -webkit-text-fill-color: #6e6e73 !important;
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
+}
+
+.status-text,
+#home .music-card-inner .status-text {
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+html.dark .status-badge,
+html[data-theme='dark'] .status-badge,
+html.dark #home .music-card-inner .status-badge,
+html[data-theme='dark'] #home .music-card-inner .status-badge {
+  color: #a1a1a6 !important;
+  -webkit-text-fill-color: #a1a1a6 !important;
+}
+
+.status-live-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #34c759;
+  box-shadow: 0 0 6px rgba(52, 199, 89, 0.7);
+  flex-shrink: 0;
+}
+
+.music-card:not(.is-playing):not(.is-audio-previewing) .status-live-dot {
+  background-color: #8e8e93;
+  box-shadow: none;
+}
+
+.playing-indicator {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 1.5px;
+  height: 10px;
+  margin-left: 2px;
+}
+
+.playing-indicator span {
+  width: 2px;
+  height: 3px;
+  border-radius: 1px;
+  background-color: #34c759;
+  transition: height 0.2s ease;
+}
+
+.playing-indicator.active span:nth-child(1) {
+  animation: eqBounce1 0.8s ease-in-out infinite alternate;
+}
+
+.playing-indicator.active span:nth-child(2) {
+  animation: eqBounce2 0.6s ease-in-out infinite alternate;
+}
+
+.playing-indicator.active span:nth-child(3) {
+  animation: eqBounce3 0.7s ease-in-out infinite alternate;
+}
+
+@keyframes eqBounce1 {
+  0% {
+    height: 3px;
+  }
+  100% {
+    height: 10px;
+  }
+}
+
+@keyframes eqBounce2 {
+  0% {
+    height: 8px;
+  }
+  100% {
+    height: 3px;
+  }
+}
+
+@keyframes eqBounce3 {
+  0% {
+    height: 4px;
+  }
+  100% {
+    height: 9px;
+  }
+}
+
+/* ── Header Meta (Actions Cluster) ─────────────────────────────── */
+.music-header-meta {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  flex-shrink: 0 !important;
+}
+
+/* ── Action Buttons Cluster (▶ Preview +  Music + 🟢 Spotify) ───── */
+.music-card-actions {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 5px !important;
+  flex-shrink: 0 !important;
+}
+
+.music-card-service-link,
+#home .music-card-spotify-link,
+#home .music-card-apple-link,
+#home .music-card-preview-link {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 24px !important;
+  height: 24px !important;
+  min-width: 24px !important;
+  min-height: 24px !important;
+  border-radius: 50% !important;
+  text-decoration: none !important;
+  box-shadow: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  font-size: 11px !important;
+  border: none !important;
+  cursor: pointer !important;
+  transition:
+    transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+    background-color 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease !important;
+}
+
+/* 30-Second Audio Preview Play/Pause Button */
+.music-card-preview-link {
+  background: #0071e3 !important;
+  background-color: #0071e3 !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  box-shadow: 0 2px 6px rgba(0, 113, 227, 0.35) !important;
+}
+
+html.dark .music-card-preview-link {
+  background: #0a84ff !important;
+  background-color: #0a84ff !important;
+  border-color: rgba(255, 255, 255, 0.25) !important;
+  box-shadow: 0 2px 8px rgba(10, 132, 255, 0.4) !important;
+}
+
+.music-card.is-audio-previewing .music-card-preview-link {
+  background: #34c759 !important;
+  background-color: #34c759 !important;
+  box-shadow: 0 2px 8px rgba(52, 199, 89, 0.45) !important;
+}
+
+.music-card-preview-link:hover {
+  transform: scale(1.14) !important;
+  box-shadow: 0 4px 12px rgba(0, 113, 227, 0.5) !important;
+}
+
+.music-card.is-audio-previewing .music-card-preview-link:hover {
+  box-shadow: 0 4px 12px rgba(52, 199, 89, 0.6) !important;
+}
+
+.music-card-preview-link i.fa-play {
+  margin-left: 1px;
+  font-size: 10px !important;
+}
+
+.music-card-preview-link i.fa-pause {
+  margin-left: 0;
+  font-size: 10px !important;
+}
+
+/* Apple Music Button */
+.music-card-apple-link {
+  background: rgba(0, 0, 0, 0.06) !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  color: #0071e3 !important;
+  -webkit-text-fill-color: #0071e3 !important;
+}
+
+html.dark .music-card-apple-link {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border: 1px solid rgba(255, 255, 255, 0.14) !important;
+  color: #0a84ff !important;
+  -webkit-text-fill-color: #0a84ff !important;
+}
+
+.music-card-apple-link:hover {
+  background: #000000 !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  border-color: #000000 !important;
+  transform: scale(1.14) !important;
+}
+
+html.dark .music-card-apple-link:hover {
+  background: #ffffff !important;
+  color: #000000 !important;
+  -webkit-text-fill-color: #000000 !important;
+  border-color: #ffffff !important;
+}
+
+/* Spotify Button */
+.music-card-spotify-link,
+#home .music-card-spotify-link {
+  background: rgba(29, 185, 84, 0.1) !important;
+  border: 1px solid rgba(29, 185, 84, 0.22) !important;
+  color: #1db954 !important;
+  -webkit-text-fill-color: #1db954 !important;
+}
+
+html.dark .music-card-spotify-link,
+html.dark #home .music-card-spotify-link {
+  background: rgba(29, 185, 84, 0.16) !important;
+  border: 1px solid rgba(29, 185, 84, 0.3) !important;
+  color: #1ed760 !important;
+  -webkit-text-fill-color: #1ed760 !important;
+}
+
+.music-card-spotify-link:hover,
+#home .music-card-spotify-link:hover {
+  background: #1db954 !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  border-color: #1db954 !important;
+  transform: scale(1.14) !important;
+}
+
+.music-card-spotify-link i,
+.music-card-spotify-link .fab,
+.music-card-spotify-link svg,
+.music-card-apple-link i,
+.music-card-apple-link .fab,
+.music-card-apple-link svg,
+.music-card-preview-link i {
+  font-size: 11.5px !important;
+  line-height: 1 !important;
+  display: inline-block !important;
+}
+
+/* ── Typography (Track & Artist) ────────────────────────────────── */
+.track-name,
+#home .music-card-inner .track-name {
+  margin: 0 !important;
+  padding: 0 !important;
+  font-size: 14.5px !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.015em !important;
+  color: #1d1d1f !important;
+  -webkit-text-fill-color: #1d1d1f !important;
+  line-height: 1.25 !important;
+  max-width: 100% !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+html.dark .track-name,
+html.dark #home .music-card-inner .track-name {
+  color: #f5f5f7 !important;
+  -webkit-text-fill-color: #f5f5f7 !important;
+}
+
+.artist-name,
+#home .music-card-inner .artist-name {
+  margin: 0 !important;
+  padding: 0 !important;
+  font-size: 12.5px !important;
+  font-weight: 500 !important;
+  color: #6e6e73 !important;
+  -webkit-text-fill-color: #6e6e73 !important;
+  line-height: 1.25 !important;
+  max-width: 100% !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+html.dark .artist-name,
+html.dark #home .music-card-inner .artist-name {
+  color: #a1a1a6 !important;
+  -webkit-text-fill-color: #a1a1a6 !important;
+}
+
+/* ── Scrubber & Timeline Progress Bar ────────────────────────────── */
+.music-scrubber-container {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 6px;
+  width: 100%;
+}
+
+.music-scrubber-track {
+  position: relative;
+  width: 100%;
+  height: 3px;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+  overflow: visible;
+  transition: height 0.15s ease;
+}
+
+html.dark .music-scrubber-track {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.music-scrubber-track:hover {
+  height: 5px;
+}
+
+.music-scrubber-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 0%;
+  border-radius: 4px;
+  background: var(--music-accent-blue, #0071e3);
+  box-shadow: 0 0 6px rgba(0, 113, 227, 0.4);
+  pointer-events: none;
+  transition: width 0.1s linear;
+}
+
+html.dark .music-scrubber-fill {
+  background: var(--music-accent-blue-dark, #0a84ff);
+  box-shadow: 0 0 6px rgba(10, 132, 255, 0.5);
+}
+
+.music-scrubber-thumb {
+  position: absolute;
+  top: 50%;
+  left: 0%;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+  transform: translate(-50%, -50%) scale(0);
+  pointer-events: none;
+  transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.music-scrubber-track:hover .music-scrubber-thumb,
+.music-card.is-audio-previewing .music-scrubber-thumb {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.music-time-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 9.5px;
+  font-weight: 600;
+  color: var(--apple-text-tertiary, #86868b);
+  font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, monospace);
+  letter-spacing: 0.02em;
+  user-select: none;
+  line-height: 1;
+}
+
+html.dark .music-time-row {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.music-preview-tag {
+  font-size: 8.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--music-accent-blue, #0071e3);
+}
+
+html.dark .music-preview-tag {
+  color: #0a84ff;
+}
+
+/* ── Mobile Viewport Optimizations ──────────────────────────────── */
+@media (max-width: 480px) {
+  .music-card-inner,
+  #home .music-card-inner {
+    padding: 11px 13px !important;
+    gap: 11px !important;
+    border-radius: 20px !important;
+  }
+
+  .album-art-container,
+  #home .music-card-inner .album-art-container {
+    width: 52px !important;
+    height: 52px !important;
+    min-width: 52px !important;
+    min-height: 52px !important;
+  }
+
+  .track-name,
+  #home .music-card-inner .track-name {
+    font-size: 13.5px !important;
+  }
+
+  .artist-name,
+  #home .music-card-inner .artist-name {
+    font-size: 11.5px !important;
+  }
+}

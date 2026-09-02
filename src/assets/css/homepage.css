@@ -2433,16 +2433,15 @@ html.dark .hero-2026-item::before {
   box-shadow: 0 0 0 4px rgb(41 151 255 / 12%);
 }
 
-/* Music Card - iOS 26.4 Rectangular Compact */
+/* Music Card - Apple Music Player Experience */
 
 .music-card {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   justify-content: center;
-  width: fit-content;
-  max-width: min(22rem, 100%);
-  margin: 0.35rem auto 0.45rem;
-  /* Height/width owned by chrome-surfaces.css — do not force a fixed/full-width box. */
+  width: 100%;
+  max-width: min(28rem, 100%);
+  margin: 0.5rem auto;
   background: none !important;
   border: none !important;
   box-shadow: none !important;
@@ -2452,9 +2451,9 @@ html.dark .hero-2026-item::before {
 #home #music-card {
   display: flex;
   justify-content: center;
-  width: fit-content;
-  max-width: min(24rem, 100%);
-  margin: 0.75rem auto;
+  width: 100%;
+  max-width: min(28rem, 100%);
+  margin: 0.5rem auto;
 }
 
 #home .track-name,
