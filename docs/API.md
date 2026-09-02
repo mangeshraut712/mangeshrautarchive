@@ -71,7 +71,7 @@ Integration keys (Supabase, WHOOP, Withings, Google) are optional for local dev.
 
 ```bash
 source venv/bin/activate
-npm run test:api   # 169 pytest tests in tests/api/
+npm run test:api   # 175 pytest tests in tests/api/
 ```
 
 ## Deploy notes
