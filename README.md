@@ -40,7 +40,7 @@
   <img src="https://img.shields.io/badge/FastAPI-0.141.1-009688?style=flat-square&logo=fastapi&logoColor=white" alt="FastAPI">
   <img src="https://img.shields.io/badge/ESM-Vanilla%20JS-F7DF1E?style=flat-square&logo=javascript&logoColor=black" alt="Vanilla ESM">
   <img src="https://img.shields.io/badge/OpenRouter-Grok%204.3%20%2B%20Nemotron-black?style=flat-square" alt="OpenRouter">
-  <img src="https://img.shields.io/badge/Vitest-210%20passed-729B1B?style=flat-square&logo=vitest&logoColor=white" alt="210 Vitest unit tests">
+  <img src="https://img.shields.io/badge/Vitest-236%20passed-729B1B?style=flat-square&logo=vitest&logoColor=white" alt="236 Vitest unit tests">
   <img src="https://img.shields.io/badge/pytest-175%20passed-0A9EDC?style=flat-square&logo=pytest&logoColor=white" alt="175 pytest API tests">
   <img src="https://img.shields.io/badge/Playwright-16%20browser%20configs-2EAD33?style=flat-square&logo=playwright&logoColor=white" alt="Playwright">
   <img src="https://img.shields.io/badge/Lighthouse-100%2F100%2F100%2F100-0cce6b?style=flat-square&logo=lighthouse&logoColor=white" alt="Lighthouse 100">
@@ -100,8 +100,8 @@
 │  🤖 Agentic AI: AssistMe chatbot, OpenRouter (grok-4.3), 13 WebMCP browser actions     │
 │  🎨 Apple HIG Design: Solid white/black canvases, 3D kinetic interaction model         │
 │  📊 Real-Time Telemetry: WHOOP vitals, GA4 realtime reach, platform health probes       │
-│  🛡️ Quality Gates: 210 Vitest tests, 175 pytest tests, 100/100/100/100 Lighthouse CI   │
-│  📜 Open Chronicle: Complete Git history from day 1 (April 8, 2025) to August 2026      │
+│  🛡️ Quality Gates: 236 Vitest tests, 175 pytest tests, 100/100/100/100 Lighthouse CI   │
+│  📜 Open Chronicle: Complete Git history from day 1 (April 8, 2025) to September 2026   │
 └────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -255,7 +255,7 @@ mangeshrautarchive/
 ├── workers/                  # ★ Cloudflare Workers (Edge AI Proxy & Cron Telemetry)
 │   └── assistme-chat/        # Standalone Edge Worker for AssistMe AI & WebMCP proxy
 ├── scripts/                  # ★ Developer Tooling & Build Pipeline (esbuild, QA, security, sync)
-├── tests/                    # ★ Automated Test Suite (210 Vitest, 175 pytest, 16 Playwright targets)
+├── tests/                    # ★ Automated Test Suite (236 Vitest, 175 pytest, 16 Playwright targets)
 ├── docs/                     # Documentation (DESIGN.md source of truth, STRUCTURE.md, plans)
 └── .github/workflows/        # Automated CI/CD (GitHub Pages deploy, monitoring, edge sync)
 ```
@@ -303,7 +303,7 @@ All quality gates are enforced locally and verified automatically in GitHub Acti
 
 | Test Suite            | Runner            |        Test Count         | Scope & Coverage                                                            |
 | :-------------------- | :---------------- | :-----------------------: | :-------------------------------------------------------------------------- |
-| **Unit Tests**        | Vitest 4.1        | **210 passed** (42 files) | JS modules, services, markdown parser, WebMCP actions, data contracts       |
+| **Unit Tests**        | Vitest 4.1        | **236 passed** (47 files) | JS modules, services, markdown parser, WebMCP actions, data contracts       |
 | **API Tests**         | pytest            | **175 passed** (26 files) | FastAPI endpoints, streaming chat, health probes, OAuth token stores        |
 | **E2E Browser Tests** | Playwright        |      **16 projects**      | Multi-browser suite (Desktop Chrome, Safari, Firefox, iPhone 17, Pixel 7)   |
 | **Accessibility**     | axe-core          |    **16/16 baseline**     | Zero critical/serious WCAG violations across light, dark, and high contrast |
@@ -350,7 +350,7 @@ npm run dev
 ### 8.3 Essential Quality Commands
 
 ```bash
-npm run check             # Run ESLint + Stylelint + Prettier + 210 Vitest tests
+npm run check             # Run ESLint + Stylelint + Prettier + 236 Vitest tests
 npm run test:api          # Run 175 pytest API tests
 npm run doctor:strict     # Run 60-point strict repository layout check
 npm run security-check    # Scan for exposed API keys and credentials
