@@ -280,6 +280,16 @@ This repository was engineered and refined using verified daily-driver AI tools 
 | **KiloChat**           |         <img src="src/assets/images/vibe-tools/kilo.png" width="22" height="22" alt="KiloChat">          | Interactive chat evaluation, knowledge auditing, and verification      | Model assessment                     |
 | **Figma**              |          <img src="src/assets/images/vibe-tools/figma.png" width="22" height="22" alt="Figma">           | UI/UX design, wireframing, and Apple HIG component layout              | Design system specification          |
 
+### 5.1 AI Models & Engineering Purpose Matrix
+
+| AI Model                     | Role & Engineering Purpose                           | Key Capabilities & Deliverables                                                                                                                                                     |
+| :--------------------------- | :--------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Gemini 3.7 Flash**         | **Rapid Multi-Viewport Visual Auditing & UI Polish** | Real-time Playwright screenshot analysis, mobile viewport zero-overflow enforcement, squircle geometry calibration, fast multi-file CSS refactoring, and CI/CD pipeline automation. |
+| **Gemini 2.5 Pro**           | **Deep Architectural Reasoning & System Contracts**  | Solid surface theming foundation, multi-page data contracts, complex layout refactoring, and long-context full-codebase auditing.                                                   |
+| **Claude 3.7 Sonnet / Opus** | **Conceptual Blueprints & Architectural Specs**      | System architecture diagrams, long-form technical field notes, API route designs, and strict security disclosures.                                                                  |
+| **Grok 4.3 & Nemotron 120B** | **Live AssistMe Edge Intelligence**                  | Real-time client-side chat streaming via OpenRouter, multi-turn memory management, and 13 WebMCP tool executions.                                                                   |
+| **GPT-4o / Codex**           | **Unit Test & Schema Scaffolding**                   | Vitest unit assertions, pytest API contracts, and edge mock fixtures across test suites.                                                                                            |
+
 ---
 
 ## 6. Product Surfaces & Capabilities

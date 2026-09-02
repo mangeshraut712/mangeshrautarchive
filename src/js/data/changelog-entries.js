@@ -49,7 +49,7 @@ export const changelogEntries = [
     title:
       'Mobile Apple Music Card Alignment: Zero Overflow, Squircle Geometry & Touch Calibration',
     summary:
-      'Purged legacy conflicting CSS overrides from mobile-viewport.css, homepage.css, and apple-premium-overrides.css that caused Spotify button overflow on mobile devices. Standardized Apple iOS squircle corner geometry (18px radius), refined touch target action clusters (23px-24px balanced circular buttons), eliminated horizontal clipping across small viewports (320px-430px), and fine-tuned responsive typography and scrubber margins.',
+      'Purged legacy conflicting CSS overrides from mobile-viewport.css, homepage.css, and apple-premium-overrides.css that caused Spotify button overflow on mobile devices. Standardized Apple iOS squircle corner geometry (18px radius), refined touch target action clusters (23px-24px balanced circular buttons), eliminated horizontal clipping across small viewports (320px-430px), and fine-tuned responsive typography and scrubber margins. Built with Gemini 3.7 Flash; token metrics and LLM observability recorded.',
     tags: ['design', 'mobile', 'apple-design', 'audio', 'performance'],
     sha: 'b712c9a4',
     link: `${CHANGELOG_REPO}/commit/b712c9a4`,
@@ -61,7 +61,7 @@ export const changelogEntries = [
     title:
       'Apple Music Player Polish: Ultra Full HD Artwork, Pure Disc Rotation & Dedicated Controls',
     summary:
-      'Refined the Apple Music interactive hero card according to DESIGN.md specification: removed the center circle cut-out for pure Full HD edge-to-edge 1000x1000 artwork rendering, enabled smooth 360-degree disc spin during live listening and 30-second audio previews, enforced solid black/white background surfaces across themes, and streamlined the action controls cluster (▶/❚❚ Preview,  Apple Music, 🟢 Spotify).',
+      'Refined the Apple Music interactive hero card according to DESIGN.md specification: removed the center circle cut-out for pure Full HD edge-to-edge 1000x1000 artwork rendering, enabled smooth 360-degree disc spin during live listening and 30-second audio previews, enforced solid black/white background surfaces across themes, and streamlined the action controls cluster (▶/❚❚ Preview,  Apple Music, 🟢 Spotify). Built with Gemini 3.7 Flash; token metrics and LLM observability recorded.',
     tags: ['design', 'apple-design', 'audio', 'performance', 'lastfm'],
     sha: 'e49a2107',
     link: `${CHANGELOG_REPO}/commit/e49a2107`,
