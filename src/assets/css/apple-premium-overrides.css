@@ -3750,50 +3750,6 @@ html.dark .artist-name {
   color: #8e8e93 !important;
 }
 
-@media (max-width: 768px) {
-  .music-card {
-    margin: 0.75rem auto !important;
-    width: auto !important;
-    display: flex !important;
-    justify-content: center !important;
-    background: none !important;
-    border: none !important;
-    box-shadow: none !important;
-  }
-
-  .album-art-container {
-    width: 48px !important;
-    height: 48px !important;
-    border-radius: 50% !important;
-  }
-
-  .album-art {
-    border-radius: 50% !important;
-  }
-
-  .track-info {
-    text-align: left !important;
-  }
-
-  .track-name,
-  .artist-name {
-    max-width: 160px !important;
-    white-space: nowrap !important;
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
-  }
-
-  .track-name {
-    font-size: 0.85rem !important;
-    font-weight: 700 !important;
-    margin-bottom: 0 !important;
-  }
-
-  .artist-name {
-    font-size: 0.75rem !important;
-  }
-}
-
 /* Last.fm Link - iOS 26.4 Compact */
 .lastfm-link {
   display: flex;

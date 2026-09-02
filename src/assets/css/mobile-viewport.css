@@ -461,19 +461,6 @@ section {
     padding: 0.4rem 0.75rem !important;
   }
 
-  .music-card .status-text {
-    font-size: 0.72rem !important;
-  }
-
-  .music-card .artist-name {
-    font-size: 0.78rem !important;
-    line-height: 1.3 !important;
-  }
-
-  .music-card .track-name {
-    font-size: 0.9rem !important;
-  }
-
   /* Cards: full-bleed within gutters, consistent padding */
   .blog-card,
   .certification-card,
@@ -671,43 +658,6 @@ section {
     margin-bottom: 0.5rem !important;
   }
 
-  body #home.hero-section .music-card {
-    margin-top: 0.25rem !important;
-    margin-bottom: 0 !important;
-  }
-
-  body #home.hero-section .music-card-inner {
-    min-height: 52px !important;
-    padding: 0.38rem 0.75rem 0.38rem 0.38rem !important;
-    gap: 0.65rem !important;
-  }
-
-  body #home.hero-section .album-art-container,
-  body #home.hero-section .album-art {
-    width: 44px !important;
-    height: 44px !important;
-    min-width: 44px !important;
-    min-height: 44px !important;
-  }
-
-  body #home.hero-section .track-name {
-    font-size: 0.82rem !important;
-    line-height: 1.2 !important;
-    max-width: 150px !important;
-  }
-
-  body #home.hero-section .artist-name {
-    font-size: 0.7rem !important;
-    line-height: 1.2 !important;
-    max-width: 150px !important;
-  }
-
-  body #home.hero-section .status-row {
-    font-size: 0.62rem !important;
-    line-height: 1 !important;
-    margin-top: 0.12rem !important;
-  }
-
   body #home.hero-section .hero-description {
     max-width: min(44ch, calc(100vw - 2rem)) !important;
     font-size: 0.975rem !important;
@@ -864,15 +814,6 @@ svg {
      ========================================================================== */
 
   /* Touch Target Enhancements */
-  a.music-card-spotify-link,
-  .music-card-spotify-link {
-    min-width: 44px !important;
-    min-height: 44px !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-  }
-
   button.card-speak-btn,
   button.card-translate-btn,
   .about-speak-btn,

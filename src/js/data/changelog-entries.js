@@ -43,6 +43,18 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── September 2026 ──────────────────────────────────────────
   {
+    id: 'b712c9a4',
+    date: '2026-09-02',
+    type: 'fix',
+    title:
+      'Mobile Apple Music Card Alignment: Zero Overflow, Squircle Geometry & Touch Calibration',
+    summary:
+      'Purged legacy conflicting CSS overrides from mobile-viewport.css, homepage.css, and apple-premium-overrides.css that caused Spotify button overflow on mobile devices. Standardized Apple iOS squircle corner geometry (18px radius), refined touch target action clusters (23px-24px balanced circular buttons), eliminated horizontal clipping across small viewports (320px-430px), and fine-tuned responsive typography and scrubber margins.',
+    tags: ['design', 'mobile', 'apple-design', 'audio', 'performance'],
+    sha: 'b712c9a4',
+    link: `${CHANGELOG_REPO}/commit/b712c9a4`,
+  },
+  {
     id: 'e49a2107',
     date: '2026-09-02',
     type: 'improvement',
