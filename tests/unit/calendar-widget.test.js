@@ -373,6 +373,26 @@ describe('Apple-style Calendar and Smart Reminders Widget', () => {
     await vi.waitFor(() => expect(window.Calendly.initPopupWidget).toHaveBeenCalledOnce());
   });
 
+  it('renders September 5th Codex Dev Meetup & Agent Hackathon event and marks day cell', async () => {
+    const { CalendarWidget } = await import('../../src/js/modules/calendar.js');
+    document.body.innerHTML = '<div id="calendar-widget"></div>';
+
+    const widget = new CalendarWidget('calendar-widget');
+    widget.date = new Date(2026, 8, 1); // September 2026
+    widget.selectedDate = new Date(2026, 8, 5); // Sep 5, 2026
+    widget.init();
+
+    const day5 = document.querySelector('[data-day="5"]');
+    expect(day5).not.toBeNull();
+    expect(day5.classList.contains('has-event')).toBe(true);
+
+    day5.click();
+    expect(document.body.textContent).toContain(
+      'Ticket: OpenAI Codex Dev Meetup & Agent Hackathon'
+    );
+    expect(document.body.textContent).toContain('Codex');
+  });
+
   it('auto initializes on DOMContentLoaded or directly via initCalendarWidget', async () => {
     const { initCalendarWidget } = await import('../../src/js/modules/calendar.js');
     document.body.innerHTML = '<div id="calendar-widget"></div>';

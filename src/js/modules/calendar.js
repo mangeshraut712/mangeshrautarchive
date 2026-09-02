@@ -76,8 +76,20 @@ export class CalendarWidget {
       // ── Calendar Events & Meetups ─────────────────────────────────
       {
         id: 204,
-        text: 'SF AI Agent Summit & Cloudflare Hackathon',
+        text: 'Ticket: OpenAI Codex Dev Meetup & Agent Hackathon',
         time: 'Sep 5 · 11:00 AM',
+        dateKey: '2026-09-05',
+        category: 'events',
+        tag: 'Codex',
+        color: 'green',
+        icon: 'terminal',
+        location: 'Tech Community Hub & Livestream',
+        completed: false,
+      },
+      {
+        id: 209,
+        text: 'SF AI Agent Summit & Cloudflare Hackathon',
+        time: 'Sep 5 · 3:00 PM',
         dateKey: '2026-09-05',
         category: 'events',
         tag: 'Cloudflare',
