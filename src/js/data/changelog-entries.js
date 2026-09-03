@@ -43,6 +43,28 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── September 2026 ──────────────────────────────────────────
   {
+    id: 'f87e2b10',
+    date: '2026-09-03',
+    type: 'improvement',
+    title: 'Google Search City Knowledge Panel Format on Travel Atlas',
+    summary:
+      'Elevated all expanded city stops across USA, India, UAE, and Puerto Rico into rich Google Search / Google Travel Knowledge Panels. Added direct action buttons for Google Maps, Google Guide, and Wikipedia with Apple-grade glassmorphism pills. Introduced formatted geographic coordinates (e.g. 27.1722° N, 78.0422° E) and structured knowledge graph fact grids (Coordinates, Place Type, Visual Record, Route Signal, Atmosphere). Upgraded city sights generation to extract authentic landmarks from travel intelligence into Google Travel cards with direct search links. Implemented hover and idle background prefetching for instant, zero-latency image and encyclopedic overview rendering. Engineered with Gemini 3.8 Flash in Google Antigravity IDE (AGY).',
+    tags: ['design', 'travel', 'apple-design', 'performance'],
+    sha: 'f87e2b10',
+    link: `${CHANGELOG_REPO}/commit/f87e2b10`,
+  },
+  {
+    id: 'c4287d9e',
+    date: '2026-09-03',
+    type: 'improvement',
+    title: 'Clean Minimalist Travel Atlas Timeline & Subpage Design Polish',
+    summary:
+      'Restored the Changelog page to its clean, simple, un-boxed format and extended this minimalist standard to the Travel Atlas timeline. Replaced bulky card wrappers on travel stops with borderless list items featuring a red circular pin dot, uppercase regional metadata, bold title hierarchy, and subtle active blue state accents. Formatted Systems hero stats with tabular numbers to prevent digit breaks and balanced mobile grid to 2x3. Upgraded systems statement to shadcn callout card with Apple blue accents. Resolved Travel Atlas action button clipping and truncation with a 2x2 grid and non-shrinking country capsule pills. Enhanced Monitor operations control center with live telemetry pulsing indicator and untruncated runtime snapshot labels. Deduplicated daily driver badges on Uses stack. Engineered with Gemini 3.8 Flash in Google Antigravity IDE (AGY).',
+    tags: ['design', 'mobile', 'apple-design', 'systems', 'travel', 'monitor'],
+    sha: 'c4287d9e',
+    link: `${CHANGELOG_REPO}/commit/c4287d9e`,
+  },
+  {
     id: 'a1096d1c',
     date: '2026-09-03',
     type: 'improvement',

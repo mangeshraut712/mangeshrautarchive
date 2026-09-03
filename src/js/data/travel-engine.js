@@ -517,27 +517,125 @@ function createDefaultNeighborhoods(stop, intelligence) {
   ].filter(Boolean);
 }
 
+function formatCoords(coords) {
+  if (!Array.isArray(coords) || coords.length < 2) return '';
+  const [lng, lat] = coords;
+  const latDir = lat >= 0 ? 'N' : 'S';
+  const lngDir = lng >= 0 ? 'E' : 'W';
+  return `${Math.abs(lat).toFixed(4)}° ${latDir}, ${Math.abs(lng).toFixed(4)}° ${lngDir}`;
+}
+
 function createDefaultThingsToDo(stop, intelligence) {
   const primaryPlace = stop.placeName || stop.name;
   const archetype = getPlaceArchetype(stop, intelligence);
 
-  return [
-    {
-      title: primaryPlace,
+  const rawHighlights = (stop.highlight || '')
+    .split(/[,;·]\s*/)
+    .map(h => h.trim())
+    .filter(h => h.length > 2);
+
+  const sights = [];
+
+  function getCategoryForSight(sight) {
+    const s = sight.toLowerCase();
+    if (
+      s.includes('fort') ||
+      s.includes('palace') ||
+      s.includes('castle') ||
+      s.includes('mahal') ||
+      s.includes('monument')
+    ) {
+      return 'Historic Landmark';
+    }
+    if (
+      s.includes('park') ||
+      s.includes('trail') ||
+      s.includes('valley') ||
+      s.includes('plateau') ||
+      s.includes('caves') ||
+      s.includes('beach') ||
+      s.includes('coast') ||
+      s.includes('falls') ||
+      s.includes('mountain') ||
+      s.includes('river')
+    ) {
+      return 'Nature & Outdoors';
+    }
+    if (
+      s.includes('temple') ||
+      s.includes('mosque') ||
+      s.includes('church') ||
+      s.includes('cathedral') ||
+      s.includes('buddhist')
+    ) {
+      return 'Sacred Architecture';
+    }
+    if (
+      s.includes('museum') ||
+      s.includes('hall') ||
+      s.includes('theatre') ||
+      s.includes('opera') ||
+      s.includes('center') ||
+      s.includes('campus') ||
+      s.includes('university') ||
+      s.includes('library')
+    ) {
+      return 'Arts & Culture';
+    }
+    if (
+      s.includes('market') ||
+      s.includes('street') ||
+      s.includes('square') ||
+      s.includes('bazaar') ||
+      s.includes('drive') ||
+      s.includes('boulevard') ||
+      s.includes('bridge')
+    ) {
+      return 'City Sight & Streets';
+    }
+    return archetype || 'Top Sight';
+  }
+
+  const cleanVibe = stop.tagline ? stop.tagline.replace(/^the\s+/i, '').toLowerCase() : '';
+  const vibeDescription = cleanVibe ? `${cleanVibe} vibe` : 'cultural atmosphere';
+
+  for (const sight of rawHighlights) {
+    if (sights.length >= 4) break;
+    sights.push({
+      title: sight,
+      category: getCategoryForSight(sight),
+      summary: `Renowned attraction in ${primaryPlace}, celebrated for its ${vibeDescription} and authentic local character.`,
+      source: 'Google Travel',
+      sourceUrl: `https://www.google.com/search?q=${encodeURIComponent(sight + ' ' + primaryPlace)}`,
+    });
+  }
+
+  if (sights.length < 2 && intelligence.mustSee && intelligence.mustSee.length > 0) {
+    for (const ms of intelligence.mustSee) {
+      if (sights.length >= 3) break;
+      if (!sights.some(s => s.title.toLowerCase() === ms.toLowerCase())) {
+        sights.push({
+          title: ms,
+          category: getCategoryForSight(ms),
+          summary: `Must-see landmark in ${primaryPlace} showcasing the authentic character of ${stop.region}.`,
+          source: 'Google Travel',
+          sourceUrl: `https://www.google.com/search?q=${encodeURIComponent(ms + ' ' + primaryPlace)}`,
+        });
+      }
+    }
+  }
+
+  if (sights.length === 0) {
+    sights.push({
+      title: `${primaryPlace} Highlights`,
       category: archetype,
-      summary: `${primaryPlace} anchors the card: read it through ${intelligence.culturalSignificance.toLowerCase()}`,
-    },
-    {
-      title: stop.region,
-      category: 'Regional context',
-      summary: `${stop.region} supplies the wider geography, food, routes, and local texture around this stop.`,
-    },
-    {
-      title: intelligence.mustSee[0] || stop.highlight || primaryPlace,
-      category: 'What to notice',
-      summary: `Look for ${intelligence.sensoryDescriptors.slice(0, 3).join(', ')} and the movement pattern that made this place memorable.`,
-    },
-  ];
+      summary: `${stop.tagline || primaryPlace}: explore the distinctive character, heritage, and landscapes across ${stop.region}, ${stop.country}.`,
+      source: 'Google Travel',
+      sourceUrl: `https://www.google.com/search?q=${encodeURIComponent(primaryPlace + ' ' + stop.country)}`,
+    });
+  }
+
+  return sights;
 }
 
 function createAtlasSummary(stop, intelligence) {
@@ -556,12 +654,19 @@ function createQuickFacts(stop, intelligence) {
       ? `${photoCount.toLocaleString()} photos · ${getDensitySignal(photoCount)}`
       : getDensitySignal(photoCount);
 
-  return [
+  const facts = [
     { label: 'Region', value: `${stop.region}, ${stop.country}` },
+    { label: 'Coordinates', value: formatCoords(stop.coordinates) },
     { label: 'Place Type', value: getPlaceArchetype(stop, intelligence) },
     { label: 'Visual Record', value: visualRecord },
     { label: 'Route Signal', value: getMovementSignal(stop) },
   ];
+
+  if (stop.tagline) {
+    facts.push({ label: 'Atmosphere', value: stop.tagline });
+  }
+
+  return facts;
 }
 
 function createSignalTags(stop, intelligence) {

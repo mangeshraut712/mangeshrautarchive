@@ -163,6 +163,24 @@ body.systems-page .systems-hero-stats {
   margin-top: 1rem !important;
 }
 
+body.systems-page .systems-hero-stat-value {
+  white-space: nowrap !important;
+  font-variant-numeric: tabular-nums !important;
+  font-size: clamp(1.05rem, 2.2vw, 1.38rem) !important;
+  line-height: 1.15 !important;
+}
+
+@media (max-width: 768px) {
+  body.systems-page .systems-hero-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 0.65rem !important;
+  }
+
+  body.systems-page .systems-hero-stat:first-child {
+    grid-column: auto !important;
+  }
+}
+
 /* Section cards — no clipped focus rings, tight stack */
 body.systems-page .systems-keynote-section {
   gap: 0.9rem;
@@ -505,14 +523,12 @@ html[data-theme='dark'] body.travel-body .travel-sidebar {
   background-image: none !important;
 }
 
-/* Compact chrome so timeline gets the rest of the viewport */
+/* Header naturally sizes so all controls and action buttons are fully visible */
 body.travel-body .travel-sidebar__header {
   flex-shrink: 0 !important;
-  max-height: min(40vh, 300px) !important;
-  overflow-x: hidden !important;
-  overflow-y: auto !important;
-  overscroll-behavior: contain !important;
-  padding: 0.75rem 0.95rem 0.55rem !important;
+  max-height: none !important;
+  overflow: visible !important;
+  padding: 0.85rem 1rem 0.65rem !important;
 }
 
 body.travel-body .travel-timeline {
@@ -559,11 +575,13 @@ body.travel-body .travel-search {
 }
 
 body.travel-body .travel-countries {
-  gap: 0.3rem !important;
+  gap: 0.4rem !important;
   flex-wrap: nowrap !important;
-  max-height: 2.2rem !important;
+  min-height: 38px !important;
+  max-height: none !important;
   overflow-x: auto !important;
-  overflow-y: hidden !important;
+  overflow-y: visible !important;
+  padding: 3px 2px 4px !important;
   overscroll-behavior: contain;
   scrollbar-width: none;
 }
@@ -572,14 +590,163 @@ body.travel-body .travel-countries::-webkit-scrollbar {
   display: none;
 }
 
-/* Stop cards stay inside the sidebar (width + margin already in travel-atlas) */
-body.travel-body .travel-stop {
+@media (min-width: 821px) {
+  body.travel-body .travel-countries {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0.45rem !important;
+    overflow-x: visible !important;
+    overflow-y: visible !important;
+  }
+
+  body.travel-body .country-pill {
+    width: 100% !important;
+    justify-content: space-between !important;
+    padding: 0.45rem 0.75rem !important;
+    box-sizing: border-box !important;
+  }
+}
+
+/* ─── Changelog-style Clean & Minimalist Travel Timeline & Stops ─── */
+body.travel-body .travel-timeline__country-header {
+  margin: 1.25rem 0.5rem 0.35rem !important;
+  padding: 0.25rem 0 !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  border-bottom: 1px solid
+    color-mix(in srgb, var(--separator, rgba(0, 0, 0, 0.12)) 40%, transparent) !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+html.dark body.travel-body .travel-timeline__country-header {
+  background: transparent !important;
+  background-color: transparent !important;
+  border-bottom-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+body.travel-body .travel-timeline__country-header h2 {
+  font-size: 1.05rem !important;
+  font-weight: 750 !important;
+  color: var(--text-primary) !important;
+  letter-spacing: -0.01em !important;
+}
+
+html body.travel-body .travel-stop,
+html:not(.dark) body.travel-body .travel-stop,
+html[data-lg-mode] body.travel-body .travel-stop,
+html.dark body.travel-body .travel-stop {
+  position: relative !important;
+  display: block !important;
   width: auto !important;
-  max-width: calc(100% - 0.8rem) !important;
+  max-width: 100% !important;
   min-width: 0 !important;
   box-sizing: border-box !important;
   overflow: hidden !important;
-  margin-inline: 0.4rem !important;
+  margin: 0 !important;
+  padding: 1.1rem 0.65rem 1.1rem 2.25rem !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  border: none !important;
+  border-width: 0 0 1px 0 !important;
+  border-style: solid !important;
+  border-color: color-mix(in srgb, var(--separator, #e5e5ea) 60%, transparent) !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  transition: background-color 0.15s ease !important;
+}
+
+html body.travel-body .travel-stop:hover,
+html:not(.dark) body.travel-body .travel-stop:hover,
+html[data-lg-mode] body.travel-body .travel-stop:hover {
+  background: color-mix(
+    in srgb,
+    var(--fill-secondary, rgba(0, 0, 0, 0.04)) 70%,
+    transparent
+  ) !important;
+  background-color: color-mix(
+    in srgb,
+    var(--fill-secondary, rgba(0, 0, 0, 0.04)) 70%,
+    transparent
+  ) !important;
+  transform: none !important;
+  box-shadow: none !important;
+  border-radius: 8px !important;
+}
+
+html.dark body.travel-body .travel-stop {
+  background: transparent !important;
+  background-color: transparent !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+html.dark body.travel-body .travel-stop:hover {
+  background: rgba(255, 255, 255, 0.05) !important;
+  background-color: rgba(255, 255, 255, 0.05) !important;
+  transform: none !important;
+  box-shadow: none !important;
+  border-radius: 8px !important;
+}
+
+html body.travel-body .travel-stop.active,
+html:not(.dark) body.travel-body .travel-stop.active,
+html[data-lg-mode] body.travel-body .travel-stop.active {
+  background: color-mix(in srgb, var(--apple-blue, #0071e3) 9%, transparent) !important;
+  background-color: color-mix(in srgb, var(--apple-blue, #0071e3) 9%, transparent) !important;
+  border-radius: 8px !important;
+  box-shadow: inset 3px 0 0 var(--apple-blue, #0071e3) !important;
+}
+
+html.dark body.travel-body .travel-stop.active {
+  background: rgba(10, 132, 255, 0.14) !important;
+  background-color: rgba(10, 132, 255, 0.14) !important;
+  box-shadow: inset 3px 0 0 #2997ff !important;
+}
+
+body.travel-body .travel-stop__dot {
+  position: absolute !important;
+  left: 0.75rem !important;
+  top: 1.25rem !important;
+  width: 8px !important;
+  height: 8px !important;
+  border-radius: 50% !important;
+  background: var(--apple-red, #ff3b30) !important;
+  box-shadow: 0 0 0 2px color-mix(in srgb, #ff3b30 25%, transparent) !important;
+  transition:
+    transform 0.2s ease,
+    background-color 0.2s ease !important;
+}
+
+body.travel-body .travel-stop.active .travel-stop__dot {
+  transform: scale(1.25) !important;
+  background: var(--apple-blue, #0071e3) !important;
+  box-shadow: 0 0 0 3px color-mix(in srgb, #0071e3 30%, transparent) !important;
+}
+
+body.travel-body .travel-stop__order {
+  font-size: 0.72rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.03em !important;
+  text-transform: uppercase !important;
+  color: var(--text-tertiary, #86868b) !important;
+  margin-bottom: 0.15rem !important;
+}
+
+body.travel-body .travel-stop__name {
+  font-size: 1.05rem !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.012em !important;
+  color: var(--text-primary) !important;
+  margin: 0 0 0.2rem !important;
+  line-height: 1.25 !important;
+}
+
+body.travel-body .travel-stop__tagline {
+  font-size: 0.84rem !important;
+  line-height: 1.4 !important;
+  color: var(--text-secondary, #6e6e73) !important;
 }
 
 /*
@@ -1333,7 +1500,7 @@ html[data-theme='dark'] body.travel-body .travel-stop__signals span {
   -webkit-text-fill-color: var(--travel-link) !important;
 }
 
-body.travel-body :is(.travel-stop, .place-guide-card, .travel-sidebar, .travel-nav) {
+body.travel-body :is(.place-guide-card, .travel-sidebar, .travel-nav) {
   background: var(--travel-surface) !important;
   background-color: var(--travel-surface) !important;
   color: var(--travel-text) !important;
@@ -1643,4 +1810,14 @@ html.dark body.travel-body .travel-search:focus-within,
 html.dark body.error-page .error-search:focus-within {
   border-color: #2997ff !important;
   box-shadow: 0 0 0 3px rgb(41 151 255 / 24%) !important;
+}
+
+/* ─── 5. Mobile FAB Clearance & Safe Area Padding Across Subpages ─── */
+@media (max-width: 768px) {
+  body.systems-page .systems-shell,
+  body.monitor-page .monitor-container,
+  body.uses-page .systems-shell,
+  body.changelog-page .systems-shell {
+    padding-bottom: max(6rem, calc(env(safe-area-inset-bottom, 0px) + 5.5rem)) !important;
+  }
 }

@@ -534,12 +534,74 @@ function renderTimeline() {
       stopTour();
       setActive(Number(stop.dataset.index));
     });
+
+    el.addEventListener(
+      'pointerover',
+      event => {
+        const stop = event.target.closest('.travel-stop');
+        if (!stop) return;
+        const idx = Number(stop.dataset.index);
+        const wp = travelData.waypoints[idx];
+        if (wp && !wp.editorial.wikiLoaded) {
+          fetchWikiData(wp, stop);
+        }
+      },
+      { passive: true }
+    );
   }
 
   updateStopA11y();
   updateMapPointVisibility();
   updateTravelStatus();
   rescanCardContentAccessibility(el);
+
+  if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
+    window.requestIdleCallback(
+      () => {
+        const firstBatch = Array.from(el.querySelectorAll('.travel-stop')).slice(0, 6);
+        firstBatch.forEach(stopEl => {
+          const idx = Number(stopEl.dataset.index);
+          const wp = travelData.waypoints[idx];
+          if (wp && !wp.editorial.wikiLoaded) {
+            fetchWikiData(wp, stopEl);
+          }
+        });
+      },
+      { timeout: 2500 }
+    );
+  }
+}
+
+function formatCoords(coords) {
+  if (!Array.isArray(coords) || coords.length < 2) return '';
+  const [lng, lat] = coords;
+  const latDir = lat >= 0 ? 'N' : 'S';
+  const lngDir = lng >= 0 ? 'E' : 'W';
+  return `${Math.abs(lat).toFixed(4)}° ${latDir}, ${Math.abs(lng).toFixed(4)}° ${lngDir}`;
+}
+
+function renderGoogleActions(waypoint) {
+  const query =
+    `${waypoint.title} ${waypoint.locality.city !== waypoint.title ? waypoint.locality.city : ''} ${waypoint.locality.country}`.trim();
+  const gmapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
+  const gsearchUrl = `https://www.google.com/search?q=${encodeURIComponent(query + ' travel attractions sights')}`;
+  const wikiUrl = `https://en.wikipedia.org/wiki/${encodeURIComponent(waypoint.title)}`;
+
+  return `
+    <div class="travel-stop__actions" role="toolbar" aria-label="Explore ${escapeHtml(waypoint.title)} on Google and Wikipedia">
+      <a class="travel-action-link travel-action-link--gmaps" href="${gmapsUrl}" target="_blank" rel="noopener noreferrer" title="View ${escapeHtml(waypoint.title)} on Google Maps" onclick="event.stopPropagation();">
+        <i class="fas fa-map-location-dot" aria-hidden="true"></i>
+        <span>Google Maps</span>
+      </a>
+      <a class="travel-action-link travel-action-link--search" href="${gsearchUrl}" target="_blank" rel="noopener noreferrer" title="Explore ${escapeHtml(waypoint.title)} travel sights on Google" onclick="event.stopPropagation();">
+        <i class="fab fa-google" aria-hidden="true"></i>
+        <span>Google Guide</span>
+      </a>
+      <a class="travel-action-link travel-action-link--wiki" href="${wikiUrl}" target="_blank" rel="noopener noreferrer" title="Read Wikipedia article for ${escapeHtml(waypoint.title)}" onclick="event.stopPropagation();">
+        <i class="fab fa-wikipedia-w" aria-hidden="true"></i>
+        <span>Wikipedia</span>
+      </a>
+    </div>`;
 }
 
 function renderStopCard(waypoint, index, countryGroupHeader) {
@@ -580,18 +642,23 @@ function renderStopCard(waypoint, index, countryGroupHeader) {
   const summaryId = `travel-stop-summary-${index}`;
   const nameId = `travel-stop-name-${index}`;
   const ariaLabel = `Open details for ${waypoint.title} in ${waypoint.locality.city}, ${waypoint.locality.country}`;
+  const coordsFormatted = formatCoords(waypoint.locality.coordinates);
 
   return `
     ${countryGroupHeader}
     <article class="travel-stop${activeClass}" data-index="${index}" data-city="${escapeHtml(waypoint.locality.city)}" data-country="${escapeHtml(waypoint.locality.country)}" style="--stop-color: ${waypointColor()}" aria-label="${escapeHtml(ariaLabel)}">
       <div class="travel-stop__main" role="button" tabindex="0" aria-labelledby="${nameId}" aria-describedby="${summaryId}" aria-controls="${detailsId}" aria-expanded="${index === state.activeIndex}">
         <div class="travel-stop__dot"></div>
-        <div class="travel-stop__order">${escapeHtml(waypoint.locality.region)}, ${escapeHtml(waypoint.locality.country)} ${homeBadge}</div>
+        <div class="travel-stop__order">
+          <span>${escapeHtml(waypoint.locality.region)}, ${escapeHtml(waypoint.locality.country)} ${homeBadge}</span>
+          ${coordsFormatted ? `<span class="travel-stop__coords">${escapeHtml(coordsFormatted)}</span>` : ''}
+        </div>
         <h3 class="travel-stop__name" id="${nameId}">${escapeHtml(waypoint.title)}</h3>
         ${placeContext}
         <div class="travel-stop__tagline" id="${summaryId}">${escapeHtml(experience)}</div>
         <div class="travel-stop__details" id="${detailsId}">
           ${renderStopMedia(waypoint)}
+          ${renderGoogleActions(waypoint)}
           <p class="travel-stop__story">${escapeHtml(wikiSummary)}</p>
           ${renderQuickFacts(waypoint)}
           ${renderSignalTags(waypoint)}
@@ -618,7 +685,12 @@ function renderStopCard(waypoint, index, countryGroupHeader) {
 }
 
 function renderStopMedia(waypoint) {
-  const image = safeExternalUrl(waypoint.editorial.wikiImage);
+  let image = safeExternalUrl(waypoint.editorial.wikiImage);
+  if (!image && waypoint.editorial.thingsToDo?.length) {
+    const firstWithImage = waypoint.editorial.thingsToDo.find(t => t.image);
+    if (firstWithImage) image = safeExternalUrl(firstWithImage.image);
+  }
+
   if (image) {
     return `
       <figure class="travel-stop__media">
@@ -629,8 +701,8 @@ function renderStopMedia(waypoint) {
   return `
     <figure class="travel-stop__media travel-stop__media--pending" aria-label="${escapeHtml(waypoint.title)} visual brief">
       <div class="travel-stop__media-placeholder">
-        <i class="fas fa-image" aria-hidden="true"></i>
-        <span>Image intelligence loads when an authoritative travel image is available.</span>
+        <i class="fas fa-camera-retro" aria-hidden="true"></i>
+        <span>${escapeHtml(waypoint.title)} &middot; ${escapeHtml(waypoint.locality.country)}</span>
       </div>
     </figure>`;
 }
@@ -844,8 +916,27 @@ function bindFilters() {
 const wikiCache = new Map();
 
 async function fetchWikiData(waypoint, stopElement) {
+  if (!waypoint) return;
+  const cacheKey = `${waypoint.title}-${waypoint.locality.country}`;
+
+  if (wikiCache.has(cacheKey)) {
+    const cachedData = wikiCache.get(cacheKey);
+    if (stopElement) {
+      applyWikiData(cachedData, stopElement, waypoint);
+    } else if (cachedData.page) {
+      if (cachedData.page.thumbnail?.source) {
+        waypoint.editorial.wikiImage = cachedData.page.thumbnail.source;
+      }
+      if (cachedData.page.extract) {
+        waypoint.editorial.wikiSummary = cachedData.page.extract;
+      }
+      waypoint.editorial.wikiLoaded = true;
+    }
+    return;
+  }
+
   // If we already have the data in the waypoint, just apply it
-  if (waypoint.editorial.wikiLoaded) {
+  if (waypoint.editorial.wikiLoaded && stopElement) {
     applyWikiData(
       {
         page: {
@@ -859,18 +950,11 @@ async function fetchWikiData(waypoint, stopElement) {
     return;
   }
 
-  if (stopElement.dataset.wikiLoaded === 'true') return;
-  stopElement.dataset.wikiLoaded = 'true';
-
-  const cacheKey = `${waypoint.title}-${waypoint.locality.country}`;
-  if (wikiCache.has(cacheKey)) {
-    const cachedData = wikiCache.get(cacheKey);
-    applyWikiData(cachedData, stopElement);
-    return;
-  }
+  if (stopElement && stopElement.dataset.wikiLoaded === 'true') return;
+  if (stopElement) stopElement.dataset.wikiLoaded = 'true';
 
   // Add loading state
-  const story = stopElement.querySelector('.travel-stop__story');
+  const story = stopElement?.querySelector('.travel-stop__story');
   if (story) {
     story.innerHTML = '<span class="loading-dots">Loading insights</span>';
   }
@@ -894,9 +978,7 @@ async function fetchWikiData(waypoint, stopElement) {
           }
           return null;
         })
-        .catch(() => {
-          return null;
-        });
+        .catch(() => null);
     });
 
     const results = await Promise.all(queryPromises);
@@ -905,10 +987,18 @@ async function fetchWikiData(waypoint, stopElement) {
 
     const wikiData = { page: bestPage };
     wikiCache.set(cacheKey, wikiData);
-    applyWikiData(wikiData, stopElement, waypoint);
+    if (stopElement) {
+      applyWikiData(wikiData, stopElement, waypoint);
+    } else if (bestPage) {
+      if (bestPage.thumbnail?.source) {
+        waypoint.editorial.wikiImage = bestPage.thumbnail.source;
+      }
+      if (bestPage.extract) {
+        waypoint.editorial.wikiSummary = bestPage.extract;
+      }
+      waypoint.editorial.wikiLoaded = true;
+    }
   } catch (_e) {
-    console.error('Failed to fetch wiki for', waypoint.title);
-    // Reset loading state on error
     if (story) {
       story.textContent = 'Loading local insights...';
     }
@@ -917,45 +1007,52 @@ async function fetchWikiData(waypoint, stopElement) {
 
 function applyWikiData(wikiData, stopElement, waypoint) {
   const { page } = wikiData;
+  const imageSource =
+    page?.thumbnail?.source ||
+    waypoint?.editorial?.wikiImage ||
+    waypoint?.editorial?.thingsToDo?.find(t => t.image)?.image;
 
-  if (page) {
-    if (page.thumbnail && page.thumbnail.source) {
-      waypoint.editorial.wikiImage = page.thumbnail.source;
-      const media = stopElement.querySelector('.travel-stop__media');
-      let img = stopElement.querySelector('.travel-stop__image');
+  if (imageSource && stopElement) {
+    if (waypoint?.editorial) {
+      waypoint.editorial.wikiImage = imageSource;
+    }
+    const media = stopElement.querySelector('.travel-stop__media');
+    let img = stopElement.querySelector('.travel-stop__image');
 
-      if (!img && media) {
-        img = document.createElement('img');
-        img.className = 'travel-stop__image loaded';
-        img.alt = waypoint.title;
-        img.loading = 'lazy';
-        img.referrerPolicy = 'no-referrer';
-        media.replaceChildren(img);
-        media.classList.remove('travel-stop__media--pending');
-      }
-
-      if (img) {
-        img.src = page.thumbnail.source;
-        img.style.cssText += '; display: block; cursor: pointer;';
-        img.classList.add('loaded');
-        img.onclick = () => openPhotoGallery(stopElement, 0);
-      }
+    if (!img && media) {
+      img = document.createElement('img');
+      img.className = 'travel-stop__image loaded';
+      img.alt = waypoint?.title || 'Travel destination';
+      img.loading = 'lazy';
+      img.referrerPolicy = 'no-referrer';
+      media.replaceChildren(img);
+      media.classList.remove('travel-stop__media--pending');
     }
 
-    if (page.extract) {
-      let shortText = page.extract;
-      const sentences = shortText.split('. ');
-      if (sentences.length > 2) {
-        shortText = sentences.slice(0, 2).join('. ') + '.';
-      }
+    if (img) {
+      img.src = imageSource;
+      img.style.cssText += '; display: block; cursor: pointer;';
+      img.classList.add('loaded');
+      img.onclick = () => openPhotoGallery(stopElement, 0);
+    }
+  }
+
+  if (page?.extract && stopElement) {
+    let shortText = page.extract;
+    const sentences = shortText.split('. ');
+    if (sentences.length > 2) {
+      shortText = sentences.slice(0, 2).join('. ') + '.';
+    }
+    if (waypoint?.editorial) {
       waypoint.editorial.wikiSummary = shortText;
-      const story = stopElement.querySelector('.travel-stop__story');
-      if (story) {
-        story.textContent = shortText;
-      }
     }
-    waypoint.editorial.wikiLoaded = true;
-  } else {
+    const story = stopElement.querySelector('.travel-stop__story');
+    if (story) {
+      story.textContent = shortText;
+    }
+  }
+
+  if (waypoint?.editorial) {
     waypoint.editorial.wikiLoaded = true;
   }
 }
@@ -1291,9 +1388,13 @@ async function initMap() {
 
   state.map.on('load', () => {
     state.ready = true;
-    const mapContainer = document.getElementById('map-container');
-    mapContainer?.setAttribute('data-map-ready', 'true');
-    document.getElementById('travel-map-load')?.setAttribute('hidden', '');
+    document.getElementById('map-container')?.setAttribute('data-map-ready', 'true');
+    const loadBtn = document.getElementById('travel-map-load');
+    if (loadBtn) {
+      loadBtn.setAttribute('hidden', '');
+      loadBtn.classList.add('is-hidden');
+      loadBtn.style.setProperty('display', 'none', 'important');
+    }
     setMapProjection();
     restoreMapDataLayers();
     fitMapToVisiblePlaces();

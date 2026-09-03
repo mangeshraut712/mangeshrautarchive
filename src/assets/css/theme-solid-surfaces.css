@@ -262,13 +262,11 @@ html[data-theme='dark'] body.blog-standalone-page {
   .ops-card,
   .endpoint-card,
   .travel-sidebar,
-  .travel-stop,
   .place-guide-card,
   .travel-stat,
   .travel-filter-panel,
   .travel-advanced-search,
   .travel-results-summary,
-  .travel-timeline__country-header,
   .sub-card,
   .nested-card,
   .vibe-stack-card,
@@ -351,13 +349,11 @@ html:not(.dark)
     .ops-card,
     .endpoint-card,
     .travel-sidebar,
-    .travel-stop,
     .place-guide-card,
     .travel-stat,
     .travel-filter-panel,
     .travel-advanced-search,
     .travel-results-summary,
-    .travel-timeline__country-header,
     .sub-card,
     .nested-card,
     .vibe-stack-card,
@@ -467,13 +463,11 @@ html.dark
     .ops-card,
     .endpoint-card,
     .travel-sidebar,
-    .travel-stop,
     .place-guide-card,
     .travel-stat,
     .travel-filter-panel,
     .travel-advanced-search,
     .travel-results-summary,
-    .travel-timeline__country-header,
     .sub-card,
     .nested-card,
     .vibe-stack-card,
@@ -981,7 +975,6 @@ html.dark
       #skills-container .skill-badge,
       #projects .activity-stat-item,
       #experience .experience-tag,
-      .travel-stop,
       .place-guide-card,
       .travel-stat,
       .travel-sidebar,
@@ -1005,7 +998,6 @@ html.dark
       #skills-container .skill-badge,
       #projects .activity-stat-item,
       #experience .experience-tag,
-      .travel-stop,
       .place-guide-card,
       .travel-stat,
       .travel-sidebar,
@@ -1137,7 +1129,6 @@ body.monitor-page .monitor-container {
   html:not(.dark)
     body.travel-body
     :is(
-      .travel-stop,
       .place-guide-card,
       .travel-stat,
       .travel-sidebar,
@@ -1153,7 +1144,6 @@ body.monitor-page .monitor-container {
   html.dark
     body.travel-body
     :is(
-      .travel-stop,
       .place-guide-card,
       .travel-stat,
       .travel-sidebar,
@@ -1235,16 +1225,6 @@ body.monitor-page .monitor-container {
     box-shadow: none !important;
     background-color: inherit !important;
   }
-}
-
-html.dark body.travel-body .travel-stop.active {
-  border-color: #0a84ff !important;
-  box-shadow: none !important;
-}
-
-body.travel-body .travel-stop.active {
-  border-color: #0071e3 !important;
-  box-shadow: none !important;
 }
 
 /* ─── Hero chrome: solid blue name (LCP-safe; no transparent fill) ─── */
@@ -1845,7 +1825,6 @@ html.dark #projects .github-graph-legend {
       body.monitor-page .ops-list-row,
       body.monitor-page .ops-bar-row,
       body.monitor-page .ops-stat-grid > div,
-      body.travel-body .travel-stop,
       body.travel-body .place-guide-card,
       body.travel-body .travel-stat,
       body.travel-body .travel-sidebar,
@@ -1853,7 +1832,6 @@ html.dark #projects .github-graph-legend {
       body.travel-body .travel-filter-panel,
       body.travel-body .travel-advanced-search,
       body.travel-body .travel-results-summary,
-      body.travel-body .travel-timeline__country-header,
       .portfolio-reach-panel,
       .vibe-tool-chip
     ):hover {
@@ -1957,7 +1935,6 @@ html.dark #projects .github-graph-legend {
       body.monitor-page .ops-list-row,
       body.monitor-page .ops-bar-row,
       body.monitor-page .ops-stat-grid > div,
-      body.travel-body .travel-stop,
       body.travel-body .place-guide-card,
       body.travel-body .travel-stat,
       body.travel-body .travel-sidebar,
@@ -1965,7 +1942,6 @@ html.dark #projects .github-graph-legend {
       body.travel-body .travel-filter-panel,
       body.travel-body .travel-advanced-search,
       body.travel-body .travel-results-summary,
-      body.travel-body .travel-timeline__country-header,
       .portfolio-reach-panel,
       .vibe-tool-chip
     ):hover {
@@ -2190,13 +2166,11 @@ html.dark :is(#skills .skill-category, #skills-container .skill-category):focus-
     .ops-card,
     .endpoint-card,
     .travel-sidebar,
-    .travel-stop,
     .place-guide-card,
     .travel-stat,
     .travel-filter-panel,
     .travel-advanced-search,
     .travel-results-summary,
-    .travel-timeline__country-header,
     .sub-card,
     .nested-card,
     .vibe-stack-card,
@@ -2285,7 +2259,6 @@ html.dark :is(#skills .skill-category, #skills-container .skill-category):focus-
       #projects #github-projects-container .showcase-project-card,
       #skills .skill-category,
       #skills-container .skill-category,
-      .travel-stop,
       .place-guide-card
     ):is(:hover, :focus-within) {
     border-color: var(--card-border-hover) !important;
@@ -2339,7 +2312,6 @@ html.dark :is(#skills .skill-category, #skills-container .skill-category):focus-
       #projects #github-projects-container .showcase-project-card,
       #skills .skill-category,
       #skills-container .skill-category,
-      .travel-stop,
       .place-guide-card
     ):is(:hover, :focus-within) {
     border-color: var(--card-border-hover) !important;
@@ -2428,7 +2400,6 @@ html:not(.dark)
     .uses-search,
     .uses-control-tile:not(.active):not(.is-active),
     .travel-stat,
-    .travel-stop,
     .travel-stop__media,
     .place-guide-card,
     .blog-topic-pill,
@@ -2451,7 +2422,6 @@ html.dark
     .uses-search,
     .uses-control-tile:not(.active):not(.is-active),
     .travel-stat,
-    .travel-stop,
     .travel-stop__media,
     .place-guide-card,
     .blog-topic-pill,
@@ -3423,4 +3393,103 @@ html.dark body.monitor-page .text-accent-blue,
 html[data-theme='dark'] body.monitor-page .text-accent-blue {
   color: #58a6ff !important;
   -webkit-text-fill-color: #58a6ff !important;
+}
+
+/* ─── Changelog-style Clean & Minimalist Travel Timeline & Stops ─── */
+html body.travel-body .travel-timeline__country-header,
+html:not(.dark) body.travel-body .travel-timeline__country-header,
+html.dark body.travel-body .travel-timeline__country-header {
+  margin: 1.25rem 0.5rem 0.35rem !important;
+  padding: 0.25rem 0 !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  border: none !important;
+  border-bottom: 1px solid
+    color-mix(in srgb, var(--separator, rgba(0, 0, 0, 0.12)) 40%, transparent) !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+html.dark body.travel-body .travel-timeline__country-header {
+  border-bottom-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+html body.travel-body .travel-timeline__country-header h2 {
+  font-size: 1.05rem !important;
+  font-weight: 750 !important;
+  color: var(--text-primary) !important;
+  letter-spacing: -0.01em !important;
+}
+
+html body.travel-body .travel-stop,
+html:not(.dark) body.travel-body .travel-stop,
+html.dark body.travel-body .travel-stop,
+html[data-lg-mode] body.travel-body .travel-stop {
+  position: relative !important;
+  display: block !important;
+  width: auto !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  box-sizing: border-box !important;
+  overflow: hidden !important;
+  margin: 0 !important;
+  padding: 1rem 0.65rem 1rem 2.25rem !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  border: none !important;
+  border-width: 0 0 1px 0 !important;
+  border-style: solid !important;
+  border-color: color-mix(in srgb, var(--separator, #e5e5ea) 50%, transparent) !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  transition: background-color 0.15s ease !important;
+}
+
+html body.travel-body .travel-stop:hover,
+html:not(.dark) body.travel-body .travel-stop:hover,
+html[data-lg-mode] body.travel-body .travel-stop:hover {
+  background: color-mix(
+    in srgb,
+    var(--fill-secondary, rgba(0, 0, 0, 0.04)) 70%,
+    transparent
+  ) !important;
+  background-color: color-mix(
+    in srgb,
+    var(--fill-secondary, rgba(0, 0, 0, 0.04)) 70%,
+    transparent
+  ) !important;
+  transform: none !important;
+  box-shadow: none !important;
+  border-radius: 8px !important;
+}
+
+html.dark body.travel-body .travel-stop {
+  background: transparent !important;
+  background-color: transparent !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+html.dark body.travel-body .travel-stop:hover {
+  background: rgba(255, 255, 255, 0.05) !important;
+  background-color: rgba(255, 255, 255, 0.05) !important;
+  transform: none !important;
+  box-shadow: none !important;
+  border-radius: 8px !important;
+}
+
+html body.travel-body .travel-stop.active,
+html:not(.dark) body.travel-body .travel-stop.active,
+html[data-lg-mode] body.travel-body .travel-stop.active {
+  background: color-mix(in srgb, var(--apple-blue, #0071e3) 9%, transparent) !important;
+  background-color: color-mix(in srgb, var(--apple-blue, #0071e3) 9%, transparent) !important;
+  border-radius: 8px !important;
+  box-shadow: inset 3px 0 0 var(--apple-blue, #0071e3) !important;
+}
+
+html.dark body.travel-body .travel-stop.active {
+  background: rgba(10, 132, 255, 0.14) !important;
+  background-color: rgba(10, 132, 255, 0.14) !important;
+  box-shadow: inset 3px 0 0 #2997ff !important;
 }

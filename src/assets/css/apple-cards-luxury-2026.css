@@ -106,7 +106,6 @@ html.dark {
   .monitor-summary-panel,
   .ops-card,
   .endpoint-card,
-  .travel-stop,
   .place-guide-card,
   .travel-stat,
   .travel-filter-panel,
@@ -226,7 +225,6 @@ html[data-lg-mode='tinted']:not(.dark)
     .monitor-summary-card,
     .ops-card,
     .endpoint-card,
-    .travel-stop,
     .place-guide-card,
     .travel-stat,
     .engineering-quality-overview,
@@ -296,7 +294,6 @@ html.dark[data-lg-mode='tinted']
     .monitor-summary-card,
     .ops-card,
     .endpoint-card,
-    .travel-stop,
     .place-guide-card,
     .travel-stat,
     .engineering-quality-overview,
@@ -363,7 +360,6 @@ html:not([data-lg-mode]).dark
     .monitor-summary-card,
     .ops-card,
     .endpoint-card,
-    .travel-stop,
     .place-guide-card,
     .eng-showcase-card,
     .systems-bento-tile,
@@ -674,7 +670,7 @@ body.systems-page
     .eng-design-card
   ),
 body.monitor-page :is(.monitor-summary-card, .doc-card, .overview-card, .ops-card, .endpoint-card),
-body.travel-body :is(.travel-stop, .place-guide-card, .travel-stat),
+body.travel-body :is(.place-guide-card, .travel-stat),
 body.uses-page :is(.uses-control-tile, .card) {
   border-radius: var(--lux-radius) !important;
 }
@@ -687,7 +683,6 @@ html[data-lg-mode='tinted']:not(.dark)
     .eng-showcase-card,
     .monitor-summary-card,
     .ops-card,
-    .travel-stop,
     .place-guide-card
   ) {
   background: #ffffff !important;
@@ -703,7 +698,6 @@ html.dark[data-lg-mode='tinted']
     .eng-showcase-card,
     .monitor-summary-card,
     .ops-card,
-    .travel-stop,
     .place-guide-card
   ) {
   background: #000000 !important;
@@ -738,7 +732,6 @@ html[data-lg-mode='tinted']:not(.dark)
     .monitor-summary-card,
     .ops-card,
     .endpoint-card,
-    .travel-stop,
     .place-guide-card,
     .eng-showcase-card,
     .systems-bento-tile,
@@ -782,7 +775,6 @@ html.dark[data-lg-mode='tinted']
     .monitor-summary-card,
     .ops-card,
     .endpoint-card,
-    .travel-stop,
     .place-guide-card,
     .eng-showcase-card,
     .systems-bento-tile,
@@ -827,7 +819,6 @@ html.dark[data-lg-mode='tinted']
       .monitor-summary-card,
       .ops-card,
       .endpoint-card,
-      .travel-stop,
       .place-guide-card,
       .eng-showcase-card,
       .systems-bento-tile,
@@ -867,7 +858,6 @@ html.dark[data-lg-mode='tinted']
       .monitor-summary-card,
       .ops-card,
       .endpoint-card,
-      .travel-stop,
       .place-guide-card,
       .eng-showcase-card,
       .systems-bento-tile,

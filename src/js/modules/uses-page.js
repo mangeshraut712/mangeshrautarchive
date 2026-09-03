@@ -116,8 +116,15 @@ function renderFilters() {
 }
 
 function renderItem(item) {
+  const isDailyTag =
+    String(item.tag || '')
+      .trim()
+      .toLowerCase() === 'daily';
   const featured = item.featured ? '<span class="uses-pill uses-pill--soft">Daily</span>' : '';
-  const tag = item.tag ? `<span class="uses-pill">${escapeHtml(item.tag)}</span>` : '';
+  const tag =
+    item.tag && !(item.featured && isDailyTag)
+      ? `<span class="uses-pill">${escapeHtml(item.tag)}</span>`
+      : '';
 
   return `
     <li class="uses-item">

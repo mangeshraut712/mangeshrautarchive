@@ -21,7 +21,7 @@
     </tr>
   </table>
 
-<sub><strong>mangeshraut.pro</strong> · <strong>Production Release · August 2026</strong> · Verified 100% Green on <code>main</code></sub>
+<sub><strong>mangeshraut.pro</strong> · <strong>Production Release · September 2026</strong> · Verified 100% Green on <code>main</code></sub>
 
 </div>
 
@@ -282,29 +282,28 @@ This repository was engineered and refined using verified daily-driver AI tools 
 
 ### 5.1 AI Models & Engineering Purpose Matrix
 
-| AI Model                     | Role & Engineering Purpose                                           | Key Capabilities & Deliverables                                                                                                                                                     |
-| :--------------------------- | :------------------------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Gemini 3.8 Flash**         | **Full-Site Multi-Dimensional Auditing & Automated Quality Healing** | Sitewide runtime exception resolution, Apple HIG typography token unification, mobile hero viewport calibration, and Playwright 16-project E2E test synchronization.                |
-| **Gemini 3.7 Flash**         | **Rapid Multi-Viewport Visual Auditing & UI Polish**                 | Real-time Playwright screenshot analysis, mobile viewport zero-overflow enforcement, squircle geometry calibration, fast multi-file CSS refactoring, and CI/CD pipeline automation. |
-| **Gemini 2.5 Pro**           | **Deep Architectural Reasoning & System Contracts**                  | Solid surface theming foundation, multi-page data contracts, complex layout refactoring, and long-context full-codebase auditing.                                                   |
-| **Claude 3.7 Sonnet / Opus** | **Conceptual Blueprints & Architectural Specs**                      | System architecture diagrams, long-form technical field notes, API route designs, and strict security disclosures.                                                                  |
-| **Grok 4.3 & Nemotron 120B** | **Live AssistMe Edge Intelligence**                                  | Real-time client-side chat streaming via OpenRouter, multi-turn memory management, and 14 WebMCP tool executions.                                                                   |
-| **GPT-4o / Codex**           | **Unit Test & Schema Scaffolding**                                   | Vitest unit assertions, pytest API contracts, and edge mock fixtures across test suites.                                                                                            |
+| AI Model | Role & Engineering Purpose | Key Capabilities & Deliverables |
+| **Gemini 3.8 Flash** | **Google Search City Knowledge Panel & Clean Minimalist Travel Atlas** | Elevated Travel Atlas city stops to rich Google Search / Google Travel Knowledge Panels with direct Google Maps, Google Guide, and Wikipedia actions, formatted geographic coordinates, structured knowledge graph facts, authentic landmark sight cards, and idle/hover background prefetching. Restored Changelog and Travel timeline to clean un-boxed format. |
+| **Gemini 3.7 Flash** | **Rapid Multi-Viewport Visual Auditing & UI Polish** | Real-time Playwright screenshot analysis, mobile viewport zero-overflow enforcement, squircle geometry calibration, fast multi-file CSS refactoring, and CI/CD pipeline automation. |
+| **Gemini 2.5 Pro** | **Deep Architectural Reasoning & System Contracts** | Solid surface theming foundation, multi-page data contracts, complex layout refactoring, and long-context full-codebase auditing. |
+| **Claude 3.7 Sonnet / Opus** | **Conceptual Blueprints & Architectural Specs** | System architecture diagrams, long-form technical field notes, API route designs, and strict security disclosures. |
+| **Grok 4.3 & Nemotron 120B** | **Live AssistMe Edge Intelligence** | Real-time client-side chat streaming via OpenRouter, multi-turn memory management, and 14 WebMCP tool executions. |
+| **GPT-4o / Codex** | **Unit Test & Schema Scaffolding** | Vitest unit assertions, pytest API contracts, and edge mock fixtures across test suites. |
 
 ---
 
 ## 6. Product Surfaces & Capabilities
 
-| Surface / Route                                                                                         | Primary Purpose & Key Features                                                                       |
-| :------------------------------------------------------------------------------------------------------ | :--------------------------------------------------------------------------------------------------- |
-| [**`/` (Homepage)**](https://mangeshraut712.github.io/mangeshrautarchive/)                              | Dynamic Island hero, persistent contact, live Google booking, and Apple/Outlook event fallbacks.     |
-| [**`/systems`**](https://mangeshraut712.github.io/mangeshrautarchive/systems)                           | Systems engineering notebook, multi-model token telemetry, daily-driver stack, architecture FAQ.     |
-| [**`/monitor`**](https://mangeshraut712.github.io/mangeshrautarchive/monitor)                           | Real-time platform health, hosting status, WHOOP vitals summary, GA4 realtime reach.                 |
-| [**`/travel`**](https://mangeshraut712.github.io/mangeshrautarchive/travel)                             | MapLibre 3D WebGL interactive atlas covering 18 US States and 4 Countries with flight arcs.          |
-| [**`/uses`**](https://mangeshraut712.github.io/mangeshrautarchive/uses)                                 | Hardware, developer tooling, software, and everyday carry with category filtering.                   |
-| [**`/changelog`**](https://mangeshraut712.github.io/mangeshrautarchive/changelog)                       | Complete chronological release history spanning from repo creation (April 8, 2025) to August 2026.   |
-| [**`/blog/`**](https://mangeshraut712.github.io/mangeshrautarchive/blog/)                               | 16 long-form technical field notes and deep dives with source embeds and KaTeX math.                 |
-| [**`/case-studies/`**](https://mangeshraut712.github.io/mangeshrautarchive/case-studies/portfolio.html) | 5 architectural case studies (Portfolio Architecture, HindAI, CES Energy, AssistMe VA, Bug Tracker). |
+| Surface / Route                                                                                         | Primary Purpose & Key Features                                                                                                                                                      |
+| :------------------------------------------------------------------------------------------------------ | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [**`/` (Homepage)**](https://mangeshraut712.github.io/mangeshrautarchive/)                              | Dynamic Island hero, persistent contact, live Google booking, and Apple/Outlook event fallbacks.                                                                                    |
+| [**`/systems`**](https://mangeshraut712.github.io/mangeshrautarchive/systems)                           | Systems engineering notebook, multi-model token telemetry, daily-driver stack, architecture FAQ.                                                                                    |
+| [**`/monitor`**](https://mangeshraut712.github.io/mangeshrautarchive/monitor)                           | Real-time platform health, hosting status, WHOOP vitals summary, GA4 realtime reach.                                                                                                |
+| [**`/travel`**](https://mangeshraut712.github.io/mangeshrautarchive/travel)                             | MapLibre 3D WebGL interactive atlas covering 90 stops across 4 countries with Google Search City Knowledge Panels, Google Maps/Guide actions, coordinates, and instant prefetching. |
+| [**`/uses`**](https://mangeshraut712.github.io/mangeshrautarchive/uses)                                 | Hardware, developer tooling, software, and everyday carry with category filtering and deduplicated stack badges.                                                                    |
+| [**`/changelog`**](https://mangeshraut712.github.io/mangeshrautarchive/changelog)                       | Clean GitHub/Apple un-boxed release history spanning from repo creation (April 8, 2025) to September 2026.                                                                          |
+| [**`/blog/`**](https://mangeshraut712.github.io/mangeshrautarchive/blog/)                               | 16 long-form technical field notes and deep dives with source embeds and KaTeX math.                                                                                                |
+| [**`/case-studies/`**](https://mangeshraut712.github.io/mangeshrautarchive/case-studies/portfolio.html) | 5 architectural case studies (Portfolio Architecture, HindAI, CES Energy, AssistMe VA, Bug Tracker).                                                                                |
 
 ---
 

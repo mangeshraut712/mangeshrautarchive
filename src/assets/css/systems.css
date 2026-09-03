@@ -175,11 +175,13 @@ html.dark .systems-eyebrow {
 }
 
 .systems-hero-stat-value {
-  font-size: clamp(1.35rem, 3vw, 1.65rem);
+  font-size: clamp(1.05rem, 2.2vw, 1.38rem);
   font-weight: 700;
   letter-spacing: -0.03em;
   color: var(--systems-text);
-  line-height: 1.1;
+  line-height: 1.15;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
 }
 
 .systems-hero-stat-value small {
@@ -2529,7 +2531,7 @@ html.dark .case-study-evidence-bar a {
   }
 
   .systems-hero-stat:first-child {
-    grid-column: 1 / -1 !important;
+    grid-column: auto !important;
   }
 
   .systems-bento--telemetry,
@@ -3068,19 +3070,36 @@ html.dark body.systems-page .systems-status-pill.unhealthy {
 
 /* ─── Engineering Evidence notebook sections ─── */
 .systems-public-statement {
-  margin: 0 0 1rem;
-  padding: 0.9rem 1rem;
+  margin: 0 0 1.25rem;
+  padding: 0.85rem 1.15rem;
   border-radius: 14px;
-  border: 1px solid var(--systems-card-border);
-  background: #ffffff;
-  color: var(--systems-muted);
-  font-size: 0.9rem;
-  line-height: 1.55;
-  font-style: italic;
+  border: 1px solid rgba(0, 113, 227, 0.2);
+  background: rgba(0, 113, 227, 0.04);
+  color: var(--systems-text);
+  font-size: 0.88rem;
+  line-height: 1.5;
+  font-style: normal;
+  text-align: left;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03);
+}
+
+.systems-public-statement::before {
+  content: '\f05a';
+  font-family: 'Font Awesome 6 Free', sans-serif;
+  font-weight: 900;
+  font-size: 1rem;
+  color: var(--systems-blue);
+  flex-shrink: 0;
+  margin-top: 0.15rem;
 }
 
 html.dark .systems-public-statement {
-  background: #000000;
+  background: rgba(10, 132, 255, 0.08);
+  border-color: rgba(10, 132, 255, 0.25);
+  color: #e5e5ea;
 }
 
 .systems-keynote-section--hero {
