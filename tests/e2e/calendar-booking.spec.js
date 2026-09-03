@@ -27,11 +27,11 @@ test.describe('Apple-style Contact Calendar and Smart Reminders', () => {
     await expect(
       calendar.locator('.reminder-card').getByText(/Google & Apple Calendar Sync/i)
     ).toBeVisible();
-    await expect(calendar.getByText('Review Portfolio Design')).toBeVisible();
     await expect(page.locator('#contact .calendly-panel')).toBeVisible();
 
     // Switch to All tab
     await calendar.locator('[data-filter="all"]').click();
+    await expect(calendar.getByText('Review Portfolio Design')).toBeVisible();
     await expect(calendar.getByText("Mangesh's Birthday 🎂")).toBeVisible();
     await expect(calendar.getByText('Email Mangesh')).toBeVisible();
     await expect(calendar.getByText('AI Model Training')).toBeVisible();

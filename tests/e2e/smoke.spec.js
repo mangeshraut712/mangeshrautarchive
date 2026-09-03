@@ -664,12 +664,14 @@ test.describe('Chrome smoke tests', () => {
       musicState.firstShelfArtwork.includes('/300x300/') ||
         musicState.firstShelfArtwork.includes('/600x600/') ||
         musicState.firstShelfArtwork.includes('/600x600bb.') ||
+        musicState.firstShelfArtwork.includes('/1000x1000/') ||
         musicState.firstShelfArtwork.startsWith('data:image/')
     ).toBe(true);
     expect(
       musicState.recentArtwork.includes('/300x300/') ||
         musicState.recentArtwork.includes('/600x600/') ||
         musicState.recentArtwork.includes('/600x600bb.') ||
+        musicState.recentArtwork.includes('/1000x1000/') ||
         musicState.recentArtwork.startsWith('data:image/')
     ).toBe(true);
     expect(musicState.recentArtwork.includes('/64s/')).toBe(false);

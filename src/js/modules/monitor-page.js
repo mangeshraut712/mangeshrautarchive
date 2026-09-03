@@ -1425,6 +1425,8 @@ function renderEvents(events) {
                         </div>
                         <div class="event-source">${escapeHtml(event.source)}</div>
                         ${
+                          event.details &&
+                          typeof event.details === 'object' &&
                           Object.keys(event.details).length > 0
                             ? `
                             <div class="event-details">

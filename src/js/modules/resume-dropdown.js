@@ -164,8 +164,8 @@ export function initResumeDropdown() {
       Math.max(toggleRect.width, 280),
       Math.max(260, window.innerWidth - 24)
     );
-    const gap = 10;
-    const viewportPad = 12;
+    const gap = 8;
+    const viewportPad = 8;
     const menuHeight = Math.ceil(menu.getBoundingClientRect().height || menu.scrollHeight);
     const overflowBelow = toggleRect.bottom + gap + menuHeight + viewportPad - window.innerHeight;
 

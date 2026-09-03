@@ -43,6 +43,18 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── September 2026 ──────────────────────────────────────────
   {
+    id: 'a1096d1c',
+    date: '2026-09-03',
+    type: 'improvement',
+    title:
+      'Full-Site Multi-Dimensional Audit: Runtime Resilience, Apple HIG Typography & Mobile Viewport Calibration',
+    summary:
+      'Conducted exhaustive sitewide audit across all 13 core pages and case studies (100/100 Apple HIG design score). Resolved null/undefined Object.keys runtime exception in monitor-page.js event handler. Standardized Apple SF Pro Display typography tokens on 404.css and offline pages. Calibrated mobile hero vertical fit in homepage-hero-polish.css and resume-dropdown.js to guarantee zero window shift when opening resume options. Synchronized Playwright E2E suites for WebMCP tool registrations and 1000x1000 ultra-high-res music artwork. Engineered with Gemini 3.8 Flash in Google Antigravity IDE; token metrics and LLM observability recorded.',
+    tags: ['design', 'performance', 'mobile', 'apple-design', 'testing', 'monitor', 'assistme'],
+    sha: 'a1096d1c',
+    link: `${CHANGELOG_REPO}/commit/a1096d1c`,
+  },
+  {
     id: 'b712c9a4',
     date: '2026-09-02',
     type: 'fix',

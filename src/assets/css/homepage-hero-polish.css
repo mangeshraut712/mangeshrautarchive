@@ -545,6 +545,12 @@ html.dark body #home.hero-section .hero-actions .hero-cta.hero-cta-secondary:hov
     margin: 0 auto !important;
   }
 
+  @media (max-width: 480px) {
+    #home.hero-section .hero-layout-wrapper {
+      top: -1.75rem !important;
+    }
+  }
+
   #home.hero-section .hero-text-block.home-hero-text,
   html body #home.hero-section .hero-text-block {
     gap: 0.875rem !important;

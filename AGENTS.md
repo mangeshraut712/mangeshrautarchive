@@ -1,14 +1,14 @@
 # AGENTS.md — Universal AI Agent Briefing
 
 > **Standard:** Linux Foundation AGENTS.md v1.0 (2026)
-> **Last updated:** 2026-08-23
+> **Last updated:** 2026-09-03
 
 ---
 
 ## Agent Operating Principles
 
 - When creating or updating UI elements, components, cards, pages, buttons, or themes, always consult and adhere to [docs/DESIGN.md](docs/DESIGN.md) (vibrant Apple Blue `#0071e3` gradient with specular metallic shine animation, unified circular red close buttons `#ff3b30`, authentic glassmorphism, zero horizontal overflow).
-- **Mandatory Model Check & Purpose Observability**: For EVERY code modification, design polish, bugfix, or release, ALWAYS inspect and identify the exact active AI model being used (e.g., `gemini-3.7-flash`, `gemini-2.5-pro`, `claude-3.7-sonnet`, `grok-4.3`, `gpt-4o`). Explicitly record the model's dedicated engineering purpose and token consumption details in:
+- **Mandatory Model Check & Purpose Observability**: For EVERY code modification, design polish, bugfix, or release, ALWAYS inspect and identify the exact active AI model being used (e.g., `gemini-3.8-flash`, `gemini-3.7-flash`, `gemini-2.5-pro`, `claude-3.7-sonnet`, `grok-4.3`, `gpt-4o`). Explicitly record the model's dedicated engineering purpose and token consumption details in:
   1. `src/js/data/changelog-entries.js` (typed changelog entry)
   2. `README.md` (Section 5 / 5.1 AI Models & Engineering Purpose Matrix)
   3. The Git commit message body and session documentation without requiring user prompting.

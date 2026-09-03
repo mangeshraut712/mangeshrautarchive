@@ -924,7 +924,9 @@ body.offline-page {
   place-items: center;
   padding: max(1.25rem, env(safe-area-inset-top)) max(1.25rem, env(safe-area-inset-right))
     max(1.25rem, env(safe-area-inset-bottom)) max(1.25rem, env(safe-area-inset-left));
-  font-family: var(--font-text);
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', 'Helvetica Neue', Helvetica,
+    Arial, sans-serif;
   background: #ffffff !important;
   background-color: #ffffff !important;
   background-image: none !important;
@@ -996,6 +998,9 @@ body.offline-page .offline-kicker {
 
 body.offline-page h1 {
   margin: 0 0 0.65rem;
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica,
+    Arial, sans-serif;
   font-size: clamp(1.45rem, 4vw, 1.85rem);
   letter-spacing: -0.03em;
   line-height: 1.15;
