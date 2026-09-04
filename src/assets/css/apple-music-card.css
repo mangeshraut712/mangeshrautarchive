@@ -28,12 +28,16 @@
   width: 100% !important;
   max-width: 370px !important;
   min-height: 0 !important;
-  margin: 0.55rem auto 0.75rem auto !important;
+  margin: 0.35rem auto 0.45rem auto !important;
   padding: 0 !important;
   background: transparent !important;
   border: none !important;
   box-shadow: none !important;
   isolation: isolate;
+}
+
+#telemetry-rings-container:empty {
+  display: none !important;
 }
 
 .music-ambient-glow {
@@ -67,17 +71,19 @@
   align-items: center !important;
   width: 100% !important;
   max-width: 100% !important;
-  min-height: 88px !important;
+  min-height: 80px !important;
   box-sizing: border-box !important;
   overflow: hidden !important;
   background: #ffffff !important;
   background-color: #ffffff !important;
-  border: 1px solid rgba(0, 113, 227, 0.2) !important;
-  border-radius: 22px !important;
-  padding: 12px 15px !important;
-  gap: 13px !important;
+  background-clip: padding-box !important;
+  border: 1px solid rgba(0, 113, 227, 0.22) !important;
+  border-radius: 20px !important;
+  padding: 10px 14px !important;
+  gap: 12px !important;
   box-shadow:
-    0 4px 20px rgba(0, 0, 0, 0.05),
+    0 0 0 1px rgba(0, 113, 227, 0.08),
+    0 4px 18px rgba(0, 0, 0, 0.06),
     0 1px 3px rgba(0, 0, 0, 0.03) !important;
   transition:
     transform 0.24s cubic-bezier(0.16, 1, 0.3, 1),
@@ -93,26 +99,30 @@ html.dark #home .music-card-inner,
 html[data-theme='dark'] #home .music-card-inner {
   background: #000000 !important;
   background-color: #000000 !important;
-  border: 1px solid #27272a !important;
+  background-clip: padding-box !important;
+  border: 1px solid rgba(255, 255, 255, 0.16) !important;
   box-shadow:
-    0 8px 30px rgba(0, 0, 0, 0.65),
+    0 0 0 1px rgba(255, 255, 255, 0.06),
+    0 8px 28px rgba(0, 0, 0, 0.7),
     0 1px 3px rgba(255, 255, 255, 0.04) !important;
 }
 
 .music-card:hover .music-card-inner,
 #home .music-card:hover .music-card-inner {
   transform: translateY(-2px) !important;
-  border-color: rgba(0, 113, 227, 0.35) !important;
+  border-color: rgba(0, 113, 227, 0.4) !important;
   box-shadow:
-    0 8px 25px rgba(0, 113, 227, 0.12),
+    0 0 0 1px rgba(0, 113, 227, 0.18),
+    0 8px 25px rgba(0, 113, 227, 0.14),
     0 1px 4px rgba(0, 0, 0, 0.05) !important;
 }
 
 html.dark .music-card:hover .music-card-inner,
 html.dark #home .music-card:hover .music-card-inner {
-  border-color: rgba(10, 132, 255, 0.45) !important;
+  border-color: rgba(10, 132, 255, 0.55) !important;
   box-shadow:
-    0 10px 32px rgba(10, 132, 255, 0.22),
+    0 0 0 1px rgba(10, 132, 255, 0.25),
+    0 10px 32px rgba(10, 132, 255, 0.25),
     0 2px 8px rgba(0, 0, 0, 0.7) !important;
 }
 
@@ -130,12 +140,12 @@ html.dark #home .music-card:hover .music-card-inner {
 #home .music-card-inner .album-art-container,
 #home .music-card:hover .album-art-container {
   position: relative !important;
-  width: 62px !important;
-  height: 62px !important;
-  min-width: 62px !important;
-  min-height: 62px !important;
-  max-width: 62px !important;
-  max-height: 62px !important;
+  width: 58px !important;
+  height: 58px !important;
+  min-width: 58px !important;
+  min-height: 58px !important;
+  max-width: 58px !important;
+  max-height: 58px !important;
   border-radius: 50% !important;
   -webkit-border-radius: 50% !important;
   overflow: hidden !important;
@@ -418,9 +428,9 @@ html.dark .music-card-preview-link {
   -webkit-text-fill-color: #1d1d1f !important;
 }
 
-html.dark .music-card-apple-link,
-html.dark #home .music-card-apple-link,
-html.dark #home #music-apple-link {
+html.dark .music-card-apple-link:not(:hover),
+html.dark #home .music-card-apple-link:not(:hover),
+html.dark #home #music-apple-link:not(:hover) {
   background: rgba(255, 255, 255, 0.08) !important;
   border: 1px solid rgba(255, 255, 255, 0.14) !important;
   color: #f5f5f7 !important;
@@ -431,6 +441,7 @@ html.dark #home #music-apple-link {
 #home .music-card-apple-link:hover,
 #home #music-apple-link:hover {
   background: #000000 !important;
+  background-color: #000000 !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
   border-color: #000000 !important;
@@ -450,10 +461,12 @@ html.dark .music-card-apple-link:hover,
 html.dark #home .music-card-apple-link:hover,
 html.dark #home #music-apple-link:hover {
   background: #ffffff !important;
+  background-color: #ffffff !important;
   color: #000000 !important;
   -webkit-text-fill-color: #000000 !important;
   border-color: #ffffff !important;
-  box-shadow: 0 2px 8px rgba(255, 255, 255, 0.3) !important;
+  transform: scale(1.12) !important;
+  box-shadow: 0 2px 10px rgba(255, 255, 255, 0.35) !important;
 }
 
 html.dark .music-card-apple-link:hover i,
@@ -469,40 +482,60 @@ html.dark #home .music-card-apple-link:hover .fab {
 #home .music-card-spotify-link,
 #home #music-spotify-link {
   display: inline-flex !important;
+}
+
+.music-card-spotify-link:not(:hover),
+#home .music-card-spotify-link:not(:hover),
+#home #music-spotify-link:not(:hover) {
   background: rgba(29, 185, 84, 0.1) !important;
   border: 1px solid rgba(29, 185, 84, 0.22) !important;
   color: #1db954 !important;
   -webkit-text-fill-color: #1db954 !important;
 }
 
-html.dark .music-card-spotify-link,
-html.dark #home .music-card-spotify-link,
-html.dark #home #music-spotify-link {
+html.dark .music-card-spotify-link:not(:hover),
+html.dark #home .music-card-spotify-link:not(:hover),
+html.dark #home #music-spotify-link:not(:hover) {
   background: rgba(29, 185, 84, 0.16) !important;
   border: 1px solid rgba(29, 185, 84, 0.3) !important;
   color: #1ed760 !important;
   -webkit-text-fill-color: #1ed760 !important;
 }
 
-/* Spotify Hover: Always Solid Green with Crisp White Icon Across All Browsers */
+/* Spotify Hover: Solid Green with Crisp White Icon Across Both Themes */
 .music-card-spotify-link:hover,
 #home .music-card-spotify-link:hover,
-#home #music-spotify-link:hover {
+#home #music-spotify-link:hover,
+html.dark .music-card-spotify-link:hover,
+html.dark #home .music-card-spotify-link:hover,
+html.dark #home #music-spotify-link:hover {
   background: #1db954 !important;
   background-color: #1db954 !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
   border-color: #1db954 !important;
   transform: scale(1.12) !important;
-  box-shadow: 0 2px 8px rgba(29, 185, 84, 0.4) !important;
+  box-shadow: 0 2px 10px rgba(29, 185, 84, 0.5) !important;
 }
 
+#home #music-spotify-link:hover i,
+#home #music-spotify-link:hover .fab,
+#home #music-spotify-link:hover svg,
+#home .music-card-spotify-link:hover i,
+#home .music-card-spotify-link:hover .fab,
+#home .music-card-spotify-link:hover svg,
 .music-card-spotify-link:hover i,
 .music-card-spotify-link:hover .fab,
 .music-card-spotify-link:hover svg,
-#home .music-card-spotify-link:hover i,
-#home .music-card-spotify-link:hover .fab,
-#home .music-card-spotify-link:hover svg {
+html.dark #home #music-spotify-link:hover i,
+html.dark #home #music-spotify-link:hover .fab,
+html.dark #home #music-spotify-link:hover svg,
+html.dark #home .music-card-spotify-link:hover i,
+html.dark #home .music-card-spotify-link:hover .fab,
+html.dark #home .music-card-spotify-link:hover svg,
+html.dark .music-card-spotify-link:hover i,
+html.dark .music-card-spotify-link:hover .fab,
+html.dark .music-card-spotify-link:hover svg {
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
 }

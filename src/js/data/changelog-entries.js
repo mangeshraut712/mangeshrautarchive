@@ -43,6 +43,17 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── September 2026 ──────────────────────────────────────────
   {
+    id: 'f92d4b8e',
+    date: '2026-09-04',
+    type: 'improvement',
+    title: 'Hero Viewport Fit, Corner Perimeter Visibility & Dark Theme Hover Fix',
+    summary:
+      'Refined the homepage hero section into a clean, simple, and proportional Apple HIG layout that fits within standard laptop and desktop viewports (820px/768px height) with 40-65px of comfortable breathing room below CTA buttons. Scaled profile avatar (96px), tightened flex gaps and padding, and streamlined description line-height. Resolved dark theme button hover specificity bugs by scoping idle states to :not(:hover) and enforcing solid green (#1db954) background with crisp white icon on Spotify and white background with black icon on Apple Music. Restored full 4-corner perimeter definition on the music card in dark mode using specular glass border (rgba(255,255,255,0.16)) and ambient box-shadow to eliminate top border clipping. Engineered with Gemini 3.8 Flash in Google Antigravity IDE (AGY).',
+    tags: ['design', 'apple-design', 'performance'],
+    sha: 'f92d4b8e',
+    link: `${CHANGELOG_REPO}/commit/f92d4b8e`,
+  },
+  {
     id: 'b43c31db',
     date: '2026-09-04',
     type: 'improvement',

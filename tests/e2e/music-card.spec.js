@@ -29,10 +29,14 @@ test.describe('Apple Music Card — Permanent Compact Player & UX Polish', () =>
     expect(box.width).toBeLessThanOrEqual(380);
     expect(box.height).toBeGreaterThanOrEqual(75);
 
-    // Album art should be prominent (~62px on desktop)
+    // Album art should be prominent (~58px on desktop)
     const artBox = await page.locator('.album-art-container').boundingBox();
-    expect(artBox.width).toBeGreaterThanOrEqual(58);
-    expect(artBox.height).toBeGreaterThanOrEqual(58);
+    expect(artBox.width).toBeGreaterThanOrEqual(56);
+    expect(artBox.height).toBeGreaterThanOrEqual(56);
+
+    // Verify hero action buttons fit comfortably above the fold (within 820px)
+    const actionsBox = await page.locator('.hero-actions').boundingBox();
+    expect(actionsBox.y + actionsBox.height).toBeLessThanOrEqual(800);
 
     // 2. Verify all core controls and elements are directly visible
     await expect(page.locator('#album-art')).toBeVisible();
