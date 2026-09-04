@@ -23,11 +23,16 @@ test.describe('Apple Music Card — Permanent Compact Player & UX Polish', () =>
     const musicCard = page.locator('#music-card');
     await expect(musicCard).toBeVisible();
 
-    // 1. Verify permanent compact card geometry
+    // 1. Verify permanent compact card geometry (370px max width)
     const box = await musicCard.boundingBox();
     expect(box).toBeTruthy();
-    expect(box.width).toBeLessThanOrEqual(440);
-    expect(box.height).toBeGreaterThanOrEqual(70);
+    expect(box.width).toBeLessThanOrEqual(380);
+    expect(box.height).toBeGreaterThanOrEqual(75);
+
+    // Album art should be prominent (~62px on desktop)
+    const artBox = await page.locator('.album-art-container').boundingBox();
+    expect(artBox.width).toBeGreaterThanOrEqual(58);
+    expect(artBox.height).toBeGreaterThanOrEqual(58);
 
     // 2. Verify all core controls and elements are directly visible
     await expect(page.locator('#album-art')).toBeVisible();

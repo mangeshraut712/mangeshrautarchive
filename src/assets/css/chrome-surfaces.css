@@ -132,7 +132,7 @@ html[data-lg-mode='tinted'] #home .music-card-inner.lg-webgl-host .lg-webgl-canv
 /* ─── Hero music card styling is now encapsulated in apple-music-card.css ─── */
 #home .music-card {
   width: 100%;
-  max-width: 440px;
+  max-width: 370px;
   margin: 0.75rem auto;
 }
 

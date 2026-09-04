@@ -43,6 +43,17 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── September 2026 ──────────────────────────────────────────
   {
+    id: 'b43c31db',
+    date: '2026-09-04',
+    type: 'improvement',
+    title: 'Apple Music Player Compact Proportions & Prominent Vinyl Artwork',
+    summary:
+      'Re-calibrated the permanent Apple Music player to snug, compact luxury dimensions matching Apple Music / shadcn design benchmarks. Scaled album artwork to a prominent 62px circular vinyl disc matching card vertical bounds, reduced card max-width from 420px to 370px to eliminate dead whitespace, enlarged track title (16.5px bold) and artist typography (13.5px medium), expanded circular action buttons to 30px with 12.5px iconography, and refined timeline scrubber indicators. Ensured pixel-perfect cross-theme harmony across Light and Dark modes with verified 0px horizontal page overflow across mobile viewports. Engineered with Gemini 3.8 Flash in Google Antigravity IDE (AGY).',
+    tags: ['design', 'apple-design', 'performance'],
+    sha: 'b43c31db',
+    link: `${CHANGELOG_REPO}/commit/b43c31db`,
+  },
+  {
     id: 'a83c791d',
     date: '2026-09-04',
     type: 'improvement',
