@@ -1,4 +1,4 @@
-# Project Structure & Architecture Map (August 2026)
+# Project Structure & Architecture Map (September 2026)
 
 Canonical layout for **mangeshrautarchive**. All files and directories are organized strictly by purpose and lifecycle.
 

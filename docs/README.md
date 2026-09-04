@@ -8,6 +8,8 @@
 | [foglamp-scan.md](./foglamp-scan.md)                                       | Public AI architecture map (Foglamp) + keep-alive               |
 | [seo/gsc-keyword-notepad-2026-07.md](./seo/gsc-keyword-notepad-2026-07.md) | Search Console query notepad + underserved keyword plan         |
 | [plans/](./plans/)                                                         | Improve-skill / audit execution plans (historical + active)     |
+| [design-plans/](./design-plans/)                                           | AssistMe chatbot UX design plans and specifications             |
+| [INSIGHTS.md](./INSIGHTS.md)                                               | Architecture insights and learning notes                        |
 | [../README.md](../README.md)                                               | Public project README                                           |
 | [../CONTRIBUTING.md](../CONTRIBUTING.md)                                   | Contribution guidelines & dev workflow                          |
 | [../CODE_OF_CONDUCT.md](../CODE_OF_CONDUCT.md)                             | Community code of conduct (Covenant v2.1)                       |

@@ -1,7 +1,7 @@
 # AGENTS.md — Universal AI Agent Briefing
 
 > **Standard:** Linux Foundation AGENTS.md v1.0 (2026)
-> **Last updated:** 2026-09-03
+> **Last updated:** 2026-09-05
 
 ---
 
@@ -102,7 +102,7 @@ npm run lint:python         # flake8 (Python)
 npm run format:check        # Prettier check
 
 # Test
-npm test                    # Vitest unit tests (209 tests)
+npm test                    # Vitest unit tests (236 tests)
 npm run test:api            # pytest API tests (175 tests; activate venv first)
 npm run test:e2e:chrome     # Playwright E2E — Desktop Chrome
 npm run test:e2e:all        # Playwright E2E — all 16 browser projects
@@ -205,7 +205,7 @@ All three test suites must pass before any merge to `main`:
 
 | Suite | Runner     | Command                | Coverage                                    |
 | ----- | ---------- | ---------------------- | ------------------------------------------- |
-| Unit  | Vitest     | `npm test`             | 209 tests — JS modules, utilities, markdown |
+| Unit  | Vitest     | `npm test`             | 236 tests — JS modules, utilities, markdown |
 | API   | pytest     | `npm run test:api`     | 175 tests — FastAPI endpoints, middleware   |
 | E2E   | Playwright | `npm run test:e2e:all` | Multi-spec suite across 16 browser projects |
 
