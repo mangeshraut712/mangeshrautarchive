@@ -260,15 +260,7 @@ html.dark #home #name-pronounce-btn.name-pronounce-btn {
   font-size: 0.9rem !important;
 }
 
-#home.hero-section .music-card,
-#home.hero-section #music-card {
-  width: 100% !important;
-  max-width: min(28rem, 100%) !important;
-  min-height: 52px !important;
-  margin: 0.5rem auto !important;
-  padding: 0 !important;
-  justify-content: center !important;
-}
+/* ─── Hero music card styling is encapsulated in apple-music-card.css ─── */
 
 #home.hero-section .hero-body,
 #home.hero-section .hero-footer {
@@ -602,11 +594,6 @@ html.dark body #home.hero-section .hero-actions .hero-cta.hero-cta-secondary:hov
     min-height: 38px !important;
     padding: 0.45rem 0.9rem !important;
     font-size: 0.85rem !important;
-  }
-
-  #home.hero-section .music-card,
-  #home.hero-section #music-card {
-    min-height: 50px !important;
   }
 
   #home.hero-section .hero-description,

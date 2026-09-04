@@ -372,9 +372,9 @@ html.browser-safari section#projects #github-projects-container .project-languag
   -webkit-text-fill-color: currentColor !important;
 }
 
-/* Avoid Safari flex min-height collapse on premium cards */
-html.browser-safari #home .music-card-inner,
-html.browser-chromium #home .music-card-inner {
+/* Avoid Safari flex min-height collapse on premium cards when expanded */
+html.browser-safari #home .music-card.is-expanded .music-card-inner,
+html.browser-chromium #home .music-card.is-expanded .music-card-inner {
   min-height: 64px !important;
 }
 

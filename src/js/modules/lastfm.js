@@ -59,11 +59,57 @@ class LastFmService {
     this.audioPlayer = null;
     this.currentPreviewUrl = '';
     this.isAudioPlaying = false;
+    this.isHeroExpanded = false;
     this._currentTrackData = null;
+    this._outsideMusicCardBound = false;
+  }
+
+  toggleHeroExpanded(forceState) {
+    if (!this.hero?.musicCard) return;
+    this.isHeroExpanded = typeof forceState === 'boolean' ? forceState : !this.isHeroExpanded;
+    this.hero.musicCard.classList.toggle('is-expanded', this.isHeroExpanded);
+    this.hero.musicCard.setAttribute('data-expanded', this.isHeroExpanded ? 'true' : 'false');
+    this.hero.musicCard.setAttribute('aria-expanded', this.isHeroExpanded ? 'true' : 'false');
+
+    if (this.hero.expandIcon) {
+      this.hero.expandIcon.className = this.isHeroExpanded
+        ? 'fas fa-chevron-up'
+        : 'fas fa-chevron-down';
+    }
+    if (this.hero.expandBtn) {
+      this.hero.expandBtn.title = this.isHeroExpanded ? 'Collapse player' : 'Expand player';
+      this.hero.expandBtn.setAttribute(
+        'aria-label',
+        this.isHeroExpanded ? 'Collapse music player' : 'Expand music player'
+      );
+    }
+  }
+
+  expandHero() {
+    this.toggleHeroExpanded(true);
+  }
+
+  collapseHero() {
+    this.toggleHeroExpanded(false);
   }
 
   initHero(elements) {
     this.hero = elements;
+    this.isHeroExpanded = false;
+    if (this.hero?.musicCard) {
+      this.hero.musicCard.setAttribute('data-expanded', 'false');
+      this.hero.musicCard.setAttribute('aria-expanded', 'false');
+      this.hero.musicCard.classList.remove('is-expanded');
+    }
+
+    if (this.hero?.expandBtn && !this.hero.expandBtn.dataset.bound) {
+      this.hero.expandBtn.dataset.bound = '1';
+      this.hero.expandBtn.addEventListener('click', e => {
+        e.stopPropagation();
+        this.toggleHeroExpanded();
+      });
+    }
+
     if (this.hero?.musicCard && !this.hero.musicCard.dataset.clickBound) {
       this.hero.musicCard.dataset.clickBound = '1';
       this.hero.musicCard.style.cursor = 'pointer';
@@ -72,12 +118,33 @@ class LastFmService {
           e.target.closest('#music-spotify-link') ||
           e.target.closest('#music-apple-link') ||
           e.target.closest('#music-preview-btn') ||
-          e.target.closest('#music-scrubber-container')
+          e.target.closest('#music-scrubber-container') ||
+          e.target.closest('#music-expand-btn')
         ) {
+          return;
+        }
+        if (!this.isHeroExpanded) {
+          this.expandHero();
           return;
         }
         if (this.hero.spotifyLink?.href) {
           window.open(this.hero.spotifyLink.href, '_blank', 'noopener,noreferrer');
+        }
+      });
+    }
+
+    if (!this._outsideMusicCardBound && typeof document !== 'undefined') {
+      this._outsideMusicCardBound = true;
+      document.addEventListener('click', e => {
+        if (this.isHeroExpanded && this.hero?.musicCard) {
+          if (!this.hero.musicCard.contains(e.target)) {
+            this.collapseHero();
+          }
+        }
+      });
+      document.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && this.isHeroExpanded) {
+          this.collapseHero();
         }
       });
     }
@@ -1325,6 +1392,8 @@ function initLastFmService() {
     timeCurrent: document.getElementById('music-time-current'),
     timeDuration: document.getElementById('music-time-duration'),
     previewTag: document.getElementById('music-preview-tag'),
+    expandBtn: document.getElementById('music-expand-btn'),
+    expandIcon: document.getElementById('music-expand-icon'),
   };
 
   if (heroElements.trackName && heroElements.albumArt) {

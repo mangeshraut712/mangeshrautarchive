@@ -43,6 +43,17 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── September 2026 ──────────────────────────────────────────
   {
+    id: 'e1a7428f',
+    date: '2026-09-04',
+    type: 'improvement',
+    title: 'Dynamic Island Pill & Smooth Expand Morph on Apple Music Player',
+    summary:
+      'Transformed the hero Apple Music card into an ultra-sleek, compact Dynamic Island capsule (~38px height) that seamlessly integrates beneath the hero badges without dominating page real estate. Features spinning mini-vinyl artwork (28px), inline song title and artist marquee with bullet separator, live audio equalizer dot, mini preview play button, and expand chevron toggle. Clicking the compact pill or expand button smoothly morphs into the full luxury player with 58px vinyl art, live listening status badge, Apple Music & Spotify streaming links, and interactive audio preview scrubber timeline. Supports smooth collapse via chevron or outside document click with full mobile responsiveness (zero overflow) and accessible ARIA state management. Engineered with Gemini 3.8 Flash in Google Antigravity IDE (AGY).',
+    tags: ['design', 'performance', 'apple-design', 'assistme'],
+    sha: 'e1a7428f',
+    link: `${CHANGELOG_REPO}/commit/e1a7428f`,
+  },
+  {
     id: 'f87e2b10',
     date: '2026-09-03',
     type: 'improvement',

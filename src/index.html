@@ -2135,7 +2135,7 @@ html.dark #home .hero-name-text {
                 <div id="telemetry-rings-container" class="telemetry-rings-container" aria-live="polite"></div>
 
                 <!-- Apple Music Interactive Experience Card -->
-                <div class="music-card" id="music-card" data-music-state="loading">
+                <div class="music-card" id="music-card" data-music-state="loading" data-expanded="false" aria-expanded="false">
                   <div class="music-ambient-glow" id="music-ambient-glow" aria-hidden="true"></div>
                   <div class="music-card-inner lg-interactive" data-lg-interactive>
                     <div class="album-art-container" id="album-art-container">
@@ -2187,6 +2187,15 @@ html.dark #home .hero-name-text {
                             >
                               <i class="fab fa-spotify" aria-hidden="true"></i>
                             </a>
+                            <button
+                              type="button"
+                              id="music-expand-btn"
+                              class="music-card-service-link music-card-expand-link"
+                              aria-label="Expand music player"
+                              title="Expand player"
+                            >
+                              <i class="fas fa-chevron-down" id="music-expand-icon" aria-hidden="true"></i>
+                            </button>
                           </div>
                         </div>
                       </div>
