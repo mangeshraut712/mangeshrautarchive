@@ -1487,11 +1487,24 @@ html:not(.dark) .method-delete {
 
 .event-btn-resolve {
   background: var(--accent-green);
-  color: white;
+  color: #ffffff;
+}
+
+html.dark .event-btn-resolve,
+[data-theme='dark'] .event-btn-resolve {
+  background: var(--accent-green);
+  color: #000000;
+  font-weight: 700;
 }
 
 .event-btn-resolve:hover {
   background: #30d158;
+}
+
+html.dark .event-btn-resolve:hover,
+[data-theme='dark'] .event-btn-resolve:hover {
+  background: #28cd41;
+  color: #000000;
 }
 
 /* ========================================

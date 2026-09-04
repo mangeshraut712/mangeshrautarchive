@@ -59,6 +59,10 @@ async function waitForAccessiblePage(page, path) {
       timeout: 20_000,
     });
   }
+
+  if (path === PAGES.monitor) {
+    await page.waitForSelector('.event-btn-resolve', { timeout: 5000 }).catch(() => {});
+  }
 }
 
 function knownHomepageDebt(mode) {
