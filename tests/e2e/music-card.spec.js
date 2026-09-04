@@ -5,96 +5,106 @@ import { gotoSiteReady } from './helpers/site.js';
 const safeScreenshot = async (page, filePath) => {
   try {
     const dir = filePath.substring(0, filePath.lastIndexOf('/'));
-    if (fs.existsSync(dir)) {
-      await page.screenshot({ path: filePath });
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
     }
+    await page.screenshot({ path: filePath });
   } catch {
     // Graceful fallback for CI environments where local artifact dir does not exist
   }
 };
 
-test.describe('Apple Music Card — Dynamic Island Pill & Expansion', () => {
-  test('renders compact pill by default and expands/collapses smoothly', async ({ page }) => {
+test.describe('Apple Music Card — Permanent Compact Player & UX Polish', () => {
+  test('renders permanent compact player with all controls visible and polished hover states', async ({
+    page,
+  }) => {
     await gotoSiteReady(page);
 
     const musicCard = page.locator('#music-card');
     await expect(musicCard).toBeVisible();
 
-    // 1. Verify default compact state
-    await expect(musicCard).toHaveAttribute('data-expanded', 'false');
+    // 1. Verify permanent compact card geometry
+    const box = await musicCard.boundingBox();
+    expect(box).toBeTruthy();
+    expect(box.width).toBeLessThanOrEqual(440);
+    expect(box.height).toBeGreaterThanOrEqual(70);
 
-    const compactBox = await musicCard.boundingBox();
-    expect(compactBox).toBeTruthy();
-    expect(compactBox.width).toBeLessThanOrEqual(380);
-    expect(compactBox.height).toBeLessThanOrEqual(55);
-
-    // Scrubber is hidden in compact mode
-    const scrubber = page.locator('#music-scrubber-container');
-    await expect(scrubber).toBeHidden();
-
-    // Streaming service links are hidden in compact mode
-    await expect(page.locator('#music-apple-link')).toBeHidden();
-    await expect(page.locator('#music-spotify-link')).toBeHidden();
-
-    // Mini preview button and expand button are visible
+    // 2. Verify all core controls and elements are directly visible
+    await expect(page.locator('#album-art')).toBeVisible();
+    await expect(page.locator('#track-name')).toBeVisible();
+    await expect(page.locator('#artist-name')).toBeVisible();
+    await expect(page.locator('.status-badge')).toBeVisible();
     await expect(page.locator('#music-preview-btn')).toBeVisible();
-    const expandBtn = page.locator('#music-expand-btn');
-    await expect(expandBtn).toBeVisible();
-    await expect(expandBtn).toHaveAttribute('aria-expanded', 'false');
-    await expect(page.locator('#music-expand-icon')).toHaveClass(/fa-chevron-down/);
-
-    // 2. Click compact pill to expand
-    await musicCard.click();
-    await expect(musicCard).toHaveAttribute('data-expanded', 'true');
-    await expect(expandBtn).toHaveAttribute('aria-expanded', 'true');
-    await expect(page.locator('#music-expand-icon')).toHaveClass(/fa-chevron-up/);
-
-    // Scrubber and streaming links are now visible
-    await expect(scrubber).toBeVisible();
     await expect(page.locator('#music-apple-link')).toBeVisible();
-    await expect(page.locator('#music-spotify-link')).toBeVisible();
+    const spotifyLink = page.locator('#music-spotify-link');
+    await expect(spotifyLink).toBeVisible();
+    await expect(page.locator('#music-scrubber-container')).toBeVisible();
 
-    const expandedBox = await musicCard.boundingBox();
-    expect(expandedBox.height).toBeGreaterThan(65);
+    // Expand button should NOT be present
+    await expect(page.locator('#music-expand-btn')).toHaveCount(0);
 
-    // Take screenshot of expanded state
+    // 3. Capture screenshot in Light mode
     await safeScreenshot(
       page,
-      '/Users/mangeshraut/.gemini/antigravity/brain/b43c31db-0fa8-4790-bb36-99c700e6edfc/audit_screens/music_card_expanded_desktop.png'
+      '/Users/mangeshraut/.gemini/antigravity/brain/b43c31db-0fa8-4790-bb36-99c700e6edfc/audit_screens/music_card_permanent_light.png'
     );
 
-    // 3. Click collapse button to collapse back to pill
-    await expandBtn.click();
-    await expect(musicCard).toHaveAttribute('data-expanded', 'false');
-    await expect(expandBtn).toHaveAttribute('aria-expanded', 'false');
-    await expect(page.locator('#music-expand-icon')).toHaveClass(/fa-chevron-down/);
-    await expect(scrubber).toBeHidden();
+    // 4. Test Spotify hover state — icon must be crisp white on green background
+    await spotifyLink.hover();
+    await page.waitForTimeout(400);
 
-    // Take screenshot of compact state
+    const spotifyIconColor = await spotifyLink.locator('i').evaluate(el => {
+      return window.getComputedStyle(el).color;
+    });
+    // In CSS rgb(255, 255, 255) is white
+    expect(spotifyIconColor).toBe('rgb(255, 255, 255)');
+
     await safeScreenshot(
       page,
-      '/Users/mangeshraut/.gemini/antigravity/brain/b43c31db-0fa8-4790-bb36-99c700e6edfc/audit_screens/music_card_compact_desktop.png'
+      '/Users/mangeshraut/.gemini/antigravity/brain/b43c31db-0fa8-4790-bb36-99c700e6edfc/audit_screens/music_card_spotify_hover.png'
     );
 
-    // 4. Expand again, then click outside to collapse
-    await musicCard.click();
-    await expect(musicCard).toHaveAttribute('data-expanded', 'true');
+    // 5. Test Dark theme toggle
+    const themeBtn = page.locator('#theme-toggle');
+    await expect(themeBtn).toBeVisible();
+    await themeBtn.click();
+    await page.waitForTimeout(400);
+    await expect(musicCard).toBeVisible();
+    await safeScreenshot(
+      page,
+      '/Users/mangeshraut/.gemini/antigravity/brain/b43c31db-0fa8-4790-bb36-99c700e6edfc/audit_screens/music_card_permanent_dark.png'
+    );
 
-    // Click outside on body
-    await page.locator('body').click({ position: { x: 50, y: 50 } });
-    await expect(musicCard).toHaveAttribute('data-expanded', 'false');
+    // Test Spotify hover state in dark mode
+    await spotifyLink.hover();
+    await page.waitForTimeout(400);
+    const darkSpotifyIconColor = await spotifyLink.locator('i').evaluate(el => {
+      return window.getComputedStyle(el).color;
+    });
+    expect(darkSpotifyIconColor).toBe('rgb(255, 255, 255)');
+    await safeScreenshot(
+      page,
+      '/Users/mangeshraut/.gemini/antigravity/brain/b43c31db-0fa8-4790-bb36-99c700e6edfc/audit_screens/music_card_spotify_hover_dark.png'
+    );
   });
 
-  test('compact pill renders cleanly on mobile viewports with no overflow', async ({ page }) => {
+  test('permanent compact player renders cleanly on mobile viewports with no overflow', async ({
+    page,
+  }) => {
     await page.setViewportSize({ width: 390, height: 844 });
     await gotoSiteReady(page);
 
     const musicCard = page.locator('#music-card');
     await expect(musicCard).toBeVisible();
-    await expect(musicCard).toHaveAttribute('data-expanded', 'false');
 
-    const compactBox = await musicCard.boundingBox();
-    expect(compactBox.width).toBeLessThanOrEqual(340);
+    const box = await musicCard.boundingBox();
+    expect(box.width).toBeLessThanOrEqual(390);
+
+    // Verify all primary elements are visible on mobile
+    await expect(page.locator('#album-art')).toBeVisible();
+    await expect(page.locator('#track-name')).toBeVisible();
+    await expect(page.locator('#music-preview-btn')).toBeVisible();
+    await expect(page.locator('#music-spotify-link')).toBeVisible();
 
     // Verify zero horizontal page overflow
     const scrollWidth = await page.evaluate(() => document.documentElement.scrollWidth);
@@ -103,16 +113,7 @@ test.describe('Apple Music Card — Dynamic Island Pill & Expansion', () => {
 
     await safeScreenshot(
       page,
-      '/Users/mangeshraut/.gemini/antigravity/brain/b43c31db-0fa8-4790-bb36-99c700e6edfc/audit_screens/music_card_compact_mobile.png'
-    );
-
-    // Expand on mobile
-    await musicCard.click();
-    await expect(musicCard).toHaveAttribute('data-expanded', 'true');
-
-    await safeScreenshot(
-      page,
-      '/Users/mangeshraut/.gemini/antigravity/brain/b43c31db-0fa8-4790-bb36-99c700e6edfc/audit_screens/music_card_expanded_mobile.png'
+      '/Users/mangeshraut/.gemini/antigravity/brain/b43c31db-0fa8-4790-bb36-99c700e6edfc/audit_screens/music_card_permanent_mobile.png'
     );
   });
 });

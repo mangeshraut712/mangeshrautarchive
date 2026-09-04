@@ -43,6 +43,17 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── September 2026 ──────────────────────────────────────────
   {
+    id: 'a83c791d',
+    date: '2026-09-04',
+    type: 'improvement',
+    title: 'Permanent Compact Apple Music Player & Cross-Theme Specular Hover UI',
+    summary:
+      'Refined the hero music card into a permanent, compact Apple/shadcn-grade media player (~84px height, 420px max-width) seamlessly nested below hero badges. Removed the collapsible dynamic island pill and expand toggle in favor of direct access to all playback controls, spinning vinyl disc (58px), live equalizer listening status badge, Apple Music & Spotify links, and interactive 30s audio preview scrubber timeline. Resolved a critical cross-browser hover bug in Safari where text-fill overrides rendered the Spotify brand icon invisible against green fill by scoping idle states and enforcing high-specificity white icon fills on hover. Unified luxury glassmorphism surfaces across pure white (#ffffff / #e5e5ea) Light theme and deep pitch (#000000 / #27272a) Dark theme per Apple HIG and docs/DESIGN.md standards. Engineered with Gemini 3.8 Flash in Google Antigravity IDE (AGY).',
+    tags: ['design', 'apple-design', 'performance', 'assistme'],
+    sha: 'a83c791d',
+    link: `${CHANGELOG_REPO}/commit/a83c791d`,
+  },
+  {
     id: 'e1a7428f',
     date: '2026-09-04',
     type: 'improvement',
