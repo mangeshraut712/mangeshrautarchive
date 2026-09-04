@@ -1021,7 +1021,7 @@ html.dark .portfolio-reach-badge i {
   width: 100%;
   min-width: 0;
   max-width: none;
-  padding: 0.9rem;
+  padding: 0.75rem 0.85rem;
   border-radius: 22px;
   color: #1d1d1f;
   background: #ffffff !important;
@@ -1029,15 +1029,16 @@ html.dark .portfolio-reach-badge i {
   background-image: none !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
-  border: 1px solid rgb(0 0 0 / 10%) !important;
-  box-shadow: 0 2px 8px rgb(0 0 0 / 6%) !important;
+  border: 1px solid #e5e5ea !important;
+  box-shadow: none !important;
   transition:
     border-color 0.2s ease,
     box-shadow 0.2s ease;
 }
 
 .portfolio-reach-panel:hover {
-  border-color: var(--theme-card-border-hover, #0071e3) !important;
+  border-color: #0071e3 !important;
+  box-shadow: none !important;
 }
 
 .portfolio-reach-panel.is-open {
@@ -1123,7 +1124,7 @@ html.dark .portfolio-reach-badge i {
 
 .reach-panel-metric {
   min-width: 0;
-  padding: 0.7rem 0.75rem;
+  padding: 0.5rem 0.6rem;
   border-right: 1px solid rgb(0 0 0 / 8%);
   text-align: left;
 }
@@ -1141,8 +1142,8 @@ html.dark .portfolio-reach-badge i {
 
 .reach-panel-metric strong {
   display: block;
-  margin: 0.28rem 0 0.12rem;
-  font-size: clamp(1.2rem, 3.5vw, 1.65rem);
+  margin: 0.2rem 0 0.1rem;
+  font-size: clamp(1.05rem, 2.8vw, 1.35rem);
   line-height: 1;
   letter-spacing: 0;
   font-variant-numeric: tabular-nums;
@@ -1241,8 +1242,13 @@ html.dark .portfolio-reach-panel {
   color: #f5f5f7;
   background: #000000 !important;
   background-color: #000000 !important;
-  border-color: rgb(255 255 255 / 12%) !important;
-  box-shadow: 0 2px 8px rgb(0 0 0 / 30%) !important;
+  border: 1px solid #2c2c2e !important;
+  box-shadow: none !important;
+}
+
+html.dark .portfolio-reach-panel:hover {
+  border-color: #0a84ff !important;
+  box-shadow: none !important;
 }
 
 html.dark .reach-panel-metrics,
@@ -1283,8 +1289,8 @@ html.dark .portfolio-reach-badge .reach-count.is-updating {
 
 /* Google Analytics Style Redesign & Real-time Integration */
 .reach-realtime-section {
-  margin-top: 0.65rem;
-  padding: 0.75rem 0.85rem;
+  margin-top: 0.45rem;
+  padding: 0.55rem 0.7rem;
   background: #ffffff;
   border: 1px solid rgb(0 0 0 / 8%);
   border-radius: 16px;
@@ -1350,13 +1356,13 @@ html.dark .reach-realtime-title {
 }
 
 .reach-realtime-value {
-  font-size: clamp(2rem, 5vw, 2.45rem);
+  font-size: clamp(1.65rem, 4vw, 2.1rem);
   font-weight: 700;
   line-height: 1.1;
   letter-spacing: -0.01em;
   color: #1d1d1f;
   font-variant-numeric: tabular-nums;
-  margin-bottom: 0.55rem;
+  margin-bottom: 0.35rem;
 }
 
 html.dark .reach-realtime-value {
@@ -1364,7 +1370,7 @@ html.dark .reach-realtime-value {
 }
 
 .reach-realtime-chart-container {
-  margin-bottom: 0.65rem;
+  margin-bottom: 0.4rem;
 }
 
 .reach-realtime-chart-label {
@@ -1465,8 +1471,8 @@ html.dark .reach-realtime-chart-bars span {
 }
 
 .reach-realtime-countries-block {
-  margin-top: 0.55rem;
-  padding-top: 0.45rem;
+  margin-top: 0.4rem;
+  padding-top: 0.35rem;
   border-top: 1px solid rgb(0 0 0 / 5%);
   text-align: left;
 }
@@ -1501,6 +1507,11 @@ html.dark .reach-realtime-countries-block[data-mode='realtime'] .reach-realtime-
   flex-direction: column;
   gap: 0.4rem;
   min-height: 1.25rem;
+}
+
+.reach-realtime-countries .reach-realtime-country-row:nth-child(n + 3),
+.reach-realtime-countries .reach-country-row:nth-child(n + 3) {
+  display: none !important;
 }
 
 .reach-country-empty {

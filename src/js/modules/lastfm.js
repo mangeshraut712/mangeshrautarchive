@@ -562,6 +562,13 @@ class LastFmService {
     for (const item of results) {
       const gotTrack = norm(item?.trackName);
       const gotArtist = norm(item?.artistName);
+
+      // Strict artist integrity: never cross-match distinct artists
+      if (wantArtist && gotArtist) {
+        if (wantArtist.includes('nusrat') && !gotArtist.includes('nusrat')) continue;
+        if (wantArtist.includes('rahat') && !gotArtist.includes('rahat')) continue;
+      }
+
       let score = 0;
       if (wantTrack && gotTrack === wantTrack) score += 5;
       else if (wantTrack && gotTrack.includes(wantTrack)) score += 3;
@@ -601,10 +608,11 @@ class LastFmService {
     return details?.artwork || null;
   }
 
-  fetchAppleMusicDetailsViaJsonp(trackName = '', artistName = '') {
+  fetchAppleMusicDetailsViaJsonp(trackName = '', artistName = '', country = '') {
     if (typeof globalThis.document === 'undefined') return Promise.resolve(null);
     return new Promise(resolve => {
       const query = encodeURIComponent(`${trackName} ${artistName}`.trim());
+      const countryParam = country ? `&country=${encodeURIComponent(country)}` : '';
       const callbackName = `__itunesCb_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
       const script = globalThis.document.createElement('script');
       let settled = false;
@@ -631,7 +639,7 @@ class LastFmService {
         resolve(details || null);
       };
 
-      script.src = `https://itunes.apple.com/search?term=${query}&entity=song&limit=5&callback=${callbackName}`;
+      script.src = `https://itunes.apple.com/search?term=${query}&entity=song&limit=5${countryParam}&callback=${callbackName}`;
       script.async = true;
       script.onerror = () => {
         cleanup();
@@ -661,17 +669,7 @@ class LastFmService {
     }
 
     const pending = (async () => {
-      // 1. Direct client-side iTunes Search via JSONP
-      try {
-        const jsonpDetails = await this.fetchAppleMusicDetailsViaJsonp(trackName, artistName);
-        if (jsonpDetails) {
-          return jsonpDetails;
-        }
-      } catch {
-        // iTunes API unavailable
-      }
-
-      // 2. Try serverless backend API proxy
+      // 1. Prioritize serverless backend API proxy (multi-storefront iTunes, verified mappings, rich caching)
       try {
         const response = await fetch(
           `${this.artworkApiUrl}?${new URLSearchParams({
@@ -696,6 +694,30 @@ class LastFmService {
         }
       } catch {
         // Backend API offline or timed out
+      }
+
+      // 2. Direct client-side iTunes Search via JSONP (default storefront)
+      try {
+        const jsonpDetails = await this.fetchAppleMusicDetailsViaJsonp(trackName, artistName);
+        if (jsonpDetails) {
+          return jsonpDetails;
+        }
+      } catch {
+        // iTunes API unavailable
+      }
+
+      // 3. Direct client-side iTunes Search via JSONP with IN storefront fallback
+      try {
+        const jsonpDetailsIn = await this.fetchAppleMusicDetailsViaJsonp(
+          trackName,
+          artistName,
+          'IN'
+        );
+        if (jsonpDetailsIn) {
+          return jsonpDetailsIn;
+        }
+      } catch {
+        // iTunes IN fallback unavailable
       }
 
       return null;

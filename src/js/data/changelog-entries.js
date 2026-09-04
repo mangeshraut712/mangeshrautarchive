@@ -43,6 +43,17 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── September 2026 ──────────────────────────────────────────
   {
+    id: 'music-artwork-buttons',
+    date: '2026-09-05',
+    type: 'fix',
+    title: 'Music Card: Authentic Artwork Resolution & Button Clipping Fix',
+    summary:
+      'Fixed Last.fm/Spotify artwork mismatch for "Sochta Hoon - Remix" and "Tere Bin Nahin Lagda" via verified artwork mappings, multi-storefront iTunes fallback (US→IN), and strict artist integrity scoring. Resolved action button clipping (Play, Apple Music, Spotify) caused by overflow:hidden + border-radius:20px corner geometry — set overflow:visible on .music-card-inner and .track-info, reduced button size to 28px, hover scale to 1.08, and removed conflicting liquid-glass overflow rule. Active model: Claude Opus 4.6 (Thinking) — CSS geometry debugging and multi-file surgical edits.',
+    tags: ['design', 'api'],
+    sha: 'ef1b7c16',
+    link: null,
+  },
+  {
     id: '780d4285',
     date: '2026-09-04',
     type: 'fix',

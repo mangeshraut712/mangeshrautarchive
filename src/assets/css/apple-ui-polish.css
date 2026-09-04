@@ -395,8 +395,8 @@ html body #home .hero-description-lines,
 html body #home .hero-description-line,
 html body #home .hero-description.hero-description-lines {
   color: #6e6e73 !important;
-  font-size: clamp(1rem, 1.2vw, 1.125rem) !important;
-  line-height: 1.55 !important;
+  font-size: clamp(0.8125rem, 0.95vw, 0.9rem) !important;
+  line-height: 1.44 !important;
   font-weight: 400 !important;
   letter-spacing: -0.012em !important;
   opacity: 1 !important;
@@ -407,7 +407,7 @@ html body #home .hero-description.hero-description-lines {
 
 html body #home .hero-description-line {
   display: block !important;
-  margin: 0.35rem 0 !important;
+  margin: 0.15rem 0 !important;
 }
 
 html.dark body #home .hero-description,

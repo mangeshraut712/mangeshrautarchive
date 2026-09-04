@@ -265,7 +265,13 @@ html:not(.dark) #home :is(.portfolio-reach-panel, .vibe-stack-card, .reach-realt
 }
 
 html.dark #home :is(.portfolio-reach-panel, .vibe-stack-card, .reach-realtime-section) {
-  border-color: rgb(255 255 255 / 14%) !important;
+  border-color: #2c2c2e !important;
+}
+
+/* Portfolio Reach: limit to top 2 countries so card fits cleanly without vertical scroll */
+.reach-realtime-countries .reach-realtime-country-row:nth-child(n + 3),
+.reach-realtime-countries .reach-country-row:nth-child(n + 3) {
+  display: none !important;
 }
 
 /* Vibe tool chips inside the flyout — solid canvas, not grey white-alpha */
@@ -415,20 +421,20 @@ svg,
   }
 }
 
-/* 4K Glass contrast enhancement for cards across the portfolio */
+/* 4K Retina card contrast across the portfolio — solid Apple surfaces */
 .project-card,
 .recommendation-card,
 .skill-card,
 .timeline-item,
 .systems-card {
-  backdrop-filter: blur(20px) saturate(180%) !important;
-  -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
 }
 
 html.dark .project-card,
 html.dark .recommendation-card,
 html.dark .skill-card,
 html.dark .systems-card {
-  border-color: rgba(255, 255, 255, 0.15) !important;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
+  border-color: #2c2c2e !important;
+  box-shadow: none !important;
 }

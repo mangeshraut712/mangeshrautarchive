@@ -272,23 +272,30 @@ html.dark #home #name-pronounce-btn.name-pronounce-btn {
 }
 
 #home.hero-section .hero-description,
-#home.hero-section .hero-description-lines {
+#home.hero-section .hero-description-lines,
+#home.hero-section .hero-description-line,
+html body #home .hero-description,
+html body #home .hero-description-lines,
+html body #home .hero-description-line {
   width: 100% !important;
   max-width: 44rem !important;
   margin: 0 auto !important;
   padding: 0 !important;
   color: var(--apple-text-secondary, #515154) !important;
-  font-size: clamp(0.9rem, 1.12vw, 1.02rem) !important;
-  line-height: 1.48 !important;
+  font-size: clamp(0.8125rem, 0.95vw, 0.9rem) !important;
+  line-height: 1.44 !important;
   letter-spacing: -0.012em !important;
   text-align: center !important;
 }
 
-#home .hero-description-line {
+#home .hero-description-line,
+html body #home .hero-description-line {
   display: block !important;
   margin: 0 !important;
   text-align: center !important;
   white-space: nowrap !important;
+  font-size: clamp(0.8125rem, 0.95vw, 0.9rem) !important;
+  line-height: 1.44 !important;
 }
 
 #home.hero-section .hero-actions {
@@ -511,10 +518,14 @@ html.dark body #home.hero-section .hero-actions .hero-cta.hero-cta-secondary:hov
   }
 
   #home.hero-section .hero-description,
-  #home.hero-section .hero-description-lines {
+  #home.hero-section .hero-description-lines,
+  #home .hero-description-line,
+  html body #home .hero-description,
+  html body #home .hero-description-lines,
+  html body #home .hero-description-line {
     max-width: 36rem !important;
-    font-size: clamp(0.95rem, 3.8vw, 1.08rem) !important;
-    line-height: 1.5 !important;
+    font-size: clamp(0.775rem, 2.2vw, 0.85rem) !important;
+    line-height: 1.42 !important;
   }
 }
 
@@ -598,23 +609,27 @@ html.dark body #home.hero-section .hero-actions .hero-cta.hero-cta-secondary:hov
   }
 
   #home.hero-section .hero-description,
-  #home.hero-section .hero-description-lines {
+  #home.hero-section .hero-description-lines,
+  html body #home.hero-section .hero-description,
+  html body #home.hero-section .hero-description-lines {
     display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
-    gap: 0.4rem !important;
+    gap: 0.35rem !important;
     width: 100% !important;
-    font-size: clamp(0.75rem, 3.1vw, 0.88rem) !important;
-    line-height: 1.45 !important;
+    font-size: clamp(0.72rem, 2.8vw, 0.82rem) !important;
+    line-height: 1.4 !important;
     letter-spacing: -0.015em !important;
   }
 
-  #home.hero-section .hero-description-line {
+  #home.hero-section .hero-description-line,
+  html body #home.hero-section .hero-description-line {
     display: block !important;
     width: 100% !important;
     text-align: center !important;
     white-space: nowrap !important;
-    font-size: clamp(0.75rem, 3.1vw, 0.88rem) !important;
+    font-size: clamp(0.72rem, 2.8vw, 0.82rem) !important;
+    line-height: 1.4 !important;
   }
 
   html body #home.hero-section .hero-actions {

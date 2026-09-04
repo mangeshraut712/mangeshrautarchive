@@ -228,6 +228,13 @@ def _track_artist_name(track: dict) -> str:
     return str(artist or "").strip()
 
 
+def _track_album_name(track: dict) -> str:
+    album = track.get("album") or {}
+    if isinstance(album, dict):
+        return str(album.get("#text") or album.get("name") or "").strip()
+    return str(album or "").strip()
+
+
 def _upscale_lastfm_image(url: str) -> str:
     """Normalize Last.fm CDN thumbnails (/34s/, /64s/, /174s/) to /300x300/."""
     return (
@@ -313,25 +320,47 @@ async def refresh_lastfm_recent_cache(cache_key: str, user: str, limit: int):
 
 
 async def enrich_recent_tracks_with_artwork(payload: dict, max_tracks: int = 8) -> dict:
-    """Attach resolved_artwork so hero/shelf never stick on Last.fm star placeholders."""
+    """Attach resolved_artwork so hero/shelf never stick on Last.fm star placeholders or mismatched covers."""
     tracks = _normalize_tracks(payload)
     if not tracks:
         return payload
 
     async def enrich_one(track: dict) -> None:
+        name = str(track.get("name") or "").strip()
+        artist = _track_artist_name(track)
+        album = _track_album_name(track)
+
+        # 1. Check verified curated artwork first (e.g. Sochta Hoon Remix, Tere Bin Nahin Lagda)
+        verified = _match_verified_artwork(name, artist)
+        if verified:
+            track["resolved_artwork"] = verified[0]
+            track["artwork_source"] = verified[1]
+            images = track.get("image")
+            if not isinstance(images, list):
+                images = []
+            else:
+                images = list(images)
+            images.append({"size": "extralarge", "#text": verified[0]})
+            track["image"] = images
+            return
+
+        # 2. If track already has authentic non-placeholder resolved_artwork, keep it
         existing = str(track.get("resolved_artwork") or "").strip()
         if existing and LASTFM_PLACEHOLDER_HASH not in existing:
             return
 
+        # 3. Check scrobbled Last.fm image (if valid and not generic placeholder)
         lastfm_url = _best_lastfm_image(track)
         if lastfm_url:
             track["resolved_artwork"] = lastfm_url
             track["artwork_source"] = "lastfm"
             return
 
-        name = str(track.get("name") or "").strip()
-        artist = _track_artist_name(track)
-        artwork_url, artwork_source = await resolve_external_artwork(name, artist)
+        # 4. Resolve external high-res artwork via multi-storefront iTunes & Last.fm track info
+        try:
+            artwork_url, artwork_source = await resolve_external_artwork(name, artist, album=album)
+        except TypeError:
+            artwork_url, artwork_source = await resolve_external_artwork(name, artist)
         if artwork_url:
             track["resolved_artwork"] = artwork_url
             track["artwork_source"] = artwork_source
@@ -558,52 +587,84 @@ def _text_match_score(candidate: str, hint: str) -> int:
     return 1 if cand_tokens & want_tokens else 0
 
 
-def _pick_itunes_artwork(results: list, track_hint: str = "", artist_hint: str = "") -> str:
-    """Pick the iTunes hit that matches BOTH the track and artist, not just artist.
+def _match_verified_artwork(track: str, artist: str = "") -> Optional[tuple[str, str]]:
+    """Match high-profile scrobbled tracks to verified 1000x1000 master artwork."""
+    t = _normalize_music_text(track)
+    a = _normalize_music_text(artist)
+    if "sochta hoon" in t:
+        if not a or "vibrono" in a or "nusrat" in a or "remix" in t:
+            return (
+                "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/24/01/15/24011584-ab1b-34e7-7900-4e492ff648e0/26UMGIM63269.rgb.jpg/1000x1000bb.jpg",
+                "verified-spotify-apple",
+            )
+    if "tere bin nahin lagda" in t:
+        if not a or "nusrat" in a:
+            return (
+                "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/b2/74/97/b27497e8-5396-a12d-2505-4e10ee693093/24UM1IM19518.rgb.jpg/1000x1000bb.jpg",
+                "verified-spotify-apple",
+            )
+    return None
 
-    Scoring weights artist and track equally; the album/collection name is used as a
-    secondary track signal (tracks are often titled after their album). Only results
-    that plausibly match (artist OR track substring match) are trusted, so we never
-    return confidently-wrong artwork for an unrelated song by the same artist.
-    """
+
+def _pick_itunes_artwork(
+    results: list, track_hint: str = "", artist_hint: str = "", album_hint: str = ""
+) -> str:
+    """Pick the iTunes hit that matches BOTH track and artist, with strict artist integrity."""
     if not results:
         return ""
 
     scored = []
+    want_artist = _normalize_music_text(artist_hint)
+    want_track = _normalize_music_text(track_hint)
+    want_album = _normalize_music_text(album_hint)
+
     for idx, item in enumerate(results):
         if not isinstance(item, dict):
             continue
         if not str(item.get("artworkUrl100") or "").strip():
             continue
 
-        artist_score = _text_match_score(item.get("artistName"), artist_hint) if artist_hint else 0
-        track_score = _text_match_score(item.get("trackName"), track_hint) if track_hint else 0
-        # An album titled like the song still counts as a (weaker) track signal.
-        collection_score = (
-            _text_match_score(item.get("collectionName"), track_hint) if track_hint else 0
-        )
-        effective_track = max(track_score, collection_score - 1)
+        cand_artist = _normalize_music_text(item.get("artistName"))
+        cand_track = _normalize_music_text(item.get("trackName"))
+        cand_album = _normalize_music_text(item.get("collectionName"))
 
-        total = artist_score * 3 + effective_track * 3
-        scored.append((total, artist_score, effective_track, -idx, item))
+        # Strict artist mismatch check: "nusrat" must not match "rahat"
+        if want_artist and cand_artist:
+            if "nusrat" in want_artist and "nusrat" not in cand_artist:
+                continue
+            if "rahat" in want_artist and "rahat" not in cand_artist:
+                continue
+
+        artist_score = _text_match_score(cand_artist, want_artist) if want_artist else 0
+        track_score = _text_match_score(cand_track, want_track) if want_track else 0
+        album_score = _text_match_score(cand_album, want_album) if want_album else 0
+
+        # An album titled like the song still counts as a secondary track signal
+        collection_as_track = _text_match_score(cand_album, want_track) if want_track else 0
+        effective_track = max(track_score, collection_as_track - 1)
+
+        total = artist_score * 4 + effective_track * 4 + album_score * 2
+        scored.append((total, artist_score, effective_track, album_score, -idx, item))
 
     if not scored:
         return ""
 
-    scored.sort(key=lambda entry: entry[:4], reverse=True)
+    scored.sort(key=lambda entry: entry[:5], reverse=True)
     best = scored[0]
-    _, best_artist, best_track, _, best_item = best
+    total, best_artist, best_track, best_album, _, best_item = best
 
-    # Require real confidence: a strong artist match or a strong track match.
-    # Otherwise skip iTunes so we fall back to Last.fm's exact track metadata.
-    # Only enforce this when the result actually exposes metadata to judge against
-    # (real iTunes results always do); otherwise we can't do better than the top hit.
-    have_hints = bool(artist_hint) or bool(track_hint)
+    # Require real confidence: strong artist or strong track or combined match
+    have_hints = bool(want_artist) or bool(want_track)
     best_has_metadata = any(
         str(best_item.get(field) or "").strip()
         for field in ("artistName", "trackName", "collectionName")
     )
-    confident = (best_artist >= 2) or (best_track >= 2) or (best_artist >= 1 and best_track >= 1)
+    confident = (
+        (best_artist >= 2)
+        or (best_track >= 2)
+        or (best_artist >= 1 and best_track >= 1)
+        or (best_album >= 2)
+    )
     if have_hints and best_has_metadata and not confident:
         return ""
 
@@ -612,12 +673,12 @@ def _pick_itunes_artwork(results: list, track_hint: str = "", artist_hint: str =
 
 
 async def fetch_itunes_artwork(
-    search_term: str, track_hint: str = "", artist_hint: str = ""
+    search_term: str, track_hint: str = "", artist_hint: str = "", album_hint: str = ""
 ) -> str:
-    """Fetch album artwork from iTunes Search API (server-side to avoid browser CORS)."""
+    """Fetch album artwork from iTunes Search API across US and IN storefronts."""
     cache_key = (
         f"itunes|{search_term.strip().lower()}"
-        f"|{track_hint.strip().lower()}|{artist_hint.strip().lower()}"
+        f"|{track_hint.strip().lower()}|{artist_hint.strip().lower()}|{album_hint.strip().lower()}"
     )
     if not search_term.strip():
         return ""
@@ -626,29 +687,40 @@ async def fetch_itunes_artwork(
     if cached and time.time() - cached["ts"] < ARTWORK_CACHE_DURATION:
         return cached["url"]
 
-    search_url = (
-        "https://itunes.apple.com/search?"
-        f"term={quote(search_term)}&media=music&entity=song&limit=8"
-    )
     headers = {
         "User-Agent": "AssistMe-Portfolio/3.0.0",
         "Accept": "application/json",
     }
 
-    try:
-        async with httpx.AsyncClient(timeout=3.2, follow_redirects=True) as client:
-            response = await client.get(search_url, headers=headers)
-            response.raise_for_status()
-            data = response.json()
+    # Detect if search term likely benefits from Indian storefront first
+    indian_indicators = (
+        "khan", "singh", "sharma", "remix", "nusrat", "qawwali", "bollywood", "hindi", "pritam", "shashwat", "vibrono"
+    )
+    norm_term = search_term.lower()
+    storefronts = ["IN", "US"] if any(ind in norm_term for ind in indian_indicators) else ["US", "IN"]
 
-        artwork = _pick_itunes_artwork(
-            data.get("results") or [], track_hint=track_hint, artist_hint=artist_hint
+    for country in storefronts:
+        search_url = (
+            "https://itunes.apple.com/search?"
+            f"term={quote(search_term)}&country={country}&media=music&entity=song&limit=8"
         )
-        if artwork:
-            artwork_cache[cache_key] = {"url": artwork, "ts": time.time()}
-            return artwork
-    except Exception as e:
-        print(f"iTunes artwork fetch failed for {search_term}: {type(e).__name__} - {str(e)}")
+        try:
+            async with httpx.AsyncClient(timeout=3.5, follow_redirects=True) as client:
+                response = await client.get(search_url, headers=headers)
+                response.raise_for_status()
+                data = response.json()
+
+            artwork = _pick_itunes_artwork(
+                data.get("results") or [],
+                track_hint=track_hint,
+                artist_hint=artist_hint,
+                album_hint=album_hint,
+            )
+            if artwork:
+                artwork_cache[cache_key] = {"url": artwork, "ts": time.time()}
+                return artwork
+        except Exception as e:
+            print(f"iTunes artwork fetch ({country}) failed for {search_term}: {type(e).__name__} - {str(e)}")
 
     return ""
 
@@ -699,15 +771,34 @@ async def fetch_lastfm_track_artwork(track: str, artist: str = "") -> str:
     return ""
 
 
-async def resolve_external_artwork(track: str, artist: str = "") -> tuple[str, str]:
-    """Prefer iTunes (track+artist verified), then Last.fm track metadata."""
+async def resolve_external_artwork(
+    track: str, artist: str = "", album: str = ""
+) -> tuple[str, str]:
+    """Prefer verified curated artwork, then multi-storefront iTunes (US/IN), then Last.fm track metadata."""
+    verified = _match_verified_artwork(track, artist)
+    if verified:
+        return verified
+
+    # 1. Direct search: track + artist
     search_term = f"{track.strip()} {artist.strip()}".strip()
     itunes_url = await fetch_itunes_artwork(
-        search_term, track_hint=track, artist_hint=artist
+        search_term, track_hint=track, artist_hint=artist, album_hint=album
     )
     if itunes_url:
         return itunes_url, "itunes"
 
+    # 2. Cleaned track fallback (strip parentheticals, remix tags, and feat suffixes)
+    cleaned_track = re.sub(r"[\(\[\{].*?[\)\]\}]", "", track).strip()
+    cleaned_track = re.sub(r"\s[-–—]\s.*$", "", cleaned_track).strip()
+    if cleaned_track and cleaned_track.lower() != track.lower().strip():
+        fallback_term = f"{cleaned_track} {artist.strip()}".strip()
+        itunes_url = await fetch_itunes_artwork(
+            fallback_term, track_hint=cleaned_track, artist_hint=artist, album_hint=album
+        )
+        if itunes_url:
+            return itunes_url, "itunes"
+
+    # 3. Last.fm track info fallback
     lastfm_url = await fetch_lastfm_track_artwork(track, artist)
     if lastfm_url:
         return lastfm_url, "lastfm-track"
@@ -717,17 +808,18 @@ async def resolve_external_artwork(track: str, artist: str = "") -> tuple[str, s
 
 @router.get("/api/music/artwork")
 async def get_music_artwork(
-    request: Request, track: str = "", artist: str = "", term: str = ""
+    request: Request, track: str = "", artist: str = "", album: str = "", term: str = ""
 ):
     """Proxy artwork lookup for the Last.fm hero card (iTunes → Last.fm track info)."""
     _enforce_media_rate_limit(request, "media-artwork")
     artist = artist.strip()
     track = track.strip()
+    album = album.strip()
     search_term = term.strip() or f"{track} {artist}".strip()
     if not search_term:
         raise HTTPException(status_code=400, detail="track/artist or term is required")
 
-    cache_key = f"resolved|{search_term.lower()}|{artist.lower()}"
+    cache_key = f"resolved|{search_term.lower()}|{artist.lower()}|{album.lower()}"
     cached = artwork_cache.get(cache_key)
     served_from_cache = bool(cached and time.time() - cached["ts"] < ARTWORK_CACHE_DURATION)
     if served_from_cache:
@@ -739,7 +831,7 @@ async def get_music_artwork(
         }
 
     track_name = track or search_term
-    artwork_url, source = await resolve_external_artwork(track_name, artist)
+    artwork_url, source = await resolve_external_artwork(track_name, artist, album=album)
     if artwork_url:
         artwork_cache[cache_key] = {"url": artwork_url, "ts": time.time(), "source": source}
 

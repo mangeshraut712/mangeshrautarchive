@@ -98,6 +98,10 @@
       }
     }
 
+    if (top + panelHeight > viewportH - MARGIN) {
+      top = Math.max(MARGIN, viewportH - MARGIN - panelHeight);
+    }
+
     top = clamp(top, MARGIN, Math.max(MARGIN, viewportH - 120));
 
     flyout.style.left = `${left}px`;

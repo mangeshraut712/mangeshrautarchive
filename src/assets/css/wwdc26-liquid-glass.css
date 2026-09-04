@@ -3253,7 +3253,6 @@ html.dark[data-lg-mode='tinted']
 }
 
 /* Clip specular on solid pills/cards; keep nav text underlines visible */
-#home .music-card-inner.lg-interactive,
 #home .hero-cta.lg-interactive,
 #chatbot-toggle.lg-interactive,
 #go-to-top.lg-interactive,

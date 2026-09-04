@@ -239,7 +239,7 @@
       .replace(/'/g, '&#39;');
   }
 
-  const COUNTRY_DISPLAY_LIMIT = 3;
+  const COUNTRY_DISPLAY_LIMIT = 2;
 
   function normalizeCountryEntry(entry) {
     const country = String(entry?.country || '').trim();
