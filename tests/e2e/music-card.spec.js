@@ -22,7 +22,6 @@ test.describe('Apple Music Card — Dynamic Island Pill & Expansion', () => {
 
     // 1. Verify default compact state
     await expect(musicCard).toHaveAttribute('data-expanded', 'false');
-    await expect(musicCard).toHaveAttribute('aria-expanded', 'false');
 
     const compactBox = await musicCard.boundingBox();
     expect(compactBox).toBeTruthy();
@@ -41,12 +40,13 @@ test.describe('Apple Music Card — Dynamic Island Pill & Expansion', () => {
     await expect(page.locator('#music-preview-btn')).toBeVisible();
     const expandBtn = page.locator('#music-expand-btn');
     await expect(expandBtn).toBeVisible();
+    await expect(expandBtn).toHaveAttribute('aria-expanded', 'false');
     await expect(page.locator('#music-expand-icon')).toHaveClass(/fa-chevron-down/);
 
     // 2. Click compact pill to expand
     await musicCard.click();
     await expect(musicCard).toHaveAttribute('data-expanded', 'true');
-    await expect(musicCard).toHaveAttribute('aria-expanded', 'true');
+    await expect(expandBtn).toHaveAttribute('aria-expanded', 'true');
     await expect(page.locator('#music-expand-icon')).toHaveClass(/fa-chevron-up/);
 
     // Scrubber and streaming links are now visible
@@ -66,7 +66,7 @@ test.describe('Apple Music Card — Dynamic Island Pill & Expansion', () => {
     // 3. Click collapse button to collapse back to pill
     await expandBtn.click();
     await expect(musicCard).toHaveAttribute('data-expanded', 'false');
-    await expect(musicCard).toHaveAttribute('aria-expanded', 'false');
+    await expect(expandBtn).toHaveAttribute('aria-expanded', 'false');
     await expect(page.locator('#music-expand-icon')).toHaveClass(/fa-chevron-down/);
     await expect(scrubber).toBeHidden();
 

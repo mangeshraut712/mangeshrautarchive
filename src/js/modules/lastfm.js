@@ -69,7 +69,6 @@ class LastFmService {
     this.isHeroExpanded = typeof forceState === 'boolean' ? forceState : !this.isHeroExpanded;
     this.hero.musicCard.classList.toggle('is-expanded', this.isHeroExpanded);
     this.hero.musicCard.setAttribute('data-expanded', this.isHeroExpanded ? 'true' : 'false');
-    this.hero.musicCard.setAttribute('aria-expanded', this.isHeroExpanded ? 'true' : 'false');
 
     if (this.hero.expandIcon) {
       this.hero.expandIcon.className = this.isHeroExpanded
@@ -77,6 +76,7 @@ class LastFmService {
         : 'fas fa-chevron-down';
     }
     if (this.hero.expandBtn) {
+      this.hero.expandBtn.setAttribute('aria-expanded', this.isHeroExpanded ? 'true' : 'false');
       this.hero.expandBtn.title = this.isHeroExpanded ? 'Collapse player' : 'Expand player';
       this.hero.expandBtn.setAttribute(
         'aria-label',
@@ -98,16 +98,18 @@ class LastFmService {
     this.isHeroExpanded = false;
     if (this.hero?.musicCard) {
       this.hero.musicCard.setAttribute('data-expanded', 'false');
-      this.hero.musicCard.setAttribute('aria-expanded', 'false');
       this.hero.musicCard.classList.remove('is-expanded');
     }
 
-    if (this.hero?.expandBtn && !this.hero.expandBtn.dataset.bound) {
-      this.hero.expandBtn.dataset.bound = '1';
-      this.hero.expandBtn.addEventListener('click', e => {
-        e.stopPropagation();
-        this.toggleHeroExpanded();
-      });
+    if (this.hero?.expandBtn) {
+      this.hero.expandBtn.setAttribute('aria-expanded', 'false');
+      if (!this.hero.expandBtn.dataset.bound) {
+        this.hero.expandBtn.dataset.bound = '1';
+        this.hero.expandBtn.addEventListener('click', e => {
+          e.stopPropagation();
+          this.toggleHeroExpanded();
+        });
+      }
     }
 
     if (this.hero?.musicCard && !this.hero.musicCard.dataset.clickBound) {
