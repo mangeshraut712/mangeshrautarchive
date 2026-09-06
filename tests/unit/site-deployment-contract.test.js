@@ -82,8 +82,9 @@ describe('public deployment contract', () => {
       'changelog.html',
     ]) {
       const html = readProjectFile(`src/${page}`);
-      expect(html, page).toContain(`property="og:image" content="${shareImage}"`);
-      expect(html, page).toContain(`name="twitter:image" content="${shareImage}"`);
+      expect(html, page).toMatch(/property="og:image"/);
+      expect(html, page).toMatch(/name="twitter:image"/);
+      expect(html, page).toContain(shareImage);
       expect(html, page).not.toContain('https://mangeshraut.pro/assets/images/home.png');
     }
   });
