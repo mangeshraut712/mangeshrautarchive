@@ -13,7 +13,7 @@
 | **Lighthouse Accessibility**  | **100 / 100**          | 100          | 🟢 Perfect (WCAG AAA) |
 | **Lighthouse Best Practices** | **100 / 100**          | 100          | 🟢 Perfect            |
 | **Lighthouse SEO**            | **100 / 100**          | ≥ 90         | 🟢 Perfect            |
-| **Unit Test Coverage**        | **236 tests** (Vitest) | 100% passing | 🟢 100% Green         |
+| **Unit Test Coverage**        | **239 tests** (Vitest) | 100% passing | 🟢 100% Green         |
 | **API Endpoints Tested**      | **175 tests** (pytest) | 100% passing | 🟢 100% Green         |
 | **Browser Compatibility**     | **16 Browser Configs** | 100% passing | 🟢 Desktop & Mobile   |
 | **Security & Secrets**        | **0 Leaks**            | 0 Leaks      | 🟢 Clean              |

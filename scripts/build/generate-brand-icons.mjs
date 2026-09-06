@@ -96,6 +96,8 @@ export async function generateBrandIcons() {
     ['src/favicon.ico', ico],
     ['src/apple-touch-icon.png', touch180],
     ['src/apple-touch-icon-precomposed.png', touch180],
+    ['src/apple-touch-icon-mr-20260906.png', touch180],
+    ['src/apple-touch-icon-precomposed-mr-20260906.png', touch180],
     ['src/assets/icons/favicon-16x16.png', png16],
     ['src/assets/icons/favicon-32x32.png', png32],
     ['src/assets/icons/favicon-48x48.png', png48],
@@ -103,6 +105,8 @@ export async function generateBrandIcons() {
     ['src/assets/icons/apple-touch-icon.png', touch180],
     ['src/assets/icons/icon-192.png', pwa192],
     ['src/assets/icons/icon-512.png', pwa512],
+    ['src/assets/icons/icon-192-mr-20260906.png', pwa192],
+    ['src/assets/icons/icon-512-mr-20260906.png', pwa512],
   ];
 
   await Promise.all(
