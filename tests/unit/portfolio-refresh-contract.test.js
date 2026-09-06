@@ -50,14 +50,17 @@ describe('portfolio visual refresh contracts', () => {
       read('src/index.html'),
       read('scripts/build/asset-version.mjs'),
     ]);
-    const version = versionSource.match(/ASSET_VER = '([^']+)'/)?.[1];
-    expect(version).toBeTruthy();
+    const iconVersion = versionSource.match(/ICON_VER = '([^']+)'/)?.[1];
+    expect(iconVersion).toBeTruthy();
 
     const iconHrefs = [
       ...html.matchAll(/<link[^>]+rel="(?:icon|apple-touch-icon)"[^>]+href="([^"]+)"/g),
     ].map(match => match[1]);
     expect(iconHrefs.length).toBeGreaterThanOrEqual(4);
-    expect(iconHrefs.every(href => href.includes(`?v=${version}`))).toBe(true);
+    expect(iconHrefs.every(href => href.includes(`?v=${iconVersion}`))).toBe(true);
+    expect(
+      iconHrefs.every(href => href.includes('mangeshraut712.github.io/mangeshrautarchive'))
+    ).toBe(true);
   });
 
   it('uses Baseline loading and bitmap decoding on relevant paths', async () => {

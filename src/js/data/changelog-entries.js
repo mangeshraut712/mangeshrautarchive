@@ -43,6 +43,17 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── September 2026 ──────────────────────────────────────────
   {
+    id: 'safari-favorites-mr-logo-cachebust',
+    date: '2026-09-06',
+    type: 'fix',
+    title: 'Safari Favorites: Cache-Bust MR Crown Touch Icons Off Ganesh Fallback',
+    summary:
+      'Safari Start Page Favorites still showed the Support-section Lord Ganesha photo after live apple-touch-icon.png already shipped the white-on-black MR crown. Root causes: sticky Favorites cache on old filenames, plus og:image/twitter:image pointing at mangeshraut.pro (HTTP 402) so Safari could synthesize a colorful page image. Copied touch/PWA icons to never-cached apple-touch-icon-mr-20260906.png / icon-192-mr-20260906.png / icon-512-mr-20260906.png, pointed all rel=icon and apple-touch links plus the PWA manifest at absolute GitHub Pages URLs with ?v=20260906mr, and retargeted share images to github.io home.png. Blessing UI (ganesh.png) is unchanged and is not referenced by any icon/manifest entry. Active model: Cursor Grok 4.6 (medium) — icon/meta cache-bust and OG host correction. Token metrics not exported by this Cursor Cloud runtime.',
+    tags: ['design', 'deploy'],
+    sha: 'pending',
+    link: `${CHANGELOG_REPO}`,
+  },
+  {
     id: 'safari-favorites-touch-icon-fix',
     date: '2026-09-06',
     type: 'fix',

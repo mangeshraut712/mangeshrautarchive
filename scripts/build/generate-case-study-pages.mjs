@@ -3,7 +3,15 @@ import { dirname, resolve } from 'path';
 import { fileURLToPath } from 'url';
 import { caseStudies } from '../../src/js/modules/case-studies-data.js';
 import { SITE_URL as CANONICAL_SITE_URL } from '../../src/js/data/portfolio-public-data.js';
-import { ASSET_VER, fontAwesomeStylesheet } from './asset-version.mjs';
+import {
+  APPLE_TOUCH_ICON_180,
+  ASSET_VER,
+  GITHUB_PAGES_ORIGIN,
+  PWA_ICON_192,
+  PWA_ICON_512,
+  fontAwesomeStylesheet,
+  pagesIconUrl,
+} from './asset-version.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const SITE_URL = (
@@ -116,14 +124,14 @@ function pageShell({ title, description, canonical, body }) {
     <meta property="og:url" content="${canonical}" />
     <meta property="og:title" content="${escapeHTML(title)}" />
     <meta property="og:description" content="${escapeHTML(description)}" />
-    <meta property="og:image" content="https://mangeshraut.pro/assets/images/home.png" />
+    <meta property="og:image" content="${GITHUB_PAGES_ORIGIN}/assets/images/home.png" />
     <meta property="og:image:width" content="3024" />
     <meta property="og:image:height" content="1722" />
     <meta property="og:image:alt" content="${escapeHTML(title)}" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="${escapeHTML(title)}" />
     <meta name="twitter:description" content="${escapeHTML(description)}" />
-    <meta name="twitter:image" content="https://mangeshraut.pro/assets/images/home.png" />
+    <meta name="twitter:image" content="${GITHUB_PAGES_ORIGIN}/assets/images/home.png" />
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -131,7 +139,7 @@ function pageShell({ title, description, canonical, body }) {
         "headline": "${escapeHTML(title)}",
         "description": "${escapeHTML(description)}",
         "url": "${canonical}",
-        "image": "https://mangeshraut.pro/assets/images/home.png",
+        "image": "${GITHUB_PAGES_ORIGIN}/assets/images/home.png",
         "author": {
           "@type": "Person",
           "name": "Mangesh Raut",
@@ -144,14 +152,15 @@ function pageShell({ title, description, canonical, body }) {
         }
       }
     </script>
-    <link rel="icon" href="${ASSET_PREFIX}/favicon.svg?v=${ASSET_VER}" type="image/svg+xml" />
-    <link rel="icon" href="${ASSET_PREFIX}/favicon.ico?v=${ASSET_VER}" sizes="48x48" />
-    <link rel="icon" href="${ASSET_PREFIX}/favicon-32x32.png?v=${ASSET_VER}" type="image/png" sizes="32x32" />
-    <link rel="apple-touch-icon" href="${ASSET_PREFIX}/apple-touch-icon.png?v=${ASSET_VER}" sizes="180x180" />
-    <link rel="apple-touch-icon-precomposed" href="${ASSET_PREFIX}/apple-touch-icon-precomposed.png?v=${ASSET_VER}" sizes="180x180" />
-    <link rel="apple-touch-icon" href="${ASSET_PREFIX}/assets/icons/icon-192.png?v=${ASSET_VER}" sizes="192x192" />
-    <link rel="apple-touch-icon-precomposed" href="${ASSET_PREFIX}/assets/icons/icon-192.png?v=${ASSET_VER}" sizes="192x192" />
-    <link rel="apple-touch-icon" href="${ASSET_PREFIX}/assets/icons/icon-512.png?v=${ASSET_VER}" sizes="512x512" />
+    <link rel="icon" href="${pagesIconUrl('favicon.svg')}" type="image/svg+xml" />
+    <link rel="icon" href="${pagesIconUrl('favicon.ico')}" sizes="48x48" />
+    <link rel="icon" href="${pagesIconUrl('favicon-32x32.png')}" type="image/png" sizes="32x32" />
+    <link rel="icon" href="${pagesIconUrl('favicon-16x16.png')}" type="image/png" sizes="16x16" />
+    <link rel="apple-touch-icon" href="${pagesIconUrl(APPLE_TOUCH_ICON_180)}" sizes="180x180" />
+    <link rel="apple-touch-icon-precomposed" href="${pagesIconUrl(APPLE_TOUCH_ICON_180)}" sizes="180x180" />
+    <link rel="apple-touch-icon" href="${pagesIconUrl(PWA_ICON_192)}" sizes="192x192" />
+    <link rel="apple-touch-icon-precomposed" href="${pagesIconUrl(PWA_ICON_192)}" sizes="192x192" />
+    <link rel="apple-touch-icon" href="${pagesIconUrl(PWA_ICON_512)}" sizes="512x512" />
     <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/apple-design-system.css?v=${ASSET_VER}" />
     <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/sitewide-design-system.css?v=${ASSET_VER}" />
     <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/monitor.css?v=${ASSET_VER}" />

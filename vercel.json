@@ -253,6 +253,32 @@
       ]
     },
     {
+      "source": "/apple-touch-icon-mr-20260906.png",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        },
+        {
+          "key": "Content-Type",
+          "value": "image/png"
+        }
+      ]
+    },
+    {
+      "source": "/apple-touch-icon-precomposed-mr-20260906.png",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        },
+        {
+          "key": "Content-Type",
+          "value": "image/png"
+        }
+      ]
+    },
+    {
       "source": "/apple-touch-icon-precomposed.png",
       "headers": [
         {

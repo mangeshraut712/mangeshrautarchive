@@ -10,7 +10,14 @@ import {
   getTopTags,
   parseBlogContent,
 } from '../../src/js/modules/blog-markdown.js';
-import { ASSET_VER, fontAwesomeStylesheet } from './asset-version.mjs';
+import {
+  APPLE_TOUCH_ICON_180,
+  ASSET_VER,
+  PWA_ICON_192,
+  PWA_ICON_512,
+  fontAwesomeStylesheet,
+  pagesIconUrl,
+} from './asset-version.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const SITE_URL =
@@ -114,14 +121,15 @@ function pageShell({
     <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
     <meta name="color-scheme" content="light dark" />
     <title>${escapeHTML(title)}</title>
-    <link rel="icon" href="${ASSET_PREFIX}/favicon.svg?v=${ASSET_VER}" type="image/svg+xml" />
-    <link rel="icon" href="${ASSET_PREFIX}/favicon.ico?v=${ASSET_VER}" sizes="48x48" />
-    <link rel="icon" href="${ASSET_PREFIX}/favicon-32x32.png?v=${ASSET_VER}" type="image/png" sizes="32x32" />
-    <link rel="apple-touch-icon" href="${ASSET_PREFIX}/apple-touch-icon.png?v=${ASSET_VER}" sizes="180x180" />
-    <link rel="apple-touch-icon-precomposed" href="${ASSET_PREFIX}/apple-touch-icon-precomposed.png?v=${ASSET_VER}" sizes="180x180" />
-    <link rel="apple-touch-icon" href="${ASSET_PREFIX}/assets/icons/icon-192.png?v=${ASSET_VER}" sizes="192x192" />
-    <link rel="apple-touch-icon-precomposed" href="${ASSET_PREFIX}/assets/icons/icon-192.png?v=${ASSET_VER}" sizes="192x192" />
-    <link rel="apple-touch-icon" href="${ASSET_PREFIX}/assets/icons/icon-512.png?v=${ASSET_VER}" sizes="512x512" />
+    <link rel="icon" href="${pagesIconUrl('favicon.svg')}" type="image/svg+xml" />
+    <link rel="icon" href="${pagesIconUrl('favicon.ico')}" sizes="48x48" />
+    <link rel="icon" href="${pagesIconUrl('favicon-32x32.png')}" type="image/png" sizes="32x32" />
+    <link rel="icon" href="${pagesIconUrl('favicon-16x16.png')}" type="image/png" sizes="16x16" />
+    <link rel="apple-touch-icon" href="${pagesIconUrl(APPLE_TOUCH_ICON_180)}" sizes="180x180" />
+    <link rel="apple-touch-icon-precomposed" href="${pagesIconUrl(APPLE_TOUCH_ICON_180)}" sizes="180x180" />
+    <link rel="apple-touch-icon" href="${pagesIconUrl(PWA_ICON_192)}" sizes="192x192" />
+    <link rel="apple-touch-icon-precomposed" href="${pagesIconUrl(PWA_ICON_192)}" sizes="192x192" />
+    <link rel="apple-touch-icon" href="${pagesIconUrl(PWA_ICON_512)}" sizes="512x512" />
 <link rel="manifest" href="${ASSET_PREFIX}/manifest.json" />
     <link rel="alternate" type="application/rss+xml" title="RSS" href="${SITE_URL}/rss.xml" />
     <link rel="alternate" type="application/atom+xml" title="Atom" href="${SITE_URL}/feed.xml" />
