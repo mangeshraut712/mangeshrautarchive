@@ -69,7 +69,7 @@ OpenRouter API (grok-4.3) for AI features.
 - **Mandatory Pre-Commit Actions (Execute Automatically without Prompts)**:
   1. **Changelog**: Add a typed entry to `src/js/data/changelog-entries.js` for every fix, release, or UI polish, attributing the active AI model.
   2. **Active Model Telemetry**: Inspect and record the active LLM model name (e.g. `gemini-3.7-flash`, `gemini-2.5-pro`, `claude-3.7-sonnet`, `grok-4.3`), purpose, and token usage in commit messages and documentation.
-  3. **Quality Gates**: Ensure `npm run check` (ESLint + Stylelint + Prettier + 236 Vitest tests), `npm run security-check`, and `npm run build` all pass with zero errors before committing.
+  3. **Quality Gates**: Ensure `npm run check` (ESLint + Stylelint + Prettier + 239 Vitest tests), `npm run security-check`, and `npm run build` all pass with zero errors before committing.
   4. **Documentation**: Automatically update `README.md`, `AGENTS.md`, and `docs/DESIGN.md` whenever adding features or altering architecture.
 
 ## Build Tooling
