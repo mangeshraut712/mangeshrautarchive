@@ -315,7 +315,7 @@ All quality gates are enforced locally and verified automatically in GitHub Acti
 | Test Suite            | Runner            |        Test Count         | Scope & Coverage                                                            |
 | :-------------------- | :---------------- | :-----------------------: | :-------------------------------------------------------------------------- |
 | **Unit Tests**        | Vitest 4.1        | **236 passed** (47 files) | JS modules, services, markdown parser, WebMCP actions, data contracts       |
-| **API Tests**         | pytest            | **175 passed** (26 files) | FastAPI endpoints, streaming chat, health probes, OAuth token stores        |
+| **API Tests**         | pytest            | **175 passed** (27 files) | FastAPI endpoints, streaming chat, health probes, OAuth token stores        |
 | **E2E Browser Tests** | Playwright        |      **16 projects**      | Multi-browser suite (Desktop Chrome, Safari, Firefox, iPhone 17, Pixel 7)   |
 | **Accessibility**     | axe-core          |    **16/16 baseline**     | Zero critical/serious WCAG violations across light, dark, and high contrast |
 | **Lighthouse CI**     | Google Lighthouse |    **100/100/100/100**    | Performance, Accessibility, Best Practices, SEO deploy gates                |
