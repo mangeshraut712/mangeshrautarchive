@@ -43,6 +43,17 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── September 2026 ──────────────────────────────────────────
   {
+    id: 'safari-favorites-touch-icon-fix',
+    date: '2026-09-06',
+    type: 'fix',
+    title: 'Safari Favorites Touch Icon Resolution & Host-Root Squircle Synchronization',
+    summary:
+      'Resolved Safari Start Page Favorites tile displaying third-party Ganesh artwork instead of the authentic portfolio logo. Root cause: host-level touch icon cache collision on mangeshraut712.github.io where subpath visits cached an un-scoped 192x192 icon over the portfolio. Fixed by adding apple-touch-icon-precomposed and explicit multi-size touch icons (180x180, 192x192, 512x512) across all 10 shell HTML pages and page generators, synchronizing host-root repo (mangeshraut712.github.io) with latest continuous Apple squircle brand assets, scoping subpath touch icon tags, and flushing local Touch Icons Cache. Active model: Gemini 3.8 Flash (High) — Safari Touch Icons Cache SQLite reverse-engineering and host-collision resolution.',
+    tags: ['design', 'deploy'],
+    sha: '51e39ef3',
+    link: `${CHANGELOG_REPO}/commit/51e39ef3`,
+  },
+  {
     id: 'music-artwork-buttons',
     date: '2026-09-05',
     type: 'fix',

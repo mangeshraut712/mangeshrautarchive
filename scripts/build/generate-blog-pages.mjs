@@ -118,6 +118,10 @@ function pageShell({
     <link rel="icon" href="${ASSET_PREFIX}/favicon.ico?v=${ASSET_VER}" sizes="48x48" />
     <link rel="icon" href="${ASSET_PREFIX}/favicon-32x32.png?v=${ASSET_VER}" type="image/png" sizes="32x32" />
     <link rel="apple-touch-icon" href="${ASSET_PREFIX}/apple-touch-icon.png?v=${ASSET_VER}" sizes="180x180" />
+    <link rel="apple-touch-icon-precomposed" href="${ASSET_PREFIX}/apple-touch-icon-precomposed.png?v=${ASSET_VER}" sizes="180x180" />
+    <link rel="apple-touch-icon" href="${ASSET_PREFIX}/assets/icons/icon-192.png?v=${ASSET_VER}" sizes="192x192" />
+    <link rel="apple-touch-icon-precomposed" href="${ASSET_PREFIX}/assets/icons/icon-192.png?v=${ASSET_VER}" sizes="192x192" />
+    <link rel="apple-touch-icon" href="${ASSET_PREFIX}/assets/icons/icon-512.png?v=${ASSET_VER}" sizes="512x512" />
 <link rel="manifest" href="${ASSET_PREFIX}/manifest.json" />
     <link rel="alternate" type="application/rss+xml" title="RSS" href="${SITE_URL}/rss.xml" />
     <link rel="alternate" type="application/atom+xml" title="Atom" href="${SITE_URL}/feed.xml" />

@@ -148,6 +148,10 @@ function pageShell({ title, description, canonical, body }) {
     <link rel="icon" href="${ASSET_PREFIX}/favicon.ico?v=${ASSET_VER}" sizes="48x48" />
     <link rel="icon" href="${ASSET_PREFIX}/favicon-32x32.png?v=${ASSET_VER}" type="image/png" sizes="32x32" />
     <link rel="apple-touch-icon" href="${ASSET_PREFIX}/apple-touch-icon.png?v=${ASSET_VER}" sizes="180x180" />
+    <link rel="apple-touch-icon-precomposed" href="${ASSET_PREFIX}/apple-touch-icon-precomposed.png?v=${ASSET_VER}" sizes="180x180" />
+    <link rel="apple-touch-icon" href="${ASSET_PREFIX}/assets/icons/icon-192.png?v=${ASSET_VER}" sizes="192x192" />
+    <link rel="apple-touch-icon-precomposed" href="${ASSET_PREFIX}/assets/icons/icon-192.png?v=${ASSET_VER}" sizes="192x192" />
+    <link rel="apple-touch-icon" href="${ASSET_PREFIX}/assets/icons/icon-512.png?v=${ASSET_VER}" sizes="512x512" />
     <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/apple-design-system.css?v=${ASSET_VER}" />
     <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/sitewide-design-system.css?v=${ASSET_VER}" />
     <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/monitor.css?v=${ASSET_VER}" />
