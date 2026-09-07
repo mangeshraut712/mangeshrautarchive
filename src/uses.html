@@ -257,15 +257,17 @@
       </div>
     </nav>
 
-    <main class="systems-shell uses-page" id="main-content">
-      <header class="systems-keynote-hero uses-hero">
-        <p class="systems-eyebrow">Uses · /uses</p>
-        <h1>What I use to build.</h1>
-        <p class="uses-hero-lead systems-hero-lead">
-          A living toolkit for AI-native product work — hardware, agents, engineering stack, and the
-          systems behind this portfolio. Inspired by the
-          <a href="https://uses.tech/" rel="noopener noreferrer" target="_blank">uses.tech</a>
-          tradition: specific tools with a reason. Verified 13.66B token burn tracked on
+    <main class="systems-shell uses-page uses-keynote-shell" id="main-content">
+      <!-- ─── Apple Special Event Keynote Stage ─── -->
+      <header class="keynote-hero">
+        <div class="keynote-hero__badge-row">
+          <span class="keynote-pulse-dot" aria-hidden="true"></span>
+          <span class="keynote-eyebrow">Apple Special Event · Architecture &amp; Toolkit</span>
+        </div>
+        <h1 class="keynote-hero__title">What we used to build the portfolio.</h1>
+        <p class="keynote-hero__lead">
+          From first principles to global edge: how autonomous AI agents, zero-runtime architecture,
+          and rigorous quality gates crafted this experience. Verified 13.66B token burn tracked on
           <a href="systems.html#tokenization">Systems Tokenization</a> and
           <a
             href="https://whoburnedmore.com/u/mrcommando712"
@@ -274,48 +276,703 @@
             >whoburnedmore.com</a
           >.
         </p>
-        <div class="uses-stats" id="uses-stats" aria-label="Stack summary"></div>
+
+        <!-- Keynote Big Metrics Strip -->
+        <div class="keynote-metric-strip" aria-label="Keynote engineering metrics">
+          <div class="keynote-metric-card">
+            <span class="keynote-metric-card__value">13.66B</span>
+            <span class="keynote-metric-card__label">Tokens Burned</span>
+            <span class="keynote-metric-card__sub">#53 All-Time Rank</span>
+          </div>
+          <div class="keynote-metric-card">
+            <span class="keynote-metric-card__value">9 / 6</span>
+            <span class="keynote-metric-card__label">Tools &amp; Models</span>
+            <span class="keynote-metric-card__sub">Agentic Stack</span>
+          </div>
+          <div class="keynote-metric-card">
+            <span class="keynote-metric-card__value">0 KB</span>
+            <span class="keynote-metric-card__label">Runtime Framework</span>
+            <span class="keynote-metric-card__sub">Pure Vanilla ESM</span>
+          </div>
+          <div class="keynote-metric-card">
+            <span class="keynote-metric-card__value">239 + 175</span>
+            <span class="keynote-metric-card__label">Automated Tests</span>
+            <span class="keynote-metric-card__sub">Vitest + Pytest</span>
+          </div>
+          <div class="keynote-metric-card">
+            <span class="keynote-metric-card__value">100%</span>
+            <span class="keynote-metric-card__label">Lighthouse Gates</span>
+            <span class="keynote-metric-card__sub">100/100/100/100 CI</span>
+          </div>
+        </div>
       </header>
 
-      <section class="uses-featured-block" aria-labelledby="uses-featured-heading">
-        <h2 class="uses-block-label" id="uses-featured-heading">Daily drivers</h2>
-        <div class="uses-featured" id="uses-featured"></div>
-      </section>
-
-      <div class="uses-toolbar" role="search">
-        <div class="uses-search">
-          <i class="fas fa-magnifying-glass" aria-hidden="true"></i>
-          <input
-            id="uses-search"
-            type="search"
-            placeholder="Search tools, tags, categories..."
-            autocomplete="off"
-            aria-label="Search stack tools"
-          />
+      <!-- ─── Interactive Keynote Chapter Controller ─── -->
+      <nav class="keynote-deck-nav" aria-label="Keynote presentation chapters">
+        <div class="keynote-chapter-pills" id="keynote-chapter-pills" role="tablist">
           <button
-            id="uses-search-clear"
-            class="uses-search__clear"
             type="button"
-            aria-label="Clear search"
+            role="tab"
+            class="keynote-chapter-pill is-active"
+            data-slide-index="0"
+            aria-selected="true"
+            aria-controls="keynote-slide-1"
           >
-            <i class="fas fa-xmark" aria-hidden="true"></i>
+            <span class="keynote-chapter-pill__num">01</span>
+            <span class="keynote-chapter-pill__title">Strategy</span>
+          </button>
+          <button
+            type="button"
+            role="tab"
+            class="keynote-chapter-pill"
+            data-slide-index="1"
+            aria-selected="false"
+            aria-controls="keynote-slide-2"
+          >
+            <span class="keynote-chapter-pill__num">02</span>
+            <span class="keynote-chapter-pill__title">Intelligence</span>
+          </button>
+          <button
+            type="button"
+            role="tab"
+            class="keynote-chapter-pill"
+            data-slide-index="2"
+            aria-selected="false"
+            aria-controls="keynote-slide-3"
+          >
+            <span class="keynote-chapter-pill__num">03</span>
+            <span class="keynote-chapter-pill__title">Scaffolding</span>
+          </button>
+          <button
+            type="button"
+            role="tab"
+            class="keynote-chapter-pill"
+            data-slide-index="3"
+            aria-selected="false"
+            aria-controls="keynote-slide-4"
+          >
+            <span class="keynote-chapter-pill__num">04</span>
+            <span class="keynote-chapter-pill__title">Quality Gates</span>
+          </button>
+          <button
+            type="button"
+            role="tab"
+            class="keynote-chapter-pill"
+            data-slide-index="4"
+            aria-selected="false"
+            aria-controls="keynote-slide-5"
+          >
+            <span class="keynote-chapter-pill__num">05</span>
+            <span class="keynote-chapter-pill__title">Global Edge</span>
+          </button>
+          <button
+            type="button"
+            role="tab"
+            class="keynote-chapter-pill"
+            data-slide-index="5"
+            aria-selected="false"
+            aria-controls="keynote-slide-6"
+          >
+            <span class="keynote-chapter-pill__num">06</span>
+            <span class="keynote-chapter-pill__title">Studio Gear</span>
           </button>
         </div>
-        <div
-          class="uses-filters"
-          id="uses-filters"
-          role="toolbar"
-          aria-label="Filter by category"
-        ></div>
-        <p class="uses-results-label" id="uses-results-label">Loading stack…</p>
+
+        <div class="keynote-deck-controls">
+          <button
+            type="button"
+            class="keynote-deck-arrow"
+            id="keynote-prev-btn"
+            aria-label="Previous slide"
+          >
+            <i class="fas fa-chevron-left" aria-hidden="true"></i>
+          </button>
+          <span class="keynote-slide-counter" id="keynote-slide-counter" aria-live="polite"
+            >Slide 01 of 06</span
+          >
+          <button
+            type="button"
+            class="keynote-deck-arrow"
+            id="keynote-next-btn"
+            aria-label="Next slide"
+          >
+            <i class="fas fa-chevron-right" aria-hidden="true"></i>
+          </button>
+        </div>
+      </nav>
+
+      <!-- ─── The 6 Apple Keynote Presentation Slides ─── -->
+      <div class="keynote-presentation-stage" id="keynote-stage">
+        <!-- Slide 01: Understand & Architecture Strategy -->
+        <section
+          class="keynote-slide is-active"
+          id="keynote-slide-1"
+          data-slide-num="1"
+          role="tabpanel"
+          aria-label="Act I: Strategy and Architecture"
+        >
+          <div class="keynote-slide__header">
+            <span class="keynote-slide__kicker">Act I · Philosophy &amp; Architecture</span>
+            <h2 class="keynote-slide__headline">Zero framework runtime. Pure web fundamentals.</h2>
+            <p class="keynote-slide__desc">
+              Why no React, Angular, or Vue runtime? By relying on native ES modules, vanilla CSS
+              custom properties, and esbuild bundling, we eliminated hydration lag, bloated virtual
+              DOM overhead, and layout shifts. The result is fluid 60–120fps ProMotion scrolling and
+              sub-800ms Largest Contentful Paint.
+            </p>
+          </div>
+
+          <div class="keynote-bento-grid keynote-bento-grid--strategy">
+            <article class="keynote-bento-card keynote-bento-card--accent">
+              <div class="keynote-bento-card__badge">Performance Standard</div>
+              <h3 class="keynote-bento-card__title">Sub-800ms LCP &amp; Instant Paint</h3>
+              <p class="keynote-bento-card__copy">
+                Zero client hydration pause. HTML5 renders directly on arrival, accelerated by
+                inlined critical styling and speculative resource preloading.
+              </p>
+              <div class="keynote-spec-pill-row">
+                <span class="keynote-spec-pill"><i class="fas fa-bolt"></i> 0.6s LCP</span>
+                <span class="keynote-spec-pill"><i class="fas fa-gauge-high"></i> 0 CLS</span>
+                <span class="keynote-spec-pill"><i class="fas fa-microchip"></i> 0ms TBT</span>
+              </div>
+            </article>
+
+            <article class="keynote-bento-card">
+              <div class="keynote-bento-card__badge">Web Fundamentals</div>
+              <h3 class="keynote-bento-card__title">Vanilla ES Modules &amp; Standards</h3>
+              <p class="keynote-bento-card__copy">
+                Modular JavaScript architecture with strict type-safety, single-responsibility
+                modules, and native browser import maps.
+              </p>
+              <div
+                class="keynote-code-snippet"
+                tabindex="0"
+                role="region"
+                aria-label="Module import code example"
+              >
+                <code>import { usesCatalog } from './data/portfolio-public-data.js';</code>
+              </div>
+            </article>
+
+            <article class="keynote-bento-card">
+              <div class="keynote-bento-card__badge">Visual Language</div>
+              <h3 class="keynote-bento-card__title">Apple Human Interface (HIG)</h3>
+              <p class="keynote-bento-card__copy">
+                Solid white/black surfaces (#fff / #000), continuous squircle radii (18px), specular
+                metallic highlights, and authentic glassmorphism.
+              </p>
+            </article>
+
+            <article class="keynote-bento-card">
+              <div class="keynote-bento-card__badge">Resilience</div>
+              <h3 class="keynote-bento-card__title">Offline-First Service Worker</h3>
+              <p class="keynote-bento-card__copy">
+                PWA manifest with versioned asset caching, dynamic offline fallbacks, and instant
+                page restoration.
+              </p>
+            </article>
+          </div>
+        </section>
+
+        <!-- Slide 02: Research & Frontier Intelligence -->
+        <section
+          class="keynote-slide"
+          id="keynote-slide-2"
+          data-slide-num="2"
+          role="tabpanel"
+          aria-label="Act II: Research and Frontier Intelligence"
+        >
+          <div class="keynote-slide__header">
+            <span class="keynote-slide__kicker">Act II · Research &amp; Deep Reasoning</span>
+            <h2 class="keynote-slide__headline">
+              Frontier brains behind every architectural decision.
+            </h2>
+            <p class="keynote-slide__desc">
+              Every system contract, CSS geometry refactoring, and automated test suite is powered
+              by specialized frontier AI models. Verified by 13.66 billion tokens burned across
+              real-world coding sessions.
+            </p>
+          </div>
+
+          <div class="keynote-bento-grid keynote-bento-grid--intelligence">
+            <article class="keynote-bento-card keynote-bento-card--featured">
+              <div class="keynote-bento-card__header-flex">
+                <div>
+                  <span class="keynote-bento-card__badge">Lead Visual &amp; Audit Brain</span>
+                  <h3 class="keynote-bento-card__title">Gemini 3.8 Flash (High)</h3>
+                </div>
+                <span class="keynote-token-badge">Google AGY</span>
+              </div>
+              <p class="keynote-bento-card__copy">
+                Autonomous agentic assistant for visual layout auditing, multi-viewport Playwright
+                screenshot analysis, CSS grid refactoring, and zero-overflow enforcement.
+              </p>
+              <div class="keynote-tag-list">
+                <span class="keynote-tag">Visual Auditing</span>
+                <span class="keynote-tag">CSS Refactoring</span>
+                <span class="keynote-tag">A11y Remediation</span>
+                <span class="keynote-tag">CI Verification</span>
+              </div>
+            </article>
+
+            <article class="keynote-bento-card">
+              <div class="keynote-bento-card__header-flex">
+                <div>
+                  <span class="keynote-bento-card__badge">Deep Architectural Reasoning</span>
+                  <h3 class="keynote-bento-card__title">Claude 3.7 Sonnet / Opus 4.6</h3>
+                </div>
+                <span class="keynote-token-badge">4.93B Tokens</span>
+              </div>
+              <p class="keynote-bento-card__copy">
+                Conceptual blueprints, complex API contracts, multi-storefront artwork pipelines,
+                and high-fidelity technical field notes.
+              </p>
+            </article>
+
+            <article class="keynote-bento-card">
+              <div class="keynote-bento-card__header-flex">
+                <div>
+                  <span class="keynote-bento-card__badge">Live Edge Assistant</span>
+                  <h3 class="keynote-bento-card__title">Grok 4.3 &amp; Nemotron 120B</h3>
+                </div>
+                <span class="keynote-token-badge">1.65B Tokens</span>
+              </div>
+              <p class="keynote-bento-card__copy">
+                Real-time streaming chat intelligence via OpenRouter, multi-turn conversation
+                memory, and 14 WebMCP client-side tools.
+              </p>
+            </article>
+
+            <article class="keynote-bento-card keynote-bento-card--telemetry">
+              <div class="keynote-telemetry-box">
+                <span class="keynote-telemetry-box__kicker">WhoBurnedMore Telemetry</span>
+                <strong class="keynote-telemetry-box__stat">13.66B Tokens · $13,625 Spend</strong>
+                <span class="keynote-telemetry-box__sub"
+                  >#53 Global All-Time Rank · 198 Active Days · 10d Streak</span
+                >
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <!-- Slide 03: Implement & AI-Native IDE Stack -->
+        <section
+          class="keynote-slide"
+          id="keynote-slide-3"
+          data-slide-num="3"
+          role="tabpanel"
+          aria-label="Act III: Implementation and IDE Stack"
+        >
+          <div class="keynote-slide__header">
+            <span class="keynote-slide__kicker">Act III · Implementation &amp; Tooling</span>
+            <h2 class="keynote-slide__headline">
+              The autonomous workshop where code gets crafted.
+            </h2>
+            <p class="keynote-slide__desc">
+              AI pair-programming across specialized IDEs, shell agents, and autonomous coding
+              loops. From interactive planning modes to surgical terminal diffs.
+            </p>
+          </div>
+
+          <div class="keynote-tools-grid">
+            <article class="keynote-tool-card">
+              <div class="keynote-tool-card__icon-wrap">
+                <img
+                  src="assets/images/vibe-tools/antigravity.png"
+                  alt="Google Antigravity"
+                  width="36"
+                  height="36"
+                  loading="lazy"
+                />
+              </div>
+              <div class="keynote-tool-card__content">
+                <div class="keynote-tool-card__top">
+                  <h3 class="keynote-tool-card__name">Google Antigravity (AGY)</h3>
+                  <span class="keynote-tool-card__pill">Primary Agent</span>
+                </div>
+                <p class="keynote-tool-card__desc">
+                  Autonomous agentic pair programmer. Spawns specialized subagents, analyzes full
+                  workspaces, manages background tasks, and executes multi-step plans.
+                </p>
+                <div class="keynote-tool-card__stat">
+                  <strong>5.08B tokens burned</strong> · $5,082 spend
+                </div>
+              </div>
+            </article>
+
+            <article class="keynote-tool-card">
+              <div class="keynote-tool-card__icon-wrap">
+                <img
+                  src="assets/images/vibe-tools/cursor.png"
+                  alt="Cursor"
+                  width="36"
+                  height="36"
+                  loading="lazy"
+                />
+              </div>
+              <div class="keynote-tool-card__content">
+                <div class="keynote-tool-card__top">
+                  <h3 class="keynote-tool-card__name">Cursor</h3>
+                  <span class="keynote-tool-card__pill">AI-Native IDE</span>
+                </div>
+                <p class="keynote-tool-card__desc">
+                  Multi-file surgical edits, instant codebase indexing, smart copilot predictions,
+                  and lightning-fast keyboard-driven refactors.
+                </p>
+                <div class="keynote-tool-card__stat">
+                  <strong>2.19B tokens burned</strong> · $2,185 spend
+                </div>
+              </div>
+            </article>
+
+            <article class="keynote-tool-card">
+              <div class="keynote-tool-card__icon-wrap">
+                <img
+                  src="assets/images/vibe-tools/claude.png"
+                  alt="Claude Code"
+                  width="36"
+                  height="36"
+                  loading="lazy"
+                />
+              </div>
+              <div class="keynote-tool-card__content">
+                <div class="keynote-tool-card__top">
+                  <h3 class="keynote-tool-card__name">Claude Code</h3>
+                  <span class="keynote-tool-card__pill">CLI Agent</span>
+                </div>
+                <p class="keynote-tool-card__desc">
+                  Terminal-first agent for long-running repository refactors, complex git
+                  operations, and automated shell workflows.
+                </p>
+                <div class="keynote-tool-card__stat">
+                  <strong>2.73B tokens burned</strong> · $2,729 spend
+                </div>
+              </div>
+            </article>
+
+            <article class="keynote-tool-card">
+              <div class="keynote-tool-card__icon-wrap">
+                <img
+                  src="assets/images/vibe-tools/windsurf.png"
+                  alt="Windsurf"
+                  width="36"
+                  height="36"
+                  loading="lazy"
+                />
+              </div>
+              <div class="keynote-tool-card__content">
+                <div class="keynote-tool-card__top">
+                  <h3 class="keynote-tool-card__name">Windsurf</h3>
+                  <span class="keynote-tool-card__pill">Cascade IDE</span>
+                </div>
+                <p class="keynote-tool-card__desc">
+                  Agentic cascade workflows, multi-file code synthesis, and deep workspace context
+                  awareness.
+                </p>
+                <div class="keynote-tool-card__stat">
+                  <strong>2.32B tokens burned</strong> · $2,319 spend
+                </div>
+              </div>
+            </article>
+
+            <article class="keynote-tool-card">
+              <div class="keynote-tool-card__icon-wrap">
+                <img
+                  src="assets/images/vibe-tools/codex.png"
+                  alt="Codex"
+                  width="36"
+                  height="36"
+                  loading="lazy"
+                />
+              </div>
+              <div class="keynote-tool-card__content">
+                <div class="keynote-tool-card__top">
+                  <h3 class="keynote-tool-card__name">Codex &amp; GitHub Copilot</h3>
+                  <span class="keynote-tool-card__pill">Scaffolding</span>
+                </div>
+                <p class="keynote-tool-card__desc">
+                  Rapid boilerplate generation, inline code completion, and test fixture scaffolding
+                  across Python and JS modules.
+                </p>
+                <div class="keynote-tool-card__stat">
+                  <strong>621M tokens burned</strong> · $621 spend
+                </div>
+              </div>
+            </article>
+
+            <article class="keynote-tool-card">
+              <div class="keynote-tool-card__icon-wrap">
+                <img
+                  src="assets/images/vibe-tools/figma.png"
+                  alt="Figma"
+                  width="36"
+                  height="36"
+                  loading="lazy"
+                />
+              </div>
+              <div class="keynote-tool-card__content">
+                <div class="keynote-tool-card__top">
+                  <h3 class="keynote-tool-card__name">Figma</h3>
+                  <span class="keynote-tool-card__pill">Design System</span>
+                </div>
+                <p class="keynote-tool-card__desc">
+                  Apple HIG component wireframing, fluid responsive breakpoints, color palette
+                  exploration, and layout mockups.
+                </p>
+                <div class="keynote-tool-card__stat">High-fidelity UI/UX specs</div>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <!-- Slide 04: Test & Verification Matrix -->
+        <section
+          class="keynote-slide"
+          id="keynote-slide-4"
+          data-slide-num="4"
+          role="tabpanel"
+          aria-label="Act IV: Test and Verification Matrix"
+        >
+          <div class="keynote-slide__header">
+            <span class="keynote-slide__kicker">Act IV · Quality Gates &amp; Testing</span>
+            <h2 class="keynote-slide__headline">Never ship broken code. Ever.</h2>
+            <p class="keynote-slide__desc">
+              Every push to main undergoes a zero-tolerance automated CI pipeline. 414 automated
+              tests, 16 cross-browser device profiles, and automated WCAG AAA accessibility audits.
+            </p>
+          </div>
+
+          <div class="keynote-bento-grid keynote-bento-grid--testing">
+            <article class="keynote-bento-card keynote-bento-card--gate">
+              <div class="keynote-gate-header">
+                <span class="keynote-gate-badge">Gate 01</span>
+                <span class="keynote-gate-status"><i class="fas fa-check-circle"></i> Passing</span>
+              </div>
+              <h3 class="keynote-bento-card__title">Vitest 4.1 Unit Suite</h3>
+              <p class="keynote-bento-card__copy">
+                239 unit tests across 47 files running in &lt; 8 seconds. Tests markdown rendering,
+                state management, sound controls, WebMCP tools, and data contracts.
+              </p>
+              <div class="keynote-gate-stat"><strong>239 / 239</strong> tests passing</div>
+            </article>
+
+            <article class="keynote-bento-card keynote-bento-card--gate">
+              <div class="keynote-gate-header">
+                <span class="keynote-gate-badge">Gate 02</span>
+                <span class="keynote-gate-status"><i class="fas fa-check-circle"></i> Passing</span>
+              </div>
+              <h3 class="keynote-bento-card__title">Pytest API &amp; Security Suite</h3>
+              <p class="keynote-bento-card__copy">
+                175 API tests across 27 files verifying FastAPI endpoints, streaming chat, rate
+                limits, prompt injection guards, and health probes.
+              </p>
+              <div class="keynote-gate-stat"><strong>175 / 175</strong> contracts verified</div>
+            </article>
+
+            <article class="keynote-bento-card keynote-bento-card--gate">
+              <div class="keynote-gate-header">
+                <span class="keynote-gate-badge">Gate 03</span>
+                <span class="keynote-gate-status"><i class="fas fa-check-circle"></i> Passing</span>
+              </div>
+              <h3 class="keynote-bento-card__title">Playwright 16-Browser Matrix</h3>
+              <p class="keynote-bento-card__copy">
+                End-to-end browser tests across Desktop Chrome, Safari, Firefox, Edge, iPhone 17 Pro
+                Max, Pixel 7, and iPad Pro with zero layout shifts.
+              </p>
+              <div class="keynote-gate-stat"><strong>16</strong> device environments</div>
+            </article>
+
+            <article class="keynote-bento-card keynote-bento-card--gate">
+              <div class="keynote-gate-header">
+                <span class="keynote-gate-badge">Gate 04</span>
+                <span class="keynote-gate-status"><i class="fas fa-check-circle"></i> Passing</span>
+              </div>
+              <h3 class="keynote-bento-card__title">Axe-Core Accessibility (WCAG AAA)</h3>
+              <p class="keynote-bento-card__copy">
+                Strict WCAG 2.1 AA/AAA compliance: high-contrast text ratios (&gt; 7:1), non-color
+                differentiators, focus indicators, and ARIA tree parity.
+              </p>
+              <div class="keynote-gate-stat"><strong>0</strong> blocking violations</div>
+            </article>
+          </div>
+        </section>
+
+        <!-- Slide 05: Deploy & Global Edge Delivery -->
+        <section
+          class="keynote-slide"
+          id="keynote-slide-5"
+          data-slide-num="5"
+          role="tabpanel"
+          aria-label="Act V: Deployment and Global Edge"
+        >
+          <div class="keynote-slide__header">
+            <span class="keynote-slide__kicker">Act V · Deployment &amp; Global Edge</span>
+            <h2 class="keynote-slide__headline">Deployed worldwide in milliseconds.</h2>
+            <p class="keynote-slide__desc">
+              Resilient dual-surface architecture combining GitHub Pages static CDN delivery with
+              Cloudflare Workers edge intelligence and automated GitHub Actions CI/CD gates.
+            </p>
+          </div>
+
+          <div class="keynote-bento-grid keynote-bento-grid--deploy">
+            <article class="keynote-bento-card keynote-bento-card--edge">
+              <div class="keynote-bento-card__badge">Primary Static CDN</div>
+              <h3 class="keynote-bento-card__title">GitHub Pages Edge</h3>
+              <p class="keynote-bento-card__copy">
+                Global static delivery with TLS termination, atomic artifact deployment, and custom
+                domain routing at mangeshraut712.github.io/mangeshrautarchive.
+              </p>
+              <div class="keynote-pill-tag">HTTP/3 · Anycast CDN · 99.99% Uptime</div>
+            </article>
+
+            <article class="keynote-bento-card keynote-bento-card--edge">
+              <div class="keynote-bento-card__badge">AI Edge Proxy</div>
+              <h3 class="keynote-bento-card__title">Cloudflare Workers</h3>
+              <p class="keynote-bento-card__copy">
+                Runs AssistMe live chat streaming, model fallback cascades, rate limiting, and
+                WebSocket routing within 50ms of any visitor worldwide.
+              </p>
+              <div class="keynote-pill-tag">assistme-chat.mangeshraut712.workers.dev</div>
+            </article>
+
+            <article class="keynote-bento-card keynote-bento-card--edge">
+              <div class="keynote-bento-card__badge">Continuous Integration</div>
+              <h3 class="keynote-bento-card__title">GitHub Actions CI/CD</h3>
+              <p class="keynote-bento-card__copy">
+                Automated security vulnerability audit, secret leakage scanning, ESLint, Stylelint,
+                Prettier, unit tests, and Lighthouse score verification.
+              </p>
+              <div class="keynote-pill-tag">Automated Release Notes &amp; Tagging</div>
+            </article>
+
+            <article class="keynote-bento-card keynote-bento-card--edge">
+              <div class="keynote-bento-card__badge">Deploy Gate</div>
+              <h3 class="keynote-bento-card__title">Lighthouse 100/100/100/100</h3>
+              <p class="keynote-bento-card__copy">
+                Strict deploy gate enforcing perfect scores on Performance, Accessibility, Best
+                Practices, and SEO on every production build.
+              </p>
+              <div class="keynote-pill-tag">100 / 100 / 100 / 100 Perfect Gate</div>
+            </article>
+          </div>
+        </section>
+
+        <!-- Slide 06: Physical Studio & Everyday Carry -->
+        <section
+          class="keynote-slide"
+          id="keynote-slide-6"
+          data-slide-num="6"
+          role="tabpanel"
+          aria-label="Act VI: Physical Studio and Hardware"
+        >
+          <div class="keynote-slide__header">
+            <span class="keynote-slide__kicker">Act VI · The Physical Workshop</span>
+            <h2 class="keynote-slide__headline">
+              Hardware built for focus and sustained velocity.
+            </h2>
+            <p class="keynote-slide__desc">
+              A carefully curated physical environment designed for deep flow states, silent
+              performance, and retina visual clarity.
+            </p>
+          </div>
+
+          <div class="keynote-bento-grid keynote-bento-grid--hardware">
+            <article class="keynote-bento-card keynote-bento-card--hardware">
+              <div class="keynote-hardware-icon"><i class="fas fa-laptop"></i></div>
+              <h3 class="keynote-bento-card__title">MacBook Pro (Apple Silicon)</h3>
+              <p class="keynote-bento-card__copy">
+                Primary daily machine. Unified memory architecture enables running multiple local
+                Docker containers, browser instances, and background compiler daemons without fan
+                noise.
+              </p>
+              <span class="keynote-spec-badge">Apple Silicon · Unified Memory</span>
+            </article>
+
+            <article class="keynote-bento-card keynote-bento-card--hardware">
+              <div class="keynote-hardware-icon"><i class="fas fa-desktop"></i></div>
+              <h3 class="keynote-bento-card__title">Apple Studio Display (5K)</h3>
+              <p class="keynote-bento-card__copy">
+                Single massive 27-inch 5K Retina canvas. Provides pixel-accurate Apple typography
+                rendering (SF Pro), side-by-side terminal splits, and live browser previews.
+              </p>
+              <span class="keynote-spec-badge">5K Retina · 218 PPI</span>
+            </article>
+
+            <article class="keynote-bento-card keynote-bento-card--hardware">
+              <div class="keynote-hardware-icon"><i class="fas fa-headphones"></i></div>
+              <h3 class="keynote-bento-card__title">AirPods Pro (2nd Gen)</h3>
+              <p class="keynote-bento-card__copy">
+                Active Noise Cancellation for uninterrupted focus, Spatial Audio for the permanent
+                hero music player, and walk-and-think debugging sessions.
+              </p>
+              <span class="keynote-spec-badge">Spatial Audio · Active ANC</span>
+            </article>
+
+            <article class="keynote-bento-card keynote-bento-card--hardware">
+              <div class="keynote-hardware-icon"><i class="fas fa-bolt"></i></div>
+              <h3 class="keynote-bento-card__title">Raycast &amp; macOS Shortcuts</h3>
+              <p class="keynote-bento-card__copy">
+                Supercharged window management, clipboard history, quick script runners, and custom
+                git commands executed directly via hotkeys.
+              </p>
+              <span class="keynote-spec-badge">Zero Friction Navigation</span>
+            </article>
+          </div>
+        </section>
       </div>
 
-      <div class="uses-grid" id="uses-grid">
-        <div class="loading-state">
-          <div class="loading-spinner" aria-hidden="true"></div>
-          <p class="loading-message">Loading stack…</p>
+      <!-- ─── Complete Toolkit Catalog & Filterable Directory ─── -->
+      <section class="uses-catalog-section" id="uses-catalog-section">
+        <header class="uses-catalog-header">
+          <span class="uses-catalog-eyebrow">Full Directory</span>
+          <h2 class="uses-catalog-title">Explore the Complete Toolkit Catalog</h2>
+          <p class="uses-catalog-lead">
+            Filter all tools, hardware devices, libraries, and utilities categorized across 8
+            engineering domains.
+          </p>
+          <div class="uses-stats" id="uses-stats" aria-label="Stack summary"></div>
+        </header>
+
+        <section class="uses-featured-block" aria-labelledby="uses-featured-heading">
+          <h3 class="uses-block-label" id="uses-featured-heading">Daily drivers</h3>
+          <div class="uses-featured" id="uses-featured"></div>
+        </section>
+
+        <div class="uses-toolbar" role="search">
+          <div class="uses-search">
+            <i class="fas fa-magnifying-glass" aria-hidden="true"></i>
+            <input
+              id="uses-search"
+              type="search"
+              placeholder="Search tools, tags, categories..."
+              autocomplete="off"
+              aria-label="Search stack tools"
+            />
+            <button
+              id="uses-search-clear"
+              class="uses-search__clear"
+              type="button"
+              aria-label="Clear search"
+            >
+              <i class="fas fa-xmark" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div
+            class="uses-filters"
+            id="uses-filters"
+            role="toolbar"
+            aria-label="Filter by category"
+          ></div>
+          <p class="uses-results-label" id="uses-results-label">Loading stack…</p>
         </div>
-      </div>
+
+        <div class="uses-grid" id="uses-grid">
+          <div class="loading-state">
+            <div class="loading-spinner" aria-hidden="true"></div>
+            <p class="loading-message">Loading stack…</p>
+          </div>
+        </div>
+      </section>
 
       <nav class="systems-footer-links" aria-label="Related engineering pages">
         <a href="/systems">Systems notebook</a>

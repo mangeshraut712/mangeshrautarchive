@@ -41,42 +41,787 @@ html.dark body.uses-page {
 body.uses-page .systems-shell {
   display: block;
   gap: clamp(1rem, 2vw, 1.5rem);
-  max-width: min(54rem, 100%) !important;
+  max-width: min(1200px, 100%) !important;
   width: 100%;
   margin-inline: auto;
-  padding-top: 0.85rem;
+  padding: calc(92px + env(safe-area-inset-top, 0px)) clamp(1rem, 3vw, 2rem) 4rem;
+  box-sizing: border-box;
   text-align: left;
 }
 
-/* Hero */
-body.uses-page .uses-hero {
-  display: grid;
-  gap: 0.45rem;
-  padding: 0.15rem 0 1rem;
+@keyframes keynoteSlideFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.995);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
-body.uses-page .uses-hero h1 {
-  margin: 0;
-  font-size: clamp(1.75rem, 3.5vw, 2.25rem);
-  font-weight: 600;
-  letter-spacing: -0.03em;
-  line-height: 1.1;
+@keyframes keynotePulse {
+  0% {
+    box-shadow: 0 0 0 0 rgb(52 199 89 / 60%);
+  }
+  70% {
+    box-shadow: 0 0 0 7px rgb(52 199 89 / 0%);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgb(52 199 89 / 0%);
+  }
+}
+
+/* ─── Apple Special Event Keynote Hero ─── */
+body.uses-page .keynote-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: clamp(0.75rem, 2vw, 1.5rem) 0 clamp(1.5rem, 3vw, 2.5rem);
+  border-bottom: 1px solid var(--uses-border);
+}
+
+body.uses-page .keynote-hero__badge-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.35rem 0.85rem;
+  border-radius: 9999px;
+  border: 1px solid var(--uses-border);
+  background: var(--uses-surface);
+  box-shadow: 0 1px 4px rgb(0 0 0 / 4%);
+  margin-bottom: 1rem;
+}
+
+body.uses-page .keynote-pulse-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #34c759;
+  box-shadow: 0 0 0 0 rgb(52 199 89 / 70%);
+  animation: keynotePulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  flex-shrink: 0;
+}
+
+body.uses-page .keynote-eyebrow {
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--uses-pill-soft-fg);
+}
+
+body.uses-page .keynote-hero__title {
+  margin: 0 0 1rem;
+  font-size: clamp(2.2rem, 5vw, 3.6rem);
+  font-weight: 750;
+  letter-spacing: -0.035em;
+  line-height: 1.08;
   color: var(--uses-text);
+  max-width: 24ch;
 }
 
-body.uses-page .uses-hero-lead {
-  margin: 0;
-  max-width: 38rem;
-  font-size: 0.95rem;
-  line-height: 1.45;
+body.uses-page .keynote-hero__lead {
+  margin: 0 0 2rem;
+  font-size: clamp(1.02rem, 1.6vw, 1.2rem);
+  line-height: 1.55;
   color: var(--uses-text-secondary);
+  max-width: 52rem;
 }
 
-body.uses-page .uses-hero-lead a {
-  color: var(--uses-blue);
+body.uses-page .keynote-hero__lead a {
+  color: var(--uses-pill-soft-fg);
   font-weight: 650;
   text-decoration: underline;
   text-underline-offset: 2px;
+}
+
+/* Keynote metric strip */
+body.uses-page .keynote-metric-strip {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.85rem;
+  width: 100%;
+}
+
+body.uses-page .keynote-metric-card {
+  padding: 1.2rem 0.85rem;
+  border-radius: var(--uses-radius);
+  border: 1px solid var(--uses-border);
+  background: var(--uses-surface);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease;
+  box-shadow: 0 2px 10px rgb(0 0 0 / 3%);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  body.uses-page .keynote-metric-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--uses-blue);
+  }
+}
+
+body.uses-page .keynote-metric-card__value {
+  font-size: clamp(1.35rem, 2.3vw, 1.85rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--uses-pill-soft-fg);
+  line-height: 1.15;
+}
+
+body.uses-page .keynote-metric-card__label {
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--uses-text);
+  margin-top: 0.15rem;
+}
+
+body.uses-page .keynote-metric-card__sub {
+  font-size: 0.7rem;
+  font-weight: 550;
+  color: var(--uses-text-secondary);
+}
+
+/* ─── Interactive Keynote Chapter Controller ─── */
+body.uses-page .keynote-deck-nav {
+  position: sticky;
+  top: var(--subpage-sticky-top, 74px);
+  z-index: 45;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.6rem 0.85rem;
+  margin: 2rem 0 2.25rem;
+  border-radius: 9999px;
+  border: 1px solid var(--uses-border);
+  background: rgb(255 255 255 / 85%);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 8px 30px rgb(0 0 0 / 6%);
+}
+
+html.dark body.uses-page .keynote-deck-nav {
+  background: rgb(0 0 0 / 85%);
+  box-shadow: 0 8px 32px rgb(0 0 0 / 50%);
+}
+
+body.uses-page .keynote-chapter-pills {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  min-width: 0;
+  padding: 0.1rem 0;
+}
+
+body.uses-page .keynote-chapter-pills::-webkit-scrollbar {
+  display: none;
+}
+
+body.uses-page .keynote-chapter-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-height: 38px;
+  padding: 0.4rem 0.95rem;
+  border-radius: 9999px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--uses-text-secondary);
+  font-family: inherit;
+  font-size: 0.86rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  outline: none;
+}
+
+body.uses-page .keynote-chapter-pill:hover {
+  color: var(--uses-text);
+  background: var(--uses-surface-muted);
+}
+
+body.uses-page .keynote-chapter-pill.is-active {
+  background-image: linear-gradient(135deg, #0077ed 0%, #0071e3 50%, #005bb5 100%) !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  border: 1px solid rgb(255 255 255 / 25%) !important;
+  box-shadow: 0 3px 12px rgb(0 113 227 / 38%) !important;
+}
+
+body.uses-page .keynote-chapter-pill__num {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.74rem;
+  font-weight: 700;
+  opacity: 0.85;
+}
+
+body.uses-page .keynote-chapter-pill__title {
+  font-weight: 650;
+}
+
+body.uses-page .keynote-deck-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  flex-shrink: 0;
+}
+
+body.uses-page .keynote-deck-arrow {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--uses-border);
+  background: var(--uses-surface);
+  color: var(--uses-text);
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+body.uses-page .keynote-deck-arrow:hover:not(:disabled) {
+  border-color: var(--uses-blue);
+  color: var(--uses-blue);
+  transform: scale(1.06);
+}
+
+body.uses-page .keynote-deck-arrow:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+body.uses-page .keynote-slide-counter {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.8rem;
+  font-weight: 650;
+  color: var(--uses-text-secondary);
+  white-space: nowrap;
+  padding: 0 0.25rem;
+}
+
+/* ─── Keynote Presentation Stage & Slides ─── */
+body.uses-page .keynote-presentation-stage {
+  position: relative;
+  min-height: 480px;
+  margin-bottom: 4rem;
+}
+
+body.uses-page .keynote-slide {
+  display: none;
+  opacity: 0;
+}
+
+body.uses-page .keynote-slide.is-active {
+  display: block;
+  opacity: 1;
+  animation: keynoteSlideFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+body.uses-page .keynote-slide__header {
+  margin-bottom: 1.75rem;
+}
+
+body.uses-page .keynote-slide__kicker {
+  display: block;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--uses-pill-soft-fg);
+  margin-bottom: 0.4rem;
+}
+
+body.uses-page .keynote-slide__headline {
+  margin: 0 0 0.75rem;
+  font-size: clamp(1.75rem, 3.8vw, 2.55rem);
+  font-weight: 750;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  color: var(--uses-text);
+  max-width: 32ch;
+}
+
+body.uses-page .keynote-slide__desc {
+  margin: 0;
+  font-size: clamp(0.96rem, 1.4vw, 1.1rem);
+  line-height: 1.6;
+  color: var(--uses-text-secondary);
+  max-width: 50rem;
+}
+
+/* ─── Keynote Bento Grids & Cards ─── */
+body.uses-page .keynote-bento-grid {
+  display: grid;
+  gap: 1.15rem;
+  grid-template-columns: repeat(12, 1fr);
+}
+
+/* Strategy Grid */
+body.uses-page .keynote-bento-grid--strategy > :nth-child(1) {
+  grid-column: span 7;
+}
+
+body.uses-page .keynote-bento-grid--strategy > :nth-child(2) {
+  grid-column: span 5;
+}
+
+body.uses-page .keynote-bento-grid--strategy > :nth-child(3) {
+  grid-column: span 6;
+}
+
+body.uses-page .keynote-bento-grid--strategy > :nth-child(4) {
+  grid-column: span 6;
+}
+
+/* Intelligence Grid */
+body.uses-page .keynote-bento-grid--intelligence > :nth-child(1) {
+  grid-column: span 12;
+}
+
+body.uses-page .keynote-bento-grid--intelligence > :nth-child(2) {
+  grid-column: span 6;
+}
+
+body.uses-page .keynote-bento-grid--intelligence > :nth-child(3) {
+  grid-column: span 6;
+}
+
+body.uses-page .keynote-bento-grid--intelligence > :nth-child(4) {
+  grid-column: span 12;
+}
+
+/* Testing, Deploy, Hardware Grids: 2x2 */
+body.uses-page .keynote-bento-grid--testing > *,
+body.uses-page .keynote-bento-grid--deploy > *,
+body.uses-page .keynote-bento-grid--hardware > * {
+  grid-column: span 6;
+}
+
+/* Bento Card Styles */
+body.uses-page .keynote-bento-card {
+  padding: 1.65rem 1.6rem;
+  border-radius: var(--uses-radius);
+  border: 1px solid var(--uses-border);
+  background: var(--uses-surface);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.95rem;
+  transition:
+    transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 3%);
+  min-width: 0;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  body.uses-page .keynote-bento-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px rgb(0 0 0 / 8%);
+    border-color: var(--uses-blue);
+  }
+}
+
+html.dark body.uses-page .keynote-bento-card:hover {
+  box-shadow: 0 12px 32px rgb(0 0 0 / 45%);
+}
+
+body.uses-page .keynote-bento-card__badge {
+  display: inline-block;
+  width: fit-content;
+  padding: 0.25rem 0.65rem;
+  border-radius: 9999px;
+  background: var(--uses-blue-soft);
+  color: var(--uses-pill-soft-fg);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+body.uses-page .keynote-bento-card__title {
+  margin: 0;
+  font-size: 1.28rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+  color: var(--uses-text);
+}
+
+body.uses-page .keynote-bento-card__copy {
+  margin: 0;
+  font-size: 0.94rem;
+  line-height: 1.55;
+  color: var(--uses-text-secondary);
+  flex: 1 1 auto;
+}
+
+body.uses-page .keynote-spec-pill-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-top: 0.25rem;
+}
+
+body.uses-page .keynote-spec-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: 8px;
+  background: var(--uses-surface-muted);
+  border: 1px solid var(--uses-border);
+  font-family: var(--font-mono, monospace);
+  font-size: 0.76rem;
+  font-weight: 650;
+  color: var(--uses-text);
+}
+
+body.uses-page .keynote-spec-pill i {
+  color: var(--uses-pill-soft-fg);
+}
+
+body.uses-page .keynote-code-snippet {
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  background: rgb(0 0 0 / 4%);
+  border: 1px solid var(--uses-border);
+  font-family: var(--font-mono, monospace);
+  font-size: 0.78rem;
+  color: var(--uses-pill-soft-fg);
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+body.uses-page .keynote-code-snippet:focus-visible {
+  outline: 2px solid var(--uses-blue);
+  outline-offset: 2px;
+}
+
+html.dark body.uses-page .keynote-code-snippet {
+  background: rgb(255 255 255 / 5%);
+  color: #58a6ff;
+}
+
+/* Intelligence slide specifics */
+body.uses-page .keynote-bento-card__header-flex {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+body.uses-page .keynote-token-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.28rem 0.65rem;
+  border-radius: 9999px;
+  background: var(--uses-blue-soft);
+  color: var(--uses-pill-soft-fg);
+  font-family: var(--font-mono, monospace);
+  font-size: 0.74rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+body.uses-page .keynote-tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-top: 0.5rem;
+}
+
+body.uses-page .keynote-tag {
+  display: inline-block;
+  padding: 0.25rem 0.65rem;
+  border-radius: 6px;
+  background: var(--uses-surface-muted);
+  border: 1px solid var(--uses-border);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--uses-text-secondary);
+}
+
+body.uses-page .keynote-telemetry-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 0.35rem;
+  padding: 0.5rem 0;
+}
+
+body.uses-page .keynote-telemetry-box__kicker {
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--uses-pill-soft-fg);
+}
+
+body.uses-page .keynote-telemetry-box__stat {
+  font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  color: var(--uses-text);
+}
+
+body.uses-page .keynote-telemetry-box__sub {
+  font-size: 0.85rem;
+  color: var(--uses-text-secondary);
+}
+
+/* Tools Grid (Act III) */
+body.uses-page .keynote-tools-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.15rem;
+}
+
+body.uses-page .keynote-tool-card {
+  padding: 1.5rem 1.4rem;
+  border-radius: var(--uses-radius);
+  border: 1px solid var(--uses-border);
+  background: var(--uses-surface);
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  transition:
+    transform 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+  min-width: 0;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 3%);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  body.uses-page .keynote-tool-card:hover {
+    transform: translateY(-3px);
+    border-color: var(--uses-blue);
+    box-shadow: 0 10px 28px rgb(0 0 0 / 7%);
+  }
+}
+
+html.dark body.uses-page .keynote-tool-card:hover {
+  box-shadow: 0 10px 28px rgb(0 0 0 / 40%);
+}
+
+body.uses-page .keynote-tool-card__icon-wrap {
+  width: 48px;
+  height: 48px;
+  border-radius: 13px;
+  background: var(--uses-surface-muted);
+  border: 1px solid var(--uses-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  padding: 6px;
+}
+
+body.uses-page .keynote-tool-card__icon-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+body.uses-page .keynote-tool-card__content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+body.uses-page .keynote-tool-card__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+body.uses-page .keynote-tool-card__name {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--uses-text);
+  line-height: 1.2;
+}
+
+body.uses-page .keynote-tool-card__pill {
+  display: inline-block;
+  padding: 0.18rem 0.5rem;
+  border-radius: 9999px;
+  background: var(--uses-blue-soft);
+  color: var(--uses-pill-soft-fg);
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+body.uses-page .keynote-tool-card__desc {
+  margin: 0;
+  font-size: 0.86rem;
+  line-height: 1.48;
+  color: var(--uses-text-secondary);
+}
+
+body.uses-page .keynote-tool-card__stat {
+  margin-top: 0.25rem;
+  font-size: 0.78rem;
+  font-family: var(--font-mono, monospace);
+  color: var(--uses-text-secondary);
+}
+
+body.uses-page .keynote-tool-card__stat strong {
+  color: var(--uses-text);
+  font-weight: 700;
+}
+
+/* Quality Gates (Act IV) */
+body.uses-page .keynote-gate-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+body.uses-page .keynote-gate-badge {
+  font-size: 0.74rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--uses-text-secondary);
+}
+
+body.uses-page .keynote-gate-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #1b8738;
+}
+
+html.dark body.uses-page .keynote-gate-status {
+  color: #30d158;
+}
+
+body.uses-page .keynote-gate-stat {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.85rem;
+  color: var(--uses-text-secondary);
+  padding: 0.4rem 0.75rem;
+  border-radius: 8px;
+  background: var(--uses-surface-muted);
+  border: 1px solid var(--uses-border);
+  width: fit-content;
+}
+
+body.uses-page .keynote-gate-stat strong {
+  color: var(--uses-pill-soft-fg);
+  font-weight: 750;
+}
+
+/* Global Edge (Act V) */
+body.uses-page .keynote-pill-tag {
+  display: inline-block;
+  padding: 0.35rem 0.75rem;
+  border-radius: 9999px;
+  background: var(--uses-surface-muted);
+  border: 1px solid var(--uses-border);
+  font-family: var(--font-mono, monospace);
+  font-size: 0.76rem;
+  font-weight: 650;
+  color: var(--uses-text-secondary);
+  width: fit-content;
+}
+
+/* Hardware & Studio (Act VI) */
+body.uses-page .keynote-hardware-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--uses-blue-soft);
+  color: var(--uses-pill-soft-fg);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+}
+
+body.uses-page .keynote-spec-badge {
+  display: inline-block;
+  padding: 0.35rem 0.75rem;
+  border-radius: 9999px;
+  background: var(--uses-surface-muted);
+  border: 1px solid var(--uses-border);
+  font-size: 0.75rem;
+  font-weight: 650;
+  color: var(--uses-text-secondary);
+  width: fit-content;
+}
+
+/* ─── Catalog Section ─── */
+body.uses-page .uses-catalog-section {
+  margin-top: 3.5rem;
+  padding-top: 2.5rem;
+  border-top: 1px solid var(--uses-border);
+}
+
+body.uses-page .uses-catalog-header {
+  margin-bottom: 2rem;
+}
+
+body.uses-page .uses-catalog-eyebrow {
+  display: block;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--uses-pill-soft-fg);
+  margin-bottom: 0.4rem;
+}
+
+body.uses-page .uses-catalog-title {
+  margin: 0 0 0.65rem;
+  font-size: clamp(1.65rem, 3.2vw, 2.25rem);
+  font-weight: 750;
+  letter-spacing: -0.025em;
+  line-height: 1.2;
+  color: var(--uses-text);
+}
+
+body.uses-page .uses-catalog-lead {
+  margin: 0 0 1.5rem;
+  font-size: 0.98rem;
+  line-height: 1.55;
+  color: var(--uses-text-secondary);
+  max-width: 45rem;
 }
 
 body.uses-page .uses-stats {
@@ -643,9 +1388,27 @@ body.uses-page .loading-state {
 }
 
 /* Responsive */
+@media (max-width: 1024px) {
+  body.uses-page .keynote-tools-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
 @media (max-width: 900px) {
   body.uses-page .uses-featured {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  body.uses-page .keynote-metric-strip {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  body.uses-page .keynote-bento-grid--strategy > *,
+  body.uses-page .keynote-bento-grid--intelligence > *,
+  body.uses-page .keynote-bento-grid--testing > *,
+  body.uses-page .keynote-bento-grid--deploy > *,
+  body.uses-page .keynote-bento-grid--hardware > * {
+    grid-column: span 12 !important;
   }
 }
 
@@ -666,10 +1429,6 @@ body.uses-page .loading-state {
     top: var(--subpage-sticky-top, 70px);
   }
 
-  body.uses-page .uses-hero-lead {
-    font-size: 0.98rem;
-  }
-
   body.uses-page .uses-item__top {
     flex-direction: column;
     align-items: flex-start;
@@ -678,11 +1437,48 @@ body.uses-page .loading-state {
   body.uses-page .uses-item__tags {
     justify-content: flex-start;
   }
+
+  body.uses-page .keynote-metric-strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  body.uses-page .keynote-tools-grid {
+    grid-template-columns: 1fr;
+  }
+
+  body.uses-page .keynote-deck-controls {
+    display: none;
+  }
+
+  body.uses-page .keynote-deck-nav {
+    border-radius: 16px;
+    padding: 0.45rem 0.5rem;
+    margin: 1.5rem 0 1.75rem;
+  }
+
+  body.uses-page .keynote-bento-card {
+    padding: 1.25rem 1.1rem;
+  }
+
+  body.uses-page .keynote-slide__header {
+    margin-bottom: 1.25rem;
+  }
+
+  body.uses-page .keynote-hero__lead {
+    font-size: 0.98rem;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   body.uses-page .uses-featured-card:hover,
-  body.uses-page .uses-section {
+  body.uses-page .uses-section,
+  body.uses-page .keynote-bento-card:hover,
+  body.uses-page .keynote-tool-card:hover {
     transform: none !important;
+  }
+
+  body.uses-page .keynote-slide.is-active,
+  body.uses-page .keynote-pulse-dot {
+    animation: none !important;
   }
 }

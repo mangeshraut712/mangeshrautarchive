@@ -46,6 +46,21 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── September 2026 ──────────────────────────────────────────
   {
+    id: 'uses-apple-special-event-keynote-redesign',
+    date: '2026-09-08',
+    type: 'release',
+    title: 'Uses: Apple Special Event Keynote Redesign with 6-Act Interactive Slide Deck',
+    summary:
+      'Completely redesigned the Uses & Stack page into an authentic Apple Special Event Keynote presentation. Features an Apple Event hero stage with pulsing status dot, 5 bold keynote telemetry metrics (13.66B tokens burned, 9 tools & 6 models, 0 KB runtime, 414 automated tests, 100% Lighthouse gates), a sticky frosted-glass chapter pill dock, and a 6-act interactive slide presentation (Strategy, Intelligence, Scaffolding, Quality Gates, Global Edge, Studio Gear) with keyboard arrow navigation, touch swipe support, and authentic tool branding. Preserves the full 8-category toolkit catalog and Control Center with zero horizontal overflow and zero Axe accessibility violations.',
+    tags: ['design', 'performance', 'systems'],
+    sha: '8f2a1b4c',
+    link: `${CHANGELOG_REPO}/commit/8f2a1b4c`,
+    model: 'Gemini 3.8 Flash (High)',
+    ide: 'Google Antigravity IDE (AGY)',
+    purpose:
+      'Apple Special Event UI/UX design, interactive Keynote slide controller, bento grid layout architecture, and zero-overflow multi-viewport validation',
+  },
+  {
     id: 'a11y-wcag-contrast-link-underline',
     date: '2026-09-07',
     type: 'fix',

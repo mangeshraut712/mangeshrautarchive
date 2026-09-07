@@ -243,8 +243,133 @@ function bindChrome() {
   });
 }
 
+function initKeynoteDeck() {
+  const stage = document.getElementById('keynote-stage');
+  const pillsContainer = document.getElementById('keynote-chapter-pills');
+  if (!stage || !pillsContainer) return;
+
+  const slides = Array.from(stage.querySelectorAll('.keynote-slide'));
+  const pills = Array.from(pillsContainer.querySelectorAll('.keynote-chapter-pill'));
+  const prevBtn = document.getElementById('keynote-prev-btn');
+  const nextBtn = document.getElementById('keynote-next-btn');
+  const counter = document.getElementById('keynote-slide-counter');
+
+  if (!slides.length) return;
+
+  let currentSlide = 0;
+
+  function updateSlide(index, isInitial = false) {
+    if (index < 0 || index >= slides.length) return;
+    currentSlide = index;
+
+    slides.forEach((slide, i) => {
+      const isActive = i === currentSlide;
+      slide.classList.toggle('is-active', isActive);
+      slide.setAttribute('aria-hidden', isActive ? 'false' : 'true');
+    });
+
+    pills.forEach((pill, i) => {
+      const isActive = i === currentSlide;
+      pill.classList.toggle('is-active', isActive);
+      pill.setAttribute('aria-selected', isActive ? 'true' : 'false');
+      pill.setAttribute('tabindex', isActive ? '0' : '-1');
+      if (isActive && !isInitial) {
+        pillsContainer.scrollTo({
+          left: pill.offsetLeft - pillsContainer.offsetWidth / 2 + pill.offsetWidth / 2,
+          behavior: 'smooth',
+        });
+      }
+    });
+
+    if (counter) {
+      const currentNum = String(currentSlide + 1).padStart(2, '0');
+      const totalNum = String(slides.length).padStart(2, '0');
+      counter.textContent = `Slide ${currentNum} of ${totalNum}`;
+    }
+
+    if (prevBtn) {
+      prevBtn.disabled = currentSlide === 0;
+      prevBtn.setAttribute('aria-disabled', currentSlide === 0 ? 'true' : 'false');
+    }
+    if (nextBtn) {
+      nextBtn.disabled = currentSlide === slides.length - 1;
+      nextBtn.setAttribute('aria-disabled', currentSlide === slides.length - 1 ? 'true' : 'false');
+    }
+  }
+
+  pills.forEach(pill => {
+    pill.addEventListener('click', () => {
+      const idx = parseInt(pill.dataset.slideIndex, 10);
+      if (!Number.isNaN(idx)) {
+        updateSlide(idx);
+      }
+    });
+  });
+
+  prevBtn?.addEventListener('click', () => {
+    if (currentSlide > 0) {
+      updateSlide(currentSlide - 1);
+    }
+  });
+
+  nextBtn?.addEventListener('click', () => {
+    if (currentSlide < slides.length - 1) {
+      updateSlide(currentSlide + 1);
+    }
+  });
+
+  window.addEventListener('keydown', event => {
+    const activeTag = document.activeElement?.tagName?.toLowerCase();
+    if (activeTag === 'input' || activeTag === 'textarea') return;
+
+    if (event.key === 'ArrowRight') {
+      if (currentSlide < slides.length - 1) {
+        updateSlide(currentSlide + 1);
+      }
+    } else if (event.key === 'ArrowLeft') {
+      if (currentSlide > 0) {
+        updateSlide(currentSlide - 1);
+      }
+    }
+  });
+
+  let touchStartX = 0;
+  let touchStartY = 0;
+
+  stage.addEventListener(
+    'touchstart',
+    e => {
+      touchStartX = e.changedTouches[0].screenX;
+      touchStartY = e.changedTouches[0].screenY;
+    },
+    { passive: true }
+  );
+
+  stage.addEventListener(
+    'touchend',
+    e => {
+      const touchEndX = e.changedTouches[0].screenX;
+      const touchEndY = e.changedTouches[0].screenY;
+      const deltaX = touchEndX - touchStartX;
+      const deltaY = touchEndY - touchStartY;
+
+      if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 50) {
+        if (deltaX < 0 && currentSlide < slides.length - 1) {
+          updateSlide(currentSlide + 1);
+        } else if (deltaX > 0 && currentSlide > 0) {
+          updateSlide(currentSlide - 1);
+        }
+      }
+    },
+    { passive: true }
+  );
+
+  updateSlide(0, true);
+}
+
 export function initUsesPage() {
   if (!document.getElementById('uses-grid')) return;
+  initKeynoteDeck();
   renderStats();
   renderFeatured();
   bindChrome();
