@@ -43,6 +43,17 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── September 2026 ──────────────────────────────────────────
   {
+    id: 'hero-page-fit-spacing',
+    date: '2026-09-07',
+    type: 'improvement',
+    title: 'Hero Section: Page-Fit Spacing Calibration & Bottom CTA Clearance',
+    summary:
+      'Calibrated hero section vertical rhythm and breathing room across viewports while anchoring CTA buttons towards the bottom of the first screen. Expanded vertical gaps between the avatar, heading, identity strip, subtitle, badges, music card, and bio text using responsive clamp() and vh units to achieve an authentic Apple-style page-fit presentation without changing element sizes. Enforced a balanced 5.5rem-8rem bottom clearance so the Download Resume dropdown opens downwards with zero window scroll or fold overflow across desktop and laptop viewports. Active model: Gemini 3.8 Flash (High) — responsive viewport rhythm calibration and Playwright multi-display testing.',
+    tags: ['design', 'performance'],
+    sha: 'c4e9281a',
+    link: `${CHANGELOG_REPO}/commit/c4e9281a`,
+  },
+  {
     id: 'safari-favorites-mr-logo-cachebust',
     date: '2026-09-06',
     type: 'fix',
