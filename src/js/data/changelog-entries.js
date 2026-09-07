@@ -30,12 +30,15 @@ export const CHANGELOG_TAGS = [
  * @typedef {{
  *   id: string,
  *   date: string,
- *   type: 'release' | 'improvement' | 'retired',
+ *   type: 'release' | 'improvement' | 'fix' | 'retired',
  *   title: string,
  *   summary: string,
  *   tags?: string[],
  *   sha: string,
  *   link?: string | null,
+ *   model?: string,
+ *   ide?: string,
+ *   purpose?: string,
  * }} ChangelogEntry
  */
 
@@ -43,15 +46,34 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── September 2026 ──────────────────────────────────────────
   {
+    id: 'a11y-wcag-contrast-link-underline',
+    date: '2026-09-07',
+    type: 'fix',
+    title: 'Accessibility: Inline Link Distinguishability & Systems Badge Contrast (WCAG AAA)',
+    summary:
+      'Resolved Axe accessibility violations across subpages. Added non-color link distinguishability (text-decoration underline and font-weight 600) for inline links within paragraph text blocks on the System Monitor page to satisfy WCAG 2.1 AA 1.4.1. Elevated systems telemetry accent pill color contrast in light mode to #004ea8, achieving a 7.25:1 contrast ratio that surpasses the WCAG AAA 7:1 threshold. Active model: Gemini 3.8 Flash (High) in Google Antigravity IDE (AGY) — automated Axe accessibility auditing and surgical CSS contrast refactoring.',
+    tags: ['monitor', 'systems', 'design'],
+    sha: 'd587099a',
+    link: `${CHANGELOG_REPO}/commit/d587099a`,
+    model: 'Gemini 3.8 Flash (High)',
+    ide: 'Google Antigravity IDE (AGY)',
+    purpose:
+      'Automated Axe accessibility auditing, WCAG 1.4.1 inline link distinguishability, and WCAG AAA color contrast compliance',
+  },
+  {
     id: 'monitor-card-fit-docs-rebalance',
     date: '2026-09-07',
     type: 'fix',
     title: 'Monitor Page: Card Fit Alignment, Empty Void Elimination & WhoBurnedMore Telemetry',
     summary:
-      'Eliminated large vertical whitespace voids on the System Monitor page by re-architecting the API documentation and performance grid layouts. Decoupled the API docs section into three semantic tiers: full-width quick links, a 3-column start-aligned endpoints grid with auto-height cards, and a dedicated full-width 2-column status and audit log glossary. Balanced endpoints into six logical groups (Overview & Health, Events & Incidents, Platform & Surfaces, Media & Content, Analytics & Vitals, and OAuth & Sync) to avoid overloaded 15-endpoint cards and uneven card stretching. Assigned explicit 2x2 grid areas to the real-time performance section, placing engineering benchmarks alongside request volumes and system load bars. Integrated verified WhoBurnedMore developer telemetry (13.66B tokens burned, $13,625 spend, #53 all-time rank across 9 tool stacks) strictly into separate subpages (Systems, Uses, Monitor) without touching the homepage. Active model: Gemini 3.8 Flash (High) — visual layout auditing, CSS grid refactoring, and multi-viewport Playwright verification.',
+      'Eliminated large vertical whitespace voids on the System Monitor page by re-architecting the API documentation and performance grid layouts. Decoupled the API docs section into three semantic tiers: full-width quick links, a 3-column start-aligned endpoints grid with auto-height cards, and a dedicated full-width 2-column status and audit log glossary. Balanced endpoints into six logical groups (Overview & Health, Events & Incidents, Platform & Surfaces, Media & Content, Analytics & Vitals, and OAuth & Sync) to avoid overloaded 15-endpoint cards and uneven card stretching. Assigned explicit 2x2 grid areas to the real-time performance section, placing engineering benchmarks alongside request volumes and system load bars. Integrated verified WhoBurnedMore developer telemetry (13.66B tokens burned, $13,625 spend, #53 all-time rank across 9 tool stacks) strictly into separate subpages (Systems, Uses, Monitor) without touching the homepage. Active model: Gemini 3.8 Flash (High) in Google Antigravity IDE (AGY) — visual layout auditing, CSS grid refactoring, WhoBurnedMore telemetry integration, and multi-viewport Playwright verification.',
     tags: ['monitor', 'systems', 'design', 'api'],
-    sha: '6eaf9804',
-    link: `${CHANGELOG_REPO}/commit/6eaf9804`,
+    sha: '50960687',
+    link: `${CHANGELOG_REPO}/commit/50960687`,
+    model: 'Gemini 3.8 Flash (High)',
+    ide: 'Google Antigravity IDE (AGY)',
+    purpose:
+      'Visual layout auditing, System Monitor grid refactoring, empty whitespace void elimination, WhoBurnedMore developer telemetry integration, and multi-viewport Playwright verification',
   },
   {
     id: 'hero-page-fit-spacing',
@@ -59,10 +81,14 @@ export const changelogEntries = [
     type: 'improvement',
     title: 'Hero Section: Page-Fit Spacing Calibration & Bottom CTA Clearance',
     summary:
-      'Calibrated hero section vertical rhythm and breathing room across viewports while anchoring CTA buttons towards the bottom of the first screen. Expanded vertical gaps between the avatar, heading, identity strip, subtitle, badges, music card, and bio text using responsive clamp() and vh units to achieve an authentic Apple-style page-fit presentation without changing element sizes. Enforced a balanced 5.5rem-8rem bottom clearance so the Download Resume dropdown opens downwards with zero window scroll or fold overflow across desktop and laptop viewports. Active model: Gemini 3.8 Flash (High) — responsive viewport rhythm calibration and Playwright multi-display testing.',
+      'Calibrated hero section vertical rhythm and breathing room across viewports while anchoring CTA buttons towards the bottom of the first screen. Expanded vertical gaps between the avatar, heading, identity strip, subtitle, badges, music card, and bio text using responsive clamp() and vh units to achieve an authentic Apple-style page-fit presentation without changing element sizes. Enforced a balanced 5.5rem-8rem bottom clearance so the Download Resume dropdown opens downwards with zero window scroll or fold overflow across desktop and laptop viewports. Active model: Gemini 3.8 Flash (High) in Google Antigravity IDE (AGY) — responsive viewport rhythm calibration and Playwright multi-display testing.',
     tags: ['design', 'performance'],
     sha: '60385a6b',
     link: `${CHANGELOG_REPO}/commit/60385a6b`,
+    model: 'Gemini 3.8 Flash (High)',
+    ide: 'Google Antigravity IDE (AGY)',
+    purpose:
+      'Responsive viewport rhythm calibration, bottom CTA clearance enforcement, and Playwright multi-display testing',
   },
   {
     id: 'safari-favorites-mr-logo-cachebust',

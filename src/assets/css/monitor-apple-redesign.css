@@ -1516,6 +1516,38 @@ body.monitor-page .monitor-section-rail a:focus-visible {
   }
 }
 
+/* ─── Accessible inline text links (WCAG 1.4.1 non-color differentiator) ─── */
+body.monitor-page .section-desc a,
+body.monitor-page .monitor-inline-link {
+  color: #005bb5;
+  text-decoration: underline !important;
+  text-underline-offset: 2px;
+  font-weight: 600;
+  transition: color 0.15s ease;
+}
+
+body.monitor-page .section-desc a:hover,
+body.monitor-page .monitor-inline-link:hover {
+  color: var(--accent-blue, #0071e3);
+}
+
+html.dark body.monitor-page .section-desc a,
+html.dark body.monitor-page .monitor-inline-link,
+[data-theme='dark'] body.monitor-page .section-desc a,
+[data-theme='dark'] body.monitor-page .monitor-inline-link {
+  color: #64d2ff !important;
+  text-decoration: underline !important;
+  text-underline-offset: 2px;
+  font-weight: 600;
+}
+
+html.dark body.monitor-page .section-desc a:hover,
+html.dark body.monitor-page .monitor-inline-link:hover,
+[data-theme='dark'] body.monitor-page .section-desc a:hover,
+[data-theme='dark'] body.monitor-page .monitor-inline-link:hover {
+  color: #a5e5ff !important;
+}
+
 @media (prefers-reduced-motion: reduce) {
   body.monitor-page .doc-card,
   body.monitor-page .health-card,
