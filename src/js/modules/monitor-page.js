@@ -340,7 +340,8 @@ async function fetchHostingSurfaces() {
 }
 
 async function fetchMonitorDocs() {
-  return fetchMonitorJson('/api/monitor/docs', 'Monitor docs');
+  const result = await fetchMonitorJson('/api/monitor/docs', 'Monitor docs');
+  return result || FALLBACK_MONITOR_DOCS;
 }
 
 async function fetchEvents() {
@@ -834,42 +835,308 @@ async function refreshPlatformHealth() {
   setButtonLoading('#btn-refresh-platform-health', false);
 }
 
+const FALLBACK_MONITOR_DOCS = {
+  title: 'System Monitor API',
+  description:
+    'Reference metadata for monitor endpoints, status meanings, and documentation links.',
+  docs_links: {
+    openapi: '/api/docs',
+    redoc: '/api/redoc',
+    health_json: '/api/monitor/health',
+    status_json: '/api/monitor/status',
+    hosting_surfaces: '/api/monitor/hosting-surfaces',
+    external_services: '/api/monitor/external-services',
+  },
+  status_legend: [
+    {
+      status: 'healthy',
+      label: 'Healthy',
+      description: 'Service is responding normally and within expected thresholds.',
+    },
+    {
+      status: 'degraded',
+      label: 'Degraded',
+      description: 'Service is responding but has configuration, latency, or quota pressure.',
+    },
+    {
+      status: 'unhealthy',
+      label: 'Unhealthy',
+      description: 'Service is unavailable or returning failed checks.',
+    },
+    {
+      status: 'unknown',
+      label: 'Unknown',
+      description: 'No reliable signal is currently available for that check.',
+    },
+  ],
+  event_types: [
+    {
+      type: 'critical',
+      description: 'Immediate action required. User-facing failure or major outage.',
+    },
+    {
+      type: 'error',
+      description: 'A request or integration failed and should be investigated.',
+    },
+    {
+      type: 'warning',
+      description: 'Non-fatal degradation, quota pressure, or performance anomaly.',
+    },
+    {
+      type: 'info',
+      description: 'Operational informational event or monitoring update.',
+    },
+    {
+      type: 'success',
+      description: 'Successful remediation or recovery event.',
+    },
+  ],
+  endpoint_groups: [
+    {
+      title: 'Overview & Health',
+      description: 'Use these endpoints for top-level status and health diagnostics.',
+      endpoints: [
+        {
+          method: 'GET',
+          path: '/api/monitor/status',
+          summary: 'Quick status payload for lightweight checks and summaries.',
+        },
+        {
+          method: 'GET',
+          path: '/api/monitor/health',
+          summary: 'Detailed health report with component checks and overall status.',
+        },
+        {
+          method: 'GET',
+          path: '/api/monitor/metrics',
+          summary: 'Aggregated request metrics, endpoint performance, and event counts.',
+        },
+      ],
+    },
+    {
+      title: 'Events & Incidents',
+      description: 'Inspect warnings, errors, and resolution history from the monitor.',
+      endpoints: [
+        {
+          method: 'GET',
+          path: '/api/monitor/events',
+          summary: 'Fetch recent monitor events with optional filtering.',
+        },
+        {
+          method: 'POST',
+          path: '/api/monitor/events/{event_id}/resolve',
+          summary: 'Mark an event as resolved from the dashboard.',
+        },
+      ],
+    },
+    {
+      title: 'Platform & Surfaces',
+      description: 'Reference live platform health, surface deployments, and core integrations.',
+      endpoints: [
+        {
+          method: 'GET',
+          path: '/api/monitor/external-services',
+          summary:
+            'Live health for external services such as OpenRouter, GitHub, Vercel, Last.fm, and analytics.',
+        },
+        {
+          method: 'GET',
+          path: '/api/monitor/platform-health',
+          summary:
+            'Cross-check core APIs, integration readiness, and safe integration env presence.',
+        },
+        {
+          method: 'GET',
+          path: '/api/integrations/status',
+          summary:
+            'Safe readiness status for Supabase, WHOOP, Withings, and Google Calendar integrations.',
+        },
+        {
+          method: 'GET',
+          path: '/api/monitor/hosting-surfaces',
+          summary:
+            'Status for custom-domain, Vercel deployment, GitHub Pages, and safe runtime env presence.',
+        },
+      ],
+    },
+    {
+      title: 'Media & Content APIs',
+      description: 'Access recent media activity, TMDB movie posters, and Google Books covers.',
+      endpoints: [
+        {
+          method: 'GET',
+          path: '/api/music/recent',
+          summary: 'Fetch recent Last.fm listening history with 25s cache.',
+        },
+        {
+          method: 'GET',
+          path: '/api/posters/movie',
+          summary: 'Fetch movie and TV show poster URLs from TMDB API.',
+        },
+        {
+          method: 'GET',
+          path: '/api/posters/book',
+          summary: 'Fetch book covers from Google Books or Open Library.',
+        },
+      ],
+    },
+    {
+      title: 'Analytics & Health Vitals',
+      description: 'Authoritative reach metrics and sanitized biometric health vitals.',
+      endpoints: [
+        {
+          method: 'GET',
+          path: '/api/analytics/reach',
+          summary: 'Authoritative reach and total views count from Firestore.',
+        },
+        {
+          method: 'GET',
+          path: '/api/health-vitals/summary',
+          summary: 'Public sanitized health vitals summary backed by Supabase when configured.',
+        },
+        {
+          method: 'POST',
+          path: '/api/health-vitals/sync',
+          summary: 'Protected health summary upsert or polling sync for WHOOP/Withings.',
+        },
+      ],
+    },
+    {
+      title: 'OAuth & Provider Sync',
+      description: 'Calendar availability, OAuth linking, and background provider synchronization.',
+      endpoints: [
+        {
+          method: 'POST',
+          path: '/api/integrations/sync-all',
+          summary: 'Protected sync for all connected health and calendar providers.',
+        },
+        {
+          method: 'POST',
+          path: '/api/integrations/{provider}/disconnect',
+          summary: 'Protected disconnect for whoop, withings, or google_calendar.',
+        },
+        {
+          method: 'GET',
+          path: '/api/calendar/availability',
+          summary: 'Google Calendar free/busy availability when OAuth is connected.',
+        },
+        {
+          method: 'GET',
+          path: '/api/integrations/google-calendar/connect',
+          summary: 'Start Google Calendar OAuth for free/busy availability.',
+        },
+        {
+          method: 'GET',
+          path: '/api/integrations/whoop/connect',
+          summary: 'Start WHOOP OAuth for sanitized recovery, sleep, and strain summaries.',
+        },
+        {
+          method: 'GET',
+          path: '/api/integrations/withings/connect',
+          summary: 'Start Withings OAuth for weight and body metric summaries.',
+        },
+      ],
+    },
+  ],
+};
+
+function normalizeDocEndpointGroups(groups) {
+  if (!Array.isArray(groups) || groups.length === 0) {
+    return FALLBACK_MONITOR_DOCS.endpoint_groups;
+  }
+  const result = [];
+  for (const group of groups) {
+    if (Array.isArray(group.endpoints) && group.endpoints.length > 6) {
+      const endpoints = group.endpoints;
+      const mediaEndpoints = endpoints.filter(
+        e => e.path.includes('/music') || e.path.includes('/posters')
+      );
+      const analyticsEndpoints = endpoints.filter(
+        e => e.path.includes('/analytics') || e.path.includes('/health-vitals')
+      );
+      const oauthEndpoints = endpoints.filter(
+        e => e.path.includes('/integrations') || e.path.includes('/calendar')
+      );
+
+      if (mediaEndpoints.length || analyticsEndpoints.length || oauthEndpoints.length) {
+        if (mediaEndpoints.length) {
+          result.push({
+            title: 'Media & Content APIs',
+            description:
+              'Access recent media activity, TMDB movie posters, and Google Books covers.',
+            endpoints: mediaEndpoints,
+          });
+        }
+        if (analyticsEndpoints.length) {
+          result.push({
+            title: 'Analytics & Health Vitals',
+            description: 'Authoritative reach metrics and sanitized biometric health vitals.',
+            endpoints: analyticsEndpoints,
+          });
+        }
+        if (oauthEndpoints.length) {
+          result.push({
+            title: 'OAuth & Provider Sync',
+            description:
+              'Calendar availability, OAuth linking, and background provider synchronization.',
+            endpoints: oauthEndpoints,
+          });
+        }
+        const remaining = endpoints.filter(
+          e =>
+            !mediaEndpoints.includes(e) &&
+            !analyticsEndpoints.includes(e) &&
+            !oauthEndpoints.includes(e)
+        );
+        if (remaining.length) {
+          result.push({
+            title: group.title || 'Additional Services',
+            description: group.description || '',
+            endpoints: remaining,
+          });
+        }
+        continue;
+      }
+    }
+    result.push(group);
+  }
+  return result;
+}
+
 function renderMonitorDocs(data) {
   const container = document.getElementById('monitor-docs-grid');
-  if (!data || !Array.isArray(data.endpoint_groups)) {
-    container.innerHTML = `
-                    <div class="empty-state">
-                        <i class="fas fa-book-open"></i>
-                        <h3>Unable to load API references</h3>
-                        <p>Open the live OpenAPI docs directly from the actions above.</p>
-                    </div>
-                `;
-    return;
-  }
+  if (!container) return;
 
-  const statusLegend = (data.status_legend || [])
+  const docsData =
+    data && Array.isArray(data.endpoint_groups) && data.endpoint_groups.length > 0
+      ? data
+      : FALLBACK_MONITOR_DOCS;
+
+  const statusLegend = (docsData.status_legend || FALLBACK_MONITOR_DOCS.status_legend)
     .map(
       item => `
                 <div class="legend-row">
-                    <span class="legend-status-badge status-${item.status}">${item.label}</span>
-                    <span class="legend-status-desc">${item.description}</span>
+                    <span class="legend-status-badge status-${item.status}">${escapeHtml(item.label)}</span>
+                    <span class="legend-status-desc">${escapeHtml(item.description)}</span>
                 </div>
             `
     )
     .join('');
 
-  const eventLegend = (data.event_types || [])
+  const eventLegend = (docsData.event_types || FALLBACK_MONITOR_DOCS.event_types)
     .map(
       item => `
                 <div class="legend-row">
-                    <span class="legend-status-badge status-neutral">${item.type}</span>
-                    <span class="legend-status-desc">${item.description}</span>
+                    <span class="legend-status-badge status-neutral">${escapeHtml(item.type)}</span>
+                    <span class="legend-status-desc">${escapeHtml(item.description)}</span>
                 </div>
             `
     )
     .join('');
 
-  const groups = data.endpoint_groups
+  const normalizedGroups = normalizeDocEndpointGroups(docsData.endpoint_groups);
+
+  const groups = normalizedGroups
     .map(
       group => `
                 <article class="doc-card">
@@ -898,40 +1165,42 @@ function renderMonitorDocs(data) {
     )
     .join('');
 
+  const docsLinks = docsData.docs_links || FALLBACK_MONITOR_DOCS.docs_links;
+
   container.innerHTML = `
                 <article class="doc-card doc-card-links">
                     <p class="doc-card-kicker">Documentation Links</p>
-                    <p class="doc-card-description doc-card-description--margin-bottom-20">${escapeHtml(data.description || '')}</p>
+                    <p class="doc-card-description doc-card-description--margin-bottom-20">${escapeHtml(docsData.description || '')}</p>
                     <div class="doc-link-tile-grid">
-                        <a class="doc-link-tile" href="${escapeHtml(toAbsoluteApiLink(data.docs_links?.openapi || '/api/docs'))}" target="_blank" rel="noopener">
+                        <a class="doc-link-tile" href="${escapeHtml(toAbsoluteApiLink(docsLinks?.openapi || '/api/docs'))}" target="_blank" rel="noopener">
                             <div class="tile-icon"><i class="fas fa-file-code"></i></div>
                             <div class="tile-content">
                                 <span class="tile-title">OpenAPI Explorer</span>
                                 <span class="tile-desc">Interactive Swagger UI explorer</span>
                             </div>
                         </a>
-                        <a class="doc-link-tile" href="${escapeHtml(toAbsoluteApiLink(data.docs_links?.redoc || '/api/redoc'))}" target="_blank" rel="noopener">
+                        <a class="doc-link-tile" href="${escapeHtml(toAbsoluteApiLink(docsLinks?.redoc || '/api/redoc'))}" target="_blank" rel="noopener">
                             <div class="tile-icon"><i class="fas fa-project-diagram"></i></div>
                             <div class="tile-content">
                                 <span class="tile-title">ReDoc Reference</span>
                                 <span class="tile-desc">Detailed clean API reference manual</span>
                             </div>
                         </a>
-                        <a class="doc-link-tile" href="${escapeHtml(toAbsoluteApiLink(data.docs_links?.health_json || '/api/monitor/health'))}" target="_blank" rel="noopener">
+                        <a class="doc-link-tile" href="${escapeHtml(toAbsoluteApiLink(docsLinks?.health_json || '/api/monitor/health'))}" target="_blank" rel="noopener">
                             <div class="tile-icon"><i class="fas fa-heartbeat"></i></div>
                             <div class="tile-content">
                                 <span class="tile-title">Health JSON</span>
                                 <span class="tile-desc">Raw system-wide service statuses</span>
                             </div>
                         </a>
-                        <a class="doc-link-tile" href="${escapeHtml(toAbsoluteApiLink(data.docs_links?.status_json || '/api/monitor/status'))}" target="_blank" rel="noopener">
+                        <a class="doc-link-tile" href="${escapeHtml(toAbsoluteApiLink(docsLinks?.status_json || '/api/monitor/status'))}" target="_blank" rel="noopener">
                             <div class="tile-icon"><i class="fas fa-info-circle"></i></div>
                             <div class="tile-content">
                                 <span class="tile-title">Status JSON</span>
                                 <span class="tile-desc">Detailed latency and code metrics</span>
                             </div>
                         </a>
-                        <a class="doc-link-tile" href="${escapeHtml(toAbsoluteApiLink(data.docs_links?.hosting_surfaces || '/api/monitor/hosting-surfaces'))}" target="_blank" rel="noopener">
+                        <a class="doc-link-tile" href="${escapeHtml(toAbsoluteApiLink(docsLinks?.hosting_surfaces || '/api/monitor/hosting-surfaces'))}" target="_blank" rel="noopener">
                             <div class="tile-icon"><i class="fas fa-cloud-upload-alt"></i></div>
                             <div class="tile-content">
                                 <span class="tile-title">Deployment JSON</span>
@@ -940,9 +1209,12 @@ function renderMonitorDocs(data) {
                         </a>
                     </div>
                 </article>
-                ${groups}
-                <article class="doc-card doc-card--span-2">
+                <div class="docs-endpoints-grid">
+                    ${groups}
+                </div>
+                <article class="doc-card doc-card-glossary">
                     <p class="doc-card-kicker">Status & Event Glossary</p>
+                    <p class="doc-card-description">Definitions for runtime operational health states and audit log event levels.</p>
                     <div class="glossary-grid">
                         <div>
                             <p class="glossary-header-text">System Statuses</p>

@@ -626,7 +626,6 @@ body.monitor-page .section-actions {
 
 /* ─── Dense card grids ─── */
 body.monitor-page .health-grid,
-body.monitor-page .docs-grid,
 body.monitor-page .backend-system-grid,
 body.monitor-page .platform-health-grid,
 body.monitor-page .portfolio-surface-grid {
@@ -641,7 +640,6 @@ body.monitor-page .portfolio-surface-grid {
 @media (min-width: 900px) {
   body.monitor-page .health-grid,
   body.monitor-page .portfolio-surface-grid,
-  body.monitor-page .docs-grid,
   body.monitor-page .backend-system-grid,
   body.monitor-page .platform-health-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
@@ -653,6 +651,65 @@ body.monitor-page .portfolio-surface-grid {
   body.monitor-page .portfolio-surface-grid,
   body.monitor-page .platform-health-grid {
     grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  }
+}
+
+/* ─── API Docs Container & Endpoints Grid ─── */
+body.monitor-page .docs-grid {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: var(--mon-gap) !important;
+  width: 100% !important;
+  min-width: 0;
+}
+
+body.monitor-page .docs-endpoints-grid {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: var(--mon-gap) !important;
+  width: 100% !important;
+  min-width: 0;
+  align-items: start !important;
+}
+
+@media (max-width: 1024px) {
+  body.monitor-page .docs-endpoints-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 680px) {
+  body.monitor-page .docs-endpoints-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+body.monitor-page .docs-endpoints-grid .doc-card {
+  height: auto !important;
+  min-height: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: flex-start !important;
+}
+
+body.monitor-page .doc-card-glossary {
+  width: 100% !important;
+  height: auto !important;
+  min-height: 0 !important;
+  grid-column: 1 / -1 !important;
+}
+
+body.monitor-page .doc-card-glossary .glossary-grid {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 1.5rem !important;
+  margin-top: 0.5rem !important;
+  align-items: start !important;
+}
+
+@media (max-width: 680px) {
+  body.monitor-page .doc-card-glossary .glossary-grid {
+    grid-template-columns: 1fr !important;
   }
 }
 
@@ -772,7 +829,7 @@ body.monitor-page .resource-trends-grid--performance {
   grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) !important;
   grid-template-areas:
     'latency resources'
-    'volume volume' !important;
+    'benchmarks volume' !important;
 }
 
 body.monitor-page .resource-trends-grid--performance .latency-card {
@@ -781,6 +838,10 @@ body.monitor-page .resource-trends-grid--performance .latency-card {
 
 body.monitor-page .resource-trends-grid--performance .resource-load-card {
   grid-area: resources !important;
+}
+
+body.monitor-page .resource-trends-grid--performance .engineering-benchmark-card {
+  grid-area: benchmarks !important;
 }
 
 body.monitor-page .resource-trends-grid--performance .endpoint-volume-card {
@@ -1267,6 +1328,7 @@ body.monitor-page .monitor-section-rail a:focus-visible {
     grid-template-areas:
       'latency'
       'resources'
+      'benchmarks'
       'volume' !important;
   }
 
@@ -1332,7 +1394,6 @@ body.monitor-page .monitor-section-rail a:focus-visible {
 
   body.monitor-page .health-grid,
   body.monitor-page .portfolio-surface-grid,
-  body.monitor-page .docs-grid,
   body.monitor-page .backend-system-grid,
   body.monitor-page .platform-health-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
@@ -1409,7 +1470,6 @@ body.monitor-page .monitor-section-rail a:focus-visible {
   }
 
   body.monitor-page .health-grid,
-  body.monitor-page .docs-grid,
   body.monitor-page .backend-system-grid,
   body.monitor-page .portfolio-surface-grid,
   body.monitor-page .platform-health-grid {

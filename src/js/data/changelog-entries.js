@@ -43,6 +43,17 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── September 2026 ──────────────────────────────────────────
   {
+    id: 'monitor-card-fit-docs-rebalance',
+    date: '2026-09-07',
+    type: 'fix',
+    title: 'Monitor Page: Card Fit Alignment, Empty Void Elimination & WhoBurnedMore Telemetry',
+    summary:
+      'Eliminated large vertical whitespace voids on the System Monitor page by re-architecting the API documentation and performance grid layouts. Decoupled the API docs section into three semantic tiers: full-width quick links, a 3-column start-aligned endpoints grid with auto-height cards, and a dedicated full-width 2-column status and audit log glossary. Balanced endpoints into six logical groups (Overview & Health, Events & Incidents, Platform & Surfaces, Media & Content, Analytics & Vitals, and OAuth & Sync) to avoid overloaded 15-endpoint cards and uneven card stretching. Assigned explicit 2x2 grid areas to the real-time performance section, placing engineering benchmarks alongside request volumes and system load bars. Integrated verified WhoBurnedMore developer telemetry (13.66B tokens burned, $13,625 spend, #53 all-time rank across 9 tool stacks) strictly into separate subpages (Systems, Uses, Monitor) without touching the homepage. Active model: Gemini 3.8 Flash (High) — visual layout auditing, CSS grid refactoring, and multi-viewport Playwright verification.',
+    tags: ['monitor', 'systems', 'design', 'api'],
+    sha: '6eaf9804',
+    link: `${CHANGELOG_REPO}/commit/6eaf9804`,
+  },
+  {
     id: 'hero-page-fit-spacing',
     date: '2026-09-07',
     type: 'improvement',

@@ -998,13 +998,44 @@ body.monitor-page main > section.section:not(#home) {
 }
 
 .docs-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  display: flex;
+  flex-direction: column;
   gap: 16px;
+  width: 100%;
+}
+
+.docs-endpoints-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  width: 100%;
+  align-items: start;
+}
+
+@media (max-width: 1024px) {
+  .docs-endpoints-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 680px) {
+  .docs-endpoints-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.docs-endpoints-grid .doc-card {
+  height: auto;
+  min-height: 0;
+}
+
+.doc-card-glossary {
+  width: 100%;
+  height: auto;
 }
 
 .doc-card-links {
-  grid-column: 1 / -1;
+  width: 100%;
 }
 
 .doc-card {
@@ -1936,7 +1967,7 @@ html.dark .event-btn-resolve:hover,
     justify-content: flex-start;
   }
 
-  .docs-grid {
+  .docs-endpoints-grid {
     grid-template-columns: 1fr;
   }
 

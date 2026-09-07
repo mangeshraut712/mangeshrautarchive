@@ -127,7 +127,7 @@ export const usesCatalog = [
     items: [
       {
         name: 'Cursor',
-        note: 'Primary AI-native IDE for multi-file refactors and portfolio work.',
+        note: 'Primary AI-native IDE — 3.74B tokens (27% of coding telemetry) for multi-file refactors.',
         tag: 'IDE',
         featured: true,
       },
@@ -151,12 +151,13 @@ export const usesCatalog = [
       },
       {
         name: 'Codex',
-        note: 'Secondary pair-programmer for alternate model opinions.',
+        note: 'Primary pairing agent — 9.18B tokens (67% of coding telemetry) for full-system scaffolding.',
         tag: 'Agent',
+        featured: true,
       },
       {
         name: 'Cline',
-        note: 'Autonomous coding agent for browser automation and precision refactoring.',
+        note: 'Autonomous coding agent for browser automation and precision refactoring — 61.4M tokens.',
         tag: 'Agent',
       },
       {

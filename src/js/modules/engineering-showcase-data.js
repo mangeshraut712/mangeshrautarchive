@@ -11,8 +11,9 @@ import {
   WEBMCP_TOOL_COUNT,
 } from '../data/portfolio-public-data.js';
 import { BRAND_TAGLINE, portfolioCaseStudy } from './case-studies-data.js';
+import { whoburnedmoreProfile } from '../data/whoburnedmore-data.js';
 
-export { portfolioCaseStudy, BRAND_TAGLINE, usesStack };
+export { portfolioCaseStudy, BRAND_TAGLINE, usesStack, whoburnedmoreProfile };
 
 const deployLighthouse = formatDeployLighthouseGate();
 const mobileGate = LIGHTHOUSE_DEPLOY_GATES.mobile;
@@ -26,7 +27,7 @@ export const heroLead =
 export const heroStats = [
   { value: deployLighthouse, unit: '', label: 'Lighthouse CI gate', href: '#production' },
   { value: String(WEBMCP_TOOL_COUNT), unit: '', label: 'WebMCP tools', href: '#architecture' },
-  { value: '40', unit: '%', label: 'Dashboard improvement', href: '#projects' },
+  { value: '13.66B', unit: '', label: 'AI tokens burned', href: '#tokenization' },
   { value: '16', unit: '', label: 'Technical articles', href: '#writing' },
   { value: '32', unit: '', label: 'Public repositories', href: '#open-source' },
   { value: 'Live', unit: '', label: 'Production monitor', href: 'monitor.html' },
@@ -296,18 +297,8 @@ export const evidenceFooterLinks = [
   { label: 'Writings', href: '/blog/' },
 ];
 
-/** AI tooling tokenization — public build stack transparency */
-export const tokenizationStack = [
-  { name: 'Antigravity', tokens: '5.2B' },
-  { name: 'Cursor', tokens: '2.1B' },
-  { name: 'Claude', tokens: '1.8B' },
-  { name: 'Codex', tokens: '1.5B' },
-  { name: 'OpenRouter', tokens: '1.4B' },
-  { name: 'Cline', tokens: '800M' },
-  { name: 'Windsurf', tokens: '600M' },
-  { name: 'KiloChat', tokens: '500M' },
-  { name: 'VS Code', tokens: null },
-];
+/** AI tooling tokenization — verified public telemetry from whoburnedmore.com/u/mrcommando712 */
+export const tokenizationStack = whoburnedmoreProfile.tools;
 
 /** @deprecated use lessonsLearned */
 export const engineeringPrinciples = lessonsLearned;

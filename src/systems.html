@@ -516,14 +516,61 @@
         aria-labelledby="tokenization-title"
       >
         <div class="systems-section-head">
-          <h2 class="systems-section-title" id="tokenization-title">Tokenization</h2>
+          <p class="systems-eyebrow">Telemetry · whoburnedmore.com</p>
+          <div class="systems-token-title-wrap">
+            <h2 class="systems-section-title" id="tokenization-title">
+              Tokenization &amp; AI Burn
+            </h2>
+            <div class="systems-token-verified-badge" title="Verified on whoburnedmore.com">
+              <span class="systems-token-pulse"></span>
+              <span>Leaderboard #53 · Top 18%</span>
+            </div>
+          </div>
           <p class="systems-section-desc">
-            Transparent record of AI tooling used to build and ship this portfolio.
+            Verified public record of AI coding token burn, model telemetry, and IDE utilization
+            behind this portfolio, tracked live on whoburnedmore.com.
           </p>
         </div>
+
+        <!-- Telemetry Headline Bento: 4 Apple Glass Cards -->
+        <div class="systems-token-bento" id="systems-token-bento"></div>
+
+        <!-- Interactive Segmented Control Tabs (By Tool / IDE vs By AI Model) -->
+        <div class="systems-token-controls">
+          <div
+            class="systems-arch-tabs systems-token-tabs"
+            role="tablist"
+            aria-label="Token burn views"
+          >
+            <button
+              type="button"
+              class="systems-arch-tab is-active"
+              id="token-tab-tools"
+              data-token-tab="tools"
+              role="tab"
+              aria-selected="true"
+            >
+              By Tool / IDE
+            </button>
+            <button
+              type="button"
+              class="systems-arch-tab"
+              id="token-tab-models"
+              data-token-tab="models"
+              role="tab"
+              aria-selected="false"
+            >
+              By AI Model
+            </button>
+          </div>
+        </div>
+
         <article class="systems-token-panel lg-glass-card" aria-label="AI tooling tokenization">
           <div class="systems-token-list" id="systems-token-grid"></div>
         </article>
+
+        <!-- Verified Profile Action Card -->
+        <div class="systems-token-footer lg-glass-card" id="systems-token-footer"></div>
       </section>
     </main>
 

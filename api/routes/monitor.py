@@ -307,13 +307,13 @@ async def get_monitor_docs():
                 ],
             },
             {
-                "title": "Integrations & Docs",
-                "description": "Reference integration health and documentation surfaces.",
+                "title": "Platform & Surfaces",
+                "description": "Reference live platform health, surface deployments, and core integrations.",
                 "endpoints": [
                     {
                         "method": "GET",
                         "path": "/api/monitor/external-services",
-                        "summary": "Live health for external services such as OpenRouter, GitHub, Vercel platform status, Last.fm, and analytics.",
+                        "summary": "Live health for external services such as OpenRouter, GitHub, Vercel, Last.fm, and analytics.",
                     },
                     {
                         "method": "GET",
@@ -330,21 +330,11 @@ async def get_monitor_docs():
                         "path": "/api/monitor/hosting-surfaces",
                         "summary": "Status for custom-domain, Vercel deployment, GitHub Pages, and safe runtime env presence.",
                     },
-                    {
-                        "method": "GET",
-                        "path": "/api/monitor/docs",
-                        "summary": "Structured monitor reference data for the frontend docs panel.",
-                    },
-                    {
-                        "method": "GET",
-                        "path": "/api/docs",
-                        "summary": "Interactive OpenAPI explorer for the full backend.",
-                    },
                 ],
             },
             {
-                "title": "Media & Analytics APIs",
-                "description": "Access recent media activity, TMDB/Google Books posters, and reach metrics.",
+                "title": "Media & Content APIs",
+                "description": "Access recent media activity, TMDB movie posters, and Google Books covers.",
                 "endpoints": [
                     {
                         "method": "GET",
@@ -361,6 +351,12 @@ async def get_monitor_docs():
                         "path": "/api/posters/book",
                         "summary": "Fetch book covers from Google Books or Open Library.",
                     },
+                ],
+            },
+            {
+                "title": "Analytics & Health Vitals",
+                "description": "Authoritative reach metrics and sanitized biometric health vitals.",
+                "endpoints": [
                     {
                         "method": "GET",
                         "path": "/api/analytics/reach",
@@ -374,8 +370,14 @@ async def get_monitor_docs():
                     {
                         "method": "POST",
                         "path": "/api/health-vitals/sync",
-                        "summary": "Protected health summary upsert or provider polling sync for connected WHOOP/Withings accounts.",
+                        "summary": "Protected health summary upsert or polling sync for WHOOP/Withings.",
                     },
+                ],
+            },
+            {
+                "title": "OAuth & Provider Sync",
+                "description": "Calendar availability, OAuth linking, and background provider synchronization.",
+                "endpoints": [
                     {
                         "method": "POST",
                         "path": "/api/integrations/sync-all",
@@ -405,16 +407,6 @@ async def get_monitor_docs():
                         "method": "GET",
                         "path": "/api/integrations/withings/connect",
                         "summary": "Start Withings OAuth for weight and body metric summaries.",
-                    },
-                    {
-                        "method": "POST",
-                        "path": "/api/calendar/watch/google",
-                        "summary": "Register Google Calendar push notifications (admin).",
-                    },
-                    {
-                        "method": "POST",
-                        "path": "/api/calendar/webhook/google",
-                        "summary": "Google Calendar push notification webhook.",
                     },
                 ],
             },

@@ -13,6 +13,7 @@ import {
   publicEvidenceStatement,
   tokenizationStack,
   writingTopics,
+  whoburnedmoreProfile,
 } from './engineering-showcase-data.js';
 import { caseStudies, renderCaseStudyEvidenceRow } from './case-studies-data.js';
 import { mountArchitectureDiagrams, remountArchPanel } from './systems-arch-diagrams.js';
@@ -358,66 +359,145 @@ function renderWriting() {
 }
 
 function renderTokenization() {
-  const root = document.getElementById('systems-token-grid');
-  if (!root) return;
+  const bentoRoot = document.getElementById('systems-token-bento');
+  const gridRoot = document.getElementById('systems-token-grid');
+  const footerRoot = document.getElementById('systems-token-footer');
+
+  // 1. Render Headline Bento if container exists
+  if (bentoRoot && whoburnedmoreProfile) {
+    const p = whoburnedmoreProfile;
+    bentoRoot.innerHTML = `
+      <div class="systems-token-bento-tile lg-glass-card">
+        <div class="systems-token-tile-kicker">Lifetime Burn</div>
+        <div class="systems-token-tile-val font-mono">${escapeHtml(p.lifetimeBurn)}</div>
+        <div class="systems-token-tile-sub">${escapeHtml(p.estimatedCost)} est. spend · ${p.activeDays} active days</div>
+        <div class="systems-token-tile-pill systems-token-pill--accent">${escapeHtml(p.benchmarks.burnRatio)} avg dev</div>
+      </div>
+      <div class="systems-token-bento-tile lg-glass-card">
+        <div class="systems-token-tile-kicker">Leaderboard Standing</div>
+        <div class="systems-token-tile-val font-mono">#${p.rankings.allTime}</div>
+        <div class="systems-token-tile-sub">All-time (#${p.rankings.weekly} weekly · #${p.rankings.daily} daily)</div>
+        <div class="systems-token-tile-pill systems-token-pill--success">${escapeHtml(p.rankings.percentile)} of ${p.rankings.totalDevs} devs</div>
+      </div>
+      <div class="systems-token-bento-tile lg-glass-card">
+        <div class="systems-token-tile-kicker">Consistency &amp; Velocity</div>
+        <div class="systems-token-tile-val font-mono">${escapeHtml(p.currentStreak)}</div>
+        <div class="systems-token-tile-sub">${escapeHtml(p.dailyAvgBurn)}/day avg · ${escapeHtml(p.totalMessages)} messages</div>
+        <div class="systems-token-tile-pill">Longest ${escapeHtml(p.longestStreak)} streak</div>
+      </div>
+      <div class="systems-token-bento-tile lg-glass-card">
+        <div class="systems-token-tile-kicker">Prompt Cache Economics</div>
+        <div class="systems-token-tile-val font-mono systems-token-val--green">${escapeHtml(p.cache.hitRate)}</div>
+        <div class="systems-token-tile-sub">${escapeHtml(p.cache.cacheReads)} cache reads · ${escapeHtml(p.cache.inputTokens)} inputs</div>
+        <div class="systems-token-tile-pill systems-token-pill--cache">${escapeHtml(p.cache.dollarsSaved)} saved</div>
+      </div>
+    `;
+  }
+
+  // 2. Render List Grid (Tools vs Models)
+  if (!gridRoot) return;
+
+  let activeTab = 'tools';
 
   const parseTokens = t => {
     if (!t) return 0;
+    if (typeof t === 'number') return t;
     if (t.endsWith('B')) return parseFloat(t) * 1e9;
     if (t.endsWith('M')) return parseFloat(t) * 1e6;
     if (t.endsWith('k') || t.endsWith('K')) return parseFloat(t) * 1e3;
     return parseFloat(t) || 0;
   };
 
-  const maxTokens = Math.max(...tokenizationStack.map(t => parseTokens(t.tokens)), 5.2e9);
+  const renderGridContent = tab => {
+    const isTools = tab === 'tools';
+    const items = isTools
+      ? whoburnedmoreProfile?.tools || tokenizationStack
+      : whoburnedmoreProfile?.models || [];
+    const maxVal = Math.max(...items.map(t => parseTokens(t.tokensRaw || t.tokens)), 9.18e9);
 
-  const getTokenWidth = tokens => {
-    const parsed = parseTokens(tokens);
-    if (!parsed) return 12;
-    return Math.max(15, Math.min(100, Math.round((parsed / maxTokens) * 100)));
+    gridRoot.innerHTML = items
+      .map(item => {
+        const val = parseTokens(item.tokensRaw || item.tokens);
+        const width = val ? Math.max(8, Math.min(100, Math.round((val / maxVal) * 100))) : 15;
+        const isLive = !item.tokens;
+        const metaSpend =
+          item.spend && item.spend !== '$0' && item.spend !== 'Live'
+            ? ` · <span class="systems-token-spend font-mono">${escapeHtml(item.spend)}</span>`
+            : '';
+        const metaShare = item.share
+          ? `<span class="systems-token-share font-mono">${escapeHtml(item.share)}</span>`
+          : '';
+
+        return `<div class="systems-token-row lg-glass-card">
+          <div class="systems-token-row-head">
+            <div class="systems-token-name-wrap">
+              <span class="systems-token-label">${escapeHtml(item.name)}</span>
+              ${metaShare}
+            </div>
+            ${
+              item.tokens
+                ? `<strong class="systems-token-value font-mono">${escapeHtml(item.tokens)}<small> tokens</small>${metaSpend}</strong>`
+                : `<strong class="systems-token-value systems-token-value--active"><span class="systems-token-pulse"></span>Active</strong>`
+            }
+          </div>
+          <div class="systems-token-bar-track" aria-hidden="true">
+            <div class="systems-token-bar-fill ${isLive ? 'is-active' : ''}" style="width: ${width}%"></div>
+          </div>
+          <span class="systems-token-context">${escapeHtml(item.context || '')}</span>
+        </div>`;
+      })
+      .join('');
   };
 
-  const toolContexts = {
-    Antigravity: 'Autonomous multi-agent pair programming & architectural refactoring',
-    Cursor: 'Primary IDE environment & full-repo context orchestration',
-    Claude: 'Direct chat model reasoning & conceptual system modeling',
-    Codex: 'Generative codebase synthesis & unit test scaffolding',
-    OpenRouter: 'Unified API gateway & smart model routing (Grok, Claude, Gemma)',
-    Cline: 'Agentic file-editing & browser automation',
-    Windsurf: 'AI flow & cascade agentic development',
-    KiloChat: 'Chat interface & human-in-the-loop coordination',
-    'VS Code': 'Primary code editor & workspace management',
-  };
+  renderGridContent(activeTab);
 
-  const sortedStack = [...tokenizationStack].sort((a, b) => {
-    const valA = parseTokens(a.tokens);
-    const valB = parseTokens(b.tokens);
-    if (valB !== valA) return valB - valA;
-    return a.name.localeCompare(b.name);
-  });
+  // 3. Attach tab handlers
+  const tabToolsBtn = document.getElementById('token-tab-tools');
+  const tabModelsBtn = document.getElementById('token-tab-models');
 
-  root.innerHTML = sortedStack
-    .map(tool => {
-      const width = getTokenWidth(tool.tokens);
-      const isLive = !tool.tokens;
-      const contextText = toolContexts[tool.name] || 'AI utility tool integration';
+  if (tabToolsBtn && tabModelsBtn) {
+    tabToolsBtn.addEventListener('click', () => {
+      if (activeTab === 'tools') return;
+      activeTab = 'tools';
+      tabToolsBtn.classList.add('is-active');
+      tabToolsBtn.setAttribute('aria-selected', 'true');
+      tabModelsBtn.classList.remove('is-active');
+      tabModelsBtn.setAttribute('aria-selected', 'false');
+      renderGridContent('tools');
+    });
 
-      return `<div class="systems-token-row lg-glass-card">
-        <div class="systems-token-row-head">
-          <span class="systems-token-label">${escapeHtml(tool.name)}</span>
-          ${
-            tool.tokens
-              ? `<strong class="systems-token-value">${escapeHtml(tool.tokens)}<small> tokens</small></strong>`
-              : `<strong class="systems-token-value systems-token-value--active"><span class="systems-token-pulse"></span>Active</strong>`
-          }
+    tabModelsBtn.addEventListener('click', () => {
+      if (activeTab === 'models') return;
+      activeTab = 'models';
+      tabModelsBtn.classList.add('is-active');
+      tabModelsBtn.setAttribute('aria-selected', 'true');
+      tabToolsBtn.classList.remove('is-active');
+      tabToolsBtn.setAttribute('aria-selected', 'false');
+      renderGridContent('models');
+    });
+  }
+
+  // 4. Render Footer Profile Action
+  if (footerRoot && whoburnedmoreProfile) {
+    const p = whoburnedmoreProfile;
+    footerRoot.innerHTML = `
+      <div class="systems-token-footer-info">
+        <div class="systems-token-footer-avatar" aria-hidden="true">
+          <i class="fas fa-fire-flame-curved"></i>
         </div>
-        <div class="systems-token-bar-track" aria-hidden="true">
-          <div class="systems-token-bar-fill ${isLive ? 'is-active' : ''}" style="width: ${width}%"></div>
+        <div class="systems-token-footer-text">
+          <strong class="systems-token-footer-name">@${escapeHtml(p.username)} on whoburnedmore.com</strong>
+          <span class="systems-token-footer-meta">Leaderboard #${p.rankings.allTime} All-Time · ${escapeHtml(p.lifetimeBurn)} tokens · Synced ${escapeHtml(p.lastSynced)}</span>
         </div>
-        <span class="systems-token-context">${escapeHtml(contextText)}</span>
-      </div>`;
-    })
-    .join('');
+      </div>
+      <div class="systems-token-footer-cta">
+        <a class="engineering-open-btn systems-token-profile-btn" href="${escapeHtml(p.profileUrl)}" target="_blank" rel="noopener noreferrer">
+          <span>View Leaderboard Profile</span>
+          <span aria-hidden="true">↗</span>
+        </a>
+      </div>
+    `;
+  }
 }
 
 function renderProductionMetrics() {
