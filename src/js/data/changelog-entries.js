@@ -53,8 +53,8 @@ export const changelogEntries = [
     summary:
       'Codified 14 core software engineering best practices for long-term architectural health, modularity, and operational excellence across the repository. Created comprehensive docs/BEST_PRACTICES.md blueprint detailing explicit architecture, loosely coupled modules, scalability design, self-documenting naming, simple control flow, single-purpose functions, uniform style enforcement, API/invariant documentation, first-class automated testing, continuous refactoring, intentional technical debt paydown, reviewable Git history, rigorous code reviews, and end-to-end automated CI/CD. Embedded these tenets as mandatory AI agent directives in AGENTS.md and root GEMINI.md, and integrated them into README.md Section 8 open-source governance.',
     tags: ['systems', 'design', 'performance'],
-    sha: '3a7d18bc',
-    link: `${CHANGELOG_REPO}/commit/3a7d18bc`,
+    sha: 'feafbe55',
+    link: `${CHANGELOG_REPO}/commit/feafbe55`,
     model: 'Gemini 3.8 Flash (High)',
     ide: 'Google Antigravity IDE (AGY)',
     purpose:
