@@ -2257,7 +2257,6 @@ body.travel-body .travel-stop__fact {
   -webkit-text-fill-color: var(--travel-text) !important;
 }
 
-body.travel-body .travel-stat,
 body.travel-body .travel-search {
   background: var(--travel-surface-muted) !important;
   background-color: var(--travel-surface-muted) !important;
@@ -2266,16 +2265,13 @@ body.travel-body .travel-search {
   -webkit-text-fill-color: var(--travel-text) !important;
 }
 
-body.travel-body .country-pill,
-body.travel-body .travel-action,
 body.travel-body .travel-filter-chip,
-body.travel-body .travel-advanced-toggle,
 body.travel-body .place-guide__chips span {
   font-family: var(--font-text) !important;
   font-size: 0.84rem !important;
   font-weight: 580 !important;
   border-radius: 9999px !important;
-  min-height: 38px !important;
+  min-height: 36px !important;
   background: #ffffff !important;
   background-color: #ffffff !important;
   background-image: none !important;
@@ -2286,10 +2282,7 @@ body.travel-body .place-guide__chips span {
   transition: all 0.2s ease;
 }
 
-html.dark body.travel-body .country-pill,
-html.dark body.travel-body .travel-action,
 html.dark body.travel-body .travel-filter-chip,
-html.dark body.travel-body .travel-advanced-toggle,
 html.dark body.travel-body .place-guide__chips span {
   background: #000000 !important;
   background-color: #000000 !important;

@@ -107,10 +107,7 @@ html.dark {
   .ops-card,
   .endpoint-card,
   .place-guide-card,
-  .travel-stat,
   .travel-filter-panel,
-  .travel-advanced-search,
-  .travel-results-summary,
   .sub-card,
   .nested-card,
   .vibe-stack-card,
@@ -226,7 +223,6 @@ html[data-lg-mode='tinted']:not(.dark)
     .ops-card,
     .endpoint-card,
     .place-guide-card,
-    .travel-stat,
     .engineering-quality-overview,
     .projects-activity-overview,
     .systems-evidence-card,
@@ -670,7 +666,7 @@ body.systems-page
     .eng-design-card
   ),
 body.monitor-page :is(.monitor-summary-card, .doc-card, .overview-card, .ops-card, .endpoint-card),
-body.travel-body :is(.place-guide-card, .travel-stat),
+body.travel-body .place-guide-card,
 body.uses-page :is(.uses-control-tile, .card) {
   border-radius: var(--lux-radius) !important;
 }

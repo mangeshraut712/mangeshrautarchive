@@ -277,6 +277,15 @@ mangeshrautarchive/
 | [**`/blog/`**](https://mangeshraut712.github.io/mangeshrautarchive/blog/)                               | 16 long-form technical field notes and deep dives with source embeds and KaTeX math.                                                                                                |
 | [**`/case-studies/`**](https://mangeshraut712.github.io/mangeshrautarchive/case-studies/portfolio.html) | 5 architectural case studies (Portfolio Architecture, HindAI, CES Energy, AssistMe VA, Bug Tracker).                                                                                |
 
+### 5.1 AI Models & Engineering Purpose Matrix
+
+| Model Tier & Name      | Engineering Purpose & Scope                                                                                                                 | Reasoning Mode           | Status |
+| :--------------------- | :------------------------------------------------------------------------------------------------------------------------------------------ | :----------------------- | :----: |
+| **`gemini-3.8-flash`** | Travel Atlas Apple Maps sidebar redesign, segmented metric strip architecture, global CSS capsule purge, and subpage layout synchronization | High / Extended Thinking | Active |
+| **`gemini-3.8-flash`** | Codification of 14 Software Engineering Best Practices (`docs/BEST_PRACTICES.md`), subnavbar geometric synchronization                      | High / Extended Thinking | Active |
+| **`gemini-3.8-flash`** | Keynote Special Event presentation redesign for `/uses`, WebMCP agentic tooling                                                             | High / Extended Thinking | Active |
+| **`grok-4.3`**         | Production conversational agent (`/api/chat`), real-time streaming, WebMCP portfolio actions                                                | Standard / Low Latency   | Active |
+
 ---
 
 ## 6. Testing & Quality Assurance Matrix

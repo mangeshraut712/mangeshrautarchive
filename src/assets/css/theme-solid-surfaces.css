@@ -263,10 +263,7 @@ html[data-theme='dark'] body.blog-standalone-page {
   .endpoint-card,
   .travel-sidebar,
   .place-guide-card,
-  .travel-stat,
   .travel-filter-panel,
-  .travel-advanced-search,
-  .travel-results-summary,
   .sub-card,
   .nested-card,
   .vibe-stack-card,
@@ -350,10 +347,7 @@ html:not(.dark)
     .endpoint-card,
     .travel-sidebar,
     .place-guide-card,
-    .travel-stat,
     .travel-filter-panel,
-    .travel-advanced-search,
-    .travel-results-summary,
     .sub-card,
     .nested-card,
     .vibe-stack-card,
@@ -464,10 +458,7 @@ html.dark
     .endpoint-card,
     .travel-sidebar,
     .place-guide-card,
-    .travel-stat,
     .travel-filter-panel,
-    .travel-advanced-search,
-    .travel-results-summary,
     .sub-card,
     .nested-card,
     .vibe-stack-card,
@@ -976,7 +967,6 @@ html.dark
       #projects .activity-stat-item,
       #experience .experience-tag,
       .place-guide-card,
-      .travel-stat,
       .travel-sidebar,
       .article-related-card,
       .education-card,
@@ -999,7 +989,6 @@ html.dark
       #projects .activity-stat-item,
       #experience .experience-tag,
       .place-guide-card,
-      .travel-stat,
       .travel-sidebar,
       .article-related-card,
       .education-card,
@@ -1128,30 +1117,14 @@ body.monitor-page .monitor-container {
 @media (hover: hover) and (pointer: fine) {
   html:not(.dark)
     body.travel-body
-    :is(
-      .place-guide-card,
-      .travel-stat,
-      .travel-sidebar,
-      #travel-sidebar,
-      .country-pill,
-      .travel-filter-chip,
-      .travel-action
-    ):hover {
+    :is(.place-guide-card, .travel-sidebar, #travel-sidebar, .travel-filter-chip):hover {
     border-color: #0071e3 !important;
     box-shadow: none !important;
   }
 
   html.dark
     body.travel-body
-    :is(
-      .place-guide-card,
-      .travel-stat,
-      .travel-sidebar,
-      #travel-sidebar,
-      .country-pill,
-      .travel-filter-chip,
-      .travel-action
-    ):hover {
+    :is(.place-guide-card, .travel-sidebar, #travel-sidebar, .travel-filter-chip):hover {
     border-color: #0a84ff !important;
     box-shadow: none !important;
   }
@@ -1826,12 +1799,9 @@ html.dark #projects .github-graph-legend {
       body.monitor-page .ops-bar-row,
       body.monitor-page .ops-stat-grid > div,
       body.travel-body .place-guide-card,
-      body.travel-body .travel-stat,
       body.travel-body .travel-sidebar,
       body.travel-body #travel-sidebar,
       body.travel-body .travel-filter-panel,
-      body.travel-body .travel-advanced-search,
-      body.travel-body .travel-results-summary,
       .portfolio-reach-panel,
       .vibe-tool-chip
     ):hover {
@@ -1936,12 +1906,9 @@ html.dark #projects .github-graph-legend {
       body.monitor-page .ops-bar-row,
       body.monitor-page .ops-stat-grid > div,
       body.travel-body .place-guide-card,
-      body.travel-body .travel-stat,
       body.travel-body .travel-sidebar,
       body.travel-body #travel-sidebar,
       body.travel-body .travel-filter-panel,
-      body.travel-body .travel-advanced-search,
-      body.travel-body .travel-results-summary,
       .portfolio-reach-panel,
       .vibe-tool-chip
     ):hover {
@@ -2167,10 +2134,7 @@ html.dark :is(#skills .skill-category, #skills-container .skill-category):focus-
     .endpoint-card,
     .travel-sidebar,
     .place-guide-card,
-    .travel-stat,
     .travel-filter-panel,
-    .travel-advanced-search,
-    .travel-results-summary,
     .sub-card,
     .nested-card,
     .vibe-stack-card,
@@ -2399,7 +2363,6 @@ html:not(.dark)
     .uses-item,
     .uses-search,
     .uses-control-tile:not(.active):not(.is-active),
-    .travel-stat,
     .travel-stop__media,
     .place-guide-card,
     .blog-topic-pill,
@@ -2421,7 +2384,6 @@ html.dark
     .uses-item,
     .uses-search,
     .uses-control-tile:not(.active):not(.is-active),
-    .travel-stat,
     .travel-stop__media,
     .place-guide-card,
     .blog-topic-pill,
@@ -2733,7 +2695,6 @@ html:not(.dark)
     .vibe-tool-item,
     .doc-link-tile,
     .place-guide-card,
-    .travel-stat,
     .modal-content,
     .share-dialog,
     .a11y-panel,

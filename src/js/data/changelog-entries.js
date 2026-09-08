@@ -46,6 +46,21 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── September 2026 ──────────────────────────────────────────
   {
+    id: 'travel-atlas-apple-maps-sidebar-redesign',
+    date: '2026-09-08',
+    type: 'improvement',
+    title: 'Design System: Travel Atlas Sidebar Apple Maps Redesign & Spatial Decongestion',
+    summary:
+      'Transformed the Travel Atlas sidebar (.travel-sidebar) into an Apple Maps-inspired interface, resolving heavy capsule clutter and reclaiming >200px of vertical height. Replaced 4 bloated stat cards with a unified Apple Segmented Metric Strip (4 Countries · 85 Cities · 90 Places · 29 Regions) featuring hairline dividers. Converted the rigid 2x2 country grid into a smooth, horizontal-scrolling pill track with Apple Blue active indicators. Consolidated 4 action buttons into a compact 1-row segmented control (Featured, Spotlight, Route, Reset). Refined the search field into an Apple squircle with transparent input embedding, and converted the heavy results box into an unobtrusive status caption line. Purged conflicting global card and capsule overrides across apple-cards-luxury-2026.css, sitewide-design-system.css, and theme-solid-surfaces.css, ensuring instant visibility for places without scrolling and maintaining zero horizontal overflow across all viewports.',
+    tags: ['design', 'performance', 'systems'],
+    sha: '7f0f60d3',
+    link: `${CHANGELOG_REPO}/commit/7f0f60d3`,
+    model: 'Gemini 3.8 Flash (High)',
+    ide: 'Google Antigravity IDE (AGY)',
+    purpose:
+      'Travel Atlas sidebar Apple Maps redesign, segmented control refactoring, and global CSS override hygiene',
+  },
+  {
     id: 'subnavbar-synchronization-apple-shadcn-alignment',
     date: '2026-09-08',
     type: 'improvement',

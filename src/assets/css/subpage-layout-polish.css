@@ -539,7 +539,28 @@ body.travel-body .travel-sidebar__header {
   flex-shrink: 0 !important;
   max-height: none !important;
   overflow: visible !important;
-  padding: 0.85rem 1rem 0.65rem !important;
+  padding: 0.85rem 1rem 0.6rem !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.07) !important;
+}
+
+html.dark body.travel-body .travel-sidebar__header {
+  border-bottom-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+body.travel-body .travel-sidebar__header h1 {
+  font-size: 1.35rem !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.025em !important;
+  margin: 0 0 2px !important;
+  color: var(--travel-text) !important;
+}
+
+body.travel-body .travel-sidebar__subtitle {
+  font-size: 12.5px !important;
+  color: var(--travel-text-secondary, #6e6e73) !important;
+  -webkit-text-fill-color: var(--travel-text-secondary, #6e6e73) !important;
+  margin: 0 0 0.55rem !important;
+  line-height: 1.35 !important;
 }
 
 body.travel-body .travel-timeline {
@@ -548,74 +569,317 @@ body.travel-body .travel-timeline {
   overflow-y: auto !important;
 }
 
+/* ─── Unified Apple Segmented Metric Strip ─── */
 body.travel-body .travel-stats {
-  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
-  gap: 0.3rem !important;
-  margin-top: 0.55rem !important;
+  display: grid !important;
+  grid-template-columns: repeat(4, 1fr) !important;
+  gap: 0 !important;
+  padding: 5px 3px !important;
+  border-radius: 12px !important;
+  background: rgba(0, 0, 0, 0.035) !important;
+  border: 1px solid rgba(0, 0, 0, 0.06) !important;
+  margin-top: 0 !important;
+  margin-bottom: 0.55rem !important;
+  box-shadow: none !important;
+}
+
+html.dark body.travel-body .travel-stats {
+  background: rgba(255, 255, 255, 0.06) !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
 }
 
 body.travel-body .travel-stat {
-  min-width: 0;
-  padding: 0.35rem 0.2rem !important;
-  border-radius: 10px;
-  background: #ffffff;
+  min-width: 0 !important;
+  padding: 3px 2px !important;
+  border: none !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  position: relative !important;
+  text-align: center !important;
 }
 
-html.dark body.travel-body .travel-stat,
-html[data-theme='dark'] body.travel-body .travel-stat {
-  background: #000000;
+body.travel-body .travel-stat:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  top: 15%;
+  right: 0;
+  height: 70%;
+  width: 1px;
+  background: rgba(0, 0, 0, 0.08);
+}
+
+html.dark body.travel-body .travel-stat:not(:last-child)::after {
+  background: rgba(255, 255, 255, 0.1);
 }
 
 body.travel-body .travel-stat__value {
-  font-size: 0.9rem !important;
-  overflow-wrap: anywhere;
+  display: block !important;
+  font-size: 15px !important;
+  font-weight: 700 !important;
+  color: var(--apple-blue, #0071e3) !important;
+  -webkit-text-fill-color: var(--apple-blue, #0071e3) !important;
+  letter-spacing: -0.02em !important;
+  line-height: 1.15 !important;
 }
 
 body.travel-body .travel-stat__label {
-  font-size: 0.58rem !important;
-  letter-spacing: 0.03em;
+  display: block !important;
+  font-size: 9.5px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.04em !important;
+  text-transform: uppercase !important;
+  color: var(--travel-text-secondary, #6e6e73) !important;
+  -webkit-text-fill-color: var(--travel-text-secondary, #6e6e73) !important;
+  margin-top: 1px !important;
+  line-height: 1.15 !important;
 }
 
-body.travel-body .travel-sidebar__header h1 {
-  font-size: clamp(1.05rem, 2.2vw, 1.25rem) !important;
-  line-height: 1.15;
-}
-
+/* ─── Apple Maps Search Box ─── */
 body.travel-body .travel-search {
-  min-height: 38px;
+  display: grid !important;
+  grid-template-columns: 16px 1fr 30px !important;
+  align-items: center !important;
+  gap: 8px !important;
+  min-height: 36px !important;
+  height: 36px !important;
+  padding: 0 6px 0 10px !important;
+  border-radius: 10px !important;
+  background: rgba(0, 0, 0, 0.04) !important;
+  border: 1px solid rgba(0, 0, 0, 0.06) !important;
+  box-sizing: border-box !important;
+  margin-top: 0 !important;
+  margin-bottom: 0.5rem !important;
+  transition: all 0.2s ease !important;
 }
 
+html.dark body.travel-body .travel-search {
+  background: rgba(255, 255, 255, 0.06) !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+body.travel-body .travel-search:focus-within {
+  background: #ffffff !important;
+  border-color: var(--apple-blue) !important;
+  box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.15) !important;
+}
+
+html.dark body.travel-body .travel-search:focus-within {
+  background: #000000 !important;
+  border-color: var(--apple-blue) !important;
+  box-shadow: 0 0 0 3px rgba(41, 151, 255, 0.25) !important;
+}
+
+body.travel-body .travel-search input,
+html body.travel-body #travel-sidebar .travel-search input,
+html body.travel-body #travel-sidebar input#place-search {
+  width: 100% !important;
+  height: 100% !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  color: var(--travel-text, #1d1d1f) !important;
+  -webkit-text-fill-color: var(--travel-text, #1d1d1f) !important;
+  font-size: 13.5px !important;
+  font-weight: 500 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+html.dark body.travel-body .travel-search input {
+  background: transparent !important;
+  background-color: transparent !important;
+  color: #f5f5f7 !important;
+  -webkit-text-fill-color: #f5f5f7 !important;
+}
+
+body.travel-body .travel-search__clear {
+  border: none !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  width: 24px !important;
+  height: 24px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+}
+
+/* ─── Apple Horizontal Country Filter Chips (No 2x2 grid) ─── */
 body.travel-body .travel-countries {
-  gap: 0.4rem !important;
+  display: flex !important;
   flex-wrap: nowrap !important;
-  min-height: 38px !important;
+  gap: 6px !important;
+  min-height: 32px !important;
   max-height: none !important;
   overflow-x: auto !important;
-  overflow-y: visible !important;
-  padding: 3px 2px 4px !important;
-  overscroll-behavior: contain;
-  scrollbar-width: none;
+  overflow-y: hidden !important;
+  padding: 1px 1px 4px !important;
+  margin-top: 0 !important;
+  margin-bottom: 0.45rem !important;
+  scrollbar-width: none !important;
+  -webkit-overflow-scrolling: touch !important;
 }
 
 body.travel-body .travel-countries::-webkit-scrollbar {
-  display: none;
+  display: none !important;
 }
 
-@media (min-width: 821px) {
-  body.travel-body .travel-countries {
-    display: grid !important;
-    grid-template-columns: repeat(2, 1fr) !important;
-    gap: 0.45rem !important;
-    overflow-x: visible !important;
-    overflow-y: visible !important;
-  }
+body.travel-body .country-pill {
+  width: auto !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 5px !important;
+  min-height: 30px !important;
+  padding: 0 10px !important;
+  border-radius: 9999px !important;
+  font-size: 12px !important;
+  font-weight: 550 !important;
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
+  background: rgba(0, 0, 0, 0.04) !important;
+  border: 1px solid rgba(0, 0, 0, 0.06) !important;
+  color: var(--travel-text, #1d1d1f) !important;
+  -webkit-text-fill-color: var(--travel-text, #1d1d1f) !important;
+  box-shadow: none !important;
+  cursor: pointer !important;
+  transition: all 0.18s ease !important;
+}
 
-  body.travel-body .country-pill {
-    width: 100% !important;
-    justify-content: space-between !important;
-    padding: 0.45rem 0.75rem !important;
-    box-sizing: border-box !important;
-  }
+html.dark body.travel-body .country-pill {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+  color: #f5f5f7 !important;
+  -webkit-text-fill-color: #f5f5f7 !important;
+}
+
+body.travel-body .country-pill:hover {
+  background: rgba(0, 0, 0, 0.08) !important;
+  transform: translateY(-1px) !important;
+}
+
+html.dark body.travel-body .country-pill:hover {
+  background: rgba(255, 255, 255, 0.14) !important;
+}
+
+body.travel-body .country-pill.active,
+body.travel-body .country-pill[aria-pressed='true'] {
+  background-image: linear-gradient(135deg, #0077ed 0%, #0071e3 50%, #005bb5 100%) !important;
+  background-color: #0071e3 !important;
+  border-color: rgba(255, 255, 255, 0.25) !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  box-shadow: 0 2px 8px rgba(0, 113, 227, 0.35) !important;
+}
+
+/* ─── Compact 1-Row Segmented Action Controls ─── */
+body.travel-body .travel-actions {
+  display: grid !important;
+  grid-template-columns: repeat(4, 1fr) !important;
+  gap: 5px !important;
+  margin-top: 0 !important;
+  margin-bottom: 0.45rem !important;
+}
+
+body.travel-body .travel-action {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 4px !important;
+  min-height: 30px !important;
+  padding: 0 3px !important;
+  border-radius: 7px !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  background: rgba(0, 0, 0, 0.04) !important;
+  border: 1px solid rgba(0, 0, 0, 0.06) !important;
+  color: var(--travel-text-secondary, #6e6e73) !important;
+  -webkit-text-fill-color: var(--travel-text-secondary, #6e6e73) !important;
+  box-shadow: none !important;
+  cursor: pointer !important;
+  transition: all 0.18s ease !important;
+}
+
+html.dark body.travel-body .travel-action {
+  background: rgba(255, 255, 255, 0.06) !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+  color: #a1a1a6 !important;
+  -webkit-text-fill-color: #a1a1a6 !important;
+}
+
+body.travel-body .travel-action:hover {
+  background: rgba(0, 0, 0, 0.08) !important;
+  color: var(--travel-text, #1d1d1f) !important;
+  -webkit-text-fill-color: var(--travel-text, #1d1d1f) !important;
+}
+
+html.dark body.travel-body .travel-action:hover {
+  background: rgba(255, 255, 255, 0.12) !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+body.travel-body .travel-action.active,
+body.travel-body .travel-action[aria-pressed='true'] {
+  background-image: linear-gradient(135deg, #0077ed 0%, #0071e3 50%, #005bb5 100%) !important;
+  background-color: #0071e3 !important;
+  border-color: rgba(255, 255, 255, 0.25) !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  box-shadow: 0 2px 8px rgba(0, 113, 227, 0.35) !important;
+}
+
+body.travel-body #featured-toggle.active {
+  background-image: linear-gradient(135deg, #ff9500 0%, #ff8000 100%) !important;
+  background-color: #ff9500 !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0.25) !important;
+  box-shadow: 0 2px 8px rgba(255, 149, 0, 0.35) !important;
+}
+
+/* ─── Refined Results Caption (No Ugly Box) ─── */
+body.travel-body .travel-results-summary {
+  margin-top: 0.15rem !important;
+  margin-bottom: 0 !important;
+  padding: 2px 2px !important;
+  border: none !important;
+  background: transparent !important;
+  color: var(--travel-text-secondary, #6e6e73) !important;
+  -webkit-text-fill-color: var(--travel-text-secondary, #6e6e73) !important;
+  font-size: 11px !important;
+  font-weight: 500 !important;
+  letter-spacing: -0.01em !important;
+  line-height: 1.35 !important;
+}
+
+/* ─── Compact Advanced Filters Accordion ─── */
+body.travel-body .travel-advanced-search {
+  margin-top: 0 !important;
+  margin-bottom: 0.4rem !important;
+  border-radius: 9px !important;
+  border: 1px solid rgba(0, 0, 0, 0.06) !important;
+  background: rgba(0, 0, 0, 0.02) !important;
+}
+
+html.dark body.travel-body .travel-advanced-search {
+  border-color: rgba(255, 255, 255, 0.08) !important;
+  background: rgba(255, 255, 255, 0.03) !important;
+}
+
+body.travel-body .travel-advanced-toggle {
+  padding: 4px 8px !important;
+  font-size: 11px !important;
+  font-weight: 550 !important;
+  min-height: 26px !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
 }
 
 /* ─── Changelog-style Clean & Minimalist Travel Timeline & Stops ─── */
@@ -1833,7 +2097,6 @@ html.dark body.error-page .error-dest-item:hover {
 
 /* ─── 4. Subpage Clean Search Inputs ─── */
 body.uses-page .uses-search,
-body.travel-body .travel-search,
 body.error-page .error-search {
   display: flex !important;
   align-items: center !important;
@@ -1850,7 +2113,6 @@ body.error-page .error-search {
 }
 
 html.dark body.uses-page .uses-search,
-html.dark body.travel-body .travel-search,
 html.dark body.error-page .error-search {
   background: #000000 !important;
   background-color: #000000 !important;
@@ -1858,14 +2120,12 @@ html.dark body.error-page .error-search {
 }
 
 body.uses-page .uses-search:focus-within,
-body.travel-body .travel-search:focus-within,
 body.error-page .error-search:focus-within {
   border-color: #0071e3 !important;
   box-shadow: 0 0 0 3px rgb(0 113 227 / 18%) !important;
 }
 
 html.dark body.uses-page .uses-search:focus-within,
-html.dark body.travel-body .travel-search:focus-within,
 html.dark body.error-page .error-search:focus-within {
   border-color: #2997ff !important;
   box-shadow: 0 0 0 3px rgb(41 151 255 / 24%) !important;
