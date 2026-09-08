@@ -54,8 +54,8 @@ export const changelogEntries = [
     summary:
       'Completed comprehensive multi-agent audit remediation across all 9 pages following the Uses Keynote launch. Converted root-relative href="/" and extensionless navigation/footer links to resilient relative paths across systems, monitor, travel, uses, changelog, 404, and offline surfaces for 100% GitHub Pages deployment safety. Fixed homepage Antigravity tool chip URL. Aligned Uses Keynote Slide 3 telemetry with canonical WhoBurnedMore data (Codex 9.18B tokens, Cursor 3.74B, Kilo 611M, Cline/Droid 99.6M, Antigravity Active Orchestrator). Reframed PWA service worker claims, scoped global Keynote arrow listener to exclude code snippets, added Enter/Space keyboard handlers and ARIA attributes for featured cards, solved narrow viewport overflow on edge domains, enforced >=40px touch targets, standardized title separators to em dash, and synchronized Vitest count to 239.',
     tags: ['systems', 'design', 'performance'],
-    sha: '1b4c9e2f',
-    link: `${CHANGELOG_REPO}/commit/1b4c9e2f`,
+    sha: '12c84d1c',
+    link: `${CHANGELOG_REPO}/commit/12c84d1c`,
     model: 'Gemini 3.8 Flash (High) & Claude Opus 4.6 (Thinking)',
     ide: 'Google Antigravity IDE (AGY)',
     purpose:
