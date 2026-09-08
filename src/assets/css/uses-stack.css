@@ -216,6 +216,7 @@ html.dark body.uses-page .keynote-deck-nav {
 }
 
 body.uses-page .keynote-chapter-pills {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 0.45rem;

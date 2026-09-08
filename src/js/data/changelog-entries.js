@@ -84,8 +84,8 @@ export const changelogEntries = [
     summary:
       'Resolved Axe accessibility violations across subpages. Added non-color link distinguishability (text-decoration underline and font-weight 600) for inline links within paragraph text blocks on the System Monitor page to satisfy WCAG 2.1 AA 1.4.1. Elevated systems telemetry accent pill color contrast in light mode to #004ea8, achieving a 7.25:1 contrast ratio that surpasses the WCAG AAA 7:1 threshold. Active model: Gemini 3.8 Flash (High) in Google Antigravity IDE (AGY) — automated Axe accessibility auditing and surgical CSS contrast refactoring.',
     tags: ['monitor', 'systems', 'design'],
-    sha: 'd587099a',
-    link: `${CHANGELOG_REPO}/commit/d587099a`,
+    sha: '775c36e7',
+    link: `${CHANGELOG_REPO}/commit/775c36e7`,
     model: 'Gemini 3.8 Flash (High)',
     ide: 'Google Antigravity IDE (AGY)',
     purpose:
@@ -131,6 +131,9 @@ export const changelogEntries = [
     tags: ['design', 'deploy'],
     sha: '17db675c',
     link: `${CHANGELOG_REPO}/commit/17db675c`,
+    model: 'Grok 4.6 (medium)',
+    ide: 'Cursor Cloud',
+    purpose: 'Icon/meta cache-bust and Open Graph host correction for Safari Favorites',
   },
   {
     id: 'safari-favorites-touch-icon-fix',
@@ -142,6 +145,9 @@ export const changelogEntries = [
     tags: ['design', 'deploy'],
     sha: '51e39ef3',
     link: `${CHANGELOG_REPO}/commit/51e39ef3`,
+    model: 'Gemini 3.8 Flash (High)',
+    ide: 'Google Antigravity IDE (AGY)',
+    purpose: 'Safari Touch Icons Cache SQLite reverse-engineering and host-collision resolution',
   },
   {
     id: 'music-artwork-buttons',
@@ -153,6 +159,9 @@ export const changelogEntries = [
     tags: ['design', 'api'],
     sha: 'e0b067dc',
     link: `${CHANGELOG_REPO}/commit/e0b067dc`,
+    model: 'Claude Opus 4.6 (Thinking)',
+    ide: 'Cursor',
+    purpose: 'CSS geometry debugging, button clipping fix, and multi-file surgical edits',
   },
   {
     id: '780d4285',

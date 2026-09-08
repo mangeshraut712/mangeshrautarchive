@@ -478,6 +478,22 @@ html.dark .systems-keynote-section:nth-of-type(even) {
   color: var(--systems-muted);
 }
 
+.systems-section-desc a {
+  color: var(--apple-blue, #0071e3);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  font-weight: 500;
+  transition: opacity 0.2s ease;
+}
+
+.systems-section-desc a:hover {
+  opacity: 0.8;
+}
+
+html.dark .systems-section-desc a {
+  color: #0a84ff;
+}
+
 .systems-section-desc code {
   font-size: 0.88em;
   padding: 0.1em 0.35em;
