@@ -39,7 +39,7 @@
   <img src="https://img.shields.io/badge/Python-3.12+-3776AB?style=flat-square&logo=python&logoColor=white" alt="Python 3.12">
   <img src="https://img.shields.io/badge/FastAPI-0.141.1-009688?style=flat-square&logo=fastapi&logoColor=white" alt="FastAPI">
   <img src="https://img.shields.io/badge/ESM-Vanilla%20JS-F7DF1E?style=flat-square&logo=javascript&logoColor=black" alt="Vanilla ESM">
-  <img src="https://img.shields.io/badge/OpenRouter-Grok%204.3%20%2B%20Nemotron-black?style=flat-square" alt="OpenRouter">
+  <img src="https://img.shields.io/badge/Cloudflare-Workers-F38020?style=flat-square&logo=cloudflare&logoColor=white" alt="Cloudflare Workers">
   <img src="https://img.shields.io/badge/Vitest-239%20passed-729B1B?style=flat-square&logo=vitest&logoColor=white" alt="239 Vitest unit tests">
   <img src="https://img.shields.io/badge/pytest-175%20passed-0A9EDC?style=flat-square&logo=pytest&logoColor=white" alt="175 pytest API tests">
   <img src="https://img.shields.io/badge/Playwright-16%20browser%20configs-2EAD33?style=flat-square&logo=playwright&logoColor=white" alt="Playwright">
@@ -49,7 +49,7 @@
 
 <p align="center">
   <strong>Zero Framework Runtime · Native Vanilla ESM · FastAPI Serverless · Agentic WebMCP · Apple HIG Liquid Glass</strong><br>
-  <sub>High-contrast solid canvas (<code>#ffffff</code> / <code>#000000</code>) · Multi-Model AI Routing · 1,820+ Git Commits Open Chronicle</sub>
+  <sub>High-contrast solid canvas (<code>#ffffff</code> / <code>#000000</code>) · Dual-Host Edge Topology · 414 Automated Tests · 100/100 Lighthouse CI</sub>
 </p>
 
 <p align="center">
@@ -67,7 +67,7 @@
   ·
   <a href="https://mangeshraut712.github.io/mangeshrautarchive/blog/"><b>Field Notes</b></a>
   ·
-  <a href="#8-quick-start--development"><b>Quick Start</b></a>
+  <a href="#7-quick-start--development"><b>Quick Start</b></a>
 </p>
 
 ---
@@ -78,13 +78,12 @@
 2. [Visual Architecture & System Diagrams](#2-visual-architecture--system-diagrams)
 3. [Core Technical Stack](#3-core-technical-stack)
 4. [Repository Structure & Subsystems](#4-repository-structure--subsystems)
-5. [Authentic AI & Development Tooling](#5-authentic-ai--development-tooling)
-6. [Product Surfaces & Capabilities](#6-product-surfaces--capabilities)
-7. [Testing & Quality Assurance Matrix](#7-testing--quality-assurance-matrix)
-8. [Quick Start & Development](#8-quick-start--development)
-9. [Open Source Governance & Guidelines](#9-open-source-governance--guidelines)
-10. [Verified Biographical & Project Facts](#10-verified-biographical--project-facts)
-11. [License, Citation & Contact](#11-license-citation--contact)
+5. [Product Surfaces & Capabilities](#5-product-surfaces--capabilities)
+6. [Testing & Quality Assurance Matrix](#6-testing--quality-assurance-matrix)
+7. [Quick Start & Development](#7-quick-start--development)
+8. [Open Source Governance & Guidelines](#8-open-source-governance--guidelines)
+9. [Verified Biographical & Project Facts](#9-verified-biographical--project-facts)
+10. [License, Citation & Contact](#10-license-citation--contact)
 
 ---
 
@@ -97,7 +96,7 @@
 │                                 CORE ARCHITECTURAL PILLARS                              │
 ├────────────────────────────────────────────────────────────────────────────────────────┤
 │  ⚡ Zero-Framework ESM: Native JavaScript modules, esbuild bundling, custom properties │
-│  🤖 Agentic AI: AssistMe chatbot, OpenRouter (grok-4.3), 13 WebMCP browser actions     │
+│  🤖 Agentic AI: AssistMe chatbot, OpenRouter streaming, 13 WebMCP browser actions      │
 │  🎨 Apple HIG Design: Solid white/black canvases, 3D kinetic interaction model         │
 │  📊 Real-Time Telemetry: WHOOP vitals, GA4 realtime reach, platform health probes       │
 │  🛡️ Quality Gates: 239 Vitest tests, 175 pytest tests, 100/100/100/100 Lighthouse CI   │
@@ -114,7 +113,7 @@
 High-resolution vector architecture committed in [`src/assets/images/diagrams/system-architecture.svg`](src/assets/images/diagrams/system-architecture.svg):
 
 <div align="center">
-  <img src="src/assets/images/diagrams/system-architecture.svg" alt="System Architecture Diagram" width="820">
+  <img src="src/assets/images/diagrams/system-architecture.svg" alt="System Architecture Diagram" width="100%" style="max-width: 840px;">
   <br>
   <sub><b>Figure 1: Full-stack system topology spanning client browser, edge routing, AI models, and upstream APIs.</b></sub>
 </div>
@@ -126,7 +125,7 @@ High-resolution vector architecture committed in [`src/assets/images/diagrams/sy
 Client-side tool execution, memory management, and OpenRouter NDJSON streaming committed in [`src/assets/images/diagrams/assistme-multimodal-workflow.svg`](src/assets/images/diagrams/assistme-multimodal-workflow.svg):
 
 <div align="center">
-  <img src="src/assets/images/diagrams/assistme-multimodal-workflow.svg" alt="AssistMe Multimodal AI Workflow" width="820">
+  <img src="src/assets/images/diagrams/assistme-multimodal-workflow.svg" alt="AssistMe Multimodal AI Workflow" width="100%" style="max-width: 840px;">
   <br>
   <sub><b>Figure 2: Multimodal AssistMe chatbot pipeline with WebMCP action execution and streaming intelligence.</b></sub>
 </div>
@@ -138,7 +137,7 @@ Client-side tool execution, memory management, and OpenRouter NDJSON streaming c
 Automated repository health verification enforcing 100/100/100/100 Lighthouse scores committed in [`src/assets/images/diagrams/ci-cd-quality-pipeline.svg`](src/assets/images/diagrams/ci-cd-quality-pipeline.svg):
 
 <div align="center">
-  <img src="src/assets/images/diagrams/ci-cd-quality-pipeline.svg" alt="CI/CD Quality Pipeline" width="820">
+  <img src="src/assets/images/diagrams/ci-cd-quality-pipeline.svg" alt="CI/CD Quality Pipeline" width="100%" style="max-width: 840px;">
   <br>
   <sub><b>Figure 3: 3-tier automated CI/CD pipeline enforcing static security, linting, unit tests, and Lighthouse floors.</b></sub>
 </div>
@@ -150,7 +149,7 @@ Automated repository health verification enforcing 100/100/100/100 Lighthouse sc
 GitHub Pages primary publishing + Cloudflare Worker API, with Vercel/FastAPI retained as an optional compatibility surface committed in [`src/assets/images/diagrams/dual-host-edge-topology.svg`](src/assets/images/diagrams/dual-host-edge-topology.svg):
 
 <div align="center">
-  <img src="src/assets/images/diagrams/dual-host-edge-topology.svg" alt="Dual-Host Edge Topology" width="820">
+  <img src="src/assets/images/diagrams/dual-host-edge-topology.svg" alt="Dual-Host Edge Topology" width="100%" style="max-width: 840px;">
   <br>
   <sub><b>Figure 4: Global edge delivery network with zero-cold-start static distribution and live serverless API proxying.</b></sub>
 </div>
@@ -162,7 +161,7 @@ GitHub Pages primary publishing + Cloudflare Worker API, with Vercel/FastAPI ret
 Live music listening telemetry, Last.fm scrobble synchronization, and cached artwork loading committed in [`src/assets/images/diagrams/spotify-live-scrobble-flow.svg`](src/assets/images/diagrams/spotify-live-scrobble-flow.svg):
 
 <div align="center">
-  <img src="src/assets/images/diagrams/spotify-live-scrobble-flow.svg" alt="Spotify Live Scrobble Flow" width="820">
+  <img src="src/assets/images/diagrams/spotify-live-scrobble-flow.svg" alt="Spotify Live Scrobble Flow" width="100%" style="max-width: 840px;">
   <br>
   <sub><b>Figure 5: Real-time Spotify listening feed with Last.fm API caching, cover artwork rendering, and fallbacks.</b></sub>
 </div>
@@ -187,7 +186,7 @@ flowchart TD
   end
 
   subgraph Upstream ["Upstream AI & Cloud Integrations"]
-    OR["OpenRouter (Grok 4.3 / Nemotron / Gemma)"]
+    OR["OpenRouter (Multi-Model AI Streaming)"]
     GH["GitHub REST API (Projects & Stats)"]
     Supa["Supabase PostgreSQL (Forms & Bookings)"]
     GCal["Google Calendar (Free/Busy & Invites)"]
@@ -232,7 +231,7 @@ flowchart TD
 - **Pure HTML5 / CSS3 / ES Modules**: Zero React, Vue, Angular, or Svelte runtime overhead.
 - **Design Tokens**: Standardized CSS custom properties (`--apple-blue: #0071e3`, `--apple-bg`, `--apple-surface`).
 - **Surface Contrast**: Solid `#ffffff` in light mode and solid `#000000` in dark mode.
-- **3D Interactive Kinetics**: Specular metallic sheen animations, perspective hover lift, and tactile spring click micro-physics across all 6 button tiers.
+- **3D Interactive Kinetics**: Specular metallic sheen animations, perspective hover lift, and tactile spring click micro-physics across all button tiers.
 - **Liquid Glass Materials**: Real-time glassmorphic shaders (`clear`, `balanced` 42% tint, `tinted`).
 - **Rich Rendering**: KaTeX math rendering, marked Markdown parser, DOMPurify HTML sanitization.
 
@@ -247,7 +246,7 @@ mangeshrautarchive/
 ├── src/                      # ★ Production Frontend Source (Vanilla HTML, CSS, ESM)
 │   ├── *.html                # Page shells (index, systems, monitor, travel, uses, changelog, 404)
 │   ├── js/core|modules|services|utils|data|vendor/ # Modular client engine & WebMCP tools
-│   └── assets/css|images|files|icons|vendor/       # 6-tier design system & media assets
+│   └── assets/css|images|files|icons|vendor/       # Design system & media assets
 ├── api/                      # ★ FastAPI Backend (Python 3.12+ Serverless & Local Intelligence)
 │   ├── routes/               # Modular HTTP route handlers (chat, monitor, media, integrations)
 │   ├── integrations/         # Third-party OAuth connectors & health probes
@@ -264,53 +263,22 @@ mangeshrautarchive/
 
 ---
 
-## 5. Authentic AI & Development Tooling
-
-This repository was engineered and refined using verified daily-driver AI tools and development environments:
-
-| Tool                   |                                                   Icon                                                   | Role & Workflow Context                                                | Telemetry & Usage                               |
-| :--------------------- | :------------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------- | :---------------------------------------------- |
-| **Google Antigravity** | <img src="src/assets/images/vibe-tools/antigravity.png" width="22" height="22" alt="Google Antigravity"> | Multi-agent pair programming, test running, and full-repo architecture | Gemini 3.8 Flash, 3.7 Flash & 2.5 Pro reasoning |
-| **Cursor**             |         <img src="src/assets/images/vibe-tools/cursor.png" width="22" height="22" alt="Cursor">          | Primary AI-native IDE with full-codebase context orchestration         | Daily-driver IDE                                |
-| **Anthropic Claude**   |         <img src="src/assets/images/vibe-tools/claude.png" width="22" height="22" alt="Claude">          | Deep conceptual reasoning, architectural blueprints, and refactoring   | Claude 3.7 Sonnet, Opus & Opus 4.6              |
-| **OpenAI Codex**       |       <img src="src/assets/images/vibe-tools/codex.png" width="22" height="22" alt="OpenAI Codex">       | Unit test scaffolding, schema validation, and pair programming         | GPT-4o / Codex engine                           |
-| **OpenRouter**         |        <img src="src/assets/images/vibe-tools/kilo.png" width="22" height="22" alt="OpenRouter">         | Multi-model proxy routing with live streaming                          | Grok 4.3, Nemotron 120B, Gemma 27B              |
-| **Cline**              |          <img src="src/assets/images/vibe-tools/cline.png" width="22" height="22" alt="Cline">           | Autonomous agentic coding for browser testing and refactors            | Browser automation & QA                         |
-| **Windsurf**           |       <img src="src/assets/images/vibe-tools/windsurf.png" width="22" height="22" alt="Windsurf">        | Cascade agentic flow development and interactive iteration             | Cascade flow IDE                                |
-| **KiloChat**           |         <img src="src/assets/images/vibe-tools/kilo.png" width="22" height="22" alt="KiloChat">          | Interactive chat evaluation, knowledge auditing, and verification      | Model assessment                                |
-| **Figma**              |          <img src="src/assets/images/vibe-tools/figma.png" width="22" height="22" alt="Figma">           | UI/UX design, wireframing, and Apple HIG component layout              | Design system specification                     |
-
-### 5.1 AI Models & Engineering Purpose Matrix
-
-| AI Model                       | IDE / Environment             | Role & Engineering Purpose                                                        | Key Capabilities & Deliverables                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
-| :----------------------------- | :---------------------------- | :-------------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Grok 4.6 (medium)**          | **Cursor Cloud**              | **Safari Favorites MR-logo cache-bust & OG image host correction**                | Copied Apple touch / PWA icons to never-cached `*-mr-20260906` filenames, switched all `rel=icon` / `apple-touch-icon` / manifest entries to absolute GitHub Pages URLs with `?v=20260906mr`, and retargeted `og:image` / `twitter:image` from paused `mangeshraut.pro` (HTTP 402) to live `github.io` `home.png`. Token metrics not exported by this Cursor Cloud runtime.                                                                                                                                                                                                                                                                                                                                                                                           |
-| **Gemini 3.8 Flash (High)**    | **Google Antigravity (AGY)**  | **Uses Keynote Redesign, Cross-Page Audit Remediation & WhoBurnedMore Telemetry** | Architected and delivered complete Apple Special Event Keynote redesign of the Uses page (6-act presentation, frosted glass pill dock, 5 bold telemetry metrics). Executed comprehensive cross-page audit remediation across all 9 pages: converted root-relative `href="/"` and extensionless links to resilient relative paths, fixed homepage Antigravity URL, reconciled Keynote Slide 3 telemetry with WhoBurnedMore source data (9.18B Codex, 3.74B Cursor, 611M Kilo, 99.6M Cline/Droid, Active Antigravity Orchestrator), scoped keyboard arrow listeners, added Enter/Space keyboard handlers on Daily Drivers cards, eliminated mobile domain overflow, standardized title em dashes, and synchronized Vitest count to 239. Verified with 100% green CI/CD. |
-| **Gemini 3.7 Flash**           | **Google Antigravity / CLI**  | **Rapid Multi-Viewport Visual Auditing & UI Polish**                              | Real-time Playwright screenshot analysis, mobile viewport zero-overflow enforcement, squircle geometry calibration, fast multi-file CSS refactoring, and CI/CD pipeline automation.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-| **Gemini 2.5 Pro**             | **Google Antigravity (AGY)**  | **Deep Architectural Reasoning & System Contracts**                               | Solid surface theming foundation, multi-page data contracts, complex layout refactoring, and long-context full-codebase auditing.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
-| **Claude 3.7 Sonnet / Opus**   | **Claude Code / Cursor**      | **Conceptual Blueprints & Architectural Specs**                                   | System architecture diagrams, long-form technical field notes, API route designs, and strict security disclosures.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-| **Claude Opus 4.6 (Thinking)** | **Cursor**                    | **Multi-Storefront Artwork Pipeline & CSS Geometry Debugging**                    | Resolved Last.fm/Spotify artwork mismatch via verified artwork mappings, multi-storefront iTunes fallback (US→IN), and strict artist integrity scoring. Fixed music card action button clipping caused by overflow:hidden + border-radius corner geometry with surgical multi-file CSS edits across desktop and mobile breakpoints.                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-| **Grok 4.3 & Nemotron 120B**   | **OpenRouter API / AssistMe** | **Live AssistMe Edge Intelligence**                                               | Real-time client-side chat streaming via OpenRouter, multi-turn memory management, and 14 WebMCP tool executions.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
-| **GPT-4o / Codex**             | **VS Code / Copilot**         | **Unit Test & Schema Scaffolding**                                                | Vitest unit assertions, pytest API contracts, and edge mock fixtures across test suites.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
-
----
-
-## 6. Product Surfaces & Capabilities
+## 5. Product Surfaces & Capabilities
 
 | Surface / Route                                                                                         | Primary Purpose & Key Features                                                                                                                                                      |
 | :------------------------------------------------------------------------------------------------------ | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [**`/` (Homepage)**](https://mangeshraut712.github.io/mangeshrautarchive/)                              | Permanent compact Apple Music player with 30s audio scrubber & live equalizer, persistent contact, live Google booking, and Apple/Outlook event fallbacks.                          |
-| [**`/systems`**](https://mangeshraut712.github.io/mangeshrautarchive/systems)                           | Systems engineering notebook, multi-model token telemetry, daily-driver stack, architecture FAQ.                                                                                    |
+| [**`/systems`**](https://mangeshraut712.github.io/mangeshrautarchive/systems)                           | Systems engineering notebook, token telemetry, daily-driver stack, architecture FAQ.                                                                                                |
 | [**`/monitor`**](https://mangeshraut712.github.io/mangeshrautarchive/monitor)                           | Real-time platform health, hosting status, WHOOP vitals summary, GA4 realtime reach.                                                                                                |
 | [**`/travel`**](https://mangeshraut712.github.io/mangeshrautarchive/travel)                             | MapLibre 3D WebGL interactive atlas covering 90 stops across 4 countries with Google Search City Knowledge Panels, Google Maps/Guide actions, coordinates, and instant prefetching. |
-| [**`/uses`**](https://mangeshraut712.github.io/mangeshrautarchive/uses)                                 | Hardware, developer tooling, software, and everyday carry with category filtering and deduplicated stack badges.                                                                    |
+| [**`/uses`**](https://mangeshraut712.github.io/mangeshrautarchive/uses)                                 | Apple Special Event Keynote presentation with 6 interactive acts, frosted glass pill dock, and category-filtered engineering inventory.                                             |
 | [**`/changelog`**](https://mangeshraut712.github.io/mangeshrautarchive/changelog)                       | Clean GitHub/Apple un-boxed release history spanning from repo creation (April 8, 2025) to September 2026.                                                                          |
 | [**`/blog/`**](https://mangeshraut712.github.io/mangeshrautarchive/blog/)                               | 16 long-form technical field notes and deep dives with source embeds and KaTeX math.                                                                                                |
 | [**`/case-studies/`**](https://mangeshraut712.github.io/mangeshrautarchive/case-studies/portfolio.html) | 5 architectural case studies (Portfolio Architecture, HindAI, CES Energy, AssistMe VA, Bug Tracker).                                                                                |
 
 ---
 
-## 7. Testing & Quality Assurance Matrix
+## 6. Testing & Quality Assurance Matrix
 
 All quality gates are enforced locally and verified automatically in GitHub Actions CI:
 
@@ -325,15 +293,15 @@ All quality gates are enforced locally and verified automatically in GitHub Acti
 
 ---
 
-## 8. Quick Start & Development
+## 7. Quick Start & Development
 
-### 8.1 Prerequisites
+### 7.1 Prerequisites
 
 - **Node.js**: ≥22.0.0 and <27.0.0 (`.nvmrc` → `22`)
 - **Python**: 3.12+
 - **Git**: 2.30+
 
-### 8.2 Installation & Local Dev
+### 7.2 Installation & Local Dev
 
 ```bash
 # 1. Clone the repository
@@ -360,7 +328,7 @@ npm run dev
 # FastAPI:  http://127.0.0.1:8001 (Docs: /docs)
 ```
 
-### 8.3 Essential Quality Commands
+### 7.3 Essential Quality Commands
 
 ```bash
 npm run check             # Run ESLint + Stylelint + Prettier + 239 Vitest tests
@@ -373,7 +341,7 @@ npm run qa:prod-ready     # Full pre-deployment verification matrix
 
 ---
 
-## 9. Open Source Governance & Guidelines
+## 8. Open Source Governance & Guidelines
 
 We adhere to industry-standard open-source community health and governance standards:
 
@@ -387,7 +355,7 @@ We adhere to industry-standard open-source community health and governance stand
 
 ---
 
-## 10. Verified Biographical & Project Facts
+## 9. Verified Biographical & Project Facts
 
 All facts across the portfolio website are verified against primary records:
 
@@ -414,7 +382,7 @@ All facts across the portfolio website are verified against primary records:
 
 ---
 
-## 11. License, Citation & Contact
+## 10. License, Citation & Contact
 
 - **License**: **MIT License** — [LICENSE](LICENSE) · Copyright © 2025–2026 Mangesh Raut
 - **Citation**: See [CITATION.cff](CITATION.cff) or cite as:

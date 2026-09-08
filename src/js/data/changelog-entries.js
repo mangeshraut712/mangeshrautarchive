@@ -46,6 +46,21 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── September 2026 ──────────────────────────────────────────
   {
+    id: 'readme-modernization-diagram-alignment',
+    date: '2026-09-08',
+    type: 'improvement',
+    title: 'Documentation: Repository Architecture Modernization & Diagram Layout Alignment',
+    summary:
+      'Elevated repository README to industry-standard architecture documentation. Removed developer AI tooling matrix per user instruction, restructured sections to focus on full-stack architecture, zero-framework ESM philosophy, product surfaces, and quality gates. Re-engineered vector diagrams (system-architecture.svg, ci-cd-quality-pipeline.svg, assistme-multimodal-workflow.svg, dual-host-edge-topology.svg) to eliminate card text clipping, resolve Lighthouse score gauge overlap, expand card widths and heights, and synchronize automated test counts to 414 (239 Vitest + 175 pytest).',
+    tags: ['systems', 'design', 'performance'],
+    sha: '4b1e0d4c',
+    link: `${CHANGELOG_REPO}/commit/4b1e0d4c`,
+    model: 'Gemini 3.8 Flash (High)',
+    ide: 'Google Antigravity IDE (AGY)',
+    purpose:
+      'Repository README modernization, SVG geometry calibration, diagram text overlap elimination, and test metric synchronization',
+  },
+  {
     id: 'cross-page-audit-navigation-telemetry-remediation',
     date: '2026-09-08',
     type: 'fix',

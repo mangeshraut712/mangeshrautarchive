@@ -29,109 +29,112 @@
   <rect width="960" height="540" rx="20" class="bg" />
 
   <!-- Header Section -->
-  <g transform="translate(40, 40)">
+  <g transform="translate(40, 36)">
     <text class="section-title" x="0" y="0">mangeshraut.pro — Full-Stack Edge Architecture</text>
     <text class="section-desc" x="0" y="22">Dual-Host CDN Static Edge • Serverless Python 3.12 FastAPI Gateway • Multi-Model OpenRouter AI Router</text>
   </g>
 
-  <!-- Flow Edges -->
-  <path class="edge" d="M 140 180 L 220 180" />
-  <path class="edge" d="M 360 180 L 440 180" />
-  <path class="edge" d="M 580 180 L 660 180" />
-  <path class="edge" d="M 800 180 L 850 180" />
+  <!-- Horizontal Flow Edges -->
+  <path class="edge" d="M 150 180 L 195 180" />
+  <path class="edge" d="M 365 180 L 410 180" />
+  <path class="edge" d="M 580 180 L 625 180" />
+  <path class="edge" d="M 795 180 L 840 180" />
 
-  <path class="edge-solid" d="M 290 230 L 290 320" />
-  <path class="edge-solid" d="M 510 230 L 510 320" />
-  <path class="edge-solid" d="M 730 230 L 730 320" />
+  <!-- Vertical Subsystem Edges -->
+  <path class="edge-solid" d="M 280 255 L 280 305" />
+  <path class="edge-solid" d="M 495 255 L 495 305" />
+  <path class="edge-solid" d="M 710 255 L 710 305" />
 
   <!-- Column 1: Client Layer -->
-  <g transform="translate(40, 110)">
-    <rect width="100" height="140" rx="14" class="card-bg" />
-    <circle cx="50" cy="45" r="20" fill="#0071e3" opacity="0.12" />
-    <text x="50" y="50" text-anchor="middle" font-size="20">🌐</text>
-    <text class="node-title" x="50" y="85" text-anchor="middle">Client</text>
-    <text class="node-sub" x="50" y="102" text-anchor="middle">Safari / Chrome</text>
-    <text class="node-sub" x="50" y="118" text-anchor="middle">Desktop &amp; Mobile</text>
+  <g transform="translate(40, 105)">
+    <rect width="110" height="150" rx="14" class="card-bg" />
+    <circle cx="55" cy="45" r="20" fill="#0071e3" opacity="0.12" />
+    <text x="55" y="52" text-anchor="middle" font-size="20">🌐</text>
+    <text class="node-title" x="55" y="88" text-anchor="middle">Client</text>
+    <text class="node-sub" x="55" y="106" text-anchor="middle">Safari / Chrome</text>
+    <text class="node-sub" x="55" y="124" text-anchor="middle">Desktop &amp; Mobile</text>
   </g>
 
   <!-- Column 2: Edge Delivery -->
-  <g transform="translate(220, 110)">
-    <rect width="140" height="140" rx="14" class="card-bg-accent" />
+  <g transform="translate(195, 105)">
+    <rect width="170" height="150" rx="14" class="card-bg-accent" />
     <rect x="15" y="15" width="46" height="18" class="badge-pill" />
     <text class="node-tag" x="38" y="28" text-anchor="middle">EDGE</text>
     <text class="node-title" x="15" y="58">Vercel CDN</text>
     <text class="node-sub" x="15" y="76">mangeshraut.pro</text>
-    <text class="node-sub" x="15" y="96">• Static Cache</text>
-    <text class="node-sub" x="15" y="112">• Brotli Compression</text>
-    <text class="node-sub" x="15" y="128">• Smart DNS Routing</text>
+    <text class="node-sub" x="15" y="96">• Static Edge Cache</text>
+    <text class="node-sub" x="15" y="114">• Brotli Compression</text>
+    <text class="node-sub" x="15" y="132">• Smart Anycast DNS</text>
   </g>
 
   <!-- Column 3: Frontend Runtime -->
-  <g transform="translate(440, 110)">
-    <rect width="140" height="140" rx="14" class="card-bg" />
+  <g transform="translate(410, 105)">
+    <rect width="170" height="150" rx="14" class="card-bg" />
     <rect x="15" y="15" width="48" height="18" class="badge-pill" />
     <text class="node-tag" x="39" y="28" text-anchor="middle">SHELL</text>
     <text class="node-title" x="15" y="58">Vanilla ESM</text>
     <text class="node-sub" x="15" y="76">Zero Frameworks</text>
     <text class="node-sub" x="15" y="96">• Web Components</text>
-    <text class="node-sub" x="15" y="112">• Liquid Glass Engine</text>
-    <text class="node-sub" x="15" y="128">• Lazy Modules Loader</text>
+    <text class="node-sub" x="15" y="114">• Liquid Glass Engine</text>
+    <text class="node-sub" x="15" y="132">• Lazy Module Loader</text>
   </g>
 
   <!-- Column 4: FastAPI Gateway -->
-  <g transform="translate(660, 110)">
-    <rect width="140" height="140" rx="14" class="card-bg-accent" />
+  <g transform="translate(625, 105)">
+    <rect width="170" height="150" rx="14" class="card-bg-accent" />
     <rect x="15" y="15" width="54" height="18" class="badge-pill" />
     <text class="node-tag" x="42" y="28" text-anchor="middle">API GW</text>
     <text class="node-title" x="15" y="58">FastAPI /api</text>
     <text class="node-sub" x="15" y="76">Python 3.12 Core</text>
     <text class="node-sub" x="15" y="96">• /api/chat (NDJSON)</text>
-    <text class="node-sub" x="15" y="112">• /api/media/recent</text>
-    <text class="node-sub" x="15" y="128">• /api/monitor/*</text>
+    <text class="node-sub" x="15" y="114">• /api/media/recent</text>
+    <text class="node-sub" x="15" y="132">• /api/monitor/*</text>
   </g>
 
   <!-- Column 5: Intelligence & External Services -->
-  <g transform="translate(850, 110)">
-    <rect width="70" height="140" rx="14" class="card-bg" />
-    <text x="35" y="45" text-anchor="middle" font-size="20">🤖</text>
-    <text class="node-title" x="35" y="75" text-anchor="middle">AI</text>
-    <text class="node-sub" x="35" y="95" text-anchor="middle">Grok 4.3</text>
-    <text class="node-sub" x="35" y="110" text-anchor="middle">Claude</text>
-    <text class="node-sub" x="35" y="125" text-anchor="middle">Gemini</text>
+  <g transform="translate(840, 105)">
+    <rect width="80" height="150" rx="14" class="card-bg" />
+    <text x="40" y="45" text-anchor="middle" font-size="20">🤖</text>
+    <text class="node-title" x="40" y="75" text-anchor="middle">AI</text>
+    <text class="node-sub" x="40" y="95" text-anchor="middle">Grok 4.3</text>
+    <text class="node-sub" x="40" y="112" text-anchor="middle">Claude</text>
+    <text class="node-sub" x="40" y="128" text-anchor="middle">Gemini</text>
   </g>
 
   <!-- Lower Row: Subsystems & Redundancy -->
   <!-- Redundancy 1: GitHub Pages Mirror -->
-  <g transform="translate(220, 320)">
-    <rect width="140" height="150" rx="14" class="card-bg" />
+  <g transform="translate(195, 305)">
+    <rect width="170" height="175" rx="14" class="card-bg" />
     <text class="node-title" x="15" y="32">GitHub Pages</text>
     <text class="node-sub" x="15" y="50">Static Mirror Host</text>
-    <text class="node-sub" x="15" y="72">• mangeshraut712.github.io</text>
-    <text class="node-sub" x="15" y="88">• Zero downtime failover</text>
-    <text class="node-sub" x="15" y="104">• Cloudflare Worker Proxy</text>
-    <text class="node-sub" x="15" y="120">• SHA Parity Guard</text>
+    <text class="node-sub" x="15" y="74">• github.io Primary</text>
+    <text class="node-sub" x="15" y="92">• Zero downtime failover</text>
+    <text class="node-sub" x="15" y="110">• Cloudflare Worker Proxy</text>
+    <text class="node-sub" x="15" y="128">• SHA Parity Guard</text>
+    <text class="node-sub" x="15" y="146">• 0-Downtime Atomic Sync</text>
   </g>
 
   <!-- Redundancy 2: Client Subsystems -->
-  <g transform="translate(440, 320)">
-    <rect width="140" height="150" rx="14" class="card-bg" />
+  <g transform="translate(410, 305)">
+    <rect width="170" height="175" rx="14" class="card-bg" />
     <text class="node-title" x="15" y="32">Interactive UI</text>
     <text class="node-sub" x="15" y="50">Modular Subsystems</text>
-    <text class="node-sub" x="15" y="72">• Hero Music Pill Card</text>
-    <text class="node-sub" x="15" y="88">• Project Search &amp; Chips</text>
-    <text class="node-sub" x="15" y="104">• Skills Depth Radar</text>
-    <text class="node-sub" x="15" y="120">• Travel Atlas &amp; Map</text>
-    <text class="node-sub" x="15" y="136">• System Telemetry Ring</text>
+    <text class="node-sub" x="15" y="74">• Hero Music Pill Card</text>
+    <text class="node-sub" x="15" y="92">• Project Search &amp; Chips</text>
+    <text class="node-sub" x="15" y="110">• Skills Depth Radar</text>
+    <text class="node-sub" x="15" y="128">• Travel Atlas &amp; Map</text>
+    <text class="node-sub" x="15" y="146">• System Telemetry Ring</text>
   </g>
 
   <!-- Redundancy 3: Backend Security & Verification -->
-  <g transform="translate(660, 320)">
-    <rect width="140" height="150" rx="14" class="card-bg" />
+  <g transform="translate(625, 305)">
+    <rect width="170" height="175" rx="14" class="card-bg" />
     <text class="node-title" x="15" y="32">Safety &amp; Telemetry</text>
     <text class="node-sub" x="15" y="50">Edge Security Layer</text>
-    <text class="node-sub" x="15" y="72">• HMAC Session Auth</text>
-    <text class="node-sub" x="15" y="88">• Prompt Injection Filter</text>
-    <text class="node-sub" x="15" y="104">• In-Memory 25s Cache</text>
-    <text class="node-sub" x="15" y="120">• 161 Vitest + 166 pytest</text>
+    <text class="node-sub" x="15" y="74">• HMAC Session Auth</text>
+    <text class="node-sub" x="15" y="92">• Prompt Injection Filter</text>
+    <text class="node-sub" x="15" y="110">• In-Memory 25s Cache</text>
+    <text class="node-sub" x="15" y="128">• 239 Vitest + 175 pytest</text>
+    <text class="node-sub" x="15" y="146">• 100/100 Lighthouse Floor</text>
   </g>
 </svg>
