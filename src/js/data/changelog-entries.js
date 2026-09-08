@@ -46,6 +46,36 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── September 2026 ──────────────────────────────────────────
   {
+    id: 'subpage-spacing-and-layout-luxury-upgrade',
+    date: '2026-09-08',
+    type: 'improvement',
+    title: 'Design System: Separate Pages Spatial Decongestion & Luxury Layout Polish',
+    summary:
+      'Elevated all 5 standalone surfaces (Systems, Travel, Monitor, Uses, and Changelog) to Apple HIG luxury breathing room standards, dismantling congested card stacks and cramped overrides. Systems: expanded keynote section padding and inter-section gaps to clamp(2rem, 4vw, 3.25rem), increased card padding to clamp(1.15rem, 2vw, 1.5rem), and broadened decision row spacing. Monitor: expanded container shell to min(75rem, 100%) (1200px) and grid gaps to clamp(1rem, 1.8vw, 1.35rem), raised card min-height to 9.5rem and min-width to 250px, preventing badge wrapping and text truncation. Travel: expanded sidebar header padding, broadened stat card touch targets and country pills, and upgraded stop card padding to 3rem left-inset with 16px radius. Uses: relaxed presentation stage margins, broadened keynote bento card padding, and increased catalog grid gap to 1.85rem. Changelog: widened reading shell to 56rem, added entry dividers, relaxed toolbar chip rows, and integrated dedicated entry summary rendering.',
+    tags: ['design', 'systems', 'performance'],
+    sha: 'a83f19e2',
+    link: `${CHANGELOG_REPO}/commit/a83f19e2`,
+    model: 'Gemini 3.8 Flash (High)',
+    ide: 'Google Antigravity IDE (AGY)',
+    purpose:
+      'Separate pages layout upgrade, card decongestion, spatial rhythm calibration, and responsive breathing room',
+  },
+  {
+    id: 'cross-page-deduplication-and-section-reordering',
+    date: '2026-09-08',
+    type: 'improvement',
+    title: 'Architecture: Cross-Page Section Deduplication & Cohesive Surface Flow Reordering',
+    summary:
+      'Audited all secondary pages to eliminate duplicate cross-page cards and sections, consolidating each feature to its canonical home. Disambiguated systems.html Projects section into Architectural Case Studies with updated rail navigation, preserving existing anchors and E2E test contracts. Streamlined systems.html Writing section into a dedicated Engineering Field Notes directory with domain topic chips and direct links to the canonical 16-post technical writings on the homepage and blog archive, removing duplicate post cards. Reordered monitor.html to place Deployment Surfaces immediately following Portfolio Surfaces in Tier 2, establishing a cohesive edge and surface observability flow.',
+    tags: ['systems', 'design', 'performance'],
+    sha: 'b729c924',
+    link: `${CHANGELOG_REPO}/commit/b729c924`,
+    model: 'Gemini 3.8 Flash (High)',
+    ide: 'Google Antigravity IDE (AGY)',
+    purpose:
+      'Cross-page content deduplication, canonical information architecture consolidation, and monitoring surface reordering',
+  },
+  {
     id: 'readme-modernization-diagram-alignment',
     date: '2026-09-08',
     type: 'improvement',

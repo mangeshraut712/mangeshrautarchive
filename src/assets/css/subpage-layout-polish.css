@@ -25,7 +25,7 @@ body.uses-page {
   );
   --subpage-sticky-top: calc(var(--subpage-nav-top) + var(--subpage-nav-height) + 12px);
   --systems-shell-max: min(1200px, 100%);
-  --systems-section-gap: clamp(1.5rem, 3.5vw, 2.35rem);
+  --systems-section-gap: clamp(2rem, 4vw, 3.25rem);
   --systems-radius: 18px;
   --systems-radius-sm: 14px;
   /* Sticky needs a visible overflow chain — do not clip on body. */
@@ -181,22 +181,22 @@ body.systems-page .systems-hero-stat-value {
   }
 }
 
-/* Section cards — no clipped focus rings, tight stack */
+/* Section cards — generous Apple HIG breathing room */
 body.systems-page .systems-keynote-section {
-  gap: 0.9rem;
-  padding: clamp(1rem, 2.4vw, 1.5rem);
+  gap: clamp(1.25rem, 2.5vw, 1.75rem);
+  padding: clamp(1.5rem, 3.2vw, 2.5rem);
   overflow: visible;
   isolation: isolate;
 }
 
 body.systems-page .systems-section-head {
-  margin-bottom: 0.15rem;
+  margin-bottom: 0.5rem;
 }
 
 body.systems-page .systems-section-desc {
   max-width: none;
-  font-size: 0.9rem;
-  line-height: 1.45;
+  font-size: 0.95rem;
+  line-height: 1.55;
 }
 
 /* Sticky rail layout polish — clear fixed nav, no side mask eating labels */
@@ -215,9 +215,9 @@ html.dark body.systems-page .systems-section-rail {
   box-shadow: 0 2px 14px rgb(0 0 0 / 35%);
 }
 
-/* Evidence + metrics denser */
+/* Evidence + metrics spacious */
 body.systems-page .systems-evidence-grid {
-  gap: 0.7rem;
+  gap: clamp(1rem, 2vw, 1.35rem);
   align-items: stretch;
 }
 
@@ -225,6 +225,7 @@ body.systems-page .systems-evidence-card {
   min-width: 0;
   height: 100%;
   box-sizing: border-box;
+  padding: clamp(1.25rem, 2vw, 1.6rem);
 }
 
 /* When only a few overview cards, prefer half-width pairs on desktop */
@@ -242,7 +243,7 @@ body.systems-page .systems-metrics-grid,
 body.systems-page .systems-benchmarks-viz,
 body.systems-page .systems-now-grid,
 body.systems-page .systems-principles-grid {
-  gap: 0.7rem !important;
+  gap: clamp(1rem, 2vw, 1.35rem) !important;
   align-items: stretch;
 }
 
@@ -254,14 +255,15 @@ body.systems-page .systems-bento-tile {
   min-width: 0;
   height: 100%;
   box-sizing: border-box;
+  padding: clamp(1.15rem, 2vw, 1.5rem);
 }
 
-/* Decision rows — two-up on wide screens (fill width, less vertical dead space) */
+/* Decision rows — two-up on wide screens with generous padding */
 body.systems-page .systems-decision-grid {
   display: grid !important;
   grid-template-columns: 1fr !important;
-  gap: 0.55rem !important;
-  margin-bottom: 0.75rem !important;
+  gap: clamp(0.85rem, 1.5vw, 1.15rem) !important;
+  margin-bottom: 1.25rem !important;
 }
 
 @media (min-width: 900px) {
@@ -274,8 +276,8 @@ body.systems-page .systems-decision-row {
   margin-bottom: 0 !important;
   min-width: 0;
   height: 100%;
-  padding: 0.95rem 1.05rem !important;
-  gap: 0.85rem !important;
+  padding: 1.15rem 1.35rem !important;
+  gap: 1rem !important;
 }
 
 body.systems-page .systems-decision-meta {
@@ -283,23 +285,23 @@ body.systems-page .systems-decision-meta {
 }
 
 body.systems-page .systems-decision-label {
-  font-size: 0.9rem !important;
+  font-size: 0.95rem !important;
 }
 
 body.systems-page .systems-decision-why {
-  font-size: 0.82rem !important;
-  line-height: 1.4 !important;
+  font-size: 0.88rem !important;
+  line-height: 1.5 !important;
 }
 
 /* Architecture stage */
 body.systems-page .systems-arch-stage {
-  padding: 0.9rem !important;
+  padding: clamp(1.25rem, 2.5vw, 1.85rem) !important;
   min-width: 0;
 }
 
 body.systems-page .systems-arch-tabs {
-  gap: 0.3rem;
-  margin-bottom: 0.75rem !important;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem !important;
 }
 
 body.systems-page .systems-arch-diagram-host {
@@ -311,7 +313,7 @@ body.systems-page .systems-arch-diagram-host {
 /* Failure / project grids */
 body.systems-page .systems-failure-grid {
   display: grid !important;
-  gap: 0.55rem !important;
+  gap: clamp(0.85rem, 1.5vw, 1.15rem) !important;
 }
 
 @media (min-width: 900px) {
@@ -324,14 +326,14 @@ body.systems-page .systems-failure-row {
   margin: 0;
   height: 100%;
   min-width: 0;
-  padding: 0.95rem 1.05rem !important;
+  padding: 1.15rem 1.35rem !important;
 }
 
 /* ─── Uses page ─── */
 body.uses-page .uses-grid {
   display: grid !important;
   grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-  gap: 0.75rem !important;
+  gap: clamp(1.25rem, 2.2vw, 1.85rem) !important;
   align-items: stretch;
 }
 
@@ -340,7 +342,7 @@ body.uses-page .uses-section {
   height: 100%;
   display: flex;
   flex-direction: column;
-  padding: 1rem 1.05rem 0.95rem !important;
+  padding: clamp(1.25rem, 2.2vw, 1.65rem) !important;
   box-sizing: border-box;
 }
 
@@ -349,16 +351,16 @@ body.uses-page .uses-section ul {
 }
 
 body.uses-page .uses-control-center {
-  margin-bottom: 0.85rem !important;
-  padding: 1rem !important;
+  margin-bottom: 1.5rem !important;
+  padding: clamp(1.25rem, 2vw, 1.65rem) !important;
 }
 
 body.uses-page .uses-control-center__grid {
-  gap: 0.55rem !important;
+  gap: clamp(0.75rem, 1.5vw, 1rem) !important;
 }
 
 body.uses-page .systems-footer {
-  margin-top: 0.5rem;
+  margin-top: 1.5rem;
 }
 
 @media (max-width: 640px) {

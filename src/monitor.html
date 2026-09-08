@@ -501,6 +501,28 @@
         </div>
       </section>
 
+      <section class="section" id="deployment-surfaces-section">
+        <div class="section-header">
+          <h2 class="section-title">Deployment Surfaces</h2>
+          <div class="section-actions">
+            <button
+              class="btn btn-secondary"
+              id="btn-refresh-surfaces"
+              onclick="refreshHostingSurfaces()"
+            >
+              <i class="fas fa-globe"></i>
+              <span>Refresh Surfaces</span>
+            </button>
+          </div>
+        </div>
+        <div class="health-grid" id="deployment-surfaces">
+          <div class="empty-state">
+            <i class="fas fa-spinner fa-spin"></i>
+            <h3>Checking deployment surfaces...</h3>
+          </div>
+        </div>
+      </section>
+
       <section class="section monitor-dashboard-section" id="backend-system-section">
         <div class="section-header">
           <h2 class="section-title">Backend System Map</h2>
@@ -792,28 +814,6 @@
           <div class="empty-state">
             <i class="fas fa-spinner fa-spin"></i>
             <h3>Loading OAuth integration status...</h3>
-          </div>
-        </div>
-      </section>
-
-      <section class="section" id="deployment-surfaces-section">
-        <div class="section-header">
-          <h2 class="section-title">Deployment Surfaces</h2>
-          <div class="section-actions">
-            <button
-              class="btn btn-secondary"
-              id="btn-refresh-surfaces"
-              onclick="refreshHostingSurfaces()"
-            >
-              <i class="fas fa-globe"></i>
-              <span>Refresh Surfaces</span>
-            </button>
-          </div>
-        </div>
-        <div class="health-grid" id="deployment-surfaces">
-          <div class="empty-state">
-            <i class="fas fa-spinner fa-spin"></i>
-            <h3>Checking deployment surfaces...</h3>
           </div>
         </div>
       </section>

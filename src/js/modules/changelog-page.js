@@ -195,6 +195,7 @@ function renderEntry(entry) {
         <h3 class="changelog-entry__title">${titleInner}</h3>
         ${area ? `<p class="changelog-entry__area">${escapeHtml(area)}</p>` : ''}
       </div>
+      ${entry.summary ? `<p class="changelog-entry__summary">${escapeHtml(entry.summary)}</p>` : ''}
     </article>`;
 }
 

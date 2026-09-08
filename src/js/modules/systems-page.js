@@ -307,35 +307,6 @@ function renderWriting() {
   const root = document.getElementById('systems-writing-grid');
   if (!root) return;
 
-  const formatDate = dateString => {
-    const options = { year: 'numeric', month: 'long', day: 'numeric' };
-    return new Date(dateString).toLocaleDateString('en-US', options);
-  };
-
-  // Grab the top 3 most recent posts for showcase
-  const recentPosts = blogPosts.toSorted((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 3);
-
-  const articlesHtml = recentPosts
-    .map(
-      post => `
-        <article class="systems-writing-card lg-glass-card">
-          <div class="systems-writing-card-header">
-            <span class="systems-writing-kicker">${escapeHtml(post.kicker || 'Field Notes')}</span>
-            <span class="systems-writing-time">${escapeHtml(post.readTime)}</span>
-          </div>
-          <h3 class="systems-writing-title">
-            <a href="blog/${escapeHtml(post.id)}.html">${escapeHtml(post.title)}</a>
-          </h3>
-          <p class="systems-writing-summary">${escapeHtml(post.summary)}</p>
-          <div class="systems-writing-footer">
-            <span class="systems-writing-date">${formatDate(post.date)}</span>
-            <a class="systems-writing-link" href="blog/${escapeHtml(post.id)}.html">Read article →</a>
-          </div>
-        </article>
-      `
-    )
-    .join('');
-
   const topicsHtml = writingTopics
     .map(
       topic =>
@@ -345,11 +316,24 @@ function renderWriting() {
 
   root.innerHTML = `
     <div class="systems-writing-container">
-      <div class="systems-writing-articles">
-        ${articlesHtml}
-      </div>
+      <article class="systems-writing-card lg-glass-card">
+        <div class="systems-writing-card-header">
+          <span class="systems-writing-kicker">Architecture &amp; Field Notes</span>
+          <span class="systems-writing-time">${blogPosts.length} Published Articles</span>
+        </div>
+        <h3 class="systems-writing-title">
+          Technical Field Notes, Distributed Systems &amp; Agentic AI
+        </h3>
+        <p class="systems-writing-summary">
+          Deep-dive technical essays covering Spring Boot, AWS event-driven architectures, agentic AI workflows, LLM token optimization, and high-throughput systems design. Canonical articles, interactive filters, and newsletter subscription are hosted on the main portfolio.
+        </p>
+        <div class="systems-writing-footer">
+          <a class="systems-writing-link" href="index.html#blog">View all ${blogPosts.length} articles on homepage →</a>
+          <a class="systems-writing-link" href="blog/index.html">Browse blog index →</a>
+        </div>
+      </article>
       <div class="systems-writing-topics-section">
-        <span class="systems-writing-topics-title">Explore more topics</span>
+        <span class="systems-writing-topics-title">Technical Domains</span>
         <div class="systems-writing-topics-grid">
           ${topicsHtml}
         </div>
