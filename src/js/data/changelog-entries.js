@@ -53,8 +53,8 @@ export const changelogEntries = [
     summary:
       'Elevated all 5 standalone surfaces (Systems, Travel, Monitor, Uses, and Changelog) to Apple HIG luxury breathing room standards, dismantling congested card stacks and cramped overrides. Systems: expanded keynote section padding and inter-section gaps to clamp(2rem, 4vw, 3.25rem), increased card padding to clamp(1.15rem, 2vw, 1.5rem), and broadened decision row spacing. Monitor: expanded container shell to min(75rem, 100%) (1200px) and grid gaps to clamp(1rem, 1.8vw, 1.35rem), raised card min-height to 9.5rem and min-width to 250px, preventing badge wrapping and text truncation. Travel: expanded sidebar header padding, broadened stat card touch targets and country pills, and upgraded stop card padding to 3rem left-inset with 16px radius. Uses: relaxed presentation stage margins, broadened keynote bento card padding, and increased catalog grid gap to 1.85rem. Changelog: widened reading shell to 56rem, added entry dividers, relaxed toolbar chip rows, and integrated dedicated entry summary rendering.',
     tags: ['design', 'systems', 'performance'],
-    sha: 'a83f19e2',
-    link: `${CHANGELOG_REPO}/commit/a83f19e2`,
+    sha: '9bf6d3e0',
+    link: `${CHANGELOG_REPO}/commit/9bf6d3e0`,
     model: 'Gemini 3.8 Flash (High)',
     ide: 'Google Antigravity IDE (AGY)',
     purpose:
