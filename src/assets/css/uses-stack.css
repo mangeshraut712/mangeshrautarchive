@@ -272,7 +272,17 @@ body.uses-page .keynote-chapter-pill__num {
   font-family: var(--font-mono, monospace);
   font-size: 0.74rem;
   font-weight: 700;
-  opacity: 0.85;
+  color: #555558;
+}
+
+html.dark body.uses-page .keynote-chapter-pill__num {
+  color: #a1a1a6;
+}
+
+body.uses-page .keynote-chapter-pill.is-active .keynote-chapter-pill__num {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  opacity: 0.95;
 }
 
 body.uses-page .keynote-chapter-pill__title {
