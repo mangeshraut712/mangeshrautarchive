@@ -3292,7 +3292,84 @@ document.addEventListener('DOMContentLoaded', async () => {
   setInterval(() => refreshData({ silent: true }), 30000);
 });
 
+function initMonitorSectionRail() {
+  const rail = document.querySelector('.monitor-section-rail');
+  if (!rail) return;
+
+  const links = rail.querySelectorAll('[data-section-link]');
+  if (!links.length) return;
+
+  const sectionMap = new Map(
+    [...links].map(link => [link.getAttribute('href')?.slice(1), link]).filter(([id]) => id)
+  );
+  const sections = [...sectionMap.keys()].map(id => document.getElementById(id)).filter(Boolean);
+
+  const setActive = id => {
+    links.forEach(link => {
+      const active = link.getAttribute('href') === `#${id}`;
+      link.classList.toggle('is-active', active);
+      link.setAttribute('aria-current', active ? 'true' : 'false');
+      if (active && rail) {
+        const railRect = rail.getBoundingClientRect();
+        const linkRect = link.getBoundingClientRect();
+        const offset = linkRect.left - railRect.left - railRect.width / 2 + linkRect.width / 2;
+        rail.scrollTo({ left: rail.scrollLeft + offset, behavior: 'smooth' });
+      }
+    });
+  };
+
+  let isScrollingTo = null;
+  let scrollTimeout = null;
+
+  links.forEach(link => {
+    link.addEventListener('click', event => {
+      const href = link.getAttribute('href');
+      if (!href?.startsWith('#')) return;
+      const target = document.querySelector(href);
+      if (!target) return;
+      event.preventDefault();
+      isScrollingTo = href.slice(1);
+      setActive(isScrollingTo);
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      if (scrollTimeout) clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => {
+        isScrollingTo = null;
+      }, 1000);
+    });
+  });
+
+  if (!sections.length || !('IntersectionObserver' in window)) return;
+
+  const observer = new IntersectionObserver(
+    entries => {
+      const visible = entries
+        .filter(entry => entry.isIntersecting)
+        .reduce(
+          (best, entry) =>
+            !best || entry.intersectionRatio > best.intersectionRatio ? entry : best,
+          null
+        );
+      if (!visible) return;
+      if (isScrollingTo) {
+        if (visible.target.id === isScrollingTo) {
+          isScrollingTo = null;
+        } else {
+          return;
+        }
+      }
+      setActive(visible.target.id);
+    },
+    {
+      rootMargin: '-80px 0px -50% 0px',
+      threshold: [0, 0.1, 0.25, 0.5, 0.75, 1],
+    }
+  );
+
+  sections.forEach(section => observer.observe(section));
+}
+
 initOverlayMenu();
+initMonitorSectionRail();
 
 const nav = document.getElementById('global-nav');
 const syncNavState = () => {

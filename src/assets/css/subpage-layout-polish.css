@@ -16,14 +16,15 @@
 /* Shared chrome tokens (fallback if systems-critical not present) */
 body.systems-page,
 body.monitor-page,
-body.uses-page {
+body.uses-page,
+body.changelog-page {
   --subpage-nav-top: max(14px, env(safe-area-inset-top, 0px));
-  --subpage-nav-height: 52px;
-  --subpage-nav-gap: 18px;
+  --subpage-nav-height: 60px;
+  --subpage-nav-gap: 20px;
   --subpage-body-pad-top: calc(
     var(--subpage-nav-top) + var(--subpage-nav-height) + var(--subpage-nav-gap)
   );
-  --subpage-sticky-top: calc(var(--subpage-nav-top) + var(--subpage-nav-height) + 12px);
+  --subpage-sticky-top: calc(var(--subpage-nav-top) + var(--subpage-nav-height) + 16px);
   --systems-shell-max: min(1200px, 100%);
   --systems-section-gap: clamp(2rem, 4vw, 3.25rem);
   --systems-radius: 18px;
@@ -40,18 +41,21 @@ body.uses-page {
 html.dark body.systems-page,
 html.dark body.monitor-page,
 html.dark body.uses-page,
+html.dark body.changelog-page,
 html[data-theme='dark'] body.systems-page,
 html[data-theme='dark'] body.monitor-page,
-html[data-theme='dark'] body.uses-page {
+html[data-theme='dark'] body.uses-page,
+html[data-theme='dark'] body.changelog-page {
   background: #000000 !important;
   background-color: #000000 !important;
   background-image: none !important;
 }
 
-/* Floating pill nav — solid, shared on systems / monitor / uses */
+/* Floating pill nav — solid, shared on systems / monitor / uses / changelog */
 body.systems-page .monitor-page-nav,
 body.monitor-page .monitor-page-nav,
-body.uses-page .monitor-page-nav {
+body.uses-page .monitor-page-nav,
+body.changelog-page .monitor-page-nav {
   top: var(--subpage-nav-top) !important;
   min-height: var(--subpage-nav-height) !important;
   background: #ffffff !important;
@@ -65,9 +69,11 @@ body.uses-page .monitor-page-nav {
 html.dark body.systems-page .monitor-page-nav,
 html.dark body.monitor-page .monitor-page-nav,
 html.dark body.uses-page .monitor-page-nav,
+html.dark body.changelog-page .monitor-page-nav,
 html[data-theme='dark'] body.systems-page .monitor-page-nav,
 html[data-theme='dark'] body.monitor-page .monitor-page-nav,
-html[data-theme='dark'] body.uses-page .monitor-page-nav {
+html[data-theme='dark'] body.uses-page .monitor-page-nav,
+html[data-theme='dark'] body.changelog-page .monitor-page-nav {
   background: #000000 !important;
   background-color: #000000 !important;
   border-color: #2c2c2e !important;
@@ -80,14 +86,17 @@ html[data-theme='dark'] body.uses-page .monitor-page-nav {
  */
 html:has(body.systems-page),
 html:has(body.uses-page),
-html:has(body.monitor-page) {
+html:has(body.monitor-page),
+html:has(body.changelog-page) {
   overflow-x: visible !important;
   overflow-y: auto !important;
 }
 
-/* Sticky section rails — never slide under the fixed nav */
+/* Sticky section rails & subnavbars — never slide under the fixed nav */
 body.systems-page .systems-section-rail,
-body.monitor-page .monitor-section-rail {
+body.monitor-page .monitor-section-rail,
+body.uses-page .keynote-deck-nav,
+body.changelog-page .changelog-toolbar {
   position: sticky !important;
   top: var(--subpage-sticky-top) !important;
   background: #ffffff !important;
@@ -199,20 +208,20 @@ body.systems-page .systems-section-desc {
   line-height: 1.55;
 }
 
-/* Sticky rail layout polish — clear fixed nav, no side mask eating labels */
+/* Sticky rail layout polish — clear fixed nav, centered fit-content pill */
 body.systems-page .systems-section-rail {
-  width: 100%;
-  max-width: 100%;
-  justify-content: flex-start;
-  margin: 0 auto;
-  box-sizing: border-box;
+  width: fit-content !important;
+  max-width: 100% !important;
+  justify-content: center !important;
+  margin: 0 auto !important;
+  box-sizing: border-box !important;
   mask-image: none !important;
   -webkit-mask-image: none !important;
-  box-shadow: 0 2px 12px rgb(0 0 0 / 5%);
+  box-shadow: 0 2px 12px rgb(0 0 0 / 5%) !important;
 }
 
 html.dark body.systems-page .systems-section-rail {
-  box-shadow: 0 2px 14px rgb(0 0 0 / 35%);
+  box-shadow: 0 2px 14px rgb(0 0 0 / 35%) !important;
 }
 
 /* Evidence + metrics spacious */
@@ -1326,7 +1335,8 @@ body.offline-page .offline-destinations a:focus-visible {
 @media (max-width: 640px) {
   body.systems-page,
   body.monitor-page,
-  body.uses-page {
+  body.uses-page,
+  body.changelog-page {
     /* Slightly tighter pad still clears nav */
     --subpage-nav-gap: 12px;
     padding-top: var(--subpage-body-pad-top) !important;
@@ -1573,41 +1583,69 @@ html.dark body.changelog-page .changelog-hero-lead {
   color: #8b949e !important;
 }
 
-/* ─── 2. Unified Changelog-Standard Pill Section Rails & Filter Toolbars ─── */
+/* ─── 2. Unified Apple HIG & shadcn/ui Segmented Section Rails & Filter Toolbars ─── */
 body.systems-page .systems-section-rail,
 body.monitor-page .monitor-section-rail,
 body.uses-page .uses-filters,
+body.uses-page .keynote-deck-nav,
+body.changelog-page .changelog-toolbar,
 body.travel-body .travel-filter-chips {
   display: flex !important;
   flex-wrap: nowrap !important;
   align-items: center !important;
   gap: 0.35rem !important;
   padding: 0.35rem 0.55rem !important;
-  border-radius: 980px !important;
-  border: 1px solid #d2d2d7 !important;
-  background: #ffffff !important;
-  background-color: #ffffff !important;
-  box-shadow: 0 1px 3px rgb(0 0 0 / 4%) !important;
+  border-radius: 9999px !important;
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
+  background: rgba(255, 255, 255, 0.9) !important;
+  background-color: rgba(255, 255, 255, 0.9) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05) !important;
   overflow-x: auto !important;
   overflow-y: hidden !important;
   scrollbar-width: none !important;
   -webkit-overflow-scrolling: touch !important;
+  width: fit-content !important;
+  max-width: 100% !important;
+  margin-inline: auto !important;
 }
 
 html.dark body.systems-page .systems-section-rail,
 html.dark body.monitor-page .monitor-section-rail,
 html.dark body.uses-page .uses-filters,
+html.dark body.uses-page .keynote-deck-nav,
+html.dark body.changelog-page .changelog-toolbar,
 html.dark body.travel-body .travel-filter-chips {
-  background: #000000 !important;
-  background-color: #000000 !important;
-  border-color: #30363d !important;
-  box-shadow: 0 2px 10px rgb(0 0 0 / 30%) !important;
+  background: rgba(18, 18, 20, 0.9) !important;
+  background-color: rgba(18, 18, 20, 0.9) !important;
+  border-color: rgba(255, 255, 255, 0.14) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45) !important;
+}
+
+body.monitor-page .monitor-section-rail__list {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.3rem !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  list-style: none !important;
+  width: max-content !important;
+}
+
+body.monitor-page .monitor-section-rail__list li {
+  display: inline-flex !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
 body.systems-page .systems-section-rail a,
 body.monitor-page .monitor-section-rail a,
 body.uses-page .uses-chip,
 body.uses-page .uses-filters button,
+body.uses-page .keynote-chapter-pill,
+body.changelog-page .changelog-chip,
+body.changelog-page .changelog-filters-toggle,
 body.travel-body .travel-filter-chip {
   appearance: none !important;
   display: inline-flex !important;
@@ -1619,10 +1657,10 @@ body.travel-body .travel-filter-chip {
   background-color: transparent !important;
   color: #6e6e73 !important;
   -webkit-text-fill-color: #6e6e73 !important;
-  border-radius: 980px !important;
-  padding: 0.42rem 0.82rem !important;
+  border-radius: 9999px !important;
+  padding: 0.42rem 0.85rem !important;
   font-size: 0.8125rem !important;
-  font-weight: 600 !important;
+  font-weight: 550 !important;
   letter-spacing: -0.01em !important;
   line-height: 1.2 !important;
   white-space: nowrap !important;
@@ -1639,6 +1677,9 @@ html.dark body.systems-page .systems-section-rail a,
 html.dark body.monitor-page .monitor-section-rail a,
 html.dark body.uses-page .uses-chip,
 html.dark body.uses-page .uses-filters button,
+html.dark body.uses-page .keynote-chapter-pill,
+html.dark body.changelog-page .changelog-chip,
+html.dark body.changelog-page .changelog-filters-toggle,
 html.dark body.travel-body .travel-filter-chip {
   color: #8b949e !important;
   -webkit-text-fill-color: #8b949e !important;
@@ -1648,9 +1689,12 @@ body.systems-page .systems-section-rail a:hover,
 body.monitor-page .monitor-section-rail a:hover,
 body.uses-page .uses-chip:hover,
 body.uses-page .uses-filters button:hover,
+body.uses-page .keynote-chapter-pill:hover,
+body.changelog-page .changelog-chip:hover,
+body.changelog-page .changelog-filters-toggle:hover,
 body.travel-body .travel-filter-chip:hover {
-  background: #f0f0f2 !important;
-  background-color: #f0f0f2 !important;
+  background: rgba(0, 0, 0, 0.05) !important;
+  background-color: rgba(0, 0, 0, 0.05) !important;
   color: #1d1d1f !important;
   -webkit-text-fill-color: #1d1d1f !important;
   transform: none !important;
@@ -1660,9 +1704,12 @@ html.dark body.systems-page .systems-section-rail a:hover,
 html.dark body.monitor-page .monitor-section-rail a:hover,
 html.dark body.uses-page .uses-chip:hover,
 html.dark body.uses-page .uses-filters button:hover,
+html.dark body.uses-page .keynote-chapter-pill:hover,
+html.dark body.changelog-page .changelog-chip:hover,
+html.dark body.changelog-page .changelog-filters-toggle:hover,
 html.dark body.travel-body .travel-filter-chip:hover {
-  background: #1c2128 !important;
-  background-color: #1c2128 !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+  background-color: rgba(255, 255, 255, 0.08) !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
 }
@@ -1674,13 +1721,18 @@ body.monitor-page .monitor-section-rail a[aria-current='true'],
 body.uses-page .uses-chip.is-active,
 body.uses-page .uses-filters button.is-active,
 body.uses-page .uses-filters button[aria-pressed='true'],
+body.uses-page .keynote-chapter-pill.is-active,
+body.changelog-page .changelog-chip.is-active,
+body.changelog-page .changelog-chip.active,
 body.travel-body .travel-filter-chip.active,
 body.travel-body .travel-filter-chip[aria-pressed='true'] {
-  background: #0071e3 !important;
+  background-image: linear-gradient(135deg, #0077ed 0%, #0071e3 50%, #005bb5 100%) !important;
   background-color: #0071e3 !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
   font-weight: 650 !important;
+  border-radius: 9999px !important;
+  box-shadow: 0 2px 10px rgba(0, 113, 227, 0.35) !important;
 }
 
 html.dark body.systems-page .systems-section-rail a.is-active,
@@ -1690,13 +1742,18 @@ html.dark body.monitor-page .monitor-section-rail a[aria-current='true'],
 html.dark body.uses-page .uses-chip.is-active,
 html.dark body.uses-page .uses-filters button.is-active,
 html.dark body.uses-page .uses-filters button[aria-pressed='true'],
+html.dark body.uses-page .keynote-chapter-pill.is-active,
+html.dark body.changelog-page .changelog-chip.is-active,
+html.dark body.changelog-page .changelog-chip.active,
 html.dark body.travel-body .travel-filter-chip.active,
 html.dark body.travel-body .travel-filter-chip[aria-pressed='true'] {
-  background: #0071e3 !important;
+  background-image: linear-gradient(135deg, #0077ed 0%, #0071e3 50%, #005bb5 100%) !important;
   background-color: #0071e3 !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
   font-weight: 650 !important;
+  border-radius: 9999px !important;
+  box-shadow: 0 2px 10px rgba(0, 113, 227, 0.45) !important;
 }
 
 /* ─── 3. Unified Solid Cards & Fine Hairlines ─── */

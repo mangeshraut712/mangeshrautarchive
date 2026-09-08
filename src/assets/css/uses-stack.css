@@ -44,7 +44,10 @@ body.uses-page .systems-shell {
   max-width: min(1200px, 100%) !important;
   width: 100%;
   margin-inline: auto;
-  padding: calc(92px + env(safe-area-inset-top, 0px)) clamp(1rem, 3vw, 2rem) 4rem;
+  padding: calc(
+      var(--subpage-nav-top, 14px) + var(--subpage-nav-height, 52px) + clamp(1.5rem, 3vw, 2.25rem)
+    )
+    clamp(1rem, 3vw, 2rem) 4rem;
   box-sizing: border-box;
   text-align: left;
 }
@@ -194,25 +197,26 @@ body.uses-page .keynote-metric-card__sub {
 /* ─── Interactive Keynote Chapter Controller ─── */
 body.uses-page .keynote-deck-nav {
   position: sticky;
-  top: var(--subpage-sticky-top, 74px);
-  z-index: 45;
+  top: var(--subpage-sticky-top, 86px) !important;
+  z-index: 100;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  padding: 0.6rem 0.85rem;
-  margin: 2rem 0 2.25rem;
+  padding: 0.45rem 0.75rem;
+  margin: 1.5rem 0 2rem;
   border-radius: 9999px;
   border: 1px solid var(--uses-border);
-  background: rgb(255 255 255 / 85%);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  box-shadow: 0 8px 30px rgb(0 0 0 / 6%);
+  background: rgba(255, 255, 255, 0.92) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
 }
 
 html.dark body.uses-page .keynote-deck-nav {
-  background: rgb(0 0 0 / 85%);
-  box-shadow: 0 8px 32px rgb(0 0 0 / 50%);
+  background: rgba(18, 18, 20, 0.92) !important;
+  border-color: rgba(255, 255, 255, 0.14) !important;
+  box-shadow: 0 4px 28px rgba(0, 0, 0, 0.5);
 }
 
 body.uses-page .keynote-chapter-pills {

@@ -168,12 +168,20 @@ html.dark .travel-map-load {
   justify-content: space-between;
   width: min(1040px, calc(100% - 32px));
   min-height: 52px;
-  padding: var(--space-2) var(--space-4);
-  border-radius: var(--radius-full);
-  border: 1px solid var(--theme-card-border, var(--separator));
-  background: var(--theme-card-bg, #ffffff);
-  box-shadow: var(--shadow-md);
+  padding: 8px 16px;
+  border-radius: 9999px;
+  border: 1px solid #e5e5ea !important;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
   transform: translateX(-50%);
+}
+
+html.dark .travel-nav {
+  background: #000000 !important;
+  background-color: #000000 !important;
+  border-color: #2c2c2e !important;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.45);
 }
 
 .travel-nav__back {

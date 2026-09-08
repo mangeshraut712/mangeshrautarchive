@@ -13,12 +13,12 @@
   );
   /* Shared subpage chrome — nav float + sticky rails (systems / monitor / uses) */
   --subpage-nav-top: max(14px, env(safe-area-inset-top, 0px));
-  --subpage-nav-height: 52px;
-  --subpage-nav-gap: 18px;
+  --subpage-nav-height: 60px;
+  --subpage-nav-gap: 20px;
   --subpage-body-pad-top: calc(
     var(--subpage-nav-top) + var(--subpage-nav-height) + var(--subpage-nav-gap)
   );
-  --subpage-sticky-top: calc(var(--subpage-nav-top) + var(--subpage-nav-height) + 12px);
+  --subpage-sticky-top: calc(var(--subpage-nav-top) + var(--subpage-nav-height) + 16px);
   --border-color: rgb(0 0 0 / 10%);
   --bg-secondary: #ffffff;
   --text-primary: #1d1d1f;

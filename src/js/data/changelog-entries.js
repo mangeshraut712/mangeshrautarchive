@@ -46,6 +46,22 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── September 2026 ──────────────────────────────────────────
   {
+    id: 'subnavbar-synchronization-apple-shadcn-alignment',
+    date: '2026-09-08',
+    type: 'improvement',
+    title:
+      'Design System: Separate Pages Subnavbar Synchronization & Apple HIG / shadcn/ui Alignment',
+    summary:
+      'Synchronized navigation chrome and secondary subnavbars across all 5 standalone surfaces (Systems, Monitor, Uses, Changelog, and Travel). Unified subpage navigation geometry tokens (--subpage-nav-top, --subpage-nav-height, --subpage-sticky-top, --subpage-body-pad-top) eliminating hero heading occlusion on initial load and sticky collisions on scroll. Transformed all secondary subnavbars (.systems-section-rail, .monitor-section-rail, .keynote-deck-nav, .changelog-toolbar) into Apple HIG and shadcn/ui segmented controls with centered fit-content pill geometry, frosted glass backdrops (backdrop-filter: blur(20px)), and vibrant Apple Blue gradient elevated active pills. Added dynamic IntersectionObserver scrollspy to monitor-page.js with smooth auto-centering tab scrolling and eliminated the 35% empty void on systems.html.',
+    tags: ['design', 'systems', 'performance'],
+    sha: '018fbbed',
+    link: `${CHANGELOG_REPO}/commit/018fbbed`,
+    model: 'Gemini 3.8 Flash (High)',
+    ide: 'Google Antigravity IDE (AGY)',
+    purpose:
+      'Subnavbar synchronization, Apple HIG and shadcn/ui segmented control alignment, and sticky scroll collision remediation',
+  },
+  {
     id: 'software-engineering-best-practices-codification',
     date: '2026-09-08',
     type: 'improvement',

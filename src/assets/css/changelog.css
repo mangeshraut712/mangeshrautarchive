@@ -44,7 +44,7 @@ body.changelog-page .systems-shell.changelog-shell {
   max-width: min(56rem, 100%) !important;
   width: 100%;
   margin-inline: auto;
-  padding: 1.25rem clamp(1rem, 3vw, 2rem) 4rem !important;
+  padding: 0.5rem clamp(1rem, 3vw, 2rem) 4rem !important;
   text-align: left;
 }
 
@@ -99,35 +99,45 @@ body.changelog-page .changelog-meta time {
   color: var(--cl-secondary);
 }
 
-/* Type filters — GitHub-style loose pills */
+/* Type filters — Segmented Apple HIG / shadcn style toolbar */
 body.changelog-page .changelog-toolbar {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
-  gap: 0.65rem 0.85rem;
-  margin: 0.45rem 0 0;
-  padding: 1.1rem 0 1rem;
-  border: 0;
-  border-bottom: 0;
-  background: var(--cl-bg);
-  box-shadow: none;
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
+  justify-content: space-between;
+  gap: 0.5rem 0.85rem;
+  margin: 0.5rem auto 1.5rem;
+  padding: 0.35rem 0.55rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: rgba(255, 255, 255, 0.92) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
   position: sticky;
-  top: calc(env(safe-area-inset-top, 0px) + 3.45rem);
-  z-index: 5;
+  top: var(--subpage-sticky-top, 86px) !important;
+  z-index: 100;
+  width: fit-content;
+  max-width: 100%;
+}
+
+html.dark body.changelog-page .changelog-toolbar {
+  background: rgba(18, 18, 20, 0.92) !important;
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.45);
 }
 
 body.changelog-page .changelog-type-row {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
-  gap: 0.45rem;
+  gap: 0.35rem;
   flex: 1 1 auto;
   min-width: 0;
   padding: 0;
   border: 0;
   background: transparent;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
 }
 
 body.changelog-page .changelog-chip {
@@ -143,6 +153,8 @@ body.changelog-page .changelog-chip {
   font-weight: 580 !important;
   letter-spacing: -0.01em;
   line-height: 1.2;
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
   cursor: pointer;
   background: #ffffff !important;
   background-color: #ffffff !important;
@@ -233,6 +245,8 @@ body.changelog-page .changelog-filters-toggle {
   font-weight: 650 !important;
   letter-spacing: 0.03em;
   text-transform: uppercase;
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
   cursor: pointer;
   background: #ffffff !important;
   background-color: #ffffff !important;
@@ -535,6 +549,17 @@ body.changelog-page .changelog-empty {
 }
 
 @media (width <= 640px) {
+  body.changelog-page .changelog-toolbar {
+    padding: 0.3rem 0.45rem;
+    gap: 0.4rem;
+  }
+
+  body.changelog-page .changelog-chip {
+    padding: 0.35rem 0.75rem !important;
+    font-size: 0.78rem !important;
+    min-height: 32px !important;
+  }
+
   body.changelog-page .changelog-entry {
     padding: 1.5rem 0;
   }
@@ -546,6 +571,9 @@ body.changelog-page .changelog-empty {
 
   body.changelog-page .changelog-filters-toggle {
     margin-left: 0;
+    padding: 0.3rem 0.65rem !important;
+    font-size: 0.7rem !important;
+    min-height: 32px !important;
   }
 
   body.changelog-page .changelog-month__title {
