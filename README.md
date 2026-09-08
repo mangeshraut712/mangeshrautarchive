@@ -82,6 +82,7 @@
 6. [Testing & Quality Assurance Matrix](#6-testing--quality-assurance-matrix)
 7. [Quick Start & Development](#7-quick-start--development)
 8. [Open Source Governance & Guidelines](#8-open-source-governance--guidelines)
+   - [8.1 Software Engineering Best Practices for Long-Term Success](#81-software-engineering-best-practices-for-long-term-success)
 9. [Verified Biographical & Project Facts](#9-verified-biographical--project-facts)
 10. [License, Citation & Contact](#10-license-citation--contact)
 
@@ -343,15 +344,37 @@ npm run qa:prod-ready     # Full pre-deployment verification matrix
 
 ## 8. Open Source Governance & Guidelines
 
-We adhere to industry-standard open-source community health and governance standards:
+We adhere to industry-standard open-source community health, architecture, and governance standards:
 
-| Document                                       | Purpose                                                                                               |
-| :--------------------------------------------- | :---------------------------------------------------------------------------------------------------- |
-| **[`CONTRIBUTING.md`](CONTRIBUTING.md)**       | Step-by-step contribution workflow, coding conventions, testing guidelines, and PR template.          |
-| **[`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md)** | **Contributor Covenant v2.1** community standards and enforcement guidelines.                         |
-| **[`SECURITY.md`](SECURITY.md)**               | Vulnerability reporting procedure, coordinated disclosure policy, and `security.txt` RFC 9116 parity. |
-| **[`AGENTS.md`](AGENTS.md)**                   | **Linux Foundation AGENTS.md v1.0** standard for AI agent coordination and observability.             |
-| **[`CITATION.cff`](CITATION.cff)**             | **Citation File Format v1.2.0** metadata for academic and software citations.                         |
+| Document                                               | Purpose                                                                                                                      |
+| :----------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------- |
+| **[`docs/BEST_PRACTICES.md`](docs/BEST_PRACTICES.md)** | **Software Engineering Best Practices**: 14 architectural principles for long-term maintainability, modularity, and quality. |
+| **[`CONTRIBUTING.md`](CONTRIBUTING.md)**               | Step-by-step contribution workflow, coding conventions, testing guidelines, and PR template.                                 |
+| **[`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md)**         | **Contributor Covenant v2.1** community standards and enforcement guidelines.                                                |
+| **[`SECURITY.md`](SECURITY.md)**                       | Vulnerability reporting procedure, coordinated disclosure policy, and `security.txt` RFC 9116 parity.                        |
+| **[`AGENTS.md`](AGENTS.md)**                           | **Linux Foundation AGENTS.md v1.0** standard for AI agent coordination and observability.                                    |
+| **[`CITATION.cff`](CITATION.cff)**                     | **Citation File Format v1.2.0** metadata for academic and software citations.                                                |
+
+### 8.1 Software Engineering Best Practices for Long-Term Success
+
+The repository enforces 14 architectural and operational tenets across every pull request and automated build:
+
+1. **Explicit Architecture:** Choose an explicit architecture (layered, MVC, modular services) matching the product's scale, and keep it documented so new work has a place to live.
+2. **Loosely Coupled Modules:** Split the system into loosely coupled modules with one clear responsibility each, so change in one area does not ripple through the rest.
+3. **Design for Scalability:** Design for growth from the start: isolate stateful parts, keep interfaces stable, and plan how the system will scale horizontally and vertically.
+4. **Self-Documenting Naming:** Name variables, functions, types, and modules so the intent is obvious without extra commentary.
+5. **Simple Control Flow:** Prefer simple, readable control flow over clever or dense logic; complexity should be justified by a real constraint.
+6. **Single-Purpose Functions:** Keep functions and methods small and single-purpose so they can be reasoned about, tested, and reused.
+7. **Enforce Uniform Standards:** Enforce one formatting and style standard across the repository so reviews focus on behavior, not noise.
+8. **Document Invariants & APIs:** Document architecture, public APIs, and non-obvious invariants so the system remains understandable years later.
+9. **First-Class Automated Testing:** Write code that is testable at unit, integration, and end-to-end levels, and treat tests as part of the product, not an afterthought.
+10. **Continuous Refactoring:** Refactor regularly to improve structure and clarity without changing external behavior.
+11. **Intentional Debt Paydown:** Track and pay down technical debt on purpose; do not let shortcuts become the architecture.
+12. **Reviewable Git History:** Use Git with a clear branch and merge policy so history stays reviewable and recoverable.
+13. **Rigorous Code Reviews:** Require code reviews to protect quality, share design knowledge, and catch defects before they ship.
+14. **Fully Automated CI/CD:** Run CI/CD so every change is built, tested, and released through the same automated path.
+
+For detailed implementations and code patterns, see the full guide in **[`docs/BEST_PRACTICES.md`](docs/BEST_PRACTICES.md)**.
 
 ---
 

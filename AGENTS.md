@@ -25,6 +25,27 @@
 
 ---
 
+## Core Software Engineering Best Practices for Long-Term Success
+
+All agents operating in this repository must strictly adhere to the 14 core software engineering best practices detailed in [docs/BEST_PRACTICES.md](docs/BEST_PRACTICES.md):
+
+1. **Explicit Architecture**: Choose an explicit architecture (layered, MVC, modular services) matching the product scale, and keep it documented so new work has a clear place to live.
+2. **Loosely Coupled Modules**: Split the system into loosely coupled modules with one clear responsibility each, preventing changes from rippling across boundaries.
+3. **Design for Scalability**: Design for growth from the start: isolate stateful components, maintain stable interfaces, and plan for horizontal/vertical scaling.
+4. **Self-Documenting Naming**: Name variables, functions, types, and modules so their intent is obvious without needing explanatory commentary.
+5. **Simple Control Flow**: Prefer simple, readable control flow over dense or clever logic; complexity must be justified by an authentic constraint.
+6. **Single-Purpose Functions**: Keep functions and methods small and single-purpose for straightforward reasoning, testing, and reuse.
+7. **Enforce Uniform Standards**: Enforce one formatting and style standard (ESLint, Stylelint, Prettier, flake8) across the repo so reviews focus on behavior.
+8. **Document Invariants & APIs**: Document architecture, public APIs, and non-obvious invariants so the system remains understandable long into the future.
+9. **First-Class Automated Testing**: Write testable code across unit, integration, and E2E levels; treat tests as core product deliverables.
+10. **Continuous Refactoring**: Refactor regularly to improve clarity and structural hygiene without mutating external behavior.
+11. **Intentional Debt Paydown**: Track and pay down technical debt deliberately; never let shortcuts become permanent architecture.
+12. **Reviewable Git History**: Maintain a clean Git workflow with conventional commits and clear branching so history remains bisectable and recoverable.
+13. **Rigorous Code Reviews**: Require high-signal automated and peer reviews to protect quality, spread architecture knowledge, and catch regressions.
+14. **Fully Automated CI/CD**: Run end-to-end CI/CD so every change is linted, built, tested, and released via the same automated, deterministic pipeline.
+
+---
+
 ## 1. Project Overview
 
 **mangeshrautarchive** is Mangesh Raut's agentic full-stack portfolio website.
