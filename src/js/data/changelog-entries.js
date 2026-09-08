@@ -46,6 +46,22 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── September 2026 ──────────────────────────────────────────
   {
+    id: 'cross-page-audit-navigation-telemetry-remediation',
+    date: '2026-09-08',
+    type: 'fix',
+    title:
+      'Audit Remediation: Cross-Page Relative Navigation, Telemetry Alignment & WCAG ARIA Polish',
+    summary:
+      'Completed comprehensive multi-agent audit remediation across all 9 pages following the Uses Keynote launch. Converted root-relative href="/" and extensionless navigation/footer links to resilient relative paths across systems, monitor, travel, uses, changelog, 404, and offline surfaces for 100% GitHub Pages deployment safety. Fixed homepage Antigravity tool chip URL. Aligned Uses Keynote Slide 3 telemetry with canonical WhoBurnedMore data (Codex 9.18B tokens, Cursor 3.74B, Kilo 611M, Cline/Droid 99.6M, Antigravity Active Orchestrator). Reframed PWA service worker claims, scoped global Keynote arrow listener to exclude code snippets, added Enter/Space keyboard handlers and ARIA attributes for featured cards, solved narrow viewport overflow on edge domains, enforced >=40px touch targets, standardized title separators to em dash, and synchronized Vitest count to 239.',
+    tags: ['systems', 'design', 'performance'],
+    sha: '1b4c9e2f',
+    link: `${CHANGELOG_REPO}/commit/1b4c9e2f`,
+    model: 'Gemini 3.8 Flash (High) & Claude Opus 4.6 (Thinking)',
+    ide: 'Google Antigravity IDE (AGY)',
+    purpose:
+      'Multi-agent cross-page audit discovery, relative navigation remediation, WhoBurnedMore telemetry reconciliation, and WCAG keyboard/ARIA pattern enforcement',
+  },
+  {
     id: 'uses-apple-special-event-keynote-redesign',
     date: '2026-09-08',
     type: 'release',
@@ -53,8 +69,8 @@ export const changelogEntries = [
     summary:
       'Completely redesigned the Uses & Stack page into an authentic Apple Special Event Keynote presentation. Features an Apple Event hero stage with pulsing status dot, 5 bold keynote telemetry metrics (13.66B tokens burned, 9 tools & 6 models, 0 KB runtime, 414 automated tests, 100% Lighthouse gates), a sticky frosted-glass chapter pill dock, and a 6-act interactive slide presentation (Strategy, Intelligence, Scaffolding, Quality Gates, Global Edge, Studio Gear) with keyboard arrow navigation, touch swipe support, and authentic tool branding. Preserves the full 8-category toolkit catalog and Control Center with zero horizontal overflow and zero Axe accessibility violations.',
     tags: ['design', 'performance', 'systems'],
-    sha: '8f2a1b4c',
-    link: `${CHANGELOG_REPO}/commit/8f2a1b4c`,
+    sha: '3cde03e4',
+    link: `${CHANGELOG_REPO}/commit/3cde03e4`,
     model: 'Gemini 3.8 Flash (High)',
     ide: 'Google Antigravity IDE (AGY)',
     purpose:

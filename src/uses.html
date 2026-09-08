@@ -10,7 +10,7 @@
     <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
     <meta name="color-scheme" content="light dark" />
     <meta name="view-transition" content="same-origin" />
-    <title>Stack &amp; Uses | Mangesh Raut Portfolio</title>
+    <title>Stack &amp; Uses — Mangesh Raut Portfolio</title>
     <meta
       name="description"
       content="Tools and stack behind the Mangesh Raut software engineer portfolio — hardware, software, AI agents, and the systems used to ship full stack work every day."
@@ -23,7 +23,7 @@
     <link rel="alternate" hreflang="x-default" href="https://mangeshraut.pro/uses" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://mangeshraut.pro/uses" />
-    <meta property="og:title" content="Stack & Uses | Mangesh Raut Portfolio" />
+    <meta property="og:title" content="Stack &amp; Uses — Mangesh Raut Portfolio" />
     <meta
       property="og:description"
       content="Tools and stack behind the Mangesh Raut software engineer portfolio — hardware, software, AI agents, and daily drivers."
@@ -35,8 +35,9 @@
     <meta property="og:image:width" content="3024" />
     <meta property="og:image:height" content="1722" />
     <meta property="og:image:alt" content="Hardware, software, and AI stack Mangesh Raut uses" />
+    <meta property="og:locale" content="en_US" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Stack & Uses | Mangesh Raut" />
+    <meta name="twitter:title" content="Stack &amp; Uses — Mangesh Raut" />
     <meta
       name="twitter:description"
       content="The stack behind Mangesh Raut's portfolio — hardware, software, AI agents, engineering tools, and daily drivers."
@@ -219,9 +220,9 @@
       <a href="#main-content" class="skip-link">Skip to main content</a>
     </div>
 
-    <nav id="global-nav" class="monitor-page-nav" aria-label="Stack navigation">
+    <nav id="global-nav" class="monitor-page-nav" aria-label="Uses navigation">
       <div class="monitor-page-nav__left">
-        <a class="monitor-page-nav__home" href="/" aria-label="Mangesh Raut home">
+        <a class="monitor-page-nav__home" href="index.html" aria-label="Mangesh Raut home">
           <picture>
             <source srcset="assets/images/profile-icon.webp" type="image/webp" />
             <img
@@ -234,14 +235,14 @@
             />
           </picture>
         </a>
-        <a class="monitor-page-nav__back" href="/" aria-label="Back to portfolio home">
+        <a class="monitor-page-nav__back" href="index.html" aria-label="Back to portfolio home">
           <i class="fas fa-chevron-left" aria-hidden="true"></i>
           <span>Portfolio</span>
         </a>
       </div>
       <div class="monitor-page-nav__brand" aria-label="Current page">
-        <span class="monitor-page-nav__kicker">Colophon</span>
-        <span class="monitor-page-nav__label">Stack</span>
+        <span class="monitor-page-nav__kicker">Portfolio</span>
+        <span class="monitor-page-nav__label">Uses</span>
       </div>
       <div class="monitor-page-nav__actions">
         <button
@@ -309,13 +310,20 @@
 
       <!-- ─── Interactive Keynote Chapter Controller ─── -->
       <nav class="keynote-deck-nav" aria-label="Keynote presentation chapters">
-        <div class="keynote-chapter-pills" id="keynote-chapter-pills" role="tablist">
+        <div
+          class="keynote-chapter-pills"
+          id="keynote-chapter-pills"
+          role="tablist"
+          aria-label="Keynote chapters"
+        >
           <button
             type="button"
             role="tab"
+            id="keynote-tab-1"
             class="keynote-chapter-pill is-active"
             data-slide-index="0"
             aria-selected="true"
+            tabindex="0"
             aria-controls="keynote-slide-1"
           >
             <span class="keynote-chapter-pill__num">01</span>
@@ -324,9 +332,11 @@
           <button
             type="button"
             role="tab"
+            id="keynote-tab-2"
             class="keynote-chapter-pill"
             data-slide-index="1"
             aria-selected="false"
+            tabindex="-1"
             aria-controls="keynote-slide-2"
           >
             <span class="keynote-chapter-pill__num">02</span>
@@ -335,9 +345,11 @@
           <button
             type="button"
             role="tab"
+            id="keynote-tab-3"
             class="keynote-chapter-pill"
             data-slide-index="2"
             aria-selected="false"
+            tabindex="-1"
             aria-controls="keynote-slide-3"
           >
             <span class="keynote-chapter-pill__num">03</span>
@@ -346,9 +358,11 @@
           <button
             type="button"
             role="tab"
+            id="keynote-tab-4"
             class="keynote-chapter-pill"
             data-slide-index="3"
             aria-selected="false"
+            tabindex="-1"
             aria-controls="keynote-slide-4"
           >
             <span class="keynote-chapter-pill__num">04</span>
@@ -357,9 +371,11 @@
           <button
             type="button"
             role="tab"
+            id="keynote-tab-5"
             class="keynote-chapter-pill"
             data-slide-index="4"
             aria-selected="false"
+            tabindex="-1"
             aria-controls="keynote-slide-5"
           >
             <span class="keynote-chapter-pill__num">05</span>
@@ -368,9 +384,11 @@
           <button
             type="button"
             role="tab"
+            id="keynote-tab-6"
             class="keynote-chapter-pill"
             data-slide-index="5"
             aria-selected="false"
+            tabindex="-1"
             aria-controls="keynote-slide-6"
           >
             <span class="keynote-chapter-pill__num">06</span>
@@ -384,6 +402,8 @@
             class="keynote-deck-arrow"
             id="keynote-prev-btn"
             aria-label="Previous slide"
+            disabled
+            aria-disabled="true"
           >
             <i class="fas fa-chevron-left" aria-hidden="true"></i>
           </button>
@@ -409,7 +429,7 @@
           id="keynote-slide-1"
           data-slide-num="1"
           role="tabpanel"
-          aria-label="Act I: Strategy and Architecture"
+          aria-labelledby="keynote-tab-1"
         >
           <div class="keynote-slide__header">
             <span class="keynote-slide__kicker">Act I · Philosophy &amp; Architecture</span>
@@ -442,7 +462,7 @@
               <h3 class="keynote-bento-card__title">Vanilla ES Modules &amp; Standards</h3>
               <p class="keynote-bento-card__copy">
                 Modular JavaScript architecture with strict type-safety, single-responsibility
-                modules, and native browser import maps.
+                modules, and native browser ES modules.
               </p>
               <div
                 class="keynote-code-snippet"
@@ -465,10 +485,10 @@
 
             <article class="keynote-bento-card">
               <div class="keynote-bento-card__badge">Resilience</div>
-              <h3 class="keynote-bento-card__title">Offline-First Service Worker</h3>
+              <h3 class="keynote-bento-card__title">Installable PWA Manifest</h3>
               <p class="keynote-bento-card__copy">
-                PWA manifest with versioned asset caching, dynamic offline fallbacks, and instant
-                page restoration.
+                Standalone web app manifest with home-screen shortcuts, graceful offline fallback
+                page, and optimized reconnection flow.
               </p>
             </article>
           </div>
@@ -480,7 +500,8 @@
           id="keynote-slide-2"
           data-slide-num="2"
           role="tabpanel"
-          aria-label="Act II: Research and Frontier Intelligence"
+          aria-labelledby="keynote-tab-2"
+          aria-hidden="true"
         >
           <div class="keynote-slide__header">
             <span class="keynote-slide__kicker">Act II · Research &amp; Deep Reasoning</span>
@@ -561,7 +582,8 @@
           id="keynote-slide-3"
           data-slide-num="3"
           role="tabpanel"
-          aria-label="Act III: Implementation and IDE Stack"
+          aria-labelledby="keynote-tab-3"
+          aria-hidden="true"
         >
           <div class="keynote-slide__header">
             <span class="keynote-slide__kicker">Act III · Implementation &amp; Tooling</span>
@@ -595,7 +617,32 @@
                   workspaces, manages background tasks, and executes multi-step plans.
                 </p>
                 <div class="keynote-tool-card__stat">
-                  <strong>5.08B tokens burned</strong> · $5,082 spend
+                  <strong>Active Orchestrator</strong> · Live multi-agent fleet
+                </div>
+              </div>
+            </article>
+
+            <article class="keynote-tool-card">
+              <div class="keynote-tool-card__icon-wrap">
+                <img
+                  src="assets/images/vibe-tools/codex.png"
+                  alt="Codex"
+                  width="36"
+                  height="36"
+                  loading="lazy"
+                />
+              </div>
+              <div class="keynote-tool-card__content">
+                <div class="keynote-tool-card__top">
+                  <h3 class="keynote-tool-card__name">Codex &amp; GitHub Copilot</h3>
+                  <span class="keynote-tool-card__pill">Scaffolding &amp; Core</span>
+                </div>
+                <p class="keynote-tool-card__desc">
+                  Primary codebase generation, unit test scaffolding, and multi-file code synthesis
+                  across Python and modern ESM modules.
+                </p>
+                <div class="keynote-tool-card__stat">
+                  <strong>9.18B tokens burned</strong> · $11,045 spend (67.2%)
                 </div>
               </div>
             </article>
@@ -616,11 +663,11 @@
                   <span class="keynote-tool-card__pill">AI-Native IDE</span>
                 </div>
                 <p class="keynote-tool-card__desc">
-                  Multi-file surgical edits, instant codebase indexing, smart copilot predictions,
-                  and lightning-fast keyboard-driven refactors.
+                  Full-repo context orchestration, multi-file surgical edits, smart copilot
+                  predictions, and keyboard-driven refactors.
                 </p>
                 <div class="keynote-tool-card__stat">
-                  <strong>2.19B tokens burned</strong> · $2,185 spend
+                  <strong>3.74B tokens burned</strong> · $2,527 spend (27.4%)
                 </div>
               </div>
             </article>
@@ -628,8 +675,8 @@
             <article class="keynote-tool-card">
               <div class="keynote-tool-card__icon-wrap">
                 <img
-                  src="assets/images/vibe-tools/claude.png"
-                  alt="Claude Code"
+                  src="assets/images/vibe-tools/kilo.png"
+                  alt="Kilo Code"
                   width="36"
                   height="36"
                   loading="lazy"
@@ -637,15 +684,15 @@
               </div>
               <div class="keynote-tool-card__content">
                 <div class="keynote-tool-card__top">
-                  <h3 class="keynote-tool-card__name">Claude Code</h3>
-                  <span class="keynote-tool-card__pill">CLI Agent</span>
+                  <h3 class="keynote-tool-card__name">Kilo Code</h3>
+                  <span class="keynote-tool-card__pill">Pair Programming</span>
                 </div>
                 <p class="keynote-tool-card__desc">
-                  Terminal-first agent for long-running repository refactors, complex git
-                  operations, and automated shell workflows.
+                  Multi-model evaluation, fast interactive chat interface, and prompt
+                  experimentation across frontier reasoning architectures.
                 </p>
                 <div class="keynote-tool-card__stat">
-                  <strong>2.73B tokens burned</strong> · $2,729 spend
+                  <strong>611.0M tokens burned</strong> · 4.5% leaderboard share
                 </div>
               </div>
             </article>
@@ -653,8 +700,8 @@
             <article class="keynote-tool-card">
               <div class="keynote-tool-card__icon-wrap">
                 <img
-                  src="assets/images/vibe-tools/windsurf.png"
-                  alt="Windsurf"
+                  src="assets/images/vibe-tools/cline.png"
+                  alt="Cline"
                   width="36"
                   height="36"
                   loading="lazy"
@@ -662,40 +709,15 @@
               </div>
               <div class="keynote-tool-card__content">
                 <div class="keynote-tool-card__top">
-                  <h3 class="keynote-tool-card__name">Windsurf</h3>
-                  <span class="keynote-tool-card__pill">Cascade IDE</span>
+                  <h3 class="keynote-tool-card__name">Cline &amp; Droid</h3>
+                  <span class="keynote-tool-card__pill">CLI Agents</span>
                 </div>
                 <p class="keynote-tool-card__desc">
-                  Agentic cascade workflows, multi-file code synthesis, and deep workspace context
-                  awareness.
+                  Autonomous terminal execution, browser testing automation, and surgical file
+                  modifications via tool-use protocols.
                 </p>
                 <div class="keynote-tool-card__stat">
-                  <strong>2.32B tokens burned</strong> · $2,319 spend
-                </div>
-              </div>
-            </article>
-
-            <article class="keynote-tool-card">
-              <div class="keynote-tool-card__icon-wrap">
-                <img
-                  src="assets/images/vibe-tools/codex.png"
-                  alt="Codex"
-                  width="36"
-                  height="36"
-                  loading="lazy"
-                />
-              </div>
-              <div class="keynote-tool-card__content">
-                <div class="keynote-tool-card__top">
-                  <h3 class="keynote-tool-card__name">Codex &amp; GitHub Copilot</h3>
-                  <span class="keynote-tool-card__pill">Scaffolding</span>
-                </div>
-                <p class="keynote-tool-card__desc">
-                  Rapid boilerplate generation, inline code completion, and test fixture scaffolding
-                  across Python and JS modules.
-                </p>
-                <div class="keynote-tool-card__stat">
-                  <strong>621M tokens burned</strong> · $621 spend
+                  <strong>99.6M tokens burned</strong> · CLI &amp; automation agents
                 </div>
               </div>
             </article>
@@ -719,7 +741,9 @@
                   Apple HIG component wireframing, fluid responsive breakpoints, color palette
                   exploration, and layout mockups.
                 </p>
-                <div class="keynote-tool-card__stat">High-fidelity UI/UX specs</div>
+                <div class="keynote-tool-card__stat">
+                  <strong>Apple HIG Architecture</strong> · High-fidelity UI/UX specs
+                </div>
               </div>
             </article>
           </div>
@@ -731,7 +755,8 @@
           id="keynote-slide-4"
           data-slide-num="4"
           role="tabpanel"
-          aria-label="Act IV: Test and Verification Matrix"
+          aria-labelledby="keynote-tab-4"
+          aria-hidden="true"
         >
           <div class="keynote-slide__header">
             <span class="keynote-slide__kicker">Act IV · Quality Gates &amp; Testing</span>
@@ -803,7 +828,8 @@
           id="keynote-slide-5"
           data-slide-num="5"
           role="tabpanel"
-          aria-label="Act V: Deployment and Global Edge"
+          aria-labelledby="keynote-tab-5"
+          aria-hidden="true"
         >
           <div class="keynote-slide__header">
             <span class="keynote-slide__kicker">Act V · Deployment &amp; Global Edge</span>
@@ -820,7 +846,7 @@
               <h3 class="keynote-bento-card__title">GitHub Pages Edge</h3>
               <p class="keynote-bento-card__copy">
                 Global static delivery with TLS termination, atomic artifact deployment, and custom
-                domain routing at mangeshraut712.github.io/mangeshrautarchive.
+                deployment pipeline at mangeshraut712.github.io/mangeshrautarchive.
               </p>
               <div class="keynote-pill-tag">HTTP/3 · Anycast CDN · 99.99% Uptime</div>
             </article>
@@ -863,7 +889,8 @@
           id="keynote-slide-6"
           data-slide-num="6"
           role="tabpanel"
-          aria-label="Act VI: Physical Studio and Hardware"
+          aria-labelledby="keynote-tab-6"
+          aria-hidden="true"
         >
           <div class="keynote-slide__header">
             <span class="keynote-slide__kicker">Act VI · The Physical Workshop</span>
@@ -975,10 +1002,10 @@
       </section>
 
       <nav class="systems-footer-links" aria-label="Related engineering pages">
-        <a href="/systems">Systems notebook</a>
-        <a href="/monitor">System monitor</a>
-        <a href="/travel">Travel atlas</a>
-        <a href="/#projects">Portfolio projects</a>
+        <a href="systems.html">Systems notebook</a>
+        <a href="monitor.html">System monitor</a>
+        <a href="travel.html">Travel atlas</a>
+        <a href="index.html#projects">Portfolio projects</a>
       </nav>
     </main>
 

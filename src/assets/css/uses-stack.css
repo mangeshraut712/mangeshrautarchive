@@ -186,7 +186,7 @@ body.uses-page .keynote-metric-card__label {
 }
 
 body.uses-page .keynote-metric-card__sub {
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   font-weight: 550;
   color: var(--uses-text-secondary);
 }
@@ -282,8 +282,8 @@ body.uses-page .keynote-deck-controls {
 }
 
 body.uses-page .keynote-deck-arrow {
-  width: 36px;
-  height: 36px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   display: inline-flex;
   align-items: center;
@@ -639,6 +639,11 @@ body.uses-page .keynote-tool-card__icon-wrap {
   padding: 6px;
 }
 
+html.dark body.uses-page .keynote-tool-card__icon-wrap {
+  background: rgb(255 255 255 / 94%);
+  border-color: rgb(255 255 255 / 20%);
+}
+
 body.uses-page .keynote-tool-card__icon-wrap img {
   width: 100%;
   height: 100%;
@@ -676,7 +681,7 @@ body.uses-page .keynote-tool-card__pill {
   border-radius: 9999px;
   background: var(--uses-blue-soft);
   color: var(--uses-pill-soft-fg);
-  font-size: 0.68rem;
+  font-size: 0.75rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.04em;
@@ -759,6 +764,9 @@ body.uses-page .keynote-pill-tag {
   font-weight: 650;
   color: var(--uses-text-secondary);
   width: fit-content;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  word-break: break-all;
 }
 
 /* Hardware & Studio (Act VI) */
@@ -851,7 +859,7 @@ body.uses-page .uses-stat__value {
 body.uses-page .uses-stat__label {
   display: block;
   margin-top: 0.2rem;
-  font-size: 0.68rem;
+  font-size: 0.75rem;
   font-weight: 650;
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -992,12 +1000,12 @@ body.uses-page .uses-search__clear {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 2rem !important;
-  height: 2rem !important;
-  min-width: 2rem !important;
-  min-height: 2rem !important;
-  max-width: 2rem !important;
-  max-height: 2rem !important;
+  width: 40px !important;
+  height: 40px !important;
+  min-width: 40px !important;
+  min-height: 40px !important;
+  max-width: 40px !important;
+  max-height: 40px !important;
   padding: 0 !important;
   border: 0 !important;
   border-radius: 50% !important;
@@ -1054,7 +1062,7 @@ body.uses-page .uses-filter-chip {
   align-items: center;
   gap: 0.35rem;
   flex: 0 0 auto;
-  min-height: 36px;
+  min-height: 40px;
   padding: 0.4rem 0.95rem;
   border-radius: 9999px;
   border: 1px solid rgba(0, 0, 0, 0.14);
@@ -1275,7 +1283,7 @@ body.uses-page .uses-pill {
   border: 1px solid var(--uses-border);
   background: var(--uses-surface);
   color: var(--uses-text-secondary);
-  font-size: 0.65rem;
+  font-size: 0.75rem;
   font-weight: 750;
   letter-spacing: 0.03em;
   text-transform: uppercase;
@@ -1440,6 +1448,10 @@ body.uses-page .loading-state {
 
   body.uses-page .keynote-metric-strip {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  body.uses-page .keynote-metric-strip > :nth-child(5) {
+    grid-column: span 2;
   }
 
   body.uses-page .keynote-tools-grid {

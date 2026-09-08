@@ -73,12 +73,12 @@ function renderFeatured() {
   el.innerHTML = featured
     .map(
       item => `
-      <article class="uses-featured-card" data-category="${escapeHtml(item.categoryId)}">
+      <article class="uses-featured-card" data-category="${escapeHtml(item.categoryId)}" tabindex="0" role="button">
         <div class="uses-featured-card__meta">
           <span class="uses-pill uses-pill--accent">${escapeHtml(item.tag || 'Featured')}</span>
           <span class="uses-featured-card__cat">${escapeHtml(item.category)}</span>
         </div>
-        <h3 class="uses-featured-card__name">${escapeHtml(item.name)}</h3>
+        <h4 class="uses-featured-card__name">${escapeHtml(item.name)}</h4>
         <p class="uses-featured-card__note">${escapeHtml(item.note || '')}</p>
       </article>`
     )
@@ -160,7 +160,7 @@ function renderGrid() {
             <div class="uses-section__title-row">
               <span class="uses-section-icon" aria-hidden="true"><i class="fas ${escapeHtml(category.icon)}"></i></span>
               <div>
-                <h2>${escapeHtml(category.label)}</h2>
+                <h3>${escapeHtml(category.label)}</h3>
                 <p class="uses-section__blurb">${escapeHtml(category.blurb || '')}</p>
               </div>
             </div>
@@ -231,7 +231,8 @@ function bindChrome() {
     }
   });
 
-  document.getElementById('uses-featured')?.addEventListener('click', event => {
+  const featuredEl = document.getElementById('uses-featured');
+  const handleFeaturedActivation = event => {
     const card = event.target.closest('[data-category]');
     if (!card) return;
     state.filter = card.dataset.category || 'all';
@@ -240,6 +241,13 @@ function bindChrome() {
       behavior: 'smooth',
       block: 'start',
     });
+  };
+  featuredEl?.addEventListener('click', handleFeaturedActivation);
+  featuredEl?.addEventListener('keydown', event => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      handleFeaturedActivation(event);
+    }
   });
 }
 
@@ -247,6 +255,8 @@ function initKeynoteDeck() {
   const stage = document.getElementById('keynote-stage');
   const pillsContainer = document.getElementById('keynote-chapter-pills');
   if (!stage || !pillsContainer) return;
+  if (stage.dataset.keynoteReady) return;
+  stage.dataset.keynoteReady = 'true';
 
   const slides = Array.from(stage.querySelectorAll('.keynote-slide'));
   const pills = Array.from(pillsContainer.querySelectorAll('.keynote-chapter-pill'));
@@ -321,6 +331,8 @@ function initKeynoteDeck() {
   window.addEventListener('keydown', event => {
     const activeTag = document.activeElement?.tagName?.toLowerCase();
     if (activeTag === 'input' || activeTag === 'textarea') return;
+    if (document.activeElement?.closest('.keynote-code-snippet, .uses-filters, [role="textbox"]'))
+      return;
 
     if (event.key === 'ArrowRight') {
       if (currentSlide < slides.length - 1) {
@@ -335,10 +347,13 @@ function initKeynoteDeck() {
 
   let touchStartX = 0;
   let touchStartY = 0;
+  let touchStartTime = 0;
 
   stage.addEventListener(
     'touchstart',
     e => {
+      if (e.target.closest('.keynote-code-snippet')) return;
+      touchStartTime = Date.now();
       touchStartX = e.changedTouches[0].screenX;
       touchStartY = e.changedTouches[0].screenY;
     },
@@ -348,6 +363,7 @@ function initKeynoteDeck() {
   stage.addEventListener(
     'touchend',
     e => {
+      if (Date.now() - touchStartTime > 800) return;
       const touchEndX = e.changedTouches[0].screenX;
       const touchEndY = e.changedTouches[0].screenY;
       const deltaX = touchEndX - touchStartX;
