@@ -242,7 +242,7 @@ export function renderOpenSourcePanel() {
     <div class="systems-metric-panel-head">
       <div>
         <h3 class="systems-metric-panel-title">${escapeHtml(openSourceActivity.label)}</h3>
-        <p class="systems-oss-stars-badge"><i class="fas fa-star text-accent-yellow" aria-hidden="true"></i> <strong>250+ stars</strong> across 18 public repositories · 100% open source</p>
+        <p class="systems-oss-stars-badge"><i class="fas fa-star text-accent-yellow" aria-hidden="true"></i> <strong>250+ stars</strong> across 51 public repositories · 100% open source</p>
       </div>
       <a class="systems-tile-link" href="${escapeHtml(openSourceActivity.repoUrl)}" target="_blank" rel="noopener noreferrer">GitHub Profile →</a>
     </div>
@@ -251,7 +251,7 @@ export function renderOpenSourcePanel() {
     <div class="github-lang-dist-container">
       <div class="github-lang-dist-header">
         <span class="github-lang-dist-title">Aggregate Codebase Distribution</span>
-        <span class="github-lang-dist-stats">18 Public Repositories</span>
+        <span class="github-lang-dist-stats">51 Public Repositories</span>
       </div>
       <div class="github-lang-bar-track" role="progressbar" aria-label="GitHub Language Proportions">
         <span class="github-lang-segment" style="--lang-pct: 42%; background-color: #3572A5;" title="Python: 42%"></span>
@@ -276,26 +276,26 @@ export function renderOpenSourcePanel() {
         <div class="systems-commit-item">
           <div class="systems-commit-head">
             <span class="systems-commit-repo">mangeshrautarchive</span>
-            <code class="systems-commit-sha">7de216c</code>
+            <code class="systems-commit-sha">ef574c11</code>
             <span class="systems-commit-time">Recently</span>
           </div>
-          <p class="systems-commit-msg">feat(telemetry): live git telemetry, engineering benchmarks HUD & neural voice persona switcher</p>
+          <p class="systems-commit-msg">fix(ci): reconfigure release workflow to explicit tags and manual dispatch</p>
         </div>
         <div class="systems-commit-item">
           <div class="systems-commit-head">
             <span class="systems-commit-repo">mangeshrautarchive</span>
-            <code class="systems-commit-sha">813909e</code>
+            <code class="systems-commit-sha">b2cf7996</code>
             <span class="systems-commit-time">Recently</span>
           </div>
-          <p class="systems-commit-msg">fix(calendar): isolate birthday categories & eliminate duplicate event leakage</p>
+          <p class="systems-commit-msg">fix(perf): sitewide 100 lighthouse scores, wcag aa hierarchy and contrast remediation</p>
         </div>
         <div class="systems-commit-item">
           <div class="systems-commit-head">
-            <span class="systems-commit-repo">Gravity-SaaS-Agent</span>
-            <code class="systems-commit-sha">4e12a9d</code>
+            <span class="systems-commit-repo">mangeshrautarchive</span>
+            <code class="systems-commit-sha">349b23fc</code>
             <span class="systems-commit-time">Recently</span>
           </div>
-          <p class="systems-commit-msg">feat(agents): multi-agent workflow orchestration with WebMCP streaming</p>
+          <p class="systems-commit-msg">fix(travel): transform sidebar into compact apple maps segmented controls and strip</p>
         </div>
       </div>
     </div>

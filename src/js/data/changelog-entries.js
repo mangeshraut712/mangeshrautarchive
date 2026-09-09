@@ -46,6 +46,21 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── September 2026 ──────────────────────────────────────────
   {
+    id: 'github-operating-view-graphs-calendar-sync',
+    date: '2026-09-09',
+    type: 'improvement',
+    title: 'Data Ops: GitHub Operating View, 2D/3D Contributions Graph & Calendar Telemetry Sync',
+    summary:
+      'Synchronized the entire GitHub Operating View and portfolio telemetry with live GitHub metadata and activity signals. Updated live repository catalog (github-stats.json) reflecting 51 public repositories, 8 stars, 4 forks, and 8 followers with recent push activity for Hindai and mangeshrautarchive. Calibrated the 2D canvas and 3D contribution graphs fallback sample (github-contributions-graph.js) to verified 2026 total contributions (2,654 contributions). Synchronized public repository metrics across systems.html, systems-viz.js, and engineering-showcase-data.js from legacy counts to 51 public repos. Refreshed recent public commit streams in systems-viz.js with verified recent SHAs. Injected Sep 9, 2026 sitewide QA certification reminder into calendar.js, aligned WebMCP static hero stat fallback to 14 tools, and updated offline fallback repositories in github-projects.js.',
+    tags: ['systems', 'performance'],
+    sha: 'e022e57e',
+    link: `${CHANGELOG_REPO}/commit/e022e57e`,
+    model: 'Gemini 3.8 Flash (High)',
+    ide: 'Google Antigravity IDE (AGY)',
+    purpose:
+      'GitHub Operating View live data synchronization, 2D/3D contribution graph calibration (2,654 contributions), calendar reminder injection, and cross-surface repository metrics alignment',
+  },
+  {
     id: 'sitewide-100-lighthouse-and-wcag-aa-remediation',
     date: '2026-09-09',
     type: 'improvement',

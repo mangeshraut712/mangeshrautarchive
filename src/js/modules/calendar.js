@@ -239,6 +239,17 @@ export class CalendarWidget {
         completed: false,
       },
       {
+        id: 106,
+        text: 'Sitewide 100/100/100/100 QA Certification & Telemetry Sync',
+        time: 'Sep 9 · 11:30 AM',
+        dateKey: '2026-09-09',
+        category: 'reminders',
+        tag: 'Milestone',
+        color: 'blue',
+        icon: 'award',
+        completed: false,
+      },
+      {
         id: 105,
         text: 'FastAPI & Cloudflare Edge Resilience Stress Test',
         time: 'Sep 15 · 3:00 PM',

@@ -29,7 +29,7 @@ export const heroStats = [
   { value: String(WEBMCP_TOOL_COUNT), unit: '', label: 'WebMCP tools', href: '#architecture' },
   { value: '13.66B', unit: '', label: 'AI tokens burned', href: '#tokenization' },
   { value: '16', unit: '', label: 'Technical articles', href: '#writing' },
-  { value: '32', unit: '', label: 'Public repositories', href: '#open-source' },
+  { value: '51', unit: '', label: 'Public repositories', href: '#open-source' },
   { value: 'Live', unit: '', label: 'Production monitor', href: 'monitor.html' },
 ];
 
@@ -212,7 +212,7 @@ export const openSourceActivity = {
     { label: 'Recent PR', value: '—', liveKey: 'recentPr' },
     { label: 'Recent issue', value: '—', liveKey: 'recentIssue' },
     { label: 'Most active repo', value: 'mangeshrautarchive', liveKey: 'activeRepo' },
-    { label: 'Repositories', value: '32' },
+    { label: 'Repositories', value: '51' },
     { label: 'Contributions', value: 'Active', liveKey: 'streak' },
   ],
   repoUrl: 'https://github.com/mangeshraut712',
@@ -235,7 +235,7 @@ export const engineeringTimeline = [
     items: [
       'Full Website 5-Phase Overhaul & Refactoring',
       'Modular Monitor Architecture (src/js/modules/monitor-page.js, -76% HTML size)',
-      '172 Vitest unit tests · 166 pytest API tests · 16 Playwright browser projects',
+      '239 Vitest unit tests · 175 pytest API tests · 16 Playwright browser projects',
       'Vendor Rich-Markdown Bundle Compression (604 KB → 334 KB, -17,050 lines)',
       'Evidence-based competency tiers (Core, Proficient, Familiar) replacing percentages',
       'Clean SEO canonical URL architecture & skip-navigation accessibility',

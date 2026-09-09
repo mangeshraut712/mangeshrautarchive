@@ -115,7 +115,7 @@ function generateSampleYear(year) {
     days.push({ date, count, level });
   }
   const calcTotal = days.reduce((s, x) => s + x.count, 0);
-  const total = year === 2026 || year === today.getFullYear() ? 3592 : calcTotal;
+  const total = year === 2026 || year === today.getFullYear() ? 2654 : calcTotal;
   return { year, days, total, isSample: true };
 }
 

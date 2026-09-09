@@ -280,6 +280,7 @@ mangeshrautarchive/
 ### 5.1 AI Models & Engineering Purpose Matrix
 
 | Model Tier & Name | Engineering Purpose & Scope | Reasoning Mode | Status |
+| **`gemini-3.8-flash`** | GitHub Operating View live sync (51 repos), 2D/3D contributions graph calibration (2,654 contributions), calendar reminders & cross-surface telemetry | High / Extended Thinking | Active |
 | **`gemini-3.8-flash`** | Sitewide 100/100/100/100 Lighthouse PageSpeed optimization, WCAG 2 AA color contrast & heading sequence remediation, CSS deferral, and zero-defect QA | High / Extended Thinking | Active |
 | **`gemini-3.8-flash`** | Travel Atlas Apple Maps sidebar redesign, segmented metric strip architecture, global CSS capsule purge, and subpage layout synchronization | High / Extended Thinking | Active |
 | **`gemini-3.8-flash`** | Codification of 14 Software Engineering Best Practices (`docs/BEST_PRACTICES.md`), subnavbar geometric synchronization | High / Extended Thinking | Active |
