@@ -207,6 +207,7 @@ const allowedRootFiles = new Set([
   'CNAME',
   'CODE_OF_CONDUCT.md',
   'CONTRIBUTING.md',
+  'GEMINI.md',
   'LICENSE',
   'README.md',
   'SECURITY.md',

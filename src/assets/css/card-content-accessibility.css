@@ -21,11 +21,11 @@
   flex-wrap: nowrap !important;
   align-items: center !important;
   justify-content: flex-end !important;
-  gap: 0.32rem;
+  gap: 8px !important;
   flex-shrink: 0 !important;
   width: auto !important;
   max-width: 100%;
-  min-height: 34px;
+  min-height: 40px;
   box-sizing: border-box;
 }
 
@@ -54,12 +54,12 @@
   flex-wrap: nowrap !important;
   align-items: center !important;
   justify-content: center !important;
-  width: 34px !important;
-  min-width: 34px !important;
-  max-width: 34px !important;
-  height: 34px !important;
-  min-height: 34px !important;
-  max-height: 34px !important;
+  width: 40px !important;
+  min-width: 40px !important;
+  max-width: 40px !important;
+  height: 40px !important;
+  min-height: 40px !important;
+  max-height: 40px !important;
   padding: 0 !important;
   border-radius: 999px !important;
   border: 1px solid rgb(0 0 0 / 10%);

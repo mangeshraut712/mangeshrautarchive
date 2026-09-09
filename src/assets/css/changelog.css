@@ -7,7 +7,7 @@ body.changelog-page {
   --cl-bg: #ffffff;
   --cl-text: #1d1d1f;
   --cl-secondary: #6e6e73;
-  --cl-muted: #86868b;
+  --cl-muted: #6e6e73;
   --cl-border: #e5e5ea;
   --cl-surface: #ffffff;
   --cl-chip-active: #0071e3;
@@ -25,7 +25,7 @@ html.dark body.changelog-page {
   --cl-bg: #000000;
   --cl-text: #f5f5f7;
   --cl-secondary: #a1a1a6;
-  --cl-muted: #86868b;
+  --cl-muted: #98989d;
   --cl-border: #2c2c2e;
   --cl-surface: #000000;
   --cl-chip-active: #0071e3;
@@ -362,6 +362,14 @@ body.changelog-page .changelog-month {
   gap: 0;
   padding-bottom: 2.5rem;
   scroll-margin-top: 7.5rem;
+}
+
+body.changelog-page .changelog-month__heading {
+  margin: 0;
+  padding: 0;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
 }
 
 body.changelog-page .changelog-month__title {

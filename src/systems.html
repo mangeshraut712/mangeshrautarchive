@@ -128,37 +128,85 @@
     <script src="js/utils/theme-head.js"></script>
     <!-- Shared subpage chrome stack: critical → polish → design system → page → deferred chrome -->
     <link rel="stylesheet" href="assets/css/systems-critical.css?v=20260718share" />
-    <link rel="stylesheet" href="assets/css/ux-polish-fixes.css?v=20260719ui2" />
+    <link
+      rel="stylesheet"
+      href="assets/css/ux-polish-fixes.css?v=20260719ui2"
+      media="print"
+      onload="this.media = 'all'"
+    />
+    <noscript
+      ><link rel="stylesheet" href="assets/css/ux-polish-fixes.css?v=20260719ui2"
+    /></noscript>
     <script src="js/utils/perf-audit-flag.js"></script>
-    <link rel="stylesheet" href="assets/css/apple-design-system.css?v=20260716aa" data-perf-defer />
-    <link rel="stylesheet" href="assets/css/typography-system.css?v=20260716aa" data-perf-defer />
+    <link rel="stylesheet" href="assets/css/systems.css?v=20260724dino1" />
+    <link
+      rel="stylesheet"
+      href="assets/css/apple-design-system.css?v=20260716aa"
+      media="print"
+      onload="this.media = 'all'"
+      data-perf-defer
+    />
+    <link
+      rel="stylesheet"
+      href="assets/css/typography-system.css?v=20260716aa"
+      media="print"
+      onload="this.media = 'all'"
+      data-perf-defer
+    />
     <link
       rel="stylesheet"
       href="assets/css/sitewide-design-system.css?v=20260808center9"
+      media="print"
+      onload="this.media = 'all'"
       data-perf-defer
     />
-    <link rel="stylesheet" href="assets/css/accessibility.css?v=20260719ui2" data-perf-defer />
-    <link rel="stylesheet" href="assets/css/monitor.css?v=20260718sub2" data-perf-defer />
-    <link rel="stylesheet" href="assets/css/systems.css?v=20260724dino1" data-perf-defer />
-    <link rel="stylesheet" href="assets/css/architecture-tree.css?v=20260816lux" data-perf-defer />
+    <link
+      rel="stylesheet"
+      href="assets/css/accessibility.css?v=20260719ui2"
+      media="print"
+      onload="this.media = 'all'"
+      data-perf-defer
+    />
+    <link
+      rel="stylesheet"
+      href="assets/css/monitor.css?v=20260718sub2"
+      media="print"
+      onload="this.media = 'all'"
+      data-perf-defer
+    />
+    <link
+      rel="stylesheet"
+      href="assets/css/architecture-tree.css?v=20260816lux"
+      media="print"
+      onload="this.media = 'all'"
+      data-perf-defer
+    />
     <link
       rel="stylesheet"
       href="assets/css/quick-copy-shadcn.css?v=20260826cache1"
+      media="print"
+      onload="this.media = 'all'"
       data-perf-defer
     />
     <link
       rel="stylesheet"
       href="assets/css/mobile-viewport.css?v=20260719chrome2"
+      media="print"
+      onload="this.media = 'all'"
       data-perf-defer
     />
     <link
       rel="stylesheet"
       href="assets/css/font-awesome-display.css?v=20260716aa"
+      media="print"
+      onload="this.media = 'all'"
       data-perf-defer
     />
     <link
       rel="stylesheet"
       href="assets/css/sections-apple-premium.css?v=20260716aa"
+      media="print"
+      onload="this.media = 'all'"
       data-perf-defer
     />
     <link
@@ -168,8 +216,20 @@
       onload="this.media = 'all'"
       data-perf-defer
     />
-    <link rel="stylesheet" href="assets/css/chrome-surfaces.css?v=20260717clean" data-perf-defer />
-    <link rel="stylesheet" href="assets/css/share-widget.css?v=20260719ui2" data-perf-defer />
+    <link
+      rel="stylesheet"
+      href="assets/css/chrome-surfaces.css?v=20260717clean"
+      media="print"
+      onload="this.media = 'all'"
+      data-perf-defer
+    />
+    <link
+      rel="stylesheet"
+      href="assets/css/share-widget.css?v=20260719ui2"
+      media="print"
+      onload="this.media = 'all'"
+      data-perf-defer
+    />
     <link
       rel="stylesheet"
       href="assets/vendor/fontawesome/css/all.min.css?v=20260716aa"
@@ -212,8 +272,24 @@
       }
     </script>
     <script src="js/utils/deferred-analytics.js" defer></script>
-    <link rel="stylesheet" href="assets/css/apple-cards-luxury-2026.css?v=20260717clean" />
-    <link rel="stylesheet" href="assets/css/subpage-layout-polish.css?v=20260724dino1" />
+    <link
+      rel="stylesheet"
+      href="assets/css/apple-cards-luxury-2026.css?v=20260717clean"
+      media="print"
+      onload="this.media = 'all'"
+    />
+    <noscript
+      ><link rel="stylesheet" href="assets/css/apple-cards-luxury-2026.css?v=20260717clean"
+    /></noscript>
+    <link
+      rel="stylesheet"
+      href="assets/css/subpage-layout-polish.css?v=20260724dino1"
+      media="print"
+      onload="this.media = 'all'"
+    />
+    <noscript
+      ><link rel="stylesheet" href="assets/css/subpage-layout-polish.css?v=20260724dino1"
+    /></noscript>
   </head>
   <body class="systems-page monitor-page systems-evidence-page">
     <div class="skip-links" role="navigation" aria-label="Skip links">
@@ -261,20 +337,79 @@
     <main class="systems-shell" id="main-content">
       <section class="systems-keynote-section systems-keynote-section--hero" id="overview">
         <header class="systems-keynote-hero">
-          <p class="systems-public-statement" id="systems-public-statement"></p>
+          <p class="systems-public-statement" id="systems-public-statement">
+            This page is intentionally public. Every architecture decision, benchmark, tradeoff,
+            failure, and production metric exists because I believe engineering ability should be
+            demonstrated through evidence rather than claimed through bullet points.
+          </p>
           <p class="systems-eyebrow">Systems</p>
           <h1>Proof you can build, ship, think, and trust.</h1>
-          <p class="systems-hero-lead systems-hero-lead--stack" id="systems-hero-lead"></p>
+          <p class="systems-hero-lead systems-hero-lead--stack" id="systems-hero-lead">
+            Every claim on this portfolio is backed by code, benchmarks, architecture, or production
+            telemetry. No stock templates. No generated project descriptions. Only things I've
+            built, measured, shipped, and learned.
+          </p>
           <div
             class="systems-hero-stats"
             id="systems-hero-stats"
             aria-label="Key engineering metrics"
-          ></div>
+          >
+            <a class="systems-hero-stat" href="#production"
+              ><span class="systems-hero-stat-value">100/100/100/100</span
+              ><span class="systems-hero-stat-label">Lighthouse CI gate</span></a
+            ><a class="systems-hero-stat" href="#architecture"
+              ><span class="systems-hero-stat-value">20</span
+              ><span class="systems-hero-stat-label">WebMCP tools</span></a
+            ><a class="systems-hero-stat" href="#tokenization"
+              ><span class="systems-hero-stat-value">13.66B</span
+              ><span class="systems-hero-stat-label">AI tokens burned</span></a
+            ><a class="systems-hero-stat" href="#writing"
+              ><span class="systems-hero-stat-value">16</span
+              ><span class="systems-hero-stat-label">Technical articles</span></a
+            ><a class="systems-hero-stat" href="#open-source"
+              ><span class="systems-hero-stat-value">32</span
+              ><span class="systems-hero-stat-label">Public repositories</span></a
+            ><a class="systems-hero-stat" href="monitor.html"
+              ><span class="systems-hero-stat-value">Live</span
+              ><span class="systems-hero-stat-label">Production monitor</span></a
+            >
+          </div>
         </header>
         <div class="systems-section-head systems-section-head--center">
           <h2 id="overview-heading">Builder profile</h2>
         </div>
-        <div class="systems-evidence-grid" id="systems-overview-grid"></div>
+        <div class="systems-evidence-grid" id="systems-overview-grid">
+          <article
+            class="eng-showcase-card systems-evidence-card lg-glass-card systems-evidence-card--featured"
+            id="builder-profile"
+          >
+            <h3 class="eng-card-q">Builder Profile</h3>
+            <p class="eng-card-lead">Software Development Engineer</p>
+            <ul class="eng-card-bullets">
+              <li>MS Computer Science — Drexel University</li>
+              <li>
+                Building production AI products, agentic workflows, developer infrastructure, and
+                modern web systems.
+              </li>
+            </ul>
+          </article>
+          <article
+            class="eng-showcase-card systems-evidence-card lg-glass-card"
+            id="build-capabilities"
+          >
+            <h3 class="eng-card-q">What I Actually Build</h3>
+            <ul class="systems-capability-list">
+              <li class="systems-capability-item">✓ AI Products</li>
+              <li class="systems-capability-item">✓ Agentic Systems</li>
+              <li class="systems-capability-item">✓ Full Stack Applications</li>
+              <li class="systems-capability-item">✓ RAG Pipelines</li>
+              <li class="systems-capability-item">✓ Developer Tools</li>
+              <li class="systems-capability-item">✓ System Monitors</li>
+              <li class="systems-capability-item">✓ Production APIs</li>
+              <li class="systems-capability-item">✓ Design Systems</li>
+            </ul>
+          </article>
+        </div>
       </section>
 
       <nav class="systems-section-rail" id="systems-section-rail" aria-label="Page sections">

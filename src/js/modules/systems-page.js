@@ -26,7 +26,6 @@ import {
   updateLiveBenchmarkValues,
 } from './systems-viz.js';
 import { isPerformanceAudit } from '../utils/perf-audit.js';
-import { blogPosts } from './blog-data.js';
 import { escapeHtml } from '../utils/escape-html.js';
 import { initArchitectureTree } from './architecture-tree.js';
 
@@ -216,12 +215,12 @@ function renderOverview() {
 
   root.innerHTML = `
     <article class="eng-showcase-card systems-evidence-card lg-glass-card systems-evidence-card--featured" id="${escapeHtml(builderProfile.anchor)}">
-      <h2 class="eng-card-q">${escapeHtml(builderProfile.title)}</h2>
+      <h3 class="eng-card-q">${escapeHtml(builderProfile.title)}</h3>
       <p class="eng-card-lead">${escapeHtml(builderProfile.lead)}</p>
       <ul class="eng-card-bullets">${builderProfile.bullets.map(b => `<li>${escapeHtml(b)}</li>`).join('')}</ul>
     </article>
     <article class="eng-showcase-card systems-evidence-card lg-glass-card" id="${escapeHtml(buildCapabilities.anchor)}">
-      <h2 class="eng-card-q">${escapeHtml(buildCapabilities.title)}</h2>
+      <h3 class="eng-card-q">${escapeHtml(buildCapabilities.title)}</h3>
       <ul class="systems-capability-list">${capabilityList}</ul>
     </article>
   `;
@@ -249,7 +248,7 @@ function renderDecisionGrid(rootId, decisions) {
             </span>
           </div>
           <div class="systems-decision-content">
-            <h4 class="systems-decision-label">${escapeHtml(item.decision)}</h4>
+            <h3 class="systems-decision-label">${escapeHtml(item.decision)}</h3>
             <div class="systems-decision-why-container">
               <span class="why-kicker">Rationale</span>
               <p class="systems-decision-why">${escapeHtml(item.why)}</p>
@@ -268,12 +267,15 @@ function renderFailures() {
     .map(
       item => `
         <div class="systems-failure-row lg-glass-card">
-          <div class="systems-failure-header">
-            <span class="failure-icon-container">
+          <div class="systems-failure-meta">
+            <span class="failure-badge">
               <i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i>
+              <span>FAILED</span>
             </span>
-            <div class="systems-failure-title-block">
-              <h4 class="systems-failure-name">${escapeHtml(item.name)}</h4>
+          </div>
+          <div class="systems-failure-content">
+            <div class="systems-failure-title-row">
+              <h3 class="systems-failure-name">${escapeHtml(item.name)}</h3>
               <span class="systems-failure-status-badge">${escapeHtml(item.status)}</span>
             </div>
           </div>
@@ -314,12 +316,15 @@ function renderWriting() {
     )
     .join('');
 
+  const articleStat = heroStats.find(s => s.href === '#writing');
+  const articleCount = articleStat ? articleStat.value : '16';
+
   root.innerHTML = `
     <div class="systems-writing-container">
       <article class="systems-writing-card lg-glass-card">
         <div class="systems-writing-card-header">
           <span class="systems-writing-kicker">Architecture &amp; Field Notes</span>
-          <span class="systems-writing-time">${blogPosts.length} Published Articles</span>
+          <span class="systems-writing-time">${escapeHtml(articleCount)} Published Articles</span>
         </div>
         <h3 class="systems-writing-title">
           Technical Field Notes, Distributed Systems &amp; Agentic AI
@@ -328,7 +333,7 @@ function renderWriting() {
           Deep-dive technical essays covering Spring Boot, AWS event-driven architectures, agentic AI workflows, LLM token optimization, and high-throughput systems design. Canonical articles, interactive filters, and newsletter subscription are hosted on the main portfolio.
         </p>
         <div class="systems-writing-footer">
-          <a class="systems-writing-link" href="index.html#blog">View all ${blogPosts.length} articles on homepage →</a>
+          <a class="systems-writing-link" href="index.html#blog">View all ${escapeHtml(articleCount)} articles on homepage →</a>
           <a class="systems-writing-link" href="blog/index.html">Browse blog index →</a>
         </div>
       </article>

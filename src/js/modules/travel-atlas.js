@@ -647,7 +647,7 @@ function renderStopCard(waypoint, index, countryGroupHeader) {
   return `
     ${countryGroupHeader}
     <article class="travel-stop${activeClass}" data-index="${index}" data-city="${escapeHtml(waypoint.locality.city)}" data-country="${escapeHtml(waypoint.locality.country)}" style="--stop-color: ${waypointColor()}" aria-label="${escapeHtml(ariaLabel)}">
-      <div class="travel-stop__main" role="button" tabindex="0" aria-labelledby="${nameId}" aria-describedby="${summaryId}" aria-controls="${detailsId}" aria-expanded="${index === state.activeIndex}">
+      <div class="travel-stop__main" role="button" tabindex="0" aria-describedby="${summaryId}" aria-controls="${detailsId}" aria-expanded="${index === state.activeIndex}">
         <div class="travel-stop__dot"></div>
         <div class="travel-stop__order">
           <span>${escapeHtml(waypoint.locality.region)}, ${escapeHtml(waypoint.locality.country)} ${homeBadge}</span>
@@ -656,30 +656,30 @@ function renderStopCard(waypoint, index, countryGroupHeader) {
         <h3 class="travel-stop__name" id="${nameId}">${escapeHtml(waypoint.title)}</h3>
         ${placeContext}
         <div class="travel-stop__tagline" id="${summaryId}">${escapeHtml(experience)}</div>
-        <div class="travel-stop__details" id="${detailsId}">
-          ${renderStopMedia(waypoint)}
-          ${renderGoogleActions(waypoint)}
-          <p class="travel-stop__story">${escapeHtml(wikiSummary)}</p>
-          ${renderQuickFacts(waypoint)}
-          ${renderSignalTags(waypoint)}
-          ${
-            showWhyVisit
-              ? `<div class="travel-stop__detail-section">
-            <div class="travel-stop__detail-label">Why Visit</div>
-            <div class="travel-stop__detail-text">${escapeHtml(whyVisit)}</div>
-          </div>`
-              : ''
-          }
-          ${
-            showMustSee
-              ? `<div class="travel-stop__detail-section">
-            <div class="travel-stop__detail-label">Must See</div>
-            <div class="travel-stop__detail-text">${escapeHtml(mustSee.join(', '))}</div>
-          </div>`
-              : ''
-          }
-          ${renderPlaceGuide(waypoint)}
-        </div>
+      </div>
+      <div class="travel-stop__details" id="${detailsId}">
+        ${renderStopMedia(waypoint)}
+        ${renderGoogleActions(waypoint)}
+        <p class="travel-stop__story">${escapeHtml(wikiSummary)}</p>
+        ${renderQuickFacts(waypoint)}
+        ${renderSignalTags(waypoint)}
+        ${
+          showWhyVisit
+            ? `<div class="travel-stop__detail-section">
+          <div class="travel-stop__detail-label">Why Visit</div>
+          <div class="travel-stop__detail-text">${escapeHtml(whyVisit)}</div>
+        </div>`
+            : ''
+        }
+        ${
+          showMustSee
+            ? `<div class="travel-stop__detail-section">
+          <div class="travel-stop__detail-label">Must See</div>
+          <div class="travel-stop__detail-text">${escapeHtml(mustSee.join(', '))}</div>
+        </div>`
+            : ''
+        }
+        ${renderPlaceGuide(waypoint)}
       </div>
     </article>`;
 }

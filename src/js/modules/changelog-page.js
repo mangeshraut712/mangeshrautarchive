@@ -228,15 +228,17 @@ function renderTimeline() {
       const expanded = state.collapsed.has(id) ? 'false' : 'true';
       return `
       <section class="changelog-month${collapsed}" id="${escapeHtml(id)}" aria-label="${escapeHtml(month)}">
-        <button
-          type="button"
-          class="changelog-month__title"
-          data-month-toggle="${escapeHtml(id)}"
-          aria-expanded="${expanded}"
-        >
-          <span>${escapeHtml(month)}</span>
-          <i class="fas fa-chevron-down" aria-hidden="true"></i>
-        </button>
+        <h2 class="changelog-month__heading">
+          <button
+            type="button"
+            class="changelog-month__title"
+            data-month-toggle="${escapeHtml(id)}"
+            aria-expanded="${expanded}"
+          >
+            <span>${escapeHtml(month)}</span>
+            <i class="fas fa-chevron-down" aria-hidden="true"></i>
+          </button>
+        </h2>
         <div class="changelog-month__list">
           ${monthEntries.map(renderEntry).join('')}
         </div>

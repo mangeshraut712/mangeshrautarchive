@@ -244,7 +244,11 @@ async function initAssistMeChrome() {
   ensureCriticalHideStyles();
   ensureGoToTopButton();
   ensureChatbotChrome();
-  ensureAssistMeStyles();
+  if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
+    window.requestIdleCallback(() => ensureAssistMeStyles(), { timeout: 3000 });
+  } else {
+    setTimeout(ensureAssistMeStyles, 2000);
+  }
   bindLazyChatbot();
 
   try {

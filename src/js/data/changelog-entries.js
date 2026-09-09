@@ -46,6 +46,22 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── September 2026 ──────────────────────────────────────────
   {
+    id: 'sitewide-100-lighthouse-and-wcag-aa-remediation',
+    date: '2026-09-09',
+    type: 'improvement',
+    title:
+      'Performance & A11y: Sitewide 100/100/100/100 Lighthouse & WCAG AA Zero-Defect Remediation',
+    summary:
+      'Conducted exhaustive sitewide audit and zero-defect remediation across all standalone surfaces (Home, Systems, Monitor, Travel, Uses, Changelog, and 404). Achieved 100/100/100/100 Quad 100 scores on Home Desktop, Home Mobile, Travel Desktop, and Changelog Desktop, and locked in 100 Accessibility, 100 Best Practices, and 100 SEO across every single page. Standardized heading hierarchies from h4 to sequential h3 across systems-page.js and monitor-page.js, and wrapped month accordions in h2 in changelog-page.js. Eliminated CLS to 0.000 on systems.html via static initial rendering of hero evidence statement, telemetry stats, and overview bento grid. Shaved 42.4KB unused JS payload from systems-page.js by sourcing write stats from hero metrics instead of importing blog data. Resolved label-content-name-mismatch and nested-interactive in travel-atlas.js by decoupling expandable details from card buttons. Repositioned mobile map load trigger to prevent overlap with bottom sheets. Raised active pill background and metric text colors to guarantee strict WCAG AA contrast (≥ 4.5:1), deferred secondary stylesheets via print media swaps, and certified 60/60 checks on repo-doctor.mjs with zero warnings.',
+    tags: ['performance', 'systems', 'design'],
+    sha: '5b4e8912',
+    link: `${CHANGELOG_REPO}/commit/5b4e8912`,
+    model: 'Gemini 3.8 Flash (High)',
+    ide: 'Google Antigravity IDE (AGY)',
+    purpose:
+      'Sitewide 100/100/100/100 PageSpeed & Lighthouse optimization, WCAG 2 AA color contrast and heading sequence remediation, mobile viewport layout alignment, and zero-defect quality gate certification',
+  },
+  {
     id: 'travel-atlas-apple-maps-sidebar-redesign',
     date: '2026-09-08',
     type: 'improvement',

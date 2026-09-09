@@ -1473,12 +1473,12 @@ html.dark #projects #github-projects-container .showcase-project-card:hover {
   flex-wrap: nowrap !important;
   align-items: center !important;
   justify-content: center !important;
-  width: 34px !important;
-  min-width: 34px !important;
-  max-width: 34px !important;
-  height: 34px !important;
-  min-height: 34px !important;
-  max-height: 34px !important;
+  width: 40px !important;
+  min-width: 40px !important;
+  max-width: 40px !important;
+  height: 40px !important;
+  min-height: 40px !important;
+  max-height: 40px !important;
   padding: 0 !important;
   gap: 0 !important;
   border-radius: 999px !important;
@@ -1540,7 +1540,7 @@ html.dark #projects #github-projects-container .showcase-project-card:hover {
     justify-content: flex-end !important;
     margin-left: auto !important;
     align-self: flex-end !important;
-    gap: 0.4rem !important;
+    gap: 8px !important;
   }
 
   .about-card-header .card-read-toolbar .card-tool-label,
@@ -1554,10 +1554,10 @@ html.dark #projects #github-projects-container .showcase-project-card:hover {
   .card-read-toolbar .card-speak-btn,
   .card-read-toolbar .card-translate-btn,
   .card-read-toolbar .card-restore-btn {
-    width: 36px !important;
-    min-width: 36px !important;
-    height: 36px !important;
-    min-height: 36px !important;
+    width: 40px !important;
+    min-width: 40px !important;
+    height: 40px !important;
+    min-height: 40px !important;
     padding: 0 !important;
   }
 }

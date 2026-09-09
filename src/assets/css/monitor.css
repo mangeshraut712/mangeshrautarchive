@@ -1321,7 +1321,7 @@ html:not(.dark) .method-delete {
   color: var(--text-secondary);
 }
 
-.health-info h4 {
+.health-info :is(h3, h4) {
   font-size: 15px;
   font-weight: 600;
   margin-bottom: 3px;
@@ -4000,7 +4000,10 @@ html.dark .rate-limit-bar-track {
   font-weight: 700;
 }
 .text-accent-blue {
-  color: var(--accent-blue);
+  color: #0066cc;
+}
+html.dark .text-accent-blue {
+  color: #58a6ff;
 }
 .ai-token-bar-track {
   height: 6px;

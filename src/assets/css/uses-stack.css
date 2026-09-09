@@ -1389,8 +1389,8 @@ body.uses-page .uses-control-tile i {
 
 body.uses-page .uses-control-tile.is-active,
 body.uses-page button.uses-control-tile.is-active[type='button'] {
-  background: var(--uses-blue) !important;
-  border-color: var(--uses-blue) !important;
+  background: #0071e3 !important;
+  border-color: #0071e3 !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
 }

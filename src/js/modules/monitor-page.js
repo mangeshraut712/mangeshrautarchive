@@ -806,7 +806,7 @@ function renderPlatformHealthMatrix(data) {
                     <i class="fas fa-${status === 'healthy' ? 'check' : status === 'degraded' ? 'minus' : status === 'unhealthy' ? 'xmark' : 'circle-question'}" aria-hidden="true"></i>
                   </div>
                   <div class="health-info">
-                    <h4>${escapeHtml(check.label || check.id)}</h4>
+                    <h3>${escapeHtml(check.label || check.id)}</h3>
                     <p>${escapeHtml(check.detail || '')}</p>
                     <p class="integration-meta"><code>${escapeHtml(path || '—')}</code></p>
                   </div>
@@ -1258,7 +1258,7 @@ function renderStatusCard({
                 <i class="fas fa-${getStatusIcon(tone)}" aria-hidden="true"></i>
               </div>
               <div class="health-info">
-                <h4>${escapeHtml(title)}</h4>
+                <h3>${escapeHtml(title)}</h3>
                 <p>${escapeHtml(message || '')}</p>
                 ${linkHtml || ''}
               </div>
@@ -1622,7 +1622,7 @@ function renderIntegrationsPanel(data) {
                     <i class="fas fa-${icon}"></i>
                   </div>
                   <div class="health-info">
-                    <h4>${escapeHtml(label)}</h4>
+                    <h3>${escapeHtml(label)}</h3>
                     <p>${escapeHtml(provider.purpose || '')}</p>
                     <p class="integration-meta">
                       <span>${escapeHtml(statusLabel)}</span>
@@ -2598,7 +2598,7 @@ async function runClientProbes() {
               <div class="health-item-left">
                 <div class="health-status-icon ${tone}"><i class="fas fa-${getStatusIcon(tone)}" aria-hidden="true"></i></div>
                 <div class="health-info">
-                  <h4>${escapeHtml(r.name)}</h4>
+                  <h3>${escapeHtml(r.name)}</h3>
                   <p>${escapeHtml(msg)}</p>
                   <a class="health-inline-link" href="${escapeHtml(r.url)}" target="_blank" rel="noopener">Open target</a>
                 </div>
