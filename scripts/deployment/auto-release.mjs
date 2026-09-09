@@ -20,8 +20,13 @@ async function publishRelease() {
   }
 
   const latest = changelogEntries[0];
-  const tagName = `v${latest.date.replace(/-/g, '.')}-${latest.id}`;
-  const releaseTitle = `${latest.title} (${latest.date})`;
+  const inputTag =
+    process.env.INPUT_TAG_NAME?.trim() ||
+    (process.env.GITHUB_REF_TYPE === 'tag' ? process.env.GITHUB_REF_NAME : '');
+  const tagName = inputTag || `v${latest.date.replace(/-/g, '.')}-${latest.id}`;
+  const releaseTitle = inputTag
+    ? `Release ${inputTag}: ${latest.title}`
+    : `${latest.title} (${latest.date})`;
 
   console.log(`[auto-release] Latest entry: "${latest.title}" [${latest.id}]`);
   console.log(`[auto-release] Target tag: ${tagName}`);
