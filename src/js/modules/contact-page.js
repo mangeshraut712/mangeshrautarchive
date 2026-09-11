@@ -7,6 +7,7 @@
 import { initBlessingMediaModal } from './blessing-media-modal.js';
 import { getSubmissionContext, submitStoredForm } from '../services/form-submission.js';
 import { openCalendlyPopup } from '../utils/calendly.js';
+import { openLumaCalendar } from '../utils/luma.js';
 
 export function initContactInteractions() {
   initBlessingMediaModal();
@@ -14,6 +15,7 @@ export function initContactInteractions() {
   initCryptoCopyButtons();
   initEmailCopyButtons();
   initCalendlyButton();
+  initLumaButtons();
   initSupportDonationInteractions();
 }
 
@@ -51,6 +53,16 @@ function initCalendlyButton() {
     if (!btn) return;
     e.preventDefault();
     void openCalendlyPopup();
+  });
+}
+
+function initLumaButtons() {
+  document.addEventListener('click', e => {
+    const btn = e.target.closest('[data-open-luma]');
+    if (!btn) return;
+    e.preventDefault();
+    const customUrl = btn.getAttribute('data-luma-url') || undefined;
+    openLumaCalendar(customUrl);
   });
 }
 

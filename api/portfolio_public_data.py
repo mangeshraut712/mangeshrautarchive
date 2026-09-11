@@ -32,9 +32,14 @@ LIGHTHOUSE_PAGES_GATES: Dict[str, Dict[str, int]] = {
     "mobile": {"performance": 85, "accessibility": 90, "best_practices": 90, "seo": 90},
 }
 
-TEST_COUNTS = {"vitest": 209, "pytest": 175, "playwright_projects": 16}
+TEST_COUNTS = {
+    "vitest": 242,
+    "pytest": 175,
+    "playwright_projects": 16,
+}
 
 WEBMCP_TOOL_COUNT = 14
+LUMA_CALENDARS_URL = "https://luma.com/home/calendars"
 
 PWA_POLICY = {
     "installable": True,
@@ -101,6 +106,7 @@ def get_portfolio_facts_chunk() -> str:
         f"{LIGHTHOUSE_PAGES_GATES['mobile']['performance']}+ "
         f"(see npm run qa:lighthouse:ci)\n"
         f"- WebMCP browser tools: {WEBMCP_TOOL_COUNT}\n"
+        f"- Community events & calendars: Luma ({LUMA_CALENDARS_URL})\n"
         f"- PWA: {PWA_POLICY['summary']}\n"
         f"- Uses stack:\n  "
         + "\n  ".join(uses_lines)
@@ -117,6 +123,7 @@ def get_portfolio_facts_dict() -> Dict[str, Any]:
         "lighthouse_pages_gates": LIGHTHOUSE_PAGES_GATES,
         "test_counts": TEST_COUNTS,
         "webmcp_tool_count": WEBMCP_TOOL_COUNT,
+        "luma_calendars_url": LUMA_CALENDARS_URL,
         "pwa_policy": PWA_POLICY,
         "uses_stack": USES_STACK,
         "quality_summary": format_quality_summary(),

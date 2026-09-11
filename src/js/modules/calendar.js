@@ -1,4 +1,5 @@
 import { openCalendlyPopup } from '../utils/calendly.js';
+import { LUMA_CALENDARS_URL } from '../utils/luma.js';
 import { escapeHtml } from '../utils/escape-html.js';
 import { getFormsApiBase } from '../services/form-submission.js';
 import { changelogEntries } from '../data/changelog-entries.js';
@@ -84,6 +85,8 @@ export class CalendarWidget {
         color: 'green',
         icon: 'terminal',
         location: 'Tech Community Hub & Livestream',
+        lumaUrl: LUMA_CALENDARS_URL,
+        isLuma: true,
         completed: false,
       },
       {
@@ -96,6 +99,8 @@ export class CalendarWidget {
         color: 'orange',
         icon: 'cloud',
         location: 'Moscone Center & Virtual Stage',
+        lumaUrl: LUMA_CALENDARS_URL,
+        isLuma: true,
         completed: false,
       },
       {
@@ -108,6 +113,8 @@ export class CalendarWidget {
         color: 'purple',
         icon: 'robot',
         location: 'Open Source Live',
+        lumaUrl: LUMA_CALENDARS_URL,
+        isLuma: true,
         completed: false,
       },
       {
@@ -120,6 +127,8 @@ export class CalendarWidget {
         color: 'purple',
         icon: 'code',
         location: 'Tech Park & Livestream',
+        lumaUrl: LUMA_CALENDARS_URL,
+        isLuma: true,
         completed: false,
       },
       {
@@ -132,6 +141,8 @@ export class CalendarWidget {
         color: 'blue',
         icon: 'server',
         location: 'Engineering Stage',
+        lumaUrl: LUMA_CALENDARS_URL,
+        isLuma: true,
         completed: false,
       },
       {
@@ -144,6 +155,8 @@ export class CalendarWidget {
         color: 'blue',
         icon: 'microphone',
         location: 'Global Livestream',
+        lumaUrl: LUMA_CALENDARS_URL,
+        isLuma: true,
         completed: false,
       },
       {
@@ -156,6 +169,8 @@ export class CalendarWidget {
         color: 'orange',
         icon: 'mug-hot',
         location: 'Cursor Community Hub',
+        lumaUrl: LUMA_CALENDARS_URL,
+        isLuma: true,
         completed: false,
       },
       {
@@ -168,6 +183,8 @@ export class CalendarWidget {
         color: 'purple',
         icon: 'code',
         location: 'Anthropic Discord & Livestream',
+        lumaUrl: LUMA_CALENDARS_URL,
+        isLuma: true,
         completed: false,
       },
       {
@@ -180,6 +197,8 @@ export class CalendarWidget {
         color: 'blue',
         icon: 'microphone',
         location: 'Virtual Tech Stage',
+        lumaUrl: LUMA_CALENDARS_URL,
+        isLuma: true,
         completed: false,
       },
       // ── Core Tasks & Smart Reminders ────────────────────────────
@@ -746,7 +765,10 @@ export class CalendarWidget {
               <i class="fas fa-list-check" aria-hidden="true"></i>
               <span>Smart Reminders & Events</span>
             </div>
-            <button type="button" class="ios-btn-small" title="Add Reminder" aria-label="Add new reminder"><i class="fas fa-plus" aria-hidden="true"></i> New</button>
+            <div class="reminders-header-actions">
+              <a href="${LUMA_CALENDARS_URL}" target="_blank" rel="noopener noreferrer" class="ios-btn-small luma-header-btn" title="View & Follow Events on Luma Calendar" aria-label="View on Luma Calendar"><i class="fas fa-calendar-star" aria-hidden="true"></i> Luma</a>
+              <button type="button" class="ios-btn-small" title="Add Reminder" aria-label="Add new reminder"><i class="fas fa-plus" aria-hidden="true"></i> New</button>
+            </div>
           </div>
 
           <!-- Category Filter Tabs -->
@@ -822,12 +844,24 @@ export class CalendarWidget {
                 <div class="card-content">
                   <div class="card-header-flex">
                     <span class="card-time"><i class="fas fa-${escapeHtml(r.icon || 'clock')}" aria-hidden="true"></i> ${escapeHtml(r.time)}</span>
-                    ${r.tag ? `<span class="card-tag tag-${escapeHtml(r.color || 'blue')}">${escapeHtml(r.tag)}</span>` : ''}
+                    <div class="card-tags-group">
+                      ${r.tag ? `<span class="card-tag tag-${escapeHtml(r.color || 'blue')}">${escapeHtml(r.tag)}</span>` : ''}
+                      ${r.isLuma || r.lumaUrl ? `<span class="card-tag tag-luma"><i class="fas fa-ticket" aria-hidden="true"></i> Luma</span>` : ''}
+                    </div>
                   </div>
                   <div class="card-title">${escapeHtml(r.text)}</div>
                   ${r.location ? `<div class="card-location"><i class="fas fa-map-pin"></i> ${escapeHtml(r.location)}</div>` : ''}
                 </div>
                 <div class="card-action-area">
+                  ${
+                    r.isLuma || r.lumaUrl
+                      ? `
+                    <a href="${escapeHtml(r.lumaUrl || LUMA_CALENDARS_URL)}" target="_blank" rel="noopener noreferrer" class="card-action-btn luma-btn" title="View Ticket & RSVP on Luma" aria-label="View Ticket on Luma">
+                      <i class="fas fa-ticket" aria-hidden="true"></i>
+                    </a>
+                  `
+                      : ''
+                  }
                   <button type="button" class="card-action-btn ask-ai-btn" data-id="${r.id}" title="Ask AI Assistant about this item" aria-label="Ask AI about ${escapeHtml(r.text)}">
                     <i class="fas fa-wand-magic-sparkles" aria-hidden="true"></i>
                   </button>

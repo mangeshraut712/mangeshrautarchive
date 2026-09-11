@@ -401,4 +401,29 @@ describe('Apple-style Calendar and Smart Reminders Widget', () => {
     expect(instance).toBeDefined();
     expect(document.querySelector('.ios-widget-wrapper')).not.toBeNull();
   });
+
+  it('renders Luma Calendar header button and Luma ticket action buttons on meetup events', async () => {
+    const { CalendarWidget } = await import('../../src/js/modules/calendar.js');
+    document.body.innerHTML = '<div id="calendar-widget"></div>';
+
+    const widget = new CalendarWidget('calendar-widget');
+    widget.date = new Date(2026, 8, 1);
+    widget.init();
+
+    const lumaHeaderBtn = document.querySelector('.luma-header-btn');
+    expect(lumaHeaderBtn).not.toBeNull();
+    expect(lumaHeaderBtn.getAttribute('href')).toBe('https://luma.com/home/calendars');
+
+    // Switch to Events tab
+    const eventsTab = document.querySelector('[data-filter="events"]');
+    expect(eventsTab).not.toBeNull();
+    eventsTab.click();
+
+    const lumaTags = document.querySelectorAll('.tag-luma');
+    expect(lumaTags.length).toBeGreaterThan(0);
+
+    const lumaActionBtns = document.querySelectorAll('.card-action-btn.luma-btn');
+    expect(lumaActionBtns.length).toBeGreaterThan(0);
+    expect(lumaActionBtns[0].getAttribute('href')).toContain('luma.com');
+  });
 });

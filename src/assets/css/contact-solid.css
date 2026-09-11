@@ -390,6 +390,175 @@ html.dark body #contact .calendly-panel-button:hover * {
   -webkit-text-fill-color: #ffffff !important;
 }
 
+/* Luma Events CTA — Apple Luxury Outlined Pill with Vibrant Sunset-Coral Accent */
+html:not(.dark) body #contact .luma-panel-button,
+html[data-theme='light'] body #contact .luma-panel-button {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
+  border: 1.5px solid rgba(235, 87, 87, 0.35) !important;
+  color: #d70015 !important;
+  -webkit-text-fill-color: #d70015 !important;
+  border-radius: 980px !important;
+  min-height: 48px !important;
+  font-size: 0.94rem !important;
+  font-weight: 600 !important;
+  box-shadow:
+    0 2px 8px rgba(235, 87, 87, 0.08),
+    0 1px 2px rgba(0, 0, 0, 0.04) !important;
+  cursor: pointer !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.65rem !important;
+  width: 100% !important;
+  text-decoration: none !important;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+html:not(.dark) body #contact .luma-panel-button * {
+  color: #d70015 !important;
+  -webkit-text-fill-color: #d70015 !important;
+}
+
+html:not(.dark) body #contact .luma-panel-button:hover,
+html[data-theme='light'] body #contact .luma-panel-button:hover {
+  background-color: #eb5757 !important;
+  background-image: linear-gradient(135deg, #ff5370 0%, #eb5757 50%, #c43838 100%) !important;
+  border-color: rgba(255, 255, 255, 0.35) !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  transform: translateY(-2px) scale(1.01) !important;
+  box-shadow: 0 8px 24px rgba(235, 87, 87, 0.4) !important;
+}
+
+html:not(.dark) body #contact .luma-panel-button:hover * {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+html.dark body #contact .luma-panel-button,
+html[data-theme='dark'] body #contact .luma-panel-button {
+  background: #000000 !important;
+  background-color: #000000 !important;
+  background-image: none !important;
+  border: 1.5px solid rgba(255, 105, 97, 0.45) !important;
+  color: #ff6961 !important;
+  -webkit-text-fill-color: #ff6961 !important;
+  border-radius: 980px !important;
+  min-height: 48px !important;
+  font-size: 0.94rem !important;
+  font-weight: 600 !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5) !important;
+  cursor: pointer !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.65rem !important;
+  width: 100% !important;
+  text-decoration: none !important;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+html.dark body #contact .luma-panel-button * {
+  color: #ff6961 !important;
+  -webkit-text-fill-color: #ff6961 !important;
+}
+
+html.dark body #contact .luma-panel-button:hover,
+html[data-theme='dark'] body #contact .luma-panel-button:hover {
+  background-color: #eb5757 !important;
+  background-image: linear-gradient(135deg, #ff5370 0%, #eb5757 50%, #c43838 100%) !important;
+  border-color: rgba(255, 255, 255, 0.35) !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  transform: translateY(-2px) scale(1.01) !important;
+  box-shadow: 0 8px 24px rgba(235, 87, 87, 0.55) !important;
+}
+
+html.dark body #contact .luma-panel-button:hover * {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+/* Luma Badge & Action Controls in Calendar Widget */
+.card-tags-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+}
+
+.tag-luma {
+  background: rgba(235, 87, 87, 0.12) !important;
+  color: #d70015 !important;
+  border: 1px solid rgba(235, 87, 87, 0.25) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.25rem !important;
+  font-size: 0.72rem !important;
+  font-weight: 600 !important;
+}
+
+html.dark .tag-luma {
+  background: rgba(255, 105, 97, 0.2) !important;
+  color: #ff6961 !important;
+  border-color: rgba(255, 105, 97, 0.35) !important;
+}
+
+.reminders-header-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.luma-header-btn {
+  text-decoration: none !important;
+  color: #d70015 !important;
+  background: rgba(235, 87, 87, 0.1) !important;
+  border: 1px solid rgba(235, 87, 87, 0.25) !important;
+  font-weight: 650 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.35rem !important;
+}
+
+.luma-header-btn:hover {
+  background: #eb5757 !important;
+  color: #ffffff !important;
+  border-color: #eb5757 !important;
+}
+
+html.dark .luma-header-btn {
+  color: #ff6961 !important;
+  background: rgba(255, 105, 97, 0.18) !important;
+  border-color: rgba(255, 105, 97, 0.35) !important;
+}
+
+html.dark .luma-header-btn:hover {
+  background: #ff6961 !important;
+  color: #000000 !important;
+}
+
+.card-action-btn.luma-btn {
+  color: #d70015 !important;
+  text-decoration: none !important;
+}
+
+.card-action-btn.luma-btn:hover {
+  background: rgba(235, 87, 87, 0.15) !important;
+  color: #a70010 !important;
+}
+
+html.dark .card-action-btn.luma-btn {
+  color: #ff6961 !important;
+}
+
+html.dark .card-action-btn.luma-btn:hover {
+  background: rgba(255, 105, 97, 0.25) !important;
+  color: #ffffff !important;
+}
+
 /* ── Contact link rows — solid only when tinted ── */
 html[data-lg-mode='tinted']:not(.dark) body #contact a.contact-link-item,
 html[data-lg-mode='tinted']:not(.dark) body #contact .contact-link-item {
@@ -826,8 +995,10 @@ html body #contact #calendar-widget :is(.ios-weekdays, .ios-grid) {
   grid-template-columns: repeat(7, minmax(0, 1fr)) !important;
 }
 
-html body #contact #calendar-widget .calendly-panel {
-  display: block !important;
+html body #contact .calendly-panel {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.75rem !important;
   width: 100% !important;
   padding: 8px 0 12px !important;
   background: transparent !important;
@@ -835,7 +1006,7 @@ html body #contact #calendar-widget .calendly-panel {
   box-shadow: none !important;
 }
 
-html body #contact #calendar-widget .calendly-panel-button {
+html body #contact :is(.calendly-panel-button, .luma-panel-button) {
   width: 100% !important;
 }
 

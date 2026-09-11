@@ -46,6 +46,22 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── September 2026 ──────────────────────────────────────────
   {
+    id: 'luma-calendar-community-hub-integration',
+    date: '2026-09-11',
+    type: 'improvement',
+    title:
+      'Calendar & Community: Luma Calendar Hub, Event Ticket Badges & Contact RSVP Integration',
+    summary:
+      'Seamlessly integrated Luma Calendar (https://luma.com/home/calendars / lu.ma) across the portfolio ecosystem without adding runtime UI frameworks. Enhanced the Contact section with dual scheduling actions: an Apple HIG luxury outlined pill for Luma Calendar with vibrant sunset-coral accents (#d70015 / #ff6961) alongside 1:1 Calendly consultations. Upgraded the Calendar & Smart Reminders widget header with a direct Luma Calendar discovery button (.luma-header-btn) and decorated community tech meetups and hackathons (Cursor Pune, Claude Code Meetup, OpenAI Codex Dev Meetup, SF AI Agent Summit, WebMCP Symposium) with verified Luma badges (.tag-luma) and direct ticket RSVP action triggers (.luma-btn). Expanded test suite to 242 Vitest unit tests across 48 files with dedicated Luma utility test coverage and calendar widget action verification.',
+    tags: ['design', 'systems'],
+    sha: '88474716',
+    link: `${CHANGELOG_REPO}/commit/88474716`,
+    model: 'Gemini 3.8 Flash (High)',
+    ide: 'Google Antigravity IDE (AGY)',
+    purpose:
+      'Luma Calendar ecosystem integration (https://luma.com/home/calendars), dual consultation & community RSVP buttons in Contact, event ticket badges, and calendar widget action enhancements',
+  },
+  {
     id: 'github-operating-view-graphs-calendar-sync',
     date: '2026-09-09',
     type: 'improvement',
