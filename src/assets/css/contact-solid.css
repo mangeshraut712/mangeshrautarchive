@@ -506,6 +506,79 @@ html.dark .tag-luma {
   border-color: rgba(255, 105, 97, 0.35) !important;
 }
 
+/* Luma Status Badges (Going, Waitlisted, Submitted, Done) */
+.tag-luma-status {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.28rem !important;
+  font-size: 0.72rem !important;
+  font-weight: 600 !important;
+  border-radius: 980px !important;
+  padding: 2px 8px !important;
+}
+
+.tag-luma-status--going {
+  background: rgba(52, 199, 89, 0.12) !important;
+  color: #248a3d !important;
+  border: 1px solid rgba(52, 199, 89, 0.3) !important;
+}
+
+html.dark .tag-luma-status--going {
+  background: rgba(48, 209, 88, 0.2) !important;
+  color: #30d158 !important;
+  border-color: rgba(48, 209, 88, 0.4) !important;
+}
+
+.tag-luma-status--waitlisted {
+  background: rgba(255, 149, 0, 0.12) !important;
+  color: #b36200 !important;
+  border: 1px solid rgba(255, 149, 0, 0.3) !important;
+}
+
+html.dark .tag-luma-status--waitlisted {
+  background: rgba(255, 159, 10, 0.2) !important;
+  color: #ff9f0a !important;
+  border-color: rgba(255, 159, 10, 0.4) !important;
+}
+
+.tag-luma-status--pending {
+  background: rgba(175, 82, 222, 0.12) !important;
+  color: #7b3899 !important;
+  border: 1px solid rgba(175, 82, 222, 0.3) !important;
+}
+
+html.dark .tag-luma-status--pending {
+  background: rgba(191, 90, 242, 0.2) !important;
+  color: #bf5af2 !important;
+  border-color: rgba(191, 90, 242, 0.4) !important;
+}
+
+.tag-luma-status--done {
+  background: rgba(0, 113, 227, 0.1) !important;
+  color: #0071e3 !important;
+  border: 1px solid rgba(0, 113, 227, 0.25) !important;
+}
+
+html.dark .tag-luma-status--done {
+  background: rgba(41, 151, 255, 0.18) !important;
+  color: #2997ff !important;
+  border-color: rgba(41, 151, 255, 0.35) !important;
+}
+
+.card-host {
+  font-size: 0.76rem !important;
+  color: #6e6e73 !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.35rem !important;
+  margin-top: 0.15rem !important;
+  margin-bottom: 0.15rem !important;
+}
+
+html.dark .card-host {
+  color: #a1a1a6 !important;
+}
+
 .reminders-header-actions {
   display: inline-flex;
   align-items: center;

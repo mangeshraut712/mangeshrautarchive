@@ -123,7 +123,7 @@ npm run lint:python         # flake8 (Python)
 npm run format:check        # Prettier check
 
 # Test
-npm test                    # Vitest unit tests (242 tests)
+npm test                    # Vitest unit tests (243 tests)
 npm run test:api            # pytest API tests (175 tests; activate venv first)
 npm run test:e2e:chrome     # Playwright E2E — Desktop Chrome
 npm run test:e2e:all        # Playwright E2E — all 16 browser projects
@@ -181,7 +181,7 @@ npm run qa:lighthouse:vercel  # Live Vercel Lighthouse floors
 - **MANDATORY Pre-Commit & Release Checklist (Always Execute Automatically)**:
   1. **Update Changelog (`src/js/data/changelog-entries.js`)**: Add a new typed entry to `changelogEntries` detailing the shipped fixes, features, or design polish, with explicit active model attribution and purpose.
   2. **Track Active LLM Model, Purpose & Metrics in Markdown**: In `README.md` (Section 5.1), documentation files, and the commit body, record the active LLM model (e.g. `gemini-3.7-flash`, `gemini-2.5-pro`, `claude-3.7-sonnet`, `grok-4.3`), its dedicated purpose (e.g. visual layout auditing, CSS refactoring, architectural contract), reasoning mode, and token consumption metrics.
-  3. **Run Full Quality Gate**: Run `npm run check` (ESLint + Stylelint + Prettier + Vitest 242 tests), `npm run security-check`, and `npm run build` with Node 22 (`export PATH="/opt/homebrew/opt/node@22/bin:/opt/homebrew/Cellar/node@22/22.23.2/bin:$PATH"`).
+  3. **Run Full Quality Gate**: Run `npm run check` (ESLint + Stylelint + Prettier + Vitest 243 tests), `npm run security-check`, and `npm run build` with Node 22 (`export PATH="/opt/homebrew/opt/node@22/bin:/opt/homebrew/Cellar/node@22/22.23.2/bin:$PATH"`).
   4. **Sync Documentation**: Keep test counts, architecture files, and design system rules synchronized across `README.md`, `AGENTS.md`, and `docs/DESIGN.md`.
   5. **Guarantee 100% Green CI/CD Protocol**: Always monitor GitHub Actions after every `git push` to `main` via `gh run list` / `gh run view` to confirm all remote jobs (actionlint, linting, Vitest, pytest, Playwright, Lighthouse 100/100/100/100 gates, and Pages deployment) complete with green checks. Never consider a task finished with failing remote CI runs.
 
@@ -226,7 +226,7 @@ All three test suites must pass before any merge to `main`:
 
 | Suite | Runner     | Command                | Coverage                                    |
 | ----- | ---------- | ---------------------- | ------------------------------------------- |
-| Unit  | Vitest     | `npm test`             | 242 tests — JS modules, utilities, markdown |
+| Unit  | Vitest     | `npm test`             | 243 tests — JS modules, utilities, markdown |
 | API   | pytest     | `npm run test:api`     | 175 tests — FastAPI endpoints, middleware   |
 | E2E   | Playwright | `npm run test:e2e:all` | Multi-spec suite across 16 browser projects |
 

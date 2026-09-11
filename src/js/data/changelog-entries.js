@@ -46,6 +46,21 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── September 2026 ──────────────────────────────────────────
   {
+    id: 'luma-live-schedule-attendance-statuses',
+    date: '2026-09-11',
+    type: 'improvement',
+    title: 'Calendar & Events: Live Luma Schedule & Attendance Status Stream for mbr63@drexel.edu',
+    summary:
+      'Crosschecked and embedded the verified real-world Luma events schedule directly from live browser account mbr63@drexel.edu into the Calendar & Smart Reminders widget on the Contact page. Faithfully showcases all 4 attendance lifecycles: Going (confirmed attendance for Build with AI Thoughtworks, The AI Engineering Stack, Morning Sessions w/ Builders, Astra Commons: Pune), Waitlisted (Dev Days Pune, Data meets AI), Submitted / Pending approval (Bhopal | Claude Code Build Day - Fable 5.1, NEO4J Graph Builder Build Sprint Pune), and Attended / Done (Codex Build House Pune, Cafe Cursor Pune, Cursor Meetup Philadelphia 1-Year Anniversary, Cafe Cursor Philadelphia). Added a dedicated Luma filter tab (.filter-tab[data-filter="luma"]) with dynamic count badge, host metadata lines (.card-host), Apple HIG luxury status badge cues (.tag-luma-status--going, --waitlisted, --pending, --done), and direct event URLs linking to verified ticket pages. Expanded automated test suite to 243 Vitest unit tests across 48 files with comprehensive calendar widget status and filter assertions.',
+    tags: ['design', 'systems'],
+    sha: '82161147',
+    link: `${CHANGELOG_REPO}/commit/82161147`,
+    model: 'Gemini 3.8 Flash (High)',
+    ide: 'Google Antigravity IDE (AGY)',
+    purpose:
+      'Live Luma events schedule synchronization for mbr63@drexel.edu, 4-state attendance tracking (Going, Waitlisted, Submitted, Attended), dedicated Luma filter tab, host metadata rendering, and 243 Vitest unit test suite expansion',
+  },
+  {
     id: 'luma-calendar-community-hub-integration',
     date: '2026-09-11',
     type: 'improvement',

@@ -295,7 +295,7 @@ describe('Apple-style Calendar and Smart Reminders Widget', () => {
     const day29 = document.querySelector('[data-day="29"]');
     day29.click();
 
-    expect(document.body.textContent).toContain('Ticket: Cafe Cursor Pune');
+    expect(document.body.textContent).toContain('Cafe Cursor Pune');
     expect(document.body.textContent).toContain('Pune | Claude Code Meetup');
   });
 
@@ -387,9 +387,7 @@ describe('Apple-style Calendar and Smart Reminders Widget', () => {
     expect(day5.classList.contains('has-event')).toBe(true);
 
     day5.click();
-    expect(document.body.textContent).toContain(
-      'Ticket: OpenAI Codex Dev Meetup & Agent Hackathon'
-    );
+    expect(document.body.textContent).toContain('Codex Build House - Pune');
     expect(document.body.textContent).toContain('Codex');
   });
 
@@ -425,5 +423,52 @@ describe('Apple-style Calendar and Smart Reminders Widget', () => {
     const lumaActionBtns = document.querySelectorAll('.card-action-btn.luma-btn');
     expect(lumaActionBtns.length).toBeGreaterThan(0);
     expect(lumaActionBtns[0].getAttribute('href')).toContain('luma.com');
+  });
+
+  it('renders dedicated Luma filter tab, event host metadata, and Going/Waitlisted/Pending/Attended status badges', async () => {
+    const { CalendarWidget } = await import('../../src/js/modules/calendar.js');
+    document.body.innerHTML = '<div id="calendar-widget"></div>';
+
+    const widget = new CalendarWidget('calendar-widget');
+    widget.date = new Date(2026, 8, 1);
+    widget.init();
+
+    // Verify Luma filter tab exists
+    const lumaTab = document.querySelector('[data-filter="luma"]');
+    expect(lumaTab).not.toBeNull();
+    expect(lumaTab.textContent).toContain('Luma');
+
+    // Click Luma filter tab
+    lumaTab.click();
+    expect(widget.activeFilter).toBe('luma');
+
+    // Verify status badges are rendered
+    const goingBadges = document.querySelectorAll('.tag-luma-status--going');
+    expect(goingBadges.length).toBeGreaterThan(0);
+    expect(goingBadges[0].textContent).toContain('Going');
+
+    const waitlistedBadges = document.querySelectorAll('.tag-luma-status--waitlisted');
+    expect(waitlistedBadges.length).toBeGreaterThan(0);
+    expect(waitlistedBadges[0].textContent).toContain('Waitlisted');
+
+    const pendingBadges = document.querySelectorAll('.tag-luma-status--pending');
+    expect(pendingBadges.length).toBeGreaterThan(0);
+    expect(pendingBadges[0].textContent).toContain('Submitted');
+
+    const doneBadges = document.querySelectorAll('.tag-luma-status--done');
+    expect(doneBadges.length).toBeGreaterThan(0);
+    expect(doneBadges[0].textContent).toContain('Attended');
+
+    // Verify host information is displayed
+    const hostEntries = document.querySelectorAll('.card-host');
+    expect(hostEntries.length).toBeGreaterThan(0);
+    expect(hostEntries[0].textContent).toContain('By');
+
+    // Verify direct event URLs link to verified luma.com IDs
+    const lumaLinks = Array.from(document.querySelectorAll('.card-action-btn.luma-btn')).map(el =>
+      el.getAttribute('href')
+    );
+    expect(lumaLinks.some(url => url.includes('o0ls3yva'))).toBe(true); // GDG Pune
+    expect(lumaLinks.some(url => url.includes('sq2mmwfm'))).toBe(true); // Codex Build House
   });
 });

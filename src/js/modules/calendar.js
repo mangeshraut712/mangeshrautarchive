@@ -74,107 +74,170 @@ export class CalendarWidget {
         icon: 'cake-candles',
         completed: false,
       },
-      // ── Calendar Events & Meetups ─────────────────────────────────
+      // ── Live Luma Events & Community Schedule (Account: mbr63@drexel.edu) ───
       {
-        id: 204,
-        text: 'Ticket: OpenAI Codex Dev Meetup & Agent Hackathon',
-        time: 'Sep 5 · 11:00 AM',
+        id: 211,
+        text: "Build with AI - Code for Communities - Pre DevFest Pune'26 Workshop Series 4.0 | Thoughtworks",
+        time: 'Sep 12 · 9:00 AM',
+        dateKey: '2026-09-12',
+        category: 'events',
+        tag: 'GDG Pune',
+        color: 'green',
+        icon: 'laptop-code',
+        location: 'Thoughtworks Technologies India Private Limited',
+        lumaHost: 'GDG Pune',
+        lumaStatus: 'going',
+        lumaUrl: 'https://luma.com/o0ls3yva',
+        isLuma: true,
+        completed: false,
+      },
+      {
+        id: 212,
+        text: 'The AI Engineering Stack (+290)',
+        time: 'Sep 12 · 10:00 AM',
+        dateKey: '2026-09-12',
+        category: 'events',
+        tag: 'AI Stack',
+        color: 'green',
+        icon: 'layer-group',
+        location: 'DevX, Pune',
+        lumaHost: 'Indian Data Club',
+        lumaStatus: 'going',
+        lumaUrl: 'https://luma.com/bkdq2d6r',
+        isLuma: true,
+        completed: false,
+      },
+      {
+        id: 213,
+        text: 'Morning Sessions w/ Builders (Pune Edition) (+49)',
+        time: 'Sep 12 · 11:00 AM',
+        dateKey: '2026-09-12',
+        category: 'events',
+        tag: 'Builders',
+        color: 'green',
+        icon: 'mug-hot',
+        location: 'The Office Club, Alluring Sky',
+        lumaHost: 'Nischay Joshi & Almas',
+        lumaStatus: 'going',
+        lumaUrl: 'https://luma.com/zk2sqibt',
+        isLuma: true,
+        completed: false,
+      },
+      {
+        id: 214,
+        text: 'Astra Commons: Pune',
+        time: 'Sep 18 · 12:30 PM',
+        dateKey: '2026-09-18',
+        category: 'events',
+        tag: 'Astra',
+        color: 'green',
+        icon: 'users',
+        location: 'Pune',
+        lumaHost: 'AMAN MOGAL, Rhiannon Payne, Pauline P. Narvas & Vaibhav Srivastav',
+        lumaStatus: 'going',
+        lumaUrl: 'https://luma.com/dhbisvze',
+        isLuma: true,
+        completed: false,
+      },
+      {
+        id: 215,
+        text: 'Dev Days | Pune, India (+336)',
+        time: 'Sep 19 · 9:30 AM',
+        dateKey: '2026-09-19',
+        category: 'events',
+        tag: 'Dev Days',
+        color: 'orange',
+        icon: 'clock',
+        location: 'Data Axle Pune',
+        lumaHost: 'Dev Days, Alok Kumar & Tauqeer Ahmad',
+        lumaStatus: 'waitlisted',
+        lumaUrl: 'https://luma.com/lh60mh4e',
+        isLuma: true,
+        completed: false,
+      },
+      {
+        id: 216,
+        text: 'Bhopal | Claude Code Build Day - Fable 5.1',
+        time: 'Sep 20 · 11:00 AM',
+        dateKey: '2026-09-20',
+        category: 'events',
+        tag: 'Claude',
+        color: 'purple',
+        icon: 'code',
+        location: 'Location Shown Upon Approval',
+        lumaHost: 'Aniket Sahu',
+        lumaStatus: 'pending',
+        lumaUrl: 'https://luma.com/claude-z01j',
+        isLuma: true,
+        completed: false,
+      },
+      {
+        id: 217,
+        text: 'Data meets AI (+110)',
+        time: 'Sep 26 · 9:30 AM',
+        dateKey: '2026-09-26',
+        category: 'events',
+        tag: 'Data AI',
+        color: 'orange',
+        icon: 'database',
+        location: 'Nutanix Technologies India Pvt Ltd',
+        lumaHost: 'Pranav Mehta & ClickHouse Team',
+        lumaStatus: 'waitlisted',
+        lumaUrl: 'https://luma.com/8fp3lum7',
+        isLuma: true,
+        completed: false,
+      },
+      {
+        id: 218,
+        text: 'NEO4J Graph Builder: BUILD SPRINT, Pune',
+        time: 'Sep 26 · 10:00 AM',
+        dateKey: '2026-09-26',
+        category: 'events',
+        tag: 'Neo4j',
+        color: 'purple',
+        icon: 'diagram-project',
+        location: 'Pune',
+        lumaHost: 'Rajat Gupta',
+        lumaStatus: 'pending',
+        lumaUrl: 'https://luma.com/nsm1hg6e',
+        isLuma: true,
+        completed: false,
+      },
+      // ── Past Done / Attended Luma Events ───────────────────────────
+      {
+        id: 201,
+        text: 'Codex Build House - Pune (+63)',
+        time: 'Sep 5 · 9:00 AM',
         dateKey: '2026-09-05',
         category: 'events',
         tag: 'Codex',
-        color: 'green',
+        color: 'blue',
         icon: 'terminal',
-        location: 'Tech Community Hub & Livestream',
-        lumaUrl: LUMA_CALENDARS_URL,
+        location: 'Manogat villa, Pune',
+        lumaHost: 'AMAN MOGAL, Pauline P. Narvas & Om Kute',
+        lumaStatus: 'done',
+        lumaUrl: 'https://luma.com/sq2mmwfm',
         isLuma: true,
-        completed: false,
-      },
-      {
-        id: 209,
-        text: 'SF AI Agent Summit & Cloudflare Hackathon',
-        time: 'Sep 5 · 3:00 PM',
-        dateKey: '2026-09-05',
-        category: 'events',
-        tag: 'Cloudflare',
-        color: 'orange',
-        icon: 'cloud',
-        location: 'Moscone Center & Virtual Stage',
-        lumaUrl: LUMA_CALENDARS_URL,
-        isLuma: true,
-        completed: false,
-      },
-      {
-        id: 205,
-        text: 'Global Open Source & WebMCP Symposium',
-        time: 'Sep 12 · 3:00 PM',
-        dateKey: '2026-09-12',
-        category: 'events',
-        tag: 'WebMCP',
-        color: 'purple',
-        icon: 'robot',
-        location: 'Open Source Live',
-        lumaUrl: LUMA_CALENDARS_URL,
-        isLuma: true,
-        completed: false,
-      },
-      {
-        id: 206,
-        text: 'Pune Developer Circle: Claude Code & MCP Tools',
-        time: 'Sep 19 · 2:00 PM',
-        dateKey: '2026-09-19',
-        category: 'events',
-        tag: 'Meetup',
-        color: 'purple',
-        icon: 'code',
-        location: 'Tech Park & Livestream',
-        lumaUrl: LUMA_CALENDARS_URL,
-        isLuma: true,
-        completed: false,
-      },
-      {
-        id: 207,
-        text: 'Distributed Systems & FastAPI Architecture',
-        time: 'Sep 26 · 5:30 PM',
-        dateKey: '2026-09-26',
-        category: 'events',
-        tag: 'Architecture',
-        color: 'blue',
-        icon: 'server',
-        location: 'Engineering Stage',
-        lumaUrl: LUMA_CALENDARS_URL,
-        isLuma: true,
-        completed: false,
-      },
-      {
-        id: 208,
-        text: 'Next-Gen AI Portfolio Keynote & Live Agent Demo',
-        time: 'Oct 3 · 4:00 PM',
-        dateKey: '2026-10-03',
-        category: 'events',
-        tag: 'Keynote',
-        color: 'blue',
-        icon: 'microphone',
-        location: 'Global Livestream',
-        lumaUrl: LUMA_CALENDARS_URL,
-        isLuma: true,
-        completed: false,
-      },
-      {
-        id: 201,
-        text: 'Ticket: Cafe Cursor Pune',
-        time: 'Aug 29 · 11:00 AM',
-        dateKey: '2026-08-29',
-        category: 'events',
-        tag: 'Cursor',
-        color: 'orange',
-        icon: 'mug-hot',
-        location: 'Cursor Community Hub',
-        lumaUrl: LUMA_CALENDARS_URL,
-        isLuma: true,
-        completed: false,
+        completed: true,
       },
       {
         id: 202,
+        text: 'Cafe Cursor Pune',
+        time: 'Aug 29 · 10:00 AM',
+        dateKey: '2026-08-29',
+        category: 'events',
+        tag: 'Cursor',
+        color: 'blue',
+        icon: 'mug-hot',
+        location: 'Mauji - The Time Cafe',
+        lumaHost: 'Himanshu Sangshetti',
+        lumaStatus: 'done',
+        lumaUrl: 'https://luma.com/bbs0fetq',
+        isLuma: true,
+        completed: true,
+      },
+      {
+        id: 205,
         text: 'Pune | Claude Code Meetup',
         time: 'Aug 29 · 3:00 PM',
         dateKey: '2026-08-29',
@@ -182,24 +245,44 @@ export class CalendarWidget {
         tag: 'Claude',
         color: 'purple',
         icon: 'code',
-        location: 'Anthropic Discord & Livestream',
-        lumaUrl: LUMA_CALENDARS_URL,
+        location: 'Anthropic Community & Livestream',
+        lumaHost: 'Claude Community Network',
+        lumaStatus: 'done',
+        lumaUrl: 'https://luma.com/claude-z01j',
         isLuma: true,
-        completed: false,
+        completed: true,
       },
       {
         id: 203,
-        text: 'Agentic Full-Stack Keynote & Live Demo',
-        time: 'Aug 31 · 5:00 PM',
-        dateKey: '2026-08-31',
+        text: 'Cursor Meetup Philadelphia — One Year Anniversary 🎂 (+252)',
+        time: 'Aug 25 · 6:00 PM EDT',
+        dateKey: '2026-08-25',
         category: 'events',
-        tag: 'Keynote',
+        tag: 'Cursor',
         color: 'blue',
-        icon: 'microphone',
-        location: 'Virtual Tech Stage',
-        lumaUrl: LUMA_CALENDARS_URL,
+        icon: 'cake-candles',
+        location: 'Indy Hall Clubhouse at 709 N 2nd St, Philadelphia',
+        lumaHost: 'Luis Cielak & Malcolm Jones',
+        lumaStatus: 'done',
+        lumaUrl: 'https://luma.com/cursor-1z5g',
         isLuma: true,
-        completed: false,
+        completed: true,
+      },
+      {
+        id: 204,
+        text: 'Cafe Cursor Philadelphia',
+        time: 'Jul 16 · 7:30 PM (10:00 AM EDT)',
+        dateKey: '2026-07-16',
+        category: 'events',
+        tag: 'Cursor',
+        color: 'blue',
+        icon: 'mug-hot',
+        location: 'Percy Diner & Bar, Philadelphia',
+        lumaHost: 'Luis Cielak & Malcolm Jones',
+        lumaStatus: 'done',
+        lumaUrl: 'https://luma.com/tkx269iu',
+        isLuma: true,
+        completed: true,
       },
       // ── Core Tasks & Smart Reminders ────────────────────────────
       {
@@ -601,6 +684,9 @@ export class CalendarWidget {
     }
 
     // Filter by category tab
+    if (this.activeFilter === 'luma') {
+      return list.filter(r => (r.isLuma || r.lumaUrl) && !r.isChangelog);
+    }
     if (this.activeFilter === 'events') {
       return list.filter(r => r.category === 'events');
     }
@@ -658,6 +744,9 @@ export class CalendarWidget {
 
     const totalEventsCount = this.reminders.filter(
       r => r.category === 'events' && !r.isChangelog
+    ).length;
+    const totalLumaCount = this.reminders.filter(
+      r => (r.isLuma || r.lumaUrl) && !r.isChangelog
     ).length;
     const totalRemindersCount = this.reminders.filter(
       r => r.category === 'reminders' && !r.isChangelog
@@ -766,7 +855,7 @@ export class CalendarWidget {
               <span>Smart Reminders & Events</span>
             </div>
             <div class="reminders-header-actions">
-              <a href="${LUMA_CALENDARS_URL}" target="_blank" rel="noopener noreferrer" class="ios-btn-small luma-header-btn" title="View & Follow Events on Luma Calendar" aria-label="View on Luma Calendar"><i class="fas fa-calendar-star" aria-hidden="true"></i> Luma</a>
+              <a href="${LUMA_CALENDARS_URL}" target="_blank" rel="noopener noreferrer" class="ios-btn-small luma-header-btn" title="View & Follow Events on Luma Calendar (mbr63@drexel.edu)" aria-label="View on Luma Calendar"><i class="fas fa-calendar-star" aria-hidden="true"></i> Luma</a>
               <button type="button" class="ios-btn-small" title="Add Reminder" aria-label="Add new reminder"><i class="fas fa-plus" aria-hidden="true"></i> New</button>
             </div>
           </div>
@@ -781,6 +870,9 @@ export class CalendarWidget {
             </button>
             <button type="button" class="filter-tab ${this.activeFilter === 'events' ? 'active' : ''}" data-filter="events">
               <i class="fas fa-calendar-check" aria-hidden="true"></i> Events (${totalEventsCount})
+            </button>
+            <button type="button" class="filter-tab ${this.activeFilter === 'luma' ? 'active' : ''}" data-filter="luma">
+              <i class="fas fa-ticket" aria-hidden="true"></i> Luma (${totalLumaCount})
             </button>
             <button type="button" class="filter-tab ${this.activeFilter === 'birthdays' ? 'active' : ''}" data-filter="birthdays">
               <i class="fas fa-cake-candles" aria-hidden="true"></i> Birthdays (${totalBirthdaysCount})
@@ -847,9 +939,22 @@ export class CalendarWidget {
                     <div class="card-tags-group">
                       ${r.tag ? `<span class="card-tag tag-${escapeHtml(r.color || 'blue')}">${escapeHtml(r.tag)}</span>` : ''}
                       ${r.isLuma || r.lumaUrl ? `<span class="card-tag tag-luma"><i class="fas fa-ticket" aria-hidden="true"></i> Luma</span>` : ''}
+                      ${
+                        r.lumaStatus
+                          ? `
+                        <span class="card-tag tag-luma-status tag-luma-status--${escapeHtml(r.lumaStatus)}">
+                          ${r.lumaStatus === 'going' ? '<i class="fas fa-circle-check" aria-hidden="true"></i> Going' : ''}
+                          ${r.lumaStatus === 'waitlisted' ? '<i class="fas fa-clock" aria-hidden="true"></i> Waitlisted' : ''}
+                          ${r.lumaStatus === 'pending' ? '<i class="fas fa-hourglass-half" aria-hidden="true"></i> Submitted' : ''}
+                          ${r.lumaStatus === 'done' || r.lumaStatus === 'attended' ? '<i class="fas fa-check-double" aria-hidden="true"></i> Attended' : ''}
+                        </span>
+                      `
+                          : ''
+                      }
                     </div>
                   </div>
                   <div class="card-title">${escapeHtml(r.text)}</div>
+                  ${r.lumaHost ? `<div class="card-host"><i class="fas fa-user-circle" aria-hidden="true"></i> By ${escapeHtml(r.lumaHost)}</div>` : ''}
                   ${r.location ? `<div class="card-location"><i class="fas fa-map-pin"></i> ${escapeHtml(r.location)}</div>` : ''}
                 </div>
                 <div class="card-action-area">
