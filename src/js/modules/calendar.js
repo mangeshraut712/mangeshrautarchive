@@ -19,8 +19,244 @@ function ensureContactSolidStyles() {
   document.head.appendChild(link);
 }
 
-function dateKey(year, month, day) {
+export function dateKey(year, month, day) {
   return `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+}
+
+/**
+ * Smart Natural Language Reminder & Event Parser
+ * Automatically parses relative dates, times, categories, and tags from plain text.
+ */
+export function parseNaturalLanguageReminder(rawText, baseDate = new Date()) {
+  const currentBase =
+    baseDate instanceof Date && !isNaN(baseDate.getTime()) ? baseDate : new Date();
+  if (!rawText || typeof rawText !== 'string') {
+    return {
+      title: 'New Reminder',
+      dateKey: dateKey(currentBase.getFullYear(), currentBase.getMonth(), currentBase.getDate()),
+      time: 'Scheduled',
+      timeOnly: 'Scheduled',
+      category: 'reminders',
+      tag: 'Task',
+      color: 'blue',
+      icon: 'bell',
+    };
+  }
+
+  let text = rawText.trim();
+  let targetDate = new Date(
+    currentBase.getFullYear(),
+    currentBase.getMonth(),
+    currentBase.getDate()
+  );
+  let timeStr = 'Scheduled';
+  let category = 'reminders';
+  let tag = 'Task';
+  let color = 'blue';
+  let icon = 'bell';
+
+  const lower = text.toLowerCase();
+
+  // 1. Detect Category / Tag / Color / Icon
+  if (/#urgent\b/i.test(lower) || /\burgent\b|\basap\b|\bdeadline\b|\bpriority\b/i.test(lower)) {
+    tag = 'Urgent';
+    color = 'red';
+    icon = 'bolt';
+    text = text.replace(/#urgent\b/gi, '').trim();
+  } else if (
+    /#ai\b/i.test(lower) ||
+    /\bai\b|\bllm\b|\bmodel\b|\bgpt\b|\bclaude\b|\bagent\b/i.test(lower)
+  ) {
+    tag = 'AI';
+    color = 'purple';
+    icon = 'brain';
+    text = text.replace(/#ai\b/gi, '').trim();
+  } else if (/#design\b/i.test(lower) || /\bdesign\b|\bui\b|\bux\b|\bfigma\b/i.test(lower)) {
+    tag = 'Design';
+    color = 'blue';
+    icon = 'palette';
+    text = text.replace(/#design\b/gi, '').trim();
+  } else if (/#birthday\b/i.test(lower) || /\bbirthday\b|\bbday\b/i.test(lower)) {
+    tag = 'Birthday';
+    color = 'pink';
+    icon = 'cake-candles';
+    category = 'birthdays';
+    text = text.replace(/#birthday\b/gi, '').trim();
+  } else if (
+    /#meetup\b/i.test(lower) ||
+    /\bmeetup\b|\bhackathon\b|\bconference\b|\bworkshop\b/i.test(lower)
+  ) {
+    tag = 'Event';
+    color = 'green';
+    icon = 'ticket';
+    category = 'events';
+    text = text.replace(/#meetup\b/gi, '').trim();
+  } else if (
+    /#sync\b/i.test(lower) ||
+    /\bsync\b|\b1:1\b|\bcall\b|\bmeeting\b|\bcatchup\b/i.test(lower)
+  ) {
+    tag = 'Sync';
+    color = 'blue';
+    icon = 'handshake';
+    text = text.replace(/#sync\b/gi, '').trim();
+  }
+
+  // 2. Relative & Named Date Parsing
+  const monthNames = [
+    'jan',
+    'feb',
+    'mar',
+    'apr',
+    'may',
+    'jun',
+    'jul',
+    'aug',
+    'sep',
+    'oct',
+    'nov',
+    'dec',
+  ];
+  const fullMonthNames = [
+    'january',
+    'february',
+    'march',
+    'april',
+    'may',
+    'june',
+    'july',
+    'august',
+    'september',
+    'october',
+    'november',
+    'december',
+  ];
+  const dayNames = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+  const dayShortNames = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
+
+  let matchedDate = false;
+
+  // "tomorrow" / "tmrw"
+  if (/\b(?:tomorrow|tmrw)\b/i.test(text)) {
+    targetDate.setDate(targetDate.getDate() + 1);
+    text = text.replace(/\b(?:tomorrow|tmrw)\b/gi, '').trim();
+    matchedDate = true;
+  }
+  // "today" / "tonight"
+  else if (/\b(?:today|tonight)\b/i.test(text)) {
+    text = text.replace(/\b(?:today|tonight)\b/gi, '').trim();
+    matchedDate = true;
+  }
+  // "in X days"
+  else if (/\bin\s+(\d+)\s+days?\b/i.test(text)) {
+    const m = text.match(/\bin\s+(\d+)\s+days?\b/i);
+    if (m) {
+      targetDate.setDate(targetDate.getDate() + parseInt(m[1], 10));
+      text = text.replace(/\bin\s+\d+\s+days?\b/gi, '').trim();
+      matchedDate = true;
+    }
+  }
+  // "next Monday" / "this Friday" / "on Friday"
+  else if (
+    /\b(?:next|this|on)?\s*(monday|tuesday|wednesday|thursday|friday|saturday|sunday|mon|tue|wed|thu|fri|sat|sun)\b/i.test(
+      text
+    )
+  ) {
+    const m = text.match(
+      /\b(?:next|this|on)?\s*(monday|tuesday|wednesday|thursday|friday|saturday|sunday|mon|tue|wed|thu|fri|sat|sun)\b/i
+    );
+    if (m) {
+      const dayTargetStr = m[1].toLowerCase();
+      let targetDayIdx = dayNames.indexOf(dayTargetStr);
+      if (targetDayIdx === -1) targetDayIdx = dayShortNames.indexOf(dayTargetStr);
+      if (targetDayIdx !== -1) {
+        const currentDayIdx = targetDate.getDay();
+        let daysUntil = (targetDayIdx - currentDayIdx + 7) % 7;
+        if (daysUntil === 0) daysUntil = 7;
+        targetDate.setDate(targetDate.getDate() + daysUntil);
+        text = text.replace(m[0], '').trim();
+        matchedDate = true;
+      }
+    }
+  }
+
+  // Explicit date: "Sep 15", "September 15", "15 Sep", "2026-09-15"
+  if (!matchedDate) {
+    const isoMatch = text.match(/\b(20\d\d)-(\d{1,2})-(\d{1,2})\b/);
+    if (isoMatch) {
+      targetDate = new Date(
+        parseInt(isoMatch[1], 10),
+        parseInt(isoMatch[2], 10) - 1,
+        parseInt(isoMatch[3], 10)
+      );
+      text = text.replace(isoMatch[0], '').trim();
+    } else {
+      const monthRegex = new RegExp(
+        `\\b(?:on\\s+)?(${fullMonthNames.join('|')}|${monthNames.join('|')})\\s+(\\d{1,2})(?:st|nd|rd|th)?(?:,?\\s+(20\\d\\d))?\\b`,
+        'i'
+      );
+      const mMatch = text.match(monthRegex);
+      if (mMatch) {
+        const mStr = mMatch[1].toLowerCase().slice(0, 3);
+        const mIdx = monthNames.indexOf(mStr);
+        const dayVal = parseInt(mMatch[2], 10);
+        const yearVal = mMatch[3] ? parseInt(mMatch[3], 10) : targetDate.getFullYear();
+        if (mIdx !== -1 && dayVal >= 1 && dayVal <= 31) {
+          targetDate = new Date(yearVal, mIdx, dayVal);
+          text = text.replace(mMatch[0], '').trim();
+        }
+      }
+    }
+  }
+
+  // 3. Time Parsing: "at 3pm", "3:30pm", "10:00 AM", "14:00", "at noon"
+  const timeRegex =
+    /\b(?:at\s+)?(?:(\d{1,2})(?::(\d{2}))?\s*(am|pm)|(\d{1,2}):(\d{2})|noon|midnight)\b/i;
+  const tMatch = text.match(timeRegex);
+  if (tMatch) {
+    const rawMatch = tMatch[0];
+    const matchLower = rawMatch.toLowerCase();
+    if (matchLower.includes('noon')) {
+      timeStr = '12:00 PM';
+    } else if (matchLower.includes('midnight')) {
+      timeStr = '12:00 AM';
+    } else if (tMatch[1] && tMatch[3]) {
+      const hh = parseInt(tMatch[1], 10);
+      const mm = tMatch[2] ? tMatch[2] : '00';
+      const ampm = tMatch[3].toUpperCase();
+      timeStr = `${hh}:${mm} ${ampm}`;
+    } else if (tMatch[4] && tMatch[5]) {
+      const hh = parseInt(tMatch[4], 10);
+      const mm = tMatch[5];
+      const ampm = hh >= 12 ? 'PM' : 'AM';
+      const dispH = hh % 12 || 12;
+      timeStr = `${dispH}:${mm} ${ampm}`;
+    }
+    text = text.replace(rawMatch, '').trim();
+  }
+
+  // Clean up residual prepositions / punctuation
+  text = text.replace(/^(?:at|on|for|to|remind me to|reminder:?)\s+/i, '');
+  text = text.replace(/\s+(?:at|on|for)\s*$/i, '');
+  text = text.replace(/^[-,.:;\s]+|[-,.:;\s]+$/g, '').trim();
+
+  const finalTitle = text || 'New Reminder';
+  const finalKey = dateKey(targetDate.getFullYear(), targetDate.getMonth(), targetDate.getDate());
+  const monthAbbr = targetDate.toLocaleString('en-US', { month: 'short' });
+  const displayTime =
+    timeStr !== 'Scheduled'
+      ? `${monthAbbr} ${targetDate.getDate()} · ${timeStr}`
+      : `${monthAbbr} ${targetDate.getDate()} · Scheduled`;
+
+  return {
+    title: finalTitle,
+    dateKey: finalKey,
+    time: displayTime,
+    timeOnly: timeStr,
+    category,
+    tag,
+    color,
+    icon,
+  };
 }
 
 export class CalendarWidget {
@@ -32,6 +268,8 @@ export class CalendarWidget {
     this.selectedDayCell = null;
     this.selectedDayFilter = dateKey(now.getFullYear(), now.getMonth(), now.getDate());
     this.activeFilter = 'day';
+    this.searchQuery = '';
+    this.aiBriefData = null;
     this.liveSlots = [];
     this.liveEvents = [];
     this.liveProviders = ['google', 'apple'];
@@ -416,10 +654,198 @@ export class CalendarWidget {
         });
       });
     }
+
+    // Load local storage persisted reminders & completion states
+    this.loadPersistedReminders();
+  }
+
+  loadPersistedReminders() {
+    if (typeof window === 'undefined' || !window.localStorage) return;
+    try {
+      const stored = window.localStorage.getItem('mangesh_portfolio_reminders');
+      if (!stored) return;
+      const parsed = JSON.parse(stored);
+      if (Array.isArray(parsed)) {
+        for (const item of parsed) {
+          if (item && item.id && item.isCustomUserReminder) {
+            const exists = this.reminders.some(r => r.id === item.id);
+            if (!exists) {
+              this.reminders.unshift(item);
+            }
+          }
+        }
+        const completionMap = new Map();
+        for (const item of parsed) {
+          if (item && item.id !== undefined && typeof item.completed === 'boolean') {
+            completionMap.set(item.id, item.completed);
+          }
+        }
+        for (const r of this.reminders) {
+          if (completionMap.has(r.id)) {
+            r.completed = completionMap.get(r.id);
+          }
+        }
+      }
+    } catch {
+      // Ignore storage read errors
+    }
+  }
+
+  persistReminders() {
+    if (typeof window === 'undefined' || !window.localStorage) return;
+    try {
+      const toSave = this.reminders
+        .filter(r => r.isCustomUserReminder || r.completed)
+        .map(r => ({
+          id: r.id,
+          text: r.text,
+          time: r.time,
+          dateKey: r.dateKey,
+          category: r.category,
+          tag: r.tag,
+          color: r.color,
+          icon: r.icon,
+          completed: Boolean(r.completed),
+          isCustomUserReminder: Boolean(r.isCustomUserReminder),
+        }));
+      window.localStorage.setItem('mangesh_portfolio_reminders', JSON.stringify(toSave));
+    } catch {
+      // Ignore storage write errors
+    }
+  }
+
+  checkScheduleConflict(targetDateKey, timeStr = '') {
+    if (!targetDateKey) {
+      return { hasConflict: false, conflictItem: null, countOnDay: 0, message: '' };
+    }
+
+    const itemsOnDay = this.reminders.filter(r => {
+      if (r.isChangelog) return false;
+      if (!r.dateKey) return false;
+      return r.dateKey === targetDateKey || r.dateKey.endsWith(`-${targetDateKey.slice(5)}`);
+    });
+
+    if (itemsOnDay.length === 0) {
+      return {
+        hasConflict: false,
+        conflictItem: null,
+        countOnDay: 0,
+        message: 'No conflicts. Day is completely open.',
+      };
+    }
+
+    if (timeStr && timeStr !== 'Scheduled' && timeStr !== 'All Day') {
+      const normalizedTime = timeStr.toLowerCase().replace(/\s+/g, '');
+      const exactTimeConflict = itemsOnDay.find(r => {
+        if (!r.time) return false;
+        const rTime = r.time.toLowerCase().replace(/\s+/g, '');
+        return rTime.includes(normalizedTime);
+      });
+
+      if (exactTimeConflict) {
+        return {
+          hasConflict: true,
+          conflictItem: exactTimeConflict,
+          countOnDay: itemsOnDay.length,
+          message: `Time conflict: "${exactTimeConflict.text}" is already scheduled at ${exactTimeConflict.time}.`,
+        };
+      }
+    }
+
+    if (itemsOnDay.length >= 3) {
+      return {
+        hasConflict: false,
+        isDense: true,
+        conflictItem: itemsOnDay[0],
+        countOnDay: itemsOnDay.length,
+        message: `Notice: ${itemsOnDay.length} items already scheduled on this day.`,
+      };
+    }
+
+    return {
+      hasConflict: false,
+      conflictItem: itemsOnDay[0],
+      countOnDay: itemsOnDay.length,
+      message: `${itemsOnDay.length} existing item(s) on this date.`,
+    };
+  }
+
+  generateDailyBrief(targetDateKey) {
+    const key =
+      targetDateKey ||
+      this.selectedDayFilter ||
+      dateKey(this.date.getFullYear(), this.date.getMonth(), this.date.getDate());
+
+    const items = this.reminders.filter(r => {
+      if (r.isChangelog) return false;
+      if (!r.dateKey) return false;
+      return r.dateKey === key || r.dateKey.endsWith(`-${key.slice(5)}`);
+    });
+
+    const lumaItems = items.filter(r => r.isLuma || r.lumaUrl);
+    const birthdays = items.filter(r => r.category === 'birthdays');
+    const tasks = items.filter(r => r.category === 'reminders');
+    const going = lumaItems.filter(r => r.lumaStatus === 'going');
+    const waitlisted = lumaItems.filter(r => r.lumaStatus === 'waitlisted');
+    const pending = lumaItems.filter(r => r.lumaStatus === 'pending');
+    const done = lumaItems.filter(r => r.lumaStatus === 'done' || r.lumaStatus === 'attended');
+
+    let density = 'Clear';
+    if (items.length >= 3) density = 'High Density';
+    else if (items.length > 0) density = 'Moderate';
+
+    let summaryText;
+    if (items.length === 0) {
+      summaryText =
+        'Schedule is completely open. Ideal for deep engineering focus or booking a 1:1 consultation.';
+    } else {
+      const parts = [];
+      if (birthdays.length > 0) {
+        parts.push(`Celebrate ${birthdays.map(b => b.text).join(', ')}`);
+      }
+      if (going.length > 0) {
+        parts.push(
+          `RSVP confirmed for ${going.length} event(s): ${going.map(e => e.text).join('; ')}`
+        );
+      }
+      if (waitlisted.length > 0) {
+        parts.push(
+          `Waitlisted for ${waitlisted.length} event(s): ${waitlisted.map(e => e.text).join('; ')}`
+        );
+      }
+      if (pending.length > 0) {
+        parts.push(`Registration submitted for ${pending.length} event(s)`);
+      }
+      if (done.length > 0) {
+        parts.push(`Attended ${done.length} past community event(s)`);
+      }
+      if (tasks.length > 0) {
+        const completedTasks = tasks.filter(t => t.completed).length;
+        parts.push(`${tasks.length} task(s) on schedule (${completedTasks} completed)`);
+      }
+      summaryText = parts.join('. ') + '.';
+    }
+
+    this.aiBriefData = {
+      dateKey: key,
+      density,
+      totalCount: items.length,
+      lumaCount: lumaItems.length,
+      tasksCount: tasks.length,
+      birthdaysCount: birthdays.length,
+      summaryText,
+      items,
+    };
+
+    this.render();
+    return this.aiBriefData;
   }
 
   init() {
     if (!this.container) return;
+    if (typeof window !== 'undefined') {
+      window.calendarWidget = this;
+    }
     ensureContactSolidStyles();
     if (this.selectedDate) {
       this.selectedDayFilter = dateKey(
@@ -474,18 +900,22 @@ export class CalendarWidget {
             activeDate.getMonth(),
             activeDate.getDate()
           );
+          const slotText =
+            this.liveSlots.length > 0 ? `${this.liveSlots.length} Free Slots` : 'Live Booking Open';
+          const defaultTag = this.liveSlots.length > 0 ? 'Live Sync' : 'Booking Open';
+
           if (isGoogleConnected && isAppleConnected) {
             syncReminder.text = 'Google & Apple Calendar Sync';
-            syncReminder.time = `${this.liveSlots.length} Free Slots`;
-            syncReminder.tag = 'Live Sync';
+            syncReminder.time = slotText;
+            syncReminder.tag = defaultTag;
           } else if (isAppleConnected) {
             syncReminder.text = 'Apple iCloud Calendar & CalDAV';
-            syncReminder.time = `${this.liveSlots.length} Free Slots`;
-            syncReminder.tag = 'Apple';
+            syncReminder.time = slotText;
+            syncReminder.tag = this.liveSlots.length > 0 ? 'Apple' : 'Booking Open';
           } else {
             syncReminder.text = 'Google Calendar & Meet Live';
-            syncReminder.time = `${this.liveSlots.length} Free Slots`;
-            syncReminder.tag = 'Live';
+            syncReminder.time = slotText;
+            syncReminder.tag = this.liveSlots.length > 0 ? 'Live' : 'Booking Open';
           }
         }
 
@@ -663,7 +1093,23 @@ export class CalendarWidget {
   }
 
   getFilteredReminders() {
-    const list = this.reminders;
+    let list = this.reminders;
+
+    // Apply text search query across title, host, location, tag, time, dateKey
+    if (this.searchQuery && typeof this.searchQuery === 'string') {
+      const q = this.searchQuery.trim().toLowerCase();
+      if (q) {
+        list = list.filter(r => {
+          const textMatch = r.text && r.text.toLowerCase().includes(q);
+          const hostMatch = r.lumaHost && r.lumaHost.toLowerCase().includes(q);
+          const locMatch = r.location && r.location.toLowerCase().includes(q);
+          const tagMatch = r.tag && r.tag.toLowerCase().includes(q);
+          const timeMatch = r.time && r.time.toLowerCase().includes(q);
+          const dateMatch = r.dateKey && r.dateKey.toLowerCase().includes(q);
+          return textMatch || hostMatch || locMatch || tagMatch || timeMatch || dateMatch;
+        });
+      }
+    }
 
     // Filter by specific day if activeFilter === 'day'
     if (this.activeFilter === 'day') {
@@ -855,8 +1301,18 @@ export class CalendarWidget {
               <span>Smart Reminders & Events</span>
             </div>
             <div class="reminders-header-actions">
+              <button type="button" class="ios-btn-smart smart-reminder-trigger-btn" title="Add Smart AI Reminder with Natural Language" aria-label="Smart AI Reminder"><i class="fas fa-wand-magic-sparkles" aria-hidden="true"></i> Smart Add</button>
               <a href="${LUMA_CALENDARS_URL}" target="_blank" rel="noopener noreferrer" class="ios-btn-small luma-header-btn" title="View & Follow Events on Luma Calendar (mbr63@drexel.edu)" aria-label="View on Luma Calendar"><i class="fas fa-calendar-star" aria-hidden="true"></i> Luma</a>
               <button type="button" class="ios-btn-small" title="Add Reminder" aria-label="Add new reminder"><i class="fas fa-plus" aria-hidden="true"></i> New</button>
+            </div>
+          </div>
+
+          <!-- Calendar Search Bar -->
+          <div class="calendar-search-wrap">
+            <div class="calendar-search-box">
+              <i class="fas fa-search search-icon" aria-hidden="true"></i>
+              <input type="search" class="reminders-search-input" placeholder="Search events, meetups, reminders, tags..." value="${escapeHtml(this.searchQuery)}" aria-label="Search calendar and reminders">
+              ${this.searchQuery ? `<button type="button" class="calendar-search-clear" aria-label="Clear search"><i class="fas fa-times" aria-hidden="true"></i></button>` : ''}
             </div>
           </div>
 
@@ -890,12 +1346,49 @@ export class CalendarWidget {
               ? `
             <div class="day-inspector-banner">
               <div class="day-inspector-info">
-                <i class="fas fa-filter"></i>
+                <i class="fas fa-filter" aria-hidden="true"></i>
                 <span>Showing items for <strong>${monthNames[this.selectedDate.getMonth()]} ${this.selectedDate.getDate()}, ${this.selectedDate.getFullYear()}</strong></span>
               </div>
-              <button type="button" class="day-inspector-clear" title="Show All Items">
-                <i class="fas fa-times"></i> View All
-              </button>
+              <div class="day-inspector-actions">
+                <button type="button" class="day-inspector-ai-brief" title="Generate AI Daily Briefing" aria-label="AI Daily Briefing">
+                  <i class="fas fa-wand-magic-sparkles" aria-hidden="true"></i> AI Brief
+                </button>
+                <button type="button" class="day-inspector-clear" title="Show All Items">
+                  <i class="fas fa-times" aria-hidden="true"></i> View All
+                </button>
+              </div>
+            </div>
+          `
+              : ''
+          }
+
+          ${
+            this.aiBriefData && this.aiBriefData.dateKey === currentDayKey
+              ? `
+            <div class="ai-daily-brief-hud" role="region" aria-label="AI Daily Briefing">
+              <div class="ai-brief-header">
+                <div class="ai-brief-title">
+                  <i class="fas fa-wand-magic-sparkles" aria-hidden="true"></i>
+                  <span>AI Daily Brief · ${escapeHtml(this.aiBriefData.density)}</span>
+                </div>
+                <div class="ai-brief-actions">
+                  <button type="button" class="ai-brief-discuss-btn" title="Discuss in AssistMe" aria-label="Discuss in AssistMe">
+                    <i class="fas fa-comments" aria-hidden="true"></i> Discuss in AssistMe
+                  </button>
+                  <button type="button" class="ai-brief-dismiss-btn" title="Dismiss Brief" aria-label="Dismiss Brief">
+                    <i class="fas fa-times" aria-hidden="true"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="ai-brief-body">
+                <p class="ai-brief-summary">${escapeHtml(this.aiBriefData.summaryText)}</p>
+                <div class="ai-brief-stats">
+                  <span class="brief-stat-chip"><i class="fas fa-calendar-day" aria-hidden="true"></i> ${this.aiBriefData.totalCount} item(s)</span>
+                  ${this.aiBriefData.lumaCount > 0 ? `<span class="brief-stat-chip tag-luma"><i class="fas fa-ticket" aria-hidden="true"></i> ${this.aiBriefData.lumaCount} Luma</span>` : ''}
+                  ${this.aiBriefData.tasksCount > 0 ? `<span class="brief-stat-chip tag-blue"><i class="fas fa-list-check" aria-hidden="true"></i> ${this.aiBriefData.tasksCount} task(s)</span>` : ''}
+                  ${this.aiBriefData.birthdaysCount > 0 ? `<span class="brief-stat-chip tag-pink"><i class="fas fa-cake-candles" aria-hidden="true"></i> ${this.aiBriefData.birthdaysCount} Birthday</span>` : ''}
+                </div>
+              </div>
             </div>
           `
               : ''
@@ -907,7 +1400,7 @@ export class CalendarWidget {
                 ? `
               <div class="day-empty-state">
                 <div class="empty-state-icon">
-                  <i class="fas fa-calendar-plus"></i>
+                  <i class="fas fa-calendar-plus" aria-hidden="true"></i>
                 </div>
                 <div class="empty-state-title">No Reminders or Events</div>
                 <div class="empty-state-subtitle">${
@@ -916,14 +1409,17 @@ export class CalendarWidget {
                     : 'This day'
                 } is completely open. Add a reminder or book a consultation.</div>
                 <div class="empty-state-actions">
+                  <button type="button" class="empty-action-btn smart-add-btn">
+                    <i class="fas fa-wand-magic-sparkles" aria-hidden="true"></i> Smart AI Add
+                  </button>
                   <button type="button" class="empty-action-btn add-reminder-btn">
-                    <i class="fas fa-plus"></i> Add Reminder
+                    <i class="fas fa-plus" aria-hidden="true"></i> Add Reminder
                   </button>
                   <button type="button" class="empty-action-btn book-consult-btn">
-                    <i class="fas fa-calendar-check"></i> Book Consultation
+                    <i class="fas fa-calendar-check" aria-hidden="true"></i> Book Consultation
                   </button>
                   <button type="button" class="empty-action-btn show-all-btn">
-                    <i class="fas fa-layer-group"></i> View All Items
+                    <i class="fas fa-layer-group" aria-hidden="true"></i> View All Items
                   </button>
                 </div>
               </div>
@@ -1025,6 +1521,82 @@ export class CalendarWidget {
     if (todayBtn) todayBtn.onclick = () => this.goToToday();
     if (nextBtn) nextBtn.onclick = () => this.changeMonth(1);
 
+    // Search input
+    const searchInput = this.container.querySelector('.reminders-search-input');
+    if (searchInput) {
+      searchInput.oninput = e => {
+        this.searchQuery = e.target.value;
+        this.render();
+        const nextInput = this.container.querySelector('.reminders-search-input');
+        if (nextInput) {
+          nextInput.focus();
+          const len = nextInput.value.length;
+          nextInput.setSelectionRange(len, len);
+        }
+      };
+    }
+    const searchClear = this.container.querySelector('.calendar-search-clear');
+    if (searchClear) {
+      searchClear.onclick = () => {
+        this.searchQuery = '';
+        this.render();
+      };
+    }
+
+    // AI Daily Brief Button
+    const aiBriefBtn = this.container.querySelector('.day-inspector-ai-brief');
+    if (aiBriefBtn) {
+      aiBriefBtn.onclick = () => {
+        const curKey =
+          this.selectedDayFilter ||
+          dateKey(
+            this.date.getFullYear(),
+            this.date.getMonth(),
+            this.selectedDate ? this.selectedDate.getDate() : new Date().getDate()
+          );
+        this.generateDailyBrief(curKey);
+      };
+    }
+
+    // Dismiss AI Brief
+    const dismissBriefBtn = this.container.querySelector('.ai-brief-dismiss-btn');
+    if (dismissBriefBtn) {
+      dismissBriefBtn.onclick = () => {
+        this.aiBriefData = null;
+        this.render();
+      };
+    }
+
+    // Discuss AI Brief in AssistMe
+    const discussBriefBtn = this.container.querySelector('.ai-brief-discuss-btn');
+    if (discussBriefBtn) {
+      discussBriefBtn.onclick = () => {
+        const chatbotToggle = document.getElementById('chatbot-toggle');
+        if (chatbotToggle) {
+          chatbotToggle.click();
+          setTimeout(() => {
+            const input = document.getElementById('chatbot-input');
+            if (input) {
+              input.value = `Discuss my schedule for ${this.selectedDayFilter || 'today'}: ${this.aiBriefData?.summaryText || ''}`;
+              input.focus();
+            }
+          }, 300);
+        }
+      };
+    }
+
+    // Smart Reminder Modal Trigger (Header)
+    const smartAddBtn = this.container.querySelector('.smart-reminder-trigger-btn');
+    if (smartAddBtn) {
+      smartAddBtn.onclick = () => this.openSmartReminderModal();
+    }
+
+    // Empty State Smart Add
+    const emptySmartAddBtn = this.container.querySelector('.empty-action-btn.smart-add-btn');
+    if (emptySmartAddBtn) {
+      emptySmartAddBtn.onclick = () => this.openSmartReminderModal();
+    }
+
     // Filter Tabs
     this.container.querySelectorAll('.filter-tab').forEach(tab => {
       tab.onclick = () => {
@@ -1095,6 +1667,7 @@ export class CalendarWidget {
       item.onclick = e => {
         if (e.target.closest('.card-action-btn') || e.target.closest('.status-circle')) return;
         reminder.completed = !reminder.completed;
+        this.persistReminders();
         this.render();
       };
 
@@ -1104,6 +1677,7 @@ export class CalendarWidget {
         statusCircle.onclick = e => {
           e.stopPropagation();
           reminder.completed = !reminder.completed;
+          this.persistReminders();
           this.render();
         };
       }
@@ -1116,6 +1690,7 @@ export class CalendarWidget {
           const newText = prompt('Update Reminder:', reminder.text);
           if (newText !== null && newText.trim() !== '') {
             reminder.text = newText.trim();
+            this.persistReminders();
             this.render();
           }
         };
@@ -1170,39 +1745,248 @@ export class CalendarWidget {
       'Dec',
     ];
 
-    let title = typeof titleOverride === 'string' && titleOverride ? titleOverride : null;
-    if (!title && typeof window !== 'undefined' && typeof window.prompt === 'function') {
-      try {
-        const inputTitle = window.prompt(
-          `Add New Reminder / Event for ${monthNames[selMonth]} ${selDay}, ${selYear}:`,
-          'New Reminder'
-        );
-        if (inputTitle === null) return;
-        if (typeof inputTitle === 'string') {
-          title = inputTitle.trim() || 'New Reminder';
+    let reminderData;
+    if (typeof titleOverride === 'string' && titleOverride.trim()) {
+      reminderData = parseNaturalLanguageReminder(
+        titleOverride,
+        this.selectedDate || new Date(selYear, selMonth, selDay)
+      );
+    } else {
+      let title = null;
+      if (typeof window !== 'undefined' && typeof window.prompt === 'function') {
+        try {
+          const inputTitle = window.prompt(
+            `Add New Reminder / Event for ${monthNames[selMonth]} ${selDay}, ${selYear}:`,
+            'New Reminder'
+          );
+          if (inputTitle === null) return null;
+          if (typeof inputTitle === 'string') {
+            title = inputTitle.trim() || 'New Reminder';
+          }
+        } catch {
+          title = 'New Reminder';
         }
-      } catch {
+      }
+      if (!title) {
         title = 'New Reminder';
       }
-    }
-    if (!title) {
-      title = 'New Reminder';
+      reminderData = {
+        title,
+        dateKey: dKey,
+        time: `${monthNames[selMonth]} ${selDay} · Scheduled`,
+        timeOnly: 'Scheduled',
+        category: 'reminders',
+        color: ['blue', 'red', 'orange', 'green', 'purple'][Math.floor(Math.random() * 5)],
+        tag: 'Custom',
+        icon: 'bell',
+      };
     }
 
     const newReminder = {
-      id: Date.now(),
-      text: title,
-      time: `${monthNames[selMonth]} ${selDay} · Scheduled`,
-      dateKey: dKey,
-      category: 'reminders',
-      color: ['blue', 'red', 'orange', 'green', 'purple'][Math.floor(Math.random() * 5)],
-      tag: 'Custom',
-      icon: 'bell',
+      id: Date.now() + Math.floor(Math.random() * 1000),
+      text: reminderData.title,
+      time: reminderData.time,
+      dateKey: reminderData.dateKey,
+      category: reminderData.category || 'reminders',
+      color: reminderData.color || 'blue',
+      tag: reminderData.tag || 'Custom',
+      icon: reminderData.icon || 'bell',
       completed: false,
+      isCustomUserReminder: true,
     };
+
     this.reminders.unshift(newReminder);
+    this.persistReminders();
     this.activeFilter = 'day';
+    this.selectedDayFilter = newReminder.dateKey;
+    if (newReminder.dateKey && newReminder.dateKey.length >= 10) {
+      const parts = newReminder.dateKey.split('-');
+      this.selectedDate = new Date(
+        parseInt(parts[0], 10),
+        parseInt(parts[1], 10) - 1,
+        parseInt(parts[2], 10)
+      );
+    }
     this.render();
+    return newReminder;
+  }
+
+  openSmartReminderModal(initialText = '') {
+    if (typeof document === 'undefined') return;
+
+    // Remove any existing modal
+    const existing = document.querySelector('.smart-reminder-modal-overlay');
+    if (existing) existing.remove();
+
+    const overlay = document.createElement('div');
+    overlay.className = 'smart-reminder-modal-overlay';
+    overlay.setAttribute('role', 'dialog');
+    overlay.setAttribute('aria-modal', 'true');
+    overlay.setAttribute('aria-label', 'Smart AI Reminder Creation');
+
+    const selDay = this.selectedDate ? this.selectedDate.getDate() : new Date().getDate();
+    const selMonth = this.selectedDate ? this.selectedDate.getMonth() : new Date().getMonth();
+    const selYear = this.selectedDate ? this.selectedDate.getFullYear() : new Date().getFullYear();
+    const baseDate = this.selectedDate || new Date(selYear, selMonth, selDay);
+
+    overlay.innerHTML = `
+      <div class="smart-reminder-modal-card">
+        <div class="smart-modal-header">
+          <div class="smart-modal-title">
+            <i class="fas fa-wand-magic-sparkles" aria-hidden="true"></i>
+            <span>Smart AI Reminder</span>
+          </div>
+          <button type="button" class="smart-modal-close" aria-label="Close modal">
+            <i class="fas fa-times" aria-hidden="true"></i>
+          </button>
+        </div>
+
+        <p class="smart-modal-description">
+          Type naturally. Antigravity AI extracts relative dates, times, categories, and tags automatically.
+        </p>
+
+        <div class="smart-modal-input-wrap">
+          <textarea
+            class="smart-modal-textarea"
+            placeholder="e.g. Sync with team tomorrow at 3pm #sync, or DevFest workshop on Friday 10am #meetup"
+            rows="3"
+            aria-label="Reminder details in natural language"
+          >${escapeHtml(initialText)}</textarea>
+        </div>
+
+        <!-- Quick Tag Presets -->
+        <div class="smart-modal-presets" aria-label="Quick preset chips">
+          <button type="button" class="preset-chip" data-preset="Sync with engineering team tomorrow at 3pm #sync">
+            <i class="fas fa-handshake" aria-hidden="true"></i> Team Sync
+          </button>
+          <button type="button" class="preset-chip" data-preset="AI Agent sprint review on Friday at 11am #ai">
+            <i class="fas fa-brain" aria-hidden="true"></i> AI Sprint
+          </button>
+          <button type="button" class="preset-chip" data-preset="Critical architecture deadline next Monday 2pm #urgent">
+            <i class="fas fa-bolt" aria-hidden="true"></i> Urgent Deadline
+          </button>
+          <button type="button" class="preset-chip" data-preset="DevFest workshop on Saturday 9:30am #meetup">
+            <i class="fas fa-ticket" aria-hidden="true"></i> Workshop
+          </button>
+        </div>
+
+        <!-- Live Parsed Preview & Conflict Detection -->
+        <div class="smart-modal-preview-box">
+          <div class="smart-preview-label">
+            <i class="fas fa-eye" aria-hidden="true"></i> Live AI Parsing
+          </div>
+          <div class="smart-preview-content">
+            <div class="smart-preview-title" id="smart-preview-title">New Reminder</div>
+            <div class="smart-preview-meta">
+              <span class="preview-badge badge-time" id="smart-preview-time">Scheduled</span>
+              <span class="preview-badge badge-tag" id="smart-preview-tag">Task</span>
+              <span class="preview-badge badge-cat" id="smart-preview-category">reminders</span>
+            </div>
+          </div>
+          <div class="smart-conflict-alert" id="smart-conflict-alert" style="display: none;"></div>
+        </div>
+
+        <div class="smart-modal-actions">
+          <button type="button" class="smart-modal-btn btn-cancel">Cancel</button>
+          <button type="button" class="smart-modal-btn btn-save">
+            <i class="fas fa-plus" aria-hidden="true"></i> Add to Calendar
+          </button>
+        </div>
+      </div>
+    `;
+
+    document.body.appendChild(overlay);
+
+    const textarea = overlay.querySelector('.smart-modal-textarea');
+    const previewTitle = overlay.querySelector('#smart-preview-title');
+    const previewTime = overlay.querySelector('#smart-preview-time');
+    const previewTag = overlay.querySelector('#smart-preview-tag');
+    const previewCat = overlay.querySelector('#smart-preview-category');
+    const conflictAlert = overlay.querySelector('#smart-conflict-alert');
+    const closeBtn = overlay.querySelector('.smart-modal-close');
+    const cancelBtn = overlay.querySelector('.btn-cancel');
+    const saveBtn = overlay.querySelector('.btn-save');
+
+    const updatePreview = () => {
+      const text = textarea ? textarea.value.trim() : '';
+      const parsed = parseNaturalLanguageReminder(text || 'New Reminder', baseDate);
+      if (previewTitle) previewTitle.textContent = parsed.title;
+      if (previewTime) previewTime.textContent = parsed.time;
+      if (previewTag) {
+        previewTag.textContent = parsed.tag;
+        previewTag.className = `preview-badge badge-tag tag-${parsed.color || 'blue'}`;
+      }
+      if (previewCat) previewCat.textContent = parsed.category;
+
+      // Conflict Check
+      const conflict = this.checkScheduleConflict(parsed.dateKey, parsed.timeOnly);
+      if (conflictAlert) {
+        if (conflict.hasConflict) {
+          conflictAlert.style.display = 'flex';
+          conflictAlert.className = 'smart-conflict-alert conflict-warning';
+          conflictAlert.innerHTML = `<i class="fas fa-triangle-exclamation" aria-hidden="true"></i> <span>${escapeHtml(conflict.message)}</span>`;
+        } else if (conflict.isDense) {
+          conflictAlert.style.display = 'flex';
+          conflictAlert.className = 'smart-conflict-alert conflict-notice';
+          conflictAlert.innerHTML = `<i class="fas fa-info-circle" aria-hidden="true"></i> <span>${escapeHtml(conflict.message)}</span>`;
+        } else {
+          conflictAlert.style.display = 'none';
+        }
+      }
+    };
+
+    if (textarea) {
+      textarea.addEventListener('input', updatePreview);
+    }
+    updatePreview();
+
+    // Preset chip clicks
+    overlay.querySelectorAll('.preset-chip').forEach(btn => {
+      btn.onclick = () => {
+        if (textarea) {
+          textarea.value = btn.dataset.preset || '';
+          updatePreview();
+          textarea.focus();
+        }
+      };
+    });
+
+    const closeModal = () => {
+      overlay.classList.add('closing');
+      setTimeout(() => overlay.remove(), 200);
+    };
+
+    const handleSave = () => {
+      const val = textarea ? textarea.value.trim() : '';
+      this.addNewReminder(val || 'New Reminder');
+      closeModal();
+    };
+
+    if (closeBtn) closeBtn.onclick = closeModal;
+    if (cancelBtn) cancelBtn.onclick = closeModal;
+    if (saveBtn) saveBtn.onclick = handleSave;
+
+    overlay.onclick = e => {
+      if (e.target === overlay) closeModal();
+    };
+
+    // Keyboard support
+    const handleKeydown = e => {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        closeModal();
+        window.removeEventListener('keydown', handleKeydown);
+      } else if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault();
+        handleSave();
+        window.removeEventListener('keydown', handleKeydown);
+      }
+    };
+    window.addEventListener('keydown', handleKeydown);
+
+    if (textarea) {
+      setTimeout(() => textarea.focus(), 50);
+    }
   }
 
   addConfirmedBooking({ title, time, tag = 'Confirmed' } = {}) {

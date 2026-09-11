@@ -40,7 +40,7 @@
   <img src="https://img.shields.io/badge/FastAPI-0.141.1-009688?style=flat-square&logo=fastapi&logoColor=white" alt="FastAPI">
   <img src="https://img.shields.io/badge/ESM-Vanilla%20JS-F7DF1E?style=flat-square&logo=javascript&logoColor=black" alt="Vanilla ESM">
   <img src="https://img.shields.io/badge/Cloudflare-Workers-F38020?style=flat-square&logo=cloudflare&logoColor=white" alt="Cloudflare Workers">
-  <img src="https://img.shields.io/badge/Vitest-243%20passed-729B1B?style=flat-square&logo=vitest&logoColor=white" alt="243 Vitest unit tests">
+  <img src="https://img.shields.io/badge/Vitest-253%20passed-729B1B?style=flat-square&logo=vitest&logoColor=white" alt="253 Vitest unit tests">
   <img src="https://img.shields.io/badge/pytest-175%20passed-0A9EDC?style=flat-square&logo=pytest&logoColor=white" alt="175 pytest API tests">
   <img src="https://img.shields.io/badge/Playwright-16%20browser%20configs-2EAD33?style=flat-square&logo=playwright&logoColor=white" alt="Playwright">
   <img src="https://img.shields.io/badge/Lighthouse-100%2F100%2F100%2F100-0cce6b?style=flat-square&logo=lighthouse&logoColor=white" alt="Lighthouse 100">
@@ -49,7 +49,7 @@
 
 <p align="center">
   <strong>Zero Framework Runtime · Native Vanilla ESM · FastAPI Serverless · Agentic WebMCP · Apple HIG Liquid Glass</strong><br>
-  <sub>High-contrast solid canvas (<code>#ffffff</code> / <code>#000000</code>) · Dual-Host Edge Topology · 414 Automated Tests · 100/100 Lighthouse CI</sub>
+  <sub>High-contrast solid canvas (<code>#ffffff</code> / <code>#000000</code>) · Dual-Host Edge Topology · 428 Automated Tests · 100/100 Lighthouse CI</sub>
 </p>
 
 <p align="center">
@@ -97,10 +97,10 @@
 │                                 CORE ARCHITECTURAL PILLARS                              │
 ├────────────────────────────────────────────────────────────────────────────────────────┤
 │  ⚡ Zero-Framework ESM: Native JavaScript modules, esbuild bundling, custom properties │
-│  🤖 Agentic AI: AssistMe chatbot, OpenRouter streaming, 13 WebMCP browser actions      │
+│  🤖 Agentic AI: AssistMe chatbot, OpenRouter streaming, 17 WebMCP browser actions      │
 │  🎨 Apple HIG Design: Solid white/black canvases, 3D kinetic interaction model         │
 │  📊 Real-Time Telemetry: WHOOP vitals, GA4 realtime reach, platform health probes       │
-│  🛡️ Quality Gates: 243 Vitest tests, 175 pytest tests, 100/100/100/100 Lighthouse CI   │
+│  🛡️ Quality Gates: 253 Vitest tests, 175 pytest tests, 100/100/100/100 Lighthouse CI   │
 │  📜 Open Chronicle: Complete Git history from day 1 (April 8, 2025) to September 2026   │
 └────────────────────────────────────────────────────────────────────────────────────────┘
 ```
@@ -176,7 +176,7 @@ flowchart TD
   subgraph Client ["Client Browser (Vanilla ESM)"]
     DOM["HTML5 Semantic Shells"]
     JS["Core Modules & Bootstrap"]
-    MCP["WebMCP Action Engine (13 Tools)"]
+    MCP["WebMCP Action Engine (17 Tools)"]
     UI["Apple HIG Liquid Glass UI"]
   end
 
@@ -255,7 +255,7 @@ mangeshrautarchive/
 ├── workers/                  # ★ Cloudflare Workers (Edge AI Proxy & Cron Telemetry)
 │   └── assistme-chat/        # Standalone Edge Worker for AssistMe AI & WebMCP proxy
 ├── scripts/                  # ★ Developer Tooling & Build Pipeline (esbuild, QA, security, sync)
-├── tests/                    # ★ Automated Test Suite (243 Vitest, 175 pytest, 16 Playwright targets)
+├── tests/                    # ★ Automated Test Suite (253 Vitest, 175 pytest, 16 Playwright targets)
 ├── docs/                     # Documentation (DESIGN.md source of truth, STRUCTURE.md, plans)
 └── .github/workflows/        # Automated CI/CD (GitHub Pages deploy, monitoring, edge sync)
 ```
@@ -279,15 +279,16 @@ mangeshrautarchive/
 
 ### 5.1 AI Models & Engineering Purpose Matrix
 
-| Model Tier & Name      | Engineering Purpose & Scope                                                                                                                                               | Reasoning Mode           | Status |
-| :--------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | :----------------------- | :----- |
-| **`gemini-3.8-flash`** | Live Luma events schedule sync for `mbr63@drexel.edu`, 4-state attendance tracking (Going, Waitlisted, Submitted, Attended), dedicated Luma filter tab & 243 Vitest tests | High / Extended Thinking | Active |
-| **`gemini-3.8-flash`** | GitHub Operating View live sync (51 repos), 2D/3D contributions graph calibration (2,654 contributions), calendar reminders & cross-surface telemetry                     | High / Extended Thinking | Active |
-| **`gemini-3.8-flash`** | Sitewide 100/100/100/100 Lighthouse PageSpeed optimization, WCAG 2 AA color contrast & heading sequence remediation, CSS deferral, and zero-defect QA                     | High / Extended Thinking | Active |
-| **`gemini-3.8-flash`** | Travel Atlas Apple Maps sidebar redesign, segmented metric strip architecture, global CSS capsule purge, and subpage layout synchronization                               | High / Extended Thinking | Active |
-| **`gemini-3.8-flash`** | Codification of 14 Software Engineering Best Practices (`docs/BEST_PRACTICES.md`), subnavbar geometric synchronization                                                    | High / Extended Thinking | Active |
-| **`gemini-3.8-flash`** | Keynote Special Event presentation redesign for `/uses`, WebMCP agentic tooling                                                                                           | High / Extended Thinking | Active |
-| **`grok-4.3`**         | Production conversational agent (`/api/chat`), real-time streaming, WebMCP portfolio actions                                                                              | Standard / Low Latency   | Active |
+| Model Tier & Name      | Engineering Purpose & Scope                                                                                                                                                                                       | Reasoning Mode           | Status |
+| :--------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :----------------------- | :----- |
+| **`gemini-3.8-flash`** | Smart AI Calendar & Reminders (NLP parser, schedule conflict & density detector, AI daily briefing HUD, WebMCP actions `add_calendar_reminder`, `get_calendar_events`, `filter_calendar_view`) & 253 Vitest tests | High / Extended Thinking | Active |
+| **`gemini-3.8-flash`** | Live Luma events schedule sync for `mbr63@drexel.edu`, 4-state attendance tracking (Going, Waitlisted, Submitted, Attended), dedicated Luma filter tab & 243 Vitest tests                                         | High / Extended Thinking | Active |
+| **`gemini-3.8-flash`** | GitHub Operating View live sync (51 repos), 2D/3D contributions graph calibration (2,654 contributions), calendar reminders & cross-surface telemetry                                                             | High / Extended Thinking | Active |
+| **`gemini-3.8-flash`** | Sitewide 100/100/100/100 Lighthouse PageSpeed optimization, WCAG 2 AA color contrast & heading sequence remediation, CSS deferral, and zero-defect QA                                                             | High / Extended Thinking | Active |
+| **`gemini-3.8-flash`** | Travel Atlas Apple Maps sidebar redesign, segmented metric strip architecture, global CSS capsule purge, and subpage layout synchronization                                                                       | High / Extended Thinking | Active |
+| **`gemini-3.8-flash`** | Codification of 14 Software Engineering Best Practices (`docs/BEST_PRACTICES.md`), subnavbar geometric synchronization                                                                                            | High / Extended Thinking | Active |
+| **`gemini-3.8-flash`** | Keynote Special Event presentation redesign for `/uses`, WebMCP agentic tooling                                                                                                                                   | High / Extended Thinking | Active |
+| **`grok-4.3`**         | Production conversational agent (`/api/chat`), real-time streaming, WebMCP portfolio actions                                                                                                                      | Standard / Low Latency   | Active |
 
 ---
 
@@ -297,7 +298,7 @@ All quality gates are enforced locally and verified automatically in GitHub Acti
 
 | Test Suite            | Runner            |        Test Count         | Scope & Coverage                                                            |
 | :-------------------- | :---------------- | :-----------------------: | :-------------------------------------------------------------------------- |
-| **Unit Tests**        | Vitest 4.1        | **243 passed** (48 files) | JS modules, services, markdown parser, WebMCP actions, data contracts       |
+| **Unit Tests**        | Vitest 4.1        | **253 passed** (48 files) | JS modules, services, markdown parser, WebMCP actions, data contracts       |
 | **API Tests**         | pytest            | **175 passed** (27 files) | FastAPI endpoints, streaming chat, health probes, OAuth token stores        |
 | **E2E Browser Tests** | Playwright        |      **16 projects**      | Multi-browser suite (Desktop Chrome, Safari, Firefox, iPhone 17, Pixel 7)   |
 | **Accessibility**     | axe-core          |    **16/16 baseline**     | Zero critical/serious WCAG violations across light, dark, and high contrast |
@@ -344,7 +345,7 @@ npm run dev
 ### 7.3 Essential Quality Commands
 
 ```bash
-npm run check             # Run ESLint + Stylelint + Prettier + 243 Vitest tests
+npm run check             # Run ESLint + Stylelint + Prettier + 253 Vitest tests
 npm run test:api          # Run 175 pytest API tests
 npm run doctor:strict     # Run 60-point strict repository layout check
 npm run security-check    # Scan for exposed API keys and credentials

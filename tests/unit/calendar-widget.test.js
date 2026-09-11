@@ -471,4 +471,151 @@ describe('Apple-style Calendar and Smart Reminders Widget', () => {
     expect(lumaLinks.some(url => url.includes('o0ls3yva'))).toBe(true); // GDG Pune
     expect(lumaLinks.some(url => url.includes('sq2mmwfm'))).toBe(true); // Codex Build House
   });
+
+  it('parses natural language strings into relative dates, times, categories, and tags', async () => {
+    const { parseNaturalLanguageReminder } = await import('../../src/js/modules/calendar.js');
+    const baseDate = new Date(2026, 8, 10); // Thu Sep 10, 2026
+
+    // 1. "tomorrow at 3pm #sync" -> Sep 11, 3:00 PM, tag: Sync
+    const res1 = parseNaturalLanguageReminder('Sync with team tomorrow at 3pm #sync', baseDate);
+    expect(res1.dateKey).toBe('2026-09-11');
+    expect(res1.timeOnly).toBe('3:00 PM');
+    expect(res1.tag).toBe('Sync');
+    expect(res1.color).toBe('blue');
+
+    // 2. "in 3 days at 10:30am #urgent" -> Sep 13, 10:30 AM, tag: Urgent, color: red
+    const res2 = parseNaturalLanguageReminder('Bugfix in 3 days at 10:30am #urgent', baseDate);
+    expect(res2.dateKey).toBe('2026-09-13');
+    expect(res2.timeOnly).toBe('10:30 AM');
+    expect(res2.tag).toBe('Urgent');
+    expect(res2.color).toBe('red');
+
+    // 3. "AI Agent Sprint on Sep 15 at 2:00 PM #ai" -> Sep 15, tag: AI, color: purple
+    const res3 = parseNaturalLanguageReminder('AI Agent Sprint on Sep 15 at 2:00 PM #ai', baseDate);
+    expect(res3.dateKey).toBe('2026-09-15');
+    expect(res3.timeOnly).toBe('2:00 PM');
+    expect(res3.tag).toBe('AI');
+    expect(res3.color).toBe('purple');
+
+    // 4. "DevFest Workshop next Friday #meetup"
+    const res4 = parseNaturalLanguageReminder('DevFest Workshop next Friday #meetup', baseDate);
+    expect(res4.category).toBe('events');
+    expect(res4.tag).toBe('Event');
+    expect(res4.color).toBe('green');
+  });
+
+  it('detects schedule conflicts and high density days', async () => {
+    const { CalendarWidget } = await import('../../src/js/modules/calendar.js');
+    document.body.innerHTML = '<div id="calendar-widget"></div>';
+
+    const widget = new CalendarWidget('calendar-widget');
+    widget.date = new Date(2026, 8, 1);
+    widget.init();
+
+    // Sep 12 has multiple events, including "The AI Engineering Stack" at 10:00 AM
+    const conflictExact = widget.checkScheduleConflict('2026-09-12', '10:00 AM');
+    expect(conflictExact.hasConflict).toBe(true);
+    expect(conflictExact.message).toContain('Time conflict');
+
+    // Check open day
+    const conflictOpen = widget.checkScheduleConflict('2026-09-30', '11:00 AM');
+    expect(conflictOpen.hasConflict).toBe(false);
+    expect(conflictOpen.countOnDay).toBe(0);
+  });
+
+  it('generates an AI daily briefing HUD with event counts, attendance, and summary', async () => {
+    const { CalendarWidget } = await import('../../src/js/modules/calendar.js');
+    document.body.innerHTML = '<div id="calendar-widget"></div>';
+
+    const widget = new CalendarWidget('calendar-widget');
+    widget.date = new Date(2026, 8, 1);
+    widget.selectedDate = new Date(2026, 8, 12);
+    widget.selectedDayFilter = '2026-09-12';
+    widget.init();
+
+    const brief = widget.generateDailyBrief('2026-09-12');
+    expect(brief.totalCount).toBeGreaterThanOrEqual(3);
+    expect(brief.density).toBe('High Density');
+    expect(brief.summaryText).toContain('RSVP confirmed');
+
+    // Verify rendered HUD
+    const hud = document.querySelector('.ai-daily-brief-hud');
+    expect(hud).not.toBeNull();
+    expect(hud.textContent).toContain('AI Daily Brief');
+    expect(hud.textContent).toContain('Discuss in AssistMe');
+  });
+
+  it('filters reminders via instant search query across text, tags, and hosts', async () => {
+    const { CalendarWidget } = await import('../../src/js/modules/calendar.js');
+    document.body.innerHTML = '<div id="calendar-widget"></div>';
+
+    const widget = new CalendarWidget('calendar-widget');
+    widget.date = new Date(2026, 8, 1);
+    widget.init();
+
+    // View All
+    widget.activeFilter = 'all';
+    widget.searchQuery = 'Cursor';
+    widget.render();
+
+    const cards = document.querySelectorAll('.reminder-card');
+    expect(cards.length).toBeGreaterThan(0);
+    cards.forEach(card => {
+      expect(card.textContent.toLowerCase()).toContain('cursor');
+    });
+
+    // Clear search
+    widget.searchQuery = '';
+    widget.render();
+    expect(document.querySelectorAll('.reminder-card').length).toBeGreaterThan(cards.length);
+  });
+
+  it('persists custom reminders and completed state in localStorage', async () => {
+    const { CalendarWidget } = await import('../../src/js/modules/calendar.js');
+    document.body.innerHTML = '<div id="calendar-widget"></div>';
+
+    const widget = new CalendarWidget('calendar-widget');
+    widget.init();
+
+    // Add reminder via natural language
+    const created = widget.addNewReminder('Review AI telemetry tomorrow at 4pm #urgent');
+    expect(created.tag).toBe('Urgent');
+    expect(created.isCustomUserReminder).toBe(true);
+
+    const stored = window.localStorage.getItem('mangesh_portfolio_reminders');
+    expect(stored).not.toBeNull();
+    expect(stored).toContain('Review AI telemetry');
+
+    // Simulate page reload
+    const widget2 = new CalendarWidget('calendar-widget');
+    expect(widget2.reminders.some(r => r.text.includes('Review AI telemetry'))).toBe(true);
+  });
+
+  it('renders and interacts with Apple HIG Smart AI Reminder Modal', async () => {
+    const { CalendarWidget } = await import('../../src/js/modules/calendar.js');
+    document.body.innerHTML = '<div id="calendar-widget"></div>';
+
+    const widget = new CalendarWidget('calendar-widget');
+    widget.init();
+
+    widget.openSmartReminderModal('Team sprint tomorrow at 2pm #ai');
+    const overlay = document.querySelector('.smart-reminder-modal-overlay');
+    expect(overlay).not.toBeNull();
+    expect(overlay.getAttribute('role')).toBe('dialog');
+
+    // Verify live preview
+    const previewTitle = overlay.querySelector('#smart-preview-title');
+    expect(previewTitle.textContent).toContain('Team sprint');
+
+    // Click preset chip
+    const presetBtn = overlay.querySelector('.preset-chip');
+    expect(presetBtn).not.toBeNull();
+    presetBtn.click();
+    expect(overlay.querySelector('.smart-modal-textarea').value).not.toBe('');
+
+    // Save reminder
+    const saveBtn = overlay.querySelector('.btn-save');
+    saveBtn.click();
+    expect(widget.reminders.length).toBeGreaterThan(0);
+  });
 });

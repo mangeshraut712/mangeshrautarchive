@@ -46,6 +46,22 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── September 2026 ──────────────────────────────────────────
   {
+    id: 'smart-ai-calendar-reminders-nlp-modal',
+    date: '2026-09-11',
+    type: 'improvement',
+    title:
+      'Calendar & Smart Reminders: Apple HIG AI NLP Parser, Schedule Conflict Detection & WebMCP Agentic Actions',
+    summary:
+      'Transformed the Contact page Calendar & Smart Reminders system into an intelligent Apple-style scheduling engine with natural language AI parsing, real-time schedule conflict detection, and conversational WebMCP tools. Replaced browser prompt dialogs with an Apple HIG Smart AI Reminder modal featuring live relative date resolution (tomorrow, next Friday, in 3 days), exact time extraction (3pm, 10:30am, noon), category mapping (#urgent, #ai, #design, #birthday, #meetup, #sync), and conflict warnings. Added an AI Daily Briefing HUD synthesizing day schedules with 1-click AssistMe conversational discussion. Implemented instant schedule search across titles, hosts, and tags, persistent custom reminders with localStorage, and replaced "0 Free Slots" with inviting "Live Booking Open" fallback. Equipped AssistMe with 3 new WebMCP client tools (add_calendar_reminder, get_calendar_events, filter_calendar_view) expanding total portfolio WebMCP tools to 17. Expanded test suite to 253 Vitest unit tests across 48 files.',
+    tags: ['design', 'systems', 'features'],
+    sha: '672af1c2',
+    link: `${CHANGELOG_REPO}/commit/672af1c2`,
+    model: 'Gemini 3.8 Flash (High)',
+    ide: 'Google Antigravity IDE (AGY)',
+    purpose:
+      'Smart AI Reminder system upgrade with natural language parsing (relative dates, times, categories, tags), real-time schedule conflict and high-density alerts, AI Daily Briefing HUD with AssistMe integration, instant schedule search, localStorage persistence, WebMCP agentic calendar tools, and 253 Vitest unit tests',
+  },
+  {
     id: 'luma-live-schedule-attendance-statuses',
     date: '2026-09-11',
     type: 'improvement',

@@ -33,12 +33,12 @@ LIGHTHOUSE_PAGES_GATES: Dict[str, Dict[str, int]] = {
 }
 
 TEST_COUNTS = {
-    "vitest": 243,
+    "vitest": 253,
     "pytest": 175,
     "playwright_projects": 16,
 }
 
-WEBMCP_TOOL_COUNT = 14
+WEBMCP_TOOL_COUNT = 17
 LUMA_CALENDARS_URL = "https://luma.com/home/calendars"
 
 PWA_POLICY = {

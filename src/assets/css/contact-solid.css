@@ -1088,3 +1088,661 @@ html body #contact :is(.calendly-panel-button, .luma-panel-button) {
     padding: 0.875rem !important;
   }
 }
+
+/* ════════════════════════════════════════════════════════════════
+   Apple HIG Smart AI Reminders, Search & Daily Brief HUD
+   ════════════════════════════════════════════════════════════════ */
+
+.ios-btn-smart {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 6px 12px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  border-radius: 980px;
+  background: linear-gradient(135deg, #0077ed 0%, #0071e3 50%, #005bb5 100%);
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 2px 8px rgba(0, 113, 227, 0.35);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ios-btn-smart:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(0, 113, 227, 0.5);
+}
+
+.ios-btn-smart i {
+  color: #ffffff !important;
+}
+
+html.dark .ios-btn-smart {
+  background: linear-gradient(135deg, #0a84ff 0%, #0071e3 50%, #005bb5 100%);
+  box-shadow: 0 2px 10px rgba(10, 132, 255, 0.45);
+}
+
+/* ── Calendar Instant Search Bar ── */
+.calendar-search-wrap {
+  width: 100%;
+  margin: 0.5rem 0 0.85rem;
+}
+
+.calendar-search-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.04);
+  border: 1px solid #e5e5ea;
+  border-radius: 12px;
+  padding: 0 0.75rem;
+  transition: all 0.2s ease;
+}
+
+html.dark .calendar-search-box {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: #2c2c2e;
+}
+
+.calendar-search-box:focus-within {
+  border-color: #0071e3;
+  box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.15);
+}
+
+html.dark .calendar-search-box:focus-within {
+  border-color: #0a84ff;
+  box-shadow: 0 0 0 3px rgba(10, 132, 255, 0.25);
+}
+
+.calendar-search-box .search-icon {
+  font-size: 0.85rem;
+  color: #86868b;
+  margin-right: 0.5rem;
+}
+
+.reminders-search-input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  padding: 0.6rem 0;
+  font-size: 0.85rem;
+  color: var(--contact-solid-fg);
+  outline: none;
+  font-family: inherit;
+  min-width: 0;
+}
+
+.reminders-search-input::placeholder {
+  color: #86868b;
+}
+
+.calendar-search-clear {
+  border: none;
+  background: transparent;
+  color: #86868b;
+  font-size: 0.8rem;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.15s ease;
+}
+
+.calendar-search-clear:hover {
+  color: var(--contact-solid-fg);
+  background: rgba(0, 0, 0, 0.08);
+}
+
+html.dark .calendar-search-clear:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* ── Day Inspector Actions & AI Brief HUD ── */
+.day-inspector-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  padding: 0.6rem 0.85rem;
+  background: rgba(0, 113, 227, 0.06);
+  border: 1px solid rgba(0, 113, 227, 0.18);
+  border-radius: 12px;
+  margin-bottom: 0.85rem;
+}
+
+html.dark .day-inspector-banner {
+  background: rgba(10, 132, 255, 0.1);
+  border-color: rgba(10, 132, 255, 0.25);
+}
+
+.day-inspector-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.day-inspector-ai-brief {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.76rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 980px;
+  background: rgba(0, 113, 227, 0.12);
+  color: #0071e3 !important;
+  border: 1px solid rgba(0, 113, 227, 0.28);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.day-inspector-ai-brief:hover {
+  background: #0071e3;
+  color: #ffffff !important;
+}
+
+.day-inspector-ai-brief:hover i {
+  color: #ffffff !important;
+}
+
+html.dark .day-inspector-ai-brief {
+  background: rgba(10, 132, 255, 0.2);
+  color: #2997ff !important;
+  border-color: rgba(10, 132, 255, 0.4);
+}
+
+html.dark .day-inspector-ai-brief:hover {
+  background: #0a84ff;
+  color: #ffffff !important;
+}
+
+.ai-daily-brief-hud {
+  background: rgba(0, 113, 227, 0.05);
+  border: 1.5px solid rgba(0, 113, 227, 0.25);
+  border-radius: 14px;
+  padding: 0.85rem 1rem;
+  margin-bottom: 1rem;
+  position: relative;
+  overflow: hidden;
+  animation: briefSlideDown 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes briefSlideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+html.dark .ai-daily-brief-hud {
+  background: rgba(10, 132, 255, 0.08);
+  border-color: rgba(10, 132, 255, 0.35);
+}
+
+.ai-brief-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.45rem;
+}
+
+.ai-brief-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #0071e3;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+html.dark .ai-brief-title {
+  color: #2997ff;
+}
+
+.ai-brief-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.ai-brief-discuss-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 980px;
+  border: 1px solid rgba(0, 113, 227, 0.3);
+  background: #ffffff;
+  color: #0071e3 !important;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+html.dark .ai-brief-discuss-btn {
+  background: #1c1c1e;
+  border-color: rgba(10, 132, 255, 0.4);
+  color: #2997ff !important;
+}
+
+.ai-brief-discuss-btn:hover {
+  background: #0071e3;
+  color: #ffffff !important;
+}
+
+.ai-brief-dismiss-btn {
+  border: none;
+  background: transparent;
+  color: #86868b;
+  cursor: pointer;
+  padding: 3px 6px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+}
+
+.ai-brief-dismiss-btn:hover {
+  color: var(--contact-solid-fg);
+}
+
+.ai-brief-summary {
+  font-size: 0.86rem;
+  line-height: 1.45;
+  color: var(--contact-solid-fg);
+  margin-bottom: 0.5rem;
+}
+
+.ai-brief-stats {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.brief-stat-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 980px;
+  background: rgba(0, 0, 0, 0.05);
+  color: var(--contact-solid-fg);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+html.dark .brief-stat-chip {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+/* ── Apple HIG Smart AI Reminder Modal ── */
+.smart-reminder-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  padding: 1.25rem;
+  animation: modalFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.smart-reminder-modal-overlay.closing {
+  animation: modalFadeOut 0.18s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modalFadeOut {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+.smart-reminder-modal-card {
+  position: relative;
+  width: 100%;
+  max-width: 520px;
+  background: #ffffff;
+  border: 1px solid #e5e5ea;
+  border-radius: 20px;
+  padding: 1.5rem;
+  box-shadow:
+    0 24px 60px rgba(0, 0, 0, 0.2),
+    0 8px 24px rgba(0, 0, 0, 0.12);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  animation: cardPopIn 0.24s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes cardPopIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+html.dark .smart-reminder-modal-card {
+  background: #1c1c1e;
+  border-color: #2c2c2e;
+  box-shadow:
+    0 24px 60px rgba(0, 0, 0, 0.65),
+    0 8px 24px rgba(0, 0, 0, 0.5);
+}
+
+.smart-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.smart-modal-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--contact-solid-fg);
+}
+
+.smart-modal-title i {
+  color: #0071e3;
+}
+
+html.dark .smart-modal-title i {
+  color: #0a84ff;
+}
+
+.smart-modal-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(0, 0, 0, 0.06);
+  color: #86868b;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+html.dark .smart-modal-close {
+  background: rgba(255, 255, 255, 0.1);
+  color: #d2d2d7;
+}
+
+.smart-modal-close:hover {
+  background: #ff3b30;
+  color: #ffffff;
+}
+
+.smart-modal-description {
+  font-size: 0.84rem;
+  color: var(--contact-solid-muted);
+  line-height: 1.4;
+  margin: 0;
+}
+
+.smart-modal-textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.85rem;
+  font-size: 0.94rem;
+  font-family: inherit;
+  border: 1.5px solid #e5e5ea;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.02);
+  color: var(--contact-solid-fg);
+  resize: vertical;
+  min-height: 75px;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+html.dark .smart-modal-textarea {
+  border-color: #2c2c2e;
+  background: rgba(255, 255, 255, 0.04);
+  color: #f5f5f7;
+}
+
+.smart-modal-textarea:focus {
+  border-color: #0071e3;
+  box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.18);
+}
+
+html.dark .smart-modal-textarea:focus {
+  border-color: #0a84ff;
+  box-shadow: 0 0 0 3px rgba(10, 132, 255, 0.25);
+}
+
+.smart-modal-presets {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.preset-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.74rem;
+  font-weight: 550;
+  padding: 4px 10px;
+  border-radius: 980px;
+  border: 1px solid #e5e5ea;
+  background: #ffffff;
+  color: var(--contact-solid-fg);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+html.dark .preset-chip {
+  background: #2c2c2e;
+  border-color: #3a3a3c;
+  color: #f5f5f7;
+}
+
+.preset-chip:hover {
+  border-color: #0071e3;
+  color: #0071e3;
+  transform: translateY(-1px);
+}
+
+html.dark .preset-chip:hover {
+  border-color: #0a84ff;
+  color: #2997ff;
+}
+
+.smart-modal-preview-box {
+  background: rgba(0, 113, 227, 0.04);
+  border: 1px dashed rgba(0, 113, 227, 0.3);
+  border-radius: 12px;
+  padding: 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+html.dark .smart-modal-preview-box {
+  background: rgba(10, 132, 255, 0.06);
+  border-color: rgba(10, 132, 255, 0.35);
+}
+
+.smart-preview-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #0071e3;
+  letter-spacing: 0.04em;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+html.dark .smart-preview-label {
+  color: #2997ff;
+}
+
+.smart-preview-title {
+  font-size: 0.94rem;
+  font-weight: 650;
+  color: var(--contact-solid-fg);
+}
+
+.smart-preview-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.preview-badge {
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 980px;
+  background: rgba(0, 0, 0, 0.06);
+  color: var(--contact-solid-fg);
+}
+
+html.dark .preview-badge {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.preview-badge.badge-tag.tag-red {
+  background: rgba(255, 59, 48, 0.15);
+  color: #ff3b30;
+}
+
+.preview-badge.badge-tag.tag-purple {
+  background: rgba(175, 82, 222, 0.15);
+  color: #af52de;
+}
+
+.preview-badge.badge-tag.tag-blue {
+  background: rgba(0, 113, 227, 0.15);
+  color: #0071e3;
+}
+
+.preview-badge.badge-tag.tag-pink {
+  background: rgba(255, 45, 85, 0.15);
+  color: #ff2d55;
+}
+
+.preview-badge.badge-tag.tag-green {
+  background: rgba(52, 199, 89, 0.15);
+  color: #34c759;
+}
+
+.smart-conflict-alert {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.76rem;
+  font-weight: 600;
+  padding: 6px 10px;
+  border-radius: 8px;
+}
+
+.smart-conflict-alert.conflict-warning {
+  background: rgba(255, 59, 48, 0.1);
+  color: #ff3b30;
+  border: 1px solid rgba(255, 59, 48, 0.3);
+}
+
+.smart-conflict-alert.conflict-notice {
+  background: rgba(255, 149, 0, 0.1);
+  color: #ff9500;
+  border: 1px solid rgba(255, 149, 0, 0.3);
+}
+
+.smart-modal-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.6rem;
+  margin-top: 0.25rem;
+}
+
+.smart-modal-btn {
+  padding: 8px 16px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  border-radius: 980px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+  min-height: 40px;
+}
+
+.smart-modal-btn.btn-cancel {
+  background: rgba(0, 0, 0, 0.05);
+  color: var(--contact-solid-muted);
+}
+
+html.dark .smart-modal-btn.btn-cancel {
+  background: rgba(255, 255, 255, 0.08);
+  color: #a1a1a6;
+}
+
+.smart-modal-btn.btn-cancel:hover {
+  background: rgba(0, 0, 0, 0.1);
+  color: var(--contact-solid-fg);
+}
+
+html.dark .smart-modal-btn.btn-cancel:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+}
+
+.smart-modal-btn.btn-save {
+  background: linear-gradient(135deg, #0077ed 0%, #0071e3 50%, #005bb5 100%);
+  color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  box-shadow: 0 4px 12px rgba(0, 113, 227, 0.3);
+}
+
+.smart-modal-btn.btn-save:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(0, 113, 227, 0.45);
+}

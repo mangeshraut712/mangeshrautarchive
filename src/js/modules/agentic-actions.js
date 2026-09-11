@@ -293,6 +293,76 @@ export class AgenticActionHandler {
         { signal }
       );
 
+      // 15. Add Smart AI Reminder to Calendar
+      navigator.modelContext.registerTool(
+        {
+          name: 'add_calendar_reminder',
+          description:
+            "Add a reminder or task to Mangesh's portfolio calendar with natural language date, time, and tag parsing (e.g. 'Sync with team tomorrow at 3pm #sync').",
+          inputSchema: {
+            type: 'object',
+            properties: {
+              text: {
+                type: 'string',
+                description: 'The natural language reminder text to parse and add.',
+              },
+            },
+            required: ['text'],
+          },
+          execute: async input => {
+            return this.addCalendarReminder([null, input.text]);
+          },
+        },
+        { signal }
+      );
+
+      // 16. Get Calendar Events & Schedule
+      navigator.modelContext.registerTool(
+        {
+          name: 'get_calendar_events',
+          description:
+            "Retrieve upcoming events, Luma meetups, birthdays, and reminders from Mangesh's calendar widget.",
+          inputSchema: {
+            type: 'object',
+            properties: {
+              category: {
+                type: 'string',
+                description:
+                  "Optional filter category: 'all', 'luma', 'events', 'birthdays', 'reminders', 'changelog'.",
+              },
+            },
+          },
+          execute: async input => {
+            return this.getCalendarEvents([null, input?.category]);
+          },
+          annotations: { readOnlyHint: true },
+        },
+        { signal }
+      );
+
+      // 17. Filter Calendar View
+      navigator.modelContext.registerTool(
+        {
+          name: 'filter_calendar_view',
+          description: 'Filter the interactive calendar view by category tab or search query.',
+          inputSchema: {
+            type: 'object',
+            properties: {
+              filter: {
+                type: 'string',
+                description:
+                  "The filter tab name ('all', 'day', 'events', 'luma', 'birthdays', 'changelog', 'reminders') or search query string.",
+              },
+            },
+            required: ['filter'],
+          },
+          execute: async input => {
+            return this.filterCalendarView([null, input.filter]);
+          },
+        },
+        { signal }
+      );
+
       // Clean up on page unload to avoid WebMCP registry conflicts
       window.addEventListener(
         'beforeunload',
@@ -345,6 +415,35 @@ export class AgenticActionHandler {
       ],
       handler: this.scheduleMeeting.bind(this),
       description: 'Schedule a meeting with Mangesh',
+    });
+
+    // Add Calendar Reminder / Task
+    this.registerAction('add_calendar_reminder', {
+      patterns: [
+        /(?:remind\s+me\s+to|add\s+(?:a\s+)?reminder(?:\s+to)?|create\s+(?:a\s+)?reminder(?:\s+to)?|schedule\s+(?:a\s+)?task(?:\s+to)?)\s+(.+)/i,
+        /^(?:new|add)\s+reminder:\s*(.+)/i,
+      ],
+      handler: this.addCalendarReminder.bind(this),
+      description: 'Add a new reminder or task to the calendar widget',
+    });
+
+    // Query Calendar Events
+    this.registerAction('get_calendar_events', {
+      patterns: [
+        /(?:what(?:'s|\s+is)\s+on\s+(?:the|my|your)\s+calendar|show\s+(?:me\s+)?(?:the\s+)?calendar\s+(?:events|schedule)|what\s+events\s+(?:are\s+)?coming\s+up|upcoming\s+events)/i,
+        /(?:view|show)\s+(?:my\s+)?(?:schedule|calendar)/i,
+      ],
+      handler: this.getCalendarEvents.bind(this),
+      description: 'Retrieve upcoming calendar events and reminders',
+    });
+
+    // Filter Calendar View
+    this.registerAction('filter_calendar_view', {
+      patterns: [
+        /(?:filter|show)\s+(?:calendar\s+)?(luma|birthdays?|events?|tasks?|reminders?|changelog)\s+(?:on\s+calendar|tab|events)?/i,
+      ],
+      handler: this.filterCalendarView.bind(this),
+      description: 'Filter the calendar view by tab or query',
     });
 
     // Contact actions
@@ -675,6 +774,131 @@ export class AgenticActionHandler {
       message:
         '📅 Opening the live Google Calendar availability in Contact. Choose a time to receive an emailed invitation.',
       action: 'schedule_meeting',
+    };
+  }
+
+  async addCalendarReminder(match) {
+    const rawText = Array.isArray(match) ? match[1] : match;
+    const text = typeof rawText === 'string' ? rawText.trim() : '';
+    if (!text) {
+      return {
+        success: false,
+        message: '❌ Please specify what reminder or task to add.',
+        action: 'add_calendar_reminder',
+      };
+    }
+
+    const contactSection = document.querySelector('#contact');
+    if (contactSection) {
+      contactSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    const widget =
+      (typeof window !== 'undefined' && window.calendarWidget) ||
+      document.querySelector('#calendar-widget')?.__widget;
+
+    if (widget && typeof widget.addNewReminder === 'function') {
+      const created = widget.addNewReminder(text);
+      const reminderTitle = created?.text || text;
+      const reminderTime = created?.time || 'Scheduled';
+      const reminderTag = created?.tag || 'Task';
+
+      return {
+        success: true,
+        message: `✅ Added reminder to calendar: "${reminderTitle}" (${reminderTime}) [Tag: ${reminderTag}].`,
+        action: 'add_calendar_reminder',
+        data: created,
+      };
+    }
+
+    return {
+      success: true,
+      message: `📅 Calendar section navigated. Please use the Smart Reminder modal to save "${text}".`,
+      action: 'add_calendar_reminder',
+    };
+  }
+
+  async getCalendarEvents(match) {
+    const rawCategory = Array.isArray(match) ? match[1] : match;
+    const category = typeof rawCategory === 'string' ? rawCategory.toLowerCase().trim() : 'all';
+
+    const widget =
+      (typeof window !== 'undefined' && window.calendarWidget) ||
+      document.querySelector('#calendar-widget')?.__widget;
+
+    if (widget && Array.isArray(widget.reminders)) {
+      let items = widget.reminders;
+      if (category && category !== 'all') {
+        if (category.includes('luma')) items = items.filter(r => r.isLuma || r.lumaUrl);
+        else if (category.includes('birthday'))
+          items = items.filter(r => r.category === 'birthdays');
+        else if (category.includes('event')) items = items.filter(r => r.category === 'events');
+        else if (category.includes('task') || category.includes('reminder'))
+          items = items.filter(r => r.category === 'reminders');
+        else if (category.includes('changelog'))
+          items = items.filter(r => r.category === 'changelog');
+      }
+
+      const topItems = items.slice(0, 8);
+      const formatted = topItems
+        .map(
+          item =>
+            `• **${item.text}** — ${item.time}${item.tag ? ` [${item.tag}]` : ''}${item.lumaStatus ? ` (${item.lumaStatus})` : ''}`
+        )
+        .join('\n');
+
+      return {
+        success: true,
+        message: `📅 **Upcoming Calendar Schedule (${topItems.length} items):**\n\n${formatted}`,
+        action: 'get_calendar_events',
+        data: topItems,
+      };
+    }
+
+    return {
+      success: false,
+      message: '❌ Calendar schedule not currently available. Please visit the Contact section.',
+      action: 'get_calendar_events',
+    };
+  }
+
+  async filterCalendarView(match) {
+    const rawFilter = Array.isArray(match) ? match[1] : match;
+    const filter = typeof rawFilter === 'string' ? rawFilter.toLowerCase().trim() : 'all';
+
+    const contactSection = document.querySelector('#contact');
+    if (contactSection) {
+      contactSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    const widget =
+      (typeof window !== 'undefined' && window.calendarWidget) ||
+      document.querySelector('#calendar-widget')?.__widget;
+
+    if (widget) {
+      let targetTab = 'all';
+      if (filter.includes('luma')) targetTab = 'luma';
+      else if (filter.includes('bday') || filter.includes('birthday')) targetTab = 'birthdays';
+      else if (filter.includes('event')) targetTab = 'events';
+      else if (filter.includes('reminder') || filter.includes('task')) targetTab = 'reminders';
+      else if (filter.includes('changelog')) targetTab = 'changelog';
+      else if (filter.includes('day') || filter.includes('today')) targetTab = 'day';
+
+      widget.activeFilter = targetTab;
+      widget.render();
+
+      return {
+        success: true,
+        message: `🔍 Filtered calendar view to tab "${targetTab}".`,
+        action: 'filter_calendar_view',
+        tab: targetTab,
+      };
+    }
+
+    return {
+      success: false,
+      message: '❌ Could not filter calendar widget.',
+      action: 'filter_calendar_view',
     };
   }
 

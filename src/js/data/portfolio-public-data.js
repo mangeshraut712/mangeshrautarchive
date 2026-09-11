@@ -44,12 +44,12 @@ export const LIGHTHOUSE_VERCEL_GATES = {
 };
 
 export const TEST_COUNTS = {
-  vitest: 243,
+  vitest: 253,
   pytest: 175,
   playwrightProjects: 16,
 };
 
-export const WEBMCP_TOOL_COUNT = 14;
+export const WEBMCP_TOOL_COUNT = 17;
 export const LUMA_CALENDARS_URL = 'https://luma.com/home/calendars';
 
 export const PWA_POLICY = {

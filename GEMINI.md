@@ -35,7 +35,7 @@ All developers and autonomous AI agents working in this repository must implemen
 6. **Small, Single-Purpose Functions:** Keep functions under 50 lines with focused single responsibilities.
 7. **Enforced Code Standards:** Enforce zero-tolerance linting and formatting via ESLint, Stylelint, Prettier, and flake8.
 8. **Documented Invariants & APIs:** Keep [docs/STRUCTURE.md](docs/STRUCTURE.md), [docs/API.md](docs/API.md), and [docs/DESIGN.md](docs/DESIGN.md) synchronized.
-9. **First-Class Automated Testing:** Maintain 100% passing tests (243 Vitest, 175 pytest, 16-browser Playwright matrix).
+9. **First-Class Automated Testing:** Maintain 100% passing tests (253 Vitest, 175 pytest, 16-browser Playwright matrix).
 10. **Continuous Refactoring:** Prune dead code, consolidate design tokens, and streamline without behavior regressions.
 11. **Intentional Debt Paydown:** Actively track, document, and remediate technical debt; never let shortcuts become permanent architecture.
 12. **Reviewable Git History:** Write conventional commits (`type(scope): description`) with bisectable history.
@@ -49,7 +49,7 @@ All developers and autonomous AI agents working in this repository must implemen
 Before finalizing any task or pushing to `main`, always run:
 
 ```bash
-# 1. Full Check Gate (ESLint + Stylelint + Prettier + 243 Vitest Tests)
+# 1. Full Check Gate (ESLint + Stylelint + Prettier + 253 Vitest Tests)
 export PATH="/opt/homebrew/opt/node@22/bin:/opt/homebrew/Cellar/node@22/22.23.2/bin:$PATH" && npm run check
 
 # 2. Security Check & Production Bundle Build
