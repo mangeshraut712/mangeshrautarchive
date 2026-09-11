@@ -747,10 +747,456 @@ html[data-theme='dark']
   color: #a1a1a6 !important;
 }
 
+/* ── Apple HIG Calendar & Reminder Cards (Solid Surfaces & Alignment) ── */
+html body #contact .reminder-card {
+  position: relative !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  padding: 12px 14px 12px 16px !important;
+  border-radius: 14px !important;
+  background: #ffffff !important;
+  border: 1px solid #e5e5ea !important;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04) !important;
+  min-height: 64px !important;
+  gap: 10px !important;
+  overflow: hidden !important;
+  box-sizing: border-box !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+html.dark body #contact .reminder-card {
+  background: #000000 !important;
+  border: 1px solid #2c2c2e !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4) !important;
+  color: #f5f5f7 !important;
+}
+
+html body #contact .reminder-card:hover {
+  transform: translateY(-1px) !important;
+  border-color: rgba(0, 113, 227, 0.35) !important;
+  box-shadow: 0 4px 14px rgba(0, 113, 227, 0.12) !important;
+}
+
+html.dark body #contact .reminder-card:hover {
+  background: #000000 !important;
+  border-color: rgba(10, 132, 255, 0.45) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6) !important;
+}
+
+html body #contact .card-content {
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 4px !important;
+  padding-left: 8px !important;
+  padding-right: 4px !important;
+  overflow: hidden !important;
+}
+
+html body #contact .card-header-flex {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  flex-wrap: nowrap !important;
+  overflow: hidden !important;
+  width: 100% !important;
+  font-size: 0.72rem !important;
+}
+
+html body #contact .card-time {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
+  font-size: 0.72rem !important;
+  font-weight: 650 !important;
+  color: #4a4a4f !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.03em !important;
+}
+
+html.dark body #contact .card-time {
+  color: #a1a1a6 !important;
+}
+
+html body #contact .card-tags-group {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+  flex-wrap: nowrap !important;
+  overflow: hidden !important;
+  min-width: 0 !important;
+}
+
+/* Card Tag System — Apple HIG pills */
+html body #contact .card-tag {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 3px !important;
+  font-size: 0.68rem !important;
+  font-weight: 650 !important;
+  padding: 2px 7px !important;
+  border-radius: 980px !important;
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
+  line-height: 1.3 !important;
+}
+
+html body #contact .card-tag.tag-blue {
+  background: rgba(0, 113, 227, 0.1) !important;
+  color: #0071e3 !important;
+  border: 1px solid rgba(0, 113, 227, 0.22) !important;
+}
+
+html.dark body #contact .card-tag.tag-blue {
+  background: rgba(10, 132, 255, 0.2) !important;
+  color: #2997ff !important;
+  border-color: rgba(10, 132, 255, 0.38) !important;
+}
+
+html body #contact .card-tag.tag-red {
+  background: rgba(255, 59, 48, 0.1) !important;
+  color: #ff3b30 !important;
+  border: 1px solid rgba(255, 59, 48, 0.22) !important;
+}
+
+html.dark body #contact .card-tag.tag-red {
+  background: rgba(255, 59, 48, 0.2) !important;
+  color: #ff453a !important;
+  border-color: rgba(255, 59, 48, 0.38) !important;
+}
+
+html body #contact .card-tag.tag-green {
+  background: rgba(52, 199, 89, 0.12) !important;
+  color: #28a745 !important;
+  border: 1px solid rgba(52, 199, 89, 0.25) !important;
+}
+
+html.dark body #contact .card-tag.tag-green {
+  background: rgba(52, 199, 89, 0.2) !important;
+  color: #30d158 !important;
+  border-color: rgba(52, 199, 89, 0.4) !important;
+}
+
+html body #contact .card-tag.tag-orange {
+  background: rgba(255, 149, 0, 0.12) !important;
+  color: #e08600 !important;
+  border: 1px solid rgba(255, 149, 0, 0.25) !important;
+}
+
+html.dark body #contact .card-tag.tag-orange {
+  background: rgba(255, 149, 0, 0.2) !important;
+  color: #ff9f0a !important;
+  border-color: rgba(255, 149, 0, 0.4) !important;
+}
+
+html body #contact .card-tag.tag-purple {
+  background: rgba(175, 82, 222, 0.1) !important;
+  color: #af52de !important;
+  border: 1px solid rgba(175, 82, 222, 0.22) !important;
+}
+
+html.dark body #contact .card-tag.tag-purple {
+  background: rgba(191, 90, 242, 0.2) !important;
+  color: #bf5af2 !important;
+  border-color: rgba(191, 90, 242, 0.38) !important;
+}
+
+html body #contact .card-tag.tag-pink {
+  background: rgba(255, 45, 85, 0.1) !important;
+  color: #ff2d55 !important;
+  border: 1px solid rgba(255, 45, 85, 0.22) !important;
+}
+
+html.dark body #contact .card-tag.tag-pink {
+  background: rgba(255, 55, 95, 0.2) !important;
+  color: #ff375f !important;
+  border-color: rgba(255, 55, 95, 0.38) !important;
+}
+
+html body #contact .card-tag.tag-cyan {
+  background: rgba(50, 173, 230, 0.1) !important;
+  color: #0077b6 !important;
+  border: 1px solid rgba(50, 173, 230, 0.22) !important;
+}
+
+html.dark body #contact .card-tag.tag-cyan {
+  background: rgba(100, 210, 255, 0.2) !important;
+  color: #64d2ff !important;
+  border-color: rgba(100, 210, 255, 0.38) !important;
+}
+
+html body #contact .card-tag.tag-luma {
+  background: rgba(235, 54, 52, 0.1) !important;
+  color: #eb3634 !important;
+  border: 1px solid rgba(235, 54, 52, 0.25) !important;
+}
+
+html.dark body #contact .card-tag.tag-luma {
+  background: rgba(235, 54, 52, 0.2) !important;
+  color: #ff5c5a !important;
+  border-color: rgba(235, 54, 52, 0.4) !important;
+}
+
+html body #contact .tag-luma-status--going {
+  background: rgba(52, 199, 89, 0.14) !important;
+  color: #28a745 !important;
+  border: 1px solid rgba(52, 199, 89, 0.3) !important;
+}
+
+html.dark body #contact .tag-luma-status--going {
+  background: rgba(52, 199, 89, 0.22) !important;
+  color: #30d158 !important;
+  border-color: rgba(52, 199, 89, 0.45) !important;
+}
+
+html body #contact .tag-luma-status--waitlisted {
+  background: rgba(255, 149, 0, 0.14) !important;
+  color: #e08600 !important;
+  border: 1px solid rgba(255, 149, 0, 0.3) !important;
+}
+
+html.dark body #contact .tag-luma-status--waitlisted {
+  background: rgba(255, 149, 0, 0.22) !important;
+  color: #ff9f0a !important;
+  border-color: rgba(255, 149, 0, 0.45) !important;
+}
+
+html body #contact .tag-luma-status--pending {
+  background: rgba(0, 113, 227, 0.12) !important;
+  color: #0071e3 !important;
+  border: 1px solid rgba(0, 113, 227, 0.28) !important;
+}
+
+html.dark body #contact .tag-luma-status--pending {
+  background: rgba(10, 132, 255, 0.2) !important;
+  color: #409cff !important;
+  border-color: rgba(10, 132, 255, 0.4) !important;
+}
+
+html body #contact .tag-luma-status--attended {
+  background: rgba(142, 142, 147, 0.14) !important;
+  color: #636366 !important;
+  border: 1px solid rgba(142, 142, 147, 0.25) !important;
+}
+
+html.dark body #contact .tag-luma-status--attended {
+  background: rgba(142, 142, 147, 0.22) !important;
+  color: #8e8e93 !important;
+  border-color: rgba(142, 142, 147, 0.35) !important;
+}
+
+html body #contact .card-title {
+  font-size: 0.94rem !important;
+  font-weight: 600 !important;
+  line-height: 1.35 !important;
+  color: #1d1d1f !important;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 2 !important;
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: normal !important;
+  word-break: break-word !important;
+}
+
+html.dark body #contact .card-title {
+  color: #f5f5f7 !important;
+}
+
+html body #contact .card-host {
+  display: flex !important;
+  align-items: center !important;
+  gap: 5px !important;
+  font-size: 0.78rem !important;
+  color: #6e6e73 !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+html.dark body #contact .card-host {
+  color: #a1a1a6 !important;
+}
+
+html body #contact .card-location {
+  display: flex !important;
+  align-items: center !important;
+  gap: 5px !important;
+  font-size: 0.78rem !important;
+  color: #0071e3 !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+html.dark body #contact .card-location {
+  color: #2997ff !important;
+}
+
+/* Card Action Area */
 html body #contact .card-action-area {
-  display: flex;
-  align-items: center;
-  gap: 0.35rem;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 6px !important;
+  flex-shrink: 0 !important;
+  margin-left: auto !important;
+}
+
+html body #contact .card-action-btn {
+  width: 32px !important;
+  height: 32px !important;
+  min-width: 32px !important;
+  border-radius: 50% !important;
+  background: #ffffff !important;
+  border: 1px solid #e5e5ea !important;
+  cursor: pointer !important;
+  font-size: 0.78rem !important;
+  color: #1d1d1f !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  padding: 0 !important;
+  flex-shrink: 0 !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+}
+
+html body #contact .card-action-btn:hover {
+  transform: scale(1.08) !important;
+}
+
+html.dark body #contact .card-action-btn {
+  background: #000000 !important;
+  border-color: #2c2c2e !important;
+  color: #f5f5f7 !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4) !important;
+}
+
+html body #contact .luma-btn {
+  color: #eb3634 !important;
+  border-color: rgba(235, 54, 52, 0.25) !important;
+  background: rgba(235, 54, 52, 0.06) !important;
+}
+
+html body #contact .luma-btn:hover {
+  background: #eb3634 !important;
+  color: #ffffff !important;
+  border-color: #eb3634 !important;
+  box-shadow: 0 2px 10px rgba(235, 54, 52, 0.35) !important;
+}
+
+html.dark body #contact .luma-btn {
+  background: rgba(235, 54, 52, 0.14) !important;
+  border-color: rgba(235, 54, 52, 0.4) !important;
+  color: #ff5c5a !important;
+}
+
+html.dark body #contact .luma-btn:hover {
+  background: #eb3634 !important;
+  color: #ffffff !important;
+}
+
+html body #contact .ask-ai-btn {
+  color: #0071e3 !important;
+  border-color: rgba(0, 113, 227, 0.25) !important;
+  background: rgba(0, 113, 227, 0.06) !important;
+}
+
+html body #contact .ask-ai-btn:hover {
+  background: #0071e3 !important;
+  color: #ffffff !important;
+  border-color: #0071e3 !important;
+  box-shadow: 0 2px 10px rgba(0, 113, 227, 0.35) !important;
+}
+
+html.dark body #contact .ask-ai-btn {
+  background: rgba(10, 132, 255, 0.14) !important;
+  border-color: rgba(10, 132, 255, 0.4) !important;
+  color: #2997ff !important;
+}
+
+html.dark body #contact .ask-ai-btn:hover {
+  background: #0a84ff !important;
+  color: #ffffff !important;
+}
+
+html body #contact .edit-btn:hover {
+  background: #0071e3 !important;
+  color: #ffffff !important;
+  border-color: #0071e3 !important;
+}
+
+html.dark body #contact .edit-btn:hover {
+  background: #0a84ff !important;
+  color: #ffffff !important;
+  border-color: #0a84ff !important;
+}
+
+html body #contact .status-circle {
+  width: 24px !important;
+  height: 24px !important;
+  min-width: 24px !important;
+  border-radius: 50% !important;
+  border: 2px solid #d1d1d6 !important;
+  background: transparent !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  flex-shrink: 0 !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  color: transparent !important;
+}
+
+html.dark body #contact .status-circle {
+  border-color: #48484a !important;
+}
+
+html body #contact .status-circle:hover {
+  border-color: #0071e3 !important;
+  transform: scale(1.08) !important;
+}
+
+html.dark body #contact .status-circle:hover {
+  border-color: #0a84ff !important;
+}
+
+html body #contact .reminder-card.completed .status-circle {
+  background: #34c759 !important;
+  border-color: #34c759 !important;
+  color: #ffffff !important;
+}
+
+@media (max-width: 480px) {
+  html body #contact .reminder-card {
+    padding: 10px 12px 10px 14px !important;
+    gap: 8px !important;
+  }
+
+  html body #contact .card-content {
+    padding-left: 6px !important;
+    padding-right: 2px !important;
+  }
+
+  html body #contact .card-title {
+    font-size: 0.88rem !important;
+  }
+
+  html body #contact .card-time {
+    font-size: 0.68rem !important;
+  }
+
+  html body #contact .card-action-btn {
+    width: 28px !important;
+    height: 28px !important;
+    min-width: 28px !important;
+    font-size: 0.72rem !important;
+  }
 }
 
 /* Kill glass hover lift on calendar shell */
@@ -1134,26 +1580,26 @@ html.dark .ios-btn-smart {
   display: flex;
   align-items: center;
   width: 100%;
-  background: rgba(0, 0, 0, 0.04);
-  border: 1px solid #e5e5ea;
+  background: #ffffff !important;
+  border: 1px solid #e5e5ea !important;
   border-radius: 12px;
   padding: 0 0.75rem;
   transition: all 0.2s ease;
 }
 
 html.dark .calendar-search-box {
-  background: rgba(255, 255, 255, 0.06);
-  border-color: #2c2c2e;
+  background: #000000 !important;
+  border-color: #2c2c2e !important;
 }
 
 .calendar-search-box:focus-within {
-  border-color: #0071e3;
-  box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.15);
+  border-color: #0071e3 !important;
+  box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.15) !important;
 }
 
 html.dark .calendar-search-box:focus-within {
-  border-color: #0a84ff;
-  box-shadow: 0 0 0 3px rgba(10, 132, 255, 0.25);
+  border-color: #0a84ff !important;
+  box-shadow: 0 0 0 3px rgba(10, 132, 255, 0.25) !important;
 }
 
 .calendar-search-box .search-icon {
@@ -1209,15 +1655,17 @@ html.dark .calendar-search-clear:hover {
   gap: 0.75rem;
   flex-wrap: wrap;
   padding: 0.6rem 0.85rem;
-  background: rgba(0, 113, 227, 0.06);
-  border: 1px solid rgba(0, 113, 227, 0.18);
+  background: #ffffff !important;
+  border: 1px solid rgba(0, 113, 227, 0.25) !important;
   border-radius: 12px;
   margin-bottom: 0.85rem;
+  color: #0071e3 !important;
 }
 
 html.dark .day-inspector-banner {
-  background: rgba(10, 132, 255, 0.1);
-  border-color: rgba(10, 132, 255, 0.25);
+  background: #000000 !important;
+  border-color: rgba(10, 132, 255, 0.35) !important;
+  color: #409cff !important;
 }
 
 .day-inspector-actions {
@@ -1262,8 +1710,8 @@ html.dark .day-inspector-ai-brief:hover {
 }
 
 .ai-daily-brief-hud {
-  background: rgba(0, 113, 227, 0.05);
-  border: 1.5px solid rgba(0, 113, 227, 0.25);
+  background: #ffffff !important;
+  border: 1.5px solid rgba(0, 113, 227, 0.25) !important;
   border-radius: 14px;
   padding: 0.85rem 1rem;
   margin-bottom: 1rem;
@@ -1285,8 +1733,8 @@ html.dark .day-inspector-ai-brief:hover {
 }
 
 html.dark .ai-daily-brief-hud {
-  background: rgba(10, 132, 255, 0.08);
-  border-color: rgba(10, 132, 255, 0.35);
+  background: #000000 !important;
+  border-color: rgba(10, 132, 255, 0.35) !important;
 }
 
 .ai-brief-header {
@@ -1334,7 +1782,7 @@ html.dark .ai-brief-title {
 }
 
 html.dark .ai-brief-discuss-btn {
-  background: #1c1c1e;
+  background: #000000 !important;
   border-color: rgba(10, 132, 255, 0.4);
   color: #2997ff !important;
 }
@@ -1433,8 +1881,8 @@ html.dark .brief-stat-chip {
   position: relative;
   width: 100%;
   max-width: 520px;
-  background: #ffffff;
-  border: 1px solid #e5e5ea;
+  background: #ffffff !important;
+  border: 1px solid #e5e5ea !important;
   border-radius: 20px;
   padding: 1.5rem;
   box-shadow:
@@ -1459,8 +1907,8 @@ html.dark .brief-stat-chip {
 }
 
 html.dark .smart-reminder-modal-card {
-  background: #1c1c1e;
-  border-color: #2c2c2e;
+  background: #000000 !important;
+  border-color: #2c2c2e !important;
   box-shadow:
     0 24px 60px rgba(0, 0, 0, 0.65),
     0 8px 24px rgba(0, 0, 0, 0.5);
@@ -1496,21 +1944,28 @@ html.dark .smart-modal-title i {
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  border: none;
-  background: rgba(0, 0, 0, 0.06);
-  color: #86868b;
+  border: none !important;
+  background: #ff3b30 !important;
+  color: #ffffff !important;
   cursor: pointer;
   transition: all 0.15s ease;
 }
 
-html.dark .smart-modal-close {
-  background: rgba(255, 255, 255, 0.1);
-  color: #d2d2d7;
+.smart-modal-close:hover {
+  background: #ff453a !important;
+  color: #ffffff !important;
+  transform: scale(1.05);
 }
 
-.smart-modal-close:hover {
-  background: #ff3b30;
-  color: #ffffff;
+html.dark .smart-modal-close {
+  background: #ff3b30 !important;
+  color: #ffffff !important;
+}
+
+html.dark .smart-modal-close:hover {
+  background: #ff453a !important;
+  color: #ffffff !important;
+  transform: scale(1.05);
 }
 
 .smart-modal-description {
@@ -1526,9 +1981,9 @@ html.dark .smart-modal-close {
   padding: 0.85rem;
   font-size: 0.94rem;
   font-family: inherit;
-  border: 1.5px solid #e5e5ea;
+  border: 1.5px solid #e5e5ea !important;
   border-radius: 12px;
-  background: rgba(0, 0, 0, 0.02);
+  background: #ffffff !important;
   color: var(--contact-solid-fg);
   resize: vertical;
   min-height: 75px;
@@ -1537,8 +1992,8 @@ html.dark .smart-modal-close {
 }
 
 html.dark .smart-modal-textarea {
-  border-color: #2c2c2e;
-  background: rgba(255, 255, 255, 0.04);
+  border-color: #2c2c2e !important;
+  background: #000000 !important;
   color: #f5f5f7;
 }
 
@@ -1567,16 +2022,16 @@ html.dark .smart-modal-textarea:focus {
   font-weight: 550;
   padding: 4px 10px;
   border-radius: 980px;
-  border: 1px solid #e5e5ea;
-  background: #ffffff;
+  border: 1px solid #e5e5ea !important;
+  background: #ffffff !important;
   color: var(--contact-solid-fg);
   cursor: pointer;
   transition: all 0.15s ease;
 }
 
 html.dark .preset-chip {
-  background: #2c2c2e;
-  border-color: #3a3a3c;
+  background: #000000 !important;
+  border-color: #2c2c2e !important;
   color: #f5f5f7;
 }
 

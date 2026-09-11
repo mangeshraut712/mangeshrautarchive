@@ -1300,11 +1300,6 @@ export class CalendarWidget {
               <i class="fas fa-list-check" aria-hidden="true"></i>
               <span>Smart Reminders & Events</span>
             </div>
-            <div class="reminders-header-actions">
-              <button type="button" class="ios-btn-smart smart-reminder-trigger-btn" title="Add Smart AI Reminder with Natural Language" aria-label="Smart AI Reminder"><i class="fas fa-wand-magic-sparkles" aria-hidden="true"></i> Smart Add</button>
-              <a href="${LUMA_CALENDARS_URL}" target="_blank" rel="noopener noreferrer" class="ios-btn-small luma-header-btn" title="View & Follow Events on Luma Calendar (mbr63@drexel.edu)" aria-label="View on Luma Calendar"><i class="fas fa-calendar-star" aria-hidden="true"></i> Luma</a>
-              <button type="button" class="ios-btn-small" title="Add Reminder" aria-label="Add new reminder"><i class="fas fa-plus" aria-hidden="true"></i> New</button>
-            </div>
           </div>
 
           <!-- Calendar Search Bar -->
@@ -1341,20 +1336,21 @@ export class CalendarWidget {
             </button>
           </div>
 
+          <!-- Day Inspector Banner (when filtering by selected date) -->
           ${
             this.activeFilter === 'day' && this.selectedDate
               ? `
             <div class="day-inspector-banner">
               <div class="day-inspector-info">
-                <i class="fas fa-filter" aria-hidden="true"></i>
+                <i class="fas fa-calendar-check" aria-hidden="true"></i>
                 <span>Showing items for <strong>${monthNames[this.selectedDate.getMonth()]} ${this.selectedDate.getDate()}, ${this.selectedDate.getFullYear()}</strong></span>
               </div>
               <div class="day-inspector-actions">
-                <button type="button" class="day-inspector-ai-brief" title="Generate AI Daily Briefing" aria-label="AI Daily Briefing">
+                <button type="button" class="day-inspector-ai-brief" title="Generate AI Daily Brief" aria-label="Generate AI Daily Brief">
                   <i class="fas fa-wand-magic-sparkles" aria-hidden="true"></i> AI Brief
                 </button>
-                <button type="button" class="day-inspector-clear" title="Show All Items">
-                  <i class="fas fa-times" aria-hidden="true"></i> View All
+                <button type="button" class="day-inspector-clear" aria-label="View all days">
+                  <i class="fas fa-times" aria-hidden="true"></i> All Items
                 </button>
               </div>
             </div>
@@ -1362,8 +1358,9 @@ export class CalendarWidget {
               : ''
           }
 
+          <!-- AI Daily Briefing HUD -->
           ${
-            this.aiBriefData && this.aiBriefData.dateKey === currentDayKey
+            this.aiBriefData
               ? `
             <div class="ai-daily-brief-hud" role="region" aria-label="AI Daily Briefing">
               <div class="ai-brief-header">
@@ -1407,14 +1404,8 @@ export class CalendarWidget {
                   this.selectedDate
                     ? `${monthNames[this.selectedDate.getMonth()]} ${this.selectedDate.getDate()}`
                     : 'This day'
-                } is completely open. Add a reminder or book a consultation.</div>
+                } is completely open. Book a consultation or explore the schedule.</div>
                 <div class="empty-state-actions">
-                  <button type="button" class="empty-action-btn smart-add-btn">
-                    <i class="fas fa-wand-magic-sparkles" aria-hidden="true"></i> Smart AI Add
-                  </button>
-                  <button type="button" class="empty-action-btn add-reminder-btn">
-                    <i class="fas fa-plus" aria-hidden="true"></i> Add Reminder
-                  </button>
                   <button type="button" class="empty-action-btn book-consult-btn">
                     <i class="fas fa-calendar-check" aria-hidden="true"></i> Book Consultation
                   </button>
@@ -1433,12 +1424,12 @@ export class CalendarWidget {
                   <div class="card-header-flex">
                     <span class="card-time"><i class="fas fa-${escapeHtml(r.icon || 'clock')}" aria-hidden="true"></i> ${escapeHtml(r.time)}</span>
                     <div class="card-tags-group">
-                      ${r.tag ? `<span class="card-tag tag-${escapeHtml(r.color || 'blue')}">${escapeHtml(r.tag)}</span>` : ''}
-                      ${r.isLuma || r.lumaUrl ? `<span class="card-tag tag-luma"><i class="fas fa-ticket" aria-hidden="true"></i> Luma</span>` : ''}
+                      ${r.tag && (!r.lumaHost || r.tag.trim().toLowerCase() !== r.lumaHost.trim().toLowerCase()) ? `<span class="card-tag tag-${escapeHtml(r.color || 'blue')}">${escapeHtml(r.tag)}</span>` : ''}
+                      ${(r.isLuma || r.lumaUrl) && !r.lumaStatus ? `<span class="card-tag tag-luma"><i class="fas fa-ticket" aria-hidden="true"></i> Luma</span>` : ''}
                       ${
                         r.lumaStatus
                           ? `
-                        <span class="card-tag tag-luma-status tag-luma-status--${escapeHtml(r.lumaStatus)}">
+                        <span class="card-tag tag-luma tag-luma-status tag-luma-status--${escapeHtml(r.lumaStatus)}">
                           ${r.lumaStatus === 'going' ? '<i class="fas fa-circle-check" aria-hidden="true"></i> Going' : ''}
                           ${r.lumaStatus === 'waitlisted' ? '<i class="fas fa-clock" aria-hidden="true"></i> Waitlisted' : ''}
                           ${r.lumaStatus === 'pending' ? '<i class="fas fa-hourglass-half" aria-hidden="true"></i> Submitted' : ''}
@@ -1451,7 +1442,7 @@ export class CalendarWidget {
                   </div>
                   <div class="card-title">${escapeHtml(r.text)}</div>
                   ${r.lumaHost ? `<div class="card-host"><i class="fas fa-user-circle" aria-hidden="true"></i> By ${escapeHtml(r.lumaHost)}</div>` : ''}
-                  ${r.location ? `<div class="card-location"><i class="fas fa-map-pin"></i> ${escapeHtml(r.location)}</div>` : ''}
+                  ${r.location ? `<div class="card-location"><i class="fas fa-map-pin" aria-hidden="true"></i> ${escapeHtml(r.location)}</div>` : ''}
                 </div>
                 <div class="card-action-area">
                   ${
@@ -1476,7 +1467,12 @@ export class CalendarWidget {
                       : ''
                   }
                   ${
-                    !r.isChangelog && !r.isImportedEvent && r.id !== 100
+                    !r.isChangelog &&
+                    !r.isImportedEvent &&
+                    !r.isLuma &&
+                    !r.lumaUrl &&
+                    r.category !== 'events' &&
+                    r.id !== 100
                       ? `
                     <button type="button" class="card-action-btn edit-btn" data-id="${r.id}" title="Edit text" aria-label="Edit reminder">
                       <i class="fas fa-pen" aria-hidden="true"></i>

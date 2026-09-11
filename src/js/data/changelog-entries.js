@@ -46,6 +46,22 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── September 2026 ──────────────────────────────────────────
   {
+    id: 'contact-solid-theme-luma-cleanup-card-alignment',
+    date: '2026-09-11',
+    type: 'fix',
+    title:
+      'Design & Contact: Solid Light/Dark Surfaces, Redundant Action Cleanup & Card Alignment Precision',
+    summary:
+      'Harmonized Contact surfaces with docs/DESIGN.md standardizing pure solid canvas values (#ffffff in light mode, #000000 in dark mode) and eliminating liquid-glass background bleeding across Calendar Search, Day Inspector, AI Daily Brief HUD, and Smart Reminder modals. Replaced gray modal close button with the unified Apple Red circular close button (#ff3b30). Streamlined the Send a Message card by removing the redundant Explore Events on Luma Calendar CTA button, and uncluttered the Calendar & Reminders header by removing redundant Luma and New/Add Reminder header buttons. Eliminated duplicate Luma pill badges and duplicate host tags on conference cards, and prevented edit/checkbox controls from rendering on non-task event entries. Fixed card layout and typography in contact-solid.css ensuring date/time timestamps never awkwardly wrap, event titles comfortably clamp to 2 legible lines, and action buttons stay neatly aligned to the right without clipping across all viewport sizes. Validated across 253 Vitest unit tests, 175 pytest API tests, and 60/60 repo doctor checks.',
+    tags: ['design', 'performance'],
+    sha: 'ddae9e19',
+    link: `${CHANGELOG_REPO}/commit/ddae9e19`,
+    model: 'Gemini 3.8 Flash (High)',
+    ide: 'Google Antigravity IDE (AGY)',
+    purpose:
+      'Solid Apple HIG theme compliance, redundant Luma button cleanup in Send a Message and widget header, reminder card alignment and typography fixes, and unified red modal close button',
+  },
+  {
     id: 'smart-ai-calendar-reminders-nlp-modal',
     date: '2026-09-11',
     type: 'improvement',

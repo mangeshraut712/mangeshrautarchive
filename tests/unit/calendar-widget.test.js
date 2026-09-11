@@ -88,7 +88,6 @@ describe('Apple-style Calendar and Smart Reminders Widget', () => {
 
     expect(document.querySelector('.day-empty-state')).not.toBeNull();
     expect(document.body.textContent).toContain('No Reminders or Events');
-    expect(document.querySelector('.empty-action-btn.add-reminder-btn')).not.toBeNull();
     expect(document.querySelector('.empty-action-btn.book-consult-btn')).not.toBeNull();
     expect(document.querySelector('.empty-action-btn.show-all-btn')).not.toBeNull();
   });
@@ -219,7 +218,7 @@ describe('Apple-style Calendar and Smart Reminders Widget', () => {
     expect(document.body.textContent).toContain('Updated Meeting Title');
   });
 
-  it('adds a new reminder when New button is clicked', async () => {
+  it('adds a new reminder dynamically', async () => {
     const { CalendarWidget } = await import('../../src/js/modules/calendar.js');
     document.body.innerHTML = '<div id="calendar-widget"></div>';
 
@@ -227,7 +226,7 @@ describe('Apple-style Calendar and Smart Reminders Widget', () => {
     widget.init();
 
     const initialLength = widget.reminders.length;
-    document.querySelector('.ios-btn-small').click();
+    widget.addNewReminder('New Reminder');
     expect(widget.reminders.length).toBe(initialLength + 1);
     expect(document.body.textContent).toContain('New Reminder');
   });
@@ -400,17 +399,13 @@ describe('Apple-style Calendar and Smart Reminders Widget', () => {
     expect(document.querySelector('.ios-widget-wrapper')).not.toBeNull();
   });
 
-  it('renders Luma Calendar header button and Luma ticket action buttons on meetup events', async () => {
+  it('renders Luma ticket action buttons on meetup events', async () => {
     const { CalendarWidget } = await import('../../src/js/modules/calendar.js');
     document.body.innerHTML = '<div id="calendar-widget"></div>';
 
     const widget = new CalendarWidget('calendar-widget');
     widget.date = new Date(2026, 8, 1);
     widget.init();
-
-    const lumaHeaderBtn = document.querySelector('.luma-header-btn');
-    expect(lumaHeaderBtn).not.toBeNull();
-    expect(lumaHeaderBtn.getAttribute('href')).toBe('https://luma.com/home/calendars');
 
     // Switch to Events tab
     const eventsTab = document.querySelector('[data-filter="events"]');
