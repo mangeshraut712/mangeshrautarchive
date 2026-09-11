@@ -46,6 +46,22 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── September 2026 ──────────────────────────────────────────
   {
+    id: 'contact-color-cascade-luma-purge-new-button',
+    date: '2026-09-11',
+    type: 'fix',
+    title:
+      'Contact & Calendar: WebKit Text Color Cascade Anti-Leak Locks, Luma Header Purge & Restored + New Action',
+    summary:
+      'Resolved the WebKit -webkit-text-fill-color inheritance cascade bug across the Contact page and Calendar & Reminders widget, preventing text, tabs, and status badges from being overridden or washed out across light and dark modes. Explicitly bound dual color and -webkit-text-fill-color properties across category filter tabs, Day Inspector banner controls, search inputs, card titles, host metadata, locations, time stamps, and event action buttons. Completely purged obsolete Explore Events on Luma Calendar styling and removed the duplicate Luma header button from the calendar widget, while preserving the dedicated Apple Blue [+ New] reminder trigger with full event binding. Purged dead duplicate CSS rules from contact-solid.css and added regression unit test assertions. Validated across 253 Vitest unit tests, 175 pytest API tests, and 60/60 repo doctor checks.',
+    tags: ['design', 'performance', 'contact'],
+    sha: '037f0028',
+    link: `${CHANGELOG_REPO}/commit/037f0028`,
+    model: 'Gemini 3.8 Flash (High)',
+    ide: 'Google Antigravity IDE (AGY)',
+    purpose:
+      'Resolving WebKit text fill color cascade bugs across calendar and reminder cards, purging obsolete Luma header and panel buttons, and ensuring solid theme compliance with restored + New button',
+  },
+  {
     id: 'contact-solid-theme-luma-cleanup-card-alignment',
     date: '2026-09-11',
     type: 'fix',

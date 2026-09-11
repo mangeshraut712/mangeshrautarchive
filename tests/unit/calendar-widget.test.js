@@ -399,13 +399,19 @@ describe('Apple-style Calendar and Smart Reminders Widget', () => {
     expect(document.querySelector('.ios-widget-wrapper')).not.toBeNull();
   });
 
-  it('renders Luma ticket action buttons on meetup events', async () => {
+  it('renders Luma ticket action buttons on meetup events and preserves + New button without Luma header button', async () => {
     const { CalendarWidget } = await import('../../src/js/modules/calendar.js');
     document.body.innerHTML = '<div id="calendar-widget"></div>';
 
     const widget = new CalendarWidget('calendar-widget');
     widget.date = new Date(2026, 8, 1);
     widget.init();
+
+    // Verify no Luma button exists in header next to New
+    expect(document.querySelector('.luma-header-btn')).toBeNull();
+    const newBtn = document.querySelector('.reminders-header-actions .ios-btn-small');
+    expect(newBtn).not.toBeNull();
+    expect(newBtn.textContent).toContain('New');
 
     // Switch to Events tab
     const eventsTab = document.querySelector('[data-filter="events"]');

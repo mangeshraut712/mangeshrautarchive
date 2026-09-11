@@ -390,246 +390,329 @@ html.dark body #contact .calendly-panel-button:hover * {
   -webkit-text-fill-color: #ffffff !important;
 }
 
-/* Luma Events CTA — Apple Luxury Outlined Pill with Vibrant Sunset-Coral Accent */
-html:not(.dark) body #contact .luma-panel-button,
-html[data-theme='light'] body #contact .luma-panel-button {
+/* ════════════════════════════════════════════════════════════════
+   Anti-Cascade Text Fill & Surface Rules for Contact Widget
+   Prevents -webkit-text-fill-color inheritance from washing out text
+   ════════════════════════════════════════════════════════════════ */
+
+/* Reminders Header & Actions */
+html body #contact .reminders-header {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  margin-bottom: 12px !important;
+  width: 100% !important;
+}
+
+html body #contact .reminders-title {
+  font-size: 1rem !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.01em !important;
+  margin: 0 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  color: #1d1d1f !important;
+  -webkit-text-fill-color: #1d1d1f !important;
+}
+
+html body #contact .reminders-title i {
+  color: #0071e3 !important;
+  -webkit-text-fill-color: #0071e3 !important;
+  font-size: 0.95rem !important;
+}
+
+html.dark body #contact .reminders-title {
+  color: #f5f5f7 !important;
+  -webkit-text-fill-color: #f5f5f7 !important;
+}
+
+html.dark body #contact .reminders-title i {
+  color: #2997ff !important;
+  -webkit-text-fill-color: #2997ff !important;
+}
+
+html body #contact .reminders-header-actions {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+}
+
+html body #contact .reminders-header-actions .ios-btn-small {
+  position: relative !important;
+  overflow: hidden !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+  height: 32px !important;
+  padding: 0 14px !important;
+  border-radius: 9999px !important;
+  font-size: 0.8rem !important;
+  font-weight: 600 !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  background-image: linear-gradient(135deg, #0077ed 0%, #0071e3 50%, #005bb5 100%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+  box-shadow: 0 2px 8px rgba(0, 113, 227, 0.35) !important;
+  cursor: pointer !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+html body #contact .reminders-header-actions .ios-btn-small * {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+html body #contact .reminders-header-actions .ios-btn-small:hover {
+  background-image: linear-gradient(135deg, #0080ff 0%, #0071e3 50%, #0066cc 100%) !important;
+  transform: translateY(-1px) scale(1.04) !important;
+  box-shadow: 0 4px 14px rgba(0, 113, 227, 0.45) !important;
+}
+
+html body #contact .reminders-header-actions .ios-btn-small:active {
+  transform: scale(0.95) !important;
+}
+
+/* Category Filter Tabs — Bulletproof Text Anti-Cascade */
+html body #contact .calendar-filter-tabs {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 8px !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  padding: 4px 2px 10px !important;
+  margin-bottom: 8px !important;
+}
+
+html body #contact .filter-tab {
+  flex: 0 0 auto !important;
+  min-height: 28px !important;
+  border-radius: 9999px !important;
+  font-size: 0.74rem !important;
+  font-weight: 600 !important;
+  padding: 4px 11px !important;
+  cursor: pointer !important;
+  white-space: nowrap !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 5px !important;
   background: #ffffff !important;
   background-color: #ffffff !important;
   background-image: none !important;
-  border: 1.5px solid rgba(235, 87, 87, 0.35) !important;
-  color: #d70015 !important;
-  -webkit-text-fill-color: #d70015 !important;
-  border-radius: 980px !important;
-  min-height: 48px !important;
-  font-size: 0.94rem !important;
-  font-weight: 600 !important;
-  box-shadow:
-    0 2px 8px rgba(235, 87, 87, 0.08),
-    0 1px 2px rgba(0, 0, 0, 0.04) !important;
-  cursor: pointer !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  gap: 0.65rem !important;
-  width: 100% !important;
-  text-decoration: none !important;
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  border: 1px solid rgba(0, 0, 0, 0.14) !important;
+  color: #1d1d1f !important;
+  -webkit-text-fill-color: #1d1d1f !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
-html:not(.dark) body #contact .luma-panel-button * {
-  color: #d70015 !important;
-  -webkit-text-fill-color: #d70015 !important;
+html body #contact .filter-tab i {
+  font-size: 0.72rem !important;
+  opacity: 0.85;
+  color: inherit !important;
+  -webkit-text-fill-color: inherit !important;
 }
 
-html:not(.dark) body #contact .luma-panel-button:hover,
-html[data-theme='light'] body #contact .luma-panel-button:hover {
-  background-color: #eb5757 !important;
-  background-image: linear-gradient(135deg, #ff5370 0%, #eb5757 50%, #c43838 100%) !important;
-  border-color: rgba(255, 255, 255, 0.35) !important;
-  color: #ffffff !important;
-  -webkit-text-fill-color: #ffffff !important;
-  transform: translateY(-2px) scale(1.01) !important;
-  box-shadow: 0 8px 24px rgba(235, 87, 87, 0.4) !important;
+html body #contact .filter-tab:hover {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  border-color: #0071e3 !important;
+  color: #0071e3 !important;
+  -webkit-text-fill-color: #0071e3 !important;
+  transform: translateY(-1px) !important;
 }
 
-html:not(.dark) body #contact .luma-panel-button:hover * {
-  color: #ffffff !important;
-  -webkit-text-fill-color: #ffffff !important;
-}
-
-html.dark body #contact .luma-panel-button,
-html[data-theme='dark'] body #contact .luma-panel-button {
+html.dark body #contact .filter-tab {
   background: #000000 !important;
   background-color: #000000 !important;
   background-image: none !important;
-  border: 1.5px solid rgba(255, 105, 97, 0.45) !important;
-  color: #ff6961 !important;
-  -webkit-text-fill-color: #ff6961 !important;
-  border-radius: 980px !important;
-  min-height: 48px !important;
-  font-size: 0.94rem !important;
-  font-weight: 600 !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5) !important;
-  cursor: pointer !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  gap: 0.65rem !important;
-  width: 100% !important;
-  text-decoration: none !important;
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  border: 1px solid #2c2c2e !important;
+  color: #f5f5f7 !important;
+  -webkit-text-fill-color: #f5f5f7 !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4) !important;
 }
 
-html.dark body #contact .luma-panel-button * {
-  color: #ff6961 !important;
-  -webkit-text-fill-color: #ff6961 !important;
-}
-
-html.dark body #contact .luma-panel-button:hover,
-html[data-theme='dark'] body #contact .luma-panel-button:hover {
-  background-color: #eb5757 !important;
-  background-image: linear-gradient(135deg, #ff5370 0%, #eb5757 50%, #c43838 100%) !important;
-  border-color: rgba(255, 255, 255, 0.35) !important;
-  color: #ffffff !important;
-  -webkit-text-fill-color: #ffffff !important;
-  transform: translateY(-2px) scale(1.01) !important;
-  box-shadow: 0 8px 24px rgba(235, 87, 87, 0.55) !important;
-}
-
-html.dark body #contact .luma-panel-button:hover * {
-  color: #ffffff !important;
-  -webkit-text-fill-color: #ffffff !important;
-}
-
-/* Luma Badge & Action Controls in Calendar Widget */
-.card-tags-group {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  flex-wrap: wrap;
-}
-
-.tag-luma {
-  background: rgba(235, 87, 87, 0.12) !important;
-  color: #d70015 !important;
-  border: 1px solid rgba(235, 87, 87, 0.25) !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  gap: 0.25rem !important;
-  font-size: 0.72rem !important;
-  font-weight: 600 !important;
-}
-
-html.dark .tag-luma {
-  background: rgba(255, 105, 97, 0.2) !important;
-  color: #ff6961 !important;
-  border-color: rgba(255, 105, 97, 0.35) !important;
-}
-
-/* Luma Status Badges (Going, Waitlisted, Submitted, Done) */
-.tag-luma-status {
-  display: inline-flex !important;
-  align-items: center !important;
-  gap: 0.28rem !important;
-  font-size: 0.72rem !important;
-  font-weight: 600 !important;
-  border-radius: 980px !important;
-  padding: 2px 8px !important;
-}
-
-.tag-luma-status--going {
-  background: rgba(52, 199, 89, 0.12) !important;
-  color: #248a3d !important;
-  border: 1px solid rgba(52, 199, 89, 0.3) !important;
-}
-
-html.dark .tag-luma-status--going {
-  background: rgba(48, 209, 88, 0.2) !important;
-  color: #30d158 !important;
-  border-color: rgba(48, 209, 88, 0.4) !important;
-}
-
-.tag-luma-status--waitlisted {
-  background: rgba(255, 149, 0, 0.12) !important;
-  color: #b36200 !important;
-  border: 1px solid rgba(255, 149, 0, 0.3) !important;
-}
-
-html.dark .tag-luma-status--waitlisted {
-  background: rgba(255, 159, 10, 0.2) !important;
-  color: #ff9f0a !important;
-  border-color: rgba(255, 159, 10, 0.4) !important;
-}
-
-.tag-luma-status--pending {
-  background: rgba(175, 82, 222, 0.12) !important;
-  color: #7b3899 !important;
-  border: 1px solid rgba(175, 82, 222, 0.3) !important;
-}
-
-html.dark .tag-luma-status--pending {
-  background: rgba(191, 90, 242, 0.2) !important;
-  color: #bf5af2 !important;
-  border-color: rgba(191, 90, 242, 0.4) !important;
-}
-
-.tag-luma-status--done {
-  background: rgba(0, 113, 227, 0.1) !important;
-  color: #0071e3 !important;
-  border: 1px solid rgba(0, 113, 227, 0.25) !important;
-}
-
-html.dark .tag-luma-status--done {
-  background: rgba(41, 151, 255, 0.18) !important;
+html.dark body #contact .filter-tab:hover {
+  background: #000000 !important;
+  background-color: #000000 !important;
+  border-color: #2997ff !important;
   color: #2997ff !important;
-  border-color: rgba(41, 151, 255, 0.35) !important;
+  -webkit-text-fill-color: #2997ff !important;
 }
 
-.card-host {
-  font-size: 0.76rem !important;
-  color: #6e6e73 !important;
+html body #contact .filter-tab.active,
+html.dark body #contact .filter-tab.active {
+  background-image: linear-gradient(135deg, #0077ed 0%, #0071e3 50%, #005bb5 100%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  box-shadow: 0 2px 8px rgba(0, 113, 227, 0.38) !important;
+}
+
+html body #contact .filter-tab.active i,
+html.dark body #contact .filter-tab.active i {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  opacity: 1;
+}
+
+/* Calendar Search Bar Text Anti-Cascade */
+html body #contact .calendar-search-wrap {
+  margin-bottom: 8px !important;
+}
+
+html body #contact .calendar-search-box {
   display: flex !important;
   align-items: center !important;
-  gap: 0.35rem !important;
-  margin-top: 0.15rem !important;
-  margin-bottom: 0.15rem !important;
+  gap: 8px !important;
+  padding: 6px 12px !important;
+  border-radius: 10px !important;
+  background: #ffffff !important;
+  border: 1px solid #e5e5ea !important;
 }
 
-html.dark .card-host {
-  color: #a1a1a6 !important;
+html.dark body #contact .calendar-search-box {
+  background: #000000 !important;
+  border-color: #2c2c2e !important;
 }
 
-.reminders-header-actions {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
+html body #contact .reminders-search-input {
+  flex: 1 !important;
+  border: none !important;
+  background: transparent !important;
+  outline: none !important;
+  font-size: 0.82rem !important;
+  color: #1d1d1f !important;
+  -webkit-text-fill-color: #1d1d1f !important;
 }
 
-.luma-header-btn {
-  text-decoration: none !important;
-  color: #d70015 !important;
-  background: rgba(235, 87, 87, 0.1) !important;
-  border: 1px solid rgba(235, 87, 87, 0.25) !important;
-  font-weight: 650 !important;
+html.dark body #contact .reminders-search-input {
+  color: #f5f5f7 !important;
+  -webkit-text-fill-color: #f5f5f7 !important;
+}
+
+html body #contact .calendar-search-box .search-icon,
+html body #contact .calendar-search-clear {
+  color: #86868b !important;
+  -webkit-text-fill-color: #86868b !important;
+}
+
+/* Day Inspector Banner Anti-Cascade */
+html body #contact .day-inspector-banner {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  padding: 6px 12px !important;
+  border-radius: 10px !important;
+  font-size: 0.76rem !important;
+  font-weight: 500 !important;
+  background: rgba(0, 113, 227, 0.05) !important;
+  border: 1px solid rgba(0, 113, 227, 0.15) !important;
+  color: #0071e3 !important;
+  -webkit-text-fill-color: #0071e3 !important;
+  margin-bottom: 8px !important;
+}
+
+html.dark body #contact .day-inspector-banner {
+  background: rgba(10, 132, 255, 0.08) !important;
+  border-color: rgba(10, 132, 255, 0.2) !important;
+  color: #409cff !important;
+  -webkit-text-fill-color: #409cff !important;
+}
+
+html body #contact .day-inspector-info {
   display: inline-flex !important;
   align-items: center !important;
-  gap: 0.35rem !important;
+  gap: 6px !important;
+  color: #1d1d1f !important;
+  -webkit-text-fill-color: #1d1d1f !important;
 }
 
-.luma-header-btn:hover {
-  background: #eb5757 !important;
+html body #contact .day-inspector-info strong {
+  color: #0071e3 !important;
+  -webkit-text-fill-color: #0071e3 !important;
+}
+
+html.dark body #contact .day-inspector-info {
+  color: #f5f5f7 !important;
+  -webkit-text-fill-color: #f5f5f7 !important;
+}
+
+html.dark body #contact .day-inspector-info strong {
+  color: #2997ff !important;
+  -webkit-text-fill-color: #2997ff !important;
+}
+
+html body #contact .day-inspector-ai-brief {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+  background: rgba(0, 113, 227, 0.08) !important;
+  border: 1px solid rgba(0, 113, 227, 0.2) !important;
+  border-radius: 980px !important;
+  font-size: 0.7rem !important;
+  font-weight: 600 !important;
+  padding: 2px 8px !important;
+  cursor: pointer !important;
+  color: #0071e3 !important;
+  -webkit-text-fill-color: #0071e3 !important;
+  transition: all 0.15s ease !important;
+}
+
+html body #contact .day-inspector-ai-brief:hover {
+  background: #0071e3 !important;
   color: #ffffff !important;
-  border-color: #eb5757 !important;
+  -webkit-text-fill-color: #ffffff !important;
+  border-color: #0071e3 !important;
 }
 
-html.dark .luma-header-btn {
-  color: #ff6961 !important;
-  background: rgba(255, 105, 97, 0.18) !important;
-  border-color: rgba(255, 105, 97, 0.35) !important;
+html.dark body #contact .day-inspector-ai-brief {
+  background: rgba(10, 132, 255, 0.15) !important;
+  border-color: rgba(10, 132, 255, 0.3) !important;
+  color: #2997ff !important;
+  -webkit-text-fill-color: #2997ff !important;
 }
 
-html.dark .luma-header-btn:hover {
-  background: #ff6961 !important;
-  color: #000000 !important;
-}
-
-.card-action-btn.luma-btn {
-  color: #d70015 !important;
-  text-decoration: none !important;
-}
-
-.card-action-btn.luma-btn:hover {
-  background: rgba(235, 87, 87, 0.15) !important;
-  color: #a70010 !important;
-}
-
-html.dark .card-action-btn.luma-btn {
-  color: #ff6961 !important;
-}
-
-html.dark .card-action-btn.luma-btn:hover {
-  background: rgba(255, 105, 97, 0.25) !important;
+html.dark body #contact .day-inspector-ai-brief:hover {
+  background: #0a84ff !important;
   color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  border-color: #0a84ff !important;
+}
+
+html body #contact .day-inspector-clear {
+  background: rgba(0, 113, 227, 0.08) !important;
+  border: 1px solid rgba(0, 113, 227, 0.18) !important;
+  cursor: pointer !important;
+  color: #6e6e73 !important;
+  -webkit-text-fill-color: #6e6e73 !important;
+  font-size: 0.7rem !important;
+  font-weight: 600 !important;
+  padding: 2px 8px !important;
+  border-radius: 9999px !important;
+  transition: all 0.15s ease !important;
+}
+
+html body #contact .day-inspector-clear:hover {
+  background: #0071e3 !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  border-color: #0071e3 !important;
+}
+
+html.dark body #contact .day-inspector-clear {
+  background: rgba(10, 132, 255, 0.15) !important;
+  border-color: rgba(10, 132, 255, 0.3) !important;
+  color: #a1a1a6 !important;
+  -webkit-text-fill-color: #a1a1a6 !important;
+}
+
+html.dark body #contact .day-inspector-clear:hover {
+  background: #0a84ff !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  border-color: #0a84ff !important;
 }
 
 /* ── Contact link rows — solid only when tinted ── */
@@ -848,144 +931,168 @@ html body #contact .card-tag {
 html body #contact .card-tag.tag-blue {
   background: rgba(0, 113, 227, 0.1) !important;
   color: #0071e3 !important;
+  -webkit-text-fill-color: #0071e3 !important;
   border: 1px solid rgba(0, 113, 227, 0.22) !important;
 }
 
 html.dark body #contact .card-tag.tag-blue {
   background: rgba(10, 132, 255, 0.2) !important;
   color: #2997ff !important;
+  -webkit-text-fill-color: #2997ff !important;
   border-color: rgba(10, 132, 255, 0.38) !important;
 }
 
 html body #contact .card-tag.tag-red {
   background: rgba(255, 59, 48, 0.1) !important;
   color: #ff3b30 !important;
+  -webkit-text-fill-color: #ff3b30 !important;
   border: 1px solid rgba(255, 59, 48, 0.22) !important;
 }
 
 html.dark body #contact .card-tag.tag-red {
   background: rgba(255, 59, 48, 0.2) !important;
   color: #ff453a !important;
+  -webkit-text-fill-color: #ff453a !important;
   border-color: rgba(255, 59, 48, 0.38) !important;
 }
 
 html body #contact .card-tag.tag-green {
   background: rgba(52, 199, 89, 0.12) !important;
   color: #28a745 !important;
+  -webkit-text-fill-color: #28a745 !important;
   border: 1px solid rgba(52, 199, 89, 0.25) !important;
 }
 
 html.dark body #contact .card-tag.tag-green {
   background: rgba(52, 199, 89, 0.2) !important;
   color: #30d158 !important;
+  -webkit-text-fill-color: #30d158 !important;
   border-color: rgba(52, 199, 89, 0.4) !important;
 }
 
 html body #contact .card-tag.tag-orange {
   background: rgba(255, 149, 0, 0.12) !important;
   color: #e08600 !important;
+  -webkit-text-fill-color: #e08600 !important;
   border: 1px solid rgba(255, 149, 0, 0.25) !important;
 }
 
 html.dark body #contact .card-tag.tag-orange {
   background: rgba(255, 149, 0, 0.2) !important;
   color: #ff9f0a !important;
+  -webkit-text-fill-color: #ff9f0a !important;
   border-color: rgba(255, 149, 0, 0.4) !important;
 }
 
 html body #contact .card-tag.tag-purple {
   background: rgba(175, 82, 222, 0.1) !important;
   color: #af52de !important;
+  -webkit-text-fill-color: #af52de !important;
   border: 1px solid rgba(175, 82, 222, 0.22) !important;
 }
 
 html.dark body #contact .card-tag.tag-purple {
   background: rgba(191, 90, 242, 0.2) !important;
   color: #bf5af2 !important;
+  -webkit-text-fill-color: #bf5af2 !important;
   border-color: rgba(191, 90, 242, 0.38) !important;
 }
 
 html body #contact .card-tag.tag-pink {
   background: rgba(255, 45, 85, 0.1) !important;
   color: #ff2d55 !important;
+  -webkit-text-fill-color: #ff2d55 !important;
   border: 1px solid rgba(255, 45, 85, 0.22) !important;
 }
 
 html.dark body #contact .card-tag.tag-pink {
   background: rgba(255, 55, 95, 0.2) !important;
   color: #ff375f !important;
+  -webkit-text-fill-color: #ff375f !important;
   border-color: rgba(255, 55, 95, 0.38) !important;
 }
 
 html body #contact .card-tag.tag-cyan {
   background: rgba(50, 173, 230, 0.1) !important;
   color: #0077b6 !important;
+  -webkit-text-fill-color: #0077b6 !important;
   border: 1px solid rgba(50, 173, 230, 0.22) !important;
 }
 
 html.dark body #contact .card-tag.tag-cyan {
   background: rgba(100, 210, 255, 0.2) !important;
   color: #64d2ff !important;
+  -webkit-text-fill-color: #64d2ff !important;
   border-color: rgba(100, 210, 255, 0.38) !important;
 }
 
 html body #contact .card-tag.tag-luma {
   background: rgba(235, 54, 52, 0.1) !important;
   color: #eb3634 !important;
+  -webkit-text-fill-color: #eb3634 !important;
   border: 1px solid rgba(235, 54, 52, 0.25) !important;
 }
 
 html.dark body #contact .card-tag.tag-luma {
   background: rgba(235, 54, 52, 0.2) !important;
   color: #ff5c5a !important;
+  -webkit-text-fill-color: #ff5c5a !important;
   border-color: rgba(235, 54, 52, 0.4) !important;
 }
 
 html body #contact .tag-luma-status--going {
   background: rgba(52, 199, 89, 0.14) !important;
   color: #28a745 !important;
+  -webkit-text-fill-color: #28a745 !important;
   border: 1px solid rgba(52, 199, 89, 0.3) !important;
 }
 
 html.dark body #contact .tag-luma-status--going {
   background: rgba(52, 199, 89, 0.22) !important;
   color: #30d158 !important;
+  -webkit-text-fill-color: #30d158 !important;
   border-color: rgba(52, 199, 89, 0.45) !important;
 }
 
 html body #contact .tag-luma-status--waitlisted {
   background: rgba(255, 149, 0, 0.14) !important;
   color: #e08600 !important;
+  -webkit-text-fill-color: #e08600 !important;
   border: 1px solid rgba(255, 149, 0, 0.3) !important;
 }
 
 html.dark body #contact .tag-luma-status--waitlisted {
   background: rgba(255, 149, 0, 0.22) !important;
   color: #ff9f0a !important;
+  -webkit-text-fill-color: #ff9f0a !important;
   border-color: rgba(255, 149, 0, 0.45) !important;
 }
 
 html body #contact .tag-luma-status--pending {
   background: rgba(0, 113, 227, 0.12) !important;
   color: #0071e3 !important;
+  -webkit-text-fill-color: #0071e3 !important;
   border: 1px solid rgba(0, 113, 227, 0.28) !important;
 }
 
 html.dark body #contact .tag-luma-status--pending {
   background: rgba(10, 132, 255, 0.2) !important;
   color: #409cff !important;
+  -webkit-text-fill-color: #409cff !important;
   border-color: rgba(10, 132, 255, 0.4) !important;
 }
 
 html body #contact .tag-luma-status--attended {
   background: rgba(142, 142, 147, 0.14) !important;
   color: #636366 !important;
+  -webkit-text-fill-color: #636366 !important;
   border: 1px solid rgba(142, 142, 147, 0.25) !important;
 }
 
 html.dark body #contact .tag-luma-status--attended {
   background: rgba(142, 142, 147, 0.22) !important;
   color: #8e8e93 !important;
+  -webkit-text-fill-color: #8e8e93 !important;
   border-color: rgba(142, 142, 147, 0.35) !important;
 }
 
@@ -994,6 +1101,7 @@ html body #contact .card-title {
   font-weight: 600 !important;
   line-height: 1.35 !important;
   color: #1d1d1f !important;
+  -webkit-text-fill-color: #1d1d1f !important;
   display: -webkit-box !important;
   -webkit-line-clamp: 2 !important;
   -webkit-box-orient: vertical !important;
@@ -1005,6 +1113,7 @@ html body #contact .card-title {
 
 html.dark body #contact .card-title {
   color: #f5f5f7 !important;
+  -webkit-text-fill-color: #f5f5f7 !important;
 }
 
 html body #contact .card-host {
@@ -1013,6 +1122,7 @@ html body #contact .card-host {
   gap: 5px !important;
   font-size: 0.78rem !important;
   color: #6e6e73 !important;
+  -webkit-text-fill-color: #6e6e73 !important;
   white-space: nowrap !important;
   overflow: hidden !important;
   text-overflow: ellipsis !important;
@@ -1020,6 +1130,7 @@ html body #contact .card-host {
 
 html.dark body #contact .card-host {
   color: #a1a1a6 !important;
+  -webkit-text-fill-color: #a1a1a6 !important;
 }
 
 html body #contact .card-location {
@@ -1028,6 +1139,7 @@ html body #contact .card-location {
   gap: 5px !important;
   font-size: 0.78rem !important;
   color: #0071e3 !important;
+  -webkit-text-fill-color: #0071e3 !important;
   white-space: nowrap !important;
   overflow: hidden !important;
   text-overflow: ellipsis !important;
@@ -1035,6 +1147,7 @@ html body #contact .card-location {
 
 html.dark body #contact .card-location {
   color: #2997ff !important;
+  -webkit-text-fill-color: #2997ff !important;
 }
 
 /* Card Action Area */
@@ -1057,6 +1170,7 @@ html body #contact .card-action-btn {
   cursor: pointer !important;
   font-size: 0.78rem !important;
   color: #1d1d1f !important;
+  -webkit-text-fill-color: #1d1d1f !important;
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -1068,17 +1182,30 @@ html body #contact .card-action-btn {
 
 html body #contact .card-action-btn:hover {
   transform: scale(1.08) !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  background: #0071e3 !important;
+  border-color: #0071e3 !important;
 }
 
 html.dark body #contact .card-action-btn {
   background: #000000 !important;
   border-color: #2c2c2e !important;
   color: #f5f5f7 !important;
+  -webkit-text-fill-color: #f5f5f7 !important;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4) !important;
+}
+
+html.dark body #contact .card-action-btn:hover {
+  background: #0a84ff !important;
+  border-color: #0a84ff !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
 }
 
 html body #contact .luma-btn {
   color: #eb3634 !important;
+  -webkit-text-fill-color: #eb3634 !important;
   border-color: rgba(235, 54, 52, 0.25) !important;
   background: rgba(235, 54, 52, 0.06) !important;
 }
@@ -1086,6 +1213,7 @@ html body #contact .luma-btn {
 html body #contact .luma-btn:hover {
   background: #eb3634 !important;
   color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
   border-color: #eb3634 !important;
   box-shadow: 0 2px 10px rgba(235, 54, 52, 0.35) !important;
 }
@@ -1094,15 +1222,18 @@ html.dark body #contact .luma-btn {
   background: rgba(235, 54, 52, 0.14) !important;
   border-color: rgba(235, 54, 52, 0.4) !important;
   color: #ff5c5a !important;
+  -webkit-text-fill-color: #ff5c5a !important;
 }
 
 html.dark body #contact .luma-btn:hover {
   background: #eb3634 !important;
   color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
 }
 
 html body #contact .ask-ai-btn {
   color: #0071e3 !important;
+  -webkit-text-fill-color: #0071e3 !important;
   border-color: rgba(0, 113, 227, 0.25) !important;
   background: rgba(0, 113, 227, 0.06) !important;
 }
@@ -1110,6 +1241,7 @@ html body #contact .ask-ai-btn {
 html body #contact .ask-ai-btn:hover {
   background: #0071e3 !important;
   color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
   border-color: #0071e3 !important;
   box-shadow: 0 2px 10px rgba(0, 113, 227, 0.35) !important;
 }
@@ -1118,22 +1250,26 @@ html.dark body #contact .ask-ai-btn {
   background: rgba(10, 132, 255, 0.14) !important;
   border-color: rgba(10, 132, 255, 0.4) !important;
   color: #2997ff !important;
+  -webkit-text-fill-color: #2997ff !important;
 }
 
 html.dark body #contact .ask-ai-btn:hover {
   background: #0a84ff !important;
   color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
 }
 
 html body #contact .edit-btn:hover {
   background: #0071e3 !important;
   color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
   border-color: #0071e3 !important;
 }
 
 html.dark body #contact .edit-btn:hover {
   background: #0a84ff !important;
   color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
   border-color: #0a84ff !important;
 }
 
@@ -1525,7 +1661,7 @@ html body #contact .calendly-panel {
   box-shadow: none !important;
 }
 
-html body #contact :is(.calendly-panel-button, .luma-panel-button) {
+html body #contact .calendly-panel-button {
   width: 100% !important;
 }
 

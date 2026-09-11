@@ -1300,6 +1300,9 @@ export class CalendarWidget {
               <i class="fas fa-list-check" aria-hidden="true"></i>
               <span>Smart Reminders & Events</span>
             </div>
+            <div class="reminders-header-actions">
+              <button type="button" class="ios-btn-small" title="Add Reminder" aria-label="Add new reminder"><i class="fas fa-plus" aria-hidden="true"></i> New</button>
+            </div>
           </div>
 
           <!-- Calendar Search Bar -->
