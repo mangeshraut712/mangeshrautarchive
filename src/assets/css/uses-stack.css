@@ -180,7 +180,7 @@ body.uses-page .keynote-metric-card__value {
 }
 
 body.uses-page .keynote-metric-card__label {
-  font-size: 0.74rem;
+  font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -270,7 +270,7 @@ body.uses-page .keynote-chapter-pill.is-active {
 
 body.uses-page .keynote-chapter-pill__num {
   font-family: var(--font-mono, monospace);
-  font-size: 0.74rem;
+  font-size: 0.75rem;
   font-weight: 700;
   color: #555558;
 }
@@ -467,7 +467,7 @@ body.uses-page .keynote-bento-card__badge {
   border-radius: 9999px;
   background: var(--uses-blue-soft);
   color: var(--uses-pill-soft-fg);
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.05em;
   text-transform: uppercase;
@@ -553,7 +553,7 @@ body.uses-page .keynote-token-badge {
   background: var(--uses-blue-soft);
   color: var(--uses-pill-soft-fg);
   font-family: var(--font-mono, monospace);
-  font-size: 0.74rem;
+  font-size: 0.75rem;
   font-weight: 700;
   flex-shrink: 0;
 }
@@ -731,7 +731,7 @@ body.uses-page .keynote-gate-header {
 }
 
 body.uses-page .keynote-gate-badge {
-  font-size: 0.74rem;
+  font-size: 0.75rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.06em;
@@ -889,7 +889,7 @@ body.uses-page .uses-featured-block {
 
 body.uses-page .uses-block-label {
   margin: 0;
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -930,7 +930,7 @@ body.uses-page .uses-featured-card__meta {
 }
 
 body.uses-page .uses-featured-card__cat {
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   font-weight: 650;
   color: var(--uses-text-muted);
   letter-spacing: 0.02em;
@@ -1229,7 +1229,7 @@ body.uses-page .uses-section__count {
   border-radius: 999px;
   background: var(--uses-blue-soft);
   color: var(--uses-blue);
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   font-weight: 750;
 }
 

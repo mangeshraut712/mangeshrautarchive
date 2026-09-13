@@ -46,6 +46,22 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── September 2026 ──────────────────────────────────────────
   {
+    id: 'sitewide-engineering-design-cwv-telemetry-sync',
+    date: '2026-09-13',
+    type: 'improvement',
+    title:
+      'Sitewide Quality & Polish: Telemetry Synchronization, Sub-12px Font Remediation, Rendering Containment & Architecture Hygiene',
+    summary:
+      'Executed a comprehensive sitewide improvement across all production surfaces following the approved 4-pillar engineering plan. Synchronized automated test telemetry across the System Monitor (monitor.html), engineering showcase data, and documentation to reflect the current passing suite of 253 Vitest unit tests, 175 pytest API tests, 16 Playwright browser projects, and 17 WebMCP agentic tools. Standardized all typography to enforce strict Apple HIG minimum text standards (>=0.75rem / 12px) across uses-stack.css and changelog.css, eliminating sub-12px micro-text. Implemented CSS content-visibility: auto with intrinsic size containment on historical changelog timeline items to accelerate rendering and improve Interaction to Next Paint (INP). Verified solid pure canvases (#ffffff in light mode, #000000 in dark mode), 6-tier button hierarchy, 44px touch targets, and resilient relative navigation paths across all 7 pages. Passed 100% across all 253 Vitest unit tests, 175 pytest API tests, 60/60 repo doctor checks, ESLint, Stylelint, and Prettier gates.',
+    tags: ['design', 'performance', 'architecture', 'telemetry'],
+    sha: 'd797560b',
+    link: `${CHANGELOG_REPO}/commit/d797560b`,
+    model: 'Gemini 3.8 Flash (High)',
+    ide: 'Google Antigravity IDE (AGY)',
+    purpose:
+      'Sitewide quality and performance enhancement, test count synchronization (253 Vitest / 175 pytest / 17 WebMCP), sub-12px font remediation, and rendering containment acceleration',
+  },
+  {
     id: 'mobile-viewport-cards-resume-dropdown-alignment',
     date: '2026-09-13',
     type: 'fix',
