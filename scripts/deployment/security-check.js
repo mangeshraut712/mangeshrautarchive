@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 
 import { readFileSync, readdirSync, statSync } from 'fs';
-import { dirname, extname, join, relative } from 'path';
+import { dirname, extname, join, relative, resolve } from 'path';
 import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-const PROJECT_ROOT = join(__dirname, '..');
+const PROJECT_ROOT = resolve(__dirname, '../..');
 
 class SecurityChecker {
   constructor() {
@@ -30,7 +30,7 @@ class SecurityChecker {
     // High-risk files are checked first to fail fast.
     this.alwaysCheck = [
       'src/index.html',
-      'src/js/core/script.js',
+      'src/js/entry.js',
       'src/js/core/bootstrap.js',
       'api/index.py',
     ];
@@ -50,6 +50,12 @@ class SecurityChecker {
       'playwright-report',
       '__pycache__',
       'venv',
+      '.venv',
+      '.secrets',
+      '.pytest_cache',
+      '.ruff_cache',
+      '.tempmediaStorage',
+      'scratch',
     ]);
 
     this.skipFiles = new Set([

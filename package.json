@@ -6,7 +6,7 @@
   "scripts": {
     "check-node": "node scripts/utils/check-node.mjs",
     "vendor:markdown": "node scripts/build/vendor-rich-markdown.mjs",
-    "prebuild": "node scripts/utils/check-node.mjs && npm run assets:icons && npm run vendor:markdown",
+    "prebuild": "node scripts/utils/check-node.mjs && npm run build:css && npm run assets:icons && npm run vendor:markdown",
     "test": "node --no-warnings scripts/utils/check-node.mjs && node --no-warnings ./node_modules/vitest/vitest.mjs --run --passWithNoTests",
     "build": "node scripts/build/build.js",
     "build:css": "tailwindcss -i ./src/assets/css/tailwind-input.css -o ./src/assets/css/tailwind-output.css --minify",

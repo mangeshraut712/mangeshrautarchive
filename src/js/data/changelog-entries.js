@@ -46,6 +46,22 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── September 2026 ──────────────────────────────────────────
   {
+    id: 'sitewide-audit-security-hardening-pipeline-sync',
+    date: '2026-09-13',
+    type: 'improvement',
+    title:
+      'Sitewide Multi-Dimensional Audit & P0 Remediation: Security Hardening, ESLint No-Undef Enforcement & Pipeline Integrity',
+    summary:
+      'Executed a comprehensive multi-dimensional codebase audit spanning 67 CSS files, 138 JS modules, 43 Python backend files, and 7 HTML surfaces. Remediated critical P0 security findings: eliminated reflected DOM XSS in search results (search.js) by sanitizing empty query interpolation with escapeHtml; purged hardcoded external third-party API keys from the client bundle (external-config.js); fixed security-check.js root directory resolution bug to enforce scanning of the entire repository; hardened FastAPI personalization endpoints with token authorization and IP rate limiting; converted Upstash Redis rate limiter to use persistent pooled HTTP connection with fast 1.5s timeouts; upgraded ESLint no-undef from warning to strict error for all browser JS; integrated Tailwind CSS build:css directly into package.json prebuild; replaced stub tests in realtime-voice-service.test.js with real unit test coverage importing RealtimeVoiceService.js (growing Vitest suite to 255 tests); eliminated sub-12px typography tokens in typography-system.css; synchronized GitHub stats badge in systems-viz.js with verified public repository telemetry (51 repos); resolved static ESM cache-busting import query in projects-showcase.js; and populated aria-hidden="true" across all decorative FontAwesome icons in monitor.html, uses.html, and index.html.',
+    tags: ['security', 'audit', 'quality', 'telemetry', 'testing'],
+    sha: '6250a3ee',
+    link: `${CHANGELOG_REPO}/commit/6250a3ee`,
+    model: 'Gemini 3.8 Flash (High)',
+    ide: 'Google Antigravity IDE (AGY)',
+    purpose:
+      'Comprehensive sitewide audit orchestration and P0/P1 remediation across security, pipeline integrity, test coverage, and accessibility',
+  },
+  {
     id: 'sitewide-engineering-design-cwv-telemetry-sync',
     date: '2026-09-13',
     type: 'improvement',

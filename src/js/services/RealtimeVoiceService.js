@@ -378,4 +378,5 @@ class RealtimeVoiceService {
 }
 
 export const realtimeVoiceService = new RealtimeVoiceService();
+export { RealtimeVoiceService, resolveRealtimeWsUrl, floatTo16BitPCM };
 export default RealtimeVoiceService;

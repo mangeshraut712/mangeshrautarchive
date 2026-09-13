@@ -84,8 +84,8 @@
   /* 15px → 16px */
   --fs-body-sm: clamp(0.8125rem, 0.1vw + 0.25rem, 0.875rem);
   /* 13px → 14px */
-  --fs-body-xs: clamp(0.6875rem, 0.1vw + 0.125rem, 0.75rem);
-  /* 11px → 12px */
+  --fs-body-xs: 0.75rem;
+  /* 12px minimum */
 
   /* Navigation */
   --fs-nav: clamp(0.8125rem, 0.2vw + 0.125rem, 0.875rem);
@@ -104,8 +104,8 @@
   /* Labels & Captions */
   --fs-label: 0.75rem;
   /* 12px */
-  --fs-caption: 0.6875rem;
-  /* 11px */
+  --fs-caption: 0.75rem;
+  /* 12px minimum */
 
   /* === TEXT COLORS - LIGHT MODE ===
      Owned values match apple-design-system.css (--text-primary/secondary/tertiary). */

@@ -28,6 +28,7 @@ mangeshrautarchive/
 │   ├── *.html                # Page shells (index, systems, monitor, travel, uses, changelog, 404, offline)
 │   ├── js/
 │   │   ├── core/             # Application lifecycle, bootstrap, subpage chrome, theme managers
+│   │   ├── chatbot/          # Chatbot streaming engine, memory, rate-limiting, and UI controller
 │   │   ├── modules/          # Feature modules (chatbot, projects showcase, calendar, telemetry, …)
 │   │   ├── services/         # Rich markdown engine, streaming parser, audio/voice, analytics
 │   │   ├── utils/            # Pure helpers, DOM utilities, security sanitizers, date formatters
@@ -43,7 +44,7 @@ mangeshrautarchive/
 │   ├── integrations/         # Third-party OAuth connectors, token stores, health probes
 │   ├── config.py             # Environment configuration & model router defaults
 │   ├── model_router.py       # Multi-model routing (Grok 4.3, Nemotron 120B, Gemma 27B)
-│   └── monitoring.py         # System health, telemetry, probe handlers
+│   └── monitoring.py         # Latency tracker, error budgets, telemetry aggregation
 │
 ├── workers/                  # ★ Cloudflare Workers (Edge AI & GitHub Pages API Proxy)
 │   └── assistme-chat/        # Standalone Edge Worker for AssistMe AI Chat & WebMCP proxy
@@ -57,7 +58,7 @@ mangeshrautarchive/
 │   └── offline/              # Offline data builders (travel GeoJSON database)
 │
 ├── tests/                    # ★ Complete Automated Test Suite
-│   ├── unit/                 # 253 Vitest unit tests across 48 files (JS modules, WebMCP actions)
+│   ├── unit/                 # 255 Vitest unit tests across 48 files (JS modules, WebMCP actions)
 │   ├── api/                  # 175 pytest API tests (FastAPI routes, streaming, OAuth, middleware)
 │   └── e2e/                  # Playwright multi-browser end-to-end specifications across 16 targets
 │

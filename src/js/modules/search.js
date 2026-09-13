@@ -785,7 +785,7 @@ class PortfolioSearch {
                     <div class="search-no-results-icon">
                         <i class="fas fa-search"></i>
                     </div>
-                    <div class="search-no-results-text">No results found for "${query}"</div>
+                    <div class="search-no-results-text">No results found for "${this.escapeHtml(query)}"</div>
                 </div>
             `;
       return;

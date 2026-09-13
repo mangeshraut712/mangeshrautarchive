@@ -242,7 +242,7 @@ export function renderOpenSourcePanel() {
     <div class="systems-metric-panel-head">
       <div>
         <h3 class="systems-metric-panel-title">${escapeHtml(openSourceActivity.label)}</h3>
-        <p class="systems-oss-stars-badge"><i class="fas fa-star text-accent-yellow" aria-hidden="true"></i> <strong>250+ stars</strong> across 51 public repositories · 100% open source</p>
+        <p class="systems-oss-stars-badge"><i class="fas fa-code-branch text-accent-blue" aria-hidden="true"></i> <strong>51 public repositories</strong> across systems, AI & web platforms · 100% open source</p>
       </div>
       <a class="systems-tile-link" href="${escapeHtml(openSourceActivity.repoUrl)}" target="_blank" rel="noopener noreferrer">GitHub Profile →</a>
     </div>

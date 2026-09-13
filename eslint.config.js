@@ -43,7 +43,7 @@ export default [
         { argsIgnorePattern: '^_', varsIgnorePattern: '^_', caughtErrorsIgnorePattern: '^_' },
       ],
       'no-console': 'off',
-      'no-undef': 'warn',
+      'no-undef': 'error',
     },
   },
   // Scripts with Browser APIs (mjs files using Playwright)

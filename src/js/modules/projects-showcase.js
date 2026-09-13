@@ -1,4 +1,4 @@
-import GitHubProjects from './github-projects.js?v=20260729sync1';
+import GitHubProjects from './github-projects.js';
 import { observeScrollAnimations } from './scroll-animations.js';
 import './project-xr.js';
 import './github-contributions-graph.js';
