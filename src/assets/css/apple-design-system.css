@@ -149,15 +149,18 @@
     --transition-base: 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
     --transition-slow: 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
 
-    /* Z-Index Scale */
+    /* Z-Index Scale (unified Apple HIG scale matching ux-polish-fixes.css) */
     --z-base: 1;
     --z-dropdown: 100;
-    --z-sticky: 200;
+    --z-sticky: 100;
+    --z-nav: 1000;
     --z-navbar: 1000;
-    --z-overlay: 2000;
-    --z-modal: 3000;
-    --z-toast: 4000;
-    --z-tooltip: 5000;
+    --z-fab: 9000;
+    --z-a11y: 9100;
+    --z-overlay: 10000;
+    --z-modal: 11000;
+    --z-toast: 12000;
+    --z-tooltip: 12500;
 
     /* Container */
     --container-sm: 640px;

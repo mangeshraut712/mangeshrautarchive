@@ -1373,8 +1373,11 @@ async def get_models():
 
 
 @router.post("/api/typing")
-async def typing_indicator(indicator: TypingIndicator):
+async def typing_indicator(request: Request, indicator: TypingIndicator):
     """Handle typing indicators (for future WebSocket support)"""
+    client_ip = get_client_ip(request)
+    if not check_rate_limit(f"typing:{client_ip}"):
+        raise HTTPException(status_code=429, detail="Too many typing indicator requests")
     return {
         "status": "received",
         "session_id": indicator.session_id,

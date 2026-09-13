@@ -314,7 +314,7 @@ async def refresh_lastfm_recent_cache(cache_key: str, user: str, limit: int):
         data = await fetch_lastfm_recent_payload(user, limit)
         lastfm_recent_cache[cache_key] = {"data": data, "ts": time.time()}
     except Exception as e:
-        print(f"Last.fm background refresh failed: {type(e).__name__} - {str(e)}")
+        logger.warning("Last.fm background refresh failed: %s - %s", type(e).__name__, e)
     finally:
         _lastfm_refreshing.discard(cache_key)
 
@@ -435,19 +435,19 @@ async def fetch_tmdb_poster(title: str, media_type: str = "movie") -> str:
                 return poster_url
 
     except httpx.HTTPStatusError as e:
-        print(f"TMDB HTTP status error for {title}: {e.response.status_code} - {e.response.text}")
+        logger.warning("TMDB HTTP status error for %s: %s - %s", title, e.response.status_code, e.response.text)
         if system_monitor is not None:
             system_monitor.record_poster_request(False)
     except httpx.RequestError as e:
-        print(f"TMDB request error for {title}: {str(e)}")
+        logger.warning("TMDB request error for %s: %s", title, e)
         if system_monitor is not None:
             system_monitor.record_poster_request(False)
     except json.JSONDecodeError:
-        print(f"TMDB invalid JSON response for {title}")
+        logger.warning("TMDB invalid JSON response for %s", title)
         if system_monitor is not None:
             system_monitor.record_poster_request(False)
     except Exception as e:
-        print(f"TMDB unexpected fetch error for {title}: {type(e).__name__} - {str(e)}")
+        logger.warning("TMDB unexpected fetch error for %s: %s - %s", title, type(e).__name__, e)
         if system_monitor is not None:
             system_monitor.record_poster_request(False)
 
@@ -496,19 +496,19 @@ async def fetch_google_books_cover(title: str, author: str = "") -> str:
                 return cover_url
 
     except httpx.HTTPStatusError as e:
-        print(f"Google Books HTTP status error for {title}: {e.response.status_code} - {e.response.text}")
+        logger.warning("Google Books HTTP status error for %s: %s - %s", title, e.response.status_code, e.response.text)
         if system_monitor is not None:
             system_monitor.record_poster_request(False)
     except httpx.RequestError as e:
-        print(f"Google Books request error for {title}: {str(e)}")
+        logger.warning("Google Books request error for %s: %s", title, e)
         if system_monitor is not None:
             system_monitor.record_poster_request(False)
     except json.JSONDecodeError:
-        print(f"Google Books invalid JSON response for {title}")
+        logger.warning("Google Books invalid JSON response for %s", title)
         if system_monitor is not None:
             system_monitor.record_poster_request(False)
     except Exception as e:
-        print(f"Google Books unexpected fetch error for {title}: {type(e).__name__} - {str(e)}")
+        logger.warning("Google Books unexpected fetch error for %s: %s - %s", title, type(e).__name__, e)
         if system_monitor is not None:
             system_monitor.record_poster_request(False)
 
@@ -542,19 +542,19 @@ async def fetch_openlibrary_cover(title: str, author: str = "") -> str:
                 return cover_url
 
     except httpx.HTTPStatusError as e:
-        print(f"Open Library HTTP status error for {title}: {e.response.status_code} - {e.response.text}")
+        logger.warning("Open Library HTTP status error for %s: %s - %s", title, e.response.status_code, e.response.text)
         if system_monitor is not None:
             system_monitor.record_poster_request(False)
     except httpx.RequestError as e:
-        print(f"Open Library request error for {title}: {str(e)}")
+        logger.warning("Open Library request error for %s: %s", title, e)
         if system_monitor is not None:
             system_monitor.record_poster_request(False)
     except json.JSONDecodeError:
-        print(f"Open Library invalid JSON response for {title}")
+        logger.warning("Open Library invalid JSON response for %s", title)
         if system_monitor is not None:
             system_monitor.record_poster_request(False)
     except Exception as e:
-        print(f"Open Library unexpected fetch error for {title}: {type(e).__name__} - {str(e)}")
+        logger.warning("Open Library unexpected fetch error for %s: %s - %s", title, type(e).__name__, e)
         if system_monitor is not None:
             system_monitor.record_poster_request(False)
 
@@ -720,7 +720,7 @@ async def fetch_itunes_artwork(
                 artwork_cache[cache_key] = {"url": artwork, "ts": time.time()}
                 return artwork
         except Exception as e:
-            print(f"iTunes artwork fetch ({country}) failed for {search_term}: {type(e).__name__} - {str(e)}")
+            logger.warning("iTunes artwork fetch (%s) failed for %s: %s - %s", country, search_term, type(e).__name__, e)
 
     return ""
 
@@ -764,8 +764,11 @@ async def fetch_lastfm_track_artwork(track: str, artist: str = "") -> str:
             artwork_cache[cache_key] = {"url": artwork, "ts": time.time()}
             return artwork
     except Exception as e:
-        print(
-            f"Last.fm track artwork fetch failed for {track_name}: {type(e).__name__} - {str(e)}"
+        logger.warning(
+            "Last.fm track artwork fetch failed for %s: %s - %s",
+            track_name,
+            type(e).__name__,
+            e,
         )
 
     return ""
@@ -907,7 +910,7 @@ async def get_recent_music(
             )
         raise
     except httpx.TimeoutException:
-        print("⏰ Last.fm request timed out")
+        logger.warning("Last.fm request timed out")
         if cached:
             return JSONResponse(
                 content=ensure_listen_now_meta(cached["data"], user),
@@ -920,7 +923,7 @@ async def get_recent_music(
             headers=build_lastfm_headers("TIMEOUT", started_at, {"X-Lastfm-Error": "timeout"}),
         )
     except httpx.ConnectError:
-        print("🌐 Connection error to Last.fm")
+        logger.warning("Connection error to Last.fm")
         if cached:
             return JSONResponse(
                 content=ensure_listen_now_meta(cached["data"], user),
@@ -933,7 +936,7 @@ async def get_recent_music(
             headers=build_lastfm_headers("OFFLINE", started_at, {"X-Lastfm-Error": "connect-error"}),
         )
     except json.JSONDecodeError as e:
-        print(f"💥 Music Proxy JSON Parse Exception: {str(e)}")
+        logger.warning("Music Proxy JSON Parse Exception: %s", e)
         if cached:
             return JSONResponse(
                 content=ensure_listen_now_meta(cached["data"], user),
@@ -947,7 +950,7 @@ async def get_recent_music(
             },
         )
     except Exception as e:
-        print(f"💥 Music Proxy Exception: {type(e).__name__} - {str(e)}")
+        logger.warning("Music Proxy Exception: %s - %s", type(e).__name__, e)
         if cached:
             return JSONResponse(
                 content=ensure_listen_now_meta(cached["data"], user),

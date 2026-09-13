@@ -3289,7 +3289,11 @@ document.addEventListener('DOMContentLoaded', async () => {
   refreshData({ silent: true });
 
   // Auto-refresh every 30 seconds
-  setInterval(() => refreshData({ silent: true }), 30000);
+  setInterval(() => {
+    if (document.visibilityState === 'visible') {
+      refreshData({ silent: true });
+    }
+  }, 30000);
 });
 
 function initMonitorSectionRail() {

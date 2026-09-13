@@ -6,7 +6,7 @@ import logging
 import os
 import time
 from collections import defaultdict
-from typing import DefaultDict, Dict, List, Optional, Protocol
+from typing import Any, DefaultDict, Dict, List, Optional, Protocol
 
 logger = logging.getLogger(__name__)
 
@@ -71,6 +71,17 @@ class UpstashRateLimitStore:
         self._token = token
         self._fallback = fallback
         self._warned = False
+        self._client: Optional[Any] = None
+
+    def _get_client(self):
+        import httpx
+
+        if self._client is None or getattr(self._client, "is_closed", False):
+            self._client = httpx.Client(
+                timeout=2.0,
+                limits=httpx.Limits(max_keepalive_connections=10, max_connections=20),
+            )
+        return self._client
 
     def _key(self, client_id: str, window_sec: float) -> str:
         bucket = int(time.time() // max(window_sec, 1))
@@ -78,19 +89,17 @@ class UpstashRateLimitStore:
 
     def allow(self, client_id: str, *, limit: int, window_sec: float) -> bool:
         try:
-            import httpx
-
             key = self._key(client_id, window_sec)
             headers = {"Authorization": f"Bearer {self._token}"}
-            with httpx.Client(timeout=2.0) as client:
-                incr = client.post(f"{self._url}/incr/{key}", headers=headers)
-                incr.raise_for_status()
-                count = int(incr.json().get("result", 0))
-                if count == 1:
-                    client.post(
-                        f"{self._url}/expire/{key}/{int(max(window_sec, 1))}",
-                        headers=headers,
-                    )
+            client = self._get_client()
+            incr = client.post(f"{self._url}/incr/{key}", headers=headers)
+            incr.raise_for_status()
+            count = int(incr.json().get("result", 0))
+            if count == 1:
+                client.post(
+                    f"{self._url}/expire/{key}/{int(max(window_sec, 1))}",
+                    headers=headers,
+                )
             return count <= limit
         except Exception as exc:
             fail_closed = os.getenv("RATE_LIMIT_FAIL_CLOSED", "").strip().lower() in (
@@ -111,6 +120,9 @@ class UpstashRateLimitStore:
             return self._fallback.allow(client_id, limit=limit, window_sec=window_sec)
 
     def clear(self) -> None:
+        if self._client is not None and not getattr(self._client, "is_closed", False):
+            self._client.close()
+            self._client = None
         self._fallback.clear()
 
     def snapshot(self) -> Dict[str, List[float]]:

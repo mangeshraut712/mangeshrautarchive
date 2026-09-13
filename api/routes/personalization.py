@@ -3,11 +3,17 @@ from datetime import datetime, timezone
 from typing import Dict, Any
 from fastapi import APIRouter, HTTPException, Request
 
+from pydantic import BaseModel, Field
+
 from api.config import get_client_ip, check_rate_limit, verify_session_token
 from api.memory_manager import memory_manager
 
 logger = logging.getLogger(__name__)
 router = APIRouter()
+
+
+class UserPreferencesPayload(BaseModel):
+    preferences: Dict[str, Any] = Field(default_factory=dict)
 
 
 def _resolve_authenticated_user(request: Request) -> str:
@@ -39,14 +45,14 @@ async def get_memory_stats():
 
 
 @router.post("/api/personalization/preferences")
-async def update_user_preferences(request: Request, preferences: Dict[str, Any]):
+async def update_user_preferences(request: Request, payload: UserPreferencesPayload):
     """
     Update user preferences (GDPR compliant)
     """
     _check_personalization_rate_limit(request)
     try:
         user_id = _resolve_authenticated_user(request)
-        prefs = preferences.get("preferences", {})
+        prefs = payload.preferences
 
         memory_manager.update_preferences(user_id, prefs)
 

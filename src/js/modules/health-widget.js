@@ -124,7 +124,9 @@ class HealthWidget {
     }
 
     this.refreshTimer = window.setInterval(() => {
-      this.fetchFromApi({ background: true });
+      if (document.visibilityState === 'visible') {
+        this.fetchFromApi({ background: true });
+      }
     }, HEALTH_REFRESH_INTERVAL_MS);
   }
 

@@ -728,7 +728,11 @@ async function hydrateTelemetry({ initial = false } = {}) {
   }
 
   if (initial && !telemetryTimer) {
-    telemetryTimer = window.setInterval(() => hydrateTelemetry(), 30_000);
+    telemetryTimer = window.setInterval(() => {
+      if (document.visibilityState === 'visible') {
+        hydrateTelemetry();
+      }
+    }, 30_000);
     window.addEventListener(
       'pagehide',
       () => {

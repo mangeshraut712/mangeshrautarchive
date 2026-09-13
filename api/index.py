@@ -1,4 +1,6 @@
 import os
+import logging
+from contextlib import asynccontextmanager
 from datetime import datetime, timezone
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
@@ -8,6 +10,7 @@ from fastapi.responses import JSONResponse
 from dotenv import load_dotenv
 
 from api.config import get_default_model, get_openrouter_api_key
+from api.http_client import close_async_http_client
 
 # Monitoring
 from api.monitoring import (
@@ -15,6 +18,16 @@ from api.monitoring import (
     EventType,
 )
 from api.middleware import MonitoringMiddleware
+
+logger = logging.getLogger("api.index")
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """FastAPI application lifespan managing client pool lifecycle."""
+    yield
+    await close_async_http_client()
+
 
 # Routes
 from api.routes import (
@@ -63,6 +76,7 @@ app = FastAPI(
     redoc_url="/api/redoc" if _public_docs_enabled else None,
     openapi_url="/api/openapi.json" if _public_docs_enabled else None,
     openapi_tags=OPENAPI_TAGS,
+    lifespan=lifespan,
 )
 
 # Add monitoring middleware (only if system_monitor initialized successfully)
@@ -134,17 +148,12 @@ app.add_middleware(
 
 # Startup logging
 if "PYTEST_CURRENT_TEST" not in os.environ:
-    print("=" * 60)
-    print("🚀 AssistMe API Starting (Modular Edition)...")
-    print(f"   Environment: {os.getenv('VERCEL_ENV', 'local')}")
+    logger.info("AssistMe API Starting (Modular Edition)... Environment: %s", os.getenv("VERCEL_ENV", "local"))
     if get_openrouter_api_key():
-        print("   API Key: ✅ Configured (OpenRouter)")
-        print(f"   Model: {get_default_model()}")
+        logger.info("API Key: Configured (OpenRouter) | Model: %s", get_default_model())
     else:
-        print("   API Key: ⚠️  Not configured")
-        print("   Mode: 🧠 Local Intelligence (Offline Fallback Active)")
-    print(f"   Site URL: {os.getenv('OPENROUTER_SITE_URL', 'https://mangeshraut.pro')}")
-    print("=" * 60)
+        logger.info("API Key: Not configured | Mode: Local Intelligence (Offline Fallback Active)")
+    logger.info("Site URL: %s", os.getenv("OPENROUTER_SITE_URL", "https://mangeshraut.pro"))
 
 # Include Routers
 app.include_router(chat.router)
@@ -224,6 +233,6 @@ if vercel_env != "production":
     try:
         # Mount the entire src directory to serve all static files (assets, js, manifest, etc.)
         app.mount("/", StaticFiles(directory="src", html=True), name="static")
-        print("📁 Static files mounted from /src directory")
+        logger.info("Static files mounted from /src directory")
     except Exception as e:
-        print(f"⚠️ Static files skipped: {e}")
+        logger.warning("Static files skipped: %s", e)

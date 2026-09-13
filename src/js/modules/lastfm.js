@@ -1316,7 +1316,19 @@ class LastFmService {
       this.showLoadingState();
     }
     this.fetchRecent();
-    this.intervalId = globalThis.setInterval(() => this.fetchRecent(), this.UPDATE_INTERVAL_MS);
+    this.intervalId = globalThis.setInterval(() => {
+      if (typeof document === 'undefined' || document.visibilityState === 'visible') {
+        this.fetchRecent();
+      }
+    }, this.UPDATE_INTERVAL_MS);
+    if (typeof document !== 'undefined' && !this._visibilityHandlerBound) {
+      this._visibilityHandlerBound = true;
+      document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible' && this.started) {
+          this.fetchRecent();
+        }
+      });
+    }
   }
 }
 

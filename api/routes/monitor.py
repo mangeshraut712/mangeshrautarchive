@@ -707,8 +707,13 @@ async def get_deployment_history():
 
 
 @router.post("/api/monitor/web-vitals")
-async def track_web_vitals(vitals: Dict[str, float]):
+async def track_web_vitals(request: Request, vitals: Dict[str, float]):
     """Track Core Web Vitals from frontend"""
+    from api.config import check_rate_limit, get_client_ip
+
+    client_ip = get_client_ip(request)
+    if not check_rate_limit(f"vitals:{client_ip}"):
+        raise HTTPException(status_code=429, detail="Too many web vitals reports")
     if system_monitor is not None:
         system_monitor.track_web_vitals(vitals)
     return {"status": "recorded"}

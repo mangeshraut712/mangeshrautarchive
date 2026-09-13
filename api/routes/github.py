@@ -334,8 +334,8 @@ async def get_github_repos(
     except HTTPException:
         raise
     except httpx.HTTPError as e:
-        print(f"❌ get_github_repos HTTP error: {str(e)}")
+        logger.error("get_github_repos HTTP error: %s", e)
         raise HTTPException(status_code=502, detail="GitHub API gateway error")
     except Exception as e:
-        print(f"❌ get_github_repos unexpected error: {type(e).__name__} - {str(e)}")
+        logger.error("get_github_repos unexpected error: %s - %s", type(e).__name__, e)
         raise HTTPException(status_code=500, detail="GitHub integration error")

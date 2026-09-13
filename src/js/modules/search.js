@@ -18,6 +18,7 @@ class PortfolioSearch {
     this.searchableContent = [];
     this.activeResultIndex = -1;
     this._domIndexed = false;
+    this._debounceTimer = null;
     this.suggestedSearches = this.buildSuggestedSearches();
 
     this.init();
@@ -567,13 +568,20 @@ class PortfolioSearch {
       }
     });
 
-    // Search input
+    // Search input (debounced to prevent main-thread jank)
     this.searchInput.addEventListener('input', e => {
       const query = e.target.value;
+      if (this._debounceTimer) {
+        clearTimeout(this._debounceTimer);
+        this._debounceTimer = null;
+      }
       if (query.length === 0) {
         this.showSuggestedSearches();
       } else {
-        this.performSearch(query);
+        this._debounceTimer = setTimeout(() => {
+          this.performSearch(query);
+          this._debounceTimer = null;
+        }, 120);
       }
     });
 
@@ -599,6 +607,10 @@ class PortfolioSearch {
   }
 
   closeSearch() {
+    if (this._debounceTimer) {
+      clearTimeout(this._debounceTimer);
+      this._debounceTimer = null;
+    }
     this.searchOverlay.classList.remove('active');
     this.searchOverlay.style.setProperty('display', 'none', 'important');
     this.searchOverlay.setAttribute('aria-hidden', 'true');

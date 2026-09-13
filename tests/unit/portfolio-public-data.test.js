@@ -28,7 +28,7 @@ describe('portfolio-public-data', () => {
   it('documents consistent test counts and WebMCP tools', () => {
     expect(TEST_COUNTS.pytest).toBe(175);
     expect(TEST_COUNTS.playwrightProjects).toBe(16);
-    expect(TEST_COUNTS.vitest).toBe(255);
+    expect(TEST_COUNTS.vitest).toBe(261);
     expect(WEBMCP_TOOL_COUNT).toBe(17);
     expect(formatQualitySummary()).toContain(`${TEST_COUNTS.vitest} Vitest`);
     expect(formatQualitySummary()).toContain(`${TEST_COUNTS.pytest} pytest`);

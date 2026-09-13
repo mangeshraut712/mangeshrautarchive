@@ -46,6 +46,22 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── September 2026 ──────────────────────────────────────────
   {
+    id: 'backend-connection-pooling-rate-limiting-search-debounce',
+    date: '2026-09-13',
+    type: 'improvement',
+    title:
+      'Backend HTTP Connection Pooling, Lifespan Teardown, Rate Limit Hardening, Search Debounce & Test Suite Expansion (261 Tests)',
+    summary:
+      'Completed Phase 2 of sitewide audit remediation. Implemented centralized async HTTP client pooling with httpx in api/http_client.py with FastAPI lifespan management in api/index.py; converted Upstash Redis rate limiter to use a shared persistent httpx client pool with keep-alive reuse; migrated 34 raw print statements to structured logging across media.py, github.py, and index.py; enforced Pydantic UserPreferencesPayload validation on personalization routes and IP rate limiting on /api/typing and /api/monitor/web-vitals; added a 120ms debounce timer to search.js to eliminate typing jank; added visibility-aware guards to recurring telemetry and music polling across systems-page.js, health-widget.js, lastfm.js, and monitor-page.js; throttled blog scroll progress bar updates via requestAnimationFrame; unified CSS z-index variables in apple-design-system.css; standardized changelog and 404 navigation and social meta tags; and created comprehensive unit tests in tests/unit/scroll-lock.test.js, growing the passing Vitest suite to 261 tests across 49 files.',
+    tags: ['api', 'performance', 'systems', 'monitor'],
+    sha: '9f3c7a1e',
+    link: `${CHANGELOG_REPO}/commit/9f3c7a1e`,
+    model: 'Gemini 3.8 Flash (High)',
+    ide: 'Google Antigravity IDE (AGY)',
+    purpose:
+      'Sitewide audit phase 2 remediation: backend connection pooling, lifespan teardown, rate limiting, structured logging, search debounce, visibility polling, and test expansion',
+  },
+  {
     id: 'sitewide-audit-security-hardening-pipeline-sync',
     date: '2026-09-13',
     type: 'improvement',

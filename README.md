@@ -40,7 +40,7 @@
   <img src="https://img.shields.io/badge/FastAPI-0.141.1-009688?style=flat-square&logo=fastapi&logoColor=white" alt="FastAPI">
   <img src="https://img.shields.io/badge/ESM-Vanilla%20JS-F7DF1E?style=flat-square&logo=javascript&logoColor=black" alt="Vanilla ESM">
   <img src="https://img.shields.io/badge/Cloudflare-Workers-F38020?style=flat-square&logo=cloudflare&logoColor=white" alt="Cloudflare Workers">
-  <img src="https://img.shields.io/badge/Vitest-255%20passed-729B1B?style=flat-square&logo=vitest&logoColor=white" alt="255 Vitest unit tests">
+  <img src="https://img.shields.io/badge/Vitest-261%20passed-729B1B?style=flat-square&logo=vitest&logoColor=white" alt="261 Vitest unit tests">
   <img src="https://img.shields.io/badge/pytest-175%20passed-0A9EDC?style=flat-square&logo=pytest&logoColor=white" alt="175 pytest API tests">
   <img src="https://img.shields.io/badge/Playwright-16%20browser%20configs-2EAD33?style=flat-square&logo=playwright&logoColor=white" alt="Playwright">
   <img src="https://img.shields.io/badge/Lighthouse-100%2F100%2F100%2F100-0cce6b?style=flat-square&logo=lighthouse&logoColor=white" alt="Lighthouse 100">
@@ -100,7 +100,7 @@
 │  🤖 Agentic AI: AssistMe chatbot, OpenRouter streaming, 17 WebMCP browser actions      │
 │  🎨 Apple HIG Design: Solid white/black canvases, 3D kinetic interaction model         │
 │  📊 Real-Time Telemetry: WHOOP vitals, GA4 realtime reach, platform health probes       │
-│  🛡️ Quality Gates: 255 Vitest tests, 175 pytest tests, 100/100/100/100 Lighthouse CI   │
+│  🛡️ Quality Gates: 261 Vitest tests, 175 pytest tests, 100/100/100/100 Lighthouse CI   │
 │  📜 Open Chronicle: Complete Git history from day 1 (April 8, 2025) to September 2026   │
 └────────────────────────────────────────────────────────────────────────────────────────┘
 ```
@@ -255,7 +255,7 @@ mangeshrautarchive/
 ├── workers/                  # ★ Cloudflare Workers (Edge AI Proxy & Cron Telemetry)
 │   └── assistme-chat/        # Standalone Edge Worker for AssistMe AI & WebMCP proxy
 ├── scripts/                  # ★ Developer Tooling & Build Pipeline (esbuild, QA, security, sync)
-├── tests/                    # ★ Automated Test Suite (255 Vitest, 175 pytest, 16 Playwright targets)
+├── tests/                    # ★ Automated Test Suite (261 Vitest, 175 pytest, 16 Playwright targets)
 ├── docs/                     # Documentation (DESIGN.md source of truth, STRUCTURE.md, plans)
 └── .github/workflows/        # Automated CI/CD (GitHub Pages deploy, monitoring, edge sync)
 ```
@@ -281,6 +281,7 @@ mangeshrautarchive/
 
 | Model Tier & Name      | Engineering Purpose & Scope                                                                                                                                                                                                                                                                                                      | Reasoning Mode           | Status |
 | :--------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :----------------------- | :----- |
+| **`gemini-3.8-flash`** | Phase 2 audit remediation: FastAPI connection pooling (`api/http_client.py`), non-blocking Upstash rate limiter pool (`api/rate_limit.py`), Pydantic model validation, structured logging, debounced search (search.js), visibility-aware background polling, Z-index token harmonization, and 261 Vitest tests                  | High / Extended Thinking | Active |
 | **`gemini-3.8-flash`** | Comprehensive sitewide audit & P0 remediation: reflected XSS elimination (search.js), hardcoded API keys cleanup (external-config.js), security-check root directory fix, FastAPI personalization token authorization & rate limiting, ESLint `no-undef: error` upgrade, Tailwind CSS prebuild integration, and 255 Vitest tests | High / Extended Thinking | Active |
 | **`gemini-3.8-flash`** | Sitewide quality & polish: test telemetry synchronization (253 Vitest, 175 pytest, 17 WebMCP), sub-12px font remediation, rendering containment (content-visibility: auto), and Apple HIG compliance                                                                                                                             | High / Extended Thinking | Active |
 | **`gemini-3.8-flash`** | Mobile viewport layout auditing, reminder cards responsive geometry and flex-shrink fixes, circular action button immunity, and mobile hero resume dropdown viewport placement hardening                                                                                                                                         | High / Extended Thinking | Active |
@@ -303,7 +304,7 @@ All quality gates are enforced locally and verified automatically in GitHub Acti
 
 | Test Suite            | Runner            |        Test Count         | Scope & Coverage                                                            |
 | :-------------------- | :---------------- | :-----------------------: | :-------------------------------------------------------------------------- |
-| **Unit Tests**        | Vitest 4.1        | **255 passed** (48 files) | JS modules, services, markdown parser, WebMCP actions, data contracts       |
+| **Unit Tests**        | Vitest 4.1        | **261 passed** (49 files) | JS modules, services, markdown parser, WebMCP actions, data contracts       |
 | **API Tests**         | pytest            | **175 passed** (27 files) | FastAPI endpoints, streaming chat, health probes, OAuth token stores        |
 | **E2E Browser Tests** | Playwright        |      **16 projects**      | Multi-browser suite (Desktop Chrome, Safari, Firefox, iPhone 17, Pixel 7)   |
 | **Accessibility**     | axe-core          |    **16/16 baseline**     | Zero critical/serious WCAG violations across light, dark, and high contrast |
@@ -350,7 +351,7 @@ npm run dev
 ### 7.3 Essential Quality Commands
 
 ```bash
-npm run check             # Run ESLint + Stylelint + Prettier + 255 Vitest tests
+npm run check             # Run ESLint + Stylelint + Prettier + 261 Vitest tests
 npm run test:api          # Run 175 pytest API tests
 npm run doctor:strict     # Run 60-point strict repository layout check
 npm run security-check    # Scan for exposed API keys and credentials

@@ -67,10 +67,17 @@ function initReadingProgress() {
     scrollHeight = article.scrollHeight;
   };
 
+  let ticking = false;
   const update = () => {
-    const total = Math.max(scrollHeight - window.innerHeight, 1);
-    const scrolled = Math.min(Math.max(window.scrollY - offsetTop, 0), total);
-    bar.style.width = `${Math.round((scrolled / total) * 100)}%`;
+    if (!ticking) {
+      window.requestAnimationFrame(() => {
+        const total = Math.max(scrollHeight - window.innerHeight, 1);
+        const scrolled = Math.min(Math.max(window.scrollY - offsetTop, 0), total);
+        bar.style.width = `${Math.round((scrolled / total) * 100)}%`;
+        ticking = false;
+      });
+      ticking = true;
+    }
   };
 
   window.addEventListener('scroll', update, { passive: true });

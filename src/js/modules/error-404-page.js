@@ -3,6 +3,8 @@
  * Path display, go-back, theme fallback, light keyboard shortcuts.
  */
 
+import { escapeHtml } from '../utils/escape-html.js';
+
 const DESTINATIONS = [
   { href: 'index.html#home', title: 'Home', key: '1' },
   { href: 'systems.html', title: 'Systems', key: '2' },
@@ -27,15 +29,6 @@ function resolveAttemptedPath() {
     return path + (window.location.search || '') + (window.location.hash || '');
   }
   return '';
-}
-
-function escapeHtml(value) {
-  return String(value)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
 }
 
 function renderDestinations(listEl) {
