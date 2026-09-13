@@ -46,6 +46,22 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── September 2026 ──────────────────────────────────────────
   {
+    id: 'mobile-viewport-cards-resume-dropdown-alignment',
+    date: '2026-09-13',
+    type: 'fix',
+    title:
+      'Mobile Viewport Fit: Reminders Card Geometry, Touch Action Alignment & Seamless Resume Dropdown Placement',
+    summary:
+      'Resolved mobile viewport card squishing and alignment issues in the Contact section calendar & reminders widget and home hero. Eliminated flex-shrink collapse on reminder cards in .reminders-list so cards naturally expand to multi-line content without vertical clipping or horizontal overflow. Enforced aspect-ratio: 1 / 1, explicit circular geometry (32px/26px/24px), and touch protection to prevent global button rules from stretching action buttons into ovals. Converted category filter tabs into a sleek 1-row touch-scrollable rail on mobile screens. Removed asymmetric right padding on #contact containers that ate gutter space. Refined mobile hero spacing on <=480px viewports (avatar, name typography, music player dimensions, and CTA gaps) to ensure #resume-dropdown-toggle retains comfortable clearance above the viewport bottom, allowing compact resume download options to open smoothly below without triggering auto-scroll or dock collisions. Hardened resume-dropdown.js with an isPositioning execution guard and openScrollY initialization to prevent race conditions during programmatic positioning. Validated 100% across all 17 mobile viewport Playwright tests, 16 smoke Playwright tests, 253 Vitest unit tests, 175 pytest API tests, and 60/60 repo doctor checks.',
+    tags: ['mobile', 'design', 'contact', 'performance'],
+    sha: 'd245ce0e',
+    link: `${CHANGELOG_REPO}/commit/d245ce0e`,
+    model: 'Gemini 3.8 Flash (High)',
+    ide: 'Google Antigravity IDE (AGY)',
+    purpose:
+      'Mobile viewport layout auditing, reminder cards responsive geometry and flex-shrink fixes, circular action button immunity, and mobile hero resume dropdown viewport placement hardening',
+  },
+  {
     id: 'contact-color-cascade-luma-purge-new-button',
     date: '2026-09-11',
     type: 'fix',

@@ -122,6 +122,7 @@ export function initResumeDropdown() {
   let positionFrame = 0;
   let portaled = false;
   let openScrollY = 0;
+  let isPositioning = false;
 
   // Normalize hrefs for dual-host deploys and attach download metadata
   items.forEach(item => {
@@ -159,34 +160,42 @@ export function initResumeDropdown() {
   function positionMenu() {
     if (!wrapper.classList.contains('is-open')) return;
 
-    let toggleRect = toggle.getBoundingClientRect();
-    const menuWidth = Math.min(
-      Math.max(toggleRect.width, 280),
-      Math.max(260, window.innerWidth - 24)
-    );
-    const gap = 8;
-    const viewportPad = 8;
-    const menuHeight = Math.ceil(menu.getBoundingClientRect().height || menu.scrollHeight);
-    const overflowBelow = toggleRect.bottom + gap + menuHeight + viewportPad - window.innerHeight;
+    isPositioning = true;
+    try {
+      let toggleRect = toggle.getBoundingClientRect();
+      const menuWidth = Math.min(
+        Math.max(toggleRect.width, 280),
+        Math.max(260, window.innerWidth - 24)
+      );
+      const gap = 8;
+      const viewportPad = 8;
+      const menuHeight = Math.ceil(menu.getBoundingClientRect().height || menu.scrollHeight);
+      const overflowBelow = toggleRect.bottom + gap + menuHeight + viewportPad - window.innerHeight;
 
-    if (overflowBelow > 0) {
-      window.scrollBy({ top: Math.ceil(overflowBelow), behavior: 'instant' });
-      toggleRect = toggle.getBoundingClientRect();
+      if (overflowBelow > 0) {
+        window.scrollBy({ top: Math.ceil(overflowBelow), behavior: 'instant' });
+        openScrollY = window.scrollY;
+        toggleRect = toggle.getBoundingClientRect();
+      }
+
+      let left = toggleRect.left + toggleRect.width / 2 - menuWidth / 2;
+      left = Math.max(viewportPad, Math.min(left, window.innerWidth - menuWidth - viewportPad));
+
+      menu.style.position = 'fixed';
+      menu.style.left = `${Math.round(left)}px`;
+      menu.style.width = `${Math.round(menuWidth)}px`;
+      menu.style.right = 'auto';
+      menu.style.zIndex = '12050';
+      menu.style.margin = '0';
+      menu.style.bottom = 'auto';
+      menu.style.top = `${Math.round(toggleRect.bottom + gap)}px`;
+      menu.style.overflowY = 'visible';
+      menu.dataset.placement = 'bottom';
+    } finally {
+      window.requestAnimationFrame(() => {
+        isPositioning = false;
+      });
     }
-
-    let left = toggleRect.left + toggleRect.width / 2 - menuWidth / 2;
-    left = Math.max(viewportPad, Math.min(left, window.innerWidth - menuWidth - viewportPad));
-
-    menu.style.position = 'fixed';
-    menu.style.left = `${Math.round(left)}px`;
-    menu.style.width = `${Math.round(menuWidth)}px`;
-    menu.style.right = 'auto';
-    menu.style.zIndex = '12050';
-    menu.style.margin = '0';
-    menu.style.bottom = 'auto';
-    menu.style.top = `${Math.round(toggleRect.bottom + gap)}px`;
-    menu.style.overflowY = 'visible';
-    menu.dataset.placement = 'bottom';
   }
 
   function schedulePosition() {
@@ -198,6 +207,7 @@ export function initResumeDropdown() {
   }
 
   function openMenu() {
+    openScrollY = window.scrollY;
     wrapper.classList.add('is-open');
     menu.classList.add('is-open');
     document.body.classList.add('resume-menu-open');
@@ -327,6 +337,7 @@ export function initResumeDropdown() {
   window.addEventListener(
     'scroll',
     () => {
+      if (isPositioning) return;
       if (wrapper.classList.contains('is-open') && Math.abs(window.scrollY - openScrollY) > 20) {
         closeMenu();
       }

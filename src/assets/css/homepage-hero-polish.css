@@ -550,8 +550,84 @@ html.dark body #home.hero-section .hero-actions .hero-cta.hero-cta-secondary:hov
   }
 
   @media (max-width: 480px) {
+    #home.hero-section {
+      padding: 0.85rem 0.75rem 1.25rem !important;
+    }
+
     #home.hero-section .hero-layout-wrapper {
-      top: -1.75rem !important;
+      top: -2.25rem !important;
+      gap: 0.55rem !important;
+    }
+
+    #home.hero-section .hero-text-block.home-hero-text,
+    html body #home.hero-section .hero-text-block {
+      gap: 0.55rem !important;
+    }
+
+    #home.hero-section .profile-image-wrapper,
+    body #home.hero-section .profile-image-wrapper {
+      width: 68px !important;
+      height: 68px !important;
+      min-width: 68px !important;
+      min-height: 68px !important;
+    }
+
+    #home.hero-section .hero-header {
+      gap: 0.25rem !important;
+    }
+
+    #home.hero-section .hero-name,
+    #home-heading.hero-name {
+      font-size: clamp(1.85rem, 7.5vw, 2.25rem) !important;
+    }
+
+    #home .hero-identity-item {
+      min-height: 30px !important;
+      padding: 0.25rem 0.65rem !important;
+    }
+
+    #home .hero-role-flip {
+      min-height: 1.65rem !important;
+    }
+
+    #home.hero-section .hero-insights-band {
+      min-height: 34px !important;
+      gap: 0.45rem !important;
+    }
+
+    #home .hero-pill-badge {
+      min-height: 34px !important;
+      padding: 0.3rem 0.75rem !important;
+      font-size: 0.8rem !important;
+    }
+
+    #home.hero-section .music-card,
+    #home.hero-section #music-card {
+      margin: 0.2rem auto 0.35rem auto !important;
+    }
+
+    #home.hero-section .music-card-inner {
+      padding: 8px 12px !important;
+      min-height: 66px !important;
+      gap: 10px !important;
+    }
+
+    #home.hero-section .album-art-container {
+      width: 46px !important;
+      height: 46px !important;
+      min-width: 46px !important;
+      min-height: 46px !important;
+    }
+
+    html body #home.hero-section .hero-actions {
+      gap: 0.4rem !important;
+      margin: 0.15rem auto 0 auto !important;
+    }
+
+    html body #home.hero-section .hero-actions .hero-cta {
+      min-height: 42px !important;
+      padding: 0.5rem 1rem !important;
+      font-size: 0.92rem !important;
     }
   }
 

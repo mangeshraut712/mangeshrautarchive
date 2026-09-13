@@ -1475,6 +1475,8 @@ export class CalendarWidget {
                     !r.isLuma &&
                     !r.lumaUrl &&
                     r.category !== 'events' &&
+                    r.category !== 'birthdays' &&
+                    !r.isBirthday &&
                     r.id !== 100
                       ? `
                     <button type="button" class="card-action-btn edit-btn" data-id="${r.id}" title="Edit text" aria-label="Edit reminder">

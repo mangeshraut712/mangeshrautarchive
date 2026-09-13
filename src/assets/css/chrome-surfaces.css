@@ -151,9 +151,6 @@ footer {
 }
 
 @media (max-width: 768px) {
-  #contact,
-  #contact .container,
-  .contact-info-all,
   .support-donation-card,
   #debug-runner-section,
   footer,

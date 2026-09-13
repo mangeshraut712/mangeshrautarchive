@@ -842,6 +842,8 @@ html body #contact .reminder-card {
   border: 1px solid #e5e5ea !important;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04) !important;
   min-height: 64px !important;
+  height: auto !important;
+  flex-shrink: 0 !important;
   gap: 10px !important;
   overflow: hidden !important;
   box-sizing: border-box !important;
@@ -1164,7 +1166,11 @@ html body #contact .card-action-btn {
   width: 32px !important;
   height: 32px !important;
   min-width: 32px !important;
+  min-height: 32px !important;
+  max-width: 32px !important;
+  max-height: 32px !important;
   border-radius: 50% !important;
+  aspect-ratio: 1 / 1 !important;
   background: #ffffff !important;
   border: 1px solid #e5e5ea !important;
   cursor: pointer !important;
@@ -1277,7 +1283,11 @@ html body #contact .status-circle {
   width: 24px !important;
   height: 24px !important;
   min-width: 24px !important;
+  min-height: 24px !important;
+  max-width: 24px !important;
+  max-height: 24px !important;
   border-radius: 50% !important;
+  aspect-ratio: 1 / 1 !important;
   border: 2px solid #d1d1d6 !important;
   background: transparent !important;
   display: flex !important;
@@ -1308,6 +1318,205 @@ html body #contact .reminder-card.completed .status-circle {
   color: #ffffff !important;
 }
 
+@media (max-width: 768px) {
+  /* 1. Eliminate asymmetric padding on contact section & containers */
+  #contact {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  #contact .container {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+    max-width: 100% !important;
+    margin-inline: auto !important;
+    box-sizing: border-box !important;
+  }
+
+  .contact-card.calendar-reminders-card {
+    padding: 16px 14px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .ios-reminders-section {
+    padding: 14px 2px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  /* 2. Sleek 1-row Native Apple Horizontal Pill Rail */
+  html body #contact .calendar-filter-tabs {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: none !important;
+    gap: 6px !important;
+    padding: 4px 2px 10px !important;
+    margin-bottom: 8px !important;
+    max-width: 100% !important;
+  }
+
+  html body #contact .calendar-filter-tabs::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  html body #contact .filter-tab {
+    flex: 0 0 auto !important;
+    white-space: nowrap !important;
+  }
+
+  /* 3. Search Bar */
+  .calendar-search-wrap {
+    margin: 0.25rem 0 0.65rem !important;
+  }
+
+  .calendar-search-box {
+    height: 42px !important;
+    border-radius: 12px !important;
+    padding: 0 0.75rem !important;
+  }
+
+  .reminders-search-input {
+    font-size: 0.85rem !important;
+    padding: 0.45rem 0 !important;
+  }
+
+  /* 4. Day Inspector Banner & AI Brief */
+  html body #contact .day-inspector-banner {
+    padding: 0.65rem 0.85rem !important;
+    gap: 0.5rem !important;
+  }
+
+  html body #contact .day-inspector-actions {
+    width: 100% !important;
+    justify-content: flex-end !important;
+    gap: 0.5rem !important;
+  }
+
+  /* 5. Mobile Reminders List Container */
+  .reminders-list {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 10px !important;
+    max-height: 420px !important;
+    overflow-y: auto !important;
+    padding: 4px 1px !important;
+  }
+
+  /* 6. Apple HIG Mobile Reminder Cards */
+  html body #contact .reminder-card {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    padding: 12px 14px 12px 16px !important;
+    border-radius: 16px !important;
+    gap: 10px !important;
+    min-height: 68px !important;
+    height: auto !important;
+    flex-shrink: 0 !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+  }
+
+  html.dark body #contact .reminder-card {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.45) !important;
+  }
+
+  html body #contact .card-content {
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 4px !important;
+    padding-left: 6px !important;
+    padding-right: 2px !important;
+  }
+
+  html body #contact .card-header-flex {
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    flex-wrap: wrap !important;
+    width: 100% !important;
+  }
+
+  html body #contact .card-time {
+    font-size: 0.72rem !important;
+    font-weight: 700 !important;
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+  }
+
+  html body #contact .card-tags-group {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 4px !important;
+    flex-wrap: wrap !important;
+  }
+
+  html body #contact .card-title {
+    font-size: 0.92rem !important;
+    line-height: 1.38 !important;
+    font-weight: 600 !important;
+    white-space: normal !important;
+    word-break: break-word !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2 !important;
+    -webkit-box-orient: vertical !important;
+  }
+
+  html body #contact .card-host,
+  html body #contact .card-location {
+    font-size: 0.76rem !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  /* 7. Action Area & Circular Button Immunity */
+  html body #contact .reminder-card .card-action-area {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    gap: 6px !important;
+    flex-shrink: 0 !important;
+    margin-left: auto !important;
+  }
+
+  html body #contact .reminder-card .card-action-btn {
+    width: 32px !important;
+    height: 32px !important;
+    min-width: 32px !important;
+    min-height: 32px !important;
+    max-width: 32px !important;
+    max-height: 32px !important;
+    border-radius: 50% !important;
+    aspect-ratio: 1 / 1 !important;
+    font-size: 0.74rem !important;
+    flex-shrink: 0 !important;
+    padding: 0 !important;
+  }
+
+  html body #contact .reminder-card .status-circle {
+    width: 26px !important;
+    height: 26px !important;
+    min-width: 26px !important;
+    min-height: 26px !important;
+    max-width: 26px !important;
+    max-height: 26px !important;
+    border-radius: 50% !important;
+    aspect-ratio: 1 / 1 !important;
+    flex-shrink: 0 !important;
+    padding: 0 !important;
+  }
+}
+
 @media (max-width: 480px) {
   html body #contact .reminder-card {
     padding: 10px 12px 10px 14px !important;
@@ -1315,8 +1524,8 @@ html body #contact .reminder-card.completed .status-circle {
   }
 
   html body #contact .card-content {
-    padding-left: 6px !important;
-    padding-right: 2px !important;
+    padding-left: 4px !important;
+    padding-right: 0 !important;
   }
 
   html body #contact .card-title {
@@ -1324,14 +1533,38 @@ html body #contact .reminder-card.completed .status-circle {
   }
 
   html body #contact .card-time {
-    font-size: 0.68rem !important;
+    font-size: 0.7rem !important;
   }
 
-  html body #contact .card-action-btn {
-    width: 28px !important;
-    height: 28px !important;
-    min-width: 28px !important;
+  html body #contact .reminder-card .card-action-btn {
+    width: 30px !important;
+    height: 30px !important;
+    min-width: 30px !important;
+    min-height: 30px !important;
+    max-width: 30px !important;
+    max-height: 30px !important;
     font-size: 0.72rem !important;
+  }
+
+  html body #contact .reminder-card .status-circle {
+    width: 24px !important;
+    height: 24px !important;
+    min-width: 24px !important;
+    min-height: 24px !important;
+    max-width: 24px !important;
+    max-height: 24px !important;
+  }
+
+  .smart-reminder-modal-overlay {
+    padding: 0.75rem !important;
+  }
+
+  .smart-reminder-modal-card {
+    padding: 1.15rem 1rem !important;
+    border-radius: 18px !important;
+    max-height: 90vh !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
   }
 }
 
