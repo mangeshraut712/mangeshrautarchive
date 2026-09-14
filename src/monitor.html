@@ -401,7 +401,7 @@
                 <button
                   class="btn btn-secondary control-center-refresh"
                   type="button"
-                  onclick="refreshData()"
+                  data-monitor-action="refresh-data"
                 >
                   <i class="fas fa-rotate" aria-hidden="true"></i>
                   <span>Refresh</span>
@@ -514,7 +514,7 @@
               class="btn btn-secondary"
               type="button"
               id="btn-refresh-portfolio-catalog"
-              onclick="refreshPortfolioCatalog()"
+              data-monitor-action="refresh-portfolio-catalog"
             >
               <i class="fas fa-globe" aria-hidden="true"></i>
               <span>Probe All</span>
@@ -540,7 +540,7 @@
             <button
               class="btn btn-secondary"
               id="btn-refresh-surfaces"
-              onclick="refreshHostingSurfaces()"
+              data-monitor-action="refresh-hosting-surfaces"
             >
               <i class="fas fa-globe" aria-hidden="true"></i>
               <span>Refresh Surfaces</span>
@@ -671,7 +671,7 @@
             <div class="benchmark-badges-row">
               <div class="benchmark-pill">
                 <i class="fas fa-check-double text-accent-green" aria-hidden="true"></i>
-                <span>261 Vitest Unit Tests</span>
+                <span>268 Vitest Unit Tests</span>
               </div>
               <div class="benchmark-pill">
                 <i class="fas fa-vial-circle-check text-accent-green" aria-hidden="true"></i>
@@ -704,7 +704,7 @@
             <button
               class="btn btn-secondary"
               id="btn-run-health-checks"
-              onclick="runHealthChecks()"
+              data-monitor-action="run-health-checks"
             >
               <i class="fas fa-stethoscope" aria-hidden="true"></i>
               <span>Run Checks</span>
@@ -724,7 +724,7 @@
         <div class="section-header">
           <h2 class="section-title">API Endpoint Metrics</h2>
           <div class="section-actions">
-            <button class="btn btn-secondary" onclick="exportMetrics()">
+            <button class="btn btn-secondary" data-monitor-action="export-metrics">
               <i class="fas fa-download" aria-hidden="true"></i>
               Export JSON
             </button>
@@ -762,7 +762,7 @@
             <button
               class="btn btn-secondary"
               id="btn-refresh-providers"
-              onclick="checkExternalApis()"
+              data-monitor-action="check-external-apis"
             >
               <i class="fas fa-sync" aria-hidden="true"></i>
               <span>Refresh Providers</span>
@@ -784,7 +784,7 @@
             <button
               class="btn btn-secondary"
               id="btn-refresh-platform-health"
-              onclick="refreshPlatformHealth()"
+              data-monitor-action="refresh-platform-health"
             >
               <i class="fas fa-heart-pulse" aria-hidden="true"></i>
               <span>Refresh Matrix</span>
@@ -812,7 +812,7 @@
             <button
               class="btn btn-secondary"
               id="btn-refresh-integrations"
-              onclick="refreshIntegrationsPanel()"
+              data-monitor-action="refresh-integrations-panel"
             >
               <i class="fas fa-link" aria-hidden="true"></i>
               <span>Refresh OAuth Status</span>
@@ -883,9 +883,9 @@
               </div>
               <span class="overview-card__status badge-healthy">100% Passing</span>
             </div>
-            <div class="overview-card__value">436+ Tests</div>
+            <div class="overview-card__value">443+ Tests</div>
             <div class="overview-card__label">Automated Test Suites</div>
-            <div class="overview-card__meta">261 Vitest · 175 Pytest · 16 Playwright Configs</div>
+            <div class="overview-card__meta">268 Vitest · 175 Pytest · 16 Playwright Configs</div>
           </div>
           <div class="overview-card">
             <div class="overview-card__header">
@@ -927,7 +927,11 @@
         <div class="section-header">
           <h2 class="section-title">System Event Audit Log</h2>
           <div class="section-actions">
-            <button class="btn btn-secondary" id="btn-clear-resolved" onclick="clearResolved()">
+            <button
+              class="btn btn-secondary"
+              id="btn-clear-resolved"
+              data-monitor-action="clear-resolved"
+            >
               <i class="fas fa-check-double" aria-hidden="true"></i>
               <span>Clear Resolved</span>
             </button>
@@ -942,26 +946,25 @@
               id="log-search-input"
               class="log-search-input"
               placeholder="Search events by keyword, source, or IP..."
-              oninput="handleLogFilterChange()"
             />
           </div>
           <div class="log-tabs">
-            <button class="log-tab-btn active" data-filter="" onclick="selectLogTab(this)">
+            <button class="log-tab-btn active" data-filter="" data-monitor-action="select-log-tab">
               All
             </button>
-            <button class="log-tab-btn" data-filter="critical" onclick="selectLogTab(this)">
+            <button class="log-tab-btn" data-filter="critical" data-monitor-action="select-log-tab">
               Critical
             </button>
-            <button class="log-tab-btn" data-filter="error" onclick="selectLogTab(this)">
+            <button class="log-tab-btn" data-filter="error" data-monitor-action="select-log-tab">
               Errors
             </button>
-            <button class="log-tab-btn" data-filter="warning" onclick="selectLogTab(this)">
+            <button class="log-tab-btn" data-filter="warning" data-monitor-action="select-log-tab">
               Warnings
             </button>
-            <button class="log-tab-btn" data-filter="success" onclick="selectLogTab(this)">
+            <button class="log-tab-btn" data-filter="success" data-monitor-action="select-log-tab">
               Success
             </button>
-            <button class="log-tab-btn" data-filter="info" onclick="selectLogTab(this)">
+            <button class="log-tab-btn" data-filter="info" data-monitor-action="select-log-tab">
               Info
             </button>
           </div>
@@ -1037,7 +1040,11 @@
         <div class="section-header">
           <h2 class="section-title">Client-Side Latency</h2>
           <div class="section-actions">
-            <button class="btn btn-secondary" id="btn-run-probes" onclick="runClientProbes()">
+            <button
+              class="btn btn-secondary"
+              id="btn-run-probes"
+              data-monitor-action="run-client-probes"
+            >
               <i class="fas fa-satellite-dish" aria-hidden="true"></i>
               <span>Run Probes</span>
             </button>
@@ -1064,7 +1071,11 @@
         <div class="section-header">
           <h2 class="section-title">Security & Rate Limiting</h2>
           <div class="section-actions">
-            <button class="btn btn-secondary" id="btn-refresh-security" onclick="refreshSecurity()">
+            <button
+              class="btn btn-secondary"
+              id="btn-refresh-security"
+              data-monitor-action="refresh-security"
+            >
               <i class="fas fa-shield-halved" aria-hidden="true"></i>
               <span>Run Audit</span>
             </button>
@@ -1125,7 +1136,11 @@
             </p>
           </div>
           <div class="section-actions">
-            <button class="btn btn-secondary" id="btn-refresh-ai" onclick="refreshAIMetrics()">
+            <button
+              class="btn btn-secondary"
+              id="btn-refresh-ai"
+              data-monitor-action="refresh-ai-metrics"
+            >
               <i class="fas fa-brain" aria-hidden="true"></i>
               <span>Refresh</span>
             </button>

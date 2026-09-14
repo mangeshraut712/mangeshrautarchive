@@ -6,5 +6,11 @@ export default defineConfig({
     include: ['tests/unit/**/*.test.js'],
     exclude: ['dist/**', 'node_modules/**'],
     environment: 'jsdom',
+    coverage: {
+      provider: 'v8',
+      reportsDirectory: 'coverage',
+      include: ['src/js/**/*.js'],
+      exclude: ['src/js/vendor/**', 'dist/**'],
+    },
   },
 });

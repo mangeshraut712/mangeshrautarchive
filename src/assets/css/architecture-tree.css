@@ -207,7 +207,7 @@ html.dark .arch-node-title {
 }
 
 .arch-node-badge {
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 600;
   fill: #86868b;
   font-family: var(--font-text);
@@ -223,7 +223,7 @@ html.dark .arch-node-divider {
 }
 
 .arch-node-subtext {
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.03em;
   fill: #0071e3;

@@ -172,7 +172,7 @@ html.dark .radar-vertex-dot.is-hovered {
 }
 
 .radar-axis-label {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 650;
   fill: var(--text-secondary, #6e6e73);
   font-family: var(--font-text);

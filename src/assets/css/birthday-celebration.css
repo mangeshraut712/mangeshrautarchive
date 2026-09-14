@@ -116,7 +116,7 @@ html.dark .birthday-notification {
 }
 
 .ios-calendar-date {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
   color: #1d1d1f;
   position: absolute;
@@ -458,7 +458,7 @@ html.dark .ios-body {
 }
 
 .calendar-month {
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 700;
   color: #ff3b30;
   text-transform: uppercase;

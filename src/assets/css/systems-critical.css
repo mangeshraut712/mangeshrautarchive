@@ -299,7 +299,7 @@ html.dark .monitor-page-nav__back {
 }
 
 .monitor-page-nav__kicker {
-  font-size: 10px;
+  font-size: 12px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--systems-muted);

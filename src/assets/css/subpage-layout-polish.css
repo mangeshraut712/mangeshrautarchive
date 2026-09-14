@@ -794,7 +794,7 @@ body.travel-body .travel-action {
   min-height: 30px !important;
   padding: 0 3px !important;
   border-radius: 7px !important;
-  font-size: 11px !important;
+  font-size: 12px !important;
   font-weight: 600 !important;
   background: rgba(0, 0, 0, 0.04) !important;
   border: 1px solid rgba(0, 0, 0, 0.06) !important;
@@ -852,7 +852,7 @@ body.travel-body .travel-results-summary {
   background: transparent !important;
   color: var(--travel-text-secondary, #6e6e73) !important;
   -webkit-text-fill-color: var(--travel-text-secondary, #6e6e73) !important;
-  font-size: 11px !important;
+  font-size: 12px !important;
   font-weight: 500 !important;
   letter-spacing: -0.01em !important;
   line-height: 1.35 !important;
@@ -874,7 +874,7 @@ html.dark body.travel-body .travel-advanced-search {
 
 body.travel-body .travel-advanced-toggle {
   padding: 4px 8px !important;
-  font-size: 11px !important;
+  font-size: 12px !important;
   font-weight: 550 !important;
   min-height: 26px !important;
   background: transparent !important;

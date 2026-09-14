@@ -46,6 +46,22 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── September 2026 ──────────────────────────────────────────
   {
+    id: 'audit-phase3-typography-csp-semantics-tests',
+    date: '2026-09-14',
+    type: 'improvement',
+    title:
+      'Comprehensive Audit Remediation Phase 3: Apple HIG Typography Floor, CSP Event Delegation, Semantic HTML, Serverless Secret Stability & Test Suite Expansion (268 Tests)',
+    summary:
+      'Remediated remaining audit findings across all production surfaces. Restored proper heading semantics by removing role="button" from h1#home-heading and establishing clean h2→h3→h4 outline hierarchy in experience timeline. Converted travel sidebar from aside to section landmark with aria-label. Canonicalized blog navigation to href="blog/". Replaced all 18 inline onclick/oninput handlers in monitor.html with data-monitor-action event delegation via initMonitorActionDelegation() in monitor-page.js for CSP script-src compliance. Standardized 100 sub-12px font-size declarations (7px–11px) to 12px across 14 CSS files and updated all 0.6875rem caption token fallbacks to 0.75rem for Apple HIG legibility. Replaced max-width: 100vw with 100% in mobile-viewport.css to eliminate scrollbar overflow. Purged inline styles from showMeetingScheduler in agentic-actions.js, replacing with CSS classes in ai-assistant.css. Hardened serverless HMAC session secret fallback chain with VERCEL_DEPLOYMENT_ID and VERCEL_GIT_COMMIT_SHA in api/config.py. Added vitest coverage configuration (v8 provider). Created authentic unit tests for storage-cleanup.js and blog-reactions.js, expanding the test suite to 268 tests across 51 files. Synchronized all telemetry counts across monitor.html, uses.html, README.md, AGENTS.md, GEMINI.md, docs/STRUCTURE.md, docs/INSIGHTS.md, tests/README.md, and portfolio-public-data.js. Added missing CI workflows (github-stats-sync.yml, link-checker.yml, release.yml) to docs/STRUCTURE.md.',
+    tags: ['design', 'performance', 'monitor', 'api'],
+    sha: '83c60680',
+    link: `${CHANGELOG_REPO}/commit/83c60680`,
+    model: 'Claude Opus 4.6 (Thinking) + Gemini 3.8 Flash (High)',
+    ide: 'Google Antigravity IDE (AGY)',
+    purpose:
+      'Audit phase 3: Apple HIG 12px typography floor enforcement, CSP-safe event delegation, semantic HTML restoration, serverless secret hardening, and test suite expansion to 268',
+  },
+  {
     id: 'backend-connection-pooling-rate-limiting-search-debounce',
     date: '2026-09-13',
     type: 'improvement',

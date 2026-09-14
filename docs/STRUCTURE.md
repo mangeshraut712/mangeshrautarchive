@@ -58,7 +58,7 @@ mangeshrautarchive/
 │   └── offline/              # Offline data builders (travel GeoJSON database)
 │
 ├── tests/                    # ★ Complete Automated Test Suite
-│   ├── unit/                 # 261 Vitest unit tests across 49 files (JS modules, WebMCP actions)
+│   ├── unit/                 # 268 Vitest unit tests across 51 files (JS modules, WebMCP actions)
 │   ├── api/                  # 175 pytest API tests (FastAPI routes, streaming, OAuth, middleware)
 │   └── e2e/                  # Playwright multi-browser end-to-end specifications across 16 targets
 │
@@ -73,8 +73,11 @@ mangeshrautarchive/
 ├── .github/workflows/        # Automated CI/CD, Deployment & Health Monitoring Workflows
 │   ├── deploy.yml            # Primary CI pipeline → Quality gates → GitHub Pages deployment
 │   ├── deploy-chat-worker.yml # Deploy Cloudflare Worker edge API
+│   ├── github-stats-sync.yml # Daily GitHub statistics & star telemetry sync
 │   ├── health-vitals-sync.yml # Edge WHOOP / Withings cron telemetry sync
+│   ├── link-checker.yml      # Hyperlink integrity and 404 audit workflow
 │   ├── post-deploy-monitoring.yml # Production reachability & Lighthouse monitoring
+│   ├── release.yml           # Automated tag creation & changelog release automation
 │   └── foglamp-scan-keepalive.yml # Architecture map keep-alive
 │
 ├── dist/                     # Production compiled bundle output (Git-ignored)

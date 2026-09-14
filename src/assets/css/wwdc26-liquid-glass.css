@@ -634,7 +634,7 @@ html.dark #chatbot-widget .writing-tools-popover {
   align-items: center;
   gap: 0.4rem;
   padding: 6px 10px 2px;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -1130,7 +1130,7 @@ html.dark #chatbot-widget .chatbot-close-btn:hover {
   gap: 5px;
   padding: 2px 8px;
   border-radius: 999px;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 650;
   letter-spacing: 0.01em;
   line-height: 1.2;
@@ -1251,7 +1251,7 @@ html.dark #chatbot-widget .composer-status-chip {
 }
 
 #chatbot-widget .chatbot-clear-undo-timer {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 650;
   opacity: 0.72;
   min-width: 1.5rem;
@@ -1261,7 +1261,7 @@ html.dark #chatbot-widget .composer-status-chip {
 #chatbot-widget .chatbot-dictation-status {
   margin: 0 6px 0 2px;
   min-height: 0;
-  font-size: 10px;
+  font-size: 12px;
   line-height: 1.2;
   font-weight: 600;
   text-align: left;
@@ -1337,7 +1337,7 @@ html.dark #chatbot-widget .chatbot-plus-btn {
 #chatbot-widget #chatbot-rate-status {
   margin: 0 6px 0 0;
   min-height: 0 !important;
-  font-size: 10px;
+  font-size: 12px;
   line-height: 1.2;
   font-weight: 500;
   text-align: right;

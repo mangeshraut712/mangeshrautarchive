@@ -3372,8 +3372,67 @@ function initMonitorSectionRail() {
   sections.forEach(section => observer.observe(section));
 }
 
+function initMonitorActionDelegation() {
+  document.addEventListener('click', event => {
+    const target = event.target.closest('[data-monitor-action]');
+    if (!target) return;
+
+    const action = target.getAttribute('data-monitor-action');
+    switch (action) {
+      case 'refresh-data':
+        refreshData();
+        break;
+      case 'refresh-portfolio-catalog':
+        refreshPortfolioCatalog();
+        break;
+      case 'refresh-hosting-surfaces':
+        refreshHostingSurfaces();
+        break;
+      case 'run-health-checks':
+        runHealthChecks();
+        break;
+      case 'export-metrics':
+        exportMetrics();
+        break;
+      case 'check-external-apis':
+        checkExternalApis();
+        break;
+      case 'refresh-platform-health':
+        refreshPlatformHealth();
+        break;
+      case 'refresh-integrations-panel':
+        refreshIntegrationsPanel();
+        break;
+      case 'clear-resolved':
+        clearResolved();
+        break;
+      case 'select-log-tab':
+        selectLogTab(target);
+        break;
+      case 'run-client-probes':
+        runClientProbes();
+        break;
+      case 'refresh-security':
+        refreshSecurity();
+        break;
+      case 'refresh-ai-metrics':
+        refreshAIMetrics();
+        break;
+      default:
+        break;
+    }
+  });
+
+  const searchInput = document.getElementById('log-search-input');
+  if (searchInput && !searchInput.dataset.boundInput) {
+    searchInput.dataset.boundInput = 'true';
+    searchInput.addEventListener('input', () => handleLogFilterChange());
+  }
+}
+
 initOverlayMenu();
 initMonitorSectionRail();
+initMonitorActionDelegation();
 
 const nav = document.getElementById('global-nav');
 const syncNavState = () => {

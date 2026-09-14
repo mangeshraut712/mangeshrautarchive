@@ -2123,7 +2123,7 @@ html.dark .status-circle {
 }
 
 .status-circle i {
-  font-size: 11px !important;
+  font-size: 12px !important;
 
   /* Smaller tick */
   display: block;
@@ -2376,7 +2376,7 @@ html.dark .day-cell.mangesh-birthday {
 .birthday-dot {
   position: absolute;
   bottom: 2px;
-  font-size: 10px;
+  font-size: 12px;
   line-height: 1;
   color: #000;
 }

@@ -704,7 +704,7 @@ html.dark .blessing-devotional-item {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 8px;
+  font-size: 12px;
 }
 
 .blessing-details {
@@ -3044,7 +3044,7 @@ html[data-theme='dark'] #music-content .listen-now-mini {
 }
 
 #music-content .listen-now-mini__eyebrow {
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -3177,7 +3177,7 @@ html[data-theme='dark'] #music-content .listen-now-mini__artist {
 
 #music-content .listen-now-meta {
   margin: 0;
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
   font-weight: 600;
   color: #6e6e73;
 }

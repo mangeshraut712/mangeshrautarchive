@@ -43,7 +43,6 @@ export function applyNameLanguage(lang) {
   if (heading) {
     heading.setAttribute('aria-label', ariaLabel);
     heading.setAttribute('title', titleHint);
-    heading.setAttribute('role', 'button');
     heading.setAttribute('tabindex', '0');
     heading.classList.add('hero-name--interactive');
   }

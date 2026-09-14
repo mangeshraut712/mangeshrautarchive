@@ -27,7 +27,8 @@ describe('name-translate module', () => {
     const heading = document.getElementById('home-heading');
     const nameText = heading.querySelector('.hero-name-text');
 
-    expect(heading.getAttribute('role')).toBe('button');
+    expect(heading.getAttribute('role')).toBeNull();
+    expect(heading.tagName).toBe('H1');
     expect(heading.getAttribute('tabindex')).toBe('0');
     expect(nameText.textContent).toBe('Mangesh Raut');
     expect(nameText.getAttribute('lang')).toBe('en');

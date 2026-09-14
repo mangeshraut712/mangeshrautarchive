@@ -826,6 +826,8 @@ def _session_auth_secret() -> bytes:
         os.getenv("SESSION_AUTH_SECRET", "").strip()
         or os.getenv("INTEGRATION_ENCRYPTION_KEY", "").strip()
         or os.getenv("INTEGRATION_SYNC_ADMIN_TOKEN", "").strip()
+        or os.getenv("VERCEL_DEPLOYMENT_ID", "").strip()
+        or os.getenv("VERCEL_GIT_COMMIT_SHA", "").strip()
     )
     if not material:
         material = (

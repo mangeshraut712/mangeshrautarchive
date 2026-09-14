@@ -1159,68 +1159,37 @@ export class AgenticActionHandler {
    */
 
   showMeetingScheduler() {
-    // Create a simple meeting scheduler modal
+    // Create a meeting scheduler modal
     const modal = document.createElement('div');
     modal.className = 'meeting-scheduler-modal';
     modal.innerHTML = `
-            <div class="modal-overlay" style="
-                position: fixed;
-                top: 0;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                background: rgba(0, 0, 0, 0.5);
-                backdrop-filter: blur(10px);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                z-index: 10000;
-                animation: fadeIn 0.3s ease;
-            ">
-                <div class="modal-content" style="
-                    background: white;
-                    padding: 2rem;
-                    border-radius: 16px;
-                    max-width: 500px;
-                    width: 90%;
-                    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-                ">
-                    <h3 style="margin: 0 0 1rem 0; color: #1d1d1f;">📅 Schedule a Meeting</h3>
-                    <p style="color: #666; margin-bottom: 1.5rem;">
-                        To schedule a meeting with Mangesh, please email:
-                    </p>
-                    <div style="
-                        background: #f5f5f7;
-                        padding: 1rem;
-                        border-radius: 8px;
-                        margin-bottom: 1.5rem;
-                        font-family: monospace;
-                    ">
-                        mbr63@drexel.edu
-                    </div>
-                    <p style="color: #666; font-size: 0.9rem; margin-bottom: 1.5rem;">
-                        Available: Weekdays 9 AM - 5 PM EST
-                    </p>
-                    <button onclick="this.closest('.meeting-scheduler-modal').remove()" style="
-                        background: #007aff;
-                        color: white;
-                        border: none;
-                        padding: 0.75rem 1.5rem;
-                        border-radius: 8px;
-                        cursor: pointer;
-                        font-size: 1rem;
-                        width: 100%;
-                    ">
-                        Got it!
-                    </button>
-                </div>
-            </div>
-        `;
+      <div class="meeting-scheduler-overlay">
+        <div class="meeting-scheduler-content" role="dialog" aria-modal="true" aria-labelledby="meeting-scheduler-heading">
+          <h3 id="meeting-scheduler-heading" class="meeting-scheduler-title">📅 Schedule a Meeting</h3>
+          <p class="meeting-scheduler-desc">
+            To schedule a meeting with Mangesh, please email:
+          </p>
+          <div class="meeting-scheduler-email">
+            mbr63@drexel.edu
+          </div>
+          <p class="meeting-scheduler-hours">
+            Available: Weekdays 9 AM - 5 PM EST
+          </p>
+          <button type="button" class="meeting-scheduler-btn" data-action="close">
+            Got it!
+          </button>
+        </div>
+      </div>
+    `;
 
     document.body.appendChild(modal);
 
+    modal.querySelector('[data-action="close"]')?.addEventListener('click', () => {
+      modal.remove();
+    });
+
     // Close on overlay click
-    modal.querySelector('.modal-overlay').addEventListener('click', e => {
+    modal.querySelector('.meeting-scheduler-overlay')?.addEventListener('click', e => {
       if (e.target === e.currentTarget) {
         modal.remove();
       }

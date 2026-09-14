@@ -235,7 +235,7 @@ html.dark .monitor-page-nav,
 
 .monitor-page-nav__kicker {
   color: var(--accent-blue);
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.12em !important;
   line-height: 1;
@@ -669,7 +669,7 @@ body.monitor-page main > section.monitor-summary-card:not(#home) {
 }
 
 .summary-chip-label {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -743,7 +743,7 @@ body.monitor-page main > section.monitor-summary-card:not(#home) {
 }
 
 .env-pill-label {
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -1046,7 +1046,7 @@ body.monitor-page main > section.section:not(#home) {
 }
 
 .doc-card-kicker {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -1083,7 +1083,7 @@ body.monitor-page main > section.section:not(#home) {
   padding: 6px 10px;
   border-radius: 999px;
   text-align: center;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -1243,7 +1243,7 @@ html:not(.dark) .method-delete {
   border-radius: 999px;
   background: rgba(142, 142, 147, 0.12);
   color: var(--text-secondary);
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 800;
   letter-spacing: 0.06em;
   line-height: 1;
@@ -2041,7 +2041,7 @@ html.dark .event-btn-resolve:hover,
 }
 
 .chart-axis-text {
-  font-size: 11px;
+  font-size: 12px;
   fill: var(--text-secondary);
   font-weight: 500;
 }
@@ -2218,7 +2218,7 @@ html.dark .event-btn-resolve:hover,
 }
 
 .security-severity {
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -2252,7 +2252,7 @@ html.dark .event-btn-resolve:hover,
 
 .security-time {
   color: var(--text-secondary);
-  font-size: 11px;
+  font-size: 12px;
 }
 
 .rate-limits-list {
@@ -2461,7 +2461,7 @@ html.dark .log-tab-btn.active,
   .metrics-table td::before {
     color: var(--text-secondary);
     content: '';
-    font-size: 10px;
+    font-size: 12px;
     font-weight: 800;
     letter-spacing: 0.12em;
     text-transform: uppercase;
@@ -2539,7 +2539,7 @@ html.dark .log-tab-btn.active,
 
 .monitor-refresh-note {
   margin: 0;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
   color: var(--text-secondary);
   letter-spacing: 0.01em;
@@ -2572,7 +2572,7 @@ html.dark .log-tab-btn.active,
 }
 
 .integration-meta code {
-  font-size: 11px;
+  font-size: 12px;
   word-break: break-all;
 }
 
@@ -2829,7 +2829,7 @@ html.dark body.monitor-page .integration-owner-auth,
 }
 
 .meta-stat-label {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
   color: var(--text-secondary);
   text-transform: uppercase;
@@ -2858,7 +2858,7 @@ html.dark body.monitor-page .integration-owner-auth,
 }
 
 .visual-section-label {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
   color: var(--text-secondary);
   text-transform: uppercase;
@@ -3006,7 +3006,7 @@ html.dark body.monitor-page .integration-owner-auth,
 }
 
 .tile-desc {
-  font-size: 11px;
+  font-size: 12px;
   color: var(--text-secondary);
   line-height: 1.3;
 }
@@ -3055,7 +3055,7 @@ html.dark body.monitor-page .integration-owner-auth,
 }
 
 .legend-status-badge {
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 700;
   text-transform: uppercase;
   padding: 3px 8px;
@@ -3227,7 +3227,7 @@ body.monitor-page .monitor-summary-card {
 
 .control-center-eyebrow {
   margin: 0;
-  font-size: 11px;
+  font-size: 12px;
 }
 
 .control-center-heading {
@@ -3319,7 +3319,7 @@ body.monitor-page .monitor-summary-card {
 
 .donut-chart__center small {
   color: var(--text-secondary);
-  font-size: 8px;
+  font-size: 12px;
   font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -3361,7 +3361,7 @@ body.monitor-page .monitor-summary-card {
   gap: 7px;
   min-width: 0;
   color: var(--text-secondary);
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 650;
 }
 
@@ -3370,7 +3370,7 @@ body.monitor-page .monitor-summary-card {
 .ops-bar-row__header strong {
   color: var(--text-primary);
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: 12px;
   white-space: nowrap;
 }
 
@@ -3457,7 +3457,7 @@ body.monitor-page .monitor-summary-card {
 .endpoint-volume-bar strong {
   color: var(--text-secondary);
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: 12px;
 }
 
 .endpoint-volume-bar__track {
@@ -3482,7 +3482,7 @@ body.monitor-page .monitor-summary-card {
 .endpoint-volume-bar small {
   overflow: hidden;
   color: var(--text-secondary);
-  font-size: 9px;
+  font-size: 12px;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -3506,7 +3506,7 @@ body.monitor-page .monitor-summary-card {
 
 .availability-summary {
   color: var(--text-secondary);
-  font-size: 10px;
+  font-size: 12px;
 }
 
 .availability-summary strong {
@@ -3552,7 +3552,7 @@ html.dark .ops-card,
 .ops-card__kicker {
   margin: 0 0 3px;
   color: var(--accent-blue);
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 800;
   letter-spacing: 0.11em;
   text-transform: uppercase;
@@ -3575,7 +3575,7 @@ html.dark .ops-card,
   min-height: 24px;
   padding: 4px 9px;
   border-radius: 999px;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 800;
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -3653,7 +3653,7 @@ html.dark .ops-card,
 .ops-bar-row__header span {
   overflow: hidden;
   color: var(--text-secondary);
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 650;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -3687,7 +3687,7 @@ html.dark .ops-card,
   display: block;
   margin-bottom: 4px;
   color: var(--text-secondary);
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -3828,7 +3828,7 @@ html.dark .ops-card,
   margin-top: 12px;
 }
 .glossary-header-text {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
   color: var(--text-secondary);
   text-transform: uppercase;
@@ -3873,7 +3873,7 @@ html.dark .ops-card,
   color: var(--accent-red);
 }
 .rate-limit-title {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
   color: var(--text-secondary);
   text-transform: uppercase;
@@ -3894,7 +3894,7 @@ html.dark .ops-card,
 }
 .rate-limit-usage-label {
   font-weight: 700;
-  font-size: 11px;
+  font-size: 12px;
 }
 .rate-limit-bar-track {
   height: 6px;
@@ -3911,7 +3911,7 @@ html.dark .rate-limit-bar-track {
   transition: width 0.3s ease;
 }
 .rate-limit-footer {
-  font-size: 10px;
+  font-size: 12px;
   color: var(--text-secondary);
   display: flex;
   justify-content: space-between;
@@ -3926,7 +3926,7 @@ html.dark .rate-limit-bar-track {
   gap: 8px;
 }
 .rate-limit-flagged-badge {
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 700;
   text-transform: uppercase;
   color: var(--accent-red);
@@ -3969,7 +3969,7 @@ html.dark .rate-limit-bar-track {
   margin-bottom: 8px;
 }
 .ai-metric-footer-text {
-  font-size: 11px;
+  font-size: 12px;
   color: var(--text-secondary);
   margin: 0;
 }
@@ -4055,7 +4055,7 @@ html.dark .ai-model-row {
 }
 .ai-model-name {
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: 12px;
   color: var(--text-primary);
   text-overflow: ellipsis;
   overflow: hidden;
@@ -4162,7 +4162,7 @@ html.dark .benchmark-metric-item {
 }
 
 .benchmark-metric-label {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.04em;
@@ -4257,7 +4257,7 @@ html.dark .benchmark-pill {
 .terminal-btn {
   padding: 3px 8px;
   border-radius: 6px;
-  font-size: 11px;
+  font-size: 12px;
   border: 1px solid rgb(255 255 255 / 15%);
   background: rgb(255 255 255 / 8%);
   color: rgb(255 255 255 / 85%);
@@ -4298,7 +4298,7 @@ html.dark .benchmark-pill {
   font-weight: 600;
   padding: 1px 4px;
   border-radius: 4px;
-  font-size: 11px;
+  font-size: 12px;
   margin-right: 6px;
 }
 
