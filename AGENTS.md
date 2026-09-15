@@ -1,25 +1,30 @@
 # AGENTS.md — Universal AI Agent Briefing
 
 > **Standard:** Linux Foundation AGENTS.md v1.0 (2026)
-> **Last updated:** 2026-09-05
+> **Last updated:** 2026-09-15
 
 ---
 
 ## Agent Operating Principles
 
 - When creating or updating UI elements, components, cards, pages, buttons, or themes, always consult and adhere to [docs/DESIGN.md](docs/DESIGN.md) (vibrant Apple Blue `#0071e3` gradient with specular metallic shine animation, unified circular red close buttons `#ff3b30`, authentic glassmorphism, zero horizontal overflow).
-- **Mandatory Model Check & Purpose Observability**: For EVERY code modification, design polish, bugfix, or release, ALWAYS inspect and identify the exact active AI model being used (e.g., `gemini-3.8-flash`, `gemini-3.7-flash`, `gemini-2.5-pro`, `claude-3.7-sonnet`, `grok-4.3`, `gpt-4o`). Explicitly record the model's dedicated engineering purpose and token consumption details in:
-  1. `src/js/data/changelog-entries.js` (typed changelog entry)
-  2. `README.md` (Section 5 / 5.1 AI Models & Engineering Purpose Matrix)
-  3. The Git commit message body and session documentation without requiring user prompting.
+- Record the coding agent or exposed model family and its engineering purpose in the changelog and
+  README for shipped changes. Record an exact model variant, reasoning mode, or token usage only when
+  the runtime exposes it; use `unavailable` rather than guessing. Keep the portfolio chatbot's runtime
+  model separate from the coding agent that changed the repository.
 - When explaining a concept or relationship to the user, use the `visualize` skill when a visual materially improves understanding.
 - Be concise, direct, and candid. Challenge weak assumptions and distinguish verified facts from uncertainty.
 - Ground research in authoritative, current sources and link important evidence.
 - Preserve the original goal and constraints. Finish authorized work end to end and verify the actual result before claiming completion.
 - Ask questions only when a decision is materially ambiguous, risky, or requires approval.
+- Once the user authorizes a change, continue through routine local edits, focused checks, fixes, and
+  reruns without asking again. Keep approval boundaries for destructive actions, credentials, external
+  writes, commits, pushes, and deployments.
 - Use relevant skills. Spawn subagents only for genuinely independent work, then verify and synthesize their findings.
 - Keep changes focused and simple. Avoid unrelated edits, unnecessary abstractions, and low-signal tests.
-- Test observable behavior, review substantial changes, and validate user-facing work in the real interface when applicable.
+- Test observable behavior. For meaningful UI changes, inspect the actual interface at representative
+  desktop and mobile widths and in affected themes, fix observed problems, and recheck. Report any
+  surface or state that could not be inspected.
 - Preserve unrelated work. Never take destructive, production, or external actions beyond what the user authorized.
 - Report meaningful blockers, outcomes, and evidence without noisy progress.
 
@@ -66,7 +71,7 @@ All agents operating in this repository must strictly adhere to the 14 core soft
 - **AI Chatbot:** OpenRouter API (grok-4.3 model) proxied through FastAPI, with WebMCP agentic actions.
 - **Build:** esbuild for JS bundling; Tailwind CSS v4 for utility generation only (output CSS file consumed, never classes in HTML markup).
 - **Styling:** Vanilla CSS with Apple-standard CSS custom properties (`--apple-blue: #0071e3`, etc.).
-- **Testing:** Vitest (unit), pytest (API), Playwright (E2E across 16 browser configs).
+- **Testing:** Vitest (unit), pytest (API), Playwright (E2E; projects are defined in `playwright.config.js`).
 - **CI/CD:** GitHub Actions — security scanning, ESLint, Stylelint, Lighthouse deploy gates (100/100/100/100 on built dist homepage).
 
 ---
@@ -123,8 +128,8 @@ npm run lint:python         # flake8 (Python)
 npm run format:check        # Prettier check
 
 # Test
-npm test                    # Vitest unit tests (268 tests)
-npm run test:api            # pytest API tests (175 tests; activate venv first)
+npm test                    # Vitest unit tests
+npm run test:api            # pytest API tests; activate venv first when required
 npm run test:e2e:chrome     # Playwright E2E — Desktop Chrome
 npm run test:e2e:all        # Playwright E2E — all 16 browser projects
 
@@ -181,7 +186,7 @@ npm run qa:lighthouse:vercel  # Live Vercel Lighthouse floors
 - **MANDATORY Pre-Commit & Release Checklist (Always Execute Automatically)**:
   1. **Update Changelog (`src/js/data/changelog-entries.js`)**: Add a new typed entry to `changelogEntries` detailing the shipped fixes, features, or design polish, with explicit active model attribution and purpose.
   2. **Track Active LLM Model, Purpose & Metrics in Markdown**: In `README.md` (Section 5.1), documentation files, and the commit body, record the active LLM model (e.g. `gemini-3.7-flash`, `gemini-2.5-pro`, `claude-3.7-sonnet`, `grok-4.3`), its dedicated purpose (e.g. visual layout auditing, CSS refactoring, architectural contract), reasoning mode, and token consumption metrics.
-  3. **Run Full Quality Gate**: Run `npm run check` (ESLint + Stylelint + Prettier + Vitest 268 tests), `npm run security-check`, and `npm run build` with Node 22 (`export PATH="/opt/homebrew/opt/node@22/bin:/opt/homebrew/Cellar/node@22/22.23.2/bin:$PATH"`).
+  3. **Run Full Quality Gate**: Run `npm run check` (ESLint + Stylelint + Prettier + Vitest 272 tests), `npm run security-check`, and `npm run build` with Node 22 (`export PATH="/opt/homebrew/opt/node@22/bin:/opt/homebrew/Cellar/node@22/22.23.2/bin:$PATH"`).
   4. **Sync Documentation**: Keep test counts, architecture files, and design system rules synchronized across `README.md`, `AGENTS.md`, and `docs/DESIGN.md`.
   5. **Guarantee 100% Green CI/CD Protocol**: Always monitor GitHub Actions after every `git push` to `main` via `gh run list` / `gh run view` to confirm all remote jobs (actionlint, linting, Vitest, pytest, Playwright, Lighthouse 100/100/100/100 gates, and Pages deployment) complete with green checks. Never consider a task finished with failing remote CI runs.
 
@@ -226,7 +231,7 @@ All three test suites must pass before any merge to `main`:
 
 | Suite | Runner     | Command                | Coverage                                    |
 | ----- | ---------- | ---------------------- | ------------------------------------------- |
-| Unit  | Vitest     | `npm test`             | 268 tests — JS modules, utilities, markdown |
+| Unit  | Vitest     | `npm test`             | 272 tests — JS modules, utilities, markdown |
 | API   | pytest     | `npm run test:api`     | 175 tests — FastAPI endpoints, middleware   |
 | E2E   | Playwright | `npm run test:e2e:all` | Multi-spec suite across 16 browser projects |
 

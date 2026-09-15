@@ -23,6 +23,7 @@ const state = {
 const TYPE_LABELS = {
   release: 'Release',
   improvement: 'Improvement',
+  fix: 'Fix',
   retired: 'Retired',
 };
 
@@ -30,6 +31,7 @@ const TYPE_ICONS = {
   all: 'fa-border-all',
   release: 'fa-plus',
   improvement: 'fa-file-lines',
+  fix: 'fa-wrench',
   retired: 'fa-triangle-exclamation',
 };
 
@@ -187,18 +189,37 @@ function renderEntry(entry) {
     ? `<a class="changelog-entry__title-link" href="${escapeHtml(commitUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(entry.title)}</a>`
     : escapeHtml(entry.title);
   const typeLabel = (TYPE_LABELS[entry.type] || entry.type).toUpperCase();
+  const attribution = [
+    ['Editor', entry.ide],
+    ['Model', entry.model],
+    ['Purpose', entry.purpose],
+    ['Reasoning', entry.reasoning],
+    ['Usage', entry.usage],
+  ].filter(([, value]) => value);
 
   return `
     <article class="changelog-entry" data-type="${escapeHtml(entry.type)}" data-id="${escapeHtml(entry.id)}">
       <div class="changelog-entry__meta">
         <time datetime="${escapeHtml(entry.date)}">${escapeHtml(formatEyebrowDay(entry.date))}</time>
         <span class="changelog-entry__badge">${escapeHtml(typeLabel)}</span>
+        ${entry.status === 'unreleased' ? '<span class="changelog-entry__status">Unreleased</span>' : ''}
       </div>
       <div class="changelog-entry__main">
         <h3 class="changelog-entry__title">${titleInner}</h3>
         ${area ? `<p class="changelog-entry__area">${escapeHtml(area)}</p>` : ''}
       </div>
-      ${entry.summary ? `<p class="changelog-entry__summary">${escapeHtml(entry.summary)}</p>` : ''}
+      ${
+        entry.summary
+          ? `
+        <details class="changelog-entry__details">
+          <summary aria-label="Details: ${escapeHtml(entry.title)}">Details</summary>
+          ${entry.detailTitle ? `<p class="changelog-entry__original-title">${escapeHtml(entry.detailTitle)}</p>` : ''}
+          <p class="changelog-entry__summary">${escapeHtml(entry.summary)}</p>
+          ${attribution.length ? `<dl class="changelog-entry__attribution">${attribution.map(([label, value]) => `<div><dt>${label}</dt><dd>${escapeHtml(value)}</dd></div>`).join('')}</dl>` : ''}
+          ${commitUrl ? `<a class="changelog-entry__commit" href="${escapeHtml(commitUrl)}" target="_blank" rel="noopener noreferrer">View commit <span aria-hidden="true">↗</span></a>` : ''}
+        </details>`
+          : ''
+      }
     </article>`;
 }
 
@@ -237,12 +258,13 @@ function renderTimeline() {
             class="changelog-month__title"
             data-month-toggle="${escapeHtml(id)}"
             aria-expanded="${expanded}"
+            aria-controls="${escapeHtml(id)}-list"
           >
             <span>${escapeHtml(month)}</span>
             <i class="fas fa-chevron-down" aria-hidden="true"></i>
           </button>
         </h2>
-        <div class="changelog-month__list">
+        <div class="changelog-month__list" id="${escapeHtml(id)}-list">
           ${monthEntries.map(renderEntry).join('')}
         </div>
       </section>`;
@@ -257,6 +279,7 @@ function bindEvents() {
     state.type = btn.getAttribute('data-type') || 'all';
     renderTypeFilters();
     renderTimeline();
+    document.querySelector(`[data-type="${state.type}"]`)?.focus({ preventScroll: true });
   });
 
   document.getElementById('changelog-tag-filters')?.addEventListener('click', event => {
@@ -266,6 +289,7 @@ function bindEvents() {
     renderTagFilters();
     syncFiltersPanel();
     renderTimeline();
+    document.querySelector(`[data-tag="${state.tag}"]`)?.focus({ preventScroll: true });
   });
 
   document.getElementById('changelog-filters-toggle')?.addEventListener('click', () => {
@@ -283,6 +307,7 @@ function bindEvents() {
       renderTagFilters();
       syncFiltersPanel();
       renderTimeline();
+      document.querySelector('[data-type="all"]')?.focus({ preventScroll: true });
       return;
     }
 
@@ -302,6 +327,10 @@ function bindEvents() {
 }
 
 export function initChangelogPage() {
+  state.type = 'all';
+  state.tag = 'all';
+  state.filtersOpen = false;
+  state.collapsed.clear();
   renderMeta();
   renderTypeFilters();
   renderTagFilters();

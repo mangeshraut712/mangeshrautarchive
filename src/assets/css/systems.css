@@ -3429,6 +3429,13 @@ html.dark .systems-failure-status-badge {
   gap: 1rem;
 }
 
+@supports (grid-template-rows: masonry) {
+  .systems-writing-articles {
+    grid-template-rows: masonry;
+    align-items: start;
+  }
+}
+
 .systems-writing-card {
   display: flex;
   flex-direction: column;

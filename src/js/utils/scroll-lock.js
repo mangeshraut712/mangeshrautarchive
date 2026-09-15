@@ -60,7 +60,9 @@ export function restoreBodyScrollPosition(
 
   const applyScroll = () => {
     // Prefer window.scrollTo; also set documentElement/body for WebKit
-    windowRef.scrollTo(0, targetY);
+    if (typeof windowRef?.scrollTo === 'function') {
+      windowRef.scrollTo(0, targetY);
+    }
     if (document.documentElement) {
       document.documentElement.scrollTop = targetY;
     }
