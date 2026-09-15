@@ -55,8 +55,8 @@ export const changelogEntries = [
     summary:
       'Streamlined changelog page to a compact, highly scannable timeline format inspired by Apple and shadcn design patterns. Separated concise headlines from detailed technical subheadings; encapsulated complete engineering summaries, active model attribution (Editor, Model, Purpose, Reasoning, Usage), and commit references inside accessible native <details> disclosures with animated custom chevrons, theme-aware focus indicators, and reduced-motion support. Formalized continuous in-situ visual verification across viewports and themes for UI/UX, 3D, and visual components in AGENTS.md and GEMINI.md. Standardized portable multi-IDE attribution across Antigravity, Codex/ChatGPT, Claude, and Cursor, recording confirmed model families and marking unexposed parameters as unavailable. Expanded passing test suite to 273 Vitest unit tests (52 suites) and 175 pytest tests (448 total).',
     tags: ['design', 'systems', 'performance'],
-    sha: 'bf94df3c',
-    link: `${CHANGELOG_REPO}/commit/bf94df3c`,
+    sha: 'f0b6746c',
+    link: `${CHANGELOG_REPO}/commit/f0b6746c`,
     model: 'GPT-6 / Codex + Gemini 3.8 Flash (High)',
     ide: 'OpenAI Codex Desktop + Google Antigravity IDE (AGY)',
     purpose:
