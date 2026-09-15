@@ -1367,45 +1367,40 @@ function initServiceWorker() {
     }
   };
 
-  if (!('serviceWorker' in navigator)) {
-    return;
-  }
-
-  const cleanupKey = 'portfolio-sw-cleanup-v20260826';
-  try {
-    if (sessionStorage.getItem(cleanupKey) === '1') {
-      return;
-    }
-  } catch (_error) {
-    // Privacy-restricted storage should not block stale-cache cleanup.
-  }
-
-  window.addEventListener(
-    'load',
-    () => {
-      runWhenIdle(async () => {
-        try {
-          const registrations = await navigator.serviceWorker.getRegistrations();
-          await Promise.all(registrations.map(registration => registration.unregister()));
-
-          if ('caches' in window) {
-            const cacheNames = await caches.keys();
-            await Promise.all(cacheNames.map(cacheName => caches.delete(cacheName)));
-          }
-
-          clearPortfolioStorage();
+  if ('serviceWorker' in navigator) {
+    window.addEventListener(
+      'load',
+      () => {
+        runWhenIdle(async () => {
           try {
-            sessionStorage.setItem(cleanupKey, '1');
+            // Safari 27+: Re-enable SW with static routing (bypasses iOS reload bugs)
+            // Older browsers: Keep SW unregistered for stability
+            if (
+              'NavigationPreloadManager' in window ||
+              CSS.supports('animation-timeline', 'scroll()')
+            ) {
+              // Modern browser — safe to use static-routed service worker
+              navigator.serviceWorker.register('./service-worker.js').catch(() => {});
+            } else {
+              // Legacy browser — keep unregistered for iOS Safari stability
+              const registrations = await navigator.serviceWorker.getRegistrations();
+              await Promise.all(registrations.map(registration => registration.unregister()));
+
+              if ('caches' in window) {
+                const cacheNames = await caches.keys();
+                await Promise.all(cacheNames.map(cacheName => caches.delete(cacheName)));
+              }
+
+              clearPortfolioStorage();
+            }
           } catch (_error) {
-            // Stale-cache cleanup already ran; storage support is optional.
+            // Service worker cleanup is best-effort; failures are non-critical
           }
-        } catch (_error) {
-          // Service worker cleanup is best-effort; failures are non-critical
-        }
-      }, 1000);
-    },
-    { once: true }
-  );
+        }, 1000);
+      },
+      { once: true }
+    );
+  }
 }
 
 function applyStoredLiquidGlassTint() {

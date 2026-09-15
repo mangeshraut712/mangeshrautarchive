@@ -11,6 +11,21 @@ const CACHE_VERSION = 'portfolio-shell-v__ASSET_VER__';
 const PRECACHE_URLS = ['./offline.html', './manifest.json', './assets/images/profile-icon.png'];
 
 self.addEventListener('install', event => {
+  // Static Routing API — bypass SW thread for immutable assets (Safari 27+)
+  if (self.registration && self.registration.router) {
+    try {
+      self.registration.router.register([
+        { condition: { urlPattern: '*.css' }, source: 'cache' },
+        { condition: { urlPattern: '*.woff2' }, source: 'cache' },
+        { condition: { urlPattern: '*.webp' }, source: 'cache' },
+        { condition: { urlPattern: '*.png' }, source: 'cache' },
+        { condition: { urlPattern: '*.svg' }, source: 'cache' },
+      ]);
+    } catch (_e) {
+      // Static routing not supported — fallback to standard fetch handling
+    }
+  }
+
   event.waitUntil(
     (async () => {
       const cache = await caches.open(CACHE_VERSION);

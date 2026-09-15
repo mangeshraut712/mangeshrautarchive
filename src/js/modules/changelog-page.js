@@ -91,6 +91,9 @@ function getVisibleEntries() {
   for (const entry of changelogEntries) {
     if (state.type !== 'all' && entry.type !== state.type) continue;
     if (state.tag !== 'all') {
+      // Future enhancement (Safari 27+): When active filters become a Set,
+      // we can use Set.prototype.intersection() to find overlapping tags natively
+      // e.g. activeTags.intersection(tagSet).size > 0
       const tagSet = new Set(entry.tags || []);
       if (!tagSet.has(state.tag)) continue;
     }

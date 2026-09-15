@@ -442,10 +442,18 @@ html.dark .systems-eyebrow {
 .systems-hero-stats {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
+  container-type: inline-size;
   gap: 0.65rem;
   margin: 1.75rem auto 0;
   max-width: 720px;
   width: 100%;
+}
+
+@supports (grid-template-rows: masonry) {
+  .systems-hero-stats {
+    grid-template-rows: masonry;
+    align-items: start;
+  }
 }
 
 .systems-hero-stat {

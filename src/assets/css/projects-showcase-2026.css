@@ -105,6 +105,7 @@ html.dark .project-evidence-link.is-unavailable {
 #projects #github-projects-container {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
+  container-type: inline-size;
   gap: 1.15rem;
   padding: 4px !important;
   margin: 0 -4px !important;
@@ -115,6 +116,29 @@ html.dark .project-evidence-link.is-unavailable {
   align-items: stretch;
   justify-items: stretch;
   box-sizing: border-box !important;
+}
+
+/* Safari 27+ / Chrome 129+ — native masonry grid packing */
+@supports (grid-template-rows: masonry) {
+  #projects .projects-grid-shell,
+  #projects #github-projects-container {
+    grid-template-rows: masonry;
+    align-items: start;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   CONTAINER QUERIES — component-level responsive adaptation
+   ═══════════════════════════════════════════════════════════════════ */
+@container (max-width: 480px) {
+  .project-card {
+    padding: 1rem;
+  }
+
+  .project-card-header {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
 }
 
 /* Section and global nav alignment */

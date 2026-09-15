@@ -47,6 +47,7 @@
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
   border-bottom: 1px solid rgb(0 0 0 / 8%);
+  view-transition-name: global-nav;
 
   /* Smooth transitions — Apple Liquid Glass morph timing */
   transition:
@@ -832,4 +833,17 @@ html.dark #close-menu-btn.premium-close-btn {
   background: #ff453a !important;
   transform: scale(1.08) !important;
   box-shadow: 0 6px 16px rgb(255 69 58 / 60%) !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   VIEW TRANSITION CONTINUITY — Safari 27 cross-document morphing
+   ═══════════════════════════════════════════════════════════════════ */
+::view-transition-group(global-nav) {
+  animation-duration: 0.25s;
+  animation-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+::view-transition-old(global-nav),
+::view-transition-new(global-nav) {
+  mix-blend-mode: normal;
 }

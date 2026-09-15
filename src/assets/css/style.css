@@ -315,6 +315,7 @@ html {
   border: none;
   max-width: 100%;
   overflow-x: hidden;
+  overflow-anchor: auto; /* Safari 27+ zero-CLS during async hydration */
   font-size: 100%;
   text-size-adjust: 100%;
   scroll-behavior: smooth;

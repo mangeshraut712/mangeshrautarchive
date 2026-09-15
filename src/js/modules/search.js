@@ -666,9 +666,20 @@ class PortfolioSearch {
     if (!this.searchOverlay) return [];
     const sel =
       'a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])';
-    return Array.from(this.searchOverlay.querySelectorAll(sel)).filter(
-      el => !el.hasAttribute('disabled') && el.offsetParent !== null
-    );
+
+    // Progressive enhancement: Iterator helpers (Safari 27+ / ES2025)
+    // When globalThis.Iterator.from() is available, avoid allocating full intermediate arrays.
+    const nodes = this.searchOverlay.querySelectorAll(sel);
+    if (
+      typeof globalThis.Iterator !== 'undefined' &&
+      typeof globalThis.Iterator.from === 'function'
+    ) {
+      return globalThis.Iterator.from(nodes.values())
+        .filter(el => !el.hasAttribute('disabled') && el.offsetParent !== null)
+        .toArray();
+    }
+
+    return Array.from(nodes).filter(el => !el.hasAttribute('disabled') && el.offsetParent !== null);
   }
 
   _bindFocusTrap() {

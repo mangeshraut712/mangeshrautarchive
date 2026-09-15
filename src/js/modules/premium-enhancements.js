@@ -26,6 +26,11 @@
     progressBar.setAttribute('aria-hidden', 'true');
     document.body.appendChild(progressBar);
 
+    // Safari 27+ / Chrome 115+: CSS scroll-driven animation handles it
+    if (CSS.supports('animation-timeline', 'scroll()')) {
+      return; // CSS handles scroll progress natively on compositor thread
+    }
+
     let ticking = false;
 
     function updateProgress() {

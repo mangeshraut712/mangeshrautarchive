@@ -3767,6 +3767,29 @@ html.dark #chatbot-widget .writing-tools-popover {
   box-shadow: 0 14px 40px rgb(0 0 0 / 48%);
 }
 
+/* Safari 17+ / Chrome 114+ — native popover with @starting-style entry animation */
+@supports selector(:popover-open) {
+  .writing-tools-popover:popover-open {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  @starting-style {
+    .writing-tools-popover:popover-open {
+      opacity: 0;
+      transform: translateY(8px) scale(0.96);
+    }
+  }
+
+  .writing-tools-popover {
+    transition:
+      opacity 0.2s ease,
+      transform 0.2s ease,
+      display 0.2s allow-discrete,
+      overlay 0.2s allow-discrete;
+  }
+}
+
 #chatbot-widget .writing-tools-title {
   display: inline-flex;
   align-items: center;

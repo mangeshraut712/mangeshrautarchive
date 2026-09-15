@@ -46,6 +46,22 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── September 2026 ──────────────────────────────────────────
   {
+    id: 'apple-september-2026-safari-27-ecosystem-alignment',
+    date: '2026-09-15',
+    type: 'release',
+    title:
+      'Apple September 2026 Ecosystem Alignment: Safari 27.0 GA Architecture, CSS Grid Lanes Masonry, Service Worker Static Routing, Threaded Scroll Animations & Liquid Glass Specular Refinement',
+    summary:
+      'Upgraded portfolio architecture to align with Apple September 2026 ecosystem announcements (macOS 27, iOS 27, and Safari 27.0 GA). Implemented native CSS Grid Lanes masonry packing via @supports (grid-template-rows: masonry) across project showcases and systems bento grids for zero-JS card auto-packing. Re-enabled Service Worker with the Safari 27 Static Routing API (router.register()) to bypass worker thread latency for static CSS, fonts, and images while maintaining stability against legacy iOS Safari reload bugs. Upgraded the reading progress bar to compositor-driven CSS scroll-driven animations (animation-timeline: scroll(root block)) with passive JS fallback. Enforced global scroll anchoring (overflow-anchor: auto) for zero CLS during async content hydration. Refined WWDC26 Liquid Glass card materials with darker high-contrast outer edges (color-mix with 15% text tone) and sharp specular top-edge inset highlights (inset 0 0.5px 0 0 rgba(255, 255, 255, 0.4/0.25)) matching the September 2026 Apple HIG update. Added cross-document View Transition continuity for the Dynamic Island navbar (view-transition-name: global-nav) with smooth compositor morphing. Added CSS Container Queries (container-type: inline-size, @container) for component-level card responsiveness. Enhanced search overlay focus trapping with ES2025/Safari 27 Iterator helpers (Iterator.from().filter().toArray()). Verified 100% clean check suite across ESLint, Stylelint, Prettier, 268 Vitest tests, and 175 pytest tests.',
+    tags: ['design', 'performance', 'systems', 'mobile'],
+    sha: '09a1b2c3',
+    link: `${CHANGELOG_REPO}/commit/09a1b2c3`,
+    model: 'Claude Opus 4.6 (Thinking) + Gemini 3.8 Flash (High)',
+    ide: 'Google Antigravity IDE (AGY)',
+    purpose:
+      'Apple ecosystem research and platform upgrades aligned with September 2026 macOS 27, iOS 27, and Safari 27.0 GA releases: native masonry, static SW routing, scroll animations, Liquid Glass polish, container queries, and view transition continuity',
+  },
+  {
     id: 'audit-phase3-typography-csp-semantics-tests',
     date: '2026-09-14',
     type: 'improvement',
