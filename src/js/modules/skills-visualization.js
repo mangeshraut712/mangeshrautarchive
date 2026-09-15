@@ -154,7 +154,7 @@ class SkillsVisualization {
     const delay = index * 50; // Stagger animation
 
     return `
-      <div class="skill-badge group" style="animation-delay: ${delay}ms">
+      <div class="skill-badge group" data-skill="${skill.name}" style="animation-delay: ${delay}ms">
         <div class="skill-badge-icon" style="color: ${skill.color}; background: ${skill.color}15; border-color: ${skill.color}30;">
           <i class="${skill.icon}"></i>
         </div>

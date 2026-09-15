@@ -579,6 +579,14 @@ i.fa-js,
 .fa-brands.fa-js,
 .fa-brands.fa-js-square,
 .tech-icon.fa-js {
+  color: #b8860b !important;
+  -webkit-text-fill-color: #b8860b !important;
+}
+
+html.dark i.fa-js,
+html.dark .fa-brands.fa-js,
+html.dark .fa-brands.fa-js-square,
+html.dark .tech-icon.fa-js {
   color: #f7df1e !important;
   -webkit-text-fill-color: #f7df1e !important;
 }
@@ -586,6 +594,13 @@ i.fa-js,
 i.fa-react,
 .fa-brands.fa-react,
 .tech-icon.fa-react {
+  color: #0088cc !important;
+  -webkit-text-fill-color: #0088cc !important;
+}
+
+html.dark i.fa-react,
+html.dark .fa-brands.fa-react,
+html.dark .tech-icon.fa-react {
   color: #61dafb !important;
   -webkit-text-fill-color: #61dafb !important;
 }
@@ -658,6 +673,94 @@ i.fa-css3-alt,
 .tech-icon.fa-database {
   color: #336791 !important;
   -webkit-text-fill-color: #336791 !important;
+}
+
+html.dark :not(.experience-icon):not(.education-icon) > i.fa-database,
+html.dark :not(.experience-icon):not(.education-icon) > .fa-solid.fa-database,
+html.dark :not(.experience-icon):not(.education-icon) > .fas.fa-database,
+html.dark .tech-icon.fa-database {
+  color: #4169e1 !important;
+  -webkit-text-fill-color: #4169e1 !important;
+}
+
+/* Swift */
+i.fa-swift,
+.fa-brands.fa-swift,
+.tech-icon.fa-swift {
+  color: #fa7343 !important;
+  -webkit-text-fill-color: #fa7343 !important;
+}
+
+/* Rust */
+i.fa-rust,
+.fa-brands.fa-rust,
+.tech-icon.fa-rust {
+  color: #dea584 !important;
+  -webkit-text-fill-color: #dea584 !important;
+}
+
+/* Go / Golang */
+i.fa-golang,
+.fa-brands.fa-golang,
+.tech-icon.fa-golang {
+  color: #00add8 !important;
+  -webkit-text-fill-color: #00add8 !important;
+}
+
+/* Vue.js */
+i.fa-vuejs,
+.fa-brands.fa-vuejs,
+.tech-icon.fa-vuejs {
+  color: #42b883 !important;
+  -webkit-text-fill-color: #42b883 !important;
+}
+
+/* Figma */
+i.fa-figma,
+.fa-brands.fa-figma,
+.tech-icon.fa-figma {
+  color: #f24e1e !important;
+  -webkit-text-fill-color: #f24e1e !important;
+}
+
+/* Jira */
+i.fa-jira,
+.fa-brands.fa-jira,
+.tech-icon.fa-jira {
+  color: #0052cc !important;
+  -webkit-text-fill-color: #0052cc !important;
+}
+
+/* GitHub - monochromatic theme adaptation */
+i.fa-github,
+.fa-brands.fa-github,
+.fab.fa-github,
+.tech-icon.fa-github {
+  color: #181717 !important;
+  -webkit-text-fill-color: #181717 !important;
+}
+
+html.dark i.fa-github,
+html.dark .fa-brands.fa-github,
+html.dark .fab.fa-github,
+html.dark .tech-icon.fa-github {
+  color: #f5f5f7 !important;
+  -webkit-text-fill-color: #f5f5f7 !important;
+}
+
+/* Apple - monochromatic theme adaptation */
+i.fa-apple,
+.fa-brands.fa-apple,
+.tech-icon.fa-apple {
+  color: #1d1d1f !important;
+  -webkit-text-fill-color: #1d1d1f !important;
+}
+
+html.dark i.fa-apple,
+html.dark .fa-brands.fa-apple,
+html.dark .tech-icon.fa-apple {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
 }
 
 .experience-icon i,

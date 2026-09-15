@@ -3170,6 +3170,11 @@ html.dark
   vertical-align: middle !important;
 }
 
+/* Color Cascade & Icon Fidelity — prevent ancestor -webkit-text-fill-color from wiping out icon colors */
+:is(i.fa, i.fab, i.fas, i.far, .tech-icon):not([class*='gradient']):not([class*='shine']) {
+  -webkit-text-fill-color: currentColor !important;
+}
+
 /* ==========================================================================
    Theme-wise text contrast locks (AA) — homepage surfaces
    ========================================================================== */

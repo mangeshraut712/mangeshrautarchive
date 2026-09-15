@@ -2910,6 +2910,10 @@ html.dark .artist-name {
    MARQUEE ICON COLORS (ORIGINAL COLORS)
    ======================================== */
 
+.marquee-item i {
+  -webkit-text-fill-color: currentColor !important;
+}
+
 .marquee-item .fa-java {
   color: #007396 !important;
 }
@@ -2919,11 +2923,11 @@ html.dark .artist-name {
 }
 
 .marquee-item .fa-js {
-  color: #f7df1e !important;
+  color: #b8860b !important;
 }
 
 .marquee-item .fa-react {
-  color: #61dafb !important;
+  color: #0088cc !important;
 }
 
 .marquee-item .fa-angular {
@@ -2943,11 +2947,35 @@ html.dark .artist-name {
 }
 
 .marquee-item .fa-database {
-  color: #0071e3 !important;
+  color: #336791 !important;
 }
 
 .marquee-item .fa-git-alt {
   color: #f05032 !important;
+}
+
+.marquee-item .fa-github {
+  color: #181717 !important;
+}
+
+.marquee-item .fa-apple {
+  color: #1d1d1f !important;
+}
+
+.marquee-item .fa-swift {
+  color: #fa7343 !important;
+}
+
+.marquee-item .fa-rust {
+  color: #dea584 !important;
+}
+
+.marquee-item .fa-golang {
+  color: #00add8 !important;
+}
+
+.marquee-item .fa-vuejs {
+  color: #42b883 !important;
 }
 
 .marquee-item .fa-linux {
@@ -2997,11 +3025,35 @@ html.dark .marquee-item .fa-docker {
 }
 
 html.dark .marquee-item .fa-database {
-  color: #0071e3 !important;
+  color: #4169e1 !important;
 }
 
 html.dark .marquee-item .fa-git-alt {
   color: #f05032 !important;
+}
+
+html.dark .marquee-item .fa-github {
+  color: #f5f5f7 !important;
+}
+
+html.dark .marquee-item .fa-apple {
+  color: #ffffff !important;
+}
+
+html.dark .marquee-item .fa-swift {
+  color: #fa7343 !important;
+}
+
+html.dark .marquee-item .fa-rust {
+  color: #dea584 !important;
+}
+
+html.dark .marquee-item .fa-golang {
+  color: #00add8 !important;
+}
+
+html.dark .marquee-item .fa-vuejs {
+  color: #42b883 !important;
 }
 
 html.dark .marquee-item .fa-linux {
