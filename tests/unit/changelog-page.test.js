@@ -64,4 +64,19 @@ describe('changelog browsing', () => {
     button.click();
     expect(button.getAttribute('aria-expanded')).toBe('true');
   });
+
+  it('separates concise headline from detailed subtitle for clean scannability', () => {
+    const entry = document.querySelector('.changelog-entry');
+    const source = changelogEntries.find(item => item.id === entry.dataset.id);
+    const titleLink = entry.querySelector('.changelog-entry__title-link, .changelog-entry__title');
+    if (source.title.includes(':')) {
+      const [expectedShort, ...rest] = source.title.split(':');
+      expect(titleLink.textContent.trim()).toBe(expectedShort.trim());
+      const detailSubtitle = entry.querySelector('.changelog-entry__detail-title');
+      expect(detailSubtitle).not.toBeNull();
+      expect(detailSubtitle.textContent.trim()).toBe(rest.join(':').trim());
+    } else {
+      expect(titleLink.textContent.trim()).toBe(source.title);
+    }
+  });
 });

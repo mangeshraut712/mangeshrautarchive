@@ -182,12 +182,33 @@ function renderTagFilters() {
     .join('');
 }
 
+function getEntryHeadlines(entry) {
+  if (entry.detailTitle) {
+    return {
+      title: entry.title,
+      detailTitle: entry.detailTitle,
+    };
+  }
+  if (entry.title && entry.title.includes(':')) {
+    const colonIdx = entry.title.indexOf(':');
+    return {
+      title: entry.title.slice(0, colonIdx).trim(),
+      detailTitle: entry.title.slice(colonIdx + 1).trim(),
+    };
+  }
+  return {
+    title: entry.title,
+    detailTitle: '',
+  };
+}
+
 function renderEntry(entry) {
+  const { title: displayTitle, detailTitle } = getEntryHeadlines(entry);
   const area = primaryArea(entry);
   const commitUrl = getCommitUrl(entry.sha);
   const titleInner = commitUrl
-    ? `<a class="changelog-entry__title-link" href="${escapeHtml(commitUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(entry.title)}</a>`
-    : escapeHtml(entry.title);
+    ? `<a class="changelog-entry__title-link" href="${escapeHtml(commitUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(displayTitle)}</a>`
+    : escapeHtml(displayTitle);
   const typeLabel = (TYPE_LABELS[entry.type] || entry.type).toUpperCase();
   const attribution = [
     ['Editor', entry.ide],
@@ -212,11 +233,16 @@ function renderEntry(entry) {
         entry.summary
           ? `
         <details class="changelog-entry__details">
-          <summary aria-label="Details: ${escapeHtml(entry.title)}">Details</summary>
-          ${entry.detailTitle ? `<p class="changelog-entry__original-title">${escapeHtml(entry.detailTitle)}</p>` : ''}
-          <p class="changelog-entry__summary">${escapeHtml(entry.summary)}</p>
-          ${attribution.length ? `<dl class="changelog-entry__attribution">${attribution.map(([label, value]) => `<div><dt>${label}</dt><dd>${escapeHtml(value)}</dd></div>`).join('')}</dl>` : ''}
-          ${commitUrl ? `<a class="changelog-entry__commit" href="${escapeHtml(commitUrl)}" target="_blank" rel="noopener noreferrer">View commit <span aria-hidden="true">↗</span></a>` : ''}
+          <summary aria-label="Details: ${escapeHtml(displayTitle)}">
+            <span>Details</span>
+            <i class="fas fa-chevron-down" aria-hidden="true"></i>
+          </summary>
+          <div class="changelog-entry__details-content">
+            ${detailTitle ? `<h4 class="changelog-entry__detail-title">${escapeHtml(detailTitle)}</h4>` : ''}
+            <p class="changelog-entry__summary">${escapeHtml(entry.summary)}</p>
+            ${attribution.length ? `<dl class="changelog-entry__attribution">${attribution.map(([label, value]) => `<div><dt>${label}</dt><dd>${escapeHtml(value)}</dd></div>`).join('')}</dl>` : ''}
+            ${commitUrl ? `<a class="changelog-entry__commit" href="${escapeHtml(commitUrl)}" target="_blank" rel="noopener noreferrer">View commit <span aria-hidden="true">↗</span></a>` : ''}
+          </div>
         </details>`
           : ''
       }

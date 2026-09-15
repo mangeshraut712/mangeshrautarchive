@@ -46,16 +46,34 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── September 2026 ──────────────────────────────────────────
   {
+    id: 'compact-changelog-ux-portable-ai-guidance',
+    date: '2026-09-15',
+    type: 'improvement',
+    title: 'Compact Changelog UX & Portable Multi-AI Guidance',
+    detailTitle:
+      'Apple HIG & shadcn Interactive Details Disclosure, Continuous Visual In-Situ Verification & Multi-IDE Model Portability',
+    summary:
+      'Streamlined changelog page to a compact, highly scannable timeline format inspired by Apple and shadcn design patterns. Separated concise headlines from detailed technical subheadings; encapsulated complete engineering summaries, active model attribution (Editor, Model, Purpose, Reasoning, Usage), and commit references inside accessible native <details> disclosures with animated custom chevrons, theme-aware focus indicators, and reduced-motion support. Formalized continuous in-situ visual verification across viewports and themes for UI/UX, 3D, and visual components in AGENTS.md and GEMINI.md. Standardized portable multi-IDE attribution across Antigravity, Codex/ChatGPT, Claude, and Cursor, recording confirmed model families and marking unexposed parameters as unavailable. Expanded passing test suite to 273 Vitest unit tests (52 suites) and 175 pytest tests (448 total).',
+    tags: ['design', 'systems', 'performance'],
+    sha: 'bf94df3c',
+    link: `${CHANGELOG_REPO}/commit/bf94df3c`,
+    model: 'GPT-6 / Codex + Gemini 3.8 Flash (High)',
+    ide: 'OpenAI Codex Desktop + Google Antigravity IDE (AGY)',
+    purpose:
+      'Changelog simplification, Apple HIG & shadcn interactive disclosure styling, continuous visual in-situ verification rule, and portable multi-IDE documentation alignment',
+  },
+  {
     id: 'apple-september-2026-safari-27-ecosystem-alignment',
     date: '2026-09-15',
     type: 'release',
-    title:
-      'Apple September 2026 Ecosystem Alignment: Safari 27.0 GA Architecture, CSS Grid Lanes Masonry, Service Worker Static Routing, Threaded Scroll Animations & Liquid Glass Specular Refinement',
+    title: 'Apple September 2026 Ecosystem Alignment',
+    detailTitle:
+      'Safari 27.0 GA Architecture, CSS Grid Lanes Masonry, Service Worker Static Routing, Threaded Scroll Animations & Liquid Glass Specular Refinement',
     summary:
-      'Upgraded portfolio architecture to align with Apple September 2026 ecosystem announcements (macOS 27, iOS 27, and Safari 27.0 GA). Implemented native CSS Grid Lanes masonry packing via @supports (grid-template-rows: masonry) across project showcases, systems bento grids, and blog index/related article grids for zero-JS card auto-packing. Re-enabled Service Worker with the Safari 27 Static Routing API (router.register()) to bypass worker thread latency for static CSS, fonts, and images while maintaining stability against legacy iOS Safari reload bugs. Upgraded the reading progress bar to compositor-driven CSS scroll-driven animations (animation-timeline: scroll(root block)) with passive JS fallback. Enforced global scroll anchoring (overflow-anchor: auto) for zero CLS during async content hydration. Refined WWDC26 Liquid Glass card materials with darker high-contrast outer edges (color-mix with 15% text tone) and sharp specular top-edge inset highlights (inset 0 0.5px 0 0 rgba(255, 255, 255, 0.4/0.25)) matching the September 2026 Apple HIG update. Added cross-document View Transition continuity for the Dynamic Island navbar (view-transition-name: global-nav) with smooth compositor morphing. Added CSS Container Queries (container-type: inline-size, @container) for component-level card responsiveness. Enhanced search overlay focus trapping with ES2025/Safari 27 Iterator helpers (Iterator.from().filter().toArray()). Verified 100% clean check suite across ESLint, Stylelint, Prettier, 272 Vitest tests, and 175 pytest tests.',
+      'Upgraded portfolio architecture to align with Apple September 2026 ecosystem announcements (macOS 27, iOS 27, and Safari 27.0 GA). Implemented native CSS Grid Lanes masonry packing via @supports (grid-template-rows: masonry) across project showcases, systems bento grids, and blog index/related article grids for zero-JS card auto-packing. Re-enabled Service Worker with the Safari 27 Static Routing API (router.register()) to bypass worker thread latency for static CSS, fonts, and images while maintaining stability against legacy iOS Safari reload bugs. Upgraded the reading progress bar to compositor-driven CSS scroll-driven animations (animation-timeline: scroll(root block)) with passive JS fallback. Enforced global scroll anchoring (overflow-anchor: auto) for zero CLS during async content hydration. Refined WWDC26 Liquid Glass card materials with darker high-contrast outer edges (color-mix with 15% text tone) and sharp specular top-edge inset highlights (inset 0 0.5px 0 0 rgba(255, 255, 255, 0.4/0.25)) matching the September 2026 Apple HIG update. Added cross-document View Transition continuity for the Dynamic Island navbar (view-transition-name: global-nav) with smooth compositor morphing. Added CSS Container Queries (container-type: inline-size, @container) for component-level card responsiveness. Enhanced search overlay focus trapping with ES2025/Safari 27 Iterator helpers (Iterator.from().filter().toArray()). Verified 100% clean check suite across ESLint, Stylelint, Prettier, 273 Vitest tests, and 175 pytest tests.',
     tags: ['design', 'performance', 'systems', 'mobile'],
-    sha: '7f45c3dd',
-    link: `${CHANGELOG_REPO}/commit/7f45c3dd`,
+    sha: 'bf94df3c',
+    link: `${CHANGELOG_REPO}/commit/bf94df3c`,
     model: 'Claude Opus 4.6 (Thinking) + Gemini 3.8 Flash (High)',
     ide: 'Google Antigravity IDE (AGY)',
     purpose:

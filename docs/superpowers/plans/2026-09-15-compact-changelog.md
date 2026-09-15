@@ -36,6 +36,6 @@ and reduced-motion states. Keep the existing vanilla HTML/CSS/ES module stack.
 ## Progress
 
 - [x] Inspect current renderer, data, styles, design system, and canonical commands.
-- [ ] Implement and verify compact changelog.
-- [ ] Review and update documentation.
-- [ ] Complete browser checks and quality gates; record results.
+- [x] Implement and verify compact changelog (Apple HIG & shadcn details disclosure, concise titles, attribution table).
+- [x] Review and update documentation (AGENTS.md, GEMINI.md, README.md, STRUCTURE.md, INSIGHTS.md, tests/README.md).
+- [x] Complete browser checks and quality gates; record results (273 Vitest, 175 pytest, clean lint, security, build).

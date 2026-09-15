@@ -18,8 +18,10 @@
 3. **Environment & Runtime:**
    - Node.js ≥22 (see `.nvmrc`).
    - Python 3.12+ in `./venv` with FastAPI for serverless functions and local dev.
-4. **Active Model Check & Observability:**
-   - Explicitly record the active AI model name, purpose, and metrics in `src/js/data/changelog-entries.js` and Git commit bodies.
+4. **Active Model Check, Multi-IDE Portability & In-Situ Visual Verification:**
+   - Explicitly record the active AI model name/family (e.g. `GPT-6 / Codex`, `Claude Opus 4.6`, `Gemini 3.8 Flash`), IDE environment, purpose, and metrics in `src/js/data/changelog-entries.js` and Git commit bodies.
+   - Record `unavailable` for unexposed model variants, reasoning parameters, or token counts rather than guessing.
+   - Continuously verify front-end, UI/UX, 3D, and visual components in-situ in the browser across viewports and themes as changes are applied.
 
 ---
 
@@ -35,7 +37,7 @@ All developers and autonomous AI agents working in this repository must implemen
 6. **Small, Single-Purpose Functions:** Keep functions under 50 lines with focused single responsibilities.
 7. **Enforced Code Standards:** Enforce zero-tolerance linting and formatting via ESLint, Stylelint, Prettier, and flake8.
 8. **Documented Invariants & APIs:** Keep [docs/STRUCTURE.md](docs/STRUCTURE.md), [docs/API.md](docs/API.md), and [docs/DESIGN.md](docs/DESIGN.md) synchronized.
-9. **First-Class Automated Testing:** Maintain 100% passing tests (272 Vitest, 175 pytest, 16-browser Playwright matrix).
+9. **First-Class Automated Testing:** Maintain 100% passing tests (273 Vitest, 175 pytest, 16-browser Playwright matrix).
 10. **Continuous Refactoring:** Prune dead code, consolidate design tokens, and streamline without behavior regressions.
 11. **Intentional Debt Paydown:** Actively track, document, and remediate technical debt; never let shortcuts become permanent architecture.
 12. **Reviewable Git History:** Write conventional commits (`type(scope): description`) with bisectable history.
@@ -49,7 +51,7 @@ All developers and autonomous AI agents working in this repository must implemen
 Before finalizing any task or pushing to `main`, always run:
 
 ```bash
-# 1. Full Check Gate (ESLint + Stylelint + Prettier + 272 Vitest Tests)
+# 1. Full Check Gate (ESLint + Stylelint + Prettier + 273 Vitest Tests)
 export PATH="/opt/homebrew/opt/node@22/bin:/opt/homebrew/Cellar/node@22/22.23.2/bin:$PATH" && npm run check
 
 # 2. Security Check & Production Bundle Build

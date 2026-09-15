@@ -8,10 +8,8 @@
 ## Agent Operating Principles
 
 - When creating or updating UI elements, components, cards, pages, buttons, or themes, always consult and adhere to [docs/DESIGN.md](docs/DESIGN.md) (vibrant Apple Blue `#0071e3` gradient with specular metallic shine animation, unified circular red close buttons `#ff3b30`, authentic glassmorphism, zero horizontal overflow).
-- Record the coding agent or exposed model family and its engineering purpose in the changelog and
-  README for shipped changes. Record an exact model variant, reasoning mode, or token usage only when
-  the runtime exposes it; use `unavailable` rather than guessing. Keep the portfolio chatbot's runtime
-  model separate from the coding agent that changed the repository.
+- **Multi-IDE & Multi-Model Attribution**: The portfolio is actively maintained across diverse AI coding environments and IDEs (Google Antigravity IDE / AGY, OpenAI Codex / ChatGPT, Claude Code, Cursor, GitHub Copilot). Record the coding agent or exposed model family (e.g. `GPT-6 / Codex`, `Claude Opus 4.6`, `Gemini 3.8 Flash`, `grok-4.3`) and its dedicated engineering purpose in `src/js/data/changelog-entries.js` and `README.md` for shipped changes. Record an exact model variant, reasoning mode, or token usage only when the runtime exposes it; use `unavailable` rather than guessing. Always keep the portfolio chatbot's runtime model (`api/model_router.py`) distinct from the coding agent that changed the repository.
+- **Continuous In-Situ Visual Verification (Astra Principle)**: Always verify visual work as you go. For front-end, UI/UX, 3D (Three.js), CSS animations, and video/media tasks, continuously inspect the actual rendered interface in the browser across representative desktop and mobile widths and in both light and dark themes as changes are applied, fixing observed defects before claiming completion. This materially boosts end-artifact quality across all models. Report any surface or state that could not be inspected.
 - When explaining a concept or relationship to the user, use the `visualize` skill when a visual materially improves understanding.
 - Be concise, direct, and candid. Challenge weak assumptions and distinguish verified facts from uncertainty.
 - Ground research in authoritative, current sources and link important evidence.
@@ -22,9 +20,6 @@
   writes, commits, pushes, and deployments.
 - Use relevant skills. Spawn subagents only for genuinely independent work, then verify and synthesize their findings.
 - Keep changes focused and simple. Avoid unrelated edits, unnecessary abstractions, and low-signal tests.
-- Test observable behavior. For meaningful UI changes, inspect the actual interface at representative
-  desktop and mobile widths and in affected themes, fix observed problems, and recheck. Report any
-  surface or state that could not be inspected.
 - Preserve unrelated work. Never take destructive, production, or external actions beyond what the user authorized.
 - Report meaningful blockers, outcomes, and evidence without noisy progress.
 
@@ -186,7 +181,7 @@ npm run qa:lighthouse:vercel  # Live Vercel Lighthouse floors
 - **MANDATORY Pre-Commit & Release Checklist (Always Execute Automatically)**:
   1. **Update Changelog (`src/js/data/changelog-entries.js`)**: Add a new typed entry to `changelogEntries` detailing the shipped fixes, features, or design polish, with explicit active model attribution and purpose.
   2. **Track Active LLM Model, Purpose & Metrics in Markdown**: In `README.md` (Section 5.1), documentation files, and the commit body, record the active LLM model (e.g. `gemini-3.7-flash`, `gemini-2.5-pro`, `claude-3.7-sonnet`, `grok-4.3`), its dedicated purpose (e.g. visual layout auditing, CSS refactoring, architectural contract), reasoning mode, and token consumption metrics.
-  3. **Run Full Quality Gate**: Run `npm run check` (ESLint + Stylelint + Prettier + Vitest 272 tests), `npm run security-check`, and `npm run build` with Node 22 (`export PATH="/opt/homebrew/opt/node@22/bin:/opt/homebrew/Cellar/node@22/22.23.2/bin:$PATH"`).
+  3. **Run Full Quality Gate**: Run `npm run check` (ESLint + Stylelint + Prettier + Vitest 273 tests), `npm run security-check`, and `npm run build` with Node 22 (`export PATH="/opt/homebrew/opt/node@22/bin:/opt/homebrew/Cellar/node@22/22.23.2/bin:$PATH"`).
   4. **Sync Documentation**: Keep test counts, architecture files, and design system rules synchronized across `README.md`, `AGENTS.md`, and `docs/DESIGN.md`.
   5. **Guarantee 100% Green CI/CD Protocol**: Always monitor GitHub Actions after every `git push` to `main` via `gh run list` / `gh run view` to confirm all remote jobs (actionlint, linting, Vitest, pytest, Playwright, Lighthouse 100/100/100/100 gates, and Pages deployment) complete with green checks. Never consider a task finished with failing remote CI runs.
 
@@ -231,7 +226,7 @@ All three test suites must pass before any merge to `main`:
 
 | Suite | Runner     | Command                | Coverage                                    |
 | ----- | ---------- | ---------------------- | ------------------------------------------- |
-| Unit  | Vitest     | `npm test`             | 272 tests — JS modules, utilities, markdown |
+| Unit  | Vitest     | `npm test`             | 273 tests — JS modules, utilities, markdown |
 | API   | pytest     | `npm run test:api`     | 175 tests — FastAPI endpoints, middleware   |
 | E2E   | Playwright | `npm run test:e2e:all` | Multi-spec suite across 16 browser projects |
 

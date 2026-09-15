@@ -509,7 +509,7 @@ body.changelog-page .changelog-entry__main {
 
 body.changelog-page .changelog-entry__title {
   margin: 0 !important;
-  flex: 1 1 16rem;
+  flex: 1 1 auto;
   min-width: 0;
   font-size: 1rem !important;
   font-weight: 600 !important;
@@ -548,6 +548,163 @@ body.changelog-page .changelog-entry__area {
   max-width: 12rem;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+/* Details disclosure — Apple / shadcn interactive pattern */
+body.changelog-page .changelog-entry__details {
+  margin-top: 0.35rem;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease;
+}
+
+body.changelog-page .changelog-entry__details[open] {
+  background: rgba(0, 0, 0, 0.02);
+  border-color: var(--cl-border);
+  padding: 0.85rem 1.1rem;
+}
+
+html.dark body.changelog-page .changelog-entry__details[open] {
+  background: rgba(255, 255, 255, 0.03);
+  border-color: var(--cl-border);
+}
+
+body.changelog-page .changelog-entry__details summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.28rem 0.65rem;
+  border-radius: 9999px;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--cl-secondary);
+  background: rgba(0, 0, 0, 0.03);
+  border: 1px solid var(--cl-border);
+  cursor: pointer;
+  user-select: none;
+  list-style: none;
+  transition:
+    color 0.15s ease,
+    background 0.15s ease,
+    border-color 0.15s ease,
+    transform 0.15s ease;
+}
+
+html.dark body.changelog-page .changelog-entry__details summary {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: var(--cl-border);
+  color: var(--cl-secondary);
+}
+
+body.changelog-page .changelog-entry__details summary::-webkit-details-marker {
+  display: none;
+}
+
+body.changelog-page .changelog-entry__details summary i {
+  font-size: 0.65rem;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+body.changelog-page .changelog-entry__details[open] summary i {
+  transform: rotate(180deg);
+}
+
+body.changelog-page .changelog-entry__details summary:hover {
+  color: var(--cl-blue);
+  background: rgba(0, 113, 227, 0.08);
+  border-color: rgba(0, 113, 227, 0.25);
+}
+
+body.changelog-page .changelog-entry__details summary:focus-visible {
+  outline: 2px solid var(--cl-blue);
+  outline-offset: 2px;
+}
+
+body.changelog-page .changelog-entry__details-content {
+  display: grid;
+  gap: 0.65rem;
+  margin-top: 0.75rem;
+  padding-top: 0.65rem;
+  border-top: 1px solid var(--cl-border);
+}
+
+body.changelog-page .changelog-entry__detail-title {
+  margin: 0;
+  font-size: 0.88rem;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--cl-text);
+  letter-spacing: -0.01em;
+}
+
+body.changelog-page .changelog-entry__details .changelog-entry__summary {
+  margin: 0;
+  font-size: 0.88rem;
+  line-height: 1.6;
+  color: var(--cl-secondary);
+}
+
+body.changelog-page .changelog-entry__attribution {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.6rem 1rem;
+  margin: 0.35rem 0 0;
+  padding: 0.65rem 0 0;
+  border-top: 1px dashed var(--cl-border);
+}
+
+body.changelog-page .changelog-entry__attribution div {
+  display: grid;
+  gap: 0.15rem;
+}
+
+body.changelog-page .changelog-entry__attribution dt {
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--cl-muted);
+}
+
+body.changelog-page .changelog-entry__attribution dd {
+  margin: 0;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--cl-secondary);
+  line-height: 1.4;
+  word-break: break-word;
+}
+
+body.changelog-page .changelog-entry__commit {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  width: fit-content;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--cl-blue);
+  text-decoration: none;
+  padding: 0.25rem 0.55rem;
+  border-radius: 6px;
+  background: rgba(0, 113, 227, 0.08);
+  border: 1px solid rgba(0, 113, 227, 0.18);
+  transition:
+    background 0.15s ease,
+    transform 0.15s ease,
+    border-color 0.15s ease;
+}
+
+body.changelog-page .changelog-entry__commit:hover {
+  background: rgba(0, 113, 227, 0.15);
+  border-color: var(--cl-blue);
+  transform: translateX(2px);
+}
+
+body.changelog-page .changelog-entry__commit:focus-visible {
+  outline: 2px solid var(--cl-blue);
+  outline-offset: 2px;
 }
 
 body.changelog-page .changelog-empty {
@@ -592,7 +749,9 @@ body.changelog-page .changelog-empty {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  body.changelog-page .changelog-month__title i {
+  body.changelog-page .changelog-month__title i,
+  body.changelog-page .changelog-entry__details summary i,
+  body.changelog-page .changelog-entry__commit {
     transition: none;
   }
 }
