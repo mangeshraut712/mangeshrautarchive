@@ -55,8 +55,8 @@ export const changelogEntries = [
     summary:
       'Resolved the WebKit inheritance cascade defect where ancestor -webkit-text-fill-color rules stripped color from child SVG and FontAwesome icons, washing them out. Enforced global anti-washout rules (:is(i.fa, i.fab, i.fas, i.far, .tech-icon) { -webkit-text-fill-color: currentColor !important; }), added theme-aware contrast adaptation for JavaScript (#b8860b light / #f7df1e dark), React (#0088cc light / #61dafb dark), GitHub (#181717 light / #f5f5f7 dark), Apple (#1d1d1f light / #ffffff dark), Next.js (#000000 light / #ffffff dark), and Django (#092e20 light / #44b78b dark). Enhanced changelog filter chips with distinct status colors (release green, improvement blue, fix orange, retired amber) and solid disclosure surfaces (#ffffff light, #000000 dark) adhering to Apple HIG zero-overflow and high-contrast design specifications.',
     tags: ['design', 'performance', 'systems'],
-    sha: 'a4f81c92',
-    link: `${CHANGELOG_REPO}/commit/a4f81c92`,
+    sha: '8e7d5955',
+    link: `${CHANGELOG_REPO}/commit/8e7d5955`,
     model: 'Gemini 3.8 Flash (High)',
     ide: 'Google Antigravity IDE (AGY)',
     purpose:
