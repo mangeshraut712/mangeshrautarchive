@@ -55,8 +55,8 @@ export const changelogEntries = [
     summary:
       "Identified and neutralized the root-cause universal descendant override in sitewide-design-system.css that forcefully set -webkit-text-fill-color on all inactive button children, stripping icons of their authentic colors. Scoped descendant text-fill rules to exclude icons and SVGs (*:not(i):not(svg):not([class*='fa']):not([class*='icon'])). Restored vibrant Apple system colors for Changelog chips (release green #34c759/#30d158, improvement blue #0071e3/#2997ff, fix orange #ff9500/#ff9f0a, retired coral #ff3b30/#ff453a), Travel Atlas category icons (food, culture, nature, urban, history), Uses stack filter badges (hardware, software, AI, engineering, fonts, themes, productivity, reading), and Monitor telemetry status indicators with Apple status indicator dots. Guaranteed 0px horizontal overflow and high-contrast solid canvases across light (#ffffff) and dark (#000000) viewports.",
     tags: ['design', 'systems', 'performance'],
-    sha: '8e7d5955',
-    link: `${CHANGELOG_REPO}/commit/8e7d5955`,
+    sha: '7e8e3d18',
+    link: `${CHANGELOG_REPO}/commit/7e8e3d18`,
     model: 'Gemini 3.8 Flash (High)',
     ide: 'Google Antigravity IDE (AGY)',
     purpose:
