@@ -55,8 +55,8 @@ export const changelogEntries = [
     summary:
       'Replaced the in-flow grid expansion of the area filter panel that previously distorted the 9999px pill toolbar into an enlarged oval capsule and crushed type chips. Engineered an authentic floating Apple-style dropdown menu card (16px border-radius, backdrop-filter blur 25px saturate 190%, subtle borders, specular inset highlights) anchored to the filters toggle button. Integrated smooth 180° chevron rotation, active state indicators (✓ checkmark), outside-click and Escape key dismissal with event stopPropagation to prevent race conditions during DOM re-renders. Tailored responsive styling with right-edge gradient masks, horizontal chip scrolling on mobile, and tuned tablet chip metrics overriding sitewide design system cascades. Verified 0px horizontal overflow across desktop (1280px), tablet (768px), and mobile (390px) viewports in both light and dark modes.',
     tags: ['design', 'performance', 'systems'],
-    sha: '9b5b3c66',
-    link: `${CHANGELOG_REPO}/commit/9b5b3c66`,
+    sha: 'e95f76df',
+    link: `${CHANGELOG_REPO}/commit/e95f76df`,
     model: 'Gemini 3.8 Flash (High)',
     ide: 'Google Antigravity IDE (AGY)',
     purpose:
