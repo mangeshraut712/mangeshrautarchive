@@ -103,43 +103,44 @@ body.changelog-page .changelog-meta time {
 
 /* Type filters — Segmented Apple HIG / shadcn style toolbar */
 body.changelog-page .changelog-toolbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.5rem 0.85rem;
-  margin: 0.5rem auto 1.5rem;
-  padding: 0.35rem 0.55rem;
-  border-radius: 9999px;
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 0.5rem 0.85rem !important;
+  margin: 0.5rem auto 1.5rem !important;
+  padding: 0.35rem 0.55rem !important;
+  border-radius: 9999px !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
   background: rgba(255, 255, 255, 0.92) !important;
   backdrop-filter: blur(20px) !important;
   -webkit-backdrop-filter: blur(20px) !important;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-  position: sticky;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05) !important;
+  position: sticky !important;
   top: var(--subpage-sticky-top, 86px) !important;
-  z-index: 100;
-  width: fit-content;
-  max-width: 100%;
+  z-index: 100 !important;
+  width: fit-content !important;
+  max-width: 100% !important;
+  overflow: visible !important;
 }
 
 html.dark body.changelog-page .changelog-toolbar {
   background: rgba(18, 18, 20, 0.92) !important;
-  border-color: rgba(255, 255, 255, 0.12);
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.45);
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.45) !important;
 }
 
 body.changelog-page .changelog-type-row {
-  display: flex;
-  align-items: center;
-  gap: 0.35rem;
-  flex: 1 1 auto;
-  min-width: 0;
-  padding: 0;
-  border: 0;
-  background: transparent;
-  overflow-x: auto;
-  scrollbar-width: none;
-  -webkit-overflow-scrolling: touch;
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.35rem !important;
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  overflow-x: auto !important;
+  scrollbar-width: none !important;
+  -webkit-overflow-scrolling: touch !important;
 }
 
 body.changelog-page .changelog-chip {
@@ -287,17 +288,25 @@ html.dark body.changelog-page .changelog-chip[data-type='retired']:not(.is-activ
   -webkit-text-fill-color: #ff453a !important;
 }
 
+/* ─── Apple Dropdown Menu Anchor ─── */
+body.changelog-page .changelog-filter-dropdown {
+  position: relative !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  flex-shrink: 0 !important;
+}
+
 body.changelog-page .changelog-filters-toggle {
   appearance: none;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.4rem !important;
   margin-left: auto;
-  min-height: 32px !important;
+  min-height: 34px !important;
   border-radius: 9999px !important;
-  padding: 0.35rem 0.85rem !important;
+  padding: 0.4rem 0.9rem !important;
   font-family: var(--font-text) !important;
-  font-size: 0.75rem !important;
+  font-size: 0.76rem !important;
   font-weight: 650 !important;
   letter-spacing: 0.03em;
   text-transform: uppercase;
@@ -311,7 +320,7 @@ body.changelog-page .changelog-filters-toggle {
   -webkit-text-fill-color: var(--cl-secondary, #6e6e73) !important;
   border: 1px solid rgba(0, 0, 0, 0.14) !important;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
-  transition: all 0.2s ease;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
 html.dark body.changelog-page .changelog-filters-toggle {
@@ -325,16 +334,30 @@ html.dark body.changelog-page .changelog-filters-toggle {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4) !important;
 }
 
-body.changelog-page .changelog-filters-toggle i {
+body.changelog-page .changelog-filters-toggle i.fa-filter {
   color: #0071e3 !important;
   -webkit-text-fill-color: #0071e3 !important;
-  font-size: 0.78rem;
-  margin-right: 0.15rem;
+  font-size: 0.78rem !important;
+  margin-right: 0.1rem !important;
 }
 
-html.dark body.changelog-page .changelog-filters-toggle i {
+html.dark body.changelog-page .changelog-filters-toggle i.fa-filter {
   color: #2997ff !important;
   -webkit-text-fill-color: #2997ff !important;
+}
+
+body.changelog-page .changelog-filter-chevron {
+  font-size: 0.65rem !important;
+  margin-left: 0.25rem !important;
+  color: var(--cl-muted, #86868b) !important;
+  -webkit-text-fill-color: var(--cl-muted, #86868b) !important;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+body.changelog-page .changelog-filters-toggle[aria-expanded='true'] .changelog-filter-chevron {
+  transform: rotate(180deg) !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
 }
 
 body.changelog-page .changelog-filters-toggle[aria-expanded='true'] i {
@@ -363,7 +386,10 @@ html.dark body.changelog-page .changelog-filters-toggle:hover {
   box-shadow: 0 3px 10px rgba(41, 151, 255, 0.2) !important;
 }
 
-body.changelog-page .changelog-filters-toggle[aria-expanded='true'] {
+html:not(.dark)
+  body.changelog-page
+  .changelog-filters-toggle:is([aria-expanded='true'], .is-active),
+body.changelog-page .changelog-filters-toggle:is([aria-expanded='true'], .is-active) {
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
   background-color: #0071e3 !important;
@@ -372,47 +398,203 @@ body.changelog-page .changelog-filters-toggle[aria-expanded='true'] {
   box-shadow: 0 3px 12px rgba(0, 113, 227, 0.4) !important;
 }
 
+html:not(.dark)
+  body.changelog-page
+  .changelog-filters-toggle:is([aria-expanded='true'], .is-active)
+  i,
+html:not(.dark)
+  body.changelog-page
+  .changelog-filters-toggle:is([aria-expanded='true'], .is-active)
+  .changelog-filter-chevron,
+body.changelog-page .changelog-filters-toggle:is([aria-expanded='true'], .is-active) i,
+body.changelog-page
+  .changelog-filters-toggle:is([aria-expanded='true'], .is-active)
+  .changelog-filter-chevron {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+html.dark body.changelog-page .changelog-filters-toggle:is([aria-expanded='true'], .is-active) {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  background-color: #0071e3 !important;
+  background-image: linear-gradient(135deg, #0077ed 0%, #0071e3 50%, #005bb5 100%) !important;
+  border-color: rgba(255, 255, 255, 0.25) !important;
+  box-shadow: 0 3px 14px rgba(0, 113, 227, 0.5) !important;
+}
+
+html.dark body.changelog-page .changelog-filters-toggle:is([aria-expanded='true'], .is-active) i,
+html.dark
+  body.changelog-page
+  .changelog-filters-toggle:is([aria-expanded='true'], .is-active)
+  .changelog-filter-chevron {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+/* Floating Apple Dropdown Menu */
 body.changelog-page .changelog-filter-panel {
   display: none;
-  width: 100%;
-  gap: 0.5rem;
-  padding: 0.55rem 0 0.1rem;
+  position: absolute !important;
+  top: calc(100% + 10px) !important;
+  right: 0 !important;
+  width: 250px !important;
+  max-width: calc(100vw - 32px) !important;
+  background: rgba(255, 255, 255, 0.96) !important;
+  background-color: rgba(255, 255, 255, 0.96) !important;
+  backdrop-filter: blur(25px) saturate(190%) !important;
+  -webkit-backdrop-filter: blur(25px) saturate(190%) !important;
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
+  border-radius: 16px !important;
+  padding: 0.4rem !important;
+  box-shadow:
+    0 14px 40px rgba(0, 0, 0, 0.12),
+    0 3px 12px rgba(0, 0, 0, 0.05),
+    inset 0 0.5px 0 0 rgba(255, 255, 255, 0.8) !important;
+  z-index: 1000 !important;
+  box-sizing: border-box !important;
+  opacity: 0;
+  transform: translateY(-6px) scale(0.98);
+  transform-origin: top right;
+  transition:
+    opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  pointer-events: none;
+}
+
+html.dark body.changelog-page .changelog-filter-panel {
+  background: rgba(28, 28, 30, 0.96) !important;
+  background-color: rgba(28, 28, 30, 0.96) !important;
+  border-color: rgba(255, 255, 255, 0.14) !important;
+  box-shadow:
+    0 18px 48px rgba(0, 0, 0, 0.7),
+    0 4px 16px rgba(0, 0, 0, 0.45),
+    inset 0 0.5px 0 0 rgba(255, 255, 255, 0.15) !important;
 }
 
 body.changelog-page .changelog-filter-panel.is-open {
-  display: grid;
+  display: flex !important;
+  flex-direction: column !important;
+  opacity: 1 !important;
+  transform: translateY(0) scale(1) !important;
+  pointer-events: auto !important;
+}
+
+body.changelog-page .changelog-menu-header {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  padding: 0.35rem 0.65rem 0.35rem !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06) !important;
+  margin-bottom: 0.25rem !important;
+}
+
+html.dark body.changelog-page .changelog-menu-header {
+  border-bottom-color: rgba(255, 255, 255, 0.08) !important;
 }
 
 body.changelog-page .changelog-toolbar__label {
-  margin: 0;
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--cl-muted);
-  text-align: left;
+  margin: 0 !important;
+  font-size: 0.65rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.06em !important;
+  text-transform: uppercase !important;
+  color: var(--cl-muted, #86868b) !important;
+  text-align: left !important;
 }
 
+body.changelog-page .changelog-menu-list,
 body.changelog-page .changelog-chip-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.45rem;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 2px !important;
+  max-height: 280px !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  scrollbar-width: thin !important;
+  -webkit-overflow-scrolling: touch !important;
+  padding: 0.1rem 0 !important;
 }
 
-body.changelog-page .changelog-chip--tag {
-  border: 1px solid var(--cl-border) !important;
-  border-radius: 980px !important;
+body.changelog-page .changelog-menu-item {
+  appearance: none;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  width: 100% !important;
+  padding: 0.45rem 0.75rem !important;
+  border-radius: 8px !important;
+  border: none !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  font-family: var(--font-text) !important;
+  font-size: 0.82rem !important;
+  font-weight: 500 !important;
+  line-height: 1.3 !important;
+  color: var(--cl-text, #1d1d1f) !important;
+  -webkit-text-fill-color: var(--cl-text, #1d1d1f) !important;
+  cursor: pointer;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease !important;
+  text-align: left;
+  box-sizing: border-box;
+}
+
+html.dark body.changelog-page .changelog-menu-item {
+  color: var(--cl-text, #f5f5f7) !important;
+  -webkit-text-fill-color: var(--cl-text, #f5f5f7) !important;
+}
+
+body.changelog-page .changelog-menu-item:hover {
+  background: rgba(0, 113, 227, 0.08) !important;
+  background-color: rgba(0, 113, 227, 0.08) !important;
+  color: #0071e3 !important;
+  -webkit-text-fill-color: #0071e3 !important;
+}
+
+html.dark body.changelog-page .changelog-menu-item:hover {
+  background: rgba(41, 151, 255, 0.15) !important;
+  background-color: rgba(41, 151, 255, 0.15) !important;
+  color: #2997ff !important;
+  -webkit-text-fill-color: #2997ff !important;
+}
+
+body.changelog-page .changelog-menu-item.is-active {
+  background: rgba(0, 113, 227, 0.12) !important;
+  background-color: rgba(0, 113, 227, 0.12) !important;
+  color: #0071e3 !important;
+  -webkit-text-fill-color: #0071e3 !important;
+  font-weight: 650 !important;
+}
+
+html.dark body.changelog-page .changelog-menu-item.is-active {
+  background: rgba(41, 151, 255, 0.2) !important;
+  background-color: rgba(41, 151, 255, 0.2) !important;
+  color: #2997ff !important;
+  -webkit-text-fill-color: #2997ff !important;
+  font-weight: 650 !important;
+}
+
+body.changelog-page .changelog-menu-item .changelog-menu-check {
   font-size: 0.75rem !important;
-  padding: 0.3rem 0.65rem !important;
+  color: #0071e3 !important;
+  -webkit-text-fill-color: #0071e3 !important;
+  opacity: 0;
+  transition: opacity 0.15s ease !important;
+  margin-left: 0.5rem !important;
+  flex-shrink: 0;
 }
 
-body.changelog-page .changelog-chip--tag.is-active {
-  background-color: #0071e3 !important;
-  background-image: linear-gradient(135deg, #0077ed 0%, #0071e3 50%, #005bb5 100%) !important;
-  color: #ffffff !important;
-  -webkit-text-fill-color: #ffffff !important;
-  border-color: rgba(255, 255, 255, 0.25) !important;
-  box-shadow: 0 3px 12px rgba(0, 113, 227, 0.4) !important;
+html.dark body.changelog-page .changelog-menu-item .changelog-menu-check {
+  color: #2997ff !important;
+  -webkit-text-fill-color: #2997ff !important;
+}
+
+body.changelog-page .changelog-menu-item.is-active .changelog-menu-check {
+  opacity: 1 !important;
 }
 
 body.changelog-page .changelog-results-label {
@@ -803,16 +985,96 @@ body.changelog-page .changelog-empty {
   color: var(--cl-secondary);
 }
 
-@media (width <= 640px) {
+@media (641px <= width <= 1024px) {
+  #main-content .changelog-toolbar,
   body.changelog-page .changelog-toolbar {
-    padding: 0.3rem 0.45rem;
-    gap: 0.4rem;
+    gap: 0.35rem 0.5rem !important;
+    padding: 0.3rem 0.45rem !important;
+    max-width: 100% !important;
   }
 
+  #main-content #changelog-type-filters .changelog-chip,
   body.changelog-page .changelog-chip {
-    padding: 0.35rem 0.75rem !important;
-    font-size: 0.78rem !important;
+    padding: 0.32rem 0.58rem !important;
+    font-size: 0.72rem !important;
     min-height: 32px !important;
+    gap: 0.3rem !important;
+  }
+
+  #main-content #changelog-filter-dropdown #changelog-filters-toggle,
+  body.changelog-page .changelog-filters-toggle {
+    padding: 0.32rem 0.65rem !important;
+    font-size: 0.72rem !important;
+    min-height: 32px !important;
+    gap: 0.3rem !important;
+  }
+}
+
+@media (width <= 640px) {
+  #main-content .changelog-toolbar,
+  body.changelog-page .changelog-toolbar {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0.28rem 0.35rem !important;
+    gap: 0.25rem !important;
+    margin-inline: 0 !important;
+  }
+
+  #main-content .changelog-type-row,
+  body.changelog-page .changelog-type-row {
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+    overflow-x: auto !important;
+    scrollbar-width: none !important;
+    -webkit-overflow-scrolling: touch !important;
+    mask-image: linear-gradient(to right, black calc(100% - 24px), transparent 100%) !important;
+    -webkit-mask-image: linear-gradient(
+      to right,
+      black calc(100% - 24px),
+      transparent 100%
+    ) !important;
+    padding-right: 0.35rem !important;
+  }
+
+  #main-content .changelog-type-row::-webkit-scrollbar,
+  body.changelog-page .changelog-type-row::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  #main-content .changelog-filter-dropdown,
+  body.changelog-page .changelog-filter-dropdown {
+    flex-shrink: 0 !important;
+    border-left: 1px solid rgba(0, 0, 0, 0.1) !important;
+    padding-left: 0.25rem !important;
+  }
+
+  html.dark #main-content .changelog-filter-dropdown,
+  html.dark body.changelog-page .changelog-filter-dropdown {
+    border-left-color: rgba(255, 255, 255, 0.14) !important;
+  }
+
+  #main-content #changelog-type-filters .changelog-chip,
+  body.changelog-page .changelog-chip {
+    padding: 0.32rem 0.65rem !important;
+    font-size: 0.72rem !important;
+    min-height: 30px !important;
+    gap: 0.3rem !important;
+  }
+
+  #main-content #changelog-filter-dropdown #changelog-filters-toggle,
+  body.changelog-page .changelog-filters-toggle {
+    margin-left: 0 !important;
+    padding: 0.32rem 0.65rem !important;
+    font-size: 0.72rem !important;
+    min-height: 30px !important;
+    gap: 0.3rem !important;
+  }
+
+  #main-content #changelog-filter-dropdown #changelog-filter-panel,
+  body.changelog-page .changelog-filter-panel {
+    top: calc(100% + 8px) !important;
+    right: 0 !important;
+    width: min(270px, calc(100vw - 32px)) !important;
   }
 
   body.changelog-page .changelog-entry {
@@ -822,13 +1084,6 @@ body.changelog-page .changelog-empty {
   body.changelog-page .changelog-entry__main {
     flex-direction: column;
     gap: 0.35rem;
-  }
-
-  body.changelog-page .changelog-filters-toggle {
-    margin-left: 0;
-    padding: 0.3rem 0.65rem !important;
-    font-size: 0.75rem !important;
-    min-height: 32px !important;
   }
 
   body.changelog-page .changelog-month__title {

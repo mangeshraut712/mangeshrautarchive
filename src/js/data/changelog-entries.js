@@ -46,6 +46,23 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── September 2026 ──────────────────────────────────────────
   {
+    id: 'apple-style-floating-dropdown-menu',
+    date: '2026-09-16',
+    type: 'improvement',
+    title: 'Apple-Style Floating Dropdown Menu for Changelog Area Filters',
+    detailTitle:
+      'Engineered Authentic Apple HIG Floating Dropdown Menu Replacing In-Flow Filter Expansion Across Desktop, Tablet, and Mobile',
+    summary:
+      'Replaced the in-flow grid expansion of the area filter panel that previously distorted the 9999px pill toolbar into an enlarged oval capsule and crushed type chips. Engineered an authentic floating Apple-style dropdown menu card (16px border-radius, backdrop-filter blur 25px saturate 190%, subtle borders, specular inset highlights) anchored to the filters toggle button. Integrated smooth 180° chevron rotation, active state indicators (✓ checkmark), outside-click and Escape key dismissal with event stopPropagation to prevent race conditions during DOM re-renders. Tailored responsive styling with right-edge gradient masks, horizontal chip scrolling on mobile, and tuned tablet chip metrics overriding sitewide design system cascades. Verified 0px horizontal overflow across desktop (1280px), tablet (768px), and mobile (390px) viewports in both light and dark modes.',
+    tags: ['design', 'performance', 'systems'],
+    sha: '9b5b3c66',
+    link: `${CHANGELOG_REPO}/commit/9b5b3c66`,
+    model: 'Gemini 3.8 Flash (High)',
+    ide: 'Google Antigravity IDE (AGY)',
+    purpose:
+      'Designing and engineering an authentic floating Apple-style dropdown menu for changelog area filters across desktop, tablet, and mobile viewports with zero horizontal overflow',
+  },
+  {
     id: 'apple-status-icons-cascade-immunity',
     date: '2026-09-16',
     type: 'fix',

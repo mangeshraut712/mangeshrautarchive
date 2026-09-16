@@ -300,24 +300,35 @@
           role="toolbar"
           aria-label="Filter by type"
         ></div>
-        <button
-          type="button"
-          class="changelog-filters-toggle"
-          id="changelog-filters-toggle"
-          aria-expanded="false"
-          aria-controls="changelog-filter-panel"
-        >
-          <i class="fas fa-filter" aria-hidden="true"></i>
-          <span>Filters</span>
-        </button>
-        <div class="changelog-filter-panel" id="changelog-filter-panel">
-          <p class="changelog-toolbar__label" id="changelog-tag-label">Area</p>
+        <div class="changelog-filter-dropdown" id="changelog-filter-dropdown">
+          <button
+            type="button"
+            class="changelog-filters-toggle"
+            id="changelog-filters-toggle"
+            aria-expanded="false"
+            aria-haspopup="true"
+            aria-controls="changelog-filter-panel"
+          >
+            <i class="fas fa-filter" aria-hidden="true"></i>
+            <span>Filters</span>
+            <i class="fas fa-chevron-down changelog-filter-chevron" aria-hidden="true"></i>
+          </button>
           <div
-            class="changelog-chip-row"
-            id="changelog-tag-filters"
-            role="toolbar"
+            class="changelog-filter-panel"
+            id="changelog-filter-panel"
+            role="region"
             aria-labelledby="changelog-tag-label"
-          ></div>
+          >
+            <div class="changelog-menu-header">
+              <span class="changelog-toolbar__label" id="changelog-tag-label">Area</span>
+            </div>
+            <div
+              class="changelog-chip-row changelog-menu-list"
+              id="changelog-tag-filters"
+              role="toolbar"
+              aria-labelledby="changelog-tag-label"
+            ></div>
+          </div>
         </div>
       </div>
 

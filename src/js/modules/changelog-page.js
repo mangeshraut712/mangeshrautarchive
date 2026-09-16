@@ -120,8 +120,9 @@ function syncFiltersPanel() {
   if (!panel || !toggle) return;
   panel.classList.toggle('is-open', state.filtersOpen);
   toggle.setAttribute('aria-expanded', state.filtersOpen ? 'true' : 'false');
+  toggle.classList.toggle('is-active', state.filtersOpen || state.tag !== 'all');
   const count = state.tag === 'all' ? 0 : 1;
-  toggle.innerHTML = `<i class="fas fa-filter" aria-hidden="true"></i><span>Filters${count ? ` (${count})` : ''}</span>`;
+  toggle.innerHTML = `<i class="fas fa-filter" aria-hidden="true"></i><span>Filters${count ? ` (${count})` : ''}</span><i class="fas fa-chevron-down changelog-filter-chevron" aria-hidden="true"></i>`;
 }
 
 function renderMeta() {
@@ -168,15 +169,17 @@ function renderTagFilters() {
   const chips = [{ id: 'all', label: 'All areas' }, ...CHANGELOG_TAGS];
   el.innerHTML = chips
     .map(tag => {
-      const active = state.tag === tag.id ? ' is-active' : '';
+      const isSelected = state.tag === tag.id;
+      const active = isSelected ? ' is-active' : '';
       return `
         <button
           type="button"
-          class="changelog-chip changelog-chip--tag${active}"
+          class="changelog-menu-item changelog-chip--tag${active}"
           data-tag="${escapeHtml(tag.id)}"
-          aria-pressed="${state.tag === tag.id ? 'true' : 'false'}"
+          aria-pressed="${isSelected ? 'true' : 'false'}"
         >
-          ${escapeHtml(tag.label)}
+          <span class="changelog-menu-item-text">${escapeHtml(tag.label)}</span>
+          <i class="fas fa-check changelog-menu-check" aria-hidden="true"></i>
         </button>`;
     })
     .join('');
@@ -318,9 +321,31 @@ function bindEvents() {
     document.querySelector(`[data-tag="${state.tag}"]`)?.focus({ preventScroll: true });
   });
 
-  document.getElementById('changelog-filters-toggle')?.addEventListener('click', () => {
+  document.getElementById('changelog-filters-toggle')?.addEventListener('click', event => {
+    event.stopPropagation();
     state.filtersOpen = !state.filtersOpen;
     syncFiltersPanel();
+  });
+
+  document.getElementById('changelog-filter-panel')?.addEventListener('click', event => {
+    event.stopPropagation();
+  });
+
+  // Light-dismiss: close dropdown on outside click
+  document.addEventListener('click', () => {
+    if (state.filtersOpen) {
+      state.filtersOpen = false;
+      syncFiltersPanel();
+    }
+  });
+
+  // Close dropdown on Escape key
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && state.filtersOpen) {
+      state.filtersOpen = false;
+      syncFiltersPanel();
+      document.getElementById('changelog-filters-toggle')?.focus({ preventScroll: true });
+    }
   });
 
   document.getElementById('changelog-timeline')?.addEventListener('click', event => {

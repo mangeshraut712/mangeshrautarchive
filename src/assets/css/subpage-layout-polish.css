@@ -1852,7 +1852,6 @@ body.systems-page .systems-section-rail,
 body.monitor-page .monitor-section-rail,
 body.uses-page .uses-filters,
 body.uses-page .keynote-deck-nav,
-body.changelog-page .changelog-toolbar,
 body.travel-body .travel-filter-chips {
   display: flex !important;
   flex-wrap: nowrap !important;
@@ -1879,7 +1878,6 @@ html.dark body.systems-page .systems-section-rail,
 html.dark body.monitor-page .monitor-section-rail,
 html.dark body.uses-page .uses-filters,
 html.dark body.uses-page .keynote-deck-nav,
-html.dark body.changelog-page .changelog-toolbar,
 html.dark body.travel-body .travel-filter-chips {
   background: rgba(18, 18, 20, 0.9) !important;
   background-color: rgba(18, 18, 20, 0.9) !important;
