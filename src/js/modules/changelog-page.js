@@ -28,8 +28,8 @@ const TYPE_LABELS = {
 };
 
 const TYPE_ICONS = {
-  all: 'fa-border-all',
-  release: 'fa-plus',
+  all: 'fa-globe',
+  release: 'fa-wand-magic-sparkles',
   improvement: 'fa-file-lines',
   fix: 'fa-wrench',
   retired: 'fa-triangle-exclamation',

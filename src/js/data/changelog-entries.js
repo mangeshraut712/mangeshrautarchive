@@ -46,6 +46,23 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── September 2026 ──────────────────────────────────────────
   {
+    id: 'apple-status-icons-cascade-immunity',
+    date: '2026-09-16',
+    type: 'fix',
+    title: 'Apple Status Icon Fidelity & Sitewide Descendant Cascade Immunity',
+    detailTitle:
+      'Neutralized High-Specificity Wildcard Text-Fill Cascade & Restored Authentic Apple Category and Status Icon Colors Across Surfaces',
+    summary:
+      "Identified and neutralized the root-cause universal descendant override in sitewide-design-system.css that forcefully set -webkit-text-fill-color on all inactive button children, stripping icons of their authentic colors. Scoped descendant text-fill rules to exclude icons and SVGs (*:not(i):not(svg):not([class*='fa']):not([class*='icon'])). Restored vibrant Apple system colors for Changelog chips (release green #34c759/#30d158, improvement blue #0071e3/#2997ff, fix orange #ff9500/#ff9f0a, retired coral #ff3b30/#ff453a), Travel Atlas category icons (food, culture, nature, urban, history), Uses stack filter badges (hardware, software, AI, engineering, fonts, themes, productivity, reading), and Monitor telemetry status indicators with Apple status indicator dots. Guaranteed 0px horizontal overflow and high-contrast solid canvases across light (#ffffff) and dark (#000000) viewports.",
+    tags: ['design', 'systems', 'performance'],
+    sha: '8e7d5955',
+    link: `${CHANGELOG_REPO}/commit/8e7d5955`,
+    model: 'Gemini 3.8 Flash (High)',
+    ide: 'Google Antigravity IDE (AGY)',
+    purpose:
+      'Restoring authentic Apple status and category icon colors and eliminating sitewide descendant text-fill cascade across Changelog, Travel, Uses, and Monitor',
+  },
+  {
     id: 'anti-washout-color-cascade-solid-surfaces',
     date: '2026-09-15',
     type: 'fix',

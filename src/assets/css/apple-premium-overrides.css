@@ -3429,10 +3429,16 @@ i.fab {
   justify-content: center !important;
 }
 
-/* Ensure icons inside buttons are visible */
-.btn i,
-button i {
-  color: inherit !important;
+/* Ensure icons inside standard buttons default to inherit only when no specific color is set */
+.btn:not([class*='chip']):not([class*='badge']):not([class*='filter']):not([class*='tab']):not(
+    [class*='pill']
+  )
+  > i:not([style*='color']),
+button:not([class*='chip']):not([class*='badge']):not([class*='filter']):not([class*='tab']):not(
+    [class*='pill']
+  )
+  > i:not([style*='color']) {
+  color: inherit;
 }
 
 /* --- Contact AssistMe Icon --- */

@@ -1170,6 +1170,10 @@ body.monitor-page .log-tabs {
 }
 
 body.monitor-page .log-tab-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
   flex: 1 1 auto;
   min-height: 32px;
   text-align: center;
