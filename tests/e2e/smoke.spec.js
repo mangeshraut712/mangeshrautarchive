@@ -292,6 +292,9 @@ test.describe('Chrome smoke tests', () => {
     await expect(page.locator('#status-distribution-chart .donut-chart')).toBeVisible({
       timeout: 15000,
     });
+
+    // Verify Services tab view
+    await page.locator('#tab-services').click();
     await expect(page.locator('#platform-health-grid .health-item').first()).toBeVisible({
       timeout: 15000,
     });
@@ -301,8 +304,13 @@ test.describe('Chrome smoke tests', () => {
     );
 
     await page.locator('.control-center-actions button').first().click();
+
+    // Verify Security tab event filter
+    await page.locator('#tab-security').click();
     await page.locator('#event-filter').selectOption('warning');
 
+    // Verify Deployments tab surface refresh
+    await page.locator('#tab-deployments').click();
     const refreshButton = page.locator('button', { hasText: 'Refresh Surfaces' });
     await expect(refreshButton).toBeVisible();
 
@@ -312,6 +320,8 @@ test.describe('Chrome smoke tests', () => {
     await refreshButton.click();
     await responsePromise;
 
+    // Return to Overview tab to run health checks
+    await page.locator('#tab-overview').click();
     const healthChecksPromise = page
       .waitForResponse(response => response.url().includes('/api/monitor/health'), {
         timeout: 10000,

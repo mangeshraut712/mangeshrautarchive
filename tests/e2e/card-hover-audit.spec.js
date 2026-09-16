@@ -51,7 +51,7 @@ const STANDALONE_CARD_CHECKS = [
     waitFor: '#systems-overview-grid .eng-showcase-card',
   },
   {
-    path: '/monitor',
+    path: '/monitor#deployments',
     name: 'monitor',
     selector: 'body.monitor-page .doc-card',
     waitFor: 'body.monitor-page .doc-card',

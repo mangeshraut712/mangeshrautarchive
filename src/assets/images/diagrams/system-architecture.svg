@@ -134,7 +134,7 @@
     <text class="node-sub" x="15" y="74">• HMAC Session Auth</text>
     <text class="node-sub" x="15" y="92">• Prompt Injection Filter</text>
     <text class="node-sub" x="15" y="110">• In-Memory 25s Cache</text>
-    <text class="node-sub" x="15" y="128">• 239 Vitest + 175 pytest</text>
+    <text class="node-sub" x="15" y="128">• 281 Vitest + 175 pytest</text>
     <text class="node-sub" x="15" y="146">• 100/100 Lighthouse Floor</text>
   </g>
 </svg>

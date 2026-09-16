@@ -3401,50 +3401,44 @@ html[data-lg-mode] body.travel-body .travel-stop {
   min-width: 0 !important;
   box-sizing: border-box !important;
   overflow: hidden !important;
-  margin: 0 !important;
-  padding: 1rem 0.65rem 1rem 2.25rem !important;
-  background: transparent !important;
-  background-color: transparent !important;
+  margin: 6px 0.65rem !important;
+  padding: 1.1rem 0.85rem 1.1rem 2.75rem !important;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
   background-image: none !important;
-  border: none !important;
-  border-width: 0 0 1px 0 !important;
-  border-style: solid !important;
-  border-color: color-mix(in srgb, var(--separator, #e5e5ea) 50%, transparent) !important;
-  border-radius: 0 !important;
+  border: 1px solid color-mix(in srgb, var(--separator, #e5e5ea) 85%, transparent) !important;
+  border-radius: 16px !important;
   box-shadow: none !important;
-  transition: background-color 0.15s ease !important;
+  transition:
+    transform 0.18s ease,
+    border-color 0.18s ease,
+    background-color 0.18s ease !important;
 }
 
 html body.travel-body .travel-stop:hover,
 html:not(.dark) body.travel-body .travel-stop:hover,
 html[data-lg-mode] body.travel-body .travel-stop:hover {
-  background: color-mix(
-    in srgb,
-    var(--fill-secondary, rgba(0, 0, 0, 0.04)) 70%,
-    transparent
-  ) !important;
-  background-color: color-mix(
-    in srgb,
-    var(--fill-secondary, rgba(0, 0, 0, 0.04)) 70%,
-    transparent
-  ) !important;
+  border-color: #0071e3 !important;
+  background-color: #ffffff !important;
   transform: none !important;
   box-shadow: none !important;
-  border-radius: 8px !important;
+  border-radius: 16px !important;
 }
 
 html.dark body.travel-body .travel-stop {
-  background: transparent !important;
-  background-color: transparent !important;
-  border-color: rgba(255, 255, 255, 0.08) !important;
+  background: #000000 !important;
+  background-color: #000000 !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  border-radius: 16px !important;
 }
 
 html.dark body.travel-body .travel-stop:hover {
-  background: rgba(255, 255, 255, 0.05) !important;
-  background-color: rgba(255, 255, 255, 0.05) !important;
+  background: #000000 !important;
+  background-color: #000000 !important;
+  border-color: #2997ff !important;
   transform: none !important;
   box-shadow: none !important;
-  border-radius: 8px !important;
+  border-radius: 16px !important;
 }
 
 html body.travel-body .travel-stop.active,

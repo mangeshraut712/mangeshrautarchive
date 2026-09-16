@@ -1365,7 +1365,7 @@ async function initMap() {
     pitch: 20,
     bearing: 0,
     antialias: true,
-    attributionControl: true,
+    attributionControl: false,
     cooperativeGestures: true,
     maxPitch: 70,
   });
@@ -1435,7 +1435,13 @@ function scheduleMapInit() {
     });
   };
 
+  window.__travelState = state;
+  window.__initTravelMap = start;
+
   loadButton?.addEventListener('click', start);
+  ['pointerdown', 'keydown'].forEach(evt => {
+    window.addEventListener(evt, start, { once: true, passive: true });
+  });
   window.setTimeout(start, TRAVEL_MAP_AUTO_START_MS);
 }
 
@@ -1898,10 +1904,12 @@ function bindSidebarToggle() {
   const sidebar = document.getElementById('travel-sidebar');
   const panelToggle = document.getElementById('travel-sidebar-toggle');
   const handleToggle = document.getElementById('travel-sidebar-handle');
+  const expandTab = document.getElementById('travel-sidebar-expand-tab');
   if (!sidebar) return;
 
   const setCollapsed = collapsed => {
     sidebar.classList.toggle('is-collapsed', collapsed);
+    document.body.classList.toggle('sidebar-collapsed', collapsed);
     panelToggle?.classList.toggle('is-active', !collapsed);
     panelToggle?.setAttribute('aria-expanded', String(!collapsed));
     handleToggle?.setAttribute('aria-expanded', String(!collapsed));
@@ -1909,6 +1917,11 @@ function bindSidebarToggle() {
       'aria-label',
       collapsed ? 'Expand places panel' : 'Collapse places panel'
     );
+    expandTab?.setAttribute('aria-expanded', String(!collapsed));
+
+    requestAnimationFrame(() => {
+      state.map?.resize?.();
+    });
   };
 
   const toggleSidebar = () => {
@@ -1917,6 +1930,10 @@ function bindSidebarToggle() {
 
   panelToggle?.addEventListener('click', toggleSidebar);
   handleToggle?.addEventListener('click', toggleSidebar);
+  expandTab?.addEventListener('click', () => setCollapsed(false));
+
+  /* Initial state synchronization */
+  setCollapsed(sidebar.classList.contains('is-collapsed'));
 
   /* Mobile: expand sheet when user picks a place so details are usable */
   const mq = window.matchMedia('(max-width: 820px)');

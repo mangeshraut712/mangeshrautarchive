@@ -437,6 +437,91 @@ def generate_local_response(query: str, site_context: str = "") -> Dict:
             "category": "Travel",
         }
 
+    # Devotional Blessings & Cultural Heritage (Featured on Site under #contact)
+    if any(
+        k in query
+        for k in [
+            "ganpati",
+            "ganesh",
+            "aarti",
+            "sukhkarta",
+            "dukhharta",
+            "dukh harta",
+            "hanuman",
+            "chalisa",
+            "bhagavad gita",
+            "gita",
+            "blessing",
+            "devotional",
+        ]
+    ):
+        if any(g in query for g in ["hanuman", "chalisa", "bajrangbali"]):
+            return {
+                "answer": (
+                    "🕉️ **Shree Hanuman Chalisa** (Featured on Mangesh's portfolio under `#contact`):\n\n"
+                    "Composed by Goswami Tulsidas in Awadhi, famously rendered by Hariharan & Gulshan Kumar.\n\n"
+                    "**Opening Couplet (दोहा):**\n"
+                    "> श्रीगुरु चरन सरोज रज निज मनु मुकुरु सुधारि।\n"
+                    "> बरनउँ रघुबर बिमल जसु जो दायकु फल चारि॥\n"
+                    "> बुद्धिहीन तनु जानिके सुमिरौं पवन-कुमार।\n"
+                    "> बल बुधि बिद्या देहु मोहिं हरहु कलेस बिकार॥\n\n"
+                    "**Chaupai 1:**\n"
+                    "> जय हनुमान ज्ञान गुन सागर। जय कपीस तिहुँ लोक उजागर॥\n"
+                    "> राम दूत अतुलित बल धामा। अंजनि-पुत्र पवनसुत नामा॥\n\n"
+                    "▶️ [Watch Shree Hanuman Chalisa on YouTube](https://www.youtube.com/watch?v=AETFvQonfV8)\n\n"
+                    "You can also open the interactive lyrics modal directly from the **Support & Blessings** card on the portfolio."
+                ),
+                "category": "Devotional",
+            }
+
+        is_meaning = any(m in query for m in ["meaning", "arth", "translate", "translation", "significance"])
+        if is_meaning:
+            return {
+                "answer": (
+                    "🕉️ **Meaning of Shree Ganapati Aarti — 'Sukhkarta Dukhharta'**:\n\n"
+                    "Composed in the 17th century by Marathi saint **Samarth Ramdas**, famously sung by **Lata Mangeshkar** (featured on Mangesh's portfolio under `#contact`):\n\n"
+                    "1. **सुखकर्ता दुखहर्ता वार्ता विघ्नाची | नुरवी पुरवी प्रेम कृपा जयाची ||**\n"
+                    "   *Lord Ganesha is the harbinger of happiness (Sukhkarta) and the destroyer of all sorrow and affliction (Dukhharta). He eradicates every obstacle (Vighnaharta) and bestows boundless love and benevolence upon his devotees.*\n\n"
+                    "2. **सर्वांगी सुंदर उटी शेंदुराची | कंठी झळके माळ मोत्यांची ||**\n"
+                    "   *His entire form is adorned with fragrant red vermilion (shendoor), and a radiant necklace of pearls shines gracefully around his neck.*\n\n"
+                    "3. **जय देव जय देव जय मंगलमूर्ती | दर्शनमात्रे मन कामना पूर्ती ||**\n"
+                    "   *Hail the Divine Lord! Hail the Auspicious Form (Mangalmurti)! Merely beholding your sacred presence fulfills all righteous desires of the mind and heart.*\n\n"
+                    "▶️ [Watch Lata Mangeshkar's Aarti on YouTube](https://www.youtube.com/watch?v=w0W8Wh-8UCg)\n"
+                    "Visit the **Support & Blessings** section on `#contact` to view the full interactive lyrics modal."
+                ),
+                "category": "Devotional",
+            }
+
+        return {
+            "answer": (
+                "🕉️ **Shree Ganapati Aarti — 'Sukhkarta Dukhharta'**:\n\n"
+                "Featured on Mangesh's portfolio in the **Support & Devotional Blessings** section under `#contact`.\n"
+                "Composed in the 17th century by Saint **Samarth Ramdas** and celebrated worldwide, notably sung by **Lata Mangeshkar**.\n\n"
+                "**Lyrics (Marathi):**\n"
+                "> सुखकर्ता दुखहर्ता वार्ता विघ्नाची।\n"
+                "> नुरवी पुरवी प्रेम कृपा जयाची॥\n"
+                "> सर्वांगी सुंदर उटी शेंदुराची।\n"
+                "> कंठी झळके माळ मोत्यांची॥\n"
+                "> जय देव जय देव जय मंगलमूर्ती।\n"
+                "> दर्शनमात्रे मनकामना पूर्ती॥\n\n"
+                "> रत्नखचित फरा तुज गौरीकुमरा।\n"
+                "> चंदनाची उटी कुमकुम केशरा॥\n"
+                "> हीरे जडित मुकुट शोभतो बरा।\n"
+                "> रुणझुणती नूपुरे चरणी घागरिया॥\n"
+                "> जय देव जय देव जय मंगलमूर्ती।\n"
+                "> दर्शनमात्रे मनकामना पूर्ती॥\n\n"
+                "> लंबोदर पीतांबर फणिवरबंधना।\n"
+                "> सरल सोंड वक्रतुंड त्रिनयना॥\n"
+                "> दास रामाचा वाट पाहे सदना।\n"
+                "> संकटी पावावे निर्वाणी रक्षावे सुरवरवंदना॥\n"
+                "> जय देव जय देव जय मंगलमूर्ती।\n"
+                "> दर्शनमात्रे मनकामना पूर्ती॥\n\n"
+                "▶️ [Listen on YouTube (Lata Mangeshkar)](https://www.youtube.com/watch?v=w0W8Wh-8UCg)\n\n"
+                "Would you like the English translation or spiritual meaning of any verse?"
+            ),
+            "category": "Devotional",
+        }
+
     if site_context and _query_has_any_word(
         query,
         [
@@ -1110,7 +1195,19 @@ async def chat_endpoint(request: ChatRequest, req: Request):
         }
 
     safe_context = sanitize_context(request.context)
-    site_context = retrieve_site_context(message, safe_context)
+    retrieval_query = message
+    if request.messages and len(message.split()) <= 8:
+        pronouns = {"it", "this", "that", "its", "them", "meaning", "lyrics", "song", "aarti", "chalisa", "why", "how", "more", "tell", "explain"}
+        query_words = set(re.findall(r"[a-zA-Z0-9]+", message.lower()))
+        if query_words & pronouns:
+            for past in reversed(request.messages[-4:]):
+                if isinstance(past, dict):
+                    past_text = sanitize_chat_text(past.get("content", ""))
+                    if past_text and not past_text.startswith("👋"):
+                        retrieval_query = f"{past_text[:160]} {message}"
+                        break
+
+    site_context = retrieve_site_context(retrieval_query, safe_context)
     web_tools_enabled = should_use_web_tools(message, site_context)
     session_id = sanitize_session_id(request.session_id)
     safe_images = sanitize_chat_images(getattr(request, "images", None))

@@ -88,6 +88,12 @@ PUBLIC_SOURCES: Sequence[Dict[str, str]] = (
         "url": "https://mangeshraut.pro/travel",
         "kind": "javascript",
     },
+    {
+        "path": "src/js/modules/blessing-media-modal.js",
+        "title": "Support and devotional blessings lyrics (Ganapati Aarti, Hanuman Chalisa)",
+        "url": "https://mangeshraut.pro/#contact",
+        "kind": "javascript",
+    },
 )
 
 SECTION_HINTS = {
@@ -101,7 +107,7 @@ SECTION_HINTS = {
     "awards": "awards honors achievements graduate academic distinction student of the year",
     "certifications": "certifications aws oracle tensorflow",
     "blog": "blog writing articles technical writings open x google io",
-    "contact": "contact email phone linkedin github calendar",
+    "contact": "contact email phone linkedin github calendar devotional blessings ganesh ganapati aarti sukhkarta dukh harta lata mangeshkar hanuman chalisa bhagavad gita donation support crypto",
     "travel": "travel atlas cities countries landmarks photos distance map",
     "monitor": "system monitor operations api backend vercel github status",
     "systems": "systems engineering evidence benchmarks architecture lighthouse quality gates",
@@ -381,8 +387,20 @@ def build_derived_knowledge_text() -> str:
         f"{country}: {data['stops']} stops"
         for country, data in travel["countries"].items()
     ]
+    devotional_facts = (
+        "Devotional Blessings & Cultural Heritage: "
+        "Lord Ganesha Shree Ganapati Aarti 'Sukhkarta Dukhharta' by 17th-century saint Samarth Ramdas, "
+        "rendered by Lata Mangeshkar (YouTube: https://www.youtube.com/watch?v=w0W8Wh-8UCg). "
+        "Full Marathi lyrics: सुखकर्ता दुखहर्ता वार्ता विघ्नाची। नुरवी पुरवी प्रेम कृपा जयाची॥ "
+        "सर्वांगी सुंदर उटी शेंदुराची। कंठी झळके माळ मोत्यांची॥ जय देव जय देव जय मंगलमूर्ती। दर्शनमात्रे मनकामना पूर्ती॥ "
+        "Meaning: Ganesha removes all pain and sorrow, brings joyful tidings, and bestows boundless grace. "
+        "Lord Hanuman Shree Hanuman Chalisa by Goswami Tulsidas, sung by Hariharan (YouTube: https://www.youtube.com/watch?v=AETFvQonfV8). "
+        "Bhagavad Gita quotes Ch 2:47 and Ch 9:22. "
+        "Support donation channels: Stripe, PayPal, Buy Me a Coffee, and crypto wallets (SOL, BTC, USDC, ETH, DOGE)."
+    )
     return _normalize_text(
         f"{get_portfolio_facts_chunk()} "
+        f"{devotional_facts} "
         f"Travel Atlas total stops: {travel['total_stops']} across {travel['country_count']} countries. "
         f"Country stop counts: {'; '.join(country_lines)}. "
         f"{format_usa_state_summary()} "
@@ -503,6 +521,8 @@ def retrieve_site_context(
             score += 3 if "monitor" in chunk.title.lower() else 0
         if any(hint in lower_query for hint in ("blog", "article", "writing")):
             score += 3 if "blog" in chunk.title.lower() else 0
+        if any(hint in lower_query for hint in ("ganesh", "ganapati", "aarti", "sukhkarta", "dukhharta", "hanuman", "chalisa", "devotional", "blessing")):
+            score += 5 if ("blessing" in chunk.source.lower() or "devotional" in chunk.text.lower()) else 0
         scored.append((score, chunk))
 
     scored.sort(key=lambda item: item[0], reverse=True)

@@ -304,3 +304,22 @@ def test_direct_changelog_command_returns_recent_releases():
     assert res["category"] == "Changelog"
     assert "Recent Portfolio Releases" in res["answer"]
     assert "/changelog" in res["answer"]
+
+
+def test_devotional_queries_grounded_in_portfolio_facts(client):
+    """Ensure Ganapati Aarti and Hanuman Chalisa queries are answered with authentic portfolio context."""
+    from api.routes.chat import generate_local_response
+
+    ganesh_res = generate_local_response("tell me the ganpati aarti")
+    assert ganesh_res["category"] == "Devotional"
+    assert "Sukhkarta Dukhharta" in ganesh_res["answer"]
+    assert "सुखकर्ता दुखहर्ता" in ganesh_res["answer"]
+    assert "Lata Mangeshkar" in ganesh_res["answer"]
+
+    meaning_res = generate_local_response("whats the meaning of sukhkarta")
+    assert meaning_res["category"] == "Devotional"
+    assert "Meaning of Shree Ganapati Aarti" in meaning_res["answer"]
+
+    hanuman_res = generate_local_response("hanuman chalisa lyrics")
+    assert hanuman_res["category"] == "Devotional"
+    assert "Shree Hanuman Chalisa" in hanuman_res["answer"]

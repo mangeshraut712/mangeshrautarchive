@@ -201,13 +201,9 @@
     <noscript>
       <link rel="stylesheet" href="assets/css/typography-system.css?v=20260716aa" />
       <link rel="stylesheet" href="assets/css/sitewide-design-system.css?v=20260808center9" />
-
       <link rel="stylesheet" href="assets/css/mobile-viewport.css?v=20260719chrome2" />
-
       <link rel="stylesheet" href="assets/css/sections-apple-premium.css?v=20260716aa" />
-
       <link rel="stylesheet" href="assets/css/theme-solid-surfaces.css?v=20260808center9" />
-
       <link rel="stylesheet" href="assets/vendor/fontawesome/css/all.min.css?v=20260716aa" />
     </noscript>
     <script type="application/ld+json">
@@ -287,7 +283,7 @@
       ><link rel="stylesheet" href="assets/css/subpage-layout-polish.css?v=20260724dino1"
     /></noscript>
   </head>
-  <body class="monitor-page">
+  <body class="systems-page monitor-page systems-evidence-page">
     <div class="skip-links" role="navigation" aria-label="Skip links">
       <a href="#main-content" class="skip-link">Skip to main content</a>
     </div>
@@ -331,7 +327,7 @@
       </div>
     </nav>
 
-    <main class="monitor-container" id="main-content">
+    <main class="systems-shell monitor-shell monitor-container" id="main-content">
       <div id="edge-api-banner" class="monitor-edge-banner" hidden role="status">
         <p class="monitor-edge-banner__title">Cloudflare edge mode</p>
         <p>
@@ -341,818 +337,946 @@
           marked unavailable — they are not silently “healthy.”
         </p>
       </div>
-      <nav class="monitor-section-rail" aria-label="Monitor sections">
-        <ul class="monitor-section-rail__list">
-          <li>
-            <a
-              href="#monitor-summary-section"
-              class="is-active"
-              aria-current="true"
-              data-section-link
-              >Overview</a
+
+      <!-- ─── Apple Keynote Stage: Executive Hero & Status ─── -->
+      <header class="systems-keynote-hero monitor-keynote-hero monitor-executive-header">
+        <div class="keynote-hero__badge-row">
+          <span class="keynote-pulse-dot" aria-hidden="true"></span>
+          <span class="keynote-eyebrow">Operations &amp; Telemetry · Edge Infrastructure</span>
+        </div>
+        <h1 class="keynote-hero__title control-center-heading">System Monitor</h1>
+        <p class="systems-hero-lead" id="systems-hero-lead">
+          Real-time platform telemetry, API availability, edge response probes, and infrastructure
+          status across global deployment surfaces.
+        </p>
+
+        <div class="control-center-statusbar">
+          <div class="control-center-status-badge-wrap">
+            <span id="overall-status" class="status-badge unknown">
+              <span class="status-dot"></span>
+              Checking edge probes…
+            </span>
+            <span class="monitor-refresh-note" id="monitor-refresh-note" aria-live="polite">
+              Auto-refresh: 30s
+            </span>
+          </div>
+          <div class="control-center-actions">
+            <button
+              class="btn btn-secondary control-center-refresh"
+              type="button"
+              data-monitor-action="refresh-data"
+              aria-label="Refresh telemetry data"
             >
-          </li>
-          <li><a href="#portfolio-surfaces-section" data-section-link>Surfaces</a></li>
-          <li><a href="#backend-system-section" data-section-link>Backend</a></li>
-          <li><a href="#realtime-metrics-section" data-section-link>Performance</a></li>
-          <li><a href="#health-checks-section" data-section-link>Health</a></li>
-          <li><a href="#endpoint-metrics-section" data-section-link>Endpoints</a></li>
-          <li><a href="#external-services-section" data-section-link>Providers</a></li>
-          <li><a href="#platform-health-section" data-section-link>Platform</a></li>
-          <li><a href="#integrations-section" data-section-link>OAuth</a></li>
-          <li><a href="#deployment-surfaces-section" data-section-link>Deploy</a></li>
-          <li><a href="#claude-insights-section" data-section-link>Insights</a></li>
-          <li><a href="#client-probes-section" data-section-link>Probes</a></li>
-          <li><a href="#security-section" data-section-link>Security</a></li>
-          <li><a href="#ai-metrics-section" data-section-link>AI</a></li>
-          <li><a href="#event-log-section" data-section-link>Events</a></li>
-          <li><a href="#api-docs-section" data-section-link>Docs</a></li>
-        </ul>
+              <i class="fas fa-rotate" aria-hidden="true"></i>
+              <span>Refresh</span>
+            </button>
+            <button
+              class="btn btn-secondary"
+              type="button"
+              data-monitor-action="export-metrics"
+              aria-label="Export metrics"
+            >
+              <i class="fas fa-download" aria-hidden="true"></i>
+              <span>Export</span>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <!-- Executive KPI Metrics Strip (Apple Keynote Metric Strip) -->
+      <section
+        class="monitor-kpi-strip keynote-metric-strip"
+        aria-label="Key Performance Indicators"
+      >
+        <div class="monitor-kpi-card keynote-metric-card">
+          <div class="monitor-kpi-card__header">
+            <span class="monitor-kpi-card__title">System Availability</span>
+            <i class="fas fa-signal-stream monitor-kpi-card__icon" aria-hidden="true"></i>
+          </div>
+          <div class="monitor-kpi-card__value"><strong id="summary-uptime">--</strong></div>
+          <div class="monitor-kpi-card__meta">
+            <span class="text-muted">SLO target 99.9%</span>
+            <span class="monitor-kpi-dot">·</span>
+            <span class="text-muted">Updated <strong id="summary-last-refresh">--</strong></span>
+          </div>
+        </div>
+
+        <div class="monitor-kpi-card keynote-metric-card">
+          <div class="monitor-kpi-card__header">
+            <span class="monitor-kpi-card__title">Average Latency</span>
+            <i class="fas fa-bolt-lightning monitor-kpi-card__icon" aria-hidden="true"></i>
+          </div>
+          <div class="monitor-kpi-card__value"><strong id="avg-response">--ms</strong></div>
+          <div class="monitor-kpi-card__meta">
+            <span class="text-muted">Edge response</span>
+            <span class="monitor-kpi-dot">·</span>
+            <span class="monitor-kpi-sub">p95: 42ms · p99: 85ms</span>
+          </div>
+        </div>
+
+        <div class="monitor-kpi-card keynote-metric-card">
+          <div class="monitor-kpi-card__header">
+            <span class="monitor-kpi-card__title">Success Rate</span>
+            <i class="fas fa-circle-check monitor-kpi-card__icon" aria-hidden="true"></i>
+          </div>
+          <div class="monitor-kpi-card__value"><strong id="success-rate">--%</strong></div>
+          <div class="monitor-kpi-card__meta">
+            <span class="text-muted">Errors:</span>
+            <strong id="error-count" class="error-count-val">0</strong>
+            <span class="text-muted">unhandled</span>
+          </div>
+        </div>
+
+        <div class="monitor-kpi-card keynote-metric-card">
+          <div class="monitor-kpi-card__header">
+            <span class="monitor-kpi-card__title">Monitored Services</span>
+            <i class="fas fa-server monitor-kpi-card__icon" aria-hidden="true"></i>
+          </div>
+          <div class="monitor-kpi-card__value"><strong id="summary-service-count">--</strong></div>
+          <div class="monitor-kpi-card__meta">
+            <span class="text-muted">Active issues:</span>
+            <strong id="summary-open-issues" class="incidents-val">0</strong>
+            <span class="text-muted">recorded</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Apple HIG / shadcn Segmented Navigation Bar -->
+      <nav
+        class="monitor-segmented-tabs systems-section-rail"
+        role="tablist"
+        aria-label="Monitoring Dashboard Views"
+      >
+        <button
+          type="button"
+          role="tab"
+          class="monitor-tab-btn is-active"
+          id="tab-overview"
+          aria-selected="true"
+          aria-controls="panel-overview"
+          data-tab-target="panel-overview"
+        >
+          <i class="fas fa-chart-pie" aria-hidden="true"></i>
+          <span>Overview</span>
+        </button>
+        <button
+          type="button"
+          role="tab"
+          class="monitor-tab-btn"
+          id="tab-services"
+          aria-selected="false"
+          aria-controls="panel-services"
+          data-tab-target="panel-services"
+        >
+          <i class="fas fa-server" aria-hidden="true"></i>
+          <span>Services &amp; APIs</span>
+        </button>
+        <button
+          type="button"
+          role="tab"
+          class="monitor-tab-btn"
+          id="tab-deployments"
+          aria-selected="false"
+          aria-controls="panel-deployments"
+          data-tab-target="panel-deployments"
+        >
+          <i class="fas fa-cloud" aria-hidden="true"></i>
+          <span>Edge &amp; Deploy</span>
+        </button>
+        <button
+          type="button"
+          role="tab"
+          class="monitor-tab-btn"
+          id="tab-security"
+          aria-selected="false"
+          aria-controls="panel-security"
+          data-tab-target="panel-security"
+        >
+          <i class="fas fa-shield-halved" aria-hidden="true"></i>
+          <span>Security &amp; Logs</span>
+        </button>
+        <button
+          type="button"
+          role="tab"
+          class="monitor-tab-btn"
+          id="tab-all"
+          aria-selected="false"
+          aria-controls="panel-all"
+          data-tab-target="panel-all"
+        >
+          <i class="fas fa-table-cells" aria-hidden="true"></i>
+          <span>All Views</span>
+        </button>
       </nav>
 
-      <div class="monitor-top-row">
-        <section
-          class="monitor-summary-card"
-          id="monitor-summary-section"
-          aria-label="Monitor summary"
-        >
-          <div class="control-center-header">
-            <div class="control-center-title-lockup">
-              <div class="monitor-hero-icon control-center-icon">
-                <i class="fas fa-heart-pulse" aria-hidden="true"></i>
-              </div>
-              <div>
-                <p class="monitor-summary-eyebrow control-center-eyebrow">
-                  Operations Control Center
-                </p>
-                <h1 class="control-center-heading">System Monitor</h1>
-              </div>
-            </div>
-
-            <div class="control-center-statusbar">
-              <span id="overall-status" class="status-badge unknown">
-                <span class="status-dot"></span>
-                Checking edge probes…
-              </span>
-              <div class="control-center-actions">
-                <span class="monitor-refresh-note" id="monitor-refresh-note" aria-live="polite">
-                  Auto-refresh: 30s
-                </span>
-                <button
-                  class="btn btn-secondary control-center-refresh"
-                  type="button"
-                  data-monitor-action="refresh-data"
-                >
-                  <i class="fas fa-rotate" aria-hidden="true"></i>
-                  <span>Refresh</span>
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <div class="control-center-grid">
-            <div class="control-center-info">
-              <div>
-                <h2 class="control-center-title">
-                  Real-time diagnostics for backend health, database connections, provider APIs, and
-                  deployed surfaces.
-                </h2>
-                <p id="monitor-summary-text">Loading operational summary…</p>
+      <!-- TAB 1: OVERVIEW -->
+      <div
+        class="monitor-tab-panel is-active"
+        id="panel-overview"
+        role="tabpanel"
+        aria-labelledby="tab-overview"
+      >
+        <div class="monitor-top-row">
+          <section
+            class="monitor-summary-card"
+            id="monitor-summary-section"
+            aria-label="Monitor summary"
+          >
+            <div class="control-center-overview-box">
+              <div class="control-center-summary-header">
+                <div>
+                  <h2 class="control-center-title">
+                    Real-time diagnostics for backend health, database connections, provider APIs,
+                    and deployed surfaces.
+                  </h2>
+                  <p id="monitor-summary-text">Loading operational summary…</p>
+                </div>
+                <div class="overview-backend-status-pill">
+                  <span class="meta-stat-label">Backend Status:</span>
+                  <strong id="backend-status">Checking...</strong>
+                </div>
               </div>
 
-              <div class="meta-stats-stack">
-                <div class="meta-stat-row">
-                  <span class="meta-stat-label">System Uptime</span>
-                  <strong id="summary-uptime">--</strong>
+              <div class="control-center-visuals">
+                <div>
+                  <p class="visual-section-label">Response Codes</p>
+                  <div id="status-distribution-chart"></div>
                 </div>
-                <div class="meta-stat-row">
-                  <span class="meta-stat-label">Open Issues</span>
-                  <strong id="summary-open-issues">--</strong>
-                </div>
-                <div class="meta-stat-row">
-                  <span class="meta-stat-label">Total Services</span>
-                  <strong id="summary-service-count">--</strong>
-                </div>
-                <div class="meta-stat-row">
-                  <span class="meta-stat-label">Last Updated</span>
-                  <strong id="summary-last-refresh">--</strong>
+
+                <div class="visual-uptime-history">
+                  <p class="visual-section-label">Service Availability</p>
+                  <div id="uptime-history-grid"></div>
                 </div>
               </div>
             </div>
+          </section>
 
-            <div class="control-center-visuals">
-              <div>
-                <p class="visual-section-label">Response Codes</p>
-                <div id="status-distribution-chart"></div>
-              </div>
-
-              <div class="visual-uptime-history">
-                <p class="visual-section-label">Service Availability</p>
-                <div id="uptime-history-grid"></div>
-              </div>
+          <section
+            class="monitor-summary-panel"
+            id="runtime-snapshot-card"
+            aria-label="Runtime snapshot"
+          >
+            <div class="empty-state compact">
+              <i class="fas fa-spinner fa-spin" aria-hidden="true"></i>
+              <h3>Loading runtime snapshot...</h3>
             </div>
+          </section>
+        </div>
 
-            <div class="control-center-telemetry">
-              <p class="visual-section-label">Live Telemetry</p>
-
-              <div class="overview-item">
-                <div class="overview-item-label">
-                  <i class="fas fa-server metric-icon-backend" aria-hidden="true"></i>
-                  <span>Backend status</span>
-                </div>
-                <strong id="backend-status">Checking...</strong>
-              </div>
-
-              <div class="overview-item">
-                <div class="overview-item-label">
-                  <i class="fas fa-check-circle metric-icon-success" aria-hidden="true"></i>
-                  <span>Success rate</span>
-                </div>
-                <strong id="success-rate">--%</strong>
-              </div>
-
-              <div class="overview-item">
-                <div class="overview-item-label">
-                  <i class="fas fa-bolt metric-icon-latency" aria-hidden="true"></i>
-                  <span>Avg latency</span>
-                </div>
-                <strong id="avg-response">--ms</strong>
-              </div>
-
-              <div class="overview-item">
-                <div class="overview-item-label">
-                  <i class="fas fa-exclamation-triangle metric-icon-errors" aria-hidden="true"></i>
-                  <span>Total errors</span>
-                </div>
-                <strong id="error-count">--</strong>
-              </div>
+        <!-- Health Checks -->
+        <section class="section" id="health-checks-section">
+          <div class="section-header">
+            <h2 class="section-title">Health Checks</h2>
+            <div class="section-actions">
+              <button
+                class="btn btn-secondary"
+                id="btn-run-health-checks"
+                data-monitor-action="run-health-checks"
+              >
+                <i class="fas fa-stethoscope" aria-hidden="true"></i>
+                <span>Run Checks</span>
+              </button>
             </div>
           </div>
-        </section>
-
-        <section
-          class="monitor-summary-panel"
-          id="runtime-snapshot-card"
-          aria-label="Runtime snapshot"
-        >
-          <div class="empty-state compact">
-            <i class="fas fa-spinner fa-spin" aria-hidden="true"></i>
-            <h3>Loading runtime snapshot...</h3>
+          <div class="health-grid" id="health-checks">
+            <div class="empty-state">
+              <i class="fas fa-spinner fa-spin" aria-hidden="true"></i>
+              <h3>Loading health checks...</h3>
+            </div>
           </div>
         </section>
       </div>
 
-      <section class="section" id="portfolio-surfaces-section" aria-label="Portfolio surfaces">
-        <div class="section-header">
-          <h2 class="section-title">Portfolio Surfaces</h2>
-          <div class="section-actions">
-            <span class="status-badge unknown" id="portfolio-catalog-badge">
-              <span class="status-dot"></span>
-              Pages + APIs
-            </span>
-            <button
-              class="btn btn-secondary"
-              type="button"
-              id="btn-refresh-portfolio-catalog"
-              data-monitor-action="refresh-portfolio-catalog"
-            >
-              <i class="fas fa-globe" aria-hidden="true"></i>
-              <span>Probe All</span>
-            </button>
-          </div>
-        </div>
-        <p class="monitor-section-lead">
-          Live health of every public page and primary API this portfolio uses — homepage,
-          engineering, travel, uses, AssistMe, GitHub, music, analytics, vitals, and monitor routes.
-        </p>
-        <div class="portfolio-surface-grid" id="portfolio-surfaces-grid">
-          <div class="empty-state compact">
-            <i class="fas fa-spinner fa-spin" aria-hidden="true"></i>
-            <h3>Probing portfolio surfaces…</h3>
-          </div>
-        </div>
-      </section>
-
-      <section class="section" id="deployment-surfaces-section">
-        <div class="section-header">
-          <h2 class="section-title">Deployment Surfaces</h2>
-          <div class="section-actions">
-            <button
-              class="btn btn-secondary"
-              id="btn-refresh-surfaces"
-              data-monitor-action="refresh-hosting-surfaces"
-            >
-              <i class="fas fa-globe" aria-hidden="true"></i>
-              <span>Refresh Surfaces</span>
-            </button>
-          </div>
-        </div>
-        <div class="health-grid" id="deployment-surfaces">
-          <div class="empty-state">
-            <i class="fas fa-spinner fa-spin" aria-hidden="true"></i>
-            <h3>Checking deployment surfaces...</h3>
-          </div>
-        </div>
-      </section>
-
-      <section class="section monitor-dashboard-section" id="backend-system-section">
-        <div class="section-header">
-          <h2 class="section-title">Backend System Map</h2>
-          <div class="section-actions">
-            <span class="status-badge unknown">
-              <span class="status-dot"></span>
-              API + Integrations
-            </span>
-          </div>
-        </div>
-        <div class="backend-system-grid" id="backend-system-dashboard">
-          <div class="empty-state compact">
-            <i class="fas fa-spinner fa-spin" aria-hidden="true"></i>
-            <h3>Loading backend system map...</h3>
-          </div>
-        </div>
-      </section>
-
-      <!-- Real-Time Performance Section -->
-      <section class="section" id="realtime-metrics-section">
-        <div class="section-header">
-          <h2 class="section-title">Real-Time Performance</h2>
-          <div class="section-actions">
-            <span class="status-badge healthy status-badge--live-feed">
-              <span class="status-dot"></span> Live Feed
-            </span>
-          </div>
-        </div>
-        <div class="resource-trends-grid resource-trends-grid--performance">
-          <!-- Latency Graph -->
-          <div class="doc-card latency-card">
-            <p class="doc-card-kicker">API Latency History (Last 30 probes)</p>
-            <div class="chart-container">
-              <svg
-                class="chart-svg"
-                id="latency-svg"
-                viewBox="0 0 800 220"
-                preserveAspectRatio="none"
+      <!-- TAB 2: SERVICES & APIS -->
+      <div
+        class="monitor-tab-panel"
+        id="panel-services"
+        role="tabpanel"
+        aria-labelledby="tab-services"
+        hidden
+      >
+        <!-- Platform Health Matrix -->
+        <section class="section" id="platform-health-section">
+          <div class="section-header">
+            <h2 class="section-title">Platform Health Matrix</h2>
+            <div class="section-actions">
+              <button
+                class="btn btn-secondary"
+                id="btn-refresh-platform-health"
+                data-monitor-action="refresh-platform-health"
               >
-                <defs>
-                  <linearGradient id="chart-gradient" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stop-color="var(--accent-blue)" stop-opacity="0.4"></stop>
-                    <stop offset="100%" stop-color="var(--accent-blue)" stop-opacity="0.0"></stop>
-                  </linearGradient>
-                </defs>
-                <g id="chart-grid-group"></g>
-                <path id="chart-area-path" class="chart-path-area" d=""></path>
-                <path id="chart-line-path" class="chart-path-line" d=""></path>
-                <g id="chart-nodes-group"></g>
-              </svg>
-              <div id="chart-tooltip" class="chart-tooltip"></div>
+                <i class="fas fa-heart-pulse" aria-hidden="true"></i>
+                <span>Refresh Matrix</span>
+              </button>
             </div>
           </div>
-          <!-- System Resource Progress Bars -->
-          <div class="doc-card resource-load-card">
-            <p class="doc-card-kicker">Environment Resource Load</p>
-            <p class="doc-card-description doc-card-description--spaced">
-              Serverless ephemeral container capacity indicator.
-            </p>
-
-            <div class="resource-bar-wrapper">
-              <div class="resource-bar-header">
-                <span>CPU Load</span>
-                <span id="resource-cpu-value">--%</span>
-              </div>
-              <div class="resource-bar-track">
-                <div id="resource-cpu-fill" class="resource-bar-fill normal"></div>
-              </div>
-            </div>
-
-            <div class="resource-bar-wrapper">
-              <div class="resource-bar-header">
-                <span>Memory Allocation</span>
-                <span id="resource-memory-value">--%</span>
-              </div>
-              <div class="resource-bar-track">
-                <div id="resource-memory-fill" class="resource-bar-fill normal"></div>
-              </div>
-            </div>
-
-            <div class="resource-bar-wrapper">
-              <div class="resource-bar-header">
-                <span>API Traffic Rate</span>
-                <span id="resource-traffic-value">-- req/sec</span>
-              </div>
-              <div class="resource-bar-track">
-                <div id="resource-traffic-fill" class="resource-bar-fill normal"></div>
-              </div>
+          <p class="monitor-section-lead">
+            Cross-checks core APIs, OAuth readiness, health vitals, and calendar availability for
+            the active backend.
+          </p>
+          <div class="platform-health-summary" id="platform-health-summary"></div>
+          <div class="platform-health-grid" id="platform-health-grid">
+            <div class="empty-state">
+              <i class="fas fa-spinner fa-spin" aria-hidden="true"></i>
+              <h3>Loading platform health matrix...</h3>
             </div>
           </div>
+        </section>
 
-          <!-- Engineering & Automated Test Benchmarks Card -->
-          <div class="doc-card engineering-benchmark-card">
-            <p class="doc-card-kicker">Engineering & Quality Benchmarks</p>
-            <p class="doc-card-description doc-card-description--spaced">
-              Real-time API latency percentiles and automated quality verification.
-            </p>
-
-            <div class="benchmark-metric-grid">
-              <div class="benchmark-metric-item">
-                <span class="benchmark-metric-label">p50 Latency</span>
-                <strong class="benchmark-metric-val text-accent-blue" id="bench-p50">18ms</strong>
-              </div>
-              <div class="benchmark-metric-item">
-                <span class="benchmark-metric-label">p95 Latency</span>
-                <strong class="benchmark-metric-val text-accent-green" id="bench-p95">42ms</strong>
-              </div>
-              <div class="benchmark-metric-item">
-                <span class="benchmark-metric-label">p99 Latency</span>
-                <strong class="benchmark-metric-val text-accent-purple" id="bench-p99">85ms</strong>
-              </div>
-            </div>
-
-            <div class="benchmark-badges-row">
-              <div class="benchmark-pill">
-                <i class="fas fa-check-double text-accent-green" aria-hidden="true"></i>
-                <span>273 Vitest Unit Tests</span>
-              </div>
-              <div class="benchmark-pill">
-                <i class="fas fa-vial-circle-check text-accent-green" aria-hidden="true"></i>
-                <span>175 Pytest API Tests</span>
-              </div>
-              <div class="benchmark-pill">
-                <i class="fas fa-shield-halved text-accent-blue" aria-hidden="true"></i>
-                <span>0 Secrets · A+ Security</span>
-              </div>
+        <section class="section" id="portfolio-surfaces-section" aria-label="Portfolio surfaces">
+          <div class="section-header">
+            <h2 class="section-title">Portfolio Surfaces</h2>
+            <div class="section-actions">
+              <span class="status-badge unknown" id="portfolio-catalog-badge">
+                <span class="status-dot"></span>
+                Pages + APIs
+              </span>
+              <button
+                class="btn btn-secondary"
+                type="button"
+                id="btn-refresh-portfolio-catalog"
+                data-monitor-action="refresh-portfolio-catalog"
+              >
+                <i class="fas fa-globe" aria-hidden="true"></i>
+                <span>Probe All</span>
+              </button>
             </div>
           </div>
+          <p class="monitor-section-lead">
+            Live health of every public page and primary API this portfolio uses — homepage,
+            engineering, travel, uses, AssistMe, GitHub, music, analytics, vitals, and monitor
+            routes.
+          </p>
+          <div class="portfolio-surface-grid" id="portfolio-surfaces-grid">
+            <div class="empty-state compact">
+              <i class="fas fa-spinner fa-spin" aria-hidden="true"></i>
+              <h3>Probing portfolio surfaces…</h3>
+            </div>
+          </div>
+        </section>
 
-          <div class="doc-card endpoint-volume-card">
-            <div>
-              <p class="doc-card-kicker">Endpoint Request Volume</p>
-              <p class="doc-card-description compact-copy">
-                Top monitored API routes by recorded request count.
+        <!-- Endpoint Metrics -->
+        <section class="section" id="endpoint-metrics-section">
+          <div class="section-header">
+            <h2 class="section-title">API Endpoint Metrics</h2>
+            <div class="section-actions">
+              <button class="btn btn-secondary" data-monitor-action="export-metrics">
+                <i class="fas fa-download" aria-hidden="true"></i>
+                Export JSON
+              </button>
+            </div>
+          </div>
+          <div class="monitor-table-scroll" tabindex="0" aria-label="API endpoint metrics table">
+            <table class="metrics-table">
+              <thead>
+                <tr>
+                  <th>Endpoint</th>
+                  <th>Method</th>
+                  <th>Requests</th>
+                  <th>Success Rate</th>
+                  <th>Avg Response</th>
+                  <th>Last Status</th>
+                </tr>
+              </thead>
+              <tbody id="metrics-table-body">
+                <tr>
+                  <td colspan="6" class="empty-state">
+                    <i class="fas fa-spinner fa-spin" aria-hidden="true"></i>
+                    <h3>Loading metrics...</h3>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="section monitor-dashboard-section" id="backend-system-section">
+          <div class="section-header">
+            <h2 class="section-title">Backend System Map</h2>
+            <div class="section-actions">
+              <span class="status-badge unknown">
+                <span class="status-dot"></span>
+                API + Integrations
+              </span>
+            </div>
+          </div>
+          <div class="backend-system-grid" id="backend-system-dashboard">
+            <div class="empty-state compact">
+              <i class="fas fa-spinner fa-spin" aria-hidden="true"></i>
+              <h3>Loading backend system map...</h3>
+            </div>
+          </div>
+        </section>
+
+        <!-- External APIs Status -->
+        <section class="section" id="external-services-section">
+          <div class="section-header">
+            <h2 class="section-title">Provider APIs</h2>
+            <div class="section-actions">
+              <button
+                class="btn btn-secondary"
+                id="btn-refresh-providers"
+                data-monitor-action="check-external-apis"
+              >
+                <i class="fas fa-sync" aria-hidden="true"></i>
+                <span>Refresh Providers</span>
+              </button>
+            </div>
+          </div>
+          <div class="health-grid" id="external-apis">
+            <div class="empty-state">
+              <i class="fas fa-spinner fa-spin" aria-hidden="true"></i>
+              <h3>Checking service integrations...</h3>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- TAB 3: EDGE & DEPLOYMENTS -->
+      <div
+        class="monitor-tab-panel"
+        id="panel-deployments"
+        role="tabpanel"
+        aria-labelledby="tab-deployments"
+        hidden
+      >
+        <!-- Deployment Surfaces -->
+        <section class="section" id="deployment-surfaces-section">
+          <div class="section-header">
+            <h2 class="section-title">Deployment Surfaces</h2>
+            <div class="section-actions">
+              <button
+                class="btn btn-secondary"
+                id="btn-refresh-surfaces"
+                data-monitor-action="refresh-hosting-surfaces"
+              >
+                <i class="fas fa-globe" aria-hidden="true"></i>
+                <span>Refresh Surfaces</span>
+              </button>
+            </div>
+          </div>
+          <div class="health-grid" id="deployment-surfaces">
+            <div class="empty-state">
+              <i class="fas fa-spinner fa-spin" aria-hidden="true"></i>
+              <h3>Checking deployment surfaces...</h3>
+            </div>
+          </div>
+        </section>
+
+        <!-- Client-Side Latency Probes -->
+        <section class="section" id="client-probes-section">
+          <div class="section-header">
+            <h2 class="section-title">Client-Side Latency</h2>
+            <div class="section-actions">
+              <button
+                class="btn btn-secondary"
+                id="btn-run-probes"
+                data-monitor-action="run-client-probes"
+              >
+                <i class="fas fa-satellite-dish" aria-hidden="true"></i>
+                <span>Run Probes</span>
+              </button>
+            </div>
+          </div>
+          <p class="monitor-section-lead">
+            Live latency probes from your browser to all deployment surfaces. Works on GitHub Pages,
+            Vercel, and localhost.
+          </p>
+          <div class="health-grid" id="client-probes">
+            <div class="empty-state">
+              <i class="fas fa-satellite-dish" aria-hidden="true"></i>
+              <h3>Measure live edge latency</h3>
+              <p>
+                Run probes from this browser against GitHub Pages, the Cloudflare Worker, and
+                optional Vercel surfaces — no backend session required.
               </p>
             </div>
-            <div id="hourly-traffic-chart"></div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <!-- Health Checks -->
-      <section class="section" id="health-checks-section">
-        <div class="section-header">
-          <h2 class="section-title">Health Checks</h2>
-          <div class="section-actions">
-            <button
-              class="btn btn-secondary"
-              id="btn-run-health-checks"
-              data-monitor-action="run-health-checks"
-            >
-              <i class="fas fa-stethoscope" aria-hidden="true"></i>
-              <span>Run Checks</span>
-            </button>
+        <!-- Real-Time Performance Section -->
+        <section class="section" id="realtime-metrics-section">
+          <div class="section-header">
+            <h2 class="section-title">Real-Time Performance</h2>
+            <div class="section-actions">
+              <span class="status-badge healthy status-badge--live-feed">
+                <span class="status-dot"></span> Live Feed
+              </span>
+            </div>
           </div>
-        </div>
-        <div class="health-grid" id="health-checks">
-          <div class="empty-state">
-            <i class="fas fa-spinner fa-spin" aria-hidden="true"></i>
-            <h3>Loading health checks...</h3>
-          </div>
-        </div>
-      </section>
+          <div class="resource-trends-grid resource-trends-grid--performance">
+            <!-- Latency Graph -->
+            <div class="doc-card latency-card">
+              <p class="doc-card-kicker">API Latency History (Last 30 probes)</p>
+              <div class="chart-container">
+                <svg
+                  class="chart-svg"
+                  id="latency-svg"
+                  viewBox="0 0 800 220"
+                  preserveAspectRatio="none"
+                >
+                  <defs>
+                    <linearGradient id="chart-gradient" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="var(--accent-blue)" stop-opacity="0.4"></stop>
+                      <stop offset="100%" stop-color="var(--accent-blue)" stop-opacity="0.0"></stop>
+                    </linearGradient>
+                  </defs>
+                  <g id="chart-grid-group"></g>
+                  <path id="chart-area-path" class="chart-path-area" d=""></path>
+                  <path id="chart-line-path" class="chart-path-line" d=""></path>
+                  <g id="chart-nodes-group"></g>
+                </svg>
+                <div id="chart-tooltip" class="chart-tooltip"></div>
+              </div>
+            </div>
+            <!-- System Resource Progress Bars -->
+            <div class="doc-card resource-load-card">
+              <p class="doc-card-kicker">Environment Resource Load</p>
+              <p class="doc-card-description doc-card-description--spaced">
+                Serverless ephemeral container capacity indicator.
+              </p>
 
-      <!-- Endpoint Metrics -->
-      <section class="section" id="endpoint-metrics-section">
-        <div class="section-header">
-          <h2 class="section-title">API Endpoint Metrics</h2>
-          <div class="section-actions">
-            <button class="btn btn-secondary" data-monitor-action="export-metrics">
-              <i class="fas fa-download" aria-hidden="true"></i>
-              Export JSON
-            </button>
-          </div>
-        </div>
-        <div class="monitor-table-scroll" tabindex="0" aria-label="API endpoint metrics table">
-          <table class="metrics-table">
-            <thead>
-              <tr>
-                <th>Endpoint</th>
-                <th>Method</th>
-                <th>Requests</th>
-                <th>Success Rate</th>
-                <th>Avg Response</th>
-                <th>Last Status</th>
-              </tr>
-            </thead>
-            <tbody id="metrics-table-body">
-              <tr>
-                <td colspan="6" class="empty-state">
-                  <i class="fas fa-spinner fa-spin" aria-hidden="true"></i>
-                  <h3>Loading metrics...</h3>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
+              <div class="resource-bar-wrapper">
+                <div class="resource-bar-header">
+                  <span>CPU Load</span>
+                  <span id="resource-cpu-value">--%</span>
+                </div>
+                <div class="resource-bar-track">
+                  <div id="resource-cpu-fill" class="resource-bar-fill normal"></div>
+                </div>
+              </div>
 
-      <!-- External APIs Status -->
-      <section class="section" id="external-services-section">
-        <div class="section-header">
-          <h2 class="section-title">Provider APIs</h2>
-          <div class="section-actions">
-            <button
-              class="btn btn-secondary"
-              id="btn-refresh-providers"
-              data-monitor-action="check-external-apis"
-            >
-              <i class="fas fa-sync" aria-hidden="true"></i>
-              <span>Refresh Providers</span>
-            </button>
-          </div>
-        </div>
-        <div class="health-grid" id="external-apis">
-          <div class="empty-state">
-            <i class="fas fa-spinner fa-spin" aria-hidden="true"></i>
-            <h3>Checking service integrations...</h3>
-          </div>
-        </div>
-      </section>
+              <div class="resource-bar-wrapper">
+                <div class="resource-bar-header">
+                  <span>Memory Allocation</span>
+                  <span id="resource-memory-value">--%</span>
+                </div>
+                <div class="resource-bar-track">
+                  <div id="resource-memory-fill" class="resource-bar-fill normal"></div>
+                </div>
+              </div>
 
-      <section class="section" id="platform-health-section">
-        <div class="section-header">
-          <h2 class="section-title">Platform Health Matrix</h2>
-          <div class="section-actions">
-            <button
-              class="btn btn-secondary"
-              id="btn-refresh-platform-health"
-              data-monitor-action="refresh-platform-health"
-            >
-              <i class="fas fa-heart-pulse" aria-hidden="true"></i>
-              <span>Refresh Matrix</span>
-            </button>
-          </div>
-        </div>
-        <p class="monitor-section-lead">
-          Cross-checks core APIs, OAuth readiness, health vitals, and calendar availability for the
-          active backend. Run <code>npm run verify:env-parity</code> locally to compare
-          <code>.env.local</code> with Vercel production keys (no secrets printed).
-        </p>
-        <div class="platform-health-summary" id="platform-health-summary"></div>
-        <div class="platform-health-grid" id="platform-health-grid">
-          <div class="empty-state">
-            <i class="fas fa-spinner fa-spin" aria-hidden="true"></i>
-            <h3>Loading platform health matrix...</h3>
-          </div>
-        </div>
-      </section>
+              <div class="resource-bar-wrapper">
+                <div class="resource-bar-header">
+                  <span>API Traffic Rate</span>
+                  <span id="resource-traffic-value">-- req/sec</span>
+                </div>
+                <div class="resource-bar-track">
+                  <div id="resource-traffic-fill" class="resource-bar-fill normal"></div>
+                </div>
+              </div>
+            </div>
 
-      <section class="section" id="integrations-section">
-        <div class="section-header">
-          <h2 class="section-title">OAuth Integrations</h2>
-          <div class="section-actions">
-            <button
-              class="btn btn-secondary"
-              id="btn-refresh-integrations"
-              data-monitor-action="refresh-integrations-panel"
-            >
-              <i class="fas fa-link" aria-hidden="true"></i>
-              <span>Refresh OAuth Status</span>
-            </button>
+            <!-- Engineering & Automated Test Benchmarks Card -->
+            <div class="doc-card engineering-benchmark-card">
+              <p class="doc-card-kicker">Engineering & Quality Benchmarks</p>
+              <p class="doc-card-description doc-card-description--spaced">
+                Real-time API latency percentiles and automated quality verification.
+              </p>
+
+              <div class="benchmark-metric-grid">
+                <div class="benchmark-metric-item">
+                  <span class="benchmark-metric-label">p50 Latency</span>
+                  <strong class="benchmark-metric-val text-accent-blue" id="bench-p50">18ms</strong>
+                </div>
+                <div class="benchmark-metric-item">
+                  <span class="benchmark-metric-label">p95 Latency</span>
+                  <strong class="benchmark-metric-val text-accent-green" id="bench-p95"
+                    >42ms</strong
+                  >
+                </div>
+                <div class="benchmark-metric-item">
+                  <span class="benchmark-metric-label">p99 Latency</span>
+                  <strong class="benchmark-metric-val text-accent-purple" id="bench-p99"
+                    >85ms</strong
+                  >
+                </div>
+              </div>
+
+              <div class="benchmark-badges-row">
+                <div class="benchmark-pill">
+                  <i class="fas fa-check-double text-accent-green" aria-hidden="true"></i>
+                  <span>281 Vitest Unit Tests</span>
+                </div>
+                <div class="benchmark-pill">
+                  <i class="fas fa-vial-circle-check text-accent-green" aria-hidden="true"></i>
+                  <span>176 Pytest API Tests</span>
+                </div>
+                <div class="benchmark-pill">
+                  <i class="fas fa-shield-halved text-accent-blue" aria-hidden="true"></i>
+                  <span>0 Secrets · A+ Security</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="doc-card endpoint-volume-card">
+              <div>
+                <p class="doc-card-kicker">Endpoint Request Volume</p>
+                <p class="doc-card-description compact-copy">
+                  Top monitored API routes by recorded request count.
+                </p>
+              </div>
+              <div id="hourly-traffic-chart"></div>
+            </div>
           </div>
-        </div>
-        <p class="monitor-section-lead">
-          Owner-only OAuth linking is protected. Enter your admin token below, then use
-          <strong>Connect in Chrome</strong> to start a signed OAuth flow for the account you want
-          to link.
-        </p>
-        <div class="integration-owner-auth">
-          <label for="owner-admin-token">Owner admin token</label>
-          <div class="integration-owner-auth__row">
-            <input
-              id="owner-admin-token"
-              type="password"
-              autocomplete="off"
-              placeholder="Paste INTEGRATION_SYNC_ADMIN_TOKEN or MONITOR_ADMIN_TOKEN"
-            />
-            <button type="button" class="btn btn-secondary" id="btn-save-owner-token">
-              Save for session
-            </button>
+        </section>
+
+        <section class="section" id="integrations-section">
+          <div class="section-header">
+            <h2 class="section-title">OAuth Integrations</h2>
+            <div class="section-actions">
+              <button
+                class="btn btn-secondary"
+                id="btn-refresh-integrations"
+                data-monitor-action="refresh-integrations-panel"
+              >
+                <i class="fas fa-link" aria-hidden="true"></i>
+                <span>Refresh OAuth Status</span>
+              </button>
+            </div>
           </div>
-          <p class="integration-owner-auth__hint">
-            Stored only in this browser session. Required for OAuth connect and monitor event
-            resolve actions.
+          <p class="monitor-section-lead">
+            Owner-only OAuth linking is protected. Enter your admin token below, then use
+            <strong>Connect in Chrome</strong> to start a signed OAuth flow for the account you want
+            to link.
           </p>
-        </div>
-        <div class="health-grid" id="oauth-integrations">
-          <div class="empty-state">
-            <i class="fas fa-spinner fa-spin" aria-hidden="true"></i>
-            <h3>Loading OAuth integration status...</h3>
-          </div>
-        </div>
-      </section>
-
-      <!-- Claude Code & Agentic Insights Section -->
-      <section class="section" id="claude-insights-section">
-        <div class="section-header">
-          <h2 class="section-title">Claude Code &amp; Agentic Insights</h2>
-          <div class="section-actions">
-            <span class="status-badge healthy">
-              <span class="status-dot"></span> Telemetry Active
-            </span>
-          </div>
-        </div>
-        <p class="monitor-section-lead">
-          Automated codebase analytics, test velocity, and autonomous agent metrics generated via
-          <code>npm run insights</code>.
-        </p>
-        <div class="overview-grid" id="claude-insights-grid">
-          <div class="overview-card">
-            <div class="overview-card__header">
-              <div class="overview-card__icon">
-                <i class="fas fa-microchip" aria-hidden="true"></i>
-              </div>
-              <span class="overview-card__status badge-healthy">Pristine</span>
-            </div>
-            <div class="overview-card__value">100/100</div>
-            <div class="overview-card__label">Lighthouse Suite</div>
-            <div class="overview-card__meta">Performance · A11y · SEO · Best Practices</div>
-          </div>
-          <div class="overview-card">
-            <div class="overview-card__header">
-              <div class="overview-card__icon">
-                <i class="fas fa-check-circle" aria-hidden="true"></i>
-              </div>
-              <span class="overview-card__status badge-healthy">100% Passing</span>
-            </div>
-            <div class="overview-card__value">448+ Tests</div>
-            <div class="overview-card__label">Automated Test Suites</div>
-            <div class="overview-card__meta">273 Vitest · 175 Pytest · 16 Playwright Configs</div>
-          </div>
-          <div class="overview-card">
-            <div class="overview-card__header">
-              <div class="overview-card__icon"><i class="fas fa-robot" aria-hidden="true"></i></div>
-              <span class="overview-card__status badge-healthy">17 WebMCP</span>
-            </div>
-            <div class="overview-card__value">AssistMe AI</div>
-            <div class="overview-card__label">Agentic Tool Bridge</div>
-            <div class="overview-card__meta">Deterministic browser navigation &amp; telemetry</div>
-          </div>
-          <div class="overview-card">
-            <div class="overview-card__header">
-              <div class="overview-card__icon">
-                <i class="fas fa-sliders-h" aria-hidden="true"></i>
-              </div>
-              <span class="overview-card__status badge-healthy">4 Lenses</span>
-            </div>
-            <div class="overview-card__value">Hyper-Personalization</div>
-            <div class="overview-card__label">Visitor Lens Engine</div>
-            <div class="overview-card__meta">Recruiter · Engineer · Founder · All-Around</div>
-          </div>
-        </div>
-      </section>
-
-      <section class="section" id="api-docs-section">
-        <div class="section-header">
-          <h2 class="section-title">API Docs & References</h2>
-        </div>
-        <div class="docs-grid" id="monitor-docs-grid">
-          <div class="empty-state">
-            <i class="fas fa-spinner fa-spin" aria-hidden="true"></i>
-            <h3>Loading API references...</h3>
-          </div>
-        </div>
-      </section>
-
-      <!-- Event Log -->
-      <section class="section" id="event-log-section">
-        <div class="section-header">
-          <h2 class="section-title">System Event Audit Log</h2>
-          <div class="section-actions">
-            <button
-              class="btn btn-secondary"
-              id="btn-clear-resolved"
-              data-monitor-action="clear-resolved"
-            >
-              <i class="fas fa-check-double" aria-hidden="true"></i>
-              <span>Clear Resolved</span>
-            </button>
-          </div>
-        </div>
-
-        <div class="log-filter-bar">
-          <div class="log-search-wrapper">
-            <i class="fas fa-search log-search-icon" aria-hidden="true"></i>
-            <input
-              type="text"
-              id="log-search-input"
-              class="log-search-input"
-              placeholder="Search events by keyword, source, or IP..."
-            />
-          </div>
-          <div class="log-tabs">
-            <button class="log-tab-btn active" data-filter="" data-monitor-action="select-log-tab">
-              All
-            </button>
-            <button class="log-tab-btn" data-filter="critical" data-monitor-action="select-log-tab">
-              Critical
-            </button>
-            <button class="log-tab-btn" data-filter="error" data-monitor-action="select-log-tab">
-              Errors
-            </button>
-            <button class="log-tab-btn" data-filter="warning" data-monitor-action="select-log-tab">
-              Warnings
-            </button>
-            <button class="log-tab-btn" data-filter="success" data-monitor-action="select-log-tab">
-              Success
-            </button>
-            <button class="log-tab-btn" data-filter="info" data-monitor-action="select-log-tab">
-              Info
-            </button>
-          </div>
-        </div>
-
-        <!-- Hidden legacy filter element to keep backward compatibility -->
-        <select
-          id="event-filter"
-          class="event-filter-sr-only"
-          onchange="filterEvents()"
-          aria-label="Filter events"
-        >
-          <option value="">All Events</option>
-          <option value="critical">Critical</option>
-          <option value="error">Errors</option>
-          <option value="warning">Warnings</option>
-          <option value="success">Success</option>
-          <option value="info">Info</option>
-        </select>
-
-        <!-- Live Terminal Log Console -->
-        <div class="terminal-log-console" id="terminal-log-console">
-          <div class="terminal-header">
-            <div class="terminal-controls">
-              <span class="terminal-dot dot-red"></span>
-              <span class="terminal-dot dot-yellow"></span>
-              <span class="terminal-dot dot-green"></span>
-            </div>
-            <div class="terminal-title">
-              <i class="fas fa-terminal" aria-hidden="true"></i> Live System Stream (SSE)
-            </div>
-            <div class="terminal-actions">
-              <button
-                type="button"
-                class="terminal-btn"
-                id="btn-toggle-terminal-stream"
-                title="Pause / Resume Live Stream"
-              >
-                <i class="fas fa-pause" aria-hidden="true"></i> Pause
-              </button>
-              <button
-                type="button"
-                class="terminal-btn"
-                id="btn-clear-terminal-logs"
-                title="Clear Console"
-              >
-                <i class="fas fa-trash" aria-hidden="true"></i> Clear
+          <div class="integration-owner-auth">
+            <label for="owner-admin-token">Owner admin token</label>
+            <div class="integration-owner-auth__row">
+              <input
+                id="owner-admin-token"
+                type="password"
+                autocomplete="off"
+                placeholder="Paste INTEGRATION_SYNC_ADMIN_TOKEN or MONITOR_ADMIN_TOKEN"
+              />
+              <button type="button" class="btn btn-secondary" id="btn-save-owner-token">
+                Save for session
               </button>
             </div>
-          </div>
-          <div class="terminal-body" id="terminal-body" tabindex="0" role="log" aria-live="polite">
-            <div class="terminal-line">
-              <span class="terminal-tag tag-info">[SYSTEM]</span> Connected to live operations
-              telemetry stream (/api/monitor/events)...
-            </div>
-            <div class="terminal-line">
-              <span class="terminal-tag tag-success">[HEALTH]</span> Probes synchronized: 100%
-              services online.
-            </div>
-          </div>
-        </div>
-
-        <div class="event-list" id="event-list">
-          <div class="empty-state">
-            <i class="fas fa-spinner fa-spin" aria-hidden="true"></i>
-            <h3>Loading events...</h3>
-          </div>
-        </div>
-      </section>
-
-      <!-- Client-Side Latency Probes -->
-      <section class="section" id="client-probes-section">
-        <div class="section-header">
-          <h2 class="section-title">Client-Side Latency</h2>
-          <div class="section-actions">
-            <button
-              class="btn btn-secondary"
-              id="btn-run-probes"
-              data-monitor-action="run-client-probes"
-            >
-              <i class="fas fa-satellite-dish" aria-hidden="true"></i>
-              <span>Run Probes</span>
-            </button>
-          </div>
-        </div>
-        <p class="monitor-section-lead">
-          Live latency probes from your browser to all deployment surfaces. Works on GitHub Pages,
-          Vercel, and localhost.
-        </p>
-        <div class="health-grid" id="client-probes">
-          <div class="empty-state">
-            <i class="fas fa-satellite-dish" aria-hidden="true"></i>
-            <h3>Measure live edge latency</h3>
-            <p>
-              Run probes from this browser against GitHub Pages, the Cloudflare Worker, and optional
-              Vercel surfaces — no backend session required.
+            <p class="integration-owner-auth__hint">
+              Stored only in this browser session. Required for OAuth connect and monitor event
+              resolve actions.
             </p>
           </div>
-        </div>
-      </section>
-
-      <!-- Security & Rate Limiting -->
-      <section class="section" id="security-section">
-        <div class="section-header">
-          <h2 class="section-title">Security & Rate Limiting</h2>
-          <div class="section-actions">
-            <button
-              class="btn btn-secondary"
-              id="btn-refresh-security"
-              data-monitor-action="refresh-security"
-            >
-              <i class="fas fa-shield-halved" aria-hidden="true"></i>
-              <span>Run Audit</span>
-            </button>
+          <div class="health-grid" id="oauth-integrations">
+            <div class="empty-state">
+              <i class="fas fa-spinner fa-spin" aria-hidden="true"></i>
+              <h3>Loading OAuth integration status...</h3>
+            </div>
           </div>
-        </div>
+        </section>
 
-        <div class="security-summary">
-          <!-- Left Column: Active Threat Intrusion Logs -->
-          <div class="doc-card doc-card--column">
-            <p class="doc-card-kicker">Suspicious Intrusion Events</p>
-            <p class="doc-card-description">Scans for pattern traversal or unauthorized headers.</p>
+        <!-- Claude Code & Agentic Insights Section -->
+        <section class="section" id="claude-insights-section">
+          <div class="section-header">
+            <h2 class="section-title">Claude Code &amp; Agentic Insights</h2>
+            <div class="section-actions">
+              <span class="status-badge healthy">
+                <span class="status-dot"></span> Telemetry Active
+              </span>
+            </div>
+          </div>
+          <p class="monitor-section-lead">
+            Automated codebase analytics, test velocity, and autonomous agent metrics generated via
+            <code>npm run insights</code>.
+          </p>
+          <div class="overview-grid" id="claude-insights-grid">
+            <div class="overview-card">
+              <div class="overview-card__header">
+                <div class="overview-card__icon">
+                  <i class="fas fa-microchip" aria-hidden="true"></i>
+                </div>
+                <span class="overview-card__status badge-healthy">Pristine</span>
+              </div>
+              <div class="overview-card__value">100/100</div>
+              <div class="overview-card__label">Lighthouse Suite</div>
+              <div class="overview-card__meta">Performance · A11y · SEO · Best Practices</div>
+            </div>
+            <div class="overview-card">
+              <div class="overview-card__header">
+                <div class="overview-card__icon">
+                  <i class="fas fa-check-circle" aria-hidden="true"></i>
+                </div>
+                <span class="overview-card__status badge-healthy">100% Passing</span>
+              </div>
+              <div class="overview-card__value">457+ Tests</div>
+              <div class="overview-card__label">Automated Test Suites</div>
+              <div class="overview-card__meta">281 Vitest · 176 Pytest · 16 Playwright Configs</div>
+            </div>
+            <div class="overview-card">
+              <div class="overview-card__header">
+                <div class="overview-card__icon">
+                  <i class="fas fa-robot" aria-hidden="true"></i>
+                </div>
+                <span class="overview-card__status badge-healthy">17 WebMCP</span>
+              </div>
+              <div class="overview-card__value">AssistMe AI</div>
+              <div class="overview-card__label">Agentic Tool Bridge</div>
+              <div class="overview-card__meta">
+                Deterministic browser navigation &amp; telemetry
+              </div>
+            </div>
+            <div class="overview-card">
+              <div class="overview-card__header">
+                <div class="overview-card__icon">
+                  <i class="fas fa-sliders-h" aria-hidden="true"></i>
+                </div>
+                <span class="overview-card__status badge-healthy">4 Lenses</span>
+              </div>
+              <div class="overview-card__value">Hyper-Personalization</div>
+              <div class="overview-card__label">Visitor Lens Engine</div>
+              <div class="overview-card__meta">Recruiter · Engineer · Founder · All-Around</div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- TAB 4: SECURITY & LOGS -->
+      <div
+        class="monitor-tab-panel"
+        id="panel-security"
+        role="tabpanel"
+        aria-labelledby="tab-security"
+        hidden
+      >
+        <!-- Security & Rate Limiting -->
+        <section class="section" id="security-section">
+          <div class="section-header">
+            <h2 class="section-title">Security & Rate Limiting</h2>
+            <div class="section-actions">
+              <button
+                class="btn btn-secondary"
+                id="btn-refresh-security"
+                data-monitor-action="refresh-security"
+              >
+                <i class="fas fa-shield-halved" aria-hidden="true"></i>
+                <span>Run Audit</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="security-summary">
+            <!-- Left Column: Active Threat Intrusion Logs -->
+            <div class="doc-card doc-card--column">
+              <p class="doc-card-kicker">Suspicious Intrusion Events</p>
+              <p class="doc-card-description">
+                Scans for pattern traversal or unauthorized headers.
+              </p>
+              <div
+                id="security-threats-log"
+                class="security-log-container"
+                role="region"
+                aria-label="Security threat log"
+                tabindex="0"
+              >
+                <div class="empty-state compact empty-state--compact-pad">
+                  <i class="fas fa-shield-check icon-accent-green" aria-hidden="true"></i>
+                  <h3>No security threats detected</h3>
+                  <p>Environment is safe</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Column: Active Rate Limits and Suspicious IPs -->
+            <div class="doc-card">
+              <p class="doc-card-kicker">Active IP Rate Limits & Suspicious Hosts</p>
+              <p class="doc-card-description">
+                Tracks request volume per-IP and flagged suspicious nodes.
+              </p>
+              <div id="rate-limits-container">
+                <div class="empty-state compact empty-state--compact-pad">
+                  <i class="fas fa-gauge" aria-hidden="true"></i>
+                  <h3>No active rate limit pressure</h3>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="health-grid security-checks-hidden" id="security-checks">
+            <!-- Fallback checks container to keep compatibility -->
+          </div>
+        </section>
+
+        <!-- AI Metrics -->
+        <section class="section" id="ai-metrics-section">
+          <div class="section-header">
+            <div>
+              <h2 class="section-title">AI Provider Metrics</h2>
+              <p class="section-desc">
+                Live FastAPI runtime inference latency &amp; session tokens. For complete developer
+                token burn across IDEs (13.66B tokens), see
+                <a href="systems.html#tokenization" class="monitor-inline-link"
+                  >Systems / Tokenization</a
+                >.
+              </p>
+            </div>
+            <div class="section-actions">
+              <button
+                class="btn btn-secondary"
+                id="btn-refresh-ai"
+                data-monitor-action="refresh-ai-metrics"
+              >
+                <i class="fas fa-brain" aria-hidden="true"></i>
+                <span>Refresh</span>
+              </button>
+            </div>
+          </div>
+          <div class="health-grid" id="ai-metrics">
+            <div class="empty-state">
+              <i class="fas fa-spinner fa-spin" aria-hidden="true"></i>
+              <h3>Loading AI metrics...</h3>
+            </div>
+          </div>
+        </section>
+
+        <!-- Event Log -->
+        <section class="section" id="event-log-section">
+          <div class="section-header">
+            <h2 class="section-title">System Event Audit Log</h2>
+            <div class="section-actions">
+              <button
+                class="btn btn-secondary"
+                id="btn-clear-resolved"
+                data-monitor-action="clear-resolved"
+              >
+                <i class="fas fa-check-double" aria-hidden="true"></i>
+                <span>Clear Resolved</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="log-filter-bar">
+            <div class="log-search-wrapper">
+              <i class="fas fa-search log-search-icon" aria-hidden="true"></i>
+              <input
+                type="text"
+                id="log-search-input"
+                class="log-search-input"
+                placeholder="Search events by keyword, source, or IP..."
+              />
+            </div>
+            <div class="log-tabs">
+              <button
+                class="log-tab-btn active"
+                data-filter=""
+                data-monitor-action="select-log-tab"
+              >
+                All
+              </button>
+              <button
+                class="log-tab-btn"
+                data-filter="critical"
+                data-monitor-action="select-log-tab"
+              >
+                Critical
+              </button>
+              <button class="log-tab-btn" data-filter="error" data-monitor-action="select-log-tab">
+                Errors
+              </button>
+              <button
+                class="log-tab-btn"
+                data-filter="warning"
+                data-monitor-action="select-log-tab"
+              >
+                Warnings
+              </button>
+              <button
+                class="log-tab-btn"
+                data-filter="success"
+                data-monitor-action="select-log-tab"
+              >
+                Success
+              </button>
+              <button class="log-tab-btn" data-filter="info" data-monitor-action="select-log-tab">
+                Info
+              </button>
+            </div>
+          </div>
+
+          <!-- Hidden legacy filter element to keep backward compatibility -->
+          <select
+            id="event-filter"
+            class="event-filter-sr-only"
+            onchange="filterEvents()"
+            aria-label="Filter events"
+          >
+            <option value="">All Events</option>
+            <option value="critical">Critical</option>
+            <option value="error">Errors</option>
+            <option value="warning">Warnings</option>
+            <option value="success">Success</option>
+            <option value="info">Info</option>
+          </select>
+
+          <!-- Live Terminal Log Console -->
+          <div class="terminal-log-console" id="terminal-log-console">
+            <div class="terminal-header">
+              <div class="terminal-controls">
+                <span class="terminal-dot dot-red"></span>
+                <span class="terminal-dot dot-yellow"></span>
+                <span class="terminal-dot dot-green"></span>
+              </div>
+              <div class="terminal-title">
+                <i class="fas fa-terminal" aria-hidden="true"></i> Live System Stream (SSE)
+              </div>
+              <div class="terminal-actions">
+                <button
+                  type="button"
+                  class="terminal-btn"
+                  id="btn-toggle-terminal-stream"
+                  title="Pause / Resume Live Stream"
+                >
+                  <i class="fas fa-pause" aria-hidden="true"></i> Pause
+                </button>
+                <button
+                  type="button"
+                  class="terminal-btn"
+                  id="btn-clear-terminal-logs"
+                  title="Clear Console"
+                >
+                  <i class="fas fa-trash" aria-hidden="true"></i> Clear
+                </button>
+              </div>
+            </div>
             <div
-              id="security-threats-log"
-              class="security-log-container"
-              role="region"
-              aria-label="Security threat log"
+              class="terminal-body"
+              id="terminal-body"
               tabindex="0"
+              role="log"
+              aria-live="polite"
             >
-              <div class="empty-state compact empty-state--compact-pad">
-                <i class="fas fa-shield-check icon-accent-green" aria-hidden="true"></i>
-                <h3>No security threats detected</h3>
-                <p>Environment is safe</p>
+              <div class="terminal-line">
+                <span class="terminal-tag tag-info">[SYSTEM]</span> Connected to live operations
+                telemetry stream (/api/monitor/events)...
+              </div>
+              <div class="terminal-line">
+                <span class="terminal-tag tag-success">[HEALTH]</span> Probes synchronized: 100%
+                services online.
               </div>
             </div>
           </div>
 
-          <!-- Right Column: Active Rate Limits and Suspicious IPs -->
-          <div class="doc-card">
-            <p class="doc-card-kicker">Active IP Rate Limits & Suspicious Hosts</p>
-            <p class="doc-card-description">
-              Tracks request volume per-IP and flagged suspicious nodes.
-            </p>
-            <div id="rate-limits-container">
-              <div class="empty-state compact empty-state--compact-pad">
-                <i class="fas fa-gauge" aria-hidden="true"></i>
-                <h3>No active rate limit pressure</h3>
-              </div>
+          <div class="event-list" id="event-list">
+            <div class="empty-state">
+              <i class="fas fa-spinner fa-spin" aria-hidden="true"></i>
+              <h3>Loading events...</h3>
             </div>
           </div>
-        </div>
+        </section>
 
-        <div class="health-grid security-checks-hidden" id="security-checks">
-          <!-- Fallback checks container to keep compatibility -->
-        </div>
-      </section>
-
-      <!-- AI Metrics -->
-      <section class="section" id="ai-metrics-section">
-        <div class="section-header">
-          <div>
-            <h2 class="section-title">AI Provider Metrics</h2>
-            <p class="section-desc">
-              Live FastAPI runtime inference latency &amp; session tokens. For complete developer
-              token burn across IDEs (13.66B tokens), see
-              <a href="systems.html#tokenization" class="monitor-inline-link"
-                >Systems / Tokenization</a
-              >.
-            </p>
+        <!-- API Docs & References -->
+        <section class="section" id="api-docs-section">
+          <div class="section-header">
+            <h2 class="section-title">API Docs & References</h2>
           </div>
-          <div class="section-actions">
-            <button
-              class="btn btn-secondary"
-              id="btn-refresh-ai"
-              data-monitor-action="refresh-ai-metrics"
-            >
-              <i class="fas fa-brain" aria-hidden="true"></i>
-              <span>Refresh</span>
-            </button>
+          <div class="docs-grid" id="monitor-docs-grid">
+            <div class="empty-state">
+              <i class="fas fa-spinner fa-spin" aria-hidden="true"></i>
+              <h3>Loading API references...</h3>
+            </div>
           </div>
-        </div>
-        <div class="health-grid" id="ai-metrics">
-          <div class="empty-state">
-            <i class="fas fa-spinner fa-spin" aria-hidden="true"></i>
-            <h3>Loading AI metrics...</h3>
-          </div>
-        </div>
-      </section>
+        </section>
+      </div>
     </main>
 
     <div class="toast-container" id="toast-container"></div>

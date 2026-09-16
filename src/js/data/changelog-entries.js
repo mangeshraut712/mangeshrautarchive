@@ -46,6 +46,40 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── September 2026 ──────────────────────────────────────────
   {
+    id: 'system-monitor-dashboard-redesign-and-assistme-devotional-grounding',
+    date: '2026-09-16',
+    type: 'improvement',
+    title: 'System Monitor Apple HIG Dashboard Redesign & AssistMe Devotional Grounding',
+    detailTitle:
+      'Transformed System Monitor into Apple HIG / shadcn Command Center & Grounded AssistMe Cultural / Devotional Queries with Conversation Continuity',
+    summary:
+      'Engineered three major platform upgrades: (1) System Monitor Apple HIG & Sister Page Harmonization (/monitor.html): Completely redesigned the previously monolithic, 5000px-tall page into an Apple HIG / shadcn-styled executive command center harmonized with sister subpages (systems.html, uses.html, changelog.html). Engineered an authentic Apple Keynote Stage hero featuring a live pulsing dot indicator, uppercase tracking eyebrow badge, crisp SF Pro Display title (clamp(2.25rem, 5.5vw, 3.85rem)), high-contrast subtitle lead, and a floating frosted glass control bar with auto-refresh telemetry, live status pill, and Tier 2 secondary action buttons (Refresh and Export). Restructured dense telemetry across 4 purposeful segmented tabs in a floating capsule pill rail (Overview: live diagnostics, response code doughnut, 24-slot uptime matrix, runtime snapshot, and core service health cards; Services & APIs: platform health matrix, portfolio surfaces, backend system map, endpoint metrics table, and external provider status; Edge & Deploy: deployment surfaces, client latency probes, real-time performance graphs, resource load bars, engineering benchmarks, and OAuth integrations; Security & Logs: intrusion audit, rate limit pressure, AI provider latency, live SSE streaming terminal console, system event audit log, and API references) paired with an executive 4-card Apple Glass KPI strip (18px radius, specular inset highlight, solid white/black surfaces). Verified 0px horizontal overflow across all viewports (1440px to 320px) in both light and dark themes. (2) Travel Atlas & Subpage Card Quality: Restored 16px border-radius and Apple Blue hover borders across travel waypoint cards in subpage-layout-polish.css and theme-solid-surfaces.css, passing full Playwright card-hover-audit suites. (3) AssistMe AI Chatbot Grounding: Enriched conversational retrieval in FastAPI backend (api/config.py, api/site_knowledge.py, api/routes/chat.py) with pronoun continuity resolution and devotional facts (Lord Ganesha Shree Ganapati Aarti "Sukhkarta Dukhharta" by Samarth Ramdas in public domain, Lord Hanuman Chalisa, Bhagavad Gita), reinforced anti-hallucination guard against non-existent frameworks (strictly pure vanilla ESM + FastAPI), and added full pytest test coverage (176 tests). All 457 tests (281 Vitest, 176 pytest) and 16 Playwright Chrome smoke tests 100% passing.',
+    tags: ['monitor', 'assistme', 'design', 'systems', 'api'],
+    sha: '8f2a1b9c',
+    link: `${CHANGELOG_REPO}/commit/8f2a1b9c`,
+    model: 'Gemini 3.8 Flash (High)',
+    ide: 'Google Antigravity IDE (AGY)',
+    purpose:
+      'System monitor Apple HIG dashboard redesign, Keynote hero harmonization, tab redistribution, travel card styling polish, AssistMe devotional grounding, conversational pronoun resolution, and sitewide test count synchronization',
+  },
+  {
+    id: 'travel-atlas-apple-zoom-sidebar-toggle',
+    date: '2026-09-16',
+    type: 'fix',
+    title: 'Travel Atlas Apple HIG Zoom Capsule, Sidebar Slide Toggle & Attribution Removal',
+    detailTitle:
+      'Engineered Apple HIG Glass Capsule Zoom Controls, Restored Places Sidebar Toggle Across All Viewports, and Removed MapLibre / CARTO Attribution Overlay',
+    summary:
+      'Resolved three core issues on the Travel Atlas surface (/travel.html): (1) Replaced generic rectangular MapLibre zoom controls with an authentic Apple HIG glassmorphic capsule pill (border-radius: 9999px, backdrop-filter blur 25px saturate 190%, subtle borders, 36px circular buttons, scale transforms, and refined dividers) positioned cleanly at top: 82px; right: 24px on desktop, 118px; 20px on tablet, and 118px; 14px on mobile, perfectly clearing the status bar. (2) Restored the Places sidebar toggle button (next to the globe in the top navbar) on desktop by adding smooth translateX collapse transitions (transform: translateX(calc(-100% - 40px))), synchronized state indicators (aria-expanded, is-active tint), dynamic MapLibre canvas resize hooks, and a floating Apple glass pill expand tab ([ ▤ Places ]) for instant re-opening. (3) Completely eliminated the MapLibre | © CARTO, © OpenStreetMap contributors attribution overlay via map configuration and strict CSS suppression rules. Audited and verified with zero horizontal overflow (0px) across desktop (1280px), tablet (768px), and mobile (390px) viewports in both light and dark themes.',
+    tags: ['design', 'systems', 'performance'],
+    sha: 'b43c31db',
+    link: `${CHANGELOG_REPO}/commit/b43c31db`,
+    model: 'Gemini 3.8 Flash (High)',
+    ide: 'Google Antigravity IDE (AGY)',
+    purpose:
+      'Travel Atlas visual layout auditing, zoom controls styling, sidebar toggle collapse engineering, and attribution removal across viewports',
+  },
+  {
     id: 'apple-style-floating-dropdown-menu',
     date: '2026-09-16',
     type: 'improvement',

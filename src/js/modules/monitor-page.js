@@ -3372,6 +3372,107 @@ function initMonitorSectionRail() {
   sections.forEach(section => observer.observe(section));
 }
 
+function initMonitorDashboardTabs() {
+  const tabContainer = document.querySelector('.monitor-segmented-tabs');
+  if (!tabContainer) return;
+
+  const tabs = Array.from(tabContainer.querySelectorAll('.monitor-tab-btn'));
+  const panels = Array.from(document.querySelectorAll('.monitor-tab-panel'));
+
+  function activateTab(targetId, updateHash = true) {
+    let activeTab = tabs.find(t => t.id === targetId || t.dataset.tabTarget === targetId);
+    if (!activeTab && tabs.length) activeTab = tabs[0];
+    if (!activeTab) return;
+
+    tabs.forEach(tab => {
+      const isMatch = tab === activeTab;
+      tab.classList.toggle('is-active', isMatch);
+      tab.setAttribute('aria-selected', isMatch ? 'true' : 'false');
+    });
+
+    const targetPanelId = activeTab.dataset.tabTarget;
+    panels.forEach(panel => {
+      if (targetPanelId === 'panel-all') {
+        panel.hidden = false;
+        panel.classList.add('is-active');
+      } else {
+        const isMatch = panel.id === targetPanelId;
+        panel.hidden = !isMatch;
+        panel.classList.toggle('is-active', isMatch);
+      }
+    });
+
+    if (updateHash && targetPanelId) {
+      const slug = targetPanelId.replace('panel-', '');
+      if (window.location.hash !== `#${slug}`) {
+        try {
+          history.replaceState(null, '', `#${slug}`);
+        } catch {
+          // ignore state errors in test environments
+        }
+      }
+    }
+  }
+
+  tabs.forEach((tab, index) => {
+    tab.addEventListener('click', () => {
+      activateTab(tab.id);
+    });
+
+    tab.addEventListener('keydown', event => {
+      let nextIndex = null;
+      if (event.key === 'ArrowRight' || event.key === 'ArrowDown') {
+        nextIndex = (index + 1) % tabs.length;
+      } else if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') {
+        nextIndex = (index - 1 + tabs.length) % tabs.length;
+      } else if (event.key === 'Home') {
+        nextIndex = 0;
+      } else if (event.key === 'End') {
+        nextIndex = tabs.length - 1;
+      }
+
+      if (nextIndex !== null) {
+        event.preventDefault();
+        tabs[nextIndex].focus();
+        activateTab(tabs[nextIndex].id);
+      }
+    });
+  });
+
+  const handleHashRouting = () => {
+    const rawHash = (window.location.hash || '').slice(1).trim();
+    if (!rawHash) return;
+
+    // Check direct tab / panel match
+    const tabMatch = tabs.find(
+      t =>
+        t.id === `tab-${rawHash}` || t.dataset.tabTarget === `panel-${rawHash}` || t.id === rawHash
+    );
+    if (tabMatch) {
+      activateTab(tabMatch.id, false);
+      return;
+    }
+
+    // Check if target element exists inside a panel
+    const targetEl = document.getElementById(rawHash);
+    if (targetEl) {
+      const parentPanel = targetEl.closest('.monitor-tab-panel');
+      if (parentPanel) {
+        const matchingTab = tabs.find(t => t.dataset.tabTarget === parentPanel.id);
+        if (matchingTab) {
+          activateTab(matchingTab.id, false);
+          setTimeout(() => {
+            targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }, 80);
+        }
+      }
+    }
+  };
+
+  handleHashRouting();
+  window.addEventListener('hashchange', handleHashRouting);
+}
+
 function initMonitorActionDelegation() {
   document.addEventListener('click', event => {
     const target = event.target.closest('[data-monitor-action]');
@@ -3432,6 +3533,7 @@ function initMonitorActionDelegation() {
 
 initOverlayMenu();
 initMonitorSectionRail();
+initMonitorDashboardTabs();
 initMonitorActionDelegation();
 
 const nav = document.getElementById('global-nav');
@@ -3466,6 +3568,7 @@ Object.assign(window, {
   refreshAIMetrics,
   appendTerminalLog,
   initTerminalConsole,
+  initMonitorDashboardTabs,
 });
 
 export {
@@ -3493,4 +3596,5 @@ export {
   refreshAIMetrics,
   appendTerminalLog,
   initTerminalConsole,
+  initMonitorDashboardTabs,
 };

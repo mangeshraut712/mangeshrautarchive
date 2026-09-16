@@ -2,8 +2,8 @@
 
 | Suite       | Path                 | Runner     | Command                                         | Count (Aug/Sep 2026) |
 | ----------- | -------------------- | ---------- | ----------------------------------------------- | -------------------- |
-| **Unit**    | `tests/unit/`        | Vitest     | `npm test`                                      | 273 (52 files)       |
-| **API**     | `tests/api/`         | pytest     | `npm run test:api` (activate `venv` first)      | 175                  |
+| **Unit**    | `tests/unit/`        | Vitest     | `npm test`                                      | 281 (53 files)       |
+| **API**     | `tests/api/`         | pytest     | `npm run test:api` (activate `venv` first)      | 176 (27 files)       |
 | **E2E**     | `tests/e2e/`         | Playwright | `npm run test:e2e:chrome` / `test:e2e:all`      | 16 projects          |
 | **Helpers** | `tests/e2e/helpers/` | —          | Shared `gotoSite`, `PAGES`, GitHub Pages prefix | —                    |
 

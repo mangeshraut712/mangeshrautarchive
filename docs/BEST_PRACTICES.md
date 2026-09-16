@@ -129,9 +129,9 @@ _Document architecture, public APIs, and non-obvious invariants so the system re
 
 _Write code that is testable at unit, integration, and end-to-end levels, and treat tests as part of the product, not an afterthought._
 
-- **Repository Implementation (418+ Total Automated Tests):**
-  - **Unit Tests:** 243 Vitest tests (`tests/unit/`) validating DOM helpers, Markdown rendering, edge cache contracts, and data models in sub-second execution.
-  - **API Tests:** 175 pytest tests (`tests/api/`) verifying FastAPI endpoints, security headers, rate limits, and streaming responses.
+- **Repository Implementation (457 Total Automated Tests):**
+  - **Unit Tests:** 281 Vitest tests (`tests/unit/`) validating DOM helpers, Markdown rendering, edge cache contracts, and data models in sub-second execution.
+  - **API Tests:** 176 pytest tests (`tests/api/`) verifying FastAPI endpoints, security headers, rate limits, and streaming responses.
   - **E2E Tests:** Playwright multi-browser test matrix (`tests/e2e/`) running across 16 device configs (Desktop Chrome/Safari/Firefox, iPhone, iPad, Pixel) enforcing 0 horizontal overflow and UI state fidelity.
 
 ---
