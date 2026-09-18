@@ -36,6 +36,10 @@ import {
 } from './whoop-oauth.js';
 
 const OPENROUTER_URL = 'https://openrouter.ai/api/v1/chat/completions';
+/** First-byte budget before falling through to the next model (ChatGPT-like TTFT). */
+const OPENROUTER_FIRST_BYTE_MS = 18_000;
+/** Overall per-model budget once tokens are flowing. */
+const OPENROUTER_STREAM_TOTAL_MS = 55_000;
 /** Aspirational paid primary — used when OPENROUTER_MODEL is unset or credits return. */
 const PRIMARY_MODEL = 'x-ai/grok-4.3';
 /** Credit-safe free chain (aligned with api/config.py FREE_OPENROUTER_*). */
@@ -53,10 +57,13 @@ const FREE_VISION_MODELS = [
   'openrouter/free',
 ];
 
-const SYSTEM_PROMPT = `You are AssistMe — a premium, Apple Intelligence–inspired AI assistant for Mangesh Raut's professional portfolio (WWDC 2026 Siri-class: warm, direct, personal, action-oriented). Primary live host: GitHub Pages (mangeshraut.pro may be unavailable while Vercel is DEPLOYMENT_DISABLED).
+const SYSTEM_PROMPT = `You are AssistMe — a premium, Apple Intelligence–inspired AI assistant for Mangesh Raut's professional portfolio (WWDC 2026 Siri-class: warm, direct, personal, action-oriented). Primary live host: GitHub Pages (mangeshraut.pro may be unavailable while Vercel is DEPLOYMENT_DISABLED). Today's date context: September 2026.
 
 ## Identity
-You are intelligent, warm, concise, and useful — like a capable personal assistant. Lead with the answer, stay focused, and offer a natural next step. You specialize in Mangesh's career, but you also answer general questions (science, tech, math, culture, public knowledge) clearly — never refuse just because a question is not portfolio-related.
+You are intelligent, warm, concise, and useful — like ChatGPT or Siri: lead with the answer, stay focused, and offer a natural next step. You specialize in Mangesh's career, but you also answer general questions (science, tech, math, culture, public knowledge) clearly — never refuse just because a question is not portfolio-related.
+
+## Live facts
+Do not invent current political office-holders, live news, or private PII. If you are unsure about a changing world fact, say so and answer from portfolio knowledge instead.
 
 ## Mini Google of this portfolio
 You are the site search + knowledge layer for this portfolio: prefer precise answers grounded in portfolio facts. When page context is provided (current section / visible projects), bias toward that. If unsure, say so and suggest what to ask next.
@@ -221,24 +228,32 @@ function buildModelChain(env, requested, { hasImages = false } = {}) {
   return chain;
 }
 
-async function callOpenRouter(apiKey, model, messages, stream, env) {
-  return fetch(OPENROUTER_URL, {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      'Content-Type': 'application/json',
-      'HTTP-Referer':
-        env.OPENROUTER_SITE_URL || 'https://mangeshraut712.github.io/mangeshrautarchive',
-      'X-Title': env.OPENROUTER_SITE_TITLE || 'AssistMe Cloudflare Edge',
-    },
-    body: JSON.stringify({
-      model,
-      messages,
-      stream: Boolean(stream),
-      temperature: 0.65,
-      max_tokens: 1800,
-    }),
-  });
+async function callOpenRouter(apiKey, model, messages, stream, env, { timeoutMs } = {}) {
+  const controller = new AbortController();
+  const ms = Number(timeoutMs) > 0 ? Number(timeoutMs) : OPENROUTER_STREAM_TOTAL_MS;
+  const timer = setTimeout(() => controller.abort(), ms);
+  try {
+    return await fetch(OPENROUTER_URL, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        'Content-Type': 'application/json',
+        'HTTP-Referer':
+          env.OPENROUTER_SITE_URL || 'https://mangeshraut712.github.io/mangeshrautarchive',
+        'X-Title': env.OPENROUTER_SITE_TITLE || 'AssistMe Cloudflare Edge',
+      },
+      body: JSON.stringify({
+        model,
+        messages,
+        stream: Boolean(stream),
+        temperature: 0.65,
+        max_tokens: 1800,
+      }),
+      signal: controller.signal,
+    });
+  } finally {
+    clearTimeout(timer);
+  }
 }
 
 /** Best-effort per-isolate TTS throttle (mirrors FastAPI ~40/min). */
@@ -492,6 +507,159 @@ function streamOpenRouterToNdjson(upstream, model, cors, userMessage = '') {
   });
 }
 
+function streamChatWithFallbacks(apiKey, chain, messages, userMessage, cors, env) {
+  const encoder = new TextEncoder();
+  const stream = new ReadableStream({
+    async start(controller) {
+      const push = obj => {
+        try {
+          controller.enqueue(encoder.encode(`${JSON.stringify(obj)}\n`));
+        } catch {
+          /* stream closed */
+        }
+      };
+      push({ type: 'typing', status: 'start' });
+      let sentStop = false;
+      const stopTyping = () => {
+        if (sentStop) return;
+        sentStop = true;
+        push({ type: 'typing', status: 'stop' });
+      };
+
+      for (const model of chain) {
+        try {
+          const res = await callOpenRouter(apiKey, model, messages, true, env, {
+            timeoutMs: OPENROUTER_FIRST_BYTE_MS,
+          });
+          if (!res.ok) {
+            await res.text().catch(() => '');
+            continue;
+          }
+          stopTyping();
+          const ok = await pipeOpenRouterSseToNdjson(
+            res,
+            model,
+            userMessage,
+            push,
+            OPENROUTER_STREAM_TOTAL_MS
+          );
+          if (ok) {
+            controller.close();
+            return;
+          }
+        } catch {
+          continue;
+        }
+      }
+
+      stopTyping();
+      const answer = localAnswer(userMessage);
+      const step = 28;
+      for (let i = 0; i < answer.length; i += step) {
+        push({ type: 'chunk', content: answer.slice(i, i + step) });
+      }
+      push({
+        type: 'done',
+        full_content: answer,
+        metadata: {
+          model: 'edge-local',
+          source: 'Local Intelligence',
+          sourceLabel: 'AssistMe Edge',
+          host: 'cloudflare-worker',
+        },
+      });
+      controller.close();
+    },
+  });
+  return new Response(stream, {
+    headers: {
+      'Content-Type': 'application/x-ndjson; charset=utf-8',
+      'Cache-Control': 'no-store',
+      ...cors,
+    },
+  });
+}
+
+async function pipeOpenRouterSseToNdjson(upstream, model, userMessage, push, totalMs) {
+  const decoder = new TextDecoder();
+  let buffer = '';
+  let full = '';
+  const reader = upstream.body?.getReader();
+  if (!reader) return false;
+  const deadline =
+    Date.now() + (Number(totalMs) > 0 ? Number(totalMs) : OPENROUTER_STREAM_TOTAL_MS);
+
+  try {
+    while (true) {
+      if (Date.now() > deadline) {
+        try {
+          await reader.cancel();
+        } catch {
+          /* ignore */
+        }
+        break;
+      }
+      const { done, value } = await reader.read();
+      if (done) break;
+      buffer += decoder.decode(value, { stream: true });
+      const lines = buffer.split('\n');
+      buffer = lines.pop() || '';
+      for (const line of lines) {
+        const trimmed = line.trim();
+        if (!trimmed.startsWith('data: ')) continue;
+        const data = trimmed.slice(6);
+        if (data === '[DONE]') continue;
+        try {
+          const jsonData = JSON.parse(data);
+          const err = jsonData?.error;
+          if (err) {
+            full = '';
+            break;
+          }
+          const content = jsonData?.choices?.[0]?.delta?.content || '';
+          if (content) {
+            full += content;
+            push({ type: 'chunk', content });
+          }
+        } catch {
+          // ignore partial JSON
+        }
+      }
+    }
+  } finally {
+    reader.releaseLock();
+  }
+
+  if (!full || isGarbage(full, userMessage)) {
+    if (!full) return false;
+    const fallback = localAnswer(userMessage);
+    push({
+      type: 'done',
+      full_content: fallback,
+      metadata: {
+        model: 'edge-local',
+        source: 'Local Intelligence',
+        sourceLabel: 'AssistMe Edge (fallback)',
+        host: 'cloudflare-worker',
+        replaced_garbage: true,
+      },
+    });
+    return true;
+  }
+
+  push({
+    type: 'done',
+    full_content: full,
+    metadata: {
+      model,
+      source: 'OpenRouter',
+      sourceLabel: `OpenRouter (${String(model).split('/').pop()})`,
+      host: 'cloudflare-worker',
+    },
+  });
+  return true;
+}
+
 async function handleChat(request, env, cors) {
   let body;
   try {
@@ -565,23 +733,20 @@ async function handleChat(request, env, cors) {
   let lastErr = 'upstream failed';
   const tried = [];
 
+  if (wantStream) {
+    return streamChatWithFallbacks(apiKey, chain, messages, message, cors, env);
+  }
+
   for (const model of chain) {
     try {
-      const isFree = String(model).includes(':free') || model === 'openrouter/free';
-      // Stream paid/primary models; use non-stream for free so we can reject junk
-      // and fall through before the chat UI commits to a bad reply.
-      const useStream = wantStream && !isFree;
-      const res = await callOpenRouter(apiKey, model, messages, useStream, env);
+      const res = await callOpenRouter(apiKey, model, messages, false, env, {
+        timeoutMs: 28_000,
+      });
       if (!res.ok) {
         const errText = await res.text().catch(() => '');
         lastErr = `OpenRouter HTTP ${res.status}${errText ? `: ${errText.slice(0, 120)}` : ''}`;
         tried.push({ model, ok: false, status: res.status });
         continue;
-      }
-
-      if (useStream) {
-        tried.push({ model, ok: true, mode: 'stream' });
-        return streamOpenRouterToNdjson(res, model, cors, message);
       }
 
       const data = await res.json();
@@ -591,14 +756,7 @@ async function handleChat(request, env, cors) {
         tried.push({ model, ok: false, status: 'garbage' });
         continue;
       }
-      tried.push({ model, ok: true, mode: wantStream ? 'buffered' : 'json' });
-      if (wantStream) {
-        return streamLocal(answer, cors, {
-          model: data.model || model,
-          source: 'OpenRouter',
-          sourceLabel: `OpenRouter (${String(model).split('/').pop()})`,
-        });
-      }
+      tried.push({ model, ok: true, mode: 'json' });
       return json(
         {
           answer,
@@ -619,22 +777,20 @@ async function handleChat(request, env, cors) {
   }
 
   const answer = localAnswer(message);
-  return wantStream
-    ? streamLocal(answer, cors, { reason: lastErr })
-    : json(
-        {
-          answer,
-          source: 'Local Intelligence',
-          model: 'edge-local',
-          type: 'local',
-          fallback_reason: lastErr,
-          tried,
-          confidence: 1,
-          host: 'cloudflare-worker',
-        },
-        200,
-        cors
-      );
+  return json(
+    {
+      answer,
+      source: 'Local Intelligence',
+      model: 'edge-local',
+      type: 'local',
+      fallback_reason: lastErr,
+      tried,
+      confidence: 1,
+      host: 'cloudflare-worker',
+    },
+    200,
+    cors
+  );
 }
 
 async function handleHealth(env, cors) {

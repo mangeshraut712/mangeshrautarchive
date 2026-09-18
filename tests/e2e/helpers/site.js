@@ -40,6 +40,25 @@ export async function scrollSelectorIntoView(page, selector) {
   }, selector);
 }
 
+/** Open AssistMe after the widget module is loaded (idle prefetch). */
+export async function openChatbot(page) {
+  await page.waitForFunction(
+    () => typeof window.appleIntelligenceChatbot?.openWidget === 'function',
+    null,
+    { timeout: 20_000 }
+  );
+  await page.evaluate(() => window.appleIntelligenceChatbot.openWidget());
+  const widget = page.locator('#chatbot-widget');
+  await widget.waitFor({ state: 'visible', timeout: 10_000 });
+}
+
+/** Type a draft and send with Enter (ChatGPT-style). */
+export async function sendChatbotDraft(page, text) {
+  const textarea = page.locator('#chatbot-input');
+  await textarea.fill(text);
+  await textarea.press('Enter');
+}
+
 /** Canonical subpage paths (extensionless). */
 export const PAGES = {
   home: '/',

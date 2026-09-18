@@ -306,6 +306,19 @@ def test_direct_changelog_command_returns_recent_releases():
     assert "/changelog" in res["answer"]
 
 
+def test_local_mode_does_not_hardcode_stale_office_holders():
+    from api.routes.chat import generate_local_response
+
+    us = generate_local_response("who is the president of the united states")
+    assert us["category"] == "General Knowledge"
+    assert "biden" not in us["answer"].lower()
+    assert "local mode" in us["answer"].lower()
+
+    india = generate_local_response("who is the prime minister of india")
+    assert india["category"] == "General Knowledge"
+    assert "local mode" in india["answer"].lower()
+
+
 def test_devotional_queries_grounded_in_portfolio_facts(client):
     """Ensure Ganapati Aarti and Hanuman Chalisa queries are answered with authentic portfolio context."""
     from api.routes.chat import generate_local_response

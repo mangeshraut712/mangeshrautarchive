@@ -106,8 +106,7 @@ test.describe('Chatbot Agentic Actions & WebMCP Tool Registration', () => {
     const textarea = page.locator('#chatbot-input');
     await textarea.fill('toggle to dark mode');
 
-    const sendBtn = page.locator('.chatbot-send-btn');
-    await sendBtn.click();
+    await textarea.press('Enter');
 
     // Wait for the action to complete
     await page.waitForTimeout(2000);

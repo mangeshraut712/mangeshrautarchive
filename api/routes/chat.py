@@ -342,16 +342,17 @@ def generate_local_response(query: str, site_context: str = "") -> Dict:
             "category": "Achievements",
         }
 
-    # General World Knowledge & Trivia (e.g. Prime Minister of India, Capitals, Science)
-    if "prime minister" in query and "india" in query:
+    # General World Knowledge — Local Mode has no live news feed.
+    # Never hardcode current office-holders; they go stale (Sept 2026 audit).
+    if ("prime minister" in query and "india" in query) or (
+        ("president" in query and "united states" in query) or "president of us" in query
+    ):
         return {
-            "answer": "🇮🇳 The Prime Minister of India is **Narendra Modi**, serving as the 14th Prime Minister of India since May 2014.",
-            "category": "General Knowledge",
-        }
-
-    if "president" in query and "united states" in query or "president of us" in query:
-        return {
-            "answer": "🇺🇸 The President of the United States is **Joe Biden** (46th President).",
+            "answer": (
+                "I'm in **Local Mode**, so I don't have a live news feed for current office-holders. "
+                "When AssistMe shows **Connected**, ask again and I'll look it up. "
+                "I can still help with Mangesh's experience, skills, projects, and contact details."
+            ),
             "category": "General Knowledge",
         }
 

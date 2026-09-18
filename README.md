@@ -40,8 +40,8 @@
   <img src="https://img.shields.io/badge/FastAPI-0.141.1-009688?style=flat-square&logo=fastapi&logoColor=white" alt="FastAPI">
   <img src="https://img.shields.io/badge/ESM-Vanilla%20JS-F7DF1E?style=flat-square&logo=javascript&logoColor=black" alt="Vanilla ESM">
   <img src="https://img.shields.io/badge/Cloudflare-Workers-F38020?style=flat-square&logo=cloudflare&logoColor=white" alt="Cloudflare Workers">
-  <img src="https://img.shields.io/badge/Vitest-281%20passed-729B1B?style=flat-square&logo=vitest&logoColor=white" alt="281 Vitest unit tests">
-  <img src="https://img.shields.io/badge/pytest-175%20passed-0A9EDC?style=flat-square&logo=pytest&logoColor=white" alt="175 pytest API tests">
+  <img src="https://img.shields.io/badge/Vitest-287%20passed-729B1B?style=flat-square&logo=vitest&logoColor=white" alt="287 Vitest unit tests">
+  <img src="https://img.shields.io/badge/pytest-177%20passed-0A9EDC?style=flat-square&logo=pytest&logoColor=white" alt="177 pytest API tests">
   <img src="https://img.shields.io/badge/Playwright-16%20browser%20configs-2EAD33?style=flat-square&logo=playwright&logoColor=white" alt="Playwright">
   <img src="https://img.shields.io/badge/Lighthouse-100%2F100%2F100%2F100-0cce6b?style=flat-square&logo=lighthouse&logoColor=white" alt="Lighthouse 100">
   <a href="https://foglamp.dev/scan/mangeshrautarchive-jtspx4"><img src="https://img.shields.io/badge/Foglamp-AI%20Architecture%20Map-0071e3?style=flat-square" alt="Foglamp architecture map"></a>
@@ -100,7 +100,7 @@
 │  🤖 Agentic AI: AssistMe chatbot, OpenRouter streaming, 17 WebMCP browser actions      │
 │  🎨 Apple HIG Design: Solid white/black canvases, 3D kinetic interaction model         │
 │  📊 Real-Time Telemetry: WHOOP vitals, GA4 realtime reach, platform health probes       │
-│  🛡️ Quality Gates: 281 Vitest tests, 175 pytest tests, 100/100/100/100 Lighthouse CI   │
+│  🛡️ Quality Gates: 287 Vitest tests, 177 pytest tests, 100/100/100/100 Lighthouse CI   │
 │  📜 Open Chronicle: Complete Git history from day 1 (April 8, 2025) to September 2026   │
 └────────────────────────────────────────────────────────────────────────────────────────┘
 ```
@@ -255,7 +255,7 @@ mangeshrautarchive/
 ├── workers/                  # ★ Cloudflare Workers (Edge AI Proxy & Cron Telemetry)
 │   └── assistme-chat/        # Standalone Edge Worker for AssistMe AI & WebMCP proxy
 ├── scripts/                  # ★ Developer Tooling & Build Pipeline (esbuild, QA, security, sync)
-├── tests/                    # ★ Automated Test Suite (281 Vitest, 175 pytest, 16 Playwright targets)
+├── tests/                    # ★ Automated Test Suite (287 Vitest, 177 pytest, 16 Playwright targets)
 ├── docs/                     # Documentation (DESIGN.md source of truth, STRUCTURE.md, plans)
 └── .github/workflows/        # Automated CI/CD (GitHub Pages deploy, monitoring, edge sync)
 ```
@@ -281,6 +281,7 @@ mangeshrautarchive/
 
 | Model Tier & Name      | Engineering Purpose & Scope                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     | Reasoning Mode           | Status |
 | :--------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | :----------------------- | :----- |
+| **`grok-4.6`**         | AssistMe September 2026 audit: ChatGPT/Siri-like chatbot UX, Cloudflare Worker first-token streaming (stop buffering free-model JSON), session hydrate, overlapping FAB hide, stale Local Mode office-holder cleanup, 287 Vitest + 177 pytest                                                                                                                                                                                                                                                                                   | Standard / High          | Active |
 | **`gemini-3.8-flash`** | System Monitor Apple HIG dashboard overhaul & AssistMe devotional grounding: transformed `/monitor.html` from a 5000px scroll into an Apple HIG / shadcn 4-tab command center with executive KPI strip, eliminated card nesting redundancy, enriched FastAPI AssistMe chatbot retrieval with pronoun continuity and public domain devotional blessings (Shree Ganapati Aarti by Samarth Ramdas, Hanuman Chalisa), reinforced anti-framework hallucination safeguards, and verified 0px horizontal overflow across all viewports | High / Extended Thinking | Active |
 | **`gemini-3.8-flash`** | Travel Atlas Apple HIG zoom capsule, sidebar slide toggle & attribution removal: refined default rectangular MapLibre zoom controls to an Apple HIG glass capsule pill (9999px radius, blur 25px, specular highlight, 36px buttons), restored desktop sidebar collapse with smooth slide transition and floating glass expand tab (`[ ▤ Places ]`), and eliminated CARTO / OSM attribution banner across desktop, tablet, and mobile viewports with 0px horizontal overflow                                                     | High / Extended Thinking | Active |
 | **`gemini-3.8-flash`** | Apple-style floating dropdown menu for Changelog area filters: replaced in-flow grid expansion with an authentic floating Apple HIG dropdown menu card (blur 25px, specular highlight, 16px radius), outside-click and Escape dismissal, checkmark indicators, horizontal chip scrolling on mobile, and 0px overflow across viewports                                                                                                                                                                                           | High / Extended Thinking | Active |
@@ -359,8 +360,8 @@ npm run dev
 ### 7.3 Essential Quality Commands
 
 ```bash
-npm run check             # Run ESLint + Stylelint + Prettier + 281 Vitest tests
-npm run test:api          # Run 176 pytest API tests
+npm run check             # Run ESLint + Stylelint + Prettier + 287 Vitest tests
+npm run test:api          # Run 177 pytest API tests
 npm run doctor:strict     # Run 60-point strict repository layout check
 npm run security-check    # Scan for exposed API keys and credentials
 npm run build             # Production bundle compilation to dist/

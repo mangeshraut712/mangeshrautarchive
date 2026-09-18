@@ -63,7 +63,8 @@
   width: min(420px, calc(100vw - 2rem));
   height: min(600px, calc(100dvh - 140px));
   max-height: calc(100dvh - 140px);
-  z-index: 10050;
+  z-index: 200000;
+  isolation: isolate;
   display: flex;
   flex-direction: column;
   background: rgba(255, 255, 255, 0.94);
@@ -133,14 +134,15 @@ html.dark #chatbot-widget {
   opacity: 1;
   visibility: visible;
   transform: scale(1) translateY(0);
-  pointer-events: auto;
+  pointer-events: auto !important;
+  z-index: 200000 !important;
 }
 
 /* Full-screen dim + blur behind open chatbot (matches share sheet) */
 #chatbot-backdrop {
   position: fixed;
   inset: 0;
-  z-index: 10040;
+  z-index: 199990;
   display: none;
   background: rgba(0, 0, 0, 0.4);
   -webkit-transform: translateZ(0);
@@ -170,6 +172,13 @@ body.chatbot-open {
 body.chatbot-open .a11y-toolbar {
   opacity: 0;
   pointer-events: none;
+}
+
+/* Desktop: keep page scroll, but hide the FAB so it cannot sit on the composer.
+   Do not use visibility:hidden — #chatbot-widget is position-anchor'd to the FAB. */
+body.chatbot-open #chatbot-toggle {
+  opacity: 0 !important;
+  pointer-events: none !important;
 }
 
 @media (min-width: 769px) {
@@ -441,15 +450,23 @@ html.dark .suggested-prompt-btn:hover {
 /* ═══════════════════════════════════════════════════════════
    MESSAGES AREA - ENHANCED WITH CUSTOM SCROLLBAR
    ═══════════════════════════════════════════════════════════ */
-#chatbot-messages {
-  position: relative;
-  flex: 1;
+#chatbot-widget #chatbot-messages {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-x: hidden;
   overflow-y: auto;
   overflow-anchor: none;
-  padding: 24px;
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+#chatbot-messages:has(.welcome-message):not(:has(.user-message)) {
+  justify-content: center;
+}
+
+#chatbot-messages:has(.welcome-message):not(:has(.user-message)).chat-scroll-fade {
+  mask-image: none;
+  -webkit-mask-image: none;
 }
 
 /* shadcn-inspired scroll-fade — mask edges when content overflows */
@@ -1556,6 +1573,10 @@ html.dark .chatbot-rate-status {
   cursor: not-allowed;
   transform: none;
   pointer-events: none;
+}
+
+.chatbot-send-btn.is-empty:not(.is-busy):not(.is-stop) {
+  opacity: 0.45;
 }
 
 /* Generating: send becomes Stop — must stay clickable */
@@ -4290,16 +4311,18 @@ html.dark #chatbot-viewing-bar.chatbot-viewing-bar:hover {
 #chatbot-widget .welcome-message.welcome-message-simplified .welcome-title {
   margin: 0 !important;
   text-align: center !important;
-  font-size: 1.05rem !important;
+  font-size: 1.45rem !important;
   font-weight: 700 !important;
-  letter-spacing: -0.02em !important;
+  letter-spacing: -0.03em !important;
+  line-height: 1.2 !important;
   color: #1d1d1f !important;
   background: none !important;
-  -webkit-text-fill-color: currentColor !important;
+  -webkit-text-fill-color: #1d1d1f !important;
 }
 
 html.dark #chatbot-widget .welcome-message.welcome-message-simplified .welcome-title {
   color: #f5f5f7 !important;
+  -webkit-text-fill-color: #f5f5f7 !important;
 }
 
 #chatbot-widget .welcome-message.welcome-message-simplified .welcome-subtitle {

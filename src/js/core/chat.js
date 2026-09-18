@@ -577,6 +577,9 @@ class IntelligentAssistant {
             try {
               const data = JSON.parse(trimmed);
 
+              if (data.type === 'typing' || data.type === 'status') {
+                continue;
+              }
               // Handle chunk data (backend sends {type: "chunk", content: "..."})
               if (data.type === 'chunk' && data.content) {
                 fullText += data.content;

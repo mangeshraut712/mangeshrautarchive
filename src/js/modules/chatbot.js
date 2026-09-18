@@ -24,7 +24,17 @@ import {
   MAX_CHAT_INPUT_LENGTH as SHARED_MAX_CHAT_INPUT,
 } from '../chatbot/constants.js';
 import { getRemainingFreeMessages, consumeFreeMessage } from '../chatbot/rate-limit.js';
-import { clearSessionMemory, saveConversation } from '../chatbot/session-memory.js';
+import {
+  clearSessionMemory,
+  loadConversation,
+  saveConversation,
+} from '../chatbot/session-memory.js';
+import {
+  WELCOME_ACTION_CHIPS,
+  thinkingStageLabel,
+  usableTranscriptTurns,
+  welcomeCopy,
+} from '../chatbot/experience.js';
 import { realtimeVoiceService } from '../services/RealtimeVoiceService.js';
 import { voiceModeService } from '../services/VoiceModeService.js';
 import { lockBodyScroll, unlockBodyScroll } from '../utils/scroll-lock.js';
@@ -34,8 +44,6 @@ import appleSounds from './apple-sounds.js';
 const MAX_CHAT_INPUT_LENGTH = SHARED_MAX_CHAT_INPUT;
 const CLIENT_CHAT_MESSAGE_LIMIT = limits.dailyChatMessages || CLIENT_DAILY_CHAT_LIMIT;
 const TRUSTED_ICON_CLASS = /^fa-[a-z0-9-]+$/i;
-const SITE_SEARCH_PROMPT =
-  'Act as a site search engine for this portfolio. Give me a concise map of what I can ask about (projects, skills, experience, education, contact) and one suggested starter question for each.';
 
 function normalizeImagePayloads(images) {
   const normalized = [];
@@ -314,7 +322,7 @@ class AppleIntelligenceChatbot {
     this.initVoiceMode();
     this.bindEvents();
     this.ensureStatusIndicator();
-    this.addWelcomeMessage();
+    void this.hydrateTranscript();
     this.preloadSpeechVoices();
     void markdownService.ensureRichReady();
 
@@ -322,6 +330,7 @@ class AppleIntelligenceChatbot {
     this.setComposerChip('realtime', 'off');
     this.updateRateLimitBadge();
     this.setComposerBusy(false);
+    this.syncSendButtonState();
   }
 
   ensureStatusIndicator() {
@@ -439,7 +448,6 @@ class AppleIntelligenceChatbot {
     const sendBtn = this.elements.sendBtn;
     const input = this.elements.input;
     if (sendBtn) {
-      sendBtn.disabled = false;
       sendBtn.setAttribute('aria-busy', busy ? 'true' : 'false');
       sendBtn.classList.toggle('is-busy', Boolean(busy));
       sendBtn.classList.toggle('is-stop', Boolean(busy));
@@ -453,6 +461,25 @@ class AppleIntelligenceChatbot {
     if (input) {
       input.setAttribute('aria-busy', busy ? 'true' : 'false');
     }
+    if (!busy) this.syncSendButtonState();
+  }
+
+  composerHasDraft() {
+    const text = this.normalizeInput(this.elements.input?.value);
+    return Boolean(text) || Boolean(this.pendingImages?.length);
+  }
+
+  syncSendButtonState() {
+    const sendBtn = this.elements.sendBtn;
+    if (!sendBtn) return;
+    if (this.isProcessing) {
+      sendBtn.disabled = false;
+      sendBtn.classList.remove('is-empty');
+      return;
+    }
+    const hasDraft = this.composerHasDraft();
+    sendBtn.disabled = !hasDraft;
+    sendBtn.classList.toggle('is-empty', !hasDraft);
   }
 
   stopGeneration() {
@@ -1537,8 +1564,14 @@ class AppleIntelligenceChatbot {
       this.handleSendMessage();
     });
 
-    this.elements.input?.addEventListener('input', () => {
+    const onComposerDraftChange = () => {
       this.autoResizeTextarea(this.elements.input);
+      this.syncSendButtonState();
+    };
+    this.elements.input?.addEventListener('input', onComposerDraftChange);
+    this.elements.input?.addEventListener('change', onComposerDraftChange);
+    this.elements.input?.addEventListener('paste', () => {
+      queueMicrotask(onComposerDraftChange);
     });
 
     this.elements.input?.addEventListener('keydown', e => {
@@ -1583,6 +1616,14 @@ class AppleIntelligenceChatbot {
     });
 
     document.addEventListener('keydown', e => {
+      const assistShortcut =
+        (e.key === 'a' || e.key === 'A') && (e.metaKey || e.ctrlKey) && e.shiftKey;
+      if (assistShortcut && !this.isOpen) {
+        e.preventDefault();
+        this.openWidget();
+        return;
+      }
+
       if (e.key === 'Escape' && this.isOpen) {
         if (this.elements.widget?.querySelector('.composer-plus-popover')) {
           this.closePlusMenu();
@@ -1924,6 +1965,37 @@ class AppleIntelligenceChatbot {
 
   // ── Enhanced Welcome Message ──────────────────────
 
+  dismissWelcomeMessage() {
+    this.elements.messages
+      ?.querySelectorAll('.welcome-message, .welcome-message-simplified')
+      .forEach(el => el.remove());
+  }
+
+  async hydrateTranscript() {
+    if (this._hydratingTranscript) return;
+    this._hydratingTranscript = true;
+    const history = usableTranscriptTurns(
+      this.chatAPI?.conversation?.length ? this.chatAPI.conversation : loadConversation()
+    );
+    if (!history.length) {
+      this.addWelcomeMessage();
+      this._hydratingTranscript = false;
+      return;
+    }
+    this.dismissWelcomeMessage();
+    for (const msg of history) {
+      if (msg.role === 'user') {
+        this.addMessage(msg.content, 'user');
+        continue;
+      }
+      const messageDiv = this.addMessage('', 'assistant');
+      const contentDiv = messageDiv.querySelector('.message-content');
+      await this.finalizeStreamingContent(contentDiv, msg.content, null);
+    }
+    this.scrollEngine?.jumpToLatest({ announce: false });
+    this._hydratingTranscript = false;
+  }
+
   shouldShowWelcomeMessage() {
     const messages = this.elements.messages;
     if (!messages) return false;
@@ -1948,10 +2020,9 @@ class AppleIntelligenceChatbot {
           localStorage.setItem('assistme_last_visit', Date.now().toString());
         }
 
-        const titleText = isReturning ? 'Welcome Back to AssistMe' : 'Welcome to AssistMe';
-        const subtitleText = isReturning
-          ? "Ask about Mangesh's recent projects, GitHub telemetry, system architecture, or use + for tools."
-          : 'Ask about projects, skills, experience, or contact — or use + for tools.';
+        const { title: titleText, subtitle: subtitleText } = welcomeCopy({
+          returning: isReturning,
+        });
 
         const welcomeDiv = document.createElement('div');
         welcomeDiv.className =
@@ -1964,11 +2035,7 @@ class AppleIntelligenceChatbot {
                     </div>
                 `;
         const chips = welcomeDiv.querySelector('.welcome-chips');
-        [
-          ['fas fa-magnifying-glass', 'Search this site', SITE_SEARCH_PROMPT],
-          ['fas fa-rocket', 'Top Projects', "What are Mangesh's top projects?"],
-          ['fas fa-envelope', 'Contact', 'How can I contact Mangesh?'],
-        ].forEach(([iconClass, label, prompt]) => {
+        WELCOME_ACTION_CHIPS.forEach(([iconClass, label, prompt]) => {
           chips?.appendChild(this.createWelcomeActionChip(iconClass, label, prompt));
         });
         this.appendToMessages(welcomeDiv);
@@ -2090,6 +2157,7 @@ class AppleIntelligenceChatbot {
       return;
     }
 
+    this.dismissWelcomeMessage();
     this.isProcessing = true;
     this.setComposerBusy(true);
     this.lastUserMessage = text;
@@ -2340,7 +2408,7 @@ class AppleIntelligenceChatbot {
           ensureStreamBubble();
           this.updateThinkingStage('streaming');
           const now = Date.now();
-          if (now - lastRender >= 72 || /[\n.!?]$/.test(chunk)) {
+          if (now - lastRender >= 32 || /[\n.!?]$/.test(chunk)) {
             lastRender = now;
             void this.paintStreamingContent(contentDiv, fullText);
           } else {
@@ -2926,6 +2994,7 @@ class AppleIntelligenceChatbot {
   showThinkingIndicator() {
     this.hideTypingIndicator();
     this.setAgentComposerStatus('thinking');
+    this._thinkingStartedAt = Date.now();
     const indicator = document.createElement('div');
     indicator.className = 'thinking-indicator rich-block-thinking';
     indicator.id = 'chatbot-typing-indicator';
@@ -2935,7 +3004,7 @@ class AppleIntelligenceChatbot {
                     <i class="fas fa-brain"></i>
                 </div>
                 <div class="thinking-text">
-                    <span class="thinking-stage chat-text-shimmer">Thinking</span>
+                    <span class="thinking-stage chat-text-shimmer" data-stage="thinking">Thinking</span>
                     <span class="thinking-dots"><span>.</span><span>.</span><span>.</span></span>
                 </div>
                 <div class="thinking-shimmer" aria-hidden="true">
@@ -2946,6 +3015,13 @@ class AppleIntelligenceChatbot {
             </div>
         `;
     this.appendToMessages(indicator, { pin: false });
+    this._thinkingTick = setInterval(() => {
+      const stageEl = document.querySelector('#chatbot-typing-indicator .thinking-stage');
+      if (!stageEl) return;
+      const stage = stageEl.dataset.stage || 'thinking';
+      const elapsed = Math.floor((Date.now() - (this._thinkingStartedAt || Date.now())) / 1000);
+      stageEl.textContent = thinkingStageLabel(stage, elapsed);
+    }, 1000);
   }
 
   updateThinkingStage(stage) {
@@ -2956,12 +3032,14 @@ class AppleIntelligenceChatbot {
     const shimmer = indicator?.querySelector('.thinking-shimmer');
     if (stageEl) {
       const stages = {
-        thinking: { text: 'Thinking', icon: 'fas fa-brain' },
-        generating: { text: 'Generating', icon: 'fas fa-wand-magic-sparkles' },
-        streaming: { text: 'Streaming', icon: 'fas fa-bolt' },
+        thinking: { icon: 'fas fa-brain' },
+        generating: { icon: 'fas fa-wand-magic-sparkles' },
+        streaming: { icon: 'fas fa-bolt' },
       };
       const s = stages[stage] || stages.thinking;
-      stageEl.textContent = s.text;
+      stageEl.dataset.stage = stage;
+      const elapsed = Math.floor((Date.now() - (this._thinkingStartedAt || Date.now())) / 1000);
+      stageEl.textContent = thinkingStageLabel(stage, elapsed);
       stageEl.classList.add('chat-text-shimmer');
       if (iconEl) iconEl.className = s.icon;
       indicator?.classList.toggle('rich-block-thinking--streaming', stage === 'streaming');
@@ -2970,6 +3048,10 @@ class AppleIntelligenceChatbot {
   }
 
   hideTypingIndicator() {
+    if (this._thinkingTick) {
+      clearInterval(this._thinkingTick);
+      this._thinkingTick = null;
+    }
     const indicator = document.getElementById('chatbot-typing-indicator');
     if (!indicator) {
       if (!this.isProcessing) this.setAgentComposerStatus('idle');

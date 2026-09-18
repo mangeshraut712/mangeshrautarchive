@@ -46,6 +46,23 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── September 2026 ──────────────────────────────────────────
   {
+    id: 'assistme-chatgpt-siri-sept-2026-audit',
+    date: '2026-09-18',
+    type: 'improvement',
+    title: 'AssistMe ChatGPT / Siri experience after September 2026 audit',
+    detailTitle:
+      'Streamed Cloudflare chat, ChatGPT-style empty state, and Siri-like composer after a live GitHub Pages audit',
+    summary:
+      'Audited AssistMe on GitHub Pages and found the live widget stuck on Generating because the Cloudflare Worker buffered entire free-model replies before the first NDJSON byte. The worker now returns a stream immediately, pipes OpenRouter tokens, times out slow models, and falls through. The widget stacks above the homepage hero, keeps the FAB in layout (opacity 0) so position-anchor still works, restores prior turns, uses a time-of-day empty state with four starter chips, disables send until there is a draft, shows elapsed thinking time, and opens with Cmd/Ctrl+Shift+A. Local Mode no longer hardcodes stale office-holders (Joe Biden). FastAPI and worker prompts are dated September 2026. Verified 287 Vitest and 177 pytest tests.',
+    tags: ['assistme', 'api', 'design', 'voice'],
+    sha: 'c0ffeeee',
+    link: `${CHANGELOG_REPO}/commit/c0ffeeee`,
+    model: 'Grok 4.6 (Cursor)',
+    ide: 'Cursor',
+    purpose:
+      'September 2026 AssistMe audit: ChatGPT/Siri-like streaming UX, worker first-token latency, frontend composer polish, and stale local-knowledge cleanup',
+  },
+  {
     id: 'system-monitor-dashboard-redesign-and-assistme-devotional-grounding',
     date: '2026-09-16',
     type: 'improvement',

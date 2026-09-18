@@ -1016,13 +1016,18 @@ function initChatbotWarmPrefetch() {
     return;
   }
 
+  runWhenIdle(() => {
+    loadDeferredStyles(['assistant']).catch(() => {});
+    chatbotLoader.load().catch(() => {});
+  }, 1500);
+
   observeSectionTask(
     'contact',
     () => {
       runWhenIdle(() => {
         loadDeferredStyles(['assistant']).catch(() => {});
         chatbotLoader.load().catch(() => {});
-      }, 600);
+      }, 400);
     },
     '320px 0px'
   );

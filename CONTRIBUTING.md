@@ -92,10 +92,10 @@ Every pull request must pass the full quality matrix:
 
 ```bash
 # 1. Full automated quality check
-npm run check             # ESLint + Stylelint + Prettier + 281 Vitest unit tests
+npm run check             # ESLint + Stylelint + Prettier + 287 Vitest unit tests
 
 # 2. Python API test suite
-npm run test:api          # 176 pytest API endpoint & middleware tests
+npm run test:api          # 177 pytest API endpoint & middleware tests
 
 # 3. Codebase health & secret scanning
 npm run doctor            # Root layout & framework dependency guard

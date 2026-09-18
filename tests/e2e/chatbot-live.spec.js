@@ -26,8 +26,7 @@ test('test live chatbot on deployed portfolio', async ({ page }) => {
   await textarea.fill("Tell me about Mangesh's software engineering experience");
 
   console.log('✈️ Sending message...');
-  const sendBtn = page.locator('.chatbot-send-btn');
-  await sendBtn.click();
+  await textarea.press('Enter');
 
   console.log('⏳ Waiting for response streaming...');
   // We'll wait 12 seconds for the response stream to complete

@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { openChatbot } from './helpers/site.js';
 
 const pathPrefix = process.env.TEST_TARGET === 'github' ? '/mangeshrautarchive' : '';
 const gotoSite = (page, path = '/') =>
@@ -13,14 +14,6 @@ function buildMockStream() {
     '{"type":"done","metadata":{"source":"mock"}}',
   ];
   return `${chunks.join('\n')}\n`;
-}
-
-async function openChatbot(page) {
-  const toggle = page.locator('#chatbot-toggle');
-  await expect(toggle).toBeVisible();
-  await toggle.click();
-  await expect(page.locator('#chatbot-widget')).toBeVisible();
-  await page.waitForTimeout(800);
 }
 
 test.describe('Chatbot rich markdown cross-browser', () => {
@@ -44,7 +37,7 @@ test.describe('Chatbot rich markdown cross-browser', () => {
     await openChatbot(page);
 
     await page.locator('#chatbot-input').fill('Show rich formatting');
-    await page.locator('.chatbot-send-btn').click();
+    await page.locator('#chatbot-input').press('Enter');
 
     const assistantBubble = page.locator('#chatbot-messages .message.assistant-message').last();
     await expect(assistantBubble.locator('strong')).toBeVisible({ timeout: 15_000 });
@@ -57,7 +50,7 @@ test.describe('Chatbot rich markdown cross-browser', () => {
     await openChatbot(page);
 
     await page.locator('#chatbot-input').fill(RICH_MARKDOWN_REPLY);
-    await page.locator('.chatbot-send-btn').click();
+    await page.locator('#chatbot-input').press('Enter');
 
     const spoiler = page
       .locator('#chatbot-messages .message.assistant-message .rich-spoiler')
@@ -72,7 +65,7 @@ test.describe('Chatbot rich markdown cross-browser', () => {
     await openChatbot(page);
 
     await page.locator('#chatbot-input').fill('stream test');
-    await page.locator('.chatbot-send-btn').click();
+    await page.locator('#chatbot-input').press('Enter');
 
     const thinking = page.locator(
       '#chatbot-widget .rich-block-thinking, #chatbot-widget .thinking-indicator'

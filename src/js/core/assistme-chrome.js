@@ -125,9 +125,11 @@ function ensureChatbotChrome() {
       <div class="chatbot-header">
         <div class="chatbot-header-brand">
           <div class="chatbot-header-main">
+            <div class="chatbot-header-identity">
             <div class="chatbot-title-row">
               <span class="siri-orb" aria-hidden="true"></span>
               <h3 class="chatbot-title">AssistMe</h3>
+            </div>
             </div>
             <div class="chatbot-header-actions">
               <button class="chatbot-settings-btn" aria-label="Privacy &amp; Settings" type="button"
@@ -146,6 +148,11 @@ function ensureChatbotChrome() {
           </div>
         </div>
       </div>
+      <button type="button" id="chatbot-viewing-bar" class="chatbot-viewing-bar" hidden
+        aria-label="Ask about the section you are viewing">
+        <i class="fas fa-eye" aria-hidden="true"></i>
+        <span class="chatbot-viewing-text">Viewing <strong data-viewing-label>—</strong></span>
+      </button>
       <div id="chatbot-messages" role="log" aria-live="polite" aria-relevant="additions" aria-busy="false"></div>
       <div class="chatbot-input-container">
         <form id="chatbot-form" class="chatbot-composer">

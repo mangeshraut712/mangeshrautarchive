@@ -375,10 +375,10 @@ html.dark #chatbot-widget {
 
 .siri-orb {
   display: inline-block;
-  width: 14px;
-  height: 14px;
+  width: 22px;
+  height: 22px;
   margin-right: 8px;
-  vertical-align: -1px;
+  vertical-align: middle;
   border-radius: 50%;
   background:
     radial-gradient(circle at 30% 30%, rgb(255 255 255 / 85%), transparent 42%),
@@ -872,8 +872,8 @@ html.dark #chatbot-widget .chatbot-header {
 }
 
 #chatbot-widget .chatbot-title-row .siri-orb {
-  width: 12px;
-  height: 12px;
+  width: 18px;
+  height: 18px;
   margin: 0;
   flex-shrink: 0;
 }

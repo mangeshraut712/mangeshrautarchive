@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { openChatbot } from './helpers/site.js';
 
 const pathPrefix = process.env.TEST_TARGET === 'github' ? '/mangeshrautarchive' : '';
 const gotoSite = (page, path = '/') =>
@@ -10,14 +11,6 @@ const gotoSiteReady = async (page, path = '/') => {
   await page.waitForLoadState('load');
   await page.waitForTimeout(1200);
 };
-
-async function openChatbot(page) {
-  const toggle = page.locator('#chatbot-toggle');
-  await expect(toggle).toBeVisible();
-  await page.evaluate(() => document.getElementById('chatbot-toggle').click());
-  await expect(page.locator('#chatbot-widget')).toBeVisible();
-  await page.waitForTimeout(1000); // Allow widget styles and layout to settle
-}
 
 async function distanceFromBottom(page) {
   return page.evaluate(() => {
@@ -49,7 +42,7 @@ test.describe('Chatbot scroll engineering', () => {
     const initialPageScroll = await page.evaluate(() => window.scrollY);
 
     await page.locator('#chatbot-input').fill('Give me a long detailed answer');
-    await page.locator('.chatbot-send-btn').click();
+    await page.locator('#chatbot-input').press('Enter');
 
     await expect(page.locator('#chatbot-messages .message.assistant-message').last()).toBeVisible({
       timeout: 15_000,
@@ -108,7 +101,7 @@ test.describe('Chatbot scroll engineering', () => {
     });
 
     await page.locator('#chatbot-input').fill('Give me a long detailed answer');
-    await page.locator('.chatbot-send-btn').click();
+    await page.locator('#chatbot-input').press('Enter');
 
     await expect(
       page.locator('#chatbot-messages .message.assistant-message.streaming').last()
@@ -188,7 +181,7 @@ test.describe('Chatbot scroll engineering', () => {
     });
 
     await page.locator('#chatbot-input').fill('Give me a long detailed answer');
-    await page.locator('.chatbot-send-btn').click();
+    await page.locator('#chatbot-input').press('Enter');
 
     await expect(
       page.locator('#chatbot-messages .message.assistant-message.streaming').last()
@@ -237,7 +230,7 @@ test.describe('Chatbot scroll engineering', () => {
     });
 
     await page.locator('#chatbot-input').fill('First question');
-    await page.locator('.chatbot-send-btn').click();
+    await page.locator('#chatbot-input').press('Enter');
 
     await expect(page.locator('#chatbot-messages .message.user-message').last()).toBeVisible({
       timeout: 10_000,
@@ -304,7 +297,7 @@ test.describe('Chatbot scroll engineering', () => {
     await expect(page.locator('#chatbot-messages .welcome-message')).toBeVisible();
 
     await page.locator('#chatbot-input').fill('Quick test');
-    await page.locator('.chatbot-send-btn').click();
+    await page.locator('#chatbot-input').press('Enter');
     await expect(page.locator('#chatbot-messages .message.user-message')).toBeVisible({
       timeout: 15_000,
     });
