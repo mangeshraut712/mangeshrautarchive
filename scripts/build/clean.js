@@ -20,6 +20,7 @@ const generatedDirs = [
   '.playwright-mcp',
   '.playwright-cli',
   '.playwright',
+  '.tempmediaStorage',
   '.pytest_cache',
   '.gitnexus',
   'scratch',
