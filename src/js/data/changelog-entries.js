@@ -54,16 +54,15 @@ export const changelogEntries = [
     id: 'daybreak-changelog-accessibility-data-integrity',
     date: '2026-09-19',
     type: 'fix',
-    status: 'unreleased',
     title: 'Changelog accessibility and data integrity',
     detailTitle:
       'Daybreak review repairs contrast, touch targets, commit verification, area filters, semantics, and portable agent guidance',
     summary:
       'Hardened the compact changelog after an independent Daybreak review. Light and high-contrast badges now meet WCAG contrast, mobile controls meet the project tap-target standard, expanded details avoid the fixed utility dock, reduced-motion disables all changelog transitions, filter semantics announce concise result counts, unknown legacy tags map to a filterable Other area, and all released entries now link to verified Git commits. Canonicalized model attribution fields, made AGENTS.md the shared Codex and Claude Code instruction source, documented instruction-health checks, installed the private local-only Codex Insights workflow, and fixed AssistMe streaming so follow-up chips no longer pull a reader back to the bottom after they scroll up.',
     tags: ['design', 'systems'],
-    sha: null,
-    commitVerified: false,
-    link: null,
+    sha: '85bb4d8c',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/85bb4d8c`,
     model: 'GPT Daybreak / Codex',
     ide: 'OpenAI Codex Desktop',
     purpose:
