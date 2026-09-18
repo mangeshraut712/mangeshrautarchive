@@ -55,8 +55,8 @@ export const changelogEntries = [
     summary:
       'AssistMe no longer treats “binary search trees”, “search engine”, or a networking “file download” as site tools, and “how can I contact Mangesh?” stays a Q&A turn instead of opening the contact form. Chat bubbles now paint \\[ \\] math, mermaid HTML flow pills, Pollinations images, and trusted chart SVG, follow-up chips stay in the transcript, and OpenRouter generation ids are forwarded so Activity rows can be looked up.',
     tags: ['assistme', 'api', 'design'],
-    sha: '00000000',
-    link: null,
+    sha: '26a39103',
+    link: `${CHANGELOG_REPO}/commit/26a39103`,
     model: 'Grok 4.6 (Cursor)',
     ide: 'Cursor',
     purpose:
