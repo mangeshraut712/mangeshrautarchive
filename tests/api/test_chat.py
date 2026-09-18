@@ -319,6 +319,34 @@ def test_local_mode_does_not_hardcode_stale_office_holders():
     assert "local mode" in india["answer"].lower()
 
 
+def test_extract_openrouter_generation_id():
+    from api.routes.chat import extract_openrouter_generation_id
+
+    assert extract_openrouter_generation_id({"id": "gen-abc123"}) == "gen-abc123"
+    assert extract_openrouter_generation_id({}, {"x-generation-id": "gen-header"}) == "gen-header"
+    assert extract_openrouter_generation_id({"id": "gen-sse"}, {"x-generation-id": "gen-header"}) == (
+        "gen-header"
+    )
+    assert extract_openrouter_generation_id({"foo": 1}) == ""
+
+
+def test_resume_query_does_not_match_generic_downloads():
+    import asyncio
+    from api.config import is_resume_query
+    from api.routes.chat import generate_local_response, handle_direct_command
+
+    networking = "TCP vs UDP: when would a game, a file download, and a video call pick each one?"
+    assert is_resume_query(networking) is False
+    assert is_resume_query("download your resume") is True
+
+    local = generate_local_response(networking)
+    assert local["category"] != "Resume"
+    assert "download mangesh's resume" not in local["answer"].lower()
+
+    direct = asyncio.run(handle_direct_command(networking))
+    assert direct is None
+
+
 def test_devotional_queries_grounded_in_portfolio_facts(client):
     """Ensure Ganapati Aarti and Hanuman Chalisa queries are answered with authentic portfolio context."""
     from api.routes.chat import generate_local_response

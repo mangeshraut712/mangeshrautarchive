@@ -2504,6 +2504,11 @@ class AppleIntelligenceChatbot {
           response?.metadata?.knowledge_context ?? response?.knowledge_context ?? false,
         webTools: response?.metadata?.web_tools ?? response?.web_tools ?? false,
         webEngine: response?.metadata?.web_engine || response?.web_engine || '',
+        generationId:
+          response?.metadata?.generation_id ||
+          response?.metadata?.generationId ||
+          response?.generation_id ||
+          '',
         retried: this.retryCount > 0,
         timestamp: new Date().toLocaleTimeString('en-US', {
           hour: '2-digit',
@@ -2594,6 +2599,9 @@ class AppleIntelligenceChatbot {
   addCondensedMetadata(messageDiv, contentDiv, metadata) {
     const metaContainer = document.createElement('div');
     metaContainer.className = 'message-metadata-v2';
+    if (metadata.generationId) {
+      metaContainer.dataset.generationId = metadata.generationId;
+    }
 
     // Primary row: model + runtime + actions
     const primaryRow = document.createElement('div');
@@ -2682,6 +2690,7 @@ class AppleIntelligenceChatbot {
     if (metadata.tokens) detailChips.push(`🎯 ${metadata.tokens} tokens`);
     if (metadata.tokensPerSecond)
       detailChips.push(`⚡ ${Math.round(metadata.tokensPerSecond)} tok/s`);
+    if (metadata.generationId) detailChips.push(`🧾 ${metadata.generationId}`);
     if (metadata.confidence) detailChips.push(`✓ ${Math.round(metadata.confidence * 100)}%`);
     if (metadata.cost) {
       const costStr =
@@ -2983,6 +2992,7 @@ class AppleIntelligenceChatbot {
     });
 
     this.appendToMessages(container);
+    this.scrollEngine?.jumpToLatest?.({ announce: false });
   }
 
   removeFollowupChips() {

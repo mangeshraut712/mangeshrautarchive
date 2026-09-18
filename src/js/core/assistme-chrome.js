@@ -6,7 +6,7 @@
 import { sitePath } from '../utils/site-base.js';
 
 const ASSISTANT_CSS = [
-  '/assets/css/ai-assistant.css?v=20260722hide1',
+  '/assets/css/ai-assistant.css?v=20260918mermaid1',
   '/assets/css/ai-assistant-mobile.css?v=20260722hide1',
 ];
 

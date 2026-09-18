@@ -130,39 +130,169 @@ export function renderChartSvg(spec = {}) {
 }
 
 /**
+ * Pull a trusted Pollinations (or other https) image URL out of messy model markdown.
+ * @param {string} raw
+ * @returns {string}
+ */
+export function extractTrustedMediaUrl(raw) {
+  const text = String(raw || '')
+    .trim()
+    .replace(/^<|>$/g, '')
+    .replace(/\s+/g, '');
+  const polli = text.match(/https:\/\/(?:image\.|gen\.)?pollinations\.ai\/[^\s)<>"']+/i);
+  const candidate = polli ? polli[0].replace(/[.,;]+$/g, '') : text;
+  try {
+    const parsed = new URL(candidate);
+    if (parsed.protocol !== 'https:') return '';
+    if (POLLINATIONS_HOSTS.has(parsed.hostname)) return parsed.toString();
+  } catch {
+    return '';
+  }
+  return '';
+}
+
+/**
+ * Lightweight flowchart renderer for ```mermaid fences (no mermaid.js vendor).
+ * Renders HTML pills so geometry survives DOMPurify. Supports
+ * `flowchart|graph LR|TD` with `A[label] --> B[label]`.
+ * @param {string} source
+ * @returns {string}
+ */
+export function renderMermaidDiagram(source = '') {
+  const text = String(source || '').trim();
+  if (!text) return '<p class="rich-chart-error">Empty diagram.</p>';
+
+  const lines = text
+    .split('\n')
+    .map(line => line.trim())
+    .filter(line => line && !/^style\s+/i.test(line) && !/^classDef\b/i.test(line));
+  const header = lines[0] || '';
+  if (!/^(flowchart|graph)\b/i.test(header)) {
+    return `<pre class="rich-mermaid-fallback"><code>${escapeXml(text)}</code></pre>`;
+  }
+
+  const horizontal = !/\b(TD|TB|BT)\b/i.test(header);
+  const nodes = new Map();
+  const edges = [];
+  const nodeToken = /([A-Za-z][\w]*)\s*(?:\[([^\]]+)\]|\(([^)]+)\)|\{([^}]+)\})?/g;
+
+  const remember = (id, label) => {
+    if (!id) return;
+    const existing = nodes.get(id);
+    const nextLabel = label || existing?.label || id;
+    nodes.set(id, { id, label: nextLabel });
+  };
+
+  for (const line of lines.slice(1)) {
+    const edge = /([A-Za-z][\w]*)[^\n-]*?-->\s*([A-Za-z][\w]*)/.exec(line);
+    if (edge) edges.push({ from: edge[1], to: edge[2] });
+    nodeToken.lastIndex = 0;
+    let token;
+    while ((token = nodeToken.exec(line)) !== null) {
+      remember(token[1], token[2] || token[3] || token[4] || '');
+    }
+  }
+
+  if (!nodes.size) {
+    return `<pre class="rich-mermaid-fallback"><code>${escapeXml(text)}</code></pre>`;
+  }
+
+  const list = [...nodes.values()];
+  const byId = Object.fromEntries(list.map(node => [node.id, node]));
+  const used = new Set();
+  const sequence = [];
+  if (edges.length) {
+    let cursor = edges[0].from;
+    sequence.push(cursor);
+    used.add(cursor);
+    for (const edge of edges) {
+      if (!used.has(edge.to)) {
+        sequence.push(edge.to);
+        used.add(edge.to);
+      }
+    }
+    for (const node of list) {
+      if (!used.has(node.id)) sequence.push(node.id);
+    }
+  } else {
+    list.forEach(node => sequence.push(node.id));
+  }
+
+  const rowClass = horizontal ? 'rich-mermaid-row' : 'rich-mermaid-col';
+  const parts = [];
+  sequence.forEach((id, index) => {
+    const label = escapeXml(String(byId[id]?.label || id).slice(0, 28));
+    if (index) {
+      parts.push(
+        `<span class="rich-mermaid-arrow" aria-hidden="true">${horizontal ? '→' : '↓'}</span>`
+      );
+    }
+    parts.push(`<span class="rich-mermaid-node">${label}</span>`);
+  });
+
+  return `<figure class="rich-mermaid"><div class="${rowClass}" role="img" aria-label="Flowchart">${parts.join('')}</div></figure>`;
+}
+
+/**
  * Rewrite markdown before marked parse:
  * - ```chart JSON → HTML figure (placeholder token)
  * - ```svg → sanitized inline SVG figure
+ * - ```mermaid flowchart → HTML flow pills (DOMPurify strips SVG geometry)
  * - Inject pollinations image when intent detected and no image markdown yet
  */
-export function preprocessRichMediaMarkdown(markdown, { userPrompt = '' } = {}) {
+export function preprocessRichMediaMarkdown(markdown, { userPrompt = '', slots = [] } = {}) {
   let text = String(markdown || '');
+  const stash = html => {
+    const token = `§RICHSLOT${slots.length}§`;
+    slots.push(html);
+    return `\n\n${token}\n\n`;
+  };
 
   text = text.replace(/```chart\s*([\s\S]*?)```/gi, (_m, body) => {
     try {
       const spec = JSON.parse(String(body).trim());
-      return `\n\n${renderChartSvg(spec)}\n\n`;
+      return stash(renderChartSvg(spec));
     } catch {
-      return '\n\n<p class="rich-chart-error">Could not parse chart JSON.</p>\n\n';
+      return stash('<p class="rich-chart-error">Could not parse chart JSON.</p>');
     }
   });
 
   text = text.replace(/```svg\s*([\s\S]*?)```/gi, (_m, body) => {
-    const svg = String(body || '').trim();
+    const svg = String(body || '')
+      .trim()
+      .replace(/\son\w+\s*=\s*("[^"]*"|'[^']*'|[^\s>]+)/gi, '');
     if (!/^<svg[\s>]/i.test(svg) || /<script/i.test(svg)) {
-      return '\n\n<p class="rich-chart-error">SVG blocked for safety.</p>\n\n';
+      return stash('<p class="rich-chart-error">SVG blocked for safety.</p>');
     }
-    return `\n\n<figure class="rich-svg-media">${svg}</figure>\n\n`;
+    return stash(`<figure class="rich-svg-media">${svg}</figure>`);
+  });
+
+  text = text.replace(/```mermaid\s*([\s\S]*?)```/gi, (_m, body) => {
+    return stash(renderMermaidDiagram(body));
+  });
+
+  text = text.replace(/!\[([^\]]*)\]\(\s*<?([^)\s>]+)>?\s*\)/g, (full, alt, href) => {
+    const trusted = extractTrustedMediaUrl(href);
+    if (!trusted) return full;
+    return `![${alt}](${trusted})`;
   });
 
   if (
     userPrompt &&
     isImageGenerationIntent(userPrompt) &&
     !/!\[/.test(text) &&
-    !/image\.pollinations\.ai/.test(text)
+    !/pollinations\.ai/.test(text)
   ) {
     const url = buildPollinationsImageUrl(userPrompt);
     text += `\n\n![Generated image](${url})\n`;
+  }
+
+  if (
+    /pollinations\.ai/.test(text) &&
+    !/!\[[^\]]*\]\(\s*https:\/\/(?:image\.|gen\.)?pollinations\.ai/i.test(text)
+  ) {
+    const url = extractTrustedMediaUrl(text);
+    if (url) text += `\n\n![Generated image](${url})\n`;
   }
 
   if (userPrompt && isChartIntent(userPrompt) && !/```chart|class="rich-chart"/.test(text)) {

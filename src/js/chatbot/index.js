@@ -46,7 +46,15 @@ export {
   isChartIntent,
   buildPollinationsImageUrl,
   preprocessRichMediaMarkdown,
+  renderMermaidDiagram,
+  extractTrustedMediaUrl,
 } from './rich-media.js';
+export {
+  isSiteSearchIntent,
+  isResumeDownloadIntent,
+  isOpenContactFormIntent,
+  isAllowedAgenticMatch,
+} from './agentic-intent.js';
 export {
   SITE_SEARCH_PROMPT,
   WELCOME_ACTION_CHIPS,

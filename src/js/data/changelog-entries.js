@@ -46,6 +46,25 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── September 2026 ──────────────────────────────────────────
   {
+    id: 'assistme-intent-rich-render-sept-2026',
+    date: '2026-09-18',
+    type: 'fix',
+    title: 'AssistMe intent gates and rich chat rendering',
+    detailTitle:
+      'Stopped greedy WebMCP intercepts and restored KaTeX, Mermaid, Pollinations images, and follow-up chips',
+    summary:
+      'AssistMe no longer treats “binary search trees”, “search engine”, or a networking “file download” as site tools, and “how can I contact Mangesh?” stays a Q&A turn instead of opening the contact form. Chat bubbles now paint \\[ \\] math, mermaid HTML flow pills, Pollinations images, and trusted chart SVG, follow-up chips stay in the transcript, and OpenRouter generation ids are forwarded so Activity rows can be looked up.',
+    tags: ['assistme', 'api', 'design'],
+    sha: '00000000',
+    link: null,
+    model: 'Grok 4.6 (Cursor)',
+    ide: 'Cursor',
+    purpose:
+      'Fix AssistMe showcase bugs: greedy WebMCP intents, missing KaTeX/Mermaid/image paint, follow-up chip overflow',
+    reasoningMode: 'unavailable',
+    tokenUsage: 'unavailable',
+  },
+  {
     id: 'github-dependabot-security-batch-sept-2026',
     date: '2026-09-18',
     type: 'fix',

@@ -215,7 +215,7 @@ def generate_local_response(query: str, site_context: str = "") -> Dict:
         }
 
     # Resume/CV
-    if "resume" in query or "cv" in query:
+    if is_resume_query(query):
         resume_url = PORTFOLIO_DATA["resume_url"]
         return {
             "answer": f"📄 You can download Mangesh's resume here: {resume_url}",
@@ -828,6 +828,24 @@ def _fallback_models(model: str) -> List[str]:
     return build_model_fallback_chain(model)
 
 
+def extract_openrouter_generation_id(payload=None, headers=None) -> str:
+    """Pull OpenRouter generation id from SSE JSON and/or response headers."""
+    if headers is not None:
+        getter = getattr(headers, "get", None)
+        header_id = ""
+        if callable(getter):
+            header_id = getter("x-generation-id") or getter("X-Generation-Id") or ""
+        elif isinstance(headers, dict):
+            header_id = headers.get("x-generation-id") or headers.get("X-Generation-Id") or ""
+        if header_id:
+            return str(header_id).strip()
+    if isinstance(payload, dict):
+        gid = payload.get("id") or payload.get("generation_id")
+        if isinstance(gid, str) and gid.strip():
+            return gid.strip()
+    return ""
+
+
 async def stream_openrouter_response(
     model: str,
     messages: List[Dict],
@@ -954,6 +972,7 @@ async def stream_openrouter_response(
                             continue
 
                         model = candidate_model
+                        generation_id = extract_openrouter_generation_id({}, response.headers)
                         if retry_count == 0:
                             yield json.dumps({"type": "typing", "status": "stop"}) + "\n"
 
@@ -977,6 +996,9 @@ async def stream_openrouter_response(
                                     ) or last_upstream_reason
                                     full_content = ""
                                     break
+                                sse_id = extract_openrouter_generation_id(json_data)
+                                if sse_id:
+                                    generation_id = sse_id
                                 content = (
                                     json_data.get("choices", [{}])[0]
                                     .get("delta", {})
@@ -1041,6 +1063,7 @@ async def stream_openrouter_response(
                                         "elapsed_ms": int(elapsed * 1000),
                                         "tokens_per_sec": round(tokens_per_sec, 2),
                                         "chunks": chunk_count,
+                                        "generation_id": generation_id or None,
                                     },
                                 }
                             )
@@ -1146,6 +1169,7 @@ async def call_openrouter(
                     "answer": answer,
                     "usage": data.get("usage"),
                     "model": resolved_model,
+                    "generation_id": extract_openrouter_generation_id(data, response.headers),
                 }
             except Exception as exc:
                 last_error = exc

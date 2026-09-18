@@ -85,12 +85,46 @@ describe('MarkdownService.render', () => {
     expect(html).not.toContain('evil.example.com');
   });
 
-  it('allows trusted images', () => {
+  it('renders LaTeX display delimiters used by models', () => {
     const html = markdownService.render(
-      '![profile](https://mangeshraut.pro/assets/images/profile.webp)'
+      'The derivative is \\[ \\frac{d}{dx} x^3 = 3x^2 \\] as shown.'
+    );
+    expect(html).toMatch(/katex-display|katex/);
+    expect(html).toContain('katex-html');
+  });
+
+  it('renders Pollinations images instead of blocking them', () => {
+    const html = markdownService.render(
+      '![Glass](https://image.pollinations.ai/prompt/glassmorphic%20chatbot?width=768&nologo=true)'
     );
     expect(html).toContain('rich-inline-media');
-    expect(html).toContain('mangeshraut.pro');
+    expect(html).toContain('image.pollinations.ai');
+    expect(html).not.toContain('rich-image-blocked');
+  });
+
+  it('renders mermaid flowcharts as HTML pills', () => {
+    const html = markdownService.render('```mermaid\nflowchart LR\nA[Java] --> B[AssistMe]\n```');
+    expect(html).toContain('rich-mermaid');
+    expect(html).toContain('rich-mermaid-node');
+    expect(html).toContain('AssistMe');
+    expect(html).toContain('Java');
+  });
+
+  it('keeps trusted chart SVG geometry after sanitize', () => {
+    const html = markdownService.render(
+      '```chart\n{"type":"bar","title":"Skills","labels":["Java"],"values":[92]}\n```'
+    );
+    expect(html).toContain('rich-chart');
+    expect(html).toMatch(/viewBox="0 0 \d+ \d+"/);
+    expect(html).toMatch(/<rect[^>]*width="/);
+  });
+
+  it('injects a Pollinations image when the user asked to generate one', async () => {
+    const html = await markdownService.renderAsync('Here you go.', {
+      userPrompt: 'Generate a markdown image of a glassmorphic chatbot panel',
+    });
+    expect(html).toContain('rich-inline-media');
+    expect(html).toContain('image.pollinations.ai');
   });
 });
 

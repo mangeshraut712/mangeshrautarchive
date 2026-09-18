@@ -12,6 +12,7 @@
  */
 
 import { sitePath } from '../utils/site-base.js';
+import { isAllowedAgenticMatch } from '../chatbot/agentic-intent.js';
 import { forceDownloadFile } from './resume-dropdown.js';
 
 export class AgenticActionHandler {
@@ -398,8 +399,7 @@ export class AgenticActionHandler {
     // Download actions
     this.registerAction('download_resume', {
       patterns: [
-        /download\s+(?:my|your|the)?\s*(?:resume|cv)/i,
-        /(?:get|send|show)\s+(?:me\s+)?(?:your|the)?\s*(?:resume|cv)/i,
+        /\b(?:download|get|send|show)\s+(?:me\s+)?(?:my|your|the|his|mangesh(?:'s)?)?\s*(?:resume|cv)\b/i,
       ],
       handler: this.downloadResume.bind(this),
       description: 'Download the resume/CV',
@@ -446,12 +446,11 @@ export class AgenticActionHandler {
       description: 'Filter the calendar view by tab or query',
     });
 
-    // Contact actions
+    // Contact actions — form open only (Q&A like "how can I contact" stays with the LLM)
     this.registerAction('send_message', {
       patterns: [
-        /send\s+(?:a\s+)?(?:message|email)/i,
-        /contact\s+(?:you|mangesh)/i,
-        /(?:get in touch|reach out)/i,
+        /\b(?:send|write)\s+(?:a\s+)?(?:message|email)\b/i,
+        /\b(?:open|show|bring\s+up|fill(?:\s+out)?)\s+(?:the\s+)?contact\s+form\b/i,
       ],
       handler: this.openContactForm.bind(this),
       description: 'Open contact form to send a message',
@@ -467,9 +466,12 @@ export class AgenticActionHandler {
       description: 'Copy contact information to clipboard',
     });
 
-    // Search actions
+    // Search actions — site overlay only, not "binary search trees"
     this.registerAction('search', {
-      patterns: [/search\s+(?:for\s+)?(.+)/i, /find\s+(.+)/i, /look\s+(?:for|up)\s+(.+)/i],
+      patterns: [
+        /\bsearch\s+(?:this\s+|the\s+)?(?:site|portfolio)\b(?:\s+for\s+(.+))?/i,
+        /\b(?:find|look\s+up)\s+(?:.+\s+)?(?:on\s+)?(?:this\s+|the\s+)?(?:site|portfolio)\b/i,
+      ],
       handler: this.performSearch.bind(this),
       description: 'Search the portfolio for specific content',
     });
@@ -585,6 +587,7 @@ export class AgenticActionHandler {
     let detected = null;
 
     for (const [actionName, config] of this.actions) {
+      if (!isAllowedAgenticMatch(actionName, input)) continue;
       for (const pattern of config.patterns) {
         const match = input.match(pattern);
         if (match) {

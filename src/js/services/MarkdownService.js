@@ -1,5 +1,10 @@
 import { escapeHtml } from '../utils/escape-html.js';
-import { preprocessRichMediaMarkdown, POLLINATIONS_HOSTS } from '../chatbot/rich-media.js';
+import {
+  preprocessRichMediaMarkdown,
+  POLLINATIONS_HOSTS,
+  extractTrustedMediaUrl,
+} from '../chatbot/rich-media.js';
+
 /**
  * MarkdownService — Telegram-style rich chat rendering for AssistMe
  *
@@ -67,13 +72,19 @@ const KATEX_ATTR = [
 ];
 
 function isTrustedImageUrl(url) {
+  const pollinations = extractTrustedMediaUrl(url);
+  if (pollinations) return true;
   try {
-    const parsed = new URL(url, 'https://mangeshraut.pro');
+    const parsed = new URL(String(url || '').trim(), 'https://mangeshraut.pro');
     if (parsed.protocol !== 'https:') return false;
     return TRUSTED_IMAGE_HOSTS.has(parsed.hostname);
   } catch {
     return false;
   }
+}
+
+function trustedImageHref(url) {
+  return extractTrustedMediaUrl(url) || (isTrustedImageUrl(url) ? String(url).trim() : '');
 }
 
 class MarkdownService {
@@ -167,12 +178,13 @@ class MarkdownService {
     marked.use({
       renderer: {
         image({ href, title, text }) {
-          if (!href || !isTrustedImageUrl(href)) {
+          const safeHref = trustedImageHref(href);
+          if (!safeHref) {
             return `<span class="rich-image-blocked" title="Image blocked for security">[image: ${escapeHtml(text || 'untrusted')}]</span>`;
           }
           const titleAttr = title ? ` title="${escapeHtml(title)}"` : '';
           const alt = escapeHtml(text || 'inline image');
-          return `<figure class="rich-inline-media"><img src="${escapeHtml(href)}" alt="${alt}" loading="lazy" decoding="async"${titleAttr} /></figure>`;
+          return `<figure class="rich-inline-media"><img src="${escapeHtml(safeHref)}" alt="${alt}" loading="lazy" decoding="async" referrerpolicy="no-referrer"${titleAttr} /></figure>`;
         },
         link({ href, title, text }) {
           if (!href || !SAFE_URL_PATTERN.test(href)) {
@@ -190,7 +202,8 @@ class MarkdownService {
   _splitMathSegments(markdown) {
     const segments = [];
     let cursor = 0;
-    const pattern = /(\$\$[\s\S]+?\$\$|\$(?!\$)[^\n$]+?\$(?!\$))/g;
+    const pattern =
+      /(\$\$[\s\S]+?\$\$|\\\[[\s\S]+?\\\]|\\\([\s\S]+?\\\)|\$(?!\$)[^\n$]+?\$(?!\$))/g;
     let match;
 
     while ((match = pattern.exec(markdown)) !== null) {
@@ -198,8 +211,19 @@ class MarkdownService {
         segments.push({ type: 'text', value: markdown.slice(cursor, match.index) });
       }
       const raw = match[0];
-      const display = raw.startsWith('$$');
-      const tex = display ? raw.slice(2, -2).trim() : raw.slice(1, -1).trim();
+      let display = false;
+      let tex;
+      if (raw.startsWith('$$')) {
+        display = true;
+        tex = raw.slice(2, -2).trim();
+      } else if (raw.startsWith('\\[')) {
+        display = true;
+        tex = raw.slice(2, -2).trim();
+      } else if (raw.startsWith('\\(')) {
+        tex = raw.slice(2, -2).trim();
+      } else {
+        tex = raw.slice(1, -1).trim();
+      }
       segments.push({ type: 'math', display, tex });
       cursor = match.index + raw.length;
     }
@@ -244,6 +268,7 @@ class MarkdownService {
   _sanitize(html) {
     const { DOMPurify } = this._vendor;
     return DOMPurify.sanitize(html, {
+      USE_PROFILES: { html: true, svg: true, svgFilters: false },
       ALLOWED_TAGS: [
         'p',
         'br',
@@ -292,6 +317,8 @@ class MarkdownService {
         'g',
         'text',
         'title',
+        'marker',
+        'defs',
         ...KATEX_TAGS,
       ],
       ALLOWED_ATTR: [
@@ -310,7 +337,20 @@ class MarkdownService {
         'aria-label',
         'aria-hidden',
         'role',
+        'xmlns',
         'viewBox',
+        'viewbox',
+        'markerWidth',
+        'markerwidth',
+        'markerHeight',
+        'markerheight',
+        'refX',
+        'refx',
+        'refY',
+        'refy',
+        'font-size',
+        'font-weight',
+        'text-anchor',
         'd',
         'fill',
         'stroke',
@@ -334,14 +374,22 @@ class MarkdownService {
         'start',
         'open',
         'id',
+        'markerWidth',
+        'markerHeight',
+        'refX',
+        'refY',
+        'orient',
+        'marker-end',
+        'stroke-width',
+        'referrerpolicy',
         'data-footnote-ref',
         'data-footnote-backref',
         ...KATEX_ATTR,
       ],
       ALLOWED_URI_REGEXP: SAFE_URL_PATTERN,
       ALLOW_DATA_ATTR: true,
-      FORBID_TAGS: ['script', 'style', 'iframe', 'object', 'embed', 'form', 'button'],
-      FORBID_ATTR: ['onerror', 'onclick', 'onload', 'style'],
+      FORBID_TAGS: ['script', 'iframe', 'object', 'embed', 'form', 'button'],
+      FORBID_ATTR: ['onerror', 'onclick', 'onload'],
       FORCE_BODY: false,
       ADD_TAGS: KATEX_TAGS,
       ADD_ATTR: KATEX_ATTR,
@@ -364,15 +412,23 @@ class MarkdownService {
     this._ensureConfigured();
 
     try {
+      const slots = [];
       const prepared = preprocessRichMediaMarkdown(markdown, {
         userPrompt: options.userPrompt || '',
+        slots,
       });
       const withMath = this._preprocessMath(prepared);
       let html = this._marked.parse(withMath);
       html = html
         .replace(/<table/g, '<div class="rich-table-wrap"><table')
         .replace(/<\/table>/g, '</table></div>');
-      return this._sanitize(html);
+      html = this._sanitize(html);
+      // Trusted chart/mermaid/svg fragments are generated locally. Restore them
+      // after DOMPurify — it strips SVG geometry (width/height/viewBox/x/y).
+      slots.forEach((fragment, index) => {
+        html = html.split(`§RICHSLOT${index}§`).join(fragment);
+      });
+      return html;
     } catch (err) {
       console.warn('Markdown parse error:', err);
       return this.renderPlain(markdown);
@@ -412,7 +468,8 @@ class MarkdownService {
     const needsRich =
       this.containsMarkdown(markdown) ||
       Boolean(options.userPrompt) ||
-      /```chart|```svg/i.test(markdown);
+      /```(?:chart|svg|mermaid)/i.test(markdown) ||
+      /pollinations\.ai/i.test(markdown);
 
     if (!needsRich) {
       return this.renderPlain(markdown);
@@ -566,7 +623,7 @@ class MarkdownService {
 
   containsMarkdown(text) {
     if (!text) return false;
-    return /(\*\*|__|`|\$\$?|#{1,6}\s|\[[ xX]\]|^\s*[-*+]\s|^\s*\d+\.\s|\[.*\]\(|>\s|^\|.*\||\|\|.+?\|\||\[\^[^\]]+\]|^:{3,}|```(?:chart|svg))/m.test(
+    return /(\*\*|__|`|\$\$?|\\\[|\\\(|#{1,6}\s|\[[ xX]\]|^\s*[-*+]\s|^\s*\d+\.\s|!?\[.*\]\(|>\s|^\|.*\||\|\|.+?\|\||\[\^[^\]]+\]|^:{3,}|```(?:chart|svg|mermaid))/m.test(
       text
     );
   }

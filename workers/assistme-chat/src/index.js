@@ -424,6 +424,7 @@ function streamOpenRouterToNdjson(upstream, model, cors, userMessage = '') {
   const decoder = new TextDecoder();
   let buffer = '';
   let full = '';
+  let generationId = upstream.headers?.get?.('X-Generation-Id') || '';
 
   const stream = new ReadableStream({
     async start(controller) {
@@ -451,6 +452,8 @@ function streamOpenRouterToNdjson(upstream, model, cors, userMessage = '') {
                 full = '';
                 break;
               }
+              const sseId = jsonData?.id || jsonData?.generation_id;
+              if (sseId) generationId = String(sseId);
               const content = jsonData?.choices?.[0]?.delta?.content || '';
               if (content) {
                 full += content;
@@ -492,6 +495,7 @@ function streamOpenRouterToNdjson(upstream, model, cors, userMessage = '') {
           source: 'OpenRouter',
           sourceLabel: `OpenRouter (${String(model).split('/').pop()})`,
           host: 'cloudflare-worker',
+          generation_id: generationId || undefined,
         },
       });
       controller.close();
@@ -584,6 +588,7 @@ async function pipeOpenRouterSseToNdjson(upstream, model, userMessage, push, tot
   const decoder = new TextDecoder();
   let buffer = '';
   let full = '';
+  let generationId = upstream.headers?.get?.('X-Generation-Id') || '';
   const reader = upstream.body?.getReader();
   if (!reader) return false;
   const deadline =
@@ -616,6 +621,8 @@ async function pipeOpenRouterSseToNdjson(upstream, model, userMessage, push, tot
             full = '';
             break;
           }
+          const sseId = jsonData?.id || jsonData?.generation_id;
+          if (sseId) generationId = String(sseId);
           const content = jsonData?.choices?.[0]?.delta?.content || '';
           if (content) {
             full += content;
@@ -655,6 +662,7 @@ async function pipeOpenRouterSseToNdjson(upstream, model, userMessage, push, tot
       source: 'OpenRouter',
       sourceLabel: `OpenRouter (${String(model).split('/').pop()})`,
       host: 'cloudflare-worker',
+      generation_id: generationId || undefined,
     },
   });
   return true;

@@ -2506,14 +2506,21 @@ html.dark #chatbot-widget .chatbot-rate-status {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  padding: 4px 0 8px;
-  animation: followupSlideIn 0.5s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  padding: 8px 4px 16px;
+  margin: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior: contain;
+  animation: followupSlideIn 0.35s cubic-bezier(0.19, 1, 0.22, 1) forwards;
 }
 
 @keyframes followupSlideIn {
   from {
     opacity: 0;
-    transform: translateY(12px);
+    transform: translateY(-4px);
   }
 
   to {
@@ -2525,6 +2532,8 @@ html.dark #chatbot-widget .chatbot-rate-status {
 .followup-chip {
   display: inline-flex;
   align-items: center;
+  flex: 0 1 auto;
+  max-width: 100%;
   padding: 8px 14px;
   font-size: 13px;
   font-weight: 500;
@@ -2560,12 +2569,12 @@ html.dark #chatbot-widget .chatbot-rate-status {
 @keyframes chipReveal {
   from {
     opacity: 0;
-    transform: translateY(10px) scale(0.92);
+    transform: scale(0.96);
   }
 
   to {
     opacity: 1;
-    transform: translateY(0) scale(1);
+    transform: scale(1);
   }
 }
 
@@ -3618,8 +3627,9 @@ html.dark .rich-table-wrap {
 .message-content .katex-display {
   margin: 12px 0;
   overflow-x: auto;
-  overflow-y: hidden;
-  padding: 4px 0;
+  overflow-y: visible;
+  padding: 12px 4px;
+  min-height: 3.25em;
 }
 
 .message-content .math-error {
@@ -3642,15 +3652,60 @@ html.dark .rich-image-blocked {
   color: #ff9f0a;
 }
 
-.rich-inline-media {
-  margin: 10px 0;
-}
-
 .rich-inline-media img {
   display: block;
   max-width: min(100%, 420px);
   height: auto;
   border-radius: 10px;
+}
+
+.rich-mermaid {
+  margin: 12px 0;
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+.rich-mermaid-row,
+.rich-mermaid-col {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: nowrap;
+}
+
+.rich-mermaid-col {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.rich-mermaid-node {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 36px;
+  padding: 8px 16px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #0077ed 0%, #0071e3 50%, #005bb5 100%);
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: var(--font-text);
+  white-space: nowrap;
+}
+
+.rich-mermaid-arrow {
+  color: #0071e3;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+html.dark .rich-mermaid-arrow {
+  color: #0a84ff;
+}
+
+.rich-mermaid-fallback {
+  font-size: 0.85rem;
 }
 
 .rich-chart,
