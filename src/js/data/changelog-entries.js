@@ -55,8 +55,8 @@ export const changelogEntries = [
     summary:
       'Audited AssistMe on GitHub Pages and found the live widget stuck on Generating because the Cloudflare Worker buffered entire free-model replies before the first NDJSON byte. The worker now returns a stream immediately, pipes OpenRouter tokens, times out slow models, and falls through. The widget stacks above the homepage hero, keeps the FAB in layout (opacity 0) so position-anchor still works, restores prior turns, uses a time-of-day empty state with four starter chips, disables send until there is a draft, shows elapsed thinking time, and opens with Cmd/Ctrl+Shift+A. Local Mode no longer hardcodes stale office-holders (Joe Biden). FastAPI and worker prompts are dated September 2026. Verified 287 Vitest and 177 pytest tests.',
     tags: ['assistme', 'api', 'design', 'voice'],
-    sha: 'c0ffeeee',
-    link: `${CHANGELOG_REPO}/commit/c0ffeeee`,
+    sha: 'f8c26d2c',
+    link: `${CHANGELOG_REPO}/commit/f8c26d2c`,
     model: 'Grok 4.6 (Cursor)',
     ide: 'Cursor',
     purpose:
