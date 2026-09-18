@@ -54,16 +54,15 @@ export const changelogEntries = [
     id: 'repository-root-cleanup-and-pr-resolution',
     date: '2026-09-19',
     type: 'improvement',
-    status: 'unreleased',
     title: 'Repository root cleanup and pull-request resolution',
     detailTitle:
       'Audit the root allow-list, clean generated artifacts, preserve local configuration and credentials, and resolve the open dependency backlog',
     summary:
       'Audited every root-level file and directory against the strict repository doctor, preserved required source, configuration, environment, and credential paths, extended the canonical cleanup command to remove temporary media captures, removed redundant local build and test artifacts, kept the required venv environment, and resolved the final open Dependabot pull request by merging the verified anyio 4.14.2 lockfile update.',
     tags: ['systems', 'deploy'],
-    sha: null,
-    commitVerified: false,
-    link: null,
+    sha: '8c3a8f18',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/8c3a8f18`,
     model: 'GPT-5 / Codex',
     ide: 'OpenAI Codex Desktop',
     purpose:
