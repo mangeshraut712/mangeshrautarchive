@@ -1,7 +1,7 @@
 # AGENTS.md — Universal AI Agent Briefing
 
 > **Standard:** Linux Foundation AGENTS.md v1.0 (2026)
-> **Last updated:** 2026-09-15
+> **Last updated:** 2026-09-19
 
 ---
 
@@ -23,26 +23,38 @@
 - Preserve unrelated work. Never take destructive, production, or external actions beyond what the user authorized.
 - Report meaningful blockers, outcomes, and evidence without noisy progress.
 
+### Cross-agent instruction discovery
+
+- `AGENTS.md` is the canonical project instruction file. Keep shared rules here instead of
+  duplicating them across tool-specific files.
+- Codex reads `AGENTS.md` natively before each task. It layers the global Codex-home instructions
+  with one instruction file per directory from the repository root to the working directory. In
+  each directory, `AGENTS.override.md` takes precedence over `AGENTS.md`; configured fallback names
+  apply only after those files. More specific directories override broader guidance.
+- Claude Code 2.1.277 and later reads `AGENTS.md` when a directory has no `CLAUDE.md`. This repository
+  intentionally has no `CLAUDE.md`, so Claude Code and Codex share this file. Claude Code users can
+  change the fallback under **Project instructions** in `/config`; Anthropic documents that the
+  feature is not yet available on Bedrock, Vertex, or Foundry. See the
+  [Claude Code 2.1.277 release](https://github.com/anthropics/claude-code/releases/tag/v2.1.277)
+  and the [built-in AGENTS.md mod](https://github.com/anthropics/claude-code/tree/main/mods/agents-md).
+- Keep `GEMINI.md` and `.github/copilot-instructions.md` limited to genuine platform-specific
+  differences and point back here for shared policy.
+- Codex has no documented equivalent of Claude Code's instruction-bloat `/doctor`. The repository's
+  `npm run doctor` validates layout and stack constraints only. Review instruction health directly:
+  remove redundant steps, narrow broad skill triggers, keep safety and release gates, and verify the
+  active chain with `codex --ask-for-approval never "Summarize the current instructions."` after
+  changing instruction files. Restart the Codex session to reload the chain.
+- Codex stops adding project instructions at `project_doc_max_bytes` (32 KiB by default). Keep the
+  root brief concise and use scoped `AGENTS.override.md` files only when a subtree truly differs.
+  See [OpenAI Docs: AGENTS.md](https://developers.openai.com/docs/agent-configuration/agents-md).
+
 ---
 
-## Core Software Engineering Best Practices for Long-Term Success
+## Engineering practices
 
-All agents operating in this repository must strictly adhere to the 14 core software engineering best practices detailed in [docs/BEST_PRACTICES.md](docs/BEST_PRACTICES.md):
-
-1. **Explicit Architecture**: Choose an explicit architecture (layered, MVC, modular services) matching the product scale, and keep it documented so new work has a clear place to live.
-2. **Loosely Coupled Modules**: Split the system into loosely coupled modules with one clear responsibility each, preventing changes from rippling across boundaries.
-3. **Design for Scalability**: Design for growth from the start: isolate stateful components, maintain stable interfaces, and plan for horizontal/vertical scaling.
-4. **Self-Documenting Naming**: Name variables, functions, types, and modules so their intent is obvious without needing explanatory commentary.
-5. **Simple Control Flow**: Prefer simple, readable control flow over dense or clever logic; complexity must be justified by an authentic constraint.
-6. **Single-Purpose Functions**: Keep functions and methods small and single-purpose for straightforward reasoning, testing, and reuse.
-7. **Enforce Uniform Standards**: Enforce one formatting and style standard (ESLint, Stylelint, Prettier, flake8) across the repo so reviews focus on behavior.
-8. **Document Invariants & APIs**: Document architecture, public APIs, and non-obvious invariants so the system remains understandable long into the future.
-9. **First-Class Automated Testing**: Write testable code across unit, integration, and E2E levels; treat tests as core product deliverables.
-10. **Continuous Refactoring**: Refactor regularly to improve clarity and structural hygiene without mutating external behavior.
-11. **Intentional Debt Paydown**: Track and pay down technical debt deliberately; never let shortcuts become permanent architecture.
-12. **Reviewable Git History**: Maintain a clean Git workflow with conventional commits and clear branching so history remains bisectable and recoverable.
-13. **Rigorous Code Reviews**: Require high-signal automated and peer reviews to protect quality, spread architecture knowledge, and catch regressions.
-14. **Fully Automated CI/CD**: Run end-to-end CI/CD so every change is linted, built, tested, and released via the same automated, deterministic pipeline.
+Use [docs/BEST_PRACTICES.md](docs/BEST_PRACTICES.md) when changing architecture, module
+boundaries, public APIs, testing strategy, Git workflow, or CI/CD. Do not load or restate the full
+architecture guide for small copy, data, or isolated style edits.
 
 ---
 
@@ -180,8 +192,11 @@ npm run qa:lighthouse:vercel  # Live Vercel Lighthouse floors
 - Branch naming: `feature/short-description`, `fix/issue-description`, `chore/cleanup-task`.
 - **MANDATORY Pre-Commit & Release Checklist (Always Execute Automatically)**:
   1. **Update Changelog (`src/js/data/changelog-entries.js`)**: Add a new typed entry to `changelogEntries` detailing the shipped fixes, features, or design polish, with explicit active model attribution and purpose.
-  2. **Track Active LLM Model, Purpose & Metrics in Markdown**: In `README.md` (Section 5.1), documentation files, and the commit body, record the active LLM model (e.g. `gemini-3.7-flash`, `gemini-2.5-pro`, `claude-3.7-sonnet`, `grok-4.3`), its dedicated purpose (e.g. visual layout auditing, CSS refactoring, architectural contract), reasoning mode, and token consumption metrics.
-  3. **Run Full Quality Gate**: Run `npm run check` (ESLint + Stylelint + Prettier + Vitest 303 tests), `npm run security-check`, and `npm run build` with Node 22 (`export PATH="/opt/homebrew/opt/node@22/bin:/opt/homebrew/Cellar/node@22/22.23.2/bin:$PATH"`).
+  2. **Track Coding Agent & Purpose Without Guessing**: In `README.md` (Section 5.1),
+     documentation files, and the commit body, record the coding agent or exposed model family and
+     its dedicated purpose. Record the exact model variant, reasoning mode, and token usage only when
+     the runtime exposes them; otherwise use `unavailable`.
+  3. **Run Full Quality Gate**: Run `npm run check` (ESLint + Stylelint + Prettier + Vitest 309 tests), `npm run security-check`, and `npm run build` with Node 22 (`export PATH="/opt/homebrew/opt/node@22/bin:/opt/homebrew/Cellar/node@22/22.23.2/bin:$PATH"`).
   4. **Sync Documentation**: Keep test counts, architecture files, and design system rules synchronized across `README.md`, `AGENTS.md`, and `docs/DESIGN.md`.
   5. **Guarantee 100% Green CI/CD Protocol**: Always monitor GitHub Actions after every `git push` to `main` via `gh run list` / `gh run view` to confirm all remote jobs (actionlint, linting, Vitest, pytest, Playwright, Lighthouse 100/100/100/100 gates, and Pages deployment) complete with green checks. Never consider a task finished with failing remote CI runs.
 
@@ -226,7 +241,7 @@ All three test suites must pass before any merge to `main`:
 
 | Suite | Runner     | Command                | Coverage                                    |
 | ----- | ---------- | ---------------------- | ------------------------------------------- |
-| Unit  | Vitest     | `npm test`             | 303 tests — JS modules, utilities, markdown |
+| Unit  | Vitest     | `npm test`             | 309 tests — JS modules, utilities, markdown |
 | API   | pytest     | `npm run test:api`     | 179 tests — FastAPI endpoints, middleware   |
 | E2E   | Playwright | `npm run test:e2e:all` | Multi-spec suite across 16 browser projects |
 

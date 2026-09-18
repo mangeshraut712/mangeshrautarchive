@@ -83,22 +83,21 @@ function tagLabel(id) {
   return CHANGELOG_TAGS.find(t => t.id === id)?.label || id;
 }
 
+function entryAreaIds(entry) {
+  const knownAreas = new Set(CHANGELOG_TAGS.filter(tag => tag.id !== 'other').map(tag => tag.id));
+  const areas = [...new Set((entry.tags || []).filter(tag => knownAreas.has(tag)))];
+  return areas.length ? areas : ['other'];
+}
+
 function primaryArea(entry) {
-  const first = (entry.tags || [])[0];
-  return first ? tagLabel(first) : '';
+  return tagLabel(entryAreaIds(entry)[0]);
 }
 
 function getVisibleEntries() {
   const visible = [];
   for (const entry of changelogEntries) {
     if (state.type !== 'all' && entry.type !== state.type) continue;
-    if (state.tag !== 'all') {
-      // Future enhancement (Safari 27+): When active filters become a Set,
-      // we can use Set.prototype.intersection() to find overlapping tags natively
-      // e.g. activeTags.intersection(tagSet).size > 0
-      const tagSet = new Set(entry.tags || []);
-      if (!tagSet.has(state.tag)) continue;
-    }
+    if (state.tag !== 'all' && !entryAreaIds(entry).includes(state.tag)) continue;
     visible.push(entry);
   }
   return visible.sort((a, b) => String(b.date).localeCompare(String(a.date)));
@@ -208,21 +207,24 @@ function getEntryHeadlines(entry) {
 function renderEntry(entry) {
   const { title: displayTitle, detailTitle } = getEntryHeadlines(entry);
   const area = primaryArea(entry);
-  const commitUrl = getCommitUrl(entry.sha);
+  const commitUrl = getCommitUrl(entry);
   const titleInner = commitUrl
     ? `<a class="changelog-entry__title-link" href="${escapeHtml(commitUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(displayTitle)}</a>`
     : escapeHtml(displayTitle);
   const typeLabel = (TYPE_LABELS[entry.type] || entry.type).toUpperCase();
-  const attribution = [
-    ['Editor', entry.ide],
-    ['Model', entry.model],
-    ['Purpose', entry.purpose],
-    ['Reasoning', entry.reasoning],
-    ['Usage', entry.usage],
-  ].filter(([, value]) => value);
+  const hasAttribution = Boolean(entry.ide || entry.model || entry.purpose);
+  const attribution = hasAttribution
+    ? [
+        ['Editor', entry.ide || 'Unavailable'],
+        ['Model', entry.model || 'Unavailable'],
+        ['Purpose', entry.purpose || 'Unavailable'],
+        ['Reasoning', entry.reasoning || 'Unavailable'],
+        ['Usage', entry.usage || 'Unavailable'],
+      ]
+    : [];
 
   return `
-    <article class="changelog-entry" data-type="${escapeHtml(entry.type)}" data-id="${escapeHtml(entry.id)}">
+    <article class="changelog-entry" data-type="${escapeHtml(entry.type)}" data-area="${escapeHtml(entryAreaIds(entry)[0])}" data-areas="${escapeHtml(entryAreaIds(entry).join(' '))}" data-id="${escapeHtml(entry.id)}">
       <div class="changelog-entry__meta">
         <time datetime="${escapeHtml(entry.date)}">${escapeHtml(formatEyebrowDay(entry.date))}</time>
         <span class="changelog-entry__badge">${escapeHtml(typeLabel)}</span>

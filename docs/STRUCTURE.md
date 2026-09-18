@@ -58,7 +58,7 @@ mangeshrautarchive/
 │   └── offline/              # Offline data builders (travel GeoJSON database)
 │
 ├── tests/                    # ★ Complete Automated Test Suite
-│   ├── unit/                 # 303 Vitest unit tests across 56 files (JS modules, WebMCP actions)
+│   ├── unit/                 # 309 Vitest unit tests across 56 files (JS modules, WebMCP actions)
 │   ├── api/                  # 179 pytest API tests across 27 files (FastAPI routes, streaming, OAuth, middleware)
 │   └── e2e/                  # Playwright multi-browser end-to-end specifications across 16 targets
 │

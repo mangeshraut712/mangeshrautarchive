@@ -20,6 +20,7 @@ export class ChatScrollEngine {
     this.pendingFollowFrame = 0;
     this.resizeObserver = null;
     this.scrollDistanceFromBottom = 0;
+    this.pausedScrollTop = null;
     this.activeTurnEl = null;
     this.jumpBtn = null;
     this.boundHandlers = [];
@@ -155,6 +156,7 @@ export class ChatScrollEngine {
   resumeFollowing(_reason = 'user') {
     if (this.following) return;
     this.following = true;
+    this.pausedScrollTop = null;
     this.activityBelow = false;
     this.updateJumpAffordance();
   }
@@ -170,15 +172,17 @@ export class ChatScrollEngine {
     if (!messages) return;
     this.scrollDistanceFromBottom =
       messages.scrollHeight - messages.scrollTop - messages.clientHeight;
+    if (!this.following) {
+      this.pausedScrollTop = messages.scrollTop;
+    }
   }
 
   preserveScrollDistance() {
     const messages = this.messagesEl;
     if (!messages || this.following) return;
-    messages.scrollTop = Math.max(
-      0,
-      messages.scrollHeight - messages.clientHeight - this.scrollDistanceFromBottom
-    );
+    if (Number.isFinite(this.pausedScrollTop)) {
+      messages.scrollTop = Math.max(0, this.pausedScrollTop);
+    }
   }
 
   ensureScrollAnchor() {

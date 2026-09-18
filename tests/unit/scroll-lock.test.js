@@ -1,4 +1,4 @@
-import { describe, expect, it, beforeEach, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import {
   lockBodyScroll,
   releaseBodyScrollStyles,
@@ -26,6 +26,10 @@ describe('scroll-lock utility', () => {
       requestAnimationFrame: vi.fn(cb => cb()),
       setTimeout: vi.fn(),
     };
+  });
+
+  afterEach(() => {
+    vi.unstubAllGlobals();
   });
 
   it('locks body scroll at current scroll offset', () => {
@@ -69,6 +73,24 @@ describe('scroll-lock utility', () => {
     // Test restoreBodyScrollPosition directly
     restoreBodyScrollPosition(220, { windowRef: mockWindow });
     expect(mockWindow.scrollTo).toHaveBeenCalledWith(0, 220);
+  });
+
+  it('keeps delayed scroll restoration bound to the originating document', () => {
+    const callbacks = [];
+    const documentRef = {
+      body: { scrollTop: 0 },
+      documentElement: { scrollTop: 0 },
+      getElementById: () => null,
+    };
+    mockWindow.document = documentRef;
+    mockWindow.setTimeout = callback => callbacks.push(callback);
+
+    restoreBodyScrollPosition(240, { windowRef: mockWindow });
+    vi.stubGlobal('document', undefined);
+
+    expect(() => callbacks.forEach(callback => callback())).not.toThrow();
+    expect(documentRef.documentElement.scrollTop).toBe(240);
+    expect(documentRef.body.scrollTop).toBe(240);
   });
 
   it('recovers stuck fixed body when no overlay dialog is active', () => {

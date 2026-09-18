@@ -2992,7 +2992,6 @@ class AppleIntelligenceChatbot {
     });
 
     this.appendToMessages(container);
-    this.scrollEngine?.jumpToLatest?.({ announce: false });
   }
 
   removeFollowupChips() {

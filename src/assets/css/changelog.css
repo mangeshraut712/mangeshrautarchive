@@ -16,6 +16,10 @@ body.changelog-page {
   --cl-improvement: #0071e3;
   --cl-fix: #ff9500;
   --cl-retired: #ff3b30;
+  --cl-release-text: #176b2c;
+  --cl-improvement-text: #005eb8;
+  --cl-fix-text: #8a4b00;
+  --cl-retired-text: #c5221f;
   --cl-badge-bg: #ffffff;
   --cl-badge-text: #6e6e73;
   color: var(--cl-text);
@@ -35,6 +39,10 @@ html.dark body.changelog-page {
   --cl-improvement: #2997ff;
   --cl-fix: #ff9f0a;
   --cl-retired: #ff453a;
+  --cl-release-text: #30d158;
+  --cl-improvement-text: #2997ff;
+  --cl-fix-text: #ffb340;
+  --cl-retired-text: #ff6961;
   --cl-badge-bg: #000000;
   --cl-badge-text: #a1a1a6;
   color: var(--cl-text);
@@ -495,7 +503,7 @@ html.dark body.changelog-page .changelog-menu-header {
 
 body.changelog-page .changelog-toolbar__label {
   margin: 0 !important;
-  font-size: 0.65rem !important;
+  font-size: 0.75rem !important;
   font-weight: 700 !important;
   letter-spacing: 0.06em !important;
   text-transform: uppercase !important;
@@ -522,6 +530,7 @@ body.changelog-page .changelog-menu-item {
   align-items: center !important;
   justify-content: space-between !important;
   width: 100% !important;
+  min-height: 44px !important;
   padding: 0.45rem 0.75rem !important;
   border-radius: 8px !important;
   border: none !important;
@@ -740,27 +749,28 @@ body.changelog-page .changelog-entry__badge {
   text-transform: uppercase;
   background: var(--cl-badge-bg);
   color: var(--cl-badge-text);
+  border: 1px solid var(--cl-border);
   white-space: nowrap;
 }
 
 body.changelog-page .changelog-entry[data-type='release'] .changelog-entry__badge {
-  color: var(--cl-release) !important;
-  -webkit-text-fill-color: var(--cl-release) !important;
+  color: var(--cl-release-text) !important;
+  -webkit-text-fill-color: var(--cl-release-text) !important;
 }
 
 body.changelog-page .changelog-entry[data-type='improvement'] .changelog-entry__badge {
-  color: var(--cl-improvement) !important;
-  -webkit-text-fill-color: var(--cl-improvement) !important;
+  color: var(--cl-improvement-text) !important;
+  -webkit-text-fill-color: var(--cl-improvement-text) !important;
 }
 
 body.changelog-page .changelog-entry[data-type='fix'] .changelog-entry__badge {
-  color: var(--cl-fix) !important;
-  -webkit-text-fill-color: var(--cl-fix) !important;
+  color: var(--cl-fix-text) !important;
+  -webkit-text-fill-color: var(--cl-fix-text) !important;
 }
 
 body.changelog-page .changelog-entry[data-type='retired'] .changelog-entry__badge {
-  color: var(--cl-retired) !important;
-  -webkit-text-fill-color: var(--cl-retired) !important;
+  color: var(--cl-retired-text) !important;
+  -webkit-text-fill-color: var(--cl-retired-text) !important;
 }
 
 body.changelog-page .changelog-entry__main {
@@ -843,6 +853,7 @@ body.changelog-page .changelog-entry__details summary {
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
+  min-height: 40px;
   padding: 0.28rem 0.65rem;
   border-radius: 9999px;
   font-size: 0.78rem;
@@ -931,7 +942,7 @@ body.changelog-page .changelog-entry__attribution div {
 }
 
 body.changelog-page .changelog-entry__attribution dt {
-  font-size: 0.68rem;
+  font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 0.05em;
   text-transform: uppercase;
@@ -952,6 +963,7 @@ body.changelog-page .changelog-entry__commit {
   align-items: center;
   gap: 0.35rem;
   width: fit-content;
+  min-height: 40px;
   font-size: 0.78rem;
   font-weight: 500;
   color: var(--cl-blue);
@@ -986,6 +998,11 @@ body.changelog-page .changelog-empty {
 }
 
 @media (641px <= width <= 1024px) {
+  body.changelog-page .systems-shell article.changelog-entry,
+  body.changelog-page .changelog-entry {
+    padding-right: calc(var(--fab-size, 48px) + var(--fab-gap, 12px)) !important;
+  }
+
   #main-content .changelog-toolbar,
   body.changelog-page .changelog-toolbar {
     gap: 0.35rem 0.5rem !important;
@@ -996,16 +1013,16 @@ body.changelog-page .changelog-empty {
   #main-content #changelog-type-filters .changelog-chip,
   body.changelog-page .changelog-chip {
     padding: 0.32rem 0.58rem !important;
-    font-size: 0.72rem !important;
-    min-height: 32px !important;
+    font-size: 0.75rem !important;
+    min-height: 44px !important;
     gap: 0.3rem !important;
   }
 
   #main-content #changelog-filter-dropdown #changelog-filters-toggle,
   body.changelog-page .changelog-filters-toggle {
     padding: 0.32rem 0.65rem !important;
-    font-size: 0.72rem !important;
-    min-height: 32px !important;
+    font-size: 0.75rem !important;
+    min-height: 44px !important;
     gap: 0.3rem !important;
   }
 }
@@ -1056,8 +1073,8 @@ body.changelog-page .changelog-empty {
   #main-content #changelog-type-filters .changelog-chip,
   body.changelog-page .changelog-chip {
     padding: 0.32rem 0.65rem !important;
-    font-size: 0.72rem !important;
-    min-height: 30px !important;
+    font-size: 0.75rem !important;
+    min-height: 44px !important;
     gap: 0.3rem !important;
   }
 
@@ -1065,8 +1082,8 @@ body.changelog-page .changelog-empty {
   body.changelog-page .changelog-filters-toggle {
     margin-left: 0 !important;
     padding: 0.32rem 0.65rem !important;
-    font-size: 0.72rem !important;
-    min-height: 30px !important;
+    font-size: 0.75rem !important;
+    min-height: 44px !important;
     gap: 0.3rem !important;
   }
 
@@ -1077,8 +1094,14 @@ body.changelog-page .changelog-empty {
     width: min(270px, calc(100vw - 32px)) !important;
   }
 
+  body.changelog-page .systems-shell article.changelog-entry,
   body.changelog-page .changelog-entry {
-    padding: 1.5rem 0;
+    padding: 1.5rem calc(var(--fab-size, 44px) + var(--fab-gap, 10px)) 1.5rem 0 !important;
+  }
+
+  body.changelog-page .changelog-entry__details summary,
+  body.changelog-page .changelog-entry__commit {
+    min-height: 44px;
   }
 
   body.changelog-page .changelog-entry__main {
@@ -1091,10 +1114,74 @@ body.changelog-page .changelog-empty {
   }
 }
 
+html.high-contrast body.changelog-page {
+  --cl-bg: Canvas;
+  --cl-text: CanvasText;
+  --cl-secondary: CanvasText;
+  --cl-muted: CanvasText;
+  --cl-border: CanvasText;
+  --cl-surface: Canvas;
+  --cl-badge-bg: Canvas;
+  --cl-badge-text: CanvasText;
+  --cl-release-text: CanvasText;
+  --cl-improvement-text: CanvasText;
+  --cl-fix-text: CanvasText;
+  --cl-retired-text: CanvasText;
+}
+
+html.high-contrast body.changelog-page .changelog-entry__badge {
+  background: Canvas !important;
+  border-color: CanvasText !important;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  body.changelog-page .changelog-month__title i,
-  body.changelog-page .changelog-entry__details summary i,
-  body.changelog-page .changelog-entry__commit {
-    transition: none;
+  body.changelog-page *,
+  body.changelog-page *::before,
+  body.changelog-page *::after {
+    scroll-behavior: auto !important;
+    animation: none !important;
+    transition: none !important;
   }
+
+  html body.changelog-page .changelog-toolbar .changelog-chip,
+  html body.changelog-page #changelog-type-filters .changelog-chip,
+  html body.changelog-page .changelog-toolbar .changelog-filters-toggle,
+  html body.changelog-page #changelog-filters-toggle,
+  html body.changelog-page .changelog-filter-panel,
+  html body.changelog-page #changelog-filter-panel,
+  html body.changelog-page .changelog-menu-item,
+  html body.changelog-page #changelog-tag-filters .changelog-menu-item,
+  html body.changelog-page .changelog-entry__details,
+  html body.changelog-page .changelog-entry__details summary,
+  html body.changelog-page #changelog-timeline .changelog-entry__details summary,
+  html body.changelog-page .changelog-entry__commit,
+  html body.changelog-page .changelog-month__title i {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+html.reduce-motion body.changelog-page *,
+html.reduce-motion body.changelog-page *::before,
+html.reduce-motion body.changelog-page *::after {
+  scroll-behavior: auto !important;
+  animation: none !important;
+  transition: none !important;
+}
+
+html.reduce-motion body.changelog-page .changelog-toolbar .changelog-chip,
+html.reduce-motion body.changelog-page #changelog-type-filters .changelog-chip,
+html.reduce-motion body.changelog-page .changelog-toolbar .changelog-filters-toggle,
+html.reduce-motion body.changelog-page #changelog-filters-toggle,
+html.reduce-motion body.changelog-page .changelog-filter-panel,
+html.reduce-motion body.changelog-page #changelog-filter-panel,
+html.reduce-motion body.changelog-page .changelog-menu-item,
+html.reduce-motion body.changelog-page #changelog-tag-filters .changelog-menu-item,
+html.reduce-motion body.changelog-page .changelog-entry__details,
+html.reduce-motion body.changelog-page .changelog-entry__details summary,
+html.reduce-motion body.changelog-page #changelog-timeline .changelog-entry__details summary,
+html.reduce-motion body.changelog-page .changelog-entry__commit,
+html.reduce-motion body.changelog-page .changelog-month__title i {
+  animation: none !important;
+  transition: none !important;
 }

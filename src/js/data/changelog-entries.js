@@ -1,6 +1,6 @@
 /**
- * Portfolio changelog — sourced only from real git commits.
- * Verify any entry with: git show <sha> --stat
+ * Portfolio changelog backed by repository history.
+ * Every released entry links to a locally verified commit; only unreleased work remains unlinked.
  * GitHub: https://github.com/mangeshraut712/mangeshrautarchive/commit/<sha>
  */
 
@@ -24,6 +24,7 @@ export const CHANGELOG_TAGS = [
   { id: 'blog', label: 'Blog' },
   { id: 'monitor', label: 'Monitor' },
   { id: 'systems', label: 'Systems' },
+  { id: 'other', label: 'Other' },
 ];
 
 /**
@@ -32,18 +33,44 @@ export const CHANGELOG_TAGS = [
  *   date: string,
  *   type: 'release' | 'improvement' | 'fix' | 'retired',
  *   title: string,
+ *   detailTitle?: string,
  *   summary: string,
  *   tags?: string[],
- *   sha: string,
+ *   sha: string | null,
+ *   commitVerified: boolean,
  *   link?: string | null,
  *   model?: string,
  *   ide?: string,
  *   purpose?: string,
+ *   reasoning?: string,
+ *   usage?: string,
+ *   status?: 'unreleased',
  * }} ChangelogEntry
  */
 
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
+  {
+    id: 'daybreak-changelog-accessibility-data-integrity',
+    date: '2026-09-19',
+    type: 'fix',
+    status: 'unreleased',
+    title: 'Changelog accessibility and data integrity',
+    detailTitle:
+      'Daybreak review repairs contrast, touch targets, commit verification, area filters, semantics, and portable agent guidance',
+    summary:
+      'Hardened the compact changelog after an independent Daybreak review. Light and high-contrast badges now meet WCAG contrast, mobile controls meet the project tap-target standard, expanded details avoid the fixed utility dock, reduced-motion disables all changelog transitions, filter semantics announce concise result counts, unknown legacy tags map to a filterable Other area, and all released entries now link to verified Git commits. Canonicalized model attribution fields, made AGENTS.md the shared Codex and Claude Code instruction source, documented instruction-health checks, installed the private local-only Codex Insights workflow, and fixed AssistMe streaming so follow-up chips no longer pull a reader back to the bottom after they scroll up.',
+    tags: ['design', 'systems'],
+    sha: null,
+    commitVerified: false,
+    link: null,
+    model: 'GPT Daybreak / Codex',
+    ide: 'OpenAI Codex Desktop',
+    purpose:
+      'Independent changelog accessibility, data-integrity, responsive-layout, and agent-guidance verification and repair',
+    reasoning: 'Unavailable',
+    usage: 'Unavailable',
+  },
   // ── September 2026 ──────────────────────────────────────────
   {
     id: 'assistme-intent-rich-render-sept-2026',
@@ -56,13 +83,14 @@ export const changelogEntries = [
       'AssistMe no longer treats “binary search trees”, “search engine”, or a networking “file download” as site tools, and “how can I contact Mangesh?” stays a Q&A turn instead of opening the contact form. Chat bubbles now paint \\[ \\] math, mermaid HTML flow pills, Pollinations images, and trusted chart SVG, follow-up chips stay in the transcript, and OpenRouter generation ids are forwarded so Activity rows can be looked up.',
     tags: ['assistme', 'api', 'design'],
     sha: '26a39103',
+    commitVerified: true,
     link: `${CHANGELOG_REPO}/commit/26a39103`,
     model: 'Grok 4.6 (Cursor)',
     ide: 'Cursor',
     purpose:
       'Fix AssistMe showcase bugs: greedy WebMCP intents, missing KaTeX/Mermaid/image paint, follow-up chip overflow',
-    reasoningMode: 'unavailable',
-    tokenUsage: 'unavailable',
+    reasoning: 'Unavailable',
+    usage: 'Unavailable',
   },
   {
     id: 'github-dependabot-security-batch-sept-2026',
@@ -75,6 +103,7 @@ export const changelogEntries = [
       'Resolved open GitHub Dependabot pull requests by pinning patched lockfile versions: sharp 0.35.4, DOMPurify 3.4.15, js-yaml 4.3.2, joi 18.2.9, fast-uri 3.1.8, plus qs 6.16.0 and colord 2.10.0 overrides. Raised Python cryptography to 50.0.1 after Dependabot’s uv job failed with security_update_not_needed on 50.0.0.',
     tags: ['deploy'],
     sha: '90352040',
+    commitVerified: true,
     link: `${CHANGELOG_REPO}/commit/90352040`,
     model: 'Grok 4.6 (Cursor)',
     ide: 'Cursor',
@@ -92,6 +121,7 @@ export const changelogEntries = [
       'Audited AssistMe on GitHub Pages and found the live widget stuck on Generating because the Cloudflare Worker buffered entire free-model replies before the first NDJSON byte. The worker now returns a stream immediately, pipes OpenRouter tokens, times out slow models, and falls through. The widget stacks above the homepage hero, keeps the FAB in layout (opacity 0) so position-anchor still works, restores prior turns, uses a time-of-day empty state with four starter chips, disables send until there is a draft, shows elapsed thinking time, and opens with Cmd/Ctrl+Shift+A. Local Mode no longer hardcodes stale office-holders (Joe Biden). FastAPI and worker prompts are dated September 2026. Verified 287 Vitest and 177 pytest tests.',
     tags: ['assistme', 'api', 'design', 'voice'],
     sha: 'f8c26d2c',
+    commitVerified: true,
     link: `${CHANGELOG_REPO}/commit/f8c26d2c`,
     model: 'Grok 4.6 (Cursor)',
     ide: 'Cursor',
@@ -108,8 +138,9 @@ export const changelogEntries = [
     summary:
       'Engineered three major platform upgrades: (1) System Monitor Apple HIG & Sister Page Harmonization (/monitor.html): Completely redesigned the previously monolithic, 5000px-tall page into an Apple HIG / shadcn-styled executive command center harmonized with sister subpages (systems.html, uses.html, changelog.html). Engineered an authentic Apple Keynote Stage hero featuring a live pulsing dot indicator, uppercase tracking eyebrow badge, crisp SF Pro Display title (clamp(2.25rem, 5.5vw, 3.85rem)), high-contrast subtitle lead, and a floating frosted glass control bar with auto-refresh telemetry, live status pill, and Tier 2 secondary action buttons (Refresh and Export). Restructured dense telemetry across 4 purposeful segmented tabs in a floating capsule pill rail (Overview: live diagnostics, response code doughnut, 24-slot uptime matrix, runtime snapshot, and core service health cards; Services & APIs: platform health matrix, portfolio surfaces, backend system map, endpoint metrics table, and external provider status; Edge & Deploy: deployment surfaces, client latency probes, real-time performance graphs, resource load bars, engineering benchmarks, and OAuth integrations; Security & Logs: intrusion audit, rate limit pressure, AI provider latency, live SSE streaming terminal console, system event audit log, and API references) paired with an executive 4-card Apple Glass KPI strip (18px radius, specular inset highlight, solid white/black surfaces). Verified 0px horizontal overflow across all viewports (1440px to 320px) in both light and dark themes. (2) Travel Atlas & Subpage Card Quality: Restored 16px border-radius and Apple Blue hover borders across travel waypoint cards in subpage-layout-polish.css and theme-solid-surfaces.css, passing full Playwright card-hover-audit suites. (3) AssistMe AI Chatbot Grounding: Enriched conversational retrieval in FastAPI backend (api/config.py, api/site_knowledge.py, api/routes/chat.py) with pronoun continuity resolution and devotional facts (Lord Ganesha Shree Ganapati Aarti "Sukhkarta Dukhharta" by Samarth Ramdas in public domain, Lord Hanuman Chalisa, Bhagavad Gita), reinforced anti-hallucination guard against non-existent frameworks (strictly pure vanilla ESM + FastAPI), and added full pytest test coverage (176 tests). All 457 tests (281 Vitest, 176 pytest) and 16 Playwright Chrome smoke tests 100% passing.',
     tags: ['monitor', 'assistme', 'design', 'systems', 'api'],
-    sha: '8f2a1b9c',
-    link: `${CHANGELOG_REPO}/commit/8f2a1b9c`,
+    sha: '6b55dc2173d6',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/6b55dc2173d6`,
     model: 'Gemini 3.8 Flash (High)',
     ide: 'Google Antigravity IDE (AGY)',
     purpose:
@@ -125,8 +156,9 @@ export const changelogEntries = [
     summary:
       'Resolved three core issues on the Travel Atlas surface (/travel.html): (1) Replaced generic rectangular MapLibre zoom controls with an authentic Apple HIG glassmorphic capsule pill (border-radius: 9999px, backdrop-filter blur 25px saturate 190%, subtle borders, 36px circular buttons, scale transforms, and refined dividers) positioned cleanly at top: 82px; right: 24px on desktop, 118px; 20px on tablet, and 118px; 14px on mobile, perfectly clearing the status bar. (2) Restored the Places sidebar toggle button (next to the globe in the top navbar) on desktop by adding smooth translateX collapse transitions (transform: translateX(calc(-100% - 40px))), synchronized state indicators (aria-expanded, is-active tint), dynamic MapLibre canvas resize hooks, and a floating Apple glass pill expand tab ([ ▤ Places ]) for instant re-opening. (3) Completely eliminated the MapLibre | © CARTO, © OpenStreetMap contributors attribution overlay via map configuration and strict CSS suppression rules. Audited and verified with zero horizontal overflow (0px) across desktop (1280px), tablet (768px), and mobile (390px) viewports in both light and dark themes.',
     tags: ['design', 'systems', 'performance'],
-    sha: 'b43c31db',
-    link: `${CHANGELOG_REPO}/commit/b43c31db`,
+    sha: '6b55dc2173d6',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/6b55dc2173d6`,
     model: 'Gemini 3.8 Flash (High)',
     ide: 'Google Antigravity IDE (AGY)',
     purpose:
@@ -143,6 +175,7 @@ export const changelogEntries = [
       'Replaced the in-flow grid expansion of the area filter panel that previously distorted the 9999px pill toolbar into an enlarged oval capsule and crushed type chips. Engineered an authentic floating Apple-style dropdown menu card (16px border-radius, backdrop-filter blur 25px saturate 190%, subtle borders, specular inset highlights) anchored to the filters toggle button. Integrated smooth 180° chevron rotation, active state indicators (✓ checkmark), outside-click and Escape key dismissal with event stopPropagation to prevent race conditions during DOM re-renders. Tailored responsive styling with right-edge gradient masks, horizontal chip scrolling on mobile, and tuned tablet chip metrics overriding sitewide design system cascades. Verified 0px horizontal overflow across desktop (1280px), tablet (768px), and mobile (390px) viewports in both light and dark modes.',
     tags: ['design', 'performance', 'systems'],
     sha: 'e95f76df',
+    commitVerified: true,
     link: `${CHANGELOG_REPO}/commit/e95f76df`,
     model: 'Gemini 3.8 Flash (High)',
     ide: 'Google Antigravity IDE (AGY)',
@@ -160,6 +193,7 @@ export const changelogEntries = [
       "Identified and neutralized the root-cause universal descendant override in sitewide-design-system.css that forcefully set -webkit-text-fill-color on all inactive button children, stripping icons of their authentic colors. Scoped descendant text-fill rules to exclude icons and SVGs (*:not(i):not(svg):not([class*='fa']):not([class*='icon'])). Restored vibrant Apple system colors for Changelog chips (release green #34c759/#30d158, improvement blue #0071e3/#2997ff, fix orange #ff9500/#ff9f0a, retired coral #ff3b30/#ff453a), Travel Atlas category icons (food, culture, nature, urban, history), Uses stack filter badges (hardware, software, AI, engineering, fonts, themes, productivity, reading), and Monitor telemetry status indicators with Apple status indicator dots. Guaranteed 0px horizontal overflow and high-contrast solid canvases across light (#ffffff) and dark (#000000) viewports.",
     tags: ['design', 'systems', 'performance'],
     sha: '7e8e3d18',
+    commitVerified: true,
     link: `${CHANGELOG_REPO}/commit/7e8e3d18`,
     model: 'Gemini 3.8 Flash (High)',
     ide: 'Google Antigravity IDE (AGY)',
@@ -177,6 +211,7 @@ export const changelogEntries = [
       'Resolved the WebKit inheritance cascade defect where ancestor -webkit-text-fill-color rules stripped color from child SVG and FontAwesome icons, washing them out. Enforced global anti-washout rules (:is(i.fa, i.fab, i.fas, i.far, .tech-icon) { -webkit-text-fill-color: currentColor !important; }), added theme-aware contrast adaptation for JavaScript (#b8860b light / #f7df1e dark), React (#0088cc light / #61dafb dark), GitHub (#181717 light / #f5f5f7 dark), Apple (#1d1d1f light / #ffffff dark), Next.js (#000000 light / #ffffff dark), and Django (#092e20 light / #44b78b dark). Enhanced changelog filter chips with distinct status colors (release green, improvement blue, fix orange, retired amber) and solid disclosure surfaces (#ffffff light, #000000 dark) adhering to Apple HIG zero-overflow and high-contrast design specifications.',
     tags: ['design', 'performance', 'systems'],
     sha: '8e7d5955',
+    commitVerified: true,
     link: `${CHANGELOG_REPO}/commit/8e7d5955`,
     model: 'Gemini 3.8 Flash (High)',
     ide: 'Google Antigravity IDE (AGY)',
@@ -194,11 +229,14 @@ export const changelogEntries = [
       'Streamlined changelog page to a compact, highly scannable timeline format inspired by Apple and shadcn design patterns. Separated concise headlines from detailed technical subheadings; encapsulated complete engineering summaries, active model attribution (Editor, Model, Purpose, Reasoning, Usage), and commit references inside accessible native <details> disclosures with animated custom chevrons, theme-aware focus indicators, and reduced-motion support. Formalized continuous in-situ visual verification across viewports and themes for UI/UX, 3D, and visual components in AGENTS.md and GEMINI.md. Standardized portable multi-IDE attribution across Antigravity, Codex/ChatGPT, Claude, and Cursor, recording confirmed model families and marking unexposed parameters as unavailable. Expanded passing test suite to 273 Vitest unit tests (52 suites) and 175 pytest tests (448 total).',
     tags: ['design', 'systems', 'performance'],
     sha: 'f0b6746c',
+    commitVerified: true,
     link: `${CHANGELOG_REPO}/commit/f0b6746c`,
     model: 'GPT-6 / Codex + Gemini 3.8 Flash (High)',
     ide: 'OpenAI Codex Desktop + Google Antigravity IDE (AGY)',
     purpose:
       'Changelog simplification, Apple HIG & shadcn interactive disclosure styling, continuous visual in-situ verification rule, and portable multi-IDE documentation alignment',
+    reasoning: 'Unavailable',
+    usage: 'Unavailable',
   },
   {
     id: 'apple-september-2026-safari-27-ecosystem-alignment',
@@ -211,6 +249,7 @@ export const changelogEntries = [
       'Upgraded portfolio architecture to align with Apple September 2026 ecosystem announcements (macOS 27, iOS 27, and Safari 27.0 GA). Implemented native CSS Grid Lanes masonry packing via @supports (grid-template-rows: masonry) across project showcases, systems bento grids, and blog index/related article grids for zero-JS card auto-packing. Re-enabled Service Worker with the Safari 27 Static Routing API (router.register()) to bypass worker thread latency for static CSS, fonts, and images while maintaining stability against legacy iOS Safari reload bugs. Upgraded the reading progress bar to compositor-driven CSS scroll-driven animations (animation-timeline: scroll(root block)) with passive JS fallback. Enforced global scroll anchoring (overflow-anchor: auto) for zero CLS during async content hydration. Refined WWDC26 Liquid Glass card materials with darker high-contrast outer edges (color-mix with 15% text tone) and sharp specular top-edge inset highlights (inset 0 0.5px 0 0 rgba(255, 255, 255, 0.4/0.25)) matching the September 2026 Apple HIG update. Added cross-document View Transition continuity for the Dynamic Island navbar (view-transition-name: global-nav) with smooth compositor morphing. Added CSS Container Queries (container-type: inline-size, @container) for component-level card responsiveness. Enhanced search overlay focus trapping with ES2025/Safari 27 Iterator helpers (Iterator.from().filter().toArray()). Verified 100% clean check suite across ESLint, Stylelint, Prettier, 273 Vitest tests, and 175 pytest tests.',
     tags: ['design', 'performance', 'systems', 'mobile'],
     sha: 'bf94df3c',
+    commitVerified: true,
     link: `${CHANGELOG_REPO}/commit/bf94df3c`,
     model: 'Claude Opus 4.6 (Thinking) + Gemini 3.8 Flash (High)',
     ide: 'Google Antigravity IDE (AGY)',
@@ -227,6 +266,7 @@ export const changelogEntries = [
       'Remediated remaining audit findings across all production surfaces. Restored proper heading semantics by removing role="button" from h1#home-heading and establishing clean h2→h3→h4 outline hierarchy in experience timeline. Converted travel sidebar from aside to section landmark with aria-label. Canonicalized blog navigation to href="blog/". Replaced all 18 inline onclick/oninput handlers in monitor.html with data-monitor-action event delegation via initMonitorActionDelegation() in monitor-page.js for CSP script-src compliance. Standardized 100 sub-12px font-size declarations (7px–11px) to 12px across 14 CSS files and updated all 0.6875rem caption token fallbacks to 0.75rem for Apple HIG legibility. Replaced max-width: 100vw with 100% in mobile-viewport.css to eliminate scrollbar overflow. Purged inline styles from showMeetingScheduler in agentic-actions.js, replacing with CSS classes in ai-assistant.css. Hardened serverless HMAC session secret fallback chain with VERCEL_DEPLOYMENT_ID and VERCEL_GIT_COMMIT_SHA in api/config.py. Added vitest coverage configuration (v8 provider). Created authentic unit tests for storage-cleanup.js and blog-reactions.js, expanding the test suite to 268 tests across 51 files. Synchronized all telemetry counts across monitor.html, uses.html, README.md, AGENTS.md, GEMINI.md, docs/STRUCTURE.md, docs/INSIGHTS.md, tests/README.md, and portfolio-public-data.js. Added missing CI workflows (github-stats-sync.yml, link-checker.yml, release.yml) to docs/STRUCTURE.md.',
     tags: ['design', 'performance', 'monitor', 'api'],
     sha: '83c60680',
+    commitVerified: true,
     link: `${CHANGELOG_REPO}/commit/83c60680`,
     model: 'Claude Opus 4.6 (Thinking) + Gemini 3.8 Flash (High)',
     ide: 'Google Antigravity IDE (AGY)',
@@ -242,8 +282,9 @@ export const changelogEntries = [
     summary:
       'Completed Phase 2 of sitewide audit remediation. Implemented centralized async HTTP client pooling with httpx in api/http_client.py with FastAPI lifespan management in api/index.py; converted Upstash Redis rate limiter to use a shared persistent httpx client pool with keep-alive reuse; migrated 34 raw print statements to structured logging across media.py, github.py, and index.py; enforced Pydantic UserPreferencesPayload validation on personalization routes and IP rate limiting on /api/typing and /api/monitor/web-vitals; added a 120ms debounce timer to search.js to eliminate typing jank; added visibility-aware guards to recurring telemetry and music polling across systems-page.js, health-widget.js, lastfm.js, and monitor-page.js; throttled blog scroll progress bar updates via requestAnimationFrame; unified CSS z-index variables in apple-design-system.css; standardized changelog and 404 navigation and social meta tags; and created comprehensive unit tests in tests/unit/scroll-lock.test.js, growing the passing Vitest suite to 261 tests across 49 files.',
     tags: ['api', 'performance', 'systems', 'monitor'],
-    sha: '9f3c7a1e',
-    link: `${CHANGELOG_REPO}/commit/9f3c7a1e`,
+    sha: 'a2d36b60f1fe',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/a2d36b60f1fe`,
     model: 'Gemini 3.8 Flash (High)',
     ide: 'Google Antigravity IDE (AGY)',
     purpose:
@@ -259,6 +300,7 @@ export const changelogEntries = [
       'Executed a comprehensive multi-dimensional codebase audit spanning 67 CSS files, 138 JS modules, 43 Python backend files, and 7 HTML surfaces. Remediated critical P0 security findings: eliminated reflected DOM XSS in search results (search.js) by sanitizing empty query interpolation with escapeHtml; purged hardcoded external third-party API keys from the client bundle (external-config.js); fixed security-check.js root directory resolution bug to enforce scanning of the entire repository; hardened FastAPI personalization endpoints with token authorization and IP rate limiting; converted Upstash Redis rate limiter to use persistent pooled HTTP connection with fast 1.5s timeouts; upgraded ESLint no-undef from warning to strict error for all browser JS; integrated Tailwind CSS build:css directly into package.json prebuild; replaced stub tests in realtime-voice-service.test.js with real unit test coverage importing RealtimeVoiceService.js (growing Vitest suite to 255 tests); eliminated sub-12px typography tokens in typography-system.css; synchronized GitHub stats badge in systems-viz.js with verified public repository telemetry (51 repos); resolved static ESM cache-busting import query in projects-showcase.js; and populated aria-hidden="true" across all decorative FontAwesome icons in monitor.html, uses.html, and index.html.',
     tags: ['security', 'audit', 'quality', 'telemetry', 'testing'],
     sha: '6250a3ee',
+    commitVerified: true,
     link: `${CHANGELOG_REPO}/commit/6250a3ee`,
     model: 'Gemini 3.8 Flash (High)',
     ide: 'Google Antigravity IDE (AGY)',
@@ -275,6 +317,7 @@ export const changelogEntries = [
       'Executed a comprehensive sitewide improvement across all production surfaces following the approved 4-pillar engineering plan. Synchronized automated test telemetry across the System Monitor (monitor.html), engineering showcase data, and documentation to reflect the current passing suite of 253 Vitest unit tests, 175 pytest API tests, 16 Playwright browser projects, and 17 WebMCP agentic tools. Standardized all typography to enforce strict Apple HIG minimum text standards (>=0.75rem / 12px) across uses-stack.css and changelog.css, eliminating sub-12px micro-text. Implemented CSS content-visibility: auto with intrinsic size containment on historical changelog timeline items to accelerate rendering and improve Interaction to Next Paint (INP). Verified solid pure canvases (#ffffff in light mode, #000000 in dark mode), 6-tier button hierarchy, 44px touch targets, and resilient relative navigation paths across all 7 pages. Passed 100% across all 253 Vitest unit tests, 175 pytest API tests, 60/60 repo doctor checks, ESLint, Stylelint, and Prettier gates.',
     tags: ['design', 'performance', 'architecture', 'telemetry'],
     sha: 'd797560b',
+    commitVerified: true,
     link: `${CHANGELOG_REPO}/commit/d797560b`,
     model: 'Gemini 3.8 Flash (High)',
     ide: 'Google Antigravity IDE (AGY)',
@@ -291,6 +334,7 @@ export const changelogEntries = [
       'Resolved mobile viewport card squishing and alignment issues in the Contact section calendar & reminders widget and home hero. Eliminated flex-shrink collapse on reminder cards in .reminders-list so cards naturally expand to multi-line content without vertical clipping or horizontal overflow. Enforced aspect-ratio: 1 / 1, explicit circular geometry (32px/26px/24px), and touch protection to prevent global button rules from stretching action buttons into ovals. Converted category filter tabs into a sleek 1-row touch-scrollable rail on mobile screens. Removed asymmetric right padding on #contact containers that ate gutter space. Refined mobile hero spacing on <=480px viewports (avatar, name typography, music player dimensions, and CTA gaps) to ensure #resume-dropdown-toggle retains comfortable clearance above the viewport bottom, allowing compact resume download options to open smoothly below without triggering auto-scroll or dock collisions. Hardened resume-dropdown.js with an isPositioning execution guard and openScrollY initialization to prevent race conditions during programmatic positioning. Validated 100% across all 17 mobile viewport Playwright tests, 16 smoke Playwright tests, 253 Vitest unit tests, 175 pytest API tests, and 60/60 repo doctor checks.',
     tags: ['mobile', 'design', 'contact', 'performance'],
     sha: 'd245ce0e',
+    commitVerified: true,
     link: `${CHANGELOG_REPO}/commit/d245ce0e`,
     model: 'Gemini 3.8 Flash (High)',
     ide: 'Google Antigravity IDE (AGY)',
@@ -306,8 +350,9 @@ export const changelogEntries = [
     summary:
       'Resolved the WebKit -webkit-text-fill-color inheritance cascade bug across the Contact page and Calendar & Reminders widget, preventing text, tabs, and status badges from being overridden or washed out across light and dark modes. Explicitly bound dual color and -webkit-text-fill-color properties across category filter tabs, Day Inspector banner controls, search inputs, card titles, host metadata, locations, time stamps, and event action buttons. Completely purged obsolete Explore Events on Luma Calendar styling and removed the duplicate Luma header button from the calendar widget, while preserving the dedicated Apple Blue [+ New] reminder trigger with full event binding. Purged dead duplicate CSS rules from contact-solid.css and added regression unit test assertions. Validated across 253 Vitest unit tests, 175 pytest API tests, and 60/60 repo doctor checks.',
     tags: ['design', 'performance', 'contact'],
-    sha: '037f0028',
-    link: `${CHANGELOG_REPO}/commit/037f0028`,
+    sha: 'eb432dae1428',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/eb432dae1428`,
     model: 'Gemini 3.8 Flash (High)',
     ide: 'Google Antigravity IDE (AGY)',
     purpose:
@@ -323,6 +368,7 @@ export const changelogEntries = [
       'Harmonized Contact surfaces with docs/DESIGN.md standardizing pure solid canvas values (#ffffff in light mode, #000000 in dark mode) and eliminating liquid-glass background bleeding across Calendar Search, Day Inspector, AI Daily Brief HUD, and Smart Reminder modals. Replaced gray modal close button with the unified Apple Red circular close button (#ff3b30). Streamlined the Send a Message card by removing the redundant Explore Events on Luma Calendar CTA button, and uncluttered the Calendar & Reminders header by removing redundant Luma and New/Add Reminder header buttons. Eliminated duplicate Luma pill badges and duplicate host tags on conference cards, and prevented edit/checkbox controls from rendering on non-task event entries. Fixed card layout and typography in contact-solid.css ensuring date/time timestamps never awkwardly wrap, event titles comfortably clamp to 2 legible lines, and action buttons stay neatly aligned to the right without clipping across all viewport sizes. Validated across 253 Vitest unit tests, 175 pytest API tests, and 60/60 repo doctor checks.',
     tags: ['design', 'performance'],
     sha: 'ddae9e19',
+    commitVerified: true,
     link: `${CHANGELOG_REPO}/commit/ddae9e19`,
     model: 'Gemini 3.8 Flash (High)',
     ide: 'Google Antigravity IDE (AGY)',
@@ -339,6 +385,7 @@ export const changelogEntries = [
       'Transformed the Contact page Calendar & Smart Reminders system into an intelligent Apple-style scheduling engine with natural language AI parsing, real-time schedule conflict detection, and conversational WebMCP tools. Replaced browser prompt dialogs with an Apple HIG Smart AI Reminder modal featuring live relative date resolution (tomorrow, next Friday, in 3 days), exact time extraction (3pm, 10:30am, noon), category mapping (#urgent, #ai, #design, #birthday, #meetup, #sync), and conflict warnings. Added an AI Daily Briefing HUD synthesizing day schedules with 1-click AssistMe conversational discussion. Implemented instant schedule search across titles, hosts, and tags, persistent custom reminders with localStorage, and replaced "0 Free Slots" with inviting "Live Booking Open" fallback. Equipped AssistMe with 3 new WebMCP client tools (add_calendar_reminder, get_calendar_events, filter_calendar_view) expanding total portfolio WebMCP tools to 17. Expanded test suite to 253 Vitest unit tests across 48 files.',
     tags: ['design', 'systems', 'features'],
     sha: '672af1c2',
+    commitVerified: true,
     link: `${CHANGELOG_REPO}/commit/672af1c2`,
     model: 'Gemini 3.8 Flash (High)',
     ide: 'Google Antigravity IDE (AGY)',
@@ -354,6 +401,7 @@ export const changelogEntries = [
       'Crosschecked and embedded the verified real-world Luma events schedule directly from live browser account mbr63@drexel.edu into the Calendar & Smart Reminders widget on the Contact page. Faithfully showcases all 4 attendance lifecycles: Going (confirmed attendance for Build with AI Thoughtworks, The AI Engineering Stack, Morning Sessions w/ Builders, Astra Commons: Pune), Waitlisted (Dev Days Pune, Data meets AI), Submitted / Pending approval (Bhopal | Claude Code Build Day - Fable 5.1, NEO4J Graph Builder Build Sprint Pune), and Attended / Done (Codex Build House Pune, Cafe Cursor Pune, Cursor Meetup Philadelphia 1-Year Anniversary, Cafe Cursor Philadelphia). Added a dedicated Luma filter tab (.filter-tab[data-filter="luma"]) with dynamic count badge, host metadata lines (.card-host), Apple HIG luxury status badge cues (.tag-luma-status--going, --waitlisted, --pending, --done), and direct event URLs linking to verified ticket pages. Expanded automated test suite to 243 Vitest unit tests across 48 files with comprehensive calendar widget status and filter assertions.',
     tags: ['design', 'systems'],
     sha: '82161147',
+    commitVerified: true,
     link: `${CHANGELOG_REPO}/commit/82161147`,
     model: 'Gemini 3.8 Flash (High)',
     ide: 'Google Antigravity IDE (AGY)',
@@ -370,6 +418,7 @@ export const changelogEntries = [
       'Seamlessly integrated Luma Calendar (https://luma.com/home/calendars / lu.ma) across the portfolio ecosystem without adding runtime UI frameworks. Enhanced the Contact section with dual scheduling actions: an Apple HIG luxury outlined pill for Luma Calendar with vibrant sunset-coral accents (#d70015 / #ff6961) alongside 1:1 Calendly consultations. Upgraded the Calendar & Smart Reminders widget header with a direct Luma Calendar discovery button (.luma-header-btn) and decorated community tech meetups and hackathons (Cursor Pune, Claude Code Meetup, OpenAI Codex Dev Meetup, SF AI Agent Summit, WebMCP Symposium) with verified Luma badges (.tag-luma) and direct ticket RSVP action triggers (.luma-btn). Expanded test suite to 242 Vitest unit tests across 48 files with dedicated Luma utility test coverage and calendar widget action verification.',
     tags: ['design', 'systems'],
     sha: 'fdacada9',
+    commitVerified: true,
     link: `${CHANGELOG_REPO}/commit/fdacada9`,
     model: 'Gemini 3.8 Flash (High)',
     ide: 'Google Antigravity IDE (AGY)',
@@ -385,6 +434,7 @@ export const changelogEntries = [
       'Synchronized the entire GitHub Operating View and portfolio telemetry with live GitHub metadata and activity signals. Updated live repository catalog (github-stats.json) reflecting 51 public repositories, 8 stars, 4 forks, and 8 followers with recent push activity for Hindai and mangeshrautarchive. Calibrated the 2D canvas and 3D contribution graphs fallback sample (github-contributions-graph.js) to verified 2026 total contributions (2,654 contributions). Synchronized public repository metrics across systems.html, systems-viz.js, and engineering-showcase-data.js from legacy counts to 51 public repos. Refreshed recent public commit streams in systems-viz.js with verified recent SHAs. Injected Sep 9, 2026 sitewide QA certification reminder into calendar.js, aligned WebMCP static hero stat fallback to 14 tools, and updated offline fallback repositories in github-projects.js.',
     tags: ['systems', 'performance'],
     sha: 'e022e57e',
+    commitVerified: true,
     link: `${CHANGELOG_REPO}/commit/e022e57e`,
     model: 'Gemini 3.8 Flash (High)',
     ide: 'Google Antigravity IDE (AGY)',
@@ -400,8 +450,9 @@ export const changelogEntries = [
     summary:
       'Conducted exhaustive sitewide audit and zero-defect remediation across all standalone surfaces (Home, Systems, Monitor, Travel, Uses, Changelog, and 404). Achieved 100/100/100/100 Quad 100 scores on Home Desktop, Home Mobile, Travel Desktop, and Changelog Desktop, and locked in 100 Accessibility, 100 Best Practices, and 100 SEO across every single page. Standardized heading hierarchies from h4 to sequential h3 across systems-page.js and monitor-page.js, and wrapped month accordions in h2 in changelog-page.js. Eliminated CLS to 0.000 on systems.html via static initial rendering of hero evidence statement, telemetry stats, and overview bento grid. Shaved 42.4KB unused JS payload from systems-page.js by sourcing write stats from hero metrics instead of importing blog data. Resolved label-content-name-mismatch and nested-interactive in travel-atlas.js by decoupling expandable details from card buttons. Repositioned mobile map load trigger to prevent overlap with bottom sheets. Raised active pill background and metric text colors to guarantee strict WCAG AA contrast (≥ 4.5:1), deferred secondary stylesheets via print media swaps, and certified 60/60 checks on repo-doctor.mjs with zero warnings.',
     tags: ['performance', 'systems', 'design'],
-    sha: '5b4e8912',
-    link: `${CHANGELOG_REPO}/commit/5b4e8912`,
+    sha: 'b2cf79965d11',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/b2cf79965d11`,
     model: 'Gemini 3.8 Flash (High)',
     ide: 'Google Antigravity IDE (AGY)',
     purpose:
@@ -416,6 +467,7 @@ export const changelogEntries = [
       'Transformed the Travel Atlas sidebar (.travel-sidebar) into an Apple Maps-inspired interface, resolving heavy capsule clutter and reclaiming >200px of vertical height. Replaced 4 bloated stat cards with a unified Apple Segmented Metric Strip (4 Countries · 85 Cities · 90 Places · 29 Regions) featuring hairline dividers. Converted the rigid 2x2 country grid into a smooth, horizontal-scrolling pill track with Apple Blue active indicators. Consolidated 4 action buttons into a compact 1-row segmented control (Featured, Spotlight, Route, Reset). Refined the search field into an Apple squircle with transparent input embedding, and converted the heavy results box into an unobtrusive status caption line. Purged conflicting global card and capsule overrides across apple-cards-luxury-2026.css, sitewide-design-system.css, and theme-solid-surfaces.css, ensuring instant visibility for places without scrolling and maintaining zero horizontal overflow across all viewports.',
     tags: ['design', 'performance', 'systems'],
     sha: '7f0f60d3',
+    commitVerified: true,
     link: `${CHANGELOG_REPO}/commit/7f0f60d3`,
     model: 'Gemini 3.8 Flash (High)',
     ide: 'Google Antigravity IDE (AGY)',
@@ -432,6 +484,7 @@ export const changelogEntries = [
       'Synchronized navigation chrome and secondary subnavbars across all 5 standalone surfaces (Systems, Monitor, Uses, Changelog, and Travel). Unified subpage navigation geometry tokens (--subpage-nav-top, --subpage-nav-height, --subpage-sticky-top, --subpage-body-pad-top) eliminating hero heading occlusion on initial load and sticky collisions on scroll. Transformed all secondary subnavbars (.systems-section-rail, .monitor-section-rail, .keynote-deck-nav, .changelog-toolbar) into Apple HIG and shadcn/ui segmented controls with centered fit-content pill geometry, frosted glass backdrops (backdrop-filter: blur(20px)), and vibrant Apple Blue gradient elevated active pills. Added dynamic IntersectionObserver scrollspy to monitor-page.js with smooth auto-centering tab scrolling and eliminated the 35% empty void on systems.html.',
     tags: ['design', 'systems', 'performance'],
     sha: '018fbbed',
+    commitVerified: true,
     link: `${CHANGELOG_REPO}/commit/018fbbed`,
     model: 'Gemini 3.8 Flash (High)',
     ide: 'Google Antigravity IDE (AGY)',
@@ -447,6 +500,7 @@ export const changelogEntries = [
       'Codified 14 core software engineering best practices for long-term architectural health, modularity, and operational excellence across the repository. Created comprehensive docs/BEST_PRACTICES.md blueprint detailing explicit architecture, loosely coupled modules, scalability design, self-documenting naming, simple control flow, single-purpose functions, uniform style enforcement, API/invariant documentation, first-class automated testing, continuous refactoring, intentional technical debt paydown, reviewable Git history, rigorous code reviews, and end-to-end automated CI/CD. Embedded these tenets as mandatory AI agent directives in AGENTS.md and root GEMINI.md, and integrated them into README.md Section 8 open-source governance.',
     tags: ['systems', 'design', 'performance'],
     sha: 'feafbe55',
+    commitVerified: true,
     link: `${CHANGELOG_REPO}/commit/feafbe55`,
     model: 'Gemini 3.8 Flash (High)',
     ide: 'Google Antigravity IDE (AGY)',
@@ -462,6 +516,7 @@ export const changelogEntries = [
       'Elevated all 5 standalone surfaces (Systems, Travel, Monitor, Uses, and Changelog) to Apple HIG luxury breathing room standards, dismantling congested card stacks and cramped overrides. Systems: expanded keynote section padding and inter-section gaps to clamp(2rem, 4vw, 3.25rem), increased card padding to clamp(1.15rem, 2vw, 1.5rem), and broadened decision row spacing. Monitor: expanded container shell to min(75rem, 100%) (1200px) and grid gaps to clamp(1rem, 1.8vw, 1.35rem), raised card min-height to 9.5rem and min-width to 250px, preventing badge wrapping and text truncation. Travel: expanded sidebar header padding, broadened stat card touch targets and country pills, and upgraded stop card padding to 3rem left-inset with 16px radius. Uses: relaxed presentation stage margins, broadened keynote bento card padding, and increased catalog grid gap to 1.85rem. Changelog: widened reading shell to 56rem, added entry dividers, relaxed toolbar chip rows, and integrated dedicated entry summary rendering.',
     tags: ['design', 'systems', 'performance'],
     sha: '9bf6d3e0',
+    commitVerified: true,
     link: `${CHANGELOG_REPO}/commit/9bf6d3e0`,
     model: 'Gemini 3.8 Flash (High)',
     ide: 'Google Antigravity IDE (AGY)',
@@ -477,6 +532,7 @@ export const changelogEntries = [
       'Audited all secondary pages to eliminate duplicate cross-page cards and sections, consolidating each feature to its canonical home. Disambiguated systems.html Projects section into Architectural Case Studies with updated rail navigation, preserving existing anchors and E2E test contracts. Streamlined systems.html Writing section into a dedicated Engineering Field Notes directory with domain topic chips and direct links to the canonical 16-post technical writings on the homepage and blog archive, removing duplicate post cards. Reordered monitor.html to place Deployment Surfaces immediately following Portfolio Surfaces in Tier 2, establishing a cohesive edge and surface observability flow.',
     tags: ['systems', 'design', 'performance'],
     sha: 'b729c924',
+    commitVerified: true,
     link: `${CHANGELOG_REPO}/commit/b729c924`,
     model: 'Gemini 3.8 Flash (High)',
     ide: 'Google Antigravity IDE (AGY)',
@@ -492,6 +548,7 @@ export const changelogEntries = [
       'Elevated repository README to industry-standard architecture documentation. Removed developer AI tooling matrix per user instruction, restructured sections to focus on full-stack architecture, zero-framework ESM philosophy, product surfaces, and quality gates. Re-engineered vector diagrams (system-architecture.svg, ci-cd-quality-pipeline.svg, assistme-multimodal-workflow.svg, dual-host-edge-topology.svg) to eliminate card text clipping, resolve Lighthouse score gauge overlap, expand card widths and heights, and synchronize automated test counts to 414 (239 Vitest + 175 pytest).',
     tags: ['systems', 'design', 'performance'],
     sha: '4b1e0d4c',
+    commitVerified: true,
     link: `${CHANGELOG_REPO}/commit/4b1e0d4c`,
     model: 'Gemini 3.8 Flash (High)',
     ide: 'Google Antigravity IDE (AGY)',
@@ -508,6 +565,7 @@ export const changelogEntries = [
       'Completed comprehensive multi-agent audit remediation across all 9 pages following the Uses Keynote launch. Converted root-relative href="/" and extensionless navigation/footer links to resilient relative paths across systems, monitor, travel, uses, changelog, 404, and offline surfaces for 100% GitHub Pages deployment safety. Fixed homepage Antigravity tool chip URL. Aligned Uses Keynote Slide 3 telemetry with canonical WhoBurnedMore data (Codex 9.18B tokens, Cursor 3.74B, Kilo 611M, Cline/Droid 99.6M, Antigravity Active Orchestrator). Reframed PWA service worker claims, scoped global Keynote arrow listener to exclude code snippets, added Enter/Space keyboard handlers and ARIA attributes for featured cards, solved narrow viewport overflow on edge domains, enforced >=40px touch targets, standardized title separators to em dash, and synchronized Vitest count to 239.',
     tags: ['systems', 'design', 'performance'],
     sha: '12c84d1c',
+    commitVerified: true,
     link: `${CHANGELOG_REPO}/commit/12c84d1c`,
     model: 'Gemini 3.8 Flash (High) & Claude Opus 4.6 (Thinking)',
     ide: 'Google Antigravity IDE (AGY)',
@@ -523,6 +581,7 @@ export const changelogEntries = [
       'Completely redesigned the Uses & Stack page into an authentic Apple Special Event Keynote presentation. Features an Apple Event hero stage with pulsing status dot, 5 bold keynote telemetry metrics (13.66B tokens burned, 9 tools & 6 models, 0 KB runtime, 414 automated tests, 100% Lighthouse gates), a sticky frosted-glass chapter pill dock, and a 6-act interactive slide presentation (Strategy, Intelligence, Scaffolding, Quality Gates, Global Edge, Studio Gear) with keyboard arrow navigation, touch swipe support, and authentic tool branding. Preserves the full 8-category toolkit catalog and Control Center with zero horizontal overflow and zero Axe accessibility violations.',
     tags: ['design', 'performance', 'systems'],
     sha: '3cde03e4',
+    commitVerified: true,
     link: `${CHANGELOG_REPO}/commit/3cde03e4`,
     model: 'Gemini 3.8 Flash (High)',
     ide: 'Google Antigravity IDE (AGY)',
@@ -538,6 +597,7 @@ export const changelogEntries = [
       'Resolved Axe accessibility violations across subpages. Added non-color link distinguishability (text-decoration underline and font-weight 600) for inline links within paragraph text blocks on the System Monitor page to satisfy WCAG 2.1 AA 1.4.1. Elevated systems telemetry accent pill color contrast in light mode to #004ea8, achieving a 7.25:1 contrast ratio that surpasses the WCAG AAA 7:1 threshold. Active model: Gemini 3.8 Flash (High) in Google Antigravity IDE (AGY) — automated Axe accessibility auditing and surgical CSS contrast refactoring.',
     tags: ['monitor', 'systems', 'design'],
     sha: '775c36e7',
+    commitVerified: true,
     link: `${CHANGELOG_REPO}/commit/775c36e7`,
     model: 'Gemini 3.8 Flash (High)',
     ide: 'Google Antigravity IDE (AGY)',
@@ -553,6 +613,7 @@ export const changelogEntries = [
       'Eliminated large vertical whitespace voids on the System Monitor page by re-architecting the API documentation and performance grid layouts. Decoupled the API docs section into three semantic tiers: full-width quick links, a 3-column start-aligned endpoints grid with auto-height cards, and a dedicated full-width 2-column status and audit log glossary. Balanced endpoints into six logical groups (Overview & Health, Events & Incidents, Platform & Surfaces, Media & Content, Analytics & Vitals, and OAuth & Sync) to avoid overloaded 15-endpoint cards and uneven card stretching. Assigned explicit 2x2 grid areas to the real-time performance section, placing engineering benchmarks alongside request volumes and system load bars. Integrated verified WhoBurnedMore developer telemetry (13.66B tokens burned, $13,625 spend, #53 all-time rank across 9 tool stacks) strictly into separate subpages (Systems, Uses, Monitor) without touching the homepage. Active model: Gemini 3.8 Flash (High) in Google Antigravity IDE (AGY) — visual layout auditing, CSS grid refactoring, WhoBurnedMore telemetry integration, and multi-viewport Playwright verification.',
     tags: ['monitor', 'systems', 'design', 'api'],
     sha: '50960687',
+    commitVerified: true,
     link: `${CHANGELOG_REPO}/commit/50960687`,
     model: 'Gemini 3.8 Flash (High)',
     ide: 'Google Antigravity IDE (AGY)',
@@ -568,6 +629,7 @@ export const changelogEntries = [
       'Calibrated hero section vertical rhythm and breathing room across viewports while anchoring CTA buttons towards the bottom of the first screen. Expanded vertical gaps between the avatar, heading, identity strip, subtitle, badges, music card, and bio text using responsive clamp() and vh units to achieve an authentic Apple-style page-fit presentation without changing element sizes. Enforced a balanced 5.5rem-8rem bottom clearance so the Download Resume dropdown opens downwards with zero window scroll or fold overflow across desktop and laptop viewports. Active model: Gemini 3.8 Flash (High) in Google Antigravity IDE (AGY) — responsive viewport rhythm calibration and Playwright multi-display testing.',
     tags: ['design', 'performance'],
     sha: '60385a6b',
+    commitVerified: true,
     link: `${CHANGELOG_REPO}/commit/60385a6b`,
     model: 'Gemini 3.8 Flash (High)',
     ide: 'Google Antigravity IDE (AGY)',
@@ -582,8 +644,9 @@ export const changelogEntries = [
     summary:
       'Safari Start Page Favorites still showed the Support-section Lord Ganesha photo after live apple-touch-icon.png already shipped the white-on-black MR crown. Root causes: sticky Favorites cache on old filenames, plus og:image/twitter:image pointing at mangeshraut.pro (HTTP 402) so Safari could synthesize a colorful page image. Copied touch/PWA icons to never-cached apple-touch-icon-mr-20260906.png / icon-192-mr-20260906.png / icon-512-mr-20260906.png, pointed all rel=icon and apple-touch links plus the PWA manifest at absolute GitHub Pages URLs with ?v=20260906mr, and retargeted share images to github.io home.png. Blessing UI (ganesh.png) is unchanged and is not referenced by any icon/manifest entry. Active model: Cursor Grok 4.6 (medium) — icon/meta cache-bust and OG host correction. Token metrics not exported by this Cursor Cloud runtime.',
     tags: ['design', 'deploy'],
-    sha: '17db675c',
-    link: `${CHANGELOG_REPO}/commit/17db675c`,
+    sha: '255d8581ca30',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/255d8581ca30`,
     model: 'Grok 4.6 (medium)',
     ide: 'Cursor Cloud',
     purpose: 'Icon/meta cache-bust and Open Graph host correction for Safari Favorites',
@@ -597,6 +660,7 @@ export const changelogEntries = [
       'Resolved Safari Start Page Favorites tile displaying third-party Ganesh artwork instead of the authentic portfolio logo. Root cause: host-level touch icon cache collision on mangeshraut712.github.io where subpath visits cached an un-scoped 192x192 icon over the portfolio. Fixed by adding apple-touch-icon-precomposed and explicit multi-size touch icons (180x180, 192x192, 512x512) across all 10 shell HTML pages and page generators, synchronizing host-root repo (mangeshraut712.github.io) with latest continuous Apple squircle brand assets, scoping subpath touch icon tags, and flushing local Touch Icons Cache. Active model: Gemini 3.8 Flash (High) — Safari Touch Icons Cache SQLite reverse-engineering and host-collision resolution.',
     tags: ['design', 'deploy'],
     sha: '51e39ef3',
+    commitVerified: true,
     link: `${CHANGELOG_REPO}/commit/51e39ef3`,
     model: 'Gemini 3.8 Flash (High)',
     ide: 'Google Antigravity IDE (AGY)',
@@ -611,6 +675,7 @@ export const changelogEntries = [
       'Fixed Last.fm/Spotify artwork mismatch for "Sochta Hoon - Remix" and "Tere Bin Nahin Lagda" via verified artwork mappings, multi-storefront iTunes fallback (US→IN), and strict artist integrity scoring. Resolved action button clipping (Play, Apple Music, Spotify) caused by overflow:hidden + border-radius:20px corner geometry — set overflow:visible on .music-card-inner and .track-info, reduced button size to 28px, hover scale to 1.08, and removed conflicting liquid-glass overflow rule. Active model: Claude Opus 4.6 (Thinking) — CSS geometry debugging and multi-file surgical edits.',
     tags: ['design', 'api'],
     sha: 'e0b067dc',
+    commitVerified: true,
     link: `${CHANGELOG_REPO}/commit/e0b067dc`,
     model: 'Claude Opus 4.6 (Thinking)',
     ide: 'Cursor',
@@ -625,6 +690,7 @@ export const changelogEntries = [
       'Fixed serious WCAG 2.1 AA color contrast violation (2.02:1) on the system monitor dashboard by enforcing bold black text (#000000) on bright green (#30d158) resolve buttons in dark mode, elevating contrast to 10.36:1 (surpassing WCAG AAA 7:1 threshold). Synchronized Playwright accessibility suites to await dynamic event list rendering. Engineered with Gemini 3.8 Flash in Google Antigravity IDE (AGY).',
     tags: ['monitor', 'design', 'deploy'],
     sha: '780d4285',
+    commitVerified: true,
     link: `${CHANGELOG_REPO}/commit/780d4285`,
   },
   {
@@ -636,6 +702,7 @@ export const changelogEntries = [
       'Refined the homepage hero section into a clean, simple, and proportional Apple HIG layout that fits within standard laptop and desktop viewports (820px/768px height) with 40-65px of comfortable breathing room below CTA buttons. Scaled profile avatar (96px), tightened flex gaps and padding, and streamlined description line-height. Resolved dark theme button hover specificity bugs by scoping idle states to :not(:hover) and enforcing solid green (#1db954) background with crisp white icon on Spotify and white background with black icon on Apple Music. Restored full 4-corner perimeter definition on the music card in dark mode using specular glass border (rgba(255,255,255,0.16)) and ambient box-shadow to eliminate top border clipping. Engineered with Gemini 3.8 Flash in Google Antigravity IDE (AGY).',
     tags: ['design', 'apple-design', 'performance'],
     sha: 'a3b60e53',
+    commitVerified: true,
     link: `${CHANGELOG_REPO}/commit/a3b60e53`,
   },
   {
@@ -646,8 +713,9 @@ export const changelogEntries = [
     summary:
       'Re-calibrated the permanent Apple Music player to snug, compact luxury dimensions matching Apple Music / shadcn design benchmarks. Scaled album artwork to a prominent 62px circular vinyl disc matching card vertical bounds, reduced card max-width from 420px to 370px to eliminate dead whitespace, enlarged track title (16.5px bold) and artist typography (13.5px medium), expanded circular action buttons to 30px with 12.5px iconography, and refined timeline scrubber indicators. Ensured pixel-perfect cross-theme harmony across Light and Dark modes with verified 0px horizontal page overflow across mobile viewports. Engineered with Gemini 3.8 Flash in Google Antigravity IDE (AGY).',
     tags: ['design', 'apple-design', 'performance'],
-    sha: 'b43c31db',
-    link: `${CHANGELOG_REPO}/commit/b43c31db`,
+    sha: 'ba433664815d',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/ba433664815d`,
   },
   {
     id: 'a83c791d',
@@ -657,8 +725,9 @@ export const changelogEntries = [
     summary:
       'Refined the hero music card into a permanent, compact Apple/shadcn-grade media player (~84px height, 420px max-width) seamlessly nested below hero badges. Removed the collapsible dynamic island pill and expand toggle in favor of direct access to all playback controls, spinning vinyl disc (58px), live equalizer listening status badge, Apple Music & Spotify links, and interactive 30s audio preview scrubber timeline. Resolved a critical cross-browser hover bug in Safari where text-fill overrides rendered the Spotify brand icon invisible against green fill by scoping idle states and enforcing high-specificity white icon fills on hover. Unified luxury glassmorphism surfaces across pure white (#ffffff / #e5e5ea) Light theme and deep pitch (#000000 / #27272a) Dark theme per Apple HIG and docs/DESIGN.md standards. Engineered with Gemini 3.8 Flash in Google Antigravity IDE (AGY).',
     tags: ['design', 'apple-design', 'performance', 'assistme'],
-    sha: 'a83c791d',
-    link: `${CHANGELOG_REPO}/commit/a83c791d`,
+    sha: '56531b6cd0e3',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/56531b6cd0e3`,
   },
   {
     id: 'e1a7428f',
@@ -668,8 +737,9 @@ export const changelogEntries = [
     summary:
       'Transformed the hero Apple Music card into an ultra-sleek, compact Dynamic Island capsule (~38px height) that seamlessly integrates beneath the hero badges without dominating page real estate. Features spinning mini-vinyl artwork (28px), inline song title and artist marquee with bullet separator, live audio equalizer dot, mini preview play button, and expand chevron toggle. Clicking the compact pill or expand button smoothly morphs into the full luxury player with 58px vinyl art, live listening status badge, Apple Music & Spotify streaming links, and interactive audio preview scrubber timeline. Supports smooth collapse via chevron or outside document click with full mobile responsiveness (zero overflow) and accessible ARIA state management. Engineered with Gemini 3.8 Flash in Google Antigravity IDE (AGY).',
     tags: ['design', 'performance', 'apple-design', 'assistme'],
-    sha: 'e1a7428f',
-    link: `${CHANGELOG_REPO}/commit/e1a7428f`,
+    sha: '0f0f0d833716',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/0f0f0d833716`,
   },
   {
     id: 'f87e2b10',
@@ -679,8 +749,9 @@ export const changelogEntries = [
     summary:
       'Elevated all expanded city stops across USA, India, UAE, and Puerto Rico into rich Google Search / Google Travel Knowledge Panels. Added direct action buttons for Google Maps, Google Guide, and Wikipedia with Apple-grade glassmorphism pills. Introduced formatted geographic coordinates (e.g. 27.1722° N, 78.0422° E) and structured knowledge graph fact grids (Coordinates, Place Type, Visual Record, Route Signal, Atmosphere). Upgraded city sights generation to extract authentic landmarks from travel intelligence into Google Travel cards with direct search links. Implemented hover and idle background prefetching for instant, zero-latency image and encyclopedic overview rendering. Engineered with Gemini 3.8 Flash in Google Antigravity IDE (AGY).',
     tags: ['design', 'travel', 'apple-design', 'performance'],
-    sha: 'f87e2b10',
-    link: `${CHANGELOG_REPO}/commit/f87e2b10`,
+    sha: 'efb47c088487',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/efb47c088487`,
   },
   {
     id: 'c4287d9e',
@@ -690,8 +761,9 @@ export const changelogEntries = [
     summary:
       'Restored the Changelog page to its clean, simple, un-boxed format and extended this minimalist standard to the Travel Atlas timeline. Replaced bulky card wrappers on travel stops with borderless list items featuring a red circular pin dot, uppercase regional metadata, bold title hierarchy, and subtle active blue state accents. Formatted Systems hero stats with tabular numbers to prevent digit breaks and balanced mobile grid to 2x3. Upgraded systems statement to shadcn callout card with Apple blue accents. Resolved Travel Atlas action button clipping and truncation with a 2x2 grid and non-shrinking country capsule pills. Enhanced Monitor operations control center with live telemetry pulsing indicator and untruncated runtime snapshot labels. Deduplicated daily driver badges on Uses stack. Engineered with Gemini 3.8 Flash in Google Antigravity IDE (AGY).',
     tags: ['design', 'mobile', 'apple-design', 'systems', 'travel', 'monitor'],
-    sha: 'c4287d9e',
-    link: `${CHANGELOG_REPO}/commit/c4287d9e`,
+    sha: 'efb47c088487',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/efb47c088487`,
   },
   {
     id: 'a1096d1c',
@@ -703,6 +775,7 @@ export const changelogEntries = [
       'Conducted exhaustive sitewide audit across all 13 core pages and case studies (100/100 Apple HIG design score). Resolved null/undefined Object.keys runtime exception in monitor-page.js event handler. Standardized Apple SF Pro Display typography tokens on 404.css and offline pages. Calibrated mobile hero vertical fit in homepage-hero-polish.css and resume-dropdown.js to guarantee zero window shift when opening resume options. Synchronized Playwright E2E suites for WebMCP tool registrations and 1000x1000 ultra-high-res music artwork. Engineered with Gemini 3.8 Flash in Google Antigravity IDE; token metrics and LLM observability recorded.',
     tags: ['design', 'performance', 'mobile', 'apple-design', 'testing', 'monitor', 'assistme'],
     sha: 'a1096d1c',
+    commitVerified: true,
     link: `${CHANGELOG_REPO}/commit/a1096d1c`,
   },
   {
@@ -714,8 +787,9 @@ export const changelogEntries = [
     summary:
       'Purged legacy conflicting CSS overrides from mobile-viewport.css, homepage.css, and apple-premium-overrides.css that caused Spotify button overflow on mobile devices. Standardized Apple iOS squircle corner geometry (18px radius), refined touch target action clusters (23px-24px balanced circular buttons), eliminated horizontal clipping across small viewports (320px-430px), and fine-tuned responsive typography and scrubber margins. Built with Gemini 3.7 Flash; token metrics and LLM observability recorded.',
     tags: ['design', 'mobile', 'apple-design', 'audio', 'performance'],
-    sha: 'b712c9a4',
-    link: `${CHANGELOG_REPO}/commit/b712c9a4`,
+    sha: '45b0412909b8',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/45b0412909b8`,
   },
   {
     id: 'e49a2107',
@@ -726,8 +800,9 @@ export const changelogEntries = [
     summary:
       'Refined the Apple Music interactive hero card according to DESIGN.md specification: removed the center circle cut-out for pure Full HD edge-to-edge 1000x1000 artwork rendering, enabled smooth 360-degree disc spin during live listening and 30-second audio previews, enforced solid black/white background surfaces across themes, and streamlined the action controls cluster (▶/❚❚ Preview,  Apple Music, 🟢 Spotify). Built with Gemini 3.7 Flash; token metrics and LLM observability recorded.',
     tags: ['design', 'apple-design', 'audio', 'performance', 'lastfm'],
-    sha: 'e49a2107',
-    link: `${CHANGELOG_REPO}/commit/e49a2107`,
+    sha: '623823d1b659',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/623823d1b659`,
   },
   {
     id: 'f83b1940',
@@ -738,8 +813,9 @@ export const changelogEntries = [
     summary:
       'Elevated the hero music card into an authentic Apple Music iOS 18/macOS Sequoia interactive player featuring native 30-second AAC audio preview playback, dynamic artwork ambient aura color extraction, seekable timeline scrubber with keyboard controls, Apple Lossless audio badges, and dual  Music / Spotify deep streaming integration.',
     tags: ['design', 'apple-design', 'audio', 'lastfm', 'itunes', 'performance'],
-    sha: 'f83b1940',
-    link: `${CHANGELOG_REPO}/commit/f83b1940`,
+    sha: '623823d1b659',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/623823d1b659`,
   },
   {
     id: 'a9e41b22',
@@ -749,8 +825,9 @@ export const changelogEntries = [
     summary:
       'Synchronized interactive Apple Calendar widget and Smart Reminders with active September-October 2026 technical events, hackathons, and architecture milestones (including SF AI Agent Summit, Global Open Source & WebMCP Symposium, Pune Developer Circle Claude Code Meetup, and FastAPI High-Concurrency Architecture reviews) alongside real-time multi-calendar provider synchronization.',
     tags: ['design', 'contact', 'events', 'apple-design', 'smart-reminders', 'live-sync'],
-    sha: 'a9e41b22',
-    link: `${CHANGELOG_REPO}/commit/a9e41b22`,
+    sha: '03d5fa5e89cb',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/03d5fa5e89cb`,
   },
   // ── August 2026 ────────────────────────────────────────────
   {
@@ -770,8 +847,9 @@ export const changelogEntries = [
       'visual-regression',
       'telemetry',
     ],
-    sha: 'c82e41d9',
-    link: `${CHANGELOG_REPO}/commit/c82e41d9`,
+    sha: 'e81c3d5c46e6',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/e81c3d5c46e6`,
   },
   {
     id: 'f9c2d1b7',
@@ -781,8 +859,9 @@ export const changelogEntries = [
     summary:
       'Eliminated elevated grey background fills across the contact section and related card sub-elements in dark theme in strict accordance with Apple HIG solid surfaces. Migrated Direct Outreach channel tiles, Sponsorship tier cards, Support mode toggle pill, GitHub Sponsors button, and form inputs to pure solid black (#000000) with crisp 1px subtle borders (rgba(255, 255, 255, 0.12-0.14)), removing all grey box artifacts.',
     tags: ['design', 'dark-theme', 'contact', 'apple-design', 'zero-grey', 'ui-ux'],
-    sha: 'f9c2d1b7',
-    link: `${CHANGELOG_REPO}/commit/f9c2d1b7`,
+    sha: '7793d14912c4',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/7793d14912c4`,
   },
   {
     id: 'a81d4b29',
@@ -801,8 +880,9 @@ export const changelogEntries = [
       'apple-design',
       'ui-ux',
     ],
-    sha: 'a81d4b29',
-    link: `${CHANGELOG_REPO}/commit/a81d4b29`,
+    sha: '9cecf5791e5d',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/9cecf5791e5d`,
   },
   {
     id: 'e639a02f',
@@ -821,7 +901,8 @@ export const changelogEntries = [
       'mobile-optimization',
       'ui-ux',
     ],
-    sha: 'e639a02f',
+    sha: 'f36aff420698',
+    commitVerified: true,
   },
   {
     id: 'b41f893e',
@@ -840,8 +921,9 @@ export const changelogEntries = [
       'buymeacoffee',
       'ui-ux',
     ],
-    sha: 'b41f893e',
-    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/b41f893e',
+    sha: '38cf6c19116c',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/38cf6c19116c`,
   },
   {
     id: '72b9a4c1',
@@ -860,8 +942,9 @@ export const changelogEntries = [
       'apple-design',
       'refactor',
     ],
-    sha: '72b9a4c1',
-    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/72b9a4c1',
+    sha: '8ef828dcd5de',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/8ef828dcd5de`,
   },
   {
     id: '83e16b9d',
@@ -879,8 +962,9 @@ export const changelogEntries = [
       'vanity-url',
       'funding',
     ],
-    sha: '83e16b9d',
-    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/83e16b9d',
+    sha: '61ac99774a76',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/61ac99774a76`,
   },
   {
     id: 'a932d18f',
@@ -900,8 +984,9 @@ export const changelogEntries = [
       'ui-ux',
       'apple-design',
     ],
-    sha: 'a932d18f',
-    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/a932d18f',
+    sha: 'c7977692d1b3',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/c7977692d1b3`,
   },
   {
     id: 'f189a42c',
@@ -920,8 +1005,9 @@ export const changelogEntries = [
       'funding',
       'security',
     ],
-    sha: 'f189a42c',
-    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/f189a42c',
+    sha: '556a50655c1d',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/556a50655c1d`,
   },
   {
     id: 'd83b1a20',
@@ -940,8 +1026,9 @@ export const changelogEntries = [
       'z-index',
       'mobile-polish',
     ],
-    sha: 'd83b1a20',
-    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/d83b1a20',
+    sha: '4ea0bba8590e',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/4ea0bba8590e`,
   },
   {
     id: 'b7194f2a',
@@ -951,8 +1038,9 @@ export const changelogEntries = [
     summary:
       'Injected explicit @keyframes albumSpin definitions across core stylesheets (homepage.css, chrome-surfaces.css, apple-platform-features.css) and applied -webkit-border-radius: 50% !important with responsive mobile scaling, guaranteeing seamless continuous rotation and perfect circular geometry on both desktop and mobile devices when tracks are playing.',
     tags: ['music-card', 'vinyl', 'album-art', 'keyframes', 'animation', 'mobile-sync', 'safari'],
-    sha: 'b7194f2a',
-    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/b7194f2a',
+    sha: 'd224dc707205',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/d224dc707205`,
   },
   {
     id: 'c47b198d',
@@ -972,8 +1060,9 @@ export const changelogEntries = [
       'about',
       'apple-design',
     ],
-    sha: 'c47b198d',
-    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/c47b198d',
+    sha: '6db0367c1d70',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/6db0367c1d70`,
   },
   {
     id: 'a91d4e72',
@@ -983,8 +1072,9 @@ export const changelogEntries = [
     summary:
       'Elevated bottom viewport clearance across all floating action button slots (--fab-bottom: max(32px, safe-area-inset-bottom + 20px)), eliminating Safari window bezel clipping for the bottom-most scroll-to-top button (#go-to-top). Re-centered the arrow glyph and switched the TOP label to absolute positioning to preserve full icon visibility and circular geometry across all screen heights.',
     tags: ['ui-ux', 'fab', 'floating-dock', 'go-to-top', 'safari', 'viewport', 'accessibility'],
-    sha: 'a91d4e72',
-    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/a91d4e72',
+    sha: '07c00df51213',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/07c00df51213`,
   },
   {
     id: 'f8329a1c',
@@ -994,8 +1084,9 @@ export const changelogEntries = [
     summary:
       'Calibrated WHOOP Sleep Performance traffic-light color scoring to official WHOOP performance bands (Green: 85-100%, Yellow: 50-84%, Red: 0-49%), ensuring moderate sleep scores such as 66% render in warm yellow rather than alarmist red. Preserved Recovery scoring (Green: 67%+, Yellow: 34-66%, Red: 0-33%) and Strain load tiers.',
     tags: ['whoop', 'health', 'vitals', 'scoring', 'calibration', 'vitest'],
-    sha: 'f8329a1c',
-    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/f8329a1c',
+    sha: '170428b473fd',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/170428b473fd`,
   },
   {
     id: 'e15f829d',
@@ -1005,8 +1096,9 @@ export const changelogEntries = [
     summary:
       'Integrated quick-copy actions directly inside .contact-channel-item pills with ellipsis overflow protection and right-aligned trigger layout, fixing grid row boundary clipping in the 2-column Direct Outreach card. Synchronized quick-copy stylesheet across subpages (changelog, monitor, travel, systems, uses) for unified Apple glass aesthetics.',
     tags: ['ui-ux', 'layout', 'grid', 'contact', 'alignment', 'apple-design', 'glassmorphism'],
-    sha: 'e15f829d',
-    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/e15f829d',
+    sha: '170428b473fd',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/170428b473fd`,
   },
   {
     id: 'c4e9271a',
@@ -1016,8 +1108,9 @@ export const changelogEntries = [
     summary:
       'Refined hero name pronunciation to a single, uncluttered audio speaker button without complex options dropdowns. Transformed music card album artwork into a crisp Apple Music-standard rounded square (border-radius: 10px, specular inner border, drop shadow) and removed circular vinyl cropping and center pin overlay for optimal track artwork visibility across all viewports.',
     tags: ['ui-ux', 'music', 'artwork', 'audio', 'apple-design', 'glassmorphism', 'minimalism'],
-    sha: 'c4e9271a',
-    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/c4e9271a',
+    sha: 'dff0359060ae',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/dff0359060ae`,
   },
   {
     id: 'b712c93a',
@@ -1036,8 +1129,9 @@ export const changelogEntries = [
       'clipboard',
       'apple-glass',
     ],
-    sha: 'b712c93a',
-    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/b712c93a',
+    sha: 'dd9338c68f2b',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/dd9338c68f2b`,
   },
   {
     id: 'a87e419b',
@@ -1047,8 +1141,9 @@ export const changelogEntries = [
     summary:
       'Refined hero name translation into an instant, zero-latency toggle between English ("Mangesh Raut") and native Marathi script ("मंगेश राऊत") accessible directly via heading click and dedicated hero translate button (#name-translate-btn). Relocated copy actions to contact channels with sleek shadcn copy buttons, SVG checkmark morph animations, and floating glass toast alerts.',
     tags: ['i18n', 'marathi', 'shadcn', 'clipboard', 'ui-ux', 'accessibility', 'glassmorphism'],
-    sha: 'a87e419b',
-    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/a87e419b',
+    sha: '87bb3895eb3f',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/87bb3895eb3f`,
   },
   {
     id: 'f931d82c',
@@ -1058,8 +1153,9 @@ export const changelogEntries = [
     summary:
       'Completed multi-layer quality validation across JSDOM unit tests (210/210 passed in 2.5s), pytest backend API (175/175 passed), and real browser Lighthouse audits (100/100/100/100 desktop & mobile). Fixed Playwright test.beforeEach fixture destructuring in tests/e2e/mobile-viewport.spec.js and sanitized Chrome headless flags in scripts/deployment/lighthouse-gate.js for cross-platform stability.',
     tags: ['testing', 'jsdom', 'vitest', 'playwright', 'lighthouse', 'quality-gate'],
-    sha: 'f931d82c',
-    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/f931d82c',
+    sha: 'cdfa948cce99',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/cdfa948cce99`,
   },
   {
     id: 'b1704e38',
@@ -1069,8 +1165,9 @@ export const changelogEntries = [
     summary:
       'Enhanced scripts/deployment/lighthouse-gate.js with --disable-gpu, --no-first-run, and graceful retry error handling to prevent transient runner crashes. Added preview server warm-up in .github/workflows/deploy.yml and codified mandatory 100% Green CI/CD protocol in AGENTS.md.',
     tags: ['ci-cd', 'github-actions', 'lighthouse', 'deploy', 'quality-gate'],
-    sha: 'b1704e38',
-    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/b1704e38',
+    sha: 'b8d442dcdb26',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/b8d442dcdb26`,
   },
   {
     id: 'c529f81a',
@@ -1080,8 +1177,9 @@ export const changelogEntries = [
     summary:
       'Fixed brand icon generator in scripts/build/generate-brand-icons.mjs to extract vector path data and inject direct solid fill attributes (fill="#ffffff") for librsvg/sharp rasterization instead of unresolvable CSS custom properties. Restored crisp white MR crown monogram on luxury black squircle across apple-touch-icon.png, apple-touch-icon-precomposed.png, icon-192.png, icon-512.png, and favicon suite for Safari Start Page Favorites and iOS/Android home screens.',
     tags: ['fix', 'safari', 'apple-touch-icon', 'favicon', 'pwa', 'design'],
-    sha: 'c529f81a',
-    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/c529f81a',
+    sha: 'b6381c142c8c',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/b6381c142c8c`,
   },
   {
     id: 'e78c142b',
@@ -1091,8 +1189,9 @@ export const changelogEntries = [
     summary:
       'Fixed theme toggle Moon icon color cascade to use authentic Apple Celestial Indigo/Blue (#0071e3 light / #58a6ff dark) alongside golden Sun icon (#f59e0b light / #ffd60a dark). Guaranteed 100% white text visibility for 3D/2D contributions graph floating tooltips across all themes. Preserved green accent text (#gh-total, #gh-longest) in dark mode specificity cascade and synchronized 2D/3D graph redraw on theme changes.',
     tags: ['fix', 'design', 'themes', 'dark-mode', 'a11y', 'performance'],
-    sha: 'e78c142b',
-    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/e78c142b',
+    sha: '6b7ac6a8409a',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/6b7ac6a8409a`,
   },
   {
     id: 'a41d980e',
@@ -1111,8 +1210,9 @@ export const changelogEntries = [
       'chrome',
       'testing',
     ],
-    sha: 'a41d980e',
-    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/a41d980e',
+    sha: '605ef97d21e9',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/605ef97d21e9`,
   },
   {
     id: 'f90b231c',
@@ -1123,8 +1223,9 @@ export const changelogEntries = [
     summary:
       'Executed comprehensive cross-browser validation across Desktop Safari (WebKit), Desktop Chrome (Blink), Desktop Firefox (Gecko), Mobile Safari (iOS iPhone 14/17 Pro Max), and Mobile Chrome (Android Pixel 7). Enhanced WCAG AA contrast for dark-mode monitor telemetry values (#58a6ff) and light-mode language distribution headers (#0066cc). Unified WebKit and Chromium color profile tolerances and verified full 218-test cross-browser matrix passes with 100% green status.',
     tags: ['release', 'safari', 'chrome', 'cross-browser', 'ios', 'android', 'a11y', 'testing'],
-    sha: 'f90b231c',
-    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/f90b231c',
+    sha: '6008dd3a1ce9',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/6008dd3a1ce9`,
   },
   {
     id: 'b71a4f90',
@@ -1134,8 +1235,9 @@ export const changelogEntries = [
     summary:
       'Removed redundant "43 projects." status text below search input while preserving full polite screen-reader accessibility. Fully synchronized the "Show all projects" expand button with Apple Blue 3D button styling, specular sheen, white text and icons, and tactile press dynamics. Upgraded the 3D isometric GitHub contributions graph with hit-testing hover detection, elevated block lighting, specular glow, fixed tooltip popups, and stage perspective gyro tilt. Enhanced 3D travel atlas with resilient idle globe rotation and drag recovery.',
     tags: ['release', '3d-map', 'github-graph', 'projects', 'ui', 'animations', 'buttons'],
-    sha: 'b71a4f90',
-    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/b71a4f90',
+    sha: '7afc6b798cb6',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/7afc6b798cb6`,
   },
   {
     id: 'e840a17b',
@@ -1145,8 +1247,9 @@ export const changelogEntries = [
     summary:
       'Bumped global asset cache version to 20260826cache1 across all shell HTML pages, manifest, and service worker to automatically purge and bypass stale Chrome/Safari browser caches. Configured development server static headers with Cache-Control: no-cache, no-store, must-revalidate so edits reflect instantly in live browsers without manual hard-refreshing. Updated build pipeline to recursively version all dist HTML templates.',
     tags: ['release', 'cache-busting', 'service-worker', 'performance', 'dev-server', 'dx'],
-    sha: 'e840a17b',
-    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/e840a17b',
+    sha: 'ecdea5c4e60a',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/ecdea5c4e60a`,
   },
   {
     id: 'c912ef04',
@@ -1156,8 +1259,9 @@ export const changelogEntries = [
     summary:
       'Refined the Show fewer projects button with dynamic chevron indicators and smooth viewport scroll recovery. Enforced strict deduplication and verified authentic live demo links across all project cards (filtering out duplicate repo links and placeholder URLs). Added interactive MapLibre 3D map hover popups with Apple liquid glass cards, dynamic pulsing stop halos, and 3D kinetic hover lift on travel atlas waypoints.',
     tags: ['release', 'projects', '3d-map', 'travel-atlas', 'hover-effects', 'ui'],
-    sha: 'c912ef04',
-    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/c912ef04',
+    sha: '6a337e58154d',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/6a337e58154d`,
   },
   {
     id: 'd83a129f',
@@ -1167,8 +1271,9 @@ export const changelogEntries = [
     summary:
       'Fully organized repository directory architecture across 8 core subsystems (frontend source, FastAPI backend, Cloudflare edge workers, build tooling, test suites, and documentation). Modernized all 5 GitHub Actions workflows to verified official actions (actions/checkout@v4, setup-node@v4, cache@v4, setup-uv@v5, upload-artifact@v4, wrangler-action@v3) ensuring green-ticked CI/CD passes. Synchronized test matrices (210 Vitest, 175 pytest, 16 browser projects) and canonical architecture maps in README.md and docs/STRUCTURE.md.',
     tags: ['release', 'ci-cd', 'github-actions', 'architecture', 'documentation', 'clean-code'],
-    sha: 'd83a129f',
-    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/d83a129f',
+    sha: '79aa3608bc88',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/79aa3608bc88`,
   },
   {
     id: 'b7201c89',
@@ -1178,8 +1283,9 @@ export const changelogEntries = [
     summary:
       'Synchronized all 6 button tiers across all 7 pages with authentic 3D perspective lift on hover (translateY(-2.5px) scale(1.02) translateZ(0)), tactile click kinetics on :active (translateY(1.5px) scale(0.96)), continuous specular metallic sheen animation, and snappy Apple spring transitions (0.18s cubic-bezier(0.34, 1.56, 0.64, 1)). Eliminated sluggish transitions and standardized calendar controls, smart reminder chips, floating action buttons, and circular close triggers.',
     tags: ['release', 'design', 'buttons', '3d-animation', 'micro-interactions', 'ui'],
-    sha: 'b7201c89',
-    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/b7201c89',
+    sha: 'f568bd1cbda3',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/f568bd1cbda3`,
   },
   {
     id: 'e481b920',
@@ -1189,8 +1295,9 @@ export const changelogEntries = [
     summary:
       'Refined the Year Progress HUD widget to a compact, proportionate design matching the calendar and smart reminders with clean solid surfaces (pure white #ffffff in light mode, pure solid black #000000 in dark mode) and subtle 1px border. Eliminated all muddy grey backgrounds in dark mode across calendar widgets, media cards, and share modals in favor of solid pitch black #000000. Verified live rendering across viewports with Playwright automated test captures.',
     tags: ['release', 'design', 'calendar', 'typography', 'solid-surfaces', 'dark-mode', 'ui'],
-    sha: 'e481b920',
-    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/e481b920',
+    sha: '8370a7b1be28',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/8370a7b1be28`,
   },
   {
     id: 'f391b4e2',
@@ -1209,8 +1316,9 @@ export const changelogEntries = [
       'github',
       'benchmarks',
     ],
-    sha: 'f391b4e2',
-    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/f391b4e2',
+    sha: 'dc301bb962c2',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/dc301bb962c2`,
   },
   {
     id: 'a521e893',
@@ -1220,8 +1328,9 @@ export const changelogEntries = [
     summary:
       'Isolated imported birthdays (including Rochelle Fernands) exclusively under the Birthdays filter tab, eliminating category leakage into Events. Standardized category counts and rendering so Events (3), Birthdays (4), Tasks (4), Changelog (10), and Day (1) operate with deterministic, mutually exclusive filters.',
     tags: ['fix', 'calendar', 'birthdays', 'events', 'categories', 'ui'],
-    sha: 'a521e893',
-    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/a521e893',
+    sha: '813909ed044f',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/813909ed044f`,
   },
   {
     id: 'c8310f92',
@@ -1231,8 +1340,9 @@ export const changelogEntries = [
     summary:
       'Reverted FAQ container max-width to its focused 44rem layout. Centered the blog topic filter bar across desktop viewports above dual-column blog cards, and refined mobile responsiveness to eliminate distorted outer capsule borders by rendering balanced 3x3 wrapped pill chips across Light and Dark modes.',
     tags: ['ui', 'blog', 'mobile', 'responsive', 'apple-design', 'layout'],
-    sha: 'c8310f92',
-    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/c8310f92',
+    sha: '912a5d72ba8d',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/912a5d72ba8d`,
   },
   {
     id: 'e459a182',
@@ -1242,8 +1352,9 @@ export const changelogEntries = [
     summary:
       'Fixed a double-border defect on the "Book Instant 30-Min Consultation" button caused by an inherited card border rule on its container. Streamlined container styling to transparent and ensured a clean single Apple Blue pill border in both Light and Dark modes adhering to DESIGN.md.',
     tags: ['ui', 'fix', 'contact', 'buttons', 'apple-design', 'design-system'],
-    sha: 'e459a182',
-    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/e459a182',
+    sha: 'f95dc44dfac5',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/f95dc44dfac5`,
   },
   {
     id: 'b719c35d',
@@ -1253,8 +1364,9 @@ export const changelogEntries = [
     summary:
       'Expanded the FAQ section width to seamlessly match the dual-column blog card container width (1100px max-width) with updated questions, answers, and JSON-LD schema. Enabled graceful multi-row flex wrapping and balanced spacing across all Calendar & Smart Reminders filter tabs (Day, All, Events, Birthdays, Changelog, Tasks) without horizontal cutoff.',
     tags: ['ui', 'faq', 'calendar', 'layout', 'design-system', 'seo'],
-    sha: 'b719c35d',
-    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/b719c35d',
+    sha: '2c705db9fa14',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/2c705db9fa14`,
   },
   {
     id: 'f824b01e',
@@ -1264,8 +1376,9 @@ export const changelogEntries = [
     summary:
       'Resolved a dual-highlight state where an outdated hardcoded default date caused a simultaneous blue selection circle alongside the red today badge. Dynamically synchronized widget date initialization, today button resets, and live sync card availability with the current date.',
     tags: ['fix', 'calendar', 'reminders', 'ui', 'apple-design'],
-    sha: 'f824b01e',
-    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/f824b01e',
+    sha: 'fbb519f18d14',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/fbb519f18d14`,
   },
   {
     id: 'a914f27c',
@@ -1275,8 +1388,9 @@ export const changelogEntries = [
     summary:
       'Conducted a rigorous proofreading pass across all homepage and subpage surfaces (Hero, Experience, Education, Awards, Recommendations, Technical Writings, and Uses Stack). Eliminated resume clichés and buzzwords, refined operational volunteer and award descriptions, formatted recommendation quotes cleanly, and harmonized public font colophon details.',
     tags: ['content', 'editorial', 'experience', 'systems', 'copy'],
-    sha: 'a914f27c',
-    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/a914f27c',
+    sha: '965204838f25',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/965204838f25`,
   },
   {
     id: 'e639a04f',
@@ -1286,8 +1400,9 @@ export const changelogEntries = [
     summary:
       'Refreshed the core About Me story narrative with an authentic deep dive into 6+ years of engineering across backend distributed microservices, cloud infrastructure, full-stack products, and agentic AI systems engineering. Highlights production reliability, applied AI evaluations, Drexel MSCS, Aramark, IoasiZ, Harshwardhan Enterprises, and research.',
     tags: ['content', 'about', 'bio', 'story', 'ai-systems'],
-    sha: 'e639a04f',
-    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/e639a04f',
+    sha: '2d398127de21',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/2d398127de21`,
   },
   {
     id: 'd8471e9a',
@@ -1298,8 +1413,9 @@ export const changelogEntries = [
     summary:
       'Extended the ultra-comfortable Minion Pro / Editorial Serif typography suite across all blog articles, modals, and standalone post readers. Applied 1.16rem body sizing (1.08rem mobile), 2.05 line-height leading, 2.0rem paragraph margin, +0.022em letter-spacing, +0.04em word-spacing, pure solid black (#000000) Light mode text, and pure solid white (#ffffff) Dark mode text for unified reading excellence.',
     tags: ['design', 'ui', 'typography', 'blog', 'editorial'],
-    sha: 'd8471e9a',
-    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/d8471e9a',
+    sha: '338e3ba94dda',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/338e3ba94dda`,
   },
   {
     id: 'b281f09c',
@@ -1309,8 +1425,9 @@ export const changelogEntries = [
     summary:
       'Rendered pure solid black (#000000) typography for the About narrative in Light mode and pure solid white (#ffffff) in Dark mode for maximum reading contrast. Increased body font size to 1.16rem (18.5px desktop / 1.08rem mobile), applied +0.022em letter-spacing tracking and +0.04em word-spacing, with ultra-open 2.05 line-height and 2.0rem paragraph margin.',
     tags: ['design', 'ui', 'typography', 'contrast', 'accessibility'],
-    sha: 'b281f09c',
-    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/b281f09c',
+    sha: '038a69119117',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/038a69119117`,
   },
   {
     id: 'c529fa01',
@@ -1320,8 +1437,9 @@ export const changelogEntries = [
     summary:
       'Engineered an ultra-open, high-comfort reading layout for the About story inspired by premier long-form editorial design. Upgraded leading to 2.0 line-height, expanded paragraph rhythm to 1.85rem, enlarged body typography to 1.08rem Minion Pro / New York / Charter serif stack, increased brand kicker spacing to 1.65rem, and enhanced mobile viewport responsiveness with 1.9 line-height and 1.55rem rhythm.',
     tags: ['design', 'ui', 'typography', 'editorial', 'spacing'],
-    sha: 'c529fa01',
-    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/c529fa01',
+    sha: '1bbd1348c9d3',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/1bbd1348c9d3`,
   },
   {
     id: 'a937d04e',
@@ -1331,8 +1449,9 @@ export const changelogEntries = [
     summary:
       'Transformed the About story into a high-readability editorial layout inspired by Minion Pro and top publishing typography. Features a bold modern display heading, refined uppercase category kicker, generous 1.78 line-height leading, 1.35rem paragraph rhythm, 1.05rem serif font stack, and soft warm charcoal text colors (#2c2c2e / #e5e5ea) for effortless long-form reading across desktop and mobile.',
     tags: ['design', 'ui', 'typography', 'editorial'],
-    sha: 'a937d04e',
-    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/a937d04e',
+    sha: '1bbd1348c9d3',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/1bbd1348c9d3`,
   },
   {
     id: 'e410b89a',
@@ -1342,8 +1461,9 @@ export const changelogEntries = [
     summary:
       'Standardized the About Full Story narrative typography to match the exact Apple SF Pro font stack, 0.98rem sizing, 1.6 line-height, and refined #6e6e73 / #a1a1a6 color hierarchy used across the FAQ answers. Removed temporary font switchers to provide a cohesive, distraction-free reading experience across desktop and mobile viewports in both light and dark themes.',
     tags: ['design', 'ui', 'typography', 'polish'],
-    sha: 'e410b89a',
-    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/e410b89a',
+    sha: '0e74c82fb3d4',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/0e74c82fb3d4`,
   },
   {
     id: 'f892d10c',
@@ -1354,8 +1474,9 @@ export const changelogEntries = [
     summary:
       'Refined the About Full Story narrative with 100% fact-checked, compelling engineering copy covering Pune foundations, Student of the Year honor, SPPU distinction, Drexel MSCS (3.91 GPA & Honors), IoasiZ microservices, Aramark AWS inventory pipelines, and published IJFGCN ML research. Integrated line-height 1.5 for optimal editorial readability and introduced an interactive 3-font Apple typography switcher (Apple New York Serif, Apple SF Pro Modern Sans, and Apple SF Pro Rounded) with local storage persistence across Light and Dark themes.',
     tags: ['design', 'ui', 'typography', 'content'],
-    sha: 'f892d10c',
-    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/f892d10c',
+    sha: 'd064ba8a3836',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/d064ba8a3836`,
   },
   {
     id: 'b7194f28',
@@ -1366,8 +1487,9 @@ export const changelogEntries = [
     summary:
       'Eliminated nested double borders on the Calendly consultation panel by removing card container wrappers and crafting a unified Apple luxury secondary pill CTA with single 1.5px border, Apple Blue accents, and smooth hover gradient with white text. Re-architected Currently media cards: optimized Steve Jobs biography and book covers to 100% full uncropped visibility with 3D hardcover book spines and iBooks perspective tilt animation; upgraded Shows & Movies with 14px squircles, specular glass sheen, and Apple TV+ floating scale animation; and refined Music with 1:1 square artwork and Apple Music vinyl lift effect.',
     tags: ['design', 'ui', 'components', 'animation'],
-    sha: 'b7194f28',
-    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/b7194f28',
+    sha: 'ea74b6e2e007',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/ea74b6e2e007`,
   },
   {
     id: 'c47189fa',
@@ -1377,8 +1499,9 @@ export const changelogEntries = [
     summary:
       'Fixed hover visibility on progressive disclosure buttons (Competency Matrix & Radar, System Topology & Pipeline, and all section preview controls) by applying ultra-high specificity white text and icon overrides (#ffffff !important) across both Light and Dark themes. Restored bounded clamp height (clamp(420px, 52vh, 500px)) with smooth Apple internal scrolling for the About information card on mobile, keeping the narrative cleanly contained on screen without overflowing.',
     tags: ['design', 'ui', 'accessibility', 'mobile', 'components'],
-    sha: 'c47189fa',
-    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/c47189fa',
+    sha: '2ea83f4fa103',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/2ea83f4fa103`,
   },
   {
     id: 'a94df10b',
@@ -1388,8 +1511,9 @@ export const changelogEntries = [
     summary:
       'Harmonized the About section heading and lede subtitle with sitewide centered section hierarchy. Removed redundant milestone badge pills below the narrative to eliminate visual clutter and ensure 100% WCAG AA color contrast compliance. Upgraded the mobile graduation portrait with a 4:5 aspect ratio (440–520px) to reveal the complete Drexel commencement scoreboard and stadium background without awkward top/bottom cropping. Formatted the narrative card on mobile into a natural expanding luxury Apple surface with 24px squircles and keyboard accessible tab panels.',
     tags: ['design', 'ui', 'accessibility', 'mobile', 'components'],
-    sha: 'a94df10b',
-    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/a94df10b',
+    sha: '140097d6b450',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/140097d6b450`,
   },
   {
     id: 'e391b8a4',
@@ -1399,8 +1523,9 @@ export const changelogEntries = [
     summary:
       'Restored the original paired height architecture for the About section across Desktop, Tablet, and Mobile viewports. Synchronized the graduation photo bento wrapper and the interactive narrative card with identical clamp heights (clamp(520px, 58vh, 640px) on desktop, clamp(460px, 52vh, 560px) on tablet, clamp(400px, 50vh, 500px) on mobile). Re-enabled smooth Apple glassmorphic internal scrolling (overflow-y: auto with sleek thin scrollbar) for both Full Story and Quick Summary tab panels to maintain clean, one-page viewport fit without vertical page sprawl.',
     tags: ['design', 'ui', 'components', 'responsive'],
-    sha: 'e391b8a4',
-    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/e391b8a4',
+    sha: '3972d8e74826',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/3972d8e74826`,
   },
   {
     id: 'f4d92a18',
@@ -1410,8 +1535,9 @@ export const changelogEntries = [
     summary:
       'Audited mobile responsiveness across all 7 portfolio pages (index, systems, monitor, travel, uses, changelog, 404) across 390px (iPhone 14) and 360px (Android) viewports. Fixed skills category cards by widening marquee badges to 155px min-width with 16px squircles to eliminate label and level truncation; aligned experience and education timeline rails with a 14px node rail offset; balanced GitHub stats overview with symmetrical column-spanning layout; optimized project card action bars for single-row button touch targets; and harmonized card geometry across Light and Dark themes.',
     tags: ['mobile', 'design', 'ui', 'performance'],
-    sha: 'f4d92a18',
-    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/f4d92a18',
+    sha: '2dab24ad427a',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/2dab24ad427a`,
   },
   {
     id: 'b7e2c94a',
@@ -1421,8 +1547,9 @@ export const changelogEntries = [
     summary:
       'Refined About section layout with synchronized equal-height grid stretch across Full Story and Quick Summary tabs, visionOS glassmorphic image badge, and tactile milestone pills. Upgraded Calendly 30-min consultation CTA with authentic Apple Blue outlined luxury surface, distinct visual hierarchy from primary Send Message CTA, and smooth hover glow across Light and Dark themes.',
     tags: ['design', 'ui', 'components'],
-    sha: 'b7e2c94a',
-    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/b7e2c94a',
+    sha: '81ccdc96f17c',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/81ccdc96f17c`,
   },
   {
     id: 'a7f104d8',
@@ -1432,8 +1559,9 @@ export const changelogEntries = [
     summary:
       'Conducted a comprehensive automated and visual border audit across all 7 portfolio pages (index, systems, monitor, travel, uses, changelog, 404). Harmonized all container and card borders with authentic Apple Human Interface Guidelines: resolved subpixel image clipping in the About photo bento card by anchoring the 24px squircle hairline border to the outer wrapper, harmonized Publications card dark mode border tokens with --card-border-rest (#2c2c2e), eliminated double repeated bottom borders in Monitor telemetry and metrics tables using tr:last-child overrides, and validated zero collision anomalies across all light and dark theme surfaces.',
     tags: ['design', 'systems', 'performance'],
-    sha: 'a7f104d8',
-    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/a7f104d8',
+    sha: 'f976a0e45a56',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/f976a0e45a56`,
   },
   {
     id: 'e4c871a0',
@@ -1444,8 +1572,9 @@ export const changelogEntries = [
     summary:
       'Engineered a comprehensive luxury Apple redesign for the portfolio Contact section and interactive messaging experience. Reordered mobile card stacking to elevate Direct Outreach channels and Send Message form above lifestyle marquees. Elevated Direct Outreach channel pills with 14px squircles and hover lift, established high-contrast button hierarchy with a specular Apple Blue gradient CTA for message submission and a luxury outlined solid surface pill for instant Calendly consultation, fixed Smart Reminders button wrapping on mobile viewports, and secured skip-link focus-visible positioning.',
     tags: ['design', 'performance', 'systems'],
-    sha: 'e4c871a0',
-    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/e4c871a0',
+    sha: '55931be13c56',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/55931be13c56`,
   },
   {
     id: 'b91a27e4',
@@ -1456,7 +1585,8 @@ export const changelogEntries = [
     summary:
       'Redesigned and elevated GitHub repository showcase cards into an authentic luxury Apple aesthetic with 20px squircle geometry, pure OLED solid black in dark mode (#000000) and pure solid white in light mode (#ffffff). Enhanced top bar layout with Octocat badge anchor, active pulse momentum dot, quick clone terminal pill, and updated timestamp. Restructured title into full-width SF Pro Display typography (font-size: 1.12rem, font-weight: 700) eliminating awkward line-breaks. Organized metadata into structured tech stack capsules (language with official color dot + topic pills) and clean secondary metrics (stars, forks, license, size). Replaced stacked multi-row button grids with a balanced single-row action bar (Apple Blue gradient Live Demo CTA, solid Code button, and Vision Pro 3D Spatial trigger). Built with Gemini 2.5 Pro; token metrics and LLM observability recorded.',
     tags: ['design', 'performance', 'systems'],
-    sha: 'b91a27e4',
+    sha: 'f8ac10709d9e',
+    commitVerified: true,
   },
   {
     id: 'e48b11dc',
@@ -1467,7 +1597,8 @@ export const changelogEntries = [
     summary:
       'Standardized sitewide button systems and interactive controls across all 6 tiers in Light Mode (html:not(.dark)) to pure solid white backgrounds (#ffffff), crisp 1px Apple borders (rgba(0, 0, 0, 0.14)), and synchronized high-contrast typography (#1d1d1f resting, #0071e3 hover, #ffffff active). Harmonized secondary buttons, filter chips, architecture tabs, preview disclosures, segmented mirrors, and log tabs across Homepage, Systems, Monitor, Travel, Uses, and Changelog pages. Built with Gemini 2.5 Pro; token metrics and LLM observability recorded.',
     tags: ['design', 'a11y', 'performance', 'systems'],
-    sha: 'e48b11dc',
+    sha: 'cefca1230666',
+    commitVerified: true,
   },
   {
     id: 'a71e3b09',
@@ -1478,7 +1609,8 @@ export const changelogEntries = [
     summary:
       'Standardized sitewide button systems and interactive controls across all 6 tiers in Dark Mode (html.dark) to pure solid black background (#000000), crisp 1px Apple borders (#2c2c2e), and synchronized high-contrast font colors (#f5f5f7, #ffffff, #2997ff). Harmonized secondary buttons, filter chips, architecture tabs, preview disclosures, and utility toggles across Homepage, Systems, Monitor, Travel, Uses, and Changelog pages. Built with Gemini 2.5 Pro; token metrics and LLM observability recorded.',
     tags: ['design', 'a11y', 'performance', 'systems'],
-    sha: 'a71e3b09',
+    sha: 'da47e4add89b',
+    commitVerified: true,
   },
   {
     id: 'f94a21cb',
@@ -1489,7 +1621,8 @@ export const changelogEntries = [
     summary:
       'Hardened WCAG AA/AAA color contrast across light/dark mode dividers, footer elements, and interactive disclosure actions. Streamlined Calendly appointment booking below the contact form with dynamic category filtering. Harmonized full Playwright E2E suites across all browser configurations, ensuring 100% green test passes across GitHub Actions and dual-host deploys. Built with Gemini 3.7 Flash; token metrics and LLM observability recorded.',
     tags: ['a11y', 'design', 'performance', 'deploy'],
-    sha: 'f94a21cb',
+    sha: '717a72b7ffd3',
+    commitVerified: true,
   },
   {
     id: 'e38a92f4',
@@ -1499,7 +1632,8 @@ export const changelogEntries = [
     summary:
       'Upgraded deferred GA4 analytics engine with requestIdleCallback and visibility change triggers to capture 100% of visitor traffic across GitHub Pages. Injected tracking script across all 16 standalone blog posts and 5 technical case studies. Added automatic event tracking for high-intent actions including resume downloads, consultation bookings, and social links. Built with Gemini 2.5 Pro; token metrics tracked via total_usage.',
     tags: ['performance', 'architecture', 'a11y'],
-    sha: 'e38a92f4',
+    sha: 'ff143cfe7af8',
+    commitVerified: true,
   },
   {
     id: 'b71e49d3',
@@ -1509,7 +1643,8 @@ export const changelogEntries = [
     summary:
       'Purged all unverified and synthetic calendar entries (removed Oct 12 and May 20 entries). Standardized verified calendar data strictly to 3 verified annual birthdays (Stephen Aug 6, Mom Aug 15, Mangesh Dec 7) with accurate counter badges across all views. Built with Gemini 2.5 Pro; token metrics tracked via total_usage.',
     tags: ['design', 'performance', 'assistme'],
-    sha: 'b71e49d3',
+    sha: 'a61c6bd711b6',
+    commitVerified: true,
   },
   {
     id: 'c47e81b9',
@@ -1520,7 +1655,8 @@ export const changelogEntries = [
     summary:
       'Audited and enforced strict Apple HIG background rules across all 7 website pages (index, systems, monitor, travel, uses, changelog, 404, offline) and standalone case studies. Standardized canvases to solid pure white (#ffffff) in light mode and solid OLED black (#000000) in dark mode with refined 1px hairlines (#e5e5ea in light, #2c2c2e in dark) on all cards, panels, and widgets. Built with Gemini 2.5 Pro; token metrics tracked via total_usage.',
     tags: ['design', 'performance', 'a11y'],
-    sha: 'c47e81b9',
+    sha: '6b28c513128b',
+    commitVerified: true,
   },
   {
     id: 'a93f17d2',
@@ -1530,7 +1666,8 @@ export const changelogEntries = [
     summary:
       'Relocated the Calendly Consultation CTA button directly beneath the Send Message contact form with a sleek OR divider, creating an intuitive dual outreach pathway (Message or Live Consultation). Streamlined the Calendar & Smart Reminders widget into a clean, distraction-free Apple widget layout where the monthly grid connects seamlessly to strictly categorized Smart Reminders, verified Events, and Birthdays. Built with Gemini 2.5 Pro; token metrics tracked via total_usage.',
     tags: ['design', 'performance', 'assistme'],
-    sha: 'a93f17d2',
+    sha: '78ef02a51832',
+    commitVerified: true,
   },
   {
     id: 'f82d19b4',
@@ -1540,7 +1677,8 @@ export const changelogEntries = [
     summary:
       'Removed Autonomous Sync banner to streamline the calendar viewport directly to the Tier 1 Consultation CTA. Organized and verified all event categories with strict segregation: 5 Verified Birthdays (Stephen Aug 6, Mom Aug 15, Dad Oct 12, Mangesh Dec 7, Sister May 20), 3 Calendar Events (Cafe Cursor, Claude Code, Keynote), 4 Tasks (Sync, Design Review, Email, AI Training), 10 Changelog releases, and accurate Day & All counters. Built with Gemini 2.5 Pro; token metrics tracked via total_usage.',
     tags: ['design', 'performance', 'assistme'],
-    sha: 'f82d19b4',
+    sha: '1bae26c61e3f',
+    commitVerified: true,
   },
   {
     id: 'e71b93f2',
@@ -1550,7 +1688,8 @@ export const changelogEntries = [
     summary:
       'Elevated Calendar, Reminders, and Calendly sections to full DESIGN.md fidelity: Tier 1 full-width Consultation CTA with metallic sheen animation, high-contrast Apple Red today indicator (#ff3b30) and Apple Blue selected halo (#0071e3), non-wrapping category filter chips rail, and clean prompt-powered reminder creation. Built with Gemini 2.5 Pro; token metrics tracked via total_usage.',
     tags: ['design', 'performance', 'assistme'],
-    sha: 'e71b93f2',
+    sha: 'c0bd2491a2b9',
+    commitVerified: true,
   },
   {
     id: 'c42e88a1',
@@ -1560,7 +1699,8 @@ export const changelogEntries = [
     summary:
       'Eliminated stray syntax glitch, prevented changelog paragraph flood in day inspector by isolating releases to the Changelog tab, added smooth scroll containment to the reminders list, updated Font Awesome 6 icons (fa-wand-magic-sparkles and fa-download), and enforced authentic Apple dark mode contrast across contact headers and cards. Built with Gemini 2.5 Pro; token metrics tracked via total_usage.',
     tags: ['design', 'performance', 'assistme'],
-    sha: 'c42e88a1',
+    sha: '8697b3b4f417',
+    commitVerified: true,
   },
   {
     id: 'b19c43d2',
@@ -1570,7 +1710,8 @@ export const changelogEntries = [
     summary:
       'Upgraded Calendar & Reminders widget to isolate tasks according to active date selection with custom Apple Empty States (Add Reminder, Book Consultation, View All). Seamlessly merged full Changelog releases into calendar days with purple accent dots and tags. Verified and imported Apple CardDAV birthdays including Stephen (Aug 6), Mom (Aug 15), and Mangesh (Dec 7). Built with Gemini 2.5 Pro; token metrics tracked via total_usage.',
     tags: ['api', 'design', 'assistme'],
-    sha: 'b19c43d2',
+    sha: '18c157ee2d77',
+    commitVerified: true,
   },
   {
     id: 'f87b321a',
@@ -1580,7 +1721,8 @@ export const changelogEntries = [
     summary:
       'Transformed the Contact page Calendar & Reminders widget into an AI agentic scheduling and event discovery system. Added interactive category filter pills (All, Events, Reminders, Birthdays), a click-to-inspect day banner, multi-colored event dots (blue for meetups, pink for birthdays, orange for talks, cyan for travel), one-click .ics calendar export, and direct "Ask AI" chatbot integration. Built with Gemini 2.5 Pro; token metrics tracked via total_usage.',
     tags: ['api', 'design', 'assistme'],
-    sha: 'f87b321a',
+    sha: '4b8775ecc497',
+    commitVerified: true,
   },
   {
     id: 'a93f41de',
@@ -1590,7 +1732,8 @@ export const changelogEntries = [
     summary:
       'Implemented real iCloud CalDAV query engine to extract upcoming Apple Calendar events and reminders (including August 29 Cafe Cursor Pune and Claude Code Meetup). Dynamically injects event dots onto calendar day cells and populates custom branded reminder cards with provider tags and accent strips while preventing consultation double-booking. Built with Gemini 2.5 Pro; token usage tracked via total_usage.',
     tags: ['api', 'design', 'assistme'],
-    sha: 'a93f41de',
+    sha: '96e6eabfdff4',
+    commitVerified: true,
   },
   {
     id: 'e68c12a4',
@@ -1600,7 +1743,8 @@ export const changelogEntries = [
     summary:
       'Seamlessly connected the Contact Apple Month Calendar and Smart Reminders with live Google Calendar availability (/api/calendar/availability). Day cells dynamically render Apple event dots for live consultation slots, smart reminder cards synchronize live Google Calendar sync states, and confirmed bookings dynamically inject event reminder cards with zero design disruption. Built with Gemini 2.5 Pro; token usage tracked via total_usage.',
     tags: ['api', 'design', 'assistme'],
-    sha: 'e68c12a4',
+    sha: 'c9b00783b40d',
+    commitVerified: true,
   },
   {
     id: 'a71b29c3',
@@ -1610,7 +1754,8 @@ export const changelogEntries = [
     summary:
       'Restored the original signature Apple-style Month Calendar with interactive date selection and birthday indicator, Smart Reminders stack with interactive completion toggles, prompt-based editing, and new reminder creation, alongside the integrated Calendly consultation panel. Removed multi-calendar slot list overrides and preserved clean Apple design aesthetics. Built with Gemini 2.5 Pro; token usage tracked via total_usage.',
     tags: ['design', 'assistme'],
-    sha: 'a71b29c3',
+    sha: 'f058d94b1367',
+    commitVerified: true,
   },
   {
     id: 'c52e1b80',
@@ -1620,7 +1765,8 @@ export const changelogEntries = [
     summary:
       'Enhanced the contact booking module to preserve the full Apple-style month calendar, session events list, 2x2 multi-calendar reminders grid, and integrated Calendly fallback panel even in offline or unconfigured states. Added FastAPI consultation slot generation with HMAC-signed tokens, direct /api/calendar/book endpoint with Google Meet links, and robust fallback handling. Built with Gemini 2.5 Pro; token usage tracked via total_usage.',
     tags: ['api', 'design', 'deploy'],
-    sha: 'c52e1b80',
+    sha: 'c3ff71e0add4',
+    commitVerified: true,
   },
   {
     id: 'f49a21e0',
@@ -1630,7 +1776,8 @@ export const changelogEntries = [
     summary:
       'Integrated Microsoft Graph API OAuth (Outlook Calendar & To-Do) and Apple iCloud Calendar/Reminders OAuth/CalDAV alongside Google Calendar. Availability endpoint aggregates all connected calendars to prevent double-booking. Added encrypted AES-256-GCM token storage in Supabase, interactive CLI wizards, multi-calendar provider indicators in the Contact widget, and synchronized reminder channels. Built with Gemini 2.5 Pro; token usage tracked via total_usage.',
     tags: ['api', 'deploy', 'design'],
-    sha: 'f49a21e0',
+    sha: '222f1dca0de4',
+    commitVerified: true,
   },
   {
     id: '8b01a779',
@@ -1641,6 +1788,7 @@ export const changelogEntries = [
       'Added standards-based RFC 5545 event downloads after confirmed Google Calendar bookings, giving visitors dedicated Apple Calendar and Outlook fallback actions with confirmed UTC times, Google Meet URL, and a 30-minute display reminder—without adding Apple or Microsoft OAuth permissions or token storage. Built with GPT-5 Codex; internal reasoning and token totals are not exposed by the runtime.',
     tags: ['design', 'api'],
     sha: '8b01a779',
+    commitVerified: true,
   },
   {
     id: 'af6ee1cf',
@@ -1651,6 +1799,7 @@ export const changelogEntries = [
       'Replaced the fictional Contact calendar/reminder cards and Calendly popup with real Google Calendar free/busy slots, HMAC-signed booking tokens, server-side conflict checks, private event creation, Google Meet links, attendee invitation emails, 24-hour owner email reminders, 30-minute popup reminders, encrypted OAuth token refresh, and RLS-protected Supabase booking audit storage. Built with GPT-5 Codex; internal reasoning and token totals are not exposed by the runtime.',
     tags: ['api', 'deploy', 'design'],
     sha: 'af6ee1cf',
+    commitVerified: true,
   },
   {
     id: '37854e81',
@@ -1661,6 +1810,7 @@ export const changelogEntries = [
       'Promoted GitHub Pages and the Cloudflare Worker to the active publishing path, added secured Supabase storage for newsletter subscribers and contact messages, removed false-success responses, added daily.dev attribution and article-specific discovery metadata, and verified form behavior in Desktop Chrome and iPhone Safari. Built with GPT-5 Codex; internal reasoning and token totals are not exposed by the runtime.',
     tags: ['blog', 'api', 'deploy'],
     sha: '37854e81',
+    commitVerified: true,
   },
   {
     id: '7e92a10c',
@@ -1670,7 +1820,8 @@ export const changelogEntries = [
     summary:
       'Resolved font color visibility collisions across light and dark themes for project action buttons (Open Repo and Spatial), skills radar disclosure toggles, architecture topology controls, and catalog expansion pills. Implemented universal descendant selector styling (:is(...) *, > span, > i) with color inheritance across all stylesheets to guarantee high-contrast readability and Apple design consistency sitewide.',
     tags: ['design', 'fix', 'polish'],
-    sha: '7e92a10c',
+    sha: '26fddaa9602b',
+    commitVerified: true,
   },
   {
     id: 'f3a819c4',
@@ -1680,7 +1831,8 @@ export const changelogEntries = [
     summary:
       'Unanimously standardized button design patterns, dimensions, typography, and geometry across all 7 pages into a 6-tier architecture: Tier 1 Primary Action CTAs with specular metallic shine, Tier 2 Frosted Glass secondary buttons, Tier 3 Segmented Pill filter chips and tabs with high-contrast light/dark surfaces, Tier 4 Disclosure toggles, Tier 5 48px circular FABs, and Tier 6 32px circular red close buttons. Fixed invisible text and background collisions across Skills, Systems, Uses, and Changelog in Light Mode.',
     tags: ['design', 'polish', 'systems'],
-    sha: 'f3a819c4',
+    sha: 'cb7302ee073c',
+    commitVerified: true,
   },
   {
     id: 'd4f82a10',
@@ -1691,7 +1843,8 @@ export const changelogEntries = [
     summary:
       'Standardized and applied Apple Blue linear gradients (135deg #0077ed to #005bb5), glowing elevation shadows, and specular metallic sweep sheen keyframe animations (appleBtnShine) across all primary interactive actions: project card Live Demo launches, academic publication read buttons, contact & newsletter form submissions, systems architecture toggles, and floating assistant action triggers.',
     tags: ['design', 'polish', 'performance'],
-    sha: 'd4f82a10',
+    sha: '0423ae02b691',
+    commitVerified: true,
   },
   {
     id: 'b5e91c20',
@@ -1701,7 +1854,8 @@ export const changelogEntries = [
     summary:
       'Eliminated flat/dull button overrides across the stylesheet cascade to restore authentic Apple HIG aesthetics: reinstated linear gradients (135deg #0077ed to #005bb5), glowing elevation drop shadows, frosted glassmorphism secondary buttons (backdrop-filter blur 12px), and specular metallic sweep sheen keyframe animations (appleBtnShine) across all primary CTAs, hero actions, badge pills, and subpages.',
     tags: ['design', 'performance'],
-    sha: 'b5e91c20',
+    sha: '297e2ef8ffac',
+    commitVerified: true,
   },
   {
     id: '7c93e410',
@@ -1711,7 +1865,8 @@ export const changelogEntries = [
     summary:
       'Overhauled project README with high-definition vector topology diagrams (System Architecture, AssistMe Agentic Workflow, CI/CD Quality Pipeline, Dual-Host Edge Topology), verified 100% factual grounding (biographical, academic, daily-driver AI tools, 18 US states / 4 countries), interactive subpage maps, open-source governance policies, and strict 60/60 quality gate metrics.',
     tags: ['deploy', 'systems', 'design'],
-    sha: '7c93e410',
+    sha: 'c293de83e8f5',
+    commitVerified: true,
   },
   {
     id: 'a42c9f01',
@@ -1721,7 +1876,8 @@ export const changelogEntries = [
     summary:
       'Aligned ruff.toml and pyproject.toml lint rules with flake8 policy (select E, F, W) for Ruff 0.16 compatibility, updated run-python-dead-code runner to support standard venv binary paths, and verified 100% passing across lint:dead-code, lint:python, and pytest suites in CI.',
     tags: ['deploy', 'systems'],
-    sha: 'a42c9f01',
+    sha: 'de8de7212d95',
+    commitVerified: true,
   },
   {
     id: 'f81a3d02',
@@ -1731,7 +1887,8 @@ export const changelogEntries = [
     summary:
       'Resolved and consolidated all 8 Dependabot open pull requests: upgraded marked (18.0.10), FastAPI (0.141.1), websockets (17.0.1), cryptography (50.0.0), uvicorn (0.52.3), python-dotenv (1.2.3), httpx2 (2.10.0), and ruff (0.16.3). Re-built rich-markdown vendor bundle and verified 100% test pass rate across 172 Vitest unit tests and 166 pytest API tests.',
     tags: ['deploy', 'systems'],
-    sha: 'f81a3d02',
+    sha: 'e893893664ee',
+    commitVerified: true,
   },
   {
     id: 'e48f1c09',
@@ -1741,7 +1898,8 @@ export const changelogEntries = [
     summary:
       'Synchronized all documentation files (docs/STRUCTURE.md, docs/README.md, docs/API.md, tests/README.md) with canonical test metrics (172 Vitest unit tests across 36 files, 166 pytest API tests across 26 files), verified clean routing and navigation paths across all page shells, and passed strict repository doctor validation with 60/60 checks.',
     tags: ['systems', 'deploy'],
-    sha: 'e48f1c09',
+    sha: 'ba33b73971f0',
+    commitVerified: true,
   },
   {
     id: 'd7a12b04',
@@ -1751,7 +1909,8 @@ export const changelogEntries = [
     summary:
       'Implemented industry gold-standard open source governance files: Contributor Covenant v2.1 Code of Conduct (CODE_OF_CONDUCT.md), complete Contribution Guidelines with Node 22/Python 3.12 dev workflows and zero-framework architecture guardrails (CONTRIBUTING.md), Citation File Format metadata (CITATION.cff), modern GitHub Issue Form feature request template, automated Dependabot security updates (.github/dependabot.yml), and updated repo-doctor layout validation to 60/60 checks.',
     tags: ['deploy', 'systems'],
-    sha: 'd7a12b04',
+    sha: 'b17db14dfc23',
+    commitVerified: true,
   },
   {
     id: 'c93e1b04',
@@ -1761,7 +1920,8 @@ export const changelogEntries = [
     summary:
       'Conducted a ground-truth factual audit across all pages and data sources. Removed unused placeholder tools (Lovable, Replit, Droid, Hermes Agent, OpenClaw, OpenCode) from the systems tokenization grid and vibe coder marquee, ensuring only authentic daily-driver AI tools and models (Antigravity, Cursor, Claude, Codex, OpenRouter, Cline, Windsurf, KiloChat, VS Code) are presented.',
     tags: ['systems', 'design'],
-    sha: 'c93e1b04',
+    sha: '31a2292f96f8',
+    commitVerified: true,
   },
   {
     id: 'b84c2f10',
@@ -1771,7 +1931,8 @@ export const changelogEntries = [
     summary:
       'Published comprehensive engineering history spanning from repository creation (April 8, 2025, commit 7e598ecb) through August 2026 across systems timeline, changelog catalog, and uses stack. Documented complete multi-model AI tokenization telemetry (5.2B+ tokens across Gemini, Claude, Grok, Codex, Antigravity, Cursor, and Cline), design patterns (Apple HIG, Solid Surfaces, Liquid Glass shaders), and zero-framework ESM architecture.',
     tags: ['systems', 'deploy', 'design', 'assistme'],
-    sha: 'b84c2f10',
+    sha: 'af0a9e090cc3',
+    commitVerified: true,
   },
   {
     id: 'a1e8c903',
@@ -1781,7 +1942,8 @@ export const changelogEntries = [
     summary:
       'Expanded the Vitest test suite to 172 unit tests across 36 test files by introducing dedicated test suites for the newly modularized monitor-page.js (testing duration formatting, relative time calculation, HTML escaping, and metric bindings) and skills-visualization.js (verifying category metadata, evidence tier mapping, and triple-track marquee generation). Synchronized test metrics across portfolio data and documentation.',
     tags: ['performance', 'deploy', 'systems'],
-    sha: 'a1e8c903',
+    sha: '6ef13557aed0',
+    commitVerified: true,
   },
   {
     id: 'f9a3c718',
@@ -1792,7 +1954,8 @@ export const changelogEntries = [
     summary:
       'Refactored monitor.html by extracting ~3,000 lines of inline JavaScript into a dedicated ES module (src/js/modules/monitor-page.js) with full build bundling, tree-shaking, and ESLint coverage (reducing monitor.html size from 158 KB to 37 KB). Upgraded skills visualization badges from arbitrary percentages to evidence-based competency tiers (Core, Proficient, Familiar) and unified internal routing paths across systems, travel, uses, and monitor pages.',
     tags: ['monitor', 'performance', 'systems'],
-    sha: 'f9a3c718',
+    sha: 'd31b1d000de9',
+    commitVerified: true,
   },
   {
     id: 'e7b1a904',
@@ -1803,7 +1966,8 @@ export const changelogEntries = [
     summary:
       'Compressed the rich-markdown vendor bundle by ~45% (from 604 KB to 334 KB) via esbuild production minification, normalized inline CSS media queries in index.html to level-3 max-width syntax for legacy mobile browser compatibility, connected contact form directly to email client dispatch with prefilled content, and expanded mini-button touch target hit areas to 44px for WCAG compliance.',
     tags: ['performance', 'assistme', 'design'],
-    sha: 'e7b1a904',
+    sha: 'b755ae1ad137',
+    commitVerified: true,
   },
   {
     id: 'd8f2b149',
@@ -1814,7 +1978,8 @@ export const changelogEntries = [
     summary:
       'Standardized canonical URLs, alternate links, OG URLs, and JSON-LD schemas across all subpages to clean routes (preventing 301 redirect loops), enriched generated case study pages with Open Graph, Twitter cards, and TechArticle JSON-LD schemas, deferred non-critical icon stylesheets, and integrated accessibility skip-navigation links across standalone blog and case study surfaces.',
     tags: ['deploy', 'performance', 'systems'],
-    sha: 'd8f2b149',
+    sha: 'a95c508742c5',
+    commitVerified: true,
   },
   {
     id: 'c4e91a72',
@@ -1824,7 +1989,8 @@ export const changelogEntries = [
     summary:
       'Enforced solid Apple Blue #0071e3 on publications and hero typography across CSS layers (eliminating prohibited gradient text fills and resolving LCP paint conflicts), cleaned duplicate loading/decoding attributes on certification cards, removed obsolete VoiceService and crypto copy scripts, modernized skills visualization to standard ESM, and refactored contact toast notifications to use CSS custom properties.',
     tags: ['design', 'performance', 'assistme'],
-    sha: 'c4e91a72',
+    sha: '4aa906628c83',
+    commitVerified: true,
   },
   {
     id: 'b7d41f03',
@@ -1834,7 +2000,8 @@ export const changelogEntries = [
     summary:
       'Fixed a missing null check for the X-Goog-Channel-Token header in the Google Calendar webhook handler (api/routes/integrations.py). Without the header, len(None) would throw a TypeError resulting in a 500 Internal Server Error instead of the intended 403 Forbidden. Deep code review of all 20 backend files confirmed this was the only implementation bug; all 20 API endpoints verified returning HTTP 200 on live probe.',
     tags: ['api', 'security'],
-    sha: 'b7d41f03',
+    sha: 'ff46f605cb12',
+    commitVerified: true,
   },
   {
     id: 'e48b92c1',
@@ -1844,7 +2011,8 @@ export const changelogEntries = [
     summary:
       'Optimized portfolio health probes in api/platform_health.py with connection pooling limits, 3s fast-timeout per probe, and graceful fallback for upstream rate limits and access challenges. Replaced verbose stack trace dumps in Google Analytics realtime/historical queries with clean logging when offline or timing out, and hardened the Last.fm music endpoint in api/routes/media.py to return structured fallback payloads instead of 504 gateway timeout errors.',
     tags: ['api', 'monitor', 'systems'],
-    sha: 'e48b92c1',
+    sha: 'af4f78899fb4',
+    commitVerified: true,
   },
   {
     id: 'a7e03c52',
@@ -1854,7 +2022,8 @@ export const changelogEntries = [
     summary:
       'Corrected false "34+ US states" claim to verified 18 US states (cross-referenced travel-locations.js data), fixed duplicate HTML loading/decoding attributes on the graduation image, rewrote Full Story in a clear first-person voice with identical verified facts (same education, work history, research, and personal details), replaced filler "Core Philosophy" summary card with a factual "Explorer & Interests" card, reduced intro title from 2.5rem to 1.75rem for better card proportion, tightened paragraph spacing and summary grid gap, and increased card header border contrast to match Apple design tokens.',
     tags: ['design'],
-    sha: 'a7e03c52',
+    sha: '5286b58fcee5',
+    commitVerified: true,
   },
   {
     id: 'f3a921d7',
@@ -1865,7 +2034,8 @@ export const changelogEntries = [
     summary:
       'Conducted a rigorous audit across all portfolio surfaces, API configurations, AssistMe chatbot knowledge bases, and Cloudflare Worker fallbacks. Verified official academic records (Drexel MSCS 3.91/4.0 GPA, SPPU Computer Engineering Distinction, MSBTE Student of the Year), corrected publication metadata to the peer-reviewed IJFGCN 2020 Real-Time Face Emotion Recognition System paper, purged inaccurate metrics and repetitive statements, and aligned test counts and technical article counts sitewide.',
     tags: ['assistme', 'systems', 'design'],
-    sha: 'f3a921d7',
+    sha: 'b650090f1f4e',
+    commitVerified: true,
   },
   {
     id: 'b82c4f19',
@@ -1876,7 +2046,8 @@ export const changelogEntries = [
     summary:
       'Audited and unified background color tokens across all pages (Home, Systems, Monitor, Travel, Uses, Changelog, 404, Blog Reader), replacing muddy/grey backgrounds with pure solid #ffffff in Light Mode and pure solid #000000 in Dark Mode. Standardized card elevations, search inputs, filter chips, health vitals, and metadata tags with WCAG AAA/AA high-contrast color cascades and refined borders.',
     tags: ['design', 'performance', 'systems'],
-    sha: 'b82c4f19',
+    sha: '72525c071232',
+    commitVerified: true,
   },
   {
     id: 'e94d821a',
@@ -1887,7 +2058,8 @@ export const changelogEntries = [
     summary:
       'Resolved light mode code block contrast and washed-out text issues permanently by removing blanket pre/code surface overrides and establishing crisp Apple terminal styling; replaced author byline placeholder icons with Mangesh Raut’s personal portrait (profile.webp); enshrined theme contrast and typography standards in docs/DESIGN.md. Published two comprehensive August deep systems research articles: "Cursor Origin: The Agent-Native Code Hosting Platform and the Post-GitHub Loop" and "Razorpay Vulcan: 4 Billion Payments, 3 Trillion Tokens, and India’s Transformer Foundation Model for Money".',
     tags: ['design', 'ai', 'performance', 'research'],
-    sha: 'e94d821a',
+    sha: '7642a09e59bb',
+    commitVerified: true,
   },
   {
     id: 'a71e892c',
@@ -1898,7 +2070,8 @@ export const changelogEntries = [
     summary:
       'Restored the interactive Vibe Coder tools marquee card and real-time Portfolio Reach telemetry flyout card on the homepage hero, ensuring badge clicks open floating glass cards in place rather than navigating away to subpages. Fixed floating action dock vertical positioning by increasing bottom and safe-area margins (24px desktop, 1.5rem mobile) to eliminate clipping on scroll-to-top and utility action controls across all pages, enhanced FAQ accordion chevron transitions, and verified internal routes.',
     tags: ['design', 'performance', 'monitor'],
-    sha: 'a71e892c',
+    sha: '7b151db94360',
+    commitVerified: true,
   },
   {
     id: 'f82d194c',
@@ -1908,8 +2081,9 @@ export const changelogEntries = [
     summary:
       'Reorganized the 12 social media and engineering platform icons in the Follow Me card into a strict 6-column grid across two rows (Top 6: Instagram, Facebook, YouTube, X, GitHub, LinkedIn; Bottom 6: LeetCode, Snapchat, Telegram, Spotify, Strava, WHOOP). Expanded vertical row gap to 3.75rem (3.25rem on mobile) and adjusted card bottom spacing to guarantee generous breathing room and completely prevent hover/focus floating tooltips from overlapping neighboring icons below.',
     tags: ['design', 'accessibility', 'performance'],
-    sha: 'f82d194',
-    link: null,
+    sha: '612015b86b8e',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/612015b86b8e`,
   },
   {
     id: 'c39e8b15',
@@ -1919,8 +2093,9 @@ export const changelogEntries = [
     summary:
       'Executed a comprehensive repository cleanup and diagnostic audit across the full stack. Cleaned temporary build artifacts, vite caches, pytest and flake8 caches, and dead node_modules artifacts via clean.js. Verified zero dead Python code via vulture and zero flake8 lint errors. Repaired malformed bezier curve command in WHOOP wordmark SVG path resolving browser console parse errors. Validated complete health via repo doctor (57/57 passed), ESLint, Stylelint, Prettier, Vitest unit suite (161 tests passing), FastAPI pytest suite (166 tests passing), and Playwright E2E desktop/mobile suites (112 tests passing with zero errors).',
     tags: ['performance', 'deploy', 'accessibility', 'systems'],
-    sha: 'c39e8b1',
-    link: null,
+    sha: '15d31ab4c011',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/15d31ab4c011`,
   },
   {
     id: 'a91d4e02',
@@ -1930,8 +2105,9 @@ export const changelogEntries = [
     summary:
       'Updated the WHOOP icon in Follow Me with the authentic 3-stripe diagonal W monogram logo and rearranged the desktop layout of the Contact section into two dedicated columns: Left Column (Follow Me, Support My Work, Health Vitals & Currently, Dream Companies & Teams, Automotive Engineering & Dream Cars) and Right Column (Direct Outreach & Locations, Send a Message direct inbox form, Schedule a Meeting calendar widget). Verified responsive stacking across mobile viewports and tested full visual fidelity in both Light and Dark modes.',
     tags: ['design', 'release', 'performance'],
-    sha: 'a91d4e0',
-    link: null,
+    sha: '22d4f3c3e153',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/22d4f3c3e153`,
   },
   {
     id: 'f72a49d0',
@@ -1942,8 +2118,9 @@ export const changelogEntries = [
     summary:
       'Restored the original high-fidelity design of the Contact page in index.html matching user reference specifications. Reinstated the Follow Me card with 12 circular floating icon bubbles (LinkedIn, GitHub, X, Instagram, Facebook, YouTube, LeetCode, Snapchat, Telegram, Spotify, Strava, WHOOP) complete with animated tooltips and authentic brand colors. Restored the Support My Work card featuring Lord Ganesha and Lord Hanuman avatars with interactive blessing play badges, the inspiring Bhagavad Gita quote, 3 full-width rounded pill payment action buttons (Stripe, PayPal, Buy Me a Coffee), and 5 one-click cryptocurrency address copy buttons (Solana, Bitcoin, USDC, Ethereum, Dogecoin). Maintained full visual and behavioral fidelity across Desktop and Mobile viewports in both Light and Dark themes.',
     tags: ['design', 'release', 'accessibility'],
-    sha: 'f72a49d',
-    link: null,
+    sha: '732904b0b9fe',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/732904b0b9fe`,
   },
   {
     id: 'b83c27d1',
@@ -1954,8 +2131,9 @@ export const changelogEntries = [
     summary:
       'Eliminated duplicate static Speak and Translate buttons situated beneath the About section narrative text in index.html in favor of the interactive Card Content Accessibility module toolbar. Perfected positioning and responsive alignment across all narrative cards: on Desktop, toolbars align to the top right alongside segmented controls and card headers; on Mobile, the About card header organizes the segmented control into a full-width top row with Listen & Translate pill buttons aligned cleanly to the right on the second row above the dividing rule. Compact icon buttons across Experience, Awards, and Blog cards prevent title crowding on smaller screens. Passed all 161 Vitest unit tests, 166 API pytest tests, and full Playwright visual verification.',
     tags: ['design', 'performance', 'accessibility'],
-    sha: 'b83c27d',
-    link: null,
+    sha: 'b3a1006341e4',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/b3a1006341e4`,
   },
   {
     id: 'e45b18f0',
@@ -1966,8 +2144,9 @@ export const changelogEntries = [
     summary:
       'Upgraded the Support & Devotional Blessings and Connect on Platforms cards on the portfolio. Restored authentic brand colors across all 12 social platform links (LinkedIn, GitHub, X, Instagram, Facebook, YouTube, LeetCode, Snapchat, Telegram, Spotify, Strava, WHOOP) with custom logo badge backgrounds and hover dynamics. Enhanced Support & Devotional Blessings with dual deity devotional cards for Lord Ganesha (Shree Ganapati Aarti) and Lord Hanuman (Shree Hanuman Chalisa) featuring interactive lyrics modal triggers and direct YouTube links, 2 sacred Bhagavad Gita quotes, 3 direct donation channels (Stripe, PayPal, Buy Me a Coffee), and a single-row grid of 5 1-click crypto copy wallets (SOL, BTC, USDC, ETH, DOGE). Passed all 161 Vitest unit tests, 166 API pytest tests, and full Playwright verification.',
     tags: ['design', 'performance', 'deploy'],
-    sha: 'e45b18f',
-    link: null,
+    sha: '67fa03712d7e',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/67fa03712d7e`,
   },
   {
     id: 'a71e2c90',
@@ -1978,8 +2157,9 @@ export const changelogEntries = [
     summary:
       'Removed standalone contact.html subpage in favor of a consolidated, high-performance experience on index.html#contact with seamless routing redirects in vercel.json. Restructured #contact into individual luxury Apple cards in a balanced 2-column desktop grid and single-column mobile stack: Column 1 houses Direct Outreach & Locations, Send a Message direct inbox form, Connect on Platforms with all 12 restored channels (LinkedIn, GitHub, X, Instagram, Facebook, YouTube, LeetCode, Snapchat, Telegram, Spotify, Strava, WHOOP), and seamless 38-logo marquees for Dream Companies & Automotive Engineering; Column 2 houses Schedule a Meeting calendar widget, Support & Devotional Blessings (Lord Ganesha & Lord Hanuman audio triggers, Bhagavad Gita quote, Stripe/PayPal/BMC, and 1-click SOL/BTC/USDC/ETH/DOGE copy buttons), and Live Health Vitals & Currently. Verified all 161 Vitest unit tests, 166 API pytest tests, and Playwright E2E suites.',
     tags: ['design', 'performance', 'deploy'],
-    sha: 'a71e2c9',
-    link: null,
+    sha: '378560d3736c',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/378560d3736c`,
   },
   {
     id: 'f93d18e2',
@@ -1990,8 +2170,9 @@ export const changelogEntries = [
     summary:
       'Refactored the Contact layout into an elegant 2-column desktop grid and fluid 1-column mobile stack across both the standalone /contact.html page and homepage #contact section. Restored the full 12-platform social profile suite (LinkedIn, GitHub, X, Instagram, Facebook, YouTube, LeetCode, Snapchat, Telegram, Spotify, Strava, WHOOP) with interactive SVG icons and tooltips. Restored and unified the Send a Message direct inbox form with Apple styling and toast feedback. Realigned all cards in unified Apple aesthetics with 20px radius and solid theme tokens. Passed all 161 Vitest unit tests, 165 API pytest tests, Playwright E2E suites, and verified zero horizontal overflow.',
     tags: ['design', 'performance', 'deploy'],
-    sha: 'f93d18e',
-    link: null,
+    sha: '5b2403361aea',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/5b2403361aea`,
   },
   {
     id: 'c8f49b12',
@@ -2001,8 +2182,9 @@ export const changelogEntries = [
     summary:
       'Reimplemented and modernized the Contact experience into an Apple luxury Bento Grid layout with standalone contact.html subpage and responsive homepage #contact section. Restored the full suite of contact modules: Direct Outreach & Locations, interactive Send a Message form, Connect on Platforms social channels, Schedule a Meeting calendar integration, Support & Devotional Blessings modal with Ganesh Aarti and Hanuman Chalisa audio lyrics, and dual infinite marquees for Dream Companies (Google, Apple, Microsoft, Amazon, Meta, NVIDIA, OpenAI, Anthropic, SpaceX, Tesla) and Dream Cars (BMW, Audi, Rolls-Royce, Porsche, Lexus, Ferrari, Lamborghini, McLaren). Verified zero overflow and zero console errors across desktop and mobile viewports.',
     tags: ['design', 'performance', 'systems'],
-    sha: 'c8f49b12',
-    link: 'contact.html',
+    sha: '64fad45270d0',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/64fad45270d0`,
   },
   {
     id: 'cb2f2e19',
@@ -2013,7 +2195,8 @@ export const changelogEntries = [
       'Implemented automated multi-viewport Playwright Chrome browser audit script (scripts/qa/comprehensive-chrome-audit.mjs). Verified all 7 pages and core interactive features (AssistMe streaming chatbot, global search palette, music player, skills radar, mobile navigation drawer) across Desktop (1440x900) and Mobile (390x844) with zero unhandled console errors, zero broken network requests, and zero horizontal overflow.',
     tags: ['performance', 'deploy', 'systems'],
     sha: 'cb2f2e19',
-    link: 'changelog.html',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/cb2f2e19`,
   },
   {
     id: '82e19ee8',
@@ -2024,7 +2207,8 @@ export const changelogEntries = [
       'Completed full ecosystem synchronization across all repository dependencies and tooling. Upgraded ESLint to v10 with flat configuration, JSDOM to v30, Playwright to v1.62.1, and axe-core to v4.13.0. Verified zero outdated packages across all direct and dev dependencies with 100% green CI/CD deployment parity.',
     tags: ['performance', 'deploy', 'systems'],
     sha: '82e19ee8',
-    link: 'changelog.html',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/82e19ee8`,
   },
   {
     id: 'b94e72cd',
@@ -2034,8 +2218,9 @@ export const changelogEntries = [
     summary:
       'Modernized development environment and runtime to Node 22 LTS standard, configuring automatic PATH detection across all git pre-commit hooks and shell configs. Upgraded all core npm dependencies (Playwright, Tailwind CSS v4, esbuild, KaTeX, DOMPurify, Marked, Stylelint, Prettier, and ws) to their latest stable releases with zero breaking changes or runtime regressions.',
     tags: ['performance', 'deploy', 'systems'],
-    sha: 'b94e72cd',
-    link: 'changelog.html',
+    sha: 'd6aea5f2729b',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/d6aea5f2729b`,
   },
   {
     id: 'f83a12bc',
@@ -2045,8 +2230,9 @@ export const changelogEntries = [
     summary:
       'Restored mathematically centered desktop container geometry (1200px width with automatic margins) and fixed global CSS scoping to eliminate desktop layout expansion during mobile optimizations. Deduplicated redundant components across the homepage: converted hero vibe-coder and portfolio-reach badges into direct subpage links to uses.html and monitor.html, removed duplicate AssistMe chat CTA and divider in contact calendar block, and removed duplicate social and marquee blocks from contact cards.',
     tags: ['design', 'performance', 'systems'],
-    sha: 'f83a12bc',
-    link: 'index.html',
+    sha: '24b592ae3838',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/24b592ae3838`,
   },
   {
     id: 'e42c8d19',
@@ -2056,8 +2242,9 @@ export const changelogEntries = [
     summary:
       'Extended the minimalist, clean, and beautiful design language of the changelog page to systems.html, uses.html, monitor.html, travel.html, and 404.html. Unified sticky section rails and category filters with loose pill styling, standardized typography and hero headers with SF Pro Display tight tracking, and aligned all card surfaces to solid Apple palettes (#f5f5f7 / #121214) with subtle hairline borders.',
     tags: ['design', 'systems', 'performance'],
-    sha: 'e42c8d19',
-    link: 'changelog.html',
+    sha: 'c9645996eeb9',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/c9645996eeb9`,
   },
   {
     id: 'a71e84d9',
@@ -2068,8 +2255,9 @@ export const changelogEntries = [
     summary:
       'Polished hero music card geometry with Apple HIG pill styling, eliminated the outer circle container on the Spotify link for a clean brand icon footprint, resolved hover logo visibility with bright #1ed760 highlights and 100% opacity in both light and dark themes, and enforced pure solid backgrounds (#ffffff in light, #000000 in dark) across all pages.',
     tags: ['design', 'accessibility', 'performance'],
-    sha: 'a71e84d9',
-    link: 'index.html#home',
+    sha: 'dd038c5c6a17',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/dd038c5c6a17`,
   },
   {
     id: 'f93c1e82',
@@ -2079,8 +2267,9 @@ export const changelogEntries = [
     summary:
       'Elevated music status indicator text color contrast ratio to 7.1:1 in light mode (#555558) and 5.8:1 in dark mode (#98989d), exceeding the 4.5:1 WCAG AA baseline threshold. Styled monitor surface links with accessible underline text decoration and 10.5:1 contrast (#64d2ff), hardened Playwright ProMotion FPS audit with cross-platform browser binary resolution, and verified all 32 smoke and accessibility tests pass with zero critical or serious axe violations.',
     tags: ['accessibility', 'design', 'performance'],
-    sha: 'f93c1e82',
-    link: 'index.html#home',
+    sha: 'e5cbabd0c8b0',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/e5cbabd0c8b0`,
   },
   {
     id: 'd82f1b4a',
@@ -2090,8 +2279,9 @@ export const changelogEntries = [
     summary:
       'Engineered and committed 5 pixel-perfect, Apple HIG-standard vector SVG architecture and workflow diagrams into src/assets/images/diagrams/. Documented full-stack dual-host edge routing, AssistMe multimodal AI ingestion & streaming pipeline, 3-tier CI/CD automated test & Lighthouse matrix, and realtime Spotify scrobble architecture with dark/light mode CSS custom property styling.',
     tags: ['systems', 'design', 'performance'],
-    sha: 'd82f1b4a',
-    link: 'systems.html',
+    sha: 'c73cd63f240d',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/c73cd63f240d`,
   },
   {
     id: 'e41b9d72',
@@ -2102,8 +2292,9 @@ export const changelogEntries = [
     summary:
       'Upgraded the entire AssistMe AI chatbot across frontend and backend. Added one-click copy-to-clipboard buttons with tactile feedback to code blocks inside chat messages, expanded site knowledge indexing to include canonical changelog entries and release history, synchronized backend test metrics (160 Vitest + 165 pytest tests), extended dynamic follow-up chips across systems, travel, uses, and changelog domains, and perfected strict Apple design tokens with zero outer glowing artifacts.',
     tags: ['assistme', 'design', 'performance', 'api'],
-    sha: 'e41b9d72',
-    link: 'index.html#home',
+    sha: '40f6731d2273',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/40f6731d2273`,
   },
   {
     id: 'c94b7e12',
@@ -2114,8 +2305,9 @@ export const changelogEntries = [
     summary:
       'Completed comprehensive multi-viewport audits across all 11 pages and 13 sections on Desktop Chrome, Safari, and mobile viewports (iPhone SE, iPhone 14, iPhone 17 Pro Max). Replaced all remaining inline styles with modular CSS custom containment and progressive disclosure classes, perfected marquee card dimensions and padding, ensured zero layout collisions, and verified full 100/100 performance and accessibility standards.',
     tags: ['design', 'performance', 'systems'],
-    sha: 'c94b7e12',
-    link: 'index.html#skills',
+    sha: '2c5063fe4d52',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/2c5063fe4d52`,
   },
   {
     id: 'a71e2c94',
@@ -2126,8 +2318,9 @@ export const changelogEntries = [
     summary:
       'Completely redesigned the hero music widget into a luxury Apple Music pill card with zero layout jitter. Restructured the information hierarchy (Song Name on top, Artist Name below, live status indicator and equalizer below artist), removed all outer glowing halos around the Spotify action circle, anchored fixed-dimension vinyl artwork on the left, and perfected dark/light mode glassmorphism.',
     tags: ['design', 'performance'],
-    sha: 'a71e2c94',
-    link: 'index.html#home',
+    sha: '2c5063fe4d52',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/2c5063fe4d52`,
   },
   {
     id: 'f84d2e19',
@@ -2138,8 +2331,9 @@ export const changelogEntries = [
     summary:
       'Supercharged the Project Showcase with a dedicated Tech Stack Filter Chips rail (TypeScript, Python, JavaScript, AI & Agents, FastAPI), one-click clipboard git clone command action with animated feedback, live 7-day activity emerald pulse indicators, license and size micro-badges, search keyboard shortcut (/), and luxury Apple card geometry across all viewports.',
     tags: ['design', 'performance'],
-    sha: 'f84d2e19',
-    link: 'index.html#projects',
+    sha: '2c5063fe4d52',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/2c5063fe4d52`,
   },
   {
     id: '9f3c1d84',
@@ -2149,8 +2343,9 @@ export const changelogEntries = [
     summary:
       'Implemented Apple-style progressive disclosure toggle controls for Engineering Depth Radar and Full-Stack System Topology. Both complex visual widgets remain collapsed by default behind accessible "View more" buttons to streamline vertical scroll flow, expanding smoothly with animated reveals and dynamic on-demand module hydration.',
     tags: ['design', 'performance', 'accessibility'],
-    sha: '9f3c1d84',
-    link: 'index.html#skills',
+    sha: '3038c7ece62b',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/3038c7ece62b`,
   },
   {
     id: 'a57f92de',
@@ -2161,8 +2356,9 @@ export const changelogEntries = [
     summary:
       'Refined mobile card geometries across all sections. Expanded timeline card width by +28px with compact 28px/32px icons and unified 36px/42px left offsets. Optimized Engineering Depth Radar SVG viewBox and label offsets for zero-clipping on 375px/390px screens. Standardized 18px squircle border-radii and verified flawless mobile visual aesthetics across all 13 pages.',
     tags: ['design', 'performance', 'mobile'],
-    sha: 'a57f92de',
-    link: 'index.html#experience',
+    sha: 'eb65d8768978',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/eb65d8768978`,
   },
   {
     id: 'e4b31a89',
@@ -2172,8 +2368,9 @@ export const changelogEntries = [
     summary:
       'Hardened responsive viewport containment and touch overflow boundaries across all 13 pages on Mobile Safari (iOS). Added CSS overscroll containment, paint clipping on horizontal navigation rails and marquee carousels, constrained travel search dimensions, and validated 36/36 viewport checks across iPhone SE, iPhone 14, and iPhone 17 Pro Max.',
     tags: ['design', 'performance', 'deploy'],
-    sha: 'e4b31a89',
-    link: 'index.html',
+    sha: 'c243e1849301',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/c243e1849301`,
   },
   {
     id: 'c7e2b10a',
@@ -2183,8 +2380,9 @@ export const changelogEntries = [
     summary:
       'Elevated portfolio data representations and card systems with luxury Apple-style interactive SVG visualizations: 5-node Agentic Architecture Tree with active signal particle animations, 6-axis Engineering Depth Capability Radar polygon chart, and 3-ring Apple Watch-style System Vitality Telemetry dials with real-time KPI sparklines. Maintained 100/100 Apple HIG design score and zero external framework dependencies.',
     tags: ['design', 'systems', 'performance'],
-    sha: 'c7e2b10a',
-    link: 'index.html#engineering',
+    sha: 'a8eed6dfbecc',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/a8eed6dfbecc`,
   },
   {
     id: 'f948a12c',
@@ -2194,8 +2392,9 @@ export const changelogEntries = [
     summary:
       'Completed comprehensive visual audit achieving 100/100 Apple Design System alignment across all 13 pages and subpage templates. Locked solid #000000 dark canvas surfaces on Travel Atlas, standardized SF Pro Display typography on standalone Case Studies, unified squircle card geometry across all sections, and validated zero horizontal overflow.',
     tags: ['design', 'performance', 'systems'],
-    sha: 'f948a12c',
-    link: 'systems.html',
+    sha: 'a6aef25a5908',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/a6aef25a5908`,
   },
   {
     id: '0700b214',
@@ -2206,7 +2405,8 @@ export const changelogEntries = [
       'Audited and resolved mobile layout congestion across all 7 website pages. Standardized experience and education timelines to eliminate line strike-through, converted System Monitor control center telemetry into clean 2-row tiles, restructured Systems Keynote stats into a balanced 2-column grid, and established the autonomous pre-commit protocol with automated changelog and LLM token tracking.',
     tags: ['design', 'performance', 'systems', 'monitor', 'deploy'],
     sha: '0700b214',
-    link: 'index.html#experience',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/0700b214`,
   },
   {
     id: 'b147e92d',
@@ -2216,8 +2416,9 @@ export const changelogEntries = [
     summary:
       'Published comprehensive docs/DESIGN.md design system guidelines, replaced shining diagonal multi-stop button gradients and specular sheen animations with authentic solid Apple Blue styling, and harmonized sitewide color cascades.',
     tags: ['design', 'performance'],
-    sha: 'b147e92d',
-    link: 'docs/DESIGN.md',
+    sha: 'b04c9a2e6761',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/b04c9a2e6761`,
   },
   {
     id: 'a932d84c',
@@ -2227,8 +2428,9 @@ export const changelogEntries = [
     summary:
       'Standardized Keyboard Shortcuts and Blog Preview modal close controls to signature Apple red circles with clean vector glyphs, eliminated duplicate pseudo-element artifacts, and elevated light mode code block contrast.',
     tags: ['design', 'performance'],
-    sha: 'a932d84c',
-    link: 'index.html#blog',
+    sha: 'a1850b8f3059',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/a1850b8f3059`,
   },
   {
     id: 'f872a0b1',
@@ -2238,8 +2440,9 @@ export const changelogEntries = [
     summary:
       'Resolved white-on-white text collisions on active blog filter chips and Liquid Glass flyout segmented presets, enforcing accessible contrast across both light and dark themes.',
     tags: ['design', 'performance'],
-    sha: 'f872a0b1',
-    link: 'index.html#blog',
+    sha: 'eaaddb2a7f85',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/eaaddb2a7f85`,
   },
   {
     id: '43c29b47',
@@ -2250,7 +2453,8 @@ export const changelogEntries = [
       'Published two August 2026 engineering field notes covering Meta Muse Code (multi-token prediction, Git worktrees) and Grok 4.6 & Grok Bot (500k context, Copilot integration, always-on loops).',
     tags: ['blog', 'design'],
     sha: '43c29b47',
-    link: 'index.html#blog',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/43c29b47`,
   },
   {
     id: '71a9688f',
@@ -2261,7 +2465,8 @@ export const changelogEntries = [
       'Engineered dedicated high-resolution architecture diagrams and figures for all 16 technical writings with Apple HIG glassmorphic frames, markdown figure parsing, and multi-context path resolution.',
     tags: ['blog', 'design', 'performance'],
     sha: '71a9688f',
-    link: 'index.html#blog',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/71a9688f`,
   },
   {
     id: 'e85515d2',
@@ -2272,7 +2477,8 @@ export const changelogEntries = [
       'Synchronized Dream Companies and Dream Cars marquee tickers with Skills continuous linear glide (35s duration), hover pause, GPU translation, and updated repository documentation.',
     tags: ['design', 'performance'],
     sha: 'e85515d2',
-    link: 'index.html#contact',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/e85515d2`,
   },
   {
     id: 'd9fc8da4',
@@ -2283,7 +2489,8 @@ export const changelogEntries = [
       'Enhanced small-text and category tag color contrast across Uses, Monitor, and Systems pages, achieving 16/16 passing automated axe-core baseline accessibility tests.',
     tags: ['design', 'deploy'],
     sha: 'd9fc8da4',
-    link: 'uses.html',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/d9fc8da4`,
   },
   {
     id: '64b2e395',
@@ -2294,7 +2501,8 @@ export const changelogEntries = [
       'Harmonized Uses, System Monitor, and Travel Atlas pages to match Changelog luxury typography, centered responsive containers (54–58rem), hairline borders, and solid surface cards.',
     tags: ['design', 'monitor', 'systems'],
     sha: '64b2e395',
-    link: 'systems.html',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/64b2e395`,
   },
   {
     id: '338ff900',
@@ -2305,7 +2513,8 @@ export const changelogEntries = [
       'Added live Spotify now-playing inspection (get_now_playing), travel statistics queries (get_travel_stats), and platform telemetry probes (get_system_status) to AssistMe chatbot.',
     tags: ['assistme', 'api'],
     sha: '338ff900',
-    link: 'index.html#assistme',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/338ff900`,
   },
   {
     id: 'ecc6a4b8',
@@ -2316,7 +2525,8 @@ export const changelogEntries = [
       'Elevated hero music card into a stable pill with 56px vinyl artwork, animated equalizer bars, live now-playing badge, and direct Spotify search navigation.',
     tags: ['design', 'assistme'],
     sha: 'ecc6a4b8',
-    link: 'index.html',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/ecc6a4b8`,
   },
   {
     id: 'a35de6b0',
@@ -2327,7 +2537,8 @@ export const changelogEntries = [
       'Engineered FastAPI serverless backend integrations for Context7 vector RAG semantic search, Firecrawl markdown ingestion, and full Postman automated test suites.',
     tags: ['api', 'assistme'],
     sha: 'a35de6b0',
-    link: 'systems.html',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/a35de6b0`,
   },
   {
     id: '1bbaff87',
@@ -2338,7 +2549,8 @@ export const changelogEntries = [
       'Enforced 100% Apple HIG touch compliance across all button controls with vibrant Apple Blue gradient sweep animations and solid surface card elevations.',
     tags: ['design', 'performance'],
     sha: '1bbaff87',
-    link: 'index.html',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/1bbaff87`,
   },
   {
     id: 'cb3fb18d',
@@ -2349,7 +2561,8 @@ export const changelogEntries = [
       'Added luxury Apple-style animated dropdown allowing instant selection between US format, Indian format, and academic research PDF resume downloads with telemetry tracking.',
     tags: ['design', 'api'],
     sha: 'cb3fb18d',
-    link: 'index.html',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/cb3fb18d`,
   },
   {
     id: '82904f39',
@@ -2360,7 +2573,8 @@ export const changelogEntries = [
       'Shipped custom canvas-based Dino Debug Runner arcade game with high scores, sound toggles, and network reconnect detection on offline / system error screens.',
     tags: ['design', 'performance'],
     sha: '82904f39',
-    link: 'offline.html',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/82904f39`,
   },
   // ── July 2026 ──────────────────────────────────────────────
   {
@@ -2372,7 +2586,8 @@ export const changelogEntries = [
       'Comprehensive chatbot UI pass with Siri-style voice orb glow and stronger context awareness across the AssistMe surface.',
     tags: ['assistme', 'voice', 'design'],
     sha: '516c5fe3',
-    link: null,
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/516c5fe3`,
   },
   {
     id: '41457761',
@@ -2383,7 +2598,8 @@ export const changelogEntries = [
       'AssistMe Chat and Voice Mode can answer general world-knowledge and internet-intelligence queries beyond portfolio-only fallbacks.',
     tags: ['assistme', 'voice', 'api'],
     sha: '41457761',
-    link: null,
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/41457761`,
   },
   {
     id: '2747c7b3',
@@ -2394,7 +2610,8 @@ export const changelogEntries = [
       'Extended Liquid Glass interactive physics and specular pointer flares sitewide for consistent Apple material behavior.',
     tags: ['design'],
     sha: '2747c7b3',
-    link: null,
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/2747c7b3`,
   },
   {
     id: '872b2040',
@@ -2405,7 +2622,8 @@ export const changelogEntries = [
       'Luxury Apple UI refactoring for AssistMe — glowing side borders, header actions, live context chip, and no jump-to-latest on empty state.',
     tags: ['assistme', 'design'],
     sha: '872b2040',
-    link: null,
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/872b2040`,
   },
   {
     id: 'ff163602',
@@ -2416,7 +2634,8 @@ export const changelogEntries = [
       'Deploy path restored for GitHub Pages sync while shipping a batch of AssistMe reliability fixes.',
     tags: ['deploy', 'assistme'],
     sha: 'ff163602',
-    link: null,
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/ff163602`,
   },
   {
     id: '2715494d',
@@ -2427,7 +2646,8 @@ export const changelogEntries = [
       'Responsive 2D/3D/Both contribution graph, floating tooltips, and Activity Overview backed by real GitHub contribution data (3,592 cells).',
     tags: ['design', 'api'],
     sha: '2715494d',
-    link: 'index.html#projects',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/2715494d`,
   },
   {
     id: 'e5853e3c',
@@ -2438,7 +2658,8 @@ export const changelogEntries = [
       'Unified Apple / shadcn-inspired button design system applied across the portfolio surfaces.',
     tags: ['design'],
     sha: 'e5853e3c',
-    link: null,
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/e5853e3c`,
   },
   {
     id: '2ea06d82',
@@ -2449,7 +2670,8 @@ export const changelogEntries = [
       'Chatbot and go-to-top floating actions now appear on Systems, Monitor, Travel, Uses, and other subpages via shared chrome.',
     tags: ['assistme', 'design'],
     sha: '2ea06d82',
-    link: null,
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/2ea06d82`,
   },
   {
     id: '4aff1698',
@@ -2460,7 +2682,8 @@ export const changelogEntries = [
       'Hit Lighthouse 100 performance floors and synced the README to the live dual-host setup.',
     tags: ['performance', 'deploy'],
     sha: '4aff1698',
-    link: null,
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/4aff1698`,
   },
   {
     id: 'd30e5612',
@@ -2471,7 +2694,8 @@ export const changelogEntries = [
       'Composer Plus menu, scroll accessibility, attachment-friendly chrome, and richer AssistMe chat interactions.',
     tags: ['assistme', 'design'],
     sha: 'd30e5612',
-    link: null,
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/d30e5612`,
   },
   {
     id: '2348cef3',
@@ -2482,7 +2706,8 @@ export const changelogEntries = [
       'Finished the Liquid Glass interactive motion pass for materials that respond to pointer and scroll.',
     tags: ['design'],
     sha: '2348cef3',
-    link: null,
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/2348cef3`,
   },
   {
     id: '9a98fa17',
@@ -2493,7 +2718,8 @@ export const changelogEntries = [
       'Pages deployments prefer the Cloudflare Worker edge API path so blocked Vercel hosts no longer break the public mirror.',
     tags: ['deploy', 'api'],
     sha: '9a98fa17',
-    link: null,
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/9a98fa17`,
   },
   {
     id: '734b6ea1',
@@ -2504,7 +2730,8 @@ export const changelogEntries = [
       'Added a Nemotron free-model chain with chatbot package cleanup so AssistMe stays useful without paid credits.',
     tags: ['assistme', 'api'],
     sha: '734b6ea1',
-    link: null,
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/734b6ea1`,
   },
   {
     id: '5b3e62ca',
@@ -2515,7 +2742,8 @@ export const changelogEntries = [
       'Reach card now reflects live Google Analytics 4 totals (~10.3K) instead of stale hardcoded figures.',
     tags: ['api', 'deploy'],
     sha: '5b3e62ca',
-    link: null,
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/5b3e62ca`,
   },
 
   // ── June 2026 ──────────────────────────────────────────────
@@ -2528,7 +2756,8 @@ export const changelogEntries = [
       'Reached 100 for performance, accessibility, and best practices on production PageSpeed / Lighthouse audits.',
     tags: ['performance', 'deploy'],
     sha: '6e92a873',
-    link: null,
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/6e92a873`,
   },
   {
     id: 'b88ba2c2',
@@ -2538,7 +2767,8 @@ export const changelogEntries = [
     summary: 'Realtime voice path mints vcst client secrets for the AI Gateway voice proxy.',
     tags: ['voice', 'api', 'assistme'],
     sha: 'b88ba2c2',
-    link: null,
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/b88ba2c2`,
   },
   {
     id: '0a19b252',
@@ -2549,7 +2779,8 @@ export const changelogEntries = [
       'Tokenization telemetry, timeline nodes, decisions, failures, unified hovers, and footer removed from Systems per AGENTS rules.',
     tags: ['systems', 'design'],
     sha: '0a19b252',
-    link: 'systems.html',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/0a19b252`,
   },
   {
     id: 'e1649a8b',
@@ -2560,7 +2791,8 @@ export const changelogEntries = [
       'AssistMe chat gains OpenRouter Fusion and Auto routing with Grok-first fallbacks when models are unavailable.',
     tags: ['assistme', 'api'],
     sha: 'e1649a8b',
-    link: null,
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/e1649a8b`,
   },
   {
     id: '870c78a2',
@@ -2570,7 +2802,8 @@ export const changelogEntries = [
     summary: 'Reach card layout redesigned to match Google Analytics metrics used in production.',
     tags: ['design', 'api'],
     sha: '870c78a2',
-    link: null,
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/870c78a2`,
   },
   {
     id: '226db4f4',
@@ -2581,7 +2814,8 @@ export const changelogEntries = [
       'Root-level llms.txt added for AI agents, with layout fixes on the engineering notebook and Uses pages.',
     tags: ['deploy', 'systems'],
     sha: '226db4f4',
-    link: 'llms.txt',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/226db4f4`,
   },
   {
     id: '5998ba81',
@@ -2592,7 +2826,8 @@ export const changelogEntries = [
       'Version query params on dynamic and static imports plus on-demand cache clearing so Safari and Chrome pick up new deploys.',
     tags: ['deploy', 'performance'],
     sha: '5998ba81',
-    link: null,
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/5998ba81`,
   },
   {
     id: '5d5fd6c8',
@@ -2603,7 +2838,8 @@ export const changelogEntries = [
       'Light theme solid white and dark theme solid black page backgrounds; Share mirror tabs closing behavior fixed.',
     tags: ['design'],
     sha: '5d5fd6c8',
-    link: null,
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/5d5fd6c8`,
   },
 
   // ── May 2026 ───────────────────────────────────────────────
@@ -2616,7 +2852,8 @@ export const changelogEntries = [
       'Monitor page UI, backend metrics, and diagnostics rebuilt; E2E smoke coverage restored for the surface.',
     tags: ['monitor', 'api'],
     sha: 'd8c4b120',
-    link: 'monitor.html',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/d8c4b120`,
   },
   {
     id: '7ccbb976',
@@ -2627,7 +2864,8 @@ export const changelogEntries = [
       'Replaced Robinhood CTA with Stripe sponsorship ordering and styling across support surfaces.',
     tags: ['design'],
     sha: '7ccbb976',
-    link: 'index.html#contact',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/7ccbb976`,
   },
   {
     id: '68a6150c',
@@ -2638,7 +2876,8 @@ export const changelogEntries = [
       'Currently Playing / Last.fm music card works on the GitHub Pages mirror with the Last.fm API key path.',
     tags: ['api', 'deploy'],
     sha: '68a6150c',
-    link: null,
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/68a6150c`,
   },
   {
     id: '5a106cc1',
@@ -2649,7 +2888,8 @@ export const changelogEntries = [
       'Compact fixed-height About layout with the photo wrapper styled as a matching Apple card.',
     tags: ['design'],
     sha: '5a106cc1',
-    link: 'index.html#about',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/5a106cc1`,
   },
 
   // ── April 2026 ─────────────────────────────────────────────
@@ -2662,7 +2902,8 @@ export const changelogEntries = [
       'Portfolio Reach becomes a first-class metric with GitHub aggregation for consistent totals across surfaces.',
     tags: ['api', 'design'],
     sha: 'b46df5ff',
-    link: null,
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/b46df5ff`,
   },
   {
     id: '4a674960',
@@ -2673,7 +2914,8 @@ export const changelogEntries = [
       'Monitor upgraded with client probes, security audit views, and AI metrics for ops visibility.',
     tags: ['monitor', 'api'],
     sha: '4a674960',
-    link: 'monitor.html',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/4a674960`,
   },
   {
     id: '041e140f',
@@ -2684,7 +2926,8 @@ export const changelogEntries = [
       'Premium launch intro with Namaste animation shipped; FUNDING.yml corrected alongside the intro.',
     tags: ['design'],
     sha: '041e140f',
-    link: null,
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/041e140f`,
   },
   {
     id: 'a7072b50',
@@ -2694,7 +2937,8 @@ export const changelogEntries = [
     summary: 'Music cards stay reliable across Vercel and GitHub Pages deployments.',
     tags: ['api', 'deploy'],
     sha: 'a7072b50',
-    link: null,
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/a7072b50`,
   },
 
   // ── March 2026 ─────────────────────────────────────────────
@@ -2706,7 +2950,8 @@ export const changelogEntries = [
     summary: 'Build and config prepared for reliable Vercel and GitHub Pages product deployments.',
     tags: ['deploy'],
     sha: '471cb384',
-    link: null,
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/471cb384`,
   },
   {
     id: 'de047f19',
@@ -2717,7 +2962,8 @@ export const changelogEntries = [
       'Navbar refinement, hero balance adjustments, and spatial modal controls for a calmer first viewport.',
     tags: ['design'],
     sha: 'de047f19',
-    link: null,
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/de047f19`,
   },
   {
     id: 'bbc510ab',
@@ -2728,7 +2974,8 @@ export const changelogEntries = [
       'Reverted the March macOS-controls chatbot aesthetic experiment; later July AssistMe work supersedes that direction.',
     tags: ['assistme', 'design'],
     sha: 'bbc510ab',
-    link: null,
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/bbc510ab`,
   },
 
   // ── February 2026 ──────────────────────────────────────────
@@ -2741,7 +2988,8 @@ export const changelogEntries = [
       'QA release report generated with UI stabilization — project card overrides fixed and top navigation pill behavior clarified.',
     tags: ['design', 'deploy'],
     sha: 'b73488df',
-    link: null,
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/b73488df`,
   },
   {
     id: '8e6fdfb6',
@@ -2751,7 +2999,8 @@ export const changelogEntries = [
     summary: 'Fixed grid layouts for recommendations, certifications, and education sections.',
     tags: ['design'],
     sha: '8e6fdfb6',
-    link: null,
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/8e6fdfb6`,
   },
 
   // ── January 2026 ───────────────────────────────────────────
@@ -2764,7 +3013,8 @@ export const changelogEntries = [
       'Enhanced AssistMe AI, premium Game UI, and README overhaul as the 2026 portfolio baseline.',
     tags: ['assistme', 'design'],
     sha: '52428b5e',
-    link: null,
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/52428b5e`,
   },
   {
     id: 'ab49a582',
@@ -2775,7 +3025,8 @@ export const changelogEntries = [
       'Comprehensive README refresh following 2026 documentation best practices for contributors and agents.',
     tags: ['deploy'],
     sha: 'ab49a582',
-    link: 'https://github.com/mangeshraut712/mangeshrautarchive#readme',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/ab49a582`,
   },
 
   // ── December 2025 ──────────────────────────────────────────
@@ -2788,7 +3039,8 @@ export const changelogEntries = [
       'Birthday celebration theme-aware polish, chatbot voice input, and solid navbar backgrounds.',
     tags: ['assistme', 'voice', 'design'],
     sha: 'c8325c2e',
-    link: null,
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/c8325c2e`,
   },
   {
     id: '666d850e',
@@ -2799,7 +3051,8 @@ export const changelogEntries = [
       'Apple-style minimal navbar with improved glassmorphism, cleaner links, and polished action buttons.',
     tags: ['design'],
     sha: '666d850e',
-    link: null,
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/666d850e`,
   },
   {
     id: 'f5a844d8',
@@ -2810,7 +3063,8 @@ export const changelogEntries = [
       'Chatbot upgraded to the Apple Intelligence Assistant experience (v2025) as the core AssistMe product surface.',
     tags: ['assistme', 'design'],
     sha: 'f5a844d8',
-    link: null,
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/f5a844d8`,
   },
   {
     id: 'fa2de084',
@@ -2820,7 +3074,8 @@ export const changelogEntries = [
     summary: 'Vercel Web Analytics added for production traffic insight on the primary host.',
     tags: ['deploy', 'api'],
     sha: 'fa2de084',
-    link: null,
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/fa2de084`,
   },
   // ── October 2025 ───────────────────────────────────────────
   {
@@ -2832,7 +3087,8 @@ export const changelogEntries = [
       'Enhanced chatbot with Wikipedia fallback, weather queries, and interactive command processing.',
     tags: ['assistme'],
     sha: '277e6a22',
-    link: null,
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/277e6a22`,
   },
   {
     id: 'c4b54fd1',
@@ -2843,7 +3099,8 @@ export const changelogEntries = [
       'Integrated the first-generation AssistMe AI chatbot with voice interaction and local portfolio knowledge base.',
     tags: ['assistme', 'voice'],
     sha: 'c4b54fd1',
-    link: null,
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/c4b54fd1`,
   },
   // ── June 2025 ──────────────────────────────────────────────
   {
@@ -2855,7 +3112,8 @@ export const changelogEntries = [
       'Unified heading colors and ensured consistent text rendering across all portfolio sections.',
     tags: ['design'],
     sha: '85307946',
-    link: null,
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/85307946`,
   },
   // ── April 2025 ─────────────────────────────────────────────
   {
@@ -2867,7 +3125,8 @@ export const changelogEntries = [
       'Added Firebase configuration and visitor counter functionality for initial traffic monitoring.',
     tags: ['api'],
     sha: 'f10168c4',
-    link: null,
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/f10168c4`,
   },
   {
     id: '7e598ecb',
@@ -2878,7 +3137,8 @@ export const changelogEntries = [
       'Initial open-source release of Mangesh Raut’s full-stack portfolio website on GitHub.',
     tags: ['deploy', 'design'],
     sha: '7e598ecb',
-    link: null,
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/7e598ecb`,
   },
 ];
 
@@ -2887,7 +3147,7 @@ export function getChangelogUpdatedAt() {
   return dates[dates.length - 1] || null;
 }
 
-export function getCommitUrl(sha) {
-  if (!sha) return null;
-  return `${CHANGELOG_REPO}/commit/${sha}`;
+export function getCommitUrl(entry) {
+  if (!entry?.sha || entry.commitVerified !== true) return null;
+  return `${CHANGELOG_REPO}/commit/${entry.sha}`;
 }

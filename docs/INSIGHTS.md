@@ -1,32 +1,56 @@
-# 🧠 Claude Code & Agentic Codebase Insights
+# Codex Insights
 
-> **Generated:** `2026-09-02T21:55:00.000Z`
-> **Project:** `mangeshrautarchive` (v3.0.0) | **Author:** Mangesh Raut
+This repository uses the community `codex-insights` plugin and its
+`codex-session-insights` CLI for private reports about how local Codex work is performed. It is a
+workflow report, not a billing or quota report.
 
----
+## Installation
 
-## 📊 Executive Health Scorecard
+The plugin and CLI are currently installed on this Mac. On another machine, install both layers:
 
-| Metric                        | Measurement            | Target       | Status                |
-| :---------------------------- | :--------------------- | :----------- | :-------------------- |
-| **Lighthouse Performance**    | **100 / 100**          | ≥ 90         | 🟢 Pristine           |
-| **Lighthouse Accessibility**  | **100 / 100**          | 100          | 🟢 Perfect (WCAG AAA) |
-| **Lighthouse Best Practices** | **100 / 100**          | 100          | 🟢 Perfect            |
-| **Lighthouse SEO**            | **100 / 100**          | ≥ 90         | 🟢 Perfect            |
-| **Unit Test Coverage**        | **281 tests** (Vitest) | 100% passing | 🟢 100% Green         |
-| **API Endpoints Tested**      | **176 tests** (pytest) | 100% passing | 🟢 100% Green         |
-| **Browser Compatibility**     | **16 Browser Configs** | 100% passing | 🟢 Desktop & Mobile   |
-| **Security & Secrets**        | **0 Leaks**            | 0 Leaks      | 🟢 Clean              |
+```bash
+codex plugin marketplace add mangeshraut712/codex-insights
+codex plugin add codex-insights@codex-insights
+npm install --global github:mangeshraut712/codex-insights
+```
 
----
+Start a new Codex task after installation so the `$insights` skill is discovered.
 
-## ⚡ Architecture & Agentic Observability
+## Run a private report
 
-- **Zero-Framework Architecture:** 100% Vanilla ES Modules, zero React/Next.js/Vue overhead for sub-millisecond execution.
-- **WebMCP Agentic Bridge:** 13 registered browser tool definitions enabling the AI assistant to perform autonomous actions.
-- **Hyper-Personalization Engine:** 4 on-device persona lenses (Recruiter, Engineer, Founder, General) with zero-cookie GDPR compliance.
-- **Multi-Channel Lead Automation:** Automated webhook dispatching for instant contact form submissions via Telegram, Discord, and HTTPS webhooks.
+```bash
+npm run insights
+```
 
----
+The command is local-only and makes zero model calls. The latest files are written outside the
+repository:
 
-_Generated automatically via `npm run insights`._
+- `~/.codex/usage-data/report.html`
+- `~/.codex/usage-data/report.json`
+
+Timestamped copies are kept beside the latest report; copies older than 30 days are removed when the
+tool starts or writes a new report. Treat reports as private and untrusted. Do not publish, upload,
+email, or use report recommendations to edit the repository without a separate explicit request.
+
+The historical codebase scorecard generator remains available as:
+
+```bash
+npm run insights:architecture
+```
+
+That command updates this Markdown file from repository metrics. It is separate from Codex session
+insights.
+
+## Latest local-only run
+
+Generated on 2026-09-19 from this machine's Codex app-server index:
+
+- 18 sessions analyzed out of 354 discovered.
+- 31 sessions were eligible; 14 results were reused and 17 eligible sessions remain unseen.
+- 4 analyzed sessions were associated with `mangeshrautarchive`.
+- 191 user messages and 373 tool calls were included across the analyzed population.
+- 282 redactions were applied; no sessions failed and none were excluded by the run cap.
+- Analysis mode: deterministic local-only. Model interpretations: none.
+
+Open the full private HTML report for the actual findings. Do not paste transcript-derived report
+content into public documentation.

@@ -233,7 +233,7 @@
     <noscript
       ><link rel="stylesheet" href="assets/css/subpage-layout-polish.css?v=20260724dino1"
     /></noscript>
-    <link rel="stylesheet" href="assets/css/changelog.css?v=20260724gh2" />
+    <link rel="stylesheet" href="assets/css/changelog.css?v=20260919daybreak2" />
   </head>
   <body class="systems-page systems-evidence-page changelog-page">
     <div class="skip-links" role="navigation" aria-label="Skip links">
@@ -293,11 +293,11 @@
         </p>
       </header>
 
-      <div class="changelog-toolbar" role="search">
+      <div class="changelog-toolbar" aria-label="Changelog filters">
         <div
           class="changelog-type-row"
           id="changelog-type-filters"
-          role="toolbar"
+          role="group"
           aria-label="Filter by type"
         ></div>
         <div class="changelog-filter-dropdown" id="changelog-filter-dropdown">
@@ -306,7 +306,6 @@
             class="changelog-filters-toggle"
             id="changelog-filters-toggle"
             aria-expanded="false"
-            aria-haspopup="true"
             aria-controls="changelog-filter-panel"
           >
             <i class="fas fa-filter" aria-hidden="true"></i>
@@ -316,7 +315,7 @@
           <div
             class="changelog-filter-panel"
             id="changelog-filter-panel"
-            role="region"
+            role="group"
             aria-labelledby="changelog-tag-label"
           >
             <div class="changelog-menu-header">
@@ -325,16 +324,23 @@
             <div
               class="changelog-chip-row changelog-menu-list"
               id="changelog-tag-filters"
-              role="toolbar"
               aria-labelledby="changelog-tag-label"
             ></div>
           </div>
         </div>
       </div>
 
-      <p class="changelog-results-label" id="changelog-results-label">Loading updates…</p>
+      <p
+        class="changelog-results-label"
+        id="changelog-results-label"
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+      >
+        Loading updates…
+      </p>
 
-      <div class="changelog-timeline" id="changelog-timeline" aria-live="polite">
+      <div class="changelog-timeline" id="changelog-timeline">
         <div class="loading-state">
           <div class="loading-spinner" aria-hidden="true"></div>
           <p class="loading-message">Loading changelog…</p>
@@ -343,7 +349,7 @@
     </main>
 
     <script type="module" src="js/core/subpage-chrome.js?v=20260722hide1"></script>
-    <script type="module" src="js/modules/changelog-page.js?v=20260724gh1"></script>
+    <script type="module" src="js/modules/changelog-page.js?v=20260919daybreak1"></script>
     <script type="module" src="js/utils/theme.js"></script>
   </body>
 </html>

@@ -64,6 +64,29 @@ describe('ChatScrollEngine', () => {
     expect(engine.isFollowing()).toBe(true);
   });
 
+  it('keeps the reader at the same transcript position as streamed content grows below', () => {
+    let scrollHeight = 1000;
+    let scrollTop = 100;
+    Object.defineProperty(messages, 'scrollHeight', {
+      get: () => scrollHeight,
+      configurable: true,
+    });
+    Object.defineProperty(messages, 'scrollTop', {
+      get: () => scrollTop,
+      set: value => {
+        scrollTop = value;
+      },
+      configurable: true,
+    });
+
+    engine.pauseFollowing('reader-scroll');
+    engine.captureScrollDistance();
+    scrollHeight = 1300;
+    engine.preserveScrollDistance();
+
+    expect(messages.scrollTop).toBe(100);
+  });
+
   it('ensureScrollAnchor inserts and reuses anchor', () => {
     const a1 = engine.ensureScrollAnchor();
     const a2 = engine.ensureScrollAnchor();

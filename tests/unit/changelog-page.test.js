@@ -1,6 +1,8 @@
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { initChangelogPage } from '../../src/js/modules/changelog-page.js';
-import { changelogEntries } from '../../src/js/data/changelog-entries.js';
+import { CHANGELOG_TAGS, changelogEntries } from '../../src/js/data/changelog-entries.js';
 
 describe('changelog browsing', () => {
   beforeEach(() => {
@@ -36,6 +38,21 @@ describe('changelog browsing', () => {
     ).toBe(true);
   });
 
+  it('uses one concise live region for filtered result announcements', () => {
+    const html = readFileSync(join(process.cwd(), 'src/changelog.html'), 'utf8');
+    const page = new DOMParser().parseFromString(html, 'text/html');
+    const toolbar = page.querySelector('.changelog-toolbar');
+    const results = page.getElementById('changelog-results-label');
+    const timeline = page.getElementById('changelog-timeline');
+
+    expect(toolbar.getAttribute('role')).toBeNull();
+    expect(toolbar.getAttribute('aria-label')).toBe('Changelog filters');
+    expect(results.getAttribute('role')).toBe('status');
+    expect(results.getAttribute('aria-live')).toBe('polite');
+    expect(results.getAttribute('aria-atomic')).toBe('true');
+    expect(timeline.getAttribute('aria-live')).toBeNull();
+  });
+
   it('combines area and type filters and resets an empty result', () => {
     document.querySelector('[data-type="retired"]').click();
     document.getElementById('changelog-filters-toggle').click();
@@ -52,6 +69,30 @@ describe('changelog browsing', () => {
         document.getElementById('changelog-filters-toggle').getAttribute('aria-expanded')
       ).toBe('false');
       expect(document.activeElement.dataset.type).toBe('all');
+    }
+  });
+
+  it('uses the curated area taxonomy and keeps legacy-only entries filterable', () => {
+    const knownAreas = new Set(CHANGELOG_TAGS.map(tag => tag.id));
+    const renderedAreas = [...document.querySelectorAll('.changelog-entry')].map(
+      entry => entry.dataset.area
+    );
+    expect(renderedAreas.every(area => knownAreas.has(area))).toBe(true);
+
+    document.getElementById('changelog-filters-toggle').click();
+    document.querySelector('[data-tag="other"]').click();
+    const otherEntries = [...document.querySelectorAll('.changelog-entry')];
+    expect(otherEntries.length).toBeGreaterThan(0);
+    expect(otherEntries.every(entry => entry.dataset.area === 'other')).toBe(true);
+  });
+
+  it('renders commit links only for entries verified against repository history', () => {
+    for (const entry of document.querySelectorAll('.changelog-entry')) {
+      const source = changelogEntries.find(item => item.id === entry.dataset.id);
+      const links = entry.querySelectorAll(
+        '.changelog-entry__title-link, .changelog-entry__commit'
+      );
+      expect(links.length > 0).toBe(source.commitVerified);
     }
   });
 

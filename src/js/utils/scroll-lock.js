@@ -51,7 +51,8 @@ export function restoreBodyScrollPosition(
   scrollY,
   { anchorId = '', anchorTop = Number.NaN, windowRef = window } = {}
 ) {
-  const anchor = anchorId ? document.getElementById(anchorId) : null;
+  const documentRef = windowRef?.document || globalThis.document;
+  const anchor = anchorId ? documentRef?.getElementById(anchorId) : null;
   const restoredY =
     anchor && Number.isFinite(anchorTop)
       ? anchor.getBoundingClientRect().top + windowRef.scrollY - anchorTop
@@ -63,11 +64,11 @@ export function restoreBodyScrollPosition(
     if (typeof windowRef?.scrollTo === 'function') {
       windowRef.scrollTo(0, targetY);
     }
-    if (document.documentElement) {
-      document.documentElement.scrollTop = targetY;
+    if (documentRef?.documentElement) {
+      documentRef.documentElement.scrollTop = targetY;
     }
-    if (document.body) {
-      document.body.scrollTop = targetY;
+    if (documentRef?.body) {
+      documentRef.body.scrollTop = targetY;
     }
   };
 
