@@ -70,7 +70,7 @@
     "globals": "^17.11.0",
     "jsdom": "^30.0.1",
     "prettier": "^3.9.6",
-    "sharp": "^0.35.2",
+    "sharp": "^0.35.4",
     "start-server-and-test": "^3.0.12",
     "stylelint": "^17.14.1",
     "stylelint-config-standard": "^40.0.0",
@@ -86,6 +86,14 @@
     "marked": "^18.0.10",
     "marked-footnote": "^1.2.2",
     "ws": "^8.21.3"
+  },
+  "overrides": {
+    "dompurify": "3.4.15",
+    "js-yaml": "4.3.2",
+    "joi": "18.2.9",
+    "fast-uri": "3.1.8",
+    "qs": "6.16.0",
+    "colord": "2.10.0"
   },
   "engines": {
     "node": ">=22 <27"

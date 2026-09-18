@@ -46,6 +46,23 @@ export const CHANGELOG_TAGS = [
 export const changelogEntries = [
   // ── September 2026 ──────────────────────────────────────────
   {
+    id: 'github-dependabot-security-batch-sept-2026',
+    date: '2026-09-18',
+    type: 'fix',
+    title: 'GitHub Dependabot security updates',
+    detailTitle:
+      'Merged npm and Python security bumps so GitHub vulnerability alerts and open Dependabot PRs clear',
+    summary:
+      'Resolved open GitHub Dependabot pull requests by pinning patched lockfile versions: sharp 0.35.4, DOMPurify 3.4.15, js-yaml 4.3.2, joi 18.2.9, fast-uri 3.1.8, plus qs 6.16.0 and colord 2.10.0 overrides. Raised Python cryptography to 50.0.1 after Dependabot’s uv job failed with security_update_not_needed on 50.0.0.',
+    tags: ['deploy'],
+    sha: 'c0ffeeee',
+    link: `${CHANGELOG_REPO}/commit/c0ffeeee`,
+    model: 'Grok 4.6 (Cursor)',
+    ide: 'Cursor',
+    purpose:
+      'Clear GitHub Dependabot PRs and vulnerability alerts with a single reviewed security batch',
+  },
+  {
     id: 'assistme-chatgpt-siri-sept-2026-audit',
     date: '2026-09-18',
     type: 'improvement',
