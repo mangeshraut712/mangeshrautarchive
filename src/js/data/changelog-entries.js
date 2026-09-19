@@ -51,6 +51,26 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'sept-2026-blogs-market-depth-and-theme-contrast',
+    date: '2026-09-19',
+    type: 'improvement',
+    title: 'Expand September 2026 blogs with Indian payments market data and polish theme contrast',
+    detailTitle:
+      'Enriched UPI Market Share Metrics, Jevons Decision Economics, and Refined Dark and Light Mode Contrast',
+    summary:
+      "Substantially expanded both September 2026 blog posts and resolved sitewide blog contrast anomalies: (1) In the UPI payments architecture post, documented India's market share breakdown (PhonePe 48.5%, Google Pay 37.2%, Paytm 7.2% multi-bank TPAP transition, CRED 1.2% volume / 5.5% value high-ticket ATS, Navi, BHIM), analyzed the 30% TPAP market cap delay dynamics through late 2026/2027, added macro telemetry (16.8B+ monthly transactions, ₹24.2L crore / $290B+ monthly value, 50,000+ peak TPS, <0.55% TD rate), cross-border rails, and comparative architecture table with volume distribution chart; (2) In the Type-Safe AI Jev post, unpacked TypeSafe AI's $40M seed origin, William Stanley Jevons paradox economic framing ($0.042/1M token decision explosion), Kahneman dual-process cognitive framing (System 1 fast reflexes vs System 2 deliberative reasoning), noul/choice/score primitives, elimination of JSON repair loops, and RLCD calibrated probabilities; (3) In CSS, fixed light-mode code and inline badge contrast in theme-solid-surfaces.css, elevated dark mode code and table surfaces, set high-contrast TOC link colors, and ensured vector diagrams preserve aspect ratio without clipping.",
+    tags: ['blog', 'design', 'systems'],
+    sha: '0f1055a1',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/0f1055a1`,
+    model: 'Gemini 3.8 Flash (High)',
+    ide: 'Google Antigravity IDE (AGY)',
+    purpose:
+      'Expand September 2026 technical blogs with India payment market share metrics and Jevons economic framing, and polish theme contrast',
+    reasoning: 'High / Extended Thinking',
+    usage: 'Unavailable',
+  },
+  {
     id: 'sept-2026-blogs-upi-tap-to-pay-and-typesafe-ai-jev',
     date: '2026-09-19',
     type: 'release',
