@@ -51,6 +51,26 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'sept-2026-blog-gemini-3d-images-and-modal-deep-link',
+    date: '2026-09-19',
+    type: 'fix',
+    title: 'Generate 3D isometric Gemini images for technical blogs and fix modal deep-linking',
+    detailTitle:
+      'Replaced Broken SVGs with High-Fidelity Gemini JPG Renderings and Enabled Instant Modal Loading on Direct URL Hash Navigation',
+    summary:
+      'Polished blog architectural visuals and deep linking across the portfolio: (1) In src/assets/images/blog/, replaced flat/broken SVG placeholders with high-fidelity 16:9 3D isometric Gemini JPG renderings matching Apple dark-mode aesthetics (#0e1017 slate, neon conduits, frosted glass processors) for UPI Tap to Pay (NFC HCE, NPCI central switch, biometric passkey shield, UPI Circle), TypeSafe AI Jev (System 1 amber core, sub-70ms stream, NOUL/CHOICE/SCORE prisms), Razorpay Vulcan (4B payments transformer core), Cursor Origin, Apple PCC, and NotebookLM; (2) In src/js/core/bootstrap.js, enhanced matchesHash() to recognize direct #blog-read-* URL hash fragments, immediately initializing the blog module on direct link or refresh without requiring manual page scroll; (3) Synchronized unit tests in blog-markdown.test.js and blog-pages-build.test.js to validate the new high-resolution JPG image contracts.',
+    tags: ['blog', 'design', 'systems'],
+    sha: '0da8da2f',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/0da8da2f`,
+    model: 'Gemini 3.8 Flash (High)',
+    ide: 'Google Antigravity IDE (AGY)',
+    purpose:
+      'Generate high-fidelity 3D isometric Gemini images for technical blog architecture diagrams and fix modal deep-linking from URL hashes',
+    reasoning: 'High / Extended Thinking',
+    usage: 'Unavailable',
+  },
+  {
     id: 'sept-2026-blog-viewport-alignment-and-top-nav',
     date: '2026-09-19',
     type: 'fix',
