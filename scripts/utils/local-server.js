@@ -77,7 +77,13 @@ function buildProxyHeaders(req) {
 }
 
 async function proxyApiRequest(req, res) {
-  const targetUrl = new URL(req.originalUrl, apiTarget);
+  const configuredTarget = new URL(apiTarget);
+  const inbound = new URL(req.originalUrl, 'http://local.invalid');
+  const targetUrl = new URL(`${inbound.pathname}${inbound.search}`, configuredTarget);
+  if (targetUrl.origin !== configuredTarget.origin) {
+    res.status(400).json({ error: 'Invalid proxy target' });
+    return;
+  }
   const method = req.method || 'GET';
   const hasBody = !['GET', 'HEAD'].includes(method);
   const body = hasBody && Buffer.isBuffer(req.body) && req.body.length > 0 ? req.body : undefined;
@@ -246,8 +252,9 @@ app.get('/build-config.js', (req, res) => {
 
 app.use((req, res, next) => {
   if (req.path.length > 1 && req.path.endsWith('/')) {
-    const query = req.url.slice(req.path.length);
-    res.redirect(301, req.path.slice(0, -1) + query);
+    const inbound = new URL(req.originalUrl, 'http://local.invalid');
+    const safePath = `/${inbound.pathname.replace(/^\/+/, '').replace(/\/+$/, '')}`;
+    res.redirect(301, `${safePath}${inbound.search}`);
   } else {
     next();
   }

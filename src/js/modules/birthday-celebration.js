@@ -6,6 +6,7 @@
 import appleSounds from './apple-sounds.js';
 import { attachLiquidGlass, getLiquidGlassEngine } from './liquid-glass-engine.js';
 import { createProceduralBackground } from '../utils/liquid-glass-background.js';
+import { escapeHtml } from '../utils/escape-html.js';
 
 class BirthdayCelebration {
   constructor(testMode = false) {
@@ -234,7 +235,7 @@ class BirthdayCelebration {
           <span class="b-emoji" style="--d:.6s">✨</span>
         </div>
         <div class="hero-title">Happy Birthday</div>
-        <div class="hero-subtitle">${this.name}</div>
+        <div class="hero-subtitle">${escapeHtml(this.name)}</div>
         <div class="hero-badge">Celebrating ${this.getOrdinal(age)} Year ✦ Born Dec 7</div>
         <div class="action-area">
           <button class="glass-btn" id="birthday-enter-btn">

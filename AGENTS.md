@@ -196,7 +196,7 @@ npm run qa:lighthouse:vercel  # Live Vercel Lighthouse floors
      documentation files, and the commit body, record the coding agent or exposed model family and
      its dedicated purpose. Record the exact model variant, reasoning mode, and token usage only when
      the runtime exposes them; otherwise use `unavailable`.
-  3. **Run Full Quality Gate**: Run `npm run check` (ESLint + Stylelint + Prettier + Vitest 309 tests), `npm run security-check`, and `npm run build` with Node 22 (`export PATH="/opt/homebrew/opt/node@22/bin:/opt/homebrew/Cellar/node@22/22.23.2/bin:$PATH"`).
+  3. **Run Full Quality Gate**: Run `npm run check` (ESLint + Stylelint + Prettier + Vitest 314 tests), `npm run security-check`, and `npm run build` with Node 22 (`export PATH="/opt/homebrew/opt/node@22/bin:/opt/homebrew/Cellar/node@22/22.23.2/bin:$PATH"`).
   4. **Sync Documentation**: Keep test counts, architecture files, and design system rules synchronized across `README.md`, `AGENTS.md`, and `docs/DESIGN.md`.
   5. **Guarantee 100% Green CI/CD Protocol**: Always monitor GitHub Actions after every `git push` to `main` via `gh run list` / `gh run view` to confirm all remote jobs (actionlint, linting, Vitest, pytest, Playwright, Lighthouse 100/100/100/100 gates, and Pages deployment) complete with green checks. Never consider a task finished with failing remote CI runs.
 
@@ -241,8 +241,8 @@ All three test suites must pass before any merge to `main`:
 
 | Suite | Runner     | Command                | Coverage                                    |
 | ----- | ---------- | ---------------------- | ------------------------------------------- |
-| Unit  | Vitest     | `npm test`             | 309 tests — JS modules, utilities, markdown |
-| API   | pytest     | `npm run test:api`     | 179 tests — FastAPI endpoints, middleware   |
+| Unit  | Vitest     | `npm test`             | 314 tests — JS modules, utilities, markdown |
+| API   | pytest     | `npm run test:api`     | 182 tests — FastAPI endpoints, middleware   |
 | E2E   | Playwright | `npm run test:e2e:all` | Multi-spec suite across 16 browser projects |
 
 - Playwright configs include Desktop Chrome/Safari/Firefox/Edge, Pixel 7 Chrome, iPhone 14 Safari, iPad Pro Safari, and more.

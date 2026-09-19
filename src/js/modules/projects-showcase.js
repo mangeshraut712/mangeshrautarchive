@@ -2,6 +2,7 @@ import GitHubProjects from './github-projects.js';
 import { observeScrollAnimations } from './scroll-animations.js';
 import './project-xr.js';
 import './github-contributions-graph.js';
+import { escapeHtml } from '../utils/escape-html.js';
 
 const DEFAULT_USERNAME = 'mangeshraut712';
 const PREVIEW_CARD_MIN = 3;
@@ -221,8 +222,8 @@ function setStatItem(id, value, { hideWhenEmpty = true } = {}) {
 
 function renderNoResults(container, query = '', lensLabel = '') {
   const parts = [];
-  if (query) parts.push(`“${query}”`);
-  if (lensLabel && lensLabel.toLowerCase() !== 'all') parts.push(lensLabel);
+  if (query) parts.push(`“${escapeHtml(query)}”`);
+  if (lensLabel && lensLabel.toLowerCase() !== 'all') parts.push(escapeHtml(lensLabel));
   const suffix = parts.length ? ` for ${parts.join(' · ')}` : '';
   const canClear = Boolean(query) || (lensLabel && lensLabel.toLowerCase() !== 'all');
   container.innerHTML = `

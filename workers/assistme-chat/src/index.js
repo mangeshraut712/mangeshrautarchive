@@ -829,7 +829,8 @@ async function handleHealth(env, cors) {
     } catch (e) {
       status = 'unhealthy';
       provider_status = 'error';
-      message = `OpenRouter probe failed: ${e.message}`;
+      console.error('OpenRouter health probe failed', e?.message || e);
+      message = 'OpenRouter health probe failed.';
     }
   }
 
@@ -892,7 +893,12 @@ async function handleGithubRepos(url, cors, env = {}) {
       cors
     );
   } catch (e) {
-    return json({ success: false, error: e.message, data: [], items: [] }, 502, cors);
+    console.error('GitHub proxy request failed', e?.message || e);
+    return json(
+      { success: false, error: 'GitHub service is temporarily unavailable.', data: [], items: [] },
+      502,
+      cors
+    );
   }
 }
 
@@ -1208,7 +1214,8 @@ async function handleMusicRecent(url, env, cors) {
     enriched.listen_now = buildListenNowMeta(user, tracks, topArtists);
     return json({ ...enriched, host: 'cloudflare-worker', success: true }, 200, cors);
   } catch (e) {
-    return json({ success: false, error: e.message }, 502, cors);
+    console.error('Last.fm request failed', e?.message || e);
+    return json({ success: false, error: 'Music service is temporarily unavailable.' }, 502, cors);
   }
 }
 
@@ -1238,6 +1245,7 @@ async function handleMusicArtwork(url, env, cors) {
       cors
     );
   } catch (e) {
+    console.error('Artwork lookup failed', e?.message || e);
     return json(
       {
         artwork_url: '',
@@ -1245,7 +1253,7 @@ async function handleMusicArtwork(url, env, cors) {
         cached: false,
         term,
         host: 'cloudflare-worker',
-        error: e.message,
+        error: 'Artwork lookup is temporarily unavailable.',
       },
       200,
       cors
@@ -2094,6 +2102,7 @@ async function handleGithubProxy(url, env, cors) {
       },
     });
   } catch (e) {
-    return json({ error: e.message }, 502, cors);
+    console.error('GitHub API request failed', e?.message || e);
+    return json({ error: 'GitHub service is temporarily unavailable.' }, 502, cors);
   }
 }

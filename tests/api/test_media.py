@@ -9,6 +9,11 @@ os.environ.setdefault("VERCEL_ENV", "production")
 
 from api.config import lastfm_recent_cache
 from api.index import app
+from api.routes.media import normalize_music_text
+
+
+def test_music_text_normalization_handles_nested_noise_without_regex_backtracking():
+    assert normalize_music_text("Song (((Live))) - Remastered 2026") == "song"
 
 
 def test_music_recent_returns_latency_headers_when_lastfm_unconfigured(monkeypatch):

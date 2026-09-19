@@ -224,8 +224,7 @@ async function exchangeWhoopCode(env, code) {
     body,
   });
   if (!res.ok) {
-    const text = await res.text();
-    throw new Error(`whoop_exchange_${res.status}:${text.slice(0, 180)}`);
+    throw new Error(`whoop_exchange_${res.status}`);
   }
   return res.json();
 }
@@ -269,9 +268,16 @@ export async function handleWhoopConnect(request, env, cors = {}) {
 }
 
 function oauthErrorHtml(title, detail, redirectUri) {
-  const safeTitle = String(title || 'OAuth error');
-  const safeDetail = String(detail || '');
-  const safeRedirect = String(redirectUri || '');
+  const escapeHtml = value =>
+    String(value || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  const safeTitle = escapeHtml(title || 'OAuth error');
+  const safeDetail = escapeHtml(detail || '');
+  const safeRedirect = escapeHtml(redirectUri || '');
   return `<!doctype html><html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>${safeTitle}</title>
 <style>body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;max-width:40rem;margin:3rem auto;padding:0 1.25rem;line-height:1.5;color:#1d1d1f}code{background:#f5f5f7;padding:.15rem .4rem;border-radius:6px;font-size:.9em;word-break:break-all}a{color:#0071e3}</style></head><body>
 <h1>${safeTitle}</h1>
@@ -327,11 +333,8 @@ export async function handleWhoopCallback(request, env, cors = {}) {
     }
     return redirect(oauthSuccessRedirect(env, 'whoop'));
   } catch (err) {
-    return json(
-      { error: 'WHOOP OAuth callback failed.', detail: String(err?.message || err).slice(0, 200) },
-      502,
-      cors
-    );
+    console.error('WHOOP OAuth callback failed', err?.message || err);
+    return json({ error: 'WHOOP OAuth callback failed.' }, 502, cors);
   }
 }
 
@@ -357,8 +360,7 @@ async function exchangeWithingsCode(env, code) {
   });
   const res = await fetch(WITHINGS_TOKEN_URL, { method: 'POST', body });
   if (!res.ok) {
-    const text = await res.text();
-    throw new Error(`withings_exchange_${res.status}:${text.slice(0, 180)}`);
+    throw new Error(`withings_exchange_${res.status}`);
   }
   const data = await res.json();
   if (data.status !== 0) throw new Error(data.error || 'withings_exchange_failed');
@@ -422,10 +424,10 @@ export async function handleWithingsCallback(request, env, cors = {}) {
     }
     return redirect(oauthSuccessRedirect(env, 'withings'));
   } catch (err) {
+    console.error('Withings OAuth callback failed', err?.message || err);
     return json(
       {
         error: 'Withings OAuth callback failed.',
-        detail: String(err?.message || err).slice(0, 200),
       },
       502,
       cors

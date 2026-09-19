@@ -30,7 +30,7 @@ def _signing_key() -> bytes:
                 "Set INTEGRATION_ENCRYPTION_KEY or INTEGRATION_SYNC_ADMIN_TOKEN."
             )
         material = "local-dev-integration-signing"
-    return hashlib.sha256(material.encode("utf-8")).digest()
+    return material.encode("utf-8")
 
 
 def _encode_signed_payload(purpose: str, provider: str, ttl_seconds: int) -> str:

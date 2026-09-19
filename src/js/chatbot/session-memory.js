@@ -16,16 +16,23 @@ function safeParse(raw) {
   }
 }
 
+function secureSessionToken() {
+  if (typeof globalThis.crypto?.randomUUID === 'function') return globalThis.crypto.randomUUID();
+  const bytes = new Uint32Array(4);
+  globalThis.crypto.getRandomValues(bytes);
+  return Array.from(bytes, value => value.toString(36)).join('');
+}
+
 export function getOrCreateSessionId() {
+  const freshId = `sess_${Date.now().toString(36)}_${secureSessionToken()}`;
   try {
-    let id = localStorage.getItem(SESSION_ID_KEY);
+    const id = localStorage.getItem(SESSION_ID_KEY);
     if (id && id.length >= 8) return id;
-    id = `sess_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 10)}`;
-    localStorage.setItem(SESSION_ID_KEY, id);
-    return id;
+    localStorage.setItem(SESSION_ID_KEY, freshId);
   } catch {
-    return `sess_ephemeral_${Date.now().toString(36)}`;
+    // Private mode / quota: keep the cryptographic identifier in memory only.
   }
+  return freshId;
 }
 
 export function loadConversation(limit = MAX_CHAT_HISTORY) {

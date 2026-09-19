@@ -561,21 +561,44 @@ async def fetch_openlibrary_cover(title: str, author: str = "") -> str:
     return ""
 
 
-def _normalize_music_text(value: str) -> str:
+def normalize_music_text(value: str) -> str:
     """Lowercase and strip noise (feat., remaster/live tags, punctuation) for matching."""
     text = str(value or "").lower().strip()
     # Drop "(feat. ...)" / "ft. ..." and trailing " - Remastered 2011" style suffixes.
     text = re.sub(r"\b(feat|ft|featuring)\b.*$", " ", text)
-    text = re.sub(r"[\(\[\{].*?[\)\]\}]", " ", text)
-    text = re.sub(r"\s[-–—]\s.*$", " ", text)
+    text = _strip_bracketed_text(text)
+    text = _strip_dash_suffix(text)
     text = re.sub(r"[^a-z0-9]+", " ", text)
     return " ".join(text.split())
 
 
+def _strip_bracketed_text(value: str) -> str:
+    """Remove (), [] and {} segments in one bounded linear pass."""
+    pairs = {"(": ")", "[": "]", "{": "}"}
+    output: list[str] = []
+    closing: list[str] = []
+    for char in value:
+        if char in pairs:
+            closing.append(pairs[char])
+            if not output or output[-1] != " ":
+                output.append(" ")
+        elif closing and char == closing[-1]:
+            closing.pop()
+        elif not closing:
+            output.append(char)
+    return "".join(output)
+
+
+def _strip_dash_suffix(value: str) -> str:
+    """Drop a spaced dash suffix without a backtracking regular expression."""
+    positions = [index for token in (" - ", " – ", " — ") if (index := value.find(token)) >= 0]
+    return value[: min(positions)] if positions else value
+
+
 def _text_match_score(candidate: str, hint: str) -> int:
     """3 = exact, 2 = substring, 1 = shared token, 0 = no relation."""
-    cand = _normalize_music_text(candidate)
-    want = _normalize_music_text(hint)
+    cand = normalize_music_text(candidate)
+    want = normalize_music_text(hint)
     if not cand or not want:
         return 0
     if cand == want:
@@ -589,8 +612,8 @@ def _text_match_score(candidate: str, hint: str) -> int:
 
 def _match_verified_artwork(track: str, artist: str = "") -> Optional[tuple[str, str]]:
     """Match high-profile scrobbled tracks to verified 1000x1000 master artwork."""
-    t = _normalize_music_text(track)
-    a = _normalize_music_text(artist)
+    t = normalize_music_text(track)
+    a = normalize_music_text(artist)
     if "sochta hoon" in t:
         if not a or "vibrono" in a or "nusrat" in a or "remix" in t:
             return (
@@ -614,9 +637,9 @@ def _pick_itunes_artwork(
         return ""
 
     scored = []
-    want_artist = _normalize_music_text(artist_hint)
-    want_track = _normalize_music_text(track_hint)
-    want_album = _normalize_music_text(album_hint)
+    want_artist = normalize_music_text(artist_hint)
+    want_track = normalize_music_text(track_hint)
+    want_album = normalize_music_text(album_hint)
 
     for idx, item in enumerate(results):
         if not isinstance(item, dict):
@@ -624,9 +647,9 @@ def _pick_itunes_artwork(
         if not str(item.get("artworkUrl100") or "").strip():
             continue
 
-        cand_artist = _normalize_music_text(item.get("artistName"))
-        cand_track = _normalize_music_text(item.get("trackName"))
-        cand_album = _normalize_music_text(item.get("collectionName"))
+        cand_artist = normalize_music_text(item.get("artistName"))
+        cand_track = normalize_music_text(item.get("trackName"))
+        cand_album = normalize_music_text(item.get("collectionName"))
 
         # Strict artist mismatch check: "nusrat" must not match "rahat"
         if want_artist and cand_artist:
@@ -791,8 +814,7 @@ async def resolve_external_artwork(
         return itunes_url, "itunes"
 
     # 2. Cleaned track fallback (strip parentheticals, remix tags, and feat suffixes)
-    cleaned_track = re.sub(r"[\(\[\{].*?[\)\]\}]", "", track).strip()
-    cleaned_track = re.sub(r"\s[-–—]\s.*$", "", cleaned_track).strip()
+    cleaned_track = _strip_dash_suffix(_strip_bracketed_text(track)).strip()
     if cleaned_track and cleaned_track.lower() != track.lower().strip():
         fallback_term = f"{cleaned_track} {artist.strip()}".strip()
         itunes_url = await fetch_itunes_artwork(

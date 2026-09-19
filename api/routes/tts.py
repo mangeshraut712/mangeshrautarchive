@@ -35,7 +35,7 @@ DEFAULT_TTS_FORMAT = "mp3"
 MAX_TTS_CHARS = 2000
 
 _MARKDOWN_RE = re.compile(r"[*_`#>\|]+")
-_URL_RE = re.compile(r"https?://\S+", re.I)
+_URL_RE = re.compile(r"https?://[^\s)]+", re.I)
 _MULTI_SPACE_RE = re.compile(r"\s+")
 
 _DEFAULT_VOICES = ("eve", "ara", "rex", "sal", "leo", "sage")
@@ -59,12 +59,62 @@ def normalize_for_tts(text: str) -> str:
         return ""
     cleaned = text.replace("**", "").replace("__", "").replace("`", "")
     cleaned = _URL_RE.sub("link", cleaned)
-    cleaned = re.sub(r"!\[([^\]]*)\]\([^)]+\)", r"\1", cleaned)
-    cleaned = re.sub(r"\[([^\]]+)\]\([^)]+\)", r"\1", cleaned)
+    cleaned = _strip_markdown_links(cleaned)
     cleaned = _MARKDOWN_RE.sub("", cleaned)
     cleaned = re.sub(r"^[-*•]\s+", "", cleaned, flags=re.M)
     cleaned = _MULTI_SPACE_RE.sub(" ", cleaned)
     return cleaned.strip()[:MAX_TTS_CHARS]
+
+
+def _strip_markdown_links(value: str) -> str:
+    """Keep link labels and discard destinations in a single linear scan."""
+    output: list[str] = []
+    label: list[str] = []
+    index = 0
+    state = "text"
+    image = False
+    while index < len(value):
+        char = value[index]
+        if state == "text":
+            if char == "!" and index + 1 < len(value) and value[index + 1] == "[":
+                image = True
+                label = []
+                state = "label"
+                index += 2
+                continue
+            if char == "[":
+                image = False
+                label = []
+                state = "label"
+                index += 1
+                continue
+            output.append(char)
+            index += 1
+            continue
+
+        if state == "label":
+            if char == "]" and index + 1 < len(value) and value[index + 1] == "(":
+                state = "destination"
+                index += 2
+                continue
+            label.append(char)
+            index += 1
+            continue
+
+        if state == "destination":
+            if char == ")":
+                output.extend(label)
+                label = []
+                state = "text"
+                image = False
+            index += 1
+
+    if state == "label":
+        output.append("![" if image else "[")
+        output.extend(label)
+    elif state == "destination":
+        output.extend(label)
+    return "".join(output)
 
 
 class TTSRequest(BaseModel):

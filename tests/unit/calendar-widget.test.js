@@ -7,6 +7,13 @@ beforeEach(() => {
 });
 
 describe('Apple-style Calendar and Smart Reminders Widget', () => {
+  it('escapes RFC 5545 text delimiters and line breaks', async () => {
+    const { escapeIcsText } = await import('../../src/js/modules/calendar.js');
+    expect(escapeIcsText('Review\\notes;next,now\r\nDESCRIPTION:injected')).toBe(
+      'Review\\\\notes\\;next\\,now\\nDESCRIPTION:injected'
+    );
+  });
+
   it('renders the month calendar, weekdays, and smart reminders list for active day', async () => {
     const { CalendarWidget } = await import('../../src/js/modules/calendar.js');
     document.body.innerHTML = '<div id="calendar-widget"></div>';

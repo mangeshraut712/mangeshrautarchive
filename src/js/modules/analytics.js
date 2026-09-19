@@ -156,7 +156,7 @@
       return existing;
     }
 
-    const sessionId = `portfolio_${now}_${Math.random().toString(36).slice(2, 10)}`;
+    const sessionId = `portfolio_${now}_${globalThis.crypto.randomUUID()}`;
     localStorage.setItem(STORAGE_KEYS.SESSION_ID, sessionId);
     return sessionId;
   }

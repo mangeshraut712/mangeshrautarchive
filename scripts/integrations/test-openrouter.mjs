@@ -17,11 +17,6 @@ const apiBase =
   process.argv.find(arg => arg.startsWith('--api-url='))?.split('=')[1] ||
   `http://127.0.0.1:${process.env.PORT || 8001}`;
 
-function maskKey(key) {
-  if (!key || key.length < 12) return '(missing or too short)';
-  return `${key.slice(0, 8)}…${key.slice(-4)}`;
-}
-
 function pass(label, detail = '') {
   console.log(`✅ ${label}${detail ? ` — ${detail}` : ''}`);
 }
@@ -36,7 +31,7 @@ async function testOpenRouterKey() {
     fail('OPENROUTER_API_KEY', 'Set a real key in .env or .env.local');
     return false;
   }
-  pass('OPENROUTER_API_KEY present', maskKey(apiKey));
+  pass('OPENROUTER_API_KEY present');
   return true;
 }
 

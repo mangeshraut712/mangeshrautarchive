@@ -59,6 +59,11 @@ def test_tts_normalize_strips_markdown():
     assert "`" not in cleaned
 
 
+def test_tts_normalize_handles_adversarial_markdown_links_linearly():
+    cleaned = tts_route.normalize_for_tts("![alt](https://example.com/x) [label](javascript:bad)")
+    assert cleaned == "alt label"
+
+
 def test_tts_synthesize_proxies_openrouter(client, monkeypatch):
     monkeypatch.setenv("OPENROUTER_API_KEY", "or-test-key")
 

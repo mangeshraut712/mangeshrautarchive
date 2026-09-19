@@ -13,22 +13,20 @@
   var DEFAULT_LAT = 39.9526;
   var DEFAULT_LNG = -75.1652;
   var scheduleTimer = null;
+  var sessionGeo = null;
+
+  try {
+    localStorage.removeItem(GEO_KEY);
+  } catch (_error) {
+    // Storage may be unavailable; coordinates remain memory-only.
+  }
 
   function readJson(key) {
-    try {
-      var raw = localStorage.getItem(key);
-      return raw ? JSON.parse(raw) : null;
-    } catch (_error) {
-      return null;
-    }
+    return key === GEO_KEY ? sessionGeo : null;
   }
 
   function writeJson(key, value) {
-    try {
-      localStorage.setItem(key, JSON.stringify(value));
-    } catch (_error) {
-      // Storage unavailable — keep in-memory behavior only.
-    }
+    if (key === GEO_KEY) sessionGeo = value;
   }
 
   function normalizeMode(value) {

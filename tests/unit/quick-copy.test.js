@@ -52,6 +52,13 @@ describe('quick-copy module', () => {
     vi.useRealTimers();
   });
 
+  it('renders toast messages as text instead of active markup', () => {
+    showCopyToast('<img src=x onerror=alert(1)>');
+    const toast = document.getElementById('shadcn-copy-toast');
+    expect(toast.querySelector('img')).toBeNull();
+    expect(toast.textContent).toContain('<img src=x onerror=alert(1)>');
+  });
+
   it('toggles is-copied class and triggers toast on copy button action', async () => {
     vi.useFakeTimers();
 

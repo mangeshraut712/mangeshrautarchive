@@ -32,6 +32,17 @@ C[AWS] --> D`);
 });
 
 describe('preprocessRichMediaMarkdown', () => {
+  it('blocks model-authored SVG markup instead of restoring active attributes', () => {
+    const slots = [];
+    const out = preprocessRichMediaMarkdown(
+      '```svg\n<svg><image href="javascript:alert(1)" onload="alert(1)" /></svg>\n```',
+      { slots }
+    );
+    expect(out).toContain('§RICHSLOT0§');
+    expect(slots[0]).toContain('Custom SVG blocked for safety');
+    expect(slots[0]).not.toContain('<svg');
+  });
+
   it('rewrites mermaid fences before marked', () => {
     const slots = [];
     const out = preprocessRichMediaMarkdown('```mermaid\nflowchart TD\nA[Start] --> B[End]\n```', {

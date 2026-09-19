@@ -60,65 +60,10 @@ class FirecrawlService:
             except Exception as exc:
                 logger.warning("Firecrawl API request failed, using local fallback: %s", exc)
 
-        # Local fallback HTML fetch and text extraction
-        return await self._local_fallback_scrape(url)
-
-    async def _local_fallback_scrape(self, url: str) -> Dict[str, Any]:
-        try:
-            import httpx
-            from html.parser import HTMLParser
-
-            class SimpleTextExtractor(HTMLParser):
-                def __init__(self):
-                    super().__init__()
-                    self.text_chunks = []
-                    self.title = ""
-                    self._in_title = False
-                    self._skip = False
-
-                def handle_starttag(self, tag, attrs):
-                    if tag in {"script", "style", "nav", "footer", "header"}:
-                        self._skip = True
-                    if tag == "title":
-                        self._in_title = True
-
-                def handle_endtag(self, tag):
-                    if tag in {"script", "style", "nav", "footer", "header"}:
-                        self._skip = False
-                    if tag == "title":
-                        self._in_title = False
-
-                def handle_data(self, data):
-                    clean = data.strip()
-                    if clean:
-                        if self._in_title:
-                            self.title = clean
-                        elif not self._skip:
-                            self.text_chunks.append(clean)
-
-            async with httpx.AsyncClient(timeout=6.0, follow_redirects=True) as client:
-                headers = {"User-Agent": "Mozilla/5.0 (Portfolio-AssistMe-Bot/1.0)"}
-                resp = await client.get(url, headers=headers)
-                if resp.status_code == 200:
-                    parser = SimpleTextExtractor()
-                    parser.feed(resp.text)
-                    title = parser.title or f"Ingested Document from {url}"
-                    body = "\n\n".join(parser.text_chunks[:50]) or f"Content ingested from {url}"
-                    markdown = f"# {title}\n\n*Source URL: {url}*\n\n{body}"
-                    return {
-                        "success": True,
-                        "url": url,
-                        "markdown": markdown,
-                        "source": "local_readability_fallback",
-                    }
-        except Exception as exc:
-            logger.warning("Local fallback scrape error: %s", exc)
-
         return {
-            "success": True,
-            "url": url,
-            "markdown": f"# Document Ingested ({url})\n\n*Source URL: {url}*\n\n*Content ingested via AI Portfolio fallback intelligence engine.*",
-            "source": "local_fallback",
+            "success": False,
+            "error": "External ingestion is unavailable unless the Firecrawl service is configured.",
+            "markdown": "",
         }
 
 

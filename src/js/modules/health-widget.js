@@ -68,32 +68,24 @@ function parseWeightTrend(weightTrend) {
 
 class HealthWidget {
   constructor() {
-    this.storageKey = 'mangesh_health_metrics_v4';
+    try {
+      localStorage.removeItem('mangesh_health_metrics_v4');
+    } catch {
+      // Storage may be unavailable; metrics remain memory-only either way.
+    }
     this.metrics = this.loadMetrics();
     this.isRefreshing = false;
     this.init();
   }
 
   loadMetrics() {
-    try {
-      const stored = localStorage.getItem(this.storageKey);
-      if (stored) {
-        const parsed = JSON.parse(stored);
-        return { ...DEFAULT_METRICS, ...parsed };
-      }
-    } catch (e) {
-      console.warn('Failed to read health metrics from localStorage:', e);
-    }
-
+    // Health metrics stay in memory and are refreshed from the server. Persisting
+    // biometric values in browser storage creates unnecessary privacy exposure.
     return { ...DEFAULT_METRICS };
   }
 
   saveMetrics() {
-    try {
-      localStorage.setItem(this.storageKey, JSON.stringify(this.metrics));
-    } catch (e) {
-      console.error('Failed to save health metrics to localStorage:', e);
-    }
+    // Intentionally memory-only.
   }
 
   init() {

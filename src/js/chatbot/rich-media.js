@@ -257,14 +257,10 @@ export function preprocessRichMediaMarkdown(markdown, { userPrompt = '', slots =
     }
   });
 
-  text = text.replace(/```svg\s*([\s\S]*?)```/gi, (_m, body) => {
-    const svg = String(body || '')
-      .trim()
-      .replace(/\son\w+\s*=\s*("[^"]*"|'[^']*'|[^\s>]+)/gi, '');
-    if (!/^<svg[\s>]/i.test(svg) || /<script/i.test(svg)) {
-      return stash('<p class="rich-chart-error">SVG blocked for safety.</p>');
-    }
-    return stash(`<figure class="rich-svg-media">${svg}</figure>`);
+  text = text.replace(/```svg\s*[\s\S]*?```/gi, () => {
+    // Model-authored SVG is active markup and cannot be made safe with regex replacements.
+    // Generated charts use renderChartSvg(), whose values are escaped before construction.
+    return stash('<p class="rich-chart-error">Custom SVG blocked for safety.</p>');
   });
 
   text = text.replace(/```mermaid\s*([\s\S]*?)```/gi, (_m, body) => {

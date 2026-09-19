@@ -2045,7 +2045,7 @@ export class CalendarWidget {
     let dtstart = dtstamp;
     let dtend = dtstamp;
 
-    if (reminder.dateKey && reminder.dateKey.length >= 10) {
+    if (/^\d{4}-\d{2}-\d{2}$/.test(reminder.dateKey || '')) {
       const cleanKey = reminder.dateKey.replace(/-/g, '');
       dtstart = `${cleanKey}T100000Z`;
       dtend = `${cleanKey}T110000Z`;
@@ -2058,13 +2058,13 @@ export class CalendarWidget {
       'CALSCALE:GREGORIAN',
       'METHOD:PUBLISH',
       'BEGIN:VEVENT',
-      `UID:event-${reminder.id || Date.now()}@mangeshraut.pro`,
+      `UID:event-${escapeIcsText(reminder.id || Date.now())}@mangeshraut.pro`,
       `DTSTAMP:${dtstamp}`,
       `DTSTART:${dtstart}`,
       `DTEND:${dtend}`,
-      `SUMMARY:${summary.replace(/,/g, '\\,')}`,
-      `DESCRIPTION:${(reminder.description || reminder.time || 'Event from Mangesh Raut Calendar').replace(/,/g, '\\,')}`,
-      `LOCATION:${(reminder.location || 'Online / Remote').replace(/,/g, '\\,')}`,
+      `SUMMARY:${escapeIcsText(summary)}`,
+      `DESCRIPTION:${escapeIcsText(reminder.description || reminder.time || 'Event from Mangesh Raut Calendar')}`,
+      `LOCATION:${escapeIcsText(reminder.location || 'Online / Remote')}`,
       'STATUS:CONFIRMED',
       'END:VEVENT',
       'END:VCALENDAR',
@@ -2100,4 +2100,11 @@ if (typeof document !== 'undefined') {
   } else {
     initCalendarWidget();
   }
+}
+export function escapeIcsText(value) {
+  return String(value ?? '')
+    .replace(/\\/g, '\\\\')
+    .replace(/\r\n|\r|\n/g, '\\n')
+    .replace(/;/g, '\\;')
+    .replace(/,/g, '\\,');
 }

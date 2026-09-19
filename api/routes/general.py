@@ -1,6 +1,5 @@
 import base64
 import os
-import re
 from datetime import datetime, timezone
 from fastapi import APIRouter, HTTPException, Query, Request
 from fastapi.responses import FileResponse
@@ -21,6 +20,15 @@ from api.config import (
 )
 
 router = APIRouter()
+
+
+def _is_valid_email(value: str) -> bool:
+    """Validate the bounded address shape without a backtracking regular expression."""
+    email = value.strip()
+    if email.count("@") != 1 or any(char.isspace() for char in email):
+        return False
+    local, domain = email.split("@", 1)
+    return bool(local and domain and "." in domain and not domain.startswith(".") and not domain.endswith("."))
 
 
 @router.get("/api")
@@ -73,8 +81,7 @@ async def send_contact_message(payload: ContactMessage, req: Request):
             retry_after=RATE_LIMIT_WINDOW,
         )
 
-    email_re = re.compile(r"^[^\s@]+@[^\s@]+\.[^\s@]+$")
-    if not email_re.match(payload.email):
+    if not _is_valid_email(payload.email):
         raise HTTPException(status_code=400, detail="Invalid email address")
 
     firebase_api_key = os.getenv("GEMINI_FIREBASE_API_KEY") or os.getenv(
@@ -223,9 +230,8 @@ async def subscribe_newsletter(payload: NewsletterSubscribe, req: Request):
             retry_after=RATE_LIMIT_WINDOW,
         )
 
-    email_re = re.compile(r"^[^\s@]+@[^\s@]+\.[^\s@]+$")
     email = payload.email.strip().lower()
-    if not email_re.match(email):
+    if not _is_valid_email(email):
         raise HTTPException(status_code=400, detail="Invalid email address")
 
     firebase_api_key = os.getenv("GEMINI_FIREBASE_API_KEY") or os.getenv(
