@@ -1902,9 +1902,17 @@ html.dark .article-chart__note {
   background: rgb(255 149 0 / 10%);
 }
 
+.article-callout--warn .article-callout__label {
+  color: #c2410c;
+}
+
 .article-callout--tip {
   border-color: rgb(52 199 89 / 28%);
   background: rgb(52 199 89 / 10%);
+}
+
+.article-callout--tip .article-callout__label {
+  color: #15803d;
 }
 
 .article-callout--source {
@@ -1912,14 +1920,40 @@ html.dark .article-chart__note {
   background: rgb(0 0 0 / 3%);
 }
 
+.article-callout--source .article-callout__label {
+  color: var(--text-secondary, #6e6e73);
+}
+
 html.dark .article-callout {
   border-color: rgb(10 132 255 / 28%);
   background: rgb(10 132 255 / 10%);
 }
 
+html.dark .article-callout--warn {
+  border-color: rgb(255 159 10 / 32%);
+  background: rgb(255 159 10 / 12%);
+}
+
+html.dark .article-callout--warn .article-callout__label {
+  color: #ff9f0a;
+}
+
+html.dark .article-callout--tip {
+  border-color: rgb(48 209 88 / 32%);
+  background: rgb(48 209 88 / 12%);
+}
+
+html.dark .article-callout--tip .article-callout__label {
+  color: #30d158;
+}
+
 html.dark .article-callout--source {
   border-color: rgb(255 255 255 / 12%);
   background: rgb(255 255 255 / 5%);
+}
+
+html.dark .article-callout--source .article-callout__label {
+  color: #a1a1a6;
 }
 
 .article-callout__label {
@@ -1936,11 +1970,17 @@ html.dark .article-callout__label {
   color: #0a84ff;
 }
 
-.article-callout p {
+.article-callout p,
+.article-callout__text {
   margin: 0;
   color: inherit;
   font-size: 0.95rem;
   line-height: 1.55;
+}
+
+html.dark .article-callout p,
+html.dark .article-callout__text {
+  color: #f5f5f7 !important;
 }
 
 .article-embed-card {
@@ -3118,6 +3158,8 @@ html.dark .article-code-header {
 
 html.dark .article-callout--architecture,
 html.dark .article-callout--security {
+  background: color-mix(in srgb, #bf5af2 12%, transparent);
+  border-color: color-mix(in srgb, #bf5af2 35%, transparent);
   color: #f5f5f7 !important;
 }
 

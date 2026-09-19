@@ -51,6 +51,27 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'sept-2026-blog-viewport-alignment-and-top-nav',
+    date: '2026-09-19',
+    type: 'fix',
+    title:
+      'Align blog top navigation bar and fix multi-device viewport typography and layout geometry',
+    detailTitle:
+      'Unified Back Link and Audio Translate Tools, Eliminated Desktop Text Clipping with 1180px Measure, and Restored Mobile Padding',
+    summary:
+      'Overhauled the blog viewing experience across all device viewports following Apple Human Interface Guidelines (HIG): (1) In generate-blog-pages.mjs, unified the "← All articles" pill and speech/translate accessibility toolbars into a single semantic nav.blog-article-nav bar across the top of the article, resolving the vertical disconnect and awkward middle-right float; (2) In blog.css, expanded desktop standalone container to 1180px with a 240px sticky frosted glass TOC sidebar and 820px content column, completely eliminating the 112px text overflow and viewport collision; (3) Constrained narrative text to an optimal 720px reading measure (68-75 chars) with Apple-standard 1.72 line-height and -0.005em tracking, while allowing diagrams, tables, and code blocks to fill the full column; (4) On mobile, removed the double-clearance 128px horizontal squeeze, restoring a full 358px readable measure with 16px safe-area margins and 0px horizontal overflow; (5) Fixed callout theme colors and labels across light and dark modes for warnings (#ff9f0a), tips (#30d158), sources (#a1a1a6), architecture and security callouts.',
+    tags: ['blog', 'design', 'systems'],
+    sha: '9b4bcc56',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/9b4bcc56`,
+    model: 'Gemini 3.8 Flash (High)',
+    ide: 'Google Antigravity IDE (AGY)',
+    purpose:
+      'Fix blog top navigation alignment, eliminate desktop right-edge text clipping with 1180px container, and restore mobile reading padding',
+    reasoning: 'High / Extended Thinking',
+    usage: 'Unavailable',
+  },
+  {
     id: 'sept-2026-blogs-market-depth-and-theme-contrast',
     date: '2026-09-19',
     type: 'improvement',
