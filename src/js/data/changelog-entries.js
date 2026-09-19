@@ -60,9 +60,9 @@ export const changelogEntries = [
     summary:
       'The Cloudflare AssistMe worker no longer returns `e.message` or OpenRouter error bodies on failed chat fallbacks. Public JSON now strips Error stacks, and clients only see generic provider-failure copy.',
     tags: ['assistme', 'api', 'deploy'],
-    sha: '00000000',
+    sha: '16a71146',
     commitVerified: true,
-    link: `${CHANGELOG_REPO}/commit/00000000`,
+    link: `${CHANGELOG_REPO}/commit/16a71146`,
     model: 'Grok 4.6 (Cursor)',
     ide: 'Cursor',
     purpose: 'Fix the remaining open GitHub CodeQL stack-trace exposure on the AssistMe worker',
