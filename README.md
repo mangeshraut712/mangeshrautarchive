@@ -40,7 +40,7 @@
   <img src="https://img.shields.io/badge/FastAPI-0.141.1-009688?style=flat-square&logo=fastapi&logoColor=white" alt="FastAPI">
   <img src="https://img.shields.io/badge/ESM-Vanilla%20JS-F7DF1E?style=flat-square&logo=javascript&logoColor=black" alt="Vanilla ESM">
   <img src="https://img.shields.io/badge/Cloudflare-Workers-F38020?style=flat-square&logo=cloudflare&logoColor=white" alt="Cloudflare Workers">
-  <img src="https://img.shields.io/badge/Vitest-314%20passed-729B1B?style=flat-square&logo=vitest&logoColor=white" alt="314 Vitest unit tests">
+  <img src="https://img.shields.io/badge/Vitest-316%20passed-729B1B?style=flat-square&logo=vitest&logoColor=white" alt="316 Vitest unit tests">
   <img src="https://img.shields.io/badge/pytest-182%20passed-0A9EDC?style=flat-square&logo=pytest&logoColor=white" alt="182 pytest API tests">
   <img src="https://img.shields.io/badge/Playwright-16%20browser%20configs-2EAD33?style=flat-square&logo=playwright&logoColor=white" alt="Playwright">
   <img src="https://img.shields.io/badge/Lighthouse-100%2F100%2F100%2F100-0cce6b?style=flat-square&logo=lighthouse&logoColor=white" alt="Lighthouse 100">
@@ -49,7 +49,7 @@
 
 <p align="center">
   <strong>Zero Framework Runtime · Native Vanilla ESM · FastAPI Serverless · Agentic WebMCP · Apple HIG Liquid Glass</strong><br>
-  <sub>High-contrast solid canvas (<code>#ffffff</code> / <code>#000000</code>) · Dual-Host Edge Topology · 428 Automated Tests · 100/100 Lighthouse CI</sub>
+  <sub>High-contrast solid canvas (<code>#ffffff</code> / <code>#000000</code>) · Dual-Host Edge Topology · 316 Vitest + 182 pytest · 100/100 Lighthouse CI</sub>
 </p>
 
 <p align="center">
@@ -97,10 +97,10 @@
 │                                 CORE ARCHITECTURAL PILLARS                              │
 ├────────────────────────────────────────────────────────────────────────────────────────┤
 │  ⚡ Zero-Framework ESM: Native JavaScript modules, esbuild bundling, custom properties │
-│  🤖 Agentic AI: AssistMe chatbot, OpenRouter streaming, 17 WebMCP browser actions      │
+│  🤖 Agentic AI: AssistMe ChatGPT/iMessage thread, OpenRouter streaming, 17 WebMCP      │
 │  🎨 Apple HIG Design: Solid white/black canvases, 3D kinetic interaction model         │
 │  📊 Real-Time Telemetry: WHOOP vitals, GA4 realtime reach, platform health probes       │
-│  🛡️ Quality Gates: 314 Vitest tests, 182 pytest tests, 100/100/100/100 Lighthouse CI   │
+│  🛡️ Quality Gates: 316 Vitest tests, 182 pytest tests, 100/100/100/100 Lighthouse CI   │
 │  📜 Open Chronicle: Complete Git history from day 1 (April 8, 2025) to September 2026   │
 └────────────────────────────────────────────────────────────────────────────────────────┘
 ```
@@ -255,7 +255,7 @@ mangeshrautarchive/
 ├── workers/                  # ★ Cloudflare Workers (Edge AI Proxy & Cron Telemetry)
 │   └── assistme-chat/        # Standalone Edge Worker for AssistMe AI & WebMCP proxy
 ├── scripts/                  # ★ Developer Tooling & Build Pipeline (esbuild, QA, security, sync)
-├── tests/                    # ★ Automated Test Suite (314 Vitest, 182 pytest, 16 Playwright targets)
+├── tests/                    # ★ Automated Test Suite (316 Vitest, 182 pytest, 16 Playwright targets)
 ├── docs/                     # Documentation (DESIGN.md source of truth, STRUCTURE.md, plans)
 └── .github/workflows/        # Automated CI/CD (GitHub Pages deploy, monitoring, edge sync)
 ```
@@ -266,23 +266,25 @@ mangeshrautarchive/
 
 ## 5. Product Surfaces & Capabilities
 
-| Surface / Route                                                                                         | Primary Purpose & Key Features                                                                                                                                                       |
-| :------------------------------------------------------------------------------------------------------ | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [**`/` (Homepage)**](https://mangeshraut712.github.io/mangeshrautarchive/)                              | Permanent compact Apple Music player with 30s audio scrubber & live equalizer, persistent contact, live Google booking, and Apple/Outlook event fallbacks.                           |
-| [**`/systems`**](https://mangeshraut712.github.io/mangeshrautarchive/systems)                           | Systems engineering notebook, token telemetry, daily-driver stack, architecture FAQ.                                                                                                 |
-| [**`/monitor`**](https://mangeshraut712.github.io/mangeshrautarchive/monitor)                           | Apple HIG executive command center with 4-tab telemetry (Overview, Services & APIs, Edge & Deploy, Security & Logs), 4-card Apple Glass KPI strip, and real-time health diagnostics. |
-| [**`/travel`**](https://mangeshraut712.github.io/mangeshrautarchive/travel)                             | MapLibre 3D WebGL interactive atlas covering 90 stops across 4 countries with Google Search City Knowledge Panels, Google Maps/Guide actions, coordinates, and instant prefetching.  |
-| [**`/uses`**](https://mangeshraut712.github.io/mangeshrautarchive/uses)                                 | Apple Special Event Keynote presentation with 6 interactive acts, frosted glass pill dock, and category-filtered engineering inventory.                                              |
-| [**`/changelog`**](https://mangeshraut712.github.io/mangeshrautarchive/changelog)                       | Clean GitHub/Apple un-boxed release history spanning from repo creation (April 8, 2025) to September 2026.                                                                           |
-| [**`/blog/`**](https://mangeshraut712.github.io/mangeshrautarchive/blog/)                               | 16 long-form technical field notes and deep dives with source embeds and KaTeX math.                                                                                                 |
-| [**`/case-studies/`**](https://mangeshraut712.github.io/mangeshrautarchive/case-studies/portfolio.html) | 5 architectural case studies (Portfolio Architecture, HindAI, CES Energy, AssistMe VA, Bug Tracker).                                                                                 |
+| Surface / Route                                                                                         | Primary Purpose & Key Features                                                                                                                                                                                                                                                                                    |
+| :------------------------------------------------------------------------------------------------------ | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [**`/` (Homepage)**](https://mangeshraut712.github.io/mangeshrautarchive/)                              | Permanent compact Apple Music player with 30s audio scrubber & live equalizer, AssistMe ChatGPT/iMessage thread (turn gaps, Earlier conversation divider, one-click New chat), live Luma RSVPs with Gmail/Apple title-variant dedupe, persistent contact, live Google booking, and Apple/Outlook event fallbacks. |
+| [**`/systems`**](https://mangeshraut712.github.io/mangeshrautarchive/systems)                           | Systems engineering notebook, token telemetry, daily-driver stack, architecture FAQ.                                                                                                                                                                                                                              |
+| [**`/monitor`**](https://mangeshraut712.github.io/mangeshrautarchive/monitor)                           | Apple HIG executive command center with 4-tab telemetry (Overview, Services & APIs, Edge & Deploy, Security & Logs), 4-card Apple Glass KPI strip, and real-time health diagnostics.                                                                                                                              |
+| [**`/travel`**](https://mangeshraut712.github.io/mangeshrautarchive/travel)                             | MapLibre 3D WebGL interactive atlas covering 90 stops across 4 countries with Google Search City Knowledge Panels, Google Maps/Guide actions, coordinates, and instant prefetching.                                                                                                                               |
+| [**`/uses`**](https://mangeshraut712.github.io/mangeshrautarchive/uses)                                 | Apple Special Event Keynote presentation with 6 interactive acts, frosted glass pill dock, and category-filtered engineering inventory.                                                                                                                                                                           |
+| [**`/changelog`**](https://mangeshraut712.github.io/mangeshrautarchive/changelog)                       | Clean GitHub/Apple un-boxed release history spanning from repo creation (April 8, 2025) to September 2026.                                                                                                                                                                                                        |
+| [**`/blog/`**](https://mangeshraut712.github.io/mangeshrautarchive/blog/)                               | 16 long-form technical field notes and deep dives with source embeds and KaTeX math.                                                                                                                                                                                                                              |
+| [**`/case-studies/`**](https://mangeshraut712.github.io/mangeshrautarchive/case-studies/portfolio.html) | 5 architectural case studies (Portfolio Architecture, HindAI, CES Energy, AssistMe VA, Bug Tracker).                                                                                                                                                                                                              |
 
 ### 5.1 AI Models & Engineering Purpose Matrix
 
 | Model Tier & Name          | Engineering Purpose & Scope                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     | Reasoning Mode           | Status |
 | :------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | :----------------------- | :----- |
+| **`gemini-3.8-flash`**     | Playwright MCP & CLI tooling integration: configured official Microsoft Playwright MCP server across Antigravity IDE configurations (`~/.gemini/antigravity/mcp_config.json`, `~/.gemini/config/mcp_config.json`, `~/.gemini/antigravity-ide/mcp_config.json`) enabling zero-bloat accessibility snapshots, in-page grep, and dynamic WebMCP tool invocation, added package.json helper scripts (`playwright:mcp`, `playwright:cli`, `playwright:codegen`), and grounded Astra in-situ visual verification                      | High / Extended Thinking | Active |
 | **`gpt-5 / codex`**        | Repository cleanup, GitHub CodeQL backlog triage and remediation, SSRF/injection/XSS/session/error-disclosure hardening, Dependabot PR resolution, AssistMe scroll-follow lifecycle repair, and end-to-end release verification                                                                                                                                                                                                                                                                                                 | Unavailable              | Active |
 | **`gpt-daybreak / codex`** | Independent changelog review and repair: commit-link validation against complete local git history, filter semantics, accessible contrast and touch targets, reduced motion, fixed-dock clearance, canonical attribution fields, and portable agent guidance                                                                                                                                                                                                                                                                    | Unavailable              | Active |
+| **`grok-4.6`**             | AssistMe ChatGPT / iMessage thread spacing: flex-column transcript, 18px speaker-switch gaps, Earlier conversation divider for hydrated history, non-bubble welcome, and one-click New chat with undo — 316 Vitest                                                                                                                                                                                                                                                                                                              | Standard / High          | Active |
 | **`grok-4.6`**             | Apple Calendar / Gmail / Luma dedupe: delete the extra Gmail Claude copy, drop Apple Work ticket duplicates, keep official invites and unique Meetup cards, and collapse Declined/Ticket/[Pending] title variants in the portfolio calendar widget so live imports do not restack the same event                                                                                                                                                                                                                                | Standard / High          | Active |
 | **`grok-4.6`**             | Close remaining GitHub CodeQL alert 105 (`js/stack-trace-exposure`): AssistMe Cloudflare Worker no longer returns `e.message` or OpenRouter error bodies on chat fallbacks, and public JSON strips Error stacks                                                                                                                                                                                                                                                                                                                 | Standard / High          | Active |
 | **`grok-4.6`**             | AssistMe intent + rich-render fix: stop greedy WebMCP intercepts (search trees, file download, contact-info Q&A), paint KaTeX `\\[ \\]` / mermaid HTML flow pills / Pollinations images / trusted chart SVG, and keep follow-up chips inside the transcript                                                                                                                                                                                                                                                                     | Standard / High          | Active |
@@ -318,7 +320,7 @@ All quality gates are enforced locally and verified automatically in GitHub Acti
 
 | Test Suite            | Runner            |        Test Count         | Scope & Coverage                                                            |
 | :-------------------- | :---------------- | :-----------------------: | :-------------------------------------------------------------------------- |
-| **Unit Tests**        | Vitest 4.1        | **314 passed** (57 files) | JS modules, services, markdown parser, WebMCP actions, data contracts       |
+| **Unit Tests**        | Vitest 4.1        | **316 passed** (57 files) | JS modules, services, markdown parser, WebMCP actions, data contracts       |
 | **API Tests**         | pytest            | **182 passed** (27 files) | FastAPI endpoints, streaming chat, health probes, OAuth token stores        |
 | **E2E Browser Tests** | Playwright        |      **16 projects**      | Multi-browser suite (Desktop Chrome, Safari, Firefox, iPhone 17, Pixel 7)   |
 | **Accessibility**     | axe-core          |    **16/16 baseline**     | Zero critical/serious WCAG violations across light, dark, and high contrast |
@@ -365,12 +367,15 @@ npm run dev
 ### 7.3 Essential Quality Commands
 
 ```bash
-npm run check             # Run ESLint + Stylelint + Prettier + 314 Vitest tests
+npm run check             # Run ESLint + Stylelint + Prettier + 316 Vitest tests
 npm run test:api          # Run 182 pytest API tests
 npm run doctor:strict     # Run 60-point strict repository layout check
 npm run security-check    # Scan for exposed API keys and credentials
 npm run build             # Production bundle compilation to dist/
 npm run qa:prod-ready     # Full pre-deployment verification matrix
+npm run playwright:mcp    # Launch Playwright MCP server for AI agent browser automation
+npm run playwright:cli    # Run Playwright CLI for ad-hoc browser commands & WebMCP tool inspection
+npm run playwright:codegen # Interactive test recording & codegen in TypeScript/Python/Java/C#
 npm run insights          # Private local-only Codex work report (zero model calls)
 ```
 

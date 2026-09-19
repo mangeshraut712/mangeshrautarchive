@@ -51,6 +51,26 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'playwright-mcp-and-cli-tooling-integration-sept-2026',
+    date: '2026-09-19',
+    type: 'improvement',
+    title: 'Integrate Playwright MCP & CLI tooling for agentic browser automation',
+    detailTitle:
+      'Configured Playwright MCP Server, Added Playwright CLI & Codegen Scripts, and Grounded Astra In-Situ Visual Verification',
+    summary:
+      'Integrated Microsoft Playwright MCP (@playwright/mcp) and Playwright CLI (@playwright/cli) into the development environment and repository tooling. Configured the Playwright MCP server across Antigravity IDE configurations (~/.gemini/antigravity/mcp_config.json, ~/.gemini/config/mcp_config.json, ~/.gemini/antigravity-ide/mcp_config.json) enabling autonomous agents to execute token-lean accessibility snapshots, in-page grep, and dynamic WebMCP tool invocation. Added npm helper scripts (playwright:mcp, playwright:cli, playwright:codegen) to package.json for interactive test recording, codegen, and terminal inspections. Synchronized documentation across AGENTS.md, README.md, and test matrices.',
+    tags: ['systems', 'deploy', 'design'],
+    sha: 'c10b29b6',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/c10b29b6`,
+    model: 'Gemini 3.8 Flash (High)',
+    ide: 'Google Antigravity IDE (AGY)',
+    purpose:
+      'Playwright MCP & CLI integration for autonomous agent browser automation and in-situ visual verification',
+    reasoning: 'High / Extended Thinking',
+    usage: 'Unavailable',
+  },
+  {
     id: 'calendar-source-dedupe-sept-2026',
     date: '2026-09-19',
     type: 'fix',

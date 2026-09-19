@@ -9,7 +9,7 @@
 
 - When creating or updating UI elements, components, cards, pages, buttons, or themes, always consult and adhere to [docs/DESIGN.md](docs/DESIGN.md) (vibrant Apple Blue `#0071e3` gradient with specular metallic shine animation, unified circular red close buttons `#ff3b30`, authentic glassmorphism, zero horizontal overflow).
 - **Multi-IDE & Multi-Model Attribution**: The portfolio is actively maintained across diverse AI coding environments and IDEs (Google Antigravity IDE / AGY, OpenAI Codex / ChatGPT, Claude Code, Cursor, GitHub Copilot). Record the coding agent or exposed model family (e.g. `GPT-6 / Codex`, `Claude Opus 4.6`, `Gemini 3.8 Flash`, `grok-4.3`) and its dedicated engineering purpose in `src/js/data/changelog-entries.js` and `README.md` for shipped changes. Record an exact model variant, reasoning mode, or token usage only when the runtime exposes it; use `unavailable` rather than guessing. Always keep the portfolio chatbot's runtime model (`api/model_router.py`) distinct from the coding agent that changed the repository.
-- **Continuous In-Situ Visual Verification (Astra Principle)**: Always verify visual work as you go. For front-end, UI/UX, 3D (Three.js), CSS animations, and video/media tasks, continuously inspect the actual rendered interface in the browser across representative desktop and mobile widths and in both light and dark themes as changes are applied, fixing observed defects before claiming completion. This materially boosts end-artifact quality across all models. Report any surface or state that could not be inspected.
+- **Continuous In-Situ Visual Verification (Astra Principle)**: Always verify visual work as you go. For front-end, UI/UX, 3D (Three.js), CSS animations, and video/media tasks, continuously inspect the actual rendered interface in the browser across representative desktop and mobile widths and in both light and dark themes as changes are applied, fixing observed defects before claiming completion. Autonomous agents leverage **Playwright MCP** (`@playwright/mcp`) for zero-bloat accessibility snapshots, in-page grep, and dynamic WebMCP tool invocation, while developers use **Playwright CLI** (`@playwright/cli` / `npm run playwright:codegen`) for interactive recording and test authoring. This materially boosts end-artifact quality across all models. Report any surface or state that could not be inspected.
 - When explaining a concept or relationship to the user, use the `visualize` skill when a visual materially improves understanding.
 - Be concise, direct, and candid. Challenge weak assumptions and distinguish verified facts from uncertainty.
 - Ground research in authoritative, current sources and link important evidence.
@@ -139,6 +139,9 @@ npm test                    # Vitest unit tests
 npm run test:api            # pytest API tests; activate venv first when required
 npm run test:e2e:chrome     # Playwright E2E — Desktop Chrome
 npm run test:e2e:all        # Playwright E2E — all 16 browser projects
+npm run playwright:mcp      # Start Playwright MCP server (agent browser automation)
+npm run playwright:cli      # Run Playwright CLI for ad-hoc browser commands
+npm run playwright:codegen  # Interactive test codegen recorder
 
 # Quality gates
 npm run check               # ESLint + Stylelint + Prettier + Vitest
@@ -196,7 +199,7 @@ npm run qa:lighthouse:vercel  # Live Vercel Lighthouse floors
      documentation files, and the commit body, record the coding agent or exposed model family and
      its dedicated purpose. Record the exact model variant, reasoning mode, and token usage only when
      the runtime exposes them; otherwise use `unavailable`.
-  3. **Run Full Quality Gate**: Run `npm run check` (ESLint + Stylelint + Prettier + Vitest 314 tests), `npm run security-check`, and `npm run build` with Node 22 (`export PATH="/opt/homebrew/opt/node@22/bin:/opt/homebrew/Cellar/node@22/22.23.2/bin:$PATH"`).
+  3. **Run Full Quality Gate**: Run `npm run check` (ESLint + Stylelint + Prettier + Vitest 316 tests), `npm run security-check`, and `npm run build` with Node 22 (`export PATH="/opt/homebrew/opt/node@22/bin:/opt/homebrew/Cellar/node@22/22.23.2/bin:$PATH"`).
   4. **Sync Documentation**: Keep test counts, architecture files, and design system rules synchronized across `README.md`, `AGENTS.md`, and `docs/DESIGN.md`.
   5. **Guarantee 100% Green CI/CD Protocol**: Always monitor GitHub Actions after every `git push` to `main` via `gh run list` / `gh run view` to confirm all remote jobs (actionlint, linting, Vitest, pytest, Playwright, Lighthouse 100/100/100/100 gates, and Pages deployment) complete with green checks. Never consider a task finished with failing remote CI runs.
 
@@ -241,7 +244,7 @@ All three test suites must pass before any merge to `main`:
 
 | Suite | Runner     | Command                | Coverage                                    |
 | ----- | ---------- | ---------------------- | ------------------------------------------- |
-| Unit  | Vitest     | `npm test`             | 314 tests — JS modules, utilities, markdown |
+| Unit  | Vitest     | `npm test`             | 316 tests — JS modules, utilities, markdown |
 | API   | pytest     | `npm run test:api`     | 182 tests — FastAPI endpoints, middleware   |
 | E2E   | Playwright | `npm run test:e2e:all` | Multi-spec suite across 16 browser projects |
 
