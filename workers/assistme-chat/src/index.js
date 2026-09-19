@@ -126,8 +126,21 @@ function corsHeaders(origin, allowed) {
   return headers;
 }
 
+function toPublicJson(data) {
+  return JSON.stringify(data, (_key, value) => {
+    if (value instanceof Error) return 'internal_error';
+    if (value && typeof value === 'object' && typeof value.stack === 'string') {
+      const copy = { ...value };
+      delete copy.stack;
+      delete copy.message;
+      return copy;
+    }
+    return value;
+  });
+}
+
 function json(data, status, extra = {}) {
-  return new Response(JSON.stringify(data), {
+  return new Response(toPublicJson(data), {
     status,
     headers: {
       'Content-Type': 'application/json; charset=utf-8',
@@ -751,8 +764,7 @@ async function handleChat(request, env, cors) {
         timeoutMs: 28_000,
       });
       if (!res.ok) {
-        const errText = await res.text().catch(() => '');
-        lastErr = `OpenRouter HTTP ${res.status}${errText ? `: ${errText.slice(0, 120)}` : ''}`;
+        lastErr = `OpenRouter HTTP ${res.status}`;
         tried.push({ model, ok: false, status: res.status });
         continue;
       }
@@ -779,8 +791,9 @@ async function handleChat(request, env, cors) {
         cors
       );
     } catch (e) {
-      lastErr = e.message || String(e);
-      tried.push({ model, ok: false, error: lastErr });
+      console.error('OpenRouter fallback request failed', e?.message || e);
+      lastErr = 'OpenRouter request failed';
+      tried.push({ model, ok: false, error: 'provider_request_failed' });
     }
   }
 
