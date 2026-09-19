@@ -279,10 +279,12 @@ function renderBlogPost(post, posts) {
   const body = `
     <div class="blog-reading-progress" id="blog-reading-progress" aria-hidden="true"></div>
     <main id="main-content" class="blog-article-main" data-post-id="${escapeHTML(post.id)}">
-      <a href="${blogIndexHref()}" class="blog-back-link"><i class="fas fa-arrow-left" aria-hidden="true"></i> All articles</a>
       <article class="blog-article blog-article--editorial x-article" data-post-id="${escapeHTML(post.id)}">
-        <header class="article-header">
+        <nav class="blog-article-nav" aria-label="Article navigation">
+          <a href="${blogIndexHref()}" class="blog-back-link"><i class="fas fa-arrow-left" aria-hidden="true"></i> All articles</a>
           <div class="article-header-tools" aria-hidden="false"></div>
+        </nav>
+        <header class="article-header">
           <p class="article-kicker">${escapeHTML(post.kicker || 'Field notes')}</p>
           <h1 class="article-title">${escapeHTML(post.title)}</h1>
           <p class="article-promise">${escapeHTML(post.readerPromise || post.summary)}</p>
