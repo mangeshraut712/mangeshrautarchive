@@ -54,16 +54,15 @@ export const changelogEntries = [
     id: 'codeql-security-hardening-zero-open-alerts',
     date: '2026-09-19',
     type: 'fix',
-    status: 'unreleased',
     title: 'CodeQL security hardening across public surfaces',
     detailTitle:
       'Remove server-side request forgery, injection, unsafe rendering, weak session identifiers, sensitive browser persistence, and public error-detail paths',
     summary:
       'Triaged all 106 GitHub CodeQL alerts against the supported security boundary. Removed the direct Firecrawl fallback fetch, replaced polynomial regex paths with linear parsing, hardened OAuth state key handling, generated cryptographic browser session IDs, escaped calendar exports, blocked model-authored SVG, escaped dynamic DOM content, kept health and geolocation data out of persistent storage, stopped logging key fragments, constrained local proxy targets and redirects, and replaced Worker exception details with generic public errors. Dismissed local QA, trusted build, hostname-selection, and vendored-library findings with evidence-backed GitHub reasons.',
     tags: ['api', 'assistme', 'deploy', 'systems'],
-    sha: null,
-    commitVerified: false,
-    link: null,
+    sha: 'b2e675b7',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/b2e675b7`,
     model: 'GPT-5 / Codex + GPT Daybreak / Codex',
     ide: 'OpenAI Codex Desktop',
     purpose:

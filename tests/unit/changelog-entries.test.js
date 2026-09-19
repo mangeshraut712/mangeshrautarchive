@@ -35,16 +35,14 @@ describe('changelog entries', () => {
     }
   });
 
-  it('requires verified provenance for published entries and keeps drafts unlinked', () => {
+  it('requires verified provenance for every published entry', () => {
     const released = changelogEntries.filter(entry => entry.status !== 'unreleased');
     const unresolved = released.filter(entry => !entry.sha || entry.commitVerified !== true);
     const unreleased = changelogEntries.filter(entry => entry.status === 'unreleased');
 
     expect(unresolved).toEqual([]);
     expect(released.every(entry => getCommitUrl(entry)?.endsWith(entry.sha))).toBe(true);
-    expect(unreleased).toHaveLength(1);
-    expect(unreleased[0]).toMatchObject({ sha: null, commitVerified: false });
-    expect(getCommitUrl(unreleased[0])).toBeNull();
+    expect(unreleased).toEqual([]);
   });
 
   it('spans multiple months from real history', () => {
