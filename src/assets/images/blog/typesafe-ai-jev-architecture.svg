@@ -1,0 +1,153 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" width="1200" height="675" style="background:#0a0a0c; font-family:-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0e1017"/>
+      <stop offset="100%" stop-color="#050608"/>
+    </linearGradient>
+    <linearGradient id="blueTile" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0071e3" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#0071e3" stop-opacity="0.05"/>
+    </linearGradient>
+    <linearGradient id="purpleTile" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#af52de" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#af52de" stop-opacity="0.05"/>
+    </linearGradient>
+    <linearGradient id="greenTile" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#34c759" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#34c759" stop-opacity="0.05"/>
+    </linearGradient>
+    <linearGradient id="orangeTile" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ff9500" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#ff9500" stop-opacity="0.05"/>
+    </linearGradient>
+    <filter id="cardGlow" x="-10%" y="-10%" width="120%" height="125%">
+      <feDropShadow dx="0" dy="10" stdDeviation="14" flood-color="#000000" flood-opacity="0.55"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="675" fill="url(#bgGrad)"/>
+
+  <!-- Header -->
+  <g transform="translate(60, 50)">
+    <rect x="0" y="0" width="195" height="28" rx="14" fill="#af52de" fill-opacity="0.2" stroke="#af52de" stroke-width="1"/>
+    <text x="97" y="18" fill="#bf5af2" font-size="12" font-weight="700" text-anchor="middle" letter-spacing="1.2">TYPESAFE AI · JEV SYSTEM 1</text>
+    <text x="0" y="58" fill="#f5f5f7" font-size="28" font-weight="800" letter-spacing="-0.5">Type-Safe AI with Jev: Fast Calibrated Decisions</text>
+    <text x="0" y="82" fill="#86868b" font-size="14" font-weight="500">State-Based Ingestion · Noul/Choice/Score Primitives · RLCD Calibration · 70–500ms Latency · $0.042/1M Tokens</text>
+  </g>
+
+  <!-- Column 1: State Ingestion & Questions -->
+  <g transform="translate(60, 165)">
+    <rect width="330" height="450" rx="18" fill="#14151b" stroke="#ffffff" stroke-opacity="0.08" stroke-width="1" filter="url(#cardGlow)"/>
+    <text x="24" y="38" fill="#a1a1a6" font-size="13" font-weight="700" letter-spacing="0.8">1. STATE &amp; QUESTIONS</text>
+    <text x="24" y="64" fill="#f5f5f7" font-size="16" font-weight="700">Declarative Input Contract</text>
+
+    <!-- Block 1.1: State Context -->
+    <g transform="translate(20, 85)">
+      <rect width="290" height="74" rx="12" fill="url(#blueTile)" stroke="#0071e3" stroke-opacity="0.3"/>
+      <text x="18" y="24" fill="#2997ff" font-size="13" font-weight="700">Unified State Context</text>
+      <text x="18" y="44" fill="#a1a1a6" font-size="11">Ingests raw text, code diffs, logs, or bash commands</text>
+      <text x="18" y="60" fill="#f5f5f7" font-size="11" font-weight="600">Single forward pass for all questions</text>
+    </g>
+
+    <!-- Block 1.2: Parallel Multi-Question Batching -->
+    <g transform="translate(20, 170)">
+      <rect width="290" height="74" rx="12" fill="url(#purpleTile)" stroke="#af52de" stroke-opacity="0.3"/>
+      <text x="18" y="24" fill="#af52de" font-size="13" font-weight="700">Parallel Question Evaluation</text>
+      <text x="18" y="44" fill="#a1a1a6" font-size="11">Ask 10+ questions simultaneously on one state</text>
+      <text x="18" y="60" fill="#f5f5f7" font-size="11" font-weight="600">Zero sequential token latency penalty</text>
+    </g>
+
+    <!-- Block 1.3: Eliminating JSON Repair Loops -->
+    <g transform="translate(20, 255)">
+      <rect width="290" height="74" rx="12" fill="url(#orangeTile)" stroke="#ff9500" stroke-opacity="0.3"/>
+      <text x="18" y="24" fill="#ff9500" font-size="13" font-weight="700">No JSON Grammar Scraping</text>
+      <text x="18" y="44" fill="#a1a1a6" font-size="11">Bypasses Pydantic / Zod retry &amp; repair loops</text>
+      <text x="18" y="60" fill="#f5f5f7" font-size="11" font-weight="600">Direct probabilistic primitives</text>
+    </g>
+
+    <!-- Block 1.4: Jevons Paradox in AI -->
+    <g transform="translate(20, 340)">
+      <rect width="290" height="85" rx="12" fill="#1c1e27" stroke="#ffffff" stroke-opacity="0.06"/>
+      <text x="18" y="26" fill="#f5f5f7" font-size="13" font-weight="700">The Jevons Paradox Effect</text>
+      <text x="18" y="48" fill="#86868b" font-size="11">Making decisions 100x faster and 1000x cheaper</text>
+      <text x="18" y="66" fill="#86868b" font-size="11">causes an explosion in embedded AI decision points</text>
+    </g>
+  </g>
+
+  <!-- Column 2: Jev Model Engine (RLCD) -->
+  <g transform="translate(425, 165)">
+    <rect width="350" height="450" rx="18" fill="#14151b" stroke="#af52de" stroke-opacity="0.35" stroke-width="1.5" filter="url(#cardGlow)"/>
+    <text x="24" y="38" fill="#af52de" font-size="13" font-weight="700" letter-spacing="0.8">2. JEV SYSTEM 1 ENGINE</text>
+    <text x="24" y="64" fill="#f5f5f7" font-size="18" font-weight="700">Calibrated Fast Thinking</text>
+
+    <!-- Engine Item 2.1: 3 Primitives -->
+    <g transform="translate(20, 85)">
+      <rect width="310" height="80" rx="12" fill="url(#blueTile)" stroke="#0071e3" stroke-opacity="0.3"/>
+      <text x="20" y="24" fill="#f5f5f7" font-size="13" font-weight="700">3 Question Primitives</text>
+      <text x="20" y="42" fill="#2997ff" font-size="11" font-weight="600">• noul: binary probability [0.0 - 1.0]</text>
+      <text x="20" y="58" fill="#bf5af2" font-size="11" font-weight="600">• choice: discrete categorical distribution</text>
+      <text x="20" y="72" fill="#ff9f0a" font-size="11" font-weight="600">• score: continuous numerical scale &amp; mean</text>
+    </g>
+
+    <!-- Engine Item 2.2: RLCD Calibration -->
+    <g transform="translate(20, 175)">
+      <rect width="310" height="80" rx="12" fill="url(#purpleTile)" stroke="#af52de" stroke-opacity="0.3"/>
+      <text x="20" y="26" fill="#f5f5f7" font-size="14" font-weight="700">RLCD Calibrated Probabilities</text>
+      <text x="20" y="46" fill="#a1a1a6" font-size="12">Trained with calibrated demonstrations</text>
+      <text x="20" y="64" fill="#bf5af2" font-size="12" font-weight="600">0.85 output = 85% empirical accuracy</text>
+    </g>
+
+    <!-- Engine Item 2.3: Ultra-Low Latency & Cost -->
+    <g transform="translate(20, 265)">
+      <rect width="310" height="80" rx="12" fill="url(#greenTile)" stroke="#34c759" stroke-opacity="0.3"/>
+      <text x="20" y="26" fill="#f5f5f7" font-size="14" font-weight="700">Sub-Second Execution &amp; Pricing</text>
+      <text x="20" y="46" fill="#a1a1a6" font-size="12">70ms – 500ms p95 response time</text>
+      <text x="20" y="64" fill="#30d158" font-size="12" font-weight="600">$0.042 per 1M tokens (~100x cheaper than LLMs)</text>
+    </g>
+
+    <!-- Engine Kahneman Footer -->
+    <rect x="20" y="360" width="310" height="65" rx="10" fill="#1c1e27" stroke="#ffffff" stroke-opacity="0.06"/>
+    <text x="35" y="388" fill="#f5f5f7" font-size="12" font-weight="700">System 1 (Jev) + System 2 (LLM)</text>
+    <text x="35" y="408" fill="#86868b" font-size="11">Fast reflexive triage leaves deep thinking to frontier models</text>
+  </g>
+
+  <!-- Column 3: Type-Safe Agent Integration -->
+  <g transform="translate(810, 165)">
+    <rect width="330" height="450" rx="18" fill="#14151b" stroke="#ffffff" stroke-opacity="0.08" stroke-width="1" filter="url(#cardGlow)"/>
+    <text x="24" y="38" fill="#a1a1a6" font-size="13" font-weight="700" letter-spacing="0.8">3. PRODUCTION INTEGRATION</text>
+    <text x="24" y="64" fill="#f5f5f7" font-size="16" font-weight="700">Agent &amp; Pipeline Patterns</text>
+
+    <!-- Pattern 3.1: Pre-Flight Command Gate -->
+    <g transform="translate(20, 85)">
+      <rect width="290" height="74" rx="12" fill="url(#blueTile)" stroke="#0071e3" stroke-opacity="0.3"/>
+      <text x="18" y="24" fill="#2997ff" font-size="13" font-weight="700">Coding Agent Sandbox Gate</text>
+      <text x="18" y="44" fill="#a1a1a6" font-size="11">Checks danger before running bash commands</text>
+      <text x="18" y="60" fill="#f5f5f7" font-size="11" font-weight="600">80ms pre-execution check: block rm -rf</text>
+    </g>
+
+    <!-- Pattern 3.2: Dynamic Bayesian Thresholds -->
+    <g transform="translate(20, 170)">
+      <rect width="290" height="74" rx="12" fill="url(#greenTile)" stroke="#34c759" stroke-opacity="0.3"/>
+      <text x="18" y="24" fill="#34c759" font-size="13" font-weight="700">Calibrated Routing Thresholds</text>
+      <text x="18" y="44" fill="#a1a1a6" font-size="11">&gt; 0.85: auto-commit / auto-deploy</text>
+      <text x="18" y="60" fill="#f5f5f7" font-size="11" font-weight="600">0.50–0.85: escalate to System 2 or human</text>
+    </g>
+
+    <!-- Pattern 3.3: Native SDKs -->
+    <g transform="translate(20, 255)">
+      <rect width="290" height="74" rx="12" fill="url(#purpleTile)" stroke="#af52de" stroke-opacity="0.3"/>
+      <text x="18" y="24" fill="#af52de" font-size="13" font-weight="700">TypeScript &amp; Python SDKs</text>
+      <text x="18" y="44" fill="#a1a1a6" font-size="11">Compile-time type checking with zero runtime parse</text>
+      <text x="18" y="60" fill="#f5f5f7" font-size="11" font-weight="600">Direct Vercel AI SDK integration</text>
+    </g>
+
+    <!-- Pattern 3.4: Semantic Guardrails -->
+    <g transform="translate(20, 340)">
+      <rect width="290" height="85" rx="12" fill="#1c1e27" stroke="#ffffff" stroke-opacity="0.06"/>
+      <text x="18" y="26" fill="#f5f5f7" font-size="13" font-weight="700">Continuous Pipeline Triage</text>
+      <text x="18" y="48" fill="#86868b" font-size="11">Spam, prompt injection, sentiment, intent</text>
+      <text x="18" y="66" fill="#86868b" font-size="11">evaluated at the edge before hitting core servers</text>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,152 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" width="1200" height="675" style="background:#0a0a0c; font-family:-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0e1017"/>
+      <stop offset="100%" stop-color="#050608"/>
+    </linearGradient>
+    <linearGradient id="blueTile" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0071e3" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#0071e3" stop-opacity="0.05"/>
+    </linearGradient>
+    <linearGradient id="greenTile" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#34c759" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#34c759" stop-opacity="0.05"/>
+    </linearGradient>
+    <linearGradient id="orangeTile" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ff9500" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#ff9500" stop-opacity="0.05"/>
+    </linearGradient>
+    <linearGradient id="purpleTile" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#af52de" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#af52de" stop-opacity="0.05"/>
+    </linearGradient>
+    <filter id="cardGlow" x="-10%" y="-10%" width="120%" height="125%">
+      <feDropShadow dx="0" dy="10" stdDeviation="14" flood-color="#000000" flood-opacity="0.55"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="675" fill="url(#bgGrad)"/>
+
+  <!-- Header -->
+  <g transform="translate(60, 50)">
+    <rect x="0" y="0" width="168" height="28" rx="14" fill="#0071e3" fill-opacity="0.2" stroke="#0071e3" stroke-width="1"/>
+    <text x="84" y="18" fill="#2997ff" font-size="12" font-weight="700" text-anchor="middle" letter-spacing="1.2">UPI ARCHITECTURE 2026</text>
+    <text x="0" y="58" fill="#f5f5f7" font-size="28" font-weight="800" letter-spacing="-0.5">UPI Tap to Pay, UPI Circle &amp; Real-Time Rails</text>
+    <text x="0" y="82" fill="#86868b" font-size="14" font-weight="500">NFC Host Card Emulation · Delegated Authorization · Interoperable Credit Lines · Offline Lite X</text>
+  </g>
+
+  <!-- Column 1: Client & Device Layer -->
+  <g transform="translate(60, 165)">
+    <rect width="330" height="450" rx="18" fill="#14151b" stroke="#ffffff" stroke-opacity="0.08" stroke-width="1" filter="url(#cardGlow)"/>
+    <text x="24" y="38" fill="#a1a1a6" font-size="13" font-weight="700" letter-spacing="0.8">1. INITIATION &amp; CLIENT LAYER</text>
+    <text x="24" y="64" fill="#f5f5f7" font-size="16" font-weight="700">Device &amp; Hardware Primitives</text>
+
+    <!-- Block 1.1: NFC HCE Tap to Pay -->
+    <g transform="translate(20, 85)">
+      <rect width="290" height="74" rx="12" fill="url(#blueTile)" stroke="#0071e3" stroke-opacity="0.3"/>
+      <text x="18" y="24" fill="#2997ff" font-size="13" font-weight="700">NFC Host Card Emulation (HCE)</text>
+      <text x="18" y="44" fill="#a1a1a6" font-size="11">13.56 MHz ISO 14443 Type A/B · NDEF parsing</text>
+      <text x="18" y="60" fill="#f5f5f7" font-size="11" font-weight="600">Replaces QR scan: 400ms tap-and-go</text>
+    </g>
+
+    <!-- Block 1.2: Biometric Passkey Bypass -->
+    <g transform="translate(20, 170)">
+      <rect width="290" height="74" rx="12" fill="url(#greenTile)" stroke="#34c759" stroke-opacity="0.3"/>
+      <text x="18" y="24" fill="#34c759" font-size="13" font-weight="700">Biometric Micro-Tx Authentication</text>
+      <text x="18" y="44" fill="#a1a1a6" font-size="11">FIDO2 / BiometricPrompt hardware keystore</text>
+      <text x="18" y="60" fill="#f5f5f7" font-size="11" font-weight="600">Bypasses 6-digit PIN under ₹500/₹2,000</text>
+    </g>
+
+    <!-- Block 1.3: UPI Lite & Offline Lite X -->
+    <g transform="translate(20, 255)">
+      <rect width="290" height="74" rx="12" fill="url(#orangeTile)" stroke="#ff9500" stroke-opacity="0.3"/>
+      <text x="18" y="24" fill="#ff9500" font-size="13" font-weight="700">UPI Lite &amp; Offline Lite X (P2P)</text>
+      <text x="18" y="44" fill="#a1a1a6" font-size="11">On-device wallet balance · Zero bank CBS call</text>
+      <text x="18" y="60" fill="#f5f5f7" font-size="11" font-weight="600">Offline peer-to-peer NFC settlement</text>
+    </g>
+
+    <!-- Block 1.4: Device Binding & Security -->
+    <g transform="translate(20, 340)">
+      <rect width="290" height="85" rx="12" fill="#1c1e27" stroke="#ffffff" stroke-opacity="0.06"/>
+      <text x="18" y="26" fill="#f5f5f7" font-size="13" font-weight="700">Cryptographic Device Binding</text>
+      <text x="18" y="48" fill="#86868b" font-size="11">SIM IMSI + Android KeyStore / iOS Secure Enclave</text>
+      <text x="18" y="66" fill="#86868b" font-size="11">Immune to SIM swapping &amp; screen scrapers</text>
+    </g>
+  </g>
+
+  <!-- Column 2: NPCI Core Switch & Routing -->
+  <g transform="translate(425, 165)">
+    <rect width="350" height="450" rx="18" fill="#14151b" stroke="#0071e3" stroke-opacity="0.35" stroke-width="1.5" filter="url(#cardGlow)"/>
+    <text x="24" y="38" fill="#0071e3" font-size="13" font-weight="700" letter-spacing="0.8">2. NPCI UNIFIED CORE SWITCH</text>
+    <text x="24" y="64" fill="#f5f5f7" font-size="18" font-weight="700">National Financial Rails</text>
+
+    <!-- Switch Item 2.1: Dual-Leg ISO 20022 Switch -->
+    <g transform="translate(20, 85)">
+      <rect width="310" height="80" rx="12" fill="url(#blueTile)" stroke="#0071e3" stroke-opacity="0.3"/>
+      <text x="20" y="26" fill="#f5f5f7" font-size="14" font-weight="700">Sub-15ms Message Routing</text>
+      <text x="20" y="46" fill="#a1a1a6" font-size="12">Dual-leg debit/credit dispatch across PSPs</text>
+      <text x="20" y="64" fill="#2997ff" font-size="12" font-weight="600">p99 end-to-end latency &lt; 1,200ms</text>
+    </g>
+
+    <!-- Switch Item 2.2: UPI Circle Delegated Authority -->
+    <g transform="translate(20, 175)">
+      <rect width="310" height="80" rx="12" fill="url(#purpleTile)" stroke="#af52de" stroke-opacity="0.3"/>
+      <text x="20" y="26" fill="#f5f5f7" font-size="14" font-weight="700">UPI Circle Delegated Payments</text>
+      <text x="20" y="46" fill="#a1a1a6" font-size="12">Primary owner sets quota (e.g. ₹5k/mo) for secondary</text>
+      <text x="20" y="64" fill="#bf5af2" font-size="12" font-weight="600">Autonomous spend without PIN or push approval</text>
+    </g>
+
+    <!-- Switch Item 2.3: Interoperable Credit Lines -->
+    <g transform="translate(20, 265)">
+      <rect width="310" height="80" rx="12" fill="url(#orangeTile)" stroke="#ff9500" stroke-opacity="0.3"/>
+      <text x="20" y="26" fill="#f5f5f7" font-size="14" font-weight="700">Credit Lines on UPI (UPI Reserve)</text>
+      <text x="20" y="46" fill="#a1a1a6" font-size="12">Pre-sanctioned bank credit lines linked as VPAs</text>
+      <text x="20" y="64" fill="#ff9f0a" font-size="12" font-weight="600">Replaces credit card POS friction with QR/NFC</text>
+    </g>
+
+    <!-- Switch Token Vault Footer -->
+    <rect x="20" y="360" width="310" height="65" rx="10" fill="#1c1e27" stroke="#ffffff" stroke-opacity="0.06"/>
+    <text x="35" y="388" fill="#30d158" font-size="12" font-weight="700">RBI Central Tokenization Vault</text>
+    <text x="35" y="408" fill="#86868b" font-size="11">CoF tokens replace raw card &amp; account identifiers</text>
+  </g>
+
+  <!-- Column 3: Merchant & Settlement Rails -->
+  <g transform="translate(810, 165)">
+    <rect width="330" height="450" rx="18" fill="#14151b" stroke="#ffffff" stroke-opacity="0.08" stroke-width="1" filter="url(#cardGlow)"/>
+    <text x="24" y="38" fill="#a1a1a6" font-size="13" font-weight="700" letter-spacing="0.8">3. CLEARING &amp; SETTLEMENT</text>
+    <text x="24" y="64" fill="#f5f5f7" font-size="16" font-weight="700">Merchant &amp; Banking Rails</text>
+
+    <!-- Merchant Item 3.1: Merchant POS & Soundbox -->
+    <g transform="translate(20, 85)">
+      <rect width="290" height="74" rx="12" fill="url(#blueTile)" stroke="#0071e3" stroke-opacity="0.3"/>
+      <text x="18" y="24" fill="#2997ff" font-size="13" font-weight="700">Smart Soundbox &amp; POS Tap Pad</text>
+      <text x="18" y="44" fill="#a1a1a6" font-size="11">Integrated NFC reader + cellular telemetry</text>
+      <text x="18" y="60" fill="#f5f5f7" font-size="11" font-weight="600">Audio chime confirmation in &lt; 900ms</text>
+    </g>
+
+    <!-- Merchant Item 3.2: Immediate Settlement -->
+    <g transform="translate(20, 170)">
+      <rect width="290" height="74" rx="12" fill="url(#greenTile)" stroke="#34c759" stroke-opacity="0.3"/>
+      <text x="18" y="24" fill="#34c759" font-size="13" font-weight="700">Remitter &amp; Beneficiary CBS</text>
+      <text x="18" y="44" fill="#a1a1a6" font-size="11">Immediate IMPS gross settlement</text>
+      <text x="18" y="60" fill="#f5f5f7" font-size="11" font-weight="600">Zero MDR for small merchants</text>
+    </g>
+
+    <!-- Merchant Item 3.3: AI Conversational UPI -->
+    <g transform="translate(20, 255)">
+      <rect width="290" height="74" rx="12" fill="url(#purpleTile)" stroke="#af52de" stroke-opacity="0.3"/>
+      <text x="18" y="24" fill="#af52de" font-size="13" font-weight="700">Conversational Voice "Hello UPI"</text>
+      <text x="18" y="44" fill="#a1a1a6" font-size="11">Bhashini AI multilingual speech-to-intent</text>
+      <text x="18" y="60" fill="#f5f5f7" font-size="11" font-weight="600">Hands-free payments across 12 languages</text>
+    </g>
+
+    <!-- Merchant Item 3.4: Fraud & Velocity Gates -->
+    <g transform="translate(20, 340)">
+      <rect width="290" height="85" rx="12" fill="#1c1e27" stroke="#ffffff" stroke-opacity="0.06"/>
+      <text x="18" y="26" fill="#f5f5f7" font-size="13" font-weight="700">Real-Time Risk &amp; Mule Detection</text>
+      <text x="18" y="48" fill="#86868b" font-size="11">Velocity anomaly triggers instant dynamic step-up</text>
+      <text x="18" y="66" fill="#86868b" font-size="11">Prevents unauthorized drain &amp; mule accounts</text>
+    </g>
+  </g>
+</svg>

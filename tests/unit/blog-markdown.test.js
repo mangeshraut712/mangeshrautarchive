@@ -61,8 +61,8 @@ desc: Routing parameters and failover policies
     expect(html).toContain('https://openrouter.ai/docs/routers');
   });
 
-  it('verifies all 16 blog posts have complete tags and metadata', () => {
-    expect(blogPosts).toHaveLength(16);
+  it('verifies all 18 blog posts have complete tags and metadata', () => {
+    expect(blogPosts).toHaveLength(18);
     blogPosts.forEach(post => {
       expect(post.id).toBeTruthy();
       expect(post.title).toBeTruthy();
@@ -105,7 +105,7 @@ caption: Figure 1.0 — Intelligent routing lanes
     );
   });
 
-  it('verifies all 16 blog posts contain rich media figures', () => {
+  it('verifies all 18 blog posts contain rich media figures', () => {
     blogPosts.forEach(post => {
       expect(post.content).toContain(':::figure');
       expect(post.content).toMatch(/src:\s*assets\/images\/blog\/[\w.-]+/);
@@ -134,5 +134,29 @@ caption: Figure 1.0 — Intelligent routing lanes
     expect(vulcanPost.content).toContain('razorpay-vulcan-architecture.svg');
     expect(vulcanPost.content).toContain('4 billion payments');
     expect(vulcanPost.content).toContain('3 trillion data points');
+  });
+
+  it('validates UPI Tap to Pay September 2026 post content', () => {
+    const upiPost = blogPosts.find(p => p.id === 'upi-tap-to-pay-and-2026-payment-architecture');
+    expect(upiPost).toBeDefined();
+    expect(upiPost.date).toBe('2026-09-14');
+    expect(upiPost.tags).toContain('UPI');
+    expect(upiPost.tags).toContain('Fintech');
+    expect(upiPost.tags).toContain('NFC');
+    expect(upiPost.content).toContain('upi-tap-to-pay-architecture.svg');
+    expect(upiPost.content).toContain('Host Card Emulation');
+    expect(upiPost.content).toContain('UPI Circle');
+  });
+
+  it('validates TypeSafe AI Jev September 2026 post content', () => {
+    const jevPost = blogPosts.find(p => p.id === 'typesafe-ai-jev-system-one-decisions-2026');
+    expect(jevPost).toBeDefined();
+    expect(jevPost.date).toBe('2026-09-18');
+    expect(jevPost.tags).toContain('TypeSafe AI');
+    expect(jevPost.tags).toContain('Jev');
+    expect(jevPost.tags).toContain('System 1');
+    expect(jevPost.content).toContain('typesafe-ai-jev-architecture.svg');
+    expect(jevPost.content).toContain('Jevons Paradox');
+    expect(jevPost.content).toContain('RLCD');
   });
 });

@@ -901,7 +901,10 @@ html.dark #projects .github-graph-legend span[data-level='4'] {
 
 /* ─── Blog / contact code & tag chips ─── */
 html:not(.dark)
-  :is(#blog pre, #blog code, body.blog-standalone-page pre, body.blog-standalone-page code) {
+  :is(#blog pre, #blog code, body.blog-standalone-page pre, body.blog-standalone-page code):not(
+    .article-code-wrap pre,
+    .article-code-wrap code
+  ) {
   background: #ffffff !important;
   border: 1px solid rgb(0 0 0 / 8%);
 }
@@ -2720,6 +2723,8 @@ html:not(.dark) :is(.article-code-wrap, .terminal-window) {
 
 html:not(.dark)
   :is(
+    body.blog-standalone-page .article-code-wrap pre,
+    body.blog-standalone-page .article-code-wrap code,
     .article-code-wrap pre,
     .article-code-wrap code,
     .terminal-window pre,
