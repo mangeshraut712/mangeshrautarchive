@@ -51,6 +51,26 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'sept-2026-blogs-upi-tap-to-pay-and-typesafe-ai-jev',
+    date: '2026-09-19',
+    type: 'release',
+    title: 'Publish September 2026 blogs on UPI Tap to Pay rails and Type-Safe AI Jev',
+    detailTitle:
+      'Authored Two Technical Articles on Real-Time Payments Architecture and System 1 Calibrated Decisions with In-Situ Visual Auditing',
+    summary:
+      'Published two deep-dive systems engineering articles for September 2026: (1) "UPI Tap to Pay, UPI Circle, and the 2026 Real-Time Payments Architecture", examining NFC Host Card Emulation (HCE), biometric micro-transaction passkeys, UPI Circle delegated spending trees, credit lines on UPI, and offline Lite X cryptographic settlement; (2) "Type-Safe AI with Jev: Fast System 1 Decisions, Calibrated Probabilities, and the Jevons Paradox", synthesizing TypeSafe AI\'s $40M seed model, Kahneman System 1/2 dual-process framing, noul/choice/score primitives, RLCD calibration, and sub-100ms agent pre-routing. Created custom dark Apple-themed vector architecture diagrams, verified 18-post markdown suite with Vitest, resolved light-mode code block background specificity in theme-solid-surfaces.css via Astra in-situ Playwright inspection, and regenerated static blog pages.',
+    tags: ['blog', 'systems', 'design'],
+    sha: '30acca08',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/30acca08`,
+    model: 'Gemini 3.8 Flash (High)',
+    ide: 'Google Antigravity IDE (AGY)',
+    purpose:
+      'Author September 2026 technical blogs on UPI Tap to Pay and TypeSafe AI Jev, create vector SVGs, resolve light-mode terminal contrast, and verify test suites',
+    reasoning: 'High / Extended Thinking',
+    usage: 'Unavailable',
+  },
+  {
     id: 'playwright-mcp-and-cli-tooling-integration-sept-2026',
     date: '2026-09-19',
     type: 'improvement',
@@ -60,9 +80,9 @@ export const changelogEntries = [
     summary:
       'Integrated Microsoft Playwright MCP (@playwright/mcp) and Playwright CLI (@playwright/cli) into the development environment and repository tooling. Configured the Playwright MCP server across Antigravity IDE configurations (~/.gemini/antigravity/mcp_config.json, ~/.gemini/config/mcp_config.json, ~/.gemini/antigravity-ide/mcp_config.json) enabling autonomous agents to execute token-lean accessibility snapshots, in-page grep, and dynamic WebMCP tool invocation. Added npm helper scripts (playwright:mcp, playwright:cli, playwright:codegen) to package.json for interactive test recording, codegen, and terminal inspections. Synchronized documentation across AGENTS.md, README.md, and test matrices.',
     tags: ['systems', 'deploy', 'design'],
-    sha: 'c10b29b6',
+    sha: '4197d82c',
     commitVerified: true,
-    link: `${CHANGELOG_REPO}/commit/c10b29b6`,
+    link: `${CHANGELOG_REPO}/commit/4197d82c`,
     model: 'Gemini 3.8 Flash (High)',
     ide: 'Google Antigravity IDE (AGY)',
     purpose:
