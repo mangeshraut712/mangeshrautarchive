@@ -35,13 +35,13 @@ describe('standalone blog page generation', () => {
     expect(article).toContain('<meta name="twitter:creator" content="@mrcommando712"');
     expect(article).toContain('<meta name="twitter:card" content="summary_large_image"');
     expect(article).toContain(
-      `<meta property="og:image" content="${PAGES_URL}/assets/images/blog/razorpay-vulcan-architecture.svg"`
+      `<meta property="og:image" content="${PAGES_URL}/assets/images/blog/razorpay-vulcan-architecture.jpg"`
     );
     expect(article).toContain('max-image-preview:large');
     expect(article).toContain('data-source="blog_article_newsletter"');
     expect(article).toContain('data-newsletter-status');
     expect(article).toContain(
-      `"image":"${PAGES_URL}/assets/images/blog/razorpay-vulcan-architecture.svg"`
+      `"image":"${PAGES_URL}/assets/images/blog/razorpay-vulcan-architecture.jpg"`
     );
   });
 });

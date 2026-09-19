@@ -582,6 +582,12 @@ function observeSectionTask(sectionId, task, rootMargin = '300px 0px') {
   let started = false;
   let observer = null;
   const hashTarget = `#${sectionId}`;
+  const matchesHash = () => {
+    const hash = window.location.hash;
+    if (hash === hashTarget) return true;
+    if (sectionId === 'blog' && hash.startsWith('#blog-read-')) return true;
+    return false;
+  };
 
   const run = () => {
     if (started) return;
@@ -597,12 +603,12 @@ function observeSectionTask(sectionId, task, rootMargin = '300px 0px') {
   };
 
   const onHashChange = () => {
-    if (window.location.hash === hashTarget) {
+    if (matchesHash()) {
       run();
     }
   };
 
-  if (window.location.hash === hashTarget) {
+  if (matchesHash()) {
     run();
     return;
   }

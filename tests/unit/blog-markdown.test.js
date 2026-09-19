@@ -120,7 +120,7 @@ caption: Figure 1.0 — Intelligent routing lanes
     expect(cursorPost.date).toBe('2026-08-06');
     expect(cursorPost.tags).toContain('Cursor');
     expect(cursorPost.tags).toContain('Cursor Origin');
-    expect(cursorPost.content).toContain('cursor-origin-architecture.svg');
+    expect(cursorPost.content).toContain('cursor-origin-architecture.jpg');
     expect(cursorPost.content).toContain('Two-Way Real-Time GitHub Sync');
     expect(cursorPost.content).toContain('Vercel');
   });
@@ -131,7 +131,7 @@ caption: Figure 1.0 — Intelligent routing lanes
     expect(vulcanPost.date).toBe('2026-08-13');
     expect(vulcanPost.tags).toContain('Razorpay Vulcan');
     expect(vulcanPost.tags).toContain('NVIDIA');
-    expect(vulcanPost.content).toContain('razorpay-vulcan-architecture.svg');
+    expect(vulcanPost.content).toContain('razorpay-vulcan-architecture.jpg');
     expect(vulcanPost.content).toContain('4 billion payments');
     expect(vulcanPost.content).toContain('3 trillion data points');
   });
@@ -143,7 +143,7 @@ caption: Figure 1.0 — Intelligent routing lanes
     expect(upiPost.tags).toContain('UPI');
     expect(upiPost.tags).toContain('Fintech');
     expect(upiPost.tags).toContain('NFC');
-    expect(upiPost.content).toContain('upi-tap-to-pay-architecture.svg');
+    expect(upiPost.content).toContain('upi-tap-to-pay-architecture.jpg');
     expect(upiPost.content).toContain('Host Card Emulation');
     expect(upiPost.content).toContain('UPI Circle');
   });
@@ -155,7 +155,7 @@ caption: Figure 1.0 — Intelligent routing lanes
     expect(jevPost.tags).toContain('TypeSafe AI');
     expect(jevPost.tags).toContain('Jev');
     expect(jevPost.tags).toContain('System 1');
-    expect(jevPost.content).toContain('typesafe-ai-jev-architecture.svg');
+    expect(jevPost.content).toContain('typesafe-ai-jev-architecture.jpg');
     expect(jevPost.content).toContain('Jevons Paradox');
     expect(jevPost.content).toContain('RLCD');
   });

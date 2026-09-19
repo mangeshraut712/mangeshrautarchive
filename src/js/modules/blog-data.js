@@ -1677,7 +1677,7 @@ I am not reprinting the keynote. I am extracting the developer contract: what yo
 ## Fast Context
 
 :::figure
-src: assets/images/blog/apple-pcc-architecture.svg
+src: assets/images/blog/apple-pcc-architecture.jpg
 alt: Apple Intelligence and Private Cloud Compute Cryptographic Architecture
 caption: Figure 13.0 — Apple Intelligence & Private Cloud Compute (PCC): On-device 3B parameter model and Secure Enclave routing to cryptographically attested Apple Silicon cloud servers with zero data retention.
 :::
@@ -1816,7 +1816,7 @@ I am not claiming a secret keynote. I am describing the pattern that makes Noteb
 ## Fast Context
 
 :::figure
-src: assets/images/blog/notebooklm-grounded-pipeline.svg
+src: assets/images/blog/notebooklm-grounded-pipeline.jpg
 alt: NotebookLM Source-Grounded Research and Audio Overview Pipeline
 caption: Figure 14.0 — NotebookLM research pipeline: Multi-source ingestion (PDF, YouTube, Docs), citation-bound vector RAG with Gemini 2.5 Flash, and dual-host Audio Overview podcast synthesis.
 :::
@@ -1954,7 +1954,7 @@ NotebookLM points toward AI research tools that are grounded, multimodal, and mu
 ## Fast Context
 
 :::figure
-src: assets/images/blog/cursor-origin-architecture.svg
+src: assets/images/blog/cursor-origin-architecture.jpg
 alt: Cursor Origin Agent-Native Development Loop and Architecture
 caption: Figure 15.0 — Cursor Origin Architecture: Moving from an extension on top of GitHub to a unified, agent-native platform: IDE → Autonomous Agents → Repositories → Pull Requests → CI → Vercel Deployments.
 :::
@@ -2125,7 +2125,7 @@ In August 2026, **Razorpay** unveiled **Vulcan**—India’s first transformer-b
 ## Fast Context
 
 :::figure
-src: assets/images/blog/razorpay-vulcan-architecture.svg
+src: assets/images/blog/razorpay-vulcan-architecture.jpg
 alt: Razorpay Vulcan Foundation Model Architecture and Production Impact
 caption: Figure 16.0 — Razorpay Vulcan Systems Architecture: 4B Payments &amp; 3T Telemetry Tokens → NVIDIA &amp; AWS Foundation Transformer → Unified Dynamic Routing, Global Fraud Detection, and Predictive Personalization.
 :::
@@ -2279,7 +2279,7 @@ Razorpay Vulcan demonstrates that foundation models are not limited to text and 
 ## Fast Context
 
 :::figure
-src: assets/images/blog/upi-tap-to-pay-architecture.svg
+src: assets/images/blog/upi-tap-to-pay-architecture.jpg
 alt: UPI Tap to Pay and 2026 Payment Rails Architecture
 caption: Figure 1.0 — End-to-end transaction topology across NFC Host Card Emulation client devices, the NPCI central switch, delegated UPI Circle authority trees, and dual-leg banking settlement rails.
 :::
@@ -2497,7 +2497,7 @@ India's UPI in 2026 demonstrates how national-scale public digital infrastructur
 ## Fast Context
 
 :::figure
-src: assets/images/blog/typesafe-ai-jev-architecture.svg
+src: assets/images/blog/typesafe-ai-jev-architecture.jpg
 alt: TypeSafe AI Jev System 1 Architecture
 caption: Figure 2.0 — TypeSafe AI's Jev model architecture: state context ingestion, parallel question evaluation across noul/choice/score primitives, RLCD calibration, and ultra-fast type-safe agent pre-routing.
 :::
