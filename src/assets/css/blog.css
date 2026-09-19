@@ -1327,7 +1327,7 @@ html.dark .article-body h2 {
 }
 
 html.dark .article-inline-code {
-  background: #000000 !important;
+  background: #1c1c1e !important;
   border-color: #3a3a3c !important;
   color: #ff9f0a !important;
   -webkit-text-fill-color: #ff9f0a !important;
@@ -1712,6 +1712,10 @@ html.dark .article-figure img {
 
 html.dark .article-figure:hover img {
   box-shadow: 0 14px 40px rgb(0 0 0 / 70%);
+}
+
+.article-figure img[src$='.svg'] {
+  object-fit: contain;
 }
 
 .article-figure figcaption {
@@ -2457,6 +2461,10 @@ html.dark .blog-article-sidebar {
   font-weight: 650;
 }
 
+html.dark .blog-article-sidebar a {
+  color: #a1a1a6;
+}
+
 html.dark .blog-article-sidebar a:hover,
 html.dark .blog-article-sidebar a:focus-visible,
 html.dark .blog-article-sidebar a.is-active {
@@ -2829,8 +2837,8 @@ html.dark .blog-filter-chips {
 }
 
 html.dark .article-table-wrap {
-  background: #000000;
-  border-color: rgb(255 255 255 / 10%);
+  background: #141416;
+  border-color: #2c2c2e;
   box-shadow: 0 4px 20px rgb(0 0 0 / 40%);
 }
 
@@ -2848,8 +2856,8 @@ html.dark .article-table-wrap {
 }
 
 html.dark .article-table thead {
-  background: rgb(255 255 255 / 5%);
-  border-bottom-color: rgb(255 255 255 / 10%);
+  background: #1c1c1e;
+  border-bottom-color: #2c2c2e;
 }
 
 .article-table th {
@@ -2868,12 +2876,12 @@ html.dark .article-table th {
 .article-table td {
   padding: 0.85rem 1.15rem;
   border-bottom: 1px solid var(--lux-border, rgb(0 0 0 / 5%));
-  color: var(--text-secondary, #6e6e73);
+  color: var(--text-primary, #1d1d1f);
 }
 
 html.dark .article-table td {
-  border-bottom-color: rgb(255 255 255 / 6%);
-  color: #a1a1a6;
+  border-bottom-color: rgb(255 255 255 / 8%);
+  color: #e5e5ea;
 }
 
 .article-table tbody tr:last-child td {
@@ -2991,6 +2999,11 @@ html.dark .article-code-header {
   background: color-mix(in srgb, #bf5af2 7%, transparent);
   border-color: color-mix(in srgb, #bf5af2 25%, transparent);
   color: var(--text-primary, #1d1d1f);
+}
+
+html.dark .article-callout--architecture,
+html.dark .article-callout--security {
+  color: #f5f5f7 !important;
 }
 
 .article-callout--architecture .article-callout__label,
