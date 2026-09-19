@@ -451,8 +451,13 @@ html.dark .suggested-prompt-btn:hover {
    MESSAGES AREA - ENHANCED WITH CUSTOM SCROLLBAR
    ═══════════════════════════════════════════════════════════ */
 #chatbot-widget #chatbot-messages {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
   flex: 1 1 auto;
   min-height: 0;
+  padding: 16px 14px 20px;
+  gap: 0;
   overflow-x: hidden;
   overflow-y: auto;
   overflow-anchor: none;
@@ -668,14 +673,62 @@ html.dark #chatbot-messages::-webkit-scrollbar-thumb:hover {
 }
 
 /* ═══════════════════════════════════════════════════════════
-   BUBBLES - iMESSAGE STYLE
+   BUBBLES - iMESSAGE / CHATGPT CLASSIC THREAD
    ═══════════════════════════════════════════════════════════ */
 .message {
-  max-width: 85%;
+  max-width: min(78%, 34rem);
+  width: fit-content;
   display: flex;
   flex-direction: column;
   gap: 4px;
+  margin: 0;
   animation: msgPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+#chatbot-widget #chatbot-messages .message + .message,
+#chatbot-widget #chatbot-messages .message[data-turn-gap='same'] {
+  margin-top: 6px;
+}
+
+#chatbot-widget #chatbot-messages .user-message + .assistant-message,
+#chatbot-widget #chatbot-messages .assistant-message + .user-message,
+#chatbot-widget #chatbot-messages .message[data-turn-gap='switch'] {
+  margin-top: 18px;
+}
+
+#chatbot-widget #chatbot-messages .welcome-message + .message,
+#chatbot-widget #chatbot-messages .chat-transcript-resume + .message {
+  margin-top: 20px;
+}
+
+#chatbot-widget #chatbot-messages .message + .thinking-indicator,
+#chatbot-widget #chatbot-messages .thinking-indicator {
+  margin-top: 14px;
+  margin-bottom: 0;
+}
+
+#chatbot-widget #chatbot-messages .chatbot-followup-chips {
+  margin-top: 12px;
+  padding-top: 4px;
+}
+
+.chat-transcript-resume {
+  align-self: center;
+  width: 100%;
+  max-width: 100%;
+  margin: 4px 0 8px;
+  padding: 0;
+  border: 0;
+  color: #6e6e73;
+  font-size: 0.75rem;
+  font-weight: 650;
+  letter-spacing: 0.04em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+html.dark .chat-transcript-resume {
+  color: #a1a1a6;
 }
 
 @keyframes msgPop {
@@ -693,6 +746,19 @@ html.dark #chatbot-messages::-webkit-scrollbar-thumb:hover {
 /* Assistant */
 .assistant-message {
   align-self: flex-start;
+}
+
+#chatbot-widget #chatbot-messages .welcome-message {
+  align-self: stretch;
+  width: 100%;
+  max-width: 100%;
+}
+
+#chatbot-widget #chatbot-messages .welcome-message .message-content {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  transform: none !important;
 }
 
 /* Welcome Message Specifics */

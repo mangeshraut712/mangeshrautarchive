@@ -3,6 +3,7 @@ import {
   shouldStreamOpenRouter,
   thinkingStageLabel,
   timeOfDayGreeting,
+  transcriptTurnGap,
   usableTranscriptTurns,
   welcomeCopy,
   WELCOME_ACTION_CHIPS,
@@ -44,6 +45,15 @@ describe('welcomeCopy', () => {
   it('warms the title for returning visitors', () => {
     const copy = welcomeCopy({ now: new Date(2026, 8, 18, 9), returning: true });
     expect(copy.title).toContain('welcome back');
+  });
+});
+
+describe('transcriptTurnGap', () => {
+  it('uses ChatGPT / iMessage spacing between speakers', () => {
+    expect(transcriptTurnGap(null, 'user')).toBe('start');
+    expect(transcriptTurnGap('user', 'user')).toBe('same');
+    expect(transcriptTurnGap('user', 'assistant')).toBe('switch');
+    expect(transcriptTurnGap('assistant', 'user')).toBe('switch');
   });
 });
 

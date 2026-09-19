@@ -259,6 +259,27 @@ export function parseNaturalLanguageReminder(rawText, baseDate = new Date()) {
   };
 }
 
+/**
+ * Collapse Gmail / Outlook / Apple / Luma title variants onto one canonical name.
+ * Strips RSVP prefixes, ticket prefixes, and status suffixes used by calendar copies.
+ */
+export function normalizeCalendarTitle(title) {
+  if (!title || typeof title !== 'string') return '';
+  return title
+    .replace(/^(?:declined|tentative|accepted|cancelled|canceled):\s*/i, '')
+    .replace(/^ticket:\s*/i, '')
+    .replace(/\s*\[(?:pending|waitlisted|attended|going|done|invited|submitted)\]\s*$/i, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+export function calendarTitlesMatch(left, right) {
+  const a = normalizeCalendarTitle(left).toLowerCase();
+  const b = normalizeCalendarTitle(right).toLowerCase();
+  if (!a || !b) return false;
+  return a === b || a.includes(b) || b.includes(a);
+}
+
 export class CalendarWidget {
   constructor(containerId) {
     this.container = document.getElementById(containerId);
@@ -312,116 +333,59 @@ export class CalendarWidget {
         icon: 'cake-candles',
         completed: false,
       },
-      // ── Live Luma Events & Community Schedule (Account: mbr63@drexel.edu) ───
-      {
-        id: 211,
-        text: "Build with AI - Code for Communities - Pre DevFest Pune'26 Workshop Series 4.0 | Thoughtworks",
-        time: 'Sep 12 · 9:00 AM',
-        dateKey: '2026-09-12',
-        category: 'events',
-        tag: 'GDG Pune',
-        color: 'green',
-        icon: 'laptop-code',
-        location: 'Thoughtworks Technologies India Private Limited',
-        lumaHost: 'GDG Pune',
-        lumaStatus: 'going',
-        lumaUrl: 'https://luma.com/o0ls3yva',
-        isLuma: true,
-        completed: false,
-      },
-      {
-        id: 212,
-        text: 'The AI Engineering Stack (+290)',
-        time: 'Sep 12 · 10:00 AM',
-        dateKey: '2026-09-12',
-        category: 'events',
-        tag: 'AI Stack',
-        color: 'green',
-        icon: 'layer-group',
-        location: 'DevX, Pune',
-        lumaHost: 'Indian Data Club',
-        lumaStatus: 'going',
-        lumaUrl: 'https://luma.com/bkdq2d6r',
-        isLuma: true,
-        completed: false,
-      },
-      {
-        id: 213,
-        text: 'Morning Sessions w/ Builders (Pune Edition) (+49)',
-        time: 'Sep 12 · 11:00 AM',
-        dateKey: '2026-09-12',
-        category: 'events',
-        tag: 'Builders',
-        color: 'green',
-        icon: 'mug-hot',
-        location: 'The Office Club, Alluring Sky',
-        lumaHost: 'Nischay Joshi & Almas',
-        lumaStatus: 'going',
-        lumaUrl: 'https://luma.com/zk2sqibt',
-        isLuma: true,
-        completed: false,
-      },
-      {
-        id: 214,
-        text: 'Astra Commons: Pune',
-        time: 'Sep 18 · 12:30 PM',
-        dateKey: '2026-09-18',
-        category: 'events',
-        tag: 'Astra',
-        color: 'green',
-        icon: 'users',
-        location: 'Pune',
-        lumaHost: 'AMAN MOGAL, Rhiannon Payne, Pauline P. Narvas & Vaibhav Srivastav',
-        lumaStatus: 'going',
-        lumaUrl: 'https://luma.com/dhbisvze',
-        isLuma: true,
-        completed: false,
-      },
+      // ── Live Luma RSVPs (signed-in Luma home, verified 2026-09-19) ─────────
+      // Upcoming: Dev Days Going lh60mh4e; Mumbai Claude Fable Going claude-Fable5.1;
+      // Hack Pending h4h-pune; Neo4j Going nsm1hg6e; Grok Philly Going cursor-hdle;
+      // Build Faster Waitlisted kcw7iwbx.
+      // Google/Meetup only (not Luma tickets): MUG Sep 26, Docker Oct 17, Drupal Oct 24.
+      // Past Going/attended: Astra dhbisvze; Sep 12 GDG/IDC/Builders; AAIF 4h0mjfzr
+      // (guest ticket tk); Codex sq2mmwfm; Cafe Cursor Pune bbs0fetq; Cafe Cursor
+      // Philly tkx269iu. Philly anniversary + Claude meetup are not Going tickets.
       {
         id: 215,
-        text: 'Dev Days | Pune, India (+336)',
+        text: 'Dev Days | Pune, India',
         time: 'Sep 19 · 9:30 AM',
         dateKey: '2026-09-19',
         category: 'events',
         tag: 'Dev Days',
-        color: 'orange',
-        icon: 'clock',
-        location: 'Data Axle Pune',
-        lumaHost: 'Dev Days, Alok Kumar & Tauqeer Ahmad',
-        lumaStatus: 'waitlisted',
+        color: 'green',
+        icon: 'laptop-code',
+        location: 'Data Axle Pune, ICC Tech Park',
+        lumaHost: 'Dev Days, Alok Kumar, chetan Pujari & Darp Lalani',
+        lumaStatus: 'going',
         lumaUrl: 'https://luma.com/lh60mh4e',
         isLuma: true,
         completed: false,
       },
       {
-        id: 216,
-        text: 'Bhopal | Claude Code Build Day - Fable 5.1',
-        time: 'Sep 20 · 11:00 AM',
-        dateKey: '2026-09-20',
+        id: 220,
+        text: 'Mumbai | Claude Fable 5.1 Build Day',
+        time: 'Sep 23 · 5:30 PM',
+        dateKey: '2026-09-23',
         category: 'events',
         tag: 'Claude',
-        color: 'purple',
+        color: 'green',
         icon: 'code',
-        location: 'Location Shown Upon Approval',
-        lumaHost: 'Aniket Sahu',
-        lumaStatus: 'pending',
-        lumaUrl: 'https://luma.com/claude-z01j',
+        location: 'K J Somaiya School of Engineering',
+        lumaHost: 'Sumeet G Doshi',
+        lumaStatus: 'going',
+        lumaUrl: 'https://luma.com/claude-Fable5.1',
         isLuma: true,
         completed: false,
       },
       {
-        id: 217,
-        text: 'Data meets AI (+110)',
-        time: 'Sep 26 · 9:30 AM',
+        id: 221,
+        text: 'Hack for Humanity: Pune',
+        time: 'Sep 26 · 9:00 AM',
         dateKey: '2026-09-26',
         category: 'events',
-        tag: 'Data AI',
-        color: 'orange',
-        icon: 'database',
-        location: 'Nutanix Technologies India Pvt Ltd',
-        lumaHost: 'Pranav Mehta & ClickHouse Team',
-        lumaStatus: 'waitlisted',
-        lumaUrl: 'https://luma.com/8fp3lum7',
+        tag: 'Hack',
+        color: 'purple',
+        icon: 'hand-holding-heart',
+        location: 'Location Shown Upon Approval',
+        lumaHost: 'AJ Green, Jigar Vyas, Shivalika Devi & Supriya Rao',
+        lumaStatus: 'pending',
+        lumaUrl: 'https://luma.com/h4h-pune',
         isLuma: true,
         completed: false,
       },
@@ -432,16 +396,164 @@ export class CalendarWidget {
         dateKey: '2026-09-26',
         category: 'events',
         tag: 'Neo4j',
-        color: 'purple',
+        color: 'green',
         icon: 'diagram-project',
-        location: 'Pune',
+        location: 'iSprout GreyStone, Pune',
         lumaHost: 'Rajat Gupta',
-        lumaStatus: 'pending',
+        lumaStatus: 'going',
         lumaUrl: 'https://luma.com/nsm1hg6e',
         isLuma: true,
         completed: false,
       },
+      {
+        id: 226,
+        text: 'MUG Pune x AAIF Pune Meetup',
+        time: 'Sep 26 · 10:30 AM',
+        dateKey: '2026-09-26',
+        category: 'events',
+        tag: 'MongoDB',
+        color: 'green',
+        icon: 'database',
+        location: 'IntraEdge, 12th Floor, DNK Square, Viman Nagar',
+        completed: false,
+      },
+      {
+        id: 222,
+        text: 'Grok Bot Meetup Philadelphia — What Are You Building With AI Agents?',
+        time: 'Sep 29 · 6:00 PM EDT',
+        dateKey: '2026-09-29',
+        category: 'events',
+        tag: 'Grok',
+        color: 'green',
+        icon: 'robot',
+        location: 'Indy Hall Clubhouse at 709 N 2nd St, Philadelphia',
+        lumaHost: 'Luis Cielak & Malcolm Jones',
+        lumaStatus: 'going',
+        lumaUrl: 'https://luma.com/cursor-hdle',
+        isLuma: true,
+        completed: false,
+      },
+      {
+        id: 223,
+        text: 'Build Faster with AI and APIs (Session 4)',
+        time: 'Oct 10 · 10:00 AM',
+        dateKey: '2026-10-10',
+        category: 'events',
+        tag: 'API',
+        color: 'orange',
+        icon: 'clock',
+        location: 'Coditas, Viman Nagar',
+        lumaHost: 'Aditya Bisht & THE API COMMUNITY',
+        lumaStatus: 'waitlisted',
+        lumaUrl: 'https://luma.com/kcw7iwbx',
+        isLuma: true,
+        completed: false,
+      },
+      {
+        id: 224,
+        text: 'Docker Pune October Meetup — Invite Only',
+        time: 'Oct 17 · 10:00 AM',
+        dateKey: '2026-10-17',
+        category: 'events',
+        tag: 'Docker',
+        color: 'blue',
+        icon: 'cubes',
+        location: 'Hewlett Packard Enterprise, Grant Road, Pune',
+        completed: false,
+      },
+      {
+        id: 225,
+        text: 'Drupal Pune Meetup — October 24, 2026',
+        time: 'Oct 24 · 9:30 AM',
+        dateKey: '2026-10-24',
+        category: 'events',
+        tag: 'Drupal',
+        color: 'blue',
+        icon: 'users',
+        location: 'QED42 (Baner)',
+        completed: false,
+      },
       // ── Past Done / Attended Luma Events ───────────────────────────
+      {
+        id: 214,
+        text: 'Astra Commons: Pune',
+        time: 'Sep 18 · 4:00 PM',
+        dateKey: '2026-09-18',
+        category: 'events',
+        tag: 'Astra',
+        color: 'blue',
+        icon: 'users',
+        location: 'Cafe MAPLE, Pune',
+        lumaHost: 'AMAN MOGAL, Rhiannon Payne, Pauline P. Narvas & Vaibhav Srivastav',
+        lumaStatus: 'done',
+        lumaUrl: 'https://luma.com/dhbisvze',
+        isLuma: true,
+        completed: true,
+      },
+      {
+        id: 211,
+        text: "Build with AI - Code for Communities - Pre DevFest Pune'26 Workshop Series 4.0 | Thoughtworks",
+        time: 'Sep 12 · 9:00 AM',
+        dateKey: '2026-09-12',
+        category: 'events',
+        tag: 'GDG Pune',
+        color: 'blue',
+        icon: 'laptop-code',
+        location: 'Thoughtworks Technologies India Private Limited',
+        lumaHost: 'GDG Pune',
+        lumaStatus: 'done',
+        lumaUrl: 'https://luma.com/o0ls3yva',
+        isLuma: true,
+        completed: true,
+      },
+      {
+        id: 212,
+        text: 'The AI Engineering Stack',
+        time: 'Sep 12 · 10:00 AM',
+        dateKey: '2026-09-12',
+        category: 'events',
+        tag: 'AI Stack',
+        color: 'blue',
+        icon: 'layer-group',
+        location: 'DevX, Pune',
+        lumaHost: 'Indian Data Club',
+        lumaStatus: 'done',
+        lumaUrl: 'https://luma.com/bkdq2d6r',
+        isLuma: true,
+        completed: true,
+      },
+      {
+        id: 213,
+        text: 'Morning Sessions w/ Builders (Pune Edition)',
+        time: 'Sep 12 · 11:00 AM',
+        dateKey: '2026-09-12',
+        category: 'events',
+        tag: 'Builders',
+        color: 'blue',
+        icon: 'mug-hot',
+        location: 'The Office Club, Alluring Sky',
+        lumaHost: 'Nischay Joshi & Almas',
+        lumaStatus: 'done',
+        lumaUrl: 'https://luma.com/zk2sqibt',
+        isLuma: true,
+        completed: true,
+      },
+      {
+        id: 219,
+        text: 'AAIF Agentic AI Day — Pune Connect #2',
+        time: 'Sep 12 · 12:30 PM',
+        dateKey: '2026-09-12',
+        category: 'events',
+        tag: 'AAIF',
+        color: 'blue',
+        icon: 'network-wired',
+        location: 'Technogise Private Limited, Viman Nagar',
+        lumaHost: 'Saurabh Mishra, Jitendra Gupta, Sagar utekar & Prerana Patil',
+        lumaStatus: 'done',
+        lumaUrl: 'https://luma.com/4h0mjfzr',
+        isLuma: true,
+        completed: true,
+      },
       {
         id: 201,
         text: 'Codex Build House - Pune (+63)',
@@ -477,22 +589,18 @@ export class CalendarWidget {
       {
         id: 205,
         text: 'Pune | Claude Code Meetup',
-        time: 'Aug 29 · 3:00 PM',
+        time: 'Aug 29 · 4:00 PM',
         dateKey: '2026-08-29',
         category: 'events',
         tag: 'Claude',
         color: 'purple',
         icon: 'code',
-        location: 'Anthropic Community & Livestream',
-        lumaHost: 'Claude Community Network',
-        lumaStatus: 'done',
-        lumaUrl: 'https://luma.com/claude-z01j',
-        isLuma: true,
+        location: 'Pune, Maharashtra',
         completed: true,
       },
       {
         id: 203,
-        text: 'Cursor Meetup Philadelphia — One Year Anniversary 🎂 (+252)',
+        text: 'Cursor Meetup Philadelphia — One Year Anniversary 🎂',
         time: 'Aug 25 · 6:00 PM EDT',
         dateKey: '2026-08-25',
         category: 'events',
@@ -500,11 +608,7 @@ export class CalendarWidget {
         color: 'blue',
         icon: 'cake-candles',
         location: 'Indy Hall Clubhouse at 709 N 2nd St, Philadelphia',
-        lumaHost: 'Luis Cielak & Malcolm Jones',
-        lumaStatus: 'done',
-        lumaUrl: 'https://luma.com/cursor-1z5g',
-        isLuma: true,
-        completed: true,
+        completed: false,
       },
       {
         id: 204,
@@ -923,12 +1027,16 @@ export class CalendarWidget {
         if (this.liveEvents.length > 0) {
           for (const ev of this.liveEvents) {
             if (!ev.title) continue;
-            const existing = this.reminders.find(
-              r =>
-                (r.eventTitle && r.eventTitle === ev.title) ||
-                r.text === ev.title ||
-                (r.dateKey && ev.date && r.dateKey === ev.date && r.text.includes(ev.title))
-            );
+            const existing = this.reminders.find(r => {
+              const sameTitle =
+                calendarTitlesMatch(r.eventTitle, ev.title) ||
+                calendarTitlesMatch(r.text, ev.title);
+              if (sameTitle) return true;
+              if (r.dateKey && ev.date && r.dateKey === ev.date) {
+                return calendarTitlesMatch(r.text, ev.title);
+              }
+              return false;
+            });
             if (!existing) {
               const lowerTitle = ev.title.toLowerCase();
               const isBirthday = lowerTitle.includes('birthday') || lowerTitle.includes('bday');

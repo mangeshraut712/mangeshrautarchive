@@ -88,3 +88,14 @@ export function usableTranscriptTurns(history) {
       m.content.trim()
   );
 }
+
+/**
+ * iMessage / ChatGPT turn spacing: stacked same-sender vs a new speaker.
+ * @param {string | null | undefined} previousRole
+ * @param {string | null | undefined} nextRole
+ * @returns {'start' | 'same' | 'switch'}
+ */
+export function transcriptTurnGap(previousRole, nextRole) {
+  if (!previousRole || !nextRole) return 'start';
+  return previousRole === nextRole ? 'same' : 'switch';
+}

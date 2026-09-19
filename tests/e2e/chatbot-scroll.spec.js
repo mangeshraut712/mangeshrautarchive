@@ -306,10 +306,7 @@ test.describe('Chatbot scroll engineering', () => {
     });
 
     const clearButton = page.locator('#chatbot-clear-btn');
-    await clearButton.focus();
-    await page.keyboard.down('Space');
-    await page.waitForTimeout(1_050);
-    await page.keyboard.up('Space');
+    await clearButton.click();
     await expect(page.locator('#chatbot-messages .welcome-message')).toBeVisible({
       timeout: 2_000,
     });

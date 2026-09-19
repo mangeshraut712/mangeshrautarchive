@@ -32,6 +32,7 @@ import {
 import {
   WELCOME_ACTION_CHIPS,
   thinkingStageLabel,
+  transcriptTurnGap,
   usableTranscriptTurns,
   welcomeCopy,
 } from '../chatbot/experience.js';
@@ -1546,7 +1547,7 @@ class AppleIntelligenceChatbot {
     this.elements.toggle?.addEventListener('click', () => this.toggleWidget());
     this.elements.closeBtn?.addEventListener('click', () => this.closeWidget());
     this.elements.backdrop?.addEventListener('click', () => this.closeWidget());
-    this.elements.clearBtn && this.bindHoldToClear(this.elements.clearBtn);
+    this.elements.clearBtn && this.bindNewChatButton(this.elements.clearBtn);
     this.elements.privacyBtn?.addEventListener('click', () => {
       privacyDashboard.open();
     });
@@ -1818,55 +1819,22 @@ class AppleIntelligenceChatbot {
   }
 
   /**
-   * Hold-to-confirm clear (dqnamo pattern): press-and-hold fill, then timed undo.
+   * ChatGPT-style New chat: one click (or Enter/Space) starts a fresh thread.
    */
-  bindHoldToClear(btn) {
-    const HOLD_MS = 900;
-    const fill = btn.querySelector('.hold-confirm-fill');
-
-    const resetHold = () => {
-      if (this._clearHold?.raf) cancelAnimationFrame(this._clearHold.raf);
-      this._clearHold = null;
-      btn.classList.remove('is-holding', 'is-armed');
-      if (fill) fill.style.transform = 'scaleX(0)';
-      btn.setAttribute('aria-label', 'Hold to clear chat');
-    };
-
-    const startHold = event => {
-      if (event.button != null && event.button !== 0) return;
+  bindNewChatButton(btn) {
+    btn.setAttribute('aria-label', 'New chat');
+    btn.setAttribute('title', 'Start a new chat');
+    const startNewChat = event => {
+      if (event?.button != null && event.button !== 0) return;
       if (this.isProcessing) return;
-      if (event.cancelable) event.preventDefault();
-      resetHold();
-      btn.classList.add('is-holding');
-      const started = performance.now();
-      const state = { raf: 0 };
-      const tick = now => {
-        const progress = Math.min(1, (now - started) / HOLD_MS);
-        if (fill) fill.style.transform = `scaleX(${progress})`;
-        if (progress >= 1) {
-          btn.classList.add('is-armed');
-          this.commitClearChat({ withUndo: true });
-          resetHold();
-          return;
-        }
-        state.raf = requestAnimationFrame(tick);
-      };
-      state.raf = requestAnimationFrame(tick);
-      this._clearHold = state;
+      this.commitClearChat({ withUndo: true });
     };
-
-    btn.addEventListener('pointerdown', startHold);
-    ['pointerup', 'pointerleave', 'pointercancel', 'blur'].forEach(type => {
-      btn.addEventListener(type, resetHold);
-    });
+    btn.addEventListener('click', startNewChat);
     btn.addEventListener('keydown', e => {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
-        startHold(e);
+        startNewChat(e);
       }
-    });
-    btn.addEventListener('keyup', e => {
-      if (e.key === 'Enter' || e.key === ' ') resetHold();
     });
   }
 
@@ -1966,8 +1934,13 @@ class AppleIntelligenceChatbot {
   // ── Enhanced Welcome Message ──────────────────────
 
   dismissWelcomeMessage() {
+    if (this._welcomeTimer) {
+      clearTimeout(this._welcomeTimer);
+      this._welcomeTimer = null;
+    }
+    this._hasPendingWelcome = false;
     this.elements.messages
-      ?.querySelectorAll('.welcome-message, .welcome-message-simplified')
+      ?.querySelectorAll('.welcome-message, .welcome-message-simplified, .chat-transcript-resume')
       .forEach(el => el.remove());
   }
 
@@ -1983,6 +1956,13 @@ class AppleIntelligenceChatbot {
       return;
     }
     this.dismissWelcomeMessage();
+    if (history.some(msg => msg.role === 'user')) {
+      const marker = document.createElement('div');
+      marker.className = 'chat-transcript-resume';
+      marker.setAttribute('role', 'separator');
+      marker.textContent = 'Earlier conversation';
+      this.appendToMessages(marker);
+    }
     for (const msg of history) {
       if (msg.role === 'user') {
         this.addMessage(msg.content, 'user');
@@ -2010,7 +1990,8 @@ class AppleIntelligenceChatbot {
     if (this._hasPendingWelcome || !this.shouldShowWelcomeMessage()) return;
     this._hasPendingWelcome = true;
 
-    setTimeout(() => {
+    this._welcomeTimer = setTimeout(() => {
+      this._welcomeTimer = null;
       this._hasPendingWelcome = false;
       if (this.shouldShowWelcomeMessage()) {
         const isReturning =
@@ -2903,6 +2884,15 @@ class AppleIntelligenceChatbot {
     const messageDiv = document.createElement('div');
     messageDiv.className = `message ${role}-message`;
     messageDiv.dataset.messageId = `msg-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
+    const painted = this.elements.messages
+      ? [...this.elements.messages.querySelectorAll(':scope > .message')].at(-1)
+      : null;
+    const previousRole = painted?.classList.contains('user-message')
+      ? 'user'
+      : painted?.classList.contains('assistant-message')
+        ? 'assistant'
+        : null;
+    messageDiv.dataset.turnGap = transcriptTurnGap(previousRole, role);
 
     const contentDiv = document.createElement('div');
     contentDiv.className = 'message-content';

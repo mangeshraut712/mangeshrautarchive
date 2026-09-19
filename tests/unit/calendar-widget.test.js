@@ -480,6 +480,30 @@ describe('Apple-style Calendar and Smart Reminders Widget', () => {
     expect(lumaLinks.some(url => url.includes('sq2mmwfm'))).toBe(true); // Codex Build House
   });
 
+  it('normalizes Gmail, Outlook, and Apple title variants so live imports do not duplicate', async () => {
+    const { normalizeCalendarTitle, calendarTitlesMatch } =
+      await import('../../src/js/modules/calendar.js');
+
+    expect(normalizeCalendarTitle('Declined: The AI Engineering Stack')).toBe(
+      'The AI Engineering Stack'
+    );
+    expect(normalizeCalendarTitle('Ticket: Cafe Cursor Pune')).toBe('Cafe Cursor Pune');
+    expect(normalizeCalendarTitle('Hack for Humanity: Pune [Pending]')).toBe(
+      'Hack for Humanity: Pune'
+    );
+    expect(normalizeCalendarTitle('Build Faster with AI and APIs (Session 4) [Waitlisted]')).toBe(
+      'Build Faster with AI and APIs (Session 4)'
+    );
+    expect(
+      calendarTitlesMatch(
+        'AAIF Agentic AI Day — Pune Connect #2 [Attended]',
+        'AAIF Agentic AI Day — Pune Connect #2'
+      )
+    ).toBe(true);
+    expect(calendarTitlesMatch('Cafe Cursor Pune', 'Cafe Cursor Philadelphia')).toBe(false);
+    expect(calendarTitlesMatch('Dev Days | Pune, India', 'Dev Days | Pune, India')).toBe(true);
+  });
+
   it('parses natural language strings into relative dates, times, categories, and tags', async () => {
     const { parseNaturalLanguageReminder } = await import('../../src/js/modules/calendar.js');
     const baseDate = new Date(2026, 8, 10); // Thu Sep 10, 2026
@@ -544,7 +568,7 @@ describe('Apple-style Calendar and Smart Reminders Widget', () => {
     const brief = widget.generateDailyBrief('2026-09-12');
     expect(brief.totalCount).toBeGreaterThanOrEqual(3);
     expect(brief.density).toBe('High Density');
-    expect(brief.summaryText).toContain('RSVP confirmed');
+    expect(brief.summaryText).toMatch(/Attended|RSVP confirmed/);
 
     // Verify rendered HUD
     const hud = document.querySelector('.ai-daily-brief-hud');

@@ -976,20 +976,22 @@ html.dark #chatbot-widget .chatbot-close-btn:hover {
   color: #ffffff !important;
 }
 
-/* Messages area: tighter padding, anchor welcome near composer */
+/* Messages area: iMessage / ChatGPT thread spacing */
 #chatbot-widget #chatbot-messages {
-  padding: 10px 10px 6px;
-  gap: 10px;
+  display: flex;
+  flex-direction: column;
+  padding: 16px 14px 20px;
+  gap: 0;
 }
 
 #chatbot-widget #chatbot-messages:not(:has(.user-message)) {
   justify-content: center;
-  padding-top: 4px;
-  padding-bottom: 4px;
+  padding-top: 20px;
+  padding-bottom: 16px;
 }
 
 #chatbot-widget .message {
-  max-width: 96%;
+  max-width: min(78%, 34rem);
 }
 
 #chatbot-widget .welcome-message.welcome-message-simplified {
