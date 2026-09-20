@@ -51,6 +51,26 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'sept-2026-chronicle-vitest-count-and-contributor-setup',
+    date: '2026-09-20',
+    type: 'improvement',
+    title: 'Resync Vitest counts and contributor setup copy in the OSS chronicle',
+    detailTitle:
+      'Aligned Contributor Docs to 318 Vitest Tests, Restored FastAPI Requirements in Setup, and Listed about.html with Page Shells',
+    summary:
+      'Light maintainer pass on the public chronicle: (1) Replaced leftover 314 Vitest figures with the current 318-test unit suite in CONTRIBUTING.md, docs/STRUCTURE.md, docs/BEST_PRACTICES.md, tests/README.md, and Copilot instructions, and corrected the BEST_PRACTICES unit+API total to 500; (2) Installed both requirements.txt and requirements-dev.txt in the CONTRIBUTING Python setup so FastAPI deps match README; (3) Named about.html alongside the other HTML page shells in README, AGENTS.md, and STRUCTURE.',
+    tags: ['other'],
+    sha: '01f3a08b',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/01f3a08b`,
+    model: 'grok-4.6',
+    ide: 'Cursor',
+    purpose:
+      'Paced OSS chronicle polish: sync test counts, contributor Python install, and page-shell inventory without a redesign',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
     id: 'sept-2026-blog-gemini-3d-images-and-modal-deep-link',
     date: '2026-09-19',
     type: 'fix',
