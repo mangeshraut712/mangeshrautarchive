@@ -25,7 +25,7 @@ mangeshrautarchive/
 ├── jsconfig.json · globals.d.ts # IDE code intelligence & ambient JS type declarations
 │
 ├── src/                      # ★ Production Frontend Source (esbuild compilation target → dist/)
-│   ├── *.html                # Page shells (index, systems, monitor, travel, uses, changelog, 404, offline)
+│   ├── *.html                # Page shells (index, systems, monitor, travel, uses, changelog, about, 404, offline)
 │   ├── js/
 │   │   ├── core/             # Application lifecycle, bootstrap, subpage chrome, theme managers
 │   │   ├── chatbot/          # Chatbot streaming engine, memory, rate-limiting, and UI controller
@@ -58,7 +58,7 @@ mangeshrautarchive/
 │   └── offline/              # Offline data builders (travel GeoJSON database)
 │
 ├── tests/                    # ★ Complete Automated Test Suite
-│   ├── unit/                 # 314 Vitest unit tests across 57 files (JS modules, WebMCP actions)
+│   ├── unit/                 # 318 Vitest unit tests across 57 files (JS modules, WebMCP actions)
 │   ├── api/                  # 182 pytest API tests across 27 files (FastAPI routes, streaming, OAuth, middleware)
 │   └── e2e/                  # Playwright multi-browser end-to-end specifications across 16 targets
 │

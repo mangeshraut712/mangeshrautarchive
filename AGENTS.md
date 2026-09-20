@@ -210,7 +210,7 @@ npm run qa:lighthouse:vercel  # Live Vercel Lighthouse floors
 ```
 mangeshrautarchive/
 ├── src/                    # Frontend source → npm run build → dist/
-│   ├── *.html              # Page shells (index, systems, monitor, travel, uses, 404, offline)
+│   ├── *.html              # Page shells (index, systems, monitor, travel, uses, changelog, about, 404, offline)
 │   ├── js/core|modules|services|utils|data|vendor/
 │   └── assets/css|images|files|icons|vendor/
 ├── api/                    # FastAPI (Vercel entry: api/index.py)
