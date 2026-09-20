@@ -51,6 +51,26 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'readme-and-actions-verification-sept-2026',
+    date: '2026-09-20',
+    type: 'improvement',
+    title: 'Rebuild the repository guide and verify the complete Pages CI gate locally',
+    detailTitle:
+      'Consolidate Architecture and Contributor Documentation, Remove Stale Release Claims, and Diagnose Account-Level Actions Lock',
+    summary:
+      'Reworked README.md into a concise source-backed guide covering product surfaces, Pages/Worker/FastAPI architecture, AssistMe routing, repository ownership, setup, canonical commands, verification layers, design, security, and multi-agent attribution. Removed permanent green-build and active-Vercel claims after live checks confirmed GitHub Pages HTTP 200, the optional custom domain HTTP 402 DEPLOYMENT_DISABLED, and GitHub Actions jobs blocked before execution by an account billing lock. Reproduced the Pages release gate locally: repo doctor 60/60, dependency and secret scans, ESLint, Stylelint, Prettier, 318 Vitest tests, API tests, production build, 16 smoke tests, 16 accessibility tests, and the mobile FPS audit.',
+    tags: ['systems', 'deploy', 'other'],
+    sha: 'd2299b35',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/d2299b35`,
+    model: 'GPT-5 / Codex',
+    ide: 'OpenAI Codex',
+    purpose:
+      'Audit repository documentation, diagnose GitHub Actions failures, and reproduce the required release gates locally',
+    reasoning: 'Unavailable',
+    usage: 'Unavailable',
+  },
+  {
     id: 'sept-2026-blog-gemini-3d-images-and-modal-deep-link',
     date: '2026-09-19',
     type: 'fix',
