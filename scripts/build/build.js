@@ -8,6 +8,7 @@ import { generateBlogPages } from './generate-blog-pages.mjs';
 import { generateCaseStudyPages } from './generate-case-study-pages.mjs';
 import { caseStudies } from '../../src/js/modules/case-studies-data.js';
 import { ASSET_VER } from './asset-version.mjs';
+import { rewriteDiscoveryHosts } from './discovery-hosts.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -498,6 +499,7 @@ async function build() {
     generateSitemap(distDir),
     generateRobotsTxt(distDir),
     generateAiTxt(distDir),
+    generateAgentMaps(distDir),
     generateFeeds(distDir),
   ]);
 
@@ -717,15 +719,7 @@ async function generateAiTxt(distDir) {
     return;
   }
 
-  let ai = await readFile(aiPath, 'utf8');
-  const legacyHosts = [
-    'https://mangeshraut.pro',
-    'https://www.mangeshraut.pro',
-    'https://mangeshraut712.github.io/mangeshrautarchive',
-  ];
-  for (const host of legacyHosts) {
-    ai = ai.split(host).join(siteUrl);
-  }
+  let ai = rewriteDiscoveryHosts(await readFile(aiPath, 'utf8'), siteUrl);
   ai = ai.replace(
     /^# Live mirror:.*$/m,
     '# Live mirror: https://mangeshraut712.github.io/mangeshrautarchive/ai.txt'
@@ -733,6 +727,24 @@ async function generateAiTxt(distDir) {
   ai = ai.replace(/^Mirror:.*$/m, 'Mirror: https://mangeshraut712.github.io/mangeshrautarchive/');
   await writeFile(aiPath, ai, 'utf8');
   console.log(`🤖 ai.txt discovery URLs → ${siteUrl}`);
+}
+
+/**
+ * llms.txt and llms-full.txt are copied from src/ with apex URLs. Those URLs
+ * 402 while Vercel is disabled, so the published agent maps must match sitemap.
+ */
+async function generateAgentMaps(distDir) {
+  const siteUrl = resolveProductionSiteUrl();
+  for (const name of ['llms.txt', 'llms-full.txt']) {
+    const filePath = resolve(distDir, name);
+    if (!(await pathExists(filePath))) {
+      console.warn(`⚠️  ${name} missing in dist — skipped discovery rewrite`);
+      continue;
+    }
+    const next = rewriteDiscoveryHosts(await readFile(filePath, 'utf8'), siteUrl);
+    await writeFile(filePath, next, 'utf8');
+    console.log(`🤖 ${name} discovery URLs → ${siteUrl}`);
+  }
 }
 
 // Minify HTML files for better PageSpeed scores

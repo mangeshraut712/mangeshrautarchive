@@ -118,10 +118,10 @@ _Enforce one formatting and style standard across the repository so reviews focu
 _Document architecture, public APIs, and non-obvious invariants so the system remains understandable years later._
 
 - **Repository Implementation:**
-  - **[`docs/STRUCTURE.md`](docs/STRUCTURE.md):** Complete directory tree and subsystem map.
-  - **[`docs/DESIGN.md`](docs/DESIGN.md):** The Apple HIG liquid glass design system and specular metallic shine rules.
-  - **[`docs/API.md`](docs/API.md):** REST and streaming NDJSON endpoint specifications.
-  - **[`AGENTS.md`](AGENTS.md):** Standardized instructions and runtime constraints for autonomous coding agents.
+  - **[`docs/STRUCTURE.md`](./STRUCTURE.md):** Complete directory tree and subsystem map.
+  - **[`docs/DESIGN.md`](./DESIGN.md):** The Apple HIG liquid glass design system and specular metallic shine rules.
+  - **[`docs/API.md`](./API.md):** REST and streaming NDJSON endpoint specifications.
+  - **[`AGENTS.md`](../AGENTS.md):** Standardized instructions and runtime constraints for autonomous coding agents.
 
 ---
 

@@ -260,9 +260,10 @@ shipped changes, their purpose, and the exposed coding model when the environmen
 
 Current documentation pass:
 
-| Coding agent  | Purpose                                                                   | Exact variant / reasoning / token usage |
-| ------------- | ------------------------------------------------------------------------- | --------------------------------------- |
-| GPT-5 / Codex | README accuracy audit, architecture consolidation, contributor onboarding | Unavailable from the active runtime     |
+| Coding agent      | Purpose                                                                                     | Exact variant / reasoning / token usage                    |
+| ----------------- | ------------------------------------------------------------------------------------------- | ---------------------------------------------------------- |
+| GPT-5 / Codex     | README accuracy audit, architecture consolidation, contributor onboarding                   | Unavailable from the active runtime                        |
+| Grok 4.7 / Cursor | Live-site audit: Pages `/contact` redirect, feed and profile-image hosts, agent-map rewrite | `grok-4.7`; reasoning unavailable; token usage unavailable |
 
 No exact variant, reasoning mode, or token count is inferred when the runtime does not expose it.
 
