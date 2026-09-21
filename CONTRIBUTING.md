@@ -47,7 +47,7 @@ python3 --version  # must be 3.12+
    ```bash
    python3 -m venv venv
    source venv/bin/activate
-   pip install -r requirements-dev.txt
+   pip install -r requirements.txt -r requirements-dev.txt
    ```
 
 4. **Verify environment readiness:**
@@ -92,10 +92,10 @@ Every pull request must pass the full quality matrix:
 
 ```bash
 # 1. Full automated quality check
-npm run check             # ESLint + Stylelint + Prettier + 314 Vitest unit tests
+npm run check             # ESLint + Stylelint + Prettier + current Vitest suite
 
 # 2. Python API test suite
-npm run test:api          # 182 pytest API endpoint & middleware tests
+npm run test:api          # pytest API endpoint and middleware suite
 
 # 3. Codebase health & secret scanning
 npm run doctor            # Root layout & framework dependency guard
