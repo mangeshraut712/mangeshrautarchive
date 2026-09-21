@@ -15,12 +15,15 @@ const hasVercelJson = existsSync(vercelPath);
 const vercelConfig = hasVercelJson ? JSON.parse(readFileSync(vercelPath, 'utf8')) : null;
 
 describe('realtime-ws mint token contract', () => {
-  it.skipIf(!hasVercelJson)('vercel rewrites /api/realtime/ws to the Node realtime-ws handler', () => {
-    const rewrite = (vercelConfig.rewrites || []).find(
-      entry => entry.source === '/api/realtime/ws'
-    );
-    expect(rewrite?.destination).toMatch(/realtime-ws/);
-  });
+  it.skipIf(!hasVercelJson)(
+    'vercel rewrites /api/realtime/ws to the Node realtime-ws handler',
+    () => {
+      const rewrite = (vercelConfig.rewrites || []).find(
+        entry => entry.source === '/api/realtime/ws'
+      );
+      expect(rewrite?.destination).toMatch(/realtime-ws/);
+    }
+  );
 
   it('Node upgrade handler requires a mint token query param before gateway mint', () => {
     expect(realtimeWsSource).toMatch(/searchParams\.get\(['"]token['"]\)/);
