@@ -14,6 +14,7 @@ const root = process.cwd();
 const publicPages = [
   'index.html',
   'about.html',
+  'contact.html',
   '404.html',
   'offline.html',
   'gh.html',
@@ -102,6 +103,17 @@ describe('public deployment contract', () => {
     expect(readProjectFile('src/sitemap.xml')).not.toContain(
       'mangeshraut712.github.io/mangeshrautarchive'
     );
+  });
+
+  it('points fetchable feed and profile-image URLs at GitHub Pages', () => {
+    const html = readProjectFile('src/index.html');
+    const pages = GITHUB_PAGES_ORIGIN;
+    expect(html).toContain(`${pages}/rss.xml`);
+    expect(html).toContain(`${pages}/feed.xml`);
+    expect(html).toContain(`${pages}/assets/images/profile.jpg`);
+    expect(html).not.toContain('https://mangeshraut.pro/rss.xml');
+    expect(html).not.toContain('https://mangeshraut.pro/feed.xml');
+    expect(html).not.toContain('https://mangeshraut.pro/assets/images/profile.jpg');
   });
 
   it('does not cache mutable favicon URLs as immutable on Vercel', () => {
