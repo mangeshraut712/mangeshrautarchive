@@ -51,6 +51,26 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'pages-contact-and-discovery-hosts-sept-2026',
+    date: '2026-09-21',
+    type: 'fix',
+    title: 'Restore the Pages contact URL and stop discovery files from advertising a paused host',
+    detailTitle:
+      'Add a contact redirect for GitHub Pages, retarget live feed and profile-image URLs, and rewrite agent maps at build time',
+    summary:
+      'Live GitHub Pages returned HTTP 404 for /contact even though the production sitemap lists it; Vercel’s /contact redirect does not apply on Pages. Added src/contact.html, matching the existing about redirect, so /contact lands on the homepage contact section. Homepage RSS and Atom alternates and the Person structured-data image were still fetching mangeshraut.pro, which returns HTTP 402 DEPLOYMENT_DISABLED; those fetchable URLs now use the GitHub Pages origin that already serves them. Build output now rewrites llms.txt and llms-full.txt the same way ai.txt and robots.txt already follow the live static host. Docs links in BEST_PRACTICES.md now resolve from docs/.',
+    tags: ['deploy', 'other'],
+    sha: '09b37c08',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/09b37c08`,
+    model: 'Grok 4.7',
+    ide: 'Cursor',
+    purpose:
+      'Fix the Pages /contact 404 and discovery links that still pointed at the paused custom domain',
+    reasoning: 'Unavailable',
+    usage: 'Unavailable',
+  },
+  {
     id: 'chronicle-contributor-guidance-sept-2026',
     date: '2026-09-21',
     type: 'improvement',
