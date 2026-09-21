@@ -51,6 +51,26 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'chronicle-contributor-guidance-sept-2026',
+    date: '2026-09-21',
+    type: 'improvement',
+    title: 'Preserve PR #107 contributor corrections without stale test-count copy',
+    detailTitle:
+      'Restore Complete Python Setup, Complete the Page-Shell Inventory, and Make Test Documentation Runner-Driven',
+    summary:
+      'Carried the useful, non-conflicting parts of draft PR #107 onto the current main documentation: contributor setup now installs both production and development Python requirements; AGENTS.md and docs/STRUCTURE.md list the about and changelog page shells; Copilot, contributor, architecture, and test guidance now points to current runner output instead of duplicating test totals that drift after additions. This preserves the PR intent while avoiding its conflicts with the rebuilt README and existing verified changelog.',
+    tags: ['systems', 'other'],
+    sha: '28c556ce',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/28c556ce`,
+    model: 'GPT-5 / Codex',
+    ide: 'OpenAI Codex',
+    purpose:
+      'Resolve PR #107 by preserving its contributor and repository-map corrections in a conflict-free main commit',
+    reasoning: 'Unavailable',
+    usage: 'Unavailable',
+  },
+  {
     id: 'readme-and-actions-verification-sept-2026',
     date: '2026-09-20',
     type: 'improvement',
