@@ -138,7 +138,6 @@ console.log('\n▸ Required root files & layout');
 const requiredRoot = [
   'package.json',
   'package-lock.json',
-  'vercel.json',
   'index.js',
   'playwright.config.js',
   'vitest.config.js',
@@ -252,18 +251,23 @@ if (unexpected.length) {
   pass('Root layout matches expected allow-list');
 }
 
-// ─── 5. vercel.json sanity ─────────────────────────────────────────────────
-console.log('\n▸ Vercel / dual-host');
-const vercel = readJson('vercel.json');
-if (vercel.framework !== null && vercel.framework !== undefined) {
-  fail(`vercel.json framework must be null (got ${JSON.stringify(vercel.framework)})`);
+// ─── 5. Hosting (Cloudflare Worker + GitHub Pages) ─────────────────────────
+console.log('\n▸ Hosting (Cloudflare Worker + GitHub Pages)');
+mustExist('workers/assistme-chat/wrangler.toml');
+if (existsSync(join(root, 'vercel.json'))) {
+  const vercel = readJson('vercel.json');
+  if (vercel.framework !== null && vercel.framework !== undefined) {
+    fail(`vercel.json framework must be null (got ${JSON.stringify(vercel.framework)})`);
+  } else {
+    pass('vercel.json present (optional) — framework: null');
+  }
+  if (vercel.outputDirectory !== 'dist') {
+    fail(`vercel.json outputDirectory should be dist (got ${vercel.outputDirectory})`);
+  } else {
+    pass('vercel.json outputDirectory: dist');
+  }
 } else {
-  pass('vercel.json framework: null (static + FastAPI)');
-}
-if (vercel.outputDirectory !== 'dist') {
-  fail(`vercel.json outputDirectory should be dist (got ${vercel.outputDirectory})`);
-} else {
-  pass('vercel.json outputDirectory: dist');
+  pass('vercel.json absent (Cloudflare Worker + GitHub Pages primary)');
 }
 const cname = readText('CNAME').trim();
 if (cname !== 'mangeshraut.pro') {

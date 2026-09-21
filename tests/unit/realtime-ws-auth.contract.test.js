@@ -1,8 +1,8 @@
 /**
  * Contract: production realtime WS must reject upgrades without a short-lived mint token.
- * vercel.json routes /api/realtime/ws → api/realtime-ws.js (not the Python FastAPI WS).
+ * Legacy Vercel routed /api/realtime/ws → api/realtime-ws.js; Cloudflare Worker is primary now.
  */
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
@@ -10,10 +10,12 @@ import { consumeMintToken, signMint } from '../../api/realtime-ws.js';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '../..');
 const realtimeWsSource = readFileSync(join(root, 'api/realtime-ws.js'), 'utf8');
-const vercelConfig = JSON.parse(readFileSync(join(root, 'vercel.json'), 'utf8'));
+const vercelPath = join(root, 'vercel.json');
+const hasVercelJson = existsSync(vercelPath);
+const vercelConfig = hasVercelJson ? JSON.parse(readFileSync(vercelPath, 'utf8')) : null;
 
 describe('realtime-ws mint token contract', () => {
-  it('vercel rewrites /api/realtime/ws to the Node realtime-ws handler', () => {
+  it.skipIf(!hasVercelJson)('vercel rewrites /api/realtime/ws to the Node realtime-ws handler', () => {
     const rewrite = (vercelConfig.rewrites || []).find(
       entry => entry.source === '/api/realtime/ws'
     );
