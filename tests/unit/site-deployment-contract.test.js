@@ -116,7 +116,12 @@ describe('public deployment contract', () => {
     expect(html).not.toContain('https://mangeshraut.pro/assets/images/profile.jpg');
   });
 
-  it('does not cache mutable favicon URLs as immutable on Vercel', () => {
+  it('does not cache mutable favicon URLs as immutable on Vercel (when vercel.json present)', () => {
+    if (!existsSync(resolve(root, 'vercel.json'))) {
+      // GitHub Pages + Cloudflare primary: cache busting is query-string (?v=) on icon URLs.
+      expect(ICON_VER.length).toBeGreaterThan(0);
+      return;
+    }
     const config = JSON.parse(readProjectFile('vercel.json'));
     const faviconHeaders = config.headers.filter(rule =>
       /^\/(?:favicon|apple-touch-icon)/.test(rule.source)

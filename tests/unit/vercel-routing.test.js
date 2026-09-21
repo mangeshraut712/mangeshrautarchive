@@ -3,21 +3,16 @@ import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 
 const root = process.cwd();
+const hasVercelJson = existsSync(resolve(root, 'vercel.json'));
 
 function readProjectFile(path) {
   return readFileSync(resolve(root, path), 'utf8');
 }
 
-describe('Vercel FastAPI routing', () => {
-  it('lets api/index.py handle nested /api routes', () => {
-    const config = JSON.parse(readProjectFile('vercel.json'));
-    const rewrites = config.rewrites ?? [];
-    const apiRewrites = rewrites.filter(rule => String(rule.source || '').startsWith('/api'));
-
-    // API rewrite is required to route all /api/* paths to index.py
-    // This ensures nested routes like /api/monitor/status work correctly
-    expect(apiRewrites.length).toBeGreaterThanOrEqual(0);
+describe('API routing surface (Cloudflare Worker + FastAPI)', () => {
+  it('keeps FastAPI nested /api routes in api/index.py', () => {
     expect(existsSync(resolve(root, 'api/index.py'))).toBe(true);
+    expect(existsSync(resolve(root, 'workers/assistme-chat/wrangler.toml'))).toBe(true);
 
     const apiEntrypoint = readProjectFile('api/index.py');
     expect(apiEntrypoint).toContain('app = FastAPI(');
@@ -26,8 +21,17 @@ describe('Vercel FastAPI routing', () => {
       '@router.get("/api/analytics/reach"'
     );
   });
+});
 
-  it('redirects duplicate HTML paths to clean URLs for SEO', () => {
+describe('Vercel FastAPI routing (optional legacy host)', () => {
+  it.skipIf(!hasVercelJson)('rewrites /api via vercel.json when present', () => {
+    const config = JSON.parse(readProjectFile('vercel.json'));
+    const rewrites = config.rewrites ?? [];
+    const apiRewrites = rewrites.filter(rule => String(rule.source || '').startsWith('/api'));
+    expect(apiRewrites.length).toBeGreaterThanOrEqual(0);
+  });
+
+  it.skipIf(!hasVercelJson)('redirects duplicate HTML paths to clean URLs for SEO', () => {
     const config = JSON.parse(readProjectFile('vercel.json'));
     const redirects = config.redirects ?? [];
     const bySource = Object.fromEntries(redirects.map(rule => [rule.source, rule]));
