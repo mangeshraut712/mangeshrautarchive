@@ -73,6 +73,7 @@ mangeshrautarchive/
 ├── .github/workflows/        # Automated CI/CD, Deployment & Health Monitoring Workflows
 │   ├── deploy.yml            # Primary CI pipeline → Quality gates → GitHub Pages deployment
 │   ├── deploy-chat-worker.yml # Deploy Cloudflare Worker edge API
+│   ├── analytics-reach-sync.yml # GA4 → edge snapshot sync (every 6h, requires GA4 SA secret)
 │   ├── github-stats-sync.yml # Daily GitHub statistics & star telemetry sync
 │   ├── health-vitals-sync.yml # Edge WHOOP / Withings cron telemetry sync
 │   ├── link-checker.yml      # Hyperlink integrity and 404 audit workflow
