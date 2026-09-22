@@ -60,40 +60,46 @@ if (requireGa && reach.ga_configured !== true) {
 const existing = await readExistingSnapshot();
 
 // Health vitals are synced by their own edge cron. Only refresh them here when a
-// live summary is reachable; otherwise keep whatever the current snapshot holds.
+// live summary is reachable and has data; otherwise keep whatever the current snapshot holds.
 let healthVitals = existing?.healthVitals || null;
 try {
   const health = await getJson('/api/health-vitals/summary');
   const hd = health.data || {};
-  healthVitals = {
-    success: true,
-    timestamp: health.timestamp || new Date().toISOString(),
-    status: health.status || 'stale',
-    source: 'edge-snapshot',
-    sourceStatus: hd.sourceStatus || health.sourceStatus || 'stale',
-    lastSyncedAt: health.lastSyncedAt || hd.lastSyncedAt || null,
-    data: {
-      date: hd.date ?? null,
-      sleepScore: hd.sleepScore ?? null,
-      recoveryScore: hd.recoveryScore ?? null,
-      strain: hd.strain ?? null,
-      restingHeartRate: hd.restingHeartRate ?? null,
-      hrvTrend: hd.hrvTrend ?? null,
-      weightTrend: hd.weightTrend ?? null,
-      lastSyncedAt: hd.lastSyncedAt ?? null,
-      sourceStatus: hd.sourceStatus ?? null,
-    },
-    refresh: {
-      stale: true,
-      attempted: false,
-      refreshed: false,
-      reason: 'edge_static_snapshot',
-      sourceHost: 'fastapi-export',
-    },
-    privacy: health.privacy || null,
-    host: 'cloudflare-worker',
-    message: 'Sanitized health vitals snapshot for GitHub Pages while Vercel FastAPI is offline.',
-  };
+  if (hd.sleepScore != null || hd.date != null) {
+    healthVitals = {
+      success: true,
+      timestamp: health.timestamp || new Date().toISOString(),
+      status: health.status || 'stale',
+      source: 'edge-snapshot',
+      sourceStatus: hd.sourceStatus || health.sourceStatus || 'stale',
+      lastSyncedAt: health.lastSyncedAt || hd.lastSyncedAt || null,
+      data: {
+        date: hd.date ?? null,
+        sleepScore: hd.sleepScore ?? null,
+        recoveryScore: hd.recoveryScore ?? null,
+        strain: hd.strain ?? null,
+        restingHeartRate: hd.restingHeartRate ?? null,
+        hrvTrend: hd.hrvTrend ?? null,
+        weightTrend: hd.weightTrend ?? null,
+        lastSyncedAt: hd.lastSyncedAt ?? null,
+        sourceStatus: hd.sourceStatus ?? null,
+      },
+      refresh: {
+        stale: true,
+        attempted: false,
+        refreshed: false,
+        reason: 'edge_static_snapshot',
+        sourceHost: 'fastapi-export',
+      },
+      privacy: health.privacy || null,
+      host: 'cloudflare-worker',
+      message: 'Sanitized health vitals snapshot for GitHub Pages while Vercel FastAPI is offline.',
+    };
+  } else if (healthVitals) {
+    console.log(
+      'Health vitals summary returned no active metrics; preserving existing snapshot health data.'
+    );
+  }
 } catch (error) {
   if (healthVitals) {
     console.warn(
