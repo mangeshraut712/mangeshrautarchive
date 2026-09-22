@@ -210,15 +210,18 @@ the source of truth instead of a fixed badge count in this document.
 
 ### Current status snapshot
 
-Verified on **September 20, 2026**:
+Verified on **September 22, 2026**:
 
 - GitHub Pages responded with HTTP `200`.
 - `mangeshraut.pro` responded with HTTP `402 DEPLOYMENT_DISABLED`; it is not the active production
   availability target.
 - GitHub code scanning reported `0` open alerts, `26` fixed alerts, and `80` dismissed alerts.
-- The latest `main` CI and scheduled monitoring runs were failing. Check the live badges and
+- The latest `main` "CI → Deploy to GitHub Pages" and scheduled monitoring runs completed
+  successfully. Individual runs can still fail transiently, so check the live badges and
   [Actions](https://github.com/mangeshraut712/mangeshrautarchive/actions) before treating a release
   as green.
+- Portfolio Reach is mirrored from Google Analytics into the Cloudflare Worker snapshot by the
+  scheduled `Portfolio reach sync` workflow, so the public counter reflects real GA4 data.
 
 Zero open scanner alerts is a dashboard state, not proof that the application is vulnerability-free.
 Dismissed alerts are not equivalent to fixed vulnerabilities.
@@ -264,6 +267,7 @@ Current documentation pass:
 | ----------------- | ------------------------------------------------------------------------------------------- | ---------------------------------------------------------- |
 | GPT-5 / Codex     | README accuracy audit, architecture consolidation, contributor onboarding                   | Unavailable from the active runtime                        |
 | Grok 4.7 / Cursor | Live-site audit: Pages `/contact` redirect, feed and profile-image hosts, agent-map rewrite | `grok-4.7`; reasoning unavailable; token usage unavailable |
+| Claude / Cursor   | README status-snapshot refresh (Sep 22 CI + host facts) and GA4 reach-sync note             | Unavailable from the active runtime                        |
 
 No exact variant, reasoning mode, or token count is inferred when the runtime does not expose it.
 
