@@ -1,6 +1,6 @@
 /** Auto-exported FastAPI/GA snapshot for GitHub Pages edge (Vercel offline). */
 export const EDGE_DATA_SNAPSHOT = {
-  exportedAt: '2026-09-22T17:00:01.864Z',
+  exportedAt: '2026-09-22T21:22:52.844Z',
   reach: {
     success: true,
     total_reach: 10870,
@@ -13,12 +13,12 @@ export const EDGE_DATA_SNAPSHOT = {
     message: 'Portfolio Reach mirrored from GA4/FastAPI for GitHub Pages (Vercel offline).',
     insights: {
       unique_visitors: 10870,
-      unique_visitors_this_week: 37,
+      unique_visitors_this_week: 40,
       countries_this_week: 9,
-      sessions_this_week: 42,
-      total_views_all_time: 13595,
+      sessions_this_week: 45,
+      total_views_all_time: 13600,
       active_users_all_time: 10870,
-      event_count_all_time: 47643,
+      event_count_all_time: 47659,
       active_users_last_30_mins: 0,
       realtime_countries: [],
       realtime_fresh: false,
@@ -26,15 +26,15 @@ export const EDGE_DATA_SNAPSHOT = {
       metric_weekly_label: 'Active Users',
       avg_views_per_day: 0,
       portfolio_age_days: 1,
-      last_updated: '2026-09-22T17:00:01.831321Z',
+      last_updated: '2026-09-22T21:22:52.811562Z',
       top_countries: [
         {
           country: 'India',
-          users: 63,
+          users: 65,
         },
         {
           country: 'United States',
-          users: 37,
+          users: 38,
         },
         {
           country: 'Sweden',
@@ -99,20 +99,20 @@ export const EDGE_DATA_SNAPSHOT = {
         },
         {
           date: '2026-09-21',
-          views: 17,
-          visitors: 15,
-          sessions: 15,
+          views: 20,
+          visitors: 16,
+          sessions: 16,
         },
         {
           date: '2026-09-22',
-          views: 12,
-          visitors: 6,
-          sessions: 7,
+          views: 14,
+          visitors: 8,
+          sessions: 9,
         },
       ],
       trend_metric: 'visitors',
     },
-    timestamp: '2026-09-22T17:00:01.831321Z',
+    timestamp: '2026-09-22T21:22:52.811562Z',
   },
   healthVitals: {
     success: true,
