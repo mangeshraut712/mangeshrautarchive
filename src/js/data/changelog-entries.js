@@ -51,6 +51,26 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'portfolio-reach-ga4-edge-sync-sept-2026',
+    date: '2026-09-22',
+    type: 'fix',
+    title: 'Unfreeze Portfolio Reach counter with automated GA4 edge sync pipeline',
+    detailTitle:
+      'Scheduled GA4 to Cloudflare Edge sync workflow, Prettier-formatted snapshot writer, and PAT-authenticated branch protection bypass',
+    summary:
+      'Unfroze the Portfolio Reach widget which was stuck at 11K due to a stale static snapshot from July 2026 following the Vercel migration. Added .github/workflows/analytics-reach-sync.yml running every 6 hours to boot the FastAPI backend with the GA4 service account, query the live Google Analytics Data API, and update workers/assistme-chat/src/edge-data-snapshot.js with live reach and country insights. Hardened scripts/deployment/export-edge-snapshots.mjs with REQUIRE_GA guard and health-vitals metric preservation. Formatted snapshot output with Prettier and authorized direct branch sync using GH_PAT with automated fallback.',
+    tags: ['api', 'deploy', 'assistme'],
+    sha: 'ef05487c',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/ef05487c`,
+    model: 'Gemini 3.8 Flash / Claude Opus 4.6',
+    ide: 'Google Antigravity',
+    purpose:
+      'Unfreeze Portfolio Reach counter via automated GA4 edge sync pipeline and ensure 100% green GitHub Actions CI/CD',
+    reasoning: 'Unavailable',
+    usage: 'Unavailable',
+  },
+  {
     id: 'pages-contact-and-discovery-hosts-sept-2026',
     date: '2026-09-21',
     type: 'fix',

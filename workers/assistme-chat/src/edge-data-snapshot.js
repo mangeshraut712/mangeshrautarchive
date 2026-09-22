@@ -1,145 +1,146 @@
 /** Auto-exported FastAPI/GA snapshot for GitHub Pages edge (Vercel offline). */
 export const EDGE_DATA_SNAPSHOT = {
-  "exportedAt": "2026-09-22T07:13:25.389Z",
-  "reach": {
-    "success": true,
-    "total_reach": 10862,
-    "source": "edge-ga-snapshot",
-    "ga_enabled": true,
-    "ga_configured": false,
-    "analytics_url": "https://analytics.google.com/analytics/web/#/a394742220p537627192/reports/intelligenthome",
-    "host": "cloudflare-worker",
-    "message": "Portfolio Reach mirrored from GA4/FastAPI for GitHub Pages (Vercel offline).",
-    "insights": {
-      "unique_visitors": 10862,
-      "unique_visitors_this_week": 32,
-      "countries_this_week": 9,
-      "sessions_this_week": 36,
-      "total_views_all_time": 13584,
-      "active_users_all_time": 10862,
-      "event_count_all_time": 47614,
-      "active_users_last_30_mins": 0,
-      "realtime_countries": [],
-      "realtime_fresh": false,
-      "metric_primary_label": "Total Reach",
-      "metric_weekly_label": "Active Users",
-      "avg_views_per_day": 0,
-      "portfolio_age_days": 1,
-      "last_updated": "2026-09-22T07:13:25.356826Z",
-      "top_countries": [
+  exportedAt: '2026-09-22T07:13:25.389Z',
+  reach: {
+    success: true,
+    total_reach: 10862,
+    source: 'edge-ga-snapshot',
+    ga_enabled: true,
+    ga_configured: false,
+    analytics_url:
+      'https://analytics.google.com/analytics/web/#/a394742220p537627192/reports/intelligenthome',
+    host: 'cloudflare-worker',
+    message: 'Portfolio Reach mirrored from GA4/FastAPI for GitHub Pages (Vercel offline).',
+    insights: {
+      unique_visitors: 10862,
+      unique_visitors_this_week: 32,
+      countries_this_week: 9,
+      sessions_this_week: 36,
+      total_views_all_time: 13584,
+      active_users_all_time: 10862,
+      event_count_all_time: 47614,
+      active_users_last_30_mins: 0,
+      realtime_countries: [],
+      realtime_fresh: false,
+      metric_primary_label: 'Total Reach',
+      metric_weekly_label: 'Active Users',
+      avg_views_per_day: 0,
+      portfolio_age_days: 1,
+      last_updated: '2026-09-22T07:13:25.356826Z',
+      top_countries: [
         {
-          "country": "India",
-          "users": 60
+          country: 'India',
+          users: 60,
         },
         {
-          "country": "United States",
-          "users": 35
+          country: 'United States',
+          users: 35,
         },
         {
-          "country": "Sweden",
-          "users": 2
+          country: 'Sweden',
+          users: 2,
         },
         {
-          "country": "United Kingdom",
-          "users": 2
+          country: 'United Kingdom',
+          users: 2,
         },
         {
-          "country": "Canada",
-          "users": 1
+          country: 'Canada',
+          users: 1,
         },
         {
-          "country": "Israel",
-          "users": 1
+          country: 'Israel',
+          users: 1,
         },
         {
-          "country": "Netherlands",
-          "users": 1
+          country: 'Netherlands',
+          users: 1,
         },
         {
-          "country": "Russia",
-          "users": 1
+          country: 'Russia',
+          users: 1,
         },
         {
-          "country": "Vietnam",
-          "users": 1
-        }
+          country: 'Vietnam',
+          users: 1,
+        },
       ],
-      "countries_mode": "period",
-      "trend": [
+      countries_mode: 'period',
+      trend: [
         {
-          "date": "2026-09-16",
-          "views": 4,
-          "visitors": 3,
-          "sessions": 4
+          date: '2026-09-16',
+          views: 4,
+          visitors: 3,
+          sessions: 4,
         },
         {
-          "date": "2026-09-17",
-          "views": 0,
-          "visitors": 0,
-          "sessions": 0
+          date: '2026-09-17',
+          views: 0,
+          visitors: 0,
+          sessions: 0,
         },
         {
-          "date": "2026-09-18",
-          "views": 7,
-          "visitors": 6,
-          "sessions": 7
+          date: '2026-09-18',
+          views: 7,
+          visitors: 6,
+          sessions: 7,
         },
         {
-          "date": "2026-09-19",
-          "views": 3,
-          "visitors": 2,
-          "sessions": 2
+          date: '2026-09-19',
+          views: 3,
+          visitors: 2,
+          sessions: 2,
         },
         {
-          "date": "2026-09-20",
-          "views": 4,
-          "visitors": 3,
-          "sessions": 3
+          date: '2026-09-20',
+          views: 4,
+          visitors: 3,
+          sessions: 3,
         },
         {
-          "date": "2026-09-21",
-          "views": 17,
-          "visitors": 15,
-          "sessions": 15
+          date: '2026-09-21',
+          views: 17,
+          visitors: 15,
+          sessions: 15,
         },
         {
-          "date": "2026-09-22",
-          "views": 1,
-          "visitors": 1,
-          "sessions": 1
-        }
+          date: '2026-09-22',
+          views: 1,
+          visitors: 1,
+          sessions: 1,
+        },
       ],
-      "trend_metric": "visitors"
+      trend_metric: 'visitors',
     },
-    "timestamp": "2026-09-22T07:13:25.356826Z"
+    timestamp: '2026-09-22T07:13:25.356826Z',
   },
-  "healthVitals": {
-    "success": true,
-    "timestamp": "2026-07-19T08:40:21.882544Z",
-    "status": "live",
-    "source": "edge-snapshot",
-    "sourceStatus": "synced",
-    "lastSyncedAt": "2026-07-19T08:35:09+00:00",
-    "data": {
-      "date": "2026-07-19",
-      "sleepScore": 80,
-      "recoveryScore": 40,
-      "strain": 4.2,
-      "restingHeartRate": 63,
-      "hrvTrend": "stable",
-      "weightTrend": "102.2 kg · 67.4% muscle · 29.1% fat",
-      "lastSyncedAt": "2026-07-19T08:35:09+00:00",
-      "sourceStatus": "synced"
+  healthVitals: {
+    success: true,
+    timestamp: '2026-07-19T08:40:21.882544Z',
+    status: 'live',
+    source: 'edge-snapshot',
+    sourceStatus: 'synced',
+    lastSyncedAt: '2026-07-19T08:35:09+00:00',
+    data: {
+      date: '2026-07-19',
+      sleepScore: 80,
+      recoveryScore: 40,
+      strain: 4.2,
+      restingHeartRate: 63,
+      hrvTrend: 'stable',
+      weightTrend: '102.2 kg · 67.4% muscle · 29.1% fat',
+      lastSyncedAt: '2026-07-19T08:35:09+00:00',
+      sourceStatus: 'synced',
     },
-    "refresh": {
-      "stale": true,
-      "attempted": false,
-      "refreshed": false,
-      "reason": "edge_static_snapshot",
-      "sourceHost": "fastapi-export"
+    refresh: {
+      stale: true,
+      attempted: false,
+      refreshed: false,
+      reason: 'edge_static_snapshot',
+      sourceHost: 'fastapi-export',
     },
-    "privacy": "Public health payload is deliberately limited to daily summary metrics and trends.",
-    "host": "cloudflare-worker",
-    "message": "Sanitized health vitals snapshot for GitHub Pages while Vercel FastAPI is offline."
-  }
+    privacy: 'Public health payload is deliberately limited to daily summary metrics and trends.',
+    host: 'cloudflare-worker',
+    message: 'Sanitized health vitals snapshot for GitHub Pages while Vercel FastAPI is offline.',
+  },
 };

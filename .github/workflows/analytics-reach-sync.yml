@@ -98,7 +98,9 @@ jobs:
         env:
           API_BASE: http://127.0.0.1:8001
           REQUIRE_GA: '1'
-        run: node scripts/deployment/export-edge-snapshots.mjs
+        run: |
+          node scripts/deployment/export-edge-snapshots.mjs
+          npx prettier --write workers/assistme-chat/src/edge-data-snapshot.js
 
       - name: Stop backend
         if: always() && steps.gate.outputs.run == 'true'
@@ -115,6 +117,7 @@ jobs:
         run: |
           set -euo pipefail
           SNAPSHOT="workers/assistme-chat/src/edge-data-snapshot.js"
+          npx prettier --write "$SNAPSHOT"
           if git diff --quiet -- "$SNAPSHOT"; then
             echo "Reach snapshot unchanged — nothing to publish."
             exit 0

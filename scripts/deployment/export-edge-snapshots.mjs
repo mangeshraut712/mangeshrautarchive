@@ -165,11 +165,18 @@ const snapshot = {
   },
 };
 
-const body =
+let content =
   '/** Auto-exported FastAPI/GA snapshot for GitHub Pages edge (Vercel offline). */\n' +
   `export const EDGE_DATA_SNAPSHOT = ${JSON.stringify(snapshot, null, 2)};\n`;
 
-fs.writeFileSync(outFile, body);
+try {
+  const prettier = await import('prettier');
+  content = await prettier.format(content, { filepath: outFile });
+} catch {
+  // Prettier is optional in standalone environments
+}
+
+fs.writeFileSync(outFile, content);
 console.log(
   `Wrote ${path.relative(root, outFile)} reach=${snapshot.reach.total_reach} ` +
     `ga_configured_source=${reach.ga_configured} sleep=${snapshot.healthVitals?.data?.sleepScore}`
