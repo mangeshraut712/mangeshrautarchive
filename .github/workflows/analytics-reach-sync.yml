@@ -1,0 +1,131 @@
+# Portfolio Reach sync (GA4 → Cloudflare edge snapshot)
+#
+# Keeps the "Portfolio Reach" number accurate while Vercel is offline. Boots the
+# FastAPI backend with the GA4 service account, re-exports the edge snapshot
+# consumed by the Cloudflare Worker (workers/assistme-chat/src/edge-data-snapshot.js),
+# commits it, and dispatches the worker deploy so GitHub Pages shows fresh numbers.
+#
+# Required secret:
+#   GOOGLE_ANALYTICS_SERVICE_ACCOUNT_JSON — GA4 service-account key JSON. The
+#     service account must have Viewer access on GA4 property 537627192.
+# Optional repository variables (fall back to the portfolio defaults):
+#   GA4_PROPERTY_ID (537627192), GA4_ACCOUNT_ID (394742220)
+#
+# The job self-skips when the GA4 secret is absent, so it never overwrites the
+# live snapshot with mock/store fallback numbers.
+
+name: Portfolio reach sync (GA4 → edge)
+
+on:
+  schedule:
+    # Every 6 hours (offset to avoid the top-of-hour cron rush)
+    - cron: '17 */6 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: analytics-reach-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    name: Refresh reach snapshot from GA4
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - name: Gate on GA4 secret
+        id: gate
+        env:
+          GA_JSON: ${{ secrets.GOOGLE_ANALYTICS_SERVICE_ACCOUNT_JSON }}
+        run: |
+          if [ -z "${GA_JSON:-}" ]; then
+            echo "::warning::GOOGLE_ANALYTICS_SERVICE_ACCOUNT_JSON is not set — skipping reach sync."
+            echo "run=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Checkout
+        if: steps.gate.outputs.run == 'true'
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        if: steps.gate.outputs.run == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Setup Python
+        if: steps.gate.outputs.run == 'true'
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install backend dependencies
+        if: steps.gate.outputs.run == 'true'
+        run: pip install -r requirements.txt
+
+      - name: Start FastAPI backend
+        if: steps.gate.outputs.run == 'true'
+        env:
+          GOOGLE_ANALYTICS_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_ANALYTICS_SERVICE_ACCOUNT_JSON }}
+          GA4_PROPERTY_ID: ${{ vars.GA4_PROPERTY_ID || '537627192' }}
+          GA4_ACCOUNT_ID: ${{ vars.GA4_ACCOUNT_ID || '394742220' }}
+          NO_RELOAD: '1'
+        run: |
+          set -euo pipefail
+          python -m uvicorn api.index:app --host 127.0.0.1 --port 8001 > /tmp/uvicorn.log 2>&1 &
+          echo $! > /tmp/uvicorn.pid
+          for attempt in $(seq 1 30); do
+            if curl -sf http://127.0.0.1:8001/api/health > /dev/null; then
+              echo "Backend healthy after ${attempt}s"
+              exit 0
+            fi
+            sleep 1
+          done
+          echo "::error::FastAPI backend failed to start"
+          cat /tmp/uvicorn.log || true
+          exit 1
+
+      - name: Export reach snapshot (real GA4 only)
+        if: steps.gate.outputs.run == 'true'
+        env:
+          API_BASE: http://127.0.0.1:8001
+          REQUIRE_GA: '1'
+        run: node scripts/deployment/export-edge-snapshots.mjs
+
+      - name: Stop backend
+        if: always() && steps.gate.outputs.run == 'true'
+        run: |
+          if [ -f /tmp/uvicorn.pid ]; then
+            kill "$(cat /tmp/uvicorn.pid)" 2>/dev/null || true
+          fi
+
+      - name: Commit & dispatch worker deploy if changed
+        if: steps.gate.outputs.run == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          SNAPSHOT="workers/assistme-chat/src/edge-data-snapshot.js"
+          if git diff --quiet -- "$SNAPSHOT"; then
+            echo "Reach snapshot unchanged — nothing to publish."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add "$SNAPSHOT"
+          git commit -m "chore(analytics): refresh edge reach snapshot from GA4 [skip ci]"
+          git push origin HEAD:main
+          # GITHUB_TOKEN pushes do not trigger workflows, so dispatch the deploy explicitly.
+          gh workflow run deploy-chat-worker.yml --ref main || \
+            echo "::warning::Could not dispatch deploy-chat-worker.yml; deploy it manually."
+          {
+            echo "## Portfolio reach sync"
+            echo "- Snapshot updated and worker deploy dispatched."
+          } >> "$GITHUB_STEP_SUMMARY"
