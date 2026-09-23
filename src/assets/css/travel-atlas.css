@@ -2621,6 +2621,48 @@ html.dark body.travel-body .travel-action.active {
   -webkit-text-fill-color: #ff8a80 !important;
 }
 
+body.travel-body #route-layer-toggle.active {
+  background: color-mix(in srgb, var(--apple-blue, #0071e3) 16%, var(--travel-surface)) !important;
+  border-color: var(--apple-blue, #0071e3) !important;
+  color: #0071e3 !important;
+  -webkit-text-fill-color: #0071e3 !important;
+}
+
+html.dark body.travel-body #route-layer-toggle.active {
+  background: color-mix(in srgb, #2997ff 18%, rgba(255, 255, 255, 0.05)) !important;
+  border-color: rgba(41, 151, 255, 0.5) !important;
+  color: #2997ff !important;
+  -webkit-text-fill-color: #2997ff !important;
+}
+
+body.travel-body #spotlight-tour.active {
+  background: color-mix(in srgb, var(--apple-blue, #0071e3) 16%, var(--travel-surface)) !important;
+  border-color: var(--apple-blue, #0071e3) !important;
+  color: #0071e3 !important;
+  -webkit-text-fill-color: #0071e3 !important;
+}
+
+html.dark body.travel-body #spotlight-tour.active {
+  background: color-mix(in srgb, #2997ff 18%, rgba(255, 255, 255, 0.05)) !important;
+  border-color: rgba(41, 151, 255, 0.5) !important;
+  color: #2997ff !important;
+  -webkit-text-fill-color: #2997ff !important;
+}
+
+body.travel-body #featured-toggle.active {
+  background: color-mix(in srgb, #ff9f0a 16%, var(--travel-surface)) !important;
+  border-color: #ff9f0a !important;
+  color: #b25000 !important;
+  -webkit-text-fill-color: #b25000 !important;
+}
+
+html.dark body.travel-body #featured-toggle.active {
+  background: color-mix(in srgb, #ffd60a 18%, rgba(255, 255, 255, 0.05)) !important;
+  border-color: rgba(255, 214, 10, 0.5) !important;
+  color: #ffd60a !important;
+  -webkit-text-fill-color: #ffd60a !important;
+}
+
 body.travel-body .travel-stop.active {
   border-color: var(--travel-blue) !important;
   box-shadow: none !important;

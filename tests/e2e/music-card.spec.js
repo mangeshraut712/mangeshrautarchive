@@ -1,13 +1,15 @@
 import fs from 'node:fs';
+import path from 'node:path';
 import { test, expect } from '@playwright/test';
 import { gotoSiteReady } from './helpers/site.js';
 
-const safeScreenshot = async (page, filePath) => {
+const safeScreenshot = async (page, fileName) => {
   try {
-    const dir = filePath.substring(0, filePath.lastIndexOf('/'));
-    if (!fs.existsSync(dir)) {
-      fs.mkdirSync(dir, { recursive: true });
+    const outDir = path.resolve('artifacts/audit_screens');
+    if (!fs.existsSync(outDir)) {
+      fs.mkdirSync(outDir, { recursive: true });
     }
+    const filePath = path.isAbsolute(fileName) ? fileName : path.join(outDir, fileName);
     await page.screenshot({ path: filePath });
   } catch {
     // Graceful fallback for CI environments where local artifact dir does not exist
@@ -53,10 +55,7 @@ test.describe('Apple Music Card — Permanent Compact Player & UX Polish', () =>
     await expect(page.locator('#music-expand-btn')).toHaveCount(0);
 
     // 3. Capture screenshot in Light mode
-    await safeScreenshot(
-      page,
-      '/Users/mangeshraut/.gemini/antigravity/brain/b43c31db-0fa8-4790-bb36-99c700e6edfc/audit_screens/music_card_permanent_light.png'
-    );
+    await safeScreenshot(page, 'music_card_permanent_light.png');
 
     // 4. Test Spotify hover state — icon must be crisp white on green background
     await spotifyLink.hover();
@@ -68,10 +67,7 @@ test.describe('Apple Music Card — Permanent Compact Player & UX Polish', () =>
     // In CSS rgb(255, 255, 255) is white
     expect(spotifyIconColor).toBe('rgb(255, 255, 255)');
 
-    await safeScreenshot(
-      page,
-      '/Users/mangeshraut/.gemini/antigravity/brain/b43c31db-0fa8-4790-bb36-99c700e6edfc/audit_screens/music_card_spotify_hover.png'
-    );
+    await safeScreenshot(page, 'music_card_spotify_hover.png');
 
     // 5. Test Dark theme toggle
     const themeBtn = page.locator('#theme-toggle');
@@ -79,10 +75,7 @@ test.describe('Apple Music Card — Permanent Compact Player & UX Polish', () =>
     await themeBtn.click();
     await page.waitForTimeout(400);
     await expect(musicCard).toBeVisible();
-    await safeScreenshot(
-      page,
-      '/Users/mangeshraut/.gemini/antigravity/brain/b43c31db-0fa8-4790-bb36-99c700e6edfc/audit_screens/music_card_permanent_dark.png'
-    );
+    await safeScreenshot(page, 'music_card_permanent_dark.png');
 
     // Test Spotify hover state in dark mode
     await spotifyLink.hover();
@@ -91,10 +84,7 @@ test.describe('Apple Music Card — Permanent Compact Player & UX Polish', () =>
       return window.getComputedStyle(el).color;
     });
     expect(darkSpotifyIconColor).toBe('rgb(255, 255, 255)');
-    await safeScreenshot(
-      page,
-      '/Users/mangeshraut/.gemini/antigravity/brain/b43c31db-0fa8-4790-bb36-99c700e6edfc/audit_screens/music_card_spotify_hover_dark.png'
-    );
+    await safeScreenshot(page, 'music_card_spotify_hover_dark.png');
   });
 
   test('permanent compact player renders cleanly on mobile viewports with no overflow', async ({
@@ -120,9 +110,6 @@ test.describe('Apple Music Card — Permanent Compact Player & UX Polish', () =>
     const clientWidth = await page.evaluate(() => document.documentElement.clientWidth);
     expect(scrollWidth).toBeLessThanOrEqual(clientWidth + 1);
 
-    await safeScreenshot(
-      page,
-      '/Users/mangeshraut/.gemini/antigravity/brain/b43c31db-0fa8-4790-bb36-99c700e6edfc/audit_screens/music_card_permanent_mobile.png'
-    );
+    await safeScreenshot(page, 'music_card_permanent_mobile.png');
   });
 });

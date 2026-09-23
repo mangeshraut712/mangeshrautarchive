@@ -38,8 +38,8 @@ describe('ArchitectureTree', () => {
     const backend = tree.nodes.find(n => n.id === 'backend');
     expect(backend).toBeDefined();
     expect(backend.badge).toBe('Python 3.12+');
-    expect(backend.metrics.tests).toContain('281 Unit');
-    expect(backend.metrics.tests).toContain('176 API');
+    expect(backend.metrics.tests).toContain('319 Unit');
+    expect(backend.metrics.tests).toContain('182 API');
     expect(backend.metrics.pydantic).toBe('v2 Strict');
   });
 

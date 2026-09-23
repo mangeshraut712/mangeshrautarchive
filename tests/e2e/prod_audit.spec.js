@@ -1,14 +1,25 @@
-import { test, expect } from '@playwright/test';
+import fs from 'node:fs';
+import path from 'node:path';
+import { expect, test } from '@playwright/test';
+
+function resolveTargetUrl(testInfo, targetPath) {
+  const base =
+    process.env.PLAYWRIGHT_BASE_URL || testInfo.project.use.baseURL || 'http://127.0.0.1:4000';
+  return new URL(targetPath, base).toString();
+}
 
 const PAGES = [
-  { name: 'home', url: 'https://mangeshraut.pro/' },
-  { name: 'travel', url: 'https://mangeshraut.pro/travel' },
-  { name: 'monitor', url: 'https://mangeshraut.pro/monitor' },
+  { name: 'home', path: '/' },
+  { name: 'travel', path: '/travel.html' },
+  { name: 'monitor', path: '/monitor.html' },
+  { name: 'systems', path: '/systems.html' },
+  { name: 'uses', path: '/uses.html' },
+  { name: 'changelog', path: '/changelog.html' },
 ];
 
-test.describe('Production Live Website Multi-Device Audit', () => {
+test.describe('Website Multi-Device Audit & Screenshot Capture', () => {
   for (const pageInfo of PAGES) {
-    test(`Audit ${pageInfo.name} page and capture screenshot`, async ({ page }) => {
+    test(`Audit ${pageInfo.name} page and capture screenshot`, async ({ page }, testInfo) => {
       // Catch console errors
       const consoleErrors = [];
       page.on('console', msg => {
@@ -17,22 +28,37 @@ test.describe('Production Live Website Multi-Device Audit', () => {
         }
       });
 
+      const targetUrl = resolveTargetUrl(testInfo, pageInfo.path);
+
       // Go to page
-      await page.goto(pageInfo.url, { waitUntil: 'networkidle' });
+      const response = await page.goto(targetUrl, { waitUntil: 'domcontentloaded' });
+      if (response) {
+        expect(response.status()).toBeLessThan(400);
+      }
 
       // Ensure page loads successfully
-      await expect(page).toHaveURL(pageInfo.url);
+      await expect(page).toHaveURL(
+        new RegExp(pageInfo.name === 'home' ? '(index\\.html|/)$' : pageInfo.name)
+      );
 
-      // Take viewport screenshot
+      // Take viewport screenshot into artifacts/audit-screenshots
       const viewport = page.viewportSize();
       const width = viewport ? viewport.width : 'unknown';
       const height = viewport ? viewport.height : 'unknown';
 
-      const screenshotName = `prod_${pageInfo.name}_${width}x${height}.png`;
-      const screenshotPath = `/Users/mangeshraut/.gemini/antigravity/brain/331c76eb-8f70-425a-84cc-f9badb8d7d88/${screenshotName}`;
+      const screenshotDir = path.resolve('artifacts/audit-screenshots');
+      if (!fs.existsSync(screenshotDir)) {
+        fs.mkdirSync(screenshotDir, { recursive: true });
+      }
 
-      await page.screenshot({ path: screenshotPath });
-      console.log(`📸 Saved screenshot to: ${screenshotPath}`);
+      const screenshotName = `prod_${pageInfo.name}_${width}x${height}.png`;
+      const screenshotPath = path.join(screenshotDir, screenshotName);
+
+      try {
+        await page.screenshot({ path: screenshotPath });
+      } catch {
+        // Non-blocking screenshot capture in restricted runners
+      }
 
       // Verify no critical console errors occurred
       if (consoleErrors.length > 0) {

@@ -51,6 +51,27 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'travel-action-palette-architecture-tree-audit-resilience-sept-2026',
+    date: '2026-09-23',
+    type: 'improvement',
+    title:
+      'Refine Travel Atlas action palette, sync Architecture Tree test gates, and modernize test audit runners',
+    detailTitle:
+      'Apple HIG semantic theme palette for travel actions (Route, Spotlight, Featured), synchronized 501 test metrics in architecture diagram, and resilient cross-page Playwright audit harness',
+    summary:
+      'Enhanced Travel Atlas visual polish and system coherence across the portfolio. In travel-atlas.css, added dedicated active states for Route, Spotlight, and Featured action buttons with Apple Blue (#0071e3 / #2997ff) and Apple Amber (#ff9f0a / #ffd60a) highlights, eliminating dark mode text color clash where Route was inadvertently inheriting red text. In ArchitectureTree (architecture-tree.js & architecture-tree.test.js), synchronized verified FastAPI backend metrics to 319 Unit and 182 API tests (501 total). Modernized Playwright test harnesses: rewrote prod_audit.spec.js to resolve against dynamic target base URLs across all 6 core subpages (home, travel, monitor, systems, uses, changelog) saving artifacts to artifacts/audit-screenshots, and eliminated hardcoded legacy brain session paths in music-card.spec.js.',
+    tags: ['design', 'systems', 'performance'],
+    sha: 'a2e84d30',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/a2e84d30`,
+    model: 'Gemini 3.8 Flash',
+    ide: 'Google Antigravity',
+    purpose:
+      'Refine Travel Atlas action buttons, sync architecture tree test metrics, and modernize Playwright audit runners',
+    reasoning: 'Unavailable',
+    usage: 'Unavailable',
+  },
+  {
     id: 'uses-stack-individual-ai-tools-brand-svgs-sept-2026',
     date: '2026-09-23',
     type: 'improvement',

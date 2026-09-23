@@ -50,7 +50,7 @@ export class ArchitectureTree {
         badge: 'Python 3.12+',
         desc: 'High-concurrency async Python server with Pydantic v2 schemas, streaming SSE, session memory management, and system telemetry.',
         metrics: {
-          tests: '281 Unit · 176 API',
+          tests: '319 Unit · 182 API',
           pydantic: 'v2 Strict',
           concurrency: 'AsyncIO Non-blocking',
         },
