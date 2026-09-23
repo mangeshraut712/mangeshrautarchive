@@ -51,6 +51,27 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'portfolio-elevation-telemetry-sync-monitor-sept-2026',
+    date: '2026-09-23',
+    type: 'improvement',
+    title:
+      'Elevate entire portfolio with live telemetry sync, monitor probe repair, navbar fluid geometry, and travel globe depth',
+    detailTitle:
+      'Comprehensive portfolio polish: 15.75B token telemetry sync across Systems, Uses, and Monitor, resilient HTTP 402 probe handling for paused hosts, navbar layout auto-fit, and dark mode 3D travel atlas atmospheric glow',
+    summary:
+      'Completed a portfolio-wide elevation pass across factual telemetry, system monitoring, navigation, visual depth, and web performance. Synced WhoBurnedMore verified metrics (15.75B tokens, $15,429 spend, #56 All-Time rank, 10 tools, 501 automated tests across 319 Vitest and 182 Pytest) across Systems, Uses, and Monitor pages. Fixed false degradation alerts in System Monitor by handling HTTP 402 status on paused Vercel deployment and prioritizing local dev / GitHub Pages probes. Upgraded global Dynamic Island navigation with fluid CSS clamp spacing and ResizeObserver webfont synchronization, eliminating link clipping and overflow on sub-1440px displays. Enhanced the 3D Travel Atlas globe in dark mode with an Apple-style atmospheric backlight radial gradient to eliminate the pitch-black void. Replaced font preloads in index.html with document.fonts.load to resolve Chrome console preload warnings. Maintained 100% green checks across Vitest, pytest, anti-slop, and build pipelines.',
+    tags: ['systems', 'design', 'monitor', 'performance'],
+    sha: '1f3e4f0e',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/1f3e4f0e`,
+    model: 'Gemini 3.8 Flash',
+    ide: 'Google Antigravity',
+    purpose:
+      'Sync 15.75B live telemetry portfolio-wide, fix monitor probes for paused hosts, polish navbar layout, and add atmospheric glow to travel globe in dark mode',
+    reasoning: 'Unavailable',
+    usage: 'Unavailable',
+  },
+  {
     id: 'live-telemetry-sync-tool-separation-sept-2026',
     date: '2026-09-23',
     type: 'improvement',

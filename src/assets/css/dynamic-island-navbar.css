@@ -191,7 +191,7 @@ html.dark .global-nav.dynamic-island.scrolled {
   /* flex-start always — center→start on .is-overflowing caused Primary sections CLS */
   justify-content: flex-start;
   align-items: center;
-  gap: clamp(6px, 0.9vw, 14px) !important;
+  gap: clamp(3px, 0.55vw, 10px) !important;
   font-size: var(--island-link-size) !important;
   font-weight: var(--island-link-weight) !important;
   letter-spacing: -0.01em !important;
@@ -202,7 +202,7 @@ html.dark .global-nav.dynamic-island.scrolled {
   overflow-x: auto !important;
   scrollbar-width: none !important;
   -ms-overflow-style: none !important;
-  padding: 0 8px !important;
+  padding: 0 4px !important;
   /* Soft edge fade only when the rail actually overflows */
   mask-image: none;
   -webkit-mask-image: none;
@@ -235,7 +235,7 @@ html.dark .global-nav.dynamic-island.scrolled {
   position: relative;
   min-height: 44px !important;
   /* Keep idle padding equal to .active — padding jump was Primary sections CLS */
-  padding: 5px 10px !important;
+  padding: 5px clamp(6px, 0.55vw, 9px) !important;
   font-size: var(--island-link-size) !important;
   font-weight: var(--island-link-weight) !important;
   letter-spacing: -0.012em !important;

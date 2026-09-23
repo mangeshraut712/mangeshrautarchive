@@ -16,18 +16,10 @@
       function __preloadFaFonts() {
         if (window.__FA_FONTS_PRELOADED__) return;
         window.__FA_FONTS_PRELOADED__ = true;
-        [
-          'assets/vendor/fontawesome/webfonts/fa-solid-900.woff2',
-          'assets/vendor/fontawesome/webfonts/fa-brands-400.woff2',
-        ].forEach(function (href) {
-          var l = document.createElement('link');
-          l.rel = 'preload';
-          l.as = 'font';
-          l.type = 'font/woff2';
-          l.crossOrigin = 'anonymous';
-          l.href = href;
-          document.head.appendChild(l);
-        });
+        if (document.fonts && typeof document.fonts.load === 'function') {
+          document.fonts.load('900 1em "Font Awesome 6 Free"').catch(function () {});
+          document.fonts.load('400 1em "Font Awesome 6 Brands"').catch(function () {});
+        }
       }
       if ('requestIdleCallback' in window) {
         requestIdleCallback(__preloadFaFonts, { timeout: 4000 });

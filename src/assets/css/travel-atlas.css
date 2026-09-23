@@ -87,6 +87,12 @@ html.dark body.travel-page {
     );
 }
 
+html.dark .travel-map-layer::after {
+  background:
+    linear-gradient(90deg, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0.35) 26%, transparent 48%),
+    radial-gradient(circle at 62% 48%, transparent 38%, rgba(0, 0, 0, 0.5) 72%);
+}
+
 .travel-map {
   width: 100%;
   height: 100%;
@@ -420,9 +426,18 @@ html.dark .travel-nav__panel:hover {
   background: #e8eef5;
 }
 
-html.dark .travel-map-layer,
+html.dark .travel-map-layer {
+  background: radial-gradient(
+    circle at 62% 48%,
+    rgba(0, 113, 227, 0.22) 0%,
+    rgba(88, 86, 214, 0.1) 32%,
+    rgba(11, 18, 32, 0.85) 58%,
+    #050811 82%
+  ) !important;
+}
+
 html.dark .travel-map {
-  background: #0b1220;
+  background: transparent;
 }
 
 /* ─── Sidebar ─── */

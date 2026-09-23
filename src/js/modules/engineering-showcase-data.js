@@ -27,7 +27,12 @@ export const heroLead =
 export const heroStats = [
   { value: deployLighthouse, unit: '', label: 'Lighthouse CI gate', href: '#production' },
   { value: String(WEBMCP_TOOL_COUNT), unit: '', label: 'WebMCP tools', href: '#architecture' },
-  { value: '13.66B', unit: '', label: 'AI tokens burned', href: '#tokenization' },
+  {
+    value: whoburnedmoreProfile?.lifetimeBurn || '15.75B',
+    unit: '',
+    label: 'AI tokens burned',
+    href: '#tokenization',
+  },
   { value: '16', unit: '', label: 'Technical articles', href: '#writing' },
   { value: '51', unit: '', label: 'Public repositories', href: '#open-source' },
   { value: 'Live', unit: '', label: 'Production monitor', href: 'monitor.html' },

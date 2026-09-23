@@ -579,6 +579,10 @@ function initSmartNavbar() {
 
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', onResize, { passive: true });
+  window.addEventListener('load', syncNavRailOverflow, { once: true });
+  if (document.fonts && typeof document.fonts.ready?.then === 'function') {
+    document.fonts.ready.then(syncNavRailOverflow).catch(() => {});
+  }
 }
 
 function syncNavRailOverflow() {
@@ -588,12 +592,32 @@ function syncNavRailOverflow() {
   navRail.classList.toggle('is-overflowing', overflowing);
 }
 
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initSmartNavbar, {
-    once: true,
+function initNavRailResizeObserver() {
+  const navRail = state.nav?.querySelector('.nav-links.scrollable-nav');
+  if (!navRail || typeof ResizeObserver === 'undefined') return;
+  if (state.railObserver) {
+    state.railObserver.disconnect();
+  }
+  state.railObserver = new ResizeObserver(() => {
+    requestAnimationFrame(syncNavRailOverflow);
   });
+  state.railObserver.observe(navRail);
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener(
+    'DOMContentLoaded',
+    () => {
+      initSmartNavbar();
+      initNavRailResizeObserver();
+    },
+    {
+      once: true,
+    }
+  );
 } else {
   initSmartNavbar();
+  initNavRailResizeObserver();
 }
 
 /**
@@ -605,6 +629,11 @@ function destroySmartNavbar() {
   if (state.observer) {
     state.observer.disconnect();
     state.observer = null;
+  }
+
+  if (state.railObserver) {
+    state.railObserver.disconnect();
+    state.railObserver = null;
   }
 
   window.removeEventListener('scroll', onScroll);

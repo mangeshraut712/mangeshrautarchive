@@ -53,13 +53,22 @@ PORTFOLIO_API_CATALOG: List[Dict[str, str]] = [
 
 
 def _public_base_url() -> str:
-    return (
-        os.getenv("PORTFOLIO_PROBE_BASE_URL")
-        or os.getenv("OPENROUTER_SITE_URL")
-        or os.getenv("NEXT_PUBLIC_SITE_URL")
-        or (f"https://{os.getenv('VERCEL_URL')}" if os.getenv("VERCEL_URL") else None)
-        or "https://mangeshraut.pro"
-    ).rstrip("/")
+    explicit = os.getenv("PORTFOLIO_PROBE_BASE_URL")
+    if explicit:
+        return explicit.rstrip("/")
+
+    env = (os.getenv("ENVIRONMENT") or os.getenv("ENV") or "").lower()
+    if env in {"development", "dev", "local"}:
+        return "http://127.0.0.1:4000"
+
+    site_url = os.getenv("OPENROUTER_SITE_URL") or os.getenv("NEXT_PUBLIC_SITE_URL") or ""
+    if site_url and "mangeshraut.pro" not in site_url and "vercel.app" not in site_url:
+        return site_url.rstrip("/")
+
+    if os.getenv("GITHUB_PAGES_URL"):
+        return os.getenv("GITHUB_PAGES_URL").rstrip("/")
+
+    return "https://mangeshraut712.github.io/mangeshrautarchive"
 
 
 async def _probe_public_path(client: httpx.AsyncClient, base: str, entry: Dict[str, str]) -> Dict[str, Any]:
@@ -68,6 +77,12 @@ async def _probe_public_path(client: httpx.AsyncClient, base: str, entry: Dict[s
         url = path
     elif path == "/":
         url = f"{base}/"
+    elif "github.io" in base and path.startswith("/api/"):
+        edge_api = os.getenv("EDGE_API_BASE", "https://assistme-chat.mangeshraut712.workers.dev")
+        url = f"{edge_api.rstrip('/')}{path}"
+    elif "github.io" in base:
+        clean_path = path if path.endswith((".html", ".json", ".txt", ".xml", ".js")) else f"{path}.html"
+        url = f"{base}{clean_path if clean_path.startswith('/') else '/' + clean_path}"
     else:
         url = f"{base}{path if path.startswith('/') else '/' + path}"
     start = datetime.now(timezone.utc)

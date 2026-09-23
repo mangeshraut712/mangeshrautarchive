@@ -315,6 +315,16 @@ async def probe_monitor_surface(monitor, name: str, origin: str) -> Dict[str, An
             response = await client.get(status_url, timeout=6.0)
 
         latency = round((time.time() - start) * 1000)
+        if response.status_code == 402:
+            return {
+                "name": name,
+                "status": HealthStatus.DEGRADED.value,
+                "message": f"{name} deployment is paused on Vercel (GitHub Pages is active primary host).",
+                "metric_value": "PAUSED",
+                "metric_label": urlsplit(origin).netloc or origin,
+                "url": origin,
+            }
+
         if response.status_code != 200:
             try:
                 async with httpx.AsyncClient(follow_redirects=True) as client:
