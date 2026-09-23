@@ -95,10 +95,11 @@ html:has(body.changelog-page) {
 /* Sticky section rails & subnavbars — never slide under the fixed nav */
 body.systems-page .systems-section-rail,
 body.monitor-page .monitor-section-rail,
+body.monitor-page .monitor-segmented-tabs,
 body.uses-page .keynote-deck-nav,
 body.changelog-page .changelog-toolbar {
   position: sticky !important;
-  top: var(--subpage-sticky-top) !important;
+  top: var(--subpage-sticky-top, 86px) !important;
   background: #ffffff !important;
   background-color: #ffffff !important;
   backdrop-filter: none !important;
@@ -196,6 +197,7 @@ body.systems-page .systems-keynote-section {
   padding: clamp(1.5rem, 3.2vw, 2.5rem);
   overflow: visible;
   isolation: isolate;
+  scroll-margin-top: calc(var(--subpage-sticky-top, 86px) + 56px) !important;
 }
 
 body.systems-page .systems-section-head {
@@ -212,12 +214,18 @@ body.systems-page .systems-section-desc {
 body.systems-page .systems-section-rail {
   width: fit-content !important;
   max-width: 100% !important;
-  justify-content: center !important;
+  justify-content: flex-start !important;
   margin: 0 auto !important;
   box-sizing: border-box !important;
   mask-image: none !important;
   -webkit-mask-image: none !important;
   box-shadow: 0 2px 12px rgb(0 0 0 / 5%) !important;
+}
+
+@media (min-width: 900px) {
+  body.systems-page .systems-section-rail {
+    justify-content: center !important;
+  }
 }
 
 html.dark body.systems-page .systems-section-rail {

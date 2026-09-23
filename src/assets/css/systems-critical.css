@@ -319,11 +319,13 @@ html.dark .monitor-page-nav__back {
   display: grid;
   gap: var(--systems-section-gap);
   min-width: 0;
-  overflow-x: clip;
+  overflow: visible;
+  overflow-x: visible;
 }
 
 .systems-section-rail {
   display: flex;
+  justify-content: flex-start;
   gap: 0.35rem;
   overflow-x: auto;
   padding: 0.35rem;
@@ -337,9 +339,19 @@ html.dark .monitor-page-nav__back {
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
   position: sticky;
-  top: var(--subpage-sticky-top);
-  z-index: 50;
+  top: var(--subpage-sticky-top, 86px);
+  z-index: 200;
   box-shadow: 0 2px 12px rgb(0 0 0 / 5%);
+}
+
+@media (min-width: 900px) {
+  .systems-section-rail {
+    justify-content: center;
+  }
+}
+
+.systems-keynote-section {
+  scroll-margin-top: calc(var(--subpage-sticky-top, 86px) + 56px);
 }
 
 html.dark .systems-section-rail {

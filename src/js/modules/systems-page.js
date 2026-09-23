@@ -90,6 +90,9 @@ function initSectionRail() {
       event.preventDefault();
       isScrollingTo = href.slice(1);
       setActive(isScrollingTo);
+      if (window.history?.replaceState) {
+        window.history.replaceState(null, '', href);
+      }
       target.scrollIntoView({ behavior: 'smooth', block: 'start' });
       if (scrollTimeout) clearTimeout(scrollTimeout);
       scrollTimeout = setTimeout(() => {
@@ -124,14 +127,25 @@ function initSectionRail() {
 
   sections.forEach(section => observer.observe(section));
 
-  const initialActive = rail.querySelector('a.is-active');
-  if (initialActive && rail) {
-    requestAnimationFrame(() => {
-      const railRect = rail.getBoundingClientRect();
-      const linkRect = initialActive.getBoundingClientRect();
-      const offset = linkRect.left - railRect.left - railRect.width / 2 + linkRect.width / 2;
-      rail.scrollLeft = rail.scrollLeft + offset;
-    });
+  if (window.location.hash) {
+    const targetId = window.location.hash.slice(1);
+    const targetEl = document.getElementById(targetId);
+    if (targetEl) {
+      setTimeout(() => {
+        targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        setActive(targetId);
+      }, 150);
+    }
+  } else {
+    const initialActive = rail.querySelector('a.is-active');
+    if (initialActive && rail) {
+      requestAnimationFrame(() => {
+        const railRect = rail.getBoundingClientRect();
+        const linkRect = initialActive.getBoundingClientRect();
+        const offset = linkRect.left - railRect.left - railRect.width / 2 + linkRect.width / 2;
+        rail.scrollLeft = rail.scrollLeft + offset;
+      });
+    }
   }
 }
 
@@ -467,15 +481,15 @@ function renderTokenization() {
         <div class="systems-token-cache-summary lg-glass-card">
           <div class="systems-token-cache-summary-head">
             <span class="systems-token-label">Economic Multiplier: Capital Saved vs Capital Invested</span>
-            <span class="systems-token-spend font-mono">2.02× Financial Leverage</span>
+            <span class="systems-token-spend font-mono">2.16× Financial Leverage</span>
           </div>
           <div class="systems-token-ratio-bar" aria-hidden="true">
-            <div class="systems-token-ratio-saved" style="width: 66.9%" title="Capital Saved: $27,510 (66.9%)"></div>
-            <div class="systems-token-ratio-spent" style="width: 33.1%" title="Capital Invested: $13,625 (33.1%)"></div>
+            <div class="systems-token-ratio-saved" style="width: 68.3%" title="Capital Saved: ${escapeHtml(whoburnedmoreProfile?.cache?.dollarsSaved || '$33,260')} (68.3%)"></div>
+            <div class="systems-token-ratio-spent" style="width: 31.7%" title="Capital Invested: ${escapeHtml(whoburnedmoreProfile?.estimatedCost || '$15,429')} (31.7%)"></div>
           </div>
           <div class="systems-token-ratio-legend">
-            <span><strong class="systems-token-val--green">$27,510 Saved</strong> via 94.62% cache hit rate</span>
-            <span><strong>$13,625 Spend</strong> on model generation</span>
+            <span><strong class="systems-token-val--green">${escapeHtml(whoburnedmoreProfile?.cache?.dollarsSaved || '$33,260')} Saved</strong> via ${escapeHtml(whoburnedmoreProfile?.cache?.hitRate || '94.15%')} cache hit rate</span>
+            <span><strong>${escapeHtml(whoburnedmoreProfile?.estimatedCost || '$15,429')} Spend</strong> on model generation</span>
           </div>
         </div>
       `;
@@ -486,7 +500,7 @@ function renderTokenization() {
     const items = isTools
       ? whoburnedmoreProfile?.tools || tokenizationStack
       : whoburnedmoreProfile?.models || [];
-    const maxVal = Math.max(...items.map(t => parseTokens(t.tokensRaw || t.tokens)), 9.18e9);
+    const maxVal = Math.max(...items.map(t => parseTokens(t.tokensRaw || t.tokens)), 1);
 
     gridRoot.innerHTML = items
       .map(item => {

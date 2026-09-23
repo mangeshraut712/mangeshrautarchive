@@ -51,6 +51,27 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'live-telemetry-sync-tool-separation-sept-2026',
+    date: '2026-09-23',
+    type: 'improvement',
+    title:
+      'Sync live WhoBurnedMore telemetry and separate all AI tool cards with dedicated SVG icons',
+    detailTitle:
+      'Live profile data sync (15.75B tokens, #56 All-Time), 10 individual tool cards with brand SVG icons, and updated cache economics',
+    summary:
+      'Fetched live telemetry from whoburnedmore.com/u/mrcommando712 and synced all profile data across the Tokenization & AI Burn dashboard. Updated lifetime burn to 15.75B tokens ($15,429 spend), leaderboard standing to #56 All-Time (Top 16% of 355 devs), velocity to 73.6M/day with a 26-day streak, and cache hit rate to 94.15% ($33,260 saved, 2.16× leverage). Separated all AI tools into 10 individual cards with dedicated brand SVG squircle icons: OpenAI Codex (9.51B), Cursor (5.50B), GitHub Copilot (388.8M), Google Antigravity AGY (291.1M), KiloChat (611.0M), Claude Code (388.8M), Cline (61.4M), Droid (38.2M), OpenClaw (26.4M), and OpenCode (882.9K). Created new SVG icons for Copilot, Droid, OpenClaw, and OpenCode. Updated E2E tests for 10-tool count. All quality gates green: Vitest 319 tests, Playwright 134 E2E, ESLint, Stylelint, Prettier, and esbuild build.',
+    tags: ['systems', 'design'],
+    sha: '54f9e74e',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/54f9e74e`,
+    model: 'Gemini 3.8 Flash',
+    ide: 'Google Antigravity',
+    purpose:
+      'Sync live WhoBurnedMore profile data and separate grouped tools into individual cards with brand SVG icons',
+    reasoning: 'Unavailable',
+    usage: 'Unavailable',
+  },
+  {
     id: 'anti-slop-oxlint-integration-sept-2026',
     date: '2026-09-23',
     type: 'improvement',
