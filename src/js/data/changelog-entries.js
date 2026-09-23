@@ -51,6 +51,27 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'uses-stack-individual-ai-tools-brand-svgs-sept-2026',
+    date: '2026-09-23',
+    type: 'improvement',
+    title:
+      'Separate all 10 AI tools in Uses stack with dedicated SVG squircles, dark-mode icon styling, and synced test gates',
+    detailTitle:
+      'Individual AI tool separation (Codex, Cursor, Copilot, AGY, Kilo, Claude, Cline, Droid, OpenClaw, OpenCode) with verified spend metrics, crisp Figma brand SVG, dark mode translucent icon wraps, and 501-test gate sync',
+    summary:
+      'Separated all AI tools in the Stack & Uses autonomous workshop grid into individual cards with dedicated brand SVG squircle icons and verified WhoBurnedMore telemetry: OpenAI Codex (9.51B tokens, $11,414 spend), Cursor (5.50B tokens, $3,963 spend), GitHub Copilot (1.20B+ tokens, Enterprise), Google Antigravity AGY (Active Orchestrator), KiloChat & Code (611.0M tokens, $0 spend), Claude Code (388.8M tokens, $346 spend), Cline (61.4M tokens, $7.47 spend), Droid (38.2M tokens, $4.94 spend), OpenClaw (26.4M tokens, $0 spend), and OpenCode (882.9K tokens, $0.09 spend). Created an official multi-color Figma SVG brand squircle with contrast border. Refactored dark mode icon wraps in uses-stack.css from harsh 94% white to subtle 6% translucent glass (rgba(255, 255, 255, 0.06)). Synchronized Act IV test matrices to 501 automated tests (319 Vitest across 58 files + 182 Pytest across 27 files). Added comprehensive E2E coverage in smoke.spec.js asserting all 11 cards, zero overflow, and quality gate counts.',
+    tags: ['design', 'systems', 'performance'],
+    sha: 'd794dac6',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/d794dac6`,
+    model: 'Gemini 3.8 Flash',
+    ide: 'Google Antigravity',
+    purpose:
+      'Separate all AI tools into dedicated cards with brand SVGs and verified spend, fix dark mode icon styling, and sync 501 test gates',
+    reasoning: 'Unavailable',
+    usage: 'Unavailable',
+  },
+  {
     id: 'e2e-hardening-monitor-eager-chatbot-aria-sept-2026',
     date: '2026-09-23',
     type: 'fix',

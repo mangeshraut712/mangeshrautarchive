@@ -655,8 +655,8 @@ body.uses-page .keynote-tool-card__icon-wrap {
 }
 
 html.dark body.uses-page .keynote-tool-card__icon-wrap {
-  background: rgb(255 255 255 / 94%);
-  border-color: rgb(255 255 255 / 20%);
+  background: rgb(255 255 255 / 6%);
+  border-color: rgb(255 255 255 / 12%);
 }
 
 body.uses-page .keynote-tool-card__icon-wrap img {

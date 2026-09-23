@@ -687,4 +687,47 @@ test.describe('Chrome smoke tests', () => {
     expect(musicState.recentArtwork.includes('/64s/')).toBe(false);
     expect(musicState.recentArtwork.includes('/34s/')).toBe(false);
   });
+
+  test('uses page renders all 11 individual tool cards, quality gates, and zero overflow', async ({
+    page,
+  }) => {
+    await gotoSite(page, '/uses.html');
+    await page.waitForLoadState('domcontentloaded');
+
+    // Verify all 11 individual tool cards render
+    const toolCards = page.locator('.keynote-tool-card');
+    await expect(toolCards).toHaveCount(11);
+
+    // Verify individual telemetry values
+    await expect(page.locator('.keynote-tool-card', { hasText: 'OpenAI Codex' })).toContainText(
+      '9.51B tokens burned'
+    );
+    await expect(page.locator('.keynote-tool-card', { hasText: 'Cursor' })).toContainText(
+      '5.50B tokens burned'
+    );
+    await expect(page.locator('.keynote-tool-card', { hasText: 'GitHub Copilot' })).toContainText(
+      '1.20B+ tokens burned'
+    );
+    await expect(page.locator('.keynote-tool-card', { hasText: 'Claude Code' })).toContainText(
+      '388.8M tokens burned'
+    );
+    await expect(
+      page.locator('.keynote-tool-card', { hasText: 'Google Antigravity' })
+    ).toContainText('Active Orchestrator');
+
+    // Verify verified quality gate counts
+    await expect(page.locator('.keynote-bento-card--gate', { hasText: 'Vitest' })).toContainText(
+      '319 / 319'
+    );
+    await expect(page.locator('.keynote-bento-card--gate', { hasText: 'Pytest' })).toContainText(
+      '182 / 182'
+    );
+
+    // Verify zero horizontal overflow on tools grid
+    const overflowPx = await page.evaluate(() => {
+      const grid = document.querySelector('.keynote-tools-grid');
+      return grid ? grid.scrollWidth - grid.clientWidth : 0;
+    });
+    expect(overflowPx).toBeLessThanOrEqual(2);
+  });
 });
