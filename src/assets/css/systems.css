@@ -3884,8 +3884,8 @@ html.dark .systems-token-avatar {
   padding: 0.15rem 0.5rem;
   border-radius: 6px;
   background: rgba(0, 113, 227, 0.08);
-  color: #0071e3;
-  border: 1px solid rgba(0, 113, 227, 0.2);
+  color: #0055b8;
+  border: 1px solid rgba(0, 113, 227, 0.22);
 }
 
 html.dark .systems-token-role-chip {
@@ -3900,8 +3900,8 @@ html.dark .systems-token-role-chip {
   padding: 0.15rem 0.5rem;
   border-radius: 6px;
   background: rgba(175, 82, 222, 0.08);
-  color: #af52de;
-  border: 1px solid rgba(175, 82, 222, 0.2);
+  color: #7928ca;
+  border: 1px solid rgba(175, 82, 222, 0.22);
 }
 
 html.dark .systems-token-provider-chip {
