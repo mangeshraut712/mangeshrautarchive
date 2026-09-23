@@ -480,6 +480,20 @@ class IntelligentAssistant {
           ? AbortSignal.any([externalSignal, timeoutSignal])
           : externalSignal || timeoutSignal;
 
+      const requestPayload = {
+        message: safeQuery,
+        messages: this._getConversationForServer({ excludeTrailingUser: true }),
+        context: options.context || {},
+        session_id: options.session_id || this.sessionId || getOrCreateSessionId(),
+        stream: isStreaming,
+      };
+      if (options.model) {
+        requestPayload.model = options.model;
+      }
+      if (Array.isArray(options.images) && options.images.length) {
+        requestPayload.images = options.images.slice(0, 2);
+      }
+
       const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
@@ -487,17 +501,7 @@ class IntelligentAssistant {
           Accept: isStreaming ? 'application/x-ndjson' : 'application/json',
           Origin: window.location.origin,
         },
-        body: JSON.stringify({
-          message: safeQuery,
-          messages: this._getConversationForServer({ excludeTrailingUser: true }),
-          context: options.context || {},
-          session_id: options.session_id || this.sessionId || getOrCreateSessionId(),
-          stream: isStreaming,
-          ...(options.model ? { model: options.model } : {}),
-          ...(Array.isArray(options.images) && options.images.length
-            ? { images: options.images.slice(0, 2) }
-            : {}),
-        }),
+        body: JSON.stringify(requestPayload),
         signal,
       });
 

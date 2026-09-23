@@ -52,10 +52,17 @@ function initSectionRail() {
   if (!rail) return;
 
   const links = rail.querySelectorAll('[data-section-link]');
-  const sectionMap = new Map(
-    [...links].map(link => [link.getAttribute('href').slice(1), link]).filter(([id]) => id)
-  );
-  const sections = [...sectionMap.keys()].map(id => document.getElementById(id)).filter(Boolean);
+  const sectionMap = new Map();
+  for (const link of links) {
+    const href = link.getAttribute('href');
+    const id = href ? href.slice(1) : '';
+    if (id) sectionMap.set(id, link);
+  }
+  const sections = [];
+  for (const id of sectionMap.keys()) {
+    const el = document.getElementById(id);
+    if (el) sections.push(el);
+  }
 
   const setActive = id => {
     links.forEach(link => {
@@ -357,33 +364,64 @@ function renderTokenization() {
     const p = whoburnedmoreProfile;
     bentoRoot.innerHTML = `
       <div class="systems-token-bento-tile lg-glass-card">
-        <div class="systems-token-tile-kicker">Lifetime Burn</div>
+        <div class="systems-token-tile-top">
+          <span class="systems-token-tile-kicker">Lifetime Burn</span>
+          <span class="systems-token-metric-icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>
+          </span>
+        </div>
         <div class="systems-token-tile-val font-mono">${escapeHtml(p.lifetimeBurn)}</div>
         <div class="systems-token-tile-sub">${escapeHtml(p.estimatedCost)} est. spend · ${p.activeDays} active days</div>
-        <div class="systems-token-tile-pill systems-token-pill--accent">${escapeHtml(p.benchmarks.burnRatio)} avg dev</div>
+        <div class="systems-token-tile-pill systems-token-pill--accent">
+          <span class="systems-token-pill-dot"></span>
+          <span>${escapeHtml(p.benchmarks.burnRatio)} vs avg dev</span>
+        </div>
       </div>
       <div class="systems-token-bento-tile lg-glass-card">
-        <div class="systems-token-tile-kicker">Leaderboard Standing</div>
+        <div class="systems-token-tile-top">
+          <span class="systems-token-tile-kicker">Leaderboard Standing</span>
+          <span class="systems-token-metric-icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </span>
+        </div>
         <div class="systems-token-tile-val font-mono">#${p.rankings.allTime}</div>
         <div class="systems-token-tile-sub">All-time (#${p.rankings.weekly} weekly · #${p.rankings.daily} daily)</div>
-        <div class="systems-token-tile-pill systems-token-pill--success">${escapeHtml(p.rankings.percentile)} of ${p.rankings.totalDevs} devs</div>
+        <div class="systems-token-tile-pill systems-token-pill--success">
+          <span class="systems-token-pill-dot"></span>
+          <span>${escapeHtml(p.rankings.percentile)} of ${p.rankings.totalDevs} devs</span>
+        </div>
       </div>
       <div class="systems-token-bento-tile lg-glass-card">
-        <div class="systems-token-tile-kicker">Consistency &amp; Velocity</div>
+        <div class="systems-token-tile-top">
+          <span class="systems-token-tile-kicker">Velocity &amp; Streak</span>
+          <span class="systems-token-metric-icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          </span>
+        </div>
         <div class="systems-token-tile-val font-mono">${escapeHtml(p.currentStreak)}</div>
         <div class="systems-token-tile-sub">${escapeHtml(p.dailyAvgBurn)}/day avg · ${escapeHtml(p.totalMessages)} messages</div>
-        <div class="systems-token-tile-pill">Longest ${escapeHtml(p.longestStreak)} streak</div>
+        <div class="systems-token-tile-pill">
+          <span>Longest ${escapeHtml(p.longestStreak)} streak</span>
+        </div>
       </div>
       <div class="systems-token-bento-tile lg-glass-card">
-        <div class="systems-token-tile-kicker">Prompt Cache Economics</div>
+        <div class="systems-token-tile-top">
+          <span class="systems-token-tile-kicker">Prompt Cache ROI</span>
+          <span class="systems-token-metric-icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          </span>
+        </div>
         <div class="systems-token-tile-val font-mono systems-token-val--green">${escapeHtml(p.cache.hitRate)}</div>
         <div class="systems-token-tile-sub">${escapeHtml(p.cache.cacheReads)} cache reads · ${escapeHtml(p.cache.inputTokens)} inputs</div>
-        <div class="systems-token-tile-pill systems-token-pill--cache">${escapeHtml(p.cache.dollarsSaved)} saved</div>
+        <div class="systems-token-tile-pill systems-token-pill--cache">
+          <span class="systems-token-pill-dot"></span>
+          <span>${escapeHtml(p.cache.dollarsSaved)} saved</span>
+        </div>
       </div>
     `;
   }
 
-  // 2. Render List Grid (Tools vs Models)
+  // 2. Render List Grid (Tools vs Models vs Cache)
   if (!gridRoot) return;
 
   let activeTab = 'tools';
@@ -397,7 +435,53 @@ function renderTokenization() {
     return parseFloat(t) || 0;
   };
 
+  const getToolIconHtml = item => {
+    if (item.icon) {
+      return `<div class="systems-token-avatar"><img src="${escapeHtml(item.icon)}" alt="${escapeHtml(item.shortName || item.name)}" width="28" height="28" loading="eager" decoding="async" class="systems-token-avatar-img" /></div>`;
+    }
+    // Apple-styled monogram badge for tools without png
+    const initial = (item.shortName || item.name || 'AI').charAt(0);
+    return `<div class="systems-token-avatar systems-token-avatar--fallback" aria-hidden="true"><span>${escapeHtml(initial)}</span></div>`;
+  };
+
   const renderGridContent = tab => {
+    if (tab === 'cache') {
+      const items = whoburnedmoreProfile?.cacheTelemetry || [];
+      gridRoot.innerHTML = `
+        <div class="systems-token-cache-grid">
+          ${items
+            .map(
+              item => `
+            <div class="systems-token-cache-card lg-glass-card systems-token-cache-card--${escapeHtml(item.type || 'primary')}">
+              <div class="systems-token-cache-card-head">
+                <span class="systems-token-cache-label">${escapeHtml(item.title)}</span>
+                <span class="systems-token-cache-badge systems-token-cache-badge--${escapeHtml(item.type || 'primary')}">${escapeHtml(item.rate)}</span>
+              </div>
+              <div class="systems-token-cache-val font-mono">${escapeHtml(item.value)} <small>${escapeHtml(item.unit)}</small></div>
+              <p class="systems-token-cache-desc">${escapeHtml(item.desc)}</p>
+            </div>
+          `
+            )
+            .join('')}
+        </div>
+        <div class="systems-token-cache-summary lg-glass-card">
+          <div class="systems-token-cache-summary-head">
+            <span class="systems-token-label">Economic Multiplier: Capital Saved vs Capital Invested</span>
+            <span class="systems-token-spend font-mono">2.02× Financial Leverage</span>
+          </div>
+          <div class="systems-token-ratio-bar" aria-hidden="true">
+            <div class="systems-token-ratio-saved" style="width: 66.9%" title="Capital Saved: $27,510 (66.9%)"></div>
+            <div class="systems-token-ratio-spent" style="width: 33.1%" title="Capital Invested: $13,625 (33.1%)"></div>
+          </div>
+          <div class="systems-token-ratio-legend">
+            <span><strong class="systems-token-val--green">$27,510 Saved</strong> via 94.62% cache hit rate</span>
+            <span><strong>$13,625 Spend</strong> on model generation</span>
+          </div>
+        </div>
+      `;
+      return;
+    }
+
     const isTools = tab === 'tools';
     const items = isTools
       ? whoburnedmoreProfile?.tools || tokenizationStack
@@ -411,28 +495,47 @@ function renderTokenization() {
         const isLive = !item.tokens;
         const metaSpend =
           item.spend && item.spend !== '$0' && item.spend !== 'Live'
-            ? ` · <span class="systems-token-spend font-mono">${escapeHtml(item.spend)}</span>`
+            ? `<span class="systems-token-spend-pill font-mono">${escapeHtml(item.spend)}</span>`
             : '';
         const metaShare = item.share
           ? `<span class="systems-token-share font-mono">${escapeHtml(item.share)}</span>`
           : '';
+        const roleBadge = item.role
+          ? `<span class="systems-token-role-chip">${escapeHtml(item.role)}</span>`
+          : '';
+        const iconHtml = isTools ? getToolIconHtml(item) : '';
+        const providerBadge = item.provider
+          ? `<span class="systems-token-provider-chip">${escapeHtml(item.provider)}</span>`
+          : '';
 
-        return `<div class="systems-token-row lg-glass-card">
+        return `<div class="systems-token-row lg-glass-card ${isLive ? 'is-live-row' : ''}">
           <div class="systems-token-row-head">
             <div class="systems-token-name-wrap">
-              <span class="systems-token-label">${escapeHtml(item.name)}</span>
-              ${metaShare}
+              ${iconHtml}
+              <div class="systems-token-info">
+                <div class="systems-token-title-line">
+                  <span class="systems-token-label">${escapeHtml(item.name)}</span>
+                  ${roleBadge}
+                  ${providerBadge}
+                </div>
+              </div>
             </div>
-            ${
-              item.tokens
-                ? `<strong class="systems-token-value font-mono">${escapeHtml(item.tokens)}<small> tokens</small>${metaSpend}</strong>`
-                : `<strong class="systems-token-value systems-token-value--active"><span class="systems-token-pulse"></span>Active</strong>`
-            }
+            <div class="systems-token-metrics-right">
+              ${metaShare}
+              ${metaSpend}
+              ${
+                item.tokens
+                  ? `<strong class="systems-token-value font-mono">${escapeHtml(item.tokens)}<small> tokens</small></strong>`
+                  : `<strong class="systems-token-value systems-token-value--active"><span class="systems-token-pulse"></span>Live</strong>`
+              }
+            </div>
           </div>
           <div class="systems-token-bar-track" aria-hidden="true">
             <div class="systems-token-bar-fill ${isLive ? 'is-active' : ''}" style="width: ${width}%"></div>
           </div>
-          <span class="systems-token-context">${escapeHtml(item.context || '')}</span>
+          <div class="systems-token-context-wrap">
+            <span class="systems-token-context">${escapeHtml(item.context || '')}</span>
+          </div>
         </div>`;
       })
       .join('');
@@ -443,28 +546,28 @@ function renderTokenization() {
   // 3. Attach tab handlers
   const tabToolsBtn = document.getElementById('token-tab-tools');
   const tabModelsBtn = document.getElementById('token-tab-models');
+  const tabCacheBtn = document.getElementById('token-tab-cache');
+  const allTabs = [
+    { btn: tabToolsBtn, id: 'tools' },
+    { btn: tabModelsBtn, id: 'models' },
+    { btn: tabCacheBtn, id: 'cache' },
+  ];
 
-  if (tabToolsBtn && tabModelsBtn) {
-    tabToolsBtn.addEventListener('click', () => {
-      if (activeTab === 'tools') return;
-      activeTab = 'tools';
-      tabToolsBtn.classList.add('is-active');
-      tabToolsBtn.setAttribute('aria-selected', 'true');
-      tabModelsBtn.classList.remove('is-active');
-      tabModelsBtn.setAttribute('aria-selected', 'false');
-      renderGridContent('tools');
+  allTabs.forEach(({ btn, id }) => {
+    if (!btn) return;
+    btn.addEventListener('click', () => {
+      if (activeTab === id) return;
+      activeTab = id;
+      allTabs.forEach(({ btn: b }) => {
+        if (!b) return;
+        b.classList.remove('is-active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      btn.classList.add('is-active');
+      btn.setAttribute('aria-selected', 'true');
+      renderGridContent(id);
     });
-
-    tabModelsBtn.addEventListener('click', () => {
-      if (activeTab === 'models') return;
-      activeTab = 'models';
-      tabModelsBtn.classList.add('is-active');
-      tabModelsBtn.setAttribute('aria-selected', 'true');
-      tabToolsBtn.classList.remove('is-active');
-      tabToolsBtn.setAttribute('aria-selected', 'false');
-      renderGridContent('models');
-    });
-  }
+  });
 
   // 4. Render Footer Profile Action
   if (footerRoot && whoburnedmoreProfile) {
@@ -472,17 +575,27 @@ function renderTokenization() {
     footerRoot.innerHTML = `
       <div class="systems-token-footer-info">
         <div class="systems-token-footer-avatar" aria-hidden="true">
-          <i class="fas fa-fire-flame-curved"></i>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>
         </div>
         <div class="systems-token-footer-text">
-          <strong class="systems-token-footer-name">@${escapeHtml(p.username)} on whoburnedmore.com</strong>
-          <span class="systems-token-footer-meta">Leaderboard #${p.rankings.allTime} All-Time · ${escapeHtml(p.lifetimeBurn)} tokens · Synced ${escapeHtml(p.lastSynced)}</span>
+          <div class="systems-token-footer-title-row">
+            <strong class="systems-token-footer-name">@${escapeHtml(p.username)} on whoburnedmore.com</strong>
+            <span class="systems-token-verified-chip">
+              <span class="systems-token-pulse"></span>
+              Verified Profile
+            </span>
+          </div>
+          <span class="systems-token-footer-meta">Leaderboard #${p.rankings.allTime} All-Time · ${escapeHtml(p.lifetimeBurn)} tokens burned · Synced ${escapeHtml(p.lastSynced)}</span>
         </div>
       </div>
-      <div class="systems-token-footer-cta">
-        <a class="engineering-open-btn systems-token-profile-btn" href="${escapeHtml(p.profileUrl)}" target="_blank" rel="noopener noreferrer">
-          <span>View Leaderboard Profile</span>
+      <div class="systems-token-footer-actions">
+        <a class="engineering-open-btn btn-primary systems-token-profile-btn" href="${escapeHtml(p.profileUrl)}" target="_blank" rel="noopener noreferrer">
+          <span>View Verified Profile</span>
           <span aria-hidden="true">↗</span>
+        </a>
+        <a class="engineering-open-btn btn-secondary systems-token-uses-btn" href="uses.html#keynote-slide-3">
+          <span>AI Stack Keynote</span>
+          <span aria-hidden="true">→</span>
         </a>
       </div>
     `;

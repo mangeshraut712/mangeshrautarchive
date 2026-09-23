@@ -1689,8 +1689,8 @@ html.dark body.blog-standalone-page .article-body h3 {
   display: block;
   width: 100%;
   height: auto;
-  aspect-ratio: 16 / 9;
-  object-fit: cover;
+  aspect-ratio: auto;
+  object-fit: contain;
   border-radius: var(--lux-radius, 18px);
   border: 1px solid var(--lux-border, rgb(0 0 0 / 8%));
   background: var(--bg-primary, #ffffff);
@@ -1726,6 +1726,21 @@ html.dark .article-figure:hover img {
   line-height: 1.45;
   font-weight: 500;
   text-align: left;
+}
+
+.article-figure__full-size {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--apple-blue);
+  font-size: 0.85rem;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.article-figure__full-size:focus-visible {
+  outline: 2px solid var(--apple-blue);
+  outline-offset: 3px;
 }
 
 html.dark .article-figure figcaption {

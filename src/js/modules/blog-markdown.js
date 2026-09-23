@@ -93,6 +93,7 @@ function renderMediaBlock(kind, body, options = {}) {
     return `<figure class="article-figure">
       <img src="${escapeHTML(src)}" alt="${alt}" loading="lazy" decoding="async" width="${escapeHTML(a.width || '1200')}" height="${escapeHTML(a.height || '675')}" class="article-figure__img" />
       ${caption}
+      <a class="article-figure__full-size" href="${escapeHTML(src)}" target="_blank" rel="noopener noreferrer">Open full-size image<span class="sr-only">: ${alt} (opens in a new tab)</span></a>
     </figure>`;
   }
   if (kind === 'video') {

@@ -66,16 +66,15 @@ export function renderDonutSvg(metrics, { size = 120 } = {}) {
   ];
 
   let offset = 0;
-  const arcs = segments
-    .filter(s => s.value > 0)
-    .map(s => {
-      const dash = (s.value / total) * circ;
-      const arc = `<circle cx="${cx}" cy="${cy}" r="${r}" class="systems-donut-segment ${s.className}"
-        stroke-dasharray="${dash} ${circ - dash}" stroke-dashoffset="${-offset}"></circle>`;
-      offset += dash;
-      return arc;
-    })
-    .join('');
+  const arcsList = [];
+  for (const s of segments) {
+    if (s.value <= 0) continue;
+    const dash = (s.value / total) * circ;
+    arcsList.push(`<circle cx="${cx}" cy="${cy}" r="${r}" class="systems-donut-segment ${s.className}"
+        stroke-dasharray="${dash} ${circ - dash}" stroke-dashoffset="${-offset}"></circle>`);
+    offset += dash;
+  }
+  const arcs = arcsList.join('');
 
   const successPct = Math.round((successCount / total) * 100);
 

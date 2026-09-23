@@ -746,21 +746,22 @@ function renderQuickFacts(waypoint) {
 }
 
 function renderSignalTags(waypoint) {
-  const blocked = new Set(
-    [
-      waypoint.title,
-      waypoint.locality.city,
-      waypoint.locality.region,
-      waypoint.locality.country,
-      waypoint.locality.placeName,
-      waypoint.editorial.experience,
-      waypoint.locality.placeKind,
-      ...(waypoint.editorial.bestFor || []),
-      ...(waypoint.editorial.quickFacts || []).map(fact => fact.value),
-    ]
-      .map(normalize)
-      .filter(Boolean)
-  );
+  const blocked = new Set();
+  const rawBlockedItems = [
+    waypoint.title,
+    waypoint.locality.city,
+    waypoint.locality.region,
+    waypoint.locality.country,
+    waypoint.locality.placeName,
+    waypoint.editorial.experience,
+    waypoint.locality.placeKind,
+    ...(waypoint.editorial.bestFor || []),
+    ...(waypoint.editorial.quickFacts || []).map(fact => fact.value),
+  ];
+  for (const item of rawBlockedItems) {
+    const n = normalize(item);
+    if (n) blocked.add(n);
+  }
 
   const tags = uniqueTexts(waypoint.editorial.signalTags || [], { max: 6 }).filter(
     tag => !blocked.has(normalize(tag))
@@ -777,17 +778,18 @@ function renderPlaceGuide(waypoint) {
   const { editorial } = waypoint;
   if (!editorial.thingsToDo?.length) return '';
 
-  const blockedChip = new Set(
-    [
-      waypoint.title,
-      waypoint.locality.city,
-      waypoint.locality.region,
-      waypoint.locality.country,
-      ...(editorial.signalTags || []),
-    ]
-      .map(normalize)
-      .filter(Boolean)
-  );
+  const blockedChip = new Set();
+  const rawChipItems = [
+    waypoint.title,
+    waypoint.locality.city,
+    waypoint.locality.region,
+    waypoint.locality.country,
+    ...(editorial.signalTags || []),
+  ];
+  for (const item of rawChipItems) {
+    const n = normalize(item);
+    if (n) blockedChip.add(n);
+  }
 
   const chips = uniqueTexts([...(editorial.bestFor || []), ...(editorial.neighborhoods || [])], {
     max: 8,

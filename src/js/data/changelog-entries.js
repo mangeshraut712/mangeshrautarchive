@@ -51,6 +51,46 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'anti-slop-oxlint-integration-sept-2026',
+    date: '2026-09-23',
+    type: 'improvement',
+    title: 'Integrate dmmulroy/anti-slop Oxlint ruleset and eliminate AI slop patterns',
+    detailTitle:
+      'Vendored anti-slop Oxlint rules, zero-slop refactoring, repo doctor root allowance, and automated lint:anti-slop quality gate',
+    summary:
+      'Vendored the dmmulroy/anti-slop opinionated Oxlint plugin into tools/oxlint/anti-slop with upstream provenance tracking. Configured .oxlintrc.json to run anti-slop rules across JavaScript sources, and added npm run lint:anti-slop to the core npm run check quality gate. Refactored all detected AI slop patterns across the repository, eliminating conditional empty object spreads, replacing eager .filter().map() passes with single-pass loops, renaming ambiguous symbol names (normalizeRepoShape -> normalizeRepoRecord), and removing redundant spread fallbacks. Updated repo-doctor and .prettierignore to recognize vendored tools/ rules while maintaining 100% green checks across Vitest (319 tests), pytest (182 tests), and Playwright E2E suites.',
+    tags: ['systems', 'performance', 'other'],
+    sha: 'c7377474',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/c7377474`,
+    model: 'Gemini 3.8 Flash',
+    ide: 'Google Antigravity',
+    purpose:
+      'Install dmmulroy/anti-slop Oxlint ruleset, vendor plugin, clean up codebase slop patterns, and enforce in CI/CD',
+    reasoning: 'Unavailable',
+    usage: 'Unavailable',
+  },
+  {
+    id: 'tokenization-ai-burn-apple-dashboard-sept-2026',
+    date: '2026-09-23',
+    type: 'improvement',
+    title: 'Overhaul Tokenization & AI Burn dashboard to Apple HIG & Shadcn specifications',
+    detailTitle:
+      'Elevated hero placement, 4 Bento KPI telemetry cards, 3-tab segmented control, brand avatar icons, and verified engineer profile card',
+    summary:
+      'Redesigned the Tokenization & AI Burn surface on Systems Notebook into an Apple HIG and Shadcn-inspired telemetry dashboard. Repositioned the section to the top of the engineering page immediately following the overview showcase grid for prime engineering visibility. Integrated 4 Bento KPI tiles tracking Lifetime Burn (13.66B tokens, $13,625 spend), Leaderboard Standing (#53 All-Time, Top 18%), Velocity & Streak (10d active streak, 69.0M/day), and Prompt Cache ROI (94.62% hit rate, $27,510 saved). Added an Apple-styled 3-tab segmented controller for Tools, Models, and KV-Cache Economics. Populated verified profile telemetry across GitHub Copilot, Codex, Google Antigravity (AGY), KiloChat, Cursor, Cline, OpenRouter, and Claude Code with authentic brand avatars and verified profile badges. Guaranteed 100% test suite compatibility, zero horizontal overflow across 1280px and 390px viewports, and full light/dark theme contrast.',
+    tags: ['systems', 'design', 'performance'],
+    sha: '327b724c',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/327b724c`,
+    model: 'Gemini 3.8 Flash',
+    ide: 'Google Antigravity',
+    purpose:
+      'Redesign Tokenization & AI Burn into an Apple HIG / Shadcn telemetry dashboard with multi-platform AI profiles, Bento KPIs, and 3-tab navigation',
+    reasoning: 'Unavailable',
+    usage: 'Unavailable',
+  },
+  {
     id: 'portfolio-reach-ga4-edge-sync-sept-2026',
     date: '2026-09-22',
     type: 'fix',

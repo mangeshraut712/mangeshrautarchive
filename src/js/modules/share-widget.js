@@ -469,7 +469,7 @@ export async function ensureShareToggleReady() {
 
 if (typeof window !== 'undefined') {
   window.websiteShareWidget = {
-    ...(window.websiteShareWidget || {}),
+    ...window.websiteShareWidget,
     ensureShareToggleReady,
   };
 }

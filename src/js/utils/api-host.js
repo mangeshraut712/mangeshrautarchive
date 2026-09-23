@@ -18,21 +18,23 @@ export function isBlockedVercelHost(urlOrBase = '') {
 /** Prefer edge + config; never require Vercel for GitHub Pages. */
 export function pagesApiCandidates(extra = []) {
   const cfg = globalThis.APP_CONFIG || globalThis.buildConfig || {};
-  const list = [
+  const rawList = [
     EDGE_API_BASE,
     cfg.apiBaseUrl,
     ...(Array.isArray(cfg.apiBaseCandidates) ? cfg.apiBaseCandidates : []),
     ...extra,
-  ]
-    .filter(Boolean)
-    .map(c => {
-      try {
-        return new URL(String(c), typeof location !== 'undefined' ? location.href : undefined)
-          .origin;
-      } catch {
-        return String(c).replace(/\/$/, '');
-      }
-    });
+  ];
+  const list = [];
+  for (const c of rawList) {
+    if (!c) continue;
+    try {
+      list.push(
+        new URL(String(c), typeof location !== 'undefined' ? location.href : undefined).origin
+      );
+    } catch {
+      list.push(String(c).replace(/\/$/, ''));
+    }
+  }
   // Edge first, then other non-Vercel hosts. Skip blocked Vercel hosts entirely.
   const edge = [];
   const ok = [];

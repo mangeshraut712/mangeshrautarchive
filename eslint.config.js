@@ -14,6 +14,8 @@ export default [
       'test-results/**',
       'playwright-report/**',
       'scratch/**',
+      '.agents/**',
+      'tools/**',
       '.gitnexus/**',
       '.vercel/**',
       '.venv/**',

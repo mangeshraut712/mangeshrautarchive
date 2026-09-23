@@ -414,6 +414,7 @@
 
       <nav class="systems-section-rail" id="systems-section-rail" aria-label="Page sections">
         <a href="#overview" data-section-link class="is-active" aria-current="true">Overview</a>
+        <a href="#tokenization" data-section-link>Tokenization</a>
         <a href="#production" data-section-link>Production</a>
         <a href="#architecture" data-section-link>Architecture</a>
         <a href="#projects" data-section-link>Case Studies</a>
@@ -421,8 +422,85 @@
         <a href="#open-source" data-section-link>Open Source</a>
         <a href="#writing" data-section-link>Writing</a>
         <a href="#timeline" data-section-link>Timeline</a>
-        <a href="#tokenization" data-section-link>Tokenization</a>
       </nav>
+
+      <section
+        class="systems-keynote-section systems-tokenization-section"
+        id="tokenization"
+        aria-labelledby="tokenization-title"
+      >
+        <div class="systems-section-head">
+          <p class="systems-eyebrow">Telemetry · whoburnedmore.com</p>
+          <div class="systems-token-title-wrap">
+            <h2 class="systems-section-title" id="tokenization-title">
+              Tokenization &amp; AI Burn
+            </h2>
+            <div class="systems-token-verified-badge" title="Verified on whoburnedmore.com">
+              <span class="systems-token-pulse"></span>
+              <span>Leaderboard #53 · Top 18%</span>
+            </div>
+          </div>
+          <p class="systems-section-desc">
+            Verified public record of AI coding token burn, multi-IDE fleet telemetry, and model
+            economics powering this portfolio, tracked live on whoburnedmore.com. Explore the
+            interactive 6-act breakdown in the
+            <a href="uses.html#keynote-slide-3">Uses &amp; Stack Keynote</a>.
+          </p>
+        </div>
+
+        <!-- Telemetry Headline Bento: 4 Apple Glass Cards -->
+        <div class="systems-token-bento" id="systems-token-bento"></div>
+
+        <!-- Interactive Segmented Control Tabs (By Tool / IDE vs By AI Model vs Cache Economics) -->
+        <div class="systems-token-controls">
+          <div
+            class="systems-arch-tabs systems-token-tabs"
+            role="tablist"
+            aria-label="Token burn views"
+          >
+            <button
+              type="button"
+              class="systems-arch-tab is-active"
+              id="token-tab-tools"
+              data-token-tab="tools"
+              role="tab"
+              aria-selected="true"
+            >
+              <span class="token-tab-full">By Tool / IDE</span>
+              <span class="token-tab-short">Tools</span>
+            </button>
+            <button
+              type="button"
+              class="systems-arch-tab"
+              id="token-tab-models"
+              data-token-tab="models"
+              role="tab"
+              aria-selected="false"
+            >
+              <span class="token-tab-full">By AI Model</span>
+              <span class="token-tab-short">Models</span>
+            </button>
+            <button
+              type="button"
+              class="systems-arch-tab"
+              id="token-tab-cache"
+              data-token-tab="cache"
+              role="tab"
+              aria-selected="false"
+            >
+              <span class="token-tab-full">Cache Economics</span>
+              <span class="token-tab-short">Cache</span>
+            </button>
+          </div>
+        </div>
+
+        <article class="systems-token-panel lg-glass-card" aria-label="AI tooling tokenization">
+          <div class="systems-token-list" id="systems-token-grid"></div>
+        </article>
+
+        <!-- Verified Profile Action Card -->
+        <div class="systems-token-footer lg-glass-card" id="systems-token-footer"></div>
+      </section>
 
       <section class="systems-keynote-section" id="production" aria-labelledby="production-heading">
         <div class="systems-section-head">
@@ -646,70 +724,6 @@
           </p>
         </div>
         <div class="systems-timeline" id="systems-timeline"></div>
-      </section>
-
-      <section
-        class="systems-keynote-section"
-        id="tokenization"
-        aria-labelledby="tokenization-title"
-      >
-        <div class="systems-section-head">
-          <p class="systems-eyebrow">Telemetry · whoburnedmore.com</p>
-          <div class="systems-token-title-wrap">
-            <h2 class="systems-section-title" id="tokenization-title">
-              Tokenization &amp; AI Burn
-            </h2>
-            <div class="systems-token-verified-badge" title="Verified on whoburnedmore.com">
-              <span class="systems-token-pulse"></span>
-              <span>Leaderboard #53 · Top 18%</span>
-            </div>
-          </div>
-          <p class="systems-section-desc">
-            Verified public record of AI coding token burn, model telemetry, and IDE utilization
-            behind this portfolio, tracked live on whoburnedmore.com. Explore the interactive 6-act
-            breakdown in the <a href="uses.html#keynote-slide-3">Uses &amp; Stack Keynote</a>.
-          </p>
-        </div>
-
-        <!-- Telemetry Headline Bento: 4 Apple Glass Cards -->
-        <div class="systems-token-bento" id="systems-token-bento"></div>
-
-        <!-- Interactive Segmented Control Tabs (By Tool / IDE vs By AI Model) -->
-        <div class="systems-token-controls">
-          <div
-            class="systems-arch-tabs systems-token-tabs"
-            role="tablist"
-            aria-label="Token burn views"
-          >
-            <button
-              type="button"
-              class="systems-arch-tab is-active"
-              id="token-tab-tools"
-              data-token-tab="tools"
-              role="tab"
-              aria-selected="true"
-            >
-              By Tool / IDE
-            </button>
-            <button
-              type="button"
-              class="systems-arch-tab"
-              id="token-tab-models"
-              data-token-tab="models"
-              role="tab"
-              aria-selected="false"
-            >
-              By AI Model
-            </button>
-          </div>
-        </div>
-
-        <article class="systems-token-panel lg-glass-card" aria-label="AI tooling tokenization">
-          <div class="systems-token-list" id="systems-token-grid"></div>
-        </article>
-
-        <!-- Verified Profile Action Card -->
-        <div class="systems-token-footer lg-glass-card" id="systems-token-footer"></div>
       </section>
 
       <nav class="systems-footer-links" aria-label="Related engineering pages">

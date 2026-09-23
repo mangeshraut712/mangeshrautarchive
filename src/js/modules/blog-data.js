@@ -2127,7 +2127,7 @@ In August 2026, **Razorpay** unveiled **Vulcan**—India’s first transformer-b
 :::figure
 src: assets/images/blog/razorpay-vulcan-architecture.jpg
 alt: Razorpay Vulcan Foundation Model Architecture and Production Impact
-caption: Figure 16.0 — Razorpay Vulcan Systems Architecture: 4B Payments &amp; 3T Telemetry Tokens → NVIDIA &amp; AWS Foundation Transformer → Unified Dynamic Routing, Global Fraud Detection, and Predictive Personalization.
+caption: Figure 16.0 — Razorpay Vulcan Systems Architecture: 4B Payments & 3T Telemetry Tokens → NVIDIA & AWS Foundation Transformer → Unified Dynamic Routing, Global Fraud Detection, and Predictive Personalization.
 :::
 
 Until now, the fintech industry addressed payment challenges through isolated, specialized subsystems:

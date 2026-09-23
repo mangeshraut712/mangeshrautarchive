@@ -246,9 +246,12 @@ export const caseStudies = [
 ];
 
 const caseStudyBySlug = Object.fromEntries(caseStudies.map(cs => [cs.slug, cs]));
-const caseStudyByRepo = Object.fromEntries(
-  caseStudies.filter(cs => cs.repoName).map(cs => [cs.repoName, cs])
-);
+const caseStudyByRepo = {};
+for (const cs of caseStudies) {
+  if (cs.repoName) {
+    caseStudyByRepo[cs.repoName] = cs;
+  }
+}
 
 export function getCaseStudyBySlug(slug) {
   return caseStudyBySlug[slug] || null;

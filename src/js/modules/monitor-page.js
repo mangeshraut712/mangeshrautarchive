@@ -2181,7 +2181,7 @@ function renderBackendSystemDashboard({
 function mergeMonitorSnapshot(patch) {
   if (!patch || typeof patch !== 'object') return;
   lastMonitorSnapshot = {
-    ...(lastMonitorSnapshot || {}),
+    ...lastMonitorSnapshot,
     ...patch,
   };
 }
@@ -3303,10 +3303,17 @@ function initMonitorSectionRail() {
   const links = rail.querySelectorAll('[data-section-link]');
   if (!links.length) return;
 
-  const sectionMap = new Map(
-    [...links].map(link => [link.getAttribute('href')?.slice(1), link]).filter(([id]) => id)
-  );
-  const sections = [...sectionMap.keys()].map(id => document.getElementById(id)).filter(Boolean);
+  const sectionMap = new Map();
+  for (const link of links) {
+    const href = link.getAttribute('href');
+    const id = href ? href.slice(1) : '';
+    if (id) sectionMap.set(id, link);
+  }
+  const sections = [];
+  for (const id of sectionMap.keys()) {
+    const el = document.getElementById(id);
+    if (el) sections.push(el);
+  }
 
   const setActive = id => {
     links.forEach(link => {

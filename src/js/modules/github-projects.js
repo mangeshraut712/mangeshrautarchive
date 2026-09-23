@@ -1047,7 +1047,7 @@ class GitHubProjects {
     this.showcaseExcludes = new Set(['.github']);
   }
 
-  normalizeRepoShape(repo = {}) {
+  normalizeRepoRecord(repo = {}) {
     const stars = Number(repo.stargazers_count ?? repo.stars ?? 0);
     const forks = Number(repo.forks_count ?? repo.forks ?? 0);
     const watchers = Number(repo.subscribers_count ?? repo.watchers_count ?? repo.watchers ?? 0);
@@ -1209,12 +1209,12 @@ class GitHubProjects {
               // Ignore stale cache parse failure
             }
           }
-          return this.fallbackRepos.map(repo => this.normalizeRepoShape(repo));
+          return this.fallbackRepos.map(repo => this.normalizeRepoRecord(repo));
         }
       }
 
       const normalizedRepos = Array.isArray(rawRepos)
-        ? rawRepos.map(repo => this.normalizeRepoShape(repo))
+        ? rawRepos.map(repo => this.normalizeRepoRecord(repo))
         : [];
 
       const sortedRepos = normalizedRepos.toSorted(

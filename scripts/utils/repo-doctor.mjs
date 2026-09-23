@@ -195,6 +195,7 @@ const allowedRootDirs = new Set([
   'scripts',
   'src',
   'tests',
+  'tools',
   'workers',
   'node_modules',
   'dist',

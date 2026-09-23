@@ -18,20 +18,31 @@ const videoMode = process.env.PLAYWRIGHT_ENABLE_VIDEO === '1' ? 'retain-on-failu
 const isVisualTesting = process.env.VISUAL_TESTING === '1';
 const updateSnapshots = process.env.UPDATE_SNAPSHOTS === '1';
 
-export default defineConfig({
+const expectConfig = { timeout: 10_000 };
+if (isVisualTesting) {
+  expectConfig.toHaveScreenshot = {
+    maxDiffPixels: 100,
+    threshold: 0.2,
+  };
+}
+
+const useConfig = {
+  baseURL,
+  trace: process.env.PLAYWRIGHT_TRACE === '1' ? 'retain-on-failure' : 'off',
+  screenshot: isVisualTesting ? 'on' : 'only-on-failure',
+  video: videoMode,
+};
+if (browserChannel) {
+  useConfig.channel = browserChannel;
+}
+if (isVisualTesting) {
+  useConfig.viewport = { width: 1440, height: 900 };
+}
+
+const config = defineConfig({
   testDir: './tests/e2e',
   timeout: 90_000,
-  expect: {
-    timeout: 10_000,
-    ...(isVisualTesting
-      ? {
-          toHaveScreenshot: {
-            maxDiffPixels: 100,
-            threshold: 0.2,
-          },
-        }
-      : {}),
-  },
+  expect: expectConfig,
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 1,
@@ -41,18 +52,7 @@ export default defineConfig({
     ['html', { outputFolder: 'artifacts/playwright-report', open: 'never' }],
     ...(process.env.CI ? [['github']] : []),
   ],
-  use: {
-    baseURL,
-    trace: process.env.PLAYWRIGHT_TRACE === '1' ? 'retain-on-failure' : 'off',
-    screenshot: isVisualTesting ? 'on' : 'only-on-failure',
-    video: videoMode,
-    ...(browserChannel ? { channel: browserChannel } : {}),
-    ...(isVisualTesting
-      ? {
-          viewport: { width: 1440, height: 900 },
-        }
-      : {}),
-  },
+  use: useConfig,
   snapshotDir: './tests/e2e/__snapshots__',
   updateSnapshots: updateSnapshots ? 'all' : 'missing',
   webServer: useManagedWebServer
@@ -195,53 +195,47 @@ export default defineConfig({
       },
     },
   ],
-
-  // Configure projects for CI vs local
-  ...(process.env.CI && process.env.TEST_SUITE === 'quick'
-    ? {
-        projects: [
-          {
-            name: 'Desktop Chrome',
-            use: { ...devices['Desktop Chrome'], viewport: { width: 1440, height: 900 } },
-          },
-          { name: 'Pixel 7 Chrome', use: { ...devices['Pixel 7'] } },
-          { name: 'iPhone 14 Safari', use: { ...devices['iPhone 14'] } },
-        ],
-      }
-    : {}),
-
-  // Full suite for comprehensive testing
-  ...(process.env.CI && process.env.TEST_SUITE === 'full'
-    ? {
-        projects: [
-          {
-            name: 'Desktop Chrome',
-            use: {
-              ...devices['Desktop Chrome'],
-              channel: 'chrome',
-              viewport: { width: 1440, height: 900 },
-            },
-          },
-          {
-            name: 'Desktop Safari',
-            use: { ...devices['Desktop Safari'], viewport: { width: 1440, height: 900 } },
-          },
-          {
-            name: 'Desktop Firefox',
-            use: { ...devices['Desktop Firefox'], viewport: { width: 1440, height: 900 } },
-          },
-          {
-            name: 'Desktop Edge',
-            use: {
-              ...devices['Desktop Edge'],
-              channel: 'msedge',
-              viewport: { width: 1440, height: 900 },
-            },
-          },
-          { name: 'Pixel 7 Chrome', use: { ...devices['Pixel 7'], channel: 'chrome' } },
-          { name: 'iPhone 14 Safari', use: { ...devices['iPhone 14'] } },
-          { name: 'iPad Pro Safari', use: { ...devices['iPad Pro 11'] } },
-        ],
-      }
-    : {}),
 });
+
+if (process.env.CI && process.env.TEST_SUITE === 'quick') {
+  config.projects = [
+    {
+      name: 'Desktop Chrome',
+      use: { ...devices['Desktop Chrome'], viewport: { width: 1440, height: 900 } },
+    },
+    { name: 'Pixel 7 Chrome', use: { ...devices['Pixel 7'] } },
+    { name: 'iPhone 14 Safari', use: { ...devices['iPhone 14'] } },
+  ];
+} else if (process.env.CI && process.env.TEST_SUITE === 'full') {
+  config.projects = [
+    {
+      name: 'Desktop Chrome',
+      use: {
+        ...devices['Desktop Chrome'],
+        channel: 'chrome',
+        viewport: { width: 1440, height: 900 },
+      },
+    },
+    {
+      name: 'Desktop Safari',
+      use: { ...devices['Desktop Safari'], viewport: { width: 1440, height: 900 } },
+    },
+    {
+      name: 'Desktop Firefox',
+      use: { ...devices['Desktop Firefox'], viewport: { width: 1440, height: 900 } },
+    },
+    {
+      name: 'Desktop Edge',
+      use: {
+        ...devices['Desktop Edge'],
+        channel: 'msedge',
+        viewport: { width: 1440, height: 900 },
+      },
+    },
+    { name: 'Pixel 7 Chrome', use: { ...devices['Pixel 7'], channel: 'chrome' } },
+    { name: 'iPhone 14 Safari', use: { ...devices['iPhone 14'] } },
+    { name: 'iPad Pro Safari', use: { ...devices['iPad Pro 11'] } },
+  ];
+}
+
+export default config;

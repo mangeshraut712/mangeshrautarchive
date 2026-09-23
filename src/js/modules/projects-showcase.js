@@ -631,7 +631,7 @@ export async function initProjectShowcase({ username = DEFAULT_USERNAME } = {}) 
 
     const setRepoCatalog = repos => {
       allRepos = repos.map((repo, index) => ({
-        ...githubProjects.normalizeRepoShape(repo),
+        ...githubProjects.normalizeRepoRecord(repo),
         originalCatalogIndex: index,
         __activityLoaded: false,
       }));

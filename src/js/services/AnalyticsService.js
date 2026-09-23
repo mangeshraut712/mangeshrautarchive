@@ -119,10 +119,11 @@ class AnalyticsService {
    * @param {string} [errorCode]   Error code if outcome is 'error'
    */
   contactFormSubmit(outcome, errorCode = null) {
-    this._sendEvent('contact_form_submit', {
-      outcome,
-      ...(errorCode ? { error_code: errorCode } : {}),
-    });
+    const params = { outcome };
+    if (errorCode) {
+      params.error_code = errorCode;
+    }
+    this._sendEvent('contact_form_submit', params);
   }
 
   /** User clicked the resume download button. */
