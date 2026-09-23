@@ -41,11 +41,15 @@ test.describe('Visual Layout & Regression Checks', () => {
     const outreachCard = page.locator('.direct-outreach-card');
     await expect(outreachCard).toBeVisible();
 
-    const bgColor = await outreachCard.evaluate(el => {
-      return window.getComputedStyle(el).backgroundColor;
-    });
-    // Should be rgb(0, 0, 0) in dark mode
-    expect(bgColor).toBe('rgb(0, 0, 0)');
+    // Poll to allow theme background transition (0.3s ease) to settle on pure solid black
+    await expect
+      .poll(
+        async () => {
+          return await outreachCard.evaluate(el => window.getComputedStyle(el).backgroundColor);
+        },
+        { timeout: 5_000 }
+      )
+      .toBe('rgb(0, 0, 0)');
   });
 
   test('systems page architecture diagrams render without horizontal overflow', async ({

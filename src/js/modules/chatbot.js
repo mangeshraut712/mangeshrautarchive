@@ -1849,6 +1849,7 @@ class AppleIntelligenceChatbot {
 
     if (this.elements.messages) {
       this.elements.messages.innerHTML = '';
+      this.elements.messages.setAttribute('aria-busy', 'false');
       this.scrollEngine?.ensureScrollAnchor();
     }
     this.scrollEngine?.clearSession();

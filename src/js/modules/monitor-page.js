@@ -2273,6 +2273,18 @@ async function refreshData(options = {}) {
     edgeBanner.hidden = !onEdge;
   }
 
+  const healthPromise = fetchHealth().then(h => {
+    if (h) renderHealthChecks(h);
+    return h;
+  });
+  const metricsPromise = fetchMetrics().then(m => {
+    if (m) {
+      renderMetrics(m);
+      renderOverview(m);
+    }
+    return m;
+  });
+
   const [
     health,
     metrics,
@@ -2287,8 +2299,8 @@ async function refreshData(options = {}) {
     aiData,
     portfolioCatalog,
   ] = await Promise.all([
-    fetchHealth(),
-    fetchMetrics(),
+    healthPromise,
+    metricsPromise,
     fetchExternalServices(),
     fetchIntegrationsStatus(),
     fetchPlatformHealth(),
@@ -2299,9 +2311,9 @@ async function refreshData(options = {}) {
     fetchSecurity(),
     fetchAIMetrics(),
     fetchPortfolioCatalog(),
+    fetchEvents(),
   ]);
 
-  await fetchEvents();
   lastRefreshIso = new Date().toISOString();
   lastMonitorSnapshot = {
     health,

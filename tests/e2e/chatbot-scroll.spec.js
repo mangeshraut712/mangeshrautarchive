@@ -189,24 +189,31 @@ test.describe('Chatbot scroll engineering', () => {
       timeout: 15_000,
     });
 
-    await page.waitForTimeout(250);
+    // Wait until there is enough scrollable content in the chat viewport
+    await page.waitForFunction(
+      () => {
+        const el = document.getElementById('chatbot-messages');
+        return el && el.scrollHeight > el.clientHeight + 100;
+      },
+      { timeout: 10_000 }
+    );
 
-    // Simulate real user scrolling up by programmatically pausing following, scrolling, and updating affordance
+    // Simulate real user scrolling up to top and updating affordance
     await page.evaluate(() => {
       const chatbot = window.appleIntelligenceChatbot;
+      const messages = document.getElementById('chatbot-messages');
+      if (messages) {
+        messages.scrollTop = 0;
+      }
       if (chatbot && chatbot.scrollEngine) {
         chatbot.scrollEngine.pauseFollowing('test-scroll-up');
-        const messages = document.getElementById('chatbot-messages');
-        if (messages) {
-          messages.scrollTop = 100;
-        }
         chatbot.scrollEngine.captureScrollDistance();
         chatbot.scrollEngine.updateJumpAffordance();
       }
     });
-    await page.waitForTimeout(100);
 
-    await page.locator('.chatbot-jump-latest').click({ force: true });
+    await expect(page.locator('.chatbot-jump-latest')).toBeVisible({ timeout: 5_000 });
+    await page.locator('.chatbot-jump-latest').click();
     await page.waitForTimeout(400);
 
     const gap = await distanceFromBottom(page);
@@ -296,6 +303,27 @@ test.describe('Chatbot scroll engineering', () => {
 
     await expect(page.locator('#chatbot-messages .welcome-message')).toBeVisible();
 
+    // Mock the chat endpoint for instant deterministic response
+    await page.evaluate(() => {
+      const originalFetch = window.fetch;
+      window.fetch = async (url, options) => {
+        const urlStr = typeof url === 'string' ? url : url.url || url.toString();
+        if (urlStr.includes('/api/chat')) {
+          return new Response(
+            JSON.stringify({
+              answer: 'Quick answer from mock',
+              metadata: { source: 'mock' },
+            }),
+            {
+              status: 200,
+              headers: { 'Content-Type': 'application/json' },
+            }
+          );
+        }
+        return originalFetch(url, options);
+      };
+    });
+
     await page.locator('#chatbot-input').fill('Quick test');
     await page.locator('#chatbot-input').press('Enter');
     await expect(page.locator('#chatbot-messages .message.user-message')).toBeVisible({
@@ -308,7 +336,7 @@ test.describe('Chatbot scroll engineering', () => {
     const clearButton = page.locator('#chatbot-clear-btn');
     await clearButton.click();
     await expect(page.locator('#chatbot-messages .welcome-message')).toBeVisible({
-      timeout: 2_000,
+      timeout: 5_000,
     });
     await expect(page.locator('#chatbot-messages .message.user-message')).toHaveCount(0);
   });

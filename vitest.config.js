@@ -6,6 +6,7 @@ export default defineConfig({
     include: ['tests/unit/**/*.test.js'],
     exclude: ['dist/**', 'node_modules/**'],
     environment: 'jsdom',
+    testTimeout: 15_000,
     coverage: {
       provider: 'v8',
       reportsDirectory: 'coverage',

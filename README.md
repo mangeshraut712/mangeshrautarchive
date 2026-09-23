@@ -271,6 +271,7 @@ Current documentation pass:
 | Gemini 3.8 Flash / Google Antigravity | Systems Tokenization & AI Burn dashboard overhaul: Apple HIG Bento cards, 3-tab segmented telemetry, multi-IDE profiles                                                                     | Unavailable from the active runtime                        |
 | Gemini 3.8 Flash / Google Antigravity | Anti-Slop (dmmulroy/anti-slop) Oxlint integration, vendoring, code cleanups, and repo doctor rules                                                                                          | Unavailable from the active runtime                        |
 | Gemini 3.8 Flash / Google Antigravity | Portfolio-wide elevation: 15.75B telemetry sync across all surfaces, system monitor probe repair (handling paused Vercel), navbar fluid geometry, and dark mode globe atmospheric backlight | Unavailable from the active runtime                        |
+| Gemini 3.8 Flash / Google Antigravity | Test hardening & UI resilience: E2E race condition fixes, eager monitor health/overview rendering, chatbot mid-stream aria-busy reset, and Vitest jsdom worker timeout tuning               | Unavailable from the active runtime                        |
 
 No exact variant, reasoning mode, or token count is inferred when the runtime does not expose it.
 

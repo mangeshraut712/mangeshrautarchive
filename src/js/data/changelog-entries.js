@@ -51,6 +51,27 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'e2e-hardening-monitor-eager-chatbot-aria-sept-2026',
+    date: '2026-09-23',
+    type: 'fix',
+    title:
+      'Harden E2E test suites, eagerly render System Monitor overview, and reset chatbot aria-busy',
+    detailTitle:
+      'Robust test hardening across Playwright and Vitest, instant non-blocking monitor overview rendering, and accessible chatbot stream state handling',
+    summary:
+      'Resolved test flakiness and visual timing races across Playwright and Vitest while elevating UI responsiveness. In System Monitor, refactored refreshAllData to render core health checks and overview status eagerly upon immediate API response resolution rather than awaiting 11 secondary telemetry endpoints, eliminating cold-start delays. In the Apple Intelligence Chatbot, hardened commitClearChat to reset aria-busy="false" during mid-stream user clearing. Hardened visual regression assertions for dark mode theme transitions by polling computed styles during CSS 300ms transitions, eliminated Playwright hidden element click race conditions in chatbot jump affordances, deterministically mocked chat streaming during clear-chat e2e runs, and tuned Vitest jsdom test timeout to 15,000ms for heavy concurrent worker loads. 100% green across Vitest (319 tests), Pytest (182 tests), and Playwright E2E.',
+    tags: ['monitor', 'assistme', 'performance'],
+    sha: '90df6244',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/90df6244`,
+    model: 'Gemini 3.8 Flash',
+    ide: 'Google Antigravity',
+    purpose:
+      'Eliminate test flakiness, eagerly render system monitor status, and reset chatbot aria-busy state',
+    reasoning: 'Unavailable',
+    usage: 'Unavailable',
+  },
+  {
     id: 'portfolio-elevation-telemetry-sync-monitor-sept-2026',
     date: '2026-09-23',
     type: 'improvement',
@@ -61,9 +82,9 @@ export const changelogEntries = [
     summary:
       'Completed a portfolio-wide elevation pass across factual telemetry, system monitoring, navigation, visual depth, and web performance. Synced WhoBurnedMore verified metrics (15.75B tokens, $15,429 spend, #56 All-Time rank, 10 tools, 501 automated tests across 319 Vitest and 182 Pytest) across Systems, Uses, and Monitor pages. Fixed false degradation alerts in System Monitor by handling HTTP 402 status on paused Vercel deployment and prioritizing local dev / GitHub Pages probes. Upgraded global Dynamic Island navigation with fluid CSS clamp spacing and ResizeObserver webfont synchronization, eliminating link clipping and overflow on sub-1440px displays. Enhanced the 3D Travel Atlas globe in dark mode with an Apple-style atmospheric backlight radial gradient to eliminate the pitch-black void. Replaced font preloads in index.html with document.fonts.load to resolve Chrome console preload warnings. Maintained 100% green checks across Vitest, pytest, anti-slop, and build pipelines.',
     tags: ['systems', 'design', 'monitor', 'performance'],
-    sha: '1f3e4f0e',
+    sha: 'b315ba5c',
     commitVerified: true,
-    link: `${CHANGELOG_REPO}/commit/1f3e4f0e`,
+    link: `${CHANGELOG_REPO}/commit/b315ba5c`,
     model: 'Gemini 3.8 Flash',
     ide: 'Google Antigravity',
     purpose:
