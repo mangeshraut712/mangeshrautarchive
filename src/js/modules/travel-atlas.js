@@ -1000,7 +1000,7 @@ async function fetchWikiData(waypoint, stopElement) {
       }
       waypoint.editorial.wikiLoaded = true;
     }
-  } catch (_e) {
+  } catch {
     if (story) {
       story.textContent = 'Loading local insights...';
     }

@@ -487,7 +487,7 @@ class AppleIntelligenceChatbot {
     if (!this.activeAskController) return;
     try {
       this.activeAskController.abort();
-    } catch (_error) {
+    } catch {
       // ignore
     }
     this.hideTypingIndicator?.();
@@ -1113,7 +1113,7 @@ class AppleIntelligenceChatbot {
           this.elements.input?.classList.add('dictating');
           this.updateVoiceButtonState();
           return;
-        } catch (_error) {
+        } catch {
           // fall through to idle/review
         }
       }
@@ -1329,7 +1329,7 @@ class AppleIntelligenceChatbot {
     try {
       audio.stream?.getTracks?.().forEach(track => track.stop());
       audio.ctx?.close?.();
-    } catch (_error) {
+    } catch {
       // ignore
     }
     this.elements.dictationDock?.querySelectorAll('.dictation-wave-bar').forEach(bar => {
@@ -1547,7 +1547,9 @@ class AppleIntelligenceChatbot {
     this.elements.toggle?.addEventListener('click', () => this.toggleWidget());
     this.elements.closeBtn?.addEventListener('click', () => this.closeWidget());
     this.elements.backdrop?.addEventListener('click', () => this.closeWidget());
-    this.elements.clearBtn && this.bindNewChatButton(this.elements.clearBtn);
+    if (this.elements.clearBtn) {
+      this.bindNewChatButton(this.elements.clearBtn);
+    }
     this.elements.privacyBtn?.addEventListener('click', () => {
       privacyDashboard.open();
     });
@@ -1762,7 +1764,7 @@ class AppleIntelligenceChatbot {
     if (this.activeAskController) {
       try {
         this.activeAskController.abort();
-      } catch (_error) {
+      } catch {
         // ignore
       }
       this.activeAskController = null;
@@ -2369,7 +2371,7 @@ class AppleIntelligenceChatbot {
       if (this.activeAskController) {
         try {
           this.activeAskController.abort();
-        } catch (_error) {
+        } catch {
           // ignore prior abort
         }
       }
@@ -3131,7 +3133,7 @@ class AppleIntelligenceChatbot {
       if (this.dictationPointerId != null && btn.hasPointerCapture?.(this.dictationPointerId)) {
         try {
           btn.releasePointerCapture(this.dictationPointerId);
-        } catch (_error) {
+        } catch {
           // ignore
         }
       }
@@ -3154,7 +3156,7 @@ class AppleIntelligenceChatbot {
         this._dictationIgnoreClick = true;
         try {
           btn.setPointerCapture?.(event.pointerId);
-        } catch (_error) {
+        } catch {
           // ignore
         }
         if (this.isListening) return;

@@ -4075,7 +4075,6 @@ html.dark .currently-tabs {
 }
 
 .currently-content.active {
-  animation: fadeIn 0.3s ease;
   display: block;
 }
 
@@ -4998,15 +4997,15 @@ html.dark .book-card .media-info p {
 html:not(.dark) .watch-btn,
 html:not(.dark) .book-btn {
   background: rgba(0, 113, 227, 0.08) !important;
-  color: #0071e3 !important;
-  -webkit-text-fill-color: #0071e3 !important;
+  color: #004494 !important;
+  -webkit-text-fill-color: #004494 !important;
   border: 1px solid rgba(0, 113, 227, 0.25) !important;
 }
 
 html:not(.dark) .watch-btn *,
 html:not(.dark) .book-btn * {
-  color: #0071e3 !important;
-  -webkit-text-fill-color: #0071e3 !important;
+  color: #004494 !important;
+  -webkit-text-fill-color: #004494 !important;
 }
 
 html:not(.dark) .watch-btn:hover,

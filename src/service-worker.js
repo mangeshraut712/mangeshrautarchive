@@ -21,7 +21,7 @@ self.addEventListener('install', event => {
         { condition: { urlPattern: '*.png' }, source: 'cache' },
         { condition: { urlPattern: '*.svg' }, source: 'cache' },
       ]);
-    } catch (_e) {
+    } catch {
       // Static routing not supported — fallback to standard fetch handling
     }
   }

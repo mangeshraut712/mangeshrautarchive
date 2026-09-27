@@ -30,7 +30,7 @@
       if (labDesktop) {
         return true;
       }
-    } catch (_e) {
+    } catch {
       // ignore
     }
 
@@ -214,7 +214,7 @@
       try {
         link.onload = null;
         link.onerror = null;
-      } catch (_err) {
+      } catch {
         /* ignore */
       }
       link.removeAttribute('onload');
@@ -240,11 +240,15 @@
         var href = link.getAttribute('href') || '';
         var as = (link.getAttribute('as') || '').toLowerCase();
         if (/^https?:\/\//i.test(href)) {
-          link.parentNode && link.parentNode.removeChild(link);
+          if (link.parentNode) {
+            link.parentNode.removeChild(link);
+          }
           return;
         }
         if (as === 'font' || /fontawesome|font-awesome/i.test(href)) {
-          link.parentNode && link.parentNode.removeChild(link);
+          if (link.parentNode) {
+            link.parentNode.removeChild(link);
+          }
         }
       });
   }

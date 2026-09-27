@@ -51,6 +51,24 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'media-contrast-and-module-hygiene-sept-2026',
+    date: '2026-09-28',
+    type: 'fix',
+    title:
+      'Eliminate scroll mask and fadeIn contrast drops, elevate media CTA contrast, and clean catch bindings',
+    summary:
+      'Eliminated fadeIn animation and scroll mask fade on currently-content and media shelves that triggered low-alpha contrast violations during Axe accessibility audits, elevated .watch-btn and .book-btn light-theme typography to high-contrast Apple Blue (#004494, 8.7:1 contrast ratio) with eager fallback styling in global-improvements.css, cleaned unused catch bindings and expressions across 20+ modules to achieve 0 linter warnings, and ensured aria-busy cleanup on real media loader completion.',
+    tags: ['design', 'performance', 'other'],
+    commitVerified: false,
+    model: 'Gemini 3.8 Flash',
+    ide: 'Google Antigravity IDE',
+    purpose:
+      'Eliminate Axe contrast degradation on horizontal media shelves, enforce WCAG AA typography standards, and achieve 0-warning module hygiene',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+    status: 'unreleased',
+  },
+  {
     id: 'sitewide-palette-and-test-stability-sept-2026',
     date: '2026-09-28',
     type: 'fix',
@@ -58,14 +76,15 @@ export const changelogEntries = [
     summary:
       'Restored canonical Apple system colors (#ff3b30 in light mode and #ff453a in dark mode) for the calendar today marker and Sunday labels, restored vivid traffic-light colors (#34c759, #ffcc00, #ff3b30) for WHOOP vitals, eliminated process leaks in dev-all.js ensuring zero orphaned server listeners, hardened chatbot scroll streaming tests with deterministic client mocks, and eliminated unused variables and new Array constructs sitewide.',
     tags: ['design', 'performance', 'other'],
-    commitVerified: false,
+    sha: '8dd314a1',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/8dd314a1`,
     model: 'Gemini 3.8 Flash',
     ide: 'Google Antigravity IDE',
     purpose:
       'Enforce Apple HIG system palette fidelity, resolve linter warnings, and stabilize test suite execution',
     reasoning: 'unavailable',
     usage: 'unavailable',
-    status: 'unreleased',
   },
   {
     id: 'github-project-media-operating-view-sept-2026',

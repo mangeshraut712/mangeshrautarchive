@@ -10,7 +10,7 @@ function readBool(key, fallback = true) {
     const raw = localStorage.getItem(key);
     if (raw === '0' || raw === 'false') return false;
     if (raw === '1' || raw === 'true') return true;
-  } catch (_error) {
+  } catch {
     // ignore
   }
   return fallback;
@@ -19,7 +19,7 @@ function readBool(key, fallback = true) {
 function writeBool(key, value) {
   try {
     localStorage.setItem(key, value ? '1' : '0');
-  } catch (_error) {
+  } catch {
     // ignore
   }
 }
@@ -52,7 +52,7 @@ function initControlCenter() {
     syncLiquidGlassTokens(value / 100);
     try {
       localStorage.setItem('wwdc26-liquid-glass-tint', String(value));
-    } catch (_error) {
+    } catch {
       // ignore
     }
     const chrome = await import('./liquid-glass-chrome.js');

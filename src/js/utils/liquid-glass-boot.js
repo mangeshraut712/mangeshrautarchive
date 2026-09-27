@@ -16,7 +16,7 @@
     if (iosLike) {
       root.dataset.iosSafe = '1';
     }
-  } catch (_e) {
+  } catch {
     // ignore
   }
 
@@ -25,7 +25,7 @@
       stored = 100;
       root.dataset.lgReducedTransparency = '1';
     }
-  } catch (_e) {
+  } catch {
     // ignore
   }
 
@@ -37,7 +37,7 @@
         stored = value;
       }
     }
-  } catch (_error) {
+  } catch {
     // Storage unavailable — default tinted solid.
   }
 

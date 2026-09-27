@@ -215,7 +215,7 @@ function syncSectionHash(sectionId) {
 
   try {
     window.history.pushState(null, '', href);
-  } catch (_error) {
+  } catch {
     window.location.hash = sectionId;
   }
 

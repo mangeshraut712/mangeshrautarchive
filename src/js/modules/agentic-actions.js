@@ -658,7 +658,7 @@ export class AgenticActionHandler {
         } else if (typeof location !== 'undefined') {
           location.hash = target;
         }
-      } catch (_error) {
+      } catch {
         // ignore history failures (file://, sandboxed)
       }
 
@@ -1277,7 +1277,7 @@ export class AgenticActionHandler {
         spotifyUrl: spotifySearchUrl,
         message: lines.join('\n'),
       };
-    } catch (_err) {
+    } catch {
       return {
         success: true,
         message:
@@ -1294,7 +1294,7 @@ export class AgenticActionHandler {
         success: true,
         message: `✈️ **Mangesh's Travel Atlas**\n\n- **Destinations Logged:** 32+ cities across the United States and India\n- **US States Explored:** 15+ states (Pennsylvania, New York, New Jersey, California, Washington, Massachusetts, and more)\n- **Interactive Features:** 3D WebGL Globe, city telemetry, curated photography.\n\nExplore the interactive map: [Open Travel Atlas](${atlasLink})`,
       };
-    } catch (_e) {
+    } catch {
       return { success: false, message: 'Could not load Travel Atlas data.' };
     }
   }
@@ -1307,7 +1307,7 @@ export class AgenticActionHandler {
         success: true,
         message: `🟢 **System Monitor & Health**\n\n- **Status:** All Systems Operational (100% Core Web Vitals)\n- **Dual Hosts:** GitHub Pages + Vercel Edge Serverless\n- **Integrations:** OpenRouter AI, Cloudflare Edge Worker, Whoop 4.0, Last.fm\n\nInspect live telemetry: [Open System Monitor](${monitorLink})`,
       };
-    } catch (_e) {
+    } catch {
       return { success: false, message: 'Could not load System Monitor.' };
     }
   }
@@ -1322,7 +1322,7 @@ export class AgenticActionHandler {
         success: true,
         message: `💖 **Support & Sponsorship Options**\n\nThank you for supporting Mangesh's work! Here are the active channels:\n\n- **[Stripe Checkout](https://buy.stripe.com/bJe8wOeCQ0dXePp6Y414402):** Apple Pay, Google Pay, Cards\n- **[PayPal & Venmo](https://www.paypal.com/ncp/payment/LXNHJ5SUGNP82):** PayPal balance, Venmo, Cards\n- **[Buy Me a Coffee](https://buymeacoffee.com/mangeshraut):** Micro-tips, notes & monthly memberships\n- **[GitHub Sponsors](https://github.com/sponsors/mangeshraut712):** Monthly open-source sponsorship\n- **Crypto Wallets:** Solana (\`3LaZpBbm...mkcc\`), Bitcoin (\`bc1qe55r...0j44j\`), USDC, Ethereum, Dogecoin\n\nI have scrolled you directly to the **Support My Work** card on the page!`,
       };
-    } catch (_e) {
+    } catch {
       return {
         success: true,
         message:

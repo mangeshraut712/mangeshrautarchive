@@ -52,7 +52,7 @@ function isPerfAudit() {
       window.__PERF_AUDIT__ === true ||
       new URLSearchParams(window.location.search).has('perf-audit')
     );
-  } catch (_e) {
+  } catch {
     return false;
   }
 }
@@ -126,7 +126,7 @@ function readCache(year) {
     const parsed = JSON.parse(raw);
     if (Date.now() - parsed.t > CACHE_TTL) return null;
     return parsed.days.map(x => ({ date: parseISODate(x.date), count: x.count, level: x.level }));
-  } catch (_e) {
+  } catch {
     return null;
   }
 }
@@ -134,7 +134,7 @@ function readCache(year) {
 function writeCache(year, rawDays) {
   try {
     localStorage.setItem(CACHE_PREFIX + year, JSON.stringify({ t: Date.now(), days: rawDays }));
-  } catch (_e) {
+  } catch {
     /* storage full / unavailable — ignore */
   }
 }

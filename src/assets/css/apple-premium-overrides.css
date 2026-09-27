@@ -3835,7 +3835,6 @@ html.dark .media-poster img.error {
 
 .currently-content.active {
   display: block;
-  animation: fadeIn 0.3s ease;
 }
 
 /* Media info styling improvements */

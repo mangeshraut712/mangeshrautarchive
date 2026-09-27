@@ -1422,6 +1422,12 @@ html body #contact .currently-content {
   overflow: visible !important;
 }
 
+html body #contact .currently-content.active {
+  display: block !important;
+  opacity: 1 !important;
+  animation: none !important;
+}
+
 html body #contact .media-grid,
 html body #contact #shows-grid.media-grid,
 html body #contact #music-grid.media-grid,
@@ -1439,18 +1445,8 @@ html body #contact #books-grid.media-grid {
   -webkit-overflow-scrolling: touch !important;
   scroll-behavior: smooth !important;
   scrollbar-width: thin !important;
-  mask-image: linear-gradient(
-    to right,
-    #000 0%,
-    #000 calc(100% - 32px),
-    transparent 100%
-  ) !important;
-  -webkit-mask-image: linear-gradient(
-    to right,
-    #000 0%,
-    #000 calc(100% - 32px),
-    transparent 100%
-  ) !important;
+  mask-image: none !important;
+  -webkit-mask-image: none !important;
 }
 
 html body #contact .media-card,

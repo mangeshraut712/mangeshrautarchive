@@ -622,7 +622,7 @@ class LastFmService {
         clearTimeout(timer);
         try {
           delete globalThis[callbackName];
-        } catch (_err) {
+        } catch {
           // Ignore deletion error
         }
         if (script.parentNode) script.parentNode.removeChild(script);

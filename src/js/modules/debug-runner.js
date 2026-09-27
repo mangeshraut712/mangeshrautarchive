@@ -136,7 +136,7 @@ class DebugRunner {
     try {
       board = JSON.parse(localStorage.getItem('debugRunnerLeaderboard') || '[]');
       if (!Array.isArray(board)) board = [];
-    } catch (_error) {
+    } catch {
       board = [];
     }
     board.push(entry);
@@ -158,7 +158,7 @@ class DebugRunner {
       try {
         board = JSON.parse(localStorage.getItem('debugRunnerLeaderboard') || '[]');
         if (!Array.isArray(board)) board = [];
-      } catch (_error) {
+      } catch {
         board = [];
       }
     }
@@ -368,7 +368,7 @@ class DebugRunner {
         this.nextNoteTime += tempo;
         this.noteIndex++;
       }
-    } catch (_err) {
+    } catch {
       // Suppress procedural audio error
     }
   }
@@ -537,7 +537,7 @@ class DebugRunner {
     if ('vibrate' in navigator) {
       try {
         navigator.vibrate(duration);
-      } catch (_e) {
+      } catch {
         // Suppress vibration security errors
       }
     }

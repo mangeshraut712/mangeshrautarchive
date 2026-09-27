@@ -10,7 +10,7 @@ function readTintPercent() {
       const value = Number(raw);
       if (Number.isFinite(value) && value >= 0 && value <= 100) return value;
     }
-  } catch (_error) {
+  } catch {
     // ignore
   }
   return 100;

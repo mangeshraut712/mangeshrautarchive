@@ -612,7 +612,7 @@ class MarkdownService {
             copyBtn.innerHTML =
               '<i class="fa-regular fa-copy" aria-hidden="true"></i><span>Copy</span>';
           }, 2000);
-        } catch (_err) {
+        } catch {
           copyBtn.innerHTML = '<span>Failed</span>';
         }
       });

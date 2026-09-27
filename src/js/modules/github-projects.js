@@ -2140,7 +2140,7 @@ class GitHubProjects {
     `;
 
     this.previewModal.classList.remove('hidden');
-    this.previewModal.offsetHeight;
+    void this.previewModal.offsetHeight;
     this.previewModal.classList.add('active');
     this.previewModal.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';

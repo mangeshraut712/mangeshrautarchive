@@ -1759,7 +1759,7 @@ export class AccessibilityEnhancer {
       if (window.matchMedia('(prefers-reduced-transparency: reduce)').matches) {
         return 100;
       }
-    } catch (_error) {
+    } catch {
       // ignore
     }
     try {
@@ -1770,7 +1770,7 @@ export class AccessibilityEnhancer {
           return stored;
         }
       }
-    } catch (_error) {
+    } catch {
       // Storage unavailable — fall through to default.
     }
     // Tinted solid (default) — max readability; user can slide to Clear for glass
@@ -1797,7 +1797,7 @@ export class AccessibilityEnhancer {
     }
     try {
       localStorage.setItem('wwdc26-liquid-glass-tint', String(clamped));
-    } catch (_error) {
+    } catch {
       // Persistence is best-effort.
     }
   }

@@ -657,7 +657,7 @@ function shouldShowLaunchIntro(storageKey) {
       return sessionStorage.getItem(storageKey) !== '1';
     }
     return sessionStorage.getItem(storageKey) !== '1';
-  } catch (_error) {
+  } catch {
     return true;
   }
 }
@@ -696,7 +696,7 @@ function initLaunchIntro(documentRef = document) {
   const markIntroSeen = () => {
     try {
       sessionStorage.setItem(storageKey, '1');
-    } catch (_error) {
+    } catch {
       // Privacy-restricted storage should not block the page.
     }
   };
@@ -1373,7 +1373,7 @@ function initServiceWorker() {
       clearPortfolioStorage();
       sessionStorage.clear();
       localStorage.removeItem('portfolio-version');
-    } catch (_e) {
+    } catch {
       /* ignore */
     }
   };
@@ -1404,7 +1404,7 @@ function initServiceWorker() {
 
               clearPortfolioStorage();
             }
-          } catch (_error) {
+          } catch {
             // Service worker cleanup is best-effort; failures are non-critical
           }
         }, 1000);
@@ -1431,7 +1431,7 @@ function applyStoredLiquidGlassTint() {
     if (Number.isFinite(stored) && stored >= 0 && stored <= 100) {
       syncLiquidGlassTokens(stored / 100, { instant: true });
     }
-  } catch (_error) {
+  } catch {
     // Storage unavailable — keep the CSS default tint.
   }
 }
@@ -1507,7 +1507,7 @@ async function clearBrowserDeploymentCaches() {
   try {
     localStorage.removeItem('portfolio-version');
     sessionStorage.clear();
-  } catch (_e) {
+  } catch {
     // Storage can be unavailable in private contexts; a reload still succeeds.
   }
 }
@@ -1540,7 +1540,7 @@ async function checkDeploymentVersion() {
     try {
       sessionReloads = Number(sessionStorage.getItem('portfolio-sync-reloads') || '0');
       if (sessionReloads >= 1) return;
-    } catch (_e) {
+    } catch {
       // sessionStorage may be blocked
     }
 
@@ -1577,7 +1577,7 @@ async function checkDeploymentVersion() {
           localStorage.setItem('portfolio-last-asset-ver', String(serverConfig.version));
         }
       }
-    } catch (_e) {
+    } catch {
       /* ignore */
     }
 
@@ -1591,7 +1591,7 @@ async function checkDeploymentVersion() {
       if (currentBuildParam === normalizeBuildId(serverBuild) || syncRetry >= 1) {
         try {
           sessionStorage.setItem('portfolio-sync-reloads', '1');
-        } catch (_e) {
+        } catch {
           /* ignore */
         }
         return;
@@ -1599,7 +1599,7 @@ async function checkDeploymentVersion() {
 
       try {
         sessionStorage.setItem('portfolio-sync-reloads', String(sessionReloads + 1));
-      } catch (_e) {
+      } catch {
         /* ignore */
       }
 

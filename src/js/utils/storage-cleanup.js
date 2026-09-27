@@ -21,14 +21,14 @@ function clearPortfolioStorage() {
   try {
     const storage = window.localStorage;
     PORTFOLIO_STORAGE_KEYS.forEach(key => storage.removeItem(key));
-  } catch (_error) {
+  } catch {
     // Storage access can fail in privacy-restricted contexts; ignore and keep the page usable.
   }
 
   try {
     const storage = window.sessionStorage;
     PORTFOLIO_SESSION_KEYS.forEach(key => storage.removeItem(key));
-  } catch (_error) {
+  } catch {
     // Storage access can fail in privacy-restricted contexts; ignore and keep the page usable.
   }
 }

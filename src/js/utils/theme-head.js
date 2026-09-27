@@ -17,7 +17,7 @@
 
   try {
     localStorage.removeItem(GEO_KEY);
-  } catch (_error) {
+  } catch {
     // Storage may be unavailable; coordinates remain memory-only.
   }
 
@@ -63,7 +63,7 @@
       } else {
         localStorage.removeItem(LEGACY_KEY);
       }
-    } catch (_error) {
+    } catch {
       // Ignore storage failures.
     }
   }

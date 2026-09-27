@@ -109,6 +109,7 @@ class RealMediaLoader {
       })
       .join('');
 
+    container.removeAttribute('aria-busy');
     this.bindMediaTracking(container);
   }
 
@@ -171,6 +172,7 @@ class RealMediaLoader {
       })
       .join('');
 
+    container.removeAttribute('aria-busy');
     this.bindMediaTracking(container);
 
     // Hydrate covers

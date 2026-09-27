@@ -239,7 +239,7 @@ function bindLazyChatbot() {
         if (bot && !bot.isOpen) {
           bot.openWidget();
         }
-      } catch (_error) {
+      } catch {
         loading = false;
       }
     },
@@ -260,7 +260,7 @@ async function initAssistMeChrome() {
 
   try {
     await import('../utils/go-to-top.js');
-  } catch (_error) {
+  } catch {
     /* go-to-top is optional chrome */
   }
 }
