@@ -301,8 +301,8 @@ Razorpay, NPCI, and TypeSafe claims, and generated the complete 18-post assistan
 [deploy workflow](https://github.com/mangeshraut712/mangeshrautarchive/actions/workflows/deploy.yml)
 is the source of truth for publication status.
 
-The September 27 reading pass gives homepage cards visible full-article and preview actions. The
-preview is now a short summary; complete articles open on their own pages with section navigation.
+The September 27 reading pass makes homepage cards open complete articles directly. Previously
+shared preview hashes also forward to the corresponding article. Each article has section navigation.
 Each of the 18 articles includes a conceptual diagram, an image, a source section, and a chart,
 framework, or data table. The `npm run audit:blog-content` build gate checks article length,
 reading-time labels, heading structure, and media coverage. Conceptual diagrams and editorial

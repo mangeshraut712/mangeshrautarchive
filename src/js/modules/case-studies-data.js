@@ -97,7 +97,7 @@ export const caseStudies = [
     demoUrl: null,
     repoUrl: 'https://github.com/mangeshraut712/Hindai',
     blogId: 'google-io-2026-developer-insights',
-    blogHref: 'index.html#blog-read-google-io-2026-developer-insights',
+    blogHref: 'blog/google-io-2026-developer-insights.html',
     videoUrl: 'https://www.youtube.com/@mangeshraut71298',
     videoLabel: 'AI project demos',
     metrics: [

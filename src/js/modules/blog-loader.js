@@ -6,14 +6,12 @@ import { sitePath } from '../utils/site-base.js';
 
 /**
  * Blog Loader Module
- * Renders blog posts and handles article modal interactions
+ * Renders blog cards with direct links to complete articles
  */
 
 class BlogLoader {
   constructor() {
     this.container = document.getElementById('blog-posts-container');
-    this.modal = null;
-    this.lastFocus = null;
     this.init();
   }
 
@@ -22,9 +20,7 @@ class BlogLoader {
 
     this.renderFilters();
     this.renderPosts();
-    this.bindCardEvents();
     this.bindCodeCopy();
-    this.createModal();
     this.bindDeepLinks();
     this.syncPostCount();
   }
@@ -197,29 +193,29 @@ class BlogLoader {
   }
 
   bindDeepLinks() {
-    const tryOpenFromHash = () => {
+    // Preserve shared preview URLs while taking readers to the full article.
+    const openFullArticle = id => {
+      const post = blogPosts.find(item => item.id === id);
+      if (!post) return;
+      window.location.assign(sitePath(`/blog/${encodeURIComponent(post.id)}.html`));
+    };
+
+    const tryLegacyLink = () => {
       const pending = window.__pendingBlogOpen;
       if (pending) {
-        this.openPost(pending);
         delete window.__pendingBlogOpen;
+        openFullArticle(pending);
         return;
       }
-
       const match = window.location.hash.match(/^#blog-read-([^&]+)/);
-      if (!match) return;
-      this.openPost(decodeURIComponent(match[1]));
+      if (match) openFullArticle(decodeURIComponent(match[1]));
     };
 
     window.addEventListener('portfolio:open-blog', event => {
-      const postId = event.detail?.id;
-      if (postId) {
-        window.__pendingBlogOpen = postId;
-        tryOpenFromHash();
-      }
+      if (event.detail?.id) openFullArticle(event.detail.id);
     });
-
-    tryOpenFromHash();
-    window.addEventListener('hashchange', tryOpenFromHash);
+    tryLegacyLink();
+    window.addEventListener('hashchange', tryLegacyLink);
   }
 
   renderPosts() {
@@ -258,7 +254,6 @@ class BlogLoader {
                     <div class="blog-tags blog-tags--pills">${pills}</div>
                     <div class="blog-card-cta-row">
                       <a class="blog-read-btn" href="${fullHref}">Read full article <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
-                      <button class="blog-preview-btn" type="button" data-blog-open="${post.id}" aria-label="Preview ${this.escapeHTML(post.title)}"><i class="far fa-eye" aria-hidden="true"></i> Preview</button>
                     </div>
                 </div>
             </article>
@@ -268,18 +263,6 @@ class BlogLoader {
 
     rescanCardContentAccessibility(this.container);
     refreshSectionPreview(this.container);
-  }
-
-  bindCardEvents() {
-    this.container.addEventListener('click', event => {
-      if (event.target.closest('.blog-card-actions, a')) return;
-
-      const openControl = event.target.closest('[data-blog-open]');
-      if (openControl) {
-        event.preventDefault();
-        this.openPost(openControl.dataset.blogOpen);
-      }
-    });
   }
 
   formatDate(dateString) {
@@ -296,306 +279,11 @@ class BlogLoader {
     });
   }
 
-  renderHighlights(highlights = []) {
-    return highlights
-      .slice(0, 3)
-      .map(item => `<li>${this.escapeHTML(item)}</li>`)
-      .join('');
-  }
   escapeHTML(value = '') {
     return escapeHtmlShared(value);
   }
-
-  createModal() {
-    // Create modal HTML structure
-    const modalHTML = `
-            <div id="blog-modal" class="blog-modal hidden" role="dialog" aria-modal="true" aria-labelledby="blog-modal-title" aria-hidden="true">
-                <div class="blog-modal-overlay" data-blog-close></div>
-                <div class="blog-modal-container" tabindex="-1">
-                    <button class="blog-modal-close" type="button" aria-label="Close preview" data-blog-close><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M2.5 2.5l9 9M11.5 2.5l-9 9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
-                    <div class="blog-modal-content" id="blog-modal-body">
-                        <!-- Content injected here -->
-                    </div>
-                </div>
-            </div>
-        `;
-
-    document.body.insertAdjacentHTML('beforeend', modalHTML);
-
-    this.modal = document.getElementById('blog-modal');
-    const closeModal = () => this.closeModal();
-
-    this.modal.addEventListener('click', e => {
-      if (e.target.closest('[data-blog-close]')) closeModal();
-    });
-    document.addEventListener('keydown', e => {
-      if (e.key === 'Escape' && this.modal && !this.modal.classList.contains('hidden')) {
-        closeModal();
-        return;
-      }
-      // Simple focus trap while modal is open
-      if (e.key !== 'Tab' || !this.modal || this.modal.classList.contains('hidden')) return;
-      const focusable = this.modal.querySelectorAll(
-        'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])'
-      );
-      if (!focusable.length) return;
-      const first = focusable[0];
-      const last = focusable[focusable.length - 1];
-      if (e.shiftKey && document.activeElement === first) {
-        e.preventDefault();
-        last.focus();
-      } else if (!e.shiftKey && document.activeElement === last) {
-        e.preventDefault();
-        first.focus();
-      }
-    });
-  }
-
-  openPost(id) {
-    const post = blogPosts.find(p => p.id === id);
-    if (!post || !this.modal) return;
-
-    this.lastFocus = document.activeElement;
-    const modalBody = document.getElementById('blog-modal-body');
-    const fullPageHref = sitePath(`/blog/${encodeURIComponent(post.id)}.html`);
-    const image = sitePath(`/${getBlogPostImage(post)}`);
-    const pills = (post.tags || [])
-      .slice(0, 6)
-      .map(tag => `<span class="blog-topic-pill">${this.escapeHTML(tag)}</span>`)
-      .join('');
-
-    modalBody.innerHTML = `
-            <article class="blog-article blog-article--editorial blog-preview" data-post-id="${this.escapeHTML(post.id)}">
-            <header class="article-header">
-                <p class="article-kicker">${this.escapeHTML(post.kicker || 'Field notes')}</p>
-                <p class="blog-preview__eyebrow">Article preview</p>
-                <h2 class="article-title" id="blog-modal-title">${this.escapeHTML(post.title)}</h2>
-                <p class="article-promise">${this.escapeHTML(post.readerPromise || post.summary)}</p>
-                <div class="article-byline article-byline--editorial">
-                  <img class="article-byline__avatar" src="assets/images/profile.webp" width="40" height="40" alt="Mangesh Raut" loading="lazy" decoding="async" />
-                  <div class="article-byline__text">
-                    <span class="article-byline__name">Mangesh Raut</span>
-                    <span class="article-byline__meta">
-                      <time datetime="${this.escapeHTML(post.date)}">${this.formatDate(post.date)}</time>
-                      <span aria-hidden="true">·</span>
-                      <span>${this.escapeHTML(post.readTime)}</span>
-                    </span>
-                  </div>
-                </div>
-                <div class="article-tags blog-tags--pills">${pills}</div>
-            </header>
-            <a class="blog-read-btn blog-preview__read" href="${fullPageHref}">Read full article <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
-            <img class="blog-preview__image" src="${image}" alt="" width="1600" height="900" loading="eager" decoding="async" />
-            <p class="blog-preview__summary">${this.escapeHTML(post.summary)}</p>
-            <div class="blog-preview__highlights"><h3>In this article</h3><ul>${this.renderHighlights(post.highlights)}</ul></div>
-            </article>
-        `;
-
-    this.modal.classList.remove('hidden');
-    // Force browser reflow to enable CSS transition
-    this.modal.offsetHeight;
-    this.modal.classList.add('active');
-    this.modal.setAttribute('aria-hidden', 'false');
-    document.body.style.overflow = 'hidden';
-    document.documentElement.classList.add('blog-modal-open');
-
-    // Deep-link hash for shareable open state (without fighting #blog)
-    try {
-      const nextHash = `#blog-read-${encodeURIComponent(post.id)}`;
-      if (window.location.hash !== nextHash) {
-        history.replaceState(
-          null,
-          '',
-          `${window.location.pathname}${window.location.search}${nextHash}`
-        );
-      }
-    } catch {
-      // ignore history errors
-    }
-
-    rescanCardContentAccessibility(modalBody);
-    // Move focus into the dialog
-    requestAnimationFrame(() => {
-      this.modal.querySelector('.blog-modal-close')?.focus();
-      this.modal.querySelector('.blog-modal-container')?.scrollTo?.(0, 0);
-      modalBody.scrollTop = 0;
-    });
-  }
-
-  closeModal() {
-    if (!this.modal) return;
-    this.modal.classList.remove('active');
-    this.modal.setAttribute('aria-hidden', 'true');
-    document.body.style.overflow = '';
-    document.documentElement.classList.remove('blog-modal-open');
-
-    // Clear deep-link hash when closing from hash open
-    try {
-      if (/^#blog-read-/.test(window.location.hash)) {
-        history.replaceState(null, '', `${window.location.pathname}${window.location.search}#blog`);
-      }
-    } catch {
-      // ignore
-    }
-
-    const restore = this.lastFocus;
-    this.lastFocus = null;
-
-    // Delay hidden class to let fade-out transition complete
-    setTimeout(() => {
-      if (!this.modal.classList.contains('active')) {
-        this.modal.classList.add('hidden');
-      }
-      if (restore && typeof restore.focus === 'function') {
-        try {
-          restore.focus();
-        } catch {
-          // ignore
-        }
-      }
-    }, 300);
-  }
-
-  parseContent(content) {
-    if (!content) return '';
-
-    // Extract code blocks first to protect them from regexes
-    const codeBlocks = [];
-    let placeholderCount = 0;
-
-    let processedContent = content.replace(/```([\s\S]*?)```/g, (match, code) => {
-      const placeholder = `__CODE_BLOCK_PLACEHOLDER_${placeholderCount}__`;
-      codeBlocks.push({
-        placeholder,
-        code: code.trim(),
-      });
-      placeholderCount++;
-      return placeholder;
-    });
-
-    const paragraphs = processedContent.split(/\n\n+/);
-    const html = [];
-    let inList = false;
-    let listItems = [];
-
-    const closeList = () => {
-      if (inList) {
-        html.push(`<ul class="article-list">${listItems.join('')}</ul>`);
-        listItems = [];
-        inList = false;
-      }
-    };
-
-    const codeMap = new Map(codeBlocks.map(c => [c.placeholder, c]));
-
-    for (let block of paragraphs) {
-      block = block.trim();
-      if (!block) continue;
-
-      // Code block placeholder check
-      if (block.startsWith('__CODE_BLOCK_PLACEHOLDER_')) {
-        closeList();
-        const placeholder = block;
-        const found = codeMap.get(placeholder);
-        if (found) {
-          const escapedCode = found.code
-            .replace(/&/g, '&amp;')
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;');
-          html.push(`<pre class="article-code-block"><code>${escapedCode}</code></pre>`);
-        }
-        continue;
-      }
-
-      // Headers
-      if (block.startsWith('# ')) {
-        closeList();
-        html.push(`<h1 class="article-h1">${this.parseInline(block.substring(2))}</h1>`);
-        continue;
-      }
-      if (block.startsWith('## ')) {
-        closeList();
-        html.push(`<h2 class="article-h2">${this.parseInline(block.substring(3))}</h2>`);
-        continue;
-      }
-      if (block.startsWith('### ')) {
-        closeList();
-        html.push(`<h3 class="article-h3">${this.parseInline(block.substring(4))}</h3>`);
-        continue;
-      }
-
-      // Horizontal Rule
-      if (block === '---' || block === '***') {
-        closeList();
-        html.push('<hr class="article-hr">');
-        continue;
-      }
-
-      // Blockquotes
-      if (block.startsWith('>')) {
-        closeList();
-        const lines = block.split('\n').map(line => line.replace(/^>\s*/, ''));
-        html.push(
-          `<blockquote class="article-blockquote">${this.parseInline(lines.join('<br>'))}</blockquote>`
-        );
-        continue;
-      }
-
-      // Unordered Lists
-      const lines = block.split('\n');
-      const firstLine = lines[0].trim();
-      if (firstLine.startsWith('- ') || firstLine.startsWith('* ') || firstLine.startsWith('• ')) {
-        if (!inList) {
-          inList = true;
-          listItems = [];
-        }
-        for (let line of lines) {
-          line = line.trim();
-          if (line.startsWith('- ') || line.startsWith('* ') || line.startsWith('• ')) {
-            listItems.push(
-              `<li class="article-list-item">${this.parseInline(line.replace(/^[-*•]\s*/, ''))}</li>`
-            );
-          } else if (line) {
-            if (listItems.length > 0) {
-              listItems[listItems.length - 1] += ' ' + this.parseInline(line);
-            } else {
-              listItems.push(`<li class="article-list-item">${this.parseInline(line)}</li>`);
-            }
-          }
-        }
-        continue;
-      }
-
-      // Normal Paragraph
-      closeList();
-      html.push(`<p class="article-p">${this.parseInline(block)}</p>`);
-    }
-
-    closeList();
-    return html.join('\n');
-  }
-
-  parseInline(text) {
-    if (!text) return '';
-    return (
-      text
-        // Bold: **text**
-        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-        // Italic: *text* or _text_
-        .replace(/\*(.*?)\*/g, '<em>$1</em>')
-        .replace(/_(.*?)_/g, '<em>$1</em>')
-        // Inline code: `code`
-        .replace(/`(.*?)`/g, '<code class="article-inline-code">$1</code>')
-        // Links: [text](url)
-        .replace(
-          /\[(.*?)\]\((.*?)\)/g,
-          '<a href="$2" target="_blank" rel="noopener noreferrer" class="article-link">$1</a>'
-        )
-    );
-  }
 }
 
-// Initialize
 const initBlogLoader = () => {
   window.blogLoader = new BlogLoader();
 };

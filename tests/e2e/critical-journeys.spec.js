@@ -28,18 +28,23 @@ test('blog archive opens a full article with its lead image', async ({ page }) =
   await expect.poll(() => leadImage.evaluate(image => image.naturalWidth)).toBeGreaterThan(0);
 });
 
-test('homepage preview leads to a complete article with section navigation', async ({ page }) => {
+test('homepage card leads directly to a complete article with section navigation', async ({
+  page,
+}) => {
   await gotoSite(page, '/');
   await page.locator('#blog').scrollIntoViewIfNeeded();
   await expect(page.locator('.blog-section-intro-actions a')).toHaveAttribute('href', 'blog/');
-  await page.locator('#blog .blog-preview-btn').first().click();
-  const preview = page.locator('#blog-modal.active');
-  await expect(preview.getByText('Article preview')).toBeVisible();
-  await expect(preview.locator('.article-body')).toHaveCount(0);
-  await preview.getByRole('link', { name: 'Read full article' }).click();
+  await expect(page.locator('#blog .blog-preview-btn')).toHaveCount(0);
+  await page.locator('#blog .blog-card .blog-read-btn').first().click();
   await expect(page).toHaveURL(/\/blog\/[^/]+\.html$/);
   await expect(page.locator('.article-toc__list a').first()).toBeAttached();
   await expect(page.locator('.article-diagram')).toHaveCount(1);
+});
+
+test('old homepage preview links reach the complete article', async ({ page }) => {
+  await gotoSite(page, '/#blog-read-google-io-2026-developer-insights');
+  await expect(page).toHaveURL(/\/blog\/google-io-2026-developer-insights\.html$/);
+  await expect(page.locator('main h1')).toBeVisible();
 });
 
 test('contact form sends a message and confirms storage', async ({ page }) => {

@@ -72,7 +72,7 @@ export const changelogEntries = [
     type: 'improvement',
     title: 'Make blog reading clear and consistent across all 18 articles',
     summary:
-      'Made full article pages the primary reading path, changed the modal into a short preview, added a clear archive link and article contents rail, and added conceptual diagrams to every article. Replaced arbitrary score bars with labeled editorial frameworks, expanded the shorter UPI and Jev articles, and added a build gate for comparable article depth and media coverage.',
+      'Made full article pages the direct reading path from homepage cards and old preview links, added a clear archive link and article contents rail, and added conceptual diagrams to every article. Replaced arbitrary score bars with labeled editorial frameworks, expanded the shorter UPI and Jev articles, and added a build gate for comparable article depth and media coverage.',
     tags: ['blog', 'design', 'content'],
     commitVerified: false,
     model: 'GPT-6 / Codex',
