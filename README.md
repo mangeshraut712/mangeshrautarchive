@@ -281,6 +281,7 @@ Current documentation pass:
 | GPT-6 / Codex                         | Generate and integrate 18 article-specific blog covers with Codex's built-in OpenAI image tool; verify mobile and desktop presentation                                                      | Image model identifier, reasoning, and token usage unavailable |
 | GPT-6 / Codex                         | Audit all 18 blog pages, repair contrast and catalog coverage, and check recent financial and AI claims against primary sources                                                             | Reasoning and token usage unavailable                          |
 | GPT-6 / Codex                         | Make full blog pages the primary reading path, add 18 conceptual diagrams, normalize article depth, and verify archive and article journeys                                                 | Reasoning and token usage unavailable                          |
+| GPT-6 / Codex                         | Review 18 blog articles against primary sources, correct dated claims, and expose evidence and source navigation in each article                                                            | Reasoning and token usage unavailable                          |
 
 No exact variant, reasoning mode, or token count is inferred when the runtime does not expose it.
 
@@ -306,6 +307,13 @@ Each of the 18 articles includes a conceptual diagram, an image, a source sectio
 framework, or data table. The `npm run audit:blog-content` build gate checks article length,
 reading-time labels, heading structure, and media coverage. Conceptual diagrams and editorial
 frameworks are labeled as such; they do not represent measured vendor performance.
+
+The September 27 evidence pass adds a dated source update and direct source navigation to all 18
+articles. It corrects the Cursor Origin release and beta scope, the Gemini Notebook rename, Wispr
+privacy-setting distinctions, and Razorpay provenance. Article metadata now separates publication
+from the editorial update date, and canonical URLs match the generated `.html` pages. The content
+audit checks for dated evidence notes and multiple external links; vendor benchmarks remain labeled
+as company-reported results.
 
 ## Documentation
 

@@ -3709,3 +3709,45 @@ html.dark .article-framework > p {
 html.dark .article-framework li::before {
   color: #66b5ff;
 }
+
+.article-evidence-nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.55rem 0.85rem;
+  margin-top: 1.35rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid color-mix(in srgb, var(--apple-blue) 22%, transparent);
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--apple-blue) 5%, transparent);
+}
+
+.article-evidence-nav__label {
+  margin-right: 0.35rem;
+  color: var(--text-primary, #1d1d1f);
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.article-evidence-nav a {
+  color: var(--apple-blue);
+  font-size: 0.86rem;
+  font-weight: 650;
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+
+.article-evidence-nav a:focus-visible {
+  outline: 2px solid var(--apple-blue);
+  outline-offset: 3px;
+}
+
+html.dark .article-evidence-nav__label {
+  color: #f5f5f7;
+}
+
+html.dark .article-evidence-nav a {
+  color: #66b5ff;
+}

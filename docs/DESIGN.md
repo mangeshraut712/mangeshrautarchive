@@ -182,6 +182,7 @@ The design system enforces a strictly unified 6-tier button architecture across 
 - **Reading path**: Homepage cards show a direct full-article action first and a clearly labeled short preview second. The preview contains a summary and takeaways; the complete text belongs on the standalone article page.
 - **Article navigation**: Standalone articles use a numbered contents rail on desktop and a collapsible contents control on mobile. Headings must have stable anchor IDs and enough scroll offset to remain visible below navigation chrome.
 - **Evidence visuals**: Every longform article has a lead image and a conceptual diagram. Use measured charts only with named units and sources; label ordered opinion as an editorial framework without fabricated percentage scores.
+- **Evidence navigation**: Show publication and editorial update dates separately. Give readers direct links to the dated evidence update and original sources near the article header; label vendor-reported results and conceptual visuals.
 
 ### About Section (`#about`)
 

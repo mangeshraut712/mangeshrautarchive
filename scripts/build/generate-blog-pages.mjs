@@ -216,7 +216,7 @@ function renderBlogIndex(posts, tags) {
         <p class="blog-index-lede">Long-form field notes with reader promises, practical workflows, and honest tradeoffs — written for engineers who want signal, not hype. Claims are labeled when they are judgment, and linked when they are facts.</p>
         <div class="blog-index-meta">
           <span>${posts.length} articles</span>
-          <span>Updated ${formatBlogDate(posts[0].date)}</span>
+          <span>Editorial update ${formatBlogDate(posts[0].updatedAt || posts[0].date)}</span>
         </div>
       </header>
       <section class="blog-featured" aria-labelledby="blog-featured-title">
@@ -251,16 +251,17 @@ function renderBlogIndex(posts, tags) {
   const jsonLd = JSON.stringify({
     '@context': 'https://schema.org',
     '@type': 'Blog',
-    '@id': `${SITE_URL}/blog#blog`,
-    url: `${SITE_URL}/blog`,
+    '@id': `${SITE_URL}/blog/#blog`,
+    url: `${SITE_URL}/blog/`,
     name: 'Mangesh Raut Technical Writings',
     description: 'Technical articles on software engineering, AI, cloud, and product engineering.',
     author: { '@type': 'Person', name: 'Mangesh Raut', url: SITE_URL },
     blogPost: posts.map(post => ({
       '@type': 'BlogPosting',
       headline: post.title,
-      url: `${SITE_URL}/blog/${post.id}`,
+      url: `${SITE_URL}/blog/${post.id}.html`,
       datePublished: post.date,
+      dateModified: post.updatedAt || post.date,
       description: post.summary,
     })),
   });
@@ -269,7 +270,7 @@ function renderBlogIndex(posts, tags) {
     title: 'Technical Writings | Mangesh Raut',
     description:
       'Technical articles on AI, systems design, cloud engineering, and product building by Mangesh Raut.',
-    canonical: `${SITE_URL}/blog`,
+    canonical: `${SITE_URL}/blog/`,
     jsonLd,
     body,
     image: postImageUrl(posts[0]),
@@ -282,6 +283,10 @@ function renderBlogPost(post, posts) {
     assetPrefix: '..',
   });
   const toc = buildTableOfContents(headings);
+  const evidenceHeading = headings.find(
+    heading => heading.text === 'September 2026 evidence update'
+  );
+  const sourcesHeading = headings.find(heading => heading.text.startsWith('Sources'));
   const related = getRelatedPosts(posts, post.id, 3);
 
   const relatedHtml = related.length
@@ -321,10 +326,17 @@ function renderBlogPost(post, posts) {
                 <time datetime="${post.date}">${formatBlogDate(post.date)}</time>
                 <span aria-hidden="true">·</span>
                 <span>${escapeHTML(post.readTime)}</span>
+                <span aria-hidden="true">·</span>
+                <span>Updated <time datetime="${escapeHTML(post.updatedAt || post.date)}">${formatBlogDate(post.updatedAt || post.date)}</time></span>
               </span>
             </div>
           </div>
           <div class="article-tags blog-tags--pills">${topicPills(post.tags, 6)}</div>
+          <nav class="article-evidence-nav" aria-label="Article evidence and sources">
+            <span class="article-evidence-nav__label">Evidence trail</span>
+            ${evidenceHeading ? `<a href="#${escapeHTML(evidenceHeading.id)}">What changed in 2026</a>` : ''}
+            ${sourcesHeading ? `<a href="#${escapeHTML(sourcesHeading.id)}">Original sources</a>` : ''}
+          </nav>
         </header>
         <div class="blog-article-layout">
           ${toc ? `<aside class="blog-article-sidebar" id="blog-article-toc">${toc}</aside>` : ''}
@@ -342,11 +354,11 @@ function renderBlogPost(post, posts) {
     headline: post.title,
     description: post.summary,
     datePublished: post.date,
-    dateModified: post.date,
+    dateModified: post.updatedAt || post.date,
     author: { '@type': 'Person', name: 'Mangesh Raut', url: SITE_URL },
     publisher: { '@type': 'Person', name: 'Mangesh Raut' },
-    mainEntityOfPage: { '@type': 'WebPage', '@id': `${SITE_URL}/blog/${post.id}` },
-    url: `${SITE_URL}/blog/${post.id}`,
+    mainEntityOfPage: { '@type': 'WebPage', '@id': `${SITE_URL}/blog/${post.id}.html` },
+    url: `${SITE_URL}/blog/${post.id}.html`,
     keywords: (post.tags || []).join(', '),
     articleSection: post.kicker || 'Technical Writings',
     image: postImageUrl(post),
@@ -355,7 +367,7 @@ function renderBlogPost(post, posts) {
   return pageShell({
     title: `${post.title} | Mangesh Raut`,
     description: post.summary,
-    canonical: `${SITE_URL}/blog/${post.id}`,
+    canonical: `${SITE_URL}/blog/${post.id}.html`,
     ogType: 'article',
     jsonLd,
     body,

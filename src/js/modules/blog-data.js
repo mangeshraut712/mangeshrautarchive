@@ -44,7 +44,8 @@ export const blogPosts = [
     highlights: ['Sticky routing', 'Cache economics', 'AssistMe-style policy'],
     tags: ['OpenRouter', 'AI Routing', 'Model Gateways', 'System Design'],
     date: '2026-07-05',
-    readTime: '8 min read',
+    updatedAt: '2026-09-27',
+    readTime: '9 min read',
     content: `In 2026 the hard problem is rarely "can I call a model?" It is "can I keep calling *useful* models when prices move, providers flake, caches miss, and geopolitics reshapes token share?" OpenRouter increasingly feels like a USB hub for intelligence: one plug shape, many devices behind it, and a routing policy that decides which cable actually carries power.
 
 
@@ -62,7 +63,7 @@ nodes: Classify|Identify task and context, Constrain|Apply price and privacy rul
 note: Conceptual sequence for understanding the system; implementation details vary by product and deployment.
 :::
 
-OpenRouter is an OpenAI-compatible gateway: one API surface, many model slugs, provider-side fan-out, and controls for price, throughput, allowlists, and session stickiness. That matters more as the market fragments. OpenRouter enterprise routing data through mid-2026 showed Chinese-origin models holding **at least ~30% of weekly US enterprise token volume every week since February 8, 2026**, with peaks near **46%**—up from roughly **4.5% in H1 2025** and ~11% averaged over the prior year. DeepSeek-class and Qwen-class routes are not a footnote; they are load-bearing capacity for cost-sensitive products. (Industry coverage, including CNBC on July 7, 2026, later summarized the same OpenRouter traffic picture; verify the latest weekly series before citing in investor materials.)
+OpenRouter is an OpenAI-compatible gateway: one API surface, many model slugs, provider-side fan-out, and controls for price, throughput, allowlists, and session stickiness. That matters more as the market fragments. OpenRouter's [June 2026 routing analysis](https://openrouter.ai/blog/insights/deepseek-v4-adoption/) reports that DeepSeek's share of its platform token traffic moved from roughly 9% to 18% over the period it examined, while model-family shares shifted quickly. That is OpenRouter-platform traffic, not a measurement of all enterprise AI use or a guarantee that one model family is best for a particular product. The operational lesson is to keep routing choices observable and revisable.
 
 Meanwhile frontier models (Grok 4.5, GPT-class, Claude-class, Gemini-class) still win many hard agent turns. The builder job is not to pick a tribe. It is to write a **routing policy** that matches task class to model class, then enforce it in code.
 
@@ -155,6 +156,10 @@ On mangeshrautarchive / AssistMe:
 
 OpenRouter is the AI USB hub of 2026: one shape, many devices, and a routing policy that decides what actually runs. The teams that win will not be the ones who married a single model forever. They will be the ones who wrote lanes, sticky sessions, and soft-fail paths before the next pricing or capacity shock.
 
+## September 2026 evidence update
+
+OpenRouter’s [Auto Router documentation](https://openrouter.ai/docs/guides/routing/routers/auto-router) describes explicit session stickiness after the first successful response and a five-minute inactivity expiry for routing affinity. That timer is separate from any provider’s prompt-cache lifetime. Recheck model prices and available providers at deployment time; the policy here is an example, not a fixed 2026 price list.
+
 ---
 
 ### Sources and further reading
@@ -162,7 +167,7 @@ OpenRouter is the AI USB hub of 2026: one shape, many devices, and a routing pol
 - [OpenRouter Auto Router](https://openrouter.ai/docs/guides/routing/routers/auto-router) — Auto / Auto-beta selection and allowlists
 - [Why Use OpenRouter for DeepSeek](https://openrouter.ai/blog/insights/why-openrouter-for-deepseek/) — provider diversity and routing controls
 - [OpenRouter Prompt Caching](https://openrouter.ai/blog/tutorials/prompt-caching-sticky-routing/) — cache pricing and sticky routing pairing
-- [CNBC (July 7, 2026)](https://www.cnbc.com/2026/07/07/chinese-ai-models-costs-us-openai-anthropic.html) — OpenRouter US enterprise token-share reporting (Chinese-origin models ≥30% weekly since Feb 8, peaks ~46%); treat as capacity signal and re-check latest weeks before external citation
+- [OpenRouter: DeepSeek V4 adoption](https://openrouter.ai/blog/insights/deepseek-v4-adoption/) — platform token-share shifts through June 2026; not a market-wide enterprise measure
 `,
   },
   {
@@ -176,7 +181,8 @@ OpenRouter is the AI USB hub of 2026: one shape, many devices, and a routing pol
     pullQuote:
       'Open-sourcing the harness is the real story. A strong coding model without an inspectable agent loop is just another API slug.',
     highlights: ['Grok 4.5 API', 'Open harness', 'Agent Client Protocol'],
-    date: '2026-07-10',
+    date: '2026-07-15',
+    updatedAt: '2026-09-27',
     tags: ['Grok 4.5', 'Grok Build', 'xAI', 'Coding Agents', 'Open Source'],
     readTime: '9 min read',
     content: `July 2026 compressed two related builder decisions into one stack question: a stronger coding-first model (**Grok 4.5**) and an inspectable agent harness (**Grok Build**) that is now open source. I care less about keynote adjectives and more about what changes in an agent loop I would actually ship.
@@ -294,6 +300,10 @@ desc: Open-source coding agent harness and TUI (Apache-2.0).
 
 Grok 4.5 is a serious coding-agent brain. Grok Build being open is the lever: you can read, fork, and re-point the harness. Ship the split consciously—model, harness, gateway—or you will rebuild the same glue every release cycle.
 
+## September 2026 evidence update
+
+The [xAI open-source announcement](https://x.ai/news/grok-build-open-source) dates Grok Build’s source release to July 15, 2026. The [model documentation](https://docs.x.ai/developers/models/grok-4.5) establishes Grok 4.5 as an available coding model; it does not make it the latest or best choice for every task. Compare current models using your own repo-level evaluations.
+
 ---
 
 ### Sources and further reading
@@ -316,6 +326,7 @@ Grok 4.5 is a serious coding-agent brain. Grok Build being open is the lever: yo
     pullQuote: 'WebMCP matters when sites expose structured tools. Chat panels do not.',
     highlights: ['WebMCP tool surfaces', 'Managed vs local agents', 'Hybrid execution'],
     date: '2026-05-20',
+    updatedAt: '2026-09-27',
     tags: ['Google I/O', 'Gemini', 'WebMCP', 'Antigravity', 'Agentic Web'],
     readTime: '8 min read',
     content: `Google I/O compresses a year of platform work into inevitability theater. My job after the 2026 keynote is the opposite: name what actually changes a production architecture, and what is still a demo that needs a hardware matrix, a permission model, and a failure mode.
@@ -423,6 +434,10 @@ href: https://blog.google/innovation-and-ai/technology/ai/google-io-2026-all-our
 desc: Google’s own rundown of I/O 2026 launches—use as source material, not as a shipping checklist.
 :::
 
+## September 2026 evidence update
+
+Google’s [I/O 2026 collection](https://blog.google/innovation-and-ai/technology/developers-tools/google-io-2026-collection/) records the Gemini and Antigravity announcements, while [Chrome’s developer recap](https://developer.chrome.com/blog/new-in-chrome-io26) lists WebMCP among web announcements. An announcement, browser experiment, and broadly deployable platform feature are different states. Check present browser support and permissions before shipping.
+
 ---
 
 ### Sources and further reading
@@ -445,8 +460,9 @@ desc: Google’s own rundown of I/O 2026 launches—use as source material, not 
       'Ranking starts long before scoring. Candidate quality sets the ceiling for everything that follows.',
     highlights: ['Phoenix ranker', 'In-network + OON retrieval', 'Measurable ranking stages'],
     date: '2026-05-15',
+    updatedAt: '2026-09-27',
     tags: ['Grok', 'X Algorithm', 'Real-Time AI', 'Ranking', 'Phoenix'],
-    readTime: '8 min read',
+    readTime: '9 min read',
     content: `Modern feeds look magical from the outside because the final surface hides the plumbing. Underneath, a feed is a chain of retrieval, enrichment, ranking, policy, deduplication, and serving decisions. When xAI published the For You algorithm as open code, the interesting story was not "AI decides your feed." It was the pipeline becoming inspectable.
 
 The public repository lives at [xai-org/x-algorithm](https://github.com/xai-org/x-algorithm). The README is unusually direct: the For You feed combines **in-network** content (accounts you follow) with **out-of-network (OON)** content discovered through ML-based retrieval, then ranks candidates with **Phoenix**, a Grok-based transformer that predicts engagement probabilities. A May 15, 2026 repo update added a more runnable end-to-end inference path and additional content-understanding pieces—useful for education, still not a 1:1 clone of live production ops.
@@ -567,6 +583,10 @@ desc: Open source algorithm powering the For You feed on X — in-network + OON 
 
 The future of feeds and assistants is not only bigger models. It is cleaner retrieval, richer context hydration, and ranking systems where every stage has a measurable job. Phoenix is interesting because it is a Grok-based ranker inside a real multi-stage pipeline—not because ranking is magic.
 
+## September 2026 evidence update
+
+The current [Phoenix repository documentation](https://github.com/xai-org/x-algorithm/blob/main/phoenix/README.md) describes a production ranking and retrieval implementation with local synthetic-data stand-ins for unavailable internal services. A public code export does not expose production telemetry, live data, or the complete operational environment. Treat the pipeline diagram as a readable model of the public code.
+
 ---
 
 ### Sources
@@ -587,6 +607,7 @@ The future of feeds and assistants is not only bigger models. It is cleaner retr
       'The best ecosystem AI reduces steps. It does not ask users to move work into a new box.',
     highlights: ['Multimodal context', 'Workspace integration', 'Permission-aware UX'],
     date: '2026-01-10',
+    updatedAt: '2026-09-27',
     tags: ['Google AI', 'Gemini', 'Android', 'Multimodal', 'Workspace'],
     readTime: '7 min read',
     content: `Google’s advantage is not one model in isolation. It is distribution across Android, Chrome, Search, Photos, Gmail, Docs, Maps, YouTube, and a growing Gemini surface area. That distribution becomes powerful only when AI helps inside the place where the user already has context.
@@ -689,6 +710,10 @@ text: My read is that the ecosystems that win will hide the assistant and surfac
 
 The winning AI ecosystems will not have the loudest assistant. They will make intelligence appear exactly where the user needs it and disappear when it does not help. Google’s distribution is the opportunity. Permission-aware, multimodal, in-place design is the work.
 
+## September 2026 evidence update
+
+Google’s [I/O 2026 announcement collection](https://blog.google/innovation-and-ai/technology/developers-tools/google-io-2026-collection/) adds Gemini Omni, Gemini 3.5, and wider agent experiences to the early-year ecosystem described here. The enduring design question is still where user context and permissions live. Product availability varies by surface and plan, so avoid treating one keynote as universal rollout.
+
 ---
 
 ### Sources and context
@@ -709,6 +734,7 @@ The winning AI ecosystems will not have the loudest assistant. They will make in
     pullQuote: 'Autonomy is useful only when the team can inspect, constrain, and verify it.',
     highlights: ['Tool permissions', 'Agent observability', 'Evaluation loops'],
     date: '2026-01-25',
+    updatedAt: '2026-09-27',
     tags: ['OpenClaw', 'Open Source', 'AI Agents', 'Decentralization'],
     readTime: '8 min read',
     content: `OpenClaw (README history runs roughly Warelay → CLAWDIS → Clawdbot → Moltbot → OpenClaw from late 2025 into Jan 2026) popularized a pattern that was already in the air: a **self-hosted gateway** that connects messaging apps to a tool-using agent running on your machine.
@@ -835,6 +861,10 @@ text: My read of the open-agent wave: the winners will look slightly boring—st
 
 Open-source agents will win when they make automation understandable. The point is not maximum autonomy; it is automation the team can trust. If the framework cannot show its work, it does not deserve write access—or inbox access.
 
+## September 2026 evidence update
+
+Current [OpenClaw permission documentation](https://docs.openclaw.ai/gateway/security/tool-permissions) distinguishes full-access and restricted runs, while [access-control guidance](https://docs.openclaw.ai/gateway/security/access-control) covers shared inbox isolation. A self-hosted gateway is not a security boundary by itself. Test effective tool rights and session visibility for each channel and agent.
+
 ---
 
 ### Sources and framing
@@ -855,6 +885,7 @@ Open-source agents will win when they make automation understandable. The point 
       'The product is not transcription. The product is turning messy spoken intent into useful work.',
     highlights: ['Intent capture', 'Correction UX', 'Privacy Mode reality'],
     date: '2026-02-10',
+    updatedAt: '2026-09-27',
     tags: ['Wispr Flow', 'HCI', 'Voice AI', 'Productivity'],
     readTime: '8 min read',
     content: `Voice input is usually framed as accessibility or convenience. Those frames matter, but they understate the power-user version: fast capture, low friction, and high-quality cleanup across the places where work already happens.
@@ -878,7 +909,7 @@ note: Conceptual sequence for understanding the system; implementation details v
 
 The keyboard is still the precision instrument. Voice wins when the bottleneck is getting rough intent out of your head: first drafts, status updates, bug reports, meeting notes, long-form thinking while walking. The product challenge is not transcription alone. It is correction, formatting, privacy, destination awareness, and preserving tone.
 
-Important factual grounding from Wispr’s published Data Controls (as of mid-2026 docs): **transcription runs in the cloud** for accuracy and latency. Privacy Mode and Private Cloud Sync are separate controls covering training use and server-side retention of dictation artifacts—not a claim of on-device speech recognition. If you need zero training and no server retention of dictation content, Wispr describes combining Privacy Mode on with Private Cloud Sync off. Verify current Settings copy before you dictate secrets.
+Wispr's current [Data Controls](https://wisprflow.ai/data-controls) say **transcription always occurs in the cloud**. Its September 2026 [settings guide](https://docs.wisprflow.ai/articles/9609615338-Private-Cloud-Sync-and-Data-Sharing-preferences-in-Wispr-Flow) separates model-improvement sharing, Dictation Cloud Storage, and local history; switching off one does not switch off the others. Notetaker has separate cloud storage and retention controls. Review each setting and Context Awareness before dictating sensitive material.
 
 ## Executive summary
 
@@ -978,6 +1009,10 @@ For portfolio and productivity tools, I would use voice for quick capture: proje
 
 Voice AI becomes serious when it respects user intent, speeds up capture, and produces text that fits the workflow without making the user babysit every sentence. Transcription is the substrate. Intent-to-work is the product. Privacy is a settings surface, not a vibe.
 
+## September 2026 evidence update
+
+Wispr’s [September 2026 settings guide](https://docs.wisprflow.ai/articles/9609615338-Private-Cloud-Sync-and-Data-Sharing-preferences-in-Wispr-Flow) separates model-improvement consent, dictation cloud storage, local history, and context awareness. Its [Data Controls](https://wisprflow.ai/data-controls) say transcription still runs in the cloud. A privacy choice therefore needs a settings-by-settings review, not one “private mode” label.
+
 ---
 
 ### Sources and framing
@@ -997,6 +1032,7 @@ Voice AI becomes serious when it respects user intent, speeds up capture, and pr
       'In AI, the product is increasingly the infrastructure path from idea to deployed workload.',
     highlights: ['CUDA ecosystem', 'Cluster-scale training', 'Developer gravity'],
     date: '2026-02-24',
+    updatedAt: '2026-09-27',
     tags: ['NVIDIA', 'AI', 'Hardware', 'GPU', 'CUDA'],
     readTime: '8 min read',
     content: `NVIDIA is often described as a GPU company. That frame is too small. The durable advantage is an infrastructure stack: accelerators, networking, CUDA, libraries, deployment tooling, developer habits, and a supply chain organized around AI workloads.
@@ -1130,12 +1166,16 @@ desc: CUDA tools, libraries, and documentation that form much of the practical A
 
 NVIDIA’s position is strongest where it sells the full path to AI execution. The lesson for builders is clear: platforms win when they remove friction from the entire workflow, not just one layer. Respect the moat, measure your own bottlenecks, and keep just enough optionality to stay honest.
 
+## September 2026 evidence update
+
+NVIDIA’s [TensorRT-LLM documentation](https://developer.nvidia.com/tensorrt-llm) shows why the software path matters at serving time: model authoring, runtime, quantization, and parallelism interact with the hardware. Its published performance claims are vendor results, not a universal cost comparison. Benchmark the workload, model, batch size, latency target, and deployment constraints you actually have.
+
 ---
 
 ### Sources
 
 - [NVIDIA Developer](https://developer.nvidia.com/) — CUDA and platform documentation
-- Public NVIDIA architecture and data center product materials for GPU/cluster positioning
+- [TensorRT-LLM](https://developer.nvidia.com/tensorrt-llm) — documented inference software and serving capabilities
 - Industry practice around distributed training and inference serving (general systems knowledge)`,
   },
   {
@@ -1150,6 +1190,7 @@ NVIDIA’s position is strongest where it sells the full path to AI execution. T
       'The AI race is not one race. It is research, infrastructure, product, and policy moving at different speeds.',
     highlights: ['Compute access', 'Open models', 'Governed deployment'],
     date: '2026-03-11',
+    updatedAt: '2026-09-27',
     tags: ['AI', 'LLM', 'Geopolitics', 'Technology', 'Open Models'],
     readTime: '8 min read',
     content: `The global AI race is usually told as a leaderboard story: who tops the eval, who ships the next name, who demos the scariest agent. That story is incomplete. Model quality matters, but durable advantage also depends on compute access, energy, chip supply, data policy, research talent, deployment channels, and trust.
@@ -1283,11 +1324,15 @@ desc: Longitudinal research and policy context useful when separating hype from 
 
 The global AI race will be won by ecosystems that turn model progress into reliable, affordable, governed products. Raw capability is only the first layer. Build like the leaderboard can change next month—because it will.
 
+## September 2026 evidence update
+
+The [2026 Stanford AI Index](https://hai.stanford.edu/ai-index) separates model capability, investment, adoption, and policy measures. Those indicators can move in different directions; one leaderboard does not establish national or product leadership. When comparing systems, name the benchmark, date, workload, and provenance before drawing a conclusion.
+
 ---
 
 ### Sources
 
-- [Stanford HAI AI Index](https://aiindex.stanford.edu/) — research and policy trend context
+- [Stanford HAI 2026 AI Index](https://hai.stanford.edu/ai-index) — research, investment, adoption, and policy context
 - Public model cards and provider docs for any system you actually ship
 - Product judgments above are engineering field notes, not geopolitical endorsements`,
   },
@@ -1303,6 +1348,7 @@ The global AI race will be won by ecosystems that turn model progress into relia
       'The best AI coding tool is the one that keeps context clean, checks real work, and makes review easier.',
     highlights: ['Goal loops', 'Context hygiene', 'Verifier-reviewer workflow'],
     date: '2026-03-25',
+    updatedAt: '2026-09-27',
     tags: ['AI', 'Developer Tools', 'IDE', 'Cursor', 'VS Code', 'Windsurf'],
     readTime: '8 min read',
     content: `AI code editors are no longer just autocomplete surfaces. They are becoming engineering workbenches: context gathering, multi-file implementation, verification, review, and iteration inside one loop. The tools change monthly. The discipline should not.
@@ -1436,6 +1482,10 @@ If the tool fails (4) or (5), it is not a daily driver—it is a spike environme
 
 AI code editors are becoming serious engineering tools, but the winning workflow is still disciplined software engineering: scope, context, tests, review, and clean commits. Pick any editor you want. Do not outsource judgment.
 
+## September 2026 evidence update
+
+Current [VS Code agent documentation](https://code.visualstudio.com/docs/agents/overview) separates the editor, model, and agent harness, and lists multiple supported harnesses. That supports evaluating tools by the complete workflow rather than autocomplete quality alone. Use a representative repository task and measure review effort, test success, and recovery from a failed edit.
+
 ---
 
 ### Sources and tooling landscape
@@ -1457,6 +1507,7 @@ AI code editors are becoming serious engineering tools, but the winning workflow
       'Apple’s lesson is not minimalism for its own sake. It is complexity resolved before it reaches the user.',
     highlights: ['Vertical integration', 'Calm interface design', 'Ecosystem continuity'],
     date: '2026-04-01',
+    updatedAt: '2026-09-27',
     tags: ['Apple', 'Technology', 'Innovation', 'History', 'Design'],
     readTime: '7 min read',
     content: `Apple Computer was founded on April 1, 1976. By April 1, 2026, that is fifty years of products, misses, comebacks, and platform gravity. The anniversary is a reasonable moment to talk about discipline rather than nostalgia. The story is often told through objects: Mac, iPod, iPhone, iPad, Watch, Vision, services. The deeper lesson is operating-system thinking applied to product companies.
@@ -1566,12 +1617,16 @@ text: If a control exists because the team could not decide, the user is paying 
 
 Apple’s first fifty years show that technology becomes memorable when engineering and taste point in the same direction. The hard part is keeping that discipline while the platform expands—especially into intelligence features that tempt every product to grow a chat-shaped lump.
 
+## September 2026 evidence update
+
+Apple’s [anniversary announcement](https://www.apple.com/newsroom/2026/03/apple-to-celebrate-50-years-of-thinking-different/) confirms the April 1, 1976 founding date and the company’s own historical framing. The product-craft judgments here are editorial analysis. Treat them as design hypotheses to test against accessibility, performance, repairability, and user choice.
+
 ---
 
 ### Sources and framing
 
-- Company founding date April 1, 1976 is historical fact; "at 50" is used as a product-discipline frame around April 1, 2026.
-- Public Apple product history and Human Interface design culture as general references
+- [Apple at 50](https://www.apple.com/newsroom/2026/03/apple-to-celebrate-50-years-of-thinking-different/) — Apple confirms April 1, 1976 founding and anniversary framing
+- [Apple Human Interface Guidelines](https://developer.apple.com/design/human-interface-guidelines/) — current design guidance
 - Judgments about strategy tradeoffs are my read as a builder, not official Apple narrative`,
   },
   {
@@ -1585,8 +1640,9 @@ Apple’s first fifty years show that technology becomes memorable when engineer
     pullQuote: 'A good philosophical frame should change how we build, test, or govern systems.',
     highlights: ['Observer bias', 'Safety humility', 'Operational controls'],
     date: '2026-04-20',
+    updatedAt: '2026-09-27',
     tags: ['Philosophy', 'Anthropics', 'AI Ethics', 'Safety'],
-    readTime: '7 min read',
+    readTime: '8 min read',
     content: `Anthropic reasoning asks a strange but useful question: what should we infer from the fact that we are observers inside this world? It touches cosmology, simulation arguments, consciousness, and AI safety. The topic gets abstract quickly, so the practical move is to separate useful frames from speculative claims.
 
 **Naming note:** "Anthropic" here primarily means **anthropic reasoning / observer selection effects**. It is adjacent to—but not identical with—the company Anthropic and its public safety writing. I keep company materials as optional context, not as proof of metaphysical claims.
@@ -1716,12 +1772,16 @@ desc: Optional adjacent reading from the company of the same name—useful for p
 
 The useful part of anthropic thinking is not the most dramatic theory. It is the reminder that our viewpoint is limited, and powerful AI systems should be built with that limitation in mind. Keep the mythos small. Keep the controls real.
 
+## September 2026 evidence update
+
+[Anthropic Bias](https://anthropic-principle.com/anthropic-bias/) is a primary philosophical source for observer-selection reasoning. Anthropic’s [system cards](https://www.anthropic.com/system-cards) are a separate, empirical source for model evaluations. The shared word “anthropic” does not turn cosmological or consciousness speculation into evidence about a company’s models; operational controls need their own tests.
+
 ---
 
 ### Sources and framing
 
-- Anthropic reasoning / observer selection as a philosophical tool (general literature)
-- [Anthropic](https://www.anthropic.com/) — company research and safety communications for adjacent modern context only
+- [Nick Bostrom, Anthropic Bias](https://anthropic-principle.com/anthropic-bias/) — observer-selection framework; philosophical source, not product evidence
+- [Anthropic model system cards](https://www.anthropic.com/system-cards) — adjacent evaluation and safety documentation, not evidence for cosmological claims
 - Speculative claims in this essay are labeled; do not treat them as empirical results`,
   },
   {
@@ -1736,6 +1796,7 @@ The useful part of anthropic thinking is not the most dramatic theory. It is the
       'If Siri can only talk about your app, you built a brochure. If it can perform typed actions, you built a platform citizen.',
     highlights: ['App Schemas', 'Siri AI reliability', 'Liquid Glass accessibility'],
     date: '2026-06-12',
+    updatedAt: '2026-09-27',
     tags: ['WWDC 2026', 'Apple Intelligence', 'Siri AI', 'Liquid Glass', 'Private Cloud Compute'],
     readTime: '8 min read',
     content: `WWDC26 (week of June 8, 2026) finally put a sharper name on the bet Apple has been making for two years: intelligence that feels like OS verbs, not a chat personality bolted onto every screen. Apple’s public materials introduce **Siri AI** as a substantially more capable Siri powered by the next generation of Apple Intelligence, alongside iOS/iPadOS/macOS/watchOS/visionOS/tvOS 27 previews and continued Liquid Glass work.
@@ -1857,6 +1918,10 @@ desc: Session catalog and Apple Intelligence / App Intents materials. Prefer pri
 
 Apple’s AI strategy is about making intelligence part of the system contract. Developers who expose high-quality entities and actions will get more value than those who add a chat box. Liquid Glass should mature into clarity. Siri AI should mature into trustworthy verbs—or users will quietly stop asking.
 
+## September 2026 evidence update
+
+Apple’s [Siri App Schemas session](https://developer.apple.com/videos/play/wwdc2026/240/) describes App Intents, App Entities, schema adoption, and testing. The [WWDC announcement](https://www.apple.com/newsroom/2026/06/apple-unveils-next-generation-of-apple-intelligence-siri-ai-and-more/) previews releases; it is not a guarantee that every feature is available on every device, language, or region. Test a real supported configuration.
+
 ---
 
 ### Sources
@@ -1869,22 +1934,23 @@ Apple’s AI strategy is about making intelligence part of the system contract. 
   },
   {
     id: 'notebooklm-2026-ai-research-agent',
-    title: 'NotebookLM 2026 Field Notes: Source Grounding Under Agentic Pressure',
+    title: 'Gemini Notebook (formerly NotebookLM): Source Grounding Under Agentic Pressure',
     kicker: 'Research agents',
     summary:
-      'A practical look at NotebookLM after Audio/Video Overviews and the mid-2026 agentic upgrades: grounded research workflows, citation discipline, and what not to publish unsupervised.',
+      'A practical look at Gemini Notebook, formerly NotebookLM: grounded research, Audio and Video Overviews, staged agent features, citation discipline, and human review.',
     readerPromise:
       'You will get a practical model for turning source-grounded AI into a research workflow—without treating new agent features as a license to skip primary reading.',
     pullQuote: 'The winning research tool keeps the evidence close to the answer.',
     highlights: ['Source grounding', 'Audio / Video Overviews', 'Citation discipline'],
     date: '2026-06-10',
+    updatedAt: '2026-09-27',
     tags: ['NotebookLM', 'Gemini', 'AI Research', 'Google AI', 'Audio Overview'],
     readTime: '8 min read',
     content: `NotebookLM is most interesting when you stop treating it as document chat. The durable product idea is a research workflow: gather sources, ask questions, compare evidence, create study artifacts, and keep provenance visible.
 
-By mid-2026 the surface area is wider than “podcast my PDF.” Public product materials document Audio Overviews (including interactive modes and many languages), Video Overviews, Studio formats such as mind maps and reports, and—around June 8, 2026—agentic chat upgrades (Google describes Gemini 3.5 / Antigravity-powered deeper research, code execution in a notebook sandbox, richer export formats, and optional web-assisted source gathering). Plan tiers and quotas matter; verify in-product.
+By mid-2026 the surface area was wider than “podcast my PDF.” Public product materials document Audio Overviews (including interactive modes and many languages), Video Overviews, Studio formats such as mind maps and reports, and—around June 8, 2026—agentic chat upgrades (Google describes Gemini 3.5 / Antigravity-powered deeper research, code execution in a notebook sandbox, richer export formats, and optional web-assisted source gathering). Plan tiers and quotas matter; verify in-product.
 
-I am not claiming a secret keynote. I am describing the pattern that makes NotebookLM durable: **source-grounded synthesis with multi-format outputs**—now under pressure from agent features that can expand the corpus for you.
+Google renamed NotebookLM **Gemini Notebook** on July 16, 2026; the standalone research product continues under that name. This article keeps the launch-era name in its title for searchability. I am describing the pattern that makes the product durable: **source-grounded synthesis with multi-format outputs**—now under pressure from agent features that can expand the corpus for you.
 
 
 ## Context and scope
@@ -1901,7 +1967,7 @@ nodes: Sources|Select original material, Question|Define what needs evidence, Sy
 note: Conceptual sequence for understanding the system; implementation details vary by product and deployment.
 :::
 
-NotebookLM is Google’s research/thinking partner grounded primarily in sources you provide. You can upload PDFs, websites, YouTube links, audio, Google Docs/Slides, and more. Audio Overview remains the famous mode: conversational deep dives between AI hosts. Video Overview and other Studio artifacts make the same sources usable in different cognitive modes.
+Gemini Notebook, formerly NotebookLM, is Google’s research/thinking partner grounded primarily in sources you provide. You can upload PDFs, websites, YouTube links, audio, Google Docs/Slides, and more. Audio Overview remains the famous mode: conversational deep dives between AI hosts. Video Overview and other Studio artifacts make the same sources usable in different cognitive modes.
 
 The mid-2026 agentic upgrades raise a sharper risk: if the tool can also search the open web and write code against your notebook, **grounding discipline becomes a user skill**, not an automatic property of the brand.
 
@@ -1990,6 +2056,10 @@ For portfolio research, competitive analysis, or course work:
 
 NotebookLM points toward AI research tools that are grounded, multimodal, and multi-format. The winning version is not the one that answers fastest. It is the one that keeps the evidence close to the answer—and makes it easy to hear, challenge, and cite—even when the agent can expand the corpus for you.
 
+## September 2026 evidence update
+
+Google [renamed NotebookLM Gemini Notebook](https://blog.google/innovation-and-ai/products/gemini-notebook/notebooklm-gemini-notebook/) on July 16, 2026 and described code execution as a staged, plan-dependent rollout. The older name remains in the article URL for continuity; check the current product and tier before following a workflow that depends on sandbox execution.
+
 ---
 
 ### Sources
@@ -1998,180 +2068,133 @@ NotebookLM points toward AI research tools that are grounded, multimodal, and mu
 - [Generate Audio Overview](https://support.google.com/notebooklm/answer/16212820) — formats, interactive mode, caveats
 - [Generate Video Overview](https://support.google.com/notebooklm/answer/16454555) — video study artifacts and caveats
 - [Do your best research with NotebookLM](https://blog.google/innovation-and-ai/products/notebooklm/better-research-notebooklm/) — June 2026 agentic upgrade notes (verify plan availability)
+- [Google: NotebookLM is now Gemini Notebook](https://blog.google/innovation-and-ai/products/gemini-notebook/notebooklm-gemini-notebook/) — July 16 rename and tiered code-execution rollout
 - Feature notes above reflect publicly documented capabilities; confirm limits and tiers in-product`,
   },
   {
     id: 'cursor-origin-agent-native-code-hosting',
-    title: 'Cursor Origin: The Agent-Native Code Hosting Platform and the Post-GitHub Loop',
+    title: 'Cursor Origin in 2026: Native Git Hosting, Mirrors, and the Agent Review Loop',
     kicker: 'Agentic Infrastructure',
     summary:
-      'Cursor launches Origin—its own code hosting infrastructure with native repositories, two-way GitHub sync, and autonomous agent loops that understand, edit, test, and deploy code directly via Vercel, Buildkite, and Depot.',
+      'A source-grounded guide to Cursor Origin early beta: native Git hosting, GitHub mirrors, pull-request review, and the controls teams should test before migrating.',
     readerPromise:
-      'You will understand why Cursor moved down the developer stack into code hosting, how agent-native repositories differ from legacy Git remotes, and how Origin unifies IDE, agents, PRs, CI, and Vercel deployments into one platform.',
+      'You will learn what Origin actually supports, which forge owns a mirrored repository, and how to pilot agent work without assuming integration parity.',
     pullQuote:
-      'Cursor used to be the AI layer sitting on top of the developer stack. With Origin, it is moving down the stack and building the infrastructure underneath the agents: collapsing IDE, Repositories, Pull Requests, CI, and Deployment into one agent-native loop.',
+      'A new forge can simplify the development loop only when the source of truth, review controls, and exit path are explicit.',
     highlights: [
-      'Native Cursor Repositories',
-      'Two-Way GitHub PR Sync',
-      'Agent Swarms Beside Code',
-      'Vercel & Depot CI Deployments',
-      'The Post-GitHub Loop',
+      'Native Git repositories',
+      'GitHub mirrors',
+      'Review controls',
+      'Beta pilot',
+      'Exit path',
     ],
     tags: [
       'Cursor',
       'Cursor Origin',
       'Agentic Coding',
-      'Vercel',
+      'Git Hosting',
       'Developer Infrastructure',
       'System Architecture',
     ],
-    date: '2026-08-06',
+    date: '2026-08-17',
+    updatedAt: '2026-09-27',
     readTime: '8 min read',
-    content: `In August 2026, Cursor launched one of its most transformative updates to date: **Cursor Origin**. For the first time, Cursor can now host your code itself. This is no longer just an AI coding platform sitting on top of GitHub—Cursor is building its own native code-hosting and collaboration infrastructure, designed from the ground up for autonomous AI agents at scale.
-
+    content: `Cursor Origin is an early-beta Git forge, announced on August 17, 2026. It lets eligible Cursor customers host repositories, use ordinary Git push and pull, browse code, and review pull requests. That is a useful expansion of the development loop. It is not evidence that every agent workflow, CI system, or GitHub review automatically moves with the repository.
 
 ## Context and scope
 
 :::figure
 src: assets/images/blog/cursor-origin-architecture-codex-openai.webp
-alt: Agent development workflow connecting editor, repository, review, CI, preview, and synchronization
-caption: Conceptual development workflow connecting the editor, repository synchronization, review, CI checks, and deployment previews.
+alt: Conceptual workflow linking an editor, repository, agent, review, and deployment
+caption: A conceptual development loop. The lines illustrate decisions a team must configure; they are not a screenshot of Origin or a claim about its internal infrastructure.
 :::
 
 :::diagram
-title: An agent-native repository loop
-nodes: Repository|Host code and history, Agent|Work against a bounded task, Preview|Run builds and checks, Merge|Review provenance and changes
-note: Conceptual sequence for understanding the system; implementation details vary by product and deployment.
+title: A repository decision loop
+nodes: Select|Choose native or mirrored hosting, Push|Use ordinary Git transport, Review|Inspect the pull request and checks, Release|Deploy through configured integrations
+note: Conceptual workflow; verify each integration and permission in your own account.
 :::
 
-Before Origin, the developer workflow had a hard dependency boundary:
-\`\`\`
-Code on GitHub ──► Cursor connects to it ──► AI agents work in local IDE sandbox
-\`\`\`
+Cursor's [launch note](https://cursor.com/changelog/origin-code-hosting) says native Origin repositories make Origin the source of truth. GitHub-synced repositories keep GitHub as the source of truth and use Origin as a mirror, according to [Origin documentation](https://cursor.com/docs/origin). That distinction matters more than the phrase “post-GitHub.” A mirror gives a new place to browse and work; it is not proof of two-way pull-request, comment, or status synchronization.
 
-When GitHub experienced infrastructure failures, that entire workflow came to an immediate halt. Throughout August 2026, GitHub faced repeated reliability disruptions:
-- **August 6, 2026**: GitHub Actions was degraded for more than **9 hours**, with up to **71% of workflow runs** experiencing infrastructure failures at the peak.
-- **Mid-August Incident**: Broad outages affected API requests, Actions, Git operations, Issues, Pages, Pull Requests, and Webhooks for more than 3 hours, with **~20% error rates across web/API traffic** and **~50% error rates for archive and raw repository downloads**.
-
-The launch of **Cursor Origin** on the exact same day marked an architectural inflection point: moving code hosting directly beside the agent swarm.
-
-:::embed
-kicker: Official Announcement
-title: Cursor Origin Platform
-href: https://cursor.com/origin
-desc: Native code hosting, two-way GitHub PR sync, and agent-native CI/CD integrations with Vercel, Buildkite, and Depot.
-:::
+Origin is available in early beta on paid plans, subject to staged access. The documented starting set is repository creation, Git operations, browsing, pull requests, and GitHub mirroring. Cursor also documents Origin apps, automations, and cloud-agent connections. Confirm the availability of a particular feature in your plan and namespace before designing a migration around it.
 
 ## Executive summary
 
-Cursor Origin is not a clone of GitHub—it is an **agent-native code platform**. Key capabilities live in early beta:
-1. **Native Repositories & Pull Requests**: Full code hosting with commit graphs, checks, diffs, comments, and merging.
-2. **Two-Way Real-Time GitHub Sync**: Push to Origin or GitHub; repositories and PRs remain synchronized without workflow lock-in.
-3. **Co-Located Agent Swarms**: Autonomous agents run beside the remote repository, creating branches, executing refactors, and opening PRs in background compute.
-4. **First-Class Vercel & CI Integrations**: Deploy to Vercel via Cursor Origin (which is itself hosted on Vercel) alongside Buildkite and Depot for containerized test runners.
+Treat Origin as a second forge option. For an Origin-hosted repository, test branch protection, reviews, checks, secrets, backups, and incident recovery before putting critical work there. For a GitHub mirror, decide which platform owns writes and reviews. Keep a clone that can be pushed to a conventional Git remote. Evaluate actual task completion and review quality, not a promise that agents will automatically become faster because the forge and editor share a brand.
 
----
+## What the beta actually supports
 
-## Architectural Deep Dive: Collapsing the Developer Loop
+### Native repositories
 
-\`\`\`
-┌────────────────────────────────────────────────────────┐
-│                   1. CURSOR IDE (MONACO)               │
-│  Developer edits ──► Background Shadow LSP Verification │
-└───────────────────────────┬────────────────────────────┘
-                            │ Real-Time AST Sync
-┌───────────────────────────▼────────────────────────────┐
-│              2. CURSOR ORIGIN REPOSITORY               │
-│  Native Repo Hosting ──► Two-Way Bidirectional GH Sync  │
-└───────────────────────────┬────────────────────────────┘
-                            │ Persistent Agent Loop
-┌───────────────────────────▼────────────────────────────┐
-│              3. AUTONOMOUS AGENT WORKSPACE             │
-│  Agents understand repo ──► Write Code ──► Open PR     │
-└───────────────────────────┬────────────────────────────┘
-                            │ Automated Webhooks
-┌───────────────────────────▼────────────────────────────┐
-│              4. CLOUD CI & VERCEL DEPLOYMENT           │
-│  Buildkite & Depot CI ──► Vercel Preview & Production   │
-└────────────────────────────────────────────────────────┘
-\`\`\`
+You can create a repository, clone it, and push or pull with standard Git. Teams can browse and search the code and open, review, and merge pull requests. Origin-hosted code has its own remote and ownership model. A Git clone is portable, but repository settings, permissions, review history, and integrations need separate migration planning.
 
-### 1. Agents Living Beside the Code
+### GitHub mirrors
 
-In traditional setups, an AI assistant only sees the files currently checked out on the developer's laptop. If an agent needs to perform a large refactoring across 50 repositories, it requires 50 separate clone operations, local builds, and manual Git pushes.
+Cursor lets a team bring GitHub repositories into Origin. In that mode GitHub remains the source of truth; the Origin view is a mirror. Test what appears in the mirror after a new branch, review, failed check, and force-push. Do not describe it as bidirectional PR synchronization unless the exact behavior is documented and reproduced for the team's workflow.
 
-In **Cursor Origin**, agents live directly on the hosting infrastructure:
-- Agents query whole-repository semantic graphs via server-side Merkle trees.
-- Background agents can receive an issue, formulate a plan, create a branch, run tests against Depot containers, and open a verified pull request without touching the developer's local machine.
+### Agents and integrations
 
-### 2. Bidirectional GitHub Sync
-
-Rather than forcing teams into an all-or-nothing migration, Cursor built a seamless two-way bridge:
-- Developers can sync existing GitHub repositories into Origin in one click.
-- Any pull request opened on Origin automatically syncs commits, comments, and review statuses back to GitHub.
-- If a teammate prefers reviewing on GitHub while another works in Cursor, both views remain synchronized in real time.
+Cursor's docs say agents and automations can connect to Origin repositories, and Origin apps provide an integration surface. That can shorten setup for a task, but execution still needs permission boundaries, reproducible environments, tests, and human review. A pull request is evidence of a proposed change, not evidence that the change works.
 
 :::table
-| Capability | Traditional GitHub + Extension | Cursor Origin Agent-Native Platform |
+| Decision | Origin-hosted repository | GitHub-synced repository |
 | --- | --- | --- |
-| **Code Hosting** | GitHub Centralized Servers | Native Cursor Git Infrastructure |
-| **Agent Proximity** | Remote via sandboxed API | Co-located on hosting infrastructure |
-| **Pull Requests** | Manual human authoring &amp; review | Agent-generated PRs with automated verification |
-| **CI Integration** | Async Actions webhooks | Integrated Buildkite, Depot, and Vercel runners |
-| **Downtime Resilience** | Halts when GitHub APIs degrade | Independent hosting with two-way sync failover |
+| Git source of truth | Origin | GitHub |
+| Normal Git clone, push, pull | Documented | GitHub remains the writing remote |
+| Pull-request review | Origin supports it | Check the team's GitHub review path |
+| Agent work | Connect through supported Cursor features | Review mirror scope and permissions |
+| Migration question | Can the team replace its forge controls? | What information actually mirrors? |
 :::
 
-### 3. Native Vercel & CI Ecosystem
+## What remains unproven
 
-Cursor partnered directly with modern infrastructure providers:
-- **Vercel**: Deploy preview environments and production builds instantly from Cursor Origin. (Cursor Origin itself is hosted on Vercel, providing sub-millisecond edge routing).
-- **Depot**: Multi-platform Docker builds that compile up to 40x faster than standard CI runners.
-- **Buildkite**: Distributed, secure CI pipelines running on developer-controlled compute clusters.
+**Reliability.** A different Git host is a different dependency, not automatic immunity from outages. Measure availability and recovery in the team's own workflow. Keep a tested export path and make sure credentials can be rotated.
+
+**Governance.** Review roles, branch protection, audit visibility, secret access, data location, retention, and incident support against the team's requirements. Public beta docs establish features; they do not establish your organization's compliance posture.
+
+**Review quality.** More agent-created branches can increase reviewer load and merge contention. Require a clear task description, scoped diff, test evidence, and a responsible human before merging.
+
+**Integration parity.** Repositories move more easily than webhooks, checks, deployment rules, and permissions. Inventory each dependency instead of assuming a Vercel, Buildkite, or Depot connection exists with identical behavior.
 
 :::framework
-title: Core Advantages of Agent-Native Code Hosting
-items: Server-side whole-repo agent reasoning, Two-way GitHub synchronization speed, Integrated Vercel preview deploys, Resilience during third-party Git outages, Depot & Buildkite container CI throughput
-note: Editorial ordering only; Engineering priority scoring for agent-hosted developer platforms.
+title: What to test before moving a production repository
+items: Git ownership and exit path, Review and branch controls, CI and deployment parity, Agent permission boundaries, Editor convenience
+note: Editorial ordering; the first four are release controls, while convenience is a secondary benefit.
 :::
 
----
+## A practical 2026 pilot
 
-## Risks and limits
+1. Select a noncritical repository and record its current remote, branch rules, CI checks, webhooks, deployment path, and recovery owner.
+2. Create an Origin-native test repository, then clone, branch, push, review, merge, and pull from another machine. Confirm which steps require a paid plan or namespace administrator.
+3. Mirror a separate GitHub repository. Make one safe change in GitHub and inspect what the Origin mirror shows. Test a branch, pull request, failed check, and permissions change.
+4. Give one agent a bounded maintenance task. Compare the proposed diff, test output, and review effort with the same task through the current forge.
+5. Simulate a failed integration and a lost credential. Confirm that a Git clone and written recovery steps are enough to resume work.
+6. Migrate only after the team can name the source of truth, review owner, deployment trigger, and rollback path in one page.
 
-**Enterprise Governance and Compliance.** Storing proprietary code on Cursor's servers requires SOC 2 Type II compliance, VPC peering, and enterprise SSO. Teams with strict air-gapped policies will keep GitHub Enterprise or GitLab until self-hosted Origin instances become available.
+## Key takeaways
 
-**Merge Conflict Resolution at Agent Scale.** When multiple autonomous agents open simultaneous PRs across shared modules, merge contention can spike. Cursor's AST-aware 3-way merge engine must prove resilient against semantic regressions.
-
-**Two-Way Sync Edge Cases.** Webhook race conditions between GitHub and Origin during rapid multi-commit rebases must be monitored with idempotent queue handlers.
-
----
-
-## The Workflow I Would Use
-
-1. Link your GitHub account and import a non-critical repository into Cursor Origin.
-2. Verify that two-way sync mirrors commits and branches across both platforms.
-3. Configure Vercel deployment hooks for automated preview URLs on every Origin PR.
-4. Assign an autonomous agent task (e.g. \`@agent migrate test suite to Vitest 4\`) and watch the agent create a branch and open a PR directly in Origin.
-5. Review the visual AST diff in Origin and merge to trigger instant Vercel production deployment.
-
-:::callout
-type: tip
-label: INFRASTRUCTURE INSIGHT
-text: When AI agents write a majority of code, hosting repositories on the same compute fabric where agents reason is a fundamental efficiency multiplier.
-:::
+- Origin's concrete change is native code hosting alongside Cursor's agent workflows.
+- Native and mirrored repositories have different sources of truth.
+- Git portability does not carry every policy, check, or review artifact with it.
+- A production decision needs an observed pilot, not an architecture diagram alone.
 
 ## Conclusion
 
-Cursor Origin marks the transition from AI as an editor plugin to AI as the foundational developer platform. By unifying repositories, pull requests, autonomous agents, CI, and Vercel deployments into one seamless loop, Cursor is constructing the post-GitHub development environment.
+Origin is a credible early-beta forge to evaluate in 2026. Its useful question is whether repository ownership, agent tasks, and review can be made clearer for a particular team. The answer depends on tested controls and integrations. Keep the Git escape route simple, make the source of truth explicit, and measure whether the new loop improves the actual release process.
+
+## September 2026 evidence update
+
+Cursor’s [August 17 launch note](https://cursor.com/changelog/origin-code-hosting) and [Origin documentation](https://cursor.com/docs/origin) support the native-host and GitHub-mirror distinction. They do not substantiate automatic two-way PR sync, named CI partnerships, or specific outage immunity. Those claims were removed from this review.
 
 ---
 
 ### Sources and further reading
 
-- [Cursor Origin Platform](https://cursor.com/origin) — native repository hosting, feature specifications, and beta onboarding
-- [Cursor Blog: The Road to Agentic Infrastructure](https://cursor.com/blog) — architectural notes on two-way GitHub sync and server-side agent compute
-- [Vercel & Cursor Origin Integration](https://vercel.com/blog) — preview deployments and serverless hosting architecture
-- [GitHub Status Incident Archive (August 2026)](https://www.githubstatus.com) — incident reports covering August 6 and mid-August API and Actions outages`,
+- [Cursor: Origin Code Hosting launch, August 17, 2026](https://cursor.com/changelog/origin-code-hosting) — release date and initial beta scope
+- [Cursor Origin documentation](https://cursor.com/docs/origin) — availability, native repositories, GitHub mirrors, and permissions
+- [Cursor Origin API documentation](https://cursor.com/docs/api/origin) — beta integration surface
+`,
   },
   {
     id: 'razorpay-vulcan-payments-foundation-model',
@@ -2189,7 +2212,7 @@ Cursor Origin marks the transition from AI as an editor plugin to AI as the foun
       'Transformer Model for Money',
       '+8–10% Success Rate Lift',
       '8x Fraud Detection',
-      'NVIDIA & AWS Sovereign AI',
+      'NVIDIA and AWS infrastructure',
     ],
     tags: [
       'Razorpay Vulcan',
@@ -2200,10 +2223,11 @@ Cursor Origin marks the transition from AI as an editor plugin to AI as the foun
       'System Design',
     ],
     date: '2026-09-10',
+    updatedAt: '2026-09-27',
     readTime: '8 min read',
     content: `**4 billion payments. 3 trillion data points. One foundation model trained on all of it.**
 
-In August 2026, **Razorpay** unveiled **Vulcan**—India’s first transformer-based AI foundation model purpose-built for the financial transaction ecosystem. Built, trained, and hosted sovereignly in India in strategic partnership with **NVIDIA** and **AWS Cloud**, Vulcan fundamentally rethinks payment processing from fragmented rule heuristics into a single, unified intelligence layer.
+Razorpay announced **Vulcan** on August 18, 2026 and published a [technical explanation](https://razorpay.com/blog/vulcan-how-razorpay-built-a-foundation-model-for-payment-decisions/) in September. Razorpay describes it as a transformer-based model for payment decisions, built with NVIDIA computing and AWS infrastructure. Its launch figures are company-reported; neither the announcement nor this article establishes that all training and hosting stayed within India.
 
 
 ## Context and scope
@@ -2287,14 +2311,14 @@ The shared backbone supports distinct decision layers. Razorpay has not publishe
 :::table
 | Dimension | Legacy Payments Architecture | Razorpay Vulcan Foundation Model |
 | --- | --- | --- |
-| **Model Structure** | Multiple disconnected heuristic rule engines | Single unified Transformer Foundation Model |
-| **Training Data** | Siloed historical tables | 4 Billion payments &amp; 3 Trillion data points |
-| **Infrastructure** | Standard CPU servers | NVIDIA AI compute clusters on AWS Cloud |
+| **Model Structure** | Separate task-specific systems | Shared backbone with task-specific decision heads |
+| **Training Data** | Not stated in the public comparison | Razorpay reports 4 billion payments and nearly 3 trillion data points |
+| **Infrastructure** | Not stated in the public comparison | NVIDIA computing and AWS services, according to Razorpay |
 | **Inference Latency** | Depends on each service and payment flow | Low-latency routing is a design requirement; public per-request latency is not specified |
 | **Adaptability** | Task-specific updates | Shared pretrained representation plus separately evaluated task heads |
 :::
 
-### 3. Sovereign AI Infrastructure in India
+### 3. Infrastructure and deployment questions
 
 Razorpay describes Vulcan as built for India's payment environment in collaboration with **NVIDIA** and **AWS**. Deployment location, model quantization, and serving internals should be confirmed from technical documentation before being treated as implementation facts.
 
@@ -2330,20 +2354,24 @@ For engineers designing AI-native transaction systems:
 :::callout
 type: tip
 label: FINTECH AI PRINCIPLE
-text: Money is an interconnected communication protocol. When an AI model learns the collective behavior of billions of transactions, payments transform from fragile pipelines into self-healing intelligent networks.
+text: A shared payment representation can improve several decisions, but each task still needs its own labels, evaluation, serving controls, and rollback path.
 :::
 
 ## Conclusion
 
-Razorpay Vulcan demonstrates that foundation models are not limited to text and images. By training India's first payments transformer on 4 billion transactions and 3 trillion data points, Razorpay, NVIDIA, and AWS have constructed the intelligence layer for the future of digital commerce.
+Vulcan shows a credible way to reuse learned payment representations across routing, fraud, delivery risk, and checkout ordering. Razorpay's launch results are promising company reports. The durable engineering test is whether each decision improves on later traffic, at fixed operating constraints, without hiding new failure modes.
+
+## September 2026 evidence update
+
+Razorpay’s [launch release](https://razorpay.com/newsroom/?p=4744) reports the 4-billion-payment training scale and early task outcomes; its [technical article](https://razorpay.com/blog/vulcan-how-razorpay-built-a-foundation-model-for-payment-decisions/) explains decision-time features and out-of-time evaluation. These remain company-reported results. The article now avoids an unsupported claim that all training and hosting stayed in India.
 
 ---
 
 ### Sources and further reading
 
 - [Razorpay Vulcan engineering article](https://razorpay.com/blog/vulcan-how-razorpay-built-a-foundation-model-for-payment-decisions/) — backbone, task heads, routing context, and evaluation limits
-- [NVIDIA AI & Financial Services](https://www.nvidia.com/en-us/financial-services/) — GPU-accelerated training architectures and TensorRT inference in fintech
-- [AWS Cloud India FinTech Solutions](https://aws.amazon.com/financial-services/) — sovereign cloud infrastructure and regulatory-compliant AI hosting`,
+- [NVIDIA AI Models](https://developer.nvidia.com/ai-models) — GPU-accelerated training architectures and TensorRT inference in fintech
+- [AWS Cloud India FinTech Solutions](https://aws.amazon.com/financial-services/) — general platform context, not proof of Vulcan data residency or serving configuration`,
   },
   {
     id: 'upi-tap-to-pay-and-2026-payment-architecture',
@@ -2358,6 +2386,7 @@ Razorpay Vulcan demonstrates that foundation models are not limited to text and 
     highlights: ['NFC merchant tags', 'UPI Circle Delegated Limits', 'Interoperable Credit Lines'],
     tags: ['UPI', 'Fintech', 'Payments', 'NFC', 'System Design', 'NPCI'],
     date: '2026-09-14',
+    updatedAt: '2026-09-27',
     readTime: '8 min read',
     content: `NPCI recorded **24.509 billion UPI transactions worth ₹29.82 lakh crore in August 2026**. Those are network totals, not estimates from an app-share chart. The product family has also grown beyond scan-and-pay: NFC payee capture, delegated payments, credit lines, and low-value offline options each solve a different problem.
 
@@ -2441,6 +2470,11 @@ For a merchant or app team, instrument each stage separately: NFC read success, 
 
 The main lesson: a faster way to discover the merchant can improve the payment experience, but it does not eliminate the financial controls or distributed-system failure modes that make payment status trustworthy.
 
+## September 2026 evidence update
+
+NPCI’s [monthly UPI statistics](https://www.npci.org.in/product/upi/product-statistics) support network totals, while its [Tap and Pay overview](https://www.npci.org.in/what-we-do/upi-lite/upi-tap-and-pay/product-overview) describes the NFC payee-capture experience. Network volume does not measure adoption of each individual rail. Treat the four-step flow as conceptual, and verify the actual bank or app rules before implementation.
+
+
 ### Sources and further reading
 
 - [NPCI UPI monthly statistics](https://www.npci.org.in/product/upi/product-statistics) — August and July 2026 volume and value
@@ -2466,6 +2500,7 @@ The main lesson: a faster way to discover the merchant can improve the payment e
     ],
     tags: ['TypeSafe AI', 'Jev', 'System 1', 'AI Agents', 'TypeScript', 'System Design'],
     date: '2026-09-18',
+    updatedAt: '2026-09-27',
     readTime: '8 min read',
     content: `TypeSafe AI introduced **Jev** on September 15, 2026 as an early-access System One model for typed, probabilistic decisions. The company reports **70–500 ms end-to-end response times** and **$0.042 per million input tokens** for its own service. Those are vendor claims for a particular workload, not a latency or cost guarantee for every integration.
 
@@ -2544,6 +2579,11 @@ text: Treat a typed model response as evidence for a bounded decision. Keep auth
 TypeSafe reports strong speed and efficiency on its System One evaluations and explicitly notes that some demonstrations use short, advantageous inputs. The announced price applies to input tokens; the company lists output tokens as free. Neither claim proves another team's end-to-end workflow will be faster or cheaper after network calls, preprocessing, human review, and retries. Public examples also do not establish that every confidence estimate stays calibrated on an unseen domain.
 
 For builders, the strongest takeaway is a design pattern: let a fast model answer narrow, typed questions and make the surrounding software responsible for policy, traceability, and escalation. Test that pattern against your own tasks before replacing a working classifier or structured-output flow.
+
+## September 2026 evidence update
+
+TypeSafe’s [September 15 announcement](https://typesafe.ai/blog/introducing-system-one-models-and-jev) is the source for Jev’s latency, price, and calibration claims. They are vendor-reported, early-access results. The practical bar is calibration and error cost on your own decision distribution, including abstentions and shifted traffic; a typed output alone does not prove correctness.
+
 
 ### Sources and further reading
 

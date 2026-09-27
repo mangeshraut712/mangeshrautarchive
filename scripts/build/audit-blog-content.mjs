@@ -10,6 +10,7 @@ for (const post of blogPosts) {
   const words = post.content.trim().split(/\s+/).length;
   const { html, headings } = parseBlogContent(post.content, { addHeadingIds: true });
   const expectedMinutes = Math.ceil(words / 190 + 1.5);
+  const sourceLinks = [...post.content.matchAll(/\[[^\]]+\]\((https:\/\/[^)]+)\)/g)];
   const checks = [
     [words >= 950 && words <= 1350, `length ${words} outside 950–1350 words`],
     [post.readTime === `${expectedMinutes} min read`, `read time does not match ${words} words`],
@@ -21,6 +22,12 @@ for (const post of blogPosts) {
       'missing chart, framework, or data table',
     ],
     [/^### Sources\b/m.test(post.content), 'missing source section'],
+    [/^## September 2026 evidence update$/m.test(post.content), 'missing dated evidence update'],
+    [sourceLinks.length >= 2, `only ${sourceLinks.length} external evidence links`],
+    [
+      Boolean(post.updatedAt) && post.updatedAt >= post.date,
+      'missing or earlier editorial update date',
+    ],
   ];
   for (const [passes, issue] of checks) {
     if (!passes) issues.push(`${post.id}: ${issue}`);

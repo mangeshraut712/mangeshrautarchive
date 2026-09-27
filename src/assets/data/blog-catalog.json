@@ -9,7 +9,7 @@
   {
     "id": "grok-4-5-grok-build-open-source-2026",
     "title": "Grok 4.5 and Grok Build Field Notes: Model + Open Harness",
-    "date": "2026-07-10",
+    "date": "2026-07-15",
     "summary": "A builder read on Grok 4.5 as a coding-first frontier model and the open-sourced Grok Build harness: what matters for agent loops, what to verify, and how I would adopt both without rewriting my stack.",
     "tags": ["Grok 4.5", "Grok Build", "xAI", "Coding Agents", "Open Source"]
   },
@@ -92,21 +92,21 @@
   },
   {
     "id": "notebooklm-2026-ai-research-agent",
-    "title": "NotebookLM 2026 Field Notes: Source Grounding Under Agentic Pressure",
+    "title": "Gemini Notebook (formerly NotebookLM): Source Grounding Under Agentic Pressure",
     "date": "2026-06-10",
-    "summary": "A practical look at NotebookLM after Audio/Video Overviews and the mid-2026 agentic upgrades: grounded research workflows, citation discipline, and what not to publish unsupervised.",
+    "summary": "A practical look at Gemini Notebook, formerly NotebookLM: grounded research, Audio and Video Overviews, staged agent features, citation discipline, and human review.",
     "tags": ["NotebookLM", "Gemini", "AI Research", "Google AI", "Audio Overview"]
   },
   {
     "id": "cursor-origin-agent-native-code-hosting",
-    "title": "Cursor Origin: The Agent-Native Code Hosting Platform and the Post-GitHub Loop",
-    "date": "2026-08-06",
-    "summary": "Cursor launches Origin—its own code hosting infrastructure with native repositories, two-way GitHub sync, and autonomous agent loops that understand, edit, test, and deploy code directly via Vercel, Buildkite, and Depot.",
+    "title": "Cursor Origin in 2026: Native Git Hosting, Mirrors, and the Agent Review Loop",
+    "date": "2026-08-17",
+    "summary": "A source-grounded guide to Cursor Origin early beta: native Git hosting, GitHub mirrors, pull-request review, and the controls teams should test before migrating.",
     "tags": [
       "Cursor",
       "Cursor Origin",
       "Agentic Coding",
-      "Vercel",
+      "Git Hosting",
       "Developer Infrastructure",
       "System Architecture"
     ]

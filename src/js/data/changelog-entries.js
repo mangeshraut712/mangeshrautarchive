@@ -51,6 +51,22 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'blog-evidence-refresh-sept-2026',
+    date: '2026-09-27',
+    type: 'improvement',
+    title: 'Refresh evidence and 2026 context across all 18 articles',
+    summary:
+      'Reviewed the full collection against primary sources, added a dated evidence update and source navigation to every article, corrected Origin beta and Gemini Notebook chronology, revised Wispr privacy controls and Razorpay provenance, and aligned publication metadata with the served HTML routes.',
+    tags: ['blog', 'content', 'design'],
+    commitVerified: false,
+    model: 'GPT-6 / Codex',
+    ide: 'OpenAI Codex',
+    purpose: 'Source-grounded content review and professional article evidence navigation',
+    reasoning: 'Unavailable',
+    usage: 'Unavailable',
+    status: 'unreleased',
+  },
+  {
     id: 'blog-reading-layout-sept-2026',
     date: '2026-09-27',
     type: 'improvement',
