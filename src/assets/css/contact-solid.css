@@ -1806,6 +1806,23 @@ html body #contact .watch-btn i {
   -webkit-text-fill-color: inherit !important;
 }
 
+/* Keep small text readable on the pale blue calendar and media surfaces. */
+html:not(.dark) body #contact {
+  --contact-ink-blue: color-mix(in srgb, var(--apple-blue) 65%, #000000);
+}
+
+html:not(.dark) body #contact .day-inspector-info strong,
+html:not(.dark) body #contact .day-inspector-ai-brief,
+html:not(.dark) body #contact .card-tag.tag-blue {
+  color: var(--contact-ink-blue) !important;
+  -webkit-text-fill-color: var(--contact-ink-blue) !important;
+}
+
+html:not(.dark) body #contact .day-inspector-clear {
+  color: #464650 !important;
+  -webkit-text-fill-color: #464650 !important;
+}
+
 html:not(.dark) body #contact .currently-tab:not(.active),
 html[data-theme='light'] body #contact .currently-tab:not(.active) {
   color: #3a3a3c !important;

@@ -56,7 +56,7 @@ export const changelogEntries = [
     type: 'improvement',
     title: 'Refresh evidence and 2026 context across all 18 articles',
     summary:
-      'Reviewed the full collection against primary sources, added a dated evidence update and source navigation to every article, corrected Origin beta and Gemini Notebook chronology, revised Wispr privacy controls and Razorpay provenance, and aligned publication metadata with the served HTML routes.',
+      'Reviewed the full collection against primary sources, added a dated evidence update and source navigation to every article, corrected Origin beta and Gemini Notebook chronology, revised Wispr privacy controls and Razorpay provenance, and aligned publication metadata with the served HTML routes. Preserved text contrast while homepage sections reveal on scroll.',
     tags: ['blog', 'content', 'design'],
     commitVerified: false,
     model: 'GPT-6 / Codex',

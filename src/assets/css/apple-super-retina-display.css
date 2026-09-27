@@ -249,12 +249,10 @@ html.dark.aod-dim .a11y-toolbar {
 
   @keyframes appleSectionScrollReveal {
     from {
-      opacity: 0.72;
       transform: translateY(20px);
     }
 
     to {
-      opacity: 1;
       transform: translateY(0);
     }
   }

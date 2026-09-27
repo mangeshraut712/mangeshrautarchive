@@ -1335,7 +1335,7 @@ export class CalendarWidget {
             <span class="year-progress-year">${currentYear}</span>
             <span class="year-progress-percent">${percentPassed}%</span>
           </div>
-          <div class="year-progress-track" role="progressbar" aria-valuenow="${percentPassed}" aria-valuemin="0" aria-valuemax="100">
+          <div class="year-progress-track" role="progressbar" aria-label="Year ${currentYear} progress" aria-valuenow="${percentPassed}" aria-valuemin="0" aria-valuemax="100">
             <div class="year-progress-fill" style="width: ${percentPassed}%;"></div>
           </div>
           <div class="year-progress-footer">
@@ -1423,26 +1423,26 @@ export class CalendarWidget {
           </div>
 
           <!-- Category Filter Tabs -->
-          <div class="calendar-filter-tabs" role="tablist" aria-label="Filter events by category">
-            <button type="button" class="filter-tab ${this.activeFilter === 'day' ? 'active' : ''}" data-filter="day">
+          <div class="calendar-filter-tabs" role="group" aria-label="Filter events by category">
+            <button type="button" class="filter-tab ${this.activeFilter === 'day' ? 'active' : ''}" data-filter="day" aria-pressed="${this.activeFilter === 'day'}">
               <i class="fas fa-calendar-day" aria-hidden="true"></i> Day (${dayMatchesCount})
             </button>
-            <button type="button" class="filter-tab ${this.activeFilter === 'all' ? 'active' : ''}" data-filter="all">
+            <button type="button" class="filter-tab ${this.activeFilter === 'all' ? 'active' : ''}" data-filter="all" aria-pressed="${this.activeFilter === 'all'}">
               <i class="fas fa-layer-group" aria-hidden="true"></i> All (${totalCount})
             </button>
-            <button type="button" class="filter-tab ${this.activeFilter === 'events' ? 'active' : ''}" data-filter="events">
+            <button type="button" class="filter-tab ${this.activeFilter === 'events' ? 'active' : ''}" data-filter="events" aria-pressed="${this.activeFilter === 'events'}">
               <i class="fas fa-calendar-check" aria-hidden="true"></i> Events (${totalEventsCount})
             </button>
-            <button type="button" class="filter-tab ${this.activeFilter === 'luma' ? 'active' : ''}" data-filter="luma">
+            <button type="button" class="filter-tab ${this.activeFilter === 'luma' ? 'active' : ''}" data-filter="luma" aria-pressed="${this.activeFilter === 'luma'}">
               <i class="fas fa-ticket" aria-hidden="true"></i> Luma (${totalLumaCount})
             </button>
-            <button type="button" class="filter-tab ${this.activeFilter === 'birthdays' ? 'active' : ''}" data-filter="birthdays">
+            <button type="button" class="filter-tab ${this.activeFilter === 'birthdays' ? 'active' : ''}" data-filter="birthdays" aria-pressed="${this.activeFilter === 'birthdays'}">
               <i class="fas fa-cake-candles" aria-hidden="true"></i> Birthdays (${totalBirthdaysCount})
             </button>
-            <button type="button" class="filter-tab ${this.activeFilter === 'changelog' ? 'active' : ''}" data-filter="changelog">
+            <button type="button" class="filter-tab ${this.activeFilter === 'changelog' ? 'active' : ''}" data-filter="changelog" aria-pressed="${this.activeFilter === 'changelog'}">
               <i class="fas fa-rocket" aria-hidden="true"></i> Changelog (${totalChangelogCount})
             </button>
-            <button type="button" class="filter-tab ${this.activeFilter === 'reminders' ? 'active' : ''}" data-filter="reminders">
+            <button type="button" class="filter-tab ${this.activeFilter === 'reminders' ? 'active' : ''}" data-filter="reminders" aria-pressed="${this.activeFilter === 'reminders'}">
               <i class="fas fa-list-check" aria-hidden="true"></i> Tasks (${totalRemindersCount})
             </button>
           </div>

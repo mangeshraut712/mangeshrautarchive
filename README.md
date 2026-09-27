@@ -313,7 +313,8 @@ articles. It corrects the Cursor Origin release and beta scope, the Gemini Noteb
 privacy-setting distinctions, and Razorpay provenance. Article metadata now separates publication
 from the editorial update date, and canonical URLs match the generated `.html` pages. The content
 audit checks for dated evidence notes and multiple external links; vendor benchmarks remain labeled
-as company-reported results.
+as company-reported results. The release also keeps homepage text fully opaque during scroll
+reveals so interactive labels retain accessible contrast.
 
 ## Documentation
 
