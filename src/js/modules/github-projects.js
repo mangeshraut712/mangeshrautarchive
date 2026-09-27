@@ -2048,24 +2048,14 @@ class GitHubProjects {
     const topicsHtml =
       topics.length > 0
         ? topics
-            .slice(0, 3)
+            .slice(0, 2)
             .map(topic => `<span class="project-tag">${this.escapeHtml(topic)}</span>`)
             .join('')
         : '';
-    const licenseHtml = safeLicense
-      ? `<span class="project-meta-stat project-license-badge" title="License: ${safeLicense}">
-              <i class="fas fa-scale-balanced" aria-hidden="true"></i>${safeLicense}
-            </span>`
-      : '';
-    const sizeHtml = repoSize
-      ? `<span class="project-meta-stat project-size-badge" title="Repository size">
-              <i class="fas fa-database" aria-hidden="true"></i>${this.formatRepoSize(repoSize)}
-            </span>`
-      : '';
     const demoHtml = hasDemo
       ? `<a href="${safeHomepage}" target="_blank" rel="noopener noreferrer" class="project-action-btn btn-demo" aria-label="Open ${safeName} live demo">
                 <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i>
-                <span>Live Demo</span>
+                <span>View live</span>
               </a>`
       : '';
 
@@ -2080,10 +2070,6 @@ class GitHubProjects {
               ${pulseDotHtml}
             </div>
             <div class="project-head-actions">
-              <button type="button" class="project-clone-btn" data-repo-clone="${safeRepoUrl}.git" title="Copy git clone ${safeRepoUrl}.git" aria-label="Copy git clone command for ${safeName}">
-                <i class="fas fa-terminal" aria-hidden="true"></i>
-                <span class="clone-label">Clone</span>
-              </button>
               <span class="project-repo-updated" title="Updated ${safeUpdatedAbsolute}">
                 <i class="fas fa-clock" aria-hidden="true"></i>
                 ${safeUpdatedBadgeText}
@@ -2093,7 +2079,7 @@ class GitHubProjects {
 
           <div class="project-title-wrap">
             <h3 class="project-title">
-              <span class="project-title-text" title="${safeName}">${safeName}</span>
+              <a class="project-title-text" href="${safeRepoUrl}" target="_blank" rel="noopener noreferrer" title="View ${safeName} on GitHub">${safeName}</a>
             </h3>
           </div>
 
@@ -2113,8 +2099,6 @@ class GitHubProjects {
               <span class="project-meta-stat project-fork-stat" title="Forks: ${forks}">
                 <i class="fas fa-code-fork" aria-hidden="true"></i>${this.formatCompactNumber(forks)}
               </span>
-              ${licenseHtml}
-              ${sizeHtml}
             </div>
           </div>
         </div>
@@ -2129,7 +2113,7 @@ class GitHubProjects {
             aria-label="Open ${safeName} on GitHub"
           >
             <i class="fab fa-github" aria-hidden="true"></i>
-            <span>${hasDemo ? 'Code' : 'Open Repo'}</span>
+            <span>View code</span>
           </a>
           <button
             type="button"
@@ -2167,6 +2151,10 @@ class GitHubProjects {
           >
             <i class="fas fa-cube" aria-hidden="true"></i>
             <span>Spatial</span>
+          </button>
+          <button type="button" class="project-clone-btn" data-repo-clone="${safeRepoUrl}.git" title="Copy git clone ${safeRepoUrl}.git" aria-label="Copy git clone command for ${safeName}">
+            <i class="fas fa-terminal" aria-hidden="true"></i>
+            <span class="clone-label">Clone</span>
           </button>
         </div>
       </article>

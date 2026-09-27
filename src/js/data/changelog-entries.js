@@ -51,6 +51,22 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'editorial-project-blog-cards-sept-2026',
+    date: '2026-09-28',
+    type: 'improvement',
+    title: 'Give projects and writing a clearer editorial preview',
+    summary:
+      'Put repository cards before the contribution graph, widened them to readable two-column layouts, clarified code, demo, clone, and Spatial actions, and kept non-language proxy metadata out of the Spatial chart. Replaced the homepage blog filters and expanding list with one featured article and three recent stories. The dedicated archive now uses two readable columns and does not repeat its featured article.',
+    tags: ['design', 'blog'],
+    commitVerified: false,
+    model: 'GPT-6 / Codex',
+    ide: 'OpenAI Codex',
+    purpose: 'Improve GitHub repository cards and homepage blog discovery',
+    reasoning: 'Unavailable',
+    usage: 'Unavailable',
+    status: 'unreleased',
+  },
+  {
     id: 'blog-evidence-refresh-sept-2026',
     date: '2026-09-27',
     type: 'improvement',

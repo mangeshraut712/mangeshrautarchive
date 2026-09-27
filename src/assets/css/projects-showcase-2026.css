@@ -5076,3 +5076,172 @@ html.dark .project-clone-btn:hover {
     box-shadow: 0 0 0 0 rgba(52, 199, 89, 0);
   }
 }
+
+/* Repository-first editorial presentation. Activity follows the work it describes. */
+section#projects.projects-editorial .projects-page--repos {
+  padding-top: 0;
+  margin-top: 0;
+  border-top: 0;
+}
+
+section#projects.projects-editorial .projects-page--github {
+  padding-top: clamp(2rem, 4vw, 3rem);
+  margin-top: clamp(1rem, 3vw, 2rem);
+  border-top: 1px solid var(--project-border-light);
+}
+
+html.dark section#projects.projects-editorial .projects-page--github {
+  border-top-color: var(--project-border-dark);
+}
+
+section#projects.projects-editorial .projects-page-header {
+  max-width: 800px;
+  margin-bottom: clamp(0.75rem, 2vw, 1.5rem);
+  text-align: left;
+}
+
+section#projects.projects-editorial .projects-page-header .section-eyebrow {
+  margin: 0;
+  width: auto;
+}
+
+section#projects.projects-editorial .projects-page-header h2 {
+  margin: 0;
+  font-size: clamp(2rem, 4.5vw, 3.35rem);
+  line-height: 1.08;
+  letter-spacing: -0.045em;
+}
+
+section#projects.projects-editorial .projects-page-header .section-subtitle {
+  margin: 0 !important;
+  max-width: 660px;
+  line-height: 1.55;
+}
+
+section#projects.projects-editorial
+  .projects-page-header
+  :is(h2, .section-subtitle, .section-eyebrow) {
+  text-align: left !important;
+  justify-self: start;
+}
+
+section#projects.projects-editorial #github-projects-container {
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: clamp(1rem, 2vw, 1.5rem) !important;
+}
+
+section#projects.projects-editorial #github-projects-container .showcase-project-card {
+  --project-card-pad-x: clamp(1.35rem, 2vw, 1.8rem);
+  --project-card-pad-y: clamp(1.35rem, 2vw, 1.7rem);
+  min-height: 330px !important;
+  border-radius: 24px !important;
+}
+
+section#projects.projects-editorial #github-projects-container .project-header {
+  gap: 0.8rem !important;
+  padding-bottom: 1.25rem !important;
+}
+
+section#projects.projects-editorial #github-projects-container .project-repo-badge {
+  width: 40px !important;
+  height: 40px !important;
+  border-radius: 13px !important;
+}
+
+section#projects.projects-editorial #github-projects-container .project-title-text {
+  display: block !important;
+  overflow: visible !important;
+  font-size: clamp(1.3rem, 2vw, 1.7rem) !important;
+  line-height: 1.18 !important;
+  letter-spacing: -0.03em !important;
+  text-decoration: none !important;
+}
+
+section#projects.projects-editorial #github-projects-container .project-title-text:focus-visible {
+  outline: 2px solid var(--project-accent);
+  outline-offset: 4px;
+  border-radius: 3px;
+}
+
+section#projects.projects-editorial #github-projects-container .project-description {
+  font-size: 0.96rem !important;
+  line-height: 1.55 !important;
+  -webkit-line-clamp: 3 !important;
+  line-clamp: 3 !important;
+}
+
+section#projects.projects-editorial #github-projects-container .project-meta-row {
+  flex-direction: row !important;
+  flex-wrap: wrap !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 0.5rem 1rem !important;
+}
+
+section#projects.projects-editorial #github-projects-container .project-tech-pills {
+  min-width: 0;
+}
+
+section#projects.projects-editorial #github-projects-container .project-language,
+section#projects.projects-editorial #github-projects-container .project-tag {
+  min-height: 27px;
+  font-size: 0.72rem !important;
+}
+
+section#projects.projects-editorial #github-projects-container .project-footer {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.55rem !important;
+  padding: 1rem var(--project-card-pad-x) 1.2rem !important;
+}
+
+section#projects.projects-editorial #github-projects-container .project-footer .project-action-btn {
+  width: 100% !important;
+  height: 44px !important;
+  min-height: 44px !important;
+  font-size: 0.85rem !important;
+}
+
+section#projects.projects-editorial #github-projects-container .project-footer.no-demo .btn-github {
+  grid-column: 1 / -1;
+}
+
+section#projects.projects-editorial #github-projects-container .project-footer .btn-ar,
+section#projects.projects-editorial #github-projects-container .project-footer .project-clone-btn {
+  min-width: 0;
+  width: 100%;
+  min-height: 40px;
+  justify-content: center;
+  font-size: 0.78rem;
+  font-weight: 650;
+}
+
+section#projects.projects-editorial #github-projects-container .project-footer .btn-ar {
+  grid-column: 1;
+}
+
+section#projects.projects-editorial #github-projects-container .project-footer .project-clone-btn {
+  grid-column: 2;
+  border-radius: 10px;
+}
+
+@media (max-width: 760px) {
+  section#projects.projects-editorial #github-projects-container {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  section#projects.projects-editorial #github-projects-container .showcase-project-card {
+    min-height: 0 !important;
+  }
+
+  section#projects.projects-editorial .projects-page-header {
+    text-align: left;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  section#projects.projects-editorial #github-projects-container .showcase-project-card,
+  #blog .blog-home-editorial-grid .blog-card {
+    transform: none !important;
+  }
+}

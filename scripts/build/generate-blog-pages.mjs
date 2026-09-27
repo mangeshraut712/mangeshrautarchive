@@ -171,7 +171,7 @@ function pageShell({
 
 function renderBlogIndex(posts, tags) {
   const [featured, ...archivePosts] = posts;
-  const cards = posts
+  const cards = archivePosts
     .map(
       post => `
     <article class="blog-card blog-card--editorial" data-id="${post.id}" data-tags="${escapeHTML((post.tags || []).join(','))}">
@@ -191,7 +191,7 @@ function renderBlogIndex(posts, tags) {
         </div>
         <h2 class="blog-title"><a href="${blogPostHref(post.id)}" class="blog-title-link">${escapeHTML(post.title)}</a></h2>
         <p class="blog-summary">${escapeHTML(post.readerPromise || post.summary)}</p>
-        <div class="blog-tags blog-tags--pills">${topicPills(post.tags, 3)}</div>
+        <div class="blog-tags blog-tags--pills">${topicPills(post.tags, 2)}</div>
         <div class="blog-card-cta-row">
           <a class="blog-read-btn" href="${blogPostHref(post.id)}">Read article <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
         </div>

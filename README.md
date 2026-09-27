@@ -280,6 +280,7 @@ Current documentation pass:
 | GPT-6 / Codex                         | Retire Vitest tests, focus CI on six built-site browser journeys and API tests, and repair blog routing and contrast regressions                                                            | Reasoning and token usage unavailable                          |
 | GPT-6 / Codex                         | Generate and integrate 18 article-specific blog covers with Codex's built-in OpenAI image tool; verify mobile and desktop presentation                                                      | Image model identifier, reasoning, and token usage unavailable |
 | GPT-6 / Codex                         | Audit all 18 blog pages, repair contrast and catalog coverage, and check recent financial and AI claims against primary sources                                                             | Reasoning and token usage unavailable                          |
+| GPT-6 / Codex                         | Rework GitHub repository cards and homepage writing previews into a clearer editorial layout across desktop and mobile                                                                      | Reasoning and token usage unavailable                          |
 | GPT-6 / Codex                         | Make full blog pages the primary reading path, add 18 conceptual diagrams, normalize article depth, and verify archive and article journeys                                                 | Reasoning and token usage unavailable                          |
 | GPT-6 / Codex                         | Review 18 blog articles against primary sources, correct dated claims, and expose evidence and source navigation in each article                                                            | Reasoning and token usage unavailable                          |
 
@@ -315,6 +316,13 @@ from the editorial update date, and canonical URLs match the generated `.html` p
 audit checks for dated evidence notes and multiple external links; vendor benchmarks remain labeled
 as company-reported results. The release also keeps homepage text fully opaque during scroll
 reveals so interactive labels retain accessible contrast.
+
+The September 28 discovery pass moves repository cards ahead of the GitHub activity graph, gives
+their descriptions and actions more space, and makes repository titles direct links. The homepage
+writing shelf now presents the latest article and three recent stories; the complete 18-article
+collection stays in the dedicated archive, where previews use two columns and the featured story
+appears once. This removes the extra homepage filters and expansion control while preserving the
+full article reading path.
 
 ## Documentation
 

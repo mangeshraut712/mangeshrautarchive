@@ -2856,65 +2856,16 @@ html.dark #home .hero-name-text {
     </section>
 
     <!-- Projects Section - Dynamic GitHub Integration -->
-    <section id="projects" class="fade-in section-standard" aria-labelledby="projects-heading">
+    <section id="projects" class="fade-in section-standard projects-editorial" aria-labelledby="projects-heading">
       <div class="container">
         <div id="projects-showcase-shell" class="projects-showcase-shell">
-          <!-- Page 1: GitHub operating view -->
-          <div class="projects-page projects-page--github" id="projects-github-page">
-            <header class="projects-page-header">
-              <h2 id="projects-heading">Project Showcase</h2>
-              <p class="section-subtitle">Full stack and AI projects from this software engineer portfolio — with live GitHub activity and release-freshness signals.</p>
-            </header>
-
-            <div id="projects-activity-overview" class="projects-activity-overview" aria-live="polite">
-              <div class="activity-overview-head">
-                <div class="activity-overview-title-wrap">
-                  <p class="activity-eyebrow">GitHub Operating View</p>
-                  <h3 class="activity-title">Release-aware engineering momentum</h3>
-                </div>
-                <p id="projects-activity-caption" class="projects-activity-caption">
-                  Syncing repository stars, forks, commits, and contributor activity...
-                </p>
-              </div>
-
-              <div class="activity-overview-inner" id="activity-stats-container">
-                <div class="activity-stat-item skeleton">
-                  <span class="activity-stat-value" id="stat-repos">--</span>
-                  <span class="activity-stat-label">Public Repos</span>
-                </div>
-                <div class="activity-stat-item skeleton">
-                  <span class="activity-stat-value" id="stat-contributors">--</span>
-                  <span class="activity-stat-label">Unique Contributors</span>
-                </div>
-                <div class="activity-stat-item skeleton">
-                  <span class="activity-stat-value" id="stat-stars">--</span>
-                  <span class="activity-stat-label">Stars</span>
-                </div>
-                <div class="activity-stat-item skeleton">
-                  <span class="activity-stat-value" id="stat-forks">--</span>
-                  <span class="activity-stat-label">Forks</span>
-                </div>
-                <div class="activity-stat-item skeleton">
-                  <span class="activity-stat-value" id="stat-commits">--</span>
-                  <span class="activity-stat-label">Commits (30d)</span>
-                </div>
-                <div class="activity-stat-item skeleton">
-                  <span class="activity-stat-value" id="stat-active-repos">--</span>
-                  <span class="activity-stat-label">Active (14d)</span>
-                </div>
-                <div class="activity-stat-item skeleton">
-                  <span class="activity-stat-value" id="stat-languages">--</span>
-                  <span class="activity-stat-label">Languages</span>
-                </div>
-              </div>
-
-              <div class="activity-github-graph-container gh-contrib" id="gh-contrib" data-view="3d"
-                aria-live="polite"></div>
-            </div>
-          </div>
-
-          <!-- Page 2: Repository cards -->
+          <!-- Featured repository cards -->
           <div class="projects-page projects-page--repos" id="projects-repos-page">
+            <header class="projects-page-header">
+              <p class="section-eyebrow">Selected engineering work</p>
+              <h2 id="projects-heading">Projects built to be explored.</h2>
+              <p class="section-subtitle">A curated view of the repositories, working demos, and decisions behind the code.</p>
+            </header>
             <div class="projects-repos-toolbar" role="region" aria-label="Project filters and search">
               <div class="project-lens-bar" role="group" aria-label="Filter projects by stars, forks, or activity">
                 <button type="button" class="project-lens-chip active" data-project-lens="all" aria-pressed="true"
@@ -2990,6 +2941,57 @@ html.dark #home .hero-name-text {
               </div>
             </div>
           </div>
+
+          <!-- Page 1: GitHub operating view -->
+          <div class="projects-page projects-page--github" id="projects-github-page">
+            <div id="projects-activity-overview" class="projects-activity-overview" aria-live="polite">
+              <div class="activity-overview-head">
+                <div class="activity-overview-title-wrap">
+                  <p class="activity-eyebrow">GitHub Operating View</p>
+                  <h3 class="activity-title">Release-aware engineering momentum</h3>
+                </div>
+                <p id="projects-activity-caption" class="projects-activity-caption">
+                  Syncing repository stars, forks, commits, and contributor activity...
+                </p>
+              </div>
+
+              <div class="activity-overview-inner" id="activity-stats-container">
+                <div class="activity-stat-item skeleton">
+                  <span class="activity-stat-value" id="stat-repos">--</span>
+                  <span class="activity-stat-label">Public Repos</span>
+                </div>
+                <div class="activity-stat-item skeleton">
+                  <span class="activity-stat-value" id="stat-contributors">--</span>
+                  <span class="activity-stat-label">Unique Contributors</span>
+                </div>
+                <div class="activity-stat-item skeleton">
+                  <span class="activity-stat-value" id="stat-stars">--</span>
+                  <span class="activity-stat-label">Stars</span>
+                </div>
+                <div class="activity-stat-item skeleton">
+                  <span class="activity-stat-value" id="stat-forks">--</span>
+                  <span class="activity-stat-label">Forks</span>
+                </div>
+                <div class="activity-stat-item skeleton">
+                  <span class="activity-stat-value" id="stat-commits">--</span>
+                  <span class="activity-stat-label">Commits (30d)</span>
+                </div>
+                <div class="activity-stat-item skeleton">
+                  <span class="activity-stat-value" id="stat-active-repos">--</span>
+                  <span class="activity-stat-label">Active (14d)</span>
+                </div>
+                <div class="activity-stat-item skeleton">
+                  <span class="activity-stat-value" id="stat-languages">--</span>
+                  <span class="activity-stat-label">Languages</span>
+                </div>
+              </div>
+
+              <div class="activity-github-graph-container gh-contrib" id="gh-contrib" data-view="3d"
+                aria-live="polite"></div>
+            </div>
+          </div>
+
+
         </div>
       </div>
     </section>
@@ -3682,24 +3684,15 @@ html.dark #home .hero-name-text {
       <div class="container">
         <p class="section-eyebrow">September 2026 · Field Notes</p>
         <h2 id="blog-heading">Technical Writings <span id="blog-post-count" class="section-count">(18)</span></h2>
-        <p class="section-subtitle">Visual field notes on AI systems engineering, distributed backends, payment architecture, and developer tools — each with a practical workflow and honest tradeoffs.</p>
-        <div class="blog-section-intro-actions">
-          <a class="blog-read-btn" href="blog/">Browse all 18 articles <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
-          <p>Open any article for its full analysis, diagrams, sources, and section guide.</p>
-        </div>
-        <div
-          id="blog-posts-container"
-          data-section-preview
-          data-preview-limit="2"
-          data-preview-item=".blog-card"
-          data-preview-more="Show more on this page"
-          data-preview-less="Show fewer on this page"
-          data-preview-label="articles"
-        >
+        <p class="section-subtitle">A few recent field notes, with the full analysis, diagrams, and sources one tap away.</p>
+        <div id="blog-posts-container" class="blog-home-editorial-grid">
           <!-- Blog posts injected by blog-loader.js -->
           <div class="section-loading-container" aria-hidden="true">
             <div class="loading-spinner"></div>
           </div>
+        </div>
+        <div class="blog-home-archive-link">
+          <a href="blog/">Explore all 18 articles <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
         </div>
 
         <!-- Newsletter Subscription -->

@@ -660,7 +660,11 @@ class ProjectXR {
 
     const commits = Array.isArray(commitsData) ? commitsData : [];
     const contributors = Array.isArray(contributorsData) ? contributorsData : [];
-    const languages = languagesData && typeof languagesData === 'object' ? languagesData : {};
+    const languages = Object.fromEntries(
+      Object.entries(
+        languagesData && typeof languagesData === 'object' ? languagesData : {}
+      ).filter(([, bytes]) => Number.isFinite(bytes) && bytes > 0)
+    );
     const treeEntries = Array.isArray(treeData?.tree) ? treeData.tree.slice(0, 800) : [];
     const latestReleasePayload = Array.isArray(latestReleaseData)
       ? latestReleaseData[0]

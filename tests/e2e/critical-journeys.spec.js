@@ -2,21 +2,25 @@ import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 import { gotoSite, openChatbot } from './helpers/site.js';
 
-test('homepage navigation loads the writing section and all article cards', async ({ page }) => {
+test('homepage navigation loads a focused writing preview', async ({ page }) => {
   await gotoSite(page, '/');
   await expect(page.locator('main')).toBeAttached();
   await page.locator('a.nav-link[href="#blog"]').click();
   await expect(page).toHaveURL(/#blog$/);
-  await expect(page.locator('#blog .blog-card')).toHaveCount(18);
+  await expect(page.locator('#blog .blog-card')).toHaveCount(4);
+  await expect(page.locator('#blog .blog-card--featured-home')).toHaveCount(1);
   await expect(page.locator('#blog .blog-title-link').first()).toHaveAttribute('href', /\/blog\//);
 });
 
 test('blog archive opens a full article with its lead image', async ({ page }) => {
   await gotoSite(page, '/blog/');
   await expect(page.locator('.blog-index-title')).toBeVisible();
-  await expect
-    .poll(() => page.locator('#blog-posts-container .blog-card').count())
-    .toBeGreaterThanOrEqual(17);
+  await expect(page.locator('.blog-featured')).toHaveCount(1);
+  await expect(page.locator('#blog-posts-container .blog-card')).toHaveCount(17);
+  const featuredHref = await page.locator('.blog-featured-media').getAttribute('href');
+  await expect(
+    page.locator(`#blog-posts-container .blog-card-media[href="${featuredHref}"]`)
+  ).toHaveCount(0);
   await page.locator('#blog-posts-container .blog-title-link').first().click();
   await expect(page.locator('main h1')).toBeVisible();
   const leadImage = page.locator('.article-figure img').first();
@@ -33,7 +37,7 @@ test('homepage card leads directly to a complete article with section navigation
 }) => {
   await gotoSite(page, '/');
   await page.locator('#blog').scrollIntoViewIfNeeded();
-  await expect(page.locator('.blog-section-intro-actions a')).toHaveAttribute('href', 'blog/');
+  await expect(page.locator('.blog-home-archive-link a')).toHaveAttribute('href', 'blog/');
   await expect(page.locator('#blog .blog-preview-btn')).toHaveCount(0);
   await page.locator('#blog .blog-card .blog-read-btn').first().click();
   await expect(page).toHaveURL(/\/blog\/[^/]+\.html$/);
