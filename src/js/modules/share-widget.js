@@ -510,7 +510,7 @@ async function copyShareUrl(status) {
     await navigator.clipboard.writeText(activeMirrorUrl);
     status.textContent = 'Portfolio link copied.';
     return true;
-  } catch (_error) {
+  } catch {
     const tempInput = document.createElement('input');
     tempInput.value = activeMirrorUrl;
     document.body.appendChild(tempInput);

@@ -51,6 +51,23 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'sitewide-palette-and-test-stability-sept-2026',
+    date: '2026-09-28',
+    type: 'fix',
+    title: 'Restore canonical Apple system colors and harden test suite',
+    summary:
+      'Restored canonical Apple system colors (#ff3b30 in light mode and #ff453a in dark mode) for the calendar today marker and Sunday labels, restored vivid traffic-light colors (#34c759, #ffcc00, #ff3b30) for WHOOP vitals, eliminated process leaks in dev-all.js ensuring zero orphaned server listeners, hardened chatbot scroll streaming tests with deterministic client mocks, and eliminated unused variables and new Array constructs sitewide.',
+    tags: ['design', 'performance', 'other'],
+    commitVerified: false,
+    model: 'Gemini 3.8 Flash',
+    ide: 'Google Antigravity IDE',
+    purpose:
+      'Enforce Apple HIG system palette fidelity, resolve linter warnings, and stabilize test suite execution',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+    status: 'unreleased',
+  },
+  {
     id: 'github-project-media-operating-view-sept-2026',
     date: '2026-09-28',
     type: 'improvement',

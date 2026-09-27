@@ -168,7 +168,7 @@ async function fetchYear(year) {
     const data = { year, days, total, isSample: false };
     state.dataByYear.set(year, data);
     return data;
-  } catch (_e) {
+  } catch {
     const data = generateSampleYear(year);
     state.dataByYear.set(year, data);
     return data;
@@ -375,7 +375,7 @@ function renderHeatmap(data) {
   if (!days.length) return;
 
   const firstDow = days[0].date.getDay();
-  const cells = new Array(firstDow).fill(null).concat(days);
+  const cells = Array.from({ length: firstDow }, () => null).concat(days);
   const weeks = [];
   for (let i = 0; i < cells.length; i += 7) weeks.push(cells.slice(i, i + 7));
 
@@ -596,7 +596,7 @@ function draw3DScene(data) {
   if (!days.length) return;
 
   const firstDow = days[0].date.getDay();
-  const cells = new Array(firstDow).fill(null).concat(days);
+  const cells = Array.from({ length: firstDow }, () => null).concat(days);
   const weeks = [];
   for (let i = 0; i < cells.length; i += 7) weeks.push(cells.slice(i, i + 7));
 

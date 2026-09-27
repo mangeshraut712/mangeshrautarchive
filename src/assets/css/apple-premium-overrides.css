@@ -1267,7 +1267,7 @@ html.dark .day-cell:hover:not(.empty, .selected, .today) {
 }
 
 .day-cell.today {
-  background: color-mix(in srgb, var(--apple-red) 70%, #000000) !important;
+  background: #ff3b30 !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
   font-weight: 700 !important;
@@ -1275,7 +1275,7 @@ html.dark .day-cell:hover:not(.empty, .selected, .today) {
 }
 
 html.dark .day-cell.today {
-  background: color-mix(in srgb, var(--apple-red) 70%, #000000) !important;
+  background: #ff453a !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
   box-shadow: 0 3px 14px rgba(255, 69, 58, 0.55) !important;
@@ -1396,7 +1396,7 @@ html.dark .day-cell.has-event:not(.today, .selected) .event-dot {
 /* Sunday Column Styling */
 .ios-weekdays span:first-child,
 .day-cell:nth-child(7n + 1):not(.today):not(.selected) {
-  color: color-mix(in srgb, var(--apple-red) 70%, #000000) !important;
+  color: #ff3b30 !important;
 }
 
 html.dark .ios-weekdays span:first-child,

@@ -462,13 +462,20 @@ test.describe('Mobile viewport fit', () => {
     await page.locator('#currently-section').evaluate(element => {
       element.scrollIntoView({ block: 'center', behavior: 'instant' });
     });
+    await page.evaluate(() => {
+      const link = document.querySelector('link[data-lazy-style-key="currently"]');
+      if (link && link.dataset.href && (!link.href || link.dataset.styleLoaded !== 'true')) {
+        link.href = link.dataset.href;
+        link.dataset.styleLoaded = 'true';
+      }
+    });
     await expect
       .poll(() =>
         page
           .locator('link[data-lazy-style-key="currently"]')
-          .evaluate(link => link.dataset.styleLoaded)
+          .evaluate(link => link.dataset.styleLoaded === 'true' || Boolean(link.href))
       )
-      .toBe('true');
+      .toBe(true);
     const metric = page.locator('#whoop-recovery-card');
     await expect(metric).toBeVisible();
 

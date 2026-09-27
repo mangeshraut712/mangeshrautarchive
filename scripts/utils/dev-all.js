@@ -7,7 +7,6 @@ let shuttingDown = false;
 
 function spawnScript(name) {
   const child = spawn('npm', ['run', name], {
-    detached: true,
     env: process.env,
     stdio: 'inherit',
   });
@@ -49,7 +48,7 @@ function stopChildren() {
   for (const child of children) {
     if (!child.killed) {
       try {
-        process.kill(-child.pid, 'SIGTERM');
+        process.kill(child.pid, 'SIGTERM');
       } catch {
         child.kill('SIGTERM');
       }
@@ -72,6 +71,7 @@ function shutdown() {
 
 process.on('SIGINT', shutdown);
 process.on('SIGTERM', shutdown);
+process.on('exit', () => stopChildren());
 
 spawnScript('dev:backend');
 spawnScript('dev:frontend');
