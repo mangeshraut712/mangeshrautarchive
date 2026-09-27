@@ -1195,12 +1195,12 @@ html.dark .portfolio-reach-badge i {
 }
 
 .portfolio-reach-badge.is-syncing .reach-count {
-  opacity: 0.72;
+  opacity: 1;
 }
 
 .portfolio-reach-badge .reach-count.is-updating {
   animation: reachCountPulse 0.55s cubic-bezier(0.22, 1, 0.36, 1);
-  color: #0071e3;
+  color: #005bb5;
 }
 
 .portfolio-reach-badge .reach-count.is-settled {

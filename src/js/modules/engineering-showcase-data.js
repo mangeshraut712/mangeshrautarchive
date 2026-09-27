@@ -214,7 +214,7 @@ export const openSourceActivity = {
     { label: 'Latest release', value: '—', liveKey: 'latestRelease' },
     { label: 'Latest commit', value: '—', liveKey: 'latestCommit' },
     { label: 'Current branch', value: 'main', liveKey: 'currentBranch' },
-    { label: 'Recent PR', value: '—', liveKey: 'recentPr' },
+    { label: 'Recent PR', value: 'Merged', liveKey: 'recentPr' },
     { label: 'Recent issue', value: '—', liveKey: 'recentIssue' },
     { label: 'Most active repo', value: 'mangeshrautarchive', liveKey: 'activeRepo' },
     { label: 'Repositories', value: '51' },

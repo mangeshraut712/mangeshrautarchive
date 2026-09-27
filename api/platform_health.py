@@ -4,6 +4,7 @@ import asyncio
 import os
 from datetime import datetime, timezone
 from typing import Any, Dict, List
+from urllib.parse import urlparse
 import httpx
 
 from api.integrations import google_calendar
@@ -52,6 +53,15 @@ PORTFOLIO_API_CATALOG: List[Dict[str, str]] = [
 ]
 
 
+def _is_github_pages_host(url_or_host: str) -> bool:
+    try:
+        parsed = urlparse(url_or_host)
+        host = (parsed.hostname or parsed.path or "").lower()
+    except Exception:
+        host = url_or_host.lower()
+    return host == "github.io" or host.endswith(".github.io")
+
+
 def _public_base_url() -> str:
     explicit = os.getenv("PORTFOLIO_PROBE_BASE_URL")
     if explicit:
@@ -62,8 +72,16 @@ def _public_base_url() -> str:
         return "http://127.0.0.1:4000"
 
     site_url = os.getenv("OPENROUTER_SITE_URL") or os.getenv("NEXT_PUBLIC_SITE_URL") or ""
-    if site_url and "mangeshraut.pro" not in site_url and "vercel.app" not in site_url:
-        return site_url.rstrip("/")
+    if site_url:
+        parsed_site = urlparse(site_url)
+        site_host = (parsed_site.hostname or "").lower()
+        if (
+            site_host
+            and site_host != "mangeshraut.pro"
+            and not site_host.endswith(".vercel.app")
+            and site_host != "vercel.app"
+        ):
+            return site_url.rstrip("/")
 
     if os.getenv("GITHUB_PAGES_URL"):
         return os.getenv("GITHUB_PAGES_URL").rstrip("/")
@@ -73,14 +91,15 @@ def _public_base_url() -> str:
 
 async def _probe_public_path(client: httpx.AsyncClient, base: str, entry: Dict[str, str]) -> Dict[str, Any]:
     path = entry["path"]
+    is_github_pages = _is_github_pages_host(base)
     if path.startswith("http"):
         url = path
     elif path == "/":
         url = f"{base}/"
-    elif "github.io" in base and path.startswith("/api/"):
+    elif is_github_pages and path.startswith("/api/"):
         edge_api = os.getenv("EDGE_API_BASE", "https://assistme-chat.mangeshraut712.workers.dev")
         url = f"{edge_api.rstrip('/')}{path}"
-    elif "github.io" in base:
+    elif is_github_pages:
         clean_path = path if path.endswith((".html", ".json", ".txt", ".xml", ".js")) else f"{path}.html"
         url = f"{base}{clean_path if clean_path.startswith('/') else '/' + clean_path}"
     else:

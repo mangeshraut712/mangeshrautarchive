@@ -74,7 +74,7 @@ function getApiOriginCandidates(config) {
     return uniqueOrigins(['', remoteConfiguredOrigin, fallbackOrigin, secondaryOrigin]);
   }
 
-  if (hostname.includes('github.io')) {
+  if (hostname === 'github.io' || hostname.endsWith('.github.io')) {
     return uniqueOrigins([remoteConfiguredOrigin || fallbackOrigin || secondaryOrigin]);
   }
 
@@ -2267,9 +2267,19 @@ async function refreshData(options = {}) {
   await ensureApiOrigin({ force: true });
   const edgeBanner = document.getElementById('edge-api-banner');
   if (edgeBanner) {
-    const onEdge =
-      String(apiOrigin || '').includes('workers.dev') ||
-      (window.location.hostname || '').includes('github.io');
+    const currentHost = window.location.hostname || '';
+    const isGithubIo = currentHost === 'github.io' || currentHost.endsWith('.github.io');
+    let isWorkersDev = false;
+    try {
+      if (apiOrigin) {
+        const parsedOrigin = new URL(apiOrigin, window.location.origin);
+        isWorkersDev =
+          parsedOrigin.hostname === 'workers.dev' || parsedOrigin.hostname.endsWith('.workers.dev');
+      }
+    } catch {
+      isWorkersDev = false;
+    }
+    const onEdge = isWorkersDev || isGithubIo;
     edgeBanner.hidden = !onEdge;
   }
 

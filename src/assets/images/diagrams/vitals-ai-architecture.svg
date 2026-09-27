@@ -1,0 +1,117 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" width="100%" height="100%" role="img" aria-label="Vitals.AI Biometric Health Telemetry Architecture">
+  <style>
+    .bg { fill: #fbfbfd; }
+    .card-bg { fill: #ffffff; stroke: #e5e5ea; stroke-width: 1.5px; }
+    .card-bg-accent { fill: #f5f8ff; stroke: #0071e3; stroke-width: 1.5px; }
+    .node-title { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif; font-size: 14px; font-weight: 700; fill: #1d1d1f; }
+    .node-sub { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif; font-size: 11px; fill: #86868b; }
+    .node-tag { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif; font-size: 10px; font-weight: 600; fill: #0071e3; }
+    .edge { stroke: #0071e3; stroke-width: 2px; fill: none; stroke-linecap: round; stroke-dasharray: 6 4; }
+    .edge-solid { stroke: #d2d2d7; stroke-width: 1.5px; fill: none; stroke-linecap: round; }
+    .badge-pill { fill: #e8f2ff; rx: 6px; }
+    .section-title { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif; font-size: 20px; font-weight: 700; fill: #1d1d1f; }
+    .section-desc { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif; font-size: 12px; fill: #6e6e73; }
+    @media (prefers-color-scheme: dark) {
+      .bg { fill: #000000; }
+      .card-bg { fill: #1c1c1e; stroke: #2c2c2e; }
+      .card-bg-accent { fill: #0f1c2e; stroke: #0a84ff; }
+      .node-title { fill: #f5f5f7; }
+      .node-sub { fill: #98989d; }
+      .node-tag { fill: #64d2ff; }
+      .edge { stroke: #0a84ff; }
+      .edge-solid { stroke: #38383a; }
+      .badge-pill { fill: #102a45; }
+      .section-title { fill: #f5f5f7; }
+      .section-desc { fill: #86868b; }
+    }
+  </style>
+
+  <rect width="960" height="540" rx="20" class="bg" />
+
+  <g transform="translate(40, 36)">
+    <text class="section-title" x="0" y="0">Vitals.AI — Real-Time Health Telemetry Architecture</text>
+    <text class="section-desc" x="0" y="22">Bluetooth BLE Sensor Ingest • WebSocket Event Stream • Anomaly Isolation Forest • Apple HealthKit &amp; FHIR</text>
+  </g>
+
+  <!-- Flow Edges -->
+  <path class="edge" d="M 180 180 L 230 180" />
+  <path class="edge" d="M 410 180 L 460 180" />
+  <path class="edge" d="M 640 180 L 690 180" />
+
+  <path class="edge-solid" d="M 320 260 L 320 320" />
+  <path class="edge-solid" d="M 550 260 L 550 320" />
+  <path class="edge-solid" d="M 780 260 L 780 320" />
+
+  <!-- Node 1: BLE & Sensor Layer -->
+  <g transform="translate(40, 110)">
+    <rect width="140" height="150" rx="14" class="card-bg" />
+    <rect x="15" y="15" width="60" height="18" class="badge-pill" />
+    <text class="node-tag" x="45" y="28" text-anchor="middle">SENSORS</text>
+    <text class="node-title" x="15" y="58">BLE Ingest Hub</text>
+    <text class="node-sub" x="15" y="78">Biometric Streams</text>
+    <text class="node-sub" x="15" y="98">• Heart Rate (PPG)</text>
+    <text class="node-sub" x="15" y="116">• HRV &amp; SpO2</text>
+    <text class="node-sub" x="15" y="134">• 50Hz sample rate</text>
+  </g>
+
+  <!-- Node 2: Real-Time Stream Engine -->
+  <g transform="translate(230, 110)">
+    <rect width="180" height="150" rx="14" class="card-bg-accent" />
+    <rect x="15" y="15" width="76" height="18" class="badge-pill" />
+    <text class="node-tag" x="53" y="28" text-anchor="middle">STREAMING</text>
+    <text class="node-title" x="15" y="58">WebSocket Stream</text>
+    <text class="node-sub" x="15" y="78">FastAPI &amp; Tokio</text>
+    <text class="node-sub" x="15" y="98">• Sub-10ms packet dispatch</text>
+    <text class="node-sub" x="15" y="116">• Sliding window ring buffer</text>
+    <text class="node-sub" x="15" y="134">• Zero-copy memory pooling</text>
+  </g>
+
+  <!-- Node 3: Anomaly & ML Engine -->
+  <g transform="translate(460, 110)">
+    <rect width="180" height="150" rx="14" class="card-bg" />
+    <rect x="15" y="15" width="68" height="18" class="badge-pill" />
+    <text class="node-tag" x="49" y="28" text-anchor="middle">ANOMALY</text>
+    <text class="node-title" x="15" y="58">Isolation Forest</text>
+    <text class="node-sub" x="15" y="78">Edge Inference</text>
+    <text class="node-sub" x="15" y="98">• Arrhythmia detection</text>
+    <text class="node-sub" x="15" y="116">• 99.1% F1 accuracy</text>
+    <text class="node-sub" x="15" y="134">• Baseline auto-tuning</text>
+  </g>
+
+  <!-- Node 4: Health Dashboard & Sync -->
+  <g transform="translate(690, 110)">
+    <rect width="210" height="150" rx="14" class="card-bg-accent" />
+    <rect x="15" y="15" width="60" height="18" class="badge-pill" />
+    <text class="node-tag" x="45" y="28" text-anchor="middle">CLIENT</text>
+    <text class="node-title" x="15" y="58">HealthKit &amp; Web</text>
+    <text class="node-sub" x="15" y="78">Apple HIG Interface</text>
+    <text class="node-sub" x="15" y="98">• Activity ring visualization</text>
+    <text class="node-sub" x="15" y="116">• FHIR JSON compliant</text>
+    <text class="node-sub" x="15" y="134">• End-to-end encrypted</text>
+  </g>
+
+  <!-- Subsystems -->
+  <g transform="translate(230, 320)">
+    <rect width="180" height="150" rx="14" class="card-bg" />
+    <text class="node-title" x="15" y="32">Privacy &amp; HIPAA</text>
+    <text class="node-sub" x="15" y="52">• Client-side biometric hashing</text>
+    <text class="node-sub" x="15" y="72">• Zero cloud PII storage</text>
+    <text class="node-sub" x="15" y="92">• Local SQLite cipher</text>
+  </g>
+
+  <g transform="translate(460, 320)">
+    <rect width="180" height="150" rx="14" class="card-bg" />
+    <text class="node-title" x="15" y="32">Digital Signal Filter</text>
+    <text class="node-sub" x="15" y="52">• Butterworth bandpass (0.5-4Hz)</text>
+    <text class="node-sub" x="15" y="72">• Motion artifact rejection</text>
+    <text class="node-sub" x="15" y="92">• Signal-to-Noise Ratio &gt; 24dB</text>
+  </g>
+
+  <g transform="translate(690, 320)">
+    <rect width="210" height="150" rx="14" class="card-bg" />
+    <text class="node-title" x="15" y="32">Export &amp; Integrations</text>
+    <text class="node-sub" x="15" y="52">• Apple Health export</text>
+    <text class="node-sub" x="15" y="72">• WHOOP / Oura API link</text>
+    <text class="node-sub" x="15" y="92">• Medical PDF reports</text>
+  </g>
+</svg>

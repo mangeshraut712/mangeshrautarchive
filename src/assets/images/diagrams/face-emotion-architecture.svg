@@ -1,0 +1,117 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" width="100%" height="100%" role="img" aria-label="Real-Time Face Emotion Recognition Architecture">
+  <style>
+    .bg { fill: #fbfbfd; }
+    .card-bg { fill: #ffffff; stroke: #e5e5ea; stroke-width: 1.5px; }
+    .card-bg-accent { fill: #f5f8ff; stroke: #0071e3; stroke-width: 1.5px; }
+    .node-title { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif; font-size: 14px; font-weight: 700; fill: #1d1d1f; }
+    .node-sub { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif; font-size: 11px; fill: #86868b; }
+    .node-tag { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif; font-size: 10px; font-weight: 600; fill: #0071e3; }
+    .edge { stroke: #0071e3; stroke-width: 2px; fill: none; stroke-linecap: round; stroke-dasharray: 6 4; }
+    .edge-solid { stroke: #d2d2d7; stroke-width: 1.5px; fill: none; stroke-linecap: round; }
+    .badge-pill { fill: #e8f2ff; rx: 6px; }
+    .section-title { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif; font-size: 20px; font-weight: 700; fill: #1d1d1f; }
+    .section-desc { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif; font-size: 12px; fill: #6e6e73; }
+    @media (prefers-color-scheme: dark) {
+      .bg { fill: #000000; }
+      .card-bg { fill: #1c1c1e; stroke: #2c2c2e; }
+      .card-bg-accent { fill: #0f1c2e; stroke: #0a84ff; }
+      .node-title { fill: #f5f5f7; }
+      .node-sub { fill: #98989d; }
+      .node-tag { fill: #64d2ff; }
+      .edge { stroke: #0a84ff; }
+      .edge-solid { stroke: #38383a; }
+      .badge-pill { fill: #102a45; }
+      .section-title { fill: #f5f5f7; }
+      .section-desc { fill: #86868b; }
+    }
+  </style>
+
+  <rect width="960" height="540" rx="20" class="bg" />
+
+  <g transform="translate(40, 36)">
+    <text class="section-title" x="0" y="0">Face Emotion Recognition — Real-Time Computer Vision Pipeline</text>
+    <text class="section-desc" x="0" y="22">60 FPS Video Capture • MTCNN Face Alignment • Mini-Xception CNN • 16ms Low-Latency Inference</text>
+  </g>
+
+  <!-- Flow Edges -->
+  <path class="edge" d="M 170 180 L 220 180" />
+  <path class="edge" d="M 400 180 L 450 180" />
+  <path class="edge" d="M 640 180 L 690 180" />
+
+  <path class="edge-solid" d="M 310 260 L 310 320" />
+  <path class="edge-solid" d="M 545 260 L 545 320" />
+  <path class="edge-solid" d="M 785 260 L 785 320" />
+
+  <!-- Node 1: Video Ingest -->
+  <g transform="translate(40, 110)">
+    <rect width="130" height="150" rx="14" class="card-bg" />
+    <rect x="15" y="15" width="56" height="18" class="badge-pill" />
+    <text class="node-tag" x="43" y="28" text-anchor="middle">INGEST</text>
+    <text class="node-title" x="15" y="58">OpenCV Stream</text>
+    <text class="node-sub" x="15" y="78">1080p @ 60 FPS</text>
+    <text class="node-sub" x="15" y="98">• Threaded reader</text>
+    <text class="node-sub" x="15" y="116">• Frame buffer queue</text>
+    <text class="node-sub" x="15" y="134">• Zero frame drop</text>
+  </g>
+
+  <!-- Node 2: Face Detection & Alignment -->
+  <g transform="translate(220, 110)">
+    <rect width="180" height="150" rx="14" class="card-bg-accent" />
+    <rect x="15" y="15" width="80" height="18" class="badge-pill" />
+    <text class="node-tag" x="55" y="28" text-anchor="middle">ALIGNMENT</text>
+    <text class="node-title" x="15" y="58">MTCNN / Haar Cascade</text>
+    <text class="node-sub" x="15" y="78">Facial Landmarks</text>
+    <text class="node-sub" x="15" y="98">• 5-point landmark crop</text>
+    <text class="node-sub" x="15" y="116">• Affine warp normalization</text>
+    <text class="node-sub" x="15" y="134">• 48x48 grayscale ROI</text>
+  </g>
+
+  <!-- Node 3: Deep CNN Classifier -->
+  <g transform="translate(450, 110)">
+    <rect width="190" height="150" rx="14" class="card-bg" />
+    <rect x="15" y="15" width="76" height="18" class="badge-pill" />
+    <text class="node-tag" x="53" y="28" text-anchor="middle">NEURAL NET</text>
+    <text class="node-title" x="15" y="58">Mini-Xception CNN</text>
+    <text class="node-sub" x="15" y="78">Depthwise Separable</text>
+    <text class="node-sub" x="15" y="98">• Residual connections</text>
+    <text class="node-sub" x="15" y="116">• Global avg pooling</text>
+    <text class="node-sub" x="15" y="134">• 60,000 parameters</text>
+  </g>
+
+  <!-- Node 4: Emotion Probability Tensor -->
+  <g transform="translate(690, 110)">
+    <rect width="210" height="150" rx="14" class="card-bg-accent" />
+    <rect x="15" y="15" width="60" height="18" class="badge-pill" />
+    <text class="node-tag" x="45" y="28" text-anchor="middle">OUTPUT</text>
+    <text class="node-title" x="15" y="58">7 Emotion Classes</text>
+    <text class="node-sub" x="15" y="78">Softmax Probability</text>
+    <text class="node-sub" x="15" y="98">• Happy, Sad, Neutral...</text>
+    <text class="node-sub" x="15" y="116">• 89.4% FER-2013 score</text>
+    <text class="node-sub" x="15" y="134">• 16ms latency / frame</text>
+  </g>
+
+  <!-- Subsystems -->
+  <g transform="translate(220, 320)">
+    <rect width="180" height="150" rx="14" class="card-bg" />
+    <text class="node-title" x="15" y="32">Illumination Invariance</text>
+    <text class="node-sub" x="15" y="52">• Histogram Equalization</text>
+    <text class="node-sub" x="15" y="72">• Contrast CLAHE filter</text>
+    <text class="node-sub" x="15" y="92">• Robust in low-light</text>
+  </g>
+
+  <g transform="translate(450, 320)">
+    <rect width="190" height="150" rx="14" class="card-bg" />
+    <text class="node-title" x="15" y="32">Temporal Smoothing</text>
+    <text class="node-sub" x="15" y="52">• Exponential moving avg</text>
+    <text class="node-sub" x="15" y="72">• Eliminates flicker</text>
+    <text class="node-sub" x="15" y="92">• 5-frame stability window</text>
+  </g>
+
+  <g transform="translate(690, 320)">
+    <rect width="210" height="150" rx="14" class="card-bg" />
+    <text class="node-title" x="15" y="32">Web &amp; HUD Overlay</text>
+    <text class="node-sub" x="15" y="52">• Canvas bounding box</text>
+    <text class="node-sub" x="15" y="72">• Live probability bars</text>
+    <text class="node-sub" x="15" y="92">• WebRTC browser camera</text>
+  </g>
+</svg>

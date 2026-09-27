@@ -1,0 +1,117 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" width="100%" height="100%" role="img" aria-label="Gravity SaaS Agent Autonomous Multi-Tenant Architecture">
+  <style>
+    .bg { fill: #fbfbfd; }
+    .card-bg { fill: #ffffff; stroke: #e5e5ea; stroke-width: 1.5px; }
+    .card-bg-accent { fill: #f5f8ff; stroke: #0071e3; stroke-width: 1.5px; }
+    .node-title { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif; font-size: 14px; font-weight: 700; fill: #1d1d1f; }
+    .node-sub { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif; font-size: 11px; fill: #86868b; }
+    .node-tag { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif; font-size: 10px; font-weight: 600; fill: #0071e3; }
+    .edge { stroke: #0071e3; stroke-width: 2px; fill: none; stroke-linecap: round; stroke-dasharray: 6 4; }
+    .edge-solid { stroke: #d2d2d7; stroke-width: 1.5px; fill: none; stroke-linecap: round; }
+    .badge-pill { fill: #e8f2ff; rx: 6px; }
+    .section-title { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif; font-size: 20px; font-weight: 700; fill: #1d1d1f; }
+    .section-desc { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif; font-size: 12px; fill: #6e6e73; }
+    @media (prefers-color-scheme: dark) {
+      .bg { fill: #000000; }
+      .card-bg { fill: #1c1c1e; stroke: #2c2c2e; }
+      .card-bg-accent { fill: #0f1c2e; stroke: #0a84ff; }
+      .node-title { fill: #f5f5f7; }
+      .node-sub { fill: #98989d; }
+      .node-tag { fill: #64d2ff; }
+      .edge { stroke: #0a84ff; }
+      .edge-solid { stroke: #38383a; }
+      .badge-pill { fill: #102a45; }
+      .section-title { fill: #f5f5f7; }
+      .section-desc { fill: #86868b; }
+    }
+  </style>
+
+  <rect width="960" height="540" rx="20" class="bg" />
+
+  <g transform="translate(40, 36)">
+    <text class="section-title" x="0" y="0">Gravity SaaS Agent — Autonomous Multi-Tenant Architecture</text>
+    <text class="section-desc" x="0" y="22">OAuth2 Multi-Tenant Ingest • Autonomous ReAct Planner • Sandboxed WebMCP Executor • 99.9% Uptime SLA</text>
+  </g>
+
+  <!-- Flow Edges -->
+  <path class="edge" d="M 170 180 L 220 180" />
+  <path class="edge" d="M 400 180 L 450 180" />
+  <path class="edge" d="M 640 180 L 690 180" />
+
+  <path class="edge-solid" d="M 310 260 L 310 320" />
+  <path class="edge-solid" d="M 545 260 L 545 320" />
+  <path class="edge-solid" d="M 785 260 L 785 320" />
+
+  <!-- Node 1: Ingest & Multi-Tenancy -->
+  <g transform="translate(40, 110)">
+    <rect width="130" height="150" rx="14" class="card-bg" />
+    <rect x="15" y="15" width="56" height="18" class="badge-pill" />
+    <text class="node-tag" x="43" y="28" text-anchor="middle">TENANT</text>
+    <text class="node-title" x="15" y="58">Tenant Router</text>
+    <text class="node-sub" x="15" y="78">OAuth2 &amp; RBAC</text>
+    <text class="node-sub" x="15" y="98">• JWT tenant isolation</text>
+    <text class="node-sub" x="15" y="116">• Rate limits per org</text>
+    <text class="node-sub" x="15" y="134">• Webhook event bus</text>
+  </g>
+
+  <!-- Node 2: Autonomous Planner -->
+  <g transform="translate(220, 110)">
+    <rect width="180" height="150" rx="14" class="card-bg-accent" />
+    <rect x="15" y="15" width="80" height="18" class="badge-pill" />
+    <text class="node-tag" x="55" y="28" text-anchor="middle">ORCHESTRATION</text>
+    <text class="node-title" x="15" y="58">ReAct Planner</text>
+    <text class="node-sub" x="15" y="78">Autonomous Core</text>
+    <text class="node-sub" x="15" y="98">• Multi-step reasoning</text>
+    <text class="node-sub" x="15" y="116">• Self-correction loop</text>
+    <text class="node-sub" x="15" y="134">• Memory checkpointing</text>
+  </g>
+
+  <!-- Node 3: Sandboxed Tool Execution -->
+  <g transform="translate(450, 110)">
+    <rect width="190" height="150" rx="14" class="card-bg" />
+    <rect x="15" y="15" width="76" height="18" class="badge-pill" />
+    <text class="node-tag" x="53" y="28" text-anchor="middle">EXECUTION</text>
+    <text class="node-title" x="15" y="58">WebMCP Sandboxing</text>
+    <text class="node-sub" x="15" y="78">Secure Dispatcher</text>
+    <text class="node-sub" x="15" y="98">• Wasm / gVisor isolation</text>
+    <text class="node-sub" x="15" y="116">• Safe API mutations</text>
+    <text class="node-sub" x="15" y="134">• Audit trail logging</text>
+  </g>
+
+  <!-- Node 4: SaaS Telemetry & Delivery -->
+  <g transform="translate(690, 110)">
+    <rect width="210" height="150" rx="14" class="card-bg-accent" />
+    <rect x="15" y="15" width="60" height="18" class="badge-pill" />
+    <text class="node-tag" x="45" y="28" text-anchor="middle">DELIVERY</text>
+    <text class="node-title" x="15" y="58">Real-Time Console</text>
+    <text class="node-sub" x="15" y="78">SLA &amp; Telemetry</text>
+    <text class="node-sub" x="15" y="98">• Live SSE event stream</text>
+    <text class="node-sub" x="15" y="116">• 99.9% uptime SLA</text>
+    <text class="node-sub" x="15" y="134">• Sub-180ms p95 latency</text>
+  </g>
+
+  <!-- Subsystems -->
+  <g transform="translate(220, 320)">
+    <rect width="180" height="150" rx="14" class="card-bg" />
+    <text class="node-title" x="15" y="32">PostgreSQL &amp; Vector</text>
+    <text class="node-sub" x="15" y="52">• Row-Level Security (RLS)</text>
+    <text class="node-sub" x="15" y="72">• pgvector embeddings</text>
+    <text class="node-sub" x="15" y="92">• Encrypted at rest</text>
+  </g>
+
+  <g transform="translate(450, 320)">
+    <rect width="190" height="150" rx="14" class="card-bg" />
+    <text class="node-title" x="15" y="32">Circuit Breaker</text>
+    <text class="node-sub" x="15" y="52">• Fallback model tiering</text>
+    <text class="node-sub" x="15" y="72">• Exponential retry backoff</text>
+    <text class="node-sub" x="15" y="92">• Automated self-healing</text>
+  </g>
+
+  <g transform="translate(690, 320)">
+    <rect width="210" height="150" rx="14" class="card-bg" />
+    <text class="node-title" x="15" y="32">Enterprise SSO</text>
+    <text class="node-sub" x="15" y="52">• SAML 2.0 &amp; OIDC</text>
+    <text class="node-sub" x="15" y="72">• Role-based tool permissions</text>
+    <text class="node-sub" x="15" y="92">• SOC2 compliance ready</text>
+  </g>
+</svg>

@@ -212,12 +212,12 @@ the source of truth instead of a fixed badge count in this document.
 
 ### Current status snapshot
 
-Verified on **September 22, 2026**:
+Verified on **September 27, 2026**:
 
 - GitHub Pages responded with HTTP `200`.
 - `mangeshraut.pro` responded with HTTP `402 DEPLOYMENT_DISABLED`; it is not the active production
   availability target.
-- GitHub code scanning reported `0` open alerts, `26` fixed alerts, and `80` dismissed alerts.
+- GitHub code scanning reported `0` open alerts, `27` fixed alerts, and `84` dismissed alerts.
 - The latest `main` "CI → Deploy to GitHub Pages" and scheduled monitoring runs completed
   successfully. Individual runs can still fail transiently, so check the live badges and
   [Actions](https://github.com/mangeshraut712/mangeshrautarchive/actions) before treating a release
@@ -283,6 +283,8 @@ Current documentation pass:
 | GPT-6 / Codex                         | Rework GitHub repository cards and homepage writing previews into a clearer editorial layout across desktop and mobile                                                                      | Reasoning and token usage unavailable                          |
 | GPT-6 / Codex                         | Make full blog pages the primary reading path, add 18 conceptual diagrams, normalize article depth, and verify archive and article journeys                                                 | Reasoning and token usage unavailable                          |
 | GPT-6 / Codex                         | Review 18 blog articles against primary sources, correct dated claims, and expose evidence and source navigation in each article                                                            | Reasoning and token usage unavailable                          |
+| Gemini 3.8 Flash / Google Antigravity | CodeQL security remediation: resolve all 4 open code scanning alerts down to 0, URL substring sanitization hardening, redirect safety, and doc sync                                         | Unavailable from the active runtime                            |
+| Gemini 3.8 Flash / Google Antigravity | Elevate blog previews and repository cards with an in-situ modal preview and repository-supplied details                                                                                    | Unavailable from the active runtime                            |
 
 No exact variant, reasoning mode, or token count is inferred when the runtime does not expose it.
 

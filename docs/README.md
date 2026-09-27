@@ -4,6 +4,7 @@
 | -------------------------------------------------------------------------- | --------------------------------------------------------------- |
 | [DESIGN.md](./DESIGN.md)                                                   | Apple Human Interface Portfolio Design System (source of truth) |
 | [STRUCTURE.md](./STRUCTURE.md)                                             | Canonical folder map — **start here when organizing code**      |
+| [BEST_PRACTICES.md](./BEST_PRACTICES.md)                                   | 14 Software Engineering Best Practices for long-term success    |
 | [API.md](./API.md)                                                         | FastAPI routes, chat flow, integrations, deploy notes           |
 | [foglamp-scan.md](./foglamp-scan.md)                                       | Public AI architecture map (Foglamp) + keep-alive               |
 | [seo/gsc-keyword-notepad-2026-07.md](./seo/gsc-keyword-notepad-2026-07.md) | Search Console query notepad + underserved keyword plan         |

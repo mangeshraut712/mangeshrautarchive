@@ -83,6 +83,43 @@ export const changelogEntries = [
     status: 'unreleased',
   },
   {
+    id: 'blog-preview-and-repo-cards-elevation-sept-2026',
+    date: '2026-09-27',
+    type: 'improvement',
+    title:
+      'Elevate blog previews and GitHub repository cards with architecture schematics and telemetry',
+    summary:
+      'Polished article preview modals with authentic Apple glass blockquotes, editorial visual blocks, sanitized asset URLs, and dual reading actions. Transformed all 16 GitHub repository showcase cards to match the high-fidelity editorial format of technical articles: introduced responsive SVG architecture diagrams, domain kickers, segmented language breakdown bars, and 4-metric system benchmark telemetry matrices (latency, SLA uptime, token efficiency, testing). Built an in-situ modal architecture preview (#repo-preview-modal) with instant git clone feedback, dark/light theme parity, zero horizontal overflow, and WCAG AA contrast compliance.',
+    tags: ['blog', 'design', 'performance', 'other'],
+    sha: null,
+    commitVerified: false,
+    link: null,
+    model: 'Gemini 3.8 Flash',
+    ide: 'Google Antigravity IDE',
+    purpose:
+      'Harmonize GitHub repository cards with blog editorial fidelity, author 5 new SVG architecture schematics, and refine modal previews',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
+    id: 'security-codeql-alerts-resolution-sept-2026',
+    date: '2026-09-27',
+    type: 'fix',
+    title: 'Resolve all 4 GitHub CodeQL security & quality alerts down to 0',
+    summary:
+      'Resolved all 4 open GitHub CodeQL code scanning alerts: eliminated incomplete URL substring sanitization in api/platform_health.py and src/js/modules/monitor-page.js using rigorous urlparse and hostname suffix validation, eliminated unvalidated server-side URL redirection in scripts/utils/serve-dist.js using a canonical target dictionary and parsed query strings, synchronized API test counts (183 tests) and canonical architecture index across AGENTS.md, docs/API.md, and docs/README.md, and aligned .github/copilot-instructions.md with the shared source-of-truth directive.',
+    tags: ['api', 'monitor', 'deploy', 'other'],
+    sha: null,
+    commitVerified: false,
+    link: null,
+    model: 'Gemini 3.8 Flash',
+    ide: 'Google Antigravity IDE',
+    purpose:
+      'CodeQL security alert remediation, URL sanitization hardening, and doc synchronization',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
     id: 'blog-reading-layout-sept-2026',
     date: '2026-09-27',
     type: 'improvement',

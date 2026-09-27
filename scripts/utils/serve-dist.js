@@ -574,10 +574,22 @@ app.all(/^\/api\/.*$/, (req, res) => {
   res.json(resolveMonitorMock(req.path, req.method));
 });
 
-app.get(['/blog', '/case-studies'], (req, res, next) => {
-  if (req.path.endsWith('/')) return next();
-  const query = req.url.includes('?') ? req.url.slice(req.url.indexOf('?')) : '';
-  return res.redirect(308, `${req.path}/${query}`);
+const CANONICAL_TRAILING_SLASH_TARGETS = {
+  '/blog': '/blog/',
+  '/case-studies': '/case-studies/',
+};
+
+app.get(['/blog', '/case-studies'], (req, res, _next) => {
+  const target = CANONICAL_TRAILING_SLASH_TARGETS[req.path];
+  if (!target) return _next();
+  const query = (() => {
+    try {
+      return new URL(req.url, 'http://localhost').search || '';
+    } catch {
+      return '';
+    }
+  })();
+  return res.redirect(308, `${target}${query}`);
 });
 
 app.get(/.*/, async (req, res) => {

@@ -9,6 +9,7 @@
  */
 
 import { escapeHtml as escapeHtmlShared } from '../utils/escape-html.js';
+import { sitePath } from '../utils/site-base.js';
 
 // Hoisted Intl formatters for performance
 const absoluteDateFormatter = new Intl.DateTimeFormat('en-US', {
@@ -23,6 +24,9 @@ const repoCatalogPendingRequests = new Map();
 class GitHubProjects {
   constructor(username = 'mangeshraut712') {
     this.username = username;
+    this.previewModal = null;
+    this.lastModalFocus = null;
+    this.initModal();
     const isLocal =
       typeof window !== 'undefined' &&
       ['localhost', '127.0.0.1', '0.0.0.0'].includes(window.location.hostname);
@@ -1943,8 +1947,258 @@ class GitHubProjects {
     return repos;
   }
 
+  getRepoMeta(repo) {
+    const language = repo.language || 'Software';
+    return {
+      kicker: language === 'Unknown' ? 'Open-source repository' : `${language} repository`,
+    };
+  }
+
+  findRepoByName(name) {
+    if (!name) return null;
+    const target = String(name).toLowerCase();
+    if (Array.isArray(this.cache)) {
+      const found = this.cache.find(
+        r => r.name?.toLowerCase() === target || r.full_name?.toLowerCase() === target
+      );
+      if (found) return found;
+    }
+    return (
+      this.fallbackRepos.find(
+        r => r.name?.toLowerCase() === target || r.full_name?.toLowerCase() === target
+      ) || null
+    );
+  }
+
+  initModal() {
+    if (typeof document === 'undefined') return;
+    if (document.getElementById('repo-preview-modal')) {
+      this.previewModal = document.getElementById('repo-preview-modal');
+      return;
+    }
+
+    const modalHTML = `
+      <div id="repo-preview-modal" class="blog-modal hidden" role="dialog" aria-modal="true" aria-labelledby="repo-modal-title" aria-hidden="true">
+        <div class="blog-modal-overlay" data-repo-close></div>
+        <div class="blog-modal-container" tabindex="-1">
+          <button class="blog-modal-close" type="button" aria-label="Close project preview" data-repo-close>
+            <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M2.5 2.5l9 9M11.5 2.5l-9 9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          </button>
+          <div class="blog-modal-content" id="repo-modal-body"></div>
+        </div>
+      </div>
+    `;
+
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
+    this.previewModal = document.getElementById('repo-preview-modal');
+
+    this.previewModal.addEventListener('click', e => {
+      if (e.target.closest('[data-repo-close]')) {
+        this.closeRepoPreview();
+      }
+    });
+
+    document.addEventListener('keydown', e => {
+      if (
+        e.key === 'Escape' &&
+        this.previewModal &&
+        !this.previewModal.classList.contains('hidden')
+      ) {
+        this.closeRepoPreview();
+      }
+    });
+
+    document.addEventListener('click', e => {
+      const previewTrigger = e.target.closest('[data-repo-preview]');
+      if (previewTrigger) {
+        e.preventDefault();
+        const repoName = previewTrigger.dataset.repoPreview;
+        if (repoName) {
+          this.openRepoPreview(repoName);
+          this.lastModalFocus = previewTrigger;
+        }
+        return;
+      }
+
+      const cloneBtn = e.target.closest('.project-preview__clone-btn');
+      if (cloneBtn) {
+        e.preventDefault();
+        const cmd = cloneBtn.dataset.repoClone || '';
+        if (cmd) {
+          navigator.clipboard
+            ?.writeText(`git clone ${cmd}`)
+            .then(() => {
+              const span = cloneBtn.querySelector('span');
+              if (span) {
+                const orig = span.textContent;
+                span.textContent = 'Copied git clone! ✓';
+                setTimeout(() => {
+                  span.textContent = orig;
+                }, 2000);
+              }
+            })
+            .catch(() => {
+              // ignore clipboard failures
+            });
+        }
+      }
+    });
+
+    const tryOpenFromHash = () => {
+      const match = window.location.hash.match(/^#repo-read-([^&]+)/);
+      if (!match) return;
+      this.openRepoPreview(decodeURIComponent(match[1]));
+    };
+
+    window.addEventListener('hashchange', tryOpenFromHash);
+    setTimeout(tryOpenFromHash, 100);
+  }
+
+  openRepoPreview(repoName) {
+    if (!this.previewModal) return;
+    const repo = this.findRepoByName(repoName);
+    if (!repo) return;
+
+    this.lastModalFocus = document.activeElement;
+    const modalBody = document.getElementById('repo-modal-body');
+    if (!modalBody) return;
+
+    const meta = this.getRepoMeta(repo);
+    const safeName = this.escapeHtml(repo.name);
+    const safeRepoUrl = this.escapeHtml(repo.html_url);
+    const homepage = this.normalizeHomepageUrl(repo.homepage, repo.html_url);
+    const hasDemo = Boolean(homepage);
+    const safeHomepage = hasDemo ? this.escapeHtml(homepage) : '';
+    const safeUpdated = this.formatRelativeDateCompact(repo.updated_at);
+    const safeBranch = this.escapeHtml(repo.default_branch || 'main');
+    const safeLicense = this.escapeHtml(repo.license?.spdx_id || 'Not specified');
+    const topics = this.getTopics(repo);
+    const topicsHtml = topics
+      .slice(0, 8)
+      .map(tag => `<span class="blog-topic-pill">${this.escapeHtml(tag)}</span>`)
+      .join('');
+
+    modalBody.innerHTML = `
+      <article class="blog-article blog-article--editorial project-preview" data-repo-name="${safeName}">
+        <header class="article-header">
+          <p class="article-kicker">${this.escapeHtml(meta.kicker)}</p>
+          <p class="blog-preview__eyebrow">Repository preview</p>
+          <h2 class="article-title" id="repo-modal-title">${safeName}</h2>
+          <p class="article-promise">${this.escapeHtml(repo.description || 'See the repository for details.')}</p>
+          <div class="article-byline article-byline--editorial">
+            <img class="article-byline__avatar" src="${sitePath('/assets/images/profile.webp')}" width="40" height="40" alt="Mangesh Raut" loading="lazy" decoding="async" />
+            <div class="article-byline__text">
+              <span class="article-byline__name">Mangesh Raut</span>
+              <span class="article-byline__meta">
+                <span>Updated ${safeUpdated}</span>
+                <span aria-hidden="true">·</span>
+                <span>Branch: ${safeBranch}</span>
+                <span aria-hidden="true">·</span>
+                <span>License: ${safeLicense}</span>
+              </span>
+            </div>
+          </div>
+          <div class="article-tags blog-tags--pills">${topicsHtml}</div>
+        </header>
+
+        <div class="project-preview__top-actions">
+          <a class="blog-read-btn project-preview__action-primary" href="${safeRepoUrl}" target="_blank" rel="noopener noreferrer">
+            <i class="fab fa-github" aria-hidden="true"></i> View on GitHub <i class="fas fa-arrow-right" aria-hidden="true"></i>
+          </a>
+          ${hasDemo ? `<a class="project-action-btn btn-demo" href="${safeHomepage}" target="_blank" rel="noopener noreferrer"><i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i> Live Demo</a>` : ''}
+          <button type="button" class="project-preview__clone-btn" data-repo-clone="${safeRepoUrl}.git">
+            <i class="fas fa-terminal" aria-hidden="true"></i> <span>git clone ${safeRepoUrl}.git</span>
+          </button>
+        </div>
+
+        <div class="project-preview__telemetry-section">
+          <h3 class="project-preview__section-title">Repository details</h3>
+          <div class="project-kpi-grid project-kpi-grid--modal">
+            <div class="project-kpi-card-modal"><span>Primary language</span><strong>${this.escapeHtml(repo.language || 'Not specified')}</strong></div>
+            <div class="project-kpi-card-modal"><span>Stars</span><strong>${this.escapeHtml(repo.stargazers_count || 0)}</strong></div>
+            <div class="project-kpi-card-modal"><span>Forks</span><strong>${this.escapeHtml(repo.forks_count || 0)}</strong></div>
+            <div class="project-kpi-card-modal"><span>Open issues</span><strong>${this.escapeHtml(repo.open_issues_count || 0)}</strong></div>
+          </div>
+        </div>
+
+        <div class="blog-preview__footer-actions">
+          <a class="blog-read-btn blog-preview__read-complete" href="${safeRepoUrl}" target="_blank" rel="noopener noreferrer" aria-label="Explore ${safeName} on GitHub">
+            <i class="fab fa-github" aria-hidden="true"></i> Explore Repository <i class="fas fa-arrow-right" aria-hidden="true"></i>
+          </a>
+          ${hasDemo ? `<a class="project-action-btn btn-demo" href="${safeHomepage}" target="_blank" rel="noopener noreferrer"><i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i> Open Live Demo</a>` : ''}
+          <button type="button" class="blog-preview__close-action-btn" data-repo-close aria-label="Close repository preview">
+            Close preview
+          </button>
+        </div>
+      </article>
+    `;
+
+    this.previewModal.classList.remove('hidden');
+    this.previewModal.offsetHeight;
+    this.previewModal.classList.add('active');
+    this.previewModal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    document.documentElement.classList.add('blog-modal-open');
+
+    try {
+      const nextHash = `#repo-read-${encodeURIComponent(repo.name)}`;
+      if (window.location.hash !== nextHash) {
+        history.replaceState(
+          null,
+          '',
+          `${window.location.pathname}${window.location.search}${nextHash}`
+        );
+      }
+    } catch {
+      // ignore history errors
+    }
+
+    requestAnimationFrame(() => {
+      this.previewModal.querySelector('.blog-modal-close')?.focus();
+      this.previewModal.querySelector('.blog-modal-container')?.scrollTo?.(0, 0);
+      modalBody.scrollTop = 0;
+    });
+  }
+
+  closeRepoPreview() {
+    if (!this.previewModal) return;
+    this.previewModal.classList.remove('active');
+    this.previewModal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    document.documentElement.classList.remove('blog-modal-open');
+
+    try {
+      if (/^#repo-read-/.test(window.location.hash)) {
+        history.replaceState(
+          null,
+          '',
+          `${window.location.pathname}${window.location.search}#projects`
+        );
+      }
+    } catch {
+      // ignore history errors
+    }
+
+    const restore = this.lastModalFocus;
+    this.lastModalFocus = null;
+
+    setTimeout(() => {
+      if (!this.previewModal.classList.contains('active')) {
+        this.previewModal.classList.add('hidden');
+      }
+      if (restore && typeof restore.focus === 'function') {
+        try {
+          restore.focus();
+        } catch {
+          // ignore focus errors
+        }
+      }
+    }, 300);
+  }
+
   createProjectCard(repo, _index) {
     const showcase = repo.__showcase || this.getShowcaseScore(repo);
+    const meta = this.getRepoMeta(repo);
     const language = repo.language || 'Unknown';
     const languageColor = this.getLanguageColor(language);
     const description = repo.description || 'No repository description provided yet.';
@@ -2038,6 +2292,8 @@ class GitHubProjects {
           </div>`
       : '';
 
+    const kickerHtml = `<p class="project-kicker">${this.escapeHtml(meta.kicker)}</p>`;
+
     const languageHtml =
       language !== 'Unknown'
         ? `<span class="project-language">
@@ -2062,6 +2318,7 @@ class GitHubProjects {
     return `
       <article class="showcase-project-card apple-3d-project group lg-interactive ${hasDemo ? 'has-live-demo' : ''}" data-lg-interactive data-release-status="${safeReleaseKey}" aria-label="${safeName} project card">
         <div class="project-header">
+          ${kickerHtml}
           <div class="project-head-top">
             <div class="project-brand-meta">
               <span class="project-repo-badge" aria-hidden="true">
@@ -2105,6 +2362,15 @@ class GitHubProjects {
 
         <div class="project-footer ${hasDemo ? 'has-demo' : 'no-demo'}">
           ${demoHtml}
+          <button
+            type="button"
+            class="project-action-btn btn-preview"
+            data-repo-preview="${safeName}"
+            aria-label="Preview ${safeName} repository"
+          >
+            <i class="far fa-eye" aria-hidden="true"></i>
+            <span>Preview</span>
+          </button>
           <a
             href="${safeRepoUrl}"
             target="_blank"

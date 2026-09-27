@@ -715,12 +715,13 @@ test.describe('Chrome smoke tests', () => {
       page.locator('.keynote-tool-card', { hasText: 'Google Antigravity' })
     ).toContainText('Active Orchestrator');
 
-    // Verify verified quality gate counts
-    await expect(page.locator('.keynote-bento-card--gate', { hasText: 'Vitest' })).toContainText(
-      '319 / 319'
-    );
+    // Switch to Quality Gates tab and verify verified quality gate counts
+    await page.locator('#keynote-tab-4').click();
+    await expect(
+      page.locator('.keynote-bento-card--gate', { hasText: 'Critical Browser Journeys' })
+    ).toBeVisible();
     await expect(page.locator('.keynote-bento-card--gate', { hasText: 'Pytest' })).toContainText(
-      '182 / 182'
+      '183 / 183'
     );
 
     // Verify zero horizontal overflow on tools grid

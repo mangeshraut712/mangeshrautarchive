@@ -1,0 +1,117 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" width="100%" height="100%" role="img" aria-label="Hindai Indic Multilingual LLM Architecture">
+  <style>
+    .bg { fill: #fbfbfd; }
+    .card-bg { fill: #ffffff; stroke: #e5e5ea; stroke-width: 1.5px; }
+    .card-bg-accent { fill: #f5f8ff; stroke: #0071e3; stroke-width: 1.5px; }
+    .node-title { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif; font-size: 14px; font-weight: 700; fill: #1d1d1f; }
+    .node-sub { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif; font-size: 11px; fill: #86868b; }
+    .node-tag { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif; font-size: 10px; font-weight: 600; fill: #0071e3; }
+    .edge { stroke: #0071e3; stroke-width: 2px; fill: none; stroke-linecap: round; stroke-dasharray: 6 4; }
+    .edge-solid { stroke: #d2d2d7; stroke-width: 1.5px; fill: none; stroke-linecap: round; }
+    .badge-pill { fill: #e8f2ff; rx: 6px; }
+    .section-title { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif; font-size: 20px; font-weight: 700; fill: #1d1d1f; }
+    .section-desc { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif; font-size: 12px; fill: #6e6e73; }
+    @media (prefers-color-scheme: dark) {
+      .bg { fill: #000000; }
+      .card-bg { fill: #1c1c1e; stroke: #2c2c2e; }
+      .card-bg-accent { fill: #0f1c2e; stroke: #0a84ff; }
+      .node-title { fill: #f5f5f7; }
+      .node-sub { fill: #98989d; }
+      .node-tag { fill: #64d2ff; }
+      .edge { stroke: #0a84ff; }
+      .edge-solid { stroke: #38383a; }
+      .badge-pill { fill: #102a45; }
+      .section-title { fill: #f5f5f7; }
+      .section-desc { fill: #86868b; }
+    }
+  </style>
+
+  <rect width="960" height="540" rx="20" class="bg" />
+
+  <g transform="translate(40, 36)">
+    <text class="section-title" x="0" y="0">Hindai — Indic Multilingual AI Architecture</text>
+    <text class="section-desc" x="0" y="22">Indic BPE Tokenizer • 4-Bit AWQ Quantization • vLLM Continuous Batching • Streaming Edge Gateway</text>
+  </g>
+
+  <!-- Flow Edges -->
+  <path class="edge" d="M 180 180 L 230 180" />
+  <path class="edge" d="M 410 180 L 460 180" />
+  <path class="edge" d="M 640 180 L 690 180" />
+
+  <path class="edge-solid" d="M 320 260 L 320 320" />
+  <path class="edge-solid" d="M 550 260 L 550 320" />
+  <path class="edge-solid" d="M 780 260 L 780 320" />
+
+  <!-- Node 1: Indic Tokenizer -->
+  <g transform="translate(40, 110)">
+    <rect width="140" height="150" rx="14" class="card-bg" />
+    <rect x="15" y="15" width="60" height="18" class="badge-pill" />
+    <text class="node-tag" x="45" y="28" text-anchor="middle">TOKENIZER</text>
+    <text class="node-title" x="15" y="58">Indic-BPE Engine</text>
+    <text class="node-sub" x="15" y="78">Devanagari &amp; Indic</text>
+    <text class="node-sub" x="15" y="98">• Marathi, Hindi, Sanskrit</text>
+    <text class="node-sub" x="15" y="116">• Script preservation</text>
+    <text class="node-sub" x="15" y="134">• 3.2x compression ratio</text>
+  </g>
+
+  <!-- Node 2: Quantized Model Core -->
+  <g transform="translate(230, 110)">
+    <rect width="180" height="150" rx="14" class="card-bg-accent" />
+    <rect x="15" y="15" width="80" height="18" class="badge-pill" />
+    <text class="node-tag" x="55" y="28" text-anchor="middle">QUANTIZATION</text>
+    <text class="node-title" x="15" y="58">4-Bit AWQ Core</text>
+    <text class="node-sub" x="15" y="78">Activation-Aware</text>
+    <text class="node-sub" x="15" y="98">• 70% VRAM reduction</text>
+    <text class="node-sub" x="15" y="116">• Zero perplexity loss</text>
+    <text class="node-sub" x="15" y="134">• FP16 outlier scaling</text>
+  </g>
+
+  <!-- Node 3: vLLM High Throughput Engine -->
+  <g transform="translate(460, 110)">
+    <rect width="180" height="150" rx="14" class="card-bg" />
+    <rect x="15" y="15" width="68" height="18" class="badge-pill" />
+    <text class="node-tag" x="49" y="28" text-anchor="middle">INFERENCE</text>
+    <text class="node-title" x="15" y="58">vLLM Engine</text>
+    <text class="node-sub" x="15" y="78">PagedAttention</text>
+    <text class="node-sub" x="15" y="98">• Continuous batching</text>
+    <text class="node-sub" x="15" y="116">• 84 tokens/second</text>
+    <text class="node-sub" x="15" y="134">• Dynamic KV cache</text>
+  </g>
+
+  <!-- Node 4: FastAPI Streaming Gateway -->
+  <g transform="translate(690, 110)">
+    <rect width="210" height="150" rx="14" class="card-bg-accent" />
+    <rect x="15" y="15" width="60" height="18" class="badge-pill" />
+    <text class="node-tag" x="45" y="28" text-anchor="middle">GATEWAY</text>
+    <text class="node-title" x="15" y="58">FastAPI &amp; SSE Stream</text>
+    <text class="node-sub" x="15" y="78">Edge Transport</text>
+    <text class="node-sub" x="15" y="98">• OpenAI API compatible</text>
+    <text class="node-sub" x="15" y="116">• Token chunking &lt; 20ms</text>
+    <text class="node-sub" x="15" y="134">• Zero-credit fallback</text>
+  </g>
+
+  <!-- Subsystems -->
+  <g transform="translate(230, 320)">
+    <rect width="180" height="150" rx="14" class="card-bg" />
+    <text class="node-title" x="15" y="32">LoRA Multilingual</text>
+    <text class="node-sub" x="15" y="52">• Low-Rank Adaptation</text>
+    <text class="node-sub" x="15" y="72">• Hot-swappable dialect adapters</text>
+    <text class="node-sub" x="15" y="92">• 16M trainable parameters</text>
+  </g>
+
+  <g transform="translate(460, 320)">
+    <rect width="180" height="150" rx="14" class="card-bg" />
+    <text class="node-title" x="15" y="32">Benchmark Quality</text>
+    <text class="node-sub" x="15" y="52">• IndicMMLU: 78.4%</text>
+    <text class="node-sub" x="15" y="72">• Marathi BLEU: 34.6</text>
+    <text class="node-sub" x="15" y="92">• Context: 128k Tokens</text>
+  </g>
+
+  <g transform="translate(690, 320)">
+    <rect width="210" height="150" rx="14" class="card-bg" />
+    <text class="node-title" x="15" y="32">Edge Security &amp; PII</text>
+    <text class="node-sub" x="15" y="52">• Regex sanitization filter</text>
+    <text class="node-sub" x="15" y="72">• Zero server-side persistence</text>
+    <text class="node-sub" x="15" y="92">• Rate-limit per IP / session</text>
+  </g>
+</svg>

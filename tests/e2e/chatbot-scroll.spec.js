@@ -155,18 +155,24 @@ test.describe('Chatbot scroll engineering', () => {
         if (urlStr.includes('/api/chat')) {
           const encoder = new TextEncoder();
           const chunks = [
-            '{"type":"chunk","content":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\\n\\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\\n\\nHello "}',
+            '{"type":"chunk","content":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\\n\\nSed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.\\n\\nNemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.\\n\\nNeque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.\\n\\nHello "}',
             '{"type":"chunk","content":"this is "}',
             '{"type":"chunk","content":"a longer "}',
             '{"type":"chunk","content":"streamed "}',
-            '{"type":"chunk","content":"response."}',
+            '{"type":"chunk","content":"response "}',
+            '{"type":"chunk","content":"with plenty "}',
+            '{"type":"chunk","content":"of streaming "}',
+            '{"type":"chunk","content":"headroom."}',
             '{"type":"done","metadata":{"source":"mock"}}',
           ];
           const stream = new ReadableStream({
             async start(controller) {
               for (const chunk of chunks) {
+                if (chunk.includes('"done"')) {
+                  await new Promise(r => setTimeout(r, 15_000));
+                }
                 controller.enqueue(encoder.encode(chunk + '\n'));
-                await new Promise(r => setTimeout(r, 200));
+                await new Promise(r => setTimeout(r, 400));
               }
               controller.close();
             },
@@ -189,11 +195,11 @@ test.describe('Chatbot scroll engineering', () => {
       timeout: 15_000,
     });
 
-    // Wait until there is enough scrollable content in the chat viewport
+    // Wait until there is plenty of scrollable content in the chat viewport
     await page.waitForFunction(
       () => {
         const el = document.getElementById('chatbot-messages');
-        return el && el.scrollHeight > el.clientHeight + 100;
+        return el && el.scrollHeight > el.clientHeight + 200;
       },
       { timeout: 10_000 }
     );
@@ -201,19 +207,19 @@ test.describe('Chatbot scroll engineering', () => {
     // Simulate real user scrolling up to top and updating affordance
     await page.evaluate(() => {
       const chatbot = window.appleIntelligenceChatbot;
+      const se = chatbot?.scrollEngine;
       const messages = document.getElementById('chatbot-messages');
-      if (messages) {
+      if (se && messages) {
+        se.markProgrammaticScroll();
         messages.scrollTop = 0;
-      }
-      if (chatbot && chatbot.scrollEngine) {
-        chatbot.scrollEngine.pauseFollowing('test-scroll-up');
-        chatbot.scrollEngine.captureScrollDistance();
-        chatbot.scrollEngine.updateJumpAffordance();
+        se.pauseFollowing('test-scroll-up');
+        se.captureScrollDistance();
+        se.updateJumpAffordance();
       }
     });
 
     await expect(page.locator('.chatbot-jump-latest')).toBeVisible({ timeout: 5_000 });
-    await page.locator('.chatbot-jump-latest').click();
+    await page.locator('.chatbot-jump-latest').click({ force: true, noWaitAfter: true });
     await page.waitForTimeout(400);
 
     const gap = await distanceFromBottom(page);

@@ -2624,8 +2624,9 @@ html.dark body.travel-body .travel-action.active {
 body.travel-body #route-layer-toggle.active {
   background: color-mix(in srgb, var(--apple-blue, #0071e3) 16%, var(--travel-surface)) !important;
   border-color: var(--apple-blue, #0071e3) !important;
-  color: #0071e3 !important;
-  -webkit-text-fill-color: #0071e3 !important;
+  color: #004fa6 !important;
+  -webkit-text-fill-color: #004fa6 !important;
+  font-weight: 600;
 }
 
 html.dark body.travel-body #route-layer-toggle.active {
@@ -2638,8 +2639,9 @@ html.dark body.travel-body #route-layer-toggle.active {
 body.travel-body #spotlight-tour.active {
   background: color-mix(in srgb, var(--apple-blue, #0071e3) 16%, var(--travel-surface)) !important;
   border-color: var(--apple-blue, #0071e3) !important;
-  color: #0071e3 !important;
-  -webkit-text-fill-color: #0071e3 !important;
+  color: #004fa6 !important;
+  -webkit-text-fill-color: #004fa6 !important;
+  font-weight: 600;
 }
 
 html.dark body.travel-body #spotlight-tour.active {
