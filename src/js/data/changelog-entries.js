@@ -51,6 +51,57 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'blog-audit-catalog-sept-2026',
+    date: '2026-09-27',
+    type: 'improvement',
+    title: 'Audit blog reading experience and source claims',
+    summary:
+      'Verified all 18 article pages and archive cards across mobile and desktop in light and dark themes, fixed a contrast issue, generated a complete 18-post assistant catalog, and revised Razorpay, UPI, and Jev claims against their primary sources.',
+    tags: ['blog', 'accessibility', 'content'],
+    commitVerified: false,
+    model: 'GPT-6 / Codex',
+    ide: 'OpenAI Codex',
+    purpose: 'Audit and correct blog presentation, accessibility, indexing, and source accuracy',
+    reasoning: 'Unavailable',
+    usage: 'Unavailable',
+    status: 'unreleased',
+  },
+  {
+    id: 'blog-openai-artwork-sept-2026',
+    date: '2026-09-27',
+    type: 'improvement',
+    title: 'Replace all 18 blog covers with original article-specific artwork',
+    summary:
+      'Generated and reviewed 18 distinct covers with the Codex built-in OpenAI image tool, optimized them as WebP, connected the same artwork to archive cards and article figures, corrected conceptual figure captions, and widened mobile archive cards and topic filters. The exact image model identifier was not exposed by the tool.',
+    tags: ['blog', 'design'],
+    commitVerified: false,
+    model: 'GPT-6 / Codex',
+    ide: 'OpenAI Codex',
+    purpose:
+      'Create and integrate article-specific blog artwork and verify responsive presentation',
+    reasoning: 'Unavailable',
+    usage: 'Unavailable',
+    status: 'unreleased',
+  },
+  {
+    id: 'critical-browser-gate-sept-2026',
+    date: '2026-09-25',
+    type: 'improvement',
+    title: 'Focus the test gate on critical browser journeys and API behavior',
+    detailTitle:
+      'Retire Vitest, verify the production build in Chrome, and repair blog routing and contrast',
+    summary:
+      'Removed the Vitest unit suite and replaced its release gate with six Playwright journeys covering writing, article artwork, contact storage, chat streaming, accessibility, and mobile layout. Retained the 182 API tests, repaired generated blog index routing, and corrected a built-site color contrast failure discovered by the new browser gate.',
+    tags: ['systems', 'performance', 'design'],
+    commitVerified: false,
+    model: 'GPT-6 / Codex',
+    ide: 'OpenAI Codex',
+    purpose: 'Consolidate automated regression checks around critical browser and API behavior',
+    reasoning: 'Unavailable',
+    usage: 'Unavailable',
+    status: 'unreleased',
+  },
+  {
     id: 'travel-action-palette-architecture-tree-audit-resilience-sept-2026',
     date: '2026-09-23',
     type: 'improvement',
@@ -192,6 +243,26 @@ export const changelogEntries = [
     ide: 'Google Antigravity',
     purpose:
       'Redesign Tokenization & AI Burn into an Apple HIG / Shadcn telemetry dashboard with multi-platform AI profiles, Bento KPIs, and 3-tab navigation',
+    reasoning: 'Unavailable',
+    usage: 'Unavailable',
+  },
+  {
+    id: 'blog-visual-edition-sept-2026',
+    date: '2026-09-22',
+    type: 'improvement',
+    title: 'Refresh the complete blog archive as a September 2026 visual edition',
+    detailTitle:
+      'Unify Article Artwork, Add a Featured Story, and Rebuild the Archive’s Editorial Hierarchy',
+    summary:
+      'Connected every blog card to its canonical lead illustration, added responsive image treatments with accessible decorative semantics, and rebuilt the standalone blog index around a September 2026 masthead, latest-story feature, archive introduction, topic filters, and image-led article grid. The homepage writing section now reflects all 18 field notes and the expanded AI, payments, infrastructure, and developer-tool coverage.',
+    tags: ['blog', 'design'],
+    sha: '70aa6988cdd2e5cbe7109c500a065cd7cc980f34',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/70aa6988cdd2e5cbe7109c500a065cd7cc980f34`,
+    model: 'GPT-5.6 Sol / Codex',
+    ide: 'OpenAI Codex',
+    purpose:
+      'Refresh all blog artwork presentation and modernize the September 2026 archive experience',
     reasoning: 'Unavailable',
     usage: 'Unavailable',
   },

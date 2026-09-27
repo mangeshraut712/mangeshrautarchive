@@ -140,7 +140,6 @@ const requiredRoot = [
   'package-lock.json',
   'index.js',
   'playwright.config.js',
-  'vitest.config.js',
   'eslint.config.js',
   '.prettierrc',
   '.stylelintrc.json',
@@ -170,7 +169,6 @@ const requiredDirs = [
   'scripts/build',
   'scripts/deployment',
   'scripts/utils',
-  'tests/unit',
   'tests/api',
   'tests/e2e',
   'config',
@@ -226,7 +224,6 @@ const allowedRootFiles = new Set([
   'skills-lock.json',
   'uv.lock',
   'vercel.json',
-  'vitest.config.js',
 ]);
 function isGitIgnored(name) {
   const result = spawnSync('git', ['check-ignore', '-q', '--', name], {

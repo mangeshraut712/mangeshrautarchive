@@ -130,7 +130,7 @@ _Document architecture, public APIs, and non-obvious invariants so the system re
 _Write code that is testable at unit, integration, and end-to-end levels, and treat tests as part of the product, not an afterthought._
 
 - **Repository Implementation:**
-  - **Unit Tests:** The current Vitest suite (`tests/unit/`) validates DOM helpers, Markdown rendering, edge cache contracts, and data models.
+  - **Critical Browser Tests:** The focused Playwright suite (`tests/e2e/critical-journeys.spec.js`) checks writing, contact, chat, accessibility, and mobile layout.
   - **API Tests:** The current pytest suite (`tests/api/`) verifies FastAPI endpoints, security headers, rate limits, and streaming responses.
   - **E2E Tests:** Playwright multi-browser test matrix (`tests/e2e/`) running across 16 device configs (Desktop Chrome/Safari/Firefox, iPhone, iPad, Pixel) enforcing 0 horizontal overflow and UI state fidelity.
 
@@ -186,7 +186,7 @@ _Run CI/CD so every change is built, tested, and released through the same autom
   - GitHub Actions workflow (`.github/workflows/deploy.yml`) runs on every push:
     1. Workflow linting (`actionlint`) and secret leak scanning.
     2. Node and Python dependency installation with lockfile integrity.
-    3. Full test suites: ESLint + Stylelint + Prettier + the current Vitest and pytest suites.
+    3. Quality gates: ESLint + Stylelint + Prettier + pytest API tests + critical Playwright journeys.
     4. Production esbuild bundle compilation and asset cache-busting.
     5. Lighthouse CI deployment gates enforcing **100/100/100/100** score thresholds on built output.
     6. Automated static deployment to GitHub Pages.

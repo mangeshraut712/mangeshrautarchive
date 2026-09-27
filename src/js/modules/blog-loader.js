@@ -1,4 +1,4 @@
-import { blogPosts } from './blog-data.js';
+import { blogPosts, getBlogPostImage } from './blog-data.js';
 import { parseBlogContent } from './blog-markdown.js';
 import { rescanCardContentAccessibility } from './card-content-accessibility.js';
 import { refreshSectionPreview } from './section-preview.js';
@@ -236,9 +236,14 @@ class BlogLoader {
           .join('');
         const tagsAttr = (post.tags || []).join(',');
         const kicker = post.kicker || 'Field notes';
+        const image = sitePath(`/${getBlogPostImage(post)}`);
 
         return `
             <article class="blog-card blog-card--editorial" data-id="${post.id}" data-kicker="${this.escapeHTML(kicker)}" data-tags="${this.escapeHTML(tagsAttr)}" aria-label="${this.escapeHTML(post.title)}">
+                <a class="blog-card-media" href="${fullHref}" aria-label="Read ${this.escapeHTML(post.title)}">
+                  <img src="${image}" alt="" width="1600" height="900" loading="lazy" decoding="async" />
+                  <span class="blog-card-media-shine" aria-hidden="true"></span>
+                </a>
                 <div class="blog-card-content">
                     <div class="blog-card-top">
                       <div class="blog-card-meta">

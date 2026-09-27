@@ -251,7 +251,12 @@ app.get('/build-config.js', (req, res) => {
 });
 
 app.use((req, res, next) => {
-  if (req.path.length > 1 && req.path.endsWith('/')) {
+  // Generated index pages use folder-relative article links and assets.
+  if (
+    req.path.length > 1 &&
+    req.path.endsWith('/') &&
+    !['/blog/', '/case-studies/'].includes(req.path)
+  ) {
     const inbound = new URL(req.originalUrl, 'http://local.invalid');
     const safePath = `/${inbound.pathname.replace(/^\/+/, '').replace(/\/+$/, '')}`;
     res.redirect(301, `${safePath}${inbound.search}`);

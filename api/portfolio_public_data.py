@@ -33,8 +33,8 @@ LIGHTHOUSE_PAGES_GATES: Dict[str, Dict[str, int]] = {
 }
 
 TEST_COUNTS = {
-    "vitest": 281,
-    "pytest": 175,
+    "pytest": 182,
+    "critical_browser": 6,
     "playwright_projects": 16,
 }
 
@@ -64,7 +64,7 @@ USES_STACK: Dict[str, list[str]] = {
         "Tailwind CSS v4 (generated utilities)",
         "Cloudflare Worker + GitHub Pages",
         "GitHub Actions",
-        "Vitest · pytest · Playwright",
+        "pytest · Playwright",
     ],
     "fonts": ["SF Pro", "Inter (fallback)"],
     "theme": ["Solid white/black surfaces", "Apple 2026 design tokens", "Dark / light sync"],
@@ -76,7 +76,7 @@ USES_STACK: Dict[str, list[str]] = {
 def format_quality_summary() -> str:
     gates = LIGHTHOUSE_DEPLOY_GATES["mobile"]
     return (
-        f"{TEST_COUNTS['vitest']} Vitest · {TEST_COUNTS['pytest']} pytest · "
+        f"{TEST_COUNTS['pytest']} pytest · {TEST_COUNTS['critical_browser']} critical browser journeys · "
         f"{TEST_COUNTS['playwright_projects']} Playwright projects · "
         f"Lighthouse deploy gate {gates['performance']}/{gates['accessibility']}/"
         f"{gates['best_practices']}/{gates['seo']} (dist homepage)"

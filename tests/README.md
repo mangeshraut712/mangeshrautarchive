@@ -1,26 +1,14 @@
 # Tests
 
-| Suite       | Path                 | Runner     | Command                                         | Coverage source       |
-| ----------- | -------------------- | ---------- | ----------------------------------------------- | --------------------- |
-| **Unit**    | `tests/unit/`        | Vitest     | `npm test`                                      | Current runner output |
-| **API**     | `tests/api/`         | pytest     | `npm run test:api` (activate `venv` first)      | Current runner output |
-| **E2E**     | `tests/e2e/`         | Playwright | `npm run test:e2e:chrome` / `test:e2e:all`      | Playwright config     |
-| **Helpers** | `tests/e2e/helpers/` | —          | Shared `gotoSite`, `PAGES`, GitHub Pages prefix | —                     |
+The release gate uses 182 FastAPI tests and six critical browser journeys. The broader Playwright suite remains available for focused visual and device checks.
 
-## Conventions
+| Suite                     | Path                                  | Runner     | Command                     |
+| ------------------------- | ------------------------------------- | ---------- | --------------------------- |
+| API                       | `tests/api/`                          | pytest     | `npm run test:api`          |
+| Critical browser journeys | `tests/e2e/critical-journeys.spec.js` | Playwright | `npm run test:e2e:critical` |
+| Full Desktop Chrome suite | `tests/e2e/`                          | Playwright | `npm run test:e2e:chrome`   |
+| All browser projects      | `tests/e2e/`                          | Playwright | `npm run test:e2e:all`      |
 
-- Unit tests import production modules via `../../src/…` (never co-locate `*.test.js` under `src/`).
-- Prefer **extensionless** routes in E2E (`/monitor`, `/systems`) — works locally, on Vercel, and on GitHub Pages.
-- Use `tests/e2e/helpers/site.js` for navigation instead of duplicating `pathPrefix` logic.
-- API tests use FastAPI `TestClient` patterns in `tests/api/`.
+`npm test` runs the API suite and six critical browser journeys. `npm run check` runs lint and format checks.
 
-## Critical Chrome suite (local)
-
-```bash
-# Dev server on :4000 (npm run dev) or let Playwright start it
-npx playwright test --project="Desktop Chrome" \
-  tests/e2e/smoke.spec.js \
-  tests/e2e/accessibility.spec.js \
-  tests/e2e/engineering-page.spec.js \
-  tests/e2e/apple-platform-audit.spec.js
-```
+Use `tests/e2e/helpers/site.js` for browser navigation so local, Vercel, and GitHub Pages paths work consistently. API tests use FastAPI `TestClient` patterns in `tests/api/`.

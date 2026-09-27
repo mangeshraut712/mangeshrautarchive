@@ -135,6 +135,12 @@ async function resolveFile(requestPath) {
     return directMatch;
   }
 
+  // Generated article and case-study indexes are directories in dist/.
+  const indexMatch = await tryResolveExistingFile(join(resolvedPath, 'index.html'));
+  if (indexMatch) {
+    return indexMatch;
+  }
+
   // Match Vercel cleanUrls: /travel -> travel.html, /monitor -> monitor.html
   const extension = extname(safePath);
   if (!extension) {
@@ -566,6 +572,12 @@ app.all(/^\/api\/.*$/, (req, res) => {
   }
 
   res.json(resolveMonitorMock(req.path, req.method));
+});
+
+app.get(['/blog', '/case-studies'], (req, res, next) => {
+  if (req.path.endsWith('/')) return next();
+  const query = req.url.includes('?') ? req.url.slice(req.url.indexOf('?')) : '';
+  return res.redirect(308, `${req.path}/${query}`);
 });
 
 app.get(/.*/, async (req, res) => {

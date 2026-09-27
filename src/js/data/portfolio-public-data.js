@@ -44,8 +44,8 @@ export const LIGHTHOUSE_VERCEL_GATES = {
 };
 
 export const TEST_COUNTS = {
-  vitest: 319,
   pytest: 182,
+  criticalBrowser: 6,
   playwrightProjects: 16,
 };
 
@@ -209,12 +209,12 @@ export const usesCatalog = [
       },
       {
         name: 'GitHub Actions',
-        note: 'Security, lint, unit, API, E2E, and Lighthouse deploy gates.',
+        note: 'Security, lint, API, critical browser, and Lighthouse deploy gates.',
         tag: 'CI',
       },
       {
-        name: 'Vitest · pytest · Playwright',
-        note: 'Full three-suite gate before merge to main.',
+        name: 'pytest · Playwright',
+        note: 'API and critical browser journeys gate before merge to main.',
         tag: 'QA',
         featured: true,
       },
@@ -349,7 +349,7 @@ export function formatDeployLighthouseGate() {
 export function formatQualitySummary() {
   const gates = LIGHTHOUSE_DEPLOY_GATES.mobile;
   return (
-    `${TEST_COUNTS.vitest} Vitest · ${TEST_COUNTS.pytest} pytest · ` +
+    `${TEST_COUNTS.pytest} pytest · ${TEST_COUNTS.criticalBrowser} critical browser journeys · ` +
     `${TEST_COUNTS.playwrightProjects} Playwright projects · ` +
     `Lighthouse deploy gate ${gates.performance}/${gates.accessibility}/` +
     `${gates.bestPractices}/${gates.seo} (dist homepage)`

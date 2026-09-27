@@ -20,6 +20,16 @@ export const articlePlaybook = Object.freeze([
   'Prefer educational clarity over marketing voice — write like a careful systems researcher.',
 ]);
 
+/**
+ * Return the lead artwork declared by an article's first figure directive.
+ * Keeping this derived from the article source gives cards, social metadata,
+ * and full-page headers one canonical image without duplicating paths.
+ */
+export function getBlogPostImage(post) {
+  const match = String(post?.content || '').match(/:::figure[\s\S]*?^src:\s*([^\s]+)\s*$/m);
+  return match?.[1] || 'assets/images/profile.webp';
+}
+
 export const blogPosts = [
   {
     id: 'openrouter-ai-usb-hub-routing-2026',
@@ -42,9 +52,9 @@ export const blogPosts = [
 ## Fast Context
 
 :::figure
-src: assets/images/blog/openrouter-routing.jpg
-alt: OpenRouter 2026 Multi-Model Intelligent Routing Policy Architecture
-caption: Figure 1.0 — OpenRouter 2026 multi-model intelligent routing lanes routing user traffic dynamically across Frontier, Efficient Volume, Free Fallback, and Voice endpoints.
+src: assets/images/blog/openrouter-routing-codex-openai.webp
+alt: Conceptual gateway splitting AI requests into frontier, efficient, fallback, and voice paths
+caption: Conceptual routing policy: a gateway directs requests to frontier, efficient, fallback, or voice paths according to application needs.
 :::
 
 OpenRouter is an OpenAI-compatible gateway: one API surface, many model slugs, provider-side fan-out, and controls for price, throughput, allowlists, and session stickiness. That matters more as the market fragments. OpenRouter enterprise routing data through mid-2026 showed Chinese-origin models holding **at least ~30% of weekly US enterprise token volume every week since February 8, 2026**, with peaks near **46%**—up from roughly **4.5% in H1 2025** and ~11% averaged over the prior year. DeepSeek-class and Qwen-class routes are not a footnote; they are load-bearing capacity for cost-sensitive products. (Industry coverage, including CNBC on July 7, 2026, later summarized the same OpenRouter traffic picture; verify the latest weekly series before citing in investor materials.)
@@ -171,9 +181,9 @@ OpenRouter is the AI USB hub of 2026: one shape, many devices, and a routing pol
 ## Fast Context
 
 :::figure
-src: assets/images/blog/grok-build-agent.jpg
-alt: Grok 4.5 and Grok Build Terminal Agent Architecture
-caption: Figure 2.0 — Grok 4.5 model integrated with Grok Build terminal agent loop via Agent Client Protocol (ACP) for multi-file AST diffing and autonomous terminal execution.
+src: assets/images/blog/grok-build-agent-codex-openai.webp
+alt: Coding model, agent harness, tools, tests, and human review in a development workflow
+caption: Conceptual coding-agent workflow: the model reasons, the harness coordinates tools, and tests and review check the resulting changes.
 :::
 
 **Grok 4.5** is xAI's frontier model (SpaceXAI branding in current docs) positioned for coding, agentic tasks, and knowledge work. Official docs list model id \`grok-4.5\`, knowledge cutoff **February 1, 2026**, standard API pricing around **$2 / 1M input** and **$6 / 1M output** for prompts under 200k tokens (higher tier at ≥200k), and tools such as function calling, web search, X search, and code execution. Context window is documented at **500,000 tokens**. It is available on the xAI API, as the default model behind Grok Build, inside Cursor, and through model gateways including OpenRouter. Region and product availability can lag (including EU AI Act constraints at launch)—check the console for your account before you assume global default status.
@@ -307,9 +317,9 @@ I/O 2026 centered on an agentic Gemini stack: Gemini 3.5 Flash, Google Antigravi
 ## Fast Context
 
 :::figure
-src: assets/images/blog/google-io-webmcp.jpg
-alt: Agentic Web and WebMCP Protocol Architecture at Google I/O 2026
-caption: Figure 3.0 — The Agentic Web architecture: Google Gemini 2.5 Flash driving client-side WebMCP tool execution in under 30ms without DOM scraping.
+src: assets/images/blog/google-io-webmcp-codex-openai.webp
+alt: Browser tools, local context, cloud agents, and a human confirmation step
+caption: Conceptual division of agent work across browser tools, local context, and cloud agents, with confirmation before consequential actions.
 :::
 
 The useful I/O question is not which model name won the deck. It is: where does intelligence run, what context may leave the device, and which product moments deserve an agent versus a deterministic UI?
@@ -431,9 +441,9 @@ The public repository lives at [xai-org/x-algorithm](https://github.com/xai-org/
 ## Fast Context
 
 :::figure
-src: assets/images/blog/x-algorithm-ranking.jpg
-alt: The X Algorithm Real-Time Ranking Pipeline 2026
-caption: Figure 4.0 — The X real-time timeline ranking pipeline: Candidate sourcing from Thunder and SimClusters through Heavy Ranker Transformers and Grok Contextual Reranking.
+src: assets/images/blog/x-algorithm-ranking-codex-openai.webp
+alt: Candidate content moving through retrieval, context, ranking, filtering, and an ordered feed
+caption: Conceptual feed workflow: candidates are retrieved, enriched with context, ranked, filtered, and assembled into an ordered feed. The artwork does not represent X's internal implementation.
 :::
 
 That one-sentence architecture is a systems curriculum if you take it seriously: two candidate sources, a hydration/context path, a learned ranker with multi-action heads, then filters and blending. Open code teaches the shape. Weights, live traffic, and product policy can still be closed.
@@ -568,9 +578,9 @@ This is an early-2026 product-architecture field note. Later I/O cycles added lo
 ## Fast Context
 
 :::figure
-src: assets/images/blog/google-ai-hybrid.jpg
-alt: Google AI Hybrid Compute Topology On-Device NPU and Cloud TPU
-caption: Figure 5.0 — Google AI hybrid compute topology: Android on-device Gemini Nano processing private low-latency interactions paired with Cloud TPU clusters for Gemini 2.5 Pro reasoning.
+src: assets/images/blog/google-ai-hybrid-codex-openai.webp
+alt: Device, documents, search, and maps surrounding a context-aware assistant
+caption: Conceptual ecosystem view: AI becomes useful within existing device, document, search, and location contexts.
 :::
 
 Ecosystem AI is a product strategy, not a research paper. The bet is simple: if the assistant already sits near mail, docs, photos, maps, and the phone camera, it can reduce steps without inventing a new daily destination. The hard part is making that context useful without making users feel watched, overloaded, or trapped in a maze of assistant entry points.
@@ -687,9 +697,9 @@ This essay is a **product-pattern analysis** grounded in what the public OpenCla
 ## Fast Context
 
 :::figure
-src: assets/images/blog/openclaw-agent-swarm.jpg
-alt: OpenClaw Decentralized Multi-Agent Autonomous Swarm Infrastructure
-caption: Figure 6.0 — OpenClaw autonomous multi-agent cluster: Orchestrator node directing specialized subagents (Research, Software Engineer, QA Verifier, Security Audit) with cryptographic verification.
+src: assets/images/blog/openclaw-agent-swarm-codex-openai.webp
+alt: Local assistant gateway with messaging channels, permission gate, tools, and activity logs
+caption: Conceptual local-assistant architecture: channels connect to a gateway, while permissions constrain tools and logs record activity.
 :::
 
 What makes open agent stacks exciting is inspectability. Prompts, tools, state, retries, logs, and failures can become part of the engineering surface instead of a hidden SaaS behavior. OpenClaw’s distinctive shape is the **Gateway**: sessions, channels, tools, and events as a control plane, with the assistant reachable from the chat apps you already use.
@@ -826,9 +836,9 @@ This is a **product-pattern analysis** of dictation tools in the Wispr Flow styl
 ## Fast Context
 
 :::figure
-src: assets/images/blog/wispr-flow-voice.jpg
-alt: Wispr Flow Sub-200ms Ambient Voice Intelligence Pipeline
-caption: Figure 7.0 — Wispr Flow ambient voice dictation pipeline: Local VAD microphone capture through sub-200ms streaming neural ASR and context-aware auto-formatting engine.
+src: assets/images/blog/wispr-flow-voice-codex-openai.webp
+alt: Person dictating to a phone with cloud transcription, cleanup, and document insertion stages
+caption: Conceptual dictation workflow: capture audio, transcribe in the cloud, clean up text, and insert it into the destination application.
 :::
 
 The keyboard is still the precision instrument. Voice wins when the bottleneck is getting rough intent out of your head: first drafts, status updates, bug reports, meeting notes, long-form thinking while walking. The product challenge is not transcription alone. It is correction, formatting, privacy, destination awareness, and preserving tone.
@@ -961,9 +971,9 @@ Voice AI becomes serious when it respects user intent, speeds up capture, and pr
 ## Fast Context
 
 :::figure
-src: assets/images/blog/nvidia-blackwell-rack.jpg
-alt: NVIDIA Blackwell GB200 NVL72 Rack-Scale Architecture
-caption: Figure 8.0 — NVIDIA GB200 NVL72 liquid-cooled supercomputer rack with 5th Gen NVLink 1.8TB/s interconnect backplane uniting 72 Blackwell GPUs into a single massive coherent compute fabric.
+src: assets/images/blog/nvidia-blackwell-rack-codex-openai.webp
+alt: Four-layer AI infrastructure stack for software, compute, networking, and serving
+caption: Conceptual AI infrastructure stack: software, accelerated compute, networking, and serving work together as one execution path.
 :::
 
 In modern AI, the product teams actually buy is not a single part number. They buy a path from research idea to trained model to served inference with acceptable latency, cost, and reliability. NVIDIA’s gravity comes from making that path the default for a decade of researchers and production engineers.
@@ -1109,9 +1119,9 @@ NVIDIA’s position is strongest where it sells the full path to AI execution. T
 ## Fast Context
 
 :::figure
-src: assets/images/blog/global-ai-pareto.jpg
-alt: 2026 Global AI Model Landscape and Pareto Efficiency Frontier
-caption: Figure 9.0 — The 2026 Global AI Model Landscape: Reasoning intelligence vs inference cost per 1M tokens across Frontier Proprietary models and Open Weight engines.
+src: assets/images/blog/global-ai-pareto-codex-openai.webp
+alt: Four qualitative lenses for AI ecosystems: research, compute, distribution, and governance
+caption: Four qualitative lenses for comparing AI ecosystems: research, compute, distribution, and governance. This illustration is not a benchmark.
 :::
 
 I compare ecosystems with four lenses: **research quality**, **compute supply**, **deployment channels**, and **governance**. If one lens is missing, the strategy is incomplete even when the model demo looks strong. Countries and companies can lead on one axis and lag on another for years. I am not assigning national rankings here—those charts age badly and invite fake precision.
@@ -1257,9 +1267,9 @@ The global AI race will be won by ecosystems that turn model progress into relia
 ## Fast Context
 
 :::figure
-src: assets/images/blog/ai-code-editors.jpg
-alt: AI Code Editor Agent Loops Comparison: Cursor, Windsurf, and Grok Build
-caption: Figure 10.0 — Modern AI code editor agent loops: Indexing, multi-file code mutation preview, autonomous terminal execution, and telemetry status compared side-by-side.
+src: assets/images/blog/ai-code-editors-codex-openai.webp
+alt: AI coding workflow moving from scope through editing, checks, review, and approval
+caption: Conceptual AI-assisted development workflow: scope the task, edit, run checks, review the diff, and approve the result.
 :::
 
 I use real tools in this category—**VS Code** as the extensible baseline, **Cursor** as an AI-native fork/workflow style, **Windsurf** and similar agentic editors as multi-step coding environments, plus CLI/agent companions. Rankings rot. Workflows compound. I am not selling a permanent leaderboard.
@@ -1406,9 +1416,9 @@ AI code editors are becoming serious engineering tools, but the winning workflow
 ## Fast Context
 
 :::figure
-src: assets/images/blog/apple-silicon-history.jpg
-alt: 50 Years of Apple Innovation from Apple I to M-Series Apple Silicon
-caption: Figure 11.0 — Five decades of Apple engineering: From discrete TTL logic on the 1976 Apple I to the M5 Ultra SoC with unified memory architecture and 64-core Neural Engine.
+src: assets/images/blog/apple-silicon-history-codex-openai.webp
+alt: Conceptual evolution of personal computers and integrated devices
+caption: Conceptual illustration of integration, restraint, and continuity across personal computing; not an archival photograph or hardware specification.
 :::
 
 Apple repeatedly wins when hardware, software, interaction design, retail, and ecosystem strategy are treated as one system. It loses clarity when channels multiply without a coherent default, or when polish becomes a substitute for progress. This essay is product craft analysis, not a shareholder note, and not a claim that every Apple decision aged well.
@@ -1533,9 +1543,9 @@ This piece intentionally mixes philosophy and engineering. Where claims are not 
 ## Fast Context
 
 :::figure
-src: assets/images/blog/anthropic-alignment.jpg
-alt: Anthropic Constitutional AI and RLAIF Alignment Pipeline
-caption: Figure 12.0 — Anthropic Constitutional AI framework: Base pre-trained model critique against constitutional safety principles, preference modeling, and RLAIF fine-tuning.
+src: assets/images/blog/anthropic-alignment-codex-openai.webp
+alt: Observer studying a limited sample of a much larger landscape
+caption: Conceptual illustration of observer selection: a limited sample leaves uncertainty, which should inform evaluation and monitoring.
 :::
 
 The goal is operational: can a philosophical frame change how we build, test, or govern systems? If a conversation cannot name a control, a metric, or a decision owner, it is atmosphere—not engineering.
@@ -1677,9 +1687,9 @@ I am not reprinting the keynote. I am extracting the developer contract: what yo
 ## Fast Context
 
 :::figure
-src: assets/images/blog/apple-pcc-architecture.jpg
-alt: Apple Intelligence and Private Cloud Compute Cryptographic Architecture
-caption: Figure 13.0 — Apple Intelligence & Private Cloud Compute (PCC): On-device 3B parameter model and Secure Enclave routing to cryptographically attested Apple Silicon cloud servers with zero data retention.
+src: assets/images/blog/apple-pcc-architecture-codex-openai.webp
+alt: On-device processing with separate optional cloud assistance and confirmed app actions
+caption: Conceptual view of on-device processing, optional cloud assistance, and separately confirmed app actions; not a complete internal implementation diagram.
 :::
 
 Three threads matter for builders:
@@ -1816,9 +1826,9 @@ I am not claiming a secret keynote. I am describing the pattern that makes Noteb
 ## Fast Context
 
 :::figure
-src: assets/images/blog/notebooklm-grounded-pipeline.jpg
-alt: NotebookLM Source-Grounded Research and Audio Overview Pipeline
-caption: Figure 14.0 — NotebookLM research pipeline: Multi-source ingestion (PDF, YouTube, Docs), citation-bound vector RAG with Gemini 2.5 Flash, and dual-host Audio Overview podcast synthesis.
+src: assets/images/blog/notebooklm-grounded-pipeline-codex-openai.webp
+alt: Research sources flowing through synthesis, citations, human verification, and outputs
+caption: Conceptual research workflow: synthesize supplied sources, follow citations, verify the evidence, and prepare outputs. Grounding does not remove the need to check answers.
 :::
 
 NotebookLM is Google’s research/thinking partner grounded primarily in sources you provide. You can upload PDFs, websites, YouTube links, audio, Google Docs/Slides, and more. Audio Overview remains the famous mode: conversational deep dives between AI hosts. Video Overview and other Studio artifacts make the same sources usable in different cognitive modes.
@@ -1954,9 +1964,9 @@ NotebookLM points toward AI research tools that are grounded, multimodal, and mu
 ## Fast Context
 
 :::figure
-src: assets/images/blog/cursor-origin-architecture.jpg
-alt: Cursor Origin Agent-Native Development Loop and Architecture
-caption: Figure 15.0 — Cursor Origin Architecture: Moving from an extension on top of GitHub to a unified, agent-native platform: IDE → Autonomous Agents → Repositories → Pull Requests → CI → Vercel Deployments.
+src: assets/images/blog/cursor-origin-architecture-codex-openai.webp
+alt: Agent development workflow connecting editor, repository, review, CI, preview, and synchronization
+caption: Conceptual development workflow connecting the editor, repository synchronization, review, CI checks, and deployment previews.
 :::
 
 Before Origin, the developer workflow had a hard dependency boundary:
@@ -2091,7 +2101,7 @@ Cursor Origin marks the transition from AI as an editor plugin to AI as the foun
   {
     id: 'razorpay-vulcan-payments-foundation-model',
     title:
-      'Razorpay Vulcan: 4 Billion Payments, 3 Trillion Tokens, and India’s Transformer Foundation Model for Money',
+      'Razorpay Vulcan: 4 Billion Payments, 3 Trillion Data Points, and a Foundation Model for Money',
     kicker: 'Financial AI & Systems',
     summary:
       '4 billion payments. 3 trillion data points. One model trained on all of it. How Razorpay, NVIDIA, and AWS built Vulcan—India’s first transformer-based foundation model that understands how money moves, boosting success rates by 8–10% and detecting 8x more fraud.',
@@ -2114,7 +2124,7 @@ Cursor Origin marks the transition from AI as an editor plugin to AI as the foun
       'AWS Cloud',
       'System Design',
     ],
-    date: '2026-08-13',
+    date: '2026-09-10',
     readTime: '13 min read',
     content: `**4 billion payments. 3 trillion data points. One foundation model trained on all of it.**
 
@@ -2125,9 +2135,9 @@ In August 2026, **Razorpay** unveiled **Vulcan**—India’s first transformer-b
 ## Fast Context
 
 :::figure
-src: assets/images/blog/razorpay-vulcan-architecture.jpg
-alt: Razorpay Vulcan Foundation Model Architecture and Production Impact
-caption: Figure 16.0 — Razorpay Vulcan Systems Architecture: 4B Payments & 3T Telemetry Tokens → NVIDIA & AWS Foundation Transformer → Unified Dynamic Routing, Global Fraud Detection, and Predictive Personalization.
+src: assets/images/blog/razorpay-vulcan-architecture-codex-openai.webp
+alt: Transaction signals entering a financial model and branching to routing, fraud, and personalization
+caption: High-level conceptual view of transaction signals informing financial-model applications in routing, fraud detection, and personalization.
 :::
 
 Until now, the fintech industry addressed payment challenges through isolated, specialized subsystems:
@@ -2142,18 +2152,18 @@ Just as Large Language Models (LLMs) are trained on trillions of text tokens to 
 :::embed
 kicker: Official Announcement
 title: Razorpay Vulcan AI Foundation Model
-href: https://razorpay.com/vulcan
+href: https://razorpay.com/blog/vulcan-how-razorpay-built-a-foundation-model-for-payment-decisions/
 desc: India's first transformer model for payments, trained across 4B+ transactions with NVIDIA and AWS Cloud.
 :::
 
 ## TL;DR & Production Beta Outcomes
 
-Already operating in production beta across **51,000+ businesses**, Vulcan is delivering extraordinary, empirically verified results:
+Razorpay reports early results for Vulcan across several payment tasks. These are company-reported comparisons against each task's incumbent system; they are not independent benchmarks or one combined experiment:
 - **+8% to 10% improvement in payment success rates**—the ultimate benchmark of whether a transaction completes smoothly.
 - **8x more international card fraud detected** across cross-border e-commerce rails.
 - **5x more fraudulent or disputed transactions identified** before chargebacks occur.
 - **1–2 lakh additional purchases completed every month** through real-time checkout personalization.
-- **Self-Reinforcing Flywheel**: Every single transaction Vulcan processes reinforces model weights, making subsequent routing decisions faster and smarter.
+- **Shared Representation**: A reusable backbone learns patterns across payment records, while each application still needs its own inputs, labels, evaluation, and serving path.
 
 ---
 
@@ -2167,7 +2177,7 @@ Already operating in production beta across **51,000+ businesses**, Vulcan is de
                             │ Sub-Millisecond Feature Vector
 ┌───────────────────────────▼────────────────────────────┐
 │             2. VULCAN TRANSFORMER CORE (NVIDIA)         │
-│  Multi-Head Temporal Attention · Cross-Entity Dynamics │
+│  Set Transformer · Masked-Field Prediction             │
 └───────────────────────────┬────────────────────────────┘
                             │ Unified Inference Vector
 ┌───────────────────────────▼────────────────────────────┐
@@ -2176,23 +2186,23 @@ Already operating in production beta across **51,000+ businesses**, Vulcan is de
 └───────────────────────────┬────────────────────────────┘
                             │ Direct Execution
 ┌───────────────────────────▼────────────────────────────┐
-│             4. 51,000+ BUSINESSES (PRODUCTION)         │
-│  8–10% Success Rate Lift ── 8x Fraud Stop ── +2L Sales │
+│             4. TASK-SPECIFIC EVALUATION                 │
+│  Compare routing, fraud, and checkout separately       │
 └────────────────────────────────────────────────────────┘
 \`\`\`
 
 ### 1. Tokenizing the Anatomy of a Payment
 
-Language models treat words as subword tokens. Vulcan tokenizes payment sequences into dense multi-dimensional embeddings:
+Language models treat words as subword tokens. Razorpay describes Vulcan as a Set Transformer over structured payment fields, trained with masked-field prediction. Examples of potentially relevant fields include:
 - **Temporal Tokens**: Timestamp, day-of-week cadence, banking holiday states, and real-time network traffic congestion.
 - **Entity Tokens**: Card Issuer BIN, Acquiring Gateway, UPI Handle (VPA), Merchant Category Code (MCC), and device platform.
 - **Behavioral Velocity Tokens**: User transaction frequency, cross-merchant spending patterns, and OTP delivery latency windows.
 
-By feeding these sequences into a transformer with multi-head attention, Vulcan discovers non-obvious correlations: for instance, predicting that an issuing bank's OTP service is degrading in a specific telecom circle *before* the bank returns HTTP 500 error codes, dynamically shifting user traffic to alternative payment rails.
+Razorpay describes a separate recent-context encoder for live route health. That context is combined with the payment representation to score eligible routes. The model ranks routes already allowed by merchant configuration; it does not create new payment paths.
 
 ### 2. Unifying the Payments Stack
 
-Instead of executing five sequential API hops (fraud check → risk check → personalization → routing → 3DS), Vulcan computes a unified forward pass in **under 15 milliseconds**:
+The shared backbone supports distinct decision layers. Razorpay has not published a universal under-15-millisecond inference guarantee or said that one pass replaces every checkout service:
 
 :::table
 | Dimension | Legacy Payments Architecture | Razorpay Vulcan Foundation Model |
@@ -2200,29 +2210,29 @@ Instead of executing five sequential API hops (fraud check → risk check → pe
 | **Model Structure** | Multiple disconnected heuristic rule engines | Single unified Transformer Foundation Model |
 | **Training Data** | Siloed historical tables | 4 Billion payments &amp; 3 Trillion data points |
 | **Infrastructure** | Standard CPU servers | NVIDIA AI compute clusters on AWS Cloud |
-| **Inference Latency** | 60–150ms across separate service hops | &lt;15ms single forward pass at checkout |
-| **Adaptability** | Manual rule tuning after downtime | Autonomous continuous learning on live flows |
+| **Inference Latency** | Depends on each service and payment flow | Low-latency routing is a design requirement; public per-request latency is not specified |
+| **Adaptability** | Task-specific updates | Shared pretrained representation plus separately evaluated task heads |
 :::
 
 ### 3. Sovereign AI Infrastructure in India
 
-Financial transactions carry strict sovereign regulatory requirements under Reserve Bank of India (RBI) guidelines. Razorpay built, trained, and hosts Vulcan entirely within Indian data centers in collaboration with **NVIDIA** (leveraging GPU acceleration for distributed training and TensorRT-LLM for low-latency inference) and **AWS Cloud India**.
+Razorpay describes Vulcan as built for India's payment environment in collaboration with **NVIDIA** and **AWS**. Deployment location, model quantization, and serving internals should be confirmed from technical documentation before being treated as implementation facts.
 
 :::chart
 | Razorpay Vulcan Production Performance Metrics
-bars: Payment success rate improvement (+8-10%)|94, International card fraud detection (8x lift)|98, Fraudulent dispute identification (5x lift)|92, Sub-15ms inference latency budget|96, Monthly incremental purchases (+1-2 Lakh)|90
-note: Production beta metrics verified across 51,000+ live enterprise and SMB merchants.
+bars: Payment success improvement (reported 8-10%)|80, International card fraud detection (reported 8x)|80, Fraud or dispute identification (reported 5x)|80, Checkout personalization (reported 1-2 lakh monthly purchases)|80
+note: Razorpay launch claims for separate product components, shown as labeled claims rather than a comparable numerical scale; see the linked engineering article for evaluation caveats.
 :::
 
 ---
 
 ## What I Would Watch Closely
 
-**Model Drift vs Sudden Banking Infrastructure Flips.** When a major bank conducts scheduled core banking system (CBS) maintenance at midnight, historical tokens may mispredict gateway availability. Vulcan combines foundation model inference with real-time circuit breakers to prevent routing loops.
+**Model Drift vs Sudden Banking Infrastructure Flips.** When a bank changes availability, historical patterns can mislead routing. A production design should combine recent route-health signals with fallback rules and monitor drift.
 
 **False Positive Mitigation in High-Value Orders.** Increasing fraud detection by 8x requires careful calibration to ensure legitimate high-ticket luxury or B2B transactions are not inadvertently blocked.
 
-**Edge Deployment on Mobile SDKs.** Delivering sub-15ms checkout personalization on 4G/5G mobile networks in Tier-2 and Tier-3 Indian cities requires highly optimized quantized weights (INT8/FP8) embedded within the Razorpay standard checkout script.
+**Deployment Boundaries.** Public material does not establish that Vulcan weights run inside a mobile SDK. Model serving, network latency, and fallback behavior need separate measurement.
 
 ---
 
@@ -2232,7 +2242,7 @@ For engineers designing AI-native transaction systems:
 
 1. **Unify the Data Plane**: Ingest payment metadata, banking telemetries, and user interactions into a single streaming vector bus (Kafka/Kinesis).
 2. **Train for Multi-Task Prediction**: Structure the transformer with multiple output heads sharing the same foundational representation (routing, fraud, checkout ranking).
-3. **Strict Latency Budget**: Cap model inference at &le; 15ms to ensure zero perceived checkout lag.
+3. **Strict Latency Budget**: Measure model, network, and fallback latency against the checkout service-level objective.
 4. **Close the Feedback Loop**: Automatically label transaction outcomes (settled, failed, chargeback) to continuously fine-tune model weights.
 
 :::callout
@@ -2249,8 +2259,7 @@ Razorpay Vulcan demonstrates that foundation models are not limited to text and 
 
 ### Sources and further reading
 
-- [Razorpay Vulcan Official Announcement](https://razorpay.com/vulcan) — foundation model specifications, enterprise beta features, and partner integration notes
-- [Razorpay Engineering Blog](https://razorpay.com/blog) — deep dives into real-time transaction processing and payment success rate optimization
+- [Razorpay Vulcan engineering article](https://razorpay.com/blog/vulcan-how-razorpay-built-a-foundation-model-for-payment-decisions/) — backbone, task heads, routing context, and evaluation limits
 - [NVIDIA AI & Financial Services](https://www.nvidia.com/en-us/financial-services/) — GPU-accelerated training architectures and TensorRT inference in fintech
 - [AWS Cloud India FinTech Solutions](https://aws.amazon.com/financial-services/) — sovereign cloud infrastructure and regulatory-compliant AI hosting`,
   },
@@ -2259,217 +2268,75 @@ Razorpay Vulcan demonstrates that foundation models are not limited to text and 
     title: 'UPI Tap to Pay, UPI Circle, and the 2026 Real-Time Payments Architecture',
     kicker: 'Fintech systems',
     summary:
-      "A deep systems engineering teardown of India's 2026 Unified Payments Interface upgrades: market share dynamics (PhonePe vs Google Pay vs Paytm vs CRED), ₹24+ lakh crore monthly volumes, 30% TPAP market cap dynamics, NFC Host Card Emulation (HCE), biometric passkey bypass, UPI Circle delegated authority trees, credit lines on UPI, and offline Lite X synchronization.",
+      'A source-grounded guide to UPI Tap & Pay, UPI Circle, Credit Line on UPI, and UPI LITE X, with August 2026 transaction statistics and a practical view of the payment flow.',
     readerPromise:
       'You will get a comprehensive architectural blueprint of how UPI Tap to Pay, UPI Circle, and credit line rails execute across the NPCI central switch, remitter banks, and merchant hardware—without the marketing buzz.',
     pullQuote:
-      'Payments are not merely ledger updates; they are latency-bounded distributed state machines where a 400ms NFC touch replaces a 12-second camera framing ritual.',
-    highlights: [
-      'NFC Host Card Emulation',
-      'UPI Circle Delegated Limits',
-      'Interoperable Credit Lines',
-    ],
+      'A tap can replace QR scanning to capture the payee; authorization and payment confirmation are still separate steps.',
+    highlights: ['NFC merchant tags', 'UPI Circle Delegated Limits', 'Interoperable Credit Lines'],
     tags: ['UPI', 'Fintech', 'Payments', 'NFC', 'System Design', 'NPCI'],
     date: '2026-09-14',
-    readTime: '15 min read',
-    content: `In 2026, real-time retail payments in India process over 16.8 billion transactions a month, surpassing ₹24.2 lakh crore ($290+ billion USD) in monthly value. But the primary user-facing bottleneck has never been the central banking ledger; it has been the physical point-of-sale interaction loop. For nearly a decade, executing a Unified Payments Interface (UPI) payment meant launching an app, waking the camera, focusing on a crumpled QR code sticker or dynamic screen, waiting for URI decoding, verifying the Virtual Payment Address (VPA), typing the amount, entering a 6-digit MPIN, and waiting for round-trip confirmation—a sequence consuming 8 to 15 seconds.
+    readTime: '7 min read',
+    content: `NPCI recorded **24.509 billion UPI transactions worth ₹29.82 lakh crore in August 2026**. Those are network totals, not estimates from an app-share chart. The product family has also grown beyond scan-and-pay: NFC payee capture, delegated payments, credit lines, and low-value offline options each solve a different problem.
 
-> Reader promise: You will get a comprehensive architectural blueprint of how UPI Tap to Pay, UPI Circle, and credit line rails execute across the NPCI central switch, remitter banks, and merchant hardware—without the marketing buzz.
+> Reader promise: Understand what a tap actually does, where authorization happens, and how to evaluate these rails without confusing a fast NFC read with completed settlement.
 
 ## Fast Context
 
 :::figure
-src: assets/images/blog/upi-tap-to-pay-architecture.jpg
-alt: UPI Tap to Pay and 2026 Payment Rails Architecture
-caption: Figure 1.0 — End-to-end transaction topology across NFC Host Card Emulation client devices, the NPCI central switch, delegated UPI Circle authority trees, and dual-leg banking settlement rails.
+src: assets/images/blog/upi-tap-to-pay-architecture-codex-openai.webp
+alt: Customer tapping a phone near a merchant payment terminal
+caption: A tap captures merchant payment details. The payer still reviews and authorizes the transaction according to the applicable UPI flow.
 :::
 
-The 2025–2026 technical specifications released by the National Payments Corporation of India (NPCI) and the Reserve Bank of India (RBI) mark the transition from static optical scanning to high-throughput ambient payment rails:
+**UPI Tap & Pay** uses NFC to capture the payee UPI ID from a compatible smart tag or smart QR. NPCI's product overview says UPI LITE can handle eligible payments up to ₹500 when enabled; larger online payments require a UPI PIN. NFC is an input method here, not proof that the entire payment settled in milliseconds.
 
-- **UPI Tap to Pay**: Replacing optical QR reading with 13.56 MHz Near Field Communication (NFC) Host Card Emulation (HCE). A simple tap against a merchant POS or soundbox terminal transfers the payment context in under 100 milliseconds.
-- **Biometric Micro-Tx Bypass**: Under RBI's updated delegated authentication frameworks, on-device biometric passkeys (FIDO2 / BiometricPrompt) allow instant verification for transactions under ₹2,000 (and up to ₹5,000 for authenticated offline transit modes), bypassing the traditional MPIN completely.
-- **UPI Circle (Delegated Payments)**: A hierarchical authorization protocol allowing a primary account holder to grant secondary payment privileges to family members or dependents with granular daily/monthly caps (e.g., ₹5,000/month), eliminating the requirement for every user to hold an independent debit card or funded account.
-- **Credit Lines on UPI (UPI Reserve)**: Interoperable pre-sanctioned credit rails from commercial banks linked directly to a VPA, bypassing legacy credit card interchange fees while offering frictionless point-of-sale revolving credit.
-- **UPI Lite X (Offline P2P & P2M)**: Cryptographically signed peer-to-peer NFC settlement that works with zero cellular connectivity on either device using tamper-resistant secure elements.
-- **Global Linkages**: Real-time cross-border bilateral settlement corridors with Singapore (PayNow), the UAE (AANI), France (Lyra), Mauritius, Sri Lanka, Nepal, and Bhutan disintermediating legacy SWIFT correspondent fees.
+**UPI Circle** allows a primary user to delegate payment access to a secondary user under the product's consent and limits. **Credit Line on UPI** lets eligible customers link a pre-sanctioned bank credit line. **UPI LITE X** supports eligible offline NFC payments on compatible devices. Availability and limits depend on participating banks, apps, and current NPCI rules.
 
 :::embed
-kicker: Specification
-title: NPCI Unified Payments Interface Specifications & UPI Tap to Pay Guidelines
-href: https://www.npci.org.in/what-we-do/upi/product-overview
-desc: Technical operating standards for NFC Host Card Emulation, UPI Circle delegation limits, and ISO 20022 message routing across Indian financial rails.
+kicker: Official product guide
+title: NPCI UPI Tap & Pay
+href: https://www.npci.org.in/what-we-do/upi-lite/upi-tap-and-pay/product-overview
+desc: NPCI explains NFC payee capture, supported apps, and the PIN path for larger online payments.
 :::
 
-## The Indian UPI Market Landscape: Who's on Top & The Data
+## What the August 2026 Data Says
 
-India's real-time payments ecosystem is one of the most concentrated yet fiercely competitive software battlegrounds on earth. As of late 2026, the market share breakdown across Third-Party Application Providers (TPAPs) reveals clear leaders, high-value niche specialists, and ongoing regulatory dilemmas:
-
-- **PhonePe (Market Leader)**: Commands **~48.5% of total transaction volume** (processing ~8.2+ billion transactions monthly) and approximately 50% of total payment value. PhonePe's competitive moat is anchored in deep merchant lock-in via its ubiquitous Smart Speaker soundbox fleet (over 10 million active devices) and consumer habit loops.
-- **Google Pay (GPay - Tech Rail Titan)**: Ranks firmly at **#2 with ~37.2% volume share** (handling ~6.3+ billion monthly transactions) and ~36% of transaction value. Google Pay leverages deep Android system integration, superior user interface polish, cross-border remittance integrations, and early adoption of UPI Tap to Pay on NFC-enabled Android devices.
-- **The Duopoly Reality**: Together, **PhonePe and Google Pay control ~85.7% of all UPI transactions** in India. This concentration has prompted intense scrutiny from regulators regarding systemic infrastructure resilience.
-- **Paytm (One97 Communications - The Multi-Bank TPAP)**: Holds **#3 with ~7.2% volume share** (~1.2+ billion monthly transactions). Following the Reserve Bank of India's February 2024 regulatory directives regarding Paytm Payments Bank Limited (PPBL), Paytm successfully migrated its core merchant and consumer payment handles to a multi-bank TPAP structure in partnership with State Bank of India (SBI), Axis Bank, HDFC Bank, and YES Bank. Paytm continues to dominate merchant checkout hardware, operating the largest deployed network of NFC-ready dual-frequency POS soundboxes in tier-2 and tier-3 cities.
-- **CRED (The High-Value Outlier)**: While CRED commands only **~1.2% of total transaction volume**, it commands over **~5.5% of total transaction value**. CRED's Average Ticket Size (ATS) exceeds ₹4,500—over three times the industry average of ~₹1,440. CRED dominates high-value bill settlements, luxury commerce, rent transfers, and credit card repayments among affluent urban consumers.
-- **Navi UPI**: Founded by Flipkart co-founder Sachin Bansal, Navi has captured **~1.1% volume share** by tying zero-fee UPI payments directly to instant pre-approved personal credit lines and algorithmic cashback.
-- **BHIM (NPCI Reference App)**: Maintained by NPCI, holding **~0.8% volume share**. BHIM serves as the protocol reference client, introducing new NPCI features (such as UPI Circle and offline Lite X) before commercial TPAPs roll them out.
-- **Others (Amazon Pay, WhatsApp Pay, Tata Neu, Slice, Jupiter, Bank Apps)**: The remaining ~4.0% is split between Amazon Pay (~1.2%), WhatsApp Pay (~0.5%), ecosystem super-apps (Tata Neu, Slice), and bank-native applications (SBI YONO, HDFC PayZapp, ICICI iMobile).
+NPCI's monthly statistics list **24,508.96 million transactions** and **₹29,82,355.95 crore** of value in August 2026. July recorded 23,658.35 million transactions. These totals establish scale; they do not by themselves identify each app's market share or measure checkout latency.
 
 :::chart
-title: India UPI App Market Volume Share (2026 NPCI Clearing Data)
-bars: PhonePe (Market Leader)|48.5, Google Pay (Tech Rail Titan)|37.2, Paytm (Multi-Bank TPAP)|7.2, CRED (High-Value Premium)|1.2, Navi & Challengers|1.8, Amazon Pay & Others|4.1
-note: Volume share percentages based on monthly NPCI clearing statistics representing ~16.8 billion total transactions.
+title: UPI transaction volume, NPCI monthly totals (billions)
+bars: July 2026|23.66, August 2026|24.51
+note: Values are monthly network totals from NPCI, rounded to two decimal places; bar lengths compare months, not app shares.
 :::
 
-### The 30% Market Share Cap Conundrum
+## Follow One Tap Through the System
 
-To eliminate single-point-of-failure concentration risks, NPCI originally drafted a directive imposing a **30% volume cap** on any individual TPAP. However, enforcing this cap has proven to be an engineering and economic dilemma:
+1. **Discover the payee.** The payer opens a supported UPI app and taps a compatible NFC tag or smart QR. The app reads the merchant's payment details. This removes camera framing, but a compatible device and merchant marker are required.
+2. **Review the payment.** The app shows the payee and amount. The payer should verify both before proceeding. A merchant's audio confirmation is a notification, not cryptographic proof of settlement.
+3. **Authorize the right rail.** An eligible UPI LITE balance may use its lower-value flow. A larger online payment follows the UPI PIN path described by NPCI. Other authentication options and limits must be checked against current circulars and app support.
+4. **Wait for final status.** The app, network, and banks process the payment and return a status. A timeout needs reconciliation before retrying, because a missing response does not establish that the debit failed.
 
-1. **Enforcement Risk**: A hard algorithmic cutoff would mean that once PhonePe or Google Pay hits its 30% monthly volume quota, subsequent payment attempts by consumers at grocery stores, pharmacies, and street stalls would be declined.
-2. **Economic Disruption**: Rejecting transactions on the dominant consumer apps would immediately crash retail consumer spending and erode public trust in real-time payments.
-3. **Repeated Deadline Extensions**: Consequently, the implementation deadline has been systematically extended—from December 2022 to December 2024, and now pushed to **December 2026/2027**.
-4. **Organic Rebalancing Strategy**: Regulators and NPCI are instead pursuing structural rebalancing: encouraging bank-native applications, incentivizing new entrants through lower onboarding friction, and distributing volume across specialized architectural rails like UPI Circle, Credit Lines, and offline Lite X.
+## Four Rails, Four Different Questions
 
-### 2026 Macro Metrics & Infrastructure Resilience
+| Rail | What it changes | Key boundary |
+| --- | --- | --- |
+| UPI Tap & Pay | Captures the merchant's UPI details through NFC | A tap does not remove payment review or authorization |
+| UPI Circle | Delegates payment access | Consent, limits, revocation, and audit history matter |
+| Credit Line on UPI | Uses an eligible linked bank credit line | Terms and acceptance depend on the issuer and merchant context |
+| UPI LITE X | Supports eligible offline NFC payments | Device, balance, and later reconciliation rules matter |
 
-The sheer operational scale of India's UPI infrastructure in late 2026 is unparalleled globally:
+## Engineering Notes
 
-- **Monthly Volume**: 16.8+ billion transactions (over 560 million transactions processed every 24 hours).
-- **Monthly Value**: ₹24.2+ lakh crore ($290+ billion USD), representing an annualized run-rate exceeding **$3.5 trillion USD**—substantially greater than India's nominal GDP.
-- **Retail Payment Dominance**: UPI accounts for over **83% of all retail digital payment transactions** in India, having largely replaced cash for sub-₹500 micro-transactions.
-- **Central Switch Throughput**: The NPCI central clearing switch operates at an average baseline of 12,000–18,000 Transactions Per Second (TPS), with engineered burst capacity exceeding **50,000+ TPS** during national festive periods (e.g. Diwali shopping peaks).
-- **Technical Decline Rate (TD)**: Centralized optimization, multi-bank routing pools, and Core Banking System (CBS) offloading have compressed technical decline rates from 1.8% in 2021 to **less than 0.55% in 2026**.
+For a merchant or app team, instrument each stage separately: NFC read success, customer review, authorization, network response, and final confirmation. Show a QR fallback if NFC capture fails. Use unique transaction identifiers and reconcile timed-out payments before retrying. Expose delegation status and revocation clearly for UPI Circle. Measure real p50/p95/p99 times on supported devices instead of publishing a synthetic end-to-end latency budget.
 
-## TL;DR
-
-UPI in 2026 is no longer just a QR code scanner tied to a savings account. It is a distributed financial operating system with multiple specialized execution lanes. **UPI Tap to Pay** cuts checkout latency from 12 seconds to 400ms via NFC HCE. **UPI Circle** introduces delegated cryptographic spending trees for dependents. **UPI Lite & Lite X** bypass the core banking system (CBS) entirely at checkout time to guarantee 99.99% transaction uptime. **Credit lines on UPI** disintermediate plastic credit cards. If you are building fintech systems in 2026, treat UPI as a modular protocol stack with dedicated offline, credit, and biometric layers.
-
-## What Actually Shines
-
-### 1. NFC Host Card Emulation (HCE) Overcomes the QR Bottleneck
-
-Camera-based QR scanning suffers from physical real-world degradation: scratched terminal plastic, dirty camera lenses, low ambient light in street markets, glare from overhead lighting, and autofocus hunting on low-end Android devices.
-
-UPI Tap to Pay leverages standard ISO/IEC 14443 Type A and B specifications operating at 13.56 MHz:
-
-- **Client Protocol**: The smartphone runs an Android HCE service (or iOS NFC CoreNFC session) emulating a contactless smart card interface.
-- **NDEF Payload Transfer**: When the device is held within 4cm of an NFC-enabled merchant POS or smart soundbox, an encrypted NFC Data Exchange Format (NDEF) message containing the merchant's terminal ID, VPA, and dynamic invoice token is transmitted in <100ms.
-- **Micro-Tx Biometric Handshake**: For micro-payments under ₹2,000, the user’s on-device biometric sensor (fingerprint or 3D face scan registered via hardware Keystore / Secure Enclave) authorizes the transaction immediately, cutting total interaction time to ~400–600ms.
-
-### 2. UPI Circle: Cryptographic Delegated Spending Trees
-
-Previously, digital payments in multi-generational households required either handing over physical cards, sharing secret MPINs (a catastrophic security antipattern), or transferring lump-sum allowances into separate accounts.
-
-UPI Circle formalizes delegated authority at the NPCI switch level:
-
-- **Primary Custodian Node**: The bank account holder initiates a delegation contract specifying the secondary user’s mobile number / VPA.
-- **Dual Delegation Modes**:
-  1. *Full Delegation (Spend Quota)*: Primary user allocates a monthly limit (e.g., ₹5,000) and max per-transaction cap (e.g., ₹500). The secondary user taps and pays independently without the primary user receiving an authorization interrupt.
-  2. *Partial Delegation (Consensual Approval)*: The secondary user initiates a transaction; the NPCI switch routes an instant push challenge to the primary user's device. Upon biometric or MPIN confirmation by the primary, the debit executes.
-- **Revocation & Auditability**: The primary owner can dynamically adjust quotas, freeze delegation, or inspect itemized sub-ledgers in real time.
-
-### 3. Core Banking Offloading via UPI Lite and Offline Lite X
-
-Core Banking Systems (CBS) at large commercial banks were historically architected for batch processing and occasional branch/ATM queries—not 10,000 TPS of ₹10 chai and grocery purchases. During peak hours, bank CBS timeouts accounted for over 70% of all declined transactions.
-
-UPI Lite and Lite X resolve this by moving micro-transactions out of the synchronous CBS critical path:
-
-- **Pre-Funded On-Device Vault**: Users allocate up to ₹2,000 into a local cryptographic ledger.
-- **Zero-CBS Hit at Execution**: When paying via UPI Lite, the transaction settles against the issuing bank’s consolidated pool account without making a synchronous call to the customer’s individual core savings account ledger. The bank aggregates these transactions in periodic asynchronous clearing batches.
-- **UPI Lite X Offline NFC**: If cellular base stations fail or users are in underground metro stations, Lite X creates an encrypted point-to-point NFC channel between sender and receiver. Both hardware secure elements exchange cryptographically signed balance proofs. When either device re-establishes connectivity, the offline ledger delta syncs to the NPCI switch.
-
-### 4. Credit Lines on UPI: Disintermediating Plastic Cards
-
-Under the Reserve Bank of India's pre-sanctioned credit framework, commercial banks can now underwrite revolving credit lines linked directly to a customer's UPI ID:
-
-- **Zero Plastic Overhead**: Users access credit lines without applying for physical plastic cards, eliminating card printing, courier delivery, and chip embossing costs.
-- **Merchant Interchange Economics**: While standard UPI savings transactions carry zero Merchant Discount Rate (MDR) for merchants, credit lines on UPI introduce a tiered interchange structure (zero MDR under ₹2,000 for small merchants, and a capped 1.2–1.5% interchange for high-value retail), creating a sustainable monetization model for banks and payment apps.
-
-| Payment Rail | Checkout Latency | Connectivity Needed | Auth Mechanism | Max Transaction Cap | Primary Target Surface |
-|---|---|---|---|---|---|
-| **Legacy Optical QR** | 8,000–14,000ms | Full 4G/5G Online | 4/6-Digit MPIN | ₹1,00,000 | Standard printed stickers & dynamic POS screens |
-| **UPI Tap to Pay (NFC HCE)** | 400–800ms | Online (Client/POS) | Biometric Passkey / PIN | ₹2,000 (Passkey) / ₹1,00,000 (PIN) | NFC POS terminals & Smart Soundboxes |
-| **UPI Circle (Delegated)** | 500–1,200ms | Online | Primary Consent / Pre-set Quota | ₹15,000 / month | Family allowances, dependents & small business petty cash |
-| **UPI Lite (On-Device Pool)** | 300–600ms | Online (Device Only) | Zero PIN Required | ₹500 / transaction (₹2,000 wallet) | High-frequency daily micro-transactions (tea, transit, snacks) |
-| **UPI Lite X (Offline NFC)** | 250–500ms | 100% Offline | Secure Element Proof | ₹500 / transaction | Underground metro, aircraft, rural & disaster zones |
-| **Credit Lines on UPI** | 600–1,100ms | Online | Biometric / MPIN | Pre-approved bank credit line | High-ticket retail, consumer electronics & travel |
-
-## What I Would Watch Closely
-
-**Terminal Hardware Fragmentation.** While high-end retail chains operate modern NFC POS pads, millions of small neighborhood merchants (kiranas) rely on low-cost battery-operated cellular soundboxes. Equipping 40 million merchants with dual NFC-antenna soundboxes requires substantial hardware capital expenditure and distributor logistics.
-
-**Accidental NFC Proximity Triggers.** In densely packed public transit (e.g., Mumbai local trains or Delhi Metro gates), carrying an active NFC device near another passenger's phone or a vendor's mobile POS could theoretically trigger unintentional payload reads. NPCI specifications require the device to be unlocked with an active user intent signal (screen on + biometric unlock state) before the HCE service will release the payment payload.
-
-**Delegation Limit Cascades & Social Engineering.** Fraudsters targeting elderly citizens or children may attempt to exploit UPI Circle's secondary user status. If a child’s phone is compromised with remote screen-sharing malware (AnyDesk/TeamViewer-style APKs), attackers could rapidly exhaust the full monthly delegation quota across multiple micro-transactions. Robust behavioral anomaly detection at the PSP level is critical.
-
-**Offline Double-Spending Vectors.** UPI Lite X offline transactions rely on hardware-backed secure elements and monotonic transaction counters. If a rooted device attempts to rewind or replay signed offline balances across multiple disconnected merchant terminals, the clearing ledger must handle conflicting assertions gracefully without penalizing small merchants.
-
-## Architecture Pattern: End-to-End Latency Budget
-
-\`\`\`
-┌────────────────────────────────────────────────────────────────────────┐
-│                   UPI 2026 TRANSACTION LATENCY BUDGET                  │
-│                                                                        │
-│ 1. Client NFC Tap & Payload Exchange (ISO 14443 / HCE)      ~120ms    │
-│ 2. On-Device Biometric Verification (FIDO2 / KeyStore)      ~180ms    │
-│ 3. TPAP Client to Acquiring PSP Gateway (TLS 1.3 HTTP/2)   ~150ms    │
-│ 4. PSP to NPCI Unified Central Switch (ISO 20022 Router)    ~45ms     │
-│ 5. Switch Routing to Remitter Bank (Pool Account / Lite)    ~180ms    │
-│ 6. Central Fraud & Mule Velocity Evaluation (Vulcan Engine) ~15ms     │
-│ 7. Beneficiary Bank Credit & Push Confirmation              ~160ms    │
-│ 8. Merchant Soundbox Cellular Telemetry & Audio Chime       ~350ms    │
-│                                                                        │
-│ TOTAL END-TO-END LATENCY: ~1,200ms (p99 < 1.5s)                        │
-└────────────────────────────────────────────────────────────────────────┘
-\`\`\`
-
-## The Production Blueprint for Fintech Engineers
-
-When integrating UPI Tap to Pay and advanced 2026 rails into a financial application or merchant gateway:
-
-1. **Implement Android HCE Service with Strict Intent Gates**:
-   - Bind your \`HostApduService\` to the official NPCI AID (Application Identifier).
-   - Only return the active payment token when \`KeyguardManager.isDeviceLocked()\` evaluates to \`false\`.
-2. **Support Dynamic Fallback Routing**:
-   - If the merchant NFC reader fails to establish a carrier wave within 500ms, automatically trigger an instant display of the high-contrast dynamic QR code on the device screen without dropping the checkout session.
-3. **Enforce Idempotency on Delegated Circle Rails**:
-   - Every secondary transaction in UPI Circle must carry a unique \`DelegationConsentId\` along with a monotonic client sequence number to prevent duplicate debit submissions over flaky wireless connections.
-4. **Instrument Telemetry for Network Drops**:
-   - Track NFC handshake failure rates, biometric sensor aborts, and bank-specific CBS response distributions to continuously adjust client timeout thresholds.
-
-:::callout
-type: tip
-label: FINTECH ARCHITECTURE RULE
-text: The best payment interface is invisible. When checkout latency drops below 800 milliseconds, payments cease to be a conscious transactional chore and become a frictionless ambient layer of physical reality.
-:::
-
-## Things I Learned
-
-- Hardware contact beats optical scanning: NFC HCE eliminates 90% of environmental failure modes associated with optical camera framing.
-- Removing the bank's core banking system (CBS) from the critical path of micro-transactions via UPI Lite is the single most important architectural reason UPI scales reliably beyond 550 million daily transactions.
-- Delegated spending trees (UPI Circle) are mathematically cleaner and far safer than sharing accounts, passwords, or MPINs.
-- Soundbox audio chimes are not just consumer conveniences; they serve as cryptographic nonces confirming that clearing has finalized on the merchant's dedicated hardware.
-- Market concentration (PhonePe + Google Pay commanding >85%) proves that payment rails are classic two-sided network flywheels where merchant soundbox density and consumer UX lock-in dictate survival.
-
-## How I Would Apply This
-
-On portfolio projects and modern transaction architectures:
-
-- Design checkout flows that prioritize zero-latency local credentials (passkeys, secure biometric storage) over remote OTP verification.
-- Implement explicit failover lanes: if high-speed NFC or primary banking rails exhibit latency spikes above 800ms, immediately fall back to cached local tokens or asynchronous clearing pools.
-- Treat permission delegation as a first-class data primitive: hierarchical parent-child spending quotas with strict immutable boundaries provide a powerful pattern for enterprise SaaS billing and family financial tooling alike.
-
-## Bottom Line
-
-India's UPI in 2026 demonstrates how national-scale public digital infrastructure evolves. By pairing NFC Host Card Emulation with on-device biometrics, delegated authority trees, and offline cryptographic settlement, UPI has rendered the 10-year-old ritual of camera QR scanning obsolete—delivering a real-time, sub-second payment experience that sets the global benchmark.
-
----
+The main lesson: a faster way to discover the merchant can improve the payment experience, but it does not eliminate the financial controls or distributed-system failure modes that make payment status trustworthy.
 
 ### Sources and further reading
 
-- [NPCI Unified Payments Interface Official Overview](https://www.npci.org.in/what-we-do/upi/product-overview) — technical standards, API specifications, and architectural documentation
-- [Reserve Bank of India (RBI) Master Directions on Digital Payment Security Controls](https://www.rbi.org.in) — biometric authentication mandates, tokenization frameworks, and delegated payment regulations
-- [Android Developers: Host-based Card Emulation (HCE)](https://developer.android.com/guide/topics/connectivity/nfc/hce) — technical guide to implementing ISO/IEC 14443-4 APDU handling on Android devices
-- [FIDO Alliance: Passkeys and Contactless Payment Specifications](https://fidoalliance.org) — biometric authentication standards for retail financial transactions
-`,
+- [NPCI UPI monthly statistics](https://www.npci.org.in/product/upi/product-statistics) — August and July 2026 volume and value
+- [NPCI UPI Tap & Pay](https://www.npci.org.in/what-we-do/upi-lite/upi-tap-and-pay/product-overview) — NFC flow and payment limits
+- [NPCI digital payment launch](https://www.npci.org.in/PDF/npci/press-releases/2023/NPCI-Press-Release-RBI-Governor-Launches-Key-Digital-Payment-Initiatives-at-Global-Fintech-Fest-2023.pdf) — Credit Line on UPI and UPI LITE X context`,
   },
   {
     id: 'typesafe-ai-jev-system-one-decisions-2026',
@@ -2477,241 +2344,74 @@ India's UPI in 2026 demonstrates how national-scale public digital infrastructur
       'Type-Safe AI with Jev: Fast System 1 Decisions, Calibrated Probabilities, and the Jevons Paradox',
     kicker: 'Agent architecture',
     summary:
-      "Why TypeSafe AI's Jev model changes software architecture by separating fast, calibrated System 1 decisions from slow System 2 LLM reasoning: the $40M seed origin, William Stanley Jevons paradox, noul, choice, and score primitives, RLCD training, 70ms latency, and the elimination of fragile JSON schema repair loops in production agent loops.",
+      "A practical reading of TypeSafe AI's Jev: typed, probabilistic decisions, published latency and pricing claims, calibration limits, and where to keep human review in an agent workflow.",
     readerPromise:
-      'You will learn how to replace fragile JSON repair loops and expensive LLM classifiers with type-safe, calibrated probabilistic primitives that execute in 70ms at $0.042 per million tokens.',
+      'You will learn what TypeSafe AI reports about Jev, where typed decisions can help, and what to test before using probabilistic outputs in production.',
     pullQuote:
       'Most decisions in software are not 3,000-word philosophical essays; they are reflexive binary checks and category routings that belong in System 1, not in an autoregressive chain-of-thought loop.',
     highlights: [
       'System 1 vs System 2 AI',
       'RLCD Calibrated Probabilities',
-      '70ms Type-Safe Primitives',
+      'Typed decision primitives',
     ],
     tags: ['TypeSafe AI', 'Jev', 'System 1', 'AI Agents', 'TypeScript', 'System Design'],
     date: '2026-09-18',
-    readTime: '15 min read',
-    content: `For the past two years, the mainstream AI conversation has been obsessed with making models larger, slower, and more deliberative. We got chain-of-thought, reasoning models, test-time compute scaling, 30-second pause states, and $15-per-million-token frontier endpoints. But if you inspect actual production software—from CI/CD pipelines to IDE coding agents and web gateways—most engineering decisions do not require a 5,000-word philosophical essay. They are reflexive, instant, binary or categorical decisions: Is this input prompt a jailbreak? Does this diff contain a syntax error? Should this query route to vector search or the database? Is this bash command safe to execute in the terminal sandbox?
+    readTime: '6 min read',
+    content: `TypeSafe AI introduced **Jev** on September 15, 2026 as an early-access System One model for typed, probabilistic decisions. The company reports **70–500 ms end-to-end response times** and **$0.042 per million input tokens** for its own service. Those are vendor claims for a particular workload, not a latency or cost guarantee for every integration.
 
-> Reader promise: You will learn how to replace fragile JSON repair loops and expensive LLM classifiers with type-safe, calibrated probabilistic primitives that execute in 70ms at $0.042 per million tokens.
+> Reader promise: Understand when a typed decision helps an agent, what calibrated confidence means, and why a policy still needs evaluation and review.
 
 ## Fast Context
 
 :::figure
-src: assets/images/blog/typesafe-ai-jev-architecture.jpg
-alt: TypeSafe AI Jev System 1 Architecture
-caption: Figure 2.0 — TypeSafe AI's Jev model architecture: state context ingestion, parallel question evaluation across noul/choice/score primitives, RLCD calibration, and ultra-fast type-safe agent pre-routing.
+src: assets/images/blog/typesafe-ai-jev-architecture-codex-openai.webp
+alt: Context and question entering a typed-decision instrument with action and review paths
+caption: Conceptual decision workflow: state and a question produce a typed answer, then application policy chooses action or human review.
 :::
 
-In September 2026, Flavio Copes published a technical breakdown of **Jev**, a specialized model created by **TypeSafe AI** (a stealth AI startup founded by alumni from OpenAI, Stanford, and Google Brain that raised a $40M seed round). Jev takes a completely different philosophical and mathematical path from standard autoregressive LLMs.
-
-Instead of generating text one token at a time, Jev is explicitly trained as a **System 1 decision engine**:
-
-- **Named after William Stanley Jevons (1835–1882)**: The British economist who discovered the *Jevons Paradox*—the counter-intuitive observation that increasing the efficiency with which a resource is used increases, rather than decreases, the overall rate of consumption of that resource. In AI systems: making high-quality intelligent decisions 100x faster and 1,000x cheaper ($0.042 / 1M tokens) will not reduce our AI calls; it will cause an explosion of embedded AI decision gates across every layer of software.
-- **Daniel Kahneman's Dual-Process Cognitive Framing**: Kahneman's *Thinking, Fast and Slow* divides thought into **System 1** (fast, automatic, intuitive, low-effort pattern matching) and **System 2** (slow, deliberate, analytical, high-effort logical reasoning). Frontier LLMs (o1, o3, Claude 3.7 Sonnet thinking) are System 2. Jev is purpose-built to be the System 1 of modern software.
-- **Three Core Question Primitives**: Rather than free-form text or schema-enforced JSON generation, Jev answers questions about a state using three strictly typed primitives:
-  1. \`noul\`: Binary yes/no predicate returning a calibrated probability float between \`0.0\` and \`1.0\`.
-  2. \`choice\`: Discrete classification among a specified string array, returning a probability distribution that sums to \`1.0\`.
-  3. \`score\`: Continuous rating across a defined numerical range (e.g. 1 to 5 stars or 0 to 10 severity), returning a probability distribution and expected value.
-- **Calibrated Probabilities via RLCD**: Trained with *Reinforcement Learning from Calibrated Demonstrations*. When Jev asserts a probability of \`0.85\`, it means exactly 85% of such historical assertions are mathematically true—enabling true Bayesian decision thresholds in production code.
+A conventional language model generates strings. Jev is designed to return predefined structured values and probabilities, with multiple answers sampled in parallel. The useful architectural distinction is the contract around a decision: the application decides which possible outputs are legal and how much uncertainty it can tolerate.
 
 :::embed
-kicker: Analysis
-title: Type-Safe AI: Introducing Jev by Flavio Copes
-href: https://flaviocopes.com/jev/
-desc: An in-depth analysis of TypeSafe AI's System 1 model, William Stanley Jevons paradox, question primitives, calibrated probabilities, and sub-100ms agent decision architectures.
+kicker: Primary source
+title: TypeSafe AI introduces System One Models and Jev
+href: https://typesafe.ai/blog/introducing-system-one-models-and-jev
+desc: Vendor announcement with published latency, pricing, output, and evaluation caveats.
 :::
 
-## The William Stanley Jevons Paradox in Computing: 1865 to 2026
+## What “Calibrated” Means
 
-To understand why TypeSafe AI named their model Jev, one must revisit 19th-century industrial economics:
-
-In 1865, English economist William Stanley Jevons published *The Coal Question*. At the time, James Watt had developed a steam engine that consumed vastly less coal than Thomas Newcomen's primitive atmospheric engine. British politicians expected national coal consumption to plummet. Jevons proved the exact opposite: by slashing the cost per unit of mechanical horsepower, Watt made steam engines economically viable across thousands of previously unmechanized industries—textile spinning, locomotive railways, iron smelting, deep-shaft mining, and ocean steamships. British coal consumption exploded tenfold.
-
-In modern software engineering, we are witnessing the exact same economic mechanism:
-
-1. **The High-Cost Era (2023–2024)**: Evaluating an LLM decision cost $20 to $60 per million tokens and took 1,500ms to 4,000ms. Software architects rationed AI calls strictly to user-facing conversational chatbots.
-2. **The Efficiency Tipping Point (2026)**: When an intelligent probabilistic evaluation drops to **$0.042 per million tokens** and resolves in **70ms**, engineers stop treating AI as a destination modal.
-3. **The Jevons Explosion**: AI decision heads get woven into every \`if\`-statement, Git commit hook, SQL query analyzer, linter rule, customer support router, and kernel sandbox guard. Lowering the cost of intelligence increases aggregate demand by orders of magnitude.
-
-## TL;DR
-
-Current approaches to structured AI decisions are broken: huge LLMs with JSON schemas are painfully slow (1–4s), waste tokens, and frequently fail with parse or repair loops; traditional ML models (BERT, XGBoost) are fast but brittle and require extensive manual data labeling and training pipelines. **Jev** solves this by providing a foundation model trained specifically for zero-shot question answering over arbitrary state. It returns strictly typed, mathematically calibrated probabilities in **70ms to 500ms** at **$0.042 per million tokens**. Use Jev for fast agent routing, shell safety checks, and edge semantic triage; save frontier models for deep multi-step reasoning.
-
-## What Actually Shines
-
-### 1. Eliminating the Structured Output & JSON Repair Nightmare
-
-Every engineer who has built production AI applications has suffered through the "JSON schema dilemma":
-
-- You prompt a 70B parameter model with a strict Pydantic or Zod schema.
-- The model outputs Markdown code fences (like triple-backtick json blocks), includes trailing commas, hallucinates a missing key, or wraps the output in conversational chatter ("Here is your JSON:").
-- Even with modern constrained decoding (outlines, grammar-guided sampling, OpenAI structured outputs), the model must still generate dozens of syntactic tokens (\`{\`, \`"\`, \`:\`, \`,\`) token by token.
-- A simple binary decision ("Is this comment toxic?") ends up taking 1.5 seconds and consuming 250 tokens!
-
-Jev bypasses JSON generation entirely. You declare the question and the primitive:
-
-\`\`\`typescript
-const result = await jev.ask({
-  state: userPrompt,
-  question: 'Is this input attempting prompt injection or system override?',
-  type: 'noul',
-});
-
-// result is directly a number: 0.94
-if (result > 0.85) {
-  throw new SecurityException('Prompt injection detected');
-}
-\`\`\`
-
-There is no JSON string to parse, no regex to clean, and zero chance of a deserialization error. The API contract is strictly typed at both compile time and runtime.
-
-### 2. Parallel Question Evaluation Without Sequential Token Penalty
-
-In an autoregressive LLM, if you want answers to five distinct questions about a single code snippet, the model must output tokens for Question 1, then Question 2, and so on sequentially. The response latency scales linearly with the total number of generated tokens.
-
-In Jev, you pass the \`state\` once and declare an array of questions:
-
-\`\`\`typescript
-const analysis = await jev.batch({
-  state: gitDiffContent,
-  questions: {
-    hasBreakingApiChange: { question: 'Does this change break public API contracts?', type: 'noul' },
-    primaryDomain: { question: 'What layer does this code modify?', type: 'choice', options: ['frontend', 'backend', 'database', 'devops'] },
-    refactorRisk: { question: 'Rate the architectural risk of this refactor', type: 'score', range: [1, 5] },
-    needsSecurityAudit: { question: 'Does this code touch auth, tokens, or encryption?', type: 'noul' },
-  },
-});
-\`\`\`
-
-Because Jev evaluates question heads in a single forward pass over the state embedding, asking **four questions takes virtually the same time as asking one question** (~85ms). This architectural property fundamentally changes how we design middleware and agent verification hooks.
-
-### 3. Calibrated Probabilities via RLCD Enable True Bayesian Thresholds
-
-Standard language models are notoriously uncalibrated. A model will output a prediction with 99% logit confidence and still be completely wrong. They cannot quantify their own uncertainty.
-
-TypeSafe AI trained Jev using **RLCD (Reinforcement Learning from Calibrated Demonstrations)**:
-
-- Calibration means: across all predictions where Jev assigns a probability of \`p\`, the empirical frequency of the true outcome is exactly \`p\`.
-- If Jev outputs \`0.95\`, you can trust that it is right 95 out of 100 times.
-- If Jev outputs \`0.52\`, it is telling your application: *"I genuinely do not know; this is an almost even coin flip."*
-
-This unlocks rigorous multi-tier routing policies in production:
-
-\`\`\`typescript
-if (analysis.refactorRisk.expectedValue <= 1.5 && analysis.hasBreakingApiChange < 0.05) {
-  // Tier 1: Auto-merge in CI pipeline (100% automated)
-  await approvePullRequest();
-} else if (analysis.hasBreakingApiChange >= 0.05 && analysis.hasBreakingApiChange <= 0.40) {
-  // Tier 2: Escalate to System 2 model (e.g. Claude 3.7 Sonnet / o3) for deep verification
-  await triggerDeepAstReasoning();
-} else {
-  // Tier 3: Block and require Senior Staff Engineer manual sign-off
-  await blockDeploymentWithAuditNotice();
-}
-\`\`\`
-
-| AI Decision Paradigm | Latency (p50 / p99) | Cost per 1M Tokens | Zero-Shot Capability | Probability Calibration | Type Safety Guarantee | Best Suited Workloads |
-|---|---|---|---|---|---|---|
-| **Jev System 1 (TypeSafe AI)** | 70ms / 450ms | $0.042 | Native across any state | Mathematically Calibrated (RLCD) | Native primitive (Number, Float, Distribution) | Real-time agent routing, pre-flight safety gates, CI linting |
-| **Traditional ML (BERT / XGBoost)** | 25ms / 120ms | ~$0.010 (Self-hosted) | None (Requires dataset labeling & fine-tuning) | Poor (Requires Platt scaling) | Fixed classifier classes | Narrow high-volume classification (Spam, Ad-click CTR) |
-| **Frontier LLM (GPT-4o / Claude 3.5)** | 1,200ms / 3,500ms | $2.50 – $5.00 | Strong zero-shot | Highly uncalibrated logits | Fragile JSON schemas & repair loops | Complex document synthesis, multi-turn dialogue, agent tools |
-| **Reasoning Model (o1 / o3 / Claude Thinking)** | 4,000ms / 30,000ms | $15.00 – $60.00 | State of the art | Poor confidence awareness | Token-heavy text output | Mathematical proofs, formal verification, zero-day security |
+A calibrated model should give outcomes labeled 0.8 a roughly 80% success frequency **on a defined evaluation set**. This is a property to measure, not a promise that any individual 0.8 prediction is correct. Drift, new users, unusual data, and unclear labels can change calibration after deployment. TypeSafe calls its training method **Reinforcement Learning for Calibrated Decisions (RLCD)**.
 
 :::chart
-title: Decision Latency and Cost Efficiency by Model Category
-bars: Traditional ML BERT (Fast but zero zero-shot)|35, Jev System 1 Primitives (70ms / $0.042)|98, Standard LLM JSON Mode (1.8s / $5.00)|42, Frontier Reasoning Model (12s / $25.00)|20
-note: Composite operational score reflecting latency, zero-shot flexibility, cost per evaluation, and schema reliability.
+title: Example review policy for probabilistic decisions
+bars: Low-risk review threshold|20, Human-review band|60, High-confidence action threshold|90
+note: Illustrative policy thresholds only. They are not Jev benchmark results or recommended production settings.
 :::
 
-## What I Would Watch Closely
+## A Practical Agent Pattern
 
-**State Context Size Limits.** Jev is designed for razor-sharp evaluation of bounded contexts (code diffs, shell commands, user messages, log lines, customer reviews). If you attempt to feed a 500-page PDF or an entire 100,000-line repository AST into a single Jev state, you will hit context degradation. For large documents, chunking and semantic pre-filtering remain necessary.
+1. **Define the state and the question.** Keep the input bounded and include only data available when the decision is made. For a code change, this might be the diff, test results, and repository policy.
+2. **Constrain the output.** A typed yes/no answer, a choice among known destinations, or a score is easier to validate than free-form text. Check the current SDK documentation for exact method names and response shapes before coding.
+3. **Measure on your own data.** Compare latency, cost, accuracy, and calibration with a baseline on representative traffic. The vendor's demo may use shorter, denser inputs than a real workflow.
+4. **Keep the consequence separate.** A confidence score can route a request to deeper review. It should not authorize an irreversible shell command, payment, or production merge on its own.
+5. **Monitor drift.** Track error rates by category and periodically re-check calibration against outcomes that became known later.
 
-**Not a Text Generator.** Jev cannot write an essay, compose a Python script, or generate markdown documentation. Teams must understand that Jev is an *intelligent decision head*, not a generative creative engine. It complements generative models; it does not replace them.
+| Decision need | Typed decision model | General language model |
+| --- | --- | --- |
+| Fixed categories or scores | Natural fit when outputs are defined in advance | Possible, but output validation is still needed |
+| Long-form explanation or code | Requires another component | Natural fit |
+| Production safety | Needs thresholds, evaluation, and fallback | Needs validation, evaluation, and fallback |
 
-**Prompt Framing Sensitivity on Binary Noul Questions.** The precision of a \`noul\` question depends on unambiguous phrasing. Asking *"Is this code good?"* will yield unhelpful mid-range probabilities (~0.50) because "good" is subjective. Asking *"Does this TypeScript code contain unhandled Promise rejections or missing catch blocks?"* produces sharp, highly calibrated probabilities (0.02 or 0.97).
+## What the Announcement Does and Does Not Establish
 
-**Ecosystem Maturity.** As a model introduced in mid-2026 with a $40M seed round, TypeSafe AI's hosted infrastructure, enterprise VPC deployment options, and multi-region failover availability are still scaling compared to hyperscalers like AWS or OpenAI.
+TypeSafe reports strong speed and efficiency on its System One evaluations and explicitly notes that some demonstrations use short, advantageous inputs. The announced price applies to input tokens; the company lists output tokens as free. Neither claim proves another team's end-to-end workflow will be faster or cheaper after network calls, preprocessing, human review, and retries. Public examples also do not establish that every confidence estimate stays calibrated on an unseen domain.
 
-## Architecture Pattern: The System 1 + System 2 Agent Loop
-
-\`\`\`
-┌────────────────────────────────────────────────────────────────────────┐
-│               THE COGNITIVE DUAL-PROCESS AGENT HARNESS                │
-│                                                                        │
-│ 1. INCOMING EVENT / ACTION CANDIDATE                                   │
-│    (e.g., Coding agent proposes terminal command: "rm -rf build/ dist/")│
-└──────────────────────────────────┬─────────────────────────────────────┘
-                                   │
-                                   ▼
-┌────────────────────────────────────────────────────────────────────────┐
-│ 2. JEV SYSTEM 1 PRE-ROUTER (~75ms, $0.042/1M tokens)                   │
-│    Q1: Is this command dangerous or irreversible?  -> noul: 0.98       │
-│    Q2: What is the risk tier?                      -> score: 4.8 / 5   │
-│    Q3: Category of operation?                      -> choice: 'delete' │
-└──────────────────────────────────┬─────────────────────────────────────┘
-                                   │
-                 ┌─────────────────┴─────────────────┐
-                 ▼ (Risk > 0.85)                     ▼ (Risk < 0.10)
-┌──────────────────────────────────┐┌───────────────────────────────────┐
-│ 3A. ESCALATE / INTERRUPT         ││ 3B. FAST PATH EXECUTION           │
-│ - Require user approval prompt   ││ - Execute immediately in sandbox  │
-│ - OR pass to System 2 model for  ││ - Sub-100ms total overhead        │
-│   deliberate sandbox sandbagging ││ - Zero human interruption         │
-└──────────────────────────────────┘└───────────────────────────────────┘
-\`\`\`
-
-## The Workflow I Would Use
-
-Here is how I would integrate Jev into an autonomous coding agent loop:
-
-1. **Pre-Execution Shell Command Guardrail**:
-   - Ingest proposed shell command and current working directory as \`state\`.
-   - Ask \`isDangerous\`: \`"Does this command recursively delete directories, modify git history, or expose secrets?"\`.
-   - If probability > \`0.05\`, immediately halt and ask user for confirmation.
-2. **Semantic Gateway Triage**:
-   - At the HTTP edge (Cloudflare Worker / Vercel Edge), inspect incoming user query.
-   - Batch questions: \`isGreeting\`, \`isPortfolioQuery\`, \`isCodeRequest\`, \`requiresWebSearch\`.
-   - Route greetings to local static cache (0ms); route complex coding to frontier LLM; route portfolio questions to vector index.
-3. **Automated PR Review Triage in GitHub Actions**:
-   - Read changed files and AST diff.
-   - Ask \`affectsDatabaseSchema\` and \`touchesPaymentLogic\`.
-   - Dynamically tag PRs and assign required security reviewers before running costly integration test suites.
-
-:::callout
-type: tip
-label: JEVONS PARADOX PRINCIPLE
-text: When intelligent decisions cost essentially zero and resolve in double-digit milliseconds, AI stops being a slow, awkward chat modal and becomes the nervous system woven into every if-statement.
-:::
-
-## Things I Learned
-
-- Kahneman's cognitive split (System 1 vs System 2) is the single clearest framework for organizing multi-model AI stacks in 2026.
-- Autoregressive generation of JSON strings is an architectural antipattern for simple classification and routing tasks.
-- Calibrated probabilities matter far more than binary 0/1 labels because they allow software engineers to set custom risk-tolerance thresholds depending on the business impact of a false positive.
-- The Jevons Paradox in computing is undefeated: from transistors to bandwidth to cloud VMs, making a compute primitive cheap and fast unlocks orders of magnitude greater demand.
-
-## How I Would Apply This
-
-On this portfolio and our AssistMe agent stack:
-
-- Implement Jev-style fast routing at the edge: before dispatching a user prompt to a multi-dollar frontier model like Grok 4.5 or Claude 3.7 Sonnet, run a 75ms System 1 check to determine if the query can be answered by local portfolio knowledge or canned offline cards.
-- Add pre-flight safety filters on tool execution: verify terminal commands and file edits through calibrated probability gates before executing disk writes.
-- Replace fragile regex matching for user intent with strictly typed \`choice\` primitives.
-
-## Bottom Line
-
-Jev represents the maturation of applied AI. By focusing on fast, calibrated, type-safe System 1 decisions instead of another slow chat interface, TypeSafe AI has built the missing connective tissue for software engineering. Pair Jev for fast reflex decisions with frontier reasoning models for deliberate synthesis, and you have an architecture that is both lightning-fast and bulletproof.
-
----
+For builders, the strongest takeaway is a design pattern: let a fast model answer narrow, typed questions and make the surrounding software responsible for policy, traceability, and escalation. Test that pattern against your own tasks before replacing a working classifier or structured-output flow.
 
 ### Sources and further reading
 
-- [Type-Safe AI: Introducing Jev by Flavio Copes](https://flaviocopes.com/jev/) — architectural breakdown of Jev, System 1 thinking, and question primitives
-- [William Stanley Jevons: The Coal Question (1865)](https://en.wikipedia.org/wiki/Jevons_paradox) — foundation of the Jevons Paradox in economic resource consumption
-- [Daniel Kahneman: Thinking, Fast and Slow (2011)](https://en.wikipedia.org/wiki/Thinking,_Fast_and_Slow) — dual-process theory of cognitive systems
-- [TypeSafe AI Official Portal](https://typesafe.ai) — model documentation, SDK references, and RLCD calibration benchmarks
-`,
+- [TypeSafe AI: Introducing System One Models & Jev](https://typesafe.ai/blog/introducing-system-one-models-and-jev) — primary launch, reported price, latency, and evaluation caveats
+- [TypeSafe documentation](https://docs.typesafe.ai/) — current API contracts and supported output types`,
   },
 ];
 

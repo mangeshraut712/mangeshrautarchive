@@ -16,7 +16,6 @@ mangeshrautarchive/
 ├── vercel.json               # Vercel serverless routes, headers, functions configuration
 ├── index.js                  # Static-analysis entrypoint → src/js/entry.js
 ├── playwright.config.js      # Multi-browser Playwright E2E configuration (16 browser profiles)
-├── vitest.config.js          # Unit testing configuration → tests/unit/**/*.test.js
 ├── eslint.config.js          # ESLint 10+ flat configuration
 ├── pyproject.toml            # Python 3.12+ project config + pytest / Ruff tool configurations
 ├── requirements.txt          # Production Python API dependencies (FastAPI, Pydantic, etc.)
@@ -58,7 +57,6 @@ mangeshrautarchive/
 │   └── offline/              # Offline data builders (travel GeoJSON database)
 │
 ├── tests/                    # ★ Complete Automated Test Suite
-│   ├── unit/                 # Vitest coverage for JS modules, WebMCP actions, and data contracts
 │   ├── api/                  # pytest coverage for FastAPI routes, streaming, OAuth, and middleware
 │   └── e2e/                  # Playwright multi-browser end-to-end specifications across 16 targets
 │
@@ -98,7 +96,6 @@ mangeshrautarchive/
 | Build step                        | `scripts/build/`                                         |
 | Deploy / security / Lighthouse    | `scripts/deployment/`                                    |
 | One-off QA script                 | `scripts/qa/` or `scripts/qa/manual/`                    |
-| Vitest unit test                  | `tests/unit/`                                            |
 | API test                          | `tests/api/`                                             |
 | Playwright E2E                    | `tests/e2e/`                                             |
 | Architecture notes                | `docs/`                                                  |
@@ -108,7 +105,7 @@ mangeshrautarchive/
 
 ## Root files that must stay at root
 
-Tooling expects these paths: `package.json`, `vercel.json`, `playwright.config.js`, `vitest.config.js`, `eslint.config.js`, `.prettierrc`, `.stylelintrc.json`, `CNAME`, `pyproject.toml`, `requirements*.txt`.
+Tooling expects these paths: `package.json`, `vercel.json`, `playwright.config.js`, `eslint.config.js`, `.prettierrc`, `.stylelintrc.json`, `CNAME`, `pyproject.toml`, `requirements*.txt`.
 
 Do **not** move them into `config/` without updating every consumer.
 
@@ -122,7 +119,8 @@ Do **not** move them into `config/` without updating every consumer.
 npm run clean          # dist, artifacts, caches (keeps venvs)
 npm run doctor         # root layout + stack guard (vanilla ESM + FastAPI)
 npm run format         # Prettier write
-npm run check          # lint + format check + unit tests
+npm run check          # lint + format check
+npm test               # API tests + critical browser journeys
 ```
 
 ## Crawl map and sitemap

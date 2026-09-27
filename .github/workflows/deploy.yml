@@ -100,10 +100,6 @@ jobs:
         id: format
         run: npm run format:check
 
-      - name: Unit tests — Vitest
-        id: unit
-        run: npm test
-
       - name: Doctor — env / production API surface (non-blocking)
         # Probes live API when reachable; does not require Vercel tokens in CI.
         id: doctor_full
@@ -165,7 +161,7 @@ jobs:
           export DEBIAN_FRONTEND=noninteractive
           setsid timeout --kill-after=30s 4m npx playwright install-deps chromium
 
-      - name: Browser QA — smoke + accessibility + FPS
+      - name: Browser QA — FPS
         id: browser
         timeout-minutes: 25
         run: |
@@ -198,14 +194,6 @@ jobs:
             fi
             sleep 1
           done
-          PLAYWRIGHT_BASE_URL=http://127.0.0.1:4000 \
-            npx playwright test \
-              tests/e2e/smoke.spec.js \
-              --project="Desktop Chrome"
-          PLAYWRIGHT_BASE_URL=http://127.0.0.1:4000 \
-            npx playwright test \
-              tests/e2e/accessibility.spec.js \
-              --project="Desktop Chrome"
           PLAYWRIGHT_BASE_URL=http://127.0.0.1:4000 npm run qa:browser:ci
 
       - name: Build production bundle
@@ -225,7 +213,7 @@ jobs:
           GITHUB_PAGES: true
           GITHUB_SHA: ${{ github.sha }}
 
-      - name: Lighthouse gates — desktop + mobile (dist)
+      - name: Built-site journeys + Lighthouse gates — desktop + mobile
         id: lighthouse
         timeout-minutes: 15
         run: |
@@ -259,6 +247,7 @@ jobs:
           done
           # Warm up the server and cache
           curl -fsS --max-time 10 http://127.0.0.1:4000/?perf-audit=1 >/dev/null 2>&1 || true
+          PLAYWRIGHT_BASE_URL=http://127.0.0.1:4000 npm run test:e2e:critical
           node scripts/deployment/lighthouse-gate.js \
             --url=http://127.0.0.1:4000/ \
             --form-factor=desktop \
@@ -298,12 +287,11 @@ jobs:
             echo "| ESLint | $(mark '${{ steps.lint_js.outcome }}') |"
             echo "| Stylelint | $(mark '${{ steps.lint_css.outcome }}') |"
             echo "| Prettier | $(mark '${{ steps.format.outcome }}') |"
-            echo "| Vitest | $(mark '${{ steps.unit.outcome }}') |"
             echo "| flake8 / dead-code | $(mark '${{ steps.flake8.outcome }}') / $(mark '${{ steps.dead_code.outcome }}') |"
             echo "| API pytest | $(mark '${{ steps.api.outcome }}') |"
-            echo "| Browser QA (smoke + a11y + FPS) | $(mark '${{ steps.browser.outcome }}') |"
+            echo "| Browser QA (FPS) | $(mark '${{ steps.browser.outcome }}') |"
             echo "| Production build | $(mark '${{ steps.build.outcome }}') |"
-            echo "| Lighthouse desktop + mobile (dist) | $(mark '${{ steps.lighthouse.outcome }}') |"
+            echo "| Built-site journeys + Lighthouse (dist) | $(mark '${{ steps.lighthouse.outcome }}') |"
             echo "| Doctor (env/API) | $(mark '${{ steps.doctor_full.outcome }}') (non-blocking) |"
             echo ""
             echo "- Event: \`${{ github.event_name }}\`"

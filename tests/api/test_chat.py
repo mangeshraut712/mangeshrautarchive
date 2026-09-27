@@ -21,6 +21,7 @@ from api.routes.chat import openrouter_request_body
 from api.site_knowledge import (
     format_blog_release_summary,
     format_usa_state_summary,
+    get_blog_posts,
     retrieve_site_context,
     should_use_web_tools,
 )
@@ -147,6 +148,14 @@ def test_blog_release_summary_finds_june_2026_titles():
     assert "NotebookLM 2026 Field Notes: Source Grounding Under Agentic Pressure" in summary
     assert "2026-06-12" in summary
     assert "2026-06-10" in summary
+
+
+def test_blog_catalogue_includes_latest_articles():
+    posts = get_blog_posts()
+
+    assert len(posts) == 18
+    assert any(post["date"] == "2026-09-18" and "Jev" in post["title"] for post in posts)
+    assert any(post["date"] == "2026-09-14" and "UPI Tap to Pay" in post["title"] for post in posts)
 
 
 def test_chat_local_mode_answers_travel_state_and_blog_release_questions(client, monkeypatch):

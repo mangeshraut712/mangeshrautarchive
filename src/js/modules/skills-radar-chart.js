@@ -47,7 +47,7 @@ export class SkillsRadarChart {
         id: 'testing',
         label: 'Testing & Quality Gates',
         score: 99,
-        tools: 'Vitest, pytest, Playwright, Axe',
+        tools: 'pytest, Playwright, Axe',
       },
     ];
     this.center = 200;

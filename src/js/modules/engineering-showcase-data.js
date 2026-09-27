@@ -240,7 +240,7 @@ export const engineeringTimeline = [
     items: [
       'Full Website 5-Phase Overhaul & Refactoring',
       'Modular Monitor Architecture (src/js/modules/monitor-page.js, -76% HTML size)',
-      '303 Vitest unit tests · 179 pytest API tests · 16 Playwright browser projects',
+      '182 pytest API tests · 6 critical browser journeys · 16 Playwright browser projects',
       'Vendor Rich-Markdown Bundle Compression (604 KB → 334 KB, -17,050 lines)',
       'Evidence-based competency tiers (Core, Proficient, Familiar) replacing percentages',
       'Clean SEO canonical URL architecture & skip-navigation accessibility',
@@ -376,9 +376,9 @@ export const staticBenchmarks = [
   {
     id: 'test-matrix',
     label: 'Automated test matrix',
-    value: String(TEST_COUNTS.vitest + TEST_COUNTS.pytest),
+    value: String(TEST_COUNTS.pytest + TEST_COUNTS.criticalBrowser),
     unit: 'tests',
-    context: `${TEST_COUNTS.vitest} Vitest · ${TEST_COUNTS.pytest} pytest · ${TEST_COUNTS.playwrightProjects} Playwright projects`,
+    context: `${TEST_COUNTS.pytest} pytest · ${TEST_COUNTS.criticalBrowser} critical browser journeys · ${TEST_COUNTS.playwrightProjects} Playwright projects`,
   },
   {
     id: 'api-p95',

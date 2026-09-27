@@ -6,6 +6,7 @@ does not read environment files, git metadata, logs, or arbitrary paths.
 
 from __future__ import annotations
 
+import json
 import re
 from dataclasses import dataclass
 from datetime import date
@@ -246,22 +247,6 @@ def _extract_travel_stops(raw: str) -> List[Dict[str, str]]:
     return stops
 
 
-def _extract_blog_posts(raw: str) -> List[Dict[str, str]]:
-    """Parse title/date pairs from blog-data.js object literals.
-
-    Field notes include summary/readerPromise/pullQuote/highlights between title and
-    date, so the window must be wide enough for longer metadata blocks.
-    """
-    posts = []
-    pattern = re.compile(
-        r"""title:\s*['"](?P<title>[^'"]+)['"].{0,2500}?date:\s*['"](?P<date>\d{4}-\d{2}-\d{2})['"]""",
-        re.S,
-    )
-    for match in pattern.finditer(raw):
-        posts.append({"title": match.group("title"), "date": match.group("date")})
-    return posts
-
-
 @lru_cache(maxsize=1)
 def get_travel_summary() -> Dict[str, Any]:
     raw = _read_public_source("src/js/data/travel-locations.js")
@@ -290,7 +275,20 @@ def get_travel_summary() -> Dict[str, Any]:
 
 @lru_cache(maxsize=1)
 def get_blog_posts() -> List[Dict[str, str]]:
-    return _extract_blog_posts(_read_public_source("src/js/modules/blog-data.js"))
+    raw = _read_public_source("src/assets/data/blog-catalog.json")
+    try:
+        catalog = json.loads(raw)
+    except ValueError:
+        return []
+    if not isinstance(catalog, list):
+        return []
+    return [
+        {"title": post["title"], "date": post["date"]}
+        for post in catalog
+        if isinstance(post, dict)
+        and isinstance(post.get("title"), str)
+        and isinstance(post.get("date"), str)
+    ]
 
 
 def format_usa_state_summary() -> str:

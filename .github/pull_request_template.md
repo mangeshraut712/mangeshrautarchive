@@ -17,9 +17,9 @@
 
 <!-- Describe the tests you ran and how to reproduce them. -->
 
-- [ ] Unit tests pass (`npm test` / `npm run check`)
+- [ ] Lint and format pass (`npm run check`)
 - [ ] API tests pass (`npm run test:api`)
-- [ ] E2E smoke (when UI changes): `npm run test:e2e:chrome`
+- [ ] Critical browser journeys pass (`npm run test:e2e:critical`)
 - [ ] Lighthouse (when performance-sensitive): `npm run qa:lighthouse:desktop`
 
 ## Deploy impact

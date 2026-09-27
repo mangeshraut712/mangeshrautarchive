@@ -1,7 +1,7 @@
 import { mkdir, writeFile } from 'fs/promises';
 import { dirname, resolve } from 'path';
 import { fileURLToPath } from 'url';
-import { blogPosts } from '../../src/js/modules/blog-data.js';
+import { blogPosts, getBlogPostImage } from '../../src/js/modules/blog-data.js';
 import {
   buildTableOfContents,
   escapeHTML,
@@ -52,8 +52,7 @@ function sortedPosts() {
 }
 
 function postImagePath(post) {
-  const match = String(post?.content || '').match(/:::figure[\s\S]*?^src:\s*([^\s]+)\s*$/m);
-  return match?.[1] || 'assets/images/profile-icon.png';
+  return getBlogPostImage(post);
 }
 
 function postImageUrl(post) {
@@ -171,10 +170,15 @@ function pageShell({
 }
 
 function renderBlogIndex(posts, tags) {
+  const [featured, ...archivePosts] = posts;
   const cards = posts
     .map(
       post => `
     <article class="blog-card blog-card--editorial" data-id="${post.id}" data-tags="${escapeHTML((post.tags || []).join(','))}">
+      <a class="blog-card-media" href="${blogPostHref(post.id)}" aria-label="Read ${escapeHTML(post.title)}">
+        <img src="../${escapeHTML(postImagePath(post))}" alt="" width="1600" height="900" loading="lazy" decoding="async" />
+        <span class="blog-card-media-shine" aria-hidden="true"></span>
+      </a>
       <div class="blog-card-content">
         <div class="blog-card-top">
           <div class="blog-card-meta">
@@ -207,14 +211,35 @@ function renderBlogIndex(posts, tags) {
     <main id="main-content" class="blog-index-main">
       <a href="${ASSET_PREFIX}/" class="blog-back-link"><i class="fas fa-arrow-left" aria-hidden="true"></i> Back to portfolio</a>
       <header class="blog-index-header">
-        <p class="blog-index-kicker">Technical Writings</p>
+        <p class="blog-index-kicker">September 2026 Edition</p>
         <h1 class="blog-index-title">Field notes on AI, systems, and product engineering</h1>
         <p class="blog-index-lede">Long-form field notes with reader promises, practical workflows, and honest tradeoffs — written for engineers who want signal, not hype. Claims are labeled when they are judgment, and linked when they are facts.</p>
         <div class="blog-index-meta">
           <span>${posts.length} articles</span>
+          <span>Updated ${formatBlogDate(posts[0].date)}</span>
         </div>
       </header>
+      <section class="blog-featured" aria-labelledby="blog-featured-title">
+        <a class="blog-featured-media" href="${blogPostHref(featured.id)}" aria-label="Read ${escapeHTML(featured.title)}">
+          <img src="../${escapeHTML(postImagePath(featured))}" alt="${escapeHTML(featured.title)} cover illustration" width="1600" height="900" decoding="async" fetchpriority="high" />
+          <span class="blog-featured-badge">Latest field note</span>
+        </a>
+        <div class="blog-featured-copy">
+          <p class="blog-index-kicker">${escapeHTML(featured.kicker || 'Field notes')}</p>
+          <h2 id="blog-featured-title"><a href="${blogPostHref(featured.id)}">${escapeHTML(featured.title)}</a></h2>
+          <p>${escapeHTML(featured.readerPromise || featured.summary)}</p>
+          <div class="blog-tags blog-tags--pills">${topicPills(featured.tags, 3)}</div>
+          <a class="blog-read-btn" href="${blogPostHref(featured.id)}">Read the latest <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+        </div>
+      </section>
       ${newsletterCard({ id: 'blog-index-newsletter', source: 'blog_index_newsletter', title: 'Get the next field note' })}
+      <div class="blog-archive-heading">
+        <div>
+          <p class="blog-index-kicker">The archive</p>
+          <h2>Explore every field note</h2>
+        </div>
+        <p>${archivePosts.length} more practical reads across AI, infrastructure, developer tools, and product systems.</p>
+      </div>
       <div class="blog-filter-bar" role="group" aria-label="Filter by topic">
         <button type="button" class="blog-filter-chip active" data-tag="all" aria-pressed="true">All topics</button>
         ${tagFilters}

@@ -320,9 +320,9 @@
             <span class="keynote-metric-card__sub">Pure Vanilla ESM</span>
           </div>
           <div class="keynote-metric-card">
-            <span class="keynote-metric-card__value">319 + 182</span>
+            <span class="keynote-metric-card__value">182 + 6</span>
             <span class="keynote-metric-card__label">Automated Tests</span>
-            <span class="keynote-metric-card__sub">Vitest + Pytest</span>
+            <span class="keynote-metric-card__sub">Pytest + Critical Browser</span>
           </div>
           <div class="keynote-metric-card">
             <span class="keynote-metric-card__value">100%</span>
@@ -917,9 +917,9 @@
             <span class="keynote-slide__kicker">Act IV · Quality Gates &amp; Testing</span>
             <h2 class="keynote-slide__headline">Never ship broken code. Ever.</h2>
             <p class="keynote-slide__desc">
-              Every push to main undergoes a zero-tolerance automated CI pipeline. 501 automated
-              tests across 319 Vitest and 182 Pytest suites, 16 cross-browser device profiles, and
-              automated WCAG AAA accessibility audits.
+              Every push to main runs 182 API tests and six critical browser journeys, including
+              accessibility and mobile layout. Additional Playwright tests cover 16 configured
+              browser and device profiles on demand.
             </p>
           </div>
 
@@ -928,15 +928,15 @@
               <div class="keynote-gate-header">
                 <span class="keynote-gate-badge">Gate 01</span>
                 <span class="keynote-gate-status"
-                  ><i class="fas fa-check-circle" aria-hidden="true"></i> Passing</span
+                  ><i class="fas fa-check-circle" aria-hidden="true"></i> Configured</span
                 >
               </div>
-              <h3 class="keynote-bento-card__title">Vitest 4.1 Unit Suite</h3>
+              <h3 class="keynote-bento-card__title">Critical Browser Journeys</h3>
               <p class="keynote-bento-card__copy">
-                319 unit tests across 58 files running in &lt; 10 seconds. Tests markdown rendering,
-                state management, sound controls, WebMCP tools, and data contracts.
+                Six Playwright tests check writing, article images, contact storage, chat streaming,
+                accessibility, and mobile layout.
               </p>
-              <div class="keynote-gate-stat"><strong>319 / 319</strong> tests passing</div>
+              <div class="keynote-gate-stat"><strong>6</strong> critical journeys</div>
             </article>
 
             <article class="keynote-bento-card keynote-bento-card--gate">
@@ -1030,7 +1030,7 @@
               <h3 class="keynote-bento-card__title">GitHub Actions CI/CD</h3>
               <p class="keynote-bento-card__copy">
                 Automated security vulnerability audit, secret leakage scanning, ESLint, Stylelint,
-                Prettier, unit tests, and Lighthouse score verification.
+                Prettier, API and critical browser tests, and Lighthouse score verification.
               </p>
               <div class="keynote-pill-tag">Automated Release Notes &amp; Tagging</div>
             </article>

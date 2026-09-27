@@ -9,7 +9,7 @@ Shared tool configuration that is **not** required at the repository root.
 Root-level configs that must remain at `/` (package managers / CLIs hard-code paths):
 
 - `eslint.config.js`, `.prettierrc`, `.stylelintrc.json`
-- `vitest.config.js`, `playwright.config.js`
+- `playwright.config.js`
 - `vercel.json`
 - `pyproject.toml`, `ruff.toml`, `.flake8`
 

@@ -229,6 +229,13 @@ html.dark #home .music-card:hover .music-card-inner {
   white-space: nowrap !important;
   overflow: hidden !important;
   text-overflow: ellipsis !important;
+  color: #515154 !important;
+  -webkit-text-fill-color: #515154 !important;
+}
+
+html.dark #home .music-card-inner .status-text {
+  color: #bdbdc2 !important;
+  -webkit-text-fill-color: #bdbdc2 !important;
 }
 
 html.dark .status-badge,

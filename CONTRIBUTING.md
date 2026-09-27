@@ -92,7 +92,7 @@ Every pull request must pass the full quality matrix:
 
 ```bash
 # 1. Full automated quality check
-npm run check             # ESLint + Stylelint + Prettier + current Vitest suite
+npm run check             # ESLint + Stylelint + Prettier
 
 # 2. Python API test suite
 npm run test:api          # pytest API endpoint and middleware suite
@@ -104,8 +104,9 @@ npm run security-check    # Scans for exposed API keys or secrets
 # 4. Production build verification
 npm run build             # Production bundle compilation to dist/
 
-# 5. Playwright E2E browser tests (optional locally, runs in CI)
-npm run test:e2e:chrome   # Desktop Chrome smoke & a11y tests
+# 5. Playwright E2E browser tests (runs in CI)
+npm run test:e2e:critical # Critical user journeys on Desktop Chrome
+npm run test:e2e:chrome   # Full Desktop Chrome suite on demand
 ```
 
 ---

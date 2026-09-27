@@ -41,7 +41,7 @@ The project combines:
 - project, systems, travel, equipment, changelog, field-note, and live-monitor surfaces;
 - GitHub Pages delivery backed by a Cloudflare Worker for active API traffic;
 - a Python FastAPI backend retained for local development and the optional Vercel surface;
-- automated security, lint, unit, API, browser, accessibility, build, and Lighthouse checks.
+- automated security, lint, API, critical browser, accessibility, build, and Lighthouse checks.
 
 The primary public surface is
 [GitHub Pages](https://mangeshraut712.github.io/mangeshrautarchive/). The custom Vercel deployment
@@ -73,7 +73,7 @@ flowchart LR
   Build[Node 22 + esbuild] --> Dist[dist/]
   Dist --> Pages
   CI[GitHub Actions] --> Build
-  CI --> Tests[Vitest · pytest · Playwright<br>Security · Lighthouse]
+  CI --> Tests[pytest · critical Playwright<br>Security · Lighthouse]
 ```
 
 ![Full system architecture](src/assets/images/diagrams/system-architecture.svg)
@@ -95,7 +95,7 @@ More diagrams:
 | Compatibility API | Python 3.12+, FastAPI, Pydantic v2, Uvicorn                         |
 | AI runtime        | OpenRouter routing with paid, automatic, and free fallback paths    |
 | Rich content      | Marked, DOMPurify, KaTeX, syntax highlighting                       |
-| Testing           | Vitest, pytest, Playwright, axe-core, Lighthouse                    |
+| Testing           | pytest, Playwright, axe-core, Lighthouse                            |
 | Delivery          | GitHub Pages, GitHub Actions, optional Vercel compatibility surface |
 
 Tailwind is a build-time utility generator only. Application markup and components remain vanilla;
@@ -128,7 +128,7 @@ mangeshrautarchive/
 ├── workers/assistme-chat/     # Active Cloudflare Worker
 ├── api/                       # FastAPI compatibility backend and integrations
 ├── scripts/                   # Build, QA, deployment, synchronization, utilities
-├── tests/                     # Vitest, pytest, Playwright, accessibility tests
+├── tests/                     # pytest, Playwright, accessibility tests
 ├── docs/                      # Design, architecture, API, plans, contributor docs
 ├── .github/workflows/         # CI, deploy, monitoring, release, sync automation
 └── dist/                      # Generated production output
@@ -181,9 +181,11 @@ Commands below come from [`package.json`](package.json).
 | Start frontend only                   | `npm run dev:frontend`       |
 | Start FastAPI only                    | `npm run dev:backend`        |
 | Build production output               | `npm run build`              |
-| JS/CSS/format/unit gate               | `npm run check`              |
+| JS/CSS/format gate                    | `npm run check`              |
+| API + critical browser journeys       | `npm test`                   |
 | API tests                             | `npm run test:api`           |
 | Desktop Chrome E2E                    | `npm run test:e2e:chrome`    |
+| Critical Chrome E2E                   | `npm run test:e2e:critical`  |
 | All configured E2E projects           | `npm run test:e2e:all`       |
 | Python lint                           | `npm run lint:python`        |
 | Dependency and secret scan            | `npm run security-check`     |
@@ -201,7 +203,7 @@ The repository uses several levels of evidence rather than one permanent “all 
 1. `npm run doctor:strict` verifies repository layout and stack constraints.
 2. `npm run check`, `npm run test:api`, and focused Playwright tests verify local behavior.
 3. `npm run build` verifies the generated `dist/` artifact.
-4. GitHub Actions repeats security, lint, unit, API, browser, accessibility, build, and Lighthouse
+4. GitHub Actions repeats security, lint, API, critical browser, build, and Lighthouse
    gates before publishing Pages.
 5. Post-deploy jobs probe the public Pages and Worker surfaces and report optional Vercel status.
 
@@ -263,17 +265,21 @@ shipped changes, their purpose, and the exposed coding model when the environmen
 
 Current documentation pass:
 
-| Coding agent                          | Purpose                                                                                                                                                                                     | Exact variant / reasoning / token usage                    |
-| ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------- |
-| GPT-5 / Codex                         | README accuracy audit, architecture consolidation, contributor onboarding                                                                                                                   | Unavailable from the active runtime                        |
-| Grok 4.7 / Cursor                     | Live-site audit: Pages `/contact` redirect, feed and profile-image hosts, agent-map rewrite                                                                                                 | `grok-4.7`; reasoning unavailable; token usage unavailable |
-| Claude / Cursor                       | README status-snapshot refresh (Sep 22 CI + host facts) and GA4 reach-sync note                                                                                                             | Unavailable from the active runtime                        |
-| Gemini 3.8 Flash / Google Antigravity | Systems Tokenization & AI Burn dashboard overhaul: Apple HIG Bento cards, 3-tab segmented telemetry, multi-IDE profiles                                                                     | Unavailable from the active runtime                        |
-| Gemini 3.8 Flash / Google Antigravity | Anti-Slop (dmmulroy/anti-slop) Oxlint integration, vendoring, code cleanups, and repo doctor rules                                                                                          | Unavailable from the active runtime                        |
-| Gemini 3.8 Flash / Google Antigravity | Portfolio-wide elevation: 15.75B telemetry sync across all surfaces, system monitor probe repair (handling paused Vercel), navbar fluid geometry, and dark mode globe atmospheric backlight | Unavailable from the active runtime                        |
-| Gemini 3.8 Flash / Google Antigravity | Test hardening & UI resilience: E2E race condition fixes, eager monitor health/overview rendering, chatbot mid-stream aria-busy reset, and Vitest jsdom worker timeout tuning               | Unavailable from the active runtime                        |
-| Gemini 3.8 Flash / Google Antigravity | Uses stack elevation: Separate all 10 AI tools with dedicated brand SVG squircles, dark-mode icon styling, Figma SVG squircle, 501-test gate sync, and E2E coverage                         | Unavailable from the active runtime                        |
-| Gemini 3.8 Flash / Google Antigravity | Visual & system coherence: Travel Atlas active action palette (Route, Spotlight, Featured), Architecture Tree 501-test gate sync, and resilient Playwright cross-page audit harness         | Unavailable from the active runtime                        |
+| Coding agent                          | Purpose                                                                                                                                                                                     | Exact variant / reasoning / token usage                        |
+| ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
+| GPT-5 / Codex                         | README accuracy audit, architecture consolidation, contributor onboarding                                                                                                                   | Unavailable from the active runtime                            |
+| Grok 4.7 / Cursor                     | Live-site audit: Pages `/contact` redirect, feed and profile-image hosts, agent-map rewrite                                                                                                 | `grok-4.7`; reasoning unavailable; token usage unavailable     |
+| Claude / Cursor                       | README status-snapshot refresh (Sep 22 CI + host facts) and GA4 reach-sync note                                                                                                             | Unavailable from the active runtime                            |
+| Gemini 3.8 Flash / Google Antigravity | Systems Tokenization & AI Burn dashboard overhaul: Apple HIG Bento cards, 3-tab segmented telemetry, multi-IDE profiles                                                                     | Unavailable from the active runtime                            |
+| Gemini 3.8 Flash / Google Antigravity | Anti-Slop (dmmulroy/anti-slop) Oxlint integration, vendoring, code cleanups, and repo doctor rules                                                                                          | Unavailable from the active runtime                            |
+| Gemini 3.8 Flash / Google Antigravity | Portfolio-wide elevation: 15.75B telemetry sync across all surfaces, system monitor probe repair (handling paused Vercel), navbar fluid geometry, and dark mode globe atmospheric backlight | Unavailable from the active runtime                            |
+| Gemini 3.8 Flash / Google Antigravity | Test hardening & UI resilience: E2E race condition fixes, eager monitor health/overview rendering, chatbot mid-stream aria-busy reset, and Vitest jsdom worker timeout tuning               | Unavailable from the active runtime                            |
+| Gemini 3.8 Flash / Google Antigravity | Uses stack elevation: Separate all 10 AI tools with dedicated brand SVG squircles, dark-mode icon styling, Figma SVG squircle, 501-test gate sync, and E2E coverage                         | Unavailable from the active runtime                            |
+| Gemini 3.8 Flash / Google Antigravity | Visual & system coherence: Travel Atlas active action palette (Route, Spotlight, Featured), Architecture Tree 501-test gate sync, and resilient Playwright cross-page audit harness         | Unavailable from the active runtime                            |
+| GPT-5.6 Sol / Codex                   | September 2026 blog archive redesign, unified article artwork, and responsive visual QA                                                                                                     | `gpt-5.6-sol`; reasoning and token usage unavailable           |
+| GPT-6 / Codex                         | Retire Vitest tests, focus CI on six built-site browser journeys and API tests, and repair blog routing and contrast regressions                                                            | Reasoning and token usage unavailable                          |
+| GPT-6 / Codex                         | Generate and integrate 18 article-specific blog covers with Codex's built-in OpenAI image tool; verify mobile and desktop presentation                                                      | Image model identifier, reasoning, and token usage unavailable |
+| GPT-6 / Codex                         | Audit all 18 blog pages, repair contrast and catalog coverage, and check recent financial and AI claims against primary sources                                                             | Reasoning and token usage unavailable                          |
 
 No exact variant, reasoning mode, or token count is inferred when the runtime does not expose it.
 
@@ -281,7 +287,17 @@ Local visual audit (September 22, 2026): GPT-6 / Codex reviewed all 18 blog illu
 their articles, added access to full-size figures, preserved intrinsic image proportions, and
 corrected escaped ampersands in the Razorpay caption. Several illustrations still require editorial
 replacement or source verification; this audit does not certify their embedded claims. Exact model
-variant, reasoning mode, and token usage: unavailable. These changes are not yet published.
+variant, reasoning mode, and token usage: unavailable.
+
+Local artwork refresh (September 27, 2026): Codex's built-in OpenAI image tool produced 18 new
+article-specific covers. The exact image model identifier was not exposed, so these are not
+attributed to a particular model version. Each new WebP is used for its article figure and the
+corresponding archive card, while the original JPEGs remain in the repository. Figure captions now
+describe conceptual artwork without asserting undocumented vendor internals. A September 27 follow-up
+checked all 18 article pages and archive cards across mobile and desktop themes, corrected selected
+Razorpay, NPCI, and TypeSafe claims, and generated the complete 18-post assistant catalog. The
+[deploy workflow](https://github.com/mangeshraut712/mangeshrautarchive/actions/workflows/deploy.yml)
+is the source of truth for publication status.
 
 ## Documentation
 

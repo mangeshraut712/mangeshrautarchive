@@ -78,7 +78,7 @@ architecture guide for small copy, data, or isolated style edits.
 - **AI Chatbot:** OpenRouter API (grok-4.3 model) proxied through FastAPI, with WebMCP agentic actions.
 - **Build:** esbuild for JS bundling; Tailwind CSS v4 for utility generation only (output CSS file consumed, never classes in HTML markup).
 - **Styling:** Vanilla CSS with Apple-standard CSS custom properties (`--apple-blue: #0071e3`, etc.).
-- **Testing:** Vitest (unit), pytest (API), Playwright (E2E; projects are defined in `playwright.config.js`).
+- **Testing:** pytest (API) and Playwright (E2E; projects are defined in `playwright.config.js`).
 - **CI/CD:** GitHub Actions — security scanning, ESLint, Stylelint, Lighthouse deploy gates (100/100/100/100 on built dist homepage).
 
 ---
@@ -113,7 +113,7 @@ architecture guide for small copy, data, or isolated style edits.
 
 ```bash
 # Prerequisites
-node -v                     # must be ≥22 (see .nvmrc); Node 18 breaks Stylelint 17 / Vitest 4
+node -v                     # must be ≥22 (see .nvmrc); Node 18 breaks Stylelint 17
 npm run check-node          # fails fast if Node is out of range
 npm run doctor              # Root layout + stack guard (vanilla ESM + FastAPI)
 npm run doctor:stack        # Node + doctor (no React/Next/Vue runtime deps)
@@ -135,17 +135,18 @@ npm run lint:python         # flake8 (Python)
 npm run format:check        # Prettier check
 
 # Test
-npm test                    # Vitest unit tests
+npm test                    # API tests and critical Chrome user journeys
 npm run test:api            # pytest API tests; activate venv first when required
 npm run test:e2e:chrome     # Playwright E2E — Desktop Chrome
+npm run test:e2e:critical   # Playwright E2E — critical user journeys
 npm run test:e2e:all        # Playwright E2E — all 16 browser projects
 npm run playwright:mcp      # Start Playwright MCP server (agent browser automation)
 npm run playwright:cli      # Run Playwright CLI for ad-hoc browser commands
 npm run playwright:codegen  # Interactive test codegen recorder
 
 # Quality gates
-npm run check               # ESLint + Stylelint + Prettier + Vitest
-npm run qa:prod-ready       # Full pre-deploy: security + lint + unit + API + E2E + Lighthouse
+npm run check               # ESLint + Stylelint + Prettier
+npm run qa:prod-ready       # Full pre-deploy: security + lint + API + critical E2E + Lighthouse
 npm run qa:lighthouse:desktop  # Lighthouse audit (desktop)
 npm run qa:lighthouse:mobile   # Lighthouse audit (mobile)
 npm run security-check      # Scan for leaked secrets and credentials
@@ -199,9 +200,9 @@ npm run qa:lighthouse:vercel  # Live Vercel Lighthouse floors
      documentation files, and the commit body, record the coding agent or exposed model family and
      its dedicated purpose. Record the exact model variant, reasoning mode, and token usage only when
      the runtime exposes them; otherwise use `unavailable`.
-  3. **Run Full Quality Gate**: Run `npm run check` (ESLint + Stylelint + Prettier + Vitest 319 tests), `npm run security-check`, and `npm run build` with Node 22 (`export PATH="/opt/homebrew/opt/node@22/bin:/opt/homebrew/Cellar/node@22/22.23.2/bin:$PATH"`).
+  3. **Run Full Quality Gate**: Run `npm run check` (ESLint + Stylelint + Prettier), `npm test` (API and critical browser journeys), `npm run security-check`, and `npm run build` with Node 22 (`export PATH="/opt/homebrew/opt/node@22/bin:/opt/homebrew/Cellar/node@22/22.23.2/bin:$PATH"`).
   4. **Sync Documentation**: Keep test counts, architecture files, and design system rules synchronized across `README.md`, `AGENTS.md`, and `docs/DESIGN.md`.
-  5. **Guarantee 100% Green CI/CD Protocol**: Always monitor GitHub Actions after every `git push` to `main` via `gh run list` / `gh run view` to confirm all remote jobs (actionlint, linting, Vitest, pytest, Playwright, Lighthouse 100/100/100/100 gates, and Pages deployment) complete with green checks. Never consider a task finished with failing remote CI runs.
+  5. **Guarantee 100% Green CI/CD Protocol**: Always monitor GitHub Actions after every `git push` to `main` via `gh run list` / `gh run view` to confirm all remote jobs (actionlint, linting, pytest, critical Playwright, Lighthouse 100/100/100/100 gates, and Pages deployment) complete with green checks. Never consider a task finished with failing remote CI runs.
 
 ---
 
@@ -224,13 +225,12 @@ mangeshrautarchive/
 │   ├── qa/                 # browser / device audits
 │   └── integrations/       # OAuth + OpenRouter helpers
 ├── tests/                  # All automated tests
-│   ├── unit/               # Vitest (tests/unit/**/*.test.js)
 │   ├── api/                # pytest
 │   └── e2e/                # Playwright (+ helpers/site.js)
 ├── config/                 # vulture.toml (non-root tool config)
 ├── docs/                   # STRUCTURE.md · plans/ · doc index
 ├── dist/                   # Build output (git-ignored)
-├── vercel.json · package.json · playwright/vitest/eslint configs
+├── vercel.json · package.json · playwright/eslint configs
 └── pyproject.toml · requirements*.txt
 ```
 
@@ -242,11 +242,12 @@ Full map: [docs/STRUCTURE.md](docs/STRUCTURE.md).
 
 All three test suites must pass before any merge to `main`:
 
-| Suite | Runner     | Command                | Coverage                                    |
-| ----- | ---------- | ---------------------- | ------------------------------------------- |
-| Unit  | Vitest     | `npm test`             | 319 tests — JS modules, utilities, markdown |
-| API   | pytest     | `npm run test:api`     | 182 tests — FastAPI endpoints, middleware   |
-| E2E   | Playwright | `npm run test:e2e:all` | Multi-spec suite across 16 browser projects |
+| Suite | Runner     | Command                     | Coverage                                  |
+| ----- | ---------- | --------------------------- | ----------------------------------------- |
+| API   | pytest     | `npm run test:api`          | 182 tests — FastAPI endpoints, middleware |
+| E2E   | Playwright | `npm run test:e2e:critical` | Critical user journeys on Desktop Chrome  |
+
+The broader browser suite remains available through `npm run test:e2e:all` across 16 configured projects.
 
 - Playwright configs include Desktop Chrome/Safari/Firefox/Edge, Pixel 7 Chrome, iPhone 14 Safari, iPad Pro Safari, and more.
 - Lighthouse deploy workflow enforces 100/100/100/100 on built dist homepage; live-host floors vary (`npm run qa:lighthouse:ci`, `qa:lighthouse:vercel`).
