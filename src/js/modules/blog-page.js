@@ -90,6 +90,13 @@ function initTocSpy() {
   const body = document.querySelector('.article-body');
   if (!toc || !body) return;
 
+  const details = toc.querySelector('.article-toc__details');
+  const smallScreen = window.matchMedia('(max-width: 959px)');
+  if (details && smallScreen.matches) details.open = false;
+  smallScreen.addEventListener('change', event => {
+    if (details) details.open = !event.matches;
+  });
+
   const links = Array.from(toc.querySelectorAll('a[href^="#"]'));
   if (!links.length) return;
 

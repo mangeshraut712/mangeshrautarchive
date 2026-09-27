@@ -280,6 +280,7 @@ Current documentation pass:
 | GPT-6 / Codex                         | Retire Vitest tests, focus CI on six built-site browser journeys and API tests, and repair blog routing and contrast regressions                                                            | Reasoning and token usage unavailable                          |
 | GPT-6 / Codex                         | Generate and integrate 18 article-specific blog covers with Codex's built-in OpenAI image tool; verify mobile and desktop presentation                                                      | Image model identifier, reasoning, and token usage unavailable |
 | GPT-6 / Codex                         | Audit all 18 blog pages, repair contrast and catalog coverage, and check recent financial and AI claims against primary sources                                                             | Reasoning and token usage unavailable                          |
+| GPT-6 / Codex                         | Make full blog pages the primary reading path, add 18 conceptual diagrams, normalize article depth, and verify archive and article journeys                                                 | Reasoning and token usage unavailable                          |
 
 No exact variant, reasoning mode, or token count is inferred when the runtime does not expose it.
 
@@ -298,6 +299,13 @@ checked all 18 article pages and archive cards across mobile and desktop themes,
 Razorpay, NPCI, and TypeSafe claims, and generated the complete 18-post assistant catalog. The
 [deploy workflow](https://github.com/mangeshraut712/mangeshrautarchive/actions/workflows/deploy.yml)
 is the source of truth for publication status.
+
+The September 27 reading pass gives homepage cards visible full-article and preview actions. The
+preview is now a short summary; complete articles open on their own pages with section navigation.
+Each of the 18 articles includes a conceptual diagram, an image, a source section, and a chart,
+framework, or data table. The `npm run audit:blog-content` build gate checks article length,
+reading-time labels, heading structure, and media coverage. Conceptual diagrams and editorial
+frameworks are labeled as such; they do not represent measured vendor performance.
 
 ## Documentation
 

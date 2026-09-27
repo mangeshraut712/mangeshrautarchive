@@ -1,10 +1,8 @@
 import { blogPosts, getBlogPostImage } from './blog-data.js';
-import { parseBlogContent } from './blog-markdown.js';
 import { rescanCardContentAccessibility } from './card-content-accessibility.js';
 import { refreshSectionPreview } from './section-preview.js';
 import { escapeHTML as escapeHtmlShared } from '../utils/escape-html.js';
 import { sitePath } from '../utils/site-base.js';
-import { mountArticleReactions } from './blog-reactions.js';
 
 /**
  * Blog Loader Module
@@ -255,17 +253,12 @@ class BlogLoader {
                       </div>
                       <div class="blog-card-actions" aria-label="Listen and translate article card"></div>
                     </div>
-                    <h3 class="blog-title"><a class="blog-title-link" href="${fullHref}" data-blog-open="${post.id}">${this.escapeHTML(post.title)}</a></h3>
+                    <h3 class="blog-title"><a class="blog-title-link" href="${fullHref}">${this.escapeHTML(post.title)}</a></h3>
                     <p class="blog-summary">${this.escapeHTML(post.readerPromise || post.summary)}</p>
-                    ${
-                      post.pullQuote
-                        ? `<blockquote class="blog-card-quote">${this.escapeHTML(post.pullQuote)}</blockquote>`
-                        : ''
-                    }
                     <div class="blog-tags blog-tags--pills">${pills}</div>
                     <div class="blog-card-cta-row">
-                      <button class="blog-preview-btn" type="button" data-blog-open="${post.id}"><i class="far fa-eye" aria-hidden="true"></i> Quick Preview</button>
-                      <a class="blog-read-btn" href="${fullHref}">Read field note <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+                      <a class="blog-read-btn" href="${fullHref}">Read full article <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+                      <button class="blog-preview-btn" type="button" data-blog-open="${post.id}" aria-label="Preview ${this.escapeHTML(post.title)}"><i class="far fa-eye" aria-hidden="true"></i> Preview</button>
                     </div>
                 </div>
             </article>
@@ -279,7 +272,7 @@ class BlogLoader {
 
   bindCardEvents() {
     this.container.addEventListener('click', event => {
-      if (event.target.closest('.blog-card-actions, a.blog-read-btn')) return;
+      if (event.target.closest('.blog-card-actions, a')) return;
 
       const openControl = event.target.closest('[data-blog-open]');
       if (openControl) {
@@ -319,7 +312,7 @@ class BlogLoader {
             <div id="blog-modal" class="blog-modal hidden" role="dialog" aria-modal="true" aria-labelledby="blog-modal-title" aria-hidden="true">
                 <div class="blog-modal-overlay" data-blog-close></div>
                 <div class="blog-modal-container" tabindex="-1">
-                    <button class="blog-modal-close" type="button" aria-label="Close article" data-blog-close><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M2.5 2.5l9 9M11.5 2.5l-9 9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+                    <button class="blog-modal-close" type="button" aria-label="Close preview" data-blog-close><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M2.5 2.5l9 9M11.5 2.5l-9 9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
                     <div class="blog-modal-content" id="blog-modal-body">
                         <!-- Content injected here -->
                     </div>
@@ -364,18 +357,19 @@ class BlogLoader {
 
     this.lastFocus = document.activeElement;
     const modalBody = document.getElementById('blog-modal-body');
-    const { html: htmlContent } = parseBlogContent(post.content, { addHeadingIds: true });
     const fullPageHref = sitePath(`/blog/${encodeURIComponent(post.id)}.html`);
+    const image = sitePath(`/${getBlogPostImage(post)}`);
     const pills = (post.tags || [])
       .slice(0, 6)
       .map(tag => `<span class="blog-topic-pill">${this.escapeHTML(tag)}</span>`)
       .join('');
 
     modalBody.innerHTML = `
-            <article class="blog-article blog-article--editorial x-article" data-post-id="${this.escapeHTML(post.id)}">
+            <article class="blog-article blog-article--editorial blog-preview" data-post-id="${this.escapeHTML(post.id)}">
             <header class="article-header">
                 <p class="article-kicker">${this.escapeHTML(post.kicker || 'Field notes')}</p>
-                <h1 class="article-title" id="blog-modal-title">${this.escapeHTML(post.title)}</h1>
+                <p class="blog-preview__eyebrow">Article preview</p>
+                <h2 class="article-title" id="blog-modal-title">${this.escapeHTML(post.title)}</h2>
                 <p class="article-promise">${this.escapeHTML(post.readerPromise || post.summary)}</p>
                 <div class="article-byline article-byline--editorial">
                   <img class="article-byline__avatar" src="assets/images/profile.webp" width="40" height="40" alt="Mangesh Raut" loading="lazy" decoding="async" />
@@ -390,18 +384,12 @@ class BlogLoader {
                 </div>
                 <div class="article-tags blog-tags--pills">${pills}</div>
             </header>
-            <div class="article-body article-body--measure">
-                ${htmlContent}
-            </div>
-            <div data-blog-reactions-host></div>
-            <footer class="article-footer article-footer--editorial x-article-footer">
-              <a class="blog-read-btn x-article-footer__link" href="${fullPageHref}">Open full page</a>
-            </footer>
+            <a class="blog-read-btn blog-preview__read" href="${fullPageHref}">Read full article <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+            <img class="blog-preview__image" src="${image}" alt="" width="1600" height="900" loading="eager" decoding="async" />
+            <p class="blog-preview__summary">${this.escapeHTML(post.summary)}</p>
+            <div class="blog-preview__highlights"><h3>In this article</h3><ul>${this.renderHighlights(post.highlights)}</ul></div>
             </article>
         `;
-
-    const reactionsHost = modalBody.querySelector('[data-blog-reactions-host]');
-    if (reactionsHost) mountArticleReactions(reactionsHost, post.id);
 
     this.modal.classList.remove('hidden');
     // Force browser reflow to enable CSS transition

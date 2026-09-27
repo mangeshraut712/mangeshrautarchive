@@ -2,7 +2,7 @@ import { escapeHTML } from '../utils/escape-html.js';
 /**
  * Shared blog markdown parser — used by blog-loader (browser) and build (Node).
  * Supports headings, lists, quotes, code, HR, and media blocks:
- *   :::figure / :::video / :::audio / :::chart / :::callout / :::embed
+ *   :::figure / :::video / :::audio / :::chart / :::diagram / :::framework / :::callout / :::embed
  */
 
 function safeHref(href = '') {
@@ -91,7 +91,7 @@ function renderMediaBlock(kind, body, options = {}) {
       ? `<figcaption class="article-figure__caption">${escapeHTML(a.caption)}</figcaption>`
       : '';
     return `<figure class="article-figure">
-      <img src="${escapeHTML(src)}" alt="${alt}" loading="lazy" decoding="async" width="${escapeHTML(a.width || '1200')}" height="${escapeHTML(a.height || '675')}" class="article-figure__img" />
+      <img src="${escapeHTML(src)}" alt="${alt}" loading="eager" fetchpriority="high" decoding="async" width="${escapeHTML(a.width || '1200')}" height="${escapeHTML(a.height || '675')}" class="article-figure__img" />
       ${caption}
       <a class="article-figure__full-size" href="${escapeHTML(src)}" target="_blank" rel="noopener noreferrer">Open full-size image<span class="sr-only">: ${alt} (opens in a new tab)</span></a>
     </figure>`;
@@ -131,17 +131,20 @@ function renderMediaBlock(kind, body, options = {}) {
   }
   if (kind === 'chart') {
     const title = escapeHTML(a.title || 'Chart');
+    const max = Math.max(1, Number(a.max) || 100);
+    const unit = escapeHTML(a.unit || '');
     const bars = String(a.bars || '')
       .split(',')
       .map(part => part.trim())
       .filter(Boolean)
       .map(part => {
         const [label, valueRaw] = part.split('|').map(s => s.trim());
-        const value = Math.max(0, Math.min(100, Number(valueRaw) || 0));
+        const value = Math.max(0, Number(valueRaw) || 0);
+        const width = Math.min(100, (value / max) * 100);
         return `<div class="article-chart__row">
           <span class="article-chart__label">${escapeHTML(label || '')}</span>
-          <div class="article-chart__track" role="img" aria-label="${escapeHTML(label || '')} ${value}%">
-            <div class="article-chart__fill" style="width:${value}%"></div>
+          <div class="article-chart__track" role="img" aria-label="${escapeHTML(label || '')}: ${value} ${unit}">
+            <div class="article-chart__fill" style="width:${width}%"></div>
           </div>
           <span class="article-chart__value">${value}</span>
         </div>`;
@@ -152,6 +155,48 @@ function renderMediaBlock(kind, body, options = {}) {
       <div class="article-chart__bars">${bars}</div>
       ${a.note ? `<p class="article-chart__note">${escapeHTML(a.note)}</p>` : ''}
     </figure>`;
+  }
+  if (kind === 'diagram') {
+    const nodes = String(a.nodes || '')
+      .split(',')
+      .map(part => part.trim())
+      .filter(Boolean)
+      .map((part, index) => {
+        const [label, detail] = part.split('|').map(item => item.trim());
+        return `<li class="article-diagram__step"><span class="article-diagram__number" aria-hidden="true">${index + 1}</span><strong>${escapeHTML(label || '')}</strong><span>${escapeHTML(detail || '')}</span></li>`;
+      })
+      .join('');
+    if (!nodes) return '';
+    return `<figure class="article-diagram"><figcaption>${escapeHTML(a.title || 'How it works')}</figcaption><ol class="article-diagram__steps">${nodes}</ol>${a.note ? `<p class="article-diagram__note">${escapeHTML(a.note)}</p>` : ''}</figure>`;
+  }
+  if (kind === 'framework') {
+    const items = String(a.items || '')
+      .split(',')
+      .map(item => item.trim())
+      .filter(Boolean)
+      .map(item => `<li>${escapeHTML(item)}</li>`)
+      .join('');
+    if (!items) return '';
+    return `<figure class="article-framework"><figcaption>${escapeHTML(a.title || 'Editorial framework')}</figcaption><ol>${items}</ol>${a.note ? `<p>${escapeHTML(a.note)}</p>` : ''}</figure>`;
+  }
+  if (kind === 'table') {
+    const rows = body
+      .split('\n')
+      .map(line => line.trim())
+      .filter(line => line.startsWith('|') && line.endsWith('|'))
+      .map(line =>
+        line
+          .split('|')
+          .slice(1, -1)
+          .map(cell => cell.trim())
+      );
+    if (rows.length < 3) return '';
+    const header = rows[0].map(cell => `<th>${parseInline(cell)}</th>`).join('');
+    const cells = rows
+      .slice(2)
+      .map(row => `<tr>${row.map(cell => `<td>${parseInline(cell)}</td>`).join('')}</tr>`)
+      .join('');
+    return `<div class="article-table-wrap" tabindex="0" role="region" aria-label="Data table"><table class="article-table"><thead><tr>${header}</tr></thead><tbody>${cells}</tbody></table></div>`;
   }
   if (kind === 'callout') {
     const type = ['note', 'warn', 'tip', 'source', 'architecture', 'security'].includes(a.type)
@@ -385,7 +430,7 @@ export function buildTableOfContents(headings = []) {
         `<li class="article-toc__item article-toc__item--h${h.level}"><a href="#${escapeHTML(h.id)}">${escapeHTML(h.text)}</a></li>`
     )
     .join('');
-  return `<nav class="article-toc" aria-label="On this page"><p class="article-toc__title">On this page</p><ol class="article-toc__list">${items}</ol></nav>`;
+  return `<nav class="article-toc" aria-label="Article contents"><details class="article-toc__details" open><summary class="article-toc__title">In this article <span>Jump to section</span></summary><ol class="article-toc__list">${items}</ol></details></nav>`;
 }
 
 export function formatBlogDate(dateString) {

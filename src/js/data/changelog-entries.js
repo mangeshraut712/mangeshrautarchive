@@ -51,6 +51,22 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'blog-reading-layout-sept-2026',
+    date: '2026-09-27',
+    type: 'improvement',
+    title: 'Make blog reading clear and consistent across all 18 articles',
+    summary:
+      'Made full article pages the primary reading path, changed the modal into a short preview, added a clear archive link and article contents rail, and added conceptual diagrams to every article. Replaced arbitrary score bars with labeled editorial frameworks, expanded the shorter UPI and Jev articles, and added a build gate for comparable article depth and media coverage.',
+    tags: ['blog', 'design', 'content'],
+    commitVerified: false,
+    model: 'GPT-6 / Codex',
+    ide: 'OpenAI Codex',
+    purpose: 'Repair blog navigation and deliver consistent long-form technical reading',
+    reasoning: 'Unavailable',
+    usage: 'Unavailable',
+    status: 'unreleased',
+  },
+  {
     id: 'blog-audit-catalog-sept-2026',
     date: '2026-09-27',
     type: 'improvement',

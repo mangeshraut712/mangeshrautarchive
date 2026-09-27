@@ -179,6 +179,9 @@ The design system enforces a strictly unified 6-tier button architecture across 
 - **Section Headings (`h2`, `h3`)**: SF Pro Display, bold `700`, `#1d1d1f` (Dark: `#f5f5f7`), with subtle 1px border underline on `h2`.
 - **Callouts (`.article-callout`)**: Light tinted backgrounds (Tip: Green, Architecture: Purple, Info: Blue) with 1px border and high-contrast dark text `#1d1d1f` in light mode.
 - **Tables (`.article-table`)**: Clean Apple Developer table style with `#f2f2f7` headers (Dark: `#2c2c2e`), 1px borders, and hover row highlights.
+- **Reading path**: Homepage cards show a direct full-article action first and a clearly labeled short preview second. The preview contains a summary and takeaways; the complete text belongs on the standalone article page.
+- **Article navigation**: Standalone articles use a numbered contents rail on desktop and a collapsible contents control on mobile. Headings must have stable anchor IDs and enough scroll offset to remain visible below navigation chrome.
+- **Evidence visuals**: Every longform article has a lead image and a conceptual diagram. Use measured charts only with named units and sources; label ordered opinion as an editorial framework without fabricated percentage scores.
 
 ### About Section (`#about`)
 

@@ -3412,3 +3412,300 @@ html.dark .article-callout--security .article-callout__label {
   color: var(--apple-blue, #0071e3);
   transform: translate(2px, -2px);
 }
+
+/* Editorial reading path: the homepage previews the archive; articles own the reading surface. */
+.blog-section-intro-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.85rem 1.25rem;
+  margin: 1.3rem 0 1.75rem;
+}
+
+.blog-section-intro-actions p {
+  margin: 0;
+  color: var(--text-secondary, #6e6e73);
+  font-size: 0.9rem;
+}
+
+#blog .blog-card--editorial .blog-card-content,
+body.blog-standalone-page .blog-card--editorial .blog-card-content {
+  min-height: 0;
+  gap: 0.7rem;
+}
+
+#blog .blog-card-media,
+body.blog-standalone-page .blog-card-media {
+  aspect-ratio: 16 / 7;
+  max-height: 260px;
+}
+
+#blog .blog-card-cta-row,
+body.blog-standalone-page .blog-card-cta-row {
+  margin-top: 0.35rem;
+}
+
+#blog .blog-card-cta-row .blog-read-btn {
+  order: -1;
+}
+
+.blog-preview .article-header {
+  padding: 0 0 1.25rem;
+  margin-bottom: 1.25rem;
+  border-radius: 0;
+  background: transparent;
+}
+
+.blog-preview .article-title {
+  font-size: clamp(1.7rem, 4vw, 2.35rem);
+  line-height: 1.14;
+}
+
+.blog-preview__eyebrow {
+  margin: 0 0 0.6rem;
+  color: #0062c4;
+  font-size: 0.77rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.blog-preview__image {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: 16px;
+}
+
+.blog-preview__read {
+  margin-bottom: 1.15rem;
+}
+
+.blog-preview__summary {
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.blog-preview__highlights {
+  padding: 1rem 1.2rem;
+  border-radius: 16px;
+  background: #f5f7fa;
+}
+
+.blog-preview__highlights h3 {
+  margin: 0 0 0.6rem;
+  font-size: 0.95rem;
+}
+
+.blog-preview__highlights ul {
+  margin: 0;
+  padding-left: 1.2rem;
+  line-height: 1.65;
+}
+
+.blog-preview .article-footer {
+  margin-top: 1.25rem;
+  padding: 0;
+}
+
+html.dark .blog-preview__highlights {
+  background: #1c1c1e;
+}
+
+html.dark .blog-preview__eyebrow {
+  color: #66b5ff;
+}
+
+body.blog-standalone-page .blog-article-layout {
+  max-width: 1160px;
+  margin-inline: auto;
+}
+
+body.blog-standalone-page .blog-article-sidebar {
+  max-height: calc(100vh - 7rem);
+  overflow-y: auto;
+}
+
+body.blog-standalone-page .blog-article-sidebar .article-toc__title {
+  color: #515154;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  cursor: pointer;
+  list-style: none;
+}
+
+.blog-article-sidebar .article-toc__title::-webkit-details-marker {
+  display: none;
+}
+
+.blog-article-sidebar .article-toc__title span {
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.blog-article-sidebar .article-toc__list {
+  counter-reset: chapter;
+}
+
+.blog-article-sidebar .article-toc__item--h2 {
+  counter-increment: chapter;
+}
+
+.blog-article-sidebar .article-toc__item--h2 a::before {
+  content: counter(chapter, decimal-leading-zero) '  ';
+  color: #0062c4;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.blog-article-sidebar .article-toc__item--h3 a {
+  padding-left: 1.25rem;
+  font-size: 0.77rem;
+}
+
+html.dark body.blog-standalone-page .blog-article-sidebar .article-toc__title {
+  color: #bdbdc2;
+}
+
+html.dark .blog-article-sidebar .article-toc__item--h2 a::before {
+  color: #66b5ff;
+}
+
+@media (width < 960px) {
+  body.blog-standalone-page .blog-article-sidebar {
+    max-height: none;
+    overflow: visible;
+  }
+}
+
+@media (width <= 600px) {
+  body.blog-standalone-page .blog-article-main {
+    padding-left: max(1rem, env(safe-area-inset-left, 0px));
+    padding-right: calc(4.5rem + env(safe-area-inset-right, 0px));
+  }
+}
+
+.article-body h2[id],
+.article-body h3[id] {
+  scroll-margin-top: 6.5rem;
+}
+
+.article-diagram,
+.article-framework {
+  margin: 2rem 0;
+  padding: clamp(1rem, 3vw, 1.5rem);
+  border: 1px solid #d7e4f1;
+  border-radius: 18px;
+  background: #f7fbff;
+  color: #1d1d1f;
+}
+
+.article-diagram figcaption,
+.article-framework figcaption {
+  margin-bottom: 1.1rem;
+  font-size: 1rem;
+  font-weight: 750;
+}
+
+.article-diagram__steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 175px), 1fr));
+  gap: 0.7rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.article-diagram__step {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  min-width: 0;
+  padding: 1rem;
+  border: 1px solid #d9e5f1;
+  border-radius: 12px;
+  background: #ffffff;
+  line-height: 1.4;
+}
+
+.article-diagram__number {
+  display: grid;
+  place-items: center;
+  width: 1.6rem;
+  height: 1.6rem;
+  border-radius: 50%;
+  background: #0062c4;
+  color: #ffffff;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.article-diagram__step span:last-child {
+  color: #515154;
+  font-size: 0.85rem;
+}
+
+.article-diagram__note,
+.article-framework > p {
+  margin: 1rem 0 0;
+  color: #515154;
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
+.article-framework ol {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 190px), 1fr));
+  gap: 0.65rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: framework;
+}
+
+.article-framework li {
+  counter-increment: framework;
+  padding: 0.9rem;
+  border: 1px solid #d9e5f1;
+  border-radius: 12px;
+  background: #ffffff;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.article-framework li::before {
+  content: counter(framework, decimal-leading-zero);
+  display: block;
+  margin-bottom: 0.35rem;
+  color: #0062c4;
+  font-size: 0.75rem;
+  font-weight: 750;
+}
+
+html.dark .article-diagram,
+html.dark .article-framework {
+  border-color: #343a44;
+  background: #111821;
+  color: #f5f5f7;
+}
+
+html.dark .article-diagram__step,
+html.dark .article-framework li {
+  border-color: #343a44;
+  background: #1b2430;
+}
+
+html.dark .article-diagram__step span:last-child,
+html.dark .article-diagram__note,
+html.dark .article-framework > p {
+  color: #bdbdc2;
+}
+
+html.dark .article-framework li::before {
+  color: #66b5ff;
+}

@@ -44,17 +44,22 @@ export const blogPosts = [
     highlights: ['Sticky routing', 'Cache economics', 'AssistMe-style policy'],
     tags: ['OpenRouter', 'AI Routing', 'Model Gateways', 'System Design'],
     date: '2026-07-05',
-    readTime: '12 min read',
+    readTime: '8 min read',
     content: `In 2026 the hard problem is rarely "can I call a model?" It is "can I keep calling *useful* models when prices move, providers flake, caches miss, and geopolitics reshapes token share?" OpenRouter increasingly feels like a USB hub for intelligence: one plug shape, many devices behind it, and a routing policy that decides which cable actually carries power.
 
-> Reader promise: You will get a concrete routing policy—primary, fallback, free-chain, and sticky sessions—instead of another model beauty contest.
 
-## Fast Context
+## Context and scope
 
 :::figure
 src: assets/images/blog/openrouter-routing-codex-openai.webp
 alt: Conceptual gateway splitting AI requests into frontier, efficient, fallback, and voice paths
 caption: Conceptual routing policy: a gateway directs requests to frontier, efficient, fallback, or voice paths according to application needs.
+:::
+
+:::diagram
+title: Routing an assistant request
+nodes: Classify|Identify task and context, Constrain|Apply price and privacy rules, Route|Choose an eligible model, Verify|Check response and fallback
+note: Conceptual sequence for understanding the system; implementation details vary by product and deployment.
 :::
 
 OpenRouter is an OpenAI-compatible gateway: one API surface, many model slugs, provider-side fan-out, and controls for price, throughput, allowlists, and session stickiness. That matters more as the market fragments. OpenRouter enterprise routing data through mid-2026 showed Chinese-origin models holding **at least ~30% of weekly US enterprise token volume every week since February 8, 2026**, with peaks near **46%**—up from roughly **4.5% in H1 2025** and ~11% averaged over the prior year. DeepSeek-class and Qwen-class routes are not a footnote; they are load-bearing capacity for cost-sensitive products. (Industry coverage, including CNBC on July 7, 2026, later summarized the same OpenRouter traffic picture; verify the latest weekly series before citing in investor materials.)
@@ -70,11 +75,11 @@ href: https://openrouter.ai/docs/guides/routing/routers/auto-router
 desc: Task-aware model selection, allowlists, and fallback behavior for gateway routing.
 :::
 
-## TL;DR
+## Executive summary
 
 Treat OpenRouter as infrastructure, not as a model. Define lanes: **frontier primary** for hard agent work, **efficient open models** for volume, **free/cheap chain** for offline-feel UX when credits die, and **sticky sessions** whenever prompt caching matters. Pass \`session_id\` (or \`x-session-id\`) so sticky routing activates early. Pin providers when quality varies across hosts for the same slug. Measure cache hit rate and provider flips the same way you measure p95 latency.
 
-## What Actually Shines
+## Key capabilities
 
 ### 1. One integration, many brains
 
@@ -88,13 +93,13 @@ A single OpenAI-compatible client can reach Grok, Claude, GPT, Gemini, DeepSeek,
 
 Cache reads are often a fraction of input price (provider-dependent; Grok cache reads are documented around 0.25x input on OpenRouter's caching notes). Sticky routing exists so follow-up turns can keep hitting a warm provider cache. Without a \`session_id\`, stickiness may only engage after a cache hit is detected—and can flip after idle gaps. That is not a bug report. It is a policy input.
 
-:::chart
+:::framework
 title: How I weight OpenRouter controls for AssistMe-like chat
-bars: Fallback path when primary is down / unpaid|95, Sticky session for multi-turn chat|88, Price caps on volume lanes|80, Auto-router for unknown tasks|62, Single forever-default model|25
-note: Weights are operational priorities for a dual-host portfolio assistant, not a vendor ranking.
+items: Fallback path when primary is down / unpaid, Sticky session for multi-turn chat, Price caps on volume lanes, Auto-router for unknown tasks, Single forever-default model
+note: Editorial ordering only; Weights are operational priorities for a dual-host portfolio assistant, not a vendor ranking.
 :::
 
-## What I Would Watch Closely
+## Risks and limits
 
 **Provider flips vs cache TTL.** Sticky affinity and cache TTL can be decoupled. A one-hour cache setting does not guarantee the same provider after a quiet stretch. Instrument flips.
 
@@ -130,14 +135,14 @@ label: ROUTING RULE
 text: If a turn cannot name its lane in one word (frontier, volume, free, voice), do not call the gateway yet.
 :::
 
-## Things I Learned
+## Key takeaways
 
 - USB-hub thinking beats model fandom: connectors and failover matter more than last week's leaderboard.
 - Sticky sessions are a product requirement for cached multi-turn UX.
 - Free-chain fallbacks preserve trust when money or regions fail.
 - Observability of provider flips is as important as token counts.
 
-## How I Would Apply This
+## Practical application
 
 On mangeshrautarchive / AssistMe:
 
@@ -146,7 +151,7 @@ On mangeshrautarchive / AssistMe:
 - Use OpenRouter for chat with explicit fallbacks; treat Auto as an opt-in experiment, not the silent default.
 - Surface "which lane answered" in logs even if the UI only shows a calm assistant reply.
 
-## Bottom Line
+## Conclusion
 
 OpenRouter is the AI USB hub of 2026: one shape, many devices, and a routing policy that decides what actually runs. The teams that win will not be the ones who married a single model forever. They will be the ones who wrote lanes, sticky sessions, and soft-fail paths before the next pricing or capacity shock.
 
@@ -173,17 +178,22 @@ OpenRouter is the AI USB hub of 2026: one shape, many devices, and a routing pol
     highlights: ['Grok 4.5 API', 'Open harness', 'Agent Client Protocol'],
     date: '2026-07-10',
     tags: ['Grok 4.5', 'Grok Build', 'xAI', 'Coding Agents', 'Open Source'],
-    readTime: '11 min read',
+    readTime: '9 min read',
     content: `July 2026 compressed two related builder decisions into one stack question: a stronger coding-first model (**Grok 4.5**) and an inspectable agent harness (**Grok Build**) that is now open source. I care less about keynote adjectives and more about what changes in an agent loop I would actually ship.
 
-> Reader promise: You will leave with a clear split between the model (Grok 4.5) and the harness (Grok Build), plus a routing checklist for when each belongs in your agent loop.
 
-## Fast Context
+## Context and scope
 
 :::figure
 src: assets/images/blog/grok-build-agent-codex-openai.webp
 alt: Coding model, agent harness, tools, tests, and human review in a development workflow
 caption: Conceptual coding-agent workflow: the model reasons, the harness coordinates tools, and tests and review check the resulting changes.
+:::
+
+:::diagram
+title: A coding-agent evaluation loop
+nodes: Task|Select a representative issue, Harness|Grant bounded tools and repo context, Execute|Record edits and commands, Review|Run checks and inspect the diff
+note: Conceptual sequence for understanding the system; implementation details vary by product and deployment.
 :::
 
 **Grok 4.5** is xAI's frontier model (SpaceXAI branding in current docs) positioned for coding, agentic tasks, and knowledge work. Official docs list model id \`grok-4.5\`, knowledge cutoff **February 1, 2026**, standard API pricing around **$2 / 1M input** and **$6 / 1M output** for prompts under 200k tokens (higher tier at ≥200k), and tools such as function calling, web search, X search, and code execution. Context window is documented at **500,000 tokens**. It is available on the xAI API, as the default model behind Grok Build, inside Cursor, and through model gateways including OpenRouter. Region and product availability can lag (including EU AI Act constraints at launch)—check the console for your account before you assume global default status.
@@ -199,11 +209,11 @@ href: https://docs.x.ai/build/overview
 desc: Install the CLI/TUI, run headless, configure custom models, and call grok-4.5 on the API.
 :::
 
-## TL;DR
+## Executive summary
 
 Treat **Grok 4.5** as a strong coding-agent *brain* and **Grok Build** as a readable *nervous system*. Use the API when you already own an agent loop (IDE plugin, CI bot, portfolio assistant). Use the open harness when you want to learn or extend how context, tools, MCP, and ACP are wired. Do not confuse open-sourcing the harness with open-sourcing the model weights. Pin pricing, region availability, and cache behavior before you make Grok the default for production traffic.
 
-## What Actually Shines
+## Key capabilities
 
 ### 1. Model + harness as separate products
 
@@ -217,13 +227,13 @@ Interactive TUI for deep work. Headless \`-p\` prompts for automation. ACP for e
 
 \`config.toml\` custom models mean the harness is not locked to one vendor forever. That is the open-source win: the loop can outlive any single model release—including Grok 4.5 itself.
 
-:::chart
+:::framework
 title: Where I would put Grok 4.5 / Grok Build first (fit, not hype)
-bars: Long-horizon coding agents in a harness|90, API drop-in for existing agent loops|78, Default for every UI chat turn|42, Sole eval source of truth|28
-note: Scores are my product-fit judgment for portfolio and product engineering, not a model ranking.
+items: Long-horizon coding agents in a harness, API drop-in for existing agent loops, Default for every UI chat turn, Sole eval source of truth
+note: Editorial ordering only; Scores are my product-fit judgment for portfolio and product engineering, not a model ranking.
 :::
 
-## What I Would Watch Closely
+## Risks and limits
 
 **Bench contamination and marketing lag.** Cursor's disclosure about training data and CursorBench is the right kind of footnote. Re-check evals after cleanups before you rewrite routing policy around a single score.
 
@@ -258,14 +268,14 @@ label: BUILDER NOTE
 text: If you cannot name the harness responsibilities separately from the model name, you do not have an architecture yet—you have a demo.
 :::
 
-## Things I Learned
+## Key takeaways
 
 - Open-sourcing the agent harness is more actionable for builders than another closed chat skin.
 - Coding models should be evaluated inside a tool loop, not only on static completion prompts.
 - ACP and headless modes are how agents become products instead of toys.
 - Honest eval footnotes (data contamination, regional limits) should change your adoption timeline, not your Twitter take.
 
-## How I Would Apply This
+## Practical application
 
 On this portfolio and AssistMe stack:
 
@@ -280,7 +290,7 @@ href: https://github.com/xai-org/grok-build
 desc: Open-source coding agent harness and TUI (Apache-2.0).
 :::
 
-## Bottom Line
+## Conclusion
 
 Grok 4.5 is a serious coding-agent brain. Grok Build being open is the lever: you can read, fork, and re-point the harness. Ship the split consciously—model, harness, gateway—or you will rebuild the same glue every release cycle.
 
@@ -307,19 +317,24 @@ Grok 4.5 is a serious coding-agent brain. Grok Build being open is the lever: yo
     highlights: ['WebMCP tool surfaces', 'Managed vs local agents', 'Hybrid execution'],
     date: '2026-05-20',
     tags: ['Google I/O', 'Gemini', 'WebMCP', 'Antigravity', 'Agentic Web'],
-    readTime: '12 min read',
+    readTime: '8 min read',
     content: `Google I/O compresses a year of platform work into inevitability theater. My job after the 2026 keynote is the opposite: name what actually changes a production architecture, and what is still a demo that needs a hardware matrix, a permission model, and a failure mode.
 
 I/O 2026 centered on an agentic Gemini stack: Gemini 3.5 Flash, Google Antigravity as an agent harness, Managed Agents in the Gemini API, consumer-facing agents such as Gemini Spark, and—most relevant for web builders—**WebMCP**, a proposed way for sites to expose structured tools to browser agents. Gemma-family open models and browser ML paths remain part of the story, but they are not the loudest slide.
 
-> Reader promise: You will leave with a clear map for splitting AI work between browser tools, local helpers, and cloud agents—without treating the keynote as a shipping checklist.
 
-## Fast Context
+## Context and scope
 
 :::figure
 src: assets/images/blog/google-io-webmcp-codex-openai.webp
 alt: Browser tools, local context, cloud agents, and a human confirmation step
 caption: Conceptual division of agent work across browser tools, local context, and cloud agents, with confirmation before consequential actions.
+:::
+
+:::diagram
+title: From demo to useful web capability
+nodes: User intent|Start with a concrete job, Interface|Expose a clear app action, Permission|Confirm data and tool scope, Evaluation|Test success and failure paths
+note: Conceptual sequence for understanding the system; implementation details vary by product and deployment.
 :::
 
 The useful I/O question is not which model name won the deck. It is: where does intelligence run, what context may leave the device, and which product moments deserve an agent versus a deterministic UI?
@@ -333,11 +348,11 @@ In my read of the public announcements (May 19–20, 2026), four engineering thr
 
 Vendor benchmark screenshots from the keynote are marketing. Treat them as hypotheses until you reproduce them on *your* tasks.
 
-## TL;DR
+## Executive summary
 
 Design for three execution surfaces: **device-side helpers** for private low-latency work, **browser-exposed tools** (WebMCP-style) for reliable site actions, and **cloud agents** for hard synthesis and sandboxed tool loops. Long-context Gemini-class models make document-heavy and code-heavy products more believable when the working set is real. Gemma-style open models remain a privacy and cost valve. WebNN and WebGPU still matter for repeated local inference; WebMCP matters when you want agents to act without pretending the DOM is an API. The winning product is not a chat panel. It is a workflow where context, tools, permissions, and fallbacks are designed together.
 
-## What Actually Shines
+## Key capabilities
 
 ### 1. WebMCP as an honest agent interface
 
@@ -355,13 +370,13 @@ It is also a reliability tax. You inherit permissions, retries, partial failure,
 
 Gemma-class and built-in browser models matter less as leaderboard rivals and more as escape hatches: draft polish on a private note, accessibility rewrites, offline study mode, on-page ranking. Feature-detect, degrade gracefully, and never market local AI as frontier-equivalent.
 
-:::chart
+:::framework
 title: Where I would put AI work first (relative fit, not benchmarks)
-bars: Instant private UI helpers|88, Structured site tools (WebMCP-style)|82, Corpus synthesis / deep reasoning|74, Fully autonomous multi-app agents|34
-note: Scores are my product-fit judgment for portfolio-scale web apps, not Google’s capability claims.
+items: Instant private UI helpers, Structured site tools (WebMCP-style), Corpus synthesis / deep reasoning, Fully autonomous multi-app agents
+note: Editorial ordering only; Scores are my product-fit judgment for portfolio-scale web apps, not Google’s capability claims.
 :::
 
-## What I Would Watch Closely
+## Risks and limits
 
 **Device variance is still the boss.** Browser support, memory, thermal limits, and battery behavior vary wildly. A Shoreline demo is not a shipping plan for mid-range Android or older Safari.
 
@@ -397,7 +412,7 @@ label: BUILDER NOTE
 text: If you cannot explain the data boundary in one sentence, the feature is not ready for a model call.
 :::
 
-## Bottom Line
+## Conclusion
 
 The agentic web is not about making every page talk. It is about letting web apps expose trustworthy tools, keep private work local when possible, and treat cloud agents as deliberate upgrades—not the default for every keystroke. Hybrid intelligence wins when the browser is a trusted execution surface with contracts, not a scraped marionette.
 
@@ -431,19 +446,24 @@ desc: Google’s own rundown of I/O 2026 launches—use as source material, not 
     highlights: ['Phoenix ranker', 'In-network + OON retrieval', 'Measurable ranking stages'],
     date: '2026-05-15',
     tags: ['Grok', 'X Algorithm', 'Real-Time AI', 'Ranking', 'Phoenix'],
-    readTime: '13 min read',
+    readTime: '8 min read',
     content: `Modern feeds look magical from the outside because the final surface hides the plumbing. Underneath, a feed is a chain of retrieval, enrichment, ranking, policy, deduplication, and serving decisions. When xAI published the For You algorithm as open code, the interesting story was not "AI decides your feed." It was the pipeline becoming inspectable.
 
 The public repository lives at [xai-org/x-algorithm](https://github.com/xai-org/x-algorithm). The README is unusually direct: the For You feed combines **in-network** content (accounts you follow) with **out-of-network (OON)** content discovered through ML-based retrieval, then ranks candidates with **Phoenix**, a Grok-based transformer that predicts engagement probabilities. A May 15, 2026 repo update added a more runnable end-to-end inference path and additional content-understanding pieces—useful for education, still not a 1:1 clone of live production ops.
 
-> Reader promise: You will understand why the feed is a pipeline problem before it is a ranking-model problem—and how Phoenix fits that pipeline.
 
-## Fast Context
+## Context and scope
 
 :::figure
 src: assets/images/blog/x-algorithm-ranking-codex-openai.webp
 alt: Candidate content moving through retrieval, context, ranking, filtering, and an ordered feed
 caption: Conceptual feed workflow: candidates are retrieved, enriched with context, ranked, filtered, and assembled into an ordered feed. The artwork does not represent X's internal implementation.
+:::
+
+:::diagram
+title: A feed ranking pipeline
+nodes: Retrieve|Collect candidate posts, Hydrate|Add viewer and post context, Rank|Estimate relevance among candidates, Govern|Apply policy and diversity rules
+note: Conceptual sequence for understanding the system; implementation details vary by product and deployment.
 :::
 
 That one-sentence architecture is a systems curriculum if you take it seriously: two candidate sources, a hydration/context path, a learned ranker with multi-action heads, then filters and blending. Open code teaches the shape. Weights, live traffic, and product policy can still be closed.
@@ -454,7 +474,7 @@ label: SOURCE
 text: Primary source of truth: [xai-org/x-algorithm on GitHub](https://github.com/xai-org/x-algorithm). Phoenix details: [phoenix/README.md](https://github.com/xai-org/x-algorithm/blob/main/phoenix/README.md).
 :::
 
-## TL;DR
+## Executive summary
 
 Real-time recommendations work when many small systems cooperate. In-network retrieval keeps the graph honest. OON retrieval (Phoenix retrieval in this stack) expands discovery. Hydration turns raw post IDs into model-ready context. Phoenix ranking scores candidates with engagement-oriented predictions. Filters, blending, and product policy still decide what is allowed to ship. The model is important, but the pipeline decides what the model is allowed to see.
 
@@ -481,10 +501,10 @@ A design pattern worth stealing: **candidate isolation** via attention masking s
 
 Even a great ranker should not be the final authority. Duplicate controls, safety filters, author diversity, exploration budgets, and "not interested" feedback loops are product systems. If you collapse everything into one score with no intermediate metrics, debugging becomes folklore.
 
-:::chart
+:::framework
 title: Relative leverage of feed stages (my systems judgment)
-bars: Candidate retrieval quality|92, Context hydration|84, Learned ranking (Phoenix)|78, Policy / filter / blend|71, Final UI presentation|48
-note: A brilliant ranker cannot recover candidates retrieval never found.
+items: Candidate retrieval quality, Context hydration, Learned ranking (Phoenix), Policy / filter / blend, Final UI presentation
+note: Editorial ordering only; A brilliant ranker cannot recover candidates retrieval never found.
 :::
 
 ## What Shines in the Open Stack
@@ -517,7 +537,7 @@ If I were building a portfolio search, project recommender, or content discovery
 
 Debug stages separately. "The feed is bad" is not a ticket. "OON recall for topic X is weak" is a ticket—once you measure it.
 
-## Things I Learned
+## Key takeaways
 
 - Ranking starts before scoring because candidate quality defines the ceiling.
 - Hydrators are product-critical software, not boring ETL.
@@ -525,7 +545,7 @@ Debug stages separately. "The feed is bad" is not a ticket. "OON recall for topi
 - A measurable pipeline is easier to improve than a single black-box function.
 - Open algorithm releases are rare gifts for systems education—use them that way.
 
-## How I Would Apply This
+## Practical application
 
 For portfolio search and project discovery on this site:
 
@@ -543,7 +563,7 @@ href: https://github.com/xai-org/x-algorithm
 desc: Open source algorithm powering the For You feed on X — in-network + OON retrieval and Phoenix ranking.
 :::
 
-## Bottom Line
+## Conclusion
 
 The future of feeds and assistants is not only bigger models. It is cleaner retrieval, richer context hydration, and ranking systems where every stage has a measurable job. Phoenix is interesting because it is a Grok-based ranker inside a real multi-stage pipeline—not because ranking is magic.
 
@@ -568,14 +588,13 @@ The future of feeds and assistants is not only bigger models. It is cleaner retr
     highlights: ['Multimodal context', 'Workspace integration', 'Permission-aware UX'],
     date: '2026-01-10',
     tags: ['Google AI', 'Gemini', 'Android', 'Multimodal', 'Workspace'],
-    readTime: '11 min read',
+    readTime: '7 min read',
     content: `Google’s advantage is not one model in isolation. It is distribution across Android, Chrome, Search, Photos, Gmail, Docs, Maps, YouTube, and a growing Gemini surface area. That distribution becomes powerful only when AI helps inside the place where the user already has context.
 
 This is an early-2026 product-architecture field note. Later I/O cycles added louder agent brands; the underlying design question did not change: **where does the work already live?**
 
-> Reader promise: You will see how AI becomes useful when it appears inside existing surfaces instead of demanding a separate destination.
 
-## Fast Context
+## Context and scope
 
 :::figure
 src: assets/images/blog/google-ai-hybrid-codex-openai.webp
@@ -583,9 +602,15 @@ alt: Device, documents, search, and maps surrounding a context-aware assistant
 caption: Conceptual ecosystem view: AI becomes useful within existing device, document, search, and location contexts.
 :::
 
+:::diagram
+title: An integrated assistant task
+nodes: Entry point|User starts inside an app, Context|Access permitted data only, Action|Produce a bounded result, Review|User checks before sharing
+note: Conceptual sequence for understanding the system; implementation details vary by product and deployment.
+:::
+
 Ecosystem AI is a product strategy, not a research paper. The bet is simple: if the assistant already sits near mail, docs, photos, maps, and the phone camera, it can reduce steps without inventing a new daily destination. The hard part is making that context useful without making users feel watched, overloaded, or trapped in a maze of assistant entry points.
 
-## TL;DR
+## Executive summary
 
 Put intelligence where user context already lives. Multimodal input (camera, voice, files, screen state, text) is the interface language. Workspace integration is where AI becomes collaboration infrastructure instead of novelty. Android is the path for device-aware features that feel native. The risks are permission opacity, assistant clutter, and reliability failures that edit the wrong object with high confidence.
 
@@ -603,10 +628,10 @@ Summarize this doc. Rewrite this email. Extract action items from a meeting. Com
 
 On-device signals—locale, connectivity, battery, foreground app, accessibility settings—are product context, not telemetry trivia. Device-aware AI can change behavior: shorter answers on a noisy commute, offline drafts on a plane, larger tap targets when accessibility settings say so.
 
-:::chart
+:::framework
 title: User moments where ecosystem AI earns its keep
-bars: Write / rewrite in place|90, Search + synthesize across apps|82, Capture from camera / voice|76, Fully autonomous multi-day agents|28
-note: Autonomy score is intentionally low for daily consumer reliability, not research ambition. Scores are my judgment.
+items: Write / rewrite in place, Search + synthesize across apps, Capture from camera / voice, Fully autonomous multi-day agents
+note: Editorial ordering only; Autonomy score is intentionally low for daily consumer reliability, not research ambition. Scores are my judgment.
 :::
 
 ## What I Would Watch
@@ -638,14 +663,14 @@ That pattern is boring. Boring is how you ship trust.
 5. **Audit** — store enough metadata to debug a bad suggestion next week.
 6. **Fallback** — deterministic UI path when AI is unavailable.
 
-## Things I Learned
+## Key takeaways
 
 - AI becomes more useful when embedded into the workflow rather than bolted onto the side.
 - Multimodal is an interaction problem: selection, exclusion, and correction matter as much as perception quality.
 - The best ecosystem features save steps while preserving user control.
 - Distribution without restraint becomes noise.
 
-## How I Would Apply This
+## Practical application
 
 In my own product work, I design AI as a contextual layer: small, available, and specific to the screen the user is already using. For this portfolio that means:
 
@@ -660,7 +685,7 @@ label: OPINION
 text: My read is that the ecosystems that win will hide the assistant and surface the outcome. Chat remains a power-user escape hatch, not the default for every task.
 :::
 
-## Bottom Line
+## Conclusion
 
 The winning AI ecosystems will not have the loudest assistant. They will make intelligence appear exactly where the user needs it and disappear when it does not help. Google’s distribution is the opportunity. Permission-aware, multimodal, in-place design is the work.
 
@@ -685,16 +710,15 @@ The winning AI ecosystems will not have the loudest assistant. They will make in
     highlights: ['Tool permissions', 'Agent observability', 'Evaluation loops'],
     date: '2026-01-25',
     tags: ['OpenClaw', 'Open Source', 'AI Agents', 'Decentralization'],
-    readTime: '12 min read',
+    readTime: '8 min read',
     content: `OpenClaw (README history runs roughly Warelay → CLAWDIS → Clawdbot → Moltbot → OpenClaw from late 2025 into Jan 2026) popularized a pattern that was already in the air: a **self-hosted gateway** that connects messaging apps to a tool-using agent running on your machine.
 
 The pitch writes itself: local state, bring-your-own model, WhatsApp/Telegram/Discord/etc. as the UI, skills that grow over time. That pitch is incomplete. Autonomy without control surfaces is distributed risk with better marketing—and a large GitHub star count does not substitute for a permission model.
 
 This essay is a **product-pattern analysis** grounded in what the public OpenClaw docs and ecosystem describe. Where internals or third-party skills are unverified, I label judgments as my read.
 
-> Reader promise: You will get a practical checklist for evaluating OpenClaw-like agents without getting distracted by autonomy hype or star-count theater.
 
-## Fast Context
+## Context and scope
 
 :::figure
 src: assets/images/blog/openclaw-agent-swarm-codex-openai.webp
@@ -702,11 +726,17 @@ alt: Local assistant gateway with messaging channels, permission gate, tools, an
 caption: Conceptual local-assistant architecture: channels connect to a gateway, while permissions constrain tools and logs record activity.
 :::
 
+:::diagram
+title: A safe open-agent control loop
+nodes: Request|Define the user goal, Permission|Limit available tools, Execute|Log each action and result, Review|Evaluate outcome and recover
+note: Conceptual sequence for understanding the system; implementation details vary by product and deployment.
+:::
+
 What makes open agent stacks exciting is inspectability. Prompts, tools, state, retries, logs, and failures can become part of the engineering surface instead of a hidden SaaS behavior. OpenClaw’s distinctive shape is the **Gateway**: sessions, channels, tools, and events as a control plane, with the assistant reachable from the chat apps you already use.
 
 The next phase is not “agents that never stop.” It is agents teams can constrain, evaluate, and trust—especially when a skill can read files, drive a browser, or run shell commands.
 
-## TL;DR
+## Executive summary
 
 Judge OpenClaw-like systems on five control surfaces: **tool permissions**, **task boundaries**, **observability**, **evaluation**, and **human review points**. Community skills move fast when scopes are clear. Local customization beats universal-agent myths. Plugin ecosystems become security risks when permissions are vague. Autonomy is a dial, not a trophy. Viral growth increases supply-chain and skill-vetting pressure; it does not reduce it.
 
@@ -724,10 +754,10 @@ Meeting the user in WhatsApp or Slack is a product insight, not a gimmick—prov
 
 Teams do not need a universal agent. They need an agent that knows their monorepo commands, lint gate, deploy checklist, and definition of done. Open frameworks win when that adaptation is first-class and reviewable.
 
-:::chart
+:::framework
 title: What I weight when evaluating an open agent framework
-bars: Permission model|95, Observability / traces|90, Eval harness|86, Tool quality|72, Autonomy hype|18
-note: Autonomy without the first three is a liability score, not a feature score. Scores are my judgment.
+items: Permission model, Observability / traces, Eval harness, Tool quality, Autonomy hype
+note: Editorial ordering only; Autonomy without the first three is a liability score, not a feature score. Scores are my judgment.
 :::
 
 ## What I Would Watch
@@ -777,7 +807,7 @@ Most demos collapse these into one chatty process with shell access. Fine for to
 - Eval theater that scores “looks like a fix” instead of “canonical suite passed”
 - Skills that request more scope than the task needs
 
-## Things I Learned
+## Key takeaways
 
 - A useful agent is a constrained worker, not an unconstrained explorer.
 - Observability is a feature: traces, diffs, decisions, test results.
@@ -785,7 +815,7 @@ Most demos collapse these into one chatty process with shell access. Fine for to
 - Evaluation loops are product infrastructure.
 - Separating planner, worker, verifier, and publisher makes autonomy safer than one omniscient process.
 
-## How I Would Apply This
+## Practical application
 
 In a production repo (including this portfolio stack):
 
@@ -801,7 +831,7 @@ label: OPINION
 text: My read of the open-agent wave: the winners will look slightly boring—strict scopes, great traces, strong evals—while the hype cycle chases fully autonomous myths and star counts.
 :::
 
-## Bottom Line
+## Conclusion
 
 Open-source agents will win when they make automation understandable. The point is not maximum autonomy; it is automation the team can trust. If the framework cannot show its work, it does not deserve write access—or inbox access.
 
@@ -826,14 +856,13 @@ Open-source agents will win when they make automation understandable. The point 
     highlights: ['Intent capture', 'Correction UX', 'Privacy Mode reality'],
     date: '2026-02-10',
     tags: ['Wispr Flow', 'HCI', 'Voice AI', 'Productivity'],
-    readTime: '11 min read',
+    readTime: '8 min read',
     content: `Voice input is usually framed as accessibility or convenience. Those frames matter, but they understate the power-user version: fast capture, low friction, and high-quality cleanup across the places where work already happens.
 
 This is a **product-pattern analysis** of dictation tools in the Wispr Flow style, cross-checked against Wispr’s public privacy documentation where claims get specific. Where vendor internals are not public, I mark judgments as my read.
 
-> Reader promise: You will learn how voice input becomes a serious workflow tool when it captures intent—and when privacy settings match how the audio actually flows.
 
-## Fast Context
+## Context and scope
 
 :::figure
 src: assets/images/blog/wispr-flow-voice-codex-openai.webp
@@ -841,18 +870,24 @@ alt: Person dictating to a phone with cloud transcription, cleanup, and document
 caption: Conceptual dictation workflow: capture audio, transcribe in the cloud, clean up text, and insert it into the destination application.
 :::
 
+:::diagram
+title: A voice-to-document loop
+nodes: Capture|Record speech with consent, Transcribe|Convert audio to text, Structure|Edit for the target format, Confirm|Review names and sensitive details
+note: Conceptual sequence for understanding the system; implementation details vary by product and deployment.
+:::
+
 The keyboard is still the precision instrument. Voice wins when the bottleneck is getting rough intent out of your head: first drafts, status updates, bug reports, meeting notes, long-form thinking while walking. The product challenge is not transcription alone. It is correction, formatting, privacy, destination awareness, and preserving tone.
 
 Important factual grounding from Wispr’s published Data Controls (as of mid-2026 docs): **transcription runs in the cloud** for accuracy and latency. Privacy Mode and Private Cloud Sync are separate controls covering training use and server-side retention of dictation artifacts—not a claim of on-device speech recognition. If you need zero training and no server retention of dictation content, Wispr describes combining Privacy Mode on with Private Cloud Sync off. Verify current Settings copy before you dictate secrets.
 
-## TL;DR
+## Executive summary
 
 Treat voice as a capture system with three stages: **speak**, **shape**, **review**. AI cleanup should turn rough speech into structured output for the destination app without silently rewriting your meaning. Latency must feel continuous. Privacy expectations are high because people dictate secrets without noticing—so read the actual retention toggles, not the homepage adjectives. Cross-app availability matters more than a beautiful single-app recorder.
 
-:::chart
+:::framework
 title: Where voice beats typing for me (task fit)
-bars: First drafts / outlines|91, Status updates / bug reports|86, Long-form thinking dumps|80, Precise code edits|22, Auth forms / secrets|8
-note: Low scores are intentional. Voice is a power tool, not a universal input replacement. Scores are my judgment.
+items: First drafts / outlines, Status updates / bug reports, Long-form thinking dumps, Precise code edits, Auth forms / secrets
+note: Editorial ordering only; Low scores are intentional. Voice is a power tool, not a universal input replacement. Scores are my judgment.
 :::
 
 ## What Shines
@@ -921,7 +956,7 @@ Without raw transcript access, I cannot tell whether a bad sentence is my speech
 
 A good product admits this. A bad product markets “replace your keyboard.”
 
-## Things I Learned
+## Key takeaways
 
 - The best voice tools shape output for the destination; they do not merely transcribe.
 - Correction UX is as important as recognition accuracy.
@@ -929,7 +964,7 @@ A good product admits this. A bad product markets “replace your keyboard.”
 - Privacy design is part of HCI: cloud transcription can still be acceptable if retention and training controls are real and legible.
 - Raw transcript plus cleanup diff is the trust model I want by default.
 
-## How I Would Apply This
+## Practical application
 
 For portfolio and productivity tools, I would use voice for quick capture: project notes, daily logs, blog drafts, reminders, and issue reports. Requirements:
 
@@ -939,7 +974,7 @@ For portfolio and productivity tools, I would use voice for quick capture: proje
 - No silent training surprises without consent
 - A documented privacy preset for sensitive days
 
-## Bottom Line
+## Conclusion
 
 Voice AI becomes serious when it respects user intent, speeds up capture, and produces text that fits the workflow without making the user babysit every sentence. Transcription is the substrate. Intent-to-work is the product. Privacy is a settings surface, not a vibe.
 
@@ -963,17 +998,22 @@ Voice AI becomes serious when it respects user intent, speeds up capture, and pr
     highlights: ['CUDA ecosystem', 'Cluster-scale training', 'Developer gravity'],
     date: '2026-02-24',
     tags: ['NVIDIA', 'AI', 'Hardware', 'GPU', 'CUDA'],
-    readTime: '12 min read',
+    readTime: '8 min read',
     content: `NVIDIA is often described as a GPU company. That frame is too small. The durable advantage is an infrastructure stack: accelerators, networking, CUDA, libraries, deployment tooling, developer habits, and a supply chain organized around AI workloads.
 
-> Reader promise: You will see why NVIDIA’s moat is the full execution path, not only the chip.
 
-## Fast Context
+## Context and scope
 
 :::figure
 src: assets/images/blog/nvidia-blackwell-rack-codex-openai.webp
 alt: Four-layer AI infrastructure stack for software, compute, networking, and serving
 caption: Conceptual AI infrastructure stack: software, accelerated compute, networking, and serving work together as one execution path.
+:::
+
+:::diagram
+title: The AI infrastructure stack
+nodes: Silicon|Run tensor workloads, Networking|Move data between accelerators, Software|Schedule and optimize kernels, Deployment|Operate clusters and serve models
+note: Conceptual sequence for understanding the system; implementation details vary by product and deployment.
 :::
 
 In modern AI, the product teams actually buy is not a single part number. They buy a path from research idea to trained model to served inference with acceptable latency, cost, and reliability. NVIDIA’s gravity comes from making that path the default for a decade of researchers and production engineers.
@@ -984,7 +1024,7 @@ label: SCOPE
 text: This is an infrastructure and ecosystem field note grounded in publicly known CUDA/GPU dynamics—not insider supply-chain claims or invented market-share percentages.
 :::
 
-## TL;DR
+## Executive summary
 
 NVIDIA’s moat is not only faster silicon. It is the fact that the fastest path from idea to production training or inference often still runs through NVIDIA’s software and hardware ecosystem. CUDA created compounding developer advantage. Cluster-scale networking and systems design matter because frontier training is a distributed systems problem. Alternatives can win specific economics, but replacing the whole path is harder than shipping a competitive chip.
 
@@ -1004,10 +1044,10 @@ Frontier training is a networking, scheduling, storage, power, and cooling probl
 
 Teams need a believable story for training, fine-tuning, quantization, inference serving, observability, and failure recovery. Platforms that only win one slice force customers to become systems integrators.
 
-:::chart
+:::framework
 title: Relative strength of moat layers (my infrastructure judgment)
-bars: Software + CUDA ecosystem|94, Cluster systems / networking|88, Silicon performance|86, Developer habit / hiring|83, Price / availability flexibility|40
-note: Scores describe competitive gravity, not a claim that alternatives cannot win niches.
+items: Software + CUDA ecosystem, Cluster systems / networking, Silicon performance, Developer habit / hiring, Price / availability flexibility
+note: Editorial ordering only; Scores describe competitive gravity, not a claim that alternatives cannot win niches.
 :::
 
 ## What Shines
@@ -1061,7 +1101,7 @@ I want competition. Competition is how prices fall and how specialization appear
 
 For builders, the practical move is not ideology. It is instrumentation. If you cannot measure cost and quality by workload class, you will make procurement decisions on vibes and social media threads.
 
-## Things I Learned
+## Key takeaways
 
 - In AI, hardware and software are inseparable.
 - Developer experience can be as strong a moat as raw performance.
@@ -1069,7 +1109,7 @@ For builders, the practical move is not ideology. It is instrumentation. If you 
 - "NVIDIA dominance" is best analyzed as platform economics, not fandom or conspiracy.
 - Most product teams should optimize serving economics and eval harnesses before they romanticize custom silicon.
 
-## How I Would Apply This
+## Practical application
 
 When designing AI systems for products:
 
@@ -1086,7 +1126,7 @@ href: https://developer.nvidia.com/
 desc: CUDA tools, libraries, and documentation that form much of the practical AI execution path.
 :::
 
-## Bottom Line
+## Conclusion
 
 NVIDIA’s position is strongest where it sells the full path to AI execution. The lesson for builders is clear: platforms win when they remove friction from the entire workflow, not just one layer. Respect the moat, measure your own bottlenecks, and keep just enough optionality to stay honest.
 
@@ -1111,12 +1151,11 @@ NVIDIA’s position is strongest where it sells the full path to AI execution. T
     highlights: ['Compute access', 'Open models', 'Governed deployment'],
     date: '2026-03-11',
     tags: ['AI', 'LLM', 'Geopolitics', 'Technology', 'Open Models'],
-    readTime: '12 min read',
+    readTime: '8 min read',
     content: `The global AI race is usually told as a leaderboard story: who tops the eval, who ships the next name, who demos the scariest agent. That story is incomplete. Model quality matters, but durable advantage also depends on compute access, energy, chip supply, data policy, research talent, deployment channels, and trust.
 
-> Reader promise: You will get a sharper lens for comparing AI ecosystems without reducing everything to model leaderboards.
 
-## Fast Context
+## Context and scope
 
 :::figure
 src: assets/images/blog/global-ai-pareto-codex-openai.webp
@@ -1124,15 +1163,21 @@ alt: Four qualitative lenses for AI ecosystems: research, compute, distribution,
 caption: Four qualitative lenses for comparing AI ecosystems: research, compute, distribution, and governance. This illustration is not a benchmark.
 :::
 
-I compare ecosystems with four lenses: **research quality**, **compute supply**, **deployment channels**, and **governance**. If one lens is missing, the strategy is incomplete even when the model demo looks strong. Countries and companies can lead on one axis and lag on another for years. I am not assigning national rankings here—those charts age badly and invite fake precision.
-
-:::chart
-title: Four-lens scorecard (illustrative framing, not a ranking of nations)
-bars: Research velocity|80, Compute + energy|75, Product distribution|70, Governance / trust|65
-note: These bars are a template for analysis, not a claim about any specific country’s absolute score.
+:::diagram
+title: Four lenses for AI capacity
+nodes: Research|Measure reproducible advances, Compute|Assess energy and hardware access, Distribution|See where products reach users, Trust|Evaluate safety and governance
+note: Conceptual sequence for understanding the system; implementation details vary by product and deployment.
 :::
 
-## TL;DR
+I compare ecosystems with four lenses: **research quality**, **compute supply**, **deployment channels**, and **governance**. If one lens is missing, the strategy is incomplete even when the model demo looks strong. Countries and companies can lead on one axis and lag on another for years. I am not assigning national rankings here—those charts age badly and invite fake precision.
+
+:::framework
+title: Four-lens scorecard (illustrative framing, not a ranking of nations)
+items: Research velocity, Compute + energy, Product distribution, Governance / trust
+note: Editorial ordering only; These bars are a template for analysis, not a claim about any specific country’s absolute score.
+:::
+
+## Executive summary
 
 The strongest AI ecosystems combine frontier research, infrastructure, distribution, and governance. Open-weight models change bargaining power by reducing dependency on a few closed APIs. Competition accelerates reasoning, multimodal interfaces, coding tools, and agents. Benchmark chasing can hide weak reliability. Compute access is becoming a strategic constraint. The best model is not always the best system for a given product.
 
@@ -1206,7 +1251,7 @@ My product rule: keep at least one strong open-weight path in the adapter layer 
 
 Optimize for task success, cost, latency, and recoverable failure. The rest is context.
 
-## Things I Learned
+## Key takeaways
 
 - The AI race is not one race. Research, infrastructure, product, and policy move at different speeds.
 - Open-weight models change bargaining power.
@@ -1214,7 +1259,7 @@ Optimize for task success, cost, latency, and recoverable failure. The rest is c
 - Strategy without measurement becomes nationalism or brand loyalty cosplay.
 - Operational ownership is the hidden tax of open systems—and sometimes worth paying.
 
-## How I Would Apply This
+## Practical application
 
 For product engineering, I stay model-flexible:
 
@@ -1234,7 +1279,7 @@ href: https://aiindex.stanford.edu/
 desc: Longitudinal research and policy context useful when separating hype from measured trends.
 :::
 
-## Bottom Line
+## Conclusion
 
 The global AI race will be won by ecosystems that turn model progress into reliable, affordable, governed products. Raw capability is only the first layer. Build like the leaderboard can change next month—because it will.
 
@@ -1259,17 +1304,22 @@ The global AI race will be won by ecosystems that turn model progress into relia
     highlights: ['Goal loops', 'Context hygiene', 'Verifier-reviewer workflow'],
     date: '2026-03-25',
     tags: ['AI', 'Developer Tools', 'IDE', 'Cursor', 'VS Code', 'Windsurf'],
-    readTime: '13 min read',
+    readTime: '8 min read',
     content: `AI code editors are no longer just autocomplete surfaces. They are becoming engineering workbenches: context gathering, multi-file implementation, verification, review, and iteration inside one loop. The tools change monthly. The discipline should not.
 
-> Reader promise: You will get a daily-driver workflow for using AI coding tools without losing engineering discipline.
 
-## Fast Context
+## Context and scope
 
 :::figure
 src: assets/images/blog/ai-code-editors-codex-openai.webp
 alt: AI coding workflow moving from scope through editing, checks, review, and approval
 caption: Conceptual AI-assisted development workflow: scope the task, edit, run checks, review the diff, and approve the result.
+:::
+
+:::diagram
+title: A reviewable coding-agent workflow
+nodes: Context|Read the relevant repository, Plan|Name files and intended behavior, Edit|Create a bounded diff, Check|Run tests and human review
+note: Conceptual sequence for understanding the system; implementation details vary by product and deployment.
 :::
 
 I use real tools in this category—**VS Code** as the extensible baseline, **Cursor** as an AI-native fork/workflow style, **Windsurf** and similar agentic editors as multi-step coding environments, plus CLI/agent companions. Rankings rot. Workflows compound. I am not selling a permanent leaderboard.
@@ -1280,7 +1330,7 @@ label: NOTE
 text: This post adapts a field-note structure because AI coding tools change quickly. The durable lesson is the workflow, not a fixed product ranking or invented productivity percentages.
 :::
 
-## TL;DR
+## Executive summary
 
 The best AI coding tool is not the one that writes the most code. It is the one that keeps context clean, runs the right checks, exposes the diff clearly, and helps the engineer stay in control. Agentic multi-file edits are useful when repo conventions and test commands are known. Background verification is a major unlock. Fast agents still create cleanup debt when scope is vague.
 
@@ -1302,10 +1352,10 @@ Lean into longer loops: plan, edit, run, fix. Strength: less glue work between c
 
 Useful for bounded jobs with clear success criteria. Strength: automation. Weakness: review can become an afterthought if the PR is huge.
 
-:::chart
+:::framework
 title: What I optimize for in a daily driver (weights)
-bars: Diff clarity + reviewability|93, Repo context quality|90, Test / terminal loop|87, Multi-file agent competence|78, Flashy autonomy demos|20
-note: Autonomy demos are entertainment until checks and review are first-class. Scores are my judgment.
+items: Diff clarity + reviewability, Repo context quality, Test / terminal loop, Multi-file agent competence, Flashy autonomy demos
+note: Editorial ordering only; Autonomy demos are entertainment until checks and review are first-class. Scores are my judgment.
 :::
 
 ## What Shines
@@ -1337,7 +1387,7 @@ For UI work, add:
 7. **Verifier pass** — screenshots or Playwright assertions.
 8. **Reviewer pass** — readability, a11y, performance before human PR review.
 
-## Things I Learned
+## Key takeaways
 
 - Define the goal before coding because agents perform better when success is measurable.
 - Use verifier loops for UI, tests, and builds before asking for human review.
@@ -1345,7 +1395,7 @@ For UI work, add:
 - Context hygiene is a senior skill: reset threads, paste only relevant files, cite the source of truth.
 - The editor is becoming an orchestrator of tools, not just a buffer of text.
 
-## How I Would Apply This
+## Practical application
 
 For this portfolio project, the strongest workflow is already visible in the repo culture:
 
@@ -1382,7 +1432,7 @@ AI is useful when it reinforces that discipline. It is harmful when it becomes a
 
 If the tool fails (4) or (5), it is not a daily driver—it is a spike environment.
 
-## Bottom Line
+## Conclusion
 
 AI code editors are becoming serious engineering tools, but the winning workflow is still disciplined software engineering: scope, context, tests, review, and clean commits. Pick any editor you want. Do not outsource judgment.
 
@@ -1408,12 +1458,11 @@ AI code editors are becoming serious engineering tools, but the winning workflow
     highlights: ['Vertical integration', 'Calm interface design', 'Ecosystem continuity'],
     date: '2026-04-01',
     tags: ['Apple', 'Technology', 'Innovation', 'History', 'Design'],
-    readTime: '12 min read',
+    readTime: '7 min read',
     content: `Apple Computer was founded on April 1, 1976. By April 1, 2026, that is fifty years of products, misses, comebacks, and platform gravity. The anniversary is a reasonable moment to talk about discipline rather than nostalgia. The story is often told through objects: Mac, iPod, iPhone, iPad, Watch, Vision, services. The deeper lesson is operating-system thinking applied to product companies.
 
-> Reader promise: You will understand Apple as an operating discipline: integration, restraint, defaults, and ecosystem leverage.
 
-## Fast Context
+## Context and scope
 
 :::figure
 src: assets/images/blog/apple-silicon-history-codex-openai.webp
@@ -1421,9 +1470,15 @@ alt: Conceptual evolution of personal computers and integrated devices
 caption: Conceptual illustration of integration, restraint, and continuity across personal computing; not an archival photograph or hardware specification.
 :::
 
+:::diagram
+title: From product idea to enduring system
+nodes: Hardware|Set physical constraints, Software|Design interaction defaults, Services|Connect user workflows, Support|Maintain the experience over time
+note: Conceptual sequence for understanding the system; implementation details vary by product and deployment.
+:::
+
 Apple repeatedly wins when hardware, software, interaction design, retail, and ecosystem strategy are treated as one system. It loses clarity when channels multiply without a coherent default, or when polish becomes a substitute for progress. This essay is product craft analysis, not a shareholder note, and not a claim that every Apple decision aged well.
 
-## TL;DR
+## Executive summary
 
 Apple’s advantage is not only taste. It is **integration under constraint**. The company says no to many options so the user sees fewer seams, fewer decisions, and a more coherent experience. Vertical integration tunes performance, battery, security, and interaction together. Ecosystem continuity makes devices more valuable as a set. The risks are closed interoperability, premium cost structures, and restraint that starts to look like hesitation.
 
@@ -1441,10 +1496,10 @@ The best interfaces remove decisions. Defaults that are excellent beat preferenc
 
 Handoff, shared credentials, accessory protocols, and consistent interaction models create compound value. The ethical line is important: continuity should save time, not trap people.
 
-:::chart
+:::framework
 title: Discipline levers that still matter at year 50
-bars: Integration of HW + SW|92, Defaults and restraint|88, Ecosystem continuity|84, Retail + support as product|70, Feature checklist velocity|35
-note: Feature velocity is deliberately lower—Apple’s historical strength is coherent shipping, not winning every race to first. Scores are my judgment.
+items: Integration of HW + SW, Defaults and restraint, Ecosystem continuity, Retail + support as product, Feature checklist velocity
+note: Editorial ordering only; Feature velocity is deliberately lower—Apple’s historical strength is coherent shipping, not winning every race to first. Scores are my judgment.
 :::
 
 ## What I Would Watch
@@ -1482,7 +1537,7 @@ The next decade will test whether Apple-like restraint survives intelligence fea
 
 If anniversary lessons mean anything for builders outside Cupertino, it is this: do not let model demos dictate information architecture. Let user goals dictate where intelligence appears, then apply the same integration standards you would apply to battery life or touch latency.
 
-## Things I Learned
+## Key takeaways
 
 - The best interface is often the one that removes a decision.
 - Product quality compounds through defaults, transitions, typography, materials, and support—not only new SKUs.
@@ -1490,7 +1545,7 @@ If anniversary lessons mean anything for builders outside Cupertino, it is this:
 - Anniversary narratives should teach operating principles, not only celebrate icons.
 - Taste becomes real when it is encoded as measurable product properties and defaults.
 
-## How I Would Apply This
+## Practical application
 
 For portfolio and product interfaces—including this site’s Apple-inspired design language:
 
@@ -1507,7 +1562,7 @@ label: CRAFT
 text: If a control exists because the team could not decide, the user is paying the design debt.
 :::
 
-## Bottom Line
+## Conclusion
 
 Apple’s first fifty years show that technology becomes memorable when engineering and taste point in the same direction. The hard part is keeping that discipline while the platform expands—especially into intelligence features that tempt every product to grow a chat-shaped lump.
 
@@ -1531,16 +1586,15 @@ Apple’s first fifty years show that technology becomes memorable when engineer
     highlights: ['Observer bias', 'Safety humility', 'Operational controls'],
     date: '2026-04-20',
     tags: ['Philosophy', 'Anthropics', 'AI Ethics', 'Safety'],
-    readTime: '11 min read',
+    readTime: '7 min read',
     content: `Anthropic reasoning asks a strange but useful question: what should we infer from the fact that we are observers inside this world? It touches cosmology, simulation arguments, consciousness, and AI safety. The topic gets abstract quickly, so the practical move is to separate useful frames from speculative claims.
 
 **Naming note:** "Anthropic" here primarily means **anthropic reasoning / observer selection effects**. It is adjacent to—but not identical with—the company Anthropic and its public safety writing. I keep company materials as optional context, not as proof of metaphysical claims.
 
 This piece intentionally mixes philosophy and engineering. Where claims are not empirically settled, I mark them as speculation or opinion.
 
-> Reader promise: You will get a grounded way to read anthropic arguments without confusing speculation for safety work.
 
-## Fast Context
+## Context and scope
 
 :::figure
 src: assets/images/blog/anthropic-alignment-codex-openai.webp
@@ -1548,9 +1602,15 @@ alt: Observer studying a limited sample of a much larger landscape
 caption: Conceptual illustration of observer selection: a limited sample leaves uncertainty, which should inform evaluation and monitoring.
 :::
 
+:::diagram
+title: From alignment idea to operating control
+nodes: Principle|State desired behavior, Evaluation|Probe realistic failures, Guardrail|Constrain risky actions, Audit|Review incidents and revise
+note: Conceptual sequence for understanding the system; implementation details vary by product and deployment.
+:::
+
 The goal is operational: can a philosophical frame change how we build, test, or govern systems? If a conversation cannot name a control, a metric, or a decision owner, it is atmosphere—not engineering.
 
-## TL;DR
+## Executive summary
 
 Anthropic philosophy is valuable when it improves humility about assumptions. It becomes dangerous when speculation replaces engineering controls, evidence, and measurable safety work. Observer bias is real. Simulation arguments can be useful thought experiments. Consciousness claims need careful language. The bridge from philosophy to engineering is measurement: evals, red teaming, monitoring, and incident response.
 
@@ -1568,10 +1628,10 @@ If we are wrong about capabilities, timelines, or user behavior, products should
 
 I treat simulation talk as a thought experiment about evidence and agency—not as a literal product requirement. The useful question is: if our assumptions about the environment are wrong, which controls still work?
 
-:::chart
+:::framework
 title: How I allocate attention in "deep AI" conversations
-bars: Operational safety controls|90, Empirical evals / red teaming|88, Governance clarity|76, Philosophical framing|54, Speculative cosmology claims|15
-note: Philosophy can set posture. Operations carry production risk. Scores are my judgment.
+items: Operational safety controls, Empirical evals / red teaming, Governance clarity, Philosophical framing, Speculative cosmology claims
+note: Editorial ordering only; Philosophy can set posture. Operations carry production risk. Scores are my judgment.
 :::
 
 ## What I Would Watch
@@ -1624,7 +1684,7 @@ None of that requires settling metaphysics. All of it reduces harm.
 
 That discipline is not anti-wonder. It is pro-trust. Teams that talk with absolute certainty about unsettled questions often under-invest in the controls they could ship this sprint.
 
-## Things I Learned
+## Key takeaways
 
 - A good philosophical frame should change how we build, test, or govern systems.
 - Uncertainty is not weakness. It is a requirement for responsible AI work.
@@ -1632,7 +1692,7 @@ That discipline is not anti-wonder. It is pro-trust. Teams that talk with absolu
 - Humility without controls is vibes. Controls without humility become brittle checklists.
 - A boring safety stack beats a poetic one when production is on the line.
 
-## How I Would Apply This
+## Practical application
 
 In AI product work (including portfolio assistants):
 
@@ -1652,7 +1712,7 @@ href: https://www.anthropic.com/
 desc: Optional adjacent reading from the company of the same name—useful for product/safety communications, not as proof of cosmological claims.
 :::
 
-## Bottom Line
+## Conclusion
 
 The useful part of anthropic thinking is not the most dramatic theory. It is the reminder that our viewpoint is limited, and powerful AI systems should be built with that limitation in mind. Keep the mythos small. Keep the controls real.
 
@@ -1677,19 +1737,24 @@ The useful part of anthropic thinking is not the most dramatic theory. It is the
     highlights: ['App Schemas', 'Siri AI reliability', 'Liquid Glass accessibility'],
     date: '2026-06-12',
     tags: ['WWDC 2026', 'Apple Intelligence', 'Siri AI', 'Liquid Glass', 'Private Cloud Compute'],
-    readTime: '12 min read',
+    readTime: '8 min read',
     content: `WWDC26 (week of June 8, 2026) finally put a sharper name on the bet Apple has been making for two years: intelligence that feels like OS verbs, not a chat personality bolted onto every screen. Apple’s public materials introduce **Siri AI** as a substantially more capable Siri powered by the next generation of Apple Intelligence, alongside iOS/iPadOS/macOS/watchOS/visionOS/tvOS 27 previews and continued Liquid Glass work.
 
 I am not reprinting the keynote. I am extracting the developer contract: what you should model, what you should confirm, and what you should refuse to automate.
 
-> Reader promise: You will see what developers should expose to Siri AI: entities, schemas, confirmations, and calm automations—grounded in Apple’s public WWDC26 materials, not invented APIs.
 
-## Fast Context
+## Context and scope
 
 :::figure
 src: assets/images/blog/apple-pcc-architecture-codex-openai.webp
 alt: On-device processing with separate optional cloud assistance and confirmed app actions
 caption: Conceptual view of on-device processing, optional cloud assistance, and separately confirmed app actions; not a complete internal implementation diagram.
+:::
+
+:::diagram
+title: A developer integration path
+nodes: Intent|Identify the user task, App interface|Expose a bounded action, Privacy|Minimize shared context, Validation|Confirm output and fallback
+note: Conceptual sequence for understanding the system; implementation details vary by product and deployment.
 :::
 
 Three threads matter for builders:
@@ -1704,7 +1769,7 @@ label: GROUNDING
 text: Primary sources: Apple Newsroom WWDC26 posts on Apple Intelligence / Siri AI, and developer.apple.com WWDC26 sessions such as “Build intelligent Siri experiences with App Schemas.” Availability, languages, and regional limits (including EU/China notes in Apple’s footnotes) change—verify before you ship claims to users.
 :::
 
-## TL;DR
+## Executive summary
 
 The Apple Intelligence opportunity is not another assistant panel. It is **entity + intent design**, privacy-aware context, and small automations that feel like part of the OS. On-device work remains the right default for private low-latency tasks; Private Cloud Compute is an extension path whose credibility depends on observable boundaries. Siri AI needs reliability more than novelty. Liquid Glass year-two work should improve legibility, contrast, and performance—not only specular shine.
 
@@ -1719,10 +1784,10 @@ When a design language ships, the second year is where craft shows:
 
 My read: Liquid Glass succeeds if it becomes quiet infrastructure—clarity users feel—not a permanent keynote aesthetic demo.
 
-:::chart
+:::framework
 title: What I would prioritize after a design-language launch
-bars: Accessibility contrast & dynamic type|94, Performance / battery cost|90, Cross-app consistency|85, Novel material demos|30
-note: Maturation is mostly systems quality, not more chrome. Scores are my judgment.
+items: Accessibility contrast & dynamic type, Performance / battery cost, Cross-app consistency, Novel material demos
+note: Editorial ordering only; Maturation is mostly systems quality, not more chrome. Scores are my judgment.
 :::
 
 ## Siri AI: Product Constraints as Features
@@ -1770,14 +1835,14 @@ Each action needs a predictable input schema, reversible output where possible, 
 6. Test with App Intents Testing first, then Shortcuts, Spotlight, and Siri.
 7. Verify Liquid Glass/UI states for light, dark, high contrast, and Dynamic Type.
 
-## Things I Learned
+## Key takeaways
 
 - The best Apple Intelligence feature may look like a normal button, shortcut, or suggestion.
 - Structured app actions are easier to trust than open-ended automation.
 - A premium AI experience should feel calm, reversible, and explainable.
 - Design language maturation is an engineering project, not only branding.
 
-## How I Would Apply This
+## Practical application
 
 For an iOS or portfolio companion, I would expose small, high-quality intents instead of one broad assistant. The system should know exactly what it can do and when it must ask first. Visually, I would implement Apple-like materials with accessibility budgets, not uncritical glass everywhere.
 
@@ -1788,7 +1853,7 @@ href: https://developer.apple.com/wwdc/
 desc: Session catalog and Apple Intelligence / App Intents materials. Prefer primary Apple sources for API names and availability.
 :::
 
-## Bottom Line
+## Conclusion
 
 Apple’s AI strategy is about making intelligence part of the system contract. Developers who expose high-quality entities and actions will get more value than those who add a chat box. Liquid Glass should mature into clarity. Siri AI should mature into trustworthy verbs—or users will quietly stop asking.
 
@@ -1814,21 +1879,26 @@ Apple’s AI strategy is about making intelligence part of the system contract. 
     highlights: ['Source grounding', 'Audio / Video Overviews', 'Citation discipline'],
     date: '2026-06-10',
     tags: ['NotebookLM', 'Gemini', 'AI Research', 'Google AI', 'Audio Overview'],
-    readTime: '12 min read',
+    readTime: '8 min read',
     content: `NotebookLM is most interesting when you stop treating it as document chat. The durable product idea is a research workflow: gather sources, ask questions, compare evidence, create study artifacts, and keep provenance visible.
 
 By mid-2026 the surface area is wider than “podcast my PDF.” Public product materials document Audio Overviews (including interactive modes and many languages), Video Overviews, Studio formats such as mind maps and reports, and—around June 8, 2026—agentic chat upgrades (Google describes Gemini 3.5 / Antigravity-powered deeper research, code execution in a notebook sandbox, richer export formats, and optional web-assisted source gathering). Plan tiers and quotas matter; verify in-product.
 
 I am not claiming a secret keynote. I am describing the pattern that makes NotebookLM durable: **source-grounded synthesis with multi-format outputs**—now under pressure from agent features that can expand the corpus for you.
 
-> Reader promise: You will get a practical model for turning source-grounded AI into a research workflow—without treating new agent features as a license to skip primary reading.
 
-## Fast Context
+## Context and scope
 
 :::figure
 src: assets/images/blog/notebooklm-grounded-pipeline-codex-openai.webp
 alt: Research sources flowing through synthesis, citations, human verification, and outputs
 caption: Conceptual research workflow: synthesize supplied sources, follow citations, verify the evidence, and prepare outputs. Grounding does not remove the need to check answers.
+:::
+
+:::diagram
+title: A grounded research workflow
+nodes: Sources|Select original material, Question|Define what needs evidence, Synthesis|Connect claims to citations, Review|Verify before publishing
+note: Conceptual sequence for understanding the system; implementation details vary by product and deployment.
 :::
 
 NotebookLM is Google’s research/thinking partner grounded primarily in sources you provide. You can upload PDFs, websites, YouTube links, audio, Google Docs/Slides, and more. Audio Overview remains the famous mode: conversational deep dives between AI hosts. Video Overview and other Studio artifacts make the same sources usable in different cognitive modes.
@@ -1842,7 +1912,7 @@ href: https://notebooklm.google/
 desc: Upload sources, ask grounded questions, and generate study artifacts including Audio and Video Overviews.
 :::
 
-## TL;DR
+## Executive summary
 
 The product works best when source grounding remains visible. Use it to navigate a known corpus, not to invent facts about the open web—especially when web-assisted collection is enabled. Audio/Video Overviews and other study formats make the same sources useful in different modes. Collaboration turns a notebook into a shared research space. Generated summaries still need citation discipline and human review. Large or auto-expanded corpora can create false confidence if the set is incomplete or biased.
 
@@ -1860,10 +1930,10 @@ Audio Overviews for commute orientation; Video Overviews when diagrams matter; r
 
 Slides, video, audio, and docs match how research actually arrives: messy. The product job is to normalize that mess without erasing provenance.
 
-:::chart
+:::framework
 title: Research steps where NotebookLM-style tools help most
-bars: Orienting a new corpus|92, Comparing claims across sources|85, Creating study / audio artifacts|80, Final publication without human review|15
-note: Low score on unsupervised publishing is intentional discipline, not a product insult. Scores are my judgment.
+items: Orienting a new corpus, Comparing claims across sources, Creating study / audio artifacts, Final publication without human review
+note: Editorial ordering only; Low score on unsupervised publishing is intentional discipline, not a product insult. Scores are my judgment.
 :::
 
 ## What I Would Watch
@@ -1891,14 +1961,14 @@ text: If you cannot click back to a source for a non-obvious claim, you do not h
 
 Audio Overview sits between steps 1 and 2 for orientation, and sometimes after step 4 as a “listen for holes” pass. I do not publish from audio alone. If code ran in the notebook sandbox, I treat outputs like any other untrusted computation: check inputs, check units, check that the script answered the question I asked.
 
-## Things I Learned
+## Key takeaways
 
 - The value of a research agent is navigation through a source set, not only answers.
 - Good outputs preserve provenance: what source, what claim, what evidence, what uncertainty.
 - Multi-format outputs are a moat only while grounding stays intact.
 - Agentic features raise throughput and raise the cost of sloppy review.
 
-## How I Would Apply This
+## Practical application
 
 For portfolio research, competitive analysis, or course work:
 
@@ -1916,7 +1986,7 @@ For portfolio research, competitive analysis, or course work:
 - "Create a study outline with dependencies: concepts I must learn first."
 - "Generate a briefing for an engineer who has ten minutes."
 
-## Bottom Line
+## Conclusion
 
 NotebookLM points toward AI research tools that are grounded, multimodal, and multi-format. The winning version is not the one that answers fastest. It is the one that keeps the evidence close to the answer—and makes it easy to hear, challenge, and cite—even when the agent can expand the corpus for you.
 
@@ -1956,17 +2026,22 @@ NotebookLM points toward AI research tools that are grounded, multimodal, and mu
       'System Architecture',
     ],
     date: '2026-08-06',
-    readTime: '14 min read',
+    readTime: '8 min read',
     content: `In August 2026, Cursor launched one of its most transformative updates to date: **Cursor Origin**. For the first time, Cursor can now host your code itself. This is no longer just an AI coding platform sitting on top of GitHub—Cursor is building its own native code-hosting and collaboration infrastructure, designed from the ground up for autonomous AI agents at scale.
 
-> Reader promise: You will understand why Cursor moved down the developer stack into code hosting, how agent-native repositories differ from legacy Git remotes, and how Origin unifies IDE, agents, PRs, CI, and Vercel deployments into one platform.
 
-## Fast Context
+## Context and scope
 
 :::figure
 src: assets/images/blog/cursor-origin-architecture-codex-openai.webp
 alt: Agent development workflow connecting editor, repository, review, CI, preview, and synchronization
 caption: Conceptual development workflow connecting the editor, repository synchronization, review, CI checks, and deployment previews.
+:::
+
+:::diagram
+title: An agent-native repository loop
+nodes: Repository|Host code and history, Agent|Work against a bounded task, Preview|Run builds and checks, Merge|Review provenance and changes
+note: Conceptual sequence for understanding the system; implementation details vary by product and deployment.
 :::
 
 Before Origin, the developer workflow had a hard dependency boundary:
@@ -1987,7 +2062,7 @@ href: https://cursor.com/origin
 desc: Native code hosting, two-way GitHub PR sync, and agent-native CI/CD integrations with Vercel, Buildkite, and Depot.
 :::
 
-## TL;DR
+## Executive summary
 
 Cursor Origin is not a clone of GitHub—it is an **agent-native code platform**. Key capabilities live in early beta:
 1. **Native Repositories & Pull Requests**: Full code hosting with commit graphs, checks, diffs, comments, and merging.
@@ -2053,15 +2128,15 @@ Cursor partnered directly with modern infrastructure providers:
 - **Depot**: Multi-platform Docker builds that compile up to 40x faster than standard CI runners.
 - **Buildkite**: Distributed, secure CI pipelines running on developer-controlled compute clusters.
 
-:::chart
-| Core Advantages of Agent-Native Code Hosting
-bars: Server-side whole-repo agent reasoning|96, Two-way GitHub synchronization speed|94, Integrated Vercel preview deploys|91, Resilience during third-party Git outages|89, Depot & Buildkite container CI throughput|93
-note: Engineering priority scoring for agent-hosted developer platforms.
+:::framework
+title: Core Advantages of Agent-Native Code Hosting
+items: Server-side whole-repo agent reasoning, Two-way GitHub synchronization speed, Integrated Vercel preview deploys, Resilience during third-party Git outages, Depot & Buildkite container CI throughput
+note: Editorial ordering only; Engineering priority scoring for agent-hosted developer platforms.
 :::
 
 ---
 
-## What I Would Watch Closely
+## Risks and limits
 
 **Enterprise Governance and Compliance.** Storing proprietary code on Cursor's servers requires SOC 2 Type II compliance, VPC peering, and enterprise SSO. Teams with strict air-gapped policies will keep GitHub Enterprise or GitLab until self-hosted Origin instances become available.
 
@@ -2085,7 +2160,7 @@ label: INFRASTRUCTURE INSIGHT
 text: When AI agents write a majority of code, hosting repositories on the same compute fabric where agents reason is a fundamental efficiency multiplier.
 :::
 
-## Bottom Line
+## Conclusion
 
 Cursor Origin marks the transition from AI as an editor plugin to AI as the foundational developer platform. By unifying repositories, pull requests, autonomous agents, CI, and Vercel deployments into one seamless loop, Cursor is constructing the post-GitHub development environment.
 
@@ -2125,19 +2200,24 @@ Cursor Origin marks the transition from AI as an editor plugin to AI as the foun
       'System Design',
     ],
     date: '2026-09-10',
-    readTime: '13 min read',
+    readTime: '8 min read',
     content: `**4 billion payments. 3 trillion data points. One foundation model trained on all of it.**
 
 In August 2026, **Razorpay** unveiled **Vulcan**—India’s first transformer-based AI foundation model purpose-built for the financial transaction ecosystem. Built, trained, and hosted sovereignly in India in strategic partnership with **NVIDIA** and **AWS Cloud**, Vulcan fundamentally rethinks payment processing from fragmented rule heuristics into a single, unified intelligence layer.
 
-> Reader promise: You will understand how Razorpay tokenized 4 billion payment transactions, how Vulcan unifies fragmented routing, fraud, risk, and checkout personalization into a single foundation model, and the systems engineering behind financial transformers.
 
-## Fast Context
+## Context and scope
 
 :::figure
 src: assets/images/blog/razorpay-vulcan-architecture-codex-openai.webp
 alt: Transaction signals entering a financial model and branching to routing, fraud, and personalization
 caption: High-level conceptual view of transaction signals informing financial-model applications in routing, fraud detection, and personalization.
+:::
+
+:::diagram
+title: A payment-model decision path
+nodes: Payment fields|Build a shared representation, Recent state|Add route health where relevant, Task head|Score an eligible option, Evaluation|Compare against the incumbent
+note: Conceptual sequence for understanding the system; implementation details vary by product and deployment.
 :::
 
 Until now, the fintech industry addressed payment challenges through isolated, specialized subsystems:
@@ -2156,7 +2236,7 @@ href: https://razorpay.com/blog/vulcan-how-razorpay-built-a-foundation-model-for
 desc: India's first transformer model for payments, trained across 4B+ transactions with NVIDIA and AWS Cloud.
 :::
 
-## TL;DR & Production Beta Outcomes
+## Executive summary & Production Beta Outcomes
 
 Razorpay reports early results for Vulcan across several payment tasks. These are company-reported comparisons against each task's incumbent system; they are not independent benchmarks or one combined experiment:
 - **+8% to 10% improvement in payment success rates**—the ultimate benchmark of whether a transaction completes smoothly.
@@ -2218,15 +2298,17 @@ The shared backbone supports distinct decision layers. Razorpay has not publishe
 
 Razorpay describes Vulcan as built for India's payment environment in collaboration with **NVIDIA** and **AWS**. Deployment location, model quantization, and serving internals should be confirmed from technical documentation before being treated as implementation facts.
 
-:::chart
-| Razorpay Vulcan Production Performance Metrics
-bars: Payment success improvement (reported 8-10%)|80, International card fraud detection (reported 8x)|80, Fraud or dispute identification (reported 5x)|80, Checkout personalization (reported 1-2 lakh monthly purchases)|80
-note: Razorpay launch claims for separate product components, shown as labeled claims rather than a comparable numerical scale; see the linked engineering article for evaluation caveats.
+:::table
+| Company-reported launch result | Comparison described by Razorpay | Reading caution |
+| --- | --- | --- |
+| 8–10% payment-success improvement | Routing against the incumbent routing system | Depends on traffic and evaluation window |
+| 8× international-card fraud detection | Signals at comparable alert volume | A detection ratio is not a universal fraud rate |
+| 5× fraud or dispute identification | Same alert-volume framing | Later outcomes and false positives matter |
 :::
 
 ---
 
-## What I Would Watch Closely
+## Risks and limits
 
 **Model Drift vs Sudden Banking Infrastructure Flips.** When a bank changes availability, historical patterns can mislead routing. A production design should combine recent route-health signals with fallback rules and monitor drift.
 
@@ -2251,7 +2333,7 @@ label: FINTECH AI PRINCIPLE
 text: Money is an interconnected communication protocol. When an AI model learns the collective behavior of billions of transactions, payments transform from fragile pipelines into self-healing intelligent networks.
 :::
 
-## Bottom Line
+## Conclusion
 
 Razorpay Vulcan demonstrates that foundation models are not limited to text and images. By training India's first payments transformer on 4 billion transactions and 3 trillion data points, Razorpay, NVIDIA, and AWS have constructed the intelligence layer for the future of digital commerce.
 
@@ -2270,23 +2352,28 @@ Razorpay Vulcan demonstrates that foundation models are not limited to text and 
     summary:
       'A source-grounded guide to UPI Tap & Pay, UPI Circle, Credit Line on UPI, and UPI LITE X, with August 2026 transaction statistics and a practical view of the payment flow.',
     readerPromise:
-      'You will get a comprehensive architectural blueprint of how UPI Tap to Pay, UPI Circle, and credit line rails execute across the NPCI central switch, remitter banks, and merchant hardware—without the marketing buzz.',
+      'Understand what a tap changes, how delegated and offline UPI payments differ, and where authorization, confirmation, and recovery still matter.',
     pullQuote:
       'A tap can replace QR scanning to capture the payee; authorization and payment confirmation are still separate steps.',
     highlights: ['NFC merchant tags', 'UPI Circle Delegated Limits', 'Interoperable Credit Lines'],
     tags: ['UPI', 'Fintech', 'Payments', 'NFC', 'System Design', 'NPCI'],
     date: '2026-09-14',
-    readTime: '7 min read',
+    readTime: '8 min read',
     content: `NPCI recorded **24.509 billion UPI transactions worth ₹29.82 lakh crore in August 2026**. Those are network totals, not estimates from an app-share chart. The product family has also grown beyond scan-and-pay: NFC payee capture, delegated payments, credit lines, and low-value offline options each solve a different problem.
 
-> Reader promise: Understand what a tap actually does, where authorization happens, and how to evaluate these rails without confusing a fast NFC read with completed settlement.
 
-## Fast Context
+## Context and scope
 
 :::figure
 src: assets/images/blog/upi-tap-to-pay-architecture-codex-openai.webp
 alt: Customer tapping a phone near a merchant payment terminal
 caption: A tap captures merchant payment details. The payer still reviews and authorizes the transaction according to the applicable UPI flow.
+:::
+
+:::diagram
+title: A contactless UPI payment path
+nodes: Discover|Read the merchant tag, Review|Confirm payee and amount, Authorize|Use the applicable UPI rail, Reconcile|Confirm final status before retry
+note: Conceptual sequence for understanding the system; implementation details vary by product and deployment.
 :::
 
 **UPI Tap & Pay** uses NFC to capture the payee UPI ID from a compatible smart tag or smart QR. NPCI's product overview says UPI LITE can handle eligible payments up to ₹500 when enabled; larger online payments require a UPI PIN. NFC is an input method here, not proof that the entire payment settled in milliseconds.
@@ -2306,6 +2393,8 @@ NPCI's monthly statistics list **24,508.96 million transactions** and **₹29,82
 
 :::chart
 title: UPI transaction volume, NPCI monthly totals (billions)
+max: 30
+unit: billion transactions
 bars: July 2026|23.66, August 2026|24.51
 note: Values are monthly network totals from NPCI, rounded to two decimal places; bar lengths compare months, not app shares.
 :::
@@ -2326,6 +2415,26 @@ note: Values are monthly network totals from NPCI, rounded to two decimal places
 | Credit Line on UPI | Uses an eligible linked bank credit line | Terms and acceptance depend on the issuer and merchant context |
 | UPI LITE X | Supports eligible offline NFC payments | Device, balance, and later reconciliation rules matter |
 
+## Delegation Is an Authorization Product
+
+UPI Circle deserves its own explanation because it changes **who may initiate a payment**, while Tap & Pay changes **how a merchant is identified**. In full delegation, the primary account holder authorizes a trusted secondary user to pay within a defined allowance. NPCI's BHIM announcement describes a monthly limit of up to ₹15,000 and an expiry duration of up to five years for that product. Those limits are product rules, not a universal recommendation for household budgets. The account owner needs a clear view of the secondary user's spending and a way to revoke access.
+
+Consider a parent authorizing a student to buy groceries. The useful interface should show the available allowance, the source account, and the identity of the person whose payment will be recorded. The secondary user should not need the parent's UPI PIN. The parent should be able to see each payment and distinguish a legitimate purchase from a mistaken or coerced one. An app that merely exposes a “delegate” toggle without these controls has not solved the trust problem.
+
+Partial delegation is a different interaction: the secondary user proposes a payment and the primary user approves it. Builders should keep these modes separate in the interface and audit trail. A permission to spend within a limit is not the same as a request for approval on every transaction.
+
+## Offline Does Not Mean Final Everywhere at Once
+
+NPCI introduced UPI LITE X for payments when connectivity is poor or absent on compatible NFC devices. That is valuable in transit stations and remote areas, but an offline exchange still needs a later system of record. Product teams should explain when a payment is accepted locally, when it is synchronized, and what a user should do if the two devices show different states. Avoid promising instant bank settlement while the network is unavailable.
+
+The same distinction matters for a normal online timeout. A payment may be debited even if the confirmation message is delayed. Showing “failed” too early can cause a customer to pay twice. A reliable app should preserve the original transaction identifier, offer a pending state, and reconcile with the payment network before suggesting a retry.
+
+:::callout
+type: architecture
+label: PAYMENT STATE RULE
+text: Separate merchant discovery, customer authorization, network acceptance, and final confirmation in both the interface and telemetry. One fast stage does not make every later stage instantaneous.
+:::
+
 ## Engineering Notes
 
 For a merchant or app team, instrument each stage separately: NFC read success, customer review, authorization, network response, and final confirmation. Show a QR fallback if NFC capture fails. Use unique transaction identifiers and reconcile timed-out payments before retrying. Expose delegation status and revocation clearly for UPI Circle. Measure real p50/p95/p99 times on supported devices instead of publishing a synthetic end-to-end latency budget.
@@ -2336,6 +2445,7 @@ The main lesson: a faster way to discover the merchant can improve the payment e
 
 - [NPCI UPI monthly statistics](https://www.npci.org.in/product/upi/product-statistics) — August and July 2026 volume and value
 - [NPCI UPI Tap & Pay](https://www.npci.org.in/what-we-do/upi-lite/upi-tap-and-pay/product-overview) — NFC flow and payment limits
+- [NPCI BHIM UPI Circle announcement](https://www.npci.org.in/uploads/NBSL_Press_release_BHIM_Goes_Live_with_UPI_Circle_Full_Delegation_Enabling_Authorised_UPI_Payments_within_set_limits_7b308e643d.pdf) — full delegation and stated BHIM limits
 - [NPCI digital payment launch](https://www.npci.org.in/PDF/npci/press-releases/2023/NPCI-Press-Release-RBI-Governor-Launches-Key-Digital-Payment-Initiatives-at-Global-Fintech-Fest-2023.pdf) — Credit Line on UPI and UPI LITE X context`,
   },
   {
@@ -2356,17 +2466,22 @@ The main lesson: a faster way to discover the merchant can improve the payment e
     ],
     tags: ['TypeSafe AI', 'Jev', 'System 1', 'AI Agents', 'TypeScript', 'System Design'],
     date: '2026-09-18',
-    readTime: '6 min read',
+    readTime: '8 min read',
     content: `TypeSafe AI introduced **Jev** on September 15, 2026 as an early-access System One model for typed, probabilistic decisions. The company reports **70–500 ms end-to-end response times** and **$0.042 per million input tokens** for its own service. Those are vendor claims for a particular workload, not a latency or cost guarantee for every integration.
 
-> Reader promise: Understand when a typed decision helps an agent, what calibrated confidence means, and why a policy still needs evaluation and review.
 
-## Fast Context
+## Context and scope
 
 :::figure
 src: assets/images/blog/typesafe-ai-jev-architecture-codex-openai.webp
 alt: Context and question entering a typed-decision instrument with action and review paths
 caption: Conceptual decision workflow: state and a question produce a typed answer, then application policy chooses action or human review.
+:::
+
+:::diagram
+title: A typed decision inside an agent
+nodes: State|Supply bounded context, Question|Define allowed outputs, Decision|Receive value and uncertainty, Policy|Act or escalate with evidence
+note: Conceptual sequence for understanding the system; implementation details vary by product and deployment.
 :::
 
 A conventional language model generates strings. Jev is designed to return predefined structured values and probabilities, with multiple answers sampled in parallel. The useful architectural distinction is the contract around a decision: the application decides which possible outputs are legal and how much uncertainty it can tolerate.
@@ -2382,10 +2497,10 @@ desc: Vendor announcement with published latency, pricing, output, and evaluatio
 
 A calibrated model should give outcomes labeled 0.8 a roughly 80% success frequency **on a defined evaluation set**. This is a property to measure, not a promise that any individual 0.8 prediction is correct. Drift, new users, unusual data, and unclear labels can change calibration after deployment. TypeSafe calls its training method **Reinforcement Learning for Calibrated Decisions (RLCD)**.
 
-:::chart
-title: Example review policy for probabilistic decisions
-bars: Low-risk review threshold|20, Human-review band|60, High-confidence action threshold|90
-note: Illustrative policy thresholds only. They are not Jev benchmark results or recommended production settings.
+:::framework
+title: An illustrative review policy
+items: Low-risk answers still need sampling, Ambiguous answers go to a deeper check, High-impact actions require explicit approval
+note: These are example policy tiers rather than published Jev thresholds.
 :::
 
 ## A Practical Agent Pattern
@@ -2401,6 +2516,28 @@ note: Illustrative policy thresholds only. They are not Jev benchmark results or
 | Fixed categories or scores | Natural fit when outputs are defined in advance | Possible, but output validation is still needed |
 | Long-form explanation or code | Requires another component | Natural fit |
 | Production safety | Needs thresholds, evaluation, and fallback | Needs validation, evaluation, and fallback |
+
+## Worked Example: Route a Support Request
+
+Imagine a support inbox that receives billing questions, feature requests, and reports of account compromise. A narrow model can help route each message, but the application should define the destination set before asking the question: **billing**, **product**, **security**, or **needs human triage**. The state can contain the user's message and the limited account context needed to route it. It should not contain unrelated private history merely because that history is available.
+
+A typed answer makes one class of failure easier to handle: the model cannot return a department name outside the allowed set. That does not guarantee the selected department is correct. A plausible but wrong “billing” answer to an account takeover report is still dangerous. The application should therefore check the output's confidence, use explicit rules for known security signals, and preserve a human triage route. In the review queue, retain the input version, model version, allowed choices, score, and final decision so an error can be reconstructed.
+
+This example is an **architecture sketch**, not a claim that a specific Jev SDK call or threshold has been verified. The current TypeSafe documentation is the authority for actual request syntax and supported output types.
+
+## How to Test a Probabilistic Decision
+
+Start with a labeled set of real requests drawn from the intended workload. Split it by time, not just randomly, so the test includes newer phrasing and changing products. Compare the typed model with the existing routing rule and a general model under the same allowed destinations. Report the confusion matrix, especially the security cases that were sent elsewhere. Overall accuracy can hide an unacceptable failure rate in the smallest but highest-cost category.
+
+Calibration needs its own check. Group predictions into score bands and compare their stated confidence with the frequency of correct outcomes in each band. Repeat that check for each major category and after a product or policy change. If a 0.9 score no longer corresponds to roughly nine correct outcomes in ten on your traffic, a threshold based on that score needs revision.
+
+Latency measurements also need boundaries. Record model service time and the full user-facing path, including input preparation, network calls, policy evaluation, and any escalation. TypeSafe's published 70–500 ms range is useful as a vendor reference, while the decision to adopt it depends on your own p95 latency and error budget.
+
+:::callout
+type: architecture
+label: AGENT POLICY RULE
+text: Treat a typed model response as evidence for a bounded decision. Keep authorization, irreversible actions, and exception handling in explicit application policy.
+:::
 
 ## What the Announcement Does and Does Not Establish
 
