@@ -2073,6 +2073,7 @@ class GitHubProjects {
     const safeBranch = this.escapeHtml(repo.default_branch || 'main');
     const safeLicense = this.escapeHtml(repo.license?.spdx_id || 'Not specified');
     const topics = this.getTopics(repo);
+    const projectMedia = this.buildProjectMedia(repo, topics);
     const topicsHtml = topics
       .slice(0, 8)
       .map(tag => `<span class="blog-topic-pill">${this.escapeHtml(tag)}</span>`)
@@ -2100,6 +2101,11 @@ class GitHubProjects {
           </div>
           <div class="article-tags blog-tags--pills">${topicsHtml}</div>
         </header>
+
+        <figure class="project-preview__media">
+          <img src="${projectMedia}" alt="Concept map of ${safeName}, based on its repository language and topics" width="1200" height="675" decoding="async">
+          <figcaption>Conceptual map generated from the repository language and topics. Open the source for implementation details.</figcaption>
+        </figure>
 
         <div class="project-preview__top-actions">
           <a class="blog-read-btn project-preview__action-primary" href="${safeRepoUrl}" target="_blank" rel="noopener noreferrer">
@@ -2196,6 +2202,48 @@ class GitHubProjects {
     }, 300);
   }
 
+  buildProjectMedia(repo, topics) {
+    // Editorial topic map from public repository metadata, never a product screenshot.
+    const xml = value =>
+      String(value || '')
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&apos;');
+    const name = String(repo.name || 'Repository');
+    const language = String(repo.language || 'Source code');
+    const labels = [
+      language,
+      ...topics.slice(0, 2).map(topic => String(topic).replaceAll('-', ' ')),
+    ];
+    while (labels.length < 3) labels.push('GitHub repository');
+    const hash = [...name].reduce((sum, char) => (sum * 31 + char.charCodeAt(0)) >>> 0, 7);
+    const palettes = [
+      ['#071f3d', '#0066cc', '#63dcff'],
+      ['#1b183f', '#6654d7', '#c0a8ff'],
+      ['#092d32', '#008e95', '#9debd7'],
+      ['#302036', '#ae4684', '#ffc79a'],
+      ['#142638', '#4079a8', '#b7def9'],
+    ];
+    const [deep, mid, bright] = palettes[hash % palettes.length];
+    const title = name.length > 25 ? `${name.slice(0, 24)}…` : name;
+    const subtitle = language.length > 19 ? `${language.slice(0, 18)}…` : language;
+    const chip = (x, y, label, width) =>
+      `<rect x="${x}" y="${y}" width="${width}" height="66" rx="22" fill="#ffffff" fill-opacity=".11" stroke="#ffffff" stroke-opacity=".32"/><text x="${x + 24}" y="${y + 40}" font-size="22" font-weight="600" fill="#ffffff">${xml(label.length > 19 ? `${label.slice(0, 18)}…` : label)}</text>`;
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" role="img" aria-label="Concept map for ${xml(name)}">
+      <defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="${deep}"/><stop offset="1" stop-color="${mid}"/></linearGradient><radialGradient id="glow"><stop stop-color="${bright}" stop-opacity=".65"/><stop offset="1" stop-color="${bright}" stop-opacity="0"/></radialGradient><pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse"><path d="M48 0H0V48" fill="none" stroke="#ffffff" stroke-opacity=".08"/></pattern></defs>
+      <rect width="1200" height="675" fill="url(#bg)"/><rect width="1200" height="675" fill="url(#grid)"/><circle cx="930" cy="95" r="360" fill="url(#glow)" opacity=".62"/>
+      <rect x="62" y="58" width="252" height="46" rx="23" fill="#ffffff" fill-opacity=".14" stroke="#ffffff" stroke-opacity=".29"/><text x="84" y="88" font-family="Arial,sans-serif" font-size="19" font-weight="700" letter-spacing="2" fill="#ffffff">REPOSITORY MAP</text>
+      <text x="62" y="205" font-family="Arial,sans-serif" font-size="54" font-weight="700" letter-spacing="-2" fill="#ffffff">${xml(title)}</text><text x="64" y="252" font-family="Arial,sans-serif" font-size="24" fill="#dceeff">${xml(subtitle)} · public GitHub metadata</text>
+      <path d="M120 386H1082M190 386V440M600 386V440M1010 386V440" fill="none" stroke="${bright}" stroke-opacity=".67" stroke-width="3" stroke-linecap="round"/>
+      <circle cx="190" cy="386" r="10" fill="${bright}"/><circle cx="600" cy="386" r="10" fill="${bright}"/><circle cx="1010" cy="386" r="10" fill="${bright}"/>
+      ${chip(62, 452, labels[0], 325)}${chip(438, 452, labels[1], 325)}${chip(814, 452, labels[2], 325)}
+      <text x="64" y="625" font-family="Arial,sans-serif" font-size="20" letter-spacing="1" fill="#ffffff" fill-opacity=".75">LANGUAGE AND REPOSITORY TOPICS</text>
+    </svg>`;
+    return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
+  }
+
   createProjectCard(repo, _index) {
     const showcase = repo.__showcase || this.getShowcaseScore(repo);
     const meta = this.getRepoMeta(repo);
@@ -2228,6 +2276,7 @@ class GitHubProjects {
     const repoBranch = repo.default_branch || '';
     const aiInsight = this.buildAiInsight(repo, showcase);
     const topics = this.getTopics(repo);
+    const projectMedia = this.buildProjectMedia(repo, topics);
 
     const safeName = this.escapeHtml(repo.name);
     const safeRepoPath = this.escapeHtml(repoPath);
@@ -2317,6 +2366,11 @@ class GitHubProjects {
 
     return `
       <article class="showcase-project-card apple-3d-project group lg-interactive ${hasDemo ? 'has-live-demo' : ''}" data-lg-interactive data-release-status="${safeReleaseKey}" aria-label="${safeName} project card">
+        <figure class="project-media">
+          <a href="${safeRepoUrl}" target="_blank" rel="noopener noreferrer" aria-label="Explore ${safeName} repository">
+            <img src="${projectMedia}" alt="Concept map of ${safeName}, based on its repository language and topics" loading="lazy" decoding="async" width="1200" height="675">
+          </a>
+        </figure>
         <div class="project-header">
           ${kickerHtml}
           <div class="project-head-top">
@@ -2349,15 +2403,12 @@ class GitHubProjects {
               ${languageHtml}
               ${topicsHtml}
             </div>
-            <div class="project-stats-pills">
-              <span class="project-meta-stat project-star-stat" title="Stars: ${stars}">
-                <i class="fas fa-star" aria-hidden="true"></i>${this.formatCompactNumber(stars)}
-              </span>
-              <span class="project-meta-stat project-fork-stat" title="Forks: ${forks}">
-                <i class="fas fa-code-fork" aria-hidden="true"></i>${this.formatCompactNumber(forks)}
-              </span>
-            </div>
           </div>
+          <dl class="project-signal-grid" aria-label="Repository signals">
+            <div><dt><i class="fas fa-star" aria-hidden="true"></i> Stars</dt><dd>${this.formatCompactNumber(stars)}</dd></div>
+            <div><dt><i class="fas fa-code-fork" aria-hidden="true"></i> Forks</dt><dd>${this.formatCompactNumber(forks)}</dd></div>
+            <div><dt><i class="fas fa-code-branch" aria-hidden="true"></i> Last push</dt><dd>${this.escapeHtml(this.formatRelativeDateCompact(repo.pushed_at || repo.updated_at))}</dd></div>
+          </dl>
         </div>
 
         <div class="project-footer ${hasDemo ? 'has-demo' : 'no-demo'}">

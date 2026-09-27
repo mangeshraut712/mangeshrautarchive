@@ -285,6 +285,7 @@ Current documentation pass:
 | GPT-6 / Codex                         | Review 18 blog articles against primary sources, correct dated claims, and expose evidence and source navigation in each article                                                            | Reasoning and token usage unavailable                          |
 | Gemini 3.8 Flash / Google Antigravity | CodeQL security remediation: resolve all 4 open code scanning alerts down to 0, URL substring sanitization hardening, redirect safety, and doc sync                                         | Unavailable from the active runtime                            |
 | Gemini 3.8 Flash / Google Antigravity | Elevate blog previews and repository cards with an in-situ modal preview and repository-supplied details                                                                                    | Unavailable from the active runtime                            |
+| GPT-6 / Codex                         | Restore the GitHub Operating View above project cards and add repository-specific concept maps and readable GitHub data signals                                                             | Reasoning and token usage unavailable                          |
 
 No exact variant, reasoning mode, or token count is inferred when the runtime does not expose it.
 

@@ -51,6 +51,49 @@ test('old homepage preview links reach the complete article', async ({ page }) =
   await expect(page.locator('main h1')).toBeVisible();
 });
 
+test('GitHub operating view leads into illustrated repository cards', async ({ page }) => {
+  await gotoSite(page, '/#projects');
+  const operatingView = page.locator('#projects-github-page');
+  const repositoryList = page.locator('#projects-repos-page');
+  await expect(operatingView).toBeAttached();
+  await expect(repositoryList).toBeAttached();
+  expect(
+    await page.evaluate(
+      () =>
+        document
+          .querySelector('#projects-github-page')
+          .compareDocumentPosition(document.querySelector('#projects-repos-page')) &
+        Node.DOCUMENT_POSITION_FOLLOWING
+    )
+  ).toBeTruthy();
+  await expect(page.locator('.showcase-project-card').first()).toBeAttached();
+  await page.locator('#projects-expand-btn').click();
+  const cards = page.locator('.showcase-project-card');
+  expect(await cards.count()).toBeGreaterThan(10);
+  const mediaChecks = await cards.evaluateAll(async elements =>
+    Promise.all(
+      elements.map(async card => {
+        const image = card.querySelector('.project-media img');
+        if (!image) return false;
+        image.loading = 'eager';
+        await image.decode().catch(() => {});
+        return (
+          image.naturalWidth > 0 &&
+          Boolean(image.alt) &&
+          card.querySelectorAll('.project-signal-grid dd').length === 3
+        );
+      })
+    )
+  );
+  expect(mediaChecks.every(Boolean)).toBe(true);
+  await cards.first().locator('.btn-preview').click();
+  const previewImage = page.locator('#repo-preview-modal .project-preview__media img');
+  await expect(previewImage).toBeVisible();
+  await expect.poll(() => previewImage.evaluate(image => image.naturalWidth)).toBeGreaterThan(0);
+  await page.locator('#repo-preview-modal .blog-modal-close').click();
+  await expect(page.locator('#repo-preview-modal')).toBeHidden();
+});
+
 test('contact form sends a message and confirms storage', async ({ page }) => {
   let submitted;
   await page.route('**/api/contact', async route => {

@@ -2859,11 +2859,65 @@ html.dark #home .hero-name-text {
     <section id="projects" class="fade-in section-standard projects-editorial" aria-labelledby="projects-heading">
       <div class="container">
         <div id="projects-showcase-shell" class="projects-showcase-shell">
+          <header class="projects-page-header projects-overview-header">
+            <p class="section-eyebrow">Engineering portfolio</p>
+            <h2 id="projects-heading">GitHub Operating View.</h2>
+            <p class="section-subtitle">Explore the live engineering record, then open each repository to see the work behind it.</p>
+          </header>
+          <!-- Page 1: GitHub operating view -->
+          <div class="projects-page projects-page--github" id="projects-github-page">
+            <div id="projects-activity-overview" class="projects-activity-overview" aria-live="polite">
+              <div class="activity-overview-head">
+                <div class="activity-overview-title-wrap">
+                  <p class="activity-eyebrow">GitHub Operating View</p>
+                  <h3 class="activity-title">Release-aware engineering momentum</h3>
+                </div>
+                <p id="projects-activity-caption" class="projects-activity-caption">
+                  Syncing repository stars, forks, commits, and contributor activity...
+                </p>
+              </div>
+
+              <div class="activity-overview-inner" id="activity-stats-container">
+                <div class="activity-stat-item skeleton">
+                  <span class="activity-stat-value" id="stat-repos">--</span>
+                  <span class="activity-stat-label">Public Repos</span>
+                </div>
+                <div class="activity-stat-item skeleton">
+                  <span class="activity-stat-value" id="stat-contributors">--</span>
+                  <span class="activity-stat-label">Unique Contributors</span>
+                </div>
+                <div class="activity-stat-item skeleton">
+                  <span class="activity-stat-value" id="stat-stars">--</span>
+                  <span class="activity-stat-label">Stars</span>
+                </div>
+                <div class="activity-stat-item skeleton">
+                  <span class="activity-stat-value" id="stat-forks">--</span>
+                  <span class="activity-stat-label">Forks</span>
+                </div>
+                <div class="activity-stat-item skeleton">
+                  <span class="activity-stat-value" id="stat-commits">--</span>
+                  <span class="activity-stat-label">Commits (30d)</span>
+                </div>
+                <div class="activity-stat-item skeleton">
+                  <span class="activity-stat-value" id="stat-active-repos">--</span>
+                  <span class="activity-stat-label">Active (14d)</span>
+                </div>
+                <div class="activity-stat-item skeleton">
+                  <span class="activity-stat-value" id="stat-languages">--</span>
+                  <span class="activity-stat-label">Languages</span>
+                </div>
+              </div>
+
+              <div class="activity-github-graph-container gh-contrib" id="gh-contrib" data-view="3d"
+                aria-live="polite"></div>
+            </div>
+          </div>
+
           <!-- Featured repository cards -->
           <div class="projects-page projects-page--repos" id="projects-repos-page">
             <header class="projects-page-header">
               <p class="section-eyebrow">Selected engineering work</p>
-              <h2 id="projects-heading">Projects built to be explored.</h2>
+              <h3 id="projects-repos-heading">Projects built to be explored.</h3>
               <p class="section-subtitle">A curated view of the repositories, working demos, and decisions behind the code.</p>
             </header>
             <div class="projects-repos-toolbar" role="region" aria-label="Project filters and search">
@@ -2941,57 +2995,6 @@ html.dark #home .hero-name-text {
               </div>
             </div>
           </div>
-
-          <!-- Page 1: GitHub operating view -->
-          <div class="projects-page projects-page--github" id="projects-github-page">
-            <div id="projects-activity-overview" class="projects-activity-overview" aria-live="polite">
-              <div class="activity-overview-head">
-                <div class="activity-overview-title-wrap">
-                  <p class="activity-eyebrow">GitHub Operating View</p>
-                  <h3 class="activity-title">Release-aware engineering momentum</h3>
-                </div>
-                <p id="projects-activity-caption" class="projects-activity-caption">
-                  Syncing repository stars, forks, commits, and contributor activity...
-                </p>
-              </div>
-
-              <div class="activity-overview-inner" id="activity-stats-container">
-                <div class="activity-stat-item skeleton">
-                  <span class="activity-stat-value" id="stat-repos">--</span>
-                  <span class="activity-stat-label">Public Repos</span>
-                </div>
-                <div class="activity-stat-item skeleton">
-                  <span class="activity-stat-value" id="stat-contributors">--</span>
-                  <span class="activity-stat-label">Unique Contributors</span>
-                </div>
-                <div class="activity-stat-item skeleton">
-                  <span class="activity-stat-value" id="stat-stars">--</span>
-                  <span class="activity-stat-label">Stars</span>
-                </div>
-                <div class="activity-stat-item skeleton">
-                  <span class="activity-stat-value" id="stat-forks">--</span>
-                  <span class="activity-stat-label">Forks</span>
-                </div>
-                <div class="activity-stat-item skeleton">
-                  <span class="activity-stat-value" id="stat-commits">--</span>
-                  <span class="activity-stat-label">Commits (30d)</span>
-                </div>
-                <div class="activity-stat-item skeleton">
-                  <span class="activity-stat-value" id="stat-active-repos">--</span>
-                  <span class="activity-stat-label">Active (14d)</span>
-                </div>
-                <div class="activity-stat-item skeleton">
-                  <span class="activity-stat-value" id="stat-languages">--</span>
-                  <span class="activity-stat-label">Languages</span>
-                </div>
-              </div>
-
-              <div class="activity-github-graph-container gh-contrib" id="gh-contrib" data-view="3d"
-                aria-live="polite"></div>
-            </div>
-          </div>
-
-
         </div>
       </div>
     </section>

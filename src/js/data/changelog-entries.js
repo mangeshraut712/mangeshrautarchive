@@ -51,6 +51,22 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'github-project-media-operating-view-sept-2026',
+    date: '2026-09-28',
+    type: 'improvement',
+    title: 'Restore the GitHub operating view and add repository visuals',
+    summary:
+      'Restored the GitHub Operating View above the project catalog. Every repository card now has a distinct, metadata-based concept map alongside readable stars, forks, and last-push signals. The maps are explicitly conceptual and never presented as screenshots or invented architecture.',
+    tags: ['design', 'systems'],
+    commitVerified: false,
+    model: 'GPT-6 / Codex',
+    ide: 'OpenAI Codex',
+    purpose: 'Improve project discovery and repository data presentation',
+    reasoning: 'Unavailable',
+    usage: 'Unavailable',
+    status: 'unreleased',
+  },
+  {
     id: 'editorial-project-blog-cards-sept-2026',
     date: '2026-09-28',
     type: 'improvement',
@@ -89,7 +105,7 @@ export const changelogEntries = [
     title:
       'Elevate blog previews and GitHub repository cards with architecture schematics and telemetry',
     summary:
-      'Polished article preview modals with authentic Apple glass blockquotes, editorial visual blocks, sanitized asset URLs, and dual reading actions. Transformed all 16 GitHub repository showcase cards to match the high-fidelity editorial format of technical articles: introduced responsive SVG architecture diagrams, domain kickers, segmented language breakdown bars, and 4-metric system benchmark telemetry matrices (latency, SLA uptime, token efficiency, testing). Built an in-situ modal architecture preview (#repo-preview-modal) with instant git clone feedback, dark/light theme parity, zero horizontal overflow, and WCAG AA contrast compliance.',
+      'Polished article preview modals, added repository domain kickers and an in-situ preview with repository metadata and clone feedback, and authored five conceptual architecture SVG assets. The preview reports public repository details; the SVGs are not presented as measured benchmarks or verified implementation diagrams.',
     tags: ['blog', 'design', 'performance', 'other'],
     sha: null,
     commitVerified: false,
