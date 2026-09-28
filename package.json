@@ -60,6 +60,7 @@
     "insights": "codex-session-insights --local-only --no-open",
     "insights:architecture": "node scripts/qa/generate-claude-insights.mjs",
     "sync:github": "node scripts/integrations/sync-github-stats.mjs",
+    "sync:apple-calendar": "node scripts/integrations/sync-apple-calendar.mjs",
     "test:visual": "npx playwright test tests/e2e/visual-regression.spec.js",
     "playwright:mcp": "npx @playwright/mcp@latest",
     "playwright:cli": "npx @playwright/cli@latest",

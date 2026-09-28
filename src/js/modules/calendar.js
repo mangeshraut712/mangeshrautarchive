@@ -1,6 +1,6 @@
 import { LUMA_CALENDARS_URL } from '../utils/luma.js';
 import { escapeHtml } from '../utils/escape-html.js';
-import { changelogEntries } from '../data/changelog-entries.js';
+import { appleCalendarSnapshot } from '../data/apple-calendar-snapshot.js';
 
 function ensureContactSolidStyles() {
   const id = 'contact-solid-css';
@@ -284,460 +284,13 @@ export class CalendarWidget {
     this.selectedDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
     this.selectedDayCell = null;
     this.selectedDayFilter = dateKey(now.getFullYear(), now.getMonth(), now.getDate());
-    this.activeFilter = 'upcoming';
+    this.activeFilter = 'month';
+    this.viewMode = 'month';
     this.searchQuery = '';
     this.aiBriefData = null;
 
-    // "Smart" Reminders, Verified Birthdays & Live Calendar Data
-    this.reminders = [
-      // ── Verified Birthdays (3) ──────────────────────────────────
-      {
-        id: 996,
-        text: "Stephen's Birthday 🎂",
-        time: 'Aug 6 · All Day',
-        dateKey: '2026-08-06',
-        category: 'birthdays',
-        tag: 'Birthday',
-        color: 'pink',
-        icon: 'cake-candles',
-        completed: false,
-      },
-      {
-        id: 997,
-        text: "Mom's Birthday ❤️🎂",
-        time: 'Aug 15 · All Day',
-        dateKey: '2026-08-15',
-        category: 'birthdays',
-        tag: 'Birthday',
-        color: 'pink',
-        icon: 'cake-candles',
-        completed: false,
-      },
-      {
-        id: 999,
-        text: "Mangesh's Birthday 🎂",
-        time: 'Dec 7 · All Day',
-        dateKey: '2026-12-07',
-        category: 'birthdays',
-        tag: 'Special',
-        color: 'gold',
-        icon: 'cake-candles',
-        completed: false,
-      },
-      // ── Live Luma RSVPs (signed-in Luma home, verified 2026-09-19) ─────────
-      // Upcoming: Dev Days Going lh60mh4e; Mumbai Claude Fable Going claude-Fable5.1;
-      // Hack Pending h4h-pune; Neo4j Going nsm1hg6e; Grok Philly Going cursor-hdle;
-      // Build Faster Waitlisted kcw7iwbx.
-      // Google/Meetup only (not Luma tickets): MUG Sep 26, Docker Oct 17, Drupal Oct 24.
-      // Past Going/attended: Astra dhbisvze; Sep 12 GDG/IDC/Builders; AAIF 4h0mjfzr
-      // (guest ticket tk); Codex sq2mmwfm; Cafe Cursor Pune bbs0fetq; Cafe Cursor
-      // Philly tkx269iu. Philly anniversary + Claude meetup are not Going tickets.
-      {
-        id: 215,
-        text: 'Dev Days | Pune, India',
-        time: 'Sep 19 · 9:30 AM',
-        dateKey: '2026-09-19',
-        category: 'events',
-        tag: 'Dev Days',
-        color: 'green',
-        icon: 'laptop-code',
-        location: 'Data Axle Pune, ICC Tech Park',
-        lumaHost: 'Dev Days, Alok Kumar, chetan Pujari & Darp Lalani',
-        lumaStatus: 'going',
-        lumaUrl: 'https://luma.com/lh60mh4e',
-        isLuma: true,
-        completed: false,
-      },
-      {
-        id: 220,
-        text: 'Mumbai | Claude Fable 5.1 Build Day',
-        time: 'Sep 23 · 5:30 PM',
-        dateKey: '2026-09-23',
-        category: 'events',
-        tag: 'Claude',
-        color: 'green',
-        icon: 'code',
-        location: 'K J Somaiya School of Engineering',
-        lumaHost: 'Sumeet G Doshi',
-        lumaStatus: 'going',
-        lumaUrl: 'https://luma.com/claude-Fable5.1',
-        isLuma: true,
-        completed: false,
-      },
-      {
-        id: 221,
-        text: 'Hack for Humanity: Pune',
-        time: 'Sep 26 · 9:00 AM',
-        dateKey: '2026-09-26',
-        category: 'events',
-        tag: 'Hack',
-        color: 'purple',
-        icon: 'hand-holding-heart',
-        location: 'Location Shown Upon Approval',
-        lumaHost: 'AJ Green, Jigar Vyas, Shivalika Devi & Supriya Rao',
-        lumaStatus: 'pending',
-        lumaUrl: 'https://luma.com/h4h-pune',
-        isLuma: true,
-        completed: false,
-      },
-      {
-        id: 218,
-        text: 'NEO4J Graph Builder: BUILD SPRINT, Pune',
-        time: 'Sep 26 · 10:00 AM',
-        dateKey: '2026-09-26',
-        category: 'events',
-        tag: 'Neo4j',
-        color: 'green',
-        icon: 'diagram-project',
-        location: 'iSprout GreyStone, Pune',
-        lumaHost: 'Rajat Gupta',
-        lumaStatus: 'going',
-        lumaUrl: 'https://luma.com/nsm1hg6e',
-        isLuma: true,
-        completed: false,
-      },
-      {
-        id: 226,
-        text: 'MUG Pune x AAIF Pune Meetup',
-        time: 'Sep 26 · 10:30 AM',
-        dateKey: '2026-09-26',
-        category: 'events',
-        tag: 'MongoDB',
-        color: 'green',
-        icon: 'database',
-        location: 'IntraEdge, 12th Floor, DNK Square, Viman Nagar',
-        completed: false,
-      },
-      {
-        id: 222,
-        text: 'Grok Bot Meetup Philadelphia — What Are You Building With AI Agents?',
-        time: 'Sep 29 · 6:00 PM EDT',
-        dateKey: '2026-09-29',
-        category: 'events',
-        tag: 'Grok',
-        color: 'green',
-        icon: 'robot',
-        location: 'Indy Hall Clubhouse at 709 N 2nd St, Philadelphia',
-        lumaHost: 'Luis Cielak & Malcolm Jones',
-        lumaStatus: 'going',
-        lumaUrl: 'https://luma.com/cursor-hdle',
-        isLuma: true,
-        completed: false,
-      },
-      {
-        id: 223,
-        text: 'Build Faster with AI and APIs (Session 4)',
-        time: 'Oct 10 · 10:00 AM',
-        dateKey: '2026-10-10',
-        category: 'events',
-        tag: 'API',
-        color: 'orange',
-        icon: 'clock',
-        location: 'Coditas, Viman Nagar',
-        lumaHost: 'Aditya Bisht & THE API COMMUNITY',
-        lumaStatus: 'waitlisted',
-        lumaUrl: 'https://luma.com/kcw7iwbx',
-        isLuma: true,
-        completed: false,
-      },
-      {
-        id: 224,
-        text: 'Docker Pune October Meetup — Invite Only',
-        time: 'Oct 17 · 10:00 AM',
-        dateKey: '2026-10-17',
-        category: 'events',
-        tag: 'Docker',
-        color: 'blue',
-        icon: 'cubes',
-        location: 'Hewlett Packard Enterprise, Grant Road, Pune',
-        completed: false,
-      },
-      {
-        id: 225,
-        text: 'Drupal Pune Meetup — October 24, 2026',
-        time: 'Oct 24 · 9:30 AM',
-        dateKey: '2026-10-24',
-        category: 'events',
-        tag: 'Drupal',
-        color: 'blue',
-        icon: 'users',
-        location: 'QED42 (Baner)',
-        completed: false,
-      },
-      // ── Past Done / Attended Luma Events ───────────────────────────
-      {
-        id: 214,
-        text: 'Astra Commons: Pune',
-        time: 'Sep 18 · 4:00 PM',
-        dateKey: '2026-09-18',
-        category: 'events',
-        tag: 'Astra',
-        color: 'blue',
-        icon: 'users',
-        location: 'Cafe MAPLE, Pune',
-        lumaHost: 'AMAN MOGAL, Rhiannon Payne, Pauline P. Narvas & Vaibhav Srivastav',
-        lumaStatus: 'done',
-        lumaUrl: 'https://luma.com/dhbisvze',
-        isLuma: true,
-        completed: true,
-      },
-      {
-        id: 211,
-        text: "Build with AI - Code for Communities - Pre DevFest Pune'26 Workshop Series 4.0 | Thoughtworks",
-        time: 'Sep 12 · 9:00 AM',
-        dateKey: '2026-09-12',
-        category: 'events',
-        tag: 'GDG Pune',
-        color: 'blue',
-        icon: 'laptop-code',
-        location: 'Thoughtworks Technologies India Private Limited',
-        lumaHost: 'GDG Pune',
-        lumaStatus: 'done',
-        lumaUrl: 'https://luma.com/o0ls3yva',
-        isLuma: true,
-        completed: true,
-      },
-      {
-        id: 212,
-        text: 'The AI Engineering Stack',
-        time: 'Sep 12 · 10:00 AM',
-        dateKey: '2026-09-12',
-        category: 'events',
-        tag: 'AI Stack',
-        color: 'blue',
-        icon: 'layer-group',
-        location: 'DevX, Pune',
-        lumaHost: 'Indian Data Club',
-        lumaStatus: 'done',
-        lumaUrl: 'https://luma.com/bkdq2d6r',
-        isLuma: true,
-        completed: true,
-      },
-      {
-        id: 213,
-        text: 'Morning Sessions w/ Builders (Pune Edition)',
-        time: 'Sep 12 · 11:00 AM',
-        dateKey: '2026-09-12',
-        category: 'events',
-        tag: 'Builders',
-        color: 'blue',
-        icon: 'mug-hot',
-        location: 'The Office Club, Alluring Sky',
-        lumaHost: 'Nischay Joshi & Almas',
-        lumaStatus: 'done',
-        lumaUrl: 'https://luma.com/zk2sqibt',
-        isLuma: true,
-        completed: true,
-      },
-      {
-        id: 219,
-        text: 'AAIF Agentic AI Day — Pune Connect #2',
-        time: 'Sep 12 · 12:30 PM',
-        dateKey: '2026-09-12',
-        category: 'events',
-        tag: 'AAIF',
-        color: 'blue',
-        icon: 'network-wired',
-        location: 'Technogise Private Limited, Viman Nagar',
-        lumaHost: 'Saurabh Mishra, Jitendra Gupta, Sagar utekar & Prerana Patil',
-        lumaStatus: 'done',
-        lumaUrl: 'https://luma.com/4h0mjfzr',
-        isLuma: true,
-        completed: true,
-      },
-      {
-        id: 201,
-        text: 'Codex Build House - Pune (+63)',
-        time: 'Sep 5 · 9:00 AM',
-        dateKey: '2026-09-05',
-        category: 'events',
-        tag: 'Codex',
-        color: 'blue',
-        icon: 'terminal',
-        location: 'Manogat villa, Pune',
-        lumaHost: 'AMAN MOGAL, Pauline P. Narvas & Om Kute',
-        lumaStatus: 'done',
-        lumaUrl: 'https://luma.com/sq2mmwfm',
-        isLuma: true,
-        completed: true,
-      },
-      {
-        id: 202,
-        text: 'Cafe Cursor Pune',
-        time: 'Aug 29 · 10:00 AM',
-        dateKey: '2026-08-29',
-        category: 'events',
-        tag: 'Cursor',
-        color: 'blue',
-        icon: 'mug-hot',
-        location: 'Mauji - The Time Cafe',
-        lumaHost: 'Himanshu Sangshetti',
-        lumaStatus: 'done',
-        lumaUrl: 'https://luma.com/bbs0fetq',
-        isLuma: true,
-        completed: true,
-      },
-      {
-        id: 205,
-        text: 'Pune | Claude Code Meetup',
-        time: 'Aug 29 · 4:00 PM',
-        dateKey: '2026-08-29',
-        category: 'events',
-        tag: 'Claude',
-        color: 'purple',
-        icon: 'code',
-        location: 'Pune, Maharashtra',
-        completed: true,
-      },
-      {
-        id: 203,
-        text: 'Cursor Meetup Philadelphia — One Year Anniversary 🎂',
-        time: 'Aug 25 · 6:00 PM EDT',
-        dateKey: '2026-08-25',
-        category: 'events',
-        tag: 'Cursor',
-        color: 'blue',
-        icon: 'cake-candles',
-        location: 'Indy Hall Clubhouse at 709 N 2nd St, Philadelphia',
-        completed: false,
-      },
-      {
-        id: 204,
-        text: 'Cafe Cursor Philadelphia',
-        time: 'Jul 16 · 7:30 PM (10:00 AM EDT)',
-        dateKey: '2026-07-16',
-        category: 'events',
-        tag: 'Cursor',
-        color: 'blue',
-        icon: 'mug-hot',
-        location: 'Percy Diner & Bar, Philadelphia',
-        lumaHost: 'Luis Cielak & Malcolm Jones',
-        lumaStatus: 'done',
-        lumaUrl: 'https://luma.com/tkx269iu',
-        isLuma: true,
-        completed: true,
-      },
-      // ── Core Tasks & Smart Reminders ────────────────────────────
-      {
-        id: 101,
-        text: 'Review Multi-Channel Webhooks & Edge Telemetry',
-        time: 'Sep 2 · 10:00 AM',
-        dateKey: '2026-09-02',
-        category: 'reminders',
-        tag: 'Ops',
-        color: 'blue',
-        icon: 'shield-halved',
-        completed: false,
-      },
-      {
-        id: 102,
-        text: 'Quarterly Architecture & System Optimization Review',
-        time: 'Sep 3 · 2:00 PM',
-        dateKey: '2026-09-03',
-        category: 'reminders',
-        tag: 'Architecture',
-        color: 'purple',
-        icon: 'sliders',
-        completed: false,
-      },
-      {
-        id: 103,
-        text: 'AI Agentic Benchmark & Token Ledger Audit',
-        time: 'Sep 4 · 4:30 PM',
-        dateKey: '2026-09-04',
-        category: 'reminders',
-        tag: 'AI',
-        color: 'gold',
-        icon: 'brain',
-        completed: false,
-      },
-      {
-        id: 104,
-        text: 'Sync with Engineering Collaborators',
-        time: 'Sep 8 · 11:00 AM',
-        dateKey: '2026-09-08',
-        category: 'reminders',
-        tag: 'Sync',
-        color: 'blue',
-        icon: 'handshake',
-        completed: false,
-      },
-      {
-        id: 106,
-        text: 'Sitewide 100/100/100/100 QA Certification & Telemetry Sync',
-        time: 'Sep 9 · 11:30 AM',
-        dateKey: '2026-09-09',
-        category: 'reminders',
-        tag: 'Milestone',
-        color: 'blue',
-        icon: 'award',
-        completed: false,
-      },
-      {
-        id: 105,
-        text: 'FastAPI & Cloudflare Edge Resilience Stress Test',
-        time: 'Sep 15 · 3:00 PM',
-        dateKey: '2026-09-15',
-        category: 'reminders',
-        tag: 'QA',
-        color: 'red',
-        icon: 'bolt',
-        completed: false,
-      },
-      {
-        id: 1,
-        text: 'Review Portfolio Design',
-        time: 'Aug 24 · 10:00 AM',
-        dateKey: '2026-08-24',
-        category: 'reminders',
-        tag: 'Design',
-        color: 'blue',
-        icon: 'palette',
-        completed: false,
-      },
-      {
-        id: 2,
-        text: 'Email Mangesh',
-        time: 'Aug 25 · 2:00 PM',
-        dateKey: '2026-08-25',
-        category: 'reminders',
-        tag: 'Urgent',
-        color: 'red',
-        icon: 'envelope',
-        completed: false,
-      },
-      {
-        id: 3,
-        text: 'AI Model Training',
-        time: 'Aug 25 · 4:30 PM',
-        dateKey: '2026-08-25',
-        category: 'reminders',
-        tag: 'Dev',
-        color: 'purple',
-        icon: 'brain',
-        completed: false,
-      },
-    ];
-
-    // Inject recent Changelog Releases as Calendar milestone entries
-    if (Array.isArray(changelogEntries)) {
-      changelogEntries.slice(0, 10).forEach((entry, idx) => {
-        if (!entry.date) return;
-        this.reminders.push({
-          id: 5000 + idx,
-          text: entry.title,
-          time: `${entry.date} · Shipped`,
-          dateKey: entry.date,
-          category: 'changelog',
-          tag: 'Release',
-          color: 'purple',
-          icon: 'rocket',
-          completed: false,
-          isChangelog: true,
-          changelogId: entry.id,
-        });
-      });
-    }
+    // Public 2026 snapshot from the visible Apple Calendar sources. Browser-created tasks stay local.
+    this.reminders = appleCalendarSnapshot.events.map(event => ({ ...event }));
 
     // Load local storage persisted reminders & completion states
     this.loadPersistedReminders();
@@ -806,7 +359,7 @@ export class CalendarWidget {
     const itemsOnDay = this.reminders.filter(r => {
       if (r.isChangelog) return false;
       if (!r.dateKey) return false;
-      return r.dateKey === targetDateKey || r.dateKey.endsWith(`-${targetDateKey.slice(5)}`);
+      return r.dateKey === targetDateKey;
     });
 
     if (itemsOnDay.length === 0) {
@@ -955,7 +508,7 @@ export class CalendarWidget {
   getLiveEventDays(year, month) {
     const eventDays = new Set();
 
-    // Check all reminders, birthdays, and changelog releases for this month
+    // Check synced Apple events and browser-created reminders for this month.
     for (const r of this.reminders) {
       if (r.dateKey && r.dateKey.length >= 10) {
         const parts = r.dateKey.split('-');
@@ -988,10 +541,8 @@ export class CalendarWidget {
     if (birthdayMatch) return 'dot-pink';
 
     // 3. Changelog Releases (Purple)
-    const changelogMatch = this.reminders.find(
-      r => (r.category === 'changelog' || r.isChangelog) && r.dateKey === dKey
-    );
-    if (changelogMatch) return 'dot-purple';
+    const holidayMatch = this.reminders.find(r => r.category === 'holidays' && r.dateKey === dKey);
+    if (holidayMatch) return 'dot-gold';
 
     // 4. Default Reminders / Slots (Blue)
     return 'dot-blue';
@@ -1024,22 +575,30 @@ export class CalendarWidget {
         .sort((left, right) => left.dateKey.localeCompare(right.dateKey));
     }
 
+    if (this.activeFilter === 'month') {
+      const prefix = `${this.date.getFullYear()}-${String(this.date.getMonth() + 1).padStart(2, '0')}-`;
+      return list.filter(r => r.dateKey?.startsWith(prefix));
+    }
+
     // Filter by specific day if activeFilter === 'day'
     if (this.activeFilter === 'day') {
       const targetDateKey =
         this.selectedDayFilter ||
         dateKey(this.date.getFullYear(), this.date.getMonth(), this.date.getDate());
-      const mmDd = targetDateKey.slice(5); // e.g. "08-24"
+      return list.filter(r => !r.isChangelog && r.dateKey === targetDateKey);
+    }
 
-      return list.filter(r => {
-        if (r.isChangelog) return false;
-        if (r.dateKey) {
-          return (
-            r.dateKey === targetDateKey || r.dateKey === mmDd || r.dateKey.endsWith(`-${mmDd}`)
-          );
-        }
-        return false;
-      });
+    if (this.activeFilter === 'week') {
+      const first = new Date(this.selectedDate);
+      first.setDate(first.getDate() - first.getDay());
+      const startKey = dateKey(first.getFullYear(), first.getMonth(), first.getDate());
+      first.setDate(first.getDate() + 7);
+      const endKey = dateKey(first.getFullYear(), first.getMonth(), first.getDate());
+      return list.filter(r => r.dateKey >= startKey && r.dateKey < endKey);
+    }
+
+    if (this.activeFilter === 'year') {
+      return list.filter(r => r.dateKey?.startsWith(`${this.date.getFullYear()}-`));
     }
 
     // Filter by category tab
@@ -1055,12 +614,79 @@ export class CalendarWidget {
     if (this.activeFilter === 'birthdays') {
       return list.filter(r => r.category === 'birthdays');
     }
+    if (this.activeFilter === 'holidays') {
+      return list.filter(r => r.category === 'holidays');
+    }
     if (this.activeFilter === 'changelog') {
       return list.filter(r => r.category === 'changelog' || r.isChangelog);
     }
 
     // "all" shows all tasks, events, and birthdays (excluding changelog entries)
     return list.filter(r => !r.isChangelog);
+  }
+
+  renderCalendarView(year, month) {
+    if (this.viewMode === 'year') {
+      const monthNames = [
+        'Jan',
+        'Feb',
+        'Mar',
+        'Apr',
+        'May',
+        'Jun',
+        'Jul',
+        'Aug',
+        'Sep',
+        'Oct',
+        'Nov',
+        'Dec',
+      ];
+      return `<div class="calendar-year-view" aria-label="${year} calendar overview">${monthNames
+        .map((label, index) => {
+          const prefix = `${year}-${String(index + 1).padStart(2, '0')}-`;
+          const count = this.reminders.filter(item => item.dateKey?.startsWith(prefix)).length;
+          return `<button type="button" class="calendar-year-month" data-month="${index}" aria-label="${label} ${year}, ${count} items"><strong>${label}</strong><span>${count} ${count === 1 ? 'item' : 'items'}</span></button>`;
+        })
+        .join('')}</div>`;
+    }
+
+    const days = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+    const selected = this.selectedDate || new Date(year, month, 1);
+    if (this.viewMode === 'day') {
+      const key = dateKey(selected.getFullYear(), selected.getMonth(), selected.getDate());
+      const count = this.reminders.filter(item => item.dateKey === key).length;
+      return `<div class="calendar-day-view"><strong>${selected.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}</strong><span>${count} ${count === 1 ? 'item' : 'items'} on this day</span></div>`;
+    }
+
+    const first = this.viewMode === 'week' ? new Date(selected) : new Date(year, month, 1);
+    if (this.viewMode === 'week') first.setDate(first.getDate() - first.getDay());
+    const count = this.viewMode === 'week' ? 7 : new Date(year, month + 1, 0).getDate();
+    const blanks = this.viewMode === 'week' ? 0 : first.getDay();
+    let cells = Array.from({ length: blanks }, () => '<span class="day-cell empty"></span>');
+    for (let index = 0; index < count; index++) {
+      const current = new Date(first);
+      current.setDate(first.getDate() + index);
+      const key = dateKey(current.getFullYear(), current.getMonth(), current.getDate());
+      const today = new Date();
+      const isToday = key === dateKey(today.getFullYear(), today.getMonth(), today.getDate());
+      const selectedKey = dateKey(selected.getFullYear(), selected.getMonth(), selected.getDate());
+      const hasEvent = this.reminders.some(item => item.dateKey === key);
+      const classes = [
+        'day-cell',
+        isToday ? 'today' : '',
+        key === selectedKey ? 'selected' : '',
+        hasEvent ? 'has-event' : '',
+      ]
+        .filter(Boolean)
+        .join(' ');
+      const dot = hasEvent
+        ? `<span class="event-dot ${this.getEventDotColor(current.getFullYear(), current.getMonth(), current.getDate())}" aria-hidden="true"></span>`
+        : '';
+      cells.push(
+        `<button type="button" class="${classes}" data-date-key="${key}" aria-label="${current.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}">${current.getDate()}${dot}</button>`
+      );
+    }
+    return `<div class="ios-weekdays">${days.map(day => `<span>${day}</span>`).join('')}</div><div class="ios-grid ${this.viewMode === 'week' ? 'week-view' : ''}">${cells.join('')}</div>`;
   }
 
   render() {
@@ -1078,16 +704,9 @@ export class CalendarWidget {
       'November',
       'December',
     ];
-    const days = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
-
     const year = this.date.getFullYear();
     const month = this.date.getMonth();
     const today = new Date().getDate();
-
-    const firstDay = new Date(year, month, 1).getDay();
-    const daysInMonth = new Date(year, month + 1, 0).getDate();
-
-    const liveEventDays = this.getLiveEventDays(year, month);
     const filteredReminders = this.getFilteredReminders();
 
     const currentDayKey =
@@ -1096,7 +715,7 @@ export class CalendarWidget {
     const dayMatchesCount = this.reminders.filter(r => {
       if (r.isChangelog) return false;
       if (r.dateKey) {
-        return r.dateKey === currentDayKey || r.dateKey.endsWith(`-${currentDayKey.slice(5)}`);
+        return r.dateKey === currentDayKey;
       }
       return false;
     }).length;
@@ -1104,18 +723,13 @@ export class CalendarWidget {
     const totalEventsCount = this.reminders.filter(
       r => r.category === 'events' && !r.isChangelog
     ).length;
-    const totalLumaCount = this.reminders.filter(
-      r => (r.isLuma || r.lumaUrl) && !r.isChangelog
-    ).length;
     const totalRemindersCount = this.reminders.filter(
       r => r.category === 'reminders' && !r.isChangelog
     ).length;
     const totalBirthdaysCount = this.reminders.filter(
       r => r.category === 'birthdays' && !r.isChangelog
     ).length;
-    const totalChangelogCount = this.reminders.filter(
-      r => r.category === 'changelog' || r.isChangelog
-    ).length;
+    const totalHolidaysCount = this.reminders.filter(r => r.category === 'holidays').length;
     const totalCount = this.reminders.filter(r => !r.isChangelog).length;
     const nowKey = dateKey(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
     const upcomingCount = this.reminders.filter(
@@ -1161,53 +775,18 @@ export class CalendarWidget {
               <span class="current-year">${year}</span>
             </div>
             <div class="ios-actions">
-              <button type="button" class="ios-btn icon-only" title="Previous Month" aria-label="Previous month"><i class="fas fa-chevron-left" aria-hidden="true"></i></button>
+              <button type="button" class="ios-btn icon-only" title="Previous ${this.viewMode}" aria-label="Previous ${this.viewMode}"><i class="fas fa-chevron-left" aria-hidden="true"></i></button>
               <button type="button" class="ios-btn today-btn" title="Go to Today" aria-label="Go to today"><i class="fas fa-calendar-day" aria-hidden="true"></i></button>
-              <button type="button" class="ios-btn icon-only" title="Next Month" aria-label="Next month"><i class="fas fa-chevron-right" aria-hidden="true"></i></button>
+              <button type="button" class="ios-btn icon-only" title="Next ${this.viewMode}" aria-label="Next ${this.viewMode}"><i class="fas fa-chevron-right" aria-hidden="true"></i></button>
             </div>
           </div>
           
-          <div class="ios-weekdays">
-            ${days.map(d => `<span>${d}</span>`).join('')}
+          <div class="calendar-view-switch" role="group" aria-label="Calendar view">
+            ${['day', 'week', 'month', 'year'].map(mode => `<button type="button" data-calendar-view="${mode}" aria-pressed="${this.viewMode === mode}" class="${this.viewMode === mode ? 'active' : ''}">${mode[0].toUpperCase() + mode.slice(1)}</button>`).join('')}
           </div>
-          
-          <div class="ios-grid">
-    `;
-
-    // Empty slots
-    for (let i = 0; i < firstDay; i++) {
-      html += `<span class="day-cell empty"></span>`;
-    }
-
-    // Days
-    for (let i = 1; i <= daysInMonth; i++) {
-      const isToday =
-        i === today && month === new Date().getMonth() && year === new Date().getFullYear();
-      const hasEvent = liveEventDays.has(i);
-
-      let classes = 'day-cell';
-      if (isToday) classes += ' today';
-      if (hasEvent) classes += ' has-event';
-
-      const thisKey = dateKey(year, month, i);
-      const isSelected =
-        this.selectedDate &&
-        this.selectedDate.getFullYear() === year &&
-        this.selectedDate.getMonth() === month &&
-        this.selectedDate.getDate() === i;
-
-      if (isSelected) classes += ' selected';
-      const dotColorClass = this.getEventDotColor(year, month, i);
-
-      html += `
-        <span class="${classes}" data-day="${i}" data-date-key="${thisKey}">
-          ${i}
-          ${hasEvent ? `<div class="event-dot ${dotColorClass}" title="Calendar Event / Available Slot"></div>` : ''}
-        </span>`;
-    }
-
-    html += `
-          </div>
+          ${this.renderCalendarView(year, month)}
+          <p class="calendar-snapshot-note">Apple Calendar ${appleCalendarSnapshot.year} · ${appleCalendarSnapshot.events.length} distinct events · Last imported ${new Date(appleCalendarSnapshot.syncedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })} · ${appleCalendarSnapshot.timeZone}</p>
+          <a class="calendar-marathi-link" href="https://www.kalnirnay.com/app/" target="_blank" rel="noopener noreferrer">कालनिर्णय २०२६ · Open the official Marathi calendar <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
         </div>
 
         <!-- Reminders Section -->
@@ -1215,7 +794,7 @@ export class CalendarWidget {
           <div class="reminders-header">
             <div class="reminders-title">
               <i class="fas fa-list-check" aria-hidden="true"></i>
-              <span>Smart Reminders & Events</span>
+              <span>Events &amp; Reminders</span>
             </div>
             <div class="reminders-header-actions">
               <button type="button" class="ios-btn-small" title="Add Reminder" aria-label="Add new reminder"><i class="fas fa-plus" aria-hidden="true"></i> New</button>
@@ -1245,14 +824,11 @@ export class CalendarWidget {
             <button type="button" class="filter-tab ${this.activeFilter === 'events' ? 'active' : ''}" data-filter="events" aria-pressed="${this.activeFilter === 'events'}">
               <i class="fas fa-calendar-check" aria-hidden="true"></i> Events (${totalEventsCount})
             </button>
-            <button type="button" class="filter-tab ${this.activeFilter === 'luma' ? 'active' : ''}" data-filter="luma" aria-pressed="${this.activeFilter === 'luma'}">
-              <i class="fas fa-ticket" aria-hidden="true"></i> Luma (${totalLumaCount})
-            </button>
             <button type="button" class="filter-tab ${this.activeFilter === 'birthdays' ? 'active' : ''}" data-filter="birthdays" aria-pressed="${this.activeFilter === 'birthdays'}">
               <i class="fas fa-cake-candles" aria-hidden="true"></i> Birthdays (${totalBirthdaysCount})
             </button>
-            <button type="button" class="filter-tab ${this.activeFilter === 'changelog' ? 'active' : ''}" data-filter="changelog" aria-pressed="${this.activeFilter === 'changelog'}">
-              <i class="fas fa-rocket" aria-hidden="true"></i> Changelog (${totalChangelogCount})
+            <button type="button" class="filter-tab ${this.activeFilter === 'holidays' ? 'active' : ''}" data-filter="holidays" aria-pressed="${this.activeFilter === 'holidays'}">
+              <i class="fas fa-star" aria-hidden="true"></i> Holidays (${totalHolidaysCount})
             </button>
             <button type="button" class="filter-tab ${this.activeFilter === 'reminders' ? 'active' : ''}" data-filter="reminders" aria-pressed="${this.activeFilter === 'reminders'}">
               <i class="fas fa-list-check" aria-hidden="true"></i> Tasks (${totalRemindersCount})
@@ -1323,7 +899,7 @@ export class CalendarWidget {
                   <i class="fas fa-calendar-plus" aria-hidden="true"></i>
                 </div>
                 <div class="empty-state-title">No matching items</div>
-                <div class="empty-state-subtitle">This public list does not show private calendar events. Try another date or browse all items.</div>
+                <div class="empty-state-subtitle">No items match this date or filter. Try another view or browse the full year.</div>
                 <div class="empty-state-actions">
                   <button type="button" class="empty-action-btn show-all-btn">
                     <i class="fas fa-layer-group" aria-hidden="true"></i> View All Items
@@ -1357,8 +933,11 @@ export class CalendarWidget {
                     </div>
                   </div>
                   <div class="card-title">${escapeHtml(r.text)}</div>
+                  ${r.isSynced ? `<div class="card-source">${escapeHtml(r.sourceCalendars?.join(' + ') || 'Apple Calendar')} · ${appleCalendarSnapshot.timeZone}</div>` : ''}
                   ${r.lumaHost ? `<div class="card-host"><i class="fas fa-user-circle" aria-hidden="true"></i> By ${escapeHtml(r.lumaHost)}</div>` : ''}
                   ${r.location ? `<div class="card-location"><i class="fas fa-map-pin" aria-hidden="true"></i> ${escapeHtml(r.location)}</div>` : ''}
+                  ${r.url ? `<a class="card-event-link" href="${escapeHtml(r.url)}" target="_blank" rel="noopener noreferrer">Event link <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i></a>` : ''}
+                  ${r.notes ? `<details class="card-notes"><summary>Event details</summary><p>${escapeHtml(r.notes)}</p></details>` : ''}
                 </div>
                 <div class="card-action-area">
                   ${
@@ -1384,6 +963,7 @@ export class CalendarWidget {
                   }
                   ${
                     !r.isChangelog &&
+                    !r.isSynced &&
                     !r.isLuma &&
                     !r.lumaUrl &&
                     r.category !== 'events' &&
@@ -1420,9 +1000,22 @@ export class CalendarWidget {
     const todayBtn = this.container.querySelector('.today-btn');
     const nextBtn = this.container.querySelector('.ios-actions button:last-child');
 
-    if (prevBtn) prevBtn.onclick = () => this.changeMonth(-1);
+    if (prevBtn) prevBtn.onclick = () => this.navigateView(-1);
     if (todayBtn) todayBtn.onclick = () => this.goToToday();
-    if (nextBtn) nextBtn.onclick = () => this.changeMonth(1);
+    if (nextBtn) nextBtn.onclick = () => this.navigateView(1);
+
+    this.container.querySelectorAll('[data-calendar-view]').forEach(button => {
+      button.onclick = () => this.setViewMode(button.dataset.calendarView);
+    });
+    this.container.querySelectorAll('.calendar-year-month').forEach(button => {
+      button.onclick = () => {
+        const month = Number(button.dataset.month);
+        this.date = new Date(this.date.getFullYear(), month, 1);
+        this.selectedDate = new Date(this.date);
+        this.selectedDayFilter = dateKey(this.date.getFullYear(), month, 1);
+        this.setViewMode('month');
+      };
+    });
 
     // Search input
     const searchInput = this.container.querySelector('.reminders-search-input');
@@ -1539,10 +1132,11 @@ export class CalendarWidget {
     // Day Selection & Day Filter Click
     this.container.querySelectorAll('.day-cell:not(.empty)').forEach(day => {
       day.onclick = () => {
-        const dayNum = parseInt(day.dataset.day, 10);
-        this.selectedDate = new Date(this.date.getFullYear(), this.date.getMonth(), dayNum);
-        this.selectedDayFilter =
-          day.dataset.dateKey || dateKey(this.date.getFullYear(), this.date.getMonth(), dayNum);
+        const [year, month, date] = day.dataset.dateKey.split('-').map(Number);
+        this.selectedDate = new Date(year, month - 1, date);
+        this.date = new Date(year, month - 1, 1);
+        this.selectedDayFilter = day.dataset.dateKey;
+        this.viewMode = 'day';
         this.activeFilter = 'day';
         this.render();
       };
@@ -1556,6 +1150,7 @@ export class CalendarWidget {
 
       // Click card to toggle
       item.onclick = e => {
+        if (reminder.isSynced) return;
         if (e.target.closest('.card-action-btn') || e.target.closest('.status-circle')) return;
         reminder.completed = !reminder.completed;
         this.persistReminders();
@@ -1891,8 +1486,26 @@ export class CalendarWidget {
     this.render();
   }
 
-  changeMonth(offset) {
-    this.date.setMonth(this.date.getMonth() + offset);
+  setViewMode(mode) {
+    if (!['day', 'week', 'month', 'year'].includes(mode)) return;
+    this.viewMode = mode;
+    this.activeFilter = mode;
+    this.render();
+  }
+
+  navigateView(offset) {
+    const target = new Date(this.selectedDate || this.date);
+    if (this.viewMode === 'day') target.setDate(target.getDate() + offset);
+    else if (this.viewMode === 'week') target.setDate(target.getDate() + offset * 7);
+    else if (this.viewMode === 'year') target.setFullYear(target.getFullYear() + offset);
+    else {
+      target.setDate(1);
+      target.setMonth(target.getMonth() + offset);
+    }
+    this.selectedDate = target;
+    this.date = new Date(target.getFullYear(), target.getMonth(), 1);
+    this.selectedDayFilter = dateKey(target.getFullYear(), target.getMonth(), target.getDate());
+    this.activeFilter = this.viewMode;
     this.render();
   }
 

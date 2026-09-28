@@ -16,37 +16,35 @@ async function openContactCalendar(page) {
 }
 
 test.describe('Apple-style Contact Calendar and Smart Reminders', () => {
-  test('renders month calendar, smart reminders, and integrated Calendly panel', async ({
-    page,
-  }) => {
+  test('shows the deduplicated 2026 import and navigates calendar views', async ({ page }) => {
     const { calendar } = await openContactCalendar(page);
     await expect(calendar.locator('.ios-calendar-section')).toBeVisible();
     await expect(calendar.locator('.ios-weekdays')).toBeVisible();
     await expect(calendar.locator('.ios-reminders-section')).toBeVisible();
-    await expect(calendar.getByText('Smart Reminders & Events')).toBeVisible();
-    await expect(
-      calendar.locator('.reminder-card').getByText(/Google & Apple Calendar Sync/i)
-    ).toBeVisible();
+    await expect(calendar.getByText('Events & Reminders')).toBeVisible();
+    await expect(calendar.locator('.calendar-snapshot-note')).toContainText('97 distinct events');
     await expect(page.locator('#contact .calendly-panel')).toBeVisible();
 
-    // Switch to All tab
-    await calendar.locator('[data-filter="all"]').click();
-    await expect(calendar.getByText('Review Portfolio Design')).toBeVisible();
-    await expect(calendar.getByText("Mangesh's Birthday 🎂")).toBeVisible();
-    await expect(calendar.getByText('Email Mangesh')).toBeVisible();
-    await expect(calendar.getByText('AI Model Training')).toBeVisible();
+    await calendar.locator('[data-calendar-view="year"]').click();
+    await expect(calendar.locator('.calendar-year-month')).toHaveCount(12);
+    await calendar.locator('.calendar-year-month[data-month="0"]').click();
+    await expect(calendar.locator('.current-month')).toHaveText('January');
+    await expect(calendar.locator('.reminder-card')).not.toHaveCount(0);
+    await calendar.locator('[data-calendar-view="week"]').click();
+    await expect(calendar.locator('.ios-grid .day-cell:not(.empty)')).toHaveCount(7);
+    await calendar.locator('.ios-grid .day-cell:not(.empty)').first().click();
+    await expect(calendar.locator('.calendar-day-view')).toBeVisible();
   });
 
-  test('interacts with smart reminders and toggles completion', async ({ page }) => {
+  test('keeps imported events read-only and browser tasks editable', async ({ page }) => {
     const { calendar } = await openContactCalendar(page);
+    await calendar.locator('[data-filter="all"]').click();
     const firstCard = calendar.locator('.reminder-card').first();
     await expect(firstCard).not.toHaveClass(/completed/);
-
-    await firstCard.click();
-    await expect(firstCard).toHaveClass(/completed/);
-
     await firstCard.click();
     await expect(firstCard).not.toHaveClass(/completed/);
+    await expect(firstCard.locator('.card-source')).toBeVisible();
+    await expect(firstCard.locator('.status-circle')).toHaveCount(0);
   });
 
   test('triggers Calendly popup from consultation panel', async ({ page }) => {

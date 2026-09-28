@@ -151,6 +151,151 @@ html.dark .calendar-wrapper-clean {
   overflow: visible !important;
 }
 
+#contact .calendar-view-switch {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 4px;
+  padding: 4px;
+  margin: 0.9rem 0;
+  border: 1px solid #d2d2d7;
+  border-radius: 13px;
+  background: #f5f5f7;
+}
+
+#contact .calendar-view-switch button {
+  min-width: 0;
+  min-height: 40px;
+  border: 0;
+  border-radius: 9px;
+  background: transparent;
+  color: #515154;
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+#contact .calendar-view-switch button.active {
+  background: #fff;
+  color: #0066cc;
+  box-shadow: 0 1px 5px rgb(0 0 0 / 12%);
+}
+
+#contact #calendar-widget .day-cell:not(.empty) {
+  padding: 0;
+  border: 0;
+  background-color: transparent;
+  font: inherit;
+}
+
+#contact #calendar-widget .day-cell.today,
+#contact #calendar-widget .day-cell.selected {
+  background-color: #0071e3;
+  color: #fff;
+}
+
+#contact #calendar-widget .day-cell:focus-visible,
+#contact .calendar-view-switch button:focus-visible,
+#contact .calendar-year-month:focus-visible,
+#contact .calendar-marathi-link:focus-visible {
+  outline: 3px solid #0a84ff;
+  outline-offset: 2px;
+}
+
+#contact .calendar-year-view {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+#contact .calendar-year-month {
+  display: grid;
+  gap: 0.25rem;
+  min-height: 64px;
+  padding: 0.65rem;
+  border: 1px solid #d2d2d7;
+  border-radius: 12px;
+  background: #fff;
+  color: #1d1d1f;
+  text-align: left;
+  cursor: pointer;
+}
+
+#contact .calendar-year-month span,
+#contact .calendar-day-view span {
+  color: #515154;
+  font-size: 0.78rem;
+}
+
+#contact .calendar-day-view {
+  display: grid;
+  gap: 0.3rem;
+  padding: 1rem;
+  border: 1px solid #d2d2d7;
+  border-radius: 13px;
+}
+
+#contact .calendar-snapshot-note,
+#contact .calendar-marathi-link {
+  display: block;
+  margin: 0.8rem 0 0;
+  font-size: 0.78rem;
+  line-height: 1.45;
+}
+
+#contact .calendar-snapshot-note,
+#contact .card-source {
+  color: #515154;
+}
+
+#contact :is(.calendar-marathi-link, .card-event-link) {
+  color: #0066cc;
+  font-weight: 650;
+}
+
+#contact .card-notes {
+  margin-top: 0.6rem;
+}
+
+#contact .card-notes summary {
+  color: #0066cc;
+  cursor: pointer;
+}
+
+#contact .card-notes p {
+  max-height: 16rem;
+  overflow: auto;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+html.dark #contact .calendar-view-switch,
+html.dark #contact .calendar-year-month,
+html.dark #contact .calendar-day-view {
+  border-color: #3a3a3c;
+  background: #1c1c1e;
+  color: #f5f5f7;
+}
+
+html.dark #contact .calendar-view-switch button {
+  color: #c7c7cc;
+}
+
+html.dark #contact .calendar-view-switch button.active {
+  background: #303034;
+  color: #66b2ff;
+}
+
+html.dark
+  #contact
+  :is(.calendar-snapshot-note, .card-source, .calendar-year-month span, .calendar-day-view span) {
+  color: #c7c7cc;
+}
+
+html.dark #contact :is(.calendar-marathi-link, .card-event-link, .card-notes summary) {
+  color: #66b2ff;
+}
+
 /* ═══════════════════════════════════════════════════════════
    YEAR PROGRESS HUD WIDGET (Apple HIG Reference Standard)
    ═══════════════════════════════════════════════════════════ */

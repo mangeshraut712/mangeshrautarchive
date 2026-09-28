@@ -291,6 +291,9 @@ Current documentation pass:
 | Gemini 3.8 Flash / Google Antigravity | Restore canonical Apple system colors (#ff3b30, #ff453a, #34c759, #ffcc00), fix dev-all child process leaks, and stabilize Playwright E2E suite                                             | Unavailable from the active runtime                            |
 | Gemini 3.8 Flash / Google Antigravity | Eliminate scroll mask and fadeIn contrast drops, elevate media CTA contrast (#004494), clean catch bindings across 20+ modules, and purge aria-busy locks                                   | Unavailable from the active runtime                            |
 | Gemini 3.8 Flash / Google Antigravity | Link and verify commit provenance for all September 2026 changelog entries, integrate upstream improvements, and verify full-stack gates                                                    | Unavailable from the active runtime                            |
+| GPT-6 / Codex                         | Import the authorized public 2026 Apple Calendar snapshot, deduplicate occurrences, and add day, week, month, and year views                                                                | Reasoning and token usage unavailable                          |
+
+The contact calendar displays a dated 2026 snapshot of the visible Apple Calendar sources on the author's Mac. To refresh it on macOS after granting Calendar access, run `npm run sync:apple-calendar -- --year=2026 --include-notes`, review the generated public `src/js/data/apple-calendar-snapshot.js`, and deploy the change. The import excludes the hidden Luma calendar and collapses identical occurrences. Website reminders are saved only in the current browser; they do not write back to Apple Calendar. The Kalnirnay link opens the official app page and does not import its almanac data.
 
 No exact variant, reasoning mode, or token count is inferred when the runtime does not expose it.
 

@@ -51,6 +51,24 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'public-apple-calendar-snapshot-2026',
+    date: '2026-09-28',
+    type: 'improvement',
+    title: 'Bring the 2026 Apple Calendar into the portfolio',
+    summary:
+      'Imported the visible 2026 Apple Calendar occurrences with event details, collapsed five duplicate entries, and added day, week, month, and year views. The import is a dated public snapshot; browser tasks remain local. Luma remains hidden and the Marathi calendar links to its official app.',
+    tags: ['design'],
+    sha: null,
+    commitVerified: false,
+    model: 'GPT-6 / Codex',
+    ide: 'Codex',
+    purpose:
+      'Make the contact calendar reflect the authorized public Apple Calendar data accurately',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+    status: 'unreleased',
+  },
+  {
     id: 'changelog-provenance-and-fullstack-polish-sept-2026',
     date: '2026-09-28',
     type: 'improvement',
