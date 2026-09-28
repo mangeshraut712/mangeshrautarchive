@@ -58,16 +58,15 @@ export const changelogEntries = [
     summary:
       'Added the portfolio homepage, Crime Investigation Swing home, financial forecasting chart, and AI/ML lab chart to repository cards and previews. Preserved each source image aspect ratio and labeled charts as project outputs.',
     tags: ['design', 'systems'],
-    sha: null,
-    commitVerified: false,
-    link: null,
+    sha: '89a60e7a122c8f4fa71fb2a6b08fb67c921c0fc7',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/89a60e7a122c8f4fa71fb2a6b08fb67c921c0fc7`,
     model: 'GPT-6 / Codex',
     ide: 'OpenAI Codex',
     purpose:
       'Extend source-grounded project imagery to the remaining owned repositories with suitable README visuals',
     reasoning: 'unavailable',
     usage: 'unavailable',
-    status: 'unreleased',
   },
   {
     id: 'readme-screenshots-repo-cards-sept-2026',
