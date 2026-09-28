@@ -58,16 +58,15 @@ export const changelogEntries = [
     summary:
       'Added the openGym and Decimen README images to their repository cards and previews. Fork cards now identify their fork status, and the image captions credit the upstream README.',
     tags: ['design', 'systems'],
-    sha: null,
-    commitVerified: false,
-    link: null,
+    sha: '80abfe8c41398ffdc093cf82f1192f3b0e7e9f04',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/80abfe8c41398ffdc093cf82f1192f3b0e7e9f04`,
     model: 'GPT-6 / Codex',
     ide: 'OpenAI Codex',
     purpose:
       'Complete the image audit for remaining user-facing fork repositories without implying original authorship',
     reasoning: 'unavailable',
     usage: 'unavailable',
-    status: 'unreleased',
   },
   {
     id: 'additional-readme-project-visuals-sept-2026',
