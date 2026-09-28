@@ -39,7 +39,9 @@ test('homepage card leads directly to a complete article with section navigation
   await page.locator('#blog').scrollIntoViewIfNeeded();
   await expect(page.locator('.blog-home-archive-link a')).toHaveAttribute('href', 'blog/');
   await expect(page.locator('#blog .blog-preview-btn')).toHaveCount(0);
-  await page.locator('#blog .blog-card .blog-read-btn').first().click();
+  const readBtn = page.locator('#blog .blog-card .blog-read-btn').first();
+  await expect(readBtn).toBeVisible({ timeout: 15_000 });
+  await readBtn.click();
   await expect(page).toHaveURL(/\/blog\/[^/]+\.html$/);
   await expect(page.locator('.article-toc__list a').first()).toBeAttached();
   await expect(page.locator('.article-diagram')).toHaveCount(1);

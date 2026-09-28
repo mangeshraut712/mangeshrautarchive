@@ -51,6 +51,24 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'section-observer-and-e2e-resilience-sept-2026',
+    date: '2026-09-29',
+    type: 'fix',
+    title: 'Eager section observer registration & Playwright CI resilience',
+    summary:
+      'Register SECTION_MODULES intersection observers immediately during bootstrap so early scrolls, anchor jumps, and Playwright critical journeys hydrate section modules like blog-loader without waiting on window.onload, strengthen critical journeys test with explicit button visibility polling, and repair background whoburnedmore launchd sync agent to prioritize Node 24.',
+    tags: ['performance', 'systems'],
+    sha: null,
+    commitVerified: false,
+    link: null,
+    model: 'Gemini 3.8 Flash',
+    ide: 'Google Antigravity IDE',
+    purpose: 'Bootstrap section observer activation resilience and CI quality gate stabilization',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+    status: 'unreleased',
+  },
+  {
     id: 'repository-gallery-curation-and-mobile-dock-sept-2026',
     date: '2026-09-29',
     type: 'improvement',

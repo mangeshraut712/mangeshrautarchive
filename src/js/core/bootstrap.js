@@ -1196,11 +1196,15 @@ function initLazyModules() {
     };
 
     onFirstInteraction(scheduleInteractionModules);
+  };
 
+  // Section observers are passive IntersectionObservers that do not block rendering.
+  // Register them immediately so early scrolls and hash navigations activate without waiting for window.load.
+  if (!isPerformanceAudit()) {
     SECTION_MODULES.forEach(({ sectionId, modulePath, rootMargin }) => {
       observeSectionTask(sectionId, () => loadModule(modulePath), rootMargin);
     });
-  };
+  }
 
   if (document.readyState === 'complete') {
     run();
