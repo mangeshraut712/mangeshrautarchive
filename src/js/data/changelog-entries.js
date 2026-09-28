@@ -58,13 +58,14 @@ export const changelogEntries = [
     summary:
       'Resolved all ESLint, Unicorn, and Oxlint warnings across the codebase, eliminated unnecessary object spread fallbacks in chatbot and analytics, replaced new Array calls with typed Array.from initializers, converted regex string matching to native startsWith, removed restricted globalThis shadowing from globals.d.ts, and configured anti-slop rules to achieve 0 errors and 0 warnings across all 135 JavaScript source files.',
     tags: ['systems', 'performance'],
-    commitVerified: false,
+    sha: '8c09b705',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/8c09b705`,
     model: 'Gemini 3.8 Flash',
     ide: 'Google Antigravity IDE',
     purpose: 'Enforce zero warnings across Oxlint, anti-slop, and ESLint for robust code quality',
     reasoning: 'unavailable',
     usage: 'unavailable',
-    status: 'unreleased',
   },
   {
     id: 'fork-readme-visuals-sept-2026',
