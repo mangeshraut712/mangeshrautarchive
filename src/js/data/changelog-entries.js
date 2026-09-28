@@ -58,14 +58,14 @@ export const changelogEntries = [
     summary:
       'Make Featured follow the editorial project order, lead with verified product screenshots, and place the home page mobile utility controls in a low row so they cover less card content. Audited the live public feed and README image references: 31 of 39 owned repositories use README images in the gallery, alongside two clearly marked forks.',
     tags: ['design', 'projects'],
-    sha: null,
-    commitVerified: false,
+    sha: 'b232badb',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/b232badb`,
     model: 'GPT-6 / Codex',
     ide: 'OpenAI Codex',
     purpose: 'Audit repository image provenance and refine gallery presentation',
     reasoning: 'unavailable',
     usage: 'unavailable',
-    status: 'unreleased',
   },
   {
     id: 'apple-grade-scrolling-architecture-sept-2026',
