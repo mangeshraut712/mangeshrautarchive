@@ -49,16 +49,33 @@ is optional and may be disabled; do not use `mangeshraut.pro` as the availabilit
 
 ## Product surfaces
 
-| Route                                                                         | Purpose                                                                      |
-| ----------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
-| [`/`](https://mangeshraut712.github.io/mangeshrautarchive/)                   | Portfolio, experience, projects, live music, contact, calendar, and AssistMe |
-| [`/about`](https://mangeshraut712.github.io/mangeshrautarchive/about)         | Narrative profile and compact career summary                                 |
-| [`/systems`](https://mangeshraut712.github.io/mangeshrautarchive/systems)     | Architecture notebook, engineering stack, and system explanations            |
-| [`/monitor`](https://mangeshraut712.github.io/mangeshrautarchive/monitor)     | Deployment, service, security, and telemetry status                          |
-| [`/travel`](https://mangeshraut712.github.io/mangeshrautarchive/travel)       | Interactive travel atlas and place details                                   |
-| [`/uses`](https://mangeshraut712.github.io/mangeshrautarchive/uses)           | Tools, hardware, software, and workflow presentation                         |
-| [`/changelog`](https://mangeshraut712.github.io/mangeshrautarchive/changelog) | Compact release timeline with expandable implementation details              |
-| [`/blog/`](https://mangeshraut712.github.io/mangeshrautarchive/blog/)         | Technical field notes rendered from repository content                       |
+| Route                                                                         | Purpose                                                                         |
+| ----------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
+| [`/`](https://mangeshraut712.github.io/mangeshrautarchive/)                   | Portfolio, experience, projects, live music, contact, calendar, and AssistMe    |
+| [`/#projects`](https://mangeshraut712.github.io/mangeshrautarchive/#projects) | GitHub project gallery with README imagery, live repository facts, and previews |
+| [`/about`](https://mangeshraut712.github.io/mangeshrautarchive/about)         | Narrative profile and compact career summary                                    |
+| [`/systems`](https://mangeshraut712.github.io/mangeshrautarchive/systems)     | Architecture notebook, engineering stack, and system explanations               |
+| [`/monitor`](https://mangeshraut712.github.io/mangeshrautarchive/monitor)     | Deployment, service, security, and telemetry status                             |
+| [`/travel`](https://mangeshraut712.github.io/mangeshrautarchive/travel)       | Interactive travel atlas and place details                                      |
+| [`/uses`](https://mangeshraut712.github.io/mangeshrautarchive/uses)           | Tools, hardware, software, and workflow presentation                            |
+| [`/changelog`](https://mangeshraut712.github.io/mangeshrautarchive/changelog) | Compact release timeline with expandable implementation details                 |
+| [`/blog/`](https://mangeshraut712.github.io/mangeshrautarchive/blog/)         | Technical field notes rendered from repository content                          |
+
+## GitHub project gallery
+
+The [project gallery](https://mangeshraut712.github.io/mangeshrautarchive/#projects)
+shows each public repository once. Its Featured view leads with selected product work; search,
+filters, and sorting remain available for the full collection. Cards use repository README images
+when a suitable source exists. Other cards show labeled conceptual repository maps rather than
+invented product screenshots. Forks are identified on their cards.
+
+At the **29 September 2026** audit, the gallery showed 61 public repositories: 39 owned and 22
+forks. **31 owned repositories** and **two forks** used images referenced in their READMEs; the
+other 28 cards used conceptual maps. All 33 image files were checked against their README
+references and the hashes in the [image manifest](src/assets/images/repo-screenshots/manifest.json).
+The [coverage audit](docs/REPO_SCREENSHOT_COVERAGE.md) explains the remaining owned repositories
+and why some existing README media was not selected. Counts and activity shown on the site can
+change as GitHub repositories change.
 
 ## Architecture
 
