@@ -51,6 +51,23 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'repository-gallery-curation-and-mobile-dock-sept-2026',
+    date: '2026-09-29',
+    type: 'improvement',
+    title: 'Curated repository gallery and clearer mobile cards',
+    summary:
+      'Make Featured follow the editorial project order, lead with verified product screenshots, and place the home page mobile utility controls in a low row so they cover less card content. Audited the live public feed and README image references: 31 of 39 owned repositories use README images in the gallery, alongside two clearly marked forks.',
+    tags: ['design', 'projects'],
+    sha: null,
+    commitVerified: false,
+    model: 'GPT-6 / Codex',
+    ide: 'OpenAI Codex',
+    purpose: 'Audit repository image provenance and refine gallery presentation',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+    status: 'unreleased',
+  },
+  {
     id: 'apple-grade-scrolling-architecture-sept-2026',
     date: '2026-09-28',
     type: 'improvement',

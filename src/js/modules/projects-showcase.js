@@ -360,6 +360,10 @@ function updateActivityStats(allRepos, visibleRepos = [], githubProjects = null)
 
 function createSortComparator(sortBy, githubProjects) {
   return (a, b) => {
+    if (sortBy === 'popularity') {
+      return a.originalIndex - b.originalIndex;
+    }
+
     if (sortBy === 'date') {
       const pushedDiff =
         new Date(b.pushed_at || b.updated_at || 0) - new Date(a.pushed_at || a.updated_at || 0);

@@ -79,10 +79,8 @@ class GitHubProjects {
     this.featuredProjectOrder = [
       'mangeshrautarchive',
       'Gravity-SaaS-Agent',
-      'ai-ml-portfolio',
-      'agent-console',
-      'Stanford-CS336',
       'Hindai',
+      'agent-console',
       'Vitals.AI',
       'career-agent-pro',
       'AssistMe-VirtualAssistant',
@@ -93,6 +91,8 @@ class GitHubProjects {
       'ces-ltd.com',
       'document-scanner-cv',
       'AI-Powered-Sentiment-Analysis',
+      'ai-ml-portfolio',
+      'Stanford-CS336',
     ];
 
     this.fallbackRepos = [
