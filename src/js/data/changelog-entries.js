@@ -58,14 +58,15 @@ export const changelogEntries = [
     summary:
       'Eliminated WebKit synchronous CPU repaints by removing fixed background attachments on body and home, purged unconsumed Forced Synchronous Layout scroll loops in premium enhancements, debounced navbar section spy measurements to rely on native IntersectionObserver, restored direct-manipulation auto root scrolling with reduced motion support, contained horizontal overscroll across rails and code blocks to prevent macOS swipe back-navigation, and unified thin Apple overlay scrollbars across Firefox and WebKit.',
     tags: ['performance', 'design'],
-    commitVerified: false,
+    sha: '26a5960b',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/26a5960b`,
     model: 'Gemini 3.8 Flash',
     ide: 'Google Antigravity IDE',
     purpose:
       'Engineer authentic Apple direct-manipulation scroll physics, eliminate layout thrash, and prevent trackpad overscroll swipe navigation',
     reasoning: 'unavailable',
     usage: 'unavailable',
-    status: 'unreleased',
   },
   {
     id: 'public-apple-calendar-snapshot-2026',
