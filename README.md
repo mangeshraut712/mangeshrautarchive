@@ -290,6 +290,7 @@ Current documentation pass:
 | GPT-6 / Codex                         | Simplify contact with guided message intake, a compact manual form, one Calendly action, and smaller responsive repository cards                                                            | Reasoning and token usage unavailable                          |
 | Gemini 3.8 Flash / Google Antigravity | Restore canonical Apple system colors (#ff3b30, #ff453a, #34c759, #ffcc00), fix dev-all child process leaks, and stabilize Playwright E2E suite                                             | Unavailable from the active runtime                            |
 | Gemini 3.8 Flash / Google Antigravity | Eliminate scroll mask and fadeIn contrast drops, elevate media CTA contrast (#004494), clean catch bindings across 20+ modules, and purge aria-busy locks                                   | Unavailable from the active runtime                            |
+| Gemini 3.8 Flash / Google Antigravity | Link and verify commit provenance for all September 2026 changelog entries, integrate upstream improvements, and verify full-stack gates                                                    | Unavailable from the active runtime                            |
 
 No exact variant, reasoning mode, or token count is inferred when the runtime does not expose it.
 
