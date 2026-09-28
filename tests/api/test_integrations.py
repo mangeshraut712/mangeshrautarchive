@@ -232,6 +232,40 @@ def test_calendar_availability_is_freebusy_only_when_unconfigured(client, monkey
     assert "free/busy" in payload["privacy"]
 
 
+def test_calendar_availability_never_exposes_private_event_details(client, monkeypatch):
+    async def mock_status():
+        return {
+            "googleCalendar": {"configured": False, "connected": False},
+            "microsoftCalendar": {"configured": False, "connected": False},
+            "appleCalendar": {"configured": True, "connected": True},
+        }
+
+    async def mock_token(_provider):
+        return "test-token"
+
+    async def mock_freebusy(_token):
+        return []
+
+    async def mock_sync(*_args, **_kwargs):
+        return None
+
+    async def unexpected_events(*_args, **_kwargs):
+        raise AssertionError("Private events must not be fetched for the public endpoint")
+
+    monkeypatch.setattr("api.routes.integrations._provider_status", mock_status)
+    monkeypatch.setattr("api.routes.integrations.get_provider_access_token", mock_token)
+    monkeypatch.setattr("api.routes.integrations.apple_calendar.fetch_availability", mock_freebusy)
+    monkeypatch.setattr("api.routes.integrations.apple_calendar.fetch_events", unexpected_events)
+    monkeypatch.setattr("api.routes.integrations.update_sync_state", mock_sync)
+
+    response = client.get("/api/calendar/availability")
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["providers"] == ["apple"]
+    assert payload["events"] == []
+    assert payload["aiAgent"]["events_count"] == 0
+
+
 def test_oauth_state_roundtrip(monkeypatch):
     monkeypatch.setenv("INTEGRATION_SYNC_ADMIN_TOKEN", "test-admin-token")
     state = create_oauth_state("google_calendar")

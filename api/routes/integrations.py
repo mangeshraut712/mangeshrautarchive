@@ -611,21 +611,13 @@ async def get_calendar_availability():
     all_busy = [b for day in merged_days for b in (day.get("busy") or [])]
     slots = generate_available_slots(now=datetime.now(timezone.utc), busy_intervals=all_busy, days=14, max_slots=24)
 
-    discovered_events: List[Dict[str, Any]] = []
-    if "apple" in connected_providers:
-        try:
-            apple_events = await apple_calendar.fetch_events(days=30)
-            discovered_events.extend(apple_events)
-        except Exception:
-            pass
-
     ai_status = {
-        "active": True,
-        "mode": "autonomous-sync",
+        "active": bool(connected_providers),
+        "mode": "availability-only",
         "providers_connected": connected_providers,
-        "events_count": len(discovered_events),
+        "events_count": 0,
         "slots_count": len(slots),
-        "sync_summary": f"{len(discovered_events)} verified events actively synchronized across Apple iCloud & Google Calendar.",
+        "sync_summary": "Free/busy availability is connected; event details stay private.",
     }
 
     return {
@@ -635,7 +627,7 @@ async def get_calendar_availability():
         "source": "multi-calendar",
         "providers": connected_providers,
         "days": merged_days,
-        "events": discovered_events,
+        "events": [],
         "slots": slots,
         "aiAgent": ai_status,
         "timeZone": "America/New_York",

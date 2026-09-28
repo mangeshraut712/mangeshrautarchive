@@ -288,14 +288,11 @@ export class CalendarWidget {
     this.selectedDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
     this.selectedDayCell = null;
     this.selectedDayFilter = dateKey(now.getFullYear(), now.getMonth(), now.getDate());
-    this.activeFilter = 'day';
+    this.activeFilter = 'upcoming';
     this.searchQuery = '';
     this.aiBriefData = null;
-    this.liveSlots = [];
-    this.liveEvents = [];
-    this.liveProviders = ['google', 'apple'];
-    this.aiAgentStatus = null;
-    this.availabilityLoaded = false;
+    this.liveProviders = [];
+    this.availabilityStatus = 'loading';
 
     // "Smart" Reminders, Verified Birthdays & Live Calendar Data
     this.reminders = [
@@ -628,17 +625,6 @@ export class CalendarWidget {
       },
       // ── Core Tasks & Smart Reminders ────────────────────────────
       {
-        id: 100,
-        text: 'Google & Apple Calendar Sync',
-        time: 'Live Auto-Sync',
-        dateKey: dateKey(now.getFullYear(), now.getMonth(), now.getDate()),
-        category: 'reminders',
-        tag: 'Live Sync',
-        color: 'blue',
-        icon: 'calendar-check',
-        completed: false,
-      },
-      {
         id: 101,
         text: 'Review Multi-Channel Webhooks & Edge Telemetry',
         time: 'Sep 2 · 10:00 AM',
@@ -834,7 +820,7 @@ export class CalendarWidget {
         hasConflict: false,
         conflictItem: null,
         countOnDay: 0,
-        message: 'No conflicts. Day is completely open.',
+        message: 'No listed items on this day. Check your private calendars for conflicts.',
       };
     }
 
@@ -900,8 +886,7 @@ export class CalendarWidget {
 
     let summaryText;
     if (items.length === 0) {
-      summaryText =
-        'Schedule is completely open. Ideal for deep engineering focus or booking a 1:1 consultation.';
+      summaryText = 'No listed items on this day. Private calendars may contain other events.';
     } else {
       const parts = [];
       if (birthdays.length > 0) {
@@ -980,148 +965,15 @@ export class CalendarWidget {
       const response = await fetch(`${apiBase}${CALENDAR_ENDPOINT}`, {
         headers: { Accept: 'application/json' },
       });
-      if (!response.ok) return;
+      if (!response.ok) throw new Error('Availability unavailable');
       const payload = await response.json();
-      if (payload && (Array.isArray(payload.slots) || Array.isArray(payload.events))) {
-        this.liveSlots = Array.isArray(payload.slots) ? payload.slots : [];
-        this.liveEvents = Array.isArray(payload.events) ? payload.events : [];
-        this.liveProviders =
-          Array.isArray(payload.providers) && payload.providers.length
-            ? payload.providers
-            : ['google', 'apple'];
-        this.aiAgentStatus = payload.aiAgent || null;
-        this.availabilityLoaded = true;
-
-        const isAppleConnected = this.liveProviders.includes('apple');
-        const isGoogleConnected = this.liveProviders.includes('google');
-
-        // Update Calendar Sync reminder card to show real live slots status
-        const syncReminder = this.reminders.find(r => r.id === 100);
-        if (syncReminder) {
-          const activeDate = this.selectedDate || new Date();
-          syncReminder.dateKey = dateKey(
-            activeDate.getFullYear(),
-            activeDate.getMonth(),
-            activeDate.getDate()
-          );
-          const slotText =
-            this.liveSlots.length > 0 ? `${this.liveSlots.length} Free Slots` : 'Live Booking Open';
-          const defaultTag = this.liveSlots.length > 0 ? 'Live Sync' : 'Booking Open';
-
-          if (isGoogleConnected && isAppleConnected) {
-            syncReminder.text = 'Google & Apple Calendar Sync';
-            syncReminder.time = slotText;
-            syncReminder.tag = defaultTag;
-          } else if (isAppleConnected) {
-            syncReminder.text = 'Apple iCloud Calendar & CalDAV';
-            syncReminder.time = slotText;
-            syncReminder.tag = this.liveSlots.length > 0 ? 'Apple' : 'Booking Open';
-          } else {
-            syncReminder.text = 'Google Calendar & Meet Live';
-            syncReminder.time = slotText;
-            syncReminder.tag = this.liveSlots.length > 0 ? 'Live' : 'Booking Open';
-          }
-        }
-
-        // Dynamically import real Apple & Google Calendar events into Smart Reminders
-        if (this.liveEvents.length > 0) {
-          for (const ev of this.liveEvents) {
-            if (!ev.title) continue;
-            const existing = this.reminders.find(r => {
-              const sameTitle =
-                calendarTitlesMatch(r.eventTitle, ev.title) ||
-                calendarTitlesMatch(r.text, ev.title);
-              if (sameTitle) return true;
-              if (r.dateKey && ev.date && r.dateKey === ev.date) {
-                return calendarTitlesMatch(r.text, ev.title);
-              }
-              return false;
-            });
-            if (!existing) {
-              const lowerTitle = ev.title.toLowerCase();
-              const isBirthday = lowerTitle.includes('birthday') || lowerTitle.includes('bday');
-              const isCursor = lowerTitle.includes('cursor');
-              const isClaude = lowerTitle.includes('claude');
-              const isTravel =
-                lowerTitle.includes('flight') ||
-                lowerTitle.includes('hertz') ||
-                lowerTitle.includes('stay');
-
-              let category = 'events';
-              let tag = 'Event';
-              let color = 'blue';
-              let icon = 'calendar-day';
-
-              if (isBirthday) {
-                category = 'birthdays';
-                tag = 'Birthday';
-                color = 'pink';
-                icon = 'cake-candles';
-              } else if (isCursor) {
-                category = 'events';
-                tag = 'Cursor';
-                color = 'blue';
-                icon = 'terminal';
-              } else if (isClaude) {
-                category = 'events';
-                tag = 'Claude';
-                color = 'orange';
-                icon = 'laptop-code';
-              } else if (isTravel) {
-                category = 'events';
-                tag = 'Travel';
-                color = 'cyan';
-                icon = 'plane';
-              } else if (ev.tag) {
-                tag = ev.tag;
-                color = ev.color || 'purple';
-                category = ev.category === 'birthday' ? 'birthdays' : 'events';
-                icon = ev.icon || 'calendar-day';
-              }
-
-              let timeLabel = 'Upcoming';
-              let dKey = ev.date || '';
-              if (ev.start) {
-                const d = new Date(ev.start);
-                const mStr = d.toLocaleString('en-US', { month: 'short' });
-                const dayNum = d.getDate();
-                if (!dKey) {
-                  dKey = dateKey(d.getFullYear(), d.getMonth(), dayNum);
-                }
-                if (ev.start.includes('T00:00:00') && ev.end && ev.end.includes('T00:00:00')) {
-                  timeLabel = `${mStr} ${dayNum} · All Day`;
-                } else {
-                  const timeStr = d.toLocaleTimeString('en-US', {
-                    hour: 'numeric',
-                    minute: '2-digit',
-                  });
-                  timeLabel = `${mStr} ${dayNum} · ${timeStr}`;
-                }
-              }
-
-              this.reminders.push({
-                id: Date.now() + Math.floor(Math.random() * 1000),
-                eventTitle: ev.title,
-                text: ev.title,
-                time: timeLabel,
-                dateKey: dKey,
-                category,
-                tag,
-                color,
-                icon,
-                location: ev.location || '',
-                completed: false,
-                isImportedEvent: true,
-              });
-            }
-          }
-        }
-
-        this.render();
-      }
+      this.liveProviders = Array.isArray(payload.providers) ? payload.providers : [];
+      this.availabilityStatus = payload.status === 'live' ? 'live' : 'unavailable';
     } catch {
-      // Offline fallback: retains existing smart reminders and default calendar dots
+      this.liveProviders = [];
+      this.availabilityStatus = 'unavailable';
     }
+    this.render();
   }
 
   getLiveEventDays(year, month) {
@@ -1136,23 +988,6 @@ export class CalendarWidget {
         const d = parseInt(parts[2], 10);
         if (y === year && m === month) {
           eventDays.add(d);
-        }
-      }
-    }
-
-    if (this.liveSlots.length > 0 || this.liveEvents.length > 0) {
-      for (const slot of this.liveSlots) {
-        if (!slot.start) continue;
-        const d = new Date(slot.start);
-        if (d.getFullYear() === year && d.getMonth() === month) {
-          eventDays.add(d.getDate());
-        }
-      }
-      for (const ev of this.liveEvents) {
-        if (!ev.start) continue;
-        const d = new Date(ev.start);
-        if (d.getFullYear() === year && d.getMonth() === month) {
-          eventDays.add(d.getDate());
         }
       }
     }
@@ -1175,20 +1010,6 @@ export class CalendarWidget {
           ))
     );
     if (birthdayMatch) return 'dot-pink';
-
-    // 2. Live Events & Meetups
-    const ev = this.liveEvents.find(
-      e => (e.date && e.date === dKey) || (e.start && e.start.startsWith(dKey))
-    );
-    if (ev) {
-      const lower = ev.title.toLowerCase();
-      if (lower.includes('cursor')) return 'dot-blue';
-      if (lower.includes('claude')) return 'dot-orange';
-      if (lower.includes('birthday')) return 'dot-pink';
-      if (lower.includes('flight') || lower.includes('stay') || lower.includes('travel'))
-        return 'dot-cyan';
-      return 'dot-purple';
-    }
 
     // 3. Changelog Releases (Purple)
     const changelogMatch = this.reminders.find(
@@ -1217,6 +1038,14 @@ export class CalendarWidget {
           return textMatch || hostMatch || locMatch || tagMatch || timeMatch || dateMatch;
         });
       }
+    }
+
+    if (this.activeFilter === 'upcoming') {
+      const now = new Date();
+      const today = dateKey(now.getFullYear(), now.getMonth(), now.getDate());
+      return list
+        .filter(r => !r.isChangelog && r.dateKey && r.dateKey >= today)
+        .sort((left, right) => left.dateKey.localeCompare(right.dateKey));
     }
 
     // Filter by specific day if activeFilter === 'day'
@@ -1312,6 +1141,10 @@ export class CalendarWidget {
       r => r.category === 'changelog' || r.isChangelog
     ).length;
     const totalCount = this.reminders.filter(r => !r.isChangelog).length;
+    const nowKey = dateKey(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
+    const upcomingCount = this.reminders.filter(
+      r => !r.isChangelog && r.dateKey && r.dateKey >= nowKey
+    ).length;
 
     // Year Progress Calculation (Apple HIG Progress HUD)
     const currentYear = new Date().getFullYear();
@@ -1327,6 +1160,14 @@ export class CalendarWidget {
 
     let html = `
       <div class="ios-widget-wrapper">
+        <div class="calendar-connection" role="status" aria-live="polite">
+          <span class="calendar-connection-dot ${this.availabilityStatus === 'live' ? 'is-live' : ''}" aria-hidden="true"></span>
+          <div>
+            <strong>${this.availabilityStatus === 'live' ? 'Availability connected' : this.availabilityStatus === 'loading' ? 'Checking availability…' : 'Live availability unavailable'}</strong>
+            <span>${this.availabilityStatus === 'live' ? `Free/busy from ${escapeHtml(this.liveProviders.map(provider => ({ apple: 'Apple', google: 'Google', microsoft: 'Microsoft' })[provider] || 'calendar').join(' + '))}. Event details stay private.` : 'Community events below are editorial listings. Tasks stay in this browser.'}</span>
+          </div>
+          <button type="button" class="calendar-connection-book" data-open-calendly>Book a meeting</button>
+        </div>
         <!-- ═══════════════════════════════════════════════════════
              YEAR PROGRESS HUD WIDGET (Apple HIG Standard)
              ═══════════════════════════════════════════════════════ -->
@@ -1424,6 +1265,9 @@ export class CalendarWidget {
 
           <!-- Category Filter Tabs -->
           <div class="calendar-filter-tabs" role="group" aria-label="Filter events by category">
+            <button type="button" class="filter-tab ${this.activeFilter === 'upcoming' ? 'active' : ''}" data-filter="upcoming" aria-pressed="${this.activeFilter === 'upcoming'}">
+              <i class="fas fa-arrow-right" aria-hidden="true"></i> Upcoming (${upcomingCount})
+            </button>
             <button type="button" class="filter-tab ${this.activeFilter === 'day' ? 'active' : ''}" data-filter="day" aria-pressed="${this.activeFilter === 'day'}">
               <i class="fas fa-calendar-day" aria-hidden="true"></i> Day (${dayMatchesCount})
             </button>
@@ -1510,12 +1354,8 @@ export class CalendarWidget {
                 <div class="empty-state-icon">
                   <i class="fas fa-calendar-plus" aria-hidden="true"></i>
                 </div>
-                <div class="empty-state-title">No Reminders or Events</div>
-                <div class="empty-state-subtitle">${
-                  this.selectedDate
-                    ? `${monthNames[this.selectedDate.getMonth()]} ${this.selectedDate.getDate()}`
-                    : 'This day'
-                } is completely open. Book a consultation or explore the schedule.</div>
+                <div class="empty-state-title">No matching items</div>
+                <div class="empty-state-subtitle">This public list does not show private calendar events. Try another date or browse all items.</div>
                 <div class="empty-state-actions">
                   <button type="button" class="empty-action-btn book-consult-btn">
                     <i class="fas fa-calendar-check" aria-hidden="true"></i> Book Consultation
@@ -1569,9 +1409,9 @@ export class CalendarWidget {
                     <i class="fas fa-wand-magic-sparkles" aria-hidden="true"></i>
                   </button>
                   ${
-                    r.isImportedEvent || r.category === 'birthdays'
+                    r.isCustomUserReminder
                       ? `
-                    <button type="button" class="card-action-btn ical-btn" data-id="${r.id}" title="Download .ics Calendar Event" aria-label="Download iCal event">
+                    <button type="button" class="card-action-btn ical-btn" data-id="${r.id}" title="Export a one-time calendar copy" aria-label="Export ${escapeHtml(r.text)} as a calendar file">
                       <i class="fas fa-download" aria-hidden="true"></i>
                     </button>
                   `
@@ -1579,28 +1419,17 @@ export class CalendarWidget {
                   }
                   ${
                     !r.isChangelog &&
-                    !r.isImportedEvent &&
                     !r.isLuma &&
                     !r.lumaUrl &&
                     r.category !== 'events' &&
                     r.category !== 'birthdays' &&
-                    !r.isBirthday &&
-                    r.id !== 100
+                    !r.isBirthday
                       ? `
                     <button type="button" class="card-action-btn edit-btn" data-id="${r.id}" title="Edit text" aria-label="Edit reminder">
                       <i class="fas fa-pen" aria-hidden="true"></i>
                     </button>
                     <button type="button" class="status-circle ${r.completed ? 'checked' : ''}" data-id="${r.id}" title="Toggle Complete" aria-label="Toggle Complete">
                       <i class="fas fa-check" aria-hidden="true"></i>
-                    </button>
-                  `
-                      : ''
-                  }
-                  ${
-                    r.id === 100
-                      ? `
-                    <button type="button" class="card-action-btn sync-book-btn" title="Book Consultation" aria-label="Book Consultation">
-                      <i class="fas fa-arrow-right" aria-hidden="true"></i>
                     </button>
                   `
                       : ''
@@ -1820,15 +1649,6 @@ export class CalendarWidget {
         icalBtn.onclick = e => {
           e.stopPropagation();
           this.downloadIcsForEvent(reminder);
-        };
-      }
-
-      // Sync Card Book Button
-      const syncBookBtn = item.querySelector('.sync-book-btn');
-      if (syncBookBtn) {
-        syncBookBtn.onclick = e => {
-          e.stopPropagation();
-          openCalendlyPopup();
         };
       }
     });
@@ -2147,45 +1967,16 @@ export class CalendarWidget {
   }
 
   downloadIcsForEvent(reminder) {
-    const summary = reminder.text || 'Portfolio Event';
-    const now = new Date();
-    const dtstamp = now.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
-    let dtstart = dtstamp;
-    let dtend = dtstamp;
-
-    if (/^\d{4}-\d{2}-\d{2}$/.test(reminder.dateKey || '')) {
-      const cleanKey = reminder.dateKey.replace(/-/g, '');
-      dtstart = `${cleanKey}T100000Z`;
-      dtend = `${cleanKey}T110000Z`;
-    }
-
-    const icsContent = [
-      'BEGIN:VCALENDAR',
-      'VERSION:2.0',
-      'PRODID:-//Mangesh Raut//Portfolio Calendar Widget//EN',
-      'CALSCALE:GREGORIAN',
-      'METHOD:PUBLISH',
-      'BEGIN:VEVENT',
-      `UID:event-${escapeIcsText(reminder.id || Date.now())}@mangeshraut.pro`,
-      `DTSTAMP:${dtstamp}`,
-      `DTSTART:${dtstart}`,
-      `DTEND:${dtend}`,
-      `SUMMARY:${escapeIcsText(summary)}`,
-      `DESCRIPTION:${escapeIcsText(reminder.description || reminder.time || 'Event from Mangesh Raut Calendar')}`,
-      `LOCATION:${escapeIcsText(reminder.location || 'Online / Remote')}`,
-      'STATUS:CONFIRMED',
-      'END:VEVENT',
-      'END:VCALENDAR',
-    ].join('\r\n');
-
+    const icsContent = buildReminderCalendarCopy(reminder);
+    if (!icsContent) return;
     const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `${summary.replace(/[^a-zA-Z0-9]/g, '_')}.ics`;
+    a.download = `${reminder.text.replace(/[^a-zA-Z0-9]/g, '_')}.ics`;
     document.body.appendChild(a);
     a.click();
-    document.body.removeChild(a);
+    a.remove();
     URL.revokeObjectURL(url);
   }
 }
@@ -2215,4 +2006,55 @@ export function escapeIcsText(value) {
     .replace(/\r\n|\r|\n/g, '\\n')
     .replace(/;/g, '\\;')
     .replace(/,/g, '\\,');
+}
+
+/** A one-time event copy, deliberately separate from live account synchronization. */
+export function buildReminderCalendarCopy(reminder) {
+  if (!reminder?.isCustomUserReminder || !/^\d{4}-\d{2}-\d{2}$/.test(reminder.dateKey || '')) {
+    return null;
+  }
+  const [year, month, day] = reminder.dateKey.split('-').map(Number);
+  const start = new Date(year, month - 1, day);
+  if (start.getFullYear() !== year || start.getMonth() !== month - 1 || start.getDate() !== day) {
+    return null;
+  }
+  const pad = number => String(number).padStart(2, '0');
+  const formatDate = date =>
+    `${date.getFullYear()}${pad(date.getMonth() + 1)}${pad(date.getDate())}`;
+  const formatLocal = date =>
+    `${formatDate(date)}T${pad(date.getHours())}${pad(date.getMinutes())}00`;
+  const timeMatch = String(reminder.time || '').match(/\b(\d{1,2}):(\d{2})\s*(AM|PM)\b/i);
+  let startLine;
+  let endLine;
+  if (timeMatch) {
+    const hour = (Number(timeMatch[1]) % 12) + (timeMatch[3].toUpperCase() === 'PM' ? 12 : 0);
+    const minute = Number(timeMatch[2]);
+    if (Number(timeMatch[1]) > 12 || minute > 59) return null;
+    start.setHours(hour, minute);
+    const end = new Date(start.getTime() + 60 * 60 * 1000);
+    startLine = `DTSTART:${formatLocal(start)}`;
+    endLine = `DTEND:${formatLocal(end)}`;
+  } else {
+    const end = new Date(year, month - 1, day + 1);
+    startLine = `DTSTART;VALUE=DATE:${formatDate(start)}`;
+    endLine = `DTEND;VALUE=DATE:${formatDate(end)}`;
+  }
+  const stamp = new Date().toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+  return [
+    'BEGIN:VCALENDAR',
+    'VERSION:2.0',
+    'PRODID:-//Mangesh Raut//Portfolio Task Export//EN',
+    'CALSCALE:GREGORIAN',
+    'BEGIN:VEVENT',
+    `UID:portfolio-task-${escapeIcsText(reminder.id)}@mangeshraut.pro`,
+    `DTSTAMP:${stamp}`,
+    startLine,
+    endLine,
+    `SUMMARY:${escapeIcsText(reminder.text)}`,
+    'DESCRIPTION:One-time calendar copy of a browser-saved task. Changes do not sync.',
+    'TRANSP:TRANSPARENT',
+    'END:VEVENT',
+    'END:VCALENDAR',
+    '',
+  ].join('\r\n');
 }

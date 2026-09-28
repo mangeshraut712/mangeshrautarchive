@@ -146,6 +146,70 @@ html.dark .calendar-wrapper-clean {
   min-width: 0;
 }
 
+#contact .calendar-connection {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 16px;
+  margin-bottom: 16px;
+  border: 1px solid #d2d2d7;
+  border-radius: 16px;
+  background: #f5f5f7;
+  color: #1d1d1f;
+}
+
+#contact .calendar-connection-dot {
+  width: 10px;
+  height: 10px;
+  flex: none;
+  border-radius: 50%;
+  background: #8e8e93;
+}
+
+#contact .calendar-connection-dot.is-live {
+  background: #248a3d;
+}
+
+#contact .calendar-connection > div {
+  display: grid;
+  gap: 3px;
+  flex: 1 1 210px;
+  min-width: 0;
+}
+
+#contact .calendar-connection span:not(.calendar-connection-dot) {
+  color: #515154;
+  font-size: 0.85rem;
+  line-height: 1.45;
+}
+
+#contact .calendar-connection-book {
+  min-height: 40px;
+  padding: 0 14px;
+  border: 1px solid #0071e3;
+  border-radius: 999px;
+  background: #0071e3;
+  color: #fff;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+#contact #calendar-widget .reminders-list {
+  max-height: none !important;
+  overflow: visible !important;
+}
+
+html.dark #contact .calendar-connection {
+  border-color: #3a3a3c;
+  background: #1c1c1e;
+  color: #f5f5f7;
+}
+
+html.dark #contact .calendar-connection span:not(.calendar-connection-dot) {
+  color: #c7c7cc;
+}
+
 /* ═══════════════════════════════════════════════════════════
    YEAR PROGRESS HUD WIDGET (Apple HIG Reference Standard)
    ═══════════════════════════════════════════════════════════ */

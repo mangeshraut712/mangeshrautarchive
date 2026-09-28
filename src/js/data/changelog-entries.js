@@ -51,6 +51,23 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'contact-calendar-truthful-availability-sept-2026',
+    date: '2026-09-28',
+    type: 'fix',
+    title: 'Clarify contact calendar availability and protect event details',
+    summary:
+      'Show connected calendar providers only when availability responds live, keep private event details out of the public API, make upcoming items the first view, and offer accurate one-time calendar copies for browser-saved tasks.',
+    tags: ['api', 'design'],
+    sha: null,
+    commitVerified: false,
+    model: 'GPT-6 / Codex',
+    ide: 'Codex',
+    purpose: 'Repair contact calendar clarity, interoperability, and free/busy privacy',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+    status: 'unreleased',
+  },
+  {
     id: 'media-contrast-and-module-hygiene-sept-2026',
     date: '2026-09-28',
     type: 'fix',
