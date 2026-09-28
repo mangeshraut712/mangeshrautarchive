@@ -1961,10 +1961,12 @@ class GitHubProjects {
       return {
         src: sitePath(screenshot.file),
         alt: screenshot.alt,
-        caption: `Screenshot from the ${repo.name} README.`,
+        caption: screenshot.caption || `Screenshot from the ${repo.name} README.`,
         screenshot: true,
-        width: 1440,
-        height: 900,
+        label: screenshot.label || 'Product preview',
+        crop: screenshot.crop || null,
+        width: screenshot.width || 1440,
+        height: screenshot.height || 900,
       };
     }
 
@@ -2278,7 +2280,10 @@ class GitHubProjects {
 
   createProjectCard(repo, _index) {
     const showcase = repo.__showcase || this.getShowcaseScore(repo);
-    const language = repo.language || 'Unknown';
+    const language =
+      REPO_SCREENSHOTS[String(repo.name || '').toLowerCase()]?.language ||
+      repo.language ||
+      'Unknown';
     const description = repo.description || 'No repository description provided yet.';
     const stars = Number(repo.stargazers_count || 0);
     const forks = Number(repo.forks_count || 0);
@@ -2334,7 +2339,7 @@ class GitHubProjects {
 
     const pushedAgeDays = this.getRepoAgeDays(repo?.pushed_at || repo?.updated_at);
     const isRecentlyActive = Number.isFinite(pushedAgeDays) && pushedAgeDays <= 7;
-    const projectKind = projectMedia.screenshot ? 'Product preview' : 'Repository';
+    const projectKind = projectMedia.label || 'Repository';
     const kickerLanguage = language === 'Unknown' ? 'Software' : safeLanguage;
     const kickerHtml = `<p class="project-kicker">${kickerLanguage} <span aria-hidden="true">·</span> ${projectKind}${isRecentlyActive ? '<span class="project-pulse-dot" title="Pushed in the last 7 days"></span>' : ''}</p>`;
     const topicsHtml =
@@ -2353,7 +2358,7 @@ class GitHubProjects {
 
     return `
       <article class="showcase-project-card apple-3d-project group lg-interactive ${hasDemo ? 'has-live-demo' : ''}" data-lg-interactive data-repo-name="${safeName}" data-release-status="${safeReleaseKey}" aria-label="${safeName} project card">
-        <figure class="project-media ${projectMedia.screenshot ? 'project-media--screenshot' : ''}">
+        <figure class="project-media ${projectMedia.screenshot ? 'project-media--screenshot' : ''} ${projectMedia.crop === 'left' ? 'project-media--cover-left' : ''}">
           <button type="button" class="project-media-open" data-repo-preview="${safeName}" aria-label="Explore ${safeName} project details">
             <img src="${projectMedia.src}" alt="${this.escapeHtml(projectMedia.alt)}" loading="lazy" decoding="async" width="${projectMedia.width}" height="${projectMedia.height}">
             <span class="project-media-cue" aria-hidden="true">Explore project <i class="fas fa-arrow-up-right-from-square"></i></span>

@@ -8,6 +8,14 @@
     "bytes": 18310
   },
   {
+    "repo": "ai-ml-portfolio",
+    "file": "/assets/images/repo-screenshots/ai-ml-portfolio.png",
+    "alt": "ML from scratch: logistic regression ROC and polynomial bias-variance charts",
+    "source": "https://raw.githubusercontent.com/mangeshraut712/ai-ml-portfolio/main/docs/screenshots/mlfs-roc-bias-variance.png",
+    "sha256": "8bf518b42cc7c5ceda06c74a4c058ee25d1217b871de78e2599dbf48ec9b82de",
+    "bytes": 84971
+  },
+  {
     "repo": "AI-Powered-Sentiment-Analysis",
     "file": "/assets/images/repo-screenshots/ai-powered-sentiment-analysis.webp",
     "alt": "Hero: Understanding Happiness, with Try Demo and View Analytics",
@@ -72,6 +80,14 @@
     "bytes": 24258
   },
   {
+    "repo": "Crime-Investigation-System",
+    "file": "/assets/images/repo-screenshots/crime-investigation-system.png",
+    "alt": "Crime Investigation System Swing home window with officer login and registration",
+    "source": "https://raw.githubusercontent.com/mangeshraut712/Crime-Investigation-System/main/docs/screenshots/home.png",
+    "sha256": "b4ccff5576659e3de3832926a3abe25eabaf0761d53ebc43efa407ca8711b56e",
+    "bytes": 22640
+  },
+  {
     "repo": "document-scanner-cv",
     "file": "/assets/images/repo-screenshots/document-scanner-cv.webp",
     "alt": "From a photo to a flat page",
@@ -86,6 +102,14 @@
     "source": "https://raw.githubusercontent.com/mangeshraut712/Dotfit-Fitness/main/docs/screenshots/01-home.webp",
     "sha256": "121f8c698eabda95d0dc8553e98da4356b9d146689557d6b5c0f47a3e9f2a64c",
     "bytes": 26114
+  },
+  {
+    "repo": "financial-forecasting-model",
+    "file": "/assets/images/repo-screenshots/financial-forecasting-model.png",
+    "alt": "Monthly actual and budget revenue chart from the Excel forecasting model",
+    "source": "https://raw.githubusercontent.com/mangeshraut712/financial-forecasting-model/main/docs/screenshots/01-budget-vs-actual.png",
+    "sha256": "7515f55fdb274e289ad62ee6e9d5398cd84c62d983ab3018157e722aa7352e8d",
+    "bytes": 137654
   },
   {
     "repo": "forge-api-platform",
@@ -134,6 +158,14 @@
     "source": "https://raw.githubusercontent.com/mangeshraut712/maharashtra-sachet/main/docs/screenshots/01-home.webp",
     "sha256": "a76ada3ec27c8ab50bc1fb85a5207d67a7d8844e9a15bc7ddd8515568bc5b1fc",
     "bytes": 29804
+  },
+  {
+    "repo": "mangeshrautarchive",
+    "file": "/assets/images/homepage-light.png",
+    "alt": "Mangesh Raut portfolio homepage in light mode",
+    "source": "https://raw.githubusercontent.com/mangeshraut712/mangeshrautarchive/main/src/assets/images/homepage-light.png",
+    "sha256": "e50500849a0f1dcd4b40df9c0db4b282f716f7ba8dffff2829b5a54817b51ef5",
+    "bytes": 567019
   },
   {
     "repo": "MT-Immigration",

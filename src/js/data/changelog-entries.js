@@ -51,6 +51,25 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'additional-readme-project-visuals-sept-2026',
+    date: '2026-09-28',
+    type: 'improvement',
+    title: 'Add verified README visuals for four more projects',
+    summary:
+      'Added the portfolio homepage, Crime Investigation Swing home, financial forecasting chart, and AI/ML lab chart to repository cards and previews. Preserved each source image aspect ratio and labeled charts as project outputs.',
+    tags: ['design', 'systems'],
+    sha: null,
+    commitVerified: false,
+    link: null,
+    model: 'GPT-6 / Codex',
+    ide: 'OpenAI Codex',
+    purpose:
+      'Extend source-grounded project imagery to the remaining owned repositories with suitable README visuals',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+    status: 'unreleased',
+  },
+  {
     id: 'readme-screenshots-repo-cards-sept-2026',
     date: '2026-09-28',
     type: 'improvement',
