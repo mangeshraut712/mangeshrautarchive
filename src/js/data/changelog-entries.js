@@ -58,15 +58,15 @@ export const changelogEntries = [
     summary:
       'Imported the visible 2026 Apple Calendar occurrences with event details, collapsed five duplicate entries, and added day, week, month, and year views. The import is a dated public snapshot; browser tasks remain local. Luma remains hidden and the Marathi calendar links to its official app.',
     tags: ['design'],
-    sha: null,
-    commitVerified: false,
+    sha: 'a97d4a2f',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/a97d4a2f`,
     model: 'GPT-6 / Codex',
     ide: 'Codex',
     purpose:
       'Make the contact calendar reflect the authorized public Apple Calendar data accurately',
     reasoning: 'unavailable',
     usage: 'unavailable',
-    status: 'unreleased',
   },
   {
     id: 'changelog-provenance-and-fullstack-polish-sept-2026',
