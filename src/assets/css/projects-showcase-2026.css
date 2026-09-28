@@ -5196,6 +5196,10 @@ section#projects.projects-editorial #github-projects-container .project-media--c
   object-position: left center;
 }
 
+section#projects.projects-editorial #github-projects-container .project-media--dark {
+  background: #0a0a0a;
+}
+
 section#projects.projects-editorial #github-projects-container .project-media-cue {
   position: absolute;
   right: 0.75rem;

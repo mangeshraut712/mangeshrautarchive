@@ -1965,6 +1965,7 @@ class GitHubProjects {
         screenshot: true,
         label: screenshot.label || 'Product preview',
         crop: screenshot.crop || null,
+        tone: screenshot.tone || null,
         width: screenshot.width || 1440,
         height: screenshot.height || 900,
       };
@@ -2112,7 +2113,7 @@ class GitHubProjects {
           <p class="article-kicker">${this.escapeHtml(meta.kicker)}</p>
           <p class="blog-preview__eyebrow">Repository preview</p>
           <h2 class="article-title" id="repo-modal-title">${safeName}</h2>
-          <p class="article-promise">${this.escapeHtml(repo.description || 'See the repository for details.')}</p>
+          <p class="article-promise">${this.escapeHtml(REPO_SCREENSHOTS[String(repo.name || '').toLowerCase()]?.summary || repo.description || 'See the repository for details.')}</p>
           <div class="article-byline article-byline--editorial">
             <img class="article-byline__avatar" src="${sitePath('/assets/images/profile.webp')}" width="40" height="40" alt="Mangesh Raut" loading="lazy" decoding="async" />
             <div class="article-byline__text">
@@ -2201,7 +2202,7 @@ class GitHubProjects {
     document.documentElement.classList.remove('blog-modal-open');
 
     try {
-      if (/^#repo-read-/.test(window.location.hash)) {
+      if (window.location.hash.startsWith('#repo-read-')) {
         history.replaceState(
           null,
           '',
@@ -2284,7 +2285,10 @@ class GitHubProjects {
       REPO_SCREENSHOTS[String(repo.name || '').toLowerCase()]?.language ||
       repo.language ||
       'Unknown';
-    const description = repo.description || 'No repository description provided yet.';
+    const description =
+      REPO_SCREENSHOTS[String(repo.name || '').toLowerCase()]?.summary ||
+      repo.description ||
+      'No repository description provided yet.';
     const stars = Number(repo.stargazers_count || 0);
     const forks = Number(repo.forks_count || 0);
     const openIssues = Number(repo.open_issues_count || 0);
@@ -2339,7 +2343,7 @@ class GitHubProjects {
 
     const pushedAgeDays = this.getRepoAgeDays(repo?.pushed_at || repo?.updated_at);
     const isRecentlyActive = Number.isFinite(pushedAgeDays) && pushedAgeDays <= 7;
-    const projectKind = projectMedia.label || 'Repository';
+    const projectKind = repo.fork ? 'Fork' : projectMedia.label || 'Repository';
     const kickerLanguage = language === 'Unknown' ? 'Software' : safeLanguage;
     const kickerHtml = `<p class="project-kicker">${kickerLanguage} <span aria-hidden="true">·</span> ${projectKind}${isRecentlyActive ? '<span class="project-pulse-dot" title="Pushed in the last 7 days"></span>' : ''}</p>`;
     const topicsHtml =
@@ -2358,7 +2362,7 @@ class GitHubProjects {
 
     return `
       <article class="showcase-project-card apple-3d-project group lg-interactive ${hasDemo ? 'has-live-demo' : ''}" data-lg-interactive data-repo-name="${safeName}" data-release-status="${safeReleaseKey}" aria-label="${safeName} project card">
-        <figure class="project-media ${projectMedia.screenshot ? 'project-media--screenshot' : ''} ${projectMedia.crop === 'left' ? 'project-media--cover-left' : ''}">
+        <figure class="project-media ${projectMedia.screenshot ? 'project-media--screenshot' : ''} ${projectMedia.crop === 'left' ? 'project-media--cover-left' : ''} ${projectMedia.tone === 'dark' ? 'project-media--dark' : ''}">
           <button type="button" class="project-media-open" data-repo-preview="${safeName}" aria-label="Explore ${safeName} project details">
             <img src="${projectMedia.src}" alt="${this.escapeHtml(projectMedia.alt)}" loading="lazy" decoding="async" width="${projectMedia.width}" height="${projectMedia.height}">
             <span class="project-media-cue" aria-hidden="true">Explore project <i class="fas fa-arrow-up-right-from-square"></i></span>

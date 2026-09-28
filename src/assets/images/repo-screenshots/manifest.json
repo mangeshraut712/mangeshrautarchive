@@ -88,6 +88,14 @@
     "bytes": 22640
   },
   {
+    "repo": "decimen-optical-transfer",
+    "file": "/assets/images/repo-screenshots/decimen-optical-transfer.jpg",
+    "alt": "Phone receiving a QR-based optical file transfer from a laptop",
+    "source": "https://raw.githubusercontent.com/mangeshraut712/decimen-optical-transfer/main/docs/receiving.jpg",
+    "sha256": "cee4a6b0e9673dd843f65a43c834c4a2b22bffcf1b8feee40675bee834915625",
+    "bytes": 243823
+  },
+  {
     "repo": "document-scanner-cv",
     "file": "/assets/images/repo-screenshots/document-scanner-cv.webp",
     "alt": "From a photo to a flat page",
@@ -174,6 +182,14 @@
     "source": "https://raw.githubusercontent.com/mangeshraut712/MT-Immigration/main/docs/screenshots/01-home.webp",
     "sha256": "8c2c3471970d6c6c0cd1312e86283bc6277519603e63f3f11ca9154fc2ea039c",
     "bytes": 29074
+  },
+  {
+    "repo": "openGym",
+    "file": "/assets/images/repo-screenshots/opengym.png",
+    "alt": "openGym home screen with a weekly workout plan and body-weight chart",
+    "source": "https://raw.githubusercontent.com/mangeshraut712/openGym/main/assets/screenshots/home.png",
+    "sha256": "c5176f1df25ce54acf079f715b924e9b50b8a970d1b411fda90c46e8989dfb83",
+    "bytes": 179650
   },
   {
     "repo": "PicoTuri-EditJudge",

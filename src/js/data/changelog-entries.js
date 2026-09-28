@@ -51,6 +51,25 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'fork-readme-visuals-sept-2026',
+    date: '2026-09-28',
+    type: 'improvement',
+    title: 'Show upstream README visuals on two fork cards',
+    summary:
+      'Added the openGym and Decimen README images to their repository cards and previews. Fork cards now identify their fork status, and the image captions credit the upstream README.',
+    tags: ['design', 'systems'],
+    sha: null,
+    commitVerified: false,
+    link: null,
+    model: 'GPT-6 / Codex',
+    ide: 'OpenAI Codex',
+    purpose:
+      'Complete the image audit for remaining user-facing fork repositories without implying original authorship',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+    status: 'unreleased',
+  },
+  {
     id: 'additional-readme-project-visuals-sept-2026',
     date: '2026-09-28',
     type: 'improvement',

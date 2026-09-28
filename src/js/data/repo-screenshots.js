@@ -54,6 +54,14 @@ export const REPO_SCREENSHOTS = Object.freeze({
     crop: 'left',
     caption: 'Swing home window captured in the Crime-Investigation-System README.',
   },
+  'decimen-optical-transfer': {
+    file: '/assets/images/repo-screenshots/decimen-optical-transfer.jpg',
+    alt: 'Phone receiving a QR-based optical file transfer from a laptop',
+    width: 840,
+    height: 1666,
+    tone: 'dark',
+    caption: 'Demonstration photo from the upstream Decimen README; this repository is a fork.',
+  },
   'document-scanner-cv': {
     file: '/assets/images/repo-screenshots/document-scanner-cv.webp',
     alt: 'From a photo to a flat page',
@@ -104,6 +112,15 @@ export const REPO_SCREENSHOTS = Object.freeze({
   'mt-immigration': {
     file: '/assets/images/repo-screenshots/mt-immigration.webp',
     alt: 'M&T Immigration homepage in a Mac frame — focused immigration counsel with clear strategy',
+  },
+  opengym: {
+    file: '/assets/images/repo-screenshots/opengym.png',
+    alt: 'openGym home screen with a weekly workout plan and body-weight chart',
+    summary: 'Upstream self-hosted workout and body-weight tracker.',
+    width: 1170,
+    height: 2532,
+    tone: 'dark',
+    caption: 'Home screen from the upstream openGym README; this repository is a fork.',
   },
   'picoturi-editjudge': {
     file: '/assets/images/repo-screenshots/picoturi-editjudge.webp',
