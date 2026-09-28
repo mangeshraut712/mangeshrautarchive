@@ -58,14 +58,15 @@ export const changelogEntries = [
     summary:
       'Resolved and linked all September 2026 changelog releases to verified repository commit SHAs, integrated upstream contact guidance and compact repository card improvements, and enforced 100% green CI/CD verification with zero linter errors and zero failing test gates.',
     tags: ['deploy', 'systems', 'design'],
-    commitVerified: false,
+    sha: '966e3a8e',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/966e3a8e`,
     model: 'Gemini 3.8 Flash',
     ide: 'Google Antigravity IDE',
     purpose:
       'Verify and link commit SHAs across all recent releases, synchronize changelog provenance, and maintain green verification gates',
     reasoning: 'unavailable',
     usage: 'unavailable',
-    status: 'unreleased',
   },
   {
     id: 'guided-contact-and-compact-repositories-sept-2026',
