@@ -58,14 +58,13 @@ export const changelogEntries = [
     summary:
       'Show connected calendar providers only when availability responds live, keep private event details out of the public API, make upcoming items the first view, and offer accurate one-time calendar copies for browser-saved tasks.',
     tags: ['api', 'design'],
-    sha: null,
-    commitVerified: false,
+    sha: 'e0180c86',
+    commitVerified: true,
     model: 'GPT-6 / Codex',
     ide: 'Codex',
     purpose: 'Repair contact calendar clarity, interoperability, and free/busy privacy',
     reasoning: 'unavailable',
     usage: 'unavailable',
-    status: 'unreleased',
   },
   {
     id: 'media-contrast-and-module-hygiene-sept-2026',
