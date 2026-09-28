@@ -12,11 +12,31 @@ import { openLumaCalendar } from '../utils/luma.js';
 export function initContactInteractions() {
   initBlessingMediaModal();
   initContactForm();
+  initGuidedMessageButton();
   initCryptoCopyButtons();
   initEmailCopyButtons();
   initCalendlyButton();
   initLumaButtons();
   initSupportDonationInteractions();
+}
+
+function initGuidedMessageButton() {
+  const button = document.getElementById('contact-guided-message-btn');
+  if (!button || button.dataset.bound === 'true') return;
+  button.dataset.bound = 'true';
+  button.addEventListener('click', async () => {
+    button.disabled = true;
+    try {
+      const { initAppleIntelligenceChatbot } = await import('./chatbot.js');
+      initAppleIntelligenceChatbot()?.startContactIntake();
+    } catch {
+      const details = document.querySelector('.contact-manual-details');
+      if (details) details.open = true;
+      details?.querySelector('input[name="name"]')?.focus();
+    } finally {
+      button.disabled = false;
+    }
+  });
 }
 
 function initSupportDonationInteractions() {

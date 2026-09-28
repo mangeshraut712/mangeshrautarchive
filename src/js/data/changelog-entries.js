@@ -51,6 +51,23 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'guided-contact-and-compact-repositories-sept-2026',
+    date: '2026-09-28',
+    type: 'improvement',
+    title: 'Guide contact messages and compact repository cards',
+    summary:
+      'Removed the redundant calendar availability panel and booking actions, kept Calendly beside the contact form, collapsed the standard form, added a five-question AssistMe contact flow with review before submission, and arranged compact repository cards in three desktop, two tablet, and one mobile column.',
+    tags: ['assistme', 'design'],
+    commitVerified: false,
+    model: 'GPT-6 / Codex',
+    ide: 'Codex',
+    purpose:
+      'Simplify contact and repository browsing while preserving a deliberate message submission step',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+    status: 'unreleased',
+  },
+  {
     id: 'contact-calendar-truthful-availability-sept-2026',
     date: '2026-09-28',
     type: 'fix',

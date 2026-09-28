@@ -67,6 +67,11 @@ test('GitHub operating view leads into illustrated repository cards', async ({ p
     )
   ).toBeTruthy();
   await expect(page.locator('.showcase-project-card').first()).toBeAttached();
+  expect(
+    await page
+      .locator('#github-projects-container')
+      .evaluate(grid => getComputedStyle(grid).gridTemplateColumns.split(' ').length)
+  ).toBe(3);
   await page.locator('#projects-expand-btn').click();
   const cards = page.locator('.showcase-project-card');
   expect(await cards.count()).toBeGreaterThan(10);
@@ -110,6 +115,7 @@ test('contact form sends a message and confirms storage', async ({ page }) => {
     });
   });
   await gotoSite(page, '/#contact');
+  await page.locator('.contact-manual-details > summary').click();
   const form = page.locator('#contact-form');
   await form.locator('#contact-name').fill('Ada Lovelace');
   await form.locator('#contact-email').fill('ada@example.com');

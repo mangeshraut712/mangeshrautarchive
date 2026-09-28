@@ -74,7 +74,11 @@ export async function submitStoredForm(endpoint, payload, { fetchImpl = globalTh
     throw new Error(responseError(result, response.status));
   }
   if (!result?.success || result?.persisted !== true) {
-    throw new Error('Subscription could not be saved. Please try again.');
+    throw new Error(
+      endpoint === '/api/contact'
+        ? 'Message could not be saved. Please try again.'
+        : 'Subscription could not be saved. Please try again.'
+    );
   }
   return result;
 }

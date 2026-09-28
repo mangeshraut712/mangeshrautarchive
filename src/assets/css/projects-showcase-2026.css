@@ -5130,22 +5130,22 @@ section#projects.projects-editorial
 }
 
 section#projects.projects-editorial #github-projects-container {
-  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-  gap: clamp(1rem, 2vw, 1.5rem) !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: clamp(0.85rem, 1.5vw, 1.2rem) !important;
 }
 
 section#projects.projects-editorial #github-projects-container .showcase-project-card {
-  --project-card-pad-x: clamp(1.35rem, 2vw, 1.8rem);
-  --project-card-pad-y: clamp(1.35rem, 2vw, 1.7rem);
-  min-height: 330px !important;
-  border-radius: 24px !important;
+  --project-card-pad-x: 1rem;
+  --project-card-pad-y: 1rem;
+  min-height: 0 !important;
+  border-radius: 20px !important;
 }
 
 section#projects.projects-editorial #github-projects-container .project-media {
   position: relative;
   margin: 0;
   overflow: hidden;
-  aspect-ratio: 16 / 9;
+  aspect-ratio: 1.9;
   background: #102b49;
   border-bottom: 1px solid rgb(255 255 255 / 16%);
 }
@@ -5175,13 +5175,13 @@ section#projects.projects-editorial #github-projects-container .project-signal-g
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0;
   margin: auto 0 0;
-  padding: 0.85rem 0 0;
+  padding: 0.65rem 0 0;
   border-top: 1px solid var(--project-border-light);
 }
 
 section#projects.projects-editorial #github-projects-container .project-signal-grid > div {
   min-width: 0;
-  padding: 0 0.7rem;
+  padding: 0 0.4rem;
   border-left: 1px solid var(--project-border-light);
 }
 
@@ -5203,7 +5203,7 @@ section#projects.projects-editorial #github-projects-container .project-signal-g
 section#projects.projects-editorial #github-projects-container .project-signal-grid dd {
   margin: 0;
   color: #1d1d1f;
-  font-size: 1.02rem;
+  font-size: 0.92rem;
   font-weight: 750;
   line-height: 1.15;
 }
@@ -5226,20 +5226,20 @@ html.dark section#projects.projects-editorial #github-projects-container .projec
 }
 
 section#projects.projects-editorial #github-projects-container .project-header {
-  gap: 0.8rem !important;
-  padding-bottom: 1.25rem !important;
+  gap: 0.65rem !important;
+  padding-bottom: 0.9rem !important;
 }
 
 section#projects.projects-editorial #github-projects-container .project-repo-badge {
-  width: 40px !important;
-  height: 40px !important;
-  border-radius: 13px !important;
+  width: 34px !important;
+  height: 34px !important;
+  border-radius: 11px !important;
 }
 
 section#projects.projects-editorial #github-projects-container .project-title-text {
   display: block !important;
   overflow: visible !important;
-  font-size: clamp(1.3rem, 2vw, 1.7rem) !important;
+  font-size: clamp(1.15rem, 1.5vw, 1.4rem) !important;
   line-height: 1.18 !important;
   letter-spacing: -0.03em !important;
   text-decoration: none !important;
@@ -5252,10 +5252,10 @@ section#projects.projects-editorial #github-projects-container .project-title-te
 }
 
 section#projects.projects-editorial #github-projects-container .project-description {
-  font-size: 0.96rem !important;
-  line-height: 1.55 !important;
-  -webkit-line-clamp: 3 !important;
-  line-clamp: 3 !important;
+  font-size: 0.89rem !important;
+  line-height: 1.45 !important;
+  -webkit-line-clamp: 2 !important;
+  line-clamp: 2 !important;
 }
 
 section#projects.projects-editorial #github-projects-container .project-meta-row {
@@ -5279,15 +5279,15 @@ section#projects.projects-editorial #github-projects-container .project-tag {
 section#projects.projects-editorial #github-projects-container .project-footer {
   display: grid !important;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.55rem !important;
-  padding: 1rem var(--project-card-pad-x) 1.2rem !important;
+  gap: 0.4rem !important;
+  padding: 0.75rem var(--project-card-pad-x) 0.9rem !important;
 }
 
 section#projects.projects-editorial #github-projects-container .project-footer .project-action-btn {
   width: 100% !important;
   height: 44px !important;
   min-height: 44px !important;
-  font-size: 0.85rem !important;
+  font-size: 0.8rem !important;
 }
 
 section#projects.projects-editorial #github-projects-container .project-footer .btn-preview {
@@ -5318,7 +5318,7 @@ section#projects.projects-editorial #github-projects-container .project-footer .
   width: 100%;
   min-height: 40px;
   justify-content: center;
-  font-size: 0.78rem;
+  font-size: 0.74rem;
   font-weight: 650;
 }
 
@@ -5329,6 +5329,12 @@ section#projects.projects-editorial #github-projects-container .project-footer .
 section#projects.projects-editorial #github-projects-container .project-footer .project-clone-btn {
   grid-column: 2;
   border-radius: 10px;
+}
+
+@media (max-width: 1100px) {
+  section#projects.projects-editorial #github-projects-container {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
 }
 
 @media (max-width: 760px) {

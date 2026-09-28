@@ -146,68 +146,9 @@ html.dark .calendar-wrapper-clean {
   min-width: 0;
 }
 
-#contact .calendar-connection {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
-  padding: 16px;
-  margin-bottom: 16px;
-  border: 1px solid #d2d2d7;
-  border-radius: 16px;
-  background: #f5f5f7;
-  color: #1d1d1f;
-}
-
-#contact .calendar-connection-dot {
-  width: 10px;
-  height: 10px;
-  flex: none;
-  border-radius: 50%;
-  background: #8e8e93;
-}
-
-#contact .calendar-connection-dot.is-live {
-  background: #248a3d;
-}
-
-#contact .calendar-connection > div {
-  display: grid;
-  gap: 3px;
-  flex: 1 1 210px;
-  min-width: 0;
-}
-
-#contact .calendar-connection span:not(.calendar-connection-dot) {
-  color: #515154;
-  font-size: 0.85rem;
-  line-height: 1.45;
-}
-
-#contact .calendar-connection-book {
-  min-height: 40px;
-  padding: 0 14px;
-  border: 1px solid #0071e3;
-  border-radius: 999px;
-  background: #0071e3;
-  color: #fff;
-  font-weight: 650;
-  cursor: pointer;
-}
-
 #contact #calendar-widget .reminders-list {
   max-height: none !important;
   overflow: visible !important;
-}
-
-html.dark #contact .calendar-connection {
-  border-color: #3a3a3c;
-  background: #1c1c1e;
-  color: #f5f5f7;
-}
-
-html.dark #contact .calendar-connection span:not(.calendar-connection-dot) {
-  color: #c7c7cc;
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -1504,6 +1445,59 @@ html.dark .contact-form button[type='submit']:hover {
   gap: 0.9rem;
   margin-top: 0.75rem;
   width: 100%;
+}
+
+#contact .contact-guided-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  width: 100%;
+  min-height: 52px;
+  padding: 0.8rem 1rem;
+  border: 1px solid #0071e3;
+  border-radius: 14px;
+  background: #0071e3;
+  color: #fff;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+#contact .contact-guided-button > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+#contact .contact-guided-button:hover {
+  background: #0066cc;
+}
+
+#contact .contact-guided-button:focus-visible,
+#contact .contact-manual-details > summary:focus-visible {
+  outline: 3px solid #0a84ff;
+  outline-offset: 3px;
+}
+
+#contact .contact-manual-details {
+  margin-top: 0.5rem;
+  border-top: 1px solid #d2d2d7;
+}
+
+#contact .contact-manual-details > summary {
+  padding: 1rem 0 0.25rem;
+  color: #0066cc;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+html.dark #contact .contact-manual-details {
+  border-color: #3a3a3c;
+}
+
+html.dark #contact .contact-manual-details > summary {
+  color: #66b2ff;
 }
 
 /* Honeypot security field - must remain strictly hidden across all devices */

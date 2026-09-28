@@ -1,10 +1,6 @@
-import { openCalendlyPopup } from '../utils/calendly.js';
 import { LUMA_CALENDARS_URL } from '../utils/luma.js';
 import { escapeHtml } from '../utils/escape-html.js';
-import { getFormsApiBase } from '../services/form-submission.js';
 import { changelogEntries } from '../data/changelog-entries.js';
-
-const CALENDAR_ENDPOINT = '/api/calendar/availability';
 
 function ensureContactSolidStyles() {
   const id = 'contact-solid-css';
@@ -291,8 +287,6 @@ export class CalendarWidget {
     this.activeFilter = 'upcoming';
     this.searchQuery = '';
     this.aiBriefData = null;
-    this.liveProviders = [];
-    this.availabilityStatus = 'loading';
 
     // "Smart" Reminders, Verified Birthdays & Live Calendar Data
     this.reminders = [
@@ -956,24 +950,6 @@ export class CalendarWidget {
     }
     this.render();
     this.bindEvents();
-    void this.fetchLiveAvailability();
-  }
-
-  async fetchLiveAvailability() {
-    try {
-      const apiBase = getFormsApiBase();
-      const response = await fetch(`${apiBase}${CALENDAR_ENDPOINT}`, {
-        headers: { Accept: 'application/json' },
-      });
-      if (!response.ok) throw new Error('Availability unavailable');
-      const payload = await response.json();
-      this.liveProviders = Array.isArray(payload.providers) ? payload.providers : [];
-      this.availabilityStatus = payload.status === 'live' ? 'live' : 'unavailable';
-    } catch {
-      this.liveProviders = [];
-      this.availabilityStatus = 'unavailable';
-    }
-    this.render();
   }
 
   getLiveEventDays(year, month) {
@@ -1160,14 +1136,6 @@ export class CalendarWidget {
 
     let html = `
       <div class="ios-widget-wrapper">
-        <div class="calendar-connection" role="status" aria-live="polite">
-          <span class="calendar-connection-dot ${this.availabilityStatus === 'live' ? 'is-live' : ''}" aria-hidden="true"></span>
-          <div>
-            <strong>${this.availabilityStatus === 'live' ? 'Availability connected' : this.availabilityStatus === 'loading' ? 'Checking availability…' : 'Live availability unavailable'}</strong>
-            <span>${this.availabilityStatus === 'live' ? `Free/busy from ${escapeHtml(this.liveProviders.map(provider => ({ apple: 'Apple', google: 'Google', microsoft: 'Microsoft' })[provider] || 'calendar').join(' + '))}. Event details stay private.` : 'Community events below are editorial listings. Tasks stay in this browser.'}</span>
-          </div>
-          <button type="button" class="calendar-connection-book" data-open-calendly>Book a meeting</button>
-        </div>
         <!-- ═══════════════════════════════════════════════════════
              YEAR PROGRESS HUD WIDGET (Apple HIG Standard)
              ═══════════════════════════════════════════════════════ -->
@@ -1357,9 +1325,6 @@ export class CalendarWidget {
                 <div class="empty-state-title">No matching items</div>
                 <div class="empty-state-subtitle">This public list does not show private calendar events. Try another date or browse all items.</div>
                 <div class="empty-state-actions">
-                  <button type="button" class="empty-action-btn book-consult-btn">
-                    <i class="fas fa-calendar-check" aria-hidden="true"></i> Book Consultation
-                  </button>
                   <button type="button" class="empty-action-btn show-all-btn">
                     <i class="fas fa-layer-group" aria-hidden="true"></i> View All Items
                   </button>
@@ -1565,22 +1530,10 @@ export class CalendarWidget {
       emptyAddBtn.onclick = () => this.addNewReminder();
     }
 
-    // Empty State: Book Consultation
-    const emptyBookBtn = this.container.querySelector('.empty-action-btn.book-consult-btn');
-    if (emptyBookBtn) {
-      emptyBookBtn.onclick = () => openCalendlyPopup();
-    }
-
     // Header Add New Reminder
     const newBtn = this.container.querySelector('.ios-btn-small');
     if (newBtn) {
       newBtn.onclick = () => this.addNewReminder();
-    }
-
-    // Calendly Panel Button
-    const calendlyBtn = this.container.querySelector('.calendly-panel-button');
-    if (calendlyBtn) {
-      calendlyBtn.onclick = () => openCalendlyPopup();
     }
 
     // Day Selection & Day Filter Click

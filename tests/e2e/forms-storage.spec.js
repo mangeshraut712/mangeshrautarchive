@@ -65,6 +65,7 @@ test.describe('persistent public forms', () => {
     const getPayload = await mockStoredResponse(page, '/api/contact', 'contact-test-id');
     await gotoSite(page, '/#contact');
 
+    await page.locator('.contact-manual-details > summary').click();
     const form = page.locator('#contact-form');
     await form.scrollIntoViewIfNeeded();
     await expect(form).toBeVisible();
@@ -84,5 +85,52 @@ test.describe('persistent public forms', () => {
       message: 'Please review the system architecture.',
       source: 'github_pages_contact',
     });
+  });
+
+  test('guided contact asks for details and submits only after review', async ({ page }) => {
+    let submitted;
+    await page.route('**/api/contact', async route => {
+      submitted = route.request().postDataJSON();
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          success: true,
+          persisted: true,
+          id: 'guided-contact-id',
+          message: 'Saved successfully.',
+        }),
+      });
+    });
+    await gotoSite(page, '/#contact');
+    await page.locator('#contact-guided-message-btn').click();
+    const input = page.locator('#chatbot-input');
+    await expect(input).toBeVisible();
+    for (const answer of [
+      'Project collaboration',
+      'I would like to discuss an architecture review and arrange a call.',
+      'Next month',
+      'Ada Lovelace',
+      'ada@example.com',
+    ]) {
+      await input.fill(answer);
+      await input.press('Enter');
+    }
+    await expect(page.locator('#chatbot-messages .assistant-message').last()).toContainText(
+      'Review your message'
+    );
+    expect(submitted).toBeUndefined();
+    await input.fill('send');
+    await input.press('Enter');
+    await expect(page.locator('#chatbot-messages .assistant-message').last()).toContainText(
+      'Saved successfully.'
+    );
+    expect(submitted).toMatchObject({
+      name: 'Ada Lovelace',
+      email: 'ada@example.com',
+      subject: 'Project collaboration',
+      source: 'chatbot_contact',
+    });
+    expect(submitted.message).toContain('Next month');
   });
 });

@@ -40,7 +40,17 @@ import { realtimeVoiceService } from '../services/RealtimeVoiceService.js';
 import { voiceModeService } from '../services/VoiceModeService.js';
 import { lockBodyScroll, unlockBodyScroll } from '../utils/scroll-lock.js';
 import { decodeImageBitmap } from '../utils/image-bitmap.js';
+import { getSubmissionContext, submitStoredForm } from '../services/form-submission.js';
 import appleSounds from './apple-sounds.js';
+
+const CONTACT_QUESTIONS = [
+  'What is this about: a role, a project, a collaboration, an event, or something else?',
+  'What would you like Mangesh to know? Include the goal and a useful next step.',
+  'Is there a timeline or context to consider? Type “skip” if there is none.',
+  'What name should I use?',
+  'What email address should he reply to?',
+];
+const CONTACT_FIELDS = ['topic', 'brief', 'timeline', 'name', 'email'];
 
 const MAX_CHAT_INPUT_LENGTH = SHARED_MAX_CHAT_INPUT;
 const CLIENT_CHAT_MESSAGE_LIMIT = limits.dailyChatMessages || CLIENT_DAILY_CHAT_LIMIT;
@@ -294,6 +304,7 @@ class AppleIntelligenceChatbot {
     this.maxSessionMessages = CLIENT_CHAT_MESSAGE_LIMIT;
     this.lastFocusedElement = null;
     this.pendingImages = [];
+    this.contactIntake = null;
 
     if (!this.elements.widget || !this.elements.toggle) {
       console.error('Chatbot elements not found');
@@ -1841,6 +1852,7 @@ class AppleIntelligenceChatbot {
   }
 
   commitClearChat({ withUndo = true } = {}) {
+    this.contactIntake = null;
     const snapshot = {
       html: this.elements.messages?.innerHTML || '',
       conversation: this.chatAPI?.conversation ? [...this.chatAPI.conversation] : [],
@@ -2085,6 +2097,109 @@ class AppleIntelligenceChatbot {
 
   // ── Message Sending ──────────────────────
 
+  startContactIntake() {
+    if (this.isProcessing) this.stopGeneration();
+    if (!this.isOpen) this.openWidget();
+    this.dismissWelcomeMessage();
+    this.pendingImages = [];
+    this.renderAttachPreview();
+    this.contactIntake = { step: 0, answers: {} };
+    this.addMessage(
+      `Let's put together a message. I'll ask five short questions, then show you what will be sent. You can cancel at any time.\n\n${CONTACT_QUESTIONS[0]}`,
+      'assistant',
+      { forceScroll: true }
+    );
+    this.elements.input?.focus({ preventScroll: true });
+  }
+
+  async handleContactIntakeInput(text) {
+    const intake = this.contactIntake;
+    if (!intake) return;
+    this.addMessage(text, 'user');
+    this.elements.input.value = '';
+    this.autoResizeTextarea(this.elements.input);
+    const command = text.trim().toLowerCase();
+    if (command === 'cancel') {
+      this.contactIntake = null;
+      this.addMessage('Message cancelled. Nothing was sent.', 'assistant');
+      return;
+    }
+    if (intake.step === CONTACT_FIELDS.length) {
+      if (command === 'edit') {
+        this.startContactIntake();
+        return;
+      }
+      if (command !== 'send') {
+        this.addMessage('Type “send” to submit, “edit” to start again, or “cancel”.', 'assistant');
+        return;
+      }
+      this.isProcessing = true;
+      this.setComposerBusy(true);
+      try {
+        const { topic, brief, timeline, name, email } = intake.answers;
+        const result = await submitStoredForm('/api/contact', {
+          name,
+          email,
+          subject: topic.slice(0, 200),
+          message: `${brief}${timeline ? `\n\nTimeline / context: ${timeline}` : ''}`,
+          website: '',
+          ...getSubmissionContext({ source: 'chatbot_contact' }),
+        });
+        this.contactIntake = null;
+        this.addMessage(result.message || 'Your message was saved successfully.', 'assistant');
+      } catch (error) {
+        this.addMessage(
+          `${error.message || 'The message could not be saved.'} Your draft is still here. Type “send” to retry or “cancel”.`,
+          'assistant'
+        );
+      } finally {
+        this.isProcessing = false;
+        this.setComposerBusy(false);
+      }
+      return;
+    }
+
+    const field = CONTACT_FIELDS[intake.step];
+    const answer = text.trim();
+    const maxLength = field === 'brief' ? 1600 : field === 'email' ? 200 : 180;
+    if (answer.length > maxLength) {
+      this.addMessage(
+        `Please keep this answer under ${maxLength} characters. ${CONTACT_QUESTIONS[intake.step]}`,
+        'assistant'
+      );
+      return;
+    }
+    if (field === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(answer)) {
+      this.addMessage(
+        'That email address does not look complete. What address should he reply to?',
+        'assistant'
+      );
+      return;
+    }
+    if (field === 'brief' && answer.length < 10) {
+      this.addMessage(
+        'A little more detail will help. What is the goal and what next step would you like?',
+        'assistant'
+      );
+      return;
+    }
+    if (field !== 'timeline' && !answer) {
+      this.addMessage(CONTACT_QUESTIONS[intake.step], 'assistant');
+      return;
+    }
+    intake.answers[field] = field === 'timeline' && command === 'skip' ? '' : answer;
+    intake.step += 1;
+    if (intake.step < CONTACT_FIELDS.length) {
+      this.addMessage(CONTACT_QUESTIONS[intake.step], 'assistant');
+      return;
+    }
+    const { topic, brief, timeline, name, email } = intake.answers;
+    this.addMessage(
+      `Review your message:\n\nSubject: ${topic}\nMessage: ${brief}${timeline ? `\nTimeline / context: ${timeline}` : ''}\nFrom: ${name} <${email}>\n\nType “send” to submit, “edit” to start again, or “cancel”.`,
+      'assistant'
+    );
+  }
+
   async handleSendMessage() {
     // Sending must dismiss dictation review — do not re-enter review via stopDictation(false)
     this._dictationWanted = false;
@@ -2121,6 +2236,11 @@ class AppleIntelligenceChatbot {
 
     const text = this.normalizeInput(this.elements.input?.value);
     if (!text) return;
+
+    if (this.contactIntake) {
+      await this.handleContactIntakeInput(text);
+      return;
+    }
 
     // Check rate limit first
     const remaining = this.getRemainingQueries();

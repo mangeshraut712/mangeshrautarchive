@@ -4678,7 +4678,13 @@ html.dark #home .hero-name-text {
             <!-- Card 2: Send a Message Direct Form -->
             <div class="contact-card contact-card-apple send-message-card">
               <h3 class="contact-card-title"><i class="fas fa-comment-dots" aria-hidden="true"></i> Send a Message</h3>
-              <p class="contact-card-subtitle">Drop a note directly to my inbox with response within 24 hours.</p>
+              <p class="contact-card-subtitle">Tell me what you have in mind. The guided message asks for the essentials, then lets you review before sending.</p>
+              <button type="button" class="contact-guided-button" id="contact-guided-message-btn">
+                <span><i class="fas fa-comment" aria-hidden="true"></i> Start a guided message</span>
+                <i class="fas fa-arrow-right" aria-hidden="true"></i>
+              </button>
+              <details class="contact-manual-details">
+                <summary>Use the standard form instead</summary>
               <form id="contact-form" class="apple-contact-form" novalidate>
                 <div class="form-group-apple">
                   <label for="contact-name">Your Name</label>
@@ -4741,6 +4747,7 @@ html.dark #home .hero-name-text {
                 </button>
                 <div id="contact-form-feedback" class="form-feedback-toast" role="status" aria-live="polite"></div>
               </form>
+              </details>
 
               <!-- Alternative Action: Instant 30-Min Consultation -->
               <div class="contact-or-divider" aria-hidden="true">
@@ -4748,9 +4755,9 @@ html.dark #home .hero-name-text {
               </div>
 
               <div class="calendly-panel">
-                <button type="button" class="calendly-panel-button" id="contact-book-meeting-btn" aria-label="Book Instant 30-Min Consultation on Calendly">
+                <button type="button" class="calendly-panel-button" id="contact-book-meeting-btn" aria-label="Book a meeting on Calendly">
                   <i class="fas fa-calendar-check" aria-hidden="true"></i>
-                  <span>Book Instant 30-Min Consultation</span>
+                  <span>Book a meeting on Calendly</span>
                 </button>
               </div>
             </div>
@@ -4758,7 +4765,7 @@ html.dark #home .hero-name-text {
             <!-- Card 3: Interactive Calendar & Smart Reminders -->
             <div class="contact-card contact-card-apple calendar-reminders-card">
               <h3 class="contact-card-title"><i class="fas fa-calendar-alt" aria-hidden="true"></i> Calendar &amp; Smart Reminders</h3>
-              <p class="contact-card-subtitle">Browse community events and manage browser-saved tasks. Live availability appears only when a calendar provider is connected.</p>
+              <p class="contact-card-subtitle">Browse community events and manage your reminders.</p>
               <div id="calendar-widget">
                 <div class="loading-state"><div class="loading-spinner"></div><p class="loading-message">Loading calendar...</p></div>
               </div>

@@ -909,6 +909,8 @@ export class AgenticActionHandler {
     const contactSection = document.querySelector('#contact');
     if (contactSection) {
       contactSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      const details = contactSection.querySelector('.contact-manual-details');
+      if (details) details.open = true;
 
       // Focus on the contact form
       setTimeout(() => {
