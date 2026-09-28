@@ -467,14 +467,36 @@ function updateSmartNavbar() {
     setCompactState(false);
   }
 
-  // Update active link based on visible section
-  const visibleSectionId = getVisibleSectionId();
-  if (visibleSectionId && visibleSectionId !== state.currentActiveSectionId) {
-    state.currentActiveSectionId = visibleSectionId;
-    setActiveLinkBySectionId(visibleSectionId);
+  // Update active link for top of page immediately without DOM querying
+  if (isNearTop) {
+    if (state.currentActiveSectionId !== 'home') {
+      state.currentActiveSectionId = 'home';
+      setActiveLinkBySectionId('home');
+    }
   }
 
   state.lastY = currentY;
+}
+
+let sectionSpyTimer = null;
+function scheduleVisibleSectionCheck() {
+  if (sectionSpyTimer) return;
+  sectionSpyTimer = window.setTimeout(() => {
+    sectionSpyTimer = null;
+    const currentY = Math.max(0, window.scrollY || window.pageYOffset || 0);
+    if (currentY <= SCROLLED_THRESHOLD + 8) {
+      if (state.currentActiveSectionId !== 'home') {
+        state.currentActiveSectionId = 'home';
+        setActiveLinkBySectionId('home');
+      }
+      return;
+    }
+    const visibleSectionId = getVisibleSectionId();
+    if (visibleSectionId && visibleSectionId !== state.currentActiveSectionId) {
+      state.currentActiveSectionId = visibleSectionId;
+      setActiveLinkBySectionId(visibleSectionId);
+    }
+  }, 100);
 }
 
 function updateChatbotOffset() {
@@ -505,6 +527,7 @@ function onScroll() {
     handleScrollAwareChatbot();
     state.ticking = false;
   });
+  scheduleVisibleSectionCheck();
 }
 
 function onResize() {

@@ -51,6 +51,23 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'apple-scroll-physics-and-performance-sept-2026',
+    date: '2026-09-28',
+    type: 'improvement',
+    title: 'Restore Apple direct-manipulation scroll physics and eliminate layout thrashing',
+    summary:
+      'Eliminated WebKit synchronous CPU repaints by removing fixed background attachments on body and home, purged unconsumed Forced Synchronous Layout scroll loops in premium enhancements, debounced navbar section spy measurements to rely on native IntersectionObserver, restored direct-manipulation auto root scrolling with reduced motion support, contained horizontal overscroll across rails and code blocks to prevent macOS swipe back-navigation, and unified thin Apple overlay scrollbars across Firefox and WebKit.',
+    tags: ['performance', 'design'],
+    commitVerified: false,
+    model: 'Gemini 3.8 Flash',
+    ide: 'Google Antigravity IDE',
+    purpose:
+      'Engineer authentic Apple direct-manipulation scroll physics, eliminate layout thrash, and prevent trackpad overscroll swipe navigation',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+    status: 'unreleased',
+  },
+  {
     id: 'public-apple-calendar-snapshot-2026',
     date: '2026-09-28',
     type: 'improvement',

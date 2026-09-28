@@ -4014,7 +4014,16 @@ button:active,
   opacity: 0.9 !important;
 }
 
-/* 14. Premium Webkit Scrollbars (Apple macOS overlay style) */
+/* 14. Premium Webkit & Firefox Scrollbars (Apple macOS overlay style) */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(120, 120, 128, 0.3) transparent;
+}
+
+html.dark {
+  scrollbar-color: rgba(255, 255, 255, 0.22) transparent;
+}
+
 ::-webkit-scrollbar {
   width: 8px !important;
   height: 8px !important;

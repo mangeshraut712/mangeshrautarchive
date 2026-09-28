@@ -224,38 +224,6 @@
     updateParallax();
   }
 
-  function initSmoothSections() {
-    if (prefersReducedMotion) return;
-
-    const sections = document.querySelectorAll('section');
-    function updateSections() {
-      sections.forEach(section => {
-        const rect = section.getBoundingClientRect();
-        const inView = rect.top < window.innerHeight && rect.bottom > 0;
-
-        if (inView) {
-          const progress = 1 - rect.top / window.innerHeight;
-          section.style.setProperty('--scroll-progress', Math.min(1, Math.max(0, progress)));
-        }
-      });
-    }
-
-    let ticking = false;
-    window.addEventListener(
-      'scroll',
-      () => {
-        if (!ticking) {
-          requestAnimationFrame(() => {
-            updateSections();
-            ticking = false;
-          });
-          ticking = true;
-        }
-      },
-      { passive: true }
-    );
-  }
-
   /**
    * 6. ENHANCED IMAGE LOADING
    * Adds smooth fade-in for images as they load
@@ -506,10 +474,6 @@
       initCursorSpotlight();
     }
 
-    // Optional enhancements
-    if (!lowPowerDevice && window.innerWidth > 768) {
-      initSmoothSections();
-    }
     initTypingEffect();
     initHoverSounds(); // Enabled only when localStorage flag is present
   }

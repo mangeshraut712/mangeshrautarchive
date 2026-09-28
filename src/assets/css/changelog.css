@@ -147,6 +147,7 @@ body.changelog-page .changelog-type-row {
   border: 0 !important;
   background: transparent !important;
   overflow-x: auto !important;
+  overscroll-behavior-x: contain !important;
   scrollbar-width: none !important;
   -webkit-overflow-scrolling: touch !important;
 }

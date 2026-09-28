@@ -255,9 +255,9 @@ html.dark {
   /* Advanced CSS Features */
   color-scheme: dark;
 
-  /* Optimized Scroll Behavior */
+  /* Optimized Apple Scroll Physics & Direct Manipulation */
   scroll-behavior: auto;
-  scroll-padding-top: 80px;
+  scroll-padding-top: calc(var(--island-height, 56px) + env(safe-area-inset-top, 0px) + 20px);
   --card-surface-light: #000;
   --card-border-rest: #2c2c2e;
   --card-border-hover: #0a84ff;
@@ -276,9 +276,9 @@ html.dark body {
     --text-secondary-dark: hsl(0deg 0% 95%);
   }
   /* Override individual state selectors that might conflict */
-  /* Black body background for dark mode */
+  /* Black body background for dark mode (scroll attachment allows async GPU compositing) */
   background: #000;
-  background-attachment: fixed;
+  background-attachment: scroll;
 }
 
 /* Apple's precise design system */
@@ -287,7 +287,6 @@ html.dark body {
 
 body {
   font-family: var(--font-text);
-  scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-size: 17px;
@@ -301,14 +300,10 @@ body {
   padding: 0;
   background-color: var(--bg-primary, #fff) !important;
 
-  /* Theme-aware solid background */
+  /* Theme-aware solid background transition (never transition transform on root scroller) */
   transition:
     color 0.3s ease,
-    background-color 0.3s ease,
-    border-color 0.3s ease,
-    box-shadow 0.3s ease,
-    transform 0.3s ease,
-    opacity 0.3s ease;
+    background-color 0.3s ease;
 }
 
 html {
@@ -318,10 +313,16 @@ html {
   overflow-anchor: auto; /* Safari 27+ zero-CLS during async hydration */
   font-size: 100%;
   text-size-adjust: 100%;
-  scroll-behavior: smooth;
+  scroll-behavior: auto;
   transition:
     background-color 0.3s ease,
     color 0.3s ease;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html:focus-within {
+    scroll-behavior: smooth;
+  }
 }
 
 /* Typography - Apple Style */
@@ -2384,7 +2385,7 @@ footer i.fa-solid {
 
 #home {
   background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
-  background-attachment: fixed;
+  background-attachment: scroll;
 }
 
 /* Responsive adjustments for smaller screens if needed */

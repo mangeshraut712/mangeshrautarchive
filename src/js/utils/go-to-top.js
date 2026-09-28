@@ -60,14 +60,14 @@
       }
     }
 
-    // Scroll to top smoothly
+    // Scroll to top smoothly (respecting reduced motion preferences)
     function scrollToTop(e) {
       if (e) e.preventDefault();
 
-      // Cross-browser smooth scroll to top
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       const scrollOptions = {
         top: 0,
-        behavior: 'smooth',
+        behavior: prefersReducedMotion ? 'auto' : 'smooth',
       };
 
       // Try window.scrollTo first

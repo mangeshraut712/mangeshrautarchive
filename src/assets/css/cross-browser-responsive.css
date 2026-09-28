@@ -39,28 +39,23 @@ button {
   padding: 0;
 }
 
-/* Smooth scrolling for all browsers */
+/* Direct manipulation root scrolling with reduced motion support */
 html {
-  scroll-behavior: smooth;
-  -webkit-scroll-behavior: smooth;
-  -moz-scroll-behavior: smooth;
-  -ms-scroll-behavior: smooth;
-  -o-scroll-behavior: smooth;
+  scroll-behavior: auto;
   -webkit-text-size-adjust: 100%;
-  -moz-text-size-adjust: 100%;
-  -ms-text-size-adjust: 100%;
   text-size-adjust: 100%;
   touch-action: manipulation;
-  -webkit-touch-action: manipulation;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html:focus-within {
+    scroll-behavior: smooth;
+  }
 }
 
 html.native-scroll-jump,
 html.native-scroll-jump body {
   scroll-behavior: auto !important;
-  -webkit-scroll-behavior: auto !important;
-  -moz-scroll-behavior: auto !important;
-  -ms-scroll-behavior: auto !important;
-  -o-scroll-behavior: auto !important;
 }
 
 /* ============================================
