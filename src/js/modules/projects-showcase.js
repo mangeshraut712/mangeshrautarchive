@@ -75,10 +75,8 @@ function withinEditDistance(left, right, maxDistance = 2) {
   const lengthDiff = Math.abs(left.length - right.length);
   if (lengthDiff > maxDistance) return false;
 
-  const previous = new Array(right.length + 1);
-  const current = new Array(right.length + 1);
-
-  for (let j = 0; j <= right.length; j += 1) previous[j] = j;
+  const previous = Array.from({ length: right.length + 1 }, (_, j) => j);
+  const current = Array.from({ length: right.length + 1 });
 
   for (let i = 1; i <= left.length; i += 1) {
     current[0] = i;

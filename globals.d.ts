@@ -21,4 +21,3 @@ declare const HTMLInputElement: typeof globalThis.HTMLInputElement;
 declare const MutationObserver: typeof globalThis.MutationObserver;
 declare const requestIdleCallback: typeof globalThis.requestIdleCallback;
 declare const cancelIdleCallback: typeof globalThis.cancelIdleCallback;
-declare const globalThis: typeof globalThis;

@@ -768,7 +768,7 @@ class AppleIntelligenceChatbot {
       }
       const context = {
         ...this.buildPageContextPayload(),
-        ...(options.context || {}),
+        ...options.context,
         mode: 'voice',
       };
       this.isProcessing = true;

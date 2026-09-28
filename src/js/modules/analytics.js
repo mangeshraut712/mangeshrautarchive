@@ -266,7 +266,7 @@
    */
   function sanitizeReachPayload(payload) {
     if (!payload || typeof payload !== 'object') return payload;
-    const next = { ...payload, insights: { ...(payload.insights || {}) } };
+    const next = { ...payload, insights: { ...payload.insights } };
     const insights = next.insights;
     const source = String(next.source || '');
     const isEdgeSnapshot = /edge/i.test(source) || next.host === 'cloudflare-worker';
