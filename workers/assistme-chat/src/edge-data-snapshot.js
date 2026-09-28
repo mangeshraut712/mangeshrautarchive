@@ -1,6 +1,6 @@
 /** Auto-exported FastAPI/GA snapshot for GitHub Pages edge (Vercel offline). */
 export const EDGE_DATA_SNAPSHOT = {
-  exportedAt: '2026-09-28T05:29:09.815Z',
+  exportedAt: '2026-09-28T14:02:25.782Z',
   reach: {
     success: true,
     total_reach: 10880,
@@ -13,12 +13,12 @@ export const EDGE_DATA_SNAPSHOT = {
     message: 'Portfolio Reach mirrored from GA4/FastAPI for GitHub Pages (Vercel offline).',
     insights: {
       unique_visitors: 10880,
-      unique_visitors_this_week: 37,
+      unique_visitors_this_week: 38,
       countries_this_week: 7,
-      sessions_this_week: 45,
-      total_views_all_time: 13654,
+      sessions_this_week: 49,
+      total_views_all_time: 13660,
       active_users_all_time: 10880,
-      event_count_all_time: 47823,
+      event_count_all_time: 47842,
       active_users_last_30_mins: 0,
       realtime_countries: [],
       realtime_fresh: false,
@@ -26,7 +26,7 @@ export const EDGE_DATA_SNAPSHOT = {
       metric_weekly_label: 'Active Users',
       avg_views_per_day: 0,
       portfolio_age_days: 1,
-      last_updated: '2026-09-28T05:29:09.787242Z',
+      last_updated: '2026-09-28T14:02:25.760474Z',
       top_countries: [
         {
           country: 'India',
@@ -34,7 +34,7 @@ export const EDGE_DATA_SNAPSHOT = {
         },
         {
           country: 'United States',
-          users: 42,
+          users: 43,
         },
         {
           country: 'Sweden',
@@ -91,20 +91,20 @@ export const EDGE_DATA_SNAPSHOT = {
         },
         {
           date: '2026-09-27',
-          views: 35,
+          views: 37,
           visitors: 6,
           sessions: 10,
         },
         {
           date: '2026-09-28',
-          views: 0,
-          visitors: 0,
-          sessions: 0,
+          views: 4,
+          visitors: 2,
+          sessions: 4,
         },
       ],
       trend_metric: 'visitors',
     },
-    timestamp: '2026-09-28T05:29:09.787242Z',
+    timestamp: '2026-09-28T14:02:25.760474Z',
   },
   healthVitals: {
     success: true,
