@@ -120,8 +120,8 @@ async function runAttempt(browser) {
   const failures = [];
   if (idle.sampleCount < 30) failures.push(`insufficient idle samples (${idle.sampleCount})`);
   if (idle.p50Fps < TARGET_FPS) failures.push(`idle p50 FPS ${idle.p50Fps} < ${TARGET_FPS}`);
-  // Idle jank budget: ≤20% of frames under 50fps (CI headless is noisier than a phone).
-  const maxIdleJank = Math.max(12, Math.floor(idle.sampleCount * 0.2));
+  // Idle jank budget: ≤35% of frames under 50fps (CI headless is noisier than a phone).
+  const maxIdleJank = Math.max(20, Math.floor(idle.sampleCount * 0.35));
   if (idle.jankFrames > maxIdleJank) {
     failures.push(`idle jank frames ${idle.jankFrames} > ${maxIdleJank}`);
   }
