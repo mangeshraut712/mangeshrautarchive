@@ -1869,6 +1869,9 @@ body.travel-body .travel-filter-chips {
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05) !important;
   overflow-x: auto !important;
   overflow-y: hidden !important;
+  overscroll-behavior-x: contain !important;
+  scroll-snap-type: x proximity;
+  scroll-padding-inline: 0.5rem;
   scrollbar-width: none !important;
   -webkit-overflow-scrolling: touch !important;
   width: fit-content !important;
@@ -1930,6 +1933,7 @@ body.travel-body .travel-filter-chip {
   white-space: nowrap !important;
   text-decoration: none !important;
   cursor: pointer !important;
+  scroll-snap-align: center;
   box-shadow: none !important;
   transition:
     background-color 0.15s ease,

@@ -1351,6 +1351,9 @@ html body #contact .reminder-card.completed .status-circle {
     flex-wrap: nowrap !important;
     overflow-x: auto !important;
     overflow-y: hidden !important;
+    overscroll-behavior-x: contain !important;
+    scroll-snap-type: x proximity;
+    scroll-padding-inline: 4px;
     -webkit-overflow-scrolling: touch !important;
     scrollbar-width: none !important;
     gap: 6px !important;
@@ -1366,6 +1369,7 @@ html body #contact .reminder-card.completed .status-circle {
   html body #contact .filter-tab {
     flex: 0 0 auto !important;
     white-space: nowrap !important;
+    scroll-snap-align: start;
   }
 
   /* 3. Search Bar */

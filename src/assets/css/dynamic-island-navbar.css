@@ -252,6 +252,7 @@ html.dark .global-nav.dynamic-island.scrolled {
   border-radius: 999px;
   line-height: 1 !important;
   flex-shrink: 0;
+  scroll-snap-align: center;
   text-decoration: none !important;
 }
 
@@ -486,6 +487,7 @@ html.dark .global-nav.dynamic-island #menu-btn[aria-expanded='true'] {
   scrollbar-width: none;
   -ms-overflow-style: none;
   scroll-behavior: smooth;
+  scroll-snap-type: x proximity;
   scroll-padding-inline: 24px;
   -webkit-overflow-scrolling: touch;
   /* Edge fade only when .is-overflowing (see rule above) */

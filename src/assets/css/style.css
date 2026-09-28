@@ -309,19 +309,26 @@ body {
 html {
   border: none;
   max-width: 100%;
-  overflow-x: hidden;
+  overflow-x: clip;
   overflow-anchor: auto; /* Safari 27+ zero-CLS during async hydration */
   font-size: 100%;
   text-size-adjust: 100%;
   scroll-behavior: auto;
+  scroll-padding-top: calc(var(--island-height, 56px) + env(safe-area-inset-top, 0px) + 20px);
   transition:
     background-color 0.3s ease,
     color 0.3s ease;
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  html:focus-within {
+  html {
     scroll-behavior: smooth;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto !important;
   }
 }
 

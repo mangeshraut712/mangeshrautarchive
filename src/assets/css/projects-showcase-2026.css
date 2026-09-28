@@ -6159,6 +6159,8 @@ html.dark .project-kpi-card-modal-value,
   width: 100%;
   max-height: 90vh;
   overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
   box-shadow: 0 30px 80px rgba(0, 0, 0, 0.22);
   border: 1px solid rgba(0, 0, 0, 0.08);
   z-index: 1;

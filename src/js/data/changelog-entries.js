@@ -51,6 +51,24 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'apple-grade-scrolling-architecture-sept-2026',
+    date: '2026-09-28',
+    type: 'improvement',
+    title: 'Apple-grade scrolling behavior and root scroller architecture overhaul',
+    summary:
+      'Engineered an authentic Apple HIG scrolling experience across desktop and mobile: resolved dual-container vertical overflow conflict by keeping body overflow-y visible and html as the sole viewport scroller with overflow-x clip and scrollbar-gutter stable, eliminated mobile menu navigation scroll hijack where old pre-open scroll positions overwrote anchor jumps, unified root smooth scrolling respecting prefers-reduced-motion, standardized scroll-padding-top and section scroll margins under the Dynamic Island, added overscroll-behavior contain and momentum touch scrolling across all modal containers, search overlays, and reach flyouts to prevent background scroll chaining, added CSS scroll snap across all navigation and segmented filter rails, streamlined onScroll to eliminate inline chatbot transform thrashing, and modernized back-to-top with native scrollTo.',
+    tags: ['performance', 'design', 'systems'],
+    sha: null,
+    commitVerified: false,
+    link: null,
+    model: 'Gemini 3.8 Flash',
+    ide: 'Google Antigravity IDE',
+    purpose:
+      'Audit and overhaul website scrolling behavior to adhere to Apple HIG and modern web industry standards',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
     id: 'zero-warning-anti-slop-and-linter-audit-sept-2026',
     date: '2026-09-28',
     type: 'improvement',

@@ -950,6 +950,8 @@ html.dark #search-overlay #search-close.premium-close-btn {
   min-height: 0 !important;
   max-height: none !important;
   overflow-y: auto !important;
+  overscroll-behavior: contain !important;
+  -webkit-overflow-scrolling: touch !important;
   padding: 0.15rem 0.15rem 0.35rem !important;
   margin: 0 !important;
 }

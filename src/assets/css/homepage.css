@@ -1699,6 +1699,7 @@ html.dark .reach-countries-list::-webkit-scrollbar-thumb {
 .hero-flyout--music-slot .portfolio-reach-panel {
   max-height: inherit;
   overflow: auto;
+  overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: thin;
 }

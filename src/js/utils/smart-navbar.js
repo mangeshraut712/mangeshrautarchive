@@ -275,13 +275,15 @@ function scrollToSection(sectionId) {
 
 import { releaseBodyScrollStyles, restoreBodyScrollPosition } from './scroll-lock.js';
 
-function closeOverlayMenu() {
+function closeOverlayMenu(shouldRestoreScroll = true) {
   const released = releaseBodyScrollStyles(document.body);
   document.body.classList.remove('menu-open');
-  restoreBodyScrollPosition(released.scrollY, {
-    anchorId: released.anchorId,
-    anchorTop: released.anchorTop,
-  });
+  if (shouldRestoreScroll) {
+    restoreBodyScrollPosition(released.scrollY, {
+      anchorId: released.anchorId,
+      anchorTop: released.anchorTop,
+    });
+  }
   const overlayMenu = document.getElementById('overlay-menu');
   overlayMenu?.style.setProperty('display', 'none', 'important');
   overlayMenu?.setAttribute('aria-hidden', 'true');
@@ -324,7 +326,8 @@ function bindOverlayLinks() {
       if (!document.getElementById(sectionId)) return;
 
       event.preventDefault();
-      closeOverlayMenu();
+      // Never restore previous scroll position when navigating to a chosen section
+      closeOverlayMenu(false);
       if (sectionId === 'projects') {
         window.__ensureProjectsShowcase?.();
       }
@@ -499,24 +502,12 @@ function scheduleVisibleSectionCheck() {
   }, 100);
 }
 
-function updateChatbotOffset() {
-  const toggle = document.getElementById('chatbot-toggle');
-  if (!toggle) return;
-
-  const currentY = Math.max(0, window.scrollY || window.pageYOffset || 0);
-  if (state.direction === 'down' && currentY > 96) {
-    toggle.style.transform = 'translate3d(0, -18px, 0)';
-  } else {
-    toggle.style.transform = 'translate3d(0, 0, 0)';
-  }
-}
-
 function handleSmartNavbar() {
   updateSmartNavbar();
 }
 
 function handleScrollAwareChatbot() {
-  updateChatbotOffset();
+  // Stable floating action dock — no layout thrash
 }
 
 function onScroll() {
@@ -524,7 +515,6 @@ function onScroll() {
   state.ticking = true;
   requestAnimationFrame(() => {
     handleSmartNavbar();
-    handleScrollAwareChatbot();
     state.ticking = false;
   });
   scheduleVisibleSectionCheck();

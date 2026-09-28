@@ -1213,6 +1213,8 @@ html.dark .blog-read-btn i {
   width: 100%;
   max-height: 90vh;
   overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
   box-shadow: 0 30px 80px rgba(0, 0, 0, 0.22);
   border: 1px solid rgba(0, 0, 0, 0.08);
   z-index: 1;
@@ -2616,6 +2618,10 @@ body.blog-standalone-page #go-to-top .go-to-top-label {
   width: 100%;
   margin: 0 auto 1.5rem auto;
   overflow-x: auto;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x proximity;
+  scroll-padding-inline: 0.5rem;
   scrollbar-width: thin;
 }
 
@@ -2623,6 +2629,7 @@ body.blog-standalone-page #go-to-top .go-to-top-label {
 body.blog-standalone-page .blog-filter-chip,
 .blog-filter-chip {
   flex: 0 0 auto;
+  scroll-snap-align: start;
   padding: 0.5rem 0.9rem !important;
   border-radius: 999px !important;
   border: 1px solid rgb(0 0 0 / 8%) !important;

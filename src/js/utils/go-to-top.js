@@ -70,19 +70,10 @@
         behavior: prefersReducedMotion ? 'auto' : 'smooth',
       };
 
-      // Try window.scrollTo first
-      if ('scrollBehavior' in document.documentElement.style) {
+      try {
         window.scrollTo(scrollOptions);
-      } else {
-        // Fallback for browsers without smooth scroll support
-        const scrollStep = -window.scrollY / 20;
-        const scrollInterval = setInterval(() => {
-          if (window.scrollY > 0) {
-            window.scrollBy(0, scrollStep);
-          } else {
-            clearInterval(scrollInterval);
-          }
-        }, 16);
+      } catch {
+        window.scrollTo(0, 0);
       }
 
       // Accessibility: Move focus to the top after scrolling

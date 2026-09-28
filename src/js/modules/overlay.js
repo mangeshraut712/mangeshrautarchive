@@ -138,12 +138,8 @@ export function initOverlayNavigation(options = {}) {
       if (!targetElement) return;
 
       if (body && closeClass) {
-        const released = releaseBodyScrollStyles(body);
+        releaseBodyScrollStyles(body);
         body.classList.remove(closeClass);
-        restoreBodyScrollPosition(released.scrollY, {
-          anchorId: released.anchorId,
-          anchorTop: released.anchorTop,
-        });
       }
       const menuToggle = documentRef.getElementById('menu-btn');
       if (menuToggle) {

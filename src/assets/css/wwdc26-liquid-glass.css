@@ -166,10 +166,14 @@ html.dark .global-nav.dynamic-island.scrolled {
 }
 
 @media (width <= 768px) {
-  html.browser-chromium:not(.launch-intro-active),
-  html.browser-chromium:not(.launch-intro-active) body:not(.menu-open) {
+  html.browser-chromium:not(.launch-intro-active) {
     overflow-x: clip !important;
     overflow-y: auto !important;
+  }
+
+  html.browser-chromium:not(.launch-intro-active) body:not(.menu-open) {
+    overflow-x: clip !important;
+    overflow-y: visible !important;
   }
 }
 

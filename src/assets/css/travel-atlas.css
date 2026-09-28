@@ -673,6 +673,8 @@ html.dark .travel-sidebar {
   scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
   overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+  scroll-padding-inline: 4px;
   max-width: 100%;
   box-sizing: border-box;
 }
@@ -693,6 +695,7 @@ html.dark .travel-sidebar {
   color: var(--text-secondary);
   cursor: pointer;
   border: 1px solid transparent;
+  scroll-snap-align: start;
   flex-shrink: 0;
   white-space: nowrap;
   transition:
