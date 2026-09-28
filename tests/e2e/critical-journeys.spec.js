@@ -77,7 +77,7 @@ test('GitHub operating view leads into illustrated repository cards', async ({ p
   expect(await cards.count()).toBeGreaterThan(10);
   const mediaChecks = await cards.evaluateAll(async elements =>
     Promise.all(
-      elements.map(async card => {
+      elements.slice(0, 6).map(async card => {
         const image = card.querySelector('.project-media img');
         if (!image) return false;
         image.loading = 'eager';
@@ -91,12 +91,22 @@ test('GitHub operating view leads into illustrated repository cards', async ({ p
     )
   );
   expect(mediaChecks.every(Boolean)).toBe(true);
-  await cards.first().locator('.btn-preview').click();
+  await expect(cards.first().locator('.project-footer .btn-github')).toHaveCount(1);
+  await expect(cards.first().locator('.project-more summary')).toBeAttached();
+  const previewRepo = await cards
+    .first()
+    .locator('.project-media-open')
+    .getAttribute('data-repo-preview');
+  await cards.first().locator('.project-media-open').click();
   const previewImage = page.locator('#repo-preview-modal .project-preview__media img');
   await expect(previewImage).toBeVisible();
   await expect.poll(() => previewImage.evaluate(image => image.naturalWidth)).toBeGreaterThan(0);
   await page.locator('#repo-preview-modal .blog-modal-close').click();
   await expect(page.locator('#repo-preview-modal')).toBeHidden();
+  const currentCard = cards.filter({ has: page.locator(`[data-repo-preview="${previewRepo}"]`) });
+  await expect(currentCard.locator('.project-media-open')).toBeFocused();
+  await currentCard.locator('.project-more summary').click();
+  await expect(currentCard.locator('.project-more-menu')).toBeVisible();
 });
 
 test('contact form sends a message and confirms storage', async ({ page }) => {

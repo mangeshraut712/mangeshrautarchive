@@ -10,6 +10,7 @@
 
 import { escapeHtml as escapeHtmlShared } from '../utils/escape-html.js';
 import { sitePath } from '../utils/site-base.js';
+import { REPO_SCREENSHOTS } from '../data/repo-screenshots.js';
 
 // Hoisted Intl formatters for performance
 const absoluteDateFormatter = new Intl.DateTimeFormat('en-US', {
@@ -1954,6 +1955,30 @@ class GitHubProjects {
     };
   }
 
+  getRepoMedia(repo, topics) {
+    const screenshot = REPO_SCREENSHOTS[String(repo.name || '').toLowerCase()];
+    if (screenshot) {
+      return {
+        src: sitePath(screenshot.file),
+        alt: screenshot.alt,
+        caption: `Screenshot from the ${repo.name} README.`,
+        screenshot: true,
+        width: 1440,
+        height: 900,
+      };
+    }
+
+    return {
+      src: this.buildProjectMedia(repo, topics),
+      alt: `Concept map of ${repo.name}, based on its repository language and topics`,
+      caption:
+        'Conceptual map generated from the repository language and topics. Open the source for implementation details.',
+      screenshot: false,
+      width: 1200,
+      height: 675,
+    };
+  }
+
   findRepoByName(name) {
     if (!name) return null;
     const target = String(name).toLowerCase();
@@ -2073,7 +2098,7 @@ class GitHubProjects {
     const safeBranch = this.escapeHtml(repo.default_branch || 'main');
     const safeLicense = this.escapeHtml(repo.license?.spdx_id || 'Not specified');
     const topics = this.getTopics(repo);
-    const projectMedia = this.buildProjectMedia(repo, topics);
+    const projectMedia = this.getRepoMedia(repo, topics);
     const topicsHtml = topics
       .slice(0, 8)
       .map(tag => `<span class="blog-topic-pill">${this.escapeHtml(tag)}</span>`)
@@ -2102,9 +2127,9 @@ class GitHubProjects {
           <div class="article-tags blog-tags--pills">${topicsHtml}</div>
         </header>
 
-        <figure class="project-preview__media">
-          <img src="${projectMedia}" alt="Concept map of ${safeName}, based on its repository language and topics" width="1200" height="675" decoding="async">
-          <figcaption>Conceptual map generated from the repository language and topics. Open the source for implementation details.</figcaption>
+        <figure class="project-preview__media ${projectMedia.screenshot ? 'project-preview__media--screenshot' : ''}">
+          <img src="${projectMedia.src}" alt="${this.escapeHtml(projectMedia.alt)}" width="${projectMedia.width}" height="${projectMedia.height}" decoding="async">
+          <figcaption>${this.escapeHtml(projectMedia.caption)}</figcaption>
         </figure>
 
         <div class="project-preview__top-actions">
@@ -2186,15 +2211,22 @@ class GitHubProjects {
     }
 
     const restore = this.lastModalFocus;
+    const restoreRepoName = restore?.dataset?.repoPreview;
     this.lastModalFocus = null;
 
     setTimeout(() => {
       if (!this.previewModal.classList.contains('active')) {
         this.previewModal.classList.add('hidden');
       }
-      if (restore && typeof restore.focus === 'function') {
+      const currentTrigger = restoreRepoName
+        ? Array.from(document.querySelectorAll('[data-repo-preview]')).find(
+            trigger => trigger.dataset.repoPreview === restoreRepoName
+          )
+        : null;
+      const focusTarget = restore?.isConnected ? restore : currentTrigger;
+      if (focusTarget && typeof focusTarget.focus === 'function') {
         try {
-          restore.focus();
+          focusTarget.focus();
         } catch {
           // ignore focus errors
         }
@@ -2246,9 +2278,7 @@ class GitHubProjects {
 
   createProjectCard(repo, _index) {
     const showcase = repo.__showcase || this.getShowcaseScore(repo);
-    const meta = this.getRepoMeta(repo);
     const language = repo.language || 'Unknown';
-    const languageColor = this.getLanguageColor(language);
     const description = repo.description || 'No repository description provided yet.';
     const stars = Number(repo.stargazers_count || 0);
     const forks = Number(repo.forks_count || 0);
@@ -2268,15 +2298,13 @@ class GitHubProjects {
 
     const homepage = this.normalizeHomepageUrl(repo.homepage, repo.html_url);
     const hasDemo = Boolean(homepage);
-    const updatedAbsolute = this.formatAbsoluteDate(repo.updated_at);
-    const updatedBadgeText = this.formatRelativeDateCompact(repo.updated_at);
     const repoPath = repo.full_name || `${this.username}/${repo.name}`;
     const repoLicense = repo.license?.spdx_id || '';
     const repoSize = Number.isFinite(repo.size) ? repo.size : '';
     const repoBranch = repo.default_branch || '';
     const aiInsight = this.buildAiInsight(repo, showcase);
     const topics = this.getTopics(repo);
-    const projectMedia = this.buildProjectMedia(repo, topics);
+    const projectMedia = this.getRepoMedia(repo, topics);
 
     const safeName = this.escapeHtml(repo.name);
     const safeRepoPath = this.escapeHtml(repoPath);
@@ -2284,8 +2312,6 @@ class GitHubProjects {
     const safeLanguage = this.escapeHtml(language);
     const safeRepoUrl = this.escapeHtml(repo.html_url);
     const safeHomepage = hasDemo ? this.escapeHtml(homepage) : '';
-    const safeUpdatedAbsolute = this.escapeHtml(updatedAbsolute);
-    const safeUpdatedBadgeText = this.escapeHtml(updatedBadgeText);
     const safeInsight = this.escapeHtml(aiInsight);
     const safeScore = this.escapeHtml(showcase.score);
     const safeLicense = this.escapeHtml(repoLicense);
@@ -2294,12 +2320,8 @@ class GitHubProjects {
     const safeOpenIssues = this.escapeHtml(openIssues);
     const safeReleaseKey = this.escapeHtml(releaseKey);
     const safeReleaseLabel = this.escapeHtml(releaseSignal.label);
-    const safeReleaseMeta = this.escapeHtml(releaseSignal.meta);
     const safeReleaseTag = this.escapeHtml(releaseSignal.tagName || '');
     const safeReleaseDate = this.escapeHtml(releaseSignal.releaseDate || '');
-    const safeReleaseDateLabel = this.escapeHtml(
-      releaseSignal.releaseDateLabel || 'No release date'
-    );
     const safeReleaseUrl = this.escapeHtml(releaseSignal.latestRelease?.htmlUrl || '');
     const safeReleaseCommits = this.escapeHtml(
       releaseSignal.commitsSinceRelease === null ? '' : releaseSignal.commitsSinceRelease
@@ -2312,44 +2334,9 @@ class GitHubProjects {
 
     const pushedAgeDays = this.getRepoAgeDays(repo?.pushed_at || repo?.updated_at);
     const isRecentlyActive = Number.isFinite(pushedAgeDays) && pushedAgeDays <= 7;
-    const pulseDotHtml = isRecentlyActive
-      ? '<span class="project-pulse-dot" title="Active release momentum (< 7 days)"></span>'
-      : '';
-
-    const hasReleaseTag = Boolean(releaseSignal.tagName);
-    const showCommitsSince = hasReleaseTag && releaseSignal.commitsSinceRelease !== null;
-    const releaseCommitsText = showCommitsSince
-      ? this.formatCompactNumber(releaseSignal.commitsSinceRelease)
-      : '';
-    const releaseTagHtml = hasReleaseTag
-      ? safeReleaseUrl
-        ? `<a class="project-release-tag" href="${safeReleaseUrl}" target="_blank" rel="noopener noreferrer" title="${safeReleaseDateLabel}">${safeReleaseTag}</a>`
-        : `<strong class="project-release-tag" title="${safeReleaseDateLabel}">${safeReleaseTag}</strong>`
-      : '';
-    const releaseCommitsHtml = showCommitsSince
-      ? `<span class="project-release-commits" title="Commits since latest release">
-              <i class="fas fa-code-branch" aria-hidden="true"></i>
-              ${releaseCommitsText} since
-            </span>`
-      : '';
-    const releaseStripHtml = hasReleaseTag
-      ? `<div class="project-release-strip" data-release-status="${safeReleaseKey}">
-            <span class="project-release-status project-release-${safeReleaseKey}">${safeReleaseLabel}</span>
-            ${releaseTagHtml}
-            <span class="project-release-detail">${safeReleaseMeta}</span>
-            ${releaseCommitsHtml}
-          </div>`
-      : '';
-
-    const kickerHtml = `<p class="project-kicker">${this.escapeHtml(meta.kicker)}</p>`;
-
-    const languageHtml =
-      language !== 'Unknown'
-        ? `<span class="project-language">
-                <span class="language-dot" style="background-color: ${languageColor}"></span>
-                ${safeLanguage}
-              </span>`
-        : '';
+    const projectKind = projectMedia.screenshot ? 'Product preview' : 'Repository';
+    const kickerLanguage = language === 'Unknown' ? 'Software' : safeLanguage;
+    const kickerHtml = `<p class="project-kicker">${kickerLanguage} <span aria-hidden="true">·</span> ${projectKind}${isRecentlyActive ? '<span class="project-pulse-dot" title="Pushed in the last 7 days"></span>' : ''}</p>`;
     const topicsHtml =
       topics.length > 0
         ? topics
@@ -2360,50 +2347,25 @@ class GitHubProjects {
     const demoHtml = hasDemo
       ? `<a href="${safeHomepage}" target="_blank" rel="noopener noreferrer" class="project-action-btn btn-demo" aria-label="Open ${safeName} live demo">
                 <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i>
-                <span>View live</span>
+                <span>Live demo</span>
               </a>`
       : '';
 
     return `
-      <article class="showcase-project-card apple-3d-project group lg-interactive ${hasDemo ? 'has-live-demo' : ''}" data-lg-interactive data-release-status="${safeReleaseKey}" aria-label="${safeName} project card">
-        <figure class="project-media">
-          <a href="${safeRepoUrl}" target="_blank" rel="noopener noreferrer" aria-label="Explore ${safeName} repository">
-            <img src="${projectMedia}" alt="Concept map of ${safeName}, based on its repository language and topics" loading="lazy" decoding="async" width="1200" height="675">
-          </a>
+      <article class="showcase-project-card apple-3d-project group lg-interactive ${hasDemo ? 'has-live-demo' : ''}" data-lg-interactive data-repo-name="${safeName}" data-release-status="${safeReleaseKey}" aria-label="${safeName} project card">
+        <figure class="project-media ${projectMedia.screenshot ? 'project-media--screenshot' : ''}">
+          <button type="button" class="project-media-open" data-repo-preview="${safeName}" aria-label="Explore ${safeName} project details">
+            <img src="${projectMedia.src}" alt="${this.escapeHtml(projectMedia.alt)}" loading="lazy" decoding="async" width="${projectMedia.width}" height="${projectMedia.height}">
+            <span class="project-media-cue" aria-hidden="true">Explore project <i class="fas fa-arrow-up-right-from-square"></i></span>
+          </button>
         </figure>
         <div class="project-header">
           ${kickerHtml}
-          <div class="project-head-top">
-            <div class="project-brand-meta">
-              <span class="project-repo-badge" aria-hidden="true">
-                <i class="fab fa-github"></i>
-              </span>
-              ${pulseDotHtml}
-            </div>
-            <div class="project-head-actions">
-              <span class="project-repo-updated" title="Updated ${safeUpdatedAbsolute}">
-                <i class="fas fa-clock" aria-hidden="true"></i>
-                ${safeUpdatedBadgeText}
-              </span>
-            </div>
-          </div>
-
           <div class="project-title-wrap">
-            <h3 class="project-title">
-              <a class="project-title-text" href="${safeRepoUrl}" target="_blank" rel="noopener noreferrer" title="View ${safeName} on GitHub">${safeName}</a>
-            </h3>
+            <h3 class="project-title"><span class="project-title-text">${safeName}</span></h3>
           </div>
-
           <p class="project-description" title="${safeDescription || 'No description available'}">${safeDescription || 'No description available'}</p>
-
-          ${releaseStripHtml}
-
-          <div class="project-meta-row" aria-label="Repository stats and technologies">
-            <div class="project-tech-pills">
-              ${languageHtml}
-              ${topicsHtml}
-            </div>
-          </div>
+          ${topicsHtml ? `<div class="project-meta-row" aria-label="Repository topics"><div class="project-tech-pills">${topicsHtml}</div></div>` : ''}
           <dl class="project-signal-grid" aria-label="Repository signals">
             <div><dt><i class="fas fa-star" aria-hidden="true"></i> Stars</dt><dd>${this.formatCompactNumber(stars)}</dd></div>
             <div><dt><i class="fas fa-code-fork" aria-hidden="true"></i> Forks</dt><dd>${this.formatCompactNumber(forks)}</dd></div>
@@ -2413,25 +2375,19 @@ class GitHubProjects {
 
         <div class="project-footer ${hasDemo ? 'has-demo' : 'no-demo'}">
           ${demoHtml}
-          <button
-            type="button"
-            class="project-action-btn btn-preview"
-            data-repo-preview="${safeName}"
-            aria-label="Preview ${safeName} repository"
-          >
-            <i class="far fa-eye" aria-hidden="true"></i>
-            <span>Preview</span>
-          </button>
           <a
             href="${safeRepoUrl}"
             target="_blank"
             rel="noopener noreferrer"
-            class="project-action-btn btn-github ${!hasDemo ? 'btn-primary-action' : ''}"
+            class="project-action-btn btn-github"
             aria-label="Open ${safeName} on GitHub"
           >
             <i class="fab fa-github" aria-hidden="true"></i>
             <span>View code</span>
           </a>
+          <details class="project-more">
+            <summary aria-label="More actions for ${safeName}" title="More actions for ${safeName}"><i class="fas fa-ellipsis" aria-hidden="true"></i><span class="sr-only">More actions</span></summary>
+            <div class="project-more-menu">
           <button
             type="button"
             class="project-action-btn btn-ar"
@@ -2467,12 +2423,14 @@ class GitHubProjects {
             aria-label="${safeName}: Spatial View"
           >
             <i class="fas fa-cube" aria-hidden="true"></i>
-            <span>Spatial</span>
+            <span>Spatial view</span>
           </button>
           <button type="button" class="project-clone-btn" data-repo-clone="${safeRepoUrl}.git" title="Copy git clone ${safeRepoUrl}.git" aria-label="Copy git clone command for ${safeName}">
             <i class="fas fa-terminal" aria-hidden="true"></i>
-            <span class="clone-label">Clone</span>
+            <span class="clone-label">Copy clone command</span>
           </button>
+            </div>
+          </details>
         </div>
       </article>
     `;

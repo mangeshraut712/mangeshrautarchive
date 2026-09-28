@@ -1,0 +1,218 @@
+[
+  {
+    "repo": "agent-console",
+    "file": "/assets/images/repo-screenshots/agent-console.webp",
+    "alt": "Landing: connect to a WebSocket agent backend",
+    "source": "https://raw.githubusercontent.com/mangeshraut712/agent-console/main/docs/screenshots/01-landing.webp",
+    "sha256": "62789903cbeabd05c4fa59b365c5edd26901cdbf4bc17e423843142bce80a079",
+    "bytes": 18310
+  },
+  {
+    "repo": "AI-Powered-Sentiment-Analysis",
+    "file": "/assets/images/repo-screenshots/ai-powered-sentiment-analysis.webp",
+    "alt": "Hero: Understanding Happiness, with Try Demo and View Analytics",
+    "source": "https://raw.githubusercontent.com/mangeshraut712/AI-Powered-Sentiment-Analysis/master/docs/screenshots/01-home.webp",
+    "sha256": "eee109d11ab6cd6fd9d71a953bad982e9192dc34f7dfbed2073b1e5b8157e578",
+    "bytes": 23666
+  },
+  {
+    "repo": "ai-rubiks-cube",
+    "file": "/assets/images/repo-screenshots/ai-rubiks-cube.webp",
+    "alt": "Overview home with Cubey 3x3 cube stage",
+    "source": "https://raw.githubusercontent.com/mangeshraut712/ai-rubiks-cube/main/docs/screenshots/01-home.webp",
+    "sha256": "0be4faccbe3a96737dfb3e64381c83e8911d31e23315354d5b7f4fdc3f32313f",
+    "bytes": 35022
+  },
+  {
+    "repo": "alpha-quant-academy",
+    "file": "/assets/images/repo-screenshots/alpha-quant-academy.webp",
+    "alt": "Learn quant from zero — Alpha Quant Academy home",
+    "source": "https://raw.githubusercontent.com/mangeshraut712/alpha-quant-academy/main/docs/screenshots/01-home.webp",
+    "sha256": "cf6eeaf77199b467e5435d2d575e5e59197f9b1f45242fcd30fcd72bf76338c9",
+    "bytes": 23586
+  },
+  {
+    "repo": "AssistMe-VirtualAssistant",
+    "file": "/assets/images/repo-screenshots/assistme-virtualassistant.webp",
+    "alt": "AssistMe chat home with sidebar and prompt cards",
+    "source": "https://raw.githubusercontent.com/mangeshraut712/AssistMe-VirtualAssistant/main/docs/screenshots/01-home.webp",
+    "sha256": "6c04eb3d5a49727028b5e1c2ea7a4c6cfc0a773a9559357ab26840a06a34196d",
+    "bytes": 20518
+  },
+  {
+    "repo": "Bug-Reporting-System",
+    "file": "/assets/images/repo-screenshots/bug-reporting-system.webp",
+    "alt": "Sign in to Bug Tracker",
+    "source": "https://raw.githubusercontent.com/mangeshraut712/Bug-Reporting-System/main/docs/screenshots/01-sign-in.webp",
+    "sha256": "791cda462be2c8431c2388cc2f8874226ac0638d9d0d6441a2eaa18fb47b8067",
+    "bytes": 24844
+  },
+  {
+    "repo": "career-agent-pro",
+    "file": "/assets/images/repo-screenshots/career-agent-pro.webp",
+    "alt": "CareerAgentPro home: land the job with AI",
+    "source": "https://raw.githubusercontent.com/mangeshraut712/career-agent-pro/main/docs/screenshots/01-home.webp",
+    "sha256": "8d28828e2ffa643e1674cd9849085c861b11f1c7333c14606ae259c46bc9e224",
+    "bytes": 21712
+  },
+  {
+    "repo": "ces-ltd.com",
+    "file": "/assets/images/repo-screenshots/ces-ltd.com.webp",
+    "alt": "Home: energy markets made clear",
+    "source": "https://raw.githubusercontent.com/mangeshraut712/ces-ltd.com/main/docs/screenshots/01-home.webp",
+    "sha256": "1876e856adaefabb41fe7becd51f16d4b647ad78dcc60f2a48263845f9b6c47b",
+    "bytes": 27364
+  },
+  {
+    "repo": "codex-insights",
+    "file": "/assets/images/repo-screenshots/codex-insights.webp",
+    "alt": "Codex Insights HTML report in a Mac frame: See how you work",
+    "source": "https://raw.githubusercontent.com/mangeshraut712/codex-insights/main/docs/screenshots/01-home.webp",
+    "sha256": "9209df68f3a1e5083fd51e6cc89d27dbacc3b248a814e6681b9253e766d0f6fa",
+    "bytes": 24258
+  },
+  {
+    "repo": "document-scanner-cv",
+    "file": "/assets/images/repo-screenshots/document-scanner-cv.webp",
+    "alt": "From a photo to a flat page",
+    "source": "https://raw.githubusercontent.com/mangeshraut712/document-scanner-cv/main/docs/screenshots/01-home.webp",
+    "sha256": "c24f681e37b4e7e6d23416ea42d42a6b44a6660da1c99396f8bac3f57df99cae",
+    "bytes": 18966
+  },
+  {
+    "repo": "Dotfit-Fitness",
+    "file": "/assets/images/repo-screenshots/dotfit-fitness.webp",
+    "alt": "Dotfit Fitness homepage: train in Baner today",
+    "source": "https://raw.githubusercontent.com/mangeshraut712/Dotfit-Fitness/main/docs/screenshots/01-home.webp",
+    "sha256": "121f8c698eabda95d0dc8553e98da4356b9d146689557d6b5c0f47a3e9f2a64c",
+    "bytes": 26114
+  },
+  {
+    "repo": "forge-api-platform",
+    "file": "/assets/images/repo-screenshots/forge-api-platform.webp",
+    "alt": "ForgeAPI usage dashboard with quota, latency, and recent Todo API requests",
+    "source": "https://raw.githubusercontent.com/mangeshraut712/forge-api-platform/main/docs/screenshots/01-usage.webp",
+    "sha256": "7792bdee2ece182e942f2c9ffed97f9f4532b5a3febd522596bcccff701a67de",
+    "bytes": 17678
+  },
+  {
+    "repo": "ganeshai",
+    "file": "/assets/images/repo-screenshots/ganeshai.webp",
+    "alt": "GaneshAI home screen: Ganesh Mahotsav title and liquid-glass player on Ya Re Ya",
+    "source": "https://raw.githubusercontent.com/mangeshraut712/ganeshai/main/docs/screenshots/01-home.webp",
+    "sha256": "c7114f3895e1ba43c5e08ba211c5a39d382458463c821692c93ca8e5d7b70ebd",
+    "bytes": 57276
+  },
+  {
+    "repo": "Gravity-SaaS-Agent",
+    "file": "/assets/images/repo-screenshots/gravity-saas-agent.webp",
+    "alt": "Launch agents in minutes — Gravity landing page",
+    "source": "https://raw.githubusercontent.com/mangeshraut712/Gravity-SaaS-Agent/main/docs/screenshots/01-home.webp",
+    "sha256": "7e3f646b0182ada6785cd65d7e9dcaad071ea8e6fe87cb2db375e044268a2f3c",
+    "bytes": 24470
+  },
+  {
+    "repo": "Hindai",
+    "file": "/assets/images/repo-screenshots/hindai.webp",
+    "alt": "Hind AI home: ancient wisdom, read it here",
+    "source": "https://raw.githubusercontent.com/mangeshraut712/Hindai/main/docs/screenshots/01-home.webp",
+    "sha256": "60075bf584a8e2c299688b5f23b2d82a5190211fc6e9c76a2e9d0591e2855f4b",
+    "bytes": 48056
+  },
+  {
+    "repo": "kashishbeautyparlour",
+    "file": "/assets/images/repo-screenshots/kashishbeautyparlour.webp",
+    "alt": "Homepage: book beauty services in Pune",
+    "source": "https://raw.githubusercontent.com/mangeshraut712/kashishbeautyparlour/main/docs/screenshots/01-home.webp",
+    "sha256": "da6d6e7a881210012c100b1ca85e01f8aee09b7f56c6ef1b9a160704d704574e",
+    "bytes": 21120
+  },
+  {
+    "repo": "maharashtra-sachet",
+    "file": "/assets/images/repo-screenshots/maharashtra-sachet.webp",
+    "alt": "Homepage: independent civic alert hub and Maharashtra map",
+    "source": "https://raw.githubusercontent.com/mangeshraut712/maharashtra-sachet/main/docs/screenshots/01-home.webp",
+    "sha256": "a76ada3ec27c8ab50bc1fb85a5207d67a7d8844e9a15bc7ddd8515568bc5b1fc",
+    "bytes": 29804
+  },
+  {
+    "repo": "MT-Immigration",
+    "file": "/assets/images/repo-screenshots/mt-immigration.webp",
+    "alt": "M&T Immigration homepage in a Mac frame — focused immigration counsel with clear strategy",
+    "source": "https://raw.githubusercontent.com/mangeshraut712/MT-Immigration/main/docs/screenshots/01-home.webp",
+    "sha256": "8c2c3471970d6c6c0cd1312e86283bc6277519603e63f3f11ca9154fc2ea039c",
+    "bytes": 29074
+  },
+  {
+    "repo": "PicoTuri-EditJudge",
+    "file": "/assets/images/repo-screenshots/picoturi-editjudge.webp",
+    "alt": "Test seven algorithms — PicoTuri algorithm testing suite",
+    "source": "https://raw.githubusercontent.com/mangeshraut712/PicoTuri-EditJudge/main/docs/screenshots/01-home.webp",
+    "sha256": "757e55a8ec954e9ce273cc637fd7c84a43dbfb4cf3760f791de2758f2e1e5fbc",
+    "bytes": 26480
+  },
+  {
+    "repo": "pravinelite",
+    "file": "/assets/images/repo-screenshots/pravinelite.webp",
+    "alt": "Pravin Elite Fitness home: train in Pune, eat real food",
+    "source": "https://raw.githubusercontent.com/mangeshraut712/pravinelite/main/docs/screenshots/01-home.webp",
+    "sha256": "ab3e1cb1ac7073f5edf988c2fde4ecf8bb672969781faeed70af3e93a0da7d6f",
+    "bytes": 21022
+  },
+  {
+    "repo": "Real-Time-Face-Emotion-Recognition-System",
+    "file": "/assets/images/repo-screenshots/real-time-face-emotion-recognition-system.webp",
+    "alt": "Emotion AI idle dashboard: Start Analysis, empty charts, and timeline",
+    "source": "https://raw.githubusercontent.com/mangeshraut712/Real-Time-Face-Emotion-Recognition-System/main/docs/screenshots/01-home.webp",
+    "sha256": "2da1d08da04b3919a5be120d7bd2d493523e7dcc91295a0de1e6afdd39f69fee",
+    "bytes": 29722
+  },
+  {
+    "repo": "Starlight-Blogging-Website",
+    "file": "/assets/images/repo-screenshots/starlight-blogging-website.webp",
+    "alt": "StarLight home: every story gets readers",
+    "source": "https://raw.githubusercontent.com/mangeshraut712/Starlight-Blogging-Website/main/docs/screenshots/01-home.webp",
+    "sha256": "ffcddfc94f61e4ae2726f7a619bf89e209ad9b5d149e103b5644d87c18302a8e",
+    "bytes": 21198
+  },
+  {
+    "repo": "ThreadPulse-Daily",
+    "file": "/assets/images/repo-screenshots/threadpulse-daily.webp",
+    "alt": "Guess today's Reddit word — daily puzzle board",
+    "source": "https://raw.githubusercontent.com/mangeshraut712/ThreadPulse-Daily/main/docs/screenshots/01-home.webp",
+    "sha256": "b4e2ea3c11f59e834cb4c57f953408094e18418e77a3647dffde564ef4b3b215",
+    "bytes": 17626
+  },
+  {
+    "repo": "UIDAI-Data-Hackathon-2026",
+    "file": "/assets/images/repo-screenshots/uidai-data-hackathon-2026.webp",
+    "alt": "Hackathon site home: Aadhaar enrolment analysis and coverage-gap findings",
+    "source": "https://raw.githubusercontent.com/mangeshraut712/UIDAI-Data-Hackathon-2026/main/docs/screenshots/01-home.webp",
+    "sha256": "4e9f746bca2856711d4112314d977e9ee0b6092e034d11219bb01693a1c07781",
+    "bytes": 40202
+  },
+  {
+    "repo": "vidyaraut",
+    "file": "/assets/images/repo-screenshots/vidyaraut.webp",
+    "alt": "Homepage hero: the full portfolio story on one page",
+    "source": "https://raw.githubusercontent.com/mangeshraut712/vidyaraut/main/docs/screenshots/01-home.webp",
+    "sha256": "d749b68e5bae2d03da4865c7711fc4d5a540467cc366f325a38b730e76985930",
+    "bytes": 19848
+  },
+  {
+    "repo": "Vitals.AI",
+    "file": "/assets/images/repo-screenshots/vitals.ai.webp",
+    "alt": "Vitals.AI home dashboard with no labs synced",
+    "source": "https://raw.githubusercontent.com/mangeshraut712/Vitals.AI/main/docs/screenshots/01-home.webp",
+    "sha256": "07f10ee2fa347f6d064f40310d8ad3da3732d822f428a7707809312095f0210a",
+    "bytes": 25196
+  },
+  {
+    "repo": "VoteDine",
+    "file": "/assets/images/repo-screenshots/votedine.webp",
+    "alt": "VoteDine home — dinner decided",
+    "source": "https://raw.githubusercontent.com/mangeshraut712/VoteDine/main/docs/screenshots/01-home.webp",
+    "sha256": "10ed0426ce0bc5dfb78219f6db75cd142d322a7a0f4c45803084fd8ebf578174",
+    "bytes": 28218
+  }
+]

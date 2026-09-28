@@ -154,6 +154,7 @@ The design system enforces a strictly unified 6-tier button architecture across 
 - **Light Mode**: `background: #ffffff; border: 1px solid rgba(0, 0, 0, 0.08); border-radius: 18px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);`
 - **Dark Mode**: `background: #1c1c1e; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 18px; box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);`
 - **Hover**: Subtle lift `translateY(-3px)`, enhanced border luminescence.
+- **Repository gallery**: Lead with the real README screenshot when available, label conceptual maps accurately, and make the media open the project preview. Show language and activity once, keep demo/code links in one action row, and place Spatial and clone tools in the accessible More menu. Keep every action at least `44px` tall.
 
 ### 2. Code Blocks (`.article-code-wrap`, `.article-code-block`)
 

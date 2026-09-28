@@ -894,9 +894,33 @@ export async function initProjectShowcase({ username = DEFAULT_USERNAME } = {}) 
         }
       }
 
+      const focusedControl = document.activeElement;
+      const focusedCard = focusedControl?.closest?.('.showcase-project-card');
+      const focusedRepoName = focusedCard?.dataset.repoName;
+      const focusedSelector = focusedControl?.matches?.('.project-media-open')
+        ? '.project-media-open'
+        : focusedControl?.matches?.('.project-more summary')
+          ? '.project-more summary'
+          : null;
+      const openMenuRepoName = container
+        .querySelector('.project-more[open]')
+        ?.closest('.showcase-project-card')?.dataset.repoName;
+
       container.innerHTML = displayRepos
         .map((repo, index) => githubProjects.createProjectCard(repo, index))
         .join('');
+
+      const findCard = name =>
+        Array.from(container.querySelectorAll('.showcase-project-card')).find(
+          card => card.dataset.repoName === name
+        );
+      if (openMenuRepoName) {
+        const menu = findCard(openMenuRepoName)?.querySelector('.project-more');
+        if (menu) menu.open = true;
+      }
+      if (focusedRepoName && focusedSelector) {
+        findCard(focusedRepoName)?.querySelector(focusedSelector)?.focus({ preventScroll: true });
+      }
 
       applyTiltEffects(container);
       revealRenderedProjectCards(container);

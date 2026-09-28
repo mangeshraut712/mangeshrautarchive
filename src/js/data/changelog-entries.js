@@ -51,6 +51,24 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'readme-screenshots-repo-cards-sept-2026',
+    date: '2026-09-28',
+    type: 'improvement',
+    title: 'Show README screenshots in an image-led repository gallery',
+    summary:
+      'Added verified README screenshots for 27 repositories to project cards and previews. Reworked cards around the project image, name, concise description, topics, and repository signals; removed repeated language and activity labels, kept direct demo and code links, placed Spatial and clone actions in a compact menu, and restored preview focus when live data rerenders a card.',
+    tags: ['design', 'systems'],
+    sha: null,
+    commitVerified: false,
+    link: null,
+    model: 'GPT-6 / Codex',
+    ide: 'OpenAI Codex',
+    purpose: 'Present verified repository screenshots in a clear Apple-style project gallery',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+    status: 'unreleased',
+  },
+  {
     id: 'apple-scroll-physics-and-performance-sept-2026',
     date: '2026-09-28',
     type: 'improvement',
