@@ -184,6 +184,7 @@ The design system enforces a strictly unified 6-tier button architecture across 
 - **Article navigation**: Standalone articles use a numbered contents rail on desktop and a collapsible contents control on mobile. Headings must have stable anchor IDs and enough scroll offset to remain visible below navigation chrome.
 - **Evidence visuals**: Every longform article has a lead image and a conceptual diagram. Use measured charts only with named units and sources; label ordered opinion as an editorial framework without fabricated percentage scores.
 - **Evidence navigation**: Show publication and editorial update dates separately. Give readers direct links to the dated evidence update and original sources near the article header; label vendor-reported results and conceptual visuals.
+- **Monthly archive**: The January–September 2026 edition contains two articles per month. When an article moves to another issue, label the issue date and retain its original publication date in the byline, structured metadata, and feeds. Event dates belong in the article and must not silently become publication dates.
 
 ### About Section (`#about`)
 

@@ -154,8 +154,14 @@ def test_blog_catalogue_includes_latest_articles():
     posts = get_blog_posts()
 
     assert len(posts) == 18
-    assert any(post["date"] == "2026-09-18" and "Jev" in post["title"] for post in posts)
-    assert any(post["date"] == "2026-09-14" and "UPI Tap to Pay" in post["title"] for post in posts)
+    september = [post for post in posts if post["date"].startswith("2026-09")]
+    assert len(september) == 2
+    assert all(post["date"] == "2026-09-29" for post in september)
+    for month in range(1, 10):
+        assert sum(post["date"].startswith(f"2026-{month:02d}") for post in posts) == 2
+    summary = format_blog_release_summary("September 2026 blog releases")
+    assert "Apple September Event 2026" in summary
+    assert "OpenAI DevDay 2026" in summary
 
 
 def test_chat_local_mode_answers_travel_state_and_blog_release_questions(client, monkeypatch):

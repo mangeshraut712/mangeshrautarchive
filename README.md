@@ -317,6 +317,7 @@ Current documentation pass:
 | Gemini 3.8 Flash / Google Antigravity | Zero-warning code quality remediation: fix Unicorn and ESLint warnings, typed Array.from initializers, startsWith migration, and anti-slop config                                           | Unavailable from the active runtime                            |
 | Gemini 3.8 Flash / Google Antigravity | Apple-grade scrolling behavior & root scroller architecture overhaul: single-scroller hierarchy, mobile menu scroll hijack fix, modal overscroll containment, and rail scroll-snap          | Unavailable from the active runtime                            |
 | Gemini 3.8 Flash / Google Antigravity | Eager section observer registration & Playwright CI resilience: decouple section activation from window.onload, add read button polling, and fix whoburnedmore launchd sync Node 24 path    | Unavailable from the active runtime                            |
+| GPT-6 / Codex                         | Correct the monthly blog archive, research September Apple and OpenAI event articles, create matching editorial covers, and preserve publication provenance                                 | Exact variant, reasoning mode, and token usage unavailable     |
 
 The contact calendar displays a dated 2026 snapshot of the visible Apple Calendar sources on the author's Mac. To refresh it on macOS after granting Calendar access, run `npm run sync:apple-calendar -- --year=2026 --include-notes`, review the generated public `src/js/data/apple-calendar-snapshot.js`, and deploy the change. The import excludes the hidden Luma calendar and collapses identical occurrences. Website reminders are saved only in the current browser; they do not write back to Apple Calendar. The Kalnirnay link opens the official app page and does not import its almanac data.
 
@@ -337,6 +338,15 @@ checked all 18 article pages and archive cards across mobile and desktop themes,
 Razorpay, NPCI, and TypeSafe claims, and generated the complete 18-post assistant catalog. The
 [deploy workflow](https://github.com/mangeshraut712/mangeshrautarchive/actions/workflows/deploy.yml)
 is the source of truth for publication status.
+
+The September 29 archive edit keeps **18 active articles, exactly two per month from January
+through September 2026**. September now covers Apple's September 9 event and OpenAI DevDay
+on September 29; both new articles were published September 29. Razorpay Vulcan belongs to the
+August 18 issue, with its original September 10 publication retained separately in the article,
+structured metadata, and feeds. Retired UPI and TypeSafe URLs explain the topic replacement.
+The build audit rejects invalid dates and monthly counts other than two. GPT-6 / Codex researched
+primary sources and created two new conceptual covers with the built-in OpenAI image tool;
+the image model identifier was unavailable. Archive cards and articles share each cover.
 
 The September 27 reading pass makes homepage cards open complete articles directly. Previously
 shared preview hashes also forward to the corresponding article. Each article has section navigation.

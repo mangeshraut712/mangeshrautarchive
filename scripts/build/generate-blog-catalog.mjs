@@ -6,10 +6,11 @@ import { blogPosts } from '../../src/js/modules/blog-data.js';
 
 const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), '../..');
 const outputPath = resolve(repoRoot, 'src/assets/data/blog-catalog.json');
-const catalog = blogPosts.map(({ id, title, date, summary, tags }) => ({
+const catalog = blogPosts.map(({ id, title, date, publishedAt, summary, tags }) => ({
   id,
   title,
   date,
+  ...(publishedAt ? { publishedAt } : {}),
   summary,
   tags,
 }));

@@ -1,7 +1,7 @@
 import { mkdir, writeFile } from 'fs/promises';
 import { dirname, resolve } from 'path';
 import { fileURLToPath } from 'url';
-import { blogPosts, getBlogPostImage } from '../../src/js/modules/blog-data.js';
+import { blogPosts, getBlogPostImage, retiredBlogPosts } from '../../src/js/modules/blog-data.js';
 import {
   buildTableOfContents,
   escapeHTML,
@@ -48,7 +48,9 @@ function blogIndexHref() {
 }
 
 function sortedPosts() {
-  return [...blogPosts].sort((a, b) => new Date(b.date) - new Date(a.date));
+  return [...blogPosts].sort(
+    (a, b) => new Date(b.date) - new Date(a.date) || b.id.localeCompare(a.id)
+  );
 }
 
 function postImagePath(post) {
@@ -67,7 +69,7 @@ function newsletterCard({ id, source, title }) {
   return `<aside class="newsletter-card newsletter-card--standalone" aria-labelledby="${safeId}-title">
     <div class="icon-box blue newsletter-icon" aria-hidden="true"><i class="fas fa-envelope-open-text"></i></div>
     <h2 id="${safeId}-title">${escapeHTML(title)}</h2>
-    <p>One practical field note on AI systems, developer tools, and cloud architecture every two weeks.</p>
+    <p>Two field notes each month on AI systems, developer tools, and product engineering.</p>
     <form class="newsletter-form" data-newsletter-form data-source="${escapeHTML(source)}" novalidate>
       <label class="sr-only" for="${safeId}-email">Email address for newsletter</label>
       <input class="apple-input" id="${safeId}-email" name="email" type="email" maxlength="200" autocomplete="email" inputmode="email" placeholder="you@example.com" required aria-required="true" />
@@ -216,6 +218,7 @@ function renderBlogIndex(posts, tags) {
         <p class="blog-index-lede">Long-form field notes with reader promises, practical workflows, and honest tradeoffs — written for engineers who want signal, not hype. Claims are labeled when they are judgment, and linked when they are facts.</p>
         <div class="blog-index-meta">
           <span>${posts.length} articles</span>
+          <span>Two articles per month · January–September 2026</span>
           <span>Editorial update ${formatBlogDate(posts[0].updatedAt || posts[0].date)}</span>
         </div>
       </header>
@@ -226,6 +229,7 @@ function renderBlogIndex(posts, tags) {
         </a>
         <div class="blog-featured-copy">
           <p class="blog-index-kicker">${escapeHTML(featured.kicker || 'Field notes')}</p>
+          <time class="blog-card-date" datetime="${escapeHTML(featured.date)}">${formatBlogDate(featured.date)}</time>
           <h2 id="blog-featured-title"><a href="${blogPostHref(featured.id)}">${escapeHTML(featured.title)}</a></h2>
           <p>${escapeHTML(featured.readerPromise || featured.summary)}</p>
           <div class="blog-tags blog-tags--pills">${topicPills(featured.tags, 3)}</div>
@@ -260,7 +264,7 @@ function renderBlogIndex(posts, tags) {
       '@type': 'BlogPosting',
       headline: post.title,
       url: `${SITE_URL}/blog/${post.id}.html`,
-      datePublished: post.date,
+      datePublished: post.publishedAt || post.date,
       dateModified: post.updatedAt || post.date,
       description: post.summary,
     })),
@@ -323,7 +327,8 @@ function renderBlogPost(post, posts) {
             <div class="article-byline__text">
               <span class="article-byline__name">Mangesh Raut</span>
               <span class="article-byline__meta">
-                <time datetime="${post.date}">${formatBlogDate(post.date)}</time>
+                <span>${post.publishedAt ? 'Issue date ' : 'Published '}<time datetime="${post.date}">${formatBlogDate(post.date)}</time></span>
+                ${post.publishedAt ? `<span>First published <time datetime="${escapeHTML(post.publishedAt)}">${formatBlogDate(post.publishedAt)}</time></span>` : ''}
                 <span aria-hidden="true">·</span>
                 <span>${escapeHTML(post.readTime)}</span>
                 <span aria-hidden="true">·</span>
@@ -353,7 +358,7 @@ function renderBlogPost(post, posts) {
     '@type': 'BlogPosting',
     headline: post.title,
     description: post.summary,
-    datePublished: post.date,
+    datePublished: post.publishedAt || post.date,
     dateModified: post.updatedAt || post.date,
     author: { '@type': 'Person', name: 'Mangesh Raut', url: SITE_URL },
     publisher: { '@type': 'Person', name: 'Mangesh Raut' },
@@ -389,6 +394,32 @@ export async function generateBlogPages(distDir) {
       writeFile(resolve(blogDir, `${post.id}.html`), renderBlogPost(post, posts), 'utf8')
     )
   );
+
+  // Keep old incoming links honest: explain the retirement rather than silently
+  // redirecting a payments or decision-model URL to an unrelated event article.
+  for (const retired of retiredBlogPosts) {
+    const replacement = posts.find(post => post.id === retired.replacementId);
+    const body = `<main id="main-content" class="blog-index-main">
+      <a class="blog-back-link" href="./">Back to the archive</a>
+      <header class="blog-index-header">
+        <p class="blog-index-kicker">Archive update · September 29, 2026</p>
+        <h1 class="blog-index-title">This article has been retired</h1>
+        <p class="blog-index-lede">The ${escapeHTML(retired.title)} article was removed from the active September issue when the archive was revised to two articles per month.</p>
+        <p>Its September slot now features <a href="${blogPostHref(replacement.id)}">${escapeHTML(replacement.title)}</a>.</p>
+      </header>
+    </main>`;
+    await writeFile(
+      resolve(blogDir, `${retired.id}.html`),
+      pageShell({
+        title: 'Retired article | Mangesh Raut',
+        description: 'This article has been retired from the monthly archive.',
+        canonical: `${SITE_URL}/blog/`,
+        extraHead: '<meta name="robots" content="noindex,follow" />',
+        body,
+      }),
+      'utf8'
+    );
+  }
 
   return { count: posts.length, routePrefix: ROUTE_PREFIX };
 }

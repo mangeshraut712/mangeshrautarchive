@@ -51,6 +51,23 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'monthly-blog-calendar-september-events-2026',
+    date: '2026-09-29',
+    type: 'improvement',
+    title: 'Two monthly field notes and September event coverage',
+    summary:
+      'Balance January–September at two articles per month, assign Razorpay to the August issue while preserving its first publication date, and replace September’s UPI and TypeSafe topics with sourced Apple event and OpenAI DevDay articles. Add matching conceptual covers, retired-link notices, and a calendar audit.',
+    tags: ['blog', 'design'],
+    sha: null,
+    commitVerified: false,
+    status: 'unreleased',
+    model: 'GPT-6 / Codex',
+    ide: 'Codex desktop',
+    purpose: 'Monthly archive correction, primary-source event reporting, and visual verification',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
     id: 'section-observer-and-e2e-resilience-sept-2026',
     date: '2026-09-29',
     type: 'fix',

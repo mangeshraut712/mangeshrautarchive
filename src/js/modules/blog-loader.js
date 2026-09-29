@@ -1,4 +1,4 @@
-import { blogPosts, getBlogPostImage } from './blog-data.js';
+import { blogPosts, getBlogPostImage, retiredBlogPosts } from './blog-data.js';
 import { escapeHTML as escapeHtmlShared } from '../utils/escape-html.js';
 import { sitePath } from '../utils/site-base.js';
 
@@ -55,7 +55,7 @@ class BlogLoader {
   bindDeepLinks() {
     // Preserve shared preview URLs while taking readers to the full article.
     const openFullArticle = id => {
-      const post = blogPosts.find(item => item.id === id);
+      const post = [...blogPosts, ...retiredBlogPosts].find(item => item.id === id);
       if (!post) return;
       window.location.assign(sitePath(`/blog/${encodeURIComponent(post.id)}.html`));
     };
@@ -79,7 +79,9 @@ class BlogLoader {
   }
 
   renderPosts() {
-    const sortedPosts = blogPosts.toSorted((a, b) => new Date(b.date) - new Date(a.date));
+    const sortedPosts = blogPosts.toSorted(
+      (a, b) => new Date(b.date) - new Date(a.date) || b.id.localeCompare(a.id)
+    );
 
     this.container.innerHTML = sortedPosts
       .slice(0, 4)

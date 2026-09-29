@@ -30,6 +30,20 @@ export function getBlogPostImage(post) {
   return match?.[1] || 'assets/images/profile.webp';
 }
 
+// Retired topics remain reachable without appearing twice in the active archive.
+export const retiredBlogPosts = Object.freeze([
+  {
+    id: 'upi-tap-to-pay-and-2026-payment-architecture',
+    title: 'UPI payments architecture',
+    replacementId: 'apple-september-event-2026',
+  },
+  {
+    id: 'typesafe-ai-jev-system-one-decisions-2026',
+    title: 'TypeSafe decision models',
+    replacementId: 'openai-devday-2026',
+  },
+]);
+
 export const blogPosts = [
   {
     id: 'openrouter-ai-usb-hub-routing-2026',
@@ -2222,13 +2236,16 @@ Cursor’s [August 17 launch note](https://cursor.com/changelog/origin-code-host
       'AWS Cloud',
       'System Design',
     ],
-    date: '2026-09-10',
-    updatedAt: '2026-09-27',
-    readTime: '8 min read',
+    date: '2026-08-18',
+    publishedAt: '2026-09-10',
+    updatedAt: '2026-09-29',
+    readTime: '9 min read',
     content: `**4 billion payments. 3 trillion data points. One foundation model trained on all of it.**
 
 Razorpay announced **Vulcan** on August 18, 2026 and published a [technical explanation](https://razorpay.com/blog/vulcan-how-razorpay-built-a-foundation-model-for-payment-decisions/) in September. Razorpay describes it as a transformer-based model for payment decisions, built with NVIDIA computing and AWS infrastructure. Its launch figures are company-reported; neither the announcement nor this article establishes that all training and hosting stayed within India.
 
+
+**Archive note:** Assigned to the August 18 issue to match Vulcan’s launch. First published September 10; revised September 29. The later technical evidence remains labeled below.
 
 ## Context and scope
 
@@ -2374,222 +2391,170 @@ Razorpay’s [launch release](https://razorpay.com/newsroom/?p=4744) reports the
 - [AWS Cloud India FinTech Solutions](https://aws.amazon.com/financial-services/) — general platform context, not proof of Vulcan data residency or serving configuration`,
   },
   {
-    id: 'upi-tap-to-pay-and-2026-payment-architecture',
-    title: 'UPI Tap to Pay, UPI Circle, and the 2026 Real-Time Payments Architecture',
-    kicker: 'Fintech systems',
+    id: 'apple-september-event-2026',
+    title: 'Apple September Event 2026: Hardware Announcements, Software Decisions',
+    kicker: 'Apple platform engineering',
     summary:
-      'A source-grounded guide to UPI Tap & Pay, UPI Circle, Credit Line on UPI, and UPI LITE X, with August 2026 transaction statistics and a practical view of the payment flow.',
+      'A source-grounded review of Apple’s September 9 event, with practical guidance for adaptive layouts, state continuity, and camera workflows.',
     readerPromise:
-      'Understand what a tap changes, how delegated and offline UPI payments differ, and where authorization, confirmation, and recovery still matter.',
+      'Connect the September hardware announcements to a focused review of your application’s layout, accessibility, and media handling.',
     pullQuote:
-      'A tap can replace QR scanning to capture the payee; authorization and payment confirmation are still separate steps.',
-    highlights: ['NFC merchant tags', 'UPI Circle Delegated Limits', 'Interoperable Credit Lines'],
-    tags: ['UPI', 'Fintech', 'Payments', 'NFC', 'System Design', 'NPCI'],
-    date: '2026-09-14',
-    updatedAt: '2026-09-27',
+      'A larger surface is useful when it helps someone finish a task without losing their place.',
+    highlights: ['Adaptive layouts', 'State continuity', 'Media workflows'],
+    tags: ['Apple', 'iPhone', 'UX Engineering', 'Accessibility'],
+    date: '2026-09-29',
+    updatedAt: '2026-09-29',
     readTime: '8 min read',
-    content: `NPCI recorded **24.509 billion UPI transactions worth ₹29.82 lakh crore in August 2026**. Those are network totals, not estimates from an app-share chart. The product family has also grown beyond scan-and-pay: NFC payee capture, delegated payments, credit lines, and low-value offline options each solve a different problem.
+    content: `Apple's September 9, 2026 event gives application teams a concrete design question: what should happen when the same task moves between a compact phone, an expanded display, and a second window? This September field note connects the announced hardware to a practical software review. It was written on September 29; the event date and this article's publication date are different.
 
-
-## Context and scope
+## What Apple announced
 
 :::figure
-src: assets/images/blog/upi-tap-to-pay-architecture-codex-openai.webp
-alt: Customer tapping a phone near a merchant payment terminal
-caption: A tap captures merchant payment details. The payer still reviews and authorizes the transaction according to the applicable UPI flow.
+src: assets/images/blog/apple-september-event-2026-codex-openai.webp
+alt: Conceptual folding and conventional phones with blue adaptive layout panels
+caption: Original conceptual editorial artwork about adaptive interfaces. These device silhouettes are not official Apple product photography or exact hardware depictions.
 :::
+
+Apple's [September event overview](https://www.apple.com/apple-events/) lists iPhone Duo, iPhone 18 Pro, Apple Watch Series 12, Apple Watch Ultra 4, and AirPods 5. This article focuses on the phone announcements because they pose useful questions for application layout, state restoration, and media workflows. It does not independently test the devices or verify battery and performance claims.
+
+The [iPhone Duo announcement](https://www.apple.com/newsroom/2026/09/apple-unveils-iphone-duo/) describes a folding iPhone with an expanded inner display and Split View. Apple's [iPhone 18 Pro release](https://www.apple.com/newsroom/2026/09/apple-debuts-iphone-18-pro-and-iphone-18-pro-max/) describes A20 Pro and a 48MP main camera with a variable aperture. Those are announced product features. The engineering priorities below are my interpretation of their implications, rather than a report of new APIs demonstrated at the keynote.
+
+**The practical takeaway:** review continuity before adding a special layout. A larger surface is useful when it helps someone finish a task without losing their place.
+
+## Design around the task that survives resizing
+
+Consider a document review application. On a compact screen, a person reads one document and opens comments when needed. On a wider surface, the same application can place comments beside the document. The selected paragraph, unsent comment, and scroll position should survive that transition. Merely stretching the compact design wastes space; replacing the entire screen can discard context.
+
+I would model the document identifier, selection, draft, and navigation destination separately from presentation. Layout can then decide whether comments belong in a sheet, a neighboring panel, or another window. That separation also helps ordinary desktop resizing, tablet split screens, and browser zoom. It provides value even when a particular new device is unavailable for testing.
 
 :::diagram
-title: A contactless UPI payment path
-nodes: Discover|Read the merchant tag, Review|Confirm payee and amount, Authorize|Use the applicable UPI rail, Reconcile|Confirm final status before retry
-note: Conceptual sequence for understanding the system; implementation details vary by product and deployment.
+title: Preserve work across a layout change
+nodes: Capture|Keep selection and draft state, Adapt|Choose panels for available space, Restore|Retain focus and reading position, Verify|Complete the original task
+note: Editorial design model for application teams; this is not an Apple system architecture diagram.
 :::
 
-**UPI Tap & Pay** uses NFC to capture the payee UPI ID from a compatible smart tag or smart QR. NPCI's product overview says UPI LITE can handle eligible payments up to ₹500 when enabled; larger online payments require a UPI PIN. NFC is an input method here, not proof that the entire payment settled in milliseconds.
+A useful prototype starts with one realistic task: open a report, select a passage, write a comment, change the available width, and submit. Watch the entire transition. Does the cursor remain in the editor? Does a hidden panel retain stale information? Does the keyboard cover the submit action? These questions expose defects that polished static mockups cannot.
 
-**UPI Circle** allows a primary user to delegate payment access to a secondary user under the product's consent and limits. **Credit Line on UPI** lets eligible customers link a pre-sanctioned bank credit line. **UPI LITE X** supports eligible offline NFC payments on compatible devices. Availability and limits depend on participating banks, apps, and current NPCI rules.
+## Treat the camera as an input to a workflow
 
-:::embed
-kicker: Official product guide
-title: NPCI UPI Tap & Pay
-href: https://www.npci.org.in/what-we-do/upi-lite/upi-tap-and-pay/product-overview
-desc: NPCI explains NFC payee capture, supported apps, and the PIN path for larger online payments.
-:::
+A camera announcement matters differently to a photographer, a document scanner, and a video editor. My first review for a scanning application would cover legibility, orientation, capture permissions, and recovery when an image cannot be processed. A change in camera capability does not automatically improve text recognition or reduce upload cost.
 
-## What the August 2026 Data Says
+Keep the original capture until the user accepts the processed result. Make cropping reversible. Distinguish a successful capture from successful processing and from a completed upload. If the network fails, preserve the local work and explain the retry state. A beautiful viewfinder should still lead to a durable document.
 
-NPCI's monthly statistics list **24,508.96 million transactions** and **₹29,82,355.95 crore** of value in August 2026. July recorded 23,658.35 million transactions. These totals establish scale; they do not by themselves identify each app's market share or measure checkout latency.
+For media-heavy applications, test a representative file set rather than assuming every image has the same dimensions or encoding. Measure decode time, memory pressure, and the time until an editable preview appears. These are proposed application measurements, not benchmark results from the September event. Record the device, operating system, input files, and build used so another engineer can reproduce the result.
 
-:::chart
-title: UPI transaction volume, NPCI monthly totals (billions)
-max: 30
-unit: billion transactions
-bars: July 2026|23.66, August 2026|24.51
-note: Values are monthly network totals from NPCI, rounded to two decimal places; bar lengths compare months, not app shares.
-:::
-
-## Follow One Tap Through the System
-
-1. **Discover the payee.** The payer opens a supported UPI app and taps a compatible NFC tag or smart QR. The app reads the merchant's payment details. This removes camera framing, but a compatible device and merchant marker are required.
-2. **Review the payment.** The app shows the payee and amount. The payer should verify both before proceeding. A merchant's audio confirmation is a notification, not cryptographic proof of settlement.
-3. **Authorize the right rail.** An eligible UPI LITE balance may use its lower-value flow. A larger online payment follows the UPI PIN path described by NPCI. Other authentication options and limits must be checked against current circulars and app support.
-4. **Wait for final status.** The app, network, and banks process the payment and return a status. A timeout needs reconciliation before retrying, because a missing response does not establish that the debit failed.
-
-## Four Rails, Four Different Questions
-
-| Rail | What it changes | Key boundary |
-| --- | --- | --- |
-| UPI Tap & Pay | Captures the merchant's UPI details through NFC | A tap does not remove payment review or authorization |
-| UPI Circle | Delegates payment access | Consent, limits, revocation, and audit history matter |
-| Credit Line on UPI | Uses an eligible linked bank credit line | Terms and acceptance depend on the issuer and merchant context |
-| UPI LITE X | Supports eligible offline NFC payments | Device, balance, and later reconciliation rules matter |
-
-## Delegation Is an Authorization Product
-
-UPI Circle deserves its own explanation because it changes **who may initiate a payment**, while Tap & Pay changes **how a merchant is identified**. In full delegation, the primary account holder authorizes a trusted secondary user to pay within a defined allowance. NPCI's BHIM announcement describes a monthly limit of up to ₹15,000 and an expiry duration of up to five years for that product. Those limits are product rules, not a universal recommendation for household budgets. The account owner needs a clear view of the secondary user's spending and a way to revoke access.
-
-Consider a parent authorizing a student to buy groceries. The useful interface should show the available allowance, the source account, and the identity of the person whose payment will be recorded. The secondary user should not need the parent's UPI PIN. The parent should be able to see each payment and distinguish a legitimate purchase from a mistaken or coerced one. An app that merely exposes a “delegate” toggle without these controls has not solved the trust problem.
-
-Partial delegation is a different interaction: the secondary user proposes a payment and the primary user approves it. Builders should keep these modes separate in the interface and audit trail. A permission to spend within a limit is not the same as a request for approval on every transaction.
-
-## Offline Does Not Mean Final Everywhere at Once
-
-NPCI introduced UPI LITE X for payments when connectivity is poor or absent on compatible NFC devices. That is valuable in transit stations and remote areas, but an offline exchange still needs a later system of record. Product teams should explain when a payment is accepted locally, when it is synchronized, and what a user should do if the two devices show different states. Avoid promising instant bank settlement while the network is unavailable.
-
-The same distinction matters for a normal online timeout. A payment may be debited even if the confirmation message is delayed. Showing “failed” too early can cause a customer to pay twice. A reliable app should preserve the original transaction identifier, offer a pending state, and reconcile with the payment network before suggesting a retry.
-
-:::callout
-type: architecture
-label: PAYMENT STATE RULE
-text: Separate merchant discovery, customer authorization, network acceptance, and final confirmation in both the interface and telemetry. One fast stage does not make every later stage instantaneous.
-:::
-
-## Engineering Notes
-
-For a merchant or app team, instrument each stage separately: NFC read success, customer review, authorization, network response, and final confirmation. Show a QR fallback if NFC capture fails. Use unique transaction identifiers and reconcile timed-out payments before retrying. Expose delegation status and revocation clearly for UPI Circle. Measure real p50/p95/p99 times on supported devices instead of publishing a synthetic end-to-end latency budget.
-
-The main lesson: a faster way to discover the merchant can improve the payment experience, but it does not eliminate the financial controls or distributed-system failure modes that make payment status trustworthy.
-
-## September 2026 evidence update
-
-NPCI’s [monthly UPI statistics](https://www.npci.org.in/product/upi/product-statistics) support network totals, while its [Tap and Pay overview](https://www.npci.org.in/what-we-do/upi-lite/upi-tap-and-pay/product-overview) describes the NFC payee-capture experience. Network volume does not measure adoption of each individual rail. Treat the four-step flow as conceptual, and verify the actual bank or app rules before implementation.
-
-
-### Sources and further reading
-
-- [NPCI UPI monthly statistics](https://www.npci.org.in/product/upi/product-statistics) — August and July 2026 volume and value
-- [NPCI UPI Tap & Pay](https://www.npci.org.in/what-we-do/upi-lite/upi-tap-and-pay/product-overview) — NFC flow and payment limits
-- [NPCI BHIM UPI Circle announcement](https://www.npci.org.in/uploads/NBSL_Press_release_BHIM_Goes_Live_with_UPI_Circle_Full_Delegation_Enabling_Authorised_UPI_Payments_within_set_limits_7b308e643d.pdf) — full delegation and stated BHIM limits
-- [NPCI digital payment launch](https://www.npci.org.in/PDF/npci/press-releases/2023/NPCI-Press-Release-RBI-Governor-Launches-Key-Digital-Payment-Initiatives-at-Global-Fintech-Fest-2023.pdf) — Credit Line on UPI and UPI LITE X context`,
-  },
-  {
-    id: 'typesafe-ai-jev-system-one-decisions-2026',
-    title:
-      'Type-Safe AI with Jev: Fast System 1 Decisions, Calibrated Probabilities, and the Jevons Paradox',
-    kicker: 'Agent architecture',
-    summary:
-      "A practical reading of TypeSafe AI's Jev: typed, probabilistic decisions, published latency and pricing claims, calibration limits, and where to keep human review in an agent workflow.",
-    readerPromise:
-      'You will learn what TypeSafe AI reports about Jev, where typed decisions can help, and what to test before using probabilistic outputs in production.',
-    pullQuote:
-      'Most decisions in software are not 3,000-word philosophical essays; they are reflexive binary checks and category routings that belong in System 1, not in an autoregressive chain-of-thought loop.',
-    highlights: [
-      'System 1 vs System 2 AI',
-      'RLCD Calibrated Probabilities',
-      'Typed decision primitives',
-    ],
-    tags: ['TypeSafe AI', 'Jev', 'System 1', 'AI Agents', 'TypeScript', 'System Design'],
-    date: '2026-09-18',
-    updatedAt: '2026-09-27',
-    readTime: '8 min read',
-    content: `TypeSafe AI introduced **Jev** on September 15, 2026 as an early-access System One model for typed, probabilistic decisions. The company reports **70–500 ms end-to-end response times** and **$0.042 per million input tokens** for its own service. Those are vendor claims for a particular workload, not a latency or cost guarantee for every integration.
-
-
-## Context and scope
-
-:::figure
-src: assets/images/blog/typesafe-ai-jev-architecture-codex-openai.webp
-alt: Context and question entering a typed-decision instrument with action and review paths
-caption: Conceptual decision workflow: state and a question produce a typed answer, then application policy chooses action or human review.
-:::
-
-:::diagram
-title: A typed decision inside an agent
-nodes: State|Supply bounded context, Question|Define allowed outputs, Decision|Receive value and uncertainty, Policy|Act or escalate with evidence
-note: Conceptual sequence for understanding the system; implementation details vary by product and deployment.
-:::
-
-A conventional language model generates strings. Jev is designed to return predefined structured values and probabilities, with multiple answers sampled in parallel. The useful architectural distinction is the contract around a decision: the application decides which possible outputs are legal and how much uncertainty it can tolerate.
-
-:::embed
-kicker: Primary source
-title: TypeSafe AI introduces System One Models and Jev
-href: https://typesafe.ai/blog/introducing-system-one-models-and-jev
-desc: Vendor announcement with published latency, pricing, output, and evaluation caveats.
-:::
-
-## What “Calibrated” Means
-
-A calibrated model should give outcomes labeled 0.8 a roughly 80% success frequency **on a defined evaluation set**. This is a property to measure, not a promise that any individual 0.8 prediction is correct. Drift, new users, unusual data, and unclear labels can change calibration after deployment. TypeSafe calls its training method **Reinforcement Learning for Calibrated Decisions (RLCD)**.
+## A focused review for a small team
 
 :::framework
-title: An illustrative review policy
-items: Low-risk answers still need sampling, Ambiguous answers go to a deeper check, High-impact actions require explicit approval
-note: These are example policy tiers rather than published Jev thresholds.
+title: My order for an adaptive interface review
+items: Preserve unfinished work, Keep navigation and focus predictable, Make text and controls accessible, Measure media processing, Add device-specific polish after verification
+note: Editorial priorities for a small engineering team, not a vendor ranking or measured performance chart.
 :::
 
-## A Practical Agent Pattern
+Start with the two journeys people use most. For a reading product, that might be finding an article and returning to a saved passage. For a dashboard, it might be investigating a warning and exporting a report. Write the expected outcome in one sentence, then exercise it through narrow and wide layouts.
 
-1. **Define the state and the question.** Keep the input bounded and include only data available when the decision is made. For a code change, this might be the diff, test results, and repository policy.
-2. **Constrain the output.** A typed yes/no answer, a choice among known destinations, or a score is easier to validate than free-form text. Check the current SDK documentation for exact method names and response shapes before coding.
-3. **Measure on your own data.** Compare latency, cost, accuracy, and calibration with a baseline on representative traffic. The vendor's demo may use shorter, denser inputs than a real workflow.
-4. **Keep the consequence separate.** A confidence score can route a request to deeper review. It should not authorize an irreversible shell command, payment, or production merge on its own.
-5. **Monitor drift.** Track error rates by category and periodically re-check calibration against outcomes that became known later.
+Use the same content in both layouts. Include a long title, a large accessibility text setting, an empty result, and an error message. These states make it harder for a design to hide behind ideal sample data. The test should confirm that all actions remain reachable and that the page does not develop unintended horizontal scrolling.
 
-| Decision need | Typed decision model | General language model |
-| --- | --- | --- |
-| Fixed categories or scores | Natural fit when outputs are defined in advance | Possible, but output validation is still needed |
-| Long-form explanation or code | Requires another component | Natural fit |
-| Production safety | Needs thresholds, evaluation, and fallback | Needs validation, evaluation, and fallback |
+Next, inspect focus order and announcements with assistive technology. A panel that becomes visible should not unexpectedly steal focus from an active editor. A closed sheet should return focus to its opener. These are product decisions to validate with actual behavior, especially when several panes can show related information.
 
-## Worked Example: Route a Support Request
-
-Imagine a support inbox that receives billing questions, feature requests, and reports of account compromise. A narrow model can help route each message, but the application should define the destination set before asking the question: **billing**, **product**, **security**, or **needs human triage**. The state can contain the user's message and the limited account context needed to route it. It should not contain unrelated private history merely because that history is available.
-
-A typed answer makes one class of failure easier to handle: the model cannot return a department name outside the allowed set. That does not guarantee the selected department is correct. A plausible but wrong “billing” answer to an account takeover report is still dangerous. The application should therefore check the output's confidence, use explicit rules for known security signals, and preserve a human triage route. In the review queue, retain the input version, model version, allowed choices, score, and final decision so an error can be reconstructed.
-
-This example is an **architecture sketch**, not a claim that a specific Jev SDK call or threshold has been verified. The current TypeSafe documentation is the authority for actual request syntax and supported output types.
-
-## How to Test a Probabilistic Decision
-
-Start with a labeled set of real requests drawn from the intended workload. Split it by time, not just randomly, so the test includes newer phrasing and changing products. Compare the typed model with the existing routing rule and a general model under the same allowed destinations. Report the confusion matrix, especially the security cases that were sent elsewhere. Overall accuracy can hide an unacceptable failure rate in the smallest but highest-cost category.
-
-Calibration needs its own check. Group predictions into score bands and compare their stated confidence with the frequency of correct outcomes in each band. Repeat that check for each major category and after a product or policy change. If a 0.9 score no longer corresponds to roughly nine correct outcomes in ten on your traffic, a threshold based on that score needs revision.
-
-Latency measurements also need boundaries. Record model service time and the full user-facing path, including input preparation, network calls, policy evaluation, and any escalation. TypeSafe's published 70–500 ms range is useful as a vendor reference, while the decision to adopt it depends on your own p95 latency and error budget.
-
-:::callout
-type: architecture
-label: AGENT POLICY RULE
-text: Treat a typed model response as evidence for a bounded decision. Keep authorization, irreversible actions, and exception handling in explicit application policy.
-:::
-
-## What the Announcement Does and Does Not Establish
-
-TypeSafe reports strong speed and efficiency on its System One evaluations and explicitly notes that some demonstrations use short, advantageous inputs. The announced price applies to input tokens; the company lists output tokens as free. Neither claim proves another team's end-to-end workflow will be faster or cheaper after network calls, preprocessing, human review, and retries. Public examples also do not establish that every confidence estimate stays calibrated on an unseen domain.
-
-For builders, the strongest takeaway is a design pattern: let a fast model answer narrow, typed questions and make the surrounding software responsible for policy, traceability, and escalation. Test that pattern against your own tasks before replacing a working classifier or structured-output flow.
+Finally, compare the task completion path before and after the redesign. If a wider layout adds another toolbar but saves no navigation, reconsider it. Extra space can support clearer hierarchy, larger previews, or useful context without increasing the number of controls.
 
 ## September 2026 evidence update
 
-TypeSafe’s [September 15 announcement](https://typesafe.ai/blog/introducing-system-one-models-and-jev) is the source for Jev’s latency, price, and calibration claims. They are vendor-reported, early-access results. The practical bar is calibration and error cost on your own decision distribution, including abstentions and shifted traffic; a typed output alone does not prove correctness.
+This article replaces an earlier September payments topic as part of the archive's two-articles-per-month edit. Sources were reviewed on September 29, 2026. Apple's [September developer newsletter](https://developer.apple.com/hello/september26/) identifies the September 9 event and links to developer resources. It provides a route to current platform guidance; it is not evidence that this portfolio has tested the new hardware.
 
+There are three boundaries on this analysis. Announced hardware specifications come from Apple. The cover and workflow diagram are conceptual illustrations. The proposed testing sequence is an editorial recommendation that still needs execution against the reader's application and supported devices.
+
+For my own projects, the first deliverable would be a short continuity report: which tasks retain state, where focus moves, and what happens after an interrupted upload. That report creates an actionable backlog. Hardware-specific optimization can follow when measurements reveal an actual limitation. The best result from an event review is a smaller set of well-supported engineering decisions.
 
 ### Sources and further reading
 
-- [TypeSafe AI: Introducing System One Models & Jev](https://typesafe.ai/blog/introducing-system-one-models-and-jev) — primary launch, reported price, latency, and evaluation caveats
-- [TypeSafe documentation](https://docs.typesafe.ai/) — current API contracts and supported output types`,
+- [Apple September event overview](https://www.apple.com/apple-events/) — announced product lineup.
+- [Apple introduces iPhone Duo](https://www.apple.com/newsroom/2026/09/apple-unveils-iphone-duo/) — folding form factor and multitasking context.
+- [Apple introduces iPhone 18 Pro and Pro Max](https://www.apple.com/newsroom/2026/09/apple-debuts-iphone-18-pro-and-iphone-18-pro-max/) — processor and camera announcements.
+- [Hello Developer, September 2026](https://developer.apple.com/hello/september26/) — event date and developer resources.`,
+  },
+  {
+    id: 'openai-devday-2026',
+    title: 'OpenAI DevDay 2026: Models, Ongoing Agents, and Reliable Workflows',
+    kicker: 'AI developer platforms',
+    summary:
+      'Confirmed DevDay announcements, including GPT-6.1 Sol and dots, with an engineering plan for evaluating cost, reliability, and completed work.',
+    readerPromise:
+      'Separate launch claims from testable outcomes and build a focused evaluation plan for the new models and agent workflows.',
+    pullQuote: 'A task that changes the wrong record is still a failed task.',
+    highlights: ['GPT-6.1 Sol', 'Ongoing agents', 'Workflow evaluation'],
+    tags: ['OpenAI', 'DevDay', 'AI Agents', 'Developer Tools'],
+    date: '2026-09-29',
+    updatedAt: '2026-09-29',
+    readTime: '8 min read',
+    content: `OpenAI DevDay on September 29, 2026 brings model updates, ongoing agents, and more ways to build developer workflows. For an application team, the useful question is which announcement changes a measurable constraint: cost, completion quality, integration effort, or the amount of supervision a task needs. This field note reviews confirmed launch material and turns it into a practical evaluation plan.
+
+## The announcements that change engineering decisions
+
+:::figure
+src: assets/images/blog/openai-devday-2026-codex-openai.webp
+alt: Conceptual glass panels connecting an AI model to tools and a verification stage
+caption: Original conceptual editorial artwork illustrating an agent workflow. It is not an OpenAI product screenshot, event photograph, or measured architecture.
+:::
+
+The [official DevDay recap](https://openai.com/index/devday-2026-recap/) covers GPT-6.1 Sol, dots, Codex cloud workflows, plugin extensions, and new developer capabilities. Two distinctions matter immediately: the Decisions API is in limited preview, while GPT-6.1 Sol Ultrafast is described as coming soon. An announcement and access for a particular account are separate facts.
+
+OpenAI's [GPT-6.1 Sol launch article](https://openai.com/index/introducing-gpt-6-1-sol/) lists standard API prices of $2 per million input tokens, $0.10 per million cached input tokens, and $10 per million output tokens. It positions the model near Astra on selected evaluations at lower prices. Those comparisons are company-reported results; they are not measurements of this portfolio or a guarantee about another team's workload.
+
+My interpretation is that cheaper capable models make more workflows worth testing. They do not remove the need to define success. A task that produces an attractive answer but changes the wrong record is still a failed task.
+
+## Evaluate the completed task before the token bill
+
+A useful evaluation set contains real work with an observable endpoint. For a coding assistant, that might be a reviewed patch that passes a focused regression check. For document processing, it might be a validated extraction with citations to the correct pages. Avoid scoring only whether the response looks fluent.
+
+Keep a fixed sample of ordinary cases alongside difficult ones. Include missing information, conflicting documents, unavailable tools, and tasks that should stop for clarification. Record which model and configuration handled each case, how many attempts were needed, and whether a person had to repair the result. Compare results under the same acceptance rules.
+
+Token prices then become one part of a larger accounting model. Track tool charges, runtime, retries, and review effort where those costs apply. Cache savings are meaningful only when your actual requests benefit from caching. A public price table alone cannot establish the cost per accepted result.
+
+:::framework
+title: What I would measure in a DevDay pilot
+items: Accepted outcomes on real tasks, Incorrect external actions, Human repair effort, End-to-end completion time, Total cost per accepted result
+note: Proposed evaluation priorities, not published OpenAI benchmark scores or results measured by this portfolio.
+:::
+
+Begin with a narrow comparison rather than migrating every workflow. Keep the existing path available, run the same sample through the candidate, and inspect disagreements. If the new model handles routine cases well but struggles with a specific document type, route that category deliberately instead of averaging the problem away.
+
+## Ongoing agents need a durable work record
+
+OpenAI's [dots announcement](https://openai.com/index/introducing-dots/) describes agents with their own cloud computer, connected applications, and the ability to work across ongoing responsibilities. Rollout depends on plan, market, and workspace settings. The article also describes access controls and approval mechanisms. It should be read alongside the current settings for the account that will actually run the work.
+
+For a team building an analogous workflow, I would define a durable record for each task: purpose, permitted tools, last completed step, pending decision, and final evidence. This is my proposed application design. It is not a description of undisclosed dots internals.
+
+The record should survive a worker restart. If an agent drafts a support response, the system must distinguish drafting from sending. If a connection drops after a write, the next attempt should check the resulting state before repeating it. A task identifier and an external operation identifier can help connect the user's request to the final outcome.
+
+:::diagram
+title: A reviewable agent task
+nodes: Scope|Record goal and permissions, Execute|Run bounded tool operations, Verify|Read the resulting state, Report|Attach evidence and remaining decisions
+note: Conceptual application workflow proposed by the author; it does not depict OpenAI's internal implementation.
+:::
+
+A clear completion report is part of the product. It should state what changed, where the result lives, and whether any step failed. For recurring work, notify on a meaningful change or a decision that needs attention. Repeated messages that say nothing changed train people to ignore the system.
+
+## Put the September timeline in order
+
+The [Agents API introduction](https://openai.com/index/introducing-the-agents-api/) is dated September 10, 2026. It describes a managed harness, long-running sessions, tools, and execution environments. DevDay's recap adds computer-use support to that existing product. Calling the entire Agents API a September 29 invention would blur the release history.
+
+For an integration, separate the model from the harness and the execution environment. The model decides what to do next; the surrounding application controls which tools exist, how state is stored, and how outcomes are checked. A managed service can take over parts of that infrastructure while your product still owns its user experience and acceptance criteria.
+
+Plugin extensions are another decision about where a workflow belongs. Before creating a panel, identify the action a person needs to take there: compare alternatives, approve a draft, inspect a file, or correct a record. Build the smallest surface that makes that action understandable. A panel filled with generic status cards may add complexity without improving the task.
+
+## September 2026 evidence update
+
+Sources were reviewed on September 29 after official launch pages became available. This is a publication-day analysis, not an independent hands-on benchmark. It replaces an earlier September decision-model topic in the two-articles-per-month archive. Product access and preview status may change after publication; the linked primary sources are the place to verify current availability.
+
+My proposed next step is a one-workflow pilot with a named owner. Select a representative task sample, write acceptance criteria, define permitted actions, and retain the old path for comparison. Review the failures before expanding access. A release is useful when it improves a real workflow under conditions your team can reproduce.
+
+### Sources and further reading
+
+- [OpenAI DevDay 2026 recap](https://openai.com/index/devday-2026-recap/) — launch overview and preview distinctions.
+- [Introducing GPT-6.1 Sol](https://openai.com/index/introducing-gpt-6-1-sol/) — model claims, pricing, and availability.
+- [Introducing dots](https://openai.com/index/introducing-dots/) — ongoing agents, rollout, and controls.
+- [Introducing the Agents API](https://openai.com/index/introducing-the-agents-api/) — September 10 origin and managed runtime context.`,
   },
 ];
-
-export default blogPosts;

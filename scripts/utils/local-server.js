@@ -420,7 +420,7 @@ async function generateLocalFeeds() {
       <title>${escapeXml(post.title)}</title>
       <link>${postUrl}</link>
       <guid isPermaLink="true">${postUrl}</guid>
-      <pubDate>${new Date(post.date).toUTCString()}</pubDate>
+      <pubDate>${new Date(post.publishedAt || post.date).toUTCString()}</pubDate>
       <description>${escapeXml(post.summary)}</description>
     </item>`;
     })
@@ -447,7 +447,7 @@ ${rssItems}
     <title>${escapeXml(post.title)}</title>
     <link href="${postUrl}" />
     <id>${escapeXml(postUrl)}</id>
-    <updated>${new Date(post.date).toISOString()}</updated>
+    <updated>${new Date(post.updatedAt || post.publishedAt || post.date).toISOString()}</updated>
     <summary>${escapeXml(post.summary)}</summary>
   </entry>`;
     })

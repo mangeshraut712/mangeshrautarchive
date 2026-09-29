@@ -570,7 +570,7 @@ async function generateFeeds(distDir) {
       <title>${escapeXml(post.title)}</title>
       <link>${postUrl}</link>
       <guid isPermaLink="true">${postUrl}</guid>
-      <pubDate>${new Date(post.date).toUTCString()}</pubDate>
+      <pubDate>${new Date(post.publishedAt || post.date).toUTCString()}</pubDate>
       <description>${escapeXml(post.summary)}</description>
       ${(post.tags || []).map(tag => `<category>${escapeXml(tag)}</category>`).join('\n      ')}
     </item>`;
@@ -598,7 +598,7 @@ ${rssItems}
     <title>${escapeXml(post.title)}</title>
     <link href="${postUrl}" />
     <id>${escapeXml(postUrl)}</id>
-    <updated>${new Date(post.date).toISOString()}</updated>
+    <updated>${new Date(post.updatedAt || post.publishedAt || post.date).toISOString()}</updated>
     <summary>${escapeXml(post.summary)}</summary>
     ${(post.tags || []).map(tag => `<category term="${escapeXml(tag)}" />`).join('\n    ')}
   </entry>`;
@@ -653,7 +653,7 @@ async function generateSitemap(distDir) {
     })),
     ...posts.map(post => ({
       loc: `${siteUrl}/blog/${post.id}`,
-      lastmod: post.date || today,
+      lastmod: post.updatedAt || post.date || today,
       changefreq: 'monthly',
       priority: '0.65',
     })),

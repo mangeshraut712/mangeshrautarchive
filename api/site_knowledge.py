@@ -337,7 +337,7 @@ def format_blog_release_summary(query: str, today: Optional[date] = None) -> str
         return f"No blog posts are listed for {target_year}-{target_month:02d} in the public blog catalogue."
 
     titles = "\n".join(f"- {post['date']}: {post['title']}" for post in posts)
-    return f"Blog posts released in {target_year}-{target_month:02d}:\n{titles}"
+    return f"Blog posts in the {target_year}-{target_month:02d} archive issue:\n{titles}"
 
 
 def format_recent_blog_summary(limit: int = 5) -> str:

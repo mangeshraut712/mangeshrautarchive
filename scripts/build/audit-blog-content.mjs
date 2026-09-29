@@ -5,13 +5,32 @@ import { parseBlogContent } from '../../src/js/modules/blog-markdown.js';
 
 const issues = [];
 const rows = [];
+const monthlyCounts = new Map(
+  Array.from({ length: 9 }, (_, index) => [`2026-${String(index + 1).padStart(2, '0')}`, 0])
+);
+
+function validDate(value) {
+  return (
+    /^\d{4}-\d{2}-\d{2}$/.test(value || '') &&
+    Number.isFinite(Date.parse(value)) &&
+    new Date(value).toISOString().slice(0, 10) === value
+  );
+}
 
 for (const post of blogPosts) {
+  const month = post.date.slice(0, 7);
+  if (!monthlyCounts.has(month))
+    issues.push(`${post.id}: outside the January–September 2026 archive`);
+  monthlyCounts.set(month, (monthlyCounts.get(month) || 0) + 1);
   const words = post.content.trim().split(/\s+/).length;
   const { html, headings } = parseBlogContent(post.content, { addHeadingIds: true });
   const expectedMinutes = Math.ceil(words / 190 + 1.5);
   const sourceLinks = [...post.content.matchAll(/\[[^\]]+\]\((https:\/\/[^)]+)\)/g)];
   const checks = [
+    [
+      validDate(post.date) && validDate(post.updatedAt) && validDate(post.publishedAt || post.date),
+      'invalid calendar date',
+    ],
     [words >= 950 && words <= 1350, `length ${words} outside 950–1350 words`],
     [post.readTime === `${expectedMinutes} min read`, `read time does not match ${words} words`],
     [headings.filter(heading => heading.level === 2).length >= 4, 'fewer than four sections'],
@@ -25,7 +44,9 @@ for (const post of blogPosts) {
     [/^## September 2026 evidence update$/m.test(post.content), 'missing dated evidence update'],
     [sourceLinks.length >= 2, `only ${sourceLinks.length} external evidence links`],
     [
-      Boolean(post.updatedAt) && post.updatedAt >= post.date,
+      Boolean(post.updatedAt) &&
+        post.updatedAt >= (post.publishedAt || post.date) &&
+        post.updatedAt >= post.date,
       'missing or earlier editorial update date',
     ],
   ];
@@ -40,6 +61,10 @@ for (const post of blogPosts) {
   rows.push(`${post.id}: ${words} words, ${expectedMinutes} min, ${headings.length} headings`);
 }
 
+for (const [month, count] of monthlyCounts) {
+  if (count !== 2) issues.push(`${month}: expected exactly two articles; found ${count}`);
+}
+
 if (blogPosts.length !== 18) issues.push(`expected 18 articles; found ${blogPosts.length}`);
 if (new Set(blogPosts.map(post => post.id)).size !== blogPosts.length)
   issues.push('duplicate article id');
@@ -50,6 +75,6 @@ if (issues.length) {
   process.exitCode = 1;
 } else {
   console.log(
-    'Blog content audit passed: 18 complete articles with comparable depth and rich media.'
+    'Blog content audit passed: 18 complete articles, exactly two per month from January through September 2026.'
   );
 }
