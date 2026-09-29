@@ -58,9 +58,9 @@ export const changelogEntries = [
     summary:
       'Balance January–September at two articles per month, assign Razorpay to the August issue while preserving its first publication date, and replace September’s UPI and TypeSafe topics with sourced Apple event and OpenAI DevDay articles. Add matching conceptual covers, retired-link notices, and a calendar audit.',
     tags: ['blog', 'design'],
-    sha: null,
-    commitVerified: false,
-    status: 'unreleased',
+    sha: '740e91da',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/740e91da`,
     model: 'GPT-6 / Codex',
     ide: 'Codex desktop',
     purpose: 'Monthly archive correction, primary-source event reporting, and visual verification',
