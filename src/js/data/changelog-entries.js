@@ -58,9 +58,9 @@ export const changelogEntries = [
     summary:
       'Review all 18 blogs, replace 17 generated covers with original publisher media, add official iPhone Duo and Pro Max press imagery, and retain one documented conceptual fallback. Credit each image, preserve full images on cards, verify media hashes, and correct editorial framework labels.',
     tags: ['blog', 'design'],
-    sha: null,
-    commitVerified: false,
-    status: 'unreleased',
+    sha: '86764fc9eaeaab481b1f34dbfe4d4f6282372610',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/86764fc9eaeaab481b1f34dbfe4d4f6282372610`,
     model: 'GPT-6 / Codex',
     ide: 'Codex desktop',
     purpose: 'Primary-source image verification, media provenance, and responsive visual review',
