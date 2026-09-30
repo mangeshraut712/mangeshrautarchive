@@ -1948,6 +1948,27 @@ html.dark .article-figure:hover img {
   text-underline-offset: 0.2em;
 }
 
+.article-figure__credit {
+  display: block;
+  margin-top: 0.35rem;
+}
+
+.article-figure img.article-figure__img--native {
+  width: auto;
+  max-width: 100%;
+  margin-inline: auto;
+}
+
+.blog-card-media.blog-media--contain img,
+.blog-featured-media.blog-media--contain img {
+  object-fit: contain;
+}
+
+.blog-card-media.blog-media--native img,
+.blog-featured-media.blog-media--native img {
+  object-fit: scale-down;
+}
+
 .article-figure__full-size:focus-visible {
   outline: 2px solid var(--apple-blue);
   outline-offset: 3px;

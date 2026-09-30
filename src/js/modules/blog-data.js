@@ -30,6 +30,12 @@ export function getBlogPostImage(post) {
   return match?.[1] || 'assets/images/profile.webp';
 }
 
+export function getBlogPostImageFit(post) {
+  const figure = String(post?.content || '').match(/:::figure[\s\S]*?\n:::/)?.[0] || '';
+  const fit = figure.match(/^fit:\s*(contain|native)\s*$/m)?.[1];
+  return fit || 'cover';
+}
+
 // Retired topics remain reachable without appearing twice in the active archive.
 export const retiredBlogPosts = Object.freeze([
   {
@@ -58,7 +64,7 @@ export const blogPosts = [
     highlights: ['Sticky routing', 'Cache economics', 'AssistMe-style policy'],
     tags: ['OpenRouter', 'AI Routing', 'Model Gateways', 'System Design'],
     date: '2026-07-05',
-    updatedAt: '2026-09-27',
+    updatedAt: '2026-09-30',
     readTime: '9 min read',
     content: `In 2026 the hard problem is rarely "can I call a model?" It is "can I keep calling *useful* models when prices move, providers flake, caches miss, and geopolitics reshapes token share?" OpenRouter increasingly feels like a USB hub for intelligence: one plug shape, many devices behind it, and a routing policy that decides which cable actually carries power.
 
@@ -66,9 +72,14 @@ export const blogPosts = [
 ## Context and scope
 
 :::figure
-src: assets/images/blog/openrouter-routing-codex-openai.webp
-alt: Conceptual gateway splitting AI requests into frontier, efficient, fallback, and voice paths
-caption: Conceptual routing policy: a gateway directs requests to frontier, efficient, fallback, or voice paths according to application needs.
+src: assets/images/blog/original-sources/openrouter-source.webp
+alt: OpenRouter diagram of sticky routing, cache writes and reads, and provider failover
+caption: OpenRouter’s published diagram of caching across an agent session. Cache pricing and behavior depend on the selected model and provider.
+credit: OpenRouter
+source: https://openrouter.ai/blog/tutorials/prompt-caching-sticky-routing/
+width: 1535
+height: 1024
+fit: contain
 :::
 
 :::diagram
@@ -111,7 +122,7 @@ Cache reads are often a fraction of input price (provider-dependent; Grok cache 
 :::framework
 title: How I weight OpenRouter controls for AssistMe-like chat
 items: Fallback path when primary is down / unpaid, Sticky session for multi-turn chat, Price caps on volume lanes, Auto-router for unknown tasks, Single forever-default model
-note: Editorial ordering only; Weights are operational priorities for a dual-host portfolio assistant, not a vendor ranking.
+note: Editorial priorities for a portfolio assistant; this ordered list contains no measured weights or vendor rankings.
 :::
 
 ## Risks and limits
@@ -196,7 +207,7 @@ OpenRouter’s [Auto Router documentation](https://openrouter.ai/docs/guides/rou
       'Open-sourcing the harness is the real story. A strong coding model without an inspectable agent loop is just another API slug.',
     highlights: ['Grok 4.5 API', 'Open harness', 'Agent Client Protocol'],
     date: '2026-07-15',
-    updatedAt: '2026-09-27',
+    updatedAt: '2026-09-30',
     tags: ['Grok 4.5', 'Grok Build', 'xAI', 'Coding Agents', 'Open Source'],
     readTime: '9 min read',
     content: `July 2026 compressed two related builder decisions into one stack question: a stronger coding-first model (**Grok 4.5**) and an inspectable agent harness (**Grok Build**) that is now open source. I care less about keynote adjectives and more about what changes in an agent loop I would actually ship.
@@ -205,9 +216,14 @@ OpenRouter’s [Auto Router documentation](https://openrouter.ai/docs/guides/rou
 ## Context and scope
 
 :::figure
-src: assets/images/blog/grok-build-agent-codex-openai.webp
-alt: Coding model, agent harness, tools, tests, and human review in a development workflow
-caption: Conceptual coding-agent workflow: the model reasons, the harness coordinates tools, and tests and review check the resulting changes.
+src: assets/images/blog/original-sources/grok-build-source.webp
+alt: Open Source title on xAI’s black announcement artwork
+caption: Official artwork for xAI’s Grok Build open-source announcement.
+credit: xAI
+source: https://x.ai/news/grok-build-open-source
+width: 1200
+height: 630
+fit: contain
 :::
 
 :::diagram
@@ -250,7 +266,7 @@ Interactive TUI for deep work. Headless \`-p\` prompts for automation. ACP for e
 :::framework
 title: Where I would put Grok 4.5 / Grok Build first (fit, not hype)
 items: Long-horizon coding agents in a harness, API drop-in for existing agent loops, Default for every UI chat turn, Sole eval source of truth
-note: Editorial ordering only; Scores are my product-fit judgment for portfolio and product engineering, not a model ranking.
+note: Editorial ordering of proposed use cases, not a model benchmark or measured product-fit score.
 :::
 
 ## Risks and limits
@@ -340,7 +356,7 @@ The [xAI open-source announcement](https://x.ai/news/grok-build-open-source) dat
     pullQuote: 'WebMCP matters when sites expose structured tools. Chat panels do not.',
     highlights: ['WebMCP tool surfaces', 'Managed vs local agents', 'Hybrid execution'],
     date: '2026-05-20',
-    updatedAt: '2026-09-27',
+    updatedAt: '2026-09-30',
     tags: ['Google I/O', 'Gemini', 'WebMCP', 'Antigravity', 'Agentic Web'],
     readTime: '8 min read',
     content: `Google I/O compresses a year of platform work into inevitability theater. My job after the 2026 keynote is the opposite: name what actually changes a production architecture, and what is still a demo that needs a hardware matrix, a permission model, and a failure mode.
@@ -351,9 +367,14 @@ I/O 2026 centered on an agentic Gemini stack: Gemini 3.5 Flash, Google Antigravi
 ## Context and scope
 
 :::figure
-src: assets/images/blog/google-io-webmcp-codex-openai.webp
-alt: Browser tools, local context, cloud agents, and a human confirmation step
-caption: Conceptual division of agent work across browser tools, local context, and cloud agents, with confirmation before consequential actions.
+src: assets/images/blog/original-sources/google-io-source.webp
+alt: Google I/O announcement artwork reading Ready, Set, I/O
+caption: Official artwork from Google’s I/O 2026 announcement collection.
+credit: Google
+source: https://blog.google/innovation-and-ai/technology/ai/google-io-2026-all-our-announcements/
+width: 1300
+height: 701
+fit: contain
 :::
 
 :::diagram
@@ -398,7 +419,7 @@ Gemma-class and built-in browser models matter less as leaderboard rivals and mo
 :::framework
 title: Where I would put AI work first (relative fit, not benchmarks)
 items: Instant private UI helpers, Structured site tools (WebMCP-style), Corpus synthesis / deep reasoning, Fully autonomous multi-app agents
-note: Editorial ordering only; Scores are my product-fit judgment for portfolio-scale web apps, not Google’s capability claims.
+note: Editorial ordering of proposed web-app work, not Google capability measurements.
 :::
 
 ## Risks and limits
@@ -474,7 +495,7 @@ Google’s [I/O 2026 collection](https://blog.google/innovation-and-ai/technolog
       'Ranking starts long before scoring. Candidate quality sets the ceiling for everything that follows.',
     highlights: ['Phoenix ranker', 'In-network + OON retrieval', 'Measurable ranking stages'],
     date: '2026-05-15',
-    updatedAt: '2026-09-27',
+    updatedAt: '2026-09-30',
     tags: ['Grok', 'X Algorithm', 'Real-Time AI', 'Ranking', 'Phoenix'],
     readTime: '9 min read',
     content: `Modern feeds look magical from the outside because the final surface hides the plumbing. Underneath, a feed is a chain of retrieval, enrichment, ranking, policy, deduplication, and serving decisions. When xAI published the For You algorithm as open code, the interesting story was not "AI decides your feed." It was the pipeline becoming inspectable.
@@ -486,8 +507,13 @@ The public repository lives at [xai-org/x-algorithm](https://github.com/xai-org/
 
 :::figure
 src: assets/images/blog/x-algorithm-ranking-codex-openai.webp
-alt: Candidate content moving through retrieval, context, ranking, filtering, and an ordered feed
-caption: Conceptual feed workflow: candidates are retrieved, enriched with context, ranked, filtered, and assembled into an ordered feed. The artwork does not represent X's internal implementation.
+alt: Conceptual feed pipeline taking candidate posts through ranking and filtering
+caption: Conceptual editorial illustration of retrieval, ranking, and filtering. Original image assets were not available in the reviewed repository documentation; this is an illustration, not an X product screenshot.
+credit: Codex / OpenAI
+reference: https://github.com/xai-org/x-algorithm
+width: 1600
+height: 900
+fit: cover
 :::
 
 :::diagram
@@ -534,7 +560,7 @@ Even a great ranker should not be the final authority. Duplicate controls, safet
 :::framework
 title: Relative leverage of feed stages (my systems judgment)
 items: Candidate retrieval quality, Context hydration, Learned ranking (Phoenix), Policy / filter / blend, Final UI presentation
-note: Editorial ordering only; A brilliant ranker cannot recover candidates retrieval never found.
+note: Editorial priorities for feed design. The ordering is not measured stage performance.
 :::
 
 ## What Shines in the Open Stack
@@ -621,7 +647,7 @@ The current [Phoenix repository documentation](https://github.com/xai-org/x-algo
       'The best ecosystem AI reduces steps. It does not ask users to move work into a new box.',
     highlights: ['Multimodal context', 'Workspace integration', 'Permission-aware UX'],
     date: '2026-01-10',
-    updatedAt: '2026-09-27',
+    updatedAt: '2026-09-30',
     tags: ['Google AI', 'Gemini', 'Android', 'Multimodal', 'Workspace'],
     readTime: '7 min read',
     content: `Google’s advantage is not one model in isolation. It is distribution across Android, Chrome, Search, Photos, Gmail, Docs, Maps, YouTube, and a growing Gemini surface area. That distribution becomes powerful only when AI helps inside the place where the user already has context.
@@ -632,9 +658,14 @@ This is an early-2026 product-architecture field note. Later I/O cycles added lo
 ## Context and scope
 
 :::figure
-src: assets/images/blog/google-ai-hybrid-codex-openai.webp
-alt: Device, documents, search, and maps surrounding a context-aware assistant
-caption: Conceptual ecosystem view: AI becomes useful within existing device, document, search, and location contexts.
+src: assets/images/blog/original-sources/google-ai-source.webp
+alt: Google AI wordmark on the official dark gradient artwork
+caption: Official Google AI website artwork identifying the ecosystem discussed in this article.
+credit: Google
+source: https://ai.google/
+width: 1200
+height: 630
+fit: contain
 :::
 
 :::diagram
@@ -666,7 +697,7 @@ On-device signals—locale, connectivity, battery, foreground app, accessibility
 :::framework
 title: User moments where ecosystem AI earns its keep
 items: Write / rewrite in place, Search + synthesize across apps, Capture from camera / voice, Fully autonomous multi-day agents
-note: Editorial ordering only; Autonomy score is intentionally low for daily consumer reliability, not research ambition. Scores are my judgment.
+note: Editorial ordering of everyday use cases, not an autonomy benchmark or reliability measurement.
 :::
 
 ## What I Would Watch
@@ -748,7 +779,7 @@ Google’s [I/O 2026 announcement collection](https://blog.google/innovation-and
     pullQuote: 'Autonomy is useful only when the team can inspect, constrain, and verify it.',
     highlights: ['Tool permissions', 'Agent observability', 'Evaluation loops'],
     date: '2026-01-25',
-    updatedAt: '2026-09-27',
+    updatedAt: '2026-09-30',
     tags: ['OpenClaw', 'Open Source', 'AI Agents', 'Decentralization'],
     readTime: '8 min read',
     content: `OpenClaw (README history runs roughly Warelay → CLAWDIS → Clawdbot → Moltbot → OpenClaw from late 2025 into Jan 2026) popularized a pattern that was already in the air: a **self-hosted gateway** that connects messaging apps to a tool-using agent running on your machine.
@@ -761,9 +792,14 @@ This essay is a **product-pattern analysis** grounded in what the public OpenCla
 ## Context and scope
 
 :::figure
-src: assets/images/blog/openclaw-agent-swarm-codex-openai.webp
-alt: Local assistant gateway with messaging channels, permission gate, tools, and activity logs
-caption: Conceptual local-assistant architecture: channels connect to a gateway, while permissions constrain tools and logs record activity.
+src: assets/images/blog/original-sources/openclaw-source.webp
+alt: OpenClaw project banner with its red mascot and project name
+caption: Project banner published in OpenClaw’s original repository README.
+credit: OpenClaw contributors
+source: https://github.com/openclaw/openclaw/blob/main/README.md
+width: 1280
+height: 358
+fit: contain
 :::
 
 :::diagram
@@ -797,7 +833,7 @@ Teams do not need a universal agent. They need an agent that knows their monorep
 :::framework
 title: What I weight when evaluating an open agent framework
 items: Permission model, Observability / traces, Eval harness, Tool quality, Autonomy hype
-note: Editorial ordering only; Autonomy without the first three is a liability score, not a feature score. Scores are my judgment.
+note: Editorial priorities for evaluating an agent framework; no numerical feature scores are assigned.
 :::
 
 ## What I Would Watch
@@ -899,7 +935,7 @@ Current [OpenClaw permission documentation](https://docs.openclaw.ai/gateway/sec
       'The product is not transcription. The product is turning messy spoken intent into useful work.',
     highlights: ['Intent capture', 'Correction UX', 'Privacy Mode reality'],
     date: '2026-02-10',
-    updatedAt: '2026-09-27',
+    updatedAt: '2026-09-30',
     tags: ['Wispr Flow', 'HCI', 'Voice AI', 'Productivity'],
     readTime: '8 min read',
     content: `Voice input is usually framed as accessibility or convenience. Those frames matter, but they understate the power-user version: fast capture, low friction, and high-quality cleanup across the places where work already happens.
@@ -910,9 +946,14 @@ This is a **product-pattern analysis** of dictation tools in the Wispr Flow styl
 ## Context and scope
 
 :::figure
-src: assets/images/blog/wispr-flow-voice-codex-openai.webp
-alt: Person dictating to a phone with cloud transcription, cleanup, and document insertion stages
-caption: Conceptual dictation workflow: capture audio, transcribe in the cloud, clean up text, and insert it into the destination application.
+src: assets/images/blog/original-sources/wispr-source.webp
+alt: Wispr Flow artwork with a waveform and the words Don’t type, just speak
+caption: Official Wispr Flow promotional artwork showing its voice-input product identity.
+credit: Wispr Flow
+source: https://wisprflow.ai/
+width: 1600
+height: 840
+fit: contain
 :::
 
 :::diagram
@@ -932,7 +973,7 @@ Treat voice as a capture system with three stages: **speak**, **shape**, **revie
 :::framework
 title: Where voice beats typing for me (task fit)
 items: First drafts / outlines, Status updates / bug reports, Long-form thinking dumps, Precise code edits, Auth forms / secrets
-note: Editorial ordering only; Low scores are intentional. Voice is a power tool, not a universal input replacement. Scores are my judgment.
+note: Editorial ordering of tasks where voice input may help; no measured typing or accuracy comparison is implied.
 :::
 
 ## What Shines
@@ -1046,7 +1087,7 @@ Wispr’s [September 2026 settings guide](https://docs.wisprflow.ai/articles/960
       'In AI, the product is increasingly the infrastructure path from idea to deployed workload.',
     highlights: ['CUDA ecosystem', 'Cluster-scale training', 'Developer gravity'],
     date: '2026-02-24',
-    updatedAt: '2026-09-27',
+    updatedAt: '2026-09-30',
     tags: ['NVIDIA', 'AI', 'Hardware', 'GPU', 'CUDA'],
     readTime: '8 min read',
     content: `NVIDIA is often described as a GPU company. That frame is too small. The durable advantage is an infrastructure stack: accelerators, networking, CUDA, libraries, deployment tooling, developer habits, and a supply chain organized around AI workloads.
@@ -1055,9 +1096,14 @@ Wispr’s [September 2026 settings guide](https://docs.wisprflow.ai/articles/960
 ## Context and scope
 
 :::figure
-src: assets/images/blog/nvidia-blackwell-rack-codex-openai.webp
-alt: Four-layer AI infrastructure stack for software, compute, networking, and serving
-caption: Conceptual AI infrastructure stack: software, accelerated compute, networking, and serving work together as one execution path.
+src: assets/images/blog/original-sources/nvidia-source.webp
+alt: NVIDIA GB200 NVL72 rack shown against a black background
+caption: NVIDIA’s published product image of the GB200 NVL72 system.
+credit: NVIDIA
+source: https://www.nvidia.com/en-us/data-center/technologies/blackwell-architecture/
+width: 1280
+height: 720
+fit: contain
 :::
 
 :::diagram
@@ -1097,7 +1143,7 @@ Teams need a believable story for training, fine-tuning, quantization, inference
 :::framework
 title: Relative strength of moat layers (my infrastructure judgment)
 items: Software + CUDA ecosystem, Cluster systems / networking, Silicon performance, Developer habit / hiring, Price / availability flexibility
-note: Editorial ordering only; Scores describe competitive gravity, not a claim that alternatives cannot win niches.
+note: Editorial ordering of infrastructure factors, not measured competitive scores.
 :::
 
 ## What Shines
@@ -1204,7 +1250,7 @@ NVIDIA’s [TensorRT-LLM documentation](https://developer.nvidia.com/tensorrt-ll
       'The AI race is not one race. It is research, infrastructure, product, and policy moving at different speeds.',
     highlights: ['Compute access', 'Open models', 'Governed deployment'],
     date: '2026-03-11',
-    updatedAt: '2026-09-27',
+    updatedAt: '2026-09-30',
     tags: ['AI', 'LLM', 'Geopolitics', 'Technology', 'Open Models'],
     readTime: '8 min read',
     content: `The global AI race is usually told as a leaderboard story: who tops the eval, who ships the next name, who demos the scariest agent. That story is incomplete. Model quality matters, but durable advantage also depends on compute access, energy, chip supply, data policy, research talent, deployment channels, and trust.
@@ -1213,9 +1259,14 @@ NVIDIA’s [TensorRT-LLM documentation](https://developer.nvidia.com/tensorrt-ll
 ## Context and scope
 
 :::figure
-src: assets/images/blog/global-ai-pareto-codex-openai.webp
-alt: Four qualitative lenses for AI ecosystems: research, compute, distribution, and governance
-caption: Four qualitative lenses for comparing AI ecosystems: research, compute, distribution, and governance. This illustration is not a benchmark.
+src: assets/images/blog/original-sources/global-ai-source.webp
+alt: Stanford HAI Artificial Intelligence Index Report 2026 cover
+caption: Official cover artwork for Stanford HAI’s 2026 AI Index Report, a research source used in this article.
+credit: Stanford HAI
+source: https://hai.stanford.edu/ai-index/2026-ai-index-report
+width: 1575
+height: 1050
+fit: contain
 :::
 
 :::diagram
@@ -1227,9 +1278,9 @@ note: Conceptual sequence for understanding the system; implementation details v
 I compare ecosystems with four lenses: **research quality**, **compute supply**, **deployment channels**, and **governance**. If one lens is missing, the strategy is incomplete even when the model demo looks strong. Countries and companies can lead on one axis and lag on another for years. I am not assigning national rankings here—those charts age badly and invite fake precision.
 
 :::framework
-title: Four-lens scorecard (illustrative framing, not a ranking of nations)
+title: Four lenses for reviewing AI capacity
 items: Research velocity, Compute + energy, Product distribution, Governance / trust
-note: Editorial ordering only; These bars are a template for analysis, not a claim about any specific country’s absolute score.
+note: Editorial analysis lenses; this ordered list does not rank countries or assign national scores.
 :::
 
 ## Executive summary
@@ -1362,7 +1413,7 @@ The [2026 Stanford AI Index](https://hai.stanford.edu/ai-index) separates model 
       'The best AI coding tool is the one that keeps context clean, checks real work, and makes review easier.',
     highlights: ['Goal loops', 'Context hygiene', 'Verifier-reviewer workflow'],
     date: '2026-03-25',
-    updatedAt: '2026-09-27',
+    updatedAt: '2026-09-30',
     tags: ['AI', 'Developer Tools', 'IDE', 'Cursor', 'VS Code', 'Windsurf'],
     readTime: '8 min read',
     content: `AI code editors are no longer just autocomplete surfaces. They are becoming engineering workbenches: context gathering, multi-file implementation, verification, review, and iteration inside one loop. The tools change monthly. The discipline should not.
@@ -1371,9 +1422,14 @@ The [2026 Stanford AI Index](https://hai.stanford.edu/ai-index) separates model 
 ## Context and scope
 
 :::figure
-src: assets/images/blog/ai-code-editors-codex-openai.webp
-alt: AI coding workflow moving from scope through editing, checks, review, and approval
-caption: Conceptual AI-assisted development workflow: scope the task, edit, run checks, review the diff, and approve the result.
+src: assets/images/blog/original-sources/code-editors-source.webp
+alt: VS Code Chat view showing the session list, conversation, and input controls
+caption: Microsoft’s documented VS Code Chat interface. This is one concrete editor example within the wider comparison.
+credit: Microsoft
+source: https://code.visualstudio.com/docs/agents/overview
+width: 1560
+height: 807
+fit: contain
 :::
 
 :::diagram
@@ -1413,9 +1469,9 @@ Lean into longer loops: plan, edit, run, fix. Strength: less glue work between c
 Useful for bounded jobs with clear success criteria. Strength: automation. Weakness: review can become an afterthought if the PR is huge.
 
 :::framework
-title: What I optimize for in a daily driver (weights)
+title: What I prioritize in a daily editor
 items: Diff clarity + reviewability, Repo context quality, Test / terminal loop, Multi-file agent competence, Flashy autonomy demos
-note: Editorial ordering only; Autonomy demos are entertainment until checks and review are first-class. Scores are my judgment.
+note: Editorial priorities for choosing an editor; no measured weights or autonomy scores are assigned.
 :::
 
 ## What Shines
@@ -1521,7 +1577,7 @@ Current [VS Code agent documentation](https://code.visualstudio.com/docs/agents/
       'Apple’s lesson is not minimalism for its own sake. It is complexity resolved before it reaches the user.',
     highlights: ['Vertical integration', 'Calm interface design', 'Ecosystem continuity'],
     date: '2026-04-01',
-    updatedAt: '2026-09-27',
+    updatedAt: '2026-09-30',
     tags: ['Apple', 'Technology', 'Innovation', 'History', 'Design'],
     readTime: '7 min read',
     content: `Apple Computer was founded on April 1, 1976. By April 1, 2026, that is fifty years of products, misses, comebacks, and platform gravity. The anniversary is a reasonable moment to talk about discipline rather than nostalgia. The story is often told through objects: Mac, iPod, iPhone, iPad, Watch, Vision, services. The deeper lesson is operating-system thinking applied to product companies.
@@ -1530,9 +1586,14 @@ Current [VS Code agent documentation](https://code.visualstudio.com/docs/agents/
 ## Context and scope
 
 :::figure
-src: assets/images/blog/apple-silicon-history-codex-openai.webp
-alt: Conceptual evolution of personal computers and integrated devices
-caption: Conceptual illustration of integration, restraint, and continuity across personal computing; not an archival photograph or hardware specification.
+src: assets/images/blog/original-sources/apple-50-source.webp
+alt: Apple rainbow pencil-style logo with the 50 Years of Thinking Different title
+caption: Apple’s official 50th-anniversary artwork from its Newsroom announcement.
+credit: Apple
+source: https://www.apple.com/newsroom/2026/03/apple-to-celebrate-50-years-of-thinking-different/
+width: 653
+height: 563
+fit: contain
 :::
 
 :::diagram
@@ -1564,7 +1625,7 @@ Handoff, shared credentials, accessory protocols, and consistent interaction mod
 :::framework
 title: Discipline levers that still matter at year 50
 items: Integration of HW + SW, Defaults and restraint, Ecosystem continuity, Retail + support as product, Feature checklist velocity
-note: Editorial ordering only; Feature velocity is deliberately lower—Apple’s historical strength is coherent shipping, not winning every race to first. Scores are my judgment.
+note: Editorial ordering of product disciplines, not measured company performance.
 :::
 
 ## What I Would Watch
@@ -1654,7 +1715,7 @@ Apple’s [anniversary announcement](https://www.apple.com/newsroom/2026/03/appl
     pullQuote: 'A good philosophical frame should change how we build, test, or govern systems.',
     highlights: ['Observer bias', 'Safety humility', 'Operational controls'],
     date: '2026-04-20',
-    updatedAt: '2026-09-27',
+    updatedAt: '2026-09-30',
     tags: ['Philosophy', 'Anthropics', 'AI Ethics', 'Safety'],
     readTime: '8 min read',
     content: `Anthropic reasoning asks a strange but useful question: what should we infer from the fact that we are observers inside this world? It touches cosmology, simulation arguments, consciousness, and AI safety. The topic gets abstract quickly, so the practical move is to separate useful frames from speculative claims.
@@ -1667,9 +1728,14 @@ This piece intentionally mixes philosophy and engineering. Where claims are not 
 ## Context and scope
 
 :::figure
-src: assets/images/blog/anthropic-alignment-codex-openai.webp
-alt: Observer studying a limited sample of a much larger landscape
-caption: Conceptual illustration of observer selection: a limited sample leaves uncertainty, which should inform evaluation and monitoring.
+src: assets/images/blog/original-sources/anthropic-source.webp
+alt: Nick Bostrom seated at a microphone
+caption: Portrait of Nick Bostrom published by The Anthropic Principle site. It identifies the author of the observer-selection text discussed below.
+credit: The Anthropic Principle / Nick Bostrom
+source: https://anthropic-principle.com/anthropic-bias/
+width: 248
+height: 171
+fit: native
 :::
 
 :::diagram
@@ -1701,7 +1767,7 @@ I treat simulation talk as a thought experiment about evidence and agency—not 
 :::framework
 title: How I allocate attention in "deep AI" conversations
 items: Operational safety controls, Empirical evals / red teaming, Governance clarity, Philosophical framing, Speculative cosmology claims
-note: Editorial ordering only; Philosophy can set posture. Operations carry production risk. Scores are my judgment.
+note: Editorial priorities for analysis. The list does not quantify safety or philosophical validity.
 :::
 
 ## What I Would Watch
@@ -1810,7 +1876,7 @@ The useful part of anthropic thinking is not the most dramatic theory. It is the
       'If Siri can only talk about your app, you built a brochure. If it can perform typed actions, you built a platform citizen.',
     highlights: ['App Schemas', 'Siri AI reliability', 'Liquid Glass accessibility'],
     date: '2026-06-12',
-    updatedAt: '2026-09-27',
+    updatedAt: '2026-09-30',
     tags: ['WWDC 2026', 'Apple Intelligence', 'Siri AI', 'Liquid Glass', 'Private Cloud Compute'],
     readTime: '8 min read',
     content: `WWDC26 (week of June 8, 2026) finally put a sharper name on the bet Apple has been making for two years: intelligence that feels like OS verbs, not a chat personality bolted onto every screen. Apple’s public materials introduce **Siri AI** as a substantially more capable Siri powered by the next generation of Apple Intelligence, alongside iOS/iPadOS/macOS/watchOS/visionOS/tvOS 27 previews and continued Liquid Glass work.
@@ -1821,9 +1887,14 @@ I am not reprinting the keynote. I am extracting the developer contract: what yo
 ## Context and scope
 
 :::figure
-src: assets/images/blog/apple-pcc-architecture-codex-openai.webp
-alt: On-device processing with separate optional cloud assistance and confirmed app actions
-caption: Conceptual view of on-device processing, optional cloud assistance, and separately confirmed app actions; not a complete internal implementation diagram.
+src: assets/images/blog/original-sources/wwdc-source.webp
+alt: Apple devices displaying Siri AI interfaces in the official WWDC release image
+caption: Apple’s official Siri AI launch image showing the supported product family and example interfaces.
+credit: Apple
+source: https://www.apple.com/newsroom/2026/06/apple-introduces-siri-ai-a-profoundly-more-capable-and-personal-assistant/
+width: 980
+height: 551
+fit: contain
 :::
 
 :::diagram
@@ -1862,7 +1933,7 @@ My read: Liquid Glass succeeds if it becomes quiet infrastructure—clarity user
 :::framework
 title: What I would prioritize after a design-language launch
 items: Accessibility contrast & dynamic type, Performance / battery cost, Cross-app consistency, Novel material demos
-note: Editorial ordering only; Maturation is mostly systems quality, not more chrome. Scores are my judgment.
+note: Editorial priorities for implementation, not measured platform performance.
 :::
 
 ## Siri AI: Product Constraints as Features
@@ -1957,7 +2028,7 @@ Apple’s [Siri App Schemas session](https://developer.apple.com/videos/play/wwd
     pullQuote: 'The winning research tool keeps the evidence close to the answer.',
     highlights: ['Source grounding', 'Audio / Video Overviews', 'Citation discipline'],
     date: '2026-06-10',
-    updatedAt: '2026-09-27',
+    updatedAt: '2026-09-30',
     tags: ['NotebookLM', 'Gemini', 'AI Research', 'Google AI', 'Audio Overview'],
     readTime: '8 min read',
     content: `NotebookLM is most interesting when you stop treating it as document chat. The durable product idea is a research workflow: gather sources, ask questions, compare evidence, create study artifacts, and keep provenance visible.
@@ -1970,9 +2041,14 @@ Google renamed NotebookLM **Gemini Notebook** on July 16, 2026; the standalone r
 ## Context and scope
 
 :::figure
-src: assets/images/blog/notebooklm-grounded-pipeline-codex-openai.webp
-alt: Research sources flowing through synthesis, citations, human verification, and outputs
-caption: Conceptual research workflow: synthesize supplied sources, follow citations, verify the evidence, and prepare outputs. Grounding does not remove the need to check answers.
+src: assets/images/blog/original-sources/notebook-source.webp
+alt: Gemini Notebook name and logo in Google’s announcement artwork
+caption: Google’s official artwork announcing the NotebookLM to Gemini Notebook rename.
+credit: Google
+source: https://blog.google/innovation-and-ai/products/gemini-notebook/notebooklm-gemini-notebook/
+width: 1300
+height: 731
+fit: contain
 :::
 
 :::diagram
@@ -2013,7 +2089,7 @@ Slides, video, audio, and docs match how research actually arrives: messy. The p
 :::framework
 title: Research steps where NotebookLM-style tools help most
 items: Orienting a new corpus, Comparing claims across sources, Creating study / audio artifacts, Final publication without human review
-note: Editorial ordering only; Low score on unsupervised publishing is intentional discipline, not a product insult. Scores are my judgment.
+note: Editorial ordering of research tasks; no numerical scores or product accuracy measurements are assigned.
 :::
 
 ## What I Would Watch
@@ -2111,16 +2187,21 @@ Google [renamed NotebookLM Gemini Notebook](https://blog.google/innovation-and-a
       'System Architecture',
     ],
     date: '2026-08-17',
-    updatedAt: '2026-09-27',
+    updatedAt: '2026-09-30',
     readTime: '8 min read',
     content: `Cursor Origin is an early-beta Git forge, announced on August 17, 2026. It lets eligible Cursor customers host repositories, use ordinary Git push and pull, browse code, and review pull requests. That is a useful expansion of the development loop. It is not evidence that every agent workflow, CI system, or GitHub review automatically moves with the repository.
 
 ## Context and scope
 
 :::figure
-src: assets/images/blog/cursor-origin-architecture-codex-openai.webp
-alt: Conceptual workflow linking an editor, repository, agent, review, and deployment
-caption: A conceptual development loop. The lines illustrate decisions a team must configure; they are not a screenshot of Origin or a claim about its internal infrastructure.
+src: assets/images/blog/original-sources/cursor-source.webp
+alt: Origin repository settings screenshot published by Cursor
+caption: Cursor’s published Origin repository settings screenshot, showing sync, access, and connected-app controls.
+credit: Cursor
+source: https://cursor.com/changelog/origin-code-hosting
+width: 1600
+height: 1115
+fit: contain
 :::
 
 :::diagram
@@ -2238,7 +2319,7 @@ Cursor’s [August 17 launch note](https://cursor.com/changelog/origin-code-host
     ],
     date: '2026-08-18',
     publishedAt: '2026-09-10',
-    updatedAt: '2026-09-29',
+    updatedAt: '2026-09-30',
     readTime: '9 min read',
     content: `**4 billion payments. 3 trillion data points. One foundation model trained on all of it.**
 
@@ -2250,9 +2331,14 @@ Razorpay announced **Vulcan** on August 18, 2026 and published a [technical expl
 ## Context and scope
 
 :::figure
-src: assets/images/blog/razorpay-vulcan-architecture-codex-openai.webp
-alt: Transaction signals entering a financial model and branching to routing, fraud, and personalization
-caption: High-level conceptual view of transaction signals informing financial-model applications in routing, fraud detection, and personalization.
+src: assets/images/blog/original-sources/razorpay-source.webp
+alt: Razorpay Vulcan launch artwork with its payments foundation-model title
+caption: Razorpay’s official Vulcan article artwork. Any claims printed in it are publisher-reported statements.
+credit: Razorpay
+source: https://razorpay.com/blog/vulcan-how-razorpay-built-a-foundation-model-for-payment-decisions/
+width: 1600
+height: 837
+fit: contain
 :::
 
 :::diagram
@@ -2403,16 +2489,21 @@ Razorpay’s [launch release](https://razorpay.com/newsroom/?p=4744) reports the
     highlights: ['Adaptive layouts', 'State continuity', 'Media workflows'],
     tags: ['Apple', 'iPhone', 'UX Engineering', 'Accessibility'],
     date: '2026-09-29',
-    updatedAt: '2026-09-29',
+    updatedAt: '2026-09-30',
     readTime: '8 min read',
     content: `Apple's September 9, 2026 event gives application teams a concrete design question: what should happen when the same task moves between a compact phone, an expanded display, and a second window? This September field note connects the announced hardware to a practical software review. It was written on September 29; the event date and this article's publication date are different.
 
 ## What Apple announced
 
 :::figure
-src: assets/images/blog/apple-september-event-2026-codex-openai.webp
-alt: Conceptual folding and conventional phones with blue adaptive layout panels
-caption: Original conceptual editorial artwork about adaptive interfaces. These device silhouettes are not official Apple product photography or exact hardware depictions.
+src: assets/images/blog/original-sources/apple-duo-source.webp
+alt: Two hands holding a folded and an unfolded iPhone Duo in Apple’s Newsroom image
+caption: Apple’s official iPhone Duo press image showing the folded and unfolded devices.
+credit: Apple
+source: https://www.apple.com/newsroom/2026/09/apple-unveils-iphone-duo/
+width: 1600
+height: 900
+fit: contain
 :::
 
 Apple's [September event overview](https://www.apple.com/apple-events/) lists iPhone Duo, iPhone 18 Pro, Apple Watch Series 12, Apple Watch Ultra 4, and AirPods 5. This article focuses on the phone announcements because they pose useful questions for application layout, state restoration, and media workflows. It does not independently test the devices or verify battery and performance claims.
@@ -2434,6 +2525,17 @@ note: Editorial design model for application teams; this is not an Apple system 
 :::
 
 A useful prototype starts with one realistic task: open a report, select a passage, write a comment, change the available width, and submit. Watch the entire transition. Does the cursor remain in the editor? Does a hidden panel retain stale information? Does the keyboard cover the submit action? These questions expose defects that polished static mockups cannot.
+
+:::figure
+src: assets/images/blog/original-sources/apple-pro-source.webp
+alt: Front-facing iPhone 18 Pro and rear-facing iPhone 18 Pro Max in burgundy
+caption: Apple’s official press image showing a burgundy iPhone 18 Pro beside a rear-facing iPhone 18 Pro Max.
+credit: Apple
+source: https://www.apple.com/newsroom/2026/09/apple-debuts-iphone-18-pro-and-iphone-18-pro-max/
+width: 653
+height: 915
+fit: contain
+:::
 
 ## Treat the camera as an input to a workflow
 
@@ -2463,7 +2565,7 @@ Finally, compare the task completion path before and after the redesign. If a wi
 
 This article replaces an earlier September payments topic as part of the archive's two-articles-per-month edit. Sources were reviewed on September 29, 2026. Apple's [September developer newsletter](https://developer.apple.com/hello/september26/) identifies the September 9 event and links to developer resources. It provides a route to current platform guidance; it is not evidence that this portfolio has tested the new hardware.
 
-There are three boundaries on this analysis. Announced hardware specifications come from Apple. The cover and workflow diagram are conceptual illustrations. The proposed testing sequence is an editorial recommendation that still needs execution against the reader's application and supported devices.
+There are three boundaries on this analysis. Announced hardware specifications come from Apple. The phone images are official Apple press imagery, while the workflow diagram is an editorial illustration. The proposed testing sequence is an editorial recommendation that still needs execution against the reader's application and supported devices.
 
 For my own projects, the first deliverable would be a short continuity report: which tasks retain state, where focus moves, and what happens after an interrupted upload. That report creates an actionable backlog. Hardware-specific optimization can follow when measurements reveal an actual limitation. The best result from an event review is a smaller set of well-supported engineering decisions.
 
@@ -2486,16 +2588,21 @@ For my own projects, the first deliverable would be a short continuity report: w
     highlights: ['GPT-6.1 Sol', 'Ongoing agents', 'Workflow evaluation'],
     tags: ['OpenAI', 'DevDay', 'AI Agents', 'Developer Tools'],
     date: '2026-09-29',
-    updatedAt: '2026-09-29',
+    updatedAt: '2026-09-30',
     readTime: '8 min read',
     content: `OpenAI DevDay on September 29, 2026 brings model updates, ongoing agents, and more ways to build developer workflows. For an application team, the useful question is which announcement changes a measurable constraint: cost, completion quality, integration effort, or the amount of supervision a task needs. This field note reviews confirmed launch material and turns it into a practical evaluation plan.
 
 ## The announcements that change engineering decisions
 
 :::figure
-src: assets/images/blog/openai-devday-2026-codex-openai.webp
-alt: Conceptual glass panels connecting an AI model to tools and a verification stage
-caption: Original conceptual editorial artwork illustrating an agent workflow. It is not an OpenAI product screenshot, event photograph, or measured architecture.
+src: assets/images/blog/original-sources/devday-source.webp
+alt: OpenAI DevDay 2026 event title with colored shapes on a black background
+caption: Official OpenAI DevDay 2026 event artwork from the event website.
+credit: OpenAI
+source: https://devday.openai.com/
+width: 1600
+height: 900
+fit: contain
 :::
 
 The [official DevDay recap](https://openai.com/index/devday-2026-recap/) covers GPT-6.1 Sol, dots, Codex cloud workflows, plugin extensions, and new developer capabilities. Two distinctions matter immediately: the Decisions API is in limited preview, while GPT-6.1 Sol Ultrafast is described as coming soon. An announcement and access for a particular account are separate facts.

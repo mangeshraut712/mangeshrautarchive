@@ -87,11 +87,21 @@ function renderMediaBlock(kind, body, options = {}) {
     const src = resolveMediaUrl(a.src, assetPrefix);
     if (!src) return '';
     const alt = escapeHTML(a.alt || a.caption || '');
-    const caption = a.caption
-      ? `<figcaption class="article-figure__caption">${escapeHTML(a.caption)}</figcaption>`
-      : '';
+    const source = a.source || a.reference;
+    const sourceLink =
+      source && safeHref(source) !== '#'
+        ? `<a class="article-link" href="${escapeHTML(safeHref(source))}" target="_blank" rel="noopener noreferrer">${a.source ? 'Original source' : 'Technical reference'}</a>`
+        : '';
+    const credit =
+      a.credit || sourceLink
+        ? `<span class="article-figure__credit">${escapeHTML(a.credit || '')}${a.credit && sourceLink ? ' · ' : ''}${sourceLink}</span>`
+        : '';
+    const caption =
+      a.caption || credit
+        ? `<figcaption class="article-figure__caption">${escapeHTML(a.caption || '')}${credit}</figcaption>`
+        : '';
     return `<figure class="article-figure">
-      <img src="${escapeHTML(src)}" alt="${alt}" loading="eager" fetchpriority="high" decoding="async" width="${escapeHTML(a.width || '1200')}" height="${escapeHTML(a.height || '675')}" class="article-figure__img" />
+      <img src="${escapeHTML(src)}" alt="${alt}" loading="eager" fetchpriority="high" decoding="async" width="${escapeHTML(a.width || '1200')}" height="${escapeHTML(a.height || '675')}" class="article-figure__img${a.fit === 'native' ? ' article-figure__img--native' : ''}" />
       ${caption}
       <a class="article-figure__full-size" href="${escapeHTML(src)}" target="_blank" rel="noopener noreferrer">Open full-size image<span class="sr-only">: ${alt} (opens in a new tab)</span></a>
     </figure>`;

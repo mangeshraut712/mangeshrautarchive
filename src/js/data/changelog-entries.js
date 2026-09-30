@@ -51,6 +51,23 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'original-publisher-blog-media-september-2026',
+    date: '2026-09-30',
+    type: 'improvement',
+    title: 'Original publisher images and traceable blog media',
+    summary:
+      'Review all 18 blogs, replace 17 generated covers with original publisher media, add official iPhone Duo and Pro Max press imagery, and retain one documented conceptual fallback. Credit each image, preserve full images on cards, verify media hashes, and correct editorial framework labels.',
+    tags: ['blog', 'design'],
+    sha: null,
+    commitVerified: false,
+    status: 'unreleased',
+    model: 'GPT-6 / Codex',
+    ide: 'Codex desktop',
+    purpose: 'Primary-source image verification, media provenance, and responsive visual review',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
     id: 'monthly-blog-calendar-september-events-2026',
     date: '2026-09-29',
     type: 'improvement',

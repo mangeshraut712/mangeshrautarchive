@@ -1,4 +1,4 @@
-import { blogPosts, getBlogPostImage, retiredBlogPosts } from './blog-data.js';
+import { blogPosts, getBlogPostImage, getBlogPostImageFit, retiredBlogPosts } from './blog-data.js';
 import { escapeHTML as escapeHtmlShared } from '../utils/escape-html.js';
 import { sitePath } from '../utils/site-base.js';
 
@@ -96,7 +96,7 @@ class BlogLoader {
 
         return `
             <article class="blog-card blog-card--editorial ${index === 0 ? 'blog-card--featured-home' : 'blog-card--recent-home'}" data-id="${post.id}" aria-label="${this.escapeHTML(post.title)}">
-                <a class="blog-card-media" href="${fullHref}" aria-label="Read ${this.escapeHTML(post.title)}">
+                <a class="blog-card-media blog-media--${getBlogPostImageFit(post)}" href="${fullHref}" aria-label="Read ${this.escapeHTML(post.title)}">
                   <img src="${image}" alt="" width="1600" height="900" loading="lazy" decoding="async" />
                   <span class="blog-card-media-shine" aria-hidden="true"></span>
                   ${index === 0 ? '<span class="blog-card-feature-label">Latest field note</span>' : ''}

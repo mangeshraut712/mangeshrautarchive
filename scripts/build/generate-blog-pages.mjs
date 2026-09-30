@@ -1,7 +1,12 @@
 import { mkdir, writeFile } from 'fs/promises';
 import { dirname, resolve } from 'path';
 import { fileURLToPath } from 'url';
-import { blogPosts, getBlogPostImage, retiredBlogPosts } from '../../src/js/modules/blog-data.js';
+import {
+  blogPosts,
+  getBlogPostImage,
+  getBlogPostImageFit,
+  retiredBlogPosts,
+} from '../../src/js/modules/blog-data.js';
 import {
   buildTableOfContents,
   escapeHTML,
@@ -177,7 +182,7 @@ function renderBlogIndex(posts, tags) {
     .map(
       post => `
     <article class="blog-card blog-card--editorial" data-id="${post.id}" data-tags="${escapeHTML((post.tags || []).join(','))}">
-      <a class="blog-card-media" href="${blogPostHref(post.id)}" aria-label="Read ${escapeHTML(post.title)}">
+      <a class="blog-card-media blog-media--${getBlogPostImageFit(post)}" href="${blogPostHref(post.id)}" aria-label="Read ${escapeHTML(post.title)}">
         <img src="../${escapeHTML(postImagePath(post))}" alt="" width="1600" height="900" loading="lazy" decoding="async" />
         <span class="blog-card-media-shine" aria-hidden="true"></span>
       </a>
@@ -223,7 +228,7 @@ function renderBlogIndex(posts, tags) {
         </div>
       </header>
       <section class="blog-featured" aria-labelledby="blog-featured-title">
-        <a class="blog-featured-media" href="${blogPostHref(featured.id)}" aria-label="Read ${escapeHTML(featured.title)}">
+        <a class="blog-featured-media blog-media--${getBlogPostImageFit(featured)}" href="${blogPostHref(featured.id)}" aria-label="Read ${escapeHTML(featured.title)}">
           <img src="../${escapeHTML(postImagePath(featured))}" alt="${escapeHTML(featured.title)} cover illustration" width="1600" height="900" decoding="async" fetchpriority="high" />
           <span class="blog-featured-badge">Latest field note</span>
         </a>
