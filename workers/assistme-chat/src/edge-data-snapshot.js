@@ -1,6 +1,6 @@
 /** Auto-exported FastAPI/GA snapshot for GitHub Pages edge (Vercel offline). */
 export const EDGE_DATA_SNAPSHOT = {
-  exportedAt: '2026-09-29T22:19:18.501Z',
+  exportedAt: '2026-09-30T05:37:18.126Z',
   reach: {
     success: true,
     total_reach: 10883,
@@ -13,9 +13,9 @@ export const EDGE_DATA_SNAPSHOT = {
     message: 'Portfolio Reach mirrored from GA4/FastAPI for GitHub Pages (Vercel offline).',
     insights: {
       unique_visitors: 10883,
-      unique_visitors_this_week: 27,
+      unique_visitors_this_week: 18,
       countries_this_week: 8,
-      sessions_this_week: 39,
+      sessions_this_week: 28,
       total_views_all_time: 13677,
       active_users_all_time: 10883,
       event_count_all_time: 47893,
@@ -26,7 +26,7 @@ export const EDGE_DATA_SNAPSHOT = {
       metric_weekly_label: 'Active Users',
       avg_views_per_day: 0,
       portfolio_age_days: 1,
-      last_updated: '2026-09-29T22:19:18.475262Z',
+      last_updated: '2026-09-30T05:37:18.101931Z',
       top_countries: [
         {
           country: 'India',
@@ -39,10 +39,6 @@ export const EDGE_DATA_SNAPSHOT = {
         {
           country: 'United Kingdom',
           users: 3,
-        },
-        {
-          country: 'Sweden',
-          users: 2,
         },
         {
           country: 'Canada',
@@ -60,15 +56,13 @@ export const EDGE_DATA_SNAPSHOT = {
           country: 'Russia',
           users: 1,
         },
+        {
+          country: 'Sweden',
+          users: 1,
+        },
       ],
       countries_mode: 'period',
       trend: [
-        {
-          date: '2026-09-23',
-          views: 15,
-          visitors: 7,
-          sessions: 7,
-        },
         {
           date: '2026-09-24',
           views: 0,
@@ -105,10 +99,16 @@ export const EDGE_DATA_SNAPSHOT = {
           visitors: 1,
           sessions: 1,
         },
+        {
+          date: '2026-09-30',
+          views: 0,
+          visitors: 0,
+          sessions: 0,
+        },
       ],
       trend_metric: 'visitors',
     },
-    timestamp: '2026-09-29T22:19:18.475262Z',
+    timestamp: '2026-09-30T05:37:18.101931Z',
   },
   healthVitals: {
     success: true,
