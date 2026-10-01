@@ -86,7 +86,7 @@ conceptual fallback. The [media audit](docs/BLOG_MEDIA_AUDIT.md) and
 ### Contact, world clocks, and calendar
 
 Direct Outreach includes live analog clocks for New York, London, Mumbai, Tokyo, Sydney, and Paris,
-using IANA timezones with daylight-saving handling. Calendar events scroll within a bounded panel;
+using IANA timezones with daylight-saving handling. Three clocks are shown initially, with the other three available through View more. Calendar events show five compact cards by default and expand into a bounded scrolling panel;
 personal reminders can be reviewed, saved in the browser, and exported as one-time calendar copies.
 
 Today’s Panchang is sourced from [Kalnirnay](https://www.kalnirnay.com/). A scheduled workflow checks
@@ -256,12 +256,12 @@ Mangesh Raut maintains this portfolio with contributions from Codex, Claude Code
 Cursor, and GitHub Copilot. Shipped changes record the exposed agent/model family, engineering
 purpose, and verified commit in the [changelog](src/js/data/changelog-entries.js).
 
-| Current documentation contribution               | Attribution                                                                           |
-| ------------------------------------------------ | ------------------------------------------------------------------------------------- |
-| Coding agent                                     | GPT-6 / Codex, in Codex desktop                                                       |
-| Purpose                                          | Contact calendar, world clocks, daily source integration, and responsive verification |
-| Exact model variant, reasoning mode, token usage | Unavailable from the active runtime                                                   |
-| Portfolio chatbot model                          | Configured separately in [api/model_router.py](api/model_router.py) and the Worker    |
+| Current documentation contribution               | Attribution                                                                        |
+| ------------------------------------------------ | ---------------------------------------------------------------------------------- |
+| Coding agent                                     | GPT-6 / Codex, in Codex desktop                                                    |
+| Purpose                                          | Compact contact layout, progressive disclosure, and reliable theme contrast        |
+| Exact model variant, reasoning mode, token usage | Unavailable from the active runtime                                                |
+| Portfolio chatbot model                          | Configured separately in [api/model_router.py](api/model_router.py) and the Worker |
 
 Coding attribution in historical entries is contributor-reported in commit messages. A verified
 commit link confirms the repository reference; it does not authenticate the actual model runtime.

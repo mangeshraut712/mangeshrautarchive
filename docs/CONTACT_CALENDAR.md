@@ -2,10 +2,12 @@
 
 ## Interface
 
-- Events and reminders have their own bounded, keyboard-focusable scrolling region. Calendar controls remain outside it.
-- Import counts, last-import timestamps, source-calendar names, and the year-progress panel are omitted from the public card.
-- Direct Outreach includes live clocks for New York, London, Mumbai, Tokyo, Sydney, and Paris. JavaScript `Intl.DateTimeFormat` uses IANA timezones and applies daylight-saving rules; clock dates follow each city rather than the visitor’s date.
+- Events and reminders show five compact cards initially. View all reveals the rest in a bounded, keyboard-focusable scrolling region. Calendar controls remain outside it. Year progress is restored as a compact native progress bar.
+- Import counts, last-import timestamps, source-calendar names are omitted from the public card.
+- Direct Outreach includes live clocks for New York, London, Mumbai, Tokyo, Sydney, and Paris. JavaScript `Intl.DateTimeFormat` uses IANA timezones and applies daylight-saving rules; clock dates follow each city rather than the visitor’s date. New York, London, and Mumbai are shown first; View more reveals Tokyo, Sydney, and Paris.
 - The New button opens an accessible editor with a review preview. Parsing runs locally; it is not branded as an Antigravity AI service. Reminders are stored in the browser and do not automatically write to an Apple account.
+
+Send a Message sits directly below Follow Me in the left column. Heading icons use Apple blue; all guided-action icons stay white on the blue button in both themes. Panchang uses a compact three-column summary.
 
 ## Official Panchang
 

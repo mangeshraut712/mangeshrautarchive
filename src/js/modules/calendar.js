@@ -286,6 +286,7 @@ export class CalendarWidget {
     this.selectedDayCell = null;
     this.selectedDayFilter = dateKey(now.getFullYear(), now.getMonth(), now.getDate());
     this.activeFilter = 'month';
+    this.showAllReminders = false;
     this.viewMode = 'month';
     this.searchQuery = '';
     this.aiBriefData = null;
@@ -737,6 +738,16 @@ export class CalendarWidget {
       r => !r.isChangelog && r.dateKey && r.dateKey >= nowKey
     ).length;
 
+    const now = new Date();
+    const currentYear = now.getFullYear();
+    const yearStart = Date.UTC(currentYear, 0, 1);
+    const yearEnd = Date.UTC(currentYear + 1, 0, 1);
+    const totalYearDays = (yearEnd - yearStart) / 86400000;
+    const elapsedDays =
+      (Date.UTC(currentYear, now.getMonth(), now.getDate()) - yearStart) / 86400000 + 1;
+    const daysLeft = totalYearDays - elapsedDays;
+    const percentPassed = Math.round((elapsedDays / totalYearDays) * 100);
+
     let html = `
       <div class="ios-widget-wrapper">
         <!-- Calendar Section -->
@@ -770,6 +781,11 @@ export class CalendarWidget {
             <div class="reminders-header-actions">
               <button type="button" class="ios-btn-small" title="Add Reminder" aria-label="Add new reminder"><i class="fas fa-plus" aria-hidden="true"></i> New</button>
             </div>
+          </div>
+
+          <div class="year-progress-widget">
+            <div class="year-progress-caption"><span>${currentYear} · ${percentPassed}% complete</span><span>${daysLeft} days left</span></div>
+            <progress class="year-progress-track" value="${elapsedDays}" max="${totalYearDays}" aria-label="Year ${currentYear} progress">${percentPassed}%</progress>
           </div>
 
           <!-- Calendar Search Bar -->
@@ -861,7 +877,7 @@ export class CalendarWidget {
               : ''
           }
           
-          <div class="reminders-list" id="reminders-list-container" role="region" aria-label="Calendar events and reminders" tabindex="0">
+          <div class="reminders-list ${this.showAllReminders ? 'is-expanded' : ''}" id="reminders-list-container" role="region" aria-label="Calendar events and reminders" tabindex="0">
             ${
               filteredReminders.length === 0
                 ? `
@@ -956,6 +972,7 @@ export class CalendarWidget {
                     .join('')
             }
           </div>
+          ${filteredReminders.length > 5 ? `<button type="button" class="reminders-more-button" aria-controls="reminders-list-container" aria-expanded="${this.showAllReminders}">${this.showAllReminders ? 'Show first 5' : `View all ${filteredReminders.length} items`}</button>` : ''}
         </div>
       </div>
     `;
@@ -966,6 +983,14 @@ export class CalendarWidget {
   }
 
   bindEvents() {
+    const moreButton = this.container.querySelector('.reminders-more-button');
+    if (moreButton)
+      moreButton.onclick = () => {
+        this.showAllReminders = !this.showAllReminders;
+        this.render();
+        this.container.querySelector('.reminders-more-button')?.focus();
+      };
+
     // Month Navigation
     const prevBtn = this.container.querySelector('.ios-actions button:first-child');
     const todayBtn = this.container.querySelector('.today-btn');

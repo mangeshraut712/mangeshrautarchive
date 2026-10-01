@@ -54,6 +54,24 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'compact-contact-disclosure-october-2026',
+    date: '2026-10-01',
+    type: 'improvement',
+    title: 'Compact daily context and a clearer contact layout',
+    summary:
+      'Compact Panchang into a concise summary, show three world clocks with optional expansion, move Send a Message below Follow Me in the left column, restore year progress in Events & Reminders, and show five compact events before offering the full scrolling list. Correct message and action icon colors in both themes and verify expansion, layout, focus, and source freshness.',
+    tags: ['design', 'other'],
+    sha: null,
+    commitVerified: false,
+    model: 'GPT-6',
+    ide: 'Codex desktop',
+    purpose: 'Compact contact layout, progressive disclosure, and reliable theme contrast',
+    attributionSource: 'not-recorded',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+    status: 'unreleased',
+  },
+  {
     id: 'compact-contact-calendar-clocks-panchang-october-2026',
     date: '2026-10-01',
     type: 'improvement',

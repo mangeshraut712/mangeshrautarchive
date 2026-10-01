@@ -233,7 +233,11 @@ test('contact calendar scrolls, clocks use timezones, and stale Panchang stays h
     })
   );
   await gotoSite(page, '/#contact');
-  await expect(page.locator('.world-clock')).toHaveCount(6);
+  await expect(page.locator('.world-clock:visible')).toHaveCount(3);
+  await page.getByRole('button', { name: 'View 3 more clocks' }).click();
+  await expect(page.locator('.world-clock:visible')).toHaveCount(6);
+  await page.getByRole('button', { name: 'Show fewer clocks' }).click();
+  await expect(page.locator('.world-clock:visible')).toHaveCount(3);
   const expectedTimes = ['1:00 AM', '6:00 AM', '10:30 AM', '2:00 PM', '3:00 PM', '7:00 AM'];
   await expect
     .poll(() => page.locator('.world-clock time').allTextContents())
@@ -243,10 +247,22 @@ test('contact calendar scrolls, clocks use timezones, and stale Panchang stays h
     'href',
     'https://www.kalnirnay.com/'
   );
-  await expect(
-    page.locator('.calendar-snapshot-note,.card-source,.year-progress-widget')
-  ).toHaveCount(0);
+  await expect(page.locator('.calendar-snapshot-note,.card-source')).toHaveCount(0);
+  await expect(page.getByRole('progressbar', { name: 'Year 2026 progress' })).toHaveAttribute(
+    'value',
+    '274'
+  );
+  const leftCards = await page
+    .locator('.contact-column')
+    .first()
+    .locator(':scope > .contact-card')
+    .evaluateAll(cards =>
+      cards.slice(0, 2).map(card => card.querySelector('h3').textContent.trim())
+    );
+  expect(leftCards).toEqual(['Follow Me', 'Send a Message']);
   await page.locator('.filter-tab[data-filter="all"]').click();
+  await expect(page.locator('.reminder-card:visible')).toHaveCount(5);
+  await page.getByRole('button', { name: /View all \d+ items/ }).click();
   const list = page.locator('#reminders-list-container');
   await list.focus();
   await page.keyboard.press('PageDown');
