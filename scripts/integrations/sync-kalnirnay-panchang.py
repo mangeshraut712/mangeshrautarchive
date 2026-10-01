@@ -5,6 +5,7 @@ import sys
 from datetime import datetime
 from html.parser import HTMLParser
 from pathlib import Path
+from urllib.error import HTTPError
 from urllib.request import Request, urlopen
 from zoneinfo import ZoneInfo
 
@@ -71,6 +72,13 @@ def main():
 if __name__ == "__main__":
     try:
         main()
+    except HTTPError as error:
+        if error.code in (403, 429):
+            print(f"::warning::Kalnirnay declined this runner (HTTP {error.code}); "
+                  "snapshot unchanged. The frontend hides stale values and links to the official source.")
+        else:
+            print(f"Panchang refresh failed: {error}", file=sys.stderr)
+            sys.exit(1)
     except (OSError, ValueError) as error:
         print(f"Panchang refresh failed: {error}", file=sys.stderr)
         sys.exit(1)
