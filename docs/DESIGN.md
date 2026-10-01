@@ -163,7 +163,7 @@ The design system enforces a strictly unified 6-tier button architecture across 
 - **Code Content (`pre`, `code`)**: Always transparent background with crisp, high-contrast `#f5f5f7 !important; -webkit-text-fill-color: #f5f5f7 !important; font-family: SFMono-Regular, Consolas, Menlo, monospace; font-size: 0.88rem; line-height: 1.65;`.
 - **Strict Theme Guard**: Global light mode rules (`html:not(.dark)`) must NEVER force `pre` or `code` inside terminal containers to `background: #ffffff`.
 - **Inline Code (`.article-inline-code`)**:
-  - Light Mode: `background: #f2f2f7; border: 1px solid #d1d1d6; color: #0071e3; font-weight: 600;`
+  - Light Mode: `background: #f2f2f7; border: 1px solid #d1d1d6; color: var(--apple-blue-dark, #0051a8); font-weight: 600;`
   - Dark Mode: `background: #1c1c1e; border: 1px solid #3a3a3c; color: #ff9f0a;`
 
 ### 3. Author Byline & Profile Avatar Standard
@@ -242,3 +242,7 @@ CSS files in `src/assets/css/` are layered systematically:
   - **Bioluminescent Particle Spores**: Lightweight, 60fps upward drifting spores that automatically pause on modal close to preserve 100% CPU and battery.
   - **3D Apple Parallax Glass Tilt**: Interactive gyroscope/mouse perspective tilt with specular highlight gloss overlay.
   - **Cyber/Apple Viewfinder Brackets & Laser Scanner**: Precision corner reticles and oscillating laser sweep line.
+
+### Navigation and deferred map controls
+
+Keep the complete site menu available on laptop and desktop widths even when the section rail scrolls. Preserve dialog focus entry, Escape dismissal, and focus restoration. Positioned controls use a layout wrapper so shared button transforms cannot move them outside the viewport. The Travel map prompt remains reachable before loading and after a failed download; the places list stays usable. Article and case-study evidence links own their accessible colors, outside the global link accent override. Scrollable code examples accept keyboard focus.

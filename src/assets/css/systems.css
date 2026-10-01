@@ -229,7 +229,7 @@ html.dark .systems-eyebrow {
     transform 0.25s var(--systems-spring);
 }
 
-html.dark .systems-hero-action {
+html.dark.systems-hero-action {
   background: #000000;
   border-color: rgb(41 151 255 / 28%);
 }
@@ -2395,13 +2395,14 @@ html.dark body.case-study-standalone {
   border-radius: 999px;
   font-size: 0.82rem;
   font-weight: 560;
-  color: var(--systems-accent);
+  color: var(--apple-blue-dark, #0051a8);
   text-decoration: none;
   border: 1px solid rgb(0 113 227 / 22%);
   background: var(--systems-accent-soft);
 }
 
 html.dark .case-study-evidence-bar a {
+  color: var(--systems-accent);
   border-color: rgb(41 151 255 / 28%);
 }
 

@@ -42,8 +42,7 @@ export function initOverlayMenu(options = {}) {
     overlayMenu.removeAttribute('inert');
     menuToggle.setAttribute('aria-expanded', 'true');
     // Move keyboard focus into the menu for accessibility
-    const firstItem =
-      overlayMenu.querySelector('.menu-item, a[href], button:not([disabled])') || menuClose;
+    const firstItem = menuClose;
     if (firstItem && typeof firstItem.focus === 'function') {
       requestAnimationFrame(() => {
         try {
@@ -102,8 +101,26 @@ export function initOverlayMenu(options = {}) {
   });
 
   document.addEventListener('keydown', event => {
+    if (!body.classList.contains('menu-open')) return;
     if (event.key === 'Escape') {
+      event.preventDefault();
       closeMenu();
+      return;
+    }
+    if (event.key !== 'Tab') return;
+    const controls = Array.from(
+      overlayMenu.querySelectorAll('a[href], button:not([disabled])')
+    ).filter(control => control.getClientRects().length > 0);
+    const first = controls[0];
+    const last = controls[controls.length - 1];
+    if (!first || !last) return;
+    const outside = !overlayMenu.contains(documentRef.activeElement);
+    if (event.shiftKey && (documentRef.activeElement === first || outside)) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && (documentRef.activeElement === last || outside)) {
+      event.preventDefault();
+      first.focus();
     }
   });
 }

@@ -60,7 +60,7 @@ function renderCaseStudyBody(cs) {
         <a class="monitor-page-nav__home" href="${ASSET_PREFIX}/" aria-label="Home">
           <img src="${ASSET_PREFIX}/assets/images/profile-icon.png" alt="" width="28" height="28" />
         </a>
-        <a class="monitor-page-nav__back" href="${ASSET_PREFIX}/systems#projects">
+        <a class="monitor-page-nav__back" href="${ASSET_PREFIX}/systems.html#projects" aria-label="Back to Systems notebook">
           <i class="fas fa-chevron-left" aria-hidden="true"></i>
           <span>Notebook</span>
         </a>

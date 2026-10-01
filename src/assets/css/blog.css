@@ -1530,8 +1530,8 @@ html.dark .article-body h2 {
   font-size: 0.86em !important;
   font-weight: 600 !important;
   border: 1px solid #d1d1d6 !important;
-  color: #0071e3 !important;
-  -webkit-text-fill-color: #0071e3 !important;
+  color: var(--apple-blue-dark, #0051a8) !important;
+  -webkit-text-fill-color: var(--apple-blue-dark, #0051a8) !important;
 }
 
 html.dark .article-inline-code {
@@ -1614,7 +1614,7 @@ html.dark .article-blockquote {
 }
 
 .article-link {
-  color: #0071e3;
+  color: var(--apple-blue-dark, #0051a8);
   text-decoration: none;
   font-weight: 500;
   border-bottom: 1px dashed rgba(0, 113, 227, 0.4);
@@ -2205,7 +2205,7 @@ html.dark .article-callout--source .article-callout__label {
 .article-callout__label {
   display: inline-block;
   margin-bottom: 0.35rem;
-  color: #0071e3;
+  color: var(--apple-blue-dark, #0051a8);
   font-size: 0.7rem;
   font-weight: 780;
   letter-spacing: 0.07em;
@@ -3977,7 +3977,7 @@ html.dark .article-framework li::before {
 }
 
 .article-evidence-nav a {
-  color: var(--apple-blue);
+  color: var(--apple-blue-dark, #0051a8);
   font-size: 0.86rem;
   font-weight: 650;
   text-decoration: underline;

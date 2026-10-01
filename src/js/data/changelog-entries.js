@@ -51,6 +51,24 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'sitewide-navigation-accessibility-october-2026',
+    date: '2026-10-01',
+    type: 'fix',
+    title: 'Sitewide navigation, accessibility, and reliable travel controls',
+    summary:
+      'Audit primary pages in both themes and screen sizes, expose the complete desktop menu, restore the travel map load prompt and download retries, correct article and case-study contrast, add keyboard access to code blocks, repair RSS and sitemap URLs, and synchronize writing and test counts.',
+    tags: ['design', 'blog', 'other'],
+    sha: null,
+    commitVerified: false,
+    status: 'unreleased',
+    model: 'GPT-6 / Codex',
+    ide: 'Codex desktop',
+    purpose:
+      'Sitewide browser audit, accessible interactions, publication routes, and responsive design',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
     id: 'original-publisher-blog-media-september-2026',
     date: '2026-09-30',
     type: 'improvement',

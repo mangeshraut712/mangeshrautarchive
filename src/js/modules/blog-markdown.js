@@ -319,7 +319,7 @@ export function parseBlogContent(content, options = {}) {
                 <i class="fas fa-copy" aria-hidden="true"></i> <span>Copy</span>
               </button>
             </div>
-            <pre class="article-code-block"><code class="language-${escapeHTML(lang || 'text')}">${escapedCode}</code></pre>
+            <pre class="article-code-block" tabindex="0" aria-label="Scrollable code example"><code class="language-${escapeHTML(lang || 'text')}">${escapedCode}</code></pre>
           </div>
         `);
       }

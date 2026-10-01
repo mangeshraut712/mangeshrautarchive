@@ -565,7 +565,7 @@ async function generateFeeds(distDir) {
 
   const rssItems = posts
     .map(post => {
-      const postUrl = `${siteUrl}/blog/${post.id}`;
+      const postUrl = `${siteUrl}/blog/${post.id}.html`;
       return `    <item>
       <title>${escapeXml(post.title)}</title>
       <link>${postUrl}</link>
@@ -593,7 +593,7 @@ ${rssItems}
 
   const atomEntries = posts
     .map(post => {
-      const postUrl = `${siteUrl}/blog/${post.id}`;
+      const postUrl = `${siteUrl}/blog/${post.id}.html`;
       return `  <entry>
     <title>${escapeXml(post.title)}</title>
     <link href="${postUrl}" />
@@ -638,21 +638,21 @@ async function generateSitemap(distDir) {
   // and pollute Search Console. Standalone /blog and /case-studies pages are the source of truth.
   const staticPages = [
     { loc: `${siteUrl}/`, lastmod: today, changefreq: 'weekly', priority: '1.0' },
-    { loc: `${siteUrl}/travel`, lastmod: today, changefreq: 'monthly', priority: '0.8' },
-    { loc: `${siteUrl}/monitor`, lastmod: today, changefreq: 'daily', priority: '0.6' },
-    { loc: `${siteUrl}/systems`, lastmod: today, changefreq: 'weekly', priority: '0.75' },
-    { loc: `${siteUrl}/uses`, lastmod: today, changefreq: 'monthly', priority: '0.5' },
-    { loc: `${siteUrl}/contact`, lastmod: today, changefreq: 'monthly', priority: '0.8' },
-    { loc: `${siteUrl}/changelog`, lastmod: today, changefreq: 'weekly', priority: '0.55' },
-    { loc: `${siteUrl}/blog`, lastmod: latestPostDate, changefreq: 'weekly', priority: '0.8' },
+    { loc: `${siteUrl}/travel.html`, lastmod: today, changefreq: 'monthly', priority: '0.8' },
+    { loc: `${siteUrl}/monitor.html`, lastmod: today, changefreq: 'daily', priority: '0.6' },
+    { loc: `${siteUrl}/systems.html`, lastmod: today, changefreq: 'weekly', priority: '0.75' },
+    { loc: `${siteUrl}/uses.html`, lastmod: today, changefreq: 'monthly', priority: '0.5' },
+    { loc: `${siteUrl}/contact.html`, lastmod: today, changefreq: 'monthly', priority: '0.8' },
+    { loc: `${siteUrl}/changelog.html`, lastmod: today, changefreq: 'weekly', priority: '0.55' },
+    { loc: `${siteUrl}/blog/`, lastmod: latestPostDate, changefreq: 'weekly', priority: '0.8' },
     ...caseStudies.map(cs => ({
-      loc: `${siteUrl}/case-studies/${cs.slug}`,
+      loc: `${siteUrl}/case-studies/${cs.slug}.html`,
       lastmod: today,
       changefreq: 'monthly',
       priority: '0.7',
     })),
     ...posts.map(post => ({
-      loc: `${siteUrl}/blog/${post.id}`,
+      loc: `${siteUrl}/blog/${post.id}.html`,
       lastmod: post.updatedAt || post.date || today,
       changefreq: 'monthly',
       priority: '0.65',

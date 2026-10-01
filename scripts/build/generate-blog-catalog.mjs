@@ -26,3 +26,14 @@ await writeFile(
   })
 );
 console.log(`Generated blog catalogue: ${catalog.length} posts`);
+
+const summaryPath = resolve(repoRoot, 'src/js/data/blog-catalog-summary.js');
+await writeFile(
+  summaryPath,
+  await prettier.format(
+    `// Generated from blog-data.js by npm run assets:blog-catalog.
+export const BLOG_POST_COUNT = ${catalog.length};
+`,
+    { ...prettierConfig, parser: 'babel' }
+  )
+);

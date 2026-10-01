@@ -254,10 +254,10 @@ Full map: [docs/STRUCTURE.md](docs/STRUCTURE.md).
 
 Both test suites must pass before any merge to `main`:
 
-| Suite | Runner     | Command                     | Coverage                                  |
-| ----- | ---------- | --------------------------- | ----------------------------------------- |
-| API   | pytest     | `npm run test:api`          | 184 tests — FastAPI endpoints, middleware |
-| E2E   | Playwright | `npm run test:e2e:critical` | Critical user journeys on Desktop Chrome  |
+| Suite | Runner     | Command                     | Coverage                                    |
+| ----- | ---------- | --------------------------- | ------------------------------------------- |
+| API   | pytest     | `npm run test:api`          | 184 tests — FastAPI endpoints, middleware   |
+| E2E   | Playwright | `npm run test:e2e:critical` | 11 critical user journeys on Desktop Chrome |
 
 The broader browser suite remains available through `npm run test:e2e:all` across 16 configured projects.
 

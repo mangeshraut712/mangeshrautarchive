@@ -1329,7 +1329,10 @@ function loadMapLibre() {
     script.async = true;
     script.dataset.maplibreLoader = '1';
     script.onload = resolve;
-    script.onerror = () => reject(new Error('MapLibre failed to load'));
+    script.onerror = () => {
+      script.remove();
+      reject(new Error('MapLibre failed to load'));
+    };
     document.head.appendChild(script);
   });
 }
@@ -1391,6 +1394,8 @@ async function initMap() {
   state.map.on('load', () => {
     state.ready = true;
     document.getElementById('map-container')?.setAttribute('data-map-ready', 'true');
+    document.getElementById('map-container')?.setAttribute('aria-busy', 'false');
+    document.getElementById('travel-map-prompt')?.setAttribute('hidden', '');
     const loadBtn = document.getElementById('travel-map-load');
     if (loadBtn) {
       loadBtn.setAttribute('hidden', '');
@@ -1422,6 +1427,8 @@ function scheduleMapInit() {
     mapContainer?.setAttribute('aria-busy', 'true');
     if (loadButton) loadButton.disabled = true;
     if (loadLabel) loadLabel.textContent = 'Loading interactive map…';
+    const status = document.getElementById('travel-map-prompt-status');
+    if (status) status.textContent = 'Connecting to the map. The places list is ready to explore.';
 
     state.mapInitPromise = initMap().catch(error => {
       const message = error?.message || 'Map initialization failed';
@@ -1429,6 +1436,8 @@ function scheduleMapInit() {
       mapContainer?.setAttribute('aria-busy', 'false');
       if (loadButton) loadButton.disabled = false;
       if (loadLabel) loadLabel.textContent = 'Retry interactive map';
+      if (status)
+        status.textContent = 'The map could not load. You can retry or explore the places list.';
       state.mapInitPromise = null;
       if (!mapWarningMessages.has(message)) {
         mapWarningMessages.add(message);

@@ -44,8 +44,8 @@ export const LIGHTHOUSE_VERCEL_GATES = {
 };
 
 export const TEST_COUNTS = {
-  pytest: 182,
-  criticalBrowser: 6,
+  pytest: 184,
+  criticalBrowser: 11,
   playwrightProjects: 16,
 };
 
@@ -224,7 +224,7 @@ export const usesCatalog = [
     id: 'fonts',
     label: 'Fonts',
     icon: 'fa-font',
-    blurb: 'System-first typography with SF Pro for UI and Minion Pro for long-form reading.',
+    blurb: 'One system font family across interface controls, cards, and long-form reading.',
     items: [
       {
         name: 'SF Pro (Display & Text)',
@@ -233,14 +233,14 @@ export const usesCatalog = [
         featured: true,
       },
       {
-        name: 'Minion Pro / Editorial Serif',
-        note: 'Editorial serif stack for long-form About Me narrative and technical writings.',
+        name: 'SF Pro Text / System Sans',
+        note: 'Readable body text for the About narrative and technical articles.',
         tag: 'Editorial',
         featured: true,
       },
       {
-        name: 'Inter (fallback)',
-        note: 'Cross-platform clean fallback when SF Pro is unavailable.',
+        name: 'Helvetica / Arial (fallback)',
+        note: 'Native sans-serif fallback when SF Pro is unavailable.',
         tag: 'Fallback',
       },
     ],

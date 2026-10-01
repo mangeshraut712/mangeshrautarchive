@@ -1854,7 +1854,9 @@ body:not(.error-page)
         .changelog-entry__title-link
       ):not(.changelog-rail__link):not(.changelog-entry__commit):not(.support-coffee-btn):not(
         .support-stripe-btn
-      ):not(.support-paypal-btn)
+      ):not(.support-paypal-btn):not(.article-link):not(.article-evidence-nav a):not(
+        .case-study-evidence-bar a
+      )
   ),
 body:not(.error-page) .link,
 body:not(.error-page) .text-blue {
@@ -1876,7 +1878,9 @@ html.dark
         .changelog-entry__title-link
       ):not(.changelog-rail__link):not(.changelog-entry__commit):not(.support-coffee-btn):not(
         .support-stripe-btn
-      ):not(.support-paypal-btn)
+      ):not(.support-paypal-btn):not(.article-link):not(.article-evidence-nav a):not(
+        .case-study-evidence-bar a
+      )
   ),
 html.dark body:not(.error-page) .link,
 html.dark body:not(.error-page) .text-blue {

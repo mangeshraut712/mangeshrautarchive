@@ -300,10 +300,13 @@
           aria-busy="false"
           aria-label="World travel map with selectable countries and cities"
         ></div>
-        <button id="travel-map-load" class="travel-map-load" type="button">
-          <i class="fas fa-globe" aria-hidden="true"></i>
-          <span data-map-load-label>Load interactive map</span>
-        </button>
+        <div class="travel-map-prompt" id="travel-map-prompt">
+          <button id="travel-map-load" class="travel-map-load" type="button">
+            <i class="fas fa-globe" aria-hidden="true"></i>
+            <span data-map-load-label>Load interactive map</span>
+          </button>
+          <p id="travel-map-prompt-status" role="status">Explore the places on a world map.</p>
+        </div>
       </div>
 
       <!-- ─── UI Overlay ─── -->

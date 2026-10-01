@@ -15,6 +15,7 @@ import {
   writingTopics,
   whoburnedmoreProfile,
 } from './engineering-showcase-data.js';
+import { BLOG_POST_COUNT } from '../data/blog-catalog-summary.js';
 import { caseStudies, renderCaseStudyEvidenceRow } from './case-studies-data.js';
 import { mountArchitectureDiagrams, remountArchPanel } from './systems-arch-diagrams.js';
 import { observeScrollAnimations } from './scroll-animations.js';
@@ -338,7 +339,7 @@ function renderWriting() {
     .join('');
 
   const articleStat = heroStats.find(s => s.href === '#writing');
-  const articleCount = articleStat ? articleStat.value : '16';
+  const articleCount = articleStat ? articleStat.value : String(BLOG_POST_COUNT);
 
   root.innerHTML = `
     <div class="systems-writing-container">
@@ -351,11 +352,11 @@ function renderWriting() {
           Technical Field Notes, Distributed Systems &amp; Agentic AI
         </h3>
         <p class="systems-writing-summary">
-          Deep-dive technical essays covering Spring Boot, AWS event-driven architectures, agentic AI workflows, LLM token optimization, and high-throughput systems design. Canonical articles, interactive filters, and newsletter subscription are hosted on the main portfolio.
+          Deep-dive technical essays covering Spring Boot, AWS event-driven architectures, agentic AI workflows, LLM token optimization, and high-throughput systems design. The complete articles, original sources, and monthly archive are available in the journal.
         </p>
         <div class="systems-writing-footer">
-          <a class="systems-writing-link" href="index.html#blog">View all ${escapeHtml(articleCount)} articles on homepage →</a>
-          <a class="systems-writing-link" href="blog/index.html">Browse blog index →</a>
+          <a class="systems-writing-link" href="blog/">Read all ${escapeHtml(articleCount)} articles →</a>
+          <a class="systems-writing-link" href="index.html#blog">Latest writing on the portfolio →</a>
         </div>
       </article>
       <div class="systems-writing-topics-section">

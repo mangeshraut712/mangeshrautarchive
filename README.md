@@ -319,6 +319,7 @@ Current documentation pass:
 | Gemini 3.8 Flash / Google Antigravity | Eager section observer registration & Playwright CI resilience: decouple section activation from window.onload, add read button polling, and fix whoburnedmore launchd sync Node 24 path    | Unavailable from the active runtime                            |
 | GPT-6 / Codex                         | Correct the monthly blog archive, research September Apple and OpenAI event articles, create matching editorial covers, and preserve publication provenance                                 | Exact variant, reasoning mode, and token usage unavailable     |
 | GPT-6 / Codex                         | Audit all blog media, replace generated covers with original publisher assets, add provenance and attribution, and verify responsive rendering                                              | Exact variant, reasoning mode, and token usage unavailable     |
+| GPT-6 / Codex                         | Audit the entire website, repair laptop navigation and travel map retries, improve reading accessibility, and synchronize publication routes and public metrics                             | Exact variant, reasoning mode, and token usage unavailable     |
 
 The contact calendar displays a dated 2026 snapshot of the visible Apple Calendar sources on the author's Mac. To refresh it on macOS after granting Calendar access, run `npm run sync:apple-calendar -- --year=2026 --include-notes`, review the generated public `src/js/data/apple-calendar-snapshot.js`, and deploy the change. The import excludes the hidden Luma calendar and collapses identical occurrences. Website reminders are saved only in the current browser; they do not write back to Apple Calendar. The Kalnirnay link opens the official app page and does not import its almanac data.
 
@@ -426,3 +427,7 @@ Released under the [MIT License](LICENSE). Citation metadata is available in
 [Back to top](#mangesh-raut--agentic-full-stack-portfolio)
 
 </div>
+
+### October 2026 sitewide verification
+
+The site audit covers the homepage, Systems, Monitor, Travel, Uses, Changelog, recovery pages, blog archive, 18 articles, and five case studies. The release adds desktop menu and map-download retry regressions to the critical suite: **184 API tests and 11 critical browser journeys**. See [the audit record](docs/SITE_AUDIT_2026-10-01.md) for scope and verification limits.

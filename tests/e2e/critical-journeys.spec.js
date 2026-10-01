@@ -175,3 +175,45 @@ test('mobile homepage fits without horizontal overflow', async ({ page }) => {
     .poll(() => page.evaluate(() => document.documentElement.scrollWidth - innerWidth))
     .toBeLessThanOrEqual(1);
 });
+
+test('laptop navigation exposes every page and restores keyboard focus', async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await gotoSite(page, '/');
+  const menu = page.getByRole('button', { name: 'Open navigation menu' });
+  await expect(menu).toBeVisible();
+  await menu.click();
+  const dialog = page.getByRole('dialog', { name: 'Site navigation' });
+  await expect(dialog).toBeVisible();
+  await expect(dialog.getByRole('link', { name: 'Uses', exact: true })).toBeVisible();
+  await expect(dialog.getByRole('link', { name: 'Changelog', exact: true })).toBeVisible();
+  await expect(dialog.getByRole('button', { name: 'Close navigation menu' })).toBeFocused();
+  await page.keyboard.press('Shift+Tab');
+  await expect(dialog.getByRole('link', { name: 'Changelog', exact: true })).toBeFocused();
+  await page.keyboard.press('Tab');
+  await expect(dialog.getByRole('button', { name: 'Close navigation menu' })).toBeFocused();
+  await page.keyboard.press('Escape');
+  await expect(dialog).toBeHidden();
+  await expect(menu).toBeFocused();
+});
+
+test('travel map remains reachable and can retry a failed download', async ({ page }) => {
+  let downloadAttempts = 0;
+  await page.route('**/maplibre-gl.js', route => {
+    downloadAttempts += 1;
+    return route.abort('failed');
+  });
+  await page.setViewportSize({ width: 1440, height: 950 });
+  await gotoSite(page, '/travel.html');
+  const load = page.locator('#travel-map-load');
+  await expect(load).toBeInViewport();
+  await load.click();
+  await expect(load).toHaveText(/Retry interactive map/);
+  await expect(page.locator('#travel-map-prompt-status')).toContainText('places list');
+  await expect(load).toBeEnabled();
+  await load.click();
+  await expect.poll(() => downloadAttempts).toBe(2);
+  await expect(load).toHaveText(/Retry interactive map/);
+  await expect(page.locator('#map-container')).toHaveAttribute('aria-busy', 'false');
+  await page.setViewportSize({ width: 390, height: 844 });
+  await expect(load).toBeInViewport();
+});

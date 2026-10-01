@@ -3,7 +3,7 @@
  * Data: usesCatalog from portfolio-public-data.js
  */
 
-import { usesCatalog, getUsesStats } from '../data/portfolio-public-data.js';
+import { usesCatalog, getUsesStats, TEST_COUNTS } from '../data/portfolio-public-data.js';
 import './control-center.js';
 import { escapeHtml } from '../utils/escape-html.js';
 
@@ -385,6 +385,10 @@ function initKeynoteDeck() {
 
 export function initUsesPage() {
   if (!document.getElementById('uses-grid')) return;
+  const testMetric = document.querySelector('[data-quality-test-count]');
+  if (testMetric) {
+    testMetric.textContent = `${TEST_COUNTS.pytest} + ${TEST_COUNTS.criticalBrowser}`;
+  }
   initKeynoteDeck();
   renderStats();
   renderFeatured();

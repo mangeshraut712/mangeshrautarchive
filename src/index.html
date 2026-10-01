@@ -1688,6 +1688,7 @@ html.dark #home .hero-name-text {
         parts.overlay.setAttribute('aria-hidden', 'false');
         parts.overlay.removeAttribute('inert');
         parts.menuButton.setAttribute('aria-expanded', 'true');
+        if (parts.closeButton) parts.closeButton.focus({ preventScroll: true });
       }
 
       function closeMenu() {
@@ -1706,6 +1707,7 @@ html.dark #home .hero-name-text {
         parts.overlay.setAttribute('aria-hidden', 'true');
         parts.overlay.setAttribute('inert', '');
         parts.menuButton.setAttribute('aria-expanded', 'false');
+        parts.menuButton.focus({ preventScroll: true });
         var restore = function () {
           window.scrollTo(0, scrollY);
           if (Math.abs(window.scrollY - scrollY) > 2) {
@@ -1841,6 +1843,30 @@ html.dark #home .hero-name-text {
       document.addEventListener('visibilitychange', function () {
         if (document.visibilityState === 'visible') {
           recoverStuckScroll();
+        }
+      });
+
+      document.addEventListener('keydown', function (event) {
+        var parts = getParts();
+        if (!parts.body || !parts.overlay || !parts.body.classList.contains('menu-open')) return;
+        if (parts.menuButton && parts.menuButton.dataset.overlayBound === 'true') return;
+        if (event.key === 'Escape') {
+          event.preventDefault();
+          closeMenu();
+          return;
+        }
+        if (event.key !== 'Tab') return;
+        var controls = Array.from(parts.overlay.querySelectorAll('a[href], button:not([disabled])'))
+          .filter(function (control) { return control.getClientRects().length > 0; });
+        var first = controls[0];
+        var last = controls[controls.length - 1];
+        if (!first || !last) return;
+        if (event.shiftKey && (document.activeElement === first || !parts.overlay.contains(document.activeElement))) {
+          event.preventDefault();
+          last.focus();
+        } else if (!event.shiftKey && (document.activeElement === last || !parts.overlay.contains(document.activeElement))) {
+          event.preventDefault();
+          first.focus();
         }
       });
 

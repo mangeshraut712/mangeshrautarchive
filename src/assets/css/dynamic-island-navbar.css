@@ -389,11 +389,11 @@ html.dark .global-nav.dynamic-island .nav-link::after {
   line-height: 1 !important;
 }
 
-/* Default: hamburger is mobile/tablet only — never show beside desktop rail */
+/* Keep the complete site menu available when the desktop rail clips later links. */
 .global-nav.dynamic-island .menu-toggle-button,
 .global-nav.dynamic-island #menu-btn,
 #global-nav.global-nav.dynamic-island #menu-btn {
-  display: none !important;
+  display: flex !important;
 }
 
 html.dark .global-nav.dynamic-island .theme-toggle-nav,
@@ -684,22 +684,16 @@ html.dark .global-nav.dynamic-island #menu-btn:focus-visible {
     overflow-x: auto !important;
   }
 
-  .global-nav.dynamic-island .menu-toggle-button,
-  .global-nav.dynamic-island #menu-btn,
   #global-nav.global-nav.dynamic-island #menu-btn {
-    display: none !important;
-    visibility: hidden !important;
-    pointer-events: none !important;
-    width: 0 !important;
-    min-width: 0 !important;
-    height: 0 !important;
-    min-height: 0 !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    border: 0 !important;
-    overflow: hidden !important;
-    position: absolute !important;
-    opacity: 0 !important;
+    display: flex !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    opacity: 1 !important;
+    position: relative !important;
+    width: 44px !important;
+    min-width: 44px !important;
+    height: 44px !important;
+    min-height: 44px !important;
   }
 
   /* If overlay was left open from a resize, keep it off-screen chrome-wise */

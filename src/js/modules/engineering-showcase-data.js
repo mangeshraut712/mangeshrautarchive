@@ -10,6 +10,7 @@ import {
   usesStack,
   WEBMCP_TOOL_COUNT,
 } from '../data/portfolio-public-data.js';
+import { BLOG_POST_COUNT } from '../data/blog-catalog-summary.js';
 import { BRAND_TAGLINE, portfolioCaseStudy } from './case-studies-data.js';
 import { whoburnedmoreProfile } from '../data/whoburnedmore-data.js';
 
@@ -33,7 +34,7 @@ export const heroStats = [
     label: 'AI tokens burned',
     href: '#tokenization',
   },
-  { value: '16', unit: '', label: 'Technical articles', href: '#writing' },
+  { value: String(BLOG_POST_COUNT), unit: '', label: 'Technical articles', href: '#writing' },
   { value: '51', unit: '', label: 'Public repositories', href: '#open-source' },
   { value: 'Live', unit: '', label: 'Production monitor', href: 'monitor.html' },
 ];
