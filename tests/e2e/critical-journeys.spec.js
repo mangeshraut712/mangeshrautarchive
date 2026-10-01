@@ -183,6 +183,17 @@ test('mobile homepage fits and floating controls stay in a vertical stack', asyn
       await expect
         .poll(() => page.evaluate(() => document.documentElement.scrollWidth - innerWidth))
         .toBeLessThanOrEqual(1);
+      await page.mouse.move(0, 0);
+      await expect
+        .poll(() =>
+          page
+            .locator('.a11y-toolbar__main, #website-share-toggle, #chatbot-toggle, #go-to-top')
+            .evaluateAll(controls => {
+              const positions = controls.map(control => control.getBoundingClientRect().x);
+              return Math.max(...positions) - Math.min(...positions);
+            })
+        )
+        .toBeLessThanOrEqual(1);
       const bounds = await page
         .locator('.a11y-toolbar__main, #website-share-toggle, #chatbot-toggle, #go-to-top')
         .evaluateAll(controls =>

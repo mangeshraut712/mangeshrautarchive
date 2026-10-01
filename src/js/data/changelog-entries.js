@@ -59,7 +59,7 @@ export const changelogEntries = [
     type: 'fix',
     title: 'Restore the vertical mobile utility stack and keep panels in view',
     summary:
-      'Remove the narrow-screen rule that laid out accessibility, share, chat, and back-to-top controls horizontally. Restore safe-area-aware vertical spacing and 44-pixel touch targets. Keep accessibility tools and the Liquid Glass panel beside the stack with bounded scrolling so portrait and landscape screens retain all controls.',
+      'Remove the narrow-screen rule that laid out accessibility, share, chat, and back-to-top controls horizontally. Restore safe-area-aware vertical spacing and 44-pixel touch targets. Keep accessibility tools and the Liquid Glass panel beside the stack with bounded scrolling so portrait and landscape screens retain all controls. Regression checks wait for hover animations to settle before measuring alignment.',
     tags: ['design', 'other'],
     sha: '8630cb3bf0e856685e7b4718dc70a31cf18e858c',
     link: `${CHANGELOG_REPO}/commit/8630cb3bf0e856685e7b4718dc70a31cf18e858c`,
