@@ -51,6 +51,23 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'professional-readme-october-2026',
+    date: '2026-10-01',
+    type: 'improvement',
+    title: 'Professional repository overview and contributor onboarding',
+    summary:
+      'Reorganize the README around the live portfolio, real screenshots, product surfaces, architecture, local setup, quality evidence, deployment, security, and documentation. Preserve historical contributor attribution in a dedicated archive and distinguish coding-agent provenance from AssistMe runtime configuration.',
+    tags: ['other'],
+    sha: null,
+    commitVerified: false,
+    model: 'GPT-6 / Codex',
+    ide: 'Codex desktop',
+    purpose: 'Professional GitHub documentation, accurate onboarding, and repository presentation',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+    status: 'unreleased',
+  },
+  {
     id: 'sitewide-navigation-accessibility-october-2026',
     date: '2026-10-01',
     type: 'fix',

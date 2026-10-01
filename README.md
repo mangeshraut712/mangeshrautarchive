@@ -1,433 +1,297 @@
-# Mangesh Raut — Agentic Full-Stack Portfolio
-
 <div align="center">
 
-An open-source portfolio built with vanilla web standards, an agentic AssistMe interface,
-Cloudflare edge services, and a FastAPI compatibility backend.
+# Mangesh Raut · Portfolio
 
-[Live site](https://mangeshraut712.github.io/mangeshrautarchive/) ·
-[Systems](https://mangeshraut712.github.io/mangeshrautarchive/systems) ·
-[Monitor](https://mangeshraut712.github.io/mangeshrautarchive/monitor) ·
-[Changelog](https://mangeshraut712.github.io/mangeshrautarchive/changelog) ·
-[Documentation](docs/README.md)
+**Software engineering, thoughtful design, and AI that can act.**
 
-[![GitHub Pages](https://img.shields.io/github/actions/workflow/status/mangeshraut712/mangeshrautarchive/deploy.yml?branch=main&style=flat-square&logo=githubactions&label=Pages%20CI)](https://github.com/mangeshraut712/mangeshrautarchive/actions/workflows/deploy.yml)
-[![Monitoring](https://img.shields.io/github/actions/workflow/status/mangeshraut712/mangeshrautarchive/post-deploy-monitoring.yml?branch=main&style=flat-square&logo=githubactions&label=Monitoring)](https://github.com/mangeshraut712/mangeshrautarchive/actions/workflows/post-deploy-monitoring.yml)
-[![Node](https://img.shields.io/badge/Node-%E2%89%A522%20%3C27-339933?style=flat-square&logo=node.js&logoColor=white)](.nvmrc)
-[![Python](https://img.shields.io/badge/Python-3.12+-3776ab?style=flat-square&logo=python&logoColor=white)](.python-version)
-[![License](https://img.shields.io/badge/License-MIT-34c759?style=flat-square)](LICENSE)
+An open-source portfolio built with native web standards, an Apple-inspired interface,
+and an agentic assistant. Explore the work, inspect the systems, or run the entire project locally.
+
+<p>
+  <a href="https://mangeshraut712.github.io/mangeshrautarchive/">Explore the portfolio</a> ·
+  <a href="https://mangeshraut712.github.io/mangeshrautarchive/#projects">Projects</a> ·
+  <a href="https://mangeshraut712.github.io/mangeshrautarchive/blog/">Writing</a> ·
+  <a href="docs/README.md">Documentation</a>
+</p>
+<p>
+  <a href="https://github.com/mangeshraut712/mangeshrautarchive/actions/workflows/deploy.yml"><img src="https://img.shields.io/github/actions/workflow/status/mangeshraut712/mangeshrautarchive/deploy.yml?branch=main&amp;style=flat-square&amp;label=Pages%20CI" alt="Pages CI"></a>
+  <a href="package.json"><img src="https://img.shields.io/badge/Node-22–26-339933?style=flat-square" alt="Node 22 to 26"></a>
+  <a href=".python-version"><img src="https://img.shields.io/badge/Python-3.12%2B-3776ab?style=flat-square" alt="Python 3.12 or newer"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-0071e3?style=flat-square" alt="MIT license"></a>
+</p>
 
 </div>
 
 <table>
   <tr>
-    <td width="50%"><a href="https://mangeshraut712.github.io/mangeshrautarchive/"><img src="src/assets/images/homepage-light.png" alt="Portfolio homepage in light mode"></a></td>
-    <td width="50%"><a href="https://mangeshraut712.github.io/mangeshrautarchive/"><img src="src/assets/images/homepage-dark.png" alt="Portfolio homepage in dark mode"></a></td>
+    <td width="50%"><a href="https://mangeshraut712.github.io/mangeshrautarchive/"><img src="src/assets/images/homepage-light.png" alt="Real portfolio homepage screenshot in light mode"></a></td>
+    <td width="50%"><a href="https://mangeshraut712.github.io/mangeshrautarchive/"><img src="src/assets/images/homepage-dark.png" alt="Real portfolio homepage screenshot in dark mode"></a></td>
   </tr>
+  <tr><td align="center"><strong>Light. Clear and spacious.</strong></td><td align="center"><strong>Dark. Focused and precise.</strong></td></tr>
 </table>
 
-## What this repository contains
+Existing screenshots of the actual website. Live counters, music, and navigation can change.
 
-`mangeshrautarchive` is the production source for Mangesh Raut's portfolio and public engineering
-notebook. The browser application deliberately avoids a client-framework runtime: pages are
-semantic HTML, modular CSS, and native JavaScript ES modules bundled with esbuild.
+---
 
-The project combines:
+[Experience](#1-the-experience) · [Architecture](#2-how-it-works) ·
+[Run locally](#3-run-locally) · [Quality](#4-engineering-and-verification) ·
+[Contributing](#5-maintenance-and-contribution) · [Documentation](#6-documentation) ·
+[Contact](#7-license-and-contact)
 
-- an Apple-inspired, accessible interface with light, dark, high-contrast, reduced-motion, and
-  mobile states;
-- AssistMe, a streaming portfolio assistant with Markdown, code, math, attachments, voice, memory,
-  and WebMCP actions;
-- project, systems, travel, equipment, changelog, field-note, and live-monitor surfaces;
-- GitHub Pages delivery backed by a Cloudflare Worker for active API traffic;
-- a Python FastAPI backend retained for local development and the optional Vercel surface;
-- automated security, lint, API, critical browser, accessibility, build, and Lighthouse checks.
+## 1. The experience
 
-The primary public surface is
-[GitHub Pages](https://mangeshraut712.github.io/mangeshrautarchive/). The custom Vercel deployment
-is optional and may be disabled; do not use `mangeshraut.pro` as the availability source of truth.
+This repository is the source for Mangesh Raut’s public portfolio: professional background,
+projects, engineering case studies, publications, and writing, alongside the services that power
+AssistMe and the site’s integrations.
 
-## Product surfaces
+| Surface                                                                         | What you can explore                                                                                                            |
+| ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| [Portfolio](https://mangeshraut712.github.io/mangeshrautarchive/)               | Background, skills, experience, education, projects, publications, awards, recommendations, certifications, résumé, and contact |
+| [Projects](https://mangeshraut712.github.io/mangeshrautarchive/#projects)       | GitHub repository cards, real README screenshots, repository facts, filters, and detailed previews                              |
+| [Systems](https://mangeshraut712.github.io/mangeshrautarchive/systems.html)     | Architecture, engineering workflows, case studies, and technical decisions                                                      |
+| [Monitor](https://mangeshraut712.github.io/mangeshrautarchive/monitor.html)     | Service health, operational telemetry, and runtime diagnostics                                                                  |
+| [Writing](https://mangeshraut712.github.io/mangeshrautarchive/blog/)            | 18 articles across January–September 2026, with two articles per month, source references, and credited media                   |
+| [Travel](https://mangeshraut712.github.io/mangeshrautarchive/travel.html)       | Interactive travel atlas, route views, location stories, and a globe loaded on request                                          |
+| [Uses](https://mangeshraut712.github.io/mangeshrautarchive/uses.html)           | Development tools, hardware, AI workflow, and the stack behind the site                                                         |
+| [Changelog](https://mangeshraut712.github.io/mangeshrautarchive/changelog.html) | Releases, fixes, model attribution, and verified commit links                                                                   |
 
-| Route                                                                         | Purpose                                                                         |
-| ----------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
-| [`/`](https://mangeshraut712.github.io/mangeshrautarchive/)                   | Portfolio, experience, projects, live music, contact, calendar, and AssistMe    |
-| [`/#projects`](https://mangeshraut712.github.io/mangeshrautarchive/#projects) | GitHub project gallery with README imagery, live repository facts, and previews |
-| [`/about`](https://mangeshraut712.github.io/mangeshrautarchive/about)         | Narrative profile and compact career summary                                    |
-| [`/systems`](https://mangeshraut712.github.io/mangeshrautarchive/systems)     | Architecture notebook, engineering stack, and system explanations               |
-| [`/monitor`](https://mangeshraut712.github.io/mangeshrautarchive/monitor)     | Deployment, service, security, and telemetry status                             |
-| [`/travel`](https://mangeshraut712.github.io/mangeshrautarchive/travel)       | Interactive travel atlas and place details                                      |
-| [`/uses`](https://mangeshraut712.github.io/mangeshrautarchive/uses)           | Tools, hardware, software, and workflow presentation                            |
-| [`/changelog`](https://mangeshraut712.github.io/mangeshrautarchive/changelog) | Compact release timeline with expandable implementation details                 |
-| [`/blog/`](https://mangeshraut712.github.io/mangeshrautarchive/blog/)         | Technical field notes rendered from repository content                          |
+### AssistMe: an assistant inside the portfolio
 
-## GitHub project gallery
+AssistMe connects conversation to the website. It supports streaming responses, Markdown,
+syntax-highlighted code, mathematical notation, attachments, voice interfaces, conversation memory,
+and browser-side WebMCP actions for navigating and retrieving portfolio information.
 
-The [project gallery](https://mangeshraut712.github.io/mangeshrautarchive/#projects)
-shows each public repository once. Its Featured view leads with selected product work; search,
-filters, and sorting remain available for the full collection. Cards use repository README images
-when a suitable source exists. Other cards show labeled conceptual repository maps rather than
-invented product screenshots. Forks are identified on their cards.
+- **Grounded answers:** portfolio context is assembled from repository data and site knowledge.
+- **Tools:** browser actions are implemented in [agentic-actions.js](src/js/modules/agentic-actions.js).
+- **Model routing:** provider selection is configured in the backend and Worker; the FastAPI router
+  uses the configured OpenRouter primary model, currently `grok-4.3`.
+- **Offline development:** the local FastAPI backend provides canned portfolio answers when
+  `OPENROUTER_API_KEY` is absent. Real model responses require provider credentials.
 
-At the **29 September 2026** audit, the gallery showed 61 public repositories: 39 owned and 22
-forks. **31 owned repositories** and **two forks** used images referenced in their READMEs; the
-other 28 cards used conceptual maps. All 33 image files were checked against their README
-references and the hashes in the [image manifest](src/assets/images/repo-screenshots/manifest.json).
-The [coverage audit](docs/REPO_SCREENSHOT_COVERAGE.md) explains the remaining owned repositories
-and why some existing README media was not selected. Counts and activity shown on the site can
-change as GitHub repositories change.
+Model availability and integration behavior depend on runtime configuration. See the
+[API guide](docs/API.md) for routes, environments, and differences between deployments.
 
-## Architecture
+### Project and editorial integrity
+
+Repository cards use GitHub metadata and available README screenshots. Repositories without a
+suitable screenshot can show a clearly labeled conceptual illustration. Coverage counts are dated
+snapshots, documented in the [repository screenshot audit](docs/REPO_SCREENSHOT_COVERAGE.md) and
+[asset manifest](src/assets/images/repo-screenshots/manifest.json).
+
+Blog media is traced to original publishers where available, with visible credits and a documented
+conceptual fallback. The [media audit](docs/BLOG_MEDIA_AUDIT.md) and
+[source manifest](src/assets/data/blog-media-sources.json) record provenance and verification.
+
+### Design and accessibility
+
+The interface follows an Apple-inspired visual language: system typography, restrained spacing,
+blue primary actions, translucent surfaces, and coordinated light and dark themes. Shared design
+rules include visible keyboard focus, circular red close controls, reduced-motion support,
+accessible contrast, and layouts without horizontal overflow.
+
+The [design system](docs/DESIGN.md) defines the tokens and component behavior. This is an independent
+portfolio; it is not an Apple product or an Apple-affiliated project.
+
+## 2. How it works
 
 ```mermaid
-flowchart LR
-  Browser[Browser<br>HTML + CSS + ESM] --> Pages[GitHub Pages<br>static production]
-  Browser --> Worker[Cloudflare Worker<br>active API surface]
-  Browser -. optional/local .-> FastAPI[FastAPI<br>Python 3.12+]
-  Worker --> OpenRouter[OpenRouter<br>model routing]
-  Worker --> Services[GitHub · Calendar · Forms<br>Health · Media · Analytics]
-  FastAPI --> OpenRouter
-  Build[Node 22 + esbuild] --> Dist[dist/]
-  Dist --> Pages
-  CI[GitHub Actions] --> Build
-  CI --> Tests[pytest · critical Playwright<br>Security · Lighthouse]
+flowchart TD
+    Visitor[Browser · HTML / CSS / JavaScript]
+    Pages[GitHub Pages · static portfolio]
+    Worker[Cloudflare Worker · active edge API]
+    Local[FastAPI · local and optional Vercel backend]
+    Models[OpenRouter · configured model providers]
+    Services[GitHub / media / calendar integrations]
+    Build[esbuild + asset generators]
+    CI[GitHub Actions · checks and deployment]
+    Visitor --> Pages
+    Visitor --> Worker
+    Visitor --> Local
+    Worker --> Models
+    Local --> Models
+    Worker --> Services
+    Local --> Services
+    Build --> CI
+    CI --> Pages
 ```
 
-![Full system architecture](src/assets/images/diagrams/system-architecture.svg)
+GitHub Pages serves the production frontend. The active Cloudflare Worker provides edge API
+services. FastAPI powers local development and the optional Vercel deployment path. Static hosting
+does not execute Python; API requests use the configured service endpoint.
 
-More diagrams:
+| Layer           | Implementation                                                       | Source                                           |
+| --------------- | -------------------------------------------------------------------- | ------------------------------------------------ |
+| Interface       | Semantic HTML, vanilla CSS, native JavaScript ES modules             | [src/](src/)                                     |
+| Styling         | CSS custom properties, system font stacks, Tailwind v4 build output  | [src/assets/css/](src/assets/css/)               |
+| Build           | esbuild, generated blog pages, metadata, icons, and optimized assets | [scripts/build/](scripts/build/)                 |
+| Edge services   | Cloudflare Worker                                                    | [workers/assistme-chat/](workers/assistme-chat/) |
+| Python services | FastAPI, route modules, model routing, and integrations              | [api/](api/)                                     |
+| Rich responses  | Marked, DOMPurify, syntax highlighting, and KaTeX                    | [package.json](package.json)                     |
+| Verification    | pytest, Playwright, accessibility checks, and Lighthouse             | [tests/](tests/)                                 |
+| Delivery        | GitHub Actions, Pages, and separate Worker deployment                | [.github/workflows/](.github/workflows/)         |
 
-- [AssistMe and WebMCP workflow](src/assets/images/diagrams/assistme-multimodal-workflow.svg)
-- [CI/CD quality pipeline](src/assets/images/diagrams/ci-cd-quality-pipeline.svg)
-- [Pages, Worker, and optional Vercel topology](src/assets/images/diagrams/dual-host-edge-topology.svg)
-- [Live music and Last.fm flow](src/assets/images/diagrams/spotify-live-scrobble-flow.svg)
+The frontend has no React, Angular, Vue, or Svelte runtime. Tailwind is used during the build;
+component styling lives in vanilla CSS rather than utility classes in HTML.
 
-## Technology
-
-| Layer             | Implementation                                                      |
-| ----------------- | ------------------------------------------------------------------- |
-| Frontend          | Semantic HTML5, vanilla CSS, JavaScript ES modules                  |
-| Build             | Node.js 22, esbuild, Tailwind CSS v4 generation, Sharp              |
-| Active edge API   | Cloudflare Worker, ESM, scheduled health synchronization            |
-| Compatibility API | Python 3.12+, FastAPI, Pydantic v2, Uvicorn                         |
-| AI runtime        | OpenRouter routing with paid, automatic, and free fallback paths    |
-| Rich content      | Marked, DOMPurify, KaTeX, syntax highlighting                       |
-| Testing           | pytest, Playwright, axe-core, Lighthouse                            |
-| Delivery          | GitHub Pages, GitHub Actions, optional Vercel compatibility surface |
-
-Tailwind is a build-time utility generator only. Application markup and components remain vanilla;
-the repository does not ship React, Next.js, Vue, Angular, or Svelte.
-
-## AssistMe model routing
-
-The site's runtime assistant and the coding models used to maintain this repository are separate.
-AssistMe routes requests through OpenRouter:
-
-- portfolio questions prefer `x-ai/grok-4.3` when paid routing is available;
-- broad comparison and synthesis requests use OpenRouter Auto or Fusion routing;
-- simple queries can use Gemini Flash;
-- free Nemotron and Gemma routes keep a zero-credit fallback available;
-- image-bearing requests use a free multimodal path when configured;
-- local development works without an OpenRouter key through the offline fallback.
-
-See [`api/model_router.py`](api/model_router.py), [`api/config.py`](api/config.py), and
-[`docs/API.md`](docs/API.md) for the exact routing and endpoint contracts.
-
-## Repository map
+<details>
+<summary><strong>Repository map</strong></summary>
 
 ```text
-mangeshrautarchive/
-├── src/                       # Browser source and static public files
-│   ├── *.html                 # Page shells
-│   ├── assets/css/            # Tokens, components, page styles, theme layers
-│   ├── assets/images/         # Portfolio media and architecture diagrams
-│   └── js/                    # Core, modules, services, data, utilities, vendor code
-├── workers/assistme-chat/     # Active Cloudflare Worker
-├── api/                       # FastAPI compatibility backend and integrations
-├── scripts/                   # Build, QA, deployment, synchronization, utilities
-├── tests/                     # pytest, Playwright, accessibility tests
-├── docs/                      # Design, architecture, API, plans, contributor docs
-├── .github/workflows/         # CI, deploy, monitoring, release, sync automation
-└── dist/                      # Generated production output
+src/                     Frontend pages, ES modules, styles, media, and public data
+api/                     FastAPI application, routes, model router, and integrations
+workers/assistme-chat/   Cloudflare edge API
+scripts/                 Build, development, QA, security, and deployment tooling
+tests/api/               Python API tests
+tests/e2e/               Browser user journeys and broader regression coverage
+docs/                    Design, architecture, API guides, and audit evidence
+.github/workflows/       CI, publication, monitoring, and data synchronization
+dist/                    Generated production output; ignored by Git
 ```
 
-The complete ownership map lives in [`docs/STRUCTURE.md`](docs/STRUCTURE.md).
+See [STRUCTURE.md](docs/STRUCTURE.md) for the complete directory guide.
 
-## Quick start
+</details>
 
-### Requirements
+## 3. Run locally
 
-- Node.js `>=22 <27` (`.nvmrc` and `.node-version` use 22)
-- Python 3.12+
-- Git
-
-### Install and run
+**Prerequisites:** Git, Node.js `>=22 <27` (Node 22 recommended), Python 3.12+, and
+[uv](https://docs.astral.sh/uv/). The repository’s `.nvmrc` selects Node 22.
 
 ```bash
 git clone https://github.com/mangeshraut712/mangeshrautarchive.git
 cd mangeshrautarchive
 
-npm install --no-audit --no-fund
-
-python3 -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt -r requirements-dev.txt
+npm ci
+uv venv --python 3.12 venv
+uv pip install --python venv/bin/python -r requirements.txt -r requirements-dev.txt
+npx playwright install chromium
 
 npm run doctor:strict
 npm run dev
 ```
 
-Local endpoints:
+| Local service                 | Address                            |
+| ----------------------------- | ---------------------------------- |
+| Portfolio                     | `http://127.0.0.1:4000`            |
+| API health                    | `http://127.0.0.1:8001/api/health` |
+| Interactive API documentation | `http://127.0.0.1:8001/api/docs`   |
 
-- frontend: `http://127.0.0.1:4000`
-- FastAPI: `http://127.0.0.1:8001`
-- OpenAPI: `http://127.0.0.1:8001/docs`
+Use `venv` as the environment directory: the development backend detects its Python interpreter.
+Stop the development server with **Ctrl+C**. To run the configured Desktop Chrome tests, install
+Google Chrome; the Playwright configuration explicitly selects its `chrome` channel.
 
-Secrets are optional for the offline AssistMe fallback. Copy `.env.example` only when you need a
-real integration, keep credentials in an ignored local environment file, and never commit them.
+### Configuration and integrations
 
-## Commands
+A local demo does not require API credentials. For real services, copy `.env.example` to an ignored
+local environment file and fill only the integrations you intend to use.
 
-Commands below come from [`package.json`](package.json).
+- `OPENROUTER_API_KEY` enables real model responses in FastAPI.
+- `OPENROUTER_MODEL` optionally selects the backend model.
+- GitHub, music, health, and calendar services have their own configuration requirements.
+- Google Calendar booking and the local Apple/Outlook `.ics` fallback have different behavior;
+  consult the [API guide](docs/API.md) before configuring them.
 
-| Task                                  | Command                      |
-| ------------------------------------- | ---------------------------- |
-| Verify Node version                   | `npm run check-node`         |
-| Validate layout and stack             | `npm run doctor:strict`      |
-| Start frontend and API                | `npm run dev`                |
-| Start frontend only                   | `npm run dev:frontend`       |
-| Start FastAPI only                    | `npm run dev:backend`        |
-| Build production output               | `npm run build`              |
-| JS/CSS/format gate                    | `npm run check`              |
-| API + critical browser journeys       | `npm test`                   |
-| API tests                             | `npm run test:api`           |
-| Desktop Chrome E2E                    | `npm run test:e2e:chrome`    |
-| Critical Chrome E2E                   | `npm run test:e2e:critical`  |
-| All configured E2E projects           | `npm run test:e2e:all`       |
-| Python lint                           | `npm run lint:python`        |
-| Dependency and secret scan            | `npm run security-check`     |
-| Full production-readiness gate        | `npm run qa:prod-ready`      |
-| Verify remote deployment parity       | `npm run verify:deploy-sync` |
-| Generate private local Codex insights | `npm run insights`           |
+Never commit environment files, credentials, or private calendar data. Browser fallback reminders
+and exported calendar files do not grant access to an Apple account.
 
-Playwright helpers are available through `npm run playwright:mcp`, `npm run playwright:cli`, and
-`npm run playwright:codegen`.
+## 4. Engineering and verification
 
-## Verification model
+| Command                  | Purpose                                                     |
+| ------------------------ | ----------------------------------------------------------- |
+| `npm run dev`            | Start frontend and FastAPI development services             |
+| `npm run dev:frontend`   | Run the frontend with the local API proxy                   |
+| `npm run dev:backend`    | Run FastAPI independently                                   |
+| `npm run doctor:strict`  | Validate repository layout and stack constraints            |
+| `npm run check`          | ESLint, Stylelint, anti-slop checks, and formatting         |
+| `npm test`               | Run API tests and critical browser journeys                 |
+| `npm run test:e2e:all`   | Run the broader suite across 16 configured browser projects |
+| `npm run security-check` | Scan source files for exposed secrets and credentials       |
+| `npm run build`          | Generate production output in `dist/`                       |
+| `npm run qa:surfaces`    | Smoke-check configured deployment surfaces                  |
+| `npm run qa:postdeploy`  | Check configured host availability and commit parity        |
 
-The repository uses several levels of evidence rather than one permanent “all green” claim:
+### Evidence, not permanent guarantees
 
-1. `npm run doctor:strict` verifies repository layout and stack constraints.
-2. `npm run check`, `npm run test:api`, and focused Playwright tests verify local behavior.
-3. `npm run build` verifies the generated `dist/` artifact.
-4. GitHub Actions repeats security, lint, API, critical browser, build, and Lighthouse
-   gates before publishing Pages.
-5. Post-deploy jobs probe the public Pages and Worker surfaces and report optional Vercel status.
+The October 1, 2026 site release passed **184 API tests and 11 critical browser journeys**.
+Its deployment workflow recorded **100 / 100 / 100 / 100** Lighthouse scores for the built homepage
+on desktop and mobile. These are results for that audited release, not a promise about every page
+or future deployment. See the [successful workflow](https://github.com/mangeshraut712/mangeshrautarchive/actions/runs/36818238296)
+and [site audit](docs/SITE_AUDIT_2026-10-01.md) for scope and limitations.
 
-Test counts evolve with the repository. Use the test runner output and the current workflow run as
-the source of truth instead of a fixed badge count in this document.
+Visual review covered the main surfaces in light and dark themes at desktop and mobile widths,
+plus all 18 articles and five case studies. Critical browser coverage includes repository previews,
+article navigation, accessible menus, and travel-map retry behavior.
 
-### Current status snapshot
+### Release path
 
-Verified on **September 27, 2026**:
+1. Run the required local gates: `npm run check`, `npm test`, `npm run security-check`, and `npm run build`.
+2. Commit reviewed changes with a conventional commit message and update release attribution.
+3. Push `main`; verify the matching GitHub Actions runs and Pages publication finish successfully.
+4. Check the deployed routes and asset version. A passing local build alone does not prove deployment.
 
-- GitHub Pages responded with HTTP `200`.
-- `mangeshraut.pro` responded with HTTP `402 DEPLOYMENT_DISABLED`; it is not the active production
-  availability target.
-- GitHub code scanning reported `0` open alerts, `27` fixed alerts, and `84` dismissed alerts.
-- The latest `main` "CI → Deploy to GitHub Pages" and scheduled monitoring runs completed
-  successfully. Individual runs can still fail transiently, so check the live badges and
-  [Actions](https://github.com/mangeshraut712/mangeshrautarchive/actions) before treating a release
-  as green.
-- Portfolio Reach is mirrored from Google Analytics into the Cloudflare Worker snapshot by the
-  scheduled `Portfolio reach sync` workflow, so the public counter reflects real GA4 data.
+GitHub Pages is the primary public host. Vercel is an optional deployment path; its live availability
+must be checked separately. Worker changes follow their dedicated deployment workflow.
 
-Zero open scanner alerts is a dashboard state, not proof that the application is vulnerability-free.
-Dismissed alerts are not equivalent to fixed vulnerabilities.
+## 5. Maintenance and contribution
 
-## Design and accessibility
+Read [CONTRIBUTING.md](CONTRIBUTING.md), [AGENTS.md](AGENTS.md), and the relevant design or architecture
+guide before making changes. Keep fixes focused, preserve the native web stack, and add realistic
+browser coverage when user behavior changes. Use the four local release gates above before submitting.
 
-[`docs/DESIGN.md`](docs/DESIGN.md) is the visual source of truth. Core requirements include:
+### 5.1 Coding agents and provenance
 
-- Apple system typography with clear information hierarchy;
-- solid white and black canvases with restrained glass surfaces;
-- Apple Blue actions and consistent circular red close controls;
-- readable theme-aware colors in light, dark, and high-contrast modes;
-- 44 × 44 px touch targets, keyboard navigation, and visible focus states;
-- reduced-motion support and zero horizontal viewport overflow;
-- browser inspection at representative desktop and mobile widths during visual changes.
+Mangesh Raut maintains this portfolio with contributions from Codex, Claude Code, Google Antigravity,
+Cursor, and GitHub Copilot. Shipped changes record the exposed agent/model family, engineering
+purpose, and verified commit in the [changelog](src/js/data/changelog-entries.js).
 
-## Security and privacy
+| Current documentation contribution               | Attribution                                                                                         |
+| ------------------------------------------------ | --------------------------------------------------------------------------------------------------- |
+| Coding agent                                     | GPT-6 / Codex, in Codex desktop                                                                     |
+| Purpose                                          | Professional GitHub README, repository onboarding, architecture clarity, and verified documentation |
+| Exact model variant, reasoning mode, token usage | Unavailable from the active runtime                                                                 |
+| Portfolio chatbot model                          | Configured separately in [api/model_router.py](api/model_router.py) and the Worker                  |
 
-- API keys remain server-side and ignored environment files are excluded from Git.
-- External URLs, rich HTML, calendar content, and form inputs pass through validation or
-  sanitization boundaries.
-- CI runs dependency auditing and a repository secret scan.
-- Security reports follow the private process in [`SECURITY.md`](SECURITY.md).
-- Public disclosure metadata is available at
-  [`.well-known/security.txt`](https://mangeshraut712.github.io/mangeshrautarchive/.well-known/security.txt).
+Previous contributor records are preserved in
+[Development history](docs/DEVELOPMENT_HISTORY.md), with dated context for superseded implementations.
 
-Operational telemetry and portfolio facts should be described with their collection time and
-source. Generated or heuristic data must not be represented as human review.
+### Security, privacy, and responsible reuse
 
-## Multi-agent development record
+Provider credentials belong in backend or deployment secret stores. Public calendar endpoints expose
+sanitized availability, while integration setup and private account data require protected server
+configuration. Optional integrations and analytics should be reviewed before deploying your own copy.
 
-This repository is maintained across Codex/ChatGPT, Claude Code, Cursor, GitHub Copilot, and Google
-Antigravity. [`AGENTS.md`](AGENTS.md) is the canonical shared project briefing; platform-specific
-files contain only the differences for that environment.
+Report vulnerabilities through [SECURITY.md](SECURITY.md). See [.env.example](.env.example) for the
+configuration template. Replace personal profile data, contact destinations, OAuth settings, and
+analytics identifiers when adapting this repository.
 
-The runtime model behind AssistMe is independent of the coding agent that changed the repository.
-The release record in [`src/js/data/changelog-entries.js`](src/js/data/changelog-entries.js) tracks
-shipped changes, their purpose, and the exposed coding model when the environment provides it.
+## 6. Documentation
 
-Current documentation pass:
+| Guide                                                   | Purpose                                                            |
+| ------------------------------------------------------- | ------------------------------------------------------------------ |
+| [Documentation index](docs/README.md)                   | Start here for deeper implementation notes                         |
+| [Design system](docs/DESIGN.md)                         | Visual tokens, components, accessibility, and responsive behavior  |
+| [Architecture practices](docs/BEST_PRACTICES.md)        | Module boundaries, engineering conventions, and release discipline |
+| [Repository structure](docs/STRUCTURE.md)               | Directory map and ownership                                        |
+| [API guide](docs/API.md)                                | Routes, integrations, environments, and runtime differences        |
+| [Site audit](docs/SITE_AUDIT_2026-10-01.md)             | October 2026 visual and functional verification                    |
+| [Screenshot coverage](docs/REPO_SCREENSHOT_COVERAGE.md) | Dated repository image coverage and fallback rules                 |
+| [Blog media audit](docs/BLOG_MEDIA_AUDIT.md)            | Original-source media and provenance                               |
+| [Development history](docs/DEVELOPMENT_HISTORY.md)      | Preserved contributor attribution and historical decisions         |
 
-| Coding agent                          | Purpose                                                                                                                                                                                     | Exact variant / reasoning / token usage                        |
-| ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
-| GPT-5 / Codex                         | README accuracy audit, architecture consolidation, contributor onboarding                                                                                                                   | Unavailable from the active runtime                            |
-| Grok 4.7 / Cursor                     | Live-site audit: Pages `/contact` redirect, feed and profile-image hosts, agent-map rewrite                                                                                                 | `grok-4.7`; reasoning unavailable; token usage unavailable     |
-| Claude / Cursor                       | README status-snapshot refresh (Sep 22 CI + host facts) and GA4 reach-sync note                                                                                                             | Unavailable from the active runtime                            |
-| Gemini 3.8 Flash / Google Antigravity | Systems Tokenization & AI Burn dashboard overhaul: Apple HIG Bento cards, 3-tab segmented telemetry, multi-IDE profiles                                                                     | Unavailable from the active runtime                            |
-| Gemini 3.8 Flash / Google Antigravity | Anti-Slop (dmmulroy/anti-slop) Oxlint integration, vendoring, code cleanups, and repo doctor rules                                                                                          | Unavailable from the active runtime                            |
-| Gemini 3.8 Flash / Google Antigravity | Portfolio-wide elevation: 15.75B telemetry sync across all surfaces, system monitor probe repair (handling paused Vercel), navbar fluid geometry, and dark mode globe atmospheric backlight | Unavailable from the active runtime                            |
-| Gemini 3.8 Flash / Google Antigravity | Test hardening & UI resilience: E2E race condition fixes, eager monitor health/overview rendering, chatbot mid-stream aria-busy reset, and Vitest jsdom worker timeout tuning               | Unavailable from the active runtime                            |
-| Gemini 3.8 Flash / Google Antigravity | Uses stack elevation: Separate all 10 AI tools with dedicated brand SVG squircles, dark-mode icon styling, Figma SVG squircle, 501-test gate sync, and E2E coverage                         | Unavailable from the active runtime                            |
-| Gemini 3.8 Flash / Google Antigravity | Visual & system coherence: Travel Atlas active action palette (Route, Spotlight, Featured), Architecture Tree 501-test gate sync, and resilient Playwright cross-page audit harness         | Unavailable from the active runtime                            |
-| GPT-5.6 Sol / Codex                   | September 2026 blog archive redesign, unified article artwork, and responsive visual QA                                                                                                     | `gpt-5.6-sol`; reasoning and token usage unavailable           |
-| GPT-6 / Codex                         | Retire Vitest tests, focus CI on six built-site browser journeys and API tests, and repair blog routing and contrast regressions                                                            | Reasoning and token usage unavailable                          |
-| GPT-6 / Codex                         | Generate and integrate 18 article-specific blog covers with Codex's built-in OpenAI image tool; verify mobile and desktop presentation                                                      | Image model identifier, reasoning, and token usage unavailable |
-| GPT-6 / Codex                         | Audit all 18 blog pages, repair contrast and catalog coverage, and check recent financial and AI claims against primary sources                                                             | Reasoning and token usage unavailable                          |
-| GPT-6 / Codex                         | Rework GitHub repository cards and homepage writing previews into a clearer editorial layout across desktop and mobile                                                                      | Reasoning and token usage unavailable                          |
-| GPT-6 / Codex                         | Map 27 merged README screenshots to an image-led project gallery; remove repeated card details and group secondary Spatial and clone actions                                                | Reasoning and token usage unavailable                          |
-| GPT-6 / Codex                         | Audit remaining repositories and add four verified README visuals to project cards, keeping chart labels and source dimensions accurate                                                     | Reasoning and token usage unavailable                          |
-| GPT-6 / Codex                         | Add source-credited README imagery for two user-facing forks and mark their cards as forks; reject an empty simulator capture for the older SwiftUI trading app                             | Reasoning and token usage unavailable                          |
-| GPT-6 / Codex                         | Verify README image coverage for 31 of 39 owned repos, align Featured with the curated gallery order, and reduce mobile utility overlap on cards                                            | Reasoning and token usage unavailable                          |
-| GPT-6 / Codex                         | Make full blog pages the primary reading path, add 18 conceptual diagrams, normalize article depth, and verify archive and article journeys                                                 | Reasoning and token usage unavailable                          |
-| GPT-6 / Codex                         | Review 18 blog articles against primary sources, correct dated claims, and expose evidence and source navigation in each article                                                            | Reasoning and token usage unavailable                          |
-| Gemini 3.8 Flash / Google Antigravity | CodeQL security remediation: resolve all 4 open code scanning alerts down to 0, URL substring sanitization hardening, redirect safety, and doc sync                                         | Unavailable from the active runtime                            |
-| Gemini 3.8 Flash / Google Antigravity | Elevate blog previews and repository cards with an in-situ modal preview and repository-supplied details                                                                                    | Unavailable from the active runtime                            |
-| GPT-6 / Codex                         | Restore the GitHub Operating View above project cards and add repository-specific concept maps and readable GitHub data signals                                                             | Reasoning and token usage unavailable                          |
-| GPT-6 / Codex                         | Clarify contact calendar availability, export browser tasks accurately, and keep event details out of the public free/busy response                                                         | Reasoning and token usage unavailable                          |
-| GPT-6 / Codex                         | Simplify contact with guided message intake, a compact manual form, one Calendly action, and smaller responsive repository cards                                                            | Reasoning and token usage unavailable                          |
-| Gemini 3.8 Flash / Google Antigravity | Restore canonical Apple system colors (#ff3b30, #ff453a, #34c759, #ffcc00), fix dev-all child process leaks, and stabilize Playwright E2E suite                                             | Unavailable from the active runtime                            |
-| Gemini 3.8 Flash / Google Antigravity | Eliminate scroll mask and fadeIn contrast drops, elevate media CTA contrast (#004494), clean catch bindings across 20+ modules, and purge aria-busy locks                                   | Unavailable from the active runtime                            |
-| Gemini 3.8 Flash / Google Antigravity | Link and verify commit provenance for all September 2026 changelog entries, integrate upstream improvements, and verify full-stack gates                                                    | Unavailable from the active runtime                            |
-| GPT-6 / Codex                         | Import the authorized public 2026 Apple Calendar snapshot, deduplicate occurrences, and add day, week, month, and year views                                                                | Reasoning and token usage unavailable                          |
-| Gemini 3.8 Flash / Google Antigravity | Restore Apple direct-manipulation scroll physics, eliminate WebKit repaint thrash, debounce section spy, and contain trackpad overscroll                                                    | Unavailable from the active runtime                            |
-| Gemini 3.8 Flash / Google Antigravity | Zero-warning code quality remediation: fix Unicorn and ESLint warnings, typed Array.from initializers, startsWith migration, and anti-slop config                                           | Unavailable from the active runtime                            |
-| Gemini 3.8 Flash / Google Antigravity | Apple-grade scrolling behavior & root scroller architecture overhaul: single-scroller hierarchy, mobile menu scroll hijack fix, modal overscroll containment, and rail scroll-snap          | Unavailable from the active runtime                            |
-| Gemini 3.8 Flash / Google Antigravity | Eager section observer registration & Playwright CI resilience: decouple section activation from window.onload, add read button polling, and fix whoburnedmore launchd sync Node 24 path    | Unavailable from the active runtime                            |
-| GPT-6 / Codex                         | Correct the monthly blog archive, research September Apple and OpenAI event articles, create matching editorial covers, and preserve publication provenance                                 | Exact variant, reasoning mode, and token usage unavailable     |
-| GPT-6 / Codex                         | Audit all blog media, replace generated covers with original publisher assets, add provenance and attribution, and verify responsive rendering                                              | Exact variant, reasoning mode, and token usage unavailable     |
-| GPT-6 / Codex                         | Audit the entire website, repair laptop navigation and travel map retries, improve reading accessibility, and synchronize publication routes and public metrics                             | Exact variant, reasoning mode, and token usage unavailable     |
+## 7. License and contact
 
-The contact calendar displays a dated 2026 snapshot of the visible Apple Calendar sources on the author's Mac. To refresh it on macOS after granting Calendar access, run `npm run sync:apple-calendar -- --year=2026 --include-notes`, review the generated public `src/js/data/apple-calendar-snapshot.js`, and deploy the change. The import excludes the hidden Luma calendar and collapses identical occurrences. Website reminders are saved only in the current browser; they do not write back to Apple Calendar. The Kalnirnay link opens the official app page and does not import its almanac data.
+The repository’s original code is released under the [MIT License](LICENSE). Third-party images,
+logos, music artwork, and publisher media retain their respective rights; consult the source credits
+before reuse. Citation metadata is provided in [CITATION.cff](CITATION.cff).
 
-No exact variant, reasoning mode, or token count is inferred when the runtime does not expose it.
-
-Local visual audit (September 22, 2026): GPT-6 / Codex reviewed all 18 blog illustrations against
-their articles, added access to full-size figures, preserved intrinsic image proportions, and
-corrected escaped ampersands in the Razorpay caption. Several illustrations still require editorial
-replacement or source verification; this audit does not certify their embedded claims. Exact model
-variant, reasoning mode, and token usage: unavailable.
-
-Local artwork refresh (September 27, 2026): Codex's built-in OpenAI image tool produced 18 new
-article-specific covers. The exact image model identifier was not exposed, so these are not
-attributed to a particular model version. Each new WebP is used for its article figure and the
-corresponding archive card, while the original JPEGs remain in the repository. Figure captions now
-describe conceptual artwork without asserting undocumented vendor internals. A September 27 follow-up
-checked all 18 article pages and archive cards across mobile and desktop themes, corrected selected
-Razorpay, NPCI, and TypeSafe claims, and generated the complete 18-post assistant catalog. The
-[deploy workflow](https://github.com/mangeshraut712/mangeshrautarchive/actions/workflows/deploy.yml)
-is the source of truth for publication status.
-
-The September 30 media audit replaces 17 generated blog covers with relevant original publisher
-images, screenshots, diagrams, or announcement artwork. Apple’s September article includes official
-Duo and Pro / Pro Max press images. One X algorithm cover remains clearly labeled conceptual after
-a documented source search. All 18 articles now show media credits and source or reference links,
-and cards preserve full images without cropping. The [media audit](docs/BLOG_MEDIA_AUDIT.md) and
-[provenance manifest](src/assets/data/blog-media-sources.json) provide complete per-article coverage.
-The build gate verifies media hashes, unique assets, attribution, and fallback documentation.
-GPT-6 / Codex performed source verification and responsive browser review; exact variant, reasoning
-mode, and token usage were unavailable.
-
-The September 29 archive edit keeps **18 active articles, exactly two per month from January
-through September 2026**. September now covers Apple's September 9 event and OpenAI DevDay
-on September 29; both new articles were published September 29. Razorpay Vulcan belongs to the
-August 18 issue, with its original September 10 publication retained separately in the article,
-structured metadata, and feeds. Retired UPI and TypeSafe URLs explain the topic replacement.
-The build audit rejects invalid dates and monthly counts other than two. GPT-6 / Codex researched
-primary sources and created two new conceptual covers with the built-in OpenAI image tool;
-the image model identifier was unavailable. Archive cards and articles share each cover.
-
-The September 27 reading pass makes homepage cards open complete articles directly. Previously
-shared preview hashes also forward to the corresponding article. Each article has section navigation.
-Each of the 18 articles includes a conceptual diagram, an image, a source section, and a chart,
-framework, or data table. The `npm run audit:blog-content` build gate checks article length,
-reading-time labels, heading structure, and media coverage. Conceptual diagrams and editorial
-frameworks are labeled as such; they do not represent measured vendor performance.
-
-The September 27 evidence pass adds a dated source update and direct source navigation to all 18
-articles. It corrects the Cursor Origin release and beta scope, the Gemini Notebook rename, Wispr
-privacy-setting distinctions, and Razorpay provenance. Article metadata now separates publication
-from the editorial update date, and canonical URLs match the generated `.html` pages. The content
-audit checks for dated evidence notes and multiple external links; vendor benchmarks remain labeled
-as company-reported results. The release also keeps homepage text fully opaque during scroll
-reveals so interactive labels retain accessible contrast.
-
-The September 28 discovery pass moves repository cards ahead of the GitHub activity graph, gives
-their descriptions and actions more space, and makes repository titles direct links. The homepage
-writing shelf now presents the latest article and three recent stories; the complete 18-article
-collection stays in the dedicated archive, where previews use two columns and the featured story
-appears once. This removes the extra homepage filters and expansion control while preserving the
-full article reading path.
-
-## Documentation
-
-| Document                                           | Purpose                                               |
-| -------------------------------------------------- | ----------------------------------------------------- |
-| [`docs/README.md`](docs/README.md)                 | Documentation index                                   |
-| [`docs/DESIGN.md`](docs/DESIGN.md)                 | Visual language, tokens, components, responsive rules |
-| [`docs/STRUCTURE.md`](docs/STRUCTURE.md)           | Repository layout and ownership                       |
-| [`docs/API.md`](docs/API.md)                       | API routes, runtime differences, local behavior       |
-| [`docs/BEST_PRACTICES.md`](docs/BEST_PRACTICES.md) | Architecture and engineering principles               |
-| [`docs/INSIGHTS.md`](docs/INSIGHTS.md)             | Local-only Codex work-report guidance                 |
-| [`CONTRIBUTING.md`](CONTRIBUTING.md)               | Contribution workflow and validation                  |
-| [`SECURITY.md`](SECURITY.md)                       | Coordinated vulnerability reporting                   |
-| [`AGENTS.md`](AGENTS.md)                           | Shared AI-agent instructions                          |
-
-## Contributing
-
-Read [`CONTRIBUTING.md`](CONTRIBUTING.md), keep changes focused, and preserve the vanilla ESM and
-FastAPI architecture. Before opening a pull request:
-
-```bash
-npm run doctor:strict
-npm run check
-npm run test:api
-npm run security-check
-npm run build
-```
-
-Add focused browser coverage when behavior or layout changes. CI remains the authority for the full
-deployment matrix.
-
-## License, citation, and contact
-
-Released under the [MIT License](LICENSE). Citation metadata is available in
-[`CITATION.cff`](CITATION.cff) as version `2.5.0`.
-
-- Website: [mangeshraut712.github.io/mangeshrautarchive](https://mangeshraut712.github.io/mangeshrautarchive/)
-- GitHub: [@mangeshraut712](https://github.com/mangeshraut712)
-- LinkedIn: [mangeshraut71298](https://www.linkedin.com/in/mangeshraut71298)
-- Email: [mbr63@drexel.edu](mailto:mbr63@drexel.edu)
+**Mangesh Raut** · [Website](https://mangeshraut712.github.io/mangeshrautarchive/) ·
+[GitHub](https://github.com/mangeshraut712) ·
+[LinkedIn](https://www.linkedin.com/in/mangeshraut71298) ·
+[Email](mailto:mbr63@drexel.edu)
 
 <div align="center">
 
-[Back to top](#mangesh-raut--agentic-full-stack-portfolio)
+[Back to top](#mangesh-raut--portfolio)
 
 </div>
-
-### October 2026 sitewide verification
-
-The site audit covers the homepage, Systems, Monitor, Travel, Uses, Changelog, recovery pages, blog archive, 18 articles, and five case studies. The release adds desktop menu and map-download retry regressions to the critical suite: **184 API tests and 11 critical browser journeys**. See [the audit record](docs/SITE_AUDIT_2026-10-01.md) for scope and verification limits.

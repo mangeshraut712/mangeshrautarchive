@@ -29,3 +29,7 @@ Session transcripts, temporary dumps, IDE caches, and build artifacts. Use `arti
 
 - **No Next.js / React app** — vanilla ESM frontend + FastAPI.
 - **Node ≥22** required (`.nvmrc`). Run `npm run check-node` / `npm run doctor:stack`.
+
+## Contributor provenance
+
+[Development history](DEVELOPMENT_HISTORY.md) preserves the historical README attribution records.
