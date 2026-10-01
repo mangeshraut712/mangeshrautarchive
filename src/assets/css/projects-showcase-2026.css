@@ -6238,3 +6238,7 @@ html.dark #repo-preview-modal .blog-preview__close-action-btn,
     padding: 2rem 1.25rem;
   }
 }
+
+#projects .gh-contrib__stage[hidden] {
+  display: none;
+}

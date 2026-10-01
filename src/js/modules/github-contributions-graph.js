@@ -3,19 +3,19 @@
  *
  * Renders a GitHub-style contribution view inside the Project Showcase:
  *  - Year selector rail (current year down to 2017)
- *  - Contributions summary (Total, This week, Best day, Average/day)
+ *  - Contributions summary (Total, Last 7 days, Best day, Average/day)
  *  - Streaks summary (Longest, Current)
  *  - 2D calendar heatmap (months + Mon/Wed/Fri + Less/More legend)
  *  - 3D isometric plate (bar height = daily contributions)
  *
  * Data: public jogruber contributions API (CORS-enabled). Falls back to a
- * deterministic sample so the section still renders offline / in perf-audit.
+ * unavailable state when real contribution data cannot be retrieved.
  */
 
 const USERNAME = 'mangeshraut712';
 const API_BASE = 'https://github-contributions-api.jogruber.de/v4';
 const CACHE_TTL = 30 * 60 * 1000;
-const CACHE_PREFIX = `gh_contrib_${USERNAME}_`;
+const CACHE_PREFIX = `gh_contrib_v2_${USERNAME}_`;
 const FIRST_YEAR = 2021;
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -26,9 +26,14 @@ const PALETTES = {
   light: ['#ebedf0', '#9be9a8', '#40c463', '#30a14e', '#216e39'],
 };
 
+function githubToday() {
+  const now = new Date();
+  return new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
+}
+
 const state = {
   built: false,
-  year: new Date().getFullYear(),
+  year: githubToday().getFullYear(),
   dataByYear: new Map(),
   view: '3d',
   root: null,
@@ -92,33 +97,6 @@ const _fmtFull = new Intl.DateTimeFormat('en-US', {
 
 /* --------------------------------- data ----------------------------------- */
 
-function generateSampleYear(year) {
-  const days = [];
-  const start = new Date(year, 0, 1);
-  const end = new Date(year, 11, 31);
-  const today = new Date();
-  let seed = year;
-  const rand = () => {
-    seed = (seed * 9301 + 49297) % 233280;
-    return seed / 233280;
-  };
-  for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
-    const date = new Date(d);
-    let count = 0;
-    if (date <= today) {
-      const r = rand();
-      const weekend = date.getDay() === 0 || date.getDay() === 6;
-      const threshold = weekend ? 0.72 : 0.4;
-      if (r > threshold) count = Math.round((r - threshold) * (weekend ? 8 : 22));
-    }
-    const level = count === 0 ? 0 : count < 3 ? 1 : count < 7 ? 2 : count < 12 ? 3 : 4;
-    days.push({ date, count, level });
-  }
-  const calcTotal = days.reduce((s, x) => s + x.count, 0);
-  const total = year === 2026 || year === today.getFullYear() ? 2654 : calcTotal;
-  return { year, days, total, isSample: true };
-}
-
 function readCache(year) {
   try {
     const raw = localStorage.getItem(CACHE_PREFIX + year);
@@ -148,30 +126,40 @@ async function fetchYear(year) {
       year,
       days: cached,
       total: cached.reduce((s, x) => s + x.count, 0),
-      isSample: false,
     };
     state.dataByYear.set(year, data);
     return data;
   }
 
   try {
-    const res = await fetch(`${API_BASE}/${USERNAME}?y=${year}`, { referrerPolicy: 'no-referrer' });
+    const res = await fetch(`${API_BASE}/${USERNAME}?y=${year}`, {
+      referrerPolicy: 'no-referrer',
+      signal: AbortSignal.timeout(15000),
+    });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const json = await res.json();
     const rawDays = Array.isArray(json.contributions) ? json.contributions : [];
-    if (!rawDays.length) throw new Error('empty');
+    if (
+      !rawDays.length ||
+      rawDays.some(
+        x =>
+          !/^\d{4}-\d{2}-\d{2}$/.test(x.date) ||
+          !Number.isInteger(x.count) ||
+          x.count < 0 ||
+          !Number.isInteger(x.level) ||
+          x.level < 0 ||
+          x.level > 4
+      )
+    )
+      throw new Error('Invalid GitHub contribution data');
     writeCache(year, rawDays);
     const days = rawDays.map(x => ({ date: parseISODate(x.date), count: x.count, level: x.level }));
-    const total =
-      (json.total && (json.total[year] ?? json.total[String(year)])) ??
-      days.reduce((s, x) => s + x.count, 0);
-    const data = { year, days, total, isSample: false };
+    const total = days.reduce((sum, day) => sum + day.count, 0);
+    const data = { year, days, total };
     state.dataByYear.set(year, data);
     return data;
   } catch {
-    const data = generateSampleYear(year);
-    state.dataByYear.set(year, data);
-    return data;
+    return null;
   }
 }
 
@@ -179,12 +167,13 @@ async function fetchYear(year) {
 
 function computeStats(data) {
   const { days, year } = data;
-  const now = new Date();
-  const isCurrentYear = year === now.getFullYear();
-  const todayMid = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const todayMid = githubToday();
+  const isCurrentYear = year === todayMid.getFullYear();
 
   const elapsedDays = isCurrentYear
-    ? Math.floor((todayMid - new Date(year, 0, 1)) / 86400000) + 1
+    ? Math.floor(
+        (Date.UTC(year, todayMid.getMonth(), todayMid.getDate()) - Date.UTC(year, 0, 1)) / 86400000
+      ) + 1
     : days.length;
 
   let best = { count: -1, date: null };
@@ -210,7 +199,8 @@ function computeStats(data) {
   const boundary = isCurrentYear ? todayMid : new Date(year, 11, 31);
   const upto = days.filter(d => d.date <= boundary);
   let current = { len: 0, start: null, end: null };
-  for (let i = upto.length - 1; i >= 0; i--) {
+  const streakEnd = isCurrentYear && upto.at(-1)?.count === 0 ? upto.length - 2 : upto.length - 1;
+  for (let i = streakEnd; i >= 0; i--) {
     if (upto[i].count > 0) {
       current.len += 1;
       current.start = upto[i].date;
@@ -220,7 +210,7 @@ function computeStats(data) {
     }
   }
 
-  // This week — last 7 days up to boundary
+  // Last 7 days — last 7 days up to boundary
   const weekDays = upto.slice(-7);
   const thisWeek = weekDays.reduce((s, x) => s + x.count, 0);
 
@@ -291,7 +281,7 @@ function buildShell() {
               </div>
               <div class="gh-contrib__stat">
                 <span class="gh-contrib__stat-num" id="gh-week">—</span>
-                <span class="gh-contrib__stat-label">This week</span>
+                <span class="gh-contrib__stat-label">Last 7 days</span>
                 <span class="gh-contrib__stat-sub" id="gh-week-range"></span>
               </div>
               <div class="gh-contrib__stat">
@@ -810,9 +800,8 @@ function paintStats(data) {
 
   const source = document.getElementById('gh-contrib-source');
   if (source) {
-    source.textContent = data.isSample
-      ? 'Showing a representative sample (live GitHub data unavailable).'
-      : 'Live data from GitHub.';
+    source.textContent =
+      'GitHub profile contributions via Jogruber · cached up to 30 minutes · UTC dates.';
   }
 }
 
@@ -834,6 +823,24 @@ async function selectYear(year) {
   const data = await fetchYear(year);
   if (state.year !== year) return; // superseded by a newer click
   if (root) root.classList.remove('is-loading');
+  if (!data) {
+    state.activeData = null;
+    const source = document.getElementById('gh-contrib-source');
+    if (source)
+      source.textContent =
+        'Contribution data could not be retrieved. No estimated activity is shown.';
+    const heading = document.getElementById('gh-contrib-heading');
+    if (heading)
+      heading.textContent = 'GitHub contributions unavailable — view the profile on GitHub';
+    document.querySelectorAll('.gh-contrib__stage').forEach(stage => {
+      stage.hidden = true;
+    });
+    return;
+  }
+  document.querySelectorAll('.gh-contrib__stage').forEach(stage => {
+    stage.hidden = false;
+  });
+  setView(state.view);
   renderAll(data);
 }
 

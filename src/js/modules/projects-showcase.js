@@ -193,7 +193,7 @@ function revealRenderedProjectCards(container) {
 function formatActivityCaption(totals) {
   const repoCount = Number(totals.publicRepos || 0);
   if (repoCount > 0) {
-    return `Live public catalog from github.com/mangeshraut712 — ${repoCount} repositories with release and activity signals.`;
+    return `Live public catalog from github.com/mangeshraut712 — ${repoCount} public repositories (including forks). Commit coverage: ${totals.commitRepos}/${repoCount} repositories. Contributor coverage: ${totals.contributorRepos}/${totals.ownedRepos} original repositories. Totals reflect loaded data.`;
   }
 
   if (totals.activityRepos > 0) {
@@ -269,11 +269,16 @@ function updateActivityStats(allRepos, visibleRepos = [], githubProjects = null)
         : [];
       const contributors = toFiniteMetric(activity?.contributors);
       const hasLiveActivity =
-        activity && activity.unavailable !== true && (commits30d !== null || contributors !== null);
+        activity && activity.unavailable !== true && commits30d !== null && contributors !== null;
 
-      if (hasLiveActivity) {
-        acc.activityRepos += 1;
-        acc.totalCommits30d += commits30d ?? 0;
+      if (hasLiveActivity) acc.activityRepos += 1;
+      if (commits30d !== null) {
+        acc.commitRepos += 1;
+        acc.totalCommits30d += commits30d;
+      }
+      if (!repo.fork) {
+        acc.ownedRepos += 1;
+        if (contributors !== null) acc.contributorRepos += 1;
       }
 
       // Unique humans on owned repos only — skip forks (upstream authors) and bots.
@@ -315,6 +320,9 @@ function updateActivityStats(allRepos, visibleRepos = [], githubProjects = null)
       totalCommits30d: 0,
       contributorIds: new Set(),
       activityRepos: 0,
+      commitRepos: 0,
+      contributorRepos: 0,
+      ownedRepos: 0,
       releaseCheckedRepos: 0,
       activeRepos: 0,
       languages: new Set(),
@@ -329,16 +337,17 @@ function updateActivityStats(allRepos, visibleRepos = [], githubProjects = null)
   setStatItem('stat-forks', formatCompactNumber(totals.totalForks), { hideWhenEmpty: false });
   setStatItem(
     'stat-commits',
-    totals.activityRepos ? formatCompactNumber(totals.totalCommits30d) : '--'
+    totals.commitRepos ? formatCompactNumber(totals.totalCommits30d) : '--',
+    { hideWhenEmpty: false }
   );
   setStatItem(
     'stat-contributors',
-    uniqueContributors > 0 ? formatCompactNumber(uniqueContributors) : '--'
+    totals.contributorRepos ? formatCompactNumber(uniqueContributors) : '--',
+    { hideWhenEmpty: false }
   );
-  setStatItem(
-    'stat-active-repos',
-    totals.activeRepos > 0 ? formatCompactNumber(totals.activeRepos) : '--'
-  );
+  setStatItem('stat-active-repos', formatCompactNumber(totals.activeRepos), {
+    hideWhenEmpty: false,
+  });
   setStatItem('stat-languages', totals.languages.size, { hideWhenEmpty: false });
 
   const captionEl = document.getElementById('projects-activity-caption');

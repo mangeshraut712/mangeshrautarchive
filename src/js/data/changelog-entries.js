@@ -54,6 +54,24 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'github-contribution-integrity-october-2026',
+    date: '2026-10-02',
+    type: 'fix',
+    title: 'Show real GitHub contributions and activity coverage',
+    summary:
+      'Remove generated contribution fallback data. Use UTC date boundaries, preserve a streak through yesterday while today is unfinished, and label the rolling window Last 7 days. Derive totals from daily counts and disclose the contribution provider, cache duration, forks, and separate commit and contributor coverage.',
+    tags: ['other'],
+    sha: null,
+    commitVerified: false,
+    model: 'GPT-6 / Codex',
+    ide: 'Codex desktop',
+    purpose: 'GitHub contribution integrity and explicit repository activity coverage',
+    attributionSource: 'not-recorded',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+    status: 'unreleased',
+  },
+  {
     id: 'dependency-pr-ci-recovery-october-2026',
     date: '2026-10-01',
     type: 'fix',
