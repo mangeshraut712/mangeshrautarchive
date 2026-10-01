@@ -256,12 +256,12 @@ Mangesh Raut maintains this portfolio with contributions from Codex, Claude Code
 Cursor, and GitHub Copilot. Shipped changes record the exposed agent/model family, engineering
 purpose, and verified commit in the [changelog](src/js/data/changelog-entries.js).
 
-| Current documentation contribution               | Attribution                                                                         |
-| ------------------------------------------------ | ----------------------------------------------------------------------------------- |
-| Coding agent                                     | GPT-6 / Codex, in Codex desktop                                                     |
-| Purpose                                          | AssistMe input reliability, honest response details, and grounded portfolio answers |
-| Exact model variant, reasoning mode, token usage | Unavailable from the active runtime                                                 |
-| Portfolio chatbot model                          | Configured separately in [api/model_router.py](api/model_router.py) and the Worker  |
+| Current documentation contribution               | Attribution                                                                        |
+| ------------------------------------------------ | ---------------------------------------------------------------------------------- |
+| Coding agent                                     | GPT-6 / Codex, in Codex desktop                                                    |
+| Purpose                                          | Dependency PR integration and verified workflow tooling                            |
+| Exact model variant, reasoning mode, token usage | Unavailable from the active runtime                                                |
+| Portfolio chatbot model                          | Configured separately in [api/model_router.py](api/model_router.py) and the Worker |
 
 Coding attribution in historical entries is contributor-reported in commit messages. A verified
 commit link confirms the repository reference; it does not authenticate the actual model runtime.

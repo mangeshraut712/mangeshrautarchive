@@ -54,6 +54,24 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'dependency-pr-ci-recovery-october-2026',
+    date: '2026-10-01',
+    type: 'fix',
+    title: 'Resolve the Axios update and verify workflow tooling downloads',
+    summary:
+      'Integrate the Axios 1.20.0 development dependency update with current main. Replace the actionlint download-script pipeline with a pinned GitHub release download and SHA-256 verification before extraction, retaining workflow lint as a required release gate.',
+    tags: ['deploy', 'other'],
+    sha: null,
+    commitVerified: false,
+    model: 'GPT-6',
+    ide: 'Codex desktop',
+    purpose: 'Dependency PR integration and verified workflow tooling',
+    attributionSource: 'not-recorded',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+    status: 'unreleased',
+  },
+  {
     id: 'assistme-reliability-october-2026',
     date: '2026-10-01',
     type: 'fix',
