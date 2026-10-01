@@ -245,12 +245,17 @@ Mangesh Raut maintains this portfolio with contributions from Codex, Claude Code
 Cursor, and GitHub Copilot. Shipped changes record the exposed agent/model family, engineering
 purpose, and verified commit in the [changelog](src/js/data/changelog-entries.js).
 
-| Current documentation contribution               | Attribution                                                                                         |
-| ------------------------------------------------ | --------------------------------------------------------------------------------------------------- |
-| Coding agent                                     | GPT-6 / Codex, in Codex desktop                                                                     |
-| Purpose                                          | Professional GitHub README, repository onboarding, architecture clarity, and verified documentation |
-| Exact model variant, reasoning mode, token usage | Unavailable from the active runtime                                                                 |
-| Portfolio chatbot model                          | Configured separately in [api/model_router.py](api/model_router.py) and the Worker                  |
+| Current documentation contribution               | Attribution                                                                            |
+| ------------------------------------------------ | -------------------------------------------------------------------------------------- |
+| Coding agent                                     | GPT-6 / Codex, in Codex desktop                                                        |
+| Purpose                                          | Professional documentation and changelog provenance audit with responsive verification |
+| Exact model variant, reasoning mode, token usage | Unavailable from the active runtime                                                    |
+| Portfolio chatbot model                          | Configured separately in [api/model_router.py](api/model_router.py) and the Worker     |
+
+Coding attribution in historical entries is contributor-reported in commit messages. A verified
+commit link confirms the repository reference; it does not authenticate the actual model runtime.
+Missing model, tool, reasoning, or token records are not inferred. See the
+[changelog attribution audit](docs/CHANGELOG_ATTRIBUTION_AUDIT.md).
 
 Previous contributor records are preserved in
 [Development history](docs/DEVELOPMENT_HISTORY.md), with dated context for superseded implementations.

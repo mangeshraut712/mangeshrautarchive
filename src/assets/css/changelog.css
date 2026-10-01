@@ -942,6 +942,17 @@ body.changelog-page .changelog-entry__attribution div {
   gap: 0.15rem;
 }
 
+body.changelog-page .changelog-entry__attribution div:last-child {
+  grid-column: 1 / -1;
+}
+
+body.changelog-page .changelog-entry__provenance {
+  margin: 0.75rem 0 0;
+  font-size: 0.78rem;
+  line-height: 1.55;
+  color: var(--cl-secondary);
+}
+
 body.changelog-page .changelog-entry__attribution dt {
   font-size: 0.75rem;
   font-weight: 600;

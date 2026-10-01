@@ -213,15 +213,30 @@ function renderEntry(entry) {
     : escapeHtml(displayTitle);
   const typeLabel = (TYPE_LABELS[entry.type] || entry.type).toUpperCase();
   const hasAttribution = Boolean(entry.ide || entry.model || entry.purpose);
+  const isRecorded = value => Boolean(value && !/^unavailable$/i.test(value));
   const attribution = hasAttribution
     ? [
-        ['Editor', entry.ide || 'Unavailable'],
-        ['Model', entry.model || 'Unavailable'],
-        ['Purpose', entry.purpose || 'Unavailable'],
-        ['Reasoning', entry.reasoning || 'Unavailable'],
-        ['Usage', entry.usage || 'Unavailable'],
+        ['Coding tool', entry.ide || 'Not recorded'],
+        ['Recorded model', entry.model || 'Not recorded'],
+        ...(isRecorded(entry.reasoning) ? [['Recorded reasoning mode', entry.reasoning]] : []),
+        ...(isRecorded(entry.usage) ? [['Recorded token usage', entry.usage]] : []),
+        ['Engineering scope', entry.purpose || 'Not recorded'],
       ]
     : [];
+  const missingMetrics = [
+    ...(!isRecorded(entry.reasoning) ? ['reasoning mode'] : []),
+    ...(!isRecorded(entry.usage) ? ['token usage'] : []),
+  ];
+  const attributionNote = hasAttribution
+    ? [
+        entry.status === 'unreleased'
+          ? 'Coding attribution is recorded for the current session; the implementation commit is pending.'
+          : entry.attributionSource === 'commit-message'
+            ? 'Coding attribution is contributor-reported in the linked commit; runtime identity is not independently verified.'
+            : 'Coding tool and model were not recorded in the linked commit. No model is inferred from the change.',
+        ...(missingMetrics.length ? [`Not recorded: ${missingMetrics.join(' and ')}.`] : []),
+      ].join(' ')
+    : '';
 
   return `
     <article class="changelog-entry" data-type="${escapeHtml(entry.type)}" data-area="${escapeHtml(entryAreaIds(entry)[0])}" data-areas="${escapeHtml(entryAreaIds(entry).join(' '))}" data-id="${escapeHtml(entry.id)}">
@@ -246,6 +261,8 @@ function renderEntry(entry) {
             ${detailTitle ? `<h4 class="changelog-entry__detail-title">${escapeHtml(detailTitle)}</h4>` : ''}
             <p class="changelog-entry__summary">${escapeHtml(entry.summary)}</p>
             ${attribution.length ? `<dl class="changelog-entry__attribution">${attribution.map(([label, value]) => `<div><dt>${label}</dt><dd>${escapeHtml(value)}</dd></div>`).join('')}</dl>` : ''}
+            ${attributionNote ? `<p class="changelog-entry__provenance">${escapeHtml(attributionNote)}</p>` : ''}
+            ${entry.verificationNote ? `<p class="changelog-entry__provenance">${escapeHtml(entry.verificationNote)}</p>` : ''}
             ${commitUrl ? `<a class="changelog-entry__commit" href="${escapeHtml(commitUrl)}" target="_blank" rel="noopener noreferrer">View commit <span aria-hidden="true">↗</span></a>` : ''}
           </div>
         </details>`

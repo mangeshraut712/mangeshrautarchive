@@ -33,3 +33,5 @@ Session transcripts, temporary dumps, IDE caches, and build artifacts. Use `arti
 ## Contributor provenance
 
 [Development history](DEVELOPMENT_HISTORY.md) preserves the historical README attribution records.
+
+[Changelog attribution audit](CHANGELOG_ATTRIBUTION_AUDIT.md) explains evidence limits and links to the per-entry manifest.
