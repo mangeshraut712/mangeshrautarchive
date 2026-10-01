@@ -3917,6 +3917,93 @@ html.dark #home .hero-name-text {
               </ul>
             </div>
 
+            <!-- Card 2: Send a Message Direct Form -->
+            <div class="contact-card contact-card-apple send-message-card">
+              <h3 class="contact-card-title"><i class="fas fa-comment-dots" aria-hidden="true"></i> Send a Message</h3>
+              <p class="contact-card-subtitle">Start a conversation, review your message, and send it.</p>
+              <button type="button" class="contact-guided-button" id="contact-guided-message-btn">
+                <span><i class="fas fa-comment" aria-hidden="true"></i> Start a guided message</span>
+                <i class="fas fa-arrow-right" aria-hidden="true"></i>
+              </button>
+              <details class="contact-manual-details">
+                <summary>Use the standard form instead</summary>
+              <form id="contact-form" class="apple-contact-form" novalidate>
+                <div class="form-group-apple">
+                  <label for="contact-name">Your Name</label>
+                  <input
+                    type="text"
+                    id="contact-name"
+                    name="name"
+                    autocomplete="name"
+                    placeholder="John Appleseed"
+                    class="apple-input"
+                    maxlength="100"
+                    required
+                  />
+                </div>
+                <div class="form-group-apple">
+                  <label for="contact-email">Email Address</label>
+                  <input
+                    type="email"
+                    id="contact-email"
+                    name="email"
+                    autocomplete="email"
+                    placeholder="john@example.com"
+                    class="apple-input"
+                    maxlength="200"
+                    required
+                  />
+                </div>
+                <div class="form-group-apple">
+                  <label for="contact-subject">Subject</label>
+                  <input
+                    type="text"
+                    id="contact-subject"
+                    name="subject"
+                    autocomplete="off"
+                    placeholder="Project or Opportunity"
+                    class="apple-input"
+                    maxlength="200"
+                    required
+                  />
+                </div>
+                <div class="form-group-apple">
+                  <label for="contact-message">Message</label>
+                  <textarea
+                    id="contact-message"
+                    name="message"
+                    autocomplete="off"
+                    rows="3"
+                    placeholder="Tell me about your project or goal…"
+                    class="apple-input apple-textarea"
+                    maxlength="2000"
+                    required
+                  ></textarea>
+                </div>
+                <label class="form-honeypot" aria-hidden="true">Website
+                  <input type="text" name="website" tabindex="-1" autocomplete="off" />
+                </label>
+                <button type="submit" class="apple-submit-btn">
+                  <span>Send Message</span>
+                  <i class="fas fa-arrow-right" aria-hidden="true"></i>
+                </button>
+                <div id="contact-form-feedback" class="form-feedback-toast" role="status" aria-live="polite"></div>
+              </form>
+              </details>
+
+              <!-- Alternative Action: Instant 30-Min Consultation -->
+              <div class="contact-or-divider" aria-hidden="true">
+                <span>OR</span>
+              </div>
+
+              <div class="calendly-panel">
+                <button type="button" class="calendly-panel-button" id="contact-book-meeting-btn" aria-label="Book a meeting on Calendly">
+                  <i class="fas fa-calendar-check" aria-hidden="true"></i>
+                  <span>Book a meeting on Calendly</span>
+                </button>
+              </div>
+            </div>
+
             <!-- Card 2: Support My Work -->
             <div class="contact-card contact-card-apple support-donation-card" id="support-my-work-card">
               <!-- Compact Header with Ganesh and Hanuman -->
@@ -4702,93 +4789,6 @@ html.dark #home .hero-name-text {
               <section id="contact-world-clocks" class="contact-world-clocks" aria-label="World clocks"></section>
             </div>
 
-            <!-- Card 2: Send a Message Direct Form -->
-            <div class="contact-card contact-card-apple send-message-card">
-              <h3 class="contact-card-title"><i class="fas fa-comment-dots" aria-hidden="true"></i> Send a Message</h3>
-              <p class="contact-card-subtitle">Tell me what you have in mind. The guided message asks for the essentials, then lets you review before sending.</p>
-              <button type="button" class="contact-guided-button" id="contact-guided-message-btn">
-                <span><i class="fas fa-comment" aria-hidden="true"></i> Start a guided message</span>
-                <i class="fas fa-arrow-right" aria-hidden="true"></i>
-              </button>
-              <details class="contact-manual-details">
-                <summary>Use the standard form instead</summary>
-              <form id="contact-form" class="apple-contact-form" novalidate>
-                <div class="form-group-apple">
-                  <label for="contact-name">Your Name</label>
-                  <input
-                    type="text"
-                    id="contact-name"
-                    name="name"
-                    autocomplete="name"
-                    placeholder="John Appleseed"
-                    class="apple-input"
-                    maxlength="100"
-                    required
-                  />
-                </div>
-                <div class="form-group-apple">
-                  <label for="contact-email">Email Address</label>
-                  <input
-                    type="email"
-                    id="contact-email"
-                    name="email"
-                    autocomplete="email"
-                    placeholder="john@example.com"
-                    class="apple-input"
-                    maxlength="200"
-                    required
-                  />
-                </div>
-                <div class="form-group-apple">
-                  <label for="contact-subject">Subject</label>
-                  <input
-                    type="text"
-                    id="contact-subject"
-                    name="subject"
-                    autocomplete="off"
-                    placeholder="Project or Opportunity"
-                    class="apple-input"
-                    maxlength="200"
-                    required
-                  />
-                </div>
-                <div class="form-group-apple">
-                  <label for="contact-message">Message</label>
-                  <textarea
-                    id="contact-message"
-                    name="message"
-                    autocomplete="off"
-                    rows="3"
-                    placeholder="Tell me about your project or goal…"
-                    class="apple-input apple-textarea"
-                    maxlength="2000"
-                    required
-                  ></textarea>
-                </div>
-                <label class="form-honeypot" aria-hidden="true">Website
-                  <input type="text" name="website" tabindex="-1" autocomplete="off" />
-                </label>
-                <button type="submit" class="apple-submit-btn">
-                  <span>Send Message</span>
-                  <i class="fas fa-arrow-right" aria-hidden="true"></i>
-                </button>
-                <div id="contact-form-feedback" class="form-feedback-toast" role="status" aria-live="polite"></div>
-              </form>
-              </details>
-
-              <!-- Alternative Action: Instant 30-Min Consultation -->
-              <div class="contact-or-divider" aria-hidden="true">
-                <span>OR</span>
-              </div>
-
-              <div class="calendly-panel">
-                <button type="button" class="calendly-panel-button" id="contact-book-meeting-btn" aria-label="Book a meeting on Calendly">
-                  <i class="fas fa-calendar-check" aria-hidden="true"></i>
-                  <span>Book a meeting on Calendly</span>
-                </button>
-              </div>
-            </div>
-
             <!-- Card 3: Interactive Calendar & Smart Reminders -->
             <div class="contact-card contact-card-apple calendar-reminders-card">
               <h3 class="contact-card-title"><i class="fas fa-calendar-alt" aria-hidden="true"></i> Calendar &amp; Smart Reminders</h3>
@@ -4925,7 +4925,7 @@ html.dark #home .hero-name-text {
 
     <!-- Chatbot Widget -->
     <div id="chatbot-widget" class="hidden" role="dialog" aria-modal="true" aria-hidden="true" inert
-      aria-label="Apple Intelligence chat window" tabindex="-1">
+      aria-label="AssistMe chat window" tabindex="-1">
       <!-- Header -->
       <div class="chatbot-header">
         <div class="chatbot-header-main">

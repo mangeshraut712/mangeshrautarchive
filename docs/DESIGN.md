@@ -227,12 +227,16 @@ CSS files in `src/assets/css/` are layered systematically:
 
 ---
 
+### Floating mobile controls
+
+Keep Accessibility, Share, Chat, and Back to Top in one vertical column at the safe-area-aware right edge. Use at least 44-pixel targets with visible gaps. When Back to Top is hidden, pack the other controls down. Accessibility tools and the Liquid Glass sheet open beside the stack, with viewport-bounded vertical scrolling; they must remain reachable on small portrait and landscape screens.
+
 ## 7. Interactive Micro-Experiences & Widgets
 
-### Year Progress HUD Widget (`#calendar-container .year-progress-widget`)
+### Year Progress Widget (`#calendar-widget .year-progress-widget`)
 
-- **Location**: Rendered dynamically above the interactive calendar section in `src/js/modules/calendar.js`.
-- **Aesthetic**: Apple HIG minimalist dashboard HUD with high-contrast display typography, leap-year-aware telemetry, percentage completion gauge, and glass progress track with white luminescent glow in dark mode and specular sheen in light mode.
+- **Location**: Rendered dynamically below the Events & Reminders heading in `src/js/modules/calendar.js`.
+- **Aesthetic**: Compact year and remaining-day labels with a native progress bar, Apple blue fill, and coordinated light/dark text. Progress uses elapsed calendar days and accounts for leap years.
 
 ### In-Built Tree/ICQR Aesthetic Share Card Experience (`#website-share-dialog`)
 
@@ -246,3 +250,13 @@ CSS files in `src/assets/css/` are layered systematically:
 ### Navigation and deferred map controls
 
 Keep the complete site menu available on laptop and desktop widths even when the section rail scrolls. Preserve dialog focus entry, Escape dismissal, and focus restoration. Positioned controls use a layout wrapper so shared button transforms cannot move them outside the viewport. The Travel map prompt remains reachable before loading and after a failed download; the places list stays usable. Article and case-study evidence links own their accessible colors, outside the global link accent override. Scrollable code examples accept keyboard focus.
+
+### AssistMe response and input behavior
+
+- Keep the chat window and composer inside the visible mobile viewport in portrait and landscape.
+- Respect active text composition before treating Enter as Send; Shift+Enter inserts a line break.
+- Preserve failed drafts and attachments when the composer is empty, and count completed replies.
+- Give icon-only response actions explicit accessible labels. Collapsed Details must be hidden from
+  assistive technology, and its button must expose the expanded state.
+- Mark inferred token usage and throughput as estimates. Keep local response provenance distinct
+  from cloud model metadata, and avoid inferring project capabilities from repository names.

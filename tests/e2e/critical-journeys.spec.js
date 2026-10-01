@@ -138,21 +138,61 @@ test('contact form sends a message and confirms storage', async ({ page }) => {
   expect(submitted).toMatchObject({ email: 'ada@example.com', subject: 'Project question' });
 });
 
-test('chatbot renders a streamed answer', async ({ page }) => {
-  await page.route('**/api/chat', async route => {
-    await route.fulfill({
-      status: 200,
-      contentType: 'application/x-ndjson',
-      body: '{"type":"chunk","content":"Here is **the answer**."}\n{"type":"done","metadata":{"source":"e2e"}}\n',
+test.describe('AssistMe chat', () => {
+  test.use({ serviceWorkers: 'block' });
+
+  test('chatbot renders a streamed answer', async ({ page }) => {
+    await page.route('**/api/chat/health', route =>
+      route.fulfill({ json: { provider_status: 'online' } })
+    );
+    await page.route('**/api/chat', async route => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/x-ndjson',
+        body: '{"type":"chunk","content":"Here is **the answer**."}\n{"type":"done","metadata":{"source":"e2e"}}\n',
+      });
     });
+    await gotoSite(page, '/');
+    await openChatbot(page);
+    await page.locator('#chatbot-input').fill('Explain the portfolio');
+    await page.locator('#chatbot-input').dispatchEvent('keydown', {
+      key: 'Enter',
+      isComposing: true,
+      keyCode: 229,
+    });
+    await expect(page.locator('#chatbot-input')).toHaveValue('Explain the portfolio');
+    await expect(page.locator('#chatbot-messages .user-message')).toHaveCount(0);
+    await page.locator('#chatbot-input').press('Enter');
+    await expect(page.locator('#chatbot-messages .assistant-message').last()).toContainText(
+      'the answer'
+    );
+    const answer = page.locator('#chatbot-messages .assistant-message').last();
+    const details = answer.getByRole('button', { name: 'Details', exact: true });
+    await expect(details).toHaveAttribute('aria-expanded', 'false');
+    await expect(answer.locator('.meta-details')).toBeHidden();
+    await details.click();
+    await expect(details).toHaveAttribute('aria-expanded', 'true');
+    await expect(answer.locator('.meta-details')).toContainText('estimated');
+    await details.click();
+    await expect(answer.locator('.meta-details')).toBeHidden();
+    const completedCount = await page.evaluate(() => window.appleIntelligenceChatbot.messageCount);
+    await page.evaluate(() => {
+      const bot = window.appleIntelligenceChatbot;
+      bot.chatAPI.ask = async () => {
+        throw new Error('Simulated connection interruption');
+      };
+      bot.chatAPI.basicQueryProcessing = () => null;
+    });
+    await page.locator('#chatbot-input').fill('Keep this draft after a connection failure');
+    await page.locator('#chatbot-input').press('Enter');
+    await expect(page.locator('#chatbot-input')).toHaveValue(
+      'Keep this draft after a connection failure'
+    );
+    await expect(page.locator('#chatbot-messages')).toContainText('Your draft is ready to retry');
+    expect(await page.evaluate(() => window.appleIntelligenceChatbot.messageCount)).toBe(
+      completedCount
+    );
   });
-  await gotoSite(page, '/');
-  await openChatbot(page);
-  await page.locator('#chatbot-input').fill('Explain the portfolio');
-  await page.locator('#chatbot-input').press('Enter');
-  await expect(page.locator('#chatbot-messages .assistant-message').last()).toContainText(
-    'the answer'
-  );
 });
 
 test('homepage has no serious accessibility violations', async ({ page }) => {
@@ -167,13 +207,90 @@ test('homepage has no serious accessibility violations', async ({ page }) => {
   );
 });
 
-test('mobile homepage fits without horizontal overflow', async ({ page }) => {
-  await page.setViewportSize({ width: 390, height: 844 });
+test('mobile homepage fits and floating controls stay in a vertical stack', async ({ page }) => {
   await gotoSite(page, '/');
   await expect(page.locator('main')).toBeAttached();
-  await expect
-    .poll(() => page.evaluate(() => document.documentElement.scrollWidth - innerWidth))
-    .toBeLessThanOrEqual(1);
+  for (const [width, height] of [
+    [320, 568],
+    [390, 844],
+    [667, 375],
+  ]) {
+    await page.setViewportSize({ width, height });
+    await page.evaluate(() => window.scrollTo(0, 4000));
+    await expect(page.locator('#go-to-top')).toBeVisible();
+    for (const dark of [false, true]) {
+      await page.evaluate(value => document.documentElement.classList.toggle('dark', value), dark);
+      await expect
+        .poll(() => page.evaluate(() => document.documentElement.scrollWidth - innerWidth))
+        .toBeLessThanOrEqual(1);
+      await page.mouse.move(0, 0);
+      await expect
+        .poll(() =>
+          page
+            .locator('.a11y-toolbar__main, #website-share-toggle, #chatbot-toggle, #go-to-top')
+            .evaluateAll(controls => {
+              const positions = controls.map(control => control.getBoundingClientRect().x);
+              return Math.max(...positions) - Math.min(...positions);
+            })
+        )
+        .toBeLessThanOrEqual(1);
+      const bounds = await page
+        .locator('.a11y-toolbar__main, #website-share-toggle, #chatbot-toggle, #go-to-top')
+        .evaluateAll(controls =>
+          controls.map(control => {
+            const rect = control.getBoundingClientRect();
+            return {
+              x: rect.x,
+              y: rect.y,
+              right: rect.right,
+              bottom: rect.bottom,
+              width: rect.width,
+              height: rect.height,
+            };
+          })
+        );
+      expect(bounds).toHaveLength(4);
+      expect(
+        Math.max(...bounds.map(rect => rect.x)) - Math.min(...bounds.map(rect => rect.x))
+      ).toBeLessThanOrEqual(1);
+      for (const rect of bounds) {
+        expect(rect.width).toBeGreaterThanOrEqual(44);
+        expect(rect.height).toBeGreaterThanOrEqual(44);
+        expect(rect.x).toBeGreaterThanOrEqual(0);
+        expect(rect.y).toBeGreaterThanOrEqual(0);
+        expect(rect.right).toBeLessThanOrEqual(width);
+        expect(rect.bottom).toBeLessThanOrEqual(height);
+      }
+      const sorted = bounds.sort((a, b) => a.y - b.y);
+      for (let index = 1; index < sorted.length; index++) {
+        expect(sorted[index].y - sorted[index - 1].bottom).toBeGreaterThanOrEqual(8);
+      }
+      await page.locator('.a11y-toolbar__main').click();
+      const panel = page.locator('.a11y-toolbar__panel');
+      await expect(panel).toBeVisible();
+      await expect
+        .poll(() => panel.evaluate(element => element.getBoundingClientRect().top))
+        .toBeGreaterThanOrEqual(0);
+      await page.getByRole('button', { name: 'Liquid Glass transparency', exact: true }).click();
+      const popover = page.locator('.a11y-glass-popover');
+      await expect(popover).toBeVisible();
+      await expect
+        .poll(() => popover.evaluate(element => element.getBoundingClientRect().bottom))
+        .toBeLessThanOrEqual(height);
+      const popoverBounds = await popover.boundingBox();
+      expect(popoverBounds.x).toBeGreaterThanOrEqual(0);
+      expect(popoverBounds.y).toBeGreaterThanOrEqual(0);
+      expect(popoverBounds.x + popoverBounds.width).toBeLessThanOrEqual(width);
+      await popover.locator('.a11y-glass-popover__close').click();
+      if (
+        await page
+          .locator('.a11y-toolbar')
+          .evaluate(element => element.classList.contains('is-open'))
+      ) {
+        await page.locator('.a11y-toolbar__main').click();
+      }
+    }
+  }
 });
 
 test('laptop navigation exposes every page and restores keyboard focus', async ({ page }) => {
@@ -233,7 +350,11 @@ test('contact calendar scrolls, clocks use timezones, and stale Panchang stays h
     })
   );
   await gotoSite(page, '/#contact');
-  await expect(page.locator('.world-clock')).toHaveCount(6);
+  await expect(page.locator('.world-clock:visible')).toHaveCount(3);
+  await page.getByRole('button', { name: 'View 3 more clocks' }).click();
+  await expect(page.locator('.world-clock:visible')).toHaveCount(6);
+  await page.getByRole('button', { name: 'Show fewer clocks' }).click();
+  await expect(page.locator('.world-clock:visible')).toHaveCount(3);
   const expectedTimes = ['1:00 AM', '6:00 AM', '10:30 AM', '2:00 PM', '3:00 PM', '7:00 AM'];
   await expect
     .poll(() => page.locator('.world-clock time').allTextContents())
@@ -243,10 +364,22 @@ test('contact calendar scrolls, clocks use timezones, and stale Panchang stays h
     'href',
     'https://www.kalnirnay.com/'
   );
-  await expect(
-    page.locator('.calendar-snapshot-note,.card-source,.year-progress-widget')
-  ).toHaveCount(0);
+  await expect(page.locator('.calendar-snapshot-note,.card-source')).toHaveCount(0);
+  await expect(page.getByRole('progressbar', { name: 'Year 2026 progress' })).toHaveAttribute(
+    'value',
+    '274'
+  );
+  const leftCards = await page
+    .locator('.contact-column')
+    .first()
+    .locator(':scope > .contact-card')
+    .evaluateAll(cards =>
+      cards.slice(0, 2).map(card => card.querySelector('h3').textContent.trim())
+    );
+  expect(leftCards).toEqual(['Follow Me', 'Send a Message']);
   await page.locator('.filter-tab[data-filter="all"]').click();
+  await expect(page.locator('.reminder-card:visible')).toHaveCount(5);
+  await page.getByRole('button', { name: /View all \d+ items/ }).click();
   const list = page.locator('#reminders-list-container');
   await list.focus();
   await page.keyboard.press('PageDown');

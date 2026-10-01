@@ -117,7 +117,16 @@ function updateClocks() {
 export function initContactTime() {
   const root = document.getElementById('contact-world-clocks');
   if (root && !root.hasChildNodes()) {
-    root.innerHTML = `<h4>World clocks</h4><div class="world-clocks-grid">${CITIES.map(([city, zone]) => `<div class="world-clock" data-time-zone="${zone}">${clockFace()}<h5>${city}</h5><time></time><span class="world-clock-date"></span></div>`).join('')}</div>`;
+    root.innerHTML = `<h4>World clocks</h4><div class="world-clocks-grid" id="contact-world-clocks-grid">${CITIES.map(([city, zone], index) => `<div class="world-clock" data-time-zone="${zone}"${index > 2 ? ' hidden' : ''}>${clockFace()}<h5>${city}</h5><time></time><span class="world-clock-date"></span></div>`).join('')}</div><button type="button" class="world-clocks-toggle" aria-controls="contact-world-clocks-grid" aria-expanded="false">View 3 more clocks</button>`;
+    root.querySelector('.world-clocks-toggle').onclick = event => {
+      const expanded = event.currentTarget.getAttribute('aria-expanded') !== 'true';
+      event.currentTarget.setAttribute('aria-expanded', String(expanded));
+      event.currentTarget.textContent = expanded ? 'Show fewer clocks' : 'View 3 more clocks';
+      root.querySelectorAll('.world-clock').forEach((card, index) => {
+        card.hidden = index > 2 && !expanded;
+      });
+      updateClocks();
+    };
   }
   renderPanchang();
   if (!clockTimer) {
