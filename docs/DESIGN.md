@@ -227,6 +227,10 @@ CSS files in `src/assets/css/` are layered systematically:
 
 ---
 
+### Floating mobile controls
+
+Keep Accessibility, Share, Chat, and Back to Top in one vertical column at the safe-area-aware right edge. Use at least 44-pixel targets with visible gaps. When Back to Top is hidden, pack the other controls down. Accessibility tools and the Liquid Glass sheet open beside the stack, with viewport-bounded vertical scrolling; they must remain reachable on small portrait and landscape screens.
+
 ## 7. Interactive Micro-Experiences & Widgets
 
 ### Year Progress HUD Widget (`#calendar-container .year-progress-widget`)

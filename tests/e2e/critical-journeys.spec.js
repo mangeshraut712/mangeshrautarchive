@@ -167,13 +167,79 @@ test('homepage has no serious accessibility violations', async ({ page }) => {
   );
 });
 
-test('mobile homepage fits without horizontal overflow', async ({ page }) => {
-  await page.setViewportSize({ width: 390, height: 844 });
+test('mobile homepage fits and floating controls stay in a vertical stack', async ({ page }) => {
   await gotoSite(page, '/');
   await expect(page.locator('main')).toBeAttached();
-  await expect
-    .poll(() => page.evaluate(() => document.documentElement.scrollWidth - innerWidth))
-    .toBeLessThanOrEqual(1);
+  for (const [width, height] of [
+    [320, 568],
+    [390, 844],
+    [667, 375],
+  ]) {
+    await page.setViewportSize({ width, height });
+    await page.evaluate(() => window.scrollTo(0, 4000));
+    await expect(page.locator('#go-to-top')).toBeVisible();
+    for (const dark of [false, true]) {
+      await page.evaluate(value => document.documentElement.classList.toggle('dark', value), dark);
+      await expect
+        .poll(() => page.evaluate(() => document.documentElement.scrollWidth - innerWidth))
+        .toBeLessThanOrEqual(1);
+      const bounds = await page
+        .locator('.a11y-toolbar__main, #website-share-toggle, #chatbot-toggle, #go-to-top')
+        .evaluateAll(controls =>
+          controls.map(control => {
+            const rect = control.getBoundingClientRect();
+            return {
+              x: rect.x,
+              y: rect.y,
+              right: rect.right,
+              bottom: rect.bottom,
+              width: rect.width,
+              height: rect.height,
+            };
+          })
+        );
+      expect(bounds).toHaveLength(4);
+      expect(
+        Math.max(...bounds.map(rect => rect.x)) - Math.min(...bounds.map(rect => rect.x))
+      ).toBeLessThanOrEqual(1);
+      for (const rect of bounds) {
+        expect(rect.width).toBeGreaterThanOrEqual(44);
+        expect(rect.height).toBeGreaterThanOrEqual(44);
+        expect(rect.x).toBeGreaterThanOrEqual(0);
+        expect(rect.y).toBeGreaterThanOrEqual(0);
+        expect(rect.right).toBeLessThanOrEqual(width);
+        expect(rect.bottom).toBeLessThanOrEqual(height);
+      }
+      const sorted = bounds.sort((a, b) => a.y - b.y);
+      for (let index = 1; index < sorted.length; index++) {
+        expect(sorted[index].y - sorted[index - 1].bottom).toBeGreaterThanOrEqual(8);
+      }
+      await page.locator('.a11y-toolbar__main').click();
+      const panel = page.locator('.a11y-toolbar__panel');
+      await expect(panel).toBeVisible();
+      await expect
+        .poll(() => panel.evaluate(element => element.getBoundingClientRect().top))
+        .toBeGreaterThanOrEqual(0);
+      await page.getByRole('button', { name: 'Liquid Glass transparency', exact: true }).click();
+      const popover = page.locator('.a11y-glass-popover');
+      await expect(popover).toBeVisible();
+      await expect
+        .poll(() => popover.evaluate(element => element.getBoundingClientRect().bottom))
+        .toBeLessThanOrEqual(height);
+      const popoverBounds = await popover.boundingBox();
+      expect(popoverBounds.x).toBeGreaterThanOrEqual(0);
+      expect(popoverBounds.y).toBeGreaterThanOrEqual(0);
+      expect(popoverBounds.x + popoverBounds.width).toBeLessThanOrEqual(width);
+      await popover.locator('.a11y-glass-popover__close').click();
+      if (
+        await page
+          .locator('.a11y-toolbar')
+          .evaluate(element => element.classList.contains('is-open'))
+      ) {
+        await page.locator('.a11y-toolbar__main').click();
+      }
+    }
+  }
 });
 
 test('laptop navigation exposes every page and restores keyboard focus', async ({ page }) => {

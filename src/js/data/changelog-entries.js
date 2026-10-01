@@ -54,6 +54,24 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'mobile-vertical-utility-stack-october-2026',
+    date: '2026-10-01',
+    type: 'fix',
+    title: 'Restore the vertical mobile utility stack and keep panels in view',
+    summary:
+      'Remove the narrow-screen rule that laid out accessibility, share, chat, and back-to-top controls horizontally. Restore safe-area-aware vertical spacing and 44-pixel touch targets. Keep accessibility tools and the Liquid Glass panel beside the stack with bounded scrolling so portrait and landscape screens retain all controls.',
+    tags: ['design', 'other'],
+    sha: null,
+    commitVerified: false,
+    model: 'GPT-6',
+    ide: 'Codex desktop',
+    purpose: 'Vertical mobile controls, safe viewport bounds, and accessible touch targets',
+    attributionSource: 'not-recorded',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+    status: 'unreleased',
+  },
+  {
     id: 'safari-reminder-focus-october-2026',
     date: '2026-10-01',
     type: 'fix',

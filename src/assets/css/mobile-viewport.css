@@ -166,20 +166,38 @@ section {
     align-items: flex-end !important;
   }
 
-  .a11y-toolbar.is-open .a11y-toolbar__panel {
-    max-height: min(22rem, 55vh) !important;
+  html body .a11y-toolbar.is-open .a11y-toolbar__panel {
+    position: fixed !important;
+    right: calc(var(--fab-edge) + var(--fab-size) + var(--fab-gap)) !important;
+    bottom: var(--fab-bottom) !important;
+    max-height: min(22rem, calc(100svh - var(--fab-bottom) - 5rem)) !important;
+    overflow-y: auto !important;
+    overscroll-behavior: contain;
+  }
+
+  html body .a11y-toolbar__panel button {
+    flex-shrink: 0;
   }
 
   /* Glass popover — right-aligned solid card */
-  .a11y-glass-popover {
-    bottom: calc(var(--fab-slot-3) + var(--fab-size) + 0.75rem) !important;
+  html body .a11y-glass-popover,
+  html body .a11y-glass-popover.is-open {
+    bottom: var(--fab-bottom) !important;
     left: auto !important;
-    right: var(--fab-edge) !important;
+    right: calc(var(--fab-edge) + var(--fab-size) + var(--fab-gap)) !important;
     top: auto !important;
     transform: none !important;
-    width: min(20.5rem, calc(100vw - 1.6rem)) !important;
-    max-width: min(20.5rem, calc(100vw - 1.6rem)) !important;
-    max-height: min(82vh, 32rem) !important;
+    width: min(
+      20.5rem,
+      calc(100vw - var(--fab-edge) - var(--fab-size) - var(--fab-gap) - 1rem)
+    ) !important;
+    max-width: min(
+      20.5rem,
+      calc(100vw - var(--fab-edge) - var(--fab-size) - var(--fab-gap) - 1rem)
+    ) !important;
+    max-height: min(32rem, calc(100svh - var(--fab-bottom) - 5rem)) !important;
+    overflow-y: auto !important;
+    overscroll-behavior: contain;
     background: #ffffff !important;
     background-color: #ffffff !important;
     background-image: none !important;

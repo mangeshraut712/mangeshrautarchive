@@ -259,7 +259,7 @@ purpose, and verified commit in the [changelog](src/js/data/changelog-entries.js
 | Current documentation contribution               | Attribution                                                                        |
 | ------------------------------------------------ | ---------------------------------------------------------------------------------- |
 | Coding agent                                     | GPT-6 / Codex, in Codex desktop                                                    |
-| Purpose                                          | Compact contact layout, progressive disclosure, and reliable theme contrast        |
+| Purpose                                          | Vertical mobile controls, safe viewport bounds, and accessible touch targets       |
 | Exact model variant, reasoning mode, token usage | Unavailable from the active runtime                                                |
 | Portfolio chatbot model                          | Configured separately in [api/model_router.py](api/model_router.py) and the Worker |
 

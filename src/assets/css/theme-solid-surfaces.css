@@ -2600,32 +2600,6 @@ html body:has(#go-to-top.visible) .a11y-toolbar {
   }
 }
 
-/* The home page's narrow card grid needs its utility controls below the card edge. */
-@media (width <= 480px) {
-  html body:has(#projects.projects-editorial) #go-to-top,
-  html body:has(#projects.projects-editorial) #chatbot-toggle,
-  html body:has(#projects.projects-editorial) #website-share-toggle.website-share-fab,
-  html body:has(#projects.projects-editorial) .a11y-toolbar {
-    bottom: var(--fab-bottom) !important;
-  }
-
-  html body:has(#projects.projects-editorial) #go-to-top {
-    right: var(--fab-edge) !important;
-  }
-
-  html body:has(#projects.projects-editorial) #chatbot-toggle {
-    right: calc(var(--fab-edge) + var(--fab-size) + var(--fab-gap)) !important;
-  }
-
-  html body:has(#projects.projects-editorial) #website-share-toggle.website-share-fab {
-    right: calc(var(--fab-edge) + (var(--fab-size) + var(--fab-gap)) * 2) !important;
-  }
-
-  html body:has(#projects.projects-editorial) .a11y-toolbar {
-    right: calc(var(--fab-edge) + (var(--fab-size) + var(--fab-gap)) * 3) !important;
-  }
-}
-
 /* ==========================================================================
    Solid Theme Surface Alignment (Travel Map, Monitor Badges, Systems Rail)
    ========================================================================== */
