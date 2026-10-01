@@ -1589,7 +1589,7 @@ class AppleIntelligenceChatbot {
     });
 
     this.elements.input?.addEventListener('keydown', e => {
-      if (e.key === 'Enter' && !e.shiftKey) {
+      if (e.key === 'Enter' && !e.shiftKey && !e.isComposing && e.keyCode !== 229) {
         e.preventDefault();
         e.stopImmediatePropagation();
         this.handleSendMessage();
@@ -2248,10 +2248,6 @@ class AppleIntelligenceChatbot {
       this.addErrorMessage(
         `You have reached the daily estimate of ${this.maxSessionMessages} free AI messages. Please try again later.`
       );
-      if (this.elements.input) {
-        this.elements.input.value = '';
-        this.autoResizeTextarea(this.elements.input);
-      }
       this.updateRateLimitBadge();
       return;
     }
@@ -2296,14 +2292,17 @@ class AppleIntelligenceChatbot {
     this.showThinkingIndicator();
 
     const startTime = Date.now();
+    let completed = false;
 
     try {
       if (this.chatAPI && typeof this.chatAPI.ask === 'function') {
-        await this.streamAIResponse(text, startTime, false, {
-          images: normalizeImagePayloads(imagesForTurn),
-        });
+        completed =
+          (await this.streamAIResponse(text, startTime, false, {
+            images: normalizeImagePayloads(imagesForTurn),
+          })) !== false;
       } else {
         await this.simulateTyping(this.getFallbackResponse(text), startTime);
+        completed = true;
       }
     } catch (error) {
       if (error?.name === 'AbortError') {
@@ -2327,8 +2326,14 @@ class AppleIntelligenceChatbot {
       this.isProcessing = false;
       this.setComposerBusy(false);
       this.setAgentComposerStatus('idle');
-      if (!this._abortedLastAsk) {
+      if (completed && !this._abortedLastAsk) {
         this.messageCount++;
+      } else if (!this._abortedLastAsk && this.elements.input && !this.elements.input.value) {
+        this.elements.input.value = text;
+        this.pendingImages = imagesForTurn;
+        this.renderAttachPreview();
+        this.autoResizeTextarea(this.elements.input);
+        this.syncSendButtonState();
       }
       this._abortedLastAsk = false;
       this.updateRateLimitBadge();
@@ -2591,11 +2596,13 @@ class AppleIntelligenceChatbot {
         Math.ceil(fullText.length / 4);
       const runtimeSeconds = Math.max(runtime / 1000, 0.001);
       metadata = {
-        source: response?.metadata?.source || response?.source || 'Neural API',
-        model: response?.metadata?.model || response?.model || 'OpenRouter',
+        ...metadata,
+        source: metadata.source || response?.metadata?.source || response?.source || 'AI service',
+        model: metadata.model || response?.metadata?.model || response?.model || 'OpenRouter',
         category: response?.metadata?.category || 'General',
         runtime: runtime,
         tokens: tokenEstimate,
+        tokensEstimated: !response?.metadata?.tokens && !response?.tokens,
         tokensPerSecond:
           response?.metadata?.tokensPerSecond ||
           response?.metadata?.tokens_per_sec ||
@@ -2632,6 +2639,7 @@ class AppleIntelligenceChatbot {
       }
 
       this.schedulePinToBottom();
+      return !metadata.error;
     } catch (error) {
       if (
         error?.name === 'AbortError' ||
@@ -2660,14 +2668,14 @@ class AppleIntelligenceChatbot {
           );
           this.addMessage(offlineText, 'assistant');
           this.showFollowupChips(offlineText);
-          return;
+          return true;
         }
       }
 
       if (!fullText) {
         messageDiv?.remove();
-        this.addErrorMessage('The response was interrupted. Please try again.');
-        return;
+        this.addErrorMessage('The response was interrupted. Your draft is ready to retry.');
+        return false;
       }
 
       if (!messageDiv) {
@@ -2686,6 +2694,7 @@ class AppleIntelligenceChatbot {
         category: 'Error',
         runtime: Date.now() - startTime,
         tokens: Math.ceil(fullText.length / 4),
+        tokensEstimated: true,
         timestamp: new Date().toLocaleTimeString('en-US', {
           hour: '2-digit',
           minute: '2-digit',
@@ -2693,6 +2702,7 @@ class AppleIntelligenceChatbot {
         }),
       });
       this.addErrorMessage('Partial response shown. Tap Retry for a complete response.');
+      return false;
     } finally {
       this.scrollEngine?.onStreamEnd();
     }
@@ -2768,13 +2778,16 @@ class AppleIntelligenceChatbot {
     const detailBtn = this.createActionButton('fa-chevron-down', 'Details', () => {
       const details = metaContainer.querySelector('.meta-details');
       if (details) {
-        details.classList.toggle('expanded');
+        const expanded = details.classList.toggle('expanded');
+        details.hidden = !expanded;
+        detailBtn.setAttribute('aria-expanded', String(expanded));
         const icon = detailBtn.querySelector('i');
         icon.className = details.classList.contains('expanded')
           ? 'fas fa-chevron-up'
           : 'fas fa-chevron-down';
       }
     });
+    detailBtn.setAttribute('aria-expanded', 'false');
     actionsDiv.appendChild(detailBtn);
 
     primaryRow.appendChild(actionsDiv);
@@ -2783,6 +2796,7 @@ class AppleIntelligenceChatbot {
     // Details row (collapsed by default)
     const detailsRow = document.createElement('div');
     detailsRow.className = 'meta-details';
+    detailsRow.hidden = true;
 
     const detailChips = [];
     if (metadata.source) detailChips.push(`🔌 ${metadata.source}`);
@@ -2791,9 +2805,14 @@ class AppleIntelligenceChatbot {
       const engine = metadata.webEngine ? ` via ${metadata.webEngine}` : '';
       detailChips.push(`🌐 Web tools${engine}`);
     }
-    if (metadata.tokens) detailChips.push(`🎯 ${metadata.tokens} tokens`);
+    if (metadata.tokens)
+      detailChips.push(
+        `🎯 ${metadata.tokensEstimated ? '≈ ' : ''}${metadata.tokens} tokens${metadata.tokensEstimated ? ' (estimated)' : ''}`
+      );
     if (metadata.tokensPerSecond)
-      detailChips.push(`⚡ ${Math.round(metadata.tokensPerSecond)} tok/s`);
+      detailChips.push(
+        `⚡ ${metadata.tokensEstimated ? '≈ ' : ''}${Math.round(metadata.tokensPerSecond)} tok/s${metadata.tokensEstimated ? ' (estimated)' : ''}`
+      );
     if (metadata.generationId) detailChips.push(`🧾 ${metadata.generationId}`);
     if (metadata.confidence) detailChips.push(`✓ ${Math.round(metadata.confidence * 100)}%`);
     if (metadata.cost) {
@@ -2871,6 +2890,7 @@ class AppleIntelligenceChatbot {
       category: 'Portfolio',
       runtime: Date.now() - startTime,
       tokens: Math.ceil(text.length / 4),
+      tokensEstimated: true,
       timestamp: new Date().toLocaleTimeString('en-US', {
         hour: '2-digit',
         minute: '2-digit',
@@ -2899,8 +2919,10 @@ class AppleIntelligenceChatbot {
     btn.type = 'button';
     btn.className = 'msg-action-btn';
     btn.title = title;
+    btn.setAttribute('aria-label', title);
     const icon = document.createElement('i');
     icon.className = TRUSTED_ICON_CLASS.test(iconClass) ? `fas ${iconClass}` : 'fas fa-circle';
+    icon.setAttribute('aria-hidden', 'true');
     btn.appendChild(icon);
     btn.onclick = e => {
       e.stopPropagation();

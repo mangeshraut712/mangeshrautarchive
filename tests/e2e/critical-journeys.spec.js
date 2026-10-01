@@ -138,21 +138,61 @@ test('contact form sends a message and confirms storage', async ({ page }) => {
   expect(submitted).toMatchObject({ email: 'ada@example.com', subject: 'Project question' });
 });
 
-test('chatbot renders a streamed answer', async ({ page }) => {
-  await page.route('**/api/chat', async route => {
-    await route.fulfill({
-      status: 200,
-      contentType: 'application/x-ndjson',
-      body: '{"type":"chunk","content":"Here is **the answer**."}\n{"type":"done","metadata":{"source":"e2e"}}\n',
+test.describe('AssistMe chat', () => {
+  test.use({ serviceWorkers: 'block' });
+
+  test('chatbot renders a streamed answer', async ({ page }) => {
+    await page.route('**/api/chat/health', route =>
+      route.fulfill({ json: { provider_status: 'online' } })
+    );
+    await page.route('**/api/chat', async route => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/x-ndjson',
+        body: '{"type":"chunk","content":"Here is **the answer**."}\n{"type":"done","metadata":{"source":"e2e"}}\n',
+      });
     });
+    await gotoSite(page, '/');
+    await openChatbot(page);
+    await page.locator('#chatbot-input').fill('Explain the portfolio');
+    await page.locator('#chatbot-input').dispatchEvent('keydown', {
+      key: 'Enter',
+      isComposing: true,
+      keyCode: 229,
+    });
+    await expect(page.locator('#chatbot-input')).toHaveValue('Explain the portfolio');
+    await expect(page.locator('#chatbot-messages .user-message')).toHaveCount(0);
+    await page.locator('#chatbot-input').press('Enter');
+    await expect(page.locator('#chatbot-messages .assistant-message').last()).toContainText(
+      'the answer'
+    );
+    const answer = page.locator('#chatbot-messages .assistant-message').last();
+    const details = answer.getByRole('button', { name: 'Details', exact: true });
+    await expect(details).toHaveAttribute('aria-expanded', 'false');
+    await expect(answer.locator('.meta-details')).toBeHidden();
+    await details.click();
+    await expect(details).toHaveAttribute('aria-expanded', 'true');
+    await expect(answer.locator('.meta-details')).toContainText('estimated');
+    await details.click();
+    await expect(answer.locator('.meta-details')).toBeHidden();
+    const completedCount = await page.evaluate(() => window.appleIntelligenceChatbot.messageCount);
+    await page.evaluate(() => {
+      const bot = window.appleIntelligenceChatbot;
+      bot.chatAPI.ask = async () => {
+        throw new Error('Simulated connection interruption');
+      };
+      bot.chatAPI.basicQueryProcessing = () => null;
+    });
+    await page.locator('#chatbot-input').fill('Keep this draft after a connection failure');
+    await page.locator('#chatbot-input').press('Enter');
+    await expect(page.locator('#chatbot-input')).toHaveValue(
+      'Keep this draft after a connection failure'
+    );
+    await expect(page.locator('#chatbot-messages')).toContainText('Your draft is ready to retry');
+    expect(await page.evaluate(() => window.appleIntelligenceChatbot.messageCount)).toBe(
+      completedCount
+    );
   });
-  await gotoSite(page, '/');
-  await openChatbot(page);
-  await page.locator('#chatbot-input').fill('Explain the portfolio');
-  await page.locator('#chatbot-input').press('Enter');
-  await expect(page.locator('#chatbot-messages .assistant-message').last()).toContainText(
-    'the answer'
-  );
 });
 
 test('homepage has no serious accessibility violations', async ({ page }) => {

@@ -3506,6 +3506,10 @@ html.dark .meta-retry-badge {
     opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+.meta-details[hidden] {
+  display: none;
+}
+
 .meta-details.expanded {
   max-height: 140px;
   opacity: 1;

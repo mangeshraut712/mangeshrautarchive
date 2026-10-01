@@ -118,7 +118,7 @@ function ensureChatbotChrome() {
     widget.className = 'hidden';
     widget.setAttribute('role', 'dialog');
     widget.setAttribute('aria-modal', 'true');
-    widget.setAttribute('aria-label', 'Apple Intelligence chat window');
+    widget.setAttribute('aria-label', 'AssistMe chat window');
     widget.tabIndex = -1;
     markChromeClosed(widget);
     widget.innerHTML = `

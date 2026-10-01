@@ -250,3 +250,13 @@ Keep Accessibility, Share, Chat, and Back to Top in one vertical column at the s
 ### Navigation and deferred map controls
 
 Keep the complete site menu available on laptop and desktop widths even when the section rail scrolls. Preserve dialog focus entry, Escape dismissal, and focus restoration. Positioned controls use a layout wrapper so shared button transforms cannot move them outside the viewport. The Travel map prompt remains reachable before loading and after a failed download; the places list stays usable. Article and case-study evidence links own their accessible colors, outside the global link accent override. Scrollable code examples accept keyboard focus.
+
+### AssistMe response and input behavior
+
+- Keep the chat window and composer inside the visible mobile viewport in portrait and landscape.
+- Respect active text composition before treating Enter as Send; Shift+Enter inserts a line break.
+- Preserve failed drafts and attachments when the composer is empty, and count completed replies.
+- Give icon-only response actions explicit accessible labels. Collapsed Details must be hidden from
+  assistive technology, and its button must expose the expanded state.
+- Mark inferred token usage and throughput as estimates. Keep local response provenance distinct
+  from cloud model metadata, and avoid inferring project capabilities from repository names.

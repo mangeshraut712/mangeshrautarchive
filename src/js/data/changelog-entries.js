@@ -54,6 +54,24 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'assistme-reliability-october-2026',
+    date: '2026-10-01',
+    type: 'fix',
+    title: 'Improve AssistMe input, recovery, and response details',
+    summary:
+      'Respect text composition before sending, preserve failed drafts and attachments, and count completed responses rather than failed requests. Label estimated usage, hide collapsed details from assistive technology, and retain offline response provenance. Correct the CS336 course description and use the current request date in the edge prompt.',
+    tags: ['assistme', 'api'],
+    sha: null,
+    commitVerified: false,
+    model: 'GPT-6',
+    ide: 'Codex desktop',
+    purpose: 'AssistMe input reliability, honest response details, and grounded portfolio answers',
+    attributionSource: 'not-recorded',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+    status: 'unreleased',
+  },
+  {
     id: 'mobile-vertical-utility-stack-october-2026',
     date: '2026-10-01',
     type: 'fix',
