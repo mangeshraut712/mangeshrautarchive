@@ -54,6 +54,24 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'dependency-pr-ci-recovery-october-2026',
+    date: '2026-10-01',
+    type: 'fix',
+    title: 'Resolve the Axios update and verify workflow tooling downloads',
+    summary:
+      'Integrate Axios 1.20.0 with current main, update DOMPurify to 3.4.16 and brace-expansion to 5.0.12, and rebuild the sanitizer assets to clear the reported dependency vulnerabilities. Replace the actionlint download-script pipeline with a pinned GitHub release download and SHA-256 verification before extraction, retaining workflow lint as a required release gate.',
+    tags: ['deploy', 'other'],
+    sha: '3eaf6476b3c9aff76f4866f4fa54954e7d9bef50',
+    link: `${CHANGELOG_REPO}/commit/3eaf6476b3c9aff76f4866f4fa54954e7d9bef50`,
+    commitVerified: true,
+    model: 'GPT-6',
+    ide: 'Codex desktop',
+    purpose: 'Dependency PR integration and verified workflow tooling',
+    attributionSource: 'commit-message',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
     id: 'assistme-reliability-october-2026',
     date: '2026-10-01',
     type: 'fix',

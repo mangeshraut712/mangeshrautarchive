@@ -37,12 +37,24 @@ jobs:
 
       - name: Lint GitHub Actions workflows
         id: actionlint
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          curl -sSfL --connect-timeout 10 --max-time 60 \
-            https://raw.githubusercontent.com/rhysd/actionlint/v1.7.7/scripts/download-actionlint.bash \
-            | bash -s -- 1.7.7 /tmp
-          /tmp/actionlint -color
+          lint_dir=$(mktemp -d)
+          trap 'rm -rf "$lint_dir"' EXIT
+          gh release download v1.7.7 --repo rhysd/actionlint \
+            --pattern actionlint_1.7.7_linux_amd64.tar.gz \
+            --pattern actionlint_1.7.7_checksums.txt --dir "$lint_dir"
+          (
+            cd "$lint_dir"
+            awk '$2 == "actionlint_1.7.7_linux_amd64.tar.gz"' \
+              actionlint_1.7.7_checksums.txt > selected-checksum.txt
+            test -s selected-checksum.txt
+            sha256sum --check selected-checksum.txt
+            tar -xzf actionlint_1.7.7_linux_amd64.tar.gz actionlint
+          )
+          "$lint_dir/actionlint" -color
           echo "- actionlint ✅" >> "$GITHUB_STEP_SUMMARY"
 
       - name: Setup Node.js
