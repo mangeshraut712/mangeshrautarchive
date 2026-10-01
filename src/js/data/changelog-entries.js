@@ -54,6 +54,24 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'share-card-simplification-october-2026',
+    date: '2026-10-02',
+    type: 'improvement',
+    title: 'Simplify the portfolio share card',
+    summary:
+      'Remove the animated QR graph, pulse rings, scanner overlays and pointer tilt. Keep the mirror selector, profile badge and sharing actions in a compact card with grouped rows, a clear QR quiet zone and accessible dialog labels.',
+    tags: ['design'],
+    sha: null,
+    commitVerified: false,
+    model: 'GPT-6 / Codex',
+    ide: 'Codex desktop',
+    purpose: 'Share card simplification and QR readability',
+    attributionSource: 'not-recorded',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+    status: 'unreleased',
+  },
+  {
     id: 'missing-interface-icons-october-2026',
     date: '2026-10-02',
     type: 'fix',

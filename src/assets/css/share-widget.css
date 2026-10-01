@@ -340,221 +340,24 @@ html.dark .share-mirror-tab.active {
   box-shadow: 0 1px 4px rgba(0, 113, 227, 0.4);
 }
 
-/* ═══════════════════════════════════════════════════════════
-   APPLE AESTHETIC QR CODE EXPERIENCE (Tree/ICQR Inspired)
-   ═══════════════════════════════════════════════════════════ */
+/* A quiet QR surface keeps the code easy to scan. */
 .website-share-qr-section {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  position: relative;
-  margin: 0.85rem 0 0.5rem;
-}
-
-/* Generative Botanical/Neural Tree Canvas (tree.icqr.com) */
-.qr-tree-canvas {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 300px;
-  height: 270px;
-  pointer-events: none;
-  z-index: 0;
-  opacity: 0.95;
-}
-
-/* Ethereal Ambient Pulse Halo (Organic Aura) */
-.website-share-qr-ambient {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 220px;
-  height: 220px;
-  pointer-events: none;
-  z-index: 0;
-}
-
-.qr-ambient-pulse {
-  position: absolute;
-  inset: 0;
-  border-radius: 36px;
-  border: 1.5px solid rgba(0, 113, 227, 0.25);
-  animation: qrAmbientPulse 4s cubic-bezier(0.25, 1, 0.5, 1) infinite;
-}
-
-.qr-pulse-2 {
-  animation-delay: 2s;
-}
-
-@keyframes qrAmbientPulse {
-  0% {
-    transform: scale(0.88);
-    opacity: 0.8;
-  }
-  50% {
-    transform: scale(1.08);
-    opacity: 0.25;
-    border-color: rgba(41, 151, 255, 0.4);
-  }
-  100% {
-    transform: scale(1.18);
-    opacity: 0;
-  }
+  gap: 0.75rem;
+  margin: 0;
 }
 
 .website-share-qr-shell {
   position: relative;
-  width: 176px;
-  height: 176px;
-  background: #ffffff;
-  padding: 10px;
-  border-radius: 22px;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  box-shadow:
-    0 12px 32px rgba(0, 113, 227, 0.12),
-    0 4px 12px rgba(0, 0, 0, 0.04);
-  box-sizing: border-box;
+  width: 192px;
+  height: 192px;
+  padding: 0;
   overflow: hidden;
-  z-index: 1;
-  transform-style: preserve-3d;
-  will-change: transform;
-  transition:
-    transform 0.18s cubic-bezier(0.16, 1, 0.3, 1),
-    box-shadow 0.25s ease;
-}
-
-/* Glass Specular Reflection Overlay */
-.qr-specular-gloss {
-  position: absolute;
-  inset: 0;
-  border-radius: 22px;
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.4) 0%,
-    rgba(255, 255, 255, 0.08) 45%,
-    transparent 100%
-  );
-  pointer-events: none;
-  z-index: 4;
-}
-
-html.dark .qr-specular-gloss {
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.2) 0%,
-    rgba(255, 255, 255, 0.03) 45%,
-    transparent 100%
-  );
-}
-
-.website-share-qr-shell:hover {
-  transform: translateY(-2px) scale(1.02);
-  box-shadow:
-    0 16px 40px rgba(0, 113, 227, 0.2),
-    0 6px 16px rgba(0, 0, 0, 0.08);
-}
-
-html.dark .website-share-qr-shell {
-  background: #000000;
-  border-color: rgba(255, 255, 255, 0.12);
-  box-shadow:
-    0 12px 32px rgba(0, 113, 227, 0.25),
-    0 4px 14px rgba(0, 0, 0, 0.6);
-}
-
-/* Cyber / Apple Viewfinder Corner Brackets */
-.qr-corner-bracket {
-  position: absolute;
-  width: 14px;
-  height: 14px;
-  border-color: #0071e3;
-  border-style: solid;
-  pointer-events: none;
-  z-index: 3;
-  transition: all 0.25s ease;
-}
-
-html.dark .qr-corner-bracket {
-  border-color: #2997ff;
-}
-
-.qr-bracket-tl {
-  top: 6px;
-  left: 6px;
-  border-width: 2.5px 0 0 2.5px;
-  border-top-left-radius: 8px;
-}
-
-.qr-bracket-tr {
-  top: 6px;
-  right: 6px;
-  border-width: 2.5px 2.5px 0 0;
-  border-top-right-radius: 8px;
-}
-
-.qr-bracket-bl {
-  bottom: 6px;
-  left: 6px;
-  border-width: 0 0 2.5px 2.5px;
-  border-bottom-left-radius: 8px;
-}
-
-.qr-bracket-br {
-  bottom: 6px;
-  right: 6px;
-  border-width: 0 2.5px 2.5px 0;
-  border-bottom-right-radius: 8px;
-}
-
-/* Animated Laser Scanner Line */
-.qr-laser-scanner {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 100%;
-  pointer-events: none;
-  z-index: 2;
-  overflow: hidden;
-}
-
-.qr-laser-line {
-  position: absolute;
-  left: 6px;
-  right: 6px;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, #0071e3, #2997ff, #0071e3, transparent);
-  box-shadow:
-    0 0 8px #0071e3,
-    0 0 16px rgba(41, 151, 255, 0.6);
-  animation: qrLaserSweep 3.2s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite alternate;
-}
-
-html.dark .qr-laser-line {
-  background: linear-gradient(90deg, transparent, #2997ff, #64d2ff, #2997ff, transparent);
-  box-shadow:
-    0 0 10px #2997ff,
-    0 0 20px rgba(100, 210, 255, 0.8);
-}
-
-@keyframes qrLaserSweep {
-  0% {
-    top: 8px;
-    opacity: 0.2;
-  }
-  15% {
-    opacity: 1;
-  }
-  85% {
-    opacity: 1;
-  }
-  100% {
-    top: calc(100% - 10px);
-    opacity: 0.2;
-  }
+  border: 1px solid var(--apple-border, #e5e5ea);
+  border-radius: 16px;
+  background: var(--share-qr-paper, #ffffff);
 }
 
 .website-share-qr {
@@ -711,4 +514,54 @@ html.dark .share-action-row:hover i {
 
 html.dark .website-share-status {
   color: #2997ff;
+}
+
+/* Scoped rows retain one clean grouped surface despite global button styling. */
+#website-share-dialog .website-share-card {
+  gap: 1.25rem;
+  padding: 1.5rem !important;
+}
+
+#website-share-dialog .share-action-row {
+  min-height: 44px;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  justify-content: space-between !important;
+  text-align: start;
+}
+
+#website-share-dialog .share-action-row + .share-action-row {
+  border-top: 1px solid var(--share-divider, rgb(0 0 0 / 8%)) !important;
+}
+
+#website-share-dialog .share-action-row:focus-visible {
+  outline: 2px solid var(--apple-blue);
+  outline-offset: -3px;
+}
+
+#website-share-dialog .qr-scan-hint {
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  color: var(--apple-text-secondary, #86868b);
+  font-weight: 500;
+}
+
+#website-share-dialog .website-share-status:empty {
+  display: none;
+}
+
+#website-share-dialog .share-action-row[hidden] {
+  display: none;
+}
+
+html.dark #website-share-dialog {
+  --share-divider: rgb(255 255 255 / 10%);
+}
+
+#website-share-dialog .website-share-actions-list {
+  border-radius: 14px !important;
+  overflow: hidden;
 }
