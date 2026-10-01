@@ -217,3 +217,61 @@ test('travel map remains reachable and can retry a failed download', async ({ pa
   await page.setViewportSize({ width: 390, height: 844 });
   await expect(load).toBeInViewport();
 });
+
+test('contact calendar scrolls, clocks use timezones, and stale Panchang stays hidden', async ({
+  page,
+}) => {
+  await page.clock.setFixedTime(new Date('2026-10-01T05:00:00Z'));
+  await page.route('**/kalnirnay-panchang.json?*', route =>
+    route.fulfill({
+      contentType: 'application/json',
+      body: JSON.stringify({
+        source: 'https://www.kalnirnay.com/',
+        date: '2026-09-30',
+        tithi: 'Outdated source value',
+      }),
+    })
+  );
+  await gotoSite(page, '/#contact');
+  await expect(page.locator('.world-clock')).toHaveCount(6);
+  const expectedTimes = ['1:00 AM', '6:00 AM', '10:30 AM', '2:00 PM', '3:00 PM', '7:00 AM'];
+  await expect
+    .poll(() => page.locator('.world-clock time').allTextContents())
+    .toEqual(expectedTimes);
+  await expect(page.locator('#contact-panchang')).not.toContainText('Outdated source value');
+  await expect(page.locator('#contact-panchang .calendar-marathi-link')).toHaveAttribute(
+    'href',
+    'https://www.kalnirnay.com/'
+  );
+  await expect(
+    page.locator('.calendar-snapshot-note,.card-source,.year-progress-widget')
+  ).toHaveCount(0);
+  await page.locator('.filter-tab[data-filter="all"]').click();
+  const list = page.locator('#reminders-list-container');
+  await list.focus();
+  await page.keyboard.press('PageDown');
+  await expect.poll(() => list.evaluate(element => element.scrollTop)).toBeGreaterThan(0);
+  expect(await list.evaluate(element => element.clientHeight < element.scrollHeight)).toBe(true);
+  const add = page.getByRole('button', { name: 'Add new reminder' });
+  await add.click();
+  const modal = page.getByRole('dialog', { name: 'New reminder' });
+  await expect(modal).toBeVisible();
+  await expect(modal).not.toContainText('Antigravity');
+  await modal.getByRole('button', { name: 'Save reminder' }).focus();
+  await page.keyboard.press('Tab');
+  await expect(modal.getByRole('button', { name: 'Close modal' })).toBeFocused();
+  await page.keyboard.press('Escape');
+  await expect(modal).toBeHidden();
+  await expect(add).toBeFocused();
+  await add.click();
+  await modal
+    .getByRole('textbox', { name: 'Reminder details in natural language' })
+    .fill('Follow up tomorrow at 3pm');
+  await modal.getByRole('button', { name: 'Save reminder' }).click();
+  await expect(modal).toBeHidden();
+  await page.locator('.filter-tab[data-filter="reminders"]').click();
+  await expect(list).toContainText('Follow up');
+  await page.reload();
+  await page.locator('.filter-tab[data-filter="reminders"]').click();
+  await expect(list).toContainText('Follow up');
+});

@@ -1,5 +1,6 @@
 import { LUMA_CALENDARS_URL } from '../utils/luma.js';
 import { escapeHtml } from '../utils/escape-html.js';
+import { initContactTime } from './contact-time.js';
 import { appleCalendarSnapshot } from '../data/apple-calendar-snapshot.js';
 
 function ensureContactSolidStyles() {
@@ -736,37 +737,8 @@ export class CalendarWidget {
       r => !r.isChangelog && r.dateKey && r.dateKey >= nowKey
     ).length;
 
-    // Year Progress Calculation (Apple HIG Progress HUD)
-    const currentYear = new Date().getFullYear();
-    const startOfYear = new Date(currentYear, 0, 1);
-    const now = new Date();
-    const diffMs = now - startOfYear;
-    const dayOfYear = Math.floor(diffMs / (1000 * 60 * 60 * 24)) + 1;
-    const isLeapYear =
-      (currentYear % 4 === 0 && currentYear % 100 !== 0) || currentYear % 400 === 0;
-    const totalYearDays = isLeapYear ? 366 : 365;
-    const daysLeft = Math.max(0, totalYearDays - dayOfYear);
-    const percentPassed = Math.min(100, Math.max(0, Math.round((dayOfYear / totalYearDays) * 100)));
-
     let html = `
       <div class="ios-widget-wrapper">
-        <!-- ═══════════════════════════════════════════════════════
-             YEAR PROGRESS HUD WIDGET (Apple HIG Standard)
-             ═══════════════════════════════════════════════════════ -->
-        <div class="year-progress-widget" aria-label="Year ${currentYear} Progress: ${percentPassed}% passed, ${daysLeft} days left">
-          <div class="year-progress-header">
-            <span class="year-progress-year">${currentYear}</span>
-            <span class="year-progress-percent">${percentPassed}%</span>
-          </div>
-          <div class="year-progress-track" role="progressbar" aria-label="Year ${currentYear} progress" aria-valuenow="${percentPassed}" aria-valuemin="0" aria-valuemax="100">
-            <div class="year-progress-fill" style="width: ${percentPassed}%;"></div>
-          </div>
-          <div class="year-progress-footer">
-            <span class="year-progress-sub-left">${percentPassed}% of the year has passed</span>
-            <span class="year-progress-sub-right">${daysLeft} days left</span>
-          </div>
-        </div>
-
         <!-- Calendar Section -->
         <div class="ios-calendar-section">
           <div class="ios-header">
@@ -785,8 +757,7 @@ export class CalendarWidget {
             ${['day', 'week', 'month', 'year'].map(mode => `<button type="button" data-calendar-view="${mode}" aria-pressed="${this.viewMode === mode}" class="${this.viewMode === mode ? 'active' : ''}">${mode[0].toUpperCase() + mode.slice(1)}</button>`).join('')}
           </div>
           ${this.renderCalendarView(year, month)}
-          <p class="calendar-snapshot-note">Apple Calendar ${appleCalendarSnapshot.year} · ${appleCalendarSnapshot.events.length} distinct events · Last imported ${new Date(appleCalendarSnapshot.syncedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })} · ${appleCalendarSnapshot.timeZone}</p>
-          <a class="calendar-marathi-link" href="https://www.kalnirnay.com/app/" target="_blank" rel="noopener noreferrer">कालनिर्णय २०२६ · Open the official Marathi calendar <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
+          <section id="contact-panchang" class="contact-panchang" aria-label="Official Kalnirnay Panchang"></section>
         </div>
 
         <!-- Reminders Section -->
@@ -890,7 +861,7 @@ export class CalendarWidget {
               : ''
           }
           
-          <div class="reminders-list" id="reminders-list-container">
+          <div class="reminders-list" id="reminders-list-container" role="region" aria-label="Calendar events and reminders" tabindex="0">
             ${
               filteredReminders.length === 0
                 ? `
@@ -933,7 +904,6 @@ export class CalendarWidget {
                     </div>
                   </div>
                   <div class="card-title">${escapeHtml(r.text)}</div>
-                  ${r.isSynced ? `<div class="card-source">${escapeHtml(r.sourceCalendars?.join(' + ') || 'Apple Calendar')} · ${appleCalendarSnapshot.timeZone}</div>` : ''}
                   ${r.lumaHost ? `<div class="card-host"><i class="fas fa-user-circle" aria-hidden="true"></i> By ${escapeHtml(r.lumaHost)}</div>` : ''}
                   ${r.location ? `<div class="card-location"><i class="fas fa-map-pin" aria-hidden="true"></i> ${escapeHtml(r.location)}</div>` : ''}
                   ${r.url ? `<a class="card-event-link" href="${escapeHtml(r.url)}" target="_blank" rel="noopener noreferrer">Event link <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i></a>` : ''}
@@ -991,6 +961,7 @@ export class CalendarWidget {
     `;
 
     this.container.innerHTML = html;
+    initContactTime();
     this.bindEvents();
   }
 
@@ -1120,13 +1091,13 @@ export class CalendarWidget {
     // Empty State: Add Reminder
     const emptyAddBtn = this.container.querySelector('.empty-action-btn.add-reminder-btn');
     if (emptyAddBtn) {
-      emptyAddBtn.onclick = () => this.addNewReminder();
+      emptyAddBtn.onclick = () => this.openSmartReminderModal();
     }
 
     // Header Add New Reminder
     const newBtn = this.container.querySelector('.ios-btn-small');
     if (newBtn) {
-      newBtn.onclick = () => this.addNewReminder();
+      newBtn.onclick = () => this.openSmartReminderModal();
     }
 
     // Day Selection & Day Filter Click
@@ -1297,9 +1268,11 @@ export class CalendarWidget {
 
     const overlay = document.createElement('div');
     overlay.className = 'smart-reminder-modal-overlay';
+    overlay.id = 'smart-reminder-modal';
     overlay.setAttribute('role', 'dialog');
     overlay.setAttribute('aria-modal', 'true');
-    overlay.setAttribute('aria-label', 'Smart AI Reminder Creation');
+    overlay.setAttribute('aria-label', 'New reminder');
+    const opener = document.activeElement;
 
     const selDay = this.selectedDate ? this.selectedDate.getDate() : new Date().getDate();
     const selMonth = this.selectedDate ? this.selectedDate.getMonth() : new Date().getMonth();
@@ -1311,7 +1284,7 @@ export class CalendarWidget {
         <div class="smart-modal-header">
           <div class="smart-modal-title">
             <i class="fas fa-wand-magic-sparkles" aria-hidden="true"></i>
-            <span>Smart AI Reminder</span>
+            <span>New reminder</span>
           </div>
           <button type="button" class="smart-modal-close" aria-label="Close modal">
             <i class="fas fa-times" aria-hidden="true"></i>
@@ -1319,13 +1292,13 @@ export class CalendarWidget {
         </div>
 
         <p class="smart-modal-description">
-          Type naturally. Antigravity AI extracts relative dates, times, categories, and tags automatically.
+          Write a reminder with a date or time, then review it before saving. Your reminders stay in this browser.
         </p>
 
         <div class="smart-modal-input-wrap">
           <textarea
             class="smart-modal-textarea"
-            placeholder="e.g. Sync with team tomorrow at 3pm #sync, or DevFest workshop on Friday 10am #meetup"
+            placeholder="e.g. Follow up tomorrow at 3pm"
             rows="3"
             aria-label="Reminder details in natural language"
           >${escapeHtml(initialText)}</textarea>
@@ -1336,11 +1309,11 @@ export class CalendarWidget {
           <button type="button" class="preset-chip" data-preset="Sync with engineering team tomorrow at 3pm #sync">
             <i class="fas fa-handshake" aria-hidden="true"></i> Team Sync
           </button>
-          <button type="button" class="preset-chip" data-preset="AI Agent sprint review on Friday at 11am #ai">
-            <i class="fas fa-brain" aria-hidden="true"></i> AI Sprint
+          <button type="button" class="preset-chip" data-preset="Follow up tomorrow at 11am">
+            <i class="fas fa-brain" aria-hidden="true"></i> Follow-up
           </button>
           <button type="button" class="preset-chip" data-preset="Critical architecture deadline next Monday 2pm #urgent">
-            <i class="fas fa-bolt" aria-hidden="true"></i> Urgent Deadline
+            <i class="fas fa-bolt" aria-hidden="true"></i> Deadline
           </button>
           <button type="button" class="preset-chip" data-preset="DevFest workshop on Saturday 9:30am #meetup">
             <i class="fas fa-ticket" aria-hidden="true"></i> Workshop
@@ -1350,23 +1323,22 @@ export class CalendarWidget {
         <!-- Live Parsed Preview & Conflict Detection -->
         <div class="smart-modal-preview-box">
           <div class="smart-preview-label">
-            <i class="fas fa-eye" aria-hidden="true"></i> Live AI Parsing
+            <i class="fas fa-eye" aria-hidden="true"></i> Reminder preview
           </div>
           <div class="smart-preview-content">
             <div class="smart-preview-title" id="smart-preview-title">New Reminder</div>
             <div class="smart-preview-meta">
               <span class="preview-badge badge-time" id="smart-preview-time">Scheduled</span>
               <span class="preview-badge badge-tag" id="smart-preview-tag">Task</span>
-              <span class="preview-badge badge-cat" id="smart-preview-category">reminders</span>
             </div>
           </div>
-          <div class="smart-conflict-alert" id="smart-conflict-alert" style="display: none;"></div>
+          <div class="smart-conflict-alert" id="smart-conflict-alert" hidden></div>
         </div>
 
         <div class="smart-modal-actions">
           <button type="button" class="smart-modal-btn btn-cancel">Cancel</button>
           <button type="button" class="smart-modal-btn btn-save">
-            <i class="fas fa-plus" aria-hidden="true"></i> Add to Calendar
+            <i class="fas fa-plus" aria-hidden="true"></i> Save reminder
           </button>
         </div>
       </div>
@@ -1399,15 +1371,15 @@ export class CalendarWidget {
       const conflict = this.checkScheduleConflict(parsed.dateKey, parsed.timeOnly);
       if (conflictAlert) {
         if (conflict.hasConflict) {
-          conflictAlert.style.display = 'flex';
+          conflictAlert.hidden = false;
           conflictAlert.className = 'smart-conflict-alert conflict-warning';
           conflictAlert.innerHTML = `<i class="fas fa-triangle-exclamation" aria-hidden="true"></i> <span>${escapeHtml(conflict.message)}</span>`;
         } else if (conflict.isDense) {
-          conflictAlert.style.display = 'flex';
+          conflictAlert.hidden = false;
           conflictAlert.className = 'smart-conflict-alert conflict-notice';
           conflictAlert.innerHTML = `<i class="fas fa-info-circle" aria-hidden="true"></i> <span>${escapeHtml(conflict.message)}</span>`;
         } else {
-          conflictAlert.style.display = 'none';
+          conflictAlert.hidden = true;
         }
       }
     };
@@ -1429,8 +1401,15 @@ export class CalendarWidget {
     });
 
     const closeModal = () => {
+      window.removeEventListener('keydown', handleKeydown);
       overlay.classList.add('closing');
-      setTimeout(() => overlay.remove(), 200);
+      setTimeout(() => {
+        overlay.remove();
+        const target = opener?.isConnected
+          ? opener
+          : this.container.querySelector('.reminders-header-actions button');
+        target?.focus();
+      }, 200);
     };
 
     const handleSave = () => {
@@ -1449,7 +1428,20 @@ export class CalendarWidget {
 
     // Keyboard support
     const handleKeydown = e => {
-      if (e.key === 'Escape') {
+      if (e.key === 'Tab') {
+        const controls = [...overlay.querySelectorAll('button, textarea')].filter(
+          control => !control.disabled && control.offsetParent !== null
+        );
+        const first = controls[0];
+        const last = controls[controls.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last?.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first?.focus();
+        }
+      } else if (e.key === 'Escape') {
         e.preventDefault();
         closeModal();
         window.removeEventListener('keydown', handleKeydown);
