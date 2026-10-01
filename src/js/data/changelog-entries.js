@@ -58,9 +58,9 @@ export const changelogEntries = [
     summary:
       'Audit primary pages in both themes and screen sizes, expose the complete desktop menu, restore the travel map load prompt and download retries, correct article and case-study contrast, add keyboard access to code blocks, repair RSS and sitemap URLs, and synchronize writing and test counts.',
     tags: ['design', 'blog', 'other'],
-    sha: null,
-    commitVerified: false,
-    status: 'unreleased',
+    sha: '52835e33874155a7352f5d988b49b579d788d0ba',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/52835e33874155a7352f5d988b49b579d788d0ba`,
     model: 'GPT-6 / Codex',
     ide: 'Codex desktop',
     purpose:
