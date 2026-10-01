@@ -58,14 +58,14 @@ export const changelogEntries = [
     summary:
       'Reorganize the README around the live portfolio, real screenshots, product surfaces, architecture, local setup, quality evidence, deployment, security, and documentation. Preserve historical contributor attribution in a dedicated archive and distinguish coding-agent provenance from AssistMe runtime configuration.',
     tags: ['other'],
-    sha: null,
-    commitVerified: false,
+    sha: '7dc71a5f9f6fea7e00e81eb646295b0f6e15c64f',
+    commitVerified: true,
+    link: `${CHANGELOG_REPO}/commit/7dc71a5f9f6fea7e00e81eb646295b0f6e15c64f`,
     model: 'GPT-6 / Codex',
     ide: 'Codex desktop',
     purpose: 'Professional GitHub documentation, accurate onboarding, and repository presentation',
     reasoning: 'unavailable',
     usage: 'unavailable',
-    status: 'unreleased',
   },
   {
     id: 'sitewide-navigation-accessibility-october-2026',
