@@ -233,10 +233,10 @@ Keep Accessibility, Share, Chat, and Back to Top in one vertical column at the s
 
 ## 7. Interactive Micro-Experiences & Widgets
 
-### Year Progress HUD Widget (`#calendar-container .year-progress-widget`)
+### Year Progress Widget (`#calendar-widget .year-progress-widget`)
 
-- **Location**: Rendered dynamically above the interactive calendar section in `src/js/modules/calendar.js`.
-- **Aesthetic**: Apple HIG minimalist dashboard HUD with high-contrast display typography, leap-year-aware telemetry, percentage completion gauge, and glass progress track with white luminescent glow in dark mode and specular sheen in light mode.
+- **Location**: Rendered dynamically below the Events & Reminders heading in `src/js/modules/calendar.js`.
+- **Aesthetic**: Compact year and remaining-day labels with a native progress bar, Apple blue fill, and coordinated light/dark text. Progress uses elapsed calendar days and accounts for leap years.
 
 ### In-Built Tree/ICQR Aesthetic Share Card Experience (`#website-share-dialog`)
 
