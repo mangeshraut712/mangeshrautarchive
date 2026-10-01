@@ -18,7 +18,9 @@
       "status": "commit-message",
       "previousReasoning": "unavailable",
       "previousUsage": "unavailable",
-      "previousPurpose": "Professional GitHub documentation, accurate onboarding, and repository presentation"
+      "previousPurpose": "Professional GitHub documentation, accurate onboarding, and repository presentation",
+      "engineeringScope": "professional GitHub documentation, accurate onboarding, architecture clarity, and preserved contributor provenance",
+      "scopeSource": "commit-purpose"
     },
     {
       "id": "sitewide-navigation-accessibility-october-2026",
@@ -36,7 +38,9 @@
       "status": "commit-message",
       "previousReasoning": "unavailable",
       "previousUsage": "unavailable",
-      "previousPurpose": "Sitewide browser audit, accessible interactions, publication routes, and responsive design"
+      "previousPurpose": "Sitewide browser audit, accessible interactions, publication routes, and responsive design",
+      "engineeringScope": "sitewide browser audit, responsive interactions, accessible reading, publication routes, and accurate public metrics",
+      "scopeSource": "commit-purpose"
     },
     {
       "id": "original-publisher-blog-media-september-2026",
@@ -54,7 +58,9 @@
       "status": "commit-message",
       "previousReasoning": "unavailable",
       "previousUsage": "unavailable",
-      "previousPurpose": "Primary-source image verification, media provenance, and responsive visual review"
+      "previousPurpose": "Primary-source image verification, media provenance, and responsive visual review",
+      "engineeringScope": "primary-source image verification, media provenance, and responsive visual review",
+      "scopeSource": "commit-purpose"
     },
     {
       "id": "monthly-blog-calendar-september-events-2026",
@@ -70,7 +76,9 @@
       "status": "commit-message",
       "previousReasoning": "unavailable",
       "previousUsage": "unavailable",
-      "previousPurpose": "Monthly archive correction, primary-source event reporting, and visual verification"
+      "previousPurpose": "Monthly archive correction, primary-source event reporting, and visual verification",
+      "engineeringScope": "monthly archive correction, primary-source event research, matching editorial imagery, and responsive visual verification",
+      "scopeSource": "commit-purpose"
     },
     {
       "id": "section-observer-and-e2e-resilience-sept-2026",
@@ -88,7 +96,9 @@
       "status": "commit-message",
       "previousReasoning": "unavailable",
       "previousUsage": "unavailable",
-      "previousPurpose": "Bootstrap section observer activation resilience and CI quality gate stabilization"
+      "previousPurpose": "Bootstrap section observer activation resilience and CI quality gate stabilization",
+      "engineeringScope": "register section observers eagerly and stabilize Playwright CI journeys",
+      "scopeSource": "commit-subject"
     },
     {
       "id": "repository-gallery-curation-and-mobile-dock-sept-2026",
@@ -106,7 +116,9 @@
       "status": "commit-message",
       "previousReasoning": "unavailable",
       "previousUsage": "unavailable",
-      "previousPurpose": "Audit repository image provenance and refine gallery presentation"
+      "previousPurpose": "Audit repository image provenance and refine gallery presentation",
+      "engineeringScope": "curate gallery and clear mobile card edges",
+      "scopeSource": "commit-subject"
     },
     {
       "id": "apple-grade-scrolling-architecture-sept-2026",
@@ -122,7 +134,9 @@
       "status": "not-recorded",
       "previousReasoning": "unavailable",
       "previousUsage": "unavailable",
-      "previousPurpose": "Audit and overhaul website scrolling behavior to adhere to Apple HIG and modern web industry standards"
+      "previousPurpose": "Audit and overhaul website scrolling behavior to adhere to Apple HIG and modern web industry standards",
+      "engineeringScope": "overhaul root scroller hierarchy and Apple HIG scrolling behavior",
+      "scopeSource": "commit-subject"
     },
     {
       "id": "zero-warning-anti-slop-and-linter-audit-sept-2026",
@@ -138,7 +152,9 @@
       "status": "commit-message",
       "previousReasoning": "unavailable",
       "previousUsage": "unavailable",
-      "previousPurpose": "Enforce zero warnings across Oxlint, anti-slop, and ESLint for robust code quality"
+      "previousPurpose": "Enforce zero warnings across Oxlint, anti-slop, and ESLint for robust code quality",
+      "engineeringScope": "Enforce zero warnings across Oxlint, anti-slop, and ESLint for robust code quality",
+      "scopeSource": "commit-purpose"
     },
     {
       "id": "fork-readme-visuals-sept-2026",
@@ -154,7 +170,9 @@
       "status": "commit-message",
       "previousReasoning": "unavailable",
       "previousUsage": "unavailable",
-      "previousPurpose": "Complete the image audit for remaining user-facing fork repositories without implying original authorship"
+      "previousPurpose": "Complete the image audit for remaining user-facing fork repositories without implying original authorship",
+      "engineeringScope": "show source-credited README images for openGym and Decimen while identifying their fork status",
+      "scopeSource": "commit-purpose"
     },
     {
       "id": "additional-readme-project-visuals-sept-2026",
@@ -170,7 +188,9 @@
       "status": "commit-message",
       "previousReasoning": "unavailable",
       "previousUsage": "unavailable",
-      "previousPurpose": "Extend source-grounded project imagery to the remaining owned repositories with suitable README visuals"
+      "previousPurpose": "Extend source-grounded project imagery to the remaining owned repositories with suitable README visuals",
+      "engineeringScope": "map existing source-grounded images for the remaining suitable owned repositories and document coverage",
+      "scopeSource": "commit-purpose"
     },
     {
       "id": "readme-screenshots-repo-cards-sept-2026",
@@ -186,7 +206,9 @@
       "status": "commit-message",
       "previousReasoning": "unavailable",
       "previousUsage": "unavailable",
-      "previousPurpose": "Present verified repository screenshots in a clear Apple-style project gallery"
+      "previousPurpose": "Present verified repository screenshots in a clear Apple-style project gallery",
+      "engineeringScope": "integrate 27 verified repository screenshots and reduce duplicate card information",
+      "scopeSource": "commit-purpose"
     },
     {
       "id": "apple-scroll-physics-and-performance-sept-2026",
@@ -202,7 +224,9 @@
       "status": "commit-message",
       "previousReasoning": "unavailable",
       "previousUsage": "unavailable",
-      "previousPurpose": "Engineer authentic Apple direct-manipulation scroll physics, eliminate layout thrash, and prevent trackpad overscroll swipe navigation"
+      "previousPurpose": "Engineer authentic Apple direct-manipulation scroll physics, eliminate layout thrash, and prevent trackpad overscroll swipe navigation",
+      "engineeringScope": "Engineer authentic Apple direct-manipulation scroll physics, eliminate WebKit repaint thrash, debounce section spy, and contain trackpad overscroll",
+      "scopeSource": "commit-purpose"
     },
     {
       "id": "public-apple-calendar-snapshot-2026",
@@ -218,7 +242,9 @@
       "status": "not-recorded",
       "previousReasoning": "unavailable",
       "previousUsage": "unavailable",
-      "previousPurpose": "Make the contact calendar reflect the authorized public Apple Calendar data accurately"
+      "previousPurpose": "Make the contact calendar reflect the authorized public Apple Calendar data accurately",
+      "engineeringScope": "publish deduplicated Apple Calendar 2026 snapshot",
+      "scopeSource": "commit-subject"
     },
     {
       "id": "changelog-provenance-and-fullstack-polish-sept-2026",
@@ -234,7 +260,9 @@
       "status": "not-recorded",
       "previousReasoning": "unavailable",
       "previousUsage": "unavailable",
-      "previousPurpose": "Verify and link commit SHAs across all recent releases, synchronize changelog provenance, and maintain green verification gates"
+      "previousPurpose": "Verify and link commit SHAs across all recent releases, synchronize changelog provenance, and maintain green verification gates",
+      "engineeringScope": "link verified commit provenance for September 2026 releases",
+      "scopeSource": "commit-subject"
     },
     {
       "id": "guided-contact-and-compact-repositories-sept-2026",
@@ -250,7 +278,9 @@
       "status": "not-recorded",
       "previousReasoning": "unavailable",
       "previousUsage": "unavailable",
-      "previousPurpose": "Simplify contact and repository browsing while preserving a deliberate message submission step"
+      "previousPurpose": "Simplify contact and repository browsing while preserving a deliberate message submission step",
+      "engineeringScope": "guide messages and compact project cards",
+      "scopeSource": "commit-subject"
     },
     {
       "id": "contact-calendar-truthful-availability-sept-2026",
@@ -268,7 +298,9 @@
       "status": "commit-message",
       "previousReasoning": "unavailable",
       "previousUsage": "unavailable",
-      "previousPurpose": "Repair contact calendar clarity, interoperability, and free/busy privacy"
+      "previousPurpose": "Repair contact calendar clarity, interoperability, and free/busy privacy",
+      "engineeringScope": "correct calendar provider claims, keep private event details out of public availability, improve upcoming contact cards, and export one-time task calendar copies",
+      "scopeSource": "commit-purpose"
     },
     {
       "id": "media-contrast-and-module-hygiene-sept-2026",
@@ -284,7 +316,9 @@
       "status": "not-recorded",
       "previousReasoning": "unavailable",
       "previousUsage": "unavailable",
-      "previousPurpose": "Eliminate Axe contrast degradation on horizontal media shelves, enforce WCAG AA typography standards, and achieve 0-warning module hygiene"
+      "previousPurpose": "Eliminate Axe contrast degradation on horizontal media shelves, enforce WCAG AA typography standards, and achieve 0-warning module hygiene",
+      "engineeringScope": "eliminate scroll mask and fadeIn contrast drops, elevate media CTA contrast, and clean catch bindings",
+      "scopeSource": "commit-subject"
     },
     {
       "id": "sitewide-palette-and-test-stability-sept-2026",
@@ -300,7 +334,9 @@
       "status": "not-recorded",
       "previousReasoning": "unavailable",
       "previousUsage": "unavailable",
-      "previousPurpose": "Enforce Apple HIG system palette fidelity, resolve linter warnings, and stabilize test suite execution"
+      "previousPurpose": "Enforce Apple HIG system palette fidelity, resolve linter warnings, and stabilize test suite execution",
+      "engineeringScope": "restore canonical Apple system colors, eliminate process leaks, and stabilize Playwright suite",
+      "scopeSource": "commit-subject"
     },
     {
       "id": "github-project-media-operating-view-sept-2026",
@@ -316,7 +352,9 @@
       "status": "not-recorded",
       "previousReasoning": "unavailable",
       "previousUsage": "unavailable",
-      "previousPurpose": "Improve project discovery and repository data presentation"
+      "previousPurpose": "Improve project discovery and repository data presentation",
+      "engineeringScope": "restore operating view and add repo topic maps",
+      "scopeSource": "commit-subject"
     },
     {
       "id": "editorial-project-blog-cards-sept-2026",
@@ -332,7 +370,9 @@
       "status": "not-recorded",
       "previousReasoning": "unavailable",
       "previousUsage": "unavailable",
-      "previousPurpose": "Improve GitHub repository cards and homepage blog discovery"
+      "previousPurpose": "Improve GitHub repository cards and homepage blog discovery",
+      "engineeringScope": "refine project cards and editorial blog previews",
+      "scopeSource": "commit-subject"
     },
     {
       "id": "blog-evidence-refresh-sept-2026",
@@ -348,7 +388,9 @@
       "status": "not-recorded",
       "previousReasoning": "unavailable",
       "previousUsage": "unavailable",
-      "previousPurpose": "Source-grounded content review and professional article evidence navigation"
+      "previousPurpose": "Source-grounded content review and professional article evidence navigation",
+      "engineeringScope": "review 2026 evidence across all articles",
+      "scopeSource": "commit-subject"
     },
     {
       "id": "blog-preview-and-repo-cards-elevation-sept-2026",
@@ -366,7 +408,9 @@
       "status": "commit-message",
       "previousReasoning": "unavailable",
       "previousUsage": "unavailable",
-      "previousPurpose": "Harmonize GitHub repository cards with blog editorial fidelity, author 5 new SVG architecture schematics, and refine modal previews"
+      "previousPurpose": "Harmonize GitHub repository cards with blog editorial fidelity, author 5 new SVG architecture schematics, and refine modal previews",
+      "engineeringScope": "elevate repo cards with architecture schematics and telemetry, resolve CodeQL alerts, and harden E2E tests",
+      "scopeSource": "commit-subject"
     },
     {
       "id": "security-codeql-alerts-resolution-sept-2026",
@@ -384,7 +428,9 @@
       "status": "commit-message",
       "previousReasoning": "unavailable",
       "previousUsage": "unavailable",
-      "previousPurpose": "CodeQL security alert remediation, URL sanitization hardening, and doc synchronization"
+      "previousPurpose": "CodeQL security alert remediation, URL sanitization hardening, and doc synchronization",
+      "engineeringScope": "elevate repo cards with architecture schematics and telemetry, resolve CodeQL alerts, and harden E2E tests",
+      "scopeSource": "commit-subject"
     },
     {
       "id": "blog-reading-layout-sept-2026",
@@ -400,7 +446,9 @@
       "status": "not-recorded",
       "previousReasoning": "unavailable",
       "previousUsage": "unavailable",
-      "previousPurpose": "Repair blog navigation and deliver consistent long-form technical reading"
+      "previousPurpose": "Repair blog navigation and deliver consistent long-form technical reading",
+      "engineeringScope": "open full articles directly from homepage",
+      "scopeSource": "commit-subject"
     },
     {
       "id": "blog-audit-catalog-sept-2026",
@@ -418,7 +466,9 @@
       "status": "commit-message",
       "previousReasoning": "unavailable",
       "previousUsage": "unavailable",
-      "previousPurpose": "Audit and correct blog presentation, accessibility, indexing, and source accuracy"
+      "previousPurpose": "Audit and correct blog presentation, accessibility, indexing, and source accuracy",
+      "engineeringScope": "improve professional blog navigation, content depth, and visual explanation",
+      "scopeSource": "commit-purpose"
     },
     {
       "id": "blog-openai-artwork-sept-2026",
@@ -436,7 +486,9 @@
       "status": "commit-message",
       "previousReasoning": "unavailable",
       "previousUsage": "unavailable",
-      "previousPurpose": "Create and integrate article-specific blog artwork and verify responsive presentation"
+      "previousPurpose": "Create and integrate article-specific blog artwork and verify responsive presentation",
+      "engineeringScope": "publish the complete blog refresh and verified repository work",
+      "scopeSource": "commit-purpose"
     },
     {
       "id": "critical-browser-gate-sept-2026",
@@ -454,7 +506,9 @@
       "status": "commit-message",
       "previousReasoning": "unavailable",
       "previousUsage": "unavailable",
-      "previousPurpose": "Consolidate automated regression checks around critical browser and API behavior"
+      "previousPurpose": "Consolidate automated regression checks around critical browser and API behavior",
+      "engineeringScope": "publish the complete blog refresh and verified repository work",
+      "scopeSource": "commit-purpose"
     },
     {
       "id": "travel-action-palette-architecture-tree-audit-resilience-sept-2026",
@@ -472,7 +526,9 @@
       "status": "commit-message",
       "previousReasoning": "Unavailable",
       "previousUsage": "Unavailable",
-      "previousPurpose": "Refine Travel Atlas action buttons, sync architecture tree test metrics, and modernize Playwright audit runners"
+      "previousPurpose": "Refine Travel Atlas action buttons, sync architecture tree test metrics, and modernize Playwright audit runners",
+      "engineeringScope": "sync 501 test gates in architecture diagram, refine travel action theme palette, and modernize e2e audit harness",
+      "scopeSource": "commit-subject"
     },
     {
       "id": "uses-stack-individual-ai-tools-brand-svgs-sept-2026",
@@ -488,7 +544,9 @@
       "status": "not-recorded",
       "previousReasoning": "Unavailable",
       "previousUsage": "Unavailable",
-      "previousPurpose": "Separate all AI tools into dedicated cards with brand SVGs and verified spend, fix dark mode icon styling, and sync 501 test gates"
+      "previousPurpose": "Separate all AI tools into dedicated cards with brand SVGs and verified spend, fix dark mode icon styling, and sync 501 test gates",
+      "engineeringScope": "separate all 10 AI tools with brand SVGs, polish dark mode styling, and sync 501 test gates",
+      "scopeSource": "commit-subject"
     },
     {
       "id": "e2e-hardening-monitor-eager-chatbot-aria-sept-2026",
@@ -504,7 +562,9 @@
       "status": "not-recorded",
       "previousReasoning": "Unavailable",
       "previousUsage": "Unavailable",
-      "previousPurpose": "Eliminate test flakiness, eagerly render system monitor status, and reset chatbot aria-busy state"
+      "previousPurpose": "Eliminate test flakiness, eagerly render system monitor status, and reset chatbot aria-busy state",
+      "engineeringScope": "harden test suites, eagerly render monitor status, and reset chatbot aria-busy",
+      "scopeSource": "commit-subject"
     },
     {
       "id": "portfolio-elevation-telemetry-sync-monitor-sept-2026",
@@ -520,7 +580,9 @@
       "status": "commit-message",
       "previousReasoning": "Unavailable",
       "previousUsage": "Unavailable",
-      "previousPurpose": "Sync 15.75B live telemetry portfolio-wide, fix monitor probes for paused hosts, polish navbar layout, and add atmospheric glow to travel globe in dark mode"
+      "previousPurpose": "Sync 15.75B live telemetry portfolio-wide, fix monitor probes for paused hosts, polish navbar layout, and add atmospheric glow to travel globe in dark mode",
+      "engineeringScope": "Elevate portfolio telemetry sync, repair monitor 402 probes, polish navbar layout, and add atmospheric glow to travel globe",
+      "scopeSource": "commit-purpose"
     },
     {
       "id": "live-telemetry-sync-tool-separation-sept-2026",
@@ -536,7 +598,9 @@
       "status": "commit-message",
       "previousReasoning": "Unavailable",
       "previousUsage": "Unavailable",
-      "previousPurpose": "Sync live WhoBurnedMore profile data and separate grouped tools into individual cards with brand SVG icons"
+      "previousPurpose": "Sync live WhoBurnedMore profile data and separate grouped tools into individual cards with brand SVG icons",
+      "engineeringScope": "Sync live WhoBurnedMore telemetry and separate grouped tools into individual cards",
+      "scopeSource": "commit-purpose"
     },
     {
       "id": "anti-slop-oxlint-integration-sept-2026",
@@ -552,7 +616,9 @@
       "status": "commit-message",
       "previousReasoning": "Unavailable",
       "previousUsage": "Unavailable",
-      "previousPurpose": "Install dmmulroy/anti-slop Oxlint ruleset, vendor plugin, clean up codebase slop patterns, and enforce in CI/CD"
+      "previousPurpose": "Install dmmulroy/anti-slop Oxlint ruleset, vendor plugin, clean up codebase slop patterns, and enforce in CI/CD",
+      "engineeringScope": "Install dmmulroy/anti-slop Oxlint ruleset, vendor plugin, clean up codebase slop patterns, and enforce in CI/CD",
+      "scopeSource": "commit-purpose"
     },
     {
       "id": "tokenization-ai-burn-apple-dashboard-sept-2026",
@@ -600,7 +666,9 @@
       "status": "not-recorded",
       "previousReasoning": "Unavailable",
       "previousUsage": "Unavailable",
-      "previousPurpose": "Unfreeze Portfolio Reach counter via automated GA4 edge sync pipeline and ensure 100% green GitHub Actions CI/CD"
+      "previousPurpose": "Unfreeze Portfolio Reach counter via automated GA4 edge sync pipeline and ensure 100% green GitHub Actions CI/CD",
+      "engineeringScope": "auto-sync Portfolio Reach from GA4 to Cloudflare edge snapshot (#111)",
+      "scopeSource": "commit-subject"
     },
     {
       "id": "pages-contact-and-discovery-hosts-sept-2026",
@@ -616,7 +684,9 @@
       "status": "commit-message",
       "previousReasoning": "Unavailable",
       "previousUsage": "Unavailable",
-      "previousPurpose": "Fix the Pages /contact 404 and discovery links that still pointed at the paused custom domain"
+      "previousPurpose": "Fix the Pages /contact 404 and discovery links that still pointed at the paused custom domain",
+      "engineeringScope": "fix the GitHub Pages /contact 404 and discovery URLs that still fetched the paused custom domain",
+      "scopeSource": "commit-purpose"
     },
     {
       "id": "chronicle-contributor-guidance-sept-2026",
@@ -632,7 +702,9 @@
       "status": "commit-message",
       "previousReasoning": "Unavailable",
       "previousUsage": "Unavailable",
-      "previousPurpose": "Resolve PR #107 by preserving its contributor and repository-map corrections in a conflict-free main commit"
+      "previousPurpose": "Resolve PR #107 by preserving its contributor and repository-map corrections in a conflict-free main commit",
+      "engineeringScope": "carry forward PR #107 contributor setup and page inventory fixes while replacing stale fixed test counts with runner-based guidance",
+      "scopeSource": "commit-purpose"
     },
     {
       "id": "readme-and-actions-verification-sept-2026",
@@ -648,7 +720,9 @@
       "status": "commit-message",
       "previousReasoning": "Unavailable",
       "previousUsage": "Unavailable",
-      "previousPurpose": "Audit repository documentation, diagnose GitHub Actions failures, and reproduce the required release gates locally"
+      "previousPurpose": "Audit repository documentation, diagnose GitHub Actions failures, and reproduce the required release gates locally",
+      "engineeringScope": "README accuracy audit, architecture consolidation, contributor onboarding, and GitHub Actions diagnosis",
+      "scopeSource": "commit-purpose"
     },
     {
       "id": "sept-2026-blog-gemini-3d-images-and-modal-deep-link",
@@ -664,7 +738,9 @@
       "status": "commit-message",
       "previousReasoning": "High / Extended Thinking",
       "previousUsage": "Unavailable",
-      "previousPurpose": "Generate high-fidelity 3D isometric Gemini images for technical blog architecture diagrams and fix modal deep-linking from URL hashes"
+      "previousPurpose": "Generate high-fidelity 3D isometric Gemini images for technical blog architecture diagrams and fix modal deep-linking from URL hashes",
+      "engineeringScope": "replace broken diagram SVGs with high-fidelity Gemini 3D images and fix modal hash deep-linking",
+      "scopeSource": "commit-subject"
     },
     {
       "id": "sept-2026-blog-viewport-alignment-and-top-nav",
@@ -680,7 +756,9 @@
       "status": "not-recorded",
       "previousReasoning": "High / Extended Thinking",
       "previousUsage": "Unavailable",
-      "previousPurpose": "Fix blog top navigation alignment, eliminate desktop right-edge text clipping with 1180px container, and restore mobile reading padding"
+      "previousPurpose": "Fix blog top navigation alignment, eliminate desktop right-edge text clipping with 1180px container, and restore mobile reading padding",
+      "engineeringScope": "align top navigation bar, expand desktop measure to 1180px, and fix mobile padding",
+      "scopeSource": "commit-subject"
     },
     {
       "id": "sept-2026-blogs-market-depth-and-theme-contrast",
@@ -696,7 +774,9 @@
       "status": "not-recorded",
       "previousReasoning": "High / Extended Thinking",
       "previousUsage": "Unavailable",
-      "previousPurpose": "Expand September 2026 technical blogs with India payment market share metrics and Jevons economic framing, and polish theme contrast"
+      "previousPurpose": "Expand September 2026 technical blogs with India payment market share metrics and Jevons economic framing, and polish theme contrast",
+      "engineeringScope": "expand September 2026 UPI and Jev articles and polish theme contrast",
+      "scopeSource": "commit-subject"
     },
     {
       "id": "sept-2026-blogs-upi-tap-to-pay-and-typesafe-ai-jev",
@@ -712,7 +792,9 @@
       "status": "not-recorded",
       "previousReasoning": "High / Extended Thinking",
       "previousUsage": "Unavailable",
-      "previousPurpose": "Author September 2026 technical blogs on UPI Tap to Pay and TypeSafe AI Jev, create vector SVGs, resolve light-mode terminal contrast, and verify test suites"
+      "previousPurpose": "Author September 2026 technical blogs on UPI Tap to Pay and TypeSafe AI Jev, create vector SVGs, resolve light-mode terminal contrast, and verify test suites",
+      "engineeringScope": "publish September 2026 blogs on UPI Tap to Pay and Type-Safe AI Jev",
+      "scopeSource": "commit-subject"
     },
     {
       "id": "playwright-mcp-and-cli-tooling-integration-sept-2026",
@@ -730,7 +812,9 @@
       "status": "commit-message",
       "previousReasoning": "High / Extended Thinking",
       "previousUsage": "Unavailable",
-      "previousPurpose": "Playwright MCP & CLI integration for autonomous agent browser automation and in-situ visual verification"
+      "previousPurpose": "Playwright MCP & CLI integration for autonomous agent browser automation and in-situ visual verification",
+      "engineeringScope": "configure Playwright MCP server and CLI scripts for browser automation",
+      "scopeSource": "commit-subject"
     },
     {
       "id": "calendar-source-dedupe-sept-2026",
@@ -746,7 +830,9 @@
       "status": "not-recorded",
       "previousReasoning": "Unavailable",
       "previousUsage": "Unavailable",
-      "previousPurpose": "Organize Apple/Gmail/Outlook calendars without deleting unique or official invites"
+      "previousPurpose": "Organize Apple/Gmail/Outlook calendars without deleting unique or official invites",
+      "engineeringScope": "space AssistMe threads and dedupe calendar copies",
+      "scopeSource": "commit-subject"
     },
     {
       "id": "assistme-imessage-thread-spacing-sept-2026",
@@ -762,7 +848,9 @@
       "status": "not-recorded",
       "previousReasoning": "Unavailable",
       "previousUsage": "Unavailable",
-      "previousPurpose": "Fix AssistMe transcript crowding and match classic chat behavior"
+      "previousPurpose": "Fix AssistMe transcript crowding and match classic chat behavior",
+      "engineeringScope": "space AssistMe threads and dedupe calendar copies",
+      "scopeSource": "commit-subject"
     },
     {
       "id": "calendar-luma-rsvp-sync-sept-2026",
@@ -778,7 +866,9 @@
       "status": "not-recorded",
       "previousReasoning": "Unavailable",
       "previousUsage": "Unavailable",
-      "previousPurpose": "Keep portfolio Calendar & Luma cards aligned with live RSVP status"
+      "previousPurpose": "Keep portfolio Calendar & Luma cards aligned with live RSVP status",
+      "engineeringScope": "space AssistMe threads and dedupe calendar copies",
+      "scopeSource": "commit-subject"
     },
     {
       "id": "codeql-stack-trace-exposure-worker-sept-2026",
@@ -794,7 +884,9 @@
       "status": "not-recorded",
       "previousReasoning": "Unavailable",
       "previousUsage": "Unavailable",
-      "previousPurpose": "Fix the remaining open GitHub CodeQL stack-trace exposure on the AssistMe worker"
+      "previousPurpose": "Fix the remaining open GitHub CodeQL stack-trace exposure on the AssistMe worker",
+      "engineeringScope": "stop AssistMe Worker stack traces in public JSON",
+      "scopeSource": "commit-subject"
     },
     {
       "id": "codeql-security-hardening-zero-open-alerts",
@@ -810,7 +902,9 @@
       "status": "commit-message",
       "previousReasoning": "Unavailable",
       "previousUsage": "Unavailable",
-      "previousPurpose": "GitHub CodeQL backlog triage, supported-boundary remediation, false-positive disposition, regression testing, and release verification"
+      "previousPurpose": "GitHub CodeQL backlog triage, supported-boundary remediation, false-positive disposition, regression testing, and release verification",
+      "engineeringScope": "CodeQL triage, supported-boundary remediation, regression testing, and release verification",
+      "scopeSource": "commit-purpose"
     },
     {
       "id": "repository-root-cleanup-and-pr-resolution",
@@ -826,7 +920,9 @@
       "status": "commit-message",
       "previousReasoning": "Unavailable",
       "previousUsage": "Unavailable",
-      "previousPurpose": "Root-level repository hygiene, generated-artifact cleanup, dependency review, pull-request resolution, and release verification"
+      "previousPurpose": "Root-level repository hygiene, generated-artifact cleanup, dependency review, pull-request resolution, and release verification",
+      "engineeringScope": "repository hygiene, pull-request resolution, and release verification",
+      "scopeSource": "commit-purpose"
     },
     {
       "id": "daybreak-changelog-accessibility-data-integrity",
@@ -842,7 +938,9 @@
       "status": "commit-message",
       "previousReasoning": "Unavailable",
       "previousUsage": "Unavailable",
-      "previousPurpose": "Independent changelog accessibility, data-integrity, responsive-layout, and agent-guidance verification and repair"
+      "previousPurpose": "Independent changelog accessibility, data-integrity, responsive-layout, and agent-guidance verification and repair",
+      "engineeringScope": "implementation, provenance audit, accessibility review, documentation alignment, and verification",
+      "scopeSource": "commit-purpose"
     },
     {
       "id": "assistme-intent-rich-render-sept-2026",
@@ -860,7 +958,9 @@
       "status": "commit-message",
       "previousReasoning": "Unavailable",
       "previousUsage": "Unavailable",
-      "previousPurpose": "Fix AssistMe showcase bugs: greedy WebMCP intents, missing KaTeX/Mermaid/image paint, follow-up chip overflow"
+      "previousPurpose": "Fix AssistMe showcase bugs: greedy WebMCP intents, missing KaTeX/Mermaid/image paint, follow-up chip overflow",
+      "engineeringScope": "gate WebMCP intents and restore rich chat rendering",
+      "scopeSource": "commit-subject"
     },
     {
       "id": "github-dependabot-security-batch-sept-2026",
@@ -876,7 +976,9 @@
       "status": "not-recorded",
       "previousReasoning": null,
       "previousUsage": null,
-      "previousPurpose": "Clear GitHub Dependabot PRs and vulnerability alerts with a single reviewed security batch"
+      "previousPurpose": "Clear GitHub Dependabot PRs and vulnerability alerts with a single reviewed security batch",
+      "engineeringScope": "apply GitHub Dependabot security patches",
+      "scopeSource": "commit-subject"
     },
     {
       "id": "assistme-chatgpt-siri-sept-2026-audit",
@@ -892,7 +994,9 @@
       "status": "not-recorded",
       "previousReasoning": null,
       "previousUsage": null,
-      "previousPurpose": "September 2026 AssistMe audit: ChatGPT/Siri-like streaming UX, worker first-token latency, frontend composer polish, and stale local-knowledge cleanup"
+      "previousPurpose": "September 2026 AssistMe audit: ChatGPT/Siri-like streaming UX, worker first-token latency, frontend composer polish, and stale local-knowledge cleanup",
+      "engineeringScope": "ChatGPT/Siri streaming UX after September 2026 audit",
+      "scopeSource": "commit-subject"
     },
     {
       "id": "system-monitor-dashboard-redesign-and-assistme-devotional-grounding",
@@ -908,7 +1012,9 @@
       "status": "not-recorded",
       "previousReasoning": null,
       "previousUsage": null,
-      "previousPurpose": "System monitor Apple HIG dashboard redesign, Keynote hero harmonization, tab redistribution, travel card styling polish, AssistMe devotional grounding, conversational pronoun resolution, and sitewide test count synchronization"
+      "previousPurpose": "System monitor Apple HIG dashboard redesign, Keynote hero harmonization, tab redistribution, travel card styling polish, AssistMe devotional grounding, conversational pronoun resolution, and sitewide test count synchronization",
+      "engineeringScope": "apple hig command center redesign, travel polish & repo health audit",
+      "scopeSource": "commit-subject"
     },
     {
       "id": "travel-atlas-apple-zoom-sidebar-toggle",
@@ -924,7 +1030,9 @@
       "status": "not-recorded",
       "previousReasoning": null,
       "previousUsage": null,
-      "previousPurpose": "Travel Atlas visual layout auditing, zoom controls styling, sidebar toggle collapse engineering, and attribution removal across viewports"
+      "previousPurpose": "Travel Atlas visual layout auditing, zoom controls styling, sidebar toggle collapse engineering, and attribution removal across viewports",
+      "engineeringScope": "apple hig command center redesign, travel polish & repo health audit",
+      "scopeSource": "commit-subject"
     },
     {
       "id": "apple-style-floating-dropdown-menu",
@@ -942,7 +1050,9 @@
       "status": "commit-message",
       "previousReasoning": null,
       "previousUsage": null,
-      "previousPurpose": "Designing and engineering an authentic floating Apple-style dropdown menu for changelog area filters across desktop, tablet, and mobile viewports with zero horizontal overflow"
+      "previousPurpose": "Designing and engineering an authentic floating Apple-style dropdown menu for changelog area filters across desktop, tablet, and mobile viewports with zero horizontal overflow",
+      "engineeringScope": "implement floating Apple-style dropdown menu for mobile, tablet, and desktop",
+      "scopeSource": "commit-subject"
     },
     {
       "id": "apple-status-icons-cascade-immunity",
@@ -958,7 +1068,9 @@
       "status": "not-recorded",
       "previousReasoning": null,
       "previousUsage": null,
-      "previousPurpose": "Restoring authentic Apple status and category icon colors and eliminating sitewide descendant text-fill cascade across Changelog, Travel, Uses, and Monitor"
+      "previousPurpose": "Restoring authentic Apple status and category icon colors and eliminating sitewide descendant text-fill cascade across Changelog, Travel, Uses, and Monitor",
+      "engineeringScope": "eliminate sitewide text-fill cascade and restore authentic Apple status icon colors",
+      "scopeSource": "commit-subject"
     },
     {
       "id": "anti-washout-color-cascade-solid-surfaces",
@@ -974,7 +1086,9 @@
       "status": "commit-message",
       "previousReasoning": null,
       "previousUsage": null,
-      "previousPurpose": "Anti-washout color cascade fix, theme-aware brand icon contrast, and solid surfaces verification"
+      "previousPurpose": "Anti-washout color cascade fix, theme-aware brand icon contrast, and solid surfaces verification",
+      "engineeringScope": "Anti-washout color cascade fix, theme-aware brand icon contrast, and solid surfaces verification - Quality Gate: 273 Vitest unit tests (52 suites), 175 pytest tests (27 suites), ESLint + Stylelint + Prettier green",
+      "scopeSource": "commit-purpose"
     },
     {
       "id": "compact-changelog-ux-portable-ai-guidance",
@@ -992,7 +1106,9 @@
       "status": "commit-message",
       "previousReasoning": "Unavailable",
       "previousUsage": "Unavailable",
-      "previousPurpose": "Changelog simplification, Apple HIG & shadcn interactive disclosure styling, continuous visual in-situ verification rule, and portable multi-IDE documentation alignment"
+      "previousPurpose": "Changelog simplification, Apple HIG & shadcn interactive disclosure styling, continuous visual in-situ verification rule, and portable multi-IDE documentation alignment",
+      "engineeringScope": "compact changelog UX, Apple HIG details disclosure, in-situ visual verification rule, and portable multi-AI guidance",
+      "scopeSource": "commit-subject"
     },
     {
       "id": "apple-september-2026-safari-27-ecosystem-alignment",
@@ -1010,7 +1126,9 @@
       "status": "commit-message",
       "previousReasoning": null,
       "previousUsage": null,
-      "previousPurpose": "Apple ecosystem research and platform upgrades aligned with September 2026 macOS 27, iOS 27, and Safari 27.0 GA releases: native masonry, static SW routing, scroll animations, Liquid Glass polish, container queries, and view transition continuity"
+      "previousPurpose": "Apple ecosystem research and platform upgrades aligned with September 2026 macOS 27, iOS 27, and Safari 27.0 GA releases: native masonry, static SW routing, scroll animations, Liquid Glass polish, container queries, and view transition continuity",
+      "engineeringScope": "expand masonry to blog & systems grids, add changelog disclosure tests (272 Vitest), sync sitewide telemetry",
+      "scopeSource": "commit-subject"
     },
     {
       "id": "audit-phase3-typography-csp-semantics-tests",
@@ -1029,7 +1147,9 @@
       "status": "commit-message",
       "previousReasoning": null,
       "previousUsage": null,
-      "previousPurpose": "Audit phase 3: Apple HIG 12px typography floor enforcement, CSP-safe event delegation, semantic HTML restoration, serverless secret hardening, and test suite expansion to 268"
+      "previousPurpose": "Audit phase 3: Apple HIG 12px typography floor enforcement, CSP-safe event delegation, semantic HTML restoration, serverless secret hardening, and test suite expansion to 268",
+      "engineeringScope": "remediate remaining audit findings — HIG typography floor, CSP event delegation, semantic HTML, serverless secret stability, and test expansion to 268",
+      "scopeSource": "commit-subject"
     },
     {
       "id": "backend-connection-pooling-rate-limiting-search-debounce",
@@ -1045,7 +1165,9 @@
       "status": "not-recorded",
       "previousReasoning": null,
       "previousUsage": null,
-      "previousPurpose": "Sitewide audit phase 2 remediation: backend connection pooling, lifespan teardown, rate limiting, structured logging, search debounce, visibility polling, and test expansion"
+      "previousPurpose": "Sitewide audit phase 2 remediation: backend connection pooling, lifespan teardown, rate limiting, structured logging, search debounce, visibility polling, and test expansion",
+      "engineeringScope": "Sitewide audit phase 2 remediation",
+      "scopeSource": "commit-purpose"
     },
     {
       "id": "sitewide-audit-security-hardening-pipeline-sync",
@@ -1061,7 +1183,9 @@
       "status": "not-recorded",
       "previousReasoning": null,
       "previousUsage": null,
-      "previousPurpose": "Comprehensive sitewide audit orchestration and P0/P1 remediation across security, pipeline integrity, test coverage, and accessibility"
+      "previousPurpose": "Comprehensive sitewide audit orchestration and P0/P1 remediation across security, pipeline integrity, test coverage, and accessibility",
+      "engineeringScope": "Sitewide audit & P0 remediation",
+      "scopeSource": "commit-purpose"
     },
     {
       "id": "sitewide-engineering-design-cwv-telemetry-sync",
@@ -1079,7 +1203,9 @@
       "status": "not-recorded",
       "previousReasoning": null,
       "previousUsage": null,
-      "previousPurpose": "Sitewide quality and performance enhancement, test count synchronization (253 Vitest / 175 pytest / 17 WebMCP), sub-12px font remediation, and rendering containment acceleration"
+      "previousPurpose": "Sitewide quality and performance enhancement, test count synchronization (253 Vitest / 175 pytest / 17 WebMCP), sub-12px font remediation, and rendering containment acceleration",
+      "engineeringScope": "elevate design tokens, synchronize telemetry, and optimize rendering containment",
+      "scopeSource": "commit-subject"
     },
     {
       "id": "mobile-viewport-cards-resume-dropdown-alignment",
@@ -1098,7 +1224,9 @@
       "status": "not-recorded",
       "previousReasoning": null,
       "previousUsage": null,
-      "previousPurpose": "Mobile viewport layout auditing, reminder cards responsive geometry and flex-shrink fixes, circular action button immunity, and mobile hero resume dropdown viewport placement hardening"
+      "previousPurpose": "Mobile viewport layout auditing, reminder cards responsive geometry and flex-shrink fixes, circular action button immunity, and mobile hero resume dropdown viewport placement hardening",
+      "engineeringScope": "polish calendar reminder cards and responsive alignment across mobile viewports",
+      "scopeSource": "commit-subject"
     },
     {
       "id": "contact-color-cascade-luma-purge-new-button",
@@ -1114,7 +1242,9 @@
       "status": "not-recorded",
       "previousReasoning": null,
       "previousUsage": null,
-      "previousPurpose": "Resolving WebKit text fill color cascade bugs across calendar and reminder cards, purging obsolete Luma header and panel buttons, and ensuring solid theme compliance with restored + New button"
+      "previousPurpose": "Resolving WebKit text fill color cascade bugs across calendar and reminder cards, purging obsolete Luma header and panel buttons, and ensuring solid theme compliance with restored + New button",
+      "engineeringScope": "Resolved WebKit -webkit-text-fill-color inheritance cascade bug across contact and calendar cards, purged obsolete Explore Events on Luma button and Luma header button, and restored dedicated + New reminder button with solid theme compliance",
+      "scopeSource": "commit-purpose"
     },
     {
       "id": "contact-solid-theme-luma-cleanup-card-alignment",
@@ -1130,7 +1260,9 @@
       "status": "not-recorded",
       "previousReasoning": null,
       "previousUsage": null,
-      "previousPurpose": "Solid Apple HIG theme compliance, redundant Luma button cleanup in Send a Message and widget header, reminder card alignment and typography fixes, and unified red modal close button"
+      "previousPurpose": "Solid Apple HIG theme compliance, redundant Luma button cleanup in Send a Message and widget header, reminder card alignment and typography fixes, and unified red modal close button",
+      "engineeringScope": "Solid Apple HIG surface compliance (#ffffff light, #000000 dark), removal of redundant Luma buttons from Send a Message and widget headers, deduplication of pills and tags, and reminder card layout alignment precision",
+      "scopeSource": "commit-purpose"
     },
     {
       "id": "smart-ai-calendar-reminders-nlp-modal",
@@ -1146,7 +1278,9 @@
       "status": "not-recorded",
       "previousReasoning": null,
       "previousUsage": null,
-      "previousPurpose": "Smart AI Reminder system upgrade with natural language parsing (relative dates, times, categories, tags), real-time schedule conflict and high-density alerts, AI Daily Briefing HUD with AssistMe integration, instant schedule search, localStorage persistence, WebMCP agentic calendar tools, and 253 Vitest unit tests"
+      "previousPurpose": "Smart AI Reminder system upgrade with natural language parsing (relative dates, times, categories, tags), real-time schedule conflict and high-density alerts, AI Daily Briefing HUD with AssistMe integration, instant schedule search, localStorage persistence, WebMCP agentic calendar tools, and 253 Vitest unit tests",
+      "engineeringScope": "Calendar & Reminders AI Intelligence Upgrade and WebMCP Integration",
+      "scopeSource": "commit-purpose"
     },
     {
       "id": "luma-live-schedule-attendance-statuses",
@@ -1162,7 +1296,9 @@
       "status": "not-recorded",
       "previousReasoning": null,
       "previousUsage": null,
-      "previousPurpose": "Live Luma events schedule synchronization for mbr63@drexel.edu, 4-state attendance tracking (Going, Waitlisted, Submitted, Attended), dedicated Luma filter tab, host metadata rendering, and 243 Vitest unit test suite expansion"
+      "previousPurpose": "Live Luma events schedule synchronization for mbr63@drexel.edu, 4-state attendance tracking (Going, Waitlisted, Submitted, Attended), dedicated Luma filter tab, host metadata rendering, and 243 Vitest unit test suite expansion",
+      "engineeringScope": "Live Luma events schedule sync for mbr63@drexel.edu, 4-state attendance tracking (Going, Waitlisted, Submitted, Attended), dedicated Luma filter tab & 243 Vitest tests",
+      "scopeSource": "commit-purpose"
     },
     {
       "id": "luma-calendar-community-hub-integration",
@@ -1178,7 +1314,9 @@
       "status": "commit-message",
       "previousReasoning": null,
       "previousUsage": null,
-      "previousPurpose": "Luma Calendar ecosystem integration (https://luma.com/home/calendars), dual consultation & community RSVP buttons in Contact, event ticket badges, and calendar widget action enhancements"
+      "previousPurpose": "Luma Calendar ecosystem integration (https://luma.com/home/calendars), dual consultation & community RSVP buttons in Contact, event ticket badges, and calendar widget action enhancements",
+      "engineeringScope": "Luma Calendar ecosystem integration, dual consultation & community RSVP buttons in Contact, event ticket badges, and calendar widget action enhancements",
+      "scopeSource": "commit-purpose"
     },
     {
       "id": "github-operating-view-graphs-calendar-sync",
@@ -1197,7 +1335,9 @@
       "status": "not-recorded",
       "previousReasoning": null,
       "previousUsage": null,
-      "previousPurpose": "GitHub Operating View live data synchronization, 2D/3D contribution graph calibration (2,654 contributions), calendar reminder injection, and cross-surface repository metrics alignment"
+      "previousPurpose": "GitHub Operating View live data synchronization, 2D/3D contribution graph calibration (2,654 contributions), calendar reminder injection, and cross-surface repository metrics alignment",
+      "engineeringScope": "GitHub Operating View live sync, 2D/3D contribution graph calibration, calendar reminders & cross-surface telemetry",
+      "scopeSource": "commit-purpose"
     },
     {
       "id": "sitewide-100-lighthouse-and-wcag-aa-remediation",
@@ -1213,7 +1353,9 @@
       "status": "commit-message",
       "previousReasoning": null,
       "previousUsage": null,
-      "previousPurpose": "Sitewide 100/100/100/100 PageSpeed & Lighthouse optimization, WCAG 2 AA color contrast and heading sequence remediation, mobile viewport layout alignment, and zero-defect quality gate certification"
+      "previousPurpose": "Sitewide 100/100/100/100 PageSpeed & Lighthouse optimization, WCAG 2 AA color contrast and heading sequence remediation, mobile viewport layout alignment, and zero-defect quality gate certification",
+      "engineeringScope": "sitewide 100 lighthouse scores, wcag aa hierarchy and contrast remediation",
+      "scopeSource": "commit-subject"
     },
     {
       "id": "travel-atlas-apple-maps-sidebar-redesign",
@@ -1229,7 +1371,9 @@
       "status": "not-recorded",
       "previousReasoning": null,
       "previousUsage": null,
-      "previousPurpose": "Travel Atlas sidebar Apple Maps redesign, segmented control refactoring, and global CSS override hygiene"
+      "previousPurpose": "Travel Atlas sidebar Apple Maps redesign, segmented control refactoring, and global CSS override hygiene",
+      "engineeringScope": "Travel Atlas sidebar Apple Maps redesign & CSS architecture polish",
+      "scopeSource": "commit-purpose"
     },
     {
       "id": "subnavbar-synchronization-apple-shadcn-alignment",
@@ -1245,7 +1389,9 @@
       "status": "commit-message",
       "previousReasoning": null,
       "previousUsage": null,
-      "previousPurpose": "Subnavbar synchronization, Apple HIG and shadcn/ui segmented control alignment, and sticky scroll collision remediation"
+      "previousPurpose": "Subnavbar synchronization, Apple HIG and shadcn/ui segmented control alignment, and sticky scroll collision remediation",
+      "engineeringScope": "Subnavbar synchronization, Apple HIG and shadcn/ui segmented control alignment, and sticky scroll collision remediation",
+      "scopeSource": "commit-purpose"
     },
     {
       "id": "software-engineering-best-practices-codification",
@@ -1261,7 +1407,9 @@
       "status": "not-recorded",
       "previousReasoning": null,
       "previousUsage": null,
-      "previousPurpose": "Codification of 14 Software Engineering Best Practices across docs/BEST_PRACTICES.md, AGENTS.md, GEMINI.md, and README.md"
+      "previousPurpose": "Codification of 14 Software Engineering Best Practices across docs/BEST_PRACTICES.md, AGENTS.md, GEMINI.md, and README.md",
+      "engineeringScope": "Architecture best practices codification across docs, agent rules, and README",
+      "scopeSource": "commit-purpose"
     },
     {
       "id": "subpage-spacing-and-layout-luxury-upgrade",
@@ -1277,7 +1425,9 @@
       "status": "not-recorded",
       "previousReasoning": null,
       "previousUsage": null,
-      "previousPurpose": "Separate pages layout upgrade, card decongestion, spatial rhythm calibration, and responsive breathing room"
+      "previousPurpose": "Separate pages layout upgrade, card decongestion, spatial rhythm calibration, and responsive breathing room",
+      "engineeringScope": "Cross-page layout upgrade, card decongestion, spatial rhythm calibration, and deduplication",
+      "scopeSource": "commit-purpose"
     },
     {
       "id": "cross-page-deduplication-and-section-reordering",
@@ -1293,7 +1443,9 @@
       "status": "commit-message",
       "previousReasoning": null,
       "previousUsage": null,
-      "previousPurpose": "Cross-page content deduplication, canonical information architecture consolidation, and monitoring surface reordering"
+      "previousPurpose": "Cross-page content deduplication, canonical information architecture consolidation, and monitoring surface reordering",
+      "engineeringScope": "Repository README modernization, SVG geometry calibration, diagram text overlap elimination, and test metric synchronization",
+      "scopeSource": "commit-purpose"
     },
     {
       "id": "readme-modernization-diagram-alignment",
@@ -1309,7 +1461,9 @@
       "status": "commit-message",
       "previousReasoning": null,
       "previousUsage": null,
-      "previousPurpose": "Repository README modernization, SVG geometry calibration, diagram text overlap elimination, and test metric synchronization"
+      "previousPurpose": "Repository README modernization, SVG geometry calibration, diagram text overlap elimination, and test metric synchronization",
+      "engineeringScope": "Repository README modernization, SVG geometry calibration, diagram text overlap elimination, and test metric synchronization",
+      "scopeSource": "commit-purpose"
     },
     {
       "id": "cross-page-audit-navigation-telemetry-remediation",
@@ -1325,7 +1479,9 @@
       "status": "commit-message",
       "previousReasoning": null,
       "previousUsage": null,
-      "previousPurpose": "Multi-agent cross-page audit discovery, relative navigation remediation, WhoBurnedMore telemetry reconciliation, and WCAG keyboard/ARIA pattern enforcement"
+      "previousPurpose": "Multi-agent cross-page audit discovery, relative navigation remediation, WhoBurnedMore telemetry reconciliation, and WCAG keyboard/ARIA pattern enforcement",
+      "engineeringScope": "Multi-agent cross-page audit discovery, relative navigation remediation, WhoBurnedMore telemetry reconciliation, and WCAG keyboard/ARIA pattern enforcement",
+      "scopeSource": "commit-purpose"
     },
     {
       "id": "uses-apple-special-event-keynote-redesign",
@@ -1343,7 +1499,9 @@
       "status": "commit-message",
       "previousReasoning": null,
       "previousUsage": null,
-      "previousPurpose": "Apple Special Event UI/UX design, interactive Keynote slide controller, bento grid layout architecture, and zero-overflow multi-viewport validation"
+      "previousPurpose": "Apple Special Event UI/UX design, interactive Keynote slide controller, bento grid layout architecture, and zero-overflow multi-viewport validation",
+      "engineeringScope": "complete Apple Special Event Keynote redesign with 6-act slide deck and integrated toolkit catalog",
+      "scopeSource": "commit-subject"
     },
     {
       "id": "a11y-wcag-contrast-link-underline",
@@ -1362,7 +1520,9 @@
       "status": "commit-message",
       "previousReasoning": null,
       "previousUsage": null,
-      "previousPurpose": "Automated Axe accessibility auditing, WCAG 1.4.1 inline link distinguishability, and WCAG AAA color contrast compliance"
+      "previousPurpose": "Automated Axe accessibility auditing, WCAG 1.4.1 inline link distinguishability, and WCAG AAA color contrast compliance",
+      "engineeringScope": "Axe accessibility auditing, WCAG 1.4.1 inline link distinguishability, WCAG AAA contrast enforcement, and model/IDE changelog tracking - Quality gates: 239 Vitest unit tests, 175 Pytest API tests, Playwright 16/16 accessibility baseline, ESLint, Stylelint, Prettier, zero secrets verified",
+      "scopeSource": "commit-purpose"
     },
     {
       "id": "monitor-card-fit-docs-rebalance",
@@ -1375,12 +1535,14 @@
       "reasoning": "unavailable",
       "usage": "unavailable",
       "evidence": [
-        "- Active AI Model: Gemini 3.8 Flash (High) \u2014 visual layout auditing, CSS grid refactoring, and multi-viewport Playwright verification"
+        "- Active AI Model: Gemini 3.8 Flash (High) — visual layout auditing, CSS grid refactoring, and multi-viewport Playwright verification"
       ],
       "status": "commit-message",
       "previousReasoning": null,
       "previousUsage": null,
-      "previousPurpose": "Visual layout auditing, System Monitor grid refactoring, empty whitespace void elimination, WhoBurnedMore developer telemetry integration, and multi-viewport Playwright verification"
+      "previousPurpose": "Visual layout auditing, System Monitor grid refactoring, empty whitespace void elimination, WhoBurnedMore developer telemetry integration, and multi-viewport Playwright verification",
+      "engineeringScope": "eliminate empty card voids, rebalance API docs, and integrate WhoBurnedMore telemetry",
+      "scopeSource": "commit-subject"
     },
     {
       "id": "hero-page-fit-spacing",
@@ -1396,7 +1558,9 @@
       "status": "commit-message",
       "previousReasoning": null,
       "previousUsage": null,
-      "previousPurpose": "Responsive viewport rhythm calibration, bottom CTA clearance enforcement, and Playwright multi-display testing"
+      "previousPurpose": "Responsive viewport rhythm calibration, bottom CTA clearance enforcement, and Playwright multi-display testing",
+      "engineeringScope": "Responsive hero layout rhythm calibration, dropdown clearance geometry, and Playwright multi-display testing across Safari, Chrome, and Retina MacBook viewports",
+      "scopeSource": "commit-purpose"
     },
     {
       "id": "safari-favorites-mr-logo-cachebust",
@@ -1409,16 +1573,18 @@
       "reasoning": "unavailable",
       "usage": "unavailable",
       "evidence": [
-        "Active model: Cursor Grok 4.6 (medium) \u2014 Safari Favorites icon/meta",
-        "Active model: Cursor Grok 4.6 (medium) \u2014 changelog SHA wiring.",
-        "Active model: Cursor Grok 4.6 (medium) \u2014 format/test follow-up.",
-        "Active model: Cursor Grok 4.6 (medium) \u2014 documentation parity.",
-        "Active model: Cursor Grok 4.6 (medium) \u2014 remaining test-count parity."
+        "Active model: Cursor Grok 4.6 (medium) — Safari Favorites icon/meta",
+        "Active model: Cursor Grok 4.6 (medium) — changelog SHA wiring.",
+        "Active model: Cursor Grok 4.6 (medium) — format/test follow-up.",
+        "Active model: Cursor Grok 4.6 (medium) — documentation parity.",
+        "Active model: Cursor Grok 4.6 (medium) — remaining test-count parity."
       ],
       "status": "commit-message",
       "previousReasoning": null,
       "previousUsage": null,
-      "previousPurpose": "Icon/meta cache-bust and Open Graph host correction for Safari Favorites"
+      "previousPurpose": "Icon/meta cache-bust and Open Graph host correction for Safari Favorites",
+      "engineeringScope": "Safari Favorites tile uses MR crown, not Ganesha (#100)",
+      "scopeSource": "commit-subject"
     },
     {
       "id": "safari-favorites-touch-icon-fix",
@@ -1436,7 +1602,9 @@
       "status": "commit-message",
       "previousReasoning": null,
       "previousUsage": null,
-      "previousPurpose": "Safari Touch Icons Cache SQLite reverse-engineering and host-collision resolution"
+      "previousPurpose": "Safari Touch Icons Cache SQLite reverse-engineering and host-collision resolution",
+      "engineeringScope": "resolve Safari Favorites touch icon collision & sync Apple squircle assets",
+      "scopeSource": "commit-subject"
     },
     {
       "id": "music-artwork-buttons",
@@ -1448,11 +1616,13 @@
       "editor": null,
       "reasoning": "unavailable",
       "usage": "unavailable",
-      "evidence": ["Active model: Claude Opus 4.6 (Thinking) \u2014 CSS geometry debugging,"],
+      "evidence": ["Active model: Claude Opus 4.6 (Thinking) — CSS geometry debugging,"],
       "status": "commit-message",
       "previousReasoning": null,
       "previousUsage": null,
-      "previousPurpose": "CSS geometry debugging, button clipping fix, and multi-file surgical edits"
+      "previousPurpose": "CSS geometry debugging, button clipping fix, and multi-file surgical edits",
+      "engineeringScope": "authentic artwork resolution & button clipping fix",
+      "scopeSource": "commit-subject"
     }
   ]
 }

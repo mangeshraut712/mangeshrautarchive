@@ -25,7 +25,7 @@ For the original-publisher media entry, the commit explicitly records **GPT-6 / 
 
 - A verified commit link confirms that the commit reference resolves.
 - A model or tool in a commit message is **contributor-reported attribution**, not provider-authenticated telemetry.
-- A task’s engineering scope describes the work; it is not evidence of a particular model’s abilities.
+- For verified references, engineering scope uses the commit’s explicit purpose or its change subject. It is not evidence of a particular model’s abilities.
 - Missing reasoning modes, exact model variants, and task token counts are not inferred from names, tool choice, account totals, or change complexity.
 - The portfolio chatbot runtime is configured separately and is not the coding model that produced a change.
 

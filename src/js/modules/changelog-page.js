@@ -233,7 +233,7 @@ function renderEntry(entry) {
           ? 'Coding attribution is recorded for the current session; the implementation commit is pending.'
           : entry.attributionSource === 'commit-message'
             ? 'Coding attribution is contributor-reported in the linked commit; runtime identity is not independently verified.'
-            : 'Coding tool and model were not recorded in the linked commit. No model is inferred from the change.',
+            : 'Coding tool and model are not supported by the available commit evidence. No model is inferred from the change.',
         ...(missingMetrics.length ? [`Not recorded: ${missingMetrics.join(' and ')}.`] : []),
       ].join(' ')
     : '';

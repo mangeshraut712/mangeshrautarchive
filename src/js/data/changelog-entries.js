@@ -85,7 +85,8 @@ export const changelogEntries = [
     model: 'GPT-6',
     ide: 'Codex desktop',
     attributionSource: 'commit-message',
-    purpose: 'Professional GitHub documentation, accurate onboarding, and repository presentation',
+    purpose:
+      'professional GitHub documentation, accurate onboarding, architecture clarity, and preserved contributor provenance',
     reasoning: 'unavailable',
     usage: 'unavailable',
   },
@@ -104,7 +105,7 @@ export const changelogEntries = [
     ide: 'Codex',
     attributionSource: 'commit-message',
     purpose:
-      'Sitewide browser audit, accessible interactions, publication routes, and responsive design',
+      'sitewide browser audit, responsive interactions, accessible reading, publication routes, and accurate public metrics',
     reasoning: 'unavailable',
     usage: 'unavailable',
   },
@@ -122,7 +123,7 @@ export const changelogEntries = [
     model: 'GPT-6',
     ide: 'Codex',
     attributionSource: 'commit-message',
-    purpose: 'Primary-source image verification, media provenance, and responsive visual review',
+    purpose: 'primary-source image verification, media provenance, and responsive visual review',
     reasoning: 'unavailable',
     usage: 'unavailable',
   },
@@ -140,7 +141,8 @@ export const changelogEntries = [
     model: 'GPT-6',
     ide: 'Codex desktop',
     attributionSource: 'commit-message',
-    purpose: 'Monthly archive correction, primary-source event reporting, and visual verification',
+    purpose:
+      'monthly archive correction, primary-source event research, matching editorial imagery, and responsive visual verification',
     reasoning: 'unavailable',
     usage: 'unavailable',
   },
@@ -158,7 +160,7 @@ export const changelogEntries = [
     model: 'Gemini 3.8 Flash',
     ide: 'Google Antigravity',
     attributionSource: 'commit-message',
-    purpose: 'Bootstrap section observer activation resilience and CI quality gate stabilization',
+    purpose: 'register section observers eagerly and stabilize Playwright CI journeys',
     reasoning: 'unavailable',
     usage: 'unavailable',
   },
@@ -176,7 +178,7 @@ export const changelogEntries = [
     model: 'GPT-6',
     ide: 'Codex',
     attributionSource: 'commit-message',
-    purpose: 'Audit repository image provenance and refine gallery presentation',
+    purpose: 'curate gallery and clear mobile card edges',
     reasoning: 'unavailable',
     usage: 'unavailable',
   },
@@ -194,8 +196,7 @@ export const changelogEntries = [
     model: null,
     ide: null,
     attributionSource: 'not-recorded',
-    purpose:
-      'Audit and overhaul website scrolling behavior to adhere to Apple HIG and modern web industry standards',
+    purpose: 'overhaul root scroller hierarchy and Apple HIG scrolling behavior',
     reasoning: 'unavailable',
     usage: 'unavailable',
   },
@@ -232,7 +233,7 @@ export const changelogEntries = [
     ide: 'Codex',
     attributionSource: 'commit-message',
     purpose:
-      'Complete the image audit for remaining user-facing fork repositories without implying original authorship',
+      'show source-credited README images for openGym and Decimen while identifying their fork status',
     reasoning: 'unavailable',
     usage: 'unavailable',
   },
@@ -251,7 +252,7 @@ export const changelogEntries = [
     ide: 'Codex',
     attributionSource: 'commit-message',
     purpose:
-      'Extend source-grounded project imagery to the remaining owned repositories with suitable README visuals',
+      'map existing source-grounded images for the remaining suitable owned repositories and document coverage',
     reasoning: 'unavailable',
     usage: 'unavailable',
   },
@@ -269,7 +270,7 @@ export const changelogEntries = [
     model: 'GPT-6',
     ide: 'Codex',
     attributionSource: 'commit-message',
-    purpose: 'Present verified repository screenshots in a clear Apple-style project gallery',
+    purpose: 'integrate 27 verified repository screenshots and reduce duplicate card information',
     reasoning: 'unavailable',
     usage: 'unavailable',
   },
@@ -288,7 +289,7 @@ export const changelogEntries = [
     ide: 'Google Antigravity',
     attributionSource: 'commit-message',
     purpose:
-      'Engineer authentic Apple direct-manipulation scroll physics, eliminate layout thrash, and prevent trackpad overscroll swipe navigation',
+      'Engineer authentic Apple direct-manipulation scroll physics, eliminate WebKit repaint thrash, debounce section spy, and contain trackpad overscroll',
     reasoning: 'unavailable',
     usage: 'unavailable',
   },
@@ -306,8 +307,7 @@ export const changelogEntries = [
     model: null,
     ide: null,
     attributionSource: 'not-recorded',
-    purpose:
-      'Make the contact calendar reflect the authorized public Apple Calendar data accurately',
+    purpose: 'publish deduplicated Apple Calendar 2026 snapshot',
     reasoning: 'unavailable',
     usage: 'unavailable',
   },
@@ -325,8 +325,7 @@ export const changelogEntries = [
     model: null,
     ide: null,
     attributionSource: 'not-recorded',
-    purpose:
-      'Verify and link commit SHAs across all recent releases, synchronize changelog provenance, and maintain green verification gates',
+    purpose: 'link verified commit provenance for September 2026 releases',
     reasoning: 'unavailable',
     usage: 'unavailable',
   },
@@ -344,8 +343,7 @@ export const changelogEntries = [
     model: null,
     ide: null,
     attributionSource: 'not-recorded',
-    purpose:
-      'Simplify contact and repository browsing while preserving a deliberate message submission step',
+    purpose: 'guide messages and compact project cards',
     reasoning: 'unavailable',
     usage: 'unavailable',
   },
@@ -363,7 +361,8 @@ export const changelogEntries = [
     model: 'GPT-6',
     ide: 'Codex',
     attributionSource: 'commit-message',
-    purpose: 'Repair contact calendar clarity, interoperability, and free/busy privacy',
+    purpose:
+      'correct calendar provider claims, keep private event details out of public availability, improve upcoming contact cards, and export one-time task calendar copies',
     reasoning: 'unavailable',
     usage: 'unavailable',
   },
@@ -383,7 +382,7 @@ export const changelogEntries = [
     ide: null,
     attributionSource: 'not-recorded',
     purpose:
-      'Eliminate Axe contrast degradation on horizontal media shelves, enforce WCAG AA typography standards, and achieve 0-warning module hygiene',
+      'eliminate scroll mask and fadeIn contrast drops, elevate media CTA contrast, and clean catch bindings',
     reasoning: 'unavailable',
     usage: 'unavailable',
   },
@@ -402,7 +401,7 @@ export const changelogEntries = [
     ide: null,
     attributionSource: 'not-recorded',
     purpose:
-      'Enforce Apple HIG system palette fidelity, resolve linter warnings, and stabilize test suite execution',
+      'restore canonical Apple system colors, eliminate process leaks, and stabilize Playwright suite',
     reasoning: 'unavailable',
     usage: 'unavailable',
   },
@@ -420,7 +419,7 @@ export const changelogEntries = [
     model: null,
     ide: null,
     attributionSource: 'not-recorded',
-    purpose: 'Improve project discovery and repository data presentation',
+    purpose: 'restore operating view and add repo topic maps',
     reasoning: 'unavailable',
     usage: 'unavailable',
   },
@@ -438,7 +437,7 @@ export const changelogEntries = [
     model: null,
     ide: null,
     attributionSource: 'not-recorded',
-    purpose: 'Improve GitHub repository cards and homepage blog discovery',
+    purpose: 'refine project cards and editorial blog previews',
     reasoning: 'unavailable',
     usage: 'unavailable',
   },
@@ -456,7 +455,7 @@ export const changelogEntries = [
     model: null,
     ide: null,
     attributionSource: 'not-recorded',
-    purpose: 'Source-grounded content review and professional article evidence navigation',
+    purpose: 'review 2026 evidence across all articles',
     reasoning: 'unavailable',
     usage: 'unavailable',
   },
@@ -476,7 +475,7 @@ export const changelogEntries = [
     ide: 'Google Antigravity',
     attributionSource: 'commit-message',
     purpose:
-      'Harmonize GitHub repository cards with blog editorial fidelity, author 5 new SVG architecture schematics, and refine modal previews',
+      'elevate repo cards with architecture schematics and telemetry, resolve CodeQL alerts, and harden E2E tests',
     reasoning: 'unavailable',
     usage: 'unavailable',
   },
@@ -495,7 +494,7 @@ export const changelogEntries = [
     ide: 'Google Antigravity',
     attributionSource: 'commit-message',
     purpose:
-      'CodeQL security alert remediation, URL sanitization hardening, and doc synchronization',
+      'elevate repo cards with architecture schematics and telemetry, resolve CodeQL alerts, and harden E2E tests',
     reasoning: 'unavailable',
     usage: 'unavailable',
   },
@@ -513,7 +512,7 @@ export const changelogEntries = [
     model: null,
     ide: null,
     attributionSource: 'not-recorded',
-    purpose: 'Repair blog navigation and deliver consistent long-form technical reading',
+    purpose: 'open full articles directly from homepage',
     reasoning: 'unavailable',
     usage: 'unavailable',
   },
@@ -531,7 +530,7 @@ export const changelogEntries = [
     model: 'GPT-6',
     ide: 'Codex',
     attributionSource: 'commit-message',
-    purpose: 'Audit and correct blog presentation, accessibility, indexing, and source accuracy',
+    purpose: 'improve professional blog navigation, content depth, and visual explanation',
     reasoning: 'unavailable',
     usage: 'unavailable',
   },
@@ -549,8 +548,7 @@ export const changelogEntries = [
     model: 'GPT-6',
     ide: 'Codex',
     attributionSource: 'commit-message',
-    purpose:
-      'Create and integrate article-specific blog artwork and verify responsive presentation',
+    purpose: 'publish the complete blog refresh and verified repository work',
     reasoning: 'unavailable',
     usage: 'unavailable',
   },
@@ -570,7 +568,7 @@ export const changelogEntries = [
     model: 'GPT-6',
     ide: 'Codex',
     attributionSource: 'commit-message',
-    purpose: 'Consolidate automated regression checks around critical browser and API behavior',
+    purpose: 'publish the complete blog refresh and verified repository work',
     reasoning: 'unavailable',
     usage: 'unavailable',
   },
@@ -592,7 +590,7 @@ export const changelogEntries = [
     ide: 'Google Antigravity',
     attributionSource: 'commit-message',
     purpose:
-      'Refine Travel Atlas action buttons, sync architecture tree test metrics, and modernize Playwright audit runners',
+      'sync 501 test gates in architecture diagram, refine travel action theme palette, and modernize e2e audit harness',
     reasoning: 'unavailable',
     usage: 'unavailable',
   },
@@ -614,7 +612,7 @@ export const changelogEntries = [
     ide: null,
     attributionSource: 'not-recorded',
     purpose:
-      'Separate all AI tools into dedicated cards with brand SVGs and verified spend, fix dark mode icon styling, and sync 501 test gates',
+      'separate all 10 AI tools with brand SVGs, polish dark mode styling, and sync 501 test gates',
     reasoning: 'unavailable',
     usage: 'unavailable',
   },
@@ -635,8 +633,7 @@ export const changelogEntries = [
     model: null,
     ide: null,
     attributionSource: 'not-recorded',
-    purpose:
-      'Eliminate test flakiness, eagerly render system monitor status, and reset chatbot aria-busy state',
+    purpose: 'harden test suites, eagerly render monitor status, and reset chatbot aria-busy',
     reasoning: 'unavailable',
     usage: 'unavailable',
   },
@@ -658,7 +655,7 @@ export const changelogEntries = [
     ide: 'Google Antigravity',
     attributionSource: 'commit-message',
     purpose:
-      'Sync 15.75B live telemetry portfolio-wide, fix monitor probes for paused hosts, polish navbar layout, and add atmospheric glow to travel globe in dark mode',
+      'Elevate portfolio telemetry sync, repair monitor 402 probes, polish navbar layout, and add atmospheric glow to travel globe',
     reasoning: 'unavailable',
     usage: 'unavailable',
   },
@@ -679,8 +676,7 @@ export const changelogEntries = [
     model: 'Gemini 3.8 Flash',
     ide: 'Google Antigravity',
     attributionSource: 'commit-message',
-    purpose:
-      'Sync live WhoBurnedMore profile data and separate grouped tools into individual cards with brand SVG icons',
+    purpose: 'Sync live WhoBurnedMore telemetry and separate grouped tools into individual cards',
     reasoning: 'unavailable',
     usage: 'unavailable',
   },
@@ -763,8 +759,7 @@ export const changelogEntries = [
     model: null,
     ide: null,
     attributionSource: 'not-recorded',
-    purpose:
-      'Unfreeze Portfolio Reach counter via automated GA4 edge sync pipeline and ensure 100% green GitHub Actions CI/CD',
+    purpose: 'auto-sync Portfolio Reach from GA4 to Cloudflare edge snapshot (#111)',
     reasoning: 'unavailable',
     usage: 'unavailable',
   },
@@ -785,7 +780,7 @@ export const changelogEntries = [
     ide: 'Cursor',
     attributionSource: 'commit-message',
     purpose:
-      'Fix the Pages /contact 404 and discovery links that still pointed at the paused custom domain',
+      'fix the GitHub Pages /contact 404 and discovery URLs that still fetched the paused custom domain',
     reasoning: 'unavailable',
     usage: 'unavailable',
   },
@@ -806,7 +801,7 @@ export const changelogEntries = [
     ide: 'Codex',
     attributionSource: 'commit-message',
     purpose:
-      'Resolve PR #107 by preserving its contributor and repository-map corrections in a conflict-free main commit',
+      'carry forward PR #107 contributor setup and page inventory fixes while replacing stale fixed test counts with runner-based guidance',
     reasoning: 'unavailable',
     usage: 'unavailable',
   },
@@ -827,7 +822,7 @@ export const changelogEntries = [
     ide: 'Codex',
     attributionSource: 'commit-message',
     purpose:
-      'Audit repository documentation, diagnose GitHub Actions failures, and reproduce the required release gates locally',
+      'README accuracy audit, architecture consolidation, contributor onboarding, and GitHub Actions diagnosis',
     reasoning: 'unavailable',
     usage: 'unavailable',
   },
@@ -848,7 +843,7 @@ export const changelogEntries = [
     ide: 'Google Antigravity',
     attributionSource: 'commit-message',
     purpose:
-      'Generate high-fidelity 3D isometric Gemini images for technical blog architecture diagrams and fix modal deep-linking from URL hashes',
+      'replace broken diagram SVGs with high-fidelity Gemini 3D images and fix modal hash deep-linking',
     reasoning: 'High / Extended Thinking',
     usage: 'unavailable',
   },
@@ -869,8 +864,7 @@ export const changelogEntries = [
     model: null,
     ide: null,
     attributionSource: 'not-recorded',
-    purpose:
-      'Fix blog top navigation alignment, eliminate desktop right-edge text clipping with 1180px container, and restore mobile reading padding',
+    purpose: 'align top navigation bar, expand desktop measure to 1180px, and fix mobile padding',
     reasoning: 'unavailable',
     usage: 'unavailable',
   },
@@ -890,8 +884,7 @@ export const changelogEntries = [
     model: null,
     ide: null,
     attributionSource: 'not-recorded',
-    purpose:
-      'Expand September 2026 technical blogs with India payment market share metrics and Jevons economic framing, and polish theme contrast',
+    purpose: 'expand September 2026 UPI and Jev articles and polish theme contrast',
     reasoning: 'unavailable',
     usage: 'unavailable',
   },
@@ -911,8 +904,7 @@ export const changelogEntries = [
     model: null,
     ide: null,
     attributionSource: 'not-recorded',
-    purpose:
-      'Author September 2026 technical blogs on UPI Tap to Pay and TypeSafe AI Jev, create vector SVGs, resolve light-mode terminal contrast, and verify test suites',
+    purpose: 'publish September 2026 blogs on UPI Tap to Pay and Type-Safe AI Jev',
     reasoning: 'unavailable',
     usage: 'unavailable',
   },
@@ -932,8 +924,7 @@ export const changelogEntries = [
     model: 'Gemini 3.8 Flash',
     ide: null,
     attributionSource: 'commit-message',
-    purpose:
-      'Playwright MCP & CLI integration for autonomous agent browser automation and in-situ visual verification',
+    purpose: 'configure Playwright MCP server and CLI scripts for browser automation',
     reasoning: 'unavailable',
     usage: 'unavailable',
   },
@@ -953,7 +944,7 @@ export const changelogEntries = [
     model: null,
     ide: null,
     attributionSource: 'not-recorded',
-    purpose: 'Organize Apple/Gmail/Outlook calendars without deleting unique or official invites',
+    purpose: 'space AssistMe threads and dedupe calendar copies',
     reasoning: 'unavailable',
     usage: 'unavailable',
   },
@@ -972,7 +963,7 @@ export const changelogEntries = [
     model: null,
     ide: null,
     attributionSource: 'not-recorded',
-    purpose: 'Fix AssistMe transcript crowding and match classic chat behavior',
+    purpose: 'space AssistMe threads and dedupe calendar copies',
     reasoning: 'unavailable',
     usage: 'unavailable',
   },
@@ -991,7 +982,7 @@ export const changelogEntries = [
     model: null,
     ide: null,
     attributionSource: 'not-recorded',
-    purpose: 'Keep portfolio Calendar & Luma cards aligned with live RSVP status',
+    purpose: 'space AssistMe threads and dedupe calendar copies',
     reasoning: 'unavailable',
     usage: 'unavailable',
   },
@@ -1011,7 +1002,7 @@ export const changelogEntries = [
     model: null,
     ide: null,
     attributionSource: 'not-recorded',
-    purpose: 'Fix the remaining open GitHub CodeQL stack-trace exposure on the AssistMe worker',
+    purpose: 'stop AssistMe Worker stack traces in public JSON',
     reasoning: 'unavailable',
     usage: 'unavailable',
   },
@@ -1032,7 +1023,7 @@ export const changelogEntries = [
     ide: 'Codex',
     attributionSource: 'commit-message',
     purpose:
-      'GitHub CodeQL backlog triage, supported-boundary remediation, false-positive disposition, regression testing, and release verification',
+      'CodeQL triage, supported-boundary remediation, regression testing, and release verification',
     reasoning: 'unavailable',
     usage: 'unavailable',
   },
@@ -1052,8 +1043,7 @@ export const changelogEntries = [
     model: 'GPT-5',
     ide: 'Codex',
     attributionSource: 'commit-message',
-    purpose:
-      'Root-level repository hygiene, generated-artifact cleanup, dependency review, pull-request resolution, and release verification',
+    purpose: 'repository hygiene, pull-request resolution, and release verification',
     reasoning: 'unavailable',
     usage: 'unavailable',
   },
@@ -1074,7 +1064,7 @@ export const changelogEntries = [
     ide: 'Codex',
     attributionSource: 'commit-message',
     purpose:
-      'Independent changelog accessibility, data-integrity, responsive-layout, and agent-guidance verification and repair',
+      'implementation, provenance audit, accessibility review, documentation alignment, and verification',
     reasoning: 'unavailable',
     usage: 'unavailable',
   },
@@ -1095,8 +1085,7 @@ export const changelogEntries = [
     model: 'Grok 4.6',
     ide: 'Cursor',
     attributionSource: 'commit-message',
-    purpose:
-      'Fix AssistMe showcase bugs: greedy WebMCP intents, missing KaTeX/Mermaid/image paint, follow-up chip overflow',
+    purpose: 'gate WebMCP intents and restore rich chat rendering',
     reasoning: 'unavailable',
     usage: 'unavailable',
   },
@@ -1116,8 +1105,7 @@ export const changelogEntries = [
     model: null,
     ide: null,
     attributionSource: 'not-recorded',
-    purpose:
-      'Clear GitHub Dependabot PRs and vulnerability alerts with a single reviewed security batch',
+    purpose: 'apply GitHub Dependabot security patches',
   },
   {
     id: 'assistme-chatgpt-siri-sept-2026-audit',
@@ -1135,8 +1123,7 @@ export const changelogEntries = [
     model: null,
     ide: null,
     attributionSource: 'not-recorded',
-    purpose:
-      'September 2026 AssistMe audit: ChatGPT/Siri-like streaming UX, worker first-token latency, frontend composer polish, and stale local-knowledge cleanup',
+    purpose: 'ChatGPT/Siri streaming UX after September 2026 audit',
   },
   {
     id: 'system-monitor-dashboard-redesign-and-assistme-devotional-grounding',
@@ -1154,8 +1141,7 @@ export const changelogEntries = [
     model: null,
     ide: null,
     attributionSource: 'not-recorded',
-    purpose:
-      'System monitor Apple HIG dashboard redesign, Keynote hero harmonization, tab redistribution, travel card styling polish, AssistMe devotional grounding, conversational pronoun resolution, and sitewide test count synchronization',
+    purpose: 'apple hig command center redesign, travel polish & repo health audit',
   },
   {
     id: 'travel-atlas-apple-zoom-sidebar-toggle',
@@ -1173,8 +1159,7 @@ export const changelogEntries = [
     model: null,
     ide: null,
     attributionSource: 'not-recorded',
-    purpose:
-      'Travel Atlas visual layout auditing, zoom controls styling, sidebar toggle collapse engineering, and attribution removal across viewports',
+    purpose: 'apple hig command center redesign, travel polish & repo health audit',
   },
   {
     id: 'apple-style-floating-dropdown-menu',
@@ -1192,8 +1177,7 @@ export const changelogEntries = [
     model: 'Gemini 3.8 Flash',
     ide: 'Google Antigravity',
     attributionSource: 'commit-message',
-    purpose:
-      'Designing and engineering an authentic floating Apple-style dropdown menu for changelog area filters across desktop, tablet, and mobile viewports with zero horizontal overflow',
+    purpose: 'implement floating Apple-style dropdown menu for mobile, tablet, and desktop',
   },
   {
     id: 'apple-status-icons-cascade-immunity',
@@ -1211,8 +1195,7 @@ export const changelogEntries = [
     model: null,
     ide: null,
     attributionSource: 'not-recorded',
-    purpose:
-      'Restoring authentic Apple status and category icon colors and eliminating sitewide descendant text-fill cascade across Changelog, Travel, Uses, and Monitor',
+    purpose: 'eliminate sitewide text-fill cascade and restore authentic Apple status icon colors',
   },
   {
     id: 'anti-washout-color-cascade-solid-surfaces',
@@ -1231,7 +1214,7 @@ export const changelogEntries = [
     ide: null,
     attributionSource: 'commit-message',
     purpose:
-      'Anti-washout color cascade fix, theme-aware brand icon contrast, and solid surfaces verification',
+      'Anti-washout color cascade fix, theme-aware brand icon contrast, and solid surfaces verification - Quality Gate: 273 Vitest unit tests (52 suites), 175 pytest tests (27 suites), ESLint + Stylelint + Prettier green',
   },
   {
     id: 'compact-changelog-ux-portable-ai-guidance',
@@ -1250,7 +1233,7 @@ export const changelogEntries = [
     ide: 'Codex',
     attributionSource: 'commit-message',
     purpose:
-      'Changelog simplification, Apple HIG & shadcn interactive disclosure styling, continuous visual in-situ verification rule, and portable multi-IDE documentation alignment',
+      'compact changelog UX, Apple HIG details disclosure, in-situ visual verification rule, and portable multi-AI guidance',
     reasoning: 'unavailable',
     usage: 'unavailable',
   },
@@ -1271,7 +1254,7 @@ export const changelogEntries = [
     ide: null,
     attributionSource: 'commit-message',
     purpose:
-      'Apple ecosystem research and platform upgrades aligned with September 2026 macOS 27, iOS 27, and Safari 27.0 GA releases: native masonry, static SW routing, scroll animations, Liquid Glass polish, container queries, and view transition continuity',
+      'expand masonry to blog & systems grids, add changelog disclosure tests (272 Vitest), sync sitewide telemetry',
   },
   {
     id: 'audit-phase3-typography-csp-semantics-tests',
@@ -1289,7 +1272,7 @@ export const changelogEntries = [
     ide: null,
     attributionSource: 'commit-message',
     purpose:
-      'Audit phase 3: Apple HIG 12px typography floor enforcement, CSP-safe event delegation, semantic HTML restoration, serverless secret hardening, and test suite expansion to 268',
+      'remediate remaining audit findings — HIG typography floor, CSP event delegation, semantic HTML, serverless secret stability, and test expansion to 268',
   },
   {
     id: 'backend-connection-pooling-rate-limiting-search-debounce',
@@ -1306,8 +1289,7 @@ export const changelogEntries = [
     model: null,
     ide: null,
     attributionSource: 'not-recorded',
-    purpose:
-      'Sitewide audit phase 2 remediation: backend connection pooling, lifespan teardown, rate limiting, structured logging, search debounce, visibility polling, and test expansion',
+    purpose: 'Sitewide audit phase 2 remediation',
   },
   {
     id: 'sitewide-audit-security-hardening-pipeline-sync',
@@ -1324,8 +1306,7 @@ export const changelogEntries = [
     model: null,
     ide: null,
     attributionSource: 'not-recorded',
-    purpose:
-      'Comprehensive sitewide audit orchestration and P0/P1 remediation across security, pipeline integrity, test coverage, and accessibility',
+    purpose: 'Sitewide audit & P0 remediation',
   },
   {
     id: 'sitewide-engineering-design-cwv-telemetry-sync',
@@ -1342,8 +1323,7 @@ export const changelogEntries = [
     model: null,
     ide: null,
     attributionSource: 'not-recorded',
-    purpose:
-      'Sitewide quality and performance enhancement, test count synchronization (253 Vitest / 175 pytest / 17 WebMCP), sub-12px font remediation, and rendering containment acceleration',
+    purpose: 'elevate design tokens, synchronize telemetry, and optimize rendering containment',
   },
   {
     id: 'mobile-viewport-cards-resume-dropdown-alignment',
@@ -1360,8 +1340,7 @@ export const changelogEntries = [
     model: null,
     ide: null,
     attributionSource: 'not-recorded',
-    purpose:
-      'Mobile viewport layout auditing, reminder cards responsive geometry and flex-shrink fixes, circular action button immunity, and mobile hero resume dropdown viewport placement hardening',
+    purpose: 'polish calendar reminder cards and responsive alignment across mobile viewports',
   },
   {
     id: 'contact-color-cascade-luma-purge-new-button',
@@ -1379,7 +1358,7 @@ export const changelogEntries = [
     ide: null,
     attributionSource: 'not-recorded',
     purpose:
-      'Resolving WebKit text fill color cascade bugs across calendar and reminder cards, purging obsolete Luma header and panel buttons, and ensuring solid theme compliance with restored + New button',
+      'Resolved WebKit -webkit-text-fill-color inheritance cascade bug across contact and calendar cards, purged obsolete Explore Events on Luma button and Luma header button, and restored dedicated + New reminder button with solid theme compliance',
   },
   {
     id: 'contact-solid-theme-luma-cleanup-card-alignment',
@@ -1397,7 +1376,7 @@ export const changelogEntries = [
     ide: null,
     attributionSource: 'not-recorded',
     purpose:
-      'Solid Apple HIG theme compliance, redundant Luma button cleanup in Send a Message and widget header, reminder card alignment and typography fixes, and unified red modal close button',
+      'Solid Apple HIG surface compliance (#ffffff light, #000000 dark), removal of redundant Luma buttons from Send a Message and widget headers, deduplication of pills and tags, and reminder card layout alignment precision',
   },
   {
     id: 'smart-ai-calendar-reminders-nlp-modal',
@@ -1414,8 +1393,7 @@ export const changelogEntries = [
     model: null,
     ide: null,
     attributionSource: 'not-recorded',
-    purpose:
-      'Smart AI Reminder system upgrade with natural language parsing (relative dates, times, categories, tags), real-time schedule conflict and high-density alerts, AI Daily Briefing HUD with AssistMe integration, instant schedule search, localStorage persistence, WebMCP agentic calendar tools, and 253 Vitest unit tests',
+    purpose: 'Calendar & Reminders AI Intelligence Upgrade and WebMCP Integration',
   },
   {
     id: 'luma-live-schedule-attendance-statuses',
@@ -1432,7 +1410,7 @@ export const changelogEntries = [
     ide: null,
     attributionSource: 'not-recorded',
     purpose:
-      'Live Luma events schedule synchronization for mbr63@drexel.edu, 4-state attendance tracking (Going, Waitlisted, Submitted, Attended), dedicated Luma filter tab, host metadata rendering, and 243 Vitest unit test suite expansion',
+      'Live Luma events schedule sync for mbr63@drexel.edu, 4-state attendance tracking (Going, Waitlisted, Submitted, Attended), dedicated Luma filter tab & 243 Vitest tests',
   },
   {
     id: 'luma-calendar-community-hub-integration',
@@ -1450,7 +1428,7 @@ export const changelogEntries = [
     ide: null,
     attributionSource: 'commit-message',
     purpose:
-      'Luma Calendar ecosystem integration (https://luma.com/home/calendars), dual consultation & community RSVP buttons in Contact, event ticket badges, and calendar widget action enhancements',
+      'Luma Calendar ecosystem integration, dual consultation & community RSVP buttons in Contact, event ticket badges, and calendar widget action enhancements',
   },
   {
     id: 'github-operating-view-graphs-calendar-sync',
@@ -1467,7 +1445,7 @@ export const changelogEntries = [
     ide: null,
     attributionSource: 'not-recorded',
     purpose:
-      'GitHub Operating View live data synchronization, 2D/3D contribution graph calibration (2,654 contributions), calendar reminder injection, and cross-surface repository metrics alignment',
+      'GitHub Operating View live sync, 2D/3D contribution graph calibration, calendar reminders & cross-surface telemetry',
   },
   {
     id: 'sitewide-100-lighthouse-and-wcag-aa-remediation',
@@ -1484,8 +1462,7 @@ export const changelogEntries = [
     model: 'Gemini 3.8 Flash',
     ide: null,
     attributionSource: 'commit-message',
-    purpose:
-      'Sitewide 100/100/100/100 PageSpeed & Lighthouse optimization, WCAG 2 AA color contrast and heading sequence remediation, mobile viewport layout alignment, and zero-defect quality gate certification',
+    purpose: 'sitewide 100 lighthouse scores, wcag aa hierarchy and contrast remediation',
   },
   {
     id: 'travel-atlas-apple-maps-sidebar-redesign',
@@ -1501,8 +1478,7 @@ export const changelogEntries = [
     model: null,
     ide: null,
     attributionSource: 'not-recorded',
-    purpose:
-      'Travel Atlas sidebar Apple Maps redesign, segmented control refactoring, and global CSS override hygiene',
+    purpose: 'Travel Atlas sidebar Apple Maps redesign & CSS architecture polish',
   },
   {
     id: 'subnavbar-synchronization-apple-shadcn-alignment',
@@ -1536,8 +1512,7 @@ export const changelogEntries = [
     model: null,
     ide: null,
     attributionSource: 'not-recorded',
-    purpose:
-      'Codification of 14 Software Engineering Best Practices across docs/BEST_PRACTICES.md, AGENTS.md, GEMINI.md, and README.md',
+    purpose: 'Architecture best practices codification across docs, agent rules, and README',
   },
   {
     id: 'subpage-spacing-and-layout-luxury-upgrade',
@@ -1554,7 +1529,7 @@ export const changelogEntries = [
     ide: null,
     attributionSource: 'not-recorded',
     purpose:
-      'Separate pages layout upgrade, card decongestion, spatial rhythm calibration, and responsive breathing room',
+      'Cross-page layout upgrade, card decongestion, spatial rhythm calibration, and deduplication',
   },
   {
     id: 'cross-page-deduplication-and-section-reordering',
@@ -1571,7 +1546,7 @@ export const changelogEntries = [
     ide: null,
     attributionSource: 'commit-message',
     purpose:
-      'Cross-page content deduplication, canonical information architecture consolidation, and monitoring surface reordering',
+      'Repository README modernization, SVG geometry calibration, diagram text overlap elimination, and test metric synchronization',
   },
   {
     id: 'readme-modernization-diagram-alignment',
@@ -1623,7 +1598,7 @@ export const changelogEntries = [
     ide: 'Google Antigravity',
     attributionSource: 'commit-message',
     purpose:
-      'Apple Special Event UI/UX design, interactive Keynote slide controller, bento grid layout architecture, and zero-overflow multi-viewport validation',
+      'complete Apple Special Event Keynote redesign with 6-act slide deck and integrated toolkit catalog',
   },
   {
     id: 'a11y-wcag-contrast-link-underline',
@@ -1640,7 +1615,7 @@ export const changelogEntries = [
     ide: null,
     attributionSource: 'commit-message',
     purpose:
-      'Automated Axe accessibility auditing, WCAG 1.4.1 inline link distinguishability, and WCAG AAA color contrast compliance',
+      'Axe accessibility auditing, WCAG 1.4.1 inline link distinguishability, WCAG AAA contrast enforcement, and model/IDE changelog tracking - Quality gates: 239 Vitest unit tests, 175 Pytest API tests, Playwright 16/16 accessibility baseline, ESLint, Stylelint, Prettier, zero secrets verified',
   },
   {
     id: 'monitor-card-fit-docs-rebalance',
@@ -1657,7 +1632,7 @@ export const changelogEntries = [
     ide: null,
     attributionSource: 'commit-message',
     purpose:
-      'Visual layout auditing, System Monitor grid refactoring, empty whitespace void elimination, WhoBurnedMore developer telemetry integration, and multi-viewport Playwright verification',
+      'eliminate empty card voids, rebalance API docs, and integrate WhoBurnedMore telemetry',
   },
   {
     id: 'hero-page-fit-spacing',
@@ -1674,7 +1649,7 @@ export const changelogEntries = [
     ide: null,
     attributionSource: 'commit-message',
     purpose:
-      'Responsive viewport rhythm calibration, bottom CTA clearance enforcement, and Playwright multi-display testing',
+      'Responsive hero layout rhythm calibration, dropdown clearance geometry, and Playwright multi-display testing across Safari, Chrome, and Retina MacBook viewports',
   },
   {
     id: 'safari-favorites-mr-logo-cachebust',
@@ -1690,7 +1665,7 @@ export const changelogEntries = [
     model: 'Grok 4.6',
     ide: 'Cursor',
     attributionSource: 'commit-message',
-    purpose: 'Icon/meta cache-bust and Open Graph host correction for Safari Favorites',
+    purpose: 'Safari Favorites tile uses MR crown, not Ganesha (#100)',
   },
   {
     id: 'safari-favorites-touch-icon-fix',
@@ -1706,7 +1681,7 @@ export const changelogEntries = [
     model: 'Gemini 3.8 Flash',
     ide: null,
     attributionSource: 'commit-message',
-    purpose: 'Safari Touch Icons Cache SQLite reverse-engineering and host-collision resolution',
+    purpose: 'resolve Safari Favorites touch icon collision & sync Apple squircle assets',
   },
   {
     id: 'music-artwork-buttons',
@@ -1722,7 +1697,7 @@ export const changelogEntries = [
     model: 'Claude Opus 4.6',
     ide: null,
     attributionSource: 'commit-message',
-    purpose: 'CSS geometry debugging, button clipping fix, and multi-file surgical edits',
+    purpose: 'authentic artwork resolution & button clipping fix',
   },
   {
     id: '780d4285',
