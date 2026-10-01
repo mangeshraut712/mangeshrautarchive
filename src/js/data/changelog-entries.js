@@ -59,7 +59,7 @@ export const changelogEntries = [
     type: 'improvement',
     title: 'Compact contact calendar, world clocks, and official daily Panchang',
     summary:
-      'Bound calendar events to a keyboard-accessible scrolling panel, remove import and source metadata from the interface, add six timezone-aware analog clocks to Direct Outreach, and show date-validated Panchang from Kalnirnay with scheduled daily refresh attempts and a safe source-link fallback when the publisher blocks hosted fetching. Replace browser prompts and unsupported AI branding with an accessible reminder editor and verify persistence, focus, themes, and mobile layout.',
+      'Bound calendar events to a keyboard-accessible scrolling panel, remove import and source metadata from the interface, add six timezone-aware analog clocks with clear unstroked numerals to Direct Outreach, and show date-validated Panchang from Kalnirnay with scheduled daily refresh attempts and a safe source-link fallback when the publisher blocks hosted fetching. Replace browser prompts and unsupported AI branding with an accessible reminder editor and verify persistence, focus, themes, and mobile layout.',
     tags: ['design', 'other'],
     sha: 'fb1fb821292e9f879dec0eb62674e9d4ba8df858',
     link: `${CHANGELOG_REPO}/commit/fb1fb821292e9f879dec0eb62674e9d4ba8df858`,
