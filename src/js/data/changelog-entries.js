@@ -61,16 +61,16 @@ export const changelogEntries = [
     summary:
       'Bound calendar events to a keyboard-accessible scrolling panel, remove import and source metadata from the interface, add six timezone-aware analog clocks to Direct Outreach, and show date-validated Panchang from Kalnirnay with scheduled daily refreshes and a safe source-link fallback. Replace browser prompts and unsupported AI branding with an accessible reminder editor and verify persistence, focus, themes, and mobile layout.',
     tags: ['design', 'other'],
-    sha: null,
-    commitVerified: false,
+    sha: 'fb1fb821292e9f879dec0eb62674e9d4ba8df858',
+    link: `${CHANGELOG_REPO}/commit/fb1fb821292e9f879dec0eb62674e9d4ba8df858`,
+    commitVerified: true,
     model: 'GPT-6',
     ide: 'Codex desktop',
-    attributionSource: 'not-recorded',
+    attributionSource: 'commit-message',
     purpose:
       'Clean contact presentation, world clocks, official Panchang, and accessible reminders',
     reasoning: 'unavailable',
     usage: 'unavailable',
-    status: 'unreleased',
   },
   {
     id: 'changelog-attribution-evidence-october-2026',
