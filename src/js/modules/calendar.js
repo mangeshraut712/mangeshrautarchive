@@ -1080,13 +1080,13 @@ export class CalendarWidget {
     // Smart Reminder Modal Trigger (Header)
     const smartAddBtn = this.container.querySelector('.smart-reminder-trigger-btn');
     if (smartAddBtn) {
-      smartAddBtn.onclick = () => this.openSmartReminderModal();
+      smartAddBtn.onclick = () => this.openSmartReminderModal('', smartAddBtn);
     }
 
     // Empty State Smart Add
     const emptySmartAddBtn = this.container.querySelector('.empty-action-btn.smart-add-btn');
     if (emptySmartAddBtn) {
-      emptySmartAddBtn.onclick = () => this.openSmartReminderModal();
+      emptySmartAddBtn.onclick = () => this.openSmartReminderModal('', emptySmartAddBtn);
     }
 
     // Filter Tabs
@@ -1116,13 +1116,13 @@ export class CalendarWidget {
     // Empty State: Add Reminder
     const emptyAddBtn = this.container.querySelector('.empty-action-btn.add-reminder-btn');
     if (emptyAddBtn) {
-      emptyAddBtn.onclick = () => this.openSmartReminderModal();
+      emptyAddBtn.onclick = () => this.openSmartReminderModal('', emptyAddBtn);
     }
 
     // Header Add New Reminder
     const newBtn = this.container.querySelector('.ios-btn-small');
     if (newBtn) {
-      newBtn.onclick = () => this.openSmartReminderModal();
+      newBtn.onclick = () => this.openSmartReminderModal('', newBtn);
     }
 
     // Day Selection & Day Filter Click
@@ -1284,7 +1284,7 @@ export class CalendarWidget {
     return newReminder;
   }
 
-  openSmartReminderModal(initialText = '') {
+  openSmartReminderModal(initialText = '', trigger = null) {
     if (typeof document === 'undefined') return;
 
     // Remove any existing modal
@@ -1297,7 +1297,7 @@ export class CalendarWidget {
     overlay.setAttribute('role', 'dialog');
     overlay.setAttribute('aria-modal', 'true');
     overlay.setAttribute('aria-label', 'New reminder');
-    const opener = document.activeElement;
+    const opener = trigger || document.activeElement;
 
     const selDay = this.selectedDate ? this.selectedDate.getDate() : new Date().getDate();
     const selMonth = this.selectedDate ? this.selectedDate.getMonth() : new Date().getMonth();
@@ -1479,7 +1479,7 @@ export class CalendarWidget {
     window.addEventListener('keydown', handleKeydown);
 
     if (textarea) {
-      setTimeout(() => textarea.focus(), 50);
+      textarea.focus();
     }
   }
 

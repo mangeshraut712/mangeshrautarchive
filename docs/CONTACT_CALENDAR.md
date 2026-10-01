@@ -21,6 +21,6 @@ The frontend checks the source identity, India date, and required fields. It ref
 
 ## Verification
 
-The critical browser journey covers bounded keyboard scrolling, all six timezone results at a fixed instant, rejection of stale Panchang, reminder creation and persistence after reload, keyboard focus trapping, and Escape focus restoration. The critical suite now contains 12 journeys; API coverage remains 184 tests. Visual review includes desktop/mobile widths in both themes.
+The critical browser journey covers bounded keyboard scrolling, all six timezone results at a fixed instant, rejection of stale Panchang, reminder creation and persistence after reload, keyboard focus trapping, and Escape focus restoration. The critical suite now contains 12 journeys; API coverage remains 184 tests. Visual review includes desktop/mobile widths in both themes. The focused contact journey also passes on desktop Safari and iPhone Safari, including keyboard trapping and opener restoration.
 
 Coding agent: GPT-6 / Codex in Codex desktop. Purpose: clean contact presentation, world clocks, official daily source integration, and accessible reminders. Exact model variant, reasoning mode, and task token usage: unavailable.

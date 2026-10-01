@@ -54,6 +54,24 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'safari-reminder-focus-october-2026',
+    date: '2026-10-01',
+    type: 'fix',
+    title: 'Reliable reminder focus on desktop and mobile Safari',
+    summary:
+      'Remove delayed autofocus that could interrupt keyboard navigation and explicitly track the reminder editor opener for Safari. Verify Tab trapping, Escape focus restoration, clock expansion, five-event disclosure, source freshness, and reminder persistence on desktop Safari and iPhone Safari.',
+    tags: ['design', 'other'],
+    sha: null,
+    commitVerified: false,
+    model: 'GPT-6',
+    ide: 'Codex desktop',
+    purpose: 'Cross-browser reminder focus and contact journey verification',
+    attributionSource: 'not-recorded',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+    status: 'unreleased',
+  },
+  {
     id: 'compact-contact-disclosure-october-2026',
     date: '2026-10-01',
     type: 'improvement',
