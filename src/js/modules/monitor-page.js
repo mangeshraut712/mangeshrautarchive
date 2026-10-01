@@ -2693,7 +2693,7 @@ function renderSecurityAudit(secData) {
             </div>`
       : `
             <div class="empty-state compact empty-state--compact-pad">
-              <i class="fas fa-shield-check icon-accent-green"></i>
+              <i class="fas fa-shield-halved icon-accent-green"></i>
               <h3>No security threats detected</h3>
               <p>Environment is safe</p>
             </div>`;

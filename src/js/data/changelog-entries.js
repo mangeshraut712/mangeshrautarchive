@@ -54,6 +54,24 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'missing-interface-icons-october-2026',
+    date: '2026-10-02',
+    type: 'fix',
+    title: 'Restore missing context and interface icons',
+    summary:
+      'Add globe and calendar icons to World clocks and Today’s Panchang. Replace unsupported Monitor shield and broadcast icons and the AssistMe sparkle icon with glyphs available in the bundled Font Awesome font. Use the Apple Blue theme token for daily context icons.',
+    tags: ['design', 'monitor', 'assistme'],
+    sha: null,
+    commitVerified: false,
+    model: 'GPT-6 / Codex',
+    ide: 'Codex desktop',
+    purpose: 'Website icon integrity and theme visibility',
+    attributionSource: 'not-recorded',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+    status: 'unreleased',
+  },
+  {
     id: 'github-contribution-integrity-october-2026',
     date: '2026-10-02',
     type: 'fix',

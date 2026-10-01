@@ -35,7 +35,7 @@ function renderPanchang() {
       ]
     : [];
   root.innerHTML = `
-    <div class="panchang-heading"><h4>Today’s Panchang</h4><time datetime="${today}">${escapeHtml(new Intl.DateTimeFormat('en-IN', { timeZone: 'Asia/Kolkata', day: 'numeric', month: 'short' }).format(new Date()))}</time></div>
+    <div class="panchang-heading"><h4><i class="fas fa-calendar-day contact-context-icon" aria-hidden="true"></i> Today’s Panchang</h4><time datetime="${today}">${escapeHtml(new Intl.DateTimeFormat('en-IN', { timeZone: 'Asia/Kolkata', day: 'numeric', month: 'short' }).format(new Date()))}</time></div>
     ${valid ? `<dl class="panchang-values">${fields.map(([label, value]) => `<div><dt>${label}</dt><dd>${escapeHtml(value)}</dd></div>`).join('')}</dl>` : '<p class="panchang-fallback">View today’s Panchang directly from Kalnirnay.</p>'}
     <a class="calendar-marathi-link" href="https://www.kalnirnay.com/" target="_blank" rel="noopener noreferrer">Open the official Marathi calendar <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
     ${valid ? '<p class="panchang-source">Source: Kalnirnay</p>' : ''}`;
@@ -117,7 +117,7 @@ function updateClocks() {
 export function initContactTime() {
   const root = document.getElementById('contact-world-clocks');
   if (root && !root.hasChildNodes()) {
-    root.innerHTML = `<h4>World clocks</h4><div class="world-clocks-grid" id="contact-world-clocks-grid">${CITIES.map(([city, zone], index) => `<div class="world-clock" data-time-zone="${zone}"${index > 2 ? ' hidden' : ''}>${clockFace()}<h5>${city}</h5><time></time><span class="world-clock-date"></span></div>`).join('')}</div><button type="button" class="world-clocks-toggle" aria-controls="contact-world-clocks-grid" aria-expanded="false">View 3 more clocks</button>`;
+    root.innerHTML = `<h4><i class="fas fa-globe contact-context-icon" aria-hidden="true"></i> World clocks</h4><div class="world-clocks-grid" id="contact-world-clocks-grid">${CITIES.map(([city, zone], index) => `<div class="world-clock" data-time-zone="${zone}"${index > 2 ? ' hidden' : ''}>${clockFace()}<h5>${city}</h5><time></time><span class="world-clock-date"></span></div>`).join('')}</div><button type="button" class="world-clocks-toggle" aria-controls="contact-world-clocks-grid" aria-expanded="false">View 3 more clocks</button>`;
     root.querySelector('.world-clocks-toggle').onclick = event => {
       const expanded = event.currentTarget.getAttribute('aria-expanded') !== 'true';
       event.currentTarget.setAttribute('aria-expanded', String(expanded));

@@ -2726,7 +2726,7 @@ class AppleIntelligenceChatbot {
     modelBadge.className = 'meta-model-badge';
     const modelName = (metadata.model || '').split('/').pop() || 'AI';
     const modelIcon = document.createElement('i');
-    modelIcon.className = 'fas fa-sparkles';
+    modelIcon.className = 'fas fa-wand-magic-sparkles';
     modelBadge.append(modelIcon, document.createTextNode(` ${modelName}`));
     primaryRow.appendChild(modelBadge);
 

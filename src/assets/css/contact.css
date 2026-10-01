@@ -6851,3 +6851,10 @@ html.dark #contact .year-progress-caption {
     order: 5 !important;
   }
 }
+
+#contact .contact-context-icon {
+  display: inline-block;
+  margin-inline-end: 0.35rem;
+  color: var(--apple-blue);
+  -webkit-text-fill-color: currentcolor;
+}
