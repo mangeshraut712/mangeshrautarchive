@@ -6530,7 +6530,7 @@ html.dark body > .blessing-modal-overlay .blessing-lyric-line {
 
 #contact .world-clock-face text {
   fill: currentcolor;
-  stroke: none;
+  stroke: none !important;
   font-family: var(--font-text);
   font-size: 12px;
   font-weight: 600;
