@@ -61,8 +61,8 @@ export const changelogEntries = [
     summary:
       'Equip AssistMe with real-time web and news retrieval powered by Google News RSS and Wikipedia REST API, alongside a verified late-2026 tech leadership and products registry (covering Apple, Microsoft, OpenAI, Google, Anthropic, Meta, Nvidia, Tesla, and Amazon). Prevents outdated pre-training cutoff hallucinations and displays a live grounded badge in the Apple Intelligence telemetry inspector.',
     tags: ['assistme', 'api', 'design'],
-    sha: null,
-    commitVerified: false,
+    sha: 'bffbd16a',
+    commitVerified: true,
     model: 'Gemini 3.8 Flash',
     ide: 'Google Antigravity IDE',
     purpose:
