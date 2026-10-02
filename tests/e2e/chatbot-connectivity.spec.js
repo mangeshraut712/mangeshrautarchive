@@ -61,4 +61,14 @@ test('GitHub Pages sends AssistMe health and streamed chat to the edge API', asy
   await expect(answer).toContainText('test-provider');
   await expect(answer).toContainText('8 tokens');
   expect(chatRequests).toBe(1);
+
+  await page.getByRole('button', { name: 'Close chat', exact: true }).click();
+  await page.locator('#contact').scrollIntoViewIfNeeded();
+  await expect(page.locator('#go-to-top')).toHaveClass(/visible/);
+  await page.getByRole('button', { name: 'Open AI Assistant', exact: true }).click();
+  const window = await page.locator('#chatbot-widget').boundingBox();
+  const launcher = await page.locator('#chatbot-toggle').boundingBox();
+  expect(window.y).toBeLessThan(88);
+  expect(window.y + window.height).toBeLessThanOrEqual(launcher.y);
+  expect(launcher.y - (window.y + window.height)).toBeLessThan(24);
 });

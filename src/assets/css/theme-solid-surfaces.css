@@ -3666,6 +3666,12 @@ html body .article-inline-code {
     left: auto !important;
     margin: 0 !important;
   }
+
+  html body:has(#go-to-top.visible) #chatbot-widget {
+    bottom: calc(var(--fab-slot-1, 92px) + var(--fab-size, 48px) + 14px) !important;
+    height: auto !important;
+    max-height: none !important;
+  }
 }
 
 html body #chatbot-widget .meta-details[hidden] {
