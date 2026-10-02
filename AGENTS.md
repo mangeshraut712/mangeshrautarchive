@@ -88,7 +88,7 @@ architecture guide for small copy, data, or isolated style edits.
 
 - **Frontend:** Vanilla HTML / CSS / JavaScript ES modules — no React, Angular, Vue, or Svelte runtime.
 - **Backend:** Python 3.12+ FastAPI on Vercel serverless functions; local dev on port 8001.
-- **AI Chatbot:** OpenRouter API (grok-4.3 model) proxied through FastAPI, with WebMCP agentic actions.
+- **AI Chatbot:** OpenRouter API (live text primary: Nemotron 3 Ultra free) proxied through Cloudflare / FastAPI, with WebMCP agentic actions.
 - **Build:** esbuild for JS bundling; Tailwind CSS v4 for utility generation only (output CSS file consumed, never classes in HTML markup).
 - **Styling:** Vanilla CSS with Apple-standard CSS custom properties (`--apple-blue: #0071e3`, etc.).
 - **Testing:** pytest (API) and Playwright (E2E; projects are defined in `playwright.config.js`).
@@ -296,7 +296,7 @@ The broader browser suite remains available through `npm run test:e2e:all` acros
 
 The AI chatbot is the portfolio's interactive assistant:
 
-- **Model:** OpenRouter API → `grok-4.3` (configurable via `api/model_router.py`).
+- **Model:** Live Cloudflare text primary: `nvidia/nemotron-3-ultra-550b-a55b:free`; Nemotron Super is the next free fallback. FastAPI routing and environment overrides are configured in `api/config.py` and `api/model_router.py`. Image requests use the separate vision chain.
 - **Proxy:** Frontend JS sends chat messages to `/api/chat`. FastAPI proxies to OpenRouter with streaming responses.
 - **Memory:** Conversation history managed by `api/memory_manager.py` with configurable context window.
 - **Site Knowledge:** `api/site_knowledge.py` injects portfolio context into system prompts.

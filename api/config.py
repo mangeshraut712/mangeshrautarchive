@@ -23,11 +23,12 @@ LASTFM_DEFAULT_USERNAME = os.getenv("LASTFM_USERNAME", "mbr63").strip() or "mbr6
 FALLBACK_OPENROUTER_MODEL = "google/gemini-2.5-flash"
 PRIMARY_OPENROUTER_MODEL = "x-ai/grok-4.3"
 # Zero-credit online path when paid balance is exhausted (HTTP 402).
-# Nemotron Super 120B free is the strongest free AssistMe path (OpenRouter MCP-validated).
+# Nemotron Ultra free is verified in the live OpenRouter catalog and inference API.
 # Gemma free + openrouter/free remain spare recovery models.
-FREE_OPENROUTER_MODEL = "nvidia/nemotron-3-super-120b-a12b:free"
+FREE_OPENROUTER_MODEL = "nvidia/nemotron-3-ultra-550b-a55b:free"
 FREE_OPENROUTER_FALLBACKS = (
     FREE_OPENROUTER_MODEL,
+    "nvidia/nemotron-3-super-120b-a12b:free",
     "google/gemma-4-26b-a4b-it:free",
     "google/gemma-4-31b-it:free",
     "openrouter/free",

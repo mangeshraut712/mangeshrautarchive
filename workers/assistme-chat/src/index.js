@@ -44,6 +44,7 @@ const OPENROUTER_STREAM_TOTAL_MS = 55_000;
 const PRIMARY_MODEL = 'x-ai/grok-4.3';
 /** Credit-safe free chain (aligned with api/config.py FREE_OPENROUTER_*). */
 const FREE_MODELS = [
+  'nvidia/nemotron-3-ultra-550b-a55b:free',
   'nvidia/nemotron-3-super-120b-a12b:free',
   'google/gemma-4-26b-a4b-it:free',
   'google/gemma-4-31b-it:free',

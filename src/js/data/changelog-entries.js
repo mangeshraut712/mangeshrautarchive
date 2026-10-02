@@ -54,6 +54,24 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'assistme-nemotron-ultra-free-october-2026',
+    date: '2026-10-02',
+    type: 'improvement',
+    title: 'Nemotron 3 Ultra free powers AssistMe text chat',
+    summary:
+      'Verify the exact free model in OpenRouter’s live catalog and authenticated inference API. Configure Nemotron 3 Ultra as the live Cloudflare text primary, retain Nemotron Super as the next free fallback, align FastAPI free recovery and the deployment probe, and preserve the separate vision chain.',
+    tags: ['assistme', 'api'],
+    sha: null,
+    commitVerified: false,
+    status: 'unreleased',
+    model: 'GPT-6 / Codex',
+    ide: 'Codex desktop',
+    purpose: 'Primary-source model verification and live AssistMe text model configuration',
+    attributionSource: 'commit-message',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
     id: 'assistme-edge-routing-streaming-october-2026',
     date: '2026-10-02',
     type: 'fix',

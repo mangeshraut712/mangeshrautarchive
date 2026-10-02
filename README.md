@@ -65,7 +65,8 @@ and browser-side WebMCP actions for navigating and retrieving portfolio informat
 - **Grounded answers:** portfolio context is assembled from repository data and site knowledge.
 - **Tools:** browser actions are implemented in [agentic-actions.js](src/js/modules/agentic-actions.js).
 - **Model routing:** provider selection is configured in the backend and Worker; the FastAPI router
-  uses the configured OpenRouter primary model, currently `grok-4.3`.
+  uses the configured OpenRouter primary model, set through the server environment. The live Cloudflare text primary is
+  `nvidia/nemotron-3-ultra-550b-a55b:free`, with Nemotron Super as a fallback.
 - **Offline development:** the local FastAPI backend provides canned portfolio answers when
   `OPENROUTER_API_KEY` is absent. Real model responses require provider credentials.
 
@@ -269,7 +270,7 @@ purpose, and verified commit in the [changelog](src/js/data/changelog-entries.js
 | Current contribution                             | Attribution                                                                                                                                                                              |
 | ------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Coding agent                                     | GPT-6 / Codex, in Codex desktop                                                                                                                                                          |
-| Purpose                                          | Restore AssistMe's GitHub Pages API routing, reliable streaming, truthful response metadata, and responsive chat window layout                                                           |
+| Purpose                                          | Verify and configure Nemotron 3 Ultra free as the live AssistMe text primary                                                                                                             |
 | Exact model variant, reasoning mode, token usage | unavailable                                                                                                                                                                              |
 | Portfolio chatbot model                          | Configured separately in [api/model_router.py](api/model_router.py) and [Worker configuration](workers/assistme-chat/wrangler.toml); each live response reports the actual serving model |
 
@@ -332,3 +333,9 @@ before reuse. Citation metadata is provided in [CITATION.cff](CITATION.cff).
 [Back to top](#mangesh-raut--portfolio)
 
 </div>
+
+### AssistMe text model verification — October 2, 2026
+
+The live text primary is [Nemotron 3 Ultra free](https://openrouter.ai/nvidia/nemotron-3-ultra-550b-a55b:free). OpenRouter's live catalog reports zero prompt and completion token prices. An authenticated inference probe returned HTTP 200, the exact requested model ID, and zero cost. Nemotron Super remains the next free fallback. Ultra is text-only; image requests retain the existing free vision chain. Local/server environment overrides remain explicit.
+
+[NVIDIA's model release](https://research.nvidia.com/labs/nemotron/Nemotron-3-Ultra/) documents 550B total and 55B active parameters, released June 4, 2026. Availability and free-tier limits depend on the provider. Coding agent: GPT-6 / Codex in Codex desktop; exact variant, reasoning mode, and token usage: unavailable.

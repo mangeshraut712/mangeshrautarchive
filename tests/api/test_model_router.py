@@ -78,7 +78,9 @@ def test_resolve_compare_query_uses_auto_when_streaming():
 def test_fallback_chain_includes_grok_auto_flash_and_free():
     chain = build_model_fallback_chain(ROUTER_PRIMARY_MODEL)
     assert chain[0] == ROUTER_PRIMARY_MODEL
+    assert FREE_OPENROUTER_MODEL == "nvidia/nemotron-3-ultra-550b-a55b:free"
     assert FREE_OPENROUTER_MODEL in chain
+    assert chain.index(FREE_OPENROUTER_MODEL) < chain.index("nvidia/nemotron-3-super-120b-a12b:free")
     assert "openrouter/free" in chain or "google/gemma-4-26b-a4b-it:free" in chain
     # Free recovery should be early so 402 on paid models fails over quickly.
     free_idx = min(
