@@ -498,6 +498,7 @@ function getLatestTrendValue(trend = []) {
 }
 
 function getAverageEndpointLatency(metricsData) {
+  if (metricsData?.synthetic === true) return null;
   const endpoints = metricsData?.endpoints || [];
   if (!endpoints.length) return null;
   const total = endpoints.reduce((sum, endpoint) => {
@@ -1386,7 +1387,7 @@ function renderMicroSparkline(points) {
 
 function renderMetrics(data) {
   const tbody = document.getElementById('metrics-table-body');
-  if (!data || !data.endpoints || data.endpoints.length === 0) {
+  if (!data || data.synthetic === true || !data.endpoints || data.endpoints.length === 0) {
     tbody.innerHTML = `
                     <tr>
                         <td colspan="6" class="empty-state">
@@ -1731,7 +1732,7 @@ function renderOverview(data) {
   const errorCountEl = document.getElementById('error-count');
   const avgResponseEl = document.getElementById('avg-response');
 
-  if (!data || !data.endpoints || data.endpoints.length === 0) {
+  if (!data || data.synthetic === true || !data.endpoints || data.endpoints.length === 0) {
     if (backendStatus) {
       backendStatus.textContent = monitorApiAvailable ? 'NO DATA' : 'OFFLINE';
       backendStatus.style.color = 'var(--text-secondary)';

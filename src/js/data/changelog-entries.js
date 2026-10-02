@@ -59,7 +59,7 @@ export const changelogEntries = [
     type: 'fix',
     title: 'Align page themes and report recorded operational data',
     summary:
-      'Use solid theme surfaces on dashboard cards and page toolbars, constrain mobile architecture and monitoring grids, preserve scrollable tab widths, and align the offline theme. Remove fabricated monitoring history and latency defaults, calculate percentiles from recorded requests, fetch the public repository count through the GitHub proxy, correct article and test counts, and restore verified links for recent shipped changelog entries.',
+      'Use solid theme surfaces on dashboard cards and page toolbars, constrain mobile architecture and monitoring grids, preserve scrollable tab widths, and align the offline theme. Remove fabricated monitoring history and latency defaults, leave request-ledger metrics unavailable on the edge probe-only runtime, calculate percentiles from recorded requests, fetch the public repository count through the GitHub proxy, correct article and test counts, and restore verified links for recent shipped changelog entries.',
     tags: ['design', 'monitor', 'systems', 'api'],
     sha: '8ec55b4c17d8b85363ddfb2066d5f1a5466fce27',
     commitVerified: true,

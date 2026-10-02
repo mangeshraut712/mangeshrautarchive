@@ -28,6 +28,8 @@ unavailable.
 - Removed the fixed language distribution and unsupported recent-activity claims.
 - Monitor starts with empty history instead of random samples. Latency percentiles
   use the latest recorded request samples, not endpoint averages or fixed defaults.
+- The live Worker exposes probe results without a request ledger. Synthetic edge
+  summaries leave request latency, success rate and error count unavailable.
 - Uptime is labeled runtime uptime, without implying an availability SLO.
 - Article count is 18; test counts are 184 API and 12 critical browser journeys.
 - Recent published changelog entries link to their actual implementation commits.
