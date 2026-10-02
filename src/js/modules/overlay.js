@@ -123,6 +123,16 @@ export function initOverlayMenu(options = {}) {
       first.focus();
     }
   });
+
+  window.addEventListener(
+    'resize',
+    () => {
+      if (window.innerWidth > 1150 && body.classList.contains('menu-open')) {
+        closeMenu();
+      }
+    },
+    { passive: true }
+  );
 }
 
 export function initOverlayNavigation(options = {}) {

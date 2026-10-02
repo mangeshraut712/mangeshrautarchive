@@ -54,6 +54,24 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'navigation-viewport-discipline-october-2026',
+    date: '2026-10-02',
+    type: 'fix',
+    title: 'Bind navigation controls strictly to their device viewports',
+    summary:
+      'Resolve desktop layout defect where the mobile hamburger menu button was rendered alongside the full desktop navigation rail. Strictly enforce responsive viewport boundaries: desktop viewports (≥1151px) display the clean Apple-inspired navigation rail with direct in-page and cross-page links while hiding the mobile hamburger button; mobile and tablet viewports (≤1150px) surface the compact touch-optimized hamburger button and modal navigation drawer. In addition, restrict coarse-pointer target expansions to ≤1150px, add automatic drawer collapse on viewport expansion, and align critical Playwright E2E suites.',
+    tags: ['design', 'performance'],
+    sha: null,
+    commitVerified: false,
+    model: 'Gemini 3.8 Flash',
+    ide: 'Google Antigravity IDE',
+    purpose:
+      'Enforce responsive navigation discipline across viewports, hiding mobile hamburger on desktop while maintaining full tablet/mobile drawer accessibility',
+    attributionSource: 'commit-message',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
     id: 'assistme-realtime-news-web-grounding-october-2026',
     date: '2026-10-02',
     type: 'improvement',

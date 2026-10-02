@@ -36,7 +36,7 @@ test('homepage card leads directly to a complete article with section navigation
   page,
 }) => {
   await gotoSite(page, '/');
-  await page.locator('#blog').scrollIntoViewIfNeeded();
+  await page.locator('#blog-posts-container').scrollIntoViewIfNeeded();
   await expect(page.locator('.blog-home-archive-link a')).toHaveAttribute('href', 'blog/');
   await expect(page.locator('#blog .blog-preview-btn')).toHaveCount(0);
   const readBtn = page.locator('#blog .blog-card .blog-read-btn').first();
@@ -293,10 +293,22 @@ test('mobile homepage fits and floating controls stay in a vertical stack', asyn
   }
 });
 
-test('laptop navigation exposes every page and restores keyboard focus', async ({ page }) => {
+test('laptop and mobile navigation expose every page and restore keyboard focus', async ({
+  page,
+}) => {
+  // Desktop/laptop viewport: direct link rail is visible, mobile menu button is hidden
   await page.setViewportSize({ width: 1280, height: 900 });
   await gotoSite(page, '/');
+  const desktopLinks = page.locator('.global-nav .nav-links');
+  await expect(desktopLinks).toBeVisible();
+  await expect(desktopLinks.getByRole('link', { name: 'Uses', exact: true })).toBeVisible();
+  await expect(desktopLinks.getByRole('link', { name: 'Changelog', exact: true })).toBeVisible();
   const menu = page.getByRole('button', { name: 'Open navigation menu' });
+  await expect(menu).toBeHidden();
+
+  // Mobile/tablet viewport: direct link rail is hidden, mobile menu button is visible
+  await page.setViewportSize({ width: 820, height: 900 });
+  await expect(desktopLinks).toBeHidden();
   await expect(menu).toBeVisible();
   await menu.click();
   const dialog = page.getByRole('dialog', { name: 'Site navigation' });

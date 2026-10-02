@@ -40,7 +40,7 @@
 }
 
 /* ─── Apple HIG: minimum 44×44 interactive chrome ─── */
-@media (pointer: coarse), (max-width: 900px) {
+@media ((pointer: coarse) and (max-width: 1150px)), (max-width: 900px) {
   #global-nav.global-nav.dynamic-island .nav-link,
   #global-nav.global-nav.dynamic-island .theme-toggle-nav,
   #global-nav.global-nav.dynamic-island .menu-toggle-button,

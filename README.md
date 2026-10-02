@@ -377,7 +377,7 @@ addition to the outer request, so it is reserved for deep text comparisons and r
 A free model ID does not guarantee access: the observed Omni audio minimum was $0.50 and video
 minimum $1.00; Gemma video succeeded without that balance. These provider restrictions may change.
 
-Regression coverage: 185 API tests, 7 Worker routing/stream boundary tests, and 14 critical Chrome
-journeys. The attachment journey also runs in Safari. Coding agent: GPT-6 / Codex in Codex desktop;
-purpose: multimodal routing and conversational reliability. Exact model variant, reasoning mode,
+Regression coverage: 185 API tests, 9 Worker routing/stream boundary tests, and 14 critical Chrome
+journeys. The attachment journey also runs in Safari. Coding agent: Gemini 3.8 Flash in Google Antigravity IDE;
+purpose: viewport-specific navigation discipline, mobile hamburger suppression on desktop, and responsive test alignment. Exact model variant, reasoning mode,
 and token usage: unavailable.
