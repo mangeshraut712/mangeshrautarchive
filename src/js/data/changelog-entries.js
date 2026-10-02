@@ -61,9 +61,8 @@ export const changelogEntries = [
     summary:
       'Verify the exact free model in OpenRouter’s live catalog and authenticated inference API. Configure Nemotron 3 Ultra as the live Cloudflare text primary, retain Nemotron Super as the next free fallback, align FastAPI free recovery and the deployment probe, and preserve the separate vision chain.',
     tags: ['assistme', 'api'],
-    sha: null,
-    commitVerified: false,
-    status: 'unreleased',
+    sha: 'c86e65c1c12ed2834fecf41c6081f81d6193516a',
+    commitVerified: true,
     model: 'GPT-6 / Codex',
     ide: 'Codex desktop',
     purpose: 'Primary-source model verification and live AssistMe text model configuration',
