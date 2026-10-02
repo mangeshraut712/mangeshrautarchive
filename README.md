@@ -268,12 +268,12 @@ Mangesh Raut maintains this portfolio with contributions from Codex, Claude Code
 Cursor, and GitHub Copilot. Shipped changes record the exposed agent/model family, engineering
 purpose, and verified commit in the [changelog](src/js/data/changelog-entries.js).
 
-| Current contribution                             | Attribution                                                                                                                                                                              |
-| ------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Coding agent                                     | Gemini 3.8 Flash, in Google Antigravity IDE                                                                                                                                              |
-| Purpose                                          | Ground 2026 executive leadership facts and Apple CEO transition for real-time accuracy                                                                                                   |
-| Exact model variant, reasoning mode, token usage | unavailable                                                                                                                                                                              |
-| Portfolio chatbot model                          | Configured separately in [api/model_router.py](api/model_router.py) and [Worker configuration](workers/assistme-chat/wrangler.toml); each live response reports the actual serving model |
+| Current contribution                             | Attribution                                                                                                                                                                                 |
+| ------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Coding agent                                     | Gemini 3.8 Flash, in Google Antigravity IDE                                                                                                                                                 |
+| Purpose                                          | Curate AssistMe chatbot telemetry, eliminate noisy UUIDs and fake speed estimates, add Live Grounded and Verified Portfolio Apple HIG badges, and verify across 30 comprehensive QA domains |
+| Exact model variant, reasoning mode, token usage | unavailable                                                                                                                                                                                 |
+| Portfolio chatbot model                          | Configured separately in [api/model_router.py](api/model_router.py) and [Worker configuration](workers/assistme-chat/wrangler.toml); each live response reports the actual serving model    |
 
 AssistMe on GitHub Pages uses the Cloudflare Worker at
 `https://assistme-chat.mangeshraut712.workers.dev`. The frontend checks `/api/chat/health`

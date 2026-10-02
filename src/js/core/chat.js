@@ -676,6 +676,7 @@ class IntelligentAssistant {
           model: metadata.model || 'OpenRouter',
           type: 'general',
           confidence: 0.9,
+          metadata: { ...metadata },
           ...metadata,
         };
       } else {

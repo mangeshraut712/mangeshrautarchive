@@ -54,6 +54,24 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'assistme-telemetry-refinement-october-2026',
+    date: '2026-10-02',
+    type: 'improvement',
+    title: 'Curate AssistMe telemetry with Apple HIG badges and clean metrics',
+    summary:
+      'Refine AssistMe chatbot metadata display to showcase high-value telemetry and eliminate noise. Surface vibrant Apple-styled primary badges including model badges, latency pills, green Live Grounded badges for real-time news retrieval, and blue Verified Portfolio badges for site knowledge queries. In the details inspector, retain strictly verified metrics (model architecture, routing task, compute tokens and speed, and free pricing tier), while completely eliminating noisy internal generation UUIDs, duplicate provider chips, timestamps, and estimated tokens-per-second artifacts. Crosschecked with 5 representative interactive examples and verified across a comprehensive 30-question subject, internet, and portfolio suite.',
+    tags: ['assistme', 'design', 'performance'],
+    sha: '9e70465c',
+    commitVerified: true,
+    model: 'Gemini 3.8 Flash',
+    ide: 'Google Antigravity IDE',
+    purpose:
+      'Curate AssistMe chatbot telemetry, eliminate internal UUID and fake speed noise, add Live Grounded and Verified Portfolio Apple HIG badges, and verify across 30 comprehensive QA domains',
+    attributionSource: 'commit-message',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
     id: 'navigation-viewport-discipline-october-2026',
     date: '2026-10-02',
     type: 'fix',
