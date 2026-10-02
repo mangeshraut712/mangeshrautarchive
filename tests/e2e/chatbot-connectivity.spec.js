@@ -8,9 +8,13 @@ test('GitHub Pages sends AssistMe health and streamed chat to the edge API', asy
   baseURL,
 }) => {
   await page.route('https://mangeshraut712.github.io/**', async route => {
-    const path = new URL(route.request().url()).pathname.replace(/^\/mangeshrautarchive/, '');
-    const response = await route.fetch({ url: new URL(path || '/', baseURL).href });
-    await route.fulfill({ response });
+    try {
+      const path = new URL(route.request().url()).pathname.replace(/^\/mangeshrautarchive/, '');
+      const response = await route.fetch({ url: new URL(path || '/', baseURL).href });
+      await route.fulfill({ response });
+    } catch {
+      // Ignore remaining routes in flight when test ends
+    }
   });
   let chatRequests = 0;
   await page.route(`${edge}/api/chat/health`, route =>
@@ -71,6 +75,7 @@ test('GitHub Pages sends AssistMe health and streamed chat to the edge API', asy
   expect(window.y).toBeLessThan(88);
   expect(window.y + window.height).toBeLessThanOrEqual(launcher.y);
   expect(launcher.y - (window.y + window.height)).toBeLessThan(24);
+  await page.unrouteAll({ behavior: 'ignoreErrors' });
 });
 
 test('AssistMe previews and submits audio, video, PDF and text without exposing protocol data', async ({
