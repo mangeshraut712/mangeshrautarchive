@@ -266,12 +266,21 @@ Mangesh Raut maintains this portfolio with contributions from Codex, Claude Code
 Cursor, and GitHub Copilot. Shipped changes record the exposed agent/model family, engineering
 purpose, and verified commit in the [changelog](src/js/data/changelog-entries.js).
 
-| Current documentation contribution               | Attribution                                                                                                                  |
-| ------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------- |
-| Coding agent                                     | Gemini 3.8 Flash, in Google Antigravity IDE                                                                                  |
-| Purpose                                          | AssistMe chatbot toggle visibility, dynamic window positioning above FAB stack, and robust navbar clearance on all viewports |
-| Exact model variant, reasoning mode, token usage | Unavailable from the active runtime                                                                                          |
-| Portfolio chatbot model                          | Configured separately in [api/model_router.py](api/model_router.py) and the Worker                                           |
+| Current contribution                             | Attribution                                                                                                                                                                              |
+| ------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Coding agent                                     | GPT-6 / Codex, in Codex desktop                                                                                                                                                          |
+| Purpose                                          | Restore AssistMe's GitHub Pages API routing, reliable streaming, truthful response metadata, and responsive chat window layout                                                           |
+| Exact model variant, reasoning mode, token usage | unavailable                                                                                                                                                                              |
+| Portfolio chatbot model                          | Configured separately in [api/model_router.py](api/model_router.py) and [Worker configuration](workers/assistme-chat/wrangler.toml); each live response reports the actual serving model |
+
+AssistMe on GitHub Pages uses the Cloudflare Worker at
+`https://assistme-chat.mangeshraut712.workers.dev`. The frontend checks `/api/chat/health`
+and sends chat requests to `/api/chat` on that host. An unavailable AI provider falls back to
+explicitly labeled local answers. Interrupted streams discard the failed attempt before trying
+another model; provider token usage is retained when supplied, and estimates remain labeled.
+The chat window uses the available area below navigation, with a scrolling transcript and a
+reachable composer. The deployed-host browser regression covers routing, fallback resets, and
+final-frame metadata in Chrome and Safari.
 
 Coding attribution in historical entries is contributor-reported in commit messages. A verified
 commit link confirms the repository reference; it does not authenticate the actual model runtime.

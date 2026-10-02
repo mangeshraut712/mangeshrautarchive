@@ -3653,51 +3653,30 @@ html body .article-inline-code {
   background-image: none !important;
 }
 
-/* Chatbot widget sits cleanly above the chatbot toggle with zero navbar collision */
+/* Use the space below navigation, with the composer above floating controls. */
 @media (width > 768px) {
-  html body:not(:has(#go-to-top.visible)) #chatbot-widget {
+  html body #chatbot-widget {
     position-anchor: auto;
-    top: auto !important;
-    bottom: calc(
-      var(--fab-slot-0, var(--theme-fab-bottom, 32px)) + var(--fab-size, 48px) + 14px
-    ) !important;
-    max-height: calc(
-      100dvh -
-        calc(var(--fab-slot-0, var(--theme-fab-bottom, 32px)) + var(--fab-size, 48px) + 14px) -
-        max(calc(var(--island-height, 54px) + env(safe-area-inset-top, 0px) + 20px), 88px)
-    ) !important;
-    height: min(
-      620px,
-      calc(
-        100dvh -
-          calc(var(--fab-slot-0, var(--theme-fab-bottom, 32px)) + var(--fab-size, 48px) + 14px) -
-          max(calc(var(--island-height, 54px) + env(safe-area-inset-top, 0px) + 20px), 88px)
-      )
-    ) !important;
-    right: var(--theme-fab-edge, max(24px, env(safe-area-inset-right, 0px))) !important;
+    top: calc(var(--island-height, 56px) + 12px) !important;
+    bottom: max(96px, calc(env(safe-area-inset-bottom, 0px) + 80px)) !important;
+    height: auto !important;
+    max-height: none !important;
+    width: min(460px, calc(100vw - 48px)) !important;
+    right: var(--theme-fab-edge, 24px) !important;
     left: auto !important;
     margin: 0 !important;
   }
+}
 
-  html body:has(#go-to-top.visible) #chatbot-widget {
-    position-anchor: auto;
-    top: auto !important;
-    bottom: calc(var(--fab-slot-1, 92px) + var(--fab-size, 48px) + 14px) !important;
-    max-height: calc(
-      100dvh - calc(var(--fab-slot-1, 92px) + var(--fab-size, 48px) + 14px) -
-        max(calc(var(--island-height, 54px) + env(safe-area-inset-top, 0px) + 20px), 88px)
-    ) !important;
-    height: min(
-      620px,
-      calc(
-        100dvh - calc(var(--fab-slot-1, 92px) + var(--fab-size, 48px) + 14px) -
-          max(calc(var(--island-height, 54px) + env(safe-area-inset-top, 0px) + 20px), 88px)
-      )
-    ) !important;
-    right: var(--theme-fab-edge, max(24px, env(safe-area-inset-right, 0px))) !important;
-    left: auto !important;
-    margin: 0 !important;
-  }
+html body #chatbot-widget .meta-details[hidden] {
+  display: none !important;
+}
+
+html body #chatbot-widget .chatbot-header button {
+  width: 44px !important;
+  height: 44px !important;
+  min-width: 44px !important;
+  min-height: 44px !important;
 }
 
 /* Theme changes keep the root canvas solid without intermediate gray frames. */

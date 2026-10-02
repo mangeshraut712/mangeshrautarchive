@@ -54,6 +54,25 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'assistme-edge-routing-streaming-october-2026',
+    date: '2026-10-02',
+    type: 'fix',
+    title: 'AssistMe live connectivity and reliable streaming',
+    summary:
+      'Assign the Cloudflare API host on GitHub Pages, refresh health when reopening chat, preserve actual model and provider usage metadata, bound stalled upstream streams, and reset interrupted attempts before fallback. Expand the chat window below navigation, keep response details collapsed, enlarge header controls, and omit unrelated portfolio shortcuts from general AI answers.',
+    tags: ['assistme', 'api', 'design'],
+    sha: null,
+    commitVerified: false,
+    status: 'unreleased',
+    model: 'GPT-6 / Codex',
+    ide: 'Codex desktop',
+    purpose:
+      'Live backend diagnosis, streaming recovery, accurate runtime metadata, and responsive chat layout',
+    attributionSource: 'commit-message',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
     id: 'chatbot-assistme-window-positioning-october-2026',
     date: '2026-10-02',
     type: 'fix',

@@ -544,6 +544,7 @@ class AppleIntelligenceChatbot {
     }
 
     this.chatAPI = chatAssistant;
+    this.lastHealthCheck = Date.now();
 
     if (typeof this.chatAPI.isReady === 'function' && !this.chatAPI.isReady()) {
       try {
@@ -626,7 +627,7 @@ class AppleIntelligenceChatbot {
       statusText.textContent = labels[status] || labels.local;
       statusText.title =
         status === 'online'
-          ? 'OpenRouter configured — free models used if Grok is unavailable'
+          ? 'Connected to the live AI service; each answer shows its actual model'
           : status === 'local'
             ? 'Answering from portfolio knowledge (live API host unavailable)'
             : 'No network — offline portfolio answers only';
@@ -1752,6 +1753,10 @@ class AppleIntelligenceChatbot {
       this.elements.widget.removeAttribute('inert');
     }
     this.isOpen = true;
+    // Recheck when reopening after a temporary connection failure.
+    if (!this.lastHealthCheck || Date.now() - this.lastHealthCheck > 30_000) {
+      void this.waitForChatAPI();
+    }
     this.elements.toggle?.setAttribute('aria-expanded', 'true');
     this.updateRateLimitBadge();
     this.showContextAwareness();
@@ -2510,6 +2515,11 @@ class AppleIntelligenceChatbot {
         context: this.buildPageContextPayload(),
         session_id: this.chatAPI.sessionId,
         images: normalizeImagePayloads(askOptions.images || this.pendingImages || []),
+        onReset: () => {
+          fullText = '';
+          this._streamPaintGeneration = (this._streamPaintGeneration ?? 0) + 1;
+          contentDiv?.replaceChildren();
+        },
         onChunk: chunk => {
           if (signal.aborted) return;
           if (!chunk) return;
@@ -2619,6 +2629,7 @@ class AppleIntelligenceChatbot {
           response?.metadata?.generation_id ||
           response?.metadata?.generationId ||
           response?.generation_id ||
+          response?.generationId ||
           '',
         retried: this.retryCount > 0,
         timestamp: new Date().toLocaleTimeString('en-US', {
@@ -2628,11 +2639,15 @@ class AppleIntelligenceChatbot {
         }),
       };
 
+      if (String(metadata.source).toLowerCase() === 'openrouter')
+        this.updateStatusIndicator('online');
+      else if (metadata.model === 'edge-local') this.updateStatusIndicator('local');
+
       // Add condensed metadata
       this.addCondensedMetadata(messageDiv, contentDiv, metadata);
 
       // Show contextual follow-up chips
-      this.showFollowupChips(fullText);
+      this.showFollowupChips(fullText, userMessage);
 
       if (!metadata.error) {
         this.decrementRemainingQueries();
@@ -3102,8 +3117,16 @@ class AppleIntelligenceChatbot {
     this.appendToMessages(messageDiv, { pin: 'if-following' });
   }
 
-  showFollowupChips(assistantText) {
+  showFollowupChips(assistantText, userMessage = '') {
     this.removeFollowupChips();
+
+    // Portfolio shortcuts should not interrupt unrelated general AI answers.
+    if (
+      !/\b(mangesh|portfolio|resume|projects?|skills?|experience|education|contact|changelog|travel|uses|monitor|this site|your work)\b/i.test(
+        userMessage
+      )
+    )
+      return;
 
     const ctx = inferFollowupContext(assistantText);
     const chips = FOLLOWUP_CHIPS[ctx] || FOLLOWUP_CHIPS.default;

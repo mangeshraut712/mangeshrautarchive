@@ -402,3 +402,9 @@ encode structured versions of this checklist for automated agents:
 | `apple-design-critique`  | Full visual critique against HIG and this spec               |
 | `responsive-audit`       | Multi-viewport overflow, touch-target, and layout audit      |
 | `animation-motion-audit` | Motion timing, easing, performance, and reduce-motion review |
+
+### AssistMe viewport and response layout
+
+- Desktop chat starts 12px below the navigation height and uses the remaining viewport above its launcher. Remove fixed 620px height caps; the transcript scrolls inside the window while the composer remains reachable.
+- Mobile chat fits the available viewport below navigation with safe-area clearance. Header controls have a minimum 44px target.
+- Response details remain collapsed until requested. Model labels and token usage come from the answering service; estimates are explicitly labeled. General questions do not receive unrelated portfolio shortcut chips.

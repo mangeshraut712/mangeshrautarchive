@@ -119,6 +119,7 @@ if (typeof window !== 'undefined') {
       if (c.includes('workers.dev') || c === EDGE_BACKEND) edgeOnly.push(c);
     }
     API_BASE_CANDIDATES = [...new Set(edgeOnly.length ? edgeOnly : [EDGE_BACKEND])];
+    API_BASE = API_BASE_CANDIDATES[0];
   } else if (hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '0.0.0.0') {
     // ALWAYS use relative paths for localhost to hit the proxy
     API_BASE = '';
@@ -575,6 +576,11 @@ class IntelligentAssistant {
             try {
               const data = JSON.parse(trimmed);
 
+              if (data.type === 'reset') {
+                fullText = '';
+                options.onReset?.();
+                continue;
+              }
               if (data.type === 'typing' || data.type === 'status') {
                 continue;
               }
@@ -638,6 +644,9 @@ class IntelligentAssistant {
             reader.releaseLock();
           }
         }
+
+        // Servers may close after a final NDJSON frame without a newline.
+        if (buffer.trim()) processChunk(new TextEncoder().encode('\n'));
 
         if (metadata.streamError && !fullText.trim()) {
           this.markServerUnavailable();
@@ -771,6 +780,7 @@ class IntelligentAssistant {
     ];
 
     const result = {
+      ...payload,
       answer: payload.answer ?? payload.text ?? '',
       type: payload.type || 'general',
       confidence: typeof payload.confidence === 'number' ? payload.confidence : 0.5,
