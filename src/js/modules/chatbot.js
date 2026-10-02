@@ -2626,6 +2626,16 @@ class AppleIntelligenceChatbot {
           response?.metadata?.knowledge_context ?? response?.knowledge_context ?? false,
         webTools: response?.metadata?.web_tools ?? response?.web_tools ?? false,
         webEngine: response?.metadata?.web_engine || response?.web_engine || '',
+        liveGrounded:
+          response?.metadata?.live_grounded ??
+          response?.metadata?.liveGrounded ??
+          response?.live_grounded ??
+          false,
+        liveSources:
+          response?.metadata?.live_sources ??
+          response?.metadata?.liveSources ??
+          response?.live_sources ??
+          0,
         generationId:
           response?.metadata?.generation_id ||
           response?.metadata?.generationId ||
@@ -2870,6 +2880,10 @@ class AppleIntelligenceChatbot {
     if (metadata.webTools) {
       const engine = metadata.webEngine ? ` via ${metadata.webEngine}` : '';
       detailChips.push(`🌐 Web tools${engine}`);
+    }
+    if (metadata.liveGrounded) {
+      const count = metadata.liveSources || 0;
+      detailChips.push(count > 0 ? `🌐 Live Grounded (${count} sources)` : '🌐 Live Grounded');
     }
     if (metadata.tokens)
       detailChips.push(

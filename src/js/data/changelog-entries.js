@@ -54,6 +54,24 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'assistme-realtime-news-web-grounding-october-2026',
+    date: '2026-10-02',
+    type: 'improvement',
+    title: 'AssistMe introduces real-time web & news grounding engine',
+    summary:
+      'Equip AssistMe with real-time web and news retrieval powered by Google News RSS and Wikipedia REST API, alongside a verified late-2026 tech leadership and products registry (covering Apple, Microsoft, OpenAI, Google, Anthropic, Meta, Nvidia, Tesla, and Amazon). Prevents outdated pre-training cutoff hallucinations and displays a live grounded badge in the Apple Intelligence telemetry inspector.',
+    tags: ['assistme', 'api', 'design'],
+    sha: null,
+    commitVerified: false,
+    model: 'Gemini 3.8 Flash',
+    ide: 'Google Antigravity IDE',
+    purpose:
+      'Real-time live news and web grounding engine for contemporary events, executive updates, and fresh facts',
+    attributionSource: 'commit-message',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
     id: 'assistme-apple-intelligence-ux-model-badges-october-2026',
     date: '2026-10-02',
     type: 'improvement',
