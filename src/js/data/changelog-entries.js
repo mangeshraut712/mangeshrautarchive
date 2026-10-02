@@ -61,8 +61,8 @@ export const changelogEntries = [
     summary:
       'Refresh OpenRouter capabilities hourly; route reasoning, quick turns, code, images, and video to compatible free specialists. Add bounded audio, video, PDF, and text attachments, free PDF parsing, actual serving-model metadata, zero-cost details, and upstream Stop cancellation. Reserve paid Auto recovery and funded Fusion for eligible requests. Verify live text, image, video, and document results; disclose blocked cloud audio and TTS instead of claiming they are online.',
     tags: ['assistme', 'voice', 'api'],
-    sha: null,
-    commitVerified: false,
+    sha: 'b12429a5',
+    commitVerified: true,
     model: 'GPT-6 / Codex (impl), Gemini 2.5 Pro (validation)',
     ide: 'Codex desktop + Antigravity IDE',
     purpose:
