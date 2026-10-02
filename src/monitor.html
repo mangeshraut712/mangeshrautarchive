@@ -390,12 +390,12 @@
       >
         <div class="monitor-kpi-card keynote-metric-card">
           <div class="monitor-kpi-card__header">
-            <span class="monitor-kpi-card__title">System Availability</span>
+            <span class="monitor-kpi-card__title">Runtime Uptime</span>
             <i class="fas fa-tower-broadcast monitor-kpi-card__icon" aria-hidden="true"></i>
           </div>
           <div class="monitor-kpi-card__value"><strong id="summary-uptime">--</strong></div>
           <div class="monitor-kpi-card__meta">
-            <span class="text-muted">SLO target 99.9%</span>
+            <span class="text-muted">Since this runtime started</span>
             <span class="monitor-kpi-dot">·</span>
             <span class="text-muted">Updated <strong id="summary-last-refresh">--</strong></span>
           </div>
@@ -408,9 +408,9 @@
           </div>
           <div class="monitor-kpi-card__value"><strong id="avg-response">--ms</strong></div>
           <div class="monitor-kpi-card__meta">
-            <span class="text-muted">Edge response</span>
+            <span class="text-muted">Recorded requests</span>
             <span class="monitor-kpi-dot">·</span>
-            <span class="monitor-kpi-sub">p95: 42ms · p99: 85ms</span>
+            <span class="monitor-kpi-sub">Recent request average</span>
           </div>
         </div>
 
@@ -871,32 +871,31 @@
             <div class="doc-card engineering-benchmark-card">
               <p class="doc-card-kicker">Engineering & Quality Benchmarks</p>
               <p class="doc-card-description doc-card-description--spaced">
-                Real-time API latency percentiles and automated quality verification.
+                Recorded request latency percentiles and automated quality verification.
               </p>
 
               <div class="benchmark-metric-grid">
                 <div class="benchmark-metric-item">
                   <span class="benchmark-metric-label">p50 Latency</span>
-                  <strong class="benchmark-metric-val text-accent-blue" id="bench-p50">18ms</strong>
+                  <strong class="benchmark-metric-val text-accent-blue" id="bench-p50">—</strong>
                 </div>
                 <div class="benchmark-metric-item">
                   <span class="benchmark-metric-label">p95 Latency</span>
-                  <strong class="benchmark-metric-val text-accent-green" id="bench-p95"
-                    >42ms</strong
-                  >
+                  <strong class="benchmark-metric-val text-accent-green" id="bench-p95">—</strong>
                 </div>
                 <div class="benchmark-metric-item">
                   <span class="benchmark-metric-label">p99 Latency</span>
-                  <strong class="benchmark-metric-val text-accent-purple" id="bench-p99"
-                    >85ms</strong
-                  >
+                  <strong class="benchmark-metric-val text-accent-purple" id="bench-p99">—</strong>
                 </div>
               </div>
 
+              <p id="benchmark-sample-note" class="doc-card-description">
+                Awaiting request samples.
+              </p>
               <div class="benchmark-badges-row">
                 <div class="benchmark-pill">
                   <i class="fas fa-check-double text-accent-green" aria-hidden="true"></i>
-                  <span>6 Critical Browser Journeys</span>
+                  <span>12 Critical Browser Journeys</span>
                 </div>
                 <div class="benchmark-pill">
                   <i class="fas fa-vial-circle-check text-accent-green" aria-hidden="true"></i>

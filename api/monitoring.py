@@ -176,19 +176,6 @@ class SystemMonitor:
             "last_deployment": None,
         }
 
-        # Pre-populate trends with some mock baseline history so the dashboard looks loaded
-        baseline_time = datetime.now(timezone.utc) - timedelta(minutes=30)
-        import random
-        for i in range(30):
-            t_iso = (baseline_time + timedelta(minutes=i)).isoformat().replace("+00:00", "Z")
-            self.real_time_metrics["cpu_trend"].append({"timestamp": t_iso, "value": round(random.uniform(0.5, 3.5), 1)})
-            self.real_time_metrics["memory_trend"].append({"timestamp": t_iso, "value": round(random.uniform(42.0, 46.0), 1)})
-            self.real_time_metrics["response_time_trend"].append({
-                "timestamp": t_iso,
-                "value": round(random.uniform(30.0, 120.0), 1),
-                "path": "/api/chat" if i % 3 == 0 else "/api/monitor/status"
-            })
-
         self._last_trend_update = time.time()
 
         # Security monitoring (2026-era feature)

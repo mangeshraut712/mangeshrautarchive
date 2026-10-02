@@ -35,7 +35,7 @@ export const heroStats = [
     href: '#tokenization',
   },
   { value: String(BLOG_POST_COUNT), unit: '', label: 'Technical articles', href: '#writing' },
-  { value: '51', unit: '', label: 'Public repositories', href: '#open-source' },
+  { value: '—', unit: '', label: 'Public repositories', href: '#open-source' },
   { value: 'Live', unit: '', label: 'Production monitor', href: 'monitor.html' },
 ];
 

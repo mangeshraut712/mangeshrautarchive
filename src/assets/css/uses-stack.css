@@ -207,14 +207,14 @@ body.uses-page .keynote-deck-nav {
   margin: 1.5rem 0 2rem;
   border-radius: 9999px;
   border: 1px solid var(--uses-border);
-  background: rgba(255, 255, 255, 0.92) !important;
+  background: var(--bg-primary) !important;
   backdrop-filter: blur(20px) !important;
   -webkit-backdrop-filter: blur(20px) !important;
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
 }
 
 html.dark body.uses-page .keynote-deck-nav {
-  background: rgba(18, 18, 20, 0.92) !important;
+  background: var(--bg-primary) !important;
   border-color: rgba(255, 255, 255, 0.14) !important;
   box-shadow: 0 4px 28px rgba(0, 0, 0, 0.5);
 }

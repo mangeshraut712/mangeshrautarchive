@@ -627,6 +627,32 @@ function renderOpenSource() {
   const root = document.getElementById('systems-oss-panel');
   if (!root) return;
   root.innerHTML = renderOpenSourcePanel();
+  hydratePublicRepositoryCount();
+}
+
+async function hydratePublicRepositoryCount() {
+  if (isPerformanceAudit()) return;
+  const note = document.getElementById('oss-live-note');
+  try {
+    const response = await fetch(
+      `${getApiBase()}/api/github/proxy?path=%2Fusers%2Fmangeshraut712`,
+      {
+        headers: { Accept: 'application/vnd.github+json' },
+        signal: AbortSignal.timeout(8000),
+      }
+    );
+    if (!response.ok) throw new Error('GitHub profile unavailable');
+    const profile = await response.json();
+    if (!Number.isInteger(profile.public_repos)) throw new Error('Repository count unavailable');
+    document.getElementById('systems-public-repo-count').textContent =
+      `${profile.public_repos} public repositories`;
+    const hero = document.querySelector('a[href="#open-source"] .systems-hero-stat-value');
+    if (hero) hero.textContent = String(profile.public_repos);
+    if (note)
+      note.textContent = 'Repository count from the public GitHub profile, checked on page load.';
+  } catch {
+    if (note) note.textContent = 'GitHub count unavailable. Open the profile for current activity.';
+  }
 }
 
 function renderPrinciples() {
@@ -829,13 +855,6 @@ async function hydrateTelemetry({ initial = false } = {}) {
       : 'Using static benchmarks (live telemetry unavailable)';
     if (note) note.textContent = syncText;
     if (tileNote) tileNote.textContent = syncText;
-
-    const ossNote = document.getElementById('oss-live-note');
-    if (ossNote) {
-      ossNote.textContent = snapshot
-        ? 'Public GitHub activity — live sync enabled'
-        : 'Public GitHub metrics — static snapshot';
-    }
   } catch (error) {
     console.warn('Systems telemetry hydrate failed:', error);
     if (bento) {

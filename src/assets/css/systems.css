@@ -77,6 +77,7 @@ body.systems-page .monitor-page-nav {
   margin-inline: auto;
   padding: 0 var(--systems-shell-gutter) calc(3.5rem + env(safe-area-inset-bottom, 0px));
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--systems-section-gap);
   min-width: 0;
   overflow: visible;
@@ -3019,6 +3020,10 @@ html.dark body.systems-page .project-evidence-link.is-unavailable {
 @media (width <= 768px) {
   body.systems-page .systems-arch-stage,
   body.systems-page .systems-arch-stage.lg-glass-card {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
     padding: 0.85rem !important;
     overflow: hidden;
   }

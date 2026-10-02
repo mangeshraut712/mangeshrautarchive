@@ -592,7 +592,7 @@ body.travel-body .travel-stats {
 }
 
 html.dark body.travel-body .travel-stats {
-  background: rgba(255, 255, 255, 0.06) !important;
+  background: var(--bg-primary) !important;
   border-color: rgba(255, 255, 255, 0.08) !important;
 }
 
@@ -653,7 +653,7 @@ body.travel-body .travel-search {
   height: 36px !important;
   padding: 0 6px 0 10px !important;
   border-radius: 10px !important;
-  background: rgba(0, 0, 0, 0.04) !important;
+  background: var(--bg-primary) !important;
   border: 1px solid rgba(0, 0, 0, 0.06) !important;
   box-sizing: border-box !important;
   margin-top: 0 !important;
@@ -662,7 +662,7 @@ body.travel-body .travel-search {
 }
 
 html.dark body.travel-body .travel-search {
-  background: rgba(255, 255, 255, 0.06) !important;
+  background: var(--bg-primary) !important;
   border-color: rgba(255, 255, 255, 0.08) !important;
 }
 
@@ -750,7 +750,7 @@ body.travel-body .country-pill {
   font-weight: 550 !important;
   white-space: nowrap !important;
   flex-shrink: 0 !important;
-  background: rgba(0, 0, 0, 0.04) !important;
+  background: var(--bg-primary) !important;
   border: 1px solid rgba(0, 0, 0, 0.06) !important;
   color: var(--travel-text, #1d1d1f) !important;
   -webkit-text-fill-color: var(--travel-text, #1d1d1f) !important;
@@ -804,7 +804,7 @@ body.travel-body .travel-action {
   border-radius: 7px !important;
   font-size: 12px !important;
   font-weight: 600 !important;
-  background: rgba(0, 0, 0, 0.04) !important;
+  background: var(--bg-primary) !important;
   border: 1px solid rgba(0, 0, 0, 0.06) !important;
   color: var(--travel-text-secondary, #6e6e73) !important;
   -webkit-text-fill-color: var(--travel-text-secondary, #6e6e73) !important;
@@ -814,7 +814,7 @@ body.travel-body .travel-action {
 }
 
 html.dark body.travel-body .travel-action {
-  background: rgba(255, 255, 255, 0.06) !important;
+  background: var(--bg-primary) !important;
   border-color: rgba(255, 255, 255, 0.08) !important;
   color: #a1a1a6 !important;
   -webkit-text-fill-color: #a1a1a6 !important;
@@ -1862,8 +1862,8 @@ body.travel-body .travel-filter-chips {
   padding: 0.35rem 0.55rem !important;
   border-radius: 9999px !important;
   border: 1px solid rgba(0, 0, 0, 0.1) !important;
-  background: rgba(255, 255, 255, 0.9) !important;
-  background-color: rgba(255, 255, 255, 0.9) !important;
+  background: var(--bg-primary) !important;
+  background-color: var(--bg-primary) !important;
   backdrop-filter: blur(20px) !important;
   -webkit-backdrop-filter: blur(20px) !important;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05) !important;
@@ -1884,8 +1884,8 @@ html.dark body.monitor-page .monitor-section-rail,
 html.dark body.uses-page .uses-filters,
 html.dark body.uses-page .keynote-deck-nav,
 html.dark body.travel-body .travel-filter-chips {
-  background: rgba(18, 18, 20, 0.9) !important;
-  background-color: rgba(18, 18, 20, 0.9) !important;
+  background: var(--bg-primary) !important;
+  background-color: var(--bg-primary) !important;
   border-color: rgba(255, 255, 255, 0.14) !important;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45) !important;
 }

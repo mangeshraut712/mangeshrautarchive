@@ -635,20 +635,20 @@ html.dark
 
 /* ─── Systems rails / tabs (Unified Apple Glass & Solid Theme) ─── */
 html:not(.dark) body.systems-page :is(.systems-section-rail, .systems-flow-rail) {
-  background: rgba(0, 0, 0, 0.04) !important;
-  background-color: rgba(0, 0, 0, 0.04) !important;
+  background: var(--bg-primary) !important;
+  background-color: var(--bg-primary) !important;
   border: 1px solid rgba(0, 0, 0, 0.08) !important;
 }
 
 html:not(.dark) body.systems-page .systems-arch-tabs {
-  background: rgba(0, 0, 0, 0.04) !important;
-  background-color: rgba(0, 0, 0, 0.04) !important;
+  background: var(--bg-primary) !important;
+  background-color: var(--bg-primary) !important;
   border: 1px solid rgba(0, 0, 0, 0.08) !important;
 }
 
 html.dark body.systems-page :is(.systems-section-rail, .systems-arch-tabs, .systems-flow-rail) {
-  background: rgba(255, 255, 255, 0.06) !important;
-  background-color: rgba(255, 255, 255, 0.06) !important;
+  background: var(--bg-primary) !important;
+  background-color: var(--bg-primary) !important;
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
 }
 
@@ -3491,4 +3491,20 @@ html.dark body.travel-body .travel-stop.active {
   background: rgba(10, 132, 255, 0.14) !important;
   background-color: rgba(10, 132, 255, 0.14) !important;
   box-shadow: inset 3px 0 0 #2997ff !important;
+}
+
+/* Navigation and search use the same opaque surface as content cards. */
+html body :is(.systems-section-rail, .monitor-section-rail, .travel-search) {
+  background: var(--bg-primary) !important;
+  background-image: none !important;
+  backdrop-filter: none !important;
+}
+
+html body.monitor-page #main-content .monitor-kpi-strip {
+  padding-block: 0 !important;
+}
+
+html body.travel-body .country-pill:not(.active),
+html body.changelog-page details > summary {
+  background: var(--bg-primary) !important;
 }

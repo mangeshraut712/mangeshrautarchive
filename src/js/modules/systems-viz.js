@@ -236,69 +236,16 @@ export function renderProductionMetricsGrid() {
 }
 
 export function renderOpenSourcePanel() {
-  const rows = openSourceActivity.rows.map(metricRowHtml).join('');
   return `<article class="systems-metric-panel systems-metric-panel--oss lg-glass-card">
     <div class="systems-metric-panel-head">
       <div>
         <h3 class="systems-metric-panel-title">${escapeHtml(openSourceActivity.label)}</h3>
-        <p class="systems-oss-stars-badge"><i class="fas fa-code-branch text-accent-blue" aria-hidden="true"></i> <strong>51 public repositories</strong> across systems, AI & web platforms · 100% open source</p>
+        <p class="systems-oss-stars-badge"><i class="fas fa-code-branch text-accent-blue" aria-hidden="true"></i> <strong id="systems-public-repo-count">Public repositories</strong> across systems, AI and web platforms</p>
       </div>
       <a class="systems-tile-link" href="${escapeHtml(openSourceActivity.repoUrl)}" target="_blank" rel="noopener noreferrer">GitHub Profile →</a>
     </div>
-
-    <!-- Aggregate GitHub Language Distribution Bar -->
-    <div class="github-lang-dist-container">
-      <div class="github-lang-dist-header">
-        <span class="github-lang-dist-title">Aggregate Codebase Distribution</span>
-        <span class="github-lang-dist-stats">51 Public Repositories</span>
-      </div>
-      <div class="github-lang-bar-track" role="progressbar" aria-label="GitHub Language Proportions">
-        <span class="github-lang-segment" style="--lang-pct: 42%; background-color: #3572A5;" title="Python: 42%"></span>
-        <span class="github-lang-segment" style="--lang-pct: 36%; background-color: #f1e05a;" title="JavaScript / TypeScript: 36%"></span>
-        <span class="github-lang-segment" style="--lang-pct: 14%; background-color: #b07219;" title="Java: 14%"></span>
-        <span class="github-lang-segment" style="--lang-pct: 8%; background-color: #e34c26;" title="HTML / CSS: 8%"></span>
-      </div>
-      <div class="github-lang-legend">
-        <span class="github-lang-legend-item"><span class="github-lang-dot" style="background-color: #3572A5;"></span> Python 42%</span>
-        <span class="github-lang-legend-item"><span class="github-lang-dot" style="background-color: #f1e05a;"></span> JavaScript / TS 36%</span>
-        <span class="github-lang-legend-item"><span class="github-lang-dot" style="background-color: #b07219;"></span> Java 14%</span>
-        <span class="github-lang-legend-item"><span class="github-lang-dot" style="background-color: #e34c26;"></span> HTML / CSS 8%</span>
-      </div>
-    </div>
-
-    <div class="systems-metric-rows">${rows}</div>
-
-    <!-- Recent Public Commits Micro-feed -->
-    <div class="systems-recent-commits-feed">
-      <h4 class="systems-recent-commits-title"><i class="fas fa-code-commit text-accent-blue" aria-hidden="true"></i> Recent Public Commits</h4>
-      <div class="systems-commit-list">
-        <div class="systems-commit-item">
-          <div class="systems-commit-head">
-            <span class="systems-commit-repo">mangeshrautarchive</span>
-            <code class="systems-commit-sha">ef574c11</code>
-            <span class="systems-commit-time">Recently</span>
-          </div>
-          <p class="systems-commit-msg">fix(ci): reconfigure release workflow to explicit tags and manual dispatch</p>
-        </div>
-        <div class="systems-commit-item">
-          <div class="systems-commit-head">
-            <span class="systems-commit-repo">mangeshrautarchive</span>
-            <code class="systems-commit-sha">b2cf7996</code>
-            <span class="systems-commit-time">Recently</span>
-          </div>
-          <p class="systems-commit-msg">fix(perf): sitewide 100 lighthouse scores, wcag aa hierarchy and contrast remediation</p>
-        </div>
-        <div class="systems-commit-item">
-          <div class="systems-commit-head">
-            <span class="systems-commit-repo">mangeshrautarchive</span>
-            <code class="systems-commit-sha">349b23fc</code>
-            <span class="systems-commit-time">Recently</span>
-          </div>
-          <p class="systems-commit-msg">fix(travel): transform sidebar into compact apple maps segmented controls and strip</p>
-        </div>
-      </div>
-    </div>
-
-    <p class="systems-metric-live-note" id="oss-live-note">Syncing public activity…</p>
+    <p>Explore repository activity, contribution history and project details in the portfolio’s GitHub Operating View.</p>
+    <a class="systems-tile-link" href="index.html#projects">Explore GitHub Operating View →</a>
+    <p class="systems-metric-live-note" id="oss-live-note">Checking the public GitHub profile…</p>
   </article>`;
 }

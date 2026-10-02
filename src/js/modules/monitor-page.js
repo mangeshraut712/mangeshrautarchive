@@ -1316,7 +1316,7 @@ function renderHealthChecks(data) {
         message: check.message,
         metrics: [
           {
-            value: Number.isFinite(ms) ? `${Math.round(ms)}ms` : '—',
+            value: Number.isFinite(ms) && ms > 0 ? `${Math.round(ms)}ms` : '—',
             label: 'Response',
           },
           { value: check.status, label: 'Status', uppercase: true },
@@ -3185,34 +3185,24 @@ async function refreshAIMetrics() {
   setButtonLoading('#btn-refresh-ai', false);
 }
 
-function renderEngineeringBenchmarks(metrics, _realTime) {
-  const p50El = document.getElementById('bench-p50');
-  const p95El = document.getElementById('bench-p95');
-  const p99El = document.getElementById('bench-p99');
-  if (!p50El || !p95El || !p99El) return;
-
-  const endpoints = metrics?.endpoints || [];
-  if (endpoints.length > 0) {
-    const latencies = endpoints
-      .map(e => Number(e.avg_response_time_ms || 0))
-      .filter(n => Number.isFinite(n) && n > 0)
-      .sort((a, b) => a - b);
-
-    if (latencies.length > 0) {
-      const p50 = latencies[Math.floor(latencies.length * 0.5)] || 18;
-      const p95 = latencies[Math.floor(latencies.length * 0.95)] || Math.round(p50 * 2.2);
-      const p99 = latencies[Math.floor(latencies.length * 0.99)] || Math.round(p50 * 3.8);
-
-      p50El.textContent = `${Math.round(p50)}ms`;
-      p95El.textContent = `${Math.round(p95)}ms`;
-      p99El.textContent = `${Math.round(p99)}ms`;
-      return;
+function renderEngineeringBenchmarks(_metrics, realTime) {
+  const values = (realTime?.response_time_trend || [])
+    .map(sample => Number(sample.value))
+    .filter(value => Number.isFinite(value) && value >= 0)
+    .sort((a, b) => a - b);
+  for (const percentile of [50, 95, 99]) {
+    const element = document.getElementById(`bench-p${percentile}`);
+    if (element) {
+      const index = Math.max(0, Math.ceil((percentile / 100) * values.length) - 1);
+      element.textContent = values.length ? `${Math.round(values[index])}ms` : '—';
     }
   }
-
-  p50El.textContent = '18ms';
-  p95El.textContent = '42ms';
-  p99El.textContent = '85ms';
+  const note = document.getElementById('benchmark-sample-note');
+  if (note) {
+    note.textContent = values.length
+      ? `Latency percentiles from ${values.length} recent recorded request samples.`
+      : 'Latency percentiles unavailable until request samples are recorded.';
+  }
 }
 
 let terminalStreamPaused = false;
