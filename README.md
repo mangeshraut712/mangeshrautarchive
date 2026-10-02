@@ -90,14 +90,21 @@ using IANA timezones with daylight-saving handling. Three clocks are shown initi
 personal reminders can be reviewed, saved in the browser, and exported as one-time calendar copies.
 
 Today’s Panchang is sourced from [Kalnirnay](https://www.kalnirnay.com/). A scheduled workflow checks
-the official publication twice daily; the frontend only displays values dated today in India and
-falls back to the source link when fresh values are unavailable. See the
+the official publication hourly, using a dated cache key to avoid yesterday’s cached response.
+The frontend checks the snapshot every 15 minutes while visible and displays only values dated today
+in India. If fresh values are unavailable, it hides stale data and links to the official calendar.
+
+**Source limitation:** the October 2 local fetch returned verified current values, but Kalnirnay
+returned HTTP 403 to GitHub’s hosted runner. The scheduled workflow reports that refusal as a warning;
+a successful workflow does not guarantee fresh data. Automatic daily ingestion remains dependent on
+the publisher permitting the runner’s requests. See the
 [contact calendar implementation notes](docs/CONTACT_CALENDAR.md).
 
 ### Design and accessibility
 
 The interface follows an Apple-inspired visual language: system typography, restrained spacing,
-blue primary actions, translucent surfaces, and coordinated light and dark themes. Shared design
+blue primary actions, solid white neutral surfaces in light mode, and solid black neutral surfaces
+in dark mode. Borders define cards and grouped controls; category and brand icons retain their colors. Shared design
 rules include visible keyboard focus, circular red close controls, reduced-motion support,
 accessible contrast, and layouts without horizontal overflow.
 
@@ -224,15 +231,18 @@ and exported calendar files do not grant access to an Apple account.
 
 ### Evidence, not permanent guarantees
 
-The October 1, 2026 site release passed **184 API tests and 11 critical browser journeys**.
-Its deployment workflow recorded **100 / 100 / 100 / 100** Lighthouse scores for the built homepage
-on desktop and mobile. These are results for that audited release, not a promise about every page
-or future deployment. See the [successful workflow](https://github.com/mangeshraut712/mangeshrautarchive/actions/runs/36818238296)
-and [site audit](docs/SITE_AUDIT_2026-10-01.md) for scope and limitations.
+The October 2, 2026 theme and Panchang release passed **184 API tests and 12 critical Chrome
+journeys**, plus **26 focused Chrome/Safari checks** for the share card and engineering page.
+ESLint, Stylelint, formatting, the secret scan, and the production build passed locally.
+The [matching deployment workflow](https://github.com/mangeshraut712/mangeshrautarchive/actions/runs/36975613685)
+passed its quality, Lighthouse, Pages publication, and post-deployment verification gates.
+These are dated results for that release, not guarantees about every browser or future deployment.
 
-Visual review covered the main surfaces in light and dark themes at desktop and mobile widths,
-plus all 18 articles and five case studies. Critical browser coverage includes repository previews,
-article navigation, accessible menus, and travel-map retry behavior.
+Responsive review covered Home, Systems, Travel, Monitor, Uses, and Changelog at desktop and phone
+widths in both themes, with no horizontal overflow in the reviewed states. The deployed contact card
+was checked for current Panchang values and category icon colors. Share-card alignment and AssistMe’s
+composer and viewport bounds were also reviewed. This does not claim the broader 16-project browser
+suite passed. The [October 1 site audit](docs/SITE_AUDIT_2026-10-01.md) preserves earlier review scope.
 
 ### Release path
 
@@ -259,7 +269,7 @@ purpose, and verified commit in the [changelog](src/js/data/changelog-entries.js
 | Current documentation contribution               | Attribution                                                                        |
 | ------------------------------------------------ | ---------------------------------------------------------------------------------- |
 | Coding agent                                     | GPT-6 / Codex, in Codex desktop                                                    |
-| Purpose                                          | Solid surfaces, category icons, and official daily-source refresh                  |
+| Purpose                                          | Repository cleanup, release documentation, and daily-source limitations            |
 | Exact model variant, reasoning mode, token usage | Unavailable from the active runtime                                                |
 | Portfolio chatbot model                          | Configured separately in [api/model_router.py](api/model_router.py) and the Worker |
 

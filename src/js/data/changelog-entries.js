@@ -54,6 +54,24 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'readme-release-cleanup-october-2026',
+    date: '2026-10-02',
+    type: 'improvement',
+    title: 'Refresh release documentation and source limitations',
+    summary:
+      'Update the README and contact calendar guide with the hourly official-source schedule, 15-minute frontend refresh, hosted-runner HTTP 403 limitation, solid theme rules, and dated release verification. Tidy the Panchang request formatting and remove local generated build and test artifacts.',
+    tags: ['other'],
+    sha: null,
+    commitVerified: false,
+    status: 'unreleased',
+    model: 'GPT-6 / Codex',
+    ide: 'Codex desktop',
+    purpose: 'Repository cleanup and accurate release documentation',
+    attributionSource: 'not-recorded',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
     id: 'solid-nested-surfaces-october-2026',
     date: '2026-10-02',
     type: 'fix',
