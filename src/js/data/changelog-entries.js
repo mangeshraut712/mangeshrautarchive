@@ -61,8 +61,8 @@ export const changelogEntries = [
     summary:
       'Refine AssistMe model badge labeling (distinguishing Gemma 4 text responses from Gemma 4 Vision), upgrade details tray height and smooth scroll auto-alignment, and introduce Apple Intelligence iridescent gradient badges and refined micro-interactions matching macOS/iOS Siri design language.',
     tags: ['assistme', 'design'],
-    sha: null,
-    commitVerified: false,
+    sha: '3b9c2cc3',
+    commitVerified: true,
     model: 'Gemini 3.8 Flash',
     ide: 'Google Antigravity IDE',
     purpose:
