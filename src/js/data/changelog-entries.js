@@ -54,6 +54,24 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'assistme-apple-intelligence-ux-model-badges-october-2026',
+    date: '2026-10-02',
+    type: 'improvement',
+    title: 'AssistMe polishes Apple Intelligence inspector and model badges',
+    summary:
+      'Refine AssistMe model badge labeling (distinguishing Gemma 4 text responses from Gemma 4 Vision), upgrade details tray height and smooth scroll auto-alignment, and introduce Apple Intelligence iridescent gradient badges and refined micro-interactions matching macOS/iOS Siri design language.',
+    tags: ['assistme', 'design'],
+    sha: null,
+    commitVerified: false,
+    model: 'Gemini 3.8 Flash',
+    ide: 'Google Antigravity IDE',
+    purpose:
+      'Apple Intelligence inspired telemetry inspector, dynamic model badges, and smooth scroll alignment',
+    attributionSource: 'commit-message',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
     id: 'assistme-2026-executive-ground-truth-october-2026',
     date: '2026-10-02',
     type: 'improvement',

@@ -2726,6 +2726,32 @@ class AppleIntelligenceChatbot {
 
   // ── Condensed Metadata (replaces verbose chips) ──────
 
+  formatModelBadgeName(rawModel, metadata = {}) {
+    const raw = String(rawModel || '').trim();
+    if (!raw || raw === 'AI') return 'AssistMe AI';
+    if (raw === 'edge-local' || raw.includes('edge-local')) return 'AssistMe Local';
+    if (raw.startsWith('nvidia/nemotron-3-ultra')) return 'Nemotron Ultra';
+    if (raw.startsWith('nvidia/nemotron-3.5-lightning')) return 'Nemotron Lightning';
+    if (raw.startsWith('google/gemma-4') || raw.startsWith('google/gemma')) {
+      const isVision =
+        metadata.routingTask === 'vision' ||
+        (Array.isArray(metadata.inputModalities) && metadata.inputModalities.includes('image'));
+      return isVision ? 'Gemma 4 Vision' : 'Gemma 4';
+    }
+    if (raw.startsWith('apodex/apodex')) return 'Apodex Mini';
+    if (raw.startsWith('liquid/lfm')) return 'Liquid LFM';
+    if (raw.startsWith('cohere/north')) return 'North Code';
+    if (raw.startsWith('meta-llama/llama-3.3')) return 'Llama 3.3';
+    if (raw.startsWith('meta-llama/llama')) return 'Llama 3';
+    if (raw.startsWith('deepseek/deepseek-chat')) return 'DeepSeek V3';
+    if (raw.startsWith('deepseek/deepseek-r1')) return 'DeepSeek R1';
+    if (raw.startsWith('qwen/qwen-2.5-coder')) return 'Qwen 2.5 Coder';
+    return raw
+      .split('/')
+      .pop()
+      .replace(/:free$/, '');
+  }
+
   addCondensedMetadata(messageDiv, contentDiv, metadata) {
     const metaContainer = document.createElement('div');
     metaContainer.className = 'message-metadata-v2';
@@ -2741,18 +2767,7 @@ class AppleIntelligenceChatbot {
     const modelBadge = document.createElement('span');
     modelBadge.className = 'meta-model-badge';
     const rawModel = metadata.model || 'AI';
-    const modelName = rawModel.startsWith('nvidia/nemotron-3-ultra')
-      ? 'Nemotron Ultra'
-      : rawModel.startsWith('nvidia/nemotron-3.5-lightning')
-        ? 'Nemotron Lightning'
-        : rawModel.startsWith('google/gemma')
-          ? 'Gemma Vision'
-          : rawModel.startsWith('cohere/north')
-            ? 'North Code'
-            : rawModel
-                .split('/')
-                .pop()
-                .replace(/:free$/, '');
+    const modelName = this.formatModelBadgeName(rawModel, metadata);
     modelBadge.title = rawModel;
     const modelIcon = document.createElement('i');
     modelIcon.className = 'fas fa-wand-magic-sparkles';
@@ -2814,6 +2829,11 @@ class AppleIntelligenceChatbot {
         icon.className = details.classList.contains('expanded')
           ? 'fas fa-chevron-up'
           : 'fas fa-chevron-down';
+        if (expanded) {
+          setTimeout(() => {
+            details.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          }, 80);
+        }
       }
     });
     detailBtn.setAttribute('aria-expanded', 'false');
@@ -2830,7 +2850,19 @@ class AppleIntelligenceChatbot {
     const detailChips = [];
     if (metadata.model) detailChips.push(`Model: ${metadata.model}`);
     if (metadata.provider) detailChips.push(`Provider: ${metadata.provider}`);
-    if (metadata.routingTask) detailChips.push(`Route: ${metadata.routingTask}`);
+    if (metadata.routingTask) {
+      const taskLabel =
+        metadata.routingTask === 'quick'
+          ? 'Route: ⚡ Quick Factual'
+          : metadata.routingTask === 'coding'
+            ? 'Route: 💻 Code Synthesis'
+            : metadata.routingTask === 'vision'
+              ? 'Route: 👁️ Vision Analysis'
+              : metadata.routingTask === 'reasoning'
+                ? 'Route: 🧠 Deep Reasoning'
+                : `Route: ${metadata.routingTask}`;
+      detailChips.push(taskLabel);
+    }
     if (metadata.finishReason === 'length')
       detailChips.push('Response limit reached — ask to continue');
     if (metadata.source) detailChips.push(`🔌 ${metadata.source}`);
@@ -2850,8 +2882,7 @@ class AppleIntelligenceChatbot {
     if (metadata.generationId) detailChips.push(`🧾 ${metadata.generationId}`);
     if (metadata.confidence) detailChips.push(`✓ ${Math.round(metadata.confidence * 100)}%`);
     if (typeof metadata.cost === 'number') {
-      const costStr =
-        typeof metadata.cost === 'number' ? `$${metadata.cost.toFixed(4)}` : metadata.cost;
+      const costStr = metadata.cost === 0 ? '$0.0000 (Free Tier)' : `$${metadata.cost.toFixed(4)}`;
       detailChips.push(`💰 ${costStr}`);
     }
     if (metadata.timestamp) detailChips.push(`🕐 ${metadata.timestamp}`);
