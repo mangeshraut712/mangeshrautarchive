@@ -54,6 +54,23 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'assistme-2026-executive-ground-truth-october-2026',
+    date: '2026-10-02',
+    type: 'improvement',
+    title: 'AssistMe embeds verified 2026 executive leadership facts',
+    summary:
+      'Inject verified late-2026 leadership transitions (John Ternus as Apple CEO succeeding Tim Cook, who became Executive Chairman on September 1, 2026) directly into the edge worker system prompt and site knowledge builder. Ensures sub-second factual responses match real-world Google search truth regardless of pre-training cutoffs.',
+    tags: ['assistme', 'api'],
+    sha: null,
+    commitVerified: false,
+    model: 'Gemini 3.8 Flash',
+    ide: 'Google Antigravity IDE',
+    purpose: '2026 ground-truth knowledge injection for real-time executive and industry accuracy',
+    attributionSource: 'commit-message',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
     id: 'assistme-quick-routing-gemma-latency-october-2026',
     date: '2026-10-02',
     type: 'improvement',

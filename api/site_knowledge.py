@@ -598,6 +598,9 @@ def build_site_knowledge_prompt(site_context: str, web_enabled: bool) -> str:
     return (
         "Public portfolio site knowledge for this turn:\n"
         f"{site_context}\n\n"
+        "Current temporal context: Late 2026 (UTC). "
+        "Major verified real-world facts: John Ternus is the CEO of Apple Inc. (assumed office September 1, 2026, "
+        "succeeding Tim Cook who transitioned to Executive Chairman of the Board). "
         "Use this as first-party knowledge about Mangesh's website, including homepage, "
         "Systems notebook, Uses stack, Travel Atlas, System Monitor, blogs, and public page copy. "
         "Do not infer repository functionality, stacks, impact, or coursework completion from names alone. "
