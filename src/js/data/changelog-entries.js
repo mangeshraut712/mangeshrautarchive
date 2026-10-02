@@ -61,8 +61,8 @@ export const changelogEntries = [
     summary:
       'Route short queries and factual questions directly to Google Gemma 4 26B (free) instead of verbose reasoning models. Eliminates 22s latency spikes, cuts token consumption by over 95% on brief queries, ensures fresh factual answers, and instructs models to suppress preliminary thinking logs or internal reasoning traces.',
     tags: ['assistme', 'api'],
-    sha: null,
-    commitVerified: false,
+    sha: '370b548a',
+    commitVerified: true,
     model: 'Gemini 3.8 Flash',
     ide: 'Google Antigravity IDE',
     purpose:
