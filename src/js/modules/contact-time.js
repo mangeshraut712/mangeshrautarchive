@@ -36,7 +36,7 @@ function renderPanchang() {
     : [];
   root.innerHTML = `
     <div class="panchang-heading"><h4><i class="fas fa-calendar-day contact-context-icon" aria-hidden="true"></i> Today’s Panchang</h4><time datetime="${today}">${escapeHtml(new Intl.DateTimeFormat('en-IN', { timeZone: 'Asia/Kolkata', day: 'numeric', month: 'short' }).format(new Date()))}</time></div>
-    ${valid ? `<dl class="panchang-values">${fields.map(([label, value]) => `<div><dt>${label}</dt><dd>${escapeHtml(value)}</dd></div>`).join('')}</dl>` : '<p class="panchang-fallback">View today’s Panchang directly from Kalnirnay.</p>'}
+    ${valid ? `<dl class="panchang-values">${fields.map(([label, value]) => `<div><dt>${label}</dt><dd>${escapeHtml(value)}</dd></div>`).join('')}</dl>` : '<p class="panchang-fallback">Today’s verified details are not available yet. View Kalnirnay’s official calendar.</p>'}
     <a class="calendar-marathi-link" href="https://www.kalnirnay.com/" target="_blank" rel="noopener noreferrer">Open the official Marathi calendar <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
     ${valid ? '<p class="panchang-source">Source: Kalnirnay</p>' : ''}`;
 }
@@ -45,7 +45,7 @@ async function refreshPanchang() {
   const day = INDIA_DAY.format(new Date());
   if (requestedDay === day && Date.now() < nextPanchangRefresh) return;
   requestedDay = day;
-  nextPanchangRefresh = Date.now() + 30 * 60 * 1000;
+  nextPanchangRefresh = Date.now() + 15 * 60 * 1000;
   if (panchang?.date !== day) panchang = null;
   renderPanchang();
   try {

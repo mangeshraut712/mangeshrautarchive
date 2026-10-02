@@ -259,7 +259,7 @@ purpose, and verified commit in the [changelog](src/js/data/changelog-entries.js
 | Current documentation contribution               | Attribution                                                                        |
 | ------------------------------------------------ | ---------------------------------------------------------------------------------- |
 | Coding agent                                     | GPT-6 / Codex, in Codex desktop                                                    |
-| Purpose                                          | Responsive page review and source-grounded operational metrics                     |
+| Purpose                                          | Solid surfaces, category icons, and official daily-source refresh                  |
 | Exact model variant, reasoning mode, token usage | Unavailable from the active runtime                                                |
 | Portfolio chatbot model                          | Configured separately in [api/model_router.py](api/model_router.py) and the Worker |
 

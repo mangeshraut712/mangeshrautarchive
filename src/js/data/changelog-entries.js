@@ -54,6 +54,24 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'solid-nested-surfaces-october-2026',
+    date: '2026-10-02',
+    type: 'fix',
+    title: 'Unify solid surfaces, category icons, and daily source refresh',
+    summary:
+      'Refresh the official Panchang hourly with a dated cache key and explicit stale-source warnings. Restore semantic category icon colors, improve share and AssistMe composer surfaces and spacing, keep the chat window inside shorter viewports and mobile floating controls at full touch-target size, and align calendar views, Currently tabs, health footer, Travel controls, Systems badges, and neutral dashboard surfaces with solid white and black themes. Keep the selected calendar view blue with white text and outline the year progress track.',
+    tags: ['design'],
+    sha: null,
+    commitVerified: false,
+    status: 'unreleased',
+    model: 'GPT-6 / Codex',
+    ide: 'Codex desktop',
+    purpose: 'Solid surfaces, category icons, and official daily-source refresh',
+    attributionSource: 'not-recorded',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
     id: 'responsive-page-audit-october-2026',
     date: '2026-10-02',
     type: 'fix',

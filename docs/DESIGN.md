@@ -34,13 +34,17 @@ The portfolio follows authentic **Apple Design Principles**:
 
 ### Surfaces & Backgrounds
 
+Neutral page, card, grouped-control, and inactive-tab fills must use solid white in light mode
+and solid black in dark mode through `--bg-primary`. Avoid gray fills and neutral translucent
+overlays on these surfaces. Use borders for separation and Apple Blue for selected controls.
+
 | Token / Surface                   | Light Mode (Solid White)                    | Dark Mode (Solid Black)                            | High-Contrast Mode                          |
 | :-------------------------------- | :------------------------------------------ | :------------------------------------------------- | :------------------------------------------ |
 | **Canvas Background**             | `#ffffff` (Solid Pure White)                | `#000000` (Solid Pure Black)                       | `#ffffff` / `#000000`                       |
 | **Secondary Background / Card**   | `#ffffff` (Solid Pure White)                | `#000000` (Solid Pure Black)                       | `#ffffff` / `#000000` with 2px solid border |
 | **Tertiary / Grouped Background** | `#ffffff` (Solid Pure White)                | `#000000` (Solid Pure Black)                       | `#000000` / `#ffffff`                       |
 | **Elevated Glass Card**           | `#ffffff` with subtle border `#e5e5ea`      | `#000000` with subtle border `#2c2c2e`             | Solid `#ffffff` / `#000000`                 |
-| **Terminal / Code Block**         | `#1c1c1e` (macOS Dark Terminal)             | `#000000` (1px border `rgba(255, 255, 255, 0.12)`) | Solid `#000000` with white monospace text   |
+| **Terminal / Code Block**         | `#000000` (Dark Terminal)                   | `#000000` (1px border `rgba(255, 255, 255, 0.12)`) | Solid `#000000` with white monospace text   |
 | **Border Sub-surface**            | `1px solid #e5e5ea` (`rgba(0, 0, 0, 0.08)`) | `1px solid #2c2c2e` (`rgba(255, 255, 255, 0.12)`)  | `2px solid #000000` / `#ffffff`             |
 
 ### Typography System (Canonical Apple HIG Architecture)
@@ -101,12 +105,12 @@ The design system enforces a strictly unified 6-tier button architecture across 
   - `min-height: 48px; padding: 0.75rem 1.5rem; border-radius: 12px; font-weight: 600;`
   - `backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);`
 - **Light Mode**:
-  - `background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.95) 0%, rgba(245, 245, 247, 0.8) 100%);`
+  - `background: var(--bg-primary); background-image: none;`
   - `color: #1d1d1f !important; -webkit-text-fill-color: #1d1d1f !important;`
   - `border: 1px solid rgba(0, 0, 0, 0.14); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);`
   - **Hover**: `color: #0071e3; border-color: #0071e3; background-color: rgba(0, 113, 227, 0.06); box-shadow: 0 6px 18px rgba(0, 113, 227, 0.18); transform: translateY(-2px) scale(1.02);`
 - **Dark Mode**:
-  - `background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.04) 100%);`
+  - `background: var(--bg-primary); background-image: none;`
   - `color: #f5f5f7 !important; -webkit-text-fill-color: #f5f5f7 !important;`
   - `border: 1px solid rgba(255, 255, 255, 0.18); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);`
   - **Hover**: `color: #2997ff; border-color: #2997ff; background-color: rgba(41, 151, 255, 0.14); box-shadow: 0 6px 18px rgba(41, 151, 255, 0.25); transform: translateY(-2px) scale(1.02);`
@@ -115,8 +119,8 @@ The design system enforces a strictly unified 6-tier button architecture across 
 
 - **Specifications**: `min-height: 38px; border-radius: 9999px; font-size: 0.88rem; font-weight: 580;`
 - **Inactive State**:
-  - Light Mode: `background-image: linear-gradient(180deg, #ffffff 0%, #f5f5f7 100%); color: #1d1d1f; border: 1px solid rgba(0, 0, 0, 0.14); box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);`
-  - Dark Mode: `background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.03) 100%); color: #f5f5f7; border: 1px solid rgba(255, 255, 255, 0.16); box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);`
+  - Light Mode: `background: var(--bg-primary); background-image: none; color: #1d1d1f; border: 1px solid rgba(0, 0, 0, 0.14); box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);`
+  - Dark Mode: `background: var(--bg-primary); background-image: none; color: #f5f5f7; border: 1px solid rgba(255, 255, 255, 0.16); box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);`
   - Hover: subtle elevation lift `translateY(-1px)`, border colored with Apple Blue (`#0071e3` / `#2997ff`).
 - **Active State (`.active`, `.is-active`, `[aria-selected="true"]`, `[aria-pressed="true"]`)**:
   - `background-image: linear-gradient(135deg, #0077ed 0%, #0071e3 50%, #005bb5 100%) !important;`
@@ -152,19 +156,19 @@ The design system enforces a strictly unified 6-tier button architecture across 
 ### 1. Apple Glass Cards (`.bento-card`, `.project-card`, `.blog-card`)
 
 - **Light Mode**: `background: #ffffff; border: 1px solid rgba(0, 0, 0, 0.08); border-radius: 18px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);`
-- **Dark Mode**: `background: #1c1c1e; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 18px; box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);`
+- **Dark Mode**: `background: #000000; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 18px; box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);`
 - **Hover**: Subtle lift `translateY(-3px)`, enhanced border luminescence.
 - **Repository gallery**: Lead with the real README screenshot when available, label conceptual maps accurately, and make the media open the project preview. Show language and activity once, keep demo/code links in one action row, and place Spatial and clone tools in the accessible More menu. Keep every action at least `44px` tall.
 
 ### 2. Code Blocks (`.article-code-wrap`, `.article-code-block`)
 
-- **Container**: Dark charcoal terminal `#1c1c1e` (Light Mode) / `#000000` (Dark Mode) with 1px border `#2c2c2e`.
-- **Header Bar (`.article-code-header`)**: `#252528` (Light) / `#141416` (Dark) with uppercase monospace language tag `#a1a1a6` and solid Apple Blue `#0071e3` copy button.
+- **Container**: Solid black terminal `#000000` (Light Mode) / `#000000` (Dark Mode) with 1px border `#2c2c2e`.
+- **Header Bar (`.article-code-header`)**: `#000000` (both themes) with uppercase monospace language tag `#a1a1a6` and solid Apple Blue `#0071e3` copy button.
 - **Code Content (`pre`, `code`)**: Always transparent background with crisp, high-contrast `#f5f5f7 !important; -webkit-text-fill-color: #f5f5f7 !important; font-family: SFMono-Regular, Consolas, Menlo, monospace; font-size: 0.88rem; line-height: 1.65;`.
 - **Strict Theme Guard**: Global light mode rules (`html:not(.dark)`) must NEVER force `pre` or `code` inside terminal containers to `background: #ffffff`.
 - **Inline Code (`.article-inline-code`)**:
-  - Light Mode: `background: #f2f2f7; border: 1px solid #d1d1d6; color: var(--apple-blue-dark, #0051a8); font-weight: 600;`
-  - Dark Mode: `background: #1c1c1e; border: 1px solid #3a3a3c; color: #ff9f0a;`
+  - Light Mode: `background: var(--bg-primary); border: 1px solid #d1d1d6; color: var(--apple-blue-dark, #0051a8); font-weight: 600;`
+  - Dark Mode: `background: var(--bg-primary); border: 1px solid #3a3a3c; color: #ff9f0a;`
 
 ### 3. Author Byline & Profile Avatar Standard
 

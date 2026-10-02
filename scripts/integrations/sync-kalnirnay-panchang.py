@@ -7,6 +7,7 @@ from html.parser import HTMLParser
 from pathlib import Path
 from urllib.error import HTTPError
 from urllib.request import Request, urlopen
+from urllib.parse import urlencode
 from zoneinfo import ZoneInfo
 
 SOURCE = "https://www.kalnirnay.com/"
@@ -55,13 +56,17 @@ def parse_panchang(html):
 
 
 def main():
-    request = Request(SOURCE, headers={"User-Agent": "Mozilla/5.0", "Accept": "text/html"})
+    now = datetime.now(ZoneInfo("Asia/Kolkata"))
+    # A dated cache key and no-cache request avoid reusing yesterday's CDN response.
+    url = SOURCE + "?" + urlencode({"panchang_refresh": now.strftime("%Y-%m-%d-%H")})
+    request = Request(url, headers={"User-Agent": "Mozilla/5.0", "Accept": "text/html",
+                                   "Cache-Control": "no-cache", "Pragma": "no-cache"})
     with urlopen(request, timeout=30) as response:
         html = response.read(2_000_000).decode("utf-8")
     data = parse_panchang(html)
-    today = datetime.now(ZoneInfo("Asia/Kolkata")).date().isoformat()
+    today = now.date().isoformat()
     if data["date"] != today:
-        print(f"Kalnirnay currently publishes {data['date']}; no replacement for {today}.")
+        print(f"::warning::Kalnirnay currently publishes {data['date']}; no replacement for {today}.")
         return
     serialized = json.dumps(data, ensure_ascii=False, indent=2) + "\n"
     if not OUTPUT.exists() or OUTPUT.read_text() != serialized:

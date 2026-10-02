@@ -3508,3 +3508,179 @@ html body.travel-body .country-pill:not(.active),
 html body.changelog-page details > summary {
   background: var(--bg-primary) !important;
 }
+
+/* Neutral nested controls follow the same solid surface as their page. */
+html
+  body
+  #main-content
+  :is(
+    .currently-tabs,
+    .health-widget-footer,
+    .systems-token-tile-pill,
+    .systems-token-share,
+    .travel-sidebar-expand-tab,
+    .travel-stats,
+    .travel-advanced-search,
+    .overview-backend-status-pill,
+    .empty-state,
+    .keynote-code-snippet,
+    .about-image-badge
+  ),
+html
+  body
+  #main-content
+  #contact
+  :is(.calendar-view-switch, .calendar-year-month, .calendar-day-view, .currently-tabs) {
+  background: var(--bg-primary) !important;
+  background-image: none !important;
+}
+
+html body #main-content #contact .calendar-view-switch button.active {
+  background: var(--apple-blue) !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+html body #main-content .year-progress-track {
+  background: var(--bg-primary) !important;
+  box-shadow: inset 0 0 0 1px var(--card-border-rest);
+}
+
+/* Opaque neutral chrome remains solid even when glass preferences are enabled. */
+html body :is(#global-nav, #overlay-menu),
+html
+  body
+  #main-content
+  :is(.hero-pill-badge, .proj-search-input, .apple-input, .calendar-view-switch) {
+  background: var(--bg-primary) !important;
+  background-image: none !important;
+}
+
+html
+  body
+  #main-content
+  :is(
+    .about-tab-btn,
+    .section-preview-btn,
+    .project-lens-chip,
+    .proj-filter-btn,
+    .currently-tab-btn,
+    .share-mirror-tab,
+    .systems-arch-tab,
+    .systems-filter-chip,
+    .uses-filter-chip,
+    .changelog-chip
+  ):not(.active, .is-active, [aria-selected='true'], [aria-pressed='true']):not(:hover) {
+  background: var(--bg-primary) !important;
+  background-image: none !important;
+}
+
+html body #main-content .status-badge.unknown,
+html body #main-content #home .hero-cta-secondary,
+html body #main-content #contact .apple-input {
+  background: var(--bg-primary) !important;
+  background-image: none !important;
+}
+
+/* Share and AssistMe are mounted outside main; keep their chrome opaque too. */
+html body .website-share-dialog :is(.website-share-mirrors, .share-mirror-tab:not(.active)),
+html body #chatbot-widget :is(#chatbot-input-wrapper, #chatbot-input, .composer-plus-popover) {
+  background: var(--bg-primary) !important;
+  background-image: none !important;
+}
+
+html body #chatbot-widget #chatbot-input-wrapper {
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  transform: none !important;
+}
+
+html body #chatbot-widget #chatbot-input-wrapper:focus-within {
+  border-color: var(--apple-blue) !important;
+  outline: 2px solid var(--apple-blue);
+  outline-offset: 2px;
+  box-shadow: none !important;
+}
+
+html body #chatbot-widget #chatbot-input {
+  flex: 1 1 0;
+  min-width: 0;
+  color: var(--text-primary) !important;
+  -webkit-text-fill-color: var(--text-primary) !important;
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+}
+
+html body #main-content #contact .filter-tab {
+  min-height: 44px !important;
+}
+
+html body #main-content #contact .filter-tab[data-filter='upcoming'],
+html body #main-content #contact .filter-tab[data-filter='events'] {
+  --category-icon-color: var(--apple-blue);
+}
+html body #main-content #contact .filter-tab[data-filter='day'] {
+  --category-icon-color: var(--apple-orange);
+}
+html body #main-content #contact .filter-tab[data-filter='all'] {
+  --category-icon-color: var(--apple-purple);
+}
+html body #main-content #contact .filter-tab[data-filter='birthdays'] {
+  --category-icon-color: var(--apple-pink);
+}
+html body #main-content #contact .filter-tab[data-filter='holidays'] {
+  --category-icon-color: var(--apple-yellow);
+}
+html body #main-content #contact .filter-tab[data-filter='reminders'] {
+  --category-icon-color: var(--apple-green);
+}
+html body #main-content #contact .filter-tab:not(.active) i {
+  color: var(--category-icon-color) !important;
+  -webkit-text-fill-color: var(--category-icon-color) !important;
+  opacity: 1;
+}
+
+html body .website-share-dialog :is(.website-share-actions-list, .website-share-backdrop),
+html body #chatbot-widget :is(.chatbot-header button:not(.chatbot-close-btn), .chatbot-plus-btn) {
+  background: var(--bg-primary) !important;
+  background-image: none !important;
+}
+
+html body :is(.article-code-wrap, .article-code-header, .terminal-window) {
+  background: #000000 !important;
+  background-image: none !important;
+}
+
+html body .article-inline-code {
+  background: var(--bg-primary) !important;
+  background-image: none !important;
+}
+
+/* Anchor placement must not push the desktop chat header above the viewport. */
+@media (width > 768px) {
+  html body #chatbot-widget {
+    position-anchor: auto;
+    top: auto !important;
+    bottom: max(96px, calc(env(safe-area-inset-bottom, 0px) + 80px)) !important;
+    height: min(600px, calc(100dvh - 180px)) !important;
+    max-height: calc(100dvh - 180px) !important;
+    margin: 0 !important;
+  }
+}
+
+/* Theme changes keep the root canvas solid without intermediate gray frames. */
+html,
+html body {
+  transition: color 0.3s ease !important;
+}
+
+@media (width <= 768px) {
+  html body .a11y-toolbar__main,
+  html body #website-share-toggle,
+  html body #chatbot-toggle,
+  html body #go-to-top {
+    transform: none !important;
+  }
+}
