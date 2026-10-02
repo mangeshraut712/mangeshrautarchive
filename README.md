@@ -270,8 +270,8 @@ purpose, and verified commit in the [changelog](src/js/data/changelog-entries.js
 
 | Current contribution                             | Attribution                                                                                                                                                                              |
 | ------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Coding agent                                     | GPT-6 / Codex, in Codex desktop                                                                                                                                                          |
-| Purpose                                          | Audit and improve capability routing, multimodal attachments, streaming, and voice availability                                                                                          |
+| Coding agent                                     | Gemini 3.8 Flash, in Google Antigravity IDE                                                                                                                                              |
+| Purpose                                          | Ground 2026 executive leadership facts and Apple CEO transition for real-time accuracy                                                                                                   |
 | Exact model variant, reasoning mode, token usage | unavailable                                                                                                                                                                              |
 | Portfolio chatbot model                          | Configured separately in [api/model_router.py](api/model_router.py) and [Worker configuration](workers/assistme-chat/wrangler.toml); each live response reports the actual serving model |
 
