@@ -61,9 +61,8 @@ export const changelogEntries = [
     summary:
       'Assign the Cloudflare API host on GitHub Pages, refresh health when reopening chat, preserve actual model and provider usage metadata, bound stalled upstream streams, and reset interrupted attempts before fallback. Expand the chat window below navigation, keep response details collapsed, enlarge header controls, and omit unrelated portfolio shortcuts from general AI answers.',
     tags: ['assistme', 'api', 'design'],
-    sha: null,
-    commitVerified: false,
-    status: 'unreleased',
+    sha: 'f8a065fb42b06a09d6765fd0ba77d8d2dd3f5856',
+    commitVerified: true,
     model: 'GPT-6 / Codex',
     ide: 'Codex desktop',
     purpose:
