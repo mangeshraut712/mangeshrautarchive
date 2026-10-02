@@ -61,8 +61,8 @@ export const changelogEntries = [
     summary:
       'Resolve desktop layout defect where the mobile hamburger menu button was rendered alongside the full desktop navigation rail. Strictly enforce responsive viewport boundaries: desktop viewports (≥1151px) display the clean Apple-inspired navigation rail with direct in-page and cross-page links while hiding the mobile hamburger button; mobile and tablet viewports (≤1150px) surface the compact touch-optimized hamburger button and modal navigation drawer. In addition, restrict coarse-pointer target expansions to ≤1150px, add automatic drawer collapse on viewport expansion, and align critical Playwright E2E suites.',
     tags: ['design', 'performance'],
-    sha: null,
-    commitVerified: false,
+    sha: '46ff6479',
+    commitVerified: true,
     model: 'Gemini 3.8 Flash',
     ide: 'Google Antigravity IDE',
     purpose:
