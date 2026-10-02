@@ -1975,7 +1975,7 @@ function renderBackendSystemDashboard({
     return;
   }
 
-  const endpoints = metrics?.endpoints || [];
+  const endpoints = metrics?.synthetic === true ? [] : metrics?.endpoints || [];
   const providerItems = integrations?.services || [];
   const hostingItems = hosting?.surfaces || [];
   const oauthItems = getOAuthProviderItems(oauthStatus);
@@ -2018,7 +2018,7 @@ function renderBackendSystemDashboard({
                 <h3>${formatNumber(endpoints.length)} monitored routes</h3>
               </div>
               <span class="ops-pill ${metrics?.error_rate > 5 ? 'unhealthy' : metrics?.error_rate > 0 ? 'degraded' : 'healthy'}">
-                ${(100 - Number(metrics?.error_rate || 0)).toFixed(1)}% success
+                ${metrics?.synthetic === true ? 'Request ledger unavailable' : `${(100 - Number(metrics?.error_rate || 0)).toFixed(1)}% success`}
               </span>
             </div>
             ${renderStatusBar(endpointSummary)}
