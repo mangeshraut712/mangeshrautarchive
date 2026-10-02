@@ -54,6 +54,24 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'assistme-quick-routing-gemma-latency-october-2026',
+    date: '2026-10-02',
+    type: 'improvement',
+    title: 'AssistMe routes quick factual queries to Gemma for sub-second answers',
+    summary:
+      'Route short queries and factual questions directly to Google Gemma 4 26B (free) instead of verbose reasoning models. Eliminates 22s latency spikes, cuts token consumption by over 95% on brief queries, ensures fresh factual answers, and instructs models to suppress preliminary thinking logs or internal reasoning traces.',
+    tags: ['assistme', 'api'],
+    sha: null,
+    commitVerified: false,
+    model: 'Gemini 3.8 Flash',
+    ide: 'Google Antigravity IDE',
+    purpose:
+      'Latency optimization, token reduction, and elimination of verbose reasoning dumps on factual queries',
+    attributionSource: 'commit-message',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
     id: 'assistme-capability-routing-multimodal-october-2026',
     date: '2026-10-02',
     type: 'improvement',

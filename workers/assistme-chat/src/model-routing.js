@@ -11,6 +11,7 @@ const SEEDS = [
   [OMNI, ['text', 'image', 'audio', 'video']],
   ['thinkingmachines/inkling:free', ['text', 'image', 'audio']],
   ['qwen/qwen3.8-27b:free', ['text', 'image', 'video']],
+  ['apodex/apodex-1.1-mini:free', ['text']],
 ];
 let catalog = {
   models: SEEDS.map(([id, inputs]) => ({ id, inputs, free: true })),
@@ -84,8 +85,13 @@ export async function selectModelRoute(env, message, modalities) {
           : task === 'code'
             ? ['cohere/north-mini-code:free', ULTRA]
             : task === 'quick'
-              ? ['nvidia/nemotron-3.5-lightning:free', ULTRA]
-              : [env.OPENROUTER_MODEL, ULTRA, 'nvidia/nemotron-3-super-120b-a12b:free'];
+              ? [GEMMA, 'apodex/apodex-1.1-mini:free', ULTRA]
+              : [
+                  env.OPENROUTER_MODEL || ULTRA,
+                  GEMMA,
+                  ULTRA,
+                  'nvidia/nemotron-3-super-120b-a12b:free',
+                ];
   const available = new Set(free.map(m => m.id));
   const chain = [...preferred.filter(id => available.has(id)), ...free.map(m => m.id)];
   if (modalities.every(m => ['text', 'image'].includes(m))) chain.push('openrouter/free');

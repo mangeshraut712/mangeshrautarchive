@@ -99,6 +99,17 @@ test('text tasks select different specialists and recover from provider quota', 
   assert.equal(frames.at(-1).metadata.source, 'OpenRouter');
   failFirst = false;
 });
+test('quick factual queries route to Gemma for fast, token-efficient responses', async () => {
+  calls = [];
+  const response = await worker.fetch(
+    request({ message: 'who is apple ceo?', stream: true }),
+    env,
+    {}
+  );
+  const frames = (await response.text()).trim().split('\n').map(JSON.parse);
+  assert.equal(calls[0].model, 'google/gemma-4-26b-a4b-it:free');
+  assert.equal(frames.at(-1).metadata.source, 'OpenRouter');
+});
 test('malformed and oversized attachments are rejected, never silently discarded', async () => {
   for (const src of [
     'https://example.com/untrusted.png',
