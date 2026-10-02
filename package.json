@@ -41,7 +41,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "test:e2e": "npx playwright test --project=\"Desktop Chrome\"",
-    "test:e2e:critical": "npx playwright test tests/e2e/critical-journeys.spec.js --project=\"Desktop Chrome\" --workers=2 --retries=0",
+    "test:e2e:critical": "npx playwright test tests/e2e/critical-journeys.spec.js tests/e2e/chatbot-connectivity.spec.js --project=\"Desktop Chrome\" --workers=2 --retries=0",
     "test:e2e:chrome": "npx playwright test --project=\"Desktop Chrome\"",
     "test:e2e:all": "npx playwright test",
     "test:postman": "node scripts/qa/run-postman-tests.js",

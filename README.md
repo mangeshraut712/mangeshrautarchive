@@ -280,7 +280,8 @@ explicitly labeled local answers. Interrupted streams discard the failed attempt
 another model; provider token usage is retained when supplied, and estimates remain labeled.
 The chat window uses the available area below navigation, with a scrolling transcript and a
 reachable composer. The deployed-host browser regression covers routing, fallback resets, and
-final-frame metadata in Chrome and Safari.
+final-frame metadata in Chrome and Safari. It is included in the 13-journey critical Chrome
+release gate; Safari is also checked separately when changing this path.
 
 Coding attribution in historical entries is contributor-reported in commit messages. A verified
 commit link confirms the repository reference; it does not authenticate the actual model runtime.
