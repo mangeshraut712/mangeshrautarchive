@@ -11,6 +11,9 @@ function resolveApiBase() {
   if (host.endsWith('github.io')) {
     return 'https://assistme-chat.mangeshraut712.workers.dev';
   }
+  if (host === 'localhost' || host === '127.0.0.1') {
+    return window.location.origin;
+  }
   const base = globalThis.APP_CONFIG?.apiBaseUrl || globalThis.buildConfig?.apiBaseUrl || '';
   if (base) return base.replace(/\/$/, '');
   return window.location.origin;

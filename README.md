@@ -266,12 +266,12 @@ Mangesh Raut maintains this portfolio with contributions from Codex, Claude Code
 Cursor, and GitHub Copilot. Shipped changes record the exposed agent/model family, engineering
 purpose, and verified commit in the [changelog](src/js/data/changelog-entries.js).
 
-| Current documentation contribution               | Attribution                                                                        |
-| ------------------------------------------------ | ---------------------------------------------------------------------------------- |
-| Coding agent                                     | GPT-6 / Codex, in Codex desktop                                                    |
-| Purpose                                          | Repository cleanup, release documentation, and daily-source limitations            |
-| Exact model variant, reasoning mode, token usage | Unavailable from the active runtime                                                |
-| Portfolio chatbot model                          | Configured separately in [api/model_router.py](api/model_router.py) and the Worker |
+| Current documentation contribution               | Attribution                                                                                                                                                           |
+| ------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Coding agent                                     | Gemini 3.8 Flash, in Google Antigravity IDE                                                                                                                           |
+| Purpose                                          | Apple HIG segmented controls, CORS resolution, Playwright hardening, design audit skills, DESIGN.md motion/spacing/QA system, and AGENTS.md instruction strengthening |
+| Exact model variant, reasoning mode, token usage | Unavailable from the active runtime                                                                                                                                   |
+| Portfolio chatbot model                          | Configured separately in [api/model_router.py](api/model_router.py) and the Worker                                                                                    |
 
 Coding attribution in historical entries is contributor-reported in commit messages. A verified
 commit link confirms the repository reference; it does not authenticate the actual model runtime.
@@ -304,6 +304,7 @@ analytics identifiers when adapting this repository.
 | [Screenshot coverage](docs/REPO_SCREENSHOT_COVERAGE.md) | Dated repository image coverage and fallback rules                 |
 | [Blog media audit](docs/BLOG_MEDIA_AUDIT.md)            | Original-source media and provenance                               |
 | [Development history](docs/DEVELOPMENT_HISTORY.md)      | Preserved contributor attribution and historical decisions         |
+| [Design audit skills](.agents/skills/)                  | Apple HIG critique, responsive audit, and animation motion skills  |
 
 ## 7. License and contact
 

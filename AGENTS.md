@@ -1,7 +1,7 @@
 # AGENTS.md — Universal AI Agent Briefing
 
 > **Standard:** Linux Foundation AGENTS.md v1.0 (2026)
-> **Last updated:** 2026-09-19
+> **Last updated:** 2026-10-02
 
 ---
 
@@ -10,6 +10,7 @@
 - When creating or updating UI elements, components, cards, pages, buttons, or themes, always consult and adhere to [docs/DESIGN.md](docs/DESIGN.md) (vibrant Apple Blue `#0071e3` gradient with specular metallic shine animation, unified circular red close buttons `#ff3b30`, authentic glassmorphism, zero horizontal overflow).
 - **Multi-IDE & Multi-Model Attribution**: The portfolio is actively maintained across diverse AI coding environments and IDEs (Google Antigravity IDE / AGY, OpenAI Codex / ChatGPT, Claude Code, Cursor, GitHub Copilot). Record the coding agent or exposed model family (e.g. `GPT-6 / Codex`, `Claude Opus 4.6`, `Gemini 3.8 Flash`, `grok-4.3`) and its dedicated engineering purpose in `src/js/data/changelog-entries.js` and `README.md` for shipped changes. Record an exact model variant, reasoning mode, or token usage only when the runtime exposes it; use `unavailable` rather than guessing. Always keep the portfolio chatbot's runtime model (`api/model_router.py`) distinct from the coding agent that changed the repository.
 - **Continuous In-Situ Visual Verification (Astra Principle)**: Always verify visual work as you go. For front-end, UI/UX, 3D (Three.js), CSS animations, and video/media tasks, continuously inspect the actual rendered interface in the browser across representative desktop and mobile widths and in both light and dark themes as changes are applied, fixing observed defects before claiming completion. Autonomous agents leverage **Playwright MCP** (`@playwright/mcp`) for zero-bloat accessibility snapshots, in-page grep, and dynamic WebMCP tool invocation, while developers use **Playwright CLI** (`@playwright/cli` / `npm run playwright:codegen`) for interactive recording and test authoring. This materially boosts end-artifact quality across all models. Report any surface or state that could not be inspected.
+- **Design Audit Skills**: Three structured design audit skills are available under `.agents/skills/`: `apple-design-critique` (HIG visual critique), `responsive-audit` (multi-viewport overflow and layout), and `animation-motion-audit` (motion timing, easing, and reduce-motion compliance). Activate the relevant skill when reviewing or polishing visual components. See `docs/DESIGN.md` §8 for the full design QA checklist.
 - When explaining a concept or relationship to the user, use the `visualize` skill when a visual materially improves understanding.
 - Be concise, direct, and candid. Challenge weak assumptions and distinguish verified facts from uncertainty.
 - Ground research in authoritative, current sources and link important evidence.
@@ -213,8 +214,9 @@ npm run qa:lighthouse:vercel  # Live Vercel Lighthouse floors
      its dedicated purpose. Record the exact model variant, reasoning mode, and token usage only when
      the runtime exposes them; otherwise use `unavailable`.
   3. **Run Full Quality Gate**: Run `npm run check` (ESLint + Stylelint + Prettier), `npm test` (API and critical browser journeys), `npm run security-check`, and `npm run build` with Node 22 (`export PATH="/opt/homebrew/opt/node@22/bin:/opt/homebrew/Cellar/node@22/22.23.2/bin:$PATH"`).
-  4. **Sync Documentation**: Keep test counts, architecture files, and design system rules synchronized across `README.md`, `AGENTS.md`, and `docs/DESIGN.md`.
-  5. **Guarantee 100% Green CI/CD Protocol**: Always monitor GitHub Actions after every `git push` to `main` via `gh run list` / `gh run view` to confirm all remote jobs (actionlint, linting, pytest, critical Playwright, Lighthouse 100/100/100/100 gates, and Pages deployment) complete with green checks. Never consider a task finished with failing remote CI runs.
+  4. **Visual QA (UI changes only)**: Verify rendered output at 375px mobile and 1440px desktop in both light and dark themes. Check zero horizontal overflow, ≥44px touch targets, and `prefers-reduced-motion` compliance. Use the `.agents/skills/` design audit skills or `docs/DESIGN.md` §8 checklist.
+  5. **Sync Documentation**: Keep test counts, architecture files, and design system rules synchronized across `README.md`, `AGENTS.md`, and `docs/DESIGN.md`.
+  6. **Guarantee 100% Green CI/CD Protocol**: Always monitor GitHub Actions after every `git push` to `main` via `gh run list` / `gh run view` to confirm all remote jobs (actionlint, linting, pytest, critical Playwright, Lighthouse 100/100/100/100 gates, and Pages deployment) complete with green checks. Never consider a task finished with failing remote CI runs.
 
 ---
 

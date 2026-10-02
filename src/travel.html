@@ -124,11 +124,22 @@
         const blocked = function (u) {
           return !u || /mangeshraut\.pro|vercel\.app/i.test(String(u));
         };
-        const apiBaseUrl = isGitHubPages
+        let apiBaseUrl = isGitHubPages
           ? blocked(fromBuild)
             ? EDGE_API
             : fromBuild
           : fromBuild || window.location.origin;
+        if (
+          (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') &&
+          apiBaseUrl
+        ) {
+          try {
+            const u = new URL(apiBaseUrl, window.location.origin);
+            if (u.hostname === 'localhost' || u.hostname === '127.0.0.1') {
+              apiBaseUrl = window.location.origin;
+            }
+          } catch {}
+        }
         window.APP_CONFIG = Object.assign({}, window.APP_CONFIG || {}, { apiBaseUrl });
       })();
     </script>

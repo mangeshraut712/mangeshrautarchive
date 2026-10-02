@@ -20,6 +20,98 @@ The portfolio follows authentic **Apple Design Principles**:
 
 ---
 
+## 1.1 Motion & Animation Standards
+
+All transitions and animations follow Apple HIG motion principles: purposeful, fluid, fast,
+and interruptible. Decorative motion that doesn't communicate state change is forbidden.
+
+### Canonical easing curves
+
+| Curve                 | CSS value                        | When to use                                                             |
+| :-------------------- | :------------------------------- | :---------------------------------------------------------------------- |
+| **Apple Spring**      | `cubic-bezier(0.16, 1, 0.3, 1)`  | Primary interaction feedback: hover lift, press spring-back, modal open |
+| **Apple Ease-Out**    | `cubic-bezier(0.25, 1, 0.5, 1)`  | Exit transitions: modal close, tooltip fade, scroll-triggered reveals   |
+| **Apple Ease-In-Out** | `cubic-bezier(0.45, 0, 0.55, 1)` | Continuous loops: skeleton pulse, loading spinners                      |
+| **Linear**            | `linear`                         | Progress bars, specular shine sweeps                                    |
+
+### Duration guide
+
+| Interaction                   | Duration    | Curve             |
+| :---------------------------- | :---------- | :---------------- |
+| Hover lift (buttons, cards)   | 200–250ms   | Apple Spring      |
+| Active / press spring-back    | 100–150ms   | Apple Spring      |
+| Modal / sheet open            | 300–350ms   | Apple Spring      |
+| Modal / sheet close           | 200–250ms   | Apple Ease-Out    |
+| Tooltip / popover appear      | 150–200ms   | Apple Ease-Out    |
+| Skeleton pulse cycle          | 1500–2000ms | Apple Ease-In-Out |
+| Specular shine sweep (Tier 1) | 4500ms      | Linear            |
+| Scroll-reveal entry           | 300–400ms   | Apple Spring      |
+
+### Performance rules
+
+**Always animate** (GPU-composited, no layout thrash):
+`transform`, `opacity`, `filter`
+
+**Never animate** (triggers layout or paint):
+`width`, `height`, `top`, `left`, `margin`, `padding`, `border-width`, `font-size`
+
+Use `will-change: transform` on frequently animated elements during animation only.
+Remove after completion to avoid compositor memory waste.
+
+### Reduce-motion compliance
+
+Every animation and transition must include a `prefers-reduced-motion` override:
+
+```css
+@media (prefers-reduced-motion: reduce) {
+  .animated-element {
+    transition: opacity 150ms ease;
+    transform: none !important;
+    animation: none !important;
+  }
+}
+```
+
+Looping animations (specular shine, particle effects, breathing nodes) must fully
+pause under reduced motion. Skeleton and loading indicators may retain opacity-only
+fading at reduced duration.
+
+---
+
+## 1.2 Spacing & Grid System
+
+The portfolio uses an 8pt grid system aligned with Apple HIG spatial conventions.
+
+### Base unit
+
+All spacing values derive from a 4px half-step base. Prefer multiples of 8px for
+primary spacing (padding, margins, gaps). Use 4px for fine optical adjustments only.
+
+| Token        | Value  | Common usage                          |
+| :----------- | :----- | :------------------------------------ |
+| `--space-1`  | `4px`  | Inline icon gaps, fine optical nudges |
+| `--space-2`  | `8px`  | Compact element padding, chip gaps    |
+| `--space-3`  | `12px` | Button internal padding (vertical)    |
+| `--space-4`  | `16px` | Card internal padding, section gaps   |
+| `--space-5`  | `20px` | Card padding (primary), grid gaps     |
+| `--space-6`  | `24px` | Section margins, group separators     |
+| `--space-8`  | `32px` | Major section gaps                    |
+| `--space-10` | `40px` | Page-level section separators         |
+| `--space-12` | `48px` | Hero spacing, viewport-edge margins   |
+
+### Border radius scale
+
+| Surface                 | Radius   | CSS                     |
+| :---------------------- | :------- | :---------------------- |
+| Cards, containers       | `18px`   | `border-radius: 18px`   |
+| Buttons (standard)      | `12px`   | `border-radius: 12px`   |
+| Chips, pills, segmented | `9999px` | `border-radius: 9999px` |
+| FABs, close buttons     | `50%`    | `border-radius: 50%`    |
+| Code blocks             | `12px`   | `border-radius: 12px`   |
+| Inline code             | `6px`    | `border-radius: 6px`    |
+
+---
+
 ## 2. Design Tokens & Palette
 
 ### System Color Palette
@@ -264,3 +356,49 @@ Keep the complete site menu available on laptop and desktop widths even when the
   assistive technology, and its button must expose the expanded state.
 - Mark inferred token usage and throughput as estimates. Keep local response provenance distinct
   from cloud model metadata, and avoid inferring project capabilities from repository names.
+
+---
+
+## 8. Design QA Checklist
+
+Use this checklist before shipping any visual change. Each item maps to a documented
+section in this specification.
+
+### Pre-commit visual checks
+
+- [ ] **Typography**: Font stack, size, weight, and tracking match §2 Metric Matrix
+- [ ] **Color tokens**: All colors reference CSS custom properties, not hardcoded hex
+- [ ] **Theme parity**: Component renders correctly in light, dark, and high-contrast
+- [ ] **Button tier**: Component uses the correct tier (1–6) from §3
+- [ ] **Card surfaces**: Solid white/black through `--bg-primary`, no gray fills
+- [ ] **Border radius**: Matches §1.2 scale (18px cards, 12px buttons, 9999px pills)
+- [ ] **Spacing**: Paddings and margins align to 8pt grid (§1.2)
+- [ ] **Motion**: Transitions use documented curves and durations (§1.1)
+- [ ] **Reduce-motion**: `prefers-reduced-motion` override present for all animations
+- [ ] **Contrast**: WCAG AA ratios verified (≥4.5:1 body, ≥3.0:1 large text)
+- [ ] **Touch targets**: All interactive elements ≥ 44×44px effective area
+- [ ] **Zero overflow**: `scrollWidth ≤ innerWidth` at 375px, 768px, and 1440px
+- [ ] **Close buttons**: 32×32px circular red `#ff3b30` per Tier 6
+
+### Viewport verification matrix
+
+| Page             | 375px | 430px | 768px | 1024px | 1440px |
+| :--------------- | :---: | :---: | :---: | :----: | :----: |
+| `index.html`     |   ☐   |   ☐   |   ☐   |   ☐    |   ☐    |
+| `systems.html`   |   ☐   |   ☐   |   ☐   |   ☐    |   ☐    |
+| `monitor.html`   |   ☐   |   ☐   |   ☐   |   ☐    |   ☐    |
+| `travel.html`    |   ☐   |   ☐   |   ☐   |   ☐    |   ☐    |
+| `uses.html`      |   ☐   |   ☐   |   ☐   |   ☐    |   ☐    |
+| `changelog.html` |   ☐   |   ☐   |   ☐   |   ☐    |   ☐    |
+| `404.html`       |   ☐   |   ☐   |   ☐   |   ☐    |   ☐    |
+
+### Agent design skills
+
+The repository includes three design audit skills under `.agents/skills/` that
+encode structured versions of this checklist for automated agents:
+
+| Skill                    | Purpose                                                      |
+| :----------------------- | :----------------------------------------------------------- |
+| `apple-design-critique`  | Full visual critique against HIG and this spec               |
+| `responsive-audit`       | Multi-viewport overflow, touch-target, and layout audit      |
+| `animation-motion-audit` | Motion timing, easing, performance, and reduce-motion review |

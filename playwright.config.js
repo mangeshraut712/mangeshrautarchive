@@ -1,4 +1,21 @@
 import { defineConfig, devices } from '@playwright/test';
+import fs from 'node:fs';
+
+const hasEdge =
+  process.platform === 'darwin'
+    ? fs.existsSync('/Applications/Microsoft Edge.app')
+    : process.platform === 'win32'
+      ? fs.existsSync('C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe') ||
+        fs.existsSync('C:\\Program Files\\Microsoft\\Edge\\Application\\msedge.exe')
+      : Boolean(process.env.CI);
+
+const desktopEdgeUse = {
+  ...devices['Desktop Edge'],
+  viewport: { width: 1440, height: 900 },
+};
+if (hasEdge) {
+  desktopEdgeUse.channel = 'msedge';
+}
 
 // Environment detection for testing targets
 const target = process.env.TEST_TARGET || 'local';
@@ -89,11 +106,7 @@ const config = defineConfig({
     },
     {
       name: 'Desktop Edge',
-      use: {
-        ...devices['Desktop Edge'],
-        channel: 'msedge',
-        viewport: { width: 1440, height: 900 },
-      },
+      use: desktopEdgeUse,
     },
 
     // Mobile Devices - Android
@@ -226,11 +239,7 @@ if (process.env.CI && process.env.TEST_SUITE === 'quick') {
     },
     {
       name: 'Desktop Edge',
-      use: {
-        ...devices['Desktop Edge'],
-        channel: 'msedge',
-        viewport: { width: 1440, height: 900 },
-      },
+      use: desktopEdgeUse,
     },
     { name: 'Pixel 7 Chrome', use: { ...devices['Pixel 7'], channel: 'chrome' } },
     { name: 'iPhone 14 Safari', use: { ...devices['iPhone 14'] } },

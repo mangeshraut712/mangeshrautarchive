@@ -62,7 +62,17 @@ function uniqueOrigins(origins) {
 
 function getApiOriginCandidates(config) {
   const hostname = window.location.hostname || '';
-  const configuredOrigin = normalizeOrigin(config?.apiBaseUrl, '');
+  let configuredOrigin = normalizeOrigin(config?.apiBaseUrl, '');
+  if ((hostname === 'localhost' || hostname === '127.0.0.1') && configuredOrigin) {
+    try {
+      const u = new URL(configuredOrigin);
+      if (u.hostname === 'localhost' || u.hostname === '127.0.0.1') {
+        configuredOrigin = window.location.origin;
+      }
+    } catch {
+      // Ignore malformed URL
+    }
+  }
   const remoteConfiguredOrigin =
     configuredOrigin && configuredOrigin !== window.location.origin ? configuredOrigin : '';
   const fallbackOrigin =

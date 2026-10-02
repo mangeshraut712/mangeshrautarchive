@@ -2343,46 +2343,59 @@ html.dark .event-btn-resolve:hover,
 
 .log-tabs {
   display: flex;
-  gap: 6px;
-  background: rgba(0, 0, 0, 0.03);
-  padding: 4px;
-  border-radius: 12px;
-  border: 1px solid var(--border-color);
+  align-items: center;
+  gap: 2px;
+  background: rgba(120, 120, 128, 0.12);
+  padding: 3px;
+  border-radius: 9999px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-sizing: border-box;
 }
 
-[data-theme='dark'] .log-tabs {
-  background: #000000;
+[data-theme='dark'] .log-tabs,
+html.dark .log-tabs {
+  background: rgba(118, 118, 128, 0.24);
+  border: 1px solid rgba(255, 255, 255, 0.12);
 }
 
 .log-tab-btn {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 6px;
-  padding: 6px 14px;
+  padding: 5px 12px;
   border-radius: 9999px;
   font-family: var(--font-text);
   font-size: 0.82rem;
-  font-weight: 580;
-  background: #ffffff !important;
-  background-color: #ffffff !important;
+  font-weight: 590;
+  letter-spacing: -0.01em;
+  background: transparent !important;
+  background-color: transparent !important;
   background-image: none !important;
-  color: var(--text-secondary, #6e6e73) !important;
-  -webkit-text-fill-color: var(--text-secondary, #6e6e73) !important;
-  border: 1px solid rgba(0, 0, 0, 0.14);
+  color: #636366 !important;
+  -webkit-text-fill-color: #636366 !important;
+  border: none !important;
   cursor: pointer;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-  transition: all 0.2s ease;
+  box-shadow: none !important;
+  white-space: nowrap !important;
+  user-select: none;
+  transform: none;
+  transition:
+    color 0.18s ease,
+    background-color 0.18s ease,
+    box-shadow 0.18s ease,
+    transform 0.12s ease;
 }
 
-html.dark .log-tab-btn {
-  background: #000000 !important;
-  background-color: #000000 !important;
+html.dark .log-tab-btn,
+[data-theme='dark'] .log-tab-btn {
+  background: transparent !important;
+  background-color: transparent !important;
   background-image: none !important;
-  color: var(--text-secondary, #a1a1a6) !important;
-  -webkit-text-fill-color: var(--text-secondary, #a1a1a6) !important;
-  border: 1px solid #2c2c2e;
-  border-color: #2c2c2e;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+  color: #98989d !important;
+  -webkit-text-fill-color: #98989d !important;
+  border: none !important;
+  box-shadow: none !important;
 }
 
 .log-tab-btn[data-filter='critical']::before {
@@ -2574,19 +2587,29 @@ html.dark .log-tab-btn.active,
   }
 
   .log-tabs {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 8px;
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    gap: 3px;
     width: 100%;
-    overflow: visible;
+    padding: 3px;
+    border-radius: 9999px;
+  }
+
+  .log-tabs::-webkit-scrollbar {
+    display: none;
   }
 
   .log-tab-btn {
-    min-width: 0;
-    width: 100%;
+    min-width: auto;
+    width: auto !important;
+    flex: 0 0 auto !important;
     justify-content: center;
-    padding: 10px 12px;
+    padding: 5px 11px;
     text-align: center;
+    white-space: nowrap !important;
   }
 }
 

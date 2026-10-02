@@ -119,27 +119,21 @@ if (typeof window !== 'undefined') {
       if (c.includes('workers.dev') || c === EDGE_BACKEND) edgeOnly.push(c);
     }
     API_BASE_CANDIDATES = [...new Set(edgeOnly.length ? edgeOnly : [EDGE_BACKEND])];
-    API_BASE = API_BASE_CANDIDATES[0] || EDGE_BACKEND;
+  } else if (hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '0.0.0.0') {
+    // ALWAYS use relative paths for localhost to hit the proxy
+    API_BASE = '';
+    API_BASE_CANDIDATES = [''];
   } else if (cfg.apiBaseUrl) {
     API_BASE_CANDIDATES = [...new Set(candidates.filter(Boolean))];
     API_BASE = normalizeApiBase(cfg.apiBaseUrl);
+  } else if (hostname.includes('run.app')) {
+    API_BASE = '';
+  } else if (hostname.includes('vercel.app') || hostname === PRIMARY_CUSTOM_DOMAIN) {
+    API_BASE = '';
   } else {
-    // ALWAYS use relative paths for localhost to hit the proxy
-    if (hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '0.0.0.0') {
-      API_BASE = '';
-    }
-    // Cloud Run deployment
-    else if (hostname.includes('run.app')) {
-      API_BASE = '';
-    }
-    // Vercel deployment and primary custom domain
-    else if (hostname.includes('vercel.app') || hostname === PRIMARY_CUSTOM_DOMAIN) {
-      API_BASE = '';
-    } else {
-      API_BASE = API_BASE_CANDIDATES[0] || EDGE_BACKEND;
-      if (!API_BASE_CANDIDATES.length) {
-        API_BASE_CANDIDATES = [EDGE_BACKEND, VERCEL_BACKEND];
-      }
+    API_BASE = API_BASE_CANDIDATES[0] || EDGE_BACKEND;
+    if (!API_BASE_CANDIDATES.length) {
+      API_BASE_CANDIDATES = [EDGE_BACKEND, VERCEL_BACKEND];
     }
     API_BASE_CANDIDATES = [...new Set(candidates.filter(Boolean))];
   }

@@ -54,6 +54,25 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'apple-segmented-controls-and-runtime-hardening-october-2026',
+    date: '2026-10-02',
+    type: 'fix',
+    title: 'Apple HIG alignment, CORS resolution, design audit skills, and instruction hardening',
+    summary:
+      'Refactor segmented controls into authentic Apple HIG capsule style and decouple from Tier 3 filter chips. Add CORS headers, graceful offline API fallbacks, and loopback origin normalization to eliminate console errors. Harden Playwright cross-browser config with installed-browser detection. Create three design audit skills under .agents/skills/ (apple-design-critique, responsive-audit, animation-motion-audit). Expand DESIGN.md with codified Motion & Animation Standards (§1.1), Spacing & Grid System (§1.2), and Design QA Checklist (§8). Strengthen AGENTS.md pre-commit checklist with visual QA step and design skills cross-reference. Audit repo instructions against 10 design/UX/engineering skill categories.',
+    tags: ['design', 'api', 'deploy'],
+    sha: null,
+    commitVerified: false,
+    model: 'Gemini 3.8 Flash',
+    ide: 'Google Antigravity IDE',
+    purpose:
+      'Apple HIG segmented controls, CORS resolution, Playwright hardening, design audit skills, DESIGN.md motion/spacing/QA system, and AGENTS.md instruction strengthening',
+    attributionSource: 'commit-message',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+    status: 'unreleased',
+  },
+  {
     id: 'readme-release-cleanup-october-2026',
     date: '2026-10-02',
     type: 'improvement',

@@ -224,24 +224,33 @@ html.dark .website-share-dialog .website-share-card {
 
 /* Close button - Apple iOS style circle, inline in card header row */
 .website-share-card-top {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-top: 0.25rem;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 0.875rem !important;
+  margin-top: 0.25rem !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+@media (max-width: 480px) {
+  .website-share-card-top {
+    gap: 0.75rem !important;
+  }
 }
 
 .website-share-close {
   position: relative;
   top: auto;
   right: auto;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex: 0 0 auto;
-  width: 2rem !important;
-  height: 2rem !important;
-  min-width: 2rem !important;
-  min-height: 2rem !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex: 0 0 32px !important;
+  width: 32px !important;
+  height: 32px !important;
+  min-width: 32px !important;
+  min-height: 32px !important;
   padding: 0 !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
@@ -249,13 +258,14 @@ html.dark .website-share-dialog .website-share-card {
   background-color: #ff3b30 !important;
   border: none !important;
   border-radius: 50% !important;
-  box-shadow: 0 8px 20px rgb(255 59 48 / 35%) !important;
+  box-shadow: 0 4px 12px rgba(255, 59, 48, 0.35) !important;
   cursor: pointer;
   z-index: 2;
+  margin: 0 !important;
   transition:
     background-color 0.2s ease,
     color 0.2s ease,
-    transform 0.2s ease;
+    transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .website-share-close:hover {
@@ -263,7 +273,11 @@ html.dark .website-share-dialog .website-share-card {
   -webkit-text-fill-color: #ffffff !important;
   background: #ff453a !important;
   background-color: #ff453a !important;
-  transform: scale(1.05);
+  transform: scale(1.06);
+}
+
+.website-share-close:active {
+  transform: scale(0.94);
 }
 
 html.dark .website-share-close,
@@ -285,59 +299,104 @@ html.dark .website-share-close svg {
 
 /* Segmented Control Mirror Selector */
 .website-share-mirrors {
-  display: flex;
-  flex: 1;
-  min-width: 0;
-  background: var(--bg-primary, #ffffff);
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  padding: 2px;
-  border-radius: 10px;
-  margin-top: 0;
+  display: flex !important;
+  align-items: center !important;
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+  height: 36px !important;
+  background: rgba(120, 120, 128, 0.12) !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  padding: 3px !important;
+  border-radius: 9999px !important;
+  box-sizing: border-box !important;
+  margin-top: 0 !important;
+  gap: 2px !important;
 }
 
 html.dark .website-share-mirrors {
-  background: #000000;
-  border: 1px solid #2c2c2e;
+  background: rgba(118, 118, 128, 0.24) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
 }
 
-/* Div selector to avoid global button overrides */
+/* Segment mirror tab */
 .share-mirror-tab {
-  flex: 1;
-  padding: 8px 4px;
-  font-size: 0.74rem;
-  font-weight: 600;
-  color: #86868b;
-  background: transparent;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  user-select: none;
+  flex: 1 1 0 !important;
+  min-width: 0 !important;
+  height: 100% !important;
+  padding: 0 6px !important;
+  font-family: var(--font-text) !important;
+  font-size: 0.78rem !important;
+  font-weight: 590 !important;
+  letter-spacing: -0.01em !important;
+  color: #636366 !important;
+  -webkit-text-fill-color: #636366 !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  border: none !important;
+  border-radius: 9999px !important;
+  box-shadow: none !important;
+  cursor: pointer !important;
+  user-select: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  margin: 0 !important;
+  transform: none !important;
   transition:
-    color 0.2s ease,
-    background-color 0.2s ease,
-    border-color 0.2s ease,
-    box-shadow 0.2s ease,
-    transform 0.2s ease,
-    opacity 0.2s ease;
-  text-align: center;
-  white-space: nowrap;
+    color 0.18s ease,
+    background-color 0.18s ease,
+    box-shadow 0.18s ease,
+    transform 0.12s ease !important;
 }
 
-.share-mirror-tab:hover {
-  color: var(--text-primary);
+html.dark .share-mirror-tab {
+  color: #98989d !important;
+  -webkit-text-fill-color: #98989d !important;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .share-mirror-tab:not(.active):hover {
+    color: #1d1d1f !important;
+    -webkit-text-fill-color: #1d1d1f !important;
+    background: rgba(0, 0, 0, 0.05) !important;
+  }
+
+  html.dark .share-mirror-tab:not(.active):hover {
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+    background: rgba(255, 255, 255, 0.08) !important;
+  }
 }
 
 .share-mirror-tab.active {
-  color: #1d1d1f;
-  background: #ffffff;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  font-weight: 700;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  background-color: #0071e3 !important;
+  background-image: linear-gradient(135deg, #0077ed 0%, #0071e3 50%, #005bb5 100%) !important;
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.12),
+    0 2px 8px rgba(0, 113, 227, 0.38) !important;
+  font-weight: 600 !important;
+  border: none !important;
 }
 
 html.dark .share-mirror-tab.active {
-  color: #ffffff;
-  background: #0071e3;
-  box-shadow: 0 1px 4px rgba(0, 113, 227, 0.4);
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  background-color: #0071e3 !important;
+  background-image: linear-gradient(135deg, #0077ed 0%, #0071e3 50%, #005bb5 100%) !important;
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.2),
+    0 2px 8px rgba(0, 113, 227, 0.45) !important;
+}
+
+.share-mirror-tab:active {
+  transform: scale(0.97) !important;
 }
 
 /* A quiet QR surface keeps the code easy to scan. */

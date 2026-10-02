@@ -3560,13 +3560,9 @@ html
   body
   #main-content
   :is(
-    .about-tab-btn,
     .section-preview-btn,
     .project-lens-chip,
     .proj-filter-btn,
-    .currently-tab-btn,
-    .share-mirror-tab,
-    .systems-arch-tab,
     .systems-filter-chip,
     .uses-filter-chip,
     .changelog-chip
@@ -3582,8 +3578,7 @@ html body #main-content #contact .apple-input {
   background-image: none !important;
 }
 
-/* Share and AssistMe are mounted outside main; keep their chrome opaque too. */
-html body .website-share-dialog :is(.website-share-mirrors, .share-mirror-tab:not(.active)),
+/* Share and AssistMe are mounted outside main; keep chatbot chrome opaque. */
 html body #chatbot-widget :is(#chatbot-input-wrapper, #chatbot-input, .composer-plus-popover) {
   background: var(--bg-primary) !important;
   background-image: none !important;
