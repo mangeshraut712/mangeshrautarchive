@@ -56,17 +56,6 @@ const MAX_CHAT_INPUT_LENGTH = SHARED_MAX_CHAT_INPUT;
 const CLIENT_CHAT_MESSAGE_LIMIT = limits.dailyChatMessages || CLIENT_DAILY_CHAT_LIMIT;
 const TRUSTED_ICON_CLASS = /^fa-[a-z0-9-]+$/i;
 
-function normalizeImagePayloads(images) {
-  const normalized = [];
-  for (const image of images || []) {
-    const src =
-      typeof image === 'string' ? image : image && typeof image.src === 'string' ? image.src : '';
-    if (src) normalized.push(src);
-    if (normalized.length === 2) break;
-  }
-  return normalized;
-}
-
 function imageDisplayName(image, index = 0) {
   if (image && typeof image === 'object' && typeof image.name === 'string' && image.name.trim()) {
     return image.name.trim();
@@ -303,7 +292,7 @@ class AppleIntelligenceChatbot {
     // Local rate-limit visibility mirrors the backend throttle before requests are sent.
     this.maxSessionMessages = CLIENT_CHAT_MESSAGE_LIMIT;
     this.lastFocusedElement = null;
-    this.pendingImages = [];
+    this.pendingAttachments = [];
     this.contactIntake = null;
 
     if (!this.elements.widget || !this.elements.toggle) {
@@ -478,7 +467,7 @@ class AppleIntelligenceChatbot {
 
   composerHasDraft() {
     const text = this.normalizeInput(this.elements.input?.value);
-    return Boolean(text) || Boolean(this.pendingImages?.length);
+    return Boolean(text) || Boolean(this.pendingAttachments?.length);
   }
 
   syncSendButtonState() {
@@ -2106,7 +2095,7 @@ class AppleIntelligenceChatbot {
     if (this.isProcessing) this.stopGeneration();
     if (!this.isOpen) this.openWidget();
     this.dismissWelcomeMessage();
-    this.pendingImages = [];
+    this.pendingAttachments = [];
     this.renderAttachPreview();
     this.contactIntake = { step: 0, answers: {} };
     this.addMessage(
@@ -2239,7 +2228,9 @@ class AppleIntelligenceChatbot {
       return;
     }
 
-    const text = this.normalizeInput(this.elements.input?.value);
+    const text =
+      this.normalizeInput(this.elements.input?.value) ||
+      (this.pendingAttachments?.length ? 'Describe the attached files.' : '');
     if (!text) return;
 
     if (this.contactIntake) {
@@ -2267,8 +2258,8 @@ class AppleIntelligenceChatbot {
     this.setComposerBusy(true);
     this.lastUserMessage = text;
     this.retryCount = 0;
-    const imagesForTurn = [...(this.pendingImages || [])];
-    this.pendingImages = [];
+    const imagesForTurn = [...(this.pendingAttachments || [])];
+    this.pendingAttachments = [];
     this.renderAttachPreview();
     this.removeFollowupChips();
     this.closeWritingTools();
@@ -2303,7 +2294,7 @@ class AppleIntelligenceChatbot {
       if (this.chatAPI && typeof this.chatAPI.ask === 'function') {
         completed =
           (await this.streamAIResponse(text, startTime, false, {
-            images: normalizeImagePayloads(imagesForTurn),
+            attachments: imagesForTurn,
           })) !== false;
       } else {
         await this.simulateTyping(this.getFallbackResponse(text), startTime);
@@ -2335,7 +2326,7 @@ class AppleIntelligenceChatbot {
         this.messageCount++;
       } else if (!this._abortedLastAsk && this.elements.input && !this.elements.input.value) {
         this.elements.input.value = text;
-        this.pendingImages = imagesForTurn;
+        this.pendingAttachments = imagesForTurn;
         this.renderAttachPreview();
         this.autoResizeTextarea(this.elements.input);
         this.syncSendButtonState();
@@ -2514,7 +2505,7 @@ class AppleIntelligenceChatbot {
         ephemeral: Boolean(askOptions.ephemeral),
         context: this.buildPageContextPayload(),
         session_id: this.chatAPI.sessionId,
-        images: normalizeImagePayloads(askOptions.images || this.pendingImages || []),
+        attachments: askOptions.attachments || this.pendingAttachments || [],
         onReset: () => {
           fullText = '';
           this._streamPaintGeneration = (this._streamPaintGeneration ?? 0) + 1;
@@ -2596,6 +2587,12 @@ class AppleIntelligenceChatbot {
         await this.finalizeStreamingContent(contentDiv, fullText, response);
       }
 
+      if (messageDiv)
+        messageDiv.assistmeTurn = {
+          prompt: userMessage,
+          attachments: askOptions.attachments || [],
+        };
+
       // Extract metadata
       const runtime = Date.now() - startTime;
       const tokenEstimate =
@@ -2619,7 +2616,11 @@ class AppleIntelligenceChatbot {
           response?.tokensPerSecond ||
           response?.tokens_per_sec ||
           tokenEstimate / runtimeSeconds,
-        cost: response?.metadata?.cost,
+        cost: response?.metadata?.cost ?? response?.metadata?.usage?.cost,
+        routingTask: response?.metadata?.routing_task,
+        provider: response?.metadata?.provider,
+        requestedModel: response?.metadata?.requested_model,
+        finishReason: response?.metadata?.finish_reason,
         confidence: response?.metadata?.confidence,
         knowledgeContext:
           response?.metadata?.knowledge_context ?? response?.knowledge_context ?? false,
@@ -2739,7 +2740,20 @@ class AppleIntelligenceChatbot {
     // Model + Source badge
     const modelBadge = document.createElement('span');
     modelBadge.className = 'meta-model-badge';
-    const modelName = (metadata.model || '').split('/').pop() || 'AI';
+    const rawModel = metadata.model || 'AI';
+    const modelName = rawModel.startsWith('nvidia/nemotron-3-ultra')
+      ? 'Nemotron Ultra'
+      : rawModel.startsWith('nvidia/nemotron-3.5-lightning')
+        ? 'Nemotron Lightning'
+        : rawModel.startsWith('google/gemma')
+          ? 'Gemma Vision'
+          : rawModel.startsWith('cohere/north')
+            ? 'North Code'
+            : rawModel
+                .split('/')
+                .pop()
+                .replace(/:free$/, '');
+    modelBadge.title = rawModel;
     const modelIcon = document.createElement('i');
     modelIcon.className = 'fas fa-wand-magic-sparkles';
     modelBadge.append(modelIcon, document.createTextNode(` ${modelName}`));
@@ -2814,6 +2828,11 @@ class AppleIntelligenceChatbot {
     detailsRow.hidden = true;
 
     const detailChips = [];
+    if (metadata.model) detailChips.push(`Model: ${metadata.model}`);
+    if (metadata.provider) detailChips.push(`Provider: ${metadata.provider}`);
+    if (metadata.routingTask) detailChips.push(`Route: ${metadata.routingTask}`);
+    if (metadata.finishReason === 'length')
+      detailChips.push('Response limit reached — ask to continue');
     if (metadata.source) detailChips.push(`🔌 ${metadata.source}`);
     if (metadata.knowledgeContext) detailChips.push('📚 Site knowledge');
     if (metadata.webTools) {
@@ -2830,7 +2849,7 @@ class AppleIntelligenceChatbot {
       );
     if (metadata.generationId) detailChips.push(`🧾 ${metadata.generationId}`);
     if (metadata.confidence) detailChips.push(`✓ ${Math.round(metadata.confidence * 100)}%`);
-    if (metadata.cost) {
+    if (typeof metadata.cost === 'number') {
       const costStr =
         typeof metadata.cost === 'number' ? `$${metadata.cost.toFixed(4)}` : metadata.cost;
       detailChips.push(`💰 ${costStr}`);
@@ -3402,7 +3421,12 @@ class AppleIntelligenceChatbot {
     this.showThinkingIndicator();
     const startTime = Date.now();
     try {
-      await this.streamAIResponse(this.lastUserMessage, startTime, false, { regenerate: true });
+      await this.streamAIResponse(
+        messageDiv.assistmeTurn?.prompt || this.lastUserMessage,
+        startTime,
+        false,
+        { regenerate: true, attachments: messageDiv.assistmeTurn?.attachments || [] }
+      );
     } catch (error) {
       if (error?.name !== 'AbortError') {
         console.error('Regenerate failed:', error);
@@ -3419,7 +3443,7 @@ class AppleIntelligenceChatbot {
 
   // ── Composer Plus menu (InputGroup pattern) ──────────────────
 
-  async togglePlusMenu() {
+  togglePlusMenu() {
     const existing = this.elements.widget?.querySelector('.composer-plus-popover');
     if (existing) {
       this.closePlusMenu();
@@ -3427,14 +3451,6 @@ class AppleIntelligenceChatbot {
     }
 
     this.closeWritingTools();
-
-    if (this.voiceMode && !this.voiceModeAvailable) {
-      try {
-        this.voiceModeAvailable = await this.voiceMode.checkAvailability();
-      } catch {
-        this.voiceModeAvailable = false;
-      }
-    }
 
     const popover = document.createElement('div');
     popover.className = 'composer-plus-popover';
@@ -3448,8 +3464,8 @@ class AppleIntelligenceChatbot {
 
     const items = [
       {
-        icon: 'fa-image',
-        label: 'Attach image',
+        icon: 'fa-paperclip',
+        label: 'Attach files',
         onSelect: () => this.elements.attachInput?.click(),
       },
       {
@@ -3622,47 +3638,67 @@ class AppleIntelligenceChatbot {
 
   async handleAttachFiles(event) {
     const files = Array.from(event?.target?.files || []);
-    if (event?.target) event.target.value = '';
     if (!files.length) return;
 
     let attachmentError = '';
-    const supportsBitmapDecode = typeof globalThis.createImageBitmap === 'function';
-    const decodedImages = await Promise.all(
-      files.slice(0, 2).map(async (file, index) => {
-        if (!file.type.startsWith('image/')) return null;
-        if (file.size > 1_200_000) {
-          attachmentError ||= 'Image too large — keep under ~1.2MB.';
-          return null;
-        }
-
-        const dimensions = await decodeImageBitmap(file);
-        if (supportsBitmapDecode && !dimensions) {
-          attachmentError ||= 'Image could not be decoded.';
-          return null;
-        }
-
-        const dataUrl = await this.readFileAsDataUrl(file);
-        return dataUrl
-          ? {
-              src: dataUrl,
-              name: file.name || `image-${index + 1}.png`,
-            }
-          : null;
-      })
-    );
     const next = [];
-    for (const image of decodedImages) {
-      if (image) next.push(image);
+    for (const file of files.slice(0, 2)) {
+      const mime =
+        file.type ||
+        {
+          txt: 'text/plain',
+          md: 'text/markdown',
+          csv: 'text/csv',
+          json: 'application/json',
+          wav: 'audio/wav',
+          mp3: 'audio/mpeg',
+          mp4: 'video/mp4',
+          webm: 'video/webm',
+          pdf: 'application/pdf',
+        }[file.name.split('.').pop().toLowerCase()];
+      const kind = mime?.startsWith('image/')
+        ? 'image'
+        : mime?.startsWith('audio/')
+          ? 'audio'
+          : mime?.startsWith('video/')
+            ? 'video'
+            : 'file';
+      if (
+        !/^(image\/(png|jpeg|webp|gif)|audio\/(wav|x-wav|mpeg|ogg|flac|aac|mp4)|video\/(mp4|webm|mpeg|quicktime)|application\/(pdf|json)|text\/(plain|markdown|csv))$/.test(
+          mime || ''
+        )
+      ) {
+        attachmentError = 'Choose an image, WAV/MP3, MP4/WebM, PDF, or text file.';
+        continue;
+      }
+      const maxSize =
+        kind === 'image'
+          ? 1_200_000
+          : kind === 'file' && mime !== 'application/pdf'
+            ? 75_000
+            : 3_000_000;
+      if (file.size > maxSize) {
+        attachmentError = `${file.name} is too large. Limit: ${Math.round(maxSize / 1000)} KB.`;
+        continue;
+      }
+      if (
+        kind === 'image' &&
+        typeof globalThis.createImageBitmap === 'function' &&
+        !(await decodeImageBitmap(file))
+      ) {
+        attachmentError = 'Image could not be decoded.';
+        continue;
+      }
+      const src = await this.readFileAsDataUrl(new Blob([file], { type: mime }));
+      if (src) next.push({ src, name: file.name, kind });
     }
-    this.pendingImages = next.slice(0, 2);
+    if (event?.target) event.target.value = '';
+    this.pendingAttachments = next;
     this.renderAttachPreview();
-    if (this.pendingImages.length && this.elements.rateStatus) {
-      this.elements.rateStatus.textContent = `${this.pendingImages.length} image attached`;
-    } else if (attachmentError && this.elements.rateStatus) {
-      this.elements.rateStatus.textContent = attachmentError;
-    } else {
-      this.updateRateLimitBadge();
-    }
+    this.syncSendButtonState();
+    if (this.elements.rateStatus)
+      this.elements.rateStatus.textContent =
+        attachmentError || `${next.length} file${next.length === 1 ? '' : 's'} attached`;
   }
 
   readFileAsDataUrl(file) {
@@ -3681,11 +3717,19 @@ class AppleIntelligenceChatbot {
     const figure = document.createElement('figure');
     figure.className = 'chat-attachment';
 
-    const img = document.createElement('img');
-    img.src = src;
-    img.alt = imageDisplayName(image, index);
-    img.loading = 'lazy';
-    figure.appendChild(img);
+    const kind = image?.kind || 'image';
+    if (kind === 'image') {
+      const img = document.createElement('img');
+      img.src = src;
+      img.alt = imageDisplayName(image, index);
+      img.loading = 'lazy';
+      figure.appendChild(img);
+    } else {
+      const icon = document.createElement('i');
+      icon.className = `fas ${kind === 'audio' ? 'fa-file-audio' : kind === 'video' ? 'fa-file-video' : 'fa-file-lines'}`;
+      icon.setAttribute('aria-hidden', 'true');
+      figure.appendChild(icon);
+    }
 
     const caption = document.createElement('figcaption');
     caption.className = 'chat-attachment-meta';
@@ -3702,9 +3746,10 @@ class AppleIntelligenceChatbot {
       removeBtn.addEventListener('click', event => {
         event.preventDefault();
         event.stopPropagation();
-        this.pendingImages = (this.pendingImages || []).filter((_, i) => i !== index);
+        this.pendingAttachments = (this.pendingAttachments || []).filter((_, i) => i !== index);
         this.renderAttachPreview();
-        if (this.elements.rateStatus && !this.pendingImages.length) {
+        this.syncSendButtonState();
+        if (this.elements.rateStatus && !this.pendingAttachments.length) {
           this.elements.rateStatus.textContent = '';
         }
       });
@@ -3716,16 +3761,16 @@ class AppleIntelligenceChatbot {
   }
 
   renderAttachPreview() {
-    const wrapper = this.elements.inputWrapper || this.elements.form;
+    const wrapper = this.elements.form;
     wrapper?.querySelectorAll('.chatbot-attach-preview').forEach(el => el.remove());
-    if (!this.pendingImages?.length || !wrapper) return;
+    if (!this.pendingAttachments?.length || !wrapper) return;
     const bar = document.createElement('div');
     bar.className = 'chatbot-attach-preview';
-    this.pendingImages.forEach((image, index) => {
+    this.pendingAttachments.forEach((image, index) => {
       const card = this.createAttachmentCard(image, index, { removable: true });
       if (card) bar.appendChild(card);
     });
-    wrapper.appendChild(bar);
+    wrapper.insertBefore(bar, this.elements.inputWrapper);
   }
 
   // ── Siri AI: On-Screen Awareness (WWDC26) ───────────────────────

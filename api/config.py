@@ -1,4 +1,5 @@
 import os
+import base64
 import json
 import time
 import secrets
@@ -536,6 +537,7 @@ class ChatRequest(BaseModel):
     model: Optional[str] = None
     # Optional vision attachments (data URLs). Free OpenRouter vision models only.
     images: Optional[List[str]] = Field(default_factory=list, max_length=2)
+    attachments: List[Dict[str, str]] = Field(default_factory=list, max_length=2)
 
 
 class TypingIndicator(BaseModel):
@@ -726,7 +728,7 @@ _DATA_IMAGE_RE = re.compile(
     r"^data:image/(png|jpeg|jpg|webp|gif);base64,[A-Za-z0-9+/=\s]+$",
     re.I,
 )
-MAX_IMAGE_DATA_URL_CHARS = 350_000
+MAX_IMAGE_DATA_URL_CHARS = 1_650_000
 
 
 def sanitize_chat_images(images: Optional[List[str]]) -> List[str]:
@@ -746,15 +748,44 @@ def sanitize_chat_images(images: Optional[List[str]]) -> List[str]:
     return safe
 
 
-def build_multimodal_user_content(message: str, images: Optional[List[str]] = None) -> Any:
+def build_multimodal_user_content(
+    message: str, images: Optional[List[str]] = None, attachments: Optional[List[Dict[str, str]]] = None
+) -> Any:
     """OpenAI-compatible multimodal user content when images are present."""
     text = sanitize_chat_text(message)
     safe_images = sanitize_chat_images(images)
-    if not safe_images:
+    if not safe_images and not attachments:
         return text
     parts: List[Dict[str, Any]] = [{"type": "text", "text": text or "Describe this image."}]
     for url in safe_images:
         parts.append({"type": "image_url", "image_url": {"url": url}})
+    if len(safe_images) + len(attachments or []) > 2:
+        raise HTTPException(status_code=400, detail="Attach up to two files per message.")
+    total = sum(len(url) for url in safe_images)
+    for item in attachments or []:
+        src = item.get("src", "")
+        total += len(src)
+        match = re.fullmatch(r"data:([^;,]+);base64,([A-Za-z0-9+/=]+)", src)
+        if not match or total > 8_000_000:
+            raise HTTPException(status_code=400, detail="File unreadable or too large. Use files under 3 MB.")
+        mime, data = match.groups()
+        if mime.startswith("image/") and _DATA_IMAGE_RE.fullmatch(src):
+            parts.append({"type": "image_url", "image_url": {"url": src}})
+        elif mime in {"audio/wav", "audio/x-wav", "audio/mpeg", "audio/mp3", "audio/ogg", "audio/flac", "audio/aac", "audio/mp4"}:
+            fmt = {"audio/x-wav": "wav", "audio/mpeg": "mp3", "audio/mp4": "m4a"}.get(mime, mime.split("/")[1])
+            parts.append({"type": "input_audio", "input_audio": {"data": data, "format": fmt}})
+        elif mime in {"video/mp4", "video/webm", "video/mpeg", "video/quicktime"}:
+            parts.append({"type": "video_url", "video_url": {"url": src}})
+        elif mime == "application/pdf":
+            parts.append({"type": "file", "file": {"filename": item.get("name", "document.pdf")[:120], "file_data": src}})
+        elif mime in {"text/plain", "text/markdown", "text/csv", "application/json"} and len(data) <= 100_000:
+            try:
+                document = base64.b64decode(data, validate=True).decode("utf-8")
+            except (ValueError, UnicodeDecodeError):
+                raise HTTPException(status_code=400, detail="Text file could not be decoded.")
+            parts.append({"type": "text", "text": f"Attached document (source content):\n{document}"})
+        else:
+            raise HTTPException(status_code=400, detail="Unsupported attachment format.")
     return parts
 
 

@@ -155,12 +155,15 @@ def openrouter_request_body(
         body["plugins"] = [
             {
                 "id": "auto-router",
-                "cost_quality_tradeoff": 2,
+                "cost_tier": "low",
                 "allowed_models": AUTO_ROUTER_ALLOWED,
             }
         ]
         if session_id:
             body["session_id"] = session_id
+
+    if any(part.get("type") == "file" for m in messages if isinstance(m.get("content"), list) for part in m["content"]):
+        body.setdefault("plugins", []).append({"id": "file-parser", "pdf": {"engine": "cloudflare-ai"}})
 
     if web_tools_enabled:
         body["tools"] = [
@@ -795,13 +798,16 @@ def build_local_chat_payload(
     start_time: float,
     *,
     reason: str = "Local Intelligence",
+    has_attachments: bool = False,
 ) -> Dict:
     """Build the same local answer shape for offline and upstream-fallback modes."""
     fallback = generate_local_response(message, site_context)
     override = _upstream_fallback_answer(reason, site_context)
     # Prefer honest upstream failure copy over the misleading "no API key" blurb.
     answer = fallback["answer"]
-    if override and reason not in ("Local Intelligence", "no_key"):
+    if has_attachments:
+        answer = "I could not process the attached files with the available AI providers. Please retry or ask a typed question."
+    if override and not has_attachments and reason not in ("Local Intelligence", "no_key"):
         lower_answer = answer.lower()
         if (
             fallback.get("category") == "System"
@@ -824,7 +830,14 @@ def build_local_chat_payload(
     }
 
 
-def _fallback_models(model: str) -> List[str]:
+def _fallback_models(model: str, messages: Optional[List[Dict]] = None) -> List[str]:
+    types = {part.get("type") for m in messages or [] if isinstance(m.get("content"), list) for part in m["content"]}
+    if "input_audio" in types:
+        return ["nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free", "openrouter/auto"]
+    if "video_url" in types:
+        return ["google/gemma-4-26b-a4b-it:free", "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free", "openrouter/auto"]
+    if "image_url" in types:
+        return ["google/gemma-4-26b-a4b-it:free", "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free", "openrouter/auto"]
     return build_model_fallback_chain(model)
 
 
@@ -864,6 +877,10 @@ async def stream_openrouter_response(
         (m.get("content", "") for m in reversed(messages) if m.get("role") == "user"),
         "",
     )
+
+    has_attachments = isinstance(user_msg, list)
+    if has_attachments:
+        user_msg = next((part.get("text", "") for part in user_msg if part.get("type") == "text"), "Describe the attached files.")
 
     if not get_openrouter_api_key():
         logger.warning("⚠️ No API Key found - activating Local Intelligence Fallback")
@@ -933,7 +950,7 @@ async def stream_openrouter_response(
             full_content = ""
             chunk_count = 0
 
-        for candidate_model in _fallback_models(model):
+        for candidate_model in _fallback_models(model, messages):
             try:
                 async with httpx.AsyncClient(
                     timeout=httpx.Timeout(60.0, connect=10.0)
@@ -1091,6 +1108,7 @@ async def stream_openrouter_response(
         site_context,
         start_time,
         reason=last_upstream_reason,
+        has_attachments=has_attachments,
     )
     async for item in stream_static_chat_response(fallback, start_time):
         yield item
@@ -1131,7 +1149,7 @@ async def call_openrouter(
 
     last_error: Optional[Exception] = None
     async with httpx.AsyncClient(timeout=30.0) as client:
-        for candidate_model in _fallback_models(model):
+        for candidate_model in _fallback_models(model, messages):
             try:
                 response = await client.post(
                     API_URL,
@@ -1236,9 +1254,11 @@ async def chat_endpoint(request: ChatRequest, req: Request):
     web_tools_enabled = should_use_web_tools(message, site_context)
     session_id = sanitize_session_id(request.session_id)
     safe_images = sanitize_chat_images(getattr(request, "images", None))
+    # Validate attachments before any local command can bypass the media request.
+    build_multimodal_user_content(message, safe_images, request.attachments)
 
     direct_response = await handle_direct_command(message)
-    if direct_response:
+    if direct_response and not request.attachments and not safe_images:
         direct_response["runtime"] = f"{int((time.time() - start_time) * 1000)}ms"
         if request.stream:
             return StreamingResponse(
@@ -1256,6 +1276,8 @@ async def chat_endpoint(request: ChatRequest, req: Request):
     if not get_openrouter_api_key():
         logger.warning("⚠️ No API key - using Local Intelligence fallback")
         fallback = generate_local_response(message, site_context)
+        if request.attachments or safe_images:
+            fallback["answer"] = "File analysis needs the live AI connection. I can still help with typed portfolio questions."
         elapsed = time.time() - start_time
         payload = {
             "answer": fallback["answer"],
@@ -1299,9 +1321,9 @@ async def chat_endpoint(request: ChatRequest, req: Request):
         # Add context awareness
         if safe_context:
             context_prompt = build_context_prompt(message, safe_context)
-            user_payload = build_multimodal_user_content(context_prompt, safe_images)
+            user_payload = build_multimodal_user_content(context_prompt, safe_images, request.attachments)
         else:
-            user_payload = build_multimodal_user_content(message, safe_images)
+            user_payload = build_multimodal_user_content(message, safe_images, request.attachments)
         user_message = {"role": "user", "content": user_payload}
 
         conversation = [system_message] + history + [user_message]
@@ -1403,6 +1425,7 @@ async def chat_endpoint(request: ChatRequest, req: Request):
             site_context,
             start_time,
             reason=reason,
+            has_attachments=bool(request.images or request.attachments),
         )
     except httpx.RequestError as e:
         logger.error(f"❌ Chat endpoint connection/request error: {str(e)}")
@@ -1411,6 +1434,7 @@ async def chat_endpoint(request: ChatRequest, req: Request):
             site_context,
             start_time,
             reason=f"OpenRouter network ({type(e).__name__})",
+            has_attachments=bool(request.images or request.attachments),
         )
     except asyncio.TimeoutError:
         logger.error("❌ Chat endpoint request timed out")
@@ -1419,6 +1443,7 @@ async def chat_endpoint(request: ChatRequest, req: Request):
             site_context,
             start_time,
             reason="OpenRouter timeout",
+            has_attachments=bool(request.images or request.attachments),
         )
     except Exception as e:
         logger.error(f"❌ Chat endpoint unexpected error: {type(e).__name__} - {str(e)}", exc_info=True)

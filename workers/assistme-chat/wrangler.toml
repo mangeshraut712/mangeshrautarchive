@@ -7,6 +7,10 @@ workers_dev = true
 
 [vars]
 # Text primary: Nemotron 3 Ultra free, verified against OpenRouter catalog and inference.
+# Capability routing selects free specialists; low-cost paid Auto is final recovery.
+OPENROUTER_PAID_FALLBACK = "true"
+# Deep comparison/research uses Fusion only when the account has a positive balance.
+OPENROUTER_FUSION_ENABLED = "true"
 OPENROUTER_MODEL = "nvidia/nemotron-3-ultra-550b-a55b:free"
 OPENROUTER_SITE_URL = "https://mangeshraut712.github.io/mangeshrautarchive"
 OPENROUTER_SITE_TITLE = "AssistMe Cloudflare Edge"

@@ -379,3 +379,19 @@ def test_devotional_queries_grounded_in_portfolio_facts(client):
     hanuman_res = generate_local_response("hanuman chalisa lyrics")
     assert hanuman_res["category"] == "Devotional"
     assert "Shree Hanuman Chalisa" in hanuman_res["answer"]
+
+
+def test_multimodal_document_and_audio_payload_validation():
+    import base64
+    from api.config import build_multimodal_user_content
+    from fastapi import HTTPException
+    import pytest
+
+    audio = "data:audio/wav;base64," + base64.b64encode(b"fixture").decode()
+    parts = build_multimodal_user_content("Transcribe", attachments=[{"src": audio}])
+    assert parts[1]["input_audio"]["format"] == "wav"
+    text = "data:text/plain;base64," + base64.b64encode("Order 42".encode()).decode()
+    parts = build_multimodal_user_content("Read", attachments=[{"src": text}])
+    assert "Order 42" in parts[1]["text"]
+    with pytest.raises(HTTPException):
+        build_multimodal_user_content("Read", attachments=[{"src": "https://unsafe.example/file"}])

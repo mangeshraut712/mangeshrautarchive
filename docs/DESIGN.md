@@ -408,3 +408,13 @@ encode structured versions of this checklist for automated agents:
 - Desktop chat starts 12px below the navigation height and uses the remaining viewport above its launcher. Remove fixed 620px height caps; the transcript scrolls inside the window while the composer remains reachable.
 - Mobile chat fits the available viewport below navigation with safe-area clearance. Header controls have a minimum 44px target.
 - Response details remain collapsed until requested. Model labels and token usage come from the answering service; estimates are explicitly labeled. General questions do not receive unrelated portfolio shortcut chips.
+
+### AssistMe multimodal attachments and routing details
+
+- Use one attachment rail for image, audio, video, PDF, and text files. Non-image files use readable
+  file names and Apple Blue icons; images retain previews. Keep Remove reachable at mobile widths.
+- Model badges use concise names. Exact model IDs, routing task, supplied usage, provider, and cost
+  belong in collapsed Details. Zero cost is a valid reported value, not missing metadata.
+- Never show provider errors or reasoning traces as answer prose. A failed attachment gets a clear
+  processing notice rather than a portfolio answer. Cloud speech readiness requires availability
+  evidence; a configured key alone is insufficient.

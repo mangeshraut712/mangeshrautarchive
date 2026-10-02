@@ -316,7 +316,7 @@ class IntelligentAssistant {
       // 🎯 NEW: Check for agentic actions first (skip when regenerating / ephemeral tools)
       const startTime = Date.now();
       const actionResult =
-        ephemeral || regenerate
+        ephemeral || regenerate || options.attachments?.length || options.images?.length
           ? { actionDetected: false }
           : await agenticActions.detectAndExecute(trimmed);
 
@@ -428,6 +428,14 @@ class IntelligentAssistant {
       }
     }
 
+    if (options.attachments?.length || options.images?.length) {
+      return {
+        answer:
+          'I could not process that attachment right now. Try again when the live AI service is available.',
+        model: 'Local Portfolio KB',
+        source: 'Local Intelligence',
+      };
+    }
     const clientRaw = await this.callClientService(trimmed);
     const clientResponse = this.normalizeResponse(clientRaw, 'AssistMe');
     if (clientResponse) {
@@ -484,6 +492,9 @@ class IntelligentAssistant {
       };
       if (options.model) {
         requestPayload.model = options.model;
+      }
+      if (Array.isArray(options.attachments) && options.attachments.length) {
+        requestPayload.attachments = options.attachments.slice(0, 2);
       }
       if (Array.isArray(options.images) && options.images.length) {
         requestPayload.images = options.images.slice(0, 2);

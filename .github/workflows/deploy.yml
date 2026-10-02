@@ -144,6 +144,9 @@ jobs:
         id: flake8
         run: npm run lint:python
 
+      - name: Worker multimodal routing and stream boundaries
+        run: npm run test:worker
+
       - name: API tests — pytest
         id: api
         run: npm run test:api

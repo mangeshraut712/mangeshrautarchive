@@ -65,8 +65,9 @@ and browser-side WebMCP actions for navigating and retrieving portfolio informat
 - **Grounded answers:** portfolio context is assembled from repository data and site knowledge.
 - **Tools:** browser actions are implemented in [agentic-actions.js](src/js/modules/agentic-actions.js).
 - **Model routing:** provider selection is configured in the backend and Worker; the FastAPI router
-  uses the configured OpenRouter primary model, set through the server environment. The live Cloudflare text primary is
-  `nvidia/nemotron-3-ultra-550b-a55b:free`, with Nemotron Super as a fallback.
+  uses the configured OpenRouter primary model. The live Worker routes by task and input capability,
+  using Nemotron Ultra for reasoning, Nemotron Lightning for quick turns, North Mini Code for code,
+  and compatible Gemma/Omni models for media. Catalog capabilities refresh hourly.
 - **Offline development:** the local FastAPI backend provides canned portfolio answers when
   `OPENROUTER_API_KEY` is absent. Real model responses require provider credentials.
 
@@ -270,7 +271,7 @@ purpose, and verified commit in the [changelog](src/js/data/changelog-entries.js
 | Current contribution                             | Attribution                                                                                                                                                                              |
 | ------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Coding agent                                     | GPT-6 / Codex, in Codex desktop                                                                                                                                                          |
-| Purpose                                          | Verify and configure Nemotron 3 Ultra free as the live AssistMe text primary                                                                                                             |
+| Purpose                                          | Audit and improve capability routing, multimodal attachments, streaming, and voice availability                                                                                          |
 | Exact model variant, reasoning mode, token usage | unavailable                                                                                                                                                                              |
 | Portfolio chatbot model                          | Configured separately in [api/model_router.py](api/model_router.py) and [Worker configuration](workers/assistme-chat/wrangler.toml); each live response reports the actual serving model |
 
@@ -281,7 +282,7 @@ explicitly labeled local answers. Interrupted streams discard the failed attempt
 another model; provider token usage is retained when supplied, and estimates remain labeled.
 The chat window uses the available area below navigation, with a scrolling transcript and a
 reachable composer. The deployed-host browser regression covers routing, fallback resets, and
-final-frame metadata in Chrome and Safari. It is included in the 13-journey critical Chrome
+final-frame metadata in Chrome and Safari. It is included in the 14-journey critical Chrome
 release gate; Safari is also checked separately when changing this path.
 
 Coding attribution in historical entries is contributor-reported in commit messages. A verified
@@ -339,3 +340,44 @@ before reuse. Citation metadata is provided in [CITATION.cff](CITATION.cff).
 The live text primary is [Nemotron 3 Ultra free](https://openrouter.ai/nvidia/nemotron-3-ultra-550b-a55b:free). OpenRouter's live catalog reports zero prompt and completion token prices. An authenticated inference probe returned HTTP 200, the exact requested model ID, and zero cost. Nemotron Super remains the next free fallback. Ultra is text-only; image requests retain the existing free vision chain. Local/server environment overrides remain explicit.
 
 [NVIDIA's model release](https://research.nvidia.com/labs/nemotron/Nemotron-3-Ultra/) documents 550B total and 55B active parameters, released June 4, 2026. Availability and free-tier limits depend on the provider. Coding agent: GPT-6 / Codex in Codex desktop; exact variant, reasoning mode, and token usage: unavailable.
+
+### AssistMe multimodal routing — October 2, 2026
+
+The live Worker refreshes the [OpenRouter model catalog](https://openrouter.ai/api/v1/models) hourly
+and filters models by the inputs required by each request. New models become fallback candidates
+only when their advertised capabilities match. Safety classifiers, embeddings, and rerankers are
+excluded from conversation routing. The browser cannot select arbitrary upstream models.
+
+| Input or feature         | Current behavior                                                           | Verification                                                              |
+| ------------------------ | -------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
+| Text and reasoning       | Nemotron Ultra with compatible free recovery                               | Live streamed reply verified                                              |
+| Short turns              | Nemotron 3.5 Lightning                                                     | Live document question verified                                           |
+| Programming              | Cohere North Mini Code, then Ultra                                         | Live JavaScript reply verified                                            |
+| Images and short videos  | Gemma 4 first; compatible Omni/Qwen recovery                               | Live image and MP4 description verified                                   |
+| PDF and text files       | Explicit free Cloudflare PDF parser / bounded UTF-8 text                   | Live order-number extraction verified                                     |
+| Audio files              | Compatible Omni/Inkling candidates; paid Auto recovery                     | Account/provider restrictions prevented a successful live transcription   |
+| Dictation and read-aloud | Browser speech features; cloud TTS when funded                             | Cloud TTS returned HTTP 402; device support depends on browser and OS     |
+| Paid Auto Router         | Low-cost recovery after free candidates fail                               | Free-only Auto test returned no matching candidates                       |
+| Fusion                   | Deep text research/comparison, gated by server config and positive balance | Current account returned HTTP 402; no successful Fusion inference claimed |
+| Image/video generation   | Not connected to this chat interface                                       | No generated-asset claims or fabricated image URLs                        |
+
+Two attachments per turn are supported: images up to 1.2 MB, audio/video/PDF up to 3 MB per file,
+and text/Markdown/CSV/JSON up to 75 KB. Files are uploaded only when the message is sent; their
+contents are source material rather than instructions. Failed media processing never falls back
+to an invented description. Regeneration retains the selected turn's files during the open session.
+
+Streaming records the concrete answering model, provider, generation ID, supplied usage/cost,
+finish reason, and routing task. The main reply stays readable; technical details are collapsed.
+Stopping cancels upstream work. Unsupported or interrupted streams recover without concatenating
+answers from different models. Token estimates remain labeled.
+
+[Auto Router](https://openrouter.ai/docs/guides/routing/routers/auto-router) selects models by task.
+[Fusion](https://openrouter.ai/docs/guides/features/plugins/fusion) runs a panel and analyst in
+addition to the outer request, so it is reserved for deep text comparisons and requires credits.
+A free model ID does not guarantee access: the observed Omni audio minimum was $0.50 and video
+minimum $1.00; Gemma video succeeded without that balance. These provider restrictions may change.
+
+Regression coverage: 185 API tests, 7 Worker routing/stream boundary tests, and 14 critical Chrome
+journeys. The attachment journey also runs in Safari. Coding agent: GPT-6 / Codex in Codex desktop;
+purpose: multimodal routing and conversational reliability. Exact model variant, reasoning mode,
+and token usage: unavailable.

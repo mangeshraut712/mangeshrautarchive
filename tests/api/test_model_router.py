@@ -103,7 +103,7 @@ def test_auto_router_request_includes_plugins_and_session():
     )
     assert body["session_id"] == "sess-123"
     assert body["plugins"][0]["id"] == "auto-router"
-    assert body["plugins"][0]["cost_quality_tradeoff"] == 2
+    assert body["plugins"][0]["cost_tier"] == "low"
 
 
 def test_resolve_image_query_uses_free_vision_model():
