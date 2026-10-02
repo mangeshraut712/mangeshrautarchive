@@ -174,11 +174,12 @@ body.chatbot-open .a11y-toolbar {
   pointer-events: none;
 }
 
-/* Desktop: keep page scroll, but hide the FAB so it cannot sit on the composer.
-   Do not use visibility:hidden — #chatbot-widget is position-anchor'd to the FAB. */
+/* Desktop: Keep the chatbot toggle button visible and interactive when open */
 body.chatbot-open #chatbot-toggle {
-  opacity: 0 !important;
-  pointer-events: none !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  z-index: 200001 !important;
 }
 
 @media (min-width: 769px) {
@@ -4209,16 +4210,44 @@ html.dark .message-content .footnotes {
   #chatbot-widget {
     position: fixed !important;
     width: min(400px, calc(100vw - 3rem)) !important;
-    height: min(640px, calc(100dvh - 7.5rem)) !important;
-    max-height: calc(100dvh - 7.5rem) !important;
     top: auto !important;
-    bottom: calc(var(--fab-slot-1, 96px) + 14px) !important;
+    bottom: calc(
+      var(--fab-slot-0, var(--theme-fab-bottom, 32px)) + var(--fab-size, 48px) + 14px
+    ) !important;
     right: max(1.25rem, env(safe-area-inset-right, 0px)) !important;
     left: auto !important;
+    max-height: calc(
+      100dvh -
+        calc(var(--fab-slot-0, var(--theme-fab-bottom, 32px)) + var(--fab-size, 48px) + 14px) -
+        max(calc(var(--island-height, 54px) + env(safe-area-inset-top, 0px) + 20px), 88px)
+    ) !important;
+    height: min(
+      620px,
+      calc(
+        100dvh -
+          calc(var(--fab-slot-0, var(--theme-fab-bottom, 32px)) + var(--fab-size, 48px) + 14px) -
+          max(calc(var(--island-height, 54px) + env(safe-area-inset-top, 0px) + 20px), 88px)
+      )
+    ) !important;
     border-radius: 24px !important;
     box-shadow:
       0 24px 64px rgba(0, 0, 0, 0.18),
       0 2px 8px rgba(0, 0, 0, 0.06) !important;
+  }
+
+  body:has(#go-to-top.visible) #chatbot-widget {
+    bottom: calc(var(--fab-slot-1, 92px) + var(--fab-size, 48px) + 14px) !important;
+    max-height: calc(
+      100dvh - calc(var(--fab-slot-1, 92px) + var(--fab-size, 48px) + 14px) -
+        max(calc(var(--island-height, 54px) + env(safe-area-inset-top, 0px) + 20px), 88px)
+    ) !important;
+    height: min(
+      620px,
+      calc(
+        100dvh - calc(var(--fab-slot-1, 92px) + var(--fab-size, 48px) + 14px) -
+          max(calc(var(--island-height, 54px) + env(safe-area-inset-top, 0px) + 20px), 88px)
+      )
+    ) !important;
   }
 
   @supports (position-anchor: --chatbot-toggle) {
@@ -4229,7 +4258,7 @@ html.dark .message-content .footnotes {
       right: anchor(--chatbot-toggle right) !important;
       margin-bottom: 14px !important;
       top: auto !important;
-      position-try-fallbacks: flip-block;
+      position-try-fallbacks: none !important;
     }
   }
 }

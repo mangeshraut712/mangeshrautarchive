@@ -266,12 +266,12 @@ Mangesh Raut maintains this portfolio with contributions from Codex, Claude Code
 Cursor, and GitHub Copilot. Shipped changes record the exposed agent/model family, engineering
 purpose, and verified commit in the [changelog](src/js/data/changelog-entries.js).
 
-| Current documentation contribution               | Attribution                                                                                                                                                           |
-| ------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Coding agent                                     | Gemini 3.8 Flash, in Google Antigravity IDE                                                                                                                           |
-| Purpose                                          | Apple HIG segmented controls, CORS resolution, Playwright hardening, design audit skills, DESIGN.md motion/spacing/QA system, and AGENTS.md instruction strengthening |
-| Exact model variant, reasoning mode, token usage | Unavailable from the active runtime                                                                                                                                   |
-| Portfolio chatbot model                          | Configured separately in [api/model_router.py](api/model_router.py) and the Worker                                                                                    |
+| Current documentation contribution               | Attribution                                                                                                                  |
+| ------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------- |
+| Coding agent                                     | Gemini 3.8 Flash, in Google Antigravity IDE                                                                                  |
+| Purpose                                          | AssistMe chatbot toggle visibility, dynamic window positioning above FAB stack, and robust navbar clearance on all viewports |
+| Exact model variant, reasoning mode, token usage | Unavailable from the active runtime                                                                                          |
+| Portfolio chatbot model                          | Configured separately in [api/model_router.py](api/model_router.py) and the Worker                                           |
 
 Coding attribution in historical entries is contributor-reported in commit messages. A verified
 commit link confirms the repository reference; it does not authenticate the actual model runtime.

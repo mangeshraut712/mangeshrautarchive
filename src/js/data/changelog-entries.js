@@ -54,6 +54,25 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'chatbot-assistme-window-positioning-october-2026',
+    date: '2026-10-02',
+    type: 'fix',
+    title: 'AssistMe chatbot toggle visibility and dynamic window positioning',
+    summary:
+      'Keep the AssistMe chatbot toggle button visible and interactive while the chatbot is open. Dynamically position the chatbot widget cleanly above the toggle button across both unscrolled (slot-0) and scrolled (slot-1 with go-to-top button) states with a 14px gap. Enforce a robust 88px top clearance constraint that guarantees zero overlap with the dynamic island navbar across homepage and all subpages on all screen heights.',
+    tags: ['design', 'ux'],
+    sha: null,
+    commitVerified: false,
+    model: 'Gemini 3.8 Flash',
+    ide: 'Google Antigravity IDE',
+    purpose:
+      'AssistMe chatbot toggle visibility and dynamic window positioning above FAB stack with navbar clearance',
+    attributionSource: 'commit-message',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+    status: 'unreleased',
+  },
+  {
     id: 'apple-segmented-controls-and-runtime-hardening-october-2026',
     date: '2026-10-02',
     type: 'fix',
@@ -61,8 +80,8 @@ export const changelogEntries = [
     summary:
       'Refactor segmented controls into authentic Apple HIG capsule style and decouple from Tier 3 filter chips. Add CORS headers, graceful offline API fallbacks, and loopback origin normalization to eliminate console errors. Harden Playwright cross-browser config with installed-browser detection. Create three design audit skills under .agents/skills/ (apple-design-critique, responsive-audit, animation-motion-audit). Expand DESIGN.md with codified Motion & Animation Standards (§1.1), Spacing & Grid System (§1.2), and Design QA Checklist (§8). Strengthen AGENTS.md pre-commit checklist with visual QA step and design skills cross-reference. Audit repo instructions against 10 design/UX/engineering skill categories.',
     tags: ['design', 'api', 'deploy'],
-    sha: null,
-    commitVerified: false,
+    sha: 'e39846f02754cc13974928693a2c35a4399ceed2',
+    commitVerified: true,
     model: 'Gemini 3.8 Flash',
     ide: 'Google Antigravity IDE',
     purpose:
@@ -70,7 +89,6 @@ export const changelogEntries = [
     attributionSource: 'commit-message',
     reasoning: 'unavailable',
     usage: 'unavailable',
-    status: 'unreleased',
   },
   {
     id: 'readme-release-cleanup-october-2026',

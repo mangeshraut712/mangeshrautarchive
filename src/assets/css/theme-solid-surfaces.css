@@ -3653,14 +3653,49 @@ html body .article-inline-code {
   background-image: none !important;
 }
 
-/* Anchor placement must not push the desktop chat header above the viewport. */
+/* Chatbot widget sits cleanly above the chatbot toggle with zero navbar collision */
 @media (width > 768px) {
-  html body #chatbot-widget {
+  html body:not(:has(#go-to-top.visible)) #chatbot-widget {
     position-anchor: auto;
     top: auto !important;
-    bottom: max(96px, calc(env(safe-area-inset-bottom, 0px) + 80px)) !important;
-    height: min(600px, calc(100dvh - 180px)) !important;
-    max-height: calc(100dvh - 180px) !important;
+    bottom: calc(
+      var(--fab-slot-0, var(--theme-fab-bottom, 32px)) + var(--fab-size, 48px) + 14px
+    ) !important;
+    max-height: calc(
+      100dvh -
+        calc(var(--fab-slot-0, var(--theme-fab-bottom, 32px)) + var(--fab-size, 48px) + 14px) -
+        max(calc(var(--island-height, 54px) + env(safe-area-inset-top, 0px) + 20px), 88px)
+    ) !important;
+    height: min(
+      620px,
+      calc(
+        100dvh -
+          calc(var(--fab-slot-0, var(--theme-fab-bottom, 32px)) + var(--fab-size, 48px) + 14px) -
+          max(calc(var(--island-height, 54px) + env(safe-area-inset-top, 0px) + 20px), 88px)
+      )
+    ) !important;
+    right: var(--theme-fab-edge, max(24px, env(safe-area-inset-right, 0px))) !important;
+    left: auto !important;
+    margin: 0 !important;
+  }
+
+  html body:has(#go-to-top.visible) #chatbot-widget {
+    position-anchor: auto;
+    top: auto !important;
+    bottom: calc(var(--fab-slot-1, 92px) + var(--fab-size, 48px) + 14px) !important;
+    max-height: calc(
+      100dvh - calc(var(--fab-slot-1, 92px) + var(--fab-size, 48px) + 14px) -
+        max(calc(var(--island-height, 54px) + env(safe-area-inset-top, 0px) + 20px), 88px)
+    ) !important;
+    height: min(
+      620px,
+      calc(
+        100dvh - calc(var(--fab-slot-1, 92px) + var(--fab-size, 48px) + 14px) -
+          max(calc(var(--island-height, 54px) + env(safe-area-inset-top, 0px) + 20px), 88px)
+      )
+    ) !important;
+    right: var(--theme-fab-edge, max(24px, env(safe-area-inset-right, 0px))) !important;
+    left: auto !important;
     margin: 0 !important;
   }
 }
