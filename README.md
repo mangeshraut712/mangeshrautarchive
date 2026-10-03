@@ -262,7 +262,18 @@ Read [CONTRIBUTING.md](CONTRIBUTING.md), [AGENTS.md](AGENTS.md), and the relevan
 guide before making changes. Keep fixes focused, preserve the native web stack, and add realistic
 browser coverage when user behavior changes. Use the four local release gates above before submitting.
 
+### Tester Army browser journeys
+
+Run `npm run test:tester-army` with Node 22.12+ after `npx playwright install chromium webkit`.
+The pinned `e2e@0.16.0` and `@e2e-dev/web@0.11.2` suite runs 23 journeys on desktop Chromium
+and mobile WebKit without a model or API key. The runner starts the frontend on a free port and cleans
+up its own process. Use `E2E_APP_URL` for an existing local server. See
+[the coverage manifest](docs/TESTER_ARMY.md) for assertions and external-service limits.
+The JavaScript config is selected explicitly because upstream automatic discovery uses TypeScript filenames.
+
 ### 5.1 Coding agents and provenance
+
+**Tester Army contribution:** GPT-6.1 Sol / Codex; purpose: deterministic browser journeys and coverage boundaries. Reasoning mode and token usage: unavailable. Independent verification uses GPT-6 Luna / Codex.
 
 Mangesh Raut maintains this portfolio with contributions from Codex, Claude Code, Google Antigravity,
 Cursor, and GitHub Copilot. Shipped changes record the exposed agent/model family, engineering

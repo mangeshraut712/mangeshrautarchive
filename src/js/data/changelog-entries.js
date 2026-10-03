@@ -54,6 +54,24 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'tester-army-portfolio-journeys-20261003',
+    date: '2026-10-03',
+    type: 'improvement',
+    title: 'Add reproducible Tester Army browser journeys',
+    summary:
+      'Add pinned tester-army/e2e coverage for pages, writing, repository previews, contact, chat, sharing, clocks, and map recovery across desktop Chromium and mobile WebKit.',
+    tags: ['other'],
+    sha: null,
+    commitVerified: false,
+    model: 'GPT-6.1 Sol / Codex & Gemini 3.8 Flash',
+    ide: 'Codex desktop & Google Antigravity IDE',
+    purpose:
+      'Implement deterministic portfolio end-to-end journeys across desktop and mobile WebKit with focus and search stability fixes.',
+    attributionSource: 'commit-message',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
     id: 'full-stack-dependency-upgrade-october-3-2026',
     date: '2026-10-03',
     type: 'improvement',

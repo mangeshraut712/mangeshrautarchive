@@ -209,6 +209,7 @@ const allowedRootFiles = new Set([
   'LICENSE',
   'README.md',
   'SECURITY.md',
+  'e2e.config.mjs',
   'eslint.config.js',
   'globals.d.ts',
   'index.js',

@@ -51,6 +51,7 @@ function createShareToggleButton() {
   const button = document.createElement('button');
   button.id = SHARE_TOGGLE_ID;
   button.type = 'button';
+  button.tabIndex = 0;
   button.className = 'website-share-fab';
   button.setAttribute('aria-label', SHARE_TOGGLE_LABEL);
   button.setAttribute('data-label', SHARE_TOGGLE_LABEL);
@@ -273,6 +274,9 @@ async function initShareWidget() {
     setDialogState(dialog, trigger, false);
     if (trigger) {
       trigger.focus({ preventScroll: true });
+      requestAnimationFrame(() => {
+        trigger.focus({ preventScroll: true });
+      });
     }
   };
 

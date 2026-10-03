@@ -566,6 +566,7 @@ export class CalendarWidget {
           const dateMatch = r.dateKey && r.dateKey.toLowerCase().includes(q);
           return textMatch || hostMatch || locMatch || tagMatch || timeMatch || dateMatch;
         });
+        return list.filter(r => !r.isChangelog);
       }
     }
 

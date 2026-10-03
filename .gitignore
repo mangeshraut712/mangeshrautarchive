@@ -190,3 +190,6 @@ secrets.*
 # Foglamp: commit scan.json (public architecture summary); never commit the edit token
 .foglamp/scan.lock.json
 .foglamp/*.lock.json
+
+# Tester Army reports and local cache
+.e2e/
