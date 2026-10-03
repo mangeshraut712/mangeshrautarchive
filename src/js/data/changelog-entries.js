@@ -62,8 +62,8 @@ export const changelogEntries = [
     summary:
       'Equipped AssistMe with deep Hero Music Card (#music-card) intelligence and live telemetry. Added live DOM currentMusic extraction in chatbot page context, expanded now_playing agentic action patterns to match music card and listening queries with smooth scroll highlighting (#30d158), enriched Cloudflare worker prompt and offline fallback with Last.fm (user: mbr63) Spotify synchronization details, 30s audio previews, equalizer status, and streaming links, and injected music telemetry facts into FastAPI site knowledge.',
     tags: ['assistme', 'api', 'design'],
-    sha: null,
-    commitVerified: false,
+    sha: '825077f6',
+    commitVerified: true,
     model: 'Gemini 3.8 Flash',
     ide: 'Google Antigravity IDE',
     purpose:
