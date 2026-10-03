@@ -61,8 +61,8 @@ export const changelogEntries = [
     summary:
       'Add pinned tester-army/e2e coverage for pages, writing, repository previews, contact, chat, sharing, clocks, and map recovery across desktop Chromium and mobile WebKit.',
     tags: ['other'],
-    sha: null,
-    commitVerified: false,
+    sha: '0afd9bab',
+    commitVerified: true,
     model: 'GPT-6.1 Sol / Codex & Gemini 3.8 Flash',
     ide: 'Codex desktop & Google Antigravity IDE',
     purpose:
