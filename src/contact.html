@@ -60,14 +60,212 @@
       sizes="512x512"
     />
     <link rel="manifest" href="manifest.json" />
+    <style>
+      :root {
+        --apple-bg: #ffffff;
+        --apple-text: #1d1d1f;
+        --apple-secondary: #86868b;
+        --apple-card-bg: rgba(255, 255, 255, 0.85);
+        --apple-card-border: rgba(0, 0, 0, 0.08);
+        --apple-card-shadow: 0 12px 32px rgba(0, 0, 0, 0.06), 0 2px 6px rgba(0, 0, 0, 0.04);
+        --apple-blue: #0071e3;
+        --apple-blue-gradient: linear-gradient(135deg, #0077ed 0%, #0071e3 50%, #005bb5 100%);
+        --apple-blue-hover: linear-gradient(135deg, #0080ff 0%, #0077ed 50%, #0066cc 100%);
+        --apple-spinner: #0071e3;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --apple-bg: #000000;
+          --apple-text: #f5f5f7;
+          --apple-secondary: #a1a1a6;
+          --apple-card-bg: #121214;
+          --apple-card-border: rgba(255, 255, 255, 0.12);
+          --apple-card-shadow: 0 12px 36px rgba(0, 0, 0, 0.6), 0 2px 8px rgba(0, 0, 0, 0.4);
+          --apple-blue: #0a84ff;
+          --apple-blue-gradient: linear-gradient(135deg, #2997ff 0%, #0a84ff 50%, #0071e3 100%);
+          --apple-blue-hover: linear-gradient(135deg, #40a0ff 0%, #2997ff 50%, #0a84ff 100%);
+          --apple-spinner: #0a84ff;
+        }
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family:
+          -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', 'Helvetica Neue',
+          sans-serif;
+        background: var(--apple-bg);
+        color: var(--apple-text);
+        min-height: 100vh;
+        min-height: 100dvh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1.5rem;
+        -webkit-font-smoothing: antialiased;
+        overflow-x: hidden;
+      }
+
+      .contact-redirect-card {
+        background: var(--apple-card-bg);
+        border: 1px solid var(--apple-card-border);
+        box-shadow: var(--apple-card-shadow);
+        border-radius: 24px;
+        padding: 2.5rem 2rem;
+        max-width: 440px;
+        width: 100%;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.25rem;
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+      }
+
+      .contact-icon-badge {
+        width: 64px;
+        height: 64px;
+        border-radius: 20px;
+        background: rgba(0, 113, 227, 0.1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--apple-blue);
+      }
+
+      .contact-icon-badge svg {
+        width: 32px;
+        height: 32px;
+      }
+
+      .contact-title {
+        font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+        font-size: 1.5rem;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        color: var(--apple-text);
+      }
+
+      .contact-subtitle {
+        font-size: 0.9375rem;
+        line-height: 1.5;
+        color: var(--apple-secondary);
+        max-width: 340px;
+      }
+
+      .redirect-spinner {
+        width: 24px;
+        height: 24px;
+        border: 2.5px solid rgba(0, 113, 227, 0.2);
+        border-top-color: var(--apple-spinner);
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+        margin: 0.25rem 0;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      .contact-cta-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        min-height: 48px;
+        width: 100%;
+        padding: 0.85rem 1.75rem;
+        background-color: var(--apple-blue);
+        background-image: var(--apple-blue-gradient);
+        color: #ffffff;
+        font-size: 0.9375rem;
+        font-weight: 600;
+        text-decoration: none;
+        border-radius: 9999px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 4px 14px rgba(0, 113, 227, 0.35);
+        transition:
+          transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+          box-shadow 0.2s ease,
+          background-image 0.2s ease;
+      }
+
+      .contact-cta-btn:hover {
+        background-image: var(--apple-blue-hover);
+        transform: translateY(-1px);
+        box-shadow: 0 6px 20px rgba(0, 113, 227, 0.45);
+      }
+
+      .contact-cta-btn:active {
+        transform: scale(0.98);
+      }
+
+      .contact-cta-btn svg {
+        width: 16px;
+        height: 16px;
+        transition: transform 0.2s ease;
+      }
+
+      .contact-cta-btn:hover svg {
+        transform: translateX(3px);
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .redirect-spinner {
+          animation: none;
+        }
+        .contact-cta-btn {
+          transition: none;
+        }
+      }
+    </style>
     <meta http-equiv="refresh" content="0; url=./#contact" />
     <script>
       location.replace('./#contact');
     </script>
   </head>
   <body>
-    <p>
-      <a href="./#contact">Continue to contact Mangesh Raut</a>
-    </p>
+    <main class="contact-redirect-card">
+      <div class="contact-icon-badge" aria-hidden="true">
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M22 2L11 13" />
+          <path d="M22 2L15 22L11 13L2 9L22 2Z" />
+        </svg>
+      </div>
+      <h1 class="contact-title">Contact Mangesh Raut</h1>
+      <p class="contact-subtitle">
+        Connecting you to direct channels, scheduled meetings, and engineering inquiries.
+      </p>
+      <div class="redirect-spinner" role="status" aria-label="Redirecting to contact section"></div>
+      <a href="./#contact" class="contact-cta-btn">
+        <span>Continue to Contact</span>
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <polyline points="9 18 15 12 9 6" />
+        </svg>
+      </a>
+    </main>
   </body>
 </html>

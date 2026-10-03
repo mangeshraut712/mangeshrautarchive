@@ -256,6 +256,10 @@ const MODULE_IMPORTERS = {
     import('../modules/resume-dropdown.js').then(module => {
       module.initResumeDropdown?.();
     }),
+  '../modules/contact-page.js': () =>
+    import('../modules/contact-page.js').then(module => {
+      module.initContactInteractions?.();
+    }),
 };
 
 function getModuleImporter(modulePath) {

@@ -296,12 +296,13 @@ html.dark .shadcn-copy-btn.is-copied {
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
-  width: 28px !important;
-  height: 28px !important;
-  min-width: 28px !important;
-  min-height: 28px !important;
+  position: relative !important;
+  width: 32px !important;
+  height: 32px !important;
+  min-width: 32px !important;
+  min-height: 32px !important;
   padding: 0 !important;
-  border-radius: 6px !important;
+  border-radius: 8px !important;
   border: 1px solid rgba(0, 0, 0, 0.08) !important;
   background: rgba(255, 255, 255, 0.75) !important;
   color: #86868b !important;
@@ -311,6 +312,14 @@ html.dark .shadcn-copy-btn.is-copied {
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
   flex: 0 0 auto !important;
   margin-left: 0.35rem !important;
+}
+
+.contact-channel-copy-btn::before {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  min-width: 44px;
+  min-height: 44px;
 }
 
 .contact-channel-copy-btn:hover {

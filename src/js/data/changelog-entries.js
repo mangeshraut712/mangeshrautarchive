@@ -54,6 +54,24 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'contact-section-apple-design-elevation-20261003',
+    date: '2026-10-03',
+    type: 'improvement',
+    title: 'Elevate entire contact section and redirect shell to authentic Apple design standards',
+    summary:
+      'Balanced desktop two-column layout with 4 cards per column, fixed lazy load bootstrap registration for contact-page.js, styled world clocks toggle and reminders controls as Apple Tier 4 pill buttons, upgraded support contribution active pills with Apple Blue linear specular gradients, expanded contact copy buttons to >=44px touch targets, unified smart modal close buttons, eliminated email address clipping, and redesigned contact.html redirect shell with SF Pro typography and native Apple styling.',
+    tags: ['design', 'performance'],
+    sha: null,
+    commitVerified: false,
+    model: 'Gemini 3.8 Flash',
+    ide: 'Google Antigravity IDE',
+    purpose:
+      'Contact page and section architectural redesign, Apple HIG compliance elevation, and responsive visual polish.',
+    attributionSource: 'commit-message',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
     id: 'repo-cleanup-organization-docs-sync-20261003',
     date: '2026-10-03',
     type: 'improvement',
