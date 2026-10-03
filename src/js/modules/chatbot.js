@@ -2261,6 +2261,7 @@ class AppleIntelligenceChatbot {
     const imagesForTurn = [...(this.pendingAttachments || [])];
     this.pendingAttachments = [];
     this.renderAttachPreview();
+    if (this.elements.rateStatus) this.elements.rateStatus.textContent = '';
     this.removeFollowupChips();
     this.closeWritingTools();
     this.closePlusMenu();
@@ -2565,7 +2566,9 @@ class AppleIntelligenceChatbot {
 
       // Final fallback for completely empty responses (after retry)
       if (!fullText) {
-        const offline = this.chatAPI?.basicQueryProcessing?.(userMessage);
+        const offline = askOptions.attachments?.length
+          ? null
+          : this.chatAPI?.basicQueryProcessing?.(userMessage);
         if (offline?.answer) {
           fullText = offline.answer;
           metadata.source = offline.source || 'assistme-portfolio';
@@ -2576,8 +2579,9 @@ class AppleIntelligenceChatbot {
           );
         } else {
           ensureStreamBubble();
-          fullText =
-            'I could not reach the live AI service, but I can still answer portfolio questions offline. Try asking about skills, projects, experience, or contact details.';
+          fullText = askOptions.attachments?.length
+            ? 'I could not process the attached files. Please retry or ask a typed question.'
+            : 'I could not reach the live AI service, but I can still answer portfolio questions offline. Try asking about skills, projects, experience, or contact details.';
           metadata.error = true;
         }
       }
@@ -2601,7 +2605,6 @@ class AppleIntelligenceChatbot {
         response?.tokens ||
         response?.tokens_estimate ||
         Math.ceil(fullText.length / 4);
-      const runtimeSeconds = Math.max(runtime / 1000, 0.001);
       metadata = {
         ...metadata,
         source: metadata.source || response?.metadata?.source || response?.source || 'AI service',
@@ -2614,15 +2617,16 @@ class AppleIntelligenceChatbot {
           response?.metadata?.tokensPerSecond ||
           response?.metadata?.tokens_per_sec ||
           response?.tokensPerSecond ||
-          response?.tokens_per_sec ||
-          (!(!response?.metadata?.tokens && !response?.tokens)
-            ? tokenEstimate / runtimeSeconds
-            : undefined),
+          response?.tokens_per_sec,
         cost:
           response?.metadata?.cost ??
           response?.metadata?.usage?.cost ??
           response?.cost ??
           response?.usage?.cost,
+        byok: response?.metadata?.usage?.is_byok ?? response?.usage?.is_byok,
+        upstreamCost:
+          response?.metadata?.usage?.cost_details?.upstream_inference_cost ??
+          response?.usage?.cost_details?.upstream_inference_cost,
         routingTask:
           response?.metadata?.routing_task ||
           response?.metadata?.routingTask ||
@@ -2764,40 +2768,42 @@ class AppleIntelligenceChatbot {
     if (lower.includes('action') || lower.includes('agentic')) return 'Action Handler';
     if (lower.includes('nemotron-3-ultra') || lower.includes('nemotron-ultra'))
       return 'Nemotron Ultra';
-    if (
-      lower.includes('nemotron-3.5-lightning') ||
-      lower.includes('nemotron-lightning') ||
-      lower.includes('nemotron-super')
-    ) {
+    if (lower.includes('nemotron-3.5-lightning') || lower.includes('nemotron-lightning')) {
       return 'Nemotron Lightning';
     }
-    if (lower.includes('gemma-4') || lower.includes('gemma')) {
+    if (lower.includes('nemotron-3-super') || lower.includes('nemotron-super'))
+      return 'Nemotron Super';
+    if (lower.includes('gemma-4')) {
       const isVision =
         metadata.routingTask === 'vision' ||
         (Array.isArray(metadata.inputModalities) && metadata.inputModalities.includes('image'));
       return isVision ? 'Gemma 4 Vision' : 'Gemma 4';
     }
-    if (lower.includes('gemini-2.5') || lower.includes('gemini')) return 'Gemini 2.5 Flash';
-    if (lower.includes('grok-4') || lower.includes('grok')) return 'Grok 4.3';
+    if (lower.includes('gemini-')) {
+      return raw
+        .split('/')
+        .pop()
+        .replace(/:free$/, '')
+        .replace(/^gemini-/, 'Gemini ')
+        .replace(/-/g, ' ')
+        .replace(/\b(flash|pro|lite)\b/g, word => word[0].toUpperCase() + word.slice(1));
+    }
+    if (lower.includes('grok-4.3')) return 'Grok 4.3';
     if (lower.includes('apodex')) return 'Apodex Mini';
     if (lower.includes('liquid') || lower.includes('lfm')) return 'Liquid LFM';
     if (lower.includes('north-code') || lower.includes('north')) return 'North Code';
     if (lower.includes('command-r')) return 'Command R';
     if (lower.includes('llama-3.3')) return 'Llama 3.3';
     if (lower.includes('llama-4')) return 'Llama 4';
-    if (lower.includes('llama-3') || lower.includes('llama')) return 'Llama 3';
+    if (lower.includes('llama-3')) return 'Llama 3';
     if (lower.includes('deepseek-r1')) return 'DeepSeek R1';
-    if (
-      lower.includes('deepseek-chat') ||
-      lower.includes('deepseek-v3') ||
-      lower.includes('deepseek')
-    ) {
+    if (lower.includes('deepseek-chat') || lower.includes('deepseek-v3')) {
       return 'DeepSeek V3';
     }
-    if (lower.includes('qwen-2.5-coder') || (lower.includes('qwen') && lower.includes('coder'))) {
+    if (lower.includes('qwen-2.5-coder')) {
       return 'Qwen 2.5 Coder';
     }
-    if (lower.includes('qwen')) return 'Qwen 2.5';
+    if (lower.includes('qwen-2.5')) return 'Qwen 2.5';
     if (lower.includes('gpt-4o-mini')) return 'GPT-4o Mini';
     if (lower.includes('gpt-4o')) return 'GPT-4o';
     if (lower.includes('gpt-5')) return 'GPT-5';
@@ -2822,9 +2828,10 @@ class AppleIntelligenceChatbot {
     }
     if (lower.includes('nemotron-3-ultra')) return 'NVIDIA Nemotron 3 Ultra (550B)';
     if (lower.includes('nemotron-3.5-lightning')) return 'NVIDIA Nemotron 3.5 Lightning';
-    if (lower.includes('gemma-4')) return 'Google Gemma 4 (31B IT)';
+    if (lower.includes('gemma-4-31b')) return 'Google Gemma 4 (31B IT)';
+    if (lower.includes('gemma-4-26b-a4b')) return 'Google Gemma 4 (26B A4B IT)';
     if (lower.includes('deepseek-r1')) return 'DeepSeek R1 (Reasoning)';
-    if (lower.includes('deepseek')) return 'DeepSeek V3';
+    if (lower.includes('deepseek-v3') || lower.includes('deepseek-chat')) return 'DeepSeek V3';
     if (lower.includes('qwen-2.5-coder')) return 'Qwen 2.5 Coder (32B)';
     if (lower.includes('llama-3.3')) return 'Meta Llama 3.3 (70B)';
     if (lower.includes('north-code')) return 'Cohere North Code';
@@ -3015,10 +3022,11 @@ class AppleIntelligenceChatbot {
 
     // 6. Pricing Tier
     if (typeof metadata.cost === 'number') {
-      const costStr = metadata.cost === 0 ? 'Free Tier ($0.00)' : `$${metadata.cost.toFixed(4)}`;
-      detailChips.push(`Tier: ${costStr}`);
-    } else {
-      detailChips.push('Tier: Free Tier ($0.00)');
+      detailChips.push(`OpenRouter charge: $${metadata.cost.toFixed(4)}`);
+    }
+    if (metadata.byok) detailChips.push('Billing: Provider key (BYOK)');
+    if (metadata.byok && typeof metadata.upstreamCost === 'number') {
+      detailChips.push(`Provider-reported inference cost: $${metadata.upstreamCost.toFixed(6)}`);
     }
 
     // 7. Finish reason (length warning)

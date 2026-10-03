@@ -54,6 +54,23 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'assistme-live-multimodal-billing-october-3-2026',
+    date: '2026-10-03',
+    type: 'fix',
+    title: 'Verify multimodal replies and show honest billing details',
+    summary:
+      'Verify deployed text, code, image, video, PDF, and audio replies with their actual answering models. Audio recovers through Auto to Gemini 3.8 Flash via Google AI Studio BYOK. Distinguish OpenRouter charges from provider-reported inference costs, omit unknown pricing and derived throughput, preserve returned Gemini versions and Gemma parameter counts, and preserve explicit attachment errors when AI processing fails. Cloud TTS remains unavailable; Fusion has no successful inference evidence.',
+    tags: ['assistme', 'voice', 'api'],
+    sha: null,
+    commitVerified: false,
+    model: 'GPT-6 / Codex',
+    ide: 'Codex desktop',
+    purpose: 'Live multimodal verification, billing provenance, and responsive chatbot reliability',
+    attributionSource: 'commit-message',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
     id: 'assistme-telemetry-refinement-october-2026',
     date: '2026-10-02',
     type: 'improvement',

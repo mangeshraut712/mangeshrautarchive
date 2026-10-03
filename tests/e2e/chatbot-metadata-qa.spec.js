@@ -85,7 +85,7 @@ test.describe('AssistMe Chatbot Metadata & Multi-Question Verification', () => {
     await expect(details).toContainText('Route: ⚡ Quick Factual');
     await expect(details).toContainText('Grounding: Live Web (2 sources)');
     await expect(details).toContainText('Compute: 🎯 34 tokens • ⚡ 29 tok/s');
-    await expect(details).toContainText('Tier: Free Tier ($0.00)');
+    await expect(details).toContainText('OpenRouter charge: $0.0000');
 
     // 4. Clutter & Unwanted Chips Strictly Excluded
     await expect(details).not.toContainText('gen-');

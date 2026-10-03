@@ -275,6 +275,8 @@ purpose, and verified commit in the [changelog](src/js/data/changelog-entries.js
 | Exact model variant, reasoning mode, token usage | unavailable                                                                                                                                                                                 |
 | Portfolio chatbot model                          | Configured separately in [api/model_router.py](api/model_router.py) and [Worker configuration](workers/assistme-chat/wrangler.toml); each live response reports the actual serving model    |
 
+**AssistMe verification — October 3, 2026:** GPT-6 / Codex in Codex desktop; purpose: live multimodal verification, accurate model labels, billing provenance, and responsive chatbot reliability. Exact variant, reasoning mode, and token usage: unavailable.
+
 AssistMe on GitHub Pages uses the Cloudflare Worker at
 `https://assistme-chat.mangeshraut712.workers.dev`. The frontend checks `/api/chat/health`
 and sends chat requests to `/api/chat` on that host. An unavailable AI provider falls back to
@@ -348,18 +350,18 @@ and filters models by the inputs required by each request. New models become fal
 only when their advertised capabilities match. Safety classifiers, embeddings, and rerankers are
 excluded from conversation routing. The browser cannot select arbitrary upstream models.
 
-| Input or feature         | Current behavior                                                           | Verification                                                              |
-| ------------------------ | -------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
-| Text and reasoning       | Nemotron Ultra with compatible free recovery                               | Live streamed reply verified                                              |
-| Short turns              | Nemotron 3.5 Lightning                                                     | Live document question verified                                           |
-| Programming              | Cohere North Mini Code, then Ultra                                         | Live JavaScript reply verified                                            |
-| Images and short videos  | Gemma 4 first; compatible Omni/Qwen recovery                               | Live image and MP4 description verified                                   |
-| PDF and text files       | Explicit free Cloudflare PDF parser / bounded UTF-8 text                   | Live order-number extraction verified                                     |
-| Audio files              | Compatible Omni/Inkling candidates; paid Auto recovery                     | Account/provider restrictions prevented a successful live transcription   |
-| Dictation and read-aloud | Browser speech features; cloud TTS when funded                             | Cloud TTS returned HTTP 402; device support depends on browser and OS     |
-| Paid Auto Router         | Low-cost recovery after free candidates fail                               | Free-only Auto test returned no matching candidates                       |
-| Fusion                   | Deep text research/comparison, gated by server config and positive balance | Current account returned HTTP 402; no successful Fusion inference claimed |
-| Image/video generation   | Not connected to this chat interface                                       | No generated-asset claims or fabricated image URLs                        |
+| Input or feature         | Current behavior                                                           | Verification                                                                 |
+| ------------------------ | -------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| Text and reasoning       | Nemotron Ultra with compatible free recovery                               | Live streamed reply verified                                                 |
+| Short turns              | Gemma 4, Apodex Mini, then compatible free recovery                        | Live document question verified                                              |
+| Programming              | Cohere North Mini Code, then Ultra                                         | Live JavaScript reply verified                                               |
+| Images and short videos  | Gemma 4 first; compatible Omni/Qwen recovery                               | Live image and MP4 description verified                                      |
+| PDF and text files       | Explicit free Cloudflare PDF parser / bounded UTF-8 text                   | Live order-number extraction verified                                        |
+| Audio files              | Compatible Omni/Inkling candidates; Auto recovery                          | October 3: Gemini 3.8 Flash via Google AI Studio BYOK transcribed the sample |
+| Dictation and read-aloud | Browser speech features; cloud TTS when funded                             | Cloud TTS returned HTTP 402; device support depends on browser and OS        |
+| Paid Auto Router         | Low-cost recovery after free candidates fail                               | Free-only Auto test returned no matching candidates                          |
+| Fusion                   | Deep text research/comparison, gated by server config and positive balance | Current account returned HTTP 402; no successful Fusion inference claimed    |
+| Image/video generation   | Not connected to this chat interface                                       | No generated-asset claims or fabricated image URLs                           |
 
 Two attachments per turn are supported: images up to 1.2 MB, audio/video/PDF up to 3 MB per file,
 and text/Markdown/CSV/JSON up to 75 KB. Files are uploaded only when the message is sent; their
@@ -378,6 +380,4 @@ A free model ID does not guarantee access: the observed Omni audio minimum was $
 minimum $1.00; Gemma video succeeded without that balance. These provider restrictions may change.
 
 Regression coverage: 185 API tests, 9 Worker routing/stream boundary tests, and 14 critical Chrome
-journeys. The attachment journey also runs in Safari. Coding agent: Gemini 3.8 Flash in Google Antigravity IDE;
-purpose: viewport-specific navigation discipline, mobile hamburger suppression on desktop, and responsive test alignment. Exact model variant, reasoning mode,
-and token usage: unavailable.
+journeys. The attachment journey also runs in Safari. October 3 live checks confirmed text, code, image, video, PDF, and audio processing. Audio recovered through Auto to Gemini 3.8 Flash using Google AI Studio BYOK. OpenRouter reported a zero charge and a provider-side inference cost of $0.002493 for the sample; a zero OpenRouter charge does not prove that BYOK inference is free. Cloud TTS remains unavailable and Fusion has no successful inference evidence. Coding agent: GPT-6 / Codex in Codex desktop; purpose: live multimodal verification, honest billing metadata, and responsive chatbot review. Exact variant, reasoning mode, and token usage: unavailable.
