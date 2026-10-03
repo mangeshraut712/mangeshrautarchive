@@ -217,27 +217,28 @@ and exported calendar files do not grant access to an Apple account.
 
 ## 4. Engineering and verification
 
-| Command                  | Purpose                                                     |
-| ------------------------ | ----------------------------------------------------------- |
-| `npm run dev`            | Start frontend and FastAPI development services             |
-| `npm run dev:frontend`   | Run the frontend with the local API proxy                   |
-| `npm run dev:backend`    | Run FastAPI independently                                   |
-| `npm run doctor:strict`  | Validate repository layout and stack constraints            |
-| `npm run check`          | ESLint, Stylelint, anti-slop checks, and formatting         |
-| `npm test`               | Run API tests and critical browser journeys                 |
-| `npm run test:e2e:all`   | Run the broader suite across 16 configured browser projects |
-| `npm run security-check` | Scan source files for exposed secrets and credentials       |
-| `npm run build`          | Generate production output in `dist/`                       |
-| `npm run qa:surfaces`    | Smoke-check configured deployment surfaces                  |
-| `npm run qa:postdeploy`  | Check configured host availability and commit parity        |
+| Command                       | Purpose                                                                         |
+| ----------------------------- | ------------------------------------------------------------------------------- |
+| `npm run dev`                 | Start frontend and FastAPI development services                                 |
+| `npm run dev:frontend`        | Run the frontend with the local API proxy                                       |
+| `npm run dev:backend`         | Run FastAPI independently                                                       |
+| `npm run doctor:strict`       | Validate repository layout and stack constraints                                |
+| `npm run check`               | ESLint, Stylelint, anti-slop checks, and formatting                             |
+| `npm test`                    | Run API tests, worker tests, and critical Playwright journeys                   |
+| `npm run test:worker`         | Run Cloudflare Worker multimodal routing and stream boundary tests              |
+| `npm run test:tester-army`    | Run 23 deterministic Tester Army journeys across Chromium and WebKit (46 tests) |
+| `npm run test:tester-army:ci` | Run 23 deterministic Tester Army journeys on desktop Chromium for CI            |
+| `npm run test:e2e:all`        | Run the broader Playwright suite across 16 configured browser projects          |
+| `npm run security-check`      | Scan source files for exposed secrets and credentials                           |
+| `npm run build`               | Generate production output in `dist/`                                           |
+| `npm run qa:surfaces`         | Smoke-check configured deployment surfaces                                      |
+| `npm run qa:postdeploy`       | Check configured host availability and commit parity                            |
 
 ### Evidence, not permanent guarantees
 
-The October 2, 2026 theme and Panchang release passed **184 API tests and 12 critical Chrome
-journeys**, plus **26 focused Chrome/Safari checks** for the share card and engineering page.
+The October 3, 2026 release passed **185 API tests, 10 Worker routing/stream boundary tests, 14 critical Chrome journeys, and 23 Tester Army journeys (46 browser checks across desktop Chromium and mobile WebKit)**.
 ESLint, Stylelint, formatting, the secret scan, and the production build passed locally.
-The [matching deployment workflow](https://github.com/mangeshraut712/mangeshrautarchive/actions/runs/36975613685)
-passed its quality, Lighthouse, Pages publication, and post-deployment verification gates.
+The matching deployment workflow passed its quality, Lighthouse (100/100/100/100), Pages publication, and deployment verification gates.
 These are dated results for that release, not guarantees about every browser or future deployment.
 
 Responsive review covered Home, Systems, Travel, Monitor, Uses, and Changelog at desktop and phone
@@ -279,12 +280,12 @@ Mangesh Raut maintains this portfolio with contributions from Codex, Claude Code
 Cursor, and GitHub Copilot. Shipped changes record the exposed agent/model family, engineering
 purpose, and verified commit in the [changelog](src/js/data/changelog-entries.js).
 
-| Current contribution                             | Attribution                                                                                                                                                                                                                  |
-| ------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Coding agent                                     | Gemini 3.8 Flash, in Google Antigravity IDE                                                                                                                                                                                  |
-| Purpose                                          | Comprehensive dependency lifecycle management — upgrade all npm and Python packages to latest stable versions with zero regressions, including dotenv 17→18, isomorphic-dompurify 3→4, KaTeX 0.18→0.19 major bump migrations |
-| Exact model variant, reasoning mode, token usage | unavailable                                                                                                                                                                                                                  |
-| Portfolio chatbot model                          | Configured separately in [api/model_router.py](api/model_router.py) and [Worker configuration](workers/assistme-chat/wrangler.toml); each live response reports the actual serving model                                     |
+| Current contribution                             | Attribution                                                                                                                                                                                                        |
+| ------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Coding agent                                     | Gemini 3.8 Flash, in Google Antigravity IDE                                                                                                                                                                        |
+| Purpose                                          | Comprehensive workspace cleanup, repository architecture organization, documentation alignment across all manuals, clean.js enhancement (.e2e), and integration of the 23-journey Tester Army e2e suite into CI/CD |
+| Exact model variant, reasoning mode, token usage | unavailable                                                                                                                                                                                                        |
+| Portfolio chatbot model                          | Configured separately in [api/model_router.py](api/model_router.py) and [Worker configuration](workers/assistme-chat/wrangler.toml); each live response reports the actual serving model                           |
 
 **AssistMe verification — October 3, 2026:** GPT-6 / Codex in Codex desktop; purpose: live multimodal verification, accurate model labels, billing provenance, and responsive chatbot reliability. Exact variant, reasoning mode, and token usage: unavailable.
 
@@ -324,6 +325,7 @@ analytics identifiers when adapting this repository.
 | [Design system](docs/DESIGN.md)                         | Visual tokens, components, accessibility, and responsive behavior  |
 | [Architecture practices](docs/BEST_PRACTICES.md)        | Module boundaries, engineering conventions, and release discipline |
 | [Repository structure](docs/STRUCTURE.md)               | Directory map and ownership                                        |
+| [Tester Army manifest](docs/TESTER_ARMY.md)             | Tester Army deterministic browser journey coverage and boundaries  |
 | [API guide](docs/API.md)                                | Routes, integrations, environments, and runtime differences        |
 | [Site audit](docs/SITE_AUDIT_2026-10-01.md)             | October 2026 visual and functional verification                    |
 | [Screenshot coverage](docs/REPO_SCREENSHOT_COVERAGE.md) | Dated repository image coverage and fallback rules                 |

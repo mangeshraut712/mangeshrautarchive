@@ -150,9 +150,12 @@ npm run format:check        # Prettier check
 # Test
 npm test                    # API tests and critical Chrome user journeys
 npm run test:api            # pytest API tests; activate venv first when required
+npm run test:worker         # Cloudflare Worker multimodal routing and stream boundaries
 npm run test:e2e:chrome     # Playwright E2E — Desktop Chrome
 npm run test:e2e:critical   # Playwright E2E — critical user journeys
 npm run test:e2e:all        # Playwright E2E — all 16 browser projects
+npm run test:tester-army    # Tester Army — 23 journeys on desktop Chromium + mobile WebKit
+npm run test:tester-army:ci # Tester Army — 23 deterministic journeys on desktop Chromium
 npm run playwright:mcp      # Start Playwright MCP server (agent browser automation)
 npm run playwright:cli      # Run Playwright CLI for ad-hoc browser commands
 npm run playwright:codegen  # Interactive test codegen recorder
@@ -240,11 +243,13 @@ mangeshrautarchive/
 │   └── integrations/       # OAuth + OpenRouter helpers
 ├── tests/                  # All automated tests
 │   ├── api/                # pytest
-│   └── e2e/                # Playwright (+ helpers/site.js)
+│   ├── e2e/                # Playwright (+ helpers/site.js)
+│   ├── tester-army/        # Tester Army e2e deterministic journeys
+│   └── worker/             # Worker routing and stream boundaries
 ├── config/                 # vulture.toml (non-root tool config)
-├── docs/                   # STRUCTURE.md · plans/ · doc index
+├── docs/                   # STRUCTURE.md · TESTER_ARMY.md · plans/ · doc index
 ├── dist/                   # Build output (git-ignored)
-├── vercel.json · package.json · playwright/eslint configs
+├── e2e.config.mjs · package.json · playwright/eslint configs
 └── pyproject.toml · requirements*.txt
 ```
 
@@ -254,13 +259,14 @@ Full map: [docs/STRUCTURE.md](docs/STRUCTURE.md).
 
 ## 6. Testing Requirements
 
-All three test suites must pass before any merge to `main`:
+All four test suites must pass before any merge to `main`:
 
-| Suite  | Runner           | Command                     | Coverage                                    |
-| ------ | ---------------- | --------------------------- | ------------------------------------------- |
-| API    | pytest           | `npm run test:api`          | 185 tests — FastAPI endpoints, middleware   |
-| Worker | Node test runner | `npm run test:worker`       | 10 routing and streaming boundary checks    |
-| E2E    | Playwright       | `npm run test:e2e:critical` | 14 critical user journeys on Desktop Chrome |
+| Suite        | Runner           | Command                       | Coverage                                                                       |
+| ------------ | ---------------- | ----------------------------- | ------------------------------------------------------------------------------ |
+| API          | pytest           | `npm run test:api`            | 185 tests — FastAPI endpoints, middleware                                      |
+| Worker       | Node test runner | `npm run test:worker`         | 10 routing and streaming boundary checks                                       |
+| E2E Critical | Playwright       | `npm run test:e2e:critical`   | 14 critical user journeys on Desktop Chrome                                    |
+| Tester Army  | `e2e`            | `npm run test:tester-army:ci` | 23 deterministic journeys on desktop Chromium (46 checks across WebKit/Chrome) |
 
 The broader browser suite remains available through `npm run test:e2e:all` across 16 configured projects.
 

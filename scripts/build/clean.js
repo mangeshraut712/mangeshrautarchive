@@ -33,6 +33,7 @@ const generatedDirs = [
   '.cache',
   '.eslintcache',
   '.stylelintcache',
+  '.e2e',
   // Local AI/agent scaffolding (gitignored) — not shipped to GitHub Pages / Vercel
   '.agents',
   '.claude',

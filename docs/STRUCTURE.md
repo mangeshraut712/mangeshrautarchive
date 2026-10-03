@@ -16,6 +16,7 @@ mangeshrautarchive/
 ├── vercel.json               # Vercel serverless routes, headers, functions configuration
 ├── index.js                  # Static-analysis entrypoint → src/js/entry.js
 ├── playwright.config.js      # Multi-browser Playwright E2E configuration (16 browser profiles)
+├── e2e.config.mjs            # Tester Army deterministic browser journey configuration
 ├── eslint.config.js          # ESLint 10+ flat configuration
 ├── pyproject.toml            # Python 3.12+ project config + pytest / Ruff tool configurations
 ├── requirements.txt          # Production Python API dependencies (FastAPI, Pydantic, etc.)
@@ -58,13 +59,16 @@ mangeshrautarchive/
 │
 ├── tests/                    # ★ Complete Automated Test Suite
 │   ├── api/                  # pytest coverage for FastAPI routes, streaming, OAuth, and middleware
-│   └── e2e/                  # Playwright multi-browser end-to-end specifications across 16 targets
+│   ├── e2e/                  # Playwright multi-browser end-to-end specifications across 16 targets
+│   ├── tester-army/          # Tester Army deterministic end-to-end journeys (desktop + mobile WebKit)
+│   └── worker/               # Cloudflare Worker multimodal routing and stream boundary tests
 │
 ├── config/                   # Non-root tool configuration (e.g. vulture.toml dead-code scanner)
 │
 ├── docs/                     # Human Documentation, Design Systems & Architecture Plans
 │   ├── DESIGN.md             # Apple Human Interface Portfolio Design System (Canonical Source of Truth)
 │   ├── STRUCTURE.md          # This file — Complete repository directory map and guide
+│   ├── TESTER_ARMY.md        # Tester Army browser journey coverage manifest and boundary guide
 │   ├── README.md             # Documentation directory index
 │   └── plans/                # Architecture plans & implementation blueprints
 │
@@ -98,6 +102,8 @@ mangeshrautarchive/
 | One-off QA script                 | `scripts/qa/` or `scripts/qa/manual/`                    |
 | API test                          | `tests/api/`                                             |
 | Playwright E2E                    | `tests/e2e/`                                             |
+| Tester Army browser journeys      | `tests/tester-army/`                                     |
+| Cloudflare Worker tests           | `tests/worker/`                                          |
 | Architecture notes                | `docs/`                                                  |
 | Improve-skill plan                | `docs/plans/`                                            |
 | AssistMe UX design plan           | `docs/design-plans/`                                     |
@@ -105,7 +111,7 @@ mangeshrautarchive/
 
 ## Root files that must stay at root
 
-Tooling expects these paths: `package.json`, `vercel.json`, `playwright.config.js`, `eslint.config.js`, `.prettierrc`, `.stylelintrc.json`, `CNAME`, `pyproject.toml`, `requirements*.txt`.
+Tooling expects these paths: `package.json`, `e2e.config.mjs`, `playwright.config.js`, `eslint.config.js`, `.prettierrc`, `.stylelintrc.json`, `CNAME`, `pyproject.toml`, `requirements*.txt`.
 
 Do **not** move them into `config/` without updating every consumer.
 

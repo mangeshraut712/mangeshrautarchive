@@ -54,6 +54,25 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'repo-cleanup-organization-docs-sync-20261003',
+    date: '2026-10-03',
+    type: 'improvement',
+    title:
+      'Workspace cleanup, structure organization, and comprehensive documentation synchronization',
+    summary:
+      'Purged ephemeral build and test artifacts across all environments, enhanced clean.js with .e2e pruning, synchronized repository architecture across README.md, docs/STRUCTURE.md, docs/README.md, tests/README.md, and AGENTS.md, updated test suite commands and coverage metrics, and verified full stack test passing.',
+    tags: ['other'],
+    sha: null,
+    commitVerified: false,
+    model: 'Gemini 3.8 Flash',
+    ide: 'Google Antigravity IDE',
+    purpose:
+      'Comprehensive repository cleanup, folder organization, documentation synchronization, and clean.js enhancement.',
+    attributionSource: 'commit-message',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
     id: 'tester-army-portfolio-journeys-20261003',
     date: '2026-10-03',
     type: 'improvement',
