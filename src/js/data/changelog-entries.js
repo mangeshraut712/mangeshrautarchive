@@ -62,8 +62,8 @@ export const changelogEntries = [
     summary:
       'Purged ephemeral build and test artifacts across all environments, enhanced clean.js with .e2e pruning, synchronized repository architecture across README.md, docs/STRUCTURE.md, docs/README.md, tests/README.md, and AGENTS.md, updated test suite commands and coverage metrics, and verified full stack test passing.',
     tags: ['other'],
-    sha: null,
-    commitVerified: false,
+    sha: '01e9f691',
+    commitVerified: true,
     model: 'Gemini 3.8 Flash',
     ide: 'Google Antigravity IDE',
     purpose:
