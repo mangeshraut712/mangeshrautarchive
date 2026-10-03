@@ -54,6 +54,24 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'agentic-actions-september-2026-upgrade-20261003',
+    date: '2026-10-03',
+    type: 'improvement',
+    title: 'Upgrade AssistMe agentic actions & WebMCP suite for September 2026 platform features',
+    summary:
+      'Expanded client-side WebMCP deterministic browser tool suite from 17 to 20 tools with the addition of play_debug_runner (auto-launches, scrolls to, opens disclosure, and focuses the Dino-style mini-game), open_privacy_dashboard (triggers the on-device Apple HIG Privacy & Personalization modal for GitHub/Calendar integrations and memory controls), and open_blog_article (direct deep-linking and reader navigation for September 2026 articles: Apple September Event and OpenAI DevDay). Expanded natural language action dispatch regexes in agentic-actions.js and chatbot.js chips, enhanced section navigation with automatic subpage routing fallback (/systems, /travel, /monitor, /uses, /changelog), updated public portfolio facts, Cloudflare Worker tool definitions, and added comprehensive E2E Playwright coverage.',
+    tags: ['assistme', 'api', 'blog', 'design'],
+    sha: null,
+    commitVerified: false,
+    model: 'Gemini 3.8 Flash',
+    ide: 'Google Antigravity IDE',
+    purpose:
+      'Upgrade agentic actions and WebMCP tool suite for September 2026 platform features (Debug Runner game launcher, Privacy Dashboard modal, technical blog articles, and subpage routing).',
+    attributionSource: 'commit-message',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
     id: 'music-card-assistme-integration-20261003',
     date: '2026-10-03',
     type: 'improvement',

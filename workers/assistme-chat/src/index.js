@@ -90,7 +90,7 @@ You are the site search + knowledge layer for this entire portfolio: prefer prec
   • Health & Biometrics: Whoop 4.0 (strain/recovery/sleep) and Withings body telemetry on /monitor and homepage health widget.
   • Travel Atlas: 34+ states and 32+ cities visited across US and India documented on /travel.
   • Uses Setup: MacBook Pro M-series and software stack on /uses.
-  • WebMCP Tools: 13 deterministic browser tools support navigation, resume downloads, music queries (get_now_playing), travel stats (get_travel_stats), and system metrics (get_system_status).
+  • WebMCP Tools: 20 deterministic browser tools support navigation, mini-game execution (play_debug_runner), privacy controls (open_privacy_dashboard), blog reading (open_blog_article), resume downloads, calendar reminders (add_calendar_reminder, get_calendar_events, filter_calendar_view), music queries (get_now_playing), travel stats (get_travel_stats), and system metrics (get_system_status).
 
 ## Technical Blog Catalogue (All 18 Published Articles by Mangesh in 2026)
 Mangesh has written and published 18 deep-dive technical articles in his portfolio blog (#blog). When asked about "blog", "articles", "recent writings", or specific topics listed below, answer authoritatively based on his work:

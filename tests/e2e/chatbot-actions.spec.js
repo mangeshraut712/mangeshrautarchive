@@ -58,8 +58,8 @@ test.describe('Chatbot Agentic Actions & WebMCP Tool Registration', () => {
       tools.map(t => t.tool.name)
     );
 
-    // Assert that we registered all 17 tools
-    expect(tools.length).toBe(17);
+    // Assert that we registered all 20 tools
+    expect(tools.length).toBe(20);
 
     // Check specific tools
     const toolNames = tools.map(t => t.tool.name);
@@ -80,6 +80,9 @@ test.describe('Chatbot Agentic Actions & WebMCP Tool Registration', () => {
     expect(toolNames).toContain('add_calendar_reminder');
     expect(toolNames).toContain('get_calendar_events');
     expect(toolNames).toContain('filter_calendar_view');
+    expect(toolNames).toContain('play_debug_runner');
+    expect(toolNames).toContain('open_privacy_dashboard');
+    expect(toolNames).toContain('open_blog_article');
   });
 
   // Test 2: Local agentic action regex interception and visual feedback
@@ -163,5 +166,63 @@ test.describe('Chatbot Agentic Actions & WebMCP Tool Registration', () => {
     const actionBadge = page.locator('.action-badge');
     await expect(actionBadge).toBeVisible();
     await expect(actionBadge.locator('.action-badge-text')).toHaveText('ACTION EXECUTED');
+  });
+
+  // Test 3: Play game action launches Debug Runner and expands disclosure
+  test('should intercept play game action and expand debug runner disclosure', async ({ page }) => {
+    await page.goto('/', { waitUntil: 'networkidle' });
+
+    // Open chatbot
+    const toggleBtn = page.locator('#chatbot-toggle');
+    await expect(toggleBtn).toBeVisible();
+    await toggleBtn.click();
+
+    const widget = page.locator('#chatbot-widget');
+    await expect(widget).toBeVisible();
+
+    // Send play game command
+    const textarea = page.locator('#chatbot-input');
+    await textarea.fill('play the dino game');
+    await textarea.press('Enter');
+
+    // Wait for the action to complete
+    await page.waitForTimeout(2000);
+
+    // Verify disclosure was expanded
+    const isDisclosureOpen = await page.evaluate(() => {
+      const disclosure = document.querySelector(
+        '#debug-runner-section details.debug-runner-disclosure'
+      );
+      return disclosure ? disclosure.open : false;
+    });
+    expect(isDisclosureOpen).toBe(true);
+  });
+
+  // Test 4: Open privacy dashboard action
+  test('should intercept open privacy action and display privacy modal', async ({ page }) => {
+    await page.goto('/', { waitUntil: 'networkidle' });
+
+    // Open chatbot
+    const toggleBtn = page.locator('#chatbot-toggle');
+    await expect(toggleBtn).toBeVisible();
+    await toggleBtn.click();
+
+    const widget = page.locator('#chatbot-widget');
+    await expect(widget).toBeVisible();
+
+    // Send open privacy command
+    const textarea = page.locator('#chatbot-input');
+    await textarea.fill('open privacy dashboard');
+    await textarea.press('Enter');
+
+    // Wait for the action to complete
+    await page.waitForTimeout(2000);
+
+    // Verify privacy dashboard is visible
+    const isDashboardVisible = await page.evaluate(() => {
+      const dashboard = document.getElementById('privacy-dashboard');
+      return dashboard ? !dashboard.classList.contains('hidden') : false;
+    });
+    expect(isDashboardVisible).toBe(true);
   });
 });

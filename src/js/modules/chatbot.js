@@ -213,6 +213,18 @@ const AGENTIC_CHIP_BY_ACTION = {
   open_social: { icon: '🔗', label: 'Open Link' },
   toggle_theme: { icon: '🎨', label: 'Toggle Theme' },
   search: { icon: '🔍', label: 'Search' },
+  play_game: { icon: '🎮', label: 'Play Game' },
+  open_privacy: { icon: '🛡️', label: 'Privacy Dashboard' },
+  open_blog_article: { icon: '📖', label: 'Read Article' },
+  now_playing: { icon: '🎵', label: 'Now Playing' },
+  travel_stats: { icon: '✈️', label: 'Travel Atlas' },
+  system_status: { icon: '🟢', label: 'System Status' },
+  support_my_work: { icon: '💖', label: 'Support Work' },
+  add_calendar_reminder: { icon: '⏰', label: 'Add Reminder' },
+  get_calendar_events: { icon: '📅', label: 'Calendar Events' },
+  filter_calendar_view: { icon: '🔍', label: 'Filter Calendar' },
+  update_health_metric: { icon: '❤️', label: 'Health Metric' },
+  filter_projects: { icon: '💼', label: 'Filter Projects' },
 };
 
 // ── Agentic action patterns (UI chip only — real execution is agentic-actions.js)
@@ -229,6 +241,27 @@ const AGENTIC_PATTERNS = [
     action: 'navigate',
     icon: '🧭',
     label: 'Navigate',
+  },
+  {
+    pattern:
+      /\b(?:play|start|launch|open)\s+(?:the\s+)?(?:dino|runner|debug\s*runner|mini\s*game|game)\b/i,
+    action: 'play_game',
+    icon: '🎮',
+    label: 'Play Game',
+  },
+  {
+    pattern:
+      /\b(?:open|show|manage)\s+(?:the\s+)?(?:privacy|personalization|settings)\s*(?:dashboard|modal)?\b/i,
+    action: 'open_privacy',
+    icon: '🛡️',
+    label: 'Privacy Dashboard',
+  },
+  {
+    pattern:
+      /\b(?:read|open|view)\s+(?:the\s+)?(?:article|blog\s+post|post)\s+(?:about|on|titled)?\b/i,
+    action: 'open_blog_article',
+    icon: '📖',
+    label: 'Read Article',
   },
   {
     pattern: /\b(schedule|book|set\s*up)\s+(a\s+)?(meeting|call|chat|appointment)\b/i,
@@ -259,6 +292,12 @@ const AGENTIC_PATTERNS = [
     action: 'toggle_theme',
     icon: '🎨',
     label: 'Toggle Theme',
+  },
+  {
+    pattern: /\b(?:now\s*playing|currently\s*playing|music\s*card|spotify\s*track)\b/i,
+    action: 'now_playing',
+    icon: '🎵',
+    label: 'Now Playing',
   },
 ];
 

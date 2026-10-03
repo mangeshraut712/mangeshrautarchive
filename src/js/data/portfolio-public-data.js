@@ -49,7 +49,7 @@ export const TEST_COUNTS = {
   playwrightProjects: 16,
 };
 
-export const WEBMCP_TOOL_COUNT = 17;
+export const WEBMCP_TOOL_COUNT = 20;
 export const LUMA_CALENDARS_URL = 'https://luma.com/home/calendars';
 
 export const PWA_POLICY = {

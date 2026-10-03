@@ -14,6 +14,8 @@
 import { sitePath } from '../utils/site-base.js';
 import { isAllowedAgenticMatch } from '../chatbot/agentic-intent.js';
 import { forceDownloadFile } from './resume-dropdown.js';
+import { privacyDashboard } from './privacy-dashboard.js';
+import { blogPosts, retiredBlogPosts } from './blog-data.js';
 
 export class AgenticActionHandler {
   constructor() {
@@ -40,18 +42,19 @@ export class AgenticActionHandler {
     const signal = this.abortController.signal;
 
     try {
-      // 1. Navigate to section
+      // 1. Navigate to section or subpage
       navigator.modelContext.registerTool(
         {
           name: 'navigate_to_section',
           description:
-            'Smooth scroll to a specific section of the portfolio (e.g., home, about, skills, projects, contact, experience, education, publications, awards, certifications, blog, game).',
+            'Smooth scroll to a specific section or open a subpage of the portfolio (sections: home, about, skills, projects, contact, experience, education, publications, awards, recommendations, engineering, certifications, blog, faq, game; subpages: systems, travel, monitor, uses, changelog).',
           inputSchema: {
             type: 'object',
             properties: {
               section: {
                 type: 'string',
-                description: 'The target section name (e.g., projects, experience, contact).',
+                description:
+                  'The target section or page name (e.g., projects, experience, contact, game, systems, travel, monitor, uses, changelog).',
               },
             },
             required: ['section'],
@@ -364,6 +367,58 @@ export class AgenticActionHandler {
         { signal }
       );
 
+      // 18. Play Debug Runner Mini-Game
+      navigator.modelContext.registerTool(
+        {
+          name: 'play_debug_runner',
+          description:
+            'Launch, scroll to, open the disclosure, and focus the interactive Chrome Dino-style Debug Runner mini-game (#debug-runner-section).',
+          inputSchema: { type: 'object', properties: {} },
+          execute: async () => {
+            return this.playGame();
+          },
+        },
+        { signal }
+      );
+
+      // 19. Open Privacy & Personalization Dashboard
+      navigator.modelContext.registerTool(
+        {
+          name: 'open_privacy_dashboard',
+          description:
+            'Open the on-device Apple HIG Privacy & Personalization Dashboard modal to configure integrations (GitHub, Google Calendar), memory retention, and AI preferences.',
+          inputSchema: { type: 'object', properties: {} },
+          execute: async () => {
+            return this.openPrivacyDashboard();
+          },
+        },
+        { signal }
+      );
+
+      // 20. Open Technical Blog Article
+      navigator.modelContext.registerTool(
+        {
+          name: 'open_blog_article',
+          description:
+            'Open or navigate to a specific technical blog article by slug or topic (e.g., "apple-september-event-2026" for Apple September Event 2026, "openai-devday-2026" for OpenAI DevDay 2026, or other engineering field notes).',
+          inputSchema: {
+            type: 'object',
+            properties: {
+              article: {
+                type: 'string',
+                description:
+                  'The article slug, title keyword, or topic (e.g., "apple-september-event-2026", "openai-devday-2026", "openrouter", "grok", "vulcan").',
+              },
+            },
+            required: ['article'],
+          },
+          execute: async input => {
+            return this.openBlogArticle([null, input?.article]);
+          },
+        },
+        { signal }
+      );
+
       // Clean up on page unload to avoid WebMCP registry conflicts
       window.addEventListener(
         'beforeunload',
@@ -387,13 +442,13 @@ export class AgenticActionHandler {
     this.registerAction('navigate', {
       patterns: [
         // "go to / open / navigate to / navigate me to / take me to the Projects section"
-        /(?:go to|open|navigate(?:\s+me)?\s+to|take me to)\s+(?:the\s+)?(home|about|skills|projects|contact|experience|education|publications|awards|certifications|blog)(?:\s+section)?/i,
-        /(?:show|view)\s+(?:my|your|the)?\s*(skills|projects|experience|education|contact|publications|blog)(?:\s+section)?/i,
+        /(?:go to|open|navigate(?:\s+me)?\s+to|take me to)\s+(?:the\s+)?(home|about|skills|projects|contact|experience|education|publications|awards|certifications|blog|systems|travel|monitor|uses|changelog|game|runner|dino|debug\s*runner|faq|recommendations|engineering)(?:\s+(?:section|page))?/i,
+        /(?:show|view)\s+(?:my|your|the)?\s*(skills|projects|experience|education|contact|publications|blog|systems|travel|monitor|uses|changelog|game|runner|dino|faq|recommendations|engineering)(?:\s+(?:section|page))?/i,
         // bare "projects section" / "about section please"
-        /^(?:please\s+)?(?:the\s+)?(home|about|skills|projects|contact|experience|education)(?:\s+section)\b/i,
+        /^(?:please\s+)?(?:the\s+)?(home|about|skills|projects|contact|experience|education|systems|travel|monitor|uses|changelog|game|faq|engineering)(?:\s+(?:section|page))\b/i,
       ],
       handler: this.navigateToSection.bind(this),
-      description: 'Navigate to a specific section of the portfolio',
+      description: 'Navigate to a specific section or subpage of the portfolio',
     });
 
     // Download actions
@@ -573,6 +628,39 @@ export class AgenticActionHandler {
       handler: this.showSupportOptions.bind(this),
       description: 'Show payment, donation, and sponsorship channels to support Mangesh',
     });
+
+    // Play Debug Runner Mini-Game
+    this.registerAction('play_game', {
+      patterns: [
+        /(?:play|start|launch|open|run)\s+(?:the\s+)?(?:dino|runner|debug\s*runner|mini\s*game|game)\b/i,
+        /\b(?:play|start)\s+(?:a\s+|the\s+)?game\b/i,
+        /\b(?:launch|open)\s+(?:debug\s+runner|dev\s+runner)\b/i,
+      ],
+      handler: this.playGame.bind(this),
+      description: 'Launch and play the Chrome Dino-style Debug Runner mini-game',
+    });
+
+    // Privacy & Personalization Dashboard
+    this.registerAction('open_privacy', {
+      patterns: [
+        /(?:open|show|manage|view|edit)\s+(?:the\s+)?(?:privacy|personalization|integrations?|settings|consent|intelligence)\s*(?:dashboard|modal|settings|controls)?\b/i,
+        /\bprivacy\s+(?:dashboard|settings|modal|controls)\b/i,
+        /(?:configure|tune|manage)\s+(?:my\s+)?(?:privacy|integrations|github\s+integration|calendar\s+integration)\b/i,
+      ],
+      handler: this.openPrivacyDashboard.bind(this),
+      description: 'Open the Privacy & Personalization Dashboard modal',
+    });
+
+    // Open Technical Blog Article
+    this.registerAction('open_blog_article', {
+      patterns: [
+        /(?:open|read|view|show|navigate(?:\s+to)?)\s+(?:the\s+)?(?:blog\s+)?(?:post|article)?\s*(?:about|on|for)?\s*(?:the\s+)?(september(?:\s+2026)?(?:\s+apple)?(?:\s+event)?|apple\s+september(?:\s+event)?|devday|openai\s+devday|openrouter|grok|vulcan|notebooklm|cursor|wispr|tap\s+to\s+pay)\b/i,
+        /(?:open|read|view)\s+(?:the\s+)?(?:article|blog\s+post|post)\s+(?:about|on|titled)?\s*(.+)/i,
+        /(?:open|read)\s+(?:the\s+)?september\s+(?:2026\s+)?(?:event|article|post)/i,
+      ],
+      handler: this.openBlogArticle.bind(this),
+      description: 'Open a specific technical blog post or September 2026 article',
+    });
   }
 
   /**
@@ -630,7 +718,11 @@ export class AgenticActionHandler {
    */
 
   async navigateToSection(match) {
-    const section = match[1].toLowerCase();
+    const rawSection = String((Array.isArray(match) ? match[1] || match[0] : match) || '')
+      .toLowerCase()
+      .trim()
+      .replace(/\s+/g, '-');
+    const section = rawSection;
     const sectionMap = {
       home: '#home',
       about: '#about',
@@ -659,6 +751,8 @@ export class AgenticActionHandler {
       monitor: sitePath('/monitor.html'),
       uses: sitePath('/uses.html'),
       changelog: sitePath('/changelog.html'),
+      about: sitePath('/about.html'),
+      contact: sitePath('/contact.html'),
     };
 
     const target = sectionMap[section] || `#${section}`;
@@ -666,6 +760,20 @@ export class AgenticActionHandler {
     // Smooth scroll to section if present on current page
     const element = document.querySelector(target);
     if (element) {
+      if (
+        target === '#debug-runner-section' ||
+        section === 'game' ||
+        section === 'runner' ||
+        section === 'dino' ||
+        section === 'debug-runner'
+      ) {
+        const disclosure = element.querySelector('details.debug-runner-disclosure');
+        if (disclosure && !disclosure.open) {
+          disclosure.open = true;
+          disclosure.dispatchEvent(new Event('toggle'));
+        }
+      }
+
       element.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
       // Keep URL hash in sync so Viewing / context awareness can resolve the section
@@ -685,7 +793,10 @@ export class AgenticActionHandler {
 
       const detail = {
         sectionId:
-          section === 'game' || section === 'runner' || section === 'dino'
+          section === 'game' ||
+          section === 'runner' ||
+          section === 'dino' ||
+          section === 'debug-runner'
             ? 'debug-runner-section'
             : section,
         hash: target,
@@ -710,13 +821,176 @@ export class AgenticActionHandler {
         action: 'navigate',
         target: section,
       };
+    } else if (sectionMap[section]) {
+      window.location.href = sitePath(`/${sectionMap[section]}`);
+      return {
+        success: true,
+        message: `✅ Navigating to ${section} section on home page`,
+        action: 'navigate',
+        target: section,
+      };
     } else {
       return {
         success: false,
-        message: `❌ Section "${section}" not found. Try: home, about, skills, projects, blog, game, contact, systems, travel, monitor, uses`,
+        message: `❌ Section "${section}" not found. Try: home, about, skills, projects, blog, game, contact, systems, travel, monitor, uses, changelog`,
         action: 'navigate',
       };
     }
+  }
+
+  async playGame(_match) {
+    const gameSection = document.querySelector('#debug-runner-section');
+    if (!gameSection) {
+      window.location.href = sitePath('/#debug-runner-section');
+      return {
+        success: true,
+        message: '🎮 Navigating to the Debug Runner game on the homepage...',
+        action: 'play_game',
+      };
+    }
+
+    gameSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+    const disclosure = gameSection.querySelector('details.debug-runner-disclosure');
+    if (disclosure && !disclosure.open) {
+      disclosure.open = true;
+      disclosure.dispatchEvent(new Event('toggle'));
+    }
+
+    gameSection.classList.add('agentic-nav-highlight');
+    setTimeout(() => gameSection.classList.remove('agentic-nav-highlight'), 1000);
+
+    const canvas = document.querySelector('#debug-runner-canvas');
+    if (canvas) {
+      canvas.focus();
+    } else {
+      setTimeout(() => {
+        document.querySelector('#debug-runner-canvas')?.focus();
+      }, 300);
+    }
+
+    window.dispatchEvent(
+      new CustomEvent('portfolio:sectionchange', {
+        detail: { sectionId: 'debug-runner-section', hash: '#debug-runner-section' },
+      })
+    );
+
+    return {
+      success: true,
+      message:
+        '🎮 **Debug Runner Mini-Game Launched!**\n\nI have scrolled you to the game stage and opened the disclosure. Controls:\n- **Spacebar / Up Arrow**: Jump\n- **Down Arrow**: Duck / fast-fall\n- **P**: Pause / Resume\n- **M**: Mute Audio\n- **R**: Restart run\n\nDodge NullPointerExceptions, bugs, and merge conflicts; grab Coffee and Test Suite shields!',
+      action: 'play_game',
+    };
+  }
+
+  async openPrivacyDashboard(_match) {
+    try {
+      if (typeof privacyDashboard !== 'undefined' && typeof privacyDashboard.open === 'function') {
+        privacyDashboard.open();
+        return {
+          success: true,
+          message:
+            '🛡️ **Privacy & Personalization Dashboard Opened**\n\nYou can configure on-device data integrations (GitHub, Google Calendar), adjust memory retention, select communication style, or export/delete your session data in full compliance with GDPR.',
+          action: 'open_privacy',
+        };
+      }
+      const dashboard = document.getElementById('privacy-dashboard');
+      if (dashboard) {
+        dashboard.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+        dashboard.querySelector('.close-btn')?.focus();
+        return {
+          success: true,
+          message:
+            '🛡️ **Privacy & Personalization Dashboard Opened**\n\nYou can manage integrations, memory retention, and AI preferences.',
+          action: 'open_privacy',
+        };
+      }
+    } catch (e) {
+      console.warn('Error opening privacy dashboard:', e);
+    }
+
+    return {
+      success: false,
+      message: '❌ Privacy Dashboard is not available on this page.',
+      action: 'open_privacy',
+    };
+  }
+
+  async openBlogArticle(match) {
+    const rawQuery = String((Array.isArray(match) ? match[1] || match[0] : match) || '')
+      .toLowerCase()
+      .trim();
+
+    if (!rawQuery) {
+      return this.navigateToSection([null, 'blog']);
+    }
+
+    let matchedPost = null;
+
+    // Direct September 2026 and notable aliases
+    if (
+      rawQuery.includes('september') ||
+      rawQuery.includes('apple event') ||
+      rawQuery.includes('iphone duo') ||
+      rawQuery.includes('iphone 18')
+    ) {
+      matchedPost = blogPosts.find(p => p.id === 'apple-september-event-2026');
+    } else if (
+      rawQuery.includes('devday') ||
+      rawQuery.includes('openai') ||
+      rawQuery.includes('sol') ||
+      rawQuery.includes('gpt-6')
+    ) {
+      matchedPost = blogPosts.find(p => p.id === 'openai-devday-2026');
+    } else if (rawQuery.includes('openrouter') || rawQuery.includes('usb hub')) {
+      matchedPost = blogPosts.find(p => p.id === 'openrouter-ai-usb-hub-routing-2026');
+    } else if (rawQuery.includes('grok')) {
+      matchedPost =
+        blogPosts.find(p => p.id === 'grok-4-5-grok-build-open-source-2026') ||
+        blogPosts.find(p => p.id === 'grok-x-algorithm-systems-2026');
+    } else if (rawQuery.includes('vulcan') || rawQuery.includes('razorpay')) {
+      matchedPost = blogPosts.find(p => p.id === 'razorpay-vulcan-payments-foundation-model');
+    } else if (rawQuery.includes('tap to pay') || rawQuery.includes('upi')) {
+      matchedPost =
+        blogPosts.find(p => p.id === 'apple-september-event-2026') ||
+        retiredBlogPosts.find(p => p.id === 'upi-tap-to-pay-and-2026-payment-architecture');
+    }
+
+    if (!matchedPost) {
+      matchedPost =
+        blogPosts.find(p => p.id === rawQuery || p.id.toLowerCase().includes(rawQuery)) ||
+        blogPosts.find(p => p.title.toLowerCase().includes(rawQuery)) ||
+        blogPosts.find(p => (p.tags || []).some(t => t.toLowerCase().includes(rawQuery))) ||
+        retiredBlogPosts.find(p => p.id === rawQuery || p.id.toLowerCase().includes(rawQuery));
+    }
+
+    if (matchedPost) {
+      const targetId = matchedPost.replacementId || matchedPost.id;
+      const targetUrl = sitePath(`/blog/${encodeURIComponent(targetId)}.html`);
+
+      if (typeof window !== 'undefined') {
+        if (window.location.pathname.includes(targetId)) {
+          return {
+            success: true,
+            message: `📖 You are currently reading **${matchedPost.title}**.\n\n*${matchedPost.summary || matchedPost.readerPromise}*`,
+            action: 'open_blog_article',
+            post: matchedPost,
+          };
+        }
+        window.location.assign(targetUrl);
+      }
+
+      return {
+        success: true,
+        message: `📖 **Opening Article: ${matchedPost.title}**\n\n*${matchedPost.summary || matchedPost.readerPromise || ''}*\n\n📅 Published: ${matchedPost.date} (${matchedPost.readTime || 'Technical Deep Dive'})\n\nNavigating to [${matchedPost.title}](${targetUrl})...`,
+        action: 'open_blog_article',
+        targetUrl,
+        post: matchedPost,
+      };
+    }
+
+    return this.navigateToSection([null, 'blog']);
   }
 
   async downloadResume(match) {
