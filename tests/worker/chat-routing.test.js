@@ -13,6 +13,14 @@ const models = [
   architecture: { input_modalities: inputs, output_modalities: ['text'] },
   pricing: { prompt: '0', completion: '0' },
 }));
+models.push({
+  id: 'google/gemini-3.8-flash',
+  architecture: {
+    input_modalities: ['text', 'image', 'audio', 'video'],
+    output_modalities: ['text'],
+  },
+  pricing: { prompt: '0.0000015', completion: '0.000004' },
+});
 const env = { OPENROUTER_API_KEY: 'test-only-placeholder', OPENROUTER_PAID_FALLBACK: 'true' };
 const request = body =>
   new Request('https://example.com/api/chat', {
@@ -159,4 +167,23 @@ test('contemporary news query activates live search and attaches live grounding 
   const systemMessage = calls[0].messages.find(m => m.role === 'system');
   assert.ok(systemMessage.content.includes('Mock Real-Time Tech Headline'));
   assert.ok(systemMessage.content.includes('John Ternus is the CEO of Apple Inc.'));
+});
+
+test('audio recovers through a compatible Gemini model before Auto after a free-provider limit', async () => {
+  calls = [];
+  failFirst = true;
+  const response = await worker.fetch(
+    request({
+      message: 'Transcribe the spoken sentence exactly.',
+      messages: [{ role: 'user', content: 'Earlier conversation context.' }],
+      attachments: [{ src: dataUrl('audio/wav'), name: 'speech.wav' }],
+    }),
+    env,
+    {}
+  );
+  await response.text();
+  assert.equal(calls[0].model, 'nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free');
+  assert.equal(calls[1].model, 'google/gemini-3.8-flash');
+  assert.equal(calls[1].messages.at(-1).content[1].type, 'input_audio');
+  failFirst = false;
 });

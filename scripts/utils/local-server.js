@@ -16,8 +16,8 @@ const __dirname = dirname(__filename);
 const projectRoot = resolve(__dirname, '../../');
 
 // Load environment variables (.env.local overrides .env).
-dotenv.config({ path: join(projectRoot, '.env.local') });
-dotenv.config({ path: join(projectRoot, '.env') });
+dotenv.config({ path: join(projectRoot, '.env.local'), processEnv: process.env });
+dotenv.config({ path: join(projectRoot, '.env'), processEnv: process.env });
 
 const app = express();
 const port = Number.parseInt(process.env.PORT || '4000', 10);

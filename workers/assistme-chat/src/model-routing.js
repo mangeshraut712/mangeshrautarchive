@@ -95,6 +95,15 @@ export async function selectModelRoute(env, message, modalities) {
   const available = new Set(free.map(m => m.id));
   const chain = [...preferred.filter(id => available.has(id)), ...free.map(m => m.id)];
   if (modalities.every(m => ['text', 'image'].includes(m))) chain.push('openrouter/free');
+  const audioRecovery = [];
+  // Auto can select a credit-required provider despite an available BYOK audio route.
+  // Try the verified audio model directly first; normal OpenRouter billing still applies.
+  if (
+    env.OPENROUTER_PAID_FALLBACK === 'true' &&
+    modalities.includes('audio') &&
+    compatible.some(m => m.id === 'google/gemini-3.8-flash')
+  )
+    audioRecovery.push('google/gemini-3.8-flash');
   // Auto adapts to new task rankings. Paid recovery is server-owned, never user-selected.
   if (env.OPENROUTER_PAID_FALLBACK === 'true') chain.push('openrouter/auto');
   if (
@@ -108,6 +117,7 @@ export async function selectModelRoute(env, message, modalities) {
   return {
     chain: [...new Set(chain.filter(id => id !== 'openrouter/auto'))]
       .slice(0, 7)
+      .concat(audioRecovery)
       .concat(env.OPENROUTER_PAID_FALLBACK === 'true' ? ['openrouter/auto'] : []),
     task,
     modalities,

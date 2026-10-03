@@ -54,12 +54,30 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'full-stack-dependency-upgrade-october-3-2026',
+    date: '2026-10-03',
+    type: 'improvement',
+    title: 'Upgrade all npm and Python dependencies to latest stable versions',
+    summary:
+      'Upgraded 13 npm packages and 19 Python packages to their latest stable releases. npm: Playwright 1.62→1.63, ESLint 10.9→10.12, oxlint 1.85→1.86, Prettier 3.9.6→3.9.9, Stylelint 17.14→17.16, marked 18.0.10→18.0.14, sharp 0.35.4→0.35.5, ws 8.21→8.22, globals 17.11→17.13. Major version bumps: dotenv 17→18 (migrated all config() calls to pass processEnv explicitly), isomorphic-dompurify 3→4 (semver correction for Node ≥22 engine floor), KaTeX 0.18→0.19 (improved strict mode handling). Python: FastAPI 0.141→0.142, uvicorn 0.52→0.54, cryptography 50.0.1→50.0.2, pydantic 2.13.4→2.13.5, httpx2 2.10→2.13, starlette 1.6→1.7, websockets 17.0→17.1, ruff 0.16.3→0.16.10, flake8 7.3→7.4, and 10 more. Rebuilt rich-markdown vendor bundle with KaTeX 0.19.0. Zero regressions across 185 API, 10 worker, and lint quality gates.',
+    tags: ['performance', 'other'],
+    sha: null,
+    commitVerified: false,
+    model: 'Gemini 3.8 Flash',
+    ide: 'Google Antigravity IDE',
+    purpose:
+      'Comprehensive dependency lifecycle management — upgrade all npm and Python packages to latest stable versions with zero regressions',
+    attributionSource: 'commit-message',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
     id: 'assistme-live-multimodal-billing-october-3-2026',
     date: '2026-10-03',
     type: 'fix',
     title: 'Verify multimodal replies and show honest billing details',
     summary:
-      'Verify deployed text, code, image, video, PDF, and audio replies with their actual answering models. Audio recovers through Auto to Gemini 3.8 Flash via Google AI Studio BYOK. Distinguish OpenRouter charges from provider-reported inference costs, omit unknown pricing and derived throughput, preserve returned Gemini versions and Gemma parameter counts, and preserve explicit attachment errors when AI processing fails. Cloud TTS remains unavailable; Fusion has no successful inference evidence.',
+      'Verify deployed text, code, image, video, PDF, and audio replies with their actual answering models. Audio recovers through compatible Gemini 3.8 Flash via Google AI Studio BYOK before Auto, preserving longer conversations when Auto chooses a credit-required route. Distinguish OpenRouter charges from provider-reported inference costs, omit unknown pricing and derived throughput, preserve returned Gemini versions and Gemma parameter counts, and preserve explicit attachment errors when AI processing fails. Cloud TTS remains unavailable; Fusion has no successful inference evidence.',
     tags: ['assistme', 'voice', 'api'],
     sha: null,
     commitVerified: false,

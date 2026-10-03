@@ -8,8 +8,8 @@ import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '../..');
-config({ path: resolve(root, '.env.local') });
-config({ path: resolve(root, '.env') });
+config({ path: resolve(root, '.env.local'), processEnv: process.env });
+config({ path: resolve(root, '.env'), processEnv: process.env });
 
 const apiKey = process.env.OPENROUTER_API_KEY?.trim();
 const primaryModel = process.env.OPENROUTER_MODEL?.trim() || 'x-ai/grok-4.3';

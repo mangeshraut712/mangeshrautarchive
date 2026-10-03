@@ -833,7 +833,11 @@ def build_local_chat_payload(
 def _fallback_models(model: str, messages: Optional[List[Dict]] = None) -> List[str]:
     types = {part.get("type") for m in messages or [] if isinstance(m.get("content"), list) for part in m["content"]}
     if "input_audio" in types:
-        return ["nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free", "openrouter/auto"]
+        return [
+            "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free",
+            "google/gemini-3.8-flash",
+            "openrouter/auto",
+        ]
     if "video_url" in types:
         return ["google/gemma-4-26b-a4b-it:free", "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free", "openrouter/auto"]
     if "image_url" in types:

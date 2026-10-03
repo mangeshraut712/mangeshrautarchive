@@ -1,6 +1,8 @@
 import { test, expect } from '@playwright/test';
 import { gotoSite, openChatbot, sendChatbotDraft } from './helpers/site.js';
 
+test.use({ serviceWorkers: 'block' });
+
 test.describe('AssistMe Chatbot Metadata & Multi-Question Verification', () => {
   test.beforeEach(async ({ page }) => {
     // Intercept health check to ensure online status

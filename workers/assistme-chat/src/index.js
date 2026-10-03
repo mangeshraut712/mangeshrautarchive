@@ -568,7 +568,7 @@ function streamChatWithFallbacks(apiKey, chain, messages, userMessage, cors, env
       stopTyping();
       const answer =
         route?.modalities?.some(m => m !== 'text') || messages.some(m => Array.isArray(m.content))
-          ? 'I could not process that attachment right now. Try a smaller file or describe what you want me to check.'
+          ? 'The available AI providers could not process this attachment right now. Please retry or ask a typed question.'
           : localAnswer(userMessage);
       const step = 28;
       for (let i = 0; i < answer.length; i += step) {
@@ -845,7 +845,7 @@ async function handleChat(request, env, cors) {
   }
 
   const answer = parts.length
-    ? 'I could not process that attachment right now. Try a smaller file or describe what you want me to check.'
+    ? 'The available AI providers could not process this attachment right now. Please retry or ask a typed question.'
     : localAnswer(message);
   return json(
     {

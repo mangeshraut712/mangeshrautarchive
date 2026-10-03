@@ -17,8 +17,8 @@ import { config } from 'dotenv';
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '../..');
 const withChat = process.argv.includes('--with-chat');
 
-config({ path: resolve(root, '.env.local') });
-config({ path: resolve(root, '.env') });
+config({ path: resolve(root, '.env.local'), processEnv: process.env });
+config({ path: resolve(root, '.env'), processEnv: process.env });
 
 const globalCursorDir = resolve(homedir(), '.cursor');
 const globalMcpPath = resolve(globalCursorDir, 'mcp.json');
