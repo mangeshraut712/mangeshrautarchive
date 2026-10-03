@@ -1,9 +1,9 @@
 /** Auto-exported FastAPI/GA snapshot for GitHub Pages edge (Vercel offline). */
 export const EDGE_DATA_SNAPSHOT = {
-  exportedAt: '2026-10-03T05:22:47.141Z',
+  exportedAt: '2026-10-03T11:43:35.589Z',
   reach: {
     success: true,
-    total_reach: 10950,
+    total_reach: 10973,
     source: 'edge-ga-snapshot',
     ga_enabled: true,
     ga_configured: false,
@@ -12,13 +12,13 @@ export const EDGE_DATA_SNAPSHOT = {
     host: 'cloudflare-worker',
     message: 'Portfolio Reach mirrored from GA4/FastAPI for GitHub Pages (Vercel offline).',
     insights: {
-      unique_visitors: 10950,
-      unique_visitors_this_week: 77,
+      unique_visitors: 10973,
+      unique_visitors_this_week: 97,
       countries_this_week: 8,
-      sessions_this_week: 105,
-      total_views_all_time: 13797,
-      active_users_all_time: 10950,
-      event_count_all_time: 48306,
+      sessions_this_week: 127,
+      total_views_all_time: 13821,
+      active_users_all_time: 10973,
+      event_count_all_time: 48407,
       active_users_last_30_mins: 0,
       realtime_countries: [],
       realtime_fresh: false,
@@ -26,15 +26,15 @@ export const EDGE_DATA_SNAPSHOT = {
       metric_weekly_label: 'Active Users',
       avg_views_per_day: 0,
       portfolio_age_days: 1,
-      last_updated: '2026-10-03T05:22:47.116288Z',
+      last_updated: '2026-10-03T11:43:35.563748Z',
       top_countries: [
         {
           country: 'India',
-          users: 101,
+          users: 114,
         },
         {
           country: 'United States',
-          users: 66,
+          users: 73,
         },
         {
           country: 'United Kingdom',
@@ -95,20 +95,20 @@ export const EDGE_DATA_SNAPSHOT = {
         },
         {
           date: '2026-10-02',
-          views: 82,
+          views: 85,
           visitors: 62,
           sessions: 72,
         },
         {
           date: '2026-10-03',
-          views: 0,
-          visitors: 0,
-          sessions: 0,
+          views: 21,
+          visitors: 22,
+          sessions: 22,
         },
       ],
       trend_metric: 'visitors',
     },
-    timestamp: '2026-10-03T05:22:47.116288Z',
+    timestamp: '2026-10-03T11:43:35.563748Z',
   },
   healthVitals: {
     success: true,
