@@ -62,8 +62,8 @@ export const changelogEntries = [
     summary:
       'Redesigned the Privacy & Personalization modal with authentic Apple HIG glassmorphism, unified red close button (#ff3b30), iOS switches (#34c759), connected GitHub (@mangeshraut712) and Google Calendar/Calendly integrations with direct booking actions and dual localStorage key sync. Integrated full portfolio site awareness across all 15 homepage sections (including Debug Runner game) and separate subpages (Systems, Travel, Monitor, Uses, Changelog, About, Contact). Expanded Cloudflare edge worker, agentic navigation, and FastAPI site knowledge with all 18 published technical blog articles, temporal event matching (September 2026 Apple Event & OpenAI DevDay), and external search bypass for internal portfolio topics.',
     tags: ['assistme', 'design', 'api', 'blog'],
-    sha: null,
-    commitVerified: false,
+    sha: 'cdcce7b7',
+    commitVerified: true,
     model: 'Gemini 3.8 Flash',
     ide: 'Google Antigravity IDE',
     purpose:
