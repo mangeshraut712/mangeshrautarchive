@@ -86,8 +86,7 @@ You are the site search + knowledge layer for this entire portfolio: prefer prec
 - Flagship public repos: mangeshrautarchive, Gravity-SaaS-Agent, ai-ml-portfolio, HindAI, agent-console, Stanford-CS336.
 - Contact: mbr63drexel@gmail.com · mbr63@drexel.edu · linkedin.com/in/mangeshraut71298 · github.com/mangeshraut712
 - Portfolio surfaces: Home, About, Skills, Experience, Projects, Education, Publications, Awards, Recommendations, Certifications, Blog, FAQ, Contact, Systems, Travel, Monitor, Uses, Changelog, Game (Debug Runner).
-- Live Telemetry & Widgets:
-  • Live Music: Mangesh's Spotify listening is connected to Last.fm (user: mbr63) and shown on the Hero Music Card (#music-card).
+  • Live Music & Hero Music Card (#music-card): Mangesh's Spotify listening is connected to Last.fm (user: mbr63) and rendered on the Hero Music Card (#music-card) in the #home section using Apple Music-style glassmorphism. It polls /api/music/recent every 20s and features: live status badge with pulsating green dot & equalizer bars, track title and artist/album, album artwork with a 30s playable audio preview button, audio scrubber bar, and direct launch buttons for Spotify and Apple Music. A secondary music shelf is also located in #currently #music-content.
   • Health & Biometrics: Whoop 4.0 (strain/recovery/sleep) and Withings body telemetry on /monitor and homepage health widget.
   • Travel Atlas: 34+ states and 32+ cities visited across US and India documented on /travel.
   • Uses Setup: MacBook Pro M-series and software stack on /uses.
@@ -268,8 +267,8 @@ function localAnswer(message) {
   if (/changelog|release\s*note|shipped|version/.test(q)) {
     return 'The **Portfolio Changelog** ([/changelog](/changelog)) details the chronological evolution of this site, including feature releases, design polish, bug fixes, and multi-model AI agent attribution. Visit [/changelog](/changelog).';
   }
-  if (/music|song|track|listening|spotify|scrobble|now\s*playing/.test(q)) {
-    return "Mangesh's live music listening is powered by his **Spotify ↔ Last.fm** connection (user: **mbr63**). Check the **Hero Music Card** on the homepage to see what he's currently playing, or visit [last.fm/user/mbr63](https://www.last.fm/user/mbr63).";
+  if (/music|song|track|listening|spotify|scrobble|now\s*playing|music\s*card/.test(q)) {
+    return "Mangesh's live music listening is showcased on the **Hero Music Card** (`#music-card`) in the homepage hero section. Powered by his **Spotify ↔ Last.fm** connection (user: **mbr63**), it displays his currently playing or most recent track, album cover art, a 30-second interactive audio preview, equalizer animation, and direct links to Spotify and Apple Music. You can also view his listening shelf in the [#currently](#currently) section or check his [Last.fm profile](https://www.last.fm/user/mbr63).";
   }
   if (/whoop|health|fitness|recovery|strain|sleep|withings/.test(q)) {
     return 'Mangesh tracks his biometric recovery, sleep performance, and strain using **Whoop 4.0** and **Withings**. Check the live health widget on the homepage or visit the [System Monitor](/monitor).';

@@ -535,9 +535,12 @@ export class AgenticActionHandler {
         /what\s+music\s+(?:is\s+)?(?:playing|he\s+listening\s+to|do\s+you\s+listen\s+to)/i,
         /\b(?:now\s*playing|currently\s*playing|last\s*scrobble|spotify\s*track)\b/i,
         /current\s*(?:song|track|music)/i,
+        /(?:check|show|tell|view|what)?.*?(?:music|spotify|last\.?fm)\s*(?:card|details|player|widget|track)/i,
+        /which\s+music\s+card/i,
       ],
       handler: this.getNowPlaying.bind(this),
-      description: 'Check what music Mangesh is currently listening to on Spotify via Last.fm',
+      description:
+        'Check what music Mangesh is currently listening to on Spotify via Last.fm and inspect the Hero Music Card',
     });
 
     // Travel Atlas stats

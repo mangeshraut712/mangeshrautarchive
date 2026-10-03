@@ -4014,6 +4014,17 @@ class AppleIntelligenceChatbot {
       if (blogArticles.length === 6) break;
     }
 
+    const musicTrackEl = document.querySelector('#home .track-name, #track-name');
+    const musicArtistEl = document.querySelector('#home .artist-name, #artist-name');
+    const musicStatusEl = document.querySelector('#home #status-text, #status-text');
+    const currentMusic = musicTrackEl?.textContent?.trim()
+      ? {
+          track: musicTrackEl.textContent.trim(),
+          artist: musicArtistEl?.textContent?.trim() || '',
+          status: musicStatusEl?.textContent?.trim() || 'Listening',
+        }
+      : null;
+
     return {
       currentSection: pageCtx?.label || pageCtx?.sectionId || '',
       sectionId: pageCtx?.sectionId || '',
@@ -4022,6 +4033,7 @@ class AppleIntelligenceChatbot {
       visibleProjects: projects,
       visibleBlogArticles: blogArticles,
       gameAvailable: Boolean(document.getElementById('debug-runner-section')),
+      currentMusic,
     };
   }
 

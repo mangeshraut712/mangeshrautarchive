@@ -54,6 +54,25 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'music-card-assistme-integration-20261003',
+    date: '2026-10-03',
+    type: 'improvement',
+    title:
+      'Integrate Hero Music Card telemetry, live page context, and agentic queries in AssistMe',
+    summary:
+      'Equipped AssistMe with deep Hero Music Card (#music-card) intelligence and live telemetry. Added live DOM currentMusic extraction in chatbot page context, expanded now_playing agentic action patterns to match music card and listening queries with smooth scroll highlighting (#30d158), enriched Cloudflare worker prompt and offline fallback with Last.fm (user: mbr63) Spotify synchronization details, 30s audio previews, equalizer status, and streaming links, and injected music telemetry facts into FastAPI site knowledge.',
+    tags: ['assistme', 'api', 'design'],
+    sha: null,
+    commitVerified: false,
+    model: 'Gemini 3.8 Flash',
+    ide: 'Google Antigravity IDE',
+    purpose:
+      'AssistMe Hero Music Card integration, live track DOM context payload extraction, now_playing agentic action expansion, and site knowledge enrichment.',
+    attributionSource: 'commit-message',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
     id: 'privacy-dashboard-assistme-portfolio-awareness-20261003',
     date: '2026-10-03',
     type: 'improvement',

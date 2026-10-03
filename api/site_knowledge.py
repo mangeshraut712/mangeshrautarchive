@@ -432,10 +432,20 @@ def build_derived_knowledge_text() -> str:
         "Controls: Spacebar or Up Arrow to jump, Down Arrow to duck / fast-fall, P to pause, M to mute, R to restart. "
         "Tracks local high scores in browser localStorage."
     )
+    music_card_facts = (
+        "Music Card and Live Listening Telemetry (#music-card, #home, Last.fm user mbr63): "
+        "The homepage Hero features an authentic Apple Music-style glassmorphism Music Card. "
+        "It connects Mangesh's Spotify listening in real-time via Last.fm (user: mbr63), polling every 20 seconds. "
+        "Features: live status badge with pulsating green dot and equalizer animation, track title, artist, and album name, "
+        "high-resolution album artwork with a 30-second audio preview button (powered by iTunes Search API), an interactive "
+        "audio scrubber bar with timestamps, and direct external streaming links to Apple Music and Spotify. "
+        "A secondary music shelf is also featured in the Currently section (#currently #music-content)."
+    )
     return _normalize_text(
         f"{get_portfolio_facts_chunk()} "
         f"{devotional_facts} "
         f"{debug_runner_facts} "
+        f"{music_card_facts} "
         f"Travel Atlas total stops: {travel['total_stops']} across {travel['country_count']} countries. "
         f"Country stop counts: {'; '.join(country_lines)}. "
         f"{format_usa_state_summary()} "
@@ -559,6 +569,8 @@ def retrieve_site_context(
             score += 3 if "blog" in chunk.title.lower() else 0
         if any(hint in lower_query for hint in ("game", "runner", "dino", "debug runner")):
             score += 4 if ("runner" in chunk.title.lower() or "runner" in chunk.text.lower()) else 0
+        if any(hint in lower_query for hint in ("music", "song", "track", "spotify", "lastfm", "music card", "listening")):
+            score += 4 if ("music" in chunk.title.lower() or "music" in chunk.text.lower() or "last.fm" in chunk.text.lower()) else 0
         if any(hint in lower_query for hint in ("ganesh", "ganapati", "aarti", "sukhkarta", "dukhharta", "hanuman", "chalisa", "devotional", "blessing")):
             score += 5 if ("blessing" in chunk.source.lower() or "devotional" in chunk.text.lower()) else 0
         scored.append((score, chunk))
