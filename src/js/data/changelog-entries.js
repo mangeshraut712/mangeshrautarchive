@@ -61,8 +61,8 @@ export const changelogEntries = [
     summary:
       'Expanded client-side WebMCP deterministic browser tool suite from 17 to 20 tools with the addition of play_debug_runner (auto-launches, scrolls to, opens disclosure, and focuses the Dino-style mini-game), open_privacy_dashboard (triggers the on-device Apple HIG Privacy & Personalization modal for GitHub/Calendar integrations and memory controls), and open_blog_article (direct deep-linking and reader navigation for September 2026 articles: Apple September Event and OpenAI DevDay). Expanded natural language action dispatch regexes in agentic-actions.js and chatbot.js chips, enhanced section navigation with automatic subpage routing fallback (/systems, /travel, /monitor, /uses, /changelog), updated public portfolio facts, Cloudflare Worker tool definitions, and added comprehensive E2E Playwright coverage.',
     tags: ['assistme', 'api', 'blog', 'design'],
-    sha: null,
-    commitVerified: false,
+    sha: 'e5414700',
+    commitVerified: true,
     model: 'Gemini 3.8 Flash',
     ide: 'Google Antigravity IDE',
     purpose:
