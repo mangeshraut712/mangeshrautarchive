@@ -17,7 +17,11 @@ const CONTEMPORARY_ENTITIES_RE =
 
 // Purely portfolio-specific topics that should bypass live search to avoid latency
 const PORTFOLIO_QUERY_RE =
-  /\b(mangesh|raut|drexel|ioasiz|aramark|resume|portfolio|systems\.html|travel atlas|uses\.html|panchang|hindai|agent-console|stanford-cs336|gravity-saas|contact|email|phone|github\.com\/mangeshraut)\b/i;
+  /\b(mangesh|raut|drexel|ioasiz|aramark|resume|portfolio|systems\.html|travel atlas|uses\.html|panchang|hindai|agent-console|stanford-cs336|gravity-saas|contact|email|phone|github\.com\/mangeshraut|debug-runner|debug runner|dino|mini-game|game)\b/i;
+
+// Queries specifically targeting Mangesh's published blog articles or portfolio sections
+const PORTFOLIO_BLOG_OR_INTERNAL_RE =
+  /\b(my\s+blog|your\s+blog|check\s+(?:my\s+|the\s+)?blog|blog\s+(?:posts?|catalog|articles?)|articles?|sept(?:ember)?(?:\s+2026)?\s+event|apple\s+september\s+event|openai\s+devday|devday\s+2026|razorpay\s+vulcan|openrouter\s+field\s+notes|grok\s+4\.5)\b/i;
 
 /**
  * Determines whether a message benefits from real-time live grounding.
@@ -28,6 +32,11 @@ export function shouldFetchLiveGrounding(message) {
   if (!message || typeof message !== 'string') return false;
   const trimmed = message.trim();
   if (trimmed.length < 4) return false;
+
+  // Portfolio blog or internal feature questions bypass external news search
+  if (PORTFOLIO_BLOG_OR_INTERNAL_RE.test(trimmed)) {
+    return false;
+  }
 
   // If asking specifically about Mangesh or portfolio internals, don't query live news
   if (PORTFOLIO_QUERY_RE.test(trimmed) && !TEMPORAL_NEWS_RE.test(trimmed)) {

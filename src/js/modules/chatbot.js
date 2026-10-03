@@ -187,12 +187,21 @@ const SECTION_CONTEXT_PROMPTS = {
   about: ['About Me', 'Give me a quick intro to Mangesh'],
   skills: ['Skills', "What are Mangesh's strongest skills?"],
   experience: ['Experience', "Walk me through Mangesh's work experience"],
+  engineering: ['Engineering Showcase', 'What systems architecture patterns does Mangesh use?'],
   projects: ['Projects', "What are Mangesh's most impressive projects?"],
   education: ['Education', "Tell me about Mangesh's education"],
   publications: ['Publications', 'What research has Mangesh published?'],
+  awards: ['Awards & Honors', 'What awards and distinctions has Mangesh received?'],
+  recommendations: ['Recommendations', 'What do colleagues and managers say about Mangesh?'],
   certifications: ['Certifications', 'Which certifications does Mangesh hold?'],
-  blog: ['Blog', 'What does Mangesh write about?'],
+  blog: ['Blog', 'What does Mangesh write about in his 18 technical articles?'],
+  faq: ['FAQ', 'What are answers to common questions about hiring and availability?'],
   contact: ['Contact', 'How do I get in touch with Mangesh?'],
+  'debug-runner-section': [
+    'Debug Runner Game',
+    'Tell me about the Debug Runner mini-game and how to play',
+  ],
+  game: ['Debug Runner Game', 'Tell me about the Debug Runner mini-game and how to play'],
 };
 
 // Chip metadata keyed by agenticActions action names (post-execution)
@@ -216,7 +225,7 @@ const AGENTIC_PATTERNS = [
   },
   {
     pattern:
-      /\b(navigate|go|scroll|take\s+me|show|open)\s+(to\s+|me\s+)?(the\s+)?(home|projects?|skills?|about|contact|experience|education)\b/i,
+      /\b(navigate|go|scroll|take\s+me|show|open)\s+(to\s+|me\s+)?(the\s+)?(home|projects?|skills?|about|contact|experience|education|blog|game|runner|dino|engineering|systems|travel|monitor|uses|changelog)\b/i,
     action: 'navigate',
     icon: '🧭',
     label: 'Navigate',
@@ -3990,8 +3999,19 @@ class AppleIntelligenceChatbot {
       const title = (element.getAttribute('data-project-title') || element.textContent || '')
         .trim()
         .slice(0, 80);
-      if (title) projects.push({ title });
+      if (title && !projects.some(p => p.title === title)) projects.push({ title });
       if (projects.length === 6) break;
+    }
+
+    const blogArticles = [];
+    for (const element of document.querySelectorAll(
+      '.blog-card h3, [data-blog-title], .blog-article-card h4'
+    )) {
+      const title = (element.getAttribute('data-blog-title') || element.textContent || '')
+        .trim()
+        .slice(0, 90);
+      if (title && !blogArticles.includes(title)) blogArticles.push(title);
+      if (blogArticles.length === 6) break;
     }
 
     return {
@@ -4000,6 +4020,8 @@ class AppleIntelligenceChatbot {
       pagePath: typeof location !== 'undefined' ? location.pathname : '',
       pageTitle: typeof document !== 'undefined' ? document.title : '',
       visibleProjects: projects,
+      visibleBlogArticles: blogArticles,
+      gameAvailable: Boolean(document.getElementById('debug-runner-section')),
     };
   }
 

@@ -633,19 +633,34 @@ export class AgenticActionHandler {
       about: '#about',
       skills: '#skills',
       experience: '#experience',
+      engineering: '#engineering',
       projects: '#projects',
       education: '#education',
       publications: '#publications',
       awards: '#awards',
+      recommendations: '#recommendations',
       certifications: '#certifications',
       blog: '#blog',
+      faq: '#faq',
       contact: '#contact',
       game: '#debug-runner-section',
+      runner: '#debug-runner-section',
+      dino: '#debug-runner-section',
+      'debug-runner': '#debug-runner-section',
+      'debug-runner-section': '#debug-runner-section',
+    };
+
+    const subpageMap = {
+      systems: sitePath('/systems.html'),
+      travel: sitePath('/travel.html'),
+      monitor: sitePath('/monitor.html'),
+      uses: sitePath('/uses.html'),
+      changelog: sitePath('/changelog.html'),
     };
 
     const target = sectionMap[section] || `#${section}`;
 
-    // Smooth scroll to section
+    // Smooth scroll to section if present on current page
     const element = document.querySelector(target);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -666,7 +681,10 @@ export class AgenticActionHandler {
       setTimeout(() => element.classList.remove('agentic-nav-highlight'), 700);
 
       const detail = {
-        sectionId: section === 'game' ? 'debug-runner-section' : section,
+        sectionId:
+          section === 'game' || section === 'runner' || section === 'dino'
+            ? 'debug-runner-section'
+            : section,
         hash: target,
       };
       window.dispatchEvent(new CustomEvent('portfolio:sectionchange', { detail }));
@@ -681,10 +699,18 @@ export class AgenticActionHandler {
         action: 'navigate',
         target: section,
       };
+    } else if (subpageMap[section]) {
+      window.location.href = subpageMap[section];
+      return {
+        success: true,
+        message: `✅ Opening ${section} page`,
+        action: 'navigate',
+        target: section,
+      };
     } else {
       return {
         success: false,
-        message: `❌ Section "${section}" not found. Try: home, about, skills, projects, contact`,
+        message: `❌ Section "${section}" not found. Try: home, about, skills, projects, blog, game, contact, systems, travel, monitor, uses`,
         action: 'navigate',
       };
     }

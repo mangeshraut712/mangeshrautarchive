@@ -54,6 +54,25 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'privacy-dashboard-assistme-portfolio-awareness-20261003',
+    date: '2026-10-03',
+    type: 'improvement',
+    title:
+      'Overhaul Privacy & Personalization modal and expand AssistMe chatbot to full portfolio site awareness',
+    summary:
+      'Redesigned the Privacy & Personalization modal with authentic Apple HIG glassmorphism, unified red close button (#ff3b30), iOS switches (#34c759), connected GitHub (@mangeshraut712) and Google Calendar/Calendly integrations with direct booking actions and dual localStorage key sync. Integrated full portfolio site awareness across all 15 homepage sections (including Debug Runner game) and separate subpages (Systems, Travel, Monitor, Uses, Changelog, About, Contact). Expanded Cloudflare edge worker, agentic navigation, and FastAPI site knowledge with all 18 published technical blog articles, temporal event matching (September 2026 Apple Event & OpenAI DevDay), and external search bypass for internal portfolio topics.',
+    tags: ['assistme', 'design', 'api', 'blog'],
+    sha: null,
+    commitVerified: false,
+    model: 'Gemini 3.8 Flash',
+    ide: 'Google Antigravity IDE',
+    purpose:
+      'Privacy modal Apple HIG overhaul, active GitHub and Calendar integration controls, and complete chatbot portfolio-wide and blog awareness.',
+    attributionSource: 'commit-message',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
     id: 'contact-section-apple-design-elevation-20261003',
     date: '2026-10-03',
     type: 'improvement',
@@ -61,8 +80,8 @@ export const changelogEntries = [
     summary:
       'Balanced desktop two-column layout with 4 cards per column, fixed lazy load bootstrap registration for contact-page.js, styled world clocks toggle and reminders controls as Apple Tier 4 pill buttons, upgraded support contribution active pills with Apple Blue linear specular gradients, expanded contact copy buttons to >=44px touch targets, unified smart modal close buttons, eliminated email address clipping, and redesigned contact.html redirect shell with SF Pro typography and native Apple styling.',
     tags: ['design', 'performance'],
-    sha: null,
-    commitVerified: false,
+    sha: 'c4338f3c',
+    commitVerified: true,
     model: 'Gemini 3.8 Flash',
     ide: 'Google Antigravity IDE',
     purpose:

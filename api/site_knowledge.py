@@ -36,6 +36,18 @@ PUBLIC_SOURCES: Sequence[Dict[str, str]] = (
         "kind": "html",
     },
     {
+        "path": "src/about.html",
+        "title": "About Mangesh Raut standalone page",
+        "url": "https://mangeshraut.pro/about",
+        "kind": "html",
+    },
+    {
+        "path": "src/contact.html",
+        "title": "Contact Mangesh Raut standalone page",
+        "url": "https://mangeshraut.pro/contact",
+        "kind": "html",
+    },
+    {
         "path": "src/travel.html",
         "title": "Travel Atlas page",
         "url": "https://mangeshraut.pro/travel",
@@ -99,21 +111,26 @@ PUBLIC_SOURCES: Sequence[Dict[str, str]] = (
 
 SECTION_HINTS = {
     "home": "homepage intro name title profile headline music resume projects",
-    "about": "about personal summary background biography",
-    "skills": "skills technologies stack languages frameworks cloud ai ml",
-    "experience": "experience employment work company software engineer ces ioasiz",
-    "projects": "projects github portfolio applications software systems",
+    "about": "about personal summary background biography drexel philosophy",
+    "skills": "skills technologies stack languages frameworks cloud ai ml spring fastapi",
+    "experience": "experience employment work company software engineer ces ioasiz aramark",
+    "engineering": "systems engineering showcase architecture diagrams performance benchmarks",
+    "projects": "projects github portfolio applications software systems standouts",
     "education": "education drexel university degree gpa pune sppu msbte transcript",
     "publications": "publications research paper real time face emotion recognition system ijfgcn 2020 rtfers",
     "awards": "awards honors achievements graduate academic distinction student of the year",
-    "certifications": "certifications aws oracle tensorflow",
-    "blog": "blog writing articles technical writings open x google io",
+    "recommendations": "recommendations testimonials endorsements managers peers colleagues",
+    "certifications": "certifications aws oracle tensorflow deeplearning",
+    "blog": "blog writing articles technical writings open x google io apple devday vulcan",
+    "faq": "frequently asked questions hiring relocation sponsorship tech stack interview availability",
     "contact": "contact email phone linkedin github calendar devotional blessings ganesh ganapati aarti sukhkarta dukh harta lata mangeshkar hanuman chalisa bhagavad gita donation support crypto",
+    "game": "debug runner chrome dino mini game easter egg keyboard jump space obstacle high score offline runner canvas powerups",
+    "debug-runner": "debug runner chrome dino mini game keyboard jump space obstacle bugs memory leaks high score",
     "travel": "travel atlas cities countries landmarks photos distance map",
-    "monitor": "system monitor operations api backend vercel github status",
+    "monitor": "system monitor operations api backend vercel github status whoop withings",
     "systems": "systems engineering evidence benchmarks architecture lighthouse quality gates",
-    "uses": "uses hardware software ai stack tools colophon setup",
-    "changelog": "changelog releases shipped features updates bug fixes commits version history",
+    "uses": "uses hardware software ai stack tools colophon setup macbook studio display",
+    "changelog": "changelog releases shipped features updates bug fixes commits version history attribution",
 }
 
 WEB_FRESHNESS_RE = re.compile(
@@ -303,23 +320,34 @@ def format_usa_state_summary() -> str:
 def format_blog_release_summary(query: str, today: Optional[date] = None) -> str:
     current = today or date.today()
     month_match = re.search(
-        r"\b(january|february|march|april|may|june|july|august|september|october|november|december)\s+(20\d{2})\b",
+        r"\b(january|jan|february|feb|march|mar|april|apr|may|june|jun|july|jul|august|aug|september|sept|october|oct|november|nov|december|dec)\s+(20\d{2})\b",
         query,
         re.I,
     )
     months = {
         "january": 1,
+        "jan": 1,
         "february": 2,
+        "feb": 2,
         "march": 3,
+        "mar": 3,
         "april": 4,
+        "apr": 4,
         "may": 5,
         "june": 6,
+        "jun": 6,
         "july": 7,
+        "jul": 7,
         "august": 8,
+        "aug": 8,
         "september": 9,
+        "sept": 9,
         "october": 10,
+        "oct": 10,
         "november": 11,
+        "nov": 11,
         "december": 12,
+        "dec": 12,
     }
 
     if month_match:
@@ -379,7 +407,8 @@ def format_recent_changelog_summary(limit: int = 5) -> str:
 
 def build_derived_knowledge_text() -> str:
     travel = get_travel_summary()
-    blog_june_2026 = format_blog_release_summary("June 2026")
+    blog_sept_2026 = format_blog_release_summary("September 2026")
+    blog_recent = format_recent_blog_summary(10)
     changelog_summary = format_recent_changelog_summary(5)
     country_lines = [
         f"{country}: {data['stops']} stops"
@@ -396,13 +425,22 @@ def build_derived_knowledge_text() -> str:
         "Bhagavad Gita quotes Ch 2:47 and Ch 9:22. "
         "Support donation channels: Stripe, PayPal, Buy Me a Coffee, and crypto wallets (SOL, BTC, USDC, ETH, DOGE)."
     )
+    debug_runner_facts = (
+        "Debug Runner Mini-Game (#debug-runner-section, #game): "
+        "Chrome Dino-inspired interactive endless runner with developer-themed obstacles (bugs, null pointer exceptions, "
+        "merge conflicts, memory leaks, 404s, flying drones) and power-ups (Coffee speed boost, Test Suite shield). "
+        "Controls: Spacebar or Up Arrow to jump, Down Arrow to duck / fast-fall, P to pause, M to mute, R to restart. "
+        "Tracks local high scores in browser localStorage."
+    )
     return _normalize_text(
         f"{get_portfolio_facts_chunk()} "
         f"{devotional_facts} "
+        f"{debug_runner_facts} "
         f"Travel Atlas total stops: {travel['total_stops']} across {travel['country_count']} countries. "
         f"Country stop counts: {'; '.join(country_lines)}. "
         f"{format_usa_state_summary()} "
-        f"{blog_june_2026} "
+        f"{blog_sept_2026} "
+        f"{blog_recent} "
         f"{changelog_summary}"
     )
 
@@ -517,8 +555,10 @@ def retrieve_site_context(
             score += 3 if "travel" in chunk.title.lower() else 0
         if any(hint in lower_query for hint in ("monitor", "api", "backend", "status")):
             score += 3 if "monitor" in chunk.title.lower() else 0
-        if any(hint in lower_query for hint in ("blog", "article", "writing")):
+        if any(hint in lower_query for hint in ("blog", "article", "writing", "september", "devday", "vulcan")):
             score += 3 if "blog" in chunk.title.lower() else 0
+        if any(hint in lower_query for hint in ("game", "runner", "dino", "debug runner")):
+            score += 4 if ("runner" in chunk.title.lower() or "runner" in chunk.text.lower()) else 0
         if any(hint in lower_query for hint in ("ganesh", "ganapati", "aarti", "sukhkarta", "dukhharta", "hanuman", "chalisa", "devotional", "blessing")):
             score += 5 if ("blessing" in chunk.source.lower() or "devotional" in chunk.text.lower()) else 0
         scored.append((score, chunk))
