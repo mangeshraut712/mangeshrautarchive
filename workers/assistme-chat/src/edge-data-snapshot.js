@@ -1,6 +1,6 @@
 /** Auto-exported FastAPI/GA snapshot for GitHub Pages edge (Vercel offline). */
 export const EDGE_DATA_SNAPSHOT = {
-  exportedAt: '2026-10-04T12:27:07.935Z',
+  exportedAt: '2026-10-04T21:31:51.772Z',
   reach: {
     success: true,
     total_reach: 10991,
@@ -13,12 +13,12 @@ export const EDGE_DATA_SNAPSHOT = {
     message: 'Portfolio Reach mirrored from GA4/FastAPI for GitHub Pages (Vercel offline).',
     insights: {
       unique_visitors: 10991,
-      unique_visitors_this_week: 118,
+      unique_visitors_this_week: 119,
       countries_this_week: 8,
-      sessions_this_week: 149,
-      total_views_all_time: 13852,
+      sessions_this_week: 150,
+      total_views_all_time: 13856,
       active_users_all_time: 10991,
-      event_count_all_time: 48534,
+      event_count_all_time: 48550,
       active_users_last_30_mins: 0,
       realtime_countries: [],
       realtime_fresh: false,
@@ -26,7 +26,7 @@ export const EDGE_DATA_SNAPSHOT = {
       metric_weekly_label: 'Active Users',
       avg_views_per_day: 0,
       portfolio_age_days: 1,
-      last_updated: '2026-10-04T12:27:07.896146Z',
+      last_updated: '2026-10-04T21:31:51.741079Z',
       top_countries: [
         {
           country: 'India',
@@ -34,7 +34,7 @@ export const EDGE_DATA_SNAPSHOT = {
         },
         {
           country: 'United States',
-          users: 82,
+          users: 83,
         },
         {
           country: 'United Kingdom',
@@ -95,20 +95,20 @@ export const EDGE_DATA_SNAPSHOT = {
         },
         {
           date: '2026-10-03',
-          views: 41,
+          views: 44,
           visitors: 41,
           sessions: 42,
         },
         {
           date: '2026-10-04',
-          views: 1,
-          visitors: 1,
-          sessions: 1,
+          views: 2,
+          visitors: 2,
+          sessions: 2,
         },
       ],
       trend_metric: 'visitors',
     },
-    timestamp: '2026-10-04T12:27:07.896146Z',
+    timestamp: '2026-10-04T21:31:51.741079Z',
   },
   healthVitals: {
     success: true,
