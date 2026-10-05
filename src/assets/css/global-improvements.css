@@ -1333,11 +1333,11 @@ section[id] {
   #contact .contact-grid {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
     gap: 1.5rem !important;
-    align-items: start !important;
+    align-items: stretch !important;
   }
 
   #contact .contact-column {
-    height: auto !important;
+    height: 100% !important;
   }
 
   #contact .contact-column > * {
@@ -1348,16 +1348,20 @@ section[id] {
     box-sizing: border-box !important;
   }
 
-  #contact .contact-column:last-child .currently-card,
-  #contact .contact-column:last-child .calendar-wrapper-clean {
+  #contact .contact-column > :last-child {
+    margin-top: auto !important;
+  }
+
+  #contact .currently-card,
+  #contact .calendar-wrapper-clean {
     width: 100% !important;
     box-sizing: border-box !important;
   }
 }
 
-#contact .contact-column:last-child .currently-card,
-#contact .contact-column:last-child .calendar-wrapper-clean,
-#contact .contact-column:last-child .apple-card {
+#contact .currently-card,
+#contact .calendar-wrapper-clean,
+#contact .apple-card {
   border-radius: 18px !important;
   border: 1px solid var(--card-border-rest, #e5e5ea) !important;
   background: #ffffff !important;
@@ -1365,9 +1369,9 @@ section[id] {
   overflow: hidden !important;
 }
 
-html.dark #contact .contact-column:last-child .currently-card,
-html.dark #contact .contact-column:last-child .calendar-wrapper-clean,
-html.dark #contact .contact-column:last-child .apple-card {
+html.dark #contact .currently-card,
+html.dark #contact .calendar-wrapper-clean,
+html.dark #contact .apple-card {
   background: #000000 !important;
   border-color: #2c2c2e !important;
 }

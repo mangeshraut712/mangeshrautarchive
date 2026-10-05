@@ -82,7 +82,7 @@ html.dark #contact {
     display: grid !important;
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
     gap: 1.5rem !important;
-    align-items: start !important;
+    align-items: stretch !important;
   }
 
   .contact-column,
@@ -95,6 +95,11 @@ html.dark #contact {
     overflow: visible;
     align-items: stretch !important;
     flex: 1;
+    height: 100% !important;
+  }
+
+  #contact .contact-column > :last-child {
+    margin-top: auto !important;
   }
 }
 

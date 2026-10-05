@@ -54,6 +54,24 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'contact-desktop-grid-alignment-balance-20261005',
+    date: '2026-10-05',
+    type: 'fix',
+    title: 'Harmonize contact page cards and column balance for desktop viewports',
+    summary:
+      'Fixed desktop layout positioning and column height imbalance in the #contact section. Rebalanced the two-column grid by pairing Follow Me and Send a Message with Direct Outreach & Locations at the top, moving Calendar & Smart Reminders to the left column to counterbalance Support My Work and Merged Health & Currently on the right column, and establishing full-height stretch alignment with margin-top: auto on bottom showcase cards (Dream Companies & Teams and Automotive Engineering & Dream Cars) for pixel-perfect horizontal alignment across desktop viewports in both light and dark themes.',
+    tags: ['design', 'performance'],
+    sha: 'PENDING_SHA',
+    commitVerified: false,
+    model: 'Gemini 3.8 Flash',
+    ide: 'Google Antigravity IDE',
+    purpose:
+      'Fix contact page desktop section and card alignment, balance left and right column heights, and achieve seamless horizontal pairing for bottom marquee showcases.',
+    attributionSource: 'commit-message',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
     id: 'agentic-actions-september-2026-upgrade-20261003',
     date: '2026-10-03',
     type: 'improvement',
