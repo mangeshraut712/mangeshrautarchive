@@ -1,6 +1,6 @@
 /** Auto-exported FastAPI/GA snapshot for GitHub Pages edge (Vercel offline). */
 export const EDGE_DATA_SNAPSHOT = {
-  exportedAt: '2026-10-05T14:47:26.187Z',
+  exportedAt: '2026-10-06T00:06:10.858Z',
   reach: {
     success: true,
     total_reach: 10997,
@@ -13,12 +13,12 @@ export const EDGE_DATA_SNAPSHOT = {
     message: 'Portfolio Reach mirrored from GA4/FastAPI for GitHub Pages (Vercel offline).',
     insights: {
       unique_visitors: 10997,
-      unique_visitors_this_week: 122,
+      unique_visitors_this_week: 123,
       countries_this_week: 8,
-      sessions_this_week: 150,
-      total_views_all_time: 13863,
+      sessions_this_week: 151,
+      total_views_all_time: 13865,
       active_users_all_time: 10997,
-      event_count_all_time: 48584,
+      event_count_all_time: 48593,
       active_users_last_30_mins: 0,
       realtime_countries: [],
       realtime_fresh: false,
@@ -26,7 +26,7 @@ export const EDGE_DATA_SNAPSHOT = {
       metric_weekly_label: 'Active Users',
       avg_views_per_day: 0,
       portfolio_age_days: 1,
-      last_updated: '2026-10-05T14:47:26.066911Z',
+      last_updated: '2026-10-06T00:06:10.824739Z',
       top_countries: [
         {
           country: 'India',
@@ -34,7 +34,7 @@ export const EDGE_DATA_SNAPSHOT = {
         },
         {
           country: 'United States',
-          users: 88,
+          users: 89,
         },
         {
           country: 'United Kingdom',
@@ -95,20 +95,20 @@ export const EDGE_DATA_SNAPSHOT = {
         },
         {
           date: '2026-10-04',
-          views: 2,
+          views: 3,
           visitors: 3,
           sessions: 3,
         },
         {
           date: '2026-10-05',
-          views: 7,
-          visitors: 8,
-          sessions: 9,
+          views: 8,
+          visitors: 9,
+          sessions: 10,
         },
       ],
       trend_metric: 'visitors',
     },
-    timestamp: '2026-10-05T14:47:26.066911Z',
+    timestamp: '2026-10-06T00:06:10.824739Z',
   },
   healthVitals: {
     success: true,
