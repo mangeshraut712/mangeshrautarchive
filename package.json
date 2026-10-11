@@ -109,7 +109,9 @@
     "joi": "18.2.9",
     "fast-uri": "3.1.8",
     "qs": "6.16.0",
-    "colord": "2.10.0"
+    "colord": "2.10.0",
+    "source-map-js": "^1.2.2",
+    "proxy-addr": "^2.0.8"
   },
   "engines": {
     "node": ">=22 <27"
