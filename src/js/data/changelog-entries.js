@@ -61,8 +61,8 @@ export const changelogEntries = [
     summary:
       'Audited and resolved all 6 open GitHub CodeQL security and quality alerts (100% clean sheet): fixed CORS credential leakage vulnerability in scripts/utils/local-server.js by validating incoming origin headers against explicit allowlist patterns; resolved polynomial regular expression ReDoS vulnerability in api/config.py by replacing backtracking data URI regex with non-backtracking string partition and linear validation; resolved double-unescaping vulnerability in workers/assistme-chat/src/live-search.js by migrating chained XML/HTML entity replaces to a single-pass dictionary lookup; and fixed URL substring sanitization vulnerabilities in src/js/services/RealtimeVoiceService.js, tests/worker/chat-routing.test.js, and subpages by parsing URLs and validating exact hostname boundaries.',
     tags: ['api', 'assistme', 'deploy', 'performance'],
-    sha: null,
-    commitVerified: false,
+    sha: 'c16dda6e',
+    commitVerified: true,
     model: 'Gemini 3.8 Flash',
     ide: 'Google Antigravity IDE',
     purpose:
@@ -70,7 +70,6 @@ export const changelogEntries = [
     attributionSource: 'commit-message',
     reasoning: 'unavailable',
     usage: 'unavailable',
-    status: 'unreleased',
   },
   {
     id: 'assistme-in-widget-privacy-apple-redesign-20261011',
@@ -80,8 +79,8 @@ export const changelogEntries = [
     summary:
       "Redesigned the Privacy & Personalization dashboard to render entirely inside the AssistMe chatbot widget rather than spawning as a separate floating modal over the webpage. Replaced the detached overlay with an Apple Human Interface Guidelines-compliant view featuring a pinned navigation header with a '< Chat' back button, centered title, unified circular red close button (#ff3b30), Apple Grouped Inset cards for Data Integrations (GitHub & Google Calendar), Memory & Session Context, AI Personalization & Voice, and GDPR Data Management, iOS green toggle switches (#34c759), frosted glassmorphism backdrops, smooth vertical scrolling, in-widget status notifications, and a pinned footer with Cancel and vibrant Apple Blue Save Changes actions. Verified across desktop and mobile viewports in light and dark themes with zero horizontal overflow.",
     tags: ['assistme', 'design', 'performance'],
-    sha: null,
-    commitVerified: false,
+    sha: 'c16dda6e',
+    commitVerified: true,
     model: 'Gemini 3.8 Flash',
     ide: 'Google Antigravity IDE',
     purpose:
@@ -89,7 +88,6 @@ export const changelogEntries = [
     attributionSource: 'commit-message',
     reasoning: 'unavailable',
     usage: 'unavailable',
-    status: 'unreleased',
   },
   {
     id: 'contact-desktop-grid-alignment-balance-20261005',
