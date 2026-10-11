@@ -1600,7 +1600,11 @@ class AppleIntelligenceChatbot {
       this.bindNewChatButton(this.elements.clearBtn);
     }
     this.elements.privacyBtn?.addEventListener('click', () => {
-      privacyDashboard.open();
+      if (typeof privacyDashboard !== 'undefined' && privacyDashboard?.isOpen) {
+        privacyDashboard.close();
+      } else if (typeof privacyDashboard !== 'undefined') {
+        privacyDashboard.open();
+      }
     });
     this.elements.summarizeBtn?.addEventListener('click', () => this.summarizeConversation());
     this.elements.plusBtn?.addEventListener('click', event => {
@@ -1828,6 +1832,9 @@ class AppleIntelligenceChatbot {
     this.scrollEngine?.saveSession();
     this.closeWritingTools();
     this.closePlusMenu();
+    if (typeof privacyDashboard !== 'undefined' && privacyDashboard?.isOpen) {
+      privacyDashboard.close();
+    }
     this._dictationWanted = false;
     this.dictationHoldActive = false;
     this.dictationMode = 'idle';

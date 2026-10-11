@@ -140,7 +140,7 @@ async function injectApiKeys(distDir) {
   const host = window.location.hostname || '';
   if (loopbackHosts.includes(host)) {
     merged.apiBaseUrl = window.location.origin;
-  } else if (host.endsWith('github.io')) {
+  } else if (host === 'github.io' || host.endsWith('.github.io')) {
     // Vercel is DEPLOYMENT_DISABLED — always prefer Cloudflare edge for Pages.
     const blocked = function (u) {
       return !u || /mangeshraut\\.pro|vercel\\.app/i.test(String(u));

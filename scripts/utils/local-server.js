@@ -27,17 +27,34 @@ const strictPort = ['1', 'true', 'yes'].includes(
   String(process.env.STRICT_PORT || '').toLowerCase()
 );
 
+const ALLOWED_ORIGIN_PATTERNS = [
+  /^https?:\/\/localhost(?::\d+)?$/,
+  /^https?:\/\/127\.0\.0\.1(?::\d+)?$/,
+  /^https?:\/\/\[::1\](?::\d+)?$/,
+  /^https:\/\/mangeshraut712\.github\.io$/,
+  /^https:\/\/mangeshraut\.pro$/,
+  /^https:\/\/mraut\.vercel\.app$/,
+];
+
+function isAllowedOrigin(origin) {
+  if (!origin || typeof origin !== 'string') return false;
+  return ALLOWED_ORIGIN_PATTERNS.some(pattern => pattern.test(origin));
+}
+
 // Local dev CORS support (allows seamless cross-port & localhost ↔ 127.0.0.1 requests)
 app.use((req, res, next) => {
-  const origin = req.headers.origin || '*';
-  res.setHeader('Access-Control-Allow-Origin', origin);
+  const origin = req.headers.origin;
+  if (origin && isAllowedOrigin(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+    res.setHeader('Vary', 'Origin');
+  }
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS, HEAD');
   res.setHeader(
     'Access-Control-Allow-Headers',
     req.headers['access-control-request-headers'] ||
       'Content-Type, Authorization, Accept, Origin, X-Requested-With'
   );
-  res.setHeader('Access-Control-Allow-Credentials', 'true');
   if (req.method === 'OPTIONS') {
     res.status(204).end();
     return;

@@ -64,6 +64,15 @@ export function extractSearchTopic(query) {
   return cleaned.length >= 3 ? cleaned : query.slice(0, 100).trim();
 }
 
+const HTML_ENTITIES = {
+  '&quot;': '"',
+  '&#39;': "'",
+  '&apos;': "'",
+  '&lt;': '<',
+  '&gt;': '>',
+  '&amp;': '&',
+};
+
 /**
  * Clean XML / HTML entity encoding
  */
@@ -71,11 +80,7 @@ function cleanText(text) {
   if (!text) return '';
   return text
     .replace(/<[^>]+>/g, ' ')
-    .replace(/&amp;/g, '&')
-    .replace(/&quot;/g, '"')
-    .replace(/&#39;/g, "'")
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>')
+    .replace(/&(?:quot|#39|apos|lt|gt|amp);/g, entity => HTML_ENTITIES[entity] || entity)
     .replace(/\s+/g, ' ')
     .trim();
 }

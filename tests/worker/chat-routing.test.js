@@ -35,12 +35,19 @@ let failFirst = false;
 let cancelObserved = false;
 let stall = false;
 globalThis.fetch = async (url, options) => {
-  if (String(url).endsWith('/models')) return Response.json({ data: models });
-  if (String(url).includes('news.google.com') || String(url).includes('wikipedia.org')) {
-    return new Response(
-      '<rss><channel><item><title>Mock Real-Time Tech Headline</title><pubDate>Fri, 02 Oct 2026 12:00:00 GMT</pubDate><description>Verified contemporary tech update</description></item></channel></rss>',
-      { status: 200 }
-    );
+  const urlStr = String(url);
+  if (urlStr.endsWith('/models')) return Response.json({ data: models });
+  try {
+    const parsedUrl = new URL(urlStr);
+    const host = parsedUrl.hostname;
+    if (host === 'news.google.com' || host === 'wikipedia.org' || host.endsWith('.wikipedia.org')) {
+      return new Response(
+        '<rss><channel><item><title>Mock Real-Time Tech Headline</title><pubDate>Fri, 02 Oct 2026 12:00:00 GMT</pubDate><description>Verified contemporary tech update</description></item></channel></rss>',
+        { status: 200 }
+      );
+    }
+  } catch (_e) {
+    // Relative path or invalid URL
   }
   const body = typeof options?.body === 'string' ? JSON.parse(options.body) : {};
   calls.push(body);

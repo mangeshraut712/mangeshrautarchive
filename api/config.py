@@ -724,6 +724,8 @@ def sanitize_session_id(value: Optional[str]) -> str:
     return secrets.token_hex(16)
 
 
+_DATA_URL_MIME_RE = re.compile(r"^[a-zA-Z0-9!#$&^_.+-]+/[a-zA-Z0-9!#$&^_.+-]+$")
+_BASE64_DATA_RE = re.compile(r"^[A-Za-z0-9+/=]+$")
 _DATA_IMAGE_RE = re.compile(
     r"^data:image/(png|jpeg|jpg|webp|gif);base64,[A-Za-z0-9+/=\s]+$",
     re.I,
@@ -764,11 +766,17 @@ def build_multimodal_user_content(
     total = sum(len(url) for url in safe_images)
     for item in attachments or []:
         src = item.get("src", "")
-        total += len(src)
-        match = re.fullmatch(r"data:([^;,]+);base64,([A-Za-z0-9+/=]+)", src)
-        if not match or total > 8_000_000:
+        if not isinstance(src, str):
             raise HTTPException(status_code=400, detail="File unreadable or too large. Use files under 3 MB.")
-        mime, data = match.groups()
+        total += len(src)
+        if total > 8_000_000 or len(src) > 8_000_000:
+            raise HTTPException(status_code=400, detail="File unreadable or too large. Use files under 3 MB.")
+        if not src.startswith("data:") or ";base64," not in src:
+            raise HTTPException(status_code=400, detail="File unreadable or too large. Use files under 3 MB.")
+        prefix, _, data = src.partition(";base64,")
+        mime = prefix[5:]
+        if not mime or len(mime) > 100 or not _DATA_URL_MIME_RE.fullmatch(mime) or not _BASE64_DATA_RE.fullmatch(data):
+            raise HTTPException(status_code=400, detail="File unreadable or too large. Use files under 3 MB.")
         if mime.startswith("image/") and _DATA_IMAGE_RE.fullmatch(src):
             parts.append({"type": "image_url", "image_url": {"url": src}})
         elif mime in {"audio/wav", "audio/x-wav", "audio/mpeg", "audio/mp3", "audio/ogg", "audio/flac", "audio/aac", "audio/mp4"}:

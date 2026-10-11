@@ -117,7 +117,9 @@
     <script>
       (function () {
         const EDGE_API = 'https://assistme-chat.mangeshraut712.workers.dev';
-        const isGitHubPages = window.location.hostname.endsWith('github.io');
+        const isGitHubPages =
+          window.location.hostname === 'github.io' ||
+          window.location.hostname.endsWith('.github.io');
         const fromBuild =
           (window.buildConfig && window.buildConfig.apiBaseUrl) ||
           (window.APP_CONFIG && window.APP_CONFIG.apiBaseUrl);
