@@ -1,6 +1,6 @@
 /** Auto-exported FastAPI/GA snapshot for GitHub Pages edge (Vercel offline). */
 export const EDGE_DATA_SNAPSHOT = {
-  exportedAt: '2026-10-13T22:49:04.237Z',
+  exportedAt: '2026-10-14T04:58:41.478Z',
   reach: {
     success: true,
     total_reach: 11034,
@@ -13,12 +13,12 @@ export const EDGE_DATA_SNAPSHOT = {
     message: 'Portfolio Reach mirrored from GA4/FastAPI for GitHub Pages (Vercel offline).',
     insights: {
       unique_visitors: 11034,
-      unique_visitors_this_week: 30,
+      unique_visitors_this_week: 34,
       countries_this_week: 7,
-      sessions_this_week: 33,
-      total_views_all_time: 13907,
+      sessions_this_week: 37,
+      total_views_all_time: 13912,
       active_users_all_time: 11034,
-      event_count_all_time: 48753,
+      event_count_all_time: 48771,
       active_users_last_30_mins: 0,
       realtime_countries: [],
       realtime_fresh: false,
@@ -26,15 +26,15 @@ export const EDGE_DATA_SNAPSHOT = {
       metric_weekly_label: 'Active Users',
       avg_views_per_day: 0,
       portfolio_age_days: 1,
-      last_updated: '2026-10-13T22:49:04.203049Z',
+      last_updated: '2026-10-14T04:58:41.445977Z',
       top_countries: [
         {
           country: 'India',
-          users: 114,
+          users: 112,
         },
         {
           country: 'United States',
-          users: 93,
+          users: 96,
         },
         {
           country: 'Japan',
@@ -59,12 +59,6 @@ export const EDGE_DATA_SNAPSHOT = {
       ],
       countries_mode: 'period',
       trend: [
-        {
-          date: '2026-10-07',
-          views: 9,
-          visitors: 9,
-          sessions: 9,
-        },
         {
           date: '2026-10-08',
           views: 0,
@@ -97,14 +91,20 @@ export const EDGE_DATA_SNAPSHOT = {
         },
         {
           date: '2026-10-13',
-          views: 7,
-          visitors: 5,
-          sessions: 5,
+          views: 12,
+          visitors: 10,
+          sessions: 10,
+        },
+        {
+          date: '2026-10-14',
+          views: 0,
+          visitors: 0,
+          sessions: 0,
         },
       ],
       trend_metric: 'visitors',
     },
-    timestamp: '2026-10-13T22:49:04.203049Z',
+    timestamp: '2026-10-14T04:58:41.445977Z',
   },
   healthVitals: {
     success: true,
