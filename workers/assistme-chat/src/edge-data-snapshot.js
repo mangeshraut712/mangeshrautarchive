@@ -1,9 +1,9 @@
 /** Auto-exported FastAPI/GA snapshot for GitHub Pages edge (Vercel offline). */
 export const EDGE_DATA_SNAPSHOT = {
-  exportedAt: '2026-10-15T04:46:09.470Z',
+  exportedAt: '2026-10-15T11:35:21.049Z',
   reach: {
     success: true,
-    total_reach: 11040,
+    total_reach: 11042,
     source: 'edge-ga-snapshot',
     ga_enabled: true,
     ga_configured: false,
@@ -12,13 +12,13 @@ export const EDGE_DATA_SNAPSHOT = {
     host: 'cloudflare-worker',
     message: 'Portfolio Reach mirrored from GA4/FastAPI for GitHub Pages (Vercel offline).',
     insights: {
-      unique_visitors: 11040,
-      unique_visitors_this_week: 29,
+      unique_visitors: 11042,
+      unique_visitors_this_week: 30,
       countries_this_week: 7,
-      sessions_this_week: 32,
+      sessions_this_week: 33,
       total_views_all_time: 13916,
-      active_users_all_time: 11040,
-      event_count_all_time: 48791,
+      active_users_all_time: 11042,
+      event_count_all_time: 48792,
       active_users_last_30_mins: 0,
       realtime_countries: [],
       realtime_fresh: false,
@@ -26,7 +26,7 @@ export const EDGE_DATA_SNAPSHOT = {
       metric_weekly_label: 'Active Users',
       avg_views_per_day: 0,
       portfolio_age_days: 1,
-      last_updated: '2026-10-15T04:46:09.444011Z',
+      last_updated: '2026-10-15T11:35:21.016349Z',
       top_countries: [
         {
           country: 'India',
@@ -34,7 +34,7 @@ export const EDGE_DATA_SNAPSHOT = {
         },
         {
           country: 'United States',
-          users: 99,
+          users: 100,
         },
         {
           country: 'Japan',
@@ -98,13 +98,13 @@ export const EDGE_DATA_SNAPSHOT = {
         {
           date: '2026-10-15',
           views: 0,
-          visitors: 0,
-          sessions: 0,
+          visitors: 1,
+          sessions: 1,
         },
       ],
       trend_metric: 'visitors',
     },
-    timestamp: '2026-10-15T04:46:09.444011Z',
+    timestamp: '2026-10-15T11:35:21.016349Z',
   },
   healthVitals: {
     success: true,
