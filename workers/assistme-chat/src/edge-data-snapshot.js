@@ -1,6 +1,6 @@
 /** Auto-exported FastAPI/GA snapshot for GitHub Pages edge (Vercel offline). */
 export const EDGE_DATA_SNAPSHOT = {
-  exportedAt: '2026-10-17T20:39:38.403Z',
+  exportedAt: '2026-10-18T04:39:04.448Z',
   reach: {
     success: true,
     total_reach: 11051,
@@ -16,9 +16,9 @@ export const EDGE_DATA_SNAPSHOT = {
       unique_visitors_this_week: 36,
       countries_this_week: 7,
       sessions_this_week: 40,
-      total_views_all_time: 13923,
+      total_views_all_time: 13924,
       active_users_all_time: 11051,
-      event_count_all_time: 48824,
+      event_count_all_time: 48829,
       active_users_last_30_mins: 0,
       realtime_countries: [],
       realtime_fresh: false,
@@ -26,7 +26,7 @@ export const EDGE_DATA_SNAPSHOT = {
       metric_weekly_label: 'Active Users',
       avg_views_per_day: 0,
       portfolio_age_days: 1,
-      last_updated: '2026-10-17T20:39:38.366945Z',
+      last_updated: '2026-10-18T04:39:04.069640Z',
       top_countries: [
         {
           country: 'India',
@@ -34,7 +34,7 @@ export const EDGE_DATA_SNAPSHOT = {
         },
         {
           country: 'United States',
-          users: 104,
+          users: 105,
         },
         {
           country: 'Japan',
@@ -59,12 +59,6 @@ export const EDGE_DATA_SNAPSHOT = {
       ],
       countries_mode: 'period',
       trend: [
-        {
-          date: '2026-10-11',
-          views: 16,
-          visitors: 10,
-          sessions: 13,
-        },
         {
           date: '2026-10-12',
           views: 3,
@@ -97,14 +91,20 @@ export const EDGE_DATA_SNAPSHOT = {
         },
         {
           date: '2026-10-17',
-          views: 1,
-          visitors: 1,
-          sessions: 1,
+          views: 2,
+          visitors: 2,
+          sessions: 2,
+        },
+        {
+          date: '2026-10-18',
+          views: 0,
+          visitors: 0,
+          sessions: 0,
         },
       ],
       trend_metric: 'visitors',
     },
-    timestamp: '2026-10-17T20:39:38.366945Z',
+    timestamp: '2026-10-18T04:39:04.069640Z',
   },
   healthVitals: {
     success: true,
