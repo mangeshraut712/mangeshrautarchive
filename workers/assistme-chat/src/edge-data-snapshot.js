@@ -1,6 +1,6 @@
 /** Auto-exported FastAPI/GA snapshot for GitHub Pages edge (Vercel offline). */
 export const EDGE_DATA_SNAPSHOT = {
-  exportedAt: '2026-10-18T11:13:09.066Z',
+  exportedAt: '2026-10-18T15:55:25.295Z',
   reach: {
     success: true,
     total_reach: 11055,
@@ -26,7 +26,7 @@ export const EDGE_DATA_SNAPSHOT = {
       metric_weekly_label: 'Active Users',
       avg_views_per_day: 0,
       portfolio_age_days: 1,
-      last_updated: '2026-10-18T11:13:09.040785Z',
+      last_updated: '2026-10-18T15:55:25.262581Z',
       top_countries: [
         {
           country: 'India',
@@ -104,7 +104,7 @@ export const EDGE_DATA_SNAPSHOT = {
       ],
       trend_metric: 'visitors',
     },
-    timestamp: '2026-10-18T11:13:09.040785Z',
+    timestamp: '2026-10-18T15:55:25.262581Z',
   },
   healthVitals: {
     success: true,
