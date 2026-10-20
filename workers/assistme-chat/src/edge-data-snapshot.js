@@ -1,9 +1,9 @@
 /** Auto-exported FastAPI/GA snapshot for GitHub Pages edge (Vercel offline). */
 export const EDGE_DATA_SNAPSHOT = {
-  exportedAt: '2026-10-20T04:55:56.463Z',
+  exportedAt: '2026-10-20T11:44:11.847Z',
   reach: {
     success: true,
-    total_reach: 11059,
+    total_reach: 11061,
     source: 'edge-ga-snapshot',
     ga_enabled: true,
     ga_configured: false,
@@ -12,13 +12,13 @@ export const EDGE_DATA_SNAPSHOT = {
     host: 'cloudflare-worker',
     message: 'Portfolio Reach mirrored from GA4/FastAPI for GitHub Pages (Vercel offline).',
     insights: {
-      unique_visitors: 11059,
-      unique_visitors_this_week: 34,
+      unique_visitors: 11061,
+      unique_visitors_this_week: 36,
       countries_this_week: 6,
-      sessions_this_week: 37,
-      total_views_all_time: 13939,
-      active_users_all_time: 11059,
-      event_count_all_time: 48891,
+      sessions_this_week: 39,
+      total_views_all_time: 13941,
+      active_users_all_time: 11061,
+      event_count_all_time: 48899,
       active_users_last_30_mins: 0,
       realtime_countries: [],
       realtime_fresh: false,
@@ -26,11 +26,11 @@ export const EDGE_DATA_SNAPSHOT = {
       metric_weekly_label: 'Active Users',
       avg_views_per_day: 0,
       portfolio_age_days: 1,
-      last_updated: '2026-10-20T04:55:56.427172Z',
+      last_updated: '2026-10-20T11:44:11.362668Z',
       top_countries: [
         {
           country: 'United States',
-          users: 114,
+          users: 116,
         },
         {
           country: 'India',
@@ -87,9 +87,9 @@ export const EDGE_DATA_SNAPSHOT = {
         },
         {
           date: '2026-10-19',
-          views: 2,
-          visitors: 2,
-          sessions: 2,
+          views: 4,
+          visitors: 4,
+          sessions: 4,
         },
         {
           date: '2026-10-20',
@@ -100,7 +100,7 @@ export const EDGE_DATA_SNAPSHOT = {
       ],
       trend_metric: 'visitors',
     },
-    timestamp: '2026-10-20T04:55:56.427172Z',
+    timestamp: '2026-10-20T11:44:11.362668Z',
   },
   healthVitals: {
     success: true,
