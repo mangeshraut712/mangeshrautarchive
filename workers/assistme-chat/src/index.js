@@ -10,6 +10,7 @@
  *   GET  /api/chat/health
  *   POST /api/chat | /chat
  *   GET  /api/github/repos/public
+ *   GET  /api/github/profile
  *   GET  /api/github/proxy
  *   GET  /api/music/recent
  *   GET  /api/analytics/reach
@@ -1060,6 +1061,41 @@ async function handleGithubRepos(url, cors, env = {}) {
   }
 }
 
+async function handleGithubProfile(url, cors, env = {}) {
+  const username = url.searchParams.get('username') || 'mangeshraut712';
+  try {
+    const headers = {
+      Accept: 'application/vnd.github+json',
+      'User-Agent': 'assistme-cloudflare-edge',
+    };
+    const pat = (env.GITHUB_PAT || '').trim();
+    if (pat) headers.Authorization = `Bearer ${pat}`;
+    const res = await fetch(`https://api.github.com/users/${encodeURIComponent(username)}`, {
+      headers,
+    });
+    if (!res.ok) {
+      return json(
+        { success: false, error: `GitHub HTTP ${res.status}` },
+        res.status === 403 ? 503 : res.status,
+        cors
+      );
+    }
+    const profile = await res.json();
+    return json(
+      {
+        success: true,
+        data: profile,
+        timestamp: new Date().toISOString(),
+      },
+      200,
+      cors
+    );
+  } catch (e) {
+    console.error('GitHub profile proxy request failed', e?.message || e);
+    return json({ success: false, error: 'GitHub service is temporarily unavailable.' }, 502, cors);
+  }
+}
+
 const LASTFM_PLACEHOLDER_HASH = '2a96cbd8b46e442fc41c2b86b821562f';
 
 function trackArtistName(track) {
@@ -1458,6 +1494,13 @@ const worker = {
       (path === '/api/github/repos/public' || path === '/api/github/repos')
     ) {
       return handleGithubRepos(url, cors, env);
+    }
+
+    if (
+      request.method === 'GET' &&
+      (path === '/api/github/profile' || path === '/github/profile')
+    ) {
+      return handleGithubProfile(url, cors, env);
     }
 
     if (request.method === 'GET' && path === '/api/music/recent') {

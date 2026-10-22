@@ -2,8 +2,9 @@
 
 import asyncio
 import os
+import time
 from datetime import datetime, timezone
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 from urllib.parse import urlparse
 import httpx
 
@@ -136,8 +137,18 @@ async def _probe_public_path(client: httpx.AsyncClient, base: str, entry: Dict[s
         }
 
 
-async def probe_portfolio_catalog() -> Dict[str, Any]:
-    """Live probe of public portfolio pages and primary API routes."""
+_catalog_cache: Optional[Dict[str, Any]] = None
+_catalog_cache_time: float = 0.0
+CATALOG_CACHE_TTL = 30.0  # seconds
+
+
+async def probe_portfolio_catalog(force: bool = False) -> Dict[str, Any]:
+    """Live probe of public portfolio pages and primary API routes with in-memory TTL caching."""
+    global _catalog_cache, _catalog_cache_time
+    now = time.monotonic()
+    if not force and _catalog_cache is not None and (now - _catalog_cache_time) < CATALOG_CACHE_TTL:
+        return _catalog_cache
+
     base = _public_base_url()
     catalog = [*PORTFOLIO_PAGE_CATALOG, *PORTFOLIO_API_CATALOG]
     limits = httpx.Limits(max_connections=20, max_keepalive_connections=10)
@@ -150,7 +161,7 @@ async def probe_portfolio_catalog() -> Dict[str, Any]:
         "unhealthy": len([i for i in items if i["status"] == "unhealthy"]),
         "total": len(items),
     }
-    return {
+    result = {
         "base_url": base,
         "timestamp": _utc_now(),
         "summary": summary,
@@ -158,6 +169,9 @@ async def probe_portfolio_catalog() -> Dict[str, Any]:
         "pages": [i for i in items if i.get("group") == "pages"],
         "apis": [i for i in items if i.get("group") == "api"],
     }
+    _catalog_cache = result
+    _catalog_cache_time = now
+    return result
 
 INTEGRATION_ENV_KEYS = (
     "SUPABASE_URL",
@@ -251,10 +265,25 @@ async def collect_platform_health() -> Dict[str, Any]:
         "whoop": _env_present("WHOOP_CLIENT_ID") and _env_present("WHOOP_CLIENT_SECRET"),
         "withings": _env_present("WITHINGS_CLIENT_ID") and _env_present("WITHINGS_CLIENT_SECRET"),
     }
+
+    (
+        google_cal_connected,
+        whoop_connected,
+        withings_connected,
+        health_summary,
+        portfolio,
+    ) = await asyncio.gather(
+        integration_is_connected("google_calendar"),
+        integration_is_connected("whoop"),
+        integration_is_connected("withings"),
+        fetch_latest_health_summary(),
+        probe_portfolio_catalog(),
+    )
+
     provider_connected = {
-        "googleCalendar": await integration_is_connected("google_calendar"),
-        "whoop": await integration_is_connected("whoop"),
-        "withings": await integration_is_connected("withings"),
+        "googleCalendar": google_cal_connected,
+        "whoop": whoop_connected,
+        "withings": withings_connected,
     }
 
     for key, label, path in (
@@ -285,7 +314,6 @@ async def collect_platform_health() -> Dict[str, Any]:
             }
         )
 
-    health_summary = await fetch_latest_health_summary()
     health_status = str(health_summary.get("status") or "unknown")
     health_stale = _health_summary_stale(health_summary)
     checks.append(
@@ -324,7 +352,6 @@ async def collect_platform_health() -> Dict[str, Any]:
         }
     )
 
-    portfolio = await probe_portfolio_catalog()
     for item in portfolio.get("items") or []:
         checks.append(
             {
