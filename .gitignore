@@ -193,3 +193,5 @@ secrets.*
 
 # Tester Army reports and local cache
 .e2e/
+# Local agent tooling
+skills-lock.json
