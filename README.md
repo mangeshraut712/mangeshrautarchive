@@ -266,7 +266,7 @@ browser coverage when user behavior changes. Use the four local release gates ab
 ### Tester Army browser journeys
 
 Run `npm run test:tester-army` with Node 22.12+ after `npx playwright install chromium webkit`.
-The pinned `e2e@0.16.0` and `@e2e-dev/web@0.11.2` suite runs 23 journeys on desktop Chromium
+The pinned `e2e@0.21.2` and `@e2e-dev/web@0.11.2` suite runs 23 journeys on desktop Chromium
 and mobile WebKit without a model or API key. The runner starts the frontend on a free port and cleans
 up its own process. Use `E2E_APP_URL` for an existing local server. See
 [the coverage manifest](docs/TESTER_ARMY.md) for assertions and external-service limits.

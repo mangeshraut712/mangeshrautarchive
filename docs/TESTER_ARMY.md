@@ -1,7 +1,7 @@
 # Tester Army portfolio coverage
 
 Upstream: https://github.com/tester-army/e2e. Official bundled references live in
-`node_modules/e2e/docs`. Versions are pinned: `e2e` 0.16.0 and `@e2e-dev/web` 0.11.2.
+`node_modules/e2e/docs`. Versions are pinned: `e2e` 0.21.2 and `@e2e-dev/web` 0.11.2.
 
 Commands: `npm run test:tester-army:list`, `npm run test:tester-army`.
 Each of 23 tests runs on desktop Chromium (1440 × 900) and mobile WebKit (375 × 812).
