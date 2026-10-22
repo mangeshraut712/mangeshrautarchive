@@ -62,9 +62,8 @@ export const changelogEntries = [
     summary:
       'Patched Node.js LTS runtimes against October 2026 security advisories addressing 10 vulnerabilities including High-severity CVE-2026-111497 (Brotli decoder out-of-bounds write in node:zlib and fetch), CVE-2026-105482 (DNS truncation on NUL characters), and CVE-2026-105483 / CVE-2026-106069 (TLS certificate hostname verification bypasses). Upgraded local machine Node 22 to v22.23.4 and Node 24 to v24.22.1 with patched dependencies (brotli 1.2.1, c-ares 1.34.9, libuv 1.53.0, ca-certificates, and openssl@3/4). Upgraded system developer toolchain (git 2.56.0, gh 2.103.0, uv 0.13.5, cloudflared 2026.10.3) and refreshed semver-compatible npm dependencies. Optimized platform health probe performance in api/platform_health.py with asyncio.gather concurrency across Supabase checks and in-memory 30s TTL catalog caching. Added /api/github/profile route to Cloudflare Worker to mirror FastAPI profile endpoint and maintain dual-host parity with unit test coverage. Verified 100% green across repo doctor (57/57), linters, production build, API pytest (185/185), Worker routing tests (11/11), and critical Playwright journeys (14/14).',
     tags: ['deploy', 'performance', 'api'],
-    sha: null,
-    commitVerified: false,
-    status: 'unreleased',
+    sha: 'e4e55c6e',
+    commitVerified: true,
     model: 'Gemini 3.8 Flash',
     ide: 'Google Antigravity IDE',
     purpose:
