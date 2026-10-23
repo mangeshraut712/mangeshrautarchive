@@ -54,6 +54,25 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'github-operating-view-live-sync-20261023',
+    date: '2026-10-23',
+    type: 'improvement',
+    title: 'Synchronize GitHub Operating View and repository catalog with live platform telemetry',
+    summary:
+      'Synchronized the entire GitHub Operating View and portfolio telemetry with live GitHub metadata and activity signals from @mangeshraut712. Updated cached dataset (github-stats.json) reflecting 58 public repositories, 12 stars, 4 forks, and 10 followers with recent push signals for erdos142, mangeshrautarchive, Dotfit-Fitness, Gravity-SaaS-Agent, and Stanford-CS336. Refreshed fallback repository catalog in src/js/modules/github-projects.js with calibrated star counts (Gravity-SaaS-Agent: 7 stars, 4 forks; Stanford-CS336: 3 stars; Dotfit-Fitness: 1 star; mangeshrautarchive: 1 star) and registered the Erdős problem 142 research notebook (erdos142). Synchronized public repository and automated test counts across systems.html, engineering-showcase-data.js, portfolio-public-data.js, api/portfolio_public_data.py, api/config.py, monitor.html, and uses.html (58 public repos, 185 pytest contracts, and 14 critical browser journeys). Upgraded sync-github-stats.mjs to support GITHUB_PAT authentication.',
+    tags: ['performance', 'deploy', 'api'],
+    sha: null,
+    status: 'unreleased',
+    commitVerified: false,
+    model: 'Gemini 3.8 Flash',
+    ide: 'Google Antigravity IDE',
+    purpose:
+      'Synchronize GitHub Operating View, repository catalog, and cross-surface metrics with live authenticated GitHub platform telemetry (58 repos, 12 stars, 4 forks, 10 followers).',
+    attributionSource: 'commit-message',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
     id: 'agentic-blueprint-system-scaffolding-20261023',
     date: '2026-10-23',
     type: 'improvement',

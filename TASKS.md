@@ -45,8 +45,11 @@
   - [x] Create `DESIGN.md` (Apple HIG aesthetic, colors, typography, components).
   - [x] Create `RULES.md` (Guardrails, style guide, what AI must never do).
   - [x] Create `TASKS.md` (Incremental task backlog and milestones).
-  - [ ] Create `PROGRESS.md` (Completed work, bug fixes, operational metrics).
-- [ ] **Task 3.4: Run Quality Gates & Format Checks**
+  - [x] Create `PROGRESS.md` (Completed work, bug fixes, operational metrics).
+- [x] **Task 3.4: Synchronize GitHub Operating View with Live GitHub Platform**
+  - Scraped and synchronized live GitHub profile and repository catalog for @mangeshraut712 (58 public repos, 12 stars, 4 forks, 10 followers).
+  - Calibrated static fallback catalog in `src/js/modules/github-projects.js`, added `erdos142` research notebook, and aligned all telemetry across `systems.html`, `uses.html`, and `monitor.html`.
+- [ ] **Task 3.5: Run Quality Gates & Format Checks**
   - Execute `npm run check` (Prettier, ESLint, Stylelint, Oxlint).
   - Execute `npm run doctor:strict`.
   - Execute `npm run build` and `npm test`.

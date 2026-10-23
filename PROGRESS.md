@@ -33,6 +33,14 @@
 - Synchronized dependency pins across `README.md` and `docs/TESTER_ARMY.md`.
 - Authored the comprehensive 6-file AI guidance blueprint (`PRD.md`, `ARCHITECTURE.md`, `DESIGN.md`, `RULES.md`, `TASKS.md`, `PROGRESS.md`).
 
+### GitHub Operating View & Live Telemetry Sync
+
+- Synchronized live GitHub repository catalog and telemetry from official `@mangeshraut712` profile via authenticated REST API: **58 public repositories**, **12 stars**, **4 forks**, and **10 followers**.
+- Updated `src/js/data/github-stats.json` with active push signals for `erdos142`, `mangeshrautarchive`, `Dotfit-Fitness`, `Gravity-SaaS-Agent`, and `Stanford-CS336`.
+- Calibrated static fallback repositories in `src/js/modules/github-projects.js` (`Gravity-SaaS-Agent`: 7 stars, 4 forks; `Stanford-CS336`: 3 stars; `Dotfit-Fitness`: 1 star; `mangeshrautarchive`: 1 star) and registered the Erdős problem 142 research notebook (`erdos142`).
+- Synchronized cross-surface public repo and test counts across `systems.html`, `engineering-showcase-data.js`, `portfolio-public-data.js`, `api/portfolio_public_data.py`, `api/config.py`, `monitor.html`, and `uses.html` (58 public repos, 185 pytest contracts, 14 critical browser journeys).
+- Upgraded `scripts/integrations/sync-github-stats.mjs` to support `GITHUB_PAT` authentication.
+
 ---
 
 ## 2. What Broke & How It Was Fixed

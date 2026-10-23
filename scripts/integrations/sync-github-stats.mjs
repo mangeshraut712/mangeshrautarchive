@@ -13,7 +13,8 @@ const ROOT_DIR = path.resolve(__dirname, '../..');
 const OUTPUT_FILE = path.join(ROOT_DIR, 'src/js/data/github-stats.json');
 
 const USERNAME = 'mangeshraut712';
-const GITHUB_TOKEN = process.env.GH_TOKEN || process.env.GITHUB_TOKEN || '';
+const GITHUB_TOKEN =
+  process.env.GH_TOKEN || process.env.GITHUB_TOKEN || process.env.GITHUB_PAT || '';
 
 async function fetchGitHubStats() {
   console.log(`[github-sync] Fetching live stats for @${USERNAME}...`);

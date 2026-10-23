@@ -218,7 +218,7 @@ export const openSourceActivity = {
     { label: 'Recent PR', value: 'Merged', liveKey: 'recentPr' },
     { label: 'Recent issue', value: '—', liveKey: 'recentIssue' },
     { label: 'Most active repo', value: 'mangeshrautarchive', liveKey: 'activeRepo' },
-    { label: 'Repositories', value: '51' },
+    { label: 'Repositories', value: '58' },
     { label: 'Contributions', value: 'Active', liveKey: 'streak' },
   ],
   repoUrl: 'https://github.com/mangeshraut712',
