@@ -1693,7 +1693,7 @@ const worker = {
     }
 
     if (request.method === 'POST' && path === '/api/csp-report') {
-      return json({ success: true, host: 'cloudflare-worker' }, 204, cors);
+      return new Response(null, { status: 204, headers: cors });
     }
 
     // GitHub proxy for activity metadata (public API only)
