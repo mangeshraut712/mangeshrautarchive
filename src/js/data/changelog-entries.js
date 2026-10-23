@@ -61,8 +61,8 @@ export const changelogEntries = [
     summary:
       'Authored the complete 6-file AI agent blueprint system in repository root to eliminate AI hallucinations and align agentic coding models: PRD.md (product vision, target personas, functional modules, and quality floors), ARCHITECTURE.md (runtime matrix, directory ownership, Mermaid sequence/dataflow diagrams, and WebMCP tool lifecycle), DESIGN.md (Apple HIG design tokens, SF Pro typography, metallic shine animation, circular red close buttons, and responsive guidelines), RULES.md (strict AI guardrails forbidding UI frameworks/direct Tailwind classes/secret commits, ESM standards, and PEP 8 conventions), TASKS.md (phased incremental development roadmap), and PROGRESS.md (shipped milestones, resolved post-mortems, and live health status). Updated scripts/utils/repo-doctor.mjs root allowlist to maintain 100% green compliance across 57 strict repository layout checks.',
     tags: ['design', 'deploy', 'api', 'performance'],
-    sha: null,
-    commitVerified: false,
+    sha: '4edcc790',
+    commitVerified: true,
     model: 'Gemini 3.8 Flash',
     ide: 'Google Antigravity IDE',
     purpose:
