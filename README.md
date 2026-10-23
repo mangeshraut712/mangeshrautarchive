@@ -236,7 +236,7 @@ and exported calendar files do not grant access to an Apple account.
 
 ### Evidence, not permanent guarantees
 
-The October 22, 2026 release passed **185 API tests, 11 Worker routing/stream boundary tests, 14 critical Chrome journeys, and 23 Tester Army journeys (46 browser checks across desktop Chromium and mobile WebKit)**.
+The October 24, 2026 release passed **192 API tests, 20 Worker routing/stream boundary tests, 14 critical Chrome journeys, and 23 Tester Army journeys (46 browser checks across desktop Chromium and mobile WebKit)**.
 ESLint, Stylelint, formatting, the secret scan, and the production build passed locally.
 The matching deployment workflow passed its quality, Lighthouse (100/100/100/100), Pages publication, and deployment verification gates.
 These are dated results for that release, not guarantees about every browser or future deployment.
@@ -398,5 +398,5 @@ addition to the outer request, so it is reserved for deep text comparisons and r
 A free model ID does not guarantee access: the observed Omni audio minimum was $0.50 and video
 minimum $1.00; Gemma video succeeded without that balance. These provider restrictions may change.
 
-Regression coverage: 197 API tests, 12 Worker routing/stream boundary tests, frontend unit checks, and 15 critical Chrome
+Regression coverage: 202 API tests, 21 Worker routing/stream boundary tests, frontend unit checks, and 15 critical Chrome
 journeys. The attachment journey also runs in Safari. October 3 live checks confirmed text, code, image, video, PDF, and audio processing. Audio recovered through Auto to Gemini 3.8 Flash using Google AI Studio BYOK. OpenRouter reported a zero charge and a provider-side inference cost of $0.002493 for the sample; a zero OpenRouter charge does not prove that BYOK inference is free. A longer conversation caused Auto to return HTTP 402; direct compatible Gemini 3.8 fallback restored the same audio request, so audio now tries that route before Auto. Cloud TTS remains unavailable and Fusion has no successful inference evidence. Coding agent: GPT-6 / Codex in Codex desktop; purpose: live multimodal verification, honest billing metadata, and responsive chatbot review. Exact variant, reasoning mode, and token usage: unavailable.
