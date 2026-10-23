@@ -3983,6 +3983,7 @@ class AppleIntelligenceChatbot {
       removeBtn.type = 'button';
       removeBtn.className = 'chat-attachment-remove';
       removeBtn.textContent = 'Remove';
+      removeBtn.setAttribute('aria-label', `Remove attachment ${imageDisplayName(image, index)}`);
       removeBtn.addEventListener('click', event => {
         event.preventDefault();
         event.stopPropagation();

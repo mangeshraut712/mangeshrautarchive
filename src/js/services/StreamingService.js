@@ -183,17 +183,41 @@ class StreamingService extends EventTarget {
 
   _parseLine(line) {
     // Support both plain NDJSON `{...}` and SSE `data: {...}`
-    const raw = line.startsWith('data: ') ? line.slice(6) : line;
-    if (raw === '[DONE]') return; // SSE sentinel
+    let remaining = line.startsWith('data: ') ? line.slice(6).trim() : line.trim();
+    if (!remaining || remaining === '[DONE]') return; // SSE sentinel
 
-    let parsed;
-    try {
-      parsed = JSON.parse(raw);
-    } catch {
-      console.warn('StreamingService: unparseable line:', raw.slice(0, 100));
-      return;
+    while (remaining.length > 0) {
+      let parsed;
+      try {
+        parsed = JSON.parse(remaining);
+        this._handleParsedObject(parsed);
+        break;
+      } catch (err) {
+        const match = err?.message?.match(/position (\d+)/);
+        if (match) {
+          const pos = parseInt(match[1], 10);
+          if (pos > 0 && pos < remaining.length) {
+            try {
+              const firstPart = remaining.slice(0, pos).trim();
+              parsed = JSON.parse(firstPart);
+              this._handleParsedObject(parsed);
+              remaining = remaining.slice(pos).trim();
+              if (remaining.startsWith('data: ')) {
+                remaining = remaining.slice(6).trim();
+              }
+              continue;
+            } catch {
+              // Fall through
+            }
+          }
+        }
+        console.warn('StreamingService: unparseable line:', remaining.slice(0, 100));
+        break;
+      }
     }
+  }
 
+  _handleParsedObject(parsed) {
     const type = parsed.type ?? 'chunk';
 
     switch (type) {

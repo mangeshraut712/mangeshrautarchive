@@ -575,6 +575,43 @@ class IntelligentAssistant {
         let metadata = {};
         let buffer = '';
 
+        const parseStreamPayloads = text => {
+          const payloads = [];
+          let remaining = text.trim();
+          if (remaining.startsWith('data: ')) {
+            remaining = remaining.slice(6).trim();
+          }
+          if (!remaining || remaining === '[DONE]') return payloads;
+
+          while (remaining.length > 0) {
+            try {
+              payloads.push(JSON.parse(remaining));
+              break;
+            } catch (err) {
+              const match = err?.message?.match(/position (\d+)/);
+              if (match) {
+                const pos = parseInt(match[1], 10);
+                if (pos > 0 && pos < remaining.length) {
+                  try {
+                    const firstPart = remaining.slice(0, pos).trim();
+                    payloads.push(JSON.parse(firstPart));
+                    remaining = remaining.slice(pos).trim();
+                    if (remaining.startsWith('data: ')) {
+                      remaining = remaining.slice(6).trim();
+                    }
+                    continue;
+                  } catch {
+                    // Fall through
+                  }
+                }
+              }
+              console.warn('Error parsing stream chunk:', err);
+              break;
+            }
+          }
+          return payloads;
+        };
+
         const processChunk = chunk => {
           buffer += decoder.decode(chunk, { stream: true });
           const lines = buffer.split('\n');
@@ -584,9 +621,8 @@ class IntelligentAssistant {
             const trimmed = line.trim();
             if (!trimmed) continue;
 
-            try {
-              const data = JSON.parse(trimmed);
-
+            const items = parseStreamPayloads(trimmed);
+            for (const data of items) {
               if (data.type === 'reset') {
                 fullText = '';
                 options.onReset?.();
@@ -630,8 +666,6 @@ class IntelligentAssistant {
               else {
                 Object.assign(metadata, data);
               }
-            } catch (e) {
-              console.warn('Error parsing stream chunk:', e);
             }
           }
         };
