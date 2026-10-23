@@ -61,8 +61,8 @@ export const changelogEntries = [
     summary:
       'The built-site Playwright gate serves dist/ without the dev-server middleware, so nosniff, frame, referrer, and permissions headers were missing there. The preview server now sends the same page headers as local development, including microphone and geolocation for the page itself. Coding agent: Grok 4.7 in Cursor. Purpose: make the production preview match the security-header contract. Exact variant, reasoning mode, and token usage: unavailable.',
     tags: ['deploy'],
-    sha: null,
-    commitVerified: false,
+    sha: '5a61cbb8',
+    commitVerified: true,
     model: 'Grok 4.7',
     ide: 'Cursor',
     purpose:
@@ -70,7 +70,6 @@ export const changelogEntries = [
     attributionSource: 'commit-message',
     reasoning: 'unavailable',
     usage: 'unavailable',
-    status: 'unreleased',
   },
   {
     id: 'ingest-dns-rebinding-20261023',
