@@ -49,10 +49,15 @@
 - [x] **Task 3.4: Synchronize GitHub Operating View with Live GitHub Platform**
   - Scraped and synchronized live GitHub profile and repository catalog for @mangeshraut712 (58 public repos, 12 stars, 4 forks, 10 followers).
   - Calibrated static fallback catalog in `src/js/modules/github-projects.js`, added `erdos142` research notebook, and aligned all telemetry across `systems.html`, `uses.html`, and `monitor.html`.
-- [ ] **Task 3.5: Run Quality Gates & Format Checks**
-  - Execute `npm run check` (Prettier, ESLint, Stylelint, Oxlint).
-  - Execute `npm run doctor:strict`.
-  - Execute `npm run build` and `npm test`.
+- [x] **Task 3.5: Crosscheck & Synchronize All Surfaces with Authoritative Live Platforms**
+  - Scraped real-time WhoBurnedMore telemetry for `@mrcommando712`: 20.25B lifetime tokens, $18,090 spend, 244 active days, 56d streak, rank #67 of 342 devs (Top 20%), 94.54% cache hit rate ($40,635 saved), Codex (10.61B tokens, 52.4%) and Cursor (8.89B tokens, 43.9%).
+  - Synced official Kalnirnay Panchang for October 23, 2026 from `kalnirnay.com` (Ashwin Shukla Paksha Dwadashi, Nakshatra P.Bhadrapada, Yog Dhruv, Karan Kaulav, Sunrise 6:37 AM / Sunset 6:08 PM).
+  - Aligned WebMCP tools count portfolio-wide to 20 across `systems.html`, `uses.html`, and `index.html`.
+  - Created automated sync utility `scripts/integrations/sync-whoburnedmore.mjs` and npm scripts `sync:whoburnedmore` and `sync:kalnirnay`.
+- [x] **Task 3.6: Run Quality Gates & Format Checks**
+  - Executed `npm run check` (Prettier, ESLint, Stylelint, Oxlint).
+  - Executed `npm run doctor:strict` (57/57 passed).
+  - Executed `npm run build` (zero errors), `npm run test:worker` (11/11), `npm run test:api` (185/185), and `npm run test:e2e:critical` (14/14).
 
 ---
 

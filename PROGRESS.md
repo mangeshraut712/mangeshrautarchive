@@ -41,6 +41,13 @@
 - Synchronized cross-surface public repo and test counts across `systems.html`, `engineering-showcase-data.js`, `portfolio-public-data.js`, `api/portfolio_public_data.py`, `api/config.py`, `monitor.html`, and `uses.html` (58 public repos, 185 pytest contracts, 14 critical browser journeys).
 - Upgraded `scripts/integrations/sync-github-stats.mjs` to support `GITHUB_PAT` authentication.
 
+### Live Platform Crosschecks & Ground Truth Telemetry Sync
+
+- **WhoBurnedMore Telemetry Sync**: Sourced real-time profile metrics from `whoburnedmore.com/u/mrcommando712` and all-time leaderboard API. Updated lifetime burn to **20.25B tokens** ($18,090 spend, 244 active days, 56d streak), all-time rank to **#67 of 342 devs** (Top 20%), cache hit rate to **94.54%** ($40,635 saved, 18.82B read tokens), and tool distributions: OpenAI Codex (**10.61B tokens**, 52.4%) and Cursor (**8.89B tokens**, 43.9%).
+- **Kalnirnay Hindu Panchang**: Synced official astronomical data from `kalnirnay.com` for October 23, 2026 into `src/assets/data/kalnirnay-panchang.json`: Ashwin Shukla Paksha Dwadashi, Nakshatra P.Bhadrapada, Yog Dhruv, Karan Kaulav, Sunrise 6:37 AM / Sunset 6:08 PM.
+- **WebMCP Tools Alignment**: Reconciled WebMCP tools count portfolio-wide to **20 tools** across `systems.html`, `uses.html`, and `index.html`.
+- **Automated Sync Tooling**: Created `scripts/integrations/sync-whoburnedmore.mjs` and added `npm run sync:whoburnedmore` and `npm run sync:kalnirnay` scripts to `package.json`.
+
 ---
 
 ## 2. What Broke & How It Was Fixed

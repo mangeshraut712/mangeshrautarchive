@@ -29,7 +29,7 @@ export const heroStats = [
   { value: deployLighthouse, unit: '', label: 'Lighthouse CI gate', href: '#production' },
   { value: String(WEBMCP_TOOL_COUNT), unit: '', label: 'WebMCP tools', href: '#architecture' },
   {
-    value: whoburnedmoreProfile?.lifetimeBurn || '15.75B',
+    value: whoburnedmoreProfile?.lifetimeBurn || '20.25B',
     unit: '',
     label: 'AI tokens burned',
     href: '#tokenization',
