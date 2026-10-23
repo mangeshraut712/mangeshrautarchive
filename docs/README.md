@@ -2,6 +2,12 @@
 
 | Doc                                                                        | Contents                                                        |
 | -------------------------------------------------------------------------- | --------------------------------------------------------------- |
+| [../PRD.md](../PRD.md)                                                     | Product vision, target user personas, and requirements          |
+| [../ARCHITECTURE.md](../ARCHITECTURE.md)                                   | Tech stack, directory map, Mermaid sequence, and data flow      |
+| [../DESIGN.md](../DESIGN.md)                                               | High-level design blueprint & Apple HIG component summary       |
+| [../RULES.md](../RULES.md)                                                 | Coding style, security boundaries, and AI guardrails            |
+| [../TASKS.md](../TASKS.md)                                                 | Phased, incremental, step-by-step implementation tasks          |
+| [../PROGRESS.md](../PROGRESS.md)                                           | Completed deliverables, resolved incidents, and current status  |
 | [DESIGN.md](./DESIGN.md)                                                   | Apple Human Interface Portfolio Design System (source of truth) |
 | [STRUCTURE.md](./STRUCTURE.md)                                             | Canonical folder map — **start here when organizing code**      |
 | [BEST_PRACTICES.md](./BEST_PRACTICES.md)                                   | 14 Software Engineering Best Practices for long-term success    |

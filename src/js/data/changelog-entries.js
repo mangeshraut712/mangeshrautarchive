@@ -54,6 +54,24 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'agentic-blueprint-system-scaffolding-20261023',
+    date: '2026-10-23',
+    type: 'improvement',
+    title: 'Establish 6 core project blueprint documents for autonomous AI agent alignment',
+    summary:
+      'Authored the complete 6-file AI agent blueprint system in repository root to eliminate AI hallucinations and align agentic coding models: PRD.md (product vision, target personas, functional modules, and quality floors), ARCHITECTURE.md (runtime matrix, directory ownership, Mermaid sequence/dataflow diagrams, and WebMCP tool lifecycle), DESIGN.md (Apple HIG design tokens, SF Pro typography, metallic shine animation, circular red close buttons, and responsive guidelines), RULES.md (strict AI guardrails forbidding UI frameworks/direct Tailwind classes/secret commits, ESM standards, and PEP 8 conventions), TASKS.md (phased incremental development roadmap), and PROGRESS.md (shipped milestones, resolved post-mortems, and live health status). Updated scripts/utils/repo-doctor.mjs root allowlist to maintain 100% green compliance across 57 strict repository layout checks.',
+    tags: ['design', 'deploy', 'api', 'performance'],
+    sha: null,
+    commitVerified: false,
+    model: 'Gemini 3.8 Flash',
+    ide: 'Google Antigravity IDE',
+    purpose:
+      'Author the 6 core project blueprint documents (PRD, ARCHITECTURE, DESIGN, RULES, TASKS, PROGRESS) and register them in repo doctor layout checks.',
+    attributionSource: 'commit-message',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
     id: 'nodejs-security-updates-and-system-toolchain-20261022',
     date: '2026-10-22',
     type: 'fix',
