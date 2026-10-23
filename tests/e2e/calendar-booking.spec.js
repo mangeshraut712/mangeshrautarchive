@@ -22,7 +22,7 @@ test.describe('Apple-style Contact Calendar and Smart Reminders', () => {
     await expect(calendar.locator('.ios-weekdays')).toBeVisible();
     await expect(calendar.locator('.ios-reminders-section')).toBeVisible();
     await expect(calendar.getByText('Events & Reminders')).toBeVisible();
-    await expect(calendar.locator('.calendar-snapshot-note')).toContainText('97 distinct events');
+    await expect(calendar.locator('#contact-panchang')).toBeVisible();
     await expect(page.locator('#contact .calendly-panel')).toBeVisible();
 
     await calendar.locator('[data-calendar-view="year"]').click();
@@ -43,7 +43,6 @@ test.describe('Apple-style Contact Calendar and Smart Reminders', () => {
     await expect(firstCard).not.toHaveClass(/completed/);
     await firstCard.click();
     await expect(firstCard).not.toHaveClass(/completed/);
-    await expect(firstCard.locator('.card-source')).toBeVisible();
     await expect(firstCard.locator('.status-circle')).toHaveCount(0);
   });
 

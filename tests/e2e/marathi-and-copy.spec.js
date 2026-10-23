@@ -51,8 +51,9 @@ test.describe('Marathi Name Translation, Clean Speech Player, and shadcn Copy Fe
     await page.locator('#music-card').evaluate(el => {
       el.classList.add('is-playing');
     });
-    const playState = await albumArt.evaluate(el => getComputedStyle(el).animationPlayState);
-    expect(playState).toBe('running');
+    await expect
+      .poll(() => albumArt.evaluate(el => getComputedStyle(el).animationPlayState))
+      .toBe('running');
   });
 
   test('contact channel copy button copies email and triggers toast', async ({

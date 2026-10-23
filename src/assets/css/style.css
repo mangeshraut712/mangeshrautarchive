@@ -4939,7 +4939,12 @@ footer p {
   transform: translateY(-2px);
 }
 
+#go-to-top:not(.visible) {
+  display: none !important;
+}
+
 #go-to-top.visible {
+  display: flex !important;
   opacity: 1;
   visibility: visible;
   transform: translateY(0) scale(1);

@@ -700,10 +700,10 @@ test.describe('Chrome smoke tests', () => {
 
     // Verify individual telemetry values
     await expect(page.locator('.keynote-tool-card', { hasText: 'OpenAI Codex' })).toContainText(
-      '9.51B tokens burned'
+      '10.61B tokens burned'
     );
     await expect(page.locator('.keynote-tool-card', { hasText: 'Cursor' })).toContainText(
-      '5.50B tokens burned'
+      '8.89B tokens burned'
     );
     await expect(page.locator('.keynote-tool-card', { hasText: 'GitHub Copilot' })).toContainText(
       '1.20B+ tokens burned'
@@ -721,7 +721,7 @@ test.describe('Chrome smoke tests', () => {
       page.locator('.keynote-bento-card--gate', { hasText: 'Critical Browser Journeys' })
     ).toBeVisible();
     await expect(page.locator('.keynote-bento-card--gate', { hasText: 'Pytest' })).toContainText(
-      '184 / 184'
+      '185 / 185'
     );
 
     // Verify zero horizontal overflow on tools grid

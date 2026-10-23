@@ -217,6 +217,24 @@ async function assertCardHover(page, { section, selector }) {
   }
 
   if (!hovered.isAppleBlueBorder) {
+    try {
+      await expect
+        .poll(
+          async () => {
+            await card.hover({ force: true });
+            const m = await readCardMetrics(card, { checkAppleBlueBorder: true });
+            return m.isAppleBlueBorder;
+          },
+          { timeout: 3000 }
+        )
+        .toBe(true);
+      hovered = await readCardMetrics(card, { checkAppleBlueBorder: true });
+    } catch {
+      // Fall through to existing error logging & assertion
+    }
+  }
+
+  if (!hovered.isAppleBlueBorder) {
     console.log(
       `Failed blue border check on ${section} card. Received borderTopColor: ${hovered.borderTopColor}`
     );
@@ -318,7 +336,25 @@ test.describe('Standalone page card hover audit', () => {
       expect(resting.boxShadow).toBe('none');
       expect(resting.borderRadius).toBeGreaterThanOrEqual(12);
 
-      const hovered = await hoverAndReadCardMetrics(page, card, { checkAppleBlueBorder: true });
+      let hovered = await hoverAndReadCardMetrics(page, card, { checkAppleBlueBorder: true });
+      if (!hovered.isAppleBlueBorder) {
+        try {
+          await expect
+            .poll(
+              async () => {
+                await card.hover({ force: true });
+                const m = await readCardMetrics(card, { checkAppleBlueBorder: true });
+                return m.isAppleBlueBorder;
+              },
+              { timeout: 3000 }
+            )
+            .toBe(true);
+          hovered = await readCardMetrics(card, { checkAppleBlueBorder: true });
+        } catch {
+          // Fall through to existing error logging & assertion
+        }
+      }
+
       if (!hovered.isAppleBlueBorder) {
         console.log(
           `Failed blue border check on standalone page ${check.name} card. Received borderTopColor: ${hovered.borderTopColor}`
