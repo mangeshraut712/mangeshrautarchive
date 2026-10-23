@@ -41,6 +41,20 @@ function isAllowedOrigin(origin) {
   return ALLOWED_ORIGIN_PATTERNS.some(pattern => pattern.test(origin));
 }
 
+const SECURITY_HEADERS = {
+  'X-Content-Type-Options': 'nosniff',
+  'X-Frame-Options': 'SAMEORIGIN',
+  'Referrer-Policy': 'strict-origin-when-cross-origin',
+  'Permissions-Policy': 'camera=(), microphone=(self), geolocation=(self)',
+};
+
+app.use((_req, res, next) => {
+  for (const [name, value] of Object.entries(SECURITY_HEADERS)) {
+    if (!res.getHeader(name)) res.setHeader(name, value);
+  }
+  next();
+});
+
 // Local dev CORS support (allows seamless cross-port & localhost ↔ 127.0.0.1 requests)
 app.use((req, res, next) => {
   const origin = req.headers.origin;

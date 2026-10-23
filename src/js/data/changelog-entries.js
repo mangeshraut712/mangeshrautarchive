@@ -54,6 +54,25 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'quality-pass-security-a11y-20261023',
+    date: '2026-10-23',
+    type: 'fix',
+    title: 'Close CORS, HTML injection, ingestion, and accessibility gaps',
+    summary:
+      'Rejected Cloudflare Worker CORS origins that only contained localhost or 127.0.0.1 as a substring. Escaped blog markdown before it reaches innerHTML and limited article video iframes to known video hosts. Refused private, link-local, metadata, and credentialed URLs on /api/ingest-url before any fetch. Percent-encoded durable rate-limit keys so IPv6 addresses stay in one path segment, and recorded failed-request IPs with the same rightmost-forwarded-for trust model as rate limiting. Added nosniff, frame, referrer, and permissions headers on API and local page responses, and kept microphone and geolocation available to the page itself. Named the monitor event search field, gave action buttons an explicit type, and reserved album-art dimensions. Stashed AssistMe fallback charts so they survive sanitizing and are not drawn twice. Added Node unit tests and one critical Playwright journey. Coding agent: Grok 4.7 in Cursor. Purpose: security, accessibility, and rendering fixes. Exact variant, reasoning mode, and token usage: unavailable.',
+    tags: ['api', 'assistme', 'blog', 'monitor'],
+    sha: null,
+    commitVerified: false,
+    model: 'Grok 4.7',
+    ide: 'Cursor',
+    purpose:
+      'Fix CORS origin matching, blog HTML injection, open video embeds, private URL ingestion, rate-limit key encoding, missing security headers, the unlabeled monitor search field, and duplicate chart rendering.',
+    attributionSource: 'commit-message',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+    status: 'unreleased',
+  },
+  {
     id: 'live-platform-telemetry-crosscheck-20261023',
     date: '2026-10-23',
     type: 'improvement',

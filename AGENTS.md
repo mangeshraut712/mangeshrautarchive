@@ -148,7 +148,7 @@ npm run lint:python         # flake8 (Python)
 npm run format:check        # Prettier check
 
 # Test
-npm test                    # API tests and critical Chrome user journeys
+npm test                    # API, worker, unit, and critical Chrome journeys
 npm run test:api            # pytest API tests; activate venv first when required
 npm run test:worker         # Cloudflare Worker multimodal routing and stream boundaries
 npm run test:e2e:chrome     # Playwright E2E — Desktop Chrome
@@ -260,13 +260,14 @@ Full map: [docs/STRUCTURE.md](docs/STRUCTURE.md).
 
 ## 6. Testing Requirements
 
-All four test suites must pass before any merge to `main`:
+All five test suites must pass before any merge to `main`:
 
 | Suite        | Runner           | Command                       | Coverage                                                                       |
 | ------------ | ---------------- | ----------------------------- | ------------------------------------------------------------------------------ |
-| API          | pytest           | `npm run test:api`            | 185 tests — FastAPI endpoints, middleware                                      |
-| Worker       | Node test runner | `npm run test:worker`         | 11 routing and streaming boundary checks                                       |
-| E2E Critical | Playwright       | `npm run test:e2e:critical`   | 14 critical user journeys on Desktop Chrome                                    |
+| API          | pytest           | `npm run test:api`            | 191 tests — FastAPI endpoints, middleware                                      |
+| Worker       | Node test runner | `npm run test:worker`         | 12 routing, CORS, and streaming boundary checks                                |
+| Unit         | Node test runner | `npm run test:unit`           | Blog HTML escaping and AssistMe chart rendering                                |
+| E2E Critical | Playwright       | `npm run test:e2e:critical`   | 15 critical user journeys on Desktop Chrome                                    |
 | Tester Army  | `e2e`            | `npm run test:tester-army:ci` | 23 deterministic journeys on desktop Chromium (46 checks across WebKit/Chrome) |
 
 The broader browser suite remains available through `npm run test:e2e:all` across 16 configured projects.

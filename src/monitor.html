@@ -582,6 +582,7 @@
             <h2 class="section-title">Health Checks</h2>
             <div class="section-actions">
               <button
+                type="button"
                 class="btn btn-secondary"
                 id="btn-run-health-checks"
                 data-monitor-action="run-health-checks"
@@ -614,6 +615,7 @@
             <h2 class="section-title">Platform Health Matrix</h2>
             <div class="section-actions">
               <button
+                type="button"
                 class="btn btn-secondary"
                 id="btn-refresh-platform-health"
                 data-monitor-action="refresh-platform-health"
@@ -673,7 +675,7 @@
           <div class="section-header">
             <h2 class="section-title">API Endpoint Metrics</h2>
             <div class="section-actions">
-              <button class="btn btn-secondary" data-monitor-action="export-metrics">
+              <button type="button" class="btn btn-secondary" data-monitor-action="export-metrics">
                 <i class="fas fa-download" aria-hidden="true"></i>
                 Export JSON
               </button>
@@ -727,6 +729,7 @@
             <h2 class="section-title">Provider APIs</h2>
             <div class="section-actions">
               <button
+                type="button"
                 class="btn btn-secondary"
                 id="btn-refresh-providers"
                 data-monitor-action="check-external-apis"
@@ -759,6 +762,7 @@
             <h2 class="section-title">Deployment Surfaces</h2>
             <div class="section-actions">
               <button
+                type="button"
                 class="btn btn-secondary"
                 id="btn-refresh-surfaces"
                 data-monitor-action="refresh-hosting-surfaces"
@@ -782,6 +786,7 @@
             <h2 class="section-title">Client-Side Latency</h2>
             <div class="section-actions">
               <button
+                type="button"
                 class="btn btn-secondary"
                 id="btn-run-probes"
                 data-monitor-action="run-client-probes"
@@ -938,6 +943,7 @@
             <h2 class="section-title">OAuth Integrations</h2>
             <div class="section-actions">
               <button
+                type="button"
                 class="btn btn-secondary"
                 id="btn-refresh-integrations"
                 data-monitor-action="refresh-integrations-panel"
@@ -1011,10 +1017,10 @@
                 </div>
                 <span class="overview-card__status badge-healthy">CI Configured</span>
               </div>
-              <div class="overview-card__value">185 + 14 Tests</div>
+              <div class="overview-card__value">191 + 15 Tests</div>
               <div class="overview-card__label">Automated Test Suites</div>
               <div class="overview-card__meta">
-                185 Pytest · 14 critical browser journeys · 16 Playwright projects
+                191 Pytest · 15 critical browser journeys · 16 Playwright projects
               </div>
             </div>
             <div class="overview-card">
@@ -1059,6 +1065,7 @@
             <h2 class="section-title">Security & Rate Limiting</h2>
             <div class="section-actions">
               <button
+                type="button"
                 class="btn btn-secondary"
                 id="btn-refresh-security"
                 data-monitor-action="refresh-security"
@@ -1126,6 +1133,7 @@
             </div>
             <div class="section-actions">
               <button
+                type="button"
                 class="btn btn-secondary"
                 id="btn-refresh-ai"
                 data-monitor-action="refresh-ai-metrics"
@@ -1149,6 +1157,7 @@
             <h2 class="section-title">System Event Audit Log</h2>
             <div class="section-actions">
               <button
+                type="button"
                 class="btn btn-secondary"
                 id="btn-clear-resolved"
                 data-monitor-action="clear-resolved"
@@ -1161,16 +1170,20 @@
 
           <div class="log-filter-bar">
             <div class="log-search-wrapper">
+              <label class="sr-only" for="log-search-input">Search system events</label>
               <i class="fas fa-search log-search-icon" aria-hidden="true"></i>
               <input
-                type="text"
+                type="search"
                 id="log-search-input"
                 class="log-search-input"
                 placeholder="Search events by keyword, source, or IP..."
+                aria-label="Search system events"
+                autocomplete="off"
               />
             </div>
             <div class="log-tabs">
               <button
+                type="button"
                 class="log-tab-btn active"
                 data-filter=""
                 data-monitor-action="select-log-tab"
@@ -1178,16 +1191,23 @@
                 All
               </button>
               <button
+                type="button"
                 class="log-tab-btn"
                 data-filter="critical"
                 data-monitor-action="select-log-tab"
               >
                 Critical
               </button>
-              <button class="log-tab-btn" data-filter="error" data-monitor-action="select-log-tab">
+              <button
+                type="button"
+                class="log-tab-btn"
+                data-filter="error"
+                data-monitor-action="select-log-tab"
+              >
                 Errors
               </button>
               <button
+                type="button"
                 class="log-tab-btn"
                 data-filter="warning"
                 data-monitor-action="select-log-tab"
@@ -1195,13 +1215,19 @@
                 Warnings
               </button>
               <button
+                type="button"
                 class="log-tab-btn"
                 data-filter="success"
                 data-monitor-action="select-log-tab"
               >
                 Success
               </button>
-              <button class="log-tab-btn" data-filter="info" data-monitor-action="select-log-tab">
+              <button
+                type="button"
+                class="log-tab-btn"
+                data-filter="info"
+                data-monitor-action="select-log-tab"
+              >
                 Info
               </button>
             </div>

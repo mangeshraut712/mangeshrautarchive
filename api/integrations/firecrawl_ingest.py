@@ -5,13 +5,52 @@ to dynamically populate portfolio chatbot site knowledge.
 Supports remote Firecrawl API with fallback to local readability extraction.
 """
 
-import os
+import ipaddress
 import logging
-from typing import Dict, Any, Optional
+import os
+from typing import Any, Dict, Optional
+from urllib.parse import urlparse
 
 logger = logging.getLogger(__name__)
 
 FIRECRAWL_API_KEY = os.environ.get("FIRECRAWL_API_KEY")
+_BLOCKED_HOSTS = {"localhost", "metadata", "metadata.google.internal", "metadata.internal"}
+
+
+def ingest_url_error(url: str) -> Optional[str]:
+    """Reject schemes, credentials, and non-public hosts before any fetch."""
+    raw = (url or "").strip()
+    if not raw:
+        return "URL parameter cannot be empty."
+    parsed = urlparse(raw)
+    if parsed.scheme not in {"http", "https"}:
+        return "Invalid URL protocol. Must start with http:// or https://"
+    if parsed.username or parsed.password:
+        return "URLs with embedded credentials are not allowed."
+    host = (parsed.hostname or "").strip().lower().rstrip(".")
+    if not host:
+        return "URL host is missing."
+    if (
+        host in _BLOCKED_HOSTS
+        or host.endswith(".localhost")
+        or host.endswith(".local")
+        or host.endswith(".internal")
+    ):
+        return "That host cannot be ingested."
+    try:
+        address = ipaddress.ip_address(host)
+    except ValueError:
+        address = None
+    if address is not None and (
+        address.is_private
+        or address.is_loopback
+        or address.is_link_local
+        or address.is_multicast
+        or address.is_reserved
+        or address.is_unspecified
+    ):
+        return "That host cannot be ingested."
+    return None
 
 
 class FirecrawlService:
@@ -23,12 +62,14 @@ class FirecrawlService:
 
     async def scrape_url(self, url: str) -> Dict[str, Any]:
         """
-        Scrape target URL and convert to Markdown format.
+        Scrape a public http(s) URL and convert it to Markdown.
+        Private, link-local, and metadata hosts are refused before any request.
         """
-        if not url or not url.startswith("http"):
+        error = ingest_url_error(url)
+        if error:
             return {
                 "success": False,
-                "error": "Invalid URL protocol. Must start with http:// or https://",
+                "error": error,
                 "markdown": "",
             }
 

@@ -3,18 +3,30 @@
 # =============================================================================
 User-agent: Googlebot
 Allow: /
+Disallow: /api/
+Disallow: /build-config.json
+Disallow: /build-config.js
 Crawl-delay: 0
 
 User-agent: Bingbot
 Allow: /
+Disallow: /api/
+Disallow: /build-config.json
+Disallow: /build-config.js
 Crawl-delay: 1
 
 User-agent: Slurp
 Allow: /
+Disallow: /api/
+Disallow: /build-config.json
+Disallow: /build-config.js
 Crawl-delay: 1
 
 User-agent: DuckDuckBot
 Allow: /
+Disallow: /api/
+Disallow: /build-config.json
+Disallow: /build-config.js
 Crawl-delay: 1
 
 # =============================================================================

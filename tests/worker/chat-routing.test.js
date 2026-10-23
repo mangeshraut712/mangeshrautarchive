@@ -199,6 +199,44 @@ test('audio recovers through a compatible Gemini model before Auto after a free-
   failFirst = false;
 });
 
+test('cors allows loopback and production origins and rejects lookalike hosts', async () => {
+  for (const origin of [
+    'http://localhost:4000',
+    'http://127.0.0.1:8001',
+    'https://mangeshraut.pro',
+    'https://mangeshraut712.github.io',
+  ]) {
+    const response = await worker.fetch(
+      new Request('https://example.com/api/health', {
+        method: 'OPTIONS',
+        headers: { Origin: origin },
+      }),
+      env,
+      {}
+    );
+    assert.equal(response.status, 204);
+    assert.equal(response.headers.get('access-control-allow-origin'), origin);
+    assert.equal(response.headers.get('x-content-type-options'), 'nosniff');
+  }
+
+  for (const origin of [
+    'https://localhost.evil.example',
+    'https://evil-localhost.com',
+    'https://127.0.0.1.attacker.example',
+    'https://not-allowed.example',
+  ]) {
+    const response = await worker.fetch(
+      new Request('https://example.com/api/health', {
+        method: 'OPTIONS',
+        headers: { Origin: origin },
+      }),
+      env,
+      {}
+    );
+    assert.equal(response.headers.get('access-control-allow-origin'), null, origin);
+  }
+});
+
 test('github profile route returns user profile data', async () => {
   const response = await worker.fetch(
     new Request('https://example.com/api/github/profile'),

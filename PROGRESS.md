@@ -22,9 +22,10 @@
 
 ### Testing & Verification Milestones
 
-- **API Tests**: 185 / 185 tests passing (`npm run test:api`).
-- **Worker Routing Tests**: 11 / 11 tests passing (`npm run test:worker`).
-- **Critical Playwright Journeys**: 14 / 14 desktop journeys passing (`npm run test:e2e:critical`).
+- **API Tests**: 191 / 191 tests passing (`npm run test:api`).
+- **Worker Routing Tests**: 12 / 12 tests passing (`npm run test:worker`).
+- **Frontend Unit Tests**: blog escaping and chart rendering (`npm run test:unit`).
+- **Critical Playwright Journeys**: 15 / 15 desktop journeys passing (`npm run test:e2e:critical`).
 - **Tester Army Journeys**: 23 / 23 deterministic journeys passing (`npm run test:tester-army:ci`).
 - **Lighthouse Deploy Gate**: 100/100/100/100 floor passed on live GitHub Pages deployment.
 
