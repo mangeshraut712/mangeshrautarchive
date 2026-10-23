@@ -169,3 +169,39 @@ class TestMonitorAIMetrics:
         assert response.status_code == 200
         data = response.json()
         assert isinstance(data, dict)
+
+
+class TestMonitorCSPReport:
+    def test_csp_report_accepted(self, client):
+        response = client.post(
+            "/api/csp-report",
+            json={
+                "csp-report": {
+                    "document-uri": "https://example.com/index.html",
+                    "violated-directive": "script-src",
+                    "blocked-uri": "https://evil.com/payload.js",
+                }
+            },
+        )
+        assert response.status_code == 200
+        data = response.json()
+        assert data["accepted"] is True
+        assert "timestamp" in data
+
+    def test_csp_report_oversized_payload_rejected(self, client):
+        response = client.post(
+            "/api/csp-report",
+            content=b"x" * (16 * 1024 + 1),
+            headers={"Content-Type": "application/json"},
+        )
+        assert response.status_code == 413
+
+    def test_csp_report_malformed_json_graceful(self, client):
+        response = client.post(
+            "/api/csp-report",
+            content=b"not-json-content",
+            headers={"Content-Type": "application/json"},
+        )
+        assert response.status_code == 200
+        data = response.json()
+        assert data["accepted"] is True

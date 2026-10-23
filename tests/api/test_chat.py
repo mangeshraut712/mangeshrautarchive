@@ -395,3 +395,7 @@ def test_multimodal_document_and_audio_payload_validation():
     assert "Order 42" in parts[1]["text"]
     with pytest.raises(HTTPException):
         build_multimodal_user_content("Read", attachments=[{"src": "https://unsafe.example/file"}])
+    with pytest.raises(HTTPException):
+        build_multimodal_user_content("Read", attachments=["not-a-dict"])
+    with pytest.raises(HTTPException):
+        build_multimodal_user_content("Read", attachments=[None])

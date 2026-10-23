@@ -765,6 +765,8 @@ def build_multimodal_user_content(
         raise HTTPException(status_code=400, detail="Attach up to two files per message.")
     total = sum(len(url) for url in safe_images)
     for item in attachments or []:
+        if not isinstance(item, dict):
+            raise HTTPException(status_code=400, detail="Invalid attachment format.")
         src = item.get("src", "")
         if not isinstance(src, str):
             raise HTTPException(status_code=400, detail="File unreadable or too large. Use files under 3 MB.")

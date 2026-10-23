@@ -1,5 +1,6 @@
 import hashlib
 import hmac
+import json
 import os
 import re
 import time
@@ -138,8 +139,12 @@ async def receive_csp_report(request: Request):
     if content_length > MAX_CSP_REPORT_BYTES:
         raise HTTPException(status_code=413, detail="CSP report is too large")
 
+    raw_body = await request.body()
+    if len(raw_body) > MAX_CSP_REPORT_BYTES:
+        raise HTTPException(status_code=413, detail="CSP report is too large")
+
     try:
-        payload = await request.json()
+        payload = json.loads(raw_body.decode("utf-8")) if raw_body else {}
     except Exception:
         payload = {}
 

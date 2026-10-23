@@ -27,3 +27,25 @@ def test_vector_search_empty_query_validation():
         json={"query": "   ", "top_k": 3},
     )
     assert response.status_code == 400
+
+
+def test_vector_search_top_k_bounds():
+    response = client.post(
+        "/api/vector-search",
+        json={"query": "test query", "top_k": 0},
+    )
+    assert response.status_code == 422
+
+    response = client.post(
+        "/api/vector-search",
+        json={"query": "test query", "top_k": 100},
+    )
+    assert response.status_code == 422
+
+
+def test_vector_search_query_max_length():
+    response = client.post(
+        "/api/vector-search",
+        json={"query": "a" * 1001, "top_k": 3},
+    )
+    assert response.status_code == 422

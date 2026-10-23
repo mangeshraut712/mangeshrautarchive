@@ -4,7 +4,7 @@ Exposes POST /api/vector-search endpoint for semantic RAG retrieval.
 """
 
 from fastapi import APIRouter, HTTPException
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from typing import List, Dict, Any, Optional
 from api.integrations.upstash_vector import vector_service
 
@@ -12,9 +12,9 @@ router = APIRouter(prefix="/api", tags=["vector"])
 
 
 class VectorQueryRequest(BaseModel):
-    query: str
-    top_k: Optional[int] = 3
-    namespace: Optional[str] = "portfolio"
+    query: str = Field(..., min_length=1, max_length=1000)
+    top_k: Optional[int] = Field(default=3, ge=1, le=50)
+    namespace: Optional[str] = Field(default="portfolio", max_length=64)
 
 
 class VectorQueryResponse(BaseModel):
