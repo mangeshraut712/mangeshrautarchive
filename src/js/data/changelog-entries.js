@@ -61,8 +61,8 @@ export const changelogEntries = [
     summary:
       'Resolved every address for /api/ingest-url hostnames before calling Firecrawl. Names that resolve to loopback, private, link-local, multicast, carrier-grade NAT, or other non-global addresses are refused, including IPv4-mapped forms and mixed public answers. Resolution failures and timeouts are refused as well. Public hostnames are still forwarded with their original URL so Host and TLS stay intact. Coding agent: Grok 4.7 in Cursor. Purpose: close the DNS-rebinding gap on URL ingestion. Exact variant, reasoning mode, and token usage: unavailable.',
     tags: ['api'],
-    sha: null,
-    commitVerified: false,
+    sha: '7bd86a88',
+    commitVerified: true,
     model: 'Grok 4.7',
     ide: 'Cursor',
     purpose:
@@ -70,7 +70,6 @@ export const changelogEntries = [
     attributionSource: 'commit-message',
     reasoning: 'unavailable',
     usage: 'unavailable',
-    status: 'unreleased',
   },
   {
     id: 'quality-pass-security-a11y-20261023',
