@@ -55,6 +55,12 @@
 - **Root Cause**: Running `npm install --package-lock-only` on macOS Apple Silicon pruned foreign platform optional dependencies (`@esbuild/linux-x64`, `@tailwindcss/oxide-linux-*`, `@img/sharp-linux-*`, etc.) from `package-lock.json`.
 - **Resolution**: Restored complete cross-platform optional dependency entries from `4b41d307:package-lock.json`, committed the restored lockfile (`c7c6587a`), and verified green remote builds.
 
+### Incident 4: Critical DOMPurify Template Bypass Advisories in CI Deploy Gate
+
+- **What Broke**: The `CI → Deploy to GitHub Pages` workflow failed at the `Security — dependency vulnerability audit` step (`npm audit --audit-level=high --omit=dev`).
+- **Root Cause**: Upstream DOMPurify security advisories were published for DOMPurify <=3.4.16 (GHSA-cg2g-xh64-v4q7 split template bypass, GHSA-mrv2-3pqr-j5jr detached subtree handler bypass, GHSA-c6gr-qvv4-5v3f SMIL attribute bypass).
+- **Resolution**: Updated `overrides.dompurify` in `package.json` and resolved URL/hash in `package-lock.json` to `3.4.17` without altering multi-platform optional binaries. Verified `npm audit --audit-level=high --omit=dev` exits with 0 vulnerabilities.
+
 ---
 
 ## 3. What's Next
