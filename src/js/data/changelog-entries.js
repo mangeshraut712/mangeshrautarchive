@@ -54,6 +54,60 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'dist-preview-security-headers-20261023',
+    date: '2026-10-23',
+    type: 'fix',
+    title: 'Send baseline security headers from the production preview server',
+    summary:
+      'The built-site Playwright gate serves dist/ without the dev-server middleware, so nosniff, frame, referrer, and permissions headers were missing there. The preview server now sends the same page headers as local development, including microphone and geolocation for the page itself. Coding agent: Grok 4.7 in Cursor. Purpose: make the production preview match the security-header contract. Exact variant, reasoning mode, and token usage: unavailable.',
+    tags: ['deploy'],
+    sha: '5a61cbb8',
+    commitVerified: true,
+    model: 'Grok 4.7',
+    ide: 'Cursor',
+    purpose:
+      'Send baseline security headers from the dist preview server used by built-site browser gates.',
+    attributionSource: 'commit-message',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
+    id: 'ingest-dns-rebinding-20261023',
+    date: '2026-10-23',
+    type: 'fix',
+    title: 'Refuse ingest URLs whose DNS answers are not public',
+    summary:
+      'Resolved every address for /api/ingest-url hostnames before calling Firecrawl. Names that resolve to loopback, private, link-local, multicast, carrier-grade NAT, or other non-global addresses are refused, including IPv4-mapped forms and mixed public answers. Resolution failures and timeouts are refused as well. Public hostnames are still forwarded with their original URL so Host and TLS stay intact. Coding agent: Grok 4.7 in Cursor. Purpose: close the DNS-rebinding gap on URL ingestion. Exact variant, reasoning mode, and token usage: unavailable.',
+    tags: ['api'],
+    sha: '7bd86a88',
+    commitVerified: true,
+    model: 'Grok 4.7',
+    ide: 'Cursor',
+    purpose:
+      'Resolve ingest hostnames and refuse any DNS answer that is not a public address before Firecrawl is called.',
+    attributionSource: 'commit-message',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
+    id: 'quality-pass-security-a11y-20261023',
+    date: '2026-10-23',
+    type: 'fix',
+    title: 'Close CORS, HTML injection, ingestion, and accessibility gaps',
+    summary:
+      'Rejected Cloudflare Worker CORS origins that only contained localhost or 127.0.0.1 as a substring. Escaped blog markdown before it reaches innerHTML and limited article video iframes to known video hosts. Refused private, link-local, metadata, and credentialed URLs on /api/ingest-url before any fetch. Percent-encoded durable rate-limit keys so IPv6 addresses stay in one path segment, and recorded failed-request IPs with the same rightmost-forwarded-for trust model as rate limiting. Added nosniff, frame, referrer, and permissions headers on API and local page responses, and kept microphone and geolocation available to the page itself. Named the monitor event search field, gave action buttons an explicit type, and reserved album-art dimensions. Stashed AssistMe fallback charts so they survive sanitizing and are not drawn twice. Added Node unit tests and one critical Playwright journey. Coding agent: Grok 4.7 in Cursor. Purpose: security, accessibility, and rendering fixes. Exact variant, reasoning mode, and token usage: unavailable.',
+    tags: ['api', 'assistme', 'blog', 'monitor'],
+    sha: '485d8b01',
+    commitVerified: true,
+    model: 'Grok 4.7',
+    ide: 'Cursor',
+    purpose:
+      'Fix CORS origin matching, blog HTML injection, open video embeds, private URL ingestion, rate-limit key encoding, missing security headers, the unlabeled monitor search field, and duplicate chart rendering.',
+    attributionSource: 'commit-message',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
     id: 'live-platform-telemetry-crosscheck-20261023',
     date: '2026-10-23',
     type: 'improvement',

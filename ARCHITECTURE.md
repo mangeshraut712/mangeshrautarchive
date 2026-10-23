@@ -48,16 +48,16 @@ flowchart TD
 
 ## 2. Technology Stack
 
-| Layer                        | Technology                                          | Purpose & Rationale                                                                                                         |
-| :--------------------------- | :-------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------- |
-| **Frontend Runtime**         | Native HTML5, Vanilla CSS, ES Modules               | Pure native platform capabilities. Zero framework overhead, instantaneous hydration, 100/100 Lighthouse performance.        |
-| **Styling**                  | Vanilla CSS + Apple Custom Properties (`--apple-*`) | Authentic Apple Human Interface Guidelines styling, frosted glassmorphism, responsive layout, specular sheen animations.    |
-| **CSS Utility Engine**       | Tailwind CSS v4 (Build-time only)                   | Generates auxiliary utility classes during prebuild; output file consumed without placing utility classes directly in HTML. |
-| **Edge API**                 | Cloudflare Workers (JavaScript)                     | Sub-10ms edge latency for chat streaming, model fallback routing, GitHub API caching, and music telemetry.                  |
-| **Local/Serverless Backend** | Python 3.12+ FastAPI with Pydantic v2               | Robust endpoint routing, token cryptography, multi-calendar OAuth flows, and background health monitoring.                  |
-| **Markdown & Rich Media**    | Marked v18 + KaTeX v0.19 + DOMPurify                | Fast client-side markdown parsing, LaTeX math display, and HTML sanitization bundled in a single vendor module.             |
-| **Build & Tooling**          | esbuild + Custom Node.js scripts                    | Fast JS asset bundling, static HTML minification, sitemap/RSS feed generation, and asset cache busting.                     |
-| **Testing**                  | pytest, node:test, Playwright, Tester Army (`e2e`)  | 185 API tests, 11 worker tests, 14 critical Playwright journeys, and 23 deterministic Tester Army journeys.                 |
+| Layer                        | Technology                                          | Purpose & Rationale                                                                                                               |
+| :--------------------------- | :-------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------- |
+| **Frontend Runtime**         | Native HTML5, Vanilla CSS, ES Modules               | Pure native platform capabilities. Zero framework overhead, instantaneous hydration, 100/100 Lighthouse performance.              |
+| **Styling**                  | Vanilla CSS + Apple Custom Properties (`--apple-*`) | Authentic Apple Human Interface Guidelines styling, frosted glassmorphism, responsive layout, specular sheen animations.          |
+| **CSS Utility Engine**       | Tailwind CSS v4 (Build-time only)                   | Generates auxiliary utility classes during prebuild; output file consumed without placing utility classes directly in HTML.       |
+| **Edge API**                 | Cloudflare Workers (JavaScript)                     | Sub-10ms edge latency for chat streaming, model fallback routing, GitHub API caching, and music telemetry.                        |
+| **Local/Serverless Backend** | Python 3.12+ FastAPI with Pydantic v2               | Robust endpoint routing, token cryptography, multi-calendar OAuth flows, and background health monitoring.                        |
+| **Markdown & Rich Media**    | Marked v18 + KaTeX v0.19 + DOMPurify                | Fast client-side markdown parsing, LaTeX math display, and HTML sanitization bundled in a single vendor module.                   |
+| **Build & Tooling**          | esbuild + Custom Node.js scripts                    | Fast JS asset bundling, static HTML minification, sitemap/RSS feed generation, and asset cache busting.                           |
+| **Testing**                  | pytest, node:test, Playwright, Tester Army (`e2e`)  | 197 API tests, 12 worker tests, frontend unit checks, 15 critical Playwright journeys, and 23 deterministic Tester Army journeys. |
 
 ---
 

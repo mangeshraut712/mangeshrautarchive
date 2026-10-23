@@ -39,7 +39,7 @@ Sol 6.1 handles implementation; Luna 6 performs independent verification through
 
 ## Additional existing coverage
 
-`npm test` executes 185 API checks, 11 Worker checks, and 14 critical Playwright journeys.
+`npm test` executes 197 API checks, 12 Worker checks, frontend unit checks, and 15 critical Playwright journeys.
 The critical journeys include chat failed-connection draft recovery, multilingual/composition
 input protection, image/audio/video/PDF attachment submission, accessibility, mobile overflow,
 menu focus handling, blog navigation, repository illustrations, contact clocks, stale Panchang,

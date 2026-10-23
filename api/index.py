@@ -18,6 +18,7 @@ from api.monitoring import (
     EventType,
 )
 from api.middleware import MonitoringMiddleware
+from api.security_headers import SecurityHeadersMiddleware
 
 logger = logging.getLogger("api.index")
 
@@ -145,6 +146,9 @@ app.add_middleware(
     ],
     expose_headers=["X-Session-ID"],
 )
+
+# Outermost: stamp security headers on the final response, including streams.
+app.add_middleware(SecurityHeadersMiddleware)
 
 # Startup logging
 if "PYTEST_CURRENT_TEST" not in os.environ:

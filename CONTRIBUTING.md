@@ -106,7 +106,7 @@ Every pull request must pass the full quality matrix:
 npm run check             # ESLint + Stylelint + Prettier + Oxlint
 
 # 2. Python API test suite
-npm run test:api          # 185 pytest API endpoint and middleware tests
+npm run test:api          # 197 pytest API endpoint and middleware tests
 
 # 3. Cloudflare Worker test suite
 npm run test:worker       # 11 edge routing and multimodal streaming tests

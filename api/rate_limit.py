@@ -7,6 +7,7 @@ import os
 import time
 from collections import defaultdict
 from typing import Any, DefaultDict, Dict, List, Optional, Protocol
+from urllib.parse import quote
 
 logger = logging.getLogger(__name__)
 
@@ -85,7 +86,9 @@ class UpstashRateLimitStore:
 
     def _key(self, client_id: str, window_sec: float) -> str:
         bucket = int(time.time() // max(window_sec, 1))
-        return f"rl:{client_id}:{bucket}"
+        # Quote so IPv6 colons and slashes stay inside one REST path segment.
+        safe_id = quote(str(client_id), safe="")
+        return f"rl:{safe_id}:{bucket}"
 
     def allow(self, client_id: str, *, limit: int, window_sec: float) -> bool:
         try:

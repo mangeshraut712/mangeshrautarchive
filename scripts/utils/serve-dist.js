@@ -13,6 +13,20 @@ const port = Number.parseInt(process.env.PORT || '4180', 10);
 
 const app = express();
 
+const SECURITY_HEADERS = {
+  'X-Content-Type-Options': 'nosniff',
+  'X-Frame-Options': 'SAMEORIGIN',
+  'Referrer-Policy': 'strict-origin-when-cross-origin',
+  'Permissions-Policy': 'camera=(), microphone=(self), geolocation=(self)',
+};
+
+app.use((_req, res, next) => {
+  for (const [name, value] of Object.entries(SECURITY_HEADERS)) {
+    if (!res.getHeader(name)) res.setHeader(name, value);
+  }
+  next();
+});
+
 app.use((req, res, next) => {
   console.log(`[REQUEST] ${req.method} ${req.url}`);
   res.on('finish', () => {

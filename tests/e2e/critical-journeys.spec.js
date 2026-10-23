@@ -420,3 +420,20 @@ test('contact calendar scrolls, clocks use timezones, and stale Panchang stays h
   await page.locator('.filter-tab[data-filter="reminders"]').click();
   await expect(list).toContainText('Follow up');
 });
+
+test('monitor search is named and pages send baseline security headers', async ({ page }) => {
+  const home = await page.request.get('/');
+  expect(home.ok()).toBeTruthy();
+  expect(home.headers()['x-content-type-options']).toBe('nosniff');
+  expect(home.headers()['x-frame-options']).toBe('SAMEORIGIN');
+  expect(home.headers()['referrer-policy']).toBe('strict-origin-when-cross-origin');
+  expect(home.headers()['permissions-policy']).toContain('microphone=(self)');
+
+  await gotoSite(page, '/monitor');
+  await page.getByRole('tab', { name: 'Security & Logs' }).click();
+  const search = page.getByRole('searchbox', { name: 'Search system events' });
+  await expect(search).toBeVisible();
+  await search.fill('health');
+  await expect(search).toHaveValue('health');
+  await expect(page.locator('button:not([type])')).toHaveCount(0);
+});

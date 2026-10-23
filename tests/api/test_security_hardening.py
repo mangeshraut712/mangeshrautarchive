@@ -106,6 +106,21 @@ def test_production_session_token_rejects_public_fallback_secret(monkeypatch):
     assert create_session_token(session_id) != public_fallback_token
 
 
+def test_api_responses_set_baseline_security_headers(client):
+    response = client.get("/api/health")
+    assert response.status_code == 200
+    assert response.headers["x-content-type-options"] == "nosniff"  # nosec B101
+    assert response.headers["x-frame-options"] == "DENY"  # nosec B101
+    assert response.headers["referrer-policy"] == "strict-origin-when-cross-origin"  # nosec B101
+    assert "camera=()" in response.headers["permissions-policy"]  # nosec B101
+    assert "strict-transport-security" not in response.headers  # nosec B101
+
+
+def test_https_forwarded_requests_include_hsts(client):
+    response = client.get("/api/health", headers={"x-forwarded-proto": "https"})
+    assert response.headers["strict-transport-security"].startswith("max-age=")  # nosec B101
+
+
 def test_calendar_webhook_rejects_unknown_channel(client, monkeypatch):
     monkeypatch.setenv("INTEGRATION_SYNC_ADMIN_TOKEN", "test-admin-token")
 

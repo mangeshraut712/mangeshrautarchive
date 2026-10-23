@@ -2357,8 +2357,8 @@ html.dark #home .hero-name-text {
             <div class="about-text-card">
               <div class="about-card-header">
                 <div class="about-segmented-control" role="tablist" aria-label="About Story Mode">
-                  <button class="about-tab-btn active" role="tab" aria-selected="true" aria-controls="full-story-panel" id="tab-full-story">Full Story</button>
-                  <button class="about-tab-btn" role="tab" aria-selected="false" aria-controls="quick-summary-panel" id="tab-quick-summary">Quick Summary</button>
+                  <button type="button" class="about-tab-btn active" role="tab" aria-selected="true" aria-controls="full-story-panel" id="tab-full-story">Full Story</button>
+                  <button type="button" class="about-tab-btn" role="tab" aria-selected="false" aria-controls="quick-summary-panel" id="tab-quick-summary">Quick Summary</button>
                   <div class="segmented-control-bg"></div>
                 </div>
               </div>
@@ -4626,13 +4626,13 @@ html.dark #home .hero-name-text {
                   <!-- Featured / now playing card -->
                   <div class="media-card currently-music-card currently-music-state now-playing" id="now-playing-card" hidden>
                     <div class="media-poster">
-                      <img id="now-playing-img" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Album Art" loading="lazy" />
+                      <img id="now-playing-img" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Album Art" width="300" height="300" loading="lazy" />
                       <span class="media-badge playing" id="now-playing-badge">Now Playing</span>
                     </div>
                     <div class="media-info">
                       <h4 id="now-playing-track">Track Name</h4>
                       <p id="now-playing-artist" class="currently-meta-subtitle">Artist</p>
-                      <a id="now-playing-link" href="#" target="_blank" rel="noopener" class="watch-btn">
+                      <a id="now-playing-link" href="#" target="_blank" rel="noopener noreferrer" class="watch-btn">
                         <i class="fas fa-play" aria-hidden="true"></i> Listen
                       </a>
                     </div>
@@ -4657,7 +4657,7 @@ html.dark #home .hero-name-text {
                     <div class="media-info">
                       <h4>No live playback</h4>
                       <p class="currently-meta-subtitle">Play something to refresh this shelf</p>
-                      <a href="https://open.spotify.com" target="_blank" rel="noopener" class="watch-btn">
+                      <a href="https://open.spotify.com" target="_blank" rel="noopener noreferrer" class="watch-btn">
                         <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i> View
                       </a>
                     </div>

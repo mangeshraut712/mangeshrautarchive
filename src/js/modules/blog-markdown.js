@@ -5,15 +5,53 @@ import { escapeHTML } from '../utils/escape-html.js';
  *   :::figure / :::video / :::audio / :::chart / :::diagram / :::framework / :::callout / :::embed
  */
 
-function safeHref(href = '') {
+const RELATIVE_BASE = 'https://portfolio.invalid';
+
+function hasUnsafeHrefChars(value) {
+  if (/[\s"'<>\\]/.test(value)) return true;
+  for (let index = 0; index < value.length; index += 1) {
+    const code = value.charCodeAt(index);
+    if (code < 32 || code === 127) return true;
+  }
+  return false;
+}
+
+/** Return a URL safe to place in an href, or '#' when the value is not allowed. */
+export function safeHref(href = '') {
+  const value = String(href ?? '').trim();
+  if (!value || hasUnsafeHrefChars(value)) return '#';
   try {
-    const url = new URL(href, 'https://example.com');
-    if (!['http:', 'https:', 'mailto:'].includes(url.protocol)) {
-      return '#';
+    const url = new URL(value, RELATIVE_BASE);
+    if (!['http:', 'https:', 'mailto:'].includes(url.protocol)) return '#';
+    if (url.username || url.password) return '#';
+    const hasScheme = /^[a-z][a-z0-9+.-]*:/i.test(value);
+    if (!hasScheme) {
+      if (value.startsWith('//') || value.startsWith('\\')) return '#';
+      return value;
     }
-    return href;
+    if (url.protocol === 'mailto:') return value;
+    return url.href;
   } catch {
     return '#';
+  }
+}
+
+const VIDEO_EMBED_HOSTS = new Set([
+  'youtube.com',
+  'www.youtube.com',
+  'm.youtube.com',
+  'youtube-nocookie.com',
+  'www.youtube-nocookie.com',
+  'youtu.be',
+  'www.youtu.be',
+]);
+
+function isAllowedVideoEmbed(src = '') {
+  try {
+    const url = new URL(src);
+    return url.protocol === 'https:' && VIDEO_EMBED_HOSTS.has(url.hostname);
+  } catch {
+    return false;
   }
 }
 
@@ -48,16 +86,24 @@ export function slugifyHeading(text = '') {
 
 export function parseInline(text) {
   if (!text) return '';
-  return text
-    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-    .replace(/\*(.*?)\*/g, '<em>$1</em>')
-    .replace(/_(.*?)_/g, '<em>$1</em>')
-    .replace(/`(.*?)`/g, '<code class="article-inline-code">$1</code>')
-    .replace(
-      /\[(.*?)\]\((.*?)\)/g,
-      (_match, label, href) =>
-        `<a href="${safeHref(href)}" target="_blank" rel="noopener noreferrer" class="article-link">${label}</a>`
+  const placeholders = [];
+  const withLinks = String(text).replace(/\[(.*?)\]\((.*?)\)/g, (_match, label, href) => {
+    const token = `\uE000${placeholders.length}\uE001`;
+    const safe = safeHref(href);
+    const safeLabel = escapeHTML(label);
+    placeholders.push(
+      safe === '#'
+        ? safeLabel
+        : `<a href="${escapeHTML(safe)}" target="_blank" rel="noopener noreferrer" class="article-link">${safeLabel}</a>`
     );
+    return token;
+  });
+  const html = escapeHTML(withLinks)
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g, '<em>$1</em>')
+    .replace(/_(.+?)_/g, '<em>$1</em>')
+    .replace(/`(.+?)`/g, '<code class="article-inline-code">$1</code>');
+  return html.replace(/\uE000(\d+)\uE001/g, (_match, index) => placeholders[Number(index)] || '');
 }
 
 function parseBlockAttrs(body = '') {
@@ -110,8 +156,7 @@ function renderMediaBlock(kind, body, options = {}) {
     const src = resolveMediaUrl(a.src, assetPrefix);
     if (!src) return '';
     const title = escapeHTML(a.title || 'Embedded video');
-    const isYoutube = /youtube\.com|youtu\.be|youtube-nocookie/.test(src);
-    if (isYoutube || a.embed === 'iframe') {
+    if (isAllowedVideoEmbed(src)) {
       return `<figure class="article-video">
         <div class="article-video__frame">
           <iframe src="${escapeHTML(src)}" title="${title}" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>

@@ -291,8 +291,12 @@ export function preprocessRichMediaMarkdown(markdown, { userPrompt = '', slots =
     if (url) text += `\n\n![Generated image](${url})\n`;
   }
 
-  if (userPrompt && isChartIntent(userPrompt) && !/```chart|class="rich-chart"/.test(text)) {
-    text += `\n\n${renderChartSvg(extractChartPromptFallback(userPrompt))}\n`;
+  if (
+    userPrompt &&
+    isChartIntent(userPrompt) &&
+    !/```chart|§RICHSLOT|class="rich-chart"/i.test(text)
+  ) {
+    text += stash(renderChartSvg(extractChartPromptFallback(userPrompt)));
   }
 
   return text;
