@@ -118,8 +118,14 @@ _Enforce one formatting and style standard across the repository so reviews focu
 _Document architecture, public APIs, and non-obvious invariants so the system remains understandable years later._
 
 - **Repository Implementation:**
+  - **[`PRD.md`](../PRD.md):** Core product vision, personas, and quality floors.
+  - **[`ARCHITECTURE.md`](../ARCHITECTURE.md):** High-level topology, Mermaid sequence diagrams, and directory tree.
+  - **[`DESIGN.md`](../DESIGN.md):** High-level Apple HIG tokens and UI component patterns.
+  - **[`RULES.md`](../RULES.md):** Coding style, security boundaries, and AI non-negotiables.
+  - **[`TASKS.md`](../TASKS.md):** Phased, incremental implementation roadmap.
+  - **[`PROGRESS.md`](../PROGRESS.md):** Shipped deliverables, incident post-mortems, and live health.
   - **[`docs/STRUCTURE.md`](./STRUCTURE.md):** Complete directory tree and subsystem map.
-  - **[`docs/DESIGN.md`](./DESIGN.md):** The Apple HIG liquid glass design system and specular metallic shine rules.
+  - **[`docs/DESIGN.md`](./DESIGN.md):** Canonical Apple HIG design system specification.
   - **[`docs/API.md`](./API.md):** REST and streaming NDJSON endpoint specifications.
   - **[`AGENTS.md`](../AGENTS.md):** Standardized instructions and runtime constraints for autonomous coding agents.
 
@@ -130,8 +136,10 @@ _Document architecture, public APIs, and non-obvious invariants so the system re
 _Write code that is testable at unit, integration, and end-to-end levels, and treat tests as part of the product, not an afterthought._
 
 - **Repository Implementation:**
-  - **Critical Browser Tests:** The focused Playwright suite (`tests/e2e/critical-journeys.spec.js`) checks writing, contact, chat, accessibility, and mobile layout.
-  - **API Tests:** The current pytest suite (`tests/api/`) verifies FastAPI endpoints, security headers, rate limits, and streaming responses.
+  - **API Tests:** The pytest suite (`tests/api/`) verifies 185 FastAPI endpoints, security headers, rate limits, and streaming responses.
+  - **Worker Tests:** The Node test runner (`tests/worker/`) executes 11 routing, multimodal streaming, and edge boundary checks.
+  - **Critical Browser Tests:** The focused Playwright suite (`tests/e2e/critical-journeys.spec.js`) verifies 14 critical desktop journeys in under 40s.
+  - **Tester Army Journeys:** 23 deterministic journeys (`tests/tester-army/`) across desktop Chromium and mobile WebKit (46 checks total).
   - **E2E Tests:** Playwright multi-browser test matrix (`tests/e2e/`) running across 16 device configs (Desktop Chrome/Safari/Firefox, iPhone, iPad, Pixel) enforcing 0 horizontal overflow and UI state fidelity.
 
 ---

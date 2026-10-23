@@ -84,6 +84,17 @@ python3 --version  # must be 3.12+
 - **Style**: 4 spaces indent, 120-character line limit (enforced via flake8 and vulture dead-code scanner).
 - **Routes**: Modular route handlers located under `api/routes/`.
 
+### Project Blueprints & AI Alignment
+
+All contributors and AI pairing models must consult the 6 root blueprints:
+
+- **[PRD.md](PRD.md)**: Product vision, target user personas, and quality floors.
+- **[ARCHITECTURE.md](ARCHITECTURE.md)**: Runtime matrix, folder ownership, and Mermaid data flows.
+- **[DESIGN.md](DESIGN.md)**: Apple HIG design tokens, SF Pro fonts, and component vibe.
+- **[RULES.md](RULES.md)**: Coding standards, non-negotiable boundaries, and AI guardrails.
+- **[TASKS.md](TASKS.md)**: Phased, incremental implementation roadmap.
+- **[PROGRESS.md](PROGRESS.md)**: Shipped milestones, incident post-mortems, and live health.
+
 ---
 
 ## 4. Testing & Quality Gates
@@ -92,21 +103,25 @@ Every pull request must pass the full quality matrix:
 
 ```bash
 # 1. Full automated quality check
-npm run check             # ESLint + Stylelint + Prettier
+npm run check             # ESLint + Stylelint + Prettier + Oxlint
 
 # 2. Python API test suite
-npm run test:api          # pytest API endpoint and middleware suite
+npm run test:api          # 185 pytest API endpoint and middleware tests
 
-# 3. Codebase health & secret scanning
-npm run doctor            # Root layout & framework dependency guard
+# 3. Cloudflare Worker test suite
+npm run test:worker       # 11 edge routing and multimodal streaming tests
+
+# 4. Codebase health & secret scanning
+npm run doctor            # Root layout & framework dependency guard (57 checks)
 npm run security-check    # Scans for exposed API keys or secrets
 
-# 4. Production build verification
+# 5. Production build verification
 npm run build             # Production bundle compilation to dist/
 
-# 5. Playwright E2E browser tests (runs in CI)
-npm run test:e2e:critical # Critical user journeys on Desktop Chrome
-npm run test:e2e:chrome   # Full Desktop Chrome suite on demand
+# 6. Playwright & Tester Army E2E browser tests (runs in CI)
+npm run test:e2e:critical   # 14 critical user journeys on Desktop Chrome
+npm run test:tester-army:ci # 23 deterministic journeys on desktop Chromium
+npm run test:e2e:chrome     # Full Desktop Chrome suite on demand
 ```
 
 ---

@@ -1,11 +1,18 @@
-# Project Structure & Architecture Map (September 2026)
+# Project Structure & Architecture Map (October 2026)
 
 Canonical layout for **mangeshrautarchive**. All files and directories are organized strictly by purpose and lifecycle.
 
 ```text
 mangeshrautarchive/
 ├── README.md                 # Public project docs, architecture overview & benchmark matrix
+├── PRD.md                    # Core product requirements, target personas & quality floors
+├── ARCHITECTURE.md           # Runtime matrix, directory map, Mermaid sequence & data flows
+├── DESIGN.md                 # Apple HIG tokens, typography, component patterns & vibe
+├── RULES.md                  # Strict AI guardrails, ESM conventions, and PEP 8 standards
+├── TASKS.md                  # 4-phase incremental development and maintenance roadmap
+├── PROGRESS.md               # Shipped milestones, incident post-mortems & live health status
 ├── AGENTS.md                 # Universal AI Agent Briefing (Linux Foundation AGENTS.md standard)
+├── GEMINI.md                 # Google Antigravity / Gemini entry point
 ├── CONTRIBUTING.md           # Contribution guidelines, dev setup & PR rules
 ├── CODE_OF_CONDUCT.md        # Community standards (Contributor Covenant v2.1)
 ├── CITATION.cff              # Academic & open-source citation metadata (CFF v1.2.0)
@@ -13,7 +20,6 @@ mangeshrautarchive/
 │
 ├── package.json              # Node ≥22 engine, scripts, dev dependencies (root required)
 ├── .nvmrc · .node-version    # Pin local Node v22 for nvm / asdf / fnm / volta
-├── vercel.json               # Vercel serverless routes, headers, functions configuration
 ├── index.js                  # Static-analysis entrypoint → src/js/entry.js
 ├── playwright.config.js      # Multi-browser Playwright E2E configuration (16 browser profiles)
 ├── e2e.config.mjs            # Tester Army deterministic browser journey configuration

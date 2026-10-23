@@ -249,6 +249,7 @@ mangeshrautarchive/
 ├── config/                 # vulture.toml (non-root tool config)
 ├── docs/                   # STRUCTURE.md · TESTER_ARMY.md · plans/ · doc index
 ├── dist/                   # Build output (git-ignored)
+├── PRD.md · ARCHITECTURE.md · DESIGN.md · RULES.md · TASKS.md · PROGRESS.md # Blueprints
 ├── e2e.config.mjs · package.json · playwright/eslint configs
 └── pyproject.toml · requirements*.txt
 ```
