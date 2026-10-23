@@ -57,7 +57,7 @@ flowchart TD
 | **Local/Serverless Backend** | Python 3.12+ FastAPI with Pydantic v2               | Robust endpoint routing, token cryptography, multi-calendar OAuth flows, and background health monitoring.                        |
 | **Markdown & Rich Media**    | Marked v18 + KaTeX v0.19 + DOMPurify                | Fast client-side markdown parsing, LaTeX math display, and HTML sanitization bundled in a single vendor module.                   |
 | **Build & Tooling**          | esbuild + Custom Node.js scripts                    | Fast JS asset bundling, static HTML minification, sitemap/RSS feed generation, and asset cache busting.                           |
-| **Testing**                  | pytest, node:test, Playwright, Tester Army (`e2e`)  | 191 API tests, 12 worker tests, frontend unit checks, 15 critical Playwright journeys, and 23 deterministic Tester Army journeys. |
+| **Testing**                  | pytest, node:test, Playwright, Tester Army (`e2e`)  | 197 API tests, 12 worker tests, frontend unit checks, 15 critical Playwright journeys, and 23 deterministic Tester Army journeys. |
 
 ---
 

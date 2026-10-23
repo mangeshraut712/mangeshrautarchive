@@ -54,6 +54,25 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'ingest-dns-rebinding-20261023',
+    date: '2026-10-23',
+    type: 'fix',
+    title: 'Refuse ingest URLs whose DNS answers are not public',
+    summary:
+      'Resolved every address for /api/ingest-url hostnames before calling Firecrawl. Names that resolve to loopback, private, link-local, multicast, carrier-grade NAT, or other non-global addresses are refused, including IPv4-mapped forms and mixed public answers. Resolution failures and timeouts are refused as well. Public hostnames are still forwarded with their original URL so Host and TLS stay intact. Coding agent: Grok 4.7 in Cursor. Purpose: close the DNS-rebinding gap on URL ingestion. Exact variant, reasoning mode, and token usage: unavailable.',
+    tags: ['api'],
+    sha: null,
+    commitVerified: false,
+    model: 'Grok 4.7',
+    ide: 'Cursor',
+    purpose:
+      'Resolve ingest hostnames and refuse any DNS answer that is not a public address before Firecrawl is called.',
+    attributionSource: 'commit-message',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+    status: 'unreleased',
+  },
+  {
     id: 'quality-pass-security-a11y-20261023',
     date: '2026-10-23',
     type: 'fix',

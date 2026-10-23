@@ -22,7 +22,7 @@
 
 ### Testing & Verification Milestones
 
-- **API Tests**: 191 / 191 tests passing (`npm run test:api`).
+- **API Tests**: 197 / 197 tests passing (`npm run test:api`).
 - **Worker Routing Tests**: 12 / 12 tests passing (`npm run test:worker`).
 - **Frontend Unit Tests**: blog escaping and chart rendering (`npm run test:unit`).
 - **Critical Playwright Journeys**: 15 / 15 desktop journeys passing (`npm run test:e2e:critical`).

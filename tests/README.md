@@ -1,10 +1,10 @@
 # Tests
 
-The primary release gate uses the FastAPI test suite (191 tests), the Cloudflare Worker test suite (12 tests), frontend unit checks, and fifteen critical Playwright browser journeys on Desktop Chrome. Deterministic user journeys are additionally verified across desktop Chromium and mobile WebKit via Tester Army (`e2e`). The broader Playwright suite remains available for multi-browser and device checks.
+The primary release gate uses the FastAPI test suite (197 tests), the Cloudflare Worker test suite (12 tests), frontend unit checks, and fifteen critical Playwright browser journeys on Desktop Chrome. Deterministic user journeys are additionally verified across desktop Chromium and mobile WebKit via Tester Army (`e2e`). The broader Playwright suite remains available for multi-browser and device checks.
 
 | Suite                     | Path                                                          | Runner     | Command                       | Coverage                                                                   |
 | ------------------------- | ------------------------------------------------------------- | ---------- | ----------------------------- | -------------------------------------------------------------------------- |
-| API                       | `tests/api/`                                                  | pytest     | `npm run test:api`            | 191 tests — FastAPI routes, streaming, OAuth, health probes, middleware    |
+| API                       | `tests/api/`                                                  | pytest     | `npm run test:api`            | 197 tests — FastAPI routes, streaming, OAuth, health probes, middleware    |
 | Worker                    | `tests/worker/`                                               | Node test  | `npm run test:worker`         | 12 tests — edge routing, CORS, multimodal routing, and streams             |
 | Unit                      | `tests/unit/`                                                 | Node test  | `npm run test:unit`           | Blog HTML escaping and AssistMe chart rendering                            |
 | Critical browser journeys | `tests/e2e/critical-journeys.spec.js`, `chatbot-connectivity` | Playwright | `npm run test:e2e:critical`   | 15 critical user journeys on Desktop Chrome                                |
