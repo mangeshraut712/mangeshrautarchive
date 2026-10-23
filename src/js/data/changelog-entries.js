@@ -54,6 +54,25 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'dist-preview-security-headers-20261023',
+    date: '2026-10-23',
+    type: 'fix',
+    title: 'Send baseline security headers from the production preview server',
+    summary:
+      'The built-site Playwright gate serves dist/ without the dev-server middleware, so nosniff, frame, referrer, and permissions headers were missing there. The preview server now sends the same page headers as local development, including microphone and geolocation for the page itself. Coding agent: Grok 4.7 in Cursor. Purpose: make the production preview match the security-header contract. Exact variant, reasoning mode, and token usage: unavailable.',
+    tags: ['deploy'],
+    sha: null,
+    commitVerified: false,
+    model: 'Grok 4.7',
+    ide: 'Cursor',
+    purpose:
+      'Send baseline security headers from the dist preview server used by built-site browser gates.',
+    attributionSource: 'commit-message',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+    status: 'unreleased',
+  },
+  {
     id: 'ingest-dns-rebinding-20261023',
     date: '2026-10-23',
     type: 'fix',
