@@ -35,7 +35,6 @@ const generatedDirs = [
   '.stylelintcache',
   '.e2e',
   // Local AI/agent scaffolding (gitignored) — not shipped to GitHub Pages / Vercel
-  '.agents',
   '.claude',
   '.codacy',
   '.factory',
@@ -200,10 +199,14 @@ async function findPycacheDirsAllowVenv(directory, matches = []) {
 
 async function pruneExtraneousNpmPackages() {
   try {
-    const { stdout } = await execFileAsync('npm', ['prune', '--no-audit', '--no-fund'], {
-      cwd: root,
-      maxBuffer: 2 * 1024 * 1024,
-    });
+    const { stdout } = await execFileAsync(
+      'npm',
+      ['prune', '--no-audit', '--no-fund', '--no-save'],
+      {
+        cwd: root,
+        maxBuffer: 2 * 1024 * 1024,
+      }
+    );
     const trimmed = String(stdout || '').trim();
     if (trimmed) {
       console.log(`🧹 npm prune: ${trimmed.split('\n').pop()}`);
