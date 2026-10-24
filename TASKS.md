@@ -58,6 +58,14 @@
   - Executed `npm run check` (Prettier, ESLint, Stylelint, Oxlint).
   - Executed `npm run doctor:strict` (57/57 passed).
   - Executed `npm run build` (zero errors), `npm run test:worker` (11/11), `npm run test:api` (185/185), and `npm run test:e2e:critical` (14/14).
+- [x] **Task 3.7: Deep Quality Pass, Security Hardening & Test Suite Expansion**
+  - Hardened Upstash vector search against query injection with bounded length and top_k validation.
+  - Added SSRF defense and private IP / loopback blocking to Firecrawl URL ingestion.
+  - Bound CSP report payload size to 32KB to prevent memory exhaustion; resolved Cloudflare Worker 204 TypeError.
+  - Unified client IP extraction across requests and unhandled exceptions.
+  - Robustly parsed concatenated NDJSON stream chunks and SSE tokens; added accessible aria-labels to chat attachment buttons.
+  - Expanded test suites: pytest to 192 tests (`npm run test:api`), Cloudflare Worker edge routes to 20 tests (`npm run test:worker`).
+  - Synchronized live WhoBurnedMore telemetry (21.14B tokens, $19,062 spend, 245 active days, 57d streak, rank #64) and Kalnirnay Panchang for October 24, 2026.
 
 ---
 

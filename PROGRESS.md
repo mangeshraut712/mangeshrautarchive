@@ -22,9 +22,9 @@
 
 ### Testing & Verification Milestones
 
-- **API Tests**: 197 / 197 tests passing (`npm run test:api`).
-- **Worker Routing Tests**: 12 / 12 tests passing (`npm run test:worker`).
-- **Frontend Unit Tests**: blog escaping and chart rendering (`npm run test:unit`).
+- **API Tests**: 202 / 202 tests passing (`npm run test:api`).
+- **Worker Routing Tests**: 21 / 21 tests passing (`npm run test:worker`).
+- **Frontend Unit Tests**: 6 / 6 tests passing (`npm run test:unit`).
 - **Critical Playwright Journeys**: 15 / 15 desktop journeys passing (`npm run test:e2e:critical`).
 - **Tester Army Journeys**: 23 / 23 deterministic journeys passing (`npm run test:tester-army:ci`).
 - **Lighthouse Deploy Gate**: 100/100/100/100 floor passed on live GitHub Pages deployment.
@@ -44,8 +44,8 @@
 
 ### Live Platform Crosschecks & Ground Truth Telemetry Sync
 
-- **WhoBurnedMore Telemetry Sync**: Sourced real-time profile metrics from `whoburnedmore.com/u/mrcommando712` and all-time leaderboard API. Updated lifetime burn to **20.25B tokens** ($18,090 spend, 244 active days, 56d streak), all-time rank to **#67 of 342 devs** (Top 20%), cache hit rate to **94.54%** ($40,635 saved, 18.82B read tokens), and tool distributions: OpenAI Codex (**10.61B tokens**, 52.4%) and Cursor (**8.89B tokens**, 43.9%).
-- **Kalnirnay Hindu Panchang**: Synced official astronomical data from `kalnirnay.com` for October 23, 2026 into `src/assets/data/kalnirnay-panchang.json`: Ashwin Shukla Paksha Dwadashi, Nakshatra P.Bhadrapada, Yog Dhruv, Karan Kaulav, Sunrise 6:37 AM / Sunset 6:08 PM.
+- **WhoBurnedMore Telemetry Sync**: Sourced real-time profile metrics from `whoburnedmore.com/u/mrcommando712` and all-time leaderboard API. Updated lifetime burn to **21.14B tokens** ($19,062 spend, 245 active days, 57d streak), all-time rank to **#64 of 347 devs** (Top 18%), cache hit rate to **94.66%** ($42,336 saved, 19.68B read tokens), and tool distributions: OpenAI Codex (**10.66B tokens**, 50.4%) and Cursor (**9.75B tokens**, 46.1%).
+- **Kalnirnay Hindu Panchang**: Synced official astronomical data from `kalnirnay.com` for October 24, 2026 into `src/assets/data/kalnirnay-panchang.json`: Ashwin Shukla Paksha Trayodashi, Nakshatra U.Bhadrapada, Yog Vyaghat, Karan Garaj, Sunrise 6:38 AM / Sunset 6:08 PM.
 - **WebMCP Tools Alignment**: Reconciled WebMCP tools count portfolio-wide to **20 tools** across `systems.html`, `uses.html`, and `index.html`.
 - **Automated Sync Tooling**: Created `scripts/integrations/sync-whoburnedmore.mjs` and added `npm run sync:whoburnedmore` and `npm run sync:kalnirnay` scripts to `package.json`.
 
