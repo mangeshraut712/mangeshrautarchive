@@ -262,9 +262,90 @@ function json(data, status, extra = {}) {
   });
 }
 
+function getCodeSnippet(q) {
+  const isHelloWorld = /hello\s*world|print.*hello|first\s*program/i.test(q);
+  const isCodeQuery = isHelloWorld || /\b(?:code|snippet|syntax|example|program)\b/i.test(q);
+  if (!isCodeQuery) return null;
+
+  if (/\b(?:java)\b/i.test(q)) {
+    return 'Here is the "Hello, World!" program in **Java**:\n\n```java\npublic class HelloWorld {\n    public static void main(String[] args) {\n        System.out.println("Hello, World!");\n    }\n}\n```\n\nTo compile and run:\n```bash\njavac HelloWorld.java\njava HelloWorld\n```';
+  }
+  if (/\b(?:python|py)\b/i.test(q)) {
+    return 'Here is the "Hello, World!" program in **Python**:\n\n```python\nprint("Hello, World!")\n```\n\nTo run:\n```bash\npython hello.py\n```';
+  }
+  if (/\b(?:c\+\+|cpp)\b/i.test(q)) {
+    return 'Here is the "Hello, World!" program in **C++**:\n\n```cpp\n#include <iostream>\n\nint main() {\n    std::cout << "Hello, World!" << std::endl;\n    return 0;\n}\n```\n\nTo compile and run:\n```bash\ng++ -o hello hello.cpp\n./hello\n```';
+  }
+  if (/\b(?:c)\b/i.test(q) && !/\b(?:c\+\+|cpp|c#)\b/i.test(q)) {
+    return 'Here is the "Hello, World!" program in **C**:\n\n```c\n#include <stdio.h>\n\nint main() {\n    printf("Hello, World!\\n");\n    return 0;\n}\n```\n\nTo compile and run:\n```bash\ngcc -o hello hello.c\n./hello\n```';
+  }
+  if (/\b(?:javascript|js|node)\b/i.test(q)) {
+    return 'Here is the "Hello, World!" program in **JavaScript**:\n\n```javascript\nconsole.log("Hello, World!");\n```\n\nTo run:\n```bash\nnode hello.js\n```';
+  }
+  if (/\b(?:typescript|ts)\b/i.test(q)) {
+    return 'Here is the "Hello, World!" program in **TypeScript**:\n\n```typescript\nconst greeting: string = "Hello, World!";\nconsole.log(greeting);\n```';
+  }
+  if (/\b(?:go|golang)\b/i.test(q)) {
+    return 'Here is the "Hello, World!" program in **Go**:\n\n```go\npackage main\n\nimport "fmt"\n\nfunc main() {\n    fmt.Println("Hello, World!")\n}\n```';
+  }
+  if (/\b(?:rust|rs)\b/i.test(q)) {
+    return 'Here is the "Hello, World!" program in **Rust**:\n\n```rust\nfn main() {\n    println!("Hello, World!");\n}\n```';
+  }
+  if (/\b(?:html)\b/i.test(q)) {
+    return 'Here is a minimal "Hello, World!" page in **HTML**:\n\n```html\n<!DOCTYPE html>\n<html lang="en">\n<head>\n  <meta charset="UTF-8">\n  <title>Hello World</title>\n</head>\n<body>\n  <h1>Hello, World!</h1>\n</body>\n</html>\n```';
+  }
+  if (/\b(?:sql)\b/i.test(q)) {
+    return 'Here is "Hello, World!" in **SQL**:\n\n```sql\nSELECT \'Hello, World!\' AS greeting;\n```';
+  }
+  if (isHelloWorld) {
+    return 'Here is the classic "Hello, World!" in **Python**:\n\n```python\nprint("Hello, World!")\n```\n\nWould you like this in another language like **Java**, **C++**, **JavaScript**, **Go**, or **Rust**? Just let me know!';
+  }
+  return null;
+}
+
+function getMathOrConstantAnswer(q) {
+  if (/\b(?:value\s*of\s*pi|what\s*(?:is|'s)\s*pi|\bpi\b|3\.14)\b/i.test(q)) {
+    return "The value of **π (pi)** is approximately **3.141592653589793** (commonly rounded to **3.14159** or approximated as the fraction **22/7** or **355/113**).\n\nIt is the mathematical constant representing the ratio of a circle's circumference to its diameter ($C = 2\\pi r$, and circular area $A = \\pi r^2$).";
+  }
+  if (/\b(?:value\s*of\s*e|what\s*(?:is|'s)\s*e\b|euler'?s?\s*(?:number|constant))\b/i.test(q)) {
+    return "The value of **e (Euler's number)** is approximately **2.718281828459045**.\n\nIt is the base of natural logarithms ($\\ln$) and the unique real number such that the derivative of $e^x$ is $e^x$ itself.";
+  }
+  if (/\b(?:golden\s*ratio|value\s*of\s*phi|\bphi\b)\b/i.test(q)) {
+    return 'The **Golden Ratio (φ or phi)** is $\\frac{1 + \\sqrt{5}}{2} \\approx$ **1.6180339887**.\n\nIt commonly appears in mathematics, geometry, the Fibonacci sequence, and organic architecture.';
+  }
+  const mathMatch = q.match(
+    /(?:what\s*(?:is|'s)\s*)?(-?\d+(?:\.\d+)?)\s*([-+*/x^])\s*(-?\d+(?:\.\d+)?)\s*(?:\?|$)/i
+  );
+  if (mathMatch) {
+    const a = parseFloat(mathMatch[1]);
+    const op = mathMatch[2];
+    const b = parseFloat(mathMatch[3]);
+    let res;
+    if (op === '+') res = a + b;
+    else if (op === '-') res = a - b;
+    else if (op === '*' || op.toLowerCase() === 'x') res = a * b;
+    else if (op === '/') res = b !== 0 ? a / b : 'undefined (division by zero)';
+    else if (op === '^') res = Math.pow(a, b);
+    if (res !== undefined) {
+      return `**${res}**. Would you like to compute something else, or ask about Mangesh's portfolio projects, blog, and skills?`;
+    }
+  }
+  return null;
+}
+
 function localAnswer(message) {
   const q = String(message || '').toLowerCase();
-  if (/hello|hi\b|hey/.test(q)) {
+
+  const mathAns = getMathOrConstantAnswer(q);
+  if (mathAns) return mathAns;
+
+  const codeAns = getCodeSnippet(q);
+  if (codeAns) return codeAns;
+
+  if (
+    /^(?:hello|hi\b|hey|greetings)/.test(q) ||
+    (/hello|hi\b|hey/.test(q) && !/code|snippet|example/i.test(q))
+  ) {
     return "Hello — I'm **AssistMe**. Ask about Mangesh's skills, experience, projects, blog articles, education, or anything else you're curious about.";
   }
   if (/sept(?:ember)?(?:\s*2026)?\s*event|apple\s*(?:september|event)/.test(q)) {
@@ -297,8 +378,17 @@ function localAnswer(message) {
   if (/travel|trip|city|cities|places|visited/.test(q)) {
     return 'Mangesh has logged travels across 34+ states and 32+ cities throughout the US and India. Explore the interactive 3D globe and city cards on the [Travel Atlas](/travel).';
   }
-  if (/skill|stack|technolog|java|python|aws|cloud/.test(q)) {
+  if (/skill|stack|technolog|what.*language/.test(q)) {
     return "Mangesh's core stack: **Java Spring Boot**, **Python**, **AWS** (Lambda, EC2, ECS, S3), **Terraform**, React/Angular, and ML with TensorFlow / LLMs.";
+  }
+  if (/\b(?:java|spring|spring\s*boot)\b/.test(q)) {
+    return 'Mangesh has deep enterprise experience in **Java & Spring Boot** at IoasiZ: architecting high-throughput microservices, REST APIs, and database optimizations.';
+  }
+  if (/\b(?:python|fastapi)\b/.test(q)) {
+    return 'Mangesh actively builds with **Python**: FastAPI backends, asynchronous data pipelines, machine learning with TensorFlow, and agentic LLM routing.';
+  }
+  if (/\b(?:aws|cloud|docker|kubernetes|terraform)\b/.test(q)) {
+    return "Mangesh's cloud infrastructure expertise spans **AWS** (Lambda, EC2, ECS, S3), **Terraform** for IaC, and Dockerized microservices.";
   }
   if (/experience|work|job|company|ioasiz|aramark/.test(q)) {
     return 'Mangesh was a **Software Engineer at IoasiZ** (Piscataway, NJ, Jul 2023 – Jul 2026). Previously: cloud automation at **Aramark**.';

@@ -178,10 +178,12 @@ const SOURCE_KEY_ALIASES = {
   'assistme portfolio': 'assistme-portfolio',
   'assistme chat': 'assistme',
   'assistme math': 'assistme-math',
+  'assistme code': 'assistme-code',
   'assistme general': 'assistme',
   'assistme utility': 'assistme-utility',
   portfolio: 'assistme-portfolio',
   math: 'assistme-math',
+  code: 'assistme-code',
   openrouter: 'openrouter',
   'open router': 'openrouter',
   'local cache': 'assistme',
@@ -192,6 +194,7 @@ const SOURCE_LABELS = {
   assistme: 'AssistMe Portfolio',
   'assistme-portfolio': 'AssistMe Portfolio',
   'assistme-math': 'AssistMe Math Engine',
+  'assistme-code': 'AssistMe Code Engine',
   'assistme-utility': 'AssistMe Utility',
   'assistme-general': 'AssistMe',
   openrouter: 'OpenRouter AI',
@@ -910,6 +913,77 @@ class IntelligentAssistant {
     return valid.find(r => (r.confidence ?? 0) === maxConfidence) || valid[0];
   }
 
+  getCodeSnippet(q) {
+    const isHelloWorld = /hello\s*world|print.*hello|first\s*program/i.test(q);
+    const isCodeQuery = isHelloWorld || /\b(?:code|snippet|syntax|example|program)\b/i.test(q);
+    if (!isCodeQuery) return null;
+
+    if (/\b(?:java)\b/i.test(q)) {
+      return 'Here is the "Hello, World!" program in **Java**:\n\n```java\npublic class HelloWorld {\n    public static void main(String[] args) {\n        System.out.println("Hello, World!");\n    }\n}\n```\n\nTo compile and run:\n```bash\njavac HelloWorld.java\njava HelloWorld\n```';
+    }
+    if (/\b(?:python|py)\b/i.test(q)) {
+      return 'Here is the "Hello, World!" program in **Python**:\n\n```python\nprint("Hello, World!")\n```\n\nTo run it:\n```bash\npython hello.py\n```';
+    }
+    if (/\b(?:c\+\+|cpp)\b/i.test(q)) {
+      return 'Here is the "Hello, World!" program in **C++**:\n\n```cpp\n#include <iostream>\n\nint main() {\n    std::cout << "Hello, World!" << std::endl;\n    return 0;\n}\n```\n\nTo compile and run:\n```bash\ng++ -o hello hello.cpp\n./hello\n```';
+    }
+    if (/\b(?:c)\b/i.test(q) && !/\b(?:c\+\+|cpp|c#)\b/i.test(q)) {
+      return 'Here is the "Hello, World!" program in **C**:\n\n```c\n#include <stdio.h>\n\nint main() {\n    printf("Hello, World!\\n");\n    return 0;\n}\n```\n\nTo compile and run:\n```bash\ngcc -o hello hello.c\n./hello\n```';
+    }
+    if (/\b(?:javascript|js|node)\b/i.test(q)) {
+      return 'Here is the "Hello, World!" program in **JavaScript**:\n\n```javascript\nconsole.log("Hello, World!");\n```\n\nTo run it:\n```bash\nnode hello.js\n```';
+    }
+    if (/\b(?:typescript|ts)\b/i.test(q)) {
+      return 'Here is the "Hello, World!" program in **TypeScript**:\n\n```typescript\nconst greeting: string = "Hello, World!";\nconsole.log(greeting);\n```';
+    }
+    if (/\b(?:go|golang)\b/i.test(q)) {
+      return 'Here is the "Hello, World!" program in **Go**:\n\n```go\npackage main\n\nimport "fmt"\n\nfunc main() {\n    fmt.Println("Hello, World!")\n}\n```';
+    }
+    if (/\b(?:rust|rs)\b/i.test(q)) {
+      return 'Here is the "Hello, World!" program in **Rust**:\n\n```rust\nfn main() {\n    println!("Hello, World!");\n}\n```';
+    }
+    if (/\b(?:html)\b/i.test(q)) {
+      return 'Here is a minimal "Hello, World!" page in **HTML**:\n\n```html\n<!DOCTYPE html>\n<html lang="en">\n<head>\n  <meta charset="UTF-8">\n  <title>Hello World</title>\n</head>\n<body>\n  <h1>Hello, World!</h1>\n</body>\n</html>\n```';
+    }
+    if (/\b(?:sql)\b/i.test(q)) {
+      return 'Here is "Hello, World!" in **SQL**:\n\n```sql\nSELECT \'Hello, World!\' AS greeting;\n```';
+    }
+    if (isHelloWorld) {
+      return 'Here is the classic "Hello, World!" in **Python**:\n\n```python\nprint("Hello, World!")\n```\n\nWould you like this in another language like **Java**, **C++**, **JavaScript**, **Go**, or **Rust**? Just let me know!';
+    }
+    return null;
+  }
+
+  getMathOrConstantAnswer(q) {
+    if (/\b(?:value\s*of\s*pi|what\s*(?:is|'s)\s*pi|\bpi\b|3\.14)\b/i.test(q)) {
+      return "The value of **π (pi)** is approximately **3.141592653589793** (commonly rounded to **3.14159** or approximated as the fraction **22/7** or **355/113**).\n\nIt is the mathematical constant representing the ratio of a circle's circumference to its diameter: $C = 2\\pi r$, and circular area $A = \\pi r^2$.";
+    }
+    if (/\b(?:value\s*of\s*e|what\s*(?:is|'s)\s*e\b|euler'?s?\s*(?:number|constant))\b/i.test(q)) {
+      return "The value of **e (Euler's number)** is approximately **2.718281828459045**.\n\nIt is the base of natural logarithms ($\\ln$) and the unique real number such that the derivative of $e^x$ is $e^x$ itself.";
+    }
+    if (/\b(?:golden\s*ratio|value\s*of\s*phi|\bphi\b)\b/i.test(q)) {
+      return 'The **Golden Ratio (φ or phi)** is $\\frac{1 + \\sqrt{5}}{2} \\approx$ **1.6180339887**.\n\nIt commonly appears in mathematics, geometry, the Fibonacci sequence, and organic architecture.';
+    }
+    const mathMatch = q.match(
+      /(?:what\s*(?:is|'s)\s*)?(-?\d+(?:\.\d+)?)\s*([-+*/x^])\s*(-?\d+(?:\.\d+)?)\s*(?:\?|$)/i
+    );
+    if (mathMatch) {
+      const a = parseFloat(mathMatch[1]);
+      const op = mathMatch[2];
+      const b = parseFloat(mathMatch[3]);
+      let res;
+      if (op === '+') res = a + b;
+      else if (op === '-') res = a - b;
+      else if (op === '*' || op.toLowerCase() === 'x') res = a * b;
+      else if (op === '/') res = b !== 0 ? a / b : 'undefined (division by zero)';
+      else if (op === '^') res = Math.pow(a, b);
+      if (res !== undefined) {
+        return `**${res}**. Would you like to compute something else, or ask about Mangesh's portfolio projects, blog, and skills?`;
+      }
+    }
+    return null;
+  }
+
   basicQueryProcessing(query) {
     const result = {
       answer: '',
@@ -922,6 +996,31 @@ class IntelligentAssistant {
     };
 
     const lower = query.toLowerCase();
+
+    // Math & Scientific constants
+    const mathAns = this.getMathOrConstantAnswer(lower);
+    if (mathAns) {
+      result.answer = mathAns;
+      result.type = 'math';
+      result.confidence = 0.95;
+      result.source = 'assistme-math';
+      result.sourceLabel = this.getSourceLabelForKey('assistme-math', 'math');
+      result.model = 'Local Math Engine';
+      return result;
+    }
+
+    // Code snippets & Hello World
+    const codeAns = this.getCodeSnippet(lower);
+    if (codeAns) {
+      result.answer = codeAns;
+      result.type = 'code';
+      result.confidence = 0.95;
+      result.source = 'assistme-code';
+      result.sourceLabel = this.getSourceLabelForKey('assistme-code', 'code');
+      result.model = 'Local Code Engine';
+      return result;
+    }
+
     const portfolio = (answer, confidence = 0.85) => {
       result.answer = answer;
       result.type = 'portfolio';
@@ -932,7 +1031,11 @@ class IntelligentAssistant {
       return result;
     };
 
-    if (lower.includes('hello') || lower.includes('hi') || lower.includes('hey')) {
+    if (
+      (lower.includes('hello') || lower.includes('hi') || lower.includes('hey')) &&
+      !lower.includes('hello world') &&
+      !lower.includes('code')
+    ) {
       result.answer =
         this.defaultGreetings[Math.floor(Math.random() * this.defaultGreetings.length)] +
         '\n\n_Running in Local Mode while the live API host is unavailable — portfolio answers still work._';
@@ -988,7 +1091,7 @@ class IntelligentAssistant {
       );
     }
 
-    if (lower.includes('java') || lower.includes('spring')) {
+    if ((lower.includes('java') || lower.includes('spring')) && !lower.includes('code')) {
       return portfolio(
         'Mangesh has deep **Java / Spring Boot** experience: enterprise microservices at IoasiZ, relational data optimization, REST APIs, and AWS-integrated backends for production systems.'
       );
@@ -1197,6 +1300,7 @@ class IntelligentAssistant {
     if (!normalized) {
       if (type === 'portfolio') return SOURCE_LABELS['assistme-portfolio'];
       if (type === 'math') return SOURCE_LABELS['assistme-math'];
+      if (type === 'code') return SOURCE_LABELS['assistme-code'];
       if (type === 'utility') return SOURCE_LABELS['assistme-utility'];
       return SOURCE_LABELS['assistme-general'];
     }

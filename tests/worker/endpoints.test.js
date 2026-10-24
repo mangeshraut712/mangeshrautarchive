@@ -92,3 +92,43 @@ test('GET /unknown-route returns 404 with standard error format', async () => {
   const data = await res.json();
   assert.ok(data.error || data.detail);
 });
+
+test('POST /api/chat fallback returns accurate pi value when offline or unconfigured', async () => {
+  const req = new Request('https://worker.local/api/chat', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ message: 'what is value of pi?', stream: false }),
+  });
+  const res = await worker.fetch(req, { OPENROUTER_API_KEY: '' });
+  assert.equal(res.status, 200);
+  const data = await res.json();
+  assert.ok(data.answer.includes('3.14159'));
+  assert.equal(data.source, 'Local Intelligence');
+});
+
+test('POST /api/chat fallback returns java code for hello world query', async () => {
+  const req = new Request('https://worker.local/api/chat', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ message: 'hello world in java language', stream: false }),
+  });
+  const res = await worker.fetch(req, { OPENROUTER_API_KEY: '' });
+  assert.equal(res.status, 200);
+  const data = await res.json();
+  assert.ok(data.answer.includes('```java'));
+  assert.ok(data.answer.includes('public class HelloWorld'));
+  assert.equal(data.source, 'Local Intelligence');
+});
+
+test('POST /api/chat fallback evaluates arithmetic calculations', async () => {
+  const req = new Request('https://worker.local/api/chat', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ message: 'what is 15 * 8', stream: false }),
+  });
+  const res = await worker.fetch(req, { OPENROUTER_API_KEY: '' });
+  assert.equal(res.status, 200);
+  const data = await res.json();
+  assert.ok(data.answer.includes('120'));
+  assert.equal(data.source, 'Local Intelligence');
+});

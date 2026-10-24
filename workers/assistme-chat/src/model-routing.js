@@ -69,7 +69,9 @@ export async function selectModelRoute(env, message, modalities) {
       ? 'video'
       : modalities.includes('image')
         ? 'image'
-        : /\b(code|debug|javascript|python|sql|function|programming)\b/i.test(message)
+        : /\b(code|debug|javascript|python|sql|function|programming|java|cpp|c\+\+|golang|go|rust|typescript|html|css|script|algorithm|syntax)\b/i.test(
+              message
+            )
           ? 'code'
           : message.length < 100 &&
               !/\b(explain|compare|analy[sz]e|reason|why|research)\b/i.test(message)

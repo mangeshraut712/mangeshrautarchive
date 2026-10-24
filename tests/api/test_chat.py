@@ -399,3 +399,27 @@ def test_multimodal_document_and_audio_payload_validation():
         build_multimodal_user_content("Read", attachments=["not-a-dict"])
     with pytest.raises(HTTPException):
         build_multimodal_user_content("Read", attachments=[None])
+
+
+def test_local_math_and_code_snippets():
+    from api.routes.chat import generate_local_response
+
+    # Math queries
+    pi_res = generate_local_response("what is value of pi?")
+    assert pi_res["category"] == "Math"
+    assert "3.14159" in pi_res["answer"]
+
+    math_calc = generate_local_response("what is 25 * 4")
+    assert math_calc["category"] == "Math"
+    assert "100" in math_calc["answer"]
+
+    # Code queries
+    java_res = generate_local_response("hello world in java language")
+    assert java_res["category"] == "Code"
+    assert "public class HelloWorld" in java_res["answer"]
+    assert "```java" in java_res["answer"]
+
+    py_res = generate_local_response("hello world in python")
+    assert py_res["category"] == "Code"
+    assert 'print("Hello, World!")' in py_res["answer"]
+

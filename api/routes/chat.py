@@ -196,9 +196,211 @@ def openrouter_request_body(
     return body
 
 
+def get_local_code_snippet(query: str) -> Optional[str]:
+    is_hello_world = bool(re.search(r"hello\s*world|print.*hello|first\s*program", query, re.I))
+    is_code_query = is_hello_world or bool(re.search(r"\b(?:code|snippet|syntax|example|program)\b", query, re.I))
+    if not is_code_query:
+        return None
+
+    if re.search(r"\b(?:java)\b", query, re.I):
+        return (
+            'Here is the "Hello, World!" program in **Java**:\n\n'
+            '```java\n'
+            'public class HelloWorld {\n'
+            '    public static void main(String[] args) {\n'
+            '        System.out.println("Hello, World!");\n'
+            '    }\n'
+            '}\n'
+            '```\n\n'
+            'To compile and run:\n'
+            '```bash\n'
+            'javac HelloWorld.java\n'
+            'java HelloWorld\n'
+            '```'
+        )
+    if re.search(r"\b(?:python|py)\b", query, re.I):
+        return (
+            'Here is the "Hello, World!" program in **Python**:\n\n'
+            '```python\n'
+            'print("Hello, World!")\n'
+            '```\n\n'
+            'To run it:\n'
+            '```bash\n'
+            'python hello.py\n'
+            '```'
+        )
+    if re.search(r"\b(?:c\+\+|cpp)\b", query, re.I):
+        return (
+            'Here is the "Hello, World!" program in **C++**:\n\n'
+            '```cpp\n'
+            '#include <iostream>\n\n'
+            'int main() {\n'
+            '    std::cout << "Hello, World!" << std::endl;\n'
+            '    return 0;\n'
+            '}\n'
+            '```\n\n'
+            'To compile and run:\n'
+            '```bash\n'
+            'g++ -o hello hello.cpp\n'
+            './hello\n'
+            '```'
+        )
+    if re.search(r"\b(?:c)\b", query, re.I) and not re.search(r"\b(?:c\+\+|cpp|c#)\b", query, re.I):
+        return (
+            'Here is the "Hello, World!" program in **C**:\n\n'
+            '```c\n'
+            '#include <stdio.h>\n\n'
+            'int main() {\n'
+            '    printf("Hello, World!\\n");\n'
+            '    return 0;\n'
+            '}\n'
+            '```\n\n'
+            'To compile and run:\n'
+            '```bash\n'
+            'gcc -o hello hello.c\n'
+            './hello\n'
+            '```'
+        )
+    if re.search(r"\b(?:javascript|js|node)\b", query, re.I):
+        return (
+            'Here is the "Hello, World!" program in **JavaScript**:\n\n'
+            '```javascript\n'
+            'console.log("Hello, World!");\n'
+            '```\n\n'
+            'To run it:\n'
+            '```bash\n'
+            'node hello.js\n'
+            '```'
+        )
+    if re.search(r"\b(?:typescript|ts)\b", query, re.I):
+        return (
+            'Here is the "Hello, World!" program in **TypeScript**:\n\n'
+            '```typescript\n'
+            'const greeting: string = "Hello, World!";\n'
+            'console.log(greeting);\n'
+            '```'
+        )
+    if re.search(r"\b(?:go|golang)\b", query, re.I):
+        return (
+            'Here is the "Hello, World!" program in **Go**:\n\n'
+            '```go\n'
+            'package main\n\n'
+            'import "fmt"\n\n'
+            'func main() {\n'
+            '    fmt.Println("Hello, World!")\n'
+            '}\n'
+            '```'
+        )
+    if re.search(r"\b(?:rust|rs)\b", query, re.I):
+        return (
+            'Here is the "Hello, World!" program in **Rust**:\n\n'
+            '```rust\n'
+            'fn main() {\n'
+            '    println!("Hello, World!");\n'
+            '}\n'
+            '```'
+        )
+    if re.search(r"\b(?:html)\b", query, re.I):
+        return (
+            'Here is a minimal "Hello, World!" page in **HTML**:\n\n'
+            '```html\n'
+            '<!DOCTYPE html>\n'
+            '<html lang="en">\n'
+            '<head>\n'
+            '  <meta charset="UTF-8">\n'
+            '  <title>Hello World</title>\n'
+            '</head>\n'
+            '<body>\n'
+            '  <h1>Hello, World!</h1>\n'
+            '</body>\n'
+            '</html>\n'
+            '```'
+        )
+    if re.search(r"\b(?:sql)\b", query, re.I):
+        return (
+            'Here is "Hello, World!" in **SQL**:\n\n'
+            '```sql\n'
+            "SELECT 'Hello, World!' AS greeting;\n"
+            '```'
+        )
+    if is_hello_world:
+        return (
+            'Here is the classic "Hello, World!" in **Python**:\n\n'
+            '```python\n'
+            'print("Hello, World!")\n'
+            '```\n\n'
+            'Would you like this in another language like **Java**, **C++**, **JavaScript**, **Go**, or **Rust**? Just let me know!'
+        )
+    return None
+
+
+def get_local_math_or_constant_answer(query: str) -> Optional[str]:
+    if re.search(r"\b(?:value\s*of\s*pi|what\s*(?:is|'s)\s*pi|\bpi\b|3\.14)\b", query, re.I):
+        return (
+            "The value of **π (pi)** is approximately **3.141592653589793** (commonly rounded to **3.14159** "
+            "or approximated as the fraction **22/7** or **355/113**).\n\n"
+            "It is the mathematical constant representing the ratio of a circle's circumference to its diameter: "
+            "$C = 2\\pi r$, and circular area $A = \\pi r^2$."
+        )
+    if re.search(r"\b(?:value\s*of\s*e|what\s*(?:is|'s)\s*e\b|euler'?s?\s*(?:number|constant))\b", query, re.I):
+        return (
+            "The value of **e (Euler's number)** is approximately **2.718281828459045**.\n\n"
+            "It is the base of natural logarithms ($\\ln$) and the unique real number such that the derivative "
+            "of $e^x$ is $e^x$ itself."
+        )
+    if re.search(r"\b(?:golden\s*ratio|value\s*of\s*phi|\bphi\b)\b", query, re.I):
+        return (
+            "The **Golden Ratio (φ or phi)** is $\\frac{1 + \\sqrt{5}}{2} \\approx$ **1.6180339887**.\n\n"
+            "It commonly appears in mathematics, geometry, the Fibonacci sequence, and organic architecture."
+        )
+    m = re.search(
+        r"(?:what\s*(?:is|'s)\s*)?(-?\d+(?:\.\d+)?)\s*([\+\-\*\/x\^])\s*(-?\d+(?:\.\d+)?)\s*(?:\?|$)", query, re.I
+    )
+    if m:
+        try:
+            a = float(m.group(1))
+            op = m.group(2).lower()
+            b = float(m.group(3))
+            if op == '+':
+                res = a + b
+            elif op == '-':
+                res = a - b
+            elif op in ('*', 'x'):
+                res = a * b
+            elif op == '/':
+                res = (a / b) if b != 0 else "undefined (division by zero)"
+            elif op == '^':
+                res = a ** b
+            else:
+                return None
+            if isinstance(res, float) and res.is_integer():
+                res = int(res)
+            return (
+                f"**{res}**. Would you like to compute something else, or ask about Mangesh's portfolio projects, "
+                "blog, and skills?"
+            )
+        except Exception:
+            return None
+    return None
+
+
 def generate_local_response(query: str, site_context: str = "") -> Dict:
     """Generate a meaningful response based on portfolio data without using an LLM."""
     query = query.lower().strip()
+
+    math_ans = get_local_math_or_constant_answer(query)
+    if math_ans:
+        return {
+            "answer": math_ans,
+            "category": "Math",
+        }
+
+    code_ans = get_local_code_snippet(query)
+    if code_ans:
+        return {
+            "answer": code_ans,
+            "category": "Code",
+        }
 
     # Greetings
     if any(g in query for g in ["hello", "hi", "hey", "greetings"]):

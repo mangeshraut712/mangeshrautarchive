@@ -54,6 +54,25 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'assistme-math-code-enrichment-and-edge-sync-20261024',
+    date: '2026-10-24',
+    type: 'fix',
+    title:
+      'AssistMe Chatbot: Math constants, arithmetic evaluator, code snippet synthesis, and live edge deployment',
+    summary:
+      'Resolved the AssistMe query matching breakdown where queries like "what is value of pi?" and "hello world in java language" were misrouted or fell through to default canned portfolio introductions in Local Intelligence. Added robust math constant evaluations (π, e, φ), safe arithmetic calculations (+, -, *, /, ^), and multi-language Hello World code snippet generators across Cloudflare Worker (localAnswer), FastAPI (generate_local_response), and frontend core (basicQueryProcessing) before greeting and skill regex triggers. Updated GitHub repository secrets and Cloudflare Worker with live OpenRouter credentials, verified live streaming generation with google/gemma-4-26b-a4b-it:free and nvidia/nemotron-3-ultra-550b-a55b:free, and expanded worker/API test suites to 24 and 203 automated tests.',
+    tags: ['api', 'assistme', 'deploy', 'performance'],
+    sha: '86e67742',
+    commitVerified: true,
+    model: 'Gemini 3.8 Flash',
+    ide: 'Google Antigravity IDE',
+    purpose:
+      'Fix AssistMe local mode code and math evaluation fallback gaps, update OpenRouter secret credentials, and redeploy edge worker.',
+    attributionSource: 'commit-message',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
     id: 'assistme-stream-sanitize-auth-fallback-20261024',
     date: '2026-10-24',
     type: 'fix',

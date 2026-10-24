@@ -124,6 +124,8 @@ const chatbotConfig = {
   suggestions,
 };
 
-window.chatbotConfig = chatbotConfig;
+if (typeof window !== 'undefined') {
+  window.chatbotConfig = chatbotConfig;
+}
 
 export { ui, features, chat, limits, errorMessages, api, portfolio, suggestions, chatbotConfig };
