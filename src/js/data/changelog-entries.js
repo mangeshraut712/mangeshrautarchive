@@ -62,7 +62,7 @@ export const changelogEntries = [
     summary:
       'Diagnosed and resolved critical AssistMe chatbot streaming and latency defects across frontend and backend: (1) Added leading/trailing escaped newline and SSE delimiter sanitization in parseStreamPayloads and StreamingService to eliminate SyntaxError: Unexpected token "\\", "\\n{\\"type\\":... console warnings; (2) Added immediate circuit-breaking on OpenRouter HTTP 401 Unauthorized responses in both FastAPI and Cloudflare Worker to bypass futile 9-model 3-attempt retry loops, transforming a 44-second freeze on invalid/revoked keys into an instant sub-50ms fallback to Local Intelligence; (3) Hardened the /api/chat/health endpoint to validate credentials via OpenRouter /auth/key rather than the unauthenticated /models catalog; and (4) Stabilized Playwright chatbot scroll-up test assertions with generous container scroll margins.',
     tags: ['api', 'assistme', 'performance'],
-    sha: 'fd26ae15',
+    sha: '76452a34',
     commitVerified: true,
     model: 'Gemini 3.8 Flash',
     ide: 'Google Antigravity IDE',
