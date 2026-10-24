@@ -62,8 +62,8 @@ export const changelogEntries = [
     summary:
       'Resolved test assertion drift across the system monitor, uses page, and E2E test suites: (1) Synchronized OpenAI Codex (10.66B tokens) and Cursor (9.75B tokens) token burn telemetry in tests/e2e/smoke.spec.js with live uses.html cards; (2) Updated test metric indicators across monitor.html and uses.html from stale legacy figures (176/197/202) to accurate current totals (204 Pytest API tests, 15 critical browser journeys, 20 WebMCP deterministic agentic tools, and 204/204 contracts verified); and (3) Verified full passing status across smoke.spec.js (17/17 tests), chatbot-actions.spec.js (4/4 tests), and calendar-booking.spec.js (4/4 tests).',
     tags: ['monitor', 'systems', 'other'],
-    sha: null,
-    commitVerified: false,
+    sha: 'aa92c237',
+    commitVerified: true,
     model: 'Gemini 3.8 Flash',
     ide: 'Google Antigravity IDE',
     purpose:
