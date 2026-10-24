@@ -1,9 +1,9 @@
 /** Auto-exported FastAPI/GA snapshot for GitHub Pages edge (Vercel offline). */
 export const EDGE_DATA_SNAPSHOT = {
-  exportedAt: '2026-10-24T16:00:31.393Z',
+  exportedAt: '2026-10-24T20:53:32.699Z',
   reach: {
     success: true,
-    total_reach: 11136,
+    total_reach: 11144,
     source: 'edge-ga-snapshot',
     ga_enabled: true,
     ga_configured: false,
@@ -12,13 +12,13 @@ export const EDGE_DATA_SNAPSHOT = {
     host: 'cloudflare-worker',
     message: 'Portfolio Reach mirrored from GA4/FastAPI for GitHub Pages (Vercel offline).',
     insights: {
-      unique_visitors: 11136,
-      unique_visitors_this_week: 88,
+      unique_visitors: 11144,
+      unique_visitors_this_week: 98,
       countries_this_week: 6,
-      sessions_this_week: 95,
-      total_views_all_time: 14019,
-      active_users_all_time: 11136,
-      event_count_all_time: 49260,
+      sessions_this_week: 106,
+      total_views_all_time: 14032,
+      active_users_all_time: 11144,
+      event_count_all_time: 49311,
       active_users_last_30_mins: 0,
       realtime_countries: [],
       realtime_fresh: false,
@@ -26,15 +26,15 @@ export const EDGE_DATA_SNAPSHOT = {
       metric_weekly_label: 'Active Users',
       avg_views_per_day: 0,
       portfolio_age_days: 1,
-      last_updated: '2026-10-24T16:00:31.363161Z',
+      last_updated: '2026-10-24T20:53:32.666055Z',
       top_countries: [
         {
           country: 'United States',
-          users: 140,
+          users: 141,
         },
         {
           country: 'India',
-          users: 120,
+          users: 129,
         },
         {
           country: 'Japan',
@@ -93,14 +93,14 @@ export const EDGE_DATA_SNAPSHOT = {
         },
         {
           date: '2026-10-24',
-          views: 0,
-          visitors: 0,
-          sessions: 0,
+          views: 13,
+          visitors: 11,
+          sessions: 11,
         },
       ],
       trend_metric: 'visitors',
     },
-    timestamp: '2026-10-24T16:00:31.363161Z',
+    timestamp: '2026-10-24T20:53:32.666055Z',
   },
   healthVitals: {
     success: true,
