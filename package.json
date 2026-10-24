@@ -114,7 +114,8 @@
     "qs": "6.16.0",
     "colord": "2.10.0",
     "source-map-js": "^1.2.2",
-    "proxy-addr": "^2.0.8"
+    "proxy-addr": "^2.0.8",
+    "undici": "8.12.3"
   },
   "engines": {
     "node": ">=22 <27"
