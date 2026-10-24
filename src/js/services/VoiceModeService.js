@@ -51,14 +51,21 @@ class VoiceModeService {
     this.ttsAvailable = false;
     this.muted = false;
     this.sessionActive = false;
-    this.selectedVoice =
-      (typeof localStorage !== 'undefined' && localStorage.getItem('assistme_voice')) || 'eve';
+    this.selectedVoice = 'eve';
     this.availableVoices = [
       { id: 'eve', name: 'Eve', desc: 'Natural & Balanced' },
       { id: 'rex', name: 'Rex', desc: 'Crisp & Direct' },
       { id: 'leo', name: 'Leo', desc: 'Warm & Authoritative' },
       { id: 'sage', name: 'Sage', desc: 'Calm & Reflective' },
     ];
+    try {
+      const savedVoice = globalThis.localStorage?.getItem('assistme_voice');
+      if (this.availableVoices.some(voice => voice.id === savedVoice)) {
+        this.selectedVoice = savedVoice;
+      }
+    } catch {
+      // Storage can be denied in embedded or privacy-restricted browsers.
+    }
     this.onStatusChange = null;
     this.onTranscript = null;
     this.onAssistantText = null;
@@ -122,8 +129,10 @@ class VoiceModeService {
     const match = this.availableVoices.find(v => v.id === voiceId);
     if (match) {
       this.selectedVoice = match.id;
-      if (typeof localStorage !== 'undefined') {
-        localStorage.setItem('assistme_voice', match.id);
+      try {
+        globalThis.localStorage?.setItem('assistme_voice', match.id);
+      } catch {
+        // The selected voice remains usable for this session without persistence.
       }
     }
   }

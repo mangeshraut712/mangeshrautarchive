@@ -223,8 +223,9 @@ function corsHeaders(origin, allowed) {
   const ok = isLocal || allowList.includes(origin);
   const headers = {
     ...SECURITY_HEADERS,
-    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type, Accept, Authorization, Origin',
+    'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS',
+    'Access-Control-Allow-Headers':
+      'Content-Type, Accept, Authorization, Origin, X-Session-ID, X-Session-Token, X-Monitor-Admin-Token, X-Integration-Admin-Token',
     'Access-Control-Max-Age': '86400',
     Vary: 'Origin',
   };
@@ -529,7 +530,10 @@ async function handleTts(request, env, cors) {
     return json({ error: 'Invalid JSON body' }, 400, cors);
   }
 
-  const text = String(body?.text || '')
+  if (!body || typeof body !== 'object' || Array.isArray(body) || typeof body.text !== 'string') {
+    return json({ error: 'Text must be a string in a JSON object' }, 400, cors);
+  }
+  const text = body.text
     .replace(/\*\*/g, '')
     .replace(/https?:\/\/\S+/gi, 'link')
     .replace(/\s+/g, ' ')
@@ -927,9 +931,14 @@ async function handleChat(request, env, cors) {
     return json({ error: 'Invalid JSON body' }, 400, cors);
   }
 
-  const message = String(body.message || body.query || '')
-    .trim()
-    .slice(0, 2000);
+  if (!body || typeof body !== 'object' || Array.isArray(body)) {
+    return json({ error: 'Request body must be a JSON object' }, 400, cors);
+  }
+  const rawMessage = body.message ?? body.query ?? '';
+  if (typeof rawMessage !== 'string') {
+    return json({ error: 'Message must be a string' }, 400, cors);
+  }
+  const message = rawMessage.trim().slice(0, 2000);
   if (!message) {
     return json({ error: 'Message cannot be empty' }, 400, cors);
   }

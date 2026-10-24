@@ -54,6 +54,25 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'deep-repo-hardening-rate-limit-cache-bust-20261024',
+    date: '2026-10-24',
+    type: 'improvement',
+    title:
+      'Repository Quality & Reliability: Dynamic GitHub proxy rate limiting, asset cache-busting bump, Prettier alignment, and Tester Army verification',
+    summary:
+      'Conducted a comprehensive multi-layered repository audit and hardening pass: (1) Enhanced the API check_rate_limit utility to support optional custom limits and sliding windows while preserving full backward compatibility; (2) Configured GitHub proxy with a generous burst limit (120 req/min) to eliminate 429 false-positive warnings during rich repo card hydration; (3) Added test coverage in tests/api/test_rate_limit.py bringing the API suite to 204 passing tests; (4) Resolved dependency security vulnerabilities in npm audit; (5) Formatted test specs with Prettier; (6) Bumped the unified static asset cache-bust version in scripts/build/asset-version.mjs and service worker to 20261024release; and (7) Re-validated all quality gates: 27 worker tests, 6 unit tests, 204 pytest tests, 15 critical e2e tests, 16 accessibility tests, and 23 Tester Army journeys across headless Chromium.',
+    tags: ['api', 'deploy', 'performance', 'other'],
+    sha: null,
+    commitVerified: false,
+    model: 'Gemini 3.8 Flash',
+    ide: 'Google Antigravity IDE',
+    purpose:
+      'Deep audit, dynamic rate limit scaling, asset version bump, code formatting, and full multi-suite test validation.',
+    attributionSource: 'commit-message',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
     id: 'assistme-math-code-enrichment-and-edge-sync-20261024',
     date: '2026-10-24',
     type: 'fix',

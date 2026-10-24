@@ -88,7 +88,7 @@ async def github_api_proxy(request: Request, path: Optional[str] = None):
     from api.config import check_rate_limit, get_client_ip
 
     client_ip = get_client_ip(request)
-    if not check_rate_limit(f"gh-proxy:{client_ip}"):
+    if not check_rate_limit(f"gh-proxy:{client_ip}", limit=120, window_sec=60):
         raise HTTPException(status_code=429, detail="GitHub proxy rate limit exceeded")
 
     if not path or not path.strip():

@@ -37,6 +37,17 @@ def test_check_rate_limit_resets_after_window():
     assert check_rate_limit(client_id) is True
 
 
+def test_check_rate_limit_supports_custom_limit_and_window():
+    client_id = "test-client-custom"
+    custom_limit = 5
+    custom_window = 10
+
+    for _ in range(custom_limit):
+        assert check_rate_limit(client_id, limit=custom_limit, window_sec=custom_window) is True
+
+    assert check_rate_limit(client_id, limit=custom_limit, window_sec=custom_window) is False
+
+
 def _request(headers=None, client_host="10.0.0.1"):
     return SimpleNamespace(
         headers=headers or {},

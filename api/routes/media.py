@@ -1049,8 +1049,21 @@ async def get_batch_posters(request: Request, items: str):
     if len(data) > 20:
         raise HTTPException(status_code=400, detail="Batch size limited to 20 items")
 
+    # Validate the entire batch before consuming any upstream quota.
+    for item in data:
+        if not isinstance(item, dict):
+            continue
+        if not isinstance(item.get("type", ""), str):
+            raise HTTPException(status_code=400, detail="Item type must be a string")
+        if item.get("type", "").lower() in ("movie", "tv", "series", "book"):
+            title = item.get("title", "")
+            if not isinstance(title, str) or not title.strip():
+                raise HTTPException(status_code=400, detail="Item title must be a non-empty string")
+            if not isinstance(item.get("author", ""), str):
+                raise HTTPException(status_code=400, detail="Item author must be a string")
+
     results = []
-    for item in data[:20]:
+    for item in data:
         if not isinstance(item, dict):
             results.append({"id": "", "poster_url": "", "source": "unknown", "cached": False})
             continue
@@ -1065,9 +1078,10 @@ async def get_batch_posters(request: Request, items: str):
             source = "tmdb"
         elif media_type == "book":
             poster_url = await fetch_google_books_cover(title, author)
+            source = "google_books"
             if not poster_url:
                 poster_url = await fetch_openlibrary_cover(title, author)
-            source = "google_books" if poster_url else "openlibrary"
+                source = "openlibrary"
         else:
             poster_url = ""
             source = "unknown"

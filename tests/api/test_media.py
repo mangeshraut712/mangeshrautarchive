@@ -279,3 +279,51 @@ def test_pick_itunes_artwork_ignores_feat_and_remaster_noise():
     )
 
     assert artwork == "https://itunes/stan/600x600bb.jpg"
+
+
+def test_poster_batch_validates_all_items_before_fetching(monkeypatch):
+    import json
+    from api.config import rate_limit_store
+
+    async def unexpected_fetch(*_args, **_kwargs):
+        raise AssertionError("Malformed batches must not call upstream services")
+
+    monkeypatch.setattr("api.routes.media.fetch_tmdb_poster", unexpected_fetch)
+    monkeypatch.setattr("api.routes.media.fetch_google_books_cover", unexpected_fetch)
+    client = TestClient(app)
+    malformed_items = [
+        {"type": "movie", "title": None},
+        {"type": "movie", "title": 42},
+        {"type": "movie", "title": "   "},
+        {"type": "book", "title": "Book", "author": []},
+        {"type": [], "title": "Movie"},
+    ]
+    for item in malformed_items:
+        rate_limit_store.clear()
+        response = client.get(
+            "/api/posters/batch",
+            params={"items": json.dumps([{"type": "movie", "title": "Valid"}, item])},
+        )
+        assert response.status_code == 400
+
+
+def test_poster_batch_reports_actual_book_cover_provider(monkeypatch):
+    import json
+    from api.config import rate_limit_store
+
+    async def google_miss(*_args):
+        return ""
+
+    async def openlibrary_hit(*_args):
+        return "https://covers.openlibrary.org/b/id/123-L.jpg"
+
+    monkeypatch.setattr("api.routes.media.fetch_google_books_cover", google_miss)
+    monkeypatch.setattr("api.routes.media.fetch_openlibrary_cover", openlibrary_hit)
+    rate_limit_store.clear()
+    response = TestClient(app).get(
+        "/api/posters/batch", params={"items": json.dumps([{"id": "book", "type": "book", "title": "Dune"}])}
+    )
+    assert response.status_code == 200
+    result = response.json()["results"][0]
+    assert result["source"] == "openlibrary"
+    assert result["poster_url"].startswith("https://covers.openlibrary.org/")

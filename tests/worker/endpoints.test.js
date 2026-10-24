@@ -132,3 +132,48 @@ test('POST /api/chat fallback evaluates arithmetic calculations', async () => {
   assert.ok(data.answer.includes('120'));
   assert.equal(data.source, 'Local Intelligence');
 });
+
+test('chat rejects non-object bodies and non-string messages without invoking upstream', async () => {
+  for (const payload of [null, [], 42, 'hello', { message: {} }, { message: 42 }]) {
+    const response = await worker.fetch(
+      new Request('https://worker.local/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      }),
+      { OPENROUTER_API_KEY: '' }
+    );
+    assert.equal(response.status, 400);
+    assert.ok((await response.json()).error);
+  }
+});
+
+test('speech rejects structured text before contacting the provider', async () => {
+  const response = await worker.fetch(
+    new Request('https://worker.local/api/tts', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text: { content: 'hello' } }),
+    }),
+    env
+  );
+  assert.equal(response.status, 400);
+});
+
+test('privacy deletion preflight permits DELETE and session credentials', async () => {
+  const response = await worker.fetch(
+    new Request('https://worker.local/api/personalization/delete', {
+      method: 'OPTIONS',
+      headers: {
+        Origin: 'https://mangeshraut712.github.io',
+        'Access-Control-Request-Method': 'DELETE',
+        'Access-Control-Request-Headers': 'x-session-id,x-session-token',
+      },
+    }),
+    env
+  );
+  assert.equal(response.status, 204);
+  assert.match(response.headers.get('Access-Control-Allow-Methods'), /DELETE/);
+  assert.match(response.headers.get('Access-Control-Allow-Headers'), /X-Session-Token/i);
+  assert.match(response.headers.get('Access-Control-Allow-Headers'), /X-Session-ID/i);
+});

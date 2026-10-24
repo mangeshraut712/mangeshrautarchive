@@ -171,3 +171,37 @@ def test_calendar_webhook_rejects_empty_watch_credentials(client, monkeypatch):
         },
     )
     assert response.status_code == 403
+
+
+@pytest.mark.parametrize("header", ["X-Session-ID", "X-Session-Token", "X-Monitor-Admin-Token"])
+def test_cors_permits_authenticated_api_headers(client, header):
+    response = client.options(
+        "/api/conversation/session",
+        headers={
+            "Origin": "https://mangeshraut712.github.io",
+            "Access-Control-Request-Method": "GET",
+            "Access-Control-Request-Headers": header,
+        },
+    )
+    assert response.status_code == 200
+    assert header.lower() in response.headers["access-control-allow-headers"].lower()
+
+
+def test_cors_exposes_session_credentials_to_allowed_frontend(client):
+    response = client.get("/api/health", headers={"Origin": "https://mangeshraut712.github.io"})
+    exposed = response.headers["access-control-expose-headers"].lower()
+    assert "x-session-token" in exposed
+    assert "x-session-id" in exposed
+
+
+def test_http_error_preserves_retry_headers(client, monkeypatch):
+    from fastapi import HTTPException
+
+    def reject_request(_client_ip):
+        raise HTTPException(status_code=429, detail="Try later", headers={"Retry-After": "30"})
+
+    monkeypatch.setattr("api.routes.chat.check_rate_limit", reject_request)
+    response = client.post("/api/chat", json={"message": "hello", "stream": False})
+    assert response.status_code == 429
+    assert response.headers["retry-after"] == "30"
+    assert response.json()["error"]["message"] == "Try later"

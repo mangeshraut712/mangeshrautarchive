@@ -582,12 +582,16 @@ def get_client_ip(request: Request) -> str:
     return request.client.host if request.client else "unknown"
 
 
-def check_rate_limit(client_id: str) -> bool:
+def check_rate_limit(
+    client_id: str,
+    limit: int = RATE_LIMIT_REQUESTS,
+    window_sec: int = RATE_LIMIT_WINDOW,
+) -> bool:
     """Check if client has exceeded rate limit (durable backend when configured)."""
     return get_rate_limit_store().allow(
         client_id,
-        limit=RATE_LIMIT_REQUESTS,
-        window_sec=RATE_LIMIT_WINDOW,
+        limit=limit,
+        window_sec=window_sec,
     )
 
 

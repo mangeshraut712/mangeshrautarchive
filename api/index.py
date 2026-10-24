@@ -142,9 +142,12 @@ app.add_middleware(
         "Origin",
         "Pragma",
         "X-Requested-With",
+        "X-Session-ID",
+        "X-Session-Token",
+        "X-Monitor-Admin-Token",
         "x-integration-admin-token",
     ],
-    expose_headers=["X-Session-ID"],
+    expose_headers=["X-Session-ID", "X-Session-Token", "Retry-After"],
 )
 
 # Outermost: stamp security headers on the final response, including streams.
@@ -190,6 +193,7 @@ async def http_exception_handler(request: Request, exc: HTTPException):
 
     return JSONResponse(
         status_code=exc.status_code,
+        headers=exc.headers,
         content={
             "success": False,
             "error": {
