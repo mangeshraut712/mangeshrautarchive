@@ -422,4 +422,3 @@ def test_local_math_and_code_snippets():
     py_res = generate_local_response("hello world in python")
     assert py_res["category"] == "Code"
     assert 'print("Hello, World!")' in py_res["answer"]
-
