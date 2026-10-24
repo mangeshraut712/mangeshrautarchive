@@ -948,7 +948,8 @@ async def stream_openrouter_response(
     start_time = time.time()
     last_upstream_reason = "OpenRouter upstream unavailable"
 
-    while retry_count <= max_retries:
+    auth_failed = False
+    while retry_count <= max_retries and not auth_failed:
         if retry_count > 0:
             logger.info(f"🔄 Retrying stream (attempt {retry_count}/{max_retries})...")
             full_content = ""
@@ -990,6 +991,12 @@ async def stream_openrouter_response(
                                 f"❌ OpenRouter API error for {candidate_model}: "
                                 f"status={response.status_code}"
                             )
+                            if response.status_code == 401:
+                                auth_failed = True
+                                last_upstream_reason = (
+                                    "OpenRouter authentication failed (HTTP 401: invalid or expired API key)"
+                                )
+                                break
                             continue
 
                         model = candidate_model
@@ -1010,11 +1017,19 @@ async def stream_openrouter_response(
                                 # Surface provider error payloads instead of treating as empty success
                                 err = json_data.get("error")
                                 if err:
-                                    last_upstream_reason = (
+                                    err_msg = (
                                         err.get("message")
                                         if isinstance(err, dict)
                                         else str(err)
-                                    ) or last_upstream_reason
+                                    )
+                                    err_code = err.get("code") if isinstance(err, dict) else None
+                                    last_upstream_reason = err_msg or last_upstream_reason
+                                    if (
+                                        err_code == 401
+                                        or "user not found" in str(err_msg).lower()
+                                        or "unauthorized" in str(err_msg).lower()
+                                    ):
+                                        auth_failed = True
                                     full_content = ""
                                     break
                                 sse_id = extract_openrouter_generation_id(json_data)
@@ -1098,11 +1113,23 @@ async def stream_openrouter_response(
             except httpx.HTTPStatusError as e:
                 last_upstream_reason = f"OpenRouter HTTP {e.response.status_code}"
                 logger.error(f"❌ OpenRouter HTTP error for {candidate_model}: {e.response.status_code}")
+                if e.response.status_code == 401:
+                    auth_failed = True
+                    last_upstream_reason = (
+                        "OpenRouter authentication failed (HTTP 401: invalid or expired API key)"
+                    )
+                    break
                 continue
             except httpx.RequestError as e:
                 last_upstream_reason = f"OpenRouter network ({type(e).__name__})"
                 logger.error(f"❌ Request error for {candidate_model}: {str(e)}")
                 continue
+
+        if auth_failed:
+            logger.warning(
+                "⚠️ OpenRouter authentication failed (HTTP 401). Immediately falling back to local chat."
+            )
+            break
 
         retry_count += 1
         await asyncio.sleep(0.5)
@@ -1196,6 +1223,9 @@ async def call_openrouter(
             except Exception as exc:
                 last_error = exc
                 logger.error(f"❌ OpenRouter non-stream error for {candidate_model}: {exc}", exc_info=True)
+                if isinstance(exc, httpx.HTTPStatusError) and exc.response.status_code == 401:
+                    logger.warning("⚠️ OpenRouter authentication failed (HTTP 401) - aborting candidate chain")
+                    break
                 continue
 
     raise last_error or Exception("OpenRouter request failed")
@@ -1472,19 +1502,33 @@ async def chat_health():
         message = "OpenRouter API key is configured."
         try:
             async with httpx.AsyncClient() as client:
-                response = await client.get(
-                    "https://openrouter.ai/api/v1/models",
+                auth_resp = await client.get(
+                    "https://openrouter.ai/api/v1/auth/key",
                     headers={"Authorization": f"Bearer {api_key}"},
-                    timeout=5.0,
+                    timeout=4.0,
                 )
-            if response.status_code == 200:
-                status = "healthy"
-                provider_status = "online"
-                message = "OpenRouter model catalog is reachable."
-            else:
-                status = "unhealthy"
-                provider_status = "error"
-                message = f"OpenRouter returned HTTP {response.status_code}."
+                if auth_resp.status_code == 200:
+                    status = "healthy"
+                    provider_status = "online"
+                    message = "OpenRouter authenticated and ready."
+                elif auth_resp.status_code == 401:
+                    status = "degraded"
+                    provider_status = "local_only"
+                    message = "OpenRouter API key is invalid or unauthorized (HTTP 401). Falling back to local intelligence mode."
+                else:
+                    response = await client.get(
+                        "https://openrouter.ai/api/v1/models",
+                        headers={"Authorization": f"Bearer {api_key}"},
+                        timeout=4.0,
+                    )
+                    if response.status_code == 200:
+                        status = "healthy"
+                        provider_status = "online"
+                        message = "OpenRouter model catalog is reachable."
+                    else:
+                        status = "unhealthy"
+                        provider_status = "error"
+                        message = f"OpenRouter returned HTTP {response.status_code}."
         except Exception:
             status = "unhealthy"
             provider_status = "error"

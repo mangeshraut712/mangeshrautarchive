@@ -575,12 +575,18 @@ class IntelligentAssistant {
         let metadata = {};
         let buffer = '';
 
+        const cleanPayloadText = raw => {
+          let s = String(raw || '').trim();
+          if (s.startsWith('data:')) {
+            s = s.replace(/^data:\s*/, '');
+          }
+          // Strip literal escaped newlines/carriage returns that can appear in stream framing
+          return s.replace(/^(?:\\[nr]\s*)+/, '').trim();
+        };
+
         const parseStreamPayloads = text => {
           const payloads = [];
-          let remaining = text.trim();
-          if (remaining.startsWith('data: ')) {
-            remaining = remaining.slice(6).trim();
-          }
+          let remaining = cleanPayloadText(text);
           if (!remaining || remaining === '[DONE]') return payloads;
 
           while (remaining.length > 0) {
@@ -593,19 +599,20 @@ class IntelligentAssistant {
                 const pos = parseInt(match[1], 10);
                 if (pos > 0 && pos < remaining.length) {
                   try {
-                    const firstPart = remaining.slice(0, pos).trim();
-                    payloads.push(JSON.parse(firstPart));
-                    remaining = remaining.slice(pos).trim();
-                    if (remaining.startsWith('data: ')) {
-                      remaining = remaining.slice(6).trim();
+                    const firstPart = cleanPayloadText(remaining.slice(0, pos));
+                    if (firstPart) {
+                      payloads.push(JSON.parse(firstPart));
                     }
+                    remaining = cleanPayloadText(remaining.slice(pos));
                     continue;
                   } catch {
                     // Fall through
                   }
                 }
               }
-              console.warn('Error parsing stream chunk:', err);
+              if (remaining.length > 0 && remaining !== '[DONE]') {
+                console.warn('Error parsing stream chunk:', err?.message || err);
+              }
               break;
             }
           }

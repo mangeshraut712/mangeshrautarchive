@@ -657,6 +657,10 @@ function streamChatWithFallbacks(apiKey, chain, messages, userMessage, cors, env
           });
           if (!res.ok) {
             await res.text().catch(() => '');
+            if (res.status === 401) {
+              console.error('OpenRouter authentication failed (HTTP 401) - aborting chain');
+              break;
+            }
             continue;
           }
           stopTyping();
@@ -924,6 +928,10 @@ async function handleChat(request, env, cors) {
       if (!res.ok) {
         lastErr = `OpenRouter HTTP ${res.status}`;
         tried.push({ model, ok: false, status: res.status });
+        if (res.status === 401) {
+          console.error('OpenRouter authentication failed (HTTP 401) - aborting chain');
+          break;
+        }
         continue;
       }
 

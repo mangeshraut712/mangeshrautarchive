@@ -181,9 +181,17 @@ class StreamingService extends EventTarget {
     }
   }
 
+  _cleanPayload(raw) {
+    let s = String(raw || '').trim();
+    if (s.startsWith('data:')) {
+      s = s.replace(/^data:\s*/, '');
+    }
+    return s.replace(/^(?:\\[nr]\s*)+/, '').trim();
+  }
+
   _parseLine(line) {
     // Support both plain NDJSON `{...}` and SSE `data: {...}`
-    let remaining = line.startsWith('data: ') ? line.slice(6).trim() : line.trim();
+    let remaining = this._cleanPayload(line);
     if (!remaining || remaining === '[DONE]') return; // SSE sentinel
 
     while (remaining.length > 0) {
@@ -198,20 +206,21 @@ class StreamingService extends EventTarget {
           const pos = parseInt(match[1], 10);
           if (pos > 0 && pos < remaining.length) {
             try {
-              const firstPart = remaining.slice(0, pos).trim();
-              parsed = JSON.parse(firstPart);
-              this._handleParsedObject(parsed);
-              remaining = remaining.slice(pos).trim();
-              if (remaining.startsWith('data: ')) {
-                remaining = remaining.slice(6).trim();
+              const firstPart = this._cleanPayload(remaining.slice(0, pos));
+              if (firstPart) {
+                parsed = JSON.parse(firstPart);
+                this._handleParsedObject(parsed);
               }
+              remaining = this._cleanPayload(remaining.slice(pos));
               continue;
             } catch {
               // Fall through
             }
           }
         }
-        console.warn('StreamingService: unparseable line:', remaining.slice(0, 100));
+        if (remaining.length > 0 && remaining !== '[DONE]') {
+          console.warn('StreamingService: unparseable line:', remaining.slice(0, 100));
+        }
         break;
       }
     }

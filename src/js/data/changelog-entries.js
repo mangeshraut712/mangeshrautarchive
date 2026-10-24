@@ -54,6 +54,25 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'assistme-stream-sanitize-auth-fallback-20261024',
+    date: '2026-10-24',
+    type: 'fix',
+    title:
+      'AssistMe Chatbot: Robust stream chunk sanitization, instant 401 auth fallback, and scroll pinning stabilization',
+    summary:
+      'Diagnosed and resolved critical AssistMe chatbot streaming and latency defects across frontend and backend: (1) Added leading/trailing escaped newline and SSE delimiter sanitization in parseStreamPayloads and StreamingService to eliminate SyntaxError: Unexpected token "\\", "\\n{\\"type\\":... console warnings; (2) Added immediate circuit-breaking on OpenRouter HTTP 401 Unauthorized responses in both FastAPI and Cloudflare Worker to bypass futile 9-model 3-attempt retry loops, transforming a 44-second freeze on invalid/revoked keys into an instant sub-50ms fallback to Local Intelligence; (3) Hardened the /api/chat/health endpoint to validate credentials via OpenRouter /auth/key rather than the unauthenticated /models catalog; and (4) Stabilized Playwright chatbot scroll-up test assertions with generous container scroll margins.',
+    tags: ['api', 'assistme', 'performance'],
+    sha: 'fd26ae15',
+    commitVerified: true,
+    model: 'Gemini 3.8 Flash',
+    ide: 'Google Antigravity IDE',
+    purpose:
+      'Diagnose and fix AssistMe chatbot stream chunk parsing errors, OpenRouter 401 retry loop latency freezes, and scroll test regressions.',
+    attributionSource: 'commit-message',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
     id: 'deep-quality-pass-security-tests-20261024',
     date: '2026-10-24',
     type: 'fix',
