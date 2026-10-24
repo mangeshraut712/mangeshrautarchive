@@ -54,7 +54,6 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
-  {
     id: 'deep-quality-pass-security-tests-20261024',
     date: '2026-10-24',
     type: 'fix',
@@ -63,8 +62,8 @@ export const changelogEntries = [
     summary:
       'Completed a comprehensive repository-wide quality pass and live platform sync: hardened Upstash vector search with bounded query length and top_k validation; added SSRF protection and private IP blocking to Firecrawl URL ingestion; hardened CSP report ingestion against chunked payload memory exhaustion; unified client IP extraction across standard requests and unhandled exceptions; resolved a Cloudflare Worker TypeError crash on POST /api/csp-report; enhanced chat stream parsing for concatenated NDJSON frames and SSE tokens; added accessible aria-labels to chatbot attachment controls; expanded pytest unit test suite to 202 tests; expanded Cloudflare Worker edge route suite to 21 tests; synced live WhoBurnedMore telemetry for October 24 (21.14B tokens, $19,062 spend, 245 active days, 57d streak, rank #64 of 347 devs, 94.66% cache hit rate); and synced official Kalnirnay Hindu Panchang for October 24, 2026 (Ashwin Shukla Paksha Trayodashi). All quality gates, linters, security audits, and critical user journeys pass 100% green.',
     tags: ['api', 'assistme', 'deploy', 'monitor', 'performance', 'systems'],
-    sha: null,
-    commitVerified: false,
+    sha: '974192ab',
+    commitVerified: true,
     model: 'Gemini 3.8 Flash',
     ide: 'Google Antigravity IDE',
     purpose:
@@ -123,10 +122,6 @@ export const changelogEntries = [
     ide: 'Cursor',
     purpose:
       'Fix CORS origin matching, blog HTML injection, open video embeds, private URL ingestion, rate-limit key encoding, missing security headers, the unlabeled monitor search field, and duplicate chart rendering.',
-    attributionSource: 'commit-message',
-    reasoning: 'unavailable',
-    usage: 'unavailable',
-  },
     attributionSource: 'commit-message',
     reasoning: 'unavailable',
     usage: 'unavailable',
