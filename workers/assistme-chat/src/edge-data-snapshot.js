@@ -1,9 +1,9 @@
 /** Auto-exported FastAPI/GA snapshot for GitHub Pages edge (Vercel offline). */
 export const EDGE_DATA_SNAPSHOT = {
-  exportedAt: '2026-10-24T20:53:32.699Z',
+  exportedAt: '2026-10-25T04:47:42.197Z',
   reach: {
     success: true,
-    total_reach: 11144,
+    total_reach: 11174,
     source: 'edge-ga-snapshot',
     ga_enabled: true,
     ga_configured: false,
@@ -12,13 +12,13 @@ export const EDGE_DATA_SNAPSHOT = {
     host: 'cloudflare-worker',
     message: 'Portfolio Reach mirrored from GA4/FastAPI for GitHub Pages (Vercel offline).',
     insights: {
-      unique_visitors: 11144,
-      unique_visitors_this_week: 98,
-      countries_this_week: 6,
-      sessions_this_week: 106,
-      total_views_all_time: 14032,
-      active_users_all_time: 11144,
-      event_count_all_time: 49311,
+      unique_visitors: 11174,
+      unique_visitors_this_week: 122,
+      countries_this_week: 7,
+      sessions_this_week: 131,
+      total_views_all_time: 14062,
+      active_users_all_time: 11174,
+      event_count_all_time: 49442,
       active_users_last_30_mins: 0,
       realtime_countries: [],
       realtime_fresh: false,
@@ -26,15 +26,19 @@ export const EDGE_DATA_SNAPSHOT = {
       metric_weekly_label: 'Active Users',
       avg_views_per_day: 0,
       portfolio_age_days: 1,
-      last_updated: '2026-10-24T20:53:32.666055Z',
+      last_updated: '2026-10-25T04:47:42.165084Z',
       top_countries: [
         {
           country: 'United States',
-          users: 141,
+          users: 150,
         },
         {
           country: 'India',
-          users: 129,
+          users: 148,
+        },
+        {
+          country: 'Canada',
+          users: 1,
         },
         {
           country: 'Japan',
@@ -55,12 +59,6 @@ export const EDGE_DATA_SNAPSHOT = {
       ],
       countries_mode: 'period',
       trend: [
-        {
-          date: '2026-10-18',
-          views: 10,
-          visitors: 8,
-          sessions: 8,
-        },
         {
           date: '2026-10-19',
           views: 5,
@@ -93,14 +91,20 @@ export const EDGE_DATA_SNAPSHOT = {
         },
         {
           date: '2026-10-24',
-          views: 13,
-          visitors: 11,
-          sessions: 11,
+          views: 43,
+          visitors: 40,
+          sessions: 41,
+        },
+        {
+          date: '2026-10-25',
+          views: 0,
+          visitors: 0,
+          sessions: 0,
         },
       ],
       trend_metric: 'visitors',
     },
-    timestamp: '2026-10-24T20:53:32.666055Z',
+    timestamp: '2026-10-25T04:47:42.165084Z',
   },
   healthVitals: {
     success: true,
