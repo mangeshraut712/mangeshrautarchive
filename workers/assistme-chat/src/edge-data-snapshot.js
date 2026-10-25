@@ -1,9 +1,9 @@
 /** Auto-exported FastAPI/GA snapshot for GitHub Pages edge (Vercel offline). */
 export const EDGE_DATA_SNAPSHOT = {
-  exportedAt: '2026-10-25T11:37:43.508Z',
+  exportedAt: '2026-10-25T16:27:48.260Z',
   reach: {
     success: true,
-    total_reach: 11174,
+    total_reach: 11176,
     source: 'edge-ga-snapshot',
     ga_enabled: true,
     ga_configured: false,
@@ -12,13 +12,13 @@ export const EDGE_DATA_SNAPSHOT = {
     host: 'cloudflare-worker',
     message: 'Portfolio Reach mirrored from GA4/FastAPI for GitHub Pages (Vercel offline).',
     insights: {
-      unique_visitors: 11174,
-      unique_visitors_this_week: 124,
+      unique_visitors: 11176,
+      unique_visitors_this_week: 125,
       countries_this_week: 7,
-      sessions_this_week: 133,
-      total_views_all_time: 14064,
-      active_users_all_time: 11174,
-      event_count_all_time: 49454,
+      sessions_this_week: 134,
+      total_views_all_time: 14065,
+      active_users_all_time: 11176,
+      event_count_all_time: 49459,
       active_users_last_30_mins: 0,
       realtime_countries: [],
       realtime_fresh: false,
@@ -26,11 +26,11 @@ export const EDGE_DATA_SNAPSHOT = {
       metric_weekly_label: 'Active Users',
       avg_views_per_day: 0,
       portfolio_age_days: 1,
-      last_updated: '2026-10-25T11:37:43.487311Z',
+      last_updated: '2026-10-25T16:27:48.227697Z',
       top_countries: [
         {
           country: 'United States',
-          users: 152,
+          users: 153,
         },
         {
           country: 'India',
@@ -97,14 +97,14 @@ export const EDGE_DATA_SNAPSHOT = {
         },
         {
           date: '2026-10-25',
-          views: 2,
-          visitors: 2,
-          sessions: 2,
+          views: 3,
+          visitors: 3,
+          sessions: 3,
         },
       ],
       trend_metric: 'visitors',
     },
-    timestamp: '2026-10-25T11:37:43.487311Z',
+    timestamp: '2026-10-25T16:27:48.227697Z',
   },
   healthVitals: {
     success: true,
