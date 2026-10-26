@@ -812,9 +812,10 @@ html.dark .music-preview-tag {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  #home #music-card .album-art,
+  #home #music-card #album-art,
   #home #music-card .playing-indicator span {
     animation: none !important;
+    animation-play-state: paused !important;
     transform: none !important;
   }
 

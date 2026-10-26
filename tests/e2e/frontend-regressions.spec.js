@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { gotoSite, openChatbot } from './helpers/site.js';
+import { gotoSite, gotoSiteReady, openChatbot } from './helpers/site.js';
 
 test('voice initialization and selection survive blocked preference storage', async ({ page }) => {
   await page.addInitScript(() => {
@@ -43,4 +43,34 @@ test('voice preferences ignore stale IDs and tolerate a denied storage getter', 
     return { stale, selected: voice.selectedVoice };
   });
   expect(result).toEqual({ stale: 'eve', selected: 'rex' });
+});
+
+test('music controls keep 44px targets and stop decorative motion', async ({ page }) => {
+  await page.emulateMedia({ colorScheme: 'light', reducedMotion: 'reduce' });
+  await gotoSiteReady(page, '/');
+
+  for (const width of [375, 768, 1440]) {
+    await page.setViewportSize({ width, height: 900 });
+    const layout = await page.evaluate(() => ({
+      overflow: document.documentElement.scrollWidth > innerWidth,
+      controls: [...document.querySelectorAll('.music-card-service-link')].map(element => {
+        const rect = element.getBoundingClientRect();
+        return { width: rect.width, height: rect.height };
+      }),
+    }));
+    expect(layout.overflow).toBe(false);
+    expect(layout.controls).toHaveLength(3);
+    expect(
+      layout.controls.every(({ width: controlWidth, height }) => controlWidth >= 44 && height >= 44)
+    ).toBe(true);
+  }
+
+  const motion = await page.evaluate(() => {
+    document.querySelector('#music-card')?.classList.add('is-playing');
+    document.querySelector('#playing-indicator')?.classList.add('active');
+    return [...document.querySelectorAll('#album-art, #playing-indicator span')].map(
+      element => getComputedStyle(element).animationName
+    );
+  });
+  expect(motion).toEqual(['none', 'none', 'none', 'none']);
 });

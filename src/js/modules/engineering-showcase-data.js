@@ -241,7 +241,7 @@ export const engineeringTimeline = [
     items: [
       'Full Website 5-Phase Overhaul & Refactoring',
       'Modular Monitor Architecture (src/js/modules/monitor-page.js, -76% HTML size)',
-      '182 pytest API tests · 6 critical browser journeys · 16 Playwright browser projects',
+      '211 pytest API tests · 18 critical browser journeys · 16 Playwright browser projects',
       'Vendor Rich-Markdown Bundle Compression (604 KB → 334 KB, -17,050 lines)',
       'Evidence-based competency tiers (Core, Proficient, Familiar) replacing percentages',
       'Clean SEO canonical URL architecture & skip-navigation accessibility',

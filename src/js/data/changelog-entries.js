@@ -54,6 +54,26 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'api-contracts-and-responsive-player-20261026',
+    date: '2026-10-26',
+    type: 'fix',
+    title:
+      'Harden API contracts, improve small-screen media controls, and synchronize 211 Pytest and 18 critical browser journeys',
+    summary:
+      'Fixed cross-origin session and privacy preflights, preserved HTTP error headers, rejected malformed poster batches before upstream calls, and corrected the reported book-cover provider. Added strict JSON type checks to Worker chat and speech endpoints, made Voice Mode preferences tolerate denied storage, and enlarged music service controls to 44px while honoring reduced-motion settings. Regression coverage now includes blocked-storage startup behavior, 211 verified Pytest API contracts, and 18 critical user journeys.',
+    tags: ['api', 'assistme', 'design', 'performance'],
+    sha: null,
+    commitVerified: false,
+    link: null,
+    model: 'Gemini 3.8 Flash',
+    ide: 'Google Antigravity IDE',
+    purpose:
+      'Improve frontend startup and mobile interaction reliability, align FastAPI and Worker request contracts, enlarge mobile touch targets to >=44px, and synchronize 211 Pytest and 18 critical user journeys.',
+    attributionSource: 'commit-message',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
     id: 'telemetry-metrics-sync-and-smoke-hardening-20261024',
     date: '2026-10-24',
     type: 'fix',
