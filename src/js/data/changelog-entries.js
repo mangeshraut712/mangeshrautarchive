@@ -62,8 +62,8 @@ export const changelogEntries = [
     summary:
       'Fixed cross-origin session and privacy preflights, preserved HTTP error headers, rejected malformed poster batches before upstream calls, and corrected the reported book-cover provider. Added strict JSON type checks to Worker chat and speech endpoints, made Voice Mode preferences tolerate denied storage, and enlarged music service controls to 44px while honoring reduced-motion settings. Regression coverage now includes blocked-storage startup behavior, 211 verified Pytest API contracts, and 18 critical user journeys.',
     tags: ['api', 'assistme', 'design', 'performance'],
-    sha: null,
-    commitVerified: false,
+    sha: '7f9355ad',
+    commitVerified: true,
     link: null,
     model: 'Gemini 3.8 Flash',
     ide: 'Google Antigravity IDE',
