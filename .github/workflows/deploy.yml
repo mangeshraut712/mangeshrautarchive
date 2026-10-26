@@ -170,12 +170,18 @@ jobs:
 
       - name: Install Playwright system deps (cache hit)
         if: steps.playwright-cache.outputs.cache-hit == 'true'
-        timeout-minutes: 8
+        timeout-minutes: 12
+        env:
+          DEBIAN_FRONTEND: noninteractive
         run: |
           set -euo pipefail
-          export DEBIAN_FRONTEND=noninteractive
-          setsid timeout --kill-after=30s 7m npx playwright install-deps chromium
-
+          # Cached browsers often need no apt work; bound install-deps so locks cannot red the job.
+          npx playwright install chromium || true
+          if setsid timeout --kill-after=30s 9m npx playwright install-deps chromium; then
+            exit 0
+          fi
+          echo "WARN: install-deps timed out/failed; continuing with cached Chromium"
+          npx playwright install chromium
       - name: Browser QA — FPS
         id: browser
         timeout-minutes: 25
