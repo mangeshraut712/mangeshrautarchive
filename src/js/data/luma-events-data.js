@@ -5,7 +5,7 @@
  */
 
 export const lumaEventsList = [
-  // ── Upcoming & Active RSVPs ────────────────────────────────────────────────
+  // ── Upcoming RSVPs ────────────────────────────────────────────────────────
   {
     id: 22001,
     text: 'Global AI & Agents Hackathon 2026 (Online / Hybrid)',
@@ -22,6 +22,24 @@ export const lumaEventsList = [
     isLuma: true,
     completed: false,
   },
+
+  // ── Past Attended & Verified Community Events ──────────────────────────────
+  {
+    id: 224,
+    text: 'DevDay Exchange Community Metro Hackathon: Pune (Codex Dayline)',
+    time: 'Oct 24 · 10:00 AM – 5:30 PM',
+    dateKey: '2026-10-24',
+    category: 'events',
+    tag: 'Codex Metro',
+    color: 'blue',
+    icon: 'train-subway',
+    location: 'Pune Metro (Lokmanya Nagar to Ramwadi)',
+    lumaHost: 'AMAN MOGAL',
+    lumaStatus: 'done',
+    lumaUrl: 'https://luma.com/cnmh7l8u',
+    isLuma: true,
+    completed: true,
+  },
   {
     id: 223,
     text: 'Build Faster with AI and APIs (Session 4)',
@@ -36,7 +54,7 @@ export const lumaEventsList = [
     lumaStatus: 'waitlisted',
     lumaUrl: 'https://luma.com/kcw7iwbx',
     isLuma: true,
-    completed: false,
+    completed: true,
   },
   {
     id: 222,
@@ -45,14 +63,14 @@ export const lumaEventsList = [
     dateKey: '2026-09-29',
     category: 'events',
     tag: 'Grok',
-    color: 'green',
+    color: 'blue',
     icon: 'robot',
     location: 'Indy Hall Clubhouse at 709 N 2nd St, Philadelphia',
     lumaHost: 'Luis Cielak & Malcolm Jones',
-    lumaStatus: 'going',
+    lumaStatus: 'done',
     lumaUrl: 'https://luma.com/cursor-hdle',
     isLuma: true,
-    completed: false,
+    completed: true,
   },
   {
     id: 218,
@@ -61,14 +79,14 @@ export const lumaEventsList = [
     dateKey: '2026-09-26',
     category: 'events',
     tag: 'Neo4j',
-    color: 'green',
+    color: 'blue',
     icon: 'diagram-project',
     location: 'iSprout GreyStone, Pune',
     lumaHost: 'Rajat Gupta',
-    lumaStatus: 'going',
+    lumaStatus: 'done',
     lumaUrl: 'https://luma.com/nsm1hg6e',
     isLuma: true,
-    completed: false,
+    completed: true,
   },
   {
     id: 221,
@@ -84,7 +102,7 @@ export const lumaEventsList = [
     lumaStatus: 'pending',
     lumaUrl: 'https://luma.com/h4h-pune',
     isLuma: true,
-    completed: false,
+    completed: true,
   },
   {
     id: 220,
@@ -93,14 +111,14 @@ export const lumaEventsList = [
     dateKey: '2026-09-23',
     category: 'events',
     tag: 'Claude',
-    color: 'green',
+    color: 'blue',
     icon: 'code',
     location: 'K J Somaiya School of Engineering',
     lumaHost: 'Sumeet G Doshi',
-    lumaStatus: 'going',
+    lumaStatus: 'done',
     lumaUrl: 'https://luma.com/claude-Fable5.1',
     isLuma: true,
-    completed: false,
+    completed: true,
   },
   {
     id: 215,
@@ -109,14 +127,14 @@ export const lumaEventsList = [
     dateKey: '2026-09-19',
     category: 'events',
     tag: 'Dev Days',
-    color: 'green',
+    color: 'blue',
     icon: 'laptop-code',
     location: 'Data Axle Pune, ICC Tech Park',
     lumaHost: 'Dev Days, Alok Kumar, chetan Pujari & Darp Lalani',
-    lumaStatus: 'going',
+    lumaStatus: 'done',
     lumaUrl: 'https://luma.com/lh60mh4e',
     isLuma: true,
-    completed: false,
+    completed: true,
   },
 
   // ── Past Attended & Verified Community Events ──────────────────────────────

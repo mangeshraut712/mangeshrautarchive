@@ -54,6 +54,25 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'luma-codex-metro-and-past-events-sync-20261028',
+    date: '2026-10-28',
+    type: 'fix',
+    title: 'Synchronize Codex Metro Hackathon for Oct 24 & audit past Luma event lifecycle',
+    summary:
+      'Replaced the unconfirmed Drupal Pune placeholder on Saturday, October 24, 2026 with the verified DevDay Exchange Community Metro Hackathon: Pune (Codex Dayline) hosted inside a moving Pune Metro train by OpenAI Codex Ambassador Aman Mogal (https://luma.com/cnmh7l8u). Updated the past event lifecycle across luma-events-data.js so September and October community gatherings (Dev Days, Mumbai Claude Fable 5.1, Neo4j, Grok Philly, and Codex Metro) accurately reflect their Attended status. Enriched calendar reminder aggregation so Luma ticket metadata (Going, Waitlisted, Submitted, Attended) seamlessly hydrates matching snapshot entries.',
+    tags: ['design', 'api', 'other'],
+    sha: null,
+    commitVerified: false,
+    link: null,
+    model: 'Gemini 3.8 Flash',
+    ide: 'Google Antigravity IDE',
+    purpose:
+      'Replace unconfirmed Drupal Pune entry on Oct 24 with verified DevDay Exchange Community Metro Hackathon (Codex Dayline), audit past Luma event lifecycle statuses, and enrich calendar reminder hydration with full ticket metadata.',
+    attributionSource: 'commit-message',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
     id: 'kalnirnay-panchang-and-multi-calendar-sync-20261028',
     date: '2026-10-28',
     type: 'improvement',

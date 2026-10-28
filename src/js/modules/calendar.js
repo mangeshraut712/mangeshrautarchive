@@ -308,17 +308,26 @@ export class CalendarWidget {
     // Combine all calendar sources with deduplication by id and date/text
     this.reminders = [...importedEvents];
     for (const item of lumaEvents) {
-      if (
-        !this.reminders.some(
-          r =>
-            r.id === item.id ||
-            (r.text &&
-              item.text &&
-              r.text.toLowerCase() === item.text.toLowerCase() &&
-              r.dateKey === item.dateKey)
-        )
-      ) {
+      const matchIdx = this.reminders.findIndex(
+        r =>
+          r.id === item.id ||
+          (r.text &&
+            item.text &&
+            r.text.toLowerCase() === item.text.toLowerCase() &&
+            r.dateKey === item.dateKey)
+      );
+      if (matchIdx === -1) {
         this.reminders.push(item);
+      } else {
+        this.reminders[matchIdx] = {
+          ...this.reminders[matchIdx],
+          isLuma: true,
+          lumaHost: item.lumaHost || this.reminders[matchIdx].lumaHost,
+          lumaStatus: item.lumaStatus || this.reminders[matchIdx].lumaStatus,
+          lumaUrl: item.lumaUrl || this.reminders[matchIdx].lumaUrl || this.reminders[matchIdx].url,
+          completed:
+            item.completed !== undefined ? item.completed : this.reminders[matchIdx].completed,
+        };
       }
     }
     for (const item of devReminders) {
