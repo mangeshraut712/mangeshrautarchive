@@ -19,7 +19,7 @@ from api.portfolio_public_data import get_portfolio_facts_chunk
 
 
 ROOT = Path(__file__).resolve().parents[1]
-MAX_SOURCE_CHARS = 120_000
+MAX_SOURCE_CHARS = 350_000
 MAX_CHUNK_CHARS = 1_800
 
 PUBLIC_SOURCES: Sequence[Dict[str, str]] = (

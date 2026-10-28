@@ -54,6 +54,25 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'homepage-faq-and-site-knowledge-modernization-20261028',
+    date: '2026-10-28',
+    type: 'improvement',
+    title: 'Modernize homepage FAQ, JSON-LD schema, and AI chatbot site knowledge ingestion',
+    summary:
+      'Revamped the homepage FAQ accordion (#faq) and synchronized the Schema.org FAQPage JSON-LD rich snippet with 2026-accurate systems and professional context: full-time engineering availability & sponsorship readiness, zero-framework architecture rationale (100/100/100/100 Lighthouse on vanilla ESM), agentic AI stack depth (WebMCP, Nemotron MoE, Claude Code, OpenAI Codex), academic transcripts from Drexel University, 51+ public repositories, and verified community calendar booking (Apple/Google/Outlook/Luma). Expanded site_knowledge.py MAX_SOURCE_CHARS from 120,000 to 350,000 to ensure full homepage content and FAQ answers are dynamically vectorized for the AssistMe AI assistant.',
+    tags: ['design', 'api', 'other'],
+    sha: null,
+    commitVerified: false,
+    link: null,
+    model: 'Gemini 3.8 Flash',
+    ide: 'Google Antigravity IDE',
+    purpose:
+      'Modernize homepage FAQ and Schema.org FAQPage JSON-LD with 2026 engineering and career context, and expand chatbot site knowledge character limits to ingest the entire homepage.',
+    attributionSource: 'commit-message',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
     id: 'luma-codex-metro-and-past-events-sync-20261028',
     date: '2026-10-28',
     type: 'fix',
