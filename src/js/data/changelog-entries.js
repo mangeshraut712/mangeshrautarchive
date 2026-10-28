@@ -61,9 +61,8 @@ export const changelogEntries = [
     summary:
       'Ingested official verified Kalnirnay Panchang data for October 28, 2026 from kalnirnay.com (Ashwin Krishna Paksha Tritiya, Nakshatra Kruttika, Yog Vyatipat / Variyan, Karan Vanij, Sunrise 6:39 AM, Sunset 6:05 PM), resolving the fallback prompt on the Contact page. Synchronized the multi-calendar ecosystem across Google Calendar, Apple iCloud, Microsoft Outlook/Work, and Luma community events (mbr63@drexel.edu). Restored the dedicated Luma filter tab (.filter-tab[data-filter="luma"]) with ticket attendance states (Going, Waitlisted, Submitted, Attended), host lines, and direct lu.ma RSVP links. Reconnected portfolio sprint tasks & reminders in the calendar widget.',
     tags: ['design', 'api', 'other'],
-    sha: null,
-    commitVerified: false,
-    status: 'unreleased',
+    sha: '564ccb6a',
+    commitVerified: true,
     link: null,
     model: 'Gemini 3.8 Flash',
     ide: 'Google Antigravity IDE',
