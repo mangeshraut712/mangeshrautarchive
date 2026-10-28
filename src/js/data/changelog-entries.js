@@ -54,6 +54,24 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'debug-runner-subtitle-concision-20261029',
+    date: '2026-10-29',
+    type: 'improvement',
+    title: 'Shorten Debug Runner section subtitle for concise Apple typography',
+    summary:
+      'Refined the Debug Runner section subtitle (#debug-runner-section) from a verbose run-on feature listing to a clean, punchy Apple-style sentence: "Chrome Dino–style runner — jump, duck, and survive the night cycle."',
+    tags: ['design', 'other'],
+    sha: null,
+    commitVerified: false,
+    link: null,
+    model: 'Gemini 3.8 Flash',
+    ide: 'Google Antigravity IDE',
+    purpose: 'Shorten Debug Runner section subtitle for concise, clean Apple typography.',
+    attributionSource: 'commit-message',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
     id: 'debug-runner-streamlined-ui-and-pacing-20261029',
     date: '2026-10-29',
     type: 'improvement',
@@ -62,9 +80,9 @@ export const changelogEntries = [
     summary:
       'Eliminated visual clutter and congestion around the Debug Runner mini-game (#debug-runner-section): removed the extra ribbon badges above the stage and restored the spacious, classic Apple start screen inside the canvas without overwhelming matrix cards. Consolidated live session metrics (High Score, Speed, Combo Multiplier, and Active Boost) into an elegant 2x2 Apple Glass matrix aligned symmetrically with the Leaderboard podium and canvas height. Re-engineered game progression and difficulty pacing: dialed initial baseSpeed to a responsive 6.2, reduced continuous acceleration rate from 0.0012 to 0.0003, smoothed level advancement to every 2200 points with a gentle +0.35 speed increase capped at 12.0, expanded dynamic obstacle spacing to ensure >=0.9s human reaction windows, and staged hazard unlocks progressively (Level 1: Bugs & Fire; Level 2+: Memory Leak blobs; Level 3+: 404 Cyber Portals; Level 4+: Flying Pointers) for extended, engaging multi-minute playthroughs.',
     tags: ['design', 'performance', 'other'],
-    sha: null,
-    commitVerified: false,
-    link: null,
+    sha: '741d093e',
+    commitVerified: true,
+    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/741d093e',
     model: 'Gemini 3.8 Flash',
     ide: 'Google Antigravity IDE',
     purpose:
