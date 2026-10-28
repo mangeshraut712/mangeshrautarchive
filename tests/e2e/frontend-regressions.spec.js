@@ -45,7 +45,7 @@ test('voice preferences ignore stale IDs and tolerate a denied storage getter', 
   expect(result).toEqual({ stale: 'eve', selected: 'rex' });
 });
 
-test('music controls keep 44px targets and stop decorative motion', async ({ page }) => {
+test('hero and music controls keep 44px targets and stop decorative motion', async ({ page }) => {
   await page.emulateMedia({ colorScheme: 'light', reducedMotion: 'reduce' });
   await gotoSiteReady(page, '/');
 
@@ -53,13 +53,17 @@ test('music controls keep 44px targets and stop decorative motion', async ({ pag
     await page.setViewportSize({ width, height: 900 });
     const layout = await page.evaluate(() => ({
       overflow: document.documentElement.scrollWidth > innerWidth,
-      controls: [...document.querySelectorAll('.music-card-service-link')].map(element => {
+      controls: [
+        ...document.querySelectorAll(
+          '#name-pronounce-btn, #vibe-coder-badge, #portfolio-reach, .music-card-service-link'
+        ),
+      ].map(element => {
         const rect = element.getBoundingClientRect();
         return { width: rect.width, height: rect.height };
       }),
     }));
     expect(layout.overflow).toBe(false);
-    expect(layout.controls).toHaveLength(3);
+    expect(layout.controls).toHaveLength(6);
     expect(
       layout.controls.every(({ width: controlWidth, height }) => controlWidth >= 44 && height >= 44)
     ).toBe(true);

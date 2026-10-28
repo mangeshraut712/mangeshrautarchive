@@ -54,6 +54,47 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'sitewide-data-and-catalogue-synchronization-20261028',
+    date: '2026-10-28',
+    type: 'improvement',
+    title:
+      'Sitewide audit: Synchronize test counts, llms-full catalogue, and system prompt knowledge',
+    summary:
+      'Completed an exhaustive multi-page audit across all portfolio pages (Home, About, Systems, Monitor, Uses, Travel, Changelog, Contact). Resolved public data drift: updated TEST_COUNTS in portfolio-public-data.js and api/portfolio_public_data.py to 211 Pytest and 18 critical journeys (preventing uses.html and engineering showcase from reverting to 202+15), updated AssistMe system prompt knowledge in api/config.py to reflect all 18 Field Notes articles and 211 tests, updated llms-full.txt to enumerate all 18 published technical articles, and aligned README regression coverage.',
+    tags: ['api', 'assistme', 'monitor', 'systems', 'blog'],
+    sha: '00ef1120',
+    commitVerified: true,
+    link: null,
+    model: 'Gemini 3.8 Flash',
+    ide: 'Google Antigravity IDE',
+    purpose:
+      'Conduct comprehensive sitewide audit across all pages and sections, align canonical test counts in public data modules, update llms.txt/llms-full.txt discovery catalogues, and ensure 100% data consistency.',
+    attributionSource: 'commit-message',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
+    id: 'hero-touch-target-accessibility-20261027',
+    date: '2026-10-27',
+    type: 'fix',
+    title: 'Restore 44px homepage hero touch targets across responsive breakpoints',
+    summary:
+      'Corrected late CSS overrides that had reduced the name-pronunciation control and hero status pills below the project’s 44px interactive-target standard. The homepage now retains compliant controls at 375px, 768px, and 1440px without horizontal overflow, while the existing reduced-motion behavior remains covered by the critical-browser regression.',
+    tags: ['design', 'performance'],
+    sha: null,
+    commitVerified: false,
+    verificationNote:
+      'Local working-tree change; no commit, push, or remote verification was performed.',
+    model: 'GPT-5.6 Terra',
+    ide: 'Codex desktop',
+    purpose:
+      'Audit and correct responsive homepage touch targets, preserve reduced-motion behavior, and extend the browser regression contract.',
+    attributionSource: 'not-recorded',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+    status: 'unreleased',
+  },
+  {
     id: 'api-contracts-and-responsive-player-20261026',
     date: '2026-10-26',
     type: 'fix',

@@ -1,5 +1,5 @@
 # Mangesh Raut — Expanded site map for AI agents (llms-full.txt)
-# Companion to https://mangeshraut.pro/llms.txt · Updated 2026-07-15
+# Companion to https://mangeshraut.pro/llms.txt · Updated 2026-10-28
 
 ## Homepage sections (SPA anchors on /)
 
@@ -28,8 +28,14 @@
 
 Canonical index: https://mangeshraut.pro/blog
 
-Articles (slugs under /blog/):
+Articles (all 18 published slugs under /blog/):
 
+- apple-september-event-2026
+- openai-devday-2026
+- cursor-origin-agent-native-code-hosting
+- razorpay-vulcan-payments-foundation-model
+- openrouter-ai-usb-hub-routing-2026
+- grok-4-5-grok-build-open-source-2026
 - wwdc-2026-apple-intelligence-siri-ai
 - notebooklm-2026-ai-research-agent
 - google-io-2026-developer-insights

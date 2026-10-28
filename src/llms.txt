@@ -1,7 +1,7 @@
 # Mangesh Raut — Portfolio & Archive
 
 > Official site for AI agents, answer engines, and tools that need accurate context about Mangesh Raut and this portfolio.
-> Last updated: 2026-07-18
+> Last updated: 2026-10-28
 
 ## Identity
 
