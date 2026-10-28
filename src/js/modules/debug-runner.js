@@ -14,7 +14,7 @@ class DebugRunner {
     this.paused = false;
     this.score = 0;
     this.highScore = parseInt(localStorage.getItem('debugRunnerHighScore'), 10) || 0;
-    this.baseSpeed = 8;
+    this.baseSpeed = 6.2;
     this.speed = this.baseSpeed;
     this.level = 1;
     this.gameLoop = null;
@@ -668,7 +668,7 @@ class DebugRunner {
       this.lastUiHighScore = highScoreValue;
     }
 
-    const speedMultiplier = Math.max(1, this.speed / 8);
+    const speedMultiplier = Math.max(1, this.speed / this.baseSpeed);
     const speedLabel = `${speedMultiplier.toFixed(1)}x`;
     if (this.speedDisplay && this.lastUiSpeed !== speedLabel) {
       this.speedDisplay.textContent = speedLabel;
@@ -1040,11 +1040,11 @@ class DebugRunner {
       this.createParticles(this.dev.x + 10, this.groundY, 2, '#FFD60A');
     }
 
-    // Speed progression (Dino gradual acceleration)
-    this.speed += 0.0012 * frameScale;
+    // Speed progression (gentle, steady arcade acceleration)
+    this.speed += 0.0003 * frameScale;
 
     // Distance tracking
-    this.score += this.speed * 0.35 * frameScale;
+    this.score += this.speed * 0.22 * frameScale;
     if (this.score > this.highScore) {
       this.highScore = this.score;
     }
@@ -1074,14 +1074,14 @@ class DebugRunner {
     const nightCycle = Math.floor(displayScore / 700);
     this.nightMode = nightCycle % 2 === 1;
 
-    // Level up logic
-    const newLevel = Math.floor(this.score / 1200) + 1;
+    // Level up logic (natural progression every 2200 points, capped at 12.0)
+    const newLevel = Math.floor(this.score / 2200) + 1;
     if (newLevel > this.level) {
       this.level = newLevel;
-      this.speed += 1.2;
-      this.screenShake = this.reducedMotion ? 0 : 22;
+      this.speed = Math.min(12.0, this.speed + 0.35);
+      this.screenShake = this.reducedMotion ? 0 : 16;
       this.playSound('levelup');
-      this.createParticles(this.canvas.width / 2, this.canvas.height / 2, 45, this.colors.accent);
+      this.createParticles(this.canvas.width / 2, this.canvas.height / 2, 35, this.colors.accent);
       this.showLevelMessageUntil = Date.now() + 2000;
     }
 
@@ -1137,66 +1137,60 @@ class DebugRunner {
   }
 
   updateObstacles(frameScale = 1) {
-    const spawnRate = 0.012 + this.level * 0.002;
-    if (Math.random() < Math.min(0.03, spawnRate * frameScale)) {
+    const spawnRate = 0.01 + Math.min(0.008, this.level * 0.001);
+    if (Math.random() < Math.min(0.025, spawnRate * frameScale)) {
       const displayScore = Math.floor(this.score / 10);
       const type = Math.random();
       const obstacle = { x: 1250, speed: this.speed };
 
-      const flyersUnlocked = displayScore >= 180;
-      const memoryLeakUnlocked = true;
-      const error404Unlocked = true;
+      const flyersUnlocked = displayScore >= 200;
+      const memoryLeakUnlocked = displayScore >= 60;
+      const error404Unlocked = displayScore >= 130;
 
-      if (flyersUnlocked && type > 0.78) {
-        const band = Math.floor(Math.random() * 3);
+      if (flyersUnlocked && type > 0.8) {
+        const band = Math.floor(Math.random() * 2);
         obstacle.type = 'pointer';
         obstacle.band = band;
         obstacle.width = 44;
         obstacle.height = 26;
         obstacle.color = '#BF5AF2';
-        if (band === 0) {
-          obstacle.y = this.groundY - 102;
-        } else if (band === 1) {
-          obstacle.y = this.groundY - 72;
-        } else {
-          obstacle.y = this.groundY - 42;
-        }
-      } else if (error404Unlocked && type > 0.62) {
+        obstacle.y = band === 0 ? this.groundY - 76 : this.groundY - 44;
+      } else if (error404Unlocked && type > 0.65) {
         // 404 Cyber Portal Obstacle
         obstacle.type = 'error404';
-        obstacle.y = this.groundY - 50;
-        obstacle.width = 38;
-        obstacle.height = 50;
+        obstacle.y = this.groundY - 48;
+        obstacle.width = 36;
+        obstacle.height = 48;
         obstacle.color = this.colors.error404;
-      } else if (memoryLeakUnlocked && type > 0.44) {
+      } else if (memoryLeakUnlocked && type > 0.48) {
         // Pulsing Memory Leak Slime Obstacle
         obstacle.type = 'memoryLeak';
-        obstacle.y = this.groundY - 36;
-        obstacle.width = 42;
-        obstacle.height = 36;
+        obstacle.y = this.groundY - 34;
+        obstacle.width = 40;
+        obstacle.height = 34;
         obstacle.color = this.colors.memoryLeak;
         obstacle.seed = Math.random() * 100;
-      } else if (type < 0.16) {
+      } else if (type < 0.22) {
         obstacle.type = 'bug';
         obstacle.y = this.groundY - 32;
         obstacle.width = 32;
         obstacle.height = 32;
         obstacle.color = this.colors.bug;
-      } else if (type < 0.3) {
+      } else if (type < 0.45) {
         obstacle.type = 'conflict';
-        obstacle.y = this.groundY - 48;
-        obstacle.width = 36;
-        obstacle.height = 48;
+        obstacle.y = this.groundY - 46;
+        obstacle.width = 34;
+        obstacle.height = 46;
         obstacle.color = this.colors.conflict;
       } else {
         obstacle.type = 'fire';
-        obstacle.y = this.groundY - 38;
-        obstacle.width = 38;
-        obstacle.height = 38;
+        obstacle.y = this.groundY - 36;
+        obstacle.width = 36;
+        obstacle.height = 36;
         obstacle.color = this.colors.fire;
       }
 
-      const minGap = 260 + this.speed * 10;
+      const minGap = Math.max(340, 270 + this.speed * 12);
       const lastObs = this.obstacles[this.obstacles.length - 1];
       if (!lastObs || 1200 - lastObs.x > minGap) {
         this.obstacles.push(obstacle);
@@ -2030,110 +2024,35 @@ class DebugRunner {
   drawStartScreen() {
     const palette = this.getActivePalette();
     this.ctx.fillStyle =
-      palette.bg === '#050508' ? 'rgba(5, 5, 8, 0.82)' : 'rgba(245, 245, 247, 0.82)';
+      palette.bg === '#050508' ? 'rgba(5, 5, 8, 0.78)' : 'rgba(245, 245, 247, 0.78)';
     this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
     this.ctx.save();
-
-    // 1. Cyber Quantum Edition Pill
-    const pillText = '✨ OCTOBER 2026 EDITION · QUANTUM ENGINE';
-    this.ctx.font = 'bold 11px monospace';
-    const pillWidth = 320;
-    const pillX = this.canvas.width / 2 - pillWidth / 2;
-    const pillY = 38;
-    this.ctx.fillStyle = 'rgba(0, 113, 227, 0.15)';
-    this.ctx.strokeStyle = palette.accent;
-    this.ctx.lineWidth = 1.5;
-    this.drawRoundRect(this.ctx, pillX, pillY, pillWidth, 24, 12);
-    this.ctx.fill();
-    this.ctx.stroke();
-
-    this.ctx.fillStyle = palette.accent;
-    this.ctx.textAlign = 'center';
-    this.ctx.fillText(pillText, this.canvas.width / 2, pillY + 16);
-
-    // 2. Main Title with Glow
     this.ctx.fillStyle = palette.text;
-    this.ctx.font = 'bold 54px monospace';
-    this.ctx.shadowColor = palette.accent;
-    this.ctx.shadowBlur = 18;
-    this.ctx.fillText('DEBUG RUNNER', this.canvas.width / 2, 114);
-    this.ctx.shadowBlur = 0;
-
-    // 3. 2026 Features Carousel / Showcase Badges across center
-    const badges = [
-      { text: '☕ Coffee (+600)', color: this.colors.coffee },
-      { text: '⚡ Quantum Stash (Phase)', color: this.colors.gitStash },
-      { text: '🛡️ Test Suite (Shield)', color: this.colors.stackOverflow },
-      { text: '🔥 5x Combo Multiplier', color: '#FFD60A' },
-      { text: '☣️ Memory Leak Blob', color: this.colors.memoryLeak },
-      { text: '🚪 404 Cyber Portal', color: this.colors.error404 },
-    ];
-
-    const badgeY = 145;
-    const badgeW = 168;
-    const badgeH = 28;
-    const badgeGap = 12;
-    const totalRowW = 3 * badgeW + 2 * badgeGap;
-    const startX = this.canvas.width / 2 - totalRowW / 2;
-
-    for (let i = 0; i < 6; i++) {
-      const col = i % 3;
-      const row = Math.floor(i / 3);
-      const bx = startX + col * (badgeW + badgeGap);
-      const by = badgeY + row * (badgeH + 8);
-      const b = badges[i];
-
-      this.ctx.fillStyle = 'rgba(255, 255, 255, 0.04)';
-      this.ctx.strokeStyle = b.color;
-      this.ctx.lineWidth = 1.2;
-      this.drawRoundRect(this.ctx, bx, by, badgeW, badgeH, 6);
-      this.ctx.fill();
-      this.ctx.stroke();
-
-      this.ctx.fillStyle = b.color;
-      this.ctx.font = 'bold 10px monospace';
-      this.ctx.textAlign = 'center';
-      this.ctx.fillText(b.text, bx + badgeW / 2, by + 18);
-    }
-
-    // 4. Start Button CTA
-    const btnW = 380;
-    const btnH = 46;
-    const btnX = this.canvas.width / 2 - btnW / 2;
-    const btnY = 232;
-
-    const btnGrad = this.ctx.createLinearGradient(btnX, 0, btnX + btnW, 0);
-    btnGrad.addColorStop(0, '#0077ed');
-    btnGrad.addColorStop(0.5, '#0071e3');
-    btnGrad.addColorStop(1, '#005bb5');
-    this.ctx.fillStyle = btnGrad;
-    this.ctx.shadowColor = 'rgba(0, 113, 227, 0.5)';
-    this.ctx.shadowBlur = 14;
-    this.drawRoundRect(this.ctx, btnX, btnY, btnW, btnH, 14);
-    this.ctx.fill();
-    this.ctx.shadowBlur = 0;
-
-    this.ctx.fillStyle = '#ffffff';
-    this.ctx.font = 'bold 15px monospace';
+    this.ctx.font = 'bold 62px monospace';
     this.ctx.textAlign = 'center';
-    const startPrompt = this.isMobile
-      ? '▶ TAP TO SPRINT'
-      : this.hasGamepad
-        ? '▶ PRESS A (CONTROLLER) TO PLAY'
-        : '▶ PRESS SPACE OR CLICK TO SPRINT';
-    this.ctx.fillText(startPrompt, this.canvas.width / 2, btnY + 28);
+    this.ctx.shadowColor = palette.accent;
+    this.ctx.shadowBlur = 14;
+    this.ctx.fillText('DEBUG RUNNER', this.canvas.width / 2, this.canvas.height / 2 - 35);
+    this.ctx.shadowBlur = 0;
 
-    // 5. Controls Info
-    this.ctx.font = '12px monospace';
+    this.ctx.font = 'bold 20px monospace';
+    this.ctx.fillStyle = palette.accent;
+    const startText = this.isMobile
+      ? 'Tap to start'
+      : this.hasGamepad
+        ? 'Press A (Controller) or SPACE to start'
+        : 'Click canvas, then SPACE to start';
+    this.ctx.fillText(startText, this.canvas.width / 2, this.canvas.height / 2 + 20);
+
+    this.ctx.font = '13px monospace';
     this.ctx.fillStyle = palette.textSecondary;
-    const controlsText = this.isMobile
-      ? '📱 Touch Jump / Duck buttons or swipe canvas'
+    const controlsInfo = this.isMobile
+      ? 'Jump / Duck buttons · swipe up/down on canvas'
       : this.hasGamepad
-        ? '🎮 Controller: A Jump · B Duck/Fast-Fall · Start Pause'
-        : '⌨️ Controls: SPACE/↑ Jump · ↓ Duck/Fast-Fall · P Pause · 🔊 Click Speaker for Audio';
-    this.ctx.fillText(controlsText, this.canvas.width / 2, 312);
-
+        ? 'Controller: A Jump · B Duck/Fast-Fall · Start Pause · night mode at 700'
+        : 'SPACE/↑ jump · ↓ duck / fast-fall · P pause · night mode at 700';
+    this.ctx.fillText(controlsInfo, this.canvas.width / 2, this.canvas.height / 2 + 56);
     this.ctx.restore();
   }
 

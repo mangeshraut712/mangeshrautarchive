@@ -283,7 +283,7 @@ purpose, and verified commit in the [changelog](src/js/data/changelog-entries.js
 | Current contribution                             | Attribution                                                                                                                                                                              |
 | ------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Coding agent                                     | Gemini 3.8 Flash, in Google Antigravity IDE                                                                                                                                              |
-| Purpose                                          | Overhaul Debug Runner visual identity, start screen, capabilities ribbon, live combo/boost HUD, and Level 1 hazard spawning for October 2026 edition                                     |
+| Purpose                                          | Refine Debug Runner with clean Apple UI alignment, arcade speed pacing, and balanced hazard progression                                                                                  |
 | Exact model variant, reasoning mode, token usage | unavailable                                                                                                                                                                              |
 | Portfolio chatbot model                          | Configured separately in [api/model_router.py](api/model_router.py) and [Worker configuration](workers/assistme-chat/wrangler.toml); each live response reports the actual serving model |
 

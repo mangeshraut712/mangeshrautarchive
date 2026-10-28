@@ -54,6 +54,26 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'debug-runner-streamlined-ui-and-pacing-20261029',
+    date: '2026-10-29',
+    type: 'improvement',
+    title:
+      'Refine Debug Runner with clean Apple UI alignment, arcade speed pacing & balanced hazard progression',
+    summary:
+      'Eliminated visual clutter and congestion around the Debug Runner mini-game (#debug-runner-section): removed the extra ribbon badges above the stage and restored the spacious, classic Apple start screen inside the canvas without overwhelming matrix cards. Consolidated live session metrics (High Score, Speed, Combo Multiplier, and Active Boost) into an elegant 2x2 Apple Glass matrix aligned symmetrically with the Leaderboard podium and canvas height. Re-engineered game progression and difficulty pacing: dialed initial baseSpeed to a responsive 6.2, reduced continuous acceleration rate from 0.0012 to 0.0003, smoothed level advancement to every 2200 points with a gentle +0.35 speed increase capped at 12.0, expanded dynamic obstacle spacing to ensure >=0.9s human reaction windows, and staged hazard unlocks progressively (Level 1: Bugs & Fire; Level 2+: Memory Leak blobs; Level 3+: 404 Cyber Portals; Level 4+: Flying Pointers) for extended, engaging multi-minute playthroughs.',
+    tags: ['design', 'performance', 'other'],
+    sha: null,
+    commitVerified: false,
+    link: null,
+    model: 'Gemini 3.8 Flash',
+    ide: 'Google Antigravity IDE',
+    purpose:
+      'Decongest Debug Runner UI, align 4 live stats + Leaderboard into a balanced Apple Glass layout, and tune game speed and hazard pacing for extended, enjoyable play.',
+    attributionSource: 'commit-message',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
     id: 'debug-runner-visual-and-ui-overhaul-20261028',
     date: '2026-10-28',
     type: 'improvement',
@@ -62,9 +82,9 @@ export const changelogEntries = [
     summary:
       'Directly overhauled the visual identity and discoverability of the Debug Runner mini-game (#debug-runner-section) to make the October 2026 upgrade tangible and visible from the moment of load: redesigned the start screen canvas with an October 2026 Edition pill badge, specular neon title glow, a 6-card capability showcase matrix (Coffee, Quantum Stash, Test Suite Shield, 5x Combo, Memory Leak Blob, 404 Cyber Portal), and an Apple Blue gradient CTA button; added a glassmorphic .game-feature-ribbon above the stage; expanded the side stats panel with live combo multiplier (#game-combo-display) and active boost tracker (#game-boost-display); brought Memory Leak and 404 Cyber Portal hazards into Level 1 early rotation for immediate visual variety; and introduced glowing golden forcefields and quantum phase cloaks during active power-ups.',
     tags: ['design', 'performance', 'other'],
-    sha: null,
-    commitVerified: false,
-    link: null,
+    sha: 'b0acaea4',
+    commitVerified: true,
+    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/b0acaea4',
     model: 'Gemini 3.8 Flash',
     ide: 'Google Antigravity IDE',
     purpose:
