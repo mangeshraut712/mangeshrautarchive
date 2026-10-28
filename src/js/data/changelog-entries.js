@@ -54,6 +54,25 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'portfolio-reach-precision-and-dual-telemetry-20261028',
+    date: '2026-10-28',
+    type: 'fix',
+    title: 'Portfolio reach precision: 1-decimal formatting & dual-telemetry crosscheck',
+    summary:
+      'Resolved the issue where the Portfolio Reach widget appeared visually stuck at 11K despite continuous daily traffic growth recorded in Google Analytics 4 (property 537627192). Corrected formatNumber() in analytics.js to retain 1 decimal place below 100K (11.2K instead of 11K) so increments are visible every ~100 visitors rather than every 1,000. Added exact number display with comma formatting on badge title tooltips and flyout metric cards (11,197 active users, 14,101 views). Added an Apple-styled Dual-Telemetry Crosscheck indicator inside the Reach flyout with direct verification link to the Google Analytics live intelligence dashboard.',
+    tags: ['performance', 'design', 'monitor', 'other'],
+    sha: null,
+    commitVerified: false,
+    link: null,
+    model: 'Gemini 3.8 Flash',
+    ide: 'Google Antigravity IDE',
+    purpose:
+      'Diagnose and resolve Portfolio Reach 11K visual freeze, add 1-decimal precision formatting, add exact unrounded telemetry tooltips, and add dual-telemetry crosscheck verification with direct GA4 console linking.',
+    attributionSource: 'commit-message',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
     id: 'sitewide-data-and-catalogue-synchronization-20261028',
     date: '2026-10-28',
     type: 'improvement',

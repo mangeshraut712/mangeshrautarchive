@@ -226,8 +226,15 @@
       return `${(num / 1_000_000_000).toFixed(num >= 10_000_000_000 ? 0 : 1).replace(/\.0$/, '')}B`;
     if (num >= 1_000_000)
       return `${(num / 1_000_000).toFixed(num >= 10_000_000 ? 0 : 1).replace(/\.0$/, '')}M`;
-    if (num >= 1_000) return `${(num / 1_000).toFixed(num >= 10_000 ? 0 : 1).replace(/\.0$/, '')}K`;
+    if (num >= 1_000)
+      return `${(num / 1_000).toFixed(num >= 100_000 ? 0 : 1).replace(/\.0$/, '')}K`;
     return `${Math.round(num)}`;
+  }
+
+  function formatExact(value) {
+    const num = Number(value || 0);
+    if (!Number.isFinite(num)) return '--';
+    return num.toLocaleString('en-US');
   }
 
   function escapeHtml(value) {
@@ -478,14 +485,40 @@
         ? insights.active_users_all_time || insights.unique_visitors || 0
         : insights.unique_visitors || 0;
       reachPanelEls.visitors.textContent = formatNumber(activeUsersVal);
+      reachPanelEls.visitors.setAttribute(
+        'title',
+        `${formatExact(activeUsersVal)} verified active users`
+      );
+      const caption = document.getElementById('reach-panel-visitors-caption');
+      if (caption) caption.textContent = `${formatExact(activeUsersVal)} users`;
     }
     if (reachPanelEls.eventCount) {
       const eventCountVal = insights.event_count_all_time || 0;
       reachPanelEls.eventCount.textContent = formatNumber(eventCountVal);
+      reachPanelEls.eventCount.setAttribute(
+        'title',
+        `${formatExact(eventCountVal)} interaction events`
+      );
+      const caption = document.getElementById('reach-panel-events-caption');
+      if (caption) caption.textContent = `${formatExact(eventCountVal)} events`;
     }
     if (reachPanelEls.total) {
       const viewsVal = insights.total_views_all_time || payload?.total_reach || 0;
       reachPanelEls.total.textContent = formatNumber(viewsVal);
+      reachPanelEls.total.setAttribute('title', `${formatExact(viewsVal)} total page views`);
+      if (reachPanelEls.totalCaption) {
+        reachPanelEls.totalCaption.textContent = `${formatExact(viewsVal)} views`;
+      }
+    }
+
+    // Dual-Telemetry Crosscheck Summary Update
+    const crosscheckEl = document.getElementById('reach-crosscheck-summary');
+    if (crosscheckEl) {
+      const activeUsersVal = gaEnabled
+        ? insights.active_users_all_time || insights.unique_visitors || 0
+        : insights.unique_visitors || 0;
+      const viewsVal = insights.total_views_all_time || payload?.total_reach || 0;
+      crosscheckEl.textContent = `GA4: ${formatExact(activeUsersVal)} active · Edge: ${formatExact(viewsVal)} views`;
     }
 
     // Active Tab Styling
@@ -588,21 +621,21 @@
     const totalReach = safePayload.total_reach ?? 0;
     // Edge placeholder has no GA4 — still show a number (0) rather than "Unavailable"
     const formattedValue = formatNumber(totalReach);
+    const exactValue = formatExact(totalReach);
+    const viewsValue = formatExact(safePayload.insights?.total_views_all_time || totalReach);
     const isEdgePlaceholder = safePayload.source === 'edge-placeholder';
 
+    const titleText = isEdgePlaceholder
+      ? `Portfolio Reach (edge mode): ${exactValue} visitors`
+      : `Portfolio Reach: ${exactValue} verified active users · ${viewsValue} total views (GA4 Property 537627192)`;
+
     reachCountEls.forEach(element => {
-      animateReachValue(
-        element,
-        formattedValue,
-        isEdgePlaceholder
-          ? `Portfolio Reach (edge mode): ${formattedValue}`
-          : `Portfolio Reach: ${formattedValue}`
-      );
+      animateReachValue(element, formattedValue, titleText);
     });
     if (reachBadge) {
       reachBadge.title = isEdgePlaceholder
         ? 'Portfolio Reach on Cloudflare edge (GA4 offline with Vercel)'
-        : reachBadge.title || 'Portfolio Reach insights';
+        : titleText;
       reachBadge.classList.remove('is-unavailable');
     }
     updateReachPanel(safePayload);
