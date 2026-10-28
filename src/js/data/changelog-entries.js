@@ -54,6 +54,26 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'kalnirnay-panchang-and-multi-calendar-sync-20261028',
+    date: '2026-10-28',
+    type: 'improvement',
+    title: 'Official Kalnirnay Panchang sync for Oct 28 & multi-calendar ecosystem restoration',
+    summary:
+      'Ingested official verified Kalnirnay Panchang data for October 28, 2026 from kalnirnay.com (Ashwin Krishna Paksha Tritiya, Nakshatra Kruttika, Yog Vyatipat / Variyan, Karan Vanij, Sunrise 6:39 AM, Sunset 6:05 PM), resolving the fallback prompt on the Contact page. Synchronized the multi-calendar ecosystem across Google Calendar, Apple iCloud, Microsoft Outlook/Work, and Luma community events (mbr63@drexel.edu). Restored the dedicated Luma filter tab (.filter-tab[data-filter="luma"]) with ticket attendance states (Going, Waitlisted, Submitted, Attended), host lines, and direct lu.ma RSVP links. Reconnected portfolio sprint tasks & reminders in the calendar widget.',
+    tags: ['design', 'api', 'other'],
+    sha: null,
+    commitVerified: false,
+    status: 'unreleased',
+    link: null,
+    model: 'Gemini 3.8 Flash',
+    ide: 'Google Antigravity IDE',
+    purpose:
+      'Sync official Kalnirnay Panchang for October 28, 2026, synchronize multi-calendar ecosystem (Google, Apple, Outlook, Luma), restore interactive Luma filter tab with 4-state RSVP tracking, and reconnect developer sprint reminders.',
+    attributionSource: 'commit-message',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
     id: 'portfolio-reach-precision-and-dual-telemetry-20261028',
     date: '2026-10-28',
     type: 'fix',

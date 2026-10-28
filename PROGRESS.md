@@ -45,7 +45,8 @@
 ### Live Platform Crosschecks & Ground Truth Telemetry Sync
 
 - **WhoBurnedMore Telemetry Sync**: Sourced real-time profile metrics from `whoburnedmore.com/u/mrcommando712` and all-time leaderboard API. Updated lifetime burn to **21.14B tokens** ($19,062 spend, 245 active days, 57d streak), all-time rank to **#64 of 347 devs** (Top 18%), cache hit rate to **94.66%** ($42,336 saved, 19.68B read tokens), and tool distributions: OpenAI Codex (**10.66B tokens**, 50.4%) and Cursor (**9.75B tokens**, 46.1%).
-- **Kalnirnay Hindu Panchang**: Synced official astronomical data from `kalnirnay.com` for October 24, 2026 into `src/assets/data/kalnirnay-panchang.json`: Ashwin Shukla Paksha Trayodashi, Nakshatra U.Bhadrapada, Yog Vyaghat, Karan Garaj, Sunrise 6:38 AM / Sunset 6:08 PM.
+- **Kalnirnay Hindu Panchang**: Synced official astronomical data from `kalnirnay.com` for October 28, 2026 into `src/assets/data/kalnirnay-panchang.json`: Ashwin Krishna Paksha Tritiya, Nakshatra Kruttika, Yog Vyatipat / Variyan, Karan Vanij, Sunrise 6:39 AM / Sunset 6:05 PM.
+- **Multi-Calendar & Luma Synchronization**: Reconnected Apple, Google, and Outlook calendar events alongside verified Luma community RSVP tickets (`mbr63@drexel.edu`) across all 4 lifecycle states (Going, Waitlisted, Submitted, Attended) with interactive `.filter-tab[data-filter="luma"]` and developer sprint tasks.
 - **WebMCP Tools Alignment**: Reconciled WebMCP tools count portfolio-wide to **20 tools** across `systems.html`, `uses.html`, and `index.html`.
 - **Automated Sync Tooling**: Created `scripts/integrations/sync-whoburnedmore.mjs` and added `npm run sync:whoburnedmore` and `npm run sync:kalnirnay` scripts to `package.json`.
 

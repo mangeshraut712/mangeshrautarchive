@@ -2,6 +2,8 @@ import { LUMA_CALENDARS_URL } from '../utils/luma.js';
 import { escapeHtml } from '../utils/escape-html.js';
 import { initContactTime } from './contact-time.js';
 import { appleCalendarSnapshot } from '../data/apple-calendar-snapshot.js';
+import { lumaEventsList } from '../data/luma-events-data.js';
+import { portfolioRemindersList } from '../data/portfolio-reminders-data.js';
 
 function ensureContactSolidStyles() {
   const id = 'contact-solid-css';
@@ -291,8 +293,46 @@ export class CalendarWidget {
     this.searchQuery = '';
     this.aiBriefData = null;
 
-    // Public 2026 snapshot from the visible Apple Calendar sources. Browser-created tasks stay local.
-    this.reminders = appleCalendarSnapshot.events.map(event => ({ ...event }));
+    // Public 2026 snapshot from visible Apple, Google, and Outlook calendars.
+    const importedEvents = (appleCalendarSnapshot.events || []).map(event => ({
+      ...event,
+      isSynced: true,
+    }));
+
+    // Verified real-world Luma event tickets and community schedule (mbr63@drexel.edu)
+    const lumaEvents = lumaEventsList.map(event => ({ ...event, isSynced: true }));
+
+    // Core developer reminders and active portfolio tasks
+    const devReminders = portfolioRemindersList.map(item => ({ ...item }));
+
+    // Combine all calendar sources with deduplication by id and date/text
+    this.reminders = [...importedEvents];
+    for (const item of lumaEvents) {
+      if (
+        !this.reminders.some(
+          r =>
+            r.id === item.id ||
+            (r.text &&
+              item.text &&
+              r.text.toLowerCase() === item.text.toLowerCase() &&
+              r.dateKey === item.dateKey)
+        )
+      ) {
+        this.reminders.push(item);
+      }
+    }
+    for (const item of devReminders) {
+      if (!this.reminders.some(r => r.id === item.id)) {
+        this.reminders.push(item);
+      }
+    }
+
+    // Sort chronologically
+    this.reminders.sort(
+      (a, b) =>
+        (a.dateKey || '').localeCompare(b.dateKey || '') ||
+        (a.time || '').localeCompare(b.time || '')
+    );
 
     // Load local storage persisted reminders & completion states
     this.loadPersistedReminders();
@@ -726,6 +766,9 @@ export class CalendarWidget {
     const totalEventsCount = this.reminders.filter(
       r => r.category === 'events' && !r.isChangelog
     ).length;
+    const totalLumaCount = this.reminders.filter(
+      r => (r.isLuma || r.lumaUrl) && !r.isChangelog
+    ).length;
     const totalRemindersCount = this.reminders.filter(
       r => r.category === 'reminders' && !r.isChangelog
     ).length;
@@ -811,6 +854,9 @@ export class CalendarWidget {
             </button>
             <button type="button" class="filter-tab ${this.activeFilter === 'events' ? 'active' : ''}" data-filter="events" aria-pressed="${this.activeFilter === 'events'}">
               <i class="fas fa-calendar-check" aria-hidden="true"></i> Events (${totalEventsCount})
+            </button>
+            <button type="button" class="filter-tab ${this.activeFilter === 'luma' ? 'active' : ''}" data-filter="luma" aria-pressed="${this.activeFilter === 'luma'}">
+              <i class="fas fa-ticket" aria-hidden="true"></i> Luma (${totalLumaCount})
             </button>
             <button type="button" class="filter-tab ${this.activeFilter === 'birthdays' ? 'active' : ''}" data-filter="birthdays" aria-pressed="${this.activeFilter === 'birthdays'}">
               <i class="fas fa-cake-candles" aria-hidden="true"></i> Birthdays (${totalBirthdaysCount})

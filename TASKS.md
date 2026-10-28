@@ -65,7 +65,7 @@
   - Unified client IP extraction across requests and unhandled exceptions.
   - Robustly parsed concatenated NDJSON stream chunks and SSE tokens; added accessible aria-labels to chat attachment buttons.
   - Expanded test suites: pytest to 192 tests (`npm run test:api`), Cloudflare Worker edge routes to 20 tests (`npm run test:worker`).
-  - Synchronized live WhoBurnedMore telemetry (21.14B tokens, $19,062 spend, 245 active days, 57d streak, rank #64) and Kalnirnay Panchang for October 24, 2026.
+  - Synchronized live WhoBurnedMore telemetry (21.14B tokens, $19,062 spend, 245 active days, 57d streak, rank #64), official Kalnirnay Panchang for October 28, 2026 (Ashwin Krishna Paksha Tritiya, Nakshatra Kruttika, Yog Vyatipat / Variyan, Karan Vanij), and multi-calendar ecosystem (Google, Apple, Outlook, Luma).
 
 ---
 
