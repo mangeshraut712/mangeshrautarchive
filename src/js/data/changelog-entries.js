@@ -62,7 +62,7 @@ export const changelogEntries = [
     summary:
       'Completed an exhaustive multi-page audit across all portfolio pages (Home, About, Systems, Monitor, Uses, Travel, Changelog, Contact). Resolved public data drift: updated TEST_COUNTS in portfolio-public-data.js and api/portfolio_public_data.py to 211 Pytest and 18 critical journeys (preventing uses.html and engineering showcase from reverting to 202+15), updated AssistMe system prompt knowledge in api/config.py to reflect all 18 Field Notes articles and 211 tests, updated llms-full.txt to enumerate all 18 published technical articles, and aligned README regression coverage.',
     tags: ['api', 'assistme', 'monitor', 'systems', 'blog'],
-    sha: '00ef1120',
+    sha: 'd4272dc9',
     commitVerified: true,
     link: null,
     model: 'Gemini 3.8 Flash',
