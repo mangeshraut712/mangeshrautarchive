@@ -57,9 +57,10 @@ export const changelogEntries = [
     id: 'luma-codex-metro-and-past-events-sync-20261028',
     date: '2026-10-28',
     type: 'fix',
-    title: 'Synchronize Codex Metro Hackathon for Oct 24 & audit past Luma event lifecycle',
+    title:
+      'Synchronize live Luma account events (30 total): Codex Metro, October past meetups & upcoming schedules',
     summary:
-      'Replaced the unconfirmed Drupal Pune placeholder on Saturday, October 24, 2026 with the verified DevDay Exchange Community Metro Hackathon: Pune (Codex Dayline) hosted inside a moving Pune Metro train by OpenAI Codex Ambassador Aman Mogal (https://luma.com/cnmh7l8u). Updated the past event lifecycle across luma-events-data.js so September and October community gatherings (Dev Days, Mumbai Claude Fable 5.1, Neo4j, Grok Philly, and Codex Metro) accurately reflect their Attended status. Enriched calendar reminder aggregation so Luma ticket metadata (Going, Waitlisted, Submitted, Attended) seamlessly hydrates matching snapshot entries.',
+      'Audited live signed-in Luma account (mbr63@drexel.edu) across upcoming and past schedules. Replaced unconfirmed Drupal placeholder on Oct 24 with the verified DevDay Exchange Community Metro Hackathon: Pune (Codex Dayline, https://luma.com/cnmh7l8u). Synchronized 24 verified past community gatherings including Cursor Meetup Philadelphia (Oct 28), Prompt to Hackathon (Oct 27), Claude for Founders Bhopal (Oct 25), Ruby Meetup X AI Collective (Oct 24), Studio Session 01 (Oct 21), Dhandev Pune #03 (Oct 17), React India x React Pune (Oct 10), Genspark Meetup (Oct 4), and Build AI Agents With Codex (Oct 3). Integrated upcoming verified schedules: Monad Workshop + Ideathon (Oct 31), JS Pune Women in Tech × AI (Oct 31), Touch Grass Builders (Nov 7), Build Faster with AI and APIs (Nov 21), and AAIF Agentic AI Day (Nov 28).',
     tags: ['design', 'api', 'other'],
     sha: null,
     commitVerified: false,
@@ -67,7 +68,7 @@ export const changelogEntries = [
     model: 'Gemini 3.8 Flash',
     ide: 'Google Antigravity IDE',
     purpose:
-      'Replace unconfirmed Drupal Pune entry on Oct 24 with verified DevDay Exchange Community Metro Hackathon (Codex Dayline), audit past Luma event lifecycle statuses, and enrich calendar reminder hydration with full ticket metadata.',
+      'Synchronize live Luma account upcoming and past events across 30 total community gatherings, replace unconfirmed Oct 24 Drupal entry with Codex Metro Hackathon, and hydrate complete attendance metadata.',
     attributionSource: 'commit-message',
     reasoning: 'unavailable',
     usage: 'unavailable',
