@@ -427,9 +427,11 @@ def build_derived_knowledge_text() -> str:
     )
     debug_runner_facts = (
         "Debug Runner Mini-Game (#debug-runner-section, #game): "
-        "Chrome Dino-inspired interactive endless runner with developer-themed obstacles (bugs, null pointer exceptions, "
-        "merge conflicts, memory leaks, 404s, flying drones) and power-ups (Coffee speed boost, Test Suite shield). "
-        "Controls: Spacebar or Up Arrow to jump, Down Arrow to duck / fast-fall, P to pause, M to mute, R to restart. "
+        "Chrome Dino-inspired interactive endless runner (October 2026 Edition) with developer-themed obstacles (bugs, null pointer exceptions, "
+        "merge conflicts, memory leaks, 404 cyber portals, flying drones) and power-ups (Coffee speed boost, Test Suite shield, Quantum Git Stash phase cloak). "
+        "Features Gamepad API controller support, near-miss combo multipliers (up to 5x), milestone chimes every 100 points, "
+        "native Canvas roundRect rendering, prefers-reduced-motion a11y compliance, and local leaderboard ranking. "
+        "Controls: Spacebar or Up Arrow / Gamepad A to jump, Down Arrow / Gamepad B to duck and fast-fall, P or Start to pause, M to mute. "
         "Tracks local high scores in browser localStorage."
     )
     music_card_facts = (

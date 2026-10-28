@@ -1,7 +1,8 @@
 /**
- * Debug Runner — Chrome Dino–inspired endless runner
- * Developer-themed obstacles with Dino-core physics:
- * jump, duck, mid-air fast-fall, 3-height flyers, night cycle, delta-time.
+ * Debug Runner — Chrome Dino–inspired endless runner (October 2026 Edition)
+ * Developer-themed obstacles with Dino-core physics, Web Audio synthesizer,
+ * Gamepad API controller support, native Canvas roundRect, prefers-reduced-motion,
+ * combo multiplier system, milestone chimes, and advanced cyberpunk visual FX.
  */
 
 class DebugRunner {
@@ -22,9 +23,12 @@ class DebugRunner {
     this.obstacles = [];
     this.powerUps = [];
     this.particles = [];
+    this.speedLines = [];
     this.lastScoreIncrement = 0;
     this.invincible = false;
     this.invincibleUntil = 0;
+    this.phaseCloak = false;
+    this.phaseCloakUntil = 0;
     this.trail = [];
     this.isMobile = this.detectMobile();
     this.mobileControls = null;
@@ -43,9 +47,35 @@ class DebugRunner {
     this.gravity = 0.82;
     this.fastFallVelocity = 14;
 
+    // 2026 Combo Multiplier System
+    this.comboCount = 0;
+    this.comboMultiplier = 1;
+    this.lastNearMissTime = 0;
+    this.comboTimerMs = 3500;
+
+    // Milestone chimes (every 100 display pts)
+    this.lastMilestone = 0;
+    this.milestoneFlashUntil = 0;
+
+    // Reduced Motion compliance (AGENTS.md design audit)
+    this.reducedMotion =
+      typeof window !== 'undefined' &&
+      window.matchMedia &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Gamepad API state
+    this.hasGamepad = false;
+    this.lastGpJump = false;
+    this.lastGpDuck = false;
+    this.lastGpPause = false;
+
     // Audio & Sound
     this.audioCtx = null;
     this.muted = false;
+
+    // Lifecycle cleanup
+    this.abortController = new AbortController();
+    this.touchDuckTimer = null;
 
     // Cyberpunk Parallax Background Assets
     this.gridOffset = 0;
@@ -68,6 +98,9 @@ class DebugRunner {
         fire: '#FF9F0A',
         coffee: '#30D158',
         stackOverflow: '#BF5AF2',
+        gitStash: '#00E5FF',
+        memoryLeak: '#34C759',
+        error404: '#FF3B30',
         hero: '#ffffff',
         heroVisor: '#00E5FF',
         heroGlow: 'rgba(10, 132, 255, 0.6)',
@@ -86,6 +119,9 @@ class DebugRunner {
         fire: '#ff9500',
         coffee: '#34c759',
         stackOverflow: '#af52de',
+        gitStash: '#0071e3',
+        memoryLeak: '#28cd41',
+        error404: '#ff3b30',
         hero: '#1d1d1f',
         heroVisor: '#0071e3',
         heroGlow: 'rgba(0, 113, 227, 0.4)',
@@ -95,17 +131,63 @@ class DebugRunner {
     this.colors = this.themes.dark;
     this.updateTheme();
     this.initBackgroundElements();
+    this.initSpeedLines();
+    this.setupA11yMotionListener();
+    this.setupGamepadListeners();
   }
 
   detectMobile() {
+    if (typeof window === 'undefined') return false;
     return (
-      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
-      window.innerWidth <= 768
+      (window.matchMedia &&
+        (window.matchMedia('(pointer: coarse)').matches ||
+          window.matchMedia('(max-width: 768px)').matches)) ||
+      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+        navigator.userAgent || ''
+      )
     );
   }
 
+  setupA11yMotionListener() {
+    if (typeof window === 'undefined' || !window.matchMedia) return;
+    try {
+      const mql = window.matchMedia('(prefers-reduced-motion: reduce)');
+      mql.addEventListener(
+        'change',
+        e => {
+          this.reducedMotion = e.matches;
+          if (this.reducedMotion) {
+            this.screenShake = 0;
+            this.particles = [];
+            this.speedLines = [];
+          }
+        },
+        { signal: this.abortController.signal }
+      );
+    } catch {
+      // Ignored for older browser support
+    }
+  }
+
+  setupGamepadListeners() {
+    if (typeof window === 'undefined') return;
+    const onGpConnect = () => {
+      this.hasGamepad = true;
+    };
+    const onGpDisconnect = () => {
+      const remaining = navigator.getGamepads ? navigator.getGamepads() : [];
+      this.hasGamepad = Array.from(remaining).some(gp => gp && gp.connected);
+    };
+
+    window.addEventListener('gamepadconnected', onGpConnect, {
+      signal: this.abortController.signal,
+    });
+    window.addEventListener('gamepaddisconnected', onGpDisconnect, {
+      signal: this.abortController.signal,
+    });
+  }
+
   initBackgroundElements() {
-    // Cyberpunk Stars/Nodes
     this.neonStars = [];
     for (let i = 0; i < 40; i++) {
       this.neonStars.push({
@@ -117,7 +199,6 @@ class DebugRunner {
       });
     }
 
-    // Binary / Code rain streams (Matrix Cyberpunk Style)
     this.binaryStreams = [];
     for (let i = 0; i < 20; i++) {
       this.binaryStreams.push({
@@ -130,11 +211,25 @@ class DebugRunner {
     }
   }
 
+  initSpeedLines() {
+    this.speedLines = [];
+    for (let i = 0; i < 12; i++) {
+      this.speedLines.push({
+        x: Math.random() * 1200,
+        y: Math.random() * (this.groundY - 60),
+        len: Math.random() * 70 + 30,
+        speedMultiplier: Math.random() * 0.8 + 1.2,
+        opacity: Math.random() * 0.35 + 0.1,
+      });
+    }
+  }
+
   recordLeaderboardEntry() {
     const entry = { score: Math.floor(this.score / 10), at: Date.now() };
     let board;
     try {
-      board = JSON.parse(localStorage.getItem('debugRunnerLeaderboard') || '[]');
+      const raw = localStorage.getItem('debugRunnerLeaderboard');
+      board = raw ? JSON.parse(raw) : [];
       if (!Array.isArray(board)) board = [];
     } catch {
       board = [];
@@ -142,7 +237,16 @@ class DebugRunner {
     board.push(entry);
     board.sort((a, b) => b.score - a.score);
     board = board.slice(0, 3);
-    localStorage.setItem('debugRunnerLeaderboard', JSON.stringify(board));
+
+    try {
+      const cloned =
+        typeof structuredClone === 'function'
+          ? structuredClone(board)
+          : JSON.parse(JSON.stringify(board));
+      localStorage.setItem('debugRunnerLeaderboard', JSON.stringify(cloned));
+    } catch {
+      localStorage.setItem('debugRunnerLeaderboard', JSON.stringify(board));
+    }
     this.renderLeaderboard(board);
   }
 
@@ -156,7 +260,8 @@ class DebugRunner {
   renderLeaderboard(board = null) {
     if (!board) {
       try {
-        board = JSON.parse(localStorage.getItem('debugRunnerLeaderboard') || '[]');
+        const raw = localStorage.getItem('debugRunnerLeaderboard');
+        board = raw ? JSON.parse(raw) : [];
         if (!Array.isArray(board)) board = [];
       } catch {
         board = [];
@@ -190,7 +295,7 @@ class DebugRunner {
     this.canvas.tabIndex = 0;
     this.canvas.setAttribute(
       'aria-label',
-      'Debug Runner. Focus the canvas first. Space or Up to jump, Down to duck or fast-fall, P to pause.'
+      'Debug Runner (2026). Focus the canvas first. Space or Up to jump, Down to duck or fast-fall, P to pause.'
     );
 
     Object.assign(this.canvas.style, {
@@ -211,28 +316,32 @@ class DebugRunner {
     this.createMobileControls();
 
     // Click handler for sound toggle and start triggers
-    this.canvas.addEventListener('click', e => {
-      this.canvas.focus(); // Ensure canvas is focused so keyboard controls work instantly
-      const rect = this.canvas.getBoundingClientRect();
-      const clickX = ((e.clientX - rect.left) / rect.width) * this.canvas.width;
-      const clickY = ((e.clientY - rect.top) / rect.height) * this.canvas.height;
+    this.canvas.addEventListener(
+      'click',
+      e => {
+        this.canvas.focus();
+        const rect = this.canvas.getBoundingClientRect();
+        const clickX = ((e.clientX - rect.left) / rect.width) * this.canvas.width;
+        const clickY = ((e.clientY - rect.top) / rect.height) * this.canvas.height;
 
-      // Audio toggle button area (top right)
-      if (clickX >= 1130 && clickX <= 1180 && clickY >= 15 && clickY <= 65) {
-        this.muted = !this.muted;
-        this.vibrate(12);
-        if (!this.muted && this.audioCtx && this.audioCtx.state === 'suspended') {
-          this.audioCtx.resume();
+        // Audio toggle button area (top right)
+        if (clickX >= 1130 && clickX <= 1180 && clickY >= 15 && clickY <= 65) {
+          this.muted = !this.muted;
+          this.vibrate(12);
+          if (!this.muted && this.audioCtx && this.audioCtx.state === 'suspended') {
+            this.audioCtx.resume();
+          }
+          this.playSound('powerup');
+          if (!this.gameRunning && this.ctx) this.render();
+          return;
         }
-        this.playSound('powerup');
-        if (!this.gameRunning && this.ctx) this.render();
-        return;
-      }
 
-      if (!this.gameRunning || this.gameOver) {
-        this.start();
-      }
-    });
+        if (!this.gameRunning || this.gameOver) {
+          this.start();
+        }
+      },
+      { signal: this.abortController.signal }
+    );
 
     this.updateTheme();
     this.setupThemeObserver();
@@ -244,11 +353,11 @@ class DebugRunner {
     return this.canvas;
   }
 
-  playSound(type) {
+  playSound(type, extraPitchScale = 1.0) {
     if (this.muted) return;
     try {
       if (!this.audioCtx) {
-        this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        this.audioCtx = new window.AudioContext();
       }
       const ctx = this.audioCtx;
       if (ctx.state === 'suspended') {
@@ -279,6 +388,14 @@ class DebugRunner {
         gain.gain.linearRampToValueAtTime(0.01, now + 0.24);
         osc.start(now);
         osc.stop(now + 0.24);
+      } else if (type === 'stash') {
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(340, now);
+        osc.frequency.exponentialRampToValueAtTime(920, now + 0.22);
+        gain.gain.setValueAtTime(0.11, now);
+        gain.gain.linearRampToValueAtTime(0.01, now + 0.25);
+        osc.start(now);
+        osc.stop(now + 0.25);
       } else if (type === 'gameover') {
         osc.type = 'sawtooth';
         osc.frequency.setValueAtTime(220, now);
@@ -295,17 +412,27 @@ class DebugRunner {
         gain.gain.linearRampToValueAtTime(0.01, now + 0.32);
         osc.start(now);
         osc.stop(now + 0.32);
+      } else if (type === 'milestone') {
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(880, now);
+        osc.frequency.setValueAtTime(1320, now + 0.07);
+        gain.gain.setValueAtTime(0.09, now);
+        gain.gain.linearRampToValueAtTime(0.01, now + 0.18);
+        osc.start(now);
+        osc.stop(now + 0.18);
       } else if (type === 'nearmiss') {
+        const baseFreq = 600 * extraPitchScale;
+        const targetFreq = 1200 * extraPitchScale;
         osc.type = 'triangle';
-        osc.frequency.setValueAtTime(600, now);
-        osc.frequency.exponentialRampToValueAtTime(1200, now + 0.1);
-        gain.gain.setValueAtTime(0.08, now);
+        osc.frequency.setValueAtTime(baseFreq, now);
+        osc.frequency.exponentialRampToValueAtTime(targetFreq, now + 0.1);
+        gain.gain.setValueAtTime(0.09, now);
         gain.gain.linearRampToValueAtTime(0.01, now + 0.1);
         osc.start(now);
         osc.stop(now + 0.1);
       }
-    } catch (_e) {
-      console.warn('Audio synthesis blocked by browser security.', _e);
+    } catch {
+      // Procedural audio safety fallback
     }
   }
 
@@ -313,7 +440,7 @@ class DebugRunner {
     this.floatingTexts.push({
       x: x,
       y: y,
-      vy: -1.5,
+      vy: this.reducedMotion ? -0.8 : -1.5,
       text: text,
       color: color,
       life: 1.0,
@@ -323,7 +450,7 @@ class DebugRunner {
   playBackgroundMusic() {
     try {
       if (!this.audioCtx) {
-        this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        this.audioCtx = new window.AudioContext();
       }
       const ctx = this.audioCtx;
       if (ctx.state === 'suspended') return;
@@ -333,7 +460,6 @@ class DebugRunner {
         this.nextNoteTime = now;
       }
 
-      // Play note slightly ahead
       if (now >= this.nextNoteTime - 0.05) {
         const bassNotes = [110, 110, 130, 130, 98, 98, 87, 87];
         const freq = bassNotes[this.noteIndex % bassNotes.length];
@@ -355,11 +481,11 @@ class DebugRunner {
           filter.connect(gain);
         }
 
-        const tempo = Math.max(0.2, 0.42 - this.speed * 0.015);
+        const tempo = Math.max(0.24, 0.42 - this.speed * 0.012);
         const rampEnd = Math.max(this.nextNoteTime + 0.04, this.nextNoteTime + tempo - 0.02);
 
         gain.gain.setValueAtTime(0, this.nextNoteTime);
-        gain.gain.linearRampToValueAtTime(0.03, this.nextNoteTime + 0.02);
+        gain.gain.linearRampToValueAtTime(0.028, this.nextNoteTime + 0.02);
         gain.gain.exponentialRampToValueAtTime(0.001, rampEnd);
 
         osc.start(this.nextNoteTime);
@@ -369,7 +495,7 @@ class DebugRunner {
         this.noteIndex++;
       }
     } catch {
-      // Suppress procedural audio error
+      // Audio synth silent fail
     }
   }
 
@@ -397,7 +523,6 @@ class DebugRunner {
   }
 
   getActivePalette() {
-    // Night mode flips contrast (Chrome Dino day/night), without fighting site theme entirely.
     if (!this.nightMode) return this.colors;
     const isSiteDark = this.colors.bg === '#050508';
     if (isSiteDark) {
@@ -438,7 +563,6 @@ class DebugRunner {
     const container = document.getElementById('debug-runner-container');
     if (!container || !container.parentElement) return;
 
-    // Check if controls already exist
     const existing = document.querySelector('#debug-runner-section .debug-runner-mobile-controls');
     if (existing) {
       existing.remove();
@@ -464,11 +588,26 @@ class DebugRunner {
         btn.style.transform = 'scale(1)';
       };
 
-      btn.addEventListener('touchstart', start, { passive: true });
-      btn.addEventListener('mousedown', start, { passive: true });
-      btn.addEventListener('touchend', end, { passive: true });
-      btn.addEventListener('mouseup', end, { passive: true });
-      btn.addEventListener('mouseleave', end, { passive: true });
+      btn.addEventListener('touchstart', start, {
+        passive: true,
+        signal: this.abortController.signal,
+      });
+      btn.addEventListener('mousedown', start, {
+        passive: true,
+        signal: this.abortController.signal,
+      });
+      btn.addEventListener('touchend', end, {
+        passive: true,
+        signal: this.abortController.signal,
+      });
+      btn.addEventListener('mouseup', end, {
+        passive: true,
+        signal: this.abortController.signal,
+      });
+      btn.addEventListener('mouseleave', end, {
+        passive: true,
+        signal: this.abortController.signal,
+      });
     };
 
     const jumpBtn = this.createControlButton('JUMP', 'jump');
@@ -534,11 +673,11 @@ class DebugRunner {
   }
 
   vibrate(duration) {
-    if ('vibrate' in navigator) {
+    if ('vibrate' in navigator && !this.reducedMotion) {
       try {
         navigator.vibrate(duration);
       } catch {
-        // Suppress vibration security errors
+        // Silently catch unsupported vibration
       }
     }
   }
@@ -561,7 +700,6 @@ class DebugRunner {
     const handleInput = e => {
       if (['INPUT', 'TEXTAREA', 'SELECT', 'CONTENTEDITABLE'].includes(e.target.tagName)) return;
 
-      // Only handle game controls if the canvas has focus to avoid keyboard trapping / scroll hijacking
       if (document.activeElement !== this.canvas) return;
 
       if (e.type === 'keydown') {
@@ -594,13 +732,8 @@ class DebugRunner {
       }
     };
 
-    if (this.keyHandler) {
-      document.removeEventListener('keydown', this.keyHandler);
-      document.removeEventListener('keyup', this.keyHandler);
-    }
-
-    document.addEventListener('keydown', handleInput);
-    document.addEventListener('keyup', handleInput);
+    document.addEventListener('keydown', handleInput, { signal: this.abortController.signal });
+    document.addEventListener('keyup', handleInput, { signal: this.abortController.signal });
     this.keyHandler = handleInput;
   }
 
@@ -619,7 +752,7 @@ class DebugRunner {
           this.vibrate(25);
         }
       },
-      { passive: true }
+      { passive: true, signal: this.abortController.signal }
     );
 
     this.canvas.addEventListener(
@@ -638,7 +771,8 @@ class DebugRunner {
             } else if (diffY > 25) {
               this.duck();
               this.vibrate(12);
-              setTimeout(() => this.standUp(), 400);
+              if (this.touchDuckTimer) clearTimeout(this.touchDuckTimer);
+              this.touchDuckTimer = setTimeout(() => this.standUp(), 420);
             }
           } else if (diffX < 15 && Math.abs(diffY) < 15) {
             this.jump();
@@ -646,8 +780,62 @@ class DebugRunner {
           }
         }
       },
-      { passive: true }
+      { passive: true, signal: this.abortController.signal }
     );
+  }
+
+  pollGamepad() {
+    if (typeof navigator === 'undefined' || !navigator.getGamepads) return;
+    const gamepads = navigator.getGamepads();
+    if (!gamepads) return;
+
+    for (let i = 0; i < gamepads.length; i++) {
+      const gp = gamepads[i];
+      if (!gp || !gp.connected) continue;
+      this.hasGamepad = true;
+
+      // Button 0 (A), Button 12 (D-pad Up)
+      const jumpPressed =
+        (gp.buttons[0] && gp.buttons[0].pressed) || (gp.buttons[12] && gp.buttons[12].pressed);
+      // Button 1 (B), Button 13 (D-pad Down)
+      const duckPressed =
+        (gp.buttons[1] && gp.buttons[1].pressed) || (gp.buttons[13] && gp.buttons[13].pressed);
+      // Button 9 (Start / Options), Button 8 (Select / Share)
+      const pausePressed =
+        (gp.buttons[9] && gp.buttons[9].pressed) || (gp.buttons[8] && gp.buttons[8].pressed);
+
+      if (pausePressed && !this.lastGpPause) {
+        if (!this.gameRunning || this.gameOver) {
+          this.start();
+        } else if (this.paused) {
+          this.resume();
+        } else {
+          this.pause();
+        }
+      }
+      this.lastGpPause = pausePressed;
+
+      if (jumpPressed) {
+        if (!this.gameRunning || this.gameOver) {
+          this.start();
+        } else if (this.paused) {
+          this.resume();
+        } else if (!this.lastGpJump) {
+          this.jump();
+        }
+      }
+      this.lastGpJump = jumpPressed;
+
+      if (duckPressed) {
+        if (this.gameRunning && !this.paused) {
+          this.duck();
+        }
+      } else if (this.lastGpDuck && !duckPressed) {
+        this.standUp();
+      }
+      this.lastGpDuck = duckPressed;
+      break;
+    }
   }
 
   start() {
@@ -671,10 +859,22 @@ class DebugRunner {
     this.showLevelMessageUntil = 0;
     this.invincible = false;
     this.invincibleUntil = 0;
+    this.phaseCloak = false;
+    this.phaseCloakUntil = 0;
+    this.comboCount = 0;
+    this.comboMultiplier = 1;
+    this.lastNearMissTime = 0;
+    this.lastMilestone = 0;
+    this.milestoneFlashUntil = 0;
     this.trail = [];
     this.resetHero();
     this.updateSideStats();
     this.playSound('powerup');
+
+    if (this.touchDuckTimer) {
+      clearTimeout(this.touchDuckTimer);
+      this.touchDuckTimer = null;
+    }
 
     if (this.gameLoop) {
       cancelAnimationFrame(this.gameLoop);
@@ -696,6 +896,10 @@ class DebugRunner {
     if (this.gameLoop) {
       cancelAnimationFrame(this.gameLoop);
       this.gameLoop = null;
+    }
+    if (this.touchDuckTimer) {
+      clearTimeout(this.touchDuckTimer);
+      this.touchDuckTimer = null;
     }
     this.playSound('gameover');
     this.vibrate([60, 120, 60]);
@@ -731,7 +935,6 @@ class DebugRunner {
   jump() {
     if (this.paused || this.gameOver) return;
 
-    // Chrome Dino: ducking on ground cancels into a jump
     if (this.dev.isDucking && this.dev.onGround) {
       this.standUp();
     }
@@ -747,7 +950,6 @@ class DebugRunner {
   duck() {
     if (this.paused || this.gameOver || !this.gameRunning) return;
 
-    // Chrome Dino fast-fall: Down in mid-air accelerates descent
     if (!this.dev.onGround) {
       if (this.dev.velocityY < this.fastFallVelocity) {
         this.dev.velocityY = this.fastFallVelocity;
@@ -770,7 +972,6 @@ class DebugRunner {
     if (this.dev.onGround) {
       this.dev.y = this.groundY - 56;
     } else if (wasDucking) {
-      // Keep feet-relative position when releasing duck mid-air
       this.dev.y = Math.min(this.dev.y, this.groundY - 56);
     }
   }
@@ -778,7 +979,9 @@ class DebugRunner {
   update(now = performance.now()) {
     const dt = this.lastFrameTime ? Math.min(0.05, (now - this.lastFrameTime) / 1000) : 1 / 60;
     this.lastFrameTime = now;
-    const frameScale = dt * 60; // normalize gameplay to ~60fps units
+    const frameScale = dt * 60;
+
+    this.pollGamepad();
 
     // Background music loop
     if (this.gameRunning && !this.paused && !this.muted) {
@@ -802,8 +1005,8 @@ class DebugRunner {
       this.dev.onGround = false;
     }
 
-    // Spin during jump (subtle)
-    if (!this.dev.onGround && !this.dev.isDucking) {
+    // Spin during jump (skipped in reduced-motion)
+    if (!this.dev.onGround && !this.dev.isDucking && !this.reducedMotion) {
       this.dev.rotation += 0.08 * frameScale;
     } else {
       this.dev.rotation = 0;
@@ -814,16 +1017,36 @@ class DebugRunner {
       this.createParticles(this.dev.x + 10, this.groundY, 2, '#FFD60A');
     }
 
-    // Speed progression (Dino-like gradual ramp)
+    // Speed progression (Dino gradual acceleration)
     this.speed += 0.0012 * frameScale;
 
-    // Score tracks distance traveled
+    // Distance tracking
     this.score += this.speed * 0.35 * frameScale;
     if (this.score > this.highScore) {
       this.highScore = this.score;
     }
 
-    // Night cycle every ~700 display points (Chrome Dino cadence)
+    // Milestone chimes every 100 display points
+    const currentMilestone = Math.floor(this.score / 1000);
+    if (currentMilestone > this.lastMilestone) {
+      this.lastMilestone = currentMilestone;
+      this.playSound('milestone');
+      this.milestoneFlashUntil = Date.now() + 600;
+      this.createFloatingText(
+        this.dev.x + 20,
+        this.dev.y - 20,
+        `★ ${currentMilestone * 100} PTS!`,
+        '#FFD60A'
+      );
+    }
+
+    // Combo timer decay
+    if (this.comboCount > 0 && Date.now() - this.lastNearMissTime > this.comboTimerMs) {
+      this.comboCount = 0;
+      this.comboMultiplier = 1;
+    }
+
+    // Night cycle every ~700 display points
     const displayScore = Math.floor(this.score / 10);
     const nightCycle = Math.floor(displayScore / 700);
     this.nightMode = nightCycle % 2 === 1;
@@ -833,7 +1056,7 @@ class DebugRunner {
     if (newLevel > this.level) {
       this.level = newLevel;
       this.speed += 1.2;
-      this.screenShake = 22;
+      this.screenShake = this.reducedMotion ? 0 : 22;
       this.playSound('levelup');
       this.createParticles(this.canvas.width / 2, this.canvas.height / 2, 45, this.colors.accent);
       this.showLevelMessageUntil = Date.now() + 2000;
@@ -841,6 +1064,18 @@ class DebugRunner {
 
     // Move grid offsets
     this.gridOffset = (this.gridOffset - this.speed * frameScale) % 80;
+
+    // Update speed lines when moving fast
+    if (this.speed >= 12 && !this.reducedMotion) {
+      this.speedLines.forEach(line => {
+        line.x -= this.speed * line.speedMultiplier * frameScale;
+        if (line.x + line.len < 0) {
+          line.x = 1200 + Math.random() * 200;
+          line.y = Math.random() * (this.groundY - 60);
+          line.len = Math.random() * 80 + 40;
+        }
+      });
+    }
 
     this.updateObstacles(frameScale);
     this.updatePowerUps(frameScale);
@@ -871,60 +1106,72 @@ class DebugRunner {
         w: this.dev.width,
         h: this.dev.height,
         opacity: 0.45,
+        phase: this.phaseCloak,
       });
-      if (this.trail.length > 6) this.trail.shift();
-      this.trail.forEach(t => (t.opacity -= 0.08));
+      if (this.trail.length > 7) this.trail.shift();
+      this.trail.forEach(t => (t.opacity -= 0.07));
     }
   }
 
   updateObstacles(frameScale = 1) {
-    // Spawning frequency proportional to speed
     const spawnRate = 0.012 + this.level * 0.002;
     if (Math.random() < Math.min(0.03, spawnRate * frameScale)) {
       const displayScore = Math.floor(this.score / 10);
       const type = Math.random();
       const obstacle = { x: 1250, speed: this.speed };
 
-      // After ~450 points, introduce 3-height flyers (Chrome Dino pterodactyl bands)
       const flyersUnlocked = displayScore >= 450;
+      const memoryLeakUnlocked = displayScore >= 300;
+      const error404Unlocked = displayScore >= 600;
 
-      if (flyersUnlocked && type > 0.72) {
-        const band = Math.floor(Math.random() * 3); // 0 high / 1 mid / 2 low
+      if (flyersUnlocked && type > 0.76) {
+        const band = Math.floor(Math.random() * 3);
         obstacle.type = 'pointer';
         obstacle.band = band;
         obstacle.width = 44;
         obstacle.height = 26;
         obstacle.color = '#BF5AF2';
         if (band === 0) {
-          // High — run under while standing
           obstacle.y = this.groundY - 102;
         } else if (band === 1) {
-          // Mid — must duck
           obstacle.y = this.groundY - 72;
         } else {
-          // Low — must jump
           obstacle.y = this.groundY - 42;
         }
-      } else if (type < 0.28) {
+      } else if (error404Unlocked && type > 0.62) {
+        // 404 Cyber Portal Obstacle
+        obstacle.type = 'error404';
+        obstacle.y = this.groundY - 50;
+        obstacle.width = 38;
+        obstacle.height = 50;
+        obstacle.color = this.colors.error404;
+      } else if (memoryLeakUnlocked && type > 0.46) {
+        // Pulsing Memory Leak Slime Obstacle
+        obstacle.type = 'memoryLeak';
+        obstacle.y = this.groundY - 36;
+        obstacle.width = 42;
+        obstacle.height = 36;
+        obstacle.color = this.colors.memoryLeak;
+        obstacle.seed = Math.random() * 100;
+      } else if (type < 0.22) {
         obstacle.type = 'bug';
         obstacle.y = this.groundY - 32;
         obstacle.width = 32;
         obstacle.height = 32;
         obstacle.color = this.colors.bug;
-      } else if (type < 0.55) {
+      } else if (type < 0.38) {
         obstacle.type = 'conflict';
         obstacle.y = this.groundY - 48;
         obstacle.width = 36;
         obstacle.height = 48;
         obstacle.color = this.colors.conflict;
-      } else if (type < 0.78 || !flyersUnlocked) {
+      } else if (type < 0.52 || !flyersUnlocked) {
         obstacle.type = 'fire';
         obstacle.y = this.groundY - 38;
         obstacle.width = 38;
         obstacle.height = 38;
         obstacle.color = this.colors.fire;
       } else {
-        // Early mid flyer before full unlock mix
         obstacle.type = 'pointer';
         obstacle.band = 1;
         obstacle.y = this.groundY - 72;
@@ -933,7 +1180,6 @@ class DebugRunner {
         obstacle.color = '#BF5AF2';
       }
 
-      // Spacing scales with speed so clusters stay fair
       const minGap = 260 + this.speed * 10;
       const lastObs = this.obstacles[this.obstacles.length - 1];
       if (!lastObs || 1200 - lastObs.x > minGap) {
@@ -948,8 +1194,15 @@ class DebugRunner {
   }
 
   updatePowerUps(frameScale = 1) {
-    if (Math.random() < 0.003 * frameScale) {
-      const type = Math.random() > 0.45 ? 'coffee' : 'stackoverflow';
+    if (Math.random() < 0.0035 * frameScale) {
+      const roll = Math.random();
+      let type = 'coffee';
+      if (roll > 0.65) {
+        type = 'gitStash';
+      } else if (roll > 0.35) {
+        type = 'stackoverflow';
+      }
+
       this.powerUps.push({
         x: 1250,
         y: this.groundY - 90 - Math.random() * 70,
@@ -965,12 +1218,17 @@ class DebugRunner {
     });
     this.powerUps = this.powerUps.filter(p => p.x > -100);
 
-    if (this.invincible && Date.now() > this.invincibleUntil) {
+    const now = Date.now();
+    if (this.invincible && now > this.invincibleUntil) {
       this.invincible = false;
+    }
+    if (this.phaseCloak && now > this.phaseCloakUntil) {
+      this.phaseCloak = false;
     }
   }
 
   createParticles(x, y, count, color) {
+    if (this.reducedMotion) return;
     for (let i = 0; i < count; i++) {
       this.particles.push({
         x: x,
@@ -1001,10 +1259,13 @@ class DebugRunner {
       height: this.dev.height - 12,
     };
 
-    if (!this.invincible) {
+    // Damage immunity applies if either Shield or Quantum Phase Cloak is active
+    const isImmune = this.invincible || this.phaseCloak;
+
+    if (!isImmune) {
       for (const obs of this.obstacles) {
         if (this.rectIntersect(heroRect, obs)) {
-          this.screenShake = 22;
+          this.screenShake = this.reducedMotion ? 0 : 22;
           this.gameOver = true;
           this.createParticles(this.dev.x + 20, this.dev.y + 20, 35, this.colors.bug);
           this.stop();
@@ -1015,8 +1276,8 @@ class DebugRunner {
       }
     }
 
-    // Near miss detection (skip when invincible — passing through doesn't count)
-    if (!this.invincible) {
+    // Near miss detection & Combo chaining
+    if (!isImmune) {
       for (const obs of this.obstacles) {
         if (
           !obs.nearMissChecked &&
@@ -1026,13 +1287,33 @@ class DebugRunner {
           obs.nearMissChecked = true;
           const distY = Math.abs(this.dev.y + this.dev.height / 2 - (obs.y + obs.height / 2));
           if (distY > 15 && distY < 85) {
-            this.score += 200;
-            this.playSound('nearmiss');
+            this.comboCount++;
+            this.lastNearMissTime = Date.now();
+            if (this.comboCount >= 6) {
+              this.comboMultiplier = 5;
+            } else if (this.comboCount >= 4) {
+              this.comboMultiplier = 3;
+            } else if (this.comboCount >= 2) {
+              this.comboMultiplier = 2;
+            } else {
+              this.comboMultiplier = 1;
+            }
+
+            const pointsAwarded = 200 * this.comboMultiplier;
+            this.score += pointsAwarded;
+
+            const pitchScale = Math.min(1.8, 1.0 + (this.comboCount - 1) * 0.15);
+            this.playSound('nearmiss', pitchScale);
+
+            const comboTag =
+              this.comboMultiplier > 1
+                ? ` (+${pointsAwarded} · ${this.comboMultiplier}x COMBO!)`
+                : `+${pointsAwarded} NEAR MISS!`;
             this.createFloatingText(
               obs.x + obs.width / 2,
               obs.y - 12,
-              '+200 NEAR MISS!',
-              '#00E5FF'
+              comboTag,
+              this.comboMultiplier >= 3 ? '#FFD60A' : '#00E5FF'
             );
             this.createParticles(obs.x + obs.width / 2, obs.y, 6, '#00E5FF');
           }
@@ -1043,15 +1324,30 @@ class DebugRunner {
     for (let i = this.powerUps.length - 1; i >= 0; i--) {
       if (this.rectIntersect(heroRect, this.powerUps[i])) {
         const p = this.powerUps[i];
-        this.playSound('powerup');
         this.vibrate(20);
 
         if (p.type === 'coffee') {
+          this.playSound('powerup');
           this.score += 600;
+          this.createFloatingText(p.x, p.y - 10, '+600 COFFEE TURBO!', this.colors.coffee);
           this.createParticles(p.x + 16, p.y + 16, 18, this.colors.coffee);
+        } else if (p.type === 'gitStash') {
+          this.playSound('stash');
+          this.phaseCloak = true;
+          this.phaseCloakUntil = Date.now() + 3500;
+          this.score += 400;
+          this.createFloatingText(p.x, p.y - 10, '⚡ GIT STASH PHASE!', this.colors.gitStash);
+          this.createParticles(p.x + 16, p.y + 16, 24, this.colors.gitStash);
         } else {
+          this.playSound('powerup');
           this.invincible = true;
           this.invincibleUntil = Date.now() + 6000;
+          this.createFloatingText(
+            p.x,
+            p.y - 10,
+            '🛡️ TEST SUITE SHIELD!',
+            this.colors.stackOverflow
+          );
           this.createParticles(p.x + 16, p.y + 16, 24, this.colors.stackOverflow);
         }
         this.powerUps.splice(i, 1);
@@ -1068,20 +1364,38 @@ class DebugRunner {
     );
   }
 
+  drawRoundRect(ctx, x, y, width, height, radius) {
+    if (typeof ctx.roundRect === 'function') {
+      ctx.beginPath();
+      ctx.roundRect(x, y, width, height, radius);
+    } else {
+      ctx.beginPath();
+      ctx.moveTo(x + radius, y);
+      ctx.lineTo(x + width - radius, y);
+      ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+      ctx.lineTo(x + width, y + height - radius);
+      ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+      ctx.lineTo(x + radius, y + height);
+      ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+      ctx.lineTo(x, y + radius);
+      ctx.quadraticCurveTo(x, y, x + radius, y);
+      ctx.closePath();
+    }
+  }
+
   render() {
     this.ctx.save();
 
-    // 1. Shake Effect
-    if (this.screenShake > 0) {
+    // 1. Screen Shake Effect
+    if (this.screenShake > 0 && !this.reducedMotion) {
       const dx = (Math.random() - 0.5) * this.screenShake;
       const dy = (Math.random() - 0.5) * this.screenShake;
       this.ctx.translate(dx, dy);
     }
 
-    // Active palette (night invert like Chrome Dino)
     const palette = this.getActivePalette();
 
-    // 2. Cyberpunk Background Gradient
+    // 2. Parallax Cyberpunk Background Gradient
     const bgGrad = this.ctx.createLinearGradient(0, 0, 0, this.groundY);
     if (palette.bg === '#050508' || this.nightMode) {
       bgGrad.addColorStop(0, this.nightMode ? '#0a0a12' : '#04020a');
@@ -1093,48 +1407,65 @@ class DebugRunner {
     this.ctx.fillStyle = bgGrad;
     this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
-    // 3. Cyber Starfield / Nodes
+    // 3. Cyber Starfield Nodes
     this.ctx.fillStyle = palette.text;
     this.neonStars.forEach(star => {
       this.ctx.globalAlpha = star.opacity * (this.nightMode ? 1 : 0.85);
       this.ctx.beginPath();
       this.ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
       this.ctx.fill();
-      star.x -= star.speed * (this.speed * 0.15);
-      if (star.x < 0) star.x = 1200;
-    });
-
-    // 4. Parallax Scrolling Binary Stream
-    this.binaryStreams.forEach(stream => {
-      this.ctx.fillStyle = palette.accent;
-      this.ctx.globalAlpha = stream.opacity * (this.nightMode ? 1.4 : 1);
-      this.ctx.font = '12px monospace';
-      stream.chars.forEach((char, idx) => {
-        this.ctx.fillText(char, stream.x, stream.y + idx * 16);
-      });
-      stream.y += stream.speed * (this.speed * 0.2);
-      if (stream.y > this.groundY) {
-        stream.y = Math.random() * -200;
-        stream.x = Math.random() * 1200;
+      if (!this.reducedMotion) {
+        star.x -= star.speed * (this.speed * 0.15);
+        if (star.x < 0) star.x = 1200;
       }
     });
+
+    // 4. Warp Speed Lines (hyperspeed >= 12)
+    if (this.speed >= 12 && !this.reducedMotion) {
+      this.ctx.save();
+      this.speedLines.forEach(line => {
+        this.ctx.strokeStyle = palette.accent;
+        this.ctx.globalAlpha = line.opacity;
+        this.ctx.lineWidth = 1.2;
+        this.ctx.beginPath();
+        this.ctx.moveTo(line.x, line.y);
+        this.ctx.lineTo(line.x + line.len, line.y);
+        this.ctx.stroke();
+      });
+      this.ctx.restore();
+    }
+
+    // 5. Parallax Scrolling Binary Stream
+    if (!this.reducedMotion) {
+      this.binaryStreams.forEach(stream => {
+        this.ctx.fillStyle = palette.accent;
+        this.ctx.globalAlpha = stream.opacity * (this.nightMode ? 1.4 : 1);
+        this.ctx.font = '12px monospace';
+        stream.chars.forEach((char, idx) => {
+          this.ctx.fillText(char, stream.x, stream.y + idx * 16);
+        });
+        stream.y += stream.speed * (this.speed * 0.2);
+        if (stream.y > this.groundY) {
+          stream.y = Math.random() * -200;
+          stream.x = Math.random() * 1200;
+        }
+      });
+    }
     this.ctx.globalAlpha = 1.0;
 
-    // 5. Vector Grid Horizon Line
+    // 6. Vector Grid Horizon Line
     const horizonGrad = this.ctx.createLinearGradient(0, this.groundY - 60, 0, this.groundY);
     horizonGrad.addColorStop(0, 'rgba(10, 132, 255, 0)');
     horizonGrad.addColorStop(1, this.colors.gridHorizon);
     this.ctx.fillStyle = horizonGrad;
     this.ctx.fillRect(0, this.groundY - 60, this.canvas.width, 60);
 
-    // 6. Perspective Neon Grid Floor
+    // 7. Perspective Neon Grid Floor
     this.ctx.strokeStyle = this.colors.gridLine;
     this.ctx.lineWidth = 1.5;
 
-    // Horizontal grid lines moving with speed
     const floorHeight = this.canvas.height - this.groundY;
     for (let yOffset = 0; yOffset < floorHeight; yOffset += 20) {
-      // Perspective scaling for depth
       const currentY = this.groundY + yOffset;
       this.ctx.beginPath();
       this.ctx.moveTo(0, currentY);
@@ -1142,7 +1473,6 @@ class DebugRunner {
       this.ctx.stroke();
     }
 
-    // Perspective vertical grid lines spreading from horizon point
     const horizonX = this.canvas.width / 2;
     const gridLinesCount = 30;
     for (let i = -gridLinesCount; i <= gridLinesCount; i++) {
@@ -1154,6 +1484,17 @@ class DebugRunner {
       this.ctx.lineTo(xEnd, this.canvas.height);
       this.ctx.stroke();
     }
+
+    // Dynamic ground terrain markers that scroll with speed
+    this.ctx.save();
+    this.ctx.fillStyle = palette.accent;
+    this.ctx.globalAlpha = 0.4;
+    for (let mx = this.gridOffset; mx < this.canvas.width; mx += 80) {
+      if (mx >= 0) {
+        this.ctx.fillRect(mx, this.groundY - 1, 14, 2);
+      }
+    }
+    this.ctx.restore();
 
     // Ground Edge line
     this.ctx.strokeStyle = palette.accent;
@@ -1168,7 +1509,7 @@ class DebugRunner {
       this.ctx.fillRect(0, 0, this.canvas.width, this.groundY);
     }
 
-    // 7. Render Particles
+    // 8. Render Particles
     this.particles.forEach(p => {
       this.ctx.fillStyle = p.color;
       this.ctx.globalAlpha = p.life;
@@ -1178,42 +1519,51 @@ class DebugRunner {
     });
     this.ctx.globalAlpha = 1.0;
 
-    // 8. Render PowerUps
+    // 9. Render PowerUps
     this.powerUps.forEach(p => {
       this.ctx.save();
-      this.ctx.shadowColor = p.type === 'coffee' ? this.colors.coffee : this.colors.stackOverflow;
+      const pColor =
+        p.type === 'coffee'
+          ? this.colors.coffee
+          : p.type === 'gitStash'
+            ? this.colors.gitStash
+            : this.colors.stackOverflow;
+
+      this.ctx.shadowColor = pColor;
       this.ctx.shadowBlur = 12;
 
-      // Draw floating icon container
       const bounce = Math.sin(this.frame * 0.12) * 5;
       this.ctx.fillStyle =
-        p.type === 'coffee' ? 'rgba(48, 209, 88, 0.2)' : 'rgba(191, 90, 242, 0.2)';
-      this.ctx.strokeStyle = p.type === 'coffee' ? this.colors.coffee : this.colors.stackOverflow;
+        p.type === 'coffee'
+          ? 'rgba(48, 209, 88, 0.2)'
+          : p.type === 'gitStash'
+            ? 'rgba(0, 229, 255, 0.2)'
+            : 'rgba(191, 90, 242, 0.2)';
+
+      this.ctx.strokeStyle = pColor;
       this.ctx.lineWidth = 2;
-      this.drawRoundedRect(this.ctx, p.x, p.y + bounce, p.width, p.height, 8);
+      this.drawRoundRect(this.ctx, p.x, p.y + bounce, p.width, p.height, 8);
       this.ctx.fill();
       this.ctx.stroke();
 
-      // Render inner text symbol
       this.ctx.fillStyle = '#ffffff';
       this.ctx.font = 'bold 12px sans-serif';
       this.ctx.textAlign = 'center';
-      this.ctx.fillText(p.type === 'coffee' ? '☕' : 'SO', p.x + 16, p.y + bounce + 20);
+      const label = p.type === 'coffee' ? '☕' : p.type === 'gitStash' ? '⚡' : 'SO';
+      this.ctx.fillText(label, p.x + 16, p.y + bounce + 20);
       this.ctx.restore();
     });
 
-    // 9. Render Obstacles
+    // 10. Render Obstacles
     this.obstacles.forEach(obs => {
       this.ctx.save();
       this.ctx.shadowColor = obs.color;
       this.ctx.shadowBlur = 10;
 
       if (obs.type === 'bug') {
-        // Draw Cyberbug animated beetle
         const bugX = obs.x + obs.width / 2;
         const bugY = obs.y + obs.height / 2;
 
-        // Legs wiggling
         this.ctx.strokeStyle = obs.color;
         this.ctx.lineWidth = 2;
         const legSwing = Math.sin(this.frame * 0.3) * 6;
@@ -1229,13 +1579,11 @@ class DebugRunner {
           this.ctx.stroke();
         }
 
-        // Insect body
         this.ctx.fillStyle = obs.color;
         this.ctx.beginPath();
         this.ctx.ellipse(bugX, bugY, 12, 10, 0, 0, Math.PI * 2);
         this.ctx.fill();
 
-        // Antennae
         this.ctx.beginPath();
         this.ctx.moveTo(bugX - 4, bugY - 8);
         this.ctx.quadraticCurveTo(bugX - 10, bugY - 16, bugX - 14, bugY - 14 + legSwing);
@@ -1246,7 +1594,6 @@ class DebugRunner {
         this.ctx.quadraticCurveTo(bugX + 10, bugY - 16, bugX + 14, bugY - 14 - legSwing);
         this.ctx.stroke();
       } else if (obs.type === 'conflict') {
-        // Glitchy Holographic Git Conflict
         const pulse = Math.sin(this.frame * 0.2) * 4;
         this.ctx.strokeStyle = obs.color;
         this.ctx.lineWidth = 3;
@@ -1260,13 +1607,11 @@ class DebugRunner {
         this.ctx.fill();
         this.ctx.stroke();
 
-        // Inner Warning Symbol exclamation
         this.ctx.fillStyle = obs.color;
         this.ctx.font = 'bold 18px monospace';
         this.ctx.textAlign = 'center';
         this.ctx.fillText('!', obs.x + obs.width / 2, obs.y + obs.height - 10);
       } else if (obs.type === 'fire') {
-        // Firewall animated flames
         const px = obs.x;
         const py = obs.y;
         const pw = obs.width;
@@ -1275,7 +1620,6 @@ class DebugRunner {
         this.ctx.fillStyle = this.colors.fire;
         this.ctx.beginPath();
         this.ctx.moveTo(px, py + ph);
-        // Animate flame tips
         const flameOffset1 = Math.sin(this.frame * 0.25) * 5;
         const flameOffset2 = Math.cos(this.frame * 0.3) * 6;
         this.ctx.quadraticCurveTo(px + pw * 0.2, py + flameOffset1, px + pw * 0.35, py + ph * 0.2);
@@ -1283,6 +1627,53 @@ class DebugRunner {
         this.ctx.quadraticCurveTo(px + pw * 0.8, py - flameOffset1, px + pw, py + ph);
         this.ctx.closePath();
         this.ctx.fill();
+      } else if (obs.type === 'memoryLeak') {
+        // Pulsing Memory Leak Organic Blob
+        const blobX = obs.x + obs.width / 2;
+        const blobY = obs.y + obs.height / 2;
+        const pulse = Math.sin(this.frame * 0.18 + (obs.seed || 0)) * 4;
+        const radius = obs.width / 2 + pulse;
+
+        this.ctx.fillStyle = 'rgba(52, 199, 89, 0.22)';
+        this.ctx.strokeStyle = obs.color;
+        this.ctx.lineWidth = 2.5;
+
+        this.ctx.beginPath();
+        this.ctx.arc(blobX, blobY, Math.max(4, radius), 0, Math.PI * 2);
+        this.ctx.fill();
+        this.ctx.stroke();
+
+        // Inner toxic core
+        this.ctx.fillStyle = '#34C759';
+        this.ctx.beginPath();
+        this.ctx.arc(blobX, blobY, Math.max(2, radius * 0.45), 0, Math.PI * 2);
+        this.ctx.fill();
+
+        this.ctx.fillStyle = '#ffffff';
+        this.ctx.font = 'bold 9px monospace';
+        this.ctx.textAlign = 'center';
+        this.ctx.fillText('LEAK', blobX, obs.y - 4);
+      } else if (obs.type === 'error404') {
+        // 404 Cyber Portal with Glitch Shift
+        const glitch = Math.sin(this.frame * 0.4) * 2;
+        this.ctx.fillStyle = 'rgba(255, 59, 48, 0.18)';
+        this.ctx.strokeStyle = obs.color;
+        this.ctx.lineWidth = 2.5;
+
+        this.drawRoundRect(this.ctx, obs.x + glitch, obs.y, obs.width, obs.height, 6);
+        this.ctx.fill();
+        this.ctx.stroke();
+
+        // Cyan glitch offset edge
+        this.ctx.strokeStyle = '#00E5FF';
+        this.ctx.lineWidth = 1;
+        this.drawRoundRect(this.ctx, obs.x - glitch, obs.y - glitch, obs.width, obs.height, 6);
+        this.ctx.stroke();
+
+        this.ctx.fillStyle = '#ffffff';
+        this.ctx.font = 'bold 11px monospace';
+        this.ctx.textAlign = 'center';
+        this.ctx.fillText('404', obs.x + obs.width / 2, obs.y + obs.height / 2 + 4);
       } else if (obs.type === 'pointer') {
         const pulse = Math.sin(this.frame * 0.15) * 3;
         this.ctx.fillStyle = 'rgba(191, 90, 242, 0.15)';
@@ -1312,22 +1703,32 @@ class DebugRunner {
       this.ctx.restore();
     });
 
-    // 10. Hero Trails
+    // 11. Hero Trails
     this.trail.forEach(t => {
       this.ctx.save();
       this.ctx.globalAlpha = t.opacity;
-      this.ctx.fillStyle = this.invincible ? 'rgba(255, 214, 10, 0.15)' : 'rgba(0, 113, 227, 0.15)';
-      this.drawRoundedRect(this.ctx, t.x, t.y, t.w, t.h, 12);
+      if (t.phase) {
+        this.ctx.fillStyle = 'rgba(0, 229, 255, 0.25)';
+      } else if (this.invincible) {
+        this.ctx.fillStyle = 'rgba(255, 214, 10, 0.2)';
+      } else {
+        this.ctx.fillStyle = 'rgba(0, 113, 227, 0.15)';
+      }
+      this.drawRoundRect(this.ctx, t.x, t.y, t.w, t.h, 12);
       this.ctx.fill();
       this.ctx.restore();
     });
 
-    // 11. Animated Player Character (Cyber Hacker)
+    // 12. Animated Player Character (Cyber Hacker 2026)
     this.ctx.save();
-    if (this.invincible) {
+    if (this.phaseCloak) {
+      this.ctx.shadowColor = '#00E5FF';
+      this.ctx.shadowBlur = 24;
+      this.ctx.globalAlpha = 0.75 + Math.sin(this.frame * 0.3) * 0.2;
+      this.ctx.fillStyle = '#00E5FF';
+    } else if (this.invincible) {
       this.ctx.shadowColor = '#FFD60A';
       this.ctx.shadowBlur = 24;
-      // Flash orange/yellow
       this.ctx.fillStyle = this.frame % 6 < 3 ? '#FFD60A' : '#FF9500';
     } else {
       this.ctx.shadowColor = palette.accent;
@@ -1340,8 +1741,7 @@ class DebugRunner {
     const pw = this.dev.width;
     const ph = this.dev.height;
 
-    // Apply rotation for jump spin
-    if (!this.dev.onGround && !this.dev.isDucking) {
+    if (!this.dev.onGround && !this.dev.isDucking && !this.reducedMotion) {
       this.ctx.translate(px + pw / 2, py + ph / 2);
       this.ctx.rotate(this.dev.rotation);
       this.ctx.translate(-(px + pw / 2), -(py + ph / 2));
@@ -1359,12 +1759,16 @@ class DebugRunner {
     this.ctx.fill();
 
     // Cyber Visor Glow
-    this.ctx.fillStyle = this.invincible ? '#ffffff' : palette.heroVisor || this.colors.heroVisor;
+    this.ctx.fillStyle = this.phaseCloak
+      ? '#ffffff'
+      : this.invincible
+        ? '#ffffff'
+        : palette.heroVisor || this.colors.heroVisor;
     this.ctx.fillRect(px + pw / 2 - 2, py + (this.dev.isDucking ? 6 : 8), 12, 4);
 
     // Glowing Cyber Coat Body
-    this.ctx.fillStyle = this.invincible ? '#FFD60A' : palette.hero;
-    this.drawRoundedRect(
+    this.ctx.fillStyle = this.phaseCloak ? '#00E5FF' : this.invincible ? '#FFD60A' : palette.hero;
+    this.drawRoundRect(
       this.ctx,
       px + 2,
       py + (this.dev.isDucking ? 14 : 22),
@@ -1374,42 +1778,53 @@ class DebugRunner {
     );
     this.ctx.fill();
 
-    // Leg running cycles
+    // Arm swing counter-balance (when running)
     const cycle = Math.sin(this.frame * 0.22) * 8;
-    this.ctx.fillStyle = palette.accent;
-    if (this.dev.onGround && !this.dev.isDucking) {
-      this.drawRoundedRect(this.ctx, px + 6, py + ph - 8 + cycle, 12, 8, 4);
+    if (this.dev.onGround && !this.dev.isDucking && !this.reducedMotion) {
+      this.ctx.fillStyle = palette.accent;
+      this.drawRoundRect(this.ctx, px - 2, py + 26 - cycle * 0.5, 6, 12, 3);
       this.ctx.fill();
-      this.drawRoundedRect(this.ctx, px + pw - 18, py + ph - 8 - cycle, 12, 8, 4);
+      this.drawRoundRect(this.ctx, px + pw - 4, py + 26 + cycle * 0.5, 6, 12, 3);
+      this.ctx.fill();
+    }
+
+    // Leg running cycles
+    this.ctx.fillStyle = this.phaseCloak ? '#00E5FF' : palette.accent;
+    if (this.dev.onGround && !this.dev.isDucking) {
+      this.drawRoundRect(this.ctx, px + 6, py + ph - 8 + cycle, 12, 8, 4);
+      this.ctx.fill();
+      this.drawRoundRect(this.ctx, px + pw - 18, py + ph - 8 - cycle, 12, 8, 4);
       this.ctx.fill();
     } else if (!this.dev.isDucking) {
-      this.drawRoundedRect(this.ctx, px + 6, py + ph - 12, 12, 12, 4);
+      this.drawRoundRect(this.ctx, px + 6, py + ph - 12, 12, 12, 4);
       this.ctx.fill();
-      this.drawRoundedRect(this.ctx, px + pw - 18, py + ph - 12, 12, 12, 4);
+      this.drawRoundRect(this.ctx, px + pw - 18, py + ph - 12, 12, 12, 4);
       this.ctx.fill();
     } else {
-      // Duck slide legs
-      this.drawRoundedRect(this.ctx, px + 4, py + ph - 6, pw - 8, 6, 3);
+      this.drawRoundRect(this.ctx, px + 4, py + ph - 6, pw - 8, 6, 3);
       this.ctx.fill();
     }
 
     this.ctx.restore();
 
-    // 12. Arcade CRT Scanlines & Screen Filter
-    this.ctx.save();
-    this.ctx.strokeStyle = 'rgba(0, 0, 0, 0.06)';
-    this.ctx.lineWidth = 1;
-    for (let i = 0; i < this.canvas.height; i += 4) {
-      this.ctx.beginPath();
-      this.ctx.moveTo(0, i);
-      this.ctx.lineTo(this.canvas.width, i);
-      this.ctx.stroke();
+    // 13. Arcade CRT Scanlines (skipped in reduced motion)
+    if (!this.reducedMotion) {
+      this.ctx.save();
+      this.ctx.strokeStyle = 'rgba(0, 0, 0, 0.05)';
+      this.ctx.lineWidth = 1;
+      for (let i = 0; i < this.canvas.height; i += 4) {
+        this.ctx.beginPath();
+        this.ctx.moveTo(0, i);
+        this.ctx.lineTo(this.canvas.width, i);
+        this.ctx.stroke();
+      }
+      this.ctx.restore();
     }
-    this.ctx.restore();
 
-    // 13. UI HUD Stats & Progress Bar
+    // 14. UI HUD Stats & Progress Bar
     this.ctx.save();
-    this.ctx.fillStyle = palette.text;
+    const isFlashing = Date.now() < this.milestoneFlashUntil;
+    this.ctx.fillStyle = isFlashing ? '#FFD60A' : palette.text;
     this.ctx.font = 'bold 24px monospace';
     this.ctx.fillText(`SCORE: ${Math.floor(this.score / 10)}`, 30, 45);
 
@@ -1423,7 +1838,21 @@ class DebugRunner {
       this.ctx.fillText('NIGHT', 30, 94);
     }
 
-    // Audio Speaker Icon (Interactive)
+    // Combo HUD Indicator
+    if (this.comboCount > 1) {
+      this.ctx.fillStyle = this.comboMultiplier >= 3 ? '#FFD60A' : '#00E5FF';
+      this.ctx.font = 'bold 13px monospace';
+      this.ctx.fillText(`🔥 ${this.comboMultiplier}x COMBO (${this.comboCount})`, 30, 114);
+    }
+
+    // Gamepad indicator badge if connected
+    if (this.hasGamepad) {
+      this.ctx.fillStyle = palette.accent;
+      this.ctx.font = 'bold 11px monospace';
+      this.ctx.fillText('🎮 GAMEPAD READY', 30, 134);
+    }
+
+    // Interactive Audio Speaker Icon (top right)
     this.ctx.fillStyle = this.muted ? '#ff3b30' : palette.accent;
     this.ctx.beginPath();
     this.ctx.arc(1155, 35, 18, 0, Math.PI * 2);
@@ -1445,7 +1874,6 @@ class DebugRunner {
     this.ctx.closePath();
     this.ctx.fill();
 
-    // Muted X or waves
     if (this.muted) {
       this.ctx.strokeStyle = '#ff3b30';
       this.ctx.lineWidth = 2;
@@ -1456,7 +1884,6 @@ class DebugRunner {
       this.ctx.lineTo(1160, 37);
       this.ctx.stroke();
     } else {
-      // Sound waves
       this.ctx.strokeStyle = palette.text;
       this.ctx.lineWidth = 1.5;
       this.ctx.beginPath();
@@ -1480,37 +1907,38 @@ class DebugRunner {
     const barX = this.canvas.width / 2 - barWidth / 2;
     const barY = 35;
 
-    // Bar background
     this.ctx.fillStyle = this.nightMode || palette.bg === '#050508' ? '#1c1c1e' : '#e5e7eb';
-    this.drawRoundedRect(this.ctx, barX, barY, barWidth, barHeight, 4);
+    this.drawRoundRect(this.ctx, barX, barY, barWidth, barHeight, 4);
     this.ctx.fill();
 
-    // Bar progress fill
     const gradFill = this.ctx.createLinearGradient(barX, 0, barX + barWidth, 0);
     gradFill.addColorStop(0, '#00E5FF');
     gradFill.addColorStop(1, palette.accent);
     this.ctx.fillStyle = gradFill;
     const fillWidth = barWidth * progress;
     if (fillWidth > 1) {
-      this.drawRoundedRect(this.ctx, barX, barY, fillWidth, barHeight, 4);
+      this.drawRoundRect(this.ctx, barX, barY, fillWidth, barHeight, 4);
       this.ctx.fill();
     }
 
-    // Progress Level Label
     this.ctx.fillStyle = palette.textSecondary;
     this.ctx.font = 'bold 11px monospace';
     this.ctx.textAlign = 'center';
     this.ctx.fillText(`LEVEL ${this.level}`, this.canvas.width / 2, 28);
     this.ctx.textAlign = 'left';
 
-    if (this.invincible) {
+    if (this.phaseCloak) {
+      this.ctx.fillStyle = '#00E5FF';
+      this.ctx.font = 'bold 14px monospace';
+      this.ctx.fillText('⚡ PHASE CLOAK ACTIVE', this.canvas.width - 320, 45);
+    } else if (this.invincible) {
       this.ctx.fillStyle = '#FFD60A';
       this.ctx.font = 'bold 14px monospace';
-      this.ctx.fillText('⚡ SHIELD ACTIVE', this.canvas.width - 290, 45);
+      this.ctx.fillText('🛡️ SHIELD ACTIVE', this.canvas.width - 290, 45);
     }
     this.ctx.restore();
 
-    // 14. Level Up Banner Display
+    // 15. Level Up Banner
     if (this.showLevelMessageUntil && Date.now() < this.showLevelMessageUntil) {
       this.ctx.save();
       this.ctx.fillStyle = this.colors.accent;
@@ -1525,7 +1953,7 @@ class DebugRunner {
       this.ctx.restore();
     }
 
-    // 15. Render Floating Texts
+    // 16. Floating Texts
     this.floatingTexts.forEach(ft => {
       this.ctx.save();
       this.ctx.globalAlpha = ft.life;
@@ -1536,10 +1964,10 @@ class DebugRunner {
       this.ctx.restore();
     });
 
-    this.ctx.restore(); // Screen shake restore
+    this.ctx.restore();
 
-    // 16. Chromatic Aberration / Canvas Glitch Slice Effect
-    if (this.gameRunning && this.screenShake > 0 && Math.random() < 0.45) {
+    // 17. Glitch Slice Effect (omitted when reduced motion is requested)
+    if (this.gameRunning && this.screenShake > 0 && !this.reducedMotion && Math.random() < 0.45) {
       const sliceY = Math.random() * this.canvas.height;
       const sliceHeight = Math.random() * 32 + 8;
       const shiftX = (Math.random() - 0.5) * this.screenShake * 1.5;
@@ -1574,14 +2002,20 @@ class DebugRunner {
 
     this.ctx.font = '22px monospace';
     this.ctx.fillStyle = this.colors.accent;
-    const startText = this.isMobile ? 'Tap to start' : 'Click canvas, then SPACE to start';
+    const startText = this.isMobile
+      ? 'Tap to start'
+      : this.hasGamepad
+        ? 'Press A (Controller) or SPACE to start'
+        : 'Click canvas, then SPACE to start';
     this.ctx.fillText(startText, this.canvas.width / 2, this.canvas.height / 2 + 20);
 
     this.ctx.font = '14px monospace';
     this.ctx.fillStyle = this.colors.textSecondary;
     const controlsInfo = this.isMobile
       ? 'Jump / Duck buttons · swipe up/down on canvas'
-      : 'SPACE/↑ jump · ↓ duck / fast-fall · P pause · night mode at 700';
+      : this.hasGamepad
+        ? 'Controller A jump · B duck · Start pause · night mode at 700'
+        : 'SPACE/↑ jump · ↓ duck / fast-fall · P pause · night mode at 700';
     this.ctx.fillText(controlsInfo, this.canvas.width / 2, this.canvas.height / 2 + 55);
     this.ctx.restore();
   }
@@ -1598,25 +2032,11 @@ class DebugRunner {
     this.ctx.font = '16px monospace';
     this.ctx.fillStyle = this.colors.accent;
     this.ctx.fillText(
-      'Press P or SPACE to resume',
+      this.hasGamepad ? 'Press Start or SPACE to resume' : 'Press P or SPACE to resume',
       this.canvas.width / 2,
       this.canvas.height / 2 + 35
     );
     this.ctx.restore();
-  }
-
-  drawRoundedRect(ctx, x, y, width, height, radius) {
-    ctx.beginPath();
-    ctx.moveTo(x + radius, y);
-    ctx.lineTo(x + width - radius, y);
-    ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
-    ctx.lineTo(x + width, y + height - radius);
-    ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
-    ctx.lineTo(x + radius, y + height);
-    ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
-    ctx.lineTo(x, y + radius);
-    ctx.quadraticCurveTo(x, y, x + radius, y);
-    ctx.closePath();
   }
 
   drawGameOver() {
@@ -1642,9 +2062,32 @@ class DebugRunner {
 
     this.ctx.fillStyle = this.colors.accent;
     this.ctx.font = '18px monospace';
-    const restartText = this.isMobile ? 'Tap to retry' : 'Press SPACE to retry';
+    const restartText = this.isMobile
+      ? 'Tap to retry'
+      : this.hasGamepad
+        ? 'Press A (Controller) or SPACE to retry'
+        : 'Press SPACE to retry';
     this.ctx.fillText(restartText, this.canvas.width / 2, this.canvas.height / 2 + 65);
     this.ctx.restore();
+  }
+
+  destroy() {
+    if (this.gameLoop) {
+      cancelAnimationFrame(this.gameLoop);
+      this.gameLoop = null;
+    }
+    if (this.touchDuckTimer) {
+      clearTimeout(this.touchDuckTimer);
+      this.touchDuckTimer = null;
+    }
+    this.abortController.abort();
+    if (this.audioCtx) {
+      try {
+        this.audioCtx.close();
+      } catch {
+        // Ignored
+      }
+    }
   }
 }
 

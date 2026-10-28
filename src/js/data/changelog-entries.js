@@ -54,6 +54,26 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'debug-runner-oct-2026-modernization-20261028',
+    date: '2026-10-28',
+    type: 'improvement',
+    title:
+      'Modernize Debug Runner mini-game with October 2026 web APIs, Gamepad support & mechanics',
+    summary:
+      'Engineered an October 2026 modernization of the interactive Chrome Dino–style Debug Runner mini-game (#debug-runner-section): integrated standard Gamepad API for controller play (A jump, B duck/fast-fall, Start pause), adopted native Canvas 2D ctx.roundRect() rendering with safe fallback, added prefers-reduced-motion a11y compliance (suppressing screen shake, particles, and rapid rotations), created a combo multiplier engine rewarding consecutive near-misses (up to 5x), introduced milestone chimes every 100 points via Web Audio synthesis, added two new developer hazards (pulsing Memory Leak blobs and 404 Cyber Portals) and a Quantum Git Stash phase cloak power-up, modernized mobile pointer detection, and added AbortController lifecycle memory cleanup.',
+    tags: ['performance', 'design', 'other'],
+    sha: null,
+    commitVerified: false,
+    link: null,
+    model: 'Gemini 3.8 Flash',
+    ide: 'Google Antigravity IDE',
+    purpose:
+      'Upgrade Debug Runner mini-game into October 2026 standards with Gamepad API, prefers-reduced-motion a11y, combo multiplier, new hazards, power-ups, native roundRect, and Web Audio synthesizers.',
+    attributionSource: 'commit-message',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
     id: 'homepage-faq-and-site-knowledge-modernization-20261028',
     date: '2026-10-28',
     type: 'improvement',
