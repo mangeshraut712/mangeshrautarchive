@@ -4847,6 +4847,12 @@ html.dark #home .hero-name-text {
           </summary>
 
           <div class="game-stage">
+            <div class="game-feature-ribbon" aria-label="Game engine capabilities">
+              <span class="game-feature-tag"><i class="fas fa-microchip" aria-hidden="true"></i> 2026 Quantum Engine</span>
+              <span class="game-feature-tag"><i class="fas fa-gamepad" aria-hidden="true"></i> Gamepad API Ready</span>
+              <span class="game-feature-tag"><i class="fas fa-fire" aria-hidden="true"></i> 5x Combo Multiplier</span>
+              <span class="game-feature-tag"><i class="fas fa-shield-halved" aria-hidden="true"></i> Quantum Git Stash</span>
+            </div>
             <div class="game-area">
               <div class="game-play-zone">
                 <div class="game-canvas-wrapper">
@@ -4864,6 +4870,16 @@ html.dark #home .hero-name-text {
                   <span class="game-stat-emoji" aria-hidden="true">⚡</span>
                   <span class="game-stat-title">Speed</span>
                   <span class="game-stat-num" id="game-speed">1.0x</span>
+                </div>
+                <div class="game-stat-box" id="game-stat-combo-box">
+                  <span class="game-stat-emoji" aria-hidden="true">🔥</span>
+                  <span class="game-stat-title">Combo</span>
+                  <span class="game-stat-num" id="game-combo-display">1x</span>
+                </div>
+                <div class="game-stat-box" id="game-stat-boost-box">
+                  <span class="game-stat-emoji" aria-hidden="true">✨</span>
+                  <span class="game-stat-title">Boost</span>
+                  <span class="game-stat-num" id="game-boost-display">None</span>
                 </div>
                 <div class="game-stat-box game-leaderboard" id="game-leaderboard" aria-labelledby="game-leaderboard-title">
                   <span class="game-stat-emoji" aria-hidden="true">🏅</span>

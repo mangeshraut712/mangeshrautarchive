@@ -54,6 +54,26 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'debug-runner-visual-and-ui-overhaul-20261028',
+    date: '2026-10-28',
+    type: 'improvement',
+    title:
+      'Overhaul Debug Runner visual identity, start screen, capabilities ribbon, and side stats',
+    summary:
+      'Directly overhauled the visual identity and discoverability of the Debug Runner mini-game (#debug-runner-section) to make the October 2026 upgrade tangible and visible from the moment of load: redesigned the start screen canvas with an October 2026 Edition pill badge, specular neon title glow, a 6-card capability showcase matrix (Coffee, Quantum Stash, Test Suite Shield, 5x Combo, Memory Leak Blob, 404 Cyber Portal), and an Apple Blue gradient CTA button; added a glassmorphic .game-feature-ribbon above the stage; expanded the side stats panel with live combo multiplier (#game-combo-display) and active boost tracker (#game-boost-display); brought Memory Leak and 404 Cyber Portal hazards into Level 1 early rotation for immediate visual variety; and introduced glowing golden forcefields and quantum phase cloaks during active power-ups.',
+    tags: ['design', 'performance', 'other'],
+    sha: null,
+    commitVerified: false,
+    link: null,
+    model: 'Gemini 3.8 Flash',
+    ide: 'Google Antigravity IDE',
+    purpose:
+      'Deliver immediate, tangible visual proof of October 2026 game modernizations with a revamped start screen, feature ribbon, live combo/boost HUD, and Level 1 hazard spawning.',
+    attributionSource: 'commit-message',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
     id: 'debug-runner-oct-2026-modernization-20261028',
     date: '2026-10-28',
     type: 'improvement',
@@ -62,9 +82,9 @@ export const changelogEntries = [
     summary:
       'Engineered an October 2026 modernization of the interactive Chrome Dino–style Debug Runner mini-game (#debug-runner-section): integrated standard Gamepad API for controller play (A jump, B duck/fast-fall, Start pause), adopted native Canvas 2D ctx.roundRect() rendering with safe fallback, added prefers-reduced-motion a11y compliance (suppressing screen shake, particles, and rapid rotations), created a combo multiplier engine rewarding consecutive near-misses (up to 5x), introduced milestone chimes every 100 points via Web Audio synthesis, added two new developer hazards (pulsing Memory Leak blobs and 404 Cyber Portals) and a Quantum Git Stash phase cloak power-up, modernized mobile pointer detection, and added AbortController lifecycle memory cleanup.',
     tags: ['performance', 'design', 'other'],
-    sha: null,
-    commitVerified: false,
-    link: null,
+    sha: 'f7f4fd4f',
+    commitVerified: true,
+    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/f7f4fd4f',
     model: 'Gemini 3.8 Flash',
     ide: 'Google Antigravity IDE',
     purpose:

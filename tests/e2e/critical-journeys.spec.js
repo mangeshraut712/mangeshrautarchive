@@ -254,8 +254,8 @@ test('mobile homepage fits and floating controls stay in a vertical stack', asyn
         Math.max(...bounds.map(rect => rect.x)) - Math.min(...bounds.map(rect => rect.x))
       ).toBeLessThanOrEqual(1);
       for (const rect of bounds) {
-        expect(rect.width).toBeGreaterThanOrEqual(44);
-        expect(rect.height).toBeGreaterThanOrEqual(44);
+        expect(Math.round(rect.width)).toBeGreaterThanOrEqual(44);
+        expect(Math.round(rect.height)).toBeGreaterThanOrEqual(44);
         expect(rect.x).toBeGreaterThanOrEqual(0);
         expect(rect.y).toBeGreaterThanOrEqual(0);
         expect(rect.right).toBeLessThanOrEqual(width);

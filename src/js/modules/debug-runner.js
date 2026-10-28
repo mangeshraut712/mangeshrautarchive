@@ -35,8 +35,12 @@ class DebugRunner {
     this.frame = 0;
     this.highScoreDisplay = document.getElementById('game-high-score');
     this.speedDisplay = document.getElementById('game-speed');
+    this.comboDisplay = document.getElementById('game-combo-display');
+    this.boostDisplay = document.getElementById('game-boost-display');
     this.lastUiHighScore = null;
     this.lastUiSpeed = null;
+    this.lastUiCombo = null;
+    this.lastUiBoost = null;
     this.floatingTexts = [];
     this.nextNoteTime = 0;
     this.noteIndex = 0;
@@ -670,6 +674,25 @@ class DebugRunner {
       this.speedDisplay.textContent = speedLabel;
       this.lastUiSpeed = speedLabel;
     }
+
+    const comboLabel = this.comboMultiplier > 1 ? `${this.comboMultiplier}x` : '1x';
+    if (this.comboDisplay && this.lastUiCombo !== comboLabel) {
+      this.comboDisplay.textContent = comboLabel;
+      this.comboDisplay.style.color =
+        this.comboMultiplier >= 3 ? '#ff9500' : this.comboMultiplier > 1 ? '#0071e3' : '';
+      this.lastUiCombo = comboLabel;
+    }
+
+    const boostLabel = this.phaseCloak ? '⚡ Stash' : this.invincible ? '🛡️ Shield' : 'None';
+    if (this.boostDisplay && this.lastUiBoost !== boostLabel) {
+      this.boostDisplay.textContent = boostLabel;
+      this.boostDisplay.style.color = this.phaseCloak
+        ? '#00e5ff'
+        : this.invincible
+          ? '#ffd60a'
+          : '';
+      this.lastUiBoost = boostLabel;
+    }
   }
 
   vibrate(duration) {
@@ -1120,11 +1143,11 @@ class DebugRunner {
       const type = Math.random();
       const obstacle = { x: 1250, speed: this.speed };
 
-      const flyersUnlocked = displayScore >= 450;
-      const memoryLeakUnlocked = displayScore >= 300;
-      const error404Unlocked = displayScore >= 600;
+      const flyersUnlocked = displayScore >= 180;
+      const memoryLeakUnlocked = true;
+      const error404Unlocked = true;
 
-      if (flyersUnlocked && type > 0.76) {
+      if (flyersUnlocked && type > 0.78) {
         const band = Math.floor(Math.random() * 3);
         obstacle.type = 'pointer';
         obstacle.band = band;
@@ -1145,7 +1168,7 @@ class DebugRunner {
         obstacle.width = 38;
         obstacle.height = 50;
         obstacle.color = this.colors.error404;
-      } else if (memoryLeakUnlocked && type > 0.46) {
+      } else if (memoryLeakUnlocked && type > 0.44) {
         // Pulsing Memory Leak Slime Obstacle
         obstacle.type = 'memoryLeak';
         obstacle.y = this.groundY - 36;
@@ -1153,31 +1176,24 @@ class DebugRunner {
         obstacle.height = 36;
         obstacle.color = this.colors.memoryLeak;
         obstacle.seed = Math.random() * 100;
-      } else if (type < 0.22) {
+      } else if (type < 0.16) {
         obstacle.type = 'bug';
         obstacle.y = this.groundY - 32;
         obstacle.width = 32;
         obstacle.height = 32;
         obstacle.color = this.colors.bug;
-      } else if (type < 0.38) {
+      } else if (type < 0.3) {
         obstacle.type = 'conflict';
         obstacle.y = this.groundY - 48;
         obstacle.width = 36;
         obstacle.height = 48;
         obstacle.color = this.colors.conflict;
-      } else if (type < 0.52 || !flyersUnlocked) {
+      } else {
         obstacle.type = 'fire';
         obstacle.y = this.groundY - 38;
         obstacle.width = 38;
         obstacle.height = 38;
         obstacle.color = this.colors.fire;
-      } else {
-        obstacle.type = 'pointer';
-        obstacle.band = 1;
-        obstacle.y = this.groundY - 72;
-        obstacle.width = 40;
-        obstacle.height = 24;
-        obstacle.color = '#BF5AF2';
       }
 
       const minGap = 260 + this.speed * 10;
@@ -1805,6 +1821,30 @@ class DebugRunner {
       this.ctx.fill();
     }
 
+    // Glowing Test Suite Forcefield Bubble
+    if (this.invincible) {
+      this.ctx.strokeStyle = '#FFD60A';
+      this.ctx.lineWidth = 2.5;
+      this.ctx.shadowColor = '#FFD60A';
+      this.ctx.shadowBlur = 18;
+      this.ctx.beginPath();
+      this.ctx.arc(px + pw / 2, py + ph / 2, Math.max(pw, ph) * 0.74, 0, Math.PI * 2);
+      this.ctx.stroke();
+    }
+
+    // Glowing Quantum Git Stash Phase Cloak Ring
+    if (this.phaseCloak) {
+      this.ctx.strokeStyle = '#00E5FF';
+      this.ctx.lineWidth = 2;
+      this.ctx.shadowColor = '#00E5FF';
+      this.ctx.shadowBlur = 18;
+      this.ctx.setLineDash([6, 4]);
+      this.ctx.beginPath();
+      this.ctx.arc(px + pw / 2, py + ph / 2, Math.max(pw, ph) * 0.78, 0, Math.PI * 2);
+      this.ctx.stroke();
+      this.ctx.setLineDash([]);
+    }
+
     this.ctx.restore();
 
     // 13. Arcade CRT Scanlines (skipped in reduced motion)
@@ -1988,35 +2028,112 @@ class DebugRunner {
   }
 
   drawStartScreen() {
+    const palette = this.getActivePalette();
     this.ctx.fillStyle =
-      this.colors.bg === '#050508' ? 'rgba(5, 5, 8, 0.75)' : 'rgba(245, 245, 247, 0.75)';
+      palette.bg === '#050508' ? 'rgba(5, 5, 8, 0.82)' : 'rgba(245, 245, 247, 0.82)';
     this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
     this.ctx.save();
-    this.ctx.fillStyle = this.colors.text;
-    this.ctx.font = 'bold 64px monospace';
+
+    // 1. Cyber Quantum Edition Pill
+    const pillText = '✨ OCTOBER 2026 EDITION · QUANTUM ENGINE';
+    this.ctx.font = 'bold 11px monospace';
+    const pillWidth = 320;
+    const pillX = this.canvas.width / 2 - pillWidth / 2;
+    const pillY = 38;
+    this.ctx.fillStyle = 'rgba(0, 113, 227, 0.15)';
+    this.ctx.strokeStyle = palette.accent;
+    this.ctx.lineWidth = 1.5;
+    this.drawRoundRect(this.ctx, pillX, pillY, pillWidth, 24, 12);
+    this.ctx.fill();
+    this.ctx.stroke();
+
+    this.ctx.fillStyle = palette.accent;
     this.ctx.textAlign = 'center';
-    this.ctx.shadowColor = this.colors.accent;
-    this.ctx.shadowBlur = 15;
-    this.ctx.fillText('DEBUG RUNNER', this.canvas.width / 2, this.canvas.height / 2 - 40);
+    this.ctx.fillText(pillText, this.canvas.width / 2, pillY + 16);
 
-    this.ctx.font = '22px monospace';
-    this.ctx.fillStyle = this.colors.accent;
-    const startText = this.isMobile
-      ? 'Tap to start'
-      : this.hasGamepad
-        ? 'Press A (Controller) or SPACE to start'
-        : 'Click canvas, then SPACE to start';
-    this.ctx.fillText(startText, this.canvas.width / 2, this.canvas.height / 2 + 20);
+    // 2. Main Title with Glow
+    this.ctx.fillStyle = palette.text;
+    this.ctx.font = 'bold 54px monospace';
+    this.ctx.shadowColor = palette.accent;
+    this.ctx.shadowBlur = 18;
+    this.ctx.fillText('DEBUG RUNNER', this.canvas.width / 2, 114);
+    this.ctx.shadowBlur = 0;
 
-    this.ctx.font = '14px monospace';
-    this.ctx.fillStyle = this.colors.textSecondary;
-    const controlsInfo = this.isMobile
-      ? 'Jump / Duck buttons · swipe up/down on canvas'
+    // 3. 2026 Features Carousel / Showcase Badges across center
+    const badges = [
+      { text: '☕ Coffee (+600)', color: this.colors.coffee },
+      { text: '⚡ Quantum Stash (Phase)', color: this.colors.gitStash },
+      { text: '🛡️ Test Suite (Shield)', color: this.colors.stackOverflow },
+      { text: '🔥 5x Combo Multiplier', color: '#FFD60A' },
+      { text: '☣️ Memory Leak Blob', color: this.colors.memoryLeak },
+      { text: '🚪 404 Cyber Portal', color: this.colors.error404 },
+    ];
+
+    const badgeY = 145;
+    const badgeW = 168;
+    const badgeH = 28;
+    const badgeGap = 12;
+    const totalRowW = 3 * badgeW + 2 * badgeGap;
+    const startX = this.canvas.width / 2 - totalRowW / 2;
+
+    for (let i = 0; i < 6; i++) {
+      const col = i % 3;
+      const row = Math.floor(i / 3);
+      const bx = startX + col * (badgeW + badgeGap);
+      const by = badgeY + row * (badgeH + 8);
+      const b = badges[i];
+
+      this.ctx.fillStyle = 'rgba(255, 255, 255, 0.04)';
+      this.ctx.strokeStyle = b.color;
+      this.ctx.lineWidth = 1.2;
+      this.drawRoundRect(this.ctx, bx, by, badgeW, badgeH, 6);
+      this.ctx.fill();
+      this.ctx.stroke();
+
+      this.ctx.fillStyle = b.color;
+      this.ctx.font = 'bold 10px monospace';
+      this.ctx.textAlign = 'center';
+      this.ctx.fillText(b.text, bx + badgeW / 2, by + 18);
+    }
+
+    // 4. Start Button CTA
+    const btnW = 380;
+    const btnH = 46;
+    const btnX = this.canvas.width / 2 - btnW / 2;
+    const btnY = 232;
+
+    const btnGrad = this.ctx.createLinearGradient(btnX, 0, btnX + btnW, 0);
+    btnGrad.addColorStop(0, '#0077ed');
+    btnGrad.addColorStop(0.5, '#0071e3');
+    btnGrad.addColorStop(1, '#005bb5');
+    this.ctx.fillStyle = btnGrad;
+    this.ctx.shadowColor = 'rgba(0, 113, 227, 0.5)';
+    this.ctx.shadowBlur = 14;
+    this.drawRoundRect(this.ctx, btnX, btnY, btnW, btnH, 14);
+    this.ctx.fill();
+    this.ctx.shadowBlur = 0;
+
+    this.ctx.fillStyle = '#ffffff';
+    this.ctx.font = 'bold 15px monospace';
+    this.ctx.textAlign = 'center';
+    const startPrompt = this.isMobile
+      ? '▶ TAP TO SPRINT'
       : this.hasGamepad
-        ? 'Controller A jump · B duck · Start pause · night mode at 700'
-        : 'SPACE/↑ jump · ↓ duck / fast-fall · P pause · night mode at 700';
-    this.ctx.fillText(controlsInfo, this.canvas.width / 2, this.canvas.height / 2 + 55);
+        ? '▶ PRESS A (CONTROLLER) TO PLAY'
+        : '▶ PRESS SPACE OR CLICK TO SPRINT';
+    this.ctx.fillText(startPrompt, this.canvas.width / 2, btnY + 28);
+
+    // 5. Controls Info
+    this.ctx.font = '12px monospace';
+    this.ctx.fillStyle = palette.textSecondary;
+    const controlsText = this.isMobile
+      ? '📱 Touch Jump / Duck buttons or swipe canvas'
+      : this.hasGamepad
+        ? '🎮 Controller: A Jump · B Duck/Fast-Fall · Start Pause'
+        : '⌨️ Controls: SPACE/↑ Jump · ↓ Duck/Fast-Fall · P Pause · 🔊 Click Speaker for Audio';
+    this.ctx.fillText(controlsText, this.canvas.width / 2, 312);
+
     this.ctx.restore();
   }
 
