@@ -62,9 +62,9 @@ export const changelogEntries = [
     summary:
       'Bumped unified static asset cache-bust version to 20261029release across scripts/build/asset-version.mjs, service worker shell cache, and static HTML files (replacing legacy query stamps), ensuring aggressive browser caches (especially macOS and iOS Safari) immediately fetch the decluttered Apple-style Debug Runner UI, 2x2 stats matrix, and newly published October 2026 field notes.',
     tags: ['deploy', 'design', 'performance'],
-    sha: null,
-    commitVerified: false,
-    link: null,
+    sha: '5d47f80b',
+    commitVerified: true,
+    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/5d47f80b',
     model: 'Gemini 3.8 Flash',
     ide: 'Google Antigravity IDE',
     purpose:
