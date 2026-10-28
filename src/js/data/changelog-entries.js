@@ -54,6 +54,26 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'asset-version-bump-20261029',
+    date: '2026-10-29',
+    type: 'improvement',
+    title:
+      'Synchronize static asset cache-bust version 20261029release to bust stale browser caches',
+    summary:
+      'Bumped unified static asset cache-bust version to 20261029release across scripts/build/asset-version.mjs, service worker shell cache, and static HTML files (replacing legacy query stamps), ensuring aggressive browser caches (especially macOS and iOS Safari) immediately fetch the decluttered Apple-style Debug Runner UI, 2x2 stats matrix, and newly published October 2026 field notes.',
+    tags: ['deploy', 'design', 'performance'],
+    sha: null,
+    commitVerified: false,
+    link: null,
+    model: 'Gemini 3.8 Flash',
+    ide: 'Google Antigravity IDE',
+    purpose:
+      'Synchronize static asset cache-bust version 20261029release across build and HTML shells to bust stale Safari browser caches',
+    attributionSource: 'commit-message',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
     id: 'october-2026-field-notes-gemini4-and-macbook-touchscreen',
     date: '2026-10-29',
     type: 'release',
@@ -61,9 +81,9 @@ export const changelogEntries = [
     summary:
       'Authored two comprehensive, source-grounded engineering field notes for October 2026, expanding the portfolio archive to 20 articles across 10 balanced months (January–October 2026): (1) "Gemini 4 Argon and Carbon Field Notes: Autonomous Coding, Cyber Defense, and Benchmark Fatigue" breaking down Google DeepMind’s element-named reasoning architectures, 1M context decode, SEC-bench Pro 88.2% and CWE-bench 71.0% patching benchmarks, terminal shortcut mitigation, and sandbox isolation; and (2) "Touchscreen MacBook Pro Field Notes: PROLED XDR, Dual Input, and macOS Ergonomics" reviewing Apple’s historic October 29 release of the first touchscreen Mac, tandem OLED 2,000 nits display physics, M5 Pro/Max silicon, dual-input interaction models, and W3C PointerEvents adaptation. Generated custom 1600x900 WebP lead artworks with cryptographic provenance tracking in blog-media-sources.json, updated blog catalog and sitemap generation, and validated with 100% green unit, API, and critical E2E test suites.',
     tags: ['blog', 'systems', 'design'],
-    sha: 'a6089fec',
+    sha: 'e73416ec',
     commitVerified: true,
-    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/a6089fec',
+    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/e73416ec',
     model: 'Gemini 3.8 Flash',
     ide: 'Google Antigravity IDE',
     purpose:
@@ -80,9 +100,9 @@ export const changelogEntries = [
     summary:
       'Refined the Debug Runner section subtitle (#debug-runner-section) from a verbose run-on feature listing to a clean, punchy Apple-style sentence: "Chrome Dino–style runner — jump, duck, and survive the night cycle."',
     tags: ['design', 'other'],
-    sha: null,
-    commitVerified: false,
-    link: null,
+    sha: '5935a9b9',
+    commitVerified: true,
+    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/5935a9b9',
     model: 'Gemini 3.8 Flash',
     ide: 'Google Antigravity IDE',
     purpose: 'Shorten Debug Runner section subtitle for concise, clean Apple typography.',
