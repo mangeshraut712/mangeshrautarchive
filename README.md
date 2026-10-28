@@ -51,7 +51,7 @@ AssistMe and the site’s integrations.
 | [Projects](https://mangeshraut712.github.io/mangeshrautarchive/#projects)       | GitHub repository cards, real README screenshots, repository facts, filters, and detailed previews                              |
 | [Systems](https://mangeshraut712.github.io/mangeshrautarchive/systems.html)     | Architecture, engineering workflows, case studies, and technical decisions                                                      |
 | [Monitor](https://mangeshraut712.github.io/mangeshrautarchive/monitor.html)     | Service health, operational telemetry, and runtime diagnostics                                                                  |
-| [Writing](https://mangeshraut712.github.io/mangeshrautarchive/blog/)            | 18 articles across January–September 2026, with two articles per month, source references, and credited media                   |
+| [Writing](https://mangeshraut712.github.io/mangeshrautarchive/blog/)            | 20 articles across January–October 2026, with two articles per month, source references, and credited media                     |
 | [Travel](https://mangeshraut712.github.io/mangeshrautarchive/travel.html)       | Interactive travel atlas, route views, location stories, and a globe loaded on request                                          |
 | [Uses](https://mangeshraut712.github.io/mangeshrautarchive/uses.html)           | Development tools, hardware, AI workflow, and the stack behind the site                                                         |
 | [Changelog](https://mangeshraut712.github.io/mangeshrautarchive/changelog.html) | Releases, fixes, model attribution, and verified commit links                                                                   |
@@ -283,7 +283,7 @@ purpose, and verified commit in the [changelog](src/js/data/changelog-entries.js
 | Current contribution                             | Attribution                                                                                                                                                                              |
 | ------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Coding agent                                     | Gemini 3.8 Flash, in Google Antigravity IDE                                                                                                                                              |
-| Purpose                                          | Shorten Debug Runner section subtitle for concise, clean Apple typography                                                                                                                |
+| Purpose                                          | Publish October 2026 field notes on Gemini 4 Argon & Carbon and Touchscreen MacBook Pro with PROLED XDR Display                                                                          |
 | Exact model variant, reasoning mode, token usage | unavailable                                                                                                                                                                              |
 | Portfolio chatbot model                          | Configured separately in [api/model_router.py](api/model_router.py) and [Worker configuration](workers/assistme-chat/wrangler.toml); each live response reports the actual serving model |
 

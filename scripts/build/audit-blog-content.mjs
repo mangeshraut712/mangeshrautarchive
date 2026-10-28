@@ -26,7 +26,7 @@ for (const media of mediaManifest.media) {
   }
 }
 const monthlyCounts = new Map(
-  Array.from({ length: 9 }, (_, index) => [`2026-${String(index + 1).padStart(2, '0')}`, 0])
+  Array.from({ length: 10 }, (_, index) => [`2026-${String(index + 1).padStart(2, '0')}`, 0])
 );
 
 function validDate(value) {
@@ -43,7 +43,7 @@ for (const post of blogPosts) {
     issues.push(`${post.id}: lead media does not match its provenance record`);
   const month = post.date.slice(0, 7);
   if (!monthlyCounts.has(month))
-    issues.push(`${post.id}: outside the January–September 2026 archive`);
+    issues.push(`${post.id}: outside the January–October 2026 archive`);
   monthlyCounts.set(month, (monthlyCounts.get(month) || 0) + 1);
   const words = post.content.trim().split(/\s+/).length;
   const { html, headings } = parseBlogContent(post.content, { addHeadingIds: true });
@@ -65,7 +65,10 @@ for (const post of blogPosts) {
       'missing chart, framework, or data table',
     ],
     [/^### Sources\b/m.test(post.content), 'missing source section'],
-    [/^## September 2026 evidence update$/m.test(post.content), 'missing dated evidence update'],
+    [
+      /^## (?:September|October) 2026 evidence update$/m.test(post.content),
+      'missing dated evidence update',
+    ],
     [sourceLinks.length >= 2, `only ${sourceLinks.length} external evidence links`],
     [
       Boolean(post.updatedAt) &&
@@ -89,7 +92,7 @@ for (const [month, count] of monthlyCounts) {
   if (count !== 2) issues.push(`${month}: expected exactly two articles; found ${count}`);
 }
 
-if (blogPosts.length !== 18) issues.push(`expected 18 articles; found ${blogPosts.length}`);
+if (blogPosts.length !== 20) issues.push(`expected 20 articles; found ${blogPosts.length}`);
 if (new Set(blogPosts.map(post => post.id)).size !== blogPosts.length)
   issues.push('duplicate article id');
 
@@ -99,6 +102,6 @@ if (issues.length) {
   process.exitCode = 1;
 } else {
   console.log(
-    'Blog content audit passed: 18 complete articles, exactly two per month from January through September 2026.'
+    'Blog content audit passed: 20 complete articles, exactly two per month from January through October 2026.'
   );
 }

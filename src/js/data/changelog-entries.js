@@ -54,6 +54,25 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'october-2026-field-notes-gemini4-and-macbook-touchscreen',
+    date: '2026-10-29',
+    type: 'release',
+    title: 'Publish October 2026 field notes on Gemini 4 and Touchscreen MacBook Pro',
+    summary:
+      'Authored two comprehensive, source-grounded engineering field notes for October 2026, expanding the portfolio archive to 20 articles across 10 balanced months (January–October 2026): (1) "Gemini 4 Argon and Carbon Field Notes: Autonomous Coding, Cyber Defense, and Benchmark Fatigue" breaking down Google DeepMind’s element-named reasoning architectures, 1M context decode, SEC-bench Pro 88.2% and CWE-bench 71.0% patching benchmarks, terminal shortcut mitigation, and sandbox isolation; and (2) "Touchscreen MacBook Pro Field Notes: PROLED XDR, Dual Input, and macOS Ergonomics" reviewing Apple’s historic October 29 release of the first touchscreen Mac, tandem OLED 2,000 nits display physics, M5 Pro/Max silicon, dual-input interaction models, and W3C PointerEvents adaptation. Generated custom 1600x900 WebP lead artworks with cryptographic provenance tracking in blog-media-sources.json, updated blog catalog and sitemap generation, and validated with 100% green unit, API, and critical E2E test suites.',
+    tags: ['blog', 'systems', 'design'],
+    sha: 'a6089fec',
+    commitVerified: true,
+    link: 'https://github.com/mangeshraut712/mangeshrautarchive/commit/a6089fec',
+    model: 'Gemini 3.8 Flash',
+    ide: 'Google Antigravity IDE',
+    purpose:
+      'Publish October 2026 field notes on Gemini 4 Argon & Carbon and Touchscreen MacBook Pro with PROLED XDR Display',
+    attributionSource: 'commit-message',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
     id: 'debug-runner-subtitle-concision-20261029',
     date: '2026-10-29',
     type: 'improvement',

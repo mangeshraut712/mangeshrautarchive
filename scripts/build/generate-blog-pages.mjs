@@ -218,12 +218,12 @@ function renderBlogIndex(posts, tags) {
     <main id="main-content" class="blog-index-main">
       <a href="${ASSET_PREFIX}/" class="blog-back-link"><i class="fas fa-arrow-left" aria-hidden="true"></i> Back to portfolio</a>
       <header class="blog-index-header">
-        <p class="blog-index-kicker">September 2026 Edition</p>
+        <p class="blog-index-kicker">October 2026 Edition</p>
         <h1 class="blog-index-title">Field notes on AI, systems, and product engineering</h1>
         <p class="blog-index-lede">Long-form field notes with reader promises, practical workflows, and honest tradeoffs — written for engineers who want signal, not hype. Claims are labeled when they are judgment, and linked when they are facts.</p>
         <div class="blog-index-meta">
           <span>${posts.length} articles</span>
-          <span>Two articles per month · January–September 2026</span>
+          <span>Two articles per month · January–October 2026</span>
           <span>Editorial update ${formatBlogDate(posts[0].updatedAt || posts[0].date)}</span>
         </div>
       </header>

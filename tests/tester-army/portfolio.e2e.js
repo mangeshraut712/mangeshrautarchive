@@ -13,7 +13,7 @@ for (const path of ['/systems', '/monitor', '/travel', '/uses', '/changelog', '/
 
 test('writing archive opens a complete article', async ({ app, browser }) => {
   await app.open('/blog/');
-  await expect(browser.locator('#blog-posts-container .blog-card')).toHaveCount(17);
+  await expect(browser.locator('#blog-posts-container .blog-card')).toHaveCount(19);
   await browser.locator('#blog-posts-container .blog-title-link').first().tap();
   await expect(browser.locator('main h1')).toBeVisible();
   await expect(browser.locator('.article-toc__list a').first()).toHaveAttribute('href', /#/);

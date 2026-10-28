@@ -139,5 +139,21 @@
     "date": "2026-09-29",
     "summary": "Confirmed DevDay announcements, including GPT-6.1 Sol and dots, with an engineering plan for evaluating cost, reliability, and completed work.",
     "tags": ["OpenAI", "DevDay", "AI Agents", "Developer Tools"]
+  },
+  {
+    "id": "gemini-4-argon-and-carbon-deepmind-2026",
+    "title": "Gemini 4 Argon and Carbon Field Notes: Autonomous Coding, Cyber Defense, and Benchmark Fatigue",
+    "date": "2026-10-28",
+    "publishedAt": "2026-10-28",
+    "summary": "A source-grounded breakdown of Google DeepMind’s element-named Gemini 4 releases: 1M context reasoning in Argon, automated vulnerability patching in Carbon, and why enterprise teams must look beyond synthetic leaderboards.",
+    "tags": ["Google DeepMind", "Gemini 4", "AI Reasoning", "Cybersecurity", "Autonomous Agents"]
+  },
+  {
+    "id": "macbook-pro-touchscreen-proled-xdr-2026",
+    "title": "Touchscreen MacBook Pro Field Notes: PROLED XDR, Dual Input, and macOS Ergonomics",
+    "date": "2026-10-29",
+    "publishedAt": "2026-10-29",
+    "summary": "An architectural review of Apple’s first touchscreen Mac: tandem OLED PROLED XDR display, M5 Pro/Max silicon, dual-input ergonomics, and how web and desktop software must adapt to hybrid pointer events.",
+    "tags": ["Apple", "MacBook Pro", "Hardware Engineering", "macOS", "Display Tech"]
   }
 ]

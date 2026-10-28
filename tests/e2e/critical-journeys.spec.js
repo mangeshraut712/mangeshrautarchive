@@ -16,7 +16,7 @@ test('blog archive opens a full article with its lead image', async ({ page }) =
   await gotoSite(page, '/blog/');
   await expect(page.locator('.blog-index-title')).toBeVisible();
   await expect(page.locator('.blog-featured')).toHaveCount(1);
-  await expect(page.locator('#blog-posts-container .blog-card')).toHaveCount(17);
+  await expect(page.locator('#blog-posts-container .blog-card')).toHaveCount(19);
   const featuredHref = await page.locator('.blog-featured-media').getAttribute('href');
   await expect(
     page.locator(`#blog-posts-container .blog-card-media[href="${featuredHref}"]`)
