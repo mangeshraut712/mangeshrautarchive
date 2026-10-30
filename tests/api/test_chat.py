@@ -427,3 +427,13 @@ def test_local_math_and_code_snippets():
     py_res = generate_local_response("hello world in python")
     assert py_res["category"] == "Code"
     assert 'print("Hello, World!")' in py_res["answer"]
+
+
+def test_local_fallback_bounds_adversarial_input():
+    from api.routes.chat import get_local_code_snippet, get_local_math_or_constant_answer
+
+    assert get_local_code_snippet("print(" * 400) is None
+    assert get_local_code_snippet("print hello in Java") is not None
+    assert get_local_math_or_constant_answer("9" * 2000) is None
+    assert "100" in get_local_math_or_constant_answer("what is 25 * 4?")
+    assert get_local_math_or_constant_answer("9" * 100 + " + 1") is None

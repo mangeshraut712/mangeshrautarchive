@@ -197,7 +197,9 @@ def openrouter_request_body(
 
 
 def get_local_code_snippet(query: str) -> Optional[str]:
-    is_hello_world = bool(re.search(r"hello\s*world|print.*hello|first\s*program", query, re.I))
+    lower = query.lower()
+    print_hello = any("print" in line and "hello" in line.split("print", 1)[1] for line in lower.splitlines())
+    is_hello_world = print_hello or bool(re.search(r"hello\s*world|first\s*program", query, re.I))
     is_code_query = is_hello_world or bool(re.search(r"\b(?:code|snippet|syntax|example|program)\b", query, re.I))
     if not is_code_query:
         return None
@@ -354,7 +356,8 @@ def get_local_math_or_constant_answer(query: str) -> Optional[str]:
             "It commonly appears in mathematics, geometry, the Fibonacci sequence, and organic architecture."
         )
     m = re.search(
-        r"(?:what\s*(?:is|'s)\s*)?(-?\d+(?:\.\d+)?)\s*([\+\-\*\/x\^])\s*(-?\d+(?:\.\d+)?)\s*(?:\?|$)", query, re.I
+        r"(?<![\d.])(-?\d{1,30}(?:\.\d{1,30})?)\s{0,20}([+\-*/x^])\s{0,20}"
+        r"(-?\d{1,30}(?:\.\d{1,30})?)\s{0,20}(?:\?|$)", query, re.I
     )
     if m:
         try:

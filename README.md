@@ -282,8 +282,8 @@ purpose, and verified commit in the [changelog](src/js/data/changelog-entries.js
 
 | Current contribution                             | Attribution                                                                                                                                                                              |
 | ------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Coding agent                                     | Gemini 3.8 Flash, in Google Antigravity IDE                                                                                                                                              |
-| Purpose                                          | Synchronize static asset cache-bust version 20261029release across build and HTML shells to bust stale Safari browser caches                                                             |
+| Coding agent                                     | GPT-6.1 Terra / Codex desktop                                                                                                                                                            |
+| Purpose                                          | Correct blog image provenance and source-grounded claims, and address chat regex and dependency security findings                                                                        |
 | Exact model variant, reasoning mode, token usage | unavailable                                                                                                                                                                              |
 | Portfolio chatbot model                          | Configured separately in [api/model_router.py](api/model_router.py) and [Worker configuration](workers/assistme-chat/wrangler.toml); each live response reports the actual serving model |
 
@@ -398,5 +398,5 @@ addition to the outer request, so it is reserved for deep text comparisons and r
 A free model ID does not guarantee access: the observed Omni audio minimum was $0.50 and video
 minimum $1.00; Gemma video succeeded without that balance. These provider restrictions may change.
 
-Regression coverage: 211 API tests, 27 Worker routing/stream boundary tests, frontend unit checks, 16 accessibility tests, and 18 critical Chrome
+Regression coverage: 212 API tests, 27 Worker routing/stream boundary tests, frontend unit checks, 16 accessibility tests, and 18 critical Chrome
 journeys. The attachment journey also runs in Safari. October 3 live checks confirmed text, code, image, video, PDF, and audio processing. Audio recovered through Auto to Gemini 3.8 Flash using Google AI Studio BYOK. OpenRouter reported a zero charge and a provider-side inference cost of $0.002493 for the sample; a zero OpenRouter charge does not prove that BYOK inference is free. A longer conversation caused Auto to return HTTP 402; direct compatible Gemini 3.8 fallback restored the same audio request, so audio now tries that route before Auto. Cloud TTS remains unavailable and Fusion has no successful inference evidence. Coding agent: GPT-6 / Codex in Codex desktop; purpose: live multimodal verification, honest billing metadata, and responsive chatbot review. Exact variant, reasoning mode, and token usage: unavailable.
