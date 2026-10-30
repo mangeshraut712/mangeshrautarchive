@@ -5,13 +5,7 @@
 
 import { sitePath } from '../utils/site-base.js';
 
-const SHARE_MIRRORS = [
-  { name: 'GitHub Pages (live)', url: 'https://mangeshraut712.github.io/mangeshrautarchive/' },
-  { name: 'Custom domain (Vercel)', url: 'https://mangeshraut.pro' },
-  { name: 'Vercel app', url: 'https://mraut.vercel.app' },
-];
-
-let activeMirrorUrl = SHARE_MIRRORS[0].url;
+const PUBLISHED_SITE_URL = 'https://mangeshraut712.github.io/mangeshrautarchive/';
 const SHARE_TOGGLE_ID = 'website-share-toggle';
 const SHARE_TOGGLE_LABEL = 'Share website';
 const SHARE_TITLE = 'Mangesh Raut Archive';
@@ -89,13 +83,7 @@ const createShareMarkup = () => `
     <div class="website-share-card" aria-describedby="website-share-description">
       <div class="website-share-card-top">
         <div class="website-share-mirrors" role="tablist" aria-label="Select website mirror">
-          ${SHARE_MIRRORS.map(
-            (mirror, idx) => `
-          <div class="share-mirror-tab ${idx === 0 ? 'active' : ''}" role="tab" aria-selected="${idx === 0 ? 'true' : 'false'}" tabindex="0" data-mirror-idx="${idx}">
-            ${mirror.name.split(' ')[0]}
-          </div>
-        `
-          ).join('')}
+          <p class="website-share-origin">Live on GitHub Pages</p>
         </div>
         <button class="website-share-close" type="button" aria-label="Close share options" data-share-close>
           <i class="fa-solid fa-xmark" aria-hidden="true"></i>
@@ -106,7 +94,7 @@ const createShareMarkup = () => `
       <p id="website-share-description" class="sr-only">Scan the QR code or choose a sharing option.</p>
       <div class="website-share-qr-section">
         <div class="website-share-qr-shell">
-          <img class="website-share-qr" data-src="${getQrCodeUrl(activeMirrorUrl)}" alt="QR code to open the selected portfolio website" width="192" height="192" loading="lazy" decoding="async" onerror="this.onerror=null;this.closest('.website-share-qr-section')?.classList.add('is-hidden');">
+          <img class="website-share-qr" data-src="${getQrCodeUrl(PUBLISHED_SITE_URL)}" alt="QR code to open the published portfolio website" width="192" height="192" loading="lazy" decoding="async" onerror="this.onerror=null;this.closest('.website-share-qr-section')?.classList.add('is-hidden');">
           <span class="website-share-qr-logo" aria-hidden="true">
             <img src="${sitePath('assets/images/profile.webp')}" alt="" width="32" height="32" loading="lazy" decoding="async">
           </span>
@@ -125,17 +113,17 @@ const createShareMarkup = () => `
           <i class="fa-solid fa-arrow-up-from-bracket" aria-hidden="true"></i>
         </div>
 
-        <a class="share-action-row" data-social="X" href="${SHARE_OPTIONS[0].href(activeMirrorUrl)}" target="_blank" rel="noopener noreferrer">
+        <a class="share-action-row" data-social="X" href="${SHARE_OPTIONS[0].href(PUBLISHED_SITE_URL)}" target="_blank" rel="noopener noreferrer">
           <span>Share on X (Twitter)</span>
           <i class="fa-brands fa-x-twitter" aria-hidden="true"></i>
         </a>
 
-        <a class="share-action-row" data-social="LinkedIn" href="${SHARE_OPTIONS[1].href(activeMirrorUrl)}" target="_blank" rel="noopener noreferrer">
+        <a class="share-action-row" data-social="LinkedIn" href="${SHARE_OPTIONS[1].href(PUBLISHED_SITE_URL)}" target="_blank" rel="noopener noreferrer">
           <span>Share on LinkedIn</span>
           <i class="fa-brands fa-linkedin-in" aria-hidden="true"></i>
         </a>
 
-        <a class="share-action-row" data-social="Email" href="${SHARE_OPTIONS[2].href(activeMirrorUrl)}" target="_blank" rel="noopener noreferrer">
+        <a class="share-action-row" data-social="Email" href="${SHARE_OPTIONS[2].href(PUBLISHED_SITE_URL)}" target="_blank" rel="noopener noreferrer">
           <span>Send via Email</span>
           <i class="fa-solid fa-envelope" aria-hidden="true"></i>
         </a>
@@ -198,7 +186,7 @@ async function shareWithSystemSheet(status) {
   const payload = {
     title: SHARE_TITLE,
     text: SHARE_TEXT,
-    url: activeMirrorUrl,
+    url: PUBLISHED_SITE_URL,
   };
 
   if (typeof navigator.canShare === 'function') {
@@ -227,12 +215,12 @@ async function shareWithSystemSheet(status) {
 
 async function copyShareUrl(status) {
   try {
-    await navigator.clipboard.writeText(activeMirrorUrl);
+    await navigator.clipboard.writeText(PUBLISHED_SITE_URL);
     status.textContent = 'Portfolio link copied.';
     return true;
   } catch {
     const tempInput = document.createElement('input');
-    tempInput.value = activeMirrorUrl;
+    tempInput.value = PUBLISHED_SITE_URL;
     document.body.appendChild(tempInput);
     tempInput.select();
     const copied = document.execCommand?.('copy') || false;
@@ -334,43 +322,6 @@ async function initShareWidget() {
       }
     });
   };
-
-  // Mirror tabs switcher implementation
-  const tabs = dialog.querySelectorAll('.share-mirror-tab');
-  tabs.forEach(tab => {
-    const activateTab = () => {
-      tabs.forEach(t => {
-        t.classList.remove('active');
-        t.setAttribute('aria-selected', 'false');
-      });
-      tab.classList.add('active');
-      tab.setAttribute('aria-selected', 'true');
-      const idx = parseInt(tab.dataset.mirrorIdx, 10);
-      const mirror = SHARE_MIRRORS[idx];
-      activeMirrorUrl = mirror.url;
-
-      // Update QR Code image source dynamically
-      const qrImg = dialog.querySelector('.website-share-qr');
-      if (qrImg) {
-        qrImg.src = getQrCodeUrl(mirror.url);
-      }
-
-      // Update social links href values dynamically
-      const updateSocialLink = (socialName, hrefGen) => {
-        const link = dialog.querySelector(`.share-action-row[data-social="${socialName}"]`);
-        if (link) {
-          link.href = hrefGen(mirror.url);
-        }
-      };
-
-      updateSocialLink('X', SHARE_OPTIONS[0].href);
-      updateSocialLink('LinkedIn', SHARE_OPTIONS[1].href);
-      updateSocialLink('Email', SHARE_OPTIONS[2].href);
-    };
-
-    tab.addEventListener('click', activateTab);
-    handleKeyboardActivation(tab, activateTab);
-  });
 
   const triggerCopy = async () => {
     await copyShareUrl(status);

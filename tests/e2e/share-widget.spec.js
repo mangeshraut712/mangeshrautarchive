@@ -35,7 +35,7 @@ test.describe('Share widget cross-browser', () => {
     await openShareDialog(page);
   });
 
-  test('share card opens with QR, copy row, and mirror tabs', async ({ page }) => {
+  test('share card opens with QR, copy row, and the published-site label', async ({ page }) => {
     await gotoSite(page);
 
     await expect(page.locator('.a11y-toolbar')).toBeVisible();
@@ -50,7 +50,8 @@ test.describe('Share widget cross-browser', () => {
 
     await expect(page.locator('.website-share-qr')).toBeVisible();
     await expect(page.locator('#website-share-copy')).toBeVisible();
-    await expect(page.locator('.share-mirror-tab')).toHaveCount(3);
+    await expect(page.locator('.website-share-origin')).toHaveText('Live on GitHub Pages');
+    await expect(page.locator('.share-mirror-tab')).toHaveCount(0);
 
     const dialogState = await page.evaluate(() => {
       const dialog = document.getElementById('website-share-dialog');
@@ -77,7 +78,7 @@ test.describe('Share widget cross-browser', () => {
     await expect(page.locator('#website-share-dialog')).not.toHaveClass(/active/);
   });
 
-  test('mirror tabs update QR code source', async ({ page }) => {
+  test('QR code uses the published GitHub Pages URL', async ({ page }) => {
     await gotoSite(page);
     await openShareDialog(page);
 
@@ -86,40 +87,35 @@ test.describe('Share widget cross-browser', () => {
       encodeURIComponent('https://mangeshraut712.github.io/mangeshrautarchive/')
     );
 
-    await page.locator('.share-mirror-tab[data-mirror-idx="1"]').click();
-    const vercelSrc = await page.locator('.website-share-qr').getAttribute('src');
-    expect(vercelSrc).toContain(encodeURIComponent('https://mangeshraut.pro'));
-    expect(vercelSrc).not.toBe(initialSrc);
+    expect(initialSrc).not.toContain(encodeURIComponent('https://mangeshraut.pro'));
+    expect(initialSrc).not.toContain(encodeURIComponent('https://mraut.vercel.app'));
   });
 });
 
 test.describe('Share widget mobile layout', () => {
   test.use({ viewport: { width: 440, height: 956 }, isMobile: true, hasTouch: true });
 
-  test('close button does not overlap mirror tabs', async ({ page }) => {
+  test('close button does not overlap the published-site label', async ({ page }) => {
     await gotoSite(page);
     await openShareDialog(page);
 
     const layout = await page.evaluate(() => {
       const close = document.querySelector('.website-share-close')?.getBoundingClientRect();
-      const tabs = [...document.querySelectorAll('.share-mirror-tab')].map(tab =>
-        tab.getBoundingClientRect()
-      );
-      const lastTab = tabs[tabs.length - 1];
+      const origin = document.querySelector('.website-share-origin')?.getBoundingClientRect();
       const hits = (a, b) =>
         a &&
         b &&
         !(a.right <= b.left || a.left >= b.right || a.bottom <= b.top || a.top >= b.bottom);
       return {
-        overlapsLastTab: hits(close, lastTab),
+        overlapsOrigin: hits(close, origin),
         closeLeft: close?.left,
-        lastTabRight: lastTab?.right,
-        clearance: close && lastTab ? close.left - lastTab.right : null,
+        originRight: origin?.right,
+        clearance: close && origin ? close.left - origin.right : null,
         hasHeaderRow: !!document.querySelector('.website-share-card-top'),
       };
     });
 
-    expect(layout.overlapsLastTab).toBe(false);
+    expect(layout.overlapsOrigin).toBe(false);
     expect(layout.hasHeaderRow).toBe(true);
     if (layout.clearance !== null) {
       expect(layout.clearance).toBeGreaterThanOrEqual(4);

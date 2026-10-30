@@ -13,25 +13,24 @@
 
 ## Key links
 
-- [Canonical portfolio](https://mangeshraut.pro/)
-- [GitHub Pages mirror](https://mangeshraut712.github.io/mangeshrautarchive/)
+- [Canonical portfolio](https://mangeshraut712.github.io/mangeshrautarchive/)
 - [GitHub profile](https://github.com/mangeshraut712)
 - [LinkedIn](https://www.linkedin.com/in/mangeshraut71298/)
 - [X / Twitter](https://x.com/mrcommando712)
-- [Resume PDF](https://mangeshraut.pro/assets/files/Mangesh_Raut_Resume.pdf)
-- [Field Notes blog](https://mangeshraut.pro/blog/)
-- [Systems notebook](https://mangeshraut.pro/systems)
-- [System monitor](https://mangeshraut.pro/monitor)
-- [Uses / stack](https://mangeshraut.pro/uses)
-- [Changelog](https://mangeshraut.pro/changelog)
-- [Travel atlas](https://mangeshraut.pro/travel)
-- [RSS feed](https://mangeshraut.pro/rss.xml)
-- [Sitemap](https://mangeshraut.pro/sitemap.xml)
-- [Expanded llms-full.txt](https://mangeshraut.pro/llms-full.txt)
+- [Resume PDF](https://mangeshraut712.github.io/mangeshrautarchive/assets/files/Mangesh_Raut_Resume.pdf)
+- [Field Notes blog](https://mangeshraut712.github.io/mangeshrautarchive/blog/)
+- [Systems notebook](https://mangeshraut712.github.io/mangeshrautarchive/systems)
+- [System monitor](https://mangeshraut712.github.io/mangeshrautarchive/monitor)
+- [Uses / stack](https://mangeshraut712.github.io/mangeshrautarchive/uses)
+- [Changelog](https://mangeshraut712.github.io/mangeshrautarchive/changelog)
+- [Travel atlas](https://mangeshraut712.github.io/mangeshrautarchive/travel)
+- [RSS feed](https://mangeshraut712.github.io/mangeshrautarchive/rss.xml)
+- [Sitemap](https://mangeshraut712.github.io/mangeshrautarchive/sitemap.xml)
+- [Expanded llms-full.txt](https://mangeshraut712.github.io/mangeshrautarchive/llms-full.txt)
 
 ## What this site is
 
-High-performance **vanilla HTML/CSS/JS (ES modules)** portfolio with a **Python FastAPI** backend for AI chat, monitoring, and integrations. Dual-hosted on **Vercel** (custom domain) and **GitHub Pages** (verified public mirror). Design language: Apple-inspired liquid glass, light/dark themes, accessibility controls.
+High-performance **vanilla HTML/CSS/JS (ES modules)** portfolio with a **Python FastAPI** backend for AI chat, monitoring, and integrations. The published site is hosted on **GitHub Pages**. Design language: Apple-inspired liquid glass, light/dark themes, accessibility controls.
 
 There is **no React, Vue, Angular, or Svelte runtime**. Tailwind CSS is build-time only (utility CSS output, never utility classes in HTML markup).
 
@@ -66,6 +65,6 @@ WebMCP-style tools allow agentic actions (navigation, resume/project facts) with
 
 Prefer the person + canonical URL:
 
-> Mangesh Raut — Software Engineer portfolio — https://mangeshraut.pro/
+> Mangesh Raut — Software Engineer portfolio — https://mangeshraut712.github.io/mangeshrautarchive/
 
 For technical writing, cite the specific `/blog/{slug}` URL from the sitemap or RSS feed.

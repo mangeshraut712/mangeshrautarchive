@@ -318,6 +318,27 @@ html.dark .website-share-mirrors {
   border: 1px solid rgba(255, 255, 255, 0.12) !important;
 }
 
+.website-share-origin {
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  padding: 0 0.625rem !important;
+  color: #636366 !important;
+  font-family: var(--font-text) !important;
+  font-size: 0.78rem !important;
+  font-weight: 590 !important;
+  letter-spacing: -0.01em !important;
+  line-height: 30px !important;
+  overflow: hidden !important;
+  text-align: center !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+html.dark .website-share-origin {
+  color: #98989d !important;
+}
+
 /* Segment mirror tab */
 .share-mirror-tab {
   flex: 1 1 0 !important;

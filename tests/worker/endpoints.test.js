@@ -41,7 +41,16 @@ test('GET /api/health returns operational status', async () => {
   assert.equal(data.host, 'cloudflare-worker');
 });
 
-test('GET /api/chat/health returns chat service health', async () => {
+test('GET /api/chat/health returns chat service health', async t => {
+  t.mock.method(
+    globalThis,
+    'fetch',
+    async () =>
+      new Response(JSON.stringify({ data: [] }), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' },
+      })
+  );
   const req = new Request('https://worker.local/api/chat/health', { method: 'GET' });
   const res = await worker.fetch(req, env);
   assert.equal(res.status, 200);
