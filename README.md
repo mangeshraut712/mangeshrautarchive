@@ -280,12 +280,12 @@ Mangesh Raut maintains this portfolio with contributions from Codex, Claude Code
 Cursor, and GitHub Copilot. Shipped changes record the exposed agent/model family, engineering
 purpose, and verified commit in the [changelog](src/js/data/changelog-entries.js).
 
-| Current contribution                             | Attribution                                                                                                                                                                              |
-| ------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Coding agent                                     | Codex in Codex workspace                                                                                                                                                                 |
-| Purpose                                          | Repair confirmed GitHub Pages surface links and KaTeX assets, preserve monitor accessibility, and route scheduled data updates through reviewable draft pull requests                    |
-| Exact model variant, reasoning mode, token usage | unavailable                                                                                                                                                                              |
-| Portfolio chatbot model                          | Configured separately in [api/model_router.py](api/model_router.py) and [Worker configuration](workers/assistme-chat/wrangler.toml); each live response reports the actual serving model |
+| Current contribution                             | Attribution                                                                                                                                                                                                                              |
+| ------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Coding agent                                     | Codex in Codex workspace                                                                                                                                                                                                                 |
+| Purpose                                          | Repair confirmed GitHub Pages surface links and KaTeX assets, preserve monitor accessibility, route scheduled data updates through reviewable draft pull requests, harden draft-PR action pinning, and use literal regression validation |
+| Exact model variant, reasoning mode, token usage | unavailable                                                                                                                                                                                                                              |
+| Portfolio chatbot model                          | Configured separately in [api/model_router.py](api/model_router.py) and [Worker configuration](workers/assistme-chat/wrangler.toml); each live response reports the actual serving model                                                 |
 
 **AssistMe verification — October 3, 2026:** GPT-6 / Codex in Codex desktop; purpose: live multimodal verification, accurate model labels, billing provenance, and responsive chatbot reliability. Exact variant, reasoning mode, and token usage: unavailable.
 

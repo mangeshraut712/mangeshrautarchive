@@ -29,6 +29,9 @@ const automationWorkflows = [
   },
 ];
 
+const CREATE_PULL_REQUEST_ACTION =
+  'peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1'; // v8
+
 function createGitHubFetch({ followers = 7 } = {}) {
   return async input => {
     const url = new URL(String(input));
@@ -125,7 +128,7 @@ test('scheduled data workflows create or update one reviewable draft PR instead 
 
   assert.equal(checkoutStep.uses, 'actions/checkout@v7');
   assert.equal(setupNodeStep.uses, 'actions/setup-node@v7');
-  assert.equal(createPullRequestStep.uses, 'peter-evans/create-pull-request@v8');
+  assert.equal(createPullRequestStep.uses, CREATE_PULL_REQUEST_ACTION);
 
   for (const { path, jobName, branch, changedPath } of automationWorkflows) {
     const source = readFileSync(path, 'utf8');
@@ -137,7 +140,7 @@ test('scheduled data workflows create or update one reviewable draft PR instead 
       contents: 'write',
       'pull-requests': 'write',
     });
-    assert.equal(pullRequestStep.uses, 'peter-evans/create-pull-request@v8');
+    assert.equal(pullRequestStep.uses, CREATE_PULL_REQUEST_ACTION);
     assert.equal(pullRequestStep.with.branch, branch);
     assert.equal(pullRequestStep.with.draft, 'always-true');
     assert.equal(pullRequestStep.with['add-paths'], changedPath);

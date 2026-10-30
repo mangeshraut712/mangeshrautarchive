@@ -14,6 +14,22 @@ function readRepositoryFile(relativePath) {
   return readFileSync(resolve(repoRoot, relativePath), 'utf8');
 }
 
+function assertIncludesLiteral(content, literal, label) {
+  assert.ok(content.includes(literal), `Expected ${label} to include ${literal}`);
+}
+
+test('literal published URL validation rejects a lookalike host', () => {
+  assert.throws(
+    () =>
+      assertIncludesLiteral(
+        'https://mangeshraut712.githubXio/mangeshrautarchive',
+        liveSiteUrl,
+        'lookalike Pages host'
+      ),
+    /Expected lookalike Pages host to include/u
+  );
+});
+
 test('published metadata and discovery files use the active GitHub Pages host', () => {
   const publishedFiles = [
     'src/index.html',
@@ -39,7 +55,7 @@ test('published metadata and discovery files use the active GitHub Pages host', 
   for (const relativePath of publishedFiles) {
     const source = readRepositoryFile(relativePath);
     assert.doesNotMatch(source, /https:\/\/(?:www\.)?mangeshraut\.pro\b/);
-    assert.match(source, new RegExp(liveSiteUrl.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
+    assertIncludesLiteral(source, liveSiteUrl, relativePath);
   }
 });
 
@@ -49,7 +65,7 @@ test('KaTeX stylesheet ships every referenced font from the installed version', 
   const fontNames = [...css.matchAll(/url\(fonts\/(KaTeX_[^)]+)\)/g)].map(match => match[1]);
 
   assert.ok(fontNames.length > 0, 'KaTeX stylesheet must reference self-hosted fonts');
-  assert.match(css, new RegExp(`katex-version:after\\{content:\\"${packageVersion}\\"`));
+  assertIncludesLiteral(css, `katex-version:after{content:"${packageVersion}"`, 'KaTeX stylesheet');
 
   for (const fontName of new Set(fontNames)) {
     assert.equal(
@@ -69,7 +85,7 @@ test('the monitor All Views tab only controls panels that exist', () => {
   assert.ok(controls.length > 0, 'Expected All Views to declare the panels it controls');
 
   for (const panelId of controls) {
-    assert.match(markup, new RegExp(`\\bid="${panelId}"`));
+    assertIncludesLiteral(markup, `id="${panelId}"`, `monitor panel ${panelId}`);
   }
 });
 
@@ -83,7 +99,7 @@ test('generated case studies keep public metadata on the active GitHub Pages hos
     for (const filename of readdirSync(caseStudyDirectory)) {
       const markup = readFileSync(resolve(caseStudyDirectory, filename), 'utf8');
       assert.doesNotMatch(markup, /https:\/\/(?:www\.)?mangeshraut\.pro\b/);
-      assert.match(markup, new RegExp(liveSiteUrl.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
+      assertIncludesLiteral(markup, liveSiteUrl, filename);
     }
   } finally {
     rmSync(outputDirectory, { recursive: true, force: true });
