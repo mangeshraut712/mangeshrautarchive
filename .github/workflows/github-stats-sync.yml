@@ -8,6 +8,7 @@ on:
 
 permissions:
   contents: write
+  pull-requests: write
 
 concurrency:
   group: github-stats-sync
@@ -24,34 +25,51 @@ jobs:
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+          persist-credentials: false
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
           cache-dependency-path: package-lock.json
 
       - name: Install Dependencies
-        run: npm install --no-audit --no-fund
+        run: npm ci --ignore-scripts --no-audit --no-fund
 
       - name: Run GitHub Stats Sync
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: node scripts/integrations/sync-github-stats.mjs
 
-      - name: Commit & Push changes if updated
+      # A fixed head branch updates one draft PR instead of bypassing protected main.
+      # The action exits without a PR when the sync leaves no diff.
+      - name: Create or update draft stats sync PR
+        id: create-pull-request
+        uses: peter-evans/create-pull-request@v8
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: automation/github-stats-sync
+          delete-branch: true
+          commit-message: 'chore(data): refresh GitHub stats cache'
+          title: 'chore(data): refresh GitHub stats cache'
+          body: |
+            Refreshes the public GitHub statistics cache from the GitHub API.
+
+            This draft is intentionally reviewable and must be merged through the repository's protected-branch process.
+          draft: always-true
+          add-paths: src/js/data/github-stats.json
+
+      - name: Report sync result
+        env:
+          OPERATION: ${{ steps.create-pull-request.outputs.pull-request-operation }}
+          PR_URL: ${{ steps.create-pull-request.outputs.pull-request-url }}
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          if ! git diff --quiet src/js/data/github-stats.json; then
-            git add src/js/data/github-stats.json
-            git commit -m "chore(data): auto-sync GitHub stats cache [skip ci]"
-            git push origin main
-            echo "GitHub stats updated and pushed."
+          if [ "${OPERATION}" = "none" ]; then
+            echo "GitHub stats cache unchanged; no pull request was created or updated."
           else
-            echo "No changes in GitHub stats."
+            echo "Draft pull request ${OPERATION}: ${PR_URL}"
           fi

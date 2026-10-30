@@ -54,6 +54,26 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'published-surface-and-protected-sync-repair-20261030',
+    date: '2026-10-30',
+    type: 'fix',
+    title: 'Repair Pages surface integrity and protected data synchronization',
+    summary:
+      'Corrected source and generated discovery metadata, fallback portfolio links, and the share widget to use the confirmed GitHub Pages site; self-hosted the KaTeX font files referenced by the installed stylesheet; and aligned the monitor All Views control with the panels it actually reveals. Scheduled GitHub-stat, analytics reach snapshot, and Panchang updaters now create or update fixed-branch draft pull requests instead of attempting protected-main updates; the GitHub-stat updater also retains its cache when public data is unchanged. Added deterministic regression coverage for the published surface and sync workflow behavior.',
+    tags: ['design', 'deploy', 'monitor', 'other'],
+    sha: null,
+    commitVerified: false,
+    link: null,
+    model: 'Codex',
+    ide: 'Codex workspace',
+    purpose:
+      'Repair confirmed published-site links and self-hosted math assets, preserve accessible monitor behavior, and route scheduled data updates through reviewable protected-branch workflows.',
+    attributionSource: 'not-recorded',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+    status: 'unreleased',
+  },
+  {
     id: 'asset-version-bump-20261029',
     date: '2026-10-29',
     type: 'improvement',

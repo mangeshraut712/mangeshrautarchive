@@ -282,8 +282,8 @@ purpose, and verified commit in the [changelog](src/js/data/changelog-entries.js
 
 | Current contribution                             | Attribution                                                                                                                                                                              |
 | ------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Coding agent                                     | Gemini 3.8 Flash, in Google Antigravity IDE                                                                                                                                              |
-| Purpose                                          | Synchronize static asset cache-bust version 20261029release across build and HTML shells to bust stale Safari browser caches                                                             |
+| Coding agent                                     | Codex in Codex workspace                                                                                                                                                                 |
+| Purpose                                          | Repair confirmed GitHub Pages surface links and KaTeX assets, preserve monitor accessibility, and route scheduled data updates through reviewable draft pull requests                    |
 | Exact model variant, reasoning mode, token usage | unavailable                                                                                                                                                                              |
 | Portfolio chatbot model                          | Configured separately in [api/model_router.py](api/model_router.py) and [Worker configuration](workers/assistme-chat/wrangler.toml); each live response reports the actual serving model |
 
