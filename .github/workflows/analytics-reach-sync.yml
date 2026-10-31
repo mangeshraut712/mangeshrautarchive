@@ -3,7 +3,8 @@
 # Keeps the "Portfolio Reach" number accurate while Vercel is offline. Boots the
 # FastAPI backend with the GA4 service account, re-exports the edge snapshot
 # consumed by the Cloudflare Worker (workers/assistme-chat/src/edge-data-snapshot.js),
-# commits it, and dispatches the worker deploy so GitHub Pages shows fresh numbers.
+# then opens or updates a reviewable draft pull request. The normal main-branch
+# worker deployment runs only after that PR is approved and merged.
 #
 # Required secret:
 #   GOOGLE_ANALYTICS_SERVICE_ACCOUNT_JSON — GA4 service-account key JSON. The
@@ -24,7 +25,7 @@ on:
 
 permissions:
   contents: write
-  actions: write
+  pull-requests: write
 
 concurrency:
   group: analytics-reach-sync
@@ -50,14 +51,14 @@ jobs:
 
       - name: Checkout
         if: steps.gate.outputs.run == 'true'
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
-          token: ${{ secrets.GH_PAT || secrets.GITHUB_TOKEN }}
           fetch-depth: 0
+          persist-credentials: false
 
       - name: Setup Node.js
         if: steps.gate.outputs.run == 'true'
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: '22'
 
@@ -111,45 +112,31 @@ jobs:
             kill "$(cat /tmp/uvicorn.pid)" 2>/dev/null || true
           fi
 
-      - name: Commit & dispatch worker deploy if changed
+      - name: Create or update draft reach snapshot PR
+        id: create-pull-request
+        if: steps.gate.outputs.run == 'true'
+        uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: automation/analytics-reach-sync
+          delete-branch: true
+          commit-message: 'chore(analytics): refresh edge reach snapshot from GA4'
+          title: 'chore(analytics): refresh edge reach snapshot from GA4'
+          body: |
+            Refreshes the edge reach snapshot from the configured GA4 source.
+
+            This draft is intentionally reviewable and must be merged through the repository's protected-branch process before the worker deploy runs.
+          draft: always-true
+          add-paths: workers/assistme-chat/src/edge-data-snapshot.js
+
+      - name: Report reach sync result
         if: steps.gate.outputs.run == 'true'
         env:
-          GH_TOKEN: ${{ secrets.GH_PAT || secrets.GITHUB_TOKEN }}
-          PUSH_TOKEN: ${{ secrets.GH_PAT || secrets.GITHUB_TOKEN }}
+          OPERATION: ${{ steps.create-pull-request.outputs.pull-request-operation }}
+          PR_URL: ${{ steps.create-pull-request.outputs.pull-request-url }}
         run: |
-          set -euo pipefail
-          SNAPSHOT="workers/assistme-chat/src/edge-data-snapshot.js"
-          npx prettier --write "$SNAPSHOT"
-          if git diff --quiet -- "$SNAPSHOT"; then
-            echo "Reach snapshot unchanged — nothing to publish."
-            exit 0
-          fi
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add "$SNAPSHOT"
-          git commit -m "chore(analytics): refresh edge reach snapshot from GA4 [skip ci]"
-
-          # Push to main using token (bypasses branch protection since enforce_admins is false for PAT)
-          PUSH_URL="https://x-access-token:${PUSH_TOKEN}@github.com/${{ github.repository }}.git"
-          if git push "$PUSH_URL" HEAD:main; then
-            echo "Direct push to main succeeded."
+          if [ "${OPERATION}" = "none" ]; then
+            echo "Reach snapshot unchanged; no pull request was created or updated."
           else
-            echo "Direct push to main rejected; creating sync PR via gh..."
-            BRANCH="chore/reach-sync-$(date +%s)"
-            git checkout -b "$BRANCH"
-            git push "$PUSH_URL" "$BRANCH"
-            PR_URL=$(gh pr create --title "chore(analytics): refresh edge reach snapshot from GA4 [skip ci]" \
-              --body "Automated edge reach snapshot refresh from GA4." \
-              --head "$BRANCH" --base main)
-            echo "Opened PR: $PR_URL"
-            gh pr merge "$PR_URL" --squash --admin || true
+            echo "Draft pull request ${OPERATION}: ${PR_URL}"
           fi
-
-          # Dispatch worker deploy to ensure edge updates immediately
-          gh workflow run deploy-chat-worker.yml --ref main || \
-            echo "::warning::Could not dispatch deploy-chat-worker.yml; deploy it manually."
-          {
-            echo "## Portfolio reach sync"
-            echo "- Snapshot updated with live GA4 reach."
-            echo "- Cloudflare Worker deploy triggered."
-          } >> "$GITHUB_STEP_SUMMARY"

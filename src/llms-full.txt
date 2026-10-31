@@ -1,5 +1,5 @@
 # Mangesh Raut — Expanded site map for AI agents (llms-full.txt)
-# Companion to https://mangeshraut.pro/llms.txt · Updated 2026-10-28
+# Companion to https://mangeshraut712.github.io/mangeshrautarchive/llms.txt · Updated 2026-10-28
 
 ## Homepage sections (SPA anchors on /)
 
@@ -18,17 +18,17 @@
 
 ## Case studies
 
-- https://mangeshraut.pro/case-studies/portfolio
-- https://mangeshraut.pro/case-studies/hindai
-- https://mangeshraut.pro/case-studies/ces-energy
-- https://mangeshraut.pro/case-studies/assistme-va
-- https://mangeshraut.pro/case-studies/bug-tracker
+- https://mangeshraut712.github.io/mangeshrautarchive/case-studies/portfolio
+- https://mangeshraut712.github.io/mangeshrautarchive/case-studies/hindai
+- https://mangeshraut712.github.io/mangeshrautarchive/case-studies/ces-energy
+- https://mangeshraut712.github.io/mangeshrautarchive/case-studies/assistme-va
+- https://mangeshraut712.github.io/mangeshrautarchive/case-studies/bug-tracker
 
 ## Field notes (blog)
 
-Canonical index: https://mangeshraut.pro/blog
+Canonical index: https://mangeshraut712.github.io/mangeshrautarchive/blog
 
-Articles (all 18 published slugs under /blog/):
+Articles (all 20 published slugs under /blog/):
 
 - apple-september-event-2026
 - openai-devday-2026
@@ -48,6 +48,8 @@ Articles (all 18 published slugs under /blog/):
 - wispr-flow-dictation-2026
 - openclaw-revolution-2026
 - google-ai-ecosystem-2026
+- gemini-4-argon-and-carbon-deepmind-2026
+- macbook-pro-touchscreen-proled-xdr-2026
 
 ## API surfaces (not for training scrapes)
 
@@ -58,7 +60,7 @@ Articles (all 18 published slugs under /blog/):
 
 - Liquid glass materials (clear / balanced / tinted) with solid-surface fallbacks
 - Theme: light / dark / high contrast / reduced transparency / reduced motion
-- Dual-host parity: Vercel primary, GitHub Pages mirror
+- Published host: GitHub Pages
 - Offline: service worker file present; registration policy managed in bootstrap (unregister-safe for dual-host)
 
 ## Contact for corrections

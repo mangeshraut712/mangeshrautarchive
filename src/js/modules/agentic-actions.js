@@ -1059,11 +1059,11 @@ export class AgenticActionHandler {
     return {
       success: false,
       message:
-        '📄 Resume PDF not found. Please:\n\n1. Click the "Download Resume" button on the homepage\n2. Email mbr63@drexel.edu to request a copy\n3. View the online portfolio at https://mangeshraut.pro',
+        '📄 Resume PDF not found. Please:\n\n1. Click the "Download Resume" button on the homepage\n2. Email mbr63@drexel.edu to request a copy\n3. View the online portfolio at https://mangeshraut712.github.io/mangeshrautarchive',
       action: 'download_resume',
       alternative: {
         email: 'mbr63@drexel.edu',
-        website: 'https://mangeshraut.pro',
+        website: 'https://mangeshraut712.github.io/mangeshrautarchive',
       },
     };
   }

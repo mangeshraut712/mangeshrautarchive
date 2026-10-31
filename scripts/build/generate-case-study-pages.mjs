@@ -14,11 +14,9 @@ import {
 } from './asset-version.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const SITE_URL = (
-  process.env.OPENROUTER_SITE_URL ||
-  process.env.PAGES_SITE_URL ||
-  CANONICAL_SITE_URL
-).replace(/\/$/, '');
+// Public discovery metadata follows the confirmed static-site canonical URL.
+// OpenRouter configuration must not redirect it to an unavailable app host.
+const SITE_URL = CANONICAL_SITE_URL.replace(/\/$/, '');
 const ASSET_PREFIX = '..';
 
 function escapeHTML(value) {
@@ -143,12 +141,12 @@ function pageShell({ title, description, canonical, body }) {
         "author": {
           "@type": "Person",
           "name": "Mangesh Raut",
-          "url": "https://mangeshraut.pro"
+          "url": "${SITE_URL}/"
         },
         "publisher": {
           "@type": "Person",
           "name": "Mangesh Raut",
-          "url": "https://mangeshraut.pro"
+          "url": "${SITE_URL}/"
         }
       }
     </script>

@@ -7,6 +7,7 @@ on:
 
 permissions:
   contents: write
+  pull-requests: write
 
 concurrency:
   group: kalnirnay-panchang-sync
@@ -17,22 +18,39 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
-          token: ${{ secrets.GH_PAT || secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+          persist-credentials: false
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
       - name: Fetch the official dated Panchang
         run: python scripts/integrations/sync-kalnirnay-panchang.py
-      - name: Publish changed official values
+      # A fixed head branch keeps daily source updates in one reviewable draft PR.
+      - name: Create or update draft Panchang sync PR
+        id: create-pull-request
+        uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: automation/kalnirnay-panchang-sync
+          delete-branch: true
+          commit-message: 'chore(calendar): refresh official daily Panchang'
+          title: 'chore(calendar): refresh official daily Panchang'
+          body: |
+            Refreshes the official daily Panchang source data.
+
+            This draft is intentionally reviewable and must be merged through the repository's protected-branch process.
+          draft: always-true
+          add-paths: src/assets/data/kalnirnay-panchang.json
+
+      - name: Report Panchang sync result
+        env:
+          OPERATION: ${{ steps.create-pull-request.outputs.pull-request-operation }}
+          PR_URL: ${{ steps.create-pull-request.outputs.pull-request-url }}
         run: |
-          if git diff --quiet -- src/assets/data/kalnirnay-panchang.json; then
-            exit 0
+          if [ "${OPERATION}" = "none" ]; then
+            echo "Official Panchang data unchanged; no pull request was created or updated."
+          else
+            echo "Draft pull request ${OPERATION}: ${PR_URL}"
           fi
-          git config user.name 'github-actions[bot]'
-          git config user.email 'github-actions[bot]@users.noreply.github.com'
-          git add src/assets/data/kalnirnay-panchang.json
-          git commit -m 'chore(calendar): refresh official daily Panchang'
-          git pull --rebase origin main
-          git push origin main

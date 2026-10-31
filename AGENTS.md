@@ -266,7 +266,7 @@ All five test suites must pass before any merge to `main`:
 | ------------ | ---------------- | ----------------------------- | ------------------------------------------------------------------------------ |
 | API          | pytest           | `npm run test:api`            | 212 tests — FastAPI endpoints, middleware                                      |
 | Worker       | Node test runner | `npm run test:worker`         | 27 routing, CORS, and streaming boundary checks                                |
-| Unit         | Node test runner | `npm run test:unit`           | 6 tests — Blog HTML escaping and AssistMe chart rendering                      |
+| Unit         | Node test runner | `npm run test:unit`           | 13 tests — Blog HTML escaping, chart rendering, published surfaces, sync logic |
 | E2E Critical | Playwright       | `npm run test:e2e:critical`   | 18 critical user journeys on Desktop Chrome                                    |
 | Tester Army  | `e2e`            | `npm run test:tester-army:ci` | 23 deterministic journeys on desktop Chromium (46 checks across WebKit/Chrome) |
 

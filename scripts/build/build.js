@@ -13,6 +13,7 @@ import { rewriteDiscoveryHosts } from './discovery-hosts.mjs';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const projectRoot = resolve(__dirname, '../../');
+const CANONICAL_SITE = 'https://mangeshraut712.github.io/mangeshrautarchive';
 
 // Use /tmp when inside macOS-restricted directories (Downloads, Desktop in some configs)
 // Detect by attempting a test write; fall back to /tmp/dist on EPERM
@@ -91,7 +92,6 @@ async function injectApiKeys(distDir) {
 
   // Cloudflare Worker is the primary API for GitHub Pages. Vercel is optional/offline.
   const EDGE_API = 'https://assistme-chat.mangeshraut712.workers.dev';
-  const CANONICAL_SITE = 'https://mangeshraut712.github.io/mangeshrautarchive';
   const apiBaseUrl =
     process.env.CHAT_API_BASE ||
     process.env.NEXT_PUBLIC_API_BASE ||
@@ -108,7 +108,7 @@ async function injectApiKeys(distDir) {
       process.env.EDGE_API_BASE,
       EDGE_API,
     ].filter((v, i, a) => v && String(v).startsWith('http') && a.indexOf(v) === i),
-    siteUrl: process.env.OPENROUTER_SITE_URL || process.env.PAGES_SITE_URL || CANONICAL_SITE,
+    siteUrl: CANONICAL_SITE,
     appTitle: process.env.OPENROUTER_APP_TITLE || 'AssistMe Portfolio Assistant',
     selectedModel: normalizeSelectedModel(process.env.OPENROUTER_MODEL),
     // Music uses /api/music/* on the backend — never ship Last.fm keys to browsers.
@@ -517,11 +517,7 @@ function escapeXml(value = '') {
 
 /** Canonical public host for sitemap, robots.txt, feeds, and ai.txt. */
 function resolveProductionSiteUrl() {
-  return (
-    process.env.OPENROUTER_SITE_URL ||
-    process.env.PAGES_SITE_URL ||
-    'https://mangeshraut712.github.io/mangeshrautarchive'
-  ).replace(/\/$/, '');
+  return CANONICAL_SITE;
 }
 
 function getSortedBlogPosts() {
@@ -555,10 +551,7 @@ async function syncServiceWorkerCacheVersion(distDir) {
 }
 
 async function generateFeeds(distDir) {
-  const siteUrl =
-    process.env.OPENROUTER_SITE_URL ||
-    process.env.PAGES_SITE_URL ||
-    'https://mangeshraut712.github.io/mangeshrautarchive';
+  const siteUrl = resolveProductionSiteUrl();
   const updatedAt = new Date().toUTCString();
   const atomUpdatedAt = new Date().toISOString();
   const posts = getSortedBlogPosts();
