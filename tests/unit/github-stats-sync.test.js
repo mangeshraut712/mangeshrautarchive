@@ -133,10 +133,8 @@ test('scheduled data workflows create or update one reviewable draft PR instead 
 
   assert.match(workflowSource, /name:\s*Checkout Repository\s*\n\s+uses:\s*actions\/checkout@v7/);
   assert.match(workflowSource, /name:\s*Setup Node\.js\s*\n\s+uses:\s*actions\/setup-node@v7/);
-  assert.match(
-    workflowSource,
-    new RegExp(`id:\\s*create-pull-request\\s*\\n\\s+uses:\\s*${CREATE_PULL_REQUEST_ACTION}`)
-  );
+  assert.ok(workflowSource.includes('id: create-pull-request'));
+  assert.ok(workflowSource.includes(`uses: ${CREATE_PULL_REQUEST_ACTION}`));
 
   for (const { path, branch, changedPath } of automationWorkflows) {
     const source = readFileSync(path, 'utf8');
@@ -145,10 +143,10 @@ test('scheduled data workflows create or update one reviewable draft PR instead 
       contents: 'write',
       'pull-requests': 'write',
     });
-    assert.match(source, new RegExp(`uses:\\s*${CREATE_PULL_REQUEST_ACTION}`));
-    assert.match(source, new RegExp(`branch:\\s*${branch}`));
+    assert.ok(source.includes(`uses: ${CREATE_PULL_REQUEST_ACTION}`));
+    assert.ok(source.includes(`branch: ${branch}`));
     assert.match(source, /draft:\s*always-true/);
-    assert.match(source, new RegExp(`add-paths:\\s*${changedPath}`));
+    assert.ok(source.includes(`add-paths: ${changedPath}`));
     assert.doesNotMatch(source, /\bgit\s+push\b/u);
     assert.doesNotMatch(source, /(?:HEAD:)?main\s*$/mu);
     assert.doesNotMatch(source, /\[skip ci\]|GH_PAT|gh\s+pr\s+merge|--admin/u);

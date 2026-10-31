@@ -10,7 +10,9 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT_DIR = path.resolve(__dirname, '../..');
-const OUTPUT_FILE = path.join(ROOT_DIR, 'src/js/data/github-stats.json');
+if (process.cwd() !== ROOT_DIR) {
+  process.chdir(ROOT_DIR);
+}
 
 const USERNAME = 'mangeshraut712';
 const GITHUB_TOKEN =
@@ -18,15 +20,19 @@ const GITHUB_TOKEN =
 
 function readDefaultStatsPayload() {
   try {
-    return JSON.parse(fs.readFileSync(OUTPUT_FILE, 'utf-8'));
+    return JSON.parse(fs.readFileSync('src/js/data/github-stats.json', 'utf-8'));
   } catch {
     return null;
   }
 }
 
 function writeDefaultStatsPayload(payload) {
-  fs.mkdirSync(path.dirname(OUTPUT_FILE), { recursive: true });
-  fs.writeFileSync(OUTPUT_FILE, JSON.stringify(payload, null, 2) + '\n', 'utf-8');
+  fs.mkdirSync('src/js/data', { recursive: true });
+  fs.writeFileSync(
+    'src/js/data/github-stats.json',
+    JSON.stringify(payload, null, 2) + '\n',
+    'utf-8'
+  );
 }
 
 export function hasGitHubStatsChanged(existingPayload, nextPayload) {
@@ -42,7 +48,7 @@ export async function syncGitHubStats({
   now = () => new Date().toISOString(),
   readStats = readDefaultStatsPayload,
   writeStats = writeDefaultStatsPayload,
-  hasExistingStats = () => fs.existsSync(OUTPUT_FILE),
+  hasExistingStats = () => fs.existsSync('src/js/data/github-stats.json'),
 } = {}) {
   console.log(`[github-sync] Fetching live stats for @${USERNAME}...`);
 
