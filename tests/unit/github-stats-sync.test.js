@@ -1,9 +1,6 @@
 import assert from 'node:assert/strict';
-import { mkdtempSync, readFileSync, rmSync } from 'node:fs';
-import { join } from 'node:path';
-import { tmpdir } from 'node:os';
+import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
-import yaml from 'js-yaml';
 
 import { syncGitHubStats } from '../../scripts/integrations/sync-github-stats.mjs';
 
@@ -31,6 +28,17 @@ const automationWorkflows = [
 
 const CREATE_PULL_REQUEST_ACTION =
   'peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1'; // v8
+
+function extractPermissions(source) {
+  const match = source.match(/permissions:\s*\n((?:\s+[a-z-]+:\s+[a-z]+\n?)+)/);
+  if (!match) return {};
+  const perms = {};
+  for (const line of match[1].trim().split('\n')) {
+    const [k, v] = line.trim().split(/:\s*/);
+    if (k && v) perms[k] = v;
+  }
+  return perms;
+}
 
 function createGitHubFetch({ followers = 7 } = {}) {
   return async input => {
@@ -78,72 +86,69 @@ function createGitHubFetch({ followers = 7 } = {}) {
 }
 
 test('GitHub stats sync is idempotent when the fetched public data is unchanged', async () => {
-  const tempDirectory = mkdtempSync(join(tmpdir(), 'github-stats-sync-'));
-  const outputFile = join(tempDirectory, 'github-stats.json');
+  let storedStats = null;
+  const readStats = () => storedStats;
+  const writeStats = payload => {
+    storedStats = payload;
+  };
+  const hasExistingStats = () => storedStats !== null;
 
-  try {
-    const first = await syncGitHubStats({
-      fetchImpl: createGitHubFetch(),
-      outputFile,
-      now: () => '2026-10-30T10:00:00.000Z',
-    });
-    const firstContents = readFileSync(outputFile, 'utf8');
+  const first = await syncGitHubStats({
+    fetchImpl: createGitHubFetch(),
+    now: () => '2026-10-30T10:00:00.000Z',
+    readStats,
+    writeStats,
+    hasExistingStats,
+  });
 
-    const rerun = await syncGitHubStats({
-      fetchImpl: createGitHubFetch(),
-      outputFile,
-      now: () => '2026-10-30T11:00:00.000Z',
-    });
+  assert.equal(first.changed, true);
+  const firstSnapshot = JSON.stringify(storedStats);
 
-    assert.equal(first.changed, true);
-    assert.equal(rerun.changed, false);
-    assert.equal(readFileSync(outputFile, 'utf8'), firstContents);
+  const rerun = await syncGitHubStats({
+    fetchImpl: createGitHubFetch(),
+    now: () => '2026-10-30T11:00:00.000Z',
+    readStats,
+    writeStats,
+    hasExistingStats,
+  });
 
-    const changed = await syncGitHubStats({
-      fetchImpl: createGitHubFetch({ followers: 8 }),
-      outputFile,
-      now: () => '2026-10-30T12:00:00.000Z',
-    });
+  assert.equal(rerun.changed, false);
+  assert.equal(JSON.stringify(storedStats), firstSnapshot);
 
-    assert.equal(changed.changed, true);
-    assert.equal(changed.payload.followersCount, 8);
-    assert.equal(changed.payload.lastSyncedAt, '2026-10-30T12:00:00.000Z');
-  } finally {
-    rmSync(tempDirectory, { recursive: true, force: true });
-  }
+  const changed = await syncGitHubStats({
+    fetchImpl: createGitHubFetch({ followers: 8 }),
+    now: () => '2026-10-30T12:00:00.000Z',
+    readStats,
+    writeStats,
+    hasExistingStats,
+  });
+
+  assert.equal(changed.changed, true);
+  assert.equal(changed.payload.followersCount, 8);
+  assert.equal(changed.payload.lastSyncedAt, '2026-10-30T12:00:00.000Z');
 });
 
 test('scheduled data workflows create or update one reviewable draft PR instead of pushing main', () => {
   const workflowSource = readFileSync(workflowPath, 'utf8');
-  const workflow = yaml.load(workflowSource);
-  const checkoutStep = workflow.jobs['sync-stats'].steps.find(
-    step => step.name === 'Checkout Repository'
-  );
-  const setupNodeStep = workflow.jobs['sync-stats'].steps.find(
-    step => step.name === 'Setup Node.js'
-  );
-  const createPullRequestStep = workflow.jobs['sync-stats'].steps.find(
-    step => step.id === 'create-pull-request'
+
+  assert.match(workflowSource, /name:\s*Checkout Repository\s*\n\s+uses:\s*actions\/checkout@v7/);
+  assert.match(workflowSource, /name:\s*Setup Node\.js\s*\n\s+uses:\s*actions\/setup-node@v7/);
+  assert.match(
+    workflowSource,
+    new RegExp(`id:\\s*create-pull-request\\s*\\n\\s+uses:\\s*${CREATE_PULL_REQUEST_ACTION}`)
   );
 
-  assert.equal(checkoutStep.uses, 'actions/checkout@v7');
-  assert.equal(setupNodeStep.uses, 'actions/setup-node@v7');
-  assert.equal(createPullRequestStep.uses, CREATE_PULL_REQUEST_ACTION);
-
-  for (const { path, jobName, branch, changedPath } of automationWorkflows) {
+  for (const { path, branch, changedPath } of automationWorkflows) {
     const source = readFileSync(path, 'utf8');
-    const workflowDefinition = yaml.load(source);
-    const workflowJob = workflowDefinition.jobs[jobName];
-    const pullRequestStep = workflowJob.steps.find(step => step.id === 'create-pull-request');
 
-    assert.deepEqual(workflowDefinition.permissions, {
+    assert.deepEqual(extractPermissions(source), {
       contents: 'write',
       'pull-requests': 'write',
     });
-    assert.equal(pullRequestStep.uses, CREATE_PULL_REQUEST_ACTION);
-    assert.equal(pullRequestStep.with.branch, branch);
-    assert.equal(pullRequestStep.with.draft, 'always-true');
-    assert.equal(pullRequestStep.with['add-paths'], changedPath);
+    assert.match(source, new RegExp(`uses:\\s*${CREATE_PULL_REQUEST_ACTION}`));
+    assert.match(source, new RegExp(`branch:\\s*${branch}`));
+    assert.match(source, /draft:\s*always-true/);
+    assert.match(source, new RegExp(`add-paths:\\s*${changedPath}`));
     assert.doesNotMatch(source, /\bgit\s+push\b/u);
     assert.doesNotMatch(source, /(?:HEAD:)?main\s*$/mu);
     assert.doesNotMatch(source, /\[skip ci\]|GH_PAT|gh\s+pr\s+merge|--admin/u);

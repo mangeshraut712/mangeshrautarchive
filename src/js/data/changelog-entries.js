@@ -54,6 +54,43 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'chat-fallback-dependency-security-20261031',
+    date: '2026-10-31',
+    type: 'fix',
+    title: 'Bound chat fallback matching and update vulnerable dependencies',
+    summary:
+      'Replace expensive unbounded chat fallback patterns with bounded matching and regression coverage, and update fast-uri, qs, and zod overrides to patched versions.',
+    tags: ['api', 'assistme'],
+    sha: null,
+    commitVerified: false,
+    model: 'GPT-6.1 Terra',
+    ide: 'Codex desktop',
+    purpose:
+      'Address CodeQL regex alerts and dependency advisories while preserving chat fallback behavior.',
+    attributionSource: 'not-recorded',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+    status: 'unreleased',
+  },
+  {
+    id: 'october-blog-provenance-20261031',
+    date: '2026-10-31',
+    type: 'fix',
+    title: 'Correct October article image attribution and source links',
+    summary:
+      'Replace the October illustrations with credited Google and Apple announcement images, correct source links and technical claims, link October evidence updates, and add practical evaluation sections to the September and October articles.',
+    tags: ['blog'],
+    sha: null,
+    commitVerified: false,
+    model: 'GPT-6.1 Terra',
+    ide: 'Codex desktop',
+    purpose: 'Correct October blog image provenance and source-grounded technical claims.',
+    attributionSource: 'not-recorded',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+    status: 'unreleased',
+  },
+  {
     id: 'published-surface-and-protected-sync-repair-20261030',
     date: '2026-10-30',
     type: 'fix',
@@ -71,7 +108,6 @@ export const changelogEntries = [
     attributionSource: 'not-recorded',
     reasoning: 'unavailable',
     usage: 'unavailable',
-    status: 'unreleased',
   },
   {
     id: 'asset-version-bump-20261029',

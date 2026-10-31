@@ -16,12 +16,17 @@ const USERNAME = 'mangeshraut712';
 const GITHUB_TOKEN =
   process.env.GH_TOKEN || process.env.GITHUB_TOKEN || process.env.GITHUB_PAT || '';
 
-function readStatsPayload(outputFile) {
+function readDefaultStatsPayload() {
   try {
-    return JSON.parse(fs.readFileSync(outputFile, 'utf-8'));
+    return JSON.parse(fs.readFileSync(OUTPUT_FILE, 'utf-8'));
   } catch {
     return null;
   }
+}
+
+function writeDefaultStatsPayload(payload) {
+  fs.mkdirSync(path.dirname(OUTPUT_FILE), { recursive: true });
+  fs.writeFileSync(OUTPUT_FILE, JSON.stringify(payload, null, 2) + '\n', 'utf-8');
 }
 
 export function hasGitHubStatsChanged(existingPayload, nextPayload) {
@@ -34,8 +39,10 @@ export function hasGitHubStatsChanged(existingPayload, nextPayload) {
 
 export async function syncGitHubStats({
   fetchImpl = globalThis.fetch,
-  outputFile = OUTPUT_FILE,
   now = () => new Date().toISOString(),
+  readStats = readDefaultStatsPayload,
+  writeStats = writeDefaultStatsPayload,
+  hasExistingStats = () => fs.existsSync(OUTPUT_FILE),
 } = {}) {
   console.log(`[github-sync] Fetching live stats for @${USERNAME}...`);
 
@@ -99,22 +106,21 @@ export async function syncGitHubStats({
       repositories: curatedRepos,
     };
 
-    const existingPayload = readStatsPayload(outputFile);
+    const existingPayload = readStats();
     if (!hasGitHubStatsChanged(existingPayload, statsPayload)) {
       console.log('[github-sync] Public GitHub stats are unchanged; keeping the existing cache.');
       return { changed: false, payload: existingPayload };
     }
 
-    fs.mkdirSync(path.dirname(outputFile), { recursive: true });
-    fs.writeFileSync(outputFile, JSON.stringify(statsPayload, null, 2) + '\n', 'utf-8');
-    console.log(`[github-sync] Successfully written GitHub stats to ${outputFile}`);
+    writeStats(statsPayload);
+    console.log('[github-sync] Successfully written GitHub stats cache');
     console.log(
       `[github-sync] Total stars: ${totalStars} | Public Repos: ${userData.public_repos}`
     );
     return { changed: true, payload: statsPayload };
   } catch (err) {
     console.warn(`[github-sync] Warning: Could not complete live sync (${err.message}).`);
-    if (!fs.existsSync(outputFile)) {
+    if (!hasExistingStats()) {
       // Fallback default snapshot
       const fallback = {
         username: USERNAME,
@@ -125,12 +131,11 @@ export async function syncGitHubStats({
         totalForks: 12,
         repositories: [],
       };
-      fs.mkdirSync(path.dirname(outputFile), { recursive: true });
-      fs.writeFileSync(outputFile, JSON.stringify(fallback, null, 2) + '\n', 'utf-8');
+      writeStats(fallback);
       return { changed: true, payload: fallback };
     }
 
-    return { changed: false, payload: readStatsPayload(outputFile) };
+    return { changed: false, payload: readStats() };
   }
 }
 

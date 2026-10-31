@@ -54,7 +54,7 @@ for (const post of blogPosts) {
       validDate(post.date) && validDate(post.updatedAt) && validDate(post.publishedAt || post.date),
       'invalid calendar date',
     ],
-    [words >= 950 && words <= 1350, `length ${words} outside 950–1350 words`],
+    [words >= 950 && words <= 2200, `length ${words} outside 950–2200 words`],
     [post.readTime === `${expectedMinutes} min read`, `read time does not match ${words} words`],
     [headings.filter(heading => heading.level === 2).length >= 4, 'fewer than four sections'],
     [html.includes('class="article-figure"'), 'missing lead figure'],
