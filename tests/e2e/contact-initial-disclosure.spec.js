@@ -41,3 +41,17 @@ test('Contact does not load homepage music until the visitor returns to Home', a
   await expect.poll(() => page.evaluate(() => window.scrollY)).toBeLessThan(100);
   await expect.poll(() => musicRequests).toBeGreaterThan(0);
 });
+
+test('Contact avoids warming offscreen section styles until the visitor interacts', async ({
+  page,
+  isMobile,
+}) => {
+  await page.setViewportSize(isMobile ? { width: 412, height: 823 } : { width: 1440, height: 900 });
+  await gotoSite(page, '/#contact');
+  await page.waitForTimeout(10_000);
+  const aboutStyles = page.locator('link[data-lazy-style-key~="about"]');
+  await expect(aboutStyles).not.toHaveAttribute('data-style-loaded', 'true');
+
+  await page.locator('#contact').click({ position: { x: 10, y: 10 }, force: true });
+  await expect(aboutStyles).toHaveAttribute('data-style-loaded', 'true');
+});

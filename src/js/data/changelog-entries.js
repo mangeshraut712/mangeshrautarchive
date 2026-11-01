@@ -54,6 +54,24 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'contact-offscreen-style-warmup-20261101',
+    date: '2026-11-01',
+    type: 'fix',
+    title: 'Reduce late movement on Contact links',
+    summary:
+      'Avoid automatically warming offscreen section styles while reading a direct Contact link; load them on interaction or as sections approach the viewport.',
+    tags: ['performance', 'design'],
+    sha: null,
+    commitVerified: false,
+    model: 'GPT-6',
+    ide: 'Codex desktop',
+    purpose: 'Reduce late Contact layout shifts while retaining section navigation and styling.',
+    attributionSource: 'not-recorded',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+    status: 'unreleased',
+  },
+  {
     id: 'mobile-contact-initial-disclosure-20261101',
     date: '2026-11-01',
     type: 'fix',

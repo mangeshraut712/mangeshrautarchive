@@ -47,6 +47,10 @@ After `9569aed9`, [PageSpeed Insights](https://pagespeed.web.dev/analysis/https-
 
 In a subsequent controlled live Chrome trace at 4× CPU slowdown, section disclosures initialized after Contact was displayed and produced a full-viewport shift. Two baseline runs recorded sums of non-input layout shifts of 1.065 and 1.041; two runs with the existing disclosure module loaded early on mobile recorded 0.040 and 0.041. The experiment intercepted and modified the live HTML response, and its summed shifts are not Lighthouse session-window CLS or PageSpeed scores. Fresh deployment measurements are required.
 
+After `b6889d9c`, [PageSpeed Insights](https://pagespeed.web.dev/analysis/https-mangeshraut712-github-io-mangeshrautarchive/nf12e0ll5z?form_factor=mobile) sampled the homepage at 74/100/100/100 on mobile and 69/100/100/100 on desktop. Separate full-load Contact Lighthouse samples were 39/100/100/100 with CLS 1.097 on mobile and 100/100/100/100 with CLS 0.009 on desktop. These single samples do not establish stable scores.
+
+With simulated slow network and 4× CPU slowdown, a live Chrome trace showed About, Skills, and Experience resizing after their idle style warm-up on a Contact link. A response-intercepted experiment skipping that idle warm-up recorded a sum of non-input shifts of 0.088, compared with 0.652 in one baseline trace. Those sums are diagnostic measurements, not Lighthouse session-window CLS; deployment and repeated full-load audits are needed.
+
 To collect a new public normal-load sample, run:
 
 ```bash

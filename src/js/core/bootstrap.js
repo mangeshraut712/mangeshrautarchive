@@ -1109,9 +1109,12 @@ function initDeferredStyles() {
     runWhenIdle(next, 120);
   };
 
-  // Warm early after interaction, or later in an idle period if the visitor does not interact.
+  // Keep earlier sections from shifting a Contact deep link while the visitor is reading.
+  // Their viewport observers and the interaction warm-up still load them when needed.
   onFirstInteraction(warmNearFoldStylesSequentially);
-  scheduleSoon(() => runWhenIdle(warmNearFoldStylesSequentially, 800), 8000);
+  if (window.location.hash !== '#contact') {
+    scheduleSoon(() => runWhenIdle(warmNearFoldStylesSequentially, 800), 8000);
+  }
 }
 
 function schedulePostPaintIdleModules() {
