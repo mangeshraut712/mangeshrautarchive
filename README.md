@@ -276,6 +276,8 @@ The JavaScript config is selected explicitly because upstream automatic discover
 
 **Tester Army contribution:** GPT-6.1 Sol / Codex; purpose: deterministic browser journeys and coverage boundaries. Reasoning mode and token usage: unavailable. Independent verification uses GPT-6 Luna / Codex.
 
+**Responsive audit fixes:** GPT-6 / Codex desktop; purpose: stabilize first paint and improve travel navigation and contact contrast. Exact variant, reasoning mode, and token usage: unavailable.
+
 Mangesh Raut maintains this portfolio with contributions from Codex, Claude Code, Google Antigravity,
 Cursor, and GitHub Copilot. Shipped changes record the exposed agent/model family, engineering
 purpose, and verified commit in the [changelog](src/js/data/changelog-entries.js).
@@ -283,7 +285,7 @@ purpose, and verified commit in the [changelog](src/js/data/changelog-entries.js
 | Current contribution                             | Attribution                                                                                                                                                                              |
 | ------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Coding agent                                     | GPT-6.1 Terra / Codex desktop                                                                                                                                                            |
-| Purpose                                          | Resolve a post-deploy origin-matching alert and dependency advisories, with regression coverage                                                                                          |
+| Purpose                                          | Improve article evidence, reader decision support, and accessible table rendering                                                                                                        |
 | Exact model variant, reasoning mode, token usage | unavailable                                                                                                                                                                              |
 | Portfolio chatbot model                          | Configured separately in [api/model_router.py](api/model_router.py) and [Worker configuration](workers/assistme-chat/wrangler.toml); each live response reports the actual serving model |
 

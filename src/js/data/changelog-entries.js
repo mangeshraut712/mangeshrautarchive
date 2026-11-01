@@ -54,6 +54,42 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'responsive-audit-fixes-20261101',
+    date: '2026-11-01',
+    type: 'fix',
+    title: 'Stabilize the homepage and improve mobile navigation and contrast',
+    summary:
+      'Load layout styles before paint, keep music status updates from resizing the hero, prevent the travel header label from wrapping, and improve contact calendar contrast.',
+    tags: ['performance', 'design'],
+    sha: null,
+    commitVerified: false,
+    model: 'GPT-6',
+    ide: 'Codex desktop',
+    purpose: 'Resolve browser audit findings and verify responsive, accessible rendering.',
+    attributionSource: 'not-recorded',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+    status: 'unreleased',
+  },
+  {
+    id: 'blog-evidence-tables-20261101',
+    date: '2026-11-01',
+    type: 'improvement',
+    title: 'Add source-grounded article comparisons and accessible table captions',
+    summary:
+      'Expand the archive with primary-source context, practical evaluation plans, and attributed comparisons, and give titled article tables visible captions and descriptive accessible names.',
+    tags: ['blog', 'design'],
+    sha: null,
+    commitVerified: false,
+    model: 'GPT-6.1 Terra',
+    ide: 'Codex desktop',
+    purpose: 'Improve article evidence, reader decision support, and accessible table rendering.',
+    attributionSource: 'not-recorded',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+    status: 'unreleased',
+  },
+  {
     id: 'postdeploy-origin-dependency-hardening-20261101',
     date: '2026-11-01',
     type: 'fix',

@@ -1675,7 +1675,7 @@ html.dark .travel-map-status span {
   .travel-nav {
     width: calc(100% - 1rem);
     min-height: 48px;
-    padding: 6px 10px;
+    padding: 6px 6px;
   }
 
   .travel-nav__back span {
@@ -1687,12 +1687,17 @@ html.dark .travel-map-status span {
   }
 
   .travel-nav__label {
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 700;
+  }
+
+  .travel-nav__actions {
+    gap: 4px;
   }
 
   .travel-nav__panel {
     display: inline-flex;
+    flex: 0 0 auto;
     min-width: 44px;
     min-height: 44px;
     width: auto;
@@ -1702,6 +1707,7 @@ html.dark .travel-map-status span {
 
   .travel-nav__panel::after {
     content: 'Places';
+    white-space: nowrap;
     font-size: 0.8rem;
     font-weight: 700;
     letter-spacing: -0.01em;

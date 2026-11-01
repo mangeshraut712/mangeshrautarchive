@@ -43,3 +43,13 @@ test('video blocks iframe only known video hosts', () => {
   ).html;
   assert.equal(hostile.includes('<iframe'), false);
 });
+
+test('titled article tables expose a safe caption and column headers', () => {
+  const html = parseBlogContent(
+    ':::table\ntitle: Routing <choices>\n| Choice | Purpose |\n| --- | --- |\n| Cache | Reuse |\n:::'
+  ).html;
+  assert.match(html, /aria-label="Routing &lt;choices&gt;"/);
+  assert.match(html, /<caption><span>Routing &lt;choices&gt;<\/span><\/caption>/);
+  assert.match(html, /<th scope="col">Choice<\/th>/);
+  assert.match(html, /<td>Reuse<\/td>/);
+});

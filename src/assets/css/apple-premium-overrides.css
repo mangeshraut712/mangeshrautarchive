@@ -1396,12 +1396,14 @@ html.dark .day-cell.has-event:not(.today, .selected) .event-dot {
 /* Sunday Column Styling */
 .ios-weekdays span:first-child,
 .day-cell:nth-child(7n + 1):not(.today):not(.selected) {
-  color: #ff3b30 !important;
+  --calendar-sunday-text: #c32219;
+
+  color: var(--calendar-sunday-text) !important;
 }
 
 html.dark .ios-weekdays span:first-child,
 html.dark .day-cell:nth-child(7n + 1):not(.today):not(.selected) {
-  color: #ff453a !important;
+  --calendar-sunday-text: #ff453a;
 }
 
 /* =================================================================

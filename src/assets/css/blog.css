@@ -3261,6 +3261,21 @@ html.dark .article-table-wrap {
   line-height: 1.5;
 }
 
+.article-table caption {
+  padding: 1rem 1.15rem;
+  color: var(--text-primary, #1d1d1f);
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-align: left;
+}
+
+.article-table caption span {
+  position: sticky;
+  left: 0;
+  display: block;
+  width: min(100%, calc(100vw - 8rem));
+}
+
 .article-table thead {
   background: color-mix(in srgb, var(--bg-secondary, #f5f5f7) 85%, transparent);
   border-bottom: 1px solid var(--lux-border, rgb(0 0 0 / 8%));

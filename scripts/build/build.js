@@ -226,16 +226,11 @@ const HERO_CRITICAL_CSS = [
 ];
 
 /** Deferred after first paint — non-blocking via media=print onload.
- *  homepage.css + dynamic-island-navbar.css are also deferred (js-defer-css);
- *  hero/nav metrics are locked in heroLcpLock to prevent desktop CLS. */
+ *  homepage.css + dynamic-island-navbar.css load before paint to stabilize hero and navigation. */
 const PREMIUM_DEFERRED_CSS = [
   'assets/css/accessibility.css',
-  'assets/css/tailwind-output.css',
-  'assets/css/sitewide-design-system.css',
-  'assets/css/apple-design-system.css',
   'assets/css/typography-system.css',
   'assets/css/global-improvements.css',
-  'assets/css/style.css',
   'assets/css/sections-apple-premium.css',
   'assets/css/contact.css',
   'assets/css/liquid-glass.css',
@@ -333,7 +328,7 @@ async function bundleAboveFoldCss(distDir) {
       if (window.__PERF_AUDIT__) return;
       var link = document.createElement('link');
       link.rel = 'stylesheet';
-      link.href = 'assets/css/premium-deferred.bundle.css';
+      link.href = 'assets/css/premium-deferred.bundle.css?v=${ASSET_VER}';
       link.media = 'print';
       link.onload = function () { this.media = 'all'; };
       document.head.appendChild(link);

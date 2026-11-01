@@ -199,13 +199,13 @@ html.dark #home .music-card:hover .music-card-inner {
 .music-card-inner .status-row,
 #home .music-card-inner .status-row {
   display: flex !important;
-  flex-direction: row !important;
-  flex-wrap: wrap !important;
-  align-items: center !important;
-  justify-content: space-between !important;
+  flex-direction: column !important;
+  flex-wrap: nowrap !important;
+  align-items: flex-start !important;
+  justify-content: center !important;
   width: 100% !important;
   margin: 0 0 2px 0 !important;
-  gap: 8px !important;
+  gap: 4px !important;
   flex-shrink: 0 !important;
 }
 

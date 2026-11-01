@@ -959,9 +959,11 @@ html.dark body #contact .card-tag.tag-red {
 }
 
 html body #contact .card-tag.tag-green {
+  --contact-tag-text: #16712f;
+
   background: rgba(52, 199, 89, 0.12) !important;
-  color: #28a745 !important;
-  -webkit-text-fill-color: #28a745 !important;
+  color: var(--contact-tag-text) !important;
+  -webkit-text-fill-color: var(--contact-tag-text) !important;
   border: 1px solid rgba(52, 199, 89, 0.25) !important;
 }
 
@@ -973,9 +975,11 @@ html.dark body #contact .card-tag.tag-green {
 }
 
 html body #contact .card-tag.tag-orange {
+  --contact-tag-text: #965400;
+
   background: rgba(255, 149, 0, 0.12) !important;
-  color: #e08600 !important;
-  -webkit-text-fill-color: #e08600 !important;
+  color: var(--contact-tag-text) !important;
+  -webkit-text-fill-color: var(--contact-tag-text) !important;
   border: 1px solid rgba(255, 149, 0, 0.25) !important;
 }
 
@@ -1029,9 +1033,11 @@ html.dark body #contact .card-tag.tag-cyan {
 }
 
 html body #contact .card-tag.tag-luma {
+  --contact-tag-text: #b21f1e;
+
   background: rgba(235, 54, 52, 0.1) !important;
-  color: #eb3634 !important;
-  -webkit-text-fill-color: #eb3634 !important;
+  color: var(--contact-tag-text) !important;
+  -webkit-text-fill-color: var(--contact-tag-text) !important;
   border: 1px solid rgba(235, 54, 52, 0.25) !important;
 }
 

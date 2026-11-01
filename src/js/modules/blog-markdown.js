@@ -246,12 +246,14 @@ function renderMediaBlock(kind, body, options = {}) {
           .map(cell => cell.trim())
       );
     if (rows.length < 3) return '';
-    const header = rows[0].map(cell => `<th>${parseInline(cell)}</th>`).join('');
+    const header = rows[0].map(cell => `<th scope="col">${parseInline(cell)}</th>`).join('');
     const cells = rows
       .slice(2)
       .map(row => `<tr>${row.map(cell => `<td>${parseInline(cell)}</td>`).join('')}</tr>`)
       .join('');
-    return `<div class="article-table-wrap" tabindex="0" role="region" aria-label="Data table"><table class="article-table"><thead><tr>${header}</tr></thead><tbody>${cells}</tbody></table></div>`;
+    const title = a.title || 'Data table';
+    const caption = a.title ? `<caption><span>${escapeHTML(a.title)}</span></caption>` : '';
+    return `<div class="article-table-wrap" tabindex="0" role="region" aria-label="${escapeHTML(title)}"><table class="article-table">${caption}<thead><tr>${header}</tr></thead><tbody>${cells}</tbody></table></div>`;
   }
   if (kind === 'callout') {
     const type = ['note', 'warn', 'tip', 'source', 'architecture', 'security'].includes(a.type)
