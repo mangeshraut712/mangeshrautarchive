@@ -160,8 +160,7 @@ test('analytics reach sync preserves a values-free review artifact without creat
   const source = readFileSync(analyticsWorkflowPath, 'utf8');
 
   assert.deepEqual(extractPermissions(source), {
-    contents: 'write',
-    'pull-requests': 'write',
+    contents: 'read',
   });
   assert.match(source, /uses:\s*actions\/upload-artifact@v4/);
   assert.match(
