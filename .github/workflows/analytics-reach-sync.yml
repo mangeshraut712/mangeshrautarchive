@@ -159,7 +159,7 @@ jobs:
         if: steps.gate.outputs.run == 'true'
         uses: actions/upload-artifact@v4
         with:
-          name: analytics-reach-review-${{ github.run_id }}
+          name: analytics-reach-review-${{ github.run_id }}-${{ github.run_attempt }}
           path: artifacts/analytics-reach-review
           if-no-files-found: error
           retention-days: 2
@@ -167,7 +167,7 @@ jobs:
       - name: Report reach snapshot review instructions
         if: steps.gate.outputs.run == 'true'
         env:
-          ARTIFACT_NAME: analytics-reach-review-${{ github.run_id }}
+          ARTIFACT_NAME: analytics-reach-review-${{ github.run_id }}-${{ github.run_attempt }}
           CHANGED: ${{ steps.review-artifact.outputs.changed }}
         run: |
           {

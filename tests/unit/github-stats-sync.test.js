@@ -163,7 +163,14 @@ test('analytics reach sync preserves a values-free review artifact without creat
     'pull-requests': 'write',
   });
   assert.match(source, /uses:\s*actions\/upload-artifact@v4/);
-  assert.match(source, /name:\s*analytics-reach-review-\$\{\{ github\.run_id \}\}/);
+  assert.match(
+    source,
+    /name:\s*analytics-reach-review-\$\{\{ github\.run_id \}\}-\$\{\{ github\.run_attempt \}\}/
+  );
+  assert.match(
+    source,
+    /ARTIFACT_NAME:\s*analytics-reach-review-\$\{\{ github\.run_id \}\}-\$\{\{ github\.run_attempt \}\}/
+  );
   assert.match(source, /path:\s*artifacts\/analytics-reach-review/);
   assert.match(source, /retention-days:\s*2/);
   assert.match(source, /REQUIRE_GA:\s*'1'/);
