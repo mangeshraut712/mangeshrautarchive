@@ -294,6 +294,8 @@ The JavaScript config is selected explicitly because upstream automatic discover
 
 **Lighthouse evidence:** GPT-6 / Codex desktop; purpose: record raw lab results and their measurement limits. Exact variant, reasoning mode, and token usage: unavailable.
 
+**Sitewide score record:** GPT-6 / Codex desktop; purpose: document full-load mobile and desktop measurements for each published URL. Exact variant, reasoning mode, and token usage: unavailable.
+
 **Portfolio fact corrections:** GPT-6 / Codex desktop; purpose: correct stale references and score labels, and fit case-study metrics on narrow screens. Exact variant, reasoning mode, and token usage: unavailable.
 
 **WebMCP compatibility:** GPT-6 / Codex desktop; purpose: support the current document API and add read-only blog and case-study tools. Exact variant, reasoning mode, and token usage: unavailable.

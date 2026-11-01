@@ -23,6 +23,10 @@ The Contact URL redirects to the homepage's Contact section. The recorded pre-fi
 
 The accompanying JSON also records two **local reduced audit-mode** runs: desktop scored 100 in all four raw categories; mobile scored 98 performance and 100 in the other three. The gate reported both as 100 because it rounds certain audit-mode results. Those runs are not comparable to normal page loads.
 
+A subsequent [full-load sweep of all 39 published URLs on mobile and desktop](lighthouse-wide-2026-11-01.json) sampled commit `bd31711b`. All 78 runs completed: 4 mobile and 34 desktop samples scored 100 in all four categories. All samples scored 100 for accessibility and best practices. The intentionally unindexed 404 and offline pages scored 60 for SEO on both form factors. Each score is one sample, and the tested redirect URLs may resolve to a shared homepage section; the JSON includes the final URL and measurement time.
+
+The new Contact samples scored 71 mobile and 75 desktop for performance. Mobile layout shift was 0.097, compared with 3.715 in the earlier pre-fix sample; desktop layout shift was 2.107, so the landing fix did not resolve the desktop performance issue. About scored 64 mobile and 90 desktop for performance; the mobile LCP trace identified the lazy, low-priority About image as the largest element. These measurements are diagnostic evidence, not proof of a stable change from a single run.
+
 To collect a new public normal-load sample, run:
 
 ```bash

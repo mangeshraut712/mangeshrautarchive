@@ -1,0 +1,1176 @@
+{
+  "commit": "bd31711b",
+  "description": "Single raw full-load Lighthouse lab samples; not field metrics.",
+  "results": [
+    {
+      "page": "/",
+      "formFactor": "mobile",
+      "exitCode": 0,
+      "error": null,
+      "timestampUtc": "2026-11-01T08:17:27.923Z",
+      "finalUrl": "https://mangeshraut712.github.io/mangeshrautarchive/",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 82,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      }
+    },
+    {
+      "page": "/systems.html",
+      "formFactor": "mobile",
+      "exitCode": 0,
+      "error": null,
+      "timestampUtc": "2026-11-01T08:17:50.447Z",
+      "finalUrl": "https://mangeshraut712.github.io/mangeshrautarchive/systems.html",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 97,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      }
+    },
+    {
+      "page": "/monitor.html",
+      "formFactor": "mobile",
+      "exitCode": 0,
+      "error": null,
+      "timestampUtc": "2026-11-01T08:18:06.328Z",
+      "finalUrl": "https://mangeshraut712.github.io/mangeshrautarchive/monitor.html",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 97,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      }
+    },
+    {
+      "page": "/travel.html",
+      "formFactor": "mobile",
+      "exitCode": 0,
+      "error": null,
+      "timestampUtc": "2026-11-01T08:18:22.454Z",
+      "finalUrl": "https://mangeshraut712.github.io/mangeshrautarchive/travel.html",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 98,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      }
+    },
+    {
+      "page": "/uses.html",
+      "formFactor": "mobile",
+      "exitCode": 0,
+      "error": null,
+      "timestampUtc": "2026-11-01T08:18:40.365Z",
+      "finalUrl": "https://mangeshraut712.github.io/mangeshrautarchive/uses.html",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 97,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      }
+    },
+    {
+      "page": "/changelog.html",
+      "formFactor": "mobile",
+      "exitCode": 0,
+      "error": null,
+      "timestampUtc": "2026-11-01T08:18:55.496Z",
+      "finalUrl": "https://mangeshraut712.github.io/mangeshrautarchive/changelog.html",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 96,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      }
+    },
+    {
+      "page": "/about.html",
+      "formFactor": "mobile",
+      "exitCode": 0,
+      "error": null,
+      "timestampUtc": "2026-11-01T08:19:12.692Z",
+      "finalUrl": "https://mangeshraut712.github.io/mangeshrautarchive/#about",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 64,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      }
+    },
+    {
+      "page": "/contact.html",
+      "formFactor": "mobile",
+      "exitCode": 0,
+      "error": null,
+      "timestampUtc": "2026-11-01T08:19:33.676Z",
+      "finalUrl": "https://mangeshraut712.github.io/mangeshrautarchive/#contact",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 71,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      }
+    },
+    {
+      "page": "/gh.html",
+      "formFactor": "mobile",
+      "exitCode": 0,
+      "error": null,
+      "timestampUtc": "2026-11-01T08:19:56.842Z",
+      "finalUrl": "https://mangeshraut712.github.io/mangeshrautarchive/",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 84,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      }
+    },
+    {
+      "page": "/404.html",
+      "formFactor": "mobile",
+      "exitCode": 0,
+      "error": null,
+      "timestampUtc": "2026-11-01T08:20:19.312Z",
+      "finalUrl": "https://mangeshraut712.github.io/mangeshrautarchive/404.html",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 98,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 60
+      }
+    },
+    {
+      "page": "/offline.html",
+      "formFactor": "mobile",
+      "exitCode": 0,
+      "error": null,
+      "timestampUtc": "2026-11-01T08:20:33.869Z",
+      "finalUrl": "https://mangeshraut712.github.io/mangeshrautarchive/offline.html",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 60
+      }
+    },
+    {
+      "page": "/blog/",
+      "formFactor": "mobile",
+      "exitCode": 0,
+      "error": null,
+      "timestampUtc": "2026-11-01T08:20:47.085Z",
+      "finalUrl": "https://mangeshraut712.github.io/mangeshrautarchive/blog/",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 95,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      }
+    },
+    {
+      "page": "/case-studies/assistme-va.html",
+      "formFactor": "mobile",
+      "exitCode": 0,
+      "error": null,
+      "timestampUtc": "2026-11-01T08:21:03.372Z",
+      "finalUrl": "https://mangeshraut712.github.io/mangeshrautarchive/case-studies/assistme-va.html",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 98,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      }
+    },
+    {
+      "page": "/case-studies/bug-tracker.html",
+      "formFactor": "mobile",
+      "exitCode": 0,
+      "error": null,
+      "timestampUtc": "2026-11-01T08:21:18.027Z",
+      "finalUrl": "https://mangeshraut712.github.io/mangeshrautarchive/case-studies/bug-tracker.html",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 98,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      }
+    },
+    {
+      "page": "/case-studies/ces-energy.html",
+      "formFactor": "mobile",
+      "exitCode": 0,
+      "error": null,
+      "timestampUtc": "2026-11-01T08:21:32.517Z",
+      "finalUrl": "https://mangeshraut712.github.io/mangeshrautarchive/case-studies/ces-energy.html",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 98,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      }
+    },
+    {
+      "page": "/case-studies/hindai.html",
+      "formFactor": "mobile",
+      "exitCode": 0,
+      "error": null,
+      "timestampUtc": "2026-11-01T08:21:47.293Z",
+      "finalUrl": "https://mangeshraut712.github.io/mangeshrautarchive/case-studies/hindai.html",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 98,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      }
+    },
+    {
+      "page": "/case-studies/portfolio.html",
+      "formFactor": "mobile",
+      "exitCode": 0,
+      "error": null,
+      "timestampUtc": "2026-11-01T08:22:01.615Z",
+      "finalUrl": "https://mangeshraut712.github.io/mangeshrautarchive/case-studies/portfolio.html",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      }
+    },
+    {
+      "page": "/blog/ai-code-editors-revolution-2026.html",
+      "formFactor": "mobile",
+      "exitCode": 0,
+      "error": null,
+      "timestampUtc": "2026-11-01T08:22:14.478Z",
+      "finalUrl": "https://mangeshraut712.github.io/mangeshrautarchive/blog/ai-code-editors-revolution-2026.html",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 98,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      }
+    },
+    {
+      "page": "/blog/ai-models-global-race-2026.html",
+      "formFactor": "mobile",
+      "exitCode": 0,
+      "error": null,
+      "timestampUtc": "2026-11-01T08:22:29.508Z",
+      "finalUrl": "https://mangeshraut712.github.io/mangeshrautarchive/blog/ai-models-global-race-2026.html",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 97,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      }
+    },
+    {
+      "page": "/blog/anthropic-mythos-2026.html",
+      "formFactor": "mobile",
+      "exitCode": 0,
+      "error": null,
+      "timestampUtc": "2026-11-01T08:22:44.525Z",
+      "finalUrl": "https://mangeshraut712.github.io/mangeshrautarchive/blog/anthropic-mythos-2026.html",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 98,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      }
+    },
+    {
+      "page": "/blog/apple-50th-anniversary-2026.html",
+      "formFactor": "mobile",
+      "exitCode": 0,
+      "error": null,
+      "timestampUtc": "2026-11-01T08:22:59.584Z",
+      "finalUrl": "https://mangeshraut712.github.io/mangeshrautarchive/blog/apple-50th-anniversary-2026.html",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 97,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      }
+    },
+    {
+      "page": "/blog/apple-september-event-2026.html",
+      "formFactor": "mobile",
+      "exitCode": 0,
+      "error": null,
+      "timestampUtc": "2026-11-01T08:23:14.808Z",
+      "finalUrl": "https://mangeshraut712.github.io/mangeshrautarchive/blog/apple-september-event-2026.html",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 97,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      }
+    },
+    {
+      "page": "/blog/cursor-origin-agent-native-code-hosting.html",
+      "formFactor": "mobile",
+      "exitCode": 0,
+      "error": null,
+      "timestampUtc": "2026-11-01T08:23:29.745Z",
+      "finalUrl": "https://mangeshraut712.github.io/mangeshrautarchive/blog/cursor-origin-agent-native-code-hosting.html",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 99,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      }
+    },
+    {
+      "page": "/blog/gemini-4-argon-and-carbon-deepmind-2026.html",
+      "formFactor": "mobile",
+      "exitCode": 0,
+      "error": null,
+      "timestampUtc": "2026-11-01T08:23:43.562Z",
+      "finalUrl": "https://mangeshraut712.github.io/mangeshrautarchive/blog/gemini-4-argon-and-carbon-deepmind-2026.html",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 98,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      }
+    },
+    {
+      "page": "/blog/google-ai-ecosystem-2026.html",
+      "formFactor": "mobile",
+      "exitCode": 0,
+      "error": null,
+      "timestampUtc": "2026-11-01T08:23:58.514Z",
+      "finalUrl": "https://mangeshraut712.github.io/mangeshrautarchive/blog/google-ai-ecosystem-2026.html",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      }
+    },
+    {
+      "page": "/blog/google-io-2026-developer-insights.html",
+      "formFactor": "mobile",
+      "exitCode": 0,
+      "error": null,
+      "timestampUtc": "2026-11-01T08:24:12.319Z",
+      "finalUrl": "https://mangeshraut712.github.io/mangeshrautarchive/blog/google-io-2026-developer-insights.html",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 98,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      }
+    },
+    {
+      "page": "/blog/grok-4-5-grok-build-open-source-2026.html",
+      "formFactor": "mobile",
+      "exitCode": 0,
+      "error": null,
+      "timestampUtc": "2026-11-01T08:24:27.319Z",
+      "finalUrl": "https://mangeshraut712.github.io/mangeshrautarchive/blog/grok-4-5-grok-build-open-source-2026.html",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      }
+    },
+    {
+      "page": "/blog/grok-x-algorithm-systems-2026.html",
+      "formFactor": "mobile",
+      "exitCode": 0,
+      "error": null,
+      "timestampUtc": "2026-11-01T08:24:41.148Z",
+      "finalUrl": "https://mangeshraut712.github.io/mangeshrautarchive/blog/grok-x-algorithm-systems-2026.html",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 97,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      }
+    },
+    {
+      "page": "/blog/macbook-pro-touchscreen-proled-xdr-2026.html",
+      "formFactor": "mobile",
+      "exitCode": 0,
+      "error": null,
+      "timestampUtc": "2026-11-01T08:24:56.081Z",
+      "finalUrl": "https://mangeshraut712.github.io/mangeshrautarchive/blog/macbook-pro-touchscreen-proled-xdr-2026.html",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 97,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      }
+    },
+    {
+      "page": "/blog/notebooklm-2026-ai-research-agent.html",
+      "formFactor": "mobile",
+      "exitCode": 0,
+      "error": null,
+      "timestampUtc": "2026-11-01T08:25:11.169Z",
+      "finalUrl": "https://mangeshraut712.github.io/mangeshrautarchive/blog/notebooklm-2026-ai-research-agent.html",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 98,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      }
+    },
+    {
+      "page": "/blog/nvidia-ai-dominance-2026.html",
+      "formFactor": "mobile",
+      "exitCode": 0,
+      "error": null,
+      "timestampUtc": "2026-11-01T08:25:26.495Z",
+      "finalUrl": "https://mangeshraut712.github.io/mangeshrautarchive/blog/nvidia-ai-dominance-2026.html",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 97,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      }
+    },
+    {
+      "page": "/blog/openai-devday-2026.html",
+      "formFactor": "mobile",
+      "exitCode": 0,
+      "error": null,
+      "timestampUtc": "2026-11-01T08:25:41.660Z",
+      "finalUrl": "https://mangeshraut712.github.io/mangeshrautarchive/blog/openai-devday-2026.html",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 98,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      }
+    },
+    {
+      "page": "/blog/openclaw-revolution-2026.html",
+      "formFactor": "mobile",
+      "exitCode": 0,
+      "error": null,
+      "timestampUtc": "2026-11-01T08:25:57.876Z",
+      "finalUrl": "https://mangeshraut712.github.io/mangeshrautarchive/blog/openclaw-revolution-2026.html",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 98,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      }
+    },
+    {
+      "page": "/blog/openrouter-ai-usb-hub-routing-2026.html",
+      "formFactor": "mobile",
+      "exitCode": 0,
+      "error": null,
+      "timestampUtc": "2026-11-01T08:26:12.992Z",
+      "finalUrl": "https://mangeshraut712.github.io/mangeshrautarchive/blog/openrouter-ai-usb-hub-routing-2026.html",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 97,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      }
+    },
+    {
+      "page": "/blog/razorpay-vulcan-payments-foundation-model.html",
+      "formFactor": "mobile",
+      "exitCode": 0,
+      "error": null,
+      "timestampUtc": "2026-11-01T08:26:28.216Z",
+      "finalUrl": "https://mangeshraut712.github.io/mangeshrautarchive/blog/razorpay-vulcan-payments-foundation-model.html",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 97,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      }
+    },
+    {
+      "page": "/blog/typesafe-ai-jev-system-one-decisions-2026.html",
+      "formFactor": "mobile",
+      "exitCode": 0,
+      "error": null,
+      "timestampUtc": "2026-11-01T08:26:43.619Z",
+      "finalUrl": "https://mangeshraut712.github.io/mangeshrautarchive/blog/typesafe-ai-jev-system-one-decisions-2026.html",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      }
+    },
+    {
+      "page": "/blog/upi-tap-to-pay-and-2026-payment-architecture.html",
+      "formFactor": "mobile",
+      "exitCode": 0,
+      "error": null,
+      "timestampUtc": "2026-11-01T08:26:57.279Z",
+      "finalUrl": "https://mangeshraut712.github.io/mangeshrautarchive/blog/upi-tap-to-pay-and-2026-payment-architecture.html",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 98,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      }
+    },
+    {
+      "page": "/blog/wispr-flow-dictation-2026.html",
+      "formFactor": "mobile",
+      "exitCode": 0,
+      "error": null,
+      "timestampUtc": "2026-11-01T08:27:11.903Z",
+      "finalUrl": "https://mangeshraut712.github.io/mangeshrautarchive/blog/wispr-flow-dictation-2026.html",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 97,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      }
+    },
+    {
+      "page": "/blog/wwdc-2026-apple-intelligence-siri-ai.html",
+      "formFactor": "mobile",
+      "exitCode": 0,
+      "error": null,
+      "timestampUtc": "2026-11-01T08:27:27.145Z",
+      "finalUrl": "https://mangeshraut712.github.io/mangeshrautarchive/blog/wwdc-2026-apple-intelligence-siri-ai.html",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 97,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      }
+    },
+    {
+      "page": "/",
+      "formFactor": "desktop",
+      "exitCode": 0,
+      "error": null,
+      "timestampUtc": "2026-11-01T08:27:42.350Z",
+      "finalUrl": "https://mangeshraut712.github.io/mangeshrautarchive/",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 99,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      }
+    },
+    {
+      "page": "/systems.html",
+      "formFactor": "desktop",
+      "exitCode": 0,
+      "error": null,
+      "timestampUtc": "2026-11-01T08:28:02.999Z",
+      "finalUrl": "https://mangeshraut712.github.io/mangeshrautarchive/systems.html",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      }
+    },
+    {
+      "page": "/monitor.html",
+      "formFactor": "desktop",
+      "exitCode": 0,
+      "error": null,
+      "timestampUtc": "2026-11-01T08:28:18.102Z",
+      "finalUrl": "https://mangeshraut712.github.io/mangeshrautarchive/monitor.html",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      }
+    },
+    {
+      "page": "/travel.html",
+      "formFactor": "desktop",
+      "exitCode": 0,
+      "error": null,
+      "timestampUtc": "2026-11-01T08:28:33.660Z",
+      "finalUrl": "https://mangeshraut712.github.io/mangeshrautarchive/travel.html",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      }
+    },
+    {
+      "page": "/uses.html",
+      "formFactor": "desktop",
+      "exitCode": 0,
+      "error": null,
+      "timestampUtc": "2026-11-01T08:28:50.564Z",
+      "finalUrl": "https://mangeshraut712.github.io/mangeshrautarchive/uses.html",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      }
+    },
+    {
+      "page": "/changelog.html",
+      "formFactor": "desktop",
+      "exitCode": 0,
+      "error": null,
+      "timestampUtc": "2026-11-01T08:29:04.289Z",
+      "finalUrl": "https://mangeshraut712.github.io/mangeshrautarchive/changelog.html",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      }
+    },
+    {
+      "page": "/about.html",
+      "formFactor": "desktop",
+      "exitCode": 0,
+      "error": null,
+      "timestampUtc": "2026-11-01T08:29:20.409Z",
+      "finalUrl": "https://mangeshraut712.github.io/mangeshrautarchive/#about",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 90,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      }
+    },
+    {
+      "page": "/contact.html",
+      "formFactor": "desktop",
+      "exitCode": 0,
+      "error": null,
+      "timestampUtc": "2026-11-01T08:29:41.434Z",
+      "finalUrl": "https://mangeshraut712.github.io/mangeshrautarchive/#contact",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 75,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      }
+    },
+    {
+      "page": "/gh.html",
+      "formFactor": "desktop",
+      "exitCode": 0,
+      "error": null,
+      "timestampUtc": "2026-11-01T08:30:01.894Z",
+      "finalUrl": "https://mangeshraut712.github.io/mangeshrautarchive/",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      }
+    },
+    {
+      "page": "/404.html",
+      "formFactor": "desktop",
+      "exitCode": 0,
+      "error": null,
+      "timestampUtc": "2026-11-01T08:30:21.544Z",
+      "finalUrl": "https://mangeshraut712.github.io/mangeshrautarchive/404.html",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 60
+      }
+    },
+    {
+      "page": "/offline.html",
+      "formFactor": "desktop",
+      "exitCode": 0,
+      "error": null,
+      "timestampUtc": "2026-11-01T08:30:34.691Z",
+      "finalUrl": "https://mangeshraut712.github.io/mangeshrautarchive/offline.html",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 60
+      }
+    },
+    {
+      "page": "/blog/",
+      "formFactor": "desktop",
+      "exitCode": 0,
+      "error": null,
+      "timestampUtc": "2026-11-01T08:30:47.217Z",
+      "finalUrl": "https://mangeshraut712.github.io/mangeshrautarchive/blog/",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      }
+    },
+    {
+      "page": "/case-studies/assistme-va.html",
+      "formFactor": "desktop",
+      "exitCode": 0,
+      "error": null,
+      "timestampUtc": "2026-11-01T08:31:01.163Z",
+      "finalUrl": "https://mangeshraut712.github.io/mangeshrautarchive/case-studies/assistme-va.html",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      }
+    },
+    {
+      "page": "/case-studies/bug-tracker.html",
+      "formFactor": "desktop",
+      "exitCode": 0,
+      "error": null,
+      "timestampUtc": "2026-11-01T08:31:15.660Z",
+      "finalUrl": "https://mangeshraut712.github.io/mangeshrautarchive/case-studies/bug-tracker.html",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      }
+    },
+    {
+      "page": "/case-studies/ces-energy.html",
+      "formFactor": "desktop",
+      "exitCode": 0,
+      "error": null,
+      "timestampUtc": "2026-11-01T08:31:29.095Z",
+      "finalUrl": "https://mangeshraut712.github.io/mangeshrautarchive/case-studies/ces-energy.html",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      }
+    },
+    {
+      "page": "/case-studies/hindai.html",
+      "formFactor": "desktop",
+      "exitCode": 0,
+      "error": null,
+      "timestampUtc": "2026-11-01T08:31:44.192Z",
+      "finalUrl": "https://mangeshraut712.github.io/mangeshrautarchive/case-studies/hindai.html",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      }
+    },
+    {
+      "page": "/case-studies/portfolio.html",
+      "formFactor": "desktop",
+      "exitCode": 0,
+      "error": null,
+      "timestampUtc": "2026-11-01T08:31:57.535Z",
+      "finalUrl": "https://mangeshraut712.github.io/mangeshrautarchive/case-studies/portfolio.html",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      }
+    },
+    {
+      "page": "/blog/ai-code-editors-revolution-2026.html",
+      "formFactor": "desktop",
+      "exitCode": 0,
+      "error": null,
+      "timestampUtc": "2026-11-01T08:32:10.546Z",
+      "finalUrl": "https://mangeshraut712.github.io/mangeshrautarchive/blog/ai-code-editors-revolution-2026.html",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      }
+    },
+    {
+      "page": "/blog/ai-models-global-race-2026.html",
+      "formFactor": "desktop",
+      "exitCode": 0,
+      "error": null,
+      "timestampUtc": "2026-11-01T08:32:25.821Z",
+      "finalUrl": "https://mangeshraut712.github.io/mangeshrautarchive/blog/ai-models-global-race-2026.html",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      }
+    },
+    {
+      "page": "/blog/anthropic-mythos-2026.html",
+      "formFactor": "desktop",
+      "exitCode": 0,
+      "error": null,
+      "timestampUtc": "2026-11-01T08:32:39.324Z",
+      "finalUrl": "https://mangeshraut712.github.io/mangeshrautarchive/blog/anthropic-mythos-2026.html",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      }
+    },
+    {
+      "page": "/blog/apple-50th-anniversary-2026.html",
+      "formFactor": "desktop",
+      "exitCode": 0,
+      "error": null,
+      "timestampUtc": "2026-11-01T08:32:52.842Z",
+      "finalUrl": "https://mangeshraut712.github.io/mangeshrautarchive/blog/apple-50th-anniversary-2026.html",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      }
+    },
+    {
+      "page": "/blog/apple-september-event-2026.html",
+      "formFactor": "desktop",
+      "exitCode": 0,
+      "error": null,
+      "timestampUtc": "2026-11-01T08:33:06.368Z",
+      "finalUrl": "https://mangeshraut712.github.io/mangeshrautarchive/blog/apple-september-event-2026.html",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      }
+    },
+    {
+      "page": "/blog/cursor-origin-agent-native-code-hosting.html",
+      "formFactor": "desktop",
+      "exitCode": 0,
+      "error": null,
+      "timestampUtc": "2026-11-01T08:33:19.898Z",
+      "finalUrl": "https://mangeshraut712.github.io/mangeshrautarchive/blog/cursor-origin-agent-native-code-hosting.html",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      }
+    },
+    {
+      "page": "/blog/gemini-4-argon-and-carbon-deepmind-2026.html",
+      "formFactor": "desktop",
+      "exitCode": 0,
+      "error": null,
+      "timestampUtc": "2026-11-01T08:33:33.424Z",
+      "finalUrl": "https://mangeshraut712.github.io/mangeshrautarchive/blog/gemini-4-argon-and-carbon-deepmind-2026.html",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      }
+    },
+    {
+      "page": "/blog/google-ai-ecosystem-2026.html",
+      "formFactor": "desktop",
+      "exitCode": 0,
+      "error": null,
+      "timestampUtc": "2026-11-01T08:33:46.988Z",
+      "finalUrl": "https://mangeshraut712.github.io/mangeshrautarchive/blog/google-ai-ecosystem-2026.html",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      }
+    },
+    {
+      "page": "/blog/google-io-2026-developer-insights.html",
+      "formFactor": "desktop",
+      "exitCode": 0,
+      "error": null,
+      "timestampUtc": "2026-11-01T08:34:00.232Z",
+      "finalUrl": "https://mangeshraut712.github.io/mangeshrautarchive/blog/google-io-2026-developer-insights.html",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      }
+    },
+    {
+      "page": "/blog/grok-4-5-grok-build-open-source-2026.html",
+      "formFactor": "desktop",
+      "exitCode": 0,
+      "error": null,
+      "timestampUtc": "2026-11-01T08:34:13.888Z",
+      "finalUrl": "https://mangeshraut712.github.io/mangeshrautarchive/blog/grok-4-5-grok-build-open-source-2026.html",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      }
+    },
+    {
+      "page": "/blog/grok-x-algorithm-systems-2026.html",
+      "formFactor": "desktop",
+      "exitCode": 0,
+      "error": null,
+      "timestampUtc": "2026-11-01T08:34:27.433Z",
+      "finalUrl": "https://mangeshraut712.github.io/mangeshrautarchive/blog/grok-x-algorithm-systems-2026.html",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      }
+    },
+    {
+      "page": "/blog/macbook-pro-touchscreen-proled-xdr-2026.html",
+      "formFactor": "desktop",
+      "exitCode": 0,
+      "error": null,
+      "timestampUtc": "2026-11-01T08:34:40.725Z",
+      "finalUrl": "https://mangeshraut712.github.io/mangeshrautarchive/blog/macbook-pro-touchscreen-proled-xdr-2026.html",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      }
+    },
+    {
+      "page": "/blog/notebooklm-2026-ai-research-agent.html",
+      "formFactor": "desktop",
+      "exitCode": 0,
+      "error": null,
+      "timestampUtc": "2026-11-01T08:34:54.032Z",
+      "finalUrl": "https://mangeshraut712.github.io/mangeshrautarchive/blog/notebooklm-2026-ai-research-agent.html",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      }
+    },
+    {
+      "page": "/blog/nvidia-ai-dominance-2026.html",
+      "formFactor": "desktop",
+      "exitCode": 0,
+      "error": null,
+      "timestampUtc": "2026-11-01T08:35:07.301Z",
+      "finalUrl": "https://mangeshraut712.github.io/mangeshrautarchive/blog/nvidia-ai-dominance-2026.html",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      }
+    },
+    {
+      "page": "/blog/openai-devday-2026.html",
+      "formFactor": "desktop",
+      "exitCode": 0,
+      "error": null,
+      "timestampUtc": "2026-11-01T08:35:21.050Z",
+      "finalUrl": "https://mangeshraut712.github.io/mangeshrautarchive/blog/openai-devday-2026.html",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      }
+    },
+    {
+      "page": "/blog/openclaw-revolution-2026.html",
+      "formFactor": "desktop",
+      "exitCode": 0,
+      "error": null,
+      "timestampUtc": "2026-11-01T08:35:34.742Z",
+      "finalUrl": "https://mangeshraut712.github.io/mangeshrautarchive/blog/openclaw-revolution-2026.html",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      }
+    },
+    {
+      "page": "/blog/openrouter-ai-usb-hub-routing-2026.html",
+      "formFactor": "desktop",
+      "exitCode": 0,
+      "error": null,
+      "timestampUtc": "2026-11-01T08:35:48.144Z",
+      "finalUrl": "https://mangeshraut712.github.io/mangeshrautarchive/blog/openrouter-ai-usb-hub-routing-2026.html",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      }
+    },
+    {
+      "page": "/blog/razorpay-vulcan-payments-foundation-model.html",
+      "formFactor": "desktop",
+      "exitCode": 0,
+      "error": null,
+      "timestampUtc": "2026-11-01T08:36:03.388Z",
+      "finalUrl": "https://mangeshraut712.github.io/mangeshrautarchive/blog/razorpay-vulcan-payments-foundation-model.html",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      }
+    },
+    {
+      "page": "/blog/typesafe-ai-jev-system-one-decisions-2026.html",
+      "formFactor": "desktop",
+      "exitCode": 0,
+      "error": null,
+      "timestampUtc": "2026-11-01T08:36:16.991Z",
+      "finalUrl": "https://mangeshraut712.github.io/mangeshrautarchive/blog/typesafe-ai-jev-system-one-decisions-2026.html",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      }
+    },
+    {
+      "page": "/blog/upi-tap-to-pay-and-2026-payment-architecture.html",
+      "formFactor": "desktop",
+      "exitCode": 0,
+      "error": null,
+      "timestampUtc": "2026-11-01T08:36:30.149Z",
+      "finalUrl": "https://mangeshraut712.github.io/mangeshrautarchive/blog/upi-tap-to-pay-and-2026-payment-architecture.html",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      }
+    },
+    {
+      "page": "/blog/wispr-flow-dictation-2026.html",
+      "formFactor": "desktop",
+      "exitCode": 0,
+      "error": null,
+      "timestampUtc": "2026-11-01T08:36:43.264Z",
+      "finalUrl": "https://mangeshraut712.github.io/mangeshrautarchive/blog/wispr-flow-dictation-2026.html",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      }
+    },
+    {
+      "page": "/blog/wwdc-2026-apple-intelligence-siri-ai.html",
+      "formFactor": "desktop",
+      "exitCode": 0,
+      "error": null,
+      "timestampUtc": "2026-11-01T08:36:56.691Z",
+      "finalUrl": "https://mangeshraut712.github.io/mangeshrautarchive/blog/wwdc-2026-apple-intelligence-siri-ai.html",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      }
+    }
+  ]
+}

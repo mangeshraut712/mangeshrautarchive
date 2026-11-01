@@ -54,6 +54,24 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'full-site-lighthouse-record-20261101',
+    date: '2026-11-01',
+    type: 'improvement',
+    title: 'Record full-load scores across published pages',
+    summary:
+      'Preserve one mobile and desktop Lighthouse sample per published URL, including measured exceptions and noindex pages.',
+    tags: ['performance', 'other'],
+    sha: null,
+    commitVerified: false,
+    model: 'GPT-6',
+    ide: 'Codex desktop',
+    purpose: 'Make score claims traceable to individual measured pages and their limitations.',
+    attributionSource: 'not-recorded',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+    status: 'unreleased',
+  },
+  {
     id: 'homepage-deep-link-alignment-20261101',
     date: '2026-11-01',
     type: 'fix',
