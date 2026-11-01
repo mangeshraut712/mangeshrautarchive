@@ -4,7 +4,7 @@ The primary release gate uses the FastAPI test suite (212 tests), the Cloudflare
 
 | Suite                     | Path                                                          | Runner     | Command                       | Coverage                                                                   |
 | ------------------------- | ------------------------------------------------------------- | ---------- | ----------------------------- | -------------------------------------------------------------------------- |
-| API                       | `tests/api/`                                                  | pytest     | `npm run test:api`            | 211 tests — FastAPI routes, streaming, OAuth, health probes, middleware    |
+| API                       | `tests/api/`                                                  | pytest     | `npm run test:api`            | 212 tests — FastAPI routes, streaming, OAuth, health probes, middleware    |
 | Worker                    | `tests/worker/`                                               | Node test  | `npm run test:worker`         | 27 tests — edge routing, CORS, multimodal routing, and streams             |
 | Unit                      | `tests/unit/`                                                 | Node test  | `npm run test:unit`           | 17 tests — blog escaping, chart rendering, published surfaces, sync logic  |
 | Critical browser journeys | `tests/e2e/critical-journeys.spec.js`, `chatbot-connectivity` | Playwright | `npm run test:e2e:critical`   | 18 critical user journeys on Desktop Chrome                                |
