@@ -39,6 +39,10 @@ After `2204c1f6` was deployed, [PageSpeed Insights](https://pagespeed.web.dev/an
 
 After `7718a95b` was deployed, [PageSpeed Insights](https://pagespeed.web.dev/analysis/https-mangeshraut712-github-io-mangeshrautarchive/r7t4g1p1ti?form_factor=mobile) sampled the homepage at 3:50 PM Asia/Kolkata: mobile scored 69/100/100/100 and desktop 68/100/100/100. Full-load Contact samples were desktop 74/100/100/100 with CLS 1.084 and mobile 32/100/100/100 with CLS 1.057. These are single samples; the layout-shift goal remains unmet. The report also identified oversized Last.fm artwork. For one observed image, the provider returned 437,243 bytes at its `1000x1000` URL and 173,791 bytes at `300x300`; actual savings vary by artwork and compression.
 
+After `9f4c9c23`, a [PageSpeed Insights homepage report](https://pagespeed.web.dev/analysis/https-mangeshraut712-github-io-mangeshrautarchive/qtoylvh652?form_factor=mobile) sampled mobile at 68/100/100/100 and desktop at 71/100/100/100. Full-load Contact samples were 75/100/100/100 with CLS 0.917 on desktop and 56/100/100/100 with CLS 2.915 on mobile. These are single lab samples, not field data.
+
+A local paired experiment applied the existing card accessibility and retina styles before first paint. Desktop Contact CLS was 1.020 and 1.017 on the baseline and 0.009 in both candidate runs; mobile baseline samples were 1.903 and 1.043, while candidate samples were 1.029 in both runs. Local homepage performance samples were 65 and 62 on the baseline, and 65 and 65 for the candidate. These are diagnostic samples and do not establish live scores; the mobile Contact shift remains unresolved.
+
 To collect a new public normal-load sample, run:
 
 ```bash

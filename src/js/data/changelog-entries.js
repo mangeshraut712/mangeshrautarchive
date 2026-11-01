@@ -54,6 +54,24 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'early-layout-styles-20261101',
+    date: '2026-11-01',
+    type: 'fix',
+    title: 'Apply layout styles before the first page load',
+    summary:
+      'Load the existing card accessibility and retina styles before first paint to reduce late style recalculation and desktop Contact shifts.',
+    tags: ['performance', 'design'],
+    sha: null,
+    commitVerified: false,
+    model: 'GPT-6',
+    ide: 'Codex desktop',
+    purpose: 'Reduce startup style recalculation while retaining the existing visual design.',
+    attributionSource: 'not-recorded',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+    status: 'unreleased',
+  },
+  {
     id: 'compact-lastfm-hero-artwork-20261101',
     date: '2026-11-01',
     type: 'improvement',

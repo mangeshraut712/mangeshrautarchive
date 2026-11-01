@@ -312,6 +312,8 @@ The JavaScript config is selected explicitly because upstream automatic discover
 
 **Music artwork sizing:** GPT-6 / Codex desktop; purpose: reduce the Last.fm image payload for the compact hero disc while retaining high-density display coverage. Exact variant, reasoning mode, and token usage: unavailable.
 
+**First-paint styles:** GPT-6 / Codex desktop; purpose: apply existing layout styles before page load to reduce late style recalculation. Exact variant, reasoning mode, and token usage: unavailable.
+
 Mangesh Raut maintains this portfolio with contributions from Codex, Claude Code, Google Antigravity,
 Cursor, and GitHub Copilot. Shipped changes record the exposed agent/model family, engineering
 purpose, and verified commit in the [changelog](src/js/data/changelog-entries.js).
