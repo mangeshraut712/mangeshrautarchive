@@ -2160,6 +2160,7 @@ html.launch-intro-active body {
 }
 
 .launch-intro.is-exiting {
+  pointer-events: none;
   animation: launchIntroFadeOut 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 

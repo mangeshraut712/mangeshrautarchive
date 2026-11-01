@@ -316,6 +316,8 @@ The JavaScript config is selected explicitly because upstream automatic discover
 
 **Mobile Contact startup:** GPT-6 / Codex desktop; purpose: prepare existing section disclosures earlier for mobile Contact links and measure layout stability. Exact variant, reasoning mode, and token usage: unavailable.
 
+**First-visit greeting:** GPT-6 Astra / Codex desktop; purpose: run the greeting during loading, release ready content independently of the application bundle, and parse the complete hero before loading its badge enhancements. Localhost and automation use the same first-visit behavior as production. Reasoning mode and token usage: unavailable.
+
 **Input-aware loading:** GPT-6 Astra / Codex desktop; purpose: prevent scripted scrolling from starting analytics early and load Contact widgets when relevant. GA4 configuration, queued events, idle fallback, and page-exit loading remain covered by regression tests. Reasoning mode and token usage: unavailable.
 
 **Shared layout delivery:** GPT-6 Astra / Codex desktop; purpose: stabilize shared styles before first paint, reduce repeated layout work, and correct Lighthouse browser selection. Reasoning mode and token usage: unavailable. Normal-load verification remains in progress; this is not a claim of universal 100 scores.
@@ -329,7 +331,7 @@ purpose, and verified commit in the [changelog](src/js/data/changelog-entries.js
 | Current contribution                             | Attribution                                                                                                                                                                              |
 | ------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Coding agent                                     | GPT-6 Astra / Codex desktop                                                                                                                                                              |
-| Purpose                                          | Reduce premature analytics and offscreen Contact widget work while preserving functionality                                                                                              |
+| Purpose                                          | Release ready content from the first-visit greeting while preserving its artwork and fade                                                                                                |
 | Exact model variant, reasoning mode, token usage | unavailable                                                                                                                                                                              |
 | Portfolio chatbot model                          | Configured separately in [api/model_router.py](api/model_router.py) and [Worker configuration](workers/assistme-chat/wrangler.toml); each live response reports the actual serving model |
 

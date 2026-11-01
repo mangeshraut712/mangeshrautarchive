@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+  <meta charset="UTF-8" />
   <script src="js/utils/perf-audit-head.js"></script>
   <meta name="contact-preview-module" content="" data-href="js/modules/section-preview.js" id="contact-preview-module" />
   <script>
@@ -48,7 +49,6 @@
   <!-- GA bootstrap — defer so it never blocks FCP/LCP (PageSpeed render-blocking) -->
   <script src="js/utils/deferred-analytics.js" defer></script>
 
-  <meta charset="UTF-8" />
   <title>Mangesh Raut — Software Engineer Portfolio — Java, Python, AWS, Full Stack</title>
   <meta name="viewport"
     content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover" />
@@ -1470,31 +1470,7 @@ html.dark #home .hero-name-text {
       </svg>
     </div>
   </div>
-  <script>
-    (function () {
-      var isLocalHost = /^(localhost|127\.0\.0\.1|0\.0\.0\.0|\[?::1\]?)$/.test(window.location.hostname);
-      if (isLocalHost) return;
-      if (window.__PERF_AUDIT__) return;
-      if (navigator.webdriver) return;
-      var ua = navigator.userAgent || '';
-      if (/Chrome-Lighthouse|Lighthouse|PTST|moto g power/i.test(ua)) return;
-      var key = 'portfolio-launch-intro-seen-v2026';
-      var show = false;
-      try {
-        var nav = performance.getEntriesByType('navigation')[0];
-        show = (nav && nav.type === 'reload') || sessionStorage.getItem(key) !== '1';
-      } catch (_error) {
-        show = true;
-      }
-      if (!show) return;
-      var intro = document.getElementById('launch-intro');
-      if (!intro) return;
-      intro.hidden = false;
-      intro.removeAttribute('aria-hidden');
-      document.documentElement.classList.add('launch-intro-active');
-      window.__portfolioLaunchIntroPrimed = true;
-    })();
-  </script>
+  <script src="js/core/launch-intro.js"></script>
   <!-- Search Overlay — Apple Spotlight / command palette -->
   <div id="search-overlay" role="dialog" aria-modal="true" aria-label="Command palette" aria-hidden="true" hidden>
     <div class="search-overlay-backdrop" data-search-close></div>
@@ -2148,34 +2124,6 @@ html.dark #home .hero-name-text {
                   </div>
                 </div>
 
-                <script>
-                  if (!window.__PERF_AUDIT__) {
-                    var heroFlyoutScript = document.createElement('script');
-                    heroFlyoutScript.defer = true;
-                    heroFlyoutScript.src = 'js/modules/hero-flyout-position.js?v=20260716b';
-                    document.currentScript.parentNode.insertBefore(
-                      heroFlyoutScript,
-                      document.currentScript.nextSibling
-                    );
-
-                    var vibeStackScript = document.createElement('script');
-                    vibeStackScript.defer = true;
-                    vibeStackScript.src = 'js/modules/vibe-stack.js?v=20260716b';
-                    document.currentScript.parentNode.insertBefore(
-                      vibeStackScript,
-                      heroFlyoutScript.nextSibling
-                    );
-
-                    var reachAnalytics = document.createElement('script');
-                    reachAnalytics.defer = true;
-                    reachAnalytics.src = 'js/modules/analytics.js?v=20260719reach5';
-                    document.currentScript.parentNode.insertBefore(
-                      reachAnalytics,
-                      vibeStackScript.nextSibling
-                    );
-                  }
-                </script>
-
                 <!-- System Telemetry & Vitality Rings -->
                 <div id="telemetry-rings-container" class="telemetry-rings-container" aria-live="polite"></div>
 
@@ -2337,6 +2285,33 @@ html.dark #home .hero-name-text {
         </div>
       </div>
     </section>
+    <script>
+      if (!window.__PERF_AUDIT__) {
+        var heroFlyoutScript = document.createElement('script');
+        heroFlyoutScript.defer = true;
+        heroFlyoutScript.src = 'js/modules/hero-flyout-position.js?v=20260716b';
+        document.currentScript.parentNode.insertBefore(
+          heroFlyoutScript,
+          document.currentScript.nextSibling
+        );
+
+        var vibeStackScript = document.createElement('script');
+        vibeStackScript.defer = true;
+        vibeStackScript.src = 'js/modules/vibe-stack.js?v=20260716b';
+        document.currentScript.parentNode.insertBefore(
+          vibeStackScript,
+          heroFlyoutScript.nextSibling
+        );
+
+        var reachAnalytics = document.createElement('script');
+        reachAnalytics.defer = true;
+        reachAnalytics.src = 'js/modules/analytics.js?v=20260719reach5';
+        document.currentScript.parentNode.insertBefore(
+          reachAnalytics,
+          vibeStackScript.nextSibling
+        );
+      }
+    </script>
     <!-- About Section — full next screen on desktop (no hero peek) -->
     <section id="about" class="section-about" aria-labelledby="about-heading">
       <div class="container">
@@ -5056,7 +5031,7 @@ html.dark #home .hero-name-text {
           { src: 'js/utils/smart-navbar.js?v=20261101perf6', module: true },
           { src: 'js/utils/theme.js?v=20260716aa', module: true },
           { src: 'js/utils/go-to-top.js?v=20260716aa', defer: true },
-          { src: 'js/core/bootstrap.js?v=20261101widgets1', module: true },
+          { src: 'js/core/bootstrap.js?v=20261101intro1', module: true },
           { src: 'js/modules/contact-page.js?v=20260823forms1', module: true },
           { src: 'js/modules/blessing-media-modal.js?v=20260728e', module: true },
           { src: 'js/modules/share-widget.js?v=20261029release', module: true },

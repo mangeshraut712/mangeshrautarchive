@@ -54,6 +54,25 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'loading-bound-greeting-20261101',
+    date: '2026-11-01',
+    type: 'fix',
+    title: 'Release ready content from the welcome animation',
+    summary:
+      'Run the existing greeting while the page loads and release ready content independently of the application bundle. Parse the complete hero before loading its badge enhancements to prevent an initial layout jump. Preserve the greeting artwork and fade, and use the same first-visit behavior in local and automated browsers.',
+    tags: ['performance', 'accessibility'],
+    sha: null,
+    commitVerified: false,
+    model: 'GPT-6 Astra',
+    ide: 'Codex desktop',
+    purpose:
+      'Reduce first-visit visual delay and make normal-load performance tests representative.',
+    attributionSource: 'not-recorded',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+    status: 'unreleased',
+  },
+  {
     id: 'input-aware-contact-loading-20261101',
     date: '2026-11-01',
     type: 'fix',

@@ -411,6 +411,10 @@ async function inlineThemeHead(distDir) {
 
   const scriptsToInline = [
     {
+      srcPattern: /<script\s+src="js\/core\/launch-intro\.js[^"]*"[^>]*><\/script>/g,
+      fileName: 'js/core/launch-intro.js',
+    },
+    {
       srcPattern: /<script\s+src="js\/utils\/theme-head\.js[^"]*"[^>]*><\/script>/g,
       fileName: 'js/utils/theme-head.js',
     },
