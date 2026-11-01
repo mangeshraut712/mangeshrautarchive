@@ -2,21 +2,24 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
 
+import { hasMeaningfulEdgeSnapshotChange } from '../../scripts/deployment/edge-snapshot-change.mjs';
 import { syncGitHubStats } from '../../scripts/integrations/sync-github-stats.mjs';
 
 const workflowPath = new URL('../../.github/workflows/github-stats-sync.yml', import.meta.url);
-const automationWorkflows = [
+const analyticsWorkflowPath = new URL(
+  '../../.github/workflows/analytics-reach-sync.yml',
+  import.meta.url
+);
+const edgeSnapshotExporterPath = new URL(
+  '../../scripts/deployment/export-edge-snapshots.mjs',
+  import.meta.url
+);
+const pullRequestAutomationWorkflows = [
   {
     path: workflowPath,
     jobName: 'sync-stats',
     branch: 'automation/github-stats-sync',
     changedPath: 'src/js/data/github-stats.json',
-  },
-  {
-    path: new URL('../../.github/workflows/analytics-reach-sync.yml', import.meta.url),
-    jobName: 'sync',
-    branch: 'automation/analytics-reach-sync',
-    changedPath: 'workers/assistme-chat/src/edge-data-snapshot.js',
   },
   {
     path: new URL('../../.github/workflows/kalnirnay-panchang-sync.yml', import.meta.url),
@@ -128,7 +131,7 @@ test('GitHub stats sync is idempotent when the fetched public data is unchanged'
   assert.equal(changed.payload.lastSyncedAt, '2026-10-30T12:00:00.000Z');
 });
 
-test('scheduled data workflows create or update one reviewable draft PR instead of pushing main', () => {
+test('scheduled GitHub and Panchang data workflows create one reviewable draft PR instead of pushing main', () => {
   const workflowSource = readFileSync(workflowPath, 'utf8');
 
   assert.match(workflowSource, /name:\s*Checkout Repository\s*\n\s+uses:\s*actions\/checkout@v7/);
@@ -136,7 +139,7 @@ test('scheduled data workflows create or update one reviewable draft PR instead 
   assert.ok(workflowSource.includes('id: create-pull-request'));
   assert.ok(workflowSource.includes(`uses: ${CREATE_PULL_REQUEST_ACTION}`));
 
-  for (const { path, branch, changedPath } of automationWorkflows) {
+  for (const { path, branch, changedPath } of pullRequestAutomationWorkflows) {
     const source = readFileSync(path, 'utf8');
 
     assert.deepEqual(extractPermissions(source), {
@@ -151,4 +154,77 @@ test('scheduled data workflows create or update one reviewable draft PR instead 
     assert.doesNotMatch(source, /(?:HEAD:)?main\s*$/mu);
     assert.doesNotMatch(source, /\[skip ci\]|GH_PAT|gh\s+pr\s+merge|--admin/u);
   }
+});
+
+test('analytics reach sync preserves a values-free review artifact without creating a branch or PR', () => {
+  const source = readFileSync(analyticsWorkflowPath, 'utf8');
+
+  assert.deepEqual(extractPermissions(source), {
+    contents: 'read',
+  });
+  assert.match(source, /uses:\s*actions\/upload-artifact@v4/);
+  assert.match(
+    source,
+    /name:\s*analytics-reach-review-\$\{\{ github\.run_id \}\}-\$\{\{ github\.run_attempt \}\}/
+  );
+  assert.match(
+    source,
+    /ARTIFACT_NAME:\s*analytics-reach-review-\$\{\{ github\.run_id \}\}-\$\{\{ github\.run_attempt \}\}/
+  );
+  assert.match(source, /path:\s*artifacts\/analytics-reach-review/);
+  assert.match(source, /retention-days:\s*2/);
+  assert.match(source, /REQUIRE_GA:\s*'1'/);
+  assert.match(source, /node scripts\/deployment\/export-edge-snapshots\.mjs/);
+  assert.match(source, /if git diff --quiet -- "\$CANDIDATE_PATH"; then\n\s+changed=false/u);
+  assert.match(source, /"candidateGenerated": true/u);
+  assert.match(source, /"candidateIncluded": false/u);
+  assert.match(source, /GITHUB_STEP_SUMMARY/);
+  assert.match(source, /No commit, branch, pull request, or deployment was created\./);
+  assert.match(source, /open a normal, independently reviewed pull request/iu);
+  assert.match(source, /artifact intentionally excludes generated analytics and health/u);
+  assert.doesNotMatch(
+    source,
+    /peter-evans\/create-pull-request|automation\/analytics-reach-sync|\bgit\s+push\b|GITHUB_TOKEN|gh\s+pr\b|pull-request-(?:operation|url)|cat\s+\/tmp\/uvicorn\.log|cp "\$CANDIDATE_PATH"|SHA256SUMS/u
+  );
+});
+
+test('edge snapshot review signal ignores per-run metadata but preserves meaningful changes', () => {
+  const existing = {
+    exportedAt: '2026-11-01T00:00:00.000Z',
+    reach: {
+      total_reach: 1,
+      timestamp: '2026-11-01T00:00:00.000Z',
+      insights: { last_updated: '2026-11-01T00:00:00.000Z', unique_visitors: 1 },
+    },
+    healthVitals: {
+      timestamp: '2026-11-01T00:00:00.000Z',
+      status: 'stale',
+      refresh: { ageMinutes: 1, stale: true },
+    },
+  };
+  const originalExisting = structuredClone(existing);
+  const timestampOnlyCandidate = structuredClone(existing);
+  timestampOnlyCandidate.exportedAt = '2026-11-01T01:00:00.000Z';
+  timestampOnlyCandidate.reach.timestamp = '2026-11-01T01:00:00.000Z';
+  timestampOnlyCandidate.reach.insights.last_updated = '2026-11-01T01:00:00.000Z';
+  timestampOnlyCandidate.healthVitals.timestamp = '2026-11-01T01:00:00.000Z';
+  timestampOnlyCandidate.healthVitals.refresh.ageMinutes = 61;
+
+  assert.equal(hasMeaningfulEdgeSnapshotChange(existing, timestampOnlyCandidate), false);
+  assert.deepEqual(existing, originalExisting);
+  assert.equal(hasMeaningfulEdgeSnapshotChange(null, timestampOnlyCandidate), true);
+
+  const metricCandidate = structuredClone(timestampOnlyCandidate);
+  metricCandidate.reach.total_reach = 2;
+  assert.equal(hasMeaningfulEdgeSnapshotChange(existing, metricCandidate), true);
+});
+
+test('edge snapshot exporter completion log excludes analytics and health values', () => {
+  const source = readFileSync(edgeSnapshotExporterPath, 'utf8');
+  const completionSection = source.slice(source.lastIndexOf('fs.writeFileSync'));
+
+  assert.match(source, /hasMeaningfulEdgeSnapshotChange\(existing, snapshot\)/);
+  assert.match(source, /No meaningful edge snapshot changes detected/);
+  assert.match(completionSection, /Prepared .*without logging analytics or health values\./);
+  assert.doesNotMatch(completionSection, /reach=|sleep=|total_reach|sleepScore/u);
 });

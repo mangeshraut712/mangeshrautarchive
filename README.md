@@ -310,10 +310,12 @@ purpose, and verified commit in the [changelog](src/js/data/changelog-entries.js
 
 | Current contribution                             | Attribution                                                                                                                                                                              |
 | ------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Coding agent                                     | GPT-6.1 Terra / Codex desktop                                                                                                                                                            |
-| Purpose                                          | Improve article evidence, reader decision support, and accessible table rendering                                                                                                        |
+| Coding agent                                     | GPT-5 / Codex desktop                                                                                                                                                                    |
+| Purpose                                          | Replace blocked GA4 PR automation with a values-free review artifact and redacted workflow logs                                                                                          |
 | Exact model variant, reasoning mode, token usage | unavailable                                                                                                                                                                              |
 | Portfolio chatbot model                          | Configured separately in [api/model_router.py](api/model_router.py) and [Worker configuration](workers/assistme-chat/wrangler.toml); each live response reports the actual serving model |
+
+**Analytics workflow token review:** GPT-5 / Codex desktop; purpose: limit the review-artifact workflow to read-only repository access. Exact variant, reasoning mode, and token usage: unavailable.
 
 **AssistMe verification — October 3, 2026:** GPT-6 / Codex in Codex desktop; purpose: live multimodal verification, accurate model labels, billing provenance, and responsive chatbot reliability. Exact variant, reasoning mode, and token usage: unavailable.
 
