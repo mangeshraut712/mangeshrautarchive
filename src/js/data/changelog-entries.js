@@ -54,6 +54,24 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'system-theme-favicons-20261101',
+    date: '2026-11-01',
+    type: 'fix',
+    title: 'Clear tab icons and tighter music controls',
+    summary:
+      'Select contrasting tab icons from the system theme across standalone pages, articles, and case studies. Replace white-only legacy fallbacks with a contrasting tile. Enlarge the music artwork and symbols while reducing the visible circles to 32px inside accessible 44px hit areas. Correct stale test counts in Uses and shared portfolio metadata, expand 404 navigation targets to 44px, and remove the stale September-only label from the writing section.',
+    tags: ['design'],
+    sha: null,
+    commitVerified: false,
+    model: 'GPT-6 / Codex',
+    ide: 'Codex desktop',
+    purpose: 'Improve tab branding contrast and compact music control clarity.',
+    attributionSource: 'not-recorded',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+    status: 'unreleased',
+  },
+  {
     id: 'compact-music-card-20261101',
     date: '2026-11-01',
     type: 'improvement',

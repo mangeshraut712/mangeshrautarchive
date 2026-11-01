@@ -384,9 +384,18 @@ section in this specification.
 
 Use a compact rectangular grid with circular artwork on the left, track and artist in the
 middle, listening status beneath them, and preview / Apple Music / Spotify controls at the
-upper right. Preserve 44px control hit areas and an independent compact preview timeline.
+upper right. Use 80px artwork on desktop and 64px on mobile. Visible control circles are
+32px with 22px service symbols (18px play triangle); preserve 44px hit areas and a compact
+preview timeline.
 Artwork rotation follows local audio preview playback; Last.fm listening status alone does
 not rotate it. Pause rotation when playback pauses or ends, and disable it under reduced motion.
+
+### Browser tab icons
+
+Tab icons follow the operating-system color scheme independently of the in-page theme toggle.
+`src/js/core/favicon.js` selects the contrasting PNG and listens for system changes. Standalone
+pages and generated article/case-study heads use the same icon pair. The legacy ICO/PNG fallback
+uses a white mark on a black tile; the no-JavaScript SVG adapts through its own media query.
 
 ### Viewport verification matrix
 

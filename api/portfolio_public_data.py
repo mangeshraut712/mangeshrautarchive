@@ -33,8 +33,8 @@ LIGHTHOUSE_PAGES_GATES: Dict[str, Dict[str, int]] = {
 }
 
 TEST_COUNTS = {
-    "pytest": 211,
-    "critical_browser": 18,
+    "pytest": 212,
+    "critical_browser": 20,
     "playwright_projects": 16,
 }
 

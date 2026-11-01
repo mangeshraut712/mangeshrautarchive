@@ -278,6 +278,8 @@ The JavaScript config is selected explicitly because upstream automatic discover
 
 ### 5.1 Coding agents and provenance
 
+**System-theme tab icons and music controls:** GPT-6 / Codex desktop; purpose: keep browser favicons legible in both OS themes, enlarge music artwork and symbols, and preserve accessible hit areas around smaller visible controls. Exact model variant, reasoning mode, and token usage: unavailable.
+
 **Compact music player:** GPT-6 / Codex; purpose: compact the hero music card, place controls at the upper right, and bind artwork rotation to preview playback. Exact model variant, reasoning mode, and token usage: unavailable.
 
 **Tester Army contribution:** GPT-6.1 Sol / Codex; purpose: deterministic browser journeys and coverage boundaries. Reasoning mode and token usage: unavailable. Independent verification uses GPT-6 Luna / Codex.
@@ -450,5 +452,5 @@ addition to the outer request, so it is reserved for deep text comparisons and r
 A free model ID does not guarantee access: the observed Omni audio minimum was $0.50 and video
 minimum $1.00; Gemma video succeeded without that balance. These provider restrictions may change.
 
-Regression coverage: 212 API tests, 27 Worker routing/stream boundary tests, frontend unit checks, 16 accessibility tests, and 19 critical Chrome
+Regression coverage: 212 API tests, 27 Worker routing/stream boundary tests, frontend unit checks, 16 accessibility tests, and 20 critical Chrome
 journeys. The attachment journey also runs in Safari. October 3 live checks confirmed text, code, image, video, PDF, and audio processing. Audio recovered through Auto to Gemini 3.8 Flash using Google AI Studio BYOK. OpenRouter reported a zero charge and a provider-side inference cost of $0.002493 for the sample; a zero OpenRouter charge does not prove that BYOK inference is free. A longer conversation caused Auto to return HTTP 402; direct compatible Gemini 3.8 fallback restored the same audio request, so audio now tries that route before Auto. Cloud TTS remains unavailable and Fusion has no successful inference evidence. Coding agent: GPT-6 / Codex in Codex desktop; purpose: live multimodal verification, honest billing metadata, and responsive chatbot review. Exact variant, reasoning mode, and token usage: unavailable.

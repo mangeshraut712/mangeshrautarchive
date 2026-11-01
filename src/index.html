@@ -117,10 +117,10 @@
   <meta name="twitter:site" content="@mrcommando712" />
   <meta name="twitter:creator" content="@mrcommando712" />
 
-  <link rel="icon" href="https://mangeshraut712.github.io/mangeshrautarchive/favicon.svg?v=20260906mr" type="image/svg+xml" />
-  <link rel="icon" href="https://mangeshraut712.github.io/mangeshrautarchive/favicon.ico?v=20260906mr" sizes="48x48" />
-  <link rel="icon" href="https://mangeshraut712.github.io/mangeshrautarchive/favicon-32x32.png?v=20260906mr" type="image/png" sizes="32x32" />
-  <link rel="icon" href="https://mangeshraut712.github.io/mangeshrautarchive/favicon-16x16.png?v=20260906mr" type="image/png" sizes="16x16" />
+  <link rel="icon" href="favicon-20261101.ico" sizes="16x16 32x32 48x48" />
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-light-20261101.png" data-system-favicon data-light="favicon-light-20261101.png" data-dark="favicon-dark-20261101.png" />
+    <noscript><link rel="icon" type="image/svg+xml" href="favicon.svg" /></noscript>
+    <script src="js/core/favicon.js" defer></script>
   <link rel="apple-touch-icon" href="https://mangeshraut712.github.io/mangeshrautarchive/apple-touch-icon-mr-20260906.png?v=20260906mr" sizes="180x180" />
   <link rel="apple-touch-icon-precomposed" href="https://mangeshraut712.github.io/mangeshrautarchive/apple-touch-icon-mr-20260906.png?v=20260906mr" sizes="180x180" />
   <link rel="apple-touch-icon" href="https://mangeshraut712.github.io/mangeshrautarchive/assets/icons/icon-192-mr-20260906.png?v=20260906mr" sizes="192x192" />
@@ -2160,7 +2160,7 @@ html.dark #home .hero-name-text {
                           aria-label="Play 30-second audio preview"
                           title="Play 30s Audio Preview"
                         >
-                          <i class="fas fa-play" id="music-preview-icon" aria-hidden="true"></i>
+                          <span class="music-control-face" aria-hidden="true"><i class="fas fa-play" id="music-preview-icon" aria-hidden="true"></i></span>
                         </button>
                         <a
                           id="music-apple-link"
@@ -2171,7 +2171,7 @@ html.dark #home .hero-name-text {
                           aria-label="Open track on Apple Music"
                           title="Open on Apple Music"
                         >
-                          <i class="fab fa-apple" aria-hidden="true"></i>
+                          <span class="music-control-face" aria-hidden="true"><i class="fab fa-apple" aria-hidden="true"></i></span>
                         </a>
                         <a
                           id="music-spotify-link"
@@ -2182,7 +2182,7 @@ html.dark #home .hero-name-text {
                           aria-label="Open track on Spotify"
                           title="Open on Spotify"
                         >
-                          <i class="fab fa-spotify" aria-hidden="true"></i>
+                          <span class="music-control-face" aria-hidden="true"><i class="fab fa-spotify" aria-hidden="true"></i></span>
                         </a>
                       </div>
                     </div>
@@ -3704,7 +3704,7 @@ html.dark #home .hero-name-text {
     <!-- Blog Section -->
     <section id="blog" class="section-blog" aria-labelledby="blog-heading" aria-label="Blog posts">
       <div class="container">
-        <p class="section-eyebrow">September 2026 · Field Notes</p>
+        <p class="section-eyebrow">Technology · Field Notes</p>
         <h2 id="blog-heading">Technical Writings <span id="blog-post-count" class="section-count">(18)</span></h2>
         <p class="section-subtitle">A few recent field notes, with the full analysis, diagrams, and sources one tap away.</p>
         <div id="blog-posts-container" class="blog-home-editorial-grid">
@@ -4502,10 +4502,10 @@ html.dark #home .hero-name-text {
                         </div>
                       </div>
                     </div>
-                    
+
                     <!-- Vertical Divider -->
                     <div class="health-widget-divider"></div>
-                    
+
                     <!-- Withings Section (Right) -->
                     <div class="health-widget-section withings-section">
                       <div class="health-brand">
@@ -4562,7 +4562,7 @@ html.dark #home .hero-name-text {
                       </div>
                     </div>
                   </div>
-                  
+
                   <div class="health-widget-footer">
                     <span class="last-sync-time"><i class="fas fa-sync-alt" aria-hidden="true"></i> <span id="health-sync-text">Checking stats…</span></span>
                     <span class="health-widget-live-label">Live Vitals</span>

@@ -10,6 +10,7 @@ import {
   PWA_ICON_192,
   PWA_ICON_512,
   fontAwesomeStylesheet,
+  faviconLinks,
   pagesIconUrl,
 } from './asset-version.mjs';
 
@@ -150,10 +151,7 @@ function pageShell({ title, description, canonical, body }) {
         }
       }
     </script>
-    <link rel="icon" href="${pagesIconUrl('favicon.svg')}" type="image/svg+xml" />
-    <link rel="icon" href="${pagesIconUrl('favicon.ico')}" sizes="48x48" />
-    <link rel="icon" href="${pagesIconUrl('favicon-32x32.png')}" type="image/png" sizes="32x32" />
-    <link rel="icon" href="${pagesIconUrl('favicon-16x16.png')}" type="image/png" sizes="16x16" />
+    ${faviconLinks('../')}
     <link rel="apple-touch-icon" href="${pagesIconUrl(APPLE_TOUCH_ICON_180)}" sizes="180x180" />
     <link rel="apple-touch-icon-precomposed" href="${pagesIconUrl(APPLE_TOUCH_ICON_180)}" sizes="180x180" />
     <link rel="apple-touch-icon" href="${pagesIconUrl(PWA_ICON_192)}" sizes="192x192" />

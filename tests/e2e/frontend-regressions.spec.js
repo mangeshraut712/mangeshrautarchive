@@ -140,3 +140,25 @@ test('music artwork follows preview playback rather than remote listening status
   });
   await expect(page.locator('#music-card')).not.toHaveClass(/is-audio-previewing/);
 });
+
+test('tab favicon tracks system theme independently of the page theme', async ({ page }) => {
+  for (const path of ['/', '/systems.html', '/uses.html']) {
+    await page.emulateMedia({ colorScheme: 'light' });
+    await gotoSite(page, path);
+    const icon = page.locator('link[data-system-favicon]');
+    await expect(icon).toHaveCount(1);
+    await expect(icon).toHaveAttribute('href', /favicon-light-20261101\.png$/);
+    await page.evaluate(() => {
+      document.documentElement.classList.add('dark');
+      document.documentElement.dataset.theme = 'dark';
+    });
+    await expect(icon).toHaveAttribute('href', /favicon-light-20261101\.png$/);
+    await page.emulateMedia({ colorScheme: 'dark' });
+    await expect(icon).toHaveAttribute('href', /favicon-dark-20261101\.png$/);
+    const response = await page.request.get(await icon.getAttribute('href'));
+    expect(response.ok()).toBe(true);
+    expect(response.headers()['content-type']).toContain('image/png');
+    await page.emulateMedia({ colorScheme: 'light' });
+    await expect(icon).toHaveAttribute('href', /favicon-light-20261101\.png$/);
+  }
+});

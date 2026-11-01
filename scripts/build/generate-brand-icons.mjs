@@ -21,13 +21,13 @@ async function renderTransparentPng(pathD, size, fill = '#ffffff') {
     .toBuffer();
 }
 
-async function renderSquircleTouchIcon(pathD, size) {
+async function renderSquircleTouchIcon(pathD, size, scale = 0.7) {
   const squircleSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
     <rect width="512" height="512" rx="106" fill="#000000"/>
   </svg>`;
 
   const squircleBg = await sharp(Buffer.from(squircleSvg)).resize(size, size).png().toBuffer();
-  const innerSize = Math.round(size * 0.7);
+  const innerSize = Math.round(size * scale);
   const offset = Math.round((size - innerSize) / 2);
   const whiteLogoSvg = getCleanLogoSvg(pathD, '#ffffff');
   const innerLogo = await sharp(Buffer.from(whiteLogoSvg))
@@ -76,12 +76,17 @@ export async function generateBrandIcons() {
   const pathD = pathMatch[1];
 
   const [png16, png32, png48, touch180, pwa192, pwa512] = await Promise.all([
-    renderTransparentPng(pathD, 16, '#ffffff'),
-    renderTransparentPng(pathD, 32, '#ffffff'),
-    renderTransparentPng(pathD, 48, '#ffffff'),
+    renderSquircleTouchIcon(pathD, 16, 0.9),
+    renderSquircleTouchIcon(pathD, 32, 0.9),
+    renderSquircleTouchIcon(pathD, 48, 0.9),
     renderSquircleTouchIcon(pathD, 180),
     renderSquircleTouchIcon(pathD, 192),
     renderSquircleTouchIcon(pathD, 512),
+  ]);
+
+  const [light, dark] = await Promise.all([
+    renderTransparentPng(pathD, 32, '#1d1d1f'),
+    renderTransparentPng(pathD, 32, '#ffffff'),
   ]);
 
   const ico = createPngIco([
@@ -91,9 +96,12 @@ export async function generateBrandIcons() {
   ]);
 
   const writes = [
+    ['src/favicon-light-20261101.png', light],
+    ['src/favicon-dark-20261101.png', dark],
     ['src/favicon-16x16.png', png16],
     ['src/favicon-32x32.png', png32],
     ['src/favicon.ico', ico],
+    ['src/favicon-20261101.ico', ico],
     ['src/apple-touch-icon.png', touch180],
     ['src/apple-touch-icon-precomposed.png', touch180],
     ['src/apple-touch-icon-mr-20260906.png', touch180],
