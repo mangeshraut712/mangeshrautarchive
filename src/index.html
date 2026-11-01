@@ -1376,8 +1376,8 @@ html.dark #home .hero-name-text {
   <link rel="stylesheet" href="assets/css/homepage-hero-polish.css?v=20260808center9" />
   <link rel="stylesheet" href="assets/css/quick-copy-shadcn.css?v=20260826cache1" />
   <noscript><link rel="stylesheet" href="assets/css/quick-copy-shadcn.css?v=20260826cache1" /></noscript>
-  <link rel="stylesheet" href="assets/css/apple-music-card.css?v=20260902lux1" />
-  <noscript><link rel="stylesheet" href="assets/css/apple-music-card.css?v=20260902lux1" /></noscript>
+  <link rel="stylesheet" href="assets/css/apple-music-card.css?v=20261101compact1" />
+  <noscript><link rel="stylesheet" href="assets/css/apple-music-card.css?v=20261101compact1" /></noscript>
 
   <!-- Lazy-loaded Section Styles (data-href only — loaded near section / idle) -->
   <link rel="stylesheet" data-href="assets/css/contact.css?v=20260729sync1" data-lazy-style-key="contact" />
@@ -2137,6 +2137,8 @@ html.dark #home .hero-name-text {
                         alt="Music album artwork" class="album-art" width="62" height="62" loading="lazy" decoding="async" fetchpriority="low" />
                     </div>
                     <div class="track-info">
+                      <p class="track-name" id="track-name" aria-live="polite" aria-atomic="true">Loading recent plays…</p>
+                      <p class="artist-name" id="artist-name">Music</p>
                       <div class="status-row">
                         <span class="status-badge">
                           <span class="status-live-dot" id="status-live-dot" aria-hidden="true"></span>
@@ -2147,54 +2149,52 @@ html.dark #home .hero-name-text {
                             <span></span>
                           </div>
                         </span>
-                        <div class="music-header-meta">
-                          <div class="music-card-actions">
-                            <button
-                              type="button"
-                              id="music-preview-btn"
-                              class="music-card-service-link music-card-preview-link"
-                              aria-label="Play 30-second audio preview"
-                              title="Play 30s Audio Preview"
-                            >
-                              <i class="fas fa-play" id="music-preview-icon" aria-hidden="true"></i>
-                            </button>
-                            <a
-                              id="music-apple-link"
-                              class="music-card-service-link music-card-apple-link"
-                              href="https://music.apple.com"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              aria-label="Open track on Apple Music"
-                              title="Open on Apple Music"
-                            >
-                              <i class="fab fa-apple" aria-hidden="true"></i>
-                            </a>
-                            <a
-                              id="music-spotify-link"
-                              class="music-card-service-link music-card-spotify-link"
-                              href="https://open.spotify.com"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              aria-label="Open track on Spotify"
-                              title="Open on Spotify"
-                            >
-                              <i class="fab fa-spotify" aria-hidden="true"></i>
-                            </a>
-                          </div>
-                        </div>
                       </div>
-                      <p class="track-name" id="track-name" aria-live="polite" aria-atomic="true">Loading recent plays…</p>
-                      <p class="artist-name" id="artist-name">Music</p>
-                      <div class="music-scrubber-container" id="music-scrubber-container" aria-label="Audio preview playback timeline">
-                        <div class="music-scrubber-track" id="music-scrubber-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" tabindex="0" aria-label="Audio preview progress bar">
-                          <div class="music-scrubber-fill" id="music-scrubber-fill"></div>
-                          <div class="music-scrubber-thumb" id="music-scrubber-thumb"></div>
-                        </div>
-                        <div class="music-time-row">
-                          <span class="music-time-current" id="music-time-current">0:00</span>
-                          <span class="music-preview-tag" id="music-preview-tag">30s Preview</span>
-                          <span class="music-time-duration" id="music-time-duration">0:30</span>
-                        </div>
+                    </div>
+                    <div class="music-header-meta">
+                      <div class="music-card-actions">
+                        <button
+                          type="button"
+                          id="music-preview-btn"
+                          class="music-card-service-link music-card-preview-link"
+                          aria-label="Play 30-second audio preview"
+                          title="Play 30s Audio Preview"
+                        >
+                          <i class="fas fa-play" id="music-preview-icon" aria-hidden="true"></i>
+                        </button>
+                        <a
+                          id="music-apple-link"
+                          class="music-card-service-link music-card-apple-link"
+                          href="https://music.apple.com"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          aria-label="Open track on Apple Music"
+                          title="Open on Apple Music"
+                        >
+                          <i class="fab fa-apple" aria-hidden="true"></i>
+                        </a>
+                        <a
+                          id="music-spotify-link"
+                          class="music-card-service-link music-card-spotify-link"
+                          href="https://open.spotify.com"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          aria-label="Open track on Spotify"
+                          title="Open on Spotify"
+                        >
+                          <i class="fab fa-spotify" aria-hidden="true"></i>
+                        </a>
+                      </div>
+                    </div>
+                    <div class="music-scrubber-container" id="music-scrubber-container" aria-label="Audio preview playback timeline">
+                      <div class="music-scrubber-track" id="music-scrubber-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" tabindex="0" aria-label="Audio preview progress bar">
+                        <div class="music-scrubber-fill" id="music-scrubber-fill"></div>
+                        <div class="music-scrubber-thumb" id="music-scrubber-thumb"></div>
+                      </div>
+                      <div class="music-time-row">
+                        <span class="music-time-current" id="music-time-current">0:00</span>
+                        <span class="music-preview-tag" id="music-preview-tag">30s Preview</span>
+                        <span class="music-time-duration" id="music-time-duration">0:30</span>
                       </div>
                     </div>
                   </div>

@@ -159,7 +159,7 @@ class LastFmService {
         }
       });
 
-      this.audioPlayer.addEventListener('play', () => {
+      this.audioPlayer.addEventListener('playing', () => {
         this.isAudioPlaying = true;
         this.syncAudioPlayerUI();
       });
@@ -239,6 +239,7 @@ class LastFmService {
     this.hero.musicCard.classList.toggle('is-playing', shouldSpin);
 
     if (this.hero.previewBtn) {
+      this.hero.previewBtn.setAttribute('aria-pressed', String(this.isAudioPlaying));
       this.hero.previewBtn.setAttribute(
         'aria-label',
         this.isAudioPlaying ? 'Pause audio preview' : 'Play 30-second audio preview'
@@ -1083,9 +1084,7 @@ class LastFmService {
   setHeroMusicState(state = 'loading') {
     if (!this.hero?.musicCard) return;
     this.hero.musicCard.dataset.musicState = state;
-    this.hero.musicCard.classList.toggle('is-playing', state === 'playing');
-    this.hero.playingIndicator?.classList.toggle('active', state === 'playing');
-    this.hero.statusLiveDot?.classList.toggle('active', state === 'playing');
+    this.syncAudioPlayerUI();
   }
 
   updateHero(track) {
@@ -1121,7 +1120,9 @@ class LastFmService {
     }
 
     this.hero.trackName.textContent = trackName;
+    this.hero.trackName.title = trackName;
     this.hero.artistName.textContent = artistName;
+    this.hero.artistName.title = artistName;
     if (this.hero.statusText) {
       this.hero.statusText.textContent = isNowPlaying ? 'Now Playing' : 'Recently Played';
     }

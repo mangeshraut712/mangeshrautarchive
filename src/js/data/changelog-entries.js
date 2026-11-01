@@ -54,6 +54,24 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'compact-music-card-20261101',
+    date: '2026-11-01',
+    type: 'improvement',
+    title: 'A compact music player with playback-aware artwork',
+    summary:
+      'Place circular artwork on the left, track details and listening status in the middle, and three accessible controls at the upper right. Keep the preview timeline compact across mobile and desktop; pause artwork rotation when the preview stops and respect reduced motion.',
+    tags: ['design'],
+    sha: null,
+    commitVerified: false,
+    model: 'GPT-6 / Codex',
+    ide: 'Codex desktop',
+    purpose: 'Improve music-card density, responsive layout, and playback feedback.',
+    attributionSource: 'not-recorded',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+    status: 'unreleased',
+  },
+  {
     id: 'loading-bound-greeting-20261101',
     date: '2026-11-01',
     type: 'fix',

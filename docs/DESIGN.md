@@ -380,6 +380,14 @@ section in this specification.
 - [ ] **Zero overflow**: `scrollWidth ≤ innerWidth` at 375px, 768px, and 1440px
 - [ ] **Close buttons**: 32×32px circular red `#ff3b30` per Tier 6
 
+### Hero music card
+
+Use a compact rectangular grid with circular artwork on the left, track and artist in the
+middle, listening status beneath them, and preview / Apple Music / Spotify controls at the
+upper right. Preserve 44px control hit areas and an independent compact preview timeline.
+Artwork rotation follows local audio preview playback; Last.fm listening status alone does
+not rotate it. Pause rotation when playback pauses or ends, and disable it under reduced motion.
+
 ### Viewport verification matrix
 
 | Page             | 375px | 430px | 768px | 1024px | 1440px |

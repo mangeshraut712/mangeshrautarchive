@@ -53,6 +53,14 @@ test('hero and music controls keep 44px targets and stop decorative motion', asy
     await page.setViewportSize({ width, height: 900 });
     const layout = await page.evaluate(() => ({
       overflow: document.documentElement.scrollWidth > innerWidth,
+      cardHeight: document.querySelector('#music-card').getBoundingClientRect().height,
+      statusBelowArtist:
+        document.querySelector('.status-row').getBoundingClientRect().top >=
+        document.querySelector('#artist-name').getBoundingClientRect().bottom,
+      controlsRightOfDetails:
+        document.querySelector('.music-header-meta').getBoundingClientRect().left >=
+        document.querySelector('#track-name').getBoundingClientRect().right,
+
       controls: [
         ...document.querySelectorAll(
           '#name-pronounce-btn, #vibe-coder-badge, #portfolio-reach, .music-card-service-link'
@@ -63,6 +71,9 @@ test('hero and music controls keep 44px targets and stop decorative motion', asy
       }),
     }));
     expect(layout.overflow).toBe(false);
+    expect(layout.cardHeight).toBeLessThan(128);
+    expect(layout.statusBelowArtist).toBe(true);
+    expect(layout.controlsRightOfDetails).toBe(true);
     expect(layout.controls).toHaveLength(6);
     expect(
       layout.controls.every(({ width: controlWidth, height }) => controlWidth >= 44 && height >= 44)
@@ -70,11 +81,62 @@ test('hero and music controls keep 44px targets and stop decorative motion', asy
   }
 
   const motion = await page.evaluate(() => {
-    document.querySelector('#music-card')?.classList.add('is-playing');
+    document.querySelector('#music-card')?.classList.add('is-playing', 'is-audio-previewing');
     document.querySelector('#playing-indicator')?.classList.add('active');
     return [...document.querySelectorAll('#album-art, #playing-indicator span')].map(
       element => getComputedStyle(element).animationName
     );
   });
   expect(motion).toEqual(['none', 'none', 'none', 'none']);
+});
+
+test('music artwork follows preview playback rather than remote listening status', async ({
+  page,
+}) => {
+  await gotoSiteReady(page, '/');
+  await page.emulateMedia({ reducedMotion: 'no-preference' });
+  const start = await page.evaluate(async () => {
+    const { default: music } = await import('/js/modules/lastfm.js');
+    music.setHeroMusicState('playing');
+    const artwork = document.querySelector('#album-art');
+    const idle = getComputedStyle(artwork).animationPlayState;
+    // A short PCM WAV exercises real media play, pause, and ended events without network audio.
+    const samples = 16000;
+    const bytes = new Uint8Array(44 + samples * 2);
+    const view = new DataView(bytes.buffer);
+    const label = (offset, text) =>
+      [...text].forEach((c, i) => view.setUint8(offset + i, c.charCodeAt(0)));
+    label(0, 'RIFF');
+    view.setUint32(4, bytes.length - 8, true);
+    label(8, 'WAVE');
+    label(12, 'fmt ');
+    view.setUint32(16, 16, true);
+    view.setUint16(20, 1, true);
+    view.setUint16(22, 1, true);
+    view.setUint32(24, 8000, true);
+    view.setUint32(28, 16000, true);
+    view.setUint16(32, 2, true);
+    view.setUint16(34, 16, true);
+    label(36, 'data');
+    view.setUint32(40, samples * 2, true);
+    music.currentPreviewUrl = `data:audio/wav;base64,${btoa(String.fromCharCode(...bytes))}`;
+    await music.toggleAudioPreview();
+    return { idle, playing: getComputedStyle(artwork).animationPlayState };
+  });
+  expect(start).toEqual({ idle: 'paused', playing: 'running' });
+  const paused = await page.evaluate(async () => {
+    const { default: music } = await import('/js/modules/lastfm.js');
+    await music.toggleAudioPreview();
+    return getComputedStyle(document.querySelector('#album-art')).animationPlayState;
+  });
+  expect(paused).toBe('paused');
+  await expect(page.locator('#music-preview-btn')).toHaveAttribute('aria-pressed', 'false');
+  await page.evaluate(async () => {
+    const { default: music } = await import('/js/modules/lastfm.js');
+    await music.toggleAudioPreview();
+  });
+  await expect(page.locator('#music-preview-btn')).toHaveAttribute('aria-pressed', 'false', {
+    timeout: 5000,
+  });
+  await expect(page.locator('#music-card')).not.toHaveClass(/is-audio-previewing/);
 });
