@@ -288,6 +288,8 @@ The JavaScript config is selected explicitly because upstream automatic discover
 
 **Dependency and audit review:** GPT-6 / Codex desktop; purpose: align Python dependency pins, address a test hostname finding, and document score limitations. Exact variant, reasoning mode, and token usage: unavailable.
 
+**Frontend characterization:** GPT-6 / Codex desktop; purpose: cover the asset-version contract and hero flyout behavior with focused Node tests. Exact variant, reasoning mode, and token usage: unavailable.
+
 Mangesh Raut maintains this portfolio with contributions from Codex, Claude Code, Google Antigravity,
 Cursor, and GitHub Copilot. Shipped changes record the exposed agent/model family, engineering
 purpose, and verified commit in the [changelog](src/js/data/changelog-entries.js).

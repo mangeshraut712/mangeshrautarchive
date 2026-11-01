@@ -54,6 +54,24 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'frontend-characterization-20261101',
+    date: '2026-11-01',
+    type: 'improvement',
+    title: 'Characterize asset versioning and hero flyout behavior',
+    summary:
+      'Add focused Node tests for the asset cache-stamp contract, flyout positioning, and music-card restoration, and reconcile the implementation-plan index.',
+    tags: ['performance', 'design'],
+    sha: null,
+    commitVerified: false,
+    model: 'GPT-6',
+    ide: 'Codex desktop',
+    purpose: 'Protect existing frontend behavior while completing the characterization plan.',
+    attributionSource: 'not-recorded',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+    status: 'unreleased',
+  },
+  {
     id: 'dependency-and-audit-accuracy-20261101',
     date: '2026-11-01',
     type: 'fix',
