@@ -1,12 +1,11 @@
 import { test, expect } from '@playwright/test';
 import { gotoSite } from './helpers/site.js';
 
-test('desktop Contact prepares section disclosures independently of the main bootstrap', async ({
+test('Contact prepares section disclosures independently of the main bootstrap', async ({
   page,
   isMobile,
 }) => {
-  test.skip(isMobile, 'The early Contact path is desktop-only.');
-  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.setViewportSize(isMobile ? { width: 412, height: 823 } : { width: 1440, height: 900 });
   await page.route('**/js/core/bootstrap.js?*', route => route.abort());
   await gotoSite(page, '/#contact');
   const preview = page.locator('#experience-timeline');

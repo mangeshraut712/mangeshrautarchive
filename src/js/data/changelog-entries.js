@@ -54,6 +54,24 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'mobile-contact-initial-disclosure-20261101',
+    date: '2026-11-01',
+    type: 'fix',
+    title: 'Stabilize mobile Contact deep links',
+    summary:
+      'Prepare existing section disclosures earlier on mobile Contact links to reduce movement while the page loads.',
+    tags: ['performance', 'design'],
+    sha: null,
+    commitVerified: false,
+    model: 'GPT-6',
+    ide: 'Codex desktop',
+    purpose: 'Reduce mobile Contact layout shifts without changing the visible design.',
+    attributionSource: 'not-recorded',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+    status: 'unreleased',
+  },
+  {
     id: 'early-layout-styles-20261101',
     date: '2026-11-01',
     type: 'fix',

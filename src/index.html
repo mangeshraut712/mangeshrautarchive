@@ -5,8 +5,8 @@
   <script src="js/utils/perf-audit-head.js"></script>
   <meta name="contact-preview-module" content="" data-href="js/modules/section-preview.js" id="contact-preview-module" />
   <script>
-    // Settle collapsed sections before a desktop Contact deep link scrolls past them.
-    if (window.location.hash === '#contact' && window.innerWidth > 1150) {
+    // Settle collapsed sections before a Contact deep link scrolls past them.
+    if (window.location.hash === '#contact') {
       document.documentElement.classList.add('contact-early-disclosure');
       var contactPreviewScript = document.createElement('script');
       contactPreviewScript.type = 'module';

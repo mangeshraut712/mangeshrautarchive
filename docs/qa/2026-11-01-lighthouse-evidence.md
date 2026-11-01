@@ -43,6 +43,10 @@ After `9f4c9c23`, a [PageSpeed Insights homepage report](https://pagespeed.web.d
 
 A local paired experiment applied the existing card accessibility and retina styles before first paint. Desktop Contact CLS was 1.020 and 1.017 on the baseline and 0.009 in both candidate runs; mobile baseline samples were 1.903 and 1.043, while candidate samples were 1.029 in both runs. Local homepage performance samples were 65 and 62 on the baseline, and 65 and 65 for the candidate. These are diagnostic samples and do not establish live scores; the mobile Contact shift remains unresolved.
 
+After `9569aed9`, [PageSpeed Insights](https://pagespeed.web.dev/analysis/https-mangeshraut712-github-io-mangeshrautarchive/pfs87o3jn3?form_factor=mobile) sampled the homepage at 80/100/100/100 on mobile and 87/100/100/100 on desktop. Separate full-load Contact Lighthouse samples were 63/100/100/100 with CLS 1.029 on mobile and 99/100/100/100 with CLS 0.009 on desktop. These are individual lab samples, not field data or proof of a stable result.
+
+In a subsequent controlled live Chrome trace at 4× CPU slowdown, section disclosures initialized after Contact was displayed and produced a full-viewport shift. Two baseline runs recorded sums of non-input layout shifts of 1.065 and 1.041; two runs with the existing disclosure module loaded early on mobile recorded 0.040 and 0.041. The experiment intercepted and modified the live HTML response, and its summed shifts are not Lighthouse session-window CLS or PageSpeed scores. Fresh deployment measurements are required.
+
 To collect a new public normal-load sample, run:
 
 ```bash
