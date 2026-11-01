@@ -1,5 +1,5 @@
 /** Single source of truth for static asset cache-bust query strings. */
-export const ASSET_VER = '20261101icons1';
+export const ASSET_VER = '20261101icons2';
 
 /**
  * Icon/PWA/touch-icon cache stamp. Bumped independently of CSS/JS so Safari
@@ -28,7 +28,7 @@ export function fontAwesomeStylesheet(assetPrefix = '', version = ASSET_VER) {
 
 export function faviconLinks(prefix = '') {
   return `<link rel="icon" href="${prefix}favicon-20261101.ico" sizes="16x16 32x32 48x48" />
-    <link rel="icon" type="image/png" sizes="32x32" href="${prefix}favicon-light-20261101.png" data-system-favicon data-light="${prefix}favicon-light-20261101.png" data-dark="${prefix}favicon-dark-20261101.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="${prefix}favicon-light-20261101b.png" data-system-favicon data-light="${prefix}favicon-light-20261101b.png" data-dark="${prefix}favicon-dark-20261101b.png" />
     <noscript><link rel="icon" type="image/svg+xml" href="${prefix}favicon.svg" /></noscript>
     <script src="${prefix}js/core/favicon.js" defer></script>`;
 }

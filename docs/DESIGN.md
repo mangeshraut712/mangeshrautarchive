@@ -393,7 +393,7 @@ not rotate it. Pause rotation when playback pauses or ends, and disable it under
 ### Browser tab icons
 
 Tab icons follow the operating-system color scheme independently of the in-page theme toggle.
-`src/js/core/favicon.js` selects the contrasting PNG and listens for system changes. Standalone
+`src/js/core/favicon.js` selects a PNG with an explicit contrasting background and listens for system changes. Standalone
 pages and generated article/case-study heads use the same icon pair. The legacy ICO/PNG fallback
 uses a white mark on a black tile; the no-JavaScript SVG adapts through its own media query.
 

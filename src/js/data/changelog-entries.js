@@ -54,6 +54,7 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+  {
     id: 'whoburnedmore-live-telemetry-refresh-20261102',
     date: '2026-11-02',
     type: 'improvement',
@@ -71,6 +72,25 @@ export const changelogEntries = [
     attributionSource: 'commit-message',
     reasoning: 'unavailable',
     usage: 'unavailable',
+  },
+  {
+    id: 'favicon-solid-contrast-20261101',
+    date: '2026-11-01',
+    type: 'fix',
+    title: 'Keep tab logos legible on browser-controlled backgrounds',
+    summary:
+      'Give both system-theme favicon variants an explicit contrasting tile, including the no-JavaScript SVG, and use fresh PNG filenames. This removes dependence on how browser chrome composites a transparent white mark.',
+    tags: ['design'],
+    sha: null,
+    commitVerified: false,
+    model: 'GPT-6 / Codex',
+    ide: 'Codex desktop',
+    purpose: 'Harden favicon contrast after native Safari verification.',
+    attributionSource: 'not-recorded',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+    status: 'unreleased',
+  },
   },
   {
     id: 'system-theme-favicons-20261101',

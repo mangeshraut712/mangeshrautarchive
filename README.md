@@ -278,7 +278,7 @@ The JavaScript config is selected explicitly because upstream automatic discover
 
 ### 5.1 Coding agents and provenance
 
-**System-theme tab icons and music controls:** GPT-6 / Codex desktop; purpose: keep browser favicons legible in both OS themes, enlarge music artwork and symbols, and preserve accessible hit areas around smaller visible controls. Exact model variant, reasoning mode, and token usage: unavailable.
+**System-theme tab icons and music controls:** GPT-6 / Codex desktop; purpose: keep browser favicons legible in both OS themes with explicit contrasting icon backgrounds, enlarge music artwork and symbols, and preserve accessible hit areas around smaller visible controls. Exact model variant, reasoning mode, and token usage: unavailable.
 
 **Compact music player:** GPT-6 / Codex; purpose: compact the hero music card, place controls at the upper right, and bind artwork rotation to preview playback. Exact model variant, reasoning mode, and token usage: unavailable.
 
