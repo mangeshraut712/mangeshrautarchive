@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
 
+import { hasMeaningfulEdgeSnapshotChange } from '../../scripts/deployment/edge-snapshot-change.mjs';
 import { syncGitHubStats } from '../../scripts/integrations/sync-github-stats.mjs';
 
 const workflowPath = new URL('../../.github/workflows/github-stats-sync.yml', import.meta.url);
@@ -188,10 +189,43 @@ test('analytics reach sync preserves a values-free review artifact without creat
   );
 });
 
+test('edge snapshot review signal ignores per-run metadata but preserves meaningful changes', () => {
+  const existing = {
+    exportedAt: '2026-11-01T00:00:00.000Z',
+    reach: {
+      total_reach: 1,
+      timestamp: '2026-11-01T00:00:00.000Z',
+      insights: { last_updated: '2026-11-01T00:00:00.000Z', unique_visitors: 1 },
+    },
+    healthVitals: {
+      timestamp: '2026-11-01T00:00:00.000Z',
+      status: 'stale',
+      refresh: { ageMinutes: 1, stale: true },
+    },
+  };
+  const originalExisting = structuredClone(existing);
+  const timestampOnlyCandidate = structuredClone(existing);
+  timestampOnlyCandidate.exportedAt = '2026-11-01T01:00:00.000Z';
+  timestampOnlyCandidate.reach.timestamp = '2026-11-01T01:00:00.000Z';
+  timestampOnlyCandidate.reach.insights.last_updated = '2026-11-01T01:00:00.000Z';
+  timestampOnlyCandidate.healthVitals.timestamp = '2026-11-01T01:00:00.000Z';
+  timestampOnlyCandidate.healthVitals.refresh.ageMinutes = 61;
+
+  assert.equal(hasMeaningfulEdgeSnapshotChange(existing, timestampOnlyCandidate), false);
+  assert.deepEqual(existing, originalExisting);
+  assert.equal(hasMeaningfulEdgeSnapshotChange(null, timestampOnlyCandidate), true);
+
+  const metricCandidate = structuredClone(timestampOnlyCandidate);
+  metricCandidate.reach.total_reach = 2;
+  assert.equal(hasMeaningfulEdgeSnapshotChange(existing, metricCandidate), true);
+});
+
 test('edge snapshot exporter completion log excludes analytics and health values', () => {
   const source = readFileSync(edgeSnapshotExporterPath, 'utf8');
   const completionSection = source.slice(source.lastIndexOf('fs.writeFileSync'));
 
+  assert.match(source, /hasMeaningfulEdgeSnapshotChange\(existing, snapshot\)/);
+  assert.match(source, /No meaningful edge snapshot changes detected/);
   assert.match(completionSection, /Prepared .*without logging analytics or health values\./);
   assert.doesNotMatch(completionSection, /reach=|sleep=|total_reach|sleepScore/u);
 });

@@ -16,6 +16,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
+import { hasMeaningfulEdgeSnapshotChange } from './edge-snapshot-change.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, '../..');
@@ -165,18 +166,24 @@ const snapshot = {
   },
 };
 
-let content =
-  '/** Auto-exported FastAPI/GA snapshot for GitHub Pages edge (Vercel offline). */\n' +
-  `export const EDGE_DATA_SNAPSHOT = ${JSON.stringify(snapshot, null, 2)};\n`;
+if (!hasMeaningfulEdgeSnapshotChange(existing, snapshot)) {
+  console.log(
+    'No meaningful edge snapshot changes detected; preserving the existing review candidate.'
+  );
+} else {
+  let content =
+    '/** Auto-exported FastAPI/GA snapshot for GitHub Pages edge (Vercel offline). */\n' +
+    `export const EDGE_DATA_SNAPSHOT = ${JSON.stringify(snapshot, null, 2)};\n`;
 
-try {
-  const prettier = await import('prettier');
-  content = await prettier.format(content, { filepath: outFile });
-} catch {
-  // Prettier is optional in standalone environments
+  try {
+    const prettier = await import('prettier');
+    content = await prettier.format(content, { filepath: outFile });
+  } catch {
+    // Prettier is optional in standalone environments
+  }
+
+  fs.writeFileSync(outFile, content);
+  console.log(
+    `Prepared ${path.relative(root, outFile)} for review artifact without logging analytics or health values.`
+  );
 }
-
-fs.writeFileSync(outFile, content);
-console.log(
-  `Prepared ${path.relative(root, outFile)} for review artifact without logging analytics or health values.`
-);
