@@ -254,7 +254,7 @@ jobs:
           apiToken: ${{ env.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ env.CLOUDFLARE_ACCOUNT_ID }}
           workingDirectory: workers/assistme-chat
-          wranglerVersion: '3.114.0'
+          wranglerVersion: '4.156.0'
           command: deploy
           secrets: |
             OPENROUTER_API_KEY
@@ -296,7 +296,7 @@ jobs:
         with:
           accountId: ${{ env.CLOUDFLARE_ACCOUNT_ID }}
           workingDirectory: workers/assistme-chat
-          wranglerVersion: '4.111.0'
+          wranglerVersion: '4.156.0'
           command: deploy
           secrets: |
             OPENROUTER_API_KEY

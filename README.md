@@ -296,6 +296,10 @@ The JavaScript config is selected explicitly because upstream automatic discover
 
 **Portfolio fact corrections:** GPT-6 / Codex desktop; purpose: correct stale references and score labels, and fit case-study metrics on narrow screens. Exact variant, reasoning mode, and token usage: unavailable.
 
+**WebMCP compatibility:** GPT-6 / Codex desktop; purpose: support the current document API and add read-only blog and case-study tools. Exact variant, reasoning mode, and token usage: unavailable.
+
+**Worker deployment repair:** GPT-6 / Codex desktop; purpose: resolve the Wrangler dependency conflict in the Worker deployment workflow. Exact variant, reasoning mode, and token usage: unavailable.
+
 Mangesh Raut maintains this portfolio with contributions from Codex, Claude Code, Google Antigravity,
 Cursor, and GitHub Copilot. Shipped changes record the exposed agent/model family, engineering
 purpose, and verified commit in the [changelog](src/js/data/changelog-entries.js).

@@ -192,6 +192,10 @@ html.dark .systems-eyebrow {
   font-variant-numeric: tabular-nums;
 }
 
+.systems-hero-stat-value--long {
+  font-size: clamp(0.65rem, 3.3vw, 1.38rem);
+}
+
 .systems-hero-stat-value small {
   font-size: 0.55em;
   font-weight: 600;

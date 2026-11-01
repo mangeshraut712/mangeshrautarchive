@@ -38,7 +38,9 @@ Many monitor and GitHub paths are duplicated with and without the `/api` prefix 
 1. Frontend (`src/js/core/chat.js`) POSTs to `/api/chat` with message history and optional tool results.
 2. `chat.py` builds a system prompt from `api/site_knowledge.py` + `api/config.py` portfolio facts.
 3. When configured, requests stream from OpenRouter; otherwise local intelligence fallback runs.
-4. WebMCP tool calls are handled in the browser (`agentic-actions.js`); tool output is sent back in follow-up chat turns.
+4. Browser-side actions and WebMCP tools are implemented in `agentic-actions.js`. Compatible browser agents can call the registered tools, including read-only blog search and case-study inspection; the chatbot also has its own local action handling.
+
+WebMCP remains an experimental browser feature. The site uses `document.modelContext` when present and falls back to the earlier `navigator.modelContext` integration. See the [WebMCP proposal](https://github.com/webmachinelearning/webmcp) and [Chrome's WebMCP guide](https://developer.chrome.com/docs/ai/webmcp) for current availability.
 
 ## Integrations (OAuth)
 

@@ -71,9 +71,9 @@
 
 ## Phase 4: Feature Enhancements & Advanced Agentic Tools 📋 (Upcoming)
 
-- [ ] **Task 4.1: Expand WebMCP Client Tools**
-  - Implement `searchBlogArticles` tool enabling AssistMe to query full-text blog content.
-  - Implement `inspectCaseStudy` tool for deep-linking into engineering case studies.
+- [x] **Task 4.1: Expand WebMCP Client Tools**
+  - Added read-only `search_blog_articles` for published article text and `inspect_case_study` for case-study details and links.
+  - Registered tools with the current document API while retaining the legacy navigator API where available; verified native Chromium registration and execution.
 - [ ] **Task 4.2: Mobile Safari Voice Interaction Polish**
   - Audit Web Audio API buffer playback and mic permissions on iOS Safari.
   - Verify zero audio latency stall during streaming speech-to-text.

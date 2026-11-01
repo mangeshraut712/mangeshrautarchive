@@ -38,7 +38,7 @@ TEST_COUNTS = {
     "playwright_projects": 16,
 }
 
-WEBMCP_TOOL_COUNT = 20
+WEBMCP_TOOL_COUNT = 22
 LUMA_CALENDARS_URL = "https://luma.com/home/calendars"
 
 PWA_POLICY = {

@@ -180,6 +180,10 @@ body.systems-page .systems-hero-stat-value {
   line-height: 1.15 !important;
 }
 
+body.systems-page .systems-hero-stat-value--long {
+  font-size: clamp(0.65rem, 3.3vw, 1.38rem) !important;
+}
+
 @media (max-width: 768px) {
   body.systems-page .systems-hero-stats {
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;

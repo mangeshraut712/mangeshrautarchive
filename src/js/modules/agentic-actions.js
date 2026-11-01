@@ -25,25 +25,26 @@ export class AgenticActionHandler {
     this.registerWebMCPTools();
   }
 
-  /**
-   * Register WebMCP client-side tools if navigator.modelContext is available
-   */
+  /** Register tools with the current document API or the legacy navigator API. */
   registerWebMCPTools() {
-    if (
-      typeof window === 'undefined' ||
-      typeof navigator === 'undefined' ||
-      !navigator.modelContext ||
-      !navigator.modelContext.registerTool
-    ) {
-      return;
-    }
+    if (typeof window === 'undefined' || typeof document === 'undefined') return;
+    const modelContext = document.modelContext || globalThis.navigator?.modelContext;
+    if (typeof modelContext?.registerTool !== 'function') return;
 
     this.abortController = new AbortController();
     const signal = this.abortController.signal;
+    const registerTool = (tool, options) => {
+      const registration = modelContext.registerTool(tool, options);
+      if (registration && typeof registration.catch === 'function') {
+        registration.catch(error =>
+          console.warn(`WebMCP tool ${tool.name} registration failed:`, error)
+        );
+      }
+    };
 
     try {
       // 1. Navigate to section or subpage
-      navigator.modelContext.registerTool(
+      registerTool(
         {
           name: 'navigate_to_section',
           description:
@@ -67,7 +68,7 @@ export class AgenticActionHandler {
       );
 
       // 2. Download resume
-      navigator.modelContext.registerTool(
+      registerTool(
         {
           name: 'download_resume',
           description:
@@ -90,7 +91,7 @@ export class AgenticActionHandler {
       );
 
       // 3. Schedule meeting
-      navigator.modelContext.registerTool(
+      registerTool(
         {
           name: 'schedule_meeting',
           description: 'Open live Google Calendar availability to schedule a meeting with Mangesh.',
@@ -103,7 +104,7 @@ export class AgenticActionHandler {
       );
 
       // 4. Send message (open contact form)
-      navigator.modelContext.registerTool(
+      registerTool(
         {
           name: 'open_contact_form',
           description: 'Scroll to and open/focus the contact form to let the user send a message.',
@@ -116,7 +117,7 @@ export class AgenticActionHandler {
       );
 
       // 5. Copy contact info
-      navigator.modelContext.registerTool(
+      registerTool(
         {
           name: 'copy_contact_info',
           description: "Copy Mangesh's contact details (email, LinkedIn, GitHub) to clipboard.",
@@ -129,7 +130,7 @@ export class AgenticActionHandler {
       );
 
       // 6. Search portfolio
-      navigator.modelContext.registerTool(
+      registerTool(
         {
           name: 'search_portfolio',
           description:
@@ -153,7 +154,7 @@ export class AgenticActionHandler {
       );
 
       // 7. Filter projects
-      navigator.modelContext.registerTool(
+      registerTool(
         {
           name: 'filter_projects',
           description:
@@ -177,7 +178,7 @@ export class AgenticActionHandler {
       );
 
       // 8. Open social media
-      navigator.modelContext.registerTool(
+      registerTool(
         {
           name: 'open_social_media',
           description: "Open Mangesh's profiles (github, linkedin, twitter) in a new tab.",
@@ -199,7 +200,7 @@ export class AgenticActionHandler {
       );
 
       // 9. Toggle theme
-      navigator.modelContext.registerTool(
+      registerTool(
         {
           name: 'toggle_theme',
           description: 'Toggle dark mode or light mode on the website.',
@@ -212,7 +213,7 @@ export class AgenticActionHandler {
       );
 
       // 10. Update health metric
-      navigator.modelContext.registerTool(
+      registerTool(
         {
           name: 'update_health_metric',
           description: 'Update a specific Whoop or Withings health metric in the widget.',
@@ -239,7 +240,7 @@ export class AgenticActionHandler {
       );
 
       // 11. Get now playing / recent Spotify track (Last.fm)
-      navigator.modelContext.registerTool(
+      registerTool(
         {
           name: 'get_now_playing',
           description:
@@ -254,7 +255,7 @@ export class AgenticActionHandler {
       );
 
       // 12. Get Travel Atlas statistics
-      navigator.modelContext.registerTool(
+      registerTool(
         {
           name: 'get_travel_stats',
           description:
@@ -269,7 +270,7 @@ export class AgenticActionHandler {
       );
 
       // 13. Get System Monitor operational status
-      navigator.modelContext.registerTool(
+      registerTool(
         {
           name: 'get_system_status',
           description:
@@ -284,7 +285,7 @@ export class AgenticActionHandler {
       );
 
       // 14. Support & Sponsorship options (Stripe, PayPal, BuyMeCoffee, Crypto)
-      navigator.modelContext.registerTool(
+      registerTool(
         {
           name: 'show_support_options',
           description:
@@ -298,7 +299,7 @@ export class AgenticActionHandler {
       );
 
       // 15. Add Smart AI Reminder to Calendar
-      navigator.modelContext.registerTool(
+      registerTool(
         {
           name: 'add_calendar_reminder',
           description:
@@ -321,7 +322,7 @@ export class AgenticActionHandler {
       );
 
       // 16. Get Calendar Events & Schedule
-      navigator.modelContext.registerTool(
+      registerTool(
         {
           name: 'get_calendar_events',
           description:
@@ -345,7 +346,7 @@ export class AgenticActionHandler {
       );
 
       // 17. Filter Calendar View
-      navigator.modelContext.registerTool(
+      registerTool(
         {
           name: 'filter_calendar_view',
           description: 'Filter the interactive calendar view by category tab or search query.',
@@ -368,7 +369,7 @@ export class AgenticActionHandler {
       );
 
       // 18. Play Debug Runner Mini-Game
-      navigator.modelContext.registerTool(
+      registerTool(
         {
           name: 'play_debug_runner',
           description:
@@ -382,7 +383,7 @@ export class AgenticActionHandler {
       );
 
       // 19. Open Privacy & Personalization Dashboard
-      navigator.modelContext.registerTool(
+      registerTool(
         {
           name: 'open_privacy_dashboard',
           description:
@@ -396,7 +397,7 @@ export class AgenticActionHandler {
       );
 
       // 20. Open Technical Blog Article
-      navigator.modelContext.registerTool(
+      registerTool(
         {
           name: 'open_blog_article',
           description:
@@ -414,6 +415,81 @@ export class AgenticActionHandler {
           },
           execute: async input => {
             return this.openBlogArticle([null, input?.article]);
+          },
+        },
+        { signal }
+      );
+
+      registerTool(
+        {
+          name: 'search_blog_articles',
+          description: 'Search published blog titles, summaries, tags, and article text.',
+          inputSchema: {
+            type: 'object',
+            properties: {
+              query: { type: 'string', minLength: 1, maxLength: 120 },
+            },
+            required: ['query'],
+          },
+          annotations: { readOnlyHint: true },
+          execute: async input => {
+            const query = typeof input?.query === 'string' ? input.query.trim() : '';
+            if (!query || query.length > 120) {
+              return { success: false, message: 'Enter a search query of 1–120 characters.' };
+            }
+            const needle = query.toLocaleLowerCase();
+            const results = blogPosts
+              .filter(post =>
+                [post.title, post.summary, ...(post.tags || []), post.content]
+                  .filter(Boolean)
+                  .some(value => String(value).toLocaleLowerCase().includes(needle))
+              )
+              .slice(0, 5)
+              .map(post => ({
+                id: post.id,
+                title: post.title,
+                summary: post.summary,
+                date: post.date,
+                url: sitePath(`/blog/${encodeURIComponent(post.id)}.html`),
+              }));
+            return { success: true, results };
+          },
+        },
+        { signal }
+      );
+
+      registerTool(
+        {
+          name: 'inspect_case_study',
+          description: 'Read a published engineering case study by its slug.',
+          inputSchema: {
+            type: 'object',
+            properties: {
+              slug: { type: 'string', minLength: 1, maxLength: 80 },
+            },
+            required: ['slug'],
+          },
+          annotations: { readOnlyHint: true },
+          execute: async input => {
+            const slug = typeof input?.slug === 'string' ? input.slug.trim().toLowerCase() : '';
+            if (!slug || slug.length > 80) {
+              return { success: false, message: 'Enter a case-study slug.' };
+            }
+            const { caseStudies } = await import('./case-studies-data.js');
+            const study = caseStudies.find(entry => entry.slug === slug);
+            if (!study) return { success: false, message: 'Case study not found.' };
+            return {
+              success: true,
+              caseStudy: {
+                slug: study.slug,
+                title: study.title,
+                problem: study.problem,
+                approach: study.approach,
+                tradeoffs: study.tradeoffs,
+                results: study.results,
+                url: sitePath(`/case-studies/${encodeURIComponent(study.slug)}.html`),
+              },
+            };
           },
         },
         { signal }

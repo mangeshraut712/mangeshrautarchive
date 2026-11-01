@@ -1,6 +1,24 @@
 import { test, expect } from '@playwright/test';
 import { gotoSite } from './helpers/site.js';
 
+test('systems hero score fits its card on narrow phones', async ({ page }) => {
+  for (const width of [320, 375]) {
+    await page.setViewportSize({ width, height: 812 });
+    await gotoSite(page, '/systems.html');
+    const fits = await page
+      .locator('.systems-hero-stat-value')
+      .first()
+      .evaluate(element => {
+        const parent = element.parentElement;
+        const style = getComputedStyle(parent);
+        const available =
+          parent.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight);
+        return element.getBoundingClientRect().width <= available + 1;
+      });
+    expect(fits, `hero score overflow at ${width}px`).toBe(true);
+  }
+});
+
 test('systems performance tile describes the audit gate without invented metrics', async ({
   page,
 }) => {

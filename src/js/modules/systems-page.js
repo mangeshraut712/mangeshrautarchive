@@ -225,7 +225,7 @@ function renderHero() {
       return `<a class="systems-hero-stat" href="${escapeHtml(href)}"${
         external ? ' target="_blank" rel="noopener noreferrer"' : ''
       }>
-        <span class="systems-hero-stat-value">${escapeHtml(stat.value)}${stat.unit ? `<small>${escapeHtml(stat.unit)}</small>` : ''}</span>
+        <span class="systems-hero-stat-value${String(stat.value).length > 10 ? ' systems-hero-stat-value--long' : ''}">${escapeHtml(stat.value)}${stat.unit ? `<small>${escapeHtml(stat.unit)}</small>` : ''}</span>
         <span class="systems-hero-stat-label">${escapeHtml(stat.label)}</span>
       </a>`;
     })
