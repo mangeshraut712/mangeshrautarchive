@@ -103,8 +103,9 @@
     document.head.appendChild(script);
   };
 
-  // Immediate loading on user interaction
-  ['pointerdown', 'keydown', 'scroll', 'touchstart', 'mousemove'].forEach(eventName => {
+  // Load on visitor input. Scripted carousels also emit scroll events, so listen
+  // for wheel input instead; touch, keyboard, and scrollbar drags are covered below.
+  ['pointerdown', 'keydown', 'wheel', 'touchstart', 'mousemove'].forEach(eventName => {
     window.addEventListener(eventName, loadGtag, {
       once: true,
       passive: true,

@@ -362,6 +362,9 @@ test('contact calendar scrolls, clocks use timezones, and stale Panchang stays h
     })
   );
   await gotoSite(page, '/#contact');
+  await page.waitForFunction(() => window.__smartNavbarInitialized === true);
+  await page.keyboard.press('PageDown');
+  await page.locator('#calendar-widget').scrollIntoViewIfNeeded();
   await expect(page.locator('.world-clock:visible')).toHaveCount(3);
   await page.getByRole('button', { name: 'View 3 more clocks' }).click();
   await expect(page.locator('.world-clock:visible')).toHaveCount(6);
@@ -417,6 +420,9 @@ test('contact calendar scrolls, clocks use timezones, and stale Panchang stays h
   await page.locator('.filter-tab[data-filter="reminders"]').click();
   await expect(list).toContainText('Follow up');
   await page.reload();
+  await page.waitForFunction(() => window.__smartNavbarInitialized === true);
+  await page.keyboard.press('PageDown');
+  await page.locator('#calendar-widget').scrollIntoViewIfNeeded();
   await page.locator('.filter-tab[data-filter="reminders"]').click();
   await expect(list).toContainText('Follow up');
 });

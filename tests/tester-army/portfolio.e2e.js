@@ -62,6 +62,7 @@ test('share dialog provides a portable social link and closes', async ({ app, br
 
 test('calendar clocks expand and collapse', async ({ app, browser }) => {
   await app.open('/#contact');
+  await browser.locator('.calendar-reminders-card .contact-card-title').tap();
   await expect(browser.locator('.world-clock:visible')).toHaveCount(3);
   await browser.locator('.world-clocks-toggle').tap();
   await expect(browser.locator('.world-clock:visible')).toHaveCount(6);

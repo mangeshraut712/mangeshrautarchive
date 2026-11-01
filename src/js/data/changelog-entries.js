@@ -54,6 +54,25 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'input-aware-contact-loading-20261101',
+    date: '2026-11-01',
+    type: 'fix',
+    title: 'Load interactive services when they are relevant',
+    summary:
+      'Distinguish visitor wheel input from scripted carousel scrolling when starting analytics. Initialize the Contact calendar near its widget and retain chatbot interaction loading without forcing it on a Contact link.',
+    tags: ['performance', 'assistme'],
+    sha: null,
+    commitVerified: false,
+    model: 'GPT-6 Astra',
+    ide: 'Codex desktop',
+    purpose:
+      'Reduce premature startup work while preserving analytics events, calendar use, and chatbot access.',
+    attributionSource: 'not-recorded',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+    status: 'unreleased',
+  },
+  {
     id: 'shared-styles-before-paint-20261101',
     date: '2026-11-01',
     type: 'improvement',

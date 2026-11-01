@@ -107,7 +107,12 @@ const SECTION_MODULES = [
     modulePath: '../modules/publications-preview.js',
     rootMargin: '200px 0px',
   },
-  { sectionId: 'contact', modulePath: '../modules/calendar.js', rootMargin: '200px 0px' },
+  { sectionId: 'calendar-widget', modulePath: '../modules/calendar.js', rootMargin: '200px 0px' },
+  {
+    sectionId: 'contact-world-clocks',
+    modulePath: '../modules/contact-time.js',
+    rootMargin: '200px 0px',
+  },
   { sectionId: 'contact', modulePath: '../modules/contact-page.js', rootMargin: '200px 0px' },
   {
     sectionId: 'currently-section',
@@ -228,6 +233,10 @@ const MODULE_IMPORTERS = {
   '../modules/publications-preview.js': () => import('../modules/publications-preview.js'),
   '../modules/newsletter.js': () => import('../modules/newsletter.js'),
   '../modules/calendar.js': () => import('../modules/calendar.js'),
+  '../modules/contact-time.js': () =>
+    import('../modules/contact-time.js').then(module => {
+      module.initContactTime();
+    }),
   '../modules/currently.js': () => import('../modules/currently.js'),
   '../modules/real-media-loader.js': () => import('../modules/real-media-loader.js'),
   '../modules/lastfm.js': () => import('../modules/lastfm.js?v=20261101art1'),
@@ -1032,17 +1041,6 @@ function initChatbotWarmPrefetch() {
       chatbotLoader.load().catch(() => {});
     }, 1500);
   }, 8000);
-
-  observeSectionTask(
-    'contact',
-    () => {
-      runWhenIdle(() => {
-        loadDeferredStyles(['assistant']).catch(() => {});
-        chatbotLoader.load().catch(() => {});
-      }, 400);
-    },
-    '320px 0px'
-  );
 }
 
 function initDeferredStyles() {

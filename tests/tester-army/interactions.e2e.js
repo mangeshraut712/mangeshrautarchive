@@ -49,6 +49,7 @@ test('contact rejection preserves the message for retry', async ({ app, browser 
 
 test('calendar reminder can be created edited and completed', async ({ app, browser }) => {
   await app.open('/#contact');
+  await browser.locator('.calendar-reminders-card .contact-card-title').tap();
   await browser.locator('[aria-label="Add new reminder"]').tap();
   await browser.locator('.smart-modal-textarea').fill('Review portfolio tomorrow');
   await browser.locator('.smart-modal-btn.btn-save').tap();
