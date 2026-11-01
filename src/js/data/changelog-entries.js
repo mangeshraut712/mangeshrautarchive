@@ -54,6 +54,24 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'lighthouse-evidence-20261101',
+    date: '2026-11-01',
+    type: 'improvement',
+    title: 'Record raw Lighthouse measurements and their limits',
+    summary:
+      'Preserve dated desktop and mobile lab scores, measured metrics, and repeatable audit instructions alongside the distinction between normal and reduced audit modes.',
+    tags: ['performance'],
+    sha: null,
+    commitVerified: false,
+    model: 'GPT-6',
+    ide: 'Codex desktop',
+    purpose: 'Make website performance evidence reproducible and transparent.',
+    attributionSource: 'not-recorded',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+    status: 'unreleased',
+  },
+  {
     id: 'frontend-characterization-20261101',
     date: '2026-11-01',
     type: 'improvement',

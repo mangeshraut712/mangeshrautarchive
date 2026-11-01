@@ -243,6 +243,8 @@ These are dated results for that release, not guarantees about every browser or 
 
 For a production-like Lighthouse run, pass `--full-load` to `scripts/deployment/lighthouse-gate.js` and inspect the raw category scores in the generated JSON report. Audit-mode and loopback gate output can round scores up, and local SEO results may be adjusted for a loopback robots.txt issue. Lab scores vary between runs and are not field Core Web Vitals.
 
+The [November 1 Lighthouse evidence](docs/qa/2026-11-01-lighthouse-evidence.md) records raw samples, test conditions, and a reproducible command.
+
 Responsive review covered Home, Systems, Travel, Monitor, Uses, and Changelog at desktop and phone
 widths in both themes, with no horizontal overflow in the reviewed states. The deployed contact card
 was checked for current Panchang values and category icon colors. Share-card alignment and AssistMe’s
@@ -289,6 +291,8 @@ The JavaScript config is selected explicitly because upstream automatic discover
 **Dependency and audit review:** GPT-6 / Codex desktop; purpose: align Python dependency pins, address a test hostname finding, and document score limitations. Exact variant, reasoning mode, and token usage: unavailable.
 
 **Frontend characterization:** GPT-6 / Codex desktop; purpose: cover the asset-version contract and hero flyout behavior with focused Node tests. Exact variant, reasoning mode, and token usage: unavailable.
+
+**Lighthouse evidence:** GPT-6 / Codex desktop; purpose: record raw lab results and their measurement limits. Exact variant, reasoning mode, and token usage: unavailable.
 
 Mangesh Raut maintains this portfolio with contributions from Codex, Claude Code, Google Antigravity,
 Cursor, and GitHub Copilot. Shipped changes record the exposed agent/model family, engineering

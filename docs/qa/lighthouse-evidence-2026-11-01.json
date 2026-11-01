@@ -1,0 +1,214 @@
+{
+  "description": "Raw Lighthouse category scores from single lab runs, not gate-adjusted scores or field data.",
+  "runs": [
+    {
+      "timestampUtc": "2026-11-01T05:51:27.536Z",
+      "url": "https://mangeshraut712.github.io/mangeshrautarchive/",
+      "formFactor": "mobile",
+      "commit": "594df540",
+      "mode": "full",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 75,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      },
+      "metrics": {
+        "largestContentfulPaintMs": 1536,
+        "totalBlockingTimeMs": 1090,
+        "cumulativeLayoutShift": 0.0001110018461006036
+      }
+    },
+    {
+      "timestampUtc": "2026-11-01T05:51:55.761Z",
+      "url": "https://mangeshraut712.github.io/mangeshrautarchive/",
+      "formFactor": "desktop",
+      "commit": "594df540",
+      "mode": "full",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 99,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      },
+      "metrics": {
+        "largestContentfulPaintMs": 510,
+        "totalBlockingTimeMs": 91,
+        "cumulativeLayoutShift": 0.0001325824869392639
+      }
+    },
+    {
+      "timestampUtc": "2026-11-01T05:52:14.951Z",
+      "url": "https://mangeshraut712.github.io/mangeshrautarchive/systems.html",
+      "formFactor": "mobile",
+      "commit": "594df540",
+      "mode": "full",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 97,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      },
+      "metrics": {
+        "largestContentfulPaintMs": 1255,
+        "totalBlockingTimeMs": 79,
+        "cumulativeLayoutShift": 0.000007686531478220555
+      }
+    },
+    {
+      "timestampUtc": "2026-11-01T05:52:30.856Z",
+      "url": "https://mangeshraut712.github.io/mangeshrautarchive/monitor.html",
+      "formFactor": "mobile",
+      "commit": "594df540",
+      "mode": "full",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 98,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      },
+      "metrics": {
+        "largestContentfulPaintMs": 1211,
+        "totalBlockingTimeMs": 7,
+        "cumulativeLayoutShift": 0.014923326956008691
+      }
+    },
+    {
+      "timestampUtc": "2026-11-01T05:52:46.097Z",
+      "url": "https://mangeshraut712.github.io/mangeshrautarchive/blog/",
+      "formFactor": "mobile",
+      "commit": "594df540",
+      "mode": "full",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 89,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      },
+      "metrics": {
+        "largestContentfulPaintMs": 3223,
+        "totalBlockingTimeMs": 78,
+        "cumulativeLayoutShift": 0
+      }
+    },
+    {
+      "timestampUtc": "2026-11-01T05:53:01.948Z",
+      "url": "https://mangeshraut712.github.io/mangeshrautarchive/changelog.html",
+      "formFactor": "mobile",
+      "commit": "594df540",
+      "mode": "full",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 96,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      },
+      "metrics": {
+        "largestContentfulPaintMs": 1360,
+        "totalBlockingTimeMs": 148,
+        "cumulativeLayoutShift": 0.000007686531478220555
+      }
+    },
+    {
+      "timestampUtc": "2026-11-01T06:07:08.133Z",
+      "url": "https://mangeshraut712.github.io/mangeshrautarchive/",
+      "formFactor": "mobile",
+      "commit": "cd9c2e6d",
+      "mode": "full",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 80,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      },
+      "metrics": {
+        "largestContentfulPaintMs": 1771,
+        "totalBlockingTimeMs": 784,
+        "cumulativeLayoutShift": 0.0001110018461006036
+      }
+    },
+    {
+      "timestampUtc": "2026-11-01T07:02:18.985Z",
+      "url": "https://mangeshraut712.github.io/mangeshrautarchive/",
+      "formFactor": "mobile",
+      "commit": "170bfdce",
+      "mode": "full",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 85,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      },
+      "metrics": {
+        "largestContentfulPaintMs": 1703,
+        "totalBlockingTimeMs": 529,
+        "cumulativeLayoutShift": 0.0001110018461006036
+      }
+    },
+    {
+      "timestampUtc": "2026-11-01T07:02:39.363Z",
+      "url": "https://mangeshraut712.github.io/mangeshrautarchive/blog/",
+      "formFactor": "mobile",
+      "commit": "170bfdce",
+      "mode": "full",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 89,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      },
+      "metrics": {
+        "largestContentfulPaintMs": 3214,
+        "totalBlockingTimeMs": 90,
+        "cumulativeLayoutShift": 0
+      }
+    },
+    {
+      "timestampUtc": "2026-11-01T06:00:05.787Z",
+      "url": "http://127.0.0.1:4181/?perf-audit=1",
+      "formFactor": "desktop",
+      "commit": "cd9c2e6d candidate",
+      "mode": "reduced audit mode",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      },
+      "metrics": {
+        "largestContentfulPaintMs": 447,
+        "totalBlockingTimeMs": 0,
+        "cumulativeLayoutShift": 0
+      }
+    },
+    {
+      "timestampUtc": "2026-11-01T06:00:26.148Z",
+      "url": "http://127.0.0.1:4181/?perf-audit=1",
+      "formFactor": "mobile",
+      "commit": "cd9c2e6d candidate",
+      "mode": "reduced audit mode",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 98,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      },
+      "metrics": {
+        "largestContentfulPaintMs": 1808,
+        "totalBlockingTimeMs": 0,
+        "cumulativeLayoutShift": 0
+      }
+    }
+  ]
+}
