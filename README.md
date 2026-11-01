@@ -316,6 +316,8 @@ The JavaScript config is selected explicitly because upstream automatic discover
 
 **Mobile Contact startup:** GPT-6 / Codex desktop; purpose: prepare existing section disclosures earlier for mobile Contact links and measure layout stability. Exact variant, reasoning mode, and token usage: unavailable.
 
+**Shared layout delivery:** GPT-6 Astra / Codex desktop; purpose: stabilize shared styles before first paint, reduce repeated layout work, and correct Lighthouse browser selection. Reasoning mode and token usage: unavailable. Normal-load verification remains in progress; this is not a claim of universal 100 scores.
+
 **Contact style warm-up:** GPT-6 / Codex desktop; purpose: prevent offscreen section styles from shifting a direct Contact link during idle loading. Exact variant, reasoning mode, and token usage: unavailable.
 
 Mangesh Raut maintains this portfolio with contributions from Codex, Claude Code, Google Antigravity,
@@ -324,8 +326,8 @@ purpose, and verified commit in the [changelog](src/js/data/changelog-entries.js
 
 | Current contribution                             | Attribution                                                                                                                                                                              |
 | ------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Coding agent                                     | GPT-5 / Codex desktop                                                                                                                                                                    |
-| Purpose                                          | Replace blocked GA4 PR automation with a values-free review artifact and redacted workflow logs                                                                                          |
+| Coding agent                                     | GPT-6 Astra / Codex desktop                                                                                                                                                              |
+| Purpose                                          | Stabilize shared layout styles before first paint and correct Lighthouse browser selection                                                                                               |
 | Exact model variant, reasoning mode, token usage | unavailable                                                                                                                                                                              |
 | Portfolio chatbot model                          | Configured separately in [api/model_router.py](api/model_router.py) and [Worker configuration](workers/assistme-chat/wrangler.toml); each live response reports the actual serving model |
 

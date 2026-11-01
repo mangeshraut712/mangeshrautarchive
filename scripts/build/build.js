@@ -226,8 +226,8 @@ const HERO_CRITICAL_CSS = [
   'assets/css/critical-tokens.css',
 ];
 
-/** Deferred after first paint — non-blocking via media=print onload.
- *  homepage.css + dynamic-island-navbar.css load before paint to stabilize hero and navigation. */
+/** Shared layout styles must be ready before first paint.
+ * Keep the historical bundle filename for existing cache and lazy-style metadata. */
 const PREMIUM_DEFERRED_CSS = [
   'assets/css/accessibility.css',
   'assets/css/typography-system.css',
@@ -328,7 +328,7 @@ async function bundleAboveFoldCss(distDir) {
     return `url(${quote}${fromCssDir}${quote})`;
   });
 
-  // Inject lean critical CSS. Defer the premium bundle outside Lighthouse / perf-audit.
+  // Load shared layout CSS before paint to avoid repeated full-document layout work.
   // Hero/nav metrics must match homepage.css + index critical styles (same first paint → no CLS).
   const heroLcpLock =
     '#main-content{padding-top:calc(52px + env(safe-area-inset-top,0px) + 16px);box-sizing:border-box}' +
@@ -352,18 +352,7 @@ async function bundleAboveFoldCss(distDir) {
     '<!-- Preload critical CSS for performance -->',
     `<!-- Preload critical CSS for performance -->
   <style id="hero-critical-inline">${heroCriticalContent}${heroLcpLock}</style>
-  <script>
-    (function () {
-      if (window.__PERF_AUDIT__) return;
-      var link = document.createElement('link');
-      link.rel = 'stylesheet';
-      link.href = 'assets/css/premium-deferred.bundle.css?v=${ASSET_VER}';
-      link.media = 'print';
-      link.onload = function () { this.media = 'all'; };
-      document.head.appendChild(link);
-    })();
-  </script>
-  <noscript><link rel="stylesheet" href="assets/css/premium-deferred.bundle.css" /></noscript>`
+  <link rel="stylesheet" href="assets/css/premium-deferred.bundle.css?v=${ASSET_VER}" />`
   );
 
   await writeFile(indexPath, html, 'utf8');

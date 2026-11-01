@@ -54,6 +54,25 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'shared-styles-before-paint-20261101',
+    date: '2026-11-01',
+    type: 'improvement',
+    title: 'Prepare shared layout styles before first paint',
+    summary:
+      'Load the existing shared stylesheet and icon styles before rendering, reducing repeated layout work while preserving the design and analytics. Correct Lighthouse browser selection for reproducible measurements.',
+    tags: ['performance', 'design'],
+    sha: null,
+    commitVerified: false,
+    model: 'GPT-6 Astra',
+    ide: 'Codex desktop',
+    purpose:
+      'Reduce normal-load rendering work and validate measurements without audit-only suppression.',
+    attributionSource: 'not-recorded',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+    status: 'unreleased',
+  },
+  {
     id: 'contact-offscreen-style-warmup-20261101',
     date: '2026-11-01',
     type: 'fix',

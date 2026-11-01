@@ -97,7 +97,6 @@ const lighthouseBaseArgs = [
   '-y',
   'lighthouse',
   url,
-  `--chrome-path=${chromePath}`,
   `--chrome-flags=${defaultChromeFlags}`,
   '--quiet',
   '--only-categories=performance,accessibility,best-practices,seo',
@@ -117,7 +116,7 @@ function runLighthouseAudit() {
   const output = join(tmpdir(), `lh-${formFactor}-${Date.now()}.json`);
   const run = spawnSync(npxCommand, [...lighthouseBaseArgs, `--output-path=${output}`], {
     stdio: 'inherit',
-    env: process.env,
+    env: { ...process.env, CHROME_PATH: chromePath },
     // Bound each Lighthouse Chrome run so a stuck audit cannot hold CI until job timeout.
     timeout: 180_000,
     killSignal: 'SIGKILL',
