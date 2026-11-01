@@ -54,6 +54,24 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'homepage-deep-link-alignment-20261101',
+    date: '2026-11-01',
+    type: 'fix',
+    title: 'Keep homepage deep links aligned while content loads',
+    summary:
+      'Align an initial section link after navigation starts, reusing the existing stabilization and user-interaction cancellation behavior.',
+    tags: ['performance', 'design'],
+    sha: null,
+    commitVerified: false,
+    model: 'GPT-6',
+    ide: 'Codex desktop',
+    purpose: 'Ensure visitors land on the requested homepage section as content loads.',
+    attributionSource: 'not-recorded',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+    status: 'unreleased',
+  },
+  {
     id: 'worker-deploy-wrangler-20261101',
     date: '2026-11-01',
     type: 'fix',

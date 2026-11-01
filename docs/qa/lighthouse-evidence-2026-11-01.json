@@ -209,6 +209,66 @@
         "totalBlockingTimeMs": 0,
         "cumulativeLayoutShift": 0
       }
+    },
+    {
+      "timestampUtc": "2026-11-01T07:58:42.039Z",
+      "url": "https://mangeshraut712.github.io/mangeshrautarchive/contact.html",
+      "finalUrl": "https://mangeshraut712.github.io/mangeshrautarchive/#contact",
+      "formFactor": "mobile",
+      "commit": "20c22d05",
+      "mode": "full",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 42,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      },
+      "metrics": {
+        "largestContentfulPaintMs": 1883,
+        "totalBlockingTimeMs": 1519,
+        "cumulativeLayoutShift": 3.714617913736462
+      }
+    },
+    {
+      "timestampUtc": "2026-11-01T08:00:12.218Z",
+      "url": "https://mangeshraut712.github.io/mangeshrautarchive/404.html",
+      "finalUrl": "https://mangeshraut712.github.io/mangeshrautarchive/404.html",
+      "formFactor": "mobile",
+      "commit": "20c22d05",
+      "mode": "full",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 98,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 60
+      },
+      "metrics": {
+        "largestContentfulPaintMs": 794,
+        "totalBlockingTimeMs": 0,
+        "cumulativeLayoutShift": 0
+      }
+    },
+    {
+      "timestampUtc": "2026-11-01T08:00:26.704Z",
+      "url": "https://mangeshraut712.github.io/mangeshrautarchive/offline.html",
+      "finalUrl": "https://mangeshraut712.github.io/mangeshrautarchive/offline.html",
+      "formFactor": "mobile",
+      "commit": "20c22d05",
+      "mode": "full",
+      "lighthouse": "13.6.0",
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 60
+      },
+      "metrics": {
+        "largestContentfulPaintMs": 1012,
+        "totalBlockingTimeMs": 0,
+        "cumulativeLayoutShift": 0
+      }
     }
   ]
 }

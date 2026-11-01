@@ -300,6 +300,8 @@ The JavaScript config is selected explicitly because upstream automatic discover
 
 **Worker deployment repair:** GPT-6 / Codex desktop; purpose: resolve the Wrangler dependency conflict in the Worker deployment workflow. Exact variant, reasoning mode, and token usage: unavailable.
 
+**Deep-link alignment:** GPT-6 / Codex desktop; purpose: keep initial homepage section links aligned as content loads and respect visitor scrolling. Exact variant, reasoning mode, and token usage: unavailable.
+
 Mangesh Raut maintains this portfolio with contributions from Codex, Claude Code, Google Antigravity,
 Cursor, and GitHub Copilot. Shipped changes record the exposed agent/model family, engineering
 purpose, and verified commit in the [changelog](src/js/data/changelog-entries.js).

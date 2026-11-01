@@ -587,6 +587,9 @@ function initSmartNavbar() {
 
   const initialHash = window.location.hash.replace('#', '').trim();
   setActiveLinkBySectionId(initialHash || getVisibleSectionId() || 'home');
+  if (initialHash && document.getElementById(initialHash)) {
+    scrollToSection(initialHash);
+  }
   updateSmartNavbar();
   updateScrolledState();
 

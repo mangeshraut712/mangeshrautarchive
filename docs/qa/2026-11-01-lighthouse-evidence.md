@@ -2,19 +2,24 @@
 
 This record preserves raw Lighthouse category scores from the runs in [the accompanying JSON](lighthouse-evidence-2026-11-01.json). Scores are individual lab samples, not field Core Web Vitals or guarantees for every page, visit, browser, network, or device. The raw report files are not included; the JSON records the measured scores, three metrics, URL, timestamp, Lighthouse version, and tested commit.
 
-| Page and build         | Form factor | Performance | Accessibility | Best practices | SEO |
-| ---------------------- | ----------- | ----------: | ------------: | -------------: | --: |
-| Homepage, `594df540`   | Mobile      |          75 |           100 |            100 | 100 |
-| Homepage, `594df540`   | Desktop     |          99 |           100 |            100 | 100 |
-| Systems, `594df540`    | Mobile      |          97 |           100 |            100 | 100 |
-| Monitor, `594df540`    | Mobile      |          98 |           100 |            100 | 100 |
-| Blog index, `594df540` | Mobile      |          89 |           100 |            100 | 100 |
-| Changelog, `594df540`  | Mobile      |          96 |           100 |            100 | 100 |
-| Homepage, `cd9c2e6d`   | Mobile      |          80 |           100 |            100 | 100 |
-| Homepage, `170bfdce`   | Mobile      |          85 |           100 |            100 | 100 |
-| Blog index, `170bfdce` | Mobile      |          89 |           100 |            100 | 100 |
+| Page and build               | Form factor | Performance | Accessibility | Best practices | SEO |
+| ---------------------------- | ----------- | ----------: | ------------: | -------------: | --: |
+| Homepage, `594df540`         | Mobile      |          75 |           100 |            100 | 100 |
+| Homepage, `594df540`         | Desktop     |          99 |           100 |            100 | 100 |
+| Systems, `594df540`          | Mobile      |          97 |           100 |            100 | 100 |
+| Monitor, `594df540`          | Mobile      |          98 |           100 |            100 | 100 |
+| Blog index, `594df540`       | Mobile      |          89 |           100 |            100 | 100 |
+| Changelog, `594df540`        | Mobile      |          96 |           100 |            100 | 100 |
+| Homepage, `cd9c2e6d`         | Mobile      |          80 |           100 |            100 | 100 |
+| Homepage, `170bfdce`         | Mobile      |          85 |           100 |            100 | 100 |
+| Blog index, `170bfdce`       | Mobile      |          89 |           100 |            100 | 100 |
+| Contact redirect, `20c22d05` | Mobile      |          42 |           100 |            100 | 100 |
+| 404 page, `20c22d05`         | Mobile      |          98 |           100 |            100 |  60 |
+| Offline page, `20c22d05`     | Mobile      |         100 |           100 |            100 |  60 |
 
 These used the published GitHub Pages URL and `--full-load`, which does not set the explicit `perf-audit` parameter. The site suppresses its first-visit launch animation for automated browsers, so this is not an exact replay of every human first visit. Each number is one run; differences between commits can reflect machine, network, and measurement variability. The measurements do not establish a 100 performance score across the site.
+
+The Contact URL redirects to the homepage's Contact section. The recorded pre-fix run had a 3.715 cumulative layout shift and exposed a deep-link landing defect. The landing fix requires a new public audit; a passing layout-shift score has not yet been established. The 404 and offline pages intentionally use `noindex, nofollow`; Lighthouse's crawlability audit therefore lowers their SEO scores. Indexing error and offline pages just to raise that score would misrepresent their purpose.
 
 The accompanying JSON also records two **local reduced audit-mode** runs: desktop scored 100 in all four raw categories; mobile scored 98 performance and 100 in the other three. The gate reported both as 100 because it rounds certain audit-mode results. Those runs are not comparable to normal page loads.
 
