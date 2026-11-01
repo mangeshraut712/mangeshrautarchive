@@ -54,6 +54,24 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'about-portrait-metadata-20261101',
+    date: '2026-11-01',
+    type: 'fix',
+    title: 'Correct portrait and Experience icon dimensions',
+    summary:
+      'Match the portrait metadata to its files and reserve the intended size for Experience icons before their stylesheet loads.',
+    tags: ['performance', 'design'],
+    sha: null,
+    commitVerified: false,
+    model: 'GPT-6',
+    ide: 'Codex desktop',
+    purpose: 'Improve early layout sizing while preserving the portrait crop and icon appearance.',
+    attributionSource: 'not-recorded',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+    status: 'unreleased',
+  },
+  {
     id: 'full-site-lighthouse-record-20261101',
     date: '2026-11-01',
     type: 'improvement',

@@ -27,6 +27,10 @@ A subsequent [full-load sweep of all 39 published URLs on mobile and desktop](li
 
 The new Contact samples scored 71 mobile and 75 desktop for performance. Mobile layout shift was 0.097, compared with 3.715 in the earlier pre-fix sample; desktop layout shift was 2.107, so the landing fix did not resolve the desktop performance issue. About scored 64 mobile and 90 desktop for performance; the mobile LCP trace identified the lazy, low-priority About image as the largest element. These measurements are diagnostic evidence, not proof of a stable change from a single run.
 
+Google [PageSpeed Insights](https://pagespeed.web.dev/analysis/https-mangeshraut712-github-io-mangeshrautarchive/xftlmhjz2v?form_factor=mobile) independently measured the public homepage at 2:26 PM Asia/Kolkata on November 1, 2026. Its mobile lab sample was 75 performance, 100 accessibility, 100 best practices and 100 SEO, with 1.7 s LCP, 740 ms total blocking time, 0 CLS and 6.2 s speed index. The desktop sample was 72/100/100/100, with 0.4 s LCP, 580 ms total blocking time, 0 CLS and 2.1 s speed index. PageSpeed displayed no real-user field data for this URL. These are separate single lab samples and do not establish performance on every visit.
+
+A local Contact experiment gave inconsistent desktop layout-shift samples when Experience icons received their final 20 × 20 dimensions in the HTML: baseline runs measured 1.200 and 2.036, while candidate runs measured 0.885 and 2.846. The dimensions avoid oversized unsized SVGs before the deferred stylesheet arrives, but those samples do not establish a Contact score improvement; repeat testing on the deployed build is required.
+
 To collect a new public normal-load sample, run:
 
 ```bash

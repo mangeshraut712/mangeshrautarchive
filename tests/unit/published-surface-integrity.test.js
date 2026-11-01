@@ -4,6 +4,7 @@ import { dirname, resolve } from 'node:path';
 import { tmpdir } from 'node:os';
 import { fileURLToPath } from 'node:url';
 import { test } from 'node:test';
+import sharp from 'sharp';
 
 import { generateCaseStudyPages } from '../../scripts/build/generate-case-study-pages.mjs';
 import { resolveApiUrl } from '../e2e/helpers/postdeploy.js';
@@ -41,7 +42,7 @@ test('literal published URL validation rejects a lookalike host', () => {
   );
 });
 
-test('published metadata and discovery files use the active GitHub Pages host', () => {
+test('published metadata, images, and discovery files remain consistent', async () => {
   const publishedFiles = [
     'src/index.html',
     'src/systems.html',
@@ -67,6 +68,33 @@ test('published metadata and discovery files use the active GitHub Pages host', 
     const source = readRepositoryFile(relativePath);
     assert.doesNotMatch(source, /https:\/\/(?:www\.)?mangeshraut\.pro\b/);
     assertIncludesLiteral(source, liveSiteUrl, relativePath);
+  }
+
+  const markup = readRepositoryFile('src/index.html');
+  const picture = markup.match(
+    /<picture>\s*<source[^>]*graduation-mobile\.webp[\s\S]*?<\/picture>/
+  )?.[0];
+  assert.ok(picture, 'Expected the About portrait picture');
+  const srcset = picture.match(/srcset="([^"]+)"/)?.[1] || '';
+  const sources = [...srcset.matchAll(/(assets\/images\/[^\s,]+)\s+(\d+)w/g)];
+  assert.equal(sources.length, 3);
+  for (const [, path, width] of sources) {
+    const metadata = await sharp(resolve(repoRoot, 'src', path)).metadata();
+    assert.equal(Number(width), metadata.width, `${path} width descriptor`);
+  }
+  const img = picture.match(/<img[^>]+>/)?.[0] || '';
+  const width = Number(img.match(/\bwidth="(\d+)"/)?.[1]);
+  const height = Number(img.match(/\bheight="(\d+)"/)?.[1]);
+  const metadata = await sharp(resolve(repoRoot, 'src/assets/images/graduation.jpg')).metadata();
+  assert.equal(width, metadata.width);
+  assert.equal(height, metadata.height);
+
+  const experience = markup.match(/<section id="experience"[\s\S]*?<\/section>/)?.[0] || '';
+  const icons = [...experience.matchAll(/<svg\b[^>]*>/g)].map(match => match[0]);
+  assert.ok(icons.length > 0, 'Expected inline Experience icons');
+  for (const icon of icons) {
+    assert.match(icon, /\bwidth="20"/);
+    assert.match(icon, /\bheight="20"/);
   }
 });
 
