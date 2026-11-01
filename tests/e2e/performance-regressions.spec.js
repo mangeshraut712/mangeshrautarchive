@@ -68,7 +68,7 @@ test('the GitHub Pages monitor reserves its edge banner before its module loads'
   page,
   baseURL,
 }) => {
-  if (!baseURL.includes('github.io')) {
+  if (new URL(baseURL).hostname !== 'mangeshraut712.github.io') {
     await page.route('https://mangeshraut712.github.io/**', async route => {
       const requestPath = new URL(route.request().url()).pathname.replace(
         /^\/mangeshrautarchive/,

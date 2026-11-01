@@ -192,7 +192,7 @@ function categoryScore(report, key) {
   if (relaxedHost && rounded === 99) {
     return 100;
   }
-  // Slow CI runners and remote perf-audit builds can land at 95+ with zero TBT/CLS.
+  // The audit-mode gate accepts performance scores of 95+ as 100; raw reports retain the score.
   if (relaxedHost && key === 'performance' && thresholds.performance === 100 && rounded >= 95) {
     return 100;
   }

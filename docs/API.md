@@ -6,7 +6,7 @@ Backend for the portfolio chatbot, monitoring probes, GitHub proxy, media helper
 
 | Item         | Value                                                                                         |
 | ------------ | --------------------------------------------------------------------------------------------- |
-| Framework    | FastAPI 3.x (`api/index.py`)                                                                  |
+| Framework    | FastAPI 0.142.2, Pydantic 2.13.5 (`requirements.txt`, `pyproject.toml`)                       |
 | LLM proxy    | OpenRouter (`api/model_router.py`, `api/routes/chat.py`)                                      |
 | Offline mode | When `OPENROUTER_API_KEY` is unset, chat returns canned portfolio answers                     |
 | Docs         | `/api/docs`, `/api/redoc`, `/api/openapi.json` (non-production or `ENABLE_PUBLIC_API_DOCS=1`) |
@@ -26,8 +26,10 @@ Routers are mounted in `api/index.py`:
 | `analytics.py`       | `GET/POST /api/analytics/*`                                                                             | Lightweight view/reach tracking                                                |
 | `personalization.py` | `/api/memory/*`, `/api/personalization/*`                                                               | Chat memory stats, preferences export/delete, greeting                         |
 | `integrations.py`    | `/api/integrations/*`, OAuth connect/callback, health sync                                              | WHOOP, Withings, Google Calendar via Supabase token store                      |
-| `realtime.py`        | `GET /api/realtime/health`, `WebSocket /api/realtime/ws`                                                | Realtime voice session (Vercel rewrite → `api/realtime-ws.js`)                 |
+| `realtime.py`        | `GET /api/realtime/health`, `GET /api/realtime/session`, `WebSocket /api/realtime/ws`                   | Realtime voice session and server-side WebSocket proxy                         |
 | `tts.py`             | `GET/POST /api/tts/*`                                                                                   | Text-to-speech synthesis                                                       |
+| `vector_search.py`   | `POST /api/vector-search`                                                                               | Vector search                                                                  |
+| `ingest_url.py`      | `POST /api/ingest-url`                                                                                  | URL ingestion                                                                  |
 
 Many monitor and GitHub paths are duplicated with and without the `/api` prefix for legacy clients.
 
@@ -71,11 +73,11 @@ Integration keys (Supabase, WHOOP, Withings, Google) are optional for local dev.
 
 ```bash
 source venv/bin/activate
-npm run test:api   # 211 pytest tests in tests/api/
+npm run test:api   # pytest tests in tests/api/
 ```
 
 ## Deploy notes
 
 - **GitHub Pages** ships static `dist/`; browser API calls use the Cloudflare Worker. The Worker persists newsletter and contact submissions in RLS-protected Supabase tables with server-only service-role credentials.
 - **Cloudflare Worker** (`workers/assistme-chat/`) is the primary active edge API for GitHub Pages, proxying OpenRouter LLM requests, caching catalog probes, and serving `/api/github/profile`.
-- **Vercel** serverless functions (`api/index.py`) are configured for local development on port 8001; live Vercel deployments are currently disabled (`DEPLOYMENT_DISABLED`), with `vercel.json` kept absent in accordance with repo doctor layout guards.
+- **Vercel** serverless functions use `api/index.py`; local development runs on port 8001. Live Vercel deployment is currently disabled. `vercel.json` is optional according to the repository doctor and is currently absent.

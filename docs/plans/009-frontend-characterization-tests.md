@@ -4,6 +4,7 @@
 
 ## Status
 
+- **Status**: DONE (2026-11-01; Node tests in `tests/unit/asset-version.test.js` and `tests/unit/hero-flyout-position.test.js`)
 - **Priority**: P2
 - **Effort**: M
 - **Risk**: LOW
@@ -12,6 +13,8 @@
 - **Planned at**: commit `978494ee`, 2026-07-15
 
 ## Why this matters
+
+The implementation below describes the original July 2026 proposal. The current project uses the Node test runner and a different flyout layout; the tests named above characterize the current behavior.
 
 Unit suite is ~50 Vitest tests focused on markdown/chat/config — strong for AI rendering, weak for portfolio chrome that changes weekly (hero flyouts, nav, asset version, dual-host config). Without characterization tests, refactors of `hero-flyout-position.js`, nav de-dupe, and analytics panel regressions ship uncaught until Playwright full suite (slow / not always local).
 

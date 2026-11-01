@@ -138,7 +138,7 @@ _Write code that is testable at unit, integration, and end-to-end levels, and tr
 - **Repository Implementation:**
   - **API Tests:** The pytest suite (`tests/api/`) runs 212 checks covering FastAPI endpoints, security headers, rate limits, and streaming responses.
   - **Worker Tests:** The Node test runner (`tests/worker/`) executes 27 routing, CORS, multimodal streaming, and edge boundary checks.
-  - **Unit Tests:** `npm run test:unit` covers blog HTML escaping, AssistMe chart rendering, published-surface integrity, and scheduled-sync logic (18 tests).
+  - **Unit Tests:** `npm run test:unit` covers blog HTML escaping, AssistMe chart rendering, published-surface integrity, and scheduled-sync logic (22 tests).
   - **Critical Browser Tests:** The focused Playwright suite (`tests/e2e/critical-journeys.spec.js`) verifies 18 critical desktop journeys.
   - **Tester Army Journeys:** 23 deterministic journeys (`tests/tester-army/`) across desktop Chromium and mobile WebKit (46 checks total).
   - **E2E Tests:** Playwright multi-browser test matrix (`tests/e2e/`) running across 16 device configs (Desktop Chrome/Safari/Firefox, iPhone, iPad, Pixel) enforcing 0 horizontal overflow and UI state fidelity.
@@ -197,6 +197,6 @@ _Run CI/CD so every change is built, tested, and released through the same autom
     2. Node and Python dependency installation with lockfile integrity.
     3. Quality gates: ESLint + Stylelint + Prettier + pytest API tests + critical Playwright journeys.
     4. Production esbuild bundle compilation and asset cache-busting.
-    5. Lighthouse CI deployment gates enforcing **100/100/100/100** score thresholds on built output.
+    5. Lighthouse CI gates with 100/100/100/100 thresholds on the reduced audit-mode homepage. The gate rounds some near-perfect audit-mode scores; use `--full-load` and inspect raw reports when evaluating the normal experience.
     6. Automated static deployment to GitHub Pages.
 - **Rule:** No code is manually deployed or published outside the unified CI/CD pipeline.

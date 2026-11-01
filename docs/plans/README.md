@@ -3,11 +3,11 @@
 Generated / extended by the **improve** skill.
 
 - **Wave 1** (2026-07-12, `915866f2`): plans 001–005 — **all DONE**
-- **Wave 2** (2026-07-15, `978494ee`): plans 006–010 — **TODO**
+- **Wave 2** (2026-07-15, `978494ee`): plans 006–010 are recorded as implemented.
 
 Execute in the order below unless dependencies say otherwise. Each executor: read the plan fully before starting, honor STOP conditions, and update your row when done.
 
-**Verification baseline (recon @ `978494ee`):**
+**Historical verification baseline (recon @ `978494ee`):** The table records the July 2026 reconnaissance and is not the current test configuration; see [tests/README.md](../../tests/README.md) and `package.json` for current commands.
 
 | Check       | Command                                        | Notes                                  |
 | ----------- | ---------------------------------------------- | -------------------------------------- |
@@ -31,21 +31,15 @@ Runtime: Node 22+ · Python 3.12 · vanilla ES modules + FastAPI · dual host Ve
 | 005  | Harden Last.fm artwork URLs (no raw URL in innerHTML)               | P1       | S      | —          | DONE   |
 | 006  | Sync service worker CACHE_VERSION with ASSET_VER on every deploy    | P1       | S      | —          | DONE   |
 | 007  | Durable rate limiting for serverless (replace process memory)       | P1       | M      | —          | DONE   |
-| 008  | Shared escapeHtml utility and harden remaining innerHTML sinks      | P2       | M      | —          | TODO   |
-| 009  | Characterization tests for critical frontend modules                | P2       | M      | —          | TODO   |
+| 008  | Shared escapeHtml utility and harden remaining innerHTML sinks      | P2       | M      | —          | DONE   |
+| 009  | Characterization tests for critical frontend modules                | P2       | M      | —          | DONE   |
 | 010  | Subpage CSS load hygiene (Systems / Monitor / Uses / Travel)        | P2       | M      | —          | DONE   |
 
 Status values: `TODO` | `IN PROGRESS` | `DONE` | `BLOCKED` | `REJECTED`
 
-## Recommended order (wave 2)
+## Characterization update (wave 2)
 
-1. **006** first — small, high user-visible deploy freshness win; no API risk
-2. **009** early — characterization tests de-risk later UI work
-3. **008** — security hygiene for HTML sinks
-4. **007** — rate limit durability (needs careful env design; memory default must stay green in CI)
-5. **010** — CSS load hygiene after UI is characterization-tested
-
-006 / 008 / 009 can parallelize on separate branches.
+Plan **009** uses the current Node test runner. Its asset-version and flyout tests cover the current cache-stamp contract, viewport positioning, and music-card restoration; the original Vitest instructions and flyout-width assumptions are historical.
 
 ## Dependency notes
 

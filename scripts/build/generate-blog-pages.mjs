@@ -165,11 +165,11 @@ function pageShell({
     <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/theme-solid-surfaces.css?v=${ASSET_VER}" />
     <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/apple-platform-features.css?v=${ASSET_VER}" />
     <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/chrome-surfaces.css?v=${ASSET_VER}" />
-    <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/blog-widgets.bundle.css?v=${ASSET_VER}" />
+    <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/blog-widgets.bundle.css?v=${ASSET_VER}" data-includes-styles="ai-assistant.css ai-assistant-mobile.css" />
     <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/wwdc26-liquid-glass.css?v=${ASSET_VER}" media="print" onload="this.media='all'" />
     <noscript><link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/wwdc26-liquid-glass.css?v=${ASSET_VER}" /></noscript>
     <script src="${ASSET_PREFIX}/js/utils/liquid-glass-boot.js?v=${ASSET_VER}"></script>
-    <script src="${ASSET_PREFIX}/js/utils/theme-head.js"></script>
+    <script src="${ASSET_PREFIX}/js/utils/theme-head.js?v=${ASSET_VER}"></script>
     <script src="${ASSET_PREFIX}/js/utils/deferred-analytics.js?v=${ASSET_VER}" defer></script>
     ${extraHead}
     ${jsonLd ? `<script type="application/ld+json">${jsonLd}</script>` : ''}
