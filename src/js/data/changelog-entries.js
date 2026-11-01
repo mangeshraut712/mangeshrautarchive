@@ -72,6 +72,25 @@ export const changelogEntries = [
     status: 'unreleased',
   },
   {
+    id: 'analytics-review-artifact-20261101',
+    date: '2026-11-01',
+    type: 'fix',
+    title: 'Route scheduled GA4 snapshots through short-lived review artifacts',
+    summary:
+      'Replace blocked scheduled branch and pull-request automation with a short-lived, values-free review artifact, explicit human review instructions, and completion output that omits analytics and health values.',
+    tags: ['deploy', 'api'],
+    sha: null,
+    commitVerified: false,
+    model: 'GPT-5',
+    ide: 'Codex desktop',
+    purpose:
+      'Keep GA4 snapshot exports reviewable without bypassing protected-branch policy or exposing values in public artifacts or workflow logs.',
+    attributionSource: 'not-recorded',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+    status: 'unreleased',
+  },
+  {
     id: 'full-load-performance-20261101',
     date: '2026-11-01',
     type: 'improvement',

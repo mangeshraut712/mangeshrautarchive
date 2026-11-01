@@ -3,8 +3,9 @@
 # Keeps the "Portfolio Reach" number accurate while Vercel is offline. Boots the
 # FastAPI backend with the GA4 service account, re-exports the edge snapshot
 # consumed by the Cloudflare Worker (workers/assistme-chat/src/edge-data-snapshot.js),
-# then opens or updates a reviewable draft pull request. The normal main-branch
-# worker deployment runs only after that PR is approved and merged.
+# then records a values-free review signal in a short-lived artifact. An
+# authorized human must regenerate and inspect the candidate before opening a
+# normal reviewed pull request for the main-branch worker deployment.
 #
 # Required secret:
 #   GOOGLE_ANALYTICS_SERVICE_ACCOUNT_JSON — GA4 service-account key JSON. The
@@ -13,7 +14,10 @@
 #   GA4_PROPERTY_ID (537627192), GA4_ACCOUNT_ID (394742220)
 #
 # The job self-skips when the GA4 secret is absent, so it never overwrites the
-# live snapshot with mock/store fallback numbers.
+# live snapshot with mock/store fallback numbers. Generated values are never
+# written to public workflow artifacts or public workflow logs. The artifact
+# records only whether an authorized maintainer needs to regenerate a candidate
+# in a controlled environment for normal pull-request review.
 
 name: Portfolio reach sync (GA4 → edge)
 
@@ -53,7 +57,6 @@ jobs:
         if: steps.gate.outputs.run == 'true'
         uses: actions/checkout@v7
         with:
-          fetch-depth: 0
           persist-credentials: false
 
       - name: Setup Node.js
@@ -92,8 +95,7 @@ jobs:
             fi
             sleep 1
           done
-          echo "::error::FastAPI backend failed to start"
-          cat /tmp/uvicorn.log || true
+          echo "::error::FastAPI backend failed to start; backend output is withheld to protect integration data."
           exit 1
 
       - name: Export reach snapshot (real GA4 only)
@@ -112,31 +114,72 @@ jobs:
             kill "$(cat /tmp/uvicorn.pid)" 2>/dev/null || true
           fi
 
-      - name: Create or update draft reach snapshot PR
-        id: create-pull-request
-        if: steps.gate.outputs.run == 'true'
-        uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          branch: automation/analytics-reach-sync
-          delete-branch: true
-          commit-message: 'chore(analytics): refresh edge reach snapshot from GA4'
-          title: 'chore(analytics): refresh edge reach snapshot from GA4'
-          body: |
-            Refreshes the edge reach snapshot from the configured GA4 source.
-
-            This draft is intentionally reviewable and must be merged through the repository's protected-branch process before the worker deploy runs.
-          draft: always-true
-          add-paths: workers/assistme-chat/src/edge-data-snapshot.js
-
-      - name: Report reach sync result
+      - name: Prepare reach snapshot review artifact
+        id: review-artifact
         if: steps.gate.outputs.run == 'true'
         env:
-          OPERATION: ${{ steps.create-pull-request.outputs.pull-request-operation }}
-          PR_URL: ${{ steps.create-pull-request.outputs.pull-request-url }}
+          ARTIFACT_DIR: artifacts/analytics-reach-review
+          CANDIDATE_PATH: workers/assistme-chat/src/edge-data-snapshot.js
         run: |
-          if [ "${OPERATION}" = "none" ]; then
-            echo "Reach snapshot unchanged; no pull request was created or updated."
+          set -euo pipefail
+          mkdir -p "$ARTIFACT_DIR"
+          if git diff --quiet -- "$CANDIDATE_PATH"; then
+            changed=false
           else
-            echo "Draft pull request ${OPERATION}: ${PR_URL}"
+            changed=true
           fi
+          cat > "$ARTIFACT_DIR/manifest.json" <<EOF
+          {
+            "baseCommit": "${GITHUB_SHA}",
+            "candidatePath": "${CANDIDATE_PATH}",
+            "changed": ${changed},
+            "candidateGenerated": true,
+            "candidateIncluded": false
+          }
+          EOF
+          cat > "$ARTIFACT_DIR/REVIEW.md" <<'EOF'
+          # GA4 reach snapshot review
+
+          This public-repository artifact intentionally excludes generated analytics and health
+          values. It contains only a changed/unchanged signal and the target path, not a candidate
+          snapshot, checksum, service-account data, or metric values.
+
+          1. Read `manifest.json`. If `changed` is `false`, no follow-up is required.
+          2. If it is `true`, an authorized maintainer must regenerate the candidate in a controlled
+             environment before putting it on a human-owned branch.
+          3. Inspect that candidate locally and open a normal, independently reviewed pull request;
+             do not bypass branch protection.
+
+          Do not copy analytics or health values into public issue comments, pull-request
+          descriptions, job summaries, logs, or workflow artifacts.
+          EOF
+          echo "changed=${changed}" >> "$GITHUB_OUTPUT"
+
+      - name: Upload reach snapshot review artifact
+        if: steps.gate.outputs.run == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: analytics-reach-review-${{ github.run_id }}
+          path: artifacts/analytics-reach-review
+          if-no-files-found: error
+          retention-days: 2
+
+      - name: Report reach snapshot review instructions
+        if: steps.gate.outputs.run == 'true'
+        env:
+          ARTIFACT_NAME: analytics-reach-review-${{ github.run_id }}
+          CHANGED: ${{ steps.review-artifact.outputs.changed }}
+        run: |
+          {
+            echo "## GA4 reach snapshot review"
+            echo "- Candidate changed: \`${CHANGED}\`."
+            echo "- Review artifact: \`${ARTIFACT_NAME}\` (retained for 2 days)."
+            echo "- No commit, branch, pull request, or deployment was created."
+            echo ""
+            echo "### Human review"
+            echo "1. Read the artifact manifest; it intentionally excludes generated values."
+            echo "2. If changed, regenerate the candidate in a controlled environment on a human-owned branch."
+            echo "3. Inspect it and open a normal, independently reviewed pull request; do not bypass branch protection."
+            echo ""
+            echo "Analytics and health values are intentionally absent from this public artifact, summary, and workflow logs."
+          } >> "$GITHUB_STEP_SUMMARY"

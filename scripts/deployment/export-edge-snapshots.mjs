@@ -178,6 +178,5 @@ try {
 
 fs.writeFileSync(outFile, content);
 console.log(
-  `Wrote ${path.relative(root, outFile)} reach=${snapshot.reach.total_reach} ` +
-    `ga_configured_source=${reach.ga_configured} sleep=${snapshot.healthVitals?.data?.sleepScore}`
+  `Prepared ${path.relative(root, outFile)} for review artifact without logging analytics or health values.`
 );
