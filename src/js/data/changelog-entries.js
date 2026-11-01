@@ -54,6 +54,25 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'desktop-contact-initial-disclosure-20261101',
+    date: '2026-11-01',
+    type: 'fix',
+    title: 'Prepare section disclosures for desktop Contact links',
+    summary:
+      'Initialize the existing disclosure controls earlier on direct desktop Contact visits so sections above the destination settle sooner.',
+    tags: ['performance', 'design'],
+    sha: null,
+    commitVerified: false,
+    model: 'GPT-6',
+    ide: 'Codex desktop',
+    purpose:
+      'Reduce startup layout movement on desktop Contact links without changing the mobile loading path.',
+    attributionSource: 'not-recorded',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+    status: 'unreleased',
+  },
+  {
     id: 'about-portrait-metadata-20261101',
     date: '2026-11-01',
     type: 'fix',

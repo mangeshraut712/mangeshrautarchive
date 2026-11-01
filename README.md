@@ -306,6 +306,8 @@ The JavaScript config is selected explicitly because upstream automatic discover
 
 **Portrait and icon sizing:** GPT-6 / Codex desktop; purpose: align responsive image metadata and reserve Experience icon dimensions before their stylesheet loads. Exact variant, reasoning mode, and token usage: unavailable.
 
+**Desktop Contact startup:** GPT-6 / Codex desktop; purpose: prepare existing disclosure controls before direct Contact navigation settles. Exact variant, reasoning mode, and token usage: unavailable.
+
 Mangesh Raut maintains this portfolio with contributions from Codex, Claude Code, Google Antigravity,
 Cursor, and GitHub Copilot. Shipped changes record the exposed agent/model family, engineering
 purpose, and verified commit in the [changelog](src/js/data/changelog-entries.js).

@@ -31,6 +31,10 @@ Google [PageSpeed Insights](https://pagespeed.web.dev/analysis/https-mangeshraut
 
 A local Contact experiment gave inconsistent desktop layout-shift samples when Experience icons received their final 20 × 20 dimensions in the HTML: baseline runs measured 1.200 and 2.036, while candidate runs measured 0.885 and 2.846. The dimensions avoid oversized unsized SVGs before the deferred stylesheet arrives, but those samples do not establish a Contact score improvement; repeat testing on the deployed build is required.
 
+After `1dc6de6c` was deployed, a new [PageSpeed Insights homepage report](https://pagespeed.web.dev/analysis/https-mangeshraut712-github-io-mangeshrautarchive/5nwgzeithq?form_factor=mobile) recorded 89/100/100/100 on mobile and 78/100/100/100 on desktop at 3:09 PM Asia/Kolkata. Its total blocking times were 250 ms and 410 ms respectively. These single samples do not prove that the preceding changes caused the differences from earlier runs. Separate full-load Lighthouse samples of the Contact redirect recorded 55/100/100/100 with 2.912 CLS on mobile and 74/100/100/100 with 2.978 CLS on desktop.
+
+An early-disclosure prototype limited to desktop direct Contact links produced local CLS samples of 1.078 and 1.032; separate baseline samples were 2.010 and 2.846. The scoped production build then recorded 1.011 and 1.033 in two local desktop samples. These are diagnostic lab samples and remain far above a good CLS result. A mobile prototype had markedly worse LCP, so the early initialization is limited to desktop and requires live verification.
+
 To collect a new public normal-load sample, run:
 
 ```bash
