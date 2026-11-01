@@ -37,6 +37,8 @@ An early-disclosure prototype limited to desktop direct Contact links produced l
 
 After `2204c1f6` was deployed, [PageSpeed Insights](https://pagespeed.web.dev/analysis/https-mangeshraut712-github-io-mangeshrautarchive/vxobai0p78?form_factor=mobile) sampled the homepage at 3:32 PM Asia/Kolkata: mobile scored 81/100/100/100 and desktop 69/100/100/100. Direct Lighthouse Contact samples recorded desktop 74/100/96/100 with CLS 0.917 and mobile 28/100/96/100 with CLS 2.912. The best-practices deductions were caused by failed iTunes network requests; both pages are still above a good layout-shift threshold. The measurements are individual lab runs, not proof of a stable change.
 
+After `7718a95b` was deployed, [PageSpeed Insights](https://pagespeed.web.dev/analysis/https-mangeshraut712-github-io-mangeshrautarchive/r7t4g1p1ti?form_factor=mobile) sampled the homepage at 3:50 PM Asia/Kolkata: mobile scored 69/100/100/100 and desktop 68/100/100/100. Full-load Contact samples were desktop 74/100/100/100 with CLS 1.084 and mobile 32/100/100/100 with CLS 1.057. These are single samples; the layout-shift goal remains unmet. The report also identified oversized Last.fm artwork. For one observed image, the provider returned 437,243 bytes at its `1000x1000` URL and 173,791 bytes at `300x300`; actual savings vary by artwork and compression.
+
 To collect a new public normal-load sample, run:
 
 ```bash

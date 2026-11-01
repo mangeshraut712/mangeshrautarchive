@@ -230,7 +230,7 @@ const MODULE_IMPORTERS = {
   '../modules/calendar.js': () => import('../modules/calendar.js'),
   '../modules/currently.js': () => import('../modules/currently.js'),
   '../modules/real-media-loader.js': () => import('../modules/real-media-loader.js'),
-  '../modules/lastfm.js': () => import('../modules/lastfm.js'),
+  '../modules/lastfm.js': () => import('../modules/lastfm.js?v=20261101art1'),
   '../modules/health-widget.js': () => import('../modules/health-widget.js'),
   '../modules/debug-runner.js': () => import('../modules/debug-runner.js'),
   '../modules/chatbot.js': () => import('../modules/chatbot.js'),

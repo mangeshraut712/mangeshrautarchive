@@ -87,6 +87,18 @@ class LastFmService {
       this.hero.albumArt.dataset.bound = '1';
       this.hero.albumArt.style.cursor = 'pointer';
       this.hero.albumArt.title = 'Click to toggle 30s audio preview';
+      this.hero.albumArt.addEventListener('error', event => {
+        const image = event.currentTarget;
+        if (
+          image !== this.hero?.albumArt ||
+          !this._heroCompactArtwork ||
+          image.src !== this._heroCompactArtwork
+        )
+          return;
+        this._failedHeroArtwork = this._heroCompactArtwork;
+        image.src = this._heroOriginalArtwork;
+        this._heroCompactArtwork = '';
+      });
       this.hero.albumArt.addEventListener('click', e => {
         e.stopPropagation();
         this.toggleAudioPreview();
@@ -505,6 +517,26 @@ class LastFmService {
       .replace('/174s/', `/${preferredSize}/`)
       .replace('/300x300/', `/${preferredSize}/`)
       .replace('/600x600/', `/${preferredSize}/`);
+  }
+
+  getHeroArtworkUrl(url = '') {
+    try {
+      const parsed = new URL(url);
+      const isLastFmCdn = ['lastfm-img.freetls.fastly.net', 'lastfm.freetls.fastly.net'].includes(
+        parsed.hostname
+      );
+      if (!isLastFmCdn || !/^\/i\/u\/(?:600x600|1000x1000)\//.test(parsed.pathname)) {
+        return url;
+      }
+      // The compact disc is about 60 CSS pixels; 300px covers high-density displays.
+      parsed.pathname = parsed.pathname.replace(
+        /^\/i\/u\/(?:600x600|1000x1000)\//,
+        '/i/u/300x300/'
+      );
+      return parsed.href;
+    } catch {
+      return url;
+    }
   }
 
   isUsableArtwork(url = '') {
@@ -1063,7 +1095,12 @@ class LastFmService {
     const artistName = this.getArtistName(track);
     const isNowPlaying = track?.['@attr']?.nowplaying === 'true';
     const trackId = `${trackName}::${artistName}`;
-    const artwork = this.getBestImage(track, ['extralarge', 'large', 'medium']);
+    const originalArtwork = this.getBestImage(track, ['extralarge', 'large', 'medium']);
+    const compactArtwork = this.getHeroArtworkUrl(originalArtwork);
+    const artwork = compactArtwork === this._failedHeroArtwork ? originalArtwork : compactArtwork;
+    this._heroOriginalArtwork = originalArtwork;
+    this._heroCompactArtwork = artwork !== originalArtwork ? artwork : '';
+
     const usableArtwork = this.isUsableArtwork(artwork) && this.isSafeHttpsUrl(artwork);
     const placeholder = this.getArtworkPlaceholder(trackName, artistName);
 

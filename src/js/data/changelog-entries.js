@@ -54,6 +54,24 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'compact-lastfm-hero-artwork-20261101',
+    date: '2026-11-01',
+    type: 'improvement',
+    title: 'Right-size the homepage music artwork',
+    summary:
+      'Request a 300-pixel Last.fm image for the compact music disc while keeping other providers and larger artwork surfaces unchanged.',
+    tags: ['performance', 'design'],
+    sha: null,
+    commitVerified: false,
+    model: 'GPT-6',
+    ide: 'Codex desktop',
+    purpose: 'Reduce the music card image payload without changing its visible layout.',
+    attributionSource: 'not-recorded',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+    status: 'unreleased',
+  },
+  {
     id: 'defer-offscreen-home-music-20261101',
     date: '2026-11-01',
     type: 'fix',
