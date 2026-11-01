@@ -72,45 +72,53 @@ export function initOffscreenAnimationPause() {
     observer.observe(element);
   };
 
-  const scan = root => {
-    if (!root || root.nodeType !== 1) return;
+  const pendingRoots = new Set();
+  const pendingElements = new Set();
+  let scanQueued = false;
+  let active = true;
+  const runScan = deadline => {
+    scanQueued = false;
+    if (!active) return;
 
-    if (root.matches?.(ANIMATED_SELECTOR)) {
-      trackElement(root);
+    for (const root of pendingRoots) {
+      if (root.matches?.(ANIMATED_SELECTOR)) pendingElements.add(root);
+      root.querySelectorAll(ANIMATED_SELECTOR).forEach(element => pendingElements.add(element));
     }
+    pendingRoots.clear();
 
-    root.querySelectorAll(ANIMATED_SELECTOR).forEach(trackElement);
+    let processed = 0;
+    for (const element of pendingElements) {
+      pendingElements.delete(element);
+      trackElement(element);
+      processed += 1;
+      if (processed >= 12 || (deadline && !deadline.didTimeout && deadline.timeRemaining() < 2)) {
+        break;
+      }
+    }
+    if (pendingRoots.size || pendingElements.size) scheduleScan();
   };
 
   const scheduleScan = () => {
+    if (scanQueued || !active) return;
+    scanQueued = true;
     if ('requestIdleCallback' in window) {
-      window.requestIdleCallback(() => scan(document.body), { timeout: 2000 });
-      return;
+      window.requestIdleCallback(runScan, { timeout: 1200 });
+    } else {
+      window.setTimeout(runScan, 50);
     }
+  };
 
-    window.setTimeout(() => scan(document.body), 300);
+  const queueScan = root => {
+    if (!root || root.nodeType !== 1 || !active) return;
+    pendingRoots.add(root);
+    scheduleScan();
   };
 
   if (document.body) {
-    scheduleScan();
+    queueScan(document.body);
   } else {
-    document.addEventListener('DOMContentLoaded', scheduleScan, { once: true });
+    document.addEventListener('DOMContentLoaded', () => queueScan(document.body), { once: true });
   }
-
-  let scanQueued = false;
-  const queueScan = root => {
-    if (scanQueued) return;
-    scanQueued = true;
-    const run = () => {
-      scanQueued = false;
-      scan(root);
-    };
-    if ('requestIdleCallback' in window) {
-      window.requestIdleCallback(run, { timeout: 1200 });
-    } else {
-      window.setTimeout(run, 120);
-    }
-  };
 
   const mutationObserver = new MutationObserver(mutations => {
     for (const mutation of mutations) {
@@ -126,6 +134,9 @@ export function initOffscreenAnimationPause() {
 
   window.matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', event => {
     if (!event.matches) return;
+    active = false;
+    pendingRoots.clear();
+    pendingElements.clear();
     mutationObserver.disconnect();
     observer.disconnect();
     document.querySelectorAll(`.${PAUSE_CLASS}`).forEach(element => {

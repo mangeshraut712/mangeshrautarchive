@@ -280,6 +280,8 @@ The JavaScript config is selected explicitly because upstream automatic discover
 
 **Full-load performance work:** GPT-6 / Codex desktop; purpose: reduce startup work and measure real page loads while preserving the responsive interface. Exact variant, reasoning mode, and token usage: unavailable.
 
+**Animation scheduling:** GPT-6 / Codex desktop; purpose: batch offscreen animation checks and retain newly added elements. Exact variant, reasoning mode, and token usage: unavailable.
+
 Mangesh Raut maintains this portfolio with contributions from Codex, Claude Code, Google Antigravity,
 Cursor, and GitHub Copilot. Shipped changes record the exposed agent/model family, engineering
 purpose, and verified commit in the [changelog](src/js/data/changelog-entries.js).

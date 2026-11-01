@@ -54,6 +54,24 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'animation-scan-performance-20261101',
+    date: '2026-11-01',
+    type: 'fix',
+    title: 'Batch offscreen animation checks',
+    summary:
+      'Process animation checks in smaller idle batches and retain all newly added elements so offscreen motion is paused reliably.',
+    tags: ['performance', 'design'],
+    sha: null,
+    commitVerified: false,
+    model: 'GPT-6',
+    ide: 'Codex desktop',
+    purpose: 'Reduce startup blocking while preserving and repairing offscreen animation handling.',
+    attributionSource: 'not-recorded',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+    status: 'unreleased',
+  },
+  {
     id: 'full-load-performance-20261101',
     date: '2026-11-01',
     type: 'improvement',
