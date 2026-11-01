@@ -54,6 +54,24 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'defer-offscreen-home-music-20261101',
+    date: '2026-11-01',
+    type: 'fix',
+    title: 'Load homepage music when deep-link visitors reach Home',
+    summary:
+      'Avoid loading the offscreen homepage music and live activity modules during section deep links; initialize them when Home enters view.',
+    tags: ['performance', 'other'],
+    sha: null,
+    commitVerified: false,
+    model: 'GPT-6',
+    ide: 'Codex desktop',
+    purpose: 'Reduce unnecessary offscreen network work while keeping homepage music available.',
+    attributionSource: 'not-recorded',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+    status: 'unreleased',
+  },
+  {
     id: 'desktop-contact-initial-disclosure-20261101',
     date: '2026-11-01',
     type: 'fix',

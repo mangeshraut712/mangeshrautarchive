@@ -308,6 +308,8 @@ The JavaScript config is selected explicitly because upstream automatic discover
 
 **Desktop Contact startup:** GPT-6 / Codex desktop; purpose: prepare existing disclosure controls before direct Contact navigation settles. Exact variant, reasoning mode, and token usage: unavailable.
 
+**Deep-link music loading:** GPT-6 / Codex desktop; purpose: defer offscreen homepage music on section deep links until Home is visible. Exact variant, reasoning mode, and token usage: unavailable.
+
 Mangesh Raut maintains this portfolio with contributions from Codex, Claude Code, Google Antigravity,
 Cursor, and GitHub Copilot. Shipped changes record the exposed agent/model family, engineering
 purpose, and verified commit in the [changelog](src/js/data/changelog-entries.js).

@@ -35,6 +35,8 @@ After `1dc6de6c` was deployed, a new [PageSpeed Insights homepage report](https:
 
 An early-disclosure prototype limited to desktop direct Contact links produced local CLS samples of 1.078 and 1.032; separate baseline samples were 2.010 and 2.846. The scoped production build then recorded 1.011 and 1.033 in two local desktop samples. These are diagnostic lab samples and remain far above a good CLS result. A mobile prototype had markedly worse LCP, so the early initialization is limited to desktop and requires live verification.
 
+After `2204c1f6` was deployed, [PageSpeed Insights](https://pagespeed.web.dev/analysis/https-mangeshraut712-github-io-mangeshrautarchive/vxobai0p78?form_factor=mobile) sampled the homepage at 3:32 PM Asia/Kolkata: mobile scored 81/100/100/100 and desktop 69/100/100/100. Direct Lighthouse Contact samples recorded desktop 74/100/96/100 with CLS 0.917 and mobile 28/100/96/100 with CLS 2.912. The best-practices deductions were caused by failed iTunes network requests; both pages are still above a good layout-shift threshold. The measurements are individual lab runs, not proof of a stable change.
+
 To collect a new public normal-load sample, run:
 
 ```bash

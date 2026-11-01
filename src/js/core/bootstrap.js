@@ -1690,9 +1690,15 @@ async function initBootstrap() {
     loadModule('../modules/lastfm.js').catch(() => {});
     loadModule('../modules/live-activity-strip.js').catch(() => {});
   };
-  onFirstInteraction(loadHeroEnrichment);
-  runWhenIdle(loadHeroEnrichment, 900);
-  scheduleSoon(loadHeroEnrichment, 1600);
+  const initialSection = window.location.hash;
+  if (initialSection && initialSection !== '#home') {
+    // Deep links should not fetch offscreen music until the visitor reaches Home.
+    observeSectionTask('home', loadHeroEnrichment, '0px 0px');
+  } else {
+    onFirstInteraction(loadHeroEnrichment);
+    runWhenIdle(loadHeroEnrichment, 900);
+    scheduleSoon(loadHeroEnrichment, 1600);
+  }
 
   runWhenIdle(() => {
     loadModule('../modules/real-media-loader.js').catch(() => {});
