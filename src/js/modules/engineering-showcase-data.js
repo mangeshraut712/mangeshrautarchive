@@ -349,8 +349,8 @@ export const staticBenchmarks = [
   {
     id: 'local-actions',
     label: 'Local WebMCP Actions',
-    value: '<50',
-    unit: 'ms',
+    value: 'Local',
+    unit: '',
     context: 'WebMCP navigate / theme / resume',
   },
   {
@@ -383,7 +383,7 @@ export const staticBenchmarks = [
   },
   {
     id: 'api-p95',
-    label: 'API p95 latency',
+    label: 'API average latency',
     value: '—',
     unit: 'ms',
     context: 'Live telemetry from monitor',

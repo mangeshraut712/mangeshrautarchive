@@ -62,7 +62,7 @@ export const caseStudies = [
     metrics: [
       { label: 'WebMCP tools', value: String(WEBMCP_TOOL_COUNT) },
       { label: 'Lighthouse CI gate', value: formatDeployLighthouseGate() },
-      { label: 'Local actions', value: '<50ms' },
+      { label: 'Browser actions', value: 'Local' },
       { label: 'Monitor sections', value: '15' },
     ],
     problem:
@@ -77,7 +77,7 @@ export const caseStudies = [
       `${WEBMCP_TOOL_COUNT} deterministic WebMCP tools — navigate, filter projects, music scrobbles, resume, theme`,
       `Lighthouse ${formatDeployLighthouseGate()} deploy CI gate on built dist`,
       'Public System Monitor with 15 diagnostic sections',
-      '18 technical blog posts with structured field-note workflows',
+      'Technical blog posts with structured field-note workflows',
       'WWDC26 liquid glass across home, travel, monitor, blog, systems',
       'Per-project case studies with architecture diagrams and evidence rows',
     ],

@@ -54,6 +54,24 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'portfolio-writing-facts-20261101',
+    date: '2026-11-01',
+    type: 'fix',
+    title: 'Correct portfolio references and score displays',
+    summary:
+      'Remove outdated article and timing claims, fit case-study metrics on narrow screens, correct the MacBook Pro announcement date, and clarify the Systems audit-gate display.',
+    tags: ['blog', 'systems'],
+    sha: null,
+    commitVerified: false,
+    model: 'GPT-6',
+    ide: 'Codex desktop',
+    purpose: 'Keep public case-study and score information accurate and readable.',
+    attributionSource: 'not-recorded',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+    status: 'unreleased',
+  },
+  {
     id: 'lighthouse-evidence-20261101',
     date: '2026-11-01',
     type: 'improvement',
@@ -298,7 +316,7 @@ export const changelogEntries = [
     type: 'release',
     title: 'Publish October 2026 field notes on Gemini 4 and Touchscreen MacBook Pro',
     summary:
-      'Authored two comprehensive, source-grounded engineering field notes for October 2026, expanding the portfolio archive to 20 articles across 10 balanced months (January–October 2026): (1) "Gemini 4 Argon and Carbon Field Notes: Autonomous Coding, Cyber Defense, and Benchmark Fatigue" breaking down Google DeepMind’s element-named reasoning architectures, 1M context decode, SEC-bench Pro 88.2% and CWE-bench 71.0% patching benchmarks, terminal shortcut mitigation, and sandbox isolation; and (2) "Touchscreen MacBook Pro Field Notes: PROLED XDR, Dual Input, and macOS Ergonomics" reviewing Apple’s historic October 29 release of the first touchscreen Mac, tandem OLED 2,000 nits display physics, M5 Pro/Max silicon, dual-input interaction models, and W3C PointerEvents adaptation. Generated custom 1600x900 WebP lead artworks with cryptographic provenance tracking in blog-media-sources.json, updated blog catalog and sitemap generation, and validated with 100% green unit, API, and critical E2E test suites.',
+      'Authored two comprehensive, source-grounded engineering field notes for October 2026, expanding the portfolio archive to 20 articles across 10 balanced months (January–October 2026): (1) "Gemini 4 Argon and Carbon Field Notes: Autonomous Coding, Cyber Defense, and Benchmark Fatigue" breaking down Google DeepMind’s element-named reasoning architectures, 1M context decode, SEC-bench Pro 88.2% and CWE-bench 71.0% patching benchmarks, terminal shortcut mitigation, and sandbox isolation; and (2) "Touchscreen MacBook Pro Field Notes: PROLED XDR, Dual Input, and macOS Ergonomics" reviewing Apple’s October 28 announcement of the first touchscreen Mac, tandem OLED 2,000 nits display physics, M5 Pro/Max silicon, dual-input interaction models, and W3C PointerEvents adaptation. Generated custom 1600x900 WebP lead artworks with cryptographic provenance tracking in blog-media-sources.json, updated blog catalog and sitemap generation, and validated with 100% green unit, API, and critical E2E test suites.',
     tags: ['blog', 'systems', 'design'],
     sha: 'e73416ec',
     commitVerified: true,

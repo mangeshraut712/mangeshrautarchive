@@ -122,6 +122,8 @@ export function renderBenchmarkBarsHtml() {
 
 export function renderTelemetryBento(snapshot) {
   const isLive = snapshot?.status === 'ok' || snapshot?.status === 'healthy';
+  const latency =
+    isLive && Number.isFinite(snapshot?.avg_latency_ms) ? snapshot.avg_latency_ms : null;
   const statusClass = isLive ? 'healthy' : 'degraded';
   const statusLabel = isLive ? 'Connected' : 'Static Snapshot';
 
@@ -133,10 +135,10 @@ export function renderTelemetryBento(snapshot) {
           <span class="systems-status-dot"></span>
           Lighthouse CI gate
         </span>
-        <p class="systems-tile-metric">${escapeHtml(formatDeployLighthouseGate())}<small>/100</small></p>
+        <p class="systems-tile-metric">${escapeHtml(formatDeployLighthouseGate())}</p>
         <p class="systems-tile-caption">Deploy CI gate on built dist</p>
       </div>
-      <p class="systems-tile-foot">LCP &lt; 1.5s · INP &lt; 100ms · CLS 0.00</p>
+      <p class="systems-tile-foot">Reduced audit mode · Gate rounds scores</p>
     </article>
 
     <article class="systems-bento-tile systems-bento-tile--budget lg-glass-card" data-tile="quality">
@@ -144,9 +146,9 @@ export function renderTelemetryBento(snapshot) {
       <div class="systems-status-lockup">
         <span class="systems-status-pill healthy">
           <span class="systems-status-dot"></span>
-          CI passing
+          CI configured
         </span>
-        <p class="systems-tile-metric">Passing</p>
+        <p class="systems-tile-metric">Automated</p>
         <p class="systems-tile-caption">Lint · format · e2e on every push</p>
       </div>
       <p class="systems-tile-foot">ESLint · Prettier · Playwright</p>
@@ -159,7 +161,7 @@ export function renderTelemetryBento(snapshot) {
           <span class="systems-status-dot"></span>
           WebMCP runtime
         </span>
-        <p class="systems-tile-metric">&lt; 50<small>ms</small></p>
+        <p class="systems-tile-metric">Local</p>
         <p class="systems-tile-caption">Deterministic browser actions</p>
       </div>
       <p class="systems-tile-foot">${WEBMCP_TOOL_COUNT} tools · navigate · theme · resume</p>
@@ -172,8 +174,8 @@ export function renderTelemetryBento(snapshot) {
           <span class="systems-status-dot"></span>
           ${escapeHtml(statusLabel)}
         </span>
-        <p class="systems-tile-metric">${isLive ? `${Math.round(snapshot?.avg_latency_ms || 120)}<small>ms</small>` : 'Static'}</p>
-        <p class="systems-tile-caption">p95 connection latency</p>
+        <p class="systems-tile-metric">${latency === null ? 'Not measured' : `${Math.round(latency)}<small>ms</small>`}</p>
+        <p class="systems-tile-caption">Average connection latency</p>
       </div>
       <p class="systems-tile-foot" id="telemetry-tile-synced">Syncing telemetry…</p>
       <a class="systems-tile-link" href="monitor.html" style="margin-top:0.4rem;display:inline-block;">Open System Monitor →</a>
@@ -182,12 +184,12 @@ export function renderTelemetryBento(snapshot) {
 }
 
 export function updateLiveBenchmarkValues(snapshot) {
-  const p95 = snapshot?.avg_latency_ms;
+  const latency = snapshot?.avg_latency_ms;
   const p95El = document.querySelector('[data-benchmark-id="api-p95"] [data-benchmark-value]');
-  if (p95El && p95 != null) {
-    p95El.innerHTML = `${Math.round(p95)}<small>ms</small>`;
+  if (p95El && Number.isFinite(latency)) {
+    p95El.innerHTML = `${Math.round(latency)}<small>ms</small>`;
     const fill = p95El.closest('.systems-bench-row')?.querySelector('.systems-bench-bar-fill');
-    if (fill) fill.style.width = `${Math.min(100, Math.round((p95 / 500) * 100))}%`;
+    if (fill) fill.style.width = `${Math.min(100, Math.round((latency / 500) * 100))}%`;
   }
 
   const uptimeEl = document.querySelector('[data-benchmark-id="uptime"] [data-benchmark-value]');
@@ -196,7 +198,7 @@ export function updateLiveBenchmarkValues(snapshot) {
   }
 
   document.querySelectorAll('[data-metric-live="apiP95"]').forEach(el => {
-    if (p95 != null) el.textContent = `${Math.round(p95)}`;
+    if (Number.isFinite(latency)) el.textContent = `${Math.round(latency)}`;
   });
   document.querySelectorAll('[data-metric-live="health"]').forEach(el => {
     const ok = snapshot?.status === 'ok' || snapshot?.status === 'healthy';

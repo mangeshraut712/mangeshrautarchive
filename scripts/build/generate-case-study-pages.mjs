@@ -32,7 +32,7 @@ function renderMetrics(cs) {
   return `<div class="case-study-metrics">${cs.metrics
     .map(
       m => `<div class="case-study-metric lg-glass-card">
-        <strong>${escapeHTML(m.value)}</strong>
+        <strong${String(m.value).length > 10 ? ' class="case-study-metric-value--long"' : ''}>${escapeHTML(m.value)}</strong>
         <span>${escapeHTML(m.label)}</span>
       </div>`
     )

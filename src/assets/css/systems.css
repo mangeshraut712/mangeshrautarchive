@@ -2449,6 +2449,10 @@ html.dark .case-study-evidence-bar a {
   color: var(--systems-text);
 }
 
+.case-study-metric .case-study-metric-value--long {
+  font-size: clamp(0.75rem, 3.6vw, 1.35rem);
+}
+
 .case-study-metric span {
   display: block;
   margin-top: 0.25rem;
