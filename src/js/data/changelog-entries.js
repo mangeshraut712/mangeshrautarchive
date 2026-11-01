@@ -54,6 +54,24 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'postdeploy-origin-dependency-hardening-20261101',
+    date: '2026-11-01',
+    type: 'fix',
+    title: 'Harden post-deploy API routing and update vulnerable tooling',
+    summary:
+      'Restrict post-deploy edge routing to the portfolio Pages hostname, cover lookalike hosts, and update vulnerable dependency overrides.',
+    tags: ['deploy', 'api'],
+    sha: null,
+    commitVerified: false,
+    model: 'GPT-6.1 Terra',
+    ide: 'Codex desktop',
+    purpose: 'Resolve a CodeQL origin-matching alert and dependency advisories.',
+    attributionSource: 'not-recorded',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+    status: 'unreleased',
+  },
+  {
     id: 'chat-fallback-dependency-security-20261031',
     date: '2026-10-31',
     type: 'fix',

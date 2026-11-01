@@ -6,9 +6,20 @@ import { fileURLToPath } from 'node:url';
 import { test } from 'node:test';
 
 import { generateCaseStudyPages } from '../../scripts/build/generate-case-study-pages.mjs';
+import { resolveApiUrl } from '../e2e/helpers/postdeploy.js';
 
 const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), '../..');
 const liveSiteUrl = 'https://mangeshraut712.github.io/mangeshrautarchive';
+
+test('post-deploy API routing accepts only the portfolio Pages hostname', () => {
+  assert.equal(
+    resolveApiUrl(liveSiteUrl, '/api/health'),
+    'https://assistme-chat.mangeshraut712.workers.dev/api/health'
+  );
+  for (const host of ['notgithub.io', 'github.io.evil.example', 'other.github.io']) {
+    assert.equal(resolveApiUrl(`https://${host}/`, '/api/health'), `https://${host}/api/health`);
+  }
+});
 
 function readRepositoryFile(relativePath) {
   return readFileSync(resolve(repoRoot, relativePath), 'utf8');

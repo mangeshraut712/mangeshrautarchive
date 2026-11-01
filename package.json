@@ -109,7 +109,9 @@
   "overrides": {
     "dompurify": "3.4.17",
     "js-yaml": "4.3.2",
-    "joi": "18.2.9",
+    "joi": "18.3.1",
+    "follow-redirects": "1.16.2",
+    "minimatch": "11.0.3",
     "fast-uri": "3.1.9",
     "qs": "6.17.1",
     "zod": "4.6.7",

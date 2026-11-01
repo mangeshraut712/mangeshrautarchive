@@ -136,9 +136,9 @@ _Document architecture, public APIs, and non-obvious invariants so the system re
 _Write code that is testable at unit, integration, and end-to-end levels, and treat tests as part of the product, not an afterthought._
 
 - **Repository Implementation:**
-  - **API Tests:** The pytest suite (`tests/api/`) runs 211 checks covering FastAPI endpoints, security headers, rate limits, and streaming responses.
+  - **API Tests:** The pytest suite (`tests/api/`) runs 212 checks covering FastAPI endpoints, security headers, rate limits, and streaming responses.
   - **Worker Tests:** The Node test runner (`tests/worker/`) executes 27 routing, CORS, multimodal streaming, and edge boundary checks.
-  - **Unit Tests:** `npm run test:unit` covers blog HTML escaping, AssistMe chart rendering, published-surface integrity, and scheduled-sync logic (13 tests).
+  - **Unit Tests:** `npm run test:unit` covers blog HTML escaping, AssistMe chart rendering, published-surface integrity, and scheduled-sync logic (14 tests).
   - **Critical Browser Tests:** The focused Playwright suite (`tests/e2e/critical-journeys.spec.js`) verifies 18 critical desktop journeys.
   - **Tester Army Journeys:** 23 deterministic journeys (`tests/tester-army/`) across desktop Chromium and mobile WebKit (46 checks total).
   - **E2E Tests:** Playwright multi-browser test matrix (`tests/e2e/`) running across 16 device configs (Desktop Chrome/Safari/Firefox, iPhone, iPad, Pixel) enforcing 0 horizontal overflow and UI state fidelity.

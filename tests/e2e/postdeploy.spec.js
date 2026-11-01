@@ -1,16 +1,9 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
+import { resolveApiUrl } from './helpers/postdeploy.js';
 
 function resolveTargetUrl(testInfo) {
   return process.env.PLAYWRIGHT_BASE_URL || testInfo.project.use.baseURL;
-}
-
-function resolveApiUrl(targetUrl, path) {
-  const target = new URL(targetUrl);
-  const apiOrigin = target.hostname.endsWith('github.io')
-    ? 'https://assistme-chat.mangeshraut712.workers.dev'
-    : target.origin;
-  return new URL(path, apiOrigin).toString();
 }
 
 test.describe('Post-deploy Chrome checks', () => {
