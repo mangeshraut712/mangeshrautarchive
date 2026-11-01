@@ -1026,10 +1026,12 @@ function initChatbotWarmPrefetch() {
     return;
   }
 
-  runWhenIdle(() => {
-    loadDeferredStyles(['assistant']).catch(() => {});
-    chatbotLoader.load().catch(() => {});
-  }, 1500);
+  scheduleSoon(() => {
+    runWhenIdle(() => {
+      loadDeferredStyles(['assistant']).catch(() => {});
+      chatbotLoader.load().catch(() => {});
+    }, 1500);
+  }, 8000);
 
   observeSectionTask(
     'contact',
@@ -1107,9 +1109,9 @@ function initDeferredStyles() {
     runWhenIdle(next, 120);
   };
 
-  // After first gesture only — early CSS promotion widens Speed Index on desktop lab.
+  // Warm early after interaction, or later in an idle period if the visitor does not interact.
   onFirstInteraction(warmNearFoldStylesSequentially);
-  runWhenIdle(warmNearFoldStylesSequentially, 8000);
+  scheduleSoon(() => runWhenIdle(warmNearFoldStylesSequentially, 800), 8000);
 }
 
 function schedulePostPaintIdleModules() {

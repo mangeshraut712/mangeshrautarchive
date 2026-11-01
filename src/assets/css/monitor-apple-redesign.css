@@ -1942,6 +1942,10 @@ body.monitor-page .monitor-section-rail a:focus-visible {
     gap: 0.4rem;
   }
 
+  body.monitor-page .control-center-status-badge-wrap {
+    min-height: 58px;
+  }
+
   body.monitor-page .monitor-section-rail {
     top: calc(54px + env(safe-area-inset-top, 0px));
     border-radius: 14px;

@@ -8,33 +8,7 @@
       return false;
     }
 
-    if (new URLSearchParams(window.location.search).has('perf-audit')) {
-      return true;
-    }
-
-    var userAgent = navigator.userAgent || '';
-    // Only treat real Lighthouse / PageSpeed / WebPageTest agents as audit mode.
-    // Do NOT key off bare HeadlessChrome — that disables search, theme, share, and
-    // bootstrap for Playwright CI and automated browsers, hiding product regressions.
-    if (/Chrome-Lighthouse|Lighthouse|PTST|PageSpeed/i.test(userAgent)) {
-      return true;
-    }
-
-    try {
-      // Modern Lighthouse / PageSpeed desktop dropped the Chrome-Lighthouse UA
-      // suffix and often leaves navigator.webdriver false under CDP. GitHub Pages
-      // has no middleware redirect, so match the lab desktop viewport preset
-      // (1350×940). Real browser windows almost never land on this exact size.
-      var labDesktop =
-        Math.abs(window.innerWidth - 1350) <= 24 && Math.abs(window.innerHeight - 940) <= 48;
-      if (labDesktop) {
-        return true;
-      }
-    } catch {
-      // ignore
-    }
-
-    return false;
+    return new URLSearchParams(window.location.search).has('perf-audit');
   }
 
   window.__PERF_AUDIT__ = detectPerfAudit();

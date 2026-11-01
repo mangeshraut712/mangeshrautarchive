@@ -1,6 +1,7 @@
-import { mkdir, writeFile } from 'fs/promises';
+import { mkdir, readFile, writeFile } from 'fs/promises';
 import { dirname, resolve } from 'path';
 import { fileURLToPath } from 'url';
+import { transform } from 'esbuild';
 import {
   blogPosts,
   getBlogPostImage,
@@ -30,6 +31,22 @@ const SITE_URL =
   process.env.PAGES_SITE_URL ||
   'https://mangeshraut712.github.io/mangeshrautarchive';
 const ASSET_PREFIX = '..';
+const BLOG_STYLE_GROUPS = {
+  'blog-core.bundle.css': [
+    'apple-design-system.css',
+    'typography-system.css',
+    'sitewide-design-system.css',
+    'global-improvements.css',
+    'accessibility.css',
+  ],
+  'blog-layout.bundle.css': ['blog.css', 'mobile-viewport.css'],
+  'blog-widgets.bundle.css': [
+    'ux-polish-fixes.css',
+    'ai-assistant.css',
+    'ai-assistant-mobile.css',
+    'share-widget.css',
+  ],
+};
 
 /** Deploy path prefix ('' on Vercel apex, '/mangeshrautarchive' on GitHub Pages). */
 function routePrefixFromSiteUrl(siteUrl) {
@@ -141,22 +158,14 @@ function pageShell({
     <link rel="alternate" type="application/atom+xml" title="Atom" href="${SITE_URL}/feed.xml" />
     <link rel="stylesheet" href="${fontAwesomeStylesheet(ASSET_PREFIX)}" media="print" onload="this.media='all'" />
     <noscript><link rel="stylesheet" href="${fontAwesomeStylesheet(ASSET_PREFIX)}" /></noscript>
-    <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/apple-design-system.css?v=${ASSET_VER}" />
-    <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/typography-system.css?v=${ASSET_VER}" />
-    <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/sitewide-design-system.css?v=${ASSET_VER}" />
-    <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/global-improvements.css?v=${ASSET_VER}" />
-    <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/accessibility.css?v=${ASSET_VER}" />
+    <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/blog-core.bundle.css?v=${ASSET_VER}" />
     <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/liquid-glass.css?v=${ASSET_VER}" media="print" onload="this.media='all'" />
     <noscript><link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/liquid-glass.css?v=${ASSET_VER}" /></noscript>
-    <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/blog.css?v=${ASSET_VER}" />
-    <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/mobile-viewport.css?v=${ASSET_VER}" />
+    <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/blog-layout.bundle.css?v=${ASSET_VER}" />
     <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/theme-solid-surfaces.css?v=${ASSET_VER}" />
     <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/apple-platform-features.css?v=${ASSET_VER}" />
     <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/chrome-surfaces.css?v=${ASSET_VER}" />
-    <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/ux-polish-fixes.css?v=${ASSET_VER}" />
-    <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/ai-assistant.css?v=${ASSET_VER}" />
-    <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/ai-assistant-mobile.css?v=${ASSET_VER}" />
-    <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/share-widget.css?v=${ASSET_VER}" />
+    <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/blog-widgets.bundle.css?v=${ASSET_VER}" />
     <link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/wwdc26-liquid-glass.css?v=${ASSET_VER}" media="print" onload="this.media='all'" />
     <noscript><link rel="stylesheet" href="${ASSET_PREFIX}/assets/css/wwdc26-liquid-glass.css?v=${ASSET_VER}" /></noscript>
     <script src="${ASSET_PREFIX}/js/utils/liquid-glass-boot.js?v=${ASSET_VER}"></script>
@@ -387,7 +396,17 @@ function renderBlogPost(post, posts) {
 
 export async function generateBlogPages(distDir) {
   const blogDir = resolve(distDir, 'blog');
-  await mkdir(blogDir, { recursive: true });
+  const cssDir = resolve(distDir, 'assets/css');
+  await Promise.all([mkdir(blogDir, { recursive: true }), mkdir(cssDir, { recursive: true })]);
+  await Promise.all(
+    Object.entries(BLOG_STYLE_GROUPS).map(async ([outputName, files]) => {
+      const styles = await Promise.all(
+        files.map(file => readFile(resolve(__dirname, '../../src/assets/css', file), 'utf8'))
+      );
+      const result = await transform(styles.join('\n'), { loader: 'css', minify: true });
+      await writeFile(resolve(cssDir, outputName), result.code, 'utf8');
+    })
+  );
 
   const posts = sortedPosts();
   const tags = getTopTags(posts, 8);

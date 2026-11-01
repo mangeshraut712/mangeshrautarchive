@@ -40,16 +40,18 @@ export async function scrollSelectorIntoView(page, selector) {
   }, selector);
 }
 
-/** Open AssistMe after the widget module is loaded (idle prefetch). */
+/** Open AssistMe through the launcher, including its on-demand loading path. */
 export async function openChatbot(page) {
   await page.waitForFunction(
-    () => typeof window.appleIntelligenceChatbot?.openWidget === 'function',
+    () =>
+      document.getElementById('chatbot-toggle')?.dataset.lazyModuleBound === 'true' ||
+      typeof window.appleIntelligenceChatbot?.openWidget === 'function',
     null,
     { timeout: 20_000 }
   );
-  await page.evaluate(() => window.appleIntelligenceChatbot.openWidget());
+  await page.locator('#chatbot-toggle').click();
   const widget = page.locator('#chatbot-widget');
-  await widget.waitFor({ state: 'visible', timeout: 10_000 });
+  await widget.waitFor({ state: 'visible', timeout: 20_000 });
 }
 
 /** Type a draft and send with Enter (ChatGPT-style). */

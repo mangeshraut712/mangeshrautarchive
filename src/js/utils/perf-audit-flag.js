@@ -1,8 +1,5 @@
 (function () {
-  if (
-    !/[?&]perf-audit=1(?:&|$)/.test(location.search) &&
-    !/Chrome-Lighthouse|Lighthouse|PTST/i.test(navigator.userAgent || '')
-  ) {
+  if (!/[?&]perf-audit=1(?:&|$)/.test(location.search)) {
     return;
   }
   document.documentElement.dataset.perfAudit = '1';

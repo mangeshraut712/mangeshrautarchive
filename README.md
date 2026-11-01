@@ -278,6 +278,8 @@ The JavaScript config is selected explicitly because upstream automatic discover
 
 **Responsive audit fixes:** GPT-6 / Codex desktop; purpose: stabilize first paint and improve travel navigation and contact contrast. Exact variant, reasoning mode, and token usage: unavailable.
 
+**Full-load performance work:** GPT-6 / Codex desktop; purpose: reduce startup work and measure real page loads while preserving the responsive interface. Exact variant, reasoning mode, and token usage: unavailable.
+
 Mangesh Raut maintains this portfolio with contributions from Codex, Claude Code, Google Antigravity,
 Cursor, and GitHub Copilot. Shipped changes record the exposed agent/model family, engineering
 purpose, and verified commit in the [changelog](src/js/data/changelog-entries.js).

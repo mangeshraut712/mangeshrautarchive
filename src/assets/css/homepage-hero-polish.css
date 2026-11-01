@@ -238,6 +238,13 @@ html.dark #home #name-pronounce-btn.name-pronounce-btn {
   text-wrap: balance !important;
 }
 
+@media (max-width: 350px) {
+  #home .hero-role-flip #hero-role-word.is-long {
+    font-size: 0.82rem !important;
+    white-space: nowrap !important;
+  }
+}
+
 #home.hero-section .hero-insights-band {
   display: flex !important;
   width: 100% !important;

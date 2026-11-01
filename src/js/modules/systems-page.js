@@ -208,8 +208,13 @@ function initArchitectureTabs() {
 function renderHero() {
   const statement = document.getElementById('systems-public-statement');
   const lead = document.getElementById('systems-hero-lead');
-  if (statement) statement.textContent = publicEvidenceStatement;
-  if (lead) lead.textContent = heroLead;
+  const updateText = (element, value) => {
+    if (element && element.textContent.replace(/\s+/g, ' ').trim() !== value) {
+      element.textContent = value;
+    }
+  };
+  updateText(statement, publicEvidenceStatement);
+  updateText(lead, heroLead);
 
   const root = document.getElementById('systems-hero-stats');
   if (!root) return;
@@ -936,44 +941,56 @@ export function initSystemsPage() {
   renderHero();
   renderOverview();
 
-  renderProductionMetrics();
-  renderDecisionGrid('systems-arch-decisions', architectureDecisions);
-  renderDecisionGrid('systems-eng-decisions', engineeringDecisions);
-  renderFailures();
-  renderCurrentWork();
-  renderPrinciples();
-  renderWriting();
-  renderOpenSource();
-  renderTimeline();
-  renderTokenization();
-  renderBenchmarks();
-  renderCaseStudyFlows();
-  mountArchitectureDiagrams();
-  initArchitectureTabs();
-  initArchitectureTree('#systems-arch-tree-container');
-  initSectionRail();
-  initCaseStudyRails();
-  bindCardPress();
-  if (!isPerformanceAudit()) {
-    hydrateTelemetry({ initial: true });
-  }
+  let detailsRendered = false;
+  const renderDetails = () => {
+    if (detailsRendered) return;
+    detailsRendered = true;
+    renderProductionMetrics();
+    renderDecisionGrid('systems-arch-decisions', architectureDecisions);
+    renderDecisionGrid('systems-eng-decisions', engineeringDecisions);
+    renderFailures();
+    renderCurrentWork();
+    renderPrinciples();
+    renderWriting();
+    renderOpenSource();
+    renderTimeline();
+    renderTokenization();
+    renderBenchmarks();
+    renderCaseStudyFlows();
+    mountArchitectureDiagrams();
+    initArchitectureTabs();
+    initArchitectureTree('#systems-arch-tree-container');
+    initSectionRail();
+    initCaseStudyRails();
+    bindCardPress();
+    if (!isPerformanceAudit()) {
+      hydrateTelemetry({ initial: true });
+    }
 
-  if (!isPerformanceAudit()) {
-    observeScrollAnimations([
-      '.systems-keynote-section',
-      '.systems-hero-stat',
-      '.systems-evidence-card',
-      '.systems-bento-tile',
-      '.systems-metric-panel',
-      '.systems-case-flow',
-      '.systems-principle-card',
-      '.systems-timeline-block',
-      '.systems-decision-row',
-      '.systems-failure-row',
-      '.systems-writing-chip',
-      '.systems-token-card',
-    ]);
+    if (!isPerformanceAudit()) {
+      observeScrollAnimations([
+        '.systems-keynote-section',
+        '.systems-hero-stat',
+        '.systems-evidence-card',
+        '.systems-bento-tile',
+        '.systems-metric-panel',
+        '.systems-case-flow',
+        '.systems-principle-card',
+        '.systems-timeline-block',
+        '.systems-decision-row',
+        '.systems-failure-row',
+        '.systems-writing-chip',
+        '.systems-token-card',
+      ]);
+    }
+  };
+
+  if (window.location.hash) {
+    renderDetails();
+    return;
   }
+  requestAnimationFrame(() => requestAnimationFrame(renderDetails));
+  window.setTimeout(renderDetails, 200);
 }
 
 if (document.body.classList.contains('systems-page')) {

@@ -41,6 +41,7 @@ function initHeroRoleFlip() {
   const setRole = () => {
     const word = ROLE_WORDS[index];
     roleWord.textContent = word;
+    roleWord.classList.toggle('is-long', word.length > 26);
     if (rolePrefix) {
       const firstLetter = word.charAt(0).toLowerCase();
       const isVowel = ['a', 'e', 'i', 'o', 'u'].includes(firstLetter);

@@ -54,6 +54,25 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'full-load-performance-20261101',
+    date: '2026-11-01',
+    type: 'improvement',
+    title: 'Reduce first-load work and preserve real browser behavior',
+    summary:
+      'Consolidate ordered stylesheet groups, delay nonessential warm-up, stabilize monitor and changelog loading, and restrict the reduced CI audit mode to explicit requests.',
+    tags: ['performance', 'design', 'monitor'],
+    sha: null,
+    commitVerified: false,
+    model: 'GPT-6',
+    ide: 'Codex desktop',
+    purpose:
+      'Improve full-load Lighthouse results while preserving responsive design and interactions.',
+    attributionSource: 'not-recorded',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+    status: 'unreleased',
+  },
+  {
     id: 'responsive-audit-fixes-20261101',
     date: '2026-11-01',
     type: 'fix',

@@ -4,6 +4,7 @@ import { mkdir, rm, readdir, stat, readFile, writeFile } from 'fs/promises';
 import { execSync } from 'child_process';
 import { transform } from 'esbuild';
 import { blogPosts } from '../../src/js/modules/blog-data.js';
+import { changelogEntries, getChangelogUpdatedAt } from '../../src/js/data/changelog-entries.js';
 import { generateBlogPages } from './generate-blog-pages.mjs';
 import { generateCaseStudyPages } from './generate-case-study-pages.mjs';
 import { caseStudies } from '../../src/js/modules/case-studies-data.js';
@@ -260,6 +261,34 @@ async function bundleCssGroup(distDir, relPaths, outputName) {
   await writeFile(resolve(distDir, `assets/css/${outputName}`), result.code, 'utf8');
 }
 
+async function populateChangelogMeta(distDir) {
+  const changelogPath = resolve(distDir, 'changelog.html');
+  const html = await readFile(changelogPath, 'utf8');
+  const iso = getChangelogUpdatedAt();
+  if (!iso) return;
+  const [year, month, day] = iso.split('-').map(Number);
+  const formatted = new Date(Date.UTC(year, month - 1, day)).toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    timeZone: 'UTC',
+  });
+  const timePlaceholder = '<time id="changelog-updated" datetime=""></time>';
+  const countPlaceholder = '<span id="changelog-count"></span>';
+  if (!html.includes(timePlaceholder) || !html.includes(countPlaceholder)) {
+    throw new Error('Changelog metadata placeholders are missing');
+  }
+  const updated = html
+    .replace(
+      timePlaceholder,
+      `<time id="changelog-updated" datetime="${iso}">Updated ${formatted}</time>`
+    )
+    .replace(
+      countPlaceholder,
+      `<span id="changelog-count">${changelogEntries.length} updates</span>`
+    );
+  await writeFile(changelogPath, updated, 'utf8');
+}
+
 async function bundleAboveFoldCss(distDir) {
   await Promise.all([
     bundleCssGroup(distDir, HERO_CRITICAL_CSS, 'hero-critical.bundle.css'),
@@ -475,6 +504,7 @@ async function build() {
 
   console.log('⚡ Minifying copied CSS/JS assets ...');
   await bundleAboveFoldCss(distDir);
+  await populateChangelogMeta(distDir);
   await injectApiKeys(distDir);
   await syncServiceWorkerCacheVersion(distDir);
   await optimizeCopiedAssets(distDir);
