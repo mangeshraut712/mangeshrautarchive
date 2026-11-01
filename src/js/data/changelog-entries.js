@@ -54,6 +54,42 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'dependency-and-audit-accuracy-20261101',
+    date: '2026-11-01',
+    type: 'fix',
+    title: 'Align Python dependencies and correct audit documentation',
+    summary:
+      'Synchronize Python dependency pins and the lockfile, use an exact hostname in browser test routing, and document the limits of Lighthouse gate scores.',
+    tags: ['api', 'deploy'],
+    sha: null,
+    commitVerified: false,
+    model: 'GPT-6',
+    ide: 'Codex desktop',
+    purpose: 'Improve dependency consistency, security checks, and verification accuracy.',
+    attributionSource: 'not-recorded',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+    status: 'unreleased',
+  },
+  {
+    id: 'style-loading-and-visible-labels-20261101',
+    date: '2026-11-01',
+    type: 'improvement',
+    title: 'Reduce redundant style work and clarify accessible labels',
+    summary:
+      'Avoid unnecessary theme stylesheet moves and duplicate blog assistant styles, and align contact and disclosure names with their visible text.',
+    tags: ['performance', 'blog', 'design'],
+    sha: null,
+    commitVerified: false,
+    model: 'GPT-6',
+    ide: 'Codex desktop',
+    purpose: 'Reduce redundant stylesheet work and improve voice-control accessibility.',
+    attributionSource: 'not-recorded',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+    status: 'unreleased',
+  },
+  {
     id: 'animation-scan-performance-20261101',
     date: '2026-11-01',
     type: 'fix',

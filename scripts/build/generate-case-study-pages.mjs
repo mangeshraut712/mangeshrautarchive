@@ -172,7 +172,7 @@ function pageShell({ title, description, canonical, body }) {
     <link rel="stylesheet" href="${fontAwesomeStylesheet(ASSET_PREFIX)}" media="print" onload="this.media='all'" />
     <noscript><link rel="stylesheet" href="${fontAwesomeStylesheet(ASSET_PREFIX)}" /></noscript>
     <script src="${ASSET_PREFIX}/js/utils/liquid-glass-boot.js?v=${ASSET_VER}"></script>
-    <script src="${ASSET_PREFIX}/js/utils/theme-head.js"></script>
+    <script src="${ASSET_PREFIX}/js/utils/theme-head.js?v=${ASSET_VER}"></script>
     <script src="${ASSET_PREFIX}/js/utils/deferred-analytics.js?v=${ASSET_VER}" defer></script>
   </head>
   <body class="systems-page case-study-standalone">

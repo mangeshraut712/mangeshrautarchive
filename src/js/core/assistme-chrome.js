@@ -38,9 +38,10 @@ function ensureCriticalHideStyles() {
 function ensureStylesheet(href) {
   const resolved = href.startsWith('/') ? sitePath(href) : href;
   const file = resolved.split('?')[0].split('/').pop();
-  const exists = Array.from(document.querySelectorAll('link[rel="stylesheet"]')).some(link =>
-    (link.getAttribute('href') || '').includes(file)
-  );
+  const exists = Array.from(document.querySelectorAll('link[rel="stylesheet"]')).some(link => {
+    const bundled = (link.dataset.includesStyles || '').split(/\s+/).includes(file);
+    return (link.getAttribute('href') || '').includes(file) || (bundled && link.sheet);
+  });
   if (exists) return;
   const link = document.createElement('link');
   link.rel = 'stylesheet';

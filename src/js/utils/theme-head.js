@@ -355,7 +355,12 @@
         if (typeof window !== 'undefined' && window.__PERF_AUDIT__ === true) {
           return;
         }
-        if (link.parentNode) {
+        var next = link.nextElementSibling;
+        while (next && !next.matches('style, link[rel~="stylesheet"]')) {
+          next = next.nextElementSibling;
+        }
+        // Avoid invalidating the CSS cascade when the sheet already comes last.
+        if (link.parentNode && next) {
           document.head.appendChild(link);
         }
       });

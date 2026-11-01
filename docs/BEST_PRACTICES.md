@@ -197,6 +197,6 @@ _Run CI/CD so every change is built, tested, and released through the same autom
     2. Node and Python dependency installation with lockfile integrity.
     3. Quality gates: ESLint + Stylelint + Prettier + pytest API tests + critical Playwright journeys.
     4. Production esbuild bundle compilation and asset cache-busting.
-    5. Lighthouse CI deployment gates enforcing **100/100/100/100** score thresholds on built output.
+    5. Lighthouse CI gates with 100/100/100/100 thresholds on the reduced audit-mode homepage. The gate rounds some near-perfect audit-mode scores; use `--full-load` and inspect raw reports when evaluating the normal experience.
     6. Automated static deployment to GitHub Pages.
 - **Rule:** No code is manually deployed or published outside the unified CI/CD pipeline.

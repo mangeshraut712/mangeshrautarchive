@@ -224,7 +224,7 @@ and exported calendar files do not grant access to an Apple account.
 | `npm run dev:backend`         | Run FastAPI independently                                                       |
 | `npm run doctor:strict`       | Validate repository layout and stack constraints                                |
 | `npm run check`               | ESLint, Stylelint, anti-slop checks, and formatting                             |
-| `npm test`                    | Run API tests, worker tests, and critical Playwright journeys                   |
+| `npm test`                    | Run API, Worker, unit, and critical Playwright tests                            |
 | `npm run test:worker`         | Run Cloudflare Worker multimodal routing and stream boundary tests              |
 | `npm run test:tester-army`    | Run 23 deterministic Tester Army journeys across Chromium and WebKit (46 tests) |
 | `npm run test:tester-army:ci` | Run 23 deterministic Tester Army journeys on desktop Chromium for CI            |
@@ -238,8 +238,10 @@ and exported calendar files do not grant access to an Apple account.
 
 The October 24, 2026 release passed **192 API tests, 20 Worker routing/stream boundary tests, 14 critical Chrome journeys, and 23 Tester Army journeys (46 browser checks across desktop Chromium and mobile WebKit)**.
 ESLint, Stylelint, formatting, the secret scan, and the production build passed locally.
-The matching deployment workflow passed its quality, Lighthouse (100/100/100/100), Pages publication, and deployment verification gates.
+The matching deployment workflow passed its quality, Lighthouse, Pages publication, and deployment verification gates. The Lighthouse gate uses the reduced `perf-audit` page and applies score rounding; it is not a measurement of a normal page load.
 These are dated results for that release, not guarantees about every browser or future deployment.
+
+For a production-like Lighthouse run, pass `--full-load` to `scripts/deployment/lighthouse-gate.js` and inspect the raw category scores in the generated JSON report. Audit-mode and loopback gate output can round scores up, and local SEO results may be adjusted for a loopback robots.txt issue. Lab scores vary between runs and are not field Core Web Vitals.
 
 Responsive review covered Home, Systems, Travel, Monitor, Uses, and Changelog at desktop and phone
 widths in both themes, with no horizontal overflow in the reviewed states. The deployed contact card
@@ -281,6 +283,10 @@ The JavaScript config is selected explicitly because upstream automatic discover
 **Full-load performance work:** GPT-6 / Codex desktop; purpose: reduce startup work and measure real page loads while preserving the responsive interface. Exact variant, reasoning mode, and token usage: unavailable.
 
 **Animation scheduling:** GPT-6 / Codex desktop; purpose: batch offscreen animation checks and retain newly added elements. Exact variant, reasoning mode, and token usage: unavailable.
+
+**Style loading and accessibility:** GPT-6 / Codex desktop; purpose: prevent redundant stylesheet work and align accessible names with visible labels. Exact variant, reasoning mode, and token usage: unavailable.
+
+**Dependency and audit review:** GPT-6 / Codex desktop; purpose: align Python dependency pins, address a test hostname finding, and document score limitations. Exact variant, reasoning mode, and token usage: unavailable.
 
 Mangesh Raut maintains this portfolio with contributions from Codex, Claude Code, Google Antigravity,
 Cursor, and GitHub Copilot. Shipped changes record the exposed agent/model family, engineering

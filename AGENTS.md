@@ -273,7 +273,7 @@ All five test suites must pass before any merge to `main`:
 The broader browser suite remains available through `npm run test:e2e:all` across 16 configured projects.
 
 - Playwright configs include Desktop Chrome/Safari/Firefox/Edge, Pixel 7 Chrome, iPhone 14 Safari, iPad Pro Safari, and more.
-- Lighthouse deploy workflow enforces 100/100/100/100 on built dist homepage; live-host floors vary (`npm run qa:lighthouse:ci`, `qa:lighthouse:vercel`).
+- Lighthouse deploy workflow uses 100/100/100/100 gate thresholds on the reduced audit-mode homepage; its score rounding means the gate is not evidence of raw 100s or normal-load performance. Use `--full-load` and inspect raw reports for the normal experience; live-host floors vary (`npm run qa:lighthouse:ci`, `qa:lighthouse:vercel`).
 - Accessibility tests use `@axe-core/playwright`.
 
 ---
