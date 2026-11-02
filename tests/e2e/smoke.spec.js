@@ -700,7 +700,7 @@ test.describe('Chrome smoke tests', () => {
 
     // Verify individual telemetry values
     await expect(page.locator('.keynote-tool-card', { hasText: 'OpenAI Codex' })).toContainText(
-      '10.66B tokens burned'
+      '12.40B tokens burned'
     );
     await expect(page.locator('.keynote-tool-card', { hasText: 'Cursor' })).toContainText(
       '9.75B tokens burned'

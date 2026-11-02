@@ -6,12 +6,32 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
+import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT_DIR = path.resolve(__dirname, '../..');
 const OUTPUT_FILE = path.join(ROOT_DIR, 'src/js/data/whoburnedmore-data.js');
 const USERNAME = 'mrcommando712';
+
+function formatJsLiteral(value) {
+  return JSON.stringify(value, null, 2)
+    .replace(/"([^"]+)":/g, '$1:')
+    .replace(/"/g, "'")
+    .replace(/}\n(\s*)\]/g, '},\n$1]')
+    .replace(/}\n(\s*)\}/g, '},\n$1}')
+    .replace(/('\n)(\s*[\]}])/g, "',\n$2");
+}
+
+function currentSyncLabels(now = new Date()) {
+  const isoDate = now.toISOString().slice(0, 10);
+  const lastSynced = now.toLocaleString('en-US', {
+    month: 'long',
+    year: 'numeric',
+    timeZone: 'UTC',
+  });
+  return { isoDate, lastSynced };
+}
 
 async function fetchWhoBurnedMoreData() {
   console.log(`[wbm-sync] Fetching live profile data for @${USERNAME}...`);
@@ -362,10 +382,11 @@ async function fetchWhoBurnedMoreData() {
     },
   ];
 
+  const { isoDate, lastSynced } = currentSyncLabels();
   const content = `/**
  * WhoBurnedMore Public Leaderboard & Token Burn Telemetry
  * Source of truth: https://whoburnedmore.com/u/mrcommando712
- * Last updated: 2026-10-23
+ * Last updated: ${isoDate}
  */
 
 export const whoburnedmoreProfile = {
@@ -373,7 +394,7 @@ export const whoburnedmoreProfile = {
   displayName: 'Mangesh Raut',
   profileUrl: 'https://whoburnedmore.com/u/${USERNAME}',
   badgeUrl: 'https://api.whoburnedmore.com/v1/badge/${USERNAME}.svg',
-  lastSynced: 'October 2026',
+  lastSynced: '${lastSynced}',
 
   // Lifetime headline totals (Live from whoburnedmore.com/u/${USERNAME})
   lifetimeBurn: '${lifetimeTokensStr}',
@@ -423,14 +444,10 @@ export const whoburnedmoreProfile = {
   },
 
   // Telemetry breakdown by tool / IDE — All apps separated with dedicated high-contrast SVGs
-  tools: ${JSON.stringify(toolsArray, null, 4)
-    .replace(/"([^"]+)":/g, '$1:')
-    .replace(/"/g, "'")},
+  tools: ${formatJsLiteral(toolsArray)},
 
   // Top AI models burned across all workflows (Live from whoburnedmore telemetry)
-  models: ${JSON.stringify(models, null, 4)
-    .replace(/"([^"]+)":/g, '$1:')
-    .replace(/"/g, "'")},
+  models: ${formatJsLiteral(models)},
 
   // Cache economics breakdown items (Live verified)
   cacheTelemetry: [
@@ -475,6 +492,20 @@ export const whoburnedmoreProfile = {
 `;
 
   fs.writeFileSync(OUTPUT_FILE, content, 'utf8');
+  const prettierBin = path.join(ROOT_DIR, 'node_modules', '.bin', 'prettier');
+  const prettier = fs.existsSync(prettierBin)
+    ? spawnSync(prettierBin, ['--write', OUTPUT_FILE], { cwd: ROOT_DIR, encoding: 'utf8' })
+    : spawnSync('npx', ['prettier', '--write', OUTPUT_FILE], {
+        cwd: ROOT_DIR,
+        encoding: 'utf8',
+        shell: process.platform === 'win32',
+      });
+  if (prettier.status !== 0) {
+    console.warn(
+      '[wbm-sync] Warning: Prettier formatting skipped:',
+      prettier.stderr || prettier.stdout || prettier.error?.message
+    );
+  }
   console.log(`[wbm-sync] Successfully written to ${OUTPUT_FILE}`);
 }
 

@@ -66,6 +66,9 @@
   - Robustly parsed concatenated NDJSON stream chunks and SSE tokens; added accessible aria-labels to chat attachment buttons.
   - Expanded test suites: pytest to 192 tests (`npm run test:api`), Cloudflare Worker edge routes to 20 tests (`npm run test:worker`).
   - Synchronized live WhoBurnedMore telemetry (21.14B tokens, $19,062 spend, 245 active days, 57d streak, rank #64), official Kalnirnay Panchang for October 28, 2026 (Ashwin Krishna Paksha Tritiya, Nakshatra Kruttika, Yog Vyatipat / Variyan, Karan Vanij), and multi-calendar ecosystem (Google, Apple, Outlook, Luma).
+- [x] **Task 3.8: November 2 WhoBurnedMore Live Refresh**
+  - Re-synced live telemetry to **22.89B tokens**, **$19,643** spend, **251** active days, **61d** longest streak, rank **#61 of 357** (Top 17%), **94.88%** cache hit rate.
+  - Propagated Codex **12.40B / 54.2%** and Cursor **42.6%** across Uses cards, Systems/Monitor copy, smoke assertions, and sync tooling formatting.
 
 ---
 

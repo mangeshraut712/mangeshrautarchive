@@ -54,6 +54,26 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'whoburnedmore-live-telemetry-refresh-20261102',
+    date: '2026-11-02',
+    type: 'improvement',
+    title:
+      'WhoBurnedMore live telemetry refresh: 22.89B tokens, rank #61, and cross-surface sync',
+    summary:
+      'Re-synced live WhoBurnedMore telemetry for @mrcommando712 (22.89B lifetime tokens, $19,643 spend, 251 active days, 61d longest streak, all-time rank #61 of 357 / Top 17%, 94.88% cache hit rate, $45,132 saved). Updated Systems / Uses / Monitor hard-coded figures, OpenAI Codex card to 12.40B (54.2%), Cursor share to 42.6%, smoke assertions, and hardened sync-whoburnedmore.mjs to stamp UTC sync dates plus Prettier-safe output formatting.',
+    tags: ['systems', 'monitor', 'other'],
+    sha: null,
+    commitVerified: false,
+    model: 'Composer',
+    ide: 'Cursor',
+    purpose:
+      'Refresh stale WhoBurnedMore telemetry across data, HTML surfaces, smoke tests, and sync tooling.',
+    attributionSource: 'commit-message',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+    status: 'unreleased',
+  },
+  {
     id: 'system-theme-favicons-20261101',
     date: '2026-11-01',
     type: 'fix',

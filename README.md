@@ -332,12 +332,12 @@ Mangesh Raut maintains this portfolio with contributions from Codex, Claude Code
 Cursor, and GitHub Copilot. Shipped changes record the exposed agent/model family, engineering
 purpose, and verified commit in the [changelog](src/js/data/changelog-entries.js).
 
-| Current contribution                             | Attribution                                                                                                                                                                              |
-| ------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Coding agent                                     | GPT-6 Astra / Codex desktop                                                                                                                                                              |
-| Purpose                                          | Release ready content from the first-visit greeting while preserving its artwork and fade                                                                                                |
-| Exact model variant, reasoning mode, token usage | unavailable                                                                                                                                                                              |
-| Portfolio chatbot model                          | Configured separately in [api/model_router.py](api/model_router.py) and [Worker configuration](workers/assistme-chat/wrangler.toml); each live response reports the actual serving model |
+| Current contribution                             | Attribution                                                                                                                                                                                                 |
+| ------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Coding agent                                     | Composer, in Cursor                                                                                                                                                                                         |
+| Purpose                                          | Live WhoBurnedMore telemetry refresh (22.89B tokens, #61 of 357), cross-surface Systems/Uses/Monitor sync, smoke assertion alignment, and sync-whoburnedmore.mjs formatting hardening                       |
+| Exact model variant, reasoning mode, token usage | unavailable                                                                                                                                                                                                 |
+| Portfolio chatbot model                          | Configured separately in [api/model_router.py](api/model_router.py) and [Worker configuration](workers/assistme-chat/wrangler.toml); each live response reports the actual serving model                    |
 
 **Analytics workflow token review:** GPT-5 / Codex desktop; purpose: limit the review-artifact workflow to read-only repository access. Exact variant, reasoning mode, and token usage: unavailable.
 
