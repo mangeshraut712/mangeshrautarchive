@@ -335,6 +335,8 @@ async def enrich_recent_tracks_with_artwork(payload: dict, max_tracks: int = 8) 
         if verified:
             track["resolved_artwork"] = verified[0]
             track["artwork_source"] = verified[1]
+            track["apple_music_url"] = f"https://music.apple.com/us/search?term={quote(f'{name} {artist}'.strip())}"
+            track["spotify_url"] = f"https://open.spotify.com/search/{quote(f'{name} {artist}'.strip())}"
             images = track.get("image")
             if not isinstance(images, list):
                 images = []
@@ -344,24 +346,33 @@ async def enrich_recent_tracks_with_artwork(payload: dict, max_tracks: int = 8) 
             track["image"] = images
             return
 
-        # 2. If track already has authentic non-placeholder resolved_artwork, keep it
+        # 2. Resolve external high-res artwork & audio preview via multi-storefront iTunes
+        details = await resolve_external_track_details(name, artist, album=album)
+        if details:
+            if details.get("preview_url"):
+                track["preview_url"] = details["preview_url"]
+            if details.get("apple_music_url"):
+                track["apple_music_url"] = details["apple_music_url"]
+            if details.get("genre"):
+                track["genre"] = details["genre"]
+            if details.get("duration_ms"):
+                track["duration_ms"] = details["duration_ms"]
+
+        # 3. If track already has authentic non-placeholder resolved_artwork, keep it
         existing = str(track.get("resolved_artwork") or "").strip()
         if existing and LASTFM_PLACEHOLDER_HASH not in existing:
             return
 
-        # 3. Check scrobbled Last.fm image (if valid and not generic placeholder)
+        # 4. Check scrobbled Last.fm image (if valid and not generic placeholder)
         lastfm_url = _best_lastfm_image(track)
         if lastfm_url:
             track["resolved_artwork"] = lastfm_url
             track["artwork_source"] = "lastfm"
             return
 
-        # 4. Resolve external high-res artwork via multi-storefront iTunes & Last.fm track info
-        try:
-            artwork_url, artwork_source = await resolve_external_artwork(name, artist, album=album)
-        except TypeError:
-            artwork_url, artwork_source = await resolve_external_artwork(name, artist)
-        if artwork_url:
+        if details and details.get("artwork_url"):
+            artwork_url = details["artwork_url"]
+            artwork_source = details.get("source", "itunes")
             track["resolved_artwork"] = artwork_url
             track["artwork_source"] = artwork_source
             images = track.get("image")
@@ -629,12 +640,12 @@ def _match_verified_artwork(track: str, artist: str = "") -> Optional[tuple[str,
     return None
 
 
-def _pick_itunes_artwork(
+def _pick_itunes_item(
     results: list, track_hint: str = "", artist_hint: str = "", album_hint: str = ""
-) -> str:
-    """Pick the iTunes hit that matches BOTH track and artist, with strict artist integrity."""
+) -> Optional[dict]:
+    """Pick the iTunes hit item that matches BOTH track and artist, with strict artist integrity."""
     if not results:
-        return ""
+        return None
 
     scored = []
     want_artist = normalize_music_text(artist_hint)
@@ -670,7 +681,7 @@ def _pick_itunes_artwork(
         scored.append((total, artist_score, effective_track, album_score, -idx, item))
 
     if not scored:
-        return ""
+        return None
 
     scored.sort(key=lambda entry: entry[:5], reverse=True)
     best = scored[0]
@@ -689,26 +700,56 @@ def _pick_itunes_artwork(
         or (best_album >= 2)
     )
     if have_hints and best_has_metadata and not confident:
-        return ""
+        return None
 
-    artwork = str(best_item.get("artworkUrl100") or "").strip()
+    return best_item
+
+
+def _pick_itunes_artwork(
+    results: list, track_hint: str = "", artist_hint: str = "", album_hint: str = ""
+) -> str:
+    """Pick high-res artwork from matched iTunes search results."""
+    item = _pick_itunes_item(results, track_hint, artist_hint, album_hint)
+    if not item:
+        return ""
+    artwork = str(item.get("artworkUrl100") or "").strip()
     return artwork.replace("/100x100bb.", "/600x600bb.") if artwork else ""
 
 
-async def fetch_itunes_artwork(
+def _pick_itunes_details(
+    results: list, track_hint: str = "", artist_hint: str = "", album_hint: str = ""
+) -> dict:
+    """Extract complete rich metadata (artwork, preview audio, Apple Music url, genre) from iTunes."""
+    item = _pick_itunes_item(results, track_hint, artist_hint, album_hint)
+    if not item:
+        return {}
+    artwork = str(item.get("artworkUrl100") or "").strip()
+    return {
+        "artwork_url": artwork.replace("/100x100bb.", "/600x600bb.") if artwork else "",
+        "preview_url": str(item.get("previewUrl") or "").strip(),
+        "apple_music_url": str(item.get("trackViewUrl") or "").strip(),
+        "genre": str(item.get("primaryGenreName") or "").strip(),
+        "duration_ms": item.get("trackTimeMillis") or 0,
+        "track_name": str(item.get("trackName") or "").strip(),
+        "artist_name": str(item.get("artistName") or "").strip(),
+        "collection_name": str(item.get("collectionName") or "").strip(),
+    }
+
+
+async def fetch_itunes_track_details(
     search_term: str, track_hint: str = "", artist_hint: str = "", album_hint: str = ""
-) -> str:
-    """Fetch album artwork from iTunes Search API across US and IN storefronts."""
+) -> dict:
+    """Fetch rich track metadata from iTunes Search API across US and IN storefronts."""
     cache_key = (
-        f"itunes|{search_term.strip().lower()}"
+        f"itunes_details|{search_term.strip().lower()}"
         f"|{track_hint.strip().lower()}|{artist_hint.strip().lower()}|{album_hint.strip().lower()}"
     )
     if not search_term.strip():
-        return ""
+        return {}
 
     cached = artwork_cache.get(cache_key)
     if cached and time.time() - cached["ts"] < ARTWORK_CACHE_DURATION:
-        return cached["url"]
+        return cached["data"]
 
     headers = {
         "User-Agent": "AssistMe-Portfolio/3.0.0",
@@ -733,19 +774,27 @@ async def fetch_itunes_artwork(
                 response.raise_for_status()
                 data = response.json()
 
-            artwork = _pick_itunes_artwork(
+            details = _pick_itunes_details(
                 data.get("results") or [],
                 track_hint=track_hint,
                 artist_hint=artist_hint,
                 album_hint=album_hint,
             )
-            if artwork:
-                artwork_cache[cache_key] = {"url": artwork, "ts": time.time()}
-                return artwork
+            if details and details.get("artwork_url"):
+                artwork_cache[cache_key] = {"data": details, "ts": time.time()}
+                return details
         except Exception as e:
-            logger.warning("iTunes artwork fetch (%s) failed for %s: %s - %s", country, search_term, type(e).__name__, e)
+            logger.warning("iTunes details fetch (%s) failed for %s: %s - %s", country, search_term, type(e).__name__, e)
 
-    return ""
+    return {}
+
+
+async def fetch_itunes_artwork(
+    search_term: str, track_hint: str = "", artist_hint: str = "", album_hint: str = ""
+) -> str:
+    """Fetch album artwork from iTunes Search API across US and IN storefronts."""
+    details = await fetch_itunes_track_details(search_term, track_hint, artist_hint, album_hint)
+    return details.get("artwork_url", "")
 
 
 async def fetch_lastfm_track_artwork(track: str, artist: str = "") -> str:
@@ -797,45 +846,88 @@ async def fetch_lastfm_track_artwork(track: str, artist: str = "") -> str:
     return ""
 
 
-async def resolve_external_artwork(
+async def resolve_external_track_details(
     track: str, artist: str = "", album: str = ""
-) -> tuple[str, str]:
-    """Prefer verified curated artwork, then multi-storefront iTunes (US/IN), then Last.fm track metadata."""
+) -> dict:
+    """Resolve high-res artwork, 30s audio preview, Apple Music URL, and genre metadata."""
     verified = _match_verified_artwork(track, artist)
     if verified:
-        return verified
+        return {
+            "artwork_url": verified[0],
+            "preview_url": "",
+            "apple_music_url": f"https://music.apple.com/us/search?term={quote(f'{track} {artist}'.strip())}",
+            "genre": "",
+            "duration_ms": 0,
+            "source": verified[1],
+        }
 
     # 1. Direct search: track + artist
     search_term = f"{track.strip()} {artist.strip()}".strip()
-    itunes_url = await fetch_itunes_artwork(
+    itunes_art = await fetch_itunes_artwork(
         search_term, track_hint=track, artist_hint=artist, album_hint=album
     )
-    if itunes_url:
-        return itunes_url, "itunes"
+    if itunes_art:
+        details = await fetch_itunes_track_details(
+            search_term, track_hint=track, artist_hint=artist, album_hint=album
+        )
+        if not details:
+            details = {}
+        details["artwork_url"] = itunes_art
+        details["source"] = "itunes"
+        return details
 
     # 2. Cleaned track fallback (strip parentheticals, remix tags, and feat suffixes)
     cleaned_track = _strip_dash_suffix(_strip_bracketed_text(track)).strip()
     if cleaned_track and cleaned_track.lower() != track.lower().strip():
         fallback_term = f"{cleaned_track} {artist.strip()}".strip()
-        itunes_url = await fetch_itunes_artwork(
+        itunes_art = await fetch_itunes_artwork(
             fallback_term, track_hint=cleaned_track, artist_hint=artist, album_hint=album
         )
-        if itunes_url:
-            return itunes_url, "itunes"
+        if itunes_art:
+            details = await fetch_itunes_track_details(
+                fallback_term, track_hint=cleaned_track, artist_hint=artist, album_hint=album
+            )
+            if not details:
+                details = {}
+            details["artwork_url"] = itunes_art
+            details["source"] = "itunes"
+            return details
 
     # 3. Last.fm track info fallback
     lastfm_url = await fetch_lastfm_track_artwork(track, artist)
     if lastfm_url:
-        return lastfm_url, "lastfm-track"
+        return {
+            "artwork_url": lastfm_url,
+            "preview_url": "",
+            "apple_music_url": f"https://music.apple.com/us/search?term={quote(f'{track} {artist}'.strip())}",
+            "genre": "",
+            "duration_ms": 0,
+            "source": "lastfm-track",
+        }
 
-    return "", ""
+    return {
+        "artwork_url": "",
+        "preview_url": "",
+        "apple_music_url": "",
+        "genre": "",
+        "duration_ms": 0,
+        "source": "none",
+    }
+
+
+async def resolve_external_artwork(
+    track: str, artist: str = "", album: str = ""
+) -> tuple[str, str]:
+    """Prefer verified curated artwork, then multi-storefront iTunes (US/IN), then Last.fm track metadata."""
+    details = await resolve_external_track_details(track, artist, album=album)
+    return details.get("artwork_url", ""), details.get("source", "")
 
 
 @router.get("/api/music/artwork")
 async def get_music_artwork(
     request: Request, track: str = "", artist: str = "", album: str = "", term: str = ""
 ):
-    """Proxy artwork lookup for the Last.fm hero card (iTunes → Last.fm track info)."""
+    """Proxy artwork & preview details lookup for the Last.fm hero card (iTunes → Last.fm track info)."""
     _enforce_media_rate_limit(request, "media-artwork")
     artist = artist.strip()
     track = track.strip()
@@ -844,27 +936,63 @@ async def get_music_artwork(
     if not search_term:
         raise HTTPException(status_code=400, detail="track/artist or term is required")
 
-    cache_key = f"resolved|{search_term.lower()}|{artist.lower()}|{album.lower()}"
+    cache_key = f"resolved_details|{search_term.lower()}|{artist.lower()}|{album.lower()}"
     cached = artwork_cache.get(cache_key)
     served_from_cache = bool(cached and time.time() - cached["ts"] < ARTWORK_CACHE_DURATION)
     if served_from_cache:
+        data = cached.get("data") or {}
         return {
-            "artwork_url": cached["url"],
-            "source": cached.get("source") or "cache",
+            "artwork_url": data.get("artwork_url", ""),
+            "preview_url": data.get("preview_url", ""),
+            "apple_music_url": data.get("apple_music_url", ""),
+            "genre": data.get("genre", ""),
+            "duration_ms": data.get("duration_ms", 0),
+            "source": data.get("source") or "cache",
             "cached": True,
             "term": search_term,
         }
 
     track_name = track or search_term
-    artwork_url, source = await resolve_external_artwork(track_name, artist, album=album)
-    if artwork_url:
-        artwork_cache[cache_key] = {"url": artwork_url, "ts": time.time(), "source": source}
+    details = await resolve_external_track_details(track_name, artist, album=album)
+    artwork_url = details.get("artwork_url", "")
+    source = details.get("source", "none")
+
+    artwork_cache[cache_key] = {"data": details, "ts": time.time(), "url": artwork_url, "source": source}
 
     return {
         "artwork_url": artwork_url,
+        "preview_url": details.get("preview_url", ""),
+        "apple_music_url": details.get("apple_music_url", ""),
+        "genre": details.get("genre", ""),
+        "duration_ms": details.get("duration_ms", 0),
         "source": source or "none",
         "cached": False,
         "term": search_term,
+    }
+
+
+@router.get("/api/music/details")
+async def get_music_details(
+    request: Request, track: str = "", artist: str = "", album: str = "", term: str = ""
+):
+    """Full track metadata including high-res artwork, 30s audio preview, and Apple Music deep-link."""
+    return await get_music_artwork(request, track=track, artist=artist, album=album, term=term)
+
+
+@router.get("/api/music/preview")
+async def get_music_preview(
+    request: Request, track: str = "", artist: str = "", term: str = ""
+):
+    """Resolve direct 30-second audio preview stream URL for a track."""
+    details = await get_music_artwork(request, track=track, artist=artist, term=term)
+    preview_url = details.get("preview_url", "")
+    return {
+        "preview_url": preview_url,
+        "available": bool(preview_url),
+        "track": track or term,
+        "artist": artist,
+        "apple_music_url": details.get("apple_music_url", ""),
+        "source": details.get("source", "none"),
     }
 
 

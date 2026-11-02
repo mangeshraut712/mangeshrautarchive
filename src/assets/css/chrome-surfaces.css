@@ -360,33 +360,10 @@ html.browser-safari #home .music-card-inner .artist-name {
   -webkit-text-fill-color: currentColor !important;
 }
 
-/* Safari fix: allow Spotify icon to turn white on hover instead of staying green */
-html.browser-safari #home .music-card-spotify-link:not(:hover),
-html.browser-safari #home .music-card-spotify-link:not(:hover) i,
-html.browser-safari #home .music-card-spotify-link:not(:hover) .fab {
-  color: #1db954 !important;
-  -webkit-text-fill-color: #1db954 !important;
-}
-
-html.browser-safari #home .music-card-spotify-link:hover,
-html.browser-safari #home .music-card-spotify-link:hover i,
-html.browser-safari #home .music-card-spotify-link:hover .fab {
-  color: #ffffff !important;
-  -webkit-text-fill-color: #ffffff !important;
-}
-
-html.browser-safari section#projects #github-projects-container .project-title-text,
-html.browser-safari section#projects #github-projects-container .project-description,
-html.browser-safari section#projects #github-projects-container .project-meta-stat,
-html.browser-safari section#projects #github-projects-container .project-tag,
-html.browser-safari section#projects #github-projects-container .project-language {
-  -webkit-text-fill-color: currentColor !important;
-}
-
 /* Avoid Safari flex min-height collapse on premium cards */
 html.browser-safari #home .music-card .music-card-inner,
 html.browser-chromium #home .music-card .music-card-inner {
-  min-height: 84px !important;
+  min-height: 76px !important;
 }
 
 /* ==========================================================================

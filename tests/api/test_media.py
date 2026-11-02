@@ -219,6 +219,66 @@ def test_music_artwork_requires_search_term():
     assert response.status_code == 400
 
 
+def test_music_details_and_preview_endpoints(monkeypatch):
+    from api.config import artwork_cache
+
+    artwork_cache.clear()
+
+    class MockResponse:
+        status_code = 200
+
+        def raise_for_status(self):
+            return None
+
+        def json(self):
+            return {
+                "results": [
+                    {
+                        "artistName": "Harshit Saxena",
+                        "trackName": "Hale Dil",
+                        "collectionName": "Murder 2",
+                        "artworkUrl100": "https://is1-ssl.mzstatic.com/haledil/100x100bb.jpg",
+                        "previewUrl": "https://audio-ssl.itunes.apple.com/haledil-preview.m4a",
+                        "trackViewUrl": "https://music.apple.com/us/album/hale-dil/123",
+                        "primaryGenreName": "Bollywood",
+                        "trackTimeMillis": 328000,
+                    }
+                ]
+            }
+
+    class MockClient:
+        async def __aenter__(self):
+            return self
+
+        async def __aexit__(self, *_args):
+            return None
+
+        async def get(self, *_args, **_kwargs):
+            return MockResponse()
+
+    monkeypatch.setattr("api.routes.media.httpx.AsyncClient", lambda **_kwargs: MockClient())
+    client = TestClient(app)
+
+    # Test /api/music/details
+    details_res = client.get("/api/music/details?track=Hale%20Dil&artist=Harshit%20Saxena")
+    assert details_res.status_code == 200
+    details = details_res.json()
+    assert details["artwork_url"].endswith("/600x600bb.jpg")
+    assert details["preview_url"] == "https://audio-ssl.itunes.apple.com/haledil-preview.m4a"
+    assert details["apple_music_url"] == "https://music.apple.com/us/album/hale-dil/123"
+    assert details["genre"] == "Bollywood"
+    assert details["duration_ms"] == 328000
+    assert details["source"] == "itunes"
+
+    # Test /api/music/preview
+    prev_res = client.get("/api/music/preview?track=Hale%20Dil&artist=Harshit%20Saxena")
+    assert prev_res.status_code == 200
+    prev = prev_res.json()
+    assert prev["available"] is True
+    assert prev["preview_url"] == "https://audio-ssl.itunes.apple.com/haledil-preview.m4a"
+    assert prev["apple_music_url"] == "https://music.apple.com/us/album/hale-dil/123"
+
+
 def test_pick_itunes_artwork_matches_correct_track_not_just_artist():
     """Among songs by the same artist, pick the one whose track name matches."""
     from api.routes.media import _pick_itunes_artwork

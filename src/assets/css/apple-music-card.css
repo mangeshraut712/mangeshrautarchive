@@ -65,6 +65,7 @@
   background-color: #ffffff !important;
   background-clip: padding-box !important;
   border: 1px solid #e5e5ea !important;
+  border-color: #e5e5ea !important;
   border-radius: 16px !important;
   padding: 10px 14px !important;
   gap: 6px 10px !important;
@@ -85,6 +86,7 @@ html[data-theme='dark'] #home .music-card-inner {
   background-color: #000000 !important;
   background-clip: padding-box !important;
   border: 1px solid #2c2c2e !important;
+  border-color: #2c2c2e !important;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
 }
 
@@ -388,7 +390,8 @@ html[data-theme='dark'] #home .music-card-inner .status-badge {
     box-shadow 0.2s ease;
 }
 
-html.dark #home #music-card .music-control-face {
+html.dark #home #music-card .music-control-face,
+html[data-theme='dark'] #home #music-card .music-control-face {
   border-color: #2c2c2e;
   background: #1c1c1e;
   color: #f5f5f7;
@@ -401,10 +404,22 @@ html.dark #home #music-card .music-control-face {
   -webkit-text-fill-color: currentcolor !important;
 }
 
-#home #music-card .music-card-preview-link .music-control-face {
-  background: var(--apple-blue, #0071e3);
-  border-color: var(--apple-blue, #0071e3);
-  color: #ffffff;
+/* 1. Preview Play / Pause Button — Vibrant Apple Blue (or Apple Green when playing) */
+#home #music-card .music-card-preview-link .music-control-face,
+html.dark #home #music-card .music-card-preview-link .music-control-face,
+html[data-theme='dark'] #home #music-card .music-card-preview-link .music-control-face {
+  background: var(--apple-blue, #0071e3) !important;
+  border-color: var(--apple-blue, #0071e3) !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  box-shadow: 0 2px 8px rgba(0, 113, 227, 0.28) !important;
+}
+
+#home #music-card .music-card-preview-link .music-control-face i,
+html.dark #home #music-card .music-card-preview-link .music-control-face i,
+html[data-theme='dark'] #home #music-card .music-card-preview-link .music-control-face i {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
 }
 
 #home #music-card .music-card-preview-link .fa-play {
@@ -417,42 +432,100 @@ html.dark #home #music-card .music-control-face {
   margin-left: 0;
 }
 
-#home #music-card.is-audio-previewing .music-card-preview-link .music-control-face {
+#home #music-card.is-audio-previewing .music-card-preview-link .music-control-face,
+html.dark #home #music-card.is-audio-previewing .music-card-preview-link .music-control-face,
+html[data-theme='dark']
+  #home
+  #music-card.is-audio-previewing
+  .music-card-preview-link
+  .music-control-face {
   background: #34c759 !important;
   border-color: #34c759 !important;
   color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  box-shadow: 0 2px 8px rgba(52, 199, 89, 0.45) !important;
 }
 
-#home #music-card .music-card-preview-link:hover .music-control-face {
+#home #music-card .music-card-preview-link:hover .music-control-face,
+html.dark #home #music-card .music-card-preview-link:hover .music-control-face {
   transform: scale(1.08);
-  box-shadow: 0 2px 8px rgba(0, 113, 227, 0.4);
+  box-shadow: 0 3px 12px rgba(0, 113, 227, 0.45) !important;
 }
 
-#home #music-card .music-card-apple-link:hover .music-control-face {
+/* 2. Apple Music Button — Signature Apple Music Pink/Red (#FA243C) */
+#home #music-card .music-card-apple-link .music-control-face {
+  background: #ffffff;
+  border-color: #e5e5ea;
+}
+
+html.dark #home #music-card .music-card-apple-link .music-control-face,
+html[data-theme='dark'] #home #music-card .music-card-apple-link .music-control-face {
+  background: #1c1c1e;
+  border-color: #2c2c2e;
+}
+
+#home #music-card .music-card-apple-link .music-control-face i,
+#home #music-card .music-card-apple-link i,
+html.dark #home #music-card .music-card-apple-link .music-control-face i,
+html.dark #home #music-card .music-card-apple-link i {
+  color: #fa243c !important;
+  -webkit-text-fill-color: #fa243c !important;
+  transition:
+    color 0.2s ease,
+    -webkit-text-fill-color 0.2s ease;
+}
+
+#home #music-card .music-card-apple-link:hover .music-control-face,
+html.dark #home #music-card .music-card-apple-link:hover .music-control-face {
   transform: scale(1.08);
-  background: #000000 !important;
-  border-color: #000000 !important;
+  background: #fa243c !important;
+  border-color: #fa243c !important;
+  box-shadow: 0 2px 10px rgba(250, 36, 60, 0.45) !important;
+}
+
+#home #music-card .music-card-apple-link:hover .music-control-face i,
+#home #music-card .music-card-apple-link:hover i,
+html.dark #home #music-card .music-card-apple-link:hover .music-control-face i,
+html.dark #home #music-card .music-card-apple-link:hover i {
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
 }
 
-html.dark #home #music-card .music-card-apple-link:hover .music-control-face {
-  background: #ffffff !important;
-  border-color: #ffffff !important;
-  color: #000000 !important;
-  -webkit-text-fill-color: #000000 !important;
+/* 3. Spotify Button — Iconic Spotify Green (#1DB954) */
+#home #music-card .music-card-spotify-link .music-control-face {
+  background: #ffffff;
+  border-color: #e5e5ea;
 }
 
-#home #music-card .music-card-spotify-link:hover .music-control-face {
+html.dark #home #music-card .music-card-spotify-link .music-control-face,
+html[data-theme='dark'] #home #music-card .music-card-spotify-link .music-control-face {
+  background: #1c1c1e;
+  border-color: #2c2c2e;
+}
+
+#home #music-card .music-card-spotify-link .music-control-face i,
+#home #music-card .music-card-spotify-link i,
+html.dark #home #music-card .music-card-spotify-link .music-control-face i,
+html.dark #home #music-card .music-card-spotify-link i {
+  color: #1db954 !important;
+  -webkit-text-fill-color: #1db954 !important;
+  transition:
+    color 0.2s ease,
+    -webkit-text-fill-color 0.2s ease;
+}
+
+#home #music-card .music-card-spotify-link:hover .music-control-face,
+html.dark #home #music-card .music-card-spotify-link:hover .music-control-face {
   transform: scale(1.08);
   background: #1db954 !important;
   border-color: #1db954 !important;
-  color: #ffffff !important;
-  -webkit-text-fill-color: #ffffff !important;
+  box-shadow: 0 2px 10px rgba(29, 185, 84, 0.45) !important;
 }
 
 #home #music-card .music-card-spotify-link:hover .music-control-face i,
-#home #music-card .music-card-spotify-link:hover i {
+#home #music-card .music-card-spotify-link:hover i,
+html.dark #home #music-card .music-card-spotify-link:hover .music-control-face i,
+html.dark #home #music-card .music-card-spotify-link:hover i {
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
 }
@@ -578,33 +651,54 @@ html.dark .music-scrubber-fill {
   transform: translate(-50%, -50%) scale(1);
 }
 
-.music-time-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+.music-time-row,
+#home #music-card .music-time-row {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
   font-size: 10.5px !important;
   font-weight: 600 !important;
-  color: var(--apple-text-tertiary, #86868b);
-  font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, monospace);
-  letter-spacing: 0.02em;
-  user-select: none;
-  line-height: 1;
+  font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, monospace) !important;
+  letter-spacing: 0.02em !important;
+  user-select: none !important;
+  line-height: 1 !important;
 }
 
-html.dark .music-time-row {
-  color: rgba(255, 255, 255, 0.5);
+#home #music-card .music-time-current,
+#home #music-card .music-time-duration,
+.music-time-row .music-time-current,
+.music-time-row .music-time-duration {
+  color: #6e6e73 !important;
+  -webkit-text-fill-color: #6e6e73 !important;
+  font-variant-numeric: tabular-nums !important;
 }
 
-.music-preview-tag {
+html.dark #home #music-card .music-time-current,
+html.dark #home #music-card .music-time-duration,
+html[data-theme='dark'] #home #music-card .music-time-current,
+html[data-theme='dark'] #home #music-card .music-time-duration {
+  color: #a1a1a6 !important;
+  -webkit-text-fill-color: #a1a1a6 !important;
+}
+
+.music-preview-tag,
+#home #music-card .music-preview-tag {
   font-size: 9.5px !important;
   font-weight: 700 !important;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--music-accent-blue, #0071e3);
+  text-transform: uppercase !important;
+  letter-spacing: 0.06em !important;
+  color: #0071e3 !important;
+  -webkit-text-fill-color: #0071e3 !important;
+  transition:
+    color 0.2s ease,
+    -webkit-text-fill-color 0.2s ease;
 }
 
-html.dark .music-preview-tag {
-  color: #0a84ff;
+html.dark .music-preview-tag,
+html.dark #home #music-card .music-preview-tag,
+html[data-theme='dark'] #home #music-card .music-preview-tag {
+  color: #0a84ff !important;
+  -webkit-text-fill-color: #0a84ff !important;
 }
 
 /* Keep the same compact composition at narrow widths without shrinking hit areas. */

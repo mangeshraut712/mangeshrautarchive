@@ -1137,15 +1137,24 @@ class LastFmService {
       this.hero.spotifyLink.hidden = false;
     }
     if (this.hero.appleLink) {
-      const appleSearchUrl = `https://music.apple.com/us/search?term=${encodeURIComponent(
-        `${trackName} ${artistName}`.trim()
-      )}`;
-      this.hero.appleLink.href = appleSearchUrl;
+      const appleUrl =
+        track?.apple_music_url ||
+        `https://music.apple.com/us/search?term=${encodeURIComponent(
+          `${trackName} ${artistName}`.trim()
+        )}`;
+      this.hero.appleLink.href = appleUrl;
       this.hero.appleLink.setAttribute(
         'aria-label',
         `Open ${trackName} by ${artistName} on Apple Music`
       );
       this.hero.appleLink.title = `Open on Apple Music`;
+    }
+
+    if (track?.preview_url || track?.previewUrl) {
+      this.currentPreviewUrl = track.preview_url || track.previewUrl;
+    }
+    if (track?.genre && this.hero.previewTag) {
+      this.hero.previewTag.textContent = track.genre;
     }
 
     this.hero.albumArt.alt = `${trackName} by ${artistName}`;
