@@ -1616,6 +1616,16 @@ html.dark body #contact .media-info .currently-meta-subtitle {
   color: #a1a1a6 !important;
 }
 
+html body #contact #music-empty .currently-meta-subtitle,
+html body #contact .currently-music-state.empty .currently-meta-subtitle {
+  white-space: normal !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  line-height: 1.3 !important;
+  text-overflow: clip !important;
+}
+
 html body #contact .media-info .watch-btn,
 html body #contact .media-info .watch-btn span,
 html body #contact .media-info .book-btn,

@@ -222,11 +222,123 @@ async function proxyApiRequest(req, res) {
       res.json({ success: true, totalReach: 12000, countries: 45, mode: 'offline-fallback' });
       return;
     }
-    if (pathname === '/api/music/recent') {
-      res.json({ success: true, tracks: [], user: 'mangeshraut', is_now_playing: false });
-      return;
-    }
-    if (pathname === '/api/music/artwork') {
+    if (pathname.startsWith('/api/music/')) {
+      try {
+        const edgeTarget = new URL(
+          `${inbound.pathname}${inbound.search}`,
+          'https://assistme-chat.mangeshraut712.workers.dev'
+        );
+        const edgeRes = await fetch(edgeTarget, {
+          method,
+          headers: { Accept: 'application/json' },
+        });
+        res.status(edgeRes.status);
+        edgeRes.headers.forEach((val, k) => {
+          if (!hopByHopHeaders.has(k.toLowerCase())) res.setHeader(k, val);
+        });
+        if (edgeRes.body) {
+          Readable.fromWeb(edgeRes.body).pipe(res);
+          return;
+        }
+      } catch (edgeErr) {
+        console.warn(`[Music Edge Proxy Fallback Error] ${edgeErr.message}`);
+      }
+
+      if (pathname === '/api/music/recent') {
+        res.json({
+          recenttracks: {
+            track: [
+              {
+                name: 'Hale Dil',
+                artist: { '#text': 'Harshit Saxena', name: 'Harshit Saxena' },
+                album: { '#text': 'Murder 2 (Original Motion Picture Soundtrack)' },
+                resolved_artwork:
+                  'https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/bb/cc/4b/bbcc4bd9-b705-8cff-d637-6379ac87b9a6/8902894695916_cover.jpg/600x600bb.jpg',
+                preview_url:
+                  'https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/c7/96/83/c79683d1-e1d2-325e-7a84-1f066deff33a/mzaf_8339164547711916066.plus.aac.p.m4a',
+                apple_music_url:
+                  'https://music.apple.com/us/album/hale-dil/1116333409?i=1116333464',
+                spotify_url: 'https://open.spotify.com/search/Hale%20Dil%20Harshit%20Saxena',
+                genre: 'Bollywood',
+                '@attr': { nowplaying: 'false' },
+              },
+              {
+                name: 'Main Yahaan Hoon',
+                artist: { '#text': 'Madan Mohan', name: 'Madan Mohan' },
+                album: { '#text': 'Veer - Zaara' },
+                resolved_artwork:
+                  'https://lastfm-img.freetls.fastly.net/i/u/300x300/9992c1d8b39660dfe273e07e299c72d7.jpg',
+                apple_music_url:
+                  'https://music.apple.com/us/search?term=Main%20Yahaan%20Hoon%20Madan%20Mohan',
+                spotify_url: 'https://open.spotify.com/search/Main%20Yahaan%20Hoon%20Madan%20Mohan',
+                genre: 'Bollywood',
+                '@attr': { nowplaying: 'false' },
+              },
+              {
+                name: 'Aadat',
+                artist: { '#text': 'Jal', name: 'Jal' },
+                album: { '#text': 'Kalyug (Original Motion Picture Soundtrack)' },
+                resolved_artwork:
+                  'https://lastfm-img.freetls.fastly.net/i/u/300x300/e5024750356c4513843adbc546f77b25.jpg',
+                apple_music_url: 'https://music.apple.com/us/search?term=Aadat%20Jal',
+                spotify_url: 'https://open.spotify.com/search/Aadat%20Jal',
+                genre: 'Pop / Rock',
+                '@attr': { nowplaying: 'false' },
+              },
+              {
+                name: 'Deewaana Deewaana',
+                artist: { '#text': 'A.R. Rahman', name: 'A.R. Rahman' },
+                album: { '#text': 'Tere Ishk Mein' },
+                resolved_artwork:
+                  'https://lastfm-img.freetls.fastly.net/i/u/300x300/f0ae0a091699c861783983640efc7be3.jpg',
+                apple_music_url:
+                  'https://music.apple.com/us/search?term=Deewaana%20Deewaana%20A.R.%20Rahman',
+                spotify_url: 'https://open.spotify.com/search/Deewaana%20Deewaana%20A.R.%20Rahman',
+                genre: 'Soundtrack',
+                '@attr': { nowplaying: 'false' },
+              },
+              {
+                name: 'Teri Deewani',
+                artist: { '#text': 'Kailash Kher', name: 'Kailash Kher' },
+                album: { '#text': 'Kailasa' },
+                resolved_artwork:
+                  'https://lastfm-img.freetls.fastly.net/i/u/300x300/a044eba82e974d23af1ddf7493b9a21a.jpg',
+                apple_music_url:
+                  'https://music.apple.com/us/search?term=Teri%20Deewani%20Kailash%20Kher',
+                spotify_url: 'https://open.spotify.com/search/Teri%20Deewani%20Kailash%20Kher',
+                genre: 'Sufi / Folk',
+                '@attr': { nowplaying: 'false' },
+              },
+              {
+                name: 'Aap Ki Kashish',
+                artist: { '#text': 'Himesh Reshammiya', name: 'Himesh Reshammiya' },
+                album: { '#text': 'Aashiq Banaya Aapne' },
+                resolved_artwork:
+                  'https://lastfm-img.freetls.fastly.net/i/u/300x300/8cf887f7428d3cc0ead7dbeac4d4a5e5.jpg',
+                apple_music_url:
+                  'https://music.apple.com/us/search?term=Aap%20Ki%20Kashish%20Himesh%20Reshammiya',
+                spotify_url:
+                  'https://open.spotify.com/search/Aap%20Ki%20Kashish%20Himesh%20Reshammiya',
+                genre: 'Bollywood',
+                '@attr': { nowplaying: 'false' },
+              },
+            ],
+            '@attr': { user: 'mbr63', total: '6', page: '1', perPage: '6', totalPages: '1' },
+          },
+          listen_now: {
+            top_artists: [
+              { name: 'Harshit Saxena', playcount: '14' },
+              { name: 'Madan Mohan', playcount: '12' },
+              { name: 'Jal', playcount: '10' },
+              { name: 'A.R. Rahman', playcount: '8' },
+              { name: 'Kailash Kher', playcount: '6' },
+            ],
+          },
+          success: true,
+          mode: 'offline-curated',
+        });
+        return;
+      }
       res.status(404).json({ error: 'Artwork not available in offline fallback' });
       return;
     }

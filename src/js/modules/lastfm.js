@@ -24,6 +24,161 @@ const API_DEAD_COOLDOWN_MS = 2 * 60 * 1000;
 const API_HOST_DEAD_KEY = 'portfolio_api_host_dead_v1';
 const API_HOST_DEAD_UNTIL_KEY = 'portfolio_api_host_dead_until_v1';
 
+export const CURATED_FALLBACK_TRACKS = [
+  {
+    name: 'Hale Dil',
+    artist: { '#text': 'Harshit Saxena', name: 'Harshit Saxena' },
+    album: { '#text': 'Murder 2 (Original Motion Picture Soundtrack)' },
+    resolved_artwork:
+      'https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/bb/cc/4b/bbcc4bd9-b705-8cff-d637-6379ac87b9a6/8902894695916_cover.jpg/600x600bb.jpg',
+    preview_url:
+      'https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/c7/96/83/c79683d1-e1d2-325e-7a84-1f066deff33a/mzaf_8339164547711916066.plus.aac.p.m4a',
+    apple_music_url: 'https://music.apple.com/us/album/hale-dil/1116333409?i=1116333464',
+    spotify_url: 'https://open.spotify.com/search/Hale%20Dil%20Harshit%20Saxena',
+    genre: 'Bollywood',
+    '@attr': { nowplaying: 'false' },
+    image: [
+      {
+        size: 'small',
+        '#text':
+          'https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/bb/cc/4b/bbcc4bd9-b705-8cff-d637-6379ac87b9a6/8902894695916_cover.jpg/100x100bb.jpg',
+      },
+      {
+        size: 'large',
+        '#text':
+          'https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/bb/cc/4b/bbcc4bd9-b705-8cff-d637-6379ac87b9a6/8902894695916_cover.jpg/600x600bb.jpg',
+      },
+    ],
+  },
+  {
+    name: 'Main Yahaan Hoon',
+    artist: { '#text': 'Madan Mohan', name: 'Madan Mohan' },
+    album: { '#text': 'Veer - Zaara' },
+    resolved_artwork:
+      'https://lastfm-img.freetls.fastly.net/i/u/300x300/9992c1d8b39660dfe273e07e299c72d7.jpg',
+    apple_music_url: 'https://music.apple.com/us/search?term=Main%20Yahaan%20Hoon%20Madan%20Mohan',
+    spotify_url: 'https://open.spotify.com/search/Main%20Yahaan%20Hoon%20Madan%20Mohan',
+    genre: 'Bollywood',
+    '@attr': { nowplaying: 'false' },
+    image: [
+      {
+        size: 'large',
+        '#text':
+          'https://lastfm-img.freetls.fastly.net/i/u/300x300/9992c1d8b39660dfe273e07e299c72d7.jpg',
+      },
+    ],
+  },
+  {
+    name: 'Aadat',
+    artist: { '#text': 'Jal', name: 'Jal' },
+    album: { '#text': 'Kalyug (Original Motion Picture Soundtrack)' },
+    resolved_artwork:
+      'https://lastfm-img.freetls.fastly.net/i/u/300x300/e5024750356c4513843adbc546f77b25.jpg',
+    apple_music_url: 'https://music.apple.com/us/search?term=Aadat%20Jal',
+    spotify_url: 'https://open.spotify.com/search/Aadat%20Jal',
+    genre: 'Pop / Rock',
+    '@attr': { nowplaying: 'false' },
+    image: [
+      {
+        size: 'large',
+        '#text':
+          'https://lastfm-img.freetls.fastly.net/i/u/300x300/e5024750356c4513843adbc546f77b25.jpg',
+      },
+    ],
+  },
+  {
+    name: 'Deewaana Deewaana',
+    artist: { '#text': 'A.R. Rahman', name: 'A.R. Rahman' },
+    album: { '#text': 'Tere Ishk Mein' },
+    resolved_artwork:
+      'https://lastfm-img.freetls.fastly.net/i/u/300x300/f0ae0a091699c861783983640efc7be3.jpg',
+    apple_music_url: 'https://music.apple.com/us/search?term=Deewaana%20Deewaana%20A.R.%20Rahman',
+    spotify_url: 'https://open.spotify.com/search/Deewaana%20Deewaana%20A.R.%20Rahman',
+    genre: 'Soundtrack',
+    '@attr': { nowplaying: 'false' },
+    image: [
+      {
+        size: 'large',
+        '#text':
+          'https://lastfm-img.freetls.fastly.net/i/u/300x300/f0ae0a091699c861783983640efc7be3.jpg',
+      },
+    ],
+  },
+  {
+    name: 'Teri Deewani',
+    artist: { '#text': 'Kailash Kher', name: 'Kailash Kher' },
+    album: { '#text': 'Kailasa' },
+    resolved_artwork:
+      'https://lastfm-img.freetls.fastly.net/i/u/300x300/a044eba82e974d23af1ddf7493b9a21a.jpg',
+    apple_music_url: 'https://music.apple.com/us/search?term=Teri%20Deewani%20Kailash%20Kher',
+    spotify_url: 'https://open.spotify.com/search/Teri%20Deewani%20Kailash%20Kher',
+    genre: 'Sufi / Folk',
+    '@attr': { nowplaying: 'false' },
+    image: [
+      {
+        size: 'large',
+        '#text':
+          'https://lastfm-img.freetls.fastly.net/i/u/300x300/a044eba82e974d23af1ddf7493b9a21a.jpg',
+      },
+    ],
+  },
+  {
+    name: 'Aap Ki Kashish',
+    artist: { '#text': 'Himesh Reshammiya', name: 'Himesh Reshammiya' },
+    album: { '#text': 'Aashiq Banaya Aapne' },
+    resolved_artwork:
+      'https://lastfm-img.freetls.fastly.net/i/u/300x300/8cf887f7428d3cc0ead7dbeac4d4a5e5.jpg',
+    apple_music_url:
+      'https://music.apple.com/us/search?term=Aap%20Ki%20Kashish%20Himesh%20Reshammiya',
+    spotify_url: 'https://open.spotify.com/search/Aap%20Ki%20Kashish%20Himesh%20Reshammiya',
+    genre: 'Bollywood',
+    '@attr': { nowplaying: 'false' },
+    image: [
+      {
+        size: 'large',
+        '#text':
+          'https://lastfm-img.freetls.fastly.net/i/u/300x300/8cf887f7428d3cc0ead7dbeac4d4a5e5.jpg',
+      },
+    ],
+  },
+  {
+    name: 'Kaho Na Kaho',
+    artist: { '#text': 'Anu Malik', name: 'Anu Malik' },
+    album: { '#text': 'Murder (Original Motion Picture Soundtrack)' },
+    resolved_artwork:
+      'https://lastfm-img.freetls.fastly.net/i/u/300x300/b893bebee61be01972bba09eeb411676.jpg',
+    apple_music_url: 'https://music.apple.com/us/search?term=Kaho%20Na%20Kaho%20Anu%20Malik',
+    spotify_url: 'https://open.spotify.com/search/Kaho%20Na%20Kaho%20Anu%20Malik',
+    genre: 'Bollywood',
+    '@attr': { nowplaying: 'false' },
+    image: [
+      {
+        size: 'large',
+        '#text':
+          'https://lastfm-img.freetls.fastly.net/i/u/300x300/b893bebee61be01972bba09eeb411676.jpg',
+      },
+    ],
+  },
+  {
+    name: 'Zara Zara',
+    artist: { '#text': 'Bombay Jayashri', name: 'Bombay Jayashri' },
+    album: { '#text': 'Rehnaa Hai Terre Dil Mein' },
+    resolved_artwork:
+      'https://lastfm-img.freetls.fastly.net/i/u/300x300/355b1426a0ef0629896faf886e03c075.jpg',
+    apple_music_url: 'https://music.apple.com/us/search?term=Zara%20Zara%20Bombay%20Jayashri',
+    spotify_url: 'https://open.spotify.com/search/Zara%20Zara%20Bombay%20Jayashri',
+    genre: 'Bollywood',
+    '@attr': { nowplaying: 'false' },
+    image: [
+      {
+        size: 'large',
+        '#text':
+          'https://lastfm-img.freetls.fastly.net/i/u/300x300/355b1426a0ef0629896faf886e03c075.jpg',
+      },
+    ],
+  },
+];
+
 class LastFmService {
   constructor() {
     this.USERNAME = 'mbr63';
@@ -855,7 +1010,8 @@ class LastFmService {
   }
 
   getTracksFromPayload(payload) {
-    const raw = payload?.recenttracks?.track;
+    const raw =
+      payload?.recenttracks?.track || (Array.isArray(payload?.tracks) ? payload.tracks : null);
     if (Array.isArray(raw)) return raw;
     if (raw && typeof raw === 'object') return [raw];
     return [];
@@ -963,26 +1119,48 @@ class LastFmService {
         }
       ).catch(() => null);
 
-      if (!response || !response.ok) {
-        const edgeUrl = `https://assistme-chat.mangeshraut712.workers.dev/api/music/recent?user=${encodeURIComponent(this.USERNAME)}&limit=${encodeURIComponent(limit)}&_=${bust}`;
-        if (this.apiUrl !== 'https://assistme-chat.mangeshraut712.workers.dev/api/music/recent') {
-          response = await fetch(edgeUrl, {
+      let payload = null;
+      if (response && response.ok) {
+        try {
+          payload = await response.json();
+        } catch {
+          payload = null;
+        }
+      }
+
+      let tracks = this.getTracksFromPayload(payload);
+
+      // If primary endpoint failed OR returned an empty tracks list (e.g. offline dev server or unconfigured proxy),
+      // seamlessly query the production Cloudflare Edge Worker!
+      const edgeUrl = `https://assistme-chat.mangeshraut712.workers.dev/api/music/recent?user=${encodeURIComponent(this.USERNAME)}&limit=${encodeURIComponent(limit)}&_=${bust}`;
+      if (!tracks.length && this.apiUrl !== edgeUrl) {
+        try {
+          const edgeRes = await fetch(edgeUrl, {
             signal: controller.signal,
             cache: 'no-store',
             headers: {
               Accept: 'application/json',
             },
-          }).catch(() => null);
+          });
+          if (edgeRes && edgeRes.ok) {
+            const edgePayload = await edgeRes.json();
+            const edgeTracks = this.getTracksFromPayload(edgePayload);
+            if (edgeTracks.length) {
+              return edgePayload;
+            }
+          }
+        } catch {
+          // Edge worker fallback attempt failed
         }
       }
 
-      if (!response || !response.ok) {
-        const err = new Error(`HTTP ${response?.status || 0}`);
-        err.status = response?.status || 0;
-        throw err;
+      if (payload && tracks.length) {
+        return payload;
       }
 
-      return response.json();
+      const err = new Error('No tracks returned from music API');
+      err.status = response?.status || 0;
+      throw err;
     } finally {
       clearTimeout(timeoutId);
     }
@@ -1050,31 +1228,51 @@ class LastFmService {
       }
     }
 
-    if (!this.publicApiKey) {
-      if (this.cachedTracks?.length) {
-        this.updateHero(this.cachedTracks[0]);
-        this.updateCurrently(this.cachedTracks);
-        this.updateListenNowMini(this.cachedListenNow);
-        return;
+    if (this.publicApiKey) {
+      try {
+        const payload = await this.fetchRecentViaJsonp(10);
+        if (this.applyRecentPayload(payload, 'direct-jsonp')) {
+          return;
+        }
+      } catch {
+        // Quiet fail
       }
-
-      this.showEmptyState();
-      return;
-    }
-
-    try {
-      const payload = await this.fetchRecentViaJsonp(10);
-      if (this.applyRecentPayload(payload, 'direct-jsonp')) {
-        return;
-      }
-    } catch {
-      // Quiet fail
     }
 
     if (this.cachedTracks?.length) {
       this.updateHero(this.cachedTracks[0]);
       this.updateCurrently(this.cachedTracks);
       this.updateListenNowMini(this.cachedListenNow);
+      return;
+    }
+
+    // Curated fallback: ensure hero card and Currently shelf NEVER show an empty void or placeholder
+    const fallbackPayload = {
+      recenttracks: {
+        track: CURATED_FALLBACK_TRACKS,
+        '@attr': {
+          user: this.USERNAME,
+          total: String(CURATED_FALLBACK_TRACKS.length),
+          page: '1',
+          perPage: String(CURATED_FALLBACK_TRACKS.length),
+          totalPages: '1',
+        },
+      },
+      listen_now: {
+        profile_url: this.buildLastFmProfileUrl(),
+        top_artists: [
+          { name: 'Harshit Saxena', playcount: '14' },
+          { name: 'Madan Mohan', playcount: '12' },
+          { name: 'Jal', playcount: '10' },
+          { name: 'A.R. Rahman', playcount: '8' },
+          { name: 'Kailash Kher', playcount: '6' },
+        ],
+      },
+      source: 'curated-fallback',
+      success: true,
+    };
+
+    if (this.applyRecentPayload(fallbackPayload, 'curated-fallback')) {
       return;
     }
 

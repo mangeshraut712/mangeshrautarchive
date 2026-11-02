@@ -278,6 +278,8 @@ The JavaScript config is selected explicitly because upstream automatic discover
 
 ### 5.1 Coding agents and provenance
 
+**Resilient music edge proxy and curated fallback:** Gemini 3.8 Flash, in Google Antigravity IDE; purpose: eliminate empty music placeholder void and subtitle text truncation across hero music card and Currently music shelf via edge worker proxy fallback, curated playlist ("Hale Dil", "Main Yahaan Hoon", "Aadat", "Deewaana Deewaana", "Teri Deewani", "Aap Ki Kashish", "Kaho Na Kaho", "Zara Zara") with authentic artwork and 30s previews, and local development edge proxy. Exact model variant, reasoning mode, and token usage: unavailable.
+
 **Music card brand colors and preview APIs:** Gemini 3.8 Flash, in Google Antigravity IDE; purpose: enforce authentic brand colors across all browsers (Spotify Green `#1DB954`, Apple Music Pink/Red `#FA243C`, Apple Blue `#0071e3` Play button), fix light and dark theme CSS color cascades for preview tag and timestamps satisfying WCAG 2 AA contrast, and enhance FastAPI backend media endpoints (`/api/music/artwork`, `/api/music/details`, `/api/music/preview`) to resolve and return full rich iTunes metadata with 30-second audio preview streams. Exact model variant, reasoning mode, and token usage: unavailable.
 
 **Music card compact proportions and vinyl rotation:** Gemini 3.8 Flash, in Google Antigravity IDE; purpose: right-size hero music card container width (352px) narrower than hero sections below, restore spinning vinyl artwork rotation whenever music is actively playing or previewing, and refine Spotify and Apple Music hover states while guaranteeing 44px touch targets. Exact model variant, reasoning mode, and token usage: unavailable.

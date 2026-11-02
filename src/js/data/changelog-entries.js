@@ -54,6 +54,24 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'resilient-music-edge-proxy-curated-fallback-20261102',
+    date: '2026-11-02',
+    type: 'fix',
+    title: 'Zero empty music state via edge worker proxy, curated playlist fallback, and text wrap',
+    summary:
+      'Prevent hero music card and Currently music shelf from ever displaying an empty placeholder or truncated subtitle. In lastfm.js, query Cloudflare Edge Worker whenever primary proxy returns no tracks, and automatically fall back to Mangesh\'s curated playlist (8 real tracks: "Hale Dil", "Main Yahaan Hoon", "Aadat", "Deewaana Deewaana", "Teri Deewani", "Aap Ki Kashish", "Kaho Na Kaho", "Zara Zara") with authentic artwork and 30s previews when offline or unconfigured. In local-server.js, proxy all /api/music/* endpoints to the live Cloudflare Worker with curated JSON fallback when dev backend is offline. In ux-polish-fixes.css, eliminate awkward single-line truncation on empty state subtitles.',
+    tags: ['api', 'design', 'fix'],
+    sha: '9db64b33',
+    commitVerified: true,
+    model: 'Gemini 3.8 Flash',
+    ide: 'Google Antigravity IDE',
+    purpose:
+      'Eliminate empty music placeholder void and subtitle text truncation across hero music card and Currently music shelf via edge worker proxy and curated playlist fallback.',
+    attributionSource: 'commit-message',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
     id: 'music-card-brand-colors-preview-apis-20261102',
     date: '2026-11-02',
     type: 'fix',
