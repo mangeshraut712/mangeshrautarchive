@@ -183,7 +183,7 @@ class LastFmService {
   constructor() {
     this.USERNAME = 'mbr63';
     this.PLACEHOLDER_HASH = '2a96cbd8b46e442fc41c2b86b821562f';
-    this.UPDATE_INTERVAL_MS = 20000; // 20s — beats 25s backend cache TTL
+    this.UPDATE_INTERVAL_MS = 6000; // 6s fast polling for near-instant scrobble updates
     this.ARTWORK_CACHE_TTL_MS = 10 * 60 * 1000; // 10 min artwork cache
     this.LOCAL_CACHE_KEY = 'assistme:lastfm:recent:v4';
     /** Instant paint only — never keep a day-old shelf as “current”. */
@@ -219,6 +219,9 @@ class LastFmService {
 
   initHero(elements) {
     this.hero = elements;
+    if (this.cachedTracks?.[0]) {
+      this.updateHero(this.cachedTracks[0]);
+    }
 
     if (this.hero?.musicCard && !this.hero.musicCard.dataset.clickBound) {
       this.hero.musicCard.dataset.clickBound = '1';
@@ -503,6 +506,9 @@ class LastFmService {
 
   initCurrently(elements) {
     this.currently = elements;
+    if (this.cachedTracks?.length) {
+      this.updateCurrently(this.cachedTracks);
+    }
   }
 
   resolveMusicApiBase() {
@@ -1082,14 +1088,9 @@ class LastFmService {
     this.persistLocalCache(tracks, listenNow);
     this.clearApiHostFailure();
 
-    if (!unchanged) {
-      this._shelfSignature = signature;
-      this.updateHero(tracks[0]);
-      this.updateCurrently(tracks);
-    } else if (this.hero && tracks[0]) {
-      // Same tracks — still refresh now-playing badge / status text.
-      this.updateHero(tracks[0]);
-    }
+    this._shelfSignature = signature;
+    this.updateHero(tracks[0]);
+    this.updateCurrently(tracks);
     this.updateListenNowMini(listenNow);
 
     analytics?.track?.('music_loaded', {
@@ -1552,6 +1553,26 @@ class LastFmService {
     this.currently.recentContainer.innerHTML = '';
   }
 
+  scheduleNextPoll(delayMs) {
+    if (this.intervalId) {
+      clearTimeout(this.intervalId);
+      this.intervalId = null;
+    }
+    const isNowPlaying = this.cachedTracks?.[0]?.['@attr']?.nowplaying === 'true';
+    const interval = delayMs || (isNowPlaying ? 5000 : 8000);
+    this.intervalId = globalThis.setTimeout(() => {
+      if (typeof document === 'undefined' || document.visibilityState === 'visible') {
+        this.fetchRecent().finally(() => {
+          if (this.started) {
+            this.scheduleNextPoll();
+          }
+        });
+      } else if (this.started) {
+        this.scheduleNextPoll(10000);
+      }
+    }, interval);
+  }
+
   start() {
     if (this.started) return;
     this.started = true;
@@ -1560,19 +1581,41 @@ class LastFmService {
     if (!restored) {
       this.showLoadingState();
     }
-    this.fetchRecent();
-    this.intervalId = globalThis.setInterval(() => {
-      if (typeof document === 'undefined' || document.visibilityState === 'visible') {
-        this.fetchRecent();
-      }
-    }, this.UPDATE_INTERVAL_MS);
+    this.fetchRecent().finally(() => {
+      this.scheduleNextPoll();
+    });
+
     if (typeof document !== 'undefined' && !this._visibilityHandlerBound) {
       this._visibilityHandlerBound = true;
       document.addEventListener('visibilitychange', () => {
         if (document.visibilityState === 'visible' && this.started) {
           this.fetchRecent();
+          this.scheduleNextPoll();
         }
       });
+      window.addEventListener('focus', () => {
+        if (this.started) {
+          this.fetchRecent();
+          this.scheduleNextPoll();
+        }
+      });
+      const musicTab = document.getElementById('currently-tab-music');
+      if (musicTab && !musicTab.dataset.syncBound) {
+        musicTab.dataset.syncBound = '1';
+        musicTab.addEventListener('click', () => {
+          this.fetchRecent();
+        });
+      }
+      const statusRow = document.querySelector('#home #music-card .status-row');
+      if (statusRow && !statusRow.dataset.syncBound) {
+        statusRow.dataset.syncBound = '1';
+        statusRow.style.cursor = 'pointer';
+        statusRow.title = 'Click to refresh live music scrobbles';
+        statusRow.addEventListener('click', e => {
+          e.stopPropagation();
+          this.fetchRecent();
+        });
+      }
     }
   }
 }

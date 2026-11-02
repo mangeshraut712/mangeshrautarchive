@@ -54,6 +54,24 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'apple-music-ios272-monochrome-and-low-latency-sync-20261102',
+    date: '2026-11-02',
+    type: 'improvement',
+    title: 'Apple Music iOS 27.2 monochrome design, solid themes, and 5s low-latency scrobble sync',
+    summary:
+      'Adopt the new Apple Music iOS 27.2 design language: transition Apple Music icon from red to modern solid black (#000000) in light theme and crisp pure white (#ffffff) in dark theme, with inverted solid hover transitions. Replace washed-out grey control backgrounds with solid pure black (#000000) in dark theme and solid white (#ffffff) in light theme. Enforce strict artwork rotation state: spins when music is actively playing or previewing, and pauses when idle or not playing. Radically speed up Last.fm live syncing: reduce backend caching from 25s to 5s, frontend polling from 20s to 5-8s adaptive polling, and wire instant synchronization triggers on tab focus, visibility change, and Currently music tab clicks.',
+    tags: ['design', 'api', 'performance'],
+    sha: 'de6e1f58',
+    commitVerified: true,
+    model: 'Gemini 3.8 Flash',
+    ide: 'Google Antigravity IDE',
+    purpose:
+      'Implement Apple Music iOS 27.2 monochrome design, eliminate grey background slop, guarantee strict artwork spin/pause state, and reduce Last.fm scrobble latency to 5s with instant tab syncing.',
+    attributionSource: 'commit-message',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
     id: 'resilient-music-edge-proxy-curated-fallback-20261102',
     date: '2026-11-02',
     type: 'fix',

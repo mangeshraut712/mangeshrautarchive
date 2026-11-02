@@ -452,7 +452,7 @@ html.dark #home #music-card .music-card-preview-link:hover .music-control-face {
   box-shadow: 0 3px 12px rgba(0, 113, 227, 0.45) !important;
 }
 
-/* 2. Apple Music Button — Signature Apple Music Pink/Red (#FA243C) */
+/* 2. Apple Music Button — Modern iOS 27.2 Monochrome Design (Black in Light, Pure White in Dark) */
 #home #music-card .music-card-apple-link .music-control-face {
   background: #ffffff;
   border-color: #e5e5ea;
@@ -460,38 +460,57 @@ html.dark #home #music-card .music-card-preview-link:hover .music-control-face {
 
 html.dark #home #music-card .music-card-apple-link .music-control-face,
 html[data-theme='dark'] #home #music-card .music-card-apple-link .music-control-face {
-  background: #1c1c1e;
+  background: #000000;
   border-color: #2c2c2e;
 }
 
 #home #music-card .music-card-apple-link .music-control-face i,
-#home #music-card .music-card-apple-link i,
-html.dark #home #music-card .music-card-apple-link .music-control-face i,
-html.dark #home #music-card .music-card-apple-link i {
-  color: #fa243c !important;
-  -webkit-text-fill-color: #fa243c !important;
+#home #music-card .music-card-apple-link i {
+  color: #000000 !important;
+  -webkit-text-fill-color: #000000 !important;
   transition:
     color 0.2s ease,
     -webkit-text-fill-color 0.2s ease;
 }
 
-#home #music-card .music-card-apple-link:hover .music-control-face,
-html.dark #home #music-card .music-card-apple-link:hover .music-control-face {
-  transform: scale(1.08);
-  background: #fa243c !important;
-  border-color: #fa243c !important;
-  box-shadow: 0 2px 10px rgba(250, 36, 60, 0.45) !important;
-}
-
-#home #music-card .music-card-apple-link:hover .music-control-face i,
-#home #music-card .music-card-apple-link:hover i,
-html.dark #home #music-card .music-card-apple-link:hover .music-control-face i,
-html.dark #home #music-card .music-card-apple-link:hover i {
+html.dark #home #music-card .music-card-apple-link .music-control-face i,
+html.dark #home #music-card .music-card-apple-link i,
+html[data-theme='dark'] #home #music-card .music-card-apple-link .music-control-face i,
+html[data-theme='dark'] #home #music-card .music-card-apple-link i {
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
 }
 
-/* 3. Spotify Button — Iconic Spotify Green (#1DB954) */
+#home #music-card .music-card-apple-link:hover .music-control-face {
+  transform: scale(1.08);
+  background: #000000 !important;
+  border-color: #000000 !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35) !important;
+}
+
+#home #music-card .music-card-apple-link:hover .music-control-face i,
+#home #music-card .music-card-apple-link:hover i {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+html.dark #home #music-card .music-card-apple-link:hover .music-control-face,
+html[data-theme='dark'] #home #music-card .music-card-apple-link:hover .music-control-face {
+  transform: scale(1.08);
+  background: #ffffff !important;
+  border-color: #ffffff !important;
+  box-shadow: 0 2px 10px rgba(255, 255, 255, 0.35) !important;
+}
+
+html.dark #home #music-card .music-card-apple-link:hover .music-control-face i,
+html.dark #home #music-card .music-card-apple-link:hover i,
+html[data-theme='dark'] #home #music-card .music-card-apple-link:hover .music-control-face i,
+html[data-theme='dark'] #home #music-card .music-card-apple-link:hover i {
+  color: #000000 !important;
+  -webkit-text-fill-color: #000000 !important;
+}
+
+/* 3. Spotify Button — Iconic Spotify Green (#1DB954) on Solid Pure Backgrounds */
 #home #music-card .music-card-spotify-link .music-control-face {
   background: #ffffff;
   border-color: #e5e5ea;
@@ -499,7 +518,7 @@ html.dark #home #music-card .music-card-apple-link:hover i {
 
 html.dark #home #music-card .music-card-spotify-link .music-control-face,
 html[data-theme='dark'] #home #music-card .music-card-spotify-link .music-control-face {
-  background: #1c1c1e;
+  background: #000000;
   border-color: #2c2c2e;
 }
 
