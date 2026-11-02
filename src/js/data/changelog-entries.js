@@ -61,16 +61,15 @@ export const changelogEntries = [
     summary:
       'Reduce music card container width to 352px so it sits proportionally narrower than the hero description and action buttons below. Restore active vinyl disc rotation when music is actively playing or audio previewing, while pausing when idle. Polish Spotify and Apple Music hover states and cluster spacing while strictly maintaining 44px accessible touch targets.',
     tags: ['design'],
-    sha: null,
-    commitVerified: false,
+    sha: '0ba6f3db',
+    commitVerified: true,
     model: 'Gemini 3.8 Flash',
     ide: 'Google Antigravity IDE',
     purpose:
       'Right-size hero music card width narrower than hero sections below, fix spinning vinyl artwork on playback, and refine hover interactions.',
-    attributionSource: 'not-recorded',
+    attributionSource: 'commit-message',
     reasoning: 'unavailable',
     usage: 'unavailable',
-    status: 'unreleased',
   },
   {
     id: 'whoburnedmore-live-telemetry-refresh-20261102',
@@ -98,15 +97,14 @@ export const changelogEntries = [
     summary:
       'Give both system-theme favicon variants an explicit contrasting tile, including the no-JavaScript SVG, and use fresh PNG filenames. This removes dependence on how browser chrome composites a transparent white mark.',
     tags: ['design'],
-    sha: null,
-    commitVerified: false,
+    sha: '07268411',
+    commitVerified: true,
     model: 'GPT-6 / Codex',
     ide: 'Codex desktop',
     purpose: 'Harden favicon contrast after native Safari verification.',
-    attributionSource: 'not-recorded',
+    attributionSource: 'commit-message',
     reasoning: 'unavailable',
     usage: 'unavailable',
-    status: 'unreleased',
   },
   {
     id: 'system-theme-favicons-20261101',
