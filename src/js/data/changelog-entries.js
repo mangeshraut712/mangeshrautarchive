@@ -61,8 +61,8 @@ export const changelogEntries = [
     summary:
       'Enforce authentic brand colors across all browsers: Spotify Green (#1DB954) on Spotify icon, Apple Music Pink/Red (#FA243C) on Apple Music icon, vibrant Apple Blue (#0071e3) Play button with Apple Green active playback indicator. Fix light/dark CSS color cascades for preview tag, borders, and timestamps to strictly satisfy WCAG 2 AA contrast. Enhance FastAPI media endpoints (/api/music/artwork, /api/music/details, /api/music/preview) to resolve and return full rich iTunes metadata including 30-second preview audio streams, direct Apple Music deep links, and genres.',
     tags: ['design', 'api'],
-    sha: null,
-    commitVerified: false,
+    sha: '957f08b4',
+    commitVerified: true,
     model: 'Gemini 3.8 Flash',
     ide: 'Google Antigravity IDE',
     purpose:
