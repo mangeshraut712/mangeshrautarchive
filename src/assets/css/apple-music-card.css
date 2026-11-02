@@ -26,9 +26,9 @@
 #home.hero-section #music-card {
   position: relative !important;
   width: 100% !important;
-  max-width: 480px !important;
+  max-width: min(352px, calc(100vw - 2rem)) !important;
   min-height: 0 !important;
-  margin: clamp(0.45rem, 1vh, 0.85rem) auto clamp(0.55rem, 1.2vh, 0.95rem) auto !important;
+  margin: clamp(0.35rem, 0.8vh, 0.65rem) auto clamp(0.45rem, 1vh, 0.75rem) auto !important;
   padding: 0 !important;
   background: transparent !important;
   border: none !important;
@@ -53,25 +53,26 @@
 #home .music-card-inner {
   position: relative !important;
   display: grid !important;
-  grid-template-columns: 80px minmax(0, 1fr) auto;
+  grid-template-columns: 58px minmax(0, 1fr) auto;
   grid-template-rows: auto auto;
   align-items: center !important;
   width: 100% !important;
   max-width: 100% !important;
-  min-height: 80px !important;
+  min-height: 76px !important;
   box-sizing: border-box !important;
   overflow: visible !important;
   background: #ffffff !important;
   background-color: #ffffff !important;
   background-clip: padding-box !important;
   border: 1px solid #e5e5ea !important;
-  border-radius: 18px !important;
-  padding: 12px 16px !important;
-  gap: 8px 12px !important;
-  box-shadow: none !important;
+  border-radius: 16px !important;
+  padding: 10px 14px !important;
+  gap: 6px 10px !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
   transition:
     transform 0.24s cubic-bezier(0.16, 1, 0.3, 1),
-    border-color 0.24s ease !important;
+    border-color 0.24s ease,
+    box-shadow 0.24s ease !important;
   z-index: 1;
   cursor: default !important;
 }
@@ -84,20 +85,20 @@ html[data-theme='dark'] #home .music-card-inner {
   background-color: #000000 !important;
   background-clip: padding-box !important;
   border: 1px solid #2c2c2e !important;
-  box-shadow: none !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
 }
 
 .music-card:hover .music-card-inner,
 #home .music-card:hover .music-card-inner {
   transform: translateY(-2px) !important;
   border-color: #0071e3 !important;
-  box-shadow: none !important;
+  box-shadow: 0 4px 14px rgba(0, 113, 227, 0.12) !important;
 }
 
 html.dark .music-card:hover .music-card-inner,
 html.dark #home .music-card:hover .music-card-inner {
   border-color: #0a84ff !important;
-  box-shadow: none !important;
+  box-shadow: 0 4px 14px rgba(10, 132, 255, 0.2) !important;
 }
 
 /* ── Rotating Circle Vinyl Artwork (Pure Unobstructed Disc) ──────── */
@@ -114,19 +115,19 @@ html.dark #home .music-card:hover .music-card-inner {
 #home .music-card-inner .album-art-container,
 #home .music-card:hover .album-art-container {
   position: relative !important;
-  width: 80px !important;
-  height: 80px !important;
-  min-width: 80px !important;
-  min-height: 80px !important;
-  max-width: 80px !important;
-  max-height: 80px !important;
+  width: 58px !important;
+  height: 58px !important;
+  min-width: 58px !important;
+  min-height: 58px !important;
+  max-width: 58px !important;
+  max-height: 58px !important;
   border-radius: 50% !important;
   -webkit-border-radius: 50% !important;
   overflow: hidden !important;
   flex-shrink: 0 !important;
   background: #111113 !important;
   box-shadow:
-    0 4px 14px rgba(0, 0, 0, 0.22),
+    0 3px 10px rgba(0, 0, 0, 0.22),
     inset 0 0 0 1px rgba(255, 255, 255, 0.2) !important;
   cursor: pointer;
   transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
@@ -155,13 +156,22 @@ html.dark #home .music-card:hover .music-card-inner {
   transition: opacity 0.3s ease !important;
 }
 
-/* The record follows audible preview playback, not a remote listening status. */
-#home #music-card.is-audio-previewing #album-art {
+/* Rotate vinyl record artwork whenever music is actively playing or previewing */
+#home #music-card.is-playing #album-art,
+#home #music-card.is-audio-previewing #album-art,
+#home #music-card[data-music-state='playing'] #album-art,
+.music-card.is-playing #album-art,
+.music-card.is-audio-previewing #album-art,
+.music-card[data-music-state='playing'] #album-art {
   animation: albumSpin 8s linear infinite !important;
   animation-play-state: running !important;
 }
 
-#home #music-card:not(.is-audio-previewing) #album-art {
+#home
+  #music-card:not(.is-playing):not(.is-audio-previewing):not([data-music-state='playing'])
+  #album-art,
+.music-card:not(.is-playing):not(.is-audio-previewing):not([data-music-state='playing'])
+  #album-art {
   animation-play-state: paused !important;
 }
 
@@ -337,6 +347,7 @@ html[data-theme='dark'] #home .music-card-inner .status-badge {
   display: flex;
   gap: 0;
   margin: 0;
+  align-items: center;
 }
 
 #home #music-card .music-card-service-link {
@@ -347,7 +358,7 @@ html[data-theme='dark'] #home .music-card-inner .status-badge {
   height: 44px !important;
   min-width: 44px !important;
   min-height: 44px !important;
-  margin: 0 !important;
+  margin: 0 -3px !important;
   padding: 0 !important;
   border: 0 !important;
   border-radius: 50% !important;
@@ -361,42 +372,89 @@ html[data-theme='dark'] #home .music-card-inner .status-badge {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
+  width: 30px;
+  height: 30px;
   box-sizing: border-box;
   border-radius: 50%;
-  border: 1px solid var(--border-color);
-  background: var(--bg-primary);
-  color: var(--text-primary);
+  border: 1px solid var(--border-color, #e5e5ea);
+  background: var(--bg-primary, #ffffff);
+  color: var(--text-primary, #1d1d1f);
   -webkit-text-fill-color: currentcolor;
-  transition: transform 200ms var(--ease-apple, ease-out);
+  transition:
+    transform 200ms var(--ease-apple, ease-out),
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+html.dark #home #music-card .music-control-face {
+  border-color: #2c2c2e;
+  background: #1c1c1e;
+  color: #f5f5f7;
 }
 
 #home #music-card .music-control-face i {
-  font-size: 22px !important;
+  font-size: 15px !important;
   line-height: 1 !important;
   color: inherit !important;
   -webkit-text-fill-color: currentcolor !important;
 }
 
 #home #music-card .music-card-preview-link .music-control-face {
-  background: var(--apple-blue);
-  border-color: var(--apple-blue);
-  color: var(--text-on-accent, #fff);
+  background: var(--apple-blue, #0071e3);
+  border-color: var(--apple-blue, #0071e3);
+  color: #ffffff;
 }
 
 #home #music-card .music-card-preview-link .fa-play {
-  font-size: 18px !important;
-  margin-left: 2px;
+  font-size: 13px !important;
+  margin-left: 1.5px;
 }
 
-#home #music-card .music-card-spotify-link .music-control-face {
-  color: var(--spotify-green, #1db954);
+#home #music-card .music-card-preview-link .fa-pause {
+  font-size: 13px !important;
+  margin-left: 0;
 }
 
-#home #music-card .music-card-service-link:hover .music-control-face {
+#home #music-card.is-audio-previewing .music-card-preview-link .music-control-face {
+  background: #34c759 !important;
+  border-color: #34c759 !important;
+  color: #ffffff !important;
+}
+
+#home #music-card .music-card-preview-link:hover .music-control-face {
   transform: scale(1.08);
-  border-color: var(--apple-blue);
+  box-shadow: 0 2px 8px rgba(0, 113, 227, 0.4);
+}
+
+#home #music-card .music-card-apple-link:hover .music-control-face {
+  transform: scale(1.08);
+  background: #000000 !important;
+  border-color: #000000 !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+html.dark #home #music-card .music-card-apple-link:hover .music-control-face {
+  background: #ffffff !important;
+  border-color: #ffffff !important;
+  color: #000000 !important;
+  -webkit-text-fill-color: #000000 !important;
+}
+
+#home #music-card .music-card-spotify-link:hover .music-control-face {
+  transform: scale(1.08);
+  background: #1db954 !important;
+  border-color: #1db954 !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+#home #music-card .music-card-spotify-link:hover .music-control-face i,
+#home #music-card .music-card-spotify-link:hover i {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
 }
 
 #home #music-card .music-card-service-link:focus-visible {
@@ -408,9 +466,9 @@ html[data-theme='dark'] #home .music-card-inner .status-badge {
 .track-name,
 #home .music-card-inner .track-name {
   order: 1 !important;
-  margin: 1px 0 1px 0 !important;
+  margin: 0 !important;
   padding: 0 !important;
-  font-size: 16.5px !important;
+  font-size: 14.5px !important;
   font-weight: 700 !important;
   letter-spacing: -0.015em !important;
   color: #1d1d1f !important;
@@ -434,7 +492,7 @@ html.dark #home .music-card-inner .track-name {
   order: 2 !important;
   margin: 0 !important;
   padding: 0 !important;
-  font-size: 13.5px !important;
+  font-size: 12.5px !important;
   font-weight: 500 !important;
   color: #515154 !important;
   -webkit-text-fill-color: #515154 !important;
@@ -552,30 +610,30 @@ html.dark .music-preview-tag {
 /* Keep the same compact composition at narrow widths without shrinking hit areas. */
 @media (max-width: 600px) {
   #home.hero-section #music-card {
-    max-width: 440px !important;
+    max-width: min(340px, calc(100vw - 2rem)) !important;
   }
 
   #home.hero-section #music-card .music-card-inner {
-    grid-template-columns: 64px minmax(0, 1fr) auto;
-    padding: 12px !important;
-    gap: 8px !important;
+    grid-template-columns: 50px minmax(0, 1fr) auto;
+    padding: 8px 10px !important;
+    gap: 6px 8px !important;
   }
 
   #home #music-card .album-art-container {
-    width: 64px !important;
-    height: 64px !important;
-    min-width: 64px !important;
-    min-height: 64px !important;
-    max-width: 64px !important;
-    max-height: 64px !important;
+    width: 50px !important;
+    height: 50px !important;
+    min-width: 50px !important;
+    min-height: 50px !important;
+    max-width: 50px !important;
+    max-height: 50px !important;
   }
 
   #home #music-card .track-name {
-    font-size: 14px !important;
+    font-size: 13.5px !important;
   }
 
   #home #music-card .artist-name {
-    font-size: 12px !important;
+    font-size: 11.5px !important;
   }
 
   #home #music-card .status-badge {
@@ -585,8 +643,10 @@ html.dark .music-preview-tag {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  #home #music-card.is-playing #album-art,
   #home #music-card.is-audio-previewing #album-art,
   #home #music-card #album-art,
+  .music-card #album-art,
   #home #music-card .playing-indicator span {
     animation: none !important;
     animation-play-state: paused !important;

@@ -90,16 +90,16 @@ test('hero and music controls keep 44px targets and stop decorative motion', asy
   expect(motion).toEqual(['none', 'none', 'none', 'none']);
 });
 
-test('music artwork follows preview playback rather than remote listening status', async ({
-  page,
-}) => {
+test('music artwork rotates when playing and pauses when idle', async ({ page }) => {
   await gotoSiteReady(page, '/');
   await page.emulateMedia({ reducedMotion: 'no-preference' });
   const start = await page.evaluate(async () => {
     const { default: music } = await import('/js/modules/lastfm.js');
-    music.setHeroMusicState('playing');
+    music.setHeroMusicState('idle');
     const artwork = document.querySelector('#album-art');
     const idle = getComputedStyle(artwork).animationPlayState;
+    music.setHeroMusicState('playing');
+    const playing = getComputedStyle(artwork).animationPlayState;
     // A short PCM WAV exercises real media play, pause, and ended events without network audio.
     const samples = 16000;
     const bytes = new Uint8Array(44 + samples * 2);
@@ -121,12 +121,14 @@ test('music artwork follows preview playback rather than remote listening status
     view.setUint32(40, samples * 2, true);
     music.currentPreviewUrl = `data:audio/wav;base64,${btoa(String.fromCharCode(...bytes))}`;
     await music.toggleAudioPreview();
-    return { idle, playing: getComputedStyle(artwork).animationPlayState };
+    const previewing = getComputedStyle(artwork).animationPlayState;
+    return { idle, playing, previewing };
   });
-  expect(start).toEqual({ idle: 'paused', playing: 'running' });
+  expect(start).toEqual({ idle: 'paused', playing: 'running', previewing: 'running' });
   const paused = await page.evaluate(async () => {
     const { default: music } = await import('/js/modules/lastfm.js');
     await music.toggleAudioPreview();
+    music.setHeroMusicState('idle');
     return getComputedStyle(document.querySelector('#album-art')).animationPlayState;
   });
   expect(paused).toBe('paused');

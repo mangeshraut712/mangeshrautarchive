@@ -54,12 +54,29 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'compact-music-card-and-spinning-artwork-20261102',
+    date: '2026-11-02',
+    type: 'improvement',
+    title: 'Compact music card proportions, live artwork rotation, and hover polish',
+    summary:
+      'Reduce music card container width to 352px so it sits proportionally narrower than the hero description and action buttons below. Restore active vinyl disc rotation when music is actively playing or audio previewing, while pausing when idle. Polish Spotify and Apple Music hover states and cluster spacing while strictly maintaining 44px accessible touch targets.',
+    tags: ['design'],
+    sha: null,
+    commitVerified: false,
+    model: 'Gemini 3.8 Flash',
+    ide: 'Google Antigravity IDE',
+    purpose:
+      'Right-size hero music card width narrower than hero sections below, fix spinning vinyl artwork on playback, and refine hover interactions.',
+    attributionSource: 'not-recorded',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+    status: 'unreleased',
+  },
   {
     id: 'whoburnedmore-live-telemetry-refresh-20261102',
     date: '2026-11-02',
     type: 'improvement',
-    title:
-      'WhoBurnedMore live telemetry refresh: 22.89B tokens, rank #61, and cross-surface sync',
+    title: 'WhoBurnedMore live telemetry refresh: 22.89B tokens, rank #61, and cross-surface sync',
     summary:
       'Re-synced live WhoBurnedMore telemetry for @mrcommando712 (22.89B lifetime tokens, $19,643 spend, 251 active days, 61d longest streak, all-time rank #61 of 357 / Top 17%, 94.88% cache hit rate, $45,132 saved). Updated Systems / Uses / Monitor hard-coded figures, OpenAI Codex card to 12.40B (54.2%), Cursor share to 42.6%, smoke assertions, and hardened sync-whoburnedmore.mjs to stamp UTC sync dates plus Prettier-safe output formatting.',
     tags: ['systems', 'monitor', 'other'],
@@ -90,7 +107,6 @@ export const changelogEntries = [
     reasoning: 'unavailable',
     usage: 'unavailable',
     status: 'unreleased',
-  },
   },
   {
     id: 'system-theme-favicons-20261101',
