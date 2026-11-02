@@ -62,8 +62,8 @@ export const changelogEntries = [
     summary:
       'Re-synced live WhoBurnedMore telemetry for @mrcommando712 (22.89B lifetime tokens, $19,643 spend, 251 active days, 61d longest streak, all-time rank #61 of 357 / Top 17%, 94.88% cache hit rate, $45,132 saved). Updated Systems / Uses / Monitor hard-coded figures, OpenAI Codex card to 12.40B (54.2%), Cursor share to 42.6%, smoke assertions, and hardened sync-whoburnedmore.mjs to stamp UTC sync dates plus Prettier-safe output formatting.',
     tags: ['systems', 'monitor', 'other'],
-    sha: null,
-    commitVerified: false,
+    sha: '50d5d76f',
+    commitVerified: true,
     model: 'Composer',
     ide: 'Cursor',
     purpose:
@@ -71,7 +71,6 @@ export const changelogEntries = [
     attributionSource: 'commit-message',
     reasoning: 'unavailable',
     usage: 'unavailable',
-    status: 'unreleased',
   },
   {
     id: 'system-theme-favicons-20261101',
