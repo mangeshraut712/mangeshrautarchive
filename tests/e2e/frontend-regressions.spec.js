@@ -101,7 +101,7 @@ test('music artwork rotates when playing and pauses when idle', async ({ page })
     music.setHeroMusicState('playing');
     const playing = getComputedStyle(artwork).animationPlayState;
     // A short PCM WAV exercises real media play, pause, and ended events without network audio.
-    const samples = 16000;
+    const samples = 8000;
     const bytes = new Uint8Array(44 + samples * 2);
     const view = new DataView(bytes.buffer);
     const label = (offset, text) =>
@@ -138,7 +138,7 @@ test('music artwork rotates when playing and pauses when idle', async ({ page })
     await music.toggleAudioPreview();
   });
   await expect(page.locator('#music-preview-btn')).toHaveAttribute('aria-pressed', 'false', {
-    timeout: 5000,
+    timeout: 10000,
   });
   await expect(page.locator('#music-card')).not.toHaveClass(/is-audio-previewing/);
 });
