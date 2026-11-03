@@ -62,9 +62,8 @@ export const changelogEntries = [
     summary:
       'Synchronize public metrics and repository catalogue directly with the live GitHub platform via authenticated gh API: total public repositories updated from 58 to 108 (42 original repos + 66 open-source forks), total stars updated to 13 (8 on Gravity-SaaS-Agent, 3 on Stanford-CS336, 1 on Dotfit-Fitness, 1 on mangeshrautarchive), forks updated to 4, followers updated to 15, and 2026 contributions confirmed at 4,865. Elevate top starred and flagship repositories across the projects grid and featured order, update systems overview hero metrics to 108 repos and 20 technical articles, and harden critical regressions suite audio preview test timing.',
     tags: ['systems', 'deploy', 'performance'],
-    sha: null,
-    commitVerified: false,
-    status: 'unreleased',
+    sha: 'ee4f8994',
+    commitVerified: true,
     model: 'Gemini 3.8 Flash',
     ide: 'Google Antigravity IDE',
     purpose:

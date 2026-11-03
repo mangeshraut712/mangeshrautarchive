@@ -2,8 +2,9 @@ import assert from 'node:assert/strict';
 import { readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { test } from 'node:test';
+import { fileURLToPath } from 'node:url';
 
-const SRC = new URL('../../src/', import.meta.url).pathname;
+const SRC = fileURLToPath(new URL('../../src/', import.meta.url));
 
 function falseDeferHrefs(html) {
   const withoutNoscript = html.replace(/<noscript\b[^>]*>[\s\S]*?<\/noscript>/gi, '');
