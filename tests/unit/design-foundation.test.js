@@ -22,7 +22,7 @@ function falseDeferHrefs(html) {
 }
 
 test('data-perf-defer stylesheets use media=print onload contract outside noscript', () => {
-  const pages = readdirSync(SRC).filter((name) => name.endsWith('.html'));
+  const pages = readdirSync(SRC).filter(name => name.endsWith('.html'));
   assert.ok(pages.includes('systems.html'));
   assert.ok(pages.includes('monitor.html'));
   assert.ok(pages.includes('uses.html'));
