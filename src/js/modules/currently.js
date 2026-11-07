@@ -37,6 +37,11 @@ export function initCurrentlySection() {
     if (tabName === 'music' && globalThis.lastFmService) {
       if (globalThis.lastFmService.cachedTracks?.length) {
         globalThis.lastFmService.updateCurrently(globalThis.lastFmService.cachedTracks);
+      } else {
+        globalThis.lastFmService.hydrateFromLocalCache?.();
+        if (globalThis.lastFmService.cachedTracks?.length) {
+          globalThis.lastFmService.updateCurrently(globalThis.lastFmService.cachedTracks);
+        }
       }
       globalThis.lastFmService.fetchRecent?.();
     }

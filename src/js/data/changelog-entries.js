@@ -54,6 +54,25 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'currently-music-shelf-instant-hydration-fast-sync-20261107',
+    date: '2026-11-07',
+    type: 'fix',
+    title:
+      'Zero empty void on Currently music shelf, static HTML pre-hydration, and 1.5s live scrobble sync',
+    summary:
+      'Completely eliminate the solitary "No live playback" card and empty shelf whitespace on the Currently music tab by pre-rendering 6 rich curated tracks directly in HTML and preventing start() or showLoadingState() from ever wiping recentContainer. Implement 1.5s low-latency polling during live playback (3.5s idle) and fast 4s proxy timeouts with direct Edge Worker fallback. Enforce iOS 27.2 monochrome Apple Music logo (pure black in light mode, pure white in dark mode), solid white and solid black theme backgrounds without dull grey, and guaranteed continuous vinyl artwork rotation while playing or previewing.',
+    tags: ['design', 'performance', 'api'],
+    sha: '4cac5e4f',
+    commitVerified: true,
+    model: 'Gemini 3.8 Flash',
+    ide: 'Google Antigravity IDE',
+    purpose:
+      'Pre-render 6 curated music shelf cards in HTML, eliminate Currently loading wipe and lonely error card void, tune live Last.fm scrobble sync to 1.5s, enforce iOS 27.2 monochrome Apple logo and solid themes, and ensure vinyl artwork rotation strictly matches playing state.',
+    attributionSource: 'commit-message',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
     id: 'whoburnedmore-23b-music-card-compact-sync-20261107',
     date: '2026-11-07',
     type: 'improvement',

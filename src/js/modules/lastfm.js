@@ -18,8 +18,6 @@ function ensureLastFmPreconnect() {
 }
 
 const LASTFM_JSONP_TIMEOUT_MS = 4500;
-/** Worker may enrich up to 8 tracks; keep headroom above cold-start + iTunes lookups. */
-const LASTFM_PROXY_TIMEOUT_MS = 10000;
 const API_DEAD_COOLDOWN_MS = 2 * 60 * 1000;
 const API_HOST_DEAD_KEY = 'portfolio_api_host_dead_v1';
 const API_HOST_DEAD_UNTIL_KEY = 'portfolio_api_host_dead_until_v1';
@@ -226,6 +224,7 @@ class LastFmService {
       if (this.cachedTracks?.[0]) {
         this.updateHero(this.cachedTracks[0]);
       } else if (CURATED_FALLBACK_TRACKS[0]) {
+        this.cachedTracks = CURATED_FALLBACK_TRACKS;
         this.updateHero(CURATED_FALLBACK_TRACKS[0]);
       }
     }
@@ -520,18 +519,8 @@ class LastFmService {
       if (this.cachedTracks?.length) {
         this.updateCurrently(this.cachedTracks);
       } else {
-        this.applyRecentPayload(
-          {
-            recenttracks: {
-              track: CURATED_FALLBACK_TRACKS,
-              '@attr': {
-                user: this.USERNAME,
-                total: String(CURATED_FALLBACK_TRACKS.length),
-              },
-            },
-          },
-          'initial-curated'
-        );
+        this.cachedTracks = CURATED_FALLBACK_TRACKS;
+        this.updateCurrently(CURATED_FALLBACK_TRACKS);
       }
     }
   }
@@ -1129,8 +1118,10 @@ class LastFmService {
   }
 
   async fetchRecentFromProxy(limit = 10) {
+    const edgeUrl = `https://assistme-chat.mangeshraut712.workers.dev/api/music/recent?user=${encodeURIComponent(this.USERNAME)}&limit=${encodeURIComponent(limit)}&_=${Date.now()}`;
+    const isEdgeWorker = this.apiUrl.includes('workers.dev');
     const controller = new AbortController();
-    const timeoutId = globalThis.setTimeout(() => controller.abort(), LASTFM_PROXY_TIMEOUT_MS);
+    const timeoutId = globalThis.setTimeout(() => controller.abort(), 4000);
 
     try {
       const bust = Date.now();
@@ -1158,8 +1149,7 @@ class LastFmService {
 
       // If primary endpoint failed OR returned an empty tracks list (e.g. offline dev server or unconfigured proxy),
       // seamlessly query the production Cloudflare Edge Worker!
-      const edgeUrl = `https://assistme-chat.mangeshraut712.workers.dev/api/music/recent?user=${encodeURIComponent(this.USERNAME)}&limit=${encodeURIComponent(limit)}&_=${bust}`;
-      if (!tracks.length && this.apiUrl !== edgeUrl) {
+      if (!tracks.length && !isEdgeWorker) {
         try {
           const edgeRes = await fetch(edgeUrl, {
             signal: controller.signal,
@@ -1515,9 +1505,16 @@ class LastFmService {
   updateCurrently(tracks) {
     if (!this.currently) return;
 
+    const trackList =
+      Array.isArray(tracks) && tracks.length
+        ? tracks
+        : this.cachedTracks?.length
+          ? this.cachedTracks
+          : CURATED_FALLBACK_TRACKS;
+
     let nowPlaying = null;
     const recentTracks = [];
-    for (const track of tracks) {
+    for (const track of trackList) {
       if (!nowPlaying && track?.['@attr']?.nowplaying === 'true') {
         nowPlaying = track;
       } else {
@@ -1537,8 +1534,6 @@ class LastFmService {
     if (shelfTracks.length > 0) {
       this.populateFeaturedTrack(nowPlaying || recentTracks[0] || null, Boolean(nowPlaying));
       this.renderMusicShelf(shelfTracks);
-    } else {
-      this.showEmptyState();
     }
   }
 
@@ -1559,23 +1554,25 @@ class LastFmService {
   }
 
   showLoadingState() {
-    this.showHeroLoadingState();
-    if (!this.currently) return;
-    this.setCardVisibility(this.currently.loadingEl, true);
-    this.setCardVisibility(this.currently.emptyEl, false);
-    this.setCardVisibility(this.currently.nowPlayingCard, false);
-    if (this.currently.listenNowMini) this.currently.listenNowMini.hidden = true;
-    this.currently.recentContainer.innerHTML = '';
+    if (!this.cachedTracks?.length && !this.currently?.recentContainer?.children?.length) {
+      this.showHeroLoadingState();
+      if (this.currently) {
+        this.setCardVisibility(this.currently.loadingEl, true);
+        this.setCardVisibility(this.currently.emptyEl, false);
+      }
+    }
   }
 
   showEmptyState() {
-    this.showHeroEmptyState();
-    if (!this.currently) return;
-    this.setCardVisibility(this.currently.loadingEl, false);
-    this.setCardVisibility(this.currently.nowPlayingCard, false);
-    this.setCardVisibility(this.currently.emptyEl, true);
-    if (this.currently.listenNowMini) this.currently.listenNowMini.hidden = true;
-    this.currently.recentContainer.innerHTML = '';
+    // Never show an empty void or solitary broken card.
+    // Always fall back to curated tracks!
+    if (!this.cachedTracks?.length) {
+      this.cachedTracks = CURATED_FALLBACK_TRACKS;
+    }
+    this.updateHero(this.cachedTracks[0]);
+    if (this.currently) {
+      this.updateCurrently(this.cachedTracks);
+    }
   }
 
   scheduleNextPoll(delayMs) {
@@ -1584,7 +1581,7 @@ class LastFmService {
       this.intervalId = null;
     }
     const isNowPlaying = this.cachedTracks?.[0]?.['@attr']?.nowplaying === 'true';
-    const interval = delayMs || (isNowPlaying ? 2500 : 5000);
+    const interval = delayMs || (isNowPlaying ? 1500 : 3500);
     this.intervalId = globalThis.setTimeout(() => {
       if (typeof document === 'undefined' || document.visibilityState === 'visible') {
         this.fetchRecent().finally(() => {
@@ -1593,7 +1590,7 @@ class LastFmService {
           }
         });
       } else if (this.started) {
-        this.scheduleNextPoll(6000);
+        this.scheduleNextPoll(5000);
       }
     }, interval);
   }
@@ -1602,9 +1599,15 @@ class LastFmService {
     if (this.started) return;
     this.started = true;
     ensureLastFmPreconnect();
-    const restored = this.hydrateFromLocalCache();
-    if (!restored) {
-      this.showLoadingState();
+    if (!this.cachedTracks?.length) {
+      const restored = this.hydrateFromLocalCache();
+      if (!restored) {
+        this.cachedTracks = CURATED_FALLBACK_TRACKS;
+        this.updateHero(CURATED_FALLBACK_TRACKS[0]);
+        if (this.currently) {
+          this.updateCurrently(CURATED_FALLBACK_TRACKS);
+        }
+      }
     }
     this.fetchRecent().finally(() => {
       this.scheduleNextPoll();

@@ -4621,7 +4621,7 @@ html.dark #home .hero-name-text {
                   </div>
 
                   <!-- Loading State -->
-                  <div class="media-card currently-music-card currently-music-state loading" id="music-loading">
+                  <div class="media-card currently-music-card currently-music-state loading" id="music-loading" hidden>
                     <div class="media-poster music-poster-loading currently-poster-loading">
                       <div class="loading-spinner health-spinner"></div>
                     </div>
@@ -4646,7 +4646,86 @@ html.dark #home .hero-name-text {
                   </div>
 
                   <!-- Recent tracks will be injected here as music cards -->
-                  <div id="recent-tracks-container" class="currently-tracks-display-contents"></div>
+                  <div id="recent-tracks-container" class="currently-tracks-display-contents">
+                    <div class="media-card currently-music-card recent-track-card is-recent">
+                      <div class="media-poster">
+                        <img alt="Hale Dil" class="recent-track-img" loading="lazy" decoding="async" data-track-id="Hale Dil::Harshit Saxena" src="https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/bb/cc/4b/bbcc4bd9-b705-8cff-d637-6379ac87b9a6/8902894695916_cover.jpg/600x600bb.jpg" />
+                        <span class="media-badge playing">Recent</span>
+                      </div>
+                      <div class="media-info">
+                        <h4>Hale Dil</h4>
+                        <p>Harshit Saxena</p>
+                        <a href="https://open.spotify.com/search/Hale%20Dil%20Harshit%20Saxena" target="_blank" rel="noopener noreferrer" class="watch-btn" aria-label="Open Hale Dil by Harshit Saxena">
+                          <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i><span>View</span>
+                        </a>
+                      </div>
+                    </div>
+                    <div class="media-card currently-music-card recent-track-card is-recent">
+                      <div class="media-poster">
+                        <img alt="Main Yahaan Hoon" class="recent-track-img" loading="lazy" decoding="async" data-track-id="Main Yahaan Hoon::Madan Mohan" src="https://lastfm-img.freetls.fastly.net/i/u/300x300/9992c1d8b39660dfe273e07e299c72d7.jpg" />
+                        <span class="media-badge playing">Recent</span>
+                      </div>
+                      <div class="media-info">
+                        <h4>Main Yahaan Hoon</h4>
+                        <p>Madan Mohan</p>
+                        <a href="https://open.spotify.com/search/Main%20Yahaan%20Hoon%20Madan%20Mohan" target="_blank" rel="noopener noreferrer" class="watch-btn" aria-label="Open Main Yahaan Hoon by Madan Mohan">
+                          <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i><span>View</span>
+                        </a>
+                      </div>
+                    </div>
+                    <div class="media-card currently-music-card recent-track-card is-recent">
+                      <div class="media-poster">
+                        <img alt="Aadat" class="recent-track-img" loading="lazy" decoding="async" data-track-id="Aadat::Jal" src="https://lastfm-img.freetls.fastly.net/i/u/300x300/e5024750356c4513843adbc546f77b25.jpg" />
+                        <span class="media-badge playing">Recent</span>
+                      </div>
+                      <div class="media-info">
+                        <h4>Aadat</h4>
+                        <p>Jal</p>
+                        <a href="https://open.spotify.com/search/Aadat%20Jal" target="_blank" rel="noopener noreferrer" class="watch-btn" aria-label="Open Aadat by Jal">
+                          <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i><span>View</span>
+                        </a>
+                      </div>
+                    </div>
+                    <div class="media-card currently-music-card recent-track-card is-recent">
+                      <div class="media-poster">
+                        <img alt="Deewaana Deewaana" class="recent-track-img" loading="lazy" decoding="async" data-track-id="Deewaana Deewaana::A.R. Rahman" src="https://lastfm-img.freetls.fastly.net/i/u/300x300/f0ae0a091699c861783983640efc7be3.jpg" />
+                        <span class="media-badge playing">Recent</span>
+                      </div>
+                      <div class="media-info">
+                        <h4>Deewaana Deewaana</h4>
+                        <p>A.R. Rahman</p>
+                        <a href="https://open.spotify.com/search/Deewaana%20Deewaana%20A.R.%20Rahman" target="_blank" rel="noopener noreferrer" class="watch-btn" aria-label="Open Deewaana Deewaana by A.R. Rahman">
+                          <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i><span>View</span>
+                        </a>
+                      </div>
+                    </div>
+                    <div class="media-card currently-music-card recent-track-card is-recent">
+                      <div class="media-poster">
+                        <img alt="Teri Deewani" class="recent-track-img" loading="lazy" decoding="async" data-track-id="Teri Deewani::Kailash Kher" src="https://lastfm-img.freetls.fastly.net/i/u/300x300/a044eba82e974d23af1ddf7493b9a21a.jpg" />
+                        <span class="media-badge playing">Recent</span>
+                      </div>
+                      <div class="media-info">
+                        <h4>Teri Deewani</h4>
+                        <p>Kailash Kher</p>
+                        <a href="https://open.spotify.com/search/Teri%20Deewani%20Kailash%20Kher" target="_blank" rel="noopener noreferrer" class="watch-btn" aria-label="Open Teri Deewani by Kailash Kher">
+                          <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i><span>View</span>
+                        </a>
+                      </div>
+                    </div>
+                    <div class="media-card currently-music-card recent-track-card is-recent">
+                      <div class="media-poster">
+                        <img alt="Aap Ki Kashish" class="recent-track-img" loading="lazy" decoding="async" data-track-id="Aap Ki Kashish::Himesh Reshammiya" src="https://lastfm-img.freetls.fastly.net/i/u/300x300/8cf887f7428d3cc0ead7dbeac4d4a5e5.jpg" />
+                        <span class="media-badge playing">Recent</span>
+                      </div>
+                      <div class="media-info">
+                        <h4>Aap Ki Kashish</h4>
+                        <p>Himesh Reshammiya</p>
+                        <a href="https://open.spotify.com/search/Aap%20Ki%20Kashish%20Himesh%20Reshammiya" target="_blank" rel="noopener noreferrer" class="watch-btn" aria-label="Open Aap Ki Kashish by Himesh Reshammiya">
+                          <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i><span>View</span>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
 
