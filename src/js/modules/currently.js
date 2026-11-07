@@ -34,6 +34,12 @@ export function initCurrentlySection() {
       targetContent.classList.add('active');
       targetContent.hidden = false;
     }
+    if (tabName === 'music' && globalThis.lastFmService) {
+      if (globalThis.lastFmService.cachedTracks?.length) {
+        globalThis.lastFmService.updateCurrently(globalThis.lastFmService.cachedTracks);
+      }
+      globalThis.lastFmService.fetchRecent?.();
+    }
   };
 
   // Tab switching logic (click + ARIA keyboard pattern)

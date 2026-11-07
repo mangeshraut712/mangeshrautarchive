@@ -108,12 +108,12 @@ rate_limit_store = _RateLimitStoreCompat()
 _EPHEMERAL_SESSION_AUTH_SECRET = secrets.token_urlsafe(48)
 
 # Last.fm Cache and Config
-# 5s TTL ensures live Now Playing and quick scrobbles update with minimal latency
-LASTFM_CACHE_TTL = 5  # seconds
+# 2s ultra-low TTL ensures live Now Playing and 1s quick scrobbles update near-instantly
+LASTFM_CACHE_TTL = 2  # seconds
 LASTFM_CACHE_HEADERS = {
-    "Cache-Control": "public, s-maxage=5, stale-while-revalidate=10, max-age=5",
-    "CDN-Cache-Control": "public, s-maxage=5, stale-while-revalidate=10",
-    "Vercel-CDN-Cache-Control": "public, s-maxage=5, stale-while-revalidate=10",
+    "Cache-Control": "public, s-maxage=2, stale-while-revalidate=5, max-age=2",
+    "CDN-Cache-Control": "public, s-maxage=2, stale-while-revalidate=5",
+    "Vercel-CDN-Cache-Control": "public, s-maxage=2, stale-while-revalidate=5",
     "X-Music-Source": "lastfm-proxy",
 }
 lastfm_recent_cache: Dict[str, Dict[str, Any]] = {}

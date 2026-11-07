@@ -54,6 +54,26 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'whoburnedmore-23b-music-card-compact-sync-20261107',
+    date: '2026-11-07',
+    type: 'improvement',
+    title:
+      'WhoBurnedMore 23.12B token burn sync, compact hero music card, and instant shelf hydration',
+    summary:
+      'Synchronize live WhoBurnedMore developer telemetry across Systems, Uses, and Monitor surfaces: updated lifetime burn from 22.89B to 23.12B tokens ($19,649 spend, rank #64 of 358 developers / Top 18% globally, 254 active days, 94.90% prompt cache hit rate saving $45,908). Compact the hero music card width to 324px (312px mobile) ensuring it sits elegantly narrower than the bio paragraph and CTA buttons. Refine vinyl artwork rotation physics to keep spinning when hovered while actively playing or previewing, and remain strictly stationary when idle. Eliminate cold-start empty cards on the Currently music shelf by immediately hydrating with cached or curated tracks, reduce Last.fm backend cache TTL to 2s, and wire instant tab-switch scrobble updates.',
+    tags: ['systems', 'design', 'performance', 'api'],
+    sha: null,
+    commitVerified: false,
+    status: 'unreleased',
+    model: 'Gemini 3.8 Flash',
+    ide: 'Google Antigravity IDE',
+    purpose:
+      'Synchronize WhoBurnedMore 23.12B telemetry across portfolio surfaces, reduce hero music card width, fix artwork hover rotation physics, eliminate Currently shelf loading void via instant hydration, and lower Last.fm scrobble latency to 2s.',
+    attributionSource: 'commit-message',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
     id: 'sync-github-stats-and-repositories-20261104',
     date: '2026-11-04',
     type: 'improvement',

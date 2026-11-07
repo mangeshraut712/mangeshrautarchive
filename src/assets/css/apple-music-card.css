@@ -26,7 +26,7 @@
 #home.hero-section #music-card {
   position: relative !important;
   width: 100% !important;
-  max-width: min(352px, calc(100vw - 2rem)) !important;
+  max-width: min(324px, calc(100vw - 2rem)) !important;
   min-height: 0 !important;
   margin: clamp(0.35rem, 0.8vh, 0.65rem) auto clamp(0.45rem, 1vh, 0.75rem) auto !important;
   padding: 0 !important;
@@ -142,8 +142,7 @@ html.dark #home .music-card:hover .music-card-inner {
 .album-art,
 #home .album-art,
 #home #album-art,
-#home .music-card-inner .album-art,
-#home .music-card:hover .album-art {
+#home .music-card-inner .album-art {
   width: 100% !important;
   height: 100% !important;
   min-width: 100% !important;
@@ -164,7 +163,11 @@ html.dark #home .music-card:hover .music-card-inner {
 #home #music-card[data-music-state='playing'] #album-art,
 .music-card.is-playing #album-art,
 .music-card.is-audio-previewing #album-art,
-.music-card[data-music-state='playing'] #album-art {
+.music-card[data-music-state='playing'] #album-art,
+#home #music-card.is-playing:hover #album-art,
+#home #music-card.is-audio-previewing:hover #album-art,
+.music-card.is-playing:hover #album-art,
+.music-card.is-audio-previewing:hover #album-art {
   animation: albumSpin 8s linear infinite !important;
   animation-play-state: running !important;
 }
@@ -723,7 +726,7 @@ html[data-theme='dark'] #home #music-card .music-preview-tag {
 /* Keep the same compact composition at narrow widths without shrinking hit areas. */
 @media (max-width: 600px) {
   #home.hero-section #music-card {
-    max-width: min(340px, calc(100vw - 2rem)) !important;
+    max-width: min(312px, calc(100vw - 2rem)) !important;
   }
 
   #home.hero-section #music-card .music-card-inner {

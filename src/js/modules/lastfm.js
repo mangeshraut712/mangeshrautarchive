@@ -221,6 +221,13 @@ class LastFmService {
     this.hero = elements;
     if (this.cachedTracks?.[0]) {
       this.updateHero(this.cachedTracks[0]);
+    } else {
+      this.hydrateFromLocalCache();
+      if (this.cachedTracks?.[0]) {
+        this.updateHero(this.cachedTracks[0]);
+      } else if (CURATED_FALLBACK_TRACKS[0]) {
+        this.updateHero(CURATED_FALLBACK_TRACKS[0]);
+      }
     }
 
     if (this.hero?.musicCard && !this.hero.musicCard.dataset.clickBound) {
@@ -508,6 +515,24 @@ class LastFmService {
     this.currently = elements;
     if (this.cachedTracks?.length) {
       this.updateCurrently(this.cachedTracks);
+    } else {
+      this.hydrateFromLocalCache();
+      if (this.cachedTracks?.length) {
+        this.updateCurrently(this.cachedTracks);
+      } else {
+        this.applyRecentPayload(
+          {
+            recenttracks: {
+              track: CURATED_FALLBACK_TRACKS,
+              '@attr': {
+                user: this.USERNAME,
+                total: String(CURATED_FALLBACK_TRACKS.length),
+              },
+            },
+          },
+          'initial-curated'
+        );
+      }
     }
   }
 
@@ -1559,7 +1584,7 @@ class LastFmService {
       this.intervalId = null;
     }
     const isNowPlaying = this.cachedTracks?.[0]?.['@attr']?.nowplaying === 'true';
-    const interval = delayMs || (isNowPlaying ? 5000 : 8000);
+    const interval = delayMs || (isNowPlaying ? 2500 : 5000);
     this.intervalId = globalThis.setTimeout(() => {
       if (typeof document === 'undefined' || document.visibilityState === 'visible') {
         this.fetchRecent().finally(() => {
@@ -1568,7 +1593,7 @@ class LastFmService {
           }
         });
       } else if (this.started) {
-        this.scheduleNextPoll(10000);
+        this.scheduleNextPoll(6000);
       }
     }, interval);
   }
