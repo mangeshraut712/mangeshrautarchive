@@ -62,9 +62,8 @@ export const changelogEntries = [
     summary:
       'Synchronize live WhoBurnedMore developer telemetry across Systems, Uses, and Monitor surfaces: updated lifetime burn from 22.89B to 23.12B tokens ($19,649 spend, rank #64 of 358 developers / Top 18% globally, 254 active days, 94.90% prompt cache hit rate saving $45,908). Compact the hero music card width to 324px (312px mobile) ensuring it sits elegantly narrower than the bio paragraph and CTA buttons. Refine vinyl artwork rotation physics to keep spinning when hovered while actively playing or previewing, and remain strictly stationary when idle. Eliminate cold-start empty cards on the Currently music shelf by immediately hydrating with cached or curated tracks, reduce Last.fm backend cache TTL to 2s, and wire instant tab-switch scrobble updates.',
     tags: ['systems', 'design', 'performance', 'api'],
-    sha: null,
-    commitVerified: false,
-    status: 'unreleased',
+    sha: '1efec38b',
+    commitVerified: true,
     model: 'Gemini 3.8 Flash',
     ide: 'Google Antigravity IDE',
     purpose:
