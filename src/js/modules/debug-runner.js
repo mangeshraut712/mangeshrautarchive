@@ -1302,13 +1302,17 @@ class DebugRunner {
     this.speed = Math.min(maxSpeed, this.baseSpeed + (this.distance / this.totalDistance) * 3.6);
 
     // Stage progression checks
+    const cycleDist =
+      this.difficulty === 'normal' ? this.distance % this.totalDistance : this.distance;
+    const currentLoop = Math.floor(this.distance / this.totalDistance) + 1;
     for (let i = 0; i < this.stages.length; i++) {
-      if (this.distance >= this.stages[i].start && this.distance < this.stages[i].end) {
+      if (cycleDist >= this.stages[i].start && cycleDist < this.stages[i].end) {
         if (this.stageIdx !== i) {
           this.stageIdx = i;
           this.playSound('checkpoint');
           this.createParticles(this.dev.x + 20, this.groundY - 20, 25, this.stages[i].color);
-          this.showToast(`Stage Cleared: ${this.stages[i].name}`);
+          const loopLabel = currentLoop > 1 ? ` (Loop ${currentLoop})` : '';
+          this.showToast(`Stage Cleared: ${this.stages[i].name}${loopLabel}`);
           this.updateSideStats();
         }
         break;
@@ -1372,8 +1376,8 @@ class DebugRunner {
       return;
     }
 
-    // At 960m+, stop spawning hazards and spawn Rooftop Reset pedestal at 1000m
-    if (this.distance >= this.totalDistance - 40) {
+    // At 960m+ in Hard/Nightmare modes, stop spawning hazards and spawn Rooftop Reset pedestal at 1000m
+    if (this.difficulty !== 'normal' && this.distance >= this.totalDistance - 40) {
       if (this.resetPedestalX === null) {
         this.resetPedestalX = this.canvas.width + 120;
       }
@@ -2560,7 +2564,10 @@ class DebugRunner {
         : this.difficulty === 'hard'
           ? '#ff9500'
           : '#0071e3';
-    const subtitle = `${modeUpper} MODE · SPACE / TAP TO ASCEND (0 → 1,000m)`;
+    const subtitle =
+      this.difficulty === 'normal'
+        ? 'NORMAL MODE (ENDLESS) · SPACE / TAP TO RUN FOR HIGH SCORE'
+        : `${modeUpper} MODE · SPACE / TAP TO ASCEND (0 → 1,000m)`;
     const action = this.isMobile ? 'Tap to Launch' : 'Press SPACE to Start';
     this.drawAppleCard('DEBUG ASCENT', subtitle, action, accent);
   }
@@ -2594,7 +2601,10 @@ class DebugRunner {
   }
 
   drawGameOver() {
-    const fallenMeters = Math.min(1000, Math.floor(this.distance));
+    const fallenMeters =
+      this.difficulty === 'normal'
+        ? Math.floor(this.distance)
+        : Math.min(1000, Math.floor(this.distance));
     const subtitle = `Failed at ${fallenMeters}m · Checkpoint Reset · ${this.difficulty.toUpperCase()}`;
     const action = this.isMobile ? 'Tap to Retry' : 'Press SPACE to Retry';
     this.drawAppleCard('DEPLOYMENT FAILED', subtitle, action, '#ff3b30');
@@ -2647,6 +2657,10 @@ const initDebugRunner = () => {
 
   container.dataset.gameReady = 'true';
   const game = new DebugRunner();
+  container.__game = game;
+  if (typeof window !== 'undefined') {
+    window.debugRunnerGame = game;
+  }
   const canvas = game.init();
   container.appendChild(canvas);
 

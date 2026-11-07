@@ -54,6 +54,25 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'debug-runner-endless-high-scoring-50k-leaderboard-20261107',
+    date: '2026-11-07',
+    type: 'improvement',
+    title:
+      'Endless Normal mode loop scaling, 50k+ high scoring, and verified top-3 leaderboard tracking',
+    summary:
+      'Enable seamless endless looping across cloud stages in Normal mode past 1,000m so score scales endlessly up to 5,000, 10,000, and 50,000+ points without premature Rooftop Reset pedestal triggering (which is scoped exclusively to Hard and Nightmare modes). Add loop milestone notifications ("Stage Cleared: Localhost Basement (Loop 2)"), display unclamped distance in deployment failed card, and surface automated runner handle window.debugRunnerGame. Verified with 5,010, 10,020, and 50,020 automated test runs populating the Top 3 leaderboard in light and dark themes.',
+    tags: ['design', 'performance', 'other'],
+    sha: 'e2428fce',
+    commitVerified: true,
+    model: 'Gemini 3.8 Flash',
+    ide: 'Google Antigravity IDE',
+    purpose:
+      'Enable endless Normal mode loop scaling past 1,000m, support 5,000–50,000+ high scoring, eliminate distance clamping on game over card, surface debugRunnerGame handle, and verify Top 3 leaderboard ranking.',
+    attributionSource: 'commit-message',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
     id: 'debug-ascent-rooftop-reset-arcade-edition-20261107',
     date: '2026-11-07',
     type: 'release',
@@ -62,8 +81,8 @@ export const changelogEntries = [
     summary:
       'Major Apple Arcade–inspired upgrade to the developer portfolio runner (#debug-runner-section) integrating mechanics from poteto.com’s viral Rooftop Reset. Features 3 difficulty tiers (Normal endless, Hard with stage checkpoints at 8.6x speed, and Nightmare with 0 checkpoints at 10.5x speed resetting to localhost basement on hit), invulnerable Air Dash (Shift / X / D or mobile button with cyan particle trail and ground refueling cooldown), 6 cloud architecture ascending floors (Localhost -> Staging CI -> Code Review -> Kubernetes -> Global CDN -> Production Rooftop), oscillating titanium saws, duckable laser beams, hydraulic compiler compression gates, and an elevated glass pedestal with glowing red RESET button at 1,000m triggering victory state with clear time and death counter. Styled with Apple HIG frosted glass cards, native segmented pill difficulty switcher, tactile mobile controls, and sandbox-safe storage.',
     tags: ['design', 'performance', 'other'],
-    sha: null,
-    commitVerified: false,
+    sha: '23de6ff1',
+    commitVerified: true,
     model: 'Gemini 3.8 Flash',
     ide: 'Google Antigravity IDE',
     purpose:
