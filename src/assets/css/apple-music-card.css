@@ -709,8 +709,8 @@ html[data-theme='dark'] #home #music-card .music-time-duration {
   font-weight: 700 !important;
   text-transform: uppercase !important;
   letter-spacing: 0.06em !important;
-  color: #0071e3 !important;
-  -webkit-text-fill-color: #0071e3 !important;
+  color: #005bb5 !important;
+  -webkit-text-fill-color: #005bb5 !important;
   transition:
     color 0.2s ease,
     -webkit-text-fill-color 0.2s ease;

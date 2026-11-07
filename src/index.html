@@ -4880,7 +4880,7 @@ html.dark #home .hero-name-text {
     <section id="debug-runner-section" class="fade-in" aria-labelledby="debug-runner-heading">
       <div class="container">
         <h2 id="debug-runner-heading">Debug Runner</h2>
-        <p class="section-subtitle">Chrome Dino–style runner — jump, duck, and survive the night cycle.</p>
+        <p class="section-subtitle">Apple Arcade–inspired developer runner — ascend 6 cloud architecture stages to the 1,000m Rooftop Reset.</p>
 
         <details class="debug-runner-disclosure">
           <summary aria-controls="debug-runner-container">
@@ -4889,6 +4889,32 @@ html.dark #home .hero-name-text {
           </summary>
 
           <div class="game-stage">
+            <!-- Apple Arcade Header Bar -->
+            <div class="debug-ascent-header" aria-label="Game Mode and Header">
+              <div class="debug-ascent-branding">
+                <div class="debug-ascent-badge-icon" aria-hidden="true">
+                  <i class="fas fa-gamepad"></i>
+                </div>
+                <div class="debug-ascent-meta">
+                  <span class="debug-ascent-series">Apple Inspired · Arcade Series</span>
+                  <span class="debug-ascent-title">Debug Ascent <span class="debug-ascent-version-pill">Rooftop Reset</span></span>
+                </div>
+              </div>
+
+              <!-- Segmented Difficulty Switcher (Apple HIG Native Pill) -->
+              <div class="apple-segmented-pill" role="tablist" aria-label="Game difficulty">
+                <button type="button" id="debug-seg-normal" class="apple-segmented-btn active" role="tab" aria-selected="true" data-mode="normal">
+                  Normal
+                </button>
+                <button type="button" id="debug-seg-hard" class="apple-segmented-btn" role="tab" aria-selected="false" data-mode="hard">
+                  Hard
+                </button>
+                <button type="button" id="debug-seg-nightmare" class="apple-segmented-btn" role="tab" aria-selected="false" data-mode="nightmare">
+                  Nightmare
+                </button>
+              </div>
+            </div>
+
             <div class="game-area">
               <div class="game-play-zone">
                 <div class="game-canvas-wrapper">
@@ -4907,12 +4933,12 @@ html.dark #home .hero-name-text {
                     <span class="game-stat-num" id="game-speed">1.0x</span>
                   </div>
                   <div class="game-stat-item" id="game-stat-combo-box">
-                    <span class="game-stat-tag"><span class="game-stat-emoji" aria-hidden="true">🔥</span> Combo</span>
-                    <span class="game-stat-num" id="game-combo-display">1x</span>
+                    <span class="game-stat-tag"><span class="game-stat-emoji" aria-hidden="true">🚀</span> Dash</span>
+                    <span class="game-stat-num" id="game-combo-display">Ready</span>
                   </div>
                   <div class="game-stat-item" id="game-stat-boost-box">
-                    <span class="game-stat-tag"><span class="game-stat-emoji" aria-hidden="true">✨</span> Boost</span>
-                    <span class="game-stat-num" id="game-boost-display">None</span>
+                    <span class="game-stat-tag"><span class="game-stat-emoji" aria-hidden="true">🏢</span> Floor</span>
+                    <span class="game-stat-num" id="game-boost-display">01 Local</span>
                   </div>
                 </div>
 

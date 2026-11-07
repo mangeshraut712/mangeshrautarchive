@@ -1,9 +1,33 @@
 /**
- * Debug Runner — Chrome Dino–inspired endless runner (October 2026 Edition)
- * Developer-themed obstacles with Dino-core physics, Web Audio synthesizer,
- * Gamepad API controller support, native Canvas roundRect, prefers-reduced-motion,
- * combo multiplier system, milestone chimes, and advanced cyberpunk visual FX.
+ * Debug Runner — Debug Ascent (Rooftop Reset & Apple Arcade Edition)
+ * Apple HIG-inspired developer runner: 6 cloud architecture stages (0-1000m),
+ * 3 difficulty modes (Normal, Hard, Nightmare), Air Dash mechanic with invulnerability,
+ * dynamic hazards (oscillating saws, cyber lasers, hydraulic compression gates),
+ * Rooftop Reset pedestal at 1000m, Web Audio arpeggios, and Gamepad API.
  */
+
+const safeStorage = {
+  _mem: {},
+  getItem(key) {
+    try {
+      return typeof window !== 'undefined' && window.localStorage
+        ? window.localStorage.getItem(key)
+        : this._mem[key] || null;
+    } catch {
+      return this._mem[key] || null;
+    }
+  },
+  setItem(key, val) {
+    try {
+      if (typeof window !== 'undefined' && window.localStorage) {
+        window.localStorage.setItem(key, val);
+      }
+    } catch {
+      // Storage access blocked or restricted in iframe sandbox
+    }
+    this._mem[key] = String(val);
+  },
+};
 
 class DebugRunner {
   constructor() {
@@ -11,10 +35,30 @@ class DebugRunner {
     this.ctx = null;
     this.gameRunning = false;
     this.gameOver = false;
+    this.won = false;
     this.paused = false;
+    this.difficulty = safeStorage.getItem('debugRunnerDifficulty') || 'normal';
+    this.stages = [
+      { id: 1, name: 'Localhost', sub: 'Basement Runtime', start: 0, end: 150, color: '#0a84ff' },
+      { id: 2, name: 'Staging CI', sub: 'Pipeline Shaft', start: 150, end: 350, color: '#30d158' },
+      { id: 3, name: 'Code Review', sub: 'Compiler Hall', start: 350, end: 550, color: '#ffd60a' },
+      { id: 4, name: 'Kubernetes', sub: 'Cluster Core', start: 550, end: 750, color: '#bf5af2' },
+      { id: 5, name: 'Global CDN', sub: 'Edge Antenna', start: 750, end: 920, color: '#64d2ff' },
+      { id: 6, name: 'Production', sub: 'Rooftop Reset', start: 920, end: 1000, color: '#ff453a' },
+    ];
+    this.totalDistance = 1000;
+    this.distance = 0;
+    this.stageIdx = 0;
+    this.deaths = 0;
+    this.startTime = 0;
+    this.clearTime = 0;
+    this.resetPedestalX = null;
+    this.toastText = '';
+    this.toastUntil = 0;
     this.score = 0;
-    this.highScore = parseInt(localStorage.getItem('debugRunnerHighScore'), 10) || 0;
-    this.baseSpeed = 6.2;
+    this.highScore = parseInt(safeStorage.getItem('debugRunnerHighScore') || '0', 10) || 0;
+    this.baseSpeed =
+      this.difficulty === 'nightmare' ? 10.5 : this.difficulty === 'hard' ? 8.6 : 6.8;
     this.speed = this.baseSpeed;
     this.level = 1;
     this.gameLoop = null;
@@ -33,6 +77,11 @@ class DebugRunner {
     this.isMobile = this.detectMobile();
     this.mobileControls = null;
     this.frame = 0;
+    this.bestTimes = {
+      normal: parseFloat(safeStorage.getItem('debugRunnerBest_normal') || '0'),
+      hard: parseFloat(safeStorage.getItem('debugRunnerBest_hard') || '0'),
+      nightmare: parseFloat(safeStorage.getItem('debugRunnerBest_nightmare') || '0'),
+    };
     this.highScoreDisplay = document.getElementById('game-high-score');
     this.speedDisplay = document.getElementById('game-speed');
     this.comboDisplay = document.getElementById('game-combo-display');
@@ -71,6 +120,7 @@ class DebugRunner {
     this.hasGamepad = false;
     this.lastGpJump = false;
     this.lastGpDuck = false;
+    this.lastGpDash = false;
     this.lastGpPause = false;
 
     // Audio & Sound
@@ -232,7 +282,7 @@ class DebugRunner {
     const entry = { score: Math.floor(this.score / 10), at: Date.now() };
     let board;
     try {
-      const raw = localStorage.getItem('debugRunnerLeaderboard');
+      const raw = safeStorage.getItem('debugRunnerLeaderboard');
       board = raw ? JSON.parse(raw) : [];
       if (!Array.isArray(board)) board = [];
     } catch {
@@ -247,24 +297,24 @@ class DebugRunner {
         typeof structuredClone === 'function'
           ? structuredClone(board)
           : JSON.parse(JSON.stringify(board));
-      localStorage.setItem('debugRunnerLeaderboard', JSON.stringify(cloned));
+      safeStorage.setItem('debugRunnerLeaderboard', JSON.stringify(cloned));
     } catch {
-      localStorage.setItem('debugRunnerLeaderboard', JSON.stringify(board));
+      safeStorage.setItem('debugRunnerLeaderboard', JSON.stringify(board));
     }
     this.renderLeaderboard(board);
   }
 
   persistHighScore() {
-    const stored = parseInt(localStorage.getItem('debugRunnerHighScore'), 10) || 0;
+    const stored = parseInt(safeStorage.getItem('debugRunnerHighScore') || '0', 10) || 0;
     if (this.highScore > stored) {
-      localStorage.setItem('debugRunnerHighScore', String(Math.floor(this.highScore)));
+      safeStorage.setItem('debugRunnerHighScore', String(Math.floor(this.highScore)));
     }
   }
 
   renderLeaderboard(board = null) {
     if (!board) {
       try {
-        const raw = localStorage.getItem('debugRunnerLeaderboard');
+        const raw = safeStorage.getItem('debugRunnerLeaderboard');
         board = raw ? JSON.parse(raw) : [];
         if (!Array.isArray(board)) board = [];
       } catch {
@@ -318,6 +368,7 @@ class DebugRunner {
     this.setupControls();
     this.setupTouchControls();
     this.createMobileControls();
+    this.setupSegmentedControls();
 
     // Click handler for sound toggle and start triggers
     this.canvas.addEventListener(
@@ -340,7 +391,7 @@ class DebugRunner {
           return;
         }
 
-        if (!this.gameRunning || this.gameOver) {
+        if (!this.gameRunning || this.gameOver || this.won) {
           this.start();
         }
       },
@@ -434,10 +485,114 @@ class DebugRunner {
         gain.gain.linearRampToValueAtTime(0.01, now + 0.1);
         osc.start(now);
         osc.stop(now + 0.1);
+      } else if (type === 'dash') {
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(540, now);
+        osc.frequency.exponentialRampToValueAtTime(110, now + 0.13);
+        gain.gain.setValueAtTime(0.12, now);
+        gain.gain.linearRampToValueAtTime(0.01, now + 0.13);
+        osc.start(now);
+        osc.stop(now + 0.13);
+      } else if (type === 'death') {
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(160, now);
+        osc.frequency.linearRampToValueAtTime(40, now + 0.28);
+        gain.gain.setValueAtTime(0.16, now);
+        gain.gain.linearRampToValueAtTime(0.01, now + 0.28);
+        osc.start(now);
+        osc.stop(now + 0.28);
+      } else if (type === 'checkpoint') {
+        [330, 440, 660].forEach((f, i) => {
+          const oscC = ctx.createOscillator();
+          const gainC = ctx.createGain();
+          oscC.connect(gainC);
+          gainC.connect(ctx.destination);
+          const t = now + i * 0.075;
+          oscC.type = 'triangle';
+          oscC.frequency.setValueAtTime(f, t);
+          oscC.frequency.exponentialRampToValueAtTime(f * 1.02, t + 0.14);
+          gainC.gain.setValueAtTime(0.08, t);
+          gainC.gain.linearRampToValueAtTime(0.001, t + 0.14);
+          oscC.start(t);
+          oscC.stop(t + 0.15);
+        });
+      } else if (type === 'win') {
+        [330, 415, 494, 660, 830].forEach((f, i) => {
+          const oscW = ctx.createOscillator();
+          const gainW = ctx.createGain();
+          oscW.connect(gainW);
+          gainW.connect(ctx.destination);
+          const t = now + i * 0.08;
+          oscW.type = 'triangle';
+          oscW.frequency.setValueAtTime(f, t);
+          oscW.frequency.exponentialRampToValueAtTime(f * 1.02, t + 0.18);
+          gainW.gain.setValueAtTime(0.09, t);
+          gainW.gain.linearRampToValueAtTime(0.001, t + 0.18);
+          oscW.start(t);
+          oscW.stop(t + 0.19);
+        });
       }
     } catch {
       // Procedural audio safety fallback
     }
+  }
+
+  showToast(msg, durationMs = 2200) {
+    this.toastText = msg;
+    this.toastUntil = performance.now() + durationMs;
+  }
+
+  setDifficulty(mode) {
+    if (!['normal', 'hard', 'nightmare'].includes(mode)) return;
+    this.difficulty = mode;
+    safeStorage.setItem('debugRunnerDifficulty', mode);
+
+    if (mode === 'normal') {
+      this.baseSpeed = 6.8;
+    } else if (mode === 'hard') {
+      this.baseSpeed = 8.6;
+    } else {
+      this.baseSpeed = 10.5;
+    }
+    this.speed = this.baseSpeed;
+
+    const modes = ['normal', 'hard', 'nightmare'];
+    modes.forEach(m => {
+      const btn = document.getElementById(`debug-seg-${m}`);
+      if (btn) {
+        const isActive = m === mode;
+        btn.classList.toggle('active', isActive);
+        btn.setAttribute('aria-selected', isActive ? 'true' : 'false');
+      }
+    });
+
+    if (!this.gameRunning || this.gameOver || this.won) {
+      this.drawStartScreen();
+    } else {
+      this.start();
+    }
+    this.showToast(`Selected: ${mode.toUpperCase()} Mode`);
+  }
+
+  setupSegmentedControls() {
+    const modes = ['normal', 'hard', 'nightmare'];
+    modes.forEach(mode => {
+      const btn = document.getElementById(`debug-seg-${mode}`);
+      if (btn) {
+        const isActive = mode === this.difficulty;
+        btn.classList.toggle('active', isActive);
+        btn.setAttribute('aria-selected', isActive ? 'true' : 'false');
+        btn.addEventListener(
+          'click',
+          e => {
+            e.preventDefault();
+            this.setDifficulty(mode);
+            this.vibrate(15);
+          },
+          { signal: this.abortController.signal }
+        );
+      }
+    });
   }
 
   createFloatingText(x, y, text, color) {
@@ -614,18 +769,23 @@ class DebugRunner {
       });
     };
 
-    const jumpBtn = this.createControlButton('JUMP', 'jump');
-    bindAction(jumpBtn, () => this.jump());
-
-    const duckBtn = this.createControlButton('DUCK', 'duck');
+    const duckBtn = this.createControlButton('SLIDE', 'duck');
     bindAction(
       duckBtn,
       () => this.duck(),
       () => this.standUp()
     );
 
-    wrapper.appendChild(jumpBtn);
+    const dashBtn = this.createControlButton('DASH', 'dash');
+    bindAction(dashBtn, () => this.dash());
+
+    const jumpBtn = this.createControlButton('JUMP', 'jump');
+    jumpBtn.classList.add('specular-shine');
+    bindAction(jumpBtn, () => this.jump());
+
     wrapper.appendChild(duckBtn);
+    wrapper.appendChild(dashBtn);
+    wrapper.appendChild(jumpBtn);
 
     const slot = document.getElementById('debug-runner-mobile-controls-slot');
     if (slot) {
@@ -649,7 +809,8 @@ class DebugRunner {
     btn.className = `debug-game-btn debug-game-btn--${type}`;
 
     const icon = document.createElement('i');
-    icon.className = type === 'jump' ? 'fas fa-chevron-up' : 'fas fa-chevron-down';
+    icon.className =
+      type === 'jump' ? 'fas fa-arrow-up' : type === 'dash' ? 'fas fa-bolt' : 'fas fa-arrow-down';
 
     const label = document.createElement('span');
     label.textContent = text;
@@ -675,22 +836,38 @@ class DebugRunner {
       this.lastUiSpeed = speedLabel;
     }
 
-    const comboLabel = this.comboMultiplier > 1 ? `${this.comboMultiplier}x` : '1x';
-    if (this.comboDisplay && this.lastUiCombo !== comboLabel) {
-      this.comboDisplay.textContent = comboLabel;
-      this.comboDisplay.style.color =
-        this.comboMultiplier >= 3 ? '#ff9500' : this.comboMultiplier > 1 ? '#0071e3' : '';
-      this.lastUiCombo = comboLabel;
+    // Air Dash readiness or Combo
+    let dashLabel = 'Ready';
+    let dashColor = '#30d158';
+    if (this.dev && !this.dev.dashReady) {
+      dashLabel = `${this.dev.dashCooldown.toFixed(1)}s`;
+      dashColor = '#86868b';
+    } else if (this.comboMultiplier > 1) {
+      dashLabel = `${this.comboMultiplier}x 🔥`;
+      dashColor = '#0071e3';
     }
 
-    const boostLabel = this.phaseCloak ? '⚡ Stash' : this.invincible ? '🛡️ Shield' : 'None';
+    if (this.comboDisplay && this.lastUiCombo !== dashLabel) {
+      this.comboDisplay.textContent = dashLabel;
+      this.comboDisplay.style.color = dashColor;
+      this.lastUiCombo = dashLabel;
+    }
+
+    // Current floor/stage or boost
+    const curStage = this.stages[this.stageIdx] || this.stages[0];
+    let boostLabel = `0${curStage.id} ${curStage.name}`;
+    let boostColor = curStage.color;
+    if (this.phaseCloak) {
+      boostLabel = '⚡ Stash';
+      boostColor = '#00e5ff';
+    } else if (this.invincible) {
+      boostLabel = '🛡️ Shield';
+      boostColor = '#ffd60a';
+    }
+
     if (this.boostDisplay && this.lastUiBoost !== boostLabel) {
       this.boostDisplay.textContent = boostLabel;
-      this.boostDisplay.style.color = this.phaseCloak
-        ? '#00e5ff'
-        : this.invincible
-          ? '#ffd60a'
-          : '';
+      this.boostDisplay.style.color = boostColor;
       this.lastUiBoost = boostLabel;
     }
   }
@@ -716,6 +893,10 @@ class DebugRunner {
       jumpPower: 17,
       rotation: 0,
       isDucking: false,
+      dashReady: true,
+      dashCooldown: 0,
+      isDashing: false,
+      dashFrames: 0,
     };
   }
 
@@ -728,7 +909,7 @@ class DebugRunner {
       if (e.type === 'keydown') {
         if (e.code === 'KeyP' || e.code === 'Escape') {
           e.preventDefault();
-          if (!this.gameRunning || this.gameOver) return;
+          if (!this.gameRunning || this.gameOver || this.won) return;
           if (this.paused) this.resume();
           else this.pause();
           return;
@@ -736,7 +917,7 @@ class DebugRunner {
 
         if (e.code === 'Space' || e.code === 'ArrowUp' || e.code === 'KeyW') {
           e.preventDefault();
-          if (!this.gameRunning || this.gameOver) {
+          if (!this.gameRunning || this.gameOver || this.won) {
             this.start();
           } else if (this.paused) {
             this.resume();
@@ -747,6 +928,17 @@ class DebugRunner {
         if ((e.code === 'ArrowDown' || e.code === 'KeyS') && this.gameRunning && !this.paused) {
           e.preventDefault();
           this.duck();
+        }
+        if (
+          (e.code === 'ShiftLeft' ||
+            e.code === 'ShiftRight' ||
+            e.code === 'KeyX' ||
+            e.code === 'KeyD') &&
+          this.gameRunning &&
+          !this.paused
+        ) {
+          e.preventDefault();
+          this.dash();
         }
       } else if (e.type === 'keyup') {
         if (e.code === 'ArrowDown' || e.code === 'KeyS') {
@@ -770,7 +962,7 @@ class DebugRunner {
         touchStartY = e.touches[0].clientY;
         touchStartX = e.touches[0].clientX;
 
-        if (!this.gameRunning || this.gameOver) {
+        if (!this.gameRunning || this.gameOver || this.won) {
           this.start();
           this.vibrate(25);
         }
@@ -797,6 +989,8 @@ class DebugRunner {
               if (this.touchDuckTimer) clearTimeout(this.touchDuckTimer);
               this.touchDuckTimer = setTimeout(() => this.standUp(), 420);
             }
+          } else if (diffX > 40) {
+            this.dash();
           } else if (diffX < 15 && Math.abs(diffY) < 15) {
             this.jump();
             this.vibrate(12);
@@ -823,12 +1017,15 @@ class DebugRunner {
       // Button 1 (B), Button 13 (D-pad Down)
       const duckPressed =
         (gp.buttons[1] && gp.buttons[1].pressed) || (gp.buttons[13] && gp.buttons[13].pressed);
+      // Button 2 (X), Button 5 (RB) -> Dash
+      const dashPressed =
+        (gp.buttons[2] && gp.buttons[2].pressed) || (gp.buttons[5] && gp.buttons[5].pressed);
       // Button 9 (Start / Options), Button 8 (Select / Share)
       const pausePressed =
         (gp.buttons[9] && gp.buttons[9].pressed) || (gp.buttons[8] && gp.buttons[8].pressed);
 
       if (pausePressed && !this.lastGpPause) {
-        if (!this.gameRunning || this.gameOver) {
+        if (!this.gameRunning || this.gameOver || this.won) {
           this.start();
         } else if (this.paused) {
           this.resume();
@@ -839,7 +1036,7 @@ class DebugRunner {
       this.lastGpPause = pausePressed;
 
       if (jumpPressed) {
-        if (!this.gameRunning || this.gameOver) {
+        if (!this.gameRunning || this.gameOver || this.won) {
           this.start();
         } else if (this.paused) {
           this.resume();
@@ -857,23 +1054,35 @@ class DebugRunner {
         this.standUp();
       }
       this.lastGpDuck = duckPressed;
+
+      if (dashPressed && !this.lastGpDash && this.gameRunning && !this.paused) {
+        this.dash();
+      }
+      this.lastGpDash = dashPressed;
       break;
     }
   }
 
   start() {
-    if (this.gameRunning && !this.gameOver) return;
+    if (this.gameRunning && !this.gameOver && !this.won) return;
 
     this.gameRunning = true;
     this.gameOver = false;
+    this.won = false;
     this.paused = false;
+    this.distance = 0;
     this.score = 0;
+    this.stageIdx = 0;
+    this.deaths = 0;
+    this.startTime = performance.now();
+    this.clearTime = 0;
     this.speed = this.baseSpeed;
     this.level = 1;
     this.obstacles = [];
     this.powerUps = [];
     this.particles = [];
     this.floatingTexts = [];
+    this.resetPedestalX = null;
     this.nextNoteTime = 0;
     this.noteIndex = 0;
     this.lastFrameTime = 0;
@@ -893,6 +1102,7 @@ class DebugRunner {
     this.resetHero();
     this.updateSideStats();
     this.playSound('powerup');
+    this.showToast(`Ascent Started: ${this.difficulty.toUpperCase()} Mode`);
 
     if (this.touchDuckTimer) {
       clearTimeout(this.touchDuckTimer);
@@ -924,13 +1134,32 @@ class DebugRunner {
       clearTimeout(this.touchDuckTimer);
       this.touchDuckTimer = null;
     }
-    this.playSound('gameover');
-    this.vibrate([60, 120, 60]);
-    this.drawGameOver();
+    if (!this.won) {
+      this.playSound('gameover');
+      this.vibrate([60, 120, 60]);
+      this.drawGameOver();
+    }
+  }
+
+  dash() {
+    if (this.paused || this.gameOver || !this.gameRunning || this.won) return;
+    if (!this.dev) return;
+
+    if (this.dev.dashReady && !this.dev.isDashing) {
+      this.dev.isDashing = true;
+      this.dev.dashFrames = 15;
+      this.dev.dashReady = false;
+      this.dev.dashCooldown = 1.35;
+      this.dev.velocityY = 0;
+      this.playSound('dash');
+      this.vibrate(25);
+      this.createParticles(this.dev.x, this.dev.y + this.dev.height / 2, 20, '#64d2ff');
+      this.updateSideStats();
+    }
   }
 
   pause() {
-    if (!this.gameRunning || this.gameOver || this.paused) return;
+    if (!this.gameRunning || this.gameOver || this.paused || this.won) return;
     this.paused = true;
     if (this.gameLoop) {
       cancelAnimationFrame(this.gameLoop);
@@ -942,7 +1171,7 @@ class DebugRunner {
   }
 
   resume() {
-    if (!this.gameRunning || !this.paused || this.gameOver) return;
+    if (!this.gameRunning || !this.paused || this.gameOver || this.won) return;
     this.paused = false;
     this.lastFrameTime = 0;
 
@@ -956,7 +1185,7 @@ class DebugRunner {
   }
 
   jump() {
-    if (this.paused || this.gameOver) return;
+    if (this.paused || this.gameOver || this.won) return;
 
     if (this.dev.isDucking && this.dev.onGround) {
       this.standUp();
@@ -971,7 +1200,7 @@ class DebugRunner {
   }
 
   duck() {
-    if (this.paused || this.gameOver || !this.gameRunning) return;
+    if (this.paused || this.gameOver || !this.gameRunning || this.won) return;
 
     if (!this.dev.onGround) {
       if (this.dev.velocityY < this.fastFallVelocity) {
@@ -1011,25 +1240,45 @@ class DebugRunner {
       this.playBackgroundMusic();
     }
 
-    // Gravity & physics
-    this.dev.velocityY += this.gravity * frameScale;
-    this.dev.y += this.dev.velocityY * frameScale;
-
-    // Ground check
-    if (this.dev.y >= this.groundY - this.dev.height) {
-      this.dev.y = this.groundY - this.dev.height;
-      this.dev.velocityY = 0;
-      this.dev.onGround = true;
-      if (this.dev.isDucking) {
-        this.dev.height = 30;
-        this.dev.y = this.groundY - 30;
+    // Air Dash Movement & Cooldown
+    if (this.dev.isDashing) {
+      this.dev.dashFrames--;
+      if (Math.random() < 0.6) {
+        this.createParticles(this.dev.x, this.dev.y + this.dev.height / 2, 2, '#64d2ff');
+      }
+      if (this.dev.dashFrames <= 0) {
+        this.dev.isDashing = false;
       }
     } else {
-      this.dev.onGround = false;
+      // Gravity & physics
+      this.dev.velocityY += this.gravity * frameScale;
+      this.dev.y += this.dev.velocityY * frameScale;
+
+      // Ground check
+      if (this.dev.y >= this.groundY - this.dev.height) {
+        this.dev.y = this.groundY - this.dev.height;
+        this.dev.velocityY = 0;
+        this.dev.onGround = true;
+        if (this.dev.isDucking) {
+          this.dev.height = 30;
+          this.dev.y = this.groundY - 30;
+        }
+      } else {
+        this.dev.onGround = false;
+      }
     }
 
-    // Spin during jump (skipped in reduced-motion)
-    if (!this.dev.onGround && !this.dev.isDucking && !this.reducedMotion) {
+    // Dash recharge (must touch ground to refuel)
+    if (!this.dev.dashReady) {
+      this.dev.dashCooldown = Math.max(0, this.dev.dashCooldown - dt);
+      if (this.dev.dashCooldown <= 0 && this.dev.onGround) {
+        this.dev.dashReady = true;
+        this.updateSideStats();
+      }
+    }
+
+    // Spin during jump (skipped in reduced-motion or ducking)
+    if (!this.dev.onGround && !this.dev.isDucking && !this.dev.isDashing && !this.reducedMotion) {
       this.dev.rotation += 0.08 * frameScale;
     } else {
       this.dev.rotation = 0;
@@ -1040,49 +1289,30 @@ class DebugRunner {
       this.createParticles(this.dev.x + 10, this.groundY, 2, '#FFD60A');
     }
 
-    // Speed progression (gentle, steady arcade acceleration)
-    this.speed += 0.0003 * frameScale;
-
-    // Distance tracking
-    this.score += this.speed * 0.22 * frameScale;
+    // Distance tracking & 6-Floor Stage Advancement
+    this.distance += this.speed * dt * 5;
+    this.score = Math.floor(this.distance * 10);
     if (this.score > this.highScore) {
       this.highScore = this.score;
     }
 
-    // Milestone chimes every 100 display points
-    const currentMilestone = Math.floor(this.score / 1000);
-    if (currentMilestone > this.lastMilestone) {
-      this.lastMilestone = currentMilestone;
-      this.playSound('milestone');
-      this.milestoneFlashUntil = Date.now() + 600;
-      this.createFloatingText(
-        this.dev.x + 20,
-        this.dev.y - 20,
-        `★ ${currentMilestone * 100} PTS!`,
-        '#FFD60A'
-      );
-    }
+    // Speed progression capped by difficulty
+    const maxSpeed =
+      this.difficulty === 'nightmare' ? 16.5 : this.difficulty === 'hard' ? 14.5 : 12.5;
+    this.speed = Math.min(maxSpeed, this.baseSpeed + (this.distance / this.totalDistance) * 3.6);
 
-    // Combo timer decay
-    if (this.comboCount > 0 && Date.now() - this.lastNearMissTime > this.comboTimerMs) {
-      this.comboCount = 0;
-      this.comboMultiplier = 1;
-    }
-
-    // Night cycle every ~700 display points
-    const displayScore = Math.floor(this.score / 10);
-    const nightCycle = Math.floor(displayScore / 700);
-    this.nightMode = nightCycle % 2 === 1;
-
-    // Level up logic (natural progression every 2200 points, capped at 12.0)
-    const newLevel = Math.floor(this.score / 2200) + 1;
-    if (newLevel > this.level) {
-      this.level = newLevel;
-      this.speed = Math.min(12.0, this.speed + 0.35);
-      this.screenShake = this.reducedMotion ? 0 : 16;
-      this.playSound('levelup');
-      this.createParticles(this.canvas.width / 2, this.canvas.height / 2, 35, this.colors.accent);
-      this.showLevelMessageUntil = Date.now() + 2000;
+    // Stage progression checks
+    for (let i = 0; i < this.stages.length; i++) {
+      if (this.distance >= this.stages[i].start && this.distance < this.stages[i].end) {
+        if (this.stageIdx !== i) {
+          this.stageIdx = i;
+          this.playSound('checkpoint');
+          this.createParticles(this.dev.x + 20, this.groundY - 20, 25, this.stages[i].color);
+          this.showToast(`Stage Cleared: ${this.stages[i].name}`);
+          this.updateSideStats();
+        }
+        break;
+      }
     }
 
     // Move grid offsets
@@ -1137,70 +1367,98 @@ class DebugRunner {
   }
 
   updateObstacles(frameScale = 1) {
-    const spawnRate = 0.01 + Math.min(0.008, this.level * 0.001);
-    if (Math.random() < Math.min(0.025, spawnRate * frameScale)) {
-      const displayScore = Math.floor(this.score / 10);
-      const type = Math.random();
-      const obstacle = { x: 1250, speed: this.speed };
+    if (this.won) {
+      this.obstacles = [];
+      return;
+    }
 
-      const flyersUnlocked = displayScore >= 200;
-      const memoryLeakUnlocked = displayScore >= 60;
-      const error404Unlocked = displayScore >= 130;
-
-      if (flyersUnlocked && type > 0.8) {
-        const band = Math.floor(Math.random() * 2);
-        obstacle.type = 'pointer';
-        obstacle.band = band;
-        obstacle.width = 44;
-        obstacle.height = 26;
-        obstacle.color = '#BF5AF2';
-        obstacle.y = band === 0 ? this.groundY - 76 : this.groundY - 44;
-      } else if (error404Unlocked && type > 0.65) {
-        // 404 Cyber Portal Obstacle
-        obstacle.type = 'error404';
-        obstacle.y = this.groundY - 48;
-        obstacle.width = 36;
-        obstacle.height = 48;
-        obstacle.color = this.colors.error404;
-      } else if (memoryLeakUnlocked && type > 0.48) {
-        // Pulsing Memory Leak Slime Obstacle
-        obstacle.type = 'memoryLeak';
-        obstacle.y = this.groundY - 34;
-        obstacle.width = 40;
-        obstacle.height = 34;
-        obstacle.color = this.colors.memoryLeak;
-        obstacle.seed = Math.random() * 100;
-      } else if (type < 0.22) {
-        obstacle.type = 'bug';
-        obstacle.y = this.groundY - 32;
-        obstacle.width = 32;
-        obstacle.height = 32;
-        obstacle.color = this.colors.bug;
-      } else if (type < 0.45) {
-        obstacle.type = 'conflict';
-        obstacle.y = this.groundY - 46;
-        obstacle.width = 34;
-        obstacle.height = 46;
-        obstacle.color = this.colors.conflict;
-      } else {
-        obstacle.type = 'fire';
-        obstacle.y = this.groundY - 36;
-        obstacle.width = 36;
-        obstacle.height = 36;
-        obstacle.color = this.colors.fire;
+    // At 960m+, stop spawning hazards and spawn Rooftop Reset pedestal at 1000m
+    if (this.distance >= this.totalDistance - 40) {
+      if (this.resetPedestalX === null) {
+        this.resetPedestalX = this.canvas.width + 120;
       }
+    } else {
+      const stage = this.stageIdx;
+      const spawnRate = 0.012 + Math.min(0.01, (this.stageIdx + 1) * 0.002);
+      if (Math.random() < Math.min(0.03, spawnRate * frameScale)) {
+        const minGap = Math.max(300, 440 - (this.speed - 6) * 12);
+        const lastObs = this.obstacles[this.obstacles.length - 1];
+        if (!lastObs || this.canvas.width - lastObs.x > minGap) {
+          const roll = Math.random();
+          const obstacle = { x: this.canvas.width + 40, speed: this.speed };
 
-      const minGap = Math.max(340, 270 + this.speed * 12);
-      const lastObs = this.obstacles[this.obstacles.length - 1];
-      if (!lastObs || 1200 - lastObs.x > minGap) {
-        this.obstacles.push(obstacle);
+          if (stage >= 1 && roll < 0.28) {
+            // Titanium Oscillating Saw
+            obstacle.type = 'saw';
+            obstacle.radius = 22;
+            obstacle.width = 44;
+            obstacle.height = 44;
+            obstacle.y = this.groundY - 34;
+            obstacle.baseY = this.groundY - 38;
+            obstacle.phase = Math.random() * Math.PI * 2;
+            obstacle.amp = stage >= 3 ? 34 : 20;
+            obstacle.color = '#ff453a';
+          } else if (stage >= 2 && roll < 0.52) {
+            // Head-Height Cyber Laser Beam (duck/slide or dash through)
+            obstacle.type = 'laser';
+            obstacle.y = this.groundY - 56;
+            obstacle.width = 62;
+            obstacle.height = 16;
+            obstacle.color = '#ff3b30';
+          } else if (stage >= 3 && roll < 0.7) {
+            // Hydraulic Compression Gate (high press, duck/slide under)
+            obstacle.type = 'press';
+            obstacle.y = this.groundY - 96;
+            obstacle.width = 52;
+            obstacle.height = 62;
+            obstacle.color = '#ff9f0a';
+          } else if (stage >= 1 && roll < 0.82) {
+            // Drone Pointer / Flying Bug
+            const isFlyer = stage >= 2 && Math.random() < 0.45;
+            obstacle.type = 'pointer';
+            obstacle.band = isFlyer ? 0 : 1;
+            obstacle.width = 42;
+            obstacle.height = 26;
+            obstacle.color = '#bf5af2';
+            obstacle.y = isFlyer ? this.groundY - 78 : this.groundY - 44;
+          } else if (roll < 0.88) {
+            obstacle.type = 'memoryLeak';
+            obstacle.y = this.groundY - 34;
+            obstacle.width = 40;
+            obstacle.height = 34;
+            obstacle.color = this.colors.memoryLeak;
+            obstacle.seed = Math.random() * 100;
+          } else if (roll < 0.94) {
+            obstacle.type = 'bug';
+            obstacle.y = this.groundY - 32;
+            obstacle.width = 32;
+            obstacle.height = 32;
+            obstacle.color = this.colors.bug;
+          } else {
+            obstacle.type = 'fire';
+            obstacle.y = this.groundY - 36;
+            obstacle.width = 36;
+            obstacle.height = 36;
+            obstacle.color = this.colors.fire;
+          }
+
+          this.obstacles.push(obstacle);
+        }
       }
     }
 
     this.obstacles.forEach(obs => {
       obs.x -= obs.speed * frameScale;
+      if (obs.type === 'saw') {
+        obs.y = obs.baseY + Math.sin(this.frame * 0.08 + obs.phase) * obs.amp;
+      }
     });
-    this.obstacles = this.obstacles.filter(obs => obs.x > -100);
+    this.obstacles = this.obstacles.filter(obs => obs.x > -120);
+
+    // Update 1000m reset pedestal position if active
+    if (this.resetPedestalX !== null) {
+      this.resetPedestalX -= this.speed * frameScale;
+    }
   }
 
   updatePowerUps(frameScale = 1) {
@@ -1261,26 +1519,130 @@ class DebugRunner {
     this.particles = this.particles.filter(p => p.life > 0);
   }
 
+  die() {
+    this.playSound('death');
+    this.deaths++;
+    this.vibrate([50, 100, 50]);
+    this.createParticles(this.dev.x + 20, this.dev.y + 20, 35, this.colors.bug);
+
+    if (this.difficulty === 'nightmare') {
+      // Nightmare Mode: 0 Checkpoints - Back to basement!
+      this.distance = 0;
+      this.score = 0;
+      this.stageIdx = 0;
+      this.speed = this.baseSpeed;
+      this.obstacles = [];
+      this.resetPedestalX = null;
+      this.resetHero();
+      this.showToast('NIGHTMARE RESET · BACK TO BASEMENT');
+      this.updateSideStats();
+    } else if (this.difficulty === 'hard') {
+      // Hard Mode: Checkpoint at current stage start
+      this.distance = this.stages[this.stageIdx].start;
+      this.score = Math.floor(this.distance * 10);
+      this.obstacles = this.obstacles.filter(o => o.x > this.canvas.width + 200);
+      this.resetPedestalX = null;
+      this.resetHero();
+      this.showToast(`CHECKPOINT: ${this.stages[this.stageIdx].name.toUpperCase()}`);
+      this.updateSideStats();
+    } else {
+      // Normal Mode: Classic stop / game over
+      this.gameOver = true;
+      this.stop();
+      this.persistHighScore();
+      this.recordLeaderboardEntry();
+    }
+  }
+
+  win() {
+    if (this.won) return;
+    this.won = true;
+    this.gameRunning = false;
+    if (this.gameLoop) {
+      cancelAnimationFrame(this.gameLoop);
+      this.gameLoop = null;
+    }
+
+    const elapsed = Math.max(1, (performance.now() - this.startTime) / 1000);
+    this.clearTime = elapsed;
+    const bestKey = `debugRunnerBest_${this.difficulty}`;
+    const prevBest = parseFloat(safeStorage.getItem(bestKey) || '0');
+    if (prevBest === 0 || elapsed < prevBest) {
+      safeStorage.setItem(bestKey, elapsed.toFixed(1));
+      this.bestTimes[this.difficulty] = elapsed;
+    }
+
+    this.playSound('win');
+    this.vibrate([100, 50, 100, 50, 200]);
+    this.createParticles(this.dev.x + 30, this.groundY - 30, 45, '#ffd60a');
+    this.createParticles(this.dev.x + 30, this.groundY - 60, 45, '#0a84ff');
+    this.createParticles(this.dev.x + 30, this.groundY - 45, 45, '#30d158');
+
+    this.persistHighScore();
+    this.recordLeaderboardEntry();
+    this.drawWinScreen();
+  }
+
   checkCollisions() {
+    if (this.won || !this.dev) return;
+
+    // Check 1000m Rooftop Reset Button interaction
+    if (this.resetPedestalX !== null) {
+      const rx = this.resetPedestalX;
+      if (rx <= this.dev.x + this.dev.width && rx + 80 >= this.dev.x) {
+        this.win();
+        return;
+      }
+    }
+
     const heroRect = {
       x: this.dev.x + 6,
-      y: this.dev.y + 6,
+      y: this.dev.isDucking ? this.groundY - 28 : this.dev.y + 6,
       width: this.dev.width - 12,
-      height: this.dev.height - 12,
+      height: this.dev.isDucking ? 26 : this.dev.height - 12,
     };
 
-    // Damage immunity applies if either Shield or Quantum Phase Cloak is active
-    const isImmune = this.invincible || this.phaseCloak;
+    // Invulnerability: Shield, Quantum Git Stash, or Air Dash
+    const isImmune = this.invincible || this.phaseCloak || this.dev.isDashing;
 
     if (!isImmune) {
       for (const obs of this.obstacles) {
-        if (this.rectIntersect(heroRect, obs)) {
-          this.screenShake = this.reducedMotion ? 0 : 22;
-          this.gameOver = true;
-          this.createParticles(this.dev.x + 20, this.dev.y + 20, 35, this.colors.bug);
-          this.stop();
-          this.persistHighScore();
-          this.recordLeaderboardEntry();
+        let hit = false;
+        if (obs.type === 'saw') {
+          const centerX = obs.x;
+          const centerY = obs.y;
+          const heroCenterX = heroRect.x + heroRect.width / 2;
+          const heroCenterY = heroRect.y + heroRect.height / 2;
+          const dx = heroCenterX - centerX;
+          const dy = heroCenterY - centerY;
+          const r = obs.radius + 8;
+          if (dx * dx + dy * dy < r * r) hit = true;
+        } else if (obs.type === 'laser') {
+          if (
+            heroRect.x + heroRect.width > obs.x &&
+            heroRect.x < obs.x + obs.width &&
+            heroRect.y < obs.y + obs.height &&
+            heroRect.y + heroRect.height > obs.y
+          ) {
+            hit = true;
+          }
+        } else if (obs.type === 'press') {
+          if (
+            heroRect.x + heroRect.width > obs.x &&
+            heroRect.x < obs.x + obs.width &&
+            heroRect.y < obs.y + obs.height
+          ) {
+            hit = true;
+          }
+        } else {
+          if (this.rectIntersect(heroRect, obs)) {
+            hit = true;
+          }
+        }
+
+        if (hit) {
+          this.screenShake = this.reducedMotion ? 0 : 20;
+          this.die();
           return;
         }
       }
@@ -1506,13 +1868,19 @@ class DebugRunner {
     }
     this.ctx.restore();
 
-    // Ground Edge line
-    this.ctx.strokeStyle = palette.accent;
+    // Ground Edge line with Dynamic Stage Glow
+    const curStageColor =
+      (this.stages[this.stageIdx] && this.stages[this.stageIdx].color) || palette.accent;
+    this.ctx.save();
+    this.ctx.strokeStyle = curStageColor;
+    this.ctx.shadowColor = curStageColor;
+    this.ctx.shadowBlur = 14;
     this.ctx.lineWidth = 3;
     this.ctx.beginPath();
     this.ctx.moveTo(0, this.groundY);
     this.ctx.lineTo(this.canvas.width, this.groundY);
     this.ctx.stroke();
+    this.ctx.restore();
 
     if (this.nightMode) {
       this.ctx.fillStyle = 'rgba(255, 255, 255, 0.03)';
@@ -1709,15 +2077,93 @@ class DebugRunner {
         const bandLabel =
           obs.band === 0 ? 'HIGH' : obs.band === 2 ? 'LOW' : obs.band === 1 ? 'DUCK' : 'NULL';
         this.ctx.fillText(bandLabel, bugX, obs.y - 4);
+      } else if (obs.type === 'saw') {
+        this.ctx.save();
+        this.ctx.translate(obs.x, obs.y);
+        this.ctx.rotate(this.frame * 0.14);
+        this.ctx.fillStyle = '#ff453a';
+        this.ctx.shadowColor = '#ff453a';
+        this.ctx.shadowBlur = 14;
+        this.ctx.beginPath();
+        this.ctx.arc(0, 0, obs.radius, 0, Math.PI * 2);
+        this.ctx.fill();
+
+        // Metallic Saw Teeth
+        this.ctx.strokeStyle = '#ffffff';
+        this.ctx.lineWidth = 2.5;
+        for (let i = 0; i < 8; i++) {
+          this.ctx.rotate(Math.PI / 4);
+          this.ctx.strokeRect(-2, -obs.radius - 4, 4, 8);
+        }
+        this.ctx.restore();
+      } else if (obs.type === 'laser') {
+        this.ctx.save();
+        this.ctx.fillStyle = '#ff3b30';
+        this.ctx.shadowColor = '#ff3b30';
+        this.ctx.shadowBlur = 18;
+        this.drawRoundRect(this.ctx, obs.x, obs.y, obs.width, obs.height, 4);
+        this.ctx.fill();
+        this.ctx.fillStyle = '#ffffff';
+        this.drawRoundRect(this.ctx, obs.x + 3, obs.y + 4, obs.width - 6, obs.height - 8, 2);
+        this.ctx.fill();
+        this.ctx.restore();
+      } else if (obs.type === 'press') {
+        this.ctx.save();
+        this.ctx.fillStyle = '#ff9f0a';
+        this.ctx.shadowColor = '#ff9f0a';
+        this.ctx.shadowBlur = 12;
+        this.drawRoundRect(this.ctx, obs.x, obs.y, obs.width, obs.height, 6);
+        this.ctx.fill();
+        // Warning stripes
+        this.ctx.strokeStyle = '#1c1c1e';
+        this.ctx.lineWidth = 3;
+        for (let ly = obs.y + 4; ly < obs.y + obs.height - 4; ly += 12) {
+          this.ctx.beginPath();
+          this.ctx.moveTo(obs.x + 4, ly);
+          this.ctx.lineTo(obs.x + obs.width - 4, ly + 6);
+          this.ctx.stroke();
+        }
+        this.ctx.restore();
       }
       this.ctx.restore();
     });
+
+    // Rooftop Reset Pedestal (1000m Victory Button)
+    if (this.resetPedestalX !== null) {
+      const rx = this.resetPedestalX;
+      const ry = this.groundY - 44;
+      this.ctx.save();
+      // Glass Pedestal
+      this.ctx.fillStyle =
+        palette.bg === '#050508' ? 'rgba(255, 255, 255, 0.12)' : 'rgba(0, 0, 0, 0.08)';
+      this.ctx.strokeStyle =
+        palette.bg === '#050508' ? 'rgba(255, 255, 255, 0.25)' : 'rgba(0, 0, 0, 0.15)';
+      this.ctx.lineWidth = 1.5;
+      this.drawRoundRect(this.ctx, rx, ry + 18, 80, 26, 6);
+      this.ctx.fill();
+      this.ctx.stroke();
+
+      // Glowing Red Reset Button
+      this.ctx.fillStyle = '#ff453a';
+      this.ctx.shadowColor = '#ff453a';
+      this.ctx.shadowBlur = 24;
+      this.drawRoundRect(this.ctx, rx + 12, ry, 56, 20, 6);
+      this.ctx.fill();
+      this.ctx.shadowBlur = 0;
+      this.ctx.fillStyle = '#ffffff';
+      this.ctx.font = 'bold 11px -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif';
+      this.ctx.textAlign = 'center';
+      this.ctx.fillText('RESET', rx + 40, ry + 14);
+      this.ctx.restore();
+    }
 
     // 11. Hero Trails
     this.trail.forEach(t => {
       this.ctx.save();
       this.ctx.globalAlpha = t.opacity;
-      if (t.phase) {
+      if (this.dev.isDashing) {
+        this.ctx.fillStyle = 'rgba(100, 210, 255, 0.35)';
+      } else if (t.phase) {
         this.ctx.fillStyle = 'rgba(0, 229, 255, 0.25)';
       } else if (this.invincible) {
         this.ctx.fillStyle = 'rgba(255, 214, 10, 0.2)';
@@ -1729,9 +2175,13 @@ class DebugRunner {
       this.ctx.restore();
     });
 
-    // 12. Animated Player Character (Cyber Hacker 2026)
+    // 12. Animated Player Character (Apple Cyber-Astronaut 2026)
     this.ctx.save();
-    if (this.phaseCloak) {
+    if (this.dev.isDashing) {
+      this.ctx.shadowColor = '#64d2ff';
+      this.ctx.shadowBlur = 28;
+      this.ctx.fillStyle = '#64d2ff';
+    } else if (this.phaseCloak) {
       this.ctx.shadowColor = '#00E5FF';
       this.ctx.shadowBlur = 24;
       this.ctx.globalAlpha = 0.75 + Math.sin(this.frame * 0.3) * 0.2;
@@ -1747,7 +2197,8 @@ class DebugRunner {
     }
 
     const px = this.dev.x;
-    const py = this.dev.y;
+    const idleOffset = !this.gameRunning || this.paused ? Math.sin(this.frame * 0.08) * 3.5 : 0;
+    const py = this.dev.y + idleOffset;
     const pw = this.dev.width;
     const ph = this.dev.height;
 
@@ -1998,6 +2449,31 @@ class DebugRunner {
       this.ctx.restore();
     });
 
+    // In-canvas Toast Capsule Overlay
+    if (this.toastText && performance.now() < this.toastUntil) {
+      this.ctx.save();
+      const tw = Math.min(this.canvas.width - 40, 380);
+      const th = 36;
+      const tx = (this.canvas.width - tw) / 2;
+      const ty = 20;
+      this.ctx.fillStyle =
+        palette.bg === '#050508' ? 'rgba(30, 30, 35, 0.92)' : 'rgba(255, 255, 255, 0.95)';
+      this.ctx.shadowColor = 'rgba(0, 0, 0, 0.25)';
+      this.ctx.shadowBlur = 16;
+      this.drawRoundRect(this.ctx, tx, ty, tw, th, 18);
+      this.ctx.fill();
+      this.ctx.strokeStyle =
+        palette.bg === '#050508' ? 'rgba(255, 255, 255, 0.15)' : 'rgba(0, 0, 0, 0.1)';
+      this.ctx.lineWidth = 1;
+      this.ctx.stroke();
+
+      this.ctx.fillStyle = palette.text;
+      this.ctx.font = '600 13px -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif';
+      this.ctx.textAlign = 'center';
+      this.ctx.fillText(this.toastText, this.canvas.width / 2, ty + 23);
+      this.ctx.restore();
+    }
+
     this.ctx.restore();
 
     // 17. Glitch Slice Effect (omitted when reduced motion is requested)
@@ -2021,52 +2497,86 @@ class DebugRunner {
     }
   }
 
-  drawStartScreen() {
+  drawAppleCard(title, subtitle, action, accentColor = '#0071e3') {
     const palette = this.getActivePalette();
-    this.ctx.fillStyle =
-      palette.bg === '#050508' ? 'rgba(5, 5, 8, 0.78)' : 'rgba(245, 245, 247, 0.78)';
-    this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+    const isDark = palette.bg === '#050508';
+    const cardWidth = Math.min(this.canvas.width - 60, 520);
+    const cardHeight = 260;
+    const cx = (this.canvas.width - cardWidth) / 2;
+    const cy = (this.canvas.height - cardHeight) / 2;
 
     this.ctx.save();
-    this.ctx.fillStyle = palette.text;
-    this.ctx.font = 'bold 62px monospace';
+    // Backdrop overlay
+    this.ctx.fillStyle = isDark ? 'rgba(5, 5, 8, 0.85)' : 'rgba(255, 255, 255, 0.85)';
+    this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+
+    // Frosted Apple Card
+    this.ctx.fillStyle = isDark ? 'rgba(28, 28, 30, 0.92)' : 'rgba(255, 255, 255, 0.95)';
+    this.ctx.shadowColor = isDark ? 'rgba(0, 0, 0, 0.6)' : 'rgba(0, 0, 0, 0.15)';
+    this.ctx.shadowBlur = 32;
+    this.ctx.shadowOffsetY = 12;
+    this.drawRoundRect(this.ctx, cx, cy, cardWidth, cardHeight, 20);
+    this.ctx.fill();
+    this.ctx.strokeStyle = isDark ? 'rgba(255, 255, 255, 0.12)' : 'rgba(0, 0, 0, 0.08)';
+    this.ctx.lineWidth = 1.5;
+    this.ctx.stroke();
+
+    // Title
+    this.ctx.shadowBlur = 0;
+    this.ctx.shadowOffsetY = 0;
+    this.ctx.fillStyle = accentColor;
+    this.ctx.font = '700 32px -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif';
     this.ctx.textAlign = 'center';
-    this.ctx.shadowColor = palette.accent;
-    this.ctx.shadowBlur = 14;
-    this.ctx.fillText('DEBUG RUNNER', this.canvas.width / 2, this.canvas.height / 2 - 35);
+    this.ctx.fillText(title, this.canvas.width / 2, cy + 65);
+
+    // Subtitle
+    this.ctx.fillStyle = isDark ? '#a1a1a6' : '#6e6e73';
+    this.ctx.font = '500 15px -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif';
+    this.ctx.fillText(subtitle, this.canvas.width / 2, cy + 115);
+
+    // Action Capsule Button
+    const btnW = 240;
+    const btnH = 44;
+    const btnX = (this.canvas.width - btnW) / 2;
+    const btnY = cy + 160;
+    this.ctx.fillStyle = accentColor;
+    this.ctx.shadowColor = accentColor;
+    this.ctx.shadowBlur = 18;
+    this.drawRoundRect(this.ctx, btnX, btnY, btnW, btnH, 22);
+    this.ctx.fill();
     this.ctx.shadowBlur = 0;
 
-    this.ctx.font = 'bold 20px monospace';
-    this.ctx.fillStyle = palette.accent;
-    const startText = this.isMobile
-      ? 'Tap to start'
-      : this.hasGamepad
-        ? 'Press A (Controller) or SPACE to start'
-        : 'Click canvas, then SPACE to start';
-    this.ctx.fillText(startText, this.canvas.width / 2, this.canvas.height / 2 + 20);
-
-    this.ctx.font = '13px monospace';
-    this.ctx.fillStyle = palette.textSecondary;
-    const controlsInfo = this.isMobile
-      ? 'Jump / Duck buttons · swipe up/down on canvas'
-      : this.hasGamepad
-        ? 'Controller: A Jump · B Duck/Fast-Fall · Start Pause · night mode at 700'
-        : 'SPACE/↑ jump · ↓ duck / fast-fall · P pause · night mode at 700';
-    this.ctx.fillText(controlsInfo, this.canvas.width / 2, this.canvas.height / 2 + 56);
+    this.ctx.fillStyle = '#ffffff';
+    this.ctx.font = '600 15px -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif';
+    this.ctx.fillText(action, this.canvas.width / 2, btnY + 27);
     this.ctx.restore();
   }
 
+  drawStartScreen() {
+    const modeUpper = this.difficulty.toUpperCase();
+    const accent =
+      this.difficulty === 'nightmare'
+        ? '#ff3b30'
+        : this.difficulty === 'hard'
+          ? '#ff9500'
+          : '#0071e3';
+    const subtitle = `${modeUpper} MODE · SPACE / TAP TO ASCEND (0 → 1,000m)`;
+    const action = this.isMobile ? 'Tap to Launch' : 'Press SPACE to Start';
+    this.drawAppleCard('DEBUG ASCENT', subtitle, action, accent);
+  }
+
   drawPauseOverlay() {
-    this.ctx.fillStyle =
-      this.colors.bg === '#050508' ? 'rgba(5, 5, 8, 0.72)' : 'rgba(245, 245, 247, 0.72)';
+    const palette = this.getActivePalette();
+    const isDark = palette.bg === '#050508';
+    this.ctx.fillStyle = isDark ? 'rgba(5, 5, 8, 0.72)' : 'rgba(245, 245, 247, 0.72)';
     this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
     this.ctx.save();
-    this.ctx.fillStyle = this.colors.text;
-    this.ctx.font = 'bold 48px monospace';
+    this.ctx.fillStyle = palette.text;
+    this.ctx.font = 'bold 48px -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif';
     this.ctx.textAlign = 'center';
     this.ctx.fillText('PAUSED', this.canvas.width / 2, this.canvas.height / 2 - 10);
-    this.ctx.font = '16px monospace';
-    this.ctx.fillStyle = this.colors.accent;
+    this.ctx.font = '16px -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif';
+    this.ctx.fillStyle = palette.accent;
     this.ctx.fillText(
       this.hasGamepad ? 'Press Start or SPACE to resume' : 'Press P or SPACE to resume',
       this.canvas.width / 2,
@@ -2075,36 +2585,19 @@ class DebugRunner {
     this.ctx.restore();
   }
 
+  drawWinScreen() {
+    const elapsedSec = (this.clearTime / 1000).toFixed(2);
+    const deathsText = this.deaths === 0 ? 'Flawless Run (0 resets)' : `${this.deaths} resets`;
+    const subtitle = `1,000m Cleared in ${elapsedSec}s · ${deathsText} · ${this.difficulty.toUpperCase()}`;
+    const action = this.isMobile ? 'Tap to Replay' : 'Press SPACE to Replay';
+    this.drawAppleCard('RESET PRESSED!', subtitle, action, '#34c759');
+  }
+
   drawGameOver() {
-    this.ctx.fillStyle =
-      this.colors.bg === '#050508' ? 'rgba(5, 5, 8, 0.88)' : 'rgba(245, 245, 247, 0.88)';
-    this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-
-    this.ctx.save();
-    this.ctx.fillStyle = this.colors.bug;
-    this.ctx.font = 'bold 56px monospace';
-    this.ctx.textAlign = 'center';
-    this.ctx.shadowColor = this.colors.bug;
-    this.ctx.shadowBlur = 20;
-    this.ctx.fillText('GAME OVER', this.canvas.width / 2, this.canvas.height / 2 - 40);
-
-    this.ctx.fillStyle = this.colors.text;
-    this.ctx.font = '28px monospace';
-    this.ctx.fillText(
-      `Score ${Math.floor(this.score / 10)}  ·  HI ${Math.floor(this.highScore / 10)}`,
-      this.canvas.width / 2,
-      this.canvas.height / 2 + 20
-    );
-
-    this.ctx.fillStyle = this.colors.accent;
-    this.ctx.font = '18px monospace';
-    const restartText = this.isMobile
-      ? 'Tap to retry'
-      : this.hasGamepad
-        ? 'Press A (Controller) or SPACE to retry'
-        : 'Press SPACE to retry';
-    this.ctx.fillText(restartText, this.canvas.width / 2, this.canvas.height / 2 + 65);
-    this.ctx.restore();
+    const fallenMeters = Math.min(1000, Math.floor(this.distance));
+    const subtitle = `Failed at ${fallenMeters}m · Checkpoint Reset · ${this.difficulty.toUpperCase()}`;
+    const action = this.isMobile ? 'Tap to Retry' : 'Press SPACE to Retry';
+    this.drawAppleCard('DEPLOYMENT FAILED', subtitle, action, '#ff3b30');
   }
 
   destroy() {

@@ -2851,7 +2851,7 @@ html.dark .apple-3d-project:hover {
   gap: 0.65rem !important;
 }
 
-#debug-runner-section .debug-game-btn {
+#debug-runner-section .debug-game-btn:not(.debug-game-btn--jump) {
   background: #ffffff !important;
   border: 1px solid var(--card-border-rest, #e5e5ea) !important;
   backdrop-filter: none !important;
@@ -2859,9 +2859,24 @@ html.dark .apple-3d-project:hover {
   padding: 0 !important;
 }
 
-html.dark #debug-runner-section .debug-game-btn {
+#debug-runner-section .debug-game-btn.debug-game-btn--jump {
+  background: linear-gradient(180deg, #0077ed 0%, #0062c4 100%) !important;
+  border: 1px solid #0071e3 !important;
+  border-bottom: 3px solid #005bb5 !important;
+  color: #ffffff !important;
+  padding: 0 !important;
+}
+
+html.dark #debug-runner-section .debug-game-btn:not(.debug-game-btn--jump) {
   background: #000000 !important;
   border-color: var(--card-border-rest, #2c2c2e) !important;
+}
+
+html.dark #debug-runner-section .debug-game-btn.debug-game-btn--jump {
+  background: linear-gradient(180deg, #0a84ff 0%, #0071e3 100%) !important;
+  border: 1px solid #0a84ff !important;
+  border-bottom: 3px solid #005bb5 !important;
+  color: #ffffff !important;
 }
 
 /* Global Section Spacing & Airy Heading Styles - De-congestion Phase */

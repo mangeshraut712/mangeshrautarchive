@@ -54,6 +54,25 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'debug-ascent-rooftop-reset-arcade-edition-20261107',
+    date: '2026-11-07',
+    type: 'release',
+    title:
+      'Launch Debug Ascent: Rooftop Reset Edition with 3 difficulty modes, air dash, and 1,000m victory pedestal',
+    summary:
+      'Major Apple Arcade–inspired upgrade to the developer portfolio runner (#debug-runner-section) integrating mechanics from poteto.com’s viral Rooftop Reset. Features 3 difficulty tiers (Normal endless, Hard with stage checkpoints at 8.6x speed, and Nightmare with 0 checkpoints at 10.5x speed resetting to localhost basement on hit), invulnerable Air Dash (Shift / X / D or mobile button with cyan particle trail and ground refueling cooldown), 6 cloud architecture ascending floors (Localhost -> Staging CI -> Code Review -> Kubernetes -> Global CDN -> Production Rooftop), oscillating titanium saws, duckable laser beams, hydraulic compiler compression gates, and an elevated glass pedestal with glowing red RESET button at 1,000m triggering victory state with clear time and death counter. Styled with Apple HIG frosted glass cards, native segmented pill difficulty switcher, tactile mobile controls, and sandbox-safe storage.',
+    tags: ['design', 'performance', 'other'],
+    sha: null,
+    commitVerified: false,
+    model: 'Gemini 3.8 Flash',
+    ide: 'Google Antigravity IDE',
+    purpose:
+      'Launch Debug Ascent Rooftop Reset Edition with 3 difficulty modes (Normal, Hard, Nightmare), invulnerable Air Dash, 6 architecture stages, new hazards, 1,000m victory pedestal with reset button, Apple HIG frosted glass overlays, native segmented switcher, and sandbox-safe storage.',
+    attributionSource: 'commit-message',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
     id: 'currently-music-shelf-instant-hydration-fast-sync-20261107',
     date: '2026-11-07',
     type: 'fix',

@@ -116,6 +116,184 @@ html.dark .game-stage {
 }
 
 /* ═══════════════════════════════════════════════════════════
+   APPLE ARCADE HEADER & SEGMENTED CONTROLS (HIG Edition)
+   ═══════════════════════════════════════════════════════════ */
+.debug-ascent-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.35rem 0.5rem 0.65rem;
+  border-bottom: 1px solid var(--card-border-rest, rgb(0 0 0 / 6%));
+  margin-bottom: 0.3rem;
+}
+
+html.dark .debug-ascent-header {
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+.debug-ascent-branding {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.debug-ascent-badge-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 11px;
+  background: linear-gradient(135deg, #0071e3 0%, #0a84ff 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 0.95rem;
+  box-shadow: 0 4px 12px rgba(0, 113, 227, 0.25);
+  flex-shrink: 0;
+}
+
+.debug-ascent-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.debug-ascent-series {
+  font-size: 0.64rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #0071e3;
+}
+
+html.dark .debug-ascent-series {
+  color: #2997ff;
+}
+
+.debug-ascent-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-primary, #1d1d1f);
+  letter-spacing: -0.015em;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+html.dark .debug-ascent-title {
+  color: #f5f5f7;
+}
+
+.debug-ascent-version-pill {
+  font-size: 0.64rem;
+  font-weight: 600;
+  padding: 0.12rem 0.45rem;
+  border-radius: 9999px;
+  background: rgba(0, 113, 227, 0.1);
+  color: #0071e3;
+  border: 1px solid rgba(0, 113, 227, 0.2);
+}
+
+html.dark .debug-ascent-version-pill {
+  background: rgba(41, 151, 255, 0.15);
+  color: #2997ff;
+  border-color: rgba(41, 151, 255, 0.25);
+}
+
+/* Apple Native Segmented Pill Switcher */
+.apple-segmented-pill {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--card-border-rest, rgba(0, 0, 0, 0.08));
+  border-radius: 9999px;
+  padding: 3px;
+  gap: 2px;
+}
+
+html.dark .apple-segmented-pill {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.apple-segmented-btn {
+  padding: 0.35rem 0.85rem;
+  border-radius: 9999px;
+  border: none;
+  background: transparent;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-secondary, #6e6e73);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  min-height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+html.dark .apple-segmented-btn {
+  color: #86868b;
+}
+
+.apple-segmented-btn:hover {
+  color: var(--text-primary, #1d1d1f);
+}
+
+html.dark .apple-segmented-btn:hover {
+  color: #ffffff;
+}
+
+.apple-segmented-btn.active[data-mode='normal'] {
+  background: #0071e3;
+  color: #ffffff !important;
+  box-shadow: 0 2px 8px rgba(0, 113, 227, 0.35);
+}
+
+.apple-segmented-btn.active[data-mode='hard'] {
+  background: #ff9500;
+  color: #ffffff !important;
+  box-shadow: 0 2px 8px rgba(255, 149, 0, 0.35);
+}
+
+.apple-segmented-btn.active[data-mode='nightmare'] {
+  background: #ff3b30;
+  color: #ffffff !important;
+  box-shadow: 0 2px 8px rgba(255, 59, 48, 0.35);
+}
+
+/* Specular Metallic Shine Animation for Jump */
+.specular-shine {
+  position: relative;
+  overflow: hidden;
+}
+
+.specular-shine::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+  transform: skewX(-20deg);
+  animation: specularShine 5s infinite;
+}
+
+@keyframes specularShine {
+  0%,
+  70% {
+    left: -100%;
+  }
+  100% {
+    left: 200%;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
    3. GAME AREA - Canvas + Stats Layout
    ═══════════════════════════════════════════════════════════ */
 .game-area {
@@ -522,7 +700,17 @@ html.dark .game-leaderboard-score {
   }
 
   .debug-runner-mobile-controls .debug-game-btn--jump {
-    border-bottom: 3px solid #34c759 !important;
+    border-bottom: 3px solid #0071e3 !important;
+    background: linear-gradient(180deg, #0077ed 0%, #0062c4 100%) !important;
+    color: #ffffff !important;
+  }
+
+  .debug-runner-mobile-controls .debug-game-btn--jump i {
+    color: #ffffff !important;
+  }
+
+  .debug-runner-mobile-controls .debug-game-btn--dash {
+    border-bottom: 3px solid #0a84ff !important;
   }
 
   .debug-runner-mobile-controls .debug-game-btn--duck {
