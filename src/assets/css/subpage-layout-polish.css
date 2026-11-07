@@ -1505,7 +1505,7 @@ body.offline-page button {
 
 html.dark body.offline-page button,
 html[data-theme='dark'] body.offline-page button {
-  background: #0a84ff !important;
+  background: #0071e3 !important;
 }
 
 body.offline-page .offline-link {

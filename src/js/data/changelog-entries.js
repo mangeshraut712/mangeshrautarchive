@@ -54,6 +54,25 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'apple-music-ios272-monochrome-1s-scrobble-currently-sync-20261107',
+    date: '2026-11-07',
+    type: 'fix',
+    title:
+      'Apple Music iOS 27.2 monochrome design, solid themes, 1s low-latency scrobble sync, and Currently shelf parity',
+    summary:
+      'Modernize Apple Music button to iOS 27.2 monochrome design (pure black in light mode, pure white in dark mode, no red) on solid pure backgrounds with zero grey surfaces. Eliminate the solitary "No live playback" void on Currently music shelf via immediate hydration from cache or curated tracks and eager preloading. Implement 1-second ultra-low latency Last.fm scrobble syncing with direct Cloudflare Edge Worker failover, synchronize Currently shelf and Hero Music Card in real time, enforce strict vinyl rotation physics (spins strictly when playing or previewing, strictly stationary when idle), resolve offline dark button contrast to WCAG 2 AA (>4.6:1), and unify 44px Apple HIG touch targets across all surfaces.',
+    tags: ['design', 'performance', 'api', 'other'],
+    sha: '16b78871',
+    commitVerified: true,
+    model: 'Gemini 3.8 Flash',
+    ide: 'Google Antigravity IDE',
+    purpose:
+      'Modernize Apple Music iOS 27.2 monochrome icon and solid theme surfaces, eliminate Currently shelf loading void, synchronize Last.fm scrobbles at 1s intervals with Cloudflare Edge failover, enforce strict vinyl rotation physics, and guarantee 44px Apple HIG touch targets sitewide.',
+    attributionSource: 'commit-message',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
     id: 'debug-runner-endless-high-scoring-50k-leaderboard-20261107',
     date: '2026-11-07',
     type: 'improvement',

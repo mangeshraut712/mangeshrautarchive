@@ -239,7 +239,7 @@ body.uses-page .keynote-chapter-pill {
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
-  min-height: 38px;
+  min-height: 44px;
   padding: 0.4rem 0.95rem;
   border-radius: 9999px;
   border: 1px solid transparent;
@@ -1015,12 +1015,12 @@ body.uses-page .uses-search__clear {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 40px !important;
-  height: 40px !important;
-  min-width: 40px !important;
-  min-height: 40px !important;
-  max-width: 40px !important;
-  max-height: 40px !important;
+  width: 44px !important;
+  height: 44px !important;
+  min-width: 44px !important;
+  min-height: 44px !important;
+  max-width: 44px !important;
+  max-height: 44px !important;
   padding: 0 !important;
   border: 0 !important;
   border-radius: 50% !important;
@@ -1077,7 +1077,7 @@ body.uses-page .uses-filter-chip {
   align-items: center;
   gap: 0.45rem;
   flex: 0 0 auto;
-  min-height: 40px;
+  min-height: 44px;
   padding: 0.4rem 0.95rem;
   border-radius: 9999px;
   border: 1px solid rgba(0, 0, 0, 0.14);

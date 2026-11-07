@@ -15,6 +15,10 @@ export function initCurrentlySection() {
   }
   document.body.dataset.currentlyInit = 'true';
 
+  if (!shouldSkipPerfAutoInit() && !globalThis.lastFmService) {
+    import('./lastfm.js').catch(() => {});
+  }
+
   const tabList = Array.from(tabs);
 
   const activateTab = tab => {
@@ -34,16 +38,28 @@ export function initCurrentlySection() {
       targetContent.classList.add('active');
       targetContent.hidden = false;
     }
-    if (tabName === 'music' && globalThis.lastFmService) {
-      if (globalThis.lastFmService.cachedTracks?.length) {
-        globalThis.lastFmService.updateCurrently(globalThis.lastFmService.cachedTracks);
-      } else {
-        globalThis.lastFmService.hydrateFromLocalCache?.();
-        if (globalThis.lastFmService.cachedTracks?.length) {
-          globalThis.lastFmService.updateCurrently(globalThis.lastFmService.cachedTracks);
+    if (tabName === 'music') {
+      const syncMusic = service => {
+        if (!service) return;
+        if (service.cachedTracks?.length) {
+          service.updateCurrently(service.cachedTracks);
+        } else {
+          service.hydrateFromLocalCache?.();
+          if (service.cachedTracks?.length) {
+            service.updateCurrently(service.cachedTracks);
+          }
         }
+        service.fetchRecent?.();
+      };
+      if (globalThis.lastFmService) {
+        syncMusic(globalThis.lastFmService);
+      } else {
+        import('./lastfm.js')
+          .then(mod => {
+            syncMusic(mod.default || globalThis.lastFmService);
+          })
+          .catch(() => {});
       }
-      globalThis.lastFmService.fetchRecent?.();
     }
   };
 

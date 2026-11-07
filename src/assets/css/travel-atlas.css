@@ -345,10 +345,10 @@ html.dark .travel-nav {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
-  min-width: 40px;
-  min-height: 40px;
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
   border: 1px solid rgb(0 0 0 / 12%) !important;
   border-radius: 999px;
   background: #ffffff !important;
@@ -703,6 +703,7 @@ html.dark .travel-sidebar {
   display: inline-flex;
   align-items: center;
   gap: 7px;
+  min-height: 44px;
   padding: 6px 14px;
   border-radius: var(--radius-full);
   background: var(--fill-secondary);
@@ -878,7 +879,7 @@ html.dark .travel-sidebar {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  min-height: 38px;
+  min-height: 44px;
   padding: 8px 14px;
   border-radius: 980px;
   background: var(--fill-secondary, #f5f5f7);
@@ -1715,10 +1716,10 @@ html.dark .travel-map-status span {
 
   .travel-nav__projection,
   .travel-nav__theme {
-    width: 40px;
-    height: 40px;
-    min-width: 40px;
-    min-height: 40px;
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    min-height: 44px;
   }
 
   .travel-map-status {

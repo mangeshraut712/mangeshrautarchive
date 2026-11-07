@@ -127,7 +127,7 @@ html.dark #home .music-card:hover .music-card-inner {
   -webkit-border-radius: 50% !important;
   overflow: hidden !important;
   flex-shrink: 0 !important;
-  background: #111113 !important;
+  background: #000000 !important;
   box-shadow:
     0 3px 10px rgba(0, 0, 0, 0.22),
     inset 0 0 0 1px rgba(255, 255, 255, 0.2) !important;
@@ -175,7 +175,11 @@ html.dark #home .music-card:hover .music-card-inner {
 #home
   #music-card:not(.is-playing):not(.is-audio-previewing):not([data-music-state='playing'])
   #album-art,
-.music-card:not(.is-playing):not(.is-audio-previewing):not([data-music-state='playing'])
+.music-card:not(.is-playing):not(.is-audio-previewing):not([data-music-state='playing']) #album-art,
+#home
+  #music-card:not(.is-playing):not(.is-audio-previewing):not([data-music-state='playing']):hover
+  #album-art,
+.music-card:not(.is-playing):not(.is-audio-previewing):not([data-music-state='playing']):hover
   #album-art {
   animation-play-state: paused !important;
 }
@@ -382,9 +386,9 @@ html[data-theme='dark'] #home .music-card-inner .status-badge {
   box-sizing: border-box;
   border-radius: 50%;
   border: 1px solid var(--border-color, #e5e5ea);
-  background: var(--bg-primary, #ffffff);
-  color: var(--text-primary, #1d1d1f);
-  -webkit-text-fill-color: currentcolor;
+  background: #ffffff !important;
+  color: #000000 !important;
+  -webkit-text-fill-color: #000000 !important;
   transition:
     transform 200ms var(--ease-apple, ease-out),
     background-color 0.2s ease,
@@ -395,9 +399,10 @@ html[data-theme='dark'] #home .music-card-inner .status-badge {
 
 html.dark #home #music-card .music-control-face,
 html[data-theme='dark'] #home #music-card .music-control-face {
-  border-color: #2c2c2e;
-  background: #1c1c1e;
-  color: #f5f5f7;
+  border-color: #2c2c2e !important;
+  background: #000000 !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
 }
 
 #home #music-card .music-control-face i {
@@ -457,14 +462,14 @@ html.dark #home #music-card .music-card-preview-link:hover .music-control-face {
 
 /* 2. Apple Music Button — Modern iOS 27.2 Monochrome Design (Black in Light, Pure White in Dark) */
 #home #music-card .music-card-apple-link .music-control-face {
-  background: #ffffff;
-  border-color: #e5e5ea;
+  background: #ffffff !important;
+  border-color: #e5e5ea !important;
 }
 
 html.dark #home #music-card .music-card-apple-link .music-control-face,
 html[data-theme='dark'] #home #music-card .music-card-apple-link .music-control-face {
-  background: #000000;
-  border-color: #2c2c2e;
+  background: #000000 !important;
+  border-color: #2c2c2e !important;
 }
 
 #home #music-card .music-card-apple-link .music-control-face i,

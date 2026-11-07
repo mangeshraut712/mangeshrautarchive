@@ -5842,6 +5842,14 @@ html.dark[data-lg-mode='tinted'] #contact .merged-health-currently-card {
   scrollbar-width: thin;
 }
 
+#contact #music-content [hidden],
+#contact #music-grid [hidden],
+#contact #music-empty[hidden],
+#contact #music-loading[hidden],
+#contact #now-playing-card[hidden] {
+  display: none !important;
+}
+
 #contact #music-grid.media-grid {
   max-height: 17rem !important;
 }

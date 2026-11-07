@@ -307,7 +307,7 @@ body.monitor-page .control-center-actions {
 body.monitor-page .control-center-actions .btn.btn-secondary,
 body.monitor-page .section-actions .btn.btn-secondary,
 body.monitor-page .btn.btn-secondary {
-  min-height: 38px;
+  min-height: 44px;
   padding: 0.45rem 1.15rem;
   border-radius: 9999px;
   font-size: 0.86rem;
@@ -530,7 +530,7 @@ body.monitor-page .monitor-tab-btn {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  min-height: 38px;
+  min-height: 44px;
   padding: 0.45rem 1.05rem;
   border-radius: 9999px;
   border: 1px solid transparent;

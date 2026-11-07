@@ -1121,7 +1121,7 @@ class LastFmService {
     const edgeUrl = `https://assistme-chat.mangeshraut712.workers.dev/api/music/recent?user=${encodeURIComponent(this.USERNAME)}&limit=${encodeURIComponent(limit)}&_=${Date.now()}`;
     const isEdgeWorker = this.apiUrl.includes('workers.dev');
     const controller = new AbortController();
-    const timeoutId = globalThis.setTimeout(() => controller.abort(), 4000);
+    const timeoutId = globalThis.setTimeout(() => controller.abort(), 3500);
 
     try {
       const bust = Date.now();
@@ -1148,22 +1148,28 @@ class LastFmService {
       let tracks = this.getTracksFromPayload(payload);
 
       // If primary endpoint failed OR returned an empty tracks list (e.g. offline dev server or unconfigured proxy),
-      // seamlessly query the production Cloudflare Edge Worker!
+      // seamlessly query the production Cloudflare Edge Worker with a dedicated abort signal!
       if (!tracks.length && !isEdgeWorker) {
         try {
-          const edgeRes = await fetch(edgeUrl, {
-            signal: controller.signal,
-            cache: 'no-store',
-            headers: {
-              Accept: 'application/json',
-            },
-          });
-          if (edgeRes && edgeRes.ok) {
-            const edgePayload = await edgeRes.json();
-            const edgeTracks = this.getTracksFromPayload(edgePayload);
-            if (edgeTracks.length) {
-              return edgePayload;
+          const edgeController = new AbortController();
+          const edgeTimeoutId = globalThis.setTimeout(() => edgeController.abort(), 4000);
+          try {
+            const edgeRes = await fetch(edgeUrl, {
+              signal: edgeController.signal,
+              cache: 'no-store',
+              headers: {
+                Accept: 'application/json',
+              },
+            });
+            if (edgeRes && edgeRes.ok) {
+              const edgePayload = await edgeRes.json();
+              const edgeTracks = this.getTracksFromPayload(edgePayload);
+              if (edgeTracks.length) {
+                return edgePayload;
+              }
             }
+          } finally {
+            clearTimeout(edgeTimeoutId);
           }
         } catch {
           // Edge worker fallback attempt failed
@@ -1242,6 +1248,23 @@ class LastFmService {
       } catch (error) {
         this.markApiHostTransientFailure(Number(error?.status) || 0);
       }
+    }
+
+    // If local/origin proxy failed or cooled down, query the Cloudflare edge worker directly
+    try {
+      const edgeUrl = `https://assistme-chat.mangeshraut712.workers.dev/api/music/recent?user=${encodeURIComponent(this.USERNAME)}&limit=10&_=${Date.now()}`;
+      const edgeRes = await fetch(edgeUrl, {
+        cache: 'no-store',
+        headers: { Accept: 'application/json' },
+      });
+      if (edgeRes && edgeRes.ok) {
+        const edgePayload = await edgeRes.json();
+        if (this.applyRecentPayload(edgePayload, 'edge-direct')) {
+          return;
+        }
+      }
+    } catch {
+      // Quiet fail to next fallback
     }
 
     if (this.publicApiKey) {
@@ -1581,7 +1604,7 @@ class LastFmService {
       this.intervalId = null;
     }
     const isNowPlaying = this.cachedTracks?.[0]?.['@attr']?.nowplaying === 'true';
-    const interval = delayMs || (isNowPlaying ? 1500 : 3500);
+    const interval = delayMs || (isNowPlaying ? 1000 : 2500);
     this.intervalId = globalThis.setTimeout(() => {
       if (typeof document === 'undefined' || document.visibilityState === 'visible') {
         this.fetchRecent().finally(() => {
@@ -1590,7 +1613,7 @@ class LastFmService {
           }
         });
       } else if (this.started) {
-        this.scheduleNextPoll(5000);
+        this.scheduleNextPoll(4000);
       }
     }, interval);
   }
