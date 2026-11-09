@@ -1,7 +1,7 @@
 /**
  * WhoBurnedMore Public Leaderboard & Token Burn Telemetry
  * Source of truth: https://whoburnedmore.com/u/mrcommando712
- * Last updated: 2026-11-07
+ * Last updated: 2026-11-09
  */
 
 export const whoburnedmoreProfile = {
@@ -12,22 +12,22 @@ export const whoburnedmoreProfile = {
   lastSynced: 'November 2026',
 
   // Lifetime headline totals (Live from whoburnedmore.com/u/mrcommando712)
-  lifetimeBurn: '23.12B',
-  lifetimeBurnRaw: 23115086024,
+  lifetimeBurn: '23.21B',
+  lifetimeBurnRaw: 23207424322,
   estimatedCost: '$19,649',
   estimatedCostRaw: 19649.47,
-  activeDays: 254,
+  activeDays: 255,
   currentStreak: '1d',
   longestStreak: '61d',
   dailyAvgBurn: '91.0M',
-  dailyAvgSpend: '$77.36',
+  dailyAvgSpend: '$77.06',
   totalMessages: '92.4K',
   userMessages: '25.8K',
   subagentShare: '0%',
 
   // Leaderboard standings (Live from whoburnedmore.com/u/mrcommando712)
   rankings: {
-    allTime: 64,
+    allTime: 65,
     weekly: 81,
     daily: 21,
     totalDevs: 358,
@@ -36,24 +36,24 @@ export const whoburnedmoreProfile = {
 
   // Benchmarks vs average developer on leaderboard
   benchmarks: {
-    burnRatio: '1.6×',
-    burnAvg: '14.73B',
+    burnRatio: '1.5×',
+    burnAvg: '15.00B',
     spendRatio: '2.3×',
-    spendAvg: '$' + Math.round(8579.695665814761).toLocaleString('en-US'),
+    spendAvg: '$' + Math.round(8673.412631242814).toLocaleString('en-US'),
     percentile: 'Top 18%',
-    rankText: '#64 of 358 devs',
+    rankText: '#65 of 358 devs',
   },
 
   // Prompt cache economics
   cache: {
-    hitRate: '94.90%',
-    dollarsSaved: '$45,908',
-    cacheReads: '21.60B',
-    cacheReadsRaw: 21595152621,
+    hitRate: '94.92%',
+    dollarsSaved: '$46,725',
+    cacheReads: '21.69B',
+    cacheReadsRaw: 21685915245,
     inputTokens: '1.16B',
-    inputTokensRaw: 1160495460,
-    outputTokens: '100.6M',
-    outputTokensRaw: 100571308,
+    inputTokensRaw: 1161800031,
+    outputTokens: '100.8M',
+    outputTokensRaw: 100842411,
     cacheCreationTokens: '258.9M',
     cacheCreationTokensRaw: 258866635,
   },
@@ -64,9 +64,9 @@ export const whoburnedmoreProfile = {
       name: 'OpenAI Codex',
       shortName: 'Codex',
       icon: 'assets/images/vibe-tools/codex.svg',
-      tokens: '12.48B',
-      tokensRaw: 12480032835,
-      share: '54.0%',
+      tokens: '12.57B',
+      tokensRaw: 12572371133,
+      share: '54.2%',
       spend: '$11,996',
       role: 'Scaffolding & Core Architecture',
       context: 'Primary codebase generation, unit test scaffolding, and multi-file code synthesis',
@@ -77,7 +77,7 @@ export const whoburnedmoreProfile = {
       icon: 'assets/images/vibe-tools/cursor.svg',
       tokens: '9.75B',
       tokensRaw: 9749700530,
-      share: '42.2%',
+      share: '42.0%',
       spend: '$7,594',
       role: 'AI-Native IDE',
       context:
@@ -276,9 +276,9 @@ export const whoburnedmoreProfile = {
     {
       id: 'cache-reads',
       title: 'Prompt Cache Reads',
-      value: '21.60B',
+      value: '21.69B',
       unit: 'tokens',
-      rate: '94.90% hit rate',
+      rate: '94.92% hit rate',
       type: 'success',
       desc: 'Cached prompt tokens served instantly with zero generation latency and 90% cost discount.',
     },
@@ -287,14 +287,14 @@ export const whoburnedmoreProfile = {
       title: 'Fresh Prompt Inputs',
       value: '1.16B',
       unit: 'tokens',
-      rate: '5.10% cache miss',
+      rate: '5.08% cache miss',
       type: 'primary',
       desc: 'Uncached net-new context (system instructions, user diffs, and codebase file trees).',
     },
     {
       id: 'model-outputs',
       title: 'Generated Outputs',
-      value: '100.6M',
+      value: '100.8M',
       unit: 'tokens',
       rate: '11.5:1 input/output',
       type: 'accent',
@@ -303,9 +303,9 @@ export const whoburnedmoreProfile = {
     {
       id: 'cost-reduction',
       title: 'Economic Capital Saved',
-      value: '$45,908',
+      value: '$46,725',
       unit: 'USD',
-      rate: '2.34× spend saved',
+      rate: '2.38× spend saved',
       type: 'warning',
       desc: 'Net financial savings achieved through aggressive prompt prefix caching across IDE sessions.',
     },
