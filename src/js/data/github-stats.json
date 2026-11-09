@@ -1,7 +1,7 @@
 {
   "username": "mangeshraut712",
-  "lastSyncedAt": "2026-11-09T18:13:17.638Z",
-  "publicReposCount": 106,
+  "lastSyncedAt": "2026-11-09T18:32:02.370Z",
+  "publicReposCount": 107,
   "followersCount": 15,
   "followingCount": 10,
   "totalStars": 14,
@@ -38,7 +38,7 @@
         "web-performance",
         "webmcp"
       ],
-      "updatedAt": "2026-11-09T17:41:26Z"
+      "updatedAt": "2026-11-09T18:26:56Z"
     },
     {
       "name": "mangeshraut712",
@@ -82,7 +82,14 @@
       "stars": 0,
       "forks": 0,
       "language": "Python",
-      "topics": ["gemma", "github-actions", "hackathon", "pune", "python", "triage"],
+      "topics": [
+        "gemma",
+        "github-actions",
+        "hackathon",
+        "pune",
+        "python",
+        "triage"
+      ],
       "updatedAt": "2026-11-07T10:40:25Z"
     },
     {
@@ -159,7 +166,12 @@
       "stars": 0,
       "forks": 0,
       "language": "TypeScript",
-      "topics": ["hackathon", "kiro", "kiroween", "resurrection"],
+      "topics": [
+        "hackathon",
+        "kiro",
+        "kiroween",
+        "resurrection"
+      ],
       "updatedAt": "2026-11-06T09:46:37Z"
     },
     {
@@ -203,7 +215,14 @@
       "stars": 0,
       "forks": 0,
       "language": "TypeScript",
-      "topics": ["framer-motion", "nextjs", "personal-site", "portfolio", "react", "typescript"],
+      "topics": [
+        "framer-motion",
+        "nextjs",
+        "personal-site",
+        "portfolio",
+        "react",
+        "typescript"
+      ],
       "updatedAt": "2026-11-03T21:49:07Z"
     },
     {
