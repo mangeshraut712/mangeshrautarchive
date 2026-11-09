@@ -7,82 +7,103 @@ import { initNewsletterForms } from './newsletter.js';
 
 function initBlogFilters() {
   const container = document.getElementById('blog-posts-container');
+  const search = document.getElementById('blog-search');
+  const sort = document.getElementById('blog-sort');
+  if (!container || !search || !sort) return;
   const chips = Array.from(document.querySelectorAll('.blog-filter-chip'));
+  const cards = Array.from(container.querySelectorAll('.blog-card'));
   const status = document.getElementById('blog-filter-status');
-  if (!container || !chips.length) return;
+  const empty = document.getElementById('blog-empty-state');
+  let selectedTag = 'all';
 
-  const applyFilter = tag => {
-    const cards = Array.from(container.querySelectorAll('.blog-card'));
+  const apply = () => {
+    const terms = search.value.trim().toLocaleLowerCase().split(/\s+/).filter(Boolean);
     let visible = 0;
-    const needle = String(tag || 'all')
-      .trim()
-      .toLowerCase();
-
     cards.forEach(card => {
-      const tags = String(card.dataset.tags || '')
-        .split(',')
-        .map(item => item.trim().toLowerCase())
-        .filter(Boolean);
-      const show = needle === 'all' || tags.includes(needle);
-      // Class + hidden: author `display:flex` on .blog-card beats the [hidden] UA rule.
+      const tags = (card.dataset.tags || '').split(',').map(tag => tag.toLocaleLowerCase());
+      const text = (card.dataset.search || '').toLocaleLowerCase();
+      const show =
+        (selectedTag === 'all' || tags.includes(selectedTag)) &&
+        terms.every(term => text.includes(term));
       card.hidden = !show;
       card.classList.toggle('is-filter-hidden', !show);
-      card.setAttribute('aria-hidden', show ? 'false' : 'true');
       if (show) visible += 1;
     });
-
-    if (status) {
-      // Avoid duplicating the hero “N articles” count when viewing all topics.
-      status.textContent =
-        needle === 'all' ? '' : `${visible} article${visible === 1 ? '' : 's'} in “${tag}”`;
-      status.hidden = needle === 'all';
-    }
-  };
-
-  chips.forEach(chip => {
-    chip.addEventListener('click', () => {
-      const tag = String(chip.dataset.tag || 'all').toLowerCase();
-      chips.forEach(item => {
-        const active = item === chip;
-        item.classList.toggle('active', active);
-        item.setAttribute('aria-pressed', active ? 'true' : 'false');
-      });
-      applyFilter(tag);
+    chips.forEach(chip => {
+      const active = chip.dataset.tag.toLocaleLowerCase() === selectedTag;
+      chip.classList.toggle('active', active);
+      chip.setAttribute('aria-pressed', String(active));
     });
+    status.textContent = `${visible} of ${cards.length} articles`;
+    status.hidden = false;
+    empty.hidden = visible !== 0;
+  };
+  chips.forEach(chip =>
+    chip.addEventListener('click', () => {
+      selectedTag = chip.dataset.tag.toLocaleLowerCase();
+      apply();
+    })
+  );
+  search.addEventListener('input', apply);
+  document
+    .getElementById('blog-search-form')
+    .addEventListener('submit', event => event.preventDefault());
+  sort.addEventListener('change', () => {
+    const sorted = [...cards].sort((a, b) => {
+      if (sort.value === 'title')
+        return a
+          .querySelector('.blog-title')
+          .textContent.trim()
+          .localeCompare(b.querySelector('.blog-title').textContent.trim());
+      const order = a.dataset.date.localeCompare(b.dataset.date);
+      return sort.value === 'oldest' ? order : -order;
+    });
+    container.append(...sorted);
   });
-
-  applyFilter('all');
+  document.getElementById('blog-reset').addEventListener('click', () => {
+    search.value = '';
+    selectedTag = 'all';
+    apply();
+    search.focus();
+  });
+  apply();
 }
 
 function initReadingProgress() {
   const bar = document.getElementById('blog-reading-progress');
-  const article = document.querySelector('.blog-article-main');
+  const article = document.getElementById('article-content');
   if (!bar || !article) return;
-
-  let offsetTop = article.offsetTop;
-  let scrollHeight = article.scrollHeight;
-
-  const updateOffsets = () => {
-    offsetTop = article.offsetTop;
-    scrollHeight = article.scrollHeight;
-  };
-
   let ticking = false;
   const update = () => {
-    if (!ticking) {
-      window.requestAnimationFrame(() => {
-        const total = Math.max(scrollHeight - window.innerHeight, 1);
-        const scrolled = Math.min(Math.max(window.scrollY - offsetTop, 0), total);
-        bar.style.width = `${Math.round((scrolled / total) * 100)}%`;
-        ticking = false;
-      });
-      ticking = true;
-    }
+    if (ticking) return;
+    ticking = true;
+    window.requestAnimationFrame(() => {
+      const rect = article.getBoundingClientRect();
+      const total = Math.max(rect.height - window.innerHeight, 1);
+      const progress = Math.min(Math.max(-rect.top / total, 0), 1);
+      bar.style.transform = `scaleX(${progress})`;
+      ticking = false;
+    });
   };
-
   window.addEventListener('scroll', update, { passive: true });
-  window.addEventListener('resize', updateOffsets, { passive: true });
+  window.addEventListener('resize', update, { passive: true });
+  new ResizeObserver(update).observe(article);
   update();
+}
+
+function initArticleLinkCopy() {
+  const button = document.querySelector('[data-copy-article]');
+  const status = document.getElementById('article-copy-status');
+  if (!button || !status) return;
+  button.addEventListener('click', async () => {
+    try {
+      const url = document.querySelector('link[rel="canonical"]')?.href || location.href;
+      await navigator.clipboard.writeText(url);
+      status.textContent = 'Article link copied.';
+    } catch {
+      status.textContent = 'Copy the address from your browser to share this article.';
+    }
+  });
 }
 
 function initTocSpy() {
@@ -165,6 +186,7 @@ function initBlogPage() {
   rescanCardContentAccessibility(document);
   initBlogFilters();
   initReadingProgress();
+  initArticleLinkCopy();
   initTocSpy();
   initArticleReactions();
   initNewsletterForms();

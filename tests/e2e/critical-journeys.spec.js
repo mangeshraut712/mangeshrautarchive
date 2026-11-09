@@ -16,11 +16,11 @@ test('blog archive opens a full article with its lead image', async ({ page }) =
   await gotoSite(page, '/blog/');
   await expect(page.locator('.blog-index-title')).toBeVisible();
   await expect(page.locator('.blog-featured')).toHaveCount(1);
-  await expect(page.locator('#blog-posts-container .blog-card')).toHaveCount(19);
+  await expect(page.locator('#blog-posts-container .blog-card')).toHaveCount(20);
   const featuredHref = await page.locator('.blog-featured-media').getAttribute('href');
   await expect(
     page.locator(`#blog-posts-container .blog-card-media[href="${featuredHref}"]`)
-  ).toHaveCount(0);
+  ).toHaveCount(1);
   await page.locator('#blog-posts-container .blog-title-link').first().click();
   await expect(page.locator('main h1')).toBeVisible();
   const leadImage = page.locator('.article-figure img').first();

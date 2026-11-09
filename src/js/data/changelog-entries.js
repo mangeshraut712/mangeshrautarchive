@@ -54,6 +54,23 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'journal-reader-experience-20261109',
+    date: '2026-11-09',
+    type: 'improvement',
+    title: 'An Apple-style journal with search and a focused reading experience',
+    summary:
+      'Improves all 20 article pages with readable typography, article overviews, author context, canonical sharing, and body-only reading progress. The archive now searches and filters every article, sorts by publication date or title, and provides a clear empty state. Original credited images, tables, diagrams, and sources remain available.',
+    tags: ['blog', 'design'],
+    sha: null,
+    commitVerified: false,
+    model: 'GPT-6 / Codex',
+    ide: 'Codex desktop',
+    purpose: 'Improve journal discovery and reading across mobile, tablet, and desktop.',
+    attributionSource: 'commit-message',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
     id: 'music-sync-apple-music-ios272-monochrome-and-a11y-contrast-20261109',
     date: '2026-11-09',
     type: 'fix',

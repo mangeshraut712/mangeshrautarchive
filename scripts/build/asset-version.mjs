@@ -1,5 +1,5 @@
 /** Single source of truth for static asset cache-bust query strings. */
-export const ASSET_VER = '20261101icons2';
+export const ASSET_VER = '20261109journal';
 
 /**
  * Icon/PWA/touch-icon cache stamp. Bumped independently of CSS/JS so Safari
