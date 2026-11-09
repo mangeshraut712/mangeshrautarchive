@@ -1,5 +1,5 @@
 {
-  "reviewedAt": "2026-09-30",
+  "reviewedAt": "2026-11-09",
   "policy": "Use relevant original publisher media first. Keep conceptual artwork only after documenting the absence of a suitable original image. Preserve subject and proportions, provide source attribution, and label editorial diagrams and vendor claims.",
   "media": [
     {
@@ -21,7 +21,13 @@
       "verifiedAt": "2026-09-30",
       "caption": "OpenRouter’s published diagram of caching across an agent session. Cache pricing and behavior depend on the selected model and provider.",
       "role": "lead",
-      "fit": "contain"
+      "fit": "contain",
+      "sourceCheckedAt": "2026-11-09",
+      "sourceCheck": {
+        "status": 200,
+        "originalHashMatches": true,
+        "retrievedSha256": "18f08a45dc896b47bb5327b9f4188035787ef5e0c2561ad1e229223d2b479ac6"
+      }
     },
     {
       "postId": "grok-4-5-grok-build-open-source-2026",
@@ -42,7 +48,13 @@
       "verifiedAt": "2026-09-30",
       "caption": "Official artwork for xAI’s Grok Build open-source announcement.",
       "role": "lead",
-      "fit": "contain"
+      "fit": "contain",
+      "sourceCheckedAt": "2026-11-09",
+      "sourceCheck": {
+        "status": 200,
+        "originalHashMatches": true,
+        "retrievedSha256": "3686a9d4eb5fedd8c9d659eb119481f9bb86cff9dc8c88aec603dc8a4a287497"
+      }
     },
     {
       "postId": "google-io-2026-developer-insights",
@@ -63,7 +75,13 @@
       "verifiedAt": "2026-09-30",
       "caption": "Official artwork from Google’s I/O 2026 announcement collection.",
       "role": "lead",
-      "fit": "contain"
+      "fit": "contain",
+      "sourceCheckedAt": "2026-11-09",
+      "sourceCheck": {
+        "status": 200,
+        "originalHashMatches": true,
+        "retrievedSha256": "b1b3da4f9a81fac3e51e81b63e5ae3cd05e9e4a5fafe0403dd219854d0f78e86"
+      }
     },
     {
       "postId": "google-ai-ecosystem-2026",
@@ -84,7 +102,14 @@
       "verifiedAt": "2026-09-30",
       "caption": "Official Google AI website artwork identifying the ecosystem discussed in this article.",
       "role": "lead",
-      "fit": "contain"
+      "fit": "contain",
+      "sourceCheckedAt": "2026-11-09",
+      "sourceCheck": {
+        "status": 200,
+        "originalHashMatches": false,
+        "retrievedSha256": "fc6fc6723b1df67973b0f1139eb6c958c04470ad07060efe378eecb932716147",
+        "note": "Fresh CDN bytes differ from the archived original hash. Both retrieved and local artwork were visually inspected: the same Google AI wordmark and gradient composition. Archived provenance and local bytes are retained."
+      }
     },
     {
       "postId": "openclaw-revolution-2026",
@@ -105,7 +130,13 @@
       "verifiedAt": "2026-09-30",
       "caption": "Project banner published in OpenClaw’s original repository README.",
       "role": "lead",
-      "fit": "contain"
+      "fit": "contain",
+      "sourceCheckedAt": "2026-11-09",
+      "sourceCheck": {
+        "status": 200,
+        "originalHashMatches": true,
+        "retrievedSha256": "c9eecf97003055a16a9a63306d0a21f530f92d000ea6d8d9e40c8c1bce5c141b"
+      }
     },
     {
       "postId": "wispr-flow-dictation-2026",
@@ -126,7 +157,13 @@
       "verifiedAt": "2026-09-30",
       "caption": "Official Wispr Flow promotional artwork showing its voice-input product identity.",
       "role": "lead",
-      "fit": "contain"
+      "fit": "contain",
+      "sourceCheckedAt": "2026-11-09",
+      "sourceCheck": {
+        "status": 200,
+        "originalHashMatches": true,
+        "retrievedSha256": "c6cd312db19156089be836408bf471413a763387b0564a4bdccdaecf7ea415f7"
+      }
     },
     {
       "postId": "nvidia-ai-dominance-2026",
@@ -147,7 +184,13 @@
       "verifiedAt": "2026-09-30",
       "caption": "NVIDIA’s published product image of the GB200 NVL72 system.",
       "role": "lead",
-      "fit": "contain"
+      "fit": "contain",
+      "sourceCheckedAt": "2026-11-09",
+      "sourceCheck": {
+        "status": 200,
+        "originalHashMatches": true,
+        "retrievedSha256": "5a75aa84163ec21614c6bb754207d9483d685384676966265607f4e05cea3790"
+      }
     },
     {
       "postId": "ai-models-global-race-2026",
@@ -168,7 +211,13 @@
       "verifiedAt": "2026-09-30",
       "caption": "Official cover artwork for Stanford HAI’s 2026 AI Index Report, a research source used in this article.",
       "role": "lead",
-      "fit": "contain"
+      "fit": "contain",
+      "sourceCheckedAt": "2026-11-09",
+      "sourceCheck": {
+        "status": 200,
+        "originalHashMatches": true,
+        "retrievedSha256": "ab77f287bd0ed6fd0a9912b9350e8cef195b19f44fbb683b0e3d1edc5b7d088c"
+      }
     },
     {
       "postId": "ai-code-editors-revolution-2026",
@@ -189,7 +238,13 @@
       "verifiedAt": "2026-09-30",
       "caption": "Microsoft’s documented VS Code Chat interface. This is one concrete editor example within the wider comparison.",
       "role": "lead",
-      "fit": "contain"
+      "fit": "contain",
+      "sourceCheckedAt": "2026-11-09",
+      "sourceCheck": {
+        "status": 200,
+        "originalHashMatches": true,
+        "retrievedSha256": "3ade8767658e39ec69b939be68f65e3597189bbe113c45f88110728d945dbf33"
+      }
     },
     {
       "postId": "apple-50th-anniversary-2026",
@@ -210,7 +265,13 @@
       "verifiedAt": "2026-09-30",
       "caption": "Apple’s official 50th-anniversary artwork from its Newsroom announcement.",
       "role": "lead",
-      "fit": "contain"
+      "fit": "contain",
+      "sourceCheckedAt": "2026-11-09",
+      "sourceCheck": {
+        "status": 200,
+        "originalHashMatches": true,
+        "retrievedSha256": "6793baaecb5b9c7002697012629c0e0c1f813b808f40aab676e2dd05e5ca3747"
+      }
     },
     {
       "postId": "anthropic-mythos-2026",
@@ -231,7 +292,13 @@
       "verifiedAt": "2026-09-30",
       "caption": "Portrait of Nick Bostrom published by The Anthropic Principle site. It identifies the author of the observer-selection text discussed below.",
       "role": "lead",
-      "fit": "native"
+      "fit": "native",
+      "sourceCheckedAt": "2026-11-09",
+      "sourceCheck": {
+        "status": 200,
+        "originalHashMatches": true,
+        "retrievedSha256": "e55b7beef491d4865ddabdc3c82054332746d8772dd91ba4c4425b730ca8304f"
+      }
     },
     {
       "postId": "wwdc-2026-apple-intelligence-siri-ai",
@@ -252,7 +319,13 @@
       "verifiedAt": "2026-09-30",
       "caption": "Apple’s official Siri AI launch image showing the supported product family and example interfaces.",
       "role": "lead",
-      "fit": "contain"
+      "fit": "contain",
+      "sourceCheckedAt": "2026-11-09",
+      "sourceCheck": {
+        "status": 200,
+        "originalHashMatches": true,
+        "retrievedSha256": "cbd54ab68fc5cb1461807eff22f57cb1ad39bad8e852eebfbb68061f6318f0c3"
+      }
     },
     {
       "postId": "notebooklm-2026-ai-research-agent",
@@ -273,7 +346,13 @@
       "verifiedAt": "2026-09-30",
       "caption": "Google’s official artwork announcing the NotebookLM to Gemini Notebook rename.",
       "role": "lead",
-      "fit": "contain"
+      "fit": "contain",
+      "sourceCheckedAt": "2026-11-09",
+      "sourceCheck": {
+        "status": 200,
+        "originalHashMatches": true,
+        "retrievedSha256": "7dae4da8c9f6e9a4890d0407b48f62356a3ce32eb7596b26948dcffcaf4f7605"
+      }
     },
     {
       "postId": "cursor-origin-agent-native-code-hosting",
@@ -294,7 +373,13 @@
       "verifiedAt": "2026-09-30",
       "caption": "Cursor’s published Origin repository settings screenshot, showing sync, access, and connected-app controls.",
       "role": "lead",
-      "fit": "contain"
+      "fit": "contain",
+      "sourceCheckedAt": "2026-11-09",
+      "sourceCheck": {
+        "status": 200,
+        "originalHashMatches": true,
+        "retrievedSha256": "c60c76d1b91131ee6fdcb2184214c7cb922759289afcbe0ae6f4972fab427dcb"
+      }
     },
     {
       "postId": "razorpay-vulcan-payments-foundation-model",
@@ -315,7 +400,13 @@
       "verifiedAt": "2026-09-30",
       "caption": "Razorpay’s official Vulcan article artwork. Any claims printed in it are publisher-reported statements.",
       "role": "lead",
-      "fit": "contain"
+      "fit": "contain",
+      "sourceCheckedAt": "2026-11-09",
+      "sourceCheck": {
+        "status": 200,
+        "originalHashMatches": true,
+        "retrievedSha256": "c7f4fcb216f07572ac4093f4cb7e64e7eb61dd6af1a12b619861247a9af50327"
+      }
     },
     {
       "postId": "apple-september-event-2026",
@@ -336,7 +427,13 @@
       "verifiedAt": "2026-09-30",
       "caption": "Apple’s official iPhone Duo press image showing the folded and unfolded devices.",
       "role": "lead",
-      "fit": "contain"
+      "fit": "contain",
+      "sourceCheckedAt": "2026-11-09",
+      "sourceCheck": {
+        "status": 200,
+        "originalHashMatches": true,
+        "retrievedSha256": "d01bbbe7eef65d4b0df5dffa588450300b09713b6b5108d978456ae5f239915e"
+      }
     },
     {
       "postId": "apple-september-event-2026",
@@ -357,11 +454,17 @@
       "conversion": "WebP, width limited to 1600 pixels, proportions preserved; no content edits",
       "verifiedAt": "2026-09-30",
       "caption": "Apple’s official press image showing a burgundy iPhone 18 Pro beside a rear-facing iPhone 18 Pro Max.",
-      "fit": "contain"
+      "fit": "contain",
+      "sourceCheckedAt": "2026-11-09",
+      "sourceCheck": {
+        "status": 200,
+        "originalHashMatches": true,
+        "retrievedSha256": "1b150e11dea3ad76c6c03ce1a6d4ea1845881c3c96e626d17a91def2ec52c24c"
+      }
     },
     {
       "postId": "openai-devday-2026",
-      "sourcePage": "https://devday.openai.com/",
+      "sourcePage": "https://openai.com/devday/2026/",
       "sourceUrl": "https://devday.openai.com/images/devday/devday-2026-seo-og.png",
       "credit": "OpenAI",
       "kind": "publisher-artwork",
@@ -378,7 +481,12 @@
       "verifiedAt": "2026-09-30",
       "caption": "Official OpenAI DevDay 2026 event artwork from the event website.",
       "role": "lead",
-      "fit": "contain"
+      "fit": "contain",
+      "sourceCheck": {
+        "checkedAt": "2026-11-09",
+        "status": "original asset unavailable to fresh fetch; retained previously recorded publisher copy",
+        "details": "HTTP 403 from direct fetch; browser request returned HTML, not an image. Local checksum and rendering verified separately."
+      }
     },
     {
       "postId": "gemini-4-argon-and-carbon-deepmind-2026",
@@ -398,7 +506,13 @@
       "verifiedAt": "2026-10-31",
       "caption": "Google’s announcement artwork for Gemini 4 Carbon.",
       "role": "lead",
-      "fit": "contain"
+      "fit": "contain",
+      "sourceCheckedAt": "2026-11-09",
+      "sourceCheck": {
+        "status": 200,
+        "originalHashMatches": true,
+        "retrievedSha256": "646ddc28958f7c53e015323748b11d2b5648b5ca7d5099cb251af7400b296a21"
+      }
     },
     {
       "postId": "macbook-pro-touchscreen-proled-xdr-2026",
@@ -418,23 +532,35 @@
       "verifiedAt": "2026-10-31",
       "caption": "Apple’s press image of the MacBook Pro with PROLED XDR Display.",
       "role": "lead",
-      "fit": "contain"
+      "fit": "contain",
+      "sourceCheckedAt": "2026-11-09",
+      "sourceCheck": {
+        "status": 200,
+        "originalHashMatches": true,
+        "retrievedSha256": "aca4b2a32c2a0dadcc731ddc019d5ede9c9ec76c43daeb29c85f70e6dd5be010"
+      }
     },
     {
       "postId": "grok-x-algorithm-systems-2026",
       "role": "lead",
-      "kind": "conceptual-fallback",
-      "localPath": "assets/images/blog/x-algorithm-ranking-codex-openai.webp",
-      "credit": "Codex / OpenAI",
-      "referencePage": "https://github.com/xai-org/x-algorithm",
-      "verifiedAt": "2026-09-30",
-      "fallbackReason": "The original repository README publishes its architecture as text diagrams. No downloadable original architecture image was found in the reviewed README and Phoenix documentation.",
-      "caption": "Conceptual editorial illustration of retrieval, ranking, and filtering. Original image assets were not available in the reviewed repository documentation; this is an illustration, not an X product screenshot.",
-      "alt": "Conceptual feed pipeline taking candidate posts through ranking and filtering",
-      "fit": "cover",
-      "localSha256": "b3285c04d01df70bd1613d61a9a648bc8e6afd6b83854a74e33b84e9ff78212f",
-      "width": 1600,
-      "height": 900
+      "kind": "publisher-diagram-capture",
+      "credit": "xAI contributors (Apache-2.0); repository capture",
+      "sourcePage": "https://github.com/xai-org/x-algorithm/blob/3b6919f87532e57063bb3f1e85c2f509323b513e/phoenix/README.md",
+      "sourceUrl": "https://raw.githubusercontent.com/xai-org/x-algorithm/3b6919f87532e57063bb3f1e85c2f509323b513e/phoenix/README.md",
+      "originalSha256": "01fe6fece2893023b4d64c60ff7e5030d5fabaf892898e6ce95b7818974a7910",
+      "captureSha256": "195622d899b77b9ddc0f3a5eba83c6b0306270f5c86e268512150cd6f9a73a2f",
+      "localPath": "assets/images/blog/original-sources/phoenix-publisher-diagram.webp",
+      "localSha256": "b9a7be2b4c4cfa78d1257b69b22ee0f4bb477bcf8b7988c4366296c31d56da68",
+      "width": 1426,
+      "height": 616,
+      "conversion": "Browser capture of the original two-stage pipeline diagram at the pinned source revision; WebP encoding only, no diagram edits.",
+      "verifiedAt": "2026-11-09",
+      "fit": "contain",
+      "alt": "Phoenix repository diagram showing a user request passing through two-tower retrieval and transformer ranking to a feed",
+      "caption": "The original two-stage recommendation diagram from the Phoenix README, captured at a pinned repository revision. The synthetic local path is not a replica of live X traffic.",
+      "license": "Apache-2.0",
+      "licenseUrl": "https://raw.githubusercontent.com/xai-org/x-algorithm/3b6919f87532e57063bb3f1e85c2f509323b513e/LICENSE",
+      "localLicensePath": "assets/images/blog/original-sources/phoenix-LICENSE.txt"
     }
   ]
 }

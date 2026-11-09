@@ -54,6 +54,23 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'all-article-evidence-and-worked-examples-20261109',
+    date: '2026-11-09',
+    type: 'improvement',
+    title: 'Twenty researched articles with practical examples and transparent evidence',
+    summary:
+      'Revises every article with primary-source research, topic-specific examples, comparison tables, and November evidence notes. Corrects routing, privacy, code-hosting, and payment-model claims; preserves announcement dates and labels hypothetical calculations. Replaces the Phoenix illustration with the original repository diagram and records fresh publisher-media checks.',
+    tags: ['blog'],
+    sha: null,
+    commitVerified: false,
+    model: 'GPT-6 / Codex',
+    ide: 'Codex desktop',
+    purpose: 'Improve article accuracy, useful technical depth, and publisher-media provenance.',
+    attributionSource: 'commit-message',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
     id: 'restore-classic-hero-and-devotional-support-strip-20261109',
     date: '2026-11-09',
     type: 'refactor',

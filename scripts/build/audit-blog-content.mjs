@@ -61,12 +61,16 @@ for (const post of blogPosts) {
     [html.includes('article-figure__credit'), 'missing visible media attribution'],
     [html.includes('class="article-diagram"'), 'missing conceptual diagram'],
     [
+      html.includes('class="article-table-wrap"'),
+      'missing reader comparison or worked-example table',
+    ],
+    [
       /class="article-(?:chart|framework|table-wrap)"/.test(html),
       'missing chart, framework, or data table',
     ],
     [/^### Sources\b/m.test(post.content), 'missing source section'],
     [
-      /^## (?:September|October) 2026 evidence update$/m.test(post.content),
+      /^## (?:September|October|November) 2026 evidence update$/m.test(post.content),
       'missing dated evidence update',
     ],
     [sourceLinks.length >= 2, `only ${sourceLinks.length} external evidence links`],

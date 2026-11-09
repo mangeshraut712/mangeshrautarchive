@@ -278,6 +278,8 @@ The JavaScript config is selected explicitly because upstream automatic discover
 
 ### 5.1 Coding agents and provenance
 
+**All-article research and content revision:** GPT-6 / Codex desktop; purpose: review primary sources for all 20 articles, correct unsupported product claims, add original worked examples and comparison tables, and record publisher-image provenance while preserving the Apple-style reader. Exact model variant, reasoning mode, and token usage: unavailable. See the [November 9 content evidence ledger](docs/qa/blog-content-review-2026-11-09.md) for article-by-article sources, calculations, image limitations, and verification.
+
 **Classic hero presentation and devotional support restoration:** Gemini 3.8 Flash, in Google Antigravity IDE; purpose: clean up hero section by removing recruiter quick-action strip and reverse interview chips, restoring clean personal narrative and portfolio callouts; restore classic devotional blessings and PayPal support card in Contact section. Exact model variant, reasoning mode, and token usage: unavailable.
 
 **Journal reading experience:** GPT-6 / Codex desktop; purpose: improve all 20 article layouts, add archive search and sorting, preserve credited media and evidence links, and correct article-body reading progress. Exact model variant, reasoning mode, and token usage: unavailable. Focused verification: `tests/e2e/blog-reader.spec.js` (22 cases covering all articles and discovery controls).

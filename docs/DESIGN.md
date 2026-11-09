@@ -449,3 +449,20 @@ are preserved; presentation changes do not imply fresh factual verification.
 
 Coding agent: GPT-6 / Codex desktop. Purpose: journal presentation and reader navigation.
 Exact model variant, reasoning mode, and token usage: unavailable.
+
+### Journal evidence and editorial depth
+
+Content revisions preserve the reader layout above. Give each article a concrete worked example,
+a useful comparison table, visible publisher-image attribution, and links to the primary evidence.
+Label hypothetical quantities and vendor-reported results; do not imply a personal benchmark or
+hands-on trial that was not performed. Keep archive issue dates, original publication dates, and
+editorial review dates distinct. Refresh the reading estimate after editing the body, and let the
+shared renderer regenerate the contents links from the actual headings.
+
+The November 9 review covers all 20 articles; its [evidence ledger](qa/blog-content-review-2026-11-09.md)
+records the source-to-claim mapping and media retrieval limitations. A successful source fetch does
+not independently validate a publisher's performance claim. Original media retain their proportions,
+credit, and provenance; diagrams created for explanation are labeled conceptual.
+
+Coding agent: GPT-6 / Codex desktop. Purpose: researched article content and evidence transparency.
+Exact model variant, reasoning mode, and token usage: unavailable.
