@@ -39,7 +39,7 @@ export const whoburnedmoreProfile = {
     burnRatio: '1.5×',
     burnAvg: '15.00B',
     spendRatio: '2.3×',
-    spendAvg: '$' + Math.round(8673.412631242814).toLocaleString('en-US'),
+    spendAvg: '$' + Math.round(8674.999408688229).toLocaleString('en-US'),
     percentile: 'Top 18%',
     rankText: '#65 of 358 devs',
   },
