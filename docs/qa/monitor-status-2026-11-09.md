@@ -4,6 +4,8 @@ Coding agent: GPT-6 / Codex desktop. Purpose: a status-first Monitor with truthf
 
 The design uses the clear service hierarchy of [OpenAI Status](https://status.openai.com/) while retaining the portfolio's own typography, rounded controls, white/black surfaces, and blue accents.
 
+The visit-only observation history described below was superseded by [persistent monitoring](durable-monitor-2026-11-09.md) later the same day. This document records the original redesign.
+
 ## Data and behavior
 
 - The default view reads `/api/monitor/status` from the existing configured API. The primary Cloudflare deployment includes six public probe IDs: `github_pages`, `github_repos`, `chat_health`, `lastfm`, `health_vitals`, and `integrations`.

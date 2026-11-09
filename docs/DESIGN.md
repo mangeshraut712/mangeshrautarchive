@@ -479,3 +479,5 @@ Article workflows beginning with numbered Markdown items render as native ordere
 ### Public Monitor status view
 
 The Monitor opens with grouped service availability and retains technical diagnostics in secondary tabs. Use scoped `portfolio-status.css` styles, 44px controls, semantic service disclosures, and text labels alongside status colors. Empty observation bars mean no recorded check; never manufacture historical uptime. Unknown or stale probes must not render as operational. Dark-theme accent text uses a brighter Apple Blue for AA contrast.
+
+Persistent availability uses 90 daily bars with UTC details, sampled uptime, and separate check coverage. Missing days stay empty. Keep incident confirmation and recovery timestamps visible, distinguish live probes from stored incidents, and show history-fetch errors without replacing saved records. Disclosures remain expanded during refresh; hidden pagination controls must override shared button display rules.

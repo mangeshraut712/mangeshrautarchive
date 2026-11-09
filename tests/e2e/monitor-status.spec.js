@@ -1,5 +1,11 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
+import { storedHistory } from './helpers/status-history.js';
+test.beforeEach(async ({ page }) => {
+  await page.route('https://portfolio-status.mangeshraut712.workers.dev/api/history', route =>
+    route.fulfill({ json: storedHistory() })
+  );
+});
 import { STATUS_SERVICES } from '../../src/js/utils/portfolio-status.js';
 
 function snapshot(status = 'healthy') {
@@ -72,9 +78,7 @@ test('status reports failures safely, retries, and records only observed results
     '<img src=x onerror=alert(1)> HTTP 503'
   );
   await expect(page.locator('#status-issues img')).toHaveCount(0);
-  await expect(page.locator('#status-observation-count')).toHaveText(
-    '1 of 24 observations · this visit only'
-  );
+  await expect(page.locator('#status-observation-count')).toContainText('Tracking since');
   mode = 'healthy';
   await page.getByRole('button', { name: 'Refresh service status' }).click();
   await expect(page.locator('#public-status-title')).toHaveText(

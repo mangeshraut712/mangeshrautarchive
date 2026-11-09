@@ -1,0 +1,16 @@
+{
+  "name": "portfolio-status",
+  "main": "src/index.js",
+  "compatibility_date": "2026-04-01",
+  "workers_dev": true,
+  "observability": { "enabled": true },
+  "triggers": { "crons": ["*/5 * * * *"] },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "portfolio-status",
+      "database_id": "fb56f6aa-969a-431e-9100-39038d65aa73",
+      "migrations_dir": "migrations"
+    }
+  ]
+}

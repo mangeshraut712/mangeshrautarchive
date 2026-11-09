@@ -230,8 +230,8 @@ body.monitor-page .status-service-group h3 {
 }
 .status-observations {
   display: grid;
-  grid-template-columns: repeat(24, minmax(0, 1fr));
-  gap: 4px;
+  grid-template-columns: repeat(90, minmax(0, 1fr));
+  gap: 2px;
   margin: 0 0 12px;
 }
 .status-bar {
@@ -423,4 +423,67 @@ html.dark body.monitor-page .monitor-segmented-tabs,
 html[data-theme='dark'] body.monitor-page .monitor-segmented-tabs {
   background: var(--bg-primary) !important;
   border-color: var(--mon-hairline) !important;
+}
+
+.status-uptime {
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+  line-height: 1.5;
+  padding-bottom: 12px;
+}
+.status-table-wrap {
+  max-height: 320px;
+  overflow: auto;
+  margin-top: 8px;
+}
+.status-table-wrap table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.75rem;
+}
+.status-table-wrap :is(th, td) {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid var(--mon-hairline);
+}
+.status-daily > summary {
+  min-height: 44px;
+  color: var(--status-accent);
+}
+.history-refresh {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin: 24px 0;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+.incident-timeline {
+  margin: 16px 0 0;
+  padding-left: 20px;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  line-height: 1.7;
+}
+#history-load-more {
+  margin-top: 16px;
+  min-height: 44px;
+}
+
+@media (width <= 600px) {
+  .status-observations {
+    gap: 1px;
+  }
+  .status-bar {
+    border-radius: 1px;
+  }
+  .history-refresh {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+#public-status [hidden] {
+  display: none !important;
 }

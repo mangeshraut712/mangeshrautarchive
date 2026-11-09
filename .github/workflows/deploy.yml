@@ -276,6 +276,7 @@ jobs:
             tests/e2e/launch-intro-loading.spec.js \
             tests/e2e/blog-reader.spec.js \
             tests/e2e/monitor-status.spec.js \
+            tests/e2e/monitor-history.spec.js \
             --project="Desktop Chrome" --workers=2 --retries=0
           E2E_APP_URL=http://127.0.0.1:4000 npm run test:tester-army:ci
           node scripts/deployment/lighthouse-gate.js \

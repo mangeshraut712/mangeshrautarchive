@@ -135,3 +135,7 @@ mangeshrautarchive/
 2. Tailwind scans CSS and generates `tailwind-output.css`.
 3. Rich markdown dependencies are pre-bundled by `esbuild` into `src/js/vendor/rich-markdown.js`.
 4. HTML shells are copied, JS modules are stamped with deterministic cache-busting queries (`?v=ASSET_VER`), and assets are written to `dist/`.
+
+## Independent availability history
+
+`workers/portfolio-status/` runs a five-minute Cloudflare Cron collector against six fixed public endpoints. A dedicated D1 database persists idempotent samples, daily aggregates, service transition state, and incidents. The Monitor fetches its read-only API independently of the existing AssistMe on-demand status endpoint. Incident confirmation and recovery use two consecutive observations; unknown intervals reduce coverage. The [operations guide](docs/qa/durable-monitor-2026-11-09.md) defines retention and measurement limits.

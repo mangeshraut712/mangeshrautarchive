@@ -54,6 +54,23 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'durable-uptime-20261109',
+    date: '2026-11-09',
+    type: 'improvement',
+    title: 'Uptime history that continues between visits',
+    summary:
+      'Adds an independent five-minute collector and persistent database for six public service probes. Monitor now shows 90 daily availability bars, sampled uptime and check coverage, expandable UTC tables, and paginated incident timelines. Consecutive failures confirm incidents; consecutive healthy checks resolve them. Missing observations remain unknown.',
+    tags: ['monitor', 'api'],
+    sha: null,
+    commitVerified: false,
+    model: 'GPT-6 / Codex',
+    ide: 'Codex desktop',
+    purpose: 'Implement and verify durable portfolio uptime and incident history.',
+    attributionSource: 'commit-message',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
     id: 'portfolio-status-20261109',
     date: '2026-11-09',
     type: 'improvement',

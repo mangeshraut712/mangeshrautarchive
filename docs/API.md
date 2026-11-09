@@ -82,3 +82,7 @@ npm run test:api   # pytest tests in tests/api/
 - **GitHub Pages** ships static `dist/`; browser API calls use the Cloudflare Worker. The Worker persists newsletter and contact submissions in RLS-protected Supabase tables with server-only service-role credentials.
 - **Cloudflare Worker** (`workers/assistme-chat/`) is the primary active edge API for GitHub Pages, proxying OpenRouter LLM requests, caching catalog probes, and serving `/api/github/profile`.
 - **Vercel** serverless functions use `api/index.py`; local development runs on port 8001. Live Vercel deployment is currently disabled. `vercel.json` is optional according to the repository doctor and is currently absent.
+
+## Persistent status API
+
+The independent `portfolio-status` Cloudflare Worker exposes read-only `/api/history`, `/api/incidents?before=<cursor>`, and `/health` at `https://portfolio-status.mangeshraut712.workers.dev`. It stores real five-minute HTTP probes in D1, with 90-day daily totals and persistent confirmed incidents. History includes sampled uptime, separate coverage, active incidents, and a cursor for older records. Storage failure returns HTTP 503, never a fabricated empty healthy history. See the [measurement and operations guide](qa/durable-monitor-2026-11-09.md).

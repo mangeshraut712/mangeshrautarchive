@@ -3,7 +3,11 @@
  * System monitoring telemetry, health cards, API diagnostics, and live dashboards
  */
 
-import { renderPublicStatus, expirePublicStatus } from './monitor-status.js';
+import {
+  renderPublicStatus,
+  expirePublicStatus,
+  refreshPersistentHistory,
+} from './monitor-status.js';
 
 import * as MonitorMetrics from '../utils/monitor-metrics.js';
 import { initOverlayMenu } from './overlay.js';
@@ -2301,8 +2305,10 @@ async function performRefreshData(options = {}) {
     showToast('Refreshing data...', 'info');
     setButtonLoading('.control-center-actions button:first-child', true, 'Refreshing...');
   }
+  const historyRequest = refreshPersistentHistory();
   const { probe } = await ensureApiOrigin({ force: true });
   renderPublicStatus(probe);
+  await historyRequest;
   if (document.getElementById('tab-status')?.getAttribute('aria-selected') === 'true') {
     if (!silent) {
       showToast(

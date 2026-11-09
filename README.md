@@ -127,12 +127,14 @@ Start with [CONTRIBUTING.md](CONTRIBUTING.md), [AGENTS.md](AGENTS.md), and the [
 
 I maintain this portfolio with assistance from several coding tools. Each shipped change records its contributor and purpose in the [changelog](src/js/data/changelog-entries.js); earlier records are preserved in [development history](docs/DEVELOPMENT_HISTORY.md).
 
-| This maintenance contribution              | Record                                                                                                                  |
-| ------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------- |
-| Coding agent                               | GPT-6 / Codex desktop                                                                                                   |
-| Purpose                                    | Redesign Monitor around live service status, truthful observation history, bounded refreshes, and on-demand diagnostics |
-| Exact variant, reasoning mode, token usage | unavailable                                                                                                             |
-| Chatbot runtime                            | Separate configuration in [FastAPI](api/model_router.py) and the [Worker](workers/assistme-chat/src/model-routing.js)   |
+| This maintenance contribution              | Record                                                                                                                    |
+| ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------- |
+| Coding agent                               | GPT-6 / Codex desktop                                                                                                     |
+| Purpose                                    | Add independent scheduled uptime checks, durable incident history, coverage reporting, and responsive status verification |
+| Exact variant, reasoning mode, token usage | unavailable                                                                                                               |
+| Chatbot runtime                            | Separate configuration in [FastAPI](api/model_router.py) and the [Worker](workers/assistme-chat/src/model-routing.js)     |
+
+The [persistent monitoring guide](docs/qa/durable-monitor-2026-11-09.md) describes the collector, retention, incident policy, and verification.
 
 The [Monitor status redesign](docs/qa/monitor-status-2026-11-09.md) documents probe scope, freshness, and device/theme verification.
 

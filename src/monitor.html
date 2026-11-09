@@ -498,15 +498,22 @@
               <p class="status-empty">Waiting for live service checks…</p>
             </div>
             <div class="status-history-key">
-              <span>Earlier this visit</span
-              ><span id="status-observation-count">0 of 24 observations · this visit only</span
-              ><span>Latest</span>
+              <span>Past 90 days</span
+              ><span id="status-observation-count">Persistent monitoring · every five minutes</span
+              ><span>Today</span>
             </div>
             <p class="status-caption status-history-note">
-              Bars show checks collected while this page is open. Empty bars have no data. They are
-              not a 90-day uptime record.
+              Daily bars use stored five-minute availability checks. Sampled uptime is successful
+              checks divided by recorded checks. Coverage shows how many scheduled checks were
+              recorded; empty days have no data.
             </p>
           </section>
+          <div class="history-refresh">
+            <p id="history-status" role="status">Loading stored monitoring history…</p>
+            <button id="history-retry" class="btn btn-secondary" type="button">
+              Refresh history
+            </button>
+          </div>
           <section
             id="status-current-issues"
             class="status-issues-section"
@@ -520,6 +527,19 @@
               <p class="status-empty">Waiting for monitoring results.</p>
             </div>
           </section>
+          <section class="status-issues-section" aria-labelledby="incident-history-heading">
+            <div class="status-section-heading">
+              <h2 id="incident-history-heading">Incident history</h2>
+              <span class="status-caption">Automated · persisted across visits</span>
+            </div>
+            <div id="persistent-incidents">
+              <p class="status-empty">Loading stored incidents…</p>
+            </div>
+            <button id="history-load-more" class="btn btn-secondary" type="button" hidden>
+              Load older incidents
+            </button>
+            <p id="incident-page-message" role="status"></p>
+          </section>
           <aside class="status-method">
             <h2>About these checks</h2>
             <p>
@@ -528,8 +548,10 @@
               Detailed checks are available in Diagnostics.
             </p>
             <p>
-              Updates pause while this tab is hidden. Results older than two minutes are marked
-              unverified. Durable incident history is not currently available.
+              Live page updates pause while this tab is hidden. The independent scheduled collector
+              keeps running every five minutes. Two consecutive failed checks confirm an incident;
+              two consecutive healthy checks confirm recovery. Missing intervals break confirmation
+              streaks. History dates use UTC.
             </p>
           </aside>
           <noscript
