@@ -54,6 +54,24 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'restore-classic-hero-and-devotional-support-strip-20261109',
+    date: '2026-11-09',
+    type: 'refactor',
+    title: 'Restore classic hero presentation and devotional support card with PayPal',
+    summary:
+      'Cleaned up the hero section by removing recruiter quick-action strip and reverse technical interview chips, restoring the distraction-free personal introduction and portfolio callout. Restored the classic "Support My Work" devotional blessings card and PayPal donation strip in the Contact section.',
+    tags: ['design', 'ui', 'refactor'],
+    sha: null,
+    commitVerified: false,
+    model: 'Gemini 3.8 Flash',
+    ide: 'Google Antigravity IDE',
+    purpose:
+      'Restore clean distraction-free hero layout and restore classic devotional blessings and PayPal donation strip.',
+    attributionSource: 'commit-message',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
     id: 'journal-reader-experience-20261109',
     date: '2026-11-09',
     type: 'improvement',

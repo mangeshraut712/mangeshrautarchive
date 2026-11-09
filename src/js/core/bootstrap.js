@@ -724,20 +724,6 @@ function initContactChatbotCTA(chatbotModuleLoader, documentRef = document) {
   });
 }
 
-function initReverseInterviewPrompts(chatbotModuleLoader, documentRef = document) {
-  documentRef.addEventListener('click', async event => {
-    const chip = event.target?.closest?.('[data-reverse-interview-prompt]');
-    if (!chip) return;
-    event.preventDefault();
-    const prompt = chip.getAttribute('data-prompt') || chip.textContent.trim();
-    await openChatbotAssistant({
-      prompt,
-      documentRef,
-      chatbotModuleLoader,
-    });
-  });
-}
-
 function initGlobalCalendlyTrigger(documentRef = document) {
   documentRef.addEventListener('click', async event => {
     const btn = event.target?.closest?.('[data-open-calendly]');
@@ -1397,7 +1383,6 @@ async function loadDeferredBootstrapModules() {
   initAvatarToggle();
   initPortfolioFeatureUpgrades();
   initContactChatbotCTA(chatbotLoader);
-  initReverseInterviewPrompts(chatbotLoader);
   initGlobalCalendlyTrigger();
 
   initializeVercelAnalytics().catch(error => {

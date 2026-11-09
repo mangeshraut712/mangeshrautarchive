@@ -180,12 +180,12 @@
         });
       }
 
-      // Stripe Checkout (Commercial Advisory)
+      // Stripe Checkout
       if (href.includes('buy.stripe.com')) {
         window.trackPortfolioEvent('checkout_initiated', {
           provider: 'stripe',
-          product: target.dataset.product || 'technical_advisory',
-          amount: target.dataset.amount || '250',
+          product: target.dataset.product || 'direct_support',
+          amount: target.dataset.amount || 'custom',
           currency: 'usd',
           destination: href,
         });

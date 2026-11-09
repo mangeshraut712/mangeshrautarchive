@@ -531,8 +531,6 @@ html.dark .book-btn * {
 #contact a.support-stripe-btn,
 #contact a.support-paypal-btn,
 #contact a.support-coffee-btn,
-#contact a.advisory-checkout-btn,
-#contact .advisory-checkout-btn,
 #contact .support-stripe-btn.premium,
 #contact .support-paypal-btn.premium,
 #contact .support-coffee-btn.premium {
@@ -553,16 +551,6 @@ html.dark .book-btn * {
   line-height: 1.2 !important;
 }
 
-#contact a.advisory-checkout-btn,
-#contact .advisory-checkout-btn {
-  border-radius: 12px !important;
-  background: linear-gradient(135deg, #0071e3 0%, #0051a8 100%) !important;
-  color: #fff !important;
-  box-shadow: 0 4px 14px rgba(0, 113, 227, 0.32) !important;
-}
-
-#contact .advisory-checkout-btn .payment-logo,
-#contact .advisory-checkout-btn svg,
 #contact .support-stripe-btn .payment-logo,
 #contact .support-paypal-btn .payment-logo,
 #contact .support-coffee-btn .payment-logo,
@@ -575,58 +563,6 @@ html.dark .book-btn * {
   max-height: 1.25rem !important;
   flex-shrink: 0 !important;
   display: block !important;
-}
-
-#contact .technical-advisory-card {
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 0.55rem !important;
-  padding: 1.15rem !important;
-  border-radius: 18px !important;
-  background: linear-gradient(
-    145deg,
-    rgba(0, 113, 227, 0.04) 0%,
-    rgba(0, 113, 227, 0.1) 100%
-  ) !important;
-  border: 1.5px solid rgba(0, 113, 227, 0.28) !important;
-  box-shadow: 0 6px 20px rgba(0, 113, 227, 0.08) !important;
-  margin-bottom: 0.75rem !important;
-  box-sizing: border-box !important;
-}
-
-html.dark #contact .technical-advisory-card {
-  background: linear-gradient(
-    145deg,
-    rgba(41, 151, 255, 0.08) 0%,
-    rgba(41, 151, 255, 0.15) 100%
-  ) !important;
-  border-color: rgba(41, 151, 255, 0.38) !important;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5) !important;
-}
-
-#contact span.advisory-badge,
-.advisory-badge {
-  display: inline-flex !important;
-  align-items: center !important;
-  gap: 0.3rem !important;
-  padding: 3px 8px !important;
-  border-radius: 6px !important;
-  background: #0056b3 !important;
-  background-color: #0056b3 !important;
-  color: #ffffff !important;
-  -webkit-text-fill-color: #ffffff !important;
-  font-size: 0.6875rem !important;
-  font-weight: 700 !important;
-  letter-spacing: 0.05em !important;
-  text-transform: uppercase !important;
-}
-
-html.dark #contact span.advisory-badge,
-html.dark .advisory-badge {
-  background: #0071e3 !important;
-  background-color: #0071e3 !important;
-  color: #ffffff !important;
-  -webkit-text-fill-color: #ffffff !important;
 }
 
 #contact .support-stripe-btn.premium {
