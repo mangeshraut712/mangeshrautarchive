@@ -129,8 +129,8 @@ I maintain this portfolio with assistance from several coding tools. Each shippe
 
 | This maintenance contribution              | Record                                                                                                                |
 | ------------------------------------------ | --------------------------------------------------------------------------------------------------------------------- |
-| Coding agent                               | GPT-6 / Codex desktop                                                                                                 |
-| Purpose                                    | Repair repository pagination and data provenance, bound activity requests, and improve accessible project exploration |
+| Coding agent                               | Gemini 3.8 Flash / Google Antigravity IDE                                                                             |
+| Purpose                                    | Harmonize GitHub Operating View metrics, layout, and document comprehensive system architecture and risk matrix       |
 | Exact variant, reasoning mode, token usage | unavailable                                                                                                           |
 | Chatbot runtime                            | Separate configuration in [FastAPI](api/model_router.py) and the [Worker](workers/assistme-chat/src/model-routing.js) |
 

@@ -1,12 +1,24 @@
 {
   "username": "mangeshraut712",
-  "lastSyncedAt": "2026-11-09T19:05:34.902Z",
+  "lastSyncedAt": "2026-11-09T19:48:39.257Z",
   "publicReposCount": 107,
   "followersCount": 15,
   "followingCount": 10,
   "totalStars": 14,
   "totalForks": 4,
   "repositories": [
+    {
+      "name": "mangeshraut712",
+      "fullName": "mangeshraut712/mangeshraut712",
+      "description": "Profile README — Software Engineer (Pune · Philadelphia · remote). 50 merged upstream PRs.",
+      "url": "https://github.com/mangeshraut712/mangeshraut712",
+      "homepage": "https://mangeshraut712.github.io/mangeshrautarchive/",
+      "stars": 0,
+      "forks": 0,
+      "language": "JavaScript",
+      "topics": [],
+      "updatedAt": "2026-11-09T19:13:14Z"
+    },
     {
       "name": "mangeshrautarchive",
       "fullName": "mangeshraut712/mangeshrautarchive",
@@ -38,19 +50,7 @@
         "web-performance",
         "webmcp"
       ],
-      "updatedAt": "2026-11-09T19:00:42Z"
-    },
-    {
-      "name": "mangeshraut712",
-      "fullName": "mangeshraut712/mangeshraut712",
-      "description": "Profile README — Software Engineer (Pune · Philadelphia · remote). 50 merged upstream PRs.",
-      "url": "https://github.com/mangeshraut712/mangeshraut712",
-      "homepage": "https://mangeshraut712.github.io/mangeshrautarchive/",
-      "stars": 0,
-      "forks": 0,
-      "language": "JavaScript",
-      "topics": [],
-      "updatedAt": "2026-11-09T17:30:14Z"
+      "updatedAt": "2026-11-09T19:06:52Z"
     },
     {
       "name": "alpha-quant-academy",

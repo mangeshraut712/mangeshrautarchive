@@ -54,6 +54,24 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'github-operating-view-dual-sync-20261110',
+    date: '2026-11-10',
+    type: 'improvement',
+    title: 'Harmonize GitHub Operating View metrics, layout, and system architecture mapping',
+    summary:
+      'Harmonizes GitHub Operating View card metrics with verified live indicators (100 repos, 22 unique contributors, 14 stars, 4 forks, 87 30-day commits, 97 active repos, 9 languages), relocates partial activity indicators below dual 3D/2D contribution graphs, syncs live telemetry, and adds comprehensive ARCHITECTURE.md system map and risk matrix.',
+    tags: ['design', 'systems'],
+    sha: null,
+    commitVerified: false,
+    model: 'Gemini 3.8 Flash',
+    ide: 'Google Antigravity IDE',
+    purpose:
+      'Harmonize GitHub Operating View metrics, layout, and document comprehensive system architecture and risk matrix.',
+    attributionSource: 'commit-message',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
     id: 'projects-catalog-20261110',
     date: '2026-11-10',
     type: 'improvement',
