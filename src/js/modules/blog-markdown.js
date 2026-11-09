@@ -449,6 +449,24 @@ export function parseBlogContent(content, options = {}) {
     }
 
     const firstLine = lines[0].trim();
+    const orderedStart = firstLine.match(/^(\d+)[.)]\s+/);
+    if (orderedStart) {
+      closeList();
+      const items = [];
+      for (const line of lines) {
+        const item = line.trim().match(/^\d+[.)]\s+(.+)$/);
+        if (item) items.push(item[1]);
+        else if (line.trim() && items.length) items[items.length - 1] += ` ${line.trim()}`;
+      }
+      const start = Number(orderedStart[1]);
+      html.push(
+        `<ol class="article-list article-list--ordered" start="${start}">${items
+          .map(item => `<li class="article-list-item">${parseInline(item)}</li>`)
+          .join('')}</ol>`
+      );
+      continue;
+    }
+
     if (firstLine.startsWith('- ') || firstLine.startsWith('* ') || firstLine.startsWith('• ')) {
       if (!inList) {
         inList = true;

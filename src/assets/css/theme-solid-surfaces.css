@@ -2564,7 +2564,7 @@ html body:has(#go-to-top.visible) .a11y-toolbar {
 }
 
 @media (width <= 768px) {
-  /* Keep mobile utilities in one safe-area-aware column at the bottom-right. */
+  /* One safe-area-aware row leaves mobile reading content clear. */
   html body .a11y-toolbar__main,
   html body #website-share-toggle.website-share-fab,
   html body #chatbot-toggle,
@@ -2584,7 +2584,8 @@ html body:has(#go-to-top.visible) .a11y-toolbar {
   html body:has(#go-to-top.visible) #chatbot-toggle,
   html body:has(#go-to-top.visible) #go-to-top,
   html body:has(#go-to-top.visible) #go-to-top.visible {
-    right: var(--fab-edge, max(1rem, env(safe-area-inset-right, 0px))) !important;
+    right: calc(var(--fab-edge) + var(--utility-row-offset, 0px)) !important;
+    bottom: var(--fab-bottom) !important;
     left: auto !important;
     top: auto !important;
     transform: none !important;
@@ -3697,5 +3698,17 @@ html body {
   html body #chatbot-toggle,
   html body #go-to-top {
     transform: none !important;
+  }
+}
+
+@media (width <= 768px) {
+  #website-share-toggle {
+    --utility-row-offset: calc(var(--fab-size) + var(--fab-gap));
+  }
+  .a11y-toolbar {
+    --utility-row-offset: calc((var(--fab-size) + var(--fab-gap)) * 2);
+  }
+  #go-to-top {
+    --utility-row-offset: calc((var(--fab-size) + var(--fab-gap)) * 3);
   }
 }

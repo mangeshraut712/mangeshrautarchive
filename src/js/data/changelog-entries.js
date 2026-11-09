@@ -54,6 +54,23 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'responsive-utility-row-20261109',
+    date: '2026-11-09',
+    type: 'fix',
+    title: 'More room to read on mobile',
+    summary:
+      'Moves shared mobile utility controls into a compact bottom row with 44px targets and scroll clearance. Clarifies offline recovery instructions and labels the Uses architecture presentation accurately. Renders numbered article workflows as ordered lists, keeps structured form errors readable, waits for game difficulty controls to initialize, and removes unintended service-worker registration that intercepted deferred requests.',
+    tags: ['design'],
+    sha: null,
+    commitVerified: false,
+    model: 'GPT-6 / Codex',
+    ide: 'Codex desktop',
+    purpose: 'Resolve mobile reading overlap and audit responsive portfolio surfaces.',
+    attributionSource: 'commit-message',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
     id: 'security-and-repository-presentation-20261109',
     date: '2026-11-09',
     type: 'fix',

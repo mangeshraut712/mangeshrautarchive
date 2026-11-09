@@ -325,7 +325,7 @@ CSS files in `src/assets/css/` are layered systematically:
 
 ### Floating mobile controls
 
-Keep Accessibility, Share, Chat, and Back to Top in one vertical column at the safe-area-aware right edge. Use at least 44-pixel targets with visible gaps. When Back to Top is hidden, pack the other controls down. Accessibility tools and the Liquid Glass sheet open beside the stack, with viewport-bounded vertical scrolling; they must remain reachable on small portrait and landscape screens.
+Keep Accessibility, Share, Chat, and Back to Top in a bottom row at widths up to 768px and one vertical column at the safe-area-aware right edge on larger screens. Use at least 44-pixel targets with visible gaps. On desktop, pack the remaining controls down when Back to Top is hidden. Accessibility tools and the Liquid Glass sheet open beside the stack, with viewport-bounded vertical scrolling; they must remain reachable on small portrait and landscape screens.
 
 ## 7. Interactive Micro-Experiences & Widgets
 
@@ -469,3 +469,9 @@ Exact model variant, reasoning mode, and token usage: unavailable.
 ### Public screenshot evidence
 
 README captures belong in `docs/screenshots/`, outside the production asset tree. Use `node scripts/qa/capture-readme-screenshots.mjs` with Chrome installed. The script visits the real site at 375px, 768px, and 1440px in both themes, enables reduced motion, verifies page-level horizontal overflow, and records URLs and the source revision. Inspect the actual images before publishing. The manifest is evidence for these captured states, not every interaction or browser.
+
+### Narrow-screen utility controls
+
+At widths up to 768px, shared accessibility, sharing, chat, and back-to-top controls use one bottom row, preserving 44px circles and safe-area insets. Content receives bottom clearance and anchor scrolling reserves space for the controls. Accessibility options open above the row; desktop retains the vertical stack. Do not position a tall stack over article text or Contact clocks.
+
+Article workflows beginning with numbered Markdown items render as native ordered lists. Keep their starting number, inline emphasis, and paragraph spacing; do not collapse sequential instructions into a prose paragraph.

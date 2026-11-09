@@ -4551,3 +4551,15 @@ html.dark .systems-commit-sha {
   line-height: 1.4;
   margin: 0;
 }
+
+@media (width <= 768px) {
+  .case-study-nav .monitor-page-nav__brand {
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  .case-study-nav .monitor-page-nav__label {
+    display: block;
+    max-width: 100%;
+  }
+}

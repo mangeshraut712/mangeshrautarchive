@@ -579,6 +579,7 @@ class DebugRunner {
     modes.forEach(mode => {
       const btn = document.getElementById(`debug-seg-${mode}`);
       if (btn) {
+        btn.disabled = false;
         const isActive = mode === this.difficulty;
         btn.classList.toggle('active', isActive);
         btn.setAttribute('aria-selected', isActive ? 'true' : 'false');

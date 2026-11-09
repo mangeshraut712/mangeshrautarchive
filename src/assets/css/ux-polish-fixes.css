@@ -2023,3 +2023,20 @@ html.dark .chat-attachment-preview {
       inset 0 0 22px rgba(255, 255, 255, 0.7);
   }
 }
+
+/* Keep utility controls below reading content instead of beside mobile paragraphs. */
+@media (width <= 768px) {
+  html:has(.a11y-toolbar) {
+    scroll-padding-bottom: calc(88px + env(safe-area-inset-bottom, 0px));
+  }
+
+  body:has(.a11y-toolbar) {
+    padding-bottom: calc(88px + env(safe-area-inset-bottom, 0px));
+  }
+
+  html body .a11y-toolbar.a11y-toolbar.is-open .a11y-toolbar__panel {
+    right: var(--fab-edge) !important;
+    bottom: calc(var(--fab-bottom) + var(--fab-size) + var(--fab-gap)) !important;
+    max-width: calc(100vw - var(--fab-edge) * 2) !important;
+  }
+}

@@ -50,10 +50,11 @@ export function getSubmissionContext({
 }
 
 function responseError(payload, status) {
+  const message = [payload?.error, payload?.detail, payload?.message].find(
+    value => typeof value === 'string' && value.trim()
+  );
   return (
-    payload?.error ||
-    payload?.detail ||
-    payload?.message ||
+    message ||
     (status === 429
       ? 'Too many attempts. Please wait before trying again.'
       : 'The form could not be saved. Please try again.')

@@ -1597,6 +1597,19 @@ html.dark .article-list-item {
   font-weight: bold;
 }
 
+.article-list--ordered {
+  list-style-type: decimal;
+}
+
+.article-list--ordered .article-list-item::before {
+  content: none;
+}
+
+.article-list--ordered .article-list-item::marker {
+  color: var(--text-accent, #0071e3);
+  font-weight: 600;
+}
+
 .article-blockquote {
   border-left: 4px solid var(--text-accent, #0071e3);
   padding: 0.75rem 1.5rem;

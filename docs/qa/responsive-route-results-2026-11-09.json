@@ -1,0 +1,1835 @@
+{
+  "date": "2026-11-09",
+  "baseCommit": "c6d4d3fde21fd9f492035710932373083ba48536",
+  "browser": "Chrome via Playwright",
+  "widths": [375, 768, 1440],
+  "themes": ["light", "dark"],
+  "states": 228,
+  "results": [
+    {
+      "path": "404.html",
+      "width": 375,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "about.html",
+      "width": 375,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "changelog.html",
+      "width": 375,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "contact.html",
+      "width": 375,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "index.html",
+      "width": 375,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "monitor.html",
+      "width": 375,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "offline.html",
+      "width": 375,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "systems.html",
+      "width": 375,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "travel.html",
+      "width": 375,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "uses.html",
+      "width": 375,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "case-studies/assistme-va.html",
+      "width": 375,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "case-studies/bug-tracker.html",
+      "width": 375,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "case-studies/ces-energy.html",
+      "width": 375,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "case-studies/hindai.html",
+      "width": 375,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "case-studies/portfolio.html",
+      "width": 375,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/ai-code-editors-revolution-2026.html",
+      "width": 375,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/ai-models-global-race-2026.html",
+      "width": 375,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/anthropic-mythos-2026.html",
+      "width": 375,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/apple-50th-anniversary-2026.html",
+      "width": 375,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/apple-september-event-2026.html",
+      "width": 375,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/cursor-origin-agent-native-code-hosting.html",
+      "width": 375,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/gemini-4-argon-and-carbon-deepmind-2026.html",
+      "width": 375,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/google-ai-ecosystem-2026.html",
+      "width": 375,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/google-io-2026-developer-insights.html",
+      "width": 375,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/grok-4-5-grok-build-open-source-2026.html",
+      "width": 375,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/grok-x-algorithm-systems-2026.html",
+      "width": 375,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/index.html",
+      "width": 375,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/macbook-pro-touchscreen-proled-xdr-2026.html",
+      "width": 375,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/notebooklm-2026-ai-research-agent.html",
+      "width": 375,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/nvidia-ai-dominance-2026.html",
+      "width": 375,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/openai-devday-2026.html",
+      "width": 375,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/openclaw-revolution-2026.html",
+      "width": 375,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/openrouter-ai-usb-hub-routing-2026.html",
+      "width": 375,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/razorpay-vulcan-payments-foundation-model.html",
+      "width": 375,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/typesafe-ai-jev-system-one-decisions-2026.html",
+      "width": 375,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/upi-tap-to-pay-and-2026-payment-architecture.html",
+      "width": 375,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/wispr-flow-dictation-2026.html",
+      "width": 375,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/wwdc-2026-apple-intelligence-siri-ai.html",
+      "width": 375,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "404.html",
+      "width": 375,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "about.html",
+      "width": 375,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "changelog.html",
+      "width": 375,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "contact.html",
+      "width": 375,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "index.html",
+      "width": 375,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "monitor.html",
+      "width": 375,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "offline.html",
+      "width": 375,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "systems.html",
+      "width": 375,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "travel.html",
+      "width": 375,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "uses.html",
+      "width": 375,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "case-studies/assistme-va.html",
+      "width": 375,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "case-studies/bug-tracker.html",
+      "width": 375,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": [],
+      "recheck": "Initial 404 during concurrent dist rebuild; passed after build completed."
+    },
+    {
+      "path": "case-studies/ces-energy.html",
+      "width": 375,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "case-studies/hindai.html",
+      "width": 375,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "case-studies/portfolio.html",
+      "width": 375,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/ai-code-editors-revolution-2026.html",
+      "width": 375,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/ai-models-global-race-2026.html",
+      "width": 375,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/anthropic-mythos-2026.html",
+      "width": 375,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/apple-50th-anniversary-2026.html",
+      "width": 375,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/apple-september-event-2026.html",
+      "width": 375,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/cursor-origin-agent-native-code-hosting.html",
+      "width": 375,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/gemini-4-argon-and-carbon-deepmind-2026.html",
+      "width": 375,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/google-ai-ecosystem-2026.html",
+      "width": 375,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/google-io-2026-developer-insights.html",
+      "width": 375,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/grok-4-5-grok-build-open-source-2026.html",
+      "width": 375,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/grok-x-algorithm-systems-2026.html",
+      "width": 375,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/index.html",
+      "width": 375,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/macbook-pro-touchscreen-proled-xdr-2026.html",
+      "width": 375,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/notebooklm-2026-ai-research-agent.html",
+      "width": 375,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/nvidia-ai-dominance-2026.html",
+      "width": 375,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/openai-devday-2026.html",
+      "width": 375,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/openclaw-revolution-2026.html",
+      "width": 375,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/openrouter-ai-usb-hub-routing-2026.html",
+      "width": 375,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/razorpay-vulcan-payments-foundation-model.html",
+      "width": 375,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/typesafe-ai-jev-system-one-decisions-2026.html",
+      "width": 375,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/upi-tap-to-pay-and-2026-payment-architecture.html",
+      "width": 375,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/wispr-flow-dictation-2026.html",
+      "width": 375,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/wwdc-2026-apple-intelligence-siri-ai.html",
+      "width": 375,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "404.html",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "about.html",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "changelog.html",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "contact.html",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "index.html",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "monitor.html",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "offline.html",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "systems.html",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "travel.html",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "uses.html",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "case-studies/assistme-va.html",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "case-studies/bug-tracker.html",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "case-studies/ces-energy.html",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "case-studies/hindai.html",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "case-studies/portfolio.html",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/ai-code-editors-revolution-2026.html",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/ai-models-global-race-2026.html",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/anthropic-mythos-2026.html",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/apple-50th-anniversary-2026.html",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/apple-september-event-2026.html",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/cursor-origin-agent-native-code-hosting.html",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/gemini-4-argon-and-carbon-deepmind-2026.html",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/google-ai-ecosystem-2026.html",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/google-io-2026-developer-insights.html",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/grok-4-5-grok-build-open-source-2026.html",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/grok-x-algorithm-systems-2026.html",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/index.html",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/macbook-pro-touchscreen-proled-xdr-2026.html",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/notebooklm-2026-ai-research-agent.html",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/nvidia-ai-dominance-2026.html",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/openai-devday-2026.html",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/openclaw-revolution-2026.html",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/openrouter-ai-usb-hub-routing-2026.html",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/razorpay-vulcan-payments-foundation-model.html",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/typesafe-ai-jev-system-one-decisions-2026.html",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/upi-tap-to-pay-and-2026-payment-architecture.html",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/wispr-flow-dictation-2026.html",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/wwdc-2026-apple-intelligence-siri-ai.html",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "404.html",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "about.html",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "changelog.html",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "contact.html",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "index.html",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "monitor.html",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "offline.html",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "systems.html",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "travel.html",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "uses.html",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "case-studies/assistme-va.html",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "case-studies/bug-tracker.html",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "case-studies/ces-energy.html",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "case-studies/hindai.html",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "case-studies/portfolio.html",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/ai-code-editors-revolution-2026.html",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/ai-models-global-race-2026.html",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/anthropic-mythos-2026.html",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/apple-50th-anniversary-2026.html",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/apple-september-event-2026.html",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/cursor-origin-agent-native-code-hosting.html",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/gemini-4-argon-and-carbon-deepmind-2026.html",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/google-ai-ecosystem-2026.html",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/google-io-2026-developer-insights.html",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/grok-4-5-grok-build-open-source-2026.html",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/grok-x-algorithm-systems-2026.html",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/index.html",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/macbook-pro-touchscreen-proled-xdr-2026.html",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/notebooklm-2026-ai-research-agent.html",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/nvidia-ai-dominance-2026.html",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/openai-devday-2026.html",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/openclaw-revolution-2026.html",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/openrouter-ai-usb-hub-routing-2026.html",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/razorpay-vulcan-payments-foundation-model.html",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/typesafe-ai-jev-system-one-decisions-2026.html",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/upi-tap-to-pay-and-2026-payment-architecture.html",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/wispr-flow-dictation-2026.html",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/wwdc-2026-apple-intelligence-siri-ai.html",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "404.html",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "about.html",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "changelog.html",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "contact.html",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "index.html",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "monitor.html",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "offline.html",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "systems.html",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "travel.html",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "uses.html",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "case-studies/assistme-va.html",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "case-studies/bug-tracker.html",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "case-studies/ces-energy.html",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "case-studies/hindai.html",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "case-studies/portfolio.html",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/ai-code-editors-revolution-2026.html",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/ai-models-global-race-2026.html",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/anthropic-mythos-2026.html",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/apple-50th-anniversary-2026.html",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/apple-september-event-2026.html",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/cursor-origin-agent-native-code-hosting.html",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/gemini-4-argon-and-carbon-deepmind-2026.html",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/google-ai-ecosystem-2026.html",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/google-io-2026-developer-insights.html",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/grok-4-5-grok-build-open-source-2026.html",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/grok-x-algorithm-systems-2026.html",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/index.html",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/macbook-pro-touchscreen-proled-xdr-2026.html",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/notebooklm-2026-ai-research-agent.html",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/nvidia-ai-dominance-2026.html",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/openai-devday-2026.html",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/openclaw-revolution-2026.html",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/openrouter-ai-usb-hub-routing-2026.html",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/razorpay-vulcan-payments-foundation-model.html",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/typesafe-ai-jev-system-one-decisions-2026.html",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/upi-tap-to-pay-and-2026-payment-architecture.html",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/wispr-flow-dictation-2026.html",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/wwdc-2026-apple-intelligence-siri-ai.html",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "404.html",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "about.html",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "changelog.html",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "contact.html",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "index.html",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "monitor.html",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "offline.html",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "systems.html",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "travel.html",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "uses.html",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "case-studies/assistme-va.html",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "case-studies/bug-tracker.html",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "case-studies/ces-energy.html",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "case-studies/hindai.html",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "case-studies/portfolio.html",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/ai-code-editors-revolution-2026.html",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/ai-models-global-race-2026.html",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/anthropic-mythos-2026.html",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/apple-50th-anniversary-2026.html",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/apple-september-event-2026.html",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/cursor-origin-agent-native-code-hosting.html",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/gemini-4-argon-and-carbon-deepmind-2026.html",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/google-ai-ecosystem-2026.html",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/google-io-2026-developer-insights.html",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/grok-4-5-grok-build-open-source-2026.html",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/grok-x-algorithm-systems-2026.html",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/index.html",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/macbook-pro-touchscreen-proled-xdr-2026.html",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/notebooklm-2026-ai-research-agent.html",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/nvidia-ai-dominance-2026.html",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/openai-devday-2026.html",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/openclaw-revolution-2026.html",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/openrouter-ai-usb-hub-routing-2026.html",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/razorpay-vulcan-payments-foundation-model.html",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/typesafe-ai-jev-system-one-decisions-2026.html",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/upi-tap-to-pay-and-2026-payment-architecture.html",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/wispr-flow-dictation-2026.html",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    },
+    {
+      "path": "blog/wwdc-2026-apple-intelligence-siri-ai.html",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "overflow": false,
+      "broken": []
+    }
+  ]
+}

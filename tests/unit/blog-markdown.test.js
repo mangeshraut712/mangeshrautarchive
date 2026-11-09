@@ -53,3 +53,14 @@ test('titled article tables expose a safe caption and column headers', () => {
   assert.match(html, /<th scope="col">Choice<\/th>/);
   assert.match(html, /<td>Reuse<\/td>/);
 });
+
+test('numbered workflows preserve steps, continuation text, and safe inline formatting', () => {
+  const { html } = parseBlogContent(
+    '3. **Review** the change\n   before release.\n4. <script>alert(1)</script>'
+  );
+  assert.match(html, /<ol class="article-list article-list--ordered" start="3">/);
+  assert.equal((html.match(/<li /g) || []).length, 2);
+  assert.match(html, /<strong>Review<\/strong> the change before release\.<\/li>/);
+  assert.ok(!html.includes('<script>'));
+  assert.match(html, /&lt;script&gt;/);
+});

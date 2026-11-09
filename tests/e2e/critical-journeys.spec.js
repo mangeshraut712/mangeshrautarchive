@@ -207,7 +207,7 @@ test('homepage has no serious accessibility violations', async ({ page }) => {
   );
 });
 
-test('mobile homepage fits and floating controls stay in a vertical stack', async ({ page }) => {
+test('mobile homepage fits and floating controls stay in a horizontal row', async ({ page }) => {
   await gotoSite(page, '/');
   await expect(page.locator('main')).toBeAttached();
   for (const [width, height] of [
@@ -229,7 +229,7 @@ test('mobile homepage fits and floating controls stay in a vertical stack', asyn
           page
             .locator('.a11y-toolbar__main, #website-share-toggle, #chatbot-toggle, #go-to-top')
             .evaluateAll(controls => {
-              const positions = controls.map(control => control.getBoundingClientRect().x);
+              const positions = controls.map(control => control.getBoundingClientRect().y);
               return Math.max(...positions) - Math.min(...positions);
             })
         )
@@ -251,7 +251,7 @@ test('mobile homepage fits and floating controls stay in a vertical stack', asyn
         );
       expect(bounds).toHaveLength(4);
       expect(
-        Math.max(...bounds.map(rect => rect.x)) - Math.min(...bounds.map(rect => rect.x))
+        Math.max(...bounds.map(rect => rect.y)) - Math.min(...bounds.map(rect => rect.y))
       ).toBeLessThanOrEqual(1);
       for (const rect of bounds) {
         expect(Math.round(rect.width)).toBeGreaterThanOrEqual(44);
@@ -261,9 +261,9 @@ test('mobile homepage fits and floating controls stay in a vertical stack', asyn
         expect(rect.right).toBeLessThanOrEqual(width);
         expect(rect.bottom).toBeLessThanOrEqual(height);
       }
-      const sorted = bounds.sort((a, b) => a.y - b.y);
+      const sorted = bounds.sort((a, b) => a.x - b.x);
       for (let index = 1; index < sorted.length; index++) {
-        expect(sorted[index].y - sorted[index - 1].bottom).toBeGreaterThanOrEqual(8);
+        expect(sorted[index].x - sorted[index - 1].right).toBeGreaterThanOrEqual(8);
       }
       await page.locator('.a11y-toolbar__main').click();
       const panel = page.locator('.a11y-toolbar__panel');

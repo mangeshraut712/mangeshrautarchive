@@ -1285,25 +1285,11 @@ function initServiceWorker() {
       () => {
         runWhenIdle(async () => {
           try {
-            // Safari 27+: Re-enable SW with static routing (bypasses iOS reload bugs)
-            // Older browsers: Keep SW unregistered for stability
-            if (
-              'NavigationPreloadManager' in window ||
-              CSS.supports('animation-timeline', 'scroll()')
-            ) {
-              // Modern browser — safe to use static-routed service worker
-              navigator.serviceWorker.register('./service-worker.js').catch(() => {});
-            } else {
-              // Legacy browser — keep unregistered for iOS Safari stability
-              const registrations = await navigator.serviceWorker.getRegistrations();
-              await Promise.all(registrations.map(registration => registration.unregister()));
-
-              if ('caches' in window) {
-                const cacheNames = await caches.keys();
-                await Promise.all(cacheNames.map(cacheName => caches.delete(cacheName)));
-              }
-
-              clearPortfolioStorage();
+            const registrations = await navigator.serviceWorker.getRegistrations();
+            await Promise.all(registrations.map(registration => registration.unregister()));
+            if ('caches' in window) {
+              const cacheNames = await caches.keys();
+              await Promise.all(cacheNames.map(cacheName => caches.delete(cacheName)));
             }
           } catch {
             // Service worker cleanup is best-effort; failures are non-critical

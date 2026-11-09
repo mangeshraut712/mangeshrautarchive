@@ -65,6 +65,7 @@ test.describe('persistent public forms', () => {
     const getPayload = await mockStoredResponse(page, '/api/contact', 'contact-test-id');
     await gotoSite(page, '/#contact');
 
+    await page.waitForLoadState('load');
     await page.locator('.contact-manual-details > summary').click();
     const form = page.locator('#contact-form');
     await form.scrollIntoViewIfNeeded();

@@ -127,12 +127,14 @@ Start with [CONTRIBUTING.md](CONTRIBUTING.md), [AGENTS.md](AGENTS.md), and the [
 
 I maintain this portfolio with assistance from several coding tools. Each shipped change records its contributor and purpose in the [changelog](src/js/data/changelog-entries.js); earlier records are preserved in [development history](docs/DEVELOPMENT_HISTORY.md).
 
-| This maintenance contribution              | Record                                                                                                                   |
-| ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------ |
-| Coding agent                               | GPT-6 / Codex desktop                                                                                                    |
-| Purpose                                    | Fix CodeQL findings and stale scan configuration; reconcile branches; refresh documentation and real website screenshots |
-| Exact variant, reasoning mode, token usage | unavailable                                                                                                              |
-| Chatbot runtime                            | Separate configuration in [FastAPI](api/model_router.py) and the [Worker](workers/assistme-chat/src/model-routing.js)    |
+| This maintenance contribution              | Record                                                                                                                                       |
+| ------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| Coding agent                               | GPT-6 / Codex desktop                                                                                                                        |
+| Purpose                                    | Improve responsive controls, article workflows, form feedback, and game loading; restore service-worker policy; audit pages and interactions |
+| Exact variant, reasoning mode, token usage | unavailable                                                                                                                                  |
+| Chatbot runtime                            | Separate configuration in [FastAPI](api/model_router.py) and the [Worker](workers/assistme-chat/src/model-routing.js)                        |
+
+The [November 9 responsive audit](docs/qa/responsive-feature-audit-2026-11-09.md) records device/theme coverage, fixes, and verification limits.
 
 ## 6. Documentation
 
