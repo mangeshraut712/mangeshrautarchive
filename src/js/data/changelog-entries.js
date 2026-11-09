@@ -54,6 +54,25 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'product-growth-recruiter-strip-reverse-interview-commercial-advisory-20261109',
+    date: '2026-11-09',
+    type: 'release',
+    title:
+      'Recruiter Quick-Action Strip, Reverse Technical Interview Sandbox, Commercial Advisory, and Full GA4 Telemetry',
+    summary:
+      'Implemented product intelligence and revenue growth enhancements based on GA4 analytics: deployed the Hero Recruiter Quick-Action Strip with real-time availability vitals, 1-click USA resume download, and 15m screen booking; created the interactive "Reverse Technical Interview" evaluation sandbox with 3 live architecture prompt chips hooked into AssistMe; transformed the support section into a commercial "1:1 Architecture & AI Systems Advisory ($250 / 45-min session)" offering with direct Stripe checkout alongside open-source tips; and wired full GA4 conversion telemetry to all checkout channels (Stripe, PayPal, BMC, GitHub Sponsors), contact form submissions, newsletter subscriptions, and recruiter quick-actions.',
+    tags: ['design', 'systems', 'api', 'assistme'],
+    sha: '7f922d83',
+    commitVerified: true,
+    model: 'Gemini 3.8 Flash',
+    ide: 'Google Antigravity IDE',
+    purpose:
+      'Drive recruiter engagement and monetization conversion with the Recruiter Quick-Action Strip, Reverse Technical Interview evaluation chips, 1:1 Technical Advisory Stripe checkout ($250), and comprehensive GA4 telemetry tracking.',
+    attributionSource: 'commit-message',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
     id: 'apple-music-ios272-monochrome-1s-scrobble-currently-sync-20261107',
     date: '2026-11-07',
     type: 'fix',

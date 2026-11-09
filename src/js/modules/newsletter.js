@@ -64,6 +64,12 @@ function bindNewsletterForm(form) {
         outcome: 'success',
         already_subscribed: Boolean(result.alreadySubscribed),
       });
+      if (typeof window.trackPortfolioEvent === 'function') {
+        window.trackPortfolioEvent('newsletter_subscribed', {
+          source: form.dataset.source || form.id || 'homepage_newsletter',
+          already_subscribed: Boolean(result.alreadySubscribed),
+        });
+      }
     } catch (error) {
       setStatus(statusEl, error.message || 'Subscription failed. Please try again.', 'error');
       globalThis.analytics?.track?.('newsletter_subscribe', {

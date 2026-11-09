@@ -146,10 +146,19 @@
       if (
         href.includes('resume') ||
         href.includes('Mangesh_Raut_Resume') ||
-        target.classList.contains('btn-resume')
+        target.classList.contains('btn-resume') ||
+        target.classList.contains('recruiter-resume-btn')
       ) {
+        const format = href.includes('USA') ? 'usa' : href.includes('Pune') ? 'india' : 'general';
+        const placement = target.closest('.recruiter-quick-strip')
+          ? 'hero_recruiter_strip'
+          : target.closest('#home')
+            ? 'hero_dropdown'
+            : 'site_surface';
         window.trackPortfolioEvent('resume_download', {
           link_url: href,
+          format,
+          placement,
           button_text: (target.textContent || '').trim().slice(0, 50),
         });
       }
@@ -158,16 +167,70 @@
       if (
         target.id === 'contact-book-meeting-btn' ||
         target.classList.contains('calendly-panel-button') ||
-        target.hasAttribute('data-open-calendly')
+        target.hasAttribute('data-open-calendly') ||
+        target.classList.contains('recruiter-book-btn')
       ) {
+        const placement = target.closest('.recruiter-quick-strip')
+          ? 'hero_recruiter_strip'
+          : target.closest('#contact')
+            ? 'contact_section'
+            : 'site_header';
         window.trackPortfolioEvent('book_consultation_click', {
-          placement: target.closest('#contact') ? 'contact_section' : 'site_header',
+          placement,
+        });
+      }
+
+      // Stripe Checkout (Commercial Advisory)
+      if (href.includes('buy.stripe.com')) {
+        window.trackPortfolioEvent('checkout_initiated', {
+          provider: 'stripe',
+          product: target.dataset.product || 'technical_advisory',
+          amount: target.dataset.amount || '250',
+          currency: 'usd',
+          destination: href,
+        });
+      }
+
+      // PayPal Checkout
+      if (href.includes('paypal.com') || href.includes('paypal.me')) {
+        window.trackPortfolioEvent('checkout_initiated', {
+          provider: 'paypal',
+          product: target.dataset.product || 'tip_or_support',
+          destination: href,
+        });
+      }
+
+      // Buy Me A Coffee
+      if (href.includes('buymeacoffee.com')) {
+        window.trackPortfolioEvent('checkout_initiated', {
+          provider: 'buymeacoffee',
+          product: target.dataset.product || 'coffee_support',
+          destination: href,
+        });
+      }
+
+      // GitHub Sponsors
+      if (href.includes('github.com/sponsors')) {
+        window.trackPortfolioEvent('checkout_initiated', {
+          provider: 'github_sponsors',
+          tier: target.dataset.tier || 'monthly_sponsor',
+          destination: href,
+        });
+      }
+
+      // Reverse Technical Interview Evaluation Prompts
+      if (target.hasAttribute('data-reverse-interview-prompt')) {
+        window.trackPortfolioEvent('reverse_interview_click', {
+          prompt_id: target.getAttribute('data-reverse-interview-prompt') || 'custom',
+          prompt_text: (target.getAttribute('data-prompt') || target.textContent || '')
+            .trim()
+            .slice(0, 80),
         });
       }
 
       // Outbound social profiles
       if (
-        href.includes('github.com/mangeshraut712') ||
+        (href.includes('github.com/mangeshraut712') && !href.includes('/sponsors')) ||
         href.includes('linkedin.com/in/mangeshraut712') ||
         href.includes('x.com/mangeshraut712')
       ) {

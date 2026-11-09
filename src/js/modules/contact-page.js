@@ -145,6 +145,12 @@ function initContactForm() {
         ...getSubmissionContext({ source: 'github_pages_contact' }),
       });
       showToast(result.message || 'Message saved. Mangesh will get back to you soon.', 'success');
+      if (typeof window.trackPortfolioEvent === 'function') {
+        window.trackPortfolioEvent('lead_generated', {
+          channel: 'contact_form',
+          subject: subject ? subject.slice(0, 50) : 'general',
+        });
+      }
       form.reset();
     } catch (error) {
       showToast(

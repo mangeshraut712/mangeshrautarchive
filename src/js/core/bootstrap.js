@@ -724,12 +724,43 @@ function initContactChatbotCTA(chatbotModuleLoader, documentRef = document) {
   });
 }
 
+function initReverseInterviewPrompts(chatbotModuleLoader, documentRef = document) {
+  documentRef.addEventListener('click', async event => {
+    const chip = event.target?.closest?.('[data-reverse-interview-prompt]');
+    if (!chip) return;
+    event.preventDefault();
+    const prompt = chip.getAttribute('data-prompt') || chip.textContent.trim();
+    await openChatbotAssistant({
+      prompt,
+      documentRef,
+      chatbotModuleLoader,
+    });
+  });
+}
+
+function initGlobalCalendlyTrigger(documentRef = document) {
+  documentRef.addEventListener('click', async event => {
+    const btn = event.target?.closest?.('[data-open-calendly]');
+    if (!btn) return;
+    event.preventDefault();
+    try {
+      const { openCalendlyPopup } = await import('../utils/calendly.js');
+      void openCalendlyPopup();
+    } catch {
+      window.location.hash = '#contact';
+    }
+  });
+}
+
 export async function openChatbotAssistant({
   prompt = '',
   documentRef = document,
   chatbotModuleLoader: loader = chatbotLoader,
   loadStyles = loadDeferredStyles,
 } = {}) {
+  if (typeof window !== 'undefined') {
+    window.openChatbotAssistant = openChatbotAssistant;
+  }
   return runLazyInteraction('chatbot-open', async () => {
     await Promise.all([loadStyles(['assistant'], documentRef), loader.load()]);
 
@@ -1366,6 +1397,8 @@ async function loadDeferredBootstrapModules() {
   initAvatarToggle();
   initPortfolioFeatureUpgrades();
   initContactChatbotCTA(chatbotLoader);
+  initReverseInterviewPrompts(chatbotLoader);
+  initGlobalCalendlyTrigger();
 
   initializeVercelAnalytics().catch(error => {
     console.warn('Vercel analytics init skipped:', error);
