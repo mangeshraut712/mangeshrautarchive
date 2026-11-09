@@ -54,6 +54,23 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'portfolio-status-20261109',
+    date: '2026-11-09',
+    type: 'improvement',
+    title: 'A clearer view of portfolio availability',
+    summary:
+      'Redesigns Monitor with grouped live service checks, expandable probe details, current issues, and observations collected during this visit. Adds stale-data handling, bounded and deduplicated refreshes, and on-demand diagnostics in both themes.',
+    tags: ['design'],
+    sha: null,
+    commitVerified: false,
+    model: 'GPT-6 / Codex',
+    ide: 'Codex desktop',
+    purpose: 'Build a truthful, accessible status-first portfolio monitor.',
+    attributionSource: 'commit-message',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
     id: 'responsive-utility-row-20261109',
     date: '2026-11-09',
     type: 'fix',

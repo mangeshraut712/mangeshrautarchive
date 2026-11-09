@@ -280,6 +280,7 @@ test.describe('Chrome smoke tests', () => {
     await gotoSite(page, '/monitor');
 
     await expect(page.locator('h1')).toHaveText(/System Monitor/i);
+    await page.getByRole('tab', { name: 'Diagnostics', exact: true }).click();
     await expect(page.locator('#runtime-snapshot-card')).toBeVisible();
 
     const statusEl = page.locator('#backend-status');

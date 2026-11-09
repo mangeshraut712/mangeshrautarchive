@@ -3,6 +3,8 @@
  * System monitoring telemetry, health cards, API diagnostics, and live dashboards
  */
 
+import { renderPublicStatus, expirePublicStatus } from './monitor-status.js';
+
 import * as MonitorMetrics from '../utils/monitor-metrics.js';
 import { initOverlayMenu } from './overlay.js';
 
@@ -42,6 +44,7 @@ async function loadPublicConfig() {
   try {
     const response = await fetch(new URL('./build-config.json', window.location.href), {
       cache: 'no-store',
+      signal: AbortSignal.timeout(MONITOR_API_TIMEOUT_MS),
     });
     if (!response.ok) return null;
     return await response.json();
@@ -163,7 +166,10 @@ async function fetchMonitorJson(path, label) {
   try {
     await ensureApiOrigin();
     if (!monitorApiAvailable) return null;
-    const response = await fetch(buildApiUrl(path), { cache: 'no-store' });
+    const response = await fetch(buildApiUrl(path), {
+      cache: 'no-store',
+      signal: AbortSignal.timeout(MONITOR_API_TIMEOUT_MS),
+    });
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
     const contentType = response.headers.get('content-type') || '';
     if (!contentType.includes('application/json')) return null;
@@ -360,6 +366,7 @@ async function fetchEvents() {
     if (!monitorApiAvailable) return [];
     const response = await fetch(buildApiUrl('/api/monitor/events?limit=250'), {
       cache: 'no-store',
+      signal: AbortSignal.timeout(MONITOR_API_TIMEOUT_MS),
     });
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
     const contentType = response.headers.get('content-type') || '';
@@ -2269,13 +2276,44 @@ async function fetchRealTimeMetrics() {
   return fetchMonitorJson('/api/monitor/real-time', 'Real-time metrics');
 }
 
-async function refreshData(options = {}) {
+let refreshInFlight = null;
+let diagnosticsLoaded = false;
+function refreshData(options = {}) {
+  if (refreshInFlight) return refreshInFlight;
+  const button = document.querySelector('.status-refresh');
+  if (button) {
+    button.disabled = true;
+    button.setAttribute('aria-busy', 'true');
+  }
+  refreshInFlight = performRefreshData(options).finally(() => {
+    refreshInFlight = null;
+    if (button) {
+      button.disabled = false;
+      button.removeAttribute('aria-busy');
+    }
+  });
+  return refreshInFlight;
+}
+
+async function performRefreshData(options = {}) {
   const silent = options.silent === true;
   if (!silent) {
     showToast('Refreshing data...', 'info');
     setButtonLoading('.control-center-actions button:first-child', true, 'Refreshing...');
   }
-  await ensureApiOrigin({ force: true });
+  const { probe } = await ensureApiOrigin({ force: true });
+  renderPublicStatus(probe);
+  if (document.getElementById('tab-status')?.getAttribute('aria-selected') === 'true') {
+    if (!silent) {
+      showToast(
+        probe ? 'Status refreshed' : 'Monitoring data unavailable',
+        probe ? 'success' : 'error'
+      );
+      setButtonLoading('.control-center-actions button:first-child', false);
+    }
+    return;
+  }
+  diagnosticsLoaded = true;
   const edgeBanner = document.getElementById('edge-api-banner');
   if (edgeBanner) {
     const currentHost = window.location.hostname || '';
@@ -2325,7 +2363,7 @@ async function refreshData(options = {}) {
     fetchExternalServices(),
     fetchIntegrationsStatus(),
     fetchPlatformHealth(),
-    fetchStatus(),
+    Promise.resolve(probe),
     fetchMonitorDocs(),
     fetchHostingSurfaces(),
     fetchRealTimeMetrics(),
@@ -2665,7 +2703,10 @@ async function fetchSecurity() {
   try {
     await ensureApiOrigin();
     if (!monitorApiAvailable) throw new Error(monitorApiIssue || 'Monitor API unavailable');
-    const res = await fetch(buildApiUrl('/api/monitor/security'), { cache: 'no-store' });
+    const res = await fetch(buildApiUrl('/api/monitor/security'), {
+      cache: 'no-store',
+      signal: AbortSignal.timeout(MONITOR_API_TIMEOUT_MS),
+    });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     return await res.json();
   } catch {
@@ -2986,7 +3027,10 @@ async function fetchAIMetrics() {
   try {
     await ensureApiOrigin();
     if (!monitorApiAvailable) throw new Error(monitorApiIssue || 'Monitor API unavailable');
-    const res = await fetch(buildApiUrl('/api/monitor/ai-metrics'), { cache: 'no-store' });
+    const res = await fetch(buildApiUrl('/api/monitor/ai-metrics'), {
+      cache: 'no-store',
+      signal: AbortSignal.timeout(MONITOR_API_TIMEOUT_MS),
+    });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     return await res.json();
   } catch {
@@ -3311,6 +3355,14 @@ document.addEventListener('DOMContentLoaded', async () => {
   });
   refreshData({ silent: true });
 
+  setInterval(expirePublicStatus, 10000);
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') {
+      expirePublicStatus();
+      refreshData({ silent: true });
+    }
+  });
+
   // Auto-refresh every 30 seconds
   setInterval(() => {
     if (document.visibilityState === 'visible') {
@@ -3418,6 +3470,7 @@ function initMonitorDashboardTabs() {
       const isMatch = tab === activeTab;
       tab.classList.toggle('is-active', isMatch);
       tab.setAttribute('aria-selected', isMatch ? 'true' : 'false');
+      tab.tabIndex = isMatch ? 0 : -1;
     });
 
     const targetPanelId = activeTab.dataset.tabTarget;
@@ -3431,6 +3484,14 @@ function initMonitorDashboardTabs() {
         panel.classList.toggle('is-active', isMatch);
       }
     });
+
+    if (targetPanelId !== 'panel-status' && !diagnosticsLoaded && monitorConfig) {
+      if (refreshInFlight)
+        refreshInFlight.then(() => {
+          if (!diagnosticsLoaded) refreshData({ silent: true });
+        });
+      else refreshData({ silent: true });
+    }
 
     if (updateHash && targetPanelId) {
       const slug = targetPanelId.replace('panel-', '');
@@ -3499,6 +3560,7 @@ function initMonitorDashboardTabs() {
     }
   };
 
+  activateTab('tab-status', false);
   handleHashRouting();
   window.addEventListener('hashchange', handleHashRouting);
 }

@@ -64,7 +64,7 @@ test('systems hero keeps its original text node during initialization', async ({
   ).toBe(true);
 });
 
-test('the GitHub Pages monitor reserves its edge banner before its module loads', async ({
+test('the GitHub Pages monitor reserves its status shell before its module loads', async ({
   page,
   baseURL,
 }) => {
@@ -90,8 +90,8 @@ test('the GitHub Pages monitor reserves its edge banner before its module loads'
     await page.goto('https://mangeshraut712.github.io/mangeshrautarchive/monitor.html', {
       waitUntil: 'commit',
     });
-    await page.locator('#edge-api-banner').waitFor({ state: 'attached' });
-    await expect(page.locator('#edge-api-banner')).toBeVisible({ timeout: 5000 });
+    await page.locator('#public-status').waitFor({ state: 'attached' });
+    await expect(page.locator('#public-status-title')).toBeVisible({ timeout: 5000 });
   } finally {
     releaseModule();
   }

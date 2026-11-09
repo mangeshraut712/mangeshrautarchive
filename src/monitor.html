@@ -327,6 +327,7 @@
     <noscript
       ><link rel="stylesheet" href="assets/css/subpage-layout-polish.css?v=20261029release"
     /></noscript>
+    <link rel="stylesheet" href="assets/css/portfolio-status.css" />
   </head>
   <body class="systems-page monitor-page systems-evidence-page">
     <div class="skip-links" role="navigation" aria-label="Skip links">
@@ -373,141 +374,49 @@
     </nav>
 
     <main class="systems-shell monitor-shell monitor-container" id="main-content">
-      <div id="edge-api-banner" class="monitor-edge-banner" hidden role="status">
-        <p class="monitor-edge-banner__title">Cloudflare edge mode</p>
-        <p>
-          GitHub Pages is the primary site. Monitor probes hit
-          <code>assistme-chat…workers.dev</code> with live checks for pages, chat, music, GitHub,
-          and health vitals. FastAPI-only tiles (security feed, AI token ledger, host CPU) stay
-          marked unavailable — they are not silently “healthy.”
-        </p>
-      </div>
-      <script>
-        if (location.hostname === 'github.io' || location.hostname.endsWith('.github.io')) {
-          document.getElementById('edge-api-banner').hidden = false;
-        }
-      </script>
-
-      <!-- ─── Apple Keynote Stage: Executive Hero & Status ─── -->
-      <header class="systems-keynote-hero monitor-keynote-hero monitor-executive-header">
-        <div class="keynote-hero__badge-row">
-          <span class="keynote-pulse-dot" aria-hidden="true"></span>
-          <span class="keynote-eyebrow">Operations &amp; Telemetry · Edge Infrastructure</span>
+      <header class="portfolio-status-header">
+        <div>
+          <p class="status-eyebrow">Mangesh Raut · Portfolio</p>
+          <h1>System Monitor</h1>
+          <p>Service availability. At a glance.</p>
         </div>
-        <h1 class="keynote-hero__title control-center-heading">System Monitor</h1>
-        <p class="systems-hero-lead" id="systems-hero-lead">
-          Real-time platform telemetry, API availability, edge response probes, and infrastructure
-          status across global deployment surfaces.
-        </p>
-
-        <div class="control-center-statusbar">
-          <div class="control-center-status-badge-wrap">
-            <span id="overall-status" class="status-badge unknown">
-              <span class="status-dot"></span>
-              Checking edge probes…
-            </span>
-            <span class="monitor-refresh-note" id="monitor-refresh-note" aria-live="polite">
-              Auto-refresh: 30s
-            </span>
-          </div>
-          <div class="control-center-actions">
-            <button
-              class="btn btn-secondary control-center-refresh"
-              type="button"
-              data-monitor-action="refresh-data"
-              aria-label="Refresh telemetry data"
-            >
-              <i class="fas fa-rotate" aria-hidden="true"></i>
-              <span>Refresh</span>
-            </button>
-            <button
-              class="btn btn-secondary"
-              type="button"
-              data-monitor-action="export-metrics"
-              aria-label="Export metrics"
-            >
-              <i class="fas fa-download" aria-hidden="true"></i>
-              <span>Export</span>
-            </button>
-          </div>
+        <div class="control-center-actions">
+          <button
+            class="status-refresh"
+            type="button"
+            data-monitor-action="refresh-data"
+            aria-label="Refresh service status"
+          >
+            <i class="fas fa-rotate" aria-hidden="true"></i> Refresh
+          </button>
+          <a class="status-report-link" href="index.html#contact"
+            >Report an issue <span aria-hidden="true">↗</span></a
+          >
         </div>
       </header>
-
-      <!-- Executive KPI Metrics Strip (Apple Keynote Metric Strip) -->
-      <section
-        class="monitor-kpi-strip keynote-metric-strip"
-        aria-label="Key Performance Indicators"
-      >
-        <div class="monitor-kpi-card keynote-metric-card">
-          <div class="monitor-kpi-card__header">
-            <span class="monitor-kpi-card__title">Runtime Uptime</span>
-            <i class="fas fa-tower-broadcast monitor-kpi-card__icon" aria-hidden="true"></i>
-          </div>
-          <div class="monitor-kpi-card__value"><strong id="summary-uptime">--</strong></div>
-          <div class="monitor-kpi-card__meta">
-            <span class="text-muted">Since this runtime started</span>
-            <span class="monitor-kpi-dot">·</span>
-            <span class="text-muted">Updated <strong id="summary-last-refresh">--</strong></span>
-          </div>
-        </div>
-
-        <div class="monitor-kpi-card keynote-metric-card">
-          <div class="monitor-kpi-card__header">
-            <span class="monitor-kpi-card__title">Average Latency</span>
-            <i class="fas fa-bolt-lightning monitor-kpi-card__icon" aria-hidden="true"></i>
-          </div>
-          <div class="monitor-kpi-card__value"><strong id="avg-response">--ms</strong></div>
-          <div class="monitor-kpi-card__meta">
-            <span class="text-muted">Recorded requests</span>
-            <span class="monitor-kpi-dot">·</span>
-            <span class="monitor-kpi-sub">Recent request average</span>
-          </div>
-        </div>
-
-        <div class="monitor-kpi-card keynote-metric-card">
-          <div class="monitor-kpi-card__header">
-            <span class="monitor-kpi-card__title">Success Rate</span>
-            <i class="fas fa-circle-check monitor-kpi-card__icon" aria-hidden="true"></i>
-          </div>
-          <div class="monitor-kpi-card__value"><strong id="success-rate">--%</strong></div>
-          <div class="monitor-kpi-card__meta">
-            <span class="text-muted">Errors:</span>
-            <strong id="error-count" class="error-count-val">0</strong>
-            <span class="text-muted">unhandled</span>
-          </div>
-        </div>
-
-        <div class="monitor-kpi-card keynote-metric-card">
-          <div class="monitor-kpi-card__header">
-            <span class="monitor-kpi-card__title">Monitored Services</span>
-            <i class="fas fa-server monitor-kpi-card__icon" aria-hidden="true"></i>
-          </div>
-          <div class="monitor-kpi-card__value"><strong id="summary-service-count">--</strong></div>
-          <div class="monitor-kpi-card__meta">
-            <span class="text-muted">Active issues:</span>
-            <strong id="summary-open-issues" class="incidents-val">0</strong>
-            <span class="text-muted">recorded</span>
-          </div>
-        </div>
-      </section>
-
-      <!-- Apple HIG / shadcn Segmented Navigation Bar -->
-      <nav
-        class="monitor-segmented-tabs systems-section-rail"
-        role="tablist"
-        aria-label="Monitoring Dashboard Views"
-      >
+      <nav class="monitor-segmented-tabs" role="tablist" aria-label="Monitoring Dashboard Views">
         <button
           type="button"
           role="tab"
           class="monitor-tab-btn is-active"
-          id="tab-overview"
+          id="tab-status"
           aria-selected="true"
+          aria-controls="panel-status"
+          data-tab-target="panel-status"
+        >
+          Status
+        </button>
+        <button
+          type="button"
+          role="tab"
+          class="monitor-tab-btn"
+          id="tab-overview"
+          aria-selected="false"
           aria-controls="panel-overview"
           data-tab-target="panel-overview"
         >
           <i class="fas fa-chart-pie" aria-hidden="true"></i>
-          <span>Overview</span>
+          <span>Diagnostics</span>
         </button>
         <button
           type="button"
@@ -551,7 +460,7 @@
           class="monitor-tab-btn"
           id="tab-all"
           aria-selected="false"
-          aria-controls="panel-overview panel-services panel-deployments panel-security"
+          aria-controls="panel-status panel-overview panel-services panel-deployments panel-security"
           data-tab-target="panel-all"
         >
           <i class="fas fa-table-cells" aria-hidden="true"></i>
@@ -559,13 +468,174 @@
         </button>
       </nav>
 
-      <!-- TAB 1: OVERVIEW -->
       <div
         class="monitor-tab-panel is-active"
+        id="panel-status"
+        role="tabpanel"
+        aria-labelledby="tab-status"
+      >
+        <div id="public-status" data-state="unknown">
+          <section class="status-hero" aria-labelledby="public-status-title">
+            <div class="status-hero-symbol" aria-hidden="true">
+              <span class="status-indicator"></span>
+            </div>
+            <div>
+              <p class="status-eyebrow">Current status</p>
+              <h2 id="public-status-title" aria-live="polite">Checking service availability</h2>
+              <p id="public-status-description">Connecting to the portfolio monitoring service.</p>
+            </div>
+          </section>
+          <div class="status-meta">
+            <p id="public-status-updated" aria-live="polite">Waiting for the first check…</p>
+            <a href="#status-current-issues">Current issues <span aria-hidden="true">↓</span></a>
+          </div>
+          <section class="status-components" aria-labelledby="status-services-heading">
+            <div class="status-section-heading">
+              <h2 id="status-services-heading">System status</h2>
+              <span class="status-caption">Select a service for details</span>
+            </div>
+            <div id="status-services">
+              <p class="status-empty">Waiting for live service checks…</p>
+            </div>
+            <div class="status-history-key">
+              <span>Earlier this visit</span
+              ><span id="status-observation-count">0 of 24 observations · this visit only</span
+              ><span>Latest</span>
+            </div>
+            <p class="status-caption status-history-note">
+              Bars show checks collected while this page is open. Empty bars have no data. They are
+              not a 90-day uptime record.
+            </p>
+          </section>
+          <section
+            id="status-current-issues"
+            class="status-issues-section"
+            aria-labelledby="status-issues-heading"
+          >
+            <div class="status-section-heading">
+              <h2 id="status-issues-heading">Current issues</h2>
+              <a href="changelog.html">Release history <span aria-hidden="true">↗</span></a>
+            </div>
+            <div id="status-issues">
+              <p class="status-empty">Waiting for monitoring results.</p>
+            </div>
+          </section>
+          <aside class="status-method">
+            <h2>About these checks</h2>
+            <p>
+              These are point-in-time checks from the portfolio API. A responding endpoint does not
+              guarantee every conversation, integration, or third-party action will succeed.
+              Detailed checks are available in Diagnostics.
+            </p>
+            <p>
+              Updates pause while this tab is hidden. Results older than two minutes are marked
+              unverified. Durable incident history is not currently available.
+            </p>
+          </aside>
+          <noscript
+            ><p>
+              JavaScript is required for live checks.
+              <a href="https://assistme-chat.mangeshraut712.workers.dev/api/monitor/status"
+                >View the status API</a
+              >
+              or <a href="index.html#contact">report an issue</a>.
+            </p></noscript
+          >
+        </div>
+      </div>
+
+      <!-- TAB 1: OVERVIEW -->
+      <div
+        class="monitor-tab-panel"
+        hidden
         id="panel-overview"
         role="tabpanel"
         aria-labelledby="tab-overview"
       >
+        <div id="edge-api-banner" class="monitor-edge-banner" hidden role="status">
+          <p class="monitor-edge-banner__title">Cloudflare edge mode</p>
+          <p>
+            GitHub Pages is the primary site. Monitor probes hit
+            <code>assistme-chat…workers.dev</code> with live checks for pages, chat, music, GitHub,
+            and health vitals. FastAPI-only tiles (security feed, AI token ledger, host CPU) stay
+            marked unavailable — they are not silently “healthy.”
+          </p>
+        </div>
+        <script>
+          if (location.hostname === 'github.io' || location.hostname.endsWith('.github.io')) {
+            document.getElementById('edge-api-banner').hidden = false;
+          }
+        </script>
+
+        <div class="status-diagnostic-tools">
+          <span id="overall-status" class="status-badge unknown">Checking…</span
+          ><span id="monitor-refresh-note">On-demand diagnostics</span
+          ><button type="button" class="btn btn-secondary" data-monitor-action="export-metrics">
+            Export diagnostics
+          </button>
+        </div>
+        <!-- Executive KPI Metrics Strip (Apple Keynote Metric Strip) -->
+        <section
+          class="monitor-kpi-strip keynote-metric-strip"
+          aria-label="Key Performance Indicators"
+        >
+          <div class="monitor-kpi-card keynote-metric-card">
+            <div class="monitor-kpi-card__header">
+              <span class="monitor-kpi-card__title">Runtime Uptime</span>
+              <i class="fas fa-tower-broadcast monitor-kpi-card__icon" aria-hidden="true"></i>
+            </div>
+            <div class="monitor-kpi-card__value"><strong id="summary-uptime">--</strong></div>
+            <div class="monitor-kpi-card__meta">
+              <span class="text-muted">Since this runtime started</span>
+              <span class="monitor-kpi-dot">·</span>
+              <span class="text-muted">Updated <strong id="summary-last-refresh">--</strong></span>
+            </div>
+          </div>
+
+          <div class="monitor-kpi-card keynote-metric-card">
+            <div class="monitor-kpi-card__header">
+              <span class="monitor-kpi-card__title">Average Latency</span>
+              <i class="fas fa-bolt-lightning monitor-kpi-card__icon" aria-hidden="true"></i>
+            </div>
+            <div class="monitor-kpi-card__value"><strong id="avg-response">--ms</strong></div>
+            <div class="monitor-kpi-card__meta">
+              <span class="text-muted">Recorded requests</span>
+              <span class="monitor-kpi-dot">·</span>
+              <span class="monitor-kpi-sub">Recent request average</span>
+            </div>
+          </div>
+
+          <div class="monitor-kpi-card keynote-metric-card">
+            <div class="monitor-kpi-card__header">
+              <span class="monitor-kpi-card__title">Success Rate</span>
+              <i class="fas fa-circle-check monitor-kpi-card__icon" aria-hidden="true"></i>
+            </div>
+            <div class="monitor-kpi-card__value"><strong id="success-rate">--%</strong></div>
+            <div class="monitor-kpi-card__meta">
+              <span class="text-muted">Errors:</span>
+              <strong id="error-count" class="error-count-val">0</strong>
+              <span class="text-muted">unhandled</span>
+            </div>
+          </div>
+
+          <div class="monitor-kpi-card keynote-metric-card">
+            <div class="monitor-kpi-card__header">
+              <span class="monitor-kpi-card__title">Monitored Services</span>
+              <i class="fas fa-server monitor-kpi-card__icon" aria-hidden="true"></i>
+            </div>
+            <div class="monitor-kpi-card__value">
+              <strong id="summary-service-count">--</strong>
+            </div>
+            <div class="monitor-kpi-card__meta">
+              <span class="text-muted">Active issues:</span>
+              <strong id="summary-open-issues" class="incidents-val">0</strong>
+              <span class="text-muted">recorded</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- Apple HIG / shadcn Segmented Navigation Bar -->
+
         <div class="monitor-top-row">
           <section
             class="monitor-summary-card"

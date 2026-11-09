@@ -1,0 +1,426 @@
+/* Status-first presentation. Existing technical panels remain available on demand. */
+body.monitor-page {
+  --status-accent: var(--apple-blue);
+  --status-good: #16743b;
+  --status-warning: #995600;
+  --status-bad: #c62828;
+  --status-unknown: var(--text-secondary, #6e6e73);
+}
+html.dark body.monitor-page,
+html[data-theme='dark'] body.monitor-page {
+  --status-accent: #0a84ff;
+  --status-good: #30d158;
+  --status-warning: #ffb340;
+  --status-bad: #ff6961;
+}
+html body.monitor-page .monitor-shell {
+  display: block;
+  max-width: 1000px !important;
+  padding-top: 24px !important;
+}
+body.monitor-page .portfolio-status-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+  margin: 8px 0 32px;
+  text-align: left;
+}
+body.monitor-page .portfolio-status-header h1 {
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  letter-spacing: -0.04em;
+  line-height: 1.15;
+  margin: 8px 0;
+}
+.portfolio-status-header p,
+#public-status p {
+  margin: 0;
+}
+body.monitor-page .status-eyebrow {
+  color: var(--status-accent);
+  font-size: 0.72rem;
+  font-weight: 650;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+body.monitor-page .portfolio-status-header .control-center-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+body.monitor-page .status-refresh {
+  min-height: 44px;
+  padding: 10px 20px;
+  border: 1px solid var(--apple-blue);
+  border-radius: 999px;
+  background: linear-gradient(135deg, #0077ed, var(--apple-blue), #005bb5);
+  color: #fff;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+.status-refresh:disabled {
+  opacity: 0.65;
+  cursor: wait;
+}
+.status-report-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-size: 0.85rem;
+}
+body.monitor-page .monitor-segmented-tabs {
+  position: static !important;
+  display: flex;
+  flex-wrap: wrap;
+  border-radius: 18px;
+  margin: 0 0 32px;
+  gap: 4px;
+  padding: 6px;
+}
+body.monitor-page .monitor-tab-btn {
+  min-height: 44px;
+  flex: 1 1 auto;
+}
+body.monitor-page .monitor-tab-panel[hidden] {
+  display: none !important;
+}
+#public-status {
+  --status-tone: var(--status-unknown);
+}
+#public-status[data-state='healthy'],
+#public-status [data-state='healthy'] {
+  --status-tone: var(--status-good);
+}
+#public-status[data-state='degraded'],
+#public-status [data-state='degraded'] {
+  --status-tone: var(--status-warning);
+}
+#public-status[data-state='unhealthy'],
+#public-status [data-state='unhealthy'] {
+  --status-tone: var(--status-bad);
+}
+#public-status [data-state='unknown'] {
+  --status-tone: var(--status-unknown);
+}
+body.monitor-page .status-hero {
+  display: flex;
+  align-items: flex-start;
+  gap: 24px;
+  padding: 32px;
+  border: 1px solid var(--mon-hairline) !important;
+  border-radius: 24px;
+  min-height: 190px;
+  background: var(--bg-primary);
+}
+.status-hero-symbol {
+  flex: 0 0 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--status-tone);
+  border-radius: 50%;
+}
+.status-indicator {
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--status-tone);
+}
+.status-hero-symbol .status-indicator {
+  width: 18px;
+  height: 18px;
+}
+body.monitor-page #public-status-title {
+  color: var(--text-primary);
+  font-size: clamp(1.65rem, 4vw, 2.5rem);
+  line-height: 1.15;
+  letter-spacing: -0.035em;
+  margin: 8px 0 12px;
+  max-width: 650px;
+}
+#public-status-description {
+  color: var(--text-secondary);
+  max-width: 600px;
+  line-height: 1.5;
+}
+.status-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  padding: 16px 0 32px;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+.status-meta a,
+.status-section-heading a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
+.status-section-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+body.monitor-page .status-section-heading h2 {
+  font-size: 1.35rem;
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+body.monitor-page .status-service-group {
+  border: 1px solid var(--mon-hairline) !important;
+  border-radius: 18px;
+  padding: 8px 24px 20px;
+  margin-bottom: 16px !important;
+}
+body.monitor-page .status-service-group h3 {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-secondary);
+  margin: 16px 0 4px;
+}
+.status-service summary {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  min-height: 56px;
+  gap: 16px;
+  cursor: pointer;
+}
+.status-service summary::-webkit-details-marker {
+  display: none;
+}
+.status-service-name {
+  flex: 1;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+.status-label {
+  color: var(--status-tone);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+.status-chevron {
+  color: var(--text-secondary);
+}
+.status-service[open] .status-chevron {
+  transform: rotate(180deg);
+}
+.status-service-detail {
+  padding: 0 0 16px;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+.status-service-detail p + p {
+  margin-top: 8px !important;
+}
+.status-observations {
+  display: grid;
+  grid-template-columns: repeat(24, minmax(0, 1fr));
+  gap: 4px;
+  margin: 0 0 12px;
+}
+.status-bar {
+  height: 26px;
+  border-radius: 3px;
+  background: var(--status-tone);
+}
+.status-bar--empty {
+  background: transparent;
+  border: 1px solid var(--mon-hairline) !important;
+}
+.status-history-key {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+}
+body.monitor-page .status-caption {
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  line-height: 1.5;
+}
+#public-status .status-history-note {
+  margin-top: 12px;
+  max-width: 650px;
+}
+.status-issues-section {
+  margin-top: 48px !important;
+  scroll-margin-top: 100px;
+}
+body.monitor-page .status-empty,
+.status-issue {
+  border: 1px solid var(--mon-hairline) !important;
+  border-radius: 18px;
+  padding: 24px;
+  line-height: 1.5;
+}
+.status-issue + .status-issue {
+  margin-top: 12px;
+}
+.status-issue h3 {
+  margin: 8px 0;
+}
+.status-issue .status-caption {
+  margin-top: 12px !important;
+}
+.status-method {
+  border-top: 1px solid var(--mon-hairline);
+  margin: 40px 0 24px;
+  padding-top: 24px;
+  color: var(--text-secondary);
+}
+body.monitor-page .status-method h2 {
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  margin: 0 0 8px;
+}
+.status-method p {
+  font-size: 0.8rem;
+  line-height: 1.6;
+  max-width: 740px;
+}
+.status-method p + p {
+  margin-top: 8px !important;
+}
+.status-diagnostic-tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  margin: 20px 0;
+}
+
+@media (width <= 600px) {
+  body.monitor-page .monitor-shell {
+    padding-top: 16px !important;
+  }
+  body.monitor-page .portfolio-status-header {
+    align-items: flex-start;
+    gap: 12px;
+  }
+  body.monitor-page .portfolio-status-header h1 {
+    font-size: 1.7rem;
+  }
+  .portfolio-status-header > div:first-child {
+    min-width: 0;
+  }
+  .portfolio-status-header > div:first-child > p:last-child {
+    font-size: 0.85rem;
+  }
+  body.monitor-page .status-hero {
+    padding: 24px 20px;
+    gap: 16px;
+    min-height: 250px;
+  }
+  .status-hero-symbol {
+    flex-basis: 32px;
+    height: 32px;
+  }
+  .status-hero-symbol .status-indicator {
+    width: 12px;
+    height: 12px;
+  }
+  body.monitor-page #public-status-title {
+    font-size: 1.7rem;
+  }
+  .status-section-heading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 4px;
+  }
+  body.monitor-page .status-service-group {
+    padding-inline: 16px;
+  }
+  .status-service summary {
+    gap: 8px;
+  }
+  .status-service-name {
+    font-size: 0.88rem;
+  }
+  .status-label {
+    font-size: 0.75rem;
+    gap: 6px;
+  }
+  .status-observations {
+    gap: 3px;
+  }
+  .status-history-key {
+    flex-wrap: wrap;
+  }
+  #status-observation-count {
+    order: 1;
+    flex-basis: 100%;
+    text-align: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .status-refresh,
+  .status-chevron {
+    transition: none;
+    animation: none;
+  }
+}
+
+/* Scope public typography away from shared centered section-heading rules. */
+html body.monitor-page #public-status :is(h2, h3, p) {
+  text-align: left;
+}
+html body.monitor-page #public-status .status-section-heading h2 {
+  font-size: 1.35rem !important;
+}
+html body.monitor-page #public-status .status-method h2 {
+  font-size: 0.9rem !important;
+}
+html body.monitor-page #public-status-title {
+  font-size: clamp(1.65rem, 4vw, 2.5rem) !important;
+}
+html body.monitor-page .monitor-segmented-tabs {
+  width: 100%;
+  overflow: visible;
+}
+html body.monitor-page .monitor-tab-btn {
+  flex: 1 0 auto;
+  justify-content: center;
+}
+
+@media (width <= 600px) {
+  html body.monitor-page .monitor-tab-btn {
+    flex-basis: calc(50% - 4px);
+    padding-inline: 8px;
+    font-size: 0.78rem;
+  }
+  html body.monitor-page #public-status-title {
+    font-size: 1.65rem !important;
+  }
+  html body.monitor-page .portfolio-status-header {
+    flex-direction: column;
+  }
+  html body.monitor-page .portfolio-status-header .control-center-actions {
+    flex-direction: row;
+    align-items: center;
+    gap: 16px;
+  }
+}
+
+html.dark body.monitor-page .monitor-segmented-tabs,
+html[data-theme='dark'] body.monitor-page .monitor-segmented-tabs {
+  background: var(--bg-primary) !important;
+  border-color: var(--mon-hairline) !important;
+}

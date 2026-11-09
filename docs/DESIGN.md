@@ -475,3 +475,7 @@ README captures belong in `docs/screenshots/`, outside the production asset tree
 At widths up to 768px, shared accessibility, sharing, chat, and back-to-top controls use one bottom row, preserving 44px circles and safe-area insets. Content receives bottom clearance and anchor scrolling reserves space for the controls. Accessibility options open above the row; desktop retains the vertical stack. Do not position a tall stack over article text or Contact clocks.
 
 Article workflows beginning with numbered Markdown items render as native ordered lists. Keep their starting number, inline emphasis, and paragraph spacing; do not collapse sequential instructions into a prose paragraph.
+
+### Public Monitor status view
+
+The Monitor opens with grouped service availability and retains technical diagnostics in secondary tabs. Use scoped `portfolio-status.css` styles, 44px controls, semantic service disclosures, and text labels alongside status colors. Empty observation bars mean no recorded check; never manufacture historical uptime. Unknown or stale probes must not render as operational. Dark-theme accent text uses a brighter Apple Blue for AA contrast.
