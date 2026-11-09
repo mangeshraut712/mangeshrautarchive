@@ -345,7 +345,7 @@ function updateActivityStats(allRepos, visibleRepos = [], githubProjects = null)
       ? existingContributors
       : '--';
 
-  setStatItem('stat-repos', source.length || 100, { hideWhenEmpty: false });
+  setStatItem('stat-repos', source.length || 106, { hideWhenEmpty: false });
   setStatItem('stat-stars', formatCompactNumber(totals.totalStars) || '14', {
     hideWhenEmpty: false,
   });
@@ -661,7 +661,7 @@ export async function initProjectShowcase({ username = DEFAULT_USERNAME } = {}) 
       }));
 
       const allReposByFullName = new Map(allRepos.map(repo => [repoKey(repo), repo]));
-      allShowcaseRepos = githubProjects.getShowcaseRepos(allRepos, 100).map((repo, index) => {
+      allShowcaseRepos = githubProjects.getShowcaseRepos(allRepos, 120).map((repo, index) => {
         const baseRepo = allReposByFullName.get(repoKey(repo)) || repo;
         baseRepo.__showcase = repo.__showcase || baseRepo.__showcase;
         baseRepo.originalIndex = index;

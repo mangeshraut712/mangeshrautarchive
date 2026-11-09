@@ -253,13 +253,13 @@ html.dark #projects #projects-stats .stat-label {
 }
 
 #projects .projects-page--repos {
-  padding-top: clamp(0.75rem, 1.8vw, 1.5rem);
-  margin-top: clamp(0.35rem, 1vw, 0.75rem);
-  border-top: 1px solid var(--project-border-light);
+  padding-top: clamp(2.5rem, 5vw, 4rem);
+  margin-top: clamp(2rem, 4vw, 3.5rem);
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
 }
 
 html.dark #projects .projects-page--repos {
-  border-top-color: var(--project-border-dark);
+  border-top-color: rgba(255, 255, 255, 0.1);
 }
 
 #projects .projects-showcase-shell > * {
@@ -4246,10 +4246,6 @@ section#projects .projects-repos-toolbar {
   box-sizing: border-box;
 }
 
-html.dark section#projects .projects-repos-toolbar {
-  background: rgb(255 255 255 / 3.5%);
-}
-
 section#projects .projects-repos-toolbar .project-lens-bar {
   width: 100% !important;
   max-width: 100% !important;
@@ -4744,9 +4740,23 @@ html[data-theme='light'] section#projects .projects-view-all-btn {
 
 html:not(.dark) section#projects .projects-repos-toolbar,
 html[data-theme='light'] section#projects .projects-repos-toolbar {
-  background: #ffffff !important;
-  background-color: #ffffff !important;
-  border: 1px solid #d2d2d7 !important;
+  background: rgba(255, 255, 255, 0.85) !important;
+  background-color: rgba(255, 255, 255, 0.85) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  border-radius: 20px !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04) !important;
+}
+
+html.dark section#projects .projects-repos-toolbar {
+  background: rgba(20, 20, 22, 0.8) !important;
+  background-color: rgba(20, 20, 22, 0.8) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 20px !important;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.35) !important;
 }
 
 html:not(.dark) section#projects .proj-input-group,
@@ -5148,35 +5158,60 @@ html.dark section#projects.projects-editorial .projects-overview-header .section
 }
 
 section#projects.projects-editorial .projects-page--repos .projects-page-header {
-  max-width: 800px;
-  margin-bottom: clamp(0.75rem, 2vw, 1.5rem);
-  text-align: left;
-}
-
-section#projects.projects-editorial .projects-page--repos .projects-page-header .section-eyebrow {
-  margin: 0;
-  width: auto;
+  max-width: 100% !important;
+  margin-inline: auto !important;
+  margin-bottom: clamp(1.5rem, 3vw, 2.5rem) !important;
+  text-align: center !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
 }
 
 section#projects.projects-editorial .projects-page--repos .projects-page-header h3 {
-  margin: 0;
-  font-size: clamp(1.7rem, 3vw, 2.5rem);
-  line-height: 1.08;
-  letter-spacing: -0.045em;
+  font-size: clamp(2rem, 4vw, 2.75rem) !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.03em !important;
+  line-height: 1.12 !important;
+  margin-top: 0 !important;
+  margin-bottom: 0.75rem !important;
+  padding-bottom: 0 !important;
+  text-align: center !important;
+  justify-self: center !important;
+  margin-inline: auto !important;
+  color: #0071e3 !important;
+  -webkit-text-fill-color: #0071e3 !important;
+}
+
+html.dark section#projects.projects-editorial .projects-page--repos .projects-page-header h3 {
+  color: #2997ff !important;
+  -webkit-text-fill-color: #2997ff !important;
 }
 
 section#projects.projects-editorial .projects-page--repos .projects-page-header .section-subtitle {
-  margin: 0 !important;
-  max-width: 660px;
-  line-height: 1.55;
+  font-size: clamp(1.05rem, 1.5vw, 1.3125rem) !important;
+  font-weight: 400 !important;
+  line-height: 1.4211 !important;
+  letter-spacing: -0.016em !important;
+  color: #48484a !important;
+  -webkit-text-fill-color: #48484a !important;
+  max-width: 42rem !important;
+  margin-top: 0 !important;
+  margin-inline: auto !important;
+  margin-bottom: clamp(1.2rem, 2.5vh, 2rem) !important;
+  padding-top: 0 !important;
+  text-align: center !important;
+  justify-self: center !important;
+  text-wrap: pretty !important;
 }
 
-section#projects.projects-editorial
+html.dark
+  section#projects.projects-editorial
   .projects-page--repos
   .projects-page-header
-  :is(h2, h3, .section-subtitle, .section-eyebrow) {
-  text-align: left !important;
-  justify-self: start;
+  .section-subtitle {
+  color: #a1a1a6 !important;
+  -webkit-text-fill-color: #a1a1a6 !important;
 }
 
 section#projects.projects-editorial #github-projects-container {
@@ -5353,6 +5388,58 @@ section#projects.projects-editorial #github-projects-container .project-kicker {
   color: var(--apple-blue) !important;
   font-size: 0.7rem !important;
   letter-spacing: 0.055em;
+}
+
+section#projects.projects-editorial #github-projects-container .project-lang-dot {
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-right: 0.2rem;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.12);
+}
+
+html.dark section#projects.projects-editorial #github-projects-container .project-lang-dot {
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.22);
+}
+
+section#projects.projects-editorial #github-projects-container .project-title-btn {
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  font: inherit !important;
+  color: inherit !important;
+  cursor: pointer !important;
+  text-align: left !important;
+  display: block !important;
+  width: 100% !important;
+  text-decoration: none !important;
+  transition: opacity 0.18s ease;
+}
+
+section#projects.projects-editorial
+  #github-projects-container
+  .project-title-btn:hover
+  .project-title-text {
+  color: #0071e3 !important;
+  -webkit-text-fill-color: #0071e3 !important;
+}
+
+html.dark
+  section#projects.projects-editorial
+  #github-projects-container
+  .project-title-btn:hover
+  .project-title-text {
+  color: #2997ff !important;
+  -webkit-text-fill-color: #2997ff !important;
+}
+
+section#projects.projects-editorial #github-projects-container .project-title-btn:focus-visible {
+  outline: 2px solid #0071e3;
+  outline-offset: 3px;
+  border-radius: 6px;
 }
 
 html.dark section#projects.projects-editorial #github-projects-container .project-kicker {
@@ -5541,7 +5628,7 @@ section#projects.projects-editorial #github-projects-container .project-more-men
   }
 
   section#projects.projects-editorial .projects-page--repos .projects-page-header {
-    text-align: left;
+    text-align: center;
   }
 }
 

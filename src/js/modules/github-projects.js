@@ -1570,7 +1570,7 @@ class GitHubProjects {
     return true;
   }
 
-  getShowcaseRepos(repos, limit = 100) {
+  getShowcaseRepos(repos, limit = 120) {
     if (!Array.isArray(repos) || repos.length === 0) return [];
 
     const eligible = repos.filter(repo => this.isRepositoryShowcaseReady(repo));
@@ -2378,12 +2378,17 @@ class GitHubProjects {
     const pushedAgeDays = this.getRepoAgeDays(repo?.pushed_at || repo?.updated_at);
     const isRecentlyActive = Number.isFinite(pushedAgeDays) && pushedAgeDays <= 7;
     const projectKind = repo.fork ? 'Fork' : projectMedia.label || 'Repository';
+    const langColor = this.getLanguageColor(language);
     const kickerLanguage = language === 'Unknown' ? 'Software' : safeLanguage;
-    const kickerHtml = `<p class="project-kicker">${kickerLanguage} <span aria-hidden="true">·</span> ${projectKind}${isRecentlyActive ? '<span class="project-pulse-dot" title="Pushed in the last 7 days"></span>' : ''}</p>`;
+    const langDotHtml =
+      language !== 'Unknown'
+        ? `<span class="project-lang-dot" style="background-color: ${langColor};" aria-hidden="true"></span>`
+        : '';
+    const kickerHtml = `<p class="project-kicker">${langDotHtml}<span class="project-kicker-lang">${kickerLanguage}</span> <span aria-hidden="true">·</span> <span class="project-kicker-kind">${projectKind}</span>${isRecentlyActive ? '<span class="project-pulse-dot" title="Pushed in the last 7 days"></span>' : ''}</p>`;
     const topicsHtml =
       topics.length > 0
         ? topics
-            .slice(0, 2)
+            .slice(0, 3)
             .map(topic => `<span class="project-tag">${this.escapeHtml(topic)}</span>`)
             .join('')
         : '';
@@ -2405,7 +2410,11 @@ class GitHubProjects {
         <div class="project-header">
           ${kickerHtml}
           <div class="project-title-wrap">
-            <h3 class="project-title"><span class="project-title-text">${safeName}</span></h3>
+            <h3 class="project-title">
+              <button type="button" class="project-title-btn" data-repo-preview="${safeName}" aria-label="Explore ${safeName} project details">
+                <span class="project-title-text">${safeName}</span>
+              </button>
+            </h3>
           </div>
           <p class="project-description" title="${safeDescription || 'No description available'}">${safeDescription || 'No description available'}</p>
           ${topicsHtml ? `<div class="project-meta-row" aria-label="Repository topics"><div class="project-tech-pills">${topicsHtml}</div></div>` : ''}

@@ -54,6 +54,24 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'projects-page-polish-20261109',
+    date: '2026-11-09',
+    type: 'improvement',
+    title: 'Harmonized Projects showcase and interactive card polish',
+    summary:
+      'Harmonizes the Projects repository showcase with Apple-standard centered typography matching all site sections. Removes redundant eyebrow pills, adds authentic GitHub language color dots, makes project titles directly interactive to open preview modals, expands topic coverage, enhances toolbar glassmorphism, and synchronizes live public GitHub metadata.',
+    tags: ['design'],
+    sha: null,
+    commitVerified: false,
+    model: 'Gemini 3.8 Flash',
+    ide: 'Google Antigravity IDE',
+    purpose:
+      'Harmonize Projects header, add GitHub language dots, make titles interactive, and improve card glassmorphism.',
+    attributionSource: 'commit-message',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
     id: 'github-operating-view-20261109',
     date: '2026-11-09',
     type: 'improvement',
