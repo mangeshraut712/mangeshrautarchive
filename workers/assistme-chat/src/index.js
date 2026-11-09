@@ -2431,6 +2431,7 @@ async function handleGithubProxy(url, env, cors) {
           'Cache-Control': 'public, max-age=120',
           'X-GitHub-Proxy-Degraded': 'rate-limit',
           ...cors,
+          'Access-Control-Expose-Headers': 'Link, X-GitHub-Proxy-Degraded',
         },
       });
     }
@@ -2441,6 +2442,8 @@ async function handleGithubProxy(url, env, cors) {
         'Content-Type': gh.headers.get('content-type') || 'application/json',
         'Cache-Control': 'public, max-age=60',
         ...cors,
+        Link: gh.headers.get('link') || '',
+        'Access-Control-Expose-Headers': 'Link, X-GitHub-Proxy-Degraded',
       },
     });
   } catch (e) {

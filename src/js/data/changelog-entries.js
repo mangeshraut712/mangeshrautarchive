@@ -54,6 +54,21 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'projects-catalog-20261110',
+    date: '2026-11-10',
+    type: 'improvement',
+    title: 'Complete, accessible GitHub project exploration',
+    summary:
+      'Loads the full public repository catalog with freshness and fallback labels, limits activity requests to visible cards, preserves GitHub pagination, and improves search, keyboard previews, contribution recovery, and touch targets.',
+    tags: ['design', 'performance', 'api'],
+    sha: null,
+    commitVerified: false,
+    model: 'GPT-6 / Codex',
+    ide: 'Codex desktop',
+    purpose:
+      'Improve project catalog accuracy, request efficiency, accessibility, and release verification. Exact variant, reasoning mode, and token usage unavailable.',
+  },
+  {
     id: 'projects-page-polish-20261109',
     date: '2026-11-09',
     type: 'improvement',

@@ -65,7 +65,7 @@ function normalizeSearchText(value) {
   return String(value || '')
     .toLowerCase()
     .trim()
-    .replace(/[^a-z0-9]+/g, '');
+    .replace(/[^\p{L}\p{N}]+/gu, '');
 }
 
 function withinEditDistance(left, right, maxDistance = 2) {
@@ -188,19 +188,6 @@ function revealRenderedProjectCards(container) {
     card.style.opacity = '1';
     card.style.transform = 'none';
   });
-}
-
-function formatActivityCaption(totals) {
-  const repoCount = Number(totals.publicRepos || 0);
-  if (repoCount > 0) {
-    return `Live public catalog from github.com/mangeshraut712 — ${repoCount} public repositories (including forks). Commit coverage: ${totals.commitRepos}/${repoCount} repositories. Contributor coverage: ${totals.contributorRepos}/${totals.ownedRepos} original repositories. Totals reflect loaded data.`;
-  }
-
-  if (totals.activityRepos > 0) {
-    return `${totals.activityRepos} repositories with live commit activity in the last sync.`;
-  }
-
-  return 'Syncing repository stars, forks, commits, and contributor activity...';
 }
 
 function setStatItem(id, value, { hideWhenEmpty = true } = {}) {
@@ -331,43 +318,22 @@ function updateActivityStats(allRepos, visibleRepos = [], githubProjects = null)
   );
 
   const uniqueContributors = totals.contributorIds.size;
-  const existingCommits = document.getElementById('stat-commits')?.textContent?.trim();
-  const commitsValue = totals.commitRepos
-    ? formatCompactNumber(totals.totalCommits30d)
-    : existingCommits && existingCommits !== '--'
-      ? existingCommits
-      : '--';
-
-  const existingContributors = document.getElementById('stat-contributors')?.textContent?.trim();
+  const commitsValue = totals.commitRepos ? formatCompactNumber(totals.totalCommits30d) : '--';
   const contributorsValue = totals.contributorRepos
     ? formatCompactNumber(uniqueContributors)
-    : existingContributors && existingContributors !== '--'
-      ? existingContributors
-      : '--';
-
-  setStatItem('stat-repos', source.length || 106, { hideWhenEmpty: false });
-  setStatItem('stat-stars', formatCompactNumber(totals.totalStars) || '14', {
-    hideWhenEmpty: false,
-  });
-  setStatItem('stat-forks', formatCompactNumber(totals.totalForks) || '4', {
-    hideWhenEmpty: false,
-  });
+    : '--';
+  setStatItem('stat-repos', source.length, { hideWhenEmpty: false });
+  setStatItem('stat-stars', formatCompactNumber(totals.totalStars), { hideWhenEmpty: false });
+  setStatItem('stat-forks', formatCompactNumber(totals.totalForks), { hideWhenEmpty: false });
   setStatItem('stat-commits', commitsValue, { hideWhenEmpty: false });
   setStatItem('stat-contributors', contributorsValue, { hideWhenEmpty: false });
-  setStatItem(
-    'stat-active-repos',
-    totals.activeRepos ? formatCompactNumber(totals.activeRepos) : '97',
-    {
-      hideWhenEmpty: false,
-    }
-  );
-  setStatItem('stat-languages', totals.languages.size || 9, { hideWhenEmpty: false });
-
+  setStatItem('stat-active-repos', totals.activeRepos, { hideWhenEmpty: false });
+  setStatItem('stat-languages', totals.languages.size, { hideWhenEmpty: false });
   const captionEl = document.getElementById('projects-activity-caption');
   if (!captionEl) return;
 
   if (source.length > 0) {
-    captionEl.textContent = formatActivityCaption(totals);
+    captionEl.textContent = `Activity loads for displayed repositories: commits checked for ${totals.commitRepos}/${source.length}; contributors checked for ${totals.contributorRepos}/${totals.ownedRepos} original repositories. These activity totals are partial.`;
     return;
   }
 
@@ -661,12 +627,14 @@ export async function initProjectShowcase({ username = DEFAULT_USERNAME } = {}) 
       }));
 
       const allReposByFullName = new Map(allRepos.map(repo => [repoKey(repo), repo]));
-      allShowcaseRepos = githubProjects.getShowcaseRepos(allRepos, 120).map((repo, index) => {
-        const baseRepo = allReposByFullName.get(repoKey(repo)) || repo;
-        baseRepo.__showcase = repo.__showcase || baseRepo.__showcase;
-        baseRepo.originalIndex = index;
-        return baseRepo;
-      });
+      allShowcaseRepos = githubProjects
+        .getShowcaseRepos(allRepos, allRepos.length)
+        .map((repo, index) => {
+          const baseRepo = allReposByFullName.get(repoKey(repo)) || repo;
+          baseRepo.__showcase = repo.__showcase || baseRepo.__showcase;
+          baseRepo.originalIndex = index;
+          return baseRepo;
+        });
     };
 
     setRepoCatalog(githubProjects.fallbackRepos);
@@ -726,6 +694,7 @@ export async function initProjectShowcase({ username = DEFAULT_USERNAME } = {}) 
         b.classList.toggle('active', isAct);
         b.setAttribute('aria-pressed', isAct ? 'true' : 'false');
       });
+      searchInput?.focus();
       renderProjects().catch(error => {
         console.error('Project showcase clear-filters render failed:', error);
       });
@@ -770,21 +739,6 @@ export async function initProjectShowcase({ username = DEFAULT_USERNAME } = {}) 
 
     const hydrationQueue = new Set();
     let hydrationRunning = false;
-    let hydrationRenderTimer = 0;
-
-    const scheduleHydrationRender = () => {
-      if (hydrationRenderTimer) {
-        window.clearTimeout(hydrationRenderTimer);
-      }
-
-      hydrationRenderTimer = window.setTimeout(() => {
-        hydrationRenderTimer = 0;
-        renderProjects({ queueHydration: false }).catch(error => {
-          console.error('Project showcase activity render failed:', error);
-        });
-      }, 220);
-    };
-
     const runActivityHydration = async () => {
       if (hydrationRunning) return;
       hydrationRunning = true;
@@ -808,20 +762,9 @@ export async function initProjectShowcase({ username = DEFAULT_USERNAME } = {}) 
             repo.__activityLoading = false;
           }
 
-          const visibleKeys = new Set(
-            getDisplayRepos().map(displayRepo =>
-              String(
-                displayRepo.full_name ||
-                  `${displayRepo.owner?.login || ''}/${displayRepo.name || ''}`
-              )
-            )
-          );
-          const repoKey = String(repo.full_name || `${repo.owner?.login || ''}/${repo.name || ''}`);
-          if (visibleKeys.has(repoKey)) {
-            scheduleHydrationRender();
-          } else {
-            updateActivityStats(allRepos, getDisplayRepos(), githubProjects);
-          }
+          // Background metadata must not replace controls during a pointer or keyboard gesture.
+          // Explicit search/sort/expand renders use the newly hydrated repository records.
+          updateActivityStats(allRepos, getDisplayRepos(), githubProjects);
         }
       } finally {
         hydrationRunning = false;
@@ -829,6 +772,8 @@ export async function initProjectShowcase({ username = DEFAULT_USERNAME } = {}) 
     };
 
     const queueActivityHydration = reposToHydrate => {
+      for (const repo of hydrationQueue) repo.__activityQueued = false;
+      hydrationQueue.clear();
       let queued = false;
       reposToHydrate.forEach(repo => {
         if (!repo || repo.__activityLoaded || repo.__activityLoading || repo.__activityQueued) {
@@ -843,11 +788,6 @@ export async function initProjectShowcase({ username = DEFAULT_USERNAME } = {}) 
       if (queued) {
         runWhenIdle(runActivityHydration, 600);
       }
-    };
-
-    const queueTopActivityHydration = () => {
-      // Hydrate the full public catalog so Operating View commits/contributors stay accurate.
-      queueActivityHydration(allShowcaseRepos);
     };
 
     const realignProjectsSection = () => {
@@ -926,6 +866,9 @@ export async function initProjectShowcase({ username = DEFAULT_USERNAME } = {}) 
         : focusedControl?.matches?.('.project-more summary')
           ? '.project-more summary'
           : null;
+      const focusedIndex = focusedCard
+        ? [...focusedCard.querySelectorAll('a,button,summary')].indexOf(focusedControl)
+        : -1;
       const openMenuRepoName = container
         .querySelector('.project-more[open]')
         ?.closest('.showcase-project-card')?.dataset.repoName;
@@ -942,8 +885,12 @@ export async function initProjectShowcase({ username = DEFAULT_USERNAME } = {}) 
         const menu = findCard(openMenuRepoName)?.querySelector('.project-more');
         if (menu) menu.open = true;
       }
-      if (focusedRepoName && focusedSelector) {
-        findCard(focusedRepoName)?.querySelector(focusedSelector)?.focus({ preventScroll: true });
+      if (focusedRepoName) {
+        const card = findCard(focusedRepoName);
+        const control = focusedSelector
+          ? card?.querySelector(focusedSelector)
+          : card?.querySelectorAll('a,button,summary')[focusedIndex];
+        control?.focus({ preventScroll: true });
       }
 
       applyTiltEffects(container);
@@ -1012,6 +959,8 @@ export async function initProjectShowcase({ username = DEFAULT_USERNAME } = {}) 
           }
         } catch (err) {
           console.warn('Clipboard write failed:', err);
+          document.getElementById('projects-results-status').textContent =
+            'Copy was blocked by your browser. Open the repository and use its Code menu to copy the clone URL.';
         }
       }
     });
@@ -1047,6 +996,10 @@ export async function initProjectShowcase({ username = DEFAULT_USERNAME } = {}) 
     window.addEventListener('keydown', event => {
       if (
         event.key === '/' &&
+        !event.ctrlKey &&
+        !event.metaKey &&
+        !event.altKey &&
+        !document.activeElement?.isContentEditable &&
         !['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement?.tagName)
       ) {
         if (searchInput) {
@@ -1094,22 +1047,33 @@ export async function initProjectShowcase({ username = DEFAULT_USERNAME } = {}) 
 
     await renderProjects();
     scheduleProjectsRealignment();
-    queueTopActivityHydration();
-
-    githubProjects
-      .fetchRepositories()
-      .then(repos => {
-        if (!Array.isArray(repos) || repos.length === 0) return;
-        hydrationQueue.clear();
+    const catalogStatus = document.getElementById('projects-catalog-status');
+    const refreshButton = document.getElementById('projects-refresh-btn');
+    const refreshCatalog = async (force = false) => {
+      if (refreshButton.disabled) return;
+      refreshButton.disabled = true;
+      catalogStatus.textContent = 'Checking GitHub for repository updates…';
+      try {
+        const repos = await githubProjects.fetchRepositories(force);
         setRepoCatalog(repos);
-        return renderProjects();
-      })
-      .then(() => {
-        queueTopActivityHydration();
-      })
-      .catch(error => {
-        console.warn('Live GitHub catalog refresh failed; using bundled project catalog.', error);
-      });
+        await renderProjects();
+        const status = githubProjects.catalogStatus;
+        const labels = {
+          live: 'GitHub catalog',
+          cached: 'Cached GitHub catalog',
+          stale: 'GitHub unavailable · saved catalog',
+          bundled: 'GitHub unavailable · bundled project catalog',
+        };
+        catalogStatus.textContent = `${labels[status.source]}${status.timestamp ? ` · checked ${new Date(status.timestamp).toLocaleString()}` : ''}${status.partial ? ' · some repositories may be missing' : ''}.`;
+      } catch {
+        catalogStatus.textContent =
+          'GitHub is unavailable. Showing the last loaded projects. Try refreshing.';
+      } finally {
+        refreshButton.disabled = false;
+      }
+    };
+    refreshButton.addEventListener('click', () => refreshCatalog(true));
+    await refreshCatalog();
   } catch (error) {
     console.error('Failed to initialize project showcase:', error);
     renderNoResults(container);

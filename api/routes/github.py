@@ -154,6 +154,9 @@ async def github_api_proxy(request: Request, path: Optional[str] = None):
     except httpx.RequestError as exc:
         if cached and cached.get("data") is not None:
             response = JSONResponse(status_code=200, content=cached["data"])
+            for key, value in cached["headers"].items():
+                if value:
+                    response.headers[key] = value
             response.headers["x-data-stale"] = "1"
             return response
         logger.error(f"GitHub proxy request failed: {type(exc).__name__}", exc_info=True)
@@ -163,6 +166,9 @@ async def github_api_proxy(request: Request, path: Optional[str] = None):
 
     if github_resp.status_code in (403, 429) and cached and cached.get("data") is not None:
         response = JSONResponse(status_code=200, content=cached["data"])
+        for key, value in cached["headers"].items():
+            if value:
+                response.headers[key] = value
         response.headers["x-data-stale"] = "1"
         return response
 

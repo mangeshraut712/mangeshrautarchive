@@ -147,7 +147,7 @@ app.add_middleware(
         "X-Monitor-Admin-Token",
         "x-integration-admin-token",
     ],
-    expose_headers=["X-Session-ID", "X-Session-Token", "Retry-After"],
+    expose_headers=["X-Session-ID", "X-Session-Token", "Retry-After", "Link", "X-Data-Stale"],
 )
 
 # Outermost: stamp security headers on the final response, including streams.

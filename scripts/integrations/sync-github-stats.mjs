@@ -5,6 +5,7 @@
  */
 
 import fs from 'node:fs';
+import { format } from 'prettier';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
@@ -26,11 +27,11 @@ function readDefaultStatsPayload() {
   }
 }
 
-function writeDefaultStatsPayload(payload) {
+async function writeDefaultStatsPayload(payload) {
   fs.mkdirSync('src/js/data', { recursive: true });
   fs.writeFileSync(
     'src/js/data/github-stats.json',
-    JSON.stringify(payload, null, 2) + '\n',
+    await format(JSON.stringify(payload), { parser: 'json', printWidth: 100 }),
     'utf-8'
   );
 }
@@ -118,7 +119,7 @@ export async function syncGitHubStats({
       return { changed: false, payload: existingPayload };
     }
 
-    writeStats(statsPayload);
+    await writeStats(statsPayload);
     console.log('[github-sync] Successfully written GitHub stats cache');
     console.log(
       `[github-sync] Total stars: ${totalStars} | Public Repos: ${userData.public_repos}`
@@ -137,7 +138,7 @@ export async function syncGitHubStats({
         totalForks: 12,
         repositories: [],
       };
-      writeStats(fallback);
+      await writeStats(fallback);
       return { changed: true, payload: fallback };
     }
 

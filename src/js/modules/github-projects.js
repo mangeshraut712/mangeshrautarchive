@@ -69,11 +69,12 @@ class GitHubProjects {
     this.cacheTime = null;
     this.cacheDuration = 10 * 60 * 1000;
     this.localCacheKey = `github_repos_${username}`;
-    this.repoSchemaVersion = 2;
+    this.repoSchemaVersion = 3;
+    this.catalogStatus = { source: 'bundled', timestamp: null, partial: true };
 
     this.activityCacheDuration = 15 * 60 * 1000;
     this.activityStoragePrefix = `github_repo_activity_${username}_`;
-    this.activitySchemaVersion = 5;
+    this.activitySchemaVersion = 6;
     this.repoActivityCache = new Map();
 
     this.featuredProjectOrder = [
@@ -1119,178 +1120,104 @@ class GitHubProjects {
   }
 
   async fetchRepositories(forceRefresh = false) {
-    const sharedCacheKey = `${this.username}:${this.repoSchemaVersion}`;
-
-    // Force refresh bypasses all caches
-    if (forceRefresh) {
-      this.cache = null;
-      this.cacheTime = null;
-      localStorage.removeItem(this.localCacheKey);
-      repoCatalogMemoryCache.delete(sharedCacheKey);
-      repoCatalogPendingRequests.delete(sharedCacheKey);
-    }
-
-    if (this.cache && this.cacheTime && Date.now() - this.cacheTime < this.cacheDuration) {
-      return this.cache;
-    }
-
-    const sharedCache = repoCatalogMemoryCache.get(sharedCacheKey);
-    if (
-      !forceRefresh &&
-      sharedCache?.repos &&
-      sharedCache.timestamp &&
-      Date.now() - sharedCache.timestamp < this.cacheDuration
-    ) {
-      this.cache = sharedCache.repos;
-      this.cacheTime = sharedCache.timestamp;
-      return sharedCache.repos;
-    }
-
-    if (!forceRefresh && repoCatalogPendingRequests.has(sharedCacheKey)) {
-      const repos = await repoCatalogPendingRequests.get(sharedCacheKey);
-      this.cache = repos;
-      this.cacheTime = Date.now();
-      return repos;
-    }
-
+    const key = `${this.username}:${this.repoSchemaVersion}`;
+    let stored = null;
     try {
-      const cached = localStorage.getItem(this.localCacheKey);
-      if (cached) {
-        const { repos, timestamp, version } = JSON.parse(cached);
-        if (
-          version === this.repoSchemaVersion &&
-          Array.isArray(repos) &&
-          timestamp &&
-          Date.now() - timestamp < this.cacheDuration
-        ) {
-          this.cache = repos;
-          this.cacheTime = timestamp;
-          repoCatalogMemoryCache.set(sharedCacheKey, { repos, timestamp });
-          return repos;
-        }
-      }
-    } catch (err) {
-      console.warn('Local cache read failed:', err);
+      stored = JSON.parse(localStorage.getItem(this.localCacheKey) || 'null');
+      if (stored?.version !== this.repoSchemaVersion || !Array.isArray(stored?.repos))
+        stored = null;
+    } catch {
+      /* Storage is optional, including in private browsing. */
     }
+    const cached = repoCatalogMemoryCache.get(key) || stored;
+    const use = record => {
+      this.cache = record.repos;
+      this.cacheTime = record.timestamp;
+      this.catalogStatus = record.status;
+      return record.repos;
+    };
+    if (!forceRefresh && cached && Date.now() - cached.timestamp < this.cacheDuration)
+      return use({ ...cached, status: { ...cached.status, source: 'cached' } });
+    if (repoCatalogPendingRequests.has(key)) return use(await repoCatalogPendingRequests.get(key));
 
-    const networkLoad = (async () => {
-      let rawRepos = null;
-
-      // Prefer configured edge/API bases; skip only hosts marked dead this session.
-      const candidates = this.proxyCandidates.filter(base => {
+    const pending = (async () => {
+      let repos = null;
+      for (const base of this.proxyCandidates) {
         try {
-          if (sessionStorage.getItem('portfolio_api_host_dead_v1') === '1') {
-            // Still allow non-Vercel workers.dev / custom CHAT_API_BASE
-            return (
-              !String(base).includes('mangeshraut.pro') && !String(base).includes('vercel.app')
-            );
-          }
-        } catch {
-          // ignore
-        }
-        return true;
-      });
-
-      for (const proxyBase of candidates) {
-        try {
-          const proxyResp = await fetch(
-            `${proxyBase}?username=${this.username}&limit=100&no_forks=false`,
-            { headers: { Accept: 'application/json' } }
+          const response = await fetch(
+            `${base}?username=${encodeURIComponent(this.username)}&limit=100&no_forks=false`,
+            {
+              headers: { Accept: 'application/json' },
+              signal: AbortSignal.timeout(8000),
+            }
           );
-
-          if (proxyResp.status === 402 || proxyResp.status === 503) {
-            if (
-              String(proxyBase).includes('mangeshraut.pro') ||
-              String(proxyBase).includes('vercel.app')
-            ) {
-              try {
-                sessionStorage.setItem('portfolio_api_host_dead_v1', '1');
-              } catch {
-                // ignore
-              }
-            }
-            continue;
-          }
-
-          if (!proxyResp.ok) {
-            continue;
-          }
-
-          const body = await proxyResp.json();
-          const repoList = this.extractRepoList(body);
-          if (repoList) {
-            rawRepos = repoList;
-            break;
-          }
+          if (!response.ok || response.headers.get('x-github-proxy-degraded')) continue;
+          const payload = await response.json();
+          if (payload.success === false) continue;
+          repos = this.extractRepoList(payload);
+          if (repos) break;
         } catch {
-          // Quiet: proxy may be offline on static mirrors
+          /* Try the next configured source. */
         }
       }
-
-      if (!rawRepos) {
-        try {
-          const response = await fetch(`${this.directApiUrl}?per_page=100&sort=updated`, {
-            headers: { Accept: 'application/vnd.github+json' },
-          });
-
-          if (!response.ok) throw new Error(`GitHub API error: ${response.status}`);
-          rawRepos = await response.json();
-        } catch {
-          // Prefer any local cache (even stale), then bundled catalog
-          const staleCache = localStorage.getItem(this.localCacheKey);
-          if (staleCache) {
-            try {
-              const { repos } = JSON.parse(staleCache);
-              if (repos && repos.length > 0) {
-                return repos;
-              }
-            } catch {
-              // Ignore stale cache parse failure
-            }
-          }
-          return this.fallbackRepos.map(repo => this.normalizeRepoRecord(repo));
-        }
+      if (!repos)
+        repos = await this.fetchJson(`${this.directApiUrl}?per_page=100&sort=updated&page=1`);
+      if (!Array.isArray(repos)) {
+        if (cached) return { ...cached, status: { ...cached.status, source: 'stale' } };
+        return {
+          repos: this.fallbackRepos.map(repo => this.normalizeRepoRecord(repo)),
+          timestamp: null,
+          status: { source: 'bundled', timestamp: null, partial: true },
+        };
       }
-
-      const normalizedRepos = Array.isArray(rawRepos)
-        ? rawRepos.map(repo => this.normalizeRepoRecord(repo))
-        : [];
-
-      const sortedRepos = normalizedRepos.toSorted(
-        (a, b) => new Date(b.updated_at) - new Date(a.updated_at)
-      );
-
-      this.cache = sortedRepos;
-      this.cacheTime = Date.now();
-      repoCatalogMemoryCache.set(sharedCacheKey, {
-        repos: sortedRepos,
-        timestamp: this.cacheTime,
-      });
-
-      try {
-        localStorage.setItem(
-          this.localCacheKey,
-          JSON.stringify({
-            version: this.repoSchemaVersion,
-            repos: sortedRepos,
-            timestamp: this.cacheTime,
-          })
+      let partial = false;
+      let pageSize = repos.length;
+      // GitHub caps each page at 100; a bounded walk avoids silently losing older projects.
+      for (let page = 2; pageSize === 100; page++) {
+        if (page > 10) {
+          partial = true;
+          break;
+        }
+        const next = await this.fetchJson(
+          `${this.directApiUrl}?per_page=100&sort=updated&page=${page}`
         );
-      } catch (err) {
-        console.warn('Local cache write failed:', err);
+        if (!Array.isArray(next)) {
+          partial = true;
+          break;
+        }
+        repos = repos.concat(next);
+        pageSize = next.length;
       }
-
-      return sortedRepos;
+      const unique = new Map(
+        repos
+          .filter(repo => repo && typeof repo.name === 'string')
+          .map(repo => [
+            String(repo.full_name || repo.name).toLowerCase(),
+            this.normalizeRepoRecord(repo),
+          ])
+      );
+      const timestamp = Date.now();
+      const record = {
+        version: this.repoSchemaVersion,
+        timestamp,
+        status: { source: 'live', timestamp, partial },
+        repos: [...unique.values()].toSorted(
+          (a, b) => new Date(b.updated_at || 0) - new Date(a.updated_at || 0)
+        ),
+      };
+      repoCatalogMemoryCache.set(key, record);
+      try {
+        localStorage.setItem(this.localCacheKey, JSON.stringify(record));
+      } catch {
+        /* Optional cache. */
+      }
+      return record;
     })();
-
-    if (!forceRefresh) {
-      repoCatalogPendingRequests.set(sharedCacheKey, networkLoad);
-    }
-
+    repoCatalogPendingRequests.set(key, pending);
     try {
-      return await networkLoad;
+      return use(await pending);
     } finally {
-      repoCatalogPendingRequests.delete(sharedCacheKey);
+      repoCatalogPendingRequests.delete(key);
     }
   }
 
@@ -1473,7 +1400,7 @@ class GitHubProjects {
     if (stars > 0) parts.push(`${stars} star${stars === 1 ? '' : 's'}`);
     if (repo.language) parts.push(repo.language);
     if (topics.length > 0) parts.push(topics.slice(0, 2).join(', '));
-    if (hasDemo) parts.push('Live demo available');
+    if (hasDemo) parts.push('Project website listed');
     if (updated) parts.push(`Updated ${updated}`);
 
     return parts.join(' · ') || 'Active project';
@@ -1740,8 +1667,11 @@ class GitHubProjects {
 
     if (proxyUrl) {
       try {
-        const response = await fetch(proxyUrl, { headers: { Accept: 'application/json' } });
-        if (response.ok) {
+        const response = await fetch(proxyUrl, {
+          headers: { Accept: 'application/json' },
+          signal: AbortSignal.timeout(8000),
+        });
+        if (response.ok && !response.headers.get('x-github-proxy-degraded')) {
           return await response.json();
         }
         if (typeof window !== 'undefined' && window.location.hostname.endsWith('github.io')) {
@@ -1756,7 +1686,7 @@ class GitHubProjects {
     }
 
     try {
-      const response = await fetch(url, { headers });
+      const response = await fetch(url, { headers, signal: AbortSignal.timeout(8000) });
       if (!response.ok) return null;
       return await response.json();
     } catch {
@@ -1768,11 +1698,12 @@ class GitHubProjects {
     const proxyUrl = this.buildGitHubProxyUrl(url);
 
     const attemptFetch = async targetUrl => {
-      const response = await fetch(targetUrl, { headers });
+      const response = await fetch(targetUrl, { headers, signal: AbortSignal.timeout(8000) });
       const link = response.headers.get('link') || '';
-      const data = response.ok ? await response.json() : null;
+      const ok = response.ok && !response.headers.get('x-github-proxy-degraded');
+      const data = ok ? await response.json() : null;
       return {
-        ok: response.ok,
+        ok,
         status: response.status,
         link,
         data,
@@ -1913,8 +1844,7 @@ class GitHubProjects {
       if (contributorsPayload.length === 0) {
         contributorCount = 0;
       } else {
-        const pageCount = this.getLastPageFromLink(contributorsMeta.link);
-        contributorCount = pageCount || contributorsPayload.length;
+        contributorCount = contributorsPayload.length;
         contributorLogins = contributorsPayload
           .filter(entry => {
             const type = String(entry?.type || '').toLowerCase();
@@ -2061,6 +1991,26 @@ class GitHubProjects {
     });
 
     document.addEventListener('keydown', e => {
+      if (e.key === 'Tab' && this.previewModal?.classList.contains('active')) {
+        const controls = [
+          ...this.previewModal.querySelectorAll('a[href],button:not([disabled]),[tabindex="0"]'),
+        ].filter(el => el.getClientRects().length);
+        const first = controls[0],
+          last = controls.at(-1);
+        if (
+          e.shiftKey &&
+          (document.activeElement === first || !this.previewModal.contains(document.activeElement))
+        ) {
+          e.preventDefault();
+          last?.focus();
+        } else if (
+          !e.shiftKey &&
+          (document.activeElement === last || !this.previewModal.contains(document.activeElement))
+        ) {
+          e.preventDefault();
+          first?.focus();
+        }
+      }
       if (
         e.key === 'Escape' &&
         this.previewModal &&
@@ -2087,8 +2037,8 @@ class GitHubProjects {
         e.preventDefault();
         const cmd = cloneBtn.dataset.repoClone || '';
         if (cmd) {
-          navigator.clipboard
-            ?.writeText(`git clone ${cmd}`)
+          Promise.resolve()
+            .then(() => navigator.clipboard.writeText(`git clone ${cmd}`))
             .then(() => {
               const span = cloneBtn.querySelector('span');
               if (span) {
@@ -2100,7 +2050,10 @@ class GitHubProjects {
               }
             })
             .catch(() => {
-              // ignore clipboard failures
+              const status = document.getElementById('repo-copy-status');
+              if (status)
+                status.textContent =
+                  'Copy was blocked. Open the repository and use its Code menu to copy the clone URL.';
             });
         }
       }
@@ -2109,7 +2062,11 @@ class GitHubProjects {
     const tryOpenFromHash = () => {
       const match = window.location.hash.match(/^#repo-read-([^&]+)/);
       if (!match) return;
-      this.openRepoPreview(decodeURIComponent(match[1]));
+      try {
+        this.openRepoPreview(decodeURIComponent(match[1]));
+      } catch {
+        /* Invalid URL encoding. */
+      }
     };
 
     window.addEventListener('hashchange', tryOpenFromHash);
@@ -2173,7 +2130,7 @@ class GitHubProjects {
           <a class="blog-read-btn project-preview__action-primary" href="${safeRepoUrl}" target="_blank" rel="noopener noreferrer">
             <i class="fab fa-github" aria-hidden="true"></i> View on GitHub <i class="fas fa-arrow-right" aria-hidden="true"></i>
           </a>
-          ${hasDemo ? `<a class="project-action-btn btn-demo" href="${safeHomepage}" target="_blank" rel="noopener noreferrer"><i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i> Live Demo</a>` : ''}
+          ${hasDemo ? `<a class="project-action-btn btn-demo" href="${safeHomepage}" target="_blank" rel="noopener noreferrer"><i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i> Project website</a>` : ''}
           <button type="button" class="project-preview__clone-btn" data-repo-clone="${safeRepoUrl}.git">
             <i class="fas fa-terminal" aria-hidden="true"></i> <span>git clone ${safeRepoUrl}.git</span>
           </button>
@@ -2189,11 +2146,12 @@ class GitHubProjects {
           </div>
         </div>
 
+        <p id="repo-copy-status" role="status"></p>
         <div class="blog-preview__footer-actions">
           <a class="blog-read-btn blog-preview__read-complete" href="${safeRepoUrl}" target="_blank" rel="noopener noreferrer" aria-label="Explore ${safeName} on GitHub">
             <i class="fab fa-github" aria-hidden="true"></i> Explore Repository <i class="fas fa-arrow-right" aria-hidden="true"></i>
           </a>
-          ${hasDemo ? `<a class="project-action-btn btn-demo" href="${safeHomepage}" target="_blank" rel="noopener noreferrer"><i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i> Open Live Demo</a>` : ''}
+          ${hasDemo ? `<a class="project-action-btn btn-demo" href="${safeHomepage}" target="_blank" rel="noopener noreferrer"><i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i> Open project website</a>` : ''}
           <button type="button" class="blog-preview__close-action-btn" data-repo-close aria-label="Close repository preview">
             Close preview
           </button>
@@ -2206,6 +2164,7 @@ class GitHubProjects {
     this.previewModal.classList.add('active');
     this.previewModal.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
+    this.previewModal.querySelector('[data-repo-close].blog-modal-close')?.focus();
     document.documentElement.classList.add('blog-modal-open');
 
     try {
@@ -2222,7 +2181,7 @@ class GitHubProjects {
     }
 
     requestAnimationFrame(() => {
-      this.previewModal.querySelector('.blog-modal-close')?.focus();
+      // Keep any keyboard movement made after opening; focus is set synchronously above.
       this.previewModal.querySelector('.blog-modal-container')?.scrollTo?.(0, 0);
       modalBody.scrollTop = 0;
     });
@@ -2393,9 +2352,9 @@ class GitHubProjects {
             .join('')
         : '';
     const demoHtml = hasDemo
-      ? `<a href="${safeHomepage}" target="_blank" rel="noopener noreferrer" class="project-action-btn btn-demo" aria-label="Open ${safeName} live demo">
+      ? `<a href="${safeHomepage}" target="_blank" rel="noopener noreferrer" class="project-action-btn btn-demo" aria-label="Open ${safeName} project website">
                 <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i>
-                <span>Live demo</span>
+                <span>Website</span>
               </a>`
       : '';
 

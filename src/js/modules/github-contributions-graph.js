@@ -240,7 +240,7 @@ function buildShell() {
 
   container.innerHTML = `
     <div class="gh-contrib__topbar">
-      <h4 class="gh-contrib__heading" id="gh-contrib-heading">Loading contributions…</h4>
+      <h3 class="gh-contrib__heading" id="gh-contrib-heading">Loading contributions…</h3>
       <div class="gh-contrib__controls">
         <details class="gh-contrib__settings">
           <summary class="gh-contrib__settings-btn">
@@ -326,8 +326,9 @@ function buildShell() {
         </div>
       </div>
 
-      <ul class="gh-contrib__years" id="gh-contrib-years" role="tablist" aria-label="Contribution year"></ul>
+      <ul class="gh-contrib__years" id="gh-contrib-years" aria-label="Contribution year"></ul>
     </div>
+    <button type="button" class="projects-clear-filters-btn" id="gh-contrib-retry" hidden>Retry contribution history</button>
     <div class="gh-contrib-tooltip" id="gh-contrib-tooltip" role="tooltip" aria-hidden="true"></div>
   `;
 
@@ -335,6 +336,9 @@ function buildShell() {
     btn.addEventListener('click', () => setView(btn.dataset.view));
   });
 
+  document
+    .getElementById('gh-contrib-retry')
+    .addEventListener('click', () => selectYear(state.year));
   return true;
 }
 
@@ -347,9 +351,9 @@ function renderYears() {
   list.innerHTML = years
     .map(
       y =>
-        `<li role="presentation"><button type="button" role="tab" class="gh-contrib__year${
+        `<li><button type="button" class="gh-contrib__year${
           y === state.year ? ' is-active' : ''
-        }" data-year="${y}" aria-selected="${y === state.year}">${y}</button></li>`
+        }" data-year="${y}" aria-pressed="${y === state.year}">${y}</button></li>`
     )
     .join('');
   list.querySelectorAll('.gh-contrib__year').forEach(btn => {
@@ -410,7 +414,7 @@ function renderHeatmap(data) {
           const label = `${cell.count === 0 ? 'No' : cell.count} contribution${
             cell.count === 1 ? '' : 's'
           } on ${dayStr}.${monthStr}.${yearStr}`;
-          return `<span class="gh-hm__cell" data-level="${cell.level}" data-label="${label}" tabindex="0" aria-label="${label}"></span>`;
+          return `<span class="gh-hm__cell" data-level="${cell.level}" data-label="${label}" tabindex="-1" role="img" aria-label="${label}"></span>`;
         })
         .join('');
       return `<div class="gh-hm__week">${dayCells}</div>`;
@@ -426,6 +430,26 @@ function renderHeatmap(data) {
     </div>
   `;
 
+  const navigable = [...host.querySelectorAll('.gh-hm__cell[data-label]')];
+  if (navigable.length) navigable[0].tabIndex = 0;
+  host.onkeydown = event => {
+    const index = navigable.indexOf(document.activeElement);
+    if (index < 0) return;
+    const offsets = { ArrowRight: 7, ArrowLeft: -7, ArrowDown: 1, ArrowUp: -1 };
+    const next =
+      event.key === 'Home'
+        ? 0
+        : event.key === 'End'
+          ? navigable.length - 1
+          : event.key in offsets
+            ? Math.max(0, Math.min(navigable.length - 1, index + offsets[event.key]))
+            : null;
+    if (next === null) return;
+    event.preventDefault();
+    navigable[index].tabIndex = -1;
+    navigable[next].tabIndex = 0;
+    navigable[next].focus();
+  };
   let tooltip = document.getElementById('gh-contrib-tooltip');
   if (tooltip && tooltip.parentElement !== document.body) {
     document.body.appendChild(tooltip);
@@ -815,17 +839,36 @@ function renderAll(data) {
 
 async function selectYear(year) {
   if (year === state.year && state.activeData) return;
+  const restoreYearFocus = document.activeElement?.matches('.gh-contrib__year');
   state.year = year;
   renderYears();
+  if (restoreYearFocus) document.querySelector(`[data-year="${year}"]`)?.focus();
   const heading = document.getElementById('gh-contrib-heading');
   if (heading) heading.textContent = `Loading ${year}…`;
   const root = document.getElementById('gh-contrib');
   if (root) root.classList.add('is-loading');
+  document.getElementById('gh-contrib-retry').hidden = true;
   const data = await fetchYear(year);
   if (state.year !== year) return; // superseded by a newer click
   if (root) root.classList.remove('is-loading');
   if (!data) {
     state.activeData = null;
+    document.getElementById('gh-contrib-retry').hidden = false;
+    for (const id of ['gh-total', 'gh-week', 'gh-best', 'gh-avg', 'gh-longest', 'gh-current']) {
+      const element = document.getElementById(id);
+      if (element) element.textContent = '—';
+    }
+    for (const id of [
+      'gh-total-range',
+      'gh-week-range',
+      'gh-best-date',
+      'gh-longest-range',
+      'gh-current-range',
+    ]) {
+      const element = document.getElementById(id);
+      if (element) element.textContent = '';
+    }
+
     const source = document.getElementById('gh-contrib-source');
     if (source)
       source.textContent =

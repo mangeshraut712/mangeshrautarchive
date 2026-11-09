@@ -127,12 +127,14 @@ Start with [CONTRIBUTING.md](CONTRIBUTING.md), [AGENTS.md](AGENTS.md), and the [
 
 I maintain this portfolio with assistance from several coding tools. Each shipped change records its contributor and purpose in the [changelog](src/js/data/changelog-entries.js); earlier records are preserved in [development history](docs/DEVELOPMENT_HISTORY.md).
 
-| This maintenance contribution              | Record                                                                                                                                  |
-| ------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------- |
-| Coding agent                               | Gemini 3.8 Flash / Google Antigravity IDE                                                                                               |
-| Purpose                                    | Harmonize Projects and GitHub Operating View headers, add GitHub language dots, make titles interactive, and improve card glassmorphism |
-| Exact variant, reasoning mode, token usage | unavailable                                                                                                                             |
-| Chatbot runtime                            | Separate configuration in [FastAPI](api/model_router.py) and the [Worker](workers/assistme-chat/src/model-routing.js)                   |
+| This maintenance contribution              | Record                                                                                                                |
+| ------------------------------------------ | --------------------------------------------------------------------------------------------------------------------- |
+| Coding agent                               | GPT-6 / Codex desktop                                                                                                 |
+| Purpose                                    | Repair repository pagination and data provenance, bound activity requests, and improve accessible project exploration |
+| Exact variant, reasoning mode, token usage | unavailable                                                                                                           |
+| Chatbot runtime                            | Separate configuration in [FastAPI](api/model_router.py) and the [Worker](workers/assistme-chat/src/model-routing.js) |
+
+The [project showcase audit](docs/qa/project-showcase-2026-11-10.md) records catalog accuracy, GitHub metadata handling, and device/theme verification.
 
 The [persistent monitoring guide](docs/qa/durable-monitor-2026-11-09.md) describes the collector, retention, incident policy, and verification.
 

@@ -2887,34 +2887,36 @@ html.dark #home .hero-name-text {
             <div id="projects-activity-overview" class="projects-activity-overview" aria-live="polite">
               <div class="activity-overview-inner" id="activity-stats-container">
                 <div class="activity-stat-item">
-                  <span class="activity-stat-value" id="stat-repos">106</span>
+                  <span class="activity-stat-value" id="stat-repos">—</span>
                   <span class="activity-stat-label">Public Repos</span>
                 </div>
                 <div class="activity-stat-item">
-                  <span class="activity-stat-value" id="stat-contributors">22</span>
-                  <span class="activity-stat-label">Unique Contributors</span>
+                  <span class="activity-stat-value" id="stat-contributors">—</span>
+                  <span class="activity-stat-label">Loaded contributors</span>
                 </div>
                 <div class="activity-stat-item">
-                  <span class="activity-stat-value" id="stat-stars">14</span>
+                  <span class="activity-stat-value" id="stat-stars">—</span>
                   <span class="activity-stat-label">Stars</span>
                 </div>
                 <div class="activity-stat-item">
-                  <span class="activity-stat-value" id="stat-forks">4</span>
+                  <span class="activity-stat-value" id="stat-forks">—</span>
                   <span class="activity-stat-label">Forks</span>
                 </div>
                 <div class="activity-stat-item">
-                  <span class="activity-stat-value" id="stat-commits">87</span>
-                  <span class="activity-stat-label">Commits (30d)</span>
+                  <span class="activity-stat-value" id="stat-commits">—</span>
+                  <span class="activity-stat-label">Loaded commits (30d)</span>
                 </div>
                 <div class="activity-stat-item">
-                  <span class="activity-stat-value" id="stat-active-repos">97</span>
+                  <span class="activity-stat-value" id="stat-active-repos">—</span>
                   <span class="activity-stat-label">Active (14d)</span>
                 </div>
                 <div class="activity-stat-item">
-                  <span class="activity-stat-value" id="stat-languages">9</span>
+                  <span class="activity-stat-value" id="stat-languages">—</span>
                   <span class="activity-stat-label">Languages</span>
                 </div>
               </div>
+
+              <p id="projects-activity-caption" class="projects-data-caption"></p>
 
               <div class="activity-github-graph-container gh-contrib" id="gh-contrib" data-view="both"
                 aria-live="polite"></div>
@@ -2927,6 +2929,10 @@ html.dark #home .hero-name-text {
               <h3 id="projects-repos-heading">Projects built to be explored.</h3>
               <p class="section-subtitle">A curated view of the repositories, working demos, and decisions behind the code.</p>
             </header>
+            <div class="projects-catalog-status-row">
+              <p id="projects-catalog-status" class="projects-data-caption" role="status">Showing bundled projects while GitHub updates load.</p>
+              <button type="button" id="projects-refresh-btn" class="projects-clear-filters-btn">Refresh repositories</button>
+            </div>
             <div class="projects-repos-toolbar" role="region" aria-label="Project filters and search">
               <div class="project-lens-bar" role="group" aria-label="Filter projects by stars, forks, or activity">
                 <button type="button" class="project-lens-chip active" data-project-lens="all" aria-pressed="true"

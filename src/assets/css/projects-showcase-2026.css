@@ -6379,3 +6379,51 @@ html.dark #repo-preview-modal .blog-preview__close-action-btn,
 #projects .gh-contrib__stage[hidden] {
   display: none;
 }
+
+/* Catalog provenance stays adjacent to the controls, without competing with the work. */
+.projects-catalog-status-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-block: 16px;
+}
+.projects-data-caption {
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+.projects-catalog-status-row .projects-data-caption {
+  flex: 1 1 260px;
+}
+#projects-refresh-btn {
+  min-height: 44px;
+}
+#projects [hidden] {
+  display: none !important;
+}
+
+#projects :is(.gh-contrib__view-btn, .gh-contrib__year) {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* Match the release touch-target contract despite legacy compact-control overrides. */
+section#projects
+  :is(
+    #projects-refresh-btn,
+    .gh-contrib__view-btn,
+    .gh-contrib__year,
+    .gh-contrib__settings-btn,
+    .project-title-btn
+  ) {
+  min-height: 44px !important;
+  min-width: 44px !important;
+  height: auto !important;
+}
+section#projects .gh-contrib__settings-btn {
+  display: inline-flex;
+  align-items: center;
+}

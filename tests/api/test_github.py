@@ -1,6 +1,7 @@
 """Tests for GitHub proxy and repos API endpoints."""
 
 import os
+import time
 from unittest.mock import AsyncMock, patch
 
 import httpx
@@ -108,3 +109,17 @@ class TestGithubProxy:
         response = client.get("/api/github/proxy?path=/users/mangeshraut712")
         assert response.status_code in (200, 403, 404, 429, 502, 503, 504)
         assert response.status_code != 400
+
+
+def test_github_cached_pagination_is_available_to_cross_origin_clients(client):
+    link = '<https://api.github.com/repos/mangeshraut712/demo/commits?page=42>; rel="last"'
+    _github_api_proxy_cache["gh_proxy:/repos/mangeshraut712/demo/commits"] = {
+        "ts": time.time(), "status": 200, "data": [{}], "headers": {"link": link}
+    }
+    response = client.get(
+        "/api/github/proxy?path=/repos/mangeshraut712/demo/commits",
+        headers={"Origin": "https://mangeshraut712.github.io"},
+    )
+    assert response.status_code == 200
+    assert response.headers["link"] == link
+    assert "Link" in response.headers["access-control-expose-headers"]
