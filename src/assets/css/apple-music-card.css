@@ -461,19 +461,24 @@ html.dark #home #music-card .music-card-preview-link:hover .music-control-face {
 }
 
 /* 2. Apple Music Button — Modern iOS 27.2 Monochrome Design (Black in Light, Pure White in Dark) */
-#home #music-card .music-card-apple-link .music-control-face {
+#home #music-card .music-card-apple-link .music-control-face,
+.music-card .music-card-apple-link .music-control-face {
   background: #ffffff !important;
   border-color: #e5e5ea !important;
 }
 
 html.dark #home #music-card .music-card-apple-link .music-control-face,
-html[data-theme='dark'] #home #music-card .music-card-apple-link .music-control-face {
+html[data-theme='dark'] #home #music-card .music-card-apple-link .music-control-face,
+html.dark .music-card .music-card-apple-link .music-control-face,
+html[data-theme='dark'] .music-card .music-card-apple-link .music-control-face {
   background: #000000 !important;
   border-color: #2c2c2e !important;
 }
 
 #home #music-card .music-card-apple-link .music-control-face i,
-#home #music-card .music-card-apple-link i {
+#home #music-card .music-card-apple-link i,
+.music-card .music-card-apple-link .music-control-face i,
+.music-card .music-card-apple-link i {
   color: #000000 !important;
   -webkit-text-fill-color: #000000 !important;
   transition:
@@ -484,7 +489,11 @@ html[data-theme='dark'] #home #music-card .music-card-apple-link .music-control-
 html.dark #home #music-card .music-card-apple-link .music-control-face i,
 html.dark #home #music-card .music-card-apple-link i,
 html[data-theme='dark'] #home #music-card .music-card-apple-link .music-control-face i,
-html[data-theme='dark'] #home #music-card .music-card-apple-link i {
+html[data-theme='dark'] #home #music-card .music-card-apple-link i,
+html.dark .music-card .music-card-apple-link .music-control-face i,
+html.dark .music-card .music-card-apple-link i,
+html[data-theme='dark'] .music-card .music-card-apple-link .music-control-face i,
+html[data-theme='dark'] .music-card .music-card-apple-link i {
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
 }
@@ -519,15 +528,18 @@ html[data-theme='dark'] #home #music-card .music-card-apple-link:hover i {
 }
 
 /* 3. Spotify Button — Iconic Spotify Green (#1DB954) on Solid Pure Backgrounds */
-#home #music-card .music-card-spotify-link .music-control-face {
-  background: #ffffff;
-  border-color: #e5e5ea;
+#home #music-card .music-card-spotify-link .music-control-face,
+.music-card .music-card-spotify-link .music-control-face {
+  background: #ffffff !important;
+  border-color: #e5e5ea !important;
 }
 
 html.dark #home #music-card .music-card-spotify-link .music-control-face,
-html[data-theme='dark'] #home #music-card .music-card-spotify-link .music-control-face {
-  background: #000000;
-  border-color: #2c2c2e;
+html[data-theme='dark'] #home #music-card .music-card-spotify-link .music-control-face,
+html.dark .music-card .music-card-spotify-link .music-control-face,
+html[data-theme='dark'] .music-card .music-card-spotify-link .music-control-face {
+  background: #000000 !important;
+  border-color: #2c2c2e !important;
 }
 
 #home #music-card .music-card-spotify-link .music-control-face i,

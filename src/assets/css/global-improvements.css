@@ -604,6 +604,31 @@ html.dark #contact .technical-advisory-card {
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5) !important;
 }
 
+#contact span.advisory-badge,
+.advisory-badge {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.3rem !important;
+  padding: 3px 8px !important;
+  border-radius: 6px !important;
+  background: #0056b3 !important;
+  background-color: #0056b3 !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  font-size: 0.6875rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.05em !important;
+  text-transform: uppercase !important;
+}
+
+html.dark #contact span.advisory-badge,
+html.dark .advisory-badge {
+  background: #0071e3 !important;
+  background-color: #0071e3 !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
 #contact .support-stripe-btn.premium {
   background: linear-gradient(135deg, #635bff 0%, #4f46e5 100%) !important;
   color: #fff !important;

@@ -2755,22 +2755,31 @@ html.dark .technical-advisory-card {
   gap: 0.5rem;
 }
 
-.advisory-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.3rem;
-  padding: 3px 8px;
-  border-radius: 6px;
-  background: #0071e3;
-  color: #ffffff;
-  font-size: 0.6875rem;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
+.advisory-badge,
+span.advisory-badge,
+#contact span.advisory-badge {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.3rem !important;
+  padding: 3px 8px !important;
+  border-radius: 6px !important;
+  background: #0056b3 !important;
+  background-color: #0056b3 !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  font-size: 0.6875rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.05em !important;
+  text-transform: uppercase !important;
 }
 
-html.dark .advisory-badge {
-  background: #2997ff !important;
+html.dark .advisory-badge,
+html.dark span.advisory-badge,
+html.dark #contact span.advisory-badge {
+  background: #0071e3 !important;
+  background-color: #0071e3 !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
 }
 
 .advisory-price-tag {

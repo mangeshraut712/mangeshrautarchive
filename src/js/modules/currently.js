@@ -15,6 +15,10 @@ export function initCurrentlySection() {
   }
   document.body.dataset.currentlyInit = 'true';
 
+  if (!shouldSkipPerfAutoInit() && !globalThis.lastFmService) {
+    import('./lastfm.js').catch(() => {});
+  }
+
   const tabList = Array.from(tabs);
 
   const activateTab = tab => {

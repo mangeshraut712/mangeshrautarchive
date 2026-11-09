@@ -346,7 +346,21 @@ async def enrich_recent_tracks_with_artwork(payload: dict, max_tracks: int = 8) 
             track["image"] = images
             return
 
-        # 2. Resolve external high-res artwork & audio preview via multi-storefront iTunes
+        # 2. Check scrobbled Last.fm image first! If authentic and valid, use it immediately with zero external network overhead
+        lastfm_url = _best_lastfm_image(track)
+        if lastfm_url:
+            track["resolved_artwork"] = lastfm_url
+            track["artwork_source"] = "lastfm"
+            track["apple_music_url"] = f"https://music.apple.com/us/search?term={quote(f'{name} {artist}'.strip())}"
+            track["spotify_url"] = f"https://open.spotify.com/search/{quote(f'{name} {artist}'.strip())}"
+            return
+
+        # 3. If track already has authentic non-placeholder resolved_artwork, keep it
+        existing = str(track.get("resolved_artwork") or "").strip()
+        if existing and LASTFM_PLACEHOLDER_HASH not in existing:
+            return
+
+        # 4. Only resolve external high-res artwork & audio preview via multi-storefront iTunes when no authentic art exists
         details = await resolve_external_track_details(name, artist, album=album)
         if details:
             if details.get("preview_url"):
@@ -357,31 +371,18 @@ async def enrich_recent_tracks_with_artwork(payload: dict, max_tracks: int = 8) 
                 track["genre"] = details["genre"]
             if details.get("duration_ms"):
                 track["duration_ms"] = details["duration_ms"]
-
-        # 3. If track already has authentic non-placeholder resolved_artwork, keep it
-        existing = str(track.get("resolved_artwork") or "").strip()
-        if existing and LASTFM_PLACEHOLDER_HASH not in existing:
-            return
-
-        # 4. Check scrobbled Last.fm image (if valid and not generic placeholder)
-        lastfm_url = _best_lastfm_image(track)
-        if lastfm_url:
-            track["resolved_artwork"] = lastfm_url
-            track["artwork_source"] = "lastfm"
-            return
-
-        if details and details.get("artwork_url"):
-            artwork_url = details["artwork_url"]
-            artwork_source = details.get("source", "itunes")
-            track["resolved_artwork"] = artwork_url
-            track["artwork_source"] = artwork_source
-            images = track.get("image")
-            if isinstance(images, list):
-                images = list(images)
-            else:
-                images = []
-            images.append({"size": "extralarge", "#text": artwork_url})
-            track["image"] = images
+            if details.get("artwork_url"):
+                artwork_url = details["artwork_url"]
+                artwork_source = details.get("source", "itunes")
+                track["resolved_artwork"] = artwork_url
+                track["artwork_source"] = artwork_source
+                images = track.get("image")
+                if isinstance(images, list):
+                    images = list(images)
+                else:
+                    images = []
+                images.append({"size": "extralarge", "#text": artwork_url})
+                track["image"] = images
 
     await asyncio.gather(*(enrich_one(track) for track in tracks[:max_tracks]))
     return payload

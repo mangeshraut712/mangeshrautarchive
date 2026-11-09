@@ -1597,13 +1597,18 @@ async function initBootstrap() {
     loadModule('../modules/live-activity-strip.js').catch(() => {});
   };
   const initialSection = window.location.hash;
-  if (initialSection && initialSection !== '#home') {
-    // Deep links should not fetch offscreen music until the visitor reaches Home.
+  if (
+    initialSection &&
+    initialSection !== '#home' &&
+    initialSection !== '#currently-section' &&
+    initialSection !== '#contact'
+  ) {
     observeSectionTask('home', loadHeroEnrichment, '0px 0px');
+    observeSectionTask('currently-section', loadHeroEnrichment, '400px 0px');
   } else {
     onFirstInteraction(loadHeroEnrichment);
-    runWhenIdle(loadHeroEnrichment, 900);
-    scheduleSoon(loadHeroEnrichment, 1600);
+    runWhenIdle(loadHeroEnrichment, 150);
+    scheduleSoon(loadHeroEnrichment, 300);
   }
 
   runWhenIdle(() => {
