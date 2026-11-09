@@ -35,7 +35,7 @@ const state = {
   built: false,
   year: githubToday().getFullYear(),
   dataByYear: new Map(),
-  view: '3d',
+  view: 'both',
   root: null,
   activeData: null,
   hovered3DItem: null,
@@ -236,6 +236,7 @@ function computeStats(data) {
 function buildShell() {
   const container = document.getElementById('gh-contrib');
   if (!container) return false;
+  state.view = container.getAttribute('data-view') || state.view || 'both';
 
   container.innerHTML = `
     <div class="gh-contrib__topbar">
@@ -259,8 +260,8 @@ function buildShell() {
         </details>
         <div class="gh-contrib__view" role="group" aria-label="Contribution graph view mode">
           <button type="button" class="gh-contrib__view-btn" data-view="2d" aria-pressed="false">2D</button>
-          <button type="button" class="gh-contrib__view-btn is-active" data-view="3d" aria-pressed="true">3D</button>
-          <button type="button" class="gh-contrib__view-btn" data-view="both" aria-pressed="false">Both</button>
+          <button type="button" class="gh-contrib__view-btn" data-view="3d" aria-pressed="false">3D</button>
+          <button type="button" class="gh-contrib__view-btn is-active" data-view="both" aria-pressed="true">Both</button>
         </div>
       </div>
     </div>

@@ -54,6 +54,24 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'github-operating-view-20261109',
+    date: '2026-11-09',
+    type: 'improvement',
+    title: 'Polished GitHub Operating View with dual graph display',
+    summary:
+      'Harmonizes the GitHub Operating View header to Apple-standard center alignment matching all site sections. Removes redundant pill badge and banner text, pre-hydrates live stats, and defaults contribution graph to Both mode showing 3D isometric plate and 2D calendar heatmap simultaneously.',
+    tags: ['design'],
+    sha: null,
+    commitVerified: false,
+    model: 'Gemini 3.8 Flash',
+    ide: 'Google Antigravity IDE',
+    purpose:
+      'Harmonize GitHub Operating View header, card metrics, and default to dual 3D/2D contribution view.',
+    attributionSource: 'commit-message',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
     id: 'durable-uptime-20261109',
     date: '2026-11-09',
     type: 'improvement',

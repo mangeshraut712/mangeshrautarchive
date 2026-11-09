@@ -573,16 +573,16 @@ html.dark #projects .projects-activity-caption {
 }
 
 #projects .activity-overview-inner {
-  margin-top: 1rem;
-  padding-top: 0.95rem;
-  border-top: 1px solid var(--project-border-light);
+  margin-top: 0;
+  padding-top: 0;
+  border-top: none;
   display: grid;
   grid-template-columns: repeat(7, minmax(0, 1fr));
   gap: 0.65rem;
 }
 
 html.dark #projects .activity-overview-inner {
-  border-top-color: var(--project-border-dark);
+  border-top: none;
 }
 
 #projects .activity-stat-item.activity-stat-empty {
@@ -5094,35 +5094,85 @@ html.dark section#projects.projects-editorial .projects-page--repos {
   border-top-color: var(--project-border-dark);
 }
 
-section#projects.projects-editorial .projects-page-header {
+section#projects.projects-editorial .projects-overview-header {
+  max-width: 100% !important;
+  margin-inline: auto !important;
+  margin-bottom: clamp(1.5rem, 3vw, 2.5rem) !important;
+  text-align: center !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+section#projects.projects-editorial .projects-overview-header h2 {
+  font-size: clamp(2rem, 4vw, 2.75rem) !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.03em !important;
+  line-height: 1.12 !important;
+  margin-top: 0 !important;
+  margin-bottom: 0.75rem !important;
+  padding-bottom: 0 !important;
+  text-align: center !important;
+  justify-self: center !important;
+  margin-inline: auto !important;
+  color: #0071e3 !important;
+  -webkit-text-fill-color: #0071e3 !important;
+}
+
+html.dark section#projects.projects-editorial .projects-overview-header h2 {
+  color: #2997ff !important;
+  -webkit-text-fill-color: #2997ff !important;
+}
+
+section#projects.projects-editorial .projects-overview-header .section-subtitle {
+  font-size: clamp(1.05rem, 1.5vw, 1.3125rem) !important;
+  font-weight: 400 !important;
+  line-height: 1.4211 !important;
+  letter-spacing: -0.016em !important;
+  color: #48484a !important;
+  -webkit-text-fill-color: #48484a !important;
+  max-width: 42rem !important;
+  margin-top: 0 !important;
+  margin-inline: auto !important;
+  margin-bottom: clamp(1.2rem, 2.5vh, 2rem) !important;
+  padding-top: 0 !important;
+  text-align: center !important;
+  justify-self: center !important;
+  text-wrap: pretty !important;
+}
+
+html.dark section#projects.projects-editorial .projects-overview-header .section-subtitle {
+  color: #a1a1a6 !important;
+  -webkit-text-fill-color: #a1a1a6 !important;
+}
+
+section#projects.projects-editorial .projects-page--repos .projects-page-header {
   max-width: 800px;
   margin-bottom: clamp(0.75rem, 2vw, 1.5rem);
   text-align: left;
 }
 
-section#projects.projects-editorial .projects-page-header .section-eyebrow {
+section#projects.projects-editorial .projects-page--repos .projects-page-header .section-eyebrow {
   margin: 0;
   width: auto;
 }
 
-section#projects.projects-editorial .projects-page-header :is(h2, h3) {
+section#projects.projects-editorial .projects-page--repos .projects-page-header h3 {
   margin: 0;
-  font-size: clamp(2rem, 4.5vw, 3.35rem);
+  font-size: clamp(1.7rem, 3vw, 2.5rem);
   line-height: 1.08;
   letter-spacing: -0.045em;
 }
 
-section#projects.projects-editorial .projects-page--repos .projects-page-header h3 {
-  font-size: clamp(1.7rem, 3vw, 2.5rem);
-}
-
-section#projects.projects-editorial .projects-page-header .section-subtitle {
+section#projects.projects-editorial .projects-page--repos .projects-page-header .section-subtitle {
   margin: 0 !important;
   max-width: 660px;
   line-height: 1.55;
 }
 
 section#projects.projects-editorial
+  .projects-page--repos
   .projects-page-header
   :is(h2, h3, .section-subtitle, .section-eyebrow) {
   text-align: left !important;
@@ -5490,7 +5540,7 @@ section#projects.projects-editorial #github-projects-container .project-more-men
     min-height: 0 !important;
   }
 
-  section#projects.projects-editorial .projects-page-header {
+  section#projects.projects-editorial .projects-page--repos .projects-page-header {
     text-align: left;
   }
 }
