@@ -10,6 +10,7 @@ import { mkdir, writeFile } from 'node:fs/promises';
 import { generateCaseStudyPages } from '../build/generate-case-study-pages.mjs';
 import { generateBlogPages } from '../build/generate-blog-pages.mjs';
 import { blogPosts } from '../../src/js/modules/blog-data.js';
+import { createApiProxyUrl } from './proxy-target.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -127,10 +128,13 @@ function buildProxyHeaders(req) {
 }
 
 async function proxyApiRequest(req, res) {
-  const configuredTarget = new URL(apiTarget);
-  const inbound = new URL(req.originalUrl, 'http://local.invalid');
-  const targetUrl = new URL(`${inbound.pathname}${inbound.search}`, configuredTarget);
-  if (targetUrl.origin !== configuredTarget.origin) {
+  let targetUrl;
+  try {
+    targetUrl = createApiProxyUrl(req.originalUrl, apiTarget);
+    if (targetUrl.origin !== new URL(apiTarget).origin) {
+      throw new TypeError('Unexpected proxy origin');
+    }
+  } catch {
     res.status(400).json({ error: 'Invalid proxy target' });
     return;
   }
@@ -161,7 +165,7 @@ async function proxyApiRequest(req, res) {
 
     Readable.fromWeb(upstream.body).pipe(res);
   } catch (err) {
-    const pathname = inbound.pathname || '';
+    const pathname = targetUrl.pathname || '';
     console.warn(`[API Proxy Fallback] ${method} ${pathname} (${err.message})`);
 
     // Clean offline fallback for standard read and health endpoints
@@ -224,13 +228,18 @@ async function proxyApiRequest(req, res) {
     }
     if (pathname.startsWith('/api/music/')) {
       try {
-        const edgeTarget = new URL(
-          `${inbound.pathname}${inbound.search}`,
+        const edgeTarget = createApiProxyUrl(
+          `${targetUrl.pathname}${targetUrl.search}`,
           'https://assistme-chat.mangeshraut712.workers.dev'
         );
+        if (edgeTarget.origin !== 'https://assistme-chat.mangeshraut712.workers.dev') {
+          throw new TypeError('Unexpected music proxy origin', { cause: err });
+        }
         const edgeRes = await fetch(edgeTarget, {
           method,
           headers: { Accept: 'application/json' },
+          redirect: 'manual',
+          signal: AbortSignal.timeout(8000),
         });
         res.status(edgeRes.status);
         edgeRes.headers.forEach((val, k) => {
@@ -429,7 +438,7 @@ function attachRealtimeWsProxy(server) {
     }
 
     wss.handleUpgrade(req, socket, head, clientWs => {
-      const targetUrl = new URL(req.url, apiTarget);
+      const targetUrl = createApiProxyUrl(req.url, apiTarget);
       targetUrl.protocol = targetUrl.protocol === 'https:' ? 'wss:' : 'ws:';
 
       const headers = {};

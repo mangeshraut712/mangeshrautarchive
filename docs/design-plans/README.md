@@ -1,5 +1,7 @@
 # AssistMe ← shadcn 2026-06 chat UX
 
+Historical completed design plans; inspect current implementation before reusing them.
+
 Written against: `aaf4a758`  
 Source inspiration: [shadcn/ui 2026-06 Chat Components](https://ui.shadcn.com/docs/changelog/2026-06-chat-components)  
 Constraint: **vanilla HTML/CSS/JS only** — do **not** install React, `@ai-sdk/react`, or `npx shadcn@latest`.

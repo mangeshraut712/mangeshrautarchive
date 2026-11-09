@@ -6,7 +6,7 @@ Backend for the portfolio chatbot, monitoring probes, GitHub proxy, media helper
 
 | Item         | Value                                                                                         |
 | ------------ | --------------------------------------------------------------------------------------------- |
-| Framework    | FastAPI 0.142.2, Pydantic 2.13.5 (`requirements.txt`, `pyproject.toml`)                       |
+| Framework    | FastAPI, Pydantic v2 (versions in `requirements.txt` and `pyproject.toml`)                    |
 | LLM proxy    | OpenRouter (`api/model_router.py`, `api/routes/chat.py`)                                      |
 | Offline mode | When `OPENROUTER_API_KEY` is unset, chat returns canned portfolio answers                     |
 | Docs         | `/api/docs`, `/api/redoc`, `/api/openapi.json` (non-production or `ENABLE_PUBLIC_API_DOCS=1`) |
@@ -35,9 +35,9 @@ Many monitor and GitHub paths are duplicated with and without the `/api` prefix 
 
 ## Chat flow
 
-1. Frontend (`src/js/core/chat.js`) POSTs to `/api/chat` with message history and optional tool results.
+1. Frontend chat modules POST to the configured API base with message history and optional tool results. GitHub Pages uses the Worker; local development proxies `/api/*` to FastAPI.
 2. `chat.py` builds a system prompt from `api/site_knowledge.py` + `api/config.py` portfolio facts.
-3. When configured, requests stream from OpenRouter; otherwise local intelligence fallback runs.
+3. When configured, the backend consumes OpenRouter provider streams and returns newline-delimited JSON (`application/x-ndjson`) to the browser; otherwise local intelligence fallback runs.
 4. Browser-side actions and WebMCP tools are implemented in `agentic-actions.js`. Compatible browser agents can call the registered tools, including read-only blog search and case-study inspection; the chatbot also has its own local action handling.
 
 WebMCP remains an experimental browser feature. The site uses `document.modelContext` when present and falls back to the earlier `navigator.modelContext` integration. See the [WebMCP proposal](https://github.com/webmachinelearning/webmcp) and [Chrome's WebMCP guide](https://developer.chrome.com/docs/ai/webmcp) for current availability.
@@ -74,7 +74,6 @@ Integration keys (Supabase, WHOOP, Withings, Google) are optional for local dev.
 ## Tests
 
 ```bash
-source venv/bin/activate
 npm run test:api   # pytest tests in tests/api/
 ```
 

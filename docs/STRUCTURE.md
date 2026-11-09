@@ -1,4 +1,4 @@
-# Project Structure & Architecture Map (October 2026)
+# Project Structure & Architecture Map (November 2026)
 
 Canonical layout for **mangeshrautarchive**. All files and directories are organized strictly by purpose and lifecycle.
 
@@ -9,7 +9,7 @@ mangeshrautarchive/
 ├── ARCHITECTURE.md           # Runtime matrix, directory map, Mermaid sequence & data flows
 ├── DESIGN.md                 # Apple HIG tokens, typography, component patterns & vibe
 ├── RULES.md                  # Strict AI guardrails, ESM conventions, and PEP 8 standards
-├── TASKS.md                  # 4-phase incremental development and maintenance roadmap
+├── TASKS.md                  # Current maintenance roadmap and evidence limits
 ├── PROGRESS.md               # Shipped milestones, incident post-mortems & live health status
 ├── AGENTS.md                 # Universal AI Agent Briefing (Linux Foundation AGENTS.md standard)
 ├── GEMINI.md                 # Google Antigravity / Gemini entry point
@@ -49,7 +49,7 @@ mangeshrautarchive/
 │   ├── routes/               # Modular HTTP routes (chat, monitor, media, integrations, github, etc.)
 │   ├── integrations/         # Third-party OAuth connectors, token stores, health probes
 │   ├── config.py             # Environment configuration & model router defaults
-│   ├── model_router.py       # Multi-model routing (Grok 4.3, Nemotron 120B, Gemma 27B)
+│   ├── model_router.py       # Configured model resolution and fallback routing
 │   └── monitoring.py         # Latency tracker, error budgets, telemetry aggregation
 │
 ├── workers/                  # ★ Cloudflare Workers (Edge AI & GitHub Pages API Proxy)
@@ -66,6 +66,7 @@ mangeshrautarchive/
 ├── tests/                    # ★ Complete Automated Test Suite
 │   ├── api/                  # pytest coverage for FastAPI routes, streaming, OAuth, and middleware
 │   ├── e2e/                  # Playwright multi-browser end-to-end specifications across 16 targets
+│   ├── unit/                 # URL boundaries, analytics, rendering, and data regression tests
 │   ├── tester-army/          # Tester Army deterministic end-to-end journeys (desktop + mobile WebKit)
 │   └── worker/               # Cloudflare Worker multimodal routing and stream boundary tests
 │
@@ -76,6 +77,9 @@ mangeshrautarchive/
 │   ├── STRUCTURE.md          # This file — Complete repository directory map and guide
 │   ├── TESTER_ARMY.md        # Tester Army browser journey coverage manifest and boundary guide
 │   ├── README.md             # Documentation directory index
+│   ├── screenshots/          # Real README screenshots and capture manifest; not shipped
+│   ├── qa/                   # Dated verification records
+│   ├── history/              # Superseded status and roadmap snapshots
 │   └── plans/                # Architecture plans & implementation blueprints
 │
 ├── .github/workflows/        # Automated CI/CD, Deployment & Health Monitoring Workflows
@@ -132,7 +136,7 @@ npm run clean          # dist, artifacts, caches (keeps venvs)
 npm run doctor         # root layout + stack guard (vanilla ESM + FastAPI)
 npm run format         # Prettier write
 npm run check          # lint + format check
-npm test               # API tests + critical browser journeys
+npm test               # API + Worker + unit + critical browser journeys
 ```
 
 ## Crawl map and sitemap

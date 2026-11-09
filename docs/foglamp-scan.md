@@ -28,7 +28,7 @@ Foglamp maps are **public unlisted** and **expire** (~90 days). Republishing wit
 npm run foglamp:publish
 ```
 
-Requires a local `.foglamp/scan.lock.json` from a previous publish (already created for this repo).
+Requires a local `.foglamp/scan.lock.json` from a previous publish (not supplied by a fresh clone).
 
 ### GitHub Actions (recommended)
 
@@ -48,7 +48,7 @@ If the secret is missing, the workflow fails loudly instead of creating a _new_ 
 
 ## README showcase
 
-The README links the live Foglamp map and keeps an always-on Mermaid diagram (does not expire) so GitHub viewers still understand the architecture when the external map is unavailable.
+The README contains a repository-owned Mermaid diagram. This guide links the optional public Foglamp map separately, because its availability and expiry are external to the repository.
 
 ## Regenerate the graph
 

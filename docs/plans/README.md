@@ -5,7 +5,7 @@ Generated / extended by the **improve** skill.
 - **Wave 1** (2026-07-12, `915866f2`): plans 001–005 — **all DONE**
 - **Wave 2** (2026-07-15, `978494ee`): plans 006–010 are recorded as implemented.
 
-Execute in the order below unless dependencies say otherwise. Each executor: read the plan fully before starting, honor STOP conditions, and update your row when done.
+This is the historical execution order. Check the implemented source and [current roadmap](../../TASKS.md) before starting new work; completed plans are not instructions to repeat old changes.
 
 **Historical verification baseline (recon @ `978494ee`):** The table records the July 2026 reconnaissance and is not the current test configuration; see [tests/README.md](../../tests/README.md) and `package.json` for current commands.
 

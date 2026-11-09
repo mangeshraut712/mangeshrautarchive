@@ -14,7 +14,7 @@ flowchart TD
 
     subgraph Edge ["Edge Services (Cloudflare Workers)"]
         Worker["Cloudflare Worker<br/>workers/assistme-chat/"]
-        EdgeKV["Edge Memory & Cache"]
+        EdgeKV["Isolate-local memory & cache"]
     end
 
     subgraph StaticHost ["Static Hosting (GitHub Pages CDN)"]
@@ -22,7 +22,7 @@ flowchart TD
     end
 
     subgraph BackendServices ["Backend / Local Services"]
-        FastAPI["FastAPI 3.12+ (api/index.py)"]
+        FastAPI["FastAPI / Python 3.12+ (api/index.py)"]
         Supabase["Supabase / PostgreSQL"]
     end
 
@@ -34,11 +34,14 @@ flowchart TD
     end
 
     Client -->|Static HTTP GET| Pages
-    Client -->|POST /api/chat (SSE Stream)| Worker
+    Client -->|POST /api/chat (NDJSON stream)| Worker
     Client -->|GET /api/github/*, /api/music/*| Worker
     Client -.->|Local Dev Proxy| FastAPI
     Worker -->|Inference Proxy| OpenRouter
     Worker -->|Metadata Proxy| GitHubAPI
+    Worker -->|Bookings and integration state| Supabase
+    Worker -->|Calendar availability and booking| GoogleCal
+    Worker -->|In-process cache| EdgeKV
     FastAPI -->|Direct API Checks| Supabase
     FastAPI -->|OAuth Token Exchange| GoogleCal
     FastAPI -->|Telemetry Sync| HealthAPI
@@ -48,16 +51,16 @@ flowchart TD
 
 ## 2. Technology Stack
 
-| Layer                        | Technology                                          | Purpose & Rationale                                                                                                               |
-| :--------------------------- | :-------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------- |
-| **Frontend Runtime**         | Native HTML5, Vanilla CSS, ES Modules               | Static pages and progressively loaded interactive modules without a frontend framework runtime.                                   |
-| **Styling**                  | Vanilla CSS + Apple Custom Properties (`--apple-*`) | Authentic Apple Human Interface Guidelines styling, frosted glassmorphism, responsive layout, specular sheen animations.          |
-| **CSS Utility Engine**       | Tailwind CSS v4 (Build-time only)                   | Generates auxiliary utility classes during prebuild; output file consumed without placing utility classes directly in HTML.       |
-| **Edge API**                 | Cloudflare Workers (JavaScript)                     | Chat streaming and model fallback routing, GitHub API caching, and music telemetry; latency depends on providers and network.     |
-| **Local/Serverless Backend** | Python 3.12+ FastAPI with Pydantic v2               | Robust endpoint routing, token cryptography, multi-calendar OAuth flows, and background health monitoring.                        |
-| **Markdown & Rich Media**    | Marked v18 + KaTeX v0.19 + DOMPurify                | Fast client-side markdown parsing, LaTeX math display, and HTML sanitization bundled in a single vendor module.                   |
-| **Build & Tooling**          | esbuild + Custom Node.js scripts                    | Fast JS asset bundling, static HTML minification, sitemap/RSS feed generation, and asset cache busting.                           |
-| **Testing**                  | pytest, node:test, Playwright, Tester Army (`e2e`)  | 197 API tests, 12 worker tests, frontend unit checks, 15 critical Playwright journeys, and 23 deterministic Tester Army journeys. |
+| Layer                        | Technology                                          | Purpose & Rationale                                                                                                                                 |
+| :--------------------------- | :-------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Frontend Runtime**         | Native HTML5, Vanilla CSS, ES Modules               | Static pages and progressively loaded interactive modules without a frontend framework runtime.                                                     |
+| **Styling**                  | Vanilla CSS + Apple Custom Properties (`--apple-*`) | Authentic Apple Human Interface Guidelines styling, frosted glassmorphism, responsive layout, specular sheen animations.                            |
+| **CSS Utility Engine**       | Tailwind CSS v4 (Build-time only)                   | Generates auxiliary utility classes during prebuild; output file consumed without placing utility classes directly in HTML.                         |
+| **Edge API**                 | Cloudflare Workers (JavaScript)                     | Chat streaming and model fallback routing, GitHub API caching, and music telemetry; latency depends on providers and network.                       |
+| **Local/Serverless Backend** | Python 3.12+ FastAPI with Pydantic v2               | Robust endpoint routing, token cryptography, multi-calendar OAuth flows, and background health monitoring.                                          |
+| **Markdown & Rich Media**    | Marked v18 + KaTeX v0.19 + DOMPurify                | Fast client-side markdown parsing, LaTeX math display, and HTML sanitization bundled in a single vendor module.                                     |
+| **Build & Tooling**          | esbuild + Custom Node.js scripts                    | Fast JS asset bundling, static HTML minification, sitemap/RSS feed generation, and asset cache busting.                                             |
+| **Testing**                  | pytest, node:test, Playwright, Tester Army (`e2e`)  | API, Worker, unit, critical browser, and deterministic Tester Army coverage; current counts and commands are in [tests/README.md](tests/README.md). |
 
 ---
 
@@ -103,6 +106,7 @@ mangeshrautarchive/
 ├── tests/                             # Automated test suites
 │   ├── api/                           # pytest test cases for FastAPI endpoints
 │   ├── e2e/                           # Playwright end-to-end user journeys
+│   ├── unit/                          # URL validation, rendering, and data regression checks
 │   ├── tester-army/                   # Deterministic browser verification journeys
 │   └── worker/                        # Node test runner tests for edge routing
 └── docs/                              # Detailed architectural guides, design specs, audits
@@ -117,8 +121,8 @@ mangeshrautarchive/
 1. **User Input**: Visitor enters a prompt (or attaches media) in the AssistMe widget.
 2. **Preprocessing**: The client parses attachments into base64 data payloads, serializes session context, and dispatches a `POST /api/chat` request.
 3. **Edge Ingestion**: The Cloudflare Worker intercepts the request, verifies payload limits (1.2 MB image, 3 MB media, 75 KB text), selects the optimal model via `model-routing.js`, and opens an SSE stream to OpenRouter.
-4. **Resilient Fallback**: If the primary model returns HTTP 429, 402, or 503, the Worker immediately discards the partial buffer and switches to the designated fallback model.
-5. **Streaming Response**: Frames are piped via Server-Sent Events (SSE) to `StreamingService.js`, where chunks are progressively decoded, sanitized by DOMPurify, and rendered via Marked.
+4. **Resilient Fallback**: Retry and fallback depend on provider status, request capabilities, and stream state. The Worker can try compatible providers before delivering an answer; stream-boundary tests guard against concatenating partial answers from different models. See `tests/worker/` for the actual recovery contracts.
+5. **Streaming Response**: The Worker converts provider SSE into newline-delimited JSON (`application/x-ndjson`). The browser streaming services decode records and render Markdown through the sanitized rich-response pipeline. FastAPI exposes the same NDJSON media type for streaming chat.
 
 ### 4.2 WebMCP Agentic Tool Invocation
 

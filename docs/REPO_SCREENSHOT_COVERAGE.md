@@ -1,5 +1,7 @@
 # Repository image coverage
 
+> Historical repository-card media audit. Counts below are dated snapshots, not current GitHub totals. For fresh portfolio screenshots in both themes, see the [website gallery](screenshots/README.md).
+
 Prepared by GPT-6 / Codex to verify project image coverage and source accuracy. Reasoning mode and token usage were unavailable.
 
 Rechecked 29 September 2026 against the 61 public repositories returned by the portfolio's GitHub feed: 39 owned and 22 forks. The gallery uses README images for 31 owned repositories and two forks. All 33 manifest sources were found in their current README files. The 27 screenshot PRs supplied by the owner are recorded in `src/assets/images/repo-screenshots/manifest.json`. Source URL, SHA-256, size, and alternative text for every image used by a card are in that manifest.

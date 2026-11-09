@@ -6,7 +6,7 @@ workflow report, not a billing or quota report.
 
 ## Installation
 
-The plugin and CLI are currently installed on this Mac. On another machine, install both layers:
+The September 19 local run below used a separately installed plugin and CLI. These are optional developer tools, not repository dependencies. Check availability on your machine before using the commands below:
 
 ```bash
 codex plugin marketplace add mangeshraut712/codex-insights

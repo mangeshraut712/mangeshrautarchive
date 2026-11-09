@@ -1,7 +1,8 @@
 # Software Engineering Best Practices for Long-Term Success
 
 > **Standard:** Engineering Architecture & Quality Blueprint  
-> **Last updated:** 2026-09-08  
+> **Last updated:** 2026-11-09
+>
 > **Status:** Production Standard for `mangeshrautarchive`
 
 ---
@@ -58,8 +59,8 @@ _Split the system into loosely coupled modules with one clear responsibility eac
 _Design for growth from the start: isolate stateful parts, keep interfaces stable, and plan how the system will scale horizontally and vertically._
 
 - **Repository Implementation:**
-  - **Stateless Compute:** All serverless functions in `api/` are stateless, allowing automatic horizontal scaling across Vercel and Cloudflare Edge runtimes.
-  - **Isolated Persistence:** Session data, rate limits, and analytics are isolated to Redis, Supabase, and localStorage adapters rather than in-memory global state.
+  - **Runtime Isolation:** FastAPI processes and Worker isolates may retain local memory between requests. That state is not shared reliably across instances and must not be treated as durable global storage.
+  - **Persistence Boundaries:** Inspect each adapter. Supabase-backed integration data and browser localStorage have different lifetimes from in-process caches and rate-limit state. Durable or cross-instance behavior requires an explicit shared store; do not infer it from a serverless deployment.
   - **Stable Schema Contracts:** API request/response payloads are validated via Pydantic v2 schemas (`api/models.py`), ensuring backward compatibility across frontend updates.
 
 ---
@@ -136,10 +137,10 @@ _Document architecture, public APIs, and non-obvious invariants so the system re
 _Write code that is testable at unit, integration, and end-to-end levels, and treat tests as part of the product, not an afterthought._
 
 - **Repository Implementation:**
-  - **API Tests:** The pytest suite (`tests/api/`) runs 212 checks covering FastAPI endpoints, security headers, rate limits, and streaming responses.
+  - **API Tests:** The pytest suite (`tests/api/`) covers API contracts covering FastAPI endpoints, security headers, rate limits, and streaming responses.
   - **Worker Tests:** The Node test runner (`tests/worker/`) executes 27 routing, CORS, multimodal streaming, and edge boundary checks.
-  - **Unit Tests:** `npm run test:unit` covers blog HTML escaping, AssistMe chart rendering, published-surface integrity, and scheduled-sync logic (22 tests).
-  - **Critical Browser Tests:** The focused Playwright suite (`tests/e2e/critical-journeys.spec.js`) verifies 18 critical desktop journeys.
+  - **Unit Tests:** `npm run test:unit` covers blog HTML escaping, AssistMe chart rendering, published-surface integrity, and scheduled-sync logic (see the current suite inventory in `tests/README.md`).
+  - **Critical Browser Tests:** The focused Playwright suite (`tests/e2e/critical-journeys.spec.js`) verifies critical desktop journeys alongside connectivity and frontend regression specifications.
   - **Tester Army Journeys:** 23 deterministic journeys (`tests/tester-army/`) across desktop Chromium and mobile WebKit (46 checks total).
   - **E2E Tests:** Playwright multi-browser test matrix (`tests/e2e/`) running across 16 device configs (Desktop Chrome/Safari/Firefox, iPhone, iPad, Pixel) enforcing 0 horizontal overflow and UI state fidelity.
 

@@ -54,6 +54,23 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'security-and-repository-presentation-20261109',
+    date: '2026-11-09',
+    type: 'fix',
+    title: 'Safer URL boundaries and a clearer portfolio repository',
+    summary:
+      'Validates analytics destinations by HTTPS hostname, fixes development proxy origins and redirect handling, and adds regression coverage. Removes an obsolete failed Swift scan configuration, repairs draft statistics PR creation and generated-cache formatting, integrates the refreshed public cache and reviewed branch history, refreshes operating documentation, and presents real light and dark website screenshots in the README.',
+    tags: ['api', 'deploy', 'other'],
+    sha: null,
+    commitVerified: false,
+    model: 'GPT-6 / Codex',
+    ide: 'Codex desktop',
+    purpose: 'Resolve security findings and document the portfolio with reproducible evidence.',
+    attributionSource: 'commit-message',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
     id: 'all-article-evidence-and-worked-examples-20261109',
     date: '2026-11-09',
     type: 'improvement',

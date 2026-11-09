@@ -12,3 +12,9 @@ Node/Python tooling that is **not** part of the browser runtime.
 | **offline/**      | Offline travel data builders                                | Manual data refresh                        |
 
 Prefer adding new automation here instead of dumping scripts at the repo root.
+
+## README screenshots
+
+`node scripts/qa/capture-readme-screenshots.mjs` captures seven live surfaces at 375px, 768px, and 1440px in both themes using installed Chrome. It writes optimized WebP files and provenance to `docs/screenshots/`; no production assets or CSS are changed. Set `SCREENSHOT_BASE_URL` to a local built site when reviewing unshipped UI. Browser processes close even on failure.
+
+`utils/proxy-target.mjs` constructs local development API targets from a configured origin and validated request path. Keep redirect handling explicit at every network sink.

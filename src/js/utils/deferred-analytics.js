@@ -180,8 +180,20 @@
         });
       }
 
+      // Classify destinations by parsed HTTPS host, never by substrings in the URL.
+      let destination;
+      try {
+        destination = new URL(href, window.location.href);
+      } catch {
+        destination = null;
+      }
+      const destinationHost =
+        destination?.protocol === 'https:' && !destination.username && !destination.password
+          ? destination.hostname
+          : '';
+
       // Stripe Checkout
-      if (href.includes('buy.stripe.com')) {
+      if (destinationHost === 'buy.stripe.com') {
         window.trackPortfolioEvent('checkout_initiated', {
           provider: 'stripe',
           product: target.dataset.product || 'direct_support',
@@ -192,7 +204,9 @@
       }
 
       // PayPal Checkout
-      if (href.includes('paypal.com') || href.includes('paypal.me')) {
+      if (
+        ['paypal.com', 'www.paypal.com', 'paypal.me', 'www.paypal.me'].includes(destinationHost)
+      ) {
         window.trackPortfolioEvent('checkout_initiated', {
           provider: 'paypal',
           product: target.dataset.product || 'tip_or_support',
@@ -201,7 +215,7 @@
       }
 
       // Buy Me A Coffee
-      if (href.includes('buymeacoffee.com')) {
+      if (['buymeacoffee.com', 'www.buymeacoffee.com'].includes(destinationHost)) {
         window.trackPortfolioEvent('checkout_initiated', {
           provider: 'buymeacoffee',
           product: target.dataset.product || 'coffee_support',
@@ -210,7 +224,7 @@
       }
 
       // GitHub Sponsors
-      if (href.includes('github.com/sponsors')) {
+      if (destinationHost === 'github.com' && destination.pathname.startsWith('/sponsors/')) {
         window.trackPortfolioEvent('checkout_initiated', {
           provider: 'github_sponsors',
           tier: target.dataset.tier || 'monthly_sponsor',
@@ -230,9 +244,10 @@
 
       // Outbound social profiles
       if (
-        (href.includes('github.com/mangeshraut712') && !href.includes('/sponsors')) ||
-        href.includes('linkedin.com/in/mangeshraut712') ||
-        href.includes('x.com/mangeshraut712')
+        (destinationHost === 'github.com' && /^\/mangeshraut712\/?$/.test(destination.pathname)) ||
+        (['linkedin.com', 'www.linkedin.com'].includes(destinationHost) &&
+          /^\/in\/mangeshraut712(?:98)?\/?$/.test(destination.pathname)) ||
+        (destinationHost === 'x.com' && /^\/mangeshraut712\/?$/i.test(destination.pathname))
       ) {
         window.trackPortfolioEvent('social_profile_click', {
           destination: href,

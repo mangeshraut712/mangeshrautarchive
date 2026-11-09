@@ -411,8 +411,7 @@ uses a white mark on a black tile; the no-JavaScript SVG adapts through its own 
 
 ### Agent design skills
 
-The repository includes three design audit skills under `.agents/skills/` that
-encode structured versions of this checklist for automated agents:
+Some developer environments install three design audit skills under the ignored `.agents/skills/` directory. They are optional local tools, not files supplied by this repository. When absent, apply the tracked checklist above directly:
 
 | Skill                    | Purpose                                                      |
 | :----------------------- | :----------------------------------------------------------- |
@@ -466,3 +465,7 @@ credit, and provenance; diagrams created for explanation are labeled conceptual.
 
 Coding agent: GPT-6 / Codex desktop. Purpose: researched article content and evidence transparency.
 Exact model variant, reasoning mode, and token usage: unavailable.
+
+### Public screenshot evidence
+
+README captures belong in `docs/screenshots/`, outside the production asset tree. Use `node scripts/qa/capture-readme-screenshots.mjs` with Chrome installed. The script visits the real site at 375px, 768px, and 1440px in both themes, enables reduced motion, verifies page-level horizontal overflow, and records URLs and the source revision. Inspect the actual images before publishing. The manifest is evidence for these captured states, not every interaction or browser.

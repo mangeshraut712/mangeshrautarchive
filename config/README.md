@@ -10,7 +10,7 @@ Root-level configs that must remain at `/` (package managers / CLIs hard-code pa
 
 - `eslint.config.js`, `.prettierrc`, `.stylelintrc.json`
 - `playwright.config.js`
-- `vercel.json`
+- `vercel.json` when an optional Vercel deployment is configured (currently absent)
 - `pyproject.toml`, `ruff.toml`, `.flake8`
 
 ## Repo doctor
@@ -20,6 +20,6 @@ Stack and layout health lives in `scripts/utils/repo-doctor.mjs` (not React Doct
 ```bash
 npm run doctor          # node range, stack guard, root allow-list, Vercel/Python hygiene
 npm run doctor:strict   # warnings become failures
-npm run doctor:stack    # check-node + doctor
+npm run doctor:stack    # same repository doctor alias
 npm run doctor:full     # live env / production API parity probe
 ```

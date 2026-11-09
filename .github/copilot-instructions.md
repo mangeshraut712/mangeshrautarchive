@@ -14,9 +14,9 @@ rules used across GitHub Copilot, Google Antigravity, Codex, Claude Code, and Cu
 - **Backend**: Python 3.12+ FastAPI with Pydantic v2 models and type hints (`api/routes/`).
 - **Testing**:
   - API tests: pytest (`npm run test:api`)
-  - Browser tests: Playwright across 16 browser configurations (`npm run test:e2e:critical`, `npm run test:e2e:chrome`)
+  - Browser tests: critical/Desktop Chrome through `test:e2e:critical` and `test:e2e:chrome`; all 16 configured projects through `npm run test:e2e:all`
   - Do **not** generate Vitest, Jest, Mocha, or Cypress tests.
 - **Security**: Never hardcode API keys, tokens, or credentials. Server secrets belong strictly in server-side FastAPI / Cloudflare Worker code and are never exposed to browser bundles.
-- **Quality Gates**: Ensure `npm run check` (ESLint + Stylelint + Prettier), `npm run doctor:strict`, `npm run test:api`, and `npm run security-check` pass before committing.
+- **Quality Gates**: Follow the release checklist in [AGENTS.md](../AGENTS.md), including the complete `npm test` command, build, and Tester Army gate.
 
 Do not duplicate general project rules here. Update [AGENTS.md](../AGENTS.md) when shared guidance changes.

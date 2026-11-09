@@ -39,9 +39,10 @@
    - Required: `import { helper } from './utils.js';` (never omit `.js`).
 3. **Always run the full quality gate before pushing**:
    - `npm run check` (ESLint + Stylelint + Oxlint + Prettier)
-   - `npm test` (FastAPI pytest + Worker tests + critical Playwright journeys)
-   - `npm run security-check` (0 secret leaks)
-   - `npm run build` (Clean production bundle build)
+   - `npm test` (FastAPI pytest + Worker + unit tests + critical Playwright journeys)
+   - `npm run security-check` (secret-pattern checks; not an exhaustive guarantee)
+   - `npm run build` (production bundle build)
+   - `npm run test:tester-army:ci` (deterministic desktop journeys)
 4. **Always ensure multi-platform package-lock resilience**:
    - Ensure foreign platform optional dependencies (`@esbuild/linux-*`, `@tailwindcss/oxide-linux-*`, `@img/sharp-linux-*`, `@oxlint/binding-linux-*`) are preserved in `package-lock.json` so headless Linux CI runners can build successfully.
 5. **Always update changelog entries for shipped releases**:
@@ -86,5 +87,7 @@ When committing changes, record the active coding environment and model family i
 | **Claude Code**            | `Claude Opus 4.6, in Claude Code CLI`         |
 | **Cursor IDE**             | `Claude 3.7 Sonnet / Cursor, in Cursor IDE`   |
 | **GitHub Copilot**         | `GitHub Copilot, in VS Code`                  |
+
+The strings above are examples, not evidence of the model running in a session. Record only the exposed family; exact variant, reasoning mode, and usage must be `unavailable` when not exposed.
 
 _Note_: Keep the coding agent that authored repository changes strictly distinct from the runtime chatbot model configured in `api/model_router.py` or `workers/assistme-chat/wrangler.toml`.

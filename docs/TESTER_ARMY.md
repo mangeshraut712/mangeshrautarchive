@@ -8,23 +8,23 @@ Each of 23 tests runs on desktop Chromium (1440 × 900) and mobile WebKit (375 �
 The runner manages a frontend server on a free port; `E2E_APP_URL` selects an existing server.
 Reports/cache are ignored under `.e2e`; anonymous CLI telemetry is disabled by the npm scripts.
 
-| Flow                                                        | Outcome asserted                                                                 |
-| ----------------------------------------------------------- | -------------------------------------------------------------------------------- |
-| Systems, monitor, travel, uses, changelog, 404, offline (7) | Visible main content and heading (travel uses its responsive search field)       |
-| Writing archive                                             | 17 nonfeatured articles and navigation to a full article with section navigation |
-| Repository preview                                          | Open and close the actual preview dialog                                         |
-| Contact save                                                | Simulated successful persistence renders the success message                     |
-| Contact validation                                          | Empty submission remains invalid and sends no request                            |
-| Chat                                                        | Simulated NDJSON response renders an answer                                      |
-| Share                                                       | Dialog presents LinkedIn URL and can close                                       |
-| Calendar                                                    | Expand from three to six clocks and collapse                                     |
-| Contact rejection                                           | 503 response keeps draft for retry                                               |
-| Travel search                                               | No-result state resets and Pune filter returns two stops                         |
-| Mobile navigation                                           | Escape closes menu and restores focus                                            |
-| Share keyboard                                              | Escape closes dialog and restores opener focus                                   |
-| Reminder                                                    | Create, edit and complete a browser-local reminder                               |
-| Changelog                                                   | Select fixes and reset to all entries                                            |
-| Travel error                                                | Failed map download exposes retry and retains places list                        |
+| Flow                                                        | Outcome asserted                                                                |
+| ----------------------------------------------------------- | ------------------------------------------------------------------------------- |
+| Systems, monitor, travel, uses, changelog, 404, offline (7) | Visible main content and heading (travel uses its responsive search field)      |
+| Writing archive                                             | 20 searchable articles and navigation to a full article with section navigation |
+| Repository preview                                          | Open and close the actual preview dialog                                        |
+| Contact save                                                | Simulated successful persistence renders the success message                    |
+| Contact validation                                          | Empty submission remains invalid and sends no request                           |
+| Chat                                                        | Simulated NDJSON response renders an answer                                     |
+| Share                                                       | Dialog presents LinkedIn URL and can close                                      |
+| Calendar                                                    | Expand from three to six clocks and collapse                                    |
+| Contact rejection                                           | 503 response keeps draft for retry                                              |
+| Travel search                                               | No-result state resets and Pune filter returns two stops                        |
+| Mobile navigation                                           | Escape closes menu and restores focus                                           |
+| Share keyboard                                              | Escape closes dialog and restores opener focus                                  |
+| Reminder                                                    | Create, edit and complete a browser-local reminder                              |
+| Changelog                                                   | Select fixes and reset to all entries                                           |
+| Travel error                                                | Failed map download exposes retry and retains places list                       |
 
 This is a manifest of implemented assertions, not exhaustive coverage of every application state.
 Contact persistence and chat generation use request interception, so these tests do not establish
@@ -34,12 +34,11 @@ are outside this deterministic suite. The existing API, Worker and broad Playwri
 available; `npm test` retains their critical regression gate.
 
 Optional agent steps require a chosen provider and its authentication. No credentials or model
-subscription are installed by this integration. Deterministic tests need neither. User-requested
-Sol 6.1 handles implementation; Luna 6 performs independent verification through Codex agents.
+subscription are installed by this integration. Deterministic tests need neither. Historical implementation attribution: user-requested Sol 6.1 with Luna 6 verification through Codex agents. These labels do not identify the agent for subsequent maintenance.
 
 ## Additional existing coverage
 
-`npm test` executes 211 API checks, 27 Worker checks, frontend unit checks, and 18 critical Playwright journeys.
+`npm test` executes API, Worker, unit, and critical Playwright suites. The current dated counts are maintained in [tests/README.md](../tests/README.md).
 The critical journeys include chat failed-connection draft recovery, multilingual/composition
 input protection, image/audio/video/PDF attachment submission, accessibility, mobile overflow,
 menu focus handling, blog navigation, repository illustrations, contact clocks, stale Panchang,
@@ -62,4 +61,4 @@ checks create/edit/complete. Real offline service-worker interaction is not cove
 
 The deployment workflow also runs `npm run test:tester-army:ci` (desktop Chromium) against its
 already-started production server, after the existing critical Playwright gate. The full local
-command includes mobile WebKit. CI publication has not been performed by this change.
+command includes mobile WebKit. A local pass is not evidence that a particular deployment ran this job; inspect that revision’s Actions run.

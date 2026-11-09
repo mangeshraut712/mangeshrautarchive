@@ -11,6 +11,7 @@ const source = readFileSync(
 function createAnalyticsPage() {
   const listeners = new Map();
   const scripts = [];
+  const documentListeners = new Map();
   const timers = [];
   let idle;
   const window = {
@@ -26,12 +27,19 @@ function createAnalyticsPage() {
   };
   const document = {
     title: 'Portfolio',
-    addEventListener() {},
+    addEventListener: (name, handler) => documentListeners.set(name, handler),
     createElement: () => ({}),
     head: { appendChild: script => scripts.push(script) },
   };
-  runInNewContext(source, { window, document });
-  return { window, scripts, timers, emit: name => listeners.get(name)?.(), idle: () => idle() };
+  runInNewContext(source, { window, document, URL });
+  return {
+    window,
+    scripts,
+    timers,
+    click: target => documentListeners.get('click')?.({ target: { closest: () => target } }),
+    emit: name => listeners.get(name)?.(),
+    idle: () => idle(),
+  };
 }
 
 test('scripted scrolling does not count as analytics input, while a visitor wheel does', () => {
@@ -92,4 +100,49 @@ test('high-intent conversion events (checkout, lead, newsletter, reverse intervi
   assert.equal(events[1][1], 'lead_generated');
   assert.equal(events[2][1], 'newsletter_subscribed');
   assert.equal(events[3][1], 'reverse_interview_click');
+});
+
+function link(href) {
+  return {
+    getAttribute: name => (name === 'href' ? href : null),
+    classList: { contains: () => false },
+    hasAttribute: () => false,
+    closest: () => null,
+    dataset: {},
+    textContent: 'Support',
+  };
+}
+
+test('checkout delegation rejects lookalike hosts, URL credentials and embedded destinations', () => {
+  const page = createAnalyticsPage();
+  for (const href of [
+    'https://buy.stripe.com.attacker.example/pay',
+    'https://attacker.example/?next=https://www.paypal.com/pay',
+    'https://www.paypal.com@attacker.example/pay',
+    'https://notbuymeacoffee.com/mangesh',
+    'https://attacker.example/github.com/sponsors/mangesh',
+    'javascript:open("https://buy.stripe.com/pay")',
+    'http://buy.stripe.com/pay',
+    'https://user:pass@www.paypal.com/pay',
+  ])
+    page.click(link(href));
+  assert.equal(page.window.dataLayer.filter(item => item[0] === 'event').length, 0);
+});
+
+test('checkout delegation preserves real providers and their event payloads', () => {
+  const page = createAnalyticsPage();
+  const targets = [
+    ['https://buy.stripe.com/example', 'stripe'],
+    ['https://www.paypal.com/ncp/payment/example', 'paypal'],
+    ['https://paypal.me/mangesh', 'paypal'],
+    ['https://buymeacoffee.com/mangesh', 'buymeacoffee'],
+    ['https://github.com/sponsors/mangeshraut712', 'github_sponsors'],
+  ];
+  for (const [href] of targets) page.click(link(href));
+  const events = page.window.dataLayer.filter(item => item[1] === 'checkout_initiated');
+  assert.equal(events.length, targets.length);
+  events.forEach((event, index) => {
+    assert.equal(event[2].provider, targets[index][1]);
+    assert.equal(event[2].destination, targets[index][0]);
+  });
 });

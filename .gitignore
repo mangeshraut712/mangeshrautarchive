@@ -151,9 +151,7 @@ venv
 .venv/
 .venv
 # QA / Playwright output (also under artifacts/)
-test-results/
 artifacts/playwright-report/
-playwright-report/
 
 # Python cache
 .pytest_cache/
@@ -166,7 +164,6 @@ github_upgrade.sh
 # Ignore windsurf AI rules
 .windsurfrules
 .env*.local
-.windsurf/
 
 # Environment variables (security - never commit secrets)
 .env.*.local
@@ -177,7 +174,6 @@ secrets.*
 .vercel/
 
 # Additional cache directories
-.eslintcache
 .stylelintcache
 
 #Ignore vscode AI rules

@@ -1,7 +1,7 @@
 # AGENTS.md — Universal AI Agent Briefing
 
 > **Standard:** Linux Foundation AGENTS.md v1.0 (2026)
-> **Last updated:** 2026-10-02
+> **Last updated:** 2026-11-09
 
 ---
 
@@ -10,7 +10,7 @@
 - When creating or updating UI elements, components, cards, pages, buttons, or themes, always consult and adhere to [docs/DESIGN.md](docs/DESIGN.md) (vibrant Apple Blue `#0071e3` gradient with specular metallic shine animation, unified circular red close buttons `#ff3b30`, authentic glassmorphism, zero horizontal overflow).
 - **Multi-IDE & Multi-Model Attribution**: The portfolio is actively maintained across diverse AI coding environments and IDEs (Google Antigravity IDE / AGY, OpenAI Codex / ChatGPT, Claude Code, Cursor, GitHub Copilot). Record the coding agent or exposed model family (e.g. `GPT-6 / Codex`, `Claude Opus 4.6`, `Gemini 3.8 Flash`, `grok-4.3`) and its dedicated engineering purpose in `src/js/data/changelog-entries.js` and `README.md` for shipped changes. Record an exact model variant, reasoning mode, or token usage only when the runtime exposes it; use `unavailable` rather than guessing. Always keep the portfolio chatbot's runtime model (`api/model_router.py`) distinct from the coding agent that changed the repository.
 - **Continuous In-Situ Visual Verification (Astra Principle)**: Always verify visual work as you go. For front-end, UI/UX, 3D (Three.js), CSS animations, and video/media tasks, continuously inspect the actual rendered interface in the browser across representative desktop and mobile widths and in both light and dark themes as changes are applied, fixing observed defects before claiming completion. Autonomous agents leverage **Playwright MCP** (`@playwright/mcp`) for zero-bloat accessibility snapshots, in-page grep, and dynamic WebMCP tool invocation, while developers use **Playwright CLI** (`@playwright/cli` / `npm run playwright:codegen`) for interactive recording and test authoring. This materially boosts end-artifact quality across all models. Report any surface or state that could not be inspected.
-- **Design Audit Skills**: Three structured design audit skills are available under `.agents/skills/`: `apple-design-critique` (HIG visual critique), `responsive-audit` (multi-viewport overflow and layout), and `animation-motion-audit` (motion timing, easing, and reduce-motion compliance). Activate the relevant skill when reviewing or polishing visual components. See `docs/DESIGN.md` §8 for the full design QA checklist.
+- **Design Audit Skills**: Three structured design audit skills may be installed locally under the ignored `.agents/skills/`: `apple-design-critique` (HIG visual critique), `responsive-audit` (multi-viewport overflow and layout), and `animation-motion-audit` (motion timing, easing, and reduce-motion compliance). Activate an installed relevant skill when reviewing or polishing visual components; otherwise use the tracked design QA checklist. See `docs/DESIGN.md` §8 for the full design QA checklist.
 - When explaining a concept or relationship to the user, use the `visualize` skill when a visual materially improves understanding.
 - **Clean Architecture & No Bolted-On Features**: Always build code cleanly, modularly, and with proper architecture and separation of concerns. Never simply bolt on a feature just because it was requested. If a clean, natural integration path does not exist and a refactor is needed to preserve architectural integrity, stop work ahead of time, explain why, and recommend the clean refactoring path.
 - Be concise, direct, and candid. Challenge weak assumptions and distinguish verified facts from uncertainty.
@@ -265,8 +265,8 @@ All five test suites must pass before any merge to `main`:
 
 | Suite        | Runner           | Command                       | Coverage                                                                               |
 | ------------ | ---------------- | ----------------------------- | -------------------------------------------------------------------------------------- |
-| API          | pytest           | `npm run test:api`            | 212 tests — FastAPI endpoints, middleware                                              |
-| Worker       | Node test runner | `npm run test:worker`         | 27 routing, CORS, and streaming boundary checks                                        |
+| API          | pytest           | `npm run test:api`            | See `tests/README.md` — FastAPI endpoints, middleware                                  |
+| Worker       | Node test runner | `npm run test:worker`         | Routing, CORS, and streaming boundaries; counts in `tests/README.md`                   |
 | Unit         | Node test runner | `npm run test:unit`           | 25 tests — Blog escaping, charts, published surfaces, sync logic, analytics scheduling |
 | E2E Critical | Playwright       | `npm run test:e2e:critical`   | 20 critical user journeys on Desktop Chrome                                            |
 | Tester Army  | `e2e`            | `npm run test:tester-army:ci` | 23 deterministic journeys on desktop Chromium (46 checks across WebKit/Chrome)         |
@@ -323,7 +323,7 @@ Durable, non-obvious notes for running/testing this repo in the Cursor Cloud VM.
 ### Python environment (important)
 
 - The Python virtualenv must be named `venv` (not `.venv`). `scripts/utils/dev-backend.js` auto-detects `./venv/bin/python`; if it is missing it falls back to `uv`, which is not installed in this environment, so the backend would fail to start.
-- `npm run test:api` (`python -m pytest`) and `npm run lint:python` (`python -m flake8`) call bare `python`. Activate the venv first: `source venv/bin/activate`. The `dev:backend` script does not need activation (it uses `./venv/bin/python` directly).
+- `npm run test:api` uses `scripts/utils/run-pytest.js`, which tries `PYTHON`, `venv`, `.venv`, then `uv run`, and finally `python3`. Prefer `venv` for consistency with `dev:backend`; activation is optional when these wrappers find it.
 
 ### Node install
 

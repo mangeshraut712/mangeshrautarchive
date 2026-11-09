@@ -153,3 +153,7 @@ Applied to primary action buttons and featured cards:
     }
   }
   ```
+
+## 6. Documentation and visual evidence
+
+The canonical component rules and review checklist live in [docs/DESIGN.md](docs/DESIGN.md). Fresh website screenshots belong in [docs/screenshots/](docs/screenshots/), outside runtime assets, with capture date, URL, theme, and viewport recorded. The November 9 gallery covers desktop, tablet, and mobile resting states in both themes; it does not certify every interaction.

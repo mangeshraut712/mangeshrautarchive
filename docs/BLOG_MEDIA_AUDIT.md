@@ -1,5 +1,15 @@
 # Blog media source audit
 
+## Current record — November 9, 2026
+
+All 20 published articles now use original publisher lead media with credits and provenance in the [source manifest](../src/assets/data/blog-media-sources.json). The Phoenix article now uses the original repository architecture diagram, replacing the former conceptual lead illustration. [The content review](qa/blog-content-review-2026-11-09.md) records current source checks and retrieval limitations. Editorial diagrams remain labeled as explanations; they are not publisher benchmarks.
+
+Publisher rights remain with their owners. The code license does not transfer image ownership. Keep credited sources, original proportions, and hashes when replacing or converting assets.
+
+## Historical audit — September 30, 2026
+
+The record below is preserved as evidence of that earlier pass. Its 18-article count, test counts, and Phoenix fallback describe September, not the current publication set.
+
 Reviewed September 30, 2026 by GPT-6 / Codex. Exact variant, reasoning mode, and token usage: unavailable.
 
 All 18 active articles were reviewed. Seventeen use original publisher media; one retains explicitly labeled conceptual artwork after a documented source search. Apple’s September article includes separate official Duo and Pro / Pro Max images. The 19 active image assets have unique SHA-256 hashes. The [machine-readable manifest](../src/assets/data/blog-media-sources.json) records original pages and asset URLs, original and local hashes, dimensions, conversions, credits, and the fallback reason.

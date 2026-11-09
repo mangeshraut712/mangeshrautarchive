@@ -43,7 +43,9 @@ jobs:
       - name: Run GitHub Stats Sync
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: node scripts/integrations/sync-github-stats.mjs
+        run: |
+          node scripts/integrations/sync-github-stats.mjs
+          node_modules/.bin/prettier --write src/js/data/github-stats.json
 
       # A fixed head branch updates one draft PR instead of bypassing protected main.
       # The action exits without a PR when the sync leaves no diff.

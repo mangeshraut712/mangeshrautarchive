@@ -1,44 +1,41 @@
 # Documentation
 
-| Doc                                                                        | Contents                                                        |
-| -------------------------------------------------------------------------- | --------------------------------------------------------------- |
-| [../PRD.md](../PRD.md)                                                     | Product vision, target user personas, and requirements          |
-| [../ARCHITECTURE.md](../ARCHITECTURE.md)                                   | Tech stack, directory map, Mermaid sequence, and data flow      |
-| [../DESIGN.md](../DESIGN.md)                                               | High-level design blueprint & Apple HIG component summary       |
-| [../RULES.md](../RULES.md)                                                 | Coding style, security boundaries, and AI guardrails            |
-| [../TASKS.md](../TASKS.md)                                                 | Phased, incremental, step-by-step implementation tasks          |
-| [../PROGRESS.md](../PROGRESS.md)                                           | Completed deliverables, resolved incidents, and current status  |
-| [DESIGN.md](./DESIGN.md)                                                   | Apple Human Interface Portfolio Design System (source of truth) |
-| [STRUCTURE.md](./STRUCTURE.md)                                             | Canonical folder map — **start here when organizing code**      |
-| [BEST_PRACTICES.md](./BEST_PRACTICES.md)                                   | 14 Software Engineering Best Practices for long-term success    |
-| [API.md](./API.md)                                                         | FastAPI routes, chat flow, integrations, deploy notes           |
-| [TESTER_ARMY.md](./TESTER_ARMY.md)                                         | Tester Army deterministic browser journey coverage manifest     |
-| [foglamp-scan.md](./foglamp-scan.md)                                       | Public AI architecture map (Foglamp) + keep-alive               |
-| [seo/gsc-keyword-notepad-2026-07.md](./seo/gsc-keyword-notepad-2026-07.md) | Search Console query notepad + underserved keyword plan         |
-| [plans/](./plans/)                                                         | Improve-skill / audit execution plans (historical + active)     |
-| [design-plans/](./design-plans/)                                           | AssistMe chatbot UX design plans and specifications             |
-| [INSIGHTS.md](./INSIGHTS.md)                                               | Private local Codex Insights setup and trust guidance           |
-| [../README.md](../README.md)                                               | Public project README                                           |
-| [../CONTRIBUTING.md](../CONTRIBUTING.md)                                   | Contribution guidelines & dev workflow                          |
-| [../CODE_OF_CONDUCT.md](../CODE_OF_CONDUCT.md)                             | Community code of conduct (Covenant v2.1)                       |
-| [../SECURITY.md](../SECURITY.md)                                           | Security policy & vulnerability reporting                       |
-| [../AGENTS.md](../AGENTS.md)                                               | AI agent operating brief                                        |
-| [../CITATION.cff](../CITATION.cff)                                         | Software citation metadata                                      |
-| [../.env.example](../.env.example)                                         | Environment variable template                                   |
-| [../scripts/README.md](../scripts/README.md)                               | Tooling map (build / deploy / qa)                               |
-| [../tests/README.md](../tests/README.md)                                   | Unit / API / E2E conventions                                    |
+Start with the [portfolio README](../README.md) for the product and local setup. This index separates maintained operating guides from dated evidence and historical plans.
 
-### Keep out of `docs/`
+## Current guides
 
-Session transcripts, temporary dumps, IDE caches, and build artifacts. Use `artifacts/` (gitignored) for Lighthouse/Playwright output.
+| Guide                                                                | Purpose                                                              |
+| -------------------------------------------------------------------- | -------------------------------------------------------------------- |
+| [Architecture](../ARCHITECTURE.md)                                   | Runtime boundaries and browser-to-service data flow                  |
+| [Folder map](STRUCTURE.md)                                           | Where source, tooling, generated output, and documentation belong    |
+| [Product requirements](../PRD.md)                                    | Audience, product scope, and performance goals                       |
+| [Design system](DESIGN.md)                                           | Canonical tokens, component behavior, and visual QA checklist        |
+| [Design overview](../DESIGN.md)                                      | Short introduction to the visual language                            |
+| [API](API.md)                                                        | FastAPI routes, Worker deployment, streaming, and integrations       |
+| [Contact calendar](CONTACT_CALENDAR.md)                              | World clocks, reminders, booking boundaries, and Panchang freshness  |
+| [Tests](../tests/README.md)                                          | Current suite inventory and commands                                 |
+| [Tester Army](TESTER_ARMY.md)                                        | Deterministic journey assertions and excluded live-provider behavior |
+| [Contributing](../CONTRIBUTING.md)                                   | Setup, changes, review, and release checks                           |
+| [Engineering practices](BEST_PRACTICES.md)                           | Architecture, testing, and maintenance guidance                      |
+| [Agent instructions](../AGENTS.md) / [rules](../RULES.md)            | Shared contributor constraints and attribution                       |
+| [Security](../SECURITY.md)                                           | Private reporting and implemented boundaries                         |
+| [Tools](../scripts/README.md) / [configuration](../config/README.md) | Development and QA script ownership                                  |
+| [Status](../PROGRESS.md) / [roadmap](../TASKS.md)                    | Current state and remaining verification work                        |
+| [Environment template](../.env.example)                              | Optional local service configuration; never commit credentials       |
 
-### Stack notes
+## Evidence and media
 
-- **No Next.js / React app** — vanilla ESM frontend + FastAPI.
-- **Node ≥22** required (`.nvmrc`). Run `npm run check-node` / `npm run doctor:stack`.
+- [November 9 repository review](qa/repository-review-2026-11-09.md): findings, branch decisions, documentation inventory, and validation scope.
+- [Live website screenshots](screenshots/README.md): seven surfaces, three viewports, both themes, with a capture manifest.
+- [November 9 article research](qa/blog-content-review-2026-11-09.md): all 20 articles, source-to-claim mapping, examples, and media checks.
+- [Blog media audit](BLOG_MEDIA_AUDIT.md): current provenance and preserved September evidence.
+- [Repository-card media audit](REPO_SCREENSHOT_COVERAGE.md): dated project imagery coverage, not current GitHub totals.
+- [QA records](qa/): reports describe the revision, date, configuration, and checks actually run.
 
-## Contributor provenance
+## Historical records and specialist guides
 
-[Development history](DEVELOPMENT_HISTORY.md) preserves the historical README attribution records.
+[Development history](DEVELOPMENT_HISTORY.md) preserves contributor records; the [attribution audit](CHANGELOG_ATTRIBUTION_AUDIT.md) explains their evidence limits. [Earlier status snapshots](history/) and plans in [plans/](plans/), [design-plans/](design-plans/), and [superpowers/](superpowers/) are historical context, not a replacement for the implemented source.
 
-[Changelog attribution audit](CHANGELOG_ATTRIBUTION_AUDIT.md) explains evidence limits and links to the per-entry manifest.
+[SEO notes](seo/), [the October site audit](SITE_AUDIT_2026-10-01.md), [Foglamp setup](foglamp-scan.md), and [local Insights](INSIGHTS.md) retain their own dates and operational limits. The [community code of conduct](../CODE_OF_CONDUCT.md), [license](../LICENSE), and [citation metadata](../CITATION.cff) remain separate policies.
+
+Keep session transcripts, credentials, local reports, and build output out of tracked documentation. Use ignored `artifacts/` for raw test output; publish only intentional evidence and documentation assets. Do not rewrite historical counts to look current.

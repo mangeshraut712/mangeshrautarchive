@@ -1,14 +1,14 @@
 # Security Policy
 
-> **Last updated:** 2026-07-19 (July 2026)
+> **Last updated:** 2026-11-09
 
 ## Supported Versions
 
-| Version / surface                                                                                  | Supported                                                      |
-| -------------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
-| `main` (latest)                                                                                    | ✅ Fully supported                                             |
-| [mangeshraut712.github.io/mangeshrautarchive](https://mangeshraut712.github.io/mangeshrautarchive) | ✅ GitHub Pages (active public mirror)                         |
-| [mangeshraut.pro](https://mangeshraut.pro)                                                         | ✅ Primary hostname (Vercel) when production deploy is enabled |
+| Version / surface                                                                                  | Supported                                                  |
+| -------------------------------------------------------------------------------------------------- | ---------------------------------------------------------- |
+| `main` (latest)                                                                                    | ✅ Fully supported                                         |
+| [mangeshraut712.github.io/mangeshrautarchive](https://mangeshraut712.github.io/mangeshrautarchive) | ✅ GitHub Pages (primary public frontend)                  |
+| [mangeshraut.pro](https://mangeshraut.pro)                                                         | ✅ Optional Vercel hostname; deployment currently disabled |
 
 Only the latest commit on `main` receives security fixes. Older tags or forks are not supported.
 
@@ -31,7 +31,7 @@ Please report security issues **privately**. Do **not** open a public GitHub iss
 - Potential impact (confidentiality, integrity, availability)
 - Your contact details and any disclosure timeline preferences
 
-### Response targets (July 2026)
+### Response targets
 
 | Step                      | Target                                |
 | ------------------------- | ------------------------------------- |
@@ -45,14 +45,15 @@ Machine-readable contact details also live in RFC 9116 [`security.txt`](https://
 
 ## Security Measures
 
-This portfolio implements these practices on `main` as of July 2026:
+Controls are implemented in the repository and depend on the serving runtime. Review the actual deployed responses when assessing a host:
 
-- **Content Security Policy (CSP)** — strict CSP headers with reporting where configured
-- **HSTS** — Strict-Transport-Security (production hosts)
-- **Automated secret scanning** — `npm run security-check` blocks exposed API keys before commit
-- **Dependency hygiene** — `npm audit` in CI; dependency versions are reviewed and updated manually
+- **Browser and transport policies** — HTML CSP and API response headers are configured by their respective runtimes. GitHub Pages controls its own HTTP response headers; optional backend policies are not evidence of identical headers on every host.
+- **Secret-pattern checks** — `npm run security-check` checks repository patterns before commit. Passing it is not proof that every possible secret format has been detected.
+- **Dependency hygiene** — dependency manifests and lockfiles are reviewed with security alerts and CI. Updates require behavioral validation, including transitive overrides.
 - **Server-side secrets only** — OpenRouter and other provider keys stay on FastAPI / edge workers; never shipped to browsers
-- **Input sanitization** — chatbot and user-facing inputs are sanitized before processing
+- **Input boundaries** — rich HTML passes through sanitization; route-specific validation, CORS, and server-side credential handling remain necessary. The development proxy fixes the upstream origin, rejects non-API paths, and does not automatically follow upstream redirects.
+- **CodeQL** — GitHub default setup analyzes JavaScript/TypeScript, Python, and Actions. Check both configuration health and open alerts after a release; a successful analysis job does not mean there are no findings.
+- **Outbound analytics** — checkout and social destinations are classified using parsed HTTPS hostnames, not substrings embedded in a URL.
 - **GitHub Pages `.nojekyll`** — so `/.well-known/security.txt` and other agent discovery files publish correctly
 
 ## Scope

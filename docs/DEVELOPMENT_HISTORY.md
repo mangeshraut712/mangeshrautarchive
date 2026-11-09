@@ -113,3 +113,177 @@ writing shelf now presents the latest article and three recent stories; the comp
 collection stays in the dedicated archive, where previews use two columns and the featured story
 appears once. This removes the extra homepage filters and expansion control while preserving the
 full article reading path.
+
+## README attribution archive — preserved November 9, 2026
+
+Historical implementation and verification notes moved out of the public overview. Dates and limitations below describe their original runs, not current service availability. Source links point back to the repository implementation.
+
+### 5.1 Coding agents and provenance
+
+**All-article research and content revision:** GPT-6 / Codex desktop; purpose: review primary sources for all 20 articles, correct unsupported product claims, add original worked examples and comparison tables, and record publisher-image provenance while preserving the Apple-style reader. Exact model variant, reasoning mode, and token usage: unavailable. See the [November 9 content evidence ledger](../docs/qa/blog-content-review-2026-11-09.md) for article-by-article sources, calculations, image limitations, and verification.
+
+**Classic hero presentation and devotional support restoration:** Gemini 3.8 Flash, in Google Antigravity IDE; purpose: clean up hero section by removing recruiter quick-action strip and reverse interview chips, restoring clean personal narrative and portfolio callouts; restore classic devotional blessings and PayPal support card in Contact section. Exact model variant, reasoning mode, and token usage: unavailable.
+
+**Journal reading experience:** GPT-6 / Codex desktop; purpose: improve all 20 article layouts, add archive search and sorting, preserve credited media and evidence links, and correct article-body reading progress. Exact model variant, reasoning mode, and token usage: unavailable. Focused verification: `tests/e2e/blog-reader.spec.js` (22 cases covering all articles and discovery controls).
+
+**Apple Music iOS 27.2 monochrome design, sub-1s scrobble sync, Currently shelf real-time hydration, and WCAG AA contrast:** Gemini 3.8 Flash, in Google Antigravity IDE; purpose: resolve Last.fm scrobble latency by prioritizing authentic Last.fm CDN images over synchronous external iTunes queries in api/routes/media.py, slashing response times from >5s to <200ms; eagerly hydrate the Currently music shelf directly from Cloudflare Worker and local caches to eradicate solitary "No live playback" states; enforce iOS 27.2 monochrome Apple Music button design (pure black in light mode, pure white in dark mode, zero red) on solid #ffffff and #000000 card backgrounds without dull grey; and lock commercial advisory badge color contrast to 7.2:1 with #0056b3/#ffffff, passing all Axe accessibility gates. Exact model variant, reasoning mode, and token usage: unavailable.
+
+**Recruiter Quick-Action Strip, Reverse Technical Interview Sandbox, Commercial Advisory, and Full GA4 Telemetry:** Gemini 3.8 Flash, in Google Antigravity IDE; purpose: deploy Hero Recruiter Quick-Action Strip with availability vitals, 1-click USA resume download, and 15m screen booking; deploy interactive "Reverse Technical Interview" evaluation sandbox with live architecture prompt chips connected to AssistMe; transform support section into high-value commercial "1:1 Architecture & AI Systems Advisory ($250 / 45-min session)" with Stripe checkout alongside open-source tips; and wire full GA4 conversion telemetry to all checkout channels (Stripe, PayPal, BMC, GitHub Sponsors), contact form submissions, newsletter subscriptions, and recruiter quick-actions. Exact model variant, reasoning mode, and token usage: unavailable.
+
+**Apple Music iOS 27.2 monochrome design, 1s scrobble sync, Currently shelf parity, and 44px touch targets:** Gemini 3.8 Flash, in Google Antigravity IDE; purpose: modernize Apple Music button to iOS 27.2 monochrome design (pure black in light mode, pure white in dark mode, no red) on solid pure backgrounds with zero grey surfaces, eliminate the solitary "No live playback" void on Currently music shelf via immediate hydration from cache or curated tracks and eager preloading, implement 1-second ultra-low latency Last.fm scrobble syncing with direct Cloudflare Edge Worker failover, synchronize Currently shelf and Hero Music Card in real time, enforce strict vinyl rotation physics (spins strictly when playing or previewing, strictly stationary when idle), resolve offline dark button contrast to WCAG 2 AA (>4.6:1), and unify 44px Apple HIG touch targets across all surfaces. Exact model variant, reasoning mode, and token usage: unavailable.
+
+**Debug Runner endless mode high scoring and leaderboard tracking:** Gemini 3.8 Flash, in Google Antigravity IDE; purpose: enable endless Normal mode loop progression past 1,000m allowing score to scale past 5,000, 10,000, and 50,000+ points without premature rooftop reset pedestal triggering (scoped strictly to Hard and Nightmare modes). Add stage loop indicator toast notifications, unclamp distance display in deployment failed card, expose window.debugRunnerGame handle, and verify 5,010, 10,020, and 50,020 automated playthroughs populating Top 3 leaderboard in light and dark themes. Exact model variant, reasoning mode, and token usage: unavailable.
+
+**Debug Ascent: Rooftop Reset Edition and Apple Arcade upgrade:** Gemini 3.8 Flash, in Google Antigravity IDE; purpose: major Apple Arcade upgrade to the developer portfolio runner (`#debug-runner-section`) integrating mechanics from `poteto.com`'s viral Rooftop Reset. Features 3 difficulty tiers (Normal endless, Hard with stage checkpoints at 8.6x speed, Nightmare with 0 checkpoints at 10.5x speed resetting to localhost basement on collision), invulnerable Air Dash (Shift / X / D or mobile button with cyan particle trail and ground refueling cooldown), 6 cloud architecture ascending floors (Localhost -> Staging CI -> Code Review -> Kubernetes -> Global CDN -> Production Rooftop), oscillating titanium saws, duckable laser beams, hydraulic compiler compression gates, and an elevated glass pedestal with glowing red RESET button at 1,000m triggering victory state with clear time and death counter. Styled with Apple HIG frosted glass cards, native segmented pill difficulty switcher, tactile mobile controls (`SLIDE`, `DASH`, `JUMP` with specular shine), and sandbox-safe storage. Exact model variant, reasoning mode, and token usage: unavailable.
+
+**Currently music shelf pre-hydration, zero-void resilience, and 1.5s scrobble sync:** Gemini 3.8 Flash, in Google Antigravity IDE; purpose: pre-render 6 rich curated tracks directly in HTML on the Currently music shelf, eliminate loading wipes and lonely empty-card voids in `start()` and `showLoadingState()`, accelerate live scrobble sync to 1.5s (3.5s idle) with direct Edge Worker fallback, enforce iOS 27.2 monochrome Apple Music branding, and guarantee spinning artwork strictly tracks active playback. Exact model variant, reasoning mode, and token usage: unavailable.
+
+**WhoBurnedMore 23.12B telemetry sync, compact music card, and instant shelf hydration:** Gemini 3.8 Flash, in Google Antigravity IDE; purpose: synchronize WhoBurnedMore 23.12B tokens ($19,649 spend, rank #64 / 358 devs, 254 active days) across Systems, Uses, and Monitor surfaces, reduce hero music card width to 324px (312px mobile) for tighter visual balance, fix vinyl artwork hover rotation physics, eliminate Currently shelf loading void via instant hydration, and lower Last.fm scrobble latency to 2s. Exact model variant, reasoning mode, and token usage: unavailable.
+
+**Live GitHub profile and metrics synchronization:** Gemini 3.8 Flash, in Google Antigravity IDE; purpose: synchronize public repositories (108 total, 42 original non-fork repos + 66 forks), total stars (13: 8 on Gravity-SaaS-Agent, 3 on Stanford-CS336, 1 on Dotfit-Fitness, 1 on mangeshrautarchive), total forks (4), followers (15), following (8), and 2026 contributions (4,865) directly from GitHub API via authenticated gh CLI. Elevate prominent starred projects in featured portfolio order, update systems overview metrics, and harden regressions test timing. Exact model variant, reasoning mode, and token usage: unavailable.
+
+**Apple Music iOS 27.2 monochrome design and 5s scrobble sync:** Gemini 3.8 Flash, in Google Antigravity IDE; purpose: transition Apple Music icon from red to iOS 27.2 monochrome (solid black in light theme, pure white in dark theme), eliminate grey backgrounds in favor of solid pure white and black, enforce strict artwork spin when playing vs paused when idle, and reduce Last.fm sync latency from 25s down to 5s with instant tab/focus triggers. Exact model variant, reasoning mode, and token usage: unavailable.
+
+**Resilient music edge proxy and curated fallback:** Gemini 3.8 Flash, in Google Antigravity IDE; purpose: eliminate empty music placeholder void and subtitle text truncation across hero music card and Currently music shelf via edge worker proxy fallback, curated playlist ("Hale Dil", "Main Yahaan Hoon", "Aadat", "Deewaana Deewaana", "Teri Deewani", "Aap Ki Kashish", "Kaho Na Kaho", "Zara Zara") with authentic artwork and 30s previews, and local development edge proxy. Exact model variant, reasoning mode, and token usage: unavailable.
+
+**Music card brand colors and preview APIs:** Gemini 3.8 Flash, in Google Antigravity IDE; purpose: enforce authentic brand colors across all browsers (Spotify Green `#1DB954`, Apple Music Pink/Red `#FA243C`, Apple Blue `#0071e3` Play button), fix light and dark theme CSS color cascades for preview tag and timestamps satisfying WCAG 2 AA contrast, and enhance FastAPI backend media endpoints (`/api/music/artwork`, `/api/music/details`, `/api/music/preview`) to resolve and return full rich iTunes metadata with 30-second audio preview streams. Exact model variant, reasoning mode, and token usage: unavailable.
+
+**Music card compact proportions and vinyl rotation:** Gemini 3.8 Flash, in Google Antigravity IDE; purpose: right-size hero music card container width (352px) narrower than hero sections below, restore spinning vinyl artwork rotation whenever music is actively playing or previewing, and refine Spotify and Apple Music hover states while guaranteeing 44px touch targets. Exact model variant, reasoning mode, and token usage: unavailable.
+
+**System-theme tab icons and music controls:** GPT-6 / Codex desktop; purpose: keep browser favicons legible in both OS themes with explicit contrasting icon backgrounds, enlarge music artwork and symbols, and preserve accessible hit areas around smaller visible controls. Exact model variant, reasoning mode, and token usage: unavailable.
+
+**Compact music player:** GPT-6 / Codex; purpose: compact the hero music card, place controls at the upper right, and bind artwork rotation to preview playback. Exact model variant, reasoning mode, and token usage: unavailable.
+
+**Tester Army contribution:** GPT-6.1 Sol / Codex; purpose: deterministic browser journeys and coverage boundaries. Reasoning mode and token usage: unavailable. Independent verification uses GPT-6 Luna / Codex.
+
+**Responsive audit fixes:** GPT-6 / Codex desktop; purpose: stabilize first paint and improve travel navigation and contact contrast. Exact variant, reasoning mode, and token usage: unavailable.
+
+**Full-load performance work:** GPT-6 / Codex desktop; purpose: reduce startup work and measure real page loads while preserving the responsive interface. Exact variant, reasoning mode, and token usage: unavailable.
+
+**Animation scheduling:** GPT-6 / Codex desktop; purpose: batch offscreen animation checks and retain newly added elements. Exact variant, reasoning mode, and token usage: unavailable.
+
+**Style loading and accessibility:** GPT-6 / Codex desktop; purpose: prevent redundant stylesheet work and align accessible names with visible labels. Exact variant, reasoning mode, and token usage: unavailable.
+
+**Dependency and audit review:** GPT-6 / Codex desktop; purpose: align Python dependency pins, address a test hostname finding, and document score limitations. Exact variant, reasoning mode, and token usage: unavailable.
+
+**Frontend characterization:** GPT-6 / Codex desktop; purpose: cover the asset-version contract and hero flyout behavior with focused Node tests. Exact variant, reasoning mode, and token usage: unavailable.
+
+**Lighthouse evidence:** GPT-6 / Codex desktop; purpose: record raw lab results and their measurement limits. Exact variant, reasoning mode, and token usage: unavailable.
+
+**Sitewide score record:** GPT-6 / Codex desktop; purpose: document full-load mobile and desktop measurements for each published URL. Exact variant, reasoning mode, and token usage: unavailable.
+
+**Portfolio fact corrections:** GPT-6 / Codex desktop; purpose: correct stale references and score labels, and fit case-study metrics on narrow screens. Exact variant, reasoning mode, and token usage: unavailable.
+
+**WebMCP compatibility:** GPT-6 / Codex desktop; purpose: support the current document API and add read-only blog and case-study tools. Exact variant, reasoning mode, and token usage: unavailable.
+
+**Worker deployment repair:** GPT-6 / Codex desktop; purpose: resolve the Wrangler dependency conflict in the Worker deployment workflow. Exact variant, reasoning mode, and token usage: unavailable.
+
+**Deep-link alignment:** GPT-6 / Codex desktop; purpose: keep initial homepage section links aligned as content loads and respect visitor scrolling. Exact variant, reasoning mode, and token usage: unavailable.
+
+**Portrait and icon sizing:** GPT-6 / Codex desktop; purpose: align responsive image metadata and reserve Experience icon dimensions before their stylesheet loads. Exact variant, reasoning mode, and token usage: unavailable.
+
+**Desktop Contact startup:** GPT-6 / Codex desktop; purpose: prepare existing disclosure controls before direct Contact navigation settles. Exact variant, reasoning mode, and token usage: unavailable.
+
+**Deep-link music loading:** GPT-6 / Codex desktop; purpose: defer offscreen homepage music on section deep links until Home is visible. Exact variant, reasoning mode, and token usage: unavailable.
+
+**Music artwork sizing:** GPT-6 / Codex desktop; purpose: reduce the Last.fm image payload for the compact hero disc while retaining high-density display coverage. Exact variant, reasoning mode, and token usage: unavailable.
+
+**First-paint styles:** GPT-6 / Codex desktop; purpose: apply existing layout styles before page load to reduce late style recalculation. Exact variant, reasoning mode, and token usage: unavailable.
+
+**Mobile Contact startup:** GPT-6 / Codex desktop; purpose: prepare existing section disclosures earlier for mobile Contact links and measure layout stability. Exact variant, reasoning mode, and token usage: unavailable.
+
+**First-visit greeting:** GPT-6 Astra / Codex desktop; purpose: run the greeting during loading, release ready content independently of the application bundle, and parse the complete hero before loading its badge enhancements. Localhost and automation use the same first-visit behavior as production. Reasoning mode and token usage: unavailable.
+
+**Input-aware loading:** GPT-6 Astra / Codex desktop; purpose: prevent scripted scrolling from starting analytics early and load Contact widgets when relevant. GA4 configuration, queued events, idle fallback, and page-exit loading remain covered by regression tests. Reasoning mode and token usage: unavailable.
+
+**Shared layout delivery:** GPT-6 Astra / Codex desktop; purpose: stabilize shared styles before first paint, reduce repeated layout work, and correct Lighthouse browser selection. Reasoning mode and token usage: unavailable. Normal-load verification remains in progress; this is not a claim of universal 100 scores.
+
+**Contact style warm-up:** GPT-6 / Codex desktop; purpose: prevent offscreen section styles from shifting a direct Contact link during idle loading. Exact variant, reasoning mode, and token usage: unavailable.
+
+Mangesh Raut maintains this portfolio with contributions from Codex, Claude Code, Google Antigravity,
+Cursor, and GitHub Copilot. Shipped changes record the exposed agent/model family, engineering
+purpose, and verified commit in the [changelog](../src/js/data/changelog-entries.js).
+
+| Current contribution                             | Attribution                                                                                                                                                                                    |
+| ------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Coding agent                                     | Composer, in Cursor                                                                                                                                                                            |
+| Purpose                                          | Live WhoBurnedMore telemetry refresh (22.89B tokens, #61 of 357), cross-surface Systems/Uses/Monitor sync, smoke assertion alignment, and sync-whoburnedmore.mjs formatting hardening          |
+| Exact model variant, reasoning mode, token usage | unavailable                                                                                                                                                                                    |
+| Portfolio chatbot model                          | Configured separately in [api/model_router.py](../api/model_router.py) and [Worker configuration](../workers/assistme-chat/wrangler.toml); each live response reports the actual serving model |
+
+**Analytics workflow token review:** GPT-5 / Codex desktop; purpose: limit the review-artifact workflow to read-only repository access. Exact variant, reasoning mode, and token usage: unavailable.
+
+**AssistMe verification — October 3, 2026:** GPT-6 / Codex in Codex desktop; purpose: live multimodal verification, accurate model labels, billing provenance, and responsive chatbot reliability. Exact variant, reasoning mode, and token usage: unavailable.
+
+AssistMe on GitHub Pages uses the Cloudflare Worker at
+`https://assistme-chat.mangeshraut712.workers.dev`. The frontend checks `/api/chat/health`
+and sends chat requests to `/api/chat` on that host. An unavailable AI provider falls back to
+explicitly labeled local answers. Interrupted streams discard the failed attempt before trying
+another model; provider token usage is retained when supplied, and estimates remain labeled.
+The chat window uses the available area below navigation, with a scrolling transcript and a
+reachable composer. The deployed-host browser regression covers routing, fallback resets, and
+final-frame metadata in Chrome and Safari. It is included in the 18-journey critical Chrome
+release gate; Safari is also checked separately when changing this path.
+
+Coding attribution in historical entries is contributor-reported in commit messages. A verified
+commit link confirms the repository reference; it does not authenticate the actual model runtime.
+Missing model, tool, reasoning, or token records are not inferred. See the
+[changelog attribution audit](../docs/CHANGELOG_ATTRIBUTION_AUDIT.md).
+
+Previous contributor records are preserved in
+[Development history](../docs/DEVELOPMENT_HISTORY.md), with dated context for superseded implementations.
+
+### Security, privacy, and responsible reuse
+
+Provider credentials belong in backend or deployment secret stores. Public calendar endpoints expose
+sanitized availability, while integration setup and private account data require protected server
+configuration. Optional integrations and analytics should be reviewed before deploying your own copy.
+
+Report vulnerabilities through [SECURITY.md](../SECURITY.md). See [.env.example](../.env.example) for the
+configuration template. Replace personal profile data, contact destinations, OAuth settings, and
+analytics identifiers when adapting this repository.
+
+### AssistMe text model verification — October 2, 2026
+
+The live text primary is [Nemotron 3 Ultra free](https://openrouter.ai/nvidia/nemotron-3-ultra-550b-a55b:free). OpenRouter's live catalog reports zero prompt and completion token prices. An authenticated inference probe returned HTTP 200, the exact requested model ID, and zero cost. Nemotron Super remains the next free fallback. Ultra is text-only; image requests retain the existing free vision chain. Local/server environment overrides remain explicit.
+
+[NVIDIA's model release](https://research.nvidia.com/labs/nemotron/Nemotron-3-Ultra/) documents 550B total and 55B active parameters, released June 4, 2026. Availability and free-tier limits depend on the provider. Coding agent: GPT-6 / Codex in Codex desktop; exact variant, reasoning mode, and token usage: unavailable.
+
+### AssistMe multimodal routing — October 2, 2026
+
+The live Worker refreshes the [OpenRouter model catalog](https://openrouter.ai/api/v1/models) hourly
+and filters models by the inputs required by each request. New models become fallback candidates
+only when their advertised capabilities match. Safety classifiers, embeddings, and rerankers are
+excluded from conversation routing. The browser cannot select arbitrary upstream models.
+
+| Input or feature         | Current behavior                                                           | Verification                                                                 |
+| ------------------------ | -------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| Text and reasoning       | Nemotron Ultra with compatible free recovery                               | Live streamed reply verified                                                 |
+| Short turns              | Gemma 4, Apodex Mini, then compatible free recovery                        | Live document question verified                                              |
+| Programming              | Cohere North Mini Code, then Ultra                                         | Live JavaScript reply verified                                               |
+| Images and short videos  | Gemma 4 first; compatible Omni/Qwen recovery                               | Live image and MP4 description verified                                      |
+| PDF and text files       | Explicit free Cloudflare PDF parser / bounded UTF-8 text                   | Live order-number extraction verified                                        |
+| Audio files              | Omni/Inkling; compatible Gemini 3.8 recovery before Auto                   | October 3: Gemini 3.8 Flash via Google AI Studio BYOK transcribed the sample |
+| Dictation and read-aloud | Browser speech features; cloud TTS when funded                             | Cloud TTS returned HTTP 402; device support depends on browser and OS        |
+| Paid Auto Router         | Low-cost recovery after free candidates fail                               | Free-only Auto test returned no matching candidates                          |
+| Fusion                   | Deep text research/comparison, gated by server config and positive balance | Current account returned HTTP 402; no successful Fusion inference claimed    |
+| Image/video generation   | Not connected to this chat interface                                       | No generated-asset claims or fabricated image URLs                           |
+
+Two attachments per turn are supported: images up to 1.2 MB, audio/video/PDF up to 3 MB per file,
+and text/Markdown/CSV/JSON up to 75 KB. Files are uploaded only when the message is sent; their
+contents are source material rather than instructions. Failed media processing never falls back
+to an invented description. Regeneration retains the selected turn's files during the open session.
+
+Streaming records the concrete answering model, provider, generation ID, supplied usage/cost,
+finish reason, and routing task. The main reply stays readable; technical details are collapsed.
+Stopping cancels upstream work. Unsupported or interrupted streams recover without concatenating
+answers from different models. Token estimates remain labeled.
+
+[Auto Router](https://openrouter.ai/docs/guides/routing/routers/auto-router) selects models by task.
+[Fusion](https://openrouter.ai/docs/guides/features/plugins/fusion) runs a panel and analyst in
+addition to the outer request, so it is reserved for deep text comparisons and requires credits.
+A free model ID does not guarantee access: the observed Omni audio minimum was $0.50 and video
+minimum $1.00; Gemma video succeeded without that balance. These provider restrictions may change.
+
+Regression coverage: 212 API tests, 27 Worker routing/stream boundary tests, frontend unit checks, 16 accessibility tests, and 20 critical Chrome
+journeys. The attachment journey also runs in Safari. October 3 live checks confirmed text, code, image, video, PDF, and audio processing. Audio recovered through Auto to Gemini 3.8 Flash using Google AI Studio BYOK. OpenRouter reported a zero charge and a provider-side inference cost of $0.002493 for the sample; a zero OpenRouter charge does not prove that BYOK inference is free. A longer conversation caused Auto to return HTTP 402; direct compatible Gemini 3.8 fallback restored the same audio request, so audio now tries that route before Auto. Cloud TTS remains unavailable and Fusion has no successful inference evidence. Coding agent: GPT-6 / Codex in Codex desktop; purpose: live multimodal verification, honest billing metadata, and responsive chatbot review. Exact variant, reasoning mode, and token usage: unavailable.

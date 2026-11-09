@@ -30,7 +30,7 @@ The portfolio pairs a client-side interface (HTML5, vanilla CSS with custom desi
 - **Goals**: Inspect the codebase, architectural choices, and agentic workflows.
 - **Key Needs**:
   - Transparency into multi-model AI routing, token usage, and latency.
-  - Zero-runtime framework performance (inspecting how pure vanilla ESM achieves 100/100/100/100 Lighthouse scores).
+  - Native-web performance with reproducible reports that distinguish the reduced CI audit mode from normal live-page loading.
   - WebMCP agentic tools demonstrating in-browser assistant control.
 
 ### Persona C: Collaborators & Interactive Visitors
@@ -39,7 +39,7 @@ The portfolio pairs a client-side interface (HTML5, vanilla CSS with custom desi
 - **Key Needs**:
   - AssistMe chat responsiveness with draft recovery, audio/video/image/PDF uploads, and streaming markdown.
   - Interactive world clocks and Panchang calendar data.
-  - Seamless navigation across light, dark, and high-contrast display modes.
+  - Seamless navigation across light, dark, and accessibility controls.
 
 ---
 
@@ -50,12 +50,12 @@ The portfolio pairs a client-side interface (HTML5, vanilla CSS with custom desi
 - **Multimodal Chat**: Streaming conversation supporting code syntax highlighting, KaTeX math rendering, and multi-file attachments (images up to 1.2 MB, audio/video/PDF up to 3 MB, text/markdown up to 75 KB).
 - **Edge Routing**: Primary live text routing through Cloudflare Workers using OpenRouter (`nvidia/nemotron-3-ultra-550b-a55b:free` primary with fallback chains).
 - **WebMCP Agentic Actions**: Assistant can programmatically navigate pages, surface projects, open contact forms, and inspect system vitals through registered client-side tools.
-- **In-Widget Privacy & Settings**: Apple HIG-compliant grouped inset view embedded within the chatbot for managing session memory, integrations (GitHub, Calendar), and GDPR data clearing.
+- **In-Widget Privacy & Settings**: Apple HIG-compliant grouped inset view embedded within the chatbot for managing session memory, integrations (GitHub, Calendar), and available preference and conversation data-clearing controls.
 
 ### 3.2 Showcase & Editorial Surfaces
 
 - **Projects Showcase**: Dynamically filtered repository cards with real README screenshots, conceptual illustrations, star counts, and direct links.
-- **Technical Writings (Blog)**: 18 deep-dive articles (2 per month, Jan–Sep 2026) with verified provenance, publisher credits, and RSS/Atom discovery feeds.
+- **Technical Writings (Blog)**: 20 technology articles (2 per month, Jan–Oct 2026) with verified provenance, publisher credits, and RSS/Atom discovery feeds.
 - **Systems & Case Studies**: Detailed architecture blueprints, sequence diagrams, and engineering decision logs.
 - **System Monitor**: Live operational telemetry, API latency probes, rate limiting status, and deployment integrity verification.
 - **Travel Atlas**: Interactive geographic map with responsive route views and location stories.
@@ -71,7 +71,7 @@ The portfolio pairs a client-side interface (HTML5, vanilla CSS with custom desi
 
 ## 4. Non-Functional Requirements & Performance Floors
 
-- **Lighthouse Score Floor**: 100/100/100/100 across Performance, Accessibility, Best Practices, and SEO on production dist homepage.
+- **Lighthouse Release Gate**: 100/100/100/100 across Performance, Accessibility, Best Practices, and SEO on the reduced audit-mode dist homepage, using the gate’s rounded scores. Normal-load performance must be measured separately with raw reports; universal live 100 scores remain a goal, not a verified property.
 - **Visual Design**: Strict adherence to Apple Human Interface Guidelines (`#0071e3` Apple Blue, specular shine animation, `#ff3b30` circular close buttons, authentic glassmorphism).
 - **Zero Horizontal Overflow**: 100% responsive across viewports from 375px mobile to 1440px+ ultra-wide.
 - **Touch Ergonomics**: All interactive elements and touch targets must meet the minimum size requirement of ≥44 × 44px.
