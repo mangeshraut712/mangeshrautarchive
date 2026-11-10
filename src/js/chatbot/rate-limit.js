@@ -7,7 +7,13 @@
 import { CLIENT_CHAT_RATE_KEY, CLIENT_DAILY_CHAT_LIMIT } from './constants.js';
 
 function todayKey() {
-  return new Date().toISOString().slice(0, 10);
+  // Local calendar date, not UTC. toISOString() would roll the badge over at
+  // 5:30 AM IST for a visitor in Asia/Calcutta.
+  const d = new Date();
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${y}-${m}-${day}`;
 }
 
 function readState() {
