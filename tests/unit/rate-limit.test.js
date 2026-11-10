@@ -6,10 +6,16 @@ import { CLIENT_CHAT_RATE_KEY } from '../../src/js/chatbot/constants.js';
 function mockLocalStorage() {
   const store = new Map();
   globalThis.localStorage = {
-    getItem: (key) => (store.has(key) ? store.get(key) : null),
-    setItem: (key, value) => { store.set(key, String(value)); },
-    removeItem: (key) => { store.delete(key); },
-    clear: () => { store.clear(); },
+    getItem: key => (store.has(key) ? store.get(key) : null),
+    setItem: (key, value) => {
+      store.set(key, String(value));
+    },
+    removeItem: key => {
+      store.delete(key);
+    },
+    clear: () => {
+      store.clear();
+    },
   };
   return store;
 }
@@ -23,10 +29,18 @@ function withLocalMorningAfterUtcYesterday(fn) {
       if (args.length === 0) super(instant.getTime());
       else super(...args);
     }
-    getFullYear() { return 2026; }
-    getMonth() { return 10; } // November
-    getDate() { return 10; }
-    static now() { return instant.getTime(); }
+    getFullYear() {
+      return 2026;
+    }
+    getMonth() {
+      return 10;
+    } // November
+    getDate() {
+      return 10;
+    }
+    static now() {
+      return instant.getTime();
+    }
   }
   globalThis.Date = FakeDate;
   try {
