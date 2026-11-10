@@ -163,7 +163,7 @@ npm run playwright:codegen  # Interactive test codegen recorder
 
 # Quality gates
 npm run check               # ESLint + Stylelint + Oxlint + Prettier
-npm run qa:prod-ready       # Full pre-deploy: security + lint + API + critical E2E + Lighthouse
+npm run qa:prod-ready       # Full pre-deploy: security + lint (check) + API + worker + unit + critical E2E + Lighthouse
 npm run qa:lighthouse:desktop  # Lighthouse audit (desktop)
 npm run qa:lighthouse:mobile   # Lighthouse audit (mobile)
 npm run security-check      # Scan for leaked secrets and credentials
