@@ -3461,8 +3461,8 @@ html.dark #projects .gh-contrib__year {
 #projects .gh-contrib__year:not(.is-active):hover {
   background: rgba(0, 113, 227, 0.08) !important;
   background-color: rgba(0, 113, 227, 0.08) !important;
-  color: #0071e3 !important;
-  -webkit-text-fill-color: #0071e3 !important;
+  color: #005bb5 !important;
+  -webkit-text-fill-color: #005bb5 !important;
 }
 
 html.dark #projects .gh-contrib__year:not(.is-active):hover {

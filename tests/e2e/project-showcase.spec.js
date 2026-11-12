@@ -90,6 +90,7 @@ for (const width of [375, 768, 1440])
           })
           .toBeGreaterThanOrEqual(44);
       }
+      await page.locator('.gh-contrib__year:not(.is-active)').first().hover();
       const axe = await new AxeBuilder({ page }).include('#projects').analyze();
       expect(axe.violations).toEqual([]);
     });
