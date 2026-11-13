@@ -4,7 +4,10 @@ import {
   handleCalendarSync,
   syncCalendars,
 } from '../../workers/assistme-chat/src/calendar-sync/index.js';
-import { SourceStore } from '../../workers/assistme-chat/src/calendar-sync/store.js';
+import {
+  SourceStore,
+  sourceErrorCode,
+} from '../../workers/assistme-chat/src/calendar-sync/store.js';
 import {
   seal,
   open,
@@ -520,4 +523,38 @@ test('Luma all-day events preserve date-only boundaries', () => {
   assert.equal(snapshot.events[0].start, '2026-11-13');
   assert.equal(snapshot.events[0].end, '2026-11-15');
   assert.equal(snapshot.events[0].allDay, true);
+});
+
+test('source diagnostics allowlist error codes without retaining provider secrets', () => {
+  const secret = 'https://api.luma.com/ics/get?entity=user&id=private-token';
+  for (const name of ['OperationError', 'DataError', 'InvalidCharacterError']) {
+    assert.equal(sourceErrorCode({ name, message: secret }), 'credential_decryption_failed');
+  }
+  assert.equal(sourceErrorCode({ providerStatus: 429, message: secret }), 'provider_http_429');
+  assert.equal(sourceErrorCode({ providerStatus: 401, message: secret }), 'reconnect_required');
+  assert.equal(sourceErrorCode({ providerStatus: secret, message: secret }), 'refresh_failed');
+  assert.equal(sourceErrorCode({ name: 'TimeoutError', message: secret }), 'provider_timeout');
+  assert.equal(sourceErrorCode(new Error('ical_timezone_missing')), 'ical_timezone_missing');
+  assert.equal(sourceErrorCode(new Error('ical_timezone_missing: ' + secret)), 'refresh_failed');
+  assert.equal(sourceErrorCode(new Error(secret)), 'refresh_failed');
+});
+test('scheduled credential failure retains snapshots and logs only safe provider diagnostics', async t => {
+  const row = { ...source('luma:personal'), provider: 'luma' };
+  row.credentials = await seal(
+    { ...env, INTEGRATION_ENCRYPTION_KEY: 'different-key' },
+    'credentials:luma:personal',
+    { feedUrl: 'https://api.luma.com/ics/get?entity=user&id=private-token' }
+  );
+  const rows = memoryStore(t, [row]);
+  const logs = [];
+  t.mock.method(console, 'error', value => logs.push(value));
+  const result = await syncCalendars(env);
+  assert.equal(result.refreshed, 0);
+  assert.equal(rows.get(row.id).error, 'credential_decryption_failed');
+  assert.deepEqual(rows.get(row.id).snapshot, row.snapshot);
+  assert.deepEqual(
+    logs.map(value => JSON.parse(value)),
+    [{ event: 'calendar_sync_failed', provider: 'luma', error: 'credential_decryption_failed' }]
+  );
+  assert.doesNotMatch(logs.join(''), /private-token|private@email|feedUrl|credentials|https:/);
 });

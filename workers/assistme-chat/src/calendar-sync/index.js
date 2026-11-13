@@ -1,4 +1,4 @@
-import { SourceStore, configured, sourceHealth } from './store.js';
+import { SourceStore, configured, sourceHealth, sourceErrorCode } from './store.js';
 import {
   SESSION_COOKIE,
   OAUTH_COOKIE,
@@ -147,7 +147,14 @@ export async function syncCalendars(env) {
         locked.provider === 'google' ? googleSnapshot(env, locked) : lumaSnapshot(env, locked)
       );
       results.push({ provider: source.provider, ok: true });
-    } catch {
+    } catch (error) {
+      console.error(
+        JSON.stringify({
+          event: 'calendar_sync_failed',
+          provider: source.provider,
+          error: sourceErrorCode(error),
+        })
+      );
       results.push({ provider: source.provider, ok: false });
     }
   }

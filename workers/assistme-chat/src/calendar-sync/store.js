@@ -1,4 +1,38 @@
 const TABLE = 'calendar_sync_sources';
+const SAFE_SOURCE_ERRORS = new Set([
+  'encryption_not_configured',
+  'calendar_storage_unavailable',
+  'source_busy',
+  'source_lock_lost',
+  'invalid_luma_feed',
+  'invalid_ical_feed',
+  'ical_date_missing',
+  'ical_timezone_missing',
+  'ical_uid_missing',
+  'ical_recurrence_limit',
+  'ical_item_limit',
+  'invalid_provider_page',
+  'provider_item_limit',
+  'provider_page_cycle',
+  'provider_page_limit',
+  'provider_response_too_large',
+  'google_token_missing',
+  'google_sync_cursor_missing',
+  'google_event_incomplete',
+  'google_offline_consent_required',
+  'reconnect_required',
+]);
+export function sourceErrorCode(error) {
+  if (['OperationError', 'DataError', 'InvalidCharacterError'].includes(error?.name)) {
+    return 'credential_decryption_failed';
+  }
+  const status = error?.providerStatus;
+  if (status === 401 || status === 403) return 'reconnect_required';
+  if (Number.isInteger(status) && status >= 400 && status <= 599) return `provider_http_${status}`;
+  if (['AbortError', 'TimeoutError'].includes(error?.name)) return 'provider_timeout';
+  if (error?.name === 'SyntaxError') return 'provider_invalid_payload';
+  return SAFE_SOURCE_ERRORS.has(error?.message) ? error.message : 'refresh_failed';
+}
 export function configured(env) {
   return Boolean(
     env.SUPABASE_URL &&
@@ -79,10 +113,7 @@ export class SourceStore {
     } catch (error) {
       // A failed refresh updates health only: its previous successful snapshot stays intact.
       await this.finish(source, {
-        error:
-          error.providerStatus === 401 || error.providerStatus === 403
-            ? 'reconnect_required'
-            : 'refresh_failed',
+        error: sourceErrorCode(error),
       }).catch(() => {});
       throw error;
     }

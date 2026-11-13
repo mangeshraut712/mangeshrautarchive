@@ -54,6 +54,22 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'calendar-sync-diagnostics-20261113',
+    date: '2026-11-13',
+    type: 'fix',
+    title: 'Private calendar sync failure diagnostics',
+    summary:
+      'Distinguishes credential, provider, and timeout failures without logging private content, while preserving the last successful calendar snapshot.',
+    tags: ['api'],
+    sha: null,
+    commitVerified: false,
+    model: 'GPT-6 / Codex',
+    ide: 'Codex',
+    purpose: 'Diagnose live calendar activation safely.',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
     id: 'hybrid-calendar-sync-20261113',
     date: '2026-11-13',
     type: 'feature',

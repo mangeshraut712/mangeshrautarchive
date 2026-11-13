@@ -25,7 +25,9 @@ the public response, static bundle, or localStorage.
 Cloud refresh runs at minutes 5, 20, 35 and 50. The Mac LaunchAgent runs every 900 seconds
 while logged in and awake. The public widget refreshes when visible and every 15 minutes.
 The owner workspace offers **Sync now** for cloud sources. Failed/partial reads preserve
-last successful snapshots and report delayed updates. A valid empty result clears its
+last successful snapshots and report delayed updates. Owner diagnostics distinguish
+credential decryption, provider HTTP, timeout, and invalid payload failures. Worker logs
+contain only a provider name and an allowlisted error category, never raw errors or feed URLs. A valid empty result clears its
 source scope. Sources have independent compare-and-swap leases; Google calendar cursors,
 events and Tasks commit together only after all pages succeed.
 
