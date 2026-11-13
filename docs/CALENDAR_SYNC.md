@@ -38,6 +38,8 @@ connection. The new table has RLS enabled, no browser policies, and no `anon` or
 `authenticated` privileges. Only the Worker service role reads it. Do not add public
 policies to clear the expected informational "RLS enabled, no policy" advisor notice.
 Credentials use purpose-bound AES-GCM keys derived from the existing encryption secret.
+Provider requests use manual redirect handling and reject non-success responses; Cloudflare
+Workers does not implement Fetch’s `error` redirect mode. No credential-bearing request follows a redirect.
 
 Required server secrets: `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`,
 `INTEGRATION_ENCRYPTION_KEY`, `GOOGLE_CALENDAR_CLIENT_ID`,

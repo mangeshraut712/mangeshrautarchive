@@ -9,6 +9,7 @@ import {
   sourceErrorCode,
 } from '../../workers/assistme-chat/src/calendar-sync/store.js';
 import {
+  fetchBounded,
   seal,
   open,
   digest,
@@ -557,4 +558,26 @@ test('scheduled credential failure retains snapshots and logs only safe provider
     [{ event: 'calendar_sync_failed', provider: 'luma', error: 'credential_decryption_failed' }]
   );
   assert.doesNotMatch(logs.join(''), /private-token|private@email|feedUrl|credentials|https:/);
+});
+
+test('provider fetch supports Worker redirect modes and never follows credential redirects', async t => {
+  let responseStatus = 200;
+  const requests = [];
+  t.mock.method(globalThis, 'fetch', async (url, init) => {
+    if (init.redirect === 'error') throw new TypeError('Unsupported redirect mode');
+    requests.push({ url, init });
+    return new Response('provider response', {
+      status: responseStatus,
+      headers: responseStatus === 302 ? { Location: 'https://untrusted.example' } : {},
+    });
+  });
+  assert.equal(await fetchBounded('https://provider.example'), 'provider response');
+  assert.equal(requests[0].init.redirect, 'manual');
+  responseStatus = 302;
+  await assert.rejects(
+    fetchBounded('https://provider.example', { headers: { Authorization: 'Bearer fixture' } }),
+    error => error.providerStatus === 302
+  );
+  assert.equal(requests.length, 2);
+  assert.ok(requests.every(request => request.url === 'https://provider.example'));
 });

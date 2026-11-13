@@ -127,7 +127,7 @@ export async function readJson(request, maxBytes = 2_000_000) {
 export async function fetchBounded(url, init = {}, maxBytes = 5_000_000) {
   const response = await fetch(url, {
     ...init,
-    redirect: 'error',
+    redirect: 'manual',
     signal: AbortSignal.timeout(20_000),
   });
   if (!response.ok)

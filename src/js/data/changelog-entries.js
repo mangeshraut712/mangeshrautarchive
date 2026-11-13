@@ -54,6 +54,22 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'calendar-worker-redirect-20261113',
+    date: '2026-11-13',
+    type: 'fix',
+    title: 'Google and Luma request compatibility',
+    summary:
+      'Fixes the unsupported redirect mode that prevented Cloudflare from sending provider requests, while continuing to reject redirects and protect credentials.',
+    tags: ['api'],
+    sha: null,
+    commitVerified: false,
+    model: 'GPT-6 / Codex',
+    ide: 'Codex',
+    purpose: 'Restore provider requests in the deployed Worker runtime.',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
     id: 'calendar-helper-authorization-20261113',
     date: '2026-11-13',
     type: 'fix',

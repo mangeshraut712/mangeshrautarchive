@@ -28,7 +28,7 @@ export function sourceErrorCode(error) {
   }
   const status = error?.providerStatus;
   if (status === 401 || status === 403) return 'reconnect_required';
-  if (Number.isInteger(status) && status >= 400 && status <= 599) return `provider_http_${status}`;
+  if (Number.isInteger(status) && status >= 300 && status <= 599) return `provider_http_${status}`;
   if (['AbortError', 'TimeoutError'].includes(error?.name)) return 'provider_timeout';
   if (error?.name === 'SyntaxError') return 'provider_invalid_payload';
   return SAFE_SOURCE_ERRORS.has(error?.message) ? error.message : 'refresh_failed';
