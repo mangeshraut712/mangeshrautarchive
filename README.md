@@ -125,6 +125,8 @@ Start with [CONTRIBUTING.md](CONTRIBUTING.md), [AGENTS.md](AGENTS.md), and the [
 
 ### 5.1 Coding agent and purpose
 
+Calendar deletion reconciliation (2026-11-13): GPT-6 / Codex prevents deleted recurring instances from overwhelming full Google imports, while retaining deletion handling on incremental sync and resetting cursors when query semantics change. Exact model variant, reasoning mode, and token usage: unavailable.
+
 Calendar provider compatibility (2026-11-13): GPT-6 / Codex fixes Google and Luma requests on Cloudflare Workers by using supported manual redirect handling and rejecting non-success responses without forwarding credentials. Exact model variant, reasoning mode, and token usage: unavailable.
 
 Mac calendar authorization (2026-11-13): GPT-6 / Codex adds a persistent native permission window and separates GUI and scheduled command lifecycles so macOS can authorize the installed helper. Exact model variant, reasoning mode, and token usage: unavailable.

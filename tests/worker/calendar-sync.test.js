@@ -330,6 +330,7 @@ test('Google expired cursor recovers full source; cancellations and completed ta
     expiresAt: Date.now() + 3600000,
   });
   row.snapshot.cursors = { calendar: 'expired' };
+  row.snapshot.eventQueryVersion = 2;
   row.snapshot.windowMonth = new Date().toISOString().slice(0, 7);
   row.snapshot.window = { start: '2025-01-01T00:00:00Z', end: '2028-01-01T00:00:00Z' };
   let expired = false;
@@ -580,4 +581,65 @@ test('provider fetch supports Worker redirect modes and never follows credential
   );
   assert.equal(requests.length, 2);
   assert.ok(requests.every(request => request.url === 'https://provider.example'));
+});
+
+test('Google full sync skips cancelled recurrence expansion while incremental sync applies deletions', async t => {
+  const row = source();
+  row.snapshot = {
+    cursors: { calendar: 'legacy-show-deleted-cursor' },
+    windowMonth: new Date().toISOString().slice(0, 7),
+    window: {
+      start: new Date(Date.now() - 86400000).toISOString(),
+      end: new Date(Date.now() + 730 * 86400000).toISOString(),
+    },
+  };
+  row.credentials = await seal(env, `credentials:${row.id}`, {
+    accessToken: 'token',
+    expiresAt: Date.now() + 3600000,
+  });
+  let tombstonePages = 0;
+  let incrementalRequests = 0;
+  t.mock.method(globalThis, 'fetch', async input => {
+    const url = new URL(input);
+    if (url.pathname.endsWith('/calendarList')) {
+      return Response.json({ items: [{ id: 'calendar', summary: 'Calendar' }] });
+    }
+    if (url.pathname.endsWith('/events')) {
+      if (url.searchParams.get('showDeleted') === 'true') {
+        tombstonePages++;
+        return Response.json({
+          items: Array.from({ length: 2500 }, (_, index) => ({
+            id: `cancelled-${tombstonePages}-${index}`,
+            status: 'cancelled',
+          })),
+          nextPageToken: `page-${tombstonePages}`,
+        });
+      }
+      if (url.searchParams.has('syncToken')) {
+        incrementalRequests++;
+        return Response.json({
+          items: [{ id: 'visible', status: 'cancelled' }],
+          nextSyncToken: 'after-delete',
+        });
+      }
+      return Response.json({
+        items: [
+          {
+            id: 'visible',
+            summary: 'Active event',
+            start: { dateTime: new Date(Date.now() + 86400000).toISOString() },
+            end: { dateTime: new Date(Date.now() + 90000000).toISOString() },
+          },
+        ],
+        nextSyncToken: 'initial',
+      });
+    }
+    return Response.json({ items: [] });
+  });
+  const initial = await googleSnapshot(env, row);
+  assert.equal(initial.snapshot.events.length, 1);
+  const incremental = await googleSnapshot(env, { ...row, ...initial });
+  assert.deepEqual(incremental.snapshot.events, []);
+  assert.equal(incrementalRequests, 1);
+  assert.equal(tombstonePages, 0);
 });

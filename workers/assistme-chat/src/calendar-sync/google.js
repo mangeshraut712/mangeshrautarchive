@@ -1,5 +1,6 @@
 import { fetchBounded, open, seal } from './security.js';
 import { cleanText, safeEventUrl } from './normalize.js';
+const EVENT_QUERY_VERSION = 2;
 export const GOOGLE_SCOPES = [
   'openid',
   'email',
@@ -96,13 +97,15 @@ export async function googleSnapshot(env, source) {
         };
   for (const calendar of calendars) {
     const base = `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(calendar.id)}/events`;
-    let cursor = previous.windowMonth === month ? previous.cursors?.[calendar.id] : null;
+    let cursor =
+      previous.windowMonth === month && previous.eventQueryVersion === EVENT_QUERY_VERSION
+        ? previous.cursors?.[calendar.id]
+        : null;
     const query = () => {
       const url = new URL(base);
       url.search = new URLSearchParams({
         maxResults: '2500',
         singleEvents: 'true',
-        showDeleted: 'true',
         ...(cursor ? { syncToken: cursor } : { timeMin: window.start, timeMax: window.end }),
       }).toString();
       return url;
@@ -171,7 +174,16 @@ export async function googleSnapshot(env, source) {
   }
   return {
     credentials: await seal(env, `credentials:${source.id}`, credentials),
-    snapshot: { calendars, events, reminders, passes: [], cursors, window, windowMonth: month },
+    snapshot: {
+      calendars,
+      events,
+      reminders,
+      passes: [],
+      cursors,
+      window,
+      windowMonth: month,
+      eventQueryVersion: EVENT_QUERY_VERSION,
+    },
     last_success: new Date().toISOString(),
     error: null,
   };

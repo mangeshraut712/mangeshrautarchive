@@ -54,6 +54,22 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'calendar-deleted-recurrences-20261113',
+    date: '2026-11-13',
+    type: 'fix',
+    title: 'Reliable imports after recurring-event deletions',
+    summary:
+      'Prevents deleted recurring instances from filling full Google calendar imports. Incremental sync still reconciles deletions, and existing cursors reset safely for the corrected query.',
+    tags: ['api'],
+    sha: null,
+    commitVerified: false,
+    model: 'GPT-6 / Codex',
+    ide: 'Codex',
+    purpose: 'Complete large Google imports without raising safety limits.',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
     id: 'calendar-worker-redirect-20261113',
     date: '2026-11-13',
     type: 'fix',

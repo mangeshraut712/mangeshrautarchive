@@ -67,6 +67,8 @@ recurrence timezones. Frontend tests cover replacement, errors, date mapping and
 private responses after sign-out. Check each connected source's last success and an
 anonymous private-API 401 after deployment; an installed helper alone is not active sync.
 
+Google full imports omit deleted occurrences; incremental sync tokens still return deletions.
+A versioned query marker invalidates cursors when the query semantics change.
 Google expands a bounded rolling window (one year back, two years forward), refreshed
 monthly. Apple uses the configured snapshot window and retains older out-of-window
 records. Luma retains verified past records when the feed ages them out, and honors
