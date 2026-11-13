@@ -3,10 +3,12 @@ import { createHash } from 'node:crypto';
 import { readFileSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
+import { calendarOccurrenceKey } from '../../src/js/utils/calendar-identity.js';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const year = Number(
-  process.argv.find(argument => /^--year=\d{4}$/.test(argument))?.slice(7) || 2026
+  process.argv.find(argument => /^--year=\d{4}$/.test(argument))?.slice(7) ||
+    new Date().getFullYear()
 );
 const inputFile = process.argv.find(argument => argument.startsWith('--input='))?.slice(8);
 const includeNotes = process.argv.includes('--include-notes');
@@ -48,12 +50,6 @@ const getDateKey = instant => {
   );
   return `${parts.year}-${parts.month}-${parts.day}`;
 };
-const normalizeTitle = title =>
-  String(title || '')
-    .normalize('NFKC')
-    .toLocaleLowerCase('en')
-    .replace(/[^\p{L}\p{N}]+/gu, ' ')
-    .trim();
 const categoryFor = entry => {
   if (/birthday/i.test(entry.calendarName)) return 'birthdays';
   if (/holiday/i.test(entry.calendarName)) return 'holidays';
@@ -61,6 +57,7 @@ const categoryFor = entry => {
 };
 const cleanLocation = value =>
   String(value || '')
+    .replace(/https?:\/\/\S+/gi, '[meeting link omitted]')
     .replace(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/gi, '[contact detail removed]')
     .replace(/\+?\d[\d\s().-]{8,}\d/g, '[phone removed]')
     .trim();
@@ -75,13 +72,12 @@ const validEventUrl = value => {
 const duplicateGroups = new Map();
 for (const entry of occurrences) {
   if (!entry?.title || !entry.start || !entry.end) continue;
+  if (/^(declined|cancelled|canceled):/i.test(entry.title.trim())) continue;
   if (entry.calendarName === 'Luma') continue;
   const startDay = getDateKey(entry.start);
   const endDay = getDateKey(entry.end);
   if (startDay.slice(0, 4) !== String(year) && endDay.slice(0, 4) !== String(year)) continue;
-  const key = [normalizeTitle(entry.title), entry.start, entry.end, Boolean(entry.allDay)].join(
-    '|'
-  );
+  const key = calendarOccurrenceKey(entry);
   if (!duplicateGroups.has(key)) duplicateGroups.set(key, []);
   duplicateGroups.get(key).push(entry);
 }
@@ -122,6 +118,7 @@ const events = [...duplicateGroups].map(([key, group]) => {
         group.map(item => (item.calendarName.includes('@') ? 'Google Calendar' : item.calendarName))
       ),
     ],
+    sourceFreshness: group.every(item => item.sourceName === 'Exchange') ? 'cached' : 'snapshot',
     isSynced: true,
     completed: false,
   };

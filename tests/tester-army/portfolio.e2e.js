@@ -20,6 +20,27 @@ test('writing archive opens a complete article', async ({ app, browser }) => {
 });
 
 test('repository preview opens and closes', async ({ app, browser }) => {
+  const repos = [
+    {
+      name: 'mangeshrautarchive',
+      full_name: 'mangeshraut712/mangeshrautarchive',
+      description: 'Portfolio repository preview fixture.',
+      html_url: 'https://github.com/mangeshraut712/mangeshrautarchive',
+      language: 'JavaScript',
+      stargazers_count: 1,
+      forks_count: 0,
+      topics: ['portfolio'],
+      updated_at: '2026-11-13T00:00:00Z',
+      owner: { login: 'mangeshraut712' },
+    },
+  ];
+  await browser.route('**/api/github/repos*', route => route.fulfill({ json: { items: repos } }));
+  await browser.route('**/api/github/repos/public*', route =>
+    route.fulfill({ json: { items: repos } })
+  );
+  await browser.route('https://api.github.com/users/mangeshraut712/repos*', route =>
+    route.fulfill({ json: repos })
+  );
   await app.open('/#projects');
   await browser.locator('.project-media-open').first().tap();
   await expect(browser.locator('#repo-preview-modal')).toBeVisible();

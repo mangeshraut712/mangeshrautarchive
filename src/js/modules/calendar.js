@@ -300,7 +300,11 @@ export class CalendarWidget {
     }));
 
     // Verified real-world Luma event tickets and community schedule (mbr63@drexel.edu)
-    const lumaEvents = lumaEventsList.map(event => ({ ...event, isSynced: true }));
+    const lumaEvents = lumaEventsList.map(event => ({
+      ...event,
+      isSynced: true,
+      sourceFreshness: 'snapshot',
+    }));
 
     // Core developer reminders and active portfolio tasks
     const devReminders = portfolioRemindersList.map(item => ({ ...item }));
@@ -308,27 +312,29 @@ export class CalendarWidget {
     // Combine all calendar sources with deduplication by id and date/text
     this.reminders = [...importedEvents];
     for (const item of lumaEvents) {
-      const matchIdx = this.reminders.findIndex(
+      const matches = this.reminders.filter(
         r =>
           r.id === item.id ||
+          item.calendarSourceIds?.includes(r.id) ||
           (r.text &&
             item.text &&
-            r.text.toLowerCase() === item.text.toLowerCase() &&
+            normalizeCalendarTitle(r.text).toLowerCase() ===
+              normalizeCalendarTitle(item.text).toLowerCase() &&
             r.dateKey === item.dateKey)
       );
-      if (matchIdx === -1) {
-        this.reminders.push(item);
-      } else {
-        this.reminders[matchIdx] = {
-          ...this.reminders[matchIdx],
-          isLuma: true,
-          lumaHost: item.lumaHost || this.reminders[matchIdx].lumaHost,
-          lumaStatus: item.lumaStatus || this.reminders[matchIdx].lumaStatus,
-          lumaUrl: item.lumaUrl || this.reminders[matchIdx].lumaUrl || this.reminders[matchIdx].url,
-          completed:
-            item.completed !== undefined ? item.completed : this.reminders[matchIdx].completed,
-        };
-      }
+      this.reminders = this.reminders.filter(r => !matches.includes(r));
+      const imported = matches[0];
+      const sameDay = matches.filter(r => r.dateKey === item.dateKey);
+      const timing =
+        sameDay.find(r => r.sourceCalendars?.includes('Google Calendar')) || sameDay[0];
+      this.reminders.push({
+        ...imported,
+        ...item,
+        id: imported?.id || item.id,
+        endAt: item.endAt || timing?.endAt,
+        endDateKey: timing?.endDateKey || item.dateKey,
+        sourceCalendars: [...new Set(matches.flatMap(r => r.sourceCalendars || []).concat('Luma'))],
+      });
     }
     for (const item of devReminders) {
       if (!this.reminders.some(r => r.id === item.id)) {
@@ -369,7 +375,7 @@ export class CalendarWidget {
           }
         }
         for (const r of this.reminders) {
-          if (completionMap.has(r.id)) {
+          if (r.isCustomUserReminder && completionMap.has(r.id)) {
             r.completed = completionMap.get(r.id);
           }
         }
@@ -476,6 +482,7 @@ export class CalendarWidget {
     const going = lumaItems.filter(r => r.lumaStatus === 'going');
     const waitlisted = lumaItems.filter(r => r.lumaStatus === 'waitlisted');
     const pending = lumaItems.filter(r => r.lumaStatus === 'pending');
+    const invited = lumaItems.filter(r => r.lumaStatus === 'invited');
     const done = lumaItems.filter(r => r.lumaStatus === 'done' || r.lumaStatus === 'attended');
 
     let density = 'Clear';
@@ -502,6 +509,9 @@ export class CalendarWidget {
       }
       if (pending.length > 0) {
         parts.push(`Registration submitted for ${pending.length} event(s)`);
+      }
+      if (invited.length > 0) {
+        parts.push(`Invited to ${invited.length} event(s); RSVP not confirmed`);
       }
       if (done.length > 0) {
         parts.push(`Attended ${done.length} past community event(s)`);
@@ -619,12 +629,21 @@ export class CalendarWidget {
       }
     }
 
-    if (this.activeFilter === 'upcoming') {
+    if (this.activeFilter === 'upcoming' || this.activeFilter === 'past') {
       const now = new Date();
       const today = dateKey(now.getFullYear(), now.getMonth(), now.getDate());
       return list
-        .filter(r => !r.isChangelog && r.dateKey && r.dateKey >= today)
-        .sort((left, right) => left.dateKey.localeCompare(right.dateKey));
+        .filter(
+          r =>
+            !r.isChangelog &&
+            r.dateKey &&
+            (this.activeFilter === 'past' ? r.dateKey < today : r.dateKey >= today)
+        )
+        .sort((left, right) =>
+          this.activeFilter === 'past'
+            ? right.dateKey.localeCompare(left.dateKey)
+            : left.dateKey.localeCompare(right.dateKey)
+        );
     }
 
     if (this.activeFilter === 'month') {
@@ -791,6 +810,10 @@ export class CalendarWidget {
       r => !r.isChangelog && r.dateKey && r.dateKey >= nowKey
     ).length;
 
+    const pastCount = this.reminders.filter(
+      r => !r.isChangelog && r.dateKey && r.dateKey < nowKey
+    ).length;
+
     const now = new Date();
     const currentYear = now.getFullYear();
     const yearStart = Date.UTC(currentYear, 0, 1);
@@ -854,6 +877,9 @@ export class CalendarWidget {
           <div class="calendar-filter-tabs" role="group" aria-label="Filter events by category">
             <button type="button" class="filter-tab ${this.activeFilter === 'upcoming' ? 'active' : ''}" data-filter="upcoming" aria-pressed="${this.activeFilter === 'upcoming'}">
               <i class="fas fa-arrow-right" aria-hidden="true"></i> Upcoming (${upcomingCount})
+            </button>
+            <button type="button" class="filter-tab ${this.activeFilter === 'past' ? 'active' : ''}" data-filter="past" aria-pressed="${this.activeFilter === 'past'}">
+              <i class="fas fa-clock-rotate-left" aria-hidden="true"></i> Past (${pastCount})
             </button>
             <button type="button" class="filter-tab ${this.activeFilter === 'day' ? 'active' : ''}" data-filter="day" aria-pressed="${this.activeFilter === 'day'}">
               <i class="fas fa-calendar-day" aria-hidden="true"></i> Day (${dayMatchesCount})
@@ -965,9 +991,11 @@ export class CalendarWidget {
                         r.lumaStatus
                           ? `
                         <span class="card-tag tag-luma tag-luma-status tag-luma-status--${escapeHtml(r.lumaStatus)}">
+                          ${r.isLuma && r.dateKey < nowKey ? 'Past · ' : ''}
                           ${r.lumaStatus === 'going' ? '<i class="fas fa-circle-check" aria-hidden="true"></i> Going' : ''}
                           ${r.lumaStatus === 'waitlisted' ? '<i class="fas fa-clock" aria-hidden="true"></i> Waitlisted' : ''}
-                          ${r.lumaStatus === 'pending' ? '<i class="fas fa-hourglass-half" aria-hidden="true"></i> Submitted' : ''}
+                          ${r.lumaStatus === 'pending' ? '<i class="fas fa-hourglass-half" aria-hidden="true"></i> Pending' : ''}
+                          ${r.lumaStatus === 'invited' ? '<i class="fas fa-envelope" aria-hidden="true"></i> Invited' : ''}
                           ${r.lumaStatus === 'done' || r.lumaStatus === 'attended' ? '<i class="fas fa-check-double" aria-hidden="true"></i> Attended' : ''}
                         </span>
                       `

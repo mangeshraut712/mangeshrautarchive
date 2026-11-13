@@ -54,6 +54,40 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'luma-contact-reconciliation-20261113',
+    date: '2026-11-13',
+    type: 'fix',
+    title: 'Reconcile upcoming and past Luma events in Contact',
+    summary:
+      'Verifies 10 upcoming and 53 past Luma entries in signed-in Safari and reconciles full-year Apple and Google calendar copies into 156 entries. Both Google Tasks accounts and Apple Reminders are empty; Exchange entries remain cached. Updates RSVP states and rescheduled dates, reconciles stale calendar copies, adds a Past filter, and preserves Going, Pending, and Invited without claiming attendance. Imported events no longer inherit browser task completion flags. Pins the repository-preview release test to a deterministic catalog fixture.',
+    tags: ['other'],
+    sha: null,
+    commitVerified: false,
+    model: 'GPT-6 / Codex',
+    ide: 'Codex',
+    purpose:
+      'Align the contact calendar with verified Luma upcoming and past listings without duplicate events.',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
+    id: 'calendar-refresh-20261113',
+    date: '2026-11-13',
+    type: 'fix',
+    title: 'Refresh calendar sources without duplicate occurrences',
+    summary:
+      'Refreshes the Apple Calendar snapshot and reconciles full-year Google events, collapses equivalent timezone timestamps, excludes declined invitations, corrects the Touch Grass Builders date, and clears seeded tasks after checking Apple Reminders. Browser reminders remain local; account synchronization is not continuous.',
+    tags: ['other'],
+    sha: null,
+    commitVerified: false,
+    model: 'GPT-6 / Codex',
+    ide: 'Codex',
+    purpose:
+      'Reconcile calendar and reminder website data against connected accounts without duplicating occurrences.',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
     id: 'github-operating-view-dual-sync-20261110',
     date: '2026-11-10',
     type: 'improvement',
