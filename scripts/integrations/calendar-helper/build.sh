@@ -6,7 +6,7 @@ output="${1:?Usage: build.sh /absolute/output/CalendarSync.app}"
 mkdir -p "$output/Contents/MacOS"
 cp "$root/Info.plist" "$output/Contents/Info.plist"
 /usr/bin/xcrun swiftc -parse-as-library -O -target "$(uname -m)-apple-macosx14.0" \
-  "$root/Core.swift" "$root/CalendarHelper.swift" -o "$output/Contents/MacOS/calendar-helper"
+  "$root/Core.swift" "$root/CalendarHelper.swift" "$root/AuthorizationApp.swift" -o "$output/Contents/MacOS/calendar-helper"
 /usr/bin/codesign --force --sign "${CALENDAR_SIGNING_IDENTITY:--}" "$output"
 /usr/bin/codesign --verify --strict "$output"
 printf 'Built and verified %s\n' "$output"

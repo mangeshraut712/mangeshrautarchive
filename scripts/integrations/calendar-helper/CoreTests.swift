@@ -2,6 +2,13 @@ import Foundation
 
 @main struct CoreTests {
     static func main() throws {
+        let guiArguments = try resolveArguments(["calendar-helper"], home: URL(fileURLWithPath: "/Users/test-owner"))
+        assert(guiArguments.command == "authorize")
+        assert(guiArguments.configPath == "/Users/test-owner/Library/Application Support/PortfolioCalendarSync/config.json")
+        let cliArguments = try resolveArguments(["calendar-helper", "sync", "/private/config.json"])
+        assert(cliArguments.command == "sync" && cliArguments.configPath == "/private/config.json")
+        assert((try? resolveArguments(["calendar-helper", "sync"])) == nil)
+        assert((try? resolveArguments(["calendar-helper", "sync", "/private/config.json", "extra"])) == nil)
         let base = Configuration(endpoint: "https://example.com/api/calendar-sync/apple/upload", eventCalendarIDs: ["events"], reminderCalendarIDs: ["tasks"], pastDays: 365, futureDays: 365, allowOtherSources: false, allowGoogleMirrors: false)
         try base.validate()
         var invalid = base

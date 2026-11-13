@@ -125,6 +125,8 @@ Start with [CONTRIBUTING.md](CONTRIBUTING.md), [AGENTS.md](AGENTS.md), and the [
 
 ### 5.1 Coding agent and purpose
 
+Mac calendar authorization (2026-11-13): GPT-6 / Codex adds a persistent native permission window and separates GUI and scheduled command lifecycles so macOS can authorize the installed helper. Exact model variant, reasoning mode, and token usage: unavailable.
+
 Calendar activation diagnostics (2026-11-13): GPT-6 / Codex adds safe provider failure categories while preserving the last successful snapshot. Logs exclude credentials, feed URLs, account identifiers, and event content. Exact model variant, reasoning mode, and token usage: unavailable.
 
 Automatic calendar sync (2026-11-13): GPT-6 / Codex implements separate Google account connections, private Luma subscription ingestion, and a permissioned macOS EventKit helper. The Worker publishes only Luma and explicitly public provider events, reconciles duplicate occurrences, and keeps reminders and pass references in an authenticated owner view. Activation and limitations are documented in [the calendar sync design](docs/plans/2026-11-13-calendar-auto-sync-design.md) and [Mac helper guide](scripts/integrations/calendar-helper/README.md). Exact model variant, reasoning mode, and token usage: unavailable.

@@ -54,6 +54,22 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'calendar-helper-authorization-20261113',
+    date: '2026-11-13',
+    type: 'fix',
+    title: 'Native Mac calendar permission window',
+    summary:
+      'Adds a persistent macOS authorization window with readable permission status and separates interactive setup from scheduled calendar uploads.',
+    tags: ['systems'],
+    sha: null,
+    commitVerified: false,
+    model: 'GPT-6 / Codex',
+    ide: 'Codex',
+    purpose: 'Enable explicit macOS authorization for the private calendar helper.',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
     id: 'calendar-sync-diagnostics-20261113',
     date: '2026-11-13',
     type: 'fix',

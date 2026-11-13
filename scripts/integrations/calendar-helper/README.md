@@ -24,7 +24,17 @@ reset TCC, disable Gatekeeper, or trust unrelated executables.
    `install.sh /absolute/path/config.json --allow-ad-hoc-signing` instead. This builds the app in
    `~/Library/Application Support/PortfolioCalendarSync`, copies the private config,
    and creates a LaunchAgent plist. It does **not** start the agent.
-3. Run `run.sh authorize` interactively to grant full EventKit read access. Apple names
+3. Open the installed `CalendarSync.app` as a GUI application to grant EventKit access
+   to the helper itself. Launching with no arguments performs **authorization only**
+   using `~/Library/Application Support/PortfolioCalendarSync/config.json`; it never
+   uploads. A native AppKit window and application run loop keep the helper alive
+   through permission dialogs and display a readable success or failure until closed.
+   GUI startup uses a synchronous main entry point so the native run loop can service
+   the authorization task; command-line operations use a separate asynchronous task.
+   `run.sh authorize` remains available, but a terminal launch may inherit
+   the terminal or coding app's permission attribution. A successful terminal run
+   does not establish that the LaunchAgent has access; verify the scheduled process
+   separately after GUI consent. Apple names
    this permission “full access”; the helper never modifies any provider records.
    Then run `run.sh list-calendars` and edit the installed `config.json` with exact
    selected calendar and reminder-list IDs. This command prints calendar/list names

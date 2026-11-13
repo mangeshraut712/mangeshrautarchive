@@ -49,3 +49,11 @@ func day(_ date: Date, zone: TimeZone) -> String {
     formatter.dateFormat = "yyyy-MM-dd"
     return formatter.string(from: date)
 }
+
+func resolveArguments(_ arguments: [String], home: URL = FileManager.default.homeDirectoryForCurrentUser) throws -> (command: String, configPath: String) {
+    if arguments.count == 1 {
+        return ("authorize", home.appendingPathComponent("Library/Application Support/PortfolioCalendarSync/config.json").path)
+    }
+    guard arguments.count == 3 else { throw HelperError.configuration }
+    return (arguments[1], arguments[2])
+}

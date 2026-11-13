@@ -189,26 +189,43 @@ private final class NoRedirect: NSObject, URLSessionTaskDelegate {
                     newRequest request: URLRequest, completionHandler: @escaping (URLRequest?) -> Void) { completionHandler(nil) }
 }
 
+func requestAuthorization(_ configuration: Configuration) async throws {
+    let store = EKEventStore()
+    if !configuration.eventCalendarIDs.isEmpty {
+        let granted: Bool = try await bounded { finish in store.requestFullAccessToEvents { allowed, error in finish(error == nil ? .success(allowed) : .failure(HelperError.permission)) } }
+        guard granted else { throw HelperError.permission }
+    }
+    if !configuration.reminderCalendarIDs.isEmpty {
+        let granted: Bool = try await bounded { finish in store.requestFullAccessToReminders { allowed, error in finish(error == nil ? .success(allowed) : .failure(HelperError.permission)) } }
+        guard granted else { throw HelperError.permission }
+    }
+}
+
 @main struct CalendarHelper {
-    static func main() async {
+    @MainActor
+    static func main() {
+        if CommandLine.arguments.count == 1 {
+            runAuthorizationApp()
+            return
+        }
+        Task {
+            await runCommandLine()
+            exit(0)
+        }
+        dispatchMain()
+    }
+
+    private static func runCommandLine() async {
         do {
-            let arguments = CommandLine.arguments
-            guard arguments.count == 3 else { throw HelperError.configuration }
-            let command = arguments[1]
-            let configuration = try JSONDecoder().decode(Configuration.self, from: Data(contentsOf: URL(fileURLWithPath: arguments[2])))
+            let arguments = try resolveArguments(CommandLine.arguments)
+            let command = arguments.command
+            let configuration = try JSONDecoder().decode(Configuration.self, from: Data(contentsOf: URL(fileURLWithPath: arguments.configPath)))
             try configuration.validate()
             if command == "install-token" { try installToken(configuration.endpoint); print("Upload credential saved."); return }
             guard ["authorize", "list-calendars", "sync", "validate"].contains(command) else { throw HelperError.configuration }
             let store = EKEventStore()
             if command == "authorize" {
-                if !configuration.eventCalendarIDs.isEmpty {
-                    let granted: Bool = try await bounded { finish in store.requestFullAccessToEvents { allowed, error in finish(error == nil ? .success(allowed) : .failure(HelperError.permission)) } }
-                    guard granted else { throw HelperError.permission }
-                }
-                if !configuration.reminderCalendarIDs.isEmpty {
-                    let granted: Bool = try await bounded { finish in store.requestFullAccessToReminders { allowed, error in finish(error == nil ? .success(allowed) : .failure(HelperError.permission)) } }
-                    guard granted else { throw HelperError.permission }
-                }
+                try await requestAuthorization(configuration)
                 print("Requested access granted.")
                 return
             }
