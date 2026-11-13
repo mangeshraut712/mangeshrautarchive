@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { calendarOccurrenceKey } from '../../src/js/utils/calendar-identity.js';
 import { CalendarWidget } from '../../src/js/modules/calendar.js';
 
-test('verified Luma reschedules replace calendar copies without losing separate editions', () => {
+test('public Luma fallback preserves editions without unclassified provider events', () => {
   const originalDocument = globalThis.document;
   globalThis.document = { getElementById: () => null };
   try {
@@ -20,11 +20,11 @@ test('verified Luma reschedules replace calendar copies without losing separate 
     assert.equal(
       widget.reminders.filter(r => r.dateKey === '2026-09-12' && /AAIF Agentic AI Day/.test(r.text))
         .length,
-      1
+      0
     );
     assert.equal(
       widget.reminders.filter(r => r.text === 'Touch The Real Grass: Sinhagad Fort Trek 🚩').length,
-      1
+      0
     );
     const devDays = widget.reminders.filter(r => r.text === 'Dev Days | Pune, India');
     assert.deepEqual(

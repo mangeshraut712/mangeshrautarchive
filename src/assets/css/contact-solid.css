@@ -2597,3 +2597,22 @@ html.dark .smart-modal-btn.btn-cancel:hover {
   transform: translateY(-1px);
   box-shadow: 0 6px 18px rgba(0, 113, 227, 0.45);
 }
+
+#calendar-widget .calendar-sync-status {
+  margin-block: 8px 16px;
+  color: var(--contact-solid-fg, var(--text-primary));
+  font-size: 0.82rem;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+#calendar-widget .calendar-sync-status p {
+  margin: 4px 0;
+}
+
+#calendar-widget .calendar-sync-status a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--contact-solid-blue, var(--apple-blue));
+}

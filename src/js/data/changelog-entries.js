@@ -54,6 +54,22 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'hybrid-calendar-sync-20261113',
+    date: '2026-11-13',
+    type: 'feature',
+    title: 'Hybrid calendar sync with private owner access',
+    summary:
+      'Adds separate Google account sync, a private Luma subscription, and an Apple Calendar and Reminders helper. Public events reconcile by occurrence; reminders and pass references require owner sign-in.',
+    tags: ['systems'],
+    sha: null,
+    commitVerified: false,
+    model: 'GPT-6 / Codex',
+    ide: 'Codex',
+    purpose: 'Synchronize calendars without duplicate public events or exposed private reminders.',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
     id: 'support-qr-options-20261113',
     date: '2026-11-13',
     type: 'improvement',

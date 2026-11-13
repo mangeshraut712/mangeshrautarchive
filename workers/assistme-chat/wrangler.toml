@@ -25,6 +25,6 @@ OAUTH_SUCCESS_REDIRECT = "https://mangeshraut712.github.io/mangeshrautarchive/mo
 PUBLIC_SITE_URL = "https://mangeshraut712.github.io/mangeshrautarchive"
 GOOGLE_CALENDAR_REDIRECT_URI = "https://assistme-chat.mangeshraut712.workers.dev/api/calendar/callback/google"
 
-# Keepalive every 30m — WHOOP access tokens last ~1h; refresh before expiry under lock.
+# Calendar sync every 15 minutes; health tokens refresh under their existing locks.
 [triggers]
-crons = ["5,35 * * * *"]
+crons = ["5,20,35,50 * * * *"]

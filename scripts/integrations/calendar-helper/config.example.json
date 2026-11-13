@@ -1,0 +1,9 @@
+{
+  "endpoint": "https://YOUR-WORKER.example.com/api/calendar-sync/apple/upload",
+  "eventCalendarIDs": ["REPLACE_WITH_EXPLICIT_EVENT_CALENDAR_ID"],
+  "reminderCalendarIDs": ["REPLACE_WITH_EXPLICIT_REMINDER_LIST_ID"],
+  "pastDays": 365,
+  "futureDays": 365,
+  "allowOtherSources": false,
+  "allowGoogleMirrors": false
+}

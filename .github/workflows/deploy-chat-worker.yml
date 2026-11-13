@@ -17,6 +17,8 @@ on:
     branches: [main]
     paths:
       - 'workers/assistme-chat/**'
+      - 'package.json'
+      - 'package-lock.json'
       - '.github/workflows/deploy-chat-worker.yml'
       - 'scripts/deployment/cf-parse-accounts.py'
   workflow_dispatch:
@@ -197,6 +199,9 @@ jobs:
           node-version: '22'
           cache: 'npm'
 
+      - name: Install pinned Worker dependencies
+        run: npm ci --ignore-scripts --no-audit --no-fund
+
       - name: Register workers.dev subdomain
         if: steps.cf.outputs.present == 'true'
         env:
@@ -272,6 +277,7 @@ jobs:
             WITHINGS_CLIENT_SECRET
             GOOGLE_CALENDAR_CLIENT_ID
             GOOGLE_CALENDAR_CLIENT_SECRET
+            CALENDAR_SYNC_OWNER_EMAILS
         env:
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
           LASTFM_API_KEY: ${{ secrets.LASTFM_API_KEY }}
@@ -288,6 +294,7 @@ jobs:
           WITHINGS_CLIENT_SECRET: ${{ secrets.WITHINGS_CLIENT_SECRET }}
           GOOGLE_CALENDAR_CLIENT_ID: ${{ secrets.GOOGLE_CALENDAR_CLIENT_ID }}
           GOOGLE_CALENDAR_CLIENT_SECRET: ${{ secrets.GOOGLE_CALENDAR_CLIENT_SECRET }}
+          CALENDAR_SYNC_OWNER_EMAILS: ${{ secrets.CALENDAR_SYNC_OWNER_EMAILS }}
 
       - name: Deploy Worker (Global API Key)
         id: deploy_global
@@ -314,6 +321,7 @@ jobs:
             WITHINGS_CLIENT_SECRET
             GOOGLE_CALENDAR_CLIENT_ID
             GOOGLE_CALENDAR_CLIENT_SECRET
+            CALENDAR_SYNC_OWNER_EMAILS
         env:
           CLOUDFLARE_API_KEY: ${{ env.CLOUDFLARE_API_KEY }}
           CLOUDFLARE_EMAIL: ${{ env.CLOUDFLARE_EMAIL }}
@@ -332,6 +340,7 @@ jobs:
           WITHINGS_CLIENT_SECRET: ${{ secrets.WITHINGS_CLIENT_SECRET }}
           GOOGLE_CALENDAR_CLIENT_ID: ${{ secrets.GOOGLE_CALENDAR_CLIENT_ID }}
           GOOGLE_CALENDAR_CLIENT_SECRET: ${{ secrets.GOOGLE_CALENDAR_CLIENT_SECRET }}
+          CALENDAR_SYNC_OWNER_EMAILS: ${{ secrets.CALENDAR_SYNC_OWNER_EMAILS }}
 
       - name: Resolve worker URL
         if: steps.cf.outputs.present == 'true'

@@ -125,6 +125,8 @@ Start with [CONTRIBUTING.md](CONTRIBUTING.md), [AGENTS.md](AGENTS.md), and the [
 
 ### 5.1 Coding agent and purpose
 
+Automatic calendar sync (2026-11-13): GPT-6 / Codex implements separate Google account connections, private Luma subscription ingestion, and a permissioned macOS EventKit helper. The Worker publishes only Luma and explicitly public provider events, reconciles duplicate occurrences, and keeps reminders and pass references in an authenticated owner view. Activation and limitations are documented in [the calendar sync design](docs/plans/2026-11-13-calendar-auto-sync-design.md) and [Mac helper guide](scripts/integrations/calendar-helper/README.md). Exact model variant, reasoning mode, and token usage: unavailable.
+
 Support QR options (2026-11-13): GPT-6 / Codex added a third Support My Work tab for the supplied UPI and Zelle images, with keyboard-accessible tab navigation and responsive QR frames. Exact model variant, reasoning mode, and token usage: unavailable.
 
 Luma reconciliation (2026-11-13): GPT-6 / Codex verified 10 upcoming and 53 past entries in signed-in Safari, refreshed dates and RSVP states, replaced verified stale calendar copies, and added a Past filter without inferring attendance. Exact model variant, reasoning mode, and token usage: unavailable. This snapshot does not modify calendar accounts. Release verification also pins the repository-preview browser test to a fixed catalog fixture so external GitHub availability cannot remove its test subject.

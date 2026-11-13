@@ -1,3 +1,9 @@
+import {
+  CALENDAR_OWNER_URL,
+  CALENDAR_SYNC_INTERVAL,
+  fetchPublicCalendar,
+  reconcilePublicCalendar,
+} from '../services/calendar-sync.js';
 import { LUMA_CALENDARS_URL } from '../utils/luma.js';
 import { escapeHtml } from '../utils/escape-html.js';
 import { initContactTime } from './contact-time.js';
@@ -292,6 +298,7 @@ export class CalendarWidget {
     this.viewMode = 'month';
     this.searchQuery = '';
     this.aiBriefData = null;
+    this.syncState = { configured: false, lastSuccessAt: null, stale: false };
 
     // Public 2026 snapshot from visible Apple, Google, and Outlook calendars.
     const importedEvents = (appleCalendarSnapshot.events || []).map(event => ({
@@ -541,6 +548,7 @@ export class CalendarWidget {
   init() {
     if (!this.container) return;
     if (typeof window !== 'undefined') {
+      window.calendarWidget?.stopSync?.();
       window.calendarWidget = this;
     }
     ensureContactSolidStyles();
@@ -563,7 +571,64 @@ export class CalendarWidget {
       );
     }
     this.render();
-    this.bindEvents();
+    this.startSync();
+  }
+
+  startSync() {
+    this.stopSync();
+    const controller = new AbortController();
+    this.syncController = controller;
+    const refresh = async () => {
+      if (document.hidden || this.syncPending) return;
+      this.syncPending = true;
+      try {
+        const snapshot = await fetchPublicCalendar(undefined, controller.signal);
+        if (controller.signal.aborted) return;
+        this.reminders = reconcilePublicCalendar(this.reminders, snapshot);
+        this.syncState = {
+          configured: snapshot.configured,
+          lastSuccessAt: snapshot.lastSuccessAt || this.syncState.lastSuccessAt,
+          stale: Boolean(snapshot.stale),
+        };
+        this.aiBriefData = null;
+      } catch {
+        if (controller.signal.aborted) return;
+        this.syncState.stale = true;
+      } finally {
+        this.syncPending = false;
+      }
+      if (!controller.signal.aborted) this.render();
+    };
+    this.syncVisibility = () => {
+      clearInterval(this.syncTimer);
+      if (!document.hidden) {
+        void refresh();
+        this.syncTimer = setInterval(refresh, CALENDAR_SYNC_INTERVAL);
+      }
+    };
+    document.addEventListener('visibilitychange', this.syncVisibility);
+    this.syncVisibility();
+  }
+
+  stopSync() {
+    this.syncController?.abort();
+    clearInterval(this.syncTimer);
+    if (this.syncVisibility) document.removeEventListener('visibilitychange', this.syncVisibility);
+  }
+
+  renderSyncStatus() {
+    const { configured, lastSuccessAt, stale } = this.syncState;
+    const timestamp = lastSuccessAt && new Date(lastSuccessAt);
+    const updated =
+      timestamp && Number.isFinite(timestamp.getTime())
+        ? `Last updated ${timestamp.toLocaleString()}.`
+        : 'No successful automatic update yet.';
+    const health = stale
+      ? 'Updates delayed; showing last available events.'
+      : configured
+        ? 'Automatic calendar updates enabled.'
+        : 'Saved calendar snapshot; automatic sync is not connected.';
+    return `<div class="calendar-sync-status"><p role="status">${escapeHtml(health)} ${escapeHtml(updated)}</p><p>New reminders stay in this browser.</p><a href="${CALENDAR_OWNER_URL}" target="_blank" rel="noopener noreferrer">Owner sign-in · private reminders &amp; passes</a></div>`;
   }
 
   getLiveEventDays(year, month) {
@@ -859,6 +924,7 @@ export class CalendarWidget {
             </div>
           </div>
 
+          ${this.renderSyncStatus()}
           <div class="year-progress-widget">
             <div class="year-progress-caption"><span>${currentYear} · ${percentPassed}% complete</span><span>${daysLeft} days left</span></div>
             <progress class="year-progress-track" value="${elapsedDays}" max="${totalYearDays}" aria-label="Year ${currentYear} progress">${percentPassed}%</progress>
@@ -979,12 +1045,13 @@ export class CalendarWidget {
                 : filteredReminders
                     .map(
                       r => `
-              <div class="reminder-card ${r.completed ? 'completed' : ''} accent-${escapeHtml(r.color || 'blue')}" data-id="${r.id}">
+              <div class="reminder-card ${r.completed ? 'completed' : ''} accent-${escapeHtml(r.color || 'blue')}" data-id="${escapeHtml(String(r.id))}">
                 <div class="card-accent-strip"></div>
                 <div class="card-content">
                   <div class="card-header-flex">
                     <span class="card-time"><i class="fas fa-${escapeHtml(r.icon || 'clock')}" aria-hidden="true"></i> ${escapeHtml(r.time)}</span>
                     <div class="card-tags-group">
+                      ${r.isCustomUserReminder ? '<span class="card-tag">Local · this browser</span>' : ''}
                       ${r.tag && (!r.lumaHost || r.tag.trim().toLowerCase() !== r.lumaHost.trim().toLowerCase()) ? `<span class="card-tag tag-${escapeHtml(r.color || 'blue')}">${escapeHtml(r.tag)}</span>` : ''}
                       ${(r.isLuma || r.lumaUrl) && !r.lumaStatus ? `<span class="card-tag tag-luma"><i class="fas fa-ticket" aria-hidden="true"></i> Luma</span>` : ''}
                       ${
@@ -1013,19 +1080,19 @@ export class CalendarWidget {
                   ${
                     r.isLuma || r.lumaUrl
                       ? `
-                    <a href="${escapeHtml(r.lumaUrl || LUMA_CALENDARS_URL)}" target="_blank" rel="noopener noreferrer" class="card-action-btn luma-btn" title="View Ticket & RSVP on Luma" aria-label="View Ticket on Luma">
+                    <a href="${escapeHtml(r.lumaUrl || LUMA_CALENDARS_URL)}" target="_blank" rel="noopener noreferrer" class="card-action-btn luma-btn" title="View event details on Luma" aria-label="View event details on Luma">
                       <i class="fas fa-ticket" aria-hidden="true"></i>
                     </a>
                   `
                       : ''
                   }
-                  <button type="button" class="card-action-btn ask-ai-btn" data-id="${r.id}" title="Ask AI Assistant about this item" aria-label="Ask AI about ${escapeHtml(r.text)}">
+                  <button type="button" class="card-action-btn ask-ai-btn" data-id="${escapeHtml(String(r.id))}" title="Ask AI Assistant about this item" aria-label="Ask AI about ${escapeHtml(r.text)}">
                     <i class="fas fa-wand-magic-sparkles" aria-hidden="true"></i>
                   </button>
                   ${
                     r.isCustomUserReminder
                       ? `
-                    <button type="button" class="card-action-btn ical-btn" data-id="${r.id}" title="Export a one-time calendar copy" aria-label="Export ${escapeHtml(r.text)} as a calendar file">
+                    <button type="button" class="card-action-btn ical-btn" data-id="${escapeHtml(String(r.id))}" title="Export a one-time calendar copy" aria-label="Export ${escapeHtml(r.text)} as a calendar file">
                       <i class="fas fa-download" aria-hidden="true"></i>
                     </button>
                   `
@@ -1040,10 +1107,10 @@ export class CalendarWidget {
                     r.category !== 'birthdays' &&
                     !r.isBirthday
                       ? `
-                    <button type="button" class="card-action-btn edit-btn" data-id="${r.id}" title="Edit text" aria-label="Edit reminder">
+                    <button type="button" class="card-action-btn edit-btn" data-id="${escapeHtml(String(r.id))}" title="Edit text" aria-label="Edit reminder">
                       <i class="fas fa-pen" aria-hidden="true"></i>
                     </button>
-                    <button type="button" class="status-circle ${r.completed ? 'checked' : ''}" data-id="${r.id}" title="Toggle Complete" aria-label="Toggle Complete">
+                    <button type="button" class="status-circle ${r.completed ? 'checked' : ''}" data-id="${escapeHtml(String(r.id))}" title="Toggle Complete" aria-label="Toggle Complete">
                       <i class="fas fa-check" aria-hidden="true"></i>
                     </button>
                   `
@@ -1224,8 +1291,8 @@ export class CalendarWidget {
 
     // Card Action Buttons & Status Toggle
     this.container.querySelectorAll('.reminder-card').forEach(item => {
-      const id = parseInt(item.dataset.id, 10);
-      const reminder = this.reminders.find(r => r.id === id);
+      const id = item.dataset.id;
+      const reminder = this.reminders.find(r => String(r.id) === id);
       if (!reminder) return;
 
       // Click card to toggle

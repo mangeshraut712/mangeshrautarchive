@@ -35,6 +35,8 @@ import {
   handleGoogleCalendarConnect,
 } from './google-calendar.js';
 import { handleMonitorEdge } from './monitor-edge.js';
+import { handleCalendarSync, syncCalendars } from './calendar-sync/index.js';
+import { handleCalendarOwnerPage } from './calendar-owner-page.js';
 import {
   handleAdminConnectUrl,
   handleIntegrationsStatus,
@@ -1584,6 +1586,7 @@ async function handleMusicArtwork(url, env, cors) {
 
 const worker = {
   async scheduled(_controller, env, ctx) {
+    ctx.waitUntil(syncCalendars(env).catch(() => console.error('calendar sync failed')));
     ctx.waitUntil(
       syncConnectedHealthProviders(env).catch(error => {
         console.error('scheduled health sync failed', error?.message || error);
@@ -1601,6 +1604,26 @@ const worker = {
     }
 
     const path = url.pathname.replace(/\/+$/, '') || '/';
+
+    if (path.startsWith('/api/calendar-sync/')) {
+      const page = handleCalendarOwnerPage(request);
+      if (page) return page;
+      const response = await handleCalendarSync(request, env);
+      if (response) {
+        if (path === '/api/calendar-sync/public') {
+          const headers = new Headers(response.headers);
+          for (const [key, value] of Object.entries(cors)) headers.set(key, value);
+          return new Response(response.body, { status: response.status, headers });
+        }
+        return response;
+      }
+    }
+    if (
+      path === '/api/calendar/callback/google' &&
+      url.searchParams.get('state')?.startsWith('cs1.')
+    ) {
+      return handleCalendarSync(request, env);
+    }
 
     if (
       request.method === 'GET' &&
