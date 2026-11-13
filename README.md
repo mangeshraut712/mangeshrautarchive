@@ -125,6 +125,8 @@ Start with [CONTRIBUTING.md](CONTRIBUTING.md), [AGENTS.md](AGENTS.md), and the [
 
 ### 5.1 Coding agent and purpose
 
+Support QR options (2026-11-13): GPT-6 / Codex added a third Support My Work tab for the supplied UPI and Zelle images, with keyboard-accessible tab navigation and responsive QR frames. Exact model variant, reasoning mode, and token usage: unavailable.
+
 Luma reconciliation (2026-11-13): GPT-6 / Codex verified 10 upcoming and 53 past entries in signed-in Safari, refreshed dates and RSVP states, replaced verified stale calendar copies, and added a Past filter without inferring attendance. Exact model variant, reasoning mode, and token usage: unavailable. This snapshot does not modify calendar accounts. Release verification also pins the repository-preview browser test to a fixed catalog fixture so external GitHub availability cannot remove its test subject.
 
 Calendar refresh (2026-11-13): GPT-6 / Codex refreshed the local Apple Calendar snapshot, reconciled the full 2026 Google calendar and checked scheduled 2027 events, normalized occurrence timestamps to prevent duplicates, and removed seeded reminders after Apple Reminders and both signed-in Google Tasks accounts returned no items. The combined view has 156 entries, with verified renamed/rescheduled invitations consolidated. The second Google calendar was read through its Apple mirror; Exchange remains unavailable and its cached entries are marked as cached in the data. Exact model variant, reasoning mode, and token usage: unavailable. This is a website snapshot, not continuous two-way account synchronization; browser-created reminders remain local.

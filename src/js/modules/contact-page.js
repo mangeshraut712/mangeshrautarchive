@@ -40,27 +40,33 @@ function initGuidedMessageButton() {
 }
 
 function initSupportDonationInteractions() {
-  // Support Mode Toggle (One-Time Contribution vs. Monthly Sponsorship)
-  const modePills = document.querySelectorAll('.support-mode-pill');
-  const onetimePanel = document.getElementById('support-panel-onetime');
-  const monthlyPanel = document.getElementById('support-panel-monthly');
-
-  modePills.forEach(pill => {
-    pill.addEventListener('click', () => {
-      const mode = pill.getAttribute('data-support-mode');
-      modePills.forEach(p => {
-        const isActive = p === pill;
-        p.classList.toggle('is-active', isActive);
-        p.setAttribute('aria-selected', isActive ? 'true' : 'false');
-      });
-
-      if (mode === 'monthly') {
-        if (onetimePanel) onetimePanel.hidden = true;
-        if (monthlyPanel) monthlyPanel.hidden = false;
-      } else {
-        if (onetimePanel) onetimePanel.hidden = false;
-        if (monthlyPanel) monthlyPanel.hidden = true;
-      }
+  const tabs = [...document.querySelectorAll('.support-mode-pill')];
+  const selectTab = tab => {
+    tabs.forEach(item => {
+      const active = item === tab;
+      item.classList.toggle('is-active', active);
+      item.setAttribute('aria-selected', String(active));
+      item.tabIndex = active ? 0 : -1;
+      const panel = document.getElementById(item.getAttribute('aria-controls'));
+      if (panel) panel.hidden = !active;
+    });
+  };
+  tabs.forEach((tab, index) => {
+    if (tab.dataset.supportBound === 'true') return;
+    tab.dataset.supportBound = 'true';
+    tab.addEventListener('click', () => selectTab(tab));
+    tab.addEventListener('keydown', event => {
+      const destinations = {
+        ArrowRight: (index + 1) % tabs.length,
+        ArrowLeft: (index - 1 + tabs.length) % tabs.length,
+        Home: 0,
+        End: tabs.length - 1,
+      };
+      if (!(event.key in destinations)) return;
+      event.preventDefault();
+      const next = tabs[destinations[event.key]];
+      selectTab(next);
+      next.focus();
     });
   });
 }

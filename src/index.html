@@ -4298,13 +4298,16 @@ html.dark #home .hero-name-text {
                 Every contribution keeps me building. 🙏
               </p>
 
-              <!-- Support Mode Toggle: One-Time vs. Monthly Sponsorship -->
+              <!-- Support options -->
               <div class="support-mode-toggle" role="tablist" aria-label="Support type">
                 <button type="button" class="support-mode-pill is-active" role="tab" id="support-tab-onetime" aria-selected="true" aria-controls="support-panel-onetime" data-support-mode="onetime">
-                  <i class="fas fa-heart" aria-hidden="true"></i> One-Time Contribution
+                  <i class="fas fa-heart" aria-hidden="true"></i> One-Time
                 </button>
-                <button type="button" class="support-mode-pill" role="tab" id="support-tab-monthly" aria-selected="false" aria-controls="support-panel-monthly" data-support-mode="monthly">
-                  <i class="fas fa-rocket" aria-hidden="true"></i> Monthly Sponsorship
+                <button type="button" class="support-mode-pill" role="tab" id="support-tab-monthly" aria-selected="false" aria-controls="support-panel-monthly" data-support-mode="monthly" tabindex="-1">
+                  <i class="fas fa-rocket" aria-hidden="true"></i> Monthly
+                </button>
+                <button type="button" class="support-mode-pill" role="tab" id="support-tab-qr" aria-selected="false" aria-controls="support-panel-qr" data-support-mode="qr" tabindex="-1">
+                  <i class="fas fa-qrcode" aria-hidden="true"></i> QR Codes
                 </button>
               </div>
 
@@ -4433,6 +4436,23 @@ html.dark #home .hero-name-text {
                     </a>
                   </div>
                 </div>
+              </div>
+              <div id="support-panel-qr" class="support-panel" role="tabpanel" aria-labelledby="support-tab-qr" hidden>
+                <p class="support-qr-intro">Scan a code to support my work with UPI or Zelle.</p>
+                <figure class="support-qr-card">
+                  <figcaption><h4>UPI</h4><p>Scan with any UPI app.</p></figcaption>
+                  <a class="support-qr-image support-qr-image--upi" href="assets/images/payments/upi.png" target="_blank" rel="noopener noreferrer" aria-label="Open full-size UPI payment image">
+                    <img src="assets/images/payments/upi.png" width="1320" height="2868" loading="lazy" decoding="async" alt="UPI payment QR code supplied by Mangesh Raut">
+                  </a>
+                  <a class="support-qr-open" href="assets/images/payments/upi.png" target="_blank" rel="noopener noreferrer">Open UPI image <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
+                </figure>
+                <figure class="support-qr-card">
+                  <figcaption><h4>Zelle</h4><p>Scan in your bank’s app with Zelle.</p></figcaption>
+                  <a class="support-qr-image support-qr-image--zelle" href="assets/images/payments/zelle.png" target="_blank" rel="noopener noreferrer" aria-label="Open full-size Zelle payment image">
+                    <img src="assets/images/payments/zelle.png" width="1320" height="2868" loading="lazy" decoding="async" alt="Zelle payment QR code supplied by Mangesh Raut">
+                  </a>
+                  <a class="support-qr-open" href="assets/images/payments/zelle.png" target="_blank" rel="noopener noreferrer">Open Zelle image <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
+                </figure>
               </div>
             </div>
 

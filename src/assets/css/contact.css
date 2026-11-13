@@ -2640,6 +2640,7 @@ html.dark .support-description {
 /* Support Mode Toggle — Segmented Apple Pill (Solid Theme-Aware) */
 .support-mode-toggle {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: center;
   gap: 0.35rem;
@@ -2675,7 +2676,8 @@ html.dark .support-mode-toggle {
   color: #1d1d1f;
   -webkit-text-fill-color: #1d1d1f;
   cursor: pointer;
-  min-height: 38px;
+  min-height: 44px;
+  white-space: nowrap;
   transition:
     background 0.22s cubic-bezier(0.16, 1, 0.3, 1),
     color 0.22s ease,
@@ -2713,6 +2715,72 @@ html.dark .support-mode-pill.is-active {
 
 .support-panel[hidden] {
   display: none !important;
+}
+
+.support-qr-card {
+  margin: 0;
+  padding: 1rem;
+  border: 1px solid var(--apple-gray-3, #c7c7cc);
+  border-radius: 20px;
+  text-align: center;
+}
+
+.support-qr-card h4 {
+  margin: 0 0 0.35rem;
+  font-size: 1.2rem;
+}
+
+.support-qr-card p,
+.support-qr-intro {
+  margin: 0 0 1rem;
+  line-height: 1.5;
+}
+
+.support-qr-image {
+  position: relative;
+  display: block;
+  width: min(100%, 320px);
+  aspect-ratio: 1;
+  overflow: hidden;
+  margin: 0 auto;
+  border-radius: 12px;
+}
+
+.support-qr-image img {
+  position: absolute;
+  max-width: none !important;
+  height: auto;
+}
+
+.support-qr-image--upi img {
+  width: 141.0256%;
+  left: -20.5128%;
+  top: -83.1197%;
+}
+
+.support-qr-image--zelle img {
+  width: 200%;
+  left: -50%;
+  top: -140.9091%;
+}
+
+.support-qr-open {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 44px;
+  margin-top: 0.5rem;
+  color: var(--apple-blue);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+@media (max-width: 480px) {
+  .support-mode-pill {
+    padding-inline: 0.4rem;
+    font-size: 0.75rem;
+  }
 }
 
 .support-buttons-container {

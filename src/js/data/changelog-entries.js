@@ -54,6 +54,22 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'support-qr-options-20261113',
+    date: '2026-11-13',
+    type: 'improvement',
+    title: 'Add UPI and Zelle QR support options',
+    summary:
+      'Adds a third QR Codes tab beside one-time and monthly support, using the supplied UPI and Zelle images with full-size links and keyboard tab navigation.',
+    tags: ['design'],
+    sha: null,
+    commitVerified: false,
+    model: 'GPT-6 / Codex',
+    ide: 'Codex',
+    purpose: 'Add accessible QR payment options to Support My Work.',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
     id: 'luma-contact-reconciliation-20261113',
     date: '2026-11-13',
     type: 'fix',
