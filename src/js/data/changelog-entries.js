@@ -54,6 +54,22 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'compact-support-qr-20261114',
+    date: '2026-11-14',
+    type: 'improvement',
+    title: 'Compact QR support with Cash App',
+    summary:
+      'Adds Cash App alongside UPI and Zelle. A payment selector displays one compact QR code at a time, with responsive layouts and a clean enlarged QR viewer.',
+    tags: ['design'],
+    sha: null,
+    commitVerified: false,
+    model: 'GPT-6 / Codex',
+    ide: 'Codex',
+    purpose: 'Reduce Support card height and add Cash App without altering payment codes.',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
     id: 'calendar-deleted-recurrences-20261113',
     date: '2026-11-13',
     type: 'fix',

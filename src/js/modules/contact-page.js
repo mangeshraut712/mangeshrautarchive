@@ -40,6 +40,45 @@ function initGuidedMessageButton() {
 }
 
 function initSupportDonationInteractions() {
+  const dialog = document.getElementById('support-qr-dialog');
+  if (dialog && dialog.dataset.bound !== 'true') {
+    dialog.dataset.bound = 'true';
+    dialog.querySelector('.support-qr-close').addEventListener('click', () => dialog.close());
+    dialog.addEventListener('click', event => {
+      if (event.target !== dialog) return;
+      const bounds = dialog.getBoundingClientRect();
+      if (
+        event.clientX < bounds.left ||
+        event.clientX > bounds.right ||
+        event.clientY < bounds.top ||
+        event.clientY > bounds.bottom
+      )
+        dialog.close();
+    });
+    document.querySelectorAll('.support-qr-card a').forEach(link => {
+      link.addEventListener('click', event => {
+        event.preventDefault();
+        const card = link.closest('.support-qr-card');
+        const source = card.querySelector('.support-qr-image');
+        const preview = document.createElement('div');
+        preview.className = source.className;
+        preview.append(source.querySelector('img').cloneNode(true));
+        document.getElementById('support-qr-preview').replaceChildren(preview);
+        document.getElementById('support-qr-title').textContent =
+          `${card.querySelector('h4').textContent} QR code`;
+        dialog.showModal();
+      });
+    });
+  }
+  const method = document.getElementById('support-qr-method');
+  if (method && method.dataset.bound !== 'true') {
+    method.dataset.bound = 'true';
+    method.addEventListener('change', () => {
+      document.querySelectorAll('[data-payment-method]').forEach(card => {
+        card.hidden = card.dataset.paymentMethod !== method.value;
+      });
+    });
+  }
   const tabs = [...document.querySelectorAll('.support-mode-pill')];
   const selectTab = tab => {
     tabs.forEach(item => {

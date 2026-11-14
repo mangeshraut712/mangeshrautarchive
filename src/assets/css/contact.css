@@ -2717,33 +2717,77 @@ html.dark .support-mode-pill.is-active {
   display: none !important;
 }
 
+.support-qr-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.support-qr-toolbar label {
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.support-qr-toolbar select {
+  min-height: 44px;
+  max-width: 60%;
+  padding: 8px 32px 8px 12px;
+  border: 1px solid var(--apple-gray-3);
+  border-radius: 12px;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font: inherit;
+}
+
 .support-qr-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
   margin: 0;
-  padding: 1rem;
-  border: 1px solid var(--apple-gray-3, #c7c7cc);
-  border-radius: 20px;
-  text-align: center;
+  padding: 16px;
+  border: 1px solid var(--apple-gray-3);
+  border-radius: 18px;
+  background: var(--bg-primary);
+  text-align: left;
+}
+
+.support-qr-card[hidden] {
+  display: none;
+}
+
+.support-qr-card figcaption {
+  min-width: 0;
 }
 
 .support-qr-card h4 {
-  margin: 0 0 0.35rem;
-  font-size: 1.2rem;
+  margin: 0 0 8px;
+  font-size: 1.125rem;
 }
 
 .support-qr-card p,
 .support-qr-intro {
-  margin: 0 0 1rem;
+  margin: 0;
+  font-size: 0.8125rem;
   line-height: 1.5;
+  color: var(--text-secondary);
+}
+
+.support-qr-intro {
+  text-align: center;
+  text-wrap: balance;
 }
 
 .support-qr-image {
   position: relative;
   display: block;
-  width: min(100%, 320px);
+  flex: 0 0 176px;
+  width: 176px;
   aspect-ratio: 1;
   overflow: hidden;
-  margin: 0 auto;
   border-radius: 12px;
+  background: var(--apple-white, #fff);
 }
 
 .support-qr-image img {
@@ -2753,27 +2797,107 @@ html.dark .support-mode-pill.is-active {
 }
 
 .support-qr-image--upi img {
-  width: 141.0256%;
-  left: -20.5128%;
-  top: -83.1197%;
+  width: 132%;
+  left: -16%;
+  top: -75%;
 }
 
 .support-qr-image--zelle img {
-  width: 200%;
-  left: -50%;
-  top: -140.9091%;
+  width: 203.0769%;
+  left: -51.5385%;
+  top: -142.3077%;
+}
+
+.support-qr-image--cash-app img {
+  width: 115.7895%;
+  left: -7.8947%;
+  top: -76.3158%;
 }
 
 .support-qr-open {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
+  gap: 8px;
   min-height: 44px;
-  margin-top: 0.5rem;
+  margin-top: 8px;
   color: var(--apple-blue);
+  font-size: 0.8125rem;
   text-decoration: underline;
   text-underline-offset: 0.2em;
+}
+
+.support-qr-dialog {
+  width: min(400px, calc(100vw - 32px));
+  max-height: calc(100dvh - 32px);
+  padding: 24px;
+  border: 1px solid var(--apple-gray-3);
+  border-radius: 18px;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  box-sizing: border-box;
+}
+
+.support-qr-dialog::backdrop {
+  background: var(--overlay-bg, rgb(0 0 0 / 50%));
+  backdrop-filter: blur(12px);
+}
+
+.support-qr-dialog header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.support-qr-dialog h4 {
+  margin: 0;
+  font-size: 1.125rem;
+}
+
+.support-qr-close {
+  display: grid;
+  place-items: center;
+  flex: 0 0 44px;
+  width: 44px;
+  height: 44px;
+  padding: 6px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--apple-white, #fff);
+}
+
+.support-qr-close span {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--apple-red, #ff3b30);
+  font-size: 24px;
+}
+
+.support-qr-dialog .support-qr-image {
+  width: 100%;
+  max-width: 320px;
+  margin: 0 auto;
+}
+
+.support-qr-dialog > p {
+  margin: 16px 0 0;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+}
+
+@media (max-width: 480px) {
+  .support-qr-card {
+    flex-direction: column;
+    gap: 8px;
+    text-align: center;
+  }
 }
 
 @media (max-width: 480px) {

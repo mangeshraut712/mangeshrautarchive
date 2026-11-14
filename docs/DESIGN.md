@@ -485,3 +485,15 @@ Persistent availability uses 90 daily bars with UTC details, sampled uptime, and
 ### Project catalog data and interaction
 
 The GitHub showcase retains its Apple-style cards and glass controls. Catalog provenance and freshness sit beside an explicit refresh action. Missing activity is an em dash; legitimate zero remains zero. Contributor and recent-commit totals identify the loaded subset instead of implying a complete portfolio total. Activity hydration follows visible cards. Repository previews trap keyboard focus and restore it on dismissal; contribution cells use arrow-key navigation with one tab entry. Compact showcase controls retain 44px targets in both themes. See [verification](qa/project-showcase-2026-11-10.md).
+
+### Support payment QR selector
+
+The Support card keeps One-Time, Monthly, and QR Codes as its primary modes. Inside QR Codes,
+a labeled native selector switches between UPI, Zelle, and Cash App, showing one 176px code.
+Desktop and tablet place payment guidance beside the code; narrow phones stack the guidance
+below it. Preserve the supplied QR pixels and sufficient white scanning margins. Full-size
+view uses a native dialog with a 32px red close circle inside a 44px hit target, Escape dismissal,
+and focus restoration. Keep the selector at least 44px tall and support both themes.
+
+Coding agent: GPT-6 / Codex. Purpose: compact payment selection and a clean enlarged QR viewer.
+Exact model variant, reasoning mode, and token usage: unavailable.

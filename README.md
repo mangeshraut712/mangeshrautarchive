@@ -125,6 +125,8 @@ Start with [CONTRIBUTING.md](CONTRIBUTING.md), [AGENTS.md](AGENTS.md), and the [
 
 ### 5.1 Coding agent and purpose
 
+Support card refinement (2026-11-14): GPT-6 / Codex adds Cash App and a compact single-code payment selector, preserving original payment images and checking desktop, tablet, and mobile layouts in both themes. Exact model variant, reasoning mode, and token usage: unavailable.
+
 Calendar deletion reconciliation (2026-11-13): GPT-6 / Codex prevents deleted recurring instances from overwhelming full Google imports, while retaining deletion handling on incremental sync and resetting cursors when query semantics change. Exact model variant, reasoning mode, and token usage: unavailable.
 
 Calendar provider compatibility (2026-11-13): GPT-6 / Codex fixes Google and Luma requests on Cloudflare Workers by using supported manual redirect handling and rejecting non-success responses without forwarding credentials. Exact model variant, reasoning mode, and token usage: unavailable.
