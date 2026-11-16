@@ -1,10 +1,10 @@
 {
   "username": "mangeshraut712",
-  "lastSyncedAt": "2026-11-09T19:48:39.257Z",
-  "publicReposCount": 107,
-  "followersCount": 15,
-  "followingCount": 10,
-  "totalStars": 14,
+  "lastSyncedAt": "2026-11-16T12:35:41.755Z",
+  "publicReposCount": 124,
+  "followersCount": 16,
+  "followingCount": 13,
+  "totalStars": 15,
   "totalForks": 4,
   "repositories": [
     {
@@ -17,7 +17,145 @@
       "forks": 0,
       "language": "JavaScript",
       "topics": [],
-      "updatedAt": "2026-11-09T19:13:14Z"
+      "updatedAt": "2026-11-12T12:12:46Z"
+    },
+    {
+      "name": "codex-insights",
+      "fullName": "mangeshraut712/codex-insights",
+      "description": "/insights for OpenAI Codex: a $insights skill with private workflow reports, a shareable Codex profile page, and automatic updates. Open source, local-first.",
+      "url": "https://github.com/mangeshraut712/codex-insights",
+      "homepage": "https://mangeshraut712.github.io/codex-insights/",
+      "stars": 0,
+      "forks": 0,
+      "language": "JavaScript",
+      "topics": [
+        "agent-skills",
+        "ai-coding",
+        "claude-code",
+        "cli",
+        "codex",
+        "codex-cli",
+        "codex-plugin",
+        "developer-productivity",
+        "developer-tools",
+        "github-pages",
+        "html-report",
+        "insights",
+        "local-first",
+        "nodejs",
+        "openai",
+        "openai-codex",
+        "privacy",
+        "session-analysis"
+      ],
+      "updatedAt": "2026-11-12T09:41:59Z"
+    },
+    {
+      "name": "mangeshs-merge-guide",
+      "fullName": "mangeshraut712/mangeshs-merge-guide",
+      "description": "Evidence-based OSS contribution skill: learn from PR outcomes, validate fixes, and respect maintainer policies.",
+      "url": "https://github.com/mangeshraut712/mangeshs-merge-guide",
+      "homepage": null,
+      "stars": 0,
+      "forks": 0,
+      "language": "Python",
+      "topics": [],
+      "updatedAt": "2026-11-12T09:08:48Z"
+    },
+    {
+      "name": "Hindai",
+      "fullName": "mangeshraut712/Hindai",
+      "description": "Hind AI digital gurukul — interactive learning for Indic scriptures with local Gemma via Ollama (Next.js).",
+      "url": "https://github.com/mangeshraut712/Hindai",
+      "homepage": "https://mangeshraut712.github.io/Hindai/",
+      "stars": 0,
+      "forks": 0,
+      "language": "TypeScript",
+      "topics": [
+        "gemma4",
+        "hackathon",
+        "indian-philosophy",
+        "local-ai",
+        "nextjs",
+        "ollama",
+        "sanskrit",
+        "vedas"
+      ],
+      "updatedAt": "2026-11-12T09:04:41Z"
+    },
+    {
+      "name": "PicoTuri-EditJudge",
+      "fullName": "mangeshraut712/PicoTuri-EditJudge",
+      "description": "Research tool to evaluate text-guided image edits (Flask + React).",
+      "url": "https://github.com/mangeshraut712/PicoTuri-EditJudge",
+      "homepage": "https://mangeshraut712.github.io/PicoTuri-EditJudge/",
+      "stars": 0,
+      "forks": 0,
+      "language": "JavaScript",
+      "topics": [
+        "computer-vision",
+        "evaluation",
+        "flask",
+        "image-editing",
+        "machine-learning",
+        "react",
+        "research"
+      ],
+      "updatedAt": "2026-11-12T09:04:36Z"
+    },
+    {
+      "name": "alpha-quant-academy",
+      "fullName": "mangeshraut712/alpha-quant-academy",
+      "description": "Quant finance training platform with AI stock analysis and Monte Carlo backtesting.",
+      "url": "https://github.com/mangeshraut712/alpha-quant-academy",
+      "homepage": "https://mangeshraut712.github.io/alpha-quant-academy/",
+      "stars": 1,
+      "forks": 0,
+      "language": "Jupyter Notebook",
+      "topics": [
+        "algorithmic-trading",
+        "backtesting",
+        "education",
+        "finance",
+        "machine-learning",
+        "monte-carlo",
+        "python",
+        "quant-finance"
+      ],
+      "updatedAt": "2026-11-12T09:03:38Z"
+    },
+    {
+      "name": "ThreadPulse-Daily",
+      "fullName": "mangeshraut712/ThreadPulse-Daily",
+      "description": "A community-powered daily word puzzle game for the Reddit ecosystem. Built for the Reddit Daily Games Hackathon 2026.",
+      "url": "https://github.com/mangeshraut712/ThreadPulse-Daily",
+      "homepage": "https://www.reddit.com/r/ThreadPulse2026",
+      "stars": 0,
+      "forks": 0,
+      "language": "TypeScript",
+      "topics": [
+        "devvit",
+        "gamemaker",
+        "hackathon",
+        "react",
+        "reddit",
+        "typescript",
+        "webassembly",
+        "word-game"
+      ],
+      "updatedAt": "2026-11-12T09:03:26Z"
+    },
+    {
+      "name": "rs-10871-demo",
+      "fullName": "mangeshraut712/rs-10871-demo",
+      "description": "",
+      "url": "https://github.com/mangeshraut712/rs-10871-demo",
+      "homepage": null,
+      "stars": 0,
+      "forks": 0,
+      "language": "JavaScript",
+      "topics": [],
+      "updatedAt": "2026-11-12T07:48:42Z"
     },
     {
       "name": "mangeshrautarchive",
@@ -50,129 +188,7 @@
         "web-performance",
         "webmcp"
       ],
-      "updatedAt": "2026-11-09T19:06:52Z"
-    },
-    {
-      "name": "alpha-quant-academy",
-      "fullName": "mangeshraut712/alpha-quant-academy",
-      "description": "Quant finance training platform with AI stock analysis and Monte Carlo backtesting.",
-      "url": "https://github.com/mangeshraut712/alpha-quant-academy",
-      "homepage": "https://mangeshraut712.github.io/alpha-quant-academy/",
-      "stars": 1,
-      "forks": 0,
-      "language": "Jupyter Notebook",
-      "topics": [
-        "algorithmic-trading",
-        "backtesting",
-        "education",
-        "finance",
-        "machine-learning",
-        "monte-carlo",
-        "python",
-        "quant-finance"
-      ],
-      "updatedAt": "2026-11-09T02:06:22Z"
-    },
-    {
-      "name": "actions-nurse",
-      "fullName": "mangeshraut712/actions-nurse",
-      "description": "Actions Nurse — Gemma 4 triage for failed GitHub Actions · Hacktoberfest Hack Day Pune x Cloud Native Pune",
-      "url": "https://github.com/mangeshraut712/actions-nurse",
-      "homepage": null,
-      "stars": 0,
-      "forks": 0,
-      "language": "Python",
-      "topics": ["gemma", "github-actions", "hackathon", "pune", "python", "triage"],
-      "updatedAt": "2026-11-07T10:40:25Z"
-    },
-    {
-      "name": "AssistMe-VirtualAssistant",
-      "fullName": "mangeshraut712/AssistMe-VirtualAssistant",
-      "description": "Multi-modal AI assistant with voice mode and research tools (React + FastAPI).",
-      "url": "https://github.com/mangeshraut712/AssistMe-VirtualAssistant",
-      "homepage": "https://mangeshraut712.github.io/AssistMe-VirtualAssistant/",
-      "stars": 0,
-      "forks": 0,
-      "language": "JavaScript",
-      "topics": [
-        "ai-assistant",
-        "fastapi",
-        "full-stack",
-        "python",
-        "react",
-        "tailwindcss",
-        "vite",
-        "voice"
-      ],
-      "updatedAt": "2026-11-06T14:16:48Z"
-    },
-    {
-      "name": "VoteDine",
-      "fullName": "mangeshraut712/VoteDine",
-      "description": "Real-time group dining decision app with voting and recommendations (Next.js + Fastify).",
-      "url": "https://github.com/mangeshraut712/VoteDine",
-      "homepage": "https://mangeshraut712.github.io/VoteDine/",
-      "stars": 0,
-      "forks": 0,
-      "language": "TypeScript",
-      "topics": [
-        "docker",
-        "fastify",
-        "food-tech",
-        "nextjs",
-        "postgresql",
-        "real-time",
-        "typescript",
-        "websocket"
-      ],
-      "updatedAt": "2026-11-06T14:07:30Z"
-    },
-    {
-      "name": "repair-proof",
-      "fullName": "mangeshraut712/repair-proof",
-      "description": "Evidence-first review workspace for bounded Python repair proposals, with recorded Meta Model API evidence and offline rechecks.",
-      "url": "https://github.com/mangeshraut712/repair-proof",
-      "homepage": null,
-      "stars": 0,
-      "forks": 0,
-      "language": "Python",
-      "topics": [
-        "ai-safety",
-        "code-review",
-        "evidence-first",
-        "fastapi",
-        "hackathon",
-        "meta-model-api",
-        "offline-first",
-        "program-repair",
-        "python",
-        "secure-by-design"
-      ],
-      "updatedAt": "2026-11-06T14:02:49Z"
-    },
-    {
-      "name": "gravekeeper",
-      "fullName": "mangeshraut712/gravekeeper",
-      "description": "Gravekeeper: resurrect abandoned GitHub repos and dead web pages with Wayback snapshots, hash-chained receipts, and a modernization spec. Kiroween 2026.",
-      "url": "https://github.com/mangeshraut712/gravekeeper",
-      "homepage": null,
-      "stars": 0,
-      "forks": 0,
-      "language": "TypeScript",
-      "topics": ["hackathon", "kiro", "kiroween", "resurrection"],
-      "updatedAt": "2026-11-06T09:46:37Z"
-    },
-    {
-      "name": "rs-10871-demo",
-      "fullName": "mangeshraut712/rs-10871-demo",
-      "description": "",
-      "url": "https://github.com/mangeshraut712/rs-10871-demo",
-      "homepage": null,
-      "stars": 0,
-      "forks": 0,
-      "language": "JavaScript",
-      "topics": [],
-      "updatedAt": "2026-11-04T11:53:39Z"
+      "updatedAt": "2026-11-12T07:48:30Z"
     },
     {
       "name": "Real-Time-Face-Emotion-Recognition-System",
@@ -192,40 +208,31 @@
         "real-time",
         "tensorflow"
       ],
-      "updatedAt": "2026-11-03T22:08:02Z"
+      "updatedAt": "2026-11-12T07:48:26Z"
     },
     {
-      "name": "vidyaraut",
-      "fullName": "mangeshraut712/vidyaraut",
-      "description": "Portfolio website for Vidya Raut (Next.js).",
-      "url": "https://github.com/mangeshraut712/vidyaraut",
-      "homepage": "https://mangeshraut712.github.io/vidyaraut/",
+      "name": "fleet-desk",
+      "fullName": "mangeshraut712/fleet-desk",
+      "description": "Fleet Desk: dashboard for tracking and acting on open-source pull requests",
+      "url": "https://github.com/mangeshraut712/fleet-desk",
+      "homepage": null,
       "stars": 0,
       "forks": 0,
       "language": "TypeScript",
-      "topics": ["framer-motion", "nextjs", "personal-site", "portfolio", "react", "typescript"],
-      "updatedAt": "2026-11-03T21:49:07Z"
+      "topics": [],
+      "updatedAt": "2026-11-12T07:48:21Z"
     },
     {
-      "name": "ThreadPulse-Daily",
-      "fullName": "mangeshraut712/ThreadPulse-Daily",
-      "description": "A community-powered daily word puzzle game for the Reddit ecosystem. Built for the Reddit Daily Games Hackathon 2026.",
-      "url": "https://github.com/mangeshraut712/ThreadPulse-Daily",
-      "homepage": "https://www.reddit.com/r/ThreadPulse2026",
+      "name": "gravekeeper",
+      "fullName": "mangeshraut712/gravekeeper",
+      "description": "Gravekeeper: resurrect abandoned GitHub repos and dead web pages with Wayback snapshots, hash-chained receipts, and a modernization spec. Kiroween 2026.",
+      "url": "https://github.com/mangeshraut712/gravekeeper",
+      "homepage": "https://gravekeeper-drab.vercel.app",
       "stars": 0,
       "forks": 0,
       "language": "TypeScript",
-      "topics": [
-        "devvit",
-        "gamemaker",
-        "hackathon",
-        "react",
-        "reddit",
-        "typescript",
-        "webassembly",
-        "word-game"
-      ],
-      "updatedAt": "2026-11-03T21:48:59Z"
+      "topics": ["hackathon", "kiro", "kiroween", "resurrection"],
+      "updatedAt": "2026-11-11T16:20:35Z"
     }
   ]
 }
