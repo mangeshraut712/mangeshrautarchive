@@ -446,15 +446,18 @@ test('Apple upload token is scoped and revocation rejects upload', async t => {
   );
 });
 test('Luma feed validation disallows redirects, arbitrary hosts and nonpersonal endpoints', () => {
-  assert.match(
-    validateLumaFeed('https://api.luma.com/ics/get?entity=user&id=token'),
-    /api.luma.com/
+  assert.equal(
+    new URL(validateLumaFeed('https://api.luma.com/ics/get?entity=user&id=token')).hostname,
+    'api.luma.com'
   );
   for (const url of [
     'http://api.luma.com/ics/get?entity=user&id=x',
     'https://evil.example/feed',
     'https://api.luma.com/ics/get?entity=calendar&id=x',
     'https://api.luma.com:8443/ics/get?entity=user&id=x',
+    'https://api.luma.com.evil.example/ics/get?entity=user&id=x',
+    'https://apixluma.com/ics/get?entity=user&id=x',
+    'https://user:pass@api.luma.com/ics/get?entity=user&id=x',
   ])
     assert.throws(() => validateLumaFeed(url));
 });
