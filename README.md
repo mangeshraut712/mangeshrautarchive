@@ -125,6 +125,8 @@ Start with [CONTRIBUTING.md](CONTRIBUTING.md), [AGENTS.md](AGENTS.md), and the [
 
 ### 5.1 Coding agent and purpose
 
+Showcase CI follow-up (2026-11-23): GPT-6 / Codex corrects the lazy-graph verification sequence. Exact model variant, reasoning mode, and token usage: unavailable.
+
 Work showcase (2026-11-23): GPT-6 / Codex verifies external merged PRs and repository metadata, separates projects, hackathon builds, and public security work, and checks responsive discovery in both themes. Exact model variant, reasoning mode, and token usage: unavailable.
 
 November Field Notes (2026-11-23): GPT-6 / Codex researches and publishes GTA VI launch engineering and Nue Health data UX and trust, with original publisher imagery and source boundaries. Exact model variant, reasoning mode, and token usage: unavailable.

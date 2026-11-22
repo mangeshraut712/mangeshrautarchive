@@ -57,3 +57,8 @@ nine focused showcase scenarios each in Chrome and WebKit. Axe checks passed
 at 375/768/1440 widths in light and dark modes. Real-data rendering covered
 18 stream/width/theme combinations with no horizontal overflow. Missing WebKit
 binaries were installed before its successful run; no browser test was waived.
+
+The first remote run exposed a test ordering issue: touch-target measurement ran
+before the below-fold activity graph entered the viewport and initialized. The
+journey now scrolls to the graph and waits for its settings control before
+measuring targets, preserving the production lazy-loading behavior.

@@ -78,6 +78,8 @@ for (const width of [375, 768, 1440])
       expect(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth)).toBe(
         false
       );
+      await page.locator('#gh-contrib').scrollIntoViewIfNeeded();
+      await expect(page.locator('.gh-contrib__settings-btn')).toBeVisible();
       for (const selector of [
         '#projects-refresh-btn',
         '.gh-contrib__settings-btn',

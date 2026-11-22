@@ -54,6 +54,22 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'work-showcase-lazy-qa-20261123',
+    date: '2026-11-23',
+    type: 'fix',
+    title: 'Verify activity controls after lazy initialization',
+    summary:
+      'Makes the showcase browser journey enter the activity graph before measuring its touch targets, preserving lazy loading while removing a CI timing failure.',
+    tags: ['deploy'],
+    sha: null,
+    commitVerified: false,
+    model: 'GPT-6 / Codex',
+    ide: 'Codex',
+    purpose: 'Correct the browser verification sequence for the relocated activity graph.',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
     id: 'work-showcase-20261123',
     date: '2026-11-23',
     type: 'improvement',
