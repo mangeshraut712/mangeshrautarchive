@@ -441,7 +441,7 @@ The standalone journal uses Apple Newsroom and Apple Machine Learning Research a
 restrained system typography, explicit metadata, clear discovery controls, and credited media.
 Article text has a maximum 720px measure with 19px desktop / 18px mobile body copy.
 Contents collapse on small screens; their links have 44px targets. Archive search and topic filters
-combine across all 20 articles, including the featured story, with newest/oldest/title sorting
+combine across all 22 articles, including the featured story, with newest/oldest/title sorting
 and a resettable empty state. Reading progress measures only the article body. Author links,
 RSS, and canonical-link copying remain separate from source citations. Existing evidence dates
 are preserved; presentation changes do not imply fresh factual verification.

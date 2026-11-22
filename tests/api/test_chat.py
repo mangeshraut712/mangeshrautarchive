@@ -153,13 +153,13 @@ def test_blog_release_summary_finds_june_2026_titles():
 def test_blog_catalogue_includes_latest_articles():
     posts = get_blog_posts()
 
-    assert len(posts) == 20
+    assert len(posts) == 22
     september = [post for post in posts if post["date"].startswith("2026-09")]
     assert len(september) == 2
     assert all(post["date"] == "2026-09-29" for post in september)
     october = [post for post in posts if post["date"].startswith("2026-10")]
     assert len(october) == 2
-    for month in range(1, 11):
+    for month in range(1, 12):
         assert sum(post["date"].startswith(f"2026-{month:02d}") for post in posts) == 2
     summary = format_blog_release_summary("September 2026 blog releases")
     assert "Apple September Event 2026" in summary
@@ -167,6 +167,9 @@ def test_blog_catalogue_includes_latest_articles():
     oct_summary = format_blog_release_summary("October 2026 blog releases")
     assert "Gemini 4 Argon and Carbon" in oct_summary
     assert "Touchscreen MacBook Pro" in oct_summary
+    nov_summary = format_blog_release_summary("November 2026 blog releases")
+    assert "GTA VI Field Notes" in nov_summary
+    assert "Nue Health Field Notes" in nov_summary
 
 
 def test_chat_local_mode_answers_travel_state_and_blog_release_questions(client, monkeypatch):

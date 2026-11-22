@@ -234,7 +234,7 @@ function renderBlogIndex(posts, tags) {
         <p class="blog-index-lede">Ideas, evidence, and practical lessons on building with technology. Explore AI, developer tools, and product engineering through the decisions that matter.</p>
         <div class="blog-index-meta">
           <span>${posts.length} articles</span>
-          <span>Two articles per month · January–October 2026</span>
+          <span>Two articles per month · January–November 2026</span>
           <span>Latest editorial update ${formatBlogDate(
             posts
               .map(post => post.updatedAt || post.date)
@@ -318,7 +318,7 @@ function renderBlogPost(post, posts) {
   });
   const toc = buildTableOfContents(headings);
   const evidenceHeading = headings.find(heading =>
-    /^(September|October) 2026 evidence update$/.test(heading.text)
+    /^(September|October|November) 2026 evidence update$/.test(heading.text)
   );
   const sourcesHeading = headings.find(heading => heading.text.startsWith('Sources'));
   const related = getRelatedPosts(posts, post.id, 3);

@@ -54,6 +54,22 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'november-field-notes-20261123',
+    date: '2026-11-23',
+    type: 'release',
+    title: 'November Field Notes: GTA VI and Nue Health',
+    summary:
+      'Publishes two source-grounded articles on GTA VI launch engineering and Nue Health data UX and trust, with credited publisher images, worked examples, and explicit evidence boundaries. Extends the balanced archive to 22 articles.',
+    tags: ['blog'],
+    sha: null,
+    commitVerified: false,
+    model: 'GPT-6 / Codex',
+    ide: 'Codex',
+    purpose: 'Research, write, integrate, and verify the November editorial pair.',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
     id: 'compact-support-qr-20261114',
     date: '2026-11-14',
     type: 'improvement',

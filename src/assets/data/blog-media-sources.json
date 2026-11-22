@@ -561,6 +561,60 @@
       "license": "Apache-2.0",
       "licenseUrl": "https://raw.githubusercontent.com/xai-org/x-algorithm/3b6919f87532e57063bb3f1e85c2f509323b513e/LICENSE",
       "localLicensePath": "assets/images/blog/original-sources/phoenix-LICENSE.txt"
+    },
+    {
+      "postId": "gta-vi-launch-engineering-2026",
+      "sourcePage": "https://www.rockstargames.com/VI",
+      "sourceUrl": "https://www.rockstargames.com/VI/_next/static/media/meta.0t8ty~nlmxq2s.jpg?TfXRuFEcaoj7Q2oKW_PXW",
+      "credit": "Rockstar Games",
+      "kind": "publisher-artwork",
+      "alt": "Official GTA VI artwork with characters and scenes from Leonida",
+      "finalUrl": "https://www.rockstargames.com/VI/_next/static/media/meta.0t8ty~nlmxq2s.jpg?TfXRuFEcaoj7Q2oKW_PXW",
+      "originalSha256": "0d525c70b4b361e879cb85a6313c82319ea395da6ec555b404beb1bf7ca14a53",
+      "localPath": "assets/images/blog/original-sources/gta-vi-source.jpg",
+      "localSha256": "0d525c70b4b361e879cb85a6313c82319ea395da6ec555b404beb1bf7ca14a53",
+      "width": 1200,
+      "height": 630,
+      "originalWidth": 1200,
+      "originalHeight": 630,
+      "conversion": "Original publisher image, unchanged; no content edits",
+      "verifiedAt": "2026-11-23",
+      "caption": "Official publisher imagery; see the article for scope and context.",
+      "role": "lead",
+      "fit": "contain",
+      "sourceCheckedAt": "2026-11-23",
+      "sourceCheck": {
+        "status": 200,
+        "originalHashMatches": true,
+        "retrievedSha256": "0d525c70b4b361e879cb85a6313c82319ea395da6ec555b404beb1bf7ca14a53"
+      }
+    },
+    {
+      "postId": "nue-health-data-ux-trust-2026",
+      "sourcePage": "https://www.nuehealth.in/",
+      "sourceUrl": "https://www.nuehealth.in/logo/opengraph-cohort.png",
+      "credit": "Nue Health / Sedona Health Pvt. Ltd.",
+      "kind": "publisher-artwork",
+      "alt": "Nue Health programme artwork",
+      "finalUrl": "https://www.nuehealth.in/logo/opengraph-cohort.png",
+      "originalSha256": "49dbae5d5b82d54facc64d3cb312214820ef5fd828c649a1ce090b7dda093978",
+      "localPath": "assets/images/blog/original-sources/nue-health-source.png",
+      "localSha256": "49dbae5d5b82d54facc64d3cb312214820ef5fd828c649a1ce090b7dda093978",
+      "width": 1200,
+      "height": 630,
+      "originalWidth": 1200,
+      "originalHeight": 630,
+      "conversion": "Original publisher image, unchanged; no content edits",
+      "verifiedAt": "2026-11-23",
+      "caption": "Official publisher imagery; see the article for scope and context.",
+      "role": "lead",
+      "fit": "contain",
+      "sourceCheckedAt": "2026-11-23",
+      "sourceCheck": {
+        "status": 200,
+        "originalHashMatches": true,
+        "retrievedSha256": "49dbae5d5b82d54facc64d3cb312214820ef5fd828c649a1ce090b7dda093978"
+      }
     }
   ]
 }

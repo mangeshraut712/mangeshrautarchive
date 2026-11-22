@@ -52,6 +52,237 @@ export const retiredBlogPosts = Object.freeze([
 
 export const blogPosts = [
   {
+    id: 'gta-vi-launch-engineering-2026',
+    title: 'GTA VI Field Notes: Building a World That Feels Continuous',
+    kicker: 'Game systems engineering',
+    summary:
+      'GTA VI provides a November lens on streaming deadlines, frame budgets, durable state, and the engineering behind a continuous world.',
+    readerPromise:
+      'A worked streaming budget and a repeatable review worksheet, with confirmed release facts separated from hypothetical engineering.',
+    pullQuote:
+      'Continuity is a deadline problem: prepare for what matters next, then make room for surprises.',
+    highlights: ['Streaming budget worksheet', 'State and recovery', 'Evidence versus inference'],
+    tags: ['GTA VI', 'Game Development', 'System Design'],
+    date: '2026-11-23',
+    updatedAt: '2026-11-23',
+    readTime: '9 min read',
+    content: `GTA VI is an unusually good excuse to think about systems engineering. A player sees a street, a passing car, a conversation, and the next turn. The machine has deadlines, memory limits, incomplete information, and work that must finish before the player notices it.
+
+My question is simple: how do many bounded systems produce the feeling of one continuous world? These field notes use the November release as a starting point for a practical engineering model. This is not a hands-on performance review or a description of Rockstar's internal architecture.
+
+## The release and the engineering question
+
+:::figure
+src: assets/images/blog/original-sources/gta-vi-source.jpg
+alt: Rockstar Games GTA VI artwork with Jason, Lucia, vehicles, and scenes from Leonida
+caption: Official GTA VI artwork from Rockstar Games. Promotional imagery establishes the setting; it does not establish measured performance.
+credit: Rockstar Games
+source: https://www.rockstargames.com/VI
+width: 1200
+height: 630
+fit: contain
+:::
+
+Rockstar's [November 19 release page](https://www.rockstargames.com/VI/out-now) says GTA VI is available for PlayStation 5 and Xbox Series X|S. Its [official game site](https://www.rockstargames.com/VI) introduces Jason, Lucia, and Leonida. Those are useful anchors. They do not tell us the game's frame-time distribution, memory allocation strategy, or simulation scheduling policy.
+
+**TL;DR:** continuity is a deadline problem. Load what will matter before it matters, reserve capacity for surprises, and preserve state when the player changes direction. The useful lesson for builders is to measure transitions and recovery, not just the most impressive steady-state scene.
+
+I would resist treating a beautiful trailer as a benchmark. Edited footage can show artistic intent without exposing the conditions required to reproduce it. The distinction matters because a strong technical article should make the reader better at asking questions, rather than more confident in guesses.
+
+## Streaming is a prediction with a deadline
+
+A hypothetical open-world engine cannot keep every high-detail asset ready at once. It needs a working set: nearby geometry, textures, audio, collision information, and whatever the current activity requires. Player movement changes that set. A camera turn can change it even when the character stands still.
+
+:::diagram
+title: A conceptual world-streaming loop
+nodes: Predict|Estimate likely movement, Request|Prioritize needed assets, Prepare|Decode and make resources ready, Present|Use the best ready representation, Observe|Measure misses and revise priorities
+note: Editorial model for discussing open-world systems. This is not a disclosed Rockstar implementation.
+:::
+
+Consider a deliberately simplified planning exercise. A vehicle travels at 30 metres per second. Looking four seconds ahead means preparing for approximately 120 metres of travel. Suppose the next region requires 96 MiB of additional data and the usable loading rate is 48 MiB per second. Transfer alone takes two seconds. If preparation adds half a second, the nominal remaining margin is one and a half seconds.
+
+:::table
+title: Hypothetical streaming budget, not GTA VI measurements
+| Quantity | Assumption | Consequence |
+| --- | --- | --- |
+| Movement | 30 metres per second | 120 metres in four seconds |
+| Additional data | 96 MiB | Must fit the working-set budget |
+| Usable loading rate | 48 MiB per second | Two seconds of transfer |
+| Preparation | 0.5 seconds | 2.5 seconds until ready |
+| Planning horizon | Four seconds | 1.5 seconds of nominal margin |
+:::
+
+This arithmetic is useful precisely because its limitations are visible. Real work overlaps. Storage throughput varies. Requests compete. Turning into an unexpected street can invalidate the prediction. A larger look-ahead window can reduce misses while consuming memory that another subsystem needs.
+
+My next experiment would therefore change direction suddenly and record whether the system recovers. A route that only drives forward validates the easiest prediction. A route with reversals, fast camera rotation, and dense intersections tests the policy that actually protects the experience.
+
+## A frame is a promise about time
+
+At a hypothetical 60 updates per second, the interval is about 16.67 milliseconds. At 30, it is about 33.33 milliseconds. These are arithmetic reference points, not claims about GTA VI's supported modes.
+
+The temptation is to divide that interval into neat boxes and add every subsystem's duration. That can mislead because CPU and GPU work may overlap. A better investigation follows dependencies: what must finish before the next stage can begin, and which resource creates the limiting queue?
+
+Average throughput is also insufficient. If most frames arrive promptly but occasional transitions stall, the average can conceal the moments a player remembers. I would report a distribution, identify the route and conditions, and retain the trace that explains an outlier. Repeating a run after caches are warm should be labelled differently from the first pass.
+
+This is the same discipline I want in a web application. A fast homepage does not excuse a frozen interaction after opening a complex panel. The relevant unit is the user's next action, including the expensive transition that action triggers.
+
+## The world has to remember what happened
+
+Visual continuity is only half the problem. State continuity makes actions feel consequential. In a conceptual mission system, a checkpoint, inventory change, and reward should not disagree after a restart.
+
+Imagine a reward operation interrupted between updating the balance and marking the mission complete. Replaying the operation could duplicate the reward; skipping it could lose progress. A robust design needs a clear transaction boundary or a replay-safe operation identifier, plus a recovery rule. This example describes a general failure mode, not an observed GTA VI bug.
+
+I would write the invariant before designing the animation: one completed mission grants one reward, even if saving is interrupted. Then I would test interruption around each boundary. A polished completion screen cannot compensate for a state model that becomes ambiguous when execution stops.
+
+There is an interesting product tradeoff here. Saving everything continuously is not automatically the best experience. The design must define what counts as durable progress and communicate that boundary. Users should not need to infer persistence guarantees from a spinning icon.
+
+## Launch engineering extends beyond the renderer
+
+The release also makes distribution worth examining. The downloadable package, installation work, account entitlement, and executable version are separate concerns. A successful transfer does not prove that a player can start immediately, and an available game does not imply that every dependent service has identical readiness.
+
+For my own product launches, I would give each stage an observable state and an actionable failure message. “Preparing files” and “checking access” should not collapse into an indefinite spinner. Retrying a transient operation should preserve completed work where possible.
+
+That is an architectural lesson rather than a report on Rockstar's infrastructure. I have not inspected its deployment pipeline, service topology, or launch telemetry. Keeping that boundary explicit makes the comparison useful without turning plausible engineering patterns into invented inside information.
+
+## A repeatable review beats a spectacular clip
+
+My evaluation worksheet would begin with the platform, software version, display settings, route, and starting conditions. I would separate visual observations from instrumented measurements, and distinguish a first traversal from a repeat. A reported issue should include the steps needed to reproduce it.
+
+Next I would test transitions: entering a dense area, changing activity, restarting from a checkpoint, and returning after an interruption. Each probes a different contract. The goal is not to manufacture an extreme case for a headline. It is to learn which limits become visible during ordinary play.
+
+Finally, I would ask whether the interface explains what the system is doing. Can a player understand a blocked action? Can they recover without losing their place? Consistency and recovery deserve attention alongside graphical detail because they determine whether complexity feels manageable.
+
+## November 2026 evidence update
+
+Reviewed on November 23, 2026. The release and platform statement above comes from Rockstar's dated November 19 page. The artwork comes from the official game site and is credited as promotional material. This article makes no PC release claim and includes no measured GTA VI performance results.
+
+Every numerical budget in the worked example is an explicit assumption. The streaming loop, persistence discussion, and review worksheet are my engineering analysis. If later technical disclosures establish the actual implementation, those should replace speculation rather than be retroactively treated as proof of this model.
+
+The question I will keep returning to is practical: when the player does something unexpected, which system absorbs the surprise? That is where a convincing world becomes a useful systems lesson.
+
+### Sources and further reading
+
+- [Rockstar Games: GTA VI out now, November 19, 2026](https://www.rockstargames.com/VI/out-now) — release date and supported launch platforms.
+- [Rockstar Games: official GTA VI site](https://www.rockstargames.com/VI) — setting, characters, and credited promotional artwork.`,
+  },
+  {
+    id: 'nue-health-data-ux-trust-2026',
+    title: 'Nue Health Field Notes: Data UX, Uncertainty, and Trust',
+    kicker: 'Health product design',
+    summary:
+      'A November review of Nue Health’s public product presentation, with a practical framework for evidence, uncertainty, consent, and trustworthy health-data interfaces.',
+    readerPromise:
+      'A concrete way to evaluate health dashboards without confusing a visual summary with verified medical knowledge.',
+    pullQuote: 'Make the evidence path as intentional as the first impression.',
+    highlights: ['Traceable health data', 'Trend interpretation worksheet', 'Consent and recovery'],
+    tags: ['Nue Health', 'Product Design', 'Data Privacy', 'Health Tech'],
+    date: '2026-11-23',
+    updatedAt: '2026-11-23',
+    readTime: '10 min read',
+    content: `A health dashboard can make a complicated report feel approachable in seconds. That is its strength, and also the reason its design deserves scrutiny. A colour, a score, or a confident sentence can feel more certain than the evidence behind it.
+
+Nue Health is my November case study for a product question: how should an interface help someone understand personal data without quietly becoming the authority on what that data means? I am reviewing public product material, not reporting a clinical evaluation, a security audit, or personal use of the service.
+
+## A November programme worth examining
+
+:::figure
+src: assets/images/blog/original-sources/nue-health-source.png
+alt: Nue Health programme artwork with a portrait and the words Data-led weight loss
+caption: Official Nue Health programme artwork. The data-led weight-loss wording is a publisher claim, not an independently verified outcome.
+credit: Nue Health / Sedona Health Pvt. Ltd.
+source: https://www.nuehealth.in/
+width: 1200
+height: 630
+fit: contain
+:::
+
+As reviewed on November 23, [Nue's public site](https://www.nuehealth.in/) promotes a Bangalore programme beginning November 30, 2026. It presents three measurement checkpoints, professional consultations, app access, and an AI question interface. This gives the article a concrete November connection; it does not establish when the company first launched.
+
+**TL;DR:** I would judge this category by whether users can trace a conclusion back to a measurement, understand what remains uncertain, and control where their information goes. A memorable visual model is valuable only if the underlying explanation stays available.
+
+The rest of this article is a proposed design review framework. Where I discuss a feature that ought to exist, that is my recommendation, not a claim that Nue currently implements it or lacks it. Public screenshots are enough to ask good questions, but not enough to answer every one.
+
+## The most important interaction is “why?”
+
+A body illustration can help users find information spatially. It can also compress several different ideas into one visual state: a measured value, a comparison range, an estimate, and an overall interpretation. Those ideas need different explanations.
+
+My preferred interaction would let a person move from the visual summary to the underlying record in a single deliberate step. That record would show the measurement date, unit, source, relevant comparison information, and the author or process behind the interpretation. An estimated score would be explicitly identified as an estimate.
+
+:::diagram
+title: A proposed evidence path for a health dashboard
+nodes: Measure|Keep the original dated record, Explain|Show units and interpretation source, Qualify|Describe uncertainty and missing context, Discuss|Make professional review reachable, Control|Let the user manage access and export
+note: Editorial design framework. This is not a verified diagram of Nue's internal data flow or clinical process.
+:::
+
+I would test that path with a plain question: “What information caused this label to appear?” If the interface can only repeat the label in friendlier language, the explanation has not progressed. A persuasive paragraph is not the same thing as traceability.
+
+This is a broader lesson for AI products. Explanations should expose the relevant evidence and its limits. They should not merely add confidence to the conclusion the interface already wanted the user to accept.
+
+## A worked example: make a trend inspectable
+
+Consider a fictional wellness dashboard with two observations of an abstract measurement called Marker A. The first is 100 units and the second is 90 units. The numerical difference is minus ten percent. Nothing in those numbers alone tells us whether the change is beneficial, clinically meaningful, or comparable across collection conditions.
+
+:::table
+title: Hypothetical display review, not a patient result
+| Display choice | What it communicates | What I would require |
+| --- | --- | --- |
+| “Improved 10%” | A health judgment | Evidence that improvement is the appropriate interpretation |
+| “100 to 90 units” | Two observations | Dates and the original source for each |
+| “Down 10%” | Arithmetic direction | Clear denominator and comparable units |
+| “Needs context” | Interpretation remains open | A useful explanation and a route to professional review |
+:::
+
+The calculation is straightforward: subtract 100 from 90, divide by 100, and multiply by 100. The design decision is harder. A green downward arrow could imply success before anyone has established what the measurement represents.
+
+I would keep the arithmetic separate from the health interpretation. The interface should also distinguish a missing observation from an unchanged one. Connecting a line across a long gap without explanation can imply continuity that the dataset does not contain.
+
+The next usability test is not “does this chart look clean?” It is “can the reader correctly explain what changed, what is unknown, and where to look next?” That produces a more useful quality signal than a preference vote on visual polish.
+
+## An AI answer needs an identifiable role
+
+Nue's public material includes an AI question interface. That makes role clarity central to the experience. A person should be able to distinguish an automated explanation, a recorded professional recommendation, and a new recommendation that requires review.
+
+In my proposed design, the answer would identify the records it used and the date of those records. It would not silently treat an old result as a current observation. When context is missing, it would say what is missing instead of filling the gap with a confident narrative.
+
+I would also inspect the transition to human support. A generic “contact us” link is less useful than a handoff that preserves the user's question and lets them choose which relevant records to include. Consent should happen before that transfer, with a clear account of the recipient.
+
+These are product requirements, not treatment recommendations. This article does not assess medical efficacy, recommend supplements, or suggest a testing schedule. The engineering concern is whether the system communicates the limits of its own role at the moment they matter.
+
+## Privacy is a sequence of decisions
+
+A privacy policy is necessary evidence, but it is not the whole privacy experience. Collection, analysis, sharing, retention, export, and deletion happen at different moments. A single onboarding checkbox cannot explain every later consequence with equal clarity.
+
+The [Google Play listing](https://play.google.com/store/apps/details?id=in.nuehealth.app) is another public place to inspect the developer's data disclosures. Those declarations should be treated as developer-provided information, not proof of an independent audit. I would compare them with the current policy and the actual consent screens before making a stronger claim.
+
+For a design review, I would walk through three tasks: export my records, revoke a connection, and request deletion. Each needs a visible scope. Does an export include source measurements as well as derived summaries? Does revocation stop future access? Does a deletion request explain what is removed, what may be retained, and when the process completes?
+
+I cannot establish those answers from a marketing page. They belong in a hands-on review with an authorised test account and a documented response from the provider where necessary. The useful public conclusion is that these questions should be easy for a prospective user to ask and easy for a responsible product to answer.
+
+## Trust should survive the less impressive states
+
+Product demonstrations usually show complete data and a coherent story. I would spend equal time on a failed import, a duplicate result, an unavailable source, and an interpretation awaiting review. Those states reveal whether the interface respects uncertainty or simply hides it.
+
+A duplicate result should not become a second measurement in a trend. A corrected record should preserve enough history to explain why an earlier summary changed. A failed connection should show the last successful refresh rather than leave a polished screen looking current indefinitely.
+
+For accessibility, I would check whether status can be understood without relying on colour. On a small screen, the source and date must remain reachable rather than being removed as secondary detail. A simplified layout should reduce navigation effort without deleting the evidence needed to understand the claim.
+
+My acceptance test would ask a reader to identify the source, date, interpretation owner, and next available action for one result. Then I would repeat it with incomplete data. If the second task becomes a guessing exercise, the design still needs work.
+
+## November 2026 evidence update
+
+Reviewed on November 23, 2026. The November programme date and the product categories described at the start come from Nue's current public site. The programme artwork is reproduced with attribution and its original proportions. It is a promotional example, not a real patient record evaluated for this article.
+
+This is a public-material review of data UX and trust. I have not verified backend controls, clinical outcomes, deletion execution, or the model behind an estimate. The fictional Marker A example and the proposed evidence path are original editorial tools for evaluating the interface.
+
+My recommendation to builders is to make the evidence path as intentional as the first impression. The strongest health-data experience helps people understand both what a screen can tell them and what it cannot settle on its own.
+
+### Sources and further reading
+
+- [Nue Health: current programme and app presentation](https://www.nuehealth.in/) — November programme timing and official product imagery.
+- [Nue Health on Google Play](https://play.google.com/store/apps/details?id=in.nuehealth.app) — developer-provided app description and data disclosures; these may change independently of this article.
+- [Nue Health privacy policy](https://www.nuehealth.in/privacy) — a starting point for checking current data-handling terms, rather than an assertion that implementation has been audited.`,
+  },
+  {
     id: 'openrouter-ai-usb-hub-routing-2026',
     title: 'OpenRouter Field Notes: The AI USB Hub and 2026 Routing Policy',
     kicker: 'Model gateways',

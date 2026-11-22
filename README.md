@@ -26,7 +26,7 @@ Real screenshots of the live website, captured November 9, 2026. [View the galle
 ## 1. The experience
 
 - **Portfolio and projects.** My background, experience, education, publications, résumé, and repository case studies, with filters and project previews.
-- **A journal with evidence.** Twenty technology articles across January–October 2026: primary sources, worked examples, comparison tables, credited publisher images, and reading resources. Publication dates and editorial review dates remain distinct.
+- **A journal with evidence.** Twenty-two technology articles across January–November 2026: primary sources, worked examples, comparison tables, credited publisher images, and reading resources. Publication dates and editorial review dates remain distinct.
 - **AssistMe.** Streaming answers, Markdown, code and mathematics, supported attachments, and browser actions that help visitors find relevant work. Provider availability and voice support depend on configuration and device capabilities.
 - **Systems you can inspect.** Architecture notes, a service monitor, engineering workflows, and a changelog that records what changed and who helped build it.
 - **A personal side.** A travel atlas, the tools I use, recently played music, world clocks, and contact and calendar features.
@@ -124,6 +124,8 @@ npm run build                 # Production output in dist/
 Start with [CONTRIBUTING.md](CONTRIBUTING.md), [AGENTS.md](AGENTS.md), and the [design system](docs/DESIGN.md). Keep changes focused, preserve existing work, and attach verification appropriate to the changed behavior. Report vulnerabilities privately through [SECURITY.md](SECURITY.md).
 
 ### 5.1 Coding agent and purpose
+
+November Field Notes (2026-11-23): GPT-6 / Codex researches and publishes GTA VI launch engineering and Nue Health data UX and trust, with original publisher imagery and source boundaries. Exact model variant, reasoning mode, and token usage: unavailable.
 
 Support card refinement (2026-11-14): GPT-6 / Codex adds Cash App and a compact single-code payment selector, preserving original payment images and checking desktop, tablet, and mobile layouts in both themes. Exact model variant, reasoning mode, and token usage: unavailable.
 

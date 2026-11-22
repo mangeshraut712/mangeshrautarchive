@@ -1,5 +1,19 @@
 [
   {
+    "id": "gta-vi-launch-engineering-2026",
+    "title": "GTA VI Field Notes: Building a World That Feels Continuous",
+    "date": "2026-11-23",
+    "summary": "GTA VI provides a November lens on streaming deadlines, frame budgets, durable state, and the engineering behind a continuous world.",
+    "tags": ["GTA VI", "Game Development", "System Design"]
+  },
+  {
+    "id": "nue-health-data-ux-trust-2026",
+    "title": "Nue Health Field Notes: Data UX, Uncertainty, and Trust",
+    "date": "2026-11-23",
+    "summary": "A November review of Nue Health’s public product presentation, with a practical framework for evidence, uncertainty, consent, and trustworthy health-data interfaces.",
+    "tags": ["Nue Health", "Product Design", "Data Privacy", "Health Tech"]
+  },
+  {
     "id": "openrouter-ai-usb-hub-routing-2026",
     "title": "OpenRouter Field Notes: The AI USB Hub and 2026 Routing Policy",
     "date": "2026-07-05",
