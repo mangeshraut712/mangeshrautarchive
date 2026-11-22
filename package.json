@@ -61,6 +61,7 @@
     "foglamp:publish": "node scripts/integrations/publish-foglamp-scan.mjs",
     "insights": "codex-session-insights --local-only --no-open",
     "insights:architecture": "node scripts/qa/generate-claude-insights.mjs",
+    "sync:work": "node scripts/integrations/sync-work-evidence.mjs",
     "sync:github": "node scripts/integrations/sync-github-stats.mjs",
     "sync:whoburnedmore": "node scripts/integrations/sync-whoburnedmore.mjs",
     "sync:kalnirnay": "python3 scripts/integrations/sync-kalnirnay-panchang.py",

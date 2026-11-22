@@ -73,15 +73,20 @@ export async function syncGitHubStats({
     }
     const userData = await userRes.json();
 
-    // 2. Fetch public repositories (up to 100)
-    const reposRes = await fetchImpl(
-      `https://api.github.com/users/${USERNAME}/repos?per_page=100&sort=updated`,
-      { headers }
-    );
-    if (!reposRes.ok) {
-      throw new Error(`Failed to fetch user repos: HTTP ${reposRes.status}`);
+    const repositories = new Map();
+    for (let page = 1; ; page++) {
+      const response = await fetchImpl(
+        `https://api.github.com/users/${USERNAME}/repos?per_page=100&sort=updated&page=${page}`,
+        { headers }
+      );
+      if (!response.ok) throw new Error(`Failed repository page ${page}: HTTP ${response.status}`);
+      const items = await response.json();
+      if (!Array.isArray(items)) throw new Error('Invalid repository response');
+      for (const repo of items) repositories.set(repo.full_name, repo);
+      if (items.length < 100) break;
+      if (page >= 100) throw new Error('Repository pagination limit reached');
     }
-    const reposData = await reposRes.json();
+    const reposData = [...repositories.values()];
 
     const totalStars = reposData.reduce((acc, repo) => acc + (repo.stargazers_count || 0), 0);
     const totalForks = reposData.reduce((acc, repo) => acc + (repo.forks_count || 0), 0);
@@ -128,18 +133,9 @@ export async function syncGitHubStats({
   } catch (err) {
     console.warn(`[github-sync] Warning: Could not complete live sync (${err.message}).`);
     if (!hasExistingStats()) {
-      // Fallback default snapshot
-      const fallback = {
-        username: USERNAME,
-        lastSyncedAt: now(),
-        publicReposCount: 25,
-        followersCount: 15,
-        totalStars: 42,
-        totalForks: 12,
-        repositories: [],
-      };
-      await writeStats(fallback);
-      return { changed: true, payload: fallback };
+      throw new Error('No verified GitHub stats are available; refusing fabricated defaults', {
+        cause: err,
+      });
     }
 
     return { changed: false, payload: readStats() };

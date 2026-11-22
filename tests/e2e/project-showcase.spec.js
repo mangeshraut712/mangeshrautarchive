@@ -116,6 +116,7 @@ test('contribution failure clears stale statistics and offers a working retry', 
         })
   );
   await page.goto('/#projects');
+  await page.locator('#gh-contrib').scrollIntoViewIfNeeded();
   await expect(page.locator('#gh-total')).toHaveText('7');
   fail = true;
   await page.locator('.gh-contrib__year').nth(1).click();
@@ -140,10 +141,53 @@ test('initial activity loading stays bounded and heatmap has one keyboard entry'
   const visible = await page.locator('.showcase-project-card').count();
   await expect(page.locator('#projects-activity-caption')).toContainText(`${visible}/106`);
   expect(requested.size).toBeLessThanOrEqual(8);
+  await page.locator('#gh-contrib').scrollIntoViewIfNeeded();
   const cells = page.locator('.gh-hm__cell[data-label]');
   await expect(cells).toHaveCount(14);
   await expect(page.locator('.gh-hm__cell[tabindex="0"]')).toHaveCount(1);
   await cells.first().focus();
   await page.keyboard.press('ArrowRight');
   await expect(cells.nth(7)).toBeFocused();
+});
+
+test('work streams distinguish builds and public security work while keeping merge evidence searchable', async ({
+  page,
+}) => {
+  const original = { ...repos[1], name: 'original-app', full_name: 'mangeshraut712/original-app' };
+  const hackathon = {
+    ...repos[2],
+    name: 'fieldfix',
+    full_name: 'mangeshraut712/fieldfix',
+    topics: ['hackathon'],
+  };
+  const fork = { ...repos[3], name: 'upstream-fork', fork: true };
+  await mockGitHub(page);
+  await page.route('**/api/github/repos/public*', route =>
+    route.fulfill({ json: { items: [original, hackathon, fork] } })
+  );
+  await page.goto('/#projects');
+  await expect(page.locator('#stat-repos')).toHaveText('3');
+  await expect(page.locator('.showcase-project-card')).toHaveCount(1);
+  await expect(page.locator('.showcase-project-card')).toHaveAttribute(
+    'data-repo-name',
+    'original-app'
+  );
+  await page.locator('[data-work-stream="hackathons"]').click();
+  await expect(page.locator('.showcase-project-card')).toHaveAttribute(
+    'data-repo-name',
+    'fieldfix'
+  );
+  await expect(page.locator('.work-event-context')).toContainText('Meta Global');
+  await page.locator('[data-work-stream="bounties"]').click();
+  await expect(page.locator('#work-repository-browser')).toBeHidden();
+  await expect(page.locator('#work-bounties')).toContainText('not presented as paid bounties');
+  await page.locator('.work-ledger summary').click();
+  await page.locator('#work-merge-search').fill('apple/pkl-intellij');
+  await expect(page.locator('#work-merge-list li')).toHaveCount(1);
+  await expect(page.locator('#work-merge-list a')).toHaveAttribute(
+    'href',
+    'https://github.com/apple/pkl-intellij/pull/294'
+  );
+  await page.locator('#work-merge-search').fill('not-a-real-contribution-zzzz');
+  await expect(page.locator('#work-merge-status')).toContainText('0 merged contributions');
 });

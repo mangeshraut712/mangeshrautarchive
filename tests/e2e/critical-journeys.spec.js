@@ -53,9 +53,11 @@ test('old homepage preview links reach the complete article', async ({ page }) =
   await expect(page.locator('main h1')).toBeVisible();
 });
 
-test('GitHub operating view leads into illustrated repository cards', async ({ page }) => {
+test('verified contributions lead into original project cards and wider GitHub activity', async ({
+  page,
+}) => {
   await gotoSite(page, '/#projects');
-  const operatingView = page.locator('#projects-github-page');
+  const operatingView = page.locator('#work-contributions');
   const repositoryList = page.locator('#projects-repos-page');
   await expect(operatingView).toBeAttached();
   await expect(repositoryList).toBeAttached();
@@ -63,8 +65,17 @@ test('GitHub operating view leads into illustrated repository cards', async ({ p
     await page.evaluate(
       () =>
         document
-          .querySelector('#projects-github-page')
+          .querySelector('#work-contributions')
           .compareDocumentPosition(document.querySelector('#projects-repos-page')) &
+        Node.DOCUMENT_POSITION_FOLLOWING
+    )
+  ).toBeTruthy();
+  expect(
+    await page.evaluate(
+      () =>
+        document
+          .querySelector('#projects-repos-page')
+          .compareDocumentPosition(document.querySelector('#projects-github-page')) &
         Node.DOCUMENT_POSITION_FOLLOWING
     )
   ).toBeTruthy();

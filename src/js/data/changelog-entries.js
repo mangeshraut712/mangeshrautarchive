@@ -54,6 +54,22 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'work-showcase-20261123',
+    date: '2026-11-23',
+    type: 'improvement',
+    title: 'Projects, contributions, and the evidence behind them',
+    summary:
+      'Organizes original projects, hackathon builds, and public security work into three streams. Adds verified merged-PR stories and a searchable contribution ledger, refreshes the full GitHub catalog, and removes invented activity defaults.',
+    tags: ['design', 'other'],
+    sha: null,
+    commitVerified: false,
+    model: 'GPT-6 / Codex',
+    ide: 'Codex',
+    purpose: 'Verify contribution evidence and create a clear, responsive work showcase.',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
     id: 'november-field-notes-20261123',
     date: '2026-11-23',
     type: 'release',

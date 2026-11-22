@@ -45,6 +45,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           node scripts/integrations/sync-github-stats.mjs
+          node scripts/integrations/sync-work-evidence.mjs
           node_modules/.bin/prettier --write src/js/data/github-stats.json
 
       # A fixed head branch updates one draft PR instead of bypassing protected main.
@@ -63,7 +64,9 @@ jobs:
 
             This draft is intentionally reviewable and must be merged through the repository's protected-branch process.
           draft: always-true
-          add-paths: src/js/data/github-stats.json
+          add-paths: |
+            src/js/data/github-stats.json
+            src/js/data/work-evidence.js
 
       - name: Report sync result
         env:

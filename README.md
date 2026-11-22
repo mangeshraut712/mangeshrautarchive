@@ -125,6 +125,8 @@ Start with [CONTRIBUTING.md](CONTRIBUTING.md), [AGENTS.md](AGENTS.md), and the [
 
 ### 5.1 Coding agent and purpose
 
+Work showcase (2026-11-23): GPT-6 / Codex verifies external merged PRs and repository metadata, separates projects, hackathon builds, and public security work, and checks responsive discovery in both themes. Exact model variant, reasoning mode, and token usage: unavailable.
+
 November Field Notes (2026-11-23): GPT-6 / Codex researches and publishes GTA VI launch engineering and Nue Health data UX and trust, with original publisher imagery and source boundaries. Exact model variant, reasoning mode, and token usage: unavailable.
 
 Support card refinement (2026-11-14): GPT-6 / Codex adds Cash App and a compact single-code payment selector, preserving original payment images and checking desktop, tablet, and mobile layouts in both themes. Exact model variant, reasoning mode, and token usage: unavailable.
@@ -154,7 +156,7 @@ I maintain this portfolio with assistance from several coding tools. Each shippe
 | Exact variant, reasoning mode, token usage | unavailable                                                                                                           |
 | Chatbot runtime                            | Separate configuration in [FastAPI](api/model_router.py) and the [Worker](workers/assistme-chat/src/model-routing.js) |
 
-The [project showcase audit](docs/qa/project-showcase-2026-11-10.md) records catalog accuracy, GitHub metadata handling, and device/theme verification.
+The [work showcase review](docs/qa/work-showcase-2026-11-23.md) covers contribution evidence and the three work streams. The [project showcase audit](docs/qa/project-showcase-2026-11-10.md) records catalog accuracy, GitHub metadata handling, and device/theme verification.
 
 The [persistent monitoring guide](docs/qa/durable-monitor-2026-11-09.md) describes the collector, retention, incident policy, and verification.
 

@@ -352,7 +352,8 @@ async function proxyApiRequest(req, res) {
       return;
     }
     if (pathname === '/api/github/proxy' || pathname === '/api/github/repos/public') {
-      res.json({ success: true, data: [] });
+      res.setHeader('X-GitHub-Proxy-Degraded', 'backend-unavailable');
+      res.json({ success: false, data: [] });
       return;
     }
 

@@ -149,7 +149,8 @@ test('scheduled GitHub and Panchang data workflows create one reviewable draft P
     assert.ok(source.includes(`uses: ${CREATE_PULL_REQUEST_ACTION}`));
     assert.ok(source.includes(`branch: ${branch}`));
     assert.match(source, /draft:\s*always-true/);
-    assert.ok(source.includes(`add-paths: ${changedPath}`));
+    assert.ok(source.includes(changedPath));
+    assert.match(source, /add-paths:/);
     assert.doesNotMatch(source, /\bgit\s+push\b/u);
     assert.doesNotMatch(source, /(?:HEAD:)?main\s*$/mu);
     assert.doesNotMatch(source, /\[skip ci\]|GH_PAT|gh\s+pr\s+merge|--admin/u);
@@ -227,4 +228,48 @@ test('edge snapshot exporter completion log excludes analytics and health values
   assert.match(source, /No meaningful edge snapshot changes detected/);
   assert.match(completionSection, /Prepared .*without logging analytics or health values\./);
   assert.doesNotMatch(completionSection, /reach=|sleep=|total_reach|sleepScore/u);
+});
+
+test('GitHub stats include repositories beyond the first page and deduplicate overlap', async () => {
+  let saved;
+  const repo = n => ({
+    full_name: `mangeshraut712/repo-${n}`,
+    name: `repo-${n}`,
+    stargazers_count: 1,
+    forks_count: 0,
+  });
+  const result = await syncGitHubStats({
+    fetchImpl: async input =>
+      String(input).includes('/repos?')
+        ? Response.json(
+            String(input).includes('page=2')
+              ? [repo(99), repo(100)]
+              : Array.from({ length: 100 }, (_, n) => repo(n))
+          )
+        : Response.json({ public_repos: 101 }),
+    readStats: () => null,
+    writeStats: data => {
+      saved = data;
+    },
+    hasExistingStats: () => false,
+  });
+  assert.equal(result.changed, true);
+  assert.equal(saved.totalStars, 101);
+});
+
+test('a failed continuation retains the last verified stats rather than partial totals', async () => {
+  const saved = { totalStars: 150 };
+  const result = await syncGitHubStats({
+    fetchImpl: async input =>
+      String(input).includes('/repos?')
+        ? String(input).includes('page=2')
+          ? new Response('', { status: 503 })
+          : Response.json(Array.from({ length: 100 }, (_, n) => ({ full_name: `a/${n}` })))
+        : Response.json({ public_repos: 101 }),
+    readStats: () => saved,
+    writeStats: () => assert.fail('Incomplete data must not be written'),
+    hasExistingStats: () => true,
+  });
+  assert.equal(result.payload, saved);
+  assert.equal(result.changed, false);
 });

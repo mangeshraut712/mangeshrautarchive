@@ -482,9 +482,11 @@ The Monitor opens with grouped service availability and retains technical diagno
 
 Persistent availability uses 90 daily bars with UTC details, sampled uptime, and separate check coverage. Missing days stay empty. Keep incident confirmation and recovery timestamps visible, distinguish live probes from stored incidents, and show history-fetch errors without replacing saved records. Disclosures remain expanded during refresh; hidden pagination controls must override shared button display rules.
 
-### Project catalog data and interaction
+### Work showcase data and interaction
 
-The GitHub showcase retains its Apple-style cards and glass controls. Catalog provenance and freshness sit beside an explicit refresh action. Missing activity is an em dash; legitimate zero remains zero. Contributor and recent-commit totals identify the loaded subset instead of implying a complete portfolio total. Activity hydration follows visible cards. Repository previews trap keyboard focus and restore it on dismissal; contribution cells use arrow-key navigation with one tab entry. Compact showcase controls retain 44px targets in both themes. See [verification](qa/project-showcase-2026-11-10.md).
+The Projects & contributions surface uses the existing centered Apple Blue section header, then a restrained editorial milestone with verified external merged PRs, three source-linked contribution stories, and a searchable merge ledger. Projects, Hackathons, and Bug Bounties are mutually exclusive streams within the existing Projects destination. Original-project discovery excludes forks and profile infrastructure; hackathon context links to repository evidence and does not imply an award or accepted submission. The Bug Bounties stream distinguishes verified public disclosures from ordinary security fixes and makes no unverified payout claim. The wider GitHub statistics and contribution graph follow the curated work; unknown activity starts as an em dash rather than a fabricated number.
+
+Catalog provenance and freshness sit beside an explicit refresh action. Missing activity is an em dash; legitimate zero remains zero. Contributor and recent-commit totals identify the loaded subset instead of implying a complete portfolio total. Activity hydration follows visible cards. Repository previews trap keyboard focus and restore it on dismissal; contribution cells use arrow-key navigation with one tab entry. Compact showcase controls retain 44px targets in both themes. See [verification](qa/project-showcase-2026-11-10.md).
 
 ### Support payment QR selector
 

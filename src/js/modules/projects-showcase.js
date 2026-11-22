@@ -1,4 +1,6 @@
 import GitHubProjects from './github-projects.js';
+import { renderWorkShowcase } from './work-showcase.js';
+import { getWorkStream, hackathonProjects } from '../data/work-editorial.js';
 import { observeScrollAnimations } from './scroll-animations.js';
 import './project-xr.js';
 import './github-contributions-graph.js';
@@ -318,27 +320,13 @@ function updateActivityStats(allRepos, visibleRepos = [], githubProjects = null)
   );
 
   const uniqueContributors = totals.contributorIds.size;
-  const existingCommits = document.getElementById('stat-commits')?.textContent?.trim();
-  const commitsValue = totals.commitRepos
-    ? formatCompactNumber(totals.totalCommits30d)
-    : existingCommits && existingCommits !== '—' && existingCommits !== '--'
-      ? existingCommits
-      : '87';
-
-  const existingContributors = document.getElementById('stat-contributors')?.textContent?.trim();
+  const commitsValue = totals.commitRepos ? formatCompactNumber(totals.totalCommits30d) : '--';
   const contributorsValue = totals.contributorRepos
     ? formatCompactNumber(uniqueContributors)
-    : existingContributors && existingContributors !== '—' && existingContributors !== '--'
-      ? existingContributors
-      : '22';
-
-  setStatItem('stat-repos', source.length || 100, { hideWhenEmpty: false });
-  setStatItem('stat-stars', formatCompactNumber(totals.totalStars) || '14', {
-    hideWhenEmpty: false,
-  });
-  setStatItem('stat-forks', formatCompactNumber(totals.totalForks) || '4', {
-    hideWhenEmpty: false,
-  });
+    : '--';
+  setStatItem('stat-repos', source.length, { hideWhenEmpty: false });
+  setStatItem('stat-stars', formatCompactNumber(totals.totalStars), { hideWhenEmpty: false });
+  setStatItem('stat-forks', formatCompactNumber(totals.totalForks), { hideWhenEmpty: false });
   setStatItem('stat-commits', commitsValue, { hideWhenEmpty: false });
   setStatItem('stat-contributors', contributorsValue, { hideWhenEmpty: false });
   setStatItem('stat-active-repos', source.length > 0 ? totals.activeRepos : 97, {
@@ -628,6 +616,7 @@ export async function initProjectShowcase({ username = DEFAULT_USERNAME } = {}) 
   container.dataset.projectsShowcaseInit = 'true';
 
   try {
+    renderWorkShowcase();
     const githubProjects = new GitHubProjects(username);
     let allRepos = [];
     let allShowcaseRepos = [];
@@ -666,6 +655,7 @@ export async function initProjectShowcase({ username = DEFAULT_USERNAME } = {}) 
     const techButtons = Array.from(document.querySelectorAll('[data-project-tech]'));
     const expandWrap = document.getElementById('projects-expand-wrap');
     const expandBtn = document.getElementById('projects-expand-btn');
+    let activeStream = 'projects';
     let activeLens = DEFAULT_PROJECT_LENS;
     let activeTech = DEFAULT_TECH_FILTER;
     let showAllProjects = false;
@@ -722,10 +712,39 @@ export async function initProjectShowcase({ username = DEFAULT_USERNAME } = {}) 
       const lensMatcher = createLensMatcher(getCurrentLens(), githubProjects);
       const techMatcher = createTechMatcher(activeTech);
       const filtered = allShowcaseRepos.filter(
-        repo => matcher(repo) && lensMatcher(repo) && techMatcher(repo)
+        repo =>
+          getWorkStream(repo) === activeStream &&
+          matcher(repo) &&
+          lensMatcher(repo) &&
+          techMatcher(repo)
       );
       return [...filtered].toSorted(createSortComparator(getCurrentSort(), githubProjects));
     };
+
+    const streamButtons = [...document.querySelectorAll('[data-work-stream]')];
+    streamButtons.forEach(button =>
+      button.addEventListener('click', () => {
+        activeStream = button.dataset.workStream;
+        for (const item of streamButtons)
+          item.setAttribute('aria-pressed', String(item === button));
+        const isBounties = activeStream === 'bounties';
+        document.getElementById('work-bounties').hidden = !isBounties;
+        document.getElementById('work-repository-browser').hidden = isBounties;
+        document.getElementById('projects-repos-heading').textContent =
+          activeStream === 'hackathons'
+            ? 'Ideas built against a deadline.'
+            : 'Projects built to be explored.';
+        document.getElementById('work-stream-description').textContent =
+          activeStream === 'hackathons'
+            ? 'Hackathon builds and prototypes, with event context from their public repositories. A build is not a claim of a win or accepted submission.'
+            : 'Original software, research, and tools. Forks and profile infrastructure stay on GitHub.';
+        if (!isBounties) {
+          showAllProjects = false;
+          clearFilters();
+          button.focus({ preventScroll: true });
+        }
+      })
+    );
 
     const getDisplayRepos = () => {
       const sorted = getFilteredSortedRepos();
@@ -853,7 +872,11 @@ export async function initProjectShowcase({ username = DEFAULT_USERNAME } = {}) 
 
       if (displayRepos.length === 0) {
         const previousLens = lens;
-        activeLens = updateLensChipCounts(allShowcaseRepos, githubProjects, activeLens);
+        activeLens = updateLensChipCounts(
+          allShowcaseRepos.filter(repo => getWorkStream(repo) === activeStream),
+          githubProjects,
+          activeLens
+        );
         updateLensButtons(lensButtons, activeLens);
         lens = activeLens;
 
@@ -910,9 +933,25 @@ export async function initProjectShowcase({ username = DEFAULT_USERNAME } = {}) 
       }
 
       applyTiltEffects(container);
+      container.querySelectorAll('.showcase-project-card').forEach(card => {
+        const event = hackathonProjects[String(card.dataset.repoName || '').toLowerCase()];
+        if (activeStream !== 'hackathons' || !event || card.querySelector('.work-event-context'))
+          return;
+        const link = document.createElement('a');
+        link.className = 'work-event-context';
+        link.href = event.evidence;
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+        link.textContent = event.event + ' ↗';
+        card.append(link);
+      });
       revealRenderedProjectCards(container);
       updateActivityStats(allRepos, displayRepos, githubProjects);
-      activeLens = updateLensChipCounts(allShowcaseRepos, githubProjects, activeLens);
+      activeLens = updateLensChipCounts(
+        allShowcaseRepos.filter(repo => getWorkStream(repo) === activeStream),
+        githubProjects,
+        activeLens
+      );
       updateLensButtons(lensButtons, activeLens);
       announceResults(filteredSorted.length, query, activeLens);
 
@@ -1049,7 +1088,11 @@ export async function initProjectShowcase({ username = DEFAULT_USERNAME } = {}) 
       });
     }
 
-    activeLens = updateLensChipCounts(allShowcaseRepos, githubProjects, activeLens);
+    activeLens = updateLensChipCounts(
+      allShowcaseRepos.filter(repo => getWorkStream(repo) === activeStream),
+      githubProjects,
+      activeLens
+    );
     updateLensButtons(lensButtons, activeLens);
 
     window.addEventListener(
