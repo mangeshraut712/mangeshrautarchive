@@ -60,7 +60,9 @@ jobs:
           commit-message: 'chore(data): refresh GitHub stats cache'
           title: 'chore(data): refresh GitHub stats cache'
           body: |
-            Refreshes the public GitHub statistics cache from the GitHub API.
+            Refreshes the public GitHub statistics and contribution evidence source snapshots.
+
+            The Pages workflow independently refreshes and publishes this data every six hours after its quality gates. This draft keeps source snapshots reviewable; it does not gate scheduled publication.
 
             This draft is intentionally reviewable and must be merged through the repository's protected-branch process.
           draft: always-true

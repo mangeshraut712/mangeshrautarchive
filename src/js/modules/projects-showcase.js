@@ -622,7 +622,7 @@ export async function initProjectShowcase({ username = DEFAULT_USERNAME } = {}) 
     let allShowcaseRepos = [];
 
     const repoKey = repo =>
-      String(repo.full_name || `${repo.owner?.login || ''}/${repo.name || ''}`);
+      String(repo.full_name || `${repo.owner?.login || ''}/${repo.name || ''}`).toLowerCase();
 
     const setRepoCatalog = repos => {
       allRepos = repos.map((repo, index) => ({

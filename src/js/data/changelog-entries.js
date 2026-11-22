@@ -54,6 +54,22 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'automatic-work-sync-20261123',
+    date: '2026-11-23',
+    type: 'improvement',
+    title: 'Automatic contribution and project updates',
+    summary:
+      'Refreshes public GitHub work every six hours through the gated Pages pipeline. New tagged hackathon builds enter the correct stream, while stable repository IDs and normalized PR identities prevent duplicate entries.',
+    tags: ['deploy', 'other'],
+    sha: null,
+    commitVerified: false,
+    model: 'GPT-6 / Codex',
+    ide: 'Codex',
+    purpose: 'Automate verified public work publication and prevent duplicate stream entries.',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
     id: 'work-showcase-lazy-qa-20261123',
     date: '2026-11-23',
     type: 'fix',

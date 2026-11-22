@@ -6,6 +6,9 @@ on:
   pull_request:
     branches: [main]
   workflow_dispatch:
+  schedule:
+    # Refresh public work data every six hours, away from the busiest minute.
+    - cron: '23 */6 * * *'
 
 # Least privilege by default; deploy job elevates Pages permissions.
 permissions:
@@ -67,6 +70,15 @@ jobs:
       - name: Install Node dependencies
         # package-lock can lag transitive pins; install (not ci) matches local AGENTS.md path.
         run: npm install --no-audit --no-fund
+
+      - name: Refresh public GitHub work evidence
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          node scripts/integrations/sync-work-evidence.mjs
+          node scripts/integrations/sync-github-stats.mjs
+          echo "- Public work evidence refreshed; publication requires the remaining quality gates." >> "$GITHUB_STEP_SUMMARY"
 
       - name: Doctor — stack + root hygiene
         # Fail-fast before lint/tests: layout allow-list, forbidden framework deps, pins.

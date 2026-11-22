@@ -37,7 +37,9 @@ bounty award or disclosure acknowledgement was verified for this release.
   presentation modules. Old hand-maintained fallback records are replaced by the
   verified repository snapshot.
 - The existing scheduled stats workflow refreshes both data files into its
-  reviewable draft PR. It does not automatically merge or push to main.
+  reviewable draft PR for source snapshots. Separately, the Pages workflow refreshes
+  public work every six hours and before main-branch builds, then publishes only
+  after the existing quality gates. No automated merge or direct main push is needed.
 - Stats pagination includes later pages and retains the last snapshot on failure.
   Fabricated no-data defaults are removed. The local development proxy marks an
   unavailable backend as degraded instead of a successful empty catalogue.
@@ -62,3 +64,30 @@ The first remote run exposed a test ordering issue: touch-target measurement ran
 before the below-fold activity graph entered the viewport and initialized. The
 journey now scrolls to the graph and waits for its settings control before
 measuring targets, preserving the production lazy-loading behavior.
+
+## Automatic publication
+
+Coding agent: GPT-6 / Codex. Purpose: scheduled publication, stream classification,
+and deduplication. Exact model variant, reasoning mode, and token usage: unavailable.
+
+The Pages workflow runs at minute 23 every six hours (05:53, 11:53, 17:53, and
+23:53 IST). GitHub can delay scheduled jobs; this is periodic, not real-time sync.
+Main-branch pushes and manual Pages runs refresh the same public data. The fresh
+snapshot is included in the tested deployment artifact, so it does not wait for
+the weekly source-cache draft PR. A failed or incomplete contribution fetch blocks
+publication and leaves the last successful Pages deployment available. GitHub may
+disable scheduled workflows after prolonged repository inactivity; the workflow
+can be re-enabled from Actions and run manually.
+
+For new public original repositories, add `hackathon`, `hackathons`, or
+`portfolio-hackathon` as a GitHub topic to select Hackathons automatically.
+Removing those topics moves an uncurated repository back to Projects. Existing
+verified editorial mappings remain authoritative. `portfolio-exclude`, private,
+archived, and forked repositories are excluded from original-work streams.
+No award, participation, or bounty claim is inferred from an ordinary repository.
+
+GitHub repository IDs survive renames; lowercase repository/PR-number identities
+remove case-variant duplicates. Each refresh replaces the complete snapshot rather
+than appending rows. Browser catalog caches use the updated identity rules.
+Regression coverage exercises new PRs, renamed repositories, newly tagged builds,
+stream transitions, private exclusions, and repeated refreshes.

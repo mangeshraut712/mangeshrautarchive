@@ -21,9 +21,10 @@ export function normalizeContributions(items) {
       )
         return [];
       const repository = match[1];
-      if (EXCLUDED_OWNERS.has(repository.split('/')[0].toLowerCase()) || seen.has(item.html_url))
+      const identity = item.id ?? `${repository.toLowerCase()}/pull/${Number(match[2])}`;
+      if (EXCLUDED_OWNERS.has(repository.split('/')[0].toLowerCase()) || seen.has(identity))
         return [];
-      seen.add(item.html_url);
+      seen.add(identity);
       return [
         {
           repository,
@@ -57,7 +58,11 @@ export async function fetchWorkEvidence({
       `https://api.github.com/users/mangeshraut712/repos?per_page=100&sort=updated&type=owner&page=${page}`
     );
     if (!Array.isArray(items)) throw new Error('Invalid repository page');
-    for (const item of items) repositories.set(item.full_name.toLowerCase(), item);
+    for (const item of items) {
+      if (item.private) continue;
+      if (!item.full_name || !item.owner?.login) throw new Error('Invalid public repository');
+      repositories.set(item.id ?? item.full_name.toLowerCase(), item);
+    }
     if (items.length < 100) break;
     if (page >= 100) throw new Error('Repository pagination limit reached');
   }
@@ -86,6 +91,7 @@ export async function fetchWorkEvidence({
     excludedOwners: [...EXCLUDED_OWNERS],
     contributions,
     repositories: [...repositories.values()].map(repo => ({
+      id: repo.id,
       name: repo.name,
       full_name: repo.full_name,
       description: repo.description,

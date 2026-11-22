@@ -78,6 +78,7 @@ for (const width of [375, 768, 1440])
       expect(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth)).toBe(
         false
       );
+      await expect(page.locator('#projects-catalog-status')).toContainText('GitHub catalog');
       await page.locator('#gh-contrib').scrollIntoViewIfNeeded();
       await expect(page.locator('.gh-contrib__settings-btn')).toBeVisible();
       for (const selector of [
@@ -118,6 +119,7 @@ test('contribution failure clears stale statistics and offers a working retry', 
         })
   );
   await page.goto('/#projects');
+  await expect(page.locator('#projects-catalog-status')).toContainText('GitHub catalog');
   await page.locator('#gh-contrib').scrollIntoViewIfNeeded();
   await expect(page.locator('#gh-total')).toHaveText('7');
   fail = true;
@@ -143,6 +145,7 @@ test('initial activity loading stays bounded and heatmap has one keyboard entry'
   const visible = await page.locator('.showcase-project-card').count();
   await expect(page.locator('#projects-activity-caption')).toContainText(`${visible}/106`);
   expect(requested.size).toBeLessThanOrEqual(8);
+  await expect(page.locator('#projects-catalog-status')).toContainText('GitHub catalog');
   await page.locator('#gh-contrib').scrollIntoViewIfNeeded();
   const cells = page.locator('.gh-hm__cell[data-label]');
   await expect(cells).toHaveCount(14);
@@ -192,4 +195,32 @@ test('work streams distinguish builds and public security work while keeping mer
   );
   await page.locator('#work-merge-search').fill('not-a-real-contribution-zzzz');
   await expect(page.locator('#work-merge-status')).toContainText('0 merged contributions');
+});
+
+test('refresh classifies a new hackathon and deduplicates stable repository identities', async ({
+  page,
+}) => {
+  await mockGitHub(page);
+  let catalog = [
+    { ...repos[1], id: 101, name: 'new-build', full_name: 'mangeshraut712/new-build' },
+  ];
+  await page.route('**/api/github/repos/public*', route =>
+    route.fulfill({ json: { items: catalog } })
+  );
+  await page.goto('/#projects');
+  await expect(page.locator('.showcase-project-card')).toHaveCount(1);
+  catalog = [
+    { ...catalog[0], topics: ['portfolio-hackathon'] },
+    { ...catalog[0], topics: ['portfolio-hackathon'], full_name: 'MangeshRaut712/new-build' },
+  ];
+  await page.locator('#projects-refresh-btn').click();
+  await expect(page.locator('.showcase-project-card')).toHaveCount(0);
+  await page.locator('[data-work-stream="hackathons"]').click();
+  await expect(page.locator('.showcase-project-card')).toHaveCount(1);
+  await expect(page.locator('.showcase-project-card')).toHaveAttribute(
+    'data-repo-name',
+    'new-build'
+  );
+  await page.locator('#projects-refresh-btn').click();
+  await expect(page.locator('.showcase-project-card')).toHaveCount(1);
 });

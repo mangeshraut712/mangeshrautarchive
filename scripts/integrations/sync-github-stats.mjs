@@ -82,7 +82,7 @@ export async function syncGitHubStats({
       if (!response.ok) throw new Error(`Failed repository page ${page}: HTTP ${response.status}`);
       const items = await response.json();
       if (!Array.isArray(items)) throw new Error('Invalid repository response');
-      for (const repo of items) repositories.set(repo.full_name, repo);
+      for (const repo of items) repositories.set(repo.id ?? repo.full_name.toLowerCase(), repo);
       if (items.length < 100) break;
       if (page >= 100) throw new Error('Repository pagination limit reached');
     }

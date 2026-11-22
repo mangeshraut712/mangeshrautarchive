@@ -70,7 +70,7 @@ class GitHubProjects {
     this.cacheTime = null;
     this.cacheDuration = 10 * 60 * 1000;
     this.localCacheKey = `github_repos_${username}`;
-    this.repoSchemaVersion = 3;
+    this.repoSchemaVersion = 4;
     this.catalogStatus = { source: 'bundled', timestamp: null, partial: true };
 
     this.activityCacheDuration = 15 * 60 * 1000;
@@ -210,7 +210,7 @@ class GitHubProjects {
         repos
           .filter(repo => repo && typeof repo.name === 'string')
           .map(repo => [
-            String(repo.full_name || repo.name).toLowerCase(),
+            repo.id ?? String(repo.full_name || repo.name).toLowerCase(),
             this.normalizeRepoRecord(repo),
           ])
       );

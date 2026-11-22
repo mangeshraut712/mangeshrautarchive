@@ -64,11 +64,17 @@ export const publicSecurityWork = [
 
 export function getWorkStream(repo) {
   const name = String(repo.name || '').toLowerCase();
+  const topics = new Set((repo.topics || []).map(topic => String(topic).toLowerCase()));
   if (
     repo.fork ||
     repo.archived ||
+    repo.private ||
+    topics.has('portfolio-exclude') ||
     ['.github', 'mangeshraut712', 'mangeshraut712.github.io', 'rs-10871-demo'].includes(name)
   )
     return null;
-  return hackathonProjects[name] || repo.topics?.includes('hackathon') ? 'hackathons' : 'projects';
+  return hackathonProjects[name] ||
+    ['hackathon', 'hackathons', 'portfolio-hackathon'].some(topic => topics.has(topic))
+    ? 'hackathons'
+    : 'projects';
 }
