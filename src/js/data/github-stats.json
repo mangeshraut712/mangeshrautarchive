@@ -1,12 +1,32 @@
 {
   "username": "mangeshraut712",
-  "lastSyncedAt": "2026-11-22T20:11:44.620Z",
-  "publicReposCount": 119,
+  "lastSyncedAt": "2026-11-23T14:19:26.217Z",
+  "publicReposCount": 121,
   "followersCount": 15,
   "followingCount": 15,
   "totalStars": 15,
   "totalForks": 4,
   "repositories": [
+    {
+      "name": "kohinoor-hair-salon",
+      "fullName": "mangeshraut712/kohinoor-hair-salon",
+      "description": "Men’s grooming in Pimple Nilakh, Pune. A photographic salon guide with local opening hours, directions and Instagram reels, built with Next.js and hosted on Cloudflare Pages.",
+      "url": "https://github.com/mangeshraut712/kohinoor-hair-salon",
+      "homepage": "https://kohinoor-hair-salon.pages.dev/",
+      "stars": 0,
+      "forks": 0,
+      "language": "TypeScript",
+      "topics": [
+        "nextjs",
+        "playwright",
+        "pune",
+        "salon-website",
+        "small-business",
+        "tailwindcss",
+        "typescript"
+      ],
+      "updatedAt": "2026-11-23T08:23:43Z"
+    },
     {
       "name": "hiver-spotify-support-agent",
       "fullName": "mangeshraut712/hiver-spotify-support-agent",
@@ -193,27 +213,6 @@
         "research"
       ],
       "updatedAt": "2026-11-12T09:04:36Z"
-    },
-    {
-      "name": "alpha-quant-academy",
-      "fullName": "mangeshraut712/alpha-quant-academy",
-      "description": "Quant finance training platform with AI stock analysis and Monte Carlo backtesting.",
-      "url": "https://github.com/mangeshraut712/alpha-quant-academy",
-      "homepage": "https://mangeshraut712.github.io/alpha-quant-academy/",
-      "stars": 1,
-      "forks": 0,
-      "language": "Jupyter Notebook",
-      "topics": [
-        "algorithmic-trading",
-        "backtesting",
-        "education",
-        "finance",
-        "machine-learning",
-        "monte-carlo",
-        "python",
-        "quant-finance"
-      ],
-      "updatedAt": "2026-11-12T09:03:38Z"
     }
   ]
 }
