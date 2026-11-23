@@ -1,8 +1,9 @@
 #!/bin/bash
 set -euo pipefail
 root="$(cd "$(dirname "$0")" && pwd)"
-tmp="$(mktemp -d)"
-trap 'rm -rf "$tmp"' EXIT
+mkdir -p "$root/../../../.cache/calendar-helper"
+tmp="$(mktemp -d "$root/../../../.cache/calendar-helper/test.XXXXXX")"
+trap 'node "$root/../../safety/remove-temp.mjs" "${tmp:?}" --apply' EXIT
 /usr/bin/xcrun swiftc "$root/Core.swift" "$root/CoreTests.swift" -o "$tmp/tests"
 "$tmp/tests"
 "$root/build.sh" "$tmp/CalendarSync.app"

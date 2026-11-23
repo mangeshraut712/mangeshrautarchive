@@ -9,11 +9,11 @@ import hmac
 from typing import List, Optional, Dict, Any
 from fastapi import HTTPException, Request
 from pydantic import BaseModel, Field
-from dotenv import load_dotenv
+from api.local_safety import install_local_network_guard
 
-# Load environment variables (.env.local overrides .env).
-load_dotenv(".env.local")
-load_dotenv()
+# Credentials are injected by deployment, never read from developer dotenv files.
+if os.getenv("PORTFOLIO_LOCAL_ONLY") == "1":
+    install_local_network_guard()
 
 # API Keys and Settings
 TMDB_API_KEY = os.getenv("TMDB_API_KEY", "").strip()
@@ -546,6 +546,7 @@ class TypingIndicator(BaseModel):
 
 
 class ContactMessage(BaseModel):
+    confirmExternalNotification: bool = False
     name: str = Field(..., min_length=1, max_length=100)
     email: str = Field(..., min_length=5, max_length=200)
     subject: str = Field(..., min_length=1, max_length=200)

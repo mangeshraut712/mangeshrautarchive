@@ -236,6 +236,9 @@ mangeshrautarchive/
 │   ├── routes/             # HTTP route modules
 │   ├── integrations/       # OAuth + third-party connectors
 │   └── config.py · model_router.py · monitoring.py · …
+├── workers/                # Cloudflare Workers (Edge AI & D1 Status Engine)
+│   ├── assistme-chat/      # Streaming inference, model routing & WebMCP proxy
+│   └── portfolio-status/   # 5-min cron uptime collector & D1 SQLite persistence
 ├── scripts/                # Tooling (not shipped to browsers)
 │   ├── build/              # esbuild, generators, clean
 │   ├── deployment/         # Lighthouse, security, deploy sync
@@ -267,7 +270,7 @@ All five test suites must pass before any merge to `main`:
 | ------------ | ---------------- | ----------------------------- | -------------------------------------------------------------------------------------- |
 | API          | pytest           | `npm run test:api`            | See `tests/README.md` — FastAPI endpoints, middleware                                  |
 | Worker       | Node test runner | `npm run test:worker`         | Routing, streams, persistent uptime and incidents; counts in `tests/README.md`         |
-| Unit         | Node test runner | `npm run test:unit`           | 64 tests — Blog escaping, charts, published surfaces, sync logic, analytics scheduling |
+| Unit         | Node test runner | `npm run test:unit`           | 66 tests — Blog escaping, charts, published surfaces, sync logic, analytics scheduling |
 | E2E Critical | Playwright       | `npm run test:e2e:critical`   | 20 critical user journeys on Desktop Chrome                                            |
 | Tester Army  | `e2e`            | `npm run test:tester-army:ci` | 23 deterministic journeys on desktop Chromium only (`--target desktop`)                |
 
@@ -333,3 +336,7 @@ Durable, non-obvious notes for running/testing this repo in the Cursor Cloud VM.
 
 - `npm run dev` serves the frontend on http://127.0.0.1:4000 and proxies `/api/*` to the FastAPI backend on port 8001.
 - The AI chatbot works without any secrets: when `OPENROUTER_API_KEY` is unset the backend runs in "Local Intelligence (offline fallback)" mode and returns canned portfolio answers. Set `OPENROUTER_API_KEY` (and optionally `OPENROUTER_MODEL`) in `.env`/`.env.local` only when you need real LLM responses. All other AI/media/integration keys in `.env.example` are optional for local dev.
+
+## Repository safety commands
+
+Use `npm run test:local` for credential-free tests and `npm run dev` for isolated development. `npm run clean` only previews; review its targets before `npm run clean:apply`. Run `npm run safety:check` and `npm run security-check` before release. See [docs/DEVELOPMENT_SAFETY.md](docs/DEVELOPMENT_SAFETY.md) for enforceable controls and manual account protections. Do not equate these controls with an OS sandbox.

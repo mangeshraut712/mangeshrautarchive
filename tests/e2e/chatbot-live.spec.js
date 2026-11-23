@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, test } from './helpers/isolated-test.js';
 
 test('test live chatbot on deployed portfolio', async ({ page }) => {
   const targetUrl =

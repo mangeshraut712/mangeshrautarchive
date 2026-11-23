@@ -1,6 +1,6 @@
 # Maintenance roadmap
 
-Reviewed November 9, 2026. Completed work and dated verification live in [PROGRESS.md](PROGRESS.md) and [QA records](docs/qa/). The [previous roadmap](docs/history/2026-11-09-tasks.md) is preserved for context.
+Reviewed November 10, 2026. Completed work and dated verification live in [PROGRESS.md](PROGRESS.md) and [QA records](docs/qa/). The [previous roadmap](docs/history/2026-11-09-tasks.md) is preserved for context.
 
 ## Ongoing work
 

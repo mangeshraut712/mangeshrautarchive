@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './helpers/isolated-test.js';
 import { gotoSite, openChatbot } from './helpers/site.js';
 
 test('Contact loads its calendar when the calendar approaches the viewport', async ({ page }) => {

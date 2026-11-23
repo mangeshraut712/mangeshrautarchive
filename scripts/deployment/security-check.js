@@ -1,232 +1,72 @@
 #!/usr/bin/env node
-
-import { readFileSync, readdirSync, statSync } from 'fs';
-import { dirname, extname, join, relative, resolve } from 'path';
-import { fileURLToPath } from 'url';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-const PROJECT_ROOT = resolve(__dirname, '../..');
-
-class SecurityChecker {
-  constructor() {
-    this.secrets = [
-      { pattern: /sk-[a-zA-Z0-9_]{20,}/g, name: 'OpenAI API Key' },
-      { pattern: /xai-[a-zA-Z0-9]{40,}/g, name: 'Grok API Key' },
-      { pattern: /sk-ant-[a-zA-Z0-9_-]{80,}/g, name: 'Anthropic API Key' },
-      { pattern: /pplx-[a-zA-Z0-9_-]{20,}/g, name: 'Perplexity API Key' },
-      { pattern: /AIzaSy[a-zA-Z0-9_-]{35}/g, name: 'Google Gemini API Key' },
-      { pattern: /sk-or-v1-[a-zA-Z0-9_-]{40,}/g, name: 'OpenRouter API Key' },
-      { pattern: /hf_[a-zA-Z0-9]{20,}/g, name: 'Hugging Face API Key' },
-      { pattern: /ghp_[a-zA-Z0-9]{36}/g, name: 'GitHub Personal Access Token' },
-      {
-        pattern: /https:\/\/discord(?:app)?\.com\/api\/webhooks\/[0-9]{15,22}\/[a-zA-Z0-9_-]{50,}/g,
-        name: 'Discord Webhook URL',
-      },
-      { pattern: /[0-9]{8,12}:AA[a-zA-Z0-9_-]{30,38}/g, name: 'Telegram Bot Token' },
-      { pattern: /-----BEGIN (?:RSA |EC )?PRIVATE KEY-----/g, name: 'Private Key' },
-    ];
-
-    // High-risk files are checked first to fail fast.
-    this.alwaysCheck = [
-      'src/index.html',
-      'src/js/entry.js',
-      'src/js/core/bootstrap.js',
-      'api/index.py',
-    ];
-
-    this.skipDirectories = new Set([
-      '.git',
-      'node_modules',
-      '.vscode',
-      '.next',
-      '.cursor',
-      '.npmcache',
-      'dist',
-      'build',
-      'coverage',
-      'artifacts',
-      'test-results',
-      'playwright-report',
-      '__pycache__',
-      'venv',
-      '.venv',
-      '.secrets',
-      '.pytest_cache',
-      '.ruff_cache',
-      '.tempmediaStorage',
-      'scratch',
-    ]);
-
-    this.skipFiles = new Set([
-      '.env',
-      '.env.local',
-      'API_KEYS.txt',
-      'src/js/config.local.js',
-      'config.local.js',
-    ]);
-
-    this.maxFileSizeBytes = 2 * 1024 * 1024;
-    this.allowedExtensions = new Set([
-      '.cjs',
-      '.css',
-      '.env',
-      '.html',
-      '.js',
-      '.json',
-      '.jsx',
-      '.md',
-      '.mjs',
-      '.py',
-      '.sh',
-      '.ts',
-      '.tsx',
-      '.txt',
-      '.xml',
-      '.yaml',
-      '.yml',
-    ]);
+import { execFileSync } from 'node:child_process';
+import { readFileSync, lstatSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+const root = fileURLToPath(new URL('../../', import.meta.url));
+const patterns = [
+  ['private key', /-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----/],
+  [
+    'provider key',
+    /(?:sk-or-v1-|sk-ant-|sk_live_|rk_live_|sk_test_|xai-|pplx-|hf_)[A-Za-z0-9_-]{20,}/,
+  ],
+  ['GitHub token', /(?:ghp_|gho_|github_pat_)[A-Za-z0-9_]{20,}/],
+  ['AWS access key', /AKIA[A-Z0-9]{16}/],
+  ['Google API key', /AIzaSy[A-Za-z0-9_-]{33,}/],
+  ['JWT credential', /eyJ[A-Za-z0-9_-]{20,}\.[A-Za-z0-9_-]{20,}\.[A-Za-z0-9_-]{15,}/],
+  ['Telegram credential', /[0-9]{8,12}:AA[A-Za-z0-9_-]{30,38}/],
+  [
+    'webhook credential',
+    /https:\/\/discord(?:app)?\.com\/api\/webhooks\/[0-9]{15,22}\/[A-Za-z0-9_-]{50,}/,
+  ],
+];
+const staged = process.argv.includes('--staged');
+const names = execFileSync(
+  'git',
+  ['ls-files', '-z', ...(staged ? [] : ['--cached', '--others', '--exclude-standard'])],
+  { cwd: root, encoding: 'utf8' }
+)
+  .split('\0')
+  .filter(Boolean);
+let failures = 0;
+for (const name of names) {
+  if (/(^|\/)\.env(?:$|\.)/.test(name) && !name.endsWith('.env.example')) {
+    console.error(`${name}:1: forbidden tracked environment file`);
+    failures++;
   }
-
-  toRelativePath(filePath) {
-    return relative(PROJECT_ROOT, filePath).replace(/\\/g, '/');
-  }
-
-  shouldSkipFile(filePath) {
-    const relativePath = this.toRelativePath(filePath);
-    const firstPathSegment = relativePath.split('/')[0];
-
-    if (this.skipFiles.has(relativePath)) {
-      return true;
+  let data;
+  try {
+    if (staged)
+      data = execFileSync('git', ['show', `:${name}`], {
+        cwd: root,
+        stdio: ['ignore', 'pipe', 'ignore'],
+        maxBuffer: 20 * 1024 * 1024,
+      });
+    else {
+      if (!lstatSync(new URL(name, new URL('../../', import.meta.url))).isFile()) continue;
+      data = readFileSync(new URL(name, new URL('../../', import.meta.url)));
     }
-
-    return this.skipDirectories.has(firstPathSegment);
+  } catch {
+    console.error(`${name}: unable to inspect tracked file`);
+    failures++;
+    continue;
   }
-
-  shouldScanExtension(filePath) {
-    const extension = extname(filePath).toLowerCase();
-    // Scan extensionless files too.
-    return extension === '' || this.allowedExtensions.has(extension);
-  }
-
-  checkFile(filePath) {
-    try {
-      if (!this.shouldScanExtension(filePath)) {
-        return [];
-      }
-
-      const fileStats = statSync(filePath);
-      if (fileStats.size > this.maxFileSizeBytes) {
-        return [];
-      }
-
-      const content = readFileSync(filePath, 'utf8');
-      const lines = content.split(/\r?\n/);
-      const found = [];
-
-      const activeLines = lines.filter(line => !line.includes('REVOKED:'));
-
-      for (const secret of this.secrets) {
-        let matchesCount = 0;
-
-        for (const line of activeLines) {
-          const matches = line.match(secret.pattern);
-          if (matches) {
-            matchesCount += matches.length;
-          }
-        }
-
-        if (matchesCount > 0) {
-          found.push({
-            type: secret.name,
-            pattern: secret.pattern.source,
-            matches: matchesCount,
-            file: this.toRelativePath(filePath),
-          });
+  if (data.includes(0)) continue;
+  data
+    .toString('utf8')
+    .split(/\r?\n/)
+    .forEach((line, index) => {
+      for (const [kind, pattern] of patterns) {
+        if (pattern.test(line)) {
+          console.error(`${name}:${index + 1}: possible ${kind}; value withheld`);
+          failures++;
         }
       }
-
-      return found;
-    } catch {
-      return null;
-    }
-  }
-
-  scanDirectory(dir, results = [], scannedFiles = new Set()) {
-    const items = readdirSync(dir, { withFileTypes: true });
-
-    for (const item of items) {
-      const fullPath = join(dir, item.name);
-
-      if (this.shouldSkipFile(fullPath)) {
-        continue;
-      }
-
-      if (item.isDirectory()) {
-        this.scanDirectory(fullPath, results, scannedFiles);
-        continue;
-      }
-
-      if (!item.isFile()) {
-        continue;
-      }
-
-      const relativePath = this.toRelativePath(fullPath);
-      if (scannedFiles.has(relativePath)) {
-        continue;
-      }
-
-      scannedFiles.add(relativePath);
-      const findings = this.checkFile(fullPath);
-      if (findings && findings.length > 0) {
-        results.push(...findings);
-      }
-    }
-
-    return results;
-  }
-
-  run() {
-    console.log('🔍 Running security check for exposed API keys...\n');
-
-    const findings = [];
-    const scannedFiles = new Set();
-
-    for (const file of this.alwaysCheck) {
-      const fullPath = join(PROJECT_ROOT, file);
-      const relativePath = this.toRelativePath(fullPath);
-      scannedFiles.add(relativePath);
-
-      const fileFindings = this.checkFile(fullPath);
-      if (fileFindings && fileFindings.length > 0) {
-        findings.push(...fileFindings);
-      }
-    }
-
-    this.scanDirectory(PROJECT_ROOT, findings, scannedFiles);
-
-    if (findings.length > 0) {
-      console.error('🚨 SECURITY RISK: Exposed API keys detected!\n');
-      console.error('Found:');
-
-      for (const finding of findings) {
-        console.error(`  ❌ ${finding.type}: ${finding.matches} match(es) in ${finding.file}`);
-      }
-
-      console.error('\n❌ BLOCKED: Commit aborted. Please remove exposed keys immediately.');
-      console.error('\n🔧 Actions to take:');
-      console.error('  1. Revoke/rotate all exposed API keys immediately');
-      console.error('  2. Move secrets to config.local.js (git-ignored)');
-      console.error('  3. Run: npm run security-check');
-      console.error('\n📞 Emergency: Check provider dashboards and revoke keys now!');
-
-      process.exit(1);
-    }
-
-    console.log('✅ No exposed API keys detected in codebase.');
-    console.log('🔒 All secrets appear to be properly secured.');
-  }
+    });
 }
-
-const checker = new SecurityChecker();
-checker.run();
+if (failures) {
+  console.error(
+    'WARNING: tracked secrets can grant access to accounts and data. Remove and rotate exposed credentials.'
+  );
+  process.exitCode = 1;
+} else
+  console.log('Tracked-file secret scan passed; credential validity and history were not checked.');

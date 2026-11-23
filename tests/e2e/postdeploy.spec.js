@@ -1,5 +1,5 @@
 import AxeBuilder from '@axe-core/playwright';
-import { expect, test } from '@playwright/test';
+import { expect, test } from './helpers/isolated-test.js';
 import { resolveApiUrl } from './helpers/postdeploy.js';
 
 function resolveTargetUrl(testInfo) {

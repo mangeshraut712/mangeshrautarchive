@@ -7,7 +7,6 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import JSONResponse
-from dotenv import load_dotenv
 
 from api.config import get_default_model, get_openrouter_api_key
 from api.http_client import close_async_http_client
@@ -46,9 +45,6 @@ from api.routes import (
     ingest_url,
 )
 
-# Load environment variables (.env.local overrides .env).
-load_dotenv(".env.local")
-load_dotenv()
 
 OPENAPI_TAGS = [
     {

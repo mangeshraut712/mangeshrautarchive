@@ -1,3 +1,6 @@
+import { beforeEach } from 'e2e';
+import { isolateBrowser } from './local-browser.js';
+beforeEach(isolateBrowser);
 import { test } from '@e2e-dev/web';
 import { expect } from 'e2e';
 

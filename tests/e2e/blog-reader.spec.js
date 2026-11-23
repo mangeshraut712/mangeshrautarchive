@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './helpers/isolated-test.js';
 import { blogPosts } from '../../src/js/modules/blog-data.js';
 
 const base = process.env.PLAYWRIGHT_BASE_URL || 'http://127.0.0.1:4000';

@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, test } from './helpers/isolated-test.js';
 import { PAGES, gotoSite, pathPrefix } from './helpers/site.js';
 
 const sectionIds = [

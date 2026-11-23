@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, test } from './helpers/isolated-test.js';
 import { gotoSite } from './helpers/site.js';
 
 async function openContactCalendar(page) {

@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './helpers/isolated-test.js';
 import AxeBuilder from '@axe-core/playwright';
 import { storedHistory } from './helpers/status-history.js';
 const origin = 'https://portfolio-status.mangeshraut712.workers.dev';

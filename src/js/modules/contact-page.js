@@ -182,6 +182,7 @@ function initContactForm() {
         return;
       }
       const result = await submitStoredForm('/api/contact', {
+        confirmExternalNotification: true,
         name,
         email,
         subject,

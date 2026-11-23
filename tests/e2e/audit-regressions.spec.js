@@ -1,5 +1,5 @@
 import AxeBuilder from '@axe-core/playwright';
-import { expect, test } from '@playwright/test';
+import { expect, test } from './helpers/isolated-test.js';
 import { gotoSite } from './helpers/site.js';
 
 test.use({ viewport: { width: 375, height: 812 } });

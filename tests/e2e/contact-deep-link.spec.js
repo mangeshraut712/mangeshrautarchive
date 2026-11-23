@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './helpers/isolated-test.js';
 import { gotoSite } from './helpers/site.js';
 
 for (const section of ['about', 'projects']) {

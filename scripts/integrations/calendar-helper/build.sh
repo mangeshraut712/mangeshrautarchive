@@ -7,6 +7,7 @@ mkdir -p "$output/Contents/MacOS"
 cp "$root/Info.plist" "$output/Contents/Info.plist"
 /usr/bin/xcrun swiftc -parse-as-library -O -target "$(uname -m)-apple-macosx14.0" \
   "$root/Core.swift" "$root/CalendarHelper.swift" "$root/AuthorizationApp.swift" -o "$output/Contents/MacOS/calendar-helper"
+echo "WARNING: replacing the app signature at $output; its existing signature will be lost." >&2
 /usr/bin/codesign --force --sign "${CALENDAR_SIGNING_IDENTITY:--}" "$output"
 /usr/bin/codesign --verify --strict "$output"
 printf 'Built and verified %s\n' "$output"

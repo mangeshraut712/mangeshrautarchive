@@ -1,3 +1,4 @@
+from api.notification_safety import reserve_notification
 import base64
 import os
 from datetime import datetime, timezone
@@ -144,8 +145,8 @@ async def send_contact_message(payload: ContactMessage, req: Request):
             "id": doc_id,
         }
 
-    except httpx.RequestError as exc:
-        logger.error(f"❌ Network error saving contact: {exc}", exc_info=True)
+    except httpx.RequestError:
+        logger.error("Network error saving contact; provider details withheld.")
         raise HTTPException(status_code=503, detail="Network error. Please try again.")
 
 
@@ -162,7 +163,8 @@ async def _dispatch_contact_notifications(payload: ContactMessage, req: Request)
 
     try:
         async with httpx.AsyncClient(timeout=5.0) as client:
-            if tg_token and tg_chat_id:
+            if tg_token and tg_chat_id and await reserve_notification("telegram", tg_chat_id, payload.confirmExternalNotification):
+                logger.warning("WARNING: sending one confirmed external contact notification.")
                 tg_text = (
                     f"📬 *New Portfolio Contact Submission*\n\n"
                     f"👤 *Name:* {payload.name}\n"
@@ -176,7 +178,10 @@ async def _dispatch_contact_notifications(payload: ContactMessage, req: Request)
                     json={"chat_id": tg_chat_id, "text": tg_text, "parse_mode": "Markdown"},
                 )
 
-            if discord_url:
+                return
+
+            if discord_url and await reserve_notification("discord", discord_url, payload.confirmExternalNotification):
+                logger.warning("WARNING: sending one confirmed external contact notification.")
                 await client.post(
                     discord_url,
                     json={
@@ -195,7 +200,10 @@ async def _dispatch_contact_notifications(payload: ContactMessage, req: Request)
                     },
                 )
 
-            if webhook_url:
+                return
+
+            if webhook_url and await reserve_notification("webhook", webhook_url, payload.confirmExternalNotification):
+                logger.warning("WARNING: sending one confirmed external contact notification.")
                 await client.post(
                     webhook_url,
                     json={
@@ -209,8 +217,8 @@ async def _dispatch_contact_notifications(payload: ContactMessage, req: Request)
                         },
                     },
                 )
-    except Exception as e:
-        logger.warning(f"⚠️ Notification dispatch error: {e}")
+    except Exception:
+        logger.warning("Notification dispatch failed; provider details withheld.")
 
 
 def _newsletter_doc_id(email: str) -> str:
@@ -299,8 +307,8 @@ async def subscribe_newsletter(payload: NewsletterSubscribe, req: Request):
             "id": doc_name,
         }
 
-    except httpx.RequestError as exc:
-        logger.error(f"❌ Network error saving newsletter subscription: {exc}", exc_info=True)
+    except httpx.RequestError:
+        logger.error("Network error saving newsletter; provider details withheld.")
         raise HTTPException(status_code=503, detail="Network error. Please try again.")
 
 

@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, test } from './helpers/isolated-test.js';
 
 for (const width of [375, 768, 1440]) {
   for (const theme of ['light', 'dark']) {

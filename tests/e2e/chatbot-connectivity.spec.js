@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './helpers/isolated-test.js';
 
 const edge = 'https://assistme-chat.mangeshraut712.workers.dev';
 test.use({ serviceWorkers: 'block' });

@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+import { localEnvironment } from '../safety/local-environment.mjs';
 import { existsSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { spawnSync } from 'node:child_process';
@@ -18,13 +19,13 @@ const pythonCandidates = [
   existsSync(dotVenvPython) ? dotVenvPython : null,
 ].filter(Boolean);
 
-const env = {
-  ...process.env,
-  PYTHONPATH: process.env.PYTHONPATH ? `.:${process.env.PYTHONPATH}` : '.',
-};
+const env = localEnvironment(process.env, projectRoot);
 
 const args = process.argv.slice(2);
-const pytestArgs = args.length > 0 ? args : ['-q', 'tests/api'];
+const pytestArgs =
+  args.length > 0
+    ? args
+    : ['-q', 'tests/api', '--basetemp', resolve(projectRoot, '.cache/local-runtime/pytest')];
 
 for (const python of pythonCandidates) {
   const check = spawnSync(python, ['-c', 'import pytest'], {

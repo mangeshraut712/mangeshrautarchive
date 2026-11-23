@@ -54,6 +54,23 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'development-safety-20261124',
+    date: '2026-11-24',
+    type: 'improvement',
+    title: 'Safer local development',
+    summary:
+      'Isolates local tests from production credentials, previews cleanup targets, separates database migrations from deployment, and requires explicit notification quotas.',
+    tags: ['other'],
+    sha: null,
+    commitVerified: false,
+    model: 'GPT-6 / Codex',
+    ide: 'Codex',
+    purpose:
+      'Enforce approved repository safety controls without using credentials or changing external settings.',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
     id: 'clean-portfolio-design-20261124',
     date: '2026-11-24',
     type: 'improvement',
@@ -277,6 +294,24 @@ export const changelogEntries = [
     ide: 'Codex',
     purpose:
       'Reconcile calendar and reminder website data against connected accounts without duplicating occurrences.',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
+    id: 'docs-synchronization-20261110',
+    date: '2026-11-10',
+    type: 'improvement',
+    title: 'Cross-surface documentation synchronization, edge API mapping, and architecture audit',
+    summary:
+      'Synchronizes repository documentation across AGENTS.md, DESIGN.md, docs/DESIGN.md, PROGRESS.md, TASKS.md, docs/API.md, docs/DEVELOPMENT_HISTORY.md, and docs/STRUCTURE.md. Maps the durable uptime edge engine (workers/portfolio-status), updates the unit test inventory to 43 contracts, formalizes centered section header standards, and updates development milestones.',
+    tags: ['design', 'systems'],
+    sha: null,
+    commitVerified: false,
+    model: 'Gemini 3.8 Flash',
+    ide: 'Google Antigravity IDE',
+    purpose:
+      'Synchronize cross-surface documentation, test counts, edge status API endpoints, and design system specifications.',
+    attributionSource: 'commit-message',
     reasoning: 'unavailable',
     usage: 'unavailable',
   },

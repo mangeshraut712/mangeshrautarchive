@@ -52,8 +52,9 @@ mangeshrautarchive/
 │   ├── model_router.py       # Configured model resolution and fallback routing
 │   └── monitoring.py         # Latency tracker, error budgets, telemetry aggregation
 │
-├── workers/                  # ★ Cloudflare Workers (Edge AI & GitHub Pages API Proxy)
-│   └── assistme-chat/        # Standalone Edge Worker for AssistMe AI Chat & WebMCP proxy
+├── workers/                  # ★ Cloudflare Workers (Edge AI & D1 Status Engine)
+│   ├── assistme-chat/        # Standalone Edge Worker for AssistMe AI Chat & WebMCP proxy
+│   └── portfolio-status/     # 5-minute cron uptime collector & D1 SQLite persistence
 │
 ├── scripts/                  # ★ Developer Tooling & Build Pipeline (Not shipped to browser)
 │   ├── build/                # esbuild bundlers, static generators (blog, case studies, icons), clean
@@ -66,9 +67,9 @@ mangeshrautarchive/
 ├── tests/                    # ★ Complete Automated Test Suite
 │   ├── api/                  # pytest coverage for FastAPI routes, streaming, OAuth, and middleware
 │   ├── e2e/                  # Playwright multi-browser end-to-end specifications across 16 targets
-│   ├── unit/                 # URL boundaries, analytics, rendering, and data regression tests
+│   ├── unit/                 # URL boundaries, analytics, rendering, and data regression tests (66 tests)
 │   ├── tester-army/          # Tester Army deterministic end-to-end journeys (desktop + mobile WebKit)
-│   └── worker/               # Cloudflare Worker multimodal routing and stream boundary tests
+│   └── worker/               # Edge worker routing, stream boundaries, and durable uptime tests (69 tests)
 │
 ├── config/                   # Non-root tool configuration (e.g. vulture.toml dead-code scanner)
 │

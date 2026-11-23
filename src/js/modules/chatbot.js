@@ -2187,6 +2187,7 @@ class AppleIntelligenceChatbot {
       try {
         const { topic, brief, timeline, name, email } = intake.answers;
         const result = await submitStoredForm('/api/contact', {
+          confirmExternalNotification: true,
           name,
           email,
           subject: topic.slice(0, 200),

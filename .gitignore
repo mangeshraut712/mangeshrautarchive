@@ -191,3 +191,12 @@ secrets.*
 .e2e/
 # Local agent tooling
 skills-lock.json
+
+# Local credentials and infrastructure state must never be committed.
+.env*
+!.env.example
+*.tfstate
+*.tfstate.*
+*.tfvars
+*.tfvars.json
+.cache/local-runtime/

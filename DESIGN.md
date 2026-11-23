@@ -103,7 +103,13 @@ The portfolio’s aesthetic reflects modern Apple operating systems (macOS Tahoe
 - Rounded corners (`border-radius: 16px`), subtle hairline borders, and inset dividers.
 - Used across the AssistMe Privacy Dashboard, Projects Showcase, and Monitor Vitals.
 
-### 4.4 Specular Metallic Shine Animation
+### 4.4 Centered Section Header Architecture
+
+- Every major content section (`#about`, `#skills`, `#experience`, `#engineering`, `#projects`, `#education`, `#publications`, `#awards`, `#blog`, `#faq`, `#contact`) uses standardized Apple-centered section headers.
+- The `h2` is centered in Apple Blue (`#0071e3` light / `#2997ff` dark) with semibold tracking, followed by a centered `p.section-subtitle` in neutral secondary text.
+- Section tags/eyebrows are reserved for specialized context; redundant banner labels within nested cards are eliminated to preserve whitespace and focus.
+
+### 4.5 Specular Metallic Shine Animation
 
 Applied to primary action buttons and featured cards:
 

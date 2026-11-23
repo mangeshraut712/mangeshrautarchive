@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, test } from './helpers/isolated-test.js';
 
 const pathPrefix = process.env.TEST_TARGET === 'github' ? '/mangeshrautarchive' : '';
 

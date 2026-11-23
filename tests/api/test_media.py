@@ -121,18 +121,18 @@ def test_music_recent_enriches_placeholder_artwork(monkeypatch):
         "ts": time.time(),
     }
 
-    async def fake_resolve(track: str, artist: str = ""):
+    async def fake_resolve(track: str, artist: str = "", album: str = ""):
         assert "Piya Aaye Na" in track
         assert artist == "Tulsi Kumar"
-        return (
-            "https://is1-ssl.mzstatic.com/image/thumb/Music/example/600x600bb.jpg",
-            "itunes",
-        )
+        return {
+            "artwork_url": "https://is1-ssl.mzstatic.com/image/thumb/Music/example/600x600bb.jpg",
+            "source": "itunes",
+        }
 
     async def noop_refresh(*_args, **_kwargs):
         return None
 
-    monkeypatch.setattr("api.routes.media.resolve_external_artwork", fake_resolve)
+    monkeypatch.setattr("api.routes.media.resolve_external_track_details", fake_resolve)
     monkeypatch.setattr("api.routes.media.refresh_lastfm_recent_cache", noop_refresh)
     client = TestClient(app)
 

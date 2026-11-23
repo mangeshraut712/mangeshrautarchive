@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, test } from './helpers/isolated-test.js';
 import { gotoSite, sitePath } from './helpers/site.js';
 
 test('long hero roles keep the same height on narrow phones', async ({ page }) => {

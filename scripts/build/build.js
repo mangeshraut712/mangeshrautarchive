@@ -1,6 +1,7 @@
+import { inspectDeletion, removeWithinRepo } from '../safety/safe-files.mjs';
 import { fileURLToPath } from 'url';
 import { dirname, resolve, join, relative } from 'path';
-import { mkdir, rm, readdir, stat, readFile, writeFile } from 'fs/promises';
+import { mkdir, readdir, stat, readFile, writeFile } from 'fs/promises';
 import { execSync } from 'child_process';
 import { transform } from 'esbuild';
 import { blogPosts } from '../../src/js/modules/blog-data.js';
@@ -16,27 +17,10 @@ const __dirname = dirname(__filename);
 const projectRoot = resolve(__dirname, '../../');
 const CANONICAL_SITE = 'https://mangeshraut712.github.io/mangeshrautarchive';
 
-// Use /tmp when inside macOS-restricted directories (Downloads, Desktop in some configs)
-// Detect by attempting a test write; fall back to /tmp/dist on EPERM
 async function resolveDistDir() {
-  const standard = resolve(projectRoot, 'dist');
-  try {
-    await mkdir(standard, { recursive: true });
-    // Quick write test
-    const probe = resolve(standard, '.write-probe');
-    await writeFile(probe, '');
-    await rm(probe, { force: true });
-    return standard;
-  } catch (err) {
-    if (err.code === 'EPERM' || err.code === 'EACCES') {
-      const tmp = resolve('/tmp', 'mangeshrautarchive-dist');
-      console.warn(`⚠️  Project is in a macOS-restricted directory (${err.code}).`);
-      console.warn(`   Building to ${tmp} instead.`);
-      console.warn(`   To fix permanently: move the project out of Downloads.`);
-      return tmp;
-    }
-    throw err;
-  }
+  const target = resolve(projectRoot, 'dist');
+  await inspectDeletion(projectRoot, target);
+  return target;
 }
 
 const srcDir = resolve(projectRoot, 'src');
@@ -458,13 +442,11 @@ async function inlineThemeHead(distDir) {
 async function build() {
   const distDir = await resolveDistDir();
 
-  const [, sourceExists] = await Promise.all([
-    rm(distDir, { recursive: true, force: true }),
-    pathExists(srcDir),
-  ]);
+  const sourceExists = await pathExists(srcDir);
   if (!sourceExists) {
     throw new Error('Source directory "src/" not found.');
   }
+  await removeWithinRepo(projectRoot, distDir, { apply: true });
 
   await assertVendorAssets();
 

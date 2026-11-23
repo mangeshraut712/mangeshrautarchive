@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './helpers/isolated-test.js';
 import { gotoSiteReady } from './helpers/site.js';
 
 test('hero music requests a suitably sized Last.fm image and preserves other artwork URLs', async ({

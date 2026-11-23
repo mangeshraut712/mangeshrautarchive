@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './helpers/isolated-test.js';
 import { PAGES, gotoSite } from './helpers/site.js';
 
 test.describe('Systems Page (Engineering Evidence) Audit', () => {

@@ -1,5 +1,6 @@
+import { workEvidence } from '../../src/js/data/work-evidence.js';
 import AxeBuilder from '@axe-core/playwright';
-import { expect, test } from '@playwright/test';
+import { expect, test } from './helpers/isolated-test.js';
 import { gotoSite, openChatbot } from './helpers/site.js';
 
 test('homepage navigation loads a focused writing preview', async ({ page }) => {
@@ -56,6 +57,9 @@ test('old homepage preview links reach the complete article', async ({ page }) =
 test('verified contributions lead into original project cards and wider GitHub activity', async ({
   page,
 }) => {
+  await page.route('**/api/github/repos**', route =>
+    route.fulfill({ json: { items: workEvidence.repositories } })
+  );
   await gotoSite(page, '/#projects');
   const operatingView = page.locator('#work-contributions');
   const repositoryList = page.locator('#projects-repos-page');

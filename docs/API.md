@@ -62,6 +62,24 @@ After a confirmed booking, the browser can generate one RFC 5545 `.ics` event lo
 
 Connect flows use `api/integrations/oauth_state.py` and optional `INTEGRATION_ADMIN_TOKEN` for admin-only sync endpoints.
 
+## Edge Microservices (Cloudflare Workers)
+
+The production architecture operates two dedicated Cloudflare Workers deployed to edge isolates:
+
+### 1. AssistMe Chat & Proxy Worker (`workers/assistme-chat/`)
+
+- `POST /api/chat` — Streaming multimodal inference gateway with OpenRouter provider routing, attachment ingestion (images, audio, video, PDF, text), and NDJSON output formatting.
+- `GET /api/chat/health` — Edge chat availability and provider telemetry.
+- `GET /api/github/proxy` — Paginated and rate-limit-aware proxy for GitHub repository and activity data.
+- `GET /api/calendar/availability` — Sanitized 30-minute meeting slots without exposing private event details.
+- `POST /api/calendar/book` — Cryptographically signed booking with Google Meet generation and Supabase audit logs.
+
+### 2. Portfolio Status & Uptime Worker (`workers/portfolio-status/`)
+
+- `GET /api/status/history` — Read-only 90-day time-series uptime observations, daily health aggregates, and incident records from Cloudflare D1 (SQLite).
+- `GET /api/status/probes` — Real-time probe results across the 6 monitored production endpoints (GitHub Pages, Edge Chat, FastAPI, GitHub API, DNS, and Assets).
+- **Scheduled Cron Trigger** (`*/5 * * * *`) — Autonomous 5-minute collector that probes endpoints, detects failures, evaluates 2-consecutive-failure incident confirmation, and writes idempotent telemetry to D1.
+
 ## Environment
 
 See `.env.example`. Minimum for real LLM responses:

@@ -20,7 +20,9 @@ class PortfolioAnalyticsStore:
         # Use /tmp for Vercel serverless compatibility (read-only filesystem except /tmp)
         # Fallback to module directory for local development
         vercel_env = os.getenv("VERCEL_ENV") or os.getenv("VERCEL")
-        if vercel_env:
+        if os.getenv("PORTFOLIO_LOCAL_ONLY") == "1":
+            self._file_path = Path(__file__).resolve().parent.parent / ".cache/local-runtime/analytics.json"
+        elif vercel_env:
             self._file_path = Path("/tmp") / "portfolio_analytics_data.json"
         else:
             self._file_path = Path(__file__).with_name("analytics_data.json")

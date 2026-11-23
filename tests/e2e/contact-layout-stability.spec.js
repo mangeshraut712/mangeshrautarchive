@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './helpers/isolated-test.js';
 import { gotoSite } from './helpers/site.js';
 
 test('built homepage applies shared layout styles before first contentful paint', async ({

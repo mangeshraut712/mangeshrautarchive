@@ -2,10 +2,8 @@
 #
 # Secrets:
 #   OPENROUTER_API_KEY     — required (chat models)
-#   CLOUDFLARE_API_TOKEN   — preferred (Workers Edit token)
-#   CLOUDFARE_API_KEY      — accepted alias (typo-tolerant)
-#   CLOUDFLARE_ACCOUNT_ID  — optional if token can list accounts
-#   CLOUDFLARE_EMAIL       — only for Global API Key auth
+#   CLOUDFLARE_API_TOKEN   — required (scoped Workers Edit token)
+#   CLOUDFLARE_ACCOUNT_ID  — required; never inferred from broader account access
 #   LASTFM_API_KEY         — optional music proxy
 #
 # After deploy, sets Variable CHAT_API_BASE when possible.
@@ -25,7 +23,6 @@ on:
 
 permissions:
   contents: read
-  actions: write
 
 concurrency:
   group: assistme-chat-worker
@@ -35,6 +32,7 @@ concurrency:
 jobs:
   verify-openrouter:
     name: Verify OpenRouter secret
+    environment: production-chat
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
@@ -47,7 +45,6 @@ jobs:
             echo "::error::OPENROUTER_API_KEY secret is missing."
             exit 1
           fi
-          echo "OPENROUTER_API_KEY length: ${#OPENROUTER_API_KEY}"
           HTTP=$(curl -sS --connect-timeout 10 --max-time 30 -o /tmp/or.json -w "%{http_code}" \
             -X POST "https://openrouter.ai/api/v1/chat/completions" \
             -H "Authorization: Bearer ${OPENROUTER_API_KEY}" \
@@ -56,7 +53,6 @@ jobs:
             -H "X-Title: AssistMe CI Probe" \
             -d '{"model":"nvidia/nemotron-3-ultra-550b-a55b:free","messages":[{"role":"user","content":"Reply with exactly: ok"}],"max_tokens":256}')
           echo "OpenRouter HTTP $HTTP"
-          head -c 400 /tmp/or.json; echo
           if [ "$HTTP" != "200" ]; then
             echo "::warning::OpenRouter free probe HTTP $HTTP — worker still deploys."
           else
@@ -66,131 +62,35 @@ jobs:
 
   deploy-worker:
     name: Deploy Cloudflare Worker
+    permissions:
+      contents: read
+      actions: write
     needs: verify-openrouter
+    environment: production-chat
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Resolve Cloudflare credentials
+      - name: Require scoped Cloudflare credentials
         id: cf
         env:
-          CF_TOKEN_A: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CF_TOKEN_B: ${{ secrets.CLOUDFARE_API_KEY }}
-          CF_ACCOUNT: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          CF_EMAIL: ${{ secrets.CLOUDFLARE_EMAIL }}
+          TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          ACCOUNT: ${{ vars.CLOUDFLARE_ACCOUNT_ID || secrets.CLOUDFLARE_ACCOUNT_ID || 'a537fe8750aecab2da884ab534aa8f62' }}
         run: |
           set -euo pipefail
-          # Prefer CLOUDFLARE_API_TOKEN; accept typo CLOUDFARE_API_KEY
-          RAW="${CF_TOKEN_A:-${CF_TOKEN_B:-}}"
-          # Strip whitespace / wrapping quotes that break headers
-          TOKEN=$(printf '%s' "$RAW" | tr -d '\r\n\t' | sed -e 's/^["'\'']//' -e 's/["'\'']$//')
-          ACCOUNT=$(printf '%s' "${CF_ACCOUNT:-}" | tr -d '\r\n\t ')
-          EMAIL=$(printf '%s' "${CF_EMAIL:-}" | tr -d '\r\n\t ')
-          AUTH_MODE="token"
-
-          if [ -z "$TOKEN" ]; then
-            echo "present=false" >> "$GITHUB_OUTPUT"
-            echo "::error::No Cloudflare token secret. Add CLOUDFLARE_API_TOKEN (Workers Edit template)."
-            exit 1
-          fi
-
-          echo "token_len=${#TOKEN}"
-          echo "token_prefix=$(printf '%s' "$TOKEN" | head -c 4)…"
-          # Shape hints (no secret leak)
-          if printf '%s' "$TOKEN" | grep -Eq '^[0-9a-fA-F]{37}$'; then
-            echo "shape=global_api_key_hex37"
-          elif printf '%s' "$TOKEN" | grep -Eq '^[A-Za-z0-9_-]{40,}$'; then
-            echo "shape=likely_api_token"
-          else
-            echo "shape=unknown (len=${#TOKEN})"
-          fi
-
-          # --- Auth probe ---
-          RESP=$(curl -sS --connect-timeout 10 --max-time 30 -H "Authorization: Bearer ${TOKEN}" \
-            "https://api.cloudflare.com/client/v4/accounts?per_page=5" || echo '{}')
-          mapfile -t _P < <(echo "$RESP" | python3 scripts/deployment/cf-parse-accounts.py)
-          SUCCESS="${_P[0]:-FAIL}"
-          ACCOUNT_FROM="${_P[1]:-}"
-          ERR="${_P[2]:-}"
-          echo "bearer_probe=${SUCCESS} err=${ERR:-none}"
-
-          if [ "$SUCCESS" != "OK" ]; then
-            EMAILS=()
-            [ -n "$EMAIL" ] && EMAILS+=("$EMAIL")
-            EMAILS+=("mangeshraut71298@gmail.com" "mbr63@drexel.edu")
-            for TRY in "${EMAILS[@]}"; do
-              RESP=$(curl -sS -H "X-Auth-Email: ${TRY}" -H "X-Auth-Key: ${TOKEN}" \
-                "https://api.cloudflare.com/client/v4/accounts?per_page=5" || echo '{}')
-              mapfile -t _P < <(echo "$RESP" | python3 scripts/deployment/cf-parse-accounts.py)
-              SUCCESS="${_P[0]:-FAIL}"
-              ACCOUNT_FROM="${_P[1]:-}"
-              ERR="${_P[2]:-}"
-              echo "global_probe email=${TRY} success=${SUCCESS} err=${ERR:-none}"
-              if [ "$SUCCESS" = "OK" ]; then
-                AUTH_MODE="global"
-                EMAIL="$TRY"
-                break
-              fi
-            done
-          fi
-
-          if [ -z "$ACCOUNT" ]; then
-            ACCOUNT="$ACCOUNT_FROM"
-          fi
-
-          # Allow deploy with explicit account even if list failed (limited tokens)
-          if [ "$SUCCESS" != "OK" ] && [ -n "$ACCOUNT" ]; then
-            echo "Using CLOUDFLARE_ACCOUNT_ID without Account:Read"
-            SUCCESS="OK"
-            AUTH_MODE="token"
-          fi
-
-          if [ "$SUCCESS" != "OK" ] || [ -z "$ACCOUNT" ]; then
-            {
-              echo "## Cloudflare deploy blocked — invalid API credential"
-              echo ""
-              echo "| Check | Result |"
-              echo "| --- | --- |"
-              echo "| Secret length | ${#TOKEN} |"
-              echo "| Probe | ${SUCCESS} — ${ERR:-unknown} |"
-              echo ""
-              echo "Your \`CLOUDFARE_API_KEY\` is **not** a valid Cloudflare API Token"
-              echo "(\`Invalid format for X-Auth-Key\` / invalid Bearer)."
-              echo ""
-              echo "### Fix (2 minutes)"
-              echo "1. Open https://dash.cloudflare.com/profile/api-tokens"
-              echo "2. **Create Token** → template **Edit Cloudflare Workers** → Continue → Create"
-              echo "3. Copy the token once"
-              echo "4. GitHub → Settings → Secrets → Actions → **New repository secret**:"
-              echo "   - Name: \`CLOUDFLARE_API_TOKEN\`"
-              echo "   - Value: *(paste token)*"
-              echo "5. Optional: \`CLOUDFLARE_ACCOUNT_ID\` from Workers dashboard (right sidebar)"
-              echo "6. Re-run this workflow"
-              echo ""
-              echo "Do **not** paste Global API Key digests, Origin CA keys, or random hex."
-            } >> "$GITHUB_STEP_SUMMARY"
-            echo "::error::Cloudflare credential invalid (${ERR:-auth failed}). Create API Token 'Edit Cloudflare Workers' as CLOUDFLARE_API_TOKEN."
-            exit 1
-          fi
-
+          : "${TOKEN:?CLOUDFLARE_API_TOKEN is required; global keys are unsupported}"
+          : "${ACCOUNT:?CLOUDFLARE_ACCOUNT_ID is required}"
+          echo "WARNING: this workflow replaces production Worker code and secret bindings."
           {
             echo "present=true"
-            echo "account_id=$ACCOUNT"
-            echo "auth_mode=$AUTH_MODE"
+            echo "auth_mode=token"
           } >> "$GITHUB_OUTPUT"
           {
             echo "CLOUDFLARE_ACCOUNT_ID=$ACCOUNT"
-            if [ "$AUTH_MODE" = "global" ]; then
-              echo "CLOUDFLARE_API_KEY=$TOKEN"
-              echo "CLOUDFLARE_EMAIL=$EMAIL"
-            else
-              echo "CLOUDFLARE_API_TOKEN=$TOKEN"
-            fi
+            echo "CLOUDFLARE_API_TOKEN=$TOKEN"
           } >> "$GITHUB_ENV"
-          echo "## Cloudflare auth" >> "$GITHUB_STEP_SUMMARY"
-          echo "- mode: \`${AUTH_MODE}\` · account: \`${ACCOUNT:0:8}…\`" >> "$GITHUB_STEP_SUMMARY"
 
       - name: Setup Node
         if: steps.cf.outputs.present == 'true'
@@ -207,17 +107,11 @@ jobs:
         env:
           ACCOUNT: ${{ env.CLOUDFLARE_ACCOUNT_ID }}
           TOKEN: ${{ env.CLOUDFLARE_API_TOKEN }}
-          CF_KEY: ${{ env.CLOUDFLARE_API_KEY }}
-          CF_EMAIL: ${{ env.CLOUDFLARE_EMAIL }}
         run: |
           set -euo pipefail
           # Need a workers.dev subdomain before first publish (non-interactive CI)
           SUB="mangeshraut712"
-          if [ -n "${TOKEN:-}" ]; then
-            AUTH=(-H "Authorization: Bearer ${TOKEN}")
-          else
-            AUTH=(-H "X-Auth-Email: ${CF_EMAIL}" -H "X-Auth-Key: ${CF_KEY}")
-          fi
+          AUTH=(-H "Authorization: Bearer ${TOKEN}")
           # Check existing
           EXIST=$(curl -sS "${AUTH[@]}" \
             "https://api.cloudflare.com/client/v4/accounts/${ACCOUNT}/workers/subdomain" || echo '{}')
@@ -296,52 +190,6 @@ jobs:
           GOOGLE_CALENDAR_CLIENT_SECRET: ${{ secrets.GOOGLE_CALENDAR_CLIENT_SECRET }}
           CALENDAR_SYNC_OWNER_EMAILS: ${{ secrets.CALENDAR_SYNC_OWNER_EMAILS }}
 
-      - name: Deploy Worker (Global API Key)
-        id: deploy_global
-        if: steps.cf.outputs.present == 'true' && steps.cf.outputs.auth_mode == 'global'
-        uses: cloudflare/wrangler-action@v3
-        with:
-          accountId: ${{ env.CLOUDFLARE_ACCOUNT_ID }}
-          workingDirectory: workers/assistme-chat
-          wranglerVersion: '4.156.0'
-          command: deploy
-          secrets: |
-            OPENROUTER_API_KEY
-            LASTFM_API_KEY
-            GITHUB_PAT
-            SUPABASE_URL
-            SUPABASE_SERVICE_ROLE_KEY
-            SUPABASE_HEALTH_TABLE
-            AI_GATEWAY_API_KEY
-            INTEGRATION_ENCRYPTION_KEY
-            INTEGRATION_SYNC_ADMIN_TOKEN
-            WHOOP_CLIENT_ID
-            WHOOP_CLIENT_SECRET
-            WITHINGS_CLIENT_ID
-            WITHINGS_CLIENT_SECRET
-            GOOGLE_CALENDAR_CLIENT_ID
-            GOOGLE_CALENDAR_CLIENT_SECRET
-            CALENDAR_SYNC_OWNER_EMAILS
-        env:
-          CLOUDFLARE_API_KEY: ${{ env.CLOUDFLARE_API_KEY }}
-          CLOUDFLARE_EMAIL: ${{ env.CLOUDFLARE_EMAIL }}
-          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
-          LASTFM_API_KEY: ${{ secrets.LASTFM_API_KEY }}
-          GITHUB_PAT: ${{ secrets.GH_PAT || secrets.GITHUB_PAT }}
-          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
-          SUPABASE_HEALTH_TABLE: ${{ secrets.SUPABASE_HEALTH_TABLE }}
-          AI_GATEWAY_API_KEY: ${{ secrets.AI_GATEWAY_API_KEY }}
-          INTEGRATION_ENCRYPTION_KEY: ${{ secrets.INTEGRATION_ENCRYPTION_KEY }}
-          INTEGRATION_SYNC_ADMIN_TOKEN: ${{ secrets.INTEGRATION_SYNC_ADMIN_TOKEN }}
-          WHOOP_CLIENT_ID: ${{ secrets.WHOOP_CLIENT_ID }}
-          WHOOP_CLIENT_SECRET: ${{ secrets.WHOOP_CLIENT_SECRET }}
-          WITHINGS_CLIENT_ID: ${{ secrets.WITHINGS_CLIENT_ID }}
-          WITHINGS_CLIENT_SECRET: ${{ secrets.WITHINGS_CLIENT_SECRET }}
-          GOOGLE_CALENDAR_CLIENT_ID: ${{ secrets.GOOGLE_CALENDAR_CLIENT_ID }}
-          GOOGLE_CALENDAR_CLIENT_SECRET: ${{ secrets.GOOGLE_CALENDAR_CLIENT_SECRET }}
-          CALENDAR_SYNC_OWNER_EMAILS: ${{ secrets.CALENDAR_SYNC_OWNER_EMAILS }}
-
       - name: Resolve worker URL
         if: steps.cf.outputs.present == 'true'
         id: url
@@ -349,7 +197,6 @@ jobs:
           # Do not interpolate wrangler command-output into the script body —
           # multiline logs break bash (e.g. "Cloudflare: command not found").
           DEPLOY_LOG: ${{ steps.deploy.outputs.command-output }}
-          DEPLOY_LOG_GLOBAL: ${{ steps.deploy_global.outputs.command-output }}
         run: |
           set -euo pipefail
           URL=""
@@ -359,20 +206,14 @@ jobs:
           fi
           # Fallback: scrape wrangler logs from env (safe multiline)
           if [ -z "$URL" ]; then
-            LOG="${DEPLOY_LOG:-${DEPLOY_LOG_GLOBAL:-}}"
+            LOG="${DEPLOY_LOG:-}"
             URL=$(printf '%s' "$LOG" | grep -oE 'https://[a-zA-Z0-9.-]+\.workers\.dev' | head -1 || true)
           fi
           # Fallback: Cloudflare API
           if [ -z "$URL" ]; then
-            if [ -n "${CLOUDFLARE_API_KEY:-}" ] && [ -n "${CLOUDFLARE_EMAIL:-}" ]; then
-              SUB=$(curl -sS -H "X-Auth-Email: ${CLOUDFLARE_EMAIL}" -H "X-Auth-Key: ${CLOUDFLARE_API_KEY}" \
-                "https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ACCOUNT_ID}/workers/subdomain" \
-                | python3 -c "import sys,json; d=json.load(sys.stdin); print((d.get('result') or {}).get('subdomain',''))" || true)
-            else
-              SUB=$(curl -sS -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}" \
-                "https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ACCOUNT_ID}/workers/subdomain" \
-                | python3 -c "import sys,json; d=json.load(sys.stdin); print((d.get('result') or {}).get('subdomain',''))" || true)
-            fi
+            SUB=$(curl -sS -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}" \
+              "https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ACCOUNT_ID}/workers/subdomain" \
+              | python3 -c "import sys,json; d=json.load(sys.stdin); print((d.get('result') or {}).get('subdomain',''))" || true)
             [ -n "${SUB:-}" ] && URL="https://assistme-chat.${SUB}.workers.dev"
           fi
           # Last resort known default for this account

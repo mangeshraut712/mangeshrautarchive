@@ -45,6 +45,7 @@ if (isVisualTesting) {
 
 const useConfig = {
   baseURL,
+  serviceWorkers: process.env.PORTFOLIO_LOCAL_ONLY === '1' ? 'block' : 'allow',
   trace: process.env.PLAYWRIGHT_TRACE === '1' ? 'retain-on-failure' : 'off',
   screenshot: isVisualTesting ? 'on' : 'only-on-failure',
   video: videoMode,

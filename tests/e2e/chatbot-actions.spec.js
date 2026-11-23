@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, test } from './helpers/isolated-test.js';
 
 test.describe('Chatbot Agentic Actions & WebMCP Tool Registration', () => {
   // Test 1: Mock WebMCP and verify client-side tools are registered

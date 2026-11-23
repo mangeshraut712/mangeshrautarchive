@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './helpers/isolated-test.js';
 import { PAGES as SITE_PAGES, gotoSite } from './helpers/site.js';
 
 const PAGES = [

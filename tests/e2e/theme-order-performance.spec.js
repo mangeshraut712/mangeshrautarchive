@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './helpers/isolated-test.js';
 import { gotoSite } from './helpers/site.js';
 
 test('theme stylesheet is moved only when another style follows it', async ({ page }) => {

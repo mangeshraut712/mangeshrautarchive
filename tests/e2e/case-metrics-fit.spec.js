@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './helpers/isolated-test.js';
 import { gotoSite } from './helpers/site.js';
 
 test('case-study metric values fit their cards on narrow phones', async ({ page }) => {

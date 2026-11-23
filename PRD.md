@@ -54,14 +54,19 @@ The portfolio pairs a client-side interface (HTML5, vanilla CSS with custom desi
 
 ### 3.2 Showcase & Editorial Surfaces
 
-- **Projects Showcase**: Dynamically filtered repository cards with real README screenshots, conceptual illustrations, star counts, and direct links.
+- **GitHub Operating View & Projects Showcase**: Live public repository catalog synchronized from `github.com/mangeshraut712`, featuring an interactive dual 2D grid / 3D isometric contribution graph (`data-view="both"` default), real commit velocity metrics, and dynamically filtered repository cards with real README screenshots, conceptual illustrations, and direct links.
 - **Technical Writings (Blog)**: 20 technology articles (2 per month, Jan–Oct 2026) with verified provenance, publisher credits, and RSS/Atom discovery feeds.
 - **Systems & Case Studies**: Detailed architecture blueprints, sequence diagrams, and engineering decision logs.
-- **System Monitor**: Live operational telemetry, API latency probes, rate limiting status, and deployment integrity verification.
+- **System Monitor**: Live operational telemetry, API latency probes, rate limiting status, and deployment integrity verification backed by durable edge storage.
 - **Travel Atlas**: Interactive geographic map with responsive route views and location stories.
 - **Uses**: Hardware, development tools, terminal configurations, and AI pair-programming stack.
 
-### 3.3 Contact, Clocks & Calendar
+### 3.3 Durable Edge Monitoring & Telemetry
+
+- **Edge Health Probes**: Automated Cloudflare Worker (`workers/portfolio-status`) running 5-minute cron triggers to sample probe targets (Static CDN, Chat Inference, GitHub Sync).
+- **Persistent D1 Database**: Incident tracking and observation history persisted in Cloudflare D1 SQLite, exposed via `/api/status/history` and `/api/status/probes` for public reliability transparency.
+
+### 3.4 Contact, Clocks & Calendar
 
 - **Outreach**: Direct messaging with validation, client-side draft preservation, and rate limiting.
 - **World Clocks**: Live analog and digital clocks for New York, London, Mumbai, Tokyo, Sydney, and Paris with IANA timezone DST awareness.

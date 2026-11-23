@@ -1,13 +1,39 @@
 /** Deploy the independent status collector. Never print credentials or request headers. */
+import { createHash } from 'node:crypto';
 import { readFile, readdir } from 'node:fs/promises';
 const root = new URL('../../workers/portfolio-status/', import.meta.url);
 const config = JSON.parse(await readFile(new URL('wrangler.json', root), 'utf8'));
-const account = process.env.CLOUDFLARE_ACCOUNT_ID || 'a537fe8750aecab2da884ab534aa8f62';
-const token = String(process.env.CLOUDFLARE_API_TOKEN || process.env.CLOUDFARE_API_KEY || '')
-  .trim()
-  .replace(/^["']|["']$/g, '');
-if (!token) throw new Error('Cloudflare deployment credential is missing');
-let auth = { Authorization: `Bearer ${token}` };
+const mode = process.argv[2] || '--plan';
+const database = config.d1_databases[0];
+const migrations = (await readdir(new URL('migrations/', root)))
+  .filter(name => /^[a-zA-Z0-9_-]+\.sql$/.test(name))
+  .sort();
+if (mode === '--plan') {
+  console.log('Database name:', database.database_name);
+  console.log('Migration files:', migrations.join(', '));
+  console.log('No credentials read and no network requests made.');
+  process.exit(0);
+}
+if (
+  !['--deploy', '--migrate'].includes(mode) ||
+  process.env.EXPECTED_DATABASE_NAME !== database.database_name
+) {
+  throw new Error(
+    'WARNING: remote deployment requires an explicit mode and matching EXPECTED_DATABASE_NAME.'
+  );
+}
+if (mode === '--migrate' && !process.argv.includes('--confirm-schema-change')) {
+  throw new Error(
+    'WARNING: migrations change remote database schema. Review --plan and explicitly confirm.'
+  );
+}
+if (process.env.PORTFOLIO_LOCAL_ONLY === '1')
+  throw new Error('Remote deployment is disabled in local-only execution.');
+const account = process.env.CLOUDFLARE_ACCOUNT_ID;
+const token = process.env.CLOUDFLARE_API_TOKEN;
+if (!account || !token)
+  throw new Error('A scoped CLOUDFLARE_API_TOKEN and explicit account are required.');
+const auth = { Authorization: `Bearer ${token}` };
 async function api(path, { method = 'GET', body } = {}) {
   const response = await fetch(`https://api.cloudflare.com/client/v4${path}`, {
     method,
@@ -25,24 +51,39 @@ async function api(path, { method = 'GET', body } = {}) {
     );
   return data.result;
 }
-try {
-  await api(`/accounts/${account}/workers/scripts`);
-} catch {
-  auth = {
-    'X-Auth-Key': token,
-    'X-Auth-Email': process.env.CLOUDFLARE_EMAIL || 'mbr63@drexel.edu',
-  };
-  await api(`/accounts/${account}/workers/scripts`);
+if (mode === '--migrate') {
+  console.warn(
+    'WARNING: applying remote schema migrations; schema mistakes can interrupt service or damage data.'
+  );
+  const query = sql =>
+    api(`/accounts/${account}/d1/database/${database.database_id}/query`, {
+      method: 'POST',
+      body: { sql },
+    });
+  await query(
+    'CREATE TABLE IF NOT EXISTS portfolio_migrations (name TEXT PRIMARY KEY, checksum TEXT NOT NULL)'
+  );
+  const result = await query('SELECT name, checksum FROM portfolio_migrations');
+  const applied = new Map((result[0]?.results || []).map(row => [row.name, row.checksum]));
+  for (const file of migrations) {
+    const sql = await readFile(new URL(`migrations/${file}`, root), 'utf8');
+    const checksum = createHash('sha256').update(sql).digest('hex');
+    if (applied.has(file)) {
+      if (applied.get(file) !== checksum)
+        throw new Error('Applied migration changed; manual review required.');
+      continue;
+    }
+    await query(sql);
+    await query(
+      `INSERT INTO portfolio_migrations (name, checksum) VALUES ('${file}', '${checksum}')`
+    );
+    console.log('Applied migration:', file);
+  }
+  process.exit(0);
 }
-const database = config.d1_databases[0];
-for (const file of (await readdir(new URL('migrations/', root)))
-  .filter(name => name.endsWith('.sql'))
-  .sort()) {
-  await api(`/accounts/${account}/d1/database/${database.database_id}/query`, {
-    method: 'POST',
-    body: { sql: await readFile(new URL(`migrations/${file}`, root), 'utf8') },
-  });
-}
+console.warn(
+  'WARNING: deploying replaces remote Worker code and schedules; database schema is not changed.'
+);
 const form = new FormData();
 form.append(
   'metadata',

@@ -8,8 +8,7 @@
  *   node scripts/deployment/cleanup-vercel-env.mjs --apply  # mutate Vercel
  */
 import { existsSync, readFileSync } from 'node:fs';
-import { homedir } from 'node:os';
-import { join, resolve } from 'node:path';
+import { resolve } from 'node:path';
 
 const ROOT = resolve(import.meta.dirname, '../..');
 const APPLY = process.argv.includes('--apply');
@@ -51,11 +50,17 @@ function loadVercelAuth() {
     throw new Error('Missing .vercel/project.json — run vercel link first.');
   }
   const { projectId, orgId } = JSON.parse(readFileSync(projectPath, 'utf8'));
-  const authPath = join(homedir(), 'Library/Application Support/com.vercel.cli/auth.json');
-  if (!existsSync(authPath)) {
-    throw new Error('Missing Vercel CLI auth — run vercel login first.');
-  }
-  const token = JSON.parse(readFileSync(authPath, 'utf8')).token;
+  const token = process.env.VERCEL_TOKEN;
+  if (!token || process.env.PORTFOLIO_LOCAL_ONLY === '1')
+    throw new Error('Explicit scoped VERCEL_TOKEN required; local execution is disabled.');
+  if (APPLY && !process.argv.includes('--confirm-remote-env-deletion'))
+    throw new Error(
+      'WARNING: this removes remote production/preview environment variables. Explicit confirmation required.'
+    );
+  if (APPLY)
+    console.warn(
+      'WARNING: removing remote environment variables can disable production integrations.'
+    );
   return { projectId, teamId: orgId, token };
 }
 
@@ -65,7 +70,7 @@ async function listEnvVars(auth) {
     { headers: { Authorization: `Bearer ${auth.token}` } }
   );
   const body = await response.json();
-  if (!response.ok) throw new Error(`list env failed: ${JSON.stringify(body)}`);
+  if (!response.ok) throw new Error(`list env failed: ${response.status}`);
   return body.envs || [];
 }
 
@@ -75,7 +80,7 @@ async function deleteEnv(auth, id) {
     { method: 'DELETE', headers: { Authorization: `Bearer ${auth.token}` } }
   );
   if (!response.ok && response.status !== 404) {
-    throw new Error(`delete ${id} failed: ${await response.text()}`);
+    throw new Error(`delete ${id} failed: ${response.status}`);
   }
 }
 
@@ -93,7 +98,7 @@ async function upsertConfig(auth, existing, key, value, targets) {
           `https://api.vercel.com/v9/projects/${auth.projectId}/env/${match.id}?teamId=${auth.teamId}`,
           { method: 'PATCH', headers, body: JSON.stringify({ value }) }
         );
-        if (!response.ok) throw new Error(`patch ${key}@${target}: ${await response.text()}`);
+        if (!response.ok) throw new Error(`patch ${key}@${target}: ${response.status}`);
       }
       console.log(`[keep] ${key} → ${target}`);
       continue;
@@ -115,7 +120,7 @@ async function upsertConfig(auth, existing, key, value, targets) {
         }),
       }
     );
-    if (!response.ok) throw new Error(`add ${key}@${target}: ${await response.text()}`);
+    if (!response.ok) throw new Error(`add ${key}@${target}: ${response.status}`);
   }
 }
 

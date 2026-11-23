@@ -1,5 +1,5 @@
 import AxeBuilder from '@axe-core/playwright';
-import { expect, test } from '@playwright/test';
+import { expect, test } from './helpers/isolated-test.js';
 import { PAGES, gotoSite } from './helpers/site.js';
 
 // Deterministic contrast/a11y failures should fail once — retries only burn CI time.

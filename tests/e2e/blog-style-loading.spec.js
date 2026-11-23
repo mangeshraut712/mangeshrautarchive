@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './helpers/isolated-test.js';
 import { gotoSiteReady, openChatbot } from './helpers/site.js';
 
 test('blog uses its bundled assistant styles and opens AssistMe', async ({ page }) => {

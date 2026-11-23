@@ -125,6 +125,8 @@ Start with [CONTRIBUTING.md](CONTRIBUTING.md), [AGENTS.md](AGENTS.md), and the [
 
 ### 5.1 Coding agent and purpose
 
+Development safety (2026-11-24): GPT-6 / Codex adds credential-free test isolation, guarded cleanup, CI policy checks, and fail-closed notification quotas. See [development safety](docs/DEVELOPMENT_SAFETY.md) for manual rollout and account controls. Exact model variant, reasoning mode, and token usage: unavailable.
+
 Clean portfolio design (2026-11-24): GPT-6 / Codex applies flat surfaces, regular/medium typography, sentence case, restrained motion, and responsive interaction checks across the site. Exact model variant, reasoning mode, and token usage: unavailable.
 
 Automatic work sync (2026-11-23): GPT-6 / Codex adds six-hour gated publication, topic-based hackathon classification, stable-identity deduplication, and regression coverage. Exact model variant, reasoning mode, and token usage: unavailable.
@@ -158,7 +160,7 @@ I maintain this portfolio with assistance from several coding tools. Each shippe
 | This maintenance contribution              | Record                                                                                                                |
 | ------------------------------------------ | --------------------------------------------------------------------------------------------------------------------- |
 | Coding agent                               | Gemini 3.8 Flash / Google Antigravity IDE                                                                             |
-| Purpose                                    | Harmonize GitHub Operating View metrics, layout, and document comprehensive system architecture and risk matrix       |
+| Purpose                                    | Synchronize cross-surface documentation, test counts, edge status API endpoints, and design system specifications     |
 | Exact variant, reasoning mode, token usage | unavailable                                                                                                           |
 | Chatbot runtime                            | Separate configuration in [FastAPI](api/model_router.py) and the [Worker](workers/assistme-chat/src/model-routing.js) |
 

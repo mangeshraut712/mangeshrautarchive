@@ -44,8 +44,9 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          lint_dir=$(mktemp -d)
-          trap 'rm -rf "$lint_dir"' EXIT
+          mkdir -p "$GITHUB_WORKSPACE/.cache"
+          lint_dir=$(mktemp -d "$GITHUB_WORKSPACE/.cache/actionlint.XXXXXX")
+          trap 'node scripts/safety/remove-temp.mjs "${lint_dir:?}" --apply' EXIT
           gh release download v1.7.7 --repo rhysd/actionlint \
             --pattern actionlint_1.7.7_linux_amd64.tar.gz \
             --pattern actionlint_1.7.7_checksums.txt --dir "$lint_dir"
@@ -100,13 +101,16 @@ jobs:
         id: playwright-cache
         with:
           path: ~/.cache/ms-playwright
-          key: playwright-${{ runner.os }}-${{ steps.pw.outputs.version }}
+          key: playwright-${{ github.event_name }}-${{ github.ref_name }}-${{ runner.os }}-${{ steps.pw.outputs.version }}
           restore-keys: |
-            playwright-${{ runner.os }}-
+            playwright-${{ github.event_name }}-${{ github.ref_name }}-${{ runner.os }}-
 
       - name: Security — dependency vulnerability audit
         id: npm_audit
         run: npm audit --audit-level=high --omit=dev
+
+      - name: Repository safety controls
+        run: npm run safety:check
 
       - name: Security — scan for exposed secrets
         id: secrets_scan

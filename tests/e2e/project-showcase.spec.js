@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './helpers/isolated-test.js';
 import AxeBuilder from '@axe-core/playwright';
 const repos = Array.from({ length: 106 }, (_, i) => ({
   name:

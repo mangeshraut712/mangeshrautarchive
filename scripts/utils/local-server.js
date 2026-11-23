@@ -1,10 +1,11 @@
+import { assertLocalEndpoint } from '../safety/local-environment.mjs';
 import express from 'express';
 import http from 'node:http';
 import zlib from 'node:zlib';
 import { Readable } from 'node:stream';
 import { fileURLToPath } from 'url';
 import { dirname, join, resolve } from 'path';
-import dotenv from 'dotenv';
+
 import { WebSocket, WebSocketServer } from 'ws';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { generateCaseStudyPages } from '../build/generate-case-study-pages.mjs';
@@ -16,9 +17,8 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const projectRoot = resolve(__dirname, '../../');
 
-// Load environment variables (.env.local overrides .env).
-dotenv.config({ path: join(projectRoot, '.env.local'), processEnv: process.env });
-dotenv.config({ path: join(projectRoot, '.env'), processEnv: process.env });
+// Local servers never load deployment credentials.
+assertLocalEndpoint('API_TARGET', process.env.API_TARGET);
 
 const app = express();
 const port = Number.parseInt(process.env.PORT || '4000', 10);

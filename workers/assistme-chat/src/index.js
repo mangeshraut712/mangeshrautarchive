@@ -1,3 +1,4 @@
+import { reserveNotification } from './notification-safety.js';
 /**
  * AssistMe API edge (Cloudflare Worker) — FastAPI-compatible surface for GitHub Pages
  * when Vercel is DEPLOYMENT_DISABLED.
@@ -1948,7 +1949,7 @@ const FORM_RATE_MAX = 5;
 
 function isFormRateLimited(request, formName) {
   const ip = String(request.headers.get('CF-Connecting-IP') || '').trim();
-  if (!ip) return false;
+  if (!ip) return true;
   const now = Date.now();
   const key = `${formName}:${ip}`;
   const current = FORM_RATE_LIMITS.get(key);
@@ -2137,6 +2138,7 @@ async function handleContactMessage(request, env, cors) {
 
   // Asynchronously dispatch real-time notifications to Telegram/Discord/Webhooks
   dispatchContactNotification(env, {
+    confirmed: payload.confirmExternalNotification === true,
     name,
     email,
     subject,
@@ -2158,7 +2160,10 @@ async function handleContactMessage(request, env, cors) {
   );
 }
 
-async function dispatchContactNotification(env, { name, email, subject, message, role, source }) {
+async function dispatchContactNotification(
+  env,
+  { name, email, subject, message, role, source, confirmed }
+) {
   const timestamp = new Date().toISOString();
   const alertText =
     `📬 *New Portfolio Contact Submission*\n\n` +
@@ -2175,7 +2180,8 @@ async function dispatchContactNotification(env, { name, email, subject, message,
   // 1. Telegram Bot alert
   const tgToken = env.TELEGRAM_BOT_TOKEN;
   const tgChatId = env.TELEGRAM_CHAT_ID;
-  if (tgToken && tgChatId) {
+  if (tgToken && tgChatId && (await reserveNotification(env, 'telegram', tgChatId, confirmed))) {
+    console.warn('WARNING: sending one confirmed external contact notification.');
     dispatches.push(
       fetch(`https://api.telegram.org/bot${tgToken}/sendMessage`, {
         method: 'POST',
@@ -2185,13 +2191,18 @@ async function dispatchContactNotification(env, { name, email, subject, message,
           text: alertText,
           parse_mode: 'Markdown',
         }),
-      }).catch(e => console.warn('Telegram notify error:', e.message))
+      }).catch(() => console.warn('Telegram notification failed; provider details withheld.'))
     );
   }
 
   // 2. Discord Webhook alert
   const discordWebhook = env.DISCORD_WEBHOOK_URL;
-  if (discordWebhook) {
+  if (
+    !dispatches.length &&
+    discordWebhook &&
+    (await reserveNotification(env, 'discord', discordWebhook, confirmed))
+  ) {
+    console.warn('WARNING: sending one confirmed external contact notification.');
     dispatches.push(
       fetch(discordWebhook, {
         method: 'POST',
@@ -2211,13 +2222,18 @@ async function dispatchContactNotification(env, { name, email, subject, message,
             },
           ],
         }),
-      }).catch(e => console.warn('Discord notify error:', e.message))
+      }).catch(() => console.warn('Discord notification failed; provider details withheld.'))
     );
   }
 
   // 3. Generic Webhook (Slack / Zapier / n8n / Make)
   const genericWebhook = env.CONTACT_NOTIFICATION_WEBHOOK_URL;
-  if (genericWebhook) {
+  if (
+    !dispatches.length &&
+    genericWebhook &&
+    (await reserveNotification(env, 'webhook', genericWebhook, confirmed))
+  ) {
+    console.warn('WARNING: sending one confirmed external contact notification.');
     dispatches.push(
       fetch(genericWebhook, {
         method: 'POST',
@@ -2226,7 +2242,7 @@ async function dispatchContactNotification(env, { name, email, subject, message,
           event: 'contact_form_submitted',
           data: { name, email, subject, message, role, source, timestamp },
         }),
-      }).catch(e => console.warn('Webhook notify error:', e.message))
+      }).catch(() => console.warn('Webhook notification failed; provider details withheld.'))
     );
   }
 
